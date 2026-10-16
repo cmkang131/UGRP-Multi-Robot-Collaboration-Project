@@ -1,0 +1,936 @@
+{
+  "schema": "ugrp.gcp-ops-result.v1",
+  "at": "2026-10-15 13:29:11 KST",
+  "queue": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-crate-diag-727de2af.json",
+  "pr": 500,
+  "source_sha": "727de2af0e5ec10dda0b954e757c2fe42e694766",
+  "host": {
+    "alias": "gcp1",
+    "project": "ugrp-act-train-1014",
+    "instance": "ugrp-sim-gcp1",
+    "zone": "asia-northeast3-a",
+    "machine_type": "n4-highcpu-64"
+  },
+  "profile": "crate13_v1",
+  "cargo_scene": "crate_mass_025_v1",
+  "verdict": "NOT_READY_STOPPED_FRESH_DIAGNOSTIC",
+  "stages": {
+    "reproduction": {
+      "successes": 1,
+      "planned_N": 3,
+      "submitted_N": 3,
+      "resolved_completed_N": 3,
+      "completed_failed_N": 2,
+      "supervisor_interrupted_N": 0,
+      "not_submitted_N": 0,
+      "near_wall_planned_N": 1,
+      "wall_per_sim_median_all_submitted": 3.4449234183188997,
+      "wall_per_sim_range_all_submitted": [
+        3.03335629143781,
+        5.819186176146901
+      ],
+      "first30_completed_N": 2,
+      "first30_nearest_frame_estimate_median": 3.612888324497606,
+      "first30_method": "progress.json mtime minus progress.wall_s estimates monotonic start epoch; selected review JPEG mtime estimates capture time; small file-write timing error, not exact monotonic snapshot",
+      "speed_verdict": "warning >3.5; diagnostic aborted for control failure, not qualified at planned concurrency10",
+      "denominator_note": "Completed failures, external interruptions and unsubmitted episodes remain separate. No reproduction/fresh pooling."
+    },
+    "diagnostic": {
+      "successes": 0,
+      "planned_N": 10,
+      "submitted_N": 7,
+      "resolved_completed_N": 2,
+      "completed_failed_N": 2,
+      "supervisor_interrupted_N": 5,
+      "not_submitted_N": 3,
+      "near_wall_planned_N": 0,
+      "wall_per_sim_median_all_submitted": 3.8638277657457105,
+      "wall_per_sim_range_all_submitted": [
+        3.568913653370239,
+        4.09825168394736
+      ],
+      "first30_completed_N": 1,
+      "first30_nearest_frame_estimate_median": 3.763529825210571,
+      "first30_method": "progress.json mtime minus progress.wall_s estimates monotonic start epoch; selected review JPEG mtime estimates capture time; small file-write timing error, not exact monotonic snapshot",
+      "speed_verdict": "warning >3.5; diagnostic aborted for control failure, not qualified at planned concurrency10",
+      "denominator_note": "Completed failures, external interruptions and unsubmitted episodes remain separate. No reproduction/fresh pooling."
+    }
+  },
+  "gate": {
+    "approved": false,
+    "submitted_N": 0,
+    "result": null,
+    "reason": "fresh diagnostic failed; approval waiting/promotion not applicable"
+  },
+  "training_submitted_N": 0,
+  "model_calls": 0,
+  "host_errors": 0,
+  "input_audit": {
+    "checked_runs": 10,
+    "invisible_measurements": 0,
+    "held_world_reads": 0,
+    "teacher_boundary_enabled": 10,
+    "scope": "Runtime counters and admitted source tags verified, including interrupted runs. Visible-relative demonstration teacher exception retained; not proof of a pure RGB estimator or producer mislabeling absence."
+  },
+  "near_wall_diagnostic": {
+    "drawn": 12,
+    "excluded": 2,
+    "excluded_rate": 0.16666666666666666,
+    "accepted": 10,
+    "excluded_seeds": [
+      79322,
+      79323
+    ],
+    "pending_unsubmitted_seeds": [
+      79321,
+      79324,
+      79325
+    ]
+  },
+  "findings": [
+    {
+      "run": "crate-diag-79314-727de2af",
+      "observed_cause": "Assigned teal never admitted for r1(0/126), although the blue end appears in own review. r2 failed to reach grasp station before its12s staging deadline; peer handoff aborts r1 search. Different-side chassis relation reviewed first; no proven same-end pursuit.",
+      "uncertainty": "Exact geometry/pose-estimation origin of r2 candidate rejection remains unverified.",
+      "review_times": [
+        0,
+        3,
+        5,
+        6,
+        8,
+        10,
+        12,
+        13
+      ]
+    },
+    {
+      "run": "crate-diag-79317-727de2af",
+      "observed_cause": "Different teal/blue ends in own views; r2 waits ready while r1 never reaches pick. r1 sees assigned end192/194 measurements, align emits99zero-wheel commands/129rows; assigned-lug x remains roughly0.203-0.211m in sampled late measurements. Alignment repeatedly cannot satisfy readiness and ends at20SIMs.",
+      "uncertainty": "Specific readiness/deadband/IK interaction has not been isolated; no claim that the event count itself is the root cause.",
+      "review_times": [
+        0,
+        4,
+        6,
+        8,
+        12,
+        16,
+        18,
+        20
+      ]
+    },
+    {
+      "run": "crate-reproduction-77981-727de2af",
+      "observed_cause": "Own RGB lift confirmed for both; UNKNOWN floor signals trigger reverse own issued lift, temporary setdown and re-observation; final release_success true. One development reproduction only, not a gate or ACT student success."
+    }
+  ],
+  "reproduction_stage_decision": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/crate13-727de2af-ops/reproduction-review.json",
+  "stop_record": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/stop-crate13-727de2af-20261015.json",
+  "verification": {
+    "remote_full_manifests": 10,
+    "retrieved_files_against_original_manifests": 463,
+    "compressed_files_decoded_hash_verified": 34,
+    "supervisor_records_verified": 10,
+    "directly_viewed_unique_frames": 273,
+    "visual_review": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/crate13-727de2af-ops/visual-review.json"
+  },
+  "admission": {
+    "shared_remote_lock": "/home/ugrp/ugrp-sim/admission.lock",
+    "max_reserved_crate": 7,
+    "max_reserved_total_conservative": 9,
+    "limit_total": 40,
+    "limit_crate": 10
+  },
+  "lifecycle": {
+    "owned_processes": [],
+    "other_processes": [],
+    "removed_own_lease_reservations": [
+      "/home/ugrp/ugrp-sim/leases/crate-reproduction-77990-727de2af",
+      "/home/ugrp/ugrp-sim/admission-reservations/crate-reproduction-77990-727de2af.json",
+      "/home/ugrp/ugrp-sim/leases/crate-reproduction-77978-727de2af",
+      "/home/ugrp/ugrp-sim/admission-reservations/crate-reproduction-77978-727de2af.json",
+      "/home/ugrp/ugrp-sim/leases/crate-reproduction-77981-727de2af",
+      "/home/ugrp/ugrp-sim/admission-reservations/crate-reproduction-77981-727de2af.json",
+      "/home/ugrp/ugrp-sim/leases/crate-diag-79314-727de2af",
+      "/home/ugrp/ugrp-sim/admission-reservations/crate-diag-79314-727de2af.json",
+      "/home/ugrp/ugrp-sim/leases/crate-diag-79315-727de2af",
+      "/home/ugrp/ugrp-sim/admission-reservations/crate-diag-79315-727de2af.json",
+      "/home/ugrp/ugrp-sim/leases/crate-diag-79316-727de2af",
+      "/home/ugrp/ugrp-sim/admission-reservations/crate-diag-79316-727de2af.json",
+      "/home/ugrp/ugrp-sim/leases/crate-diag-79317-727de2af",
+      "/home/ugrp/ugrp-sim/admission-reservations/crate-diag-79317-727de2af.json",
+      "/home/ugrp/ugrp-sim/leases/crate-diag-79318-727de2af",
+      "/home/ugrp/ugrp-sim/admission-reservations/crate-diag-79318-727de2af.json",
+      "/home/ugrp/ugrp-sim/leases/crate-diag-79319-727de2af",
+      "/home/ugrp/ugrp-sim/admission-reservations/crate-diag-79319-727de2af.json",
+      "/home/ugrp/ugrp-sim/leases/crate-diag-79320-727de2af",
+      "/home/ugrp/ugrp-sim/admission-reservations/crate-diag-79320-727de2af.json"
+    ],
+    "remaining_own_lease_reservations": [],
+    "idle_timer": "active",
+    "idle20m": true,
+    "loadavg": "3.32 4.23 2.84 2/786 106151\n",
+    "final_checked_at": "2026-10-15 13:29:09 KST",
+    "final_vm_idle": true,
+    "process_filter": "actual -m module/script argv; excludes inspection process"
+  },
+  "cost_safety": {
+    "budget_stop": "ACTIVE, untouched",
+    "last_observed_budget_event": {
+      "timestamp": "2026-10-15T04:07:16.966070Z",
+      "net_cost_KRW": 0,
+      "threshold_KRW": 1000
+    },
+    "credit_balance": "unverified; no billing/credit operations",
+    "max_run_duration_s": 28800,
+    "termination_action": "STOP",
+    "idle_timer": "active 20min, unchanged"
+  },
+  "pooling": {
+    "cross_sha_profile_host": false,
+    "reproduction_and_fresh": false
+  },
+  "raw_preservation": "Originals retained on GCP persistent disk. Mac has lite text/ledgers plus selected JPEGs; no full raw backup claimed.",
+  "remaining": "Corrected source SHA/new queue needed; exact staging geometry and alignment controller root causes remain to be isolated. Same-candidate pending3blocked.",
+  "runs": [
+    {
+      "name": "crate-reproduction-77990-727de2af",
+      "stage": "reproduction",
+      "seed": 77990,
+      "near_wall": false,
+      "submitted": true,
+      "status": "complete",
+      "exit": "0",
+      "success": false,
+      "prefix_held": false,
+      "release_authorized_by_own_inputs": false,
+      "release_success": null,
+      "release_outcome": "lift_not_confirmed_by_own_inputs",
+      "teacher_outcomes": {
+        "r1": "approach_blocked_handoff",
+        "r2": "peer_approach_handoff"
+      },
+      "sim_s": 12.699999999988696,
+      "wall_s": 73.90366443699986,
+      "wall_per_sim": 5.819186176146901,
+      "input_audit": {
+        "enabled": true,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "scope": "grasp and release decision inputs; GT hold and handoff distances evaluation only",
+        "teacher_boundary_source_tags": {
+          "clock": 256,
+          "issued_commands": 1280,
+          "known_shape": 896,
+          "visible_teacher_measurement": 1152,
+          "static_map": 256,
+          "fixed_rule": 256
+        }
+      },
+      "first30_completed_before_termination": false,
+      "first30_nearest_frame_estimate": null,
+      "first30_estimate_included": false,
+      "result_artifact": {
+        "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77990-727de2af/raw/result.json.zst",
+        "sha256": "db66d01c871c6c31add001214c2c692bc61614fdecd85f8aaad1bfe195c7a302",
+        "decoded_sha256": "9a1d2a58bd5dcc347fe0d2ccc38d87be05bf44d834b52243c8b4e427a9adbe0c"
+      },
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/crate-reproduction-77990-727de2af",
+      "retrieved_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77990-727de2af",
+      "verification": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/crate13-727de2af-ops/crate-reproduction-77990-727de2af-verification.json",
+      "review": {
+        "frames": 21,
+        "time_samples_sim_s": [
+          0.0,
+          2.0,
+          5.0,
+          6.0,
+          7.0,
+          10.0,
+          12.0
+        ],
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "last_saved_review_sim_s": 12.0,
+        "result_sim_s": 12.699999999988696,
+        "terminal_gap_s": 0.6999999999886963
+      },
+      "inspection_return": null
+    },
+    {
+      "name": "crate-reproduction-77978-727de2af",
+      "stage": "reproduction",
+      "seed": 77978,
+      "near_wall": true,
+      "submitted": true,
+      "status": "complete",
+      "exit": "0",
+      "success": false,
+      "prefix_held": false,
+      "release_authorized_by_own_inputs": false,
+      "release_success": null,
+      "release_outcome": "lift_not_confirmed_by_own_inputs",
+      "teacher_outcomes": {
+        "r1": "alignment_no_progress",
+        "r2": "episode_timeout"
+      },
+      "sim_s": 58.70000000019768,
+      "wall_s": 202.21700465600043,
+      "wall_per_sim": 3.4449234183188997,
+      "input_audit": {
+        "enabled": true,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "scope": "grasp and release decision inputs; GT hold and handoff distances evaluation only",
+        "teacher_boundary_source_tags": {
+          "clock": 1176,
+          "issued_commands": 5880,
+          "known_shape": 3688,
+          "visible_teacher_measurement": 4864,
+          "static_map": 1176,
+          "fixed_rule": 1176
+        }
+      },
+      "first30_completed_before_termination": true,
+      "first30_nearest_frame_estimate": {
+        "name": "000300-grasp.jpg",
+        "sim_s": 30.0,
+        "mtime_ns": 1792037788565308838,
+        "wall_s_estimate": 105.3516526222229,
+        "wall_per_sim": 3.5117217540740966
+      },
+      "first30_estimate_included": true,
+      "result_artifact": {
+        "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77978-727de2af/raw/result.json.zst",
+        "sha256": "36371c3ec42a177fcca28a179d2bd86178840f3747bbfcb47c89e6c8e2c72136",
+        "decoded_sha256": "ecc0848871122124f8e376b0af845ddceb6b5e40eaa89295c8fa2d09c2e8709d"
+      },
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/crate-reproduction-77978-727de2af",
+      "retrieved_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77978-727de2af",
+      "verification": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/crate13-727de2af-ops/crate-reproduction-77978-727de2af-verification.json",
+      "review": {
+        "frames": 30,
+        "time_samples_sim_s": [
+          0.0,
+          6.0,
+          12.0,
+          18.0,
+          23.0,
+          24.0,
+          30.0,
+          35.0,
+          46.0,
+          58.0
+        ],
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "last_saved_review_sim_s": 58.0,
+        "result_sim_s": 58.70000000019768,
+        "terminal_gap_s": 0.7000000001976829
+      },
+      "inspection_return": null
+    },
+    {
+      "name": "crate-reproduction-77981-727de2af",
+      "stage": "reproduction",
+      "seed": 77981,
+      "near_wall": false,
+      "submitted": true,
+      "status": "complete",
+      "exit": "0",
+      "success": true,
+      "prefix_held": true,
+      "release_authorized_by_own_inputs": true,
+      "release_success": true,
+      "release_outcome": "teacher_done",
+      "teacher_outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "sim_s": 65.80000000012926,
+      "wall_s": 199.59484397699998,
+      "wall_per_sim": 3.03335629143781,
+      "input_audit": {
+        "enabled": true,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "scope": "grasp and release decision inputs; GT hold and handoff distances evaluation only",
+        "teacher_boundary_source_tags": {
+          "clock": 558,
+          "issued_commands": 3508,
+          "known_shape": 2454,
+          "visible_teacher_measurement": 3012,
+          "static_map": 558,
+          "fixed_rule": 558
+        }
+      },
+      "first30_completed_before_termination": true,
+      "first30_nearest_frame_estimate": {
+        "name": "000020-release-lower.jpg",
+        "sim_s": 29.800000000050137,
+        "mtime_ns": 1792037804596496973,
+        "wall_s_estimate": 110.67883586883545,
+        "wall_per_sim": 3.7140548949211154
+      },
+      "first30_estimate_included": true,
+      "result_artifact": {
+        "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77981-727de2af/raw/result.json",
+        "sha256": "0cf0bb8ad5832c51e1d2448858e796d356f8144d70ffb9dc905bd8c51145434b",
+        "decoded_sha256": "0cf0bb8ad5832c51e1d2448858e796d356f8144d70ffb9dc905bd8c51145434b"
+      },
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/crate-reproduction-77981-727de2af",
+      "retrieved_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77981-727de2af",
+      "verification": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/crate13-727de2af-ops/crate-reproduction-77981-727de2af-verification.json",
+      "review": {
+        "frames": 36,
+        "time_samples_sim_s": [
+          0.0,
+          6.0,
+          12.0,
+          13.0,
+          18.0,
+          24.0,
+          25.0,
+          27.0,
+          29.800000000050137,
+          37.80000000005013,
+          49.80000000005013,
+          62.80000000005013
+        ],
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "last_saved_review_sim_s": 62.80000000005013,
+        "result_sim_s": 65.80000000012926,
+        "terminal_gap_s": 3.000000000079126
+      },
+      "inspection_return": {
+        "t": 30.300000000053664,
+        "reason": "UNKNOWN floor signals",
+        "destination_inside_claimed": false,
+        "path_source": "reverse of own issued constant-XY lift",
+        "base_motion_since_close": false,
+        "physical_effect": "evaluation pending"
+      }
+    },
+    {
+      "name": "crate-diag-79314-727de2af",
+      "stage": "diagnostic",
+      "seed": 79314,
+      "near_wall": false,
+      "submitted": true,
+      "status": "complete",
+      "exit": "0",
+      "success": false,
+      "prefix_held": false,
+      "release_authorized_by_own_inputs": false,
+      "release_success": null,
+      "release_outcome": "lift_not_confirmed_by_own_inputs",
+      "teacher_outcomes": {
+        "r1": "peer_approach_handoff",
+        "r2": "approach_blocked_handoff"
+      },
+      "sim_s": 13.199999999987531,
+      "wall_s": 52.17147715600004,
+      "wall_per_sim": 3.9523846330340393,
+      "input_audit": {
+        "enabled": true,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "scope": "grasp and release decision inputs; GT hold and handoff distances evaluation only",
+        "teacher_boundary_source_tags": {
+          "clock": 266,
+          "issued_commands": 1330,
+          "known_shape": 916,
+          "visible_teacher_measurement": 1182,
+          "static_map": 266,
+          "fixed_rule": 266
+        }
+      },
+      "first30_completed_before_termination": false,
+      "first30_nearest_frame_estimate": null,
+      "first30_estimate_included": false,
+      "result_artifact": {
+        "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-79314-727de2af/raw/result.json.zst",
+        "sha256": "a88be4221ba65343b5899a34d2d47e0ebf7be85dbfc81714cb232341a6919a23",
+        "decoded_sha256": "2b47712d7fce7f539bf163b5ba2cf31e11ca25211129801d8e22e297abcb96cc"
+      },
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/crate-diag-79314-727de2af",
+      "retrieved_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-79314-727de2af",
+      "verification": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/crate13-727de2af-ops/crate-diag-79314-727de2af-verification.json",
+      "review": {
+        "frames": 24,
+        "time_samples_sim_s": [
+          0.0,
+          3.0,
+          5.0,
+          6.0,
+          8.0,
+          10.0,
+          12.0,
+          13.0
+        ],
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "last_saved_review_sim_s": 13.0,
+        "result_sim_s": 13.199999999987531,
+        "terminal_gap_s": 0.19999999998753104
+      },
+      "inspection_return": null
+    },
+    {
+      "name": "crate-diag-79315-727de2af",
+      "stage": "diagnostic",
+      "seed": 79315,
+      "near_wall": false,
+      "submitted": true,
+      "status": "interrupted",
+      "exit": "130",
+      "success": false,
+      "prefix_held": true,
+      "release_authorized_by_own_inputs": true,
+      "release_success": null,
+      "release_outcome": null,
+      "teacher_outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "sim_s": 33.254750000076186,
+      "wall_s": 125.2396789989998,
+      "wall_per_sim": 3.766068877339715,
+      "input_audit": {
+        "enabled": true,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "scope": "grasp and release decision inputs; GT hold and handoff distances evaluation only",
+        "teacher_boundary_source_tags": {
+          "clock": 666,
+          "issued_commands": 3332,
+          "known_shape": 2116,
+          "visible_teacher_measurement": 2782,
+          "static_map": 666,
+          "fixed_rule": 666
+        }
+      },
+      "first30_completed_before_termination": true,
+      "first30_nearest_frame_estimate": {
+        "name": "000300-grasp.jpg",
+        "sim_s": 30.0,
+        "mtime_ns": 1792038160860495618,
+        "wall_s_estimate": 112.90589475631714,
+        "wall_per_sim": 3.763529825210571
+      },
+      "first30_estimate_included": true,
+      "result_artifact": {
+        "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-79315-727de2af/raw/result.json",
+        "sha256": "8be7895a63b4e34c7bdb00bc21af5d03a8ee1aca1b772ac29c23eca498144737",
+        "decoded_sha256": "8be7895a63b4e34c7bdb00bc21af5d03a8ee1aca1b772ac29c23eca498144737"
+      },
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/crate-diag-79315-727de2af",
+      "retrieved_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-79315-727de2af",
+      "verification": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/crate13-727de2af-ops/crate-diag-79315-727de2af-verification.json",
+      "review": {
+        "frames": 33,
+        "time_samples_sim_s": [
+          0.0,
+          6.0,
+          7.0,
+          12.0,
+          14.0,
+          18.0,
+          20.0,
+          24.0,
+          27.0,
+          30.0,
+          33.200000000075924
+        ],
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "last_saved_review_sim_s": 33.200000000075924,
+        "result_sim_s": 33.254750000076186,
+        "terminal_gap_s": 0.05475000000026142
+      },
+      "inspection_return": null
+    },
+    {
+      "name": "crate-diag-79316-727de2af",
+      "stage": "diagnostic",
+      "seed": 79316,
+      "near_wall": false,
+      "submitted": true,
+      "status": "interrupted",
+      "exit": "130",
+      "success": false,
+      "prefix_held": null,
+      "release_authorized_by_own_inputs": null,
+      "release_success": null,
+      "release_outcome": null,
+      "teacher_outcomes": null,
+      "sim_s": 29.70000000005921,
+      "wall_s": 115.39461965400005,
+      "wall_per_sim": 3.885340729083165,
+      "input_audit": {
+        "enabled": true,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "scope": "grasp and release decision inputs; GT hold and handoff distances evaluation only",
+        "teacher_boundary_source_tags": {
+          "clock": 594,
+          "issued_commands": 2970,
+          "known_shape": 1944,
+          "visible_teacher_measurement": 2538,
+          "static_map": 594,
+          "fixed_rule": 594
+        }
+      },
+      "first30_completed_before_termination": false,
+      "first30_nearest_frame_estimate": {
+        "name": "000290-grasp.jpg",
+        "sim_s": 29.0,
+        "mtime_ns": 1792038170834495721,
+        "wall_s_estimate": 113.02190279960632,
+        "wall_per_sim": 3.8973069930898734
+      },
+      "first30_estimate_included": false,
+      "result_artifact": {
+        "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-79316-727de2af/raw/result.json",
+        "sha256": "72bd3e61cbbd49b793cc06b2b32ead9034463d2efdcde336bd8e1921f5068729",
+        "decoded_sha256": "72bd3e61cbbd49b793cc06b2b32ead9034463d2efdcde336bd8e1921f5068729"
+      },
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/crate-diag-79316-727de2af",
+      "retrieved_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-79316-727de2af",
+      "verification": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/crate13-727de2af-ops/crate-diag-79316-727de2af-verification.json",
+      "review": {
+        "frames": 24,
+        "time_samples_sim_s": [
+          0.0,
+          6.0,
+          12.0,
+          17.0,
+          18.0,
+          23.0,
+          24.0,
+          29.0
+        ],
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "last_saved_review_sim_s": 29.0,
+        "result_sim_s": 29.70000000005921,
+        "terminal_gap_s": 0.7000000000592088
+      },
+      "inspection_return": null
+    },
+    {
+      "name": "crate-diag-79317-727de2af",
+      "stage": "diagnostic",
+      "seed": 79317,
+      "near_wall": false,
+      "submitted": true,
+      "status": "complete",
+      "exit": "0",
+      "success": false,
+      "prefix_held": false,
+      "release_authorized_by_own_inputs": false,
+      "release_success": null,
+      "release_outcome": "lift_not_confirmed_by_own_inputs",
+      "teacher_outcomes": {
+        "r1": "alignment_no_progress",
+        "r2": "episode_timeout"
+      },
+      "sim_s": 20.000000000012893,
+      "wall_s": 81.96503367900004,
+      "wall_per_sim": 4.09825168394736,
+      "input_audit": {
+        "enabled": true,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "scope": "grasp and release decision inputs; GT hold and handoff distances evaluation only",
+        "teacher_boundary_source_tags": {
+          "clock": 402,
+          "issued_commands": 2010,
+          "known_shape": 1457,
+          "visible_teacher_measurement": 1859,
+          "static_map": 402,
+          "fixed_rule": 402
+        }
+      },
+      "first30_completed_before_termination": false,
+      "first30_nearest_frame_estimate": null,
+      "first30_estimate_included": false,
+      "result_artifact": {
+        "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-79317-727de2af/raw/result.json.zst",
+        "sha256": "fdd3c2f12d246b3f35bdea8c8f6ba953b115e0dd4bea2c7c4dfbd754b853f5b2",
+        "decoded_sha256": "22abc56314eb4ffb79c42871a94fcc509365f9011b66d44d5d71bae509e0d902"
+      },
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/crate-diag-79317-727de2af",
+      "retrieved_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-79317-727de2af",
+      "verification": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/crate13-727de2af-ops/crate-diag-79317-727de2af-verification.json",
+      "review": {
+        "frames": 24,
+        "time_samples_sim_s": [
+          0.0,
+          4.0,
+          6.0,
+          8.0,
+          12.0,
+          16.0,
+          18.0,
+          20.0
+        ],
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "last_saved_review_sim_s": 20.0,
+        "result_sim_s": 20.000000000012893,
+        "terminal_gap_s": 1.2892797940367018e-11
+      },
+      "inspection_return": null
+    },
+    {
+      "name": "crate-diag-79318-727de2af",
+      "stage": "diagnostic",
+      "seed": 79318,
+      "near_wall": false,
+      "submitted": true,
+      "status": "interrupted",
+      "exit": "130",
+      "success": false,
+      "prefix_held": null,
+      "release_authorized_by_own_inputs": null,
+      "release_success": null,
+      "release_outcome": null,
+      "teacher_outcomes": null,
+      "sim_s": 24.815500000035886,
+      "wall_s": 95.88281792100133,
+      "wall_per_sim": 3.8638277657457105,
+      "input_audit": {
+        "enabled": true,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "scope": "grasp and release decision inputs; GT hold and handoff distances evaluation only",
+        "teacher_boundary_source_tags": {
+          "clock": 498,
+          "issued_commands": 2490,
+          "known_shape": 1619,
+          "visible_teacher_measurement": 2117,
+          "static_map": 498,
+          "fixed_rule": 498
+        }
+      },
+      "first30_completed_before_termination": false,
+      "first30_nearest_frame_estimate": null,
+      "first30_estimate_included": false,
+      "result_artifact": {
+        "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-79318-727de2af/raw/result.json",
+        "sha256": "485396244968887b2158cad4d989ac319da1bcf2841ca71301dbf83ed7c5bd71",
+        "decoded_sha256": "485396244968887b2158cad4d989ac319da1bcf2841ca71301dbf83ed7c5bd71"
+      },
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/crate-diag-79318-727de2af",
+      "retrieved_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-79318-727de2af",
+      "verification": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/crate13-727de2af-ops/crate-diag-79318-727de2af-verification.json",
+      "review": {
+        "frames": 27,
+        "time_samples_sim_s": [
+          0.0,
+          5.0,
+          6.0,
+          10.0,
+          12.0,
+          14.0,
+          18.0,
+          19.0,
+          24.0
+        ],
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "last_saved_review_sim_s": 24.0,
+        "result_sim_s": 24.815500000035886,
+        "terminal_gap_s": 0.8155000000358861
+      },
+      "inspection_return": null
+    },
+    {
+      "name": "crate-diag-79319-727de2af",
+      "stage": "diagnostic",
+      "seed": 79319,
+      "near_wall": false,
+      "submitted": true,
+      "status": "interrupted",
+      "exit": "130",
+      "success": false,
+      "prefix_held": null,
+      "release_authorized_by_own_inputs": null,
+      "release_success": null,
+      "release_outcome": null,
+      "teacher_outcomes": null,
+      "sim_s": 24.000000000031992,
+      "wall_s": 85.65392768099991,
+      "wall_per_sim": 3.568913653370239,
+      "input_audit": {
+        "enabled": true,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "scope": "grasp and release decision inputs; GT hold and handoff distances evaluation only",
+        "teacher_boundary_source_tags": {
+          "clock": 482,
+          "issued_commands": 2410,
+          "known_shape": 1575,
+          "visible_teacher_measurement": 2057,
+          "static_map": 482,
+          "fixed_rule": 482
+        }
+      },
+      "first30_completed_before_termination": false,
+      "first30_nearest_frame_estimate": null,
+      "first30_estimate_included": false,
+      "result_artifact": {
+        "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-79319-727de2af/raw/result.json",
+        "sha256": "eff8c475481caf371d1d04cb759fece115fb8fccb14f4f3f42b37c1d78f9c31a",
+        "decoded_sha256": "eff8c475481caf371d1d04cb759fece115fb8fccb14f4f3f42b37c1d78f9c31a"
+      },
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/crate-diag-79319-727de2af",
+      "retrieved_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-79319-727de2af",
+      "verification": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/crate13-727de2af-ops/crate-diag-79319-727de2af-verification.json",
+      "review": {
+        "frames": 27,
+        "time_samples_sim_s": [
+          0.0,
+          5.0,
+          6.0,
+          10.0,
+          12.0,
+          14.0,
+          18.0,
+          19.0,
+          24.0
+        ],
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "last_saved_review_sim_s": 24.0,
+        "result_sim_s": 24.000000000031992,
+        "terminal_gap_s": 3.199218667759851e-11
+      },
+      "inspection_return": null
+    },
+    {
+      "name": "crate-diag-79320-727de2af",
+      "stage": "diagnostic",
+      "seed": 79320,
+      "near_wall": false,
+      "submitted": true,
+      "status": "interrupted",
+      "exit": "130",
+      "success": false,
+      "prefix_held": null,
+      "release_authorized_by_own_inputs": null,
+      "release_success": null,
+      "release_outcome": null,
+      "teacher_outcomes": null,
+      "sim_s": 19.89075000001237,
+      "wall_s": 75.39306715699968,
+      "wall_per_sim": 3.7903581894575513,
+      "input_audit": {
+        "enabled": true,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "scope": "grasp and release decision inputs; GT hold and handoff distances evaluation only",
+        "teacher_boundary_source_tags": {
+          "clock": 398,
+          "issued_commands": 1990,
+          "known_shape": 1309,
+          "visible_teacher_measurement": 1707,
+          "static_map": 398,
+          "fixed_rule": 398
+        }
+      },
+      "first30_completed_before_termination": false,
+      "first30_nearest_frame_estimate": null,
+      "first30_estimate_included": false,
+      "result_artifact": {
+        "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-79320-727de2af/raw/result.json",
+        "sha256": "6c4fb4b28218434e06cb4081ddcfc079868af05968e4ee9e3d4b0e382f4633fd",
+        "decoded_sha256": "6c4fb4b28218434e06cb4081ddcfc079868af05968e4ee9e3d4b0e382f4633fd"
+      },
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/crate-diag-79320-727de2af",
+      "retrieved_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-79320-727de2af",
+      "verification": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/crate13-727de2af-ops/crate-diag-79320-727de2af-verification.json",
+      "review": {
+        "frames": 27,
+        "time_samples_sim_s": [
+          0.0,
+          4.0,
+          6.0,
+          8.0,
+          11.0,
+          12.0,
+          15.0,
+          18.0,
+          19.0
+        ],
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "last_saved_review_sim_s": 19.0,
+        "result_sim_s": 19.89075000001237,
+        "terminal_gap_s": 0.8907500000123711
+      },
+      "inspection_return": null
+    },
+    {
+      "name": "crate-diag-79321-727de2af",
+      "stage": "diagnostic",
+      "seed": 79321,
+      "near_wall": false,
+      "submitted": false,
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "success": null,
+      "reason": "same candidate stopped after diagnosed fresh failure"
+    },
+    {
+      "name": "crate-diag-79324-727de2af",
+      "stage": "diagnostic",
+      "seed": 79324,
+      "near_wall": false,
+      "submitted": false,
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "success": null,
+      "reason": "same candidate stopped after diagnosed fresh failure"
+    },
+    {
+      "name": "crate-diag-79325-727de2af",
+      "stage": "diagnostic",
+      "seed": 79325,
+      "near_wall": false,
+      "submitted": false,
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "success": null,
+      "reason": "same candidate stopped after diagnosed fresh failure"
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "schema": "ugrp.ops.saved_measurement.record.v1",
+  "source_sha": "40a21045387d689cc712a09c2d4cd411ec0f158d",
+  "status": "CLOSED_MEASUREMENT_ACCEPTED",
+  "pr": 504,
+  "new_physical_runs": 0,
+  "new_training_steps": 0,
+  "new_inference_calls": 0,
+  "heldout_unique_timesteps": [
+    1833,
+    1833
+  ],
+  "done_true_positive": {
+    "grasp": [
+      0,
+      5
+    ],
+    "release": [
+      0,
+      5
+    ]
+  },
+  "done_false_positives": [
+    0,
+    1823
+  ],
+  "teacher_census": [
+    50,
+    50
+  ],
+  "local_grasp_frames": 13501,
+  "preterminal_color_loss_recovery_episodes": [
+    1,
+    50
+  ],
+  "terminal_color_loss_reobservations": 3,
+  "input_audit": {
+    "episodes": 50,
+    "invisible_measurements": 0,
+    "held_world_reads": 0,
+    "missing_counters": 0
+  },
+  "first30_rgb": [
+    301,
+    301
+  ],
+  "student_visual_review_relative_sim_s": [
+    0,
+    6,
+    12,
+    18,
+    24,
+    30
+  ],
+  "training_vm_status": "TERMINATED",
+  "raw": "/mnt/act-source/act4-40a21045",
+  "local_report": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act4-40a21045-final.json",
+  "local_report_sha256": "3a36acf2d3d133181a42d74f3ea24822cd3d77f19218d2483e3776d664c36586",
+  "full_transfer_manifest": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act4-40a21045-ops/fetch-lite-manifest.json",
+  "gate40_submitted": false,
+  "accepted_summary": {
+    "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act4-40a21045.json",
+    "sha256": "386a1fa9c0d0a043d5bf4b0d29abea650d32cbd730ff780d8db0527fb55b87e3",
+    "preserved_exact_bytes": true
+  },
+  "pr_comment_url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/504#issuecomment-6183981151",
+  "coordinator_decision": "queue closed; no training stage approved. Next training candidate will be one combined round after act5 (memory review): done loss + temporal ensembling + recovery demonstrations (only 1/50 demos contain an approach lost->recover interval) + any memory change. New SHA/queue required."
+}

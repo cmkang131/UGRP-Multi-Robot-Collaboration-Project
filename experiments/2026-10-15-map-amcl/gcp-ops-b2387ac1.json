@@ -1,0 +1,1135 @@
+{
+  "schema": "ugrp.gcp_ops_summary.v1",
+  "at": "2026-10-15 12:13:20 KST",
+  "queue": "20261015-map-amcl-record-b2387ac1.json",
+  "pr": 507,
+  "source_sha": "b2387ac13fb37c90ce8fc4ecb27ff8a3c78b0fdf",
+  "recording_spec_sha256": "0cda283d91406dd6d6a0e06b48177f9997191f89dd9f36209662d5e7b185a410",
+  "project": "ugrp-act-train-1014",
+  "host": "gcp1",
+  "machine_type": "n4-highcpu-64",
+  "effective_concurrency": 1,
+  "verdict": "NOT_READY_FIRST_RECORDING_HOST_ERROR",
+  "gate": {
+    "passed_n": 0,
+    "planned_N": 40,
+    "submitted_N": 1,
+    "HOST_ERROR_N": 1,
+    "physical_stop_N": 0,
+    "not_submitted_N": 39,
+    "first30_wall_per_sim": 16.18307388676667,
+    "total_wall_per_sim": 16.45612092296666,
+    "first30_complete": true,
+    "full60_complete": false,
+    "reason": "TimeoutError:10HZ_SPEED_GATE_FAILED",
+    "relaxed_stop_limit": 6.0,
+    "pinned_code_stop_limit": 3.5,
+    "passes_relaxed_policy": false
+  },
+  "runs": [
+    {
+      "seed": 65101,
+      "run": "map-amcl-record-s65101",
+      "status": "HOST_ERROR",
+      "result": {
+        "schema": "map-amcl-recording/1",
+        "status": "HOST_ERROR",
+        "source_sha": "b2387ac13fb37c90ce8fc4ecb27ff8a3c78b0fdf",
+        "seed": 65101,
+        "host": "gcp1",
+        "machine_type": "n4-highcpu-64",
+        "project": "ugrp-act-train-1014",
+        "spec_sha256": "0cda283d91406dd6d6a0e06b48177f9997191f89dd9f36209662d5e7b185a410",
+        "model_calls": 0,
+        "candidate_in_control": false,
+        "top_camera_input": false,
+        "origin_s": 1.3,
+        "frames_per_robot": 301,
+        "sim_cap_s": 60.0,
+        "finalization_complete": true,
+        "shutdown_signals": [],
+        "finalization_errors": [],
+        "error": "TimeoutError:10HZ_SPEED_GATE_FAILED",
+        "first30": {
+          "wall_per_sim": 16.18307388676667,
+          "frames_per_robot": 301,
+          "observation_period_s": 0.1,
+          "issued_translation_commands": {
+            "r1": 26,
+            "r2": 133
+          },
+          "model_calls": 0,
+          "top_camera_input": false,
+          "passed": false
+        },
+        "sim_s": 30.0,
+        "wall_s": 493.6836276889999
+      }
+    },
+    {
+      "seed": 65102,
+      "run": "map-amcl-record-s65102",
+      "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+      "result": null
+    },
+    {
+      "seed": 65103,
+      "run": "map-amcl-record-s65103",
+      "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+      "result": null
+    },
+    {
+      "seed": 65104,
+      "run": "map-amcl-record-s65104",
+      "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+      "result": null
+    },
+    {
+      "seed": 65105,
+      "run": "map-amcl-record-s65105",
+      "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+      "result": null
+    },
+    {
+      "seed": 65106,
+      "run": "map-amcl-record-s65106",
+      "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+      "result": null
+    },
+    {
+      "seed": 65107,
+      "run": "map-amcl-record-s65107",
+      "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+      "result": null
+    },
+    {
+      "seed": 65108,
+      "run": "map-amcl-record-s65108",
+      "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+      "result": null
+    },
+    {
+      "seed": 65109,
+      "run": "map-amcl-record-s65109",
+      "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+      "result": null
+    },
+    {
+      "seed": 65110,
+      "run": "map-amcl-record-s65110",
+      "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+      "result": null
+    },
+    {
+      "seed": 65111,
+      "run": "map-amcl-record-s65111",
+      "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+      "result": null
+    },
+    {
+      "seed": 65112,
+      "run": "map-amcl-record-s65112",
+      "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+      "result": null
+    },
+    {
+      "seed": 65113,
+      "run": "map-amcl-record-s65113",
+      "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+      "result": null
+    },
+    {
+      "seed": 65114,
+      "run": "map-amcl-record-s65114",
+      "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+      "result": null
+    },
+    {
+      "seed": 65115,
+      "run": "map-amcl-record-s65115",
+      "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+      "result": null
+    },
+    {
+      "seed": 65116,
+      "run": "map-amcl-record-s65116",
+      "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+      "result": null
+    },
+    {
+      "seed": 65117,
+      "run": "map-amcl-record-s65117",
+      "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+      "result": null
+    },
+    {
+      "seed": 65118,
+      "run": "map-amcl-record-s65118",
+      "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+      "result": null
+    },
+    {
+      "seed": 65119,
+      "run": "map-amcl-record-s65119",
+      "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+      "result": null
+    },
+    {
+      "seed": 65120,
+      "run": "map-amcl-record-s65120",
+      "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+      "result": null
+    },
+    {
+      "seed": 65121,
+      "run": "map-amcl-record-s65121",
+      "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+      "result": null
+    },
+    {
+      "seed": 65122,
+      "run": "map-amcl-record-s65122",
+      "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+      "result": null
+    },
+    {
+      "seed": 65123,
+      "run": "map-amcl-record-s65123",
+      "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+      "result": null
+    },
+    {
+      "seed": 65124,
+      "run": "map-amcl-record-s65124",
+      "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+      "result": null
+    },
+    {
+      "seed": 65125,
+      "run": "map-amcl-record-s65125",
+      "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+      "result": null
+    },
+    {
+      "seed": 65126,
+      "run": "map-amcl-record-s65126",
+      "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+      "result": null
+    },
+    {
+      "seed": 65127,
+      "run": "map-amcl-record-s65127",
+      "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+      "result": null
+    },
+    {
+      "seed": 65128,
+      "run": "map-amcl-record-s65128",
+      "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+      "result": null
+    },
+    {
+      "seed": 65129,
+      "run": "map-amcl-record-s65129",
+      "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+      "result": null
+    },
+    {
+      "seed": 65130,
+      "run": "map-amcl-record-s65130",
+      "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+      "result": null
+    },
+    {
+      "seed": 65131,
+      "run": "map-amcl-record-s65131",
+      "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+      "result": null
+    },
+    {
+      "seed": 65132,
+      "run": "map-amcl-record-s65132",
+      "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+      "result": null
+    },
+    {
+      "seed": 65133,
+      "run": "map-amcl-record-s65133",
+      "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+      "result": null
+    },
+    {
+      "seed": 65134,
+      "run": "map-amcl-record-s65134",
+      "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+      "result": null
+    },
+    {
+      "seed": 65135,
+      "run": "map-amcl-record-s65135",
+      "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+      "result": null
+    },
+    {
+      "seed": 65136,
+      "run": "map-amcl-record-s65136",
+      "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+      "result": null
+    },
+    {
+      "seed": 65137,
+      "run": "map-amcl-record-s65137",
+      "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+      "result": null
+    },
+    {
+      "seed": 65138,
+      "run": "map-amcl-record-s65138",
+      "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+      "result": null
+    },
+    {
+      "seed": 65139,
+      "run": "map-amcl-record-s65139",
+      "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+      "result": null
+    },
+    {
+      "seed": 65140,
+      "run": "map-amcl-record-s65140",
+      "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+      "result": null
+    }
+  ],
+  "paired_comparison": {
+    "status": "NOT_RUN_FIRST_RECORDING_GATE_FAILED",
+    "evaluated_n": 0,
+    "planned_N": 80,
+    "truncated_N": 2,
+    "not_executed_N": 78,
+    "intervals": [
+      {
+        "seed": 65101,
+        "robot": "r1",
+        "status": "TRUNCATED_HOST_ERROR",
+        "planned_frames": 601,
+        "recorded_frames": 301,
+        "evaluated": false
+      },
+      {
+        "seed": 65101,
+        "robot": "r2",
+        "status": "TRUNCATED_HOST_ERROR",
+        "planned_frames": 601,
+        "recorded_frames": 301,
+        "evaluated": false
+      },
+      {
+        "seed": 65102,
+        "robot": "r1",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65102,
+        "robot": "r2",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65103,
+        "robot": "r1",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65103,
+        "robot": "r2",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65104,
+        "robot": "r1",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65104,
+        "robot": "r2",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65105,
+        "robot": "r1",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65105,
+        "robot": "r2",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65106,
+        "robot": "r1",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65106,
+        "robot": "r2",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65107,
+        "robot": "r1",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65107,
+        "robot": "r2",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65108,
+        "robot": "r1",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65108,
+        "robot": "r2",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65109,
+        "robot": "r1",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65109,
+        "robot": "r2",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65110,
+        "robot": "r1",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65110,
+        "robot": "r2",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65111,
+        "robot": "r1",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65111,
+        "robot": "r2",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65112,
+        "robot": "r1",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65112,
+        "robot": "r2",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65113,
+        "robot": "r1",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65113,
+        "robot": "r2",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65114,
+        "robot": "r1",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65114,
+        "robot": "r2",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65115,
+        "robot": "r1",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65115,
+        "robot": "r2",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65116,
+        "robot": "r1",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65116,
+        "robot": "r2",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65117,
+        "robot": "r1",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65117,
+        "robot": "r2",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65118,
+        "robot": "r1",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65118,
+        "robot": "r2",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65119,
+        "robot": "r1",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65119,
+        "robot": "r2",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65120,
+        "robot": "r1",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65120,
+        "robot": "r2",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65121,
+        "robot": "r1",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65121,
+        "robot": "r2",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65122,
+        "robot": "r1",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65122,
+        "robot": "r2",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65123,
+        "robot": "r1",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65123,
+        "robot": "r2",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65124,
+        "robot": "r1",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65124,
+        "robot": "r2",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65125,
+        "robot": "r1",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65125,
+        "robot": "r2",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65126,
+        "robot": "r1",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65126,
+        "robot": "r2",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65127,
+        "robot": "r1",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65127,
+        "robot": "r2",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65128,
+        "robot": "r1",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65128,
+        "robot": "r2",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65129,
+        "robot": "r1",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65129,
+        "robot": "r2",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65130,
+        "robot": "r1",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65130,
+        "robot": "r2",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65131,
+        "robot": "r1",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65131,
+        "robot": "r2",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65132,
+        "robot": "r1",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65132,
+        "robot": "r2",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65133,
+        "robot": "r1",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65133,
+        "robot": "r2",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65134,
+        "robot": "r1",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65134,
+        "robot": "r2",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65135,
+        "robot": "r1",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65135,
+        "robot": "r2",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65136,
+        "robot": "r1",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65136,
+        "robot": "r2",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65137,
+        "robot": "r1",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65137,
+        "robot": "r2",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65138,
+        "robot": "r1",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65138,
+        "robot": "r2",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65139,
+        "robot": "r1",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65139,
+        "robot": "r2",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65140,
+        "robot": "r1",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      },
+      {
+        "seed": 65140,
+        "robot": "r2",
+        "status": "NOT_SUBMITTED_FIRST_GATE_FAILED",
+        "planned_frames": 601,
+        "recorded_frames": 0,
+        "evaluated": false
+      }
+    ],
+    "methods": {
+      "baseline_fused_odom": {
+        "evaluated_n": 0,
+        "N": 80,
+        "position_median_m": null,
+        "yaw_median_deg": null,
+        "path_ratio": null,
+        "absolute_map_error_m": null,
+        "per_frame_jump_flags": null
+      },
+      "amcl_walls_v1__command_delta": {
+        "evaluated_n": 0,
+        "N": 80,
+        "position_median_m": null,
+        "yaw_median_deg": null,
+        "path_ratio": null,
+        "absolute_map_error_m": null,
+        "per_frame_jump_flags": null
+      },
+      "amcl_walls_v1__fused_delta": {
+        "evaluated_n": 0,
+        "N": 80,
+        "position_median_m": null,
+        "yaw_median_deg": null,
+        "path_ratio": null,
+        "absolute_map_error_m": null,
+        "per_frame_jump_flags": null
+      },
+      "amcl_landmarks_v1__command_delta": {
+        "evaluated_n": 0,
+        "N": 80,
+        "position_median_m": null,
+        "yaw_median_deg": null,
+        "path_ratio": null,
+        "absolute_map_error_m": null,
+        "per_frame_jump_flags": null
+      },
+      "amcl_landmarks_v1__fused_delta": {
+        "evaluated_n": 0,
+        "N": 80,
+        "position_median_m": null,
+        "yaw_median_deg": null,
+        "path_ratio": null,
+        "absolute_map_error_m": null,
+        "per_frame_jump_flags": null
+      }
+    },
+    "automatic_promotion": false
+  },
+  "input_audit": {
+    "invisible_measurements": null,
+    "held_world_reads": null,
+    "status": "NOT_INSTRUMENTED; not zero",
+    "top_camera_input": false,
+    "candidate_in_control": false,
+    "model_calls": 0
+  },
+  "frame_review": {
+    "directly_viewed": true,
+    "robots": [
+      "r1",
+      "r2"
+    ],
+    "frames_per_robot": [
+      1,
+      61,
+      121,
+      181,
+      241,
+      301
+    ],
+    "elapsed_sim_s": [
+      0,
+      6,
+      12,
+      18,
+      24,
+      30
+    ],
+    "total_directly_viewed_frames": 12,
+    "overview": "not captured; no top control input",
+    "observed": "r1 pan/turn views mostly of blue zone; r2 camera includes beam and doorway as views change; peer obstruction/same-end grasp not established in these own-camera samples. Recorded termination is speed gate, not PhysicalStop.",
+    "selection": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/maps-7b5d1924-b2387ac1-ops/amcl-frame-selection.json"
+  },
+  "verification": {
+    "before_compression": {
+      "outer_SHA256SUMS_verified": true,
+      "original_artifact_N": 636,
+      "artifact_failures": [],
+      "native_ledgers": {
+        "r1": {
+          "frames": 301,
+          "cadence_verified": true,
+          "JPEG_hash_failures": []
+        },
+        "r2": {
+          "frames": 301,
+          "cadence_verified": true,
+          "JPEG_hash_failures": []
+        }
+      },
+      "raw_bytes_before_compression": 17597463,
+      "original_result": {
+        "schema": "map-amcl-recording/1",
+        "status": "HOST_ERROR",
+        "source_sha": "b2387ac13fb37c90ce8fc4ecb27ff8a3c78b0fdf",
+        "seed": 65101,
+        "host": "gcp1",
+        "machine_type": "n4-highcpu-64",
+        "project": "ugrp-act-train-1014",
+        "spec_sha256": "0cda283d91406dd6d6a0e06b48177f9997191f89dd9f36209662d5e7b185a410",
+        "model_calls": 0,
+        "candidate_in_control": false,
+        "top_camera_input": false,
+        "origin_s": 1.3,
+        "frames_per_robot": 301,
+        "sim_cap_s": 60.0,
+        "finalization_complete": true,
+        "shutdown_signals": [],
+        "finalization_errors": [],
+        "error": "TimeoutError:10HZ_SPEED_GATE_FAILED",
+        "first30": {
+          "wall_per_sim": 16.18307388676667,
+          "frames_per_robot": 301,
+          "observation_period_s": 0.1,
+          "issued_translation_commands": {
+            "r1": 26,
+            "r2": 133
+          },
+          "model_calls": 0,
+          "top_camera_input": false,
+          "passed": false
+        },
+        "sim_s": 30.0,
+        "wall_s": 493.6836276889999
+      },
+      "mirrored_failure_receipt": {
+        "observed_outer_EXIT": 1,
+        "source_exit": "/home/ugrp/ugrp-sim/runs/map-amcl-record-s65101/EXIT",
+        "source_exit_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "raw_result_sha256": "26780af24ca9ed901633abd1b72514fe259d0addcb2b9a8e1101c0aeec8faac1",
+        "finalization_complete": true,
+        "note": "Mirror observed failed command exit for standard finished-run text compression; no success/completion claim"
+      }
+    },
+    "local_after_compression": {
+      "lite_file_N": 45,
+      "lite_bytes": 1535517,
+      "file_hash_mismatches": [],
+      "compression_original_and_archive_sha_verified_N": 9,
+      "result_sha256": "26780af24ca9ed901633abd1b72514fe259d0addcb2b9a8e1101c0aeec8faac1"
+    },
+    "compression": [
+      {
+        "run": "/home/ugrp/ugrp-sim/runs/map-amcl-record-b2387ac1/recordings/map-amcl-record-s65101",
+        "files": 9,
+        "saved_bytes": 6932072,
+        "sha256_verified": true
+      }
+    ],
+    "fetch_retry": "initial SSH failure recovered with bounded bash until/sleep30; all selected files hash matched"
+  },
+  "raw_root": "gcp1:/home/ugrp/ugrp-sim/runs/map-amcl-record-b2387ac1/recordings",
+  "raw_retention": "602 native JPEGs on GCP persistent disk; original and compressed text SHA receipts retained; no full JPEG retrieval and no independent raw backup",
+  "lite_retrieved": true,
+  "all_raw_retrieved": false,
+  "stop_record": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/stop-map-amcl-b2387ac1-20261015.json",
+  "next_step": "fixed performance/source and newly registered queue; remaining39 and comparison blocked; no seed substitution or cross-host pooling",
+  "resource_completion": {
+    "at": "2026-10-15T03:14:28+00:00",
+    "owned_processes": [],
+    "owned_leases_after": [],
+    "released_only": [
+      "selfmap-93510-7b5d1924",
+      "map-amcl-record-s65101"
+    ],
+    "all_active_run_wrappers": 0,
+    "vm_state": "RUNNING",
+    "idle_timer": "active",
+    "vm_stop_action": "none; leave idle20m guard as requested",
+    "other_resources_modified": false
+  },
+  "pr_comment": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/507#issuecomment-6183551545"
+}

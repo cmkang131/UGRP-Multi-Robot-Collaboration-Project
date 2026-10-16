@@ -1,0 +1,389 @@
+{
+  "analysis_host": "gcp1",
+  "source_sha": "d79f04a39e3eec9d418e5c44929182e0ec79f51c",
+  "planned_N": 40,
+  "attempted_N": 7,
+  "episode_funnel": [
+    {
+      "gate": "started",
+      "entered": 40,
+      "cumulative_passed": 7,
+      "rejected": 33,
+      "disposition_of_rejected": "33 not submitted after confirmed same-source control defect"
+    },
+    {
+      "gate": "finalized_result",
+      "entered": 7,
+      "cumulative_passed": 7,
+      "rejected": 0
+    },
+    {
+      "gate": "both_align",
+      "entered": 7,
+      "cumulative_passed": 6,
+      "rejected": 1
+    },
+    {
+      "gate": "both_ready",
+      "entered": 6,
+      "cumulative_passed": 6,
+      "rejected": 0
+    },
+    {
+      "gate": "both_pick",
+      "entered": 6,
+      "cumulative_passed": 6,
+      "rejected": 0
+    },
+    {
+      "gate": "both_complete",
+      "entered": 6,
+      "cumulative_passed": 5,
+      "rejected": 1
+    },
+    {
+      "gate": "strict_joint_hold_3s",
+      "entered": 5,
+      "cumulative_passed": 5,
+      "rejected": 0
+    },
+    {
+      "gate": "input_eligible_success",
+      "entered": 5,
+      "cumulative_passed": 5,
+      "rejected": 0
+    }
+  ],
+  "candidate_populations": {
+    "beampair1-gate-8318600-d79f04a3": {},
+    "beampair1-gate-8318601-d79f04a3": {},
+    "beampair1-gate-8318602-d79f04a3": {},
+    "beampair1-gate-8318603-d79f04a3": {},
+    "beampair1-gate-8318604-d79f04a3": {},
+    "beampair1-gate-8318605-d79f04a3": {},
+    "beampair1-gate-8318606-d79f04a3": {}
+  },
+  "frame_populations": {
+    "beampair1-gate-8318600-d79f04a3": [
+      {
+        "gate": "any_assigned_probe",
+        "entered": 626,
+        "cumulative_passed": 424,
+        "rejected": 202
+      },
+      {
+        "gate": "meaningful_region_5_of_15",
+        "entered": 424,
+        "cumulative_passed": 422,
+        "rejected": 2
+      },
+      {
+        "gate": "measurement_admitted_not_held",
+        "entered": 422,
+        "cumulative_passed": 422,
+        "rejected": 0
+      }
+    ],
+    "beampair1-gate-8318601-d79f04a3": [
+      {
+        "gate": "any_assigned_probe",
+        "entered": 594,
+        "cumulative_passed": 376,
+        "rejected": 218
+      },
+      {
+        "gate": "meaningful_region_5_of_15",
+        "entered": 376,
+        "cumulative_passed": 374,
+        "rejected": 2
+      },
+      {
+        "gate": "measurement_admitted_not_held",
+        "entered": 374,
+        "cumulative_passed": 374,
+        "rejected": 0
+      }
+    ],
+    "beampair1-gate-8318602-d79f04a3": [
+      {
+        "gate": "any_assigned_probe",
+        "entered": 844,
+        "cumulative_passed": 562,
+        "rejected": 282
+      },
+      {
+        "gate": "meaningful_region_5_of_15",
+        "entered": 562,
+        "cumulative_passed": 560,
+        "rejected": 2
+      },
+      {
+        "gate": "measurement_admitted_not_held",
+        "entered": 560,
+        "cumulative_passed": 560,
+        "rejected": 0
+      }
+    ],
+    "beampair1-gate-8318603-d79f04a3": [
+      {
+        "gate": "any_assigned_probe",
+        "entered": 524,
+        "cumulative_passed": 340,
+        "rejected": 184
+      },
+      {
+        "gate": "meaningful_region_5_of_15",
+        "entered": 340,
+        "cumulative_passed": 338,
+        "rejected": 2
+      },
+      {
+        "gate": "measurement_admitted_not_held",
+        "entered": 338,
+        "cumulative_passed": 338,
+        "rejected": 0
+      }
+    ],
+    "beampair1-gate-8318604-d79f04a3": [
+      {
+        "gate": "any_assigned_probe",
+        "entered": 384,
+        "cumulative_passed": 178,
+        "rejected": 206
+      },
+      {
+        "gate": "meaningful_region_5_of_15",
+        "entered": 178,
+        "cumulative_passed": 178,
+        "rejected": 0
+      },
+      {
+        "gate": "measurement_admitted_not_held",
+        "entered": 178,
+        "cumulative_passed": 178,
+        "rejected": 0
+      }
+    ],
+    "beampair1-gate-8318605-d79f04a3": [
+      {
+        "gate": "any_assigned_probe",
+        "entered": 746,
+        "cumulative_passed": 493,
+        "rejected": 253
+      },
+      {
+        "gate": "meaningful_region_5_of_15",
+        "entered": 493,
+        "cumulative_passed": 484,
+        "rejected": 9
+      },
+      {
+        "gate": "measurement_admitted_not_held",
+        "entered": 484,
+        "cumulative_passed": 484,
+        "rejected": 0
+      }
+    ],
+    "beampair1-gate-8318606-d79f04a3": [
+      {
+        "gate": "any_assigned_probe",
+        "entered": 694,
+        "cumulative_passed": 446,
+        "rejected": 248
+      },
+      {
+        "gate": "meaningful_region_5_of_15",
+        "entered": 446,
+        "cumulative_passed": 443,
+        "rejected": 3
+      },
+      {
+        "gate": "measurement_admitted_not_held",
+        "entered": 443,
+        "cumulative_passed": 443,
+        "rejected": 0
+      }
+    ]
+  },
+  "rejection_table": [],
+  "blocking_reason_table": [
+    {
+      "run": "beampair1-gate-8318604-d79f04a3",
+      "robot": "r1",
+      "reason": "safe_prefix",
+      "count": 8,
+      "population": "recovery_events; symptoms, not additive to planner calls",
+      "blocked_object": "not_recorded",
+      "min_gap_m": null
+    },
+    {
+      "run": "beampair1-gate-8318604-d79f04a3",
+      "robot": "r1",
+      "reason": "blocked_goal_calls",
+      "count": 3,
+      "population": "planner_calls; counters may overlap",
+      "blocked_object": "not_recorded",
+      "min_gap_m": null
+    },
+    {
+      "run": "beampair1-gate-8318604-d79f04a3",
+      "robot": "r1",
+      "reason": "no_path_calls",
+      "count": 3,
+      "population": "planner_calls; counters may overlap",
+      "blocked_object": "not_recorded",
+      "min_gap_m": null
+    },
+    {
+      "run": "beampair1-gate-8318604-d79f04a3",
+      "robot": "r1",
+      "reason": "peer_prefix_wait",
+      "count": 1,
+      "population": "recovery_events; symptoms, not additive to planner calls",
+      "blocked_object": "peer",
+      "min_gap_m": null
+    },
+    {
+      "run": "beampair1-gate-8318604-d79f04a3",
+      "robot": "r1",
+      "reason": "peer_wait_deadline_handoff",
+      "count": 1,
+      "population": "recovery_events; symptoms, not additive to planner calls",
+      "blocked_object": "peer",
+      "min_gap_m": null
+    },
+    {
+      "run": "beampair1-gate-8318604-d79f04a3",
+      "robot": "r1",
+      "reason": "approach_blocked_handoff",
+      "count": 1,
+      "population": "terminal_robot_outcome",
+      "blocked_object": "not_recorded",
+      "min_gap_m": null
+    },
+    {
+      "run": "beampair1-gate-8318604-d79f04a3",
+      "robot": "r2",
+      "reason": "peer_approach_handoff",
+      "count": 1,
+      "population": "terminal_robot_outcome",
+      "blocked_object": "not_recorded",
+      "min_gap_m": null
+    },
+    {
+      "run": "beampair1-gate-8318604-d79f04a3",
+      "reason": "approach_blocked_handoff",
+      "count": 1,
+      "population": "episode_outcome",
+      "blocked_object": "not_recorded",
+      "min_gap_m": null
+    },
+    {
+      "run": "beampair1-gate-8318606-d79f04a3",
+      "reason": "supervisor_stop_same_source_defect",
+      "count": 1,
+      "population": "episode_outcome",
+      "blocked_object": "not_recorded",
+      "min_gap_m": null
+    }
+  ],
+  "notes": [
+    "started rejection33 means unsubmitted frozen trials, not33 physical failures",
+    "candidate raw rows absent in all7 runs: zero logged candidate population does not mean zero planner rejections",
+    "blocked_goal_calls3/no_path_calls3 counters may overlap; recovery events are symptoms and separate populations",
+    "no geometric blocker identity or min gap recorded for terminal planner rejections; left null"
+  ],
+  "candidate_logged_funnel": {
+    "logged_candidate_N": 0,
+    "status": "NO_PER_CANDIDATE_ROWS_RECORDED",
+    "rows": [
+      {
+        "gate": "ik_unreachable",
+        "entered": 0,
+        "rejected": 0,
+        "cumulative_passed": 0
+      },
+      {
+        "gate": "gripper_angle",
+        "entered": 0,
+        "rejected": 0,
+        "cumulative_passed": 0
+      },
+      {
+        "gate": "outside_bounds",
+        "entered": 0,
+        "rejected": 0,
+        "cumulative_passed": 0
+      },
+      {
+        "gate": "blocked_goal",
+        "entered": 0,
+        "rejected": 0,
+        "cumulative_passed": 0
+      },
+      {
+        "gate": "blocked_retreat",
+        "entered": 0,
+        "rejected": 0,
+        "cumulative_passed": 0
+      },
+      {
+        "gate": "no_path",
+        "entered": 0,
+        "rejected": 0,
+        "cumulative_passed": 0
+      },
+      {
+        "gate": "unsafe_body_sweep",
+        "entered": 0,
+        "rejected": 0,
+        "cumulative_passed": 0
+      },
+      {
+        "gate": "band_not_visible",
+        "entered": 0,
+        "rejected": 0,
+        "cumulative_passed": 0
+      },
+      {
+        "gate": "arm",
+        "entered": 0,
+        "rejected": 0,
+        "cumulative_passed": 0
+      },
+      {
+        "gate": "connector",
+        "entered": 0,
+        "rejected": 0,
+        "cumulative_passed": 0
+      },
+      {
+        "gate": "planning_budget",
+        "entered": 0,
+        "rejected": 0,
+        "cumulative_passed": 0
+      }
+    ],
+    "scope": "empty logged population only; no per-candidate success inferred from planner-call counters"
+  },
+  "frame_funnel_aggregate": [
+    {
+      "gate": "any_assigned_probe",
+      "entered": 4412,
+      "rejected": 1593,
+      "cumulative_passed": 2819
+    },
+    {
+      "gate": "meaningful_region_5_of_15",
+      "entered": 2819,
+      "rejected": 20,
+      "cumulative_passed": 2799
+    },
+    {
+      "gate": "measurement_admitted_not_held",
+      "entered": 2799,
+      "rejected": 0,
+      "cumulative_passed": 2799
+    }
+  ]
+}

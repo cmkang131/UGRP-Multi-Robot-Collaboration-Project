@@ -1,0 +1,2490 @@
+{
+  "schema": "ugrp.ops.beampair1.final.v1",
+  "analysis_host": "gcp1",
+  "host": "gcp1",
+  "machine_type": "n4-highcpu-64",
+  "source_sha": "d79f04a39e3eec9d418e5c44929182e0ec79f51c",
+  "planned_N": 40,
+  "attempted_N": 7,
+  "completed_N": 7,
+  "n": 5,
+  "classes": {
+    "success": 5,
+    "physical_or_control_failure": 1,
+    "supervisor_stop": 1
+  },
+  "runs": [
+    {
+      "run": "beampair1-gate-8318600-d79f04a3",
+      "exists": true,
+      "exit": "0",
+      "progress": {
+        "sim_s": 31.000000000065416,
+        "wall_s": 76.06161134899958,
+        "phases": {
+          "r1": "complete",
+          "r2": "complete"
+        },
+        "sample": 310,
+        "timings_s": {
+          "physics": 65.52749530700476,
+          "rgb": 2.079492585002299,
+          "evaluation": 2.819829064998885,
+          "teacher": 1.607835683009398,
+          "io": 0.0
+        }
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318600-d79f04a3/raw",
+      "reason_category": "success",
+      "blocked_object": "not_recorded",
+      "min_gap_m": null,
+      "gap_scope": "legacy ledger did not record a geometric blocker",
+      "result_path": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318600-d79f04a3/raw/result.json",
+      "result_sha256": "e819b40a42d517caff6f03d2541d828a0e547a2cb7dac3236287f1bd5e736c5e",
+      "status": "complete",
+      "saved_status": "complete",
+      "legacy_success": true,
+      "source_sha": "d79f04a39e3eec9d418e5c44929182e0ec79f51c",
+      "profile": "visible_only",
+      "cap_end": false,
+      "sim_s": 31.20000000006637,
+      "phases": {
+        "r1": "complete",
+        "r2": "complete"
+      },
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 938,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "manifest_verified_files": 77,
+      "eval_path": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318600-d79f04a3/raw/eval-only.jsonl.zst",
+      "eval_sha256": "02c484c9ece192783aa58dea7b28b7af06b9bc9a8f0d9520f2f04e49890d0b4f",
+      "evaluation_rows": 313,
+      "max_strict_hold_s": 3.0000000000143245,
+      "assigned_ends": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "end_relation_samples": [
+        {
+          "t": 1.8000000000001848,
+          "nearest_ends": {
+            "r1": "blue",
+            "r2": "blue"
+          },
+          "same_nearest_end": true,
+          "scope": "evaluator distance only; not inferred intent"
+        },
+        {
+          "t": 17.39999999999207,
+          "nearest_ends": {
+            "r1": "teal",
+            "r2": "blue"
+          },
+          "same_nearest_end": false,
+          "scope": "evaluator distance only; not inferred intent"
+        },
+        {
+          "t": 33.00000000006656,
+          "nearest_ends": {
+            "r1": "teal",
+            "r2": "blue"
+          },
+          "same_nearest_end": false,
+          "scope": "evaluator distance only; not inferred intent"
+        }
+      ],
+      "strict_success": true,
+      "visible_eligible": true,
+      "result_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 938,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "adapter_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 938,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "adapter_held_world_reads": 0,
+      "raw_dependency_sha": "26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+      "adapter_source_sha": "d79f04a39e3eec9d418e5c44929182e0ec79f51c",
+      "training_rgb": false,
+      "profiles": {
+        "teacher_profile": "visible_only",
+        "self_pose_source": "issued",
+        "teacher_stability": "align_relook_v1",
+        "teacher_search": "search_body_scan_v2",
+        "approach_goal_set": "approach_goal_set_v1",
+        "nominal_blocked_handoff": "nominal_blocked_handoff_v1",
+        "approach_progress": "approach_progress_v1",
+        "approach_recovery": "progress_view_recovery_v3",
+        "handoff_observation": "visible_handoff_v1",
+        "pregrasp_sampling": "pregrasp_sampling_v1",
+        "obstacle_reobserve": "obstacle_reobserve_v1",
+        "peer_reobserve": "peer_reobserve_v1",
+        "search17_candidates": "search17_candidates_v1",
+        "search17_escape": "search17_escape_v1",
+        "search17_odometry": "search17_fixed_v1",
+        "search18_start_plan": "search18_start_plan_v1",
+        "search18_free_space": "search18_free_space_v1",
+        "search19_motion": "search19_motion_v1",
+        "search19_footprint": "search19_footprint_v1",
+        "search20": "search20_v1",
+        "search21": "search21_v1",
+        "search22": "search22_v1",
+        "search23": "search23_v1",
+        "search24_irm": "search24_irm_v1",
+        "search24_budget": "search24_checks_v1",
+        "search25_budget": "search25_checks_v1"
+      },
+      "probe_burst_ticks": {
+        "r1": 1,
+        "r2": 12
+      },
+      "probe_executed_ticks": {
+        "r1": 1,
+        "r2": 0
+      },
+      "error": null,
+      "end_reason": "teacher_terminal",
+      "first30_speed": {
+        "sim_s": 30.00000000006064,
+        "wall_s": 72.90744992300006,
+        "scope": "first 30 SIM seconds including initialization; recording only",
+        "wall_per_sim": 2.430248330761756
+      },
+      "wall_per_sim": 2.456737607558869,
+      "wall_s": 76.65021335599977,
+      "audit_passed": true,
+      "passed": true,
+      "classification": "success",
+      "stages": {
+        "both_align": true,
+        "both_ready": true,
+        "both_pick": true,
+        "both_complete": true
+      },
+      "rejection_table": [],
+      "candidate_populations": {},
+      "frame_funnel": [
+        {
+          "gate": "any_assigned_probe",
+          "entered": 626,
+          "cumulative_passed": 424,
+          "rejected": 202
+        },
+        {
+          "gate": "meaningful_region_5_of_15",
+          "entered": 424,
+          "cumulative_passed": 422,
+          "rejected": 2
+        },
+        {
+          "gate": "measurement_admitted_not_held",
+          "entered": 422,
+          "cumulative_passed": 422,
+          "rejected": 0
+        }
+      ],
+      "protocol": {
+        "r1": {
+          "phase": "complete",
+          "outcome": "success",
+          "events": [
+            {
+              "t": 2.4999999999999742,
+              "from": "approach",
+              "to": "search"
+            },
+            {
+              "t": 4.1,
+              "stage": "view_complete",
+              "k": 0,
+              "command_estimated_yaw_deg": 0.0,
+              "search": "view_complete"
+            },
+            {
+              "t": 4.9,
+              "stage": "view_complete",
+              "k": 0,
+              "command_estimated_yaw_deg": 0.0,
+              "search": "view_complete"
+            },
+            {
+              "t": 5.5,
+              "stage": "view_complete",
+              "k": 0,
+              "command_estimated_yaw_deg": 0.0,
+              "search": "view_complete"
+            },
+            {
+              "t": 5.7000000000012205,
+              "from": "search",
+              "to": "approach"
+            },
+            {
+              "t": 20.10000000000496,
+              "from": "approach",
+              "to": "align"
+            },
+            {
+              "t": 24.200000000024538,
+              "from": "align",
+              "to": "ready"
+            },
+            {
+              "t": 24.400000000025493,
+              "from": "ready",
+              "to": "pick"
+            },
+            {
+              "t": 30.10000000005271,
+              "from": "pick",
+              "to": "complete"
+            }
+          ]
+        },
+        "r2": {
+          "phase": "complete",
+          "outcome": "success",
+          "events": [
+            {
+              "t": 2.4999999999999742,
+              "from": "approach",
+              "to": "search"
+            },
+            {
+              "t": 3.3999999999994754,
+              "from": "search",
+              "to": "approach"
+            },
+            {
+              "t": 3.3999999999994754,
+              "from": "approach",
+              "to": "align"
+            },
+            {
+              "t": 3.7999999999992538,
+              "from": "align",
+              "to": "ready"
+            },
+            {
+              "t": 25.500000000030745,
+              "from": "ready",
+              "to": "pick"
+            },
+            {
+              "t": 31.200000000057962,
+              "from": "pick",
+              "to": "complete"
+            }
+          ]
+        }
+      },
+      "sha256sums_verified": true,
+      "sha256sums_errors": "",
+      "sha256sums_file_sha256": "c5c6b979081b915fc54d7b993a51ae2c3b60f696551d302bdebeb83a67034dc2"
+    },
+    {
+      "run": "beampair1-gate-8318601-d79f04a3",
+      "exists": true,
+      "exit": "0",
+      "progress": {
+        "sim_s": 29.000000000055866,
+        "wall_s": 73.99370529099997,
+        "phases": {
+          "r1": "complete",
+          "r2": "complete"
+        },
+        "sample": 290,
+        "timings_s": {
+          "physics": 62.909456530007446,
+          "rgb": 2.3475592710001365,
+          "evaluation": 3.0397299929918518,
+          "teacher": 1.5576682489863742,
+          "io": 0.0
+        }
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318601-d79f04a3/raw",
+      "reason_category": "success",
+      "blocked_object": "not_recorded",
+      "min_gap_m": null,
+      "gap_scope": "legacy ledger did not record a geometric blocker",
+      "result_path": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318601-d79f04a3/raw/result.json",
+      "result_sha256": "89314ee8e7dec068353711cf855a1a0b1ec501da46249790fb42f19b2a9a45a0",
+      "status": "complete",
+      "saved_status": "complete",
+      "legacy_success": true,
+      "source_sha": "d79f04a39e3eec9d418e5c44929182e0ec79f51c",
+      "profile": "visible_only",
+      "cap_end": false,
+      "sim_s": 29.60000000005873,
+      "phases": {
+        "r1": "complete",
+        "r2": "complete"
+      },
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1091,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "manifest_verified_files": 72,
+      "eval_path": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318601-d79f04a3/raw/eval-only.jsonl.zst",
+      "eval_sha256": "d09f47f5fac9a56d7cf89e7d03641145cb6bfbd1cab4f5d5f29090e00051b869",
+      "evaluation_rows": 297,
+      "max_strict_hold_s": 3.0000000000143245,
+      "assigned_ends": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "end_relation_samples": [
+        {
+          "t": 1.8000000000001848,
+          "nearest_ends": {
+            "r1": "teal",
+            "r2": "teal"
+          },
+          "same_nearest_end": true,
+          "scope": "evaluator distance only; not inferred intent"
+        },
+        {
+          "t": 16.59999999998825,
+          "nearest_ends": {
+            "r1": "blue",
+            "r2": "teal"
+          },
+          "same_nearest_end": false,
+          "scope": "evaluator distance only; not inferred intent"
+        },
+        {
+          "t": 31.400000000058917,
+          "nearest_ends": {
+            "r1": "blue",
+            "r2": "teal"
+          },
+          "same_nearest_end": false,
+          "scope": "evaluator distance only; not inferred intent"
+        }
+      ],
+      "strict_success": true,
+      "visible_eligible": true,
+      "result_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1091,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "adapter_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1091,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "adapter_held_world_reads": 0,
+      "raw_dependency_sha": "26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+      "adapter_source_sha": "d79f04a39e3eec9d418e5c44929182e0ec79f51c",
+      "training_rgb": false,
+      "profiles": {
+        "teacher_profile": "visible_only",
+        "self_pose_source": "issued",
+        "teacher_stability": "align_relook_v1",
+        "teacher_search": "search_body_scan_v2",
+        "approach_goal_set": "approach_goal_set_v1",
+        "nominal_blocked_handoff": "nominal_blocked_handoff_v1",
+        "approach_progress": "approach_progress_v1",
+        "approach_recovery": "progress_view_recovery_v3",
+        "handoff_observation": "visible_handoff_v1",
+        "pregrasp_sampling": "pregrasp_sampling_v1",
+        "obstacle_reobserve": "obstacle_reobserve_v1",
+        "peer_reobserve": "peer_reobserve_v1",
+        "search17_candidates": "search17_candidates_v1",
+        "search17_escape": "search17_escape_v1",
+        "search17_odometry": "search17_fixed_v1",
+        "search18_start_plan": "search18_start_plan_v1",
+        "search18_free_space": "search18_free_space_v1",
+        "search19_motion": "search19_motion_v1",
+        "search19_footprint": "search19_footprint_v1",
+        "search20": "search20_v1",
+        "search21": "search21_v1",
+        "search22": "search22_v1",
+        "search23": "search23_v1",
+        "search24_irm": "search24_irm_v1",
+        "search24_budget": "search24_checks_v1",
+        "search25_budget": "search25_checks_v1"
+      },
+      "probe_burst_ticks": {
+        "r1": 2,
+        "r2": 11
+      },
+      "probe_executed_ticks": {
+        "r1": 2,
+        "r2": 11
+      },
+      "error": null,
+      "end_reason": "teacher_terminal",
+      "first30_speed": null,
+      "wall_per_sim": 2.5632913002989817,
+      "wall_s": 75.8734224890004,
+      "audit_passed": true,
+      "passed": true,
+      "classification": "success",
+      "stages": {
+        "both_align": true,
+        "both_ready": true,
+        "both_pick": true,
+        "both_complete": true
+      },
+      "rejection_table": [],
+      "candidate_populations": {},
+      "frame_funnel": [
+        {
+          "gate": "any_assigned_probe",
+          "entered": 594,
+          "cumulative_passed": 376,
+          "rejected": 218
+        },
+        {
+          "gate": "meaningful_region_5_of_15",
+          "entered": 376,
+          "cumulative_passed": 374,
+          "rejected": 2
+        },
+        {
+          "gate": "measurement_admitted_not_held",
+          "entered": 374,
+          "cumulative_passed": 374,
+          "rejected": 0
+        }
+      ],
+      "protocol": {
+        "r1": {
+          "phase": "complete",
+          "outcome": "success",
+          "events": [
+            {
+              "t": 2.4999999999999742,
+              "from": "approach",
+              "to": "search"
+            },
+            {
+              "t": 4.3,
+              "stage": "view_complete",
+              "k": 0,
+              "command_estimated_yaw_deg": 0.0,
+              "search": "view_complete"
+            },
+            {
+              "t": 5.1,
+              "stage": "view_complete",
+              "k": 0,
+              "command_estimated_yaw_deg": 0.0,
+              "search": "view_complete"
+            },
+            {
+              "t": 5.300000000000732,
+              "from": "search",
+              "to": "approach"
+            },
+            {
+              "t": 18.19999999999589,
+              "from": "approach",
+              "to": "align"
+            },
+            {
+              "t": 22.400000000015943,
+              "from": "align",
+              "to": "ready"
+            },
+            {
+              "t": 22.600000000016898,
+              "from": "ready",
+              "to": "pick"
+            },
+            {
+              "t": 28.300000000044115,
+              "from": "pick",
+              "to": "complete"
+            }
+          ]
+        },
+        "r2": {
+          "phase": "complete",
+          "outcome": "success",
+          "events": [
+            {
+              "t": 4.800000000000121,
+              "from": "approach",
+              "to": "search"
+            },
+            {
+              "t": 8.100000000003797,
+              "from": "search",
+              "to": "approach"
+            },
+            {
+              "t": 15.299999999987017,
+              "from": "approach",
+              "to": "align"
+            },
+            {
+              "t": 18.09999999999541,
+              "from": "align",
+              "to": "ready"
+            },
+            {
+              "t": 23.900000000023105,
+              "from": "ready",
+              "to": "pick"
+            },
+            {
+              "t": 29.600000000050322,
+              "from": "pick",
+              "to": "complete"
+            }
+          ]
+        }
+      },
+      "sha256sums_verified": true,
+      "sha256sums_errors": "",
+      "sha256sums_file_sha256": "8f8ce16de31fa070855805e58833a947fe17725b7683d27ff04821a1fd4ce237"
+    },
+    {
+      "run": "beampair1-gate-8318602-d79f04a3",
+      "exists": true,
+      "exit": "0",
+      "progress": {
+        "sim_s": 42.00000000011794,
+        "wall_s": 105.8752527910001,
+        "phases": {
+          "r1": "complete",
+          "r2": "complete"
+        },
+        "sample": 420,
+        "timings_s": {
+          "physics": 92.06092985098985,
+          "rgb": 3.3191324370018265,
+          "evaluation": 4.097038854015409,
+          "teacher": 2.3214736479958447,
+          "io": 0.0
+        }
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318602-d79f04a3/raw",
+      "reason_category": "success",
+      "blocked_object": "not_recorded",
+      "min_gap_m": null,
+      "gap_scope": "legacy ledger did not record a geometric blocker",
+      "result_path": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318602-d79f04a3/raw/result.json",
+      "result_sha256": "ad27cb74605fd4eec6d093c0cba178a053a74db554946022c969aef3c29a4bb7",
+      "status": "complete",
+      "saved_status": "complete",
+      "legacy_success": true,
+      "source_sha": "d79f04a39e3eec9d418e5c44929182e0ec79f51c",
+      "profile": "visible_only",
+      "cap_end": false,
+      "sim_s": 42.10000000011842,
+      "phases": {
+        "r1": "complete",
+        "r2": "complete"
+      },
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1307,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "manifest_verified_files": 99,
+      "eval_path": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318602-d79f04a3/raw/eval-only.jsonl.zst",
+      "eval_sha256": "b17aaebc672c7180f69e7fccd5e19e1a952615bbd10a274a7f10c400807a25fa",
+      "evaluation_rows": 422,
+      "max_strict_hold_s": 3.0000000000143245,
+      "assigned_ends": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "end_relation_samples": [
+        {
+          "t": 1.8000000000001848,
+          "nearest_ends": {
+            "r1": "blue",
+            "r2": "teal"
+          },
+          "same_nearest_end": false,
+          "scope": "evaluator distance only; not inferred intent"
+        },
+        {
+          "t": 22.90000000001833,
+          "nearest_ends": {
+            "r1": "teal",
+            "r2": "blue"
+          },
+          "same_nearest_end": false,
+          "scope": "evaluator distance only; not inferred intent"
+        },
+        {
+          "t": 43.9000000001186,
+          "nearest_ends": {
+            "r1": "teal",
+            "r2": "blue"
+          },
+          "same_nearest_end": false,
+          "scope": "evaluator distance only; not inferred intent"
+        }
+      ],
+      "strict_success": true,
+      "visible_eligible": true,
+      "result_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1307,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "adapter_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1307,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "adapter_held_world_reads": 0,
+      "raw_dependency_sha": "26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+      "adapter_source_sha": "d79f04a39e3eec9d418e5c44929182e0ec79f51c",
+      "training_rgb": false,
+      "profiles": {
+        "teacher_profile": "visible_only",
+        "self_pose_source": "issued",
+        "teacher_stability": "align_relook_v1",
+        "teacher_search": "search_body_scan_v2",
+        "approach_goal_set": "approach_goal_set_v1",
+        "nominal_blocked_handoff": "nominal_blocked_handoff_v1",
+        "approach_progress": "approach_progress_v1",
+        "approach_recovery": "progress_view_recovery_v3",
+        "handoff_observation": "visible_handoff_v1",
+        "pregrasp_sampling": "pregrasp_sampling_v1",
+        "obstacle_reobserve": "obstacle_reobserve_v1",
+        "peer_reobserve": "peer_reobserve_v1",
+        "search17_candidates": "search17_candidates_v1",
+        "search17_escape": "search17_escape_v1",
+        "search17_odometry": "search17_fixed_v1",
+        "search18_start_plan": "search18_start_plan_v1",
+        "search18_free_space": "search18_free_space_v1",
+        "search19_motion": "search19_motion_v1",
+        "search19_footprint": "search19_footprint_v1",
+        "search20": "search20_v1",
+        "search21": "search21_v1",
+        "search22": "search22_v1",
+        "search23": "search23_v1",
+        "search24_irm": "search24_irm_v1",
+        "search24_budget": "search24_checks_v1",
+        "search25_budget": "search25_checks_v1"
+      },
+      "probe_burst_ticks": {
+        "r1": 3,
+        "r2": 10
+      },
+      "probe_executed_ticks": {
+        "r1": 3,
+        "r2": 10
+      },
+      "error": null,
+      "end_reason": "teacher_terminal",
+      "first30_speed": {
+        "sim_s": 30.00000000006064,
+        "wall_s": 74.5974166750002,
+        "scope": "first 30 SIM seconds including initialization; recording only",
+        "wall_per_sim": 2.4865805558283136
+      },
+      "wall_per_sim": 2.5222317143396964,
+      "wall_s": 106.1859551739999,
+      "audit_passed": true,
+      "passed": true,
+      "classification": "success",
+      "stages": {
+        "both_align": true,
+        "both_ready": true,
+        "both_pick": true,
+        "both_complete": true
+      },
+      "rejection_table": [],
+      "candidate_populations": {},
+      "frame_funnel": [
+        {
+          "gate": "any_assigned_probe",
+          "entered": 844,
+          "cumulative_passed": 562,
+          "rejected": 282
+        },
+        {
+          "gate": "meaningful_region_5_of_15",
+          "entered": 562,
+          "cumulative_passed": 560,
+          "rejected": 2
+        },
+        {
+          "gate": "measurement_admitted_not_held",
+          "entered": 560,
+          "cumulative_passed": 560,
+          "rejected": 0
+        }
+      ],
+      "protocol": {
+        "r1": {
+          "phase": "complete",
+          "outcome": "success",
+          "events": [
+            {
+              "t": 4.699999999999998,
+              "from": "approach",
+              "to": "search"
+            },
+            {
+              "t": 6.800000000002565,
+              "from": "search",
+              "to": "approach"
+            },
+            {
+              "t": 16.89999999998968,
+              "from": "approach",
+              "to": "align"
+            },
+            {
+              "t": 21.00000000000926,
+              "from": "align",
+              "to": "ready"
+            },
+            {
+              "t": 35.100000000076584,
+              "from": "ready",
+              "to": "pick"
+            },
+            {
+              "t": 40.8000000001038,
+              "from": "pick",
+              "to": "complete"
+            }
+          ]
+        },
+        "r2": {
+          "phase": "complete",
+          "outcome": "success",
+          "events": [
+            {
+              "t": 2.4999999999999742,
+              "from": "approach",
+              "to": "search"
+            },
+            {
+              "t": 3.8,
+              "stage": "view_complete",
+              "k": 0,
+              "command_estimated_yaw_deg": 0.0,
+              "search": "view_complete"
+            },
+            {
+              "t": 4.6,
+              "stage": "view_complete",
+              "k": 0,
+              "command_estimated_yaw_deg": 0.0,
+              "search": "view_complete"
+            },
+            {
+              "t": 4.800000000000121,
+              "from": "search",
+              "to": "approach"
+            },
+            {
+              "t": 6.700000000002443,
+              "from": "approach",
+              "to": "search"
+            },
+            {
+              "t": 14.89999999998795,
+              "from": "search",
+              "to": "approach"
+            },
+            {
+              "t": 30.700000000055574,
+              "from": "approach",
+              "to": "align"
+            },
+            {
+              "t": 34.90000000007563,
+              "from": "align",
+              "to": "ready"
+            },
+            {
+              "t": 36.40000000008279,
+              "from": "ready",
+              "to": "pick"
+            },
+            {
+              "t": 42.10000000011001,
+              "from": "pick",
+              "to": "complete"
+            }
+          ]
+        }
+      },
+      "sha256sums_verified": true,
+      "sha256sums_errors": "",
+      "sha256sums_file_sha256": "1d18ceead7c494fbb86c435df4263f6769d756856d62c6349ce0f9dad8616136"
+    },
+    {
+      "run": "beampair1-gate-8318603-d79f04a3",
+      "exists": true,
+      "exit": "0",
+      "progress": {
+        "sim_s": 26.000000000041542,
+        "wall_s": 65.60326477900071,
+        "phases": {
+          "r1": "complete",
+          "r2": "complete"
+        },
+        "sample": 260,
+        "timings_s": {
+          "physics": 56.5382906170089,
+          "rgb": 1.8751363560049867,
+          "evaluation": 2.4507233179983814,
+          "teacher": 0.8689185739995082,
+          "io": 0.0
+        }
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318603-d79f04a3/raw",
+      "reason_category": "success",
+      "blocked_object": "not_recorded",
+      "min_gap_m": null,
+      "gap_scope": "legacy ledger did not record a geometric blocker",
+      "result_path": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318603-d79f04a3/raw/result.json",
+      "result_sha256": "11b00c915469dc8f9f5955c30455cc5085bd4d1bd38a36e07622f6f7292eeca4",
+      "status": "complete",
+      "saved_status": "complete",
+      "legacy_success": true,
+      "source_sha": "d79f04a39e3eec9d418e5c44929182e0ec79f51c",
+      "profile": "visible_only",
+      "cap_end": false,
+      "sim_s": 26.10000000004202,
+      "phases": {
+        "r1": "complete",
+        "r2": "complete"
+      },
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 848,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "manifest_verified_files": 66,
+      "eval_path": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318603-d79f04a3/raw/eval-only.jsonl.zst",
+      "eval_sha256": "1d3b64824ec874f41964782a78ef4f99f3bba5c546d02207410551de75744e06",
+      "evaluation_rows": 262,
+      "max_strict_hold_s": 3.0000000000143245,
+      "assigned_ends": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "end_relation_samples": [
+        {
+          "t": 1.8000000000001848,
+          "nearest_ends": {
+            "r1": "blue",
+            "r2": "teal"
+          },
+          "same_nearest_end": false,
+          "scope": "evaluator distance only; not inferred intent"
+        },
+        {
+          "t": 14.89999999998795,
+          "nearest_ends": {
+            "r1": "blue",
+            "r2": "teal"
+          },
+          "same_nearest_end": false,
+          "scope": "evaluator distance only; not inferred intent"
+        },
+        {
+          "t": 27.900000000042205,
+          "nearest_ends": {
+            "r1": "blue",
+            "r2": "teal"
+          },
+          "same_nearest_end": false,
+          "scope": "evaluator distance only; not inferred intent"
+        }
+      ],
+      "strict_success": true,
+      "visible_eligible": true,
+      "result_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 848,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "adapter_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 848,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "adapter_held_world_reads": 0,
+      "raw_dependency_sha": "26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+      "adapter_source_sha": "d79f04a39e3eec9d418e5c44929182e0ec79f51c",
+      "training_rgb": false,
+      "profiles": {
+        "teacher_profile": "visible_only",
+        "self_pose_source": "issued",
+        "teacher_stability": "align_relook_v1",
+        "teacher_search": "search_body_scan_v2",
+        "approach_goal_set": "approach_goal_set_v1",
+        "nominal_blocked_handoff": "nominal_blocked_handoff_v1",
+        "approach_progress": "approach_progress_v1",
+        "approach_recovery": "progress_view_recovery_v3",
+        "handoff_observation": "visible_handoff_v1",
+        "pregrasp_sampling": "pregrasp_sampling_v1",
+        "obstacle_reobserve": "obstacle_reobserve_v1",
+        "peer_reobserve": "peer_reobserve_v1",
+        "search17_candidates": "search17_candidates_v1",
+        "search17_escape": "search17_escape_v1",
+        "search17_odometry": "search17_fixed_v1",
+        "search18_start_plan": "search18_start_plan_v1",
+        "search18_free_space": "search18_free_space_v1",
+        "search19_motion": "search19_motion_v1",
+        "search19_footprint": "search19_footprint_v1",
+        "search20": "search20_v1",
+        "search21": "search21_v1",
+        "search22": "search22_v1",
+        "search23": "search23_v1",
+        "search24_irm": "search24_irm_v1",
+        "search24_budget": "search24_checks_v1",
+        "search25_budget": "search25_checks_v1"
+      },
+      "probe_burst_ticks": {
+        "r1": 4,
+        "r2": 9
+      },
+      "probe_executed_ticks": {
+        "r1": 4,
+        "r2": 0
+      },
+      "error": null,
+      "end_reason": "teacher_terminal",
+      "first30_speed": null,
+      "wall_per_sim": 2.5258642462028456,
+      "wall_s": 65.9250568260004,
+      "audit_passed": true,
+      "passed": true,
+      "classification": "success",
+      "stages": {
+        "both_align": true,
+        "both_ready": true,
+        "both_pick": true,
+        "both_complete": true
+      },
+      "rejection_table": [],
+      "candidate_populations": {},
+      "frame_funnel": [
+        {
+          "gate": "any_assigned_probe",
+          "entered": 524,
+          "cumulative_passed": 340,
+          "rejected": 184
+        },
+        {
+          "gate": "meaningful_region_5_of_15",
+          "entered": 340,
+          "cumulative_passed": 338,
+          "rejected": 2
+        },
+        {
+          "gate": "measurement_admitted_not_held",
+          "entered": 338,
+          "cumulative_passed": 338,
+          "rejected": 0
+        }
+      ],
+      "protocol": {
+        "r1": {
+          "phase": "complete",
+          "outcome": "success",
+          "events": [
+            {
+              "t": 2.4999999999999742,
+              "from": "approach",
+              "to": "search"
+            },
+            {
+              "t": 4.1,
+              "stage": "view_complete",
+              "k": 0,
+              "command_estimated_yaw_deg": 0.0,
+              "search": "view_complete"
+            },
+            {
+              "t": 4.9,
+              "stage": "view_complete",
+              "k": 0,
+              "command_estimated_yaw_deg": 0.0,
+              "search": "view_complete"
+            },
+            {
+              "t": 5.100000000000487,
+              "from": "search",
+              "to": "approach"
+            },
+            {
+              "t": 14.999999999987716,
+              "from": "approach",
+              "to": "align"
+            },
+            {
+              "t": 18.49999999999732,
+              "from": "align",
+              "to": "ready"
+            },
+            {
+              "t": 18.5999999999978,
+              "from": "ready",
+              "to": "align"
+            },
+            {
+              "t": 18.99999999999971,
+              "from": "align",
+              "to": "ready"
+            },
+            {
+              "t": 19.200000000000664,
+              "from": "ready",
+              "to": "align"
+            },
+            {
+              "t": 19.70000000000305,
+              "from": "align",
+              "to": "ready"
+            },
+            {
+              "t": 19.900000000004006,
+              "from": "ready",
+              "to": "pick"
+            },
+            {
+              "t": 25.600000000031223,
+              "from": "pick",
+              "to": "complete"
+            }
+          ]
+        },
+        "r2": {
+          "phase": "complete",
+          "outcome": "success",
+          "events": [
+            {
+              "t": 2.4999999999999742,
+              "from": "approach",
+              "to": "search"
+            },
+            {
+              "t": 2.799999999999808,
+              "from": "search",
+              "to": "approach"
+            },
+            {
+              "t": 2.799999999999808,
+              "from": "approach",
+              "to": "align"
+            },
+            {
+              "t": 3.1999999999995863,
+              "from": "align",
+              "to": "ready"
+            },
+            {
+              "t": 20.400000000006393,
+              "from": "ready",
+              "to": "pick"
+            },
+            {
+              "t": 26.10000000003361,
+              "from": "pick",
+              "to": "complete"
+            }
+          ]
+        }
+      },
+      "sha256sums_verified": true,
+      "sha256sums_errors": "",
+      "sha256sums_file_sha256": "f6537f6c4db422019765f0390e00ab3f0d44ec9ead5e1be7844787eca0982e90"
+    },
+    {
+      "run": "beampair1-gate-8318604-d79f04a3",
+      "exists": true,
+      "exit": "0",
+      "progress": {
+        "sim_s": 19.000000000008118,
+        "wall_s": 48.97929028999988,
+        "phases": {
+          "r1": "approach",
+          "r2": "approach"
+        },
+        "sample": 190,
+        "timings_s": {
+          "physics": 39.57554604899542,
+          "rgb": 2.089145399010704,
+          "evaluation": 2.1630477489998157,
+          "teacher": 1.3756591880046471,
+          "io": 0.0
+        }
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318604-d79f04a3/raw",
+      "reason_category": "approach_blocked_handoff",
+      "blocked_object": "not_recorded",
+      "min_gap_m": null,
+      "gap_scope": "legacy ledger did not record a geometric blocker",
+      "result_path": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318604-d79f04a3/raw/result.json",
+      "result_sha256": "02462038c19f8a5f8795a7006dbfd04b356d3844439d5f89fcda95ee4ae5cce6",
+      "status": "complete",
+      "saved_status": "complete",
+      "legacy_success": false,
+      "source_sha": "d79f04a39e3eec9d418e5c44929182e0ec79f51c",
+      "profile": "visible_only",
+      "cap_end": false,
+      "sim_s": 19.100000000008595,
+      "phases": {
+        "r1": "approach",
+        "r2": "approach"
+      },
+      "outcomes": {
+        "r1": "approach_blocked_handoff",
+        "r2": "peer_approach_handoff"
+      },
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 893,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "manifest_verified_files": 52,
+      "eval_path": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318604-d79f04a3/raw/eval-only.jsonl.zst",
+      "eval_sha256": "d7eaa6bcb38b36b2f42463ed98f55dd271580ec1a6bcb38a327a8c9e977975bf",
+      "evaluation_rows": 192,
+      "max_strict_hold_s": 0.0,
+      "assigned_ends": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "end_relation_samples": [
+        {
+          "t": 1.8000000000001848,
+          "nearest_ends": {
+            "r1": "blue",
+            "r2": "teal"
+          },
+          "same_nearest_end": false,
+          "scope": "evaluator distance only; not inferred intent"
+        },
+        {
+          "t": 11.399999999996107,
+          "nearest_ends": {
+            "r1": "blue",
+            "r2": "teal"
+          },
+          "same_nearest_end": false,
+          "scope": "evaluator distance only; not inferred intent"
+        },
+        {
+          "t": 20.90000000000878,
+          "nearest_ends": {
+            "r1": "blue",
+            "r2": "teal"
+          },
+          "same_nearest_end": false,
+          "scope": "evaluator distance only; not inferred intent"
+        }
+      ],
+      "strict_success": false,
+      "visible_eligible": false,
+      "result_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 893,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "adapter_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 893,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "adapter_held_world_reads": 0,
+      "raw_dependency_sha": "26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+      "adapter_source_sha": "d79f04a39e3eec9d418e5c44929182e0ec79f51c",
+      "training_rgb": false,
+      "profiles": {
+        "teacher_profile": "visible_only",
+        "self_pose_source": "issued",
+        "teacher_stability": "align_relook_v1",
+        "teacher_search": "search_body_scan_v2",
+        "approach_goal_set": "approach_goal_set_v1",
+        "nominal_blocked_handoff": "nominal_blocked_handoff_v1",
+        "approach_progress": "approach_progress_v1",
+        "approach_recovery": "progress_view_recovery_v3",
+        "handoff_observation": "visible_handoff_v1",
+        "pregrasp_sampling": "pregrasp_sampling_v1",
+        "obstacle_reobserve": "obstacle_reobserve_v1",
+        "peer_reobserve": "peer_reobserve_v1",
+        "search17_candidates": "search17_candidates_v1",
+        "search17_escape": "search17_escape_v1",
+        "search17_odometry": "search17_fixed_v1",
+        "search18_start_plan": "search18_start_plan_v1",
+        "search18_free_space": "search18_free_space_v1",
+        "search19_motion": "search19_motion_v1",
+        "search19_footprint": "search19_footprint_v1",
+        "search20": "search20_v1",
+        "search21": "search21_v1",
+        "search22": "search22_v1",
+        "search23": "search23_v1",
+        "search24_irm": "search24_irm_v1",
+        "search24_budget": "search24_checks_v1",
+        "search25_budget": "search25_checks_v1"
+      },
+      "probe_burst_ticks": {
+        "r1": 5,
+        "r2": 8
+      },
+      "probe_executed_ticks": {
+        "r1": 5,
+        "r2": 8
+      },
+      "error": null,
+      "end_reason": "teacher_terminal",
+      "first30_speed": null,
+      "wall_per_sim": 2.5761640616742247,
+      "wall_s": 49.20473357799983,
+      "audit_passed": true,
+      "passed": false,
+      "classification": "physical_or_control_failure",
+      "stages": {
+        "both_align": false,
+        "both_ready": false,
+        "both_pick": false,
+        "both_complete": false
+      },
+      "rejection_table": [],
+      "candidate_populations": {},
+      "frame_funnel": [
+        {
+          "gate": "any_assigned_probe",
+          "entered": 384,
+          "cumulative_passed": 178,
+          "rejected": 206
+        },
+        {
+          "gate": "meaningful_region_5_of_15",
+          "entered": 178,
+          "cumulative_passed": 178,
+          "rejected": 0
+        },
+        {
+          "gate": "measurement_admitted_not_held",
+          "entered": 178,
+          "cumulative_passed": 178,
+          "rejected": 0
+        }
+      ],
+      "protocol": {
+        "r1": {
+          "phase": "approach",
+          "outcome": "approach_blocked_handoff",
+          "events": [
+            {
+              "t": 2.4999999999999742,
+              "from": "approach",
+              "to": "search"
+            },
+            {
+              "t": 4.2,
+              "stage": "view_complete",
+              "k": 0,
+              "command_estimated_yaw_deg": 0.0,
+              "search": "view_complete"
+            },
+            {
+              "t": 5.0,
+              "stage": "view_complete",
+              "k": 0,
+              "command_estimated_yaw_deg": 0.0,
+              "search": "view_complete"
+            },
+            {
+              "t": 5.2000000000006095,
+              "from": "search",
+              "to": "approach"
+            },
+            {
+              "t": 9.799999999999836,
+              "from": "approach",
+              "to": "search"
+            },
+            {
+              "t": 14.499999999988882,
+              "from": "search",
+              "to": "approach"
+            }
+          ]
+        },
+        "r2": {
+          "phase": "approach",
+          "outcome": "peer_approach_handoff",
+          "events": [
+            {
+              "t": 2.4999999999999742,
+              "from": "approach",
+              "to": "search"
+            },
+            {
+              "t": 3.9,
+              "stage": "view_complete",
+              "k": 0,
+              "command_estimated_yaw_deg": 0.0,
+              "search": "view_complete"
+            },
+            {
+              "t": 4.7,
+              "stage": "view_complete",
+              "k": 0,
+              "command_estimated_yaw_deg": 0.0,
+              "search": "view_complete"
+            },
+            {
+              "t": 4.900000000000243,
+              "from": "search",
+              "to": "approach"
+            },
+            {
+              "t": 6.800000000002565,
+              "from": "approach",
+              "to": "search"
+            },
+            {
+              "t": 16.19999999998634,
+              "from": "search",
+              "to": "approach"
+            }
+          ]
+        }
+      },
+      "sha256sums_verified": true,
+      "sha256sums_errors": "",
+      "sha256sums_file_sha256": "30441e96739709dacd2425d657ea8fb26fa0e5fc2d23d5ddbb315f7445f713d3",
+      "montage": {
+        "path": "/home/ugrp/ugrp-sim/ops-reviews/beampair1-d79f04a3/beampair1-gate-8318604-d79f04a3-montage.jpg",
+        "sha256": "a3c90d169ecb80a39dca54bdc376813d8c8c7c756250ddd17f2be24b772777eb",
+        "frames": [
+          {
+            "view": "r1",
+            "sim_s": 0.0,
+            "path": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318604-d79f04a3/raw/eval-own/r1/000000.jpg",
+            "sha256": "48e8358629743921eb6c53529679d5272979e3786dda5283eb773dbd4e5fd2a1"
+          },
+          {
+            "view": "r2",
+            "sim_s": 0.0,
+            "path": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318604-d79f04a3/raw/eval-own/r2/000000.jpg",
+            "sha256": "b9a40cbd654f8a77276ea4402fb6c427e048457efa692efa04da60f856941437"
+          },
+          {
+            "view": "r1",
+            "sim_s": 4.0,
+            "path": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318604-d79f04a3/raw/eval-own/r1/000040.jpg",
+            "sha256": "71ea28912905e1767398e72e625e0a15889a47ef3dd766d125487e3d1052b817"
+          },
+          {
+            "view": "r2",
+            "sim_s": 4.0,
+            "path": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318604-d79f04a3/raw/eval-own/r2/000040.jpg",
+            "sha256": "2cfc795a10af20a179c7eb454d4020fac4ba475af2274294f02a72e0ad82e0a6"
+          },
+          {
+            "view": "r1",
+            "sim_s": 8.0,
+            "path": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318604-d79f04a3/raw/eval-own/r1/000080.jpg",
+            "sha256": "cf7add899cd7a68ddaaf13680201c5fbe8dce7a85816c8bc7b4feb5c4d801e66"
+          },
+          {
+            "view": "r2",
+            "sim_s": 8.0,
+            "path": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318604-d79f04a3/raw/eval-own/r2/000080.jpg",
+            "sha256": "04c4c07a3f55ffa3ebe137db82a0a75a88f933193d5e42c50e8e7020f3dda700"
+          },
+          {
+            "view": "r1",
+            "sim_s": 11.0,
+            "path": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318604-d79f04a3/raw/eval-own/r1/000110.jpg",
+            "sha256": "5e8da9a6265488d92dbaae5755a4bd6aa8d53825bc48768b9b0290fad7c623d8"
+          },
+          {
+            "view": "r2",
+            "sim_s": 11.0,
+            "path": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318604-d79f04a3/raw/eval-own/r2/000110.jpg",
+            "sha256": "04136b1a95310a6af205133e13f96c0809fabf6e1a2dc0cede1a505cd6698474"
+          },
+          {
+            "view": "r1",
+            "sim_s": 15.0,
+            "path": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318604-d79f04a3/raw/eval-own/r1/000150.jpg",
+            "sha256": "665d1342c5478585148b653732f1c67a7058103b2afc9c42dcb7997a184bed56"
+          },
+          {
+            "view": "r2",
+            "sim_s": 15.0,
+            "path": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318604-d79f04a3/raw/eval-own/r2/000150.jpg",
+            "sha256": "88e933c2c0b8dd8bdd857b605000303510d47581de9e3e7e6ead7c30acb0069b"
+          },
+          {
+            "view": "r1",
+            "sim_s": 19.0,
+            "path": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318604-d79f04a3/raw/eval-own/r1/000190.jpg",
+            "sha256": "426e272aabf627f906c4a2992b540bca4a019e70a64cf593edef7e0dae0db3ef"
+          },
+          {
+            "view": "r2",
+            "sim_s": 19.0,
+            "path": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318604-d79f04a3/raw/eval-own/r2/000190.jpg",
+            "sha256": "4f12e3bcb3ebbfeacac6ead0b1efb123c6ac84d6ff591cbf012d8eeb70d12b6a"
+          }
+        ]
+      }
+    },
+    {
+      "run": "beampair1-gate-8318605-d79f04a3",
+      "exists": true,
+      "exit": "0",
+      "progress": {
+        "sim_s": 37.00000000009407,
+        "wall_s": 92.45943939499921,
+        "phases": {
+          "r1": "complete",
+          "r2": "complete"
+        },
+        "sample": 370,
+        "timings_s": {
+          "physics": 79.7840292679939,
+          "rgb": 2.5183905440026138,
+          "evaluation": 3.4799017840005035,
+          "teacher": 2.557319477994497,
+          "io": 0.0
+        }
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318605-d79f04a3/raw",
+      "reason_category": "success",
+      "blocked_object": "not_recorded",
+      "min_gap_m": null,
+      "gap_scope": "legacy ledger did not record a geometric blocker",
+      "result_path": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318605-d79f04a3/raw/result.json",
+      "result_sha256": "cba33fbeade97972813d75ecd582e2ba7c7bf0196e2639529265276aa3819c08",
+      "status": "complete",
+      "saved_status": "complete",
+      "legacy_success": true,
+      "source_sha": "d79f04a39e3eec9d418e5c44929182e0ec79f51c",
+      "profile": "visible_only",
+      "cap_end": false,
+      "sim_s": 37.200000000095024,
+      "phases": {
+        "r1": "complete",
+        "r2": "complete"
+      },
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1318,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "manifest_verified_files": 89,
+      "eval_path": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318605-d79f04a3/raw/eval-only.jsonl.zst",
+      "eval_sha256": "97202e774da1325704cfb3a949aa473c65f490e29df02d02c1aac58dfca88edc",
+      "evaluation_rows": 373,
+      "max_strict_hold_s": 3.0000000000143245,
+      "assigned_ends": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "end_relation_samples": [
+        {
+          "t": 1.8000000000001848,
+          "nearest_ends": {
+            "r1": "blue",
+            "r2": "blue"
+          },
+          "same_nearest_end": true,
+          "scope": "evaluator distance only; not inferred intent"
+        },
+        {
+          "t": 20.400000000006393,
+          "nearest_ends": {
+            "r1": "blue",
+            "r2": "teal"
+          },
+          "same_nearest_end": false,
+          "scope": "evaluator distance only; not inferred intent"
+        },
+        {
+          "t": 39.000000000095206,
+          "nearest_ends": {
+            "r1": "blue",
+            "r2": "teal"
+          },
+          "same_nearest_end": false,
+          "scope": "evaluator distance only; not inferred intent"
+        }
+      ],
+      "strict_success": true,
+      "visible_eligible": true,
+      "result_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1318,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "adapter_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1318,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "adapter_held_world_reads": 0,
+      "raw_dependency_sha": "26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+      "adapter_source_sha": "d79f04a39e3eec9d418e5c44929182e0ec79f51c",
+      "training_rgb": false,
+      "profiles": {
+        "teacher_profile": "visible_only",
+        "self_pose_source": "issued",
+        "teacher_stability": "align_relook_v1",
+        "teacher_search": "search_body_scan_v2",
+        "approach_goal_set": "approach_goal_set_v1",
+        "nominal_blocked_handoff": "nominal_blocked_handoff_v1",
+        "approach_progress": "approach_progress_v1",
+        "approach_recovery": "progress_view_recovery_v3",
+        "handoff_observation": "visible_handoff_v1",
+        "pregrasp_sampling": "pregrasp_sampling_v1",
+        "obstacle_reobserve": "obstacle_reobserve_v1",
+        "peer_reobserve": "peer_reobserve_v1",
+        "search17_candidates": "search17_candidates_v1",
+        "search17_escape": "search17_escape_v1",
+        "search17_odometry": "search17_fixed_v1",
+        "search18_start_plan": "search18_start_plan_v1",
+        "search18_free_space": "search18_free_space_v1",
+        "search19_motion": "search19_motion_v1",
+        "search19_footprint": "search19_footprint_v1",
+        "search20": "search20_v1",
+        "search21": "search21_v1",
+        "search22": "search22_v1",
+        "search23": "search23_v1",
+        "search24_irm": "search24_irm_v1",
+        "search24_budget": "search24_checks_v1",
+        "search25_budget": "search25_checks_v1"
+      },
+      "probe_burst_ticks": {
+        "r1": 6,
+        "r2": 7
+      },
+      "probe_executed_ticks": {
+        "r1": 6,
+        "r2": 7
+      },
+      "error": null,
+      "end_reason": "teacher_terminal",
+      "first30_speed": {
+        "sim_s": 30.00000000006064,
+        "wall_s": 72.43460220599991,
+        "scope": "first 30 SIM seconds including initialization; recording only",
+        "wall_per_sim": 2.4144867401951164
+      },
+      "wall_per_sim": 2.5037149665258527,
+      "wall_s": 93.13819675499963,
+      "audit_passed": true,
+      "passed": true,
+      "classification": "success",
+      "stages": {
+        "both_align": true,
+        "both_ready": true,
+        "both_pick": true,
+        "both_complete": true
+      },
+      "rejection_table": [],
+      "candidate_populations": {},
+      "frame_funnel": [
+        {
+          "gate": "any_assigned_probe",
+          "entered": 746,
+          "cumulative_passed": 493,
+          "rejected": 253
+        },
+        {
+          "gate": "meaningful_region_5_of_15",
+          "entered": 493,
+          "cumulative_passed": 484,
+          "rejected": 9
+        },
+        {
+          "gate": "measurement_admitted_not_held",
+          "entered": 484,
+          "cumulative_passed": 484,
+          "rejected": 0
+        }
+      ],
+      "protocol": {
+        "r1": {
+          "phase": "complete",
+          "outcome": "success",
+          "events": [
+            {
+              "t": 2.4999999999999742,
+              "from": "approach",
+              "to": "search"
+            },
+            {
+              "t": 3.9,
+              "stage": "view_complete",
+              "k": 0,
+              "command_estimated_yaw_deg": 0.0,
+              "search": "view_complete"
+            },
+            {
+              "t": 4.7,
+              "stage": "view_complete",
+              "k": 0,
+              "command_estimated_yaw_deg": 0.0,
+              "search": "view_complete"
+            },
+            {
+              "t": 4.900000000000243,
+              "from": "search",
+              "to": "approach"
+            },
+            {
+              "t": 6.700000000002443,
+              "from": "approach",
+              "to": "search"
+            },
+            {
+              "t": 7.600000000003543,
+              "from": "search",
+              "to": "approach"
+            },
+            {
+              "t": 8.300000000003331,
+              "from": "approach",
+              "to": "search"
+            },
+            {
+              "t": 9.700000000000069,
+              "from": "search",
+              "to": "approach"
+            },
+            {
+              "t": 9.799999999999836,
+              "from": "approach",
+              "to": "search"
+            },
+            {
+              "t": 11.199999999996573,
+              "from": "search",
+              "to": "approach"
+            },
+            {
+              "t": 22.700000000017376,
+              "from": "approach",
+              "to": "align"
+            },
+            {
+              "t": 25.400000000030268,
+              "from": "align",
+              "to": "ready"
+            },
+            {
+              "t": 30.10000000005271,
+              "from": "ready",
+              "to": "pick"
+            },
+            {
+              "t": 35.800000000079926,
+              "from": "pick",
+              "to": "complete"
+            }
+          ]
+        },
+        "r2": {
+          "phase": "complete",
+          "outcome": "success",
+          "events": [
+            {
+              "t": 2.4999999999999742,
+              "from": "approach",
+              "to": "search"
+            },
+            {
+              "t": 3.9,
+              "stage": "view_complete",
+              "k": 0,
+              "command_estimated_yaw_deg": 0.0,
+              "search": "view_complete"
+            },
+            {
+              "t": 4.7,
+              "stage": "view_complete",
+              "k": 0,
+              "command_estimated_yaw_deg": 0.0,
+              "search": "view_complete"
+            },
+            {
+              "t": 4.900000000000243,
+              "from": "search",
+              "to": "approach"
+            },
+            {
+              "t": 8.00000000000403,
+              "from": "approach",
+              "to": "search"
+            },
+            {
+              "t": 9.0000000000017,
+              "from": "search",
+              "to": "approach"
+            },
+            {
+              "t": 25.600000000031223,
+              "from": "approach",
+              "to": "align"
+            },
+            {
+              "t": 29.900000000051755,
+              "from": "align",
+              "to": "ready"
+            },
+            {
+              "t": 31.500000000059394,
+              "from": "ready",
+              "to": "pick"
+            },
+            {
+              "t": 37.20000000008661,
+              "from": "pick",
+              "to": "complete"
+            }
+          ]
+        }
+      },
+      "sha256sums_verified": true,
+      "sha256sums_errors": "",
+      "sha256sums_file_sha256": "694806cec3772a27d4d499e7bb94dafe775fcb361b227d3060f4ca32b2eaaa32"
+    },
+    {
+      "run": "beampair1-gate-8318606-d79f04a3",
+      "exists": true,
+      "exit": "130",
+      "progress": {
+        "sim_s": 34.000000000079744,
+        "wall_s": 77.0550111069997,
+        "phases": {
+          "r1": "pick",
+          "r2": "pick"
+        },
+        "sample": 340,
+        "timings_s": {
+          "physics": 65.70867703800104,
+          "rgb": 2.7411499640220427,
+          "evaluation": 3.4785317390069395,
+          "teacher": 0.9890849689818424,
+          "io": 0.0
+        }
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318606-d79f04a3/raw",
+      "reason_category": "interrupted",
+      "blocked_object": "not_recorded",
+      "min_gap_m": null,
+      "gap_scope": "legacy ledger did not record a geometric blocker",
+      "result_path": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318606-d79f04a3/raw/result.json",
+      "result_sha256": "2c821533c61cd8251844918a12c9be68f571809113ef65a32c28a103a89d8f80",
+      "status": "interrupted",
+      "saved_status": "interrupted",
+      "legacy_success": false,
+      "source_sha": "d79f04a39e3eec9d418e5c44929182e0ec79f51c",
+      "profile": "visible_only",
+      "cap_end": false,
+      "sim_s": null,
+      "phases": {
+        "r1": "pick",
+        "r2": "pick"
+      },
+      "outcomes": {
+        "r1": null,
+        "r2": null
+      },
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1297,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "manifest_verified_files": 83,
+      "eval_path": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318606-d79f04a3/raw/eval-only.jsonl.zst",
+      "eval_sha256": "a81d980bbbcad2dc9510542b458c1bffbf727ca55dbbe6b0c00a848fc5cf5fd4",
+      "evaluation_rows": 347,
+      "max_strict_hold_s": 0.0,
+      "assigned_ends": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "end_relation_samples": [
+        {
+          "t": 1.8000000000001848,
+          "nearest_ends": {
+            "r1": "teal",
+            "r2": "blue"
+          },
+          "same_nearest_end": false,
+          "scope": "evaluator distance only; not inferred intent"
+        },
+        {
+          "t": 19.100000000000186,
+          "nearest_ends": {
+            "r1": "teal",
+            "r2": "blue"
+          },
+          "same_nearest_end": false,
+          "scope": "evaluator distance only; not inferred intent"
+        },
+        {
+          "t": 36.40000000008279,
+          "nearest_ends": {
+            "r1": "teal",
+            "r2": "blue"
+          },
+          "same_nearest_end": false,
+          "scope": "evaluator distance only; not inferred intent"
+        }
+      ],
+      "strict_success": false,
+      "visible_eligible": false,
+      "result_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1297,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "adapter_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1297,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "adapter_held_world_reads": 0,
+      "raw_dependency_sha": "26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+      "adapter_source_sha": "d79f04a39e3eec9d418e5c44929182e0ec79f51c",
+      "training_rgb": false,
+      "profiles": {
+        "teacher_profile": "visible_only",
+        "self_pose_source": "issued",
+        "teacher_stability": "align_relook_v1",
+        "teacher_search": "search_body_scan_v2",
+        "approach_goal_set": "approach_goal_set_v1",
+        "nominal_blocked_handoff": "nominal_blocked_handoff_v1",
+        "approach_progress": "approach_progress_v1",
+        "approach_recovery": "progress_view_recovery_v3",
+        "handoff_observation": "visible_handoff_v1",
+        "pregrasp_sampling": "pregrasp_sampling_v1",
+        "obstacle_reobserve": "obstacle_reobserve_v1",
+        "peer_reobserve": "peer_reobserve_v1",
+        "search17_candidates": "search17_candidates_v1",
+        "search17_escape": "search17_escape_v1",
+        "search17_odometry": "search17_fixed_v1",
+        "search18_start_plan": "search18_start_plan_v1",
+        "search18_free_space": "search18_free_space_v1",
+        "search19_motion": "search19_motion_v1",
+        "search19_footprint": "search19_footprint_v1",
+        "search20": "search20_v1",
+        "search21": "search21_v1",
+        "search22": "search22_v1",
+        "search23": "search23_v1",
+        "search24_irm": "search24_irm_v1",
+        "search24_budget": "search24_checks_v1",
+        "search25_budget": "search25_checks_v1"
+      },
+      "probe_burst_ticks": {
+        "r1": 7,
+        "r2": 6
+      },
+      "probe_executed_ticks": {
+        "r1": 7,
+        "r2": 0
+      },
+      "error": "",
+      "end_reason": null,
+      "first30_speed": {
+        "sim_s": 30.00000000006064,
+        "wall_s": 67.89698152999972,
+        "scope": "first 30 SIM seconds including initialization; recording only",
+        "wall_per_sim": 2.2632327176620826
+      },
+      "wall_per_sim": null,
+      "wall_s": 78.59552781699949,
+      "audit_passed": true,
+      "passed": false,
+      "classification": "supervisor_stop",
+      "stages": {
+        "both_align": true,
+        "both_ready": true,
+        "both_pick": true,
+        "both_complete": false
+      },
+      "rejection_table": [],
+      "candidate_populations": {},
+      "frame_funnel": [
+        {
+          "gate": "any_assigned_probe",
+          "entered": 694,
+          "cumulative_passed": 446,
+          "rejected": 248
+        },
+        {
+          "gate": "meaningful_region_5_of_15",
+          "entered": 446,
+          "cumulative_passed": 443,
+          "rejected": 3
+        },
+        {
+          "gate": "measurement_admitted_not_held",
+          "entered": 443,
+          "cumulative_passed": 443,
+          "rejected": 0
+        }
+      ],
+      "protocol": {
+        "r1": {
+          "phase": "pick",
+          "outcome": null,
+          "events": [
+            {
+              "t": 2.4999999999999742,
+              "from": "approach",
+              "to": "search"
+            },
+            {
+              "t": 4.0,
+              "stage": "view_complete",
+              "k": 0,
+              "command_estimated_yaw_deg": 0.0,
+              "search": "view_complete"
+            },
+            {
+              "t": 4.8,
+              "stage": "view_complete",
+              "k": 0,
+              "command_estimated_yaw_deg": 0.0,
+              "search": "view_complete"
+            },
+            {
+              "t": 5.4,
+              "stage": "view_complete",
+              "k": 0,
+              "command_estimated_yaw_deg": 0.0,
+              "search": "view_complete"
+            },
+            {
+              "t": 6.7,
+              "stage": "view_complete",
+              "k": 0,
+              "command_estimated_yaw_deg": 0.0,
+              "search": "view_complete"
+            },
+            {
+              "t": 7.5,
+              "stage": "view_complete",
+              "k": 0,
+              "command_estimated_yaw_deg": 0.0,
+              "search": "view_complete"
+            },
+            {
+              "t": 8.1,
+              "stage": "view_complete",
+              "k": 0,
+              "command_estimated_yaw_deg": 0.0,
+              "search": "view_complete"
+            },
+            {
+              "t": 10.2,
+              "stage": "view_complete",
+              "k": 0,
+              "command_estimated_yaw_deg": 0.0,
+              "search": "view_complete"
+            },
+            {
+              "t": 11.0,
+              "stage": "view_complete",
+              "k": 0,
+              "command_estimated_yaw_deg": 0.0,
+              "search": "view_complete"
+            },
+            {
+              "t": 11.199999999996573,
+              "from": "search",
+              "to": "approach"
+            },
+            {
+              "t": 14.499999999988882,
+              "from": "approach",
+              "to": "search"
+            },
+            {
+              "t": 23.800000000022628,
+              "from": "search",
+              "to": "approach"
+            },
+            {
+              "t": 30.400000000054142,
+              "from": "approach",
+              "to": "align"
+            },
+            {
+              "t": 32.90000000006608,
+              "from": "align",
+              "to": "ready"
+            },
+            {
+              "t": 33.100000000067034,
+              "from": "ready",
+              "to": "pick"
+            }
+          ]
+        },
+        "r2": {
+          "phase": "pick",
+          "outcome": null,
+          "events": [
+            {
+              "t": 2.4999999999999742,
+              "from": "approach",
+              "to": "search"
+            },
+            {
+              "t": 2.799999999999808,
+              "from": "search",
+              "to": "approach"
+            },
+            {
+              "t": 2.799999999999808,
+              "from": "approach",
+              "to": "align"
+            },
+            {
+              "t": 3.1999999999995863,
+              "from": "align",
+              "to": "ready"
+            },
+            {
+              "t": 33.30000000006799,
+              "from": "ready",
+              "to": "pick"
+            }
+          ]
+        }
+      },
+      "sha256sums_verified": true,
+      "sha256sums_errors": "",
+      "sha256sums_file_sha256": "e4fb8b7797363913b5574ec5694f98c9d448fb01ae2e41ecb65372a1fd27db82",
+      "montage": {
+        "path": "/home/ugrp/ugrp-sim/ops-reviews/beampair1-d79f04a3/beampair1-gate-8318606-d79f04a3-montage.jpg",
+        "sha256": "b6f174b818d88aaafd891cda29b70b43be408f408c6b3bcfe28ed8e86753954b",
+        "frames": [
+          {
+            "view": "r1",
+            "sim_s": 0.0,
+            "path": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318606-d79f04a3/raw/eval-own/r1/000000.jpg",
+            "sha256": "5c7988b8f42f04b1bce42b3b25260b5541ef52b3c02476d8bd8e563b22578e15"
+          },
+          {
+            "view": "r2",
+            "sim_s": 0.0,
+            "path": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318606-d79f04a3/raw/eval-own/r2/000000.jpg",
+            "sha256": "08e1fa09f1b04ca1ec393d874c1085689609fb25c11dd935e95cd1003f8dcab6"
+          },
+          {
+            "view": "r1",
+            "sim_s": 7.0,
+            "path": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318606-d79f04a3/raw/eval-own/r1/000070.jpg",
+            "sha256": "2d1101fc650b31c134f971f0619e1eca0272cfab44a2400227e2476bbec6ed54"
+          },
+          {
+            "view": "r2",
+            "sim_s": 7.0,
+            "path": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318606-d79f04a3/raw/eval-own/r2/000070.jpg",
+            "sha256": "58ed054db9699589e56656e452396046fcffb9b0d2fb8ec86c95a3cd821061da"
+          },
+          {
+            "view": "r1",
+            "sim_s": 14.0,
+            "path": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318606-d79f04a3/raw/eval-own/r1/000140.jpg",
+            "sha256": "95abe315cc3dce513bb6293702ffe1ccf792e7a9d7b752b76477d7f4c830293e"
+          },
+          {
+            "view": "r2",
+            "sim_s": 14.0,
+            "path": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318606-d79f04a3/raw/eval-own/r2/000140.jpg",
+            "sha256": "0f93051d8b08084a01746ba155aec6856a97d563c703b57463e3a86a1193cf4d"
+          },
+          {
+            "view": "r1",
+            "sim_s": 20.0,
+            "path": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318606-d79f04a3/raw/eval-own/r1/000200.jpg",
+            "sha256": "7ae7d97eb10d4f02c8558b2a26c7a8211e89aa5dcb2abcc1f4bda93b017c2d30"
+          },
+          {
+            "view": "r2",
+            "sim_s": 20.0,
+            "path": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318606-d79f04a3/raw/eval-own/r2/000200.jpg",
+            "sha256": "b0647751f59fcde00db1243788a84b89f3f7a767a44cc6d110829700c121b63a"
+          },
+          {
+            "view": "r1",
+            "sim_s": 27.0,
+            "path": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318606-d79f04a3/raw/eval-own/r1/000270.jpg",
+            "sha256": "1b79724f0a7be6dcbdde2eb51a0404c98e924a2842bacded97f1f24e64ca443b"
+          },
+          {
+            "view": "r2",
+            "sim_s": 27.0,
+            "path": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318606-d79f04a3/raw/eval-own/r2/000270.jpg",
+            "sha256": "6682935993826b951e845c28df05fe2772ba9d89e7bdd5aab1487cea80416d71"
+          },
+          {
+            "view": "r1",
+            "sim_s": 34.0,
+            "path": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318606-d79f04a3/raw/eval-own/r1/000340.jpg",
+            "sha256": "e412607d811e5e2601ee7c96de73cb4041a2996f2d78af1c4dc5078fe9bdbf2d"
+          },
+          {
+            "view": "r2",
+            "sim_s": 34.0,
+            "path": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318606-d79f04a3/raw/eval-own/r2/000340.jpg",
+            "sha256": "029c010feeac143bef3b4cbd66be41638682672e57229ff4aa43a7ddf297da53"
+          }
+        ]
+      }
+    }
+  ],
+  "funnel_path": "/home/ugrp/ugrp-sim/ops-reviews/beampair1-d79f04a3/funnel.json",
+  "time": "2026-10-15 20:51:31 KST",
+  "status": "STOPPED_NOT_READY",
+  "gate_qualified": false,
+  "qualification_denominator": 40,
+  "gate_result": "5/40 demonstrated; incomplete stopped cohort, not an estimated40-trial success rate",
+  "physical_completed_N": 6,
+  "physical_success_n": 5,
+  "control_failure_N": 1,
+  "supervisor_stopped_N": 1,
+  "cap_end_N": 0,
+  "HOST_ERROR_N": 0,
+  "unsubmitted_N": 33,
+  "queue_ready": false,
+  "all_owned_runs_terminal": true,
+  "training_rgb": false,
+  "training_or_recording_promoted": false,
+  "source_and_host_pooling": false,
+  "reason": "seed8318604 stops before both_align: r1 peer_prefix_wait at absolute t8.9 expires at20.9 -> approach_blocked_handoff; r2 peer_approach_handoff. This confirms approach recovery/protocol control failure; exact geometric blocker/gap not captured.",
+  "multi_robot_relationship": {
+    "failed_run": "beampair1-gate-8318604-d79f04a3",
+    "same_nearest_end_rows": 0,
+    "evaluated_rows": 192,
+    "interpretation": "own cameras show distinct end regions and loss/reobservation; evaluator full trace finds no same-nearest-end row. Both remain in approach; no grasp/lift attempted. Nearest end is geometry, not inferred intent."
+  },
+  "input_audit": {
+    "runs_checked": 7,
+    "all_enabled": true,
+    "invisible_measurements": 0,
+    "held_world_reads": 0,
+    "adapter_held_world_reads": 0,
+    "scope": "per-run original result and adapter, not only aggregate"
+  },
+  "speed": {
+    "first30_N": 4,
+    "first30_median_wall_per_sim": 2.422367535478436,
+    "full_completed_N": 6,
+    "full_completed_median_wall_per_sim": 2.5240479802712708,
+    "planned_parallel": 16,
+    "planned16_speed_verified": false,
+    "note": "stopped on control failure before filling16; runs finishing before30 SIMs use actual full duration and are not first30 samples; interrupted run excluded"
+  },
+  "viewed_frames": {
+    "unique_own_camera_frames": 48,
+    "views": [
+      "r1",
+      "r2"
+    ],
+    "per_run_elapsed_sim_samples": {
+      "8318600": [
+        0,
+        6,
+        12,
+        19,
+        25,
+        31
+      ],
+      "8318601": [
+        0,
+        6,
+        12,
+        17,
+        23,
+        29
+      ],
+      "8318604": [
+        0,
+        4,
+        8,
+        11,
+        15,
+        19
+      ],
+      "8318606": [
+        0,
+        7,
+        14,
+        20,
+        27,
+        34
+      ]
+    },
+    "failed_own_frames_viewed": 12,
+    "stopped_own_frames_viewed": 12,
+    "evaluation_schematic_panels": 12,
+    "overview_original": "not recorded by pinned search22 source; evaluation-only position reconstructions labeled separately, not a rendered camera"
+  },
+  "retrieval": {
+    "all_runs_verified_N": 7,
+    "nonsuccess_original_own_images": 110,
+    "failed_or_stopped_runs_N": 2,
+    "all_local_hashes_verified": true,
+    "local_root": "/Users/changmin/projects/ugrp/outputs/gcp1-runs",
+    "receipts": [
+      "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/beampair1-d79f04a3-ops/beampair1-gate-8318600-d79f04a3-retrieval.json",
+      "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/beampair1-d79f04a3-ops/beampair1-gate-8318601-d79f04a3-retrieval.json",
+      "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/beampair1-d79f04a3-ops/beampair1-gate-8318602-d79f04a3-retrieval.json",
+      "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/beampair1-d79f04a3-ops/beampair1-gate-8318603-d79f04a3-retrieval.json",
+      "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/beampair1-d79f04a3-ops/beampair1-gate-8318604-d79f04a3-retrieval.json",
+      "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/beampair1-d79f04a3-ops/beampair1-gate-8318605-d79f04a3-retrieval.json",
+      "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/beampair1-d79f04a3-ops/beampair1-gate-8318606-d79f04a3-retrieval.json"
+    ]
+  },
+  "blocking_reason_table": [
+    {
+      "run": "beampair1-gate-8318604-d79f04a3",
+      "robot": "r1",
+      "reason": "safe_prefix",
+      "count": 8,
+      "population": "recovery_events; symptoms, not additive to planner calls",
+      "blocked_object": "not_recorded",
+      "min_gap_m": null
+    },
+    {
+      "run": "beampair1-gate-8318604-d79f04a3",
+      "robot": "r1",
+      "reason": "blocked_goal_calls",
+      "count": 3,
+      "population": "planner_calls; counters may overlap",
+      "blocked_object": "not_recorded",
+      "min_gap_m": null
+    },
+    {
+      "run": "beampair1-gate-8318604-d79f04a3",
+      "robot": "r1",
+      "reason": "no_path_calls",
+      "count": 3,
+      "population": "planner_calls; counters may overlap",
+      "blocked_object": "not_recorded",
+      "min_gap_m": null
+    },
+    {
+      "run": "beampair1-gate-8318604-d79f04a3",
+      "robot": "r1",
+      "reason": "peer_prefix_wait",
+      "count": 1,
+      "population": "recovery_events; symptoms, not additive to planner calls",
+      "blocked_object": "peer",
+      "min_gap_m": null
+    },
+    {
+      "run": "beampair1-gate-8318604-d79f04a3",
+      "robot": "r1",
+      "reason": "peer_wait_deadline_handoff",
+      "count": 1,
+      "population": "recovery_events; symptoms, not additive to planner calls",
+      "blocked_object": "peer",
+      "min_gap_m": null
+    },
+    {
+      "run": "beampair1-gate-8318604-d79f04a3",
+      "robot": "r1",
+      "reason": "approach_blocked_handoff",
+      "count": 1,
+      "population": "terminal_robot_outcome",
+      "blocked_object": "not_recorded",
+      "min_gap_m": null
+    },
+    {
+      "run": "beampair1-gate-8318604-d79f04a3",
+      "robot": "r2",
+      "reason": "peer_approach_handoff",
+      "count": 1,
+      "population": "terminal_robot_outcome",
+      "blocked_object": "not_recorded",
+      "min_gap_m": null
+    },
+    {
+      "run": "beampair1-gate-8318604-d79f04a3",
+      "reason": "approach_blocked_handoff",
+      "count": 1,
+      "population": "episode_outcome",
+      "blocked_object": "not_recorded",
+      "min_gap_m": null
+    },
+    {
+      "run": "beampair1-gate-8318606-d79f04a3",
+      "reason": "supervisor_stop_same_source_defect",
+      "count": 1,
+      "population": "episode_outcome",
+      "blocked_object": "not_recorded",
+      "min_gap_m": null
+    }
+  ],
+  "sequential_funnel": "/home/ugrp/ugrp-sim/ops-reviews/beampair1-d79f04a3/funnel.json",
+  "raw_locations": [
+    {
+      "run": "beampair1-gate-8318600-d79f04a3",
+      "remote": "gcp1:/home/ugrp/ugrp-sim/runs/beampair1-gate-8318600-d79f04a3",
+      "result_path": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318600-d79f04a3/raw/result.json",
+      "result_sha256": "e819b40a42d517caff6f03d2541d828a0e547a2cb7dac3236287f1bd5e736c5e",
+      "SHA256SUMS_sha256": "c5c6b979081b915fc54d7b993a51ae2c3b60f696551d302bdebeb83a67034dc2",
+      "SHA256SUMS_verified": true
+    },
+    {
+      "run": "beampair1-gate-8318601-d79f04a3",
+      "remote": "gcp1:/home/ugrp/ugrp-sim/runs/beampair1-gate-8318601-d79f04a3",
+      "result_path": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318601-d79f04a3/raw/result.json",
+      "result_sha256": "89314ee8e7dec068353711cf855a1a0b1ec501da46249790fb42f19b2a9a45a0",
+      "SHA256SUMS_sha256": "8f8ce16de31fa070855805e58833a947fe17725b7683d27ff04821a1fd4ce237",
+      "SHA256SUMS_verified": true
+    },
+    {
+      "run": "beampair1-gate-8318602-d79f04a3",
+      "remote": "gcp1:/home/ugrp/ugrp-sim/runs/beampair1-gate-8318602-d79f04a3",
+      "result_path": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318602-d79f04a3/raw/result.json",
+      "result_sha256": "ad27cb74605fd4eec6d093c0cba178a053a74db554946022c969aef3c29a4bb7",
+      "SHA256SUMS_sha256": "1d18ceead7c494fbb86c435df4263f6769d756856d62c6349ce0f9dad8616136",
+      "SHA256SUMS_verified": true
+    },
+    {
+      "run": "beampair1-gate-8318603-d79f04a3",
+      "remote": "gcp1:/home/ugrp/ugrp-sim/runs/beampair1-gate-8318603-d79f04a3",
+      "result_path": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318603-d79f04a3/raw/result.json",
+      "result_sha256": "11b00c915469dc8f9f5955c30455cc5085bd4d1bd38a36e07622f6f7292eeca4",
+      "SHA256SUMS_sha256": "f6537f6c4db422019765f0390e00ab3f0d44ec9ead5e1be7844787eca0982e90",
+      "SHA256SUMS_verified": true
+    },
+    {
+      "run": "beampair1-gate-8318604-d79f04a3",
+      "remote": "gcp1:/home/ugrp/ugrp-sim/runs/beampair1-gate-8318604-d79f04a3",
+      "result_path": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318604-d79f04a3/raw/result.json",
+      "result_sha256": "02462038c19f8a5f8795a7006dbfd04b356d3844439d5f89fcda95ee4ae5cce6",
+      "SHA256SUMS_sha256": "30441e96739709dacd2425d657ea8fb26fa0e5fc2d23d5ddbb315f7445f713d3",
+      "SHA256SUMS_verified": true
+    },
+    {
+      "run": "beampair1-gate-8318605-d79f04a3",
+      "remote": "gcp1:/home/ugrp/ugrp-sim/runs/beampair1-gate-8318605-d79f04a3",
+      "result_path": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318605-d79f04a3/raw/result.json",
+      "result_sha256": "cba33fbeade97972813d75ecd582e2ba7c7bf0196e2639529265276aa3819c08",
+      "SHA256SUMS_sha256": "694806cec3772a27d4d499e7bb94dafe775fcb361b227d3060f4ca32b2eaaa32",
+      "SHA256SUMS_verified": true
+    },
+    {
+      "run": "beampair1-gate-8318606-d79f04a3",
+      "remote": "gcp1:/home/ugrp/ugrp-sim/runs/beampair1-gate-8318606-d79f04a3",
+      "result_path": "/home/ugrp/ugrp-sim/runs/beampair1-gate-8318606-d79f04a3/raw/result.json",
+      "result_sha256": "2c821533c61cd8251844918a12c9be68f571809113ef65a32c28a103a89d8f80",
+      "SHA256SUMS_sha256": "e4fb8b7797363913b5574ec5694f98c9d448fb01ae2e41ecb65372a1fd27db82",
+      "SHA256SUMS_verified": true
+    }
+  ],
+  "remaining_issues": [
+    "fix approach peer wait/recovery on a new pinned SHA and remeasure from start; no further same-source trials",
+    "no source promotion/recording/training approval",
+    "per-candidate path blocker/gap audit absent; summary counters overlap",
+    "planned16 speed unmeasured because defect stopped the cohort",
+    "no original overview camera frames in this source; own frames plus evaluation reconstruction reviewed"
+  ],
+  "reproduction": "analysis_host gcp1; ops-reviews/beampair1-d79f04a3/{analyze_remote.py,review_relations_remote.py,finalize_remote.py}; original raw stays in runs/"
+}

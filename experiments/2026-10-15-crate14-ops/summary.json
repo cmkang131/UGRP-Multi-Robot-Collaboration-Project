@@ -1,0 +1,704 @@
+{
+  "schema": "ugrp.gcp-ops-result.v1",
+  "at": "2026-10-15 14:51:47 KST",
+  "queue": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-crate14-diag-8007db00.json",
+  "pr": 500,
+  "source_sha": "8007db00ecca9f168d79caad55a06001781ad079",
+  "host": {
+    "alias": "gcp1",
+    "project": "ugrp-act-train-1014",
+    "instance": "ugrp-sim-gcp1",
+    "zone": "asia-northeast3-a",
+    "machine_type": "n4-highcpu-64"
+  },
+  "profile": "crate14_v1",
+  "cargo_scene": "crate_mass_025_v1",
+  "verdict": "NOT_READY_CONTROL_FAILURE_PENDING_BLOCKED",
+  "stages": {
+    "reproduction": {
+      "successes": 0,
+      "measured_N": 3,
+      "planned_N": 3,
+      "completed_failed_N": 3,
+      "interrupted_N": 0,
+      "not_submitted_N": 0,
+      "wall_per_sim_median": 4.493844514075969,
+      "wall_per_sim_range": [
+        4.42215720652509,
+        8.270175767716328
+      ],
+      "first30_completed_N": 0,
+      "speed_verdict": "first30 INCOMPLETE: all measured runs ended before 30 SIM seconds; full-run wall/SIM descriptive only",
+      "pooling": "reproduction and fresh diagnostic kept separate"
+    },
+    "diagnostic": {
+      "successes": 0,
+      "measured_N": 2,
+      "planned_N": 10,
+      "completed_failed_N": 2,
+      "interrupted_N": 0,
+      "not_submitted_N": 8,
+      "wall_per_sim_median": 4.041257485616987,
+      "wall_per_sim_range": [
+        3.7189873742442776,
+        4.363527596989697
+      ],
+      "first30_completed_N": 0,
+      "speed_verdict": "first30 INCOMPLETE: all measured runs ended before 30 SIM seconds; full-run wall/SIM descriptive only",
+      "pooling": "reproduction and fresh diagnostic kept separate"
+    }
+  },
+  "gate": {
+    "approved": false,
+    "submitted_N": 0,
+    "successes": null,
+    "result": "NOT_RUN",
+    "reason": "diagnostic failed; no gate promotion or approval wait applicable"
+  },
+  "training_submitted_N": 0,
+  "model_calls": 0,
+  "host_errors": 0,
+  "input_audit": {
+    "checked_runs": 5,
+    "invisible_measurements": 0,
+    "held_world_reads": 0,
+    "teacher_boundary_enabled": 5,
+    "scope": "Runtime counters and admitted source tags checked. Visible-relative teacher sensor exception retained; not a validation of RGB-only pose inference."
+  },
+  "start_distribution": {
+    "proposals": 23,
+    "station_rejected": 0,
+    "los_tested": 23,
+    "los_rejected": 11,
+    "rejected": 11,
+    "rejection_rate": 0.4782608695652174
+  },
+  "near_wall": {
+    "drawn_N": 12,
+    "excluded_N": 2,
+    "excluded_rate": 0.16666666666666666,
+    "accepted_N": 10,
+    "excluded_seeds": [
+      79458,
+      79459
+    ],
+    "note": "Predeclared setup distribution, not outcome censoring"
+  },
+  "admission": {
+    "shared_local_lock": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp1-admission.lock",
+    "shared_remote_lock": "/home/ugrp/ugrp-sim/admission.lock",
+    "limit_total": 40,
+    "approved_crate_limit": 8,
+    "observed_max_reserved_crate": 5,
+    "observed_max_total_conservative": 15
+  },
+  "stop_record": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/stop-crate14-8007db00-20261015.json",
+  "stop_actions": {
+    "SUPERVISOR_STOP_written_N": 5,
+    "SIGINT_sent_N": 0,
+    "note": "All five runs had already exited when stop processing ran. No interruption result is claimed; remaining eight runs blocked."
+  },
+  "verification": {
+    "remote_full_manifests": 5,
+    "retrieved_manifest_files": 201,
+    "compressed_decoded_hash_verified": 17,
+    "supervisor_records_verified": 5,
+    "directly_viewed_unique_frames": 111
+  },
+  "cost_guards": {
+    "budget_stop": "ACTIVE and untouched",
+    "max_run_duration_s": 28800,
+    "termination_action": "STOP",
+    "idle_guard_s": 1200,
+    "credit_balance": "unverified; billing/credit operations out of scope"
+  },
+  "lifecycle": {
+    "owned_processes": [],
+    "remaining_own_lease_reservations": [],
+    "removed_verified_finished_owned_markers": [
+      "/home/ugrp/ugrp-sim/leases/crate-reproduction-79317-8007db00",
+      "/home/ugrp/ugrp-sim/admission-reservations/crate-reproduction-79317-8007db00.json",
+      "/home/ugrp/ugrp-sim/leases/crate-reproduction-79314-8007db00",
+      "/home/ugrp/ugrp-sim/admission-reservations/crate-reproduction-79314-8007db00.json",
+      "/home/ugrp/ugrp-sim/leases/crate-diag-79451-8007db00",
+      "/home/ugrp/ugrp-sim/admission-reservations/crate-diag-79451-8007db00.json",
+      "/home/ugrp/ugrp-sim/leases/crate-diag-79450-8007db00",
+      "/home/ugrp/ugrp-sim/admission-reservations/crate-diag-79450-8007db00.json",
+      "/home/ugrp/ugrp-sim/leases/crate-reproduction-77990-8007db00",
+      "/home/ugrp/ugrp-sim/admission-reservations/crate-reproduction-77990-8007db00.json"
+    ],
+    "other_jobs_untouched": [
+      {
+        "pid": 152054,
+        "command": ".venv-sim/bin/python -m scripts.run_solo_grasp_act_teacher --execution-host gcp1 --teacher-profile solo_visible_only_v1 --held-object-hidden-v1 --setdown-lookaround-v1 --teacher-stability align_relook_v1 --reach-mode pad_window_v2 --rgb-lift-mode solo_lift_lookback_v1 --solo-lift-lookback-margin-v1 --solo-truth-free-lookaround-v1 --solo-carry-to-zone-v1 --plan experiments/2026-10-15-map-carry-zone/diagnostic-plan-v6.json --episode 6 --cap-s 300 --out /home/ugrp/ugrp-sim/runs/solo-carry-93265-d9e0073f/raw"
+      },
+      {
+        "pid": 152131,
+        "command": ".venv-sim/bin/python -m scripts.run_solo_grasp_act_teacher --execution-host gcp1 --teacher-profile solo_visible_only_v1 --held-object-hidden-v1 --setdown-lookaround-v1 --teacher-stability align_relook_v1 --reach-mode pad_window_v2 --rgb-lift-mode solo_lift_lookback_v1 --solo-lift-lookback-margin-v1 --solo-truth-free-lookaround-v1 --solo-carry-to-zone-v1 --plan experiments/2026-10-15-map-carry-zone/diagnostic-plan-v6.json --episode 4 --cap-s 300 --out /home/ugrp/ugrp-sim/runs/solo-carry-93263-d9e0073f/raw"
+      },
+      {
+        "pid": 156338,
+        "command": ".venv-sim/bin/python -m scripts.run_solo_grasp_act_teacher --execution-host gcp1 --teacher-profile solo_visible_only_v1 --held-object-hidden-v1 --setdown-lookaround-v1 --teacher-stability align_relook_v1 --reach-mode pad_window_v2 --rgb-lift-mode solo_lift_lookback_v1 --solo-lift-lookback-margin-v1 --solo-truth-free-lookaround-v1 --solo-carry-to-zone-v1 --plan experiments/2026-10-15-map-carry-zone/diagnostic-plan-v6.json --episode 0 --cap-s 300 --out /home/ugrp/ugrp-sim/runs/solo-carry-93240-d9e0073f/raw"
+      },
+      {
+        "pid": 156347,
+        "command": ".venv-sim/bin/python -m scripts.run_solo_grasp_act_teacher --execution-host gcp1 --teacher-profile solo_visible_only_v1 --held-object-hidden-v1 --setdown-lookaround-v1 --teacher-stability align_relook_v1 --reach-mode pad_window_v2 --rgb-lift-mode solo_lift_lookback_v1 --solo-lift-lookback-margin-v1 --solo-truth-free-lookaround-v1 --solo-carry-to-zone-v1 --plan experiments/2026-10-15-map-carry-zone/diagnostic-plan-v6.json --episode 1 --cap-s 300 --out /home/ugrp/ugrp-sim/runs/solo-carry-93260-d9e0073f/raw"
+      },
+      {
+        "pid": 156710,
+        "command": ".venv-sim/bin/python -m scripts.run_solo_grasp_act_teacher --execution-host gcp1 --teacher-profile solo_visible_only_v1 --held-object-hidden-v1 --setdown-lookaround-v1 --teacher-stability align_relook_v1 --reach-mode pad_window_v2 --rgb-lift-mode solo_lift_lookback_v1 --solo-lift-lookback-margin-v1 --solo-truth-free-lookaround-v1 --solo-carry-to-zone-v1 --plan experiments/2026-10-15-map-carry-zone/diagnostic-plan-v6.json --episode 3 --cap-s 300 --out /home/ugrp/ugrp-sim/runs/solo-carry-93262-d9e0073f/raw"
+      },
+      {
+        "pid": 156719,
+        "command": ".venv-sim/bin/python -m scripts.run_solo_grasp_act_teacher --execution-host gcp1 --teacher-profile solo_visible_only_v1 --held-object-hidden-v1 --setdown-lookaround-v1 --teacher-stability align_relook_v1 --reach-mode pad_window_v2 --rgb-lift-mode solo_lift_lookback_v1 --solo-lift-lookback-margin-v1 --solo-truth-free-lookaround-v1 --solo-carry-to-zone-v1 --plan experiments/2026-10-15-map-carry-zone/diagnostic-plan-v6.json --episode 2 --cap-s 300 --out /home/ugrp/ugrp-sim/runs/solo-carry-93261-d9e0073f/raw"
+      },
+      {
+        "pid": 157131,
+        "command": ".venv-sim/bin/python -m scripts.run_solo_grasp_act_teacher --execution-host gcp1 --teacher-profile solo_visible_only_v1 --held-object-hidden-v1 --setdown-lookaround-v1 --teacher-stability align_relook_v1 --reach-mode pad_window_v2 --rgb-lift-mode solo_lift_lookback_v1 --solo-lift-lookback-margin-v1 --solo-truth-free-lookaround-v1 --solo-carry-to-zone-v1 --plan experiments/2026-10-15-map-carry-zone/diagnostic-plan-v6.json --episode 7 --cap-s 300 --out /home/ugrp/ugrp-sim/runs/solo-carry-93266-d9e0073f/raw"
+      },
+      {
+        "pid": 157140,
+        "command": ".venv-sim/bin/python -m scripts.run_solo_grasp_act_teacher --execution-host gcp1 --teacher-profile solo_visible_only_v1 --held-object-hidden-v1 --setdown-lookaround-v1 --teacher-stability align_relook_v1 --reach-mode pad_window_v2 --rgb-lift-mode solo_lift_lookback_v1 --solo-lift-lookback-margin-v1 --solo-truth-free-lookaround-v1 --solo-carry-to-zone-v1 --plan experiments/2026-10-15-map-carry-zone/diagnostic-plan-v6.json --episode 5 --cap-s 300 --out /home/ugrp/ugrp-sim/runs/solo-carry-93264-d9e0073f/raw"
+      }
+    ],
+    "idle_timer": "active",
+    "idle_guard_1200_s": true,
+    "vm_action": "none; existing guard remains responsible for idle shutdown"
+  },
+  "pooling": {
+    "cross_sha_profile_host": false,
+    "reproduction_and_fresh": false
+  },
+  "raw_preservation": "Originals retained on GCP persistent disk; Mac has lite evidence plus selected JPEGs. No full raw backup is claimed.",
+  "remaining": "Fix alignment nonconvergence and approach/search failure in a new source SHA, then obtain a new queue. Eight same-candidate runs remain unsubmitted. Detailed geometry/dynamics causes are not isolated.",
+  "runs": [
+    {
+      "name": "crate-reproduction-77990-8007db00",
+      "stage": "reproduction",
+      "seed": 77990,
+      "near_wall": false,
+      "submitted": true,
+      "status": "complete",
+      "exit": "0",
+      "success": false,
+      "prefix_held": false,
+      "release_success": null,
+      "release_authorized_by_own_inputs": false,
+      "release_outcome": "lift_not_confirmed_by_own_inputs",
+      "teacher_outcomes": {
+        "r1": "peer_approach_handoff",
+        "r2": "approach_blocked_handoff"
+      },
+      "sim_s": 14.399999999986154,
+      "wall_s": 119.09053105500061,
+      "wall_per_sim": 8.270175767716328,
+      "first30_completed": false,
+      "first30_measurement": null,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "boundary_enabled": true,
+        "admitted_source_tags": {
+          "clock": 290,
+          "issued_commands": 1450,
+          "known_shape": 1015,
+          "visible_teacher_measurement": 1305,
+          "static_map": 290,
+          "fixed_rule": 290
+        }
+      },
+      "finding": {
+        "observed": "개요와 자기 영상에서 r1은 화물에서 떨어진 채 접근을 끝내지 못하고 r2는 화물 근처에서 접근/재탐색한다. r1의 주 접근 후보는 138/138회 blocked_goal, r2는 approach_blocked_handoff로 종료하고 r1도 인계된다. r1에는 대체 staging 주행명령 138행이 있으므로 무명령 정지로 해석하지 않는다.",
+        "uncertainty": "주 후보를 막은 정확한 기하/위치추정 원인은 분리하지 못했다. 같은 끝 추구나 실제 충돌을 원인으로 확정하지 않는다."
+      },
+      "review": {
+        "directly_viewed_frames": [
+          "raw/eval-overview/000000-grasp.jpg",
+          "raw/eval-own/r1/000000-grasp.jpg",
+          "raw/eval-own/r2/000000-grasp.jpg",
+          "raw/eval-overview/000030-grasp.jpg",
+          "raw/eval-own/r1/000030-grasp.jpg",
+          "raw/eval-own/r2/000030-grasp.jpg",
+          "raw/eval-overview/000060-grasp.jpg",
+          "raw/eval-own/r1/000060-grasp.jpg",
+          "raw/eval-own/r2/000060-grasp.jpg",
+          "raw/eval-overview/000080-grasp.jpg",
+          "raw/eval-own/r1/000080-grasp.jpg",
+          "raw/eval-own/r2/000080-grasp.jpg",
+          "raw/eval-overview/000110-grasp.jpg",
+          "raw/eval-own/r1/000110-grasp.jpg",
+          "raw/eval-own/r2/000110-grasp.jpg",
+          "raw/eval-overview/000120-grasp.jpg",
+          "raw/eval-own/r1/000120-grasp.jpg",
+          "raw/eval-own/r2/000120-grasp.jpg",
+          "raw/eval-overview/000140-grasp.jpg",
+          "raw/eval-own/r1/000140-grasp.jpg",
+          "raw/eval-own/r2/000140-grasp.jpg"
+        ],
+        "sim_seconds": [
+          0.0,
+          3.0,
+          6.0,
+          8.0,
+          11.0,
+          12.0,
+          14.0
+        ],
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "terminal_gap_s": 0.39999999998615365
+      },
+      "result_artifact": {
+        "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77990-8007db00/raw/result.json.zst",
+        "sha256": "32fe0ebec3681b6af413962449ae0ad3e32de67009f3d6e60ae204be8913fb91",
+        "decoded_sha256": "7280130ab787c505c06d93cdedf90d7c64c6bc2b831e5409ca9cd39b081745d5"
+      },
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/crate-reproduction-77990-8007db00",
+      "retrieved_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77990-8007db00",
+      "verification": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/crate14-8007db00-ops/crate-reproduction-77990-8007db00-verification.json"
+    },
+    {
+      "name": "crate-reproduction-79314-8007db00",
+      "stage": "reproduction",
+      "seed": 79314,
+      "near_wall": false,
+      "submitted": true,
+      "status": "complete",
+      "exit": "0",
+      "success": false,
+      "prefix_held": false,
+      "release_success": null,
+      "release_authorized_by_own_inputs": false,
+      "release_outcome": "lift_not_confirmed_by_own_inputs",
+      "teacher_outcomes": {
+        "r1": "peer_approach_handoff",
+        "r2": "approach_blocked_handoff"
+      },
+      "sim_s": 13.999999999985667,
+      "wall_s": 62.91382319699915,
+      "wall_per_sim": 4.493844514075969,
+      "first30_completed": false,
+      "first30_measurement": null,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "boundary_enabled": true,
+        "admitted_source_tags": {
+          "clock": 282,
+          "issued_commands": 1410,
+          "known_shape": 964,
+          "visible_teacher_measurement": 1246,
+          "static_map": 282,
+          "fixed_rule": 282
+        }
+      },
+      "finding": {
+        "observed": "r1은 먼 위치에서 탐색하고 r2는 화물 가까이에 있다. r1 배정 청록 RGB 확인 0/141, r2 접근 경로 실패 27회 뒤 approach_blocked_handoff; 공동 들기 전 종료.",
+        "uncertainty": "r1 배정 끝 미확인과 r2 접근 시한 실패가 관측됐으며, 시야/초기 분포/기하 원인의 기여는 분리하지 못했다. 재현은 원래 시작 배치이며 신규 조건부 분포와 합치지 않는다."
+      },
+      "review": {
+        "directly_viewed_frames": [
+          "raw/eval-overview/000000-grasp.jpg",
+          "raw/eval-own/r1/000000-grasp.jpg",
+          "raw/eval-own/r2/000000-grasp.jpg",
+          "raw/eval-overview/000030-grasp.jpg",
+          "raw/eval-own/r1/000030-grasp.jpg",
+          "raw/eval-own/r2/000030-grasp.jpg",
+          "raw/eval-overview/000060-grasp.jpg",
+          "raw/eval-own/r1/000060-grasp.jpg",
+          "raw/eval-own/r2/000060-grasp.jpg",
+          "raw/eval-overview/000080-grasp.jpg",
+          "raw/eval-own/r1/000080-grasp.jpg",
+          "raw/eval-own/r2/000080-grasp.jpg",
+          "raw/eval-overview/000110-grasp.jpg",
+          "raw/eval-own/r1/000110-grasp.jpg",
+          "raw/eval-own/r2/000110-grasp.jpg",
+          "raw/eval-overview/000120-grasp.jpg",
+          "raw/eval-own/r1/000120-grasp.jpg",
+          "raw/eval-own/r2/000120-grasp.jpg",
+          "raw/eval-overview/000140-grasp.jpg",
+          "raw/eval-own/r1/000140-grasp.jpg",
+          "raw/eval-own/r2/000140-grasp.jpg"
+        ],
+        "sim_seconds": [
+          0.0,
+          3.0,
+          6.0,
+          8.0,
+          11.0,
+          12.0,
+          14.0
+        ],
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "terminal_gap_s": 0
+      },
+      "result_artifact": {
+        "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-79314-8007db00/raw/result.json.zst",
+        "sha256": "e179464e7d5bb090df5e4c4120d6614ba7d93f60e288cb7e92ca0d69a804205c",
+        "decoded_sha256": "cf0eac591471b59717b782c27ad57d4d199db92ededfbbee1b217360ca9b0cb8"
+      },
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/crate-reproduction-79314-8007db00",
+      "retrieved_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-79314-8007db00",
+      "verification": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/crate14-8007db00-ops/crate-reproduction-79314-8007db00-verification.json"
+    },
+    {
+      "name": "crate-reproduction-79317-8007db00",
+      "stage": "reproduction",
+      "seed": 79317,
+      "near_wall": false,
+      "submitted": true,
+      "status": "complete",
+      "exit": "0",
+      "success": false,
+      "prefix_held": false,
+      "release_success": null,
+      "release_authorized_by_own_inputs": false,
+      "release_outcome": "lift_not_confirmed_by_own_inputs",
+      "teacher_outcomes": {
+        "r1": "alignment_no_progress",
+        "r2": "episode_timeout"
+      },
+      "sim_s": 11.499999999991493,
+      "wall_s": 50.854807875000915,
+      "wall_per_sim": 4.42215720652509,
+      "first30_completed": false,
+      "first30_measurement": null,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "boundary_enabled": true,
+        "admitted_source_tags": {
+          "clock": 232,
+          "issued_commands": 1160,
+          "known_shape": 871,
+          "visible_teacher_measurement": 1103,
+          "static_map": 232,
+          "fixed_rule": 232
+        }
+      },
+      "finding": {
+        "observed": "서로 다른 청록/파랑 끝을 향해 접근한다. r1은 align에서 40ms 바퀴 보정을 인접 틱에 반대 방향으로 발행하고, 오차 부호 교대 재관측이 세 번째에 alignment_no_progress로 끝난다. r2는 아직 approach여서 공동 들기에 들어가지 못한다.",
+        "uncertainty": "정렬 비수렴과 중단 전이는 원장/코드에서 확인했다. 최소 펄스와 좁은 정렬 밴드가 진동을 만드는 정확한 동역학 원인은 후속 분리 진단이 필요하다."
+      },
+      "review": {
+        "directly_viewed_frames": [
+          "raw/eval-overview/000000-grasp.jpg",
+          "raw/eval-own/r1/000000-grasp.jpg",
+          "raw/eval-own/r2/000000-grasp.jpg",
+          "raw/eval-overview/000020-grasp.jpg",
+          "raw/eval-own/r1/000020-grasp.jpg",
+          "raw/eval-own/r2/000020-grasp.jpg",
+          "raw/eval-overview/000040-grasp.jpg",
+          "raw/eval-own/r1/000040-grasp.jpg",
+          "raw/eval-own/r2/000040-grasp.jpg",
+          "raw/eval-overview/000060-grasp.jpg",
+          "raw/eval-own/r1/000060-grasp.jpg",
+          "raw/eval-own/r2/000060-grasp.jpg",
+          "raw/eval-overview/000070-grasp.jpg",
+          "raw/eval-own/r1/000070-grasp.jpg",
+          "raw/eval-own/r2/000070-grasp.jpg",
+          "raw/eval-overview/000090-grasp.jpg",
+          "raw/eval-own/r1/000090-grasp.jpg",
+          "raw/eval-own/r2/000090-grasp.jpg",
+          "raw/eval-overview/000110-grasp.jpg",
+          "raw/eval-own/r1/000110-grasp.jpg",
+          "raw/eval-own/r2/000110-grasp.jpg"
+        ],
+        "sim_seconds": [
+          0.0,
+          2.0,
+          4.0,
+          6.0,
+          7.0,
+          9.0,
+          11.0
+        ],
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "terminal_gap_s": 0.499999999991493
+      },
+      "result_artifact": {
+        "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-79317-8007db00/raw/result.json",
+        "sha256": "c17956f11961a72ed90efab195678d5654c8fc15f8419a302c0dac26e6f8dac5",
+        "decoded_sha256": "c17956f11961a72ed90efab195678d5654c8fc15f8419a302c0dac26e6f8dac5"
+      },
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/crate-reproduction-79317-8007db00",
+      "retrieved_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-79317-8007db00",
+      "verification": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/crate14-8007db00-ops/crate-reproduction-79317-8007db00-verification.json"
+    },
+    {
+      "name": "crate-diag-79450-8007db00",
+      "stage": "diagnostic",
+      "seed": 79450,
+      "near_wall": false,
+      "submitted": true,
+      "status": "complete",
+      "exit": "0",
+      "success": false,
+      "prefix_held": false,
+      "release_success": null,
+      "release_authorized_by_own_inputs": false,
+      "release_outcome": "lift_not_confirmed_by_own_inputs",
+      "teacher_outcomes": {
+        "r1": "alignment_no_progress",
+        "r2": "episode_timeout"
+      },
+      "sim_s": 17.199999999999523,
+      "wall_s": 63.966582836999805,
+      "wall_per_sim": 3.7189873742442776,
+      "first30_completed": false,
+      "first30_measurement": null,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "boundary_enabled": true,
+        "admitted_source_tags": {
+          "clock": 346,
+          "issued_commands": 1730,
+          "known_shape": 1164,
+          "visible_teacher_measurement": 1510,
+          "static_map": 346,
+          "fixed_rule": 346
+        }
+      },
+      "finding": {
+        "observed": "자기 영상에서 r1은 청록, r2는 파랑 끝이다. r2 READY 156/173행 동안 r1이 정렬을 끝내지 못한다. r1 마지막 보정은 -/+0.35 바퀴 명령 40ms가 인접 틱에서 반전되고, 세 번째 오차 부호 교대 복구가 alignment_no_progress로 종료시킨다. 양쪽 READY가 모이지 않아 들기가 시작되지 않는다.",
+        "uncertainty": "같은 끝 선택/충돌의 증거는 없다. 제어 정렬 루프 비수렴은 확인했으나 펄스/관측/동역학의 세부 기여는 미확정."
+      },
+      "review": {
+        "directly_viewed_frames": [
+          "raw/eval-overview/000000-grasp.jpg",
+          "raw/eval-own/r1/000000-grasp.jpg",
+          "raw/eval-own/r2/000000-grasp.jpg",
+          "raw/eval-overview/000030-grasp.jpg",
+          "raw/eval-own/r1/000030-grasp.jpg",
+          "raw/eval-own/r2/000030-grasp.jpg",
+          "raw/eval-overview/000060-grasp.jpg",
+          "raw/eval-own/r1/000060-grasp.jpg",
+          "raw/eval-own/r2/000060-grasp.jpg",
+          "raw/eval-overview/000070-grasp.jpg",
+          "raw/eval-own/r1/000070-grasp.jpg",
+          "raw/eval-own/r2/000070-grasp.jpg",
+          "raw/eval-overview/000100-grasp.jpg",
+          "raw/eval-own/r1/000100-grasp.jpg",
+          "raw/eval-own/r2/000100-grasp.jpg",
+          "raw/eval-overview/000120-grasp.jpg",
+          "raw/eval-own/r1/000120-grasp.jpg",
+          "raw/eval-own/r2/000120-grasp.jpg",
+          "raw/eval-overview/000140-grasp.jpg",
+          "raw/eval-own/r1/000140-grasp.jpg",
+          "raw/eval-own/r2/000140-grasp.jpg",
+          "raw/eval-overview/000170-grasp.jpg",
+          "raw/eval-own/r1/000170-grasp.jpg",
+          "raw/eval-own/r2/000170-grasp.jpg"
+        ],
+        "sim_seconds": [
+          0.0,
+          3.0,
+          6.0,
+          7.0,
+          10.0,
+          12.0,
+          14.0,
+          17.0
+        ],
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "terminal_gap_s": 0.19999999999952323
+      },
+      "result_artifact": {
+        "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-79450-8007db00/raw/result.json",
+        "sha256": "40761496dc6a3a1ec362ae23b17becf6c68f0a6236ba61a2082e1bd666fd2f30",
+        "decoded_sha256": "40761496dc6a3a1ec362ae23b17becf6c68f0a6236ba61a2082e1bd666fd2f30"
+      },
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/crate-diag-79450-8007db00",
+      "retrieved_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-79450-8007db00",
+      "verification": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/crate14-8007db00-ops/crate-diag-79450-8007db00-verification.json"
+    },
+    {
+      "name": "crate-diag-79451-8007db00",
+      "stage": "diagnostic",
+      "seed": 79451,
+      "near_wall": false,
+      "submitted": true,
+      "status": "complete",
+      "exit": "0",
+      "success": false,
+      "prefix_held": false,
+      "release_success": null,
+      "release_authorized_by_own_inputs": false,
+      "release_outcome": "lift_not_confirmed_by_own_inputs",
+      "teacher_outcomes": {
+        "r1": "episode_timeout",
+        "r2": "alignment_no_progress"
+      },
+      "sim_s": 13.599999999986599,
+      "wall_s": 59.3439753190014,
+      "wall_per_sim": 4.363527596989697,
+      "first30_completed": false,
+      "first30_measurement": null,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "boundary_enabled": true,
+        "admitted_source_tags": {
+          "clock": 274,
+          "issued_commands": 1370,
+          "known_shape": 936,
+          "visible_teacher_measurement": 1210,
+          "static_map": 274,
+          "fixed_rule": 274
+        }
+      },
+      "finding": {
+        "observed": "서로 다른 끝으로 접근한다. r2가 먼저 정렬하다 40ms 바퀴 보정의 부호 교대를 반복하고 세 번째 복구에서 alignment_no_progress로 종료한다. r1은 마지막 행에서 막 align에 들어가 공동 준비를 이루지 못한다.",
+        "uncertainty": "정렬 보정의 반복 반전과 복구 한도 종료는 확인했다. 정확한 펄스 폭/정렬 밴드의 동역학 원인은 미분리."
+      },
+      "review": {
+        "directly_viewed_frames": [
+          "raw/eval-overview/000000-grasp.jpg",
+          "raw/eval-own/r1/000000-grasp.jpg",
+          "raw/eval-own/r2/000000-grasp.jpg",
+          "raw/eval-overview/000030-grasp.jpg",
+          "raw/eval-own/r1/000030-grasp.jpg",
+          "raw/eval-own/r2/000030-grasp.jpg",
+          "raw/eval-overview/000050-grasp.jpg",
+          "raw/eval-own/r1/000050-grasp.jpg",
+          "raw/eval-own/r2/000050-grasp.jpg",
+          "raw/eval-overview/000060-grasp.jpg",
+          "raw/eval-own/r1/000060-grasp.jpg",
+          "raw/eval-own/r2/000060-grasp.jpg",
+          "raw/eval-overview/000080-grasp.jpg",
+          "raw/eval-own/r1/000080-grasp.jpg",
+          "raw/eval-own/r2/000080-grasp.jpg",
+          "raw/eval-overview/000100-grasp.jpg",
+          "raw/eval-own/r1/000100-grasp.jpg",
+          "raw/eval-own/r2/000100-grasp.jpg",
+          "raw/eval-overview/000120-grasp.jpg",
+          "raw/eval-own/r1/000120-grasp.jpg",
+          "raw/eval-own/r2/000120-grasp.jpg",
+          "raw/eval-overview/000130-grasp.jpg",
+          "raw/eval-own/r1/000130-grasp.jpg",
+          "raw/eval-own/r2/000130-grasp.jpg"
+        ],
+        "sim_seconds": [
+          0.0,
+          3.0,
+          5.0,
+          6.0,
+          8.0,
+          10.0,
+          12.0,
+          13.0
+        ],
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "terminal_gap_s": 0.5999999999865988
+      },
+      "result_artifact": {
+        "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-79451-8007db00/raw/result.json",
+        "sha256": "15e3b48512c6ba6f41ab426ee580f30bf56e17394c0574348e277d84f37fff39",
+        "decoded_sha256": "15e3b48512c6ba6f41ab426ee580f30bf56e17394c0574348e277d84f37fff39"
+      },
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/crate-diag-79451-8007db00",
+      "retrieved_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-79451-8007db00",
+      "verification": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/crate14-8007db00-ops/crate-diag-79451-8007db00-verification.json"
+    },
+    {
+      "name": "crate-diag-79452-8007db00",
+      "stage": "diagnostic",
+      "seed": 79452,
+      "near_wall": false,
+      "submitted": false,
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "success": null,
+      "reason": "same-candidate control failure; no denominator filling"
+    },
+    {
+      "name": "crate-diag-79453-8007db00",
+      "stage": "diagnostic",
+      "seed": 79453,
+      "near_wall": false,
+      "submitted": false,
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "success": null,
+      "reason": "same-candidate control failure; no denominator filling"
+    },
+    {
+      "name": "crate-diag-79454-8007db00",
+      "stage": "diagnostic",
+      "seed": 79454,
+      "near_wall": false,
+      "submitted": false,
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "success": null,
+      "reason": "same-candidate control failure; no denominator filling"
+    },
+    {
+      "name": "crate-diag-79455-8007db00",
+      "stage": "diagnostic",
+      "seed": 79455,
+      "near_wall": false,
+      "submitted": false,
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "success": null,
+      "reason": "same-candidate control failure; no denominator filling"
+    },
+    {
+      "name": "crate-diag-79456-8007db00",
+      "stage": "diagnostic",
+      "seed": 79456,
+      "near_wall": false,
+      "submitted": false,
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "success": null,
+      "reason": "same-candidate control failure; no denominator filling"
+    },
+    {
+      "name": "crate-diag-79457-8007db00",
+      "stage": "diagnostic",
+      "seed": 79457,
+      "near_wall": false,
+      "submitted": false,
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "success": null,
+      "reason": "same-candidate control failure; no denominator filling"
+    },
+    {
+      "name": "crate-diag-79460-8007db00",
+      "stage": "diagnostic",
+      "seed": 79460,
+      "near_wall": false,
+      "submitted": false,
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "success": null,
+      "reason": "same-candidate control failure; no denominator filling"
+    },
+    {
+      "name": "crate-diag-79461-8007db00",
+      "stage": "diagnostic",
+      "seed": 79461,
+      "near_wall": false,
+      "submitted": false,
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "success": null,
+      "reason": "same-candidate control failure; no denominator filling"
+    }
+  ]
+}

@@ -1,0 +1,412 @@
+[
+  {
+    "insertId": "6ad0d48d00000f1f0942c01e",
+    "jsonPayload": {
+      "budgetAmount": 1000,
+      "costAmount": 0,
+      "currency": "KRW"
+    },
+    "labels": {
+      "execution_id": "IaAD4Bevt7qb",
+      "goog-managed-by": "cloudfunctions",
+      "instanceId": "0010dd86071ab8e5b3c1e581f3824778842802c2146e2ac4ac1b4781eee4b367d132d3654970e493b0f6c148cf7ff7afb58407a0b573b414c70cc0feec8314c1896bcb77ab572b0aade36bf8e522e46f805cccbb2abf95",
+      "run.googleapis.com/base_image_versions": "us-docker.pkg.dev/serverless-runtimes/google-22-full/runtimes/python312:python312_20260915_3_12_14_RC00"
+    },
+    "logName": "projects/ugrp-sim-b-1014/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-10-15T13:26:37.015198344Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "budget-stop",
+        "location": "us-central1",
+        "project_id": "ugrp-sim-b-1014",
+        "revision_name": "budget-stop-00001-qog",
+        "service_name": "budget-stop"
+      },
+      "type": "cloud_run_revision"
+    },
+    "spanId": "820448058695301142",
+    "timestamp": "2026-10-15T13:26:37.003871Z"
+  },
+  {
+    "insertId": "6ad0d48c000d9052ad35e882",
+    "labels": {
+      "goog-managed-by": "cloudfunctions",
+      "instanceId": "0010dd86071ab8e5b3c1e581f3824778842802c2146e2ac4ac1b4781eee4b367d132d3654970e493b0f6c148cf7ff7afb58407a0b573b414c70cc0feec8314c1896bcb77ab572b0aade36bf8e522e46f805cccbb2abf95",
+      "run.googleapis.com/base_image_versions": "us-docker.pkg.dev/serverless-runtimes/google-22-full/runtimes/python312:python312_20260915_3_12_14_RC00"
+    },
+    "logName": "projects/ugrp-sim-b-1014/logs/run.googleapis.com%2Fvarlog%2Fsystem",
+    "receiveTimestamp": "2026-10-15T13:26:37.018259989Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "budget-stop",
+        "location": "us-central1",
+        "project_id": "ugrp-sim-b-1014",
+        "revision_name": "budget-stop-00001-qog",
+        "service_name": "budget-stop"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "textPayload": "Default STARTUP TCP probe succeeded after 1 attempt for container \"worker\" on port 8080.",
+    "timestamp": "2026-10-15T13:26:36.888914Z"
+  },
+  {
+    "insertId": "6ad0d48500055a8a980f79a1",
+    "labels": {
+      "goog-managed-by": "cloudfunctions",
+      "instanceId": "0010dd86071ab8e5b3c1e581f3824778842802c2146e2ac4ac1b4781eee4b367d132d3654970e493b0f6c148cf7ff7afb58407a0b573b414c70cc0feec8314c1896bcb77ab572b0aade36bf8e522e46f805cccbb2abf95",
+      "scaling_reason": "AUTOSCALING"
+    },
+    "logName": "projects/ugrp-sim-b-1014/logs/run.googleapis.com%2Fvarlog%2Fsystem",
+    "receiveTimestamp": "2026-10-15T13:26:29.359168116Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "budget-stop",
+        "location": "us-central1",
+        "project_id": "ugrp-sim-b-1014",
+        "revision_name": "budget-stop-00001-qog",
+        "service_name": "budget-stop"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "textPayload": "Starting new instance. Reason: AUTOSCALING - Instance started due to configured scaling factors (e.g. CPU utilization, request throughput, etc.) or no existing capacity for current traffic.",
+    "timestamp": "2026-10-15T13:26:29.350858Z"
+  },
+  {
+    "httpRequest": {
+      "latency": "7.506482115s",
+      "protocol": "HTTP/1.1",
+      "remoteIp": "74.125.214.42",
+      "requestMethod": "POST",
+      "requestSize": "2026",
+      "requestUrl": "https://budget-stop-4gshjpozba-uc.a.run.app/?__GCP_CloudEventsMode=CUSTOM_PUBSUB_projects%2Fugrp-sim-b-1014%2Ftopics%2Fbudget-stop",
+      "responseSize": "130",
+      "serverIp": "34.143.72.2",
+      "status": 200,
+      "userAgent": "APIs-Google; (+https://developers.google.com/webmasters/APIs-Google.html)"
+    },
+    "insertId": "6ad0d48d000037d99e1291cf",
+    "labels": {
+      "goog-managed-by": "cloudfunctions",
+      "instanceId": "0010dd86071ab8e5b3c1e581f3824778842802c2146e2ac4ac1b4781eee4b367d132d3654970e493b0f6c148cf7ff7afb58407a0b573b414c70cc0feec8314c1896bcb77ab572b0aade36bf8e522e46f805cccbb2abf95",
+      "run.googleapis.com/cloud_event_id": "22027274269474946",
+      "run.googleapis.com/cloud_event_source": "//pubsub.googleapis.com/projects/ugrp-sim-b-1014/topics/budget-stop"
+    },
+    "logName": "projects/ugrp-sim-b-1014/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2026-10-15T13:26:37.021324193Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "budget-stop",
+        "location": "us-central1",
+        "project_id": "ugrp-sim-b-1014",
+        "revision_name": "budget-stop-00001-qog",
+        "service_name": "budget-stop"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "0b62d12997313816",
+    "timestamp": "2026-10-15T13:26:29.315689Z",
+    "trace": "projects/ugrp-sim-b-1014/traces/f50e7e950c8cbe9adc032f08104b1fb9",
+    "traceSampled": true
+  },
+  {
+    "insertId": "6ad0cab0000d4d790b34e6f7",
+    "jsonPayload": {
+      "budgetAmount": 1000,
+      "costAmount": 0,
+      "currency": "KRW"
+    },
+    "labels": {
+      "execution_id": "JYcXfMv94dlW",
+      "goog-managed-by": "cloudfunctions",
+      "instanceId": "0010dd8607fdaffe9d70ef5c55d061266f8186d48c1268e86810d792ce06b715e0202d74505efac5f6d6e5c018d972b85dac03e35431e4f34655d80f9efee02eeecb3d56adb6c604604db2b095640d122e6d6a709f321d",
+      "run.googleapis.com/base_image_versions": "us-docker.pkg.dev/serverless-runtimes/google-22-full/runtimes/python312:python312_20260915_3_12_14_RC00"
+    },
+    "logName": "projects/ugrp-sim-b-1014/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-10-15T12:44:32.881970116Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "budget-stop",
+        "location": "us-central1",
+        "project_id": "ugrp-sim-b-1014",
+        "revision_name": "budget-stop-00001-qog",
+        "service_name": "budget-stop"
+      },
+      "type": "cloud_run_revision"
+    },
+    "spanId": "9573225548522625177",
+    "timestamp": "2026-10-15T12:44:32.871801Z"
+  },
+  {
+    "insertId": "6ad0cab0000ba697e2a03d41",
+    "labels": {
+      "goog-managed-by": "cloudfunctions",
+      "instanceId": "0010dd8607fdaffe9d70ef5c55d061266f8186d48c1268e86810d792ce06b715e0202d74505efac5f6d6e5c018d972b85dac03e35431e4f34655d80f9efee02eeecb3d56adb6c604604db2b095640d122e6d6a709f321d",
+      "run.googleapis.com/base_image_versions": "us-docker.pkg.dev/serverless-runtimes/google-22-full/runtimes/python312:python312_20260915_3_12_14_RC00"
+    },
+    "logName": "projects/ugrp-sim-b-1014/logs/run.googleapis.com%2Fvarlog%2Fsystem",
+    "receiveTimestamp": "2026-10-15T12:44:32.895204729Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "budget-stop",
+        "location": "us-central1",
+        "project_id": "ugrp-sim-b-1014",
+        "revision_name": "budget-stop-00001-qog",
+        "service_name": "budget-stop"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "textPayload": "Default STARTUP TCP probe succeeded after 1 attempt for container \"worker\" on port 8080.",
+    "timestamp": "2026-10-15T12:44:32.763543Z"
+  },
+  {
+    "insertId": "6ad0caa70003667368908567",
+    "labels": {
+      "goog-managed-by": "cloudfunctions",
+      "instanceId": "0010dd8607fdaffe9d70ef5c55d061266f8186d48c1268e86810d792ce06b715e0202d74505efac5f6d6e5c018d972b85dac03e35431e4f34655d80f9efee02eeecb3d56adb6c604604db2b095640d122e6d6a709f321d",
+      "scaling_reason": "AUTOSCALING"
+    },
+    "logName": "projects/ugrp-sim-b-1014/logs/run.googleapis.com%2Fvarlog%2Fsystem",
+    "receiveTimestamp": "2026-10-15T12:44:23.231284546Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "budget-stop",
+        "location": "us-central1",
+        "project_id": "ugrp-sim-b-1014",
+        "revision_name": "budget-stop-00001-qog",
+        "service_name": "budget-stop"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "textPayload": "Starting new instance. Reason: AUTOSCALING - Instance started due to configured scaling factors (e.g. CPU utilization, request throughput, etc.) or no existing capacity for current traffic.",
+    "timestamp": "2026-10-15T12:44:23.222835Z"
+  },
+  {
+    "httpRequest": {
+      "latency": "9.283327369s",
+      "protocol": "HTTP/1.1",
+      "remoteIp": "66.102.7.40",
+      "requestMethod": "POST",
+      "requestSize": "2028",
+      "requestUrl": "https://budget-stop-4gshjpozba-uc.a.run.app/?__GCP_CloudEventsMode=CUSTOM_PUBSUB_projects%2Fugrp-sim-b-1014%2Ftopics%2Fbudget-stop",
+      "responseSize": "130",
+      "serverIp": "34.143.74.2",
+      "status": 200,
+      "userAgent": "APIs-Google; (+https://developers.google.com/webmasters/APIs-Google.html)"
+    },
+    "insertId": "6ad0cab0000d780bf6139d55",
+    "labels": {
+      "goog-managed-by": "cloudfunctions",
+      "instanceId": "0010dd8607fdaffe9d70ef5c55d061266f8186d48c1268e86810d792ce06b715e0202d74505efac5f6d6e5c018d972b85dac03e35431e4f34655d80f9efee02eeecb3d56adb6c604604db2b095640d122e6d6a709f321d",
+      "run.googleapis.com/cloud_event_id": "22027099002809926",
+      "run.googleapis.com/cloud_event_source": "//pubsub.googleapis.com/projects/ugrp-sim-b-1014/topics/budget-stop"
+    },
+    "logName": "projects/ugrp-sim-b-1014/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2026-10-15T12:44:32.890368275Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "budget-stop",
+        "location": "us-central1",
+        "project_id": "ugrp-sim-b-1014",
+        "revision_name": "budget-stop-00001-qog",
+        "service_name": "budget-stop"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "84daedea4e629899",
+    "timestamp": "2026-10-15T12:44:23.177947Z",
+    "trace": "projects/ugrp-sim-b-1014/traces/e509f26b8819fb79569a4ff236dc96fc",
+    "traceSampled": true
+  },
+  {
+    "insertId": "6ad0bb5b000c0700543b5c8f",
+    "jsonPayload": {
+      "budgetAmount": 1000,
+      "costAmount": 0,
+      "currency": "KRW"
+    },
+    "labels": {
+      "execution_id": "qrDFIso7aFUa",
+      "goog-managed-by": "cloudfunctions",
+      "instanceId": "0010dd86076f4fcdd54bfd02445767eb7779f74a16739629657861e865271baf02e11cd9650aadef85b680e9ba8198b3ddc53298b5070e878874b9d464aad6bdb235a684450f0a4769134507a3e79222f10c4061b97e58",
+      "run.googleapis.com/base_image_versions": "us-docker.pkg.dev/serverless-runtimes/google-22-full/runtimes/python312:python312_20260915_3_12_14_RC00"
+    },
+    "logName": "projects/ugrp-sim-b-1014/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-10-15T11:39:07.795511023Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "budget-stop",
+        "location": "us-central1",
+        "project_id": "ugrp-sim-b-1014",
+        "revision_name": "budget-stop-00001-qog",
+        "service_name": "budget-stop"
+      },
+      "type": "cloud_run_revision"
+    },
+    "spanId": "14091737784703211817",
+    "timestamp": "2026-10-15T11:39:07.788224Z"
+  },
+  {
+    "insertId": "6ad0bb5b000a769bc2296bd2",
+    "labels": {
+      "goog-managed-by": "cloudfunctions",
+      "instanceId": "0010dd86076f4fcdd54bfd02445767eb7779f74a16739629657861e865271baf02e11cd9650aadef85b680e9ba8198b3ddc53298b5070e878874b9d464aad6bdb235a684450f0a4769134507a3e79222f10c4061b97e58",
+      "run.googleapis.com/base_image_versions": "us-docker.pkg.dev/serverless-runtimes/google-22-full/runtimes/python312:python312_20260915_3_12_14_RC00"
+    },
+    "logName": "projects/ugrp-sim-b-1014/logs/run.googleapis.com%2Fvarlog%2Fsystem",
+    "receiveTimestamp": "2026-10-15T11:39:07.841769798Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "budget-stop",
+        "location": "us-central1",
+        "project_id": "ugrp-sim-b-1014",
+        "revision_name": "budget-stop-00001-qog",
+        "service_name": "budget-stop"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "textPayload": "Default STARTUP TCP probe succeeded after 1 attempt for container \"worker\" on port 8080.",
+    "timestamp": "2026-10-15T11:39:07.685723Z"
+  },
+  {
+    "insertId": "6ad0bb55000782e9a8638285",
+    "labels": {
+      "goog-managed-by": "cloudfunctions",
+      "instanceId": "0010dd86076f4fcdd54bfd02445767eb7779f74a16739629657861e865271baf02e11cd9650aadef85b680e9ba8198b3ddc53298b5070e878874b9d464aad6bdb235a684450f0a4769134507a3e79222f10c4061b97e58",
+      "scaling_reason": "AUTOSCALING"
+    },
+    "logName": "projects/ugrp-sim-b-1014/logs/run.googleapis.com%2Fvarlog%2Fsystem",
+    "receiveTimestamp": "2026-10-15T11:39:01.501690782Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "budget-stop",
+        "location": "us-central1",
+        "project_id": "ugrp-sim-b-1014",
+        "revision_name": "budget-stop-00001-qog",
+        "service_name": "budget-stop"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "textPayload": "Starting new instance. Reason: AUTOSCALING - Instance started due to configured scaling factors (e.g. CPU utilization, request throughput, etc.) or no existing capacity for current traffic.",
+    "timestamp": "2026-10-15T11:39:01.492265Z"
+  },
+  {
+    "httpRequest": {
+      "latency": "6.163681258s",
+      "protocol": "HTTP/1.1",
+      "remoteIp": "35.187.133.1",
+      "requestMethod": "POST",
+      "requestSize": "2028",
+      "requestUrl": "https://budget-stop-4gshjpozba-uc.a.run.app/?__GCP_CloudEventsMode=CUSTOM_PUBSUB_projects%2Fugrp-sim-b-1014%2Ftopics%2Fbudget-stop",
+      "responseSize": "130",
+      "serverIp": "34.143.77.2",
+      "status": 200,
+      "userAgent": "APIs-Google; (+https://developers.google.com/webmasters/APIs-Google.html)"
+    },
+    "insertId": "6ad0bb5b000c3c2e724c80fd",
+    "labels": {
+      "goog-managed-by": "cloudfunctions",
+      "instanceId": "0010dd86076f4fcdd54bfd02445767eb7779f74a16739629657861e865271baf02e11cd9650aadef85b680e9ba8198b3ddc53298b5070e878874b9d464aad6bdb235a684450f0a4769134507a3e79222f10c4061b97e58",
+      "run.googleapis.com/cloud_event_id": "22027066778832990",
+      "run.googleapis.com/cloud_event_source": "//pubsub.googleapis.com/projects/ugrp-sim-b-1014/topics/budget-stop"
+    },
+    "logName": "projects/ugrp-sim-b-1014/logs/run.googleapis.com%2Frequests",
+    "receiveTimestamp": "2026-10-15T11:39:07.810844118Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "budget-stop",
+        "location": "us-central1",
+        "project_id": "ugrp-sim-b-1014",
+        "revision_name": "budget-stop-00001-qog",
+        "service_name": "budget-stop"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "spanId": "c38fe8da9d2f5929",
+    "timestamp": "2026-10-15T11:39:01.448180Z",
+    "trace": "projects/ugrp-sim-b-1014/traces/0adeda4ff7753043cbe58b87b397aee0",
+    "traceSampled": true
+  },
+  {
+    "insertId": "6ad0b19b0009da650e16c19e",
+    "jsonPayload": {
+      "budgetAmount": 1000,
+      "costAmount": 0,
+      "currency": "KRW"
+    },
+    "labels": {
+      "execution_id": "9STUFHnu4qJy",
+      "goog-managed-by": "cloudfunctions",
+      "instanceId": "0010dd8607b8e58dc8d28fb23f048e451ed9bdb682f61a5b40e10d7200ea7287a3752c68663858d0ac03021735017bc6793c7a4e1abfcfc0e8a8f3379a199dc55fdc06ccd1b37c4809d894bd3f76c8bbf428c913cc2ca6",
+      "run.googleapis.com/base_image_versions": "us-docker.pkg.dev/serverless-runtimes/google-22-full/runtimes/python312:python312_20260915_3_12_14_RC00"
+    },
+    "logName": "projects/ugrp-sim-b-1014/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-10-15T10:57:31.654640238Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "budget-stop",
+        "location": "us-central1",
+        "project_id": "ugrp-sim-b-1014",
+        "revision_name": "budget-stop-00001-qog",
+        "service_name": "budget-stop"
+      },
+      "type": "cloud_run_revision"
+    },
+    "spanId": "14924348348799088438",
+    "timestamp": "2026-10-15T10:57:31.645733Z"
+  },
+  {
+    "insertId": "6ad0b19b000840bf0fbaea5e",
+    "labels": {
+      "goog-managed-by": "cloudfunctions",
+      "instanceId": "0010dd8607b8e58dc8d28fb23f048e451ed9bdb682f61a5b40e10d7200ea7287a3752c68663858d0ac03021735017bc6793c7a4e1abfcfc0e8a8f3379a199dc55fdc06ccd1b37c4809d894bd3f76c8bbf428c913cc2ca6",
+      "run.googleapis.com/base_image_versions": "us-docker.pkg.dev/serverless-runtimes/google-22-full/runtimes/python312:python312_20260915_3_12_14_RC00"
+    },
+    "logName": "projects/ugrp-sim-b-1014/logs/run.googleapis.com%2Fvarlog%2Fsystem",
+    "receiveTimestamp": "2026-10-15T10:57:31.782465376Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "budget-stop",
+        "location": "us-central1",
+        "project_id": "ugrp-sim-b-1014",
+        "revision_name": "budget-stop-00001-qog",
+        "service_name": "budget-stop"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "textPayload": "Default STARTUP TCP probe succeeded after 1 attempt for container \"worker\" on port 8080.",
+    "timestamp": "2026-10-15T10:57:31.540863Z"
+  },
+  {
+    "insertId": "6ad0b192000bf44126e27adf",
+    "labels": {
+      "goog-managed-by": "cloudfunctions",
+      "instanceId": "0010dd8607b8e58dc8d28fb23f048e451ed9bdb682f61a5b40e10d7200ea7287a3752c68663858d0ac03021735017bc6793c7a4e1abfcfc0e8a8f3379a199dc55fdc06ccd1b37c4809d894bd3f76c8bbf428c913cc2ca6",
+      "scaling_reason": "AUTOSCALING"
+    },
+    "logName": "projects/ugrp-sim-b-1014/logs/run.googleapis.com%2Fvarlog%2Fsystem",
+    "receiveTimestamp": "2026-10-15T10:57:22.791418599Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "budget-stop",
+        "location": "us-central1",
+        "project_id": "ugrp-sim-b-1014",
+        "revision_name": "budget-stop-00001-qog",
+        "service_name": "budget-stop"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "textPayload": "Starting new instance. Reason: AUTOSCALING - Instance started due to configured scaling factors (e.g. CPU utilization, request throughput, etc.) or no existing capacity for current traffic.",
+    "timestamp": "2026-10-15T10:57:22.783425Z"
+  }
+]

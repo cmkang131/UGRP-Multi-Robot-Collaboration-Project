@@ -1,0 +1,497 @@
+{
+  "schema": "ugrp.gcp.ops.act6.v1",
+  "at": "2026-10-15 13:25:16 KST",
+  "queue": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-act6-d4abe49f.json",
+  "status": "NOT_READY_STARTUP_DEPENDENCY_COLLISION",
+  "scope_completed": "approved census completed; gate aborted on first confirmed startup defect; remaining same-defect stages blocked",
+  "host": {
+    "alias": "gcp1",
+    "instance": "ugrp-sim-gcp1",
+    "project": "ugrp-act-train-1014",
+    "zone": "asia-northeast3-a",
+    "machine_type": "n4-highcpu-64"
+  },
+  "source_sha": "d4abe49fa43c4b7af6145cca3319a5dc5e6bede0",
+  "teacher_dependency_sha": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+  "noise_sha256": "47ddf66ab770a3b00f2cb57206225d9bdf0d138bc6468625b65be10a08bd72f7",
+  "census": {
+    "at": "2026-10-15 13:22:16 KST",
+    "complete": true,
+    "N": 50,
+    "combined_local": {
+      "N": 17851,
+      "zero": 9730,
+      "per_wheel_zero": [
+        9732,
+        9735,
+        9772,
+        9764
+      ],
+      "wheel_median": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "phase": {
+        "approach": {
+          "N": 4288,
+          "zero": 42,
+          "pan_changed": 35,
+          "pwm_changed": 39
+        },
+        "align": {
+          "N": 1083,
+          "zero": 208,
+          "pan_changed": 8,
+          "pwm_changed": 8
+        },
+        "hover": {
+          "N": 497,
+          "zero": 497,
+          "pan_changed": 364,
+          "pwm_changed": 400
+        },
+        "descent": {
+          "N": 800,
+          "zero": 800,
+          "pan_changed": 0,
+          "pwm_changed": 750
+        },
+        "close": {
+          "N": 572,
+          "zero": 572,
+          "pan_changed": 0,
+          "pwm_changed": 400
+        },
+        "lift": {
+          "N": 761,
+          "zero": 761,
+          "pan_changed": 0,
+          "pwm_changed": 600
+        },
+        "lift_settle": {
+          "N": 1600,
+          "zero": 1600,
+          "pan_changed": 0,
+          "pwm_changed": 0
+        },
+        "lookback_pose": {
+          "N": 550,
+          "zero": 550,
+          "pan_changed": 0,
+          "pwm_changed": 0
+        },
+        "lookback": {
+          "N": 1050,
+          "zero": 50,
+          "pan_changed": 0,
+          "pwm_changed": 0
+        },
+        "lookback_settle": {
+          "N": 250,
+          "zero": 250,
+          "pan_changed": 0,
+          "pwm_changed": 0
+        },
+        "verify_lift": {
+          "N": 550,
+          "zero": 550,
+          "pan_changed": 0,
+          "pwm_changed": 0
+        },
+        "hold": {
+          "N": 1500,
+          "zero": 1500,
+          "pan_changed": 0,
+          "pwm_changed": 0
+        },
+        "lookback_return": {
+          "N": 1050,
+          "zero": 50,
+          "pan_changed": 0,
+          "pwm_changed": 0
+        },
+        "lower": {
+          "N": 1000,
+          "zero": 1000,
+          "pan_changed": 0,
+          "pwm_changed": 400
+        },
+        "open": {
+          "N": 350,
+          "zero": 350,
+          "pan_changed": 0,
+          "pwm_changed": 250
+        },
+        "retract": {
+          "N": 900,
+          "zero": 900,
+          "pan_changed": 335,
+          "pwm_changed": 800
+        },
+        "backoff": {
+          "N": 1050,
+          "zero": 50,
+          "pan_changed": 0,
+          "pwm_changed": 0
+        }
+      }
+    },
+    "source_files_verified": 100,
+    "original_success": 50,
+    "input_audit_zero_N": 50,
+    "source_census_sha256": "df9372a98dd366079b67d2b046afb381ed2ac9a36991d3d70604b736c5d6f52d",
+    "scope": "full 50 command stall census; prior teacher physics is not ACT6 success or recovery coverage"
+  },
+  "census_recovery_evaluator_only": {
+    "full50_approach_invisible_episodes": [
+      {
+        "seed": 86004,
+        "visibility": {
+          "seconds": 11.599999999990729,
+          "visible_s": 7.399999999989148,
+          "max_invisible_s": 4.20000000000158,
+          "N": 116,
+          "visible_ratio": 0.6379310344823329
+        }
+      },
+      {
+        "seed": 86032,
+        "visibility": {
+          "seconds": 10.199999999993992,
+          "visible_s": 5.9999999999924105,
+          "max_invisible_s": 4.20000000000158,
+          "N": 102,
+          "visible_ratio": 0.5882352941172495
+        }
+      },
+      {
+        "seed": 86044,
+        "visibility": {
+          "seconds": 13.599999999986068,
+          "visible_s": 9.399999999984487,
+          "max_invisible_s": 4.20000000000158,
+          "N": 136,
+          "visible_ratio": 0.6911764705878027
+        }
+      }
+    ],
+    "recovery_phase_events": [],
+    "scope": "retained teacher evaluator visibility/phase events; RGB coverage is a separate measurement"
+  },
+  "gate": {
+    "planned_N": 40,
+    "submitted_N": 1,
+    "success_confirmed_N": 0,
+    "physical_results_N": 0,
+    "HOST_ERROR_N": 1,
+    "supervisor_interrupted_running_N": 0,
+    "unsubmitted_blocked_N": 39,
+    "resolved_startup_N": 1,
+    "gate_complete": false,
+    "minimum_success": 38,
+    "success_fraction_display": "0 confirmed successes / 40 planned; only 1 attempted, no physical result",
+    "max_parallel": 1,
+    "first_two_review_complete": false,
+    "promoted": false,
+    "runs": [
+      {
+        "run": "act6-gate-8316600-d4abe49f",
+        "seed": 8316600,
+        "source_sha": "d4abe49fa43c4b7af6145cca3319a5dc5e6bede0",
+        "teacher_dependency_sha": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+        "status": "HOST_ERROR",
+        "exit": 1,
+        "physical_success": null,
+        "result_json_exists": false,
+        "result_json_count": 0,
+        "raw_directory_exists": false,
+        "wall_s_process": 20.189,
+        "cpu_s_process": 11.986,
+        "sim_s": null,
+        "wall_per_sim": null,
+        "first30": null,
+        "speed_gate": "SPEED_GATE_FAIL: HOST_ERROR; SIM measurement incomplete",
+        "input_audit": {
+          "invisible_measurements": null,
+          "held_world_reads": null,
+          "status": "not generated; exception before InputAudit construction"
+        },
+        "noise": {
+          "ledger_rows": 0,
+          "noisy_ticks": 0,
+          "actual_covariance": null,
+          "clipping_rate": null,
+          "edge_loss_recovery_counts": null,
+          "status": "unmeasured: pre-world import failure"
+        },
+        "review": {
+          "frames_viewed": 0,
+          "time_range": null,
+          "reason": "world, own camera and overview review frames never created",
+          "robot_relation": "no robot motion; single active r1 plan; no multi-robot physical failure inferred"
+        },
+        "failure": {
+          "type": "ImportError",
+          "message": "cannot import name 'proportional_drive' from 'scripts.zone_teacher'",
+          "trigger": "run_solo_grasp_act_teacher.py:57 imported from the ACT checkout module, which lacks the dependency symbol",
+          "source_cause": "run_grasp_act_recovery.py:32 appends dependency package paths; existing ACT modules remain first",
+          "dependency_symbol": "6f057f7e/scripts/zone_teacher.py:77",
+          "confirmed_scope": "deterministic pinned-module collision during startup; no physical diagnosis"
+        },
+        "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/act6-gate-8316600-d4abe49f",
+        "lite_location": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act6-gate-8316600-d4abe49f",
+        "log_sha256": "2ba3a2b640e99f692a43748921795244c21d6d61818db76657868d15970194ea",
+        "source_sha_file_sha256": "fde3d517a853ae90d689e54959cfb82efe5522adccd647d9a639558ee1b21297",
+        "retrieval": {
+          "run": "act6-gate-8316600-d4abe49f",
+          "vm_all_original_manifest_verified": true,
+          "manifest_sha256": "ab463e95416bee19bc3df7907f4a9f17825c7c424f59e088590463e2ad0caf13",
+          "supplemental_after_original_manifest": {
+            "SUPERVISOR_STOP.json": "dec14681c47b8527886b89747cb40cbafcc76150bd6d889adeffdb01d08bdc4e"
+          },
+          "local_verified_files": [
+            "RUN_META.json",
+            "run_wrapper.sh",
+            "log.txt",
+            "LOADAVG",
+            "manifest.json",
+            "EXIT",
+            "recovery-commands.jsonl",
+            "COMMAND",
+            "record-copy.log",
+            "SUPERVISOR_STOP.json",
+            "SOURCE_SHA",
+            "management/20261015-042238-grasp-act-recovery-af4e6e39/console.log",
+            "management/20261015-042238-grasp-act-recovery-af4e6e39/manifest.json"
+          ],
+          "selected_frames": [],
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/act6-gate-8316600-d4abe49f",
+          "fetched_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act6-gate-8316600-d4abe49f"
+        },
+        "supervisor_stop": {
+          "record": {
+            "at": "2026-10-15 13:23:58 KST",
+            "owner": "act6-d4abe49f",
+            "run": "act6-gate-8316600-d4abe49f",
+            "source_sha": "d4abe49fa43c4b7af6145cca3319a5dc5e6bede0",
+            "reason": "ACT6 pinned source shadows dependency scripts.zone_teacher; missing proportional_drive import before world/result/RGB creation",
+            "confirmed": "startup HOST_ERROR; no physical result or review frames created",
+            "owned_processes": [],
+            "pending_same_defect_unsubmitted": 39,
+            "exit_before_stop": "1"
+          },
+          "SUPERVISOR_STOP_sha256": "dec14681c47b8527886b89747cb40cbafcc76150bd6d889adeffdb01d08bdc4e"
+        }
+      }
+    ]
+  },
+  "unsubmitted_stages": [
+    {
+      "stage": "recovery-record50",
+      "ready": false,
+      "approved": false,
+      "submitted_N": 0,
+      "reason": "not approved and gate prerequisite failed"
+    },
+    {
+      "stage": "convert-recovery",
+      "ready": false,
+      "approved": false,
+      "submitted_N": 0,
+      "reason": "not approved and gate prerequisite failed"
+    },
+    {
+      "stage": "compose-data",
+      "ready": false,
+      "approved": false,
+      "submitted_N": 0,
+      "reason": "not approved and gate prerequisite failed"
+    },
+    {
+      "stage": "p0/smoke300",
+      "ready": false,
+      "approved": false,
+      "submitted_N": 0,
+      "reason": "not approved and gate prerequisite failed"
+    },
+    {
+      "stage": "p0/main10k",
+      "ready": false,
+      "approved": false,
+      "submitted_N": 0,
+      "reason": "not approved and gate prerequisite failed"
+    },
+    {
+      "stage": "p0/heldout",
+      "ready": false,
+      "approved": false,
+      "submitted_N": 0,
+      "reason": "not approved and gate prerequisite failed"
+    },
+    {
+      "stage": "p0/heldout-analysis",
+      "ready": false,
+      "approved": false,
+      "submitted_N": 0,
+      "reason": "not approved and gate prerequisite failed"
+    },
+    {
+      "stage": "p02/smoke300",
+      "ready": false,
+      "approved": false,
+      "submitted_N": 0,
+      "reason": "not approved and gate prerequisite failed"
+    },
+    {
+      "stage": "p02/main10k",
+      "ready": false,
+      "approved": false,
+      "submitted_N": 0,
+      "reason": "not approved and gate prerequisite failed"
+    },
+    {
+      "stage": "p02/heldout",
+      "ready": false,
+      "approved": false,
+      "submitted_N": 0,
+      "reason": "not approved and gate prerequisite failed"
+    },
+    {
+      "stage": "p02/heldout-analysis",
+      "ready": false,
+      "approved": false,
+      "submitted_N": 0,
+      "reason": "not approved and gate prerequisite failed"
+    },
+    {
+      "stage": "gcp1-deployment-timing",
+      "ready": false,
+      "approved": false,
+      "submitted_N": 0,
+      "reason": "not approved and gate prerequisite failed"
+    },
+    {
+      "stage": "closed-loop-once",
+      "ready": false,
+      "approved": false,
+      "submitted_N": 0,
+      "reason": "not approved and gate prerequisite failed"
+    }
+  ],
+  "retrieval": {
+    "originals_retained_on_gcp": true,
+    "bulk_transfer_to_mac": false,
+    "verified_lite_files": 22,
+    "receipts": [
+      {
+        "run": "act6-census-d4abe49f",
+        "vm_all_manifest_verified": true,
+        "manifest_sha256": "dff17a92eb3311a49df41603351db9c5b64b7095fc98dc8fa9f8b3624d73f7ee",
+        "local_verified_files": [
+          "RUN_META.json",
+          "full-teacher-stall.json",
+          "run_wrapper.sh",
+          "log.txt",
+          "LOADAVG",
+          "EXIT",
+          "COMMAND",
+          "record-copy.log",
+          "SOURCE_SHA"
+        ],
+        "selected_frames": [],
+        "raw": "gcp1:/home/ugrp/ugrp-sim/runs/act6-census-d4abe49f",
+        "fetched_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act6-census-d4abe49f"
+      },
+      {
+        "run": "act6-gate-8316600-d4abe49f",
+        "vm_all_original_manifest_verified": true,
+        "manifest_sha256": "ab463e95416bee19bc3df7907f4a9f17825c7c424f59e088590463e2ad0caf13",
+        "supplemental_after_original_manifest": {
+          "SUPERVISOR_STOP.json": "dec14681c47b8527886b89747cb40cbafcc76150bd6d889adeffdb01d08bdc4e"
+        },
+        "local_verified_files": [
+          "RUN_META.json",
+          "run_wrapper.sh",
+          "log.txt",
+          "LOADAVG",
+          "manifest.json",
+          "EXIT",
+          "recovery-commands.jsonl",
+          "COMMAND",
+          "record-copy.log",
+          "SUPERVISOR_STOP.json",
+          "SOURCE_SHA",
+          "management/20261015-042238-grasp-act-recovery-af4e6e39/console.log",
+          "management/20261015-042238-grasp-act-recovery-af4e6e39/manifest.json"
+        ],
+        "selected_frames": [],
+        "raw": "gcp1:/home/ugrp/ugrp-sim/runs/act6-gate-8316600-d4abe49f",
+        "fetched_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act6-gate-8316600-d4abe49f"
+      }
+    ],
+    "selected_frames_N": 0
+  },
+  "guards": {
+    "budget_stop": {
+      "eventTrigger": {
+        "eventType": "google.cloud.pubsub.topic.v1.messagePublished",
+        "pubsubTopic": "projects/ugrp-act-train-1014/topics/budget-stop"
+      },
+      "state": "ACTIVE"
+    },
+    "latest_budget_message": {
+      "jsonPayload": {
+        "budgetAmount": 1000,
+        "costAmount": 0,
+        "currency": "KRW"
+      },
+      "timestamp": "2026-10-15T04:07:16.966070Z"
+    },
+    "actual_remaining_credit": null,
+    "current_official_price": null,
+    "unknown_credit_price_proceed_approval": {
+      "time": "2026-10-15T13:18:57+09:00",
+      "remaining_credit": "UNVERIFIED (billing console out of agent scope)",
+      "official_price": "UNVERIFIED for this decision",
+      "decision": "proceed: census is CPU-only on running gcp1; gate40 is ~40 x 90 SIM s on gcp1 (already running, no new VM). Budget-stop (net cost >=1,000 KRW -> stop all VMs) stays active and is the binding guard; latest ops logs showed net cost 0 KRW and no alert. If budget-stop fires: submit nothing new, alert coordinator."
+    },
+    "billing_credit_operations": 0,
+    "max_run_duration_s": 28800,
+    "termination_action": "STOP",
+    "idle_guard_s": 1200,
+    "idle_guard_active": true,
+    "new_or_resized_vms": 0,
+    "l4_started": false
+  },
+  "final_ownership": {
+    "owned_processes": [],
+    "owned_leases": [],
+    "owned_reservations": [],
+    "gate_run_dirs": [
+      "act6-gate-8316600-d4abe49f"
+    ],
+    "raw_exists": false,
+    "idle_active": "active",
+    "loadavg": "3.58 3.84 2.53 2/797 104246\n"
+  },
+  "remaining": [
+    "Fix module-version collision and issue a new pinned SHA and queue; do not retry this same SHA.",
+    "Gate input audit/noise/recovery coverage/first30 speed and all physics remain unmeasured.",
+    "No training recording, dataset conversion, training, model timing or student closed-loop was submitted."
+  ],
+  "evidence": {
+    "operations": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act6-d4abe49f-ops",
+    "preflight": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act6-d4abe49f-ops/preflight-receipt.json",
+    "stop_record": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/stop-act6-d4abe49f-20261015.json"
+  },
+  "pr": 504,
+  "pr_comment": {
+    "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/504#issuecomment-6184384644",
+    "body_verified": true,
+    "body_sha256": "e2b0c2152a2db4cb9f51c64c2904e92718890924db4ffeb0c9471af0db21ab02",
+    "at": "2026-10-15 13:25:37 KST"
+  },
+  "source_worktrees_clean_at_finish": true
+}

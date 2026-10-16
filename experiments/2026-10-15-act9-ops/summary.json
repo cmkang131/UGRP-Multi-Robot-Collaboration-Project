@@ -1,0 +1,4945 @@
+{
+  "schema": "ugrp.gcp.act9.ops.v1",
+  "at": "2026-10-15 16:30:10 KST",
+  "queue": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-act9-ec0bd628.json",
+  "source_sha": "ec0bd6284d82b2302187f9c2722c478b71a3731b",
+  "teacher_dependency_sha": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+  "host": "gcp1",
+  "machine_type": "n4-highcpu-64",
+  "profile": "solo_visible_only_v1 / recovery_perturb_v1",
+  "pr": 504,
+  "planned_N": 40,
+  "submitted_N": 17,
+  "terminal_runs_N": 17,
+  "completed_N": 7,
+  "success_n": 6,
+  "observed_fraction": "6/7",
+  "submitted_success_fraction": "6/17",
+  "gate_fraction": "6/40",
+  "successful_recovery_runs_N": 6,
+  "minimum_success": 38,
+  "minimum_successful_recovery_runs": 20,
+  "gate_pass": false,
+  "verdict": "STOPPED_CONFIRMED_DEFECT",
+  "failure_N": 1,
+  "supervisor_stopped_N": 10,
+  "unsubmitted_N": 23,
+  "physical_results_complete_N": 7,
+  "failure_reasons": {
+    "phase_timeout": 1,
+    "": 5,
+    "null": 5
+  },
+  "host_error_N": 0,
+  "input_audit": {
+    "checked_N": 12,
+    "unavailable_runs": [
+      "act9-gate-8316908-ec0bd628",
+      "act9-gate-8316909-ec0bd628",
+      "act9-gate-8316911-ec0bd628",
+      "act9-gate-8316914-ec0bd628",
+      "act9-gate-8316915-ec0bd628"
+    ],
+    "passed_N": 12,
+    "invisible_measurements": 0,
+    "held_world_reads": 0
+  },
+  "recovery": {
+    "perturbation_ticks": 153,
+    "command_ticks": 6404,
+    "lost_N": 17,
+    "reacquired_N": 13,
+    "recovery_failure_N": 4,
+    "scope": "hash-bound own-camera visibility ledger recount; actual completed physical success evaluated separately"
+  },
+  "wall_per_sim": {
+    "first30_median": 2.7206573168436687,
+    "first30_N": 11,
+    "overall_N": 7,
+    "first_wave_measurement_complete": false,
+    "planned_first_wave_concurrency": 19,
+    "overall_median": 2.7968113461435897,
+    "warn_above": 3.5,
+    "block_above": 6.0,
+    "method": "first30 review JPEG filesystem timestamps; overall result wall_s/sim_s",
+    "first_wave_N": 9,
+    "first_wave_median": 2.826390838623047,
+    "speed_gate_verdict": "INCOMPLETE_SUPERVISOR_STOP; no concurrency speed pass claimed"
+  },
+  "verification": {
+    "result_ledger_input_and_retrieval_passed": false,
+    "retrieval_hash_passed_N": 17,
+    "ledger_recount_hash_passed_N": 17,
+    "local_lite_files": 408,
+    "directly_viewed_frames": 204,
+    "preflight_receipt": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act9-ec0bd628-ops/preflight-receipt.json",
+    "remote_original_files": 1717,
+    "lossless_decode_or_reconstruction_checks": 69,
+    "frame_review_by_run": {
+      "act9-gate-8316900-ec0bd628": {
+        "count": 32,
+        "elapsed_sim_s": [
+          0.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0,
+          6.0,
+          7.0,
+          8.0,
+          10.0,
+          12.0,
+          18.0,
+          20.0,
+          24.0,
+          30.0,
+          40.0,
+          50.0
+        ]
+      },
+      "act9-gate-8316901-ec0bd628": {
+        "count": 34,
+        "elapsed_sim_s": [
+          0.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0,
+          6.0,
+          7.0,
+          8.0,
+          10.0,
+          12.0,
+          18.0,
+          19.0,
+          24.0,
+          29.0,
+          30.0,
+          38.0,
+          48.0
+        ]
+      },
+      "act9-gate-8316902-ec0bd628": {
+        "count": 20,
+        "elapsed_sim_s": [
+          0.0,
+          9.0,
+          12.0,
+          18.0,
+          24.0,
+          27.0,
+          36.0,
+          45.0,
+          48.0,
+          60.0
+        ]
+      },
+      "act9-gate-8316903-ec0bd628": {
+        "count": 0,
+        "elapsed_sim_s": []
+      },
+      "act9-gate-8316904-ec0bd628": {
+        "count": 0,
+        "elapsed_sim_s": []
+      },
+      "act9-gate-8316905-ec0bd628": {
+        "count": 0,
+        "elapsed_sim_s": []
+      },
+      "act9-gate-8316906-ec0bd628": {
+        "count": 0,
+        "elapsed_sim_s": []
+      },
+      "act9-gate-8316907-ec0bd628": {
+        "count": 12,
+        "elapsed_sim_s": [
+          0.0,
+          9.0,
+          18.0,
+          28.0,
+          37.0,
+          46.0
+        ]
+      },
+      "act9-gate-8316908-ec0bd628": {
+        "count": 12,
+        "elapsed_sim_s": [
+          0.0,
+          9.0,
+          18.0,
+          27.0,
+          36.0,
+          45.0
+        ]
+      },
+      "act9-gate-8316909-ec0bd628": {
+        "count": 11,
+        "elapsed_sim_s": [
+          0.0,
+          8.0,
+          16.0,
+          23.0,
+          31.0,
+          39.0
+        ]
+      },
+      "act9-gate-8316910-ec0bd628": {
+        "count": 12,
+        "elapsed_sim_s": [
+          0.0,
+          8.0,
+          16.0,
+          23.0,
+          31.0,
+          39.0
+        ]
+      },
+      "act9-gate-8316911-ec0bd628": {
+        "count": 12,
+        "elapsed_sim_s": [
+          0.0,
+          6.0,
+          12.0,
+          17.0,
+          23.0,
+          29.0
+        ]
+      },
+      "act9-gate-8316912-ec0bd628": {
+        "count": 12,
+        "elapsed_sim_s": [
+          0.0,
+          6.0,
+          11.0,
+          17.0,
+          22.0,
+          28.0
+        ]
+      },
+      "act9-gate-8316913-ec0bd628": {
+        "count": 12,
+        "elapsed_sim_s": [
+          0.0,
+          4.0,
+          8.0,
+          13.0,
+          17.0,
+          21.0
+        ]
+      },
+      "act9-gate-8316914-ec0bd628": {
+        "count": 12,
+        "elapsed_sim_s": [
+          0.0,
+          4.0,
+          7.0,
+          11.0,
+          14.0,
+          18.0
+        ]
+      },
+      "act9-gate-8316915-ec0bd628": {
+        "count": 11,
+        "elapsed_sim_s": [
+          0.0,
+          2.0,
+          4.0,
+          7.0,
+          9.0,
+          11.0
+        ]
+      },
+      "act9-gate-8316916-ec0bd628": {
+        "count": 12,
+        "elapsed_sim_s": [
+          0.0,
+          2.0,
+          3.0,
+          5.0,
+          6.0,
+          8.0
+        ]
+      }
+    },
+    "all_failure_and_interrupted_runs_at_least_six_frames": true
+  },
+  "scope": {
+    "training_rgb": false,
+    "training_runs": 0,
+    "recording_runs": 0,
+    "gate_promotion_authorized": false,
+    "other_SHA_or_host_pooled": false,
+    "raw_preserved": "gcp1 persistent disk; individual review frames and lite evidence retrieved"
+  },
+  "budget_safety": {
+    "budget_stop_untouched": true,
+    "max_run_duration_s": 28800,
+    "idle_shutdown_s": 1200,
+    "credit_and_price": "UNVERIFIED per authorized operations scope"
+  },
+  "runs": [
+    {
+      "run": "act9-gate-8316900-ec0bd628",
+      "seed": 8316900,
+      "submitted": true,
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/act9-gate-8316900-ec0bd628",
+      "status": "complete",
+      "success": true,
+      "source_sha": "ec0bd6284d82b2302187f9c2722c478b71a3731b",
+      "raw_status": "complete",
+      "result_complete": true,
+      "input_audit_available": true,
+      "exit": "0",
+      "reason": "command_complete",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 174,
+        "blocked_held": 184,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 112,
+          "align": 26,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "audit_pass": true,
+      "recovery_audit": {
+        "schema": "ugrp.act9.recovery_audit.v1",
+        "command_ticks": 507,
+        "perturbation_ticks": 9,
+        "perturbation_fraction": 0.01775147928994083,
+        "perturbation_times": [
+          3.299999999999531,
+          3.3999999999994754,
+          3.49999999999942,
+          3.5999999999993646,
+          3.699999999999309,
+          3.7999999999992538,
+          3.8999999999991983,
+          3.999999999999143,
+          4.099999999999265
+        ],
+        "lost_N": 1,
+        "reacquired_N": 1,
+        "recovery_scene_N": 1,
+        "recovery_failure_N": 0,
+        "perturbation_no_loss_N": 0,
+        "episodes": [
+          {
+            "episode_id": 1,
+            "start_t": 3.299999999999531,
+            "lost_t": 3.699999999999309,
+            "reacquired_t": 7.200000000003054,
+            "failure": false
+          }
+        ],
+        "scope": "own-camera visibility gate; reacquisition is not task success"
+      },
+      "ledger_recount_hash_passed": true,
+      "perturbation_label_violations": [],
+      "phase_ticks": {
+        "fold": 6,
+        "approach": 147,
+        "align": 26,
+        "hover": 9,
+        "descent": 16,
+        "close": 11,
+        "lift": 15,
+        "lift_settle": 32,
+        "lookback_pose": 11,
+        "lookback": 21,
+        "lookback_settle": 5,
+        "verify_lift": 11,
+        "hold": 30,
+        "lookback_return": 21,
+        "lower": 20,
+        "open": 7,
+        "retract": 18,
+        "backoff": 21,
+        "lookaround": 59,
+        "complete": 21
+      },
+      "sim_s": 50.60000000015678,
+      "wall_s": 139.90950054199857,
+      "wall_per_sim": 2.765009892125792,
+      "first30": {
+        "method": "review JPEG mtimes; first available through min(30,last review SIM second)",
+        "start_sim_s": 0.0,
+        "end_sim_s": 30.0,
+        "wall_s": 79.19110941886902,
+        "wall_per_sim": 2.639703647295634,
+        "available_sim_s": 30.0
+      },
+      "training_rgb": false,
+      "weld": "off",
+      "result_file": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316900-ec0bd628/raw/result.json.zst",
+      "result_sha256": "beeb649b7b65bb7fe192d9dc054fa6da237b9ece259d5e2a042d88c83c731734",
+      "ledger_sha256": "360981efb68a9818ae2dd9539aa619d8eced6aaf885bf35733812ceda10ea7eb",
+      "teacher": {
+        "profile": "solo_visible_only_v1",
+        "phase": "complete",
+        "command_result": "command_complete",
+        "holding_belief": false,
+        "ik_rejections": 11,
+        "ik_checks": 27,
+        "ik_rejection_reasons": {
+          "target has no safe v3 physical-pad IK solution": 4,
+          "target yaw is outside the calibrated servo-6 grasp sector": 7
+        },
+        "teacher_stability": "align_relook_v1",
+        "reach_mode": "pad_window_v2",
+        "rgb_lift_mode": "solo_lift_lookback_v1",
+        "negative_probe": false,
+        "solo_lift_negative_probe_v1": false,
+        "solo_lift_lookback_margin_v1": true,
+        "gate_eligible": true,
+        "lookback_commanded_backoff_m": 0.15315264186250238,
+        "lookback_commanded_return_m": 0.15315264186250238,
+        "lookback_plan": {
+          "pwm": {
+            "1": 1500,
+            "3": 806,
+            "4": 1895,
+            "5": 2188,
+            "6": 1493
+          },
+          "backoff_m": 0.15,
+          "geometry": {
+            "site_from_issued_grip_m": [
+              0.35323033653928937,
+              -0.001704716284371916,
+              0.0
+            ],
+            "site_pixels": 16890,
+            "ring_pixels": 10496,
+            "surface_in_frame_n": 81,
+            "surface_N": 81,
+            "held_occlusion_pixels": 0,
+            "bbox_xyxy": [
+              194,
+              90,
+              370,
+              192
+            ],
+            "qualified": true,
+            "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+          },
+          "command_distance_margin_m": 0.005,
+          "backoff_bounds_m": [
+            0.09,
+            0.155
+          ],
+          "action_margin_mode": "solo_lift_lookback_margin_v1",
+          "short_retreat_geometry": {
+            "site_from_issued_grip_m": [
+              0.3082303365392894,
+              -0.001704716284371916,
+              0.0
+            ],
+            "site_pixels": 26979,
+            "ring_pixels": 12640,
+            "surface_in_frame_n": 81,
+            "surface_N": 81,
+            "held_occlusion_pixels": 0,
+            "bbox_xyxy": [
+              181,
+              189,
+              386,
+              329
+            ],
+            "qualified": true,
+            "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+          },
+          "retreat_shortfall_sensitivity_m": 0.04,
+          "held_shift_sensitivity_m": 0.005,
+          "held_tilt_sensitivity_deg": 1.0,
+          "scope": "static sensitivity; actual retreat and held pose unverified"
+        },
+        "alignment_relooks": 0,
+        "events": [
+          {
+            "t": 1.3000000000000178,
+            "from": "start",
+            "to": "fold"
+          },
+          {
+            "t": 1.9000000000002182,
+            "from": "fold",
+            "to": "approach"
+          },
+          {
+            "t": 16.59999999998825,
+            "from": "approach",
+            "to": "align"
+          },
+          {
+            "t": 19.200000000000664,
+            "from": "align",
+            "to": "hover"
+          },
+          {
+            "t": 20.10000000000496,
+            "from": "hover",
+            "to": "descent"
+          },
+          {
+            "t": 21.7000000000126,
+            "from": "descent",
+            "to": "close"
+          },
+          {
+            "t": 22.800000000017853,
+            "from": "close",
+            "to": "lift"
+          },
+          {
+            "t": 24.300000000025015,
+            "from": "lift",
+            "to": "lift_settle"
+          },
+          {
+            "t": 27.500000000040295,
+            "from": "lift_settle",
+            "to": "lookback_pose"
+          },
+          {
+            "t": 28.600000000045547,
+            "from": "lookback_pose",
+            "to": "lookback"
+          },
+          {
+            "t": 30.700000000055574,
+            "from": "lookback",
+            "to": "lookback_settle"
+          },
+          {
+            "t": 31.200000000057962,
+            "from": "lookback_settle",
+            "to": "verify_lift"
+          },
+          {
+            "t": 32.300000000063214,
+            "from": "verify_lift",
+            "to": "hold"
+          },
+          {
+            "t": 35.30000000007754,
+            "from": "hold",
+            "to": "lookback_return"
+          },
+          {
+            "t": 37.400000000087566,
+            "from": "lookback_return",
+            "to": "lower"
+          },
+          {
+            "t": 39.400000000097116,
+            "from": "lower",
+            "to": "open"
+          },
+          {
+            "t": 40.10000000010046,
+            "from": "open",
+            "to": "retract"
+          },
+          {
+            "t": 41.90000000010905,
+            "from": "retract",
+            "to": "backoff"
+          },
+          {
+            "t": 44.00000000011908,
+            "from": "backoff",
+            "to": "lookaround"
+          },
+          {
+            "t": 49.90000000014725,
+            "from": "lookaround",
+            "to": "complete"
+          }
+        ],
+        "held_object_hidden_v1": true,
+        "held_interval": "close command through completed open command",
+        "setdown_lookaround_v1": true,
+        "student_execution": false,
+        "physical_success": null,
+        "done_semantics": "own command sequence and RGB confirmation only; separate evaluator scores physics"
+      },
+      "viewed_frames": [],
+      "canonical_result_sha256": "df3cf42264ab0adcdecdcfadae6d8cf934d25f6a5a335bfc347ec9f540c20111",
+      "directly_viewed_frames": [
+        {
+          "path": "raw/review-own/000000.jpg",
+          "sim_s": 0.0,
+          "sha256": "4ce92fe6fe963d0fc7f7aa28f09d932940636e78f4d8d96f966f047f16c45fd4"
+        },
+        {
+          "path": "raw/review-top/000000.jpg",
+          "sim_s": 0.0,
+          "sha256": "6c08857134cfcc7e5cd143a3fd2a27074973ed14bcdd4cc7dc710d2dc46bd403"
+        },
+        {
+          "path": "raw/review-own/000100.jpg",
+          "sim_s": 10.0
+        },
+        {
+          "path": "raw/review-top/000100.jpg",
+          "sim_s": 10.0
+        },
+        {
+          "path": "raw/review-own/000200.jpg",
+          "sim_s": 20.0
+        },
+        {
+          "path": "raw/review-top/000200.jpg",
+          "sim_s": 20.0
+        },
+        {
+          "path": "raw/review-own/000300.jpg",
+          "sim_s": 30.0,
+          "sha256": "2f735781685cd09345ba8430ca135aac7a2fddac347dbaabefd783341c76d385"
+        },
+        {
+          "path": "raw/review-top/000300.jpg",
+          "sim_s": 30.0,
+          "sha256": "40f16ffed549e731465c2a38f240b3a0a4b66f1cacaa43156b6852ea514243a0"
+        },
+        {
+          "path": "raw/review-own/000400.jpg",
+          "sim_s": 40.0
+        },
+        {
+          "path": "raw/review-top/000400.jpg",
+          "sim_s": 40.0
+        },
+        {
+          "path": "raw/review-own/000500.jpg",
+          "sim_s": 50.0
+        },
+        {
+          "path": "raw/review-top/000500.jpg",
+          "sim_s": 50.0
+        },
+        {
+          "path": "raw/review-own/000060.jpg",
+          "sim_s": 6.0,
+          "sha256": "cf57fcfb9f1e7be5ef0ca34f59ceb0d030668cda9624b29ba80a65a24940442b"
+        },
+        {
+          "path": "raw/review-top/000060.jpg",
+          "sim_s": 6.0,
+          "sha256": "4a130d47321f95305d025a2deb0a6e330de4e6d4d1e6ad1b95211f20db6b1262"
+        },
+        {
+          "path": "raw/review-own/000120.jpg",
+          "sim_s": 12.0,
+          "sha256": "ff74d76b3721271223e4a220190b09b005e6d2897c4f468a4b224ef13d440672"
+        },
+        {
+          "path": "raw/review-top/000120.jpg",
+          "sim_s": 12.0,
+          "sha256": "2f91f259e650edbe75ac4795b81c547dddb7be86a6049c79c1eaab343563b4e0"
+        },
+        {
+          "path": "raw/review-own/000180.jpg",
+          "sim_s": 18.0,
+          "sha256": "5649976d2a6553bcdc41bcbfd2e67b82f587c3f610ef5772ac789ed8b7969a88"
+        },
+        {
+          "path": "raw/review-top/000180.jpg",
+          "sim_s": 18.0,
+          "sha256": "5d36b04c7c9f5e073e83292c572d31fa44198f37f5251c4bc33f0eb2ea7dee52"
+        },
+        {
+          "path": "raw/review-own/000240.jpg",
+          "sim_s": 24.0,
+          "sha256": "c18e8ef1b11d2f587fd889454087bf64b4b47f0fdd593a985f1323da6cd03295"
+        },
+        {
+          "path": "raw/review-top/000240.jpg",
+          "sim_s": 24.0,
+          "sha256": "538cd7defdfc75432d1bd94da0e6329caee7fb25631a0fa2e7fb754e61ef13c1"
+        },
+        {
+          "path": "raw/review-own/000020.jpg",
+          "sim_s": 2.0,
+          "sha256": "dcf1f43466073d8483ad0966938db512f0cb580c1cdb786ce0caed220245ffde"
+        },
+        {
+          "path": "raw/review-top/000020.jpg",
+          "sim_s": 2.0,
+          "sha256": "06b2ebdeef7ab25282f4cb3b03a3baab8f073d45ec9d3db7016aa463af761795"
+        },
+        {
+          "path": "raw/review-own/000030.jpg",
+          "sim_s": 3.0,
+          "sha256": "fe67c2b8792d3b19503e47c2fa467c1258c31dfb72e2a1eeb80296144f7a6737"
+        },
+        {
+          "path": "raw/review-top/000030.jpg",
+          "sim_s": 3.0,
+          "sha256": "cfe21834c0521af08a2f40c38763c9353d6b114e7a3b908621cae3b6c4dd158c"
+        },
+        {
+          "path": "raw/review-own/000040.jpg",
+          "sim_s": 4.0,
+          "sha256": "b8811d6338d2044da38ba591e70f565579444ffddb41786b8c403ca401b317c1"
+        },
+        {
+          "path": "raw/review-top/000040.jpg",
+          "sim_s": 4.0,
+          "sha256": "55723c892d5256b0f1d980cb5ff331feabaf112a4aafcbd2aa55a2378898b6a4"
+        },
+        {
+          "path": "raw/review-own/000050.jpg",
+          "sim_s": 5.0,
+          "sha256": "e887f5791bca25df530353b41af49f9dd1d56daa4cfa4ab2f7d646eebe46d9f2"
+        },
+        {
+          "path": "raw/review-top/000050.jpg",
+          "sim_s": 5.0,
+          "sha256": "2b920b064300361cdc1d7e7d22f4e2d59afe2483cfb4bfeb5dd617850873a083"
+        },
+        {
+          "path": "raw/review-own/000070.jpg",
+          "sim_s": 7.0,
+          "sha256": "7066ea14adb06bc8bddb4bc42beba205c7e5fb090679f8bdf2304ea4f295d6cb"
+        },
+        {
+          "path": "raw/review-top/000070.jpg",
+          "sim_s": 7.0,
+          "sha256": "fd4d5add991bee45e18f2e01de5db6cb9998c220ec82a3e328bbf52172b0767f"
+        },
+        {
+          "path": "raw/review-own/000080.jpg",
+          "sim_s": 8.0,
+          "sha256": "55228ba71230b3192cb98a9d684c9b62f82d82717408c785478d07a7ee6357f2"
+        },
+        {
+          "path": "raw/review-top/000080.jpg",
+          "sim_s": 8.0,
+          "sha256": "0079d1acf93a6e9fb4f75ddd63e78474e37243e0ad49ad32d9419e386f325b19"
+        }
+      ],
+      "retrieval": {
+        "receipt": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act9-ec0bd628-ops/act9-gate-8316900-ec0bd628-retrieval.json",
+        "sha256": "11b0b40c2c70d3d34c3544ad892f7c9dc5da70b7c33848c4a216d412180ff023",
+        "local_verified_files": 24,
+        "manifest_sha256": "a054d077e5649eb5d4cfb429284d00546bbabe98ecf499f77a670aa535e663d8",
+        "remote_manifest_verified": true
+      },
+      "lossless_verification": {
+        "run": "act9-gate-8316900-ec0bd628",
+        "checks": [
+          {
+            "file": "recovery-eval-only.jsonl.zst",
+            "decoded_sha256": "8bee8338783ac6443ad8e3b8c774edd5f65ee714090e56bdbfecf04012a7f8e9",
+            "comparison": "saved precompression hash PASS"
+          },
+          {
+            "file": "recovery-commands.jsonl.zst",
+            "decoded_sha256": "360981efb68a9818ae2dd9539aa619d8eced6aaf885bf35733812ceda10ea7eb",
+            "comparison": "saved precompression hash PASS"
+          },
+          {
+            "file": "raw/teacher-commands.jsonl.zst",
+            "decoded_sha256": "cad511c4045d84c59a0c0019705ca67812646c32b9cdb2b7fbf700cb092014f5",
+            "comparison": "saved precompression hash PASS"
+          },
+          {
+            "file": "raw/eval-only.jsonl.zst",
+            "decoded_sha256": "82ec60b6762f7141bc06d0c7a39756ead2ac037a5bd121c4662cb7e90fb231e8",
+            "comparison": "saved precompression hash PASS"
+          }
+        ],
+        "documented_adapter_rewrites": [
+          {
+            "file": "raw/result.json.zst",
+            "reason": "adapter updates source/dependency/noise/recovery metadata after teacher inner manifest; pre-adapter report reconstructed byte-for-byte and hash matched",
+            "current_decoded_sha256": "3f8c196ad528543de2e982e0ec2f458d82bc4a43048ce8a07949a1750258a219",
+            "teacher_pre_adapter_decoded_sha256": "111f8304ffa24fcba0df2ed47f6d84d153cca21335b70e37b107a1a698d0e771"
+          }
+        ],
+        "passed": true
+      }
+    },
+    {
+      "run": "act9-gate-8316901-ec0bd628",
+      "seed": 8316901,
+      "submitted": true,
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/act9-gate-8316901-ec0bd628",
+      "status": "complete",
+      "success": true,
+      "source_sha": "ec0bd6284d82b2302187f9c2722c478b71a3731b",
+      "raw_status": "complete",
+      "result_complete": true,
+      "input_audit_available": true,
+      "exit": "0",
+      "reason": "command_complete",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 162,
+        "blocked_held": 184,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 108,
+          "align": 22,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "audit_pass": true,
+      "recovery_audit": {
+        "schema": "ugrp.act9.recovery_audit.v1",
+        "command_ticks": 487,
+        "perturbation_ticks": 9,
+        "perturbation_fraction": 0.018480492813141684,
+        "perturbation_times": [
+          4.499999999999754,
+          4.599999999999876,
+          4.699999999999998,
+          4.800000000000121,
+          4.900000000000243,
+          5.000000000000365,
+          5.100000000000487,
+          5.2000000000006095,
+          5.300000000000732
+        ],
+        "lost_N": 1,
+        "reacquired_N": 1,
+        "recovery_scene_N": 1,
+        "recovery_failure_N": 0,
+        "perturbation_no_loss_N": 0,
+        "episodes": [
+          {
+            "episode_id": 1,
+            "start_t": 4.499999999999754,
+            "lost_t": 4.800000000000121,
+            "reacquired_t": 7.1000000000029315,
+            "failure": false
+          }
+        ],
+        "scope": "own-camera visibility gate; reacquisition is not task success"
+      },
+      "ledger_recount_hash_passed": true,
+      "perturbation_label_violations": [],
+      "phase_ticks": {
+        "fold": 6,
+        "approach": 131,
+        "align": 22,
+        "hover": 9,
+        "descent": 16,
+        "close": 11,
+        "lift": 15,
+        "lift_settle": 32,
+        "lookback_pose": 11,
+        "lookback": 21,
+        "lookback_settle": 5,
+        "verify_lift": 11,
+        "hold": 30,
+        "lookback_return": 21,
+        "lower": 20,
+        "open": 7,
+        "retract": 18,
+        "backoff": 21,
+        "lookaround": 59,
+        "complete": 21
+      },
+      "sim_s": 48.60000000014723,
+      "wall_s": 131.4032847849994,
+      "wall_per_sim": 2.703771291864225,
+      "first30": {
+        "method": "review JPEG mtimes; first available through min(30,last review SIM second)",
+        "start_sim_s": 0.0,
+        "end_sim_s": 30.0,
+        "wall_s": 78.81474184989929,
+        "wall_per_sim": 2.6271580616633097,
+        "available_sim_s": 30.0
+      },
+      "training_rgb": false,
+      "weld": "off",
+      "result_file": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316901-ec0bd628/raw/result.json.zst",
+      "result_sha256": "35ead40ab68ce4fdb2b59f66151218a1062b0b36101daed9c5250cfc1679d108",
+      "ledger_sha256": "dfae4fba53af7538be1b2e99da45623712dd84b089d9fbe468ac9758ab7bf38b",
+      "teacher": {
+        "profile": "solo_visible_only_v1",
+        "phase": "complete",
+        "command_result": "command_complete",
+        "holding_belief": false,
+        "ik_rejections": 18,
+        "ik_checks": 23,
+        "ik_rejection_reasons": {
+          "target radius is outside the calibrated arm-axis envelope": 14,
+          "target has no safe v3 physical-pad IK solution": 4
+        },
+        "teacher_stability": "align_relook_v1",
+        "reach_mode": "pad_window_v2",
+        "rgb_lift_mode": "solo_lift_lookback_v1",
+        "negative_probe": false,
+        "solo_lift_negative_probe_v1": false,
+        "solo_lift_lookback_margin_v1": true,
+        "gate_eligible": true,
+        "lookback_commanded_backoff_m": 0.15315264186250238,
+        "lookback_commanded_return_m": 0.15315264186250238,
+        "lookback_plan": {
+          "pwm": {
+            "1": 1500,
+            "3": 743,
+            "4": 1886,
+            "5": 2178,
+            "6": 1498
+          },
+          "backoff_m": 0.15,
+          "geometry": {
+            "site_from_issued_grip_m": [
+              0.3469092747952462,
+              -0.00046718550219711864,
+              0.0
+            ],
+            "site_pixels": 17531,
+            "ring_pixels": 10624,
+            "surface_in_frame_n": 81,
+            "surface_N": 81,
+            "held_occlusion_pixels": 0,
+            "bbox_xyxy": [
+              197,
+              51,
+              375,
+              155
+            ],
+            "qualified": true,
+            "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+          },
+          "command_distance_margin_m": 0.005,
+          "backoff_bounds_m": [
+            0.09,
+            0.155
+          ],
+          "action_margin_mode": "solo_lift_lookback_margin_v1",
+          "short_retreat_geometry": {
+            "site_from_issued_grip_m": [
+              0.3019092747952462,
+              -0.00046718550219711864,
+              0.0
+            ],
+            "site_pixels": 27966,
+            "ring_pixels": 12800,
+            "surface_in_frame_n": 81,
+            "surface_N": 81,
+            "held_occlusion_pixels": 0,
+            "bbox_xyxy": [
+              183,
+              152,
+              390,
+              295
+            ],
+            "qualified": true,
+            "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+          },
+          "retreat_shortfall_sensitivity_m": 0.04,
+          "held_shift_sensitivity_m": 0.005,
+          "held_tilt_sensitivity_deg": 1.0,
+          "scope": "static sensitivity; actual retreat and held pose unverified"
+        },
+        "alignment_relooks": 0,
+        "events": [
+          {
+            "t": 1.3000000000000178,
+            "from": "start",
+            "to": "fold"
+          },
+          {
+            "t": 1.9000000000002182,
+            "from": "fold",
+            "to": "approach"
+          },
+          {
+            "t": 14.999999999987716,
+            "from": "approach",
+            "to": "align"
+          },
+          {
+            "t": 17.199999999991114,
+            "from": "align",
+            "to": "hover"
+          },
+          {
+            "t": 18.09999999999541,
+            "from": "hover",
+            "to": "descent"
+          },
+          {
+            "t": 19.70000000000305,
+            "from": "descent",
+            "to": "close"
+          },
+          {
+            "t": 20.800000000008303,
+            "from": "close",
+            "to": "lift"
+          },
+          {
+            "t": 22.300000000015466,
+            "from": "lift",
+            "to": "lift_settle"
+          },
+          {
+            "t": 25.500000000030745,
+            "from": "lift_settle",
+            "to": "lookback_pose"
+          },
+          {
+            "t": 26.600000000035998,
+            "from": "lookback_pose",
+            "to": "lookback"
+          },
+          {
+            "t": 28.700000000046025,
+            "from": "lookback",
+            "to": "lookback_settle"
+          },
+          {
+            "t": 29.200000000048412,
+            "from": "lookback_settle",
+            "to": "verify_lift"
+          },
+          {
+            "t": 30.300000000053664,
+            "from": "verify_lift",
+            "to": "hold"
+          },
+          {
+            "t": 33.30000000006799,
+            "from": "hold",
+            "to": "lookback_return"
+          },
+          {
+            "t": 35.400000000078016,
+            "from": "lookback_return",
+            "to": "lower"
+          },
+          {
+            "t": 37.400000000087566,
+            "from": "lower",
+            "to": "open"
+          },
+          {
+            "t": 38.10000000009091,
+            "from": "open",
+            "to": "retract"
+          },
+          {
+            "t": 39.9000000000995,
+            "from": "retract",
+            "to": "backoff"
+          },
+          {
+            "t": 42.00000000010953,
+            "from": "backoff",
+            "to": "lookaround"
+          },
+          {
+            "t": 47.9000000001377,
+            "from": "lookaround",
+            "to": "complete"
+          }
+        ],
+        "held_object_hidden_v1": true,
+        "held_interval": "close command through completed open command",
+        "setdown_lookaround_v1": true,
+        "student_execution": false,
+        "physical_success": null,
+        "done_semantics": "own command sequence and RGB confirmation only; separate evaluator scores physics"
+      },
+      "viewed_frames": [],
+      "canonical_result_sha256": "4070369333f47ec6817f3a46ed27580eb83fc31be66636154024b8813d42945e",
+      "directly_viewed_frames": [
+        {
+          "path": "raw/review-own/000000.jpg",
+          "sim_s": 0.0
+        },
+        {
+          "path": "raw/review-top/000000.jpg",
+          "sim_s": 0.0
+        },
+        {
+          "path": "raw/review-own/000060.jpg",
+          "sim_s": 6.0,
+          "sha256": "77b5c848a1084eec2735943ef85f79e41e181c962d3c4329caf7c29371f1cd30"
+        },
+        {
+          "path": "raw/review-top/000060.jpg",
+          "sim_s": 6.0,
+          "sha256": "12d67752853f44a25a9dfc9df9b4148c3aa3850be4d3818fec9fc61e38c1d07b"
+        },
+        {
+          "path": "raw/review-own/000120.jpg",
+          "sim_s": 12.0,
+          "sha256": "3d189e4732c8d5c36aa834b1a9a795a98ef664f71ffe7f2e919466a4d156be71"
+        },
+        {
+          "path": "raw/review-top/000120.jpg",
+          "sim_s": 12.0,
+          "sha256": "36356870bbd2f89da5d046be16a618f2c4c24eff797c720d291ee7fd562798d1"
+        },
+        {
+          "path": "raw/review-own/000180.jpg",
+          "sim_s": 18.0,
+          "sha256": "ab7fd835ab34cb1b8add179be96562516e44baede04ae92c9597e93547501898"
+        },
+        {
+          "path": "raw/review-top/000180.jpg",
+          "sim_s": 18.0,
+          "sha256": "7ae24f08408db68a595df190bf4a0c83b541be403af15e1c5c2d35409593320c"
+        },
+        {
+          "path": "raw/review-own/000240.jpg",
+          "sim_s": 24.0,
+          "sha256": "d3c2203a56d9cb230d0a6d8538d114a2ec65d01c2f0db778309a272bca7adb2f"
+        },
+        {
+          "path": "raw/review-top/000240.jpg",
+          "sim_s": 24.0,
+          "sha256": "344475f5b3d420e729a5ce2a37c53ac322a18af9f634b6913a08bc71bff4f1fc"
+        },
+        {
+          "path": "raw/review-own/000300.jpg",
+          "sim_s": 30.0,
+          "sha256": "ab675bee6f669d0c75013e2ace2425ac51214c62d048357333cf5da9301997ec"
+        },
+        {
+          "path": "raw/review-top/000300.jpg",
+          "sim_s": 30.0,
+          "sha256": "49831685370b56341d920e101a5fd45119cb971a79bd6c8471a51c99b654aba4"
+        },
+        {
+          "path": "raw/review-own/000020.jpg",
+          "sim_s": 2.0,
+          "sha256": "e6d93eebdf6d45d0cba9a98501378dabc1f671accfe49b5d3797c15103b3f1a9"
+        },
+        {
+          "path": "raw/review-top/000020.jpg",
+          "sim_s": 2.0,
+          "sha256": "753e418ae42e65f241e0829f44e4278926e1013cc596b100393e9023423e1cb5"
+        },
+        {
+          "path": "raw/review-own/000030.jpg",
+          "sim_s": 3.0,
+          "sha256": "22854541a755876385e6545f93ee58d0d9df0f36d8dc45ed2909719ef2bb51a2"
+        },
+        {
+          "path": "raw/review-top/000030.jpg",
+          "sim_s": 3.0,
+          "sha256": "7d4b0c30cde4d349bea457b43a03bea9d87ac4509bd5fcb26e582becdcde8dbc"
+        },
+        {
+          "path": "raw/review-own/000040.jpg",
+          "sim_s": 4.0,
+          "sha256": "228b06cb4b5cf25cb77176a8e4f8d78a96a9518fece343c4ddd68a1dec8ded38"
+        },
+        {
+          "path": "raw/review-top/000040.jpg",
+          "sim_s": 4.0,
+          "sha256": "516fe1902ced04c2ee257b22b69ee0ec90bc7a3aa89fca718f66354b73f99e0c"
+        },
+        {
+          "path": "raw/review-own/000050.jpg",
+          "sim_s": 5.0,
+          "sha256": "098e80c0405c086bd587618f0a833d1489ca9f1be6d3f3067ecd42fffcac7e07"
+        },
+        {
+          "path": "raw/review-top/000050.jpg",
+          "sim_s": 5.0,
+          "sha256": "2614814f5e0e0ed6d669902bc15ed02337f5013fe99b1f345cf223d928d4e645"
+        },
+        {
+          "path": "raw/review-own/000070.jpg",
+          "sim_s": 7.0,
+          "sha256": "ce70f8f192205cb9daa6a21760801374c064e87897d09db1a1e5d32ac34049f5"
+        },
+        {
+          "path": "raw/review-top/000070.jpg",
+          "sim_s": 7.0,
+          "sha256": "6c0b04c95345258fae471917a17a826f74dd59270d5b4e5e8e4f00678e304d2d"
+        },
+        {
+          "path": "raw/review-own/000080.jpg",
+          "sim_s": 8.0,
+          "sha256": "34c9ad58d2959d9330041415267face389404a98fd8be2bb216e773d795a9ce5"
+        },
+        {
+          "path": "raw/review-top/000080.jpg",
+          "sim_s": 8.0,
+          "sha256": "4b21516d2e07fa5832f033dacc0817ccdb28213917b3b3e88b608c27e8f45585"
+        },
+        {
+          "path": "raw/review-own/000100.jpg",
+          "sim_s": 10.0
+        },
+        {
+          "path": "raw/review-top/000100.jpg",
+          "sim_s": 10.0
+        },
+        {
+          "path": "raw/review-own/000190.jpg",
+          "sim_s": 19.0
+        },
+        {
+          "path": "raw/review-top/000190.jpg",
+          "sim_s": 19.0
+        },
+        {
+          "path": "raw/review-own/000290.jpg",
+          "sim_s": 29.0
+        },
+        {
+          "path": "raw/review-top/000290.jpg",
+          "sim_s": 29.0
+        },
+        {
+          "path": "raw/review-own/000380.jpg",
+          "sim_s": 38.0
+        },
+        {
+          "path": "raw/review-top/000380.jpg",
+          "sim_s": 38.0
+        },
+        {
+          "path": "raw/review-own/000480.jpg",
+          "sim_s": 48.0
+        },
+        {
+          "path": "raw/review-top/000480.jpg",
+          "sim_s": 48.0
+        }
+      ],
+      "retrieval": {
+        "receipt": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act9-ec0bd628-ops/act9-gate-8316901-ec0bd628-retrieval.json",
+        "sha256": "4bf68c289f2fb4ba40398843cf0557fd2c3ffab7b2f0387ea1198dec62dbe730",
+        "local_verified_files": 24,
+        "manifest_sha256": "1b81edca67aef8c630c960bbc2df800662d7bc2fa0a4daadb6a83522d1531c03",
+        "remote_manifest_verified": true
+      },
+      "lossless_verification": {
+        "run": "act9-gate-8316901-ec0bd628",
+        "checks": [
+          {
+            "file": "recovery-eval-only.jsonl.zst",
+            "decoded_sha256": "4fb95f99bc2df9cbac073286542cfc0bd1039a162f6e5da96e8335d93161ba50",
+            "comparison": "saved precompression hash PASS"
+          },
+          {
+            "file": "recovery-commands.jsonl.zst",
+            "decoded_sha256": "dfae4fba53af7538be1b2e99da45623712dd84b089d9fbe468ac9758ab7bf38b",
+            "comparison": "saved precompression hash PASS"
+          },
+          {
+            "file": "raw/teacher-commands.jsonl.zst",
+            "decoded_sha256": "6156da60747bb7c0e3183040a8e000537b3b6183e51f82dd0cfb6e80b5e9348c",
+            "comparison": "saved precompression hash PASS"
+          },
+          {
+            "file": "raw/eval-only.jsonl.zst",
+            "decoded_sha256": "ae5bc355cbb78ffcc273a918c35d97b50a376877b777e82742aa39dcd2ebe652",
+            "comparison": "saved precompression hash PASS"
+          }
+        ],
+        "documented_adapter_rewrites": [
+          {
+            "file": "raw/result.json.zst",
+            "reason": "adapter updates source/dependency/noise/recovery metadata after teacher inner manifest; pre-adapter report reconstructed byte-for-byte and hash matched",
+            "current_decoded_sha256": "ffd9725bd3c131a2fab2c9c27f1203f08e8084b8021bd488dd792d1a5d47ec63",
+            "teacher_pre_adapter_decoded_sha256": "1ef154cc0f7cdc69ac09b59198993d9b5b07fb97b14aa5c55eab1922b9df253d"
+          }
+        ],
+        "passed": true
+      }
+    },
+    {
+      "run": "act9-gate-8316902-ec0bd628",
+      "seed": 8316902,
+      "submitted": true,
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/act9-gate-8316902-ec0bd628",
+      "status": "complete",
+      "success": false,
+      "source_sha": "ec0bd6284d82b2302187f9c2722c478b71a3731b",
+      "raw_status": "complete",
+      "result_complete": true,
+      "input_audit_available": true,
+      "exit": "0",
+      "reason": "phase_timeout",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 575,
+        "blocked_held": 0,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 25
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "audit_pass": true,
+      "recovery_audit": {
+        "schema": "ugrp.act9.recovery_audit.v1",
+        "command_ticks": 607,
+        "perturbation_ticks": 9,
+        "perturbation_fraction": 0.014827018121911038,
+        "perturbation_times": [
+          3.999999999999143,
+          4.099999999999265,
+          4.199999999999387,
+          4.2999999999995095,
+          4.399999999999632,
+          4.499999999999754,
+          4.599999999999876,
+          4.699999999999998,
+          4.800000000000121
+        ],
+        "lost_N": 1,
+        "reacquired_N": 0,
+        "recovery_scene_N": 0,
+        "recovery_failure_N": 1,
+        "perturbation_no_loss_N": 0,
+        "episodes": [
+          {
+            "episode_id": 1,
+            "start_t": 3.999999999999143,
+            "lost_t": 4.499999999999754,
+            "reacquired_t": null,
+            "failure": true
+          }
+        ],
+        "scope": "own-camera visibility gate; reacquisition is not task success"
+      },
+      "ledger_recount_hash_passed": true,
+      "perturbation_label_violations": [],
+      "phase_ticks": {
+        "fold": 6,
+        "approach": 600,
+        "failed": 1
+      },
+      "sim_s": 60.60000000020453,
+      "wall_s": 160.56698536000113,
+      "wall_per_sim": 2.649620220453122,
+      "first30": {
+        "method": "review JPEG mtimes; first available through min(30,last review SIM second)",
+        "start_sim_s": 0.0,
+        "end_sim_s": 30.0,
+        "wall_s": 75.26220655441284,
+        "wall_per_sim": 2.508740218480428,
+        "available_sim_s": 30.0
+      },
+      "training_rgb": false,
+      "weld": "off",
+      "result_file": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316902-ec0bd628/raw/result.json",
+      "result_sha256": "966914e8699d2666bcc5ad92b6054c5ff7968f132435764ae75c6cb41bb4479f",
+      "ledger_sha256": "ff47872299f2a4820843ddabaf5c130abd7dd40ddea88671181ca34fb9b86437",
+      "teacher": {
+        "profile": "solo_visible_only_v1",
+        "phase": "failed",
+        "command_result": "phase_timeout",
+        "holding_belief": false,
+        "ik_rejections": 0,
+        "ik_checks": 0,
+        "ik_rejection_reasons": {},
+        "teacher_stability": "align_relook_v1",
+        "reach_mode": "pad_window_v2",
+        "rgb_lift_mode": "solo_lift_lookback_v1",
+        "negative_probe": false,
+        "solo_lift_negative_probe_v1": false,
+        "solo_lift_lookback_margin_v1": true,
+        "gate_eligible": true,
+        "lookback_commanded_backoff_m": 0.0,
+        "lookback_commanded_return_m": 0.0,
+        "lookback_plan": null,
+        "alignment_relooks": 0,
+        "events": [
+          {
+            "t": 1.3000000000000178,
+            "from": "start",
+            "to": "fold"
+          },
+          {
+            "t": 1.9000000000002182,
+            "from": "fold",
+            "to": "approach"
+          },
+          {
+            "t": 61.90000000020455,
+            "from": "approach",
+            "to": "failed"
+          }
+        ],
+        "held_object_hidden_v1": true,
+        "held_interval": "close command through completed open command",
+        "setdown_lookaround_v1": true,
+        "student_execution": false,
+        "physical_success": null,
+        "done_semantics": "own command sequence and RGB confirmation only; separate evaluator scores physics"
+      },
+      "viewed_frames": [],
+      "canonical_result_sha256": "51c93ddbf3cbbd83424ba05273bb8b1fda1951c3f1af94319235598e751e48e1",
+      "directly_viewed_frames": [
+        {
+          "path": "raw/review-own/000000.jpg",
+          "sim_s": 0.0,
+          "sha256": "0519db5b804a4e55084b702d4f585b0fb12ca0ae90f6d95d4ae94d0ff5647eb4"
+        },
+        {
+          "path": "raw/review-top/000000.jpg",
+          "sim_s": 0.0,
+          "sha256": "fa98f0e8b59a34ed905d7b130e814a1d7fdef74181f20af7b9e6c8a543ca8957"
+        },
+        {
+          "path": "raw/review-own/000120.jpg",
+          "sim_s": 12.0,
+          "sha256": "9fde74197e3cb42909e26252944c989e2496e5b74de9a3b81b807685ddda73b8"
+        },
+        {
+          "path": "raw/review-top/000120.jpg",
+          "sim_s": 12.0,
+          "sha256": "a584870c7b900991157c8b87e27a3c83d214f52eef7717594f72990f85c9735c"
+        },
+        {
+          "path": "raw/review-own/000240.jpg",
+          "sim_s": 24.0,
+          "sha256": "55d9bc2c762ca5d0f0111f967dad6663f995924ce62e4cbbfe2910f96450bc8b"
+        },
+        {
+          "path": "raw/review-top/000240.jpg",
+          "sim_s": 24.0,
+          "sha256": "a584870c7b900991157c8b87e27a3c83d214f52eef7717594f72990f85c9735c"
+        },
+        {
+          "path": "raw/review-own/000360.jpg",
+          "sim_s": 36.0,
+          "sha256": "438c803c5636a61060ca817cd6c12982a93d50d62e6b77272be4272599ba7b19"
+        },
+        {
+          "path": "raw/review-top/000360.jpg",
+          "sim_s": 36.0,
+          "sha256": "a584870c7b900991157c8b87e27a3c83d214f52eef7717594f72990f85c9735c"
+        },
+        {
+          "path": "raw/review-own/000480.jpg",
+          "sim_s": 48.0,
+          "sha256": "20c6cd6599c975dc5e8ace256245b01c9472ced5260a8c89bbc910b9121f7e47"
+        },
+        {
+          "path": "raw/review-top/000480.jpg",
+          "sim_s": 48.0,
+          "sha256": "a584870c7b900991157c8b87e27a3c83d214f52eef7717594f72990f85c9735c"
+        },
+        {
+          "path": "raw/review-own/000600.jpg",
+          "sim_s": 60.0,
+          "sha256": "09d04236027535157d99ac4f743740918c2bc3d29bdef74051eef5c53e0e1c41"
+        },
+        {
+          "path": "raw/review-top/000600.jpg",
+          "sim_s": 60.0,
+          "sha256": "a584870c7b900991157c8b87e27a3c83d214f52eef7717594f72990f85c9735c"
+        },
+        {
+          "path": "raw/review-own/000090.jpg",
+          "sim_s": 9.0,
+          "sha256": "525c3c427207ddf00e987b2c7e36e689f00879be9410101e1e29cf3fe1cb27d7"
+        },
+        {
+          "path": "raw/review-top/000090.jpg",
+          "sim_s": 9.0,
+          "sha256": "a584870c7b900991157c8b87e27a3c83d214f52eef7717594f72990f85c9735c"
+        },
+        {
+          "path": "raw/review-own/000180.jpg",
+          "sim_s": 18.0,
+          "sha256": "a42ee8b4725d6fe88f66f00e9a86cddb595d7726a06e5d31797283efd39a74fe"
+        },
+        {
+          "path": "raw/review-top/000180.jpg",
+          "sim_s": 18.0,
+          "sha256": "a584870c7b900991157c8b87e27a3c83d214f52eef7717594f72990f85c9735c"
+        },
+        {
+          "path": "raw/review-own/000270.jpg",
+          "sim_s": 27.0,
+          "sha256": "8d78e5c81b3b2713c6f0b1916e59bc04d9ba94544ff71fc298c7ef03a8eb4e7f"
+        },
+        {
+          "path": "raw/review-top/000270.jpg",
+          "sim_s": 27.0,
+          "sha256": "a584870c7b900991157c8b87e27a3c83d214f52eef7717594f72990f85c9735c"
+        },
+        {
+          "path": "raw/review-own/000450.jpg",
+          "sim_s": 45.0,
+          "sha256": "0ebbbcce90afdf4ce701363ab985c8daf14baaf0897f6f272de79eb068f1a241"
+        },
+        {
+          "path": "raw/review-top/000450.jpg",
+          "sim_s": 45.0,
+          "sha256": "a584870c7b900991157c8b87e27a3c83d214f52eef7717594f72990f85c9735c"
+        }
+      ],
+      "retrieval": {
+        "receipt": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act9-ec0bd628-ops/act9-gate-8316902-ec0bd628-retrieval.json",
+        "sha256": "08b8604ba0be4ac9401caf1c7f0e7898f4c86a676dd1e682eea6e2b82adffbc4",
+        "local_verified_files": 24,
+        "manifest_sha256": "6da5b80debfd0e0f8e815581d0242ae48f58dfae6f86be070829c002d803ba8c",
+        "remote_manifest_verified": true
+      },
+      "lossless_verification": {
+        "run": "act9-gate-8316902-ec0bd628",
+        "checks": [
+          {
+            "file": "recovery-eval-only.jsonl.zst",
+            "decoded_sha256": "0059bb1c13ccf406693cf6f3b33d416f20a6bed132f00196b14942688cd10fb0",
+            "comparison": "saved precompression hash PASS"
+          },
+          {
+            "file": "recovery-commands.jsonl.zst",
+            "decoded_sha256": "ff47872299f2a4820843ddabaf5c130abd7dd40ddea88671181ca34fb9b86437",
+            "comparison": "saved precompression hash PASS"
+          },
+          {
+            "file": "raw/teacher-commands.jsonl.zst",
+            "decoded_sha256": "714c1102dabeb36015f8e09027f7c219d9a31f0a2c99084a2d273fce7d0c48a7",
+            "comparison": "saved precompression hash PASS"
+          },
+          {
+            "file": "raw/eval-only.jsonl.zst",
+            "decoded_sha256": "0024782425a0efd938d19a0beac2f1b6eeac3e0c7be38eec66f2d69961f1677a",
+            "comparison": "saved precompression hash PASS"
+          }
+        ],
+        "documented_adapter_rewrites": [],
+        "passed": true
+      }
+    },
+    {
+      "run": "act9-gate-8316903-ec0bd628",
+      "seed": 8316903,
+      "submitted": true,
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/act9-gate-8316903-ec0bd628",
+      "status": "complete",
+      "success": true,
+      "source_sha": "ec0bd6284d82b2302187f9c2722c478b71a3731b",
+      "raw_status": "complete",
+      "result_complete": true,
+      "input_audit_available": true,
+      "exit": "0",
+      "reason": "command_complete",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 155,
+        "blocked_held": 184,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 95,
+          "align": 23,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "audit_pass": true,
+      "recovery_audit": {
+        "schema": "ugrp.act9.recovery_audit.v1",
+        "command_ticks": 468,
+        "perturbation_ticks": 9,
+        "perturbation_fraction": 0.019230769230769232,
+        "perturbation_times": [
+          5.400000000000854,
+          5.500000000000976,
+          5.600000000001098,
+          5.7000000000012205,
+          5.800000000001343,
+          5.900000000001465,
+          6.000000000001587,
+          6.100000000001709,
+          6.200000000001832
+        ],
+        "lost_N": 1,
+        "reacquired_N": 1,
+        "recovery_scene_N": 1,
+        "recovery_failure_N": 0,
+        "perturbation_no_loss_N": 0,
+        "episodes": [
+          {
+            "episode_id": 1,
+            "start_t": 5.400000000000854,
+            "lost_t": 5.7000000000012205,
+            "reacquired_t": 7.200000000003054,
+            "failure": false
+          }
+        ],
+        "scope": "own-camera visibility gate; reacquisition is not task success"
+      },
+      "ledger_recount_hash_passed": true,
+      "perturbation_label_violations": [],
+      "phase_ticks": {
+        "fold": 6,
+        "approach": 110,
+        "align": 23,
+        "hover": 10,
+        "descent": 16,
+        "close": 11,
+        "lift": 15,
+        "lift_settle": 32,
+        "lookback_pose": 11,
+        "lookback": 21,
+        "lookback_settle": 5,
+        "verify_lift": 11,
+        "hold": 30,
+        "lookback_return": 21,
+        "lower": 20,
+        "open": 7,
+        "retract": 18,
+        "backoff": 21,
+        "lookaround": 59,
+        "complete": 21
+      },
+      "sim_s": 46.70000000013816,
+      "wall_s": 145.4893931000006,
+      "wall_per_sim": 3.1154045631599607,
+      "first30": {
+        "method": "review JPEG mtimes; first available through min(30,last review SIM second)",
+        "start_sim_s": 0.0,
+        "end_sim_s": 30.0,
+        "wall_s": 91.23003649711609,
+        "wall_per_sim": 3.0410012165705362,
+        "available_sim_s": 30.0
+      },
+      "training_rgb": false,
+      "weld": "off",
+      "result_file": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316903-ec0bd628/raw/result.json.zst",
+      "result_sha256": "fe301c16701ec2d296ac47cf66123c9617a7d389d3b58eb57d3f490cecd91649",
+      "ledger_sha256": "a4ead2edde5f62c5ef5ffda2ee6f5eee104c7403e5f669e58d82bb1281a5953b",
+      "teacher": {
+        "profile": "solo_visible_only_v1",
+        "phase": "complete",
+        "command_result": "command_complete",
+        "holding_belief": false,
+        "ik_rejections": 18,
+        "ik_checks": 24,
+        "ik_rejection_reasons": {
+          "target radius is outside the calibrated arm-axis envelope": 15,
+          "target has no safe v3 physical-pad IK solution": 3
+        },
+        "teacher_stability": "align_relook_v1",
+        "reach_mode": "pad_window_v2",
+        "rgb_lift_mode": "solo_lift_lookback_v1",
+        "negative_probe": false,
+        "solo_lift_negative_probe_v1": false,
+        "solo_lift_lookback_margin_v1": true,
+        "gate_eligible": true,
+        "lookback_commanded_backoff_m": 0.15315264186250238,
+        "lookback_commanded_return_m": 0.15315264186250238,
+        "lookback_plan": {
+          "pwm": {
+            "1": 1500,
+            "3": 749,
+            "4": 1835,
+            "5": 2213,
+            "6": 1519
+          },
+          "backoff_m": 0.15,
+          "geometry": {
+            "site_from_issued_grip_m": [
+              0.3515142862464655,
+              0.004577043889490172,
+              0.0
+            ],
+            "site_pixels": 17290,
+            "ring_pixels": 10592,
+            "surface_in_frame_n": 81,
+            "surface_N": 81,
+            "held_occlusion_pixels": 0,
+            "bbox_xyxy": [
+              214,
+              70,
+              391,
+              174
+            ],
+            "qualified": true,
+            "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+          },
+          "command_distance_margin_m": 0.005,
+          "backoff_bounds_m": [
+            0.09,
+            0.155
+          ],
+          "action_margin_mode": "solo_lift_lookback_margin_v1",
+          "short_retreat_geometry": {
+            "site_from_issued_grip_m": [
+              0.30651428624646554,
+              0.004577043889490172,
+              0.0
+            ],
+            "site_pixels": 27575,
+            "ring_pixels": 12736,
+            "surface_in_frame_n": 81,
+            "surface_N": 81,
+            "held_occlusion_pixels": 0,
+            "bbox_xyxy": [
+              197,
+              170,
+              403,
+              312
+            ],
+            "qualified": true,
+            "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+          },
+          "retreat_shortfall_sensitivity_m": 0.04,
+          "held_shift_sensitivity_m": 0.005,
+          "held_tilt_sensitivity_deg": 1.0,
+          "scope": "static sensitivity; actual retreat and held pose unverified"
+        },
+        "alignment_relooks": 0,
+        "events": [
+          {
+            "t": 1.3000000000000178,
+            "from": "start",
+            "to": "fold"
+          },
+          {
+            "t": 1.9000000000002182,
+            "from": "fold",
+            "to": "approach"
+          },
+          {
+            "t": 12.89999999999261,
+            "from": "approach",
+            "to": "align"
+          },
+          {
+            "t": 15.19999999998725,
+            "from": "align",
+            "to": "hover"
+          },
+          {
+            "t": 16.19999999998634,
+            "from": "hover",
+            "to": "descent"
+          },
+          {
+            "t": 17.79999999999398,
+            "from": "descent",
+            "to": "close"
+          },
+          {
+            "t": 18.89999999999923,
+            "from": "close",
+            "to": "lift"
+          },
+          {
+            "t": 20.400000000006393,
+            "from": "lift",
+            "to": "lift_settle"
+          },
+          {
+            "t": 23.600000000021673,
+            "from": "lift_settle",
+            "to": "lookback_pose"
+          },
+          {
+            "t": 24.700000000026925,
+            "from": "lookback_pose",
+            "to": "lookback"
+          },
+          {
+            "t": 26.800000000036952,
+            "from": "lookback",
+            "to": "lookback_settle"
+          },
+          {
+            "t": 27.30000000003934,
+            "from": "lookback_settle",
+            "to": "verify_lift"
+          },
+          {
+            "t": 28.400000000044592,
+            "from": "verify_lift",
+            "to": "hold"
+          },
+          {
+            "t": 31.400000000058917,
+            "from": "hold",
+            "to": "lookback_return"
+          },
+          {
+            "t": 33.500000000068944,
+            "from": "lookback_return",
+            "to": "lower"
+          },
+          {
+            "t": 35.500000000078494,
+            "from": "lower",
+            "to": "open"
+          },
+          {
+            "t": 36.200000000081836,
+            "from": "open",
+            "to": "retract"
+          },
+          {
+            "t": 38.00000000009043,
+            "from": "retract",
+            "to": "backoff"
+          },
+          {
+            "t": 40.10000000010046,
+            "from": "backoff",
+            "to": "lookaround"
+          },
+          {
+            "t": 46.00000000012863,
+            "from": "lookaround",
+            "to": "complete"
+          }
+        ],
+        "held_object_hidden_v1": true,
+        "held_interval": "close command through completed open command",
+        "setdown_lookaround_v1": true,
+        "student_execution": false,
+        "physical_success": null,
+        "done_semantics": "own command sequence and RGB confirmation only; separate evaluator scores physics"
+      },
+      "viewed_frames": [],
+      "canonical_result_sha256": "de52c1adb2ee380c3271331b5fa09e3259869cdf6079ddcd961cc378e4e89470",
+      "directly_viewed_frames": [],
+      "retrieval": {
+        "receipt": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act9-ec0bd628-ops/act9-gate-8316903-ec0bd628-retrieval.json",
+        "sha256": "70200094587283dd837c87f10cae6cf30891e149df9d5558fd79daf51723d7cb",
+        "local_verified_files": 24,
+        "manifest_sha256": "de0f157041783cdc4abf25854ff2ae886f1780de408b3e27dba9a897350b3c8e",
+        "remote_manifest_verified": true
+      },
+      "lossless_verification": {
+        "run": "act9-gate-8316903-ec0bd628",
+        "checks": [
+          {
+            "file": "recovery-eval-only.jsonl.zst",
+            "decoded_sha256": "131c3cc92a6c48ec5d286310bddd2f593098adaee8bbd2a4fef66c09757b40f1",
+            "comparison": "saved precompression hash PASS"
+          },
+          {
+            "file": "recovery-commands.jsonl.zst",
+            "decoded_sha256": "a4ead2edde5f62c5ef5ffda2ee6f5eee104c7403e5f669e58d82bb1281a5953b",
+            "comparison": "saved precompression hash PASS"
+          },
+          {
+            "file": "raw/teacher-commands.jsonl.zst",
+            "decoded_sha256": "9c0dbf902fb5aeb7afd175b6bd9a2383b5032ae4a50356dd8aef9297a7e2f731",
+            "comparison": "saved precompression hash PASS"
+          },
+          {
+            "file": "raw/eval-only.jsonl.zst",
+            "decoded_sha256": "21c5be45e45fcf1f3a1ab0bcdb654a80785dbeea3e2d7283c2ede147ccad9c1a",
+            "comparison": "saved precompression hash PASS"
+          }
+        ],
+        "documented_adapter_rewrites": [
+          {
+            "file": "raw/result.json.zst",
+            "reason": "adapter updates source/dependency/noise/recovery metadata after teacher inner manifest; pre-adapter report reconstructed byte-for-byte and hash matched",
+            "current_decoded_sha256": "ea47ec40f8177de4743239afdc550645190611217c3e34336b5c902d928fedfc",
+            "teacher_pre_adapter_decoded_sha256": "98751014a3c2d571167ef22285c2459cca25fafc010e1c349eef7c3f1cacea34"
+          }
+        ],
+        "passed": true
+      }
+    },
+    {
+      "run": "act9-gate-8316904-ec0bd628",
+      "seed": 8316904,
+      "submitted": true,
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/act9-gate-8316904-ec0bd628",
+      "status": "complete",
+      "success": true,
+      "source_sha": "ec0bd6284d82b2302187f9c2722c478b71a3731b",
+      "raw_status": "complete",
+      "result_complete": true,
+      "input_audit_available": true,
+      "exit": "0",
+      "reason": "command_complete",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 153,
+        "blocked_held": 184,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 122,
+          "align": 21,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "audit_pass": true,
+      "recovery_audit": {
+        "schema": "ugrp.act9.recovery_audit.v1",
+        "command_ticks": 491,
+        "perturbation_ticks": 9,
+        "perturbation_fraction": 0.018329938900203666,
+        "perturbation_times": [
+          3.49999999999942,
+          3.5999999999993646,
+          3.699999999999309,
+          3.7999999999992538,
+          3.8999999999991983,
+          3.999999999999143,
+          4.099999999999265,
+          4.199999999999387,
+          4.2999999999995095
+        ],
+        "lost_N": 1,
+        "reacquired_N": 1,
+        "recovery_scene_N": 1,
+        "recovery_failure_N": 0,
+        "perturbation_no_loss_N": 0,
+        "episodes": [
+          {
+            "episode_id": 1,
+            "start_t": 3.49999999999942,
+            "lost_t": 3.999999999999143,
+            "reacquired_t": 5.400000000000854,
+            "failure": false
+          }
+        ],
+        "scope": "own-camera visibility gate; reacquisition is not task success"
+      },
+      "ledger_recount_hash_passed": true,
+      "perturbation_label_violations": [],
+      "phase_ticks": {
+        "fold": 6,
+        "approach": 136,
+        "align": 21,
+        "hover": 9,
+        "descent": 16,
+        "close": 11,
+        "lift": 15,
+        "lift_settle": 32,
+        "lookback_pose": 11,
+        "lookback": 21,
+        "lookback_settle": 5,
+        "verify_lift": 11,
+        "hold": 30,
+        "lookback_return": 21,
+        "lower": 20,
+        "open": 7,
+        "retract": 18,
+        "backoff": 21,
+        "lookaround": 59,
+        "complete": 21
+      },
+      "sim_s": 49.00000000014914,
+      "wall_s": 137.74223014499876,
+      "wall_per_sim": 2.811065921317949,
+      "first30": {
+        "method": "review JPEG mtimes; first available through min(30,last review SIM second)",
+        "start_sim_s": 0.0,
+        "end_sim_s": 30.0,
+        "wall_s": 81.61971950531006,
+        "wall_per_sim": 2.7206573168436687,
+        "available_sim_s": 30.0
+      },
+      "training_rgb": false,
+      "weld": "off",
+      "result_file": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316904-ec0bd628/raw/result.json.zst",
+      "result_sha256": "ae88d3b4b38405644b26d3b7e7b19b7c0540b03a3481ea9bfb667d523d9fd83f",
+      "ledger_sha256": "2bfada7c8455aff8f6c12c0e41dcac971cb00431a43eae4e4e2da6fff9b8f783",
+      "teacher": {
+        "profile": "solo_visible_only_v1",
+        "phase": "complete",
+        "command_result": "command_complete",
+        "holding_belief": false,
+        "ik_rejections": 17,
+        "ik_checks": 22,
+        "ik_rejection_reasons": {
+          "target radius is outside the calibrated arm-axis envelope": 13,
+          "target has no safe v3 physical-pad IK solution": 4
+        },
+        "teacher_stability": "align_relook_v1",
+        "reach_mode": "pad_window_v2",
+        "rgb_lift_mode": "solo_lift_lookback_v1",
+        "negative_probe": false,
+        "solo_lift_negative_probe_v1": false,
+        "solo_lift_lookback_margin_v1": true,
+        "gate_eligible": true,
+        "lookback_commanded_backoff_m": 0.15315264186250238,
+        "lookback_commanded_return_m": 0.15315264186250238,
+        "lookback_plan": {
+          "pwm": {
+            "1": 1500,
+            "3": 684,
+            "4": 1761,
+            "5": 2245,
+            "6": 1498
+          },
+          "backoff_m": 0.15,
+          "geometry": {
+            "site_from_issued_grip_m": [
+              0.34986820233353344,
+              -0.00047648127779580254,
+              0.0
+            ],
+            "site_pixels": 17668,
+            "ring_pixels": 10656,
+            "surface_in_frame_n": 81,
+            "surface_N": 81,
+            "held_occlusion_pixels": 0,
+            "bbox_xyxy": [
+              197,
+              49,
+              375,
+              154
+            ],
+            "qualified": true,
+            "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+          },
+          "command_distance_margin_m": 0.005,
+          "backoff_bounds_m": [
+            0.09,
+            0.155
+          ],
+          "action_margin_mode": "solo_lift_lookback_margin_v1",
+          "short_retreat_geometry": {
+            "site_from_issued_grip_m": [
+              0.30486820233353346,
+              -0.00047648127779580254,
+              0.0
+            ],
+            "site_pixels": 27926,
+            "ring_pixels": 12800,
+            "surface_in_frame_n": 81,
+            "surface_N": 81,
+            "held_occlusion_pixels": 0,
+            "bbox_xyxy": [
+              183,
+              150,
+              390,
+              293
+            ],
+            "qualified": true,
+            "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+          },
+          "retreat_shortfall_sensitivity_m": 0.04,
+          "held_shift_sensitivity_m": 0.005,
+          "held_tilt_sensitivity_deg": 1.0,
+          "scope": "static sensitivity; actual retreat and held pose unverified"
+        },
+        "alignment_relooks": 0,
+        "events": [
+          {
+            "t": 1.3000000000000178,
+            "from": "start",
+            "to": "fold"
+          },
+          {
+            "t": 1.9000000000002182,
+            "from": "fold",
+            "to": "approach"
+          },
+          {
+            "t": 15.499999999986551,
+            "from": "approach",
+            "to": "align"
+          },
+          {
+            "t": 17.599999999993024,
+            "from": "align",
+            "to": "hover"
+          },
+          {
+            "t": 18.49999999999732,
+            "from": "hover",
+            "to": "descent"
+          },
+          {
+            "t": 20.10000000000496,
+            "from": "descent",
+            "to": "close"
+          },
+          {
+            "t": 21.200000000010213,
+            "from": "close",
+            "to": "lift"
+          },
+          {
+            "t": 22.700000000017376,
+            "from": "lift",
+            "to": "lift_settle"
+          },
+          {
+            "t": 25.900000000032655,
+            "from": "lift_settle",
+            "to": "lookback_pose"
+          },
+          {
+            "t": 27.000000000037907,
+            "from": "lookback_pose",
+            "to": "lookback"
+          },
+          {
+            "t": 29.100000000047935,
+            "from": "lookback",
+            "to": "lookback_settle"
+          },
+          {
+            "t": 29.600000000050322,
+            "from": "lookback_settle",
+            "to": "verify_lift"
+          },
+          {
+            "t": 30.700000000055574,
+            "from": "verify_lift",
+            "to": "hold"
+          },
+          {
+            "t": 33.7000000000699,
+            "from": "hold",
+            "to": "lookback_return"
+          },
+          {
+            "t": 35.800000000079926,
+            "from": "lookback_return",
+            "to": "lower"
+          },
+          {
+            "t": 37.800000000089476,
+            "from": "lower",
+            "to": "open"
+          },
+          {
+            "t": 38.50000000009282,
+            "from": "open",
+            "to": "retract"
+          },
+          {
+            "t": 40.30000000010141,
+            "from": "retract",
+            "to": "backoff"
+          },
+          {
+            "t": 42.40000000011144,
+            "from": "backoff",
+            "to": "lookaround"
+          },
+          {
+            "t": 48.30000000013961,
+            "from": "lookaround",
+            "to": "complete"
+          }
+        ],
+        "held_object_hidden_v1": true,
+        "held_interval": "close command through completed open command",
+        "setdown_lookaround_v1": true,
+        "student_execution": false,
+        "physical_success": null,
+        "done_semantics": "own command sequence and RGB confirmation only; separate evaluator scores physics"
+      },
+      "viewed_frames": [],
+      "canonical_result_sha256": "4b2fa90d76fef6d2e3ac1bc7248aa3b1eae72ebb6e74d020ecfb8643ad38e845",
+      "directly_viewed_frames": [],
+      "retrieval": {
+        "receipt": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act9-ec0bd628-ops/act9-gate-8316904-ec0bd628-retrieval.json",
+        "sha256": "f1e96e60eaaf76946561a184a71d3f093813f3efa501c628296e604ca1f36f82",
+        "local_verified_files": 24,
+        "manifest_sha256": "d473e34790bdab59646bed6e206d7e4b79a6c80880dc932c8443dba4bfe9685f",
+        "remote_manifest_verified": true
+      },
+      "lossless_verification": {
+        "run": "act9-gate-8316904-ec0bd628",
+        "checks": [
+          {
+            "file": "recovery-eval-only.jsonl.zst",
+            "decoded_sha256": "a55fa92f1e70013077ce565c90b1af0f77f32bb75a76578c1a23059bdaeb630d",
+            "comparison": "saved precompression hash PASS"
+          },
+          {
+            "file": "recovery-commands.jsonl.zst",
+            "decoded_sha256": "2bfada7c8455aff8f6c12c0e41dcac971cb00431a43eae4e4e2da6fff9b8f783",
+            "comparison": "saved precompression hash PASS"
+          },
+          {
+            "file": "raw/teacher-commands.jsonl.zst",
+            "decoded_sha256": "7c83025087c0b99129cfbe557cb0ed217986ae230f25e8df98e21ad616b30882",
+            "comparison": "saved precompression hash PASS"
+          },
+          {
+            "file": "raw/eval-only.jsonl.zst",
+            "decoded_sha256": "4bb86eeb0df79800ce03ee5b20c3b181888c9195acd638247dc7bf7ffa0893de",
+            "comparison": "saved precompression hash PASS"
+          }
+        ],
+        "documented_adapter_rewrites": [
+          {
+            "file": "raw/result.json.zst",
+            "reason": "adapter updates source/dependency/noise/recovery metadata after teacher inner manifest; pre-adapter report reconstructed byte-for-byte and hash matched",
+            "current_decoded_sha256": "812209f761a65d430026f06ae5edcc7584a46e96569467a83daa94f922e915d6",
+            "teacher_pre_adapter_decoded_sha256": "696dcf945342369a47389639831f1b18c41a8840e2de539ed9edaebdd4f2e769"
+          }
+        ],
+        "passed": true
+      }
+    },
+    {
+      "run": "act9-gate-8316905-ec0bd628",
+      "seed": 8316905,
+      "submitted": true,
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/act9-gate-8316905-ec0bd628",
+      "status": "complete",
+      "success": true,
+      "source_sha": "ec0bd6284d82b2302187f9c2722c478b71a3731b",
+      "raw_status": "complete",
+      "result_complete": true,
+      "input_audit_available": true,
+      "exit": "0",
+      "reason": "command_complete",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 163,
+        "blocked_held": 184,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 131,
+          "align": 24,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "audit_pass": true,
+      "recovery_audit": {
+        "schema": "ugrp.act9.recovery_audit.v1",
+        "command_ticks": 513,
+        "perturbation_ticks": 9,
+        "perturbation_fraction": 0.017543859649122806,
+        "perturbation_times": [
+          3.7999999999992538,
+          3.8999999999991983,
+          3.999999999999143,
+          4.099999999999265,
+          4.199999999999387,
+          4.2999999999995095,
+          4.399999999999632,
+          4.499999999999754,
+          4.599999999999876
+        ],
+        "lost_N": 1,
+        "reacquired_N": 1,
+        "recovery_scene_N": 1,
+        "recovery_failure_N": 0,
+        "perturbation_no_loss_N": 0,
+        "episodes": [
+          {
+            "episode_id": 1,
+            "start_t": 3.7999999999992538,
+            "lost_t": 4.399999999999632,
+            "reacquired_t": 6.800000000002565,
+            "failure": false
+          }
+        ],
+        "scope": "own-camera visibility gate; reacquisition is not task success"
+      },
+      "ledger_recount_hash_passed": true,
+      "perturbation_label_violations": [],
+      "phase_ticks": {
+        "fold": 6,
+        "approach": 155,
+        "align": 24,
+        "hover": 9,
+        "descent": 16,
+        "close": 11,
+        "lift": 15,
+        "lift_settle": 32,
+        "lookback_pose": 11,
+        "lookback": 21,
+        "lookback_settle": 5,
+        "verify_lift": 11,
+        "hold": 30,
+        "lookback_return": 21,
+        "lower": 20,
+        "open": 7,
+        "retract": 18,
+        "backoff": 21,
+        "lookaround": 59,
+        "complete": 21
+      },
+      "sim_s": 51.20000000015965,
+      "wall_s": 143.1967409229983,
+      "wall_per_sim": 2.7968113461435897,
+      "first30": {
+        "method": "review JPEG mtimes; first available through min(30,last review SIM second)",
+        "start_sim_s": 0.0,
+        "end_sim_s": 30.0,
+        "wall_s": 79.02678489685059,
+        "wall_per_sim": 2.634226163228353,
+        "available_sim_s": 30.0
+      },
+      "training_rgb": false,
+      "weld": "off",
+      "result_file": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316905-ec0bd628/raw/result.json.zst",
+      "result_sha256": "4a33e91a400792d5a044337a5881719a5be93a0f69065481a3a735d7337f54b2",
+      "ledger_sha256": "4bf1027b45bec031e89f76d2bce52ec71c7906de3f9112ac6b30563414ccc031",
+      "teacher": {
+        "profile": "solo_visible_only_v1",
+        "phase": "complete",
+        "command_result": "command_complete",
+        "holding_belief": false,
+        "ik_rejections": 17,
+        "ik_checks": 25,
+        "ik_rejection_reasons": {
+          "target radius is outside the calibrated arm-axis envelope": 4,
+          "target has no safe v3 physical-pad IK solution": 13
+        },
+        "teacher_stability": "align_relook_v1",
+        "reach_mode": "pad_window_v2",
+        "rgb_lift_mode": "solo_lift_lookback_v1",
+        "negative_probe": false,
+        "solo_lift_negative_probe_v1": false,
+        "solo_lift_lookback_margin_v1": true,
+        "gate_eligible": true,
+        "lookback_commanded_backoff_m": 0.15315264186250238,
+        "lookback_commanded_return_m": 0.15315264186250238,
+        "lookback_plan": {
+          "pwm": {
+            "1": 1500,
+            "3": 720,
+            "4": 1806,
+            "5": 2224,
+            "6": 1483
+          },
+          "backoff_m": 0.15,
+          "geometry": {
+            "site_from_issued_grip_m": [
+              0.3505584789009193,
+              -0.004069477695468731,
+              0.0
+            ],
+            "site_pixels": 17403,
+            "ring_pixels": 10624,
+            "surface_in_frame_n": 81,
+            "surface_N": 81,
+            "held_occlusion_pixels": 0,
+            "bbox_xyxy": [
+              185,
+              61,
+              363,
+              165
+            ],
+            "qualified": true,
+            "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+          },
+          "command_distance_margin_m": 0.005,
+          "backoff_bounds_m": [
+            0.09,
+            0.155
+          ],
+          "action_margin_mode": "solo_lift_lookback_margin_v1",
+          "short_retreat_geometry": {
+            "site_from_issued_grip_m": [
+              0.3055584789009193,
+              -0.004069477695468731,
+              0.0
+            ],
+            "site_pixels": 27589,
+            "ring_pixels": 12736,
+            "surface_in_frame_n": 81,
+            "surface_N": 81,
+            "held_occlusion_pixels": 0,
+            "bbox_xyxy": [
+              174,
+              161,
+              380,
+              303
+            ],
+            "qualified": true,
+            "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+          },
+          "retreat_shortfall_sensitivity_m": 0.04,
+          "held_shift_sensitivity_m": 0.005,
+          "held_tilt_sensitivity_deg": 1.0,
+          "scope": "static sensitivity; actual retreat and held pose unverified"
+        },
+        "alignment_relooks": 0,
+        "events": [
+          {
+            "t": 1.3000000000000178,
+            "from": "start",
+            "to": "fold"
+          },
+          {
+            "t": 1.9000000000002182,
+            "from": "fold",
+            "to": "approach"
+          },
+          {
+            "t": 17.39999999999207,
+            "from": "approach",
+            "to": "align"
+          },
+          {
+            "t": 19.80000000000353,
+            "from": "align",
+            "to": "hover"
+          },
+          {
+            "t": 20.700000000007826,
+            "from": "hover",
+            "to": "descent"
+          },
+          {
+            "t": 22.300000000015466,
+            "from": "descent",
+            "to": "close"
+          },
+          {
+            "t": 23.400000000020718,
+            "from": "close",
+            "to": "lift"
+          },
+          {
+            "t": 24.90000000002788,
+            "from": "lift",
+            "to": "lift_settle"
+          },
+          {
+            "t": 28.10000000004316,
+            "from": "lift_settle",
+            "to": "lookback_pose"
+          },
+          {
+            "t": 29.200000000048412,
+            "from": "lookback_pose",
+            "to": "lookback"
+          },
+          {
+            "t": 31.30000000005844,
+            "from": "lookback",
+            "to": "lookback_settle"
+          },
+          {
+            "t": 31.800000000060827,
+            "from": "lookback_settle",
+            "to": "verify_lift"
+          },
+          {
+            "t": 32.90000000006608,
+            "from": "verify_lift",
+            "to": "hold"
+          },
+          {
+            "t": 35.900000000080404,
+            "from": "hold",
+            "to": "lookback_return"
+          },
+          {
+            "t": 38.00000000009043,
+            "from": "lookback_return",
+            "to": "lower"
+          },
+          {
+            "t": 40.00000000009998,
+            "from": "lower",
+            "to": "open"
+          },
+          {
+            "t": 40.70000000010332,
+            "from": "open",
+            "to": "retract"
+          },
+          {
+            "t": 42.50000000011192,
+            "from": "retract",
+            "to": "backoff"
+          },
+          {
+            "t": 44.600000000121945,
+            "from": "backoff",
+            "to": "lookaround"
+          },
+          {
+            "t": 50.500000000150116,
+            "from": "lookaround",
+            "to": "complete"
+          }
+        ],
+        "held_object_hidden_v1": true,
+        "held_interval": "close command through completed open command",
+        "setdown_lookaround_v1": true,
+        "student_execution": false,
+        "physical_success": null,
+        "done_semantics": "own command sequence and RGB confirmation only; separate evaluator scores physics"
+      },
+      "viewed_frames": [],
+      "canonical_result_sha256": "524d7184a9f5b57bd63b50525664360fa85cdc3bd37122afad3bb0f267d85561",
+      "directly_viewed_frames": [],
+      "retrieval": {
+        "receipt": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act9-ec0bd628-ops/act9-gate-8316905-ec0bd628-retrieval.json",
+        "sha256": "d3aebe753c419cdd1bad6e574f498e5c4eabe0a4cd8c8341cb113d2f302f8b22",
+        "local_verified_files": 24,
+        "manifest_sha256": "d997789aa60700dca8db0da07f9a71cfd1c9861a760a245c07e1adfaca24cca1",
+        "remote_manifest_verified": true
+      },
+      "lossless_verification": {
+        "run": "act9-gate-8316905-ec0bd628",
+        "checks": [
+          {
+            "file": "recovery-eval-only.jsonl.zst",
+            "decoded_sha256": "897b6be0fa3c228ac65143224ec0477dc5e64ddd6e8cb6c296d6832f6db3f575",
+            "comparison": "saved precompression hash PASS"
+          },
+          {
+            "file": "recovery-commands.jsonl.zst",
+            "decoded_sha256": "4bf1027b45bec031e89f76d2bce52ec71c7906de3f9112ac6b30563414ccc031",
+            "comparison": "saved precompression hash PASS"
+          },
+          {
+            "file": "raw/teacher-commands.jsonl.zst",
+            "decoded_sha256": "84ff2fae5e9df9439a4293b129f06a14c9a3683e197787fb7b0147123a1106fc",
+            "comparison": "saved precompression hash PASS"
+          },
+          {
+            "file": "raw/eval-only.jsonl.zst",
+            "decoded_sha256": "ae4a51eb1eae03c986b9262318dee91121d48ffbf1d223cb898df5d01acfaa92",
+            "comparison": "saved precompression hash PASS"
+          }
+        ],
+        "documented_adapter_rewrites": [
+          {
+            "file": "raw/result.json.zst",
+            "reason": "adapter updates source/dependency/noise/recovery metadata after teacher inner manifest; pre-adapter report reconstructed byte-for-byte and hash matched",
+            "current_decoded_sha256": "b28f53bab265db99656247e61f1d8e40dd6aea28714385d9e63b7547e263fcaf",
+            "teacher_pre_adapter_decoded_sha256": "b699301cdde72c0a015c7846c448b64cbfa9cb62da7c62f044ff46bde30d35fc"
+          }
+        ],
+        "passed": true
+      }
+    },
+    {
+      "run": "act9-gate-8316906-ec0bd628",
+      "seed": 8316906,
+      "submitted": true,
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/act9-gate-8316906-ec0bd628",
+      "status": "complete",
+      "success": true,
+      "source_sha": "ec0bd6284d82b2302187f9c2722c478b71a3731b",
+      "raw_status": "complete",
+      "result_complete": true,
+      "input_audit_available": true,
+      "exit": "0",
+      "reason": "command_complete",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 146,
+        "blocked_held": 184,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 89,
+          "align": 23,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "audit_pass": true,
+      "recovery_audit": {
+        "schema": "ugrp.act9.recovery_audit.v1",
+        "command_ticks": 453,
+        "perturbation_ticks": 9,
+        "perturbation_fraction": 0.019867549668874173,
+        "perturbation_times": [
+          3.7999999999992538,
+          3.8999999999991983,
+          3.999999999999143,
+          4.099999999999265,
+          4.199999999999387,
+          4.2999999999995095,
+          4.399999999999632,
+          4.499999999999754,
+          4.599999999999876
+        ],
+        "lost_N": 1,
+        "reacquired_N": 1,
+        "recovery_scene_N": 1,
+        "recovery_failure_N": 0,
+        "perturbation_no_loss_N": 0,
+        "episodes": [
+          {
+            "episode_id": 1,
+            "start_t": 3.7999999999992538,
+            "lost_t": 4.499999999999754,
+            "reacquired_t": 5.100000000000487,
+            "failure": false
+          }
+        ],
+        "scope": "own-camera visibility gate; reacquisition is not task success"
+      },
+      "ledger_recount_hash_passed": true,
+      "perturbation_label_violations": [],
+      "phase_ticks": {
+        "fold": 6,
+        "approach": 95,
+        "align": 23,
+        "hover": 10,
+        "descent": 16,
+        "close": 11,
+        "lift": 15,
+        "lift_settle": 32,
+        "lookback_pose": 11,
+        "lookback": 21,
+        "lookback_settle": 5,
+        "verify_lift": 11,
+        "hold": 30,
+        "lookback_return": 21,
+        "lower": 20,
+        "open": 7,
+        "retract": 18,
+        "backoff": 21,
+        "lookaround": 59,
+        "complete": 21
+      },
+      "sim_s": 45.200000000131,
+      "wall_s": 131.84782075399926,
+      "wall_per_sim": 2.9169871848145386,
+      "first30": {
+        "method": "review JPEG mtimes; first available through min(30,last review SIM second)",
+        "start_sim_s": 0.0,
+        "end_sim_s": 30.0,
+        "wall_s": 85.68529629707336,
+        "wall_per_sim": 2.8561765432357786,
+        "available_sim_s": 30.0
+      },
+      "training_rgb": false,
+      "weld": "off",
+      "result_file": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316906-ec0bd628/raw/result.json.zst",
+      "result_sha256": "c18354daa857cd21e64c0b97e7b6ac660dbf2b66e796dfb7260ec265871cc822",
+      "ledger_sha256": "5c8cdd5730c3e1451d2944dbae2e70c9d3fb73e9a5de70a29feb71086d60a57f",
+      "teacher": {
+        "profile": "solo_visible_only_v1",
+        "phase": "complete",
+        "command_result": "command_complete",
+        "holding_belief": false,
+        "ik_rejections": 19,
+        "ik_checks": 24,
+        "ik_rejection_reasons": {
+          "target radius is outside the calibrated arm-axis envelope": 16,
+          "target has no safe v3 physical-pad IK solution": 3
+        },
+        "teacher_stability": "align_relook_v1",
+        "reach_mode": "pad_window_v2",
+        "rgb_lift_mode": "solo_lift_lookback_v1",
+        "negative_probe": false,
+        "solo_lift_negative_probe_v1": false,
+        "solo_lift_lookback_margin_v1": true,
+        "gate_eligible": true,
+        "lookback_commanded_backoff_m": 0.15315264186250238,
+        "lookback_commanded_return_m": 0.15315264186250238,
+        "lookback_plan": {
+          "pwm": {
+            "1": 1500,
+            "3": 750,
+            "4": 1837,
+            "5": 2212,
+            "6": 1477
+          },
+          "backoff_m": 0.15,
+          "geometry": {
+            "site_from_issued_grip_m": [
+              0.3514271031200934,
+              -0.00553824694538001,
+              0.0
+            ],
+            "site_pixels": 17277,
+            "ring_pixels": 10592,
+            "surface_in_frame_n": 81,
+            "surface_N": 81,
+            "held_occlusion_pixels": 0,
+            "bbox_xyxy": [
+              181,
+              70,
+              358,
+              174
+            ],
+            "qualified": true,
+            "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+          },
+          "command_distance_margin_m": 0.005,
+          "backoff_bounds_m": [
+            0.09,
+            0.155
+          ],
+          "action_margin_mode": "solo_lift_lookback_margin_v1",
+          "short_retreat_geometry": {
+            "site_from_issued_grip_m": [
+              0.3064271031200934,
+              -0.00553824694538001,
+              0.0
+            ],
+            "site_pixels": 27552,
+            "ring_pixels": 12736,
+            "surface_in_frame_n": 81,
+            "surface_N": 81,
+            "held_occlusion_pixels": 0,
+            "bbox_xyxy": [
+              170,
+              170,
+              376,
+              312
+            ],
+            "qualified": true,
+            "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+          },
+          "retreat_shortfall_sensitivity_m": 0.04,
+          "held_shift_sensitivity_m": 0.005,
+          "held_tilt_sensitivity_deg": 1.0,
+          "scope": "static sensitivity; actual retreat and held pose unverified"
+        },
+        "alignment_relooks": 0,
+        "events": [
+          {
+            "t": 1.3000000000000178,
+            "from": "start",
+            "to": "fold"
+          },
+          {
+            "t": 1.9000000000002182,
+            "from": "fold",
+            "to": "approach"
+          },
+          {
+            "t": 11.399999999996107,
+            "from": "approach",
+            "to": "align"
+          },
+          {
+            "t": 13.699999999990746,
+            "from": "align",
+            "to": "hover"
+          },
+          {
+            "t": 14.699999999988416,
+            "from": "hover",
+            "to": "descent"
+          },
+          {
+            "t": 16.299999999986817,
+            "from": "descent",
+            "to": "close"
+          },
+          {
+            "t": 17.39999999999207,
+            "from": "close",
+            "to": "lift"
+          },
+          {
+            "t": 18.89999999999923,
+            "from": "lift",
+            "to": "lift_settle"
+          },
+          {
+            "t": 22.10000000001451,
+            "from": "lift_settle",
+            "to": "lookback_pose"
+          },
+          {
+            "t": 23.200000000019763,
+            "from": "lookback_pose",
+            "to": "lookback"
+          },
+          {
+            "t": 25.30000000002979,
+            "from": "lookback",
+            "to": "lookback_settle"
+          },
+          {
+            "t": 25.800000000032178,
+            "from": "lookback_settle",
+            "to": "verify_lift"
+          },
+          {
+            "t": 26.90000000003743,
+            "from": "verify_lift",
+            "to": "hold"
+          },
+          {
+            "t": 29.900000000051755,
+            "from": "hold",
+            "to": "lookback_return"
+          },
+          {
+            "t": 32.00000000006178,
+            "from": "lookback_return",
+            "to": "lower"
+          },
+          {
+            "t": 34.00000000007133,
+            "from": "lower",
+            "to": "open"
+          },
+          {
+            "t": 34.700000000074674,
+            "from": "open",
+            "to": "retract"
+          },
+          {
+            "t": 36.50000000008327,
+            "from": "retract",
+            "to": "backoff"
+          },
+          {
+            "t": 38.600000000093296,
+            "from": "backoff",
+            "to": "lookaround"
+          },
+          {
+            "t": 44.50000000012147,
+            "from": "lookaround",
+            "to": "complete"
+          }
+        ],
+        "held_object_hidden_v1": true,
+        "held_interval": "close command through completed open command",
+        "setdown_lookaround_v1": true,
+        "student_execution": false,
+        "physical_success": null,
+        "done_semantics": "own command sequence and RGB confirmation only; separate evaluator scores physics"
+      },
+      "viewed_frames": [],
+      "canonical_result_sha256": "7de95d06b160ae6847f79a462ee42da27279ba6eeb6c63c567945f0f8908a150",
+      "directly_viewed_frames": [],
+      "retrieval": {
+        "receipt": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act9-ec0bd628-ops/act9-gate-8316906-ec0bd628-retrieval.json",
+        "sha256": "7840291bcc355f1221b07475ff2498f23c50ab4579c84aea8423fd5a6db4a8e4",
+        "local_verified_files": 24,
+        "manifest_sha256": "ac192cfa44e88e3be5bdcba1d943bb4e5a3e89226979734d8fdce9155557678f",
+        "remote_manifest_verified": true
+      },
+      "lossless_verification": {
+        "run": "act9-gate-8316906-ec0bd628",
+        "checks": [
+          {
+            "file": "recovery-eval-only.jsonl.zst",
+            "decoded_sha256": "b22123e1882f364ac3af29467258aeb2261e2ecb8c6dfd837a59ae0dd61d7f30",
+            "comparison": "saved precompression hash PASS"
+          },
+          {
+            "file": "recovery-commands.jsonl.zst",
+            "decoded_sha256": "5c8cdd5730c3e1451d2944dbae2e70c9d3fb73e9a5de70a29feb71086d60a57f",
+            "comparison": "saved precompression hash PASS"
+          },
+          {
+            "file": "raw/teacher-commands.jsonl.zst",
+            "decoded_sha256": "f920ade61771ff05c822c5f2a4a2cd26e42f2986bc938b990ad5eed557515221",
+            "comparison": "saved precompression hash PASS"
+          },
+          {
+            "file": "raw/eval-only.jsonl.zst",
+            "decoded_sha256": "5149f4622b8d0fc73e2eb85f67923a195fcebce70e15f7282e161ec2cf46bc53",
+            "comparison": "saved precompression hash PASS"
+          }
+        ],
+        "documented_adapter_rewrites": [
+          {
+            "file": "raw/result.json.zst",
+            "reason": "adapter updates source/dependency/noise/recovery metadata after teacher inner manifest; pre-adapter report reconstructed byte-for-byte and hash matched",
+            "current_decoded_sha256": "8e9e93b3144039360fffbfd8e178bec06bc610a77a9b0ee18bc9ba2b7f39b843",
+            "teacher_pre_adapter_decoded_sha256": "ba64ebcb6f2b547b805f2f64d9d58b97f6dd9358416b3339f8c6881ca5ff1663"
+          }
+        ],
+        "passed": true
+      }
+    },
+    {
+      "run": "act9-gate-8316907-ec0bd628",
+      "seed": 8316907,
+      "submitted": true,
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/act9-gate-8316907-ec0bd628",
+      "status": "SUPERVISOR_STOP",
+      "success": false,
+      "source_sha": "ec0bd6284d82b2302187f9c2722c478b71a3731b",
+      "raw_status": "interrupted",
+      "result_complete": false,
+      "input_audit_available": true,
+      "exit": "130",
+      "reason": "",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 434,
+        "blocked_held": 0,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 27
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "audit_pass": true,
+      "recovery_audit": {
+        "schema": "ugrp.act9.recovery_audit.v1",
+        "command_ticks": 468,
+        "perturbation_ticks": 9,
+        "perturbation_fraction": 0.019230769230769232,
+        "perturbation_times": [
+          4.399999999999632,
+          4.499999999999754,
+          4.599999999999876,
+          4.699999999999998,
+          4.800000000000121,
+          4.900000000000243,
+          5.000000000000365,
+          5.100000000000487,
+          5.2000000000006095
+        ],
+        "lost_N": 1,
+        "reacquired_N": 0,
+        "recovery_scene_N": 0,
+        "recovery_failure_N": 1,
+        "perturbation_no_loss_N": 0,
+        "episodes": [
+          {
+            "episode_id": 1,
+            "start_t": 4.399999999999632,
+            "lost_t": 4.699999999999998,
+            "reacquired_t": null,
+            "failure": true
+          }
+        ],
+        "scope": "own-camera visibility gate; reacquisition is not task success"
+      },
+      "ledger_recount_hash_passed": true,
+      "perturbation_label_violations": [],
+      "phase_ticks": {
+        "fold": 6,
+        "approach": 462
+      },
+      "sim_s": null,
+      "wall_s": 141.83724336700107,
+      "wall_per_sim": null,
+      "first30": {
+        "method": "review JPEG mtimes; first available through min(30,last review SIM second)",
+        "start_sim_s": 0.0,
+        "end_sim_s": 30.0,
+        "wall_s": 88.25571465492249,
+        "wall_per_sim": 2.9418571551640826,
+        "available_sim_s": 30.0
+      },
+      "training_rgb": false,
+      "weld": "off",
+      "result_file": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316907-ec0bd628/raw/result.json",
+      "result_sha256": "84e9eb813037e83ef633bd4e7733650a055ef0facdc9c97b40bdb4f14431e2c0",
+      "ledger_sha256": "dafe4ba22f9438788b8c5db1465d286edbea87f90ce8ef32eb1c5bb1d1217fab",
+      "teacher": null,
+      "viewed_frames": [],
+      "canonical_result_sha256": "0e30564a3aac45c1add78b9a219afda4e66e4a024f3f327d3e33ef4125707ded",
+      "directly_viewed_frames": [
+        {
+          "path": "raw/review-own/000000.jpg",
+          "sim_s": 0.0
+        },
+        {
+          "path": "raw/review-top/000000.jpg",
+          "sim_s": 0.0
+        },
+        {
+          "path": "raw/review-own/000090.jpg",
+          "sim_s": 9.0
+        },
+        {
+          "path": "raw/review-top/000090.jpg",
+          "sim_s": 9.0
+        },
+        {
+          "path": "raw/review-own/000180.jpg",
+          "sim_s": 18.0
+        },
+        {
+          "path": "raw/review-top/000180.jpg",
+          "sim_s": 18.0
+        },
+        {
+          "path": "raw/review-own/000280.jpg",
+          "sim_s": 28.0
+        },
+        {
+          "path": "raw/review-top/000280.jpg",
+          "sim_s": 28.0
+        },
+        {
+          "path": "raw/review-own/000370.jpg",
+          "sim_s": 37.0
+        },
+        {
+          "path": "raw/review-top/000370.jpg",
+          "sim_s": 37.0
+        },
+        {
+          "path": "raw/review-own/000460.jpg",
+          "sim_s": 46.0
+        },
+        {
+          "path": "raw/review-top/000460.jpg",
+          "sim_s": 46.0
+        }
+      ],
+      "retrieval": {
+        "receipt": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act9-ec0bd628-ops/act9-gate-8316907-ec0bd628-retrieval.json",
+        "sha256": "5b3f0a1f59c19fb75ec1036b4f86e478f2c8ffa8d9dca658097f72d638be2d6a",
+        "local_verified_files": 24,
+        "manifest_sha256": "d7a9b4ead84cf12f2125d52000e437c5fdab6e8c83b8bfa5215241045735c055",
+        "remote_manifest_verified": true
+      },
+      "lossless_verification": {
+        "run": "act9-gate-8316907-ec0bd628",
+        "checks": [
+          {
+            "file": "recovery-eval-only.jsonl.zst",
+            "decoded_sha256": "71fdc2705f764f0dce4a9f26924d70cb761b161cc11a697f6e00ec67ea960869",
+            "comparison": "saved precompression hash PASS"
+          },
+          {
+            "file": "recovery-commands.jsonl.zst",
+            "decoded_sha256": "dafe4ba22f9438788b8c5db1465d286edbea87f90ce8ef32eb1c5bb1d1217fab",
+            "comparison": "saved precompression hash PASS"
+          },
+          {
+            "file": "raw/teacher-commands.jsonl.zst",
+            "decoded_sha256": "cb5d715b95834097e043e22f11f1ba1e00a877147e805b936275b4a12bb058ac",
+            "comparison": "saved precompression hash PASS"
+          },
+          {
+            "file": "raw/eval-only.jsonl.zst",
+            "decoded_sha256": "60e9174da5aa83ea7b3e24fe9ba04c5038aa4de7257519b6739fe21d5a06eaf7",
+            "comparison": "saved precompression hash PASS"
+          }
+        ],
+        "documented_adapter_rewrites": [],
+        "passed": true
+      }
+    },
+    {
+      "run": "act9-gate-8316908-ec0bd628",
+      "seed": 8316908,
+      "submitted": true,
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/act9-gate-8316908-ec0bd628",
+      "status": "SUPERVISOR_STOP",
+      "success": false,
+      "source_sha": "ec0bd6284d82b2302187f9c2722c478b71a3731b",
+      "raw_status": "running",
+      "result_complete": false,
+      "input_audit_available": false,
+      "exit": "130",
+      "reason": null,
+      "input_audit": {},
+      "audit_pass": false,
+      "recovery_audit": {
+        "schema": "ugrp.act9.recovery_audit.v1",
+        "command_ticks": 451,
+        "perturbation_ticks": 9,
+        "perturbation_fraction": 0.019955654101995565,
+        "perturbation_times": [
+          6.700000000002443,
+          6.800000000002565,
+          6.900000000002687,
+          7.000000000002809,
+          7.1000000000029315,
+          7.200000000003054,
+          7.300000000003176,
+          7.400000000003298,
+          7.50000000000342
+        ],
+        "lost_N": 1,
+        "reacquired_N": 1,
+        "recovery_scene_N": 1,
+        "recovery_failure_N": 0,
+        "perturbation_no_loss_N": 0,
+        "episodes": [
+          {
+            "episode_id": 1,
+            "start_t": 6.700000000002443,
+            "lost_t": 7.400000000003298,
+            "reacquired_t": 8.300000000003331,
+            "failure": false
+          }
+        ],
+        "scope": "own-camera visibility gate; reacquisition is not task success"
+      },
+      "ledger_recount_hash_passed": true,
+      "perturbation_label_violations": [],
+      "phase_ticks": {
+        "fold": 6,
+        "approach": 99,
+        "align": 25,
+        "hover": 10,
+        "descent": 16,
+        "close": 11,
+        "lift": 15,
+        "lift_settle": 32,
+        "lookback_pose": 11,
+        "lookback": 21,
+        "lookback_settle": 5,
+        "verify_lift": 11,
+        "hold": 30,
+        "lookback_return": 21,
+        "lower": 20,
+        "open": 7,
+        "retract": 18,
+        "backoff": 21,
+        "lookaround": 59,
+        "complete": 13
+      },
+      "sim_s": null,
+      "wall_s": null,
+      "wall_per_sim": null,
+      "first30": {
+        "method": "review JPEG mtimes; first available through min(30,last review SIM second)",
+        "start_sim_s": 0.0,
+        "end_sim_s": 30.0,
+        "wall_s": 85.8829562664032,
+        "wall_per_sim": 2.8627652088801065,
+        "available_sim_s": 30.0
+      },
+      "training_rgb": false,
+      "weld": "off",
+      "result_file": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316908-ec0bd628/raw/result.json",
+      "result_sha256": "f2ba1fb716c12b4d367da8adbdf3f121862c7b5c2a4fe77bacb27ceecbf0bccd",
+      "ledger_sha256": "98e5a68c74c64fe0ba35ee7894be44f56a8c4e0109fc97cdc2e1fa516a28d242",
+      "teacher": null,
+      "viewed_frames": [],
+      "canonical_result_sha256": "7ae33f5d59b10fea9aec5a10214c993a47b98648aed6aee9943d1496e3b291da",
+      "directly_viewed_frames": [
+        {
+          "path": "raw/review-own/000000.jpg",
+          "sim_s": 0.0
+        },
+        {
+          "path": "raw/review-top/000000.jpg",
+          "sim_s": 0.0
+        },
+        {
+          "path": "raw/review-own/000090.jpg",
+          "sim_s": 9.0
+        },
+        {
+          "path": "raw/review-top/000090.jpg",
+          "sim_s": 9.0
+        },
+        {
+          "path": "raw/review-own/000180.jpg",
+          "sim_s": 18.0
+        },
+        {
+          "path": "raw/review-top/000180.jpg",
+          "sim_s": 18.0
+        },
+        {
+          "path": "raw/review-own/000270.jpg",
+          "sim_s": 27.0
+        },
+        {
+          "path": "raw/review-top/000270.jpg",
+          "sim_s": 27.0
+        },
+        {
+          "path": "raw/review-own/000360.jpg",
+          "sim_s": 36.0
+        },
+        {
+          "path": "raw/review-top/000360.jpg",
+          "sim_s": 36.0
+        },
+        {
+          "path": "raw/review-own/000450.jpg",
+          "sim_s": 45.0
+        },
+        {
+          "path": "raw/review-top/000450.jpg",
+          "sim_s": 45.0
+        }
+      ],
+      "retrieval": {
+        "receipt": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act9-ec0bd628-ops/act9-gate-8316908-ec0bd628-retrieval.json",
+        "sha256": "0be872b39053e5aed2ae384230c8403e21afe6d48499776c24e7b2e839b6f25c",
+        "local_verified_files": 24,
+        "manifest_sha256": "aac670cbf763816686566056f7dc3a201f765ee768b5393b05863ab46b3d9b55",
+        "remote_manifest_verified": true
+      },
+      "lossless_verification": {
+        "run": "act9-gate-8316908-ec0bd628",
+        "checks": [
+          {
+            "file": "recovery-eval-only.jsonl.zst",
+            "decoded_sha256": "771475d87c8a6d26336b9536833e56b0d89232bb901b1a592709332a00009030",
+            "comparison": "saved precompression hash PASS"
+          },
+          {
+            "file": "recovery-commands.jsonl.zst",
+            "decoded_sha256": "98e5a68c74c64fe0ba35ee7894be44f56a8c4e0109fc97cdc2e1fa516a28d242",
+            "comparison": "saved precompression hash PASS"
+          },
+          {
+            "file": "raw/teacher-commands.jsonl.zst",
+            "decoded_sha256": "3c3629079cefaefc684ea4cca1a3b81cdead7fca85c65a9cd6ec413c70f24fc2",
+            "comparison": "saved precompression hash PASS"
+          },
+          {
+            "file": "raw/eval-only.jsonl.zst",
+            "decoded_sha256": "95c49fd27984cceae2aa78cf5ee8a1f43af678c5d5c975835019d707fb907a2b",
+            "comparison": "saved precompression hash PASS"
+          }
+        ],
+        "documented_adapter_rewrites": [],
+        "passed": true
+      }
+    },
+    {
+      "run": "act9-gate-8316909-ec0bd628",
+      "seed": 8316909,
+      "submitted": true,
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/act9-gate-8316909-ec0bd628",
+      "status": "SUPERVISOR_STOP",
+      "success": false,
+      "source_sha": "ec0bd6284d82b2302187f9c2722c478b71a3731b",
+      "raw_status": "running",
+      "result_complete": false,
+      "input_audit_available": false,
+      "exit": "130",
+      "reason": null,
+      "input_audit": {},
+      "audit_pass": false,
+      "recovery_audit": {
+        "schema": "ugrp.act9.recovery_audit.v1",
+        "command_ticks": 391,
+        "perturbation_ticks": 9,
+        "perturbation_fraction": 0.023017902813299233,
+        "perturbation_times": [
+          8.400000000003098,
+          8.500000000002865,
+          8.600000000002632,
+          8.7000000000024,
+          8.800000000002166,
+          8.900000000001933,
+          9.0000000000017,
+          9.100000000001467,
+          9.200000000001234
+        ],
+        "lost_N": 1,
+        "reacquired_N": 1,
+        "recovery_scene_N": 1,
+        "recovery_failure_N": 0,
+        "perturbation_no_loss_N": 0,
+        "episodes": [
+          {
+            "episode_id": 1,
+            "start_t": 8.400000000003098,
+            "lost_t": 9.100000000001467,
+            "reacquired_t": 12.399999999993776,
+            "failure": false
+          }
+        ],
+        "scope": "own-camera visibility gate; reacquisition is not task success"
+      },
+      "ledger_recount_hash_passed": true,
+      "perturbation_label_violations": [],
+      "phase_ticks": {
+        "fold": 6,
+        "approach": 139,
+        "align": 31,
+        "hover": 9,
+        "descent": 16,
+        "close": 11,
+        "lift": 15,
+        "lift_settle": 32,
+        "lookback_pose": 11,
+        "lookback": 21,
+        "lookback_settle": 5,
+        "verify_lift": 11,
+        "hold": 30,
+        "lookback_return": 21,
+        "lower": 20,
+        "open": 7,
+        "retract": 6
+      },
+      "sim_s": null,
+      "wall_s": null,
+      "wall_per_sim": null,
+      "first30": {
+        "method": "review JPEG mtimes; first available through min(30,last review SIM second)",
+        "start_sim_s": 0.0,
+        "end_sim_s": 30.0,
+        "wall_s": 84.7917251586914,
+        "wall_per_sim": 2.826390838623047,
+        "available_sim_s": 30.0
+      },
+      "training_rgb": false,
+      "weld": "off",
+      "result_file": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316909-ec0bd628/raw/result.json",
+      "result_sha256": "b4c0874dd58139c891909a095ac3aacb38839cc2f9da4570398e820d9342e053",
+      "ledger_sha256": "7a91b01566f1ae0f2e5790060fa2fba6ae6921464b991eeb3dee78b49ca87ff4",
+      "teacher": null,
+      "viewed_frames": [],
+      "canonical_result_sha256": "45faefd754ab8b7c1098acf2b1aa6a2f3e73cb37a00e83b6e20265b710ef53d2",
+      "directly_viewed_frames": [
+        {
+          "path": "raw/review-own/000000.jpg",
+          "sim_s": 0.0
+        },
+        {
+          "path": "raw/review-top/000000.jpg",
+          "sim_s": 0.0
+        },
+        {
+          "path": "raw/review-own/000080.jpg",
+          "sim_s": 8.0
+        },
+        {
+          "path": "raw/review-top/000080.jpg",
+          "sim_s": 8.0
+        },
+        {
+          "path": "raw/review-own/000160.jpg",
+          "sim_s": 16.0
+        },
+        {
+          "path": "raw/review-top/000160.jpg",
+          "sim_s": 16.0
+        },
+        {
+          "path": "raw/review-own/000230.jpg",
+          "sim_s": 23.0
+        },
+        {
+          "path": "raw/review-top/000230.jpg",
+          "sim_s": 23.0
+        },
+        {
+          "path": "raw/review-own/000310.jpg",
+          "sim_s": 31.0
+        },
+        {
+          "path": "raw/review-top/000310.jpg",
+          "sim_s": 31.0
+        },
+        {
+          "path": "raw/review-own/000390.jpg",
+          "sim_s": 39.0
+        }
+      ],
+      "retrieval": {
+        "receipt": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act9-ec0bd628-ops/act9-gate-8316909-ec0bd628-retrieval.json",
+        "sha256": "11dead749f6dd651ef19040eea8a53d98f6fb44f1b30e8480e52c64b454c778c",
+        "local_verified_files": 24,
+        "manifest_sha256": "687f5f676d792c26faef286e4d41f28ed4d57c6144f26669302f72f4ce35cb57",
+        "remote_manifest_verified": true
+      },
+      "lossless_verification": {
+        "run": "act9-gate-8316909-ec0bd628",
+        "checks": [
+          {
+            "file": "recovery-eval-only.jsonl.zst",
+            "decoded_sha256": "5e33b5f3225c71f089f1da28bc9a55eaba0092fb9a70f2cf3ec39a83a79dc0d0",
+            "comparison": "saved precompression hash PASS"
+          },
+          {
+            "file": "recovery-commands.jsonl.zst",
+            "decoded_sha256": "7a91b01566f1ae0f2e5790060fa2fba6ae6921464b991eeb3dee78b49ca87ff4",
+            "comparison": "saved precompression hash PASS"
+          },
+          {
+            "file": "raw/teacher-commands.jsonl.zst",
+            "decoded_sha256": "9cf70e5913aeed6cacceaa533c171625fbe2cc71fe93500552e7af2eb81dd298",
+            "comparison": "saved precompression hash PASS"
+          },
+          {
+            "file": "raw/eval-only.jsonl.zst",
+            "decoded_sha256": "6930c4634c98c4ba0d35f6852721d6dd78f5f55f54a75b129ee4db07d02a6062",
+            "comparison": "saved precompression hash PASS"
+          }
+        ],
+        "documented_adapter_rewrites": [],
+        "passed": true
+      }
+    },
+    {
+      "run": "act9-gate-8316910-ec0bd628",
+      "seed": 8316910,
+      "submitted": true,
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/act9-gate-8316910-ec0bd628",
+      "status": "SUPERVISOR_STOP",
+      "success": false,
+      "source_sha": "ec0bd6284d82b2302187f9c2722c478b71a3731b",
+      "raw_status": "interrupted",
+      "result_complete": false,
+      "input_audit_available": true,
+      "exit": "130",
+      "reason": "",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 369,
+        "blocked_held": 0,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 19
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "audit_pass": true,
+      "recovery_audit": {
+        "schema": "ugrp.act9.recovery_audit.v1",
+        "command_ticks": 395,
+        "perturbation_ticks": 9,
+        "perturbation_fraction": 0.02278481012658228,
+        "perturbation_times": [
+          3.5999999999993646,
+          3.699999999999309,
+          3.7999999999992538,
+          3.8999999999991983,
+          3.999999999999143,
+          4.099999999999265,
+          4.199999999999387,
+          4.2999999999995095,
+          4.399999999999632
+        ],
+        "lost_N": 1,
+        "reacquired_N": 0,
+        "recovery_scene_N": 0,
+        "recovery_failure_N": 1,
+        "perturbation_no_loss_N": 0,
+        "episodes": [
+          {
+            "episode_id": 1,
+            "start_t": 3.5999999999993646,
+            "lost_t": 3.8999999999991983,
+            "reacquired_t": null,
+            "failure": true
+          }
+        ],
+        "scope": "own-camera visibility gate; reacquisition is not task success"
+      },
+      "ledger_recount_hash_passed": true,
+      "perturbation_label_violations": [],
+      "phase_ticks": {
+        "fold": 6,
+        "approach": 389
+      },
+      "sim_s": null,
+      "wall_s": 104.48237479200179,
+      "wall_per_sim": null,
+      "first30": {
+        "method": "review JPEG mtimes; first available through min(30,last review SIM second)",
+        "start_sim_s": 0.0,
+        "end_sim_s": 30.0,
+        "wall_s": 77.27513575553894,
+        "wall_per_sim": 2.5758378585179647,
+        "available_sim_s": 30.0
+      },
+      "training_rgb": false,
+      "weld": "off",
+      "result_file": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316910-ec0bd628/raw/result.json",
+      "result_sha256": "98ed975127bb3ffbacc1b5c8daab35ebe6e8b64655c5b53e742f9b52060d0310",
+      "ledger_sha256": "ba3cb8e028074f285b799c7d76605f1f2a2e03203b13e809ce8c9b5eef9da3f9",
+      "teacher": null,
+      "viewed_frames": [],
+      "canonical_result_sha256": "481830b4589c4c0b31fc62bdda0cf6b545f86ab2696f25fdaa035919d6e3b6d3",
+      "directly_viewed_frames": [
+        {
+          "path": "raw/review-own/000000.jpg",
+          "sim_s": 0.0
+        },
+        {
+          "path": "raw/review-top/000000.jpg",
+          "sim_s": 0.0
+        },
+        {
+          "path": "raw/review-own/000080.jpg",
+          "sim_s": 8.0
+        },
+        {
+          "path": "raw/review-top/000080.jpg",
+          "sim_s": 8.0
+        },
+        {
+          "path": "raw/review-own/000160.jpg",
+          "sim_s": 16.0
+        },
+        {
+          "path": "raw/review-top/000160.jpg",
+          "sim_s": 16.0
+        },
+        {
+          "path": "raw/review-own/000230.jpg",
+          "sim_s": 23.0
+        },
+        {
+          "path": "raw/review-top/000230.jpg",
+          "sim_s": 23.0
+        },
+        {
+          "path": "raw/review-own/000310.jpg",
+          "sim_s": 31.0
+        },
+        {
+          "path": "raw/review-top/000310.jpg",
+          "sim_s": 31.0
+        },
+        {
+          "path": "raw/review-own/000390.jpg",
+          "sim_s": 39.0
+        },
+        {
+          "path": "raw/review-top/000390.jpg",
+          "sim_s": 39.0
+        }
+      ],
+      "retrieval": {
+        "receipt": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act9-ec0bd628-ops/act9-gate-8316910-ec0bd628-retrieval.json",
+        "sha256": "d579319380a1e1ea602cc72513aa1032b985698e563be3bed2f89c927c2ae823",
+        "local_verified_files": 24,
+        "manifest_sha256": "9cb2cffde8ab6a664f0a7c9196d271d38ec20e97a341db079626900331a3fe88",
+        "remote_manifest_verified": true
+      },
+      "lossless_verification": {
+        "run": "act9-gate-8316910-ec0bd628",
+        "checks": [
+          {
+            "file": "recovery-eval-only.jsonl.zst",
+            "decoded_sha256": "4cd4e7db2d9271a047af851be139e49c16625cee3ee386ad74d7b0e34ba3ae82",
+            "comparison": "saved precompression hash PASS"
+          },
+          {
+            "file": "recovery-commands.jsonl.zst",
+            "decoded_sha256": "ba3cb8e028074f285b799c7d76605f1f2a2e03203b13e809ce8c9b5eef9da3f9",
+            "comparison": "saved precompression hash PASS"
+          },
+          {
+            "file": "raw/teacher-commands.jsonl.zst",
+            "decoded_sha256": "08efe940d161d1cbb5760ee91fd7bf7919fdb12f32cad0cd22baf6c1c4462329",
+            "comparison": "saved precompression hash PASS"
+          },
+          {
+            "file": "raw/eval-only.jsonl.zst",
+            "decoded_sha256": "7fc09e3d3263779cceaf5d73a0705bcdf40afc6fa0f11c02f8efa7698db4780f",
+            "comparison": "saved precompression hash PASS"
+          }
+        ],
+        "documented_adapter_rewrites": [],
+        "passed": true
+      }
+    },
+    {
+      "run": "act9-gate-8316911-ec0bd628",
+      "seed": 8316911,
+      "submitted": true,
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/act9-gate-8316911-ec0bd628",
+      "status": "SUPERVISOR_STOP",
+      "success": false,
+      "source_sha": "ec0bd6284d82b2302187f9c2722c478b71a3731b",
+      "raw_status": "running",
+      "result_complete": false,
+      "input_audit_available": false,
+      "exit": "130",
+      "reason": null,
+      "input_audit": {},
+      "audit_pass": false,
+      "recovery_audit": {
+        "schema": "ugrp.act9.recovery_audit.v1",
+        "command_ticks": 293,
+        "perturbation_ticks": 9,
+        "perturbation_fraction": 0.030716723549488054,
+        "perturbation_times": [
+          4.699999999999998,
+          4.800000000000121,
+          4.900000000000243,
+          5.000000000000365,
+          5.100000000000487,
+          5.2000000000006095,
+          5.300000000000732,
+          5.400000000000854,
+          5.500000000000976
+        ],
+        "lost_N": 1,
+        "reacquired_N": 0,
+        "recovery_scene_N": 0,
+        "recovery_failure_N": 1,
+        "perturbation_no_loss_N": 0,
+        "episodes": [
+          {
+            "episode_id": 1,
+            "start_t": 4.699999999999998,
+            "lost_t": 5.000000000000365,
+            "reacquired_t": null,
+            "failure": true
+          }
+        ],
+        "scope": "own-camera visibility gate; reacquisition is not task success"
+      },
+      "ledger_recount_hash_passed": true,
+      "perturbation_label_violations": [],
+      "phase_ticks": {
+        "fold": 6,
+        "approach": 287
+      },
+      "sim_s": null,
+      "wall_s": null,
+      "wall_per_sim": null,
+      "first30": {
+        "method": "review JPEG mtimes; first available through min(30,last review SIM second)",
+        "start_sim_s": 0.0,
+        "end_sim_s": 29.0,
+        "wall_s": 84.81634259223938,
+        "wall_per_sim": 2.9247014686979096,
+        "available_sim_s": 29.0
+      },
+      "training_rgb": false,
+      "weld": "off",
+      "result_file": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316911-ec0bd628/raw/result.json",
+      "result_sha256": "e5869f44171eb1d41fd8a90e306f10f9b862da9bec98d9d38114f5d2bc3df6d2",
+      "ledger_sha256": "cb6772d86e0c9aaedb90f59426f4eba297825c7729e7c8ea75abdbeaf394e757",
+      "teacher": null,
+      "viewed_frames": [],
+      "canonical_result_sha256": "66288857fb7635eba1b346249efb96ff23e1a1b55d43fe14813ed3d1f18ad1cb",
+      "directly_viewed_frames": [
+        {
+          "path": "raw/review-own/000000.jpg",
+          "sim_s": 0.0
+        },
+        {
+          "path": "raw/review-top/000000.jpg",
+          "sim_s": 0.0
+        },
+        {
+          "path": "raw/review-own/000060.jpg",
+          "sim_s": 6.0
+        },
+        {
+          "path": "raw/review-top/000060.jpg",
+          "sim_s": 6.0
+        },
+        {
+          "path": "raw/review-own/000120.jpg",
+          "sim_s": 12.0
+        },
+        {
+          "path": "raw/review-top/000120.jpg",
+          "sim_s": 12.0
+        },
+        {
+          "path": "raw/review-own/000170.jpg",
+          "sim_s": 17.0
+        },
+        {
+          "path": "raw/review-top/000170.jpg",
+          "sim_s": 17.0
+        },
+        {
+          "path": "raw/review-own/000230.jpg",
+          "sim_s": 23.0
+        },
+        {
+          "path": "raw/review-top/000230.jpg",
+          "sim_s": 23.0
+        },
+        {
+          "path": "raw/review-own/000290.jpg",
+          "sim_s": 29.0
+        },
+        {
+          "path": "raw/review-top/000290.jpg",
+          "sim_s": 29.0
+        }
+      ],
+      "retrieval": {
+        "receipt": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act9-ec0bd628-ops/act9-gate-8316911-ec0bd628-retrieval.json",
+        "sha256": "64e2b575f81fe047dd6f758d1b6c6060c960a329e978e21fb2d94850d36d3535",
+        "local_verified_files": 24,
+        "manifest_sha256": "623e58fd2b7f0ecbd861148c3e5c166b2e1d9e1c5d988523cbfaa275f4e402d3",
+        "remote_manifest_verified": true
+      },
+      "lossless_verification": {
+        "run": "act9-gate-8316911-ec0bd628",
+        "checks": [
+          {
+            "file": "recovery-eval-only.jsonl.zst",
+            "decoded_sha256": "561de7977bb5ba71b0088b8ee75453169c4ff2d1579cff9fc9285d8f65eb4751",
+            "comparison": "saved precompression hash PASS"
+          },
+          {
+            "file": "recovery-commands.jsonl.zst",
+            "decoded_sha256": "cb6772d86e0c9aaedb90f59426f4eba297825c7729e7c8ea75abdbeaf394e757",
+            "comparison": "saved precompression hash PASS"
+          },
+          {
+            "file": "raw/teacher-commands.jsonl.zst",
+            "decoded_sha256": "ee136e83075af0bd8038e1cd164c7bab4c9ff70cc3b29a5505cf18cd6b2e7d3f",
+            "comparison": "saved precompression hash PASS"
+          },
+          {
+            "file": "raw/eval-only.jsonl.zst",
+            "decoded_sha256": "eb429c2bcad37b62f84e9336c6a7f43d19e8da07c706bc33b6d6fa1130c0ee00",
+            "comparison": "saved precompression hash PASS"
+          }
+        ],
+        "documented_adapter_rewrites": [],
+        "passed": true
+      }
+    },
+    {
+      "run": "act9-gate-8316912-ec0bd628",
+      "seed": 8316912,
+      "submitted": true,
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/act9-gate-8316912-ec0bd628",
+      "status": "SUPERVISOR_STOP",
+      "success": false,
+      "source_sha": "ec0bd6284d82b2302187f9c2722c478b71a3731b",
+      "raw_status": "interrupted",
+      "result_complete": false,
+      "input_audit_available": true,
+      "exit": "130",
+      "reason": "",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 224,
+        "blocked_held": 0,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 55
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "audit_pass": true,
+      "recovery_audit": {
+        "schema": "ugrp.act9.recovery_audit.v1",
+        "command_ticks": 286,
+        "perturbation_ticks": 9,
+        "perturbation_fraction": 0.03146853146853147,
+        "perturbation_times": [
+          4.2999999999995095,
+          4.399999999999632,
+          4.499999999999754,
+          4.599999999999876,
+          4.699999999999998,
+          4.800000000000121,
+          4.900000000000243,
+          5.000000000000365,
+          5.100000000000487
+        ],
+        "lost_N": 1,
+        "reacquired_N": 1,
+        "recovery_scene_N": 1,
+        "recovery_failure_N": 0,
+        "perturbation_no_loss_N": 0,
+        "episodes": [
+          {
+            "episode_id": 1,
+            "start_t": 4.2999999999995095,
+            "lost_t": 4.699999999999998,
+            "reacquired_t": 27.100000000038385,
+            "failure": false
+          }
+        ],
+        "scope": "own-camera visibility gate; reacquisition is not task success"
+      },
+      "ledger_recount_hash_passed": true,
+      "perturbation_label_violations": [],
+      "phase_ticks": {
+        "fold": 6,
+        "approach": 280
+      },
+      "sim_s": null,
+      "wall_s": 76.91198278599768,
+      "wall_per_sim": null,
+      "first30": {
+        "method": "review JPEG mtimes; first available through min(30,last review SIM second)",
+        "start_sim_s": 0.0,
+        "end_sim_s": 28.0,
+        "wall_s": 71.58094668388367,
+        "wall_per_sim": 2.556462381567274,
+        "available_sim_s": 28.0
+      },
+      "training_rgb": false,
+      "weld": "off",
+      "result_file": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316912-ec0bd628/raw/result.json",
+      "result_sha256": "2dceec786c72b5713d45b3c5b4aa2f2002a543b1acf9525a073746d41e4080c1",
+      "ledger_sha256": "5202df6779c97a45425d4fc4b748f1cb0301cb19534c72a9ebb16b053d308335",
+      "teacher": null,
+      "viewed_frames": [],
+      "canonical_result_sha256": "b9ca63c8f3e6d1e695917d05f0d7870f1dfaa3de7c1ef7ac106762babcc45bd3",
+      "directly_viewed_frames": [
+        {
+          "path": "raw/review-own/000000.jpg",
+          "sim_s": 0.0
+        },
+        {
+          "path": "raw/review-top/000000.jpg",
+          "sim_s": 0.0
+        },
+        {
+          "path": "raw/review-own/000060.jpg",
+          "sim_s": 6.0
+        },
+        {
+          "path": "raw/review-top/000060.jpg",
+          "sim_s": 6.0
+        },
+        {
+          "path": "raw/review-own/000110.jpg",
+          "sim_s": 11.0
+        },
+        {
+          "path": "raw/review-top/000110.jpg",
+          "sim_s": 11.0
+        },
+        {
+          "path": "raw/review-own/000170.jpg",
+          "sim_s": 17.0
+        },
+        {
+          "path": "raw/review-top/000170.jpg",
+          "sim_s": 17.0
+        },
+        {
+          "path": "raw/review-own/000220.jpg",
+          "sim_s": 22.0
+        },
+        {
+          "path": "raw/review-top/000220.jpg",
+          "sim_s": 22.0
+        },
+        {
+          "path": "raw/review-own/000280.jpg",
+          "sim_s": 28.0
+        },
+        {
+          "path": "raw/review-top/000280.jpg",
+          "sim_s": 28.0
+        }
+      ],
+      "retrieval": {
+        "receipt": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act9-ec0bd628-ops/act9-gate-8316912-ec0bd628-retrieval.json",
+        "sha256": "3c831a611545120c01144cb85236b663c0e7135bca75d6172f5cad8460063155",
+        "local_verified_files": 24,
+        "manifest_sha256": "e0f0a3f66ba5ee4c96cc75241b748cbe6dfb38d8526a1be20325a10fcf640fc0",
+        "remote_manifest_verified": true
+      },
+      "lossless_verification": {
+        "run": "act9-gate-8316912-ec0bd628",
+        "checks": [
+          {
+            "file": "recovery-eval-only.jsonl.zst",
+            "decoded_sha256": "c7b0f5a033729b0881b2485b7306c19877cc99e91d7f0c2f082c3fb50be3bd85",
+            "comparison": "saved precompression hash PASS"
+          },
+          {
+            "file": "recovery-commands.jsonl.zst",
+            "decoded_sha256": "5202df6779c97a45425d4fc4b748f1cb0301cb19534c72a9ebb16b053d308335",
+            "comparison": "saved precompression hash PASS"
+          },
+          {
+            "file": "raw/teacher-commands.jsonl.zst",
+            "decoded_sha256": "2198acc672c52ac2d075e2f76b474bf009006cd659643dc9ae78f8cbec58b2eb",
+            "comparison": "saved precompression hash PASS"
+          },
+          {
+            "file": "raw/eval-only.jsonl.zst",
+            "decoded_sha256": "8415df78e9559980b470511eb0bbd2efaf6dec69c991d104a974ff9cba891b48",
+            "comparison": "saved precompression hash PASS"
+          }
+        ],
+        "documented_adapter_rewrites": [],
+        "passed": true
+      }
+    },
+    {
+      "run": "act9-gate-8316913-ec0bd628",
+      "seed": 8316913,
+      "submitted": true,
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/act9-gate-8316913-ec0bd628",
+      "status": "SUPERVISOR_STOP",
+      "success": false,
+      "source_sha": "ec0bd6284d82b2302187f9c2722c478b71a3731b",
+      "raw_status": "interrupted",
+      "result_complete": false,
+      "input_audit_available": true,
+      "exit": "130",
+      "reason": "",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 107,
+        "blocked_held": 0,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 88,
+          "align": 13
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "audit_pass": true,
+      "recovery_audit": {
+        "schema": "ugrp.act9.recovery_audit.v1",
+        "command_ticks": 215,
+        "perturbation_ticks": 9,
+        "perturbation_fraction": 0.04186046511627907,
+        "perturbation_times": [
+          3.699999999999309,
+          3.7999999999992538,
+          3.8999999999991983,
+          3.999999999999143,
+          4.099999999999265,
+          4.199999999999387,
+          4.2999999999995095,
+          4.399999999999632,
+          4.499999999999754
+        ],
+        "lost_N": 1,
+        "reacquired_N": 1,
+        "recovery_scene_N": 1,
+        "recovery_failure_N": 0,
+        "perturbation_no_loss_N": 0,
+        "episodes": [
+          {
+            "episode_id": 1,
+            "start_t": 3.699999999999309,
+            "lost_t": 3.8999999999991983,
+            "reacquired_t": 14.599999999988649,
+            "failure": false
+          }
+        ],
+        "scope": "own-camera visibility gate; reacquisition is not task success"
+      },
+      "ledger_recount_hash_passed": true,
+      "perturbation_label_violations": [],
+      "phase_ticks": {
+        "fold": 6,
+        "approach": 195,
+        "align": 14
+      },
+      "sim_s": null,
+      "wall_s": 64.44763791700097,
+      "wall_per_sim": null,
+      "first30": {
+        "method": "review JPEG mtimes; first available through min(30,last review SIM second)",
+        "start_sim_s": 0.0,
+        "end_sim_s": 21.0,
+        "wall_s": 59.4183623790741,
+        "wall_per_sim": 2.8294458275749568,
+        "available_sim_s": 21.0
+      },
+      "training_rgb": false,
+      "weld": "off",
+      "result_file": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316913-ec0bd628/raw/result.json",
+      "result_sha256": "7315ed0f47739e48efaece850baa1ad9120ce94cead54cd05f02beed45df3b43",
+      "ledger_sha256": "c0bd2c1dbc43f91e25d2483c2dbc72c5b23c25562ac60bc48c7910c71110407a",
+      "teacher": null,
+      "viewed_frames": [],
+      "canonical_result_sha256": "711a6b135dcfa3753b99da0cb10c79c551a0ccd642607d36d3b582072523f78c",
+      "directly_viewed_frames": [
+        {
+          "path": "raw/review-own/000000.jpg",
+          "sim_s": 0.0
+        },
+        {
+          "path": "raw/review-top/000000.jpg",
+          "sim_s": 0.0
+        },
+        {
+          "path": "raw/review-own/000040.jpg",
+          "sim_s": 4.0
+        },
+        {
+          "path": "raw/review-top/000040.jpg",
+          "sim_s": 4.0
+        },
+        {
+          "path": "raw/review-own/000080.jpg",
+          "sim_s": 8.0
+        },
+        {
+          "path": "raw/review-top/000080.jpg",
+          "sim_s": 8.0
+        },
+        {
+          "path": "raw/review-own/000130.jpg",
+          "sim_s": 13.0
+        },
+        {
+          "path": "raw/review-top/000130.jpg",
+          "sim_s": 13.0
+        },
+        {
+          "path": "raw/review-own/000170.jpg",
+          "sim_s": 17.0
+        },
+        {
+          "path": "raw/review-top/000170.jpg",
+          "sim_s": 17.0
+        },
+        {
+          "path": "raw/review-own/000210.jpg",
+          "sim_s": 21.0
+        },
+        {
+          "path": "raw/review-top/000210.jpg",
+          "sim_s": 21.0
+        }
+      ],
+      "retrieval": {
+        "receipt": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act9-ec0bd628-ops/act9-gate-8316913-ec0bd628-retrieval.json",
+        "sha256": "d2e1a7146537d5c9126d1deb26d8b4fedf8bb8f73a2b4d06ff26888f1f26e1b7",
+        "local_verified_files": 24,
+        "manifest_sha256": "d4af4c80c6af456af468dcdbdd52a13269389d19c96d4823c5eb3c4a3951e271",
+        "remote_manifest_verified": true
+      },
+      "lossless_verification": {
+        "run": "act9-gate-8316913-ec0bd628",
+        "checks": [
+          {
+            "file": "recovery-eval-only.jsonl.zst",
+            "decoded_sha256": "910627fdf7c3c3b98fa340931200b1f0df1c7f867eec70868abff95f4cf259d9",
+            "comparison": "saved precompression hash PASS"
+          },
+          {
+            "file": "recovery-commands.jsonl.zst",
+            "decoded_sha256": "c0bd2c1dbc43f91e25d2483c2dbc72c5b23c25562ac60bc48c7910c71110407a",
+            "comparison": "saved precompression hash PASS"
+          },
+          {
+            "file": "raw/teacher-commands.jsonl.zst",
+            "decoded_sha256": "373be012298624479e62bfc926b905056ef68388e72f871bb5a4f5d93814d735",
+            "comparison": "saved precompression hash PASS"
+          },
+          {
+            "file": "raw/eval-only.jsonl.zst",
+            "decoded_sha256": "1756c5faf2d666a3c8abc44a14533d068169836cc18a5d4a02d5d81cfb9367fe",
+            "comparison": "saved precompression hash PASS"
+          }
+        ],
+        "documented_adapter_rewrites": [],
+        "passed": true
+      }
+    },
+    {
+      "run": "act9-gate-8316914-ec0bd628",
+      "seed": 8316914,
+      "submitted": true,
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/act9-gate-8316914-ec0bd628",
+      "status": "SUPERVISOR_STOP",
+      "success": false,
+      "source_sha": "ec0bd6284d82b2302187f9c2722c478b71a3731b",
+      "raw_status": "running",
+      "result_complete": false,
+      "input_audit_available": false,
+      "exit": "130",
+      "reason": null,
+      "input_audit": {},
+      "audit_pass": false,
+      "recovery_audit": {
+        "schema": "ugrp.act9.recovery_audit.v1",
+        "command_ticks": 184,
+        "perturbation_ticks": 9,
+        "perturbation_fraction": 0.04891304347826087,
+        "perturbation_times": [
+          4.2999999999995095,
+          4.399999999999632,
+          4.499999999999754,
+          4.599999999999876,
+          4.699999999999998,
+          4.800000000000121,
+          4.900000000000243,
+          5.000000000000365,
+          5.100000000000487
+        ],
+        "lost_N": 1,
+        "reacquired_N": 1,
+        "recovery_scene_N": 1,
+        "recovery_failure_N": 0,
+        "perturbation_no_loss_N": 0,
+        "episodes": [
+          {
+            "episode_id": 1,
+            "start_t": 4.2999999999995095,
+            "lost_t": 5.100000000000487,
+            "reacquired_t": 5.500000000000976,
+            "failure": false
+          }
+        ],
+        "scope": "own-camera visibility gate; reacquisition is not task success"
+      },
+      "ledger_recount_hash_passed": true,
+      "perturbation_label_violations": [],
+      "phase_ticks": {
+        "fold": 6,
+        "approach": 129,
+        "align": 21,
+        "hover": 9,
+        "descent": 16,
+        "close": 3
+      },
+      "sim_s": null,
+      "wall_s": null,
+      "wall_per_sim": null,
+      "first30": {
+        "method": "review JPEG mtimes; first available through min(30,last review SIM second)",
+        "start_sim_s": 0.0,
+        "end_sim_s": 18.0,
+        "wall_s": 46.39470434188843,
+        "wall_per_sim": 2.577483574549357,
+        "available_sim_s": 18.0
+      },
+      "training_rgb": false,
+      "weld": "off",
+      "result_file": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316914-ec0bd628/raw/result.json",
+      "result_sha256": "6e8590e9f3629396d3657d03018b8abdb55f08c7c6f81f8af1831c1b38957e7e",
+      "ledger_sha256": "9434d3aef0fdd72774e9444caf8ede02f59bff7ecefa58099db62bf6e47f00e1",
+      "teacher": null,
+      "viewed_frames": [],
+      "canonical_result_sha256": "f64db0ad98582df3a17bcb6f24dc5c6eba6564d0e85488870493fdca74cf0fa2",
+      "directly_viewed_frames": [
+        {
+          "path": "raw/review-own/000000.jpg",
+          "sim_s": 0.0
+        },
+        {
+          "path": "raw/review-top/000000.jpg",
+          "sim_s": 0.0
+        },
+        {
+          "path": "raw/review-own/000040.jpg",
+          "sim_s": 4.0
+        },
+        {
+          "path": "raw/review-top/000040.jpg",
+          "sim_s": 4.0
+        },
+        {
+          "path": "raw/review-own/000070.jpg",
+          "sim_s": 7.0
+        },
+        {
+          "path": "raw/review-top/000070.jpg",
+          "sim_s": 7.0
+        },
+        {
+          "path": "raw/review-own/000110.jpg",
+          "sim_s": 11.0
+        },
+        {
+          "path": "raw/review-top/000110.jpg",
+          "sim_s": 11.0
+        },
+        {
+          "path": "raw/review-own/000140.jpg",
+          "sim_s": 14.0
+        },
+        {
+          "path": "raw/review-top/000140.jpg",
+          "sim_s": 14.0
+        },
+        {
+          "path": "raw/review-own/000180.jpg",
+          "sim_s": 18.0
+        },
+        {
+          "path": "raw/review-top/000180.jpg",
+          "sim_s": 18.0
+        }
+      ],
+      "retrieval": {
+        "receipt": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act9-ec0bd628-ops/act9-gate-8316914-ec0bd628-retrieval.json",
+        "sha256": "4fd4b97c874173575ea5dc51304baa1ff518b5baf71d1a85b177df51feb46e7a",
+        "local_verified_files": 24,
+        "manifest_sha256": "bc2c5e7530cc6ec4c8ba42bd60d5556eac5c49ab3ccf8ef8943f06c1df6b0973",
+        "remote_manifest_verified": true
+      },
+      "lossless_verification": {
+        "run": "act9-gate-8316914-ec0bd628",
+        "checks": [
+          {
+            "file": "recovery-eval-only.jsonl.zst",
+            "decoded_sha256": "276647a12442607a592cead41d0b9af408cc29d63b1332abbe61db8da79f4b60",
+            "comparison": "saved precompression hash PASS"
+          },
+          {
+            "file": "recovery-commands.jsonl.zst",
+            "decoded_sha256": "9434d3aef0fdd72774e9444caf8ede02f59bff7ecefa58099db62bf6e47f00e1",
+            "comparison": "saved precompression hash PASS"
+          },
+          {
+            "file": "raw/teacher-commands.jsonl.zst",
+            "decoded_sha256": "de7af8fc29e778f27d30ae7803dfe511ecfa6787b8720e65a866ee27617da81d",
+            "comparison": "saved precompression hash PASS"
+          },
+          {
+            "file": "raw/eval-only.jsonl.zst",
+            "decoded_sha256": "5b72296627bbb7bad7ad66645e915b5f9271eaac79eca4a1944c4e6abc98acae",
+            "comparison": "saved precompression hash PASS"
+          }
+        ],
+        "documented_adapter_rewrites": [],
+        "passed": true
+      }
+    },
+    {
+      "run": "act9-gate-8316915-ec0bd628",
+      "seed": 8316915,
+      "submitted": true,
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/act9-gate-8316915-ec0bd628",
+      "status": "SUPERVISOR_STOP",
+      "success": false,
+      "source_sha": "ec0bd6284d82b2302187f9c2722c478b71a3731b",
+      "raw_status": "running",
+      "result_complete": false,
+      "input_audit_available": false,
+      "exit": "130",
+      "reason": null,
+      "input_audit": {},
+      "audit_pass": false,
+      "recovery_audit": {
+        "schema": "ugrp.act9.recovery_audit.v1",
+        "command_ticks": 111,
+        "perturbation_ticks": 9,
+        "perturbation_fraction": 0.08108108108108109,
+        "perturbation_times": [
+          4.599999999999876,
+          4.699999999999998,
+          4.800000000000121,
+          4.900000000000243,
+          5.000000000000365,
+          5.100000000000487,
+          5.2000000000006095,
+          5.300000000000732,
+          5.400000000000854
+        ],
+        "lost_N": 1,
+        "reacquired_N": 1,
+        "recovery_scene_N": 1,
+        "recovery_failure_N": 0,
+        "perturbation_no_loss_N": 0,
+        "episodes": [
+          {
+            "episode_id": 1,
+            "start_t": 4.599999999999876,
+            "lost_t": 5.100000000000487,
+            "reacquired_t": 6.500000000002198,
+            "failure": false
+          }
+        ],
+        "scope": "own-camera visibility gate; reacquisition is not task success"
+      },
+      "ledger_recount_hash_passed": true,
+      "perturbation_label_violations": [],
+      "phase_ticks": {
+        "fold": 6,
+        "approach": 105
+      },
+      "sim_s": null,
+      "wall_s": null,
+      "wall_per_sim": null,
+      "first30": {
+        "method": "review JPEG mtimes; first available through min(30,last review SIM second)",
+        "start_sim_s": 0.0,
+        "end_sim_s": 11.0,
+        "wall_s": 34.66027331352234,
+        "wall_per_sim": 3.15093393759294,
+        "available_sim_s": 11.0
+      },
+      "training_rgb": false,
+      "weld": "off",
+      "result_file": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316915-ec0bd628/raw/result.json",
+      "result_sha256": "e48d6ed77ec3347ea3dca7b8b11c1e41b7a545e78482818844d5551cb32cd5fe",
+      "ledger_sha256": "8241596b25eff990e6f9d135bfa772d5874b761d148b4238ed2d525734d09ae4",
+      "teacher": null,
+      "viewed_frames": [],
+      "canonical_result_sha256": "09911b99a0e5f697bdf5581ecd6ec5acc4bff2d8de1e4d2afff4975cf0bb176a",
+      "directly_viewed_frames": [
+        {
+          "path": "raw/review-own/000000.jpg",
+          "sim_s": 0.0
+        },
+        {
+          "path": "raw/review-top/000000.jpg",
+          "sim_s": 0.0
+        },
+        {
+          "path": "raw/review-own/000020.jpg",
+          "sim_s": 2.0
+        },
+        {
+          "path": "raw/review-top/000020.jpg",
+          "sim_s": 2.0
+        },
+        {
+          "path": "raw/review-own/000040.jpg",
+          "sim_s": 4.0
+        },
+        {
+          "path": "raw/review-top/000040.jpg",
+          "sim_s": 4.0
+        },
+        {
+          "path": "raw/review-own/000070.jpg",
+          "sim_s": 7.0
+        },
+        {
+          "path": "raw/review-top/000070.jpg",
+          "sim_s": 7.0
+        },
+        {
+          "path": "raw/review-own/000090.jpg",
+          "sim_s": 9.0
+        },
+        {
+          "path": "raw/review-top/000090.jpg",
+          "sim_s": 9.0
+        },
+        {
+          "path": "raw/review-own/000110.jpg",
+          "sim_s": 11.0
+        }
+      ],
+      "retrieval": {
+        "receipt": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act9-ec0bd628-ops/act9-gate-8316915-ec0bd628-retrieval.json",
+        "sha256": "2edea9c1acf8e4c7a74fdc4e1cf9a511dcdfaa61b46b724c3dc69b661662e09c",
+        "local_verified_files": 24,
+        "manifest_sha256": "e23798ca0311296458c3f400185ed66904096251504821b588f99ad8390ac8c0",
+        "remote_manifest_verified": true
+      },
+      "lossless_verification": {
+        "run": "act9-gate-8316915-ec0bd628",
+        "checks": [
+          {
+            "file": "recovery-eval-only.jsonl.zst",
+            "decoded_sha256": "e1bdc24e45eaeb86030a2ebc397a69b963420a6ed6ca57ea84c964395db64f0e",
+            "comparison": "saved precompression hash PASS"
+          },
+          {
+            "file": "recovery-commands.jsonl.zst",
+            "decoded_sha256": "8241596b25eff990e6f9d135bfa772d5874b761d148b4238ed2d525734d09ae4",
+            "comparison": "saved precompression hash PASS"
+          }
+        ],
+        "documented_adapter_rewrites": [],
+        "passed": true
+      }
+    },
+    {
+      "run": "act9-gate-8316916-ec0bd628",
+      "seed": 8316916,
+      "submitted": true,
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/act9-gate-8316916-ec0bd628",
+      "status": "SUPERVISOR_STOP",
+      "success": false,
+      "source_sha": "ec0bd6284d82b2302187f9c2722c478b71a3731b",
+      "raw_status": "interrupted",
+      "result_complete": false,
+      "input_audit_available": true,
+      "exit": "130",
+      "reason": "",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 22,
+        "blocked_held": 0,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 55
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "audit_pass": true,
+      "recovery_audit": {
+        "schema": "ugrp.act9.recovery_audit.v1",
+        "command_ticks": 84,
+        "perturbation_ticks": 9,
+        "perturbation_fraction": 0.10714285714285714,
+        "perturbation_times": [
+          4.2999999999995095,
+          4.399999999999632,
+          4.499999999999754,
+          4.599999999999876,
+          4.699999999999998,
+          4.800000000000121,
+          4.900000000000243,
+          5.000000000000365,
+          5.100000000000487
+        ],
+        "lost_N": 1,
+        "reacquired_N": 1,
+        "recovery_scene_N": 1,
+        "recovery_failure_N": 0,
+        "perturbation_no_loss_N": 0,
+        "episodes": [
+          {
+            "episode_id": 1,
+            "start_t": 4.2999999999995095,
+            "lost_t": 4.599999999999876,
+            "reacquired_t": 6.800000000002565,
+            "failure": false
+          }
+        ],
+        "scope": "own-camera visibility gate; reacquisition is not task success"
+      },
+      "ledger_recount_hash_passed": true,
+      "perturbation_label_violations": [],
+      "phase_ticks": {
+        "fold": 6,
+        "approach": 78
+      },
+      "sim_s": null,
+      "wall_s": 25.823976856001536,
+      "wall_per_sim": null,
+      "first30": {
+        "method": "review JPEG mtimes; first available through min(30,last review SIM second)",
+        "start_sim_s": 0.0,
+        "end_sim_s": 8.0,
+        "wall_s": 21.045958042144775,
+        "wall_per_sim": 2.630744755268097,
+        "available_sim_s": 8.0
+      },
+      "training_rgb": false,
+      "weld": "off",
+      "result_file": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316916-ec0bd628/raw/result.json",
+      "result_sha256": "c21fb21c2f7b66d49d96b5dca4fbc0ff00cd05974636738edd2ad8db935b8ae9",
+      "ledger_sha256": "b2bdd0e123139e8cbd2c924c688c62b6df540f3bafce3c750f3f55f4f389fd2d",
+      "teacher": null,
+      "viewed_frames": [],
+      "canonical_result_sha256": "dd516d6048b1f783f916c5a38d07fe505d97c4d7f9c808a0138b2c44911a04b8",
+      "directly_viewed_frames": [
+        {
+          "path": "raw/review-own/000000.jpg",
+          "sim_s": 0.0
+        },
+        {
+          "path": "raw/review-top/000000.jpg",
+          "sim_s": 0.0
+        },
+        {
+          "path": "raw/review-own/000020.jpg",
+          "sim_s": 2.0
+        },
+        {
+          "path": "raw/review-top/000020.jpg",
+          "sim_s": 2.0
+        },
+        {
+          "path": "raw/review-own/000030.jpg",
+          "sim_s": 3.0
+        },
+        {
+          "path": "raw/review-top/000030.jpg",
+          "sim_s": 3.0
+        },
+        {
+          "path": "raw/review-own/000050.jpg",
+          "sim_s": 5.0
+        },
+        {
+          "path": "raw/review-top/000050.jpg",
+          "sim_s": 5.0
+        },
+        {
+          "path": "raw/review-own/000060.jpg",
+          "sim_s": 6.0
+        },
+        {
+          "path": "raw/review-top/000060.jpg",
+          "sim_s": 6.0
+        },
+        {
+          "path": "raw/review-own/000080.jpg",
+          "sim_s": 8.0
+        },
+        {
+          "path": "raw/review-top/000080.jpg",
+          "sim_s": 8.0
+        }
+      ],
+      "retrieval": {
+        "receipt": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act9-ec0bd628-ops/act9-gate-8316916-ec0bd628-retrieval.json",
+        "sha256": "01bb74df2b7280e789f9b4c2e1b048658b8f71f52816af94e3355ef97dda60e3",
+        "local_verified_files": 24,
+        "manifest_sha256": "6ccd1ec812d275468e751250c35a09380d74d0aa1fc3f31b448a42f6830d59a6",
+        "remote_manifest_verified": true
+      },
+      "lossless_verification": {
+        "run": "act9-gate-8316916-ec0bd628",
+        "checks": [
+          {
+            "file": "recovery-eval-only.jsonl.zst",
+            "decoded_sha256": "9a42bed1fe4e5000e691aa2639dbe8d1b7a96fd4ed82342f8d60a067ab76af6d",
+            "comparison": "saved precompression hash PASS"
+          }
+        ],
+        "documented_adapter_rewrites": [],
+        "passed": true
+      }
+    },
+    {
+      "run": "act9-gate-8316917-ec0bd628",
+      "seed": 8316917,
+      "submitted": false,
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/act9-gate-8316917-ec0bd628",
+      "status": "BLOCKED",
+      "success": false
+    },
+    {
+      "run": "act9-gate-8316918-ec0bd628",
+      "seed": 8316918,
+      "submitted": false,
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/act9-gate-8316918-ec0bd628",
+      "status": "BLOCKED",
+      "success": false
+    },
+    {
+      "run": "act9-gate-8316919-ec0bd628",
+      "seed": 8316919,
+      "submitted": false,
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/act9-gate-8316919-ec0bd628",
+      "status": "BLOCKED",
+      "success": false
+    },
+    {
+      "run": "act9-gate-8316920-ec0bd628",
+      "seed": 8316920,
+      "submitted": false,
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/act9-gate-8316920-ec0bd628",
+      "status": "BLOCKED",
+      "success": false
+    },
+    {
+      "run": "act9-gate-8316921-ec0bd628",
+      "seed": 8316921,
+      "submitted": false,
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/act9-gate-8316921-ec0bd628",
+      "status": "BLOCKED",
+      "success": false
+    },
+    {
+      "run": "act9-gate-8316922-ec0bd628",
+      "seed": 8316922,
+      "submitted": false,
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/act9-gate-8316922-ec0bd628",
+      "status": "BLOCKED",
+      "success": false
+    },
+    {
+      "run": "act9-gate-8316923-ec0bd628",
+      "seed": 8316923,
+      "submitted": false,
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/act9-gate-8316923-ec0bd628",
+      "status": "BLOCKED",
+      "success": false
+    },
+    {
+      "run": "act9-gate-8316924-ec0bd628",
+      "seed": 8316924,
+      "submitted": false,
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/act9-gate-8316924-ec0bd628",
+      "status": "BLOCKED",
+      "success": false
+    },
+    {
+      "run": "act9-gate-8316925-ec0bd628",
+      "seed": 8316925,
+      "submitted": false,
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/act9-gate-8316925-ec0bd628",
+      "status": "BLOCKED",
+      "success": false
+    },
+    {
+      "run": "act9-gate-8316926-ec0bd628",
+      "seed": 8316926,
+      "submitted": false,
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/act9-gate-8316926-ec0bd628",
+      "status": "BLOCKED",
+      "success": false
+    },
+    {
+      "run": "act9-gate-8316927-ec0bd628",
+      "seed": 8316927,
+      "submitted": false,
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/act9-gate-8316927-ec0bd628",
+      "status": "BLOCKED",
+      "success": false
+    },
+    {
+      "run": "act9-gate-8316928-ec0bd628",
+      "seed": 8316928,
+      "submitted": false,
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/act9-gate-8316928-ec0bd628",
+      "status": "BLOCKED",
+      "success": false
+    },
+    {
+      "run": "act9-gate-8316929-ec0bd628",
+      "seed": 8316929,
+      "submitted": false,
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/act9-gate-8316929-ec0bd628",
+      "status": "BLOCKED",
+      "success": false
+    },
+    {
+      "run": "act9-gate-8316930-ec0bd628",
+      "seed": 8316930,
+      "submitted": false,
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/act9-gate-8316930-ec0bd628",
+      "status": "BLOCKED",
+      "success": false
+    },
+    {
+      "run": "act9-gate-8316931-ec0bd628",
+      "seed": 8316931,
+      "submitted": false,
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/act9-gate-8316931-ec0bd628",
+      "status": "BLOCKED",
+      "success": false
+    },
+    {
+      "run": "act9-gate-8316932-ec0bd628",
+      "seed": 8316932,
+      "submitted": false,
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/act9-gate-8316932-ec0bd628",
+      "status": "BLOCKED",
+      "success": false
+    },
+    {
+      "run": "act9-gate-8316933-ec0bd628",
+      "seed": 8316933,
+      "submitted": false,
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/act9-gate-8316933-ec0bd628",
+      "status": "BLOCKED",
+      "success": false
+    },
+    {
+      "run": "act9-gate-8316934-ec0bd628",
+      "seed": 8316934,
+      "submitted": false,
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/act9-gate-8316934-ec0bd628",
+      "status": "BLOCKED",
+      "success": false
+    },
+    {
+      "run": "act9-gate-8316935-ec0bd628",
+      "seed": 8316935,
+      "submitted": false,
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/act9-gate-8316935-ec0bd628",
+      "status": "BLOCKED",
+      "success": false
+    },
+    {
+      "run": "act9-gate-8316936-ec0bd628",
+      "seed": 8316936,
+      "submitted": false,
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/act9-gate-8316936-ec0bd628",
+      "status": "BLOCKED",
+      "success": false
+    },
+    {
+      "run": "act9-gate-8316937-ec0bd628",
+      "seed": 8316937,
+      "submitted": false,
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/act9-gate-8316937-ec0bd628",
+      "status": "BLOCKED",
+      "success": false
+    },
+    {
+      "run": "act9-gate-8316938-ec0bd628",
+      "seed": 8316938,
+      "submitted": false,
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/act9-gate-8316938-ec0bd628",
+      "status": "BLOCKED",
+      "success": false
+    },
+    {
+      "run": "act9-gate-8316939-ec0bd628",
+      "seed": 8316939,
+      "submitted": false,
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/act9-gate-8316939-ec0bd628",
+      "status": "BLOCKED",
+      "success": false
+    }
+  ],
+  "stop": {
+    "at": "2026-10-15 16:22:52 KST",
+    "queue": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-act9-ec0bd628.json",
+    "source_sha": "ec0bd6284d82b2302187f9c2722c478b71a3731b",
+    "reason": "seed8316902 confirmed control failure: perturbation-associated target loss persisted through approach timeout at ledger t61.9 (60.6 elapsed SIMs); terminal phase failed, last200 ticks remained approach with target invisible. Stop same-SHA batch immediately; final video/result diagnosis being retrieved.",
+    "runs": [
+      "act9-gate-8316900-ec0bd628",
+      "act9-gate-8316901-ec0bd628",
+      "act9-gate-8316902-ec0bd628",
+      "act9-gate-8316903-ec0bd628",
+      "act9-gate-8316904-ec0bd628",
+      "act9-gate-8316905-ec0bd628",
+      "act9-gate-8316906-ec0bd628",
+      "act9-gate-8316907-ec0bd628",
+      "act9-gate-8316908-ec0bd628",
+      "act9-gate-8316909-ec0bd628",
+      "act9-gate-8316910-ec0bd628",
+      "act9-gate-8316911-ec0bd628",
+      "act9-gate-8316912-ec0bd628",
+      "act9-gate-8316913-ec0bd628",
+      "act9-gate-8316914-ec0bd628",
+      "act9-gate-8316915-ec0bd628",
+      "act9-gate-8316916-ec0bd628",
+      "act9-gate-8316917-ec0bd628",
+      "act9-gate-8316918-ec0bd628",
+      "act9-gate-8316919-ec0bd628",
+      "act9-gate-8316920-ec0bd628",
+      "act9-gate-8316921-ec0bd628",
+      "act9-gate-8316922-ec0bd628",
+      "act9-gate-8316923-ec0bd628",
+      "act9-gate-8316924-ec0bd628",
+      "act9-gate-8316925-ec0bd628",
+      "act9-gate-8316926-ec0bd628",
+      "act9-gate-8316927-ec0bd628",
+      "act9-gate-8316928-ec0bd628",
+      "act9-gate-8316929-ec0bd628",
+      "act9-gate-8316930-ec0bd628",
+      "act9-gate-8316931-ec0bd628",
+      "act9-gate-8316932-ec0bd628",
+      "act9-gate-8316933-ec0bd628",
+      "act9-gate-8316934-ec0bd628",
+      "act9-gate-8316935-ec0bd628",
+      "act9-gate-8316936-ec0bd628",
+      "act9-gate-8316937-ec0bd628",
+      "act9-gate-8316938-ec0bd628",
+      "act9-gate-8316939-ec0bd628"
+    ],
+    "scope": "exact owned ACT9 run directories/PIDs only",
+    "remote": {
+      "markers": [
+        "act9-gate-8316900-ec0bd628",
+        "act9-gate-8316901-ec0bd628",
+        "act9-gate-8316902-ec0bd628",
+        "act9-gate-8316903-ec0bd628",
+        "act9-gate-8316904-ec0bd628",
+        "act9-gate-8316905-ec0bd628",
+        "act9-gate-8316906-ec0bd628",
+        "act9-gate-8316907-ec0bd628",
+        "act9-gate-8316908-ec0bd628",
+        "act9-gate-8316909-ec0bd628",
+        "act9-gate-8316910-ec0bd628",
+        "act9-gate-8316911-ec0bd628",
+        "act9-gate-8316912-ec0bd628",
+        "act9-gate-8316913-ec0bd628",
+        "act9-gate-8316914-ec0bd628",
+        "act9-gate-8316915-ec0bd628",
+        "act9-gate-8316916-ec0bd628"
+      ],
+      "sigint": [
+        {
+          "pid": 218585,
+          "args": ".venv-sim/bin/python -m scripts.sim_cli workflow run grasp-act-recovery -- --plan experiments/2026-10-15-act-train/act9-gate-plan.json --episode 7 --dependency-root /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --noise experiments/2026-10-15-act-train/act9-noise.json --recovery-mode recovery_perturb_v1 --out /home/ugrp/ugrp-sim/runs/act9-gate-8316907-ec0bd628/raw --cap-s 90"
+        },
+        {
+          "pid": 218713,
+          "args": "/home/ugrp/ugrp-sim/src/ec0bd6284d82b2302187f9c2722c478b71a3731b/.venv-sim/bin/python -m scripts.run_grasp_act_recovery --plan experiments/2026-10-15-act-train/act9-gate-plan.json --episode 7 --dependency-root /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --noise experiments/2026-10-15-act-train/act9-noise.json --recovery-mode recovery_perturb_v1 --out /home/ugrp/ugrp-sim/runs/act9-gate-8316907-ec0bd628/raw --cap-s 90"
+        },
+        {
+          "pid": 219208,
+          "args": ".venv-sim/bin/python -m scripts.sim_cli workflow run grasp-act-recovery -- --plan experiments/2026-10-15-act-train/act9-gate-plan.json --episode 8 --dependency-root /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --noise experiments/2026-10-15-act-train/act9-noise.json --recovery-mode recovery_perturb_v1 --out /home/ugrp/ugrp-sim/runs/act9-gate-8316908-ec0bd628/raw --cap-s 90"
+        },
+        {
+          "pid": 219507,
+          "args": "/home/ugrp/ugrp-sim/src/ec0bd6284d82b2302187f9c2722c478b71a3731b/.venv-sim/bin/python -m scripts.run_grasp_act_recovery --plan experiments/2026-10-15-act-train/act9-gate-plan.json --episode 8 --dependency-root /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --noise experiments/2026-10-15-act-train/act9-noise.json --recovery-mode recovery_perturb_v1 --out /home/ugrp/ugrp-sim/runs/act9-gate-8316908-ec0bd628/raw --cap-s 90"
+        },
+        {
+          "pid": 220078,
+          "args": ".venv-sim/bin/python -m scripts.sim_cli workflow run grasp-act-recovery -- --plan experiments/2026-10-15-act-train/act9-gate-plan.json --episode 9 --dependency-root /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --noise experiments/2026-10-15-act-train/act9-noise.json --recovery-mode recovery_perturb_v1 --out /home/ugrp/ugrp-sim/runs/act9-gate-8316909-ec0bd628/raw --cap-s 90"
+        },
+        {
+          "pid": 220266,
+          "args": "/home/ugrp/ugrp-sim/src/ec0bd6284d82b2302187f9c2722c478b71a3731b/.venv-sim/bin/python -m scripts.run_grasp_act_recovery --plan experiments/2026-10-15-act-train/act9-gate-plan.json --episode 9 --dependency-root /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --noise experiments/2026-10-15-act-train/act9-noise.json --recovery-mode recovery_perturb_v1 --out /home/ugrp/ugrp-sim/runs/act9-gate-8316909-ec0bd628/raw --cap-s 90"
+        },
+        {
+          "pid": 220873,
+          "args": ".venv-sim/bin/python -m scripts.sim_cli workflow run grasp-act-recovery -- --plan experiments/2026-10-15-act-train/act9-gate-plan.json --episode 10 --dependency-root /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --noise experiments/2026-10-15-act-train/act9-noise.json --recovery-mode recovery_perturb_v1 --out /home/ugrp/ugrp-sim/runs/act9-gate-8316910-ec0bd628/raw --cap-s 90"
+        },
+        {
+          "pid": 221107,
+          "args": "/home/ugrp/ugrp-sim/src/ec0bd6284d82b2302187f9c2722c478b71a3731b/.venv-sim/bin/python -m scripts.run_grasp_act_recovery --plan experiments/2026-10-15-act-train/act9-gate-plan.json --episode 10 --dependency-root /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --noise experiments/2026-10-15-act-train/act9-noise.json --recovery-mode recovery_perturb_v1 --out /home/ugrp/ugrp-sim/runs/act9-gate-8316910-ec0bd628/raw --cap-s 90"
+        },
+        {
+          "pid": 221779,
+          "args": ".venv-sim/bin/python -m scripts.sim_cli workflow run grasp-act-recovery -- --plan experiments/2026-10-15-act-train/act9-gate-plan.json --episode 11 --dependency-root /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --noise experiments/2026-10-15-act-train/act9-noise.json --recovery-mode recovery_perturb_v1 --out /home/ugrp/ugrp-sim/runs/act9-gate-8316911-ec0bd628/raw --cap-s 90"
+        },
+        {
+          "pid": 221913,
+          "args": "/home/ugrp/ugrp-sim/src/ec0bd6284d82b2302187f9c2722c478b71a3731b/.venv-sim/bin/python -m scripts.run_grasp_act_recovery --plan experiments/2026-10-15-act-train/act9-gate-plan.json --episode 11 --dependency-root /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --noise experiments/2026-10-15-act-train/act9-noise.json --recovery-mode recovery_perturb_v1 --out /home/ugrp/ugrp-sim/runs/act9-gate-8316911-ec0bd628/raw --cap-s 90"
+        },
+        {
+          "pid": 222420,
+          "args": ".venv-sim/bin/python -m scripts.sim_cli workflow run grasp-act-recovery -- --plan experiments/2026-10-15-act-train/act9-gate-plan.json --episode 12 --dependency-root /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --noise experiments/2026-10-15-act-train/act9-noise.json --recovery-mode recovery_perturb_v1 --out /home/ugrp/ugrp-sim/runs/act9-gate-8316912-ec0bd628/raw --cap-s 90"
+        },
+        {
+          "pid": 222604,
+          "args": "/home/ugrp/ugrp-sim/src/ec0bd6284d82b2302187f9c2722c478b71a3731b/.venv-sim/bin/python -m scripts.run_grasp_act_recovery --plan experiments/2026-10-15-act-train/act9-gate-plan.json --episode 12 --dependency-root /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --noise experiments/2026-10-15-act-train/act9-noise.json --recovery-mode recovery_perturb_v1 --out /home/ugrp/ugrp-sim/runs/act9-gate-8316912-ec0bd628/raw --cap-s 90"
+        },
+        {
+          "pid": 223125,
+          "args": ".venv-sim/bin/python -m scripts.sim_cli workflow run grasp-act-recovery -- --plan experiments/2026-10-15-act-train/act9-gate-plan.json --episode 13 --dependency-root /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --noise experiments/2026-10-15-act-train/act9-noise.json --recovery-mode recovery_perturb_v1 --out /home/ugrp/ugrp-sim/runs/act9-gate-8316913-ec0bd628/raw --cap-s 90"
+        },
+        {
+          "pid": 223460,
+          "args": "/home/ugrp/ugrp-sim/src/ec0bd6284d82b2302187f9c2722c478b71a3731b/.venv-sim/bin/python -m scripts.run_grasp_act_recovery --plan experiments/2026-10-15-act-train/act9-gate-plan.json --episode 13 --dependency-root /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --noise experiments/2026-10-15-act-train/act9-noise.json --recovery-mode recovery_perturb_v1 --out /home/ugrp/ugrp-sim/runs/act9-gate-8316913-ec0bd628/raw --cap-s 90"
+        },
+        {
+          "pid": 223926,
+          "args": ".venv-sim/bin/python -m scripts.sim_cli workflow run grasp-act-recovery -- --plan experiments/2026-10-15-act-train/act9-gate-plan.json --episode 14 --dependency-root /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --noise experiments/2026-10-15-act-train/act9-noise.json --recovery-mode recovery_perturb_v1 --out /home/ugrp/ugrp-sim/runs/act9-gate-8316914-ec0bd628/raw --cap-s 90"
+        },
+        {
+          "pid": 224054,
+          "args": "/home/ugrp/ugrp-sim/src/ec0bd6284d82b2302187f9c2722c478b71a3731b/.venv-sim/bin/python -m scripts.run_grasp_act_recovery --plan experiments/2026-10-15-act-train/act9-gate-plan.json --episode 14 --dependency-root /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --noise experiments/2026-10-15-act-train/act9-noise.json --recovery-mode recovery_perturb_v1 --out /home/ugrp/ugrp-sim/runs/act9-gate-8316914-ec0bd628/raw --cap-s 90"
+        },
+        {
+          "pid": 224660,
+          "args": ".venv-sim/bin/python -m scripts.sim_cli workflow run grasp-act-recovery -- --plan experiments/2026-10-15-act-train/act9-gate-plan.json --episode 15 --dependency-root /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --noise experiments/2026-10-15-act-train/act9-noise.json --recovery-mode recovery_perturb_v1 --out /home/ugrp/ugrp-sim/runs/act9-gate-8316915-ec0bd628/raw --cap-s 90"
+        },
+        {
+          "pid": 225085,
+          "args": "/home/ugrp/ugrp-sim/src/ec0bd6284d82b2302187f9c2722c478b71a3731b/.venv-sim/bin/python -m scripts.run_grasp_act_recovery --plan experiments/2026-10-15-act-train/act9-gate-plan.json --episode 15 --dependency-root /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --noise experiments/2026-10-15-act-train/act9-noise.json --recovery-mode recovery_perturb_v1 --out /home/ugrp/ugrp-sim/runs/act9-gate-8316915-ec0bd628/raw --cap-s 90"
+        },
+        {
+          "pid": 225867,
+          "args": ".venv-sim/bin/python -m scripts.sim_cli workflow run grasp-act-recovery -- --plan experiments/2026-10-15-act-train/act9-gate-plan.json --episode 16 --dependency-root /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --noise experiments/2026-10-15-act-train/act9-noise.json --recovery-mode recovery_perturb_v1 --out /home/ugrp/ugrp-sim/runs/act9-gate-8316916-ec0bd628/raw --cap-s 90"
+        },
+        {
+          "pid": 225984,
+          "args": "/home/ugrp/ugrp-sim/src/ec0bd6284d82b2302187f9c2722c478b71a3731b/.venv-sim/bin/python -m scripts.run_grasp_act_recovery --plan experiments/2026-10-15-act-train/act9-gate-plan.json --episode 16 --dependency-root /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --noise experiments/2026-10-15-act-train/act9-noise.json --recovery-mode recovery_perturb_v1 --out /home/ugrp/ugrp-sim/runs/act9-gate-8316916-ec0bd628/raw --cap-s 90"
+        }
+      ]
+    }
+  },
+  "failure_diagnosis": {
+    "at": "2026-10-15 16:26:04 KST",
+    "confirmed_defect": true,
+    "reason": "8316902 green: 교란t4.0–4.8s 뒤 t4.5s 대상상실, 원장t5.0이후 접근569틱 가시성0/569·바퀴발행0/569, 바닥만 향하는 정지 시선탐색(PWM3 500–820/PWM6 1140–2280)이 재획득 못함→60.6SIM초 phase_timeout. ACT9는 교란 중 대상기억을 지우고 고정교사 _seek는 미관측 시 정지탐색만 수행; 이 장면의 재탐색 범위 부족이 제어 실패. 접근0–60초 20고유 own/top프레임 직접확인; 고정top은 음수좌표 actor를 덮지 못해 단독증거로 안 씀.",
+    "source_sha": "ec0bd6284d82b2302187f9c2722c478b71a3731b",
+    "teacher_dependency_sha": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+    "code_evidence": [
+      "harness/grasp_act_dart.py:134-150 (ec0bd628)",
+      "sim/grasp_act_solo_teacher.py:312-317 and :377-388 (teacher6f057f7e)"
+    ],
+    "command_summary": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act9-ec0bd628-ops/failure-8316902-command-summary.json",
+    "fix_scope": "coordinator/new SHA/new queue; operator did not modify teacher",
+    "reviewed_elapsed_sim_s": [
+      0,
+      9,
+      12,
+      18,
+      24,
+      27,
+      36,
+      45,
+      48,
+      60
+    ],
+    "relation_check": "Single controlled teacher. Other robots have static far spawns; no dynamic peer commands. Fixed top cannot cover negative x/y actor; does not by itself establish peer clearance.",
+    "supporting_stopped_cases": {
+      "8316907": "yellow: floor-only own view9–46s",
+      "8316910": "green: floor-only own view8–39s",
+      "8316911": "yellow: floor/wall only6–29s; result incomplete, no final audit"
+    },
+    "partial_scope": "These three corroborate failed reacquisition before supervisor interruption, not additional completed physical failures."
+  },
+  "final_host_check": {
+    "vm": {
+      "machineType": "https://www.googleapis.com/compute/v1/projects/ugrp-act-train-1014/zones/asia-northeast3-a/machineTypes/n4-highcpu-64",
+      "name": "ugrp-sim-gcp1",
+      "scheduling": {
+        "automaticRestart": true,
+        "instanceTerminationAction": "STOP",
+        "maxRunDuration": {
+          "nanos": 0,
+          "seconds": "28800"
+        },
+        "onHostMaintenance": "MIGRATE",
+        "preemptible": false,
+        "provisioningModel": "STANDARD"
+      },
+      "status": "RUNNING"
+    },
+    "guest": {
+      "owned_processes": [],
+      "owned_leases": [],
+      "owned_reservations": [],
+      "stop_marker_pairs": [
+        "act9-gate-8316911-ec0bd628",
+        "act9-gate-8316906-ec0bd628",
+        "act9-gate-8316914-ec0bd628",
+        "act9-gate-8316908-ec0bd628",
+        "act9-gate-8316913-ec0bd628",
+        "act9-gate-8316909-ec0bd628",
+        "act9-gate-8316915-ec0bd628",
+        "act9-gate-8316910-ec0bd628",
+        "act9-gate-8316905-ec0bd628",
+        "act9-gate-8316903-ec0bd628",
+        "act9-gate-8316904-ec0bd628",
+        "act9-gate-8316916-ec0bd628",
+        "act9-gate-8316900-ec0bd628",
+        "act9-gate-8316912-ec0bd628",
+        "act9-gate-8316902-ec0bd628",
+        "act9-gate-8316907-ec0bd628",
+        "act9-gate-8316901-ec0bd628"
+      ],
+      "other_job_processes": [
+        " 231330 python          .venv-sim/bin/python -m scripts.run_solo_grasp_act_teacher --execution-host gcp1 --teacher-profile solo_visible_only_v1 --held-object-hidden-v1 --setdown-lookaround-v1 --teacher-stability align_relook_v1 --reach-mode pad_window_v2 --rgb-lift-mode solo_lift_lookback_v1 --solo-lift-lookback-margin-v1 --solo-truth-free-lookaround-v1 --solo-carry-to-zone-v1 --plan experiments/2026-10-15-map-carry-zone/diagnostic-plan-reloc8.json --episode 0 --cap-s 300 --out /home/ugrp/ugrp-sim/runs/solo-carry-93261-0459c03c/raw",
+        " 234294 python          .venv-sim/bin/python -m scripts.run_solo_grasp_act_teacher --execution-host gcp1 --teacher-profile solo_visible_only_v1 --held-object-hidden-v1 --setdown-lookaround-v1 --teacher-stability align_relook_v1 --reach-mode pad_window_v2 --rgb-lift-mode solo_lift_lookback_v1 --solo-lift-lookback-margin-v1 --solo-truth-free-lookaround-v1 --solo-carry-to-zone-v1 --plan experiments/2026-10-15-map-carry-zone/diagnostic-plan-reloc8.json --episode 1 --cap-s 300 --out /home/ugrp/ugrp-sim/runs/solo-carry-93262-0459c03c/raw",
+        " 234874 python          .venv-sim/bin/python -m scripts.run_grasp_act_release --plan experiments/2026-10-14-e2e18-grasp-rootcause/release18-diagnostic-plan.json --episode 5 --cap-s 180 --out /home/ugrp/ugrp-sim/runs/r18n-03-a3bbc90e/raw --held-object hidden_v1 --lookaround setdown_global_v1 --pose-anchor command_relative_v1 --own-pose-source commands --observe-mode backoff_v3 --zone-slots zone --reach-mode pad_window_v2 --placement global_localized_release_v1 --lateral-recovery bounded_v1 --active-recovery setdown_lookaround_v1 --command-motion yaw_cal_v1 --localization-support map_free_v1 --regrasp-check own_rgb_lift_v1 --regrasp-recovery own_rgb_realign_v1 --release-profile release18_v1 --release-fov-step release_fov_step_pulse_v1 --release-settle-reuse settled_command_v1 --release-goal-region inside_margins_v1",
+        " 235834 python          .venv-sim/bin/python -m scripts.run_grasp_act_release --plan experiments/2026-10-14-e2e18-grasp-rootcause/release18-diagnostic-plan.json --episode 6 --cap-s 180 --out /home/ugrp/ugrp-sim/runs/r18n-04-a3bbc90e/raw --held-object hidden_v1 --lookaround setdown_global_v1 --pose-anchor command_relative_v1 --own-pose-source commands --observe-mode backoff_v3 --zone-slots zone --reach-mode pad_window_v2 --placement global_localized_release_v1 --lateral-recovery bounded_v1 --active-recovery setdown_lookaround_v1 --command-motion yaw_cal_v1 --localization-support map_free_v1 --regrasp-check own_rgb_lift_v1 --regrasp-recovery own_rgb_realign_v1 --release-profile release18_v1 --release-fov-step release_fov_step_pulse_v1 --release-settle-reuse settled_command_v1 --release-goal-region inside_margins_v1",
+        " 237029 python          .venv-sim/bin/python -m scripts.run_grasp_act_release --plan experiments/2026-10-14-e2e18-grasp-rootcause/release18-diagnostic-plan.json --episode 7 --cap-s 180 --out /home/ugrp/ugrp-sim/runs/r18n-05-a3bbc90e/raw --held-object hidden_v1 --lookaround setdown_global_v1 --pose-anchor command_relative_v1 --own-pose-source commands --observe-mode backoff_v3 --zone-slots zone --reach-mode pad_window_v2 --placement global_localized_release_v1 --lateral-recovery bounded_v1 --active-recovery setdown_lookaround_v1 --command-motion yaw_cal_v1 --localization-support map_free_v1 --regrasp-check own_rgb_lift_v1 --regrasp-recovery own_rgb_realign_v1 --release-profile release18_v1 --release-fov-step release_fov_step_pulse_v1 --release-settle-reuse settled_command_v1 --release-goal-region inside_margins_v1",
+        " 237939 python          .venv-sim/bin/python -m scripts.run_grasp_act_release --plan experiments/2026-10-14-e2e18-grasp-rootcause/release18-diagnostic-plan.json --episode 8 --cap-s 180 --out /home/ugrp/ugrp-sim/runs/r18n-06-a3bbc90e/raw --held-object hidden_v1 --lookaround setdown_global_v1 --pose-anchor command_relative_v1 --own-pose-source commands --observe-mode backoff_v3 --zone-slots zone --reach-mode pad_window_v2 --placement global_localized_release_v1 --lateral-recovery bounded_v1 --active-recovery setdown_lookaround_v1 --command-motion yaw_cal_v1 --localization-support map_free_v1 --regrasp-check own_rgb_lift_v1 --regrasp-recovery own_rgb_realign_v1 --release-profile release18_v1 --release-fov-step release_fov_step_pulse_v1 --release-settle-reuse settled_command_v1 --release-goal-region inside_margins_v1",
+        " 248403 python          .venv-sim/bin/python -m scripts.run_crate_teacher --plan experiments/2026-10-15-crate16/reproduction-plan.json --episode 0 --grasp-cap-s 80 --cap-s 90 --observe-mode backoff_v3 --zone-slots zone --reach-mode pad_window_v2 --own-pose-source commands --held-object hidden_v1 --setdown-lookaround setdown_lookaround_own_v2 --crate-scene crate_mass_025_v1 --crate-lift-pose crate_antipodal_grasp_v1 --rgb-lift crate_rgb_lift_v3 --teacher-stability align_relook_v1 --teacher-search search_reacquire_v1 --approach-goal-set approach_goal_set_v1 --crate-approach-recovery crate_approach_recovery_v1 --crate-profile crate16_v1 --recording-mode success_measurement --execution-host gcp1 --pr 500 --out /home/ugrp/ugrp-sim/runs/crate16-reproduction-77990-221755a5/raw"
+      ],
+      "idle_active": "active",
+      "idle_1200s": true
+    },
+    "latest_budget_message": [
+      {
+        "jsonPayload": {
+          "budgetAmount": 1000,
+          "costAmount": 0,
+          "currency": "KRW"
+        },
+        "timestamp": "2026-10-15T07:26:42.790258Z"
+      }
+    ],
+    "budget_function": [
+      {
+        "name": "projects/ugrp-act-train-1014/locations/us-central1/functions/budget-stop",
+        "state": "ACTIVE"
+      }
+    ],
+    "vm_stopped_by_operator": false,
+    "idle_guard_left_to_stop_when_idle": true
+  },
+  "operator_complete": true,
+  "operator_completion_scope": "all17 submitted runs terminal and retrieved;23 unsubmitted BLOCKED; physical gate incomplete/not ready; no rerun authorized",
+  "concurrency": {
+    "approved_max_parallel": 19,
+    "measured_peak_owned_slots_at_admission": 14,
+    "measured_peak_global_slots_at_admission": 14,
+    "global_limit": 40
+  }
+}

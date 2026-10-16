@@ -1,0 +1,756 @@
+{
+  "schema": "ugrp.gcp-ops-result.v1",
+  "at": "2026-10-15 16:36:09 KST",
+  "queue": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-crate16-diag-221755a5.json",
+  "pr": 500,
+  "source_sha": "221755a5b4a6b3588fed0d61bb49b6e5142d63ef",
+  "profile": "crate16_v1",
+  "cargo_scene": "crate_mass_025_v1",
+  "host": {
+    "alias": "gcp1",
+    "project": "ugrp-act-train-1014",
+    "instance": "ugrp-sim-gcp1",
+    "zone": "asia-northeast3-a",
+    "machine_type": "n4-highcpu-64"
+  },
+  "verdict": "NOT_READY_CONTROL_FAILURE_REMAINING_BLOCKED",
+  "stages": {
+    "reproduction": {
+      "successes": 0,
+      "measured_N": 2,
+      "planned_N": 5,
+      "completed_failed_N": 2,
+      "not_submitted_blocked_N": 3,
+      "setup_strata": "Both submitted cases are original-setup development reproductions; conditional-start 2 and fresh10 not measured"
+    },
+    "diagnostic": {
+      "successes": null,
+      "measured_N": 0,
+      "planned_N": 10,
+      "not_submitted_blocked_N": 10
+    }
+  },
+  "gate": {
+    "submitted_N": 0,
+    "approved": false,
+    "result": "NOT_RUN"
+  },
+  "training_submitted_N": 0,
+  "training_rgb_recorded": false,
+  "model_calls": 0,
+  "host_errors": 0,
+  "speed": {
+    "first30_completed_N": 0,
+    "first30_expected_N": 2,
+    "verdict": "INCOMPLETE_EARLY_PHYSICAL_CONTROL_FAILURE",
+    "full_run_wall_per_sim_median": 4.213383481793198,
+    "full_run_wall_per_sim_range": [
+      3.9828110807144266,
+      4.443955882871968
+    ],
+    "warning_above_3_5": true,
+    "limit_6_exceeded": false,
+    "note": "Both ended before30; full-run ratio is descriptive, not a passed first30 gate; other task load retained in admission/status artifacts"
+  },
+  "input_audit": {
+    "checked_N": 2,
+    "invisible_measurements": 0,
+    "held_world_reads": 0,
+    "teacher_boundary_enabled_N": 2,
+    "scope": "Visible-relative teacher measurement admission and runtime counters; not RGB-only pose-inference validation"
+  },
+  "root_cause": {
+    "confirmed": "Collision-checked combined proposal replacement repeatedly selects yaw-only escape; r2 alternates its rotation direction and cannot finish approach, leading to progress/relook termination before joint grasp.",
+    "code": "sim/crate_grasp_teacher.py:445-464 at exact source SHA",
+    "evidence": "motion-analysis.json maps recovery timestamps to applied commands; eval-only last3s positions are corroboration only, never control inputs",
+    "r2_pure_yaw_escape_counts": [
+      [
+        119,
+        121
+      ],
+      [
+        124,
+        130
+      ]
+    ],
+    "r2_adjacent_yaw_sign_flips": [
+      84,
+      88
+    ],
+    "relationship": "Own images show teal r1 / blue r2 on distinct ends; no same-end assignment failure observed in viewed frames.",
+    "remaining_uncertainty": "Which estimated obstacle geometry rejects each original combined pulse, and how pose error contributes, remains unseparated. Recovery event counts alone are not used as the cause."
+  },
+  "admission": {
+    "shared_local_lock": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp1-admission.lock",
+    "shared_remote_lock": "/home/ugrp/ugrp-sim/admission.lock",
+    "limit_total": 40,
+    "approved_first_wave": 2,
+    "max_total_after_reservation": 10,
+    "max_own_after_reservation": 2,
+    "no_duplicate_run_names": true
+  },
+  "stop_record": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/stop-crate16-221755a5-20261015.json",
+  "stop_signals_sent_N": 0,
+  "stop_note": "Both already EXIT0 at cause confirmation; stop markers and sidecar hashes retained; all remaining13 disabled in same queue",
+  "guards": {
+    "budget_stop_state": "ACTIVE at admission; configuration untouched",
+    "credit": "UNVERIFIED; no billing operations",
+    "max_run_s": 28800,
+    "termination": "STOP",
+    "idle_guard_s": 1200,
+    "idle_timer_at_finish": "active"
+  },
+  "lifecycle": {
+    "runs": [
+      {
+        "run": "crate16-reproduction-77990-221755a5",
+        "exit": "0",
+        "lease_existed": true,
+        "lease_removed": true,
+        "reservation_status": "released",
+        "owned_pids": [],
+        "supervisor_sidecar_verified": true
+      },
+      {
+        "run": "crate16-reproduction-79314-221755a5",
+        "exit": "0",
+        "lease_existed": true,
+        "lease_removed": true,
+        "reservation_status": "released",
+        "owned_pids": [],
+        "supervisor_sidecar_verified": true
+      }
+    ],
+    "owned_processes": [],
+    "idle_timer": "active",
+    "guard_1200s": true,
+    "raw_on_persistent_disk": true
+  },
+  "verification": {
+    "remote_full_manifests_verified_N": 2,
+    "local_files_hash_verified_N": 84,
+    "local_hash_mismatch": [],
+    "compressed_artifacts_decoded_verified_N": 8,
+    "supervisor_sidecars_verified_N": 2,
+    "directly_viewed_frame_N": 48,
+    "raw_storage": "All raw preserved on GCP persistent disk; selected frames and lite evidence on Mac; no independent full backup"
+  },
+  "start_distribution": {
+    "definition": "crate14 conditional demonstration setup distribution, not evaluation outcome censoring; never pool with crate13",
+    "peer_anchor": "r2 assigned blue station; other_end exact, near_own square +/-0.45m about station, approaching/absent outward cone about station",
+    "station_distance_m": 0.1974,
+    "peer_station_min_m": 0.34,
+    "denominator": "geometrically admissible proposals before peer-station and assigned-LOS rejection, including near-wall completed draws",
+    "proposals": 21,
+    "station_rejected": 0,
+    "los_tested": 21,
+    "los_rejected": 9,
+    "rejected": 9,
+    "rejection_rate": 0.42857142857142855,
+    "rejected_starts_artifact": {
+      "path": "diagnostic-plan-rejected-starts.json.zst",
+      "sha256": "30a2089ff1ab9e891dec73ae7962b95171ed847c515653b9f3c4a7bb43e5724d",
+      "uncompressed_sha256": "91d3e955d9303a2913a2b27ca2827e92499aafde0983102b97505441b4aa6e23",
+      "uncompressed_bytes": 22579
+    }
+  },
+  "near_wall_filter": {
+    "policy": "exclude_report_v1",
+    "definition": "min rect_distance(crate center, static keepouts including perimeter) < 0.45 m (crate12 unchanged)",
+    "drawn_episode_count": 12,
+    "excluded_count": 2,
+    "excluded_rate": 0.16666666666666666,
+    "accepted_count": 10,
+    "strata_overlap": "(i//4)%4 and (i//8)%2 share one bit; recorded, distribution unchanged"
+  },
+  "pooling": "No pooling with any other SHA/profile/host, historical reproduction results, or unrun diagnostic distribution",
+  "runs": [
+    {
+      "name": "crate16-reproduction-77990-221755a5",
+      "seed": 77990,
+      "stage": "reproduction",
+      "near_wall": false,
+      "submitted": true,
+      "status": "complete",
+      "exit": "0",
+      "success": false,
+      "prefix_held": false,
+      "release_success": null,
+      "release_authorized_by_own_inputs": false,
+      "release_outcome": "lift_not_confirmed_by_own_inputs",
+      "teacher_outcomes": {
+        "r1": "peer_approach_handoff",
+        "r2": "approach_blocked_handoff"
+      },
+      "sim_s": 18.10000000000382,
+      "wall_s": 80.4356014799996,
+      "wall_per_sim": 4.443955882871968,
+      "first30_complete": false,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "teacher_boundary_enabled": true,
+        "gt_self_pose_comparison": false,
+        "admitted_source_tags": {
+          "clock": 364,
+          "issued_commands": 1820,
+          "known_shape": 1212,
+          "visible_teacher_measurement": 1576,
+          "static_map": 364,
+          "fixed_rule": 364
+        }
+      },
+      "first30_available_ledger": {
+        "r1": {
+          "first30_command_rows": 182,
+          "phase_counts": {
+            "approach": 102,
+            "search": 24,
+            "align": 56
+          },
+          "wheel_nonzero_rows": 164,
+          "assignment_rgb_rows": 182,
+          "assignment_rgb_confirmed": 164,
+          "assignment_values_keys": [
+            "assignment_source",
+            "confirmed",
+            "end",
+            "lug_pixels",
+            "own_issued_pose",
+            "rgb_sha256",
+            "source"
+          ],
+          "teacher_compute_s": {
+            "N": 182,
+            "max": 0.5267463030031649,
+            "sum": 12.639328191002278,
+            "median": 0.004108805500436574,
+            "p95": 0.41898587600371684
+          }
+        },
+        "r2": {
+          "first30_command_rows": 182,
+          "phase_counts": {
+            "approach": 178,
+            "relook": 4
+          },
+          "wheel_nonzero_rows": 169,
+          "assignment_rgb_rows": 182,
+          "assignment_rgb_confirmed": 182,
+          "assignment_values_keys": [
+            "assignment_source",
+            "confirmed",
+            "end",
+            "lug_pixels",
+            "own_issued_pose",
+            "rgb_sha256",
+            "source"
+          ],
+          "teacher_compute_s": {
+            "N": 182,
+            "max": 0.37035735299650696,
+            "sum": 2.405194175993529,
+            "median": 0.004430935501659405,
+            "p95": 0.06646092799928738
+          }
+        }
+      },
+      "motion": {
+        "run": "crate16-reproduction-77990-221755a5",
+        "origin_t": 1.8000000000001848,
+        "robots": {
+          "r1": {
+            "escape_count": 0,
+            "escape_pure_yaw_count": 0,
+            "escape_other_count": 0,
+            "adjacent_escape_yaw_sign_flips": 0,
+            "last3s": {
+              "elapsed_range": [
+                15.099999999989496,
+                18.10000000000382
+              ],
+              "eval_xy_excursion_from_first_m": 0.030227659261064896,
+              "issued_xy_excursion_from_first_m": 0.0,
+              "eval_only": true
+            },
+            "unsafe_hold_count": 0,
+            "no_path_calls": 27,
+            "blocked_goal_calls": 27,
+            "side_view_count": 13,
+            "approach_progress_log": []
+          },
+          "r2": {
+            "escape_count": 121,
+            "escape_pure_yaw_count": 119,
+            "escape_other_count": 2,
+            "adjacent_escape_yaw_sign_flips": 84,
+            "last3s": {
+              "elapsed_range": [
+                15.099999999989496,
+                18.10000000000382
+              ],
+              "eval_xy_excursion_from_first_m": 0.0003976368258943981,
+              "issued_xy_excursion_from_first_m": 0.0,
+              "eval_only": true
+            },
+            "unsafe_hold_count": 0,
+            "no_path_calls": 0,
+            "blocked_goal_calls": 0,
+            "side_view_count": 0,
+            "approach_progress_log": [
+              {
+                "t": 16.89999999998968,
+                "approach_progress": "replan",
+                "phase": "approach",
+                "required_movement_m": 0.01,
+                "allowance_s": 3.0,
+                "planner_calls": 15,
+                "no_path_calls": 0,
+                "blocked_goal_calls": 0,
+                "reason": "no_issued_pose_progress",
+                "input": "issued-command pose only"
+              },
+              {
+                "t": 19.900000000004006,
+                "approach_progress": "handoff",
+                "phase": "approach",
+                "required_movement_m": 0.01,
+                "allowance_s": 3.0,
+                "planner_calls": 19,
+                "no_path_calls": 0,
+                "blocked_goal_calls": 0,
+                "reason": "no_issued_pose_progress",
+                "input": "issued-command pose only"
+              }
+            ]
+          }
+        }
+      },
+      "finding": "r1은 청록으로 접근 후 align, r2는 파랑 근처에서 회전 대체를 반복하고 접근 무진척 재계획/재관측 후 approach_blocked_handoff. r1도 peer_approach_handoff. 서로 다른 끝을 보며 공동 준비/파지에 이르지 못함.",
+      "review": {
+        "directly_viewed_frames": [
+          "raw/eval-overview/000000-grasp.jpg",
+          "raw/eval-own/r1/000000-grasp.jpg",
+          "raw/eval-own/r2/000000-grasp.jpg",
+          "raw/eval-overview/000040-grasp.jpg",
+          "raw/eval-own/r1/000040-grasp.jpg",
+          "raw/eval-own/r2/000040-grasp.jpg",
+          "raw/eval-overview/000060-grasp.jpg",
+          "raw/eval-own/r1/000060-grasp.jpg",
+          "raw/eval-own/r2/000060-grasp.jpg",
+          "raw/eval-overview/000070-grasp.jpg",
+          "raw/eval-own/r1/000070-grasp.jpg",
+          "raw/eval-own/r2/000070-grasp.jpg",
+          "raw/eval-overview/000110-grasp.jpg",
+          "raw/eval-own/r1/000110-grasp.jpg",
+          "raw/eval-own/r2/000110-grasp.jpg",
+          "raw/eval-overview/000120-grasp.jpg",
+          "raw/eval-own/r1/000120-grasp.jpg",
+          "raw/eval-own/r2/000120-grasp.jpg",
+          "raw/eval-overview/000140-grasp.jpg",
+          "raw/eval-own/r1/000140-grasp.jpg",
+          "raw/eval-own/r2/000140-grasp.jpg",
+          "raw/eval-overview/000180-grasp.jpg",
+          "raw/eval-own/r1/000180-grasp.jpg",
+          "raw/eval-own/r2/000180-grasp.jpg"
+        ],
+        "unique_frame_N": 24,
+        "sim_seconds": [
+          0.0,
+          4.0,
+          6.0,
+          7.0,
+          11.0,
+          12.0,
+          14.0,
+          18.0
+        ],
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "terminal_gap_s": 0.10000000000382059,
+        "montages": [
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/crate16-221755a5-ops/crate16-reproduction-77990-221755a5-sheet-1.jpg",
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/crate16-221755a5-ops/crate16-reproduction-77990-221755a5-sheet-2.jpg",
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/crate16-221755a5-ops/crate16-reproduction-77990-221755a5-sheet-3.jpg"
+        ]
+      },
+      "result_artifact": {
+        "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate16-reproduction-77990-221755a5/raw/result.json.zst",
+        "sha256": "4194fa36727f1a174c0a7f2b46b68f10bae15c36e628ffb0a0e2652175c0f4c6",
+        "decoded_sha256": "4598b2f90313034eb015b70f006a293bcc0b3bd5ae040a11aed55b5dde7b1e3d"
+      },
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/crate16-reproduction-77990-221755a5",
+      "retrieved_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate16-reproduction-77990-221755a5",
+      "verification": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/crate16-221755a5-ops/crate16-reproduction-77990-221755a5-verification.json",
+      "timings_s": {
+        "rgb": 5.875485585991555,
+        "eyes": 0.0,
+        "evaluation": 15.132799171991792,
+        "teacher": 15.044522366995807,
+        "physics": 40.45910567199462
+      }
+    },
+    {
+      "name": "crate16-reproduction-79314-221755a5",
+      "seed": 79314,
+      "stage": "reproduction",
+      "near_wall": false,
+      "submitted": true,
+      "status": "complete",
+      "exit": "0",
+      "success": false,
+      "prefix_held": false,
+      "release_success": null,
+      "release_authorized_by_own_inputs": false,
+      "release_outcome": "lift_not_confirmed_by_own_inputs",
+      "teacher_outcomes": {
+        "r1": "episode_timeout",
+        "r2": "alignment_no_progress"
+      },
+      "sim_s": 20.90000000001719,
+      "wall_s": 83.24075158699998,
+      "wall_per_sim": 3.9828110807144266,
+      "first30_complete": false,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "teacher_boundary_enabled": true,
+        "gt_self_pose_comparison": false,
+        "admitted_source_tags": {
+          "clock": 420,
+          "issued_commands": 2100,
+          "known_shape": 1525,
+          "visible_teacher_measurement": 1945,
+          "static_map": 420,
+          "fixed_rule": 420
+        }
+      },
+      "first30_available_ledger": {
+        "r1": {
+          "first30_command_rows": 210,
+          "phase_counts": {
+            "approach": 100,
+            "search": 110
+          },
+          "wheel_nonzero_rows": 121,
+          "assignment_rgb_rows": 210,
+          "assignment_rgb_confirmed": 108,
+          "assignment_values_keys": [
+            "assignment_source",
+            "confirmed",
+            "end",
+            "lug_pixels",
+            "own_issued_pose",
+            "rgb_sha256",
+            "source"
+          ],
+          "teacher_compute_s": {
+            "N": 210,
+            "max": 0.12071706899951096,
+            "sum": 1.467607308026345,
+            "median": 0.003810081501796958,
+            "p95": 0.06142985499900533
+          }
+        },
+        "r2": {
+          "first30_command_rows": 210,
+          "phase_counts": {
+            "approach": 197,
+            "search": 4,
+            "relook": 9
+          },
+          "wheel_nonzero_rows": 190,
+          "assignment_rgb_rows": 210,
+          "assignment_rgb_confirmed": 210,
+          "assignment_values_keys": [
+            "assignment_source",
+            "confirmed",
+            "end",
+            "lug_pixels",
+            "own_issued_pose",
+            "rgb_sha256",
+            "source"
+          ],
+          "teacher_compute_s": {
+            "N": 210,
+            "max": 0.36895978900429327,
+            "sum": 2.9788752219646994,
+            "median": 0.004554249999273452,
+            "p95": 0.07103140600156621
+          }
+        }
+      },
+      "motion": {
+        "run": "crate16-reproduction-79314-221755a5",
+        "origin_t": 1.8000000000001848,
+        "robots": {
+          "r1": {
+            "escape_count": 36,
+            "escape_pure_yaw_count": 34,
+            "escape_other_count": 2,
+            "adjacent_escape_yaw_sign_flips": 6,
+            "last3s": {
+              "elapsed_range": [
+                17.900000000002866,
+                20.90000000001719
+              ],
+              "eval_xy_excursion_from_first_m": 0.07055311472288607,
+              "issued_xy_excursion_from_first_m": 0.10422872704458848,
+              "eval_only": true
+            },
+            "unsafe_hold_count": 0,
+            "no_path_calls": 0,
+            "blocked_goal_calls": 0,
+            "side_view_count": 28,
+            "approach_progress_log": []
+          },
+          "r2": {
+            "escape_count": 130,
+            "escape_pure_yaw_count": 124,
+            "escape_other_count": 6,
+            "adjacent_escape_yaw_sign_flips": 88,
+            "last3s": {
+              "elapsed_range": [
+                17.900000000002866,
+                20.90000000001719
+              ],
+              "eval_xy_excursion_from_first_m": 0.006179352414968929,
+              "issued_xy_excursion_from_first_m": 0.015312252924350038,
+              "eval_only": true
+            },
+            "unsafe_hold_count": 0,
+            "no_path_calls": 0,
+            "blocked_goal_calls": 0,
+            "side_view_count": 3,
+            "approach_progress_log": [
+              {
+                "t": 9.300000000001,
+                "approach_progress": "replan",
+                "phase": "approach",
+                "required_movement_m": 0.01,
+                "allowance_s": 3.0,
+                "planner_calls": 9,
+                "no_path_calls": 0,
+                "blocked_goal_calls": 0,
+                "reason": "no_issued_pose_progress",
+                "input": "issued-command pose only"
+              },
+              {
+                "t": 20.800000000008303,
+                "approach_progress": "replan",
+                "phase": "approach",
+                "required_movement_m": 0.01,
+                "allowance_s": 3.0,
+                "planner_calls": 21,
+                "no_path_calls": 0,
+                "blocked_goal_calls": 0,
+                "reason": "no_issued_pose_progress",
+                "input": "issued-command pose only"
+              }
+            ]
+          }
+        }
+      },
+      "finding": "r1은 초반 배정 끝 재탐색 뒤 청록에 접근, r2는 파랑 근처에서 회전 대체/재관측을 반복. r2의 접근 복구 세 번째가 alignment_no_progress로 종료; 당시 실제 phase는 approach이고 r1도 approach 미완료. 공동 파지 없음.",
+      "review": {
+        "directly_viewed_frames": [
+          "raw/eval-overview/000000-grasp.jpg",
+          "raw/eval-own/r1/000000-grasp.jpg",
+          "raw/eval-own/r2/000000-grasp.jpg",
+          "raw/eval-overview/000040-grasp.jpg",
+          "raw/eval-own/r1/000040-grasp.jpg",
+          "raw/eval-own/r2/000040-grasp.jpg",
+          "raw/eval-overview/000060-grasp.jpg",
+          "raw/eval-own/r1/000060-grasp.jpg",
+          "raw/eval-own/r2/000060-grasp.jpg",
+          "raw/eval-overview/000080-grasp.jpg",
+          "raw/eval-own/r1/000080-grasp.jpg",
+          "raw/eval-own/r2/000080-grasp.jpg",
+          "raw/eval-overview/000120-grasp.jpg",
+          "raw/eval-own/r1/000120-grasp.jpg",
+          "raw/eval-own/r2/000120-grasp.jpg",
+          "raw/eval-overview/000160-grasp.jpg",
+          "raw/eval-own/r1/000160-grasp.jpg",
+          "raw/eval-own/r2/000160-grasp.jpg",
+          "raw/eval-overview/000180-grasp.jpg",
+          "raw/eval-own/r1/000180-grasp.jpg",
+          "raw/eval-own/r2/000180-grasp.jpg",
+          "raw/eval-overview/000200-grasp.jpg",
+          "raw/eval-own/r1/000200-grasp.jpg",
+          "raw/eval-own/r2/000200-grasp.jpg"
+        ],
+        "unique_frame_N": 24,
+        "sim_seconds": [
+          0.0,
+          4.0,
+          6.0,
+          8.0,
+          12.0,
+          16.0,
+          18.0,
+          20.0
+        ],
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "terminal_gap_s": 0.9000000000171902,
+        "montages": [
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/crate16-221755a5-ops/crate16-reproduction-79314-221755a5-sheet-1.jpg",
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/crate16-221755a5-ops/crate16-reproduction-79314-221755a5-sheet-2.jpg",
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/crate16-221755a5-ops/crate16-reproduction-79314-221755a5-sheet-3.jpg"
+        ]
+      },
+      "result_artifact": {
+        "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate16-reproduction-79314-221755a5/raw/result.json.zst",
+        "sha256": "6335ed79cebc4d9aadec64f8326d2c24f30696a6cdc0bbe37f974f0e7bd3b1a9",
+        "decoded_sha256": "669de155036bd2fd37280345930a810d45dede5ea5315c905d492bcada1b31ab"
+      },
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/crate16-reproduction-79314-221755a5",
+      "retrieved_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate16-reproduction-79314-221755a5",
+      "verification": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/crate16-221755a5-ops/crate16-reproduction-79314-221755a5-verification.json",
+      "timings_s": {
+        "rgb": 6.999372753998614,
+        "eyes": 0.0,
+        "evaluation": 19.563189417014655,
+        "teacher": 4.446482529991044,
+        "physics": 48.263814068966894
+      }
+    },
+    {
+      "name": "crate16-reproduction-79317-221755a5",
+      "seed": 79317,
+      "stage": "reproduction",
+      "near_wall": false,
+      "submitted": false,
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "success": null,
+      "reason": "confirmed same-candidate approach-control failure; no denominator filling; independent review approval cannot waive physical defect"
+    },
+    {
+      "name": "crate16-reproduction-79450-221755a5",
+      "seed": 79450,
+      "stage": "reproduction",
+      "near_wall": false,
+      "submitted": false,
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "success": null,
+      "reason": "confirmed same-candidate approach-control failure; no denominator filling; independent review approval cannot waive physical defect"
+    },
+    {
+      "name": "crate16-reproduction-79451-221755a5",
+      "seed": 79451,
+      "stage": "reproduction",
+      "near_wall": false,
+      "submitted": false,
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "success": null,
+      "reason": "confirmed same-candidate approach-control failure; no denominator filling; independent review approval cannot waive physical defect"
+    },
+    {
+      "name": "crate16-diag-79900-221755a5",
+      "seed": 79900,
+      "stage": "diagnostic",
+      "near_wall": false,
+      "submitted": false,
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "success": null,
+      "reason": "confirmed same-candidate approach-control failure; no denominator filling; independent review approval cannot waive physical defect"
+    },
+    {
+      "name": "crate16-diag-79901-221755a5",
+      "seed": 79901,
+      "stage": "diagnostic",
+      "near_wall": false,
+      "submitted": false,
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "success": null,
+      "reason": "confirmed same-candidate approach-control failure; no denominator filling; independent review approval cannot waive physical defect"
+    },
+    {
+      "name": "crate16-diag-79902-221755a5",
+      "seed": 79902,
+      "stage": "diagnostic",
+      "near_wall": false,
+      "submitted": false,
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "success": null,
+      "reason": "confirmed same-candidate approach-control failure; no denominator filling; independent review approval cannot waive physical defect"
+    },
+    {
+      "name": "crate16-diag-79903-221755a5",
+      "seed": 79903,
+      "stage": "diagnostic",
+      "near_wall": false,
+      "submitted": false,
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "success": null,
+      "reason": "confirmed same-candidate approach-control failure; no denominator filling; independent review approval cannot waive physical defect"
+    },
+    {
+      "name": "crate16-diag-79904-221755a5",
+      "seed": 79904,
+      "stage": "diagnostic",
+      "near_wall": false,
+      "submitted": false,
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "success": null,
+      "reason": "confirmed same-candidate approach-control failure; no denominator filling; independent review approval cannot waive physical defect"
+    },
+    {
+      "name": "crate16-diag-79905-221755a5",
+      "seed": 79905,
+      "stage": "diagnostic",
+      "near_wall": false,
+      "submitted": false,
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "success": null,
+      "reason": "confirmed same-candidate approach-control failure; no denominator filling; independent review approval cannot waive physical defect"
+    },
+    {
+      "name": "crate16-diag-79906-221755a5",
+      "seed": 79906,
+      "stage": "diagnostic",
+      "near_wall": false,
+      "submitted": false,
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "success": null,
+      "reason": "confirmed same-candidate approach-control failure; no denominator filling; independent review approval cannot waive physical defect"
+    },
+    {
+      "name": "crate16-diag-79907-221755a5",
+      "seed": 79907,
+      "stage": "diagnostic",
+      "near_wall": false,
+      "submitted": false,
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "success": null,
+      "reason": "confirmed same-candidate approach-control failure; no denominator filling; independent review approval cannot waive physical defect"
+    },
+    {
+      "name": "crate16-diag-79910-221755a5",
+      "seed": 79910,
+      "stage": "diagnostic",
+      "near_wall": false,
+      "submitted": false,
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "success": null,
+      "reason": "confirmed same-candidate approach-control failure; no denominator filling; independent review approval cannot waive physical defect"
+    },
+    {
+      "name": "crate16-diag-79911-221755a5",
+      "seed": 79911,
+      "stage": "diagnostic",
+      "near_wall": false,
+      "submitted": false,
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "success": null,
+      "reason": "confirmed same-candidate approach-control failure; no denominator filling; independent review approval cannot waive physical defect"
+    }
+  ],
+  "operator_artifacts": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/crate16-221755a5-ops"
+}

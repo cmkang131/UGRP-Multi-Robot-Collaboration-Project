@@ -1,0 +1,175 @@
+{
+  "schema": "ugrp.gcp_ops_summary.v1",
+  "date": "2026-10-15 11:59:33 KST",
+  "queue": "20261015-selfmap-7b5d1924.json",
+  "pr": 506,
+  "host": "gcp1",
+  "machine_type": "n4-highcpu-64",
+  "project": "ugrp-act-train-1014",
+  "source_sha": "7b5d1924624545b44bc30804701809635663130e",
+  "verdict": "NOT_READY_SHARED_CONTROL_DEFECT",
+  "planned_N": 3,
+  "submitted_N": 1,
+  "recorded_n": 1,
+  "internal_complete_n": 0,
+  "HOST_ERROR_N": 0,
+  "physical_stop_N": 0,
+  "pending_not_submitted_N": 2,
+  "runs": [
+    {
+      "name": "selfmap-93510-7b5d1924",
+      "result": {
+        "status": "RECORDED",
+        "source_sha": "7b5d1924624545b44bc30804701809635663130e",
+        "seed": 93510,
+        "model_calls": 0,
+        "complete": false,
+        "physical_success_unverified": true,
+        "frames": 301,
+        "elapsed_sim_s": 30.0,
+        "stop_reason": "sim_time_cap",
+        "rgb_ledger_verified": true,
+        "frontier_selections": 0,
+        "frontier_arrivals": 0,
+        "map_updated_frames": 0,
+        "pose_sources": {
+          "bootstrap": 4,
+          "command_only": 297
+        },
+        "wall_s": 80.77020807300005,
+        "evaluation": {
+          "scope": "static geometry only; all predicted occupied cells scored against wall surfaces",
+          "occupancy_iou": 0.0,
+          "occupancy_intersection": 0,
+          "occupancy_union": 282,
+          "predicted_occupied": 0,
+          "truth_occupied": 282,
+          "false_occupied_outside_domain": 0,
+          "free_coverage_n": 0,
+          "free_coverage_N": 2773,
+          "free_coverage": 0.0,
+          "reachable_free_coverage_n": 0,
+          "reachable_free_coverage_N": 2773,
+          "known_coverage_n": 0,
+          "known_coverage_N": 3055,
+          "wall_error_rmse_m": null,
+          "wall_error_predicted_N": 0,
+          "all_wall_to_prediction_p95_m": null,
+          "all_wall_samples_N": 544,
+          "origin_eval_only": [
+            3.249976683652902,
+            0.7500017058969369,
+            3.141590289764954
+          ],
+          "pose_error_N": 301,
+          "trace_N": 301,
+          "pose_rmse_m": 0.022404637556754592,
+          "yaw_rmse_rad": 0.020348041866811706
+        }
+      },
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/selfmap-93510-7b5d1924/raw",
+      "result_sha256": "c85888dfb86c4dfc027edc4d3f4aa44fab888b2d6bc09d292e766a55a4bdfac9",
+      "first30_wall_per_sim": 2.574232870466676,
+      "total_wall_per_sim": 2.6923402691000016
+    },
+    {
+      "name": "selfmap-93511-7b5d1924",
+      "status": "NOT_SUBMITTED_SHARED_DEFECT"
+    },
+    {
+      "name": "selfmap-93512-7b5d1924",
+      "status": "NOT_SUBMITTED_SHARED_DEFECT"
+    }
+  ],
+  "failure_cause": {
+    "observed": "5 bootstrap landmarks, mutual matching <=5 < min_matches8; after failed fit no landmark additions; all later297 frames insufficient_matches; map updates0, frontier0",
+    "code": [
+      "harness/natural_floor_slam.py:217",
+      "harness/natural_floor_slam.py:308",
+      "harness/self_map_integration.py:251"
+    ],
+    "invariant": "Nonempty landmark bank below min_matches cannot recover through this execution path",
+    "landmark_N": 5,
+    "min_matches": 8,
+    "visual_update_n_after_bootstrap": 0,
+    "visual_update_N_after_bootstrap": 297
+  },
+  "input_audit": {
+    "invisible_measurements": null,
+    "held_world_reads": null,
+    "status": "NOT_INSTRUMENTED; do not report zero",
+    "top_rgb_input": "static boundary absent; only r3 robot_cam ledger present",
+    "runtime_inputs": [
+      "own_rgb",
+      "issued_wheel_commands",
+      "fixed_camera_calibration"
+    ]
+  },
+  "frame_review": {
+    "own_robot": "r3",
+    "frames": [
+      1,
+      61,
+      121,
+      181,
+      241,
+      301
+    ],
+    "elapsed_sim_s": [
+      0,
+      6,
+      12,
+      18,
+      24,
+      30
+    ],
+    "directly_viewed": true,
+    "overview_r1_r2": "not captured in this one active robot recording",
+    "observed": "stationary pan/rotation views of sparse/repeated floor and wall; no evidence of peer blocking",
+    "montage": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/maps-7b5d1924-b2387ac1-ops/selfmap-first30-montage.jpg"
+  },
+  "verification": {
+    "vm_sha256sum_c_pass": true,
+    "local_files_sha_verified": 44,
+    "local_hash_failures": [],
+    "compressed_original_and_archive_sha_verified": [
+      "eval_only/camera.jsonl.zst",
+      "eval_only/contacts.jsonl.zst",
+      "eval_only/servo.jsonl.zst",
+      "eval_only/trajectory.jsonl.zst",
+      "map.json.zst",
+      "robots/r3/frames.jsonl.zst",
+      "trace.jsonl.zst"
+    ],
+    "frames": 301,
+    "trace_rows": 301,
+    "ledger_t0": 1.3,
+    "ledger_tend": 31.3,
+    "period_s": 0.1,
+    "cadence_verified": true,
+    "native_jpeg_ledger_sha": {
+      "JPEG_N": 301,
+      "hash_failures": [],
+      "top_image_N": 0
+    }
+  },
+  "stop_record": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/stop-selfmap-7b5d1924-20261015.json",
+  "raw_retention": "all JPEGs retained on gcp1 persistent disk; lite text retrieved; no independent raw backup",
+  "raw_retrieval_complete": false,
+  "next_step": "new fixed source and queue; do not run pending same-SHA diagnostics",
+  "pr_comment": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/506#issuecomment-6183388482",
+  "resource_completion": {
+    "at": "2026-10-15T03:14:28+00:00",
+    "owned_processes": [],
+    "owned_leases_after": [],
+    "released_only": [
+      "selfmap-93510-7b5d1924",
+      "map-amcl-record-s65101"
+    ],
+    "all_active_run_wrappers": 0,
+    "vm_state": "RUNNING",
+    "idle_timer": "active",
+    "vm_stop_action": "none; leave idle20m guard as requested",
+    "other_resources_modified": false
+  }
+}

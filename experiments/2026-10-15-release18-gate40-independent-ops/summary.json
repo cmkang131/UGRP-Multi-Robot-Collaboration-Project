@@ -1,0 +1,281 @@
+{
+  "schema": "ugrp.gcp-ops.summary.v1",
+  "at": "2026-10-15 16:56:46 KST",
+  "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+  "host": "gcp1/n4-highcpu-64",
+  "gate": {
+    "n": 6,
+    "N": 40,
+    "required": 38,
+    "submitted": 23,
+    "normal_completed": 7,
+    "normal_success": 6,
+    "normal_physical_control_failure": 1,
+    "supervisor_interrupted": 16,
+    "unsubmitted_blocked": 17,
+    "HOST_ERROR": 0,
+    "note": "6/40 is completed success count against planned gate; halted cohort is not an unbiased population success-rate estimate"
+  },
+  "input_audit": {
+    "checked_runs": 23,
+    "invisible_measurements_sum": 0,
+    "held_world_reads_sum": 0,
+    "missing_runs": [],
+    "scope": "release decision interval; truth-based preparation prefix excluded from student training"
+  },
+  "performance": {
+    "first_wave_N": 20,
+    "first_wave_indices": "00..19",
+    "first30_wall_sim_median": 3.0000825014776833,
+    "all_first30_N": 23,
+    "all_first30_wall_sim_median": 3.0146811346741407,
+    "normal_completed_wall_sim_median": 3.0817037576329755,
+    "all_including_interrupted_wall_sim_median": 3.242258521524209,
+    "speed_warning": false,
+    "speed_block": false,
+    "method": "original eval overview JPEG mtimes mapped to trace SIM; startup excluded; shared host load, no dedicated speed cohort",
+    "near_cap_completed_or_interrupted": [],
+    "cap_note": "control-loop end from evaluation ledger; final result.sim_s includes post-run scoring"
+  },
+  "defect": {
+    "run": "r18g-13-a3bbc90e",
+    "seed": 110613,
+    "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+    "profile": "release18_v1",
+    "direct_review": {
+      "views": [
+        "eval-overview",
+        "eval-own/r1",
+        "eval-own/r2"
+      ],
+      "times_s": [
+        0.0,
+        7.0,
+        14.3,
+        21.3,
+        29.3,
+        36.3
+      ],
+      "frames": 18,
+      "finding": "r1/r2 remain at opposite ends; r1 completes second line alignment, r2 changes line position back and forth; no shared-end convergence or mutual blockage in reviewed frames"
+    },
+    "failure": "release17_motion_cap",
+    "status": "complete",
+    "outcome": "release17_motion_cap",
+    "evaluation_failure_reasons": [
+      "not_in_zone"
+    ],
+    "line_ibvs_commands": 15,
+    "adjacent_yaw_sign_changes": 14,
+    "applied_pulse_s": [
+      0.04
+    ],
+    "requested_pulse_range_s": [
+      0.0012282334367420566,
+      0.01631524151768339
+    ],
+    "command_model_cumulative_abs_yaw_rad": 0.29399999999999993,
+    "command_model_next_limit_rad": 0.3141592653589793,
+    "input_audit": {
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    "mechanism": "Minimum 40ms yaw pulse is larger than near-alignment requests; image error crosses target between pulses; yaw signs reverse repeatedly until cumulative command-model motion reaches safety cap, before repick/shift.",
+    "evidence_scope": "Image observation and issued command logs plus pinned source; command-model realized_motion is not a measured joint or physical displacement.",
+    "source_lines": [
+      "sim/release17.py:48",
+      "sim/release17.py:70",
+      "sim/release17.py:345"
+    ],
+    "motion_cap_should_remain": "No code/limit changes by operator; new SHA and queue required"
+  },
+  "runs": [
+    {
+      "run": "r18g-00-a3bbc90e",
+      "status": "complete",
+      "success": true,
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18g-00-a3bbc90e/raw",
+      "result_sha256": "9f9a4a101a193dbec925183a413132fef97a9347eff3cc08ee1a42f15b65fdda",
+      "manifest_sha256": "c3d5d85a15c8c0cce30c3c381c5c316a7e6605b3cb7138f02d9bceed73bf2e7f"
+    },
+    {
+      "run": "r18g-01-a3bbc90e",
+      "status": "complete",
+      "success": true,
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18g-01-a3bbc90e/raw",
+      "result_sha256": "10e4963738f890a60901ca3589444e6c72e8a8cbc7c28db773b0e51870180526",
+      "manifest_sha256": "04102bd0c8940ad3a6f5648849a842d71d67e6d18f92bdcbe6b92fd21c972fc0"
+    },
+    {
+      "run": "r18g-02-a3bbc90e",
+      "status": "complete",
+      "success": true,
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18g-02-a3bbc90e/raw",
+      "result_sha256": "571defb8cf9075b5d60d1f83655be70483b7b0e4d92461c55a20191b313b782e",
+      "manifest_sha256": "26f47ad62495969ceb094a34d9fa7d6ff7af7091c630811363c73c0017897b23"
+    },
+    {
+      "run": "r18g-03-a3bbc90e",
+      "status": "interrupted",
+      "success": false,
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18g-03-a3bbc90e/raw",
+      "result_sha256": "59a4945a48604666de96eadacf11b1f4d56c6f55bc4dd2f98dacdb933f975643",
+      "manifest_sha256": "8686a7b92ed337a5147c433bdf498d001fa248c8eeae6fa7765f95b4bc5f287b"
+    },
+    {
+      "run": "r18g-04-a3bbc90e",
+      "status": "interrupted",
+      "success": false,
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18g-04-a3bbc90e/raw",
+      "result_sha256": "01328d77c73cc1b9663d87d90215530dedf86af9d37560ae8af16f9b125edcb3",
+      "manifest_sha256": "a177ebf37fd0c533995d469fdc24588921da8acb0db54e13c324bb6f34009189"
+    },
+    {
+      "run": "r18g-05-a3bbc90e",
+      "status": "interrupted",
+      "success": false,
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18g-05-a3bbc90e/raw",
+      "result_sha256": "14a8aab52a0546e7c2cf6782b38914b79797a0a60baa6f14fc3609f55dd37445",
+      "manifest_sha256": "4d446accc113d6bb1483d456acfdd0e1283b053cc52cb0b143f3b00fec9a4780"
+    },
+    {
+      "run": "r18g-06-a3bbc90e",
+      "status": "interrupted",
+      "success": false,
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18g-06-a3bbc90e/raw",
+      "result_sha256": "4f567fa636bd3956d497492b182b85d23c6d0e1340f511a9e012c555a7403333",
+      "manifest_sha256": "4bd6ccefcf0a68dcd1c5f935447d60a5f3769d1b9158718c788f7eee80ec6512"
+    },
+    {
+      "run": "r18g-07-a3bbc90e",
+      "status": "interrupted",
+      "success": false,
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18g-07-a3bbc90e/raw",
+      "result_sha256": "e1dd38a952ce5565372d2628a1722b9a0f2449570dbcd690f62c0ba6c8892bc1",
+      "manifest_sha256": "426de98c50f35d0e6c0f707908c74b836ed59d69b9c5cf5794e6f9f1e2616b63"
+    },
+    {
+      "run": "r18g-08-a3bbc90e",
+      "status": "complete",
+      "success": true,
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18g-08-a3bbc90e/raw",
+      "result_sha256": "c0641b3b24408375170adecf8b2e87b22e5770e7902d4a22dcc5897ace033e57",
+      "manifest_sha256": "65a0baab2e3e7bc06c027ce65435cabe2b1e54d6aecdee948b6a58e2586ac17a"
+    },
+    {
+      "run": "r18g-09-a3bbc90e",
+      "status": "interrupted",
+      "success": false,
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18g-09-a3bbc90e/raw",
+      "result_sha256": "f625bef66f809e674222ade04075eff95f0c67697f86a3fce1ab43cd776f13a8",
+      "manifest_sha256": "226f04e4d5155d7dfbc294966670ba4eab32940b6f672ec3bf2d7a2b0b7f0221"
+    },
+    {
+      "run": "r18g-10-a3bbc90e",
+      "status": "interrupted",
+      "success": false,
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18g-10-a3bbc90e/raw",
+      "result_sha256": "ec9e20eb7ee4d71918b001b8ae0eb393a63e582e8eab6ffd23f1fef168726b0e",
+      "manifest_sha256": "950fcd703c12f34541a8dbe4275aab4a16e6a4a6a73523a5bbcbc2cd6c031565"
+    },
+    {
+      "run": "r18g-11-a3bbc90e",
+      "status": "interrupted",
+      "success": false,
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18g-11-a3bbc90e/raw",
+      "result_sha256": "2b6704193d56c6abe3f7255da1d5a87cc8b6b1164bd019984720a0b9a09e7841",
+      "manifest_sha256": "0fb7659355501d87ce8368fa75bacdf9ac52baa8648dcdc54392ab16247d4556"
+    },
+    {
+      "run": "r18g-12-a3bbc90e",
+      "status": "interrupted",
+      "success": false,
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18g-12-a3bbc90e/raw",
+      "result_sha256": "513135b807a41d9362f828522ebcc797b70594215f8c06d8a2aa45dbed3295e9",
+      "manifest_sha256": "0cfb7b8adcbf289b329311134d6f49bc73dca1fb23a846f246d417934fbd7203"
+    },
+    {
+      "run": "r18g-13-a3bbc90e",
+      "status": "complete",
+      "success": false,
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18g-13-a3bbc90e/raw",
+      "result_sha256": "c89efc236756ba34c4bb53afa7cf9767f68cdc9374e0292936daf03ff695a311",
+      "manifest_sha256": "a8064432fd285284d9d1739873d9b4eb643a9619cd6ad01555b5dbc96c39f530"
+    },
+    {
+      "run": "r18g-14-a3bbc90e",
+      "status": "interrupted",
+      "success": false,
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18g-14-a3bbc90e/raw",
+      "result_sha256": "9323eb1a35d34de134621ef4159ba358a5c5bdc005dcec8ef4e78a88daa983eb",
+      "manifest_sha256": "480c6f141afbb8e3955bd0e309d550097993742e32a8d44c70774e678c6b5efe"
+    },
+    {
+      "run": "r18g-15-a3bbc90e",
+      "status": "interrupted",
+      "success": false,
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18g-15-a3bbc90e/raw",
+      "result_sha256": "bb55df957bdfa2808d01548b9153839af6561e42e16b30a828ce98b975c11954",
+      "manifest_sha256": "c21cc1d9b3c88cb83a1f62eb9608fa888d331b5984f9911585e8e23a9c25bb0a"
+    },
+    {
+      "run": "r18g-16-a3bbc90e",
+      "status": "complete",
+      "success": true,
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18g-16-a3bbc90e/raw",
+      "result_sha256": "9a0561cd934376ba4f58a2f8f6263c219086ee1d25d26231627dca5fe9577743",
+      "manifest_sha256": "fdd44c083b13dfbf2845029501b756679ac21318bd87b200729ea63927e9ea1e"
+    },
+    {
+      "run": "r18g-17-a3bbc90e",
+      "status": "complete",
+      "success": true,
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18g-17-a3bbc90e/raw",
+      "result_sha256": "e50fec90ee0a353c650db6defc625a3fa70a95532f08ca61de688f9831d8bb29",
+      "manifest_sha256": "02e6beaaf63dd13515593707ca8a7ae6dd74c6e66874570001671ed120be490a"
+    },
+    {
+      "run": "r18g-18-a3bbc90e",
+      "status": "interrupted",
+      "success": false,
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18g-18-a3bbc90e/raw",
+      "result_sha256": "294286fb368879e2e4d1faebc500a92eaba2403421388681f5f4c5fa5b9ab5c9",
+      "manifest_sha256": "08d0d500fcc49fc781b5a75e40bd0a6ea69b15f8c56b9ee8b25cd5cfd9b6776c"
+    },
+    {
+      "run": "r18g-19-a3bbc90e",
+      "status": "interrupted",
+      "success": false,
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18g-19-a3bbc90e/raw",
+      "result_sha256": "8f620e131ce10801a5460889cdfc69d06888bd1b78ed183184a1cea231800286",
+      "manifest_sha256": "52bc078d362cf151a49f9c6858f3af74ba44b9df6c8b857fbf25d6975694b748"
+    },
+    {
+      "run": "r18g-20-a3bbc90e",
+      "status": "interrupted",
+      "success": false,
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18g-20-a3bbc90e/raw",
+      "result_sha256": "722fc225bd32599a6a42cbfbf29fef49f570cb2d224253f0ec0f4e2576803077",
+      "manifest_sha256": "49fde9d8af8a833317b859b3a59aaa46f796917cfa32061af8a8b43d7c0600a7"
+    },
+    {
+      "run": "r18g-21-a3bbc90e",
+      "status": "interrupted",
+      "success": false,
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18g-21-a3bbc90e/raw",
+      "result_sha256": "b47348ec35ba00537a79ff2bb3bcb33377131b314fe921db4fef40f25db71351",
+      "manifest_sha256": "e2b2a568b3399d2c265924ff045e9f1cab6f1f29b3dc14fcfcee1660d6581c0b"
+    },
+    {
+      "run": "r18g-22-a3bbc90e",
+      "status": "interrupted",
+      "success": false,
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18g-22-a3bbc90e/raw",
+      "result_sha256": "00e361c3a5dcafd2e0accba28dc29a73c3c898064d964b7a038c4e0cc9793656",
+      "manifest_sha256": "b49b628bf40d39a47e29b8cdb629a00d7fac1c7c6bfa132a2b5adb496d81ab02"
+    }
+  ],
+  "full_report": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release18-gate40-a3bbc90e-independent.json",
+  "full_report_sha256": "808f3907d0b6f140fff8bf082e50a4a5b9c750186c7100dea08d952709852d35",
+  "final_ownership_verification": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release18-gate40-a3bbc90e-verify/final-ownership-and-stop-verification.json"
+}

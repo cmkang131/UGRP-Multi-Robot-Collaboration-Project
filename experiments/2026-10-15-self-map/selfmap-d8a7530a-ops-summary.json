@@ -1,0 +1,157 @@
+{
+  "schema": "ugrp.gcp_ops_summary.v1",
+  "finalized_at": "2026-10-15 13:32:05 KST",
+  "queue": "20261015-selfmap-d8a7530a.json",
+  "project": "ugrp-act-train-1014",
+  "host": "gcp1",
+  "machine_type": "n4-highcpu-64",
+  "source_sha": "d8a7530a9f3f6f11d77d0ea7d06838db1486d296",
+  "pr": 506,
+  "bundle_id": "selfmap4_recovery_v1",
+  "scene": {
+    "map_id": "zone_wide_two_doors_final_v3",
+    "wall_texture": "off",
+    "drive_profile": "masterpi_drive_friction_v7",
+    "camera_profile": "camera_v3",
+    "authored_static_map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+  },
+  "verdict": "NOT_READY_180S_INCOMPLETE_RECOVERY_EXHAUSTED",
+  "planned_N": 3,
+  "submitted_N": 2,
+  "first30": {
+    "review_pass_n": 1,
+    "N": 1,
+    "recorded_n": 1,
+    "map_complete_n": 0,
+    "wall_per_sim": 4.943140102266655,
+    "speed_warning": true
+  },
+  "diagnostic180": {
+    "planned_N": 2,
+    "submitted_N": 1,
+    "completed_n": 0,
+    "HOST_ERROR_N": 1,
+    "blocked_not_submitted_N": 1,
+    "map_complete_n": 0
+  },
+  "HOST_ERROR_N": 1,
+  "gate_submitted_N": 0,
+  "input_audit": {
+    "measured_run_N": 2,
+    "invisible_measurements": [
+      0,
+      0
+    ],
+    "held_world_reads": [
+      0,
+      0
+    ],
+    "top_rgb_frames": [
+      0,
+      0
+    ],
+    "peer_rgb_frames": [
+      0,
+      0
+    ],
+    "truth_pose_inputs": [
+      0,
+      0
+    ],
+    "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads"
+  },
+  "verification": {
+    "native_jpeg_sha_verified_N": 733,
+    "remote_original_manifest_files_N": 820,
+    "local_manifest_matched_files_N": 87,
+    "compressed_original_sha_verified_N": 14,
+    "selected_jpeg_sha_verified_N": 12,
+    "stop_marker_sha256": "ab3965656768a5a36890546695692f06a27ca559a51d16e7c51a0006eafbe463",
+    "stop_marker_note": "added after original finisher manifest; separately hash verified, original manifest preserved"
+  },
+  "raw_retention": "all733 native JPEGs and original raw text remain on GCP persistent disk; lite text and12 selected frames retrieved; no independent full-raw backup",
+  "prior_replay_limitation": "previous SHA RGB replay available22/1665 only; reviewed before DEV admission, not full replay validation",
+  "next_step": "assigned queue ended: 93532 BLOCKED, request corrected source/queue from coordinator; idle guard handles VM shutdown",
+  "pr_final_comment_url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/506#issuecomment-6184453081",
+  "summary_path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/selfmap-d8a7530a.json",
+  "summary_sha256": "fc8bc7a3901a416f172f50659131e7bcb1e58c8468b8cbf9de4157655c00a739",
+  "runs": [
+    {
+      "name": "selfmap-93530-d8a7530a",
+      "stage": "first30",
+      "source_sha": "d8a7530a9f3f6f11d77d0ea7d06838db1486d296",
+      "status": "RECORDED",
+      "stop_reason": "sim_time_cap",
+      "complete": false,
+      "frames": 301,
+      "result_sha256": "4d15d5d129b7667204d2acdad35c3944c0310284ca9d1b713e9ca67aaf84729e",
+      "native_raw": "gcp1:/home/ugrp/ugrp-sim/runs/selfmap-93530-d8a7530a/raw",
+      "first30_wall_per_sim": 4.943140102266655,
+      "total_wall_per_sim": 5.061229770700023,
+      "frame_review": {
+        "directly_viewed": true,
+        "elapsed_sim_s": [
+          0.0,
+          6.0,
+          12.0,
+          18.0,
+          24.0,
+          30.0
+        ],
+        "frame_ids": [
+          1,
+          61,
+          121,
+          181,
+          241,
+          301
+        ],
+        "camera": "own r3",
+        "montage": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/selfmap-d8a7530a-ops/selfmap-93530-d8a7530a-montage.jpg",
+        "overview_r1_r2": "not captured by approved single-active-r3 bundle"
+      }
+    },
+    {
+      "name": "selfmap-93531-d8a7530a",
+      "stage": "diagnostic180_1",
+      "source_sha": "d8a7530a9f3f6f11d77d0ea7d06838db1486d296",
+      "status": "HOST_ERROR",
+      "stop_reason": "selfmap4_relocalization_exhausted",
+      "complete": false,
+      "frames": 432,
+      "result_sha256": "4f10f92982f80e33ab9ee679e1d10d0b417f456ba6bc395600496c8d2bee1139",
+      "native_raw": "gcp1:/home/ugrp/ugrp-sim/runs/selfmap-93531-d8a7530a/raw",
+      "first30_wall_per_sim": 4.476413879699976,
+      "total_wall_per_sim": 4.295067374199548,
+      "frame_review": {
+        "directly_viewed": true,
+        "elapsed_sim_s": [
+          0.0,
+          8.6,
+          17.2,
+          25.9,
+          34.5,
+          43.1
+        ],
+        "frame_ids": [
+          1,
+          87,
+          173,
+          260,
+          346,
+          432
+        ],
+        "camera": "own r3",
+        "montage": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/selfmap-d8a7530a-ops/selfmap-93531-d8a7530a-montage.jpg",
+        "overview_r1_r2": "not captured by approved single-active-r3 bundle"
+      }
+    },
+    {
+      "name": "selfmap-93532-d8a7530a",
+      "stage": "180s-b",
+      "source_sha": "d8a7530a9f3f6f11d77d0ea7d06838db1486d296",
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "reason": "93531 HOST_ERROR/unfinished; no repeat on same source"
+    }
+  ]
+}

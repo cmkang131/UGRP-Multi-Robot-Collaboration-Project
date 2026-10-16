@@ -1,0 +1,5188 @@
+{
+  "schema": "ugrp.gcp-ops.release18.gate40.v1",
+  "recorded_at": "2026-10-15 16:57:57 KST",
+  "task_finished": true,
+  "verdict": "NOT_READY_CONFIRMED_CONTROL_OSCILLATION_GATE_STOPPED",
+  "queue": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-release-gate40-a3bbc90e.json",
+  "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+  "profile": {
+    "held_object": "hidden_v1",
+    "lookaround": "setdown_global_v1",
+    "pose_anchor": "command_relative_v1",
+    "own_pose_source": "commands",
+    "observe_mode": "backoff_v3",
+    "zone_slots": "zone",
+    "reach_mode": "pad_window_v2",
+    "placement": "global_localized_release_v1",
+    "lateral_recovery": "bounded_v1",
+    "active_recovery": "setdown_lookaround_v1",
+    "command_motion": "yaw_cal_v1",
+    "localization_support": "map_free_v1",
+    "regrasp_check": "own_rgb_lift_v1",
+    "regrasp_recovery": "own_rgb_realign_v1",
+    "release_profile": "release18_v1",
+    "release_fov_step": "release_fov_step_pulse_v1",
+    "release_settle_reuse": "settled_command_v1",
+    "release_goal_region": "inside_margins_v1"
+  },
+  "host": {
+    "project": "ugrp-act-train-1014",
+    "ssh": "gcp1",
+    "instance": "ugrp-sim-gcp1",
+    "zone": "asia-northeast3-a",
+    "machine_type": "n4-highcpu-64"
+  },
+  "source_worktree": "/Users/changmin/projects/ugrp-wt/ops-release18-a3bbc90e",
+  "plan_sha256": "356a2d3a65f823ee4a7a50950c6536539f0a9cd73cca6fcb7950033ce2503e60",
+  "counts": {
+    "planned_N": 40,
+    "required": 38,
+    "known_success_n": 6,
+    "submitted": 23,
+    "completed_without_supervisor": 7,
+    "completed_success": 6,
+    "completed_control_failure": 1,
+    "supervisor_interrupted": 16,
+    "unsubmitted_blocked": 17,
+    "HOST_ERROR": 0,
+    "gate_pass": false,
+    "cohort_complete": false,
+    "display": "6/40 success confirmed; stopped incomplete cohort, not an estimated complete-cohort success rate"
+  },
+  "failure_analysis": {
+    "run": "r18g-13-a3bbc90e",
+    "seed": 110613,
+    "controller_end_sim_s": 37.200000000095024,
+    "source": "sim/release17.py:345",
+    "diagnosis": "r2 second line alignment oscillates under 40ms minimum yaw pulses; target-relative image feature error alternates signs, cumulative issued yaw reaches0.294rad and next pulse exceeds18deg budget; no repick/shift completed. r1 already aligned, waits.",
+    "relation": "opposite ends, no same-end or mutual-blocking cause seen",
+    "observed_frames": 18,
+    "observed_times_sim_s": [
+      0.0,
+      7.0,
+      14.3,
+      21.3,
+      29.3,
+      36.3
+    ],
+    "motion_budget_kind": "issued-command integral, not measured robot joint/pose state",
+    "last_line_ibvs_events": [
+      {
+        "t": 37.000000000085656,
+        "event": "line_ibvs",
+        "wheels": [
+          0.35,
+          -0.35,
+          0.0,
+          0.0
+        ],
+        "durations": [
+          0.04,
+          0.04,
+          0.0,
+          0.0
+        ],
+        "yaw_floor": {
+          "requested_s": [
+            0.011054087703810042,
+            0.011054087703810042,
+            0.0012282334367420566,
+            0.0012282334367420566
+          ],
+          "floor_s": 0.04,
+          "deadband_s": 0.02,
+          "mode": "single_pulse",
+          "applied_s": [
+            0.04,
+            0.04,
+            0.0,
+            0.0
+          ],
+          "realized_motion": [
+            0.0,
+            -0.0016,
+            -0.020999999999999994
+          ]
+        },
+        "kind": "line_ibvs",
+        "left": -0.00039303417068271954,
+        "yaw": -0.006448218598789851,
+        "aligned": false,
+        "error": [
+          0.034044234433629444,
+          -0.005979513433962601
+        ],
+        "merit": 1.365411170711877,
+        "forward": 0.0
+      },
+      {
+        "t": 37.20000000008661,
+        "event": "line_ibvs",
+        "wheels": [
+          -0.35,
+          0.35,
+          0.35,
+          -0.35
+        ],
+        "durations": [
+          0.04,
+          0.04,
+          0.04,
+          0.04
+        ],
+        "yaw_floor": {
+          "requested_s": [
+            0.014152458501589905,
+            0.014152458501589905,
+            0.0073670661944603135,
+            0.0073670661944603135
+          ],
+          "floor_s": 0.04,
+          "deadband_s": 0.02,
+          "mode": "single_pulse",
+          "applied_s": [
+            0.04,
+            0.04,
+            0.04,
+            0.04
+          ],
+          "realized_motion": [
+            0.0,
+            0.0032,
+            0.0
+          ]
+        },
+        "kind": "line_ibvs",
+        "left": 0.0008607809878420088,
+        "yaw": 0.003562330961243034,
+        "aligned": false,
+        "error": [
+          -0.028823747890029082,
+          0.008406190663780237
+        ],
+        "merit": 1.1614311896512342,
+        "forward": 0.0
+      },
+      {
+        "t": 37.400000000087566,
+        "event": "line_ibvs",
+        "wheels": [
+          0.35,
+          -0.35,
+          0.0,
+          0.0
+        ],
+        "durations": [
+          0.04,
+          0.04,
+          0.0,
+          0.0
+        ],
+        "yaw_floor": {
+          "requested_s": [
+            0.01631524151768339,
+            0.01631524151768339,
+            0.0071049424911973,
+            0.0071049424911973
+          ],
+          "floor_s": 0.04,
+          "deadband_s": 0.02,
+          "mode": "single_pulse",
+          "applied_s": [
+            0.04,
+            0.04,
+            0.0,
+            0.0
+          ],
+          "realized_motion": [
+            0.0,
+            -0.0016,
+            -0.020999999999999994
+          ]
+        },
+        "kind": "line_ibvs",
+        "left": -0.0009368073603552276,
+        "yaw": -0.004835406988905198,
+        "aligned": false,
+        "error": [
+          0.03552068266565722,
+          -0.009574278153395465
+        ],
+        "merit": 1.4297598525117852,
+        "forward": 0.0
+      },
+      {
+        "t": 37.60000000008852,
+        "event": "line_ibvs",
+        "wheels": [
+          -0.35,
+          0.35,
+          0.0,
+          0.0
+        ],
+        "durations": [
+          0.04,
+          0.04,
+          0.0,
+          0.0
+        ],
+        "yaw_floor": {
+          "requested_s": [
+            0.012237471712283891,
+            0.012237471712283891,
+            0.005107636002901293,
+            0.005107636002901293
+          ],
+          "floor_s": 0.04,
+          "deadband_s": 0.02,
+          "mode": "single_pulse",
+          "applied_s": [
+            0.04,
+            0.04,
+            0.0,
+            0.0
+          ],
+          "realized_motion": [
+            0.0,
+            0.0016,
+            0.020999999999999994
+          ]
+        },
+        "kind": "line_ibvs",
+        "left": 0.0006938043086074074,
+        "yaw": 0.003743163747425863,
+        "aligned": false,
+        "error": [
+          -0.0270086025653277,
+          0.007162717558239904
+        ],
+        "merit": 1.0869197929882248,
+        "forward": 0.0
+      },
+      {
+        "t": 37.800000000089476,
+        "event": "line_ibvs",
+        "wheels": [
+          0.35,
+          -0.35,
+          0.0,
+          0.0
+        ],
+        "durations": [
+          0.04,
+          0.04,
+          0.0,
+          0.0
+        ],
+        "yaw_floor": {
+          "requested_s": [
+            0.013150109507883758,
+            0.013150109507883758,
+            0.0,
+            0.0
+          ],
+          "floor_s": 0.04,
+          "deadband_s": 0.02,
+          "mode": "single_pulse",
+          "applied_s": [
+            0.04,
+            0.04,
+            0.0,
+            0.0
+          ],
+          "realized_motion": [
+            0.0,
+            -0.0016,
+            -0.020999999999999994
+          ]
+        },
+        "kind": "line_ibvs",
+        "left": -0.0005499649423573543,
+        "yaw": -0.006589325114837671,
+        "aligned": false,
+        "error": [
+          0.03709741819671604,
+          -0.007286312303220198
+        ],
+        "merit": 1.4888575544976868,
+        "forward": 0.0
+      },
+      {
+        "t": 38.00000000009043,
+        "event": "line_ibvs",
+        "wheels": [
+          -0.35,
+          0.35,
+          0.0,
+          0.0
+        ],
+        "durations": [
+          0.04,
+          0.04,
+          0.0,
+          0.0
+        ],
+        "yaw_floor": {
+          "requested_s": [
+            0.012907102429938483,
+            0.012907102429938483,
+            0.006176226356962623,
+            0.006176226356962623
+          ],
+          "floor_s": 0.04,
+          "deadband_s": 0.02,
+          "mode": "single_pulse",
+          "applied_s": [
+            0.04,
+            0.04,
+            0.0,
+            0.0
+          ],
+          "realized_motion": [
+            0.0,
+            0.0016,
+            0.020999999999999994
+          ]
+        },
+        "kind": "line_ibvs",
+        "left": 0.0007633331514760441,
+        "yaw": 0.0035337099383123257,
+        "aligned": false,
+        "error": [
+          -0.027183380729876243,
+          0.0076209213385203985
+        ],
+        "merit": 1.094728642731849,
+        "forward": 0.0
+      },
+      {
+        "t": 38.200000000091386,
+        "event": "line_ibvs",
+        "wheels": [
+          0.35,
+          -0.35,
+          0.0,
+          0.0
+        ],
+        "durations": [
+          0.04,
+          0.04,
+          0.0,
+          0.0
+        ],
+        "yaw_floor": {
+          "requested_s": [
+            0.011823725504534203,
+            0.011823725504534203,
+            0.0,
+            0.0
+          ],
+          "floor_s": 0.04,
+          "deadband_s": 0.02,
+          "mode": "single_pulse",
+          "applied_s": [
+            0.04,
+            0.04,
+            0.0,
+            0.0
+          ],
+          "realized_motion": [
+            0.0,
+            -0.0016,
+            -0.020999999999999994
+          ]
+        },
+        "kind": "line_ibvs",
+        "left": -0.0004446610200141755,
+        "yaw": -0.006578735892074859,
+        "aligned": false,
+        "error": [
+          0.03541289918442177,
+          -0.006446768202476635
+        ],
+        "merit": 1.4205851463840855,
+        "forward": 0.0
+      },
+      {
+        "t": 38.40000000009234,
+        "event": "line_ibvs",
+        "wheels": [
+          -0.35,
+          0.35,
+          0.0,
+          0.0
+        ],
+        "durations": [
+          0.04,
+          0.04,
+          0.0,
+          0.0
+        ],
+        "yaw_floor": {
+          "requested_s": [
+            0.013541680738185043,
+            0.013541680738185043,
+            0.006020577240805713,
+            0.006020577240805713
+          ],
+          "floor_s": 0.04,
+          "deadband_s": 0.02,
+          "mode": "single_pulse",
+          "applied_s": [
+            0.04,
+            0.04,
+            0.0,
+            0.0
+          ],
+          "realized_motion": [
+            0.0,
+            0.0016,
+            0.020999999999999994
+          ]
+        },
+        "kind": "line_ibvs",
+        "left": 0.0007824903191596303,
+        "yaw": 0.003948579336124147,
+        "aligned": false,
+        "error": [
+          -0.02927834755497364,
+          0.007957035903516334
+        ],
+        "merit": 1.1786186643148637,
+        "forward": 0.0
+      },
+      {
+        "t": 38.600000000093296,
+        "event": "line_ibvs",
+        "wheels": [
+          0.35,
+          -0.35,
+          0.0,
+          0.0
+        ],
+        "durations": [
+          0.04,
+          0.04,
+          0.0,
+          0.0
+        ],
+        "yaw_floor": {
+          "requested_s": [
+            0.011255448212892198,
+            0.011255448212892198,
+            0.0,
+            0.0
+          ],
+          "floor_s": 0.04,
+          "deadband_s": 0.02,
+          "mode": "single_pulse",
+          "applied_s": [
+            0.04,
+            0.04,
+            0.0,
+            0.0
+          ],
+          "realized_motion": [
+            0.0,
+            -0.0016,
+            -0.020999999999999994
+          ]
+        },
+        "kind": "line_ibvs",
+        "left": -0.00041651770086068024,
+        "yaw": -0.006351425799740379,
+        "aligned": false,
+        "error": [
+          0.03399044302828276,
+          -0.006122704698324104
+        ],
+        "merit": 1.3634418013324416,
+        "forward": 0.0
+      },
+      {
+        "t": 38.80000000009425,
+        "event": "line_ibvs",
+        "wheels": [
+          -0.35,
+          0.35,
+          0.0,
+          0.0
+        ],
+        "durations": [
+          0.04,
+          0.04,
+          0.0,
+          0.0
+        ],
+        "yaw_floor": {
+          "requested_s": [
+            0.01457291532010006,
+            0.01457291532010006,
+            0.007052919518171296,
+            0.007052919518171296
+          ],
+          "floor_s": 0.04,
+          "deadband_s": 0.02,
+          "mode": "single_pulse",
+          "applied_s": [
+            0.04,
+            0.04,
+            0.0,
+            0.0
+          ],
+          "realized_motion": [
+            0.0,
+            0.0016,
+            0.020999999999999994
+          ]
+        },
+        "kind": "line_ibvs",
+        "left": 0.0008650333935308542,
+        "yaw": 0.003947997796012599,
+        "aligned": false,
+        "error": [
+          -0.030560298258819334,
+          0.008611172928031877
+        ],
+        "merit": 1.2308081850380672,
+        "forward": 0.0
+      }
+    ],
+    "failure_counterexample_subset": "one diagnosed line-recheck failure; 16 supervisory interruptions are not independent physical failures"
+  },
+  "input_audit": {
+    "runs_checked": 23,
+    "invisible_measurements_sum": 0,
+    "held_world_reads_sum": 0,
+    "scope": "release decision interval; truth-based prefix is excluded preparation; no separate enabled/top-control runtime field supplied"
+  },
+  "performance": {
+    "first_wave_run_count": 20,
+    "first30_wall_sim_median_approx": 3.0000825014776833,
+    "first30_wall_sim_min": 2.7925082401810144,
+    "first30_wall_sim_max": 3.1532013140824686,
+    "overall_wall_sim_median_to_exit": 3.242258521524209,
+    "completed_only_wall_sim_median": 3.0817037576329755,
+    "scope": "rolling admission up to20; shared host load varied; first30 derived from original JPEG mtime/actual teacher SIM, startup excluded; full exits include deliberate interrupts",
+    "stop_reason": "confirmed control defect, not speed"
+  },
+  "visual_review": {
+    "runs_directly_viewed": 23,
+    "frames_directly_viewed": 414,
+    "views": [
+      "overview",
+      "r1",
+      "r2"
+    ],
+    "first_middle_end_each": true,
+    "scope": "six evenly spaced times per run; exact ranges in rows; no independent completion classification for interrupted runs"
+  },
+  "preservation": {
+    "original_manifest_files_verified": 6090,
+    "lite_files_verified": 446,
+    "compressed_and_decoded_files_verified": 91,
+    "supplemental_stop_markers_verified": 46,
+    "stop_record": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/stop-release18-gate40-a3bbc90e-20261015.json",
+    "owned_pids": [],
+    "owned_leases": [],
+    "other_jobs_at_verification": 0,
+    "idle_timer": "active",
+    "raw": "GCP persistent disk; lite logs/selected frames on Mac; no full independent raw backup",
+    "training_rgb": false,
+    "weld": "off",
+    "budget_stop": "ACTIVE trigger verified before submission, unchanged",
+    "eight_hour_stop": "28800 seconds STOP unchanged",
+    "idle_guard": "20 minutes unchanged"
+  },
+  "no_pooling": true,
+  "diagnostics_reference": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release18-diagnostic-a3bbc90e.json",
+  "remaining": "no more runs of this SHA; coordinator must fix control oscillation and provide newly approved queue; this assigned operation is finished",
+  "runs": [
+    {
+      "name": "r18g-00-a3bbc90e",
+      "seed": 110600,
+      "episode": 0,
+      "candidate": "A",
+      "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+      "submitted": true,
+      "exit": "0",
+      "status": "complete",
+      "success": true,
+      "canonical_release_success": true,
+      "release_outcome": "teacher_done",
+      "failure_reasons": [],
+      "prefix_held": true,
+      "input_audit": {
+        "held_object": "hidden_v1",
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 100.616283475003,
+      "sim_s": 33.90000000007927,
+      "wall_sim": 2.9680319609076027,
+      "first30_wall_sim_approx": 2.8630362878872977,
+      "sequence_world_t": [
+        {
+          "t": 10.1,
+          "phase": "look"
+        },
+        {
+          "t": 10.8,
+          "phase": "await_look"
+        },
+        {
+          "t": 10.9,
+          "phase": "lower"
+        },
+        {
+          "t": 13.3,
+          "phase": "await_open"
+        },
+        {
+          "t": 13.4,
+          "phase": "open"
+        },
+        {
+          "t": 14.9,
+          "phase": "observe_back"
+        },
+        {
+          "t": 16.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 20.5,
+          "phase": "observe_back"
+        },
+        {
+          "t": 23.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 27.5,
+          "phase": "observe_move"
+        },
+        {
+          "t": 28.5,
+          "phase": "observe"
+        },
+        {
+          "t": 29.1,
+          "phase": "await_observe"
+        },
+        {
+          "t": 29.2,
+          "phase": "done"
+        }
+      ],
+      "code_decisions": [
+        {
+          "action": "lower",
+          "lo": null,
+          "hi": null,
+          "evidence": [
+            "none",
+            "none"
+          ],
+          "exact": {
+            "r1": false,
+            "r2": false
+          },
+          "t": 10.899999999997272
+        },
+        {
+          "action": "lower",
+          "reason": "localized_margins_inside",
+          "t": 29.200000000048412,
+          "margins_m": [
+            0.48290032552694107,
+            0.24617095802423317
+          ],
+          "release_goal_region": "inside_margins_v1"
+        }
+      ],
+      "shift_moves_completed": 0,
+      "regrasp_epochs": [],
+      "cap_timing": {
+        "control_loop_end_sim_s": 31.400000000067326,
+        "remaining_at_control_loop_end_s": 148.59999999993266,
+        "run": "r18g-00-a3bbc90e",
+        "cap_s": 180,
+        "done_entry_sim_s": 27.40000000004823,
+        "last_control_trace_sim_s": 31.30000000006685,
+        "remaining_at_last_control_trace_s": 148.69999999993314,
+        "flag_within10s_of_cap": false,
+        "final_sim_including_postrun_evaluation_s": 33.90000000007927,
+        "shift_moves": 0,
+        "regrasp_epochs": 0,
+        "note": "control loop and evaluation separated; final result.sim_s includes post-loop evaluation"
+      },
+      "result_hash": {
+        "sha256": "9f9a4a101a193dbec925183a413132fef97a9347eff3cc08ee1a42f15b65fdda",
+        "bytes": 34183,
+        "decoded_sha256": "a9cfe37ad9615a47294f074dbb2dcedb7286d00aecff84be441ee096ad79d2fc"
+      },
+      "original_manifest_files_verified": 129,
+      "lite_files_verified": 18,
+      "decoded_files_verified": [
+        "eval-only.jsonl.zst",
+        "result.json.zst",
+        "teacher-r1.jsonl.zst",
+        "teacher-r2.jsonl.zst"
+      ],
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18g-00-a3bbc90e",
+      "lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r18g-00-a3bbc90e",
+      "visual_review": {
+        "frames_directly_viewed": 18,
+        "times_sim_s": [
+          0.0,
+          6.0,
+          12.3,
+          18.3,
+          25.3,
+          31.3
+        ],
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "montages": [
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release18-gate40-a3bbc90e-ops/r18g-00-a3bbc90e/montage-0.jpg"
+        ],
+        "relation": "opposite beam ends; no same-end/mutual-blocking cause seen",
+        "incomplete_last_triplet_excluded": false
+      }
+    },
+    {
+      "name": "r18g-01-a3bbc90e",
+      "seed": 110601,
+      "episode": 1,
+      "candidate": "A",
+      "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+      "submitted": true,
+      "exit": "0",
+      "status": "complete",
+      "success": true,
+      "canonical_release_success": true,
+      "release_outcome": "teacher_done",
+      "failure_reasons": [],
+      "prefix_held": true,
+      "input_audit": {
+        "held_object": "hidden_v1",
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 98.06112483499965,
+      "sim_s": 33.90000000007927,
+      "wall_sim": 2.8926585496982407,
+      "first30_wall_sim_approx": 2.7925082401810144,
+      "sequence_world_t": [
+        {
+          "t": 10.1,
+          "phase": "look"
+        },
+        {
+          "t": 10.8,
+          "phase": "await_look"
+        },
+        {
+          "t": 10.9,
+          "phase": "lower"
+        },
+        {
+          "t": 13.3,
+          "phase": "await_open"
+        },
+        {
+          "t": 13.4,
+          "phase": "open"
+        },
+        {
+          "t": 14.9,
+          "phase": "observe_back"
+        },
+        {
+          "t": 16.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 20.5,
+          "phase": "observe_back"
+        },
+        {
+          "t": 23.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 27.5,
+          "phase": "observe_move"
+        },
+        {
+          "t": 28.5,
+          "phase": "observe"
+        },
+        {
+          "t": 29.1,
+          "phase": "await_observe"
+        },
+        {
+          "t": 29.2,
+          "phase": "done"
+        }
+      ],
+      "code_decisions": [
+        {
+          "action": "lower",
+          "lo": null,
+          "hi": null,
+          "evidence": [
+            "none",
+            "none"
+          ],
+          "exact": {
+            "r1": false,
+            "r2": false
+          },
+          "t": 10.899999999997272
+        },
+        {
+          "action": "lower",
+          "reason": "localized_margins_inside",
+          "t": 29.200000000048412,
+          "margins_m": [
+            0.18021441135859328,
+            0.602570082855568
+          ],
+          "release_goal_region": "inside_margins_v1"
+        }
+      ],
+      "shift_moves_completed": 0,
+      "regrasp_epochs": [],
+      "cap_timing": {
+        "control_loop_end_sim_s": 31.400000000067326,
+        "remaining_at_control_loop_end_s": 148.59999999993266,
+        "run": "r18g-01-a3bbc90e",
+        "cap_s": 180,
+        "done_entry_sim_s": 27.40000000004823,
+        "last_control_trace_sim_s": 31.30000000006685,
+        "remaining_at_last_control_trace_s": 148.69999999993314,
+        "flag_within10s_of_cap": false,
+        "final_sim_including_postrun_evaluation_s": 33.90000000007927,
+        "shift_moves": 0,
+        "regrasp_epochs": 0,
+        "note": "control loop and evaluation separated; final result.sim_s includes post-loop evaluation"
+      },
+      "result_hash": {
+        "sha256": "10e4963738f890a60901ca3589444e6c72e8a8cbc7c28db773b0e51870180526",
+        "bytes": 31773,
+        "decoded_sha256": "bc2e11be385adf937717c5e61774b9209f3e946919587e05b6382cf19389dfde"
+      },
+      "original_manifest_files_verified": 129,
+      "lite_files_verified": 18,
+      "decoded_files_verified": [
+        "eval-only.jsonl.zst",
+        "result.json.zst",
+        "teacher-r1.jsonl.zst",
+        "teacher-r2.jsonl.zst"
+      ],
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18g-01-a3bbc90e",
+      "lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r18g-01-a3bbc90e",
+      "visual_review": {
+        "frames_directly_viewed": 18,
+        "times_sim_s": [
+          0.0,
+          6.0,
+          12.3,
+          18.3,
+          25.3,
+          31.3
+        ],
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "montages": [
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release18-gate40-a3bbc90e-ops/r18g-01-a3bbc90e/montage-0.jpg"
+        ],
+        "relation": "opposite beam ends; no same-end/mutual-blocking cause seen",
+        "incomplete_last_triplet_excluded": false
+      }
+    },
+    {
+      "name": "r18g-02-a3bbc90e",
+      "seed": 110602,
+      "episode": 2,
+      "candidate": "A",
+      "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+      "submitted": true,
+      "exit": "0",
+      "status": "complete",
+      "success": true,
+      "canonical_release_success": true,
+      "release_outcome": "teacher_done",
+      "failure_reasons": [],
+      "prefix_held": true,
+      "input_audit": {
+        "held_object": "hidden_v1",
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 259.4309214669993,
+      "sim_s": 83.09999999972017,
+      "wall_sim": 3.121912412369108,
+      "first30_wall_sim_approx": 2.8466336483157417,
+      "sequence_world_t": [
+        {
+          "t": 10.1,
+          "phase": "look"
+        },
+        {
+          "t": 10.8,
+          "phase": "await_look"
+        },
+        {
+          "t": 10.9,
+          "phase": "lower"
+        },
+        {
+          "t": 13.3,
+          "phase": "await_open"
+        },
+        {
+          "t": 13.4,
+          "phase": "open"
+        },
+        {
+          "t": 14.9,
+          "phase": "observe_back"
+        },
+        {
+          "t": 16.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 20.5,
+          "phase": "observe_back"
+        },
+        {
+          "t": 23.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 27.5,
+          "phase": "observe_move"
+        },
+        {
+          "t": 28.5,
+          "phase": "observe"
+        },
+        {
+          "t": 29.1,
+          "phase": "await_observe"
+        },
+        {
+          "t": 29.2,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 34.3,
+          "phase": "approach"
+        },
+        {
+          "t": 35.6,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 38.2,
+          "phase": "repick"
+        },
+        {
+          "t": 44.3,
+          "phase": "regrasp_check"
+        },
+        {
+          "t": 58.1,
+          "phase": "await_regrasp"
+        },
+        {
+          "t": 58.2,
+          "phase": "shift"
+        },
+        {
+          "t": 60.0,
+          "phase": "lower"
+        },
+        {
+          "t": 62.4,
+          "phase": "await_open"
+        },
+        {
+          "t": 62.5,
+          "phase": "open"
+        },
+        {
+          "t": 63.9,
+          "phase": "observe_back"
+        },
+        {
+          "t": 65.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 69.5,
+          "phase": "observe_back"
+        },
+        {
+          "t": 72.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 76.5,
+          "phase": "observe_move"
+        },
+        {
+          "t": 77.5,
+          "phase": "observe"
+        },
+        {
+          "t": 78.2,
+          "phase": "await_observe"
+        },
+        {
+          "t": 78.3,
+          "phase": "done"
+        }
+      ],
+      "code_decisions": [
+        {
+          "action": "lower",
+          "lo": null,
+          "hi": null,
+          "evidence": [
+            "none",
+            "none"
+          ],
+          "exact": {
+            "r1": false,
+            "r2": false
+          },
+          "t": 10.899999999997272
+        },
+        {
+          "action": "shift",
+          "shift_m": 0.2,
+          "reason": "localized_margin_correction",
+          "t": 29.200000000048412,
+          "margins_m": [
+            -0.15897570347988554,
+            0.8921409830694169
+          ]
+        },
+        {
+          "action": "lower",
+          "reason": "localized_margins_inside",
+          "t": 78.29999999987642,
+          "margins_m": [
+            0.041669164878245346,
+            0.691173085009953
+          ],
+          "release_goal_region": "inside_margins_v1"
+        }
+      ],
+      "shift_moves_completed": 1,
+      "regrasp_epochs": [
+        {
+          "epoch": 1,
+          "confirmed": {
+            "r1": true,
+            "r2": true
+          },
+          "attempts": {
+            "r1": 1,
+            "r2": 1
+          },
+          "failure": null
+        }
+      ],
+      "cap_timing": {
+        "control_loop_end_sim_s": 80.59999999977929,
+        "remaining_at_control_loop_end_s": 99.40000000022071,
+        "run": "r18g-02-a3bbc90e",
+        "cap_s": 180,
+        "done_entry_sim_s": 76.49999999987622,
+        "last_control_trace_sim_s": 80.49999999978165,
+        "remaining_at_last_control_trace_s": 99.50000000021835,
+        "flag_within10s_of_cap": false,
+        "final_sim_including_postrun_evaluation_s": 83.09999999972017,
+        "shift_moves": 1,
+        "regrasp_epochs": 1,
+        "note": "control loop and evaluation separated; final result.sim_s includes post-loop evaluation"
+      },
+      "result_hash": {
+        "sha256": "571defb8cf9075b5d60d1f83655be70483b7b0e4d92461c55a20191b313b782e",
+        "bytes": 77489,
+        "decoded_sha256": "72bd5466ae4c6455823d8499512fa142be97374dac8f76e10893176cc35a7b34"
+      },
+      "original_manifest_files_verified": 354,
+      "lite_files_verified": 18,
+      "decoded_files_verified": [
+        "eval-only.jsonl.zst",
+        "result.json.zst",
+        "teacher-r1.jsonl.zst",
+        "teacher-r2.jsonl.zst"
+      ],
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18g-02-a3bbc90e",
+      "lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r18g-02-a3bbc90e",
+      "visual_review": {
+        "frames_directly_viewed": 18,
+        "times_sim_s": [
+          0.0,
+          16.3,
+          32.3,
+          48.3,
+          64.3,
+          80.3
+        ],
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "montages": [
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release18-gate40-a3bbc90e-ops/r18g-02-a3bbc90e/montage-0.jpg"
+        ],
+        "relation": "opposite beam ends; no same-end/mutual-blocking cause seen",
+        "incomplete_last_triplet_excluded": false
+      }
+    },
+    {
+      "name": "r18g-03-a3bbc90e",
+      "seed": 110603,
+      "episode": 3,
+      "candidate": "A",
+      "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+      "submitted": true,
+      "exit": "130",
+      "status": "interrupted",
+      "success": false,
+      "canonical_release_success": null,
+      "release_outcome": "teacher_done",
+      "failure_reasons": null,
+      "prefix_held": true,
+      "input_audit": {
+        "held_object": "hidden_v1",
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 271.7919056299979,
+      "sim_s": 82.13724999974293,
+      "wall_sim": 3.3089969000769877,
+      "first30_wall_sim_approx": 3.0146811346741407,
+      "sequence_world_t": [
+        {
+          "t": 10.1,
+          "phase": "look"
+        },
+        {
+          "t": 10.8,
+          "phase": "await_look"
+        },
+        {
+          "t": 10.9,
+          "phase": "lower"
+        },
+        {
+          "t": 13.3,
+          "phase": "await_open"
+        },
+        {
+          "t": 13.4,
+          "phase": "open"
+        },
+        {
+          "t": 14.9,
+          "phase": "observe_back"
+        },
+        {
+          "t": 16.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 20.5,
+          "phase": "observe_back"
+        },
+        {
+          "t": 23.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 27.5,
+          "phase": "observe_move"
+        },
+        {
+          "t": 28.5,
+          "phase": "observe"
+        },
+        {
+          "t": 29.1,
+          "phase": "await_observe"
+        },
+        {
+          "t": 29.2,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 34.8,
+          "phase": "approach"
+        },
+        {
+          "t": 36.1,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 39.1,
+          "phase": "repick"
+        },
+        {
+          "t": 45.2,
+          "phase": "regrasp_check"
+        },
+        {
+          "t": 59.0,
+          "phase": "await_regrasp"
+        },
+        {
+          "t": 59.1,
+          "phase": "shift"
+        },
+        {
+          "t": 60.9,
+          "phase": "lower"
+        },
+        {
+          "t": 63.3,
+          "phase": "await_open"
+        },
+        {
+          "t": 63.4,
+          "phase": "open"
+        },
+        {
+          "t": 64.9,
+          "phase": "observe_back"
+        },
+        {
+          "t": 66.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 70.5,
+          "phase": "observe_back"
+        },
+        {
+          "t": 73.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 77.5,
+          "phase": "observe_move"
+        },
+        {
+          "t": 78.5,
+          "phase": "observe"
+        },
+        {
+          "t": 79.2,
+          "phase": "await_observe"
+        },
+        {
+          "t": 79.3,
+          "phase": "done"
+        }
+      ],
+      "code_decisions": null,
+      "shift_moves_completed": null,
+      "regrasp_epochs": [
+        {
+          "epoch": 1,
+          "confirmed": {
+            "r1": true,
+            "r2": true
+          },
+          "attempts": {
+            "r1": 1,
+            "r2": 1
+          },
+          "failure": null
+        }
+      ],
+      "cap_timing": {
+        "control_loop_end_sim_s": 81.59999999975564,
+        "remaining_at_control_loop_end_s": 98.40000000024436,
+        "run": "r18g-03-a3bbc90e",
+        "cap_s": 180,
+        "done_entry_sim_s": 8.29999999999895,
+        "last_control_trace_sim_s": 81.499999999758,
+        "remaining_at_last_control_trace_s": 98.500000000242,
+        "flag_within10s_of_cap": false,
+        "final_sim_including_postrun_evaluation_s": 82.13724999974293,
+        "shift_moves": null,
+        "regrasp_epochs": 1,
+        "note": "control loop and evaluation separated; final result.sim_s includes post-loop evaluation"
+      },
+      "result_hash": {
+        "sha256": "59a4945a48604666de96eadacf11b1f4d56c6f55bc4dd2f98dacdb933f975643",
+        "bytes": 19790,
+        "decoded_sha256": "b215ff0a00dacb31adfb88f701e0a7e5e267f226c1083056f47e47bb32d141c9"
+      },
+      "original_manifest_files_verified": 366,
+      "lite_files_verified": 20,
+      "decoded_files_verified": [
+        "eval-only.jsonl.zst",
+        "result.json.zst",
+        "teacher-r1.jsonl.zst",
+        "teacher-r2.jsonl.zst"
+      ],
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18g-03-a3bbc90e",
+      "lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r18g-03-a3bbc90e",
+      "visual_review": {
+        "frames_directly_viewed": 18,
+        "times_sim_s": [
+          0.0,
+          16.3,
+          32.3,
+          48.3,
+          65.3,
+          81.3
+        ],
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "montages": [
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release18-gate40-a3bbc90e-ops/r18g-03-a3bbc90e/montage-0.jpg"
+        ],
+        "relation": "opposite beam ends; no same-end/mutual-blocking cause seen",
+        "incomplete_last_triplet_excluded": false
+      }
+    },
+    {
+      "name": "r18g-04-a3bbc90e",
+      "seed": 110604,
+      "episode": 4,
+      "candidate": "A",
+      "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+      "submitted": true,
+      "exit": "130",
+      "status": "interrupted",
+      "success": false,
+      "canonical_release_success": null,
+      "release_outcome": null,
+      "failure_reasons": null,
+      "prefix_held": true,
+      "input_audit": {
+        "held_object": "hidden_v1",
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 258.7505242389998,
+      "sim_s": 80.29999999978638,
+      "wall_sim": 3.2222979357370876,
+      "first30_wall_sim_approx": 2.961883560653007,
+      "sequence_world_t": [
+        {
+          "t": 10.1,
+          "phase": "look"
+        },
+        {
+          "t": 10.8,
+          "phase": "await_look"
+        },
+        {
+          "t": 10.9,
+          "phase": "lower"
+        },
+        {
+          "t": 13.3,
+          "phase": "await_open"
+        },
+        {
+          "t": 13.4,
+          "phase": "open"
+        },
+        {
+          "t": 14.9,
+          "phase": "observe_back"
+        },
+        {
+          "t": 16.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 20.5,
+          "phase": "observe_back"
+        },
+        {
+          "t": 23.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 27.5,
+          "phase": "observe_move"
+        },
+        {
+          "t": 28.5,
+          "phase": "observe"
+        },
+        {
+          "t": 29.1,
+          "phase": "await_observe"
+        },
+        {
+          "t": 29.2,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 34.3,
+          "phase": "approach"
+        },
+        {
+          "t": 35.6,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 36.3,
+          "phase": "repick"
+        },
+        {
+          "t": 42.4,
+          "phase": "regrasp_check"
+        },
+        {
+          "t": 56.2,
+          "phase": "await_regrasp"
+        },
+        {
+          "t": 56.3,
+          "phase": "shift"
+        },
+        {
+          "t": 58.1,
+          "phase": "lower"
+        },
+        {
+          "t": 60.5,
+          "phase": "await_open"
+        },
+        {
+          "t": 60.6,
+          "phase": "open"
+        },
+        {
+          "t": 62.0,
+          "phase": "observe_back"
+        },
+        {
+          "t": 63.1,
+          "phase": "lookaround"
+        },
+        {
+          "t": 67.6,
+          "phase": "observe_back"
+        },
+        {
+          "t": 70.1,
+          "phase": "lookaround"
+        },
+        {
+          "t": 74.6,
+          "phase": "observe_move"
+        },
+        {
+          "t": 75.6,
+          "phase": "observe"
+        },
+        {
+          "t": 76.3,
+          "phase": "await_observe"
+        },
+        {
+          "t": 76.4,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 82.1,
+          "phase": "approach"
+        }
+      ],
+      "code_decisions": null,
+      "shift_moves_completed": null,
+      "regrasp_epochs": [
+        {
+          "epoch": 1,
+          "confirmed": {
+            "r1": true,
+            "r2": true
+          },
+          "attempts": {
+            "r1": 1,
+            "r2": 1
+          },
+          "failure": null
+        }
+      ],
+      "cap_timing": {
+        "control_loop_end_sim_s": 80.29999999978638,
+        "remaining_at_control_loop_end_s": 99.70000000021362,
+        "run": "r18g-04-a3bbc90e",
+        "cap_s": 180,
+        "done_entry_sim_s": 8.29999999999895,
+        "last_control_trace_sim_s": 80.29999999978638,
+        "remaining_at_last_control_trace_s": 99.70000000021362,
+        "flag_within10s_of_cap": false,
+        "final_sim_including_postrun_evaluation_s": 80.29999999978638,
+        "shift_moves": null,
+        "regrasp_epochs": 1,
+        "note": "control loop and evaluation separated; final result.sim_s includes post-loop evaluation"
+      },
+      "result_hash": {
+        "sha256": "01328d77c73cc1b9663d87d90215530dedf86af9d37560ae8af16f9b125edcb3",
+        "bytes": 20285,
+        "decoded_sha256": "8f65efb8cf4eec4af685d64c82d23d309f8421d4d26f1a49a2cfd5454027179b"
+      },
+      "original_manifest_files_verified": 363,
+      "lite_files_verified": 20,
+      "decoded_files_verified": [
+        "eval-only.jsonl.zst",
+        "result.json.zst",
+        "teacher-r1.jsonl.zst",
+        "teacher-r2.jsonl.zst"
+      ],
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18g-04-a3bbc90e",
+      "lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r18g-04-a3bbc90e",
+      "visual_review": {
+        "frames_directly_viewed": 18,
+        "times_sim_s": [
+          0.0,
+          16.3,
+          31.3,
+          47.3,
+          63.3,
+          79.3
+        ],
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "montages": [
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release18-gate40-a3bbc90e-ops/r18g-04-a3bbc90e/montage-0.jpg"
+        ],
+        "relation": "opposite beam ends; no same-end/mutual-blocking cause seen",
+        "incomplete_last_triplet_excluded": false
+      }
+    },
+    {
+      "name": "r18g-05-a3bbc90e",
+      "seed": 110605,
+      "episode": 5,
+      "candidate": "A",
+      "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+      "submitted": true,
+      "exit": "130",
+      "status": "interrupted",
+      "success": false,
+      "canonical_release_success": null,
+      "release_outcome": null,
+      "failure_reasons": null,
+      "prefix_held": true,
+      "input_audit": {
+        "held_object": "hidden_v1",
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 245.83646685499843,
+      "sim_s": 76.3999999998786,
+      "wall_sim": 3.217754801772108,
+      "first30_wall_sim_approx": 2.978679850543879,
+      "sequence_world_t": [
+        {
+          "t": 10.1,
+          "phase": "look"
+        },
+        {
+          "t": 10.8,
+          "phase": "await_look"
+        },
+        {
+          "t": 10.9,
+          "phase": "lower"
+        },
+        {
+          "t": 13.3,
+          "phase": "await_open"
+        },
+        {
+          "t": 13.4,
+          "phase": "open"
+        },
+        {
+          "t": 14.9,
+          "phase": "observe_back"
+        },
+        {
+          "t": 16.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 20.5,
+          "phase": "observe_back"
+        },
+        {
+          "t": 23.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 27.5,
+          "phase": "observe_move"
+        },
+        {
+          "t": 28.5,
+          "phase": "observe"
+        },
+        {
+          "t": 29.1,
+          "phase": "await_observe"
+        },
+        {
+          "t": 29.2,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 34.5,
+          "phase": "approach"
+        },
+        {
+          "t": 35.8,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 36.5,
+          "phase": "repick"
+        },
+        {
+          "t": 42.6,
+          "phase": "regrasp_check"
+        },
+        {
+          "t": 56.4,
+          "phase": "await_regrasp"
+        },
+        {
+          "t": 56.5,
+          "phase": "shift"
+        },
+        {
+          "t": 58.3,
+          "phase": "lower"
+        },
+        {
+          "t": 60.7,
+          "phase": "await_open"
+        },
+        {
+          "t": 60.8,
+          "phase": "open"
+        },
+        {
+          "t": 62.2,
+          "phase": "observe_back"
+        },
+        {
+          "t": 63.3,
+          "phase": "lookaround"
+        },
+        {
+          "t": 67.8,
+          "phase": "observe_back"
+        },
+        {
+          "t": 70.3,
+          "phase": "lookaround"
+        },
+        {
+          "t": 74.8,
+          "phase": "observe_move"
+        },
+        {
+          "t": 75.8,
+          "phase": "observe"
+        },
+        {
+          "t": 76.5,
+          "phase": "await_observe"
+        },
+        {
+          "t": 76.6,
+          "phase": "line_recheck"
+        }
+      ],
+      "code_decisions": null,
+      "shift_moves_completed": null,
+      "regrasp_epochs": [
+        {
+          "epoch": 1,
+          "confirmed": {
+            "r1": true,
+            "r2": true
+          },
+          "attempts": {
+            "r1": 1,
+            "r2": 1
+          },
+          "failure": null
+        }
+      ],
+      "cap_timing": {
+        "control_loop_end_sim_s": 76.3999999998786,
+        "remaining_at_control_loop_end_s": 103.6000000001214,
+        "run": "r18g-05-a3bbc90e",
+        "cap_s": 180,
+        "done_entry_sim_s": 8.29999999999895,
+        "last_control_trace_sim_s": 76.29999999988097,
+        "remaining_at_last_control_trace_s": 103.70000000011903,
+        "flag_within10s_of_cap": false,
+        "final_sim_including_postrun_evaluation_s": 76.3999999998786,
+        "shift_moves": null,
+        "regrasp_epochs": 1,
+        "note": "control loop and evaluation separated; final result.sim_s includes post-loop evaluation"
+      },
+      "result_hash": {
+        "sha256": "14a8aab52a0546e7c2cf6782b38914b79797a0a60baa6f14fc3609f55dd37445",
+        "bytes": 14593,
+        "decoded_sha256": "46855d658a05c6ecc3c9809620c277a72d98742b8389c5270dd0b1ea0e38a304"
+      },
+      "original_manifest_files_verified": 336,
+      "lite_files_verified": 20,
+      "decoded_files_verified": [
+        "eval-only.jsonl.zst",
+        "result.json.zst",
+        "teacher-r1.jsonl.zst",
+        "teacher-r2.jsonl.zst"
+      ],
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18g-05-a3bbc90e",
+      "lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r18g-05-a3bbc90e",
+      "visual_review": {
+        "frames_directly_viewed": 18,
+        "times_sim_s": [
+          0.0,
+          15.3,
+          30.3,
+          45.3,
+          61.3,
+          76.3
+        ],
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "montages": [
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release18-gate40-a3bbc90e-ops/r18g-05-a3bbc90e/montage-0.jpg"
+        ],
+        "relation": "opposite beam ends; no same-end/mutual-blocking cause seen",
+        "incomplete_last_triplet_excluded": false
+      }
+    },
+    {
+      "name": "r18g-06-a3bbc90e",
+      "seed": 110606,
+      "episode": 6,
+      "candidate": "A",
+      "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+      "submitted": true,
+      "exit": "130",
+      "status": "interrupted",
+      "success": false,
+      "canonical_release_success": null,
+      "release_outcome": null,
+      "failure_reasons": null,
+      "prefix_held": true,
+      "input_audit": {
+        "held_object": "hidden_v1",
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 245.6947201160001,
+      "sim_s": 76.29999999988097,
+      "wall_sim": 3.220114287239625,
+      "first30_wall_sim_approx": 2.999075899023578,
+      "sequence_world_t": [
+        {
+          "t": 10.1,
+          "phase": "look"
+        },
+        {
+          "t": 10.8,
+          "phase": "await_look"
+        },
+        {
+          "t": 10.9,
+          "phase": "lower"
+        },
+        {
+          "t": 13.3,
+          "phase": "await_open"
+        },
+        {
+          "t": 13.4,
+          "phase": "open"
+        },
+        {
+          "t": 14.9,
+          "phase": "observe_back"
+        },
+        {
+          "t": 16.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 20.5,
+          "phase": "observe_back"
+        },
+        {
+          "t": 23.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 27.5,
+          "phase": "observe_move"
+        },
+        {
+          "t": 28.5,
+          "phase": "observe"
+        },
+        {
+          "t": 29.1,
+          "phase": "await_observe"
+        },
+        {
+          "t": 29.2,
+          "phase": "lookaround"
+        },
+        {
+          "t": 39.6,
+          "phase": "observe_move"
+        },
+        {
+          "t": 40.6,
+          "phase": "observe"
+        },
+        {
+          "t": 41.2,
+          "phase": "await_observe"
+        },
+        {
+          "t": 41.3,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 47.0,
+          "phase": "approach"
+        },
+        {
+          "t": 48.3,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 49.0,
+          "phase": "repick"
+        },
+        {
+          "t": 55.1,
+          "phase": "regrasp_check"
+        },
+        {
+          "t": 68.9,
+          "phase": "await_regrasp"
+        },
+        {
+          "t": 69.0,
+          "phase": "shift"
+        },
+        {
+          "t": 70.8,
+          "phase": "lower"
+        },
+        {
+          "t": 73.2,
+          "phase": "await_open"
+        },
+        {
+          "t": 73.3,
+          "phase": "open"
+        },
+        {
+          "t": 74.8,
+          "phase": "observe_back"
+        },
+        {
+          "t": 75.9,
+          "phase": "lookaround"
+        }
+      ],
+      "code_decisions": null,
+      "shift_moves_completed": null,
+      "regrasp_epochs": [
+        {
+          "epoch": 1,
+          "confirmed": {
+            "r1": true,
+            "r2": true
+          },
+          "attempts": {
+            "r1": 1,
+            "r2": 1
+          },
+          "failure": null
+        }
+      ],
+      "cap_timing": {
+        "control_loop_end_sim_s": 76.29999999988097,
+        "remaining_at_control_loop_end_s": 103.70000000011903,
+        "run": "r18g-06-a3bbc90e",
+        "cap_s": 180,
+        "done_entry_sim_s": 8.29999999999895,
+        "last_control_trace_sim_s": 76.29999999988097,
+        "remaining_at_last_control_trace_s": 103.70000000011903,
+        "flag_within10s_of_cap": false,
+        "final_sim_including_postrun_evaluation_s": 76.29999999988097,
+        "shift_moves": null,
+        "regrasp_epochs": 1,
+        "note": "control loop and evaluation separated; final result.sim_s includes post-loop evaluation"
+      },
+      "result_hash": {
+        "sha256": "4f567fa636bd3956d497492b182b85d23c6d0e1340f511a9e012c555a7403333",
+        "bytes": 15571,
+        "decoded_sha256": "78f0ef90404e9468a19c8eb1a585b34248c443a823b36b41a3f93abaf5fc777d"
+      },
+      "original_manifest_files_verified": 335,
+      "lite_files_verified": 20,
+      "decoded_files_verified": [
+        "eval-only.jsonl.zst",
+        "result.json.zst",
+        "teacher-r1.jsonl.zst",
+        "teacher-r2.jsonl.zst"
+      ],
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18g-06-a3bbc90e",
+      "lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r18g-06-a3bbc90e",
+      "visual_review": {
+        "frames_directly_viewed": 18,
+        "times_sim_s": [
+          0.0,
+          15.3,
+          30.3,
+          45.3,
+          60.3,
+          75.3
+        ],
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "montages": [
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release18-gate40-a3bbc90e-ops/r18g-06-a3bbc90e/montage-0.jpg"
+        ],
+        "relation": "opposite beam ends; no same-end/mutual-blocking cause seen",
+        "incomplete_last_triplet_excluded": true
+      }
+    },
+    {
+      "name": "r18g-07-a3bbc90e",
+      "seed": 110607,
+      "episode": 7,
+      "candidate": "A",
+      "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+      "submitted": true,
+      "exit": "130",
+      "status": "interrupted",
+      "success": false,
+      "canonical_release_success": null,
+      "release_outcome": null,
+      "failure_reasons": null,
+      "prefix_held": true,
+      "input_audit": {
+        "held_object": "hidden_v1",
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 245.84386542599896,
+      "sim_s": 75.41949999990179,
+      "wall_sim": 3.2596856970189285,
+      "first30_wall_sim_approx": 2.994752465295479,
+      "sequence_world_t": [
+        {
+          "t": 10.1,
+          "phase": "look"
+        },
+        {
+          "t": 10.8,
+          "phase": "await_look"
+        },
+        {
+          "t": 10.9,
+          "phase": "lower"
+        },
+        {
+          "t": 13.3,
+          "phase": "await_open"
+        },
+        {
+          "t": 13.4,
+          "phase": "open"
+        },
+        {
+          "t": 14.9,
+          "phase": "observe_back"
+        },
+        {
+          "t": 16.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 20.5,
+          "phase": "observe_back"
+        },
+        {
+          "t": 23.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 27.5,
+          "phase": "observe_move"
+        },
+        {
+          "t": 28.5,
+          "phase": "observe"
+        },
+        {
+          "t": 29.1,
+          "phase": "await_observe"
+        },
+        {
+          "t": 29.2,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 34.9,
+          "phase": "approach"
+        },
+        {
+          "t": 36.2,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 36.9,
+          "phase": "repick"
+        },
+        {
+          "t": 43.0,
+          "phase": "regrasp_check"
+        },
+        {
+          "t": 56.8,
+          "phase": "await_regrasp"
+        },
+        {
+          "t": 56.9,
+          "phase": "shift"
+        },
+        {
+          "t": 58.7,
+          "phase": "lower"
+        },
+        {
+          "t": 61.1,
+          "phase": "await_open"
+        },
+        {
+          "t": 61.2,
+          "phase": "open"
+        },
+        {
+          "t": 62.6,
+          "phase": "observe_back"
+        },
+        {
+          "t": 63.7,
+          "phase": "lookaround"
+        },
+        {
+          "t": 68.2,
+          "phase": "observe_back"
+        },
+        {
+          "t": 70.7,
+          "phase": "lookaround"
+        },
+        {
+          "t": 75.2,
+          "phase": "observe_move"
+        },
+        {
+          "t": 76.2,
+          "phase": "observe"
+        },
+        {
+          "t": 76.9,
+          "phase": "await_observe"
+        },
+        {
+          "t": 77.0,
+          "phase": "line_recheck"
+        }
+      ],
+      "code_decisions": null,
+      "shift_moves_completed": null,
+      "regrasp_epochs": [
+        {
+          "epoch": 1,
+          "confirmed": {
+            "r1": true,
+            "r2": true
+          },
+          "attempts": {
+            "r1": 1,
+            "r2": 1
+          },
+          "failure": null
+        }
+      ],
+      "cap_timing": {
+        "control_loop_end_sim_s": 75.39999999990225,
+        "remaining_at_control_loop_end_s": 104.60000000009775,
+        "run": "r18g-07-a3bbc90e",
+        "cap_s": 180,
+        "done_entry_sim_s": 8.29999999999895,
+        "last_control_trace_sim_s": 75.39999999990225,
+        "remaining_at_last_control_trace_s": 104.60000000009775,
+        "flag_within10s_of_cap": false,
+        "final_sim_including_postrun_evaluation_s": 75.41949999990179,
+        "shift_moves": null,
+        "regrasp_epochs": 1,
+        "note": "control loop and evaluation separated; final result.sim_s includes post-loop evaluation"
+      },
+      "result_hash": {
+        "sha256": "e1dd38a952ce5565372d2628a1722b9a0f2449570dbcd690f62c0ba6c8892bc1",
+        "bytes": 15521,
+        "decoded_sha256": "eed9757d06e6943d558210b06a8458bc1d27070dd0a5fcaa8cad270c3efc6106"
+      },
+      "original_manifest_files_verified": 335,
+      "lite_files_verified": 20,
+      "decoded_files_verified": [
+        "eval-only.jsonl.zst",
+        "result.json.zst",
+        "teacher-r1.jsonl.zst",
+        "teacher-r2.jsonl.zst"
+      ],
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18g-07-a3bbc90e",
+      "lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r18g-07-a3bbc90e",
+      "visual_review": {
+        "frames_directly_viewed": 18,
+        "times_sim_s": [
+          0.0,
+          15.3,
+          30.3,
+          45.3,
+          60.3,
+          75.3
+        ],
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "montages": [
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release18-gate40-a3bbc90e-ops/r18g-07-a3bbc90e/montage-0.jpg"
+        ],
+        "relation": "opposite beam ends; no same-end/mutual-blocking cause seen",
+        "incomplete_last_triplet_excluded": false
+      }
+    },
+    {
+      "name": "r18g-08-a3bbc90e",
+      "seed": 110608,
+      "episode": 8,
+      "candidate": "A",
+      "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+      "submitted": true,
+      "exit": "0",
+      "status": "complete",
+      "success": true,
+      "canonical_release_success": true,
+      "release_outcome": "teacher_done",
+      "failure_reasons": [],
+      "prefix_held": true,
+      "input_audit": {
+        "held_object": "hidden_v1",
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 101.02781248900283,
+      "sim_s": 33.90000000007927,
+      "wall_sim": 2.9801714598456224,
+      "first30_wall_sim_approx": 2.8963366278661433,
+      "sequence_world_t": [
+        {
+          "t": 10.1,
+          "phase": "look"
+        },
+        {
+          "t": 10.8,
+          "phase": "await_look"
+        },
+        {
+          "t": 10.9,
+          "phase": "lower"
+        },
+        {
+          "t": 13.3,
+          "phase": "await_open"
+        },
+        {
+          "t": 13.4,
+          "phase": "open"
+        },
+        {
+          "t": 14.9,
+          "phase": "observe_back"
+        },
+        {
+          "t": 16.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 20.5,
+          "phase": "observe_back"
+        },
+        {
+          "t": 23.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 27.5,
+          "phase": "observe_move"
+        },
+        {
+          "t": 28.5,
+          "phase": "observe"
+        },
+        {
+          "t": 29.1,
+          "phase": "await_observe"
+        },
+        {
+          "t": 29.2,
+          "phase": "done"
+        }
+      ],
+      "code_decisions": [
+        {
+          "action": "lower",
+          "lo": null,
+          "hi": null,
+          "evidence": [
+            "none",
+            "none"
+          ],
+          "exact": {
+            "r1": false,
+            "r2": false
+          },
+          "t": 10.899999999997272
+        },
+        {
+          "action": "lower",
+          "reason": "localized_margins_inside",
+          "t": 29.200000000048412,
+          "margins_m": [
+            0.6156219793026787,
+            0.14292915725220945
+          ],
+          "release_goal_region": "inside_margins_v1"
+        }
+      ],
+      "shift_moves_completed": 0,
+      "regrasp_epochs": [],
+      "cap_timing": {
+        "control_loop_end_sim_s": 31.400000000067326,
+        "remaining_at_control_loop_end_s": 148.59999999993266,
+        "run": "r18g-08-a3bbc90e",
+        "cap_s": 180,
+        "done_entry_sim_s": 27.40000000004823,
+        "last_control_trace_sim_s": 31.30000000006685,
+        "remaining_at_last_control_trace_s": 148.69999999993314,
+        "flag_within10s_of_cap": false,
+        "final_sim_including_postrun_evaluation_s": 33.90000000007927,
+        "shift_moves": 0,
+        "regrasp_epochs": 0,
+        "note": "control loop and evaluation separated; final result.sim_s includes post-loop evaluation"
+      },
+      "result_hash": {
+        "sha256": "c0641b3b24408375170adecf8b2e87b22e5770e7902d4a22dcc5897ace033e57",
+        "bytes": 29315,
+        "decoded_sha256": "182e8dc6a182e571f115ef509c29f26ffca7aa7e7cce912bde5517fdfb48763a"
+      },
+      "original_manifest_files_verified": 129,
+      "lite_files_verified": 18,
+      "decoded_files_verified": [
+        "eval-only.jsonl.zst",
+        "result.json.zst",
+        "teacher-r1.jsonl.zst",
+        "teacher-r2.jsonl.zst"
+      ],
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18g-08-a3bbc90e",
+      "lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r18g-08-a3bbc90e",
+      "visual_review": {
+        "frames_directly_viewed": 18,
+        "times_sim_s": [
+          0.0,
+          6.0,
+          12.3,
+          18.3,
+          25.3,
+          31.3
+        ],
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "montages": [
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release18-gate40-a3bbc90e-ops/r18g-08-a3bbc90e/montage-0.jpg"
+        ],
+        "relation": "opposite beam ends; no same-end/mutual-blocking cause seen",
+        "incomplete_last_triplet_excluded": false
+      }
+    },
+    {
+      "name": "r18g-09-a3bbc90e",
+      "seed": 110609,
+      "episode": 9,
+      "candidate": "A",
+      "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+      "submitted": true,
+      "exit": "130",
+      "status": "interrupted",
+      "success": false,
+      "canonical_release_success": null,
+      "release_outcome": null,
+      "failure_reasons": null,
+      "prefix_held": true,
+      "input_audit": {
+        "held_object": "hidden_v1",
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 234.78405836299862,
+      "sim_s": 70.30000000002285,
+      "wall_sim": 3.339744784678838,
+      "first30_wall_sim_approx": 3.0929787874945296,
+      "sequence_world_t": [
+        {
+          "t": 10.1,
+          "phase": "look"
+        },
+        {
+          "t": 10.8,
+          "phase": "await_look"
+        },
+        {
+          "t": 10.9,
+          "phase": "lower"
+        },
+        {
+          "t": 13.3,
+          "phase": "await_open"
+        },
+        {
+          "t": 13.4,
+          "phase": "open"
+        },
+        {
+          "t": 14.9,
+          "phase": "observe_back"
+        },
+        {
+          "t": 16.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 20.5,
+          "phase": "observe_back"
+        },
+        {
+          "t": 23.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 27.5,
+          "phase": "observe_move"
+        },
+        {
+          "t": 28.5,
+          "phase": "observe"
+        },
+        {
+          "t": 29.1,
+          "phase": "await_observe"
+        },
+        {
+          "t": 29.2,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 34.8,
+          "phase": "approach"
+        },
+        {
+          "t": 36.1,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 36.8,
+          "phase": "repick"
+        },
+        {
+          "t": 42.9,
+          "phase": "regrasp_check"
+        },
+        {
+          "t": 56.7,
+          "phase": "await_regrasp"
+        },
+        {
+          "t": 56.8,
+          "phase": "shift"
+        },
+        {
+          "t": 58.4,
+          "phase": "lower"
+        },
+        {
+          "t": 60.8,
+          "phase": "await_open"
+        },
+        {
+          "t": 60.9,
+          "phase": "open"
+        },
+        {
+          "t": 62.3,
+          "phase": "observe_back"
+        },
+        {
+          "t": 63.4,
+          "phase": "lookaround"
+        },
+        {
+          "t": 67.9,
+          "phase": "observe_back"
+        },
+        {
+          "t": 70.4,
+          "phase": "lookaround"
+        }
+      ],
+      "code_decisions": null,
+      "shift_moves_completed": null,
+      "regrasp_epochs": [
+        {
+          "epoch": 1,
+          "confirmed": {
+            "r1": true,
+            "r2": true
+          },
+          "attempts": {
+            "r1": 1,
+            "r2": 1
+          },
+          "failure": null
+        }
+      ],
+      "cap_timing": {
+        "control_loop_end_sim_s": 70.30000000002285,
+        "remaining_at_control_loop_end_s": 109.69999999997715,
+        "run": "r18g-09-a3bbc90e",
+        "cap_s": 180,
+        "done_entry_sim_s": 8.29999999999895,
+        "last_control_trace_sim_s": 70.30000000002285,
+        "remaining_at_last_control_trace_s": 109.69999999997715,
+        "flag_within10s_of_cap": false,
+        "final_sim_including_postrun_evaluation_s": 70.30000000002285,
+        "shift_moves": null,
+        "regrasp_epochs": 1,
+        "note": "control loop and evaluation separated; final result.sim_s includes post-loop evaluation"
+      },
+      "result_hash": {
+        "sha256": "f625bef66f809e674222ade04075eff95f0c67697f86a3fce1ab43cd776f13a8",
+        "bytes": 15609,
+        "decoded_sha256": "6ea469ceabf5c15a43a7b39e9eeafda748165cba93f1a06c8e4c7cd01975bcff"
+      },
+      "original_manifest_files_verified": 312,
+      "lite_files_verified": 20,
+      "decoded_files_verified": [
+        "eval-only.jsonl.zst",
+        "result.json.zst",
+        "teacher-r1.jsonl.zst",
+        "teacher-r2.jsonl.zst"
+      ],
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18g-09-a3bbc90e",
+      "lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r18g-09-a3bbc90e",
+      "visual_review": {
+        "frames_directly_viewed": 18,
+        "times_sim_s": [
+          0.0,
+          14.3,
+          27.3,
+          41.3,
+          55.3,
+          69.3
+        ],
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "montages": [
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release18-gate40-a3bbc90e-ops/r18g-09-a3bbc90e/montage-0.jpg"
+        ],
+        "relation": "opposite beam ends; no same-end/mutual-blocking cause seen",
+        "incomplete_last_triplet_excluded": true
+      }
+    },
+    {
+      "name": "r18g-10-a3bbc90e",
+      "seed": 110610,
+      "episode": 10,
+      "candidate": "A",
+      "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+      "submitted": true,
+      "exit": "130",
+      "status": "interrupted",
+      "success": false,
+      "canonical_release_success": null,
+      "release_outcome": null,
+      "failure_reasons": null,
+      "prefix_held": true,
+      "input_audit": {
+        "held_object": "hidden_v1",
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 234.8055740380005,
+      "sim_s": 72.00674999998249,
+      "wall_sim": 3.2608828205419296,
+      "first30_wall_sim_approx": 3.0382508177112744,
+      "sequence_world_t": [
+        {
+          "t": 10.1,
+          "phase": "look"
+        },
+        {
+          "t": 10.8,
+          "phase": "await_look"
+        },
+        {
+          "t": 10.9,
+          "phase": "lower"
+        },
+        {
+          "t": 13.3,
+          "phase": "await_open"
+        },
+        {
+          "t": 13.4,
+          "phase": "open"
+        },
+        {
+          "t": 14.9,
+          "phase": "observe_back"
+        },
+        {
+          "t": 16.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 20.5,
+          "phase": "observe_back"
+        },
+        {
+          "t": 23.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 27.5,
+          "phase": "observe_move"
+        },
+        {
+          "t": 28.5,
+          "phase": "observe"
+        },
+        {
+          "t": 29.1,
+          "phase": "await_observe"
+        },
+        {
+          "t": 29.2,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 35.0,
+          "phase": "approach"
+        },
+        {
+          "t": 36.3,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 37.0,
+          "phase": "repick"
+        },
+        {
+          "t": 43.1,
+          "phase": "regrasp_check"
+        },
+        {
+          "t": 56.9,
+          "phase": "await_regrasp"
+        },
+        {
+          "t": 57.0,
+          "phase": "shift"
+        },
+        {
+          "t": 58.8,
+          "phase": "lower"
+        },
+        {
+          "t": 61.2,
+          "phase": "await_open"
+        },
+        {
+          "t": 61.3,
+          "phase": "open"
+        },
+        {
+          "t": 62.7,
+          "phase": "observe_back"
+        },
+        {
+          "t": 63.8,
+          "phase": "lookaround"
+        },
+        {
+          "t": 68.3,
+          "phase": "observe_back"
+        },
+        {
+          "t": 70.8,
+          "phase": "lookaround"
+        }
+      ],
+      "code_decisions": null,
+      "shift_moves_completed": null,
+      "regrasp_epochs": [
+        {
+          "epoch": 1,
+          "confirmed": {
+            "r1": true,
+            "r2": true
+          },
+          "attempts": {
+            "r1": 1,
+            "r2": 1
+          },
+          "failure": null
+        }
+      ],
+      "cap_timing": {
+        "control_loop_end_sim_s": 71.99999999998265,
+        "remaining_at_control_loop_end_s": 108.00000000001735,
+        "run": "r18g-10-a3bbc90e",
+        "cap_s": 180,
+        "done_entry_sim_s": 8.29999999999895,
+        "last_control_trace_sim_s": 71.99999999998265,
+        "remaining_at_last_control_trace_s": 108.00000000001735,
+        "flag_within10s_of_cap": false,
+        "final_sim_including_postrun_evaluation_s": 72.00674999998249,
+        "shift_moves": null,
+        "regrasp_epochs": 1,
+        "note": "control loop and evaluation separated; final result.sim_s includes post-loop evaluation"
+      },
+      "result_hash": {
+        "sha256": "ec9e20eb7ee4d71918b001b8ae0eb393a63e582e8eab6ffd23f1fef168726b0e",
+        "bytes": 15720,
+        "decoded_sha256": "e6f97d759ecc7d75279dacd2006602f4c90dad1413620a3b2d61fbc85122c165"
+      },
+      "original_manifest_files_verified": 321,
+      "lite_files_verified": 20,
+      "decoded_files_verified": [
+        "eval-only.jsonl.zst",
+        "result.json.zst",
+        "teacher-r1.jsonl.zst",
+        "teacher-r2.jsonl.zst"
+      ],
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18g-10-a3bbc90e",
+      "lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r18g-10-a3bbc90e",
+      "visual_review": {
+        "frames_directly_viewed": 18,
+        "times_sim_s": [
+          0.0,
+          14.3,
+          28.3,
+          42.3,
+          57.3,
+          71.3
+        ],
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "montages": [
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release18-gate40-a3bbc90e-ops/r18g-10-a3bbc90e/montage-0.jpg"
+        ],
+        "relation": "opposite beam ends; no same-end/mutual-blocking cause seen",
+        "incomplete_last_triplet_excluded": false
+      }
+    },
+    {
+      "name": "r18g-11-a3bbc90e",
+      "seed": 110611,
+      "episode": 11,
+      "candidate": "A",
+      "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+      "submitted": true,
+      "exit": "130",
+      "status": "interrupted",
+      "success": false,
+      "canonical_release_success": null,
+      "release_outcome": null,
+      "failure_reasons": null,
+      "prefix_held": true,
+      "input_audit": {
+        "held_object": "hidden_v1",
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 234.81246777499837,
+      "sim_s": 72.42249999997266,
+      "wall_sim": 3.242258521524209,
+      "first30_wall_sim_approx": 2.969372933447769,
+      "sequence_world_t": [
+        {
+          "t": 10.1,
+          "phase": "look"
+        },
+        {
+          "t": 10.8,
+          "phase": "await_look"
+        },
+        {
+          "t": 10.9,
+          "phase": "lower"
+        },
+        {
+          "t": 13.3,
+          "phase": "await_open"
+        },
+        {
+          "t": 13.4,
+          "phase": "open"
+        },
+        {
+          "t": 14.9,
+          "phase": "observe_back"
+        },
+        {
+          "t": 16.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 20.5,
+          "phase": "observe_back"
+        },
+        {
+          "t": 23.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 27.5,
+          "phase": "observe_move"
+        },
+        {
+          "t": 28.5,
+          "phase": "observe"
+        },
+        {
+          "t": 29.1,
+          "phase": "await_observe"
+        },
+        {
+          "t": 29.2,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 34.7,
+          "phase": "approach"
+        },
+        {
+          "t": 36.0,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 36.7,
+          "phase": "repick"
+        },
+        {
+          "t": 42.8,
+          "phase": "regrasp_check"
+        },
+        {
+          "t": 56.6,
+          "phase": "await_regrasp"
+        },
+        {
+          "t": 56.7,
+          "phase": "shift"
+        },
+        {
+          "t": 58.5,
+          "phase": "lower"
+        },
+        {
+          "t": 60.9,
+          "phase": "await_open"
+        },
+        {
+          "t": 61.0,
+          "phase": "open"
+        },
+        {
+          "t": 62.4,
+          "phase": "observe_back"
+        },
+        {
+          "t": 63.5,
+          "phase": "lookaround"
+        },
+        {
+          "t": 68.0,
+          "phase": "observe_back"
+        },
+        {
+          "t": 70.5,
+          "phase": "lookaround"
+        }
+      ],
+      "code_decisions": null,
+      "shift_moves_completed": null,
+      "regrasp_epochs": [
+        {
+          "epoch": 1,
+          "confirmed": {
+            "r1": true,
+            "r2": true
+          },
+          "attempts": {
+            "r1": 1,
+            "r2": 1
+          },
+          "failure": null
+        }
+      ],
+      "cap_timing": {
+        "control_loop_end_sim_s": 72.39999999997319,
+        "remaining_at_control_loop_end_s": 107.60000000002681,
+        "run": "r18g-11-a3bbc90e",
+        "cap_s": 180,
+        "done_entry_sim_s": 8.29999999999895,
+        "last_control_trace_sim_s": 72.39999999997319,
+        "remaining_at_last_control_trace_s": 107.60000000002681,
+        "flag_within10s_of_cap": false,
+        "final_sim_including_postrun_evaluation_s": 72.42249999997266,
+        "shift_moves": null,
+        "regrasp_epochs": 1,
+        "note": "control loop and evaluation separated; final result.sim_s includes post-loop evaluation"
+      },
+      "result_hash": {
+        "sha256": "2b6704193d56c6abe3f7255da1d5a87cc8b6b1164bd019984720a0b9a09e7841",
+        "bytes": 15087,
+        "decoded_sha256": "5ce33233eddbb4d6a3ea454f1a642cd9f2f3f07aabb4b757bc57543702e83af6"
+      },
+      "original_manifest_files_verified": 325,
+      "lite_files_verified": 20,
+      "decoded_files_verified": [
+        "eval-only.jsonl.zst",
+        "result.json.zst",
+        "teacher-r1.jsonl.zst",
+        "teacher-r2.jsonl.zst"
+      ],
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18g-11-a3bbc90e",
+      "lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r18g-11-a3bbc90e",
+      "visual_review": {
+        "frames_directly_viewed": 18,
+        "times_sim_s": [
+          0.0,
+          14.3,
+          29.3,
+          43.3,
+          58.3,
+          72.3
+        ],
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "montages": [
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release18-gate40-a3bbc90e-ops/r18g-11-a3bbc90e/montage-0.jpg"
+        ],
+        "relation": "opposite beam ends; no same-end/mutual-blocking cause seen",
+        "incomplete_last_triplet_excluded": false
+      }
+    },
+    {
+      "name": "r18g-12-a3bbc90e",
+      "seed": 110612,
+      "episode": 12,
+      "candidate": "A",
+      "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+      "submitted": true,
+      "exit": "130",
+      "status": "interrupted",
+      "success": false,
+      "canonical_release_success": null,
+      "release_outcome": null,
+      "failure_reasons": null,
+      "prefix_held": true,
+      "input_audit": {
+        "held_object": "hidden_v1",
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 234.84318523699767,
+      "sim_s": 69.01350000005327,
+      "wall_sim": 3.4028586470301665,
+      "first30_wall_sim_approx": 3.1532013140824686,
+      "sequence_world_t": [
+        {
+          "t": 10.1,
+          "phase": "look"
+        },
+        {
+          "t": 10.8,
+          "phase": "await_look"
+        },
+        {
+          "t": 10.9,
+          "phase": "lower"
+        },
+        {
+          "t": 13.3,
+          "phase": "await_open"
+        },
+        {
+          "t": 13.4,
+          "phase": "open"
+        },
+        {
+          "t": 14.9,
+          "phase": "observe_back"
+        },
+        {
+          "t": 16.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 20.5,
+          "phase": "observe_back"
+        },
+        {
+          "t": 23.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 27.5,
+          "phase": "observe_move"
+        },
+        {
+          "t": 28.5,
+          "phase": "observe"
+        },
+        {
+          "t": 29.1,
+          "phase": "await_observe"
+        },
+        {
+          "t": 29.2,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 34.8,
+          "phase": "approach"
+        },
+        {
+          "t": 36.1,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 39.2,
+          "phase": "repick"
+        },
+        {
+          "t": 45.3,
+          "phase": "regrasp_check"
+        },
+        {
+          "t": 59.1,
+          "phase": "await_regrasp"
+        },
+        {
+          "t": 59.2,
+          "phase": "shift"
+        },
+        {
+          "t": 61.0,
+          "phase": "lower"
+        },
+        {
+          "t": 63.4,
+          "phase": "await_open"
+        },
+        {
+          "t": 63.5,
+          "phase": "open"
+        },
+        {
+          "t": 65.0,
+          "phase": "observe_back"
+        },
+        {
+          "t": 66.1,
+          "phase": "lookaround"
+        },
+        {
+          "t": 70.6,
+          "phase": "observe_back"
+        }
+      ],
+      "code_decisions": null,
+      "shift_moves_completed": null,
+      "regrasp_epochs": [
+        {
+          "epoch": 1,
+          "confirmed": {
+            "r1": true,
+            "r2": true
+          },
+          "attempts": {
+            "r1": 1,
+            "r2": 1
+          },
+          "failure": null
+        }
+      ],
+      "cap_timing": {
+        "control_loop_end_sim_s": 69.00000000005359,
+        "remaining_at_control_loop_end_s": 110.99999999994641,
+        "run": "r18g-12-a3bbc90e",
+        "cap_s": 180,
+        "done_entry_sim_s": 8.29999999999895,
+        "last_control_trace_sim_s": 69.00000000005359,
+        "remaining_at_last_control_trace_s": 110.99999999994641,
+        "flag_within10s_of_cap": false,
+        "final_sim_including_postrun_evaluation_s": 69.01350000005327,
+        "shift_moves": null,
+        "regrasp_epochs": 1,
+        "note": "control loop and evaluation separated; final result.sim_s includes post-loop evaluation"
+      },
+      "result_hash": {
+        "sha256": "513135b807a41d9362f828522ebcc797b70594215f8c06d8a2aa45dbed3295e9",
+        "bytes": 20264,
+        "decoded_sha256": "eb501c58c59a46e9be542822545bafbdbde72aa55224ddd0156256b38636fbd0"
+      },
+      "original_manifest_files_verified": 322,
+      "lite_files_verified": 20,
+      "decoded_files_verified": [
+        "eval-only.jsonl.zst",
+        "result.json.zst",
+        "teacher-r1.jsonl.zst",
+        "teacher-r2.jsonl.zst"
+      ],
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18g-12-a3bbc90e",
+      "lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r18g-12-a3bbc90e",
+      "visual_review": {
+        "frames_directly_viewed": 18,
+        "times_sim_s": [
+          0.0,
+          13.3,
+          27.3,
+          41.3,
+          54.3,
+          68.3
+        ],
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "montages": [
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release18-gate40-a3bbc90e-ops/r18g-12-a3bbc90e/montage-0.jpg"
+        ],
+        "relation": "opposite beam ends; no same-end/mutual-blocking cause seen",
+        "incomplete_last_triplet_excluded": false
+      }
+    },
+    {
+      "name": "r18g-13-a3bbc90e",
+      "seed": 110613,
+      "episode": 13,
+      "candidate": "A",
+      "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+      "submitted": true,
+      "exit": "0",
+      "status": "complete",
+      "success": false,
+      "canonical_release_success": false,
+      "release_outcome": "release17_motion_cap",
+      "failure_reasons": [
+        "not_in_zone"
+      ],
+      "prefix_held": true,
+      "input_audit": {
+        "held_object": "hidden_v1",
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 124.0995014709988,
+      "sim_s": 39.70000000010696,
+      "wall_sim": 3.125932026968878,
+      "first30_wall_sim_approx": 3.0718481737332,
+      "sequence_world_t": [
+        {
+          "t": 10.1,
+          "phase": "look"
+        },
+        {
+          "t": 10.8,
+          "phase": "await_look"
+        },
+        {
+          "t": 10.9,
+          "phase": "lower"
+        },
+        {
+          "t": 13.3,
+          "phase": "await_open"
+        },
+        {
+          "t": 13.4,
+          "phase": "open"
+        },
+        {
+          "t": 14.9,
+          "phase": "observe_back"
+        },
+        {
+          "t": 16.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 20.5,
+          "phase": "observe_back"
+        },
+        {
+          "t": 23.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 27.5,
+          "phase": "observe_move"
+        },
+        {
+          "t": 28.5,
+          "phase": "observe"
+        },
+        {
+          "t": 29.1,
+          "phase": "await_observe"
+        },
+        {
+          "t": 29.2,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 34.3,
+          "phase": "approach"
+        },
+        {
+          "t": 35.6,
+          "phase": "line_recheck"
+        }
+      ],
+      "code_decisions": [
+        {
+          "action": "lower",
+          "lo": null,
+          "hi": null,
+          "evidence": [
+            "none",
+            "none"
+          ],
+          "exact": {
+            "r1": false,
+            "r2": false
+          },
+          "t": 10.899999999997272
+        },
+        {
+          "action": "shift",
+          "shift_m": -0.2,
+          "reason": "localized_margin_correction",
+          "t": 29.200000000048412,
+          "margins_m": [
+            1.0478231982358306,
+            -0.28110453707441785
+          ]
+        }
+      ],
+      "shift_moves_completed": 0,
+      "regrasp_epochs": [],
+      "cap_timing": {
+        "control_loop_end_sim_s": 37.200000000095024,
+        "remaining_at_control_loop_end_s": 142.79999999990497,
+        "run": "r18g-13-a3bbc90e",
+        "cap_s": 180,
+        "done_entry_sim_s": 39.70000000010696,
+        "last_control_trace_sim_s": 37.100000000094546,
+        "remaining_at_last_control_trace_s": 142.89999999990545,
+        "flag_within10s_of_cap": false,
+        "final_sim_including_postrun_evaluation_s": 39.70000000010696,
+        "shift_moves": 0,
+        "regrasp_epochs": 0,
+        "note": "control loop and evaluation separated; final result.sim_s includes post-loop evaluation"
+      },
+      "result_hash": {
+        "sha256": "c89efc236756ba34c4bb53afa7cf9767f68cdc9374e0292936daf03ff695a311",
+        "bytes": 43077,
+        "decoded_sha256": "911f0e5ca32669cd4f410ed469ea1c5883adb64fbcde7287351275ff5da5dd70"
+      },
+      "original_manifest_files_verified": 180,
+      "lite_files_verified": 18,
+      "decoded_files_verified": [
+        "eval-only.jsonl.zst",
+        "result.json.zst",
+        "teacher-r1.jsonl.zst",
+        "teacher-r2.jsonl.zst"
+      ],
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18g-13-a3bbc90e",
+      "lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r18g-13-a3bbc90e",
+      "visual_review": {
+        "frames_directly_viewed": 18,
+        "times_sim_s": [
+          0.0,
+          7.0,
+          14.3,
+          21.3,
+          29.3,
+          36.3
+        ],
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "montages": [
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release18-gate40-a3bbc90e-ops/r18g-13-a3bbc90e/montage-0.jpg"
+        ],
+        "relation": "opposite beam ends; no same-end/mutual-blocking cause seen",
+        "incomplete_last_triplet_excluded": false
+      }
+    },
+    {
+      "name": "r18g-14-a3bbc90e",
+      "seed": 110614,
+      "episode": 14,
+      "candidate": "A",
+      "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+      "submitted": true,
+      "exit": "130",
+      "status": "interrupted",
+      "success": false,
+      "canonical_release_success": null,
+      "release_outcome": null,
+      "failure_reasons": null,
+      "prefix_held": true,
+      "input_audit": {
+        "held_object": "hidden_v1",
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 223.81196036999972,
+      "sim_s": 68.26100000007106,
+      "wall_sim": 3.278767676561532,
+      "first30_wall_sim_approx": 2.975709564215478,
+      "sequence_world_t": [
+        {
+          "t": 10.1,
+          "phase": "look"
+        },
+        {
+          "t": 10.8,
+          "phase": "await_look"
+        },
+        {
+          "t": 10.9,
+          "phase": "lower"
+        },
+        {
+          "t": 13.3,
+          "phase": "await_open"
+        },
+        {
+          "t": 13.4,
+          "phase": "open"
+        },
+        {
+          "t": 14.9,
+          "phase": "observe_back"
+        },
+        {
+          "t": 16.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 20.5,
+          "phase": "observe_back"
+        },
+        {
+          "t": 23.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 27.5,
+          "phase": "observe_move"
+        },
+        {
+          "t": 28.5,
+          "phase": "observe"
+        },
+        {
+          "t": 29.1,
+          "phase": "await_observe"
+        },
+        {
+          "t": 29.2,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 35.4,
+          "phase": "approach"
+        },
+        {
+          "t": 36.7,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 37.6,
+          "phase": "repick"
+        },
+        {
+          "t": 43.7,
+          "phase": "regrasp_check"
+        },
+        {
+          "t": 57.5,
+          "phase": "await_regrasp"
+        },
+        {
+          "t": 57.6,
+          "phase": "shift"
+        },
+        {
+          "t": 59.4,
+          "phase": "lower"
+        },
+        {
+          "t": 61.8,
+          "phase": "await_open"
+        },
+        {
+          "t": 61.9,
+          "phase": "open"
+        },
+        {
+          "t": 63.3,
+          "phase": "observe_back"
+        },
+        {
+          "t": 64.4,
+          "phase": "lookaround"
+        },
+        {
+          "t": 68.9,
+          "phase": "observe_back"
+        }
+      ],
+      "code_decisions": null,
+      "shift_moves_completed": null,
+      "regrasp_epochs": [
+        {
+          "epoch": 1,
+          "confirmed": {
+            "r1": true,
+            "r2": true
+          },
+          "attempts": {
+            "r1": 1,
+            "r2": 1
+          },
+          "failure": null
+        }
+      ],
+      "cap_timing": {
+        "control_loop_end_sim_s": 68.2000000000725,
+        "remaining_at_control_loop_end_s": 111.7999999999275,
+        "run": "r18g-14-a3bbc90e",
+        "cap_s": 180,
+        "done_entry_sim_s": 8.29999999999895,
+        "last_control_trace_sim_s": 68.2000000000725,
+        "remaining_at_last_control_trace_s": 111.7999999999275,
+        "flag_within10s_of_cap": false,
+        "final_sim_including_postrun_evaluation_s": 68.26100000007106,
+        "shift_moves": null,
+        "regrasp_epochs": 1,
+        "note": "control loop and evaluation separated; final result.sim_s includes post-loop evaluation"
+      },
+      "result_hash": {
+        "sha256": "9323eb1a35d34de134621ef4159ba358a5c5bdc005dcec8ef4e78a88daa983eb",
+        "bytes": 17027,
+        "decoded_sha256": "433c9a26a0d0f3f368140e3b6a42a8b1ae286c2a823b13cb1b68c0b9b8dfd4ee"
+      },
+      "original_manifest_files_verified": 308,
+      "lite_files_verified": 20,
+      "decoded_files_verified": [
+        "eval-only.jsonl.zst",
+        "result.json.zst",
+        "teacher-r1.jsonl.zst",
+        "teacher-r2.jsonl.zst"
+      ],
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18g-14-a3bbc90e",
+      "lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r18g-14-a3bbc90e",
+      "visual_review": {
+        "frames_directly_viewed": 18,
+        "times_sim_s": [
+          0.0,
+          13.3,
+          27.3,
+          40.3,
+          54.3,
+          67.3
+        ],
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "montages": [
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release18-gate40-a3bbc90e-ops/r18g-14-a3bbc90e/montage-0.jpg"
+        ],
+        "relation": "opposite beam ends; no same-end/mutual-blocking cause seen",
+        "incomplete_last_triplet_excluded": false
+      }
+    },
+    {
+      "name": "r18g-15-a3bbc90e",
+      "seed": 110615,
+      "episode": 15,
+      "candidate": "A",
+      "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+      "submitted": true,
+      "exit": "130",
+      "status": "interrupted",
+      "success": false,
+      "canonical_release_success": null,
+      "release_outcome": null,
+      "failure_reasons": null,
+      "prefix_held": true,
+      "input_audit": {
+        "held_object": "hidden_v1",
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 223.58369809400028,
+      "sim_s": 65.35300000013983,
+      "wall_sim": 3.421169618740102,
+      "first30_wall_sim_approx": 3.1359405879469477,
+      "sequence_world_t": [
+        {
+          "t": 10.1,
+          "phase": "look"
+        },
+        {
+          "t": 10.8,
+          "phase": "await_look"
+        },
+        {
+          "t": 10.9,
+          "phase": "lower"
+        },
+        {
+          "t": 13.3,
+          "phase": "await_open"
+        },
+        {
+          "t": 13.4,
+          "phase": "open"
+        },
+        {
+          "t": 14.9,
+          "phase": "observe_back"
+        },
+        {
+          "t": 16.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 20.5,
+          "phase": "observe_back"
+        },
+        {
+          "t": 23.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 27.5,
+          "phase": "observe_move"
+        },
+        {
+          "t": 28.5,
+          "phase": "observe"
+        },
+        {
+          "t": 29.1,
+          "phase": "await_observe"
+        },
+        {
+          "t": 29.2,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 35.1,
+          "phase": "approach"
+        },
+        {
+          "t": 36.3,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 37.2,
+          "phase": "repick"
+        },
+        {
+          "t": 43.3,
+          "phase": "regrasp_check"
+        },
+        {
+          "t": 57.1,
+          "phase": "await_regrasp"
+        },
+        {
+          "t": 57.2,
+          "phase": "shift"
+        },
+        {
+          "t": 59.0,
+          "phase": "lower"
+        },
+        {
+          "t": 61.4,
+          "phase": "await_open"
+        },
+        {
+          "t": 61.5,
+          "phase": "open"
+        },
+        {
+          "t": 62.9,
+          "phase": "observe_back"
+        },
+        {
+          "t": 64.0,
+          "phase": "lookaround"
+        }
+      ],
+      "code_decisions": null,
+      "shift_moves_completed": null,
+      "regrasp_epochs": [
+        {
+          "epoch": 1,
+          "confirmed": {
+            "r1": true,
+            "r2": true
+          },
+          "attempts": {
+            "r1": 1,
+            "r2": 1
+          },
+          "failure": null
+        }
+      ],
+      "cap_timing": {
+        "control_loop_end_sim_s": 65.30000000014108,
+        "remaining_at_control_loop_end_s": 114.69999999985892,
+        "run": "r18g-15-a3bbc90e",
+        "cap_s": 180,
+        "done_entry_sim_s": 8.29999999999895,
+        "last_control_trace_sim_s": 65.30000000014108,
+        "remaining_at_last_control_trace_s": 114.69999999985892,
+        "flag_within10s_of_cap": false,
+        "final_sim_including_postrun_evaluation_s": 65.35300000013983,
+        "shift_moves": null,
+        "regrasp_epochs": 1,
+        "note": "control loop and evaluation separated; final result.sim_s includes post-loop evaluation"
+      },
+      "result_hash": {
+        "sha256": "bb55df957bdfa2808d01548b9153839af6561e42e16b30a828ce98b975c11954",
+        "bytes": 15875,
+        "decoded_sha256": "5caf4621427c4e11fc631360f107cc76d381dbb14b69d07e17f06d943ebf718e"
+      },
+      "original_manifest_files_verified": 298,
+      "lite_files_verified": 20,
+      "decoded_files_verified": [
+        "eval-only.jsonl.zst",
+        "result.json.zst",
+        "teacher-r1.jsonl.zst",
+        "teacher-r2.jsonl.zst"
+      ],
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18g-15-a3bbc90e",
+      "lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r18g-15-a3bbc90e",
+      "visual_review": {
+        "frames_directly_viewed": 18,
+        "times_sim_s": [
+          0.0,
+          13.3,
+          26.3,
+          39.3,
+          52.3,
+          65.3
+        ],
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "montages": [
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release18-gate40-a3bbc90e-ops/r18g-15-a3bbc90e/montage-0.jpg"
+        ],
+        "relation": "opposite beam ends; no same-end/mutual-blocking cause seen",
+        "incomplete_last_triplet_excluded": false
+      }
+    },
+    {
+      "name": "r18g-16-a3bbc90e",
+      "seed": 110616,
+      "episode": 16,
+      "candidate": "A",
+      "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+      "submitted": true,
+      "exit": "0",
+      "status": "complete",
+      "success": true,
+      "canonical_release_success": true,
+      "release_outcome": "teacher_done",
+      "failure_reasons": [],
+      "prefix_held": true,
+      "input_audit": {
+        "held_object": "hidden_v1",
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 104.46975738400215,
+      "sim_s": 33.90000000007927,
+      "wall_sim": 3.0817037576329755,
+      "first30_wall_sim_approx": 3.001089103931788,
+      "sequence_world_t": [
+        {
+          "t": 10.1,
+          "phase": "look"
+        },
+        {
+          "t": 10.8,
+          "phase": "await_look"
+        },
+        {
+          "t": 10.9,
+          "phase": "lower"
+        },
+        {
+          "t": 13.3,
+          "phase": "await_open"
+        },
+        {
+          "t": 13.4,
+          "phase": "open"
+        },
+        {
+          "t": 14.9,
+          "phase": "observe_back"
+        },
+        {
+          "t": 16.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 20.5,
+          "phase": "observe_back"
+        },
+        {
+          "t": 23.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 27.5,
+          "phase": "observe_move"
+        },
+        {
+          "t": 28.5,
+          "phase": "observe"
+        },
+        {
+          "t": 29.1,
+          "phase": "await_observe"
+        },
+        {
+          "t": 29.2,
+          "phase": "done"
+        }
+      ],
+      "code_decisions": [
+        {
+          "action": "lower",
+          "lo": null,
+          "hi": null,
+          "evidence": [
+            "none",
+            "none"
+          ],
+          "exact": {
+            "r1": false,
+            "r2": false
+          },
+          "t": 10.899999999997272
+        },
+        {
+          "action": "lower",
+          "reason": "localized_margins_inside",
+          "t": 29.200000000048412,
+          "margins_m": [
+            0.5245650283215352,
+            0.2303671593543829
+          ],
+          "release_goal_region": "inside_margins_v1"
+        }
+      ],
+      "shift_moves_completed": 0,
+      "regrasp_epochs": [],
+      "cap_timing": {
+        "control_loop_end_sim_s": 31.400000000067326,
+        "remaining_at_control_loop_end_s": 148.59999999993266,
+        "run": "r18g-16-a3bbc90e",
+        "cap_s": 180,
+        "done_entry_sim_s": 27.40000000004823,
+        "last_control_trace_sim_s": 31.30000000006685,
+        "remaining_at_last_control_trace_s": 148.69999999993314,
+        "flag_within10s_of_cap": false,
+        "final_sim_including_postrun_evaluation_s": 33.90000000007927,
+        "shift_moves": 0,
+        "regrasp_epochs": 0,
+        "note": "control loop and evaluation separated; final result.sim_s includes post-loop evaluation"
+      },
+      "result_hash": {
+        "sha256": "9a0561cd934376ba4f58a2f8f6263c219086ee1d25d26231627dca5fe9577743",
+        "bytes": 33524,
+        "decoded_sha256": "35dc44f8e041165b2a5bfaf241a7b5b4d5288d616b46e0d89cdab4175620a8c6"
+      },
+      "original_manifest_files_verified": 129,
+      "lite_files_verified": 18,
+      "decoded_files_verified": [
+        "eval-only.jsonl.zst",
+        "result.json.zst",
+        "teacher-r1.jsonl.zst",
+        "teacher-r2.jsonl.zst"
+      ],
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18g-16-a3bbc90e",
+      "lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r18g-16-a3bbc90e",
+      "visual_review": {
+        "frames_directly_viewed": 18,
+        "times_sim_s": [
+          0.0,
+          6.0,
+          12.3,
+          18.3,
+          25.3,
+          31.3
+        ],
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "montages": [
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release18-gate40-a3bbc90e-ops/r18g-16-a3bbc90e/montage-0.jpg"
+        ],
+        "relation": "opposite beam ends; no same-end/mutual-blocking cause seen",
+        "incomplete_last_triplet_excluded": false
+      }
+    },
+    {
+      "name": "r18g-17-a3bbc90e",
+      "seed": 110617,
+      "episode": 17,
+      "candidate": "A",
+      "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+      "submitted": true,
+      "exit": "0",
+      "status": "complete",
+      "success": true,
+      "canonical_release_success": true,
+      "release_outcome": "teacher_done",
+      "failure_reasons": [],
+      "prefix_held": true,
+      "input_audit": {
+        "held_object": "hidden_v1",
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 105.68001361799907,
+      "sim_s": 33.90000000007927,
+      "wall_sim": 3.117404531497108,
+      "first30_wall_sim_approx": 3.0232013176708166,
+      "sequence_world_t": [
+        {
+          "t": 10.1,
+          "phase": "look"
+        },
+        {
+          "t": 10.8,
+          "phase": "await_look"
+        },
+        {
+          "t": 10.9,
+          "phase": "lower"
+        },
+        {
+          "t": 13.3,
+          "phase": "await_open"
+        },
+        {
+          "t": 13.4,
+          "phase": "open"
+        },
+        {
+          "t": 14.9,
+          "phase": "observe_back"
+        },
+        {
+          "t": 16.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 20.5,
+          "phase": "observe_back"
+        },
+        {
+          "t": 23.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 27.5,
+          "phase": "observe_move"
+        },
+        {
+          "t": 28.5,
+          "phase": "observe"
+        },
+        {
+          "t": 29.1,
+          "phase": "await_observe"
+        },
+        {
+          "t": 29.2,
+          "phase": "done"
+        }
+      ],
+      "code_decisions": [
+        {
+          "action": "lower",
+          "lo": null,
+          "hi": null,
+          "evidence": [
+            "none",
+            "none"
+          ],
+          "exact": {
+            "r1": false,
+            "r2": false
+          },
+          "t": 10.899999999997272
+        },
+        {
+          "action": "lower",
+          "reason": "localized_margins_inside",
+          "t": 29.200000000048412,
+          "margins_m": [
+            0.6337502931506216,
+            0.07729811237180706
+          ],
+          "release_goal_region": "inside_margins_v1"
+        }
+      ],
+      "shift_moves_completed": 0,
+      "regrasp_epochs": [],
+      "cap_timing": {
+        "control_loop_end_sim_s": 31.400000000067326,
+        "remaining_at_control_loop_end_s": 148.59999999993266,
+        "run": "r18g-17-a3bbc90e",
+        "cap_s": 180,
+        "done_entry_sim_s": 27.40000000004823,
+        "last_control_trace_sim_s": 31.30000000006685,
+        "remaining_at_last_control_trace_s": 148.69999999993314,
+        "flag_within10s_of_cap": false,
+        "final_sim_including_postrun_evaluation_s": 33.90000000007927,
+        "shift_moves": 0,
+        "regrasp_epochs": 0,
+        "note": "control loop and evaluation separated; final result.sim_s includes post-loop evaluation"
+      },
+      "result_hash": {
+        "sha256": "e50fec90ee0a353c650db6defc625a3fa70a95532f08ca61de688f9831d8bb29",
+        "bytes": 33697,
+        "decoded_sha256": "b645bec140b92804cc17d04551cd28b8dd402695c0dd6d8c5f2cf86b06741d40"
+      },
+      "original_manifest_files_verified": 129,
+      "lite_files_verified": 18,
+      "decoded_files_verified": [
+        "eval-only.jsonl.zst",
+        "result.json.zst",
+        "teacher-r1.jsonl.zst",
+        "teacher-r2.jsonl.zst"
+      ],
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18g-17-a3bbc90e",
+      "lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r18g-17-a3bbc90e",
+      "visual_review": {
+        "frames_directly_viewed": 18,
+        "times_sim_s": [
+          0.0,
+          6.0,
+          12.3,
+          18.3,
+          25.3,
+          31.3
+        ],
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "montages": [
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release18-gate40-a3bbc90e-ops/r18g-17-a3bbc90e/montage-0.jpg"
+        ],
+        "relation": "opposite beam ends; no same-end/mutual-blocking cause seen",
+        "incomplete_last_triplet_excluded": false
+      }
+    },
+    {
+      "name": "r18g-18-a3bbc90e",
+      "seed": 110618,
+      "episode": 18,
+      "candidate": "A",
+      "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+      "submitted": true,
+      "exit": "130",
+      "status": "interrupted",
+      "success": false,
+      "canonical_release_success": null,
+      "release_outcome": null,
+      "failure_reasons": null,
+      "prefix_held": true,
+      "input_audit": {
+        "held_object": "hidden_v1",
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 212.98346576499898,
+      "sim_s": 63.651000000180076,
+      "wall_sim": 3.346113427352224,
+      "first30_wall_sim_approx": 3.074026398919987,
+      "sequence_world_t": [
+        {
+          "t": 10.1,
+          "phase": "look"
+        },
+        {
+          "t": 10.8,
+          "phase": "await_look"
+        },
+        {
+          "t": 10.9,
+          "phase": "lower"
+        },
+        {
+          "t": 13.3,
+          "phase": "await_open"
+        },
+        {
+          "t": 13.4,
+          "phase": "open"
+        },
+        {
+          "t": 14.9,
+          "phase": "observe_back"
+        },
+        {
+          "t": 16.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 20.5,
+          "phase": "observe_back"
+        },
+        {
+          "t": 23.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 27.5,
+          "phase": "observe_move"
+        },
+        {
+          "t": 28.5,
+          "phase": "observe"
+        },
+        {
+          "t": 29.1,
+          "phase": "await_observe"
+        },
+        {
+          "t": 29.2,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 35.1,
+          "phase": "approach"
+        },
+        {
+          "t": 36.4,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 37.9,
+          "phase": "repick"
+        },
+        {
+          "t": 44.0,
+          "phase": "regrasp_check"
+        },
+        {
+          "t": 57.8,
+          "phase": "await_regrasp"
+        },
+        {
+          "t": 57.9,
+          "phase": "shift"
+        },
+        {
+          "t": 59.7,
+          "phase": "lower"
+        },
+        {
+          "t": 62.1,
+          "phase": "await_open"
+        },
+        {
+          "t": 62.2,
+          "phase": "open"
+        },
+        {
+          "t": 63.6,
+          "phase": "observe_back"
+        },
+        {
+          "t": 64.7,
+          "phase": "lookaround"
+        }
+      ],
+      "code_decisions": null,
+      "shift_moves_completed": null,
+      "regrasp_epochs": [
+        {
+          "epoch": 1,
+          "confirmed": {
+            "r1": true,
+            "r2": true
+          },
+          "attempts": {
+            "r1": 1,
+            "r2": 1
+          },
+          "failure": null
+        }
+      ],
+      "cap_timing": {
+        "control_loop_end_sim_s": 63.60000000018128,
+        "remaining_at_control_loop_end_s": 116.39999999981872,
+        "run": "r18g-18-a3bbc90e",
+        "cap_s": 180,
+        "done_entry_sim_s": 8.29999999999895,
+        "last_control_trace_sim_s": 63.60000000018128,
+        "remaining_at_last_control_trace_s": 116.39999999981872,
+        "flag_within10s_of_cap": false,
+        "final_sim_including_postrun_evaluation_s": 63.651000000180076,
+        "shift_moves": null,
+        "regrasp_epochs": 1,
+        "note": "control loop and evaluation separated; final result.sim_s includes post-loop evaluation"
+      },
+      "result_hash": {
+        "sha256": "294286fb368879e2e4d1faebc500a92eaba2403421388681f5f4c5fa5b9ab5c9",
+        "bytes": 17664,
+        "decoded_sha256": "0c90e69fa16715016d53bc2cb79ce132333c0ef27ceba341d8d31e122721edf2"
+      },
+      "original_manifest_files_verified": 291,
+      "lite_files_verified": 20,
+      "decoded_files_verified": [
+        "eval-only.jsonl.zst",
+        "result.json.zst",
+        "teacher-r1.jsonl.zst",
+        "teacher-r2.jsonl.zst"
+      ],
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18g-18-a3bbc90e",
+      "lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r18g-18-a3bbc90e",
+      "visual_review": {
+        "frames_directly_viewed": 18,
+        "times_sim_s": [
+          0.0,
+          12.3,
+          25.3,
+          38.3,
+          50.3,
+          63.3
+        ],
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "montages": [
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release18-gate40-a3bbc90e-ops/r18g-18-a3bbc90e/montage-0.jpg"
+        ],
+        "relation": "opposite beam ends; no same-end/mutual-blocking cause seen",
+        "incomplete_last_triplet_excluded": false
+      }
+    },
+    {
+      "name": "r18g-19-a3bbc90e",
+      "seed": 110619,
+      "episode": 19,
+      "candidate": "A",
+      "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+      "submitted": true,
+      "exit": "130",
+      "status": "interrupted",
+      "success": false,
+      "canonical_release_success": null,
+      "release_outcome": null,
+      "failure_reasons": null,
+      "prefix_held": true,
+      "input_audit": {
+        "held_object": "hidden_v1",
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 213.2185878240016,
+      "sim_s": 64.91225000015025,
+      "wall_sim": 3.284720338973122,
+      "first30_wall_sim_approx": 3.121328188634842,
+      "sequence_world_t": [
+        {
+          "t": 10.1,
+          "phase": "look"
+        },
+        {
+          "t": 10.8,
+          "phase": "await_look"
+        },
+        {
+          "t": 10.9,
+          "phase": "lower"
+        },
+        {
+          "t": 13.3,
+          "phase": "await_open"
+        },
+        {
+          "t": 13.4,
+          "phase": "open"
+        },
+        {
+          "t": 14.9,
+          "phase": "observe_back"
+        },
+        {
+          "t": 16.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 20.5,
+          "phase": "observe_back"
+        },
+        {
+          "t": 23.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 27.5,
+          "phase": "observe_move"
+        },
+        {
+          "t": 28.5,
+          "phase": "observe"
+        },
+        {
+          "t": 29.1,
+          "phase": "await_observe"
+        },
+        {
+          "t": 29.2,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 34.6,
+          "phase": "approach"
+        },
+        {
+          "t": 35.9,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 36.6,
+          "phase": "repick"
+        },
+        {
+          "t": 42.7,
+          "phase": "regrasp_check"
+        },
+        {
+          "t": 56.5,
+          "phase": "await_regrasp"
+        },
+        {
+          "t": 56.6,
+          "phase": "shift"
+        },
+        {
+          "t": 58.4,
+          "phase": "lower"
+        },
+        {
+          "t": 60.8,
+          "phase": "await_open"
+        },
+        {
+          "t": 60.9,
+          "phase": "open"
+        },
+        {
+          "t": 62.3,
+          "phase": "observe_back"
+        },
+        {
+          "t": 63.4,
+          "phase": "lookaround"
+        }
+      ],
+      "code_decisions": null,
+      "shift_moves_completed": null,
+      "regrasp_epochs": [
+        {
+          "epoch": 1,
+          "confirmed": {
+            "r1": true,
+            "r2": true
+          },
+          "attempts": {
+            "r1": 1,
+            "r2": 1
+          },
+          "failure": null
+        }
+      ],
+      "cap_timing": {
+        "control_loop_end_sim_s": 64.90000000015054,
+        "remaining_at_control_loop_end_s": 115.09999999984946,
+        "run": "r18g-19-a3bbc90e",
+        "cap_s": 180,
+        "done_entry_sim_s": 8.29999999999895,
+        "last_control_trace_sim_s": 64.90000000015054,
+        "remaining_at_last_control_trace_s": 115.09999999984946,
+        "flag_within10s_of_cap": false,
+        "final_sim_including_postrun_evaluation_s": 64.91225000015025,
+        "shift_moves": null,
+        "regrasp_epochs": 1,
+        "note": "control loop and evaluation separated; final result.sim_s includes post-loop evaluation"
+      },
+      "result_hash": {
+        "sha256": "8f620e131ce10801a5460889cdfc69d06888bd1b78ed183184a1cea231800286",
+        "bytes": 14771,
+        "decoded_sha256": "3d13a4ecc50c980b30cad2d9d387396a098c812d9537fc798fa8f6dba3bd6279"
+      },
+      "original_manifest_files_verified": 292,
+      "lite_files_verified": 20,
+      "decoded_files_verified": [
+        "eval-only.jsonl.zst",
+        "result.json.zst",
+        "teacher-r1.jsonl.zst",
+        "teacher-r2.jsonl.zst"
+      ],
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18g-19-a3bbc90e",
+      "lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r18g-19-a3bbc90e",
+      "visual_review": {
+        "frames_directly_viewed": 18,
+        "times_sim_s": [
+          0.0,
+          13.3,
+          25.3,
+          38.3,
+          51.3,
+          64.3
+        ],
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "montages": [
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release18-gate40-a3bbc90e-ops/r18g-19-a3bbc90e/montage-0.jpg"
+        ],
+        "relation": "opposite beam ends; no same-end/mutual-blocking cause seen",
+        "incomplete_last_triplet_excluded": false
+      }
+    },
+    {
+      "name": "r18g-20-a3bbc90e",
+      "seed": 110620,
+      "episode": 20,
+      "candidate": "A",
+      "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+      "submitted": true,
+      "exit": "130",
+      "status": "interrupted",
+      "success": false,
+      "canonical_release_success": null,
+      "release_outcome": null,
+      "failure_reasons": null,
+      "prefix_held": true,
+      "input_audit": {
+        "held_object": "hidden_v1",
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 212.9952535320008,
+      "sim_s": 65.30000000014108,
+      "wall_sim": 3.261795613040438,
+      "first30_wall_sim_approx": 3.060099000578299,
+      "sequence_world_t": [
+        {
+          "t": 10.1,
+          "phase": "look"
+        },
+        {
+          "t": 10.8,
+          "phase": "await_look"
+        },
+        {
+          "t": 10.9,
+          "phase": "lower"
+        },
+        {
+          "t": 13.3,
+          "phase": "await_open"
+        },
+        {
+          "t": 13.4,
+          "phase": "open"
+        },
+        {
+          "t": 14.9,
+          "phase": "observe_back"
+        },
+        {
+          "t": 16.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 20.5,
+          "phase": "observe_back"
+        },
+        {
+          "t": 23.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 27.5,
+          "phase": "observe_move"
+        },
+        {
+          "t": 28.5,
+          "phase": "observe"
+        },
+        {
+          "t": 29.1,
+          "phase": "await_observe"
+        },
+        {
+          "t": 29.2,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 34.6,
+          "phase": "approach"
+        },
+        {
+          "t": 35.9,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 36.6,
+          "phase": "repick"
+        },
+        {
+          "t": 42.7,
+          "phase": "regrasp_check"
+        },
+        {
+          "t": 56.5,
+          "phase": "await_regrasp"
+        },
+        {
+          "t": 56.6,
+          "phase": "shift"
+        },
+        {
+          "t": 58.4,
+          "phase": "lower"
+        },
+        {
+          "t": 60.8,
+          "phase": "await_open"
+        },
+        {
+          "t": 60.9,
+          "phase": "open"
+        },
+        {
+          "t": 62.3,
+          "phase": "observe_back"
+        },
+        {
+          "t": 63.4,
+          "phase": "lookaround"
+        }
+      ],
+      "code_decisions": null,
+      "shift_moves_completed": null,
+      "regrasp_epochs": [
+        {
+          "epoch": 1,
+          "confirmed": {
+            "r1": true,
+            "r2": true
+          },
+          "attempts": {
+            "r1": 1,
+            "r2": 1
+          },
+          "failure": null
+        }
+      ],
+      "cap_timing": {
+        "control_loop_end_sim_s": 65.30000000014108,
+        "remaining_at_control_loop_end_s": 114.69999999985892,
+        "run": "r18g-20-a3bbc90e",
+        "cap_s": 180,
+        "done_entry_sim_s": 8.29999999999895,
+        "last_control_trace_sim_s": 65.30000000014108,
+        "remaining_at_last_control_trace_s": 114.69999999985892,
+        "flag_within10s_of_cap": false,
+        "final_sim_including_postrun_evaluation_s": 65.30000000014108,
+        "shift_moves": null,
+        "regrasp_epochs": 1,
+        "note": "control loop and evaluation separated; final result.sim_s includes post-loop evaluation"
+      },
+      "result_hash": {
+        "sha256": "722fc225bd32599a6a42cbfbf29fef49f570cb2d224253f0ec0f4e2576803077",
+        "bytes": 14849,
+        "decoded_sha256": "1ce00209692776014c43ba2cd2a6f9d1a729720beb6af24b4c919cbb0bc9314b"
+      },
+      "original_manifest_files_verified": 294,
+      "lite_files_verified": 20,
+      "decoded_files_verified": [
+        "eval-only.jsonl.zst",
+        "result.json.zst",
+        "teacher-r1.jsonl.zst",
+        "teacher-r2.jsonl.zst"
+      ],
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18g-20-a3bbc90e",
+      "lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r18g-20-a3bbc90e",
+      "visual_review": {
+        "frames_directly_viewed": 18,
+        "times_sim_s": [
+          0.0,
+          13.3,
+          25.3,
+          38.3,
+          51.3,
+          64.3
+        ],
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "montages": [
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release18-gate40-a3bbc90e-ops/r18g-20-a3bbc90e/montage-0.jpg"
+        ],
+        "relation": "opposite beam ends; no same-end/mutual-blocking cause seen",
+        "incomplete_last_triplet_excluded": false
+      }
+    },
+    {
+      "name": "r18g-21-a3bbc90e",
+      "seed": 110621,
+      "episode": 21,
+      "candidate": "A",
+      "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+      "submitted": true,
+      "exit": "130",
+      "status": "interrupted",
+      "success": false,
+      "canonical_release_success": null,
+      "release_outcome": null,
+      "failure_reasons": null,
+      "prefix_held": true,
+      "input_audit": {
+        "held_object": "hidden_v1",
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 171.98666593400048,
+      "sim_s": 51.056250000161185,
+      "wall_sim": 3.368572230303979,
+      "first30_wall_sim_approx": 3.1457095649705153,
+      "sequence_world_t": [
+        {
+          "t": 10.1,
+          "phase": "look"
+        },
+        {
+          "t": 10.8,
+          "phase": "await_look"
+        },
+        {
+          "t": 10.9,
+          "phase": "lower"
+        },
+        {
+          "t": 13.3,
+          "phase": "await_open"
+        },
+        {
+          "t": 13.4,
+          "phase": "open"
+        },
+        {
+          "t": 14.9,
+          "phase": "observe_back"
+        },
+        {
+          "t": 16.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 20.5,
+          "phase": "observe_back"
+        },
+        {
+          "t": 23.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 27.5,
+          "phase": "observe_move"
+        },
+        {
+          "t": 28.5,
+          "phase": "observe"
+        },
+        {
+          "t": 29.1,
+          "phase": "await_observe"
+        },
+        {
+          "t": 29.2,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 34.9,
+          "phase": "approach"
+        },
+        {
+          "t": 36.1,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 36.8,
+          "phase": "repick"
+        },
+        {
+          "t": 42.9,
+          "phase": "regrasp_check"
+        }
+      ],
+      "code_decisions": null,
+      "shift_moves_completed": null,
+      "regrasp_epochs": [
+        {
+          "epoch": 1,
+          "confirmed": {
+            "r1": true,
+            "r2": false
+          },
+          "attempts": {
+            "r1": 1,
+            "r2": 1
+          },
+          "failure": null
+        }
+      ],
+      "cap_timing": {
+        "control_loop_end_sim_s": 51.00000000016092,
+        "remaining_at_control_loop_end_s": 128.99999999983908,
+        "run": "r18g-21-a3bbc90e",
+        "cap_s": 180,
+        "done_entry_sim_s": 8.29999999999895,
+        "last_control_trace_sim_s": 51.00000000016092,
+        "remaining_at_last_control_trace_s": 128.99999999983908,
+        "flag_within10s_of_cap": false,
+        "final_sim_including_postrun_evaluation_s": 51.056250000161185,
+        "shift_moves": null,
+        "regrasp_epochs": 1,
+        "note": "control loop and evaluation separated; final result.sim_s includes post-loop evaluation"
+      },
+      "result_hash": {
+        "sha256": "b47348ec35ba00537a79ff2bb3bcb33377131b314fe921db4fef40f25db71351",
+        "bytes": 13169,
+        "decoded_sha256": "dec5e5d8a827c49afd4ecf36e391bab0260ffe0592c102691db2828a395068b4"
+      },
+      "original_manifest_files_verified": 231,
+      "lite_files_verified": 20,
+      "decoded_files_verified": [
+        "eval-only.jsonl.zst",
+        "result.json.zst",
+        "teacher-r1.jsonl.zst",
+        "teacher-r2.jsonl.zst"
+      ],
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18g-21-a3bbc90e",
+      "lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r18g-21-a3bbc90e",
+      "visual_review": {
+        "frames_directly_viewed": 18,
+        "times_sim_s": [
+          0.0,
+          10.3,
+          20.3,
+          30.3,
+          40.3,
+          50.3
+        ],
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "montages": [
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release18-gate40-a3bbc90e-ops/r18g-21-a3bbc90e/montage-0.jpg"
+        ],
+        "relation": "opposite beam ends; no same-end/mutual-blocking cause seen",
+        "incomplete_last_triplet_excluded": false
+      }
+    },
+    {
+      "name": "r18g-22-a3bbc90e",
+      "seed": 110622,
+      "episode": 22,
+      "candidate": "A",
+      "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+      "submitted": true,
+      "exit": "130",
+      "status": "interrupted",
+      "success": false,
+      "canonical_release_success": null,
+      "release_outcome": null,
+      "failure_reasons": null,
+      "prefix_held": true,
+      "input_audit": {
+        "held_object": "hidden_v1",
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 127.76945436100141,
+      "sim_s": 40.68350000011166,
+      "wall_sim": 3.140571837738905,
+      "first30_wall_sim_approx": 3.028250818592578,
+      "sequence_world_t": [
+        {
+          "t": 10.1,
+          "phase": "look"
+        },
+        {
+          "t": 10.8,
+          "phase": "await_look"
+        },
+        {
+          "t": 10.9,
+          "phase": "lower"
+        },
+        {
+          "t": 13.3,
+          "phase": "await_open"
+        },
+        {
+          "t": 13.4,
+          "phase": "open"
+        },
+        {
+          "t": 14.9,
+          "phase": "observe_back"
+        },
+        {
+          "t": 16.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 20.5,
+          "phase": "observe_back"
+        },
+        {
+          "t": 23.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 27.5,
+          "phase": "observe_move"
+        },
+        {
+          "t": 28.5,
+          "phase": "observe"
+        },
+        {
+          "t": 29.1,
+          "phase": "await_observe"
+        },
+        {
+          "t": 29.2,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 34.3,
+          "phase": "approach"
+        },
+        {
+          "t": 35.6,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 36.3,
+          "phase": "repick"
+        },
+        {
+          "t": 42.4,
+          "phase": "regrasp_check"
+        }
+      ],
+      "code_decisions": null,
+      "shift_moves_completed": null,
+      "regrasp_epochs": [
+        {
+          "epoch": 1,
+          "confirmed": {
+            "r1": false,
+            "r2": false
+          },
+          "attempts": {
+            "r1": 1,
+            "r2": 1
+          },
+          "failure": null
+        }
+      ],
+      "cap_timing": {
+        "control_loop_end_sim_s": 40.60000000011126,
+        "remaining_at_control_loop_end_s": 139.39999999988873,
+        "run": "r18g-22-a3bbc90e",
+        "cap_s": 180,
+        "done_entry_sim_s": 8.29999999999895,
+        "last_control_trace_sim_s": 40.60000000011126,
+        "remaining_at_last_control_trace_s": 139.39999999988873,
+        "flag_within10s_of_cap": false,
+        "final_sim_including_postrun_evaluation_s": 40.68350000011166,
+        "shift_moves": null,
+        "regrasp_epochs": 1,
+        "note": "control loop and evaluation separated; final result.sim_s includes post-loop evaluation"
+      },
+      "result_hash": {
+        "sha256": "00e361c3a5dcafd2e0accba28dc29a73c3c898064d964b7a038c4e0cc9793656",
+        "bytes": 64839
+      },
+      "original_manifest_files_verified": 182,
+      "lite_files_verified": 20,
+      "decoded_files_verified": [
+        "eval-only.jsonl.zst",
+        "teacher-r1.jsonl.zst",
+        "teacher-r2.jsonl.zst"
+      ],
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18g-22-a3bbc90e",
+      "lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r18g-22-a3bbc90e",
+      "visual_review": {
+        "frames_directly_viewed": 18,
+        "times_sim_s": [
+          0.0,
+          8.0,
+          16.3,
+          24.3,
+          32.3,
+          40.3
+        ],
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "montages": [
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release18-gate40-a3bbc90e-ops/r18g-22-a3bbc90e/montage-0.jpg"
+        ],
+        "relation": "opposite beam ends; no same-end/mutual-blocking cause seen",
+        "incomplete_last_triplet_excluded": false
+      }
+    },
+    {
+      "candidate": "A",
+      "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+      "episode": 23,
+      "seed": 110623,
+      "name": "r18g-23-a3bbc90e",
+      "approved": true,
+      "enabled": true,
+      "ready": false,
+      "submitted": false,
+      "scheduled": false,
+      "executed": false,
+      "status": "BLOCKED_SAME_CONFIRMED_DEFECT",
+      "blocked_reason": "same confirmed control defect; new SHA required",
+      "success": null
+    },
+    {
+      "candidate": "A",
+      "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+      "episode": 24,
+      "seed": 110624,
+      "name": "r18g-24-a3bbc90e",
+      "approved": true,
+      "enabled": true,
+      "ready": false,
+      "submitted": false,
+      "scheduled": false,
+      "executed": false,
+      "status": "BLOCKED_SAME_CONFIRMED_DEFECT",
+      "blocked_reason": "same confirmed control defect; new SHA required",
+      "success": null
+    },
+    {
+      "candidate": "A",
+      "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+      "episode": 25,
+      "seed": 110625,
+      "name": "r18g-25-a3bbc90e",
+      "approved": true,
+      "enabled": true,
+      "ready": false,
+      "submitted": false,
+      "scheduled": false,
+      "executed": false,
+      "status": "BLOCKED_SAME_CONFIRMED_DEFECT",
+      "blocked_reason": "same confirmed control defect; new SHA required",
+      "success": null
+    },
+    {
+      "candidate": "A",
+      "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+      "episode": 26,
+      "seed": 110626,
+      "name": "r18g-26-a3bbc90e",
+      "approved": true,
+      "enabled": true,
+      "ready": false,
+      "submitted": false,
+      "scheduled": false,
+      "executed": false,
+      "status": "BLOCKED_SAME_CONFIRMED_DEFECT",
+      "blocked_reason": "same confirmed control defect; new SHA required",
+      "success": null
+    },
+    {
+      "candidate": "A",
+      "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+      "episode": 27,
+      "seed": 110627,
+      "name": "r18g-27-a3bbc90e",
+      "approved": true,
+      "enabled": true,
+      "ready": false,
+      "submitted": false,
+      "scheduled": false,
+      "executed": false,
+      "status": "BLOCKED_SAME_CONFIRMED_DEFECT",
+      "blocked_reason": "same confirmed control defect; new SHA required",
+      "success": null
+    },
+    {
+      "candidate": "A",
+      "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+      "episode": 28,
+      "seed": 110628,
+      "name": "r18g-28-a3bbc90e",
+      "approved": true,
+      "enabled": true,
+      "ready": false,
+      "submitted": false,
+      "scheduled": false,
+      "executed": false,
+      "status": "BLOCKED_SAME_CONFIRMED_DEFECT",
+      "blocked_reason": "same confirmed control defect; new SHA required",
+      "success": null
+    },
+    {
+      "candidate": "A",
+      "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+      "episode": 29,
+      "seed": 110629,
+      "name": "r18g-29-a3bbc90e",
+      "approved": true,
+      "enabled": true,
+      "ready": false,
+      "submitted": false,
+      "scheduled": false,
+      "executed": false,
+      "status": "BLOCKED_SAME_CONFIRMED_DEFECT",
+      "blocked_reason": "same confirmed control defect; new SHA required",
+      "success": null
+    },
+    {
+      "candidate": "A",
+      "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+      "episode": 30,
+      "seed": 110630,
+      "name": "r18g-30-a3bbc90e",
+      "approved": true,
+      "enabled": true,
+      "ready": false,
+      "submitted": false,
+      "scheduled": false,
+      "executed": false,
+      "status": "BLOCKED_SAME_CONFIRMED_DEFECT",
+      "blocked_reason": "same confirmed control defect; new SHA required",
+      "success": null
+    },
+    {
+      "candidate": "A",
+      "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+      "episode": 31,
+      "seed": 110631,
+      "name": "r18g-31-a3bbc90e",
+      "approved": true,
+      "enabled": true,
+      "ready": false,
+      "submitted": false,
+      "scheduled": false,
+      "executed": false,
+      "status": "BLOCKED_SAME_CONFIRMED_DEFECT",
+      "blocked_reason": "same confirmed control defect; new SHA required",
+      "success": null
+    },
+    {
+      "candidate": "A",
+      "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+      "episode": 32,
+      "seed": 110632,
+      "name": "r18g-32-a3bbc90e",
+      "approved": true,
+      "enabled": true,
+      "ready": false,
+      "submitted": false,
+      "scheduled": false,
+      "executed": false,
+      "status": "BLOCKED_SAME_CONFIRMED_DEFECT",
+      "blocked_reason": "same confirmed control defect; new SHA required",
+      "success": null
+    },
+    {
+      "candidate": "A",
+      "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+      "episode": 33,
+      "seed": 110633,
+      "name": "r18g-33-a3bbc90e",
+      "approved": true,
+      "enabled": true,
+      "ready": false,
+      "submitted": false,
+      "scheduled": false,
+      "executed": false,
+      "status": "BLOCKED_SAME_CONFIRMED_DEFECT",
+      "blocked_reason": "same confirmed control defect; new SHA required",
+      "success": null
+    },
+    {
+      "candidate": "A",
+      "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+      "episode": 34,
+      "seed": 110634,
+      "name": "r18g-34-a3bbc90e",
+      "approved": true,
+      "enabled": true,
+      "ready": false,
+      "submitted": false,
+      "scheduled": false,
+      "executed": false,
+      "status": "BLOCKED_SAME_CONFIRMED_DEFECT",
+      "blocked_reason": "same confirmed control defect; new SHA required",
+      "success": null
+    },
+    {
+      "candidate": "A",
+      "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+      "episode": 35,
+      "seed": 110635,
+      "name": "r18g-35-a3bbc90e",
+      "approved": true,
+      "enabled": true,
+      "ready": false,
+      "submitted": false,
+      "scheduled": false,
+      "executed": false,
+      "status": "BLOCKED_SAME_CONFIRMED_DEFECT",
+      "blocked_reason": "same confirmed control defect; new SHA required",
+      "success": null
+    },
+    {
+      "candidate": "A",
+      "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+      "episode": 36,
+      "seed": 110636,
+      "name": "r18g-36-a3bbc90e",
+      "approved": true,
+      "enabled": true,
+      "ready": false,
+      "submitted": false,
+      "scheduled": false,
+      "executed": false,
+      "status": "BLOCKED_SAME_CONFIRMED_DEFECT",
+      "blocked_reason": "same confirmed control defect; new SHA required",
+      "success": null
+    },
+    {
+      "candidate": "A",
+      "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+      "episode": 37,
+      "seed": 110637,
+      "name": "r18g-37-a3bbc90e",
+      "approved": true,
+      "enabled": true,
+      "ready": false,
+      "submitted": false,
+      "scheduled": false,
+      "executed": false,
+      "status": "BLOCKED_SAME_CONFIRMED_DEFECT",
+      "blocked_reason": "same confirmed control defect; new SHA required",
+      "success": null
+    },
+    {
+      "candidate": "A",
+      "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+      "episode": 38,
+      "seed": 110638,
+      "name": "r18g-38-a3bbc90e",
+      "approved": true,
+      "enabled": true,
+      "ready": false,
+      "submitted": false,
+      "scheduled": false,
+      "executed": false,
+      "status": "BLOCKED_SAME_CONFIRMED_DEFECT",
+      "blocked_reason": "same confirmed control defect; new SHA required",
+      "success": null
+    },
+    {
+      "candidate": "A",
+      "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+      "episode": 39,
+      "seed": 110639,
+      "name": "r18g-39-a3bbc90e",
+      "approved": true,
+      "enabled": true,
+      "ready": false,
+      "submitted": false,
+      "scheduled": false,
+      "executed": false,
+      "status": "BLOCKED_SAME_CONFIRMED_DEFECT",
+      "blocked_reason": "same confirmed control defect; new SHA required",
+      "success": null
+    }
+  ]
+}

@@ -1,0 +1,1753 @@
+{
+  "schema": "ugrp.gcp-ops-result.v1",
+  "date": "2026-10-15 12:37:41 KST",
+  "queue": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-crate-diag-fd724191.json",
+  "pr": 500,
+  "source_sha": "fd724191b2e71ad411f04c18ef9cb0e62f258830",
+  "host": {
+    "alias": "gcp1",
+    "project": "ugrp-act-train-1014",
+    "instance": "ugrp-sim-gcp1",
+    "zone": "asia-northeast3-a",
+    "machine_type": "n4-highcpu-64"
+  },
+  "profile": "crate12_v1",
+  "cargo_scene": "crate_mass_025_v1",
+  "verdict": "NOT_READY_STOPPED_DIAGNOSTIC",
+  "stages": {
+    "reproduction": {
+      "successes": 0,
+      "planned_N": 3,
+      "submitted_N": 3,
+      "completed_failed": 2,
+      "supervisor_interrupted": 1,
+      "not_submitted": 0,
+      "near_wall_planned_N": 1,
+      "near_wall_submitted_N": 1,
+      "denominator_note": "No pooling. Not-submitted episodes are unobserved; supervised interruptions are reported separately from resolved physical failures."
+    },
+    "diagnostic": {
+      "successes": 0,
+      "planned_N": 10,
+      "submitted_N": 4,
+      "completed_failed": 1,
+      "supervisor_interrupted": 3,
+      "not_submitted": 6,
+      "near_wall_planned_N": 2,
+      "near_wall_submitted_N": 0,
+      "denominator_note": "No pooling. Not-submitted episodes are unobserved; supervised interruptions are reported separately from resolved physical failures."
+    }
+  },
+  "gate_submitted": 0,
+  "training_submitted": 0,
+  "model_calls": 0,
+  "host_errors": 0,
+  "successes": 0,
+  "submitted": 7,
+  "completed_failures": 3,
+  "supervisor_interrupted": 4,
+  "not_submitted": 6,
+  "stage_denominators_pooled": false,
+  "cross_sha_profile_host_pooling": false,
+  "input_audit": {
+    "checked_runs": 7,
+    "teacher_boundary_enabled": 7,
+    "invisible_measurements": 0,
+    "held_world_reads": 0,
+    "source_tag_check": "All admitted tags in allowed set; counter and ledger check, not proof against producer mislabeling"
+  },
+  "speed": {
+    "wall_per_sim_median": 3.7827279476370865,
+    "wall_per_sim_min": 3.5678936617899746,
+    "wall_per_sim_max": 5.316319911620562,
+    "first30_available_N": 2,
+    "first30_median_estimate": 3.656270102659861,
+    "first30_method": "progress.json mtime minus progress.wall_s estimates monotonic start epoch; selected review JPEG mtime estimates capture time; small file-write timing error, not exact monotonic snapshot",
+    "speed_qualification": "INCOMPLETE_STOPPED; 2/7 reached a saved 30SIM-second review frame, >3.5 warning, no measured result for concurrency10/40",
+    "max_reserved_crate": 7,
+    "max_reserved_total_conservative": 9,
+    "other_task_count_note": "self-map workflow parent/child conservatively counted twice in admission; untouched"
+  },
+  "verification": {
+    "remote_full_manifests": 7,
+    "local_files_against_original_manifests": 260,
+    "compressed_files_decoded_hash_verified": 21,
+    "supervisor_records_verified": 7,
+    "directly_viewed_frames": 126,
+    "views": [
+      "overview",
+      "r1",
+      "r2"
+    ],
+    "short_failure": "77990 saved only4 timestamps; all12 frames viewed, no invented frames",
+    "terminal_review_gap": "77981 last release frame27.8, terminal31.0;77982 last release frame32.3, interrupted34.62; saved terminal-time frames unavailable"
+  },
+  "main_findings": [
+    "77990 fresh(non-near-wall): r1 all candidate rejection, zero issued wheel movement, r2 peer handoff;77978 reproduction same observed failure mechanism after search. Exact candidate geometry/path blocker cause remains to be resolved.",
+    "77981 physical prefix held and own RGB lift confirmed, different lugs, then fixed signals UNKNOWN/UNKNOWN and insufficient release observation; no full task success.",
+    "77982 held but externally interrupted; other3 fresh cases externally interrupted, not independent completed failure diagnoses."
+  ],
+  "stop_record": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/stop-crate12-fd724191-20261015.json",
+  "raw_backup_scope": "Originals retained on GCP persistent disk; lite text/ledgers and selected JPEGs on Mac. No full raw backup claimed.",
+  "lifecycle": {
+    "released": [
+      {
+        "run": "crate-reproduction-77978-fd724191",
+        "reservation": {
+          "run": "crate-reproduction-77978-fd724191",
+          "owner": "crate12-fd724191",
+          "kind": "crate",
+          "slots": 1,
+          "at_unix": 1792034910.9629564,
+          "sha": "fd724191b2e71ad411f04c18ef9cb0e62f258830"
+        },
+        "lease_removed": true,
+        "exit": "0"
+      },
+      {
+        "run": "crate-reproduction-77981-fd724191",
+        "reservation": {
+          "run": "crate-reproduction-77981-fd724191",
+          "owner": "crate12-fd724191",
+          "kind": "crate",
+          "slots": 1,
+          "at_unix": 1792034957.7337768,
+          "sha": "fd724191b2e71ad411f04c18ef9cb0e62f258830"
+        },
+        "lease_removed": true,
+        "exit": "0"
+      },
+      {
+        "run": "crate-reproduction-77982-fd724191",
+        "reservation": {
+          "run": "crate-reproduction-77982-fd724191",
+          "owner": "crate12-fd724191",
+          "kind": "crate",
+          "slots": 1,
+          "at_unix": 1792034966.9377992,
+          "sha": "fd724191b2e71ad411f04c18ef9cb0e62f258830"
+        },
+        "lease_removed": true,
+        "exit": "130"
+      },
+      {
+        "run": "crate-diag-77990-fd724191",
+        "reservation": {
+          "run": "crate-diag-77990-fd724191",
+          "owner": "crate12-fd724191",
+          "kind": "crate",
+          "slots": 1,
+          "at_unix": 1792034976.2112982,
+          "sha": "fd724191b2e71ad411f04c18ef9cb0e62f258830"
+        },
+        "lease_removed": true,
+        "exit": "0"
+      },
+      {
+        "run": "crate-diag-77991-fd724191",
+        "reservation": {
+          "run": "crate-diag-77991-fd724191",
+          "owner": "crate12-fd724191",
+          "kind": "crate",
+          "slots": 1,
+          "at_unix": 1792034985.518453,
+          "sha": "fd724191b2e71ad411f04c18ef9cb0e62f258830"
+        },
+        "lease_removed": true,
+        "exit": "130"
+      },
+      {
+        "run": "crate-diag-77992-fd724191",
+        "reservation": {
+          "run": "crate-diag-77992-fd724191",
+          "owner": "crate12-fd724191",
+          "kind": "crate",
+          "slots": 1,
+          "at_unix": 1792034994.5388765,
+          "sha": "fd724191b2e71ad411f04c18ef9cb0e62f258830"
+        },
+        "lease_removed": true,
+        "exit": "130"
+      },
+      {
+        "run": "crate-diag-77993-fd724191",
+        "reservation": {
+          "run": "crate-diag-77993-fd724191",
+          "owner": "crate12-fd724191",
+          "kind": "crate",
+          "slots": 1,
+          "at_unix": 1792035003.9559672,
+          "sha": "fd724191b2e71ad411f04c18ef9cb0e62f258830"
+        },
+        "lease_removed": true,
+        "exit": "130"
+      }
+    ],
+    "owned_processes": 0,
+    "other_processes": [
+      {
+        "pid": 64452,
+        "command": ".venv-sim/bin/python -m scripts.sim_cli workflow run self-map-diagnostic -- --output /home/ugrp/ugrp-sim/runs/selfmap-93521-380277b8/raw --expected-source-sha 380277b85911af71d5fcec58905cc650f44aab97 --seed 93521 --cap-s 180 --execution-host gcp1 --project ugrp-act-train-1014 --self-map-executor frontier_drive_v1 --bootstrap command_prior_v1 --initial-sweep required_360_v1 --execute"
+      },
+      {
+        "pid": 64477,
+        "command": "/home/ugrp/ugrp-sim/src/380277b85911af71d5fcec58905cc650f44aab97/.venv-sim/bin/python -m scripts.run_self_map_diagnostic --output /home/ugrp/ugrp-sim/runs/selfmap-93521-380277b8/raw --expected-source-sha 380277b85911af71d5fcec58905cc650f44aab97 --seed 93521 --cap-s 180 --execution-host gcp1 --project ugrp-act-train-1014 --self-map-executor frontier_drive_v1 --bootstrap command_prior_v1 --initial-sweep required_360_v1 --execute"
+      },
+      {
+        "pid": 64922,
+        "command": "python3 -c from pathlib import Path import json,subprocess,sys,fcntl names=json.load(sys.stdin);R=Path('/home/ugrp/ugrp-sim');released=[] with (R/'admission.lock').open('a') as lock:  fcntl.flock(lock,fcntl.LOCK_EX)  processes=[]  for l in subprocess.check_output(['ps','-eo','pid=,comm=,args='],text=True).splitlines():   s=l.strip().split(None,2)   if len(s)==3 and 'python' in s[1] and any(x in s[2] for x in ('scripts.run_','scripts/run_','scripts.sim_cli','scripts/sim_cli')):processes.append({'pid':int(s[0]),'command':s[2]})  assert not any(any(n in p['command'] for n in names) for p in processes)  for n in names:   p=R/'runs'/n;assert (p/'EXIT').exists()   h=subprocess.run(['sha256sum','-c','--quiet',str(p/'SHA256SUMS')],capture_output=True,text=True);assert h.returncode==0,h.stderr   h=subprocess.run(['sha256sum','-c','--quiet',str(p/'SHA256SUMS.supervisor-stop')],capture_output=True,text=True);assert h.returncode==0,h.stderr   slot=R/'admission-reservations'/(n+'.json');reservation=json.loads(slot.read_text()) if slot.exists() else None   if reservation:assert reservation['owner']=='crate12-fd724191';slot.unlink()   lease=R/'leases'/n;existed=lease.exists()   if existed:lease.unlink()   released.append({'run':n,'reservation':reservation,'lease_removed':existed,'exit':(p/'EXIT').read_text().strip()}) print(json.dumps({'released':released,'owned_processes':0,'other_processes':processes,'idle_guard':subprocess.check_output(['systemctl','is-active','ugrp-idle-guard.timer'],text=True).strip(),'vm_state':'RUNNING; left to existing idle guard'}))"
+      }
+    ],
+    "idle_guard": "active",
+    "vm_state": "RUNNING; left to existing idle guard"
+  },
+  "coordinator_action": "New corrected SHA/queue needed; no remaining same-candidate submissions, no gate promotion.",
+  "runs": [
+    {
+      "name": "crate-reproduction-77978-fd724191",
+      "stage": "reproduction",
+      "seed": 77978,
+      "near_wall": true,
+      "planned": true,
+      "submitted": true,
+      "status": "complete",
+      "exit": 0,
+      "success": false,
+      "prefix_held": false,
+      "release_authorized_by_own_inputs": false,
+      "release_success": null,
+      "release_outcome": "lift_not_confirmed_by_own_inputs",
+      "prefix_outcomes": {
+        "r1": "approach_blocked_handoff",
+        "r2": "peer_approach_handoff"
+      },
+      "distinct_lugs_at_hold": null,
+      "input_audit": {
+        "enabled": true,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "teacher_boundary": {
+          "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+          "enabled": true,
+          "measurement_rows": 0,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "gt_self_pose_comparison": false,
+          "admitted_source_tags": {
+            "clock": 264,
+            "issued_commands": 1320,
+            "known_shape": 851,
+            "visible_teacher_measurement": 1115,
+            "static_map": 264,
+            "fixed_rule": 264
+          }
+        }
+      },
+      "sim_s": 13.099999999987764,
+      "wall_s": 49.55373611399955,
+      "wall_per_sim": 3.7827279476370865,
+      "first30": null,
+      "directly_viewed": [
+        {
+          "stage": "grasp",
+          "sim_s": 0.0,
+          "file": "000000-grasp.jpg"
+        },
+        {
+          "stage": "grasp",
+          "sim_s": 3.0,
+          "file": "000030-grasp.jpg"
+        },
+        {
+          "stage": "grasp",
+          "sim_s": 5.0,
+          "file": "000050-grasp.jpg"
+        },
+        {
+          "stage": "grasp",
+          "sim_s": 8.0,
+          "file": "000080-grasp.jpg"
+        },
+        {
+          "stage": "grasp",
+          "sim_s": 10.0,
+          "file": "000100-grasp.jpg"
+        },
+        {
+          "stage": "grasp",
+          "sim_s": 13.0,
+          "file": "000130-grasp.jpg"
+        }
+      ],
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/crate-reproduction-77978-fd724191",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77978-fd724191",
+      "result_sha256": "052d348405135162a25de2e1a89a306836b1a0bcb51b27d94e8ce8316640d737",
+      "manifest_sha256": "a6a5e21c975c427c4672353edaabc672592eb3bccc71799e79a2795cc55b4a17",
+      "remote_full_manifest_verified": true,
+      "local_verified_files": 36,
+      "compressed_restored_verified": [
+        "raw/eval-only.jsonl.zst",
+        "raw/result.json.zst",
+        "raw/teacher-r1.jsonl.zst",
+        "raw/teacher-r2.jsonl.zst"
+      ],
+      "supervisor_stop": true,
+      "ledger_inspection": {
+        "run": "crate-reproduction-77978-fd724191",
+        "teacher_boundary_source_tags": {
+          "clock": 264,
+          "issued_commands": 1320,
+          "known_shape": 851,
+          "visible_teacher_measurement": 1115,
+          "static_map": 264,
+          "fixed_rule": 264
+        },
+        "input_audit_zero_verified": true,
+        "first30": {
+          "r1": {
+            "first30_command_rows": 132,
+            "phase_counts": {
+              "approach": 38,
+              "search": 94
+            },
+            "wheel_nonzero_rows": 0,
+            "assignment_rgb_rows": 132,
+            "assignment_rgb_confirmed": 49,
+            "assignment_values_keys": [
+              "assignment_source",
+              "confirmed",
+              "end",
+              "lug_pixels",
+              "own_issued_pose",
+              "rgb_sha256",
+              "source"
+            ]
+          },
+          "r2": {
+            "first30_command_rows": 132,
+            "phase_counts": {
+              "approach": 7,
+              "search": 5,
+              "align": 5,
+              "ready": 115
+            },
+            "wheel_nonzero_rows": 1,
+            "assignment_rgb_rows": 132,
+            "assignment_rgb_confirmed": 124,
+            "assignment_values_keys": [
+              "assignment_source",
+              "confirmed",
+              "end",
+              "lug_pixels",
+              "own_issued_pose",
+              "rgb_sha256",
+              "source"
+            ]
+          }
+        },
+        "eval_ledger_rows": 132,
+        "release_ledger_rows": 0,
+        "release_example_keys": [],
+        "outcomes": {
+          "r1": "approach_blocked_handoff",
+          "r2": "peer_approach_handoff"
+        },
+        "distinct_lugs_at_hold": null,
+        "visibility_counts": {
+          "r1": {
+            "visible": 33,
+            "N": 124
+          },
+          "r2": {
+            "visible": 123,
+            "N": 125
+          }
+        },
+        "no_path_calls": {
+          "r1": 3,
+          "r2": 0
+        },
+        "blocked_goal_calls": {
+          "r1": 3,
+          "r2": 0
+        },
+        "events": {
+          "r1": [
+            {
+              "t": 2.4999999999999742,
+              "from": "approach",
+              "to": "search"
+            },
+            {
+              "t": 3.8,
+              "stage": "view_complete",
+              "k": 0,
+              "command_estimated_yaw_deg": 0.0,
+              "search": "view_complete"
+            },
+            {
+              "t": 4.6,
+              "stage": "view_complete",
+              "k": 0,
+              "command_estimated_yaw_deg": 0.0,
+              "search": "view_complete"
+            },
+            {
+              "t": 5.2,
+              "stage": "view_complete",
+              "k": 0,
+              "command_estimated_yaw_deg": 0.0,
+              "search": "view_complete"
+            },
+            {
+              "t": 6.5,
+              "stage": "view_complete",
+              "k": 0,
+              "command_estimated_yaw_deg": 0.0,
+              "search": "view_complete"
+            },
+            {
+              "t": 7.3,
+              "stage": "view_complete",
+              "k": 0,
+              "command_estimated_yaw_deg": 0.0,
+              "search": "view_complete"
+            },
+            {
+              "t": 7.9,
+              "stage": "view_complete",
+              "k": 0,
+              "command_estimated_yaw_deg": 0.0,
+              "search": "view_complete"
+            },
+            {
+              "t": 10.0,
+              "stage": "view_complete",
+              "k": 0,
+              "command_estimated_yaw_deg": 0.0,
+              "search": "view_complete"
+            },
+            {
+              "t": 10.8,
+              "stage": "view_complete",
+              "k": 0,
+              "command_estimated_yaw_deg": 0.0,
+              "search": "view_complete"
+            },
+            {
+              "t": 11.4,
+              "stage": "view_complete",
+              "k": 0,
+              "command_estimated_yaw_deg": 0.0,
+              "search": "view_complete"
+            },
+            {
+              "t": 11.899999999994941,
+              "from": "search",
+              "to": "approach"
+            },
+            {
+              "t": 14.89999999998795,
+              "approach": "all_goals_blocked_handoff",
+              "blocked_s": 2.9999999999930083
+            }
+          ],
+          "r2": [
+            {
+              "t": 2.4999999999999742,
+              "from": "approach",
+              "to": "search"
+            },
+            {
+              "t": 2.999999999999697,
+              "from": "search",
+              "to": "approach"
+            },
+            {
+              "t": 2.999999999999697,
+              "from": "approach",
+              "to": "align"
+            },
+            {
+              "t": 3.49999999999942,
+              "from": "align",
+              "to": "ready"
+            }
+          ]
+        }
+      },
+      "review_finding": "r2 faces blue lug and waits READY; r1 searches with 0 wheel commands132/132 and later rejects all approach candidates. 6 timestamps0/3/5/8/10/13 SIM s, overview/r1/r2; no same-lug pursuit observed. Wall geometry versus conservative planner attribution remains unverified."
+    },
+    {
+      "name": "crate-reproduction-77981-fd724191",
+      "stage": "reproduction",
+      "seed": 77981,
+      "near_wall": false,
+      "planned": true,
+      "submitted": true,
+      "status": "complete",
+      "exit": 0,
+      "success": false,
+      "prefix_held": true,
+      "release_authorized_by_own_inputs": true,
+      "release_success": false,
+      "release_outcome": "release_fixed_signal_insufficient",
+      "prefix_outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "distinct_lugs_at_hold": {
+        "ok": true
+      },
+      "input_audit": {
+        "enabled": true,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "teacher_boundary": {
+          "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+          "enabled": true,
+          "measurement_rows": 0,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "gt_self_pose_comparison": false,
+          "admitted_source_tags": {
+            "clock": 558,
+            "issued_commands": 2808,
+            "known_shape": 1756,
+            "visible_teacher_measurement": 2314,
+            "static_map": 558,
+            "fixed_rule": 558
+          }
+        }
+      },
+      "sim_s": 31.000000000065416,
+      "wall_s": 118.6832896370006,
+      "wall_per_sim": 3.8284932140887147,
+      "first30": null,
+      "directly_viewed": [
+        {
+          "stage": "grasp",
+          "sim_s": 0.0,
+          "file": "000000-grasp.jpg"
+        },
+        {
+          "stage": "grasp",
+          "sim_s": 5.0,
+          "file": "000050-grasp.jpg"
+        },
+        {
+          "stage": "grasp",
+          "sim_s": 10.0,
+          "file": "000100-grasp.jpg"
+        },
+        {
+          "stage": "grasp",
+          "sim_s": 16.0,
+          "file": "000160-grasp.jpg"
+        },
+        {
+          "stage": "grasp",
+          "sim_s": 21.0,
+          "file": "000210-grasp.jpg"
+        },
+        {
+          "stage": "grasp",
+          "sim_s": 27.0,
+          "file": "000270-grasp.jpg"
+        },
+        {
+          "stage": "release",
+          "sim_s": 27.800000000050137,
+          "file": "000000-release-look.jpg"
+        }
+      ],
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/crate-reproduction-77981-fd724191",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77981-fd724191",
+      "result_sha256": "5c5a9a41160beca194451399b9d0ee78dbf2587114792787170a17c0c4bb9d77",
+      "manifest_sha256": "ff940f32a47cd16ec308c6cdf34cc51bedb1238e25ea3eb57cd8a6d92152cf68",
+      "remote_full_manifest_verified": true,
+      "local_verified_files": 39,
+      "compressed_restored_verified": [
+        "raw/eval-only.jsonl.zst",
+        "raw/teacher-r1.jsonl.zst",
+        "raw/teacher-r2.jsonl.zst"
+      ],
+      "supervisor_stop": true,
+      "ledger_inspection": {
+        "run": "crate-reproduction-77981-fd724191",
+        "teacher_boundary_source_tags": {
+          "clock": 558,
+          "issued_commands": 2808,
+          "known_shape": 1756,
+          "visible_teacher_measurement": 2314,
+          "static_map": 558,
+          "fixed_rule": 558
+        },
+        "input_audit_zero_verified": true,
+        "first30": {
+          "r1": {
+            "first30_command_rows": 286,
+            "phase_counts": {
+              "approach": 126,
+              "align": 42,
+              "ready": 2,
+              "pick": 40,
+              "closed": 9,
+              "lift": 29,
+              "complete": 31,
+              "look": 6,
+              "await_look": 1
+            },
+            "wheel_nonzero_rows": 155,
+            "assignment_rgb_rows": 220,
+            "assignment_rgb_confirmed": 220,
+            "assignment_values_keys": [
+              "assignment_source",
+              "confirmed",
+              "end",
+              "lug_pixels",
+              "own_issued_pose",
+              "rgb_sha256",
+              "source"
+            ]
+          },
+          "r2": {
+            "first30_command_rows": 286,
+            "phase_counts": {
+              "approach": 105,
+              "align": 30,
+              "ready": 42,
+              "pick": 40,
+              "closed": 2,
+              "lift": 29,
+              "complete": 31,
+              "look": 6,
+              "await_look": 1
+            },
+            "wheel_nonzero_rows": 124,
+            "assignment_rgb_rows": 220,
+            "assignment_rgb_confirmed": 220,
+            "assignment_values_keys": [
+              "assignment_source",
+              "confirmed",
+              "end",
+              "lug_pixels",
+              "own_issued_pose",
+              "rgb_sha256",
+              "source"
+            ]
+          }
+        },
+        "eval_ledger_rows": 286,
+        "release_ledger_rows": 7,
+        "release_example_keys": [
+          "cargo_scene_version",
+          "contacts",
+          "crate",
+          "crate_lift_pose",
+          "phase",
+          "robots",
+          "stage",
+          "t"
+        ],
+        "outcomes": {
+          "r1": "success",
+          "r2": "success"
+        },
+        "distinct_lugs_at_hold": {
+          "ok": true
+        },
+        "visibility_counts": {
+          "r1": {
+            "visible": 164,
+            "N": 164
+          },
+          "r2": {
+            "visible": 171,
+            "N": 171
+          }
+        },
+        "no_path_calls": {
+          "r1": 0,
+          "r2": 0
+        },
+        "blocked_goal_calls": {
+          "r1": 0,
+          "r2": 0
+        },
+        "events": {
+          "r1": [
+            {
+              "t": 14.399999999989115,
+              "from": "approach",
+              "to": "align"
+            },
+            {
+              "t": 18.5999999999978,
+              "from": "align",
+              "to": "ready"
+            },
+            {
+              "t": 18.799999999998754,
+              "from": "ready",
+              "to": "pick"
+            },
+            {
+              "t": 22.800000000017853,
+              "from": "pick",
+              "to": "closed"
+            },
+            {
+              "t": 23.70000000002215,
+              "from": "closed",
+              "to": "lift"
+            },
+            {
+              "t": 26.600000000035998,
+              "from": "lift",
+              "to": "complete"
+            }
+          ],
+          "r2": [
+            {
+              "t": 12.299999999994009,
+              "from": "approach",
+              "to": "align"
+            },
+            {
+              "t": 15.299999999987017,
+              "from": "align",
+              "to": "ready"
+            },
+            {
+              "t": 19.500000000002096,
+              "from": "ready",
+              "to": "pick"
+            },
+            {
+              "t": 23.500000000021195,
+              "from": "pick",
+              "to": "closed"
+            },
+            {
+              "t": 23.70000000002215,
+              "from": "closed",
+              "to": "lift"
+            },
+            {
+              "t": 26.600000000035998,
+              "from": "lift",
+              "to": "complete"
+            }
+          ]
+        }
+      },
+      "review_finding": "Opposite teal/blue lugs, physical hold and own RGB lift both confirmed; release own views filled by cargo/lugs. Both destination/end_area/own_band/partner observations0/8; fixed signals UNKNOWN/UNKNOWN, code requests observe then returns release_fixed_signal_insufficient without releasing. Last available release review at27.8 SIM s; result terminal31.0 s, no terminal-time review frame."
+    },
+    {
+      "name": "crate-reproduction-77982-fd724191",
+      "stage": "reproduction",
+      "seed": 77982,
+      "near_wall": false,
+      "planned": true,
+      "submitted": true,
+      "status": "interrupted",
+      "exit": 130,
+      "success": false,
+      "prefix_held": true,
+      "release_authorized_by_own_inputs": true,
+      "release_success": null,
+      "release_outcome": "release_fixed_signal_insufficient",
+      "prefix_outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "distinct_lugs_at_hold": {
+        "ok": true
+      },
+      "input_audit": {
+        "enabled": true,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "teacher_boundary": {
+          "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+          "enabled": true,
+          "measurement_rows": 0,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "gt_self_pose_comparison": false,
+          "admitted_source_tags": {
+            "clock": 648,
+            "issued_commands": 3258,
+            "known_shape": 2083,
+            "visible_teacher_measurement": 2731,
+            "static_map": 648,
+            "fixed_rule": 648
+          }
+        }
+      },
+      "sim_s": 34.62150000008271,
+      "wall_s": 127.77250294399983,
+      "wall_per_sim": 3.6905536427853955,
+      "first30": {
+        "name": "000300-grasp.jpg",
+        "sim_s": 30.0,
+        "mtime_ns": 1792035087366502809,
+        "wall_s_estimate": 111.98087739944458,
+        "wall_per_sim": 3.7326959133148194
+      },
+      "directly_viewed": [
+        {
+          "stage": "grasp",
+          "sim_s": 0.0,
+          "file": "000000-grasp.jpg"
+        },
+        {
+          "stage": "grasp",
+          "sim_s": 6.0,
+          "file": "000060-grasp.jpg"
+        },
+        {
+          "stage": "grasp",
+          "sim_s": 12.0,
+          "file": "000120-grasp.jpg"
+        },
+        {
+          "stage": "grasp",
+          "sim_s": 19.0,
+          "file": "000190-grasp.jpg"
+        },
+        {
+          "stage": "grasp",
+          "sim_s": 25.0,
+          "file": "000250-grasp.jpg"
+        },
+        {
+          "stage": "grasp",
+          "sim_s": 32.0,
+          "file": "000320-grasp.jpg"
+        },
+        {
+          "stage": "release",
+          "sim_s": 32.30000000007163,
+          "file": "000000-release-look.jpg"
+        }
+      ],
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/crate-reproduction-77982-fd724191",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77982-fd724191",
+      "result_sha256": "737e328327c404f47dce8746ed2d7ef03dcbcfc74c452a70bf8d54bdbd44e1e0",
+      "manifest_sha256": "631a8b889700c1aa6470b105b4294c37b1c17c082e5bb777e57557d4c8f24b91",
+      "remote_full_manifest_verified": true,
+      "local_verified_files": 41,
+      "compressed_restored_verified": [
+        "raw/eval-only.jsonl.zst",
+        "raw/teacher-r1.jsonl.zst",
+        "raw/teacher-r2.jsonl.zst"
+      ],
+      "supervisor_stop": true,
+      "ledger_inspection": {
+        "run": "crate-reproduction-77982-fd724191",
+        "teacher_boundary_source_tags": {
+          "clock": 648,
+          "issued_commands": 3258,
+          "known_shape": 2083,
+          "visible_teacher_measurement": 2731,
+          "static_map": 648,
+          "fixed_rule": 648
+        },
+        "input_audit_zero_verified": true,
+        "first30": {
+          "r1": {
+            "first30_command_rows": 301,
+            "phase_counts": {
+              "approach": 122,
+              "search": 21,
+              "align": 38,
+              "ready": 32,
+              "pick": 40,
+              "closed": 11,
+              "lift": 29,
+              "complete": 8
+            },
+            "wheel_nonzero_rows": 150,
+            "assignment_rgb_rows": 265,
+            "assignment_rgb_confirmed": 245,
+            "assignment_values_keys": [
+              "assignment_source",
+              "confirmed",
+              "end",
+              "lug_pixels",
+              "own_issued_pose",
+              "rgb_sha256",
+              "source"
+            ]
+          },
+          "r2": {
+            "first30_command_rows": 301,
+            "phase_counts": {
+              "approach": 159,
+              "search": 21,
+              "align": 31,
+              "ready": 11,
+              "pick": 40,
+              "closed": 2,
+              "lift": 29,
+              "complete": 8
+            },
+            "wheel_nonzero_rows": 180,
+            "assignment_rgb_rows": 265,
+            "assignment_rgb_confirmed": 255,
+            "assignment_values_keys": [
+              "assignment_source",
+              "confirmed",
+              "end",
+              "lug_pixels",
+              "own_issued_pose",
+              "rgb_sha256",
+              "source"
+            ]
+          }
+        },
+        "eval_ledger_rows": 331,
+        "release_ledger_rows": 7,
+        "release_example_keys": [
+          "cargo_scene_version",
+          "contacts",
+          "crate",
+          "crate_lift_pose",
+          "phase",
+          "robots",
+          "stage",
+          "t"
+        ],
+        "outcomes": {
+          "r1": "success",
+          "r2": "success"
+        },
+        "distinct_lugs_at_hold": {
+          "ok": true
+        },
+        "visibility_counts": {
+          "r1": {
+            "visible": 189,
+            "N": 207
+          },
+          "r2": {
+            "visible": 198,
+            "N": 216
+          }
+        },
+        "no_path_calls": {
+          "r1": 0,
+          "r2": 0
+        },
+        "blocked_goal_calls": {
+          "r1": 0,
+          "r2": 0
+        },
+        "events": {
+          "r1": [
+            {
+              "t": 2.4999999999999742,
+              "from": "approach",
+              "to": "search"
+            },
+            {
+              "t": 3.3,
+              "stage": "view_complete",
+              "k": 0,
+              "command_estimated_yaw_deg": 0.0,
+              "search": "view_complete"
+            },
+            {
+              "t": 4.1,
+              "stage": "view_complete",
+              "k": 0,
+              "command_estimated_yaw_deg": 0.0,
+              "search": "view_complete"
+            },
+            {
+              "t": 4.599999999999876,
+              "from": "search",
+              "to": "approach"
+            },
+            {
+              "t": 16.09999999998586,
+              "from": "approach",
+              "to": "align"
+            },
+            {
+              "t": 19.900000000004006,
+              "from": "align",
+              "to": "ready"
+            },
+            {
+              "t": 23.100000000019286,
+              "from": "ready",
+              "to": "pick"
+            },
+            {
+              "t": 27.100000000038385,
+              "from": "pick",
+              "to": "closed"
+            },
+            {
+              "t": 28.200000000043637,
+              "from": "closed",
+              "to": "lift"
+            },
+            {
+              "t": 31.100000000057484,
+              "from": "lift",
+              "to": "complete"
+            }
+          ],
+          "r2": [
+            {
+              "t": 2.799999999999808,
+              "from": "approach",
+              "to": "search"
+            },
+            {
+              "t": 3.6,
+              "stage": "view_complete",
+              "k": 0,
+              "command_estimated_yaw_deg": 0.0,
+              "search": "view_complete"
+            },
+            {
+              "t": 4.4,
+              "stage": "view_complete",
+              "k": 0,
+              "command_estimated_yaw_deg": 0.0,
+              "search": "view_complete"
+            },
+            {
+              "t": 4.900000000000243,
+              "from": "search",
+              "to": "approach"
+            },
+            {
+              "t": 19.80000000000353,
+              "from": "approach",
+              "to": "align"
+            },
+            {
+              "t": 22.90000000001833,
+              "from": "align",
+              "to": "ready"
+            },
+            {
+              "t": 24.000000000023583,
+              "from": "ready",
+              "to": "pick"
+            },
+            {
+              "t": 28.000000000042682,
+              "from": "pick",
+              "to": "closed"
+            },
+            {
+              "t": 28.200000000043637,
+              "from": "closed",
+              "to": "lift"
+            },
+            {
+              "t": 31.100000000057484,
+              "from": "lift",
+              "to": "complete"
+            }
+          ]
+        }
+      },
+      "review_finding": "Opposite lugs reached and held; own-input lift confirmed, release views filled by cargo/lugs; externally interrupted at34.62 SIM s. No independent completed release outcome is assigned."
+    },
+    {
+      "name": "crate-diag-77990-fd724191",
+      "stage": "diagnostic",
+      "seed": 77990,
+      "near_wall": false,
+      "planned": true,
+      "submitted": true,
+      "status": "complete",
+      "exit": 0,
+      "success": false,
+      "prefix_held": false,
+      "release_authorized_by_own_inputs": false,
+      "release_success": null,
+      "release_outcome": "lift_not_confirmed_by_own_inputs",
+      "prefix_outcomes": {
+        "r1": "approach_blocked_handoff",
+        "r2": "peer_approach_handoff"
+      },
+      "distinct_lugs_at_hold": null,
+      "input_audit": {
+        "enabled": true,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "teacher_boundary": {
+          "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+          "enabled": true,
+          "measurement_rows": 0,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "gt_self_pose_comparison": false,
+          "admitted_source_tags": {
+            "clock": 76,
+            "issued_commands": 380,
+            "known_shape": 266,
+            "visible_teacher_measurement": 342,
+            "static_map": 76,
+            "fixed_rule": 76
+          }
+        }
+      },
+      "sim_s": 3.7000000000007915,
+      "wall_s": 19.670383673000288,
+      "wall_per_sim": 5.316319911620562,
+      "first30": null,
+      "directly_viewed": [
+        {
+          "stage": "grasp",
+          "sim_s": 0.0,
+          "file": "000000-grasp.jpg"
+        },
+        {
+          "stage": "grasp",
+          "sim_s": 1.0,
+          "file": "000010-grasp.jpg"
+        },
+        {
+          "stage": "grasp",
+          "sim_s": 2.0,
+          "file": "000020-grasp.jpg"
+        },
+        {
+          "stage": "grasp",
+          "sim_s": 3.0,
+          "file": "000030-grasp.jpg"
+        }
+      ],
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/crate-diag-77990-fd724191",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77990-fd724191",
+      "result_sha256": "9d44f3697e5b101e44605770322bdba976faf1d4ec332788e0eddfea24a7ad87",
+      "manifest_sha256": "ded777c50f37c5e11582434ddbbc7835b559b812f47a7a1e5140f1c218996e7c",
+      "remote_full_manifest_verified": true,
+      "local_verified_files": 30,
+      "compressed_restored_verified": [
+        "raw/eval-only.jsonl.zst",
+        "raw/result.json.zst"
+      ],
+      "supervisor_stop": true,
+      "ledger_inspection": {
+        "run": "crate-diag-77990-fd724191",
+        "teacher_boundary_source_tags": {
+          "clock": 76,
+          "issued_commands": 380,
+          "known_shape": 266,
+          "visible_teacher_measurement": 342,
+          "static_map": 76,
+          "fixed_rule": 76
+        },
+        "input_audit_zero_verified": true,
+        "first30": {
+          "r1": {
+            "first30_command_rows": 38,
+            "phase_counts": {
+              "approach": 38
+            },
+            "wheel_nonzero_rows": 0,
+            "assignment_rgb_rows": 38,
+            "assignment_rgb_confirmed": 38,
+            "assignment_values_keys": [
+              "assignment_source",
+              "confirmed",
+              "end",
+              "lug_pixels",
+              "own_issued_pose",
+              "rgb_sha256",
+              "source"
+            ]
+          },
+          "r2": {
+            "first30_command_rows": 38,
+            "phase_counts": {
+              "approach": 38
+            },
+            "wheel_nonzero_rows": 17,
+            "assignment_rgb_rows": 38,
+            "assignment_rgb_confirmed": 38,
+            "assignment_values_keys": [
+              "assignment_source",
+              "confirmed",
+              "end",
+              "lug_pixels",
+              "own_issued_pose",
+              "rgb_sha256",
+              "source"
+            ]
+          }
+        },
+        "eval_ledger_rows": 38,
+        "release_ledger_rows": 0,
+        "release_example_keys": [],
+        "outcomes": {
+          "r1": "approach_blocked_handoff",
+          "r2": "peer_approach_handoff"
+        },
+        "distinct_lugs_at_hold": null,
+        "visibility_counts": {
+          "r1": {
+            "visible": 30,
+            "N": 30
+          },
+          "r2": {
+            "visible": 31,
+            "N": 31
+          }
+        },
+        "no_path_calls": {
+          "r1": 3,
+          "r2": 2
+        },
+        "blocked_goal_calls": {
+          "r1": 3,
+          "r2": 0
+        },
+        "events": {
+          "r1": [
+            {
+              "t": 5.500000000000976,
+              "approach": "all_goals_blocked_handoff",
+              "blocked_s": 3.000000000001002
+            }
+          ],
+          "r2": []
+        }
+      },
+      "review_finding": "All four saved timestamps 0/1/2/3 SIM s (12 overview/r1/r2 frames). Different assigned teal/blue lugs; r1 RGB confirmed38/38, zero wheel commands38/38, 3 no-path calls, all-goals-blocked handoff; r2 approaches its blue lug. Exact obstacle/path rejection attribution and physical infeasibility not established."
+    },
+    {
+      "name": "crate-diag-77991-fd724191",
+      "stage": "diagnostic",
+      "seed": 77991,
+      "near_wall": false,
+      "planned": true,
+      "submitted": true,
+      "status": "interrupted",
+      "exit": 130,
+      "success": false,
+      "prefix_held": null,
+      "release_authorized_by_own_inputs": null,
+      "release_success": null,
+      "release_outcome": null,
+      "prefix_outcomes": null,
+      "distinct_lugs_at_hold": null,
+      "input_audit": {
+        "enabled": true,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "teacher_boundary": {
+          "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+          "enabled": true,
+          "measurement_rows": 0,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "gt_self_pose_comparison": false,
+          "admitted_source_tags": {
+            "clock": 613,
+            "issued_commands": 3065,
+            "known_shape": 2065,
+            "visible_teacher_measurement": 2678,
+            "static_map": 613,
+            "fixed_rule": 613
+          }
+        }
+      },
+      "sim_s": 30.600000000063506,
+      "wall_s": 109.17754605099981,
+      "wall_per_sim": 3.5678936617899746,
+      "first30": {
+        "name": "000300-grasp.jpg",
+        "sim_s": 30.0,
+        "mtime_ns": 1792035101309502819,
+        "wall_s_estimate": 107.3953287601471,
+        "wall_per_sim": 3.579844292004903
+      },
+      "directly_viewed": [
+        {
+          "stage": "grasp",
+          "sim_s": 0.0,
+          "file": "000000-grasp.jpg"
+        },
+        {
+          "stage": "grasp",
+          "sim_s": 6.0,
+          "file": "000060-grasp.jpg"
+        },
+        {
+          "stage": "grasp",
+          "sim_s": 12.0,
+          "file": "000120-grasp.jpg"
+        },
+        {
+          "stage": "grasp",
+          "sim_s": 18.0,
+          "file": "000180-grasp.jpg"
+        },
+        {
+          "stage": "grasp",
+          "sim_s": 24.0,
+          "file": "000240-grasp.jpg"
+        },
+        {
+          "stage": "grasp",
+          "sim_s": 30.0,
+          "file": "000300-grasp.jpg"
+        }
+      ],
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/crate-diag-77991-fd724191",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77991-fd724191",
+      "result_sha256": "c7ea9af8f11423515518a9f6686bf521c118a1e538d09ec711a90a9b961fda33",
+      "manifest_sha256": "08c534d89280a0d2f629efa6cd8077218f15948349a27f55f78678a20f13aab0",
+      "remote_full_manifest_verified": true,
+      "local_verified_files": 38,
+      "compressed_restored_verified": [
+        "raw/eval-only.jsonl.zst",
+        "raw/teacher-r1.jsonl.zst",
+        "raw/teacher-r2.jsonl.zst"
+      ],
+      "supervisor_stop": true,
+      "ledger_inspection": {
+        "run": "crate-diag-77991-fd724191",
+        "teacher_boundary_source_tags": {
+          "clock": 613,
+          "issued_commands": 3065,
+          "known_shape": 2065,
+          "visible_teacher_measurement": 2678,
+          "static_map": 613,
+          "fixed_rule": 613
+        },
+        "input_audit_zero_verified": true,
+        "first30": {
+          "r1": {
+            "first30_command_rows": 301,
+            "phase_counts": {
+              "approach": 7,
+              "search": 294
+            },
+            "wheel_nonzero_rows": 191,
+            "assignment_rgb_rows": 301,
+            "assignment_rgb_confirmed": 0,
+            "assignment_values_keys": [
+              "assignment_source",
+              "confirmed",
+              "end",
+              "lug_pixels",
+              "own_issued_pose",
+              "rgb_sha256",
+              "source"
+            ]
+          },
+          "r2": {
+            "first30_command_rows": 301,
+            "phase_counts": {
+              "approach": 54,
+              "align": 82,
+              "ready": 165
+            },
+            "wheel_nonzero_rows": 67,
+            "assignment_rgb_rows": 301,
+            "assignment_rgb_confirmed": 301,
+            "assignment_values_keys": [
+              "assignment_source",
+              "confirmed",
+              "end",
+              "lug_pixels",
+              "own_issued_pose",
+              "rgb_sha256",
+              "source"
+            ]
+          }
+        },
+        "eval_ledger_rows": 306,
+        "release_ledger_rows": 0,
+        "release_example_keys": [],
+        "outcomes": null,
+        "distinct_lugs_at_hold": null,
+        "visibility_counts": {},
+        "no_path_calls": {},
+        "blocked_goal_calls": {},
+        "events": {}
+      },
+      "review_finding": "Supervisor interrupted, not independently diagnosed as a completed failure. Own-view sequence shows one robot searching while partner approaches/waits for77991/77992; both approach opposite lugs for77993; no same-lug pursuit observed in selected frames."
+    },
+    {
+      "name": "crate-diag-77992-fd724191",
+      "stage": "diagnostic",
+      "seed": 77992,
+      "near_wall": false,
+      "planned": true,
+      "submitted": true,
+      "status": "interrupted",
+      "exit": 130,
+      "success": false,
+      "prefix_held": null,
+      "release_authorized_by_own_inputs": null,
+      "release_success": null,
+      "release_outcome": null,
+      "prefix_outcomes": null,
+      "distinct_lugs_at_hold": null,
+      "input_audit": {
+        "enabled": true,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "teacher_boundary": {
+          "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+          "enabled": true,
+          "measurement_rows": 0,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "gt_self_pose_comparison": false,
+          "admitted_source_tags": {
+            "clock": 558,
+            "issued_commands": 2790,
+            "known_shape": 1840,
+            "visible_teacher_measurement": 2398,
+            "static_map": 558,
+            "fixed_rule": 558
+          }
+        }
+      },
+      "sim_s": 27.831250000050286,
+      "wall_s": 99.7707694820001,
+      "wall_per_sim": 3.584846871118611,
+      "first30": null,
+      "directly_viewed": [
+        {
+          "stage": "grasp",
+          "sim_s": 0.0,
+          "file": "000000-grasp.jpg"
+        },
+        {
+          "stage": "grasp",
+          "sim_s": 5.0,
+          "file": "000050-grasp.jpg"
+        },
+        {
+          "stage": "grasp",
+          "sim_s": 11.0,
+          "file": "000110-grasp.jpg"
+        },
+        {
+          "stage": "grasp",
+          "sim_s": 16.0,
+          "file": "000160-grasp.jpg"
+        },
+        {
+          "stage": "grasp",
+          "sim_s": 22.0,
+          "file": "000220-grasp.jpg"
+        },
+        {
+          "stage": "grasp",
+          "sim_s": 27.0,
+          "file": "000270-grasp.jpg"
+        }
+      ],
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/crate-diag-77992-fd724191",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77992-fd724191",
+      "result_sha256": "56503e2767399642d265ec0fa4eec1a2624df37301cc06f2ad5876b3bb1e7410",
+      "manifest_sha256": "4249b19f20d9d8ba3f23c025c3809e0ddf455738252b7f00193e21ae41564771",
+      "remote_full_manifest_verified": true,
+      "local_verified_files": 38,
+      "compressed_restored_verified": [
+        "raw/eval-only.jsonl.zst",
+        "raw/teacher-r1.jsonl.zst",
+        "raw/teacher-r2.jsonl.zst"
+      ],
+      "supervisor_stop": true,
+      "ledger_inspection": {
+        "run": "crate-diag-77992-fd724191",
+        "teacher_boundary_source_tags": {
+          "clock": 558,
+          "issued_commands": 2790,
+          "known_shape": 1840,
+          "visible_teacher_measurement": 2398,
+          "static_map": 558,
+          "fixed_rule": 558
+        },
+        "input_audit_zero_verified": true,
+        "first30": {
+          "r1": {
+            "first30_command_rows": 279,
+            "phase_counts": {
+              "approach": 115,
+              "align": 28,
+              "ready": 136
+            },
+            "wheel_nonzero_rows": 133,
+            "assignment_rgb_rows": 279,
+            "assignment_rgb_confirmed": 279,
+            "assignment_values_keys": [
+              "assignment_source",
+              "confirmed",
+              "end",
+              "lug_pixels",
+              "own_issued_pose",
+              "rgb_sha256",
+              "source"
+            ]
+          },
+          "r2": {
+            "first30_command_rows": 279,
+            "phase_counts": {
+              "approach": 7,
+              "search": 272
+            },
+            "wheel_nonzero_rows": 169,
+            "assignment_rgb_rows": 279,
+            "assignment_rgb_confirmed": 56,
+            "assignment_values_keys": [
+              "assignment_source",
+              "confirmed",
+              "end",
+              "lug_pixels",
+              "own_issued_pose",
+              "rgb_sha256",
+              "source"
+            ]
+          }
+        },
+        "eval_ledger_rows": 279,
+        "release_ledger_rows": 0,
+        "release_example_keys": [],
+        "outcomes": null,
+        "distinct_lugs_at_hold": null,
+        "visibility_counts": {},
+        "no_path_calls": {},
+        "blocked_goal_calls": {},
+        "events": {}
+      },
+      "review_finding": "Supervisor interrupted, not independently diagnosed as a completed failure. Own-view sequence shows one robot searching while partner approaches/waits for77991/77992; both approach opposite lugs for77993; no same-lug pursuit observed in selected frames."
+    },
+    {
+      "name": "crate-diag-77993-fd724191",
+      "stage": "diagnostic",
+      "seed": 77993,
+      "near_wall": false,
+      "planned": true,
+      "submitted": true,
+      "status": "interrupted",
+      "exit": 130,
+      "success": false,
+      "prefix_held": null,
+      "release_authorized_by_own_inputs": null,
+      "release_success": null,
+      "release_outcome": null,
+      "prefix_outcomes": null,
+      "distinct_lugs_at_hold": null,
+      "input_audit": {
+        "enabled": true,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "teacher_boundary": {
+          "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+          "enabled": true,
+          "measurement_rows": 0,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "gt_self_pose_comparison": false,
+          "admitted_source_tags": {
+            "clock": 470,
+            "issued_commands": 2350,
+            "known_shape": 1600,
+            "visible_teacher_measurement": 2070,
+            "static_map": 470,
+            "fixed_rule": 470
+          }
+        }
+      },
+      "sim_s": 23.500000000029605,
+      "wall_s": 90.49175295799978,
+      "wall_per_sim": 3.850712891824927,
+      "first30": null,
+      "directly_viewed": [
+        {
+          "stage": "grasp",
+          "sim_s": 0.0,
+          "file": "000000-grasp.jpg"
+        },
+        {
+          "stage": "grasp",
+          "sim_s": 5.0,
+          "file": "000050-grasp.jpg"
+        },
+        {
+          "stage": "grasp",
+          "sim_s": 9.0,
+          "file": "000090-grasp.jpg"
+        },
+        {
+          "stage": "grasp",
+          "sim_s": 14.0,
+          "file": "000140-grasp.jpg"
+        },
+        {
+          "stage": "grasp",
+          "sim_s": 18.0,
+          "file": "000180-grasp.jpg"
+        },
+        {
+          "stage": "grasp",
+          "sim_s": 23.0,
+          "file": "000230-grasp.jpg"
+        }
+      ],
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/crate-diag-77993-fd724191",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77993-fd724191",
+      "result_sha256": "b073d94859fc79e7701720d9c98db9f4ef6387649fd90e49a604dbca8fb3ee7c",
+      "manifest_sha256": "75c057a2c3af0d22ab7a316bd9c3eacbd25cde85b0b5814c6edafea03b496199",
+      "remote_full_manifest_verified": true,
+      "local_verified_files": 38,
+      "compressed_restored_verified": [
+        "raw/eval-only.jsonl.zst",
+        "raw/teacher-r1.jsonl.zst",
+        "raw/teacher-r2.jsonl.zst"
+      ],
+      "supervisor_stop": true,
+      "ledger_inspection": {
+        "run": "crate-diag-77993-fd724191",
+        "teacher_boundary_source_tags": {
+          "clock": 470,
+          "issued_commands": 2350,
+          "known_shape": 1600,
+          "visible_teacher_measurement": 2070,
+          "static_map": 470,
+          "fixed_rule": 470
+        },
+        "input_audit_zero_verified": true,
+        "first30": {
+          "r1": {
+            "first30_command_rows": 235,
+            "phase_counts": {
+              "approach": 45,
+              "search": 81,
+              "align": 83,
+              "ready": 26
+            },
+            "wheel_nonzero_rows": 81,
+            "assignment_rgb_rows": 235,
+            "assignment_rgb_confirmed": 150,
+            "assignment_values_keys": [
+              "assignment_source",
+              "confirmed",
+              "end",
+              "lug_pixels",
+              "own_issued_pose",
+              "rgb_sha256",
+              "source"
+            ]
+          },
+          "r2": {
+            "first30_command_rows": 235,
+            "phase_counts": {
+              "approach": 147,
+              "search": 24,
+              "align": 60,
+              "relook": 4
+            },
+            "wheel_nonzero_rows": 164,
+            "assignment_rgb_rows": 235,
+            "assignment_rgb_confirmed": 207,
+            "assignment_values_keys": [
+              "assignment_source",
+              "confirmed",
+              "end",
+              "lug_pixels",
+              "own_issued_pose",
+              "rgb_sha256",
+              "source"
+            ]
+          }
+        },
+        "eval_ledger_rows": 235,
+        "release_ledger_rows": 0,
+        "release_example_keys": [],
+        "outcomes": null,
+        "distinct_lugs_at_hold": null,
+        "visibility_counts": {},
+        "no_path_calls": {},
+        "blocked_goal_calls": {},
+        "events": {}
+      },
+      "review_finding": "Supervisor interrupted, not independently diagnosed as a completed failure. Own-view sequence shows one robot searching while partner approaches/waits for77991/77992; both approach opposite lugs for77993; no same-lug pursuit observed in selected frames."
+    },
+    {
+      "name": "crate-diag-77994-fd724191",
+      "stage": "diagnostic",
+      "seed": 77994,
+      "near_wall": false,
+      "planned": true,
+      "submitted": false,
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "success": null,
+      "reason": "same-candidate diagnostic failure stop; not an observed physical outcome"
+    },
+    {
+      "name": "crate-diag-77995-fd724191",
+      "stage": "diagnostic",
+      "seed": 77995,
+      "near_wall": false,
+      "planned": true,
+      "submitted": false,
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "success": null,
+      "reason": "same-candidate diagnostic failure stop; not an observed physical outcome"
+    },
+    {
+      "name": "crate-diag-77996-fd724191",
+      "stage": "diagnostic",
+      "seed": 77996,
+      "near_wall": false,
+      "planned": true,
+      "submitted": false,
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "success": null,
+      "reason": "same-candidate diagnostic failure stop; not an observed physical outcome"
+    },
+    {
+      "name": "crate-diag-77997-fd724191",
+      "stage": "diagnostic",
+      "seed": 77997,
+      "near_wall": false,
+      "planned": true,
+      "submitted": false,
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "success": null,
+      "reason": "same-candidate diagnostic failure stop; not an observed physical outcome"
+    },
+    {
+      "name": "crate-diag-77998-fd724191",
+      "stage": "diagnostic",
+      "seed": 77998,
+      "near_wall": true,
+      "planned": true,
+      "submitted": false,
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "success": null,
+      "reason": "same-candidate diagnostic failure stop; not an observed physical outcome"
+    },
+    {
+      "name": "crate-diag-77999-fd724191",
+      "stage": "diagnostic",
+      "seed": 77999,
+      "near_wall": true,
+      "planned": true,
+      "submitted": false,
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "success": null,
+      "reason": "same-candidate diagnostic failure stop; not an observed physical outcome"
+    }
+  ]
+}

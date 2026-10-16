@@ -1,0 +1,4251 @@
+{
+  "schema": "ugrp.gcp-ops-result.v1",
+  "at": "2026-10-15 18:13:12 KST",
+  "queue": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-release-gate40-e897b0c2.json",
+  "source_sha": "e897b0c2c96ad99cb0a3f5eb3cc255d2686bba09",
+  "runtime_source_worktree": "/Users/changmin/projects/ugrp-wt/ops-release20-e897b0c2",
+  "queue_source_worktree": "/Users/changmin/projects/ugrp-wt/grasp-act-probes",
+  "pr": 491,
+  "status": "FINAL",
+  "host": {
+    "alias": "gcp1",
+    "project": "ugrp-act-train-1014",
+    "instance": "ugrp-sim-gcp1",
+    "zone": "asia-northeast3-a",
+    "machine_type": "n4-highcpu-64"
+  },
+  "stages": {
+    "preflight_A": {
+      "planned_N": 1,
+      "submitted_N": 1,
+      "completed_N": 1,
+      "successes": 1,
+      "failures_completed_N": 0,
+      "actual_completed_failure_N": 0,
+      "supervisor_interrupted_N": 0,
+      "running_N": 0,
+      "not_submitted_N": 0,
+      "retrieved_N": 1,
+      "HOST_ERROR_N": 0,
+      "input_audit_N": 1,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "control_top_camera_reads": 0,
+      "first30_N": 1,
+      "first30_wall_per_sim_median": 2.839405922213108,
+      "first30_warning_above3_5": false,
+      "first30_block_above6": false,
+      "successful_runs_ending_before_full30_sample": [],
+      "full_wall_per_sim_median": 3.014480280983272,
+      "threshold_38_of40_met": false
+    },
+    "preflight_B": {
+      "planned_N": 2,
+      "submitted_N": 2,
+      "completed_N": 2,
+      "successes": 2,
+      "failures_completed_N": 0,
+      "actual_completed_failure_N": 0,
+      "supervisor_interrupted_N": 0,
+      "running_N": 0,
+      "not_submitted_N": 0,
+      "retrieved_N": 2,
+      "HOST_ERROR_N": 0,
+      "input_audit_N": 2,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "control_top_camera_reads": 0,
+      "first30_N": 2,
+      "first30_wall_per_sim_median": 2.921588200547222,
+      "first30_warning_above3_5": false,
+      "first30_block_above6": false,
+      "successful_runs_ending_before_full30_sample": [],
+      "full_wall_per_sim_median": 3.1910938957090593,
+      "threshold_38_of40_met": false
+    },
+    "gate_A": {
+      "planned_N": 40,
+      "submitted_N": 21,
+      "completed_N": 21,
+      "successes": 14,
+      "failures_completed_N": 7,
+      "actual_completed_failure_N": 1,
+      "supervisor_interrupted_N": 6,
+      "running_N": 0,
+      "not_submitted_N": 19,
+      "retrieved_N": 21,
+      "HOST_ERROR_N": 0,
+      "input_audit_N": 21,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "control_top_camera_reads": 0,
+      "first30_N": 20,
+      "first30_wall_per_sim_median": 3.23036302434347,
+      "first30_warning_above3_5": false,
+      "first30_block_above6": false,
+      "successful_runs_ending_before_full30_sample": [],
+      "full_wall_per_sim_median": 3.4694400359583004,
+      "threshold_38_of40_met": false,
+      "critical_fov_recovery_subset": {
+        "successes": 9,
+        "N": 10,
+        "denominator": "Naturally completed gate runs with at least one recover_fov event; supervisor-interrupted runs excluded, no cross-candidate or preflight pooling.",
+        "runs": [
+          {
+            "name": "r20ag-13-e897b0c2",
+            "success": true,
+            "outcome": "teacher_done"
+          },
+          {
+            "name": "r20ag-05-e897b0c2",
+            "success": true,
+            "outcome": "teacher_done"
+          },
+          {
+            "name": "r20ag-09-e897b0c2",
+            "success": true,
+            "outcome": "teacher_done"
+          },
+          {
+            "name": "r20ag-04-e897b0c2",
+            "success": true,
+            "outcome": "teacher_done"
+          },
+          {
+            "name": "r20ag-06-e897b0c2",
+            "success": true,
+            "outcome": "teacher_done"
+          },
+          {
+            "name": "r20ag-02-e897b0c2",
+            "success": true,
+            "outcome": "teacher_done"
+          },
+          {
+            "name": "r20ag-18-e897b0c2",
+            "success": false,
+            "outcome": "release17_fov_no_safe_translation"
+          },
+          {
+            "name": "r20ag-10-e897b0c2",
+            "success": true,
+            "outcome": "teacher_done"
+          },
+          {
+            "name": "r20ag-11-e897b0c2",
+            "success": true,
+            "outcome": "teacher_done"
+          },
+          {
+            "name": "r20ag-03-e897b0c2",
+            "success": true,
+            "outcome": "teacher_done"
+          }
+        ]
+      }
+    },
+    "gate_B": {
+      "planned_N": 40,
+      "submitted_N": 20,
+      "completed_N": 20,
+      "successes": 13,
+      "failures_completed_N": 7,
+      "actual_completed_failure_N": 0,
+      "supervisor_interrupted_N": 7,
+      "running_N": 0,
+      "not_submitted_N": 20,
+      "retrieved_N": 20,
+      "HOST_ERROR_N": 0,
+      "input_audit_N": 20,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "control_top_camera_reads": 0,
+      "first30_N": 15,
+      "first30_wall_per_sim_median": 3.252046194800562,
+      "first30_warning_above3_5": false,
+      "first30_block_above6": false,
+      "successful_runs_ending_before_full30_sample": [
+        "r20bg-00-e897b0c2",
+        "r20bg-01-e897b0c2",
+        "r20bg-08-e897b0c2",
+        "r20bg-16-e897b0c2",
+        "r20bg-17-e897b0c2"
+      ],
+      "full_wall_per_sim_median": 3.556756425973453,
+      "threshold_38_of40_met": false,
+      "critical_fov_recovery_subset": {
+        "successes": 8,
+        "N": 8,
+        "denominator": "Naturally completed gate runs with at least one recover_fov event; supervisor-interrupted runs excluded, no cross-candidate or preflight pooling.",
+        "runs": [
+          {
+            "name": "r20bg-09-e897b0c2",
+            "success": true,
+            "outcome": "teacher_done"
+          },
+          {
+            "name": "r20bg-05-e897b0c2",
+            "success": true,
+            "outcome": "teacher_done"
+          },
+          {
+            "name": "r20bg-13-e897b0c2",
+            "success": true,
+            "outcome": "teacher_done"
+          },
+          {
+            "name": "r20bg-04-e897b0c2",
+            "success": true,
+            "outcome": "teacher_done"
+          },
+          {
+            "name": "r20bg-10-e897b0c2",
+            "success": true,
+            "outcome": "teacher_done"
+          },
+          {
+            "name": "r20bg-02-e897b0c2",
+            "success": true,
+            "outcome": "teacher_done"
+          },
+          {
+            "name": "r20bg-03-e897b0c2",
+            "success": true,
+            "outcome": "teacher_done"
+          },
+          {
+            "name": "r20bg-11-e897b0c2",
+            "success": true,
+            "outcome": "teacher_done"
+          }
+        ]
+      }
+    }
+  },
+  "input_audit_scope": "Release decision inputs only; scene-preparation grasp prefix excluded by runtime audit. Counters are runtime audit evidence, not independent information-flow proof.",
+  "recording": {
+    "training_rgb": false,
+    "training_runs": 0,
+    "gate_promotion_authorized": false
+  },
+  "model_calls": 0,
+  "raw_storage": "All raw on GCP persistent disk; hash-verified lite evidence and selected frames on Mac; no full independent raw backup",
+  "pooling": "A and B separate n/40; no preflight/DEV4/other SHA/profile/host pooling",
+  "admission": {
+    "max_observed_total_after_reservation": 40,
+    "max_observed_own_after_reservation": 24,
+    "limit_gcp1": 40,
+    "limit_combined": 24,
+    "limit_per_candidate": 12,
+    "finish_census": {
+      "jobs": {},
+      "total": 0,
+      "own": 0,
+      "loadavg": "0.94 14.64 17.85 1/710 558379\n",
+      "free_bytes": 159323607040,
+      "available_kib": 128961256,
+      "idle_guard": "active",
+      "idle_guard_sha256": "e0f759f6380753b0fcbec2400ed9753e5a223133b58ff755d2a6cdcd5cbbacc3"
+    }
+  },
+  "guards": {
+    "budget_stop": "Existing guard not modified or bypassed; no billing/credit operations",
+    "max_run_s": 28800,
+    "termination_action": "STOP",
+    "idle_guard_s": 1200,
+    "idle_timer_active": "active",
+    "idle_guard_sha256": "e0f759f6380753b0fcbec2400ed9753e5a223133b58ff755d2a6cdcd5cbbacc3"
+  },
+  "runs": [
+    {
+      "name": "r20pre-00-e897b0c2",
+      "stage": "preflight",
+      "candidate": "A",
+      "episode": 0,
+      "seed": 110613,
+      "submitted": true,
+      "exit": "0",
+      "status": "complete",
+      "success": true,
+      "release_outcome": "teacher_done",
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 512,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 389.77230032700027,
+      "sim_s": 129.2999999986277,
+      "wall_per_sim": 3.014480280983272,
+      "first30": {
+        "start_sim_s": 0.0,
+        "end_sim_s": 30.299999999998953,
+        "available_sim_s": 30.299999999998953,
+        "wall_s": 86.0339994430542,
+        "wall_per_sim": 2.839405922213108,
+        "method": "eval overview JPEG mtimes, prefix/release frame ticks aligned to teacher trace t"
+      },
+      "result_sha256": "66b6c8d8da71f6c36e24fb191741e7381f5518687af1054bb58d98ab84db86b8",
+      "profile_sha256": "d27fdd98157e27ad0455f862cfb8f3087d7f41b608d4857331cee444ddd7e526",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20pre-00-e897b0c2",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r20pre-00-e897b0c2",
+      "retrieved_and_hash_verified": true,
+      "remote_original_files_verified": 555,
+      "local_files_verified": 19,
+      "selected_frame_N": 18,
+      "directly_viewed": {
+        "viewed": true,
+        "temporal_sample_N": 6,
+        "camera_view_N": 18,
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "samples": [
+          {
+            "file": "raw/eval-overview/000000-prefix.jpg",
+            "sim_s": 0.0
+          },
+          {
+            "file": "raw/eval-overview/000160-release-lookaround.jpg",
+            "sim_s": 24.299999999998953
+          },
+          {
+            "file": "raw/eval-overview/000420-release-regrasp_check.jpg",
+            "sim_s": 50.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/000670-release-line_recheck.jpg",
+            "sim_s": 75.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/000930-release-regrasp_check.jpg",
+            "sim_s": 101.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/001180-release-done.jpg",
+            "sim_s": 126.29999999999895
+          }
+        ],
+        "relationship": "Distinct teal/blue ends; no same-end assignment or mutual blockage seen in selected frames."
+      }
+    },
+    {
+      "name": "r20pre-01-e897b0c2",
+      "stage": "preflight",
+      "candidate": "B",
+      "episode": 1,
+      "seed": 74976,
+      "submitted": true,
+      "exit": "0",
+      "status": "complete",
+      "success": true,
+      "release_outcome": "teacher_done",
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 676,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 543.900748434,
+      "sim_s": 169.89999999766763,
+      "wall_per_sim": 3.201299284528938,
+      "first30": {
+        "start_sim_s": 0.0,
+        "end_sim_s": 30.299999999998953,
+        "available_sim_s": 30.299999999998953,
+        "wall_s": 87.43524527549744,
+        "wall_per_sim": 2.885651659257441,
+        "method": "eval overview JPEG mtimes, prefix/release frame ticks aligned to teacher trace t"
+      },
+      "result_sha256": "b837c51f9b23cd911a0f9dc085626d664f6c15f9dd571f4b06a34572d9a3f00f",
+      "profile_sha256": "d814770b426f821680b93d19ee8231d143f9b4ecc5aece66a125f0249ceb59f1",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20pre-01-e897b0c2",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r20pre-01-e897b0c2",
+      "retrieved_and_hash_verified": true,
+      "remote_original_files_verified": 745,
+      "local_files_verified": 19,
+      "selected_frame_N": 18,
+      "directly_viewed": {
+        "viewed": true,
+        "temporal_sample_N": 6,
+        "camera_view_N": 18,
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "samples": [
+          {
+            "file": "raw/eval-overview/000000-prefix.jpg",
+            "sim_s": 0.0
+          },
+          {
+            "file": "raw/eval-overview/000250-release-repick.jpg",
+            "sim_s": 33.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/000580-release-lookaround.jpg",
+            "sim_s": 66.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/000920-release-shift.jpg",
+            "sim_s": 100.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/001250-release-regrasp_check.jpg",
+            "sim_s": 133.29999999999896
+          },
+          {
+            "file": "raw/eval-overview/001590-release-done.jpg",
+            "sim_s": 167.29999999999896
+          }
+        ],
+        "relationship": "Distinct teal/blue ends; no same-end assignment or mutual blockage seen in selected frames."
+      }
+    },
+    {
+      "name": "r20pre-02-e897b0c2",
+      "stage": "preflight",
+      "candidate": "B",
+      "episode": 2,
+      "seed": 78526,
+      "submitted": true,
+      "exit": "0",
+      "status": "complete",
+      "success": true,
+      "release_outcome": "teacher_done",
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 680,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 546.4766454759992,
+      "sim_s": 171.7999999976227,
+      "wall_per_sim": 3.1808885068891803,
+      "first30": {
+        "start_sim_s": 0.0,
+        "end_sim_s": 30.299999999998953,
+        "available_sim_s": 30.299999999998953,
+        "wall_s": 89.61299967765808,
+        "wall_per_sim": 2.9575247418370028,
+        "method": "eval overview JPEG mtimes, prefix/release frame ticks aligned to teacher trace t"
+      },
+      "result_sha256": "6476d17a614fac89df69bda885993b4294e3987a286cb74e0f9dbb4955ee8b01",
+      "profile_sha256": "d814770b426f821680b93d19ee8231d143f9b4ecc5aece66a125f0249ceb59f1",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20pre-02-e897b0c2",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r20pre-02-e897b0c2",
+      "retrieved_and_hash_verified": true,
+      "remote_original_files_verified": 759,
+      "local_files_verified": 19,
+      "selected_frame_N": 18,
+      "directly_viewed": {
+        "viewed": true,
+        "temporal_sample_N": 6,
+        "camera_view_N": 18,
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "samples": [
+          {
+            "file": "raw/eval-overview/000000-prefix.jpg",
+            "sim_s": 0.0
+          },
+          {
+            "file": "raw/eval-overview/000250-release-repick.jpg",
+            "sim_s": 33.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/000590-release-lookaround.jpg",
+            "sim_s": 67.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/000920-release-shift.jpg",
+            "sim_s": 100.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/001260-release-regrasp_check.jpg",
+            "sim_s": 134.29999999999896
+          },
+          {
+            "file": "raw/eval-overview/001600-release-done.jpg",
+            "sim_s": 168.29999999999896
+          }
+        ],
+        "relationship": "Distinct teal/blue ends; no same-end assignment or mutual blockage seen in selected frames."
+      }
+    },
+    {
+      "name": "r20ag-13-e897b0c2",
+      "stage": "gate",
+      "candidate": "A",
+      "episode": 13,
+      "seed": 110613,
+      "submitted": true,
+      "exit": "0",
+      "status": "complete",
+      "success": true,
+      "release_outcome": "teacher_done",
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 512,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 442.4584882490017,
+      "sim_s": 129.2999999986277,
+      "wall_per_sim": 3.4219527320471586,
+      "first30": {
+        "start_sim_s": 0.0,
+        "end_sim_s": 30.299999999998953,
+        "available_sim_s": 30.299999999998953,
+        "wall_s": 90.63999938964844,
+        "wall_per_sim": 2.991419121770679,
+        "method": "eval overview JPEG mtimes, prefix/release frame ticks aligned to teacher trace t"
+      },
+      "result_sha256": "771e51405618f305562ca33c65dcfe0b2e5ec057ad97e8e9b5e2340a86ad4648",
+      "profile_sha256": "d27fdd98157e27ad0455f862cfb8f3087d7f41b608d4857331cee444ddd7e526",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20ag-13-e897b0c2",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r20ag-13-e897b0c2",
+      "retrieved_and_hash_verified": true,
+      "remote_original_files_verified": 555,
+      "local_files_verified": 19,
+      "selected_frame_N": 18,
+      "directly_viewed": {
+        "viewed": true,
+        "temporal_sample_N": 6,
+        "camera_view_N": 18,
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "samples": [
+          {
+            "file": "raw/eval-overview/000000-prefix.jpg",
+            "sim_s": 0.0
+          },
+          {
+            "file": "raw/eval-overview/000160-release-lookaround.jpg",
+            "sim_s": 24.299999999998953
+          },
+          {
+            "file": "raw/eval-overview/000420-release-regrasp_check.jpg",
+            "sim_s": 50.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/000670-release-line_recheck.jpg",
+            "sim_s": 75.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/000930-release-regrasp_check.jpg",
+            "sim_s": 101.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/001180-release-done.jpg",
+            "sim_s": 126.29999999999895
+          }
+        ],
+        "relationship": "Distinct teal/blue ends throughout selected frames, successful release and retreat."
+      }
+    },
+    {
+      "name": "r20ag-00-e897b0c2",
+      "stage": "gate",
+      "candidate": "A",
+      "episode": 0,
+      "seed": 110600,
+      "submitted": true,
+      "exit": "0",
+      "status": "complete",
+      "success": true,
+      "release_outcome": "teacher_done",
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 132,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 108.28524872599883,
+      "sim_s": 33.90000000007927,
+      "wall_per_sim": 3.1942551246532633,
+      "first30": {
+        "start_sim_s": 0.0,
+        "end_sim_s": 30.299999999998953,
+        "available_sim_s": 30.299999999998953,
+        "wall_s": 93.14599967002869,
+        "wall_per_sim": 3.074125401651218,
+        "method": "eval overview JPEG mtimes, prefix/release frame ticks aligned to teacher trace t"
+      },
+      "result_sha256": "6eb577fb5efa173dca66259f821d47a93f622c63b06d354c3cba4476b73b7363",
+      "profile_sha256": "d27fdd98157e27ad0455f862cfb8f3087d7f41b608d4857331cee444ddd7e526",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20ag-00-e897b0c2",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r20ag-00-e897b0c2",
+      "retrieved_and_hash_verified": true,
+      "remote_original_files_verified": 129,
+      "local_files_verified": 18,
+      "selected_frame_N": 18,
+      "directly_viewed": {
+        "viewed": true,
+        "temporal_sample_N": 6,
+        "camera_view_N": 18,
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "samples": [
+          {
+            "file": "raw/eval-overview/000000-prefix.jpg",
+            "sim_s": 0.0
+          },
+          {
+            "file": "raw/eval-overview/000060-prefix.jpg",
+            "sim_s": 6.0
+          },
+          {
+            "file": "raw/eval-overview/000040-release-open.jpg",
+            "sim_s": 12.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/000100-release-lookaround.jpg",
+            "sim_s": 18.299999999998953
+          },
+          {
+            "file": "raw/eval-overview/000170-release-lookaround.jpg",
+            "sim_s": 25.299999999998953
+          },
+          {
+            "file": "raw/eval-overview/000230-release-done.jpg",
+            "sim_s": 31.299999999998953
+          }
+        ],
+        "relationship": "Distinct teal/blue ends; no same-end assignment or mutual blockage seen in selected frames."
+      }
+    },
+    {
+      "name": "r20ag-01-e897b0c2",
+      "stage": "gate",
+      "candidate": "A",
+      "episode": 1,
+      "seed": 110601,
+      "submitted": true,
+      "exit": "0",
+      "status": "complete",
+      "success": true,
+      "release_outcome": "teacher_done",
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 132,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 102.09764817100222,
+      "sim_s": 33.90000000007927,
+      "wall_per_sim": 3.011730034535796,
+      "first30": {
+        "start_sim_s": 0.0,
+        "end_sim_s": 30.299999999998953,
+        "available_sim_s": 30.299999999998953,
+        "wall_s": 87.81248068809509,
+        "wall_per_sim": 2.8981016728745255,
+        "method": "eval overview JPEG mtimes, prefix/release frame ticks aligned to teacher trace t"
+      },
+      "result_sha256": "ab7680aefc14c01f79706e5e8463aa378e4ad29d9b5df8f9e55c9571b5e8767e",
+      "profile_sha256": "d27fdd98157e27ad0455f862cfb8f3087d7f41b608d4857331cee444ddd7e526",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20ag-01-e897b0c2",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r20ag-01-e897b0c2",
+      "retrieved_and_hash_verified": true,
+      "remote_original_files_verified": 129,
+      "local_files_verified": 18,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20ag-02-e897b0c2",
+      "stage": "gate",
+      "candidate": "A",
+      "episode": 2,
+      "seed": 110602,
+      "submitted": true,
+      "exit": "0",
+      "status": "complete",
+      "success": true,
+      "release_outcome": "teacher_done",
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 320,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 276.0737606729999,
+      "sim_s": 81.59999999975564,
+      "wall_per_sim": 3.3832568710027777,
+      "first30": {
+        "start_sim_s": 0.0,
+        "end_sim_s": 30.299999999998953,
+        "available_sim_s": 30.299999999998953,
+        "wall_s": 89.1369993686676,
+        "wall_per_sim": 2.941815160682201,
+        "method": "eval overview JPEG mtimes, prefix/release frame ticks aligned to teacher trace t"
+      },
+      "result_sha256": "fc2e323b985abcae848148be9cb1138633b70d7a19fc7311e69b9e743e69be47",
+      "profile_sha256": "d27fdd98157e27ad0455f862cfb8f3087d7f41b608d4857331cee444ddd7e526",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20ag-02-e897b0c2",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r20ag-02-e897b0c2",
+      "retrieved_and_hash_verified": true,
+      "remote_original_files_verified": 340,
+      "local_files_verified": 18,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20ag-03-e897b0c2",
+      "stage": "gate",
+      "candidate": "A",
+      "episode": 3,
+      "seed": 110603,
+      "submitted": true,
+      "exit": "0",
+      "status": "complete",
+      "success": true,
+      "release_outcome": "teacher_done",
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 320,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 293.80893674099934,
+      "sim_s": 81.59999999975564,
+      "wall_per_sim": 3.6005997149740097,
+      "first30": {
+        "start_sim_s": 0.0,
+        "end_sim_s": 30.299999999998953,
+        "available_sim_s": 30.299999999998953,
+        "wall_s": 99.36599946022034,
+        "wall_per_sim": 3.2794059227796626,
+        "method": "eval overview JPEG mtimes, prefix/release frame ticks aligned to teacher trace t"
+      },
+      "result_sha256": "3365724fa3e85a906e43375919e9e5dd9873caf792027ceb428a78ed5fb0992a",
+      "profile_sha256": "d27fdd98157e27ad0455f862cfb8f3087d7f41b608d4857331cee444ddd7e526",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20ag-03-e897b0c2",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r20ag-03-e897b0c2",
+      "retrieved_and_hash_verified": true,
+      "remote_original_files_verified": 340,
+      "local_files_verified": 18,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20ag-04-e897b0c2",
+      "stage": "gate",
+      "candidate": "A",
+      "episode": 4,
+      "seed": 110604,
+      "submitted": true,
+      "exit": "0",
+      "status": "complete",
+      "success": true,
+      "release_outcome": "teacher_done",
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 512,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 453.9413219779999,
+      "sim_s": 129.2999999986277,
+      "wall_per_sim": 3.510760417500524,
+      "first30": {
+        "start_sim_s": 0.0,
+        "end_sim_s": 30.299999999998953,
+        "available_sim_s": 30.299999999998953,
+        "wall_s": 96.6659996509552,
+        "wall_per_sim": 3.19029701818345,
+        "method": "eval overview JPEG mtimes, prefix/release frame ticks aligned to teacher trace t"
+      },
+      "result_sha256": "069e04914df6a1b2391c808fe5a513132ec84d983123bf3643c74591b577eab9",
+      "profile_sha256": "d27fdd98157e27ad0455f862cfb8f3087d7f41b608d4857331cee444ddd7e526",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20ag-04-e897b0c2",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r20ag-04-e897b0c2",
+      "retrieved_and_hash_verified": true,
+      "remote_original_files_verified": 556,
+      "local_files_verified": 19,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20ag-05-e897b0c2",
+      "stage": "gate",
+      "candidate": "A",
+      "episode": 5,
+      "seed": 110605,
+      "submitted": true,
+      "exit": "0",
+      "status": "complete",
+      "success": true,
+      "release_outcome": "teacher_done",
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 512,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 469.99669173000075,
+      "sim_s": 129.5999999986206,
+      "wall_per_sim": 3.6265176831404564,
+      "first30": {
+        "start_sim_s": 0.0,
+        "end_sim_s": 30.299999999998953,
+        "available_sim_s": 30.299999999998953,
+        "wall_s": 106.16199946403503,
+        "wall_per_sim": 3.5036963519484723,
+        "method": "eval overview JPEG mtimes, prefix/release frame ticks aligned to teacher trace t"
+      },
+      "result_sha256": "89a94e0c6079390d72742b5c4c2492e51beb6c37b667ef0804ce9ecbf62376f4",
+      "profile_sha256": "d27fdd98157e27ad0455f862cfb8f3087d7f41b608d4857331cee444ddd7e526",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20ag-05-e897b0c2",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r20ag-05-e897b0c2",
+      "retrieved_and_hash_verified": true,
+      "remote_original_files_verified": 558,
+      "local_files_verified": 19,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20ag-06-e897b0c2",
+      "stage": "gate",
+      "candidate": "A",
+      "episode": 6,
+      "seed": 110606,
+      "submitted": true,
+      "exit": "0",
+      "status": "complete",
+      "success": true,
+      "release_outcome": "teacher_done",
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 560,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 504.1642499970003,
+      "sim_s": 141.4999999983392,
+      "wall_per_sim": 3.5629982332361676,
+      "first30": {
+        "start_sim_s": 0.0,
+        "end_sim_s": 30.299999999998953,
+        "available_sim_s": 30.299999999998953,
+        "wall_s": 105.3759994506836,
+        "wall_per_sim": 3.4777557574484237,
+        "method": "eval overview JPEG mtimes, prefix/release frame ticks aligned to teacher trace t"
+      },
+      "result_sha256": "23319ce4ddfffd868944b8ddf3019ee2cecca1b2e4d4d809c1525dfda5ef2771",
+      "profile_sha256": "d27fdd98157e27ad0455f862cfb8f3087d7f41b608d4857331cee444ddd7e526",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20ag-06-e897b0c2",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r20ag-06-e897b0c2",
+      "retrieved_and_hash_verified": true,
+      "remote_original_files_verified": 601,
+      "local_files_verified": 19,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20ag-07-e897b0c2",
+      "stage": "gate",
+      "candidate": "A",
+      "episode": 7,
+      "seed": 110607,
+      "submitted": true,
+      "exit": "130",
+      "status": "interrupted",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 653,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 588.553978863998,
+      "sim_s": 162.29999999784735,
+      "wall_per_sim": 3.626333819296391,
+      "first30": {
+        "start_sim_s": 0.0,
+        "end_sim_s": 30.299999999998953,
+        "available_sim_s": 30.299999999998953,
+        "wall_s": 106.26299929618835,
+        "wall_per_sim": 3.507029679742311,
+        "method": "eval overview JPEG mtimes, prefix/release frame ticks aligned to teacher trace t"
+      },
+      "result_sha256": "40b1861f0b1721f83ae1ee2e1594a641f1d8d86ce9cdffab548f53fb84ba3d86",
+      "profile_sha256": "d27fdd98157e27ad0455f862cfb8f3087d7f41b608d4857331cee444ddd7e526",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20ag-07-e897b0c2",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r20ag-07-e897b0c2",
+      "retrieved_and_hash_verified": true,
+      "remote_original_files_verified": 735,
+      "local_files_verified": 21,
+      "selected_frame_N": 18,
+      "directly_viewed": {
+        "viewed": true,
+        "temporal_sample_N": 6,
+        "camera_view_N": 18,
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "samples": [
+          {
+            "file": "raw/eval-overview/000000-prefix.jpg",
+            "sim_s": 0.0
+          },
+          {
+            "file": "raw/eval-overview/000230-release-line_recheck.jpg",
+            "sim_s": 31.299999999998953
+          },
+          {
+            "file": "raw/eval-overview/000560-release-lookaround.jpg",
+            "sim_s": 64.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/000880-release-regrasp_check.jpg",
+            "sim_s": 96.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/001210-release-approach.jpg",
+            "sim_s": 129.29999999999896
+          },
+          {
+            "file": "raw/eval-overview/001530-release-lookaround.jpg",
+            "sim_s": 161.29999999999896
+          }
+        ],
+        "relationship": "Distinct teal/blue ends in selected frames. No same-end assignment or mutual blockage observed.",
+        "classification": "Supervisor interrupted for shared-code susceptibility; no independent physical-failure cause assigned to this run."
+      }
+    },
+    {
+      "name": "r20ag-08-e897b0c2",
+      "stage": "gate",
+      "candidate": "A",
+      "episode": 8,
+      "seed": 110608,
+      "submitted": true,
+      "exit": "0",
+      "status": "complete",
+      "success": true,
+      "release_outcome": "teacher_done",
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 132,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 109.89787287500076,
+      "sim_s": 33.90000000007927,
+      "wall_per_sim": 3.2418251585470146,
+      "first30": {
+        "start_sim_s": 0.0,
+        "end_sim_s": 30.299999999998953,
+        "available_sim_s": 30.299999999998953,
+        "wall_s": 95.35299968719482,
+        "wall_per_sim": 3.1469636860461425,
+        "method": "eval overview JPEG mtimes, prefix/release frame ticks aligned to teacher trace t"
+      },
+      "result_sha256": "e059fe8f46930d6982f6eed6eb1ff85d46ff39db6c063192ef0ca6f3293e20b6",
+      "profile_sha256": "d27fdd98157e27ad0455f862cfb8f3087d7f41b608d4857331cee444ddd7e526",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20ag-08-e897b0c2",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r20ag-08-e897b0c2",
+      "retrieved_and_hash_verified": true,
+      "remote_original_files_verified": 129,
+      "local_files_verified": 18,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20ag-09-e897b0c2",
+      "stage": "gate",
+      "candidate": "A",
+      "episode": 9,
+      "seed": 110609,
+      "submitted": true,
+      "exit": "0",
+      "status": "complete",
+      "success": true,
+      "release_outcome": "teacher_done",
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 320,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 281.718530918999,
+      "sim_s": 81.1999999997651,
+      "wall_per_sim": 3.4694400359583004,
+      "first30": {
+        "start_sim_s": 0.0,
+        "end_sim_s": 30.299999999998953,
+        "available_sim_s": 30.299999999998953,
+        "wall_s": 94.01399946212769,
+        "wall_per_sim": 3.1027722594762683,
+        "method": "eval overview JPEG mtimes, prefix/release frame ticks aligned to teacher trace t"
+      },
+      "result_sha256": "75fa9e498a08139e7f67147b544b65f53e458c3f04036448f97b14e1220d2854",
+      "profile_sha256": "d27fdd98157e27ad0455f862cfb8f3087d7f41b608d4857331cee444ddd7e526",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20ag-09-e897b0c2",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r20ag-09-e897b0c2",
+      "retrieved_and_hash_verified": true,
+      "remote_original_files_verified": 339,
+      "local_files_verified": 18,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20ag-10-e897b0c2",
+      "stage": "gate",
+      "candidate": "A",
+      "episode": 10,
+      "seed": 110610,
+      "submitted": true,
+      "exit": "0",
+      "status": "complete",
+      "success": true,
+      "release_outcome": "teacher_done",
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 320,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 279.66410167999857,
+      "sim_s": 81.59999999975564,
+      "wall_per_sim": 3.4272561480494614,
+      "first30": {
+        "start_sim_s": 0.0,
+        "end_sim_s": 30.299999999998953,
+        "available_sim_s": 30.299999999998953,
+        "wall_s": 90.86399960517883,
+        "wall_per_sim": 2.998811868157821,
+        "method": "eval overview JPEG mtimes, prefix/release frame ticks aligned to teacher trace t"
+      },
+      "result_sha256": "7b38545bd84bb80bd6f164f1b85f974af15197c0f1b74c1727a27bdb5fd347d7",
+      "profile_sha256": "d27fdd98157e27ad0455f862cfb8f3087d7f41b608d4857331cee444ddd7e526",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20ag-10-e897b0c2",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r20ag-10-e897b0c2",
+      "retrieved_and_hash_verified": true,
+      "remote_original_files_verified": 341,
+      "local_files_verified": 18,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20ag-11-e897b0c2",
+      "stage": "gate",
+      "candidate": "A",
+      "episode": 11,
+      "seed": 110611,
+      "submitted": true,
+      "exit": "0",
+      "status": "complete",
+      "success": true,
+      "release_outcome": "teacher_done",
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 320,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 279.5102164890013,
+      "sim_s": 81.1999999997651,
+      "wall_per_sim": 3.442244045441009,
+      "first30": {
+        "start_sim_s": 0.0,
+        "end_sim_s": 30.299999999998953,
+        "available_sim_s": 30.299999999998953,
+        "wall_s": 92.0979995727539,
+        "wall_per_sim": 3.0395379396949536,
+        "method": "eval overview JPEG mtimes, prefix/release frame ticks aligned to teacher trace t"
+      },
+      "result_sha256": "0a7c43b33daf90ccb1897f948b18ef6d431e239f806fa7dc302f7999305f8e32",
+      "profile_sha256": "d27fdd98157e27ad0455f862cfb8f3087d7f41b608d4857331cee444ddd7e526",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20ag-11-e897b0c2",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r20ag-11-e897b0c2",
+      "retrieved_and_hash_verified": true,
+      "remote_original_files_verified": 338,
+      "local_files_verified": 18,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20ag-12-e897b0c2",
+      "stage": "gate",
+      "candidate": "A",
+      "episode": 12,
+      "seed": 110612,
+      "submitted": true,
+      "exit": "130",
+      "status": "interrupted",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 420,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 385.4425884250013,
+      "sim_s": 104.1457499992225,
+      "wall_per_sim": 3.7009920081028636,
+      "first30": {
+        "start_sim_s": 0.0,
+        "end_sim_s": 30.299999999998953,
+        "available_sim_s": 30.299999999998953,
+        "wall_s": 99.87599968910217,
+        "wall_per_sim": 3.2962376135018356,
+        "method": "eval overview JPEG mtimes, prefix/release frame ticks aligned to teacher trace t"
+      },
+      "result_sha256": "f5da446c2b70dda6072d0359bb948d1fac20c3acff2b3cde4606c58a33347d46",
+      "profile_sha256": "d27fdd98157e27ad0455f862cfb8f3087d7f41b608d4857331cee444ddd7e526",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20ag-12-e897b0c2",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r20ag-12-e897b0c2",
+      "retrieved_and_hash_verified": true,
+      "remote_original_files_verified": 483,
+      "local_files_verified": 21,
+      "selected_frame_N": 18,
+      "directly_viewed": {
+        "viewed": true,
+        "temporal_sample_N": 6,
+        "camera_view_N": 18,
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "samples": [
+          {
+            "file": "raw/eval-overview/000000-prefix.jpg",
+            "sim_s": 0.0
+          },
+          {
+            "file": "raw/eval-overview/000120-release-observe_back.jpg",
+            "sim_s": 20.299999999998953
+          },
+          {
+            "file": "raw/eval-overview/000330-release-regrasp_check.jpg",
+            "sim_s": 41.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/000530-release-observe_back.jpg",
+            "sim_s": 61.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/000740-release-approach.jpg",
+            "sim_s": 82.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/000950-release-shift.jpg",
+            "sim_s": 103.29999999999895
+          }
+        ],
+        "relationship": "Distinct teal/blue ends in selected frames. No same-end assignment or mutual blockage observed.",
+        "classification": "Supervisor interrupted for shared-code susceptibility; no independent physical-failure cause assigned to this run."
+      }
+    },
+    {
+      "name": "r20ag-14-e897b0c2",
+      "stage": "gate",
+      "candidate": "A",
+      "episode": 14,
+      "seed": 110614,
+      "submitted": true,
+      "exit": "130",
+      "status": "interrupted",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 404,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 353.79285552999863,
+      "sim_s": 99.78849999932554,
+      "wall_per_sim": 3.545427133711699,
+      "first30": {
+        "start_sim_s": 0.0,
+        "end_sim_s": 30.299999999998953,
+        "available_sim_s": 30.299999999998953,
+        "wall_s": 100.44099950790405,
+        "wall_per_sim": 3.314884472208169,
+        "method": "eval overview JPEG mtimes, prefix/release frame ticks aligned to teacher trace t"
+      },
+      "result_sha256": "95c568027d789ebb8a18c0573c1a98a940a5da0b14e299a0ac42bba57528dc2e",
+      "profile_sha256": "d27fdd98157e27ad0455f862cfb8f3087d7f41b608d4857331cee444ddd7e526",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20ag-14-e897b0c2",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r20ag-14-e897b0c2",
+      "retrieved_and_hash_verified": true,
+      "remote_original_files_verified": 451,
+      "local_files_verified": 21,
+      "selected_frame_N": 18,
+      "directly_viewed": {
+        "viewed": true,
+        "temporal_sample_N": 6,
+        "camera_view_N": 18,
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "samples": [
+          {
+            "file": "raw/eval-overview/000000-prefix.jpg",
+            "sim_s": 0.0
+          },
+          {
+            "file": "raw/eval-overview/000110-release-observe_back.jpg",
+            "sim_s": 19.299999999998953
+          },
+          {
+            "file": "raw/eval-overview/000310-release-repick.jpg",
+            "sim_s": 39.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/000510-release-await_open.jpg",
+            "sim_s": 59.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/000710-release-line_recheck.jpg",
+            "sim_s": 79.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/000910-release-regrasp_check.jpg",
+            "sim_s": 99.29999999999895
+          }
+        ],
+        "relationship": "Distinct teal/blue ends in selected frames. No same-end assignment or mutual blockage observed.",
+        "classification": "Supervisor interrupted for shared-code susceptibility; no independent physical-failure cause assigned to this run."
+      }
+    },
+    {
+      "name": "r20ag-15-e897b0c2",
+      "stage": "gate",
+      "candidate": "A",
+      "episode": 15,
+      "seed": 110615,
+      "submitted": true,
+      "exit": "130",
+      "status": "interrupted",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 356,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 323.86163246700016,
+      "sim_s": 87.45474999961719,
+      "wall_per_sim": 3.7031908783504357,
+      "first30": {
+        "start_sim_s": 0.0,
+        "end_sim_s": 30.299999999998953,
+        "available_sim_s": 30.299999999998953,
+        "wall_s": 109.73199963569641,
+        "wall_per_sim": 3.621518139792086,
+        "method": "eval overview JPEG mtimes, prefix/release frame ticks aligned to teacher trace t"
+      },
+      "result_sha256": "5f1991e48d1c611f5b853e428f25513a53d755e034d7a6514ee189757e83fe17",
+      "profile_sha256": "d27fdd98157e27ad0455f862cfb8f3087d7f41b608d4857331cee444ddd7e526",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20ag-15-e897b0c2",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r20ag-15-e897b0c2",
+      "retrieved_and_hash_verified": true,
+      "remote_original_files_verified": 402,
+      "local_files_verified": 20,
+      "selected_frame_N": 18,
+      "directly_viewed": {
+        "viewed": true,
+        "temporal_sample_N": 6,
+        "camera_view_N": 18,
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "samples": [
+          {
+            "file": "raw/eval-overview/000000-prefix.jpg",
+            "sim_s": 0.0
+          },
+          {
+            "file": "raw/eval-overview/000090-release-lookaround.jpg",
+            "sim_s": 17.299999999998953
+          },
+          {
+            "file": "raw/eval-overview/000260-release-line_recheck.jpg",
+            "sim_s": 34.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/000440-release-regrasp_check.jpg",
+            "sim_s": 52.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/000610-release-observe_back.jpg",
+            "sim_s": 69.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/000790-release-repick.jpg",
+            "sim_s": 87.29999999999895
+          }
+        ],
+        "relationship": "Distinct teal/blue ends in selected frames. No same-end assignment or mutual blockage observed.",
+        "classification": "Supervisor interrupted for shared-code susceptibility; no independent physical-failure cause assigned to this run."
+      }
+    },
+    {
+      "name": "r20ag-16-e897b0c2",
+      "stage": "gate",
+      "candidate": "A",
+      "episode": 16,
+      "seed": 110616,
+      "submitted": true,
+      "exit": "0",
+      "status": "complete",
+      "success": true,
+      "release_outcome": "teacher_done",
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 132,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 119.42893238200122,
+      "sim_s": 33.90000000007927,
+      "wall_per_sim": 3.5229773563929783,
+      "first30": {
+        "start_sim_s": 0.0,
+        "end_sim_s": 30.299999999998953,
+        "available_sim_s": 30.299999999998953,
+        "wall_s": 103.95399951934814,
+        "wall_per_sim": 3.430825066645272,
+        "method": "eval overview JPEG mtimes, prefix/release frame ticks aligned to teacher trace t"
+      },
+      "result_sha256": "ef5c0490d93c41de000102e1a9c29a36d4d328ca77fc5b3f382d20862be21061",
+      "profile_sha256": "d27fdd98157e27ad0455f862cfb8f3087d7f41b608d4857331cee444ddd7e526",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20ag-16-e897b0c2",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r20ag-16-e897b0c2",
+      "retrieved_and_hash_verified": true,
+      "remote_original_files_verified": 129,
+      "local_files_verified": 18,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20ag-17-e897b0c2",
+      "stage": "gate",
+      "candidate": "A",
+      "episode": 17,
+      "seed": 110617,
+      "submitted": true,
+      "exit": "0",
+      "status": "complete",
+      "success": true,
+      "release_outcome": "teacher_done",
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 132,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 119.52603495199946,
+      "sim_s": 33.90000000007927,
+      "wall_per_sim": 3.52584173898879,
+      "first30": {
+        "start_sim_s": 0.0,
+        "end_sim_s": 30.299999999998953,
+        "available_sim_s": 30.299999999998953,
+        "wall_s": 104.01299953460693,
+        "wall_per_sim": 3.4327722618683345,
+        "method": "eval overview JPEG mtimes, prefix/release frame ticks aligned to teacher trace t"
+      },
+      "result_sha256": "bf5fb5eb41b420537f9e2dc931f54f245af77cc9c232e74795170552c155405e",
+      "profile_sha256": "d27fdd98157e27ad0455f862cfb8f3087d7f41b608d4857331cee444ddd7e526",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20ag-17-e897b0c2",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r20ag-17-e897b0c2",
+      "retrieved_and_hash_verified": true,
+      "remote_original_files_verified": 129,
+      "local_files_verified": 18,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20ag-18-e897b0c2",
+      "stage": "gate",
+      "candidate": "A",
+      "episode": 18,
+      "seed": 110618,
+      "submitted": true,
+      "exit": "0",
+      "status": "complete",
+      "success": false,
+      "release_outcome": "release17_fov_no_safe_translation",
+      "release_failure_reasons": [
+        "not_in_zone"
+      ],
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 124,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 108.49335100699682,
+      "sim_s": 32.10000000007067,
+      "wall_per_sim": 3.379855171550092,
+      "first30": {
+        "start_sim_s": 0.0,
+        "end_sim_s": 29.299999999998953,
+        "available_sim_s": 29.299999999998953,
+        "wall_s": 94.91099953651428,
+        "wall_per_sim": 3.2392832606320026,
+        "method": "eval overview JPEG mtimes, prefix/release frame ticks aligned to teacher trace t"
+      },
+      "result_sha256": "d60f3b205981fa2d992deae5635b069842f2db4a0c784b3ea9e1d5c80f93a0e8",
+      "profile_sha256": "d27fdd98157e27ad0455f862cfb8f3087d7f41b608d4857331cee444ddd7e526",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20ag-18-e897b0c2",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r20ag-18-e897b0c2",
+      "retrieved_and_hash_verified": true,
+      "remote_original_files_verified": 128,
+      "local_files_verified": 18,
+      "selected_frame_N": 18,
+      "directly_viewed": {
+        "viewed": true,
+        "temporal_sample_N": 6,
+        "camera_view_N": 18,
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "samples": [
+          {
+            "file": "raw/eval-overview/000000-prefix.jpg",
+            "sim_s": 0.0
+          },
+          {
+            "file": "raw/eval-overview/000060-prefix.jpg",
+            "sim_s": 6.0
+          },
+          {
+            "file": "raw/eval-overview/000030-release-lower.jpg",
+            "sim_s": 11.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/000090-release-lookaround.jpg",
+            "sim_s": 17.299999999998953
+          },
+          {
+            "file": "raw/eval-overview/000150-release-lookaround.jpg",
+            "sim_s": 23.299999999998953
+          },
+          {
+            "file": "raw/eval-overview/000210-release-line_recheck.jpg",
+            "sim_s": 29.299999999998953
+          }
+        ],
+        "relationship": "Distinct teal/blue ends in selected frames. No same-end assignment or mutual blockage observed.",
+        "classification": "confirmed shared-controller failure"
+      }
+    },
+    {
+      "name": "r20ag-19-e897b0c2",
+      "stage": "gate",
+      "candidate": "A",
+      "episode": 19,
+      "seed": 110619,
+      "submitted": true,
+      "exit": "130",
+      "status": "interrupted",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 192,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 158.63118961400323,
+      "sim_s": 46.300000000138475,
+      "wall_per_sim": 3.4261596028839914,
+      "first30": {
+        "start_sim_s": 0.0,
+        "end_sim_s": 30.299999999998953,
+        "available_sim_s": 30.299999999998953,
+        "wall_s": 96.36599946022034,
+        "wall_per_sim": 3.18039602178956,
+        "method": "eval overview JPEG mtimes, prefix/release frame ticks aligned to teacher trace t"
+      },
+      "result_sha256": "71e0e9820c17c25bb51132bd54645511e6d21ed8c394f5b0932ce92884272086",
+      "profile_sha256": "d27fdd98157e27ad0455f862cfb8f3087d7f41b608d4857331cee444ddd7e526",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20ag-19-e897b0c2",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r20ag-19-e897b0c2",
+      "retrieved_and_hash_verified": true,
+      "remote_original_files_verified": 212,
+      "local_files_verified": 20,
+      "selected_frame_N": 18,
+      "directly_viewed": {
+        "viewed": true,
+        "temporal_sample_N": 6,
+        "camera_view_N": 18,
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "samples": [
+          {
+            "file": "raw/eval-overview/000000-prefix.jpg",
+            "sim_s": 0.0
+          },
+          {
+            "file": "raw/eval-overview/000000-release-look.jpg",
+            "sim_s": 8.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/000090-release-lookaround.jpg",
+            "sim_s": 17.299999999998953
+          },
+          {
+            "file": "raw/eval-overview/000190-release-await_observe.jpg",
+            "sim_s": 27.299999999998953
+          },
+          {
+            "file": "raw/eval-overview/000280-release-repick.jpg",
+            "sim_s": 36.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/000370-release-regrasp_check.jpg",
+            "sim_s": 45.29999999999895
+          }
+        ],
+        "relationship": "Distinct teal/blue ends in selected frames. No same-end assignment or mutual blockage observed.",
+        "classification": "Supervisor interrupted for shared-code susceptibility; no independent physical-failure cause assigned to this run."
+      }
+    },
+    {
+      "name": "r20ag-20-e897b0c2",
+      "stage": "gate",
+      "candidate": "A",
+      "episode": 20,
+      "seed": 110620,
+      "submitted": true,
+      "exit": "130",
+      "status": "interrupted",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 152,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 123.18130101600036,
+      "sim_s": 36.300000000090726,
+      "wall_per_sim": 3.393424270404752,
+      "first30": {
+        "start_sim_s": 0.0,
+        "end_sim_s": 30.299999999998953,
+        "available_sim_s": 30.299999999998953,
+        "wall_s": 99.09399962425232,
+        "wall_per_sim": 3.27042903050349,
+        "method": "eval overview JPEG mtimes, prefix/release frame ticks aligned to teacher trace t"
+      },
+      "result_sha256": "6098b1c5fdfe4719927ca54fd69300bf45c42c934b43493c91b5d41e233e7c99",
+      "profile_sha256": "d27fdd98157e27ad0455f862cfb8f3087d7f41b608d4857331cee444ddd7e526",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20ag-20-e897b0c2",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r20ag-20-e897b0c2",
+      "retrieved_and_hash_verified": true,
+      "remote_original_files_verified": 169,
+      "local_files_verified": 20,
+      "selected_frame_N": 18,
+      "directly_viewed": {
+        "viewed": true,
+        "temporal_sample_N": 6,
+        "camera_view_N": 18,
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "samples": [
+          {
+            "file": "raw/eval-overview/000000-prefix.jpg",
+            "sim_s": 0.0
+          },
+          {
+            "file": "raw/eval-overview/000070-prefix.jpg",
+            "sim_s": 7.0
+          },
+          {
+            "file": "raw/eval-overview/000050-release-observe_back.jpg",
+            "sim_s": 13.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/000130-release-lookaround.jpg",
+            "sim_s": 21.299999999998953
+          },
+          {
+            "file": "raw/eval-overview/000200-release-line_recheck.jpg",
+            "sim_s": 28.299999999998953
+          },
+          {
+            "file": "raw/eval-overview/000270-release-repick.jpg",
+            "sim_s": 35.29999999999895
+          }
+        ],
+        "relationship": "Distinct teal/blue ends in selected frames. No same-end assignment or mutual blockage observed.",
+        "classification": "Supervisor interrupted for shared-code susceptibility; no independent physical-failure cause assigned to this run."
+      }
+    },
+    {
+      "name": "r20ag-21-e897b0c2",
+      "stage": "gate",
+      "candidate": "A",
+      "episode": 21,
+      "seed": 110621,
+      "submitted": false,
+      "exit": null,
+      "status": "BLOCKED_SAME_DEFECT",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": null,
+        "held_world_reads": null,
+        "control_top_camera_reads": null,
+        "evaluation_top_camera_reads": null,
+        "scope": null
+      },
+      "wall_s": null,
+      "sim_s": null,
+      "wall_per_sim": null,
+      "first30": null,
+      "result_sha256": null,
+      "profile_sha256": "d27fdd98157e27ad0455f862cfb8f3087d7f41b608d4857331cee444ddd7e526",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20ag-21-e897b0c2",
+      "local_lite": null,
+      "retrieved_and_hash_verified": false,
+      "remote_original_files_verified": null,
+      "local_files_verified": null,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20ag-22-e897b0c2",
+      "stage": "gate",
+      "candidate": "A",
+      "episode": 22,
+      "seed": 110622,
+      "submitted": false,
+      "exit": null,
+      "status": "BLOCKED_SAME_DEFECT",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": null,
+        "held_world_reads": null,
+        "control_top_camera_reads": null,
+        "evaluation_top_camera_reads": null,
+        "scope": null
+      },
+      "wall_s": null,
+      "sim_s": null,
+      "wall_per_sim": null,
+      "first30": null,
+      "result_sha256": null,
+      "profile_sha256": "d27fdd98157e27ad0455f862cfb8f3087d7f41b608d4857331cee444ddd7e526",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20ag-22-e897b0c2",
+      "local_lite": null,
+      "retrieved_and_hash_verified": false,
+      "remote_original_files_verified": null,
+      "local_files_verified": null,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20ag-23-e897b0c2",
+      "stage": "gate",
+      "candidate": "A",
+      "episode": 23,
+      "seed": 110623,
+      "submitted": false,
+      "exit": null,
+      "status": "BLOCKED_SAME_DEFECT",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": null,
+        "held_world_reads": null,
+        "control_top_camera_reads": null,
+        "evaluation_top_camera_reads": null,
+        "scope": null
+      },
+      "wall_s": null,
+      "sim_s": null,
+      "wall_per_sim": null,
+      "first30": null,
+      "result_sha256": null,
+      "profile_sha256": "d27fdd98157e27ad0455f862cfb8f3087d7f41b608d4857331cee444ddd7e526",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20ag-23-e897b0c2",
+      "local_lite": null,
+      "retrieved_and_hash_verified": false,
+      "remote_original_files_verified": null,
+      "local_files_verified": null,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20ag-24-e897b0c2",
+      "stage": "gate",
+      "candidate": "A",
+      "episode": 24,
+      "seed": 110624,
+      "submitted": false,
+      "exit": null,
+      "status": "BLOCKED_SAME_DEFECT",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": null,
+        "held_world_reads": null,
+        "control_top_camera_reads": null,
+        "evaluation_top_camera_reads": null,
+        "scope": null
+      },
+      "wall_s": null,
+      "sim_s": null,
+      "wall_per_sim": null,
+      "first30": null,
+      "result_sha256": null,
+      "profile_sha256": "d27fdd98157e27ad0455f862cfb8f3087d7f41b608d4857331cee444ddd7e526",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20ag-24-e897b0c2",
+      "local_lite": null,
+      "retrieved_and_hash_verified": false,
+      "remote_original_files_verified": null,
+      "local_files_verified": null,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20ag-25-e897b0c2",
+      "stage": "gate",
+      "candidate": "A",
+      "episode": 25,
+      "seed": 110625,
+      "submitted": false,
+      "exit": null,
+      "status": "BLOCKED_SAME_DEFECT",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": null,
+        "held_world_reads": null,
+        "control_top_camera_reads": null,
+        "evaluation_top_camera_reads": null,
+        "scope": null
+      },
+      "wall_s": null,
+      "sim_s": null,
+      "wall_per_sim": null,
+      "first30": null,
+      "result_sha256": null,
+      "profile_sha256": "d27fdd98157e27ad0455f862cfb8f3087d7f41b608d4857331cee444ddd7e526",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20ag-25-e897b0c2",
+      "local_lite": null,
+      "retrieved_and_hash_verified": false,
+      "remote_original_files_verified": null,
+      "local_files_verified": null,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20ag-26-e897b0c2",
+      "stage": "gate",
+      "candidate": "A",
+      "episode": 26,
+      "seed": 110626,
+      "submitted": false,
+      "exit": null,
+      "status": "BLOCKED_SAME_DEFECT",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": null,
+        "held_world_reads": null,
+        "control_top_camera_reads": null,
+        "evaluation_top_camera_reads": null,
+        "scope": null
+      },
+      "wall_s": null,
+      "sim_s": null,
+      "wall_per_sim": null,
+      "first30": null,
+      "result_sha256": null,
+      "profile_sha256": "d27fdd98157e27ad0455f862cfb8f3087d7f41b608d4857331cee444ddd7e526",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20ag-26-e897b0c2",
+      "local_lite": null,
+      "retrieved_and_hash_verified": false,
+      "remote_original_files_verified": null,
+      "local_files_verified": null,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20ag-27-e897b0c2",
+      "stage": "gate",
+      "candidate": "A",
+      "episode": 27,
+      "seed": 110627,
+      "submitted": false,
+      "exit": null,
+      "status": "BLOCKED_SAME_DEFECT",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": null,
+        "held_world_reads": null,
+        "control_top_camera_reads": null,
+        "evaluation_top_camera_reads": null,
+        "scope": null
+      },
+      "wall_s": null,
+      "sim_s": null,
+      "wall_per_sim": null,
+      "first30": null,
+      "result_sha256": null,
+      "profile_sha256": "d27fdd98157e27ad0455f862cfb8f3087d7f41b608d4857331cee444ddd7e526",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20ag-27-e897b0c2",
+      "local_lite": null,
+      "retrieved_and_hash_verified": false,
+      "remote_original_files_verified": null,
+      "local_files_verified": null,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20ag-28-e897b0c2",
+      "stage": "gate",
+      "candidate": "A",
+      "episode": 28,
+      "seed": 110628,
+      "submitted": false,
+      "exit": null,
+      "status": "BLOCKED_SAME_DEFECT",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": null,
+        "held_world_reads": null,
+        "control_top_camera_reads": null,
+        "evaluation_top_camera_reads": null,
+        "scope": null
+      },
+      "wall_s": null,
+      "sim_s": null,
+      "wall_per_sim": null,
+      "first30": null,
+      "result_sha256": null,
+      "profile_sha256": "d27fdd98157e27ad0455f862cfb8f3087d7f41b608d4857331cee444ddd7e526",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20ag-28-e897b0c2",
+      "local_lite": null,
+      "retrieved_and_hash_verified": false,
+      "remote_original_files_verified": null,
+      "local_files_verified": null,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20ag-29-e897b0c2",
+      "stage": "gate",
+      "candidate": "A",
+      "episode": 29,
+      "seed": 110629,
+      "submitted": false,
+      "exit": null,
+      "status": "BLOCKED_SAME_DEFECT",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": null,
+        "held_world_reads": null,
+        "control_top_camera_reads": null,
+        "evaluation_top_camera_reads": null,
+        "scope": null
+      },
+      "wall_s": null,
+      "sim_s": null,
+      "wall_per_sim": null,
+      "first30": null,
+      "result_sha256": null,
+      "profile_sha256": "d27fdd98157e27ad0455f862cfb8f3087d7f41b608d4857331cee444ddd7e526",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20ag-29-e897b0c2",
+      "local_lite": null,
+      "retrieved_and_hash_verified": false,
+      "remote_original_files_verified": null,
+      "local_files_verified": null,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20ag-30-e897b0c2",
+      "stage": "gate",
+      "candidate": "A",
+      "episode": 30,
+      "seed": 110630,
+      "submitted": false,
+      "exit": null,
+      "status": "BLOCKED_SAME_DEFECT",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": null,
+        "held_world_reads": null,
+        "control_top_camera_reads": null,
+        "evaluation_top_camera_reads": null,
+        "scope": null
+      },
+      "wall_s": null,
+      "sim_s": null,
+      "wall_per_sim": null,
+      "first30": null,
+      "result_sha256": null,
+      "profile_sha256": "d27fdd98157e27ad0455f862cfb8f3087d7f41b608d4857331cee444ddd7e526",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20ag-30-e897b0c2",
+      "local_lite": null,
+      "retrieved_and_hash_verified": false,
+      "remote_original_files_verified": null,
+      "local_files_verified": null,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20ag-31-e897b0c2",
+      "stage": "gate",
+      "candidate": "A",
+      "episode": 31,
+      "seed": 110631,
+      "submitted": false,
+      "exit": null,
+      "status": "BLOCKED_SAME_DEFECT",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": null,
+        "held_world_reads": null,
+        "control_top_camera_reads": null,
+        "evaluation_top_camera_reads": null,
+        "scope": null
+      },
+      "wall_s": null,
+      "sim_s": null,
+      "wall_per_sim": null,
+      "first30": null,
+      "result_sha256": null,
+      "profile_sha256": "d27fdd98157e27ad0455f862cfb8f3087d7f41b608d4857331cee444ddd7e526",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20ag-31-e897b0c2",
+      "local_lite": null,
+      "retrieved_and_hash_verified": false,
+      "remote_original_files_verified": null,
+      "local_files_verified": null,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20ag-32-e897b0c2",
+      "stage": "gate",
+      "candidate": "A",
+      "episode": 32,
+      "seed": 110632,
+      "submitted": false,
+      "exit": null,
+      "status": "BLOCKED_SAME_DEFECT",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": null,
+        "held_world_reads": null,
+        "control_top_camera_reads": null,
+        "evaluation_top_camera_reads": null,
+        "scope": null
+      },
+      "wall_s": null,
+      "sim_s": null,
+      "wall_per_sim": null,
+      "first30": null,
+      "result_sha256": null,
+      "profile_sha256": "d27fdd98157e27ad0455f862cfb8f3087d7f41b608d4857331cee444ddd7e526",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20ag-32-e897b0c2",
+      "local_lite": null,
+      "retrieved_and_hash_verified": false,
+      "remote_original_files_verified": null,
+      "local_files_verified": null,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20ag-33-e897b0c2",
+      "stage": "gate",
+      "candidate": "A",
+      "episode": 33,
+      "seed": 110633,
+      "submitted": false,
+      "exit": null,
+      "status": "BLOCKED_SAME_DEFECT",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": null,
+        "held_world_reads": null,
+        "control_top_camera_reads": null,
+        "evaluation_top_camera_reads": null,
+        "scope": null
+      },
+      "wall_s": null,
+      "sim_s": null,
+      "wall_per_sim": null,
+      "first30": null,
+      "result_sha256": null,
+      "profile_sha256": "d27fdd98157e27ad0455f862cfb8f3087d7f41b608d4857331cee444ddd7e526",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20ag-33-e897b0c2",
+      "local_lite": null,
+      "retrieved_and_hash_verified": false,
+      "remote_original_files_verified": null,
+      "local_files_verified": null,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20ag-34-e897b0c2",
+      "stage": "gate",
+      "candidate": "A",
+      "episode": 34,
+      "seed": 110634,
+      "submitted": false,
+      "exit": null,
+      "status": "BLOCKED_SAME_DEFECT",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": null,
+        "held_world_reads": null,
+        "control_top_camera_reads": null,
+        "evaluation_top_camera_reads": null,
+        "scope": null
+      },
+      "wall_s": null,
+      "sim_s": null,
+      "wall_per_sim": null,
+      "first30": null,
+      "result_sha256": null,
+      "profile_sha256": "d27fdd98157e27ad0455f862cfb8f3087d7f41b608d4857331cee444ddd7e526",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20ag-34-e897b0c2",
+      "local_lite": null,
+      "retrieved_and_hash_verified": false,
+      "remote_original_files_verified": null,
+      "local_files_verified": null,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20ag-35-e897b0c2",
+      "stage": "gate",
+      "candidate": "A",
+      "episode": 35,
+      "seed": 110635,
+      "submitted": false,
+      "exit": null,
+      "status": "BLOCKED_SAME_DEFECT",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": null,
+        "held_world_reads": null,
+        "control_top_camera_reads": null,
+        "evaluation_top_camera_reads": null,
+        "scope": null
+      },
+      "wall_s": null,
+      "sim_s": null,
+      "wall_per_sim": null,
+      "first30": null,
+      "result_sha256": null,
+      "profile_sha256": "d27fdd98157e27ad0455f862cfb8f3087d7f41b608d4857331cee444ddd7e526",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20ag-35-e897b0c2",
+      "local_lite": null,
+      "retrieved_and_hash_verified": false,
+      "remote_original_files_verified": null,
+      "local_files_verified": null,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20ag-36-e897b0c2",
+      "stage": "gate",
+      "candidate": "A",
+      "episode": 36,
+      "seed": 110636,
+      "submitted": false,
+      "exit": null,
+      "status": "BLOCKED_SAME_DEFECT",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": null,
+        "held_world_reads": null,
+        "control_top_camera_reads": null,
+        "evaluation_top_camera_reads": null,
+        "scope": null
+      },
+      "wall_s": null,
+      "sim_s": null,
+      "wall_per_sim": null,
+      "first30": null,
+      "result_sha256": null,
+      "profile_sha256": "d27fdd98157e27ad0455f862cfb8f3087d7f41b608d4857331cee444ddd7e526",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20ag-36-e897b0c2",
+      "local_lite": null,
+      "retrieved_and_hash_verified": false,
+      "remote_original_files_verified": null,
+      "local_files_verified": null,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20ag-37-e897b0c2",
+      "stage": "gate",
+      "candidate": "A",
+      "episode": 37,
+      "seed": 110637,
+      "submitted": false,
+      "exit": null,
+      "status": "BLOCKED_SAME_DEFECT",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": null,
+        "held_world_reads": null,
+        "control_top_camera_reads": null,
+        "evaluation_top_camera_reads": null,
+        "scope": null
+      },
+      "wall_s": null,
+      "sim_s": null,
+      "wall_per_sim": null,
+      "first30": null,
+      "result_sha256": null,
+      "profile_sha256": "d27fdd98157e27ad0455f862cfb8f3087d7f41b608d4857331cee444ddd7e526",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20ag-37-e897b0c2",
+      "local_lite": null,
+      "retrieved_and_hash_verified": false,
+      "remote_original_files_verified": null,
+      "local_files_verified": null,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20ag-38-e897b0c2",
+      "stage": "gate",
+      "candidate": "A",
+      "episode": 38,
+      "seed": 110638,
+      "submitted": false,
+      "exit": null,
+      "status": "BLOCKED_SAME_DEFECT",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": null,
+        "held_world_reads": null,
+        "control_top_camera_reads": null,
+        "evaluation_top_camera_reads": null,
+        "scope": null
+      },
+      "wall_s": null,
+      "sim_s": null,
+      "wall_per_sim": null,
+      "first30": null,
+      "result_sha256": null,
+      "profile_sha256": "d27fdd98157e27ad0455f862cfb8f3087d7f41b608d4857331cee444ddd7e526",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20ag-38-e897b0c2",
+      "local_lite": null,
+      "retrieved_and_hash_verified": false,
+      "remote_original_files_verified": null,
+      "local_files_verified": null,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20ag-39-e897b0c2",
+      "stage": "gate",
+      "candidate": "A",
+      "episode": 39,
+      "seed": 110639,
+      "submitted": false,
+      "exit": null,
+      "status": "BLOCKED_SAME_DEFECT",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": null,
+        "held_world_reads": null,
+        "control_top_camera_reads": null,
+        "evaluation_top_camera_reads": null,
+        "scope": null
+      },
+      "wall_s": null,
+      "sim_s": null,
+      "wall_per_sim": null,
+      "first30": null,
+      "result_sha256": null,
+      "profile_sha256": "d27fdd98157e27ad0455f862cfb8f3087d7f41b608d4857331cee444ddd7e526",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20ag-39-e897b0c2",
+      "local_lite": null,
+      "retrieved_and_hash_verified": false,
+      "remote_original_files_verified": null,
+      "local_files_verified": null,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20bg-13-e897b0c2",
+      "stage": "gate",
+      "candidate": "B",
+      "episode": 13,
+      "seed": 110613,
+      "submitted": true,
+      "exit": "0",
+      "status": "complete",
+      "success": true,
+      "release_outcome": "teacher_done",
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 492,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 426.6405871170027,
+      "sim_s": 124.7999999987341,
+      "wall_per_sim": 3.4185944480875827,
+      "first30": {
+        "start_sim_s": 0.0,
+        "end_sim_s": 30.299999999998953,
+        "available_sim_s": 30.299999999998953,
+        "wall_s": 90.86399936676025,
+        "wall_per_sim": 2.998811860289221,
+        "method": "eval overview JPEG mtimes, prefix/release frame ticks aligned to teacher trace t"
+      },
+      "result_sha256": "b0f97c38ca2743fd552c617b3a85ffbde09d032c4ab2fcfe254cfc4d88ee3e4e",
+      "profile_sha256": "d814770b426f821680b93d19ee8231d143f9b4ecc5aece66a125f0249ceb59f1",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20bg-13-e897b0c2",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r20bg-13-e897b0c2",
+      "retrieved_and_hash_verified": true,
+      "remote_original_files_verified": 544,
+      "local_files_verified": 19,
+      "selected_frame_N": 18,
+      "directly_viewed": {
+        "viewed": true,
+        "temporal_sample_N": 6,
+        "camera_view_N": 18,
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "samples": [
+          {
+            "file": "raw/eval-overview/000000-prefix.jpg",
+            "sim_s": 0.0
+          },
+          {
+            "file": "raw/eval-overview/000150-release-lookaround.jpg",
+            "sim_s": 23.299999999998953
+          },
+          {
+            "file": "raw/eval-overview/000400-release-regrasp_check.jpg",
+            "sim_s": 48.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/000640-release-line_recheck.jpg",
+            "sim_s": 72.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/000890-release-regrasp_check.jpg",
+            "sim_s": 97.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/001130-release-done.jpg",
+            "sim_s": 121.29999999999895
+          }
+        ],
+        "relationship": "Distinct teal/blue ends throughout selected frames, successful release and retreat."
+      }
+    },
+    {
+      "name": "r20bg-00-e897b0c2",
+      "stage": "gate",
+      "candidate": "B",
+      "episode": 0,
+      "seed": 110600,
+      "submitted": true,
+      "exit": "0",
+      "status": "complete",
+      "success": true,
+      "release_outcome": "teacher_done",
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 124,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 101.4154405679983,
+      "sim_s": 32.30000000007163,
+      "wall_per_sim": 3.139796921602892,
+      "first30": {
+        "start_sim_s": 0.0,
+        "end_sim_s": 29.299999999998953,
+        "available_sim_s": 29.299999999998953,
+        "wall_s": 88.77299952507019,
+        "wall_per_sim": 3.0297952056339033,
+        "method": "eval overview JPEG mtimes, prefix/release frame ticks aligned to teacher trace t"
+      },
+      "result_sha256": "2a4ddf2d4915801198333941c4b5a07b3b176324941cb71aa0f5fdf0e7172b8b",
+      "profile_sha256": "d814770b426f821680b93d19ee8231d143f9b4ecc5aece66a125f0249ceb59f1",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20bg-00-e897b0c2",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r20bg-00-e897b0c2",
+      "retrieved_and_hash_verified": true,
+      "remote_original_files_verified": 123,
+      "local_files_verified": 18,
+      "selected_frame_N": 18,
+      "directly_viewed": {
+        "viewed": true,
+        "temporal_sample_N": 6,
+        "camera_view_N": 18,
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "samples": [
+          {
+            "file": "raw/eval-overview/000000-prefix.jpg",
+            "sim_s": 0.0
+          },
+          {
+            "file": "raw/eval-overview/000060-prefix.jpg",
+            "sim_s": 6.0
+          },
+          {
+            "file": "raw/eval-overview/000030-release-lower.jpg",
+            "sim_s": 11.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/000090-release-lookaround.jpg",
+            "sim_s": 17.299999999998953
+          },
+          {
+            "file": "raw/eval-overview/000150-release-lookaround.jpg",
+            "sim_s": 23.299999999998953
+          },
+          {
+            "file": "raw/eval-overview/000210-release-done.jpg",
+            "sim_s": 29.299999999998953
+          }
+        ],
+        "relationship": "Distinct teal/blue ends; no same-end assignment or mutual blockage seen in selected frames."
+      }
+    },
+    {
+      "name": "r20bg-01-e897b0c2",
+      "stage": "gate",
+      "candidate": "B",
+      "episode": 1,
+      "seed": 110601,
+      "submitted": true,
+      "exit": "0",
+      "status": "complete",
+      "success": true,
+      "release_outcome": "teacher_done",
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 124,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 97.04833523900015,
+      "sim_s": 32.30000000007163,
+      "wall_per_sim": 3.004592422253404,
+      "first30": {
+        "start_sim_s": 0.0,
+        "end_sim_s": 29.299999999998953,
+        "available_sim_s": 29.299999999998953,
+        "wall_s": 85.29199934005737,
+        "wall_per_sim": 2.910989738568615,
+        "method": "eval overview JPEG mtimes, prefix/release frame ticks aligned to teacher trace t"
+      },
+      "result_sha256": "bf4ba45a8cc8371967b16076a4bc325cdd68633dd6a08b62fbd72406a98619a0",
+      "profile_sha256": "d814770b426f821680b93d19ee8231d143f9b4ecc5aece66a125f0249ceb59f1",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20bg-01-e897b0c2",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r20bg-01-e897b0c2",
+      "retrieved_and_hash_verified": true,
+      "remote_original_files_verified": 123,
+      "local_files_verified": 18,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20bg-02-e897b0c2",
+      "stage": "gate",
+      "candidate": "B",
+      "episode": 2,
+      "seed": 110602,
+      "submitted": true,
+      "exit": "0",
+      "status": "complete",
+      "success": true,
+      "release_outcome": "teacher_done",
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 308,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 273.09690569300074,
+      "sim_s": 78.59999999982658,
+      "wall_per_sim": 3.4745153396132733,
+      "first30": {
+        "start_sim_s": 0.0,
+        "end_sim_s": 30.299999999998953,
+        "available_sim_s": 30.299999999998953,
+        "wall_s": 90.2839994430542,
+        "wall_per_sim": 2.979669948615753,
+        "method": "eval overview JPEG mtimes, prefix/release frame ticks aligned to teacher trace t"
+      },
+      "result_sha256": "246b296725bef47631268e07513758df07f16d333a41c4c3056fe57f869cdb44",
+      "profile_sha256": "d814770b426f821680b93d19ee8231d143f9b4ecc5aece66a125f0249ceb59f1",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20bg-02-e897b0c2",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r20bg-02-e897b0c2",
+      "retrieved_and_hash_verified": true,
+      "remote_original_files_verified": 332,
+      "local_files_verified": 18,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20bg-03-e897b0c2",
+      "stage": "gate",
+      "candidate": "B",
+      "episode": 3,
+      "seed": 110603,
+      "submitted": true,
+      "exit": "0",
+      "status": "complete",
+      "success": true,
+      "release_outcome": "teacher_done",
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 308,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 283.82725614599985,
+      "sim_s": 78.59999999982658,
+      "wall_per_sim": 3.611033793214072,
+      "first30": {
+        "start_sim_s": 0.0,
+        "end_sim_s": 30.299999999998953,
+        "available_sim_s": 30.299999999998953,
+        "wall_s": 99.59031414985657,
+        "wall_per_sim": 3.2868090478501655,
+        "method": "eval overview JPEG mtimes, prefix/release frame ticks aligned to teacher trace t"
+      },
+      "result_sha256": "a54293505d7372bb4a1510aceb1f1f088d98efbdd435bd284eff1d11e6a262e1",
+      "profile_sha256": "d814770b426f821680b93d19ee8231d143f9b4ecc5aece66a125f0249ceb59f1",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20bg-03-e897b0c2",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r20bg-03-e897b0c2",
+      "retrieved_and_hash_verified": true,
+      "remote_original_files_verified": 332,
+      "local_files_verified": 18,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20bg-04-e897b0c2",
+      "stage": "gate",
+      "candidate": "B",
+      "episode": 4,
+      "seed": 110604,
+      "submitted": true,
+      "exit": "0",
+      "status": "complete",
+      "success": true,
+      "release_outcome": "teacher_done",
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 496,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 444.561950886,
+      "sim_s": 125.099999998727,
+      "wall_per_sim": 3.553652684976209,
+      "first30": {
+        "start_sim_s": 0.0,
+        "end_sim_s": 30.299999999998953,
+        "available_sim_s": 30.299999999998953,
+        "wall_s": 100.85699963569641,
+        "wall_per_sim": 3.328613849363033,
+        "method": "eval overview JPEG mtimes, prefix/release frame ticks aligned to teacher trace t"
+      },
+      "result_sha256": "427fa4c478c87174b8bfef9f676c2d5cf546c8fab221d9e7dbf09b02bc2757ba",
+      "profile_sha256": "d814770b426f821680b93d19ee8231d143f9b4ecc5aece66a125f0249ceb59f1",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20bg-04-e897b0c2",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r20bg-04-e897b0c2",
+      "retrieved_and_hash_verified": true,
+      "remote_original_files_verified": 548,
+      "local_files_verified": 19,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20bg-05-e897b0c2",
+      "stage": "gate",
+      "candidate": "B",
+      "episode": 5,
+      "seed": 110605,
+      "submitted": true,
+      "exit": "0",
+      "status": "complete",
+      "success": true,
+      "release_outcome": "teacher_done",
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 496,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 448.8853105829985,
+      "sim_s": 125.29999999872227,
+      "wall_per_sim": 3.582484521848172,
+      "first30": {
+        "start_sim_s": 0.0,
+        "end_sim_s": 30.299999999998953,
+        "available_sim_s": 30.299999999998953,
+        "wall_s": 104.94099950790405,
+        "wall_per_sim": 3.4633993236933227,
+        "method": "eval overview JPEG mtimes, prefix/release frame ticks aligned to teacher trace t"
+      },
+      "result_sha256": "4968fac77057b9c9c30a543ab6a59e17336c00c3bc9612fa5283d6aba0d65356",
+      "profile_sha256": "d814770b426f821680b93d19ee8231d143f9b4ecc5aece66a125f0249ceb59f1",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20bg-05-e897b0c2",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r20bg-05-e897b0c2",
+      "retrieved_and_hash_verified": true,
+      "remote_original_files_verified": 549,
+      "local_files_verified": 19,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20bg-06-e897b0c2",
+      "stage": "gate",
+      "candidate": "B",
+      "episode": 6,
+      "seed": 110606,
+      "submitted": true,
+      "exit": "130",
+      "status": "interrupted",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 668,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 607.719792767999,
+      "sim_s": 166.26549999775358,
+      "wall_per_sim": 3.6551166223672977,
+      "first30": {
+        "start_sim_s": 0.0,
+        "end_sim_s": 30.299999999998953,
+        "available_sim_s": 30.299999999998953,
+        "wall_s": 108.52299952507019,
+        "wall_per_sim": 3.5816171460420443,
+        "method": "eval overview JPEG mtimes, prefix/release frame ticks aligned to teacher trace t"
+      },
+      "result_sha256": "2e4c2d9fb915ee75657a089652601e770a13a56ab83c1e770e327bb5bc546518",
+      "profile_sha256": "d814770b426f821680b93d19ee8231d143f9b4ecc5aece66a125f0249ceb59f1",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20bg-06-e897b0c2",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r20bg-06-e897b0c2",
+      "retrieved_and_hash_verified": true,
+      "remote_original_files_verified": 751,
+      "local_files_verified": 21,
+      "selected_frame_N": 18,
+      "directly_viewed": {
+        "viewed": true,
+        "temporal_sample_N": 6,
+        "camera_view_N": 18,
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "samples": [
+          {
+            "file": "raw/eval-overview/000000-prefix.jpg",
+            "sim_s": 0.0
+          },
+          {
+            "file": "raw/eval-overview/000240-release-approach.jpg",
+            "sim_s": 32.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/000570-release-observe_back.jpg",
+            "sim_s": 65.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/000910-release-regrasp_check.jpg",
+            "sim_s": 99.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/001240-release-repick.jpg",
+            "sim_s": 132.29999999999896
+          },
+          {
+            "file": "raw/eval-overview/001570-release-done.jpg",
+            "sim_s": 165.29999999999896
+          }
+        ],
+        "relationship": "Distinct teal/blue ends in selected frames. No same-end assignment or mutual blockage observed.",
+        "classification": "Supervisor interrupted for shared-code susceptibility; no independent physical-failure cause assigned to this run."
+      }
+    },
+    {
+      "name": "r20bg-07-e897b0c2",
+      "stage": "gate",
+      "candidate": "B",
+      "episode": 7,
+      "seed": 110607,
+      "submitted": true,
+      "exit": "130",
+      "status": "interrupted",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 616,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 544.2416871610003,
+      "sim_s": 152.33224999808306,
+      "wall_per_sim": 3.5727279493859574,
+      "first30": {
+        "start_sim_s": 0.0,
+        "end_sim_s": 30.299999999998953,
+        "available_sim_s": 30.299999999998953,
+        "wall_s": 98.53699970245361,
+        "wall_per_sim": 3.252046194800562,
+        "method": "eval overview JPEG mtimes, prefix/release frame ticks aligned to teacher trace t"
+      },
+      "result_sha256": "07bbfe9128bba5151e855033edf8aa2f46e3df5865a8d15eb133f39762effe2e",
+      "profile_sha256": "d814770b426f821680b93d19ee8231d143f9b4ecc5aece66a125f0249ceb59f1",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20bg-07-e897b0c2",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r20bg-07-e897b0c2",
+      "retrieved_and_hash_verified": true,
+      "remote_original_files_verified": 698,
+      "local_files_verified": 21,
+      "selected_frame_N": 18,
+      "directly_viewed": {
+        "viewed": true,
+        "temporal_sample_N": 6,
+        "camera_view_N": 18,
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "samples": [
+          {
+            "file": "raw/eval-overview/000000-prefix.jpg",
+            "sim_s": 0.0
+          },
+          {
+            "file": "raw/eval-overview/000220-release-line_recheck.jpg",
+            "sim_s": 30.299999999998953
+          },
+          {
+            "file": "raw/eval-overview/000520-release-lookaround.jpg",
+            "sim_s": 60.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/000830-release-regrasp_check.jpg",
+            "sim_s": 91.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/001130-release-line_recheck.jpg",
+            "sim_s": 121.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/001440-release-observe_back.jpg",
+            "sim_s": 152.29999999999896
+          }
+        ],
+        "relationship": "Distinct teal/blue ends in selected frames. No same-end assignment or mutual blockage observed.",
+        "classification": "Supervisor interrupted for shared-code susceptibility; no independent physical-failure cause assigned to this run."
+      }
+    },
+    {
+      "name": "r20bg-08-e897b0c2",
+      "stage": "gate",
+      "candidate": "B",
+      "episode": 8,
+      "seed": 110608,
+      "submitted": true,
+      "exit": "0",
+      "status": "complete",
+      "success": true,
+      "release_outcome": "teacher_done",
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 120,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 98.74744130399995,
+      "sim_s": 31.100000000065894,
+      "wall_per_sim": 3.1751588843662613,
+      "first30": {
+        "start_sim_s": 0.0,
+        "end_sim_s": 28.299999999998953,
+        "available_sim_s": 28.299999999998953,
+        "wall_s": 85.70899963378906,
+        "wall_per_sim": 3.028586559497959,
+        "method": "eval overview JPEG mtimes, prefix/release frame ticks aligned to teacher trace t"
+      },
+      "result_sha256": "d59fd0b9f29d3f25bb1d996d80b46c36b2d998cb8fb721d686074045db8cc12d",
+      "profile_sha256": "d814770b426f821680b93d19ee8231d143f9b4ecc5aece66a125f0249ceb59f1",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20bg-08-e897b0c2",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r20bg-08-e897b0c2",
+      "retrieved_and_hash_verified": true,
+      "remote_original_files_verified": 120,
+      "local_files_verified": 18,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20bg-09-e897b0c2",
+      "stage": "gate",
+      "candidate": "B",
+      "episode": 9,
+      "seed": 110609,
+      "submitted": true,
+      "exit": "0",
+      "status": "complete",
+      "success": true,
+      "release_outcome": "teacher_done",
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 308,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 280.4014103030022,
+      "sim_s": 78.19999999983604,
+      "wall_per_sim": 3.585695783933377,
+      "first30": {
+        "start_sim_s": 0.0,
+        "end_sim_s": 30.299999999998953,
+        "available_sim_s": 30.299999999998953,
+        "wall_s": 94.86399936676025,
+        "wall_per_sim": 3.1308250616093574,
+        "method": "eval overview JPEG mtimes, prefix/release frame ticks aligned to teacher trace t"
+      },
+      "result_sha256": "dae88c186b9934e9ca16367800bc8fda45043f80387aec44780d0a1ae73b94a7",
+      "profile_sha256": "d814770b426f821680b93d19ee8231d143f9b4ecc5aece66a125f0249ceb59f1",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20bg-09-e897b0c2",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r20bg-09-e897b0c2",
+      "retrieved_and_hash_verified": true,
+      "remote_original_files_verified": 332,
+      "local_files_verified": 18,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20bg-10-e897b0c2",
+      "stage": "gate",
+      "candidate": "B",
+      "episode": 10,
+      "seed": 110610,
+      "submitted": true,
+      "exit": "0",
+      "status": "complete",
+      "success": true,
+      "release_outcome": "teacher_done",
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 308,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 277.2520869,
+      "sim_s": 77.99999999984077,
+      "wall_per_sim": 3.554513934622641,
+      "first30": {
+        "start_sim_s": 0.0,
+        "end_sim_s": 30.299999999998953,
+        "available_sim_s": 30.299999999998953,
+        "wall_s": 92.2449996471405,
+        "wall_per_sim": 3.0443894272984715,
+        "method": "eval overview JPEG mtimes, prefix/release frame ticks aligned to teacher trace t"
+      },
+      "result_sha256": "662fab7075a64ee72a47bfe098a5e6159e1432c4abbd46c104a4d353f11d7959",
+      "profile_sha256": "d814770b426f821680b93d19ee8231d143f9b4ecc5aece66a125f0249ceb59f1",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20bg-10-e897b0c2",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r20bg-10-e897b0c2",
+      "retrieved_and_hash_verified": true,
+      "remote_original_files_verified": 329,
+      "local_files_verified": 18,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20bg-11-e897b0c2",
+      "stage": "gate",
+      "candidate": "B",
+      "episode": 11,
+      "seed": 110611,
+      "submitted": true,
+      "exit": "0",
+      "status": "complete",
+      "success": true,
+      "release_outcome": "teacher_done",
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 308,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 276.2552412090008,
+      "sim_s": 78.19999999983604,
+      "wall_per_sim": 3.5326757187925835,
+      "first30": {
+        "start_sim_s": 0.0,
+        "end_sim_s": 30.299999999998953,
+        "available_sim_s": 30.299999999998953,
+        "wall_s": 95.39099955558777,
+        "wall_per_sim": 3.1482178071152167,
+        "method": "eval overview JPEG mtimes, prefix/release frame ticks aligned to teacher trace t"
+      },
+      "result_sha256": "291a04c222836dee6516309550097fd35cd0b545fd1fa279e386c588f7dbdc12",
+      "profile_sha256": "d814770b426f821680b93d19ee8231d143f9b4ecc5aece66a125f0249ceb59f1",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20bg-11-e897b0c2",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r20bg-11-e897b0c2",
+      "retrieved_and_hash_verified": true,
+      "remote_original_files_verified": 330,
+      "local_files_verified": 18,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20bg-12-e897b0c2",
+      "stage": "gate",
+      "candidate": "B",
+      "episode": 12,
+      "seed": 110612,
+      "submitted": true,
+      "exit": "130",
+      "status": "interrupted",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 396,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 369.78228090099947,
+      "sim_s": 97.51599999937928,
+      "wall_per_sim": 3.792016498865348,
+      "first30": {
+        "start_sim_s": 0.0,
+        "end_sim_s": 30.299999999998953,
+        "available_sim_s": 30.299999999998953,
+        "wall_s": 101.75199937820435,
+        "wall_per_sim": 3.3581517946603254,
+        "method": "eval overview JPEG mtimes, prefix/release frame ticks aligned to teacher trace t"
+      },
+      "result_sha256": "d1023355d6cd0bd6daa8ac825415e4d223c55e382a8fd75d18fd0df7b892041e",
+      "profile_sha256": "d814770b426f821680b93d19ee8231d143f9b4ecc5aece66a125f0249ceb59f1",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20bg-12-e897b0c2",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r20bg-12-e897b0c2",
+      "retrieved_and_hash_verified": true,
+      "remote_original_files_verified": 451,
+      "local_files_verified": 21,
+      "selected_frame_N": 18,
+      "directly_viewed": {
+        "viewed": true,
+        "temporal_sample_N": 6,
+        "camera_view_N": 18,
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "samples": [
+          {
+            "file": "raw/eval-overview/000000-prefix.jpg",
+            "sim_s": 0.0
+          },
+          {
+            "file": "raw/eval-overview/000110-release-observe_back.jpg",
+            "sim_s": 19.299999999998953
+          },
+          {
+            "file": "raw/eval-overview/000300-release-repick.jpg",
+            "sim_s": 38.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/000500-release-open.jpg",
+            "sim_s": 58.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/000690-release-approach.jpg",
+            "sim_s": 77.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/000890-release-regrasp_check.jpg",
+            "sim_s": 97.29999999999895
+          }
+        ],
+        "relationship": "Distinct teal/blue ends in selected frames. No same-end assignment or mutual blockage observed.",
+        "classification": "Supervisor interrupted for shared-code susceptibility; no independent physical-failure cause assigned to this run."
+      }
+    },
+    {
+      "name": "r20bg-14-e897b0c2",
+      "stage": "gate",
+      "candidate": "B",
+      "episode": 14,
+      "seed": 110614,
+      "submitted": true,
+      "exit": "130",
+      "status": "interrupted",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 388,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 339.53739420799684,
+      "sim_s": 95.40249999942925,
+      "wall_per_sim": 3.5589989173242644,
+      "first30": {
+        "start_sim_s": 0.0,
+        "end_sim_s": 30.299999999998953,
+        "available_sim_s": 30.299999999998953,
+        "wall_s": 99.26099944114685,
+        "wall_per_sim": 3.275940575615521,
+        "method": "eval overview JPEG mtimes, prefix/release frame ticks aligned to teacher trace t"
+      },
+      "result_sha256": "8ae77f96689007a0fbf40e28820137bab1444be9d4e4d7b4d90e86bc7c48b714",
+      "profile_sha256": "d814770b426f821680b93d19ee8231d143f9b4ecc5aece66a125f0249ceb59f1",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20bg-14-e897b0c2",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r20bg-14-e897b0c2",
+      "retrieved_and_hash_verified": true,
+      "remote_original_files_verified": 436,
+      "local_files_verified": 21,
+      "selected_frame_N": 18,
+      "directly_viewed": {
+        "viewed": true,
+        "temporal_sample_N": 6,
+        "camera_view_N": 18,
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "samples": [
+          {
+            "file": "raw/eval-overview/000000-prefix.jpg",
+            "sim_s": 0.0
+          },
+          {
+            "file": "raw/eval-overview/000100-release-observe_back.jpg",
+            "sim_s": 18.299999999998953
+          },
+          {
+            "file": "raw/eval-overview/000290-release-repick.jpg",
+            "sim_s": 37.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/000490-release-await_open.jpg",
+            "sim_s": 57.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/000680-release-line_recheck.jpg",
+            "sim_s": 76.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/000870-release-regrasp_check.jpg",
+            "sim_s": 95.29999999999895
+          }
+        ],
+        "relationship": "Distinct teal/blue ends in selected frames. No same-end assignment or mutual blockage observed.",
+        "classification": "Supervisor interrupted for shared-code susceptibility; no independent physical-failure cause assigned to this run."
+      }
+    },
+    {
+      "name": "r20bg-15-e897b0c2",
+      "stage": "gate",
+      "candidate": "B",
+      "episode": 15,
+      "seed": 110615,
+      "submitted": true,
+      "exit": "130",
+      "status": "interrupted",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 336,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 308.3139954140024,
+      "sim_s": 83.28224999971586,
+      "wall_per_sim": 3.702037293841777,
+      "first30": {
+        "start_sim_s": 0.0,
+        "end_sim_s": 30.299999999998953,
+        "available_sim_s": 30.299999999998953,
+        "wall_s": 109.87299942970276,
+        "wall_per_sim": 3.6261715983401506,
+        "method": "eval overview JPEG mtimes, prefix/release frame ticks aligned to teacher trace t"
+      },
+      "result_sha256": "f5896b6f048ceade99d75a52c41323b8aa222d0471b42b3238e016d096d8bb0b",
+      "profile_sha256": "d814770b426f821680b93d19ee8231d143f9b4ecc5aece66a125f0249ceb59f1",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20bg-15-e897b0c2",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r20bg-15-e897b0c2",
+      "retrieved_and_hash_verified": true,
+      "remote_original_files_verified": 384,
+      "local_files_verified": 20,
+      "selected_frame_N": 18,
+      "directly_viewed": {
+        "viewed": true,
+        "temporal_sample_N": 6,
+        "camera_view_N": 18,
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "samples": [
+          {
+            "file": "raw/eval-overview/000000-prefix.jpg",
+            "sim_s": 0.0
+          },
+          {
+            "file": "raw/eval-overview/000080-release-lookaround.jpg",
+            "sim_s": 16.299999999998953
+          },
+          {
+            "file": "raw/eval-overview/000240-release-approach.jpg",
+            "sim_s": 32.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/000410-release-regrasp_check.jpg",
+            "sim_s": 49.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/000570-release-observe_back.jpg",
+            "sim_s": 65.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/000740-release-repick.jpg",
+            "sim_s": 82.29999999999895
+          }
+        ],
+        "relationship": "Distinct teal/blue ends in selected frames. No same-end assignment or mutual blockage observed.",
+        "classification": "Supervisor interrupted for shared-code susceptibility; no independent physical-failure cause assigned to this run."
+      }
+    },
+    {
+      "name": "r20bg-16-e897b0c2",
+      "stage": "gate",
+      "candidate": "B",
+      "episode": 16,
+      "seed": 110616,
+      "submitted": true,
+      "exit": "0",
+      "status": "complete",
+      "success": true,
+      "release_outcome": "teacher_done",
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 124,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 117.3932735160015,
+      "sim_s": 32.30000000007163,
+      "wall_per_sim": 3.6344666723139682,
+      "first30": {
+        "start_sim_s": 0.0,
+        "end_sim_s": 29.299999999998953,
+        "available_sim_s": 29.299999999998953,
+        "wall_s": 103.52799963951111,
+        "wall_per_sim": 3.5333788272871947,
+        "method": "eval overview JPEG mtimes, prefix/release frame ticks aligned to teacher trace t"
+      },
+      "result_sha256": "6fd7f9aa03f6c9f85ad3d3588a592ade6a5008f9d184872e6c0926ac86f27d16",
+      "profile_sha256": "d814770b426f821680b93d19ee8231d143f9b4ecc5aece66a125f0249ceb59f1",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20bg-16-e897b0c2",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r20bg-16-e897b0c2",
+      "retrieved_and_hash_verified": true,
+      "remote_original_files_verified": 123,
+      "local_files_verified": 18,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20bg-17-e897b0c2",
+      "stage": "gate",
+      "candidate": "B",
+      "episode": 17,
+      "seed": 110617,
+      "submitted": true,
+      "exit": "0",
+      "status": "complete",
+      "success": true,
+      "release_outcome": "teacher_done",
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 124,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 110.97896773699904,
+      "sim_s": 32.30000000007163,
+      "wall_per_sim": 3.4358813540790383,
+      "first30": {
+        "start_sim_s": 0.0,
+        "end_sim_s": 29.299999999998953,
+        "available_sim_s": 29.299999999998953,
+        "wall_s": 97.82623839378357,
+        "wall_per_sim": 3.338779467364746,
+        "method": "eval overview JPEG mtimes, prefix/release frame ticks aligned to teacher trace t"
+      },
+      "result_sha256": "38c3cc302032ad421c383569daf2338b2a2e6feb4f92d18de117a7d1c58df95e",
+      "profile_sha256": "d814770b426f821680b93d19ee8231d143f9b4ecc5aece66a125f0249ceb59f1",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20bg-17-e897b0c2",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r20bg-17-e897b0c2",
+      "retrieved_and_hash_verified": true,
+      "remote_original_files_verified": 123,
+      "local_files_verified": 18,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20bg-18-e897b0c2",
+      "stage": "gate",
+      "candidate": "B",
+      "episode": 18,
+      "seed": 110618,
+      "submitted": true,
+      "exit": "130",
+      "status": "interrupted",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 240,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 211.00071687700256,
+      "sim_s": 58.31600000019585,
+      "wall_per_sim": 3.6182302777332795,
+      "first30": {
+        "start_sim_s": 0.0,
+        "end_sim_s": 30.299999999998953,
+        "available_sim_s": 30.299999999998953,
+        "wall_s": 97.86008954048157,
+        "wall_per_sim": 3.2297059254285463,
+        "method": "eval overview JPEG mtimes, prefix/release frame ticks aligned to teacher trace t"
+      },
+      "result_sha256": "d3ab72586fc120fc59ad4e97efc367066f8c79f07b308cbbb6fcdb4e1e257382",
+      "profile_sha256": "d814770b426f821680b93d19ee8231d143f9b4ecc5aece66a125f0249ceb59f1",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20bg-18-e897b0c2",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r20bg-18-e897b0c2",
+      "retrieved_and_hash_verified": true,
+      "remote_original_files_verified": 270,
+      "local_files_verified": 20,
+      "selected_frame_N": 18,
+      "directly_viewed": {
+        "viewed": true,
+        "temporal_sample_N": 6,
+        "camera_view_N": 18,
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "samples": [
+          {
+            "file": "raw/eval-overview/000000-prefix.jpg",
+            "sim_s": 0.0
+          },
+          {
+            "file": "raw/eval-overview/000030-release-lower.jpg",
+            "sim_s": 11.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/000150-release-lookaround.jpg",
+            "sim_s": 23.299999999998953
+          },
+          {
+            "file": "raw/eval-overview/000260-release-repick.jpg",
+            "sim_s": 34.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/000380-release-regrasp_check.jpg",
+            "sim_s": 46.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/000500-release-open.jpg",
+            "sim_s": 58.29999999999895
+          }
+        ],
+        "relationship": "Distinct teal/blue ends in selected frames. No same-end assignment or mutual blockage observed.",
+        "classification": "Supervisor interrupted for shared-code susceptibility; no independent physical-failure cause assigned to this run."
+      }
+    },
+    {
+      "name": "r20bg-19-e897b0c2",
+      "stage": "gate",
+      "candidate": "B",
+      "episode": 19,
+      "seed": 110619,
+      "submitted": true,
+      "exit": "130",
+      "status": "interrupted",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 176,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "wall_s": 142.6170066119994,
+      "sim_s": 42.6612500001211,
+      "wall_per_sim": 3.3430104980888875,
+      "first30": {
+        "start_sim_s": 0.0,
+        "end_sim_s": 30.299999999998953,
+        "available_sim_s": 30.299999999998953,
+        "wall_s": 95.21899962425232,
+        "wall_per_sim": 3.1425412417246075,
+        "method": "eval overview JPEG mtimes, prefix/release frame ticks aligned to teacher trace t"
+      },
+      "result_sha256": "b5c7ab48bc2bcf65e1199a0ec1d9ccef3b531831e98670ffc7d3a3fde93aafbc",
+      "profile_sha256": "d814770b426f821680b93d19ee8231d143f9b4ecc5aece66a125f0249ceb59f1",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20bg-19-e897b0c2",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r20bg-19-e897b0c2",
+      "retrieved_and_hash_verified": true,
+      "remote_original_files_verified": 194,
+      "local_files_verified": 20,
+      "selected_frame_N": 18,
+      "directly_viewed": {
+        "viewed": true,
+        "temporal_sample_N": 6,
+        "camera_view_N": 18,
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "samples": [
+          {
+            "file": "raw/eval-overview/000000-prefix.jpg",
+            "sim_s": 0.0
+          },
+          {
+            "file": "raw/eval-overview/000000-release-look.jpg",
+            "sim_s": 8.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/000080-release-lookaround.jpg",
+            "sim_s": 16.299999999998953
+          },
+          {
+            "file": "raw/eval-overview/000170-release-observe.jpg",
+            "sim_s": 25.299999999998953
+          },
+          {
+            "file": "raw/eval-overview/000250-release-line_recheck.jpg",
+            "sim_s": 33.29999999999895
+          },
+          {
+            "file": "raw/eval-overview/000340-release-regrasp_check.jpg",
+            "sim_s": 42.29999999999895
+          }
+        ],
+        "relationship": "Distinct teal/blue ends in selected frames. No same-end assignment or mutual blockage observed.",
+        "classification": "Supervisor interrupted for shared-code susceptibility; no independent physical-failure cause assigned to this run."
+      }
+    },
+    {
+      "name": "r20bg-20-e897b0c2",
+      "stage": "gate",
+      "candidate": "B",
+      "episode": 20,
+      "seed": 110620,
+      "submitted": false,
+      "exit": null,
+      "status": "BLOCKED_SAME_DEFECT",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": null,
+        "held_world_reads": null,
+        "control_top_camera_reads": null,
+        "evaluation_top_camera_reads": null,
+        "scope": null
+      },
+      "wall_s": null,
+      "sim_s": null,
+      "wall_per_sim": null,
+      "first30": null,
+      "result_sha256": null,
+      "profile_sha256": "d814770b426f821680b93d19ee8231d143f9b4ecc5aece66a125f0249ceb59f1",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20bg-20-e897b0c2",
+      "local_lite": null,
+      "retrieved_and_hash_verified": false,
+      "remote_original_files_verified": null,
+      "local_files_verified": null,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20bg-21-e897b0c2",
+      "stage": "gate",
+      "candidate": "B",
+      "episode": 21,
+      "seed": 110621,
+      "submitted": false,
+      "exit": null,
+      "status": "BLOCKED_SAME_DEFECT",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": null,
+        "held_world_reads": null,
+        "control_top_camera_reads": null,
+        "evaluation_top_camera_reads": null,
+        "scope": null
+      },
+      "wall_s": null,
+      "sim_s": null,
+      "wall_per_sim": null,
+      "first30": null,
+      "result_sha256": null,
+      "profile_sha256": "d814770b426f821680b93d19ee8231d143f9b4ecc5aece66a125f0249ceb59f1",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20bg-21-e897b0c2",
+      "local_lite": null,
+      "retrieved_and_hash_verified": false,
+      "remote_original_files_verified": null,
+      "local_files_verified": null,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20bg-22-e897b0c2",
+      "stage": "gate",
+      "candidate": "B",
+      "episode": 22,
+      "seed": 110622,
+      "submitted": false,
+      "exit": null,
+      "status": "BLOCKED_SAME_DEFECT",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": null,
+        "held_world_reads": null,
+        "control_top_camera_reads": null,
+        "evaluation_top_camera_reads": null,
+        "scope": null
+      },
+      "wall_s": null,
+      "sim_s": null,
+      "wall_per_sim": null,
+      "first30": null,
+      "result_sha256": null,
+      "profile_sha256": "d814770b426f821680b93d19ee8231d143f9b4ecc5aece66a125f0249ceb59f1",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20bg-22-e897b0c2",
+      "local_lite": null,
+      "retrieved_and_hash_verified": false,
+      "remote_original_files_verified": null,
+      "local_files_verified": null,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20bg-23-e897b0c2",
+      "stage": "gate",
+      "candidate": "B",
+      "episode": 23,
+      "seed": 110623,
+      "submitted": false,
+      "exit": null,
+      "status": "BLOCKED_SAME_DEFECT",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": null,
+        "held_world_reads": null,
+        "control_top_camera_reads": null,
+        "evaluation_top_camera_reads": null,
+        "scope": null
+      },
+      "wall_s": null,
+      "sim_s": null,
+      "wall_per_sim": null,
+      "first30": null,
+      "result_sha256": null,
+      "profile_sha256": "d814770b426f821680b93d19ee8231d143f9b4ecc5aece66a125f0249ceb59f1",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20bg-23-e897b0c2",
+      "local_lite": null,
+      "retrieved_and_hash_verified": false,
+      "remote_original_files_verified": null,
+      "local_files_verified": null,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20bg-24-e897b0c2",
+      "stage": "gate",
+      "candidate": "B",
+      "episode": 24,
+      "seed": 110624,
+      "submitted": false,
+      "exit": null,
+      "status": "BLOCKED_SAME_DEFECT",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": null,
+        "held_world_reads": null,
+        "control_top_camera_reads": null,
+        "evaluation_top_camera_reads": null,
+        "scope": null
+      },
+      "wall_s": null,
+      "sim_s": null,
+      "wall_per_sim": null,
+      "first30": null,
+      "result_sha256": null,
+      "profile_sha256": "d814770b426f821680b93d19ee8231d143f9b4ecc5aece66a125f0249ceb59f1",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20bg-24-e897b0c2",
+      "local_lite": null,
+      "retrieved_and_hash_verified": false,
+      "remote_original_files_verified": null,
+      "local_files_verified": null,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20bg-25-e897b0c2",
+      "stage": "gate",
+      "candidate": "B",
+      "episode": 25,
+      "seed": 110625,
+      "submitted": false,
+      "exit": null,
+      "status": "BLOCKED_SAME_DEFECT",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": null,
+        "held_world_reads": null,
+        "control_top_camera_reads": null,
+        "evaluation_top_camera_reads": null,
+        "scope": null
+      },
+      "wall_s": null,
+      "sim_s": null,
+      "wall_per_sim": null,
+      "first30": null,
+      "result_sha256": null,
+      "profile_sha256": "d814770b426f821680b93d19ee8231d143f9b4ecc5aece66a125f0249ceb59f1",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20bg-25-e897b0c2",
+      "local_lite": null,
+      "retrieved_and_hash_verified": false,
+      "remote_original_files_verified": null,
+      "local_files_verified": null,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20bg-26-e897b0c2",
+      "stage": "gate",
+      "candidate": "B",
+      "episode": 26,
+      "seed": 110626,
+      "submitted": false,
+      "exit": null,
+      "status": "BLOCKED_SAME_DEFECT",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": null,
+        "held_world_reads": null,
+        "control_top_camera_reads": null,
+        "evaluation_top_camera_reads": null,
+        "scope": null
+      },
+      "wall_s": null,
+      "sim_s": null,
+      "wall_per_sim": null,
+      "first30": null,
+      "result_sha256": null,
+      "profile_sha256": "d814770b426f821680b93d19ee8231d143f9b4ecc5aece66a125f0249ceb59f1",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20bg-26-e897b0c2",
+      "local_lite": null,
+      "retrieved_and_hash_verified": false,
+      "remote_original_files_verified": null,
+      "local_files_verified": null,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20bg-27-e897b0c2",
+      "stage": "gate",
+      "candidate": "B",
+      "episode": 27,
+      "seed": 110627,
+      "submitted": false,
+      "exit": null,
+      "status": "BLOCKED_SAME_DEFECT",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": null,
+        "held_world_reads": null,
+        "control_top_camera_reads": null,
+        "evaluation_top_camera_reads": null,
+        "scope": null
+      },
+      "wall_s": null,
+      "sim_s": null,
+      "wall_per_sim": null,
+      "first30": null,
+      "result_sha256": null,
+      "profile_sha256": "d814770b426f821680b93d19ee8231d143f9b4ecc5aece66a125f0249ceb59f1",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20bg-27-e897b0c2",
+      "local_lite": null,
+      "retrieved_and_hash_verified": false,
+      "remote_original_files_verified": null,
+      "local_files_verified": null,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20bg-28-e897b0c2",
+      "stage": "gate",
+      "candidate": "B",
+      "episode": 28,
+      "seed": 110628,
+      "submitted": false,
+      "exit": null,
+      "status": "BLOCKED_SAME_DEFECT",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": null,
+        "held_world_reads": null,
+        "control_top_camera_reads": null,
+        "evaluation_top_camera_reads": null,
+        "scope": null
+      },
+      "wall_s": null,
+      "sim_s": null,
+      "wall_per_sim": null,
+      "first30": null,
+      "result_sha256": null,
+      "profile_sha256": "d814770b426f821680b93d19ee8231d143f9b4ecc5aece66a125f0249ceb59f1",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20bg-28-e897b0c2",
+      "local_lite": null,
+      "retrieved_and_hash_verified": false,
+      "remote_original_files_verified": null,
+      "local_files_verified": null,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20bg-29-e897b0c2",
+      "stage": "gate",
+      "candidate": "B",
+      "episode": 29,
+      "seed": 110629,
+      "submitted": false,
+      "exit": null,
+      "status": "BLOCKED_SAME_DEFECT",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": null,
+        "held_world_reads": null,
+        "control_top_camera_reads": null,
+        "evaluation_top_camera_reads": null,
+        "scope": null
+      },
+      "wall_s": null,
+      "sim_s": null,
+      "wall_per_sim": null,
+      "first30": null,
+      "result_sha256": null,
+      "profile_sha256": "d814770b426f821680b93d19ee8231d143f9b4ecc5aece66a125f0249ceb59f1",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20bg-29-e897b0c2",
+      "local_lite": null,
+      "retrieved_and_hash_verified": false,
+      "remote_original_files_verified": null,
+      "local_files_verified": null,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20bg-30-e897b0c2",
+      "stage": "gate",
+      "candidate": "B",
+      "episode": 30,
+      "seed": 110630,
+      "submitted": false,
+      "exit": null,
+      "status": "BLOCKED_SAME_DEFECT",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": null,
+        "held_world_reads": null,
+        "control_top_camera_reads": null,
+        "evaluation_top_camera_reads": null,
+        "scope": null
+      },
+      "wall_s": null,
+      "sim_s": null,
+      "wall_per_sim": null,
+      "first30": null,
+      "result_sha256": null,
+      "profile_sha256": "d814770b426f821680b93d19ee8231d143f9b4ecc5aece66a125f0249ceb59f1",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20bg-30-e897b0c2",
+      "local_lite": null,
+      "retrieved_and_hash_verified": false,
+      "remote_original_files_verified": null,
+      "local_files_verified": null,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20bg-31-e897b0c2",
+      "stage": "gate",
+      "candidate": "B",
+      "episode": 31,
+      "seed": 110631,
+      "submitted": false,
+      "exit": null,
+      "status": "BLOCKED_SAME_DEFECT",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": null,
+        "held_world_reads": null,
+        "control_top_camera_reads": null,
+        "evaluation_top_camera_reads": null,
+        "scope": null
+      },
+      "wall_s": null,
+      "sim_s": null,
+      "wall_per_sim": null,
+      "first30": null,
+      "result_sha256": null,
+      "profile_sha256": "d814770b426f821680b93d19ee8231d143f9b4ecc5aece66a125f0249ceb59f1",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20bg-31-e897b0c2",
+      "local_lite": null,
+      "retrieved_and_hash_verified": false,
+      "remote_original_files_verified": null,
+      "local_files_verified": null,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20bg-32-e897b0c2",
+      "stage": "gate",
+      "candidate": "B",
+      "episode": 32,
+      "seed": 110632,
+      "submitted": false,
+      "exit": null,
+      "status": "BLOCKED_SAME_DEFECT",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": null,
+        "held_world_reads": null,
+        "control_top_camera_reads": null,
+        "evaluation_top_camera_reads": null,
+        "scope": null
+      },
+      "wall_s": null,
+      "sim_s": null,
+      "wall_per_sim": null,
+      "first30": null,
+      "result_sha256": null,
+      "profile_sha256": "d814770b426f821680b93d19ee8231d143f9b4ecc5aece66a125f0249ceb59f1",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20bg-32-e897b0c2",
+      "local_lite": null,
+      "retrieved_and_hash_verified": false,
+      "remote_original_files_verified": null,
+      "local_files_verified": null,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20bg-33-e897b0c2",
+      "stage": "gate",
+      "candidate": "B",
+      "episode": 33,
+      "seed": 110633,
+      "submitted": false,
+      "exit": null,
+      "status": "BLOCKED_SAME_DEFECT",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": null,
+        "held_world_reads": null,
+        "control_top_camera_reads": null,
+        "evaluation_top_camera_reads": null,
+        "scope": null
+      },
+      "wall_s": null,
+      "sim_s": null,
+      "wall_per_sim": null,
+      "first30": null,
+      "result_sha256": null,
+      "profile_sha256": "d814770b426f821680b93d19ee8231d143f9b4ecc5aece66a125f0249ceb59f1",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20bg-33-e897b0c2",
+      "local_lite": null,
+      "retrieved_and_hash_verified": false,
+      "remote_original_files_verified": null,
+      "local_files_verified": null,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20bg-34-e897b0c2",
+      "stage": "gate",
+      "candidate": "B",
+      "episode": 34,
+      "seed": 110634,
+      "submitted": false,
+      "exit": null,
+      "status": "BLOCKED_SAME_DEFECT",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": null,
+        "held_world_reads": null,
+        "control_top_camera_reads": null,
+        "evaluation_top_camera_reads": null,
+        "scope": null
+      },
+      "wall_s": null,
+      "sim_s": null,
+      "wall_per_sim": null,
+      "first30": null,
+      "result_sha256": null,
+      "profile_sha256": "d814770b426f821680b93d19ee8231d143f9b4ecc5aece66a125f0249ceb59f1",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20bg-34-e897b0c2",
+      "local_lite": null,
+      "retrieved_and_hash_verified": false,
+      "remote_original_files_verified": null,
+      "local_files_verified": null,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20bg-35-e897b0c2",
+      "stage": "gate",
+      "candidate": "B",
+      "episode": 35,
+      "seed": 110635,
+      "submitted": false,
+      "exit": null,
+      "status": "BLOCKED_SAME_DEFECT",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": null,
+        "held_world_reads": null,
+        "control_top_camera_reads": null,
+        "evaluation_top_camera_reads": null,
+        "scope": null
+      },
+      "wall_s": null,
+      "sim_s": null,
+      "wall_per_sim": null,
+      "first30": null,
+      "result_sha256": null,
+      "profile_sha256": "d814770b426f821680b93d19ee8231d143f9b4ecc5aece66a125f0249ceb59f1",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20bg-35-e897b0c2",
+      "local_lite": null,
+      "retrieved_and_hash_verified": false,
+      "remote_original_files_verified": null,
+      "local_files_verified": null,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20bg-36-e897b0c2",
+      "stage": "gate",
+      "candidate": "B",
+      "episode": 36,
+      "seed": 110636,
+      "submitted": false,
+      "exit": null,
+      "status": "BLOCKED_SAME_DEFECT",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": null,
+        "held_world_reads": null,
+        "control_top_camera_reads": null,
+        "evaluation_top_camera_reads": null,
+        "scope": null
+      },
+      "wall_s": null,
+      "sim_s": null,
+      "wall_per_sim": null,
+      "first30": null,
+      "result_sha256": null,
+      "profile_sha256": "d814770b426f821680b93d19ee8231d143f9b4ecc5aece66a125f0249ceb59f1",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20bg-36-e897b0c2",
+      "local_lite": null,
+      "retrieved_and_hash_verified": false,
+      "remote_original_files_verified": null,
+      "local_files_verified": null,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20bg-37-e897b0c2",
+      "stage": "gate",
+      "candidate": "B",
+      "episode": 37,
+      "seed": 110637,
+      "submitted": false,
+      "exit": null,
+      "status": "BLOCKED_SAME_DEFECT",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": null,
+        "held_world_reads": null,
+        "control_top_camera_reads": null,
+        "evaluation_top_camera_reads": null,
+        "scope": null
+      },
+      "wall_s": null,
+      "sim_s": null,
+      "wall_per_sim": null,
+      "first30": null,
+      "result_sha256": null,
+      "profile_sha256": "d814770b426f821680b93d19ee8231d143f9b4ecc5aece66a125f0249ceb59f1",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20bg-37-e897b0c2",
+      "local_lite": null,
+      "retrieved_and_hash_verified": false,
+      "remote_original_files_verified": null,
+      "local_files_verified": null,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20bg-38-e897b0c2",
+      "stage": "gate",
+      "candidate": "B",
+      "episode": 38,
+      "seed": 110638,
+      "submitted": false,
+      "exit": null,
+      "status": "BLOCKED_SAME_DEFECT",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": null,
+        "held_world_reads": null,
+        "control_top_camera_reads": null,
+        "evaluation_top_camera_reads": null,
+        "scope": null
+      },
+      "wall_s": null,
+      "sim_s": null,
+      "wall_per_sim": null,
+      "first30": null,
+      "result_sha256": null,
+      "profile_sha256": "d814770b426f821680b93d19ee8231d143f9b4ecc5aece66a125f0249ceb59f1",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20bg-38-e897b0c2",
+      "local_lite": null,
+      "retrieved_and_hash_verified": false,
+      "remote_original_files_verified": null,
+      "local_files_verified": null,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    },
+    {
+      "name": "r20bg-39-e897b0c2",
+      "stage": "gate",
+      "candidate": "B",
+      "episode": 39,
+      "seed": 110639,
+      "submitted": false,
+      "exit": null,
+      "status": "BLOCKED_SAME_DEFECT",
+      "success": false,
+      "release_outcome": null,
+      "release_failure_reasons": [],
+      "input_audit": {
+        "invisible_measurements": null,
+        "held_world_reads": null,
+        "control_top_camera_reads": null,
+        "evaluation_top_camera_reads": null,
+        "scope": null
+      },
+      "wall_s": null,
+      "sim_s": null,
+      "wall_per_sim": null,
+      "first30": null,
+      "result_sha256": null,
+      "profile_sha256": "d814770b426f821680b93d19ee8231d143f9b4ecc5aece66a125f0249ceb59f1",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20bg-39-e897b0c2",
+      "local_lite": null,
+      "retrieved_and_hash_verified": false,
+      "remote_original_files_verified": null,
+      "local_files_verified": null,
+      "selected_frame_N": 0,
+      "directly_viewed": null
+    }
+  ],
+  "operator_artifacts": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release20-e897b0c2-ops",
+  "verdict": "NOT_READY_CONFIRMED_DEFECT_REMAINING_BLOCKED",
+  "coordinator_independent_recount": "NOT_REQUESTED_GATE_ABORTED_AFTER_CONFIRMED_DEFECT",
+  "control_defect": {
+    "at": "2026-10-15 18:08:10 KST",
+    "source_sha": "e897b0c2c96ad99cb0a3f5eb3cc255d2686bba09",
+    "run": "r20ag-18-e897b0c2",
+    "seed": 110618,
+    "candidate": "A",
+    "confirmed_control_defect": "After four successful forward FOV-recovery pulses, r1 RGB becomes fov_safe with 1px margin. release20 settling reports lateral error .02740394685 > .025. Its one quantized IBVS proposal is predicted outside FOV and returns fov_blocked; inherited tick immediately fails without a recovery alternative, before the planned .2m cargo correction.",
+    "failure_outcome": "release17_fov_no_safe_translation",
+    "evaluation_failure_reasons": [
+      "not_in_zone"
+    ],
+    "code": [
+      {
+        "path": "sim/release20.py",
+        "lines": [
+          39,
+          85
+        ]
+      },
+      {
+        "path": "sim/release17.py",
+        "lines": [
+          324,
+          337
+        ]
+      },
+      {
+        "path": "scripts/run_grasp_act_release.py",
+        "lines": [
+          170,
+          176
+        ]
+      }
+    ],
+    "robot_relationship": "r1 teal and r2 blue remain on distinct cargo ends; no same-end assignment or mutual blockage seen in 6 overview/r1/r2 samples.",
+    "evidence": [
+      {
+        "world_t": 30.6,
+        "event": "recover_fov",
+        "forward_m": 0.0129
+      },
+      {
+        "world_t": 30.8,
+        "event": "recover_fov",
+        "forward_m": 0.0129
+      },
+      {
+        "world_t": 31.0,
+        "event": "recover_fov",
+        "forward_m": 0.0129
+      },
+      {
+        "world_t": 31.2,
+        "event": "recover_fov",
+        "forward_m": 0.0129
+      },
+      {
+        "world_t": 31.4,
+        "fov_safe": true,
+        "fov_margin_px": 1.0,
+        "lateral_error": 0.027403946850441892,
+        "tolerance": 0.025,
+        "event": "fov_blocked"
+      }
+    ],
+    "stop_scope": "Both candidate A and B explicitly select the same release20.LineAlign at runtime. Shared code susceptibility justifies stopping both; this does not claim B itself reproduced this failure.",
+    "unresolved": "No controller fix performed in operations scope. Safe alternative selection and a new pinned SHA/queue require coordinator implementation.",
+    "native_input_review": {
+      "viewed": true,
+      "world_t": [
+        30.6,
+        30.8,
+        31.0,
+        31.2,
+        31.4
+      ],
+      "frames_N": 5,
+      "hash_manifest": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release20-e897b0c2-ops/failure-native-input-hashes.json",
+      "scope": "Actual consumed r1 RGB inputs; fov_safe is controller predicate, not an independent claim that the full beam is in view."
+    }
+  },
+  "stop_record": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/stop-release20-e897b0c2-20261015.json",
+  "terminal_scope": "All submitted runs retrieved and stopped; remaining same-defect queue runs blocked. Incomplete n/40 is not a cohort success-rate estimate.",
+  "final_ownership": {
+    "owned_pids": [],
+    "owned_leases": [],
+    "owned_unreleased_reservations": [],
+    "idle_timer": "active",
+    "idle_guard_sha256": "e0f759f6380753b0fcbec2400ed9753e5a223133b58ff755d2a6cdcd5cbbacc3",
+    "exits": {
+      "r20ag-09-e897b0c2": "0",
+      "r20ag-18-e897b0c2": "0",
+      "r20bg-11-e897b0c2": "0",
+      "r20ag-13-e897b0c2": "0",
+      "r20bg-19-e897b0c2": "130",
+      "r20bg-09-e897b0c2": "0",
+      "r20bg-05-e897b0c2": "0",
+      "r20bg-12-e897b0c2": "130",
+      "r20ag-19-e897b0c2": "130",
+      "r20bg-06-e897b0c2": "130",
+      "r20pre-01-e897b0c2": "0",
+      "r20ag-06-e897b0c2": "0",
+      "r20ag-12-e897b0c2": "130",
+      "r20bg-17-e897b0c2": "0",
+      "r20bg-01-e897b0c2": "0",
+      "r20bg-18-e897b0c2": "130",
+      "r20ag-20-e897b0c2": "130",
+      "r20ag-04-e897b0c2": "0",
+      "r20ag-11-e897b0c2": "0",
+      "r20ag-05-e897b0c2": "0",
+      "r20ag-02-e897b0c2": "0",
+      "r20ag-10-e897b0c2": "0",
+      "r20bg-13-e897b0c2": "0",
+      "r20ag-00-e897b0c2": "0",
+      "r20ag-03-e897b0c2": "0",
+      "r20ag-15-e897b0c2": "130",
+      "r20ag-17-e897b0c2": "0",
+      "r20ag-07-e897b0c2": "130",
+      "r20bg-10-e897b0c2": "0",
+      "r20bg-08-e897b0c2": "0",
+      "r20bg-16-e897b0c2": "0",
+      "r20bg-00-e897b0c2": "0",
+      "r20bg-04-e897b0c2": "0",
+      "r20pre-02-e897b0c2": "0",
+      "r20bg-14-e897b0c2": "130",
+      "r20bg-02-e897b0c2": "0",
+      "r20ag-01-e897b0c2": "0",
+      "r20pre-00-e897b0c2": "0",
+      "r20ag-16-e897b0c2": "0",
+      "r20bg-03-e897b0c2": "0",
+      "r20ag-08-e897b0c2": "0",
+      "r20bg-07-e897b0c2": "130",
+      "r20bg-15-e897b0c2": "130",
+      "r20ag-14-e897b0c2": "130"
+    },
+    "stop_sidecars_verified_N": 44,
+    "vm": {
+      "lastStartTimestamp": "2026-10-14T19:02:57.851-07:00",
+      "machineType": "https://www.googleapis.com/compute/v1/projects/ugrp-act-train-1014/zones/asia-northeast3-a/machineTypes/n4-highcpu-64",
+      "scheduling": {
+        "automaticRestart": true,
+        "instanceTerminationAction": "STOP",
+        "maxRunDuration": {
+          "nanos": 0,
+          "seconds": "28800"
+        },
+        "onHostMaintenance": "MIGRATE",
+        "preemptible": false,
+        "provisioningModel": "STANDARD"
+      },
+      "status": "RUNNING"
+    }
+  },
+  "verification": {
+    "submitted_N": 44,
+    "retrieved_results_hash_verified_N": 44,
+    "input_audit_checked_N": 44,
+    "input_audit_invisible_measurements": 0,
+    "input_audit_held_world_reads": 0,
+    "local_verified_files": 835,
+    "remote_manifest_original_files": 16344,
+    "stop_sidecars_verified_N": 44,
+    "directly_viewed_cases": 21,
+    "directly_viewed_frames": 378,
+    "additional_native_failure_input_frames": 5,
+    "viewed_manifest": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release20-e897b0c2-ops/viewed.json",
+    "all_failure_and_supervisor_interrupted_runs_have_six_temporal_samples": true
+  }
+}

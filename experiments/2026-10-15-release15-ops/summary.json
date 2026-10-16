@@ -1,0 +1,463 @@
+{
+  "schema": "ugrp.gcp-ops.release15.v1",
+  "recorded_at": "2026-10-15 12:56:41 KST",
+  "verdict": "NOT_READY_CONFIRMED_CONTROL_DEFECT",
+  "queue": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-release-gate-7379fdd3.json",
+  "host": {
+    "ssh": "gcp1",
+    "instance": "ugrp-sim-gcp1",
+    "project": "ugrp-act-train-1014",
+    "zone": "asia-northeast3-a",
+    "machine": "n4-highcpu-64"
+  },
+  "source": {
+    "sha": "7379fdd31a97b29ad2edc83cb8f6df1c94a8916e",
+    "branch": "claude/grasp-act-probes",
+    "pr": 491,
+    "pr_source_note": "PR491 head differs; queue explicitly pins claude/grasp-act-probes source",
+    "source_worktree": "/Users/changmin/projects/ugrp-wt/grasp-act-probes",
+    "plan_sha256": {
+      "experiments/2026-10-14-e2e18-grasp-rootcause/release15-diagnostic-plan.json": "0c8f5817a2b6ae04e51a56084bfcb2c666cc901374b425b78996a9dcb2f54bc4"
+    },
+    "profile": {
+      "held_object": "hidden_v1",
+      "lookaround": "setdown_global_v1",
+      "pose_anchor": "command_relative_v1",
+      "own_pose_source": "commands",
+      "observe_mode": "backoff_v3",
+      "zone_slots": "zone",
+      "reach_mode": "pad_window_v2",
+      "placement": "global_localized_release_v1",
+      "lateral_recovery": "bounded_v1",
+      "active_recovery": "setdown_lookaround_v1",
+      "command_motion": "native_yaw_v1",
+      "localization_support": "map_free_v1",
+      "regrasp_check": "own_rgb_lift_v1",
+      "regrasp_recovery": "own_rgb_realign_v1",
+      "release_profile": "release15_fov_v1"
+    },
+    "weld": "off",
+    "training_rgb": false,
+    "student_execution": false
+  },
+  "stages": {
+    "development_reproduction": {
+      "success": 0,
+      "N": 2,
+      "completed": 2,
+      "HOST_ERROR": 0,
+      "exit_zero": 2
+    },
+    "fresh_diagnostic": {
+      "planned_N": 7,
+      "submitted": 0,
+      "blocked": 7,
+      "success": null
+    },
+    "gate40": {
+      "approved": false,
+      "planned_N": 40,
+      "submitted": 0,
+      "success": null,
+      "promotion": false
+    }
+  },
+  "cause": {
+    "observed": "Opposite beam ends retained; own assigned band remains visible. FOV forward recovery ends in shaft_ambiguous for 1 s and release15_shaft_unobserved_1s, before regrasp.",
+    "by_seed": {
+      "74963": "r1 line alignment passes; r2 fails after 13 forward recovery pulses",
+      "74976": "r1 fails after 17 forward recovery pulses; r2 line recheck not reached"
+    },
+    "supported_interpretation": "Inherited shaft-only component ambiguity test rejects two shaft pieces separated by the assigned coloured band, while release15 FOV mask joins the assigned band. Saved JPEG component ratios 0.3433 and 0.4093 exceed the 0.3 cutoff; shaft+band each yields one component. This explains the recorded rejection without claiming unobserved physical regrasp/lift success.",
+    "source_refs": [
+      "sim/release15.py:91",
+      "sim/release_regrasp_recovery.py:41"
+    ],
+    "unverified": [
+      "Physical effect of any future fix",
+      "Successful regrasp, lift confirmation, loaded GO-ACK",
+      "New-profile fresh7 or gate40"
+    ]
+  },
+  "performance": {
+    "first30_mtime_wall_sim_median": 2.794620455688376,
+    "overall_wall_sim_median": 2.8579238188288025,
+    "first30_scope": "Approximate from JPEG mtimes over 0–30.3SIMs; startup excluded; 2 concurrent owned runs, other workload not held constant",
+    "speed_warning_over_3_5": false,
+    "speed_block_over_6": false
+  },
+  "input_audit": {
+    "runs_checked": 2,
+    "invisible_measurements_sum": 0,
+    "held_world_reads_sum": 0,
+    "prefix_excluded": true
+  },
+  "visual_review": {
+    "total_frames_viewed": 48,
+    "per_run": 24,
+    "scope": "Each: 6 evenly spaced times × overview/r1/r2 =18, plus 6 failed-camera original input JPEGs; no duration exceeds60SIMs"
+  },
+  "preservation": {
+    "raw": "Persistent GCP disk, full manifests verified; no ARM archive or complete Mac raw backup",
+    "lite_and_selected_frames": "Mac local project; hashes verified",
+    "compressed_decoded_files_verified": 8,
+    "own_active_processes_at_final_check": [],
+    "idle_guard": "active",
+    "guards_unchanged": true,
+    "budget_event_latest": {
+      "jsonPayload": {
+        "budgetAmount": 1000,
+        "costAmount": 0,
+        "currency": "KRW"
+      },
+      "timestamp": "2026-10-15T03:46:58.227159Z"
+    },
+    "actual_credit_balance": "not measured; no billing/credit changes",
+    "stop_record": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/stop-release15-7379fdd3-20261015.json"
+  },
+  "runs": [
+    {
+      "name": "r15d-00-7379fdd3",
+      "seed": 74963,
+      "cohort": "development_reproduction",
+      "submitted": true,
+      "status": "complete",
+      "exit": "0",
+      "success": false,
+      "outcome": "release15_shaft_unobserved_1s",
+      "source_sha": "7379fdd31a97b29ad2edc83cb8f6df1c94a8916e",
+      "profile": "release15_fov_v1",
+      "prefix": {
+        "held_sim_s": 8.29999999999895,
+        "outcomes": {
+          "r1": "success",
+          "r2": "success"
+        }
+      },
+      "sim_s": 39.100000000104096,
+      "wall_s": 113.40761442000075,
+      "wall_sim_overall": 2.900450496667489,
+      "first30": {
+        "source": "eval-overview JPEG mtimes; excludes startup, approximate 1SIMs sampling",
+        "from": {
+          "name": "000000-prefix.jpg",
+          "sim_relative_s": 0.0,
+          "mtime": 1792036222.541503
+        },
+        "to": {
+          "name": "000220-release-line_recheck.jpg",
+          "sim_relative_s": 30.3,
+          "mtime": 1792036308.9575028
+        },
+        "wall_sim": 2.8520131976691014
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "measurements_by_phase": {
+          "lookaround": {
+            "own_rgb_landmarks": {
+              "n": 734,
+              "invisible": 0
+            }
+          }
+        },
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check",
+        "explicit_top_control_counter": "not provided; source review only",
+        "explicit_truth_control_counter": "not provided; source review only"
+      },
+      "line_rechecks": [
+        {
+          "robot": "r1",
+          "state": "done",
+          "failure": null,
+          "events": {
+            "open_then_hover": 1,
+            "image": 4,
+            "mode_enter": 1,
+            "aligned_before_pick": 1
+          },
+          "last_image_reason": "shaft_rows"
+        },
+        {
+          "robot": "r2",
+          "state": "failed",
+          "failure": "release15_shaft_unobserved_1s",
+          "events": {
+            "open_then_hover": 1,
+            "image": 19,
+            "mode_enter": 1,
+            "recover_fov": 13
+          },
+          "last_image_reason": "shaft_ambiguous"
+        }
+      ],
+      "regrasp_barriers": 0,
+      "regrasp_scope": "Both terminated before actual regrasp/lift challenge/loaded GO-ACK; those outcomes unmeasured",
+      "component_diagnostic": {
+        "scope": "saved JPEG reanalysis, no physics; original runtime reason independently in result.json",
+        "robot": "r2",
+        "world_t": 38.40000000009234,
+        "frame": "eval-regrasp-input/r2/00022-line_recheck.jpg",
+        "shaft_only_areas": [
+          20972,
+          7200
+        ],
+        "shaft_ratio_2_to_1": 0.3433148960518787,
+        "shaft_plus_assigned_band_areas": [
+          48953
+        ]
+      },
+      "visual_review": {
+        "overview_and_both_own_times_relative_s": [
+          0.0,
+          7.0,
+          14.3,
+          21.3,
+          29.3,
+          36.3
+        ],
+        "overview_and_own_frames_viewed": 18,
+        "focused_robot": "r2",
+        "focused_input_world_times_s": [
+          34.8,
+          35.6,
+          36.2,
+          37.0,
+          37.6,
+          38.4
+        ],
+        "focused_frames_viewed": 6,
+        "total_viewed": 24,
+        "montages": [
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release15-7379fdd3-ops/r15d-00-7379fdd3/montage.jpg",
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release15-7379fdd3-ops/r15d-00-7379fdd3/focus/focus.jpg"
+        ]
+      },
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/r15d-00-7379fdd3",
+      "lite_location": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r15d-00-7379fdd3",
+      "original_sha256sums_sha256": "9c0979d51ce054b01f570b05cb3f5273b1f43a61f4ba167602a917cf1dd1ec2a",
+      "raw_result_zst_sha256": "f4dfb4e18d9409586f75314db9bc87dcbdcbe3b881d2d73ee1700b0e977cc79a",
+      "vm_manifest_verified": true,
+      "fetched_files_verified": 19,
+      "compressed_original_hashes_verified": [
+        {
+          "file": "eval-only.jsonl.zst",
+          "decoded_sha256": "595e82300978582dc02563853fb155f7e748818f5e71c597127bab596ae82ac6",
+          "decoded_bytes": 234415
+        },
+        {
+          "file": "result.json.zst",
+          "decoded_sha256": "87535e3b4ca51b7da0d3a64beb702ebf3a065c835015aca1684cf1a71c91f657",
+          "decoded_bytes": 207007
+        },
+        {
+          "file": "teacher-r1.jsonl.zst",
+          "decoded_sha256": "29a5eda9d83a9d765db2785056732eda4bfd9937765bdd21643b44c28ea1d0f3",
+          "decoded_bytes": 145107
+        },
+        {
+          "file": "teacher-r2.jsonl.zst",
+          "decoded_sha256": "70edc4a1f550dc57d31395bd9b630da75ee5b28f3e93612c1e876a7a5d7fa755",
+          "decoded_bytes": 155214
+        }
+      ],
+      "stop_marker_verified": true,
+      "lease_released": true
+    },
+    {
+      "name": "r15d-01-7379fdd3",
+      "seed": 74976,
+      "cohort": "development_reproduction",
+      "submitted": true,
+      "status": "complete",
+      "exit": "0",
+      "success": false,
+      "outcome": "release15_shaft_unobserved_1s",
+      "source_sha": "7379fdd31a97b29ad2edc83cb8f6df1c94a8916e",
+      "profile": "release15_fov_v1",
+      "prefix": {
+        "held_sim_s": 8.29999999999895,
+        "outcomes": {
+          "r1": "success",
+          "r2": "success"
+        }
+      },
+      "sim_s": 37.100000000094546,
+      "wall_s": 104.45123393099948,
+      "wall_sim_overall": 2.8153971409901155,
+      "first30": {
+        "source": "eval-overview JPEG mtimes; excludes startup, approximate 1SIMs sampling",
+        "from": {
+          "name": "000000-prefix.jpg",
+          "sim_relative_s": 0.0,
+          "mtime": 1792036230.073503
+        },
+        "to": {
+          "name": "000220-release-line_recheck.jpg",
+          "sim_relative_s": 30.3,
+          "mtime": 1792036313.0115027
+        },
+        "wall_sim": 2.73722771370765
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "measurements_by_phase": {
+          "lookaround": {
+            "own_rgb_landmarks": {
+              "n": 907,
+              "invisible": 0
+            }
+          }
+        },
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check",
+        "explicit_top_control_counter": "not provided; source review only",
+        "explicit_truth_control_counter": "not provided; source review only"
+      },
+      "line_rechecks": [
+        {
+          "robot": "r1",
+          "state": "failed",
+          "failure": "release15_shaft_unobserved_1s",
+          "events": {
+            "open_then_hover": 1,
+            "image": 24,
+            "mode_enter": 1,
+            "recover_fov": 17
+          },
+          "last_image_reason": "shaft_ambiguous"
+        }
+      ],
+      "regrasp_barriers": 0,
+      "regrasp_scope": "Both terminated before actual regrasp/lift challenge/loaded GO-ACK; those outcomes unmeasured",
+      "component_diagnostic": {
+        "scope": "saved JPEG reanalysis, no physics; original runtime reason independently in result.json",
+        "robot": "r1",
+        "world_t": 36.40000000008279,
+        "frame": "eval-regrasp-input/r1/00023-line_recheck.jpg",
+        "shaft_only_areas": [
+          22639,
+          9266
+        ],
+        "shaft_ratio_2_to_1": 0.40929369671805294,
+        "shaft_plus_assigned_band_areas": [
+          54032
+        ]
+      },
+      "visual_review": {
+        "overview_and_both_own_times_relative_s": [
+          0.0,
+          7.0,
+          13.3,
+          20.3,
+          27.3,
+          34.3
+        ],
+        "overview_and_own_frames_viewed": 18,
+        "focused_robot": "r1",
+        "focused_input_world_times_s": [
+          31.8,
+          32.8,
+          33.6,
+          34.6,
+          35.4,
+          36.4
+        ],
+        "focused_frames_viewed": 6,
+        "total_viewed": 24,
+        "montages": [
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release15-7379fdd3-ops/r15d-01-7379fdd3/montage.jpg",
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release15-7379fdd3-ops/r15d-01-7379fdd3/focus/focus.jpg"
+        ]
+      },
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/r15d-01-7379fdd3",
+      "lite_location": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r15d-01-7379fdd3",
+      "original_sha256sums_sha256": "1c7c442595d39abbb5bfbf9b87872fe963b18139b7f1a6b3f3c09fd976cf09a9",
+      "raw_result_zst_sha256": "19edf88df99c973aa0db61921353ddba30d547b05b6b272f64b717154915d26f",
+      "vm_manifest_verified": true,
+      "fetched_files_verified": 19,
+      "compressed_original_hashes_verified": [
+        {
+          "file": "eval-only.jsonl.zst",
+          "decoded_sha256": "0fdd4b923211e0a69b3328080310eff94c5826f911d48ebcc0a092708b2e07ad",
+          "decoded_bytes": 218700
+        },
+        {
+          "file": "result.json.zst",
+          "decoded_sha256": "155c7af30c3729fc531970be312e5d016b2e99345f4e986735305001453827c3",
+          "decoded_bytes": 235796
+        },
+        {
+          "file": "teacher-r1.jsonl.zst",
+          "decoded_sha256": "d31a10882307c35baf625785f62d26bf30bb9d39081b3036908d72243139e510",
+          "decoded_bytes": 139287
+        },
+        {
+          "file": "teacher-r2.jsonl.zst",
+          "decoded_sha256": "fd19a40c9285cbf83d3e53d7a16869e390d5af8ccc759791a537cd6c2851def6",
+          "decoded_bytes": 139307
+        }
+      ],
+      "stop_marker_verified": true,
+      "lease_released": true
+    },
+    {
+      "name": "r15d-02-7379fdd3",
+      "seed": 78330,
+      "cohort": "fresh_diagnostic",
+      "submitted": false,
+      "status": "BLOCKED_SAME_CONTROL_DEFECT",
+      "success": null
+    },
+    {
+      "name": "r15d-03-7379fdd3",
+      "seed": 78331,
+      "cohort": "fresh_diagnostic",
+      "submitted": false,
+      "status": "BLOCKED_SAME_CONTROL_DEFECT",
+      "success": null
+    },
+    {
+      "name": "r15d-04-7379fdd3",
+      "seed": 78332,
+      "cohort": "fresh_diagnostic",
+      "submitted": false,
+      "status": "BLOCKED_SAME_CONTROL_DEFECT",
+      "success": null
+    },
+    {
+      "name": "r15d-05-7379fdd3",
+      "seed": 78333,
+      "cohort": "fresh_diagnostic",
+      "submitted": false,
+      "status": "BLOCKED_SAME_CONTROL_DEFECT",
+      "success": null
+    },
+    {
+      "name": "r15d-06-7379fdd3",
+      "seed": 78334,
+      "cohort": "fresh_diagnostic",
+      "submitted": false,
+      "status": "BLOCKED_SAME_CONTROL_DEFECT",
+      "success": null
+    },
+    {
+      "name": "r15d-07-7379fdd3",
+      "seed": 78335,
+      "cohort": "fresh_diagnostic",
+      "submitted": false,
+      "status": "BLOCKED_SAME_CONTROL_DEFECT",
+      "success": null
+    },
+    {
+      "name": "r15d-08-7379fdd3",
+      "seed": 78336,
+      "cohort": "fresh_diagnostic",
+      "submitted": false,
+      "status": "BLOCKED_SAME_CONTROL_DEFECT",
+      "success": null
+    }
+  ],
+  "next_step": "Coordinator fixes code as a new SHA/queue; fresh7 and gate40 remain unsubmitted; this assigned queue is finished."
+}

@@ -1,0 +1,752 @@
+{
+  "schema": "ugrp.gcp.search17.operations.v1",
+  "date": "2026-10-15 13:05:20 KST",
+  "queue": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-grasp-search-4fdf7f84-diag.json",
+  "pr": 484,
+  "source_sha": "4fdf7f8407074572e59566ac719f398f913e9286",
+  "host": {
+    "ssh": "gcp1",
+    "instance": "ugrp-sim-gcp1",
+    "project_id": "ugrp-act-train-1014",
+    "zone": "asia-northeast3-a",
+    "machine_type": "n4-highcpu-64"
+  },
+  "profiles": {
+    "teacher_profile": "visible_only",
+    "self_pose_source": "issued",
+    "teacher_stability": "align_relook_v1",
+    "teacher_search": "search_body_scan_v2",
+    "approach_goal_set": "approach_goal_set_v1",
+    "nominal_blocked_handoff": "nominal_blocked_handoff_v1",
+    "approach_progress": "approach_progress_v1",
+    "approach_recovery": "progress_view_recovery_v3",
+    "approach_coordination": "off",
+    "handoff_observation": "visible_handoff_v1",
+    "failure_stop_scope": "repeated_cause_v1",
+    "peer_reobserve": "peer_reobserve_v1",
+    "obstacle_reobserve": "obstacle_reobserve_v1",
+    "pregrasp_sampling": "pregrasp_sampling_v1",
+    "search17_candidates": "search17_candidates_v1",
+    "search17_escape": "search17_escape_v1",
+    "search17_odometry": "search17_fixed_v1"
+  },
+  "criteria": {
+    "beam_min_z_m": 0.012,
+    "tilt_deg_max": 10,
+    "stable_s": 3,
+    "weld": "off",
+    "record_training": false,
+    "top_camera_control": false
+  },
+  "verdict": "DIAGNOSTIC_NOT_READY",
+  "qualification": false,
+  "stages": [
+    {
+      "stage": "repro3",
+      "run": "grasp-search17-repro3-gcp-4fdf7f84",
+      "n": 2,
+      "N": 3,
+      "planned_N": 3,
+      "completed": 3,
+      "host_errors": 0,
+      "interrupted": 0,
+      "handoffs": 1,
+      "median_wall_per_sim": 2.864522753503447,
+      "max_wall_per_sim": 3.7262370408228214,
+      "median_speed_blocked": false,
+      "median_speed_warning": false,
+      "all_input_audits_enabled": true,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "measurement_rows": 3835,
+      "frames_directly_viewed": 54,
+      "frame_view_range_sim_s": [
+        0,
+        43.0
+      ],
+      "verification": {
+        "remote_all_files_sha256": true,
+        "manifest_sha256": "da31338c5c32e363babcacb1df33b4d18a3dde9fc3dda725f734d228edcaa3b2",
+        "local_files_verified": 121,
+        "compressed_files_decoded_verified": 10
+      },
+      "source_summary": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/search17-4fdf7f84-ops/grasp-search17-repro3-gcp-4fdf7f84-summary.json.zst",
+      "first30_command_review": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/search17-4fdf7f84-ops/grasp-search17-repro3-gcp-4fdf7f84-first30-command-review.json",
+      "episodes": [
+        {
+          "seed": 315709,
+          "episode": "episode-000",
+          "status": "complete",
+          "exit": 0,
+          "physical_success": false,
+          "sim_s": 19.400000000010028,
+          "wall_s": 72.2889985920001,
+          "wall_per_sim": 3.7262370408228214,
+          "max_stable_hold_s": 0.0,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 1257,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "outcomes": {
+            "r1": "approach_blocked_handoff",
+            "r2": "peer_approach_handoff"
+          },
+          "result_local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search17-repro3-gcp-4fdf7f84/diagnostic/episode-000/raw/result.json.zst",
+          "result_sha256": "7676bfb609f578046afb6c0a94fb497c9517c47fc36919347b8f38dce2cce31e",
+          "result_decoded_sha256": "192fb7cd42a63e4ee1fb47e3b9cf670afd53c6bdf222fc9ca39e56c94cb1c615",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-search17-repro3-gcp-4fdf7f84/diagnostic/episode-000/raw",
+          "viewed_frames": [
+            0.0,
+            4.0,
+            8.0,
+            11.0,
+            15.0,
+            19.0
+          ]
+        },
+        {
+          "seed": 315724,
+          "episode": "episode-001",
+          "status": "complete",
+          "exit": 0,
+          "physical_success": true,
+          "sim_s": 43.00000000012272,
+          "wall_s": 123.17447840099976,
+          "wall_per_sim": 2.864522753503447,
+          "max_stable_hold_s": 3.0000000000143245,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 1487,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "outcomes": {
+            "r1": "success",
+            "r2": "success"
+          },
+          "result_local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search17-repro3-gcp-4fdf7f84/diagnostic/episode-001/raw/result.json",
+          "result_sha256": "20a9cbad98dbc4530d24f9ce60e87ebcca50e6bfa56e9b6df93d68099d4fc31b",
+          "result_decoded_sha256": "20a9cbad98dbc4530d24f9ce60e87ebcca50e6bfa56e9b6df93d68099d4fc31b",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-search17-repro3-gcp-4fdf7f84/diagnostic/episode-001/raw",
+          "viewed_frames": [
+            0.0,
+            9.0,
+            17.0,
+            26.0,
+            34.0,
+            43.0
+          ]
+        },
+        {
+          "seed": 315731,
+          "episode": "episode-002",
+          "status": "complete",
+          "exit": 0,
+          "physical_success": true,
+          "sim_s": 35.600000000087384,
+          "wall_s": 96.22349943399968,
+          "wall_per_sim": 2.7029072874652664,
+          "max_stable_hold_s": 3.0000000000143245,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 1091,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "outcomes": {
+            "r1": "success",
+            "r2": "success"
+          },
+          "result_local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search17-repro3-gcp-4fdf7f84/diagnostic/episode-002/raw/result.json",
+          "result_sha256": "737f806c542e0587f8ca6c069b22e20338b8ab0cf4669f6d3db620ee0a70a2a1",
+          "result_decoded_sha256": "737f806c542e0587f8ca6c069b22e20338b8ab0cf4669f6d3db620ee0a70a2a1",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-search17-repro3-gcp-4fdf7f84/diagnostic/episode-002/raw",
+          "viewed_frames": [
+            0.0,
+            7.0,
+            14.0,
+            21.0,
+            28.0,
+            35.0
+          ]
+        }
+      ]
+    },
+    {
+      "stage": "novel12",
+      "run": "grasp-search17-novel12-gcp-4fdf7f84",
+      "n": 9,
+      "N": 12,
+      "planned_N": 12,
+      "completed": 12,
+      "host_errors": 0,
+      "interrupted": 0,
+      "handoffs": 3,
+      "median_wall_per_sim": 2.849938828910804,
+      "max_wall_per_sim": 3.511025596823416,
+      "median_speed_blocked": false,
+      "median_speed_warning": false,
+      "all_input_audits_enabled": true,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "measurement_rows": 11811,
+      "frames_directly_viewed": 216,
+      "frame_view_range_sim_s": [
+        0,
+        46.0
+      ],
+      "verification": {
+        "remote_all_files_sha256": true,
+        "manifest_sha256": "a503d411adc16ede37ef615b617ca9982bf2a87ff4b651a301c75588fc975f42",
+        "local_files_verified": 445,
+        "compressed_files_decoded_verified": 35
+      },
+      "source_summary": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/search17-4fdf7f84-ops/grasp-search17-novel12-gcp-4fdf7f84-summary.json.zst",
+      "first30_command_review": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/search17-4fdf7f84-ops/grasp-search17-novel12-gcp-4fdf7f84-first30-command-review.json",
+      "episodes": [
+        {
+          "seed": 8311700,
+          "episode": "episode-000",
+          "status": "complete",
+          "exit": 0,
+          "physical_success": true,
+          "sim_s": 25.500000000039154,
+          "wall_s": 76.29144760700001,
+          "wall_per_sim": 2.9918214747797203,
+          "max_stable_hold_s": 3.0000000000143245,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 835,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "outcomes": {
+            "r1": "success",
+            "r2": "success"
+          },
+          "result_local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search17-novel12-gcp-4fdf7f84/diagnostic/episode-000/raw/result.json",
+          "result_sha256": "c9a990c3be709d9d866a6202e743b4e141920fe0276ea9563c8266713e7ca15a",
+          "result_decoded_sha256": "c9a990c3be709d9d866a6202e743b4e141920fe0276ea9563c8266713e7ca15a",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-search17-novel12-gcp-4fdf7f84/diagnostic/episode-000/raw",
+          "viewed_frames": [
+            0.0,
+            5.0,
+            10.0,
+            15.0,
+            20.0,
+            25.0
+          ]
+        },
+        {
+          "seed": 8311701,
+          "episode": "episode-001",
+          "status": "complete",
+          "exit": 0,
+          "physical_success": true,
+          "sim_s": 28.200000000052047,
+          "wall_s": 81.37256347899984,
+          "wall_per_sim": 2.885551896413108,
+          "max_stable_hold_s": 3.0000000000143245,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 922,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "outcomes": {
+            "r1": "success",
+            "r2": "success"
+          },
+          "result_local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search17-novel12-gcp-4fdf7f84/diagnostic/episode-001/raw/result.json",
+          "result_sha256": "84446c8f96f44f8ed7e0a149edbf3505b37b6cd6d17e09b91973d6cb72e6b813",
+          "result_decoded_sha256": "84446c8f96f44f8ed7e0a149edbf3505b37b6cd6d17e09b91973d6cb72e6b813",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-search17-novel12-gcp-4fdf7f84/diagnostic/episode-001/raw",
+          "viewed_frames": [
+            0.0,
+            6.0,
+            11.0,
+            17.0,
+            22.0,
+            28.0
+          ]
+        },
+        {
+          "seed": 8311702,
+          "episode": "episode-002",
+          "status": "complete",
+          "exit": 0,
+          "physical_success": false,
+          "sim_s": 16.59999999999666,
+          "wall_s": 46.48288116999993,
+          "wall_per_sim": 2.8001735644583907,
+          "max_stable_hold_s": 0.0,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 1225,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "outcomes": {
+            "r1": "approach_blocked_handoff",
+            "r2": "peer_approach_handoff"
+          },
+          "result_local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search17-novel12-gcp-4fdf7f84/diagnostic/episode-002/raw/result.json",
+          "result_sha256": "8bc0cb1a7a244b43b52e58d45dcabd3870cb381fcd64421d2083f590cad6bbbf",
+          "result_decoded_sha256": "8bc0cb1a7a244b43b52e58d45dcabd3870cb381fcd64421d2083f590cad6bbbf",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-search17-novel12-gcp-4fdf7f84/diagnostic/episode-002/raw",
+          "viewed_frames": [
+            0.0,
+            3.0,
+            6.0,
+            10.0,
+            13.0,
+            16.0
+          ]
+        },
+        {
+          "seed": 8311703,
+          "episode": "episode-003",
+          "status": "complete",
+          "exit": 0,
+          "physical_success": true,
+          "sim_s": 22.700000000025785,
+          "wall_s": 66.94916544600073,
+          "wall_per_sim": 2.9493024425517484,
+          "max_stable_hold_s": 3.0000000000143245,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 806,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "outcomes": {
+            "r1": "success",
+            "r2": "success"
+          },
+          "result_local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search17-novel12-gcp-4fdf7f84/diagnostic/episode-003/raw/result.json",
+          "result_sha256": "52a1f520b83456dca9f07ae615f9a2f0fece8b94d43448d6f7cc3a54a4c88a9d",
+          "result_decoded_sha256": "52a1f520b83456dca9f07ae615f9a2f0fece8b94d43448d6f7cc3a54a4c88a9d",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-search17-novel12-gcp-4fdf7f84/diagnostic/episode-003/raw",
+          "viewed_frames": [
+            0.0,
+            4.0,
+            9.0,
+            13.0,
+            18.0,
+            22.0
+          ]
+        },
+        {
+          "seed": 8311704,
+          "episode": "episode-004",
+          "status": "complete",
+          "exit": 0,
+          "physical_success": true,
+          "sim_s": 24.000000000031992,
+          "wall_s": 67.8177537849997,
+          "wall_per_sim": 2.825739741037887,
+          "max_stable_hold_s": 3.0000000000143245,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 797,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "outcomes": {
+            "r1": "success",
+            "r2": "success"
+          },
+          "result_local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search17-novel12-gcp-4fdf7f84/diagnostic/episode-004/raw/result.json",
+          "result_sha256": "b5a006e56cbfa2de72e068228faf04f9aec66f633ed4868ba327694ab004eec5",
+          "result_decoded_sha256": "b5a006e56cbfa2de72e068228faf04f9aec66f633ed4868ba327694ab004eec5",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-search17-novel12-gcp-4fdf7f84/diagnostic/episode-004/raw",
+          "viewed_frames": [
+            0.0,
+            5.0,
+            10.0,
+            14.0,
+            19.0,
+            24.0
+          ]
+        },
+        {
+          "seed": 8311705,
+          "episode": "episode-005",
+          "status": "complete",
+          "exit": 0,
+          "physical_success": true,
+          "sim_s": 31.400000000067326,
+          "wall_s": 86.81350934200054,
+          "wall_per_sim": 2.764761444006828,
+          "max_stable_hold_s": 3.0000000000143245,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 1195,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "outcomes": {
+            "r1": "success",
+            "r2": "success"
+          },
+          "result_local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search17-novel12-gcp-4fdf7f84/diagnostic/episode-005/raw/result.json",
+          "result_sha256": "c7910ec7d0ace2b9abfd5a6acbe05e0b532cba351d4d0d4b007a77c40db6bd16",
+          "result_decoded_sha256": "c7910ec7d0ace2b9abfd5a6acbe05e0b532cba351d4d0d4b007a77c40db6bd16",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-search17-novel12-gcp-4fdf7f84/diagnostic/episode-005/raw",
+          "viewed_frames": [
+            0.0,
+            6.0,
+            12.0,
+            19.0,
+            25.0,
+            31.0
+          ]
+        },
+        {
+          "seed": 8311706,
+          "episode": "episode-006",
+          "status": "complete",
+          "exit": 0,
+          "physical_success": true,
+          "sim_s": 31.100000000065894,
+          "wall_s": 89.75158980600008,
+          "wall_per_sim": 2.8859032091900296,
+          "max_stable_hold_s": 3.0000000000143245,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 1068,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "outcomes": {
+            "r1": "success",
+            "r2": "success"
+          },
+          "result_local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search17-novel12-gcp-4fdf7f84/diagnostic/episode-006/raw/result.json",
+          "result_sha256": "f921bb2a9ae2a33193969e767dc83757bab412347d745908ecb89816f975a654",
+          "result_decoded_sha256": "f921bb2a9ae2a33193969e767dc83757bab412347d745908ecb89816f975a654",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-search17-novel12-gcp-4fdf7f84/diagnostic/episode-006/raw",
+          "viewed_frames": [
+            0.0,
+            6.0,
+            12.0,
+            19.0,
+            25.0,
+            31.0
+          ]
+        },
+        {
+          "seed": 8311707,
+          "episode": "episode-007",
+          "status": "complete",
+          "exit": 0,
+          "physical_success": true,
+          "sim_s": 30.40000000006255,
+          "wall_s": 85.468790549,
+          "wall_per_sim": 2.8114733733165838,
+          "max_stable_hold_s": 3.0000000000143245,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 928,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "outcomes": {
+            "r1": "success",
+            "r2": "success"
+          },
+          "result_local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search17-novel12-gcp-4fdf7f84/diagnostic/episode-007/raw/result.json",
+          "result_sha256": "d9405fb0b96644718c221e8f7678692daaf7d8ca1b6d33b4008d327618006574",
+          "result_decoded_sha256": "d9405fb0b96644718c221e8f7678692daaf7d8ca1b6d33b4008d327618006574",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-search17-novel12-gcp-4fdf7f84/diagnostic/episode-007/raw",
+          "viewed_frames": [
+            0.0,
+            6.0,
+            12.0,
+            18.0,
+            24.0,
+            30.0
+          ]
+        },
+        {
+          "seed": 8311708,
+          "episode": "episode-008",
+          "status": "complete",
+          "exit": 0,
+          "physical_success": true,
+          "sim_s": 46.50000000013943,
+          "wall_s": 122.3077124020001,
+          "wall_per_sim": 2.6302733849813626,
+          "max_stable_hold_s": 3.0000000000143245,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 1356,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "outcomes": {
+            "r1": "success",
+            "r2": "success"
+          },
+          "result_local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search17-novel12-gcp-4fdf7f84/diagnostic/episode-008/raw/result.json",
+          "result_sha256": "8e25182cce8619b1c9dbf27386ea42d0a24e51ac1d4eefcda4b1351ca0cabe4a",
+          "result_decoded_sha256": "8e25182cce8619b1c9dbf27386ea42d0a24e51ac1d4eefcda4b1351ca0cabe4a",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-search17-novel12-gcp-4fdf7f84/diagnostic/episode-008/raw",
+          "viewed_frames": [
+            0.0,
+            9.0,
+            18.0,
+            28.0,
+            37.0,
+            46.0
+          ]
+        },
+        {
+          "seed": 8311709,
+          "episode": "episode-009",
+          "status": "complete",
+          "exit": 0,
+          "physical_success": false,
+          "sim_s": 6.300000000003613,
+          "wall_s": 22.119461260000207,
+          "wall_per_sim": 3.511025596823416,
+          "max_stable_hold_s": 0.0,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 339,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "outcomes": {
+            "r1": "approach_blocked_handoff",
+            "r2": "peer_approach_handoff"
+          },
+          "result_local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search17-novel12-gcp-4fdf7f84/diagnostic/episode-009/raw/result.json.zst",
+          "result_sha256": "f21d518cf976cc3ac45489e2f1d58f100a5712a46b814fd3270fea01367caa98",
+          "result_decoded_sha256": "6ee2917cb65f2fc5ad20529d37be184e36220b4d3de61ff9ab6108d7f5a665ed",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-search17-novel12-gcp-4fdf7f84/diagnostic/episode-009/raw",
+          "viewed_frames": [
+            0.0,
+            1.0,
+            2.0,
+            4.0,
+            5.0,
+            6.0
+          ]
+        },
+        {
+          "seed": 8311710,
+          "episode": "episode-010",
+          "status": "complete",
+          "exit": 0,
+          "physical_success": true,
+          "sim_s": 32.400000000072104,
+          "wall_s": 93.1220685039998,
+          "wall_per_sim": 2.874137916783721,
+          "max_stable_hold_s": 3.0000000000143245,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 1273,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "outcomes": {
+            "r1": "success",
+            "r2": "success"
+          },
+          "result_local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search17-novel12-gcp-4fdf7f84/diagnostic/episode-010/raw/result.json",
+          "result_sha256": "e55ee1ea7375b7126afb9ff654609030d533348d99a90a61a0ae76789d698c06",
+          "result_decoded_sha256": "e55ee1ea7375b7126afb9ff654609030d533348d99a90a61a0ae76789d698c06",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-search17-novel12-gcp-4fdf7f84/diagnostic/episode-010/raw",
+          "viewed_frames": [
+            0.0,
+            6.0,
+            13.0,
+            19.0,
+            26.0,
+            32.0
+          ]
+        },
+        {
+          "seed": 8311711,
+          "episode": "episode-011",
+          "status": "complete",
+          "exit": 0,
+          "physical_success": false,
+          "sim_s": 25.800000000040587,
+          "wall_s": 69.95528618799926,
+          "wall_per_sim": 2.711445201080977,
+          "max_stable_hold_s": 0.0,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 1067,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "outcomes": {
+            "r1": "peer_approach_handoff",
+            "r2": "approach_blocked_handoff"
+          },
+          "result_local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search17-novel12-gcp-4fdf7f84/diagnostic/episode-011/raw/result.json",
+          "result_sha256": "b9851b4d8e9368d9b5e0e22f858e6e6a3715070e7ca239486651d70ae6c81309",
+          "result_decoded_sha256": "b9851b4d8e9368d9b5e0e22f858e6e6a3715070e7ca239486651d70ae6c81309",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-search17-novel12-gcp-4fdf7f84/diagnostic/episode-011/raw",
+          "viewed_frames": [
+            0.0,
+            5.0,
+            10.0,
+            15.0,
+            20.0,
+            25.0
+          ]
+        }
+      ]
+    }
+  ],
+  "cross_sha_profile_host_pooling": false,
+  "reproduction_and_novel_denominators_pooled": false,
+  "first30_speed": {
+    "new_profile_novel12_observed_N": 5,
+    "at_sim_s": 30.00000000006064,
+    "median_wall_per_sim": 2.8069405718610096,
+    "max_wall_per_sim": 2.8617471815608706,
+    "completed_before_30_N": 7,
+    "early_runs_used_as_30s_measurement": false,
+    "repro_first30_exact_speed": "not separately captured; full episode ratios are reported; first30 command/phase/video inspected",
+    "source": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/search17-4fdf7f84-ops/novel-first30-speed.json"
+  },
+  "model_usage": {
+    "calls": 0,
+    "prompt_tokens": 0,
+    "completion_tokens": 0,
+    "tokens_per_sim_s": 0,
+    "cached_ratio": null,
+    "baseline_752b0cbb_model_calls": 0,
+    "compute_charge": "unverified; latest budget net-cost event is delayed and does not establish zero VM cost"
+  },
+  "frames": {
+    "directly_viewed": 270,
+    "per_episode": 18,
+    "timestamps_per_episode": 6,
+    "views": [
+      "eval-overview",
+      "eval-own/r1",
+      "eval-own/r2"
+    ],
+    "same_end_convergence_observed": false,
+    "failure_frame_ranges": {
+      "315709": [
+        0,
+        4,
+        8,
+        11,
+        15,
+        19
+      ],
+      "8311702": [
+        0,
+        3,
+        6,
+        10,
+        13,
+        16
+      ],
+      "8311709": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6
+      ],
+      "8311711": [
+        0,
+        5,
+        10,
+        15,
+        20,
+        25
+      ]
+    }
+  },
+  "failure_mechanisms": {
+    "315709": "candidate exhaustion after visible-obstacle retreat/reobserve; all-goals-blocked handoff",
+    "8311702": "peer wait/reobserve without fresh peer measurement, then peer-and-own-no-progress handoff",
+    "8311709": "candidate exhaustion after visible-obstacle retreat/reobserve; all-goals-blocked handoff",
+    "8311711": "peer wait/reobserve without fresh peer measurement, then peer-wait-deadline handoff; partner returns to search"
+  },
+  "root_cause_limits": "These are trace-backed terminal mechanisms; whether the rejected paths/stances were physically feasible is not established. No confirmed shared physical/control defect was diagnosed; clean handoffs are excluded by the approved repeated_cause_v1 supervisor policy.",
+  "confirmed_shared_physical_or_control_defect": false,
+  "supervisor_stop_count": 0,
+  "gate40": {
+    "approved": false,
+    "submitted": false,
+    "N_executed": 0,
+    "reason": "not all diagnostics successful; automatic promotion disabled; no gate stage in this queue"
+  },
+  "training_recorded": false,
+  "training_submitted": false,
+  "raw_backup_scope": "Full originals retained on GCP persistent disk. Mac contains verified lite records and selected frames; no full remote backup claimed.",
+  "preflight": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/search17-4fdf7f84-ops/preflight.json",
+  "guard_snapshot": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/search17-4fdf7f84-ops/guards.json",
+  "lifecycle": {
+    "owned_active_processes_at_finish": 0,
+    "own_leases_released": true,
+    "own_slot_reservations_released": true,
+    "idle_guard": "active; VM left for 20-minute idle shutdown"
+  },
+  "remaining": [
+    "teacher not ready for qualification; candidate feasibility and peer-reobservation limitations need coordinator review/new source before further qualification",
+    "gate40 and training remain unapproved/unsubmitted"
+  ],
+  "input_boundary": {
+    "control": "own camera visible measurements, own issued commands, permitted static map",
+    "gt": "offline calibration and evaluation only",
+    "fixed_calibration_interpretation": "coordinator interpretation, user unconfirmed",
+    "weld": "off"
+  },
+  "support_compression_record": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/search17-4fdf7f84-ops/support-compression.json",
+  "verification_totals": {
+    "local_files_against_remote_manifests": 566,
+    "raw_compressed_decoded_hashes": 45,
+    "support_compressions_byte_verified": 2,
+    "remote_full_manifests_verified": 2
+  },
+  "pr_comment": {
+    "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/484#issuecomment-6184145609",
+    "lines": 3,
+    "remote_body_verified": true
+  }
+}

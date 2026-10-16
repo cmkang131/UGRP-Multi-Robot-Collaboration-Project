@@ -1,0 +1,1058 @@
+{
+  "at": "2026-10-15 14:32:50 KST",
+  "queue": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-act7-efb002ad.json",
+  "pr": 504,
+  "source_sha": "efb002ad9ecfda23b66c7f6b9c83d912765f8494",
+  "teacher_dependency_sha": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+  "noise": {
+    "path": "experiments/2026-10-15-act-train/act6-noise.json",
+    "sha256": "47ddf66ab770a3b00f2cb57206225d9bdf0d138bc6468625b65be10a08bd72f7"
+  },
+  "gate_plan": {
+    "path": "experiments/2026-10-15-act-train/act6-gate-plan.json",
+    "sha256": "014e790da545283a81a57bf38dfdd18f7b1513eee6b61f6139e3776db3912cc4"
+  },
+  "host": "gcp1",
+  "machine_type": "n4-highcpu-64",
+  "project": "ugrp-act-train-1014",
+  "status": "STOPPED_CONFIRMED_DEFECT",
+  "planned_N": 40,
+  "completed_results": 29,
+  "success": 28,
+  "success_denominator": 40,
+  "observed_success": {
+    "n": 28,
+    "N": 29
+  },
+  "input_audit_zero_N": 29,
+  "host_errors": 0,
+  "failures": [
+    {
+      "run": "act7-gate-8316627-efb002ad",
+      "reason": "phase_timeout",
+      "physical_success": false
+    }
+  ],
+  "not_submitted": [
+    "act7-gate-8316629-efb002ad",
+    "act7-gate-8316630-efb002ad",
+    "act7-gate-8316631-efb002ad",
+    "act7-gate-8316632-efb002ad",
+    "act7-gate-8316633-efb002ad",
+    "act7-gate-8316634-efb002ad",
+    "act7-gate-8316635-efb002ad",
+    "act7-gate-8316636-efb002ad",
+    "act7-gate-8316637-efb002ad",
+    "act7-gate-8316638-efb002ad",
+    "act7-gate-8316639-efb002ad"
+  ],
+  "unfinished": [],
+  "speed": {
+    "first30": {
+      "N": 29,
+      "median": 2.7461033344268797,
+      "min": 2.389866654078166,
+      "max": 3.327208471298218
+    },
+    "full": {
+      "N": 29,
+      "median": 2.810922361802165,
+      "min": 2.5762103368243134,
+      "max": 3.186856654345688
+    },
+    "serial_first5_full": {
+      "N": 5,
+      "median": 2.6037547575466555,
+      "min": 2.5762103368243134,
+      "max": 2.8967261537459623
+    },
+    "parallel8_remaining_full": {
+      "N": 24,
+      "median": 2.833966936894238,
+      "min": 2.606221805533203,
+      "max": 3.186856654345688
+    },
+    "warning_above": 3.5,
+    "blocking_above": 6.0,
+    "measurement": "first30 review JPEG mtimes and original result wall_s/sim_s; initialization included only in full ratio"
+  },
+  "noise_summary": {
+    "noisy_ticks": 5180,
+    "projection_changed_ticks": 5116,
+    "bound_clip_ticks": 4060,
+    "deadzone_ticks": 1498,
+    "weighted_moments": {
+      "raw_mean": [
+        -0.0009164747898183261,
+        -0.0013280518268391538,
+        -0.001518820300789706,
+        0.0004394529099821609,
+        -0.0014891021043828127,
+        0.00013133489412900148,
+        8.704979044787359e-05,
+        0.000913203716838886
+      ],
+      "raw_second_moment": [
+        0.0051746004384655145,
+        0.016444396123916946,
+        0.015442685061396415,
+        0.004812714980459606,
+        0.0035522760712605223,
+        0.006649522189721957,
+        0.005766886504964293,
+        0.0043376860467687645
+      ],
+      "executed_mean": [
+        -0.0013968448067846581,
+        -0.007799485970894513,
+        -0.009593326329880565,
+        0.0024453468062941076,
+        -0.00140867976225668,
+        -0.019393513700920174,
+        -0.020288059654725795,
+        0.0022664845323998365
+      ],
+      "executed_second_moment": [
+        0.003798655537648441,
+        0.0127150896236465,
+        0.013918953399478157,
+        0.007741863527271317,
+        0.003575354026850935,
+        0.014491359106359484,
+        0.015177692148606823,
+        0.004205717979796764
+      ]
+    }
+  },
+  "recovery_coverage": {
+    "local_visibility_loss_events": 2,
+    "local_reacquired_events": 2,
+    "definition": "evaluation-only 1/3 target visibility true->false during local phases and later reacquisition; not an image-edge detector",
+    "scope": "teacher gate and recovery coverage only, no ACT student success"
+  },
+  "retrieval": {
+    "runs": 29,
+    "lite_files_sha_verified": 623,
+    "raw": "GCP persistent disk only, no ARM archive or cloud copy",
+    "compressed_logs_verified": 115
+  },
+  "visual_review": {
+    "at": "2026-10-15 14:19:54 KST",
+    "directly_viewed_frames": 60,
+    "runs": [
+      {
+        "run": "act7-gate-8316600-efb002ad",
+        "viewed_sim_s": [
+          0,
+          10,
+          19,
+          29,
+          38,
+          48
+        ],
+        "cameras": [
+          "review-own r1",
+          "review-top"
+        ],
+        "frames": 12,
+        "observation": "solo cargo approach; no peer blocking seen; target leaves own frame in blind grasp/held interval and is visible at final edge after setdown"
+      },
+      {
+        "run": "act7-gate-8316601-efb002ad",
+        "viewed_sim_s": [
+          0,
+          10,
+          20,
+          30,
+          40,
+          50
+        ],
+        "cameras": [
+          "review-own r1",
+          "review-top"
+        ],
+        "frames": 12,
+        "observation": "solo cargo approach; no peer blocking seen; target leaves own frame in blind grasp/held interval and is visible at final edge after setdown"
+      },
+      {
+        "run": "act7-gate-8316602-efb002ad",
+        "viewed_sim_s": [
+          0,
+          12,
+          23,
+          35,
+          46,
+          58
+        ],
+        "cameras": [
+          "review-own r1",
+          "review-top"
+        ],
+        "frames": 12,
+        "observation": "solo cargo approach; no peer blocking seen; target leaves own frame in blind grasp/held interval and is visible at final edge after setdown"
+      },
+      {
+        "run": "act7-gate-8316612-efb002ad",
+        "viewed_sim_s": [
+          0,
+          10,
+          20,
+          30,
+          40,
+          50
+        ],
+        "cameras": [
+          "review-own r1",
+          "review-top"
+        ],
+        "frames": 12,
+        "observation": "solo cargo approach; no peer blocking seen; target leaves own frame in blind grasp/held interval and is visible at final edge after setdown"
+      },
+      {
+        "run": "act7-gate-8316627-efb002ad",
+        "viewed_sim_s": [
+          0,
+          12,
+          24,
+          36,
+          48,
+          60
+        ],
+        "cameras": [
+          "review-own r1",
+          "review-top"
+        ],
+        "frames": 12,
+        "observation": "yellow target visible; nearly fixed in own image from24to60; no align transition; another robot visible in distant own view0/12 but no direct peer blockage confirmed in this sample"
+      }
+    ],
+    "scope": "sampled montages, not continuous or all-run video review; other run frames selected/retrieved but not yet directly viewed; no r2 own stream generated because solo r1 teacher"
+  },
+  "prior_census": {
+    "complete_N": 50,
+    "original_sources_hash_verified": 100,
+    "not_pooled_with_ACT7": true,
+    "rerun": false
+  },
+  "prior_seed8316600_HOST_ERROR_preserved_separately": true,
+  "concurrency_approval": [
+    {
+      "approved": true,
+      "time": "2026-10-15T14:05:00+09:00",
+      "after": "first 2 review PASS (2/2) + run 3 success",
+      "change": "max_parallel 1 -> 8 for the remaining runs on gcp1 (64 vCPU, otherwise idle); same source/noise/settings; shared admission limit still applies",
+      "reason": "serial 40 runs at ~3-11 min each is several hours; plan said remaining 38 at planned concurrency",
+      "note": "lost->reacquire visibility events are 0/0 in the first runs; keep recording this count per run (it is a data-usefulness concern for recovery demos, not a gate failure)"
+    }
+  ],
+  "operations_errors": [
+    "serial limit assertion after coordinator max_parallel changed, resolved before extra submit",
+    "running audit None handling in monitor, resolved with duplicate-name protection",
+    "transient gcloud/SSH status failure; retry only, no duplicate run"
+  ],
+  "credit_price": "UNVERIFIED, coordinator explicitly accepted budget-stop as binding guard; no billing changes",
+  "downstream": {
+    "recording_submitted": 0,
+    "conversion_submitted": 0,
+    "training_submitted": 0,
+    "closed_loop_submitted": 0,
+    "promotion_authorized": false
+  },
+  "ownership_receipt": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act7-efb002ad-ops/final-ownership.json",
+  "preflight_receipt": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act7-efb002ad-ops/preflight-receipt.json",
+  "pr_comment_verification": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act7-efb002ad-ops/pr-comment-verification.json",
+  "runs": [
+    {
+      "run": "act7-gate-8316600-efb002ad",
+      "seed": 8316600,
+      "kind": "cyan",
+      "exit": "0",
+      "status": "complete",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "sim_s": 48.70000000014771,
+      "wall_per_sim": 2.685293542887138,
+      "first30_wall_per_sim": 2.6257140239079795,
+      "result_sha256": "56ca8cfd29aeba02922f061440dc10cf21774cd335b4368ebadb34c85c755738",
+      "result_decoded_sha256": "a0043c7705fe1e9f76129ec79d1ac471620140bdd92326e8901786484c7d633d",
+      "manifest_sha256": "7ab04dc0455330ad099aaa5733ff04449d3e4bcd0b789c15fcaf9c4edac2bb27",
+      "noisy_ticks": 153,
+      "bound_clip_ticks": 125,
+      "deadzone_ticks": 61,
+      "local_visibility_loss": 0,
+      "local_reacquired": 0,
+      "summary": "act7-gate-8316600-efb002ad-summary.json"
+    },
+    {
+      "run": "act7-gate-8316601-efb002ad",
+      "seed": 8316601,
+      "kind": "red",
+      "exit": "0",
+      "status": "complete",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "sim_s": 50.30000000015535,
+      "wall_per_sim": 2.6037547575466555,
+      "first30_wall_per_sim": 2.48537810643514,
+      "result_sha256": "bcc4680a9c4a3629cf0666b9b8f79d6f05cffb0dc279f074ccf8c6439cf9cd25",
+      "result_decoded_sha256": "87881719bc08ac0e31d68e65a3fa4b976613ab5a25aa977fca4b83427e424f5c",
+      "manifest_sha256": "1b9f8d77f51a95b20d6255369094a79f9785e8fc5ade5928245cfc37794f4f1c",
+      "noisy_ticks": 169,
+      "bound_clip_ticks": 133,
+      "deadzone_ticks": 41,
+      "local_visibility_loss": 0,
+      "local_reacquired": 0,
+      "summary": "act7-gate-8316601-efb002ad-summary.json"
+    },
+    {
+      "run": "act7-gate-8316602-efb002ad",
+      "seed": 8316602,
+      "kind": "green",
+      "exit": "0",
+      "status": "complete",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "sim_s": 58.500000000194504,
+      "wall_per_sim": 2.600353656452892,
+      "first30_wall_per_sim": 2.4846650918324786,
+      "result_sha256": "b9dfa07164d597e4947660d2434f9c95a77ce85565522609b121a0f410e83d32",
+      "result_decoded_sha256": "0a92bc05bb98ffdd4b10dfd99fcc027f54ddb4c8213366195e091536966b5eac",
+      "manifest_sha256": "3d697cd417cf039f5fd67140c8bfd826cad44768174da862c03a63d44fc8e588",
+      "noisy_ticks": 251,
+      "bound_clip_ticks": 217,
+      "deadzone_ticks": 97,
+      "local_visibility_loss": 0,
+      "local_reacquired": 0,
+      "summary": "act7-gate-8316602-efb002ad-summary.json"
+    },
+    {
+      "run": "act7-gate-8316603-efb002ad",
+      "seed": 8316603,
+      "kind": "yellow",
+      "exit": "0",
+      "status": "complete",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "sim_s": 50.60000000015678,
+      "wall_per_sim": 2.8967261537459623,
+      "first30_wall_per_sim": 2.7578938007354736,
+      "result_sha256": "f3d79ea4f682106aabbb975bfd51950596f4f1bb444f5360fe99be8de9478405",
+      "result_decoded_sha256": "c30f35b5d01f34831cfc82647f836263404bd3435babb2d77063e5c213cbad29",
+      "manifest_sha256": "855414b555cf4c82ca35785ade39efa921d16a83d41f0ee1125913c21ec77fac",
+      "noisy_ticks": 172,
+      "bound_clip_ticks": 128,
+      "deadzone_ticks": 46,
+      "local_visibility_loss": 0,
+      "local_reacquired": 0,
+      "summary": "act7-gate-8316603-efb002ad-summary.json"
+    },
+    {
+      "run": "act7-gate-8316604-efb002ad",
+      "seed": 8316604,
+      "kind": "cyan",
+      "exit": "0",
+      "status": "complete",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "sim_s": 46.40000000013673,
+      "wall_per_sim": 2.5762103368243134,
+      "first30_wall_per_sim": 2.560406231880188,
+      "result_sha256": "34cdae2b536a82c4e01991219d01bd523a1c3e3f18e8f19a0130e99a474b6c04",
+      "result_decoded_sha256": "eaa17b14fbdf12878e72129c873a6b1d2226df93925d6f9a8762b0aae801e53c",
+      "manifest_sha256": "c980a29f1e144fc5be94815b81036712a1b035016d970590056f1fc279fcb3df",
+      "noisy_ticks": 129,
+      "bound_clip_ticks": 97,
+      "deadzone_ticks": 18,
+      "local_visibility_loss": 0,
+      "local_reacquired": 0,
+      "summary": "act7-gate-8316604-efb002ad-summary.json"
+    },
+    {
+      "run": "act7-gate-8316605-efb002ad",
+      "seed": 8316605,
+      "kind": "red",
+      "exit": "0",
+      "status": "complete",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "sim_s": 50.00000000015392,
+      "wall_per_sim": 2.7486579735715138,
+      "first30_wall_per_sim": 2.5794004678726195,
+      "result_sha256": "b19a4549e1616a474204840fc947f8441d5005df272666b0699453268ea2bef0",
+      "result_decoded_sha256": "6df75900730e5505e7fa6a6978111097ff237a3629762d940094ccbbbb4f1f2f",
+      "manifest_sha256": "b81db5cb7134b6ba4315b9be6bf6d80c85d0ba235e71d1a0f86c08f843c07baf",
+      "noisy_ticks": 166,
+      "bound_clip_ticks": 131,
+      "deadzone_ticks": 59,
+      "local_visibility_loss": 0,
+      "local_reacquired": 0,
+      "summary": "act7-gate-8316605-efb002ad-summary.json"
+    },
+    {
+      "run": "act7-gate-8316606-efb002ad",
+      "seed": 8316606,
+      "kind": "green",
+      "exit": "0",
+      "status": "complete",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "sim_s": 50.500000000156305,
+      "wall_per_sim": 2.91274154858503,
+      "first30_wall_per_sim": 2.8153812885284424,
+      "result_sha256": "c3242a25ce133f79cbf0b4ed791668378618da21d02cda7e385dad8895622388",
+      "result_decoded_sha256": "e6e293508b2b6439a40267d6253756472a91d577687bfb0367ebafdf08355f3f",
+      "manifest_sha256": "8595118a12cdab0b6ffbee7f23c0ca976037e6b2f313093183112b5bd6494809",
+      "noisy_ticks": 171,
+      "bound_clip_ticks": 130,
+      "deadzone_ticks": 34,
+      "local_visibility_loss": 0,
+      "local_reacquired": 0,
+      "summary": "act7-gate-8316606-efb002ad-summary.json"
+    },
+    {
+      "run": "act7-gate-8316607-efb002ad",
+      "seed": 8316607,
+      "kind": "yellow",
+      "exit": "0",
+      "status": "complete",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "sim_s": 47.20000000014055,
+      "wall_per_sim": 3.1668242242490163,
+      "first30_wall_per_sim": 3.1315123875935873,
+      "result_sha256": "c46aeaa65d006f927e60bb6c4352b20ac86cae153797d3b5f0b9faf1152fd119",
+      "result_decoded_sha256": "e0611113bfa6f39a753080559365e90e1ca015a375938947ad8b47e88449292f",
+      "manifest_sha256": "1f9c7e7cad96cca8277ba3dcaf4e1572a823e3df6d82c32bbb5cbd93f607f9a7",
+      "noisy_ticks": 138,
+      "bound_clip_ticks": 105,
+      "deadzone_ticks": 47,
+      "local_visibility_loss": 0,
+      "local_reacquired": 0,
+      "summary": "act7-gate-8316607-efb002ad-summary.json"
+    },
+    {
+      "run": "act7-gate-8316608-efb002ad",
+      "seed": 8316608,
+      "kind": "cyan",
+      "exit": "0",
+      "status": "complete",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "sim_s": 46.40000000013673,
+      "wall_per_sim": 2.892108280142362,
+      "first30_wall_per_sim": 2.860239863395691,
+      "result_sha256": "31c27324fa28f8798c0f0668acfdb40236a5549d41820d17dcb1d959362d6bf3",
+      "result_decoded_sha256": "f49a4f48f718675c48680718d7cc74da56d59f8ef43c47c881c449b3b71a5e25",
+      "manifest_sha256": "b090ffc815259afc1c1ccc48ef778a1325055560de8f984cbcb02ce1bb40f617",
+      "noisy_ticks": 129,
+      "bound_clip_ticks": 93,
+      "deadzone_ticks": 44,
+      "local_visibility_loss": 0,
+      "local_reacquired": 0,
+      "summary": "act7-gate-8316608-efb002ad-summary.json"
+    },
+    {
+      "run": "act7-gate-8316609-efb002ad",
+      "seed": 8316609,
+      "kind": "red",
+      "exit": "0",
+      "status": "complete",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "sim_s": 48.100000000144846,
+      "wall_per_sim": 2.9157377808020306,
+      "first30_wall_per_sim": 2.8794235706329347,
+      "result_sha256": "f900eb403ad400fc1f9bff6e928a7abe2913029cd75f9426d0e5793326032750",
+      "result_decoded_sha256": "894f06778ffcde6c72a763e9bf88cf345ec8105db4d40209de51df26b39a4c84",
+      "manifest_sha256": "135b54c935589e5ff0f2ec68cf8c589286beccc411fbd196eec3f42c7f254241",
+      "noisy_ticks": 147,
+      "bound_clip_ticks": 112,
+      "deadzone_ticks": 41,
+      "local_visibility_loss": 0,
+      "local_reacquired": 0,
+      "summary": "act7-gate-8316609-efb002ad-summary.json"
+    },
+    {
+      "run": "act7-gate-8316610-efb002ad",
+      "seed": 8316610,
+      "kind": "green",
+      "exit": "0",
+      "status": "complete",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "sim_s": 49.700000000152485,
+      "wall_per_sim": 2.7957066922248304,
+      "first30_wall_per_sim": 2.7180836677551268,
+      "result_sha256": "3b9fec9165ddf34a6026ba1608a1d9f6b843cedaf95040033a7422565136836a",
+      "result_decoded_sha256": "4368a6d174c9ebaed6f63d38347eb2a51e26c4e0c7e13fddba8d1ca017304767",
+      "manifest_sha256": "00d9faede5e5f8f8decfa49ea170a3c6f4cc4142c98d82de87e8f3adedfd3e24",
+      "noisy_ticks": 163,
+      "bound_clip_ticks": 136,
+      "deadzone_ticks": 53,
+      "local_visibility_loss": 0,
+      "local_reacquired": 0,
+      "summary": "act7-gate-8316610-efb002ad-summary.json"
+    },
+    {
+      "run": "act7-gate-8316611-efb002ad",
+      "seed": 8316611,
+      "kind": "yellow",
+      "exit": "0",
+      "status": "complete",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "sim_s": 45.50000000013243,
+      "wall_per_sim": 3.15439700768313,
+      "first30_wall_per_sim": 3.180470895767212,
+      "result_sha256": "fa379a15b9dc1b22f220b136454a23413bd3c21228607209965351337096c0d9",
+      "result_decoded_sha256": "6aa9fce837e4f5e49cfa0e1baca3e74a61ce62a08a6a538b433ce2d647e3e3a4",
+      "manifest_sha256": "c740a600c0fd19da3262fd0b2116a55a023416441801c9030bcc0cbd2fb081f6",
+      "noisy_ticks": 120,
+      "bound_clip_ticks": 96,
+      "deadzone_ticks": 46,
+      "local_visibility_loss": 0,
+      "local_reacquired": 0,
+      "summary": "act7-gate-8316611-efb002ad-summary.json"
+    },
+    {
+      "run": "act7-gate-8316612-efb002ad",
+      "seed": 8316612,
+      "kind": "cyan",
+      "exit": "0",
+      "status": "complete",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "sim_s": 50.80000000015774,
+      "wall_per_sim": 2.769008599105566,
+      "first30_wall_per_sim": 2.68774897257487,
+      "result_sha256": "b8231ff582538886563de456dd86c58218f9d98dcc46ba1d473b676899528baa",
+      "result_decoded_sha256": "e05c0711f5855c69ea67bd3a87369cb71a2037897ceffa84281524a6a6b1d765",
+      "manifest_sha256": "94afb685c56e84b2be40d8f7ce9b591d12e0962e31d0575cea0fd983d0e1b7fe",
+      "noisy_ticks": 174,
+      "bound_clip_ticks": 140,
+      "deadzone_ticks": 69,
+      "local_visibility_loss": 0,
+      "local_reacquired": 0,
+      "summary": "act7-gate-8316612-efb002ad-summary.json"
+    },
+    {
+      "run": "act7-gate-8316613-efb002ad",
+      "seed": 8316613,
+      "kind": "red",
+      "exit": "0",
+      "status": "complete",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "sim_s": 51.50000000016108,
+      "wall_per_sim": 2.7321375886322237,
+      "first30_wall_per_sim": 2.6071799834569296,
+      "result_sha256": "85be90f8f2e6ca090df69f8a3ae63a6bc584e714525e9fd1c6e7b705679b2b0b",
+      "result_decoded_sha256": "21dacc8345d458816c4c0febd307e004905ed4cd020aeb884672c99ff29d6990",
+      "manifest_sha256": "303db75d5b7d2b06f4489c43f7d282d8a3c0e9f4db7eb0a7dc1497eb0ffa912f",
+      "noisy_ticks": 181,
+      "bound_clip_ticks": 144,
+      "deadzone_ticks": 31,
+      "local_visibility_loss": 0,
+      "local_reacquired": 0,
+      "summary": "act7-gate-8316613-efb002ad-summary.json"
+    },
+    {
+      "run": "act7-gate-8316614-efb002ad",
+      "seed": 8316614,
+      "kind": "green",
+      "exit": "0",
+      "status": "complete",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "sim_s": 52.100000000163945,
+      "wall_per_sim": 2.845751312524657,
+      "first30_wall_per_sim": 2.7461033344268797,
+      "result_sha256": "c602b5904ecf58973efdc354d1fb66296898e36637dcc802d39dd129c69bbc55",
+      "result_decoded_sha256": "d12fa57804eb6948ad9b1e41a76544b5489daab298439dec64f47f1ce2383e1f",
+      "manifest_sha256": "d6e228d5af2529c8477b9bce0104eb39efa3eec736c0b8be44d9536cf3bc01cd",
+      "noisy_ticks": 187,
+      "bound_clip_ticks": 146,
+      "deadzone_ticks": 59,
+      "local_visibility_loss": 0,
+      "local_reacquired": 0,
+      "summary": "act7-gate-8316614-efb002ad-summary.json"
+    },
+    {
+      "run": "act7-gate-8316615-efb002ad",
+      "seed": 8316615,
+      "kind": "yellow",
+      "exit": "0",
+      "status": "complete",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "sim_s": 52.500000000165855,
+      "wall_per_sim": 3.1844382007137426,
+      "first30_wall_per_sim": 3.0313214540481566,
+      "result_sha256": "87d9673c398b50bc60d11fdf293bcda3f2a92766927faf420308da2fab4aabea",
+      "result_decoded_sha256": "13d83c9409f13acdd3f3bb1348cdbc0cdd02a2bd15e915b25cb7aff4dee8c7c3",
+      "manifest_sha256": "a05d18cb0d4c26d5741b5bc8cfefe0b6a5e1dd7af84b9d96535f65f1e4337e62",
+      "noisy_ticks": 191,
+      "bound_clip_ticks": 153,
+      "deadzone_ticks": 45,
+      "local_visibility_loss": 0,
+      "local_reacquired": 0,
+      "summary": "act7-gate-8316615-efb002ad-summary.json"
+    },
+    {
+      "run": "act7-gate-8316616-efb002ad",
+      "seed": 8316616,
+      "kind": "cyan",
+      "exit": "0",
+      "status": "complete",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "sim_s": 52.80000000016729,
+      "wall_per_sim": 2.7623861272828956,
+      "first30_wall_per_sim": 2.5958711942036947,
+      "result_sha256": "92d2e3a9f83d565ce696fbeb2bda3a75c0b8bf03c95249d6c707eaa3c83f938f",
+      "result_decoded_sha256": "07492402eeacd19eac8aa76e5a6346b4a22f1e85dbe148aa19b33a99569e98ca",
+      "manifest_sha256": "5d89788f75734e9dd41ef16e13f8d702611aac49011b30b0e1f577d76440f2de",
+      "noisy_ticks": 194,
+      "bound_clip_ticks": 147,
+      "deadzone_ticks": 37,
+      "local_visibility_loss": 0,
+      "local_reacquired": 0,
+      "summary": "act7-gate-8316616-efb002ad-summary.json"
+    },
+    {
+      "run": "act7-gate-8316617-efb002ad",
+      "seed": 8316617,
+      "kind": "red",
+      "exit": "0",
+      "status": "complete",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "sim_s": 49.00000000014914,
+      "wall_per_sim": 2.785400478216008,
+      "first30_wall_per_sim": 2.724160106976827,
+      "result_sha256": "c417421659d54af1658917d34d307a59ec6bf17e7d93a516a3a5fe96cba45946",
+      "result_decoded_sha256": "59056f98aae210e0fe69575bbb9ed517031d28065d3907d4aa2c75e93501935c",
+      "manifest_sha256": "9c6c8ce9059c3e467cd116f1c15f283fd5932dd818b4916d4f9dcf2873bb0f3e",
+      "noisy_ticks": 156,
+      "bound_clip_ticks": 124,
+      "deadzone_ticks": 56,
+      "local_visibility_loss": 0,
+      "local_reacquired": 0,
+      "summary": "act7-gate-8316617-efb002ad-summary.json"
+    },
+    {
+      "run": "act7-gate-8316618-efb002ad",
+      "seed": 8316618,
+      "kind": "green",
+      "exit": "0",
+      "status": "complete",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "sim_s": 50.40000000015583,
+      "wall_per_sim": 2.823480692034916,
+      "first30_wall_per_sim": 2.675640511512756,
+      "result_sha256": "ffccc3d74674e4b506e938c85d416f67847279f5e3e554db7ef4af46bc0eb744",
+      "result_decoded_sha256": "2d9c430235a150b71a43a38298839eb69241c39e3bae5b24b9471455a3418bb4",
+      "manifest_sha256": "e881700214cf197e7841548d71d48846fa633e9df7f4b35be3cc9baad1191d31",
+      "noisy_ticks": 170,
+      "bound_clip_ticks": 130,
+      "deadzone_ticks": 72,
+      "local_visibility_loss": 0,
+      "local_reacquired": 0,
+      "summary": "act7-gate-8316618-efb002ad-summary.json"
+    },
+    {
+      "run": "act7-gate-8316619-efb002ad",
+      "seed": 8316619,
+      "kind": "yellow",
+      "exit": "0",
+      "status": "complete",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "sim_s": 46.500000000137206,
+      "wall_per_sim": 3.1050544565284723,
+      "first30_wall_per_sim": 3.1075928767522174,
+      "result_sha256": "543a89e68071de80f1826f23a227b22f3b26af303d1c1b2dc9b666ea6ac9f1bd",
+      "result_decoded_sha256": "f5432e92fa0feece96c651e399136724efe0120bac80b6b624ea73897a14e59c",
+      "manifest_sha256": "aa9fe68ec27fcea2ff5f41f72f9546be07feb9b01c2ac913d4d320eaddd658dc",
+      "noisy_ticks": 130,
+      "bound_clip_ticks": 106,
+      "deadzone_ticks": 37,
+      "local_visibility_loss": 0,
+      "local_reacquired": 0,
+      "summary": "act7-gate-8316619-efb002ad-summary.json"
+    },
+    {
+      "run": "act7-gate-8316620-efb002ad",
+      "seed": 8316620,
+      "kind": "cyan",
+      "exit": "0",
+      "status": "complete",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "sim_s": 46.60000000013768,
+      "wall_per_sim": 2.7292423155498753,
+      "first30_wall_per_sim": 2.7214041153589883,
+      "result_sha256": "a98e562154bbcde3c60d1f3c33a3c85cfdf94cf9c19b67032d2ee9df942de803",
+      "result_decoded_sha256": "c96b43441f7e01eb9adf40db91964a3e25f312b3181967af7ef017e243e727c2",
+      "manifest_sha256": "932e26b025e5f80b0ff7bdd0dec89c2a5d890286f324d43013c9bee07784daac",
+      "noisy_ticks": 131,
+      "bound_clip_ticks": 97,
+      "deadzone_ticks": 25,
+      "local_visibility_loss": 0,
+      "local_reacquired": 0,
+      "summary": "act7-gate-8316620-efb002ad-summary.json"
+    },
+    {
+      "run": "act7-gate-8316621-efb002ad",
+      "seed": 8316621,
+      "kind": "red",
+      "exit": "0",
+      "status": "complete",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "sim_s": 56.300000000184,
+      "wall_per_sim": 2.606221805533203,
+      "first30_wall_per_sim": 2.389866654078166,
+      "result_sha256": "72fe4be9c1a78e2bc0484bc7380e832aeff86b8652480161941bd938607a3830",
+      "result_decoded_sha256": "668c31627143d73cada777356956e65650af67a07d490c80f7b0776a3690fd7b",
+      "manifest_sha256": "824c57123d24691d665be6b8b57d54db35f81218695016713c9f32f2648baf8f",
+      "noisy_ticks": 229,
+      "bound_clip_ticks": 181,
+      "deadzone_ticks": 56,
+      "local_visibility_loss": 0,
+      "local_reacquired": 0,
+      "summary": "act7-gate-8316621-efb002ad-summary.json"
+    },
+    {
+      "run": "act7-gate-8316622-efb002ad",
+      "seed": 8316622,
+      "kind": "green",
+      "exit": "0",
+      "status": "complete",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "sim_s": 52.00000000016347,
+      "wall_per_sim": 2.9335517881061457,
+      "first30_wall_per_sim": 2.795008158683777,
+      "result_sha256": "4bc10f750f62719b8f937e28fe52411c1d7b62ce5c5ed75e35b2f3dfe7e53ec4",
+      "result_decoded_sha256": "3c109189af5b14a147395b6c687c3169cb9cc12b8d030254755e861bbb85d5b0",
+      "manifest_sha256": "f6f53e3c600f2fac89106dbf29adc7a859fcaafe9a9b2d6b2a9938c5c95d2af7",
+      "noisy_ticks": 186,
+      "bound_clip_ticks": 137,
+      "deadzone_ticks": 35,
+      "local_visibility_loss": 0,
+      "local_reacquired": 0,
+      "summary": "act7-gate-8316622-efb002ad-summary.json"
+    },
+    {
+      "run": "act7-gate-8316623-efb002ad",
+      "seed": 8316623,
+      "kind": "yellow",
+      "exit": "0",
+      "status": "complete",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "sim_s": 48.500000000146755,
+      "wall_per_sim": 3.160730446650238,
+      "first30_wall_per_sim": 3.0614609400431316,
+      "result_sha256": "44c7c6c5f054353ff1732fc08de047cda3df2f03fef9df8a6524d1a89dc20bc6",
+      "result_decoded_sha256": "1c93b191eb7c4a77367737eb5fd7ee17741eff051c4dc962bcdef3414c811e0a",
+      "manifest_sha256": "eeae7b2829c1d1d169f3a339dfe06a9ca07b683f3f4ef0244a5c0c41246286a0",
+      "noisy_ticks": 151,
+      "bound_clip_ticks": 122,
+      "deadzone_ticks": 51,
+      "local_visibility_loss": 0,
+      "local_reacquired": 0,
+      "summary": "act7-gate-8316623-efb002ad-summary.json"
+    },
+    {
+      "run": "act7-gate-8316624-efb002ad",
+      "seed": 8316624,
+      "kind": "cyan",
+      "exit": "0",
+      "status": "complete",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "sim_s": 48.60000000014723,
+      "wall_per_sim": 2.810922361802165,
+      "first30_wall_per_sim": 2.7574520031611125,
+      "result_sha256": "aa62d7ffc5662a346412e9e30e541a2c2e36eda35da6e641a01dba0ea45e68ff",
+      "result_decoded_sha256": "729405cae80711b6be4ace966f0b554d8a2d51a97888b09d4d9ea3c3bf976f53",
+      "manifest_sha256": "ccf63ef0d0222139e530e3b1c32d0cbb2d24c776cd7a22322080ceb85d85b494",
+      "noisy_ticks": 115,
+      "bound_clip_ticks": 85,
+      "deadzone_ticks": 25,
+      "local_visibility_loss": 2,
+      "local_reacquired": 2,
+      "summary": "act7-gate-8316624-efb002ad-summary.json"
+    },
+    {
+      "run": "act7-gate-8316625-efb002ad",
+      "seed": 8316625,
+      "kind": "red",
+      "exit": "0",
+      "status": "complete",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "sim_s": 52.20000000016442,
+      "wall_per_sim": 2.807514402251707,
+      "first30_wall_per_sim": 2.7051339944203696,
+      "result_sha256": "5f8ecdbc657a6c93db91c923c180bff44766942618ee8fb5aa36cae47756fe72",
+      "result_decoded_sha256": "8950cc076b912075bae084d53da85df5a0b274a3611dfb4b36b1c49c78930629",
+      "manifest_sha256": "a1c11ae3012ecc74f6b550da393076ec49bab3e6a0c50a931f04f0f327b5c5bf",
+      "noisy_ticks": 188,
+      "bound_clip_ticks": 145,
+      "deadzone_ticks": 60,
+      "local_visibility_loss": 0,
+      "local_reacquired": 0,
+      "summary": "act7-gate-8316625-efb002ad-summary.json"
+    },
+    {
+      "run": "act7-gate-8316626-efb002ad",
+      "seed": 8316626,
+      "kind": "green",
+      "exit": "0",
+      "status": "complete",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "sim_s": 50.500000000156305,
+      "wall_per_sim": 2.8444531817535594,
+      "first30_wall_per_sim": 2.794418692588806,
+      "result_sha256": "e72752e50320bb408519a224d62ecb8088fc0f4af43a807b4d2ff88627cfeb5d",
+      "result_decoded_sha256": "f196c3fca1473d9982c5383127c6f8d6aac264bf73799a10376cd00b8690b464",
+      "manifest_sha256": "e4a52aa7806f47f5d20e8d01018c5be2e12bca13e95b034ad145ff78e6982740",
+      "noisy_ticks": 171,
+      "bound_clip_ticks": 138,
+      "deadzone_ticks": 57,
+      "local_visibility_loss": 0,
+      "local_reacquired": 0,
+      "summary": "act7-gate-8316626-efb002ad-summary.json"
+    },
+    {
+      "run": "act7-gate-8316627-efb002ad",
+      "seed": 8316627,
+      "kind": "yellow",
+      "exit": "0",
+      "status": "complete",
+      "physical_success": false,
+      "lift_success": false,
+      "release_success": false,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "sim_s": 60.60000000020453,
+      "wall_per_sim": 3.186856654345688,
+      "first30_wall_per_sim": 3.327208471298218,
+      "result_sha256": "9707e9795893debc9ecd07db0ddb7b4d4d016f21c703b8b0fe8e408885e8c308",
+      "result_decoded_sha256": "9707e9795893debc9ecd07db0ddb7b4d4d016f21c703b8b0fe8e408885e8c308",
+      "manifest_sha256": "9b047524a882720b19a38bb7aef47ff0d6460143498b599b3bce119e7f08fceb",
+      "noisy_ticks": 599,
+      "bound_clip_ticks": 465,
+      "deadzone_ticks": 163,
+      "local_visibility_loss": 0,
+      "local_reacquired": 0,
+      "summary": "act7-gate-8316627-efb002ad-summary.json"
+    },
+    {
+      "run": "act7-gate-8316628-efb002ad",
+      "seed": 8316628,
+      "kind": "cyan",
+      "exit": "0",
+      "status": "complete",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "sim_s": 45.40000000013195,
+      "wall_per_sim": 2.7903439188465167,
+      "first30_wall_per_sim": 2.7813778559366864,
+      "result_sha256": "805b5c5f4e6d452d81a0a6d1f273f223e484bc6bd157a4e5e1498f1d3ff8c139",
+      "result_decoded_sha256": "b64cb41275172f16e7833644512562b208f5d4837d3d549b4340fe7349ab3992",
+      "manifest_sha256": "5772dfc5eb8d6c9062e0fa55072c658aa94792403b20bc952242cc1e6ab3cbd8",
+      "noisy_ticks": 119,
+      "bound_clip_ticks": 97,
+      "deadzone_ticks": 33,
+      "local_visibility_loss": 0,
+      "local_reacquired": 0,
+      "summary": "act7-gate-8316628-efb002ad-summary.json"
+    }
+  ],
+  "final_ownership": {
+    "owned_processes": 0,
+    "owned_leases": 0,
+    "owned_reservations": 0,
+    "vm_state": "RUNNING",
+    "guards_intact": true,
+    "raw_original_files_sha_verified": 3643,
+    "stop_markers_verified": 58
+  },
+  "incomplete_cohort": true,
+  "denominator_note": "28/40 is successes against planned40, not a completed40-trial rate; observed28/29, unsubmitted11 BLOCKED",
+  "stop_record": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/stop-act7-efb002ad-20261015.json",
+  "confirmed_failure_diagnosis": {
+    "confirmed": "visible target approach fails to converge; 24–60 raw SIM timestamp base net displacement ~0.008640703805523823m while issuing nonzero clean/applied wheels; phase_timeout, no IK/lift attempt",
+    "net_displacement_m_raw_t24_to60": 0.008640703805523823,
+    "raw_t_note": "raw control/evaluation t includes1.3s world settling; montage tick times are relative SIM",
+    "root_cause_layer": "drive/contact/path/noise not separated; not inferred from event count",
+    "peer_relation": "solo r1 control; distant parked peer visible0/12; direct blockage not confirmed",
+    "frames": [
+      0,
+      12,
+      24,
+      36,
+      48,
+      60
+    ],
+    "input_audit": {
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    "recovery": "target visible600/600 approach measurement ticks, no lost->reacquired event",
+    "action": "stop same-source batch and block11 unsubmitted"
+  },
+  "evidence_roots": {
+    "raw": "gcp1:/home/ugrp/ugrp-sim/runs",
+    "lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs",
+    "per_run_summaries": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act7-efb002ad-ops"
+  }
+}

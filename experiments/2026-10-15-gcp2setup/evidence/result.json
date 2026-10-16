@@ -1,0 +1,432 @@
+{
+  "status": "complete",
+  "source_sha": "4a69e6bc1fb5d07ccf6b0e2e552140d9e839af9b",
+  "teacher": "release_visible_only_v1",
+  "own_pose_source": "commands",
+  "observe_mode": "backoff_v3",
+  "zone_slots": "zone",
+  "reach_mode": "pad_window_v2",
+  "held_object": "hidden_v1",
+  "weld": "off",
+  "recording_mode": "success_measurement",
+  "student_execution": false,
+  "success_rule": {
+    "settle_s": 2.0,
+    "on_floor_z_m": 0.05,
+    "speed_m_s": 0.01,
+    "tilt_deg": 3.0,
+    "open_pwm": 1900,
+    "clear_m": 0.04
+  },
+  "loadavg_at_start": [
+    5.96240234375,
+    3.76025390625,
+    1.5029296875
+  ],
+  "release_success": true,
+  "prefix_held": true,
+  "render_randomization": {
+    "schema": "ugrp.render_randomization.v1",
+    "profile": "off"
+  },
+  "zone_slot_geoms": [
+    "zone_slot_A1",
+    "zone_slot_A2",
+    "zone_slot_A3"
+  ],
+  "prefix": {
+    "held_sim_s": 8.29999999999895,
+    "outcomes": {
+      "r1": "success",
+      "r2": "success"
+    }
+  },
+  "release_start": {
+    "beam_to_zone_center_m": 0.7911852535959194
+  },
+  "release_outcome": "teacher_done",
+  "release_failure_reasons": [],
+  "evaluation_last": {
+    "t": 49.000000000142954,
+    "fit": true,
+    "z": -0.00010775542021616929,
+    "tilt_deg": 7.774907508970511e-09,
+    "contact_n": {
+      "r1": [
+        0.0,
+        0.0
+      ],
+      "r2": [
+        0.0,
+        0.0
+      ]
+    },
+    "grip_to_beam_m": [
+      0.26126558261763383,
+      0.26888704294193505
+    ],
+    "open_pwm": {
+      "r1": 2000,
+      "r2": 2000
+    },
+    "beam_xy_yaw": [
+      4.5726680521433405,
+      0.0763183889130066,
+      -1.599630902143254
+    ]
+  },
+  "evaluation_settled_s": 2.5,
+  "code_decisions": [
+    {
+      "action": "shift",
+      "shift_m": -0.1,
+      "lo": -1.1330422611944042,
+      "hi": -0.3996416040132819,
+      "evidence": [
+        "prior",
+        "prior"
+      ],
+      "exact": {
+        "r1": false,
+        "r2": false
+      },
+      "t": 10.899999999997272
+    },
+    {
+      "action": "shift",
+      "shift_m": -0.1,
+      "lo": -1.0330749609044865,
+      "hi": -0.29964524073199467,
+      "evidence": [
+        "prior",
+        "prior"
+      ],
+      "exact": {
+        "r1": false,
+        "r2": false
+      },
+      "t": 12.699999999993077
+    },
+    {
+      "action": "shift",
+      "shift_m": -0.1,
+      "lo": -0.9331076606145687,
+      "hi": -0.19964887745070725,
+      "evidence": [
+        "prior",
+        "prior"
+      ],
+      "exact": {
+        "r1": false,
+        "r2": false
+      },
+      "t": 14.499999999988882
+    },
+    {
+      "action": "shift",
+      "shift_m": -0.1,
+      "lo": -0.8331403603246508,
+      "hi": -0.09965251416941984,
+      "evidence": [
+        "prior",
+        "prior"
+      ],
+      "exact": {
+        "r1": false,
+        "r2": false
+      },
+      "t": 16.299999999986817
+    },
+    {
+      "action": "lower",
+      "lo": -0.7331730600347324,
+      "hi": 0.0003438491118675502,
+      "evidence": [
+        "prior",
+        "prior"
+      ],
+      "exact": {
+        "r1": false,
+        "r2": false
+      },
+      "t": 17.999999999994934
+    },
+    {
+      "action": "shift",
+      "shift_m": -0.057500000004422215,
+      "lo": -0.10000000000442238,
+      "hi": -0.015000000004422046,
+      "evidence": [
+        "inside_lb",
+        "edge"
+      ],
+      "exact": {
+        "r1": false,
+        "r2": true
+      },
+      "t": 25.7000000000317
+    },
+    {
+      "action": "lower",
+      "lo": -0.09999999999557829,
+      "hi": 0.03500000000442214,
+      "evidence": [
+        "inside_lb",
+        "edge"
+      ],
+      "exact": {
+        "r1": false,
+        "r2": true
+      },
+      "t": 42.600000000112395
+    }
+  ],
+  "shift_steps": 4,
+  "iterations": 1,
+  "teachers": {
+    "r1": {
+      "visible_counts_by_phase": {
+        "look": {
+          "destination": 0,
+          "end_area": 0,
+          "own_band": 0,
+          "partner": 0,
+          "N": 35
+        },
+        "await_look": {
+          "destination": 0,
+          "end_area": 0,
+          "own_band": 0,
+          "partner": 0,
+          "N": 5
+        },
+        "shift": {
+          "destination": 0,
+          "end_area": 0,
+          "own_band": 0,
+          "partner": 0,
+          "N": 47
+        },
+        "lower": {
+          "destination": 20,
+          "end_area": 20,
+          "own_band": 0,
+          "partner": 0,
+          "N": 48
+        },
+        "await_open": {
+          "destination": 2,
+          "end_area": 2,
+          "own_band": 0,
+          "partner": 0,
+          "N": 2
+        },
+        "open": {
+          "destination": 28,
+          "end_area": 28,
+          "own_band": 0,
+          "partner": 0,
+          "N": 28
+        },
+        "observe_back": {
+          "destination": 44,
+          "end_area": 44,
+          "own_band": 18,
+          "partner": 0,
+          "N": 46
+        },
+        "observe_move": {
+          "destination": 16,
+          "end_area": 16,
+          "own_band": 6,
+          "partner": 0,
+          "N": 16
+        },
+        "observe": {
+          "destination": 12,
+          "end_area": 12,
+          "own_band": 12,
+          "partner": 0,
+          "N": 12
+        },
+        "await_observe": {
+          "destination": 2,
+          "end_area": 2,
+          "own_band": 2,
+          "partner": 0,
+          "N": 2
+        },
+        "approach": {
+          "destination": 24,
+          "end_area": 24,
+          "own_band": 19,
+          "partner": 0,
+          "N": 24
+        },
+        "repick": {
+          "destination": 28,
+          "end_area": 28,
+          "own_band": 0,
+          "partner": 0,
+          "N": 61
+        },
+        "done": {
+          "destination": 40,
+          "end_area": 40,
+          "own_band": 2,
+          "partner": 39,
+          "N": 40
+        }
+      },
+      "max_destination_blind_s_by_phase": {
+        "look": 7.899999999999988,
+        "await_look": 7.999999999999988,
+        "shift": 7.29999999999999,
+        "lower": 9.399999999999983,
+        "await_open": 0.0,
+        "open": 0.0,
+        "observe_back": 0.2,
+        "observe_move": 0.0,
+        "observe": 0.0,
+        "await_observe": 0.0,
+        "approach": 0.0,
+        "repick": 3.3000000000000016,
+        "done": 0.0
+      },
+      "memory_s": 1.6,
+      "own_pose_source": "commands",
+      "scope": "visible_only teacher; truth only gates visibility of currently visible points"
+    },
+    "r2": {
+      "visible_counts_by_phase": {
+        "look": {
+          "destination": 0,
+          "end_area": 0,
+          "own_band": 0,
+          "partner": 0,
+          "N": 35
+        },
+        "await_look": {
+          "destination": 0,
+          "end_area": 0,
+          "own_band": 0,
+          "partner": 0,
+          "N": 5
+        },
+        "shift": {
+          "destination": 0,
+          "end_area": 0,
+          "own_band": 0,
+          "partner": 0,
+          "N": 47
+        },
+        "lower": {
+          "destination": 16,
+          "end_area": 16,
+          "own_band": 0,
+          "partner": 0,
+          "N": 48
+        },
+        "await_open": {
+          "destination": 1,
+          "end_area": 1,
+          "own_band": 0,
+          "partner": 0,
+          "N": 2
+        },
+        "open": {
+          "destination": 25,
+          "end_area": 25,
+          "own_band": 0,
+          "partner": 0,
+          "N": 28
+        },
+        "observe_back": {
+          "destination": 42,
+          "end_area": 42,
+          "own_band": 18,
+          "partner": 0,
+          "N": 46
+        },
+        "observe_move": {
+          "destination": 10,
+          "end_area": 16,
+          "own_band": 6,
+          "partner": 0,
+          "N": 16
+        },
+        "observe": {
+          "destination": 12,
+          "end_area": 12,
+          "own_band": 12,
+          "partner": 0,
+          "N": 12
+        },
+        "await_observe": {
+          "destination": 2,
+          "end_area": 2,
+          "own_band": 2,
+          "partner": 0,
+          "N": 2
+        },
+        "approach": {
+          "destination": 24,
+          "end_area": 24,
+          "own_band": 18,
+          "partner": 0,
+          "N": 24
+        },
+        "repick": {
+          "destination": 28,
+          "end_area": 28,
+          "own_band": 0,
+          "partner": 0,
+          "N": 61
+        },
+        "done": {
+          "destination": 40,
+          "end_area": 40,
+          "own_band": 2,
+          "partner": 39,
+          "N": 40
+        }
+      },
+      "max_destination_blind_s_by_phase": {
+        "look": 7.899999999999988,
+        "await_look": 7.999999999999988,
+        "shift": 7.29999999999999,
+        "lower": 9.199999999999983,
+        "await_open": 0.7,
+        "open": 0.9999999999999999,
+        "observe_back": 0.2,
+        "observe_move": 0.30000000000000004,
+        "observe": 0.0,
+        "await_observe": 0.0,
+        "approach": 0.0,
+        "repick": 3.3000000000000016,
+        "done": 0.0
+      },
+      "memory_s": 1.6,
+      "own_pose_source": "commands",
+      "scope": "visible_only teacher; truth only gates visibility of currently visible points"
+    }
+  },
+  "release_sim_s": 32.50000000011326,
+  "wall_s": 147.429532827,
+  "sim_s": 47.30000000014325,
+  "loadavg_at_end": [
+    1.4033203125,
+    2.6650390625,
+    1.42138671875
+  ],
+  "input_audit": {
+    "held_object": "hidden_v1",
+    "held_world_reads": 0,
+    "held_world_reads_by_site": {},
+    "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+  },
+  "timings_s": {
+    "rgb": 18.625507359000153,
+    "eyes": 0.6001723969993122
+  }
+}

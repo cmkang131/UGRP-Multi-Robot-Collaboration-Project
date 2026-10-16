@@ -1,0 +1,181 @@
+{
+  "schema": "ugrp.gcp_ops_summary.v1",
+  "written_at": "2026-10-15 14:54:33 KST",
+  "queue": "20261015-selfmap5-s1-s2.json",
+  "project": "ugrp-act-train-1014",
+  "host": "gcp1",
+  "machine_type": "n4-highcpu-64",
+  "source_sha": "cfbab2afed755777383c45347062b593175a7cc5",
+  "pr": 506,
+  "scene_version": "floor_light_v1",
+  "verdict": "NOT_READY_180S_ORB_ZERO_DISTANCE_REBUILD_FAILURE",
+  "approved_smooth_N": 3,
+  "submitted_N": 2,
+  "first30_review": {
+    "n": 1,
+    "N": 1,
+    "mapping_complete_n": 0
+  },
+  "diagnostic180": {
+    "success_n": 0,
+    "submitted_N": 1,
+    "planned_N": 2,
+    "HOST_ERROR_N": 1,
+    "blocked_not_submitted_N": 1
+  },
+  "mapping_complete_submitted": {
+    "n": 0,
+    "N": 2,
+    "note": "first30 is acquisition review, not complete-map trial"
+  },
+  "input_audit": {
+    "measured_N": 2,
+    "invisible_measurements": [
+      0,
+      0
+    ],
+    "held_world_reads": [
+      0,
+      0
+    ],
+    "top_rgb_frames": [
+      0,
+      0
+    ],
+    "peer_rgb_frames": [
+      0,
+      0
+    ],
+    "truth_pose_inputs": [
+      0,
+      0
+    ]
+  },
+  "speed": {
+    "policy": "warn>3.5; block>6 or HOST_ERROR/incomplete",
+    "first30_wall_per_sim": [
+      4.903741373966659,
+      4.740073483033302
+    ],
+    "median_first30": 4.82190742849998,
+    "total_wall_per_sim": [
+      5.018007959866676,
+      4.465383724904361
+    ],
+    "warnings_N": 2,
+    "exceeds6_N": 0,
+    "blocked_after_HOST_ERROR": true
+  },
+  "frame_review": {
+    "first30_unique_frames_N": 6,
+    "failed_unique_frames_N": 11,
+    "failed_final_elapsed_sim_s": [
+      0.0,
+      11.5,
+      23.0,
+      34.5,
+      46.0,
+      57.5
+    ],
+    "failed_live_elapsed_sim_s": [
+      0,
+      11,
+      22,
+      33,
+      44,
+      55
+    ],
+    "camera": "own r3 only; other cameras not captured",
+    "observed_peer_relation": "background robot distant; no peer blocking seen in sampled views"
+  },
+  "verification": {
+    "native_rgb_sha_verified_N": 877,
+    "remote_original_manifest_files_N": 964,
+    "local_manifest_matched_files_N": 87,
+    "compressed_original_sha_verified_N": 14,
+    "all_cadence_ok": true
+  },
+  "blocked_not_submitted": [
+    {
+      "name": "selfmap5-smooth-93552-cfbab2af",
+      "reason": "same source zero-distance rebuild defect; prerequisite180s-1 failed"
+    },
+    {
+      "name": "selfmap5-textured-93550-cfbab2af",
+      "reason": "ready=false; PR511 integration/newSHA/approval absent; sameSHA also blocked by diagnostic failure"
+    },
+    {
+      "name": "selfmap5-textured-93551-cfbab2af",
+      "reason": "ready=false; PR511 integration/newSHA/approval absent; sameSHA also blocked by diagnostic failure"
+    },
+    {
+      "name": "selfmap5-textured-93552-cfbab2af",
+      "reason": "ready=false; PR511 integration/newSHA/approval absent; sameSHA also blocked by diagnostic failure"
+    }
+  ],
+  "raw_retention": "all877 native own-RGB JPEGs and raw ledgers remain on GCP persistent disk; lite and selected frames retrieved; no independent full-raw backup",
+  "next_step": "coordinator needs corrected source and new queue; do not submit93552 or textured/currentSHA; leave idle VM to20min guard",
+  "summary_path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/selfmap5-cfbab2af.json",
+  "runs": [
+    {
+      "name": "selfmap5-smooth-93550-cfbab2af",
+      "stage": "first30",
+      "result_sha256": "8c9efa6013f8d749887f782da819275023e1b718d1654937040eee86f9cf3b72",
+      "native_raw": "gcp1:/home/ugrp/ugrp-sim/runs/selfmap5-smooth-93550-cfbab2af/raw",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/selfmap5-smooth-93550-cfbab2af",
+      "status": "RECORDED",
+      "elapsed_sim_s": 30.0,
+      "stop_reason": "sim_time_cap",
+      "map_complete": false
+    },
+    {
+      "name": "selfmap5-smooth-93551-cfbab2af",
+      "stage": "diagnostic180_1",
+      "result_sha256": "9789c3898bc59bee9a4b2917fa2e1dc439f8f8a32a0eac7664d9bb46eeb0182e",
+      "native_raw": "gcp1:/home/ugrp/ugrp-sim/runs/selfmap5-smooth-93551-cfbab2af/raw",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/selfmap5-smooth-93551-cfbab2af",
+      "status": "HOST_ERROR",
+      "elapsed_sim_s": 57.5,
+      "stop_reason": "selfmap4_relocalization_exhausted",
+      "map_complete": false
+    }
+  ],
+  "failure_summary": {
+    "confirmed": "ORB visual_relocalized during zero issued-motion segment triggers required revision; both partial rebuild attempts reject zero_command_distance with same pending endpoint/anchor and consume2-attempt budget; quarantine never clears, then selfmap4_relocalization_exhausted at57.5SIMs. No static-map registration occurred.",
+    "first_revision_frame_id": 254,
+    "pending_anchor_frame_id": 241,
+    "pending_issued_distance_m": 0.0,
+    "inserted_frames_after_pending_anchor_N": 0,
+    "unresolved": "Cause of ORB ~44degree pose jumps (matching ambiguity/calibration/other) is not independently isolated. No repair, training, gate, or new run authorized after failure."
+  },
+  "summary_sha256": "d0a5adc4a56e36c0f4e37aa690379711caaafa6d712ccedcfacfad3439e4a21d",
+  "pr_final_comment": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/506#issuecomment-6185493419",
+  "final_resources": {
+    "runs": [
+      {
+        "run": "selfmap5-smooth-93550-cfbab2af",
+        "exit": "0",
+        "lease_absent": true,
+        "all_vm_sha_pass": true
+      },
+      {
+        "run": "selfmap5-smooth-93551-cfbab2af",
+        "exit": "1",
+        "lease_absent": true,
+        "all_vm_sha_pass": true
+      }
+    ],
+    "active_sim_cli_total": 0,
+    "active_processes": [],
+    "owned_processes": [],
+    "idle_guard_timer": "active",
+    "free_bytes": 243058216960,
+    "stop_marker_sha256": "b0ff308dbada22156badc1d73d345862145aabc0f73f961ba8873c282bfde557",
+    "pending_run_exists": {
+      "selfmap5-smooth-93552-cfbab2af": false,
+      "selfmap5-textured-93550-cfbab2af": false,
+      "selfmap5-textured-93551-cfbab2af": false,
+      "selfmap5-textured-93552-cfbab2af": false
+    }
+  }
+}

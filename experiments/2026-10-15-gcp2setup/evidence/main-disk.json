@@ -1,0 +1,63 @@
+{
+  "accessMode": "READ_WRITE_SINGLE",
+  "architecture": "X86_64",
+  "creationTimestamp": "2026-10-15T07:10:11.169-07:00",
+  "enableConfidentialCompute": false,
+  "guestOsFeatures": [
+    {
+      "type": "VIRTIO_SCSI_MULTIQUEUE"
+    },
+    {
+      "type": "SEV_CAPABLE"
+    },
+    {
+      "type": "SEV_SNP_CAPABLE"
+    },
+    {
+      "type": "SEV_LIVE_MIGRATABLE"
+    },
+    {
+      "type": "SEV_LIVE_MIGRATABLE_V2"
+    },
+    {
+      "type": "SNP_SVSM_CAPABLE"
+    },
+    {
+      "type": "IDPF"
+    },
+    {
+      "type": "TDX_CAPABLE"
+    },
+    {
+      "type": "UEFI_COMPATIBLE"
+    },
+    {
+      "type": "GVNIC"
+    }
+  ],
+  "id": "723646338217893933",
+  "kind": "compute#disk",
+  "labelFingerprint": "42WmSpB8rSM=",
+  "lastAttachTimestamp": "2026-10-15T07:10:11.667-07:00",
+  "licenseCodes": [
+    "3242930272766215801"
+  ],
+  "licenses": [
+    "https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/licenses/ubuntu-2404-lts"
+  ],
+  "name": "ugrp-sim-gcp2",
+  "physicalBlockSizeBytes": "4096",
+  "provisionedIops": "5400",
+  "provisionedThroughput": "740",
+  "satisfiesPzi": true,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/ugrp-sim-b-1014/zones/asia-northeast3-a/disks/ugrp-sim-gcp2",
+  "sizeGb": "400",
+  "sourceImage": "https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-2404-noble-amd64-v20261009",
+  "sourceImageId": "6638624561818534649",
+  "status": "READY",
+  "type": "https://www.googleapis.com/compute/v1/projects/ugrp-sim-b-1014/zones/asia-northeast3-a/diskTypes/hyperdisk-balanced",
+  "users": [
+    "https://www.googleapis.com/compute/v1/projects/ugrp-sim-b-1014/zones/asia-northeast3-a/instances/ugrp-sim-gcp2"
+  ],
+  "zone": "https://www.googleapis.com/compute/v1/projects/ugrp-sim-b-1014/zones/asia-northeast3-a"
+}

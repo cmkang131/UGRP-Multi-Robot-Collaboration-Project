@@ -1,0 +1,748 @@
+{
+  "schema": "ugrp.gcp-ops.release16.v1",
+  "recorded_at": "2026-10-15 13:31:41 KST",
+  "verdict": "NOT_READY_CONFIRMED_CONTROL_DEFECT",
+  "queue": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-release-gate-be2d749a.json",
+  "host": {
+    "project": "ugrp-act-train-1014",
+    "ssh": "gcp1",
+    "instance": "ugrp-sim-gcp1",
+    "zone": "asia-northeast3-a",
+    "machine": "n4-highcpu-64"
+  },
+  "source": {
+    "sha": "be2d749adb4fd4eb38421fa19aa981e0eb195c4b",
+    "branch": "claude/grasp-act-probes",
+    "source_worktree": "/Users/changmin/projects/ugrp-wt/grasp-act-probes",
+    "pr": 491,
+    "pr_note": "PR491 head is a different branch; queue pins exact grasp-act-probes SHA",
+    "plan_sha256": {
+      "experiments/2026-10-14-e2e18-grasp-rootcause/release16-diagnostic-plan.json": "3310a471088df96bb37f16f7db0a8787b4fd536bee9c0acfb4b5fc88e56069dd"
+    },
+    "profile": {
+      "held_object": "hidden_v1",
+      "lookaround": "setdown_global_v1",
+      "pose_anchor": "command_relative_v1",
+      "own_pose_source": "commands",
+      "observe_mode": "backoff_v3",
+      "zone_slots": "zone",
+      "reach_mode": "pad_window_v2",
+      "placement": "global_localized_release_v1",
+      "lateral_recovery": "bounded_v1",
+      "active_recovery": "setdown_lookaround_v1",
+      "command_motion": "native_yaw_v1",
+      "localization_support": "map_free_v1",
+      "regrasp_check": "own_rgb_lift_v1",
+      "regrasp_recovery": "own_rgb_realign_v1",
+      "release_profile": "release16_known_shape_v1"
+    },
+    "weld": "off",
+    "training_rgb": false,
+    "student_execution": false
+  },
+  "stages": {
+    "development_reproduction": {
+      "success": 0,
+      "N": 2,
+      "completed": 2,
+      "HOST_ERROR": 0,
+      "prefix_held": 2
+    },
+    "fresh_diagnostic": {
+      "planned_N": 7,
+      "submitted": 0,
+      "blocked": 7,
+      "success": null
+    },
+    "gate40": {
+      "approved": false,
+      "scheduled": false,
+      "N": 40,
+      "submitted": 0,
+      "success": null
+    }
+  },
+  "subsets": {
+    "first_alignment_robots": {
+      "passed": 4,
+      "N": 4
+    },
+    "first_own_RGB_barrier_runs": {
+      "confirmed": 2,
+      "N": 2,
+      "scope": "own-RGB hypothesis only; not proof of stable physical grasp"
+    },
+    "later_alignment_failure_runs": {
+      "failures": 2,
+      "N": 2
+    }
+  },
+  "cause": {
+    "observed": "Both robots retain opposite ends. First alignment/own-RGB regrasp barrier succeeds; later alignment after shifting cannot recover camera view.",
+    "74963": "r2 forward issued0.100m vs evaluation displacement0.0773m; last yaw issued-0.025rad vs evaluation+0.0621rad and center_error .1297→.2435; subsequent FOV step is blocked by motion_cap.",
+    "74976": "r1 forward issued0.064m vs evaluation0.00199m in91.6–94.7 worldSIMs; beam stationary, camera remains clipped at y13 and merit8978, so no_recover_fov_progress_3s stops it.",
+    "limits": "Contact/friction/actuator/coordinate-frame contribution is not isolated. Do not assert that a yaw-constant change alone fixes either run. No additional physics or control edits performed.",
+    "evaluation_boundary": "All actual poses above were read only after runs for diagnosis; never fed back to control.",
+    "motion_audit": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release16-be2d749a-ops/motion-audit.json",
+    "yaw_audit": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release16-be2d749a-ops/yaw-audit.json"
+  },
+  "input_audit": {
+    "runs_checked": 2,
+    "invisible_measurements_sum": 0,
+    "held_world_reads_sum": 0,
+    "prefix_excluded": true
+  },
+  "performance": {
+    "first30_wall_sim_median_approx": 2.814847392211788,
+    "overall_wall_sim_median": 3.0334444502507942,
+    "scope": "two owned concurrent runs; host shared workload varied, no dedicated speed cohort",
+    "warning_over_3_5": false,
+    "block_over_6": false
+  },
+  "visual_review": {
+    "final_whole_run_frames": 63,
+    "final_focused_inputs": 18,
+    "additional_live_first30_views": 36,
+    "timing": "Final image timestamps corrected from command rows; early live/prefix-only timestamps were provisional."
+  },
+  "preservation": {
+    "raw": "GCP persistent disk only, original full manifest verified; no ARM archive or full Mac raw copy",
+    "mac": "fetch-lite plus selected original JPEGs and hash records",
+    "fetched_files_verified": 40,
+    "decoded_original_hashes_verified": 8,
+    "owned_active_pids": [],
+    "own_leases_released": true,
+    "idle_guard": "active",
+    "eight_hour_stop": "verified preflight, unchanged",
+    "budget_stop": "ACTIVE preflight, unchanged",
+    "latest_budget_message": {
+      "jsonPayload": {
+        "budgetAmount": 1000,
+        "costAmount": 0,
+        "currency": "KRW"
+      },
+      "timestamp": "2026-10-15T04:07:16.966070Z"
+    },
+    "credit_balance": "not measured; no billing or credit operations",
+    "stop_record": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/stop-release16-be2d749a-20261015.json"
+  },
+  "runs": [
+    {
+      "name": "r16d-00-be2d749a",
+      "seed": 74963,
+      "cohort": "development_reproduction",
+      "submitted": true,
+      "status": "complete",
+      "exit": "0",
+      "success": false,
+      "outcome": "release16_motion_cap",
+      "failure_reasons": [
+        "release16_motion_cap"
+      ],
+      "source_sha": "be2d749adb4fd4eb38421fa19aa981e0eb195c4b",
+      "profile": "release16_known_shape_v1",
+      "prefix": {
+        "held_sim_s": 8.29999999999895,
+        "outcomes": {
+          "r1": "success",
+          "r2": "success"
+        }
+      },
+      "sim_s": 97.09999999938911,
+      "wall_s": 296.0052279629999,
+      "wall_sim": 3.048457548556768,
+      "first30": {
+        "wall_sim_approx": 2.865569386932747,
+        "from": {
+          "name": "000000-prefix.jpg",
+          "sim_relative_s": 0.0,
+          "mtime": 1792037960.2174962
+        },
+        "to": {
+          "name": "000220-release-line_recheck.jpg",
+          "sim_relative_s": 30.300000000062074,
+          "mtime": 1792038047.0442486
+        },
+        "method": "JPEG mtime vs actual teacher-r1 command-row SIM timestamp; startup excluded; 1SIM-second image sampling"
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "measurements_by_phase": {
+          "lookaround": {
+            "own_rgb_landmarks": {
+              "n": 1680,
+              "invisible": 0
+            }
+          }
+        },
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check",
+        "explicit_enabled_counter": "not supplied by this runner",
+        "top_camera_control": "no explicit counter; source review only, review images are evaluation-only"
+      },
+      "training_exclusions": {
+        "prefix": {
+          "included": false,
+          "reason": "truth contact/height termination; scene preparation only",
+          "start_world_t": 1.8000000000001848,
+          "end_world_t": 10.099999999999136
+        },
+        "release": {
+          "included": false,
+          "reason": "success measurement; no student writer or gate admission"
+        }
+      },
+      "line_checks": [
+        {
+          "robot": "r1",
+          "state": "done",
+          "failure": null,
+          "issued_absolute_motion": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "event_counts": {
+            "open_then_hover": 1,
+            "image": 4,
+            "mode_enter": 1,
+            "aligned_before_pick": 1
+          },
+          "image_reasons": {
+            "beam_rows": 4
+          }
+        },
+        {
+          "robot": "r2",
+          "state": "done",
+          "failure": null,
+          "issued_absolute_motion": [
+            0.060000000000000026,
+            0.0,
+            0.0
+          ],
+          "event_counts": {
+            "open_then_hover": 1,
+            "image": 20,
+            "mode_enter": 4,
+            "recover_fov": 15,
+            "aligned_before_pick": 1
+          },
+          "image_reasons": {
+            "beam_clipped": 7,
+            "beam_rows": 13
+          }
+        },
+        {
+          "robot": "r1",
+          "state": "done",
+          "failure": null,
+          "issued_absolute_motion": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "event_counts": {
+            "open_then_hover": 1,
+            "image": 4,
+            "mode_enter": 1,
+            "aligned_before_pick": 1
+          },
+          "image_reasons": {
+            "beam_rows": 4
+          }
+        },
+        {
+          "robot": "r2",
+          "state": "done",
+          "failure": null,
+          "issued_absolute_motion": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "event_counts": {
+            "open_then_hover": 1,
+            "image": 4,
+            "mode_enter": 1,
+            "aligned_before_pick": 1
+          },
+          "image_reasons": {
+            "beam_rows": 4
+          }
+        },
+        {
+          "robot": "r1",
+          "state": "done",
+          "failure": null,
+          "issued_absolute_motion": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "event_counts": {
+            "open_then_hover": 1,
+            "image": 4,
+            "mode_enter": 1,
+            "aligned_before_pick": 1
+          },
+          "image_reasons": {
+            "beam_rows": 4
+          }
+        },
+        {
+          "robot": "r2",
+          "state": "failed",
+          "failure": "release16_motion_cap",
+          "issued_absolute_motion": [
+            0.10000000000000006,
+            0.0011989641377667646,
+            0.025
+          ],
+          "event_counts": {
+            "open_then_hover": 1,
+            "image": 27,
+            "mode_enter": 3,
+            "recover_fov": 25,
+            "line_ibvs": 1
+          },
+          "image_reasons": {
+            "beam_clipped": 12,
+            "beam_direction_unresolved": 11,
+            "beam_rows": 4
+          }
+        }
+      ],
+      "own_rgb_barriers": [
+        {
+          "epoch": 1,
+          "confirmed": {
+            "r1": true,
+            "r2": true
+          },
+          "failure": null,
+          "attempts": {
+            "r1": 1,
+            "r2": 1
+          },
+          "events": [
+            {
+              "t": 51.60000000015537,
+              "robot": "r1",
+              "epoch": 1,
+              "attempt": 1,
+              "event": "test_start",
+              "commanded_lift_m": 0.02
+            },
+            {
+              "t": 58.40000000018784,
+              "robot": "r1",
+              "epoch": 1,
+              "attempt": 1,
+              "event": "confirmed",
+              "reason": "own_sequential_rgb_lift"
+            },
+            {
+              "t": 58.500000000188315,
+              "robot": "r2",
+              "epoch": 1,
+              "attempt": 1,
+              "event": "test_start",
+              "commanded_lift_m": 0.02
+            },
+            {
+              "t": 65.30000000018383,
+              "robot": "r2",
+              "epoch": 1,
+              "attempt": 1,
+              "event": "confirmed",
+              "reason": "own_sequential_rgb_lift"
+            }
+          ],
+          "physical_validation": "unverified; own RGB hypothesis only"
+        }
+      ],
+      "visual_review": {
+        "final_overview_r1_r2_times_sim_relative_s": [
+          0.0,
+          6.0,
+          12.3,
+          18.3,
+          19.3,
+          24.3,
+          30.3,
+          37.3,
+          56.3,
+          75.3,
+          94.3
+        ],
+        "final_overview_r1_r2_frames_viewed": 33,
+        "focused_inputs_viewed": 9,
+        "failed_robot": "r2",
+        "failed_input_world_times_s": [
+          91.19999999957138,
+          92.19999999954773,
+          93.19999999952408,
+          94.3999999994957,
+          95.39999999947206,
+          96.39999999944841
+        ],
+        "montages": [
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release16-be2d749a-ops/r16d-00-be2d749a/montage-0.jpg",
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release16-be2d749a-ops/r16d-00-be2d749a/montage-1.jpg",
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release16-be2d749a-ops/r16d-00-be2d749a/focus/focus.jpg"
+        ],
+        "scope": "direct visual inspection; whole run >=6 evenly spaced times, gap<60SIMs; first30 and first regrasp RGB; separate live first30 montages also viewed"
+      },
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/r16d-00-be2d749a",
+      "lite_location": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r16d-00-be2d749a",
+      "result_zst_sha256": "a7ee346cdd9b6dba74eda2c4610f2c5196863b4553792e5a936fffceceb643c5",
+      "raw_sha256sums_sha256": "ddca0627d53b5aba27b3cc28238915d74581a0b22c5129a857293bf96ba11a86",
+      "final_verification": {
+        "run": "r16d-00-be2d749a",
+        "EXIT": "0",
+        "original_manifest_verified": true,
+        "stop_marker_sha256": "f02d970aeca34f30e7fc1586facdffc0c64224ca3cc0824a4c61b2f683a3929c",
+        "lease_released": true,
+        "owned_pids": [],
+        "other_simulation_jobs": [],
+        "idle_guard": "active",
+        "free_bytes": 252852215808,
+        "fetched_files_verified": 20,
+        "decoded_original_hash_verified": [
+          "eval-only.jsonl.zst",
+          "result.json.zst",
+          "teacher-r1.jsonl.zst",
+          "teacher-r2.jsonl.zst"
+        ]
+      }
+    },
+    {
+      "name": "r16d-01-be2d749a",
+      "seed": 74976,
+      "cohort": "development_reproduction",
+      "submitted": true,
+      "status": "complete",
+      "exit": "0",
+      "success": false,
+      "outcome": "release16_no_recover_fov_progress_3s",
+      "failure_reasons": [
+        "not_in_zone"
+      ],
+      "source_sha": "be2d749adb4fd4eb38421fa19aa981e0eb195c4b",
+      "profile": "release16_known_shape_v1",
+      "prefix": {
+        "held_sim_s": 8.29999999999895,
+        "outcomes": {
+          "r1": "success",
+          "r2": "success"
+        }
+      },
+      "sim_s": 95.49999999942695,
+      "wall_s": 288.2601941090006,
+      "wall_sim": 3.0184313519448205,
+      "first30": {
+        "wall_sim_approx": 2.764125397490828,
+        "from": {
+          "name": "000000-prefix.jpg",
+          "sim_relative_s": 0.0,
+          "mtime": 1792037970.1614962
+        },
+        "to": {
+          "name": "000220-release-line_recheck.jpg",
+          "sim_relative_s": 30.300000000062074,
+          "mtime": 1792038053.9144957
+        },
+        "method": "JPEG mtime vs actual teacher-r1 command-row SIM timestamp; startup excluded; 1SIM-second image sampling"
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "measurements_by_phase": {
+          "lookaround": {
+            "own_rgb_landmarks": {
+              "n": 1805,
+              "invisible": 0
+            }
+          }
+        },
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check",
+        "explicit_enabled_counter": "not supplied by this runner",
+        "top_camera_control": "no explicit counter; source review only, review images are evaluation-only"
+      },
+      "training_exclusions": {
+        "prefix": {
+          "included": false,
+          "reason": "truth contact/height termination; scene preparation only",
+          "start_world_t": 1.8000000000001848,
+          "end_world_t": 10.099999999999136
+        },
+        "release": {
+          "included": false,
+          "reason": "success measurement; no student writer or gate admission"
+        }
+      },
+      "line_checks": [
+        {
+          "robot": "r1",
+          "state": "done",
+          "failure": null,
+          "issued_absolute_motion": [
+            0.06800000000000003,
+            0.0,
+            0.0
+          ],
+          "event_counts": {
+            "open_then_hover": 1,
+            "image": 21,
+            "mode_enter": 2,
+            "recover_fov": 17,
+            "aligned_before_pick": 1
+          },
+          "image_reasons": {
+            "beam_clipped": 9,
+            "beam_direction_unresolved": 1,
+            "beam_rows": 11
+          }
+        },
+        {
+          "robot": "r2",
+          "state": "done",
+          "failure": null,
+          "issued_absolute_motion": [
+            0.06400000000000003,
+            0.0,
+            0.0
+          ],
+          "event_counts": {
+            "open_then_hover": 1,
+            "image": 20,
+            "mode_enter": 2,
+            "recover_fov": 16,
+            "aligned_before_pick": 1
+          },
+          "image_reasons": {
+            "beam_clipped": 9,
+            "beam_rows": 11
+          }
+        },
+        {
+          "robot": "r1",
+          "state": "done",
+          "failure": null,
+          "issued_absolute_motion": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "event_counts": {
+            "open_then_hover": 1,
+            "image": 4,
+            "mode_enter": 1,
+            "aligned_before_pick": 1
+          },
+          "image_reasons": {
+            "beam_rows": 4
+          }
+        },
+        {
+          "robot": "r2",
+          "state": "done",
+          "failure": null,
+          "issued_absolute_motion": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "event_counts": {
+            "open_then_hover": 1,
+            "image": 4,
+            "mode_enter": 1,
+            "aligned_before_pick": 1
+          },
+          "image_reasons": {
+            "beam_rows": 4
+          }
+        },
+        {
+          "robot": "r1",
+          "state": "failed",
+          "failure": "release16_no_recover_fov_progress_3s",
+          "issued_absolute_motion": [
+            0.06400000000000003,
+            0.0,
+            0.0
+          ],
+          "event_counts": {
+            "open_then_hover": 1,
+            "image": 17,
+            "mode_enter": 1,
+            "recover_fov": 16
+          },
+          "image_reasons": {
+            "beam_clipped": 17
+          }
+        }
+      ],
+      "own_rgb_barriers": [
+        {
+          "epoch": 1,
+          "confirmed": {
+            "r1": true,
+            "r2": true
+          },
+          "failure": null,
+          "attempts": {
+            "r1": 1,
+            "r2": 1
+          },
+          "events": [
+            {
+              "t": 55.0000000001716,
+              "robot": "r1",
+              "epoch": 1,
+              "attempt": 1,
+              "event": "test_start",
+              "commanded_lift_m": 0.02
+            },
+            {
+              "t": 61.80000000020407,
+              "robot": "r1",
+              "epoch": 1,
+              "attempt": 1,
+              "event": "confirmed",
+              "reason": "own_sequential_rgb_lift"
+            },
+            {
+              "t": 61.90000000020455,
+              "robot": "r2",
+              "epoch": 1,
+              "attempt": 1,
+              "event": "test_start",
+              "commanded_lift_m": 0.02
+            },
+            {
+              "t": 68.70000000010343,
+              "robot": "r2",
+              "epoch": 1,
+              "attempt": 1,
+              "event": "confirmed",
+              "reason": "own_sequential_rgb_lift"
+            }
+          ],
+          "physical_validation": "unverified; own RGB hypothesis only"
+        }
+      ],
+      "visual_review": {
+        "final_overview_r1_r2_times_sim_relative_s": [
+          0.0,
+          6.0,
+          12.3,
+          18.3,
+          24.3,
+          30.3,
+          37.3,
+          55.3,
+          74.3,
+          92.3
+        ],
+        "final_overview_r1_r2_frames_viewed": 30,
+        "focused_inputs_viewed": 9,
+        "failed_robot": "r1",
+        "failed_input_world_times_s": [
+          91.59999999956192,
+          92.19999999954773,
+          92.79999999953354,
+          93.59999999951462,
+          94.19999999950043,
+          94.79999999948625
+        ],
+        "montages": [
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release16-be2d749a-ops/r16d-01-be2d749a/montage-0.jpg",
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release16-be2d749a-ops/r16d-01-be2d749a/montage-1.jpg",
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release16-be2d749a-ops/r16d-01-be2d749a/focus/focus.jpg"
+        ],
+        "scope": "direct visual inspection; whole run >=6 evenly spaced times, gap<60SIMs; first30 and first regrasp RGB; separate live first30 montages also viewed"
+      },
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/r16d-01-be2d749a",
+      "lite_location": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r16d-01-be2d749a",
+      "result_zst_sha256": "94c60fe624437a37b26ad276d837247eb530590beba96cdab6f420f973bc8c34",
+      "raw_sha256sums_sha256": "8df1b81da19e8dc8b74afb2d90615cb915ea9c78e41c8b8096a4414d167c5c5b",
+      "final_verification": {
+        "run": "r16d-01-be2d749a",
+        "EXIT": "0",
+        "original_manifest_verified": true,
+        "stop_marker_sha256": "7158255800ce883c1409ab61cf7cefccb47bb42faf62389cc8c78f2c9ad65b1d",
+        "lease_released": true,
+        "owned_pids": [],
+        "other_simulation_jobs": [],
+        "idle_guard": "active",
+        "free_bytes": 252852207616,
+        "fetched_files_verified": 20,
+        "decoded_original_hash_verified": [
+          "eval-only.jsonl.zst",
+          "result.json.zst",
+          "teacher-r1.jsonl.zst",
+          "teacher-r2.jsonl.zst"
+        ]
+      }
+    },
+    {
+      "name": "r16n-00-be2d749a",
+      "seed": 78460,
+      "cohort": "fresh_diagnostic",
+      "submitted": false,
+      "status": "BLOCKED_SAME_CONTROL_DEFECT",
+      "success": null
+    },
+    {
+      "name": "r16n-01-be2d749a",
+      "seed": 78461,
+      "cohort": "fresh_diagnostic",
+      "submitted": false,
+      "status": "BLOCKED_SAME_CONTROL_DEFECT",
+      "success": null
+    },
+    {
+      "name": "r16n-02-be2d749a",
+      "seed": 78462,
+      "cohort": "fresh_diagnostic",
+      "submitted": false,
+      "status": "BLOCKED_SAME_CONTROL_DEFECT",
+      "success": null
+    },
+    {
+      "name": "r16n-03-be2d749a",
+      "seed": 78463,
+      "cohort": "fresh_diagnostic",
+      "submitted": false,
+      "status": "BLOCKED_SAME_CONTROL_DEFECT",
+      "success": null
+    },
+    {
+      "name": "r16n-04-be2d749a",
+      "seed": 78464,
+      "cohort": "fresh_diagnostic",
+      "submitted": false,
+      "status": "BLOCKED_SAME_CONTROL_DEFECT",
+      "success": null
+    },
+    {
+      "name": "r16n-05-be2d749a",
+      "seed": 78465,
+      "cohort": "fresh_diagnostic",
+      "submitted": false,
+      "status": "BLOCKED_SAME_CONTROL_DEFECT",
+      "success": null
+    },
+    {
+      "name": "r16n-06-be2d749a",
+      "seed": 78466,
+      "cohort": "fresh_diagnostic",
+      "submitted": false,
+      "status": "BLOCKED_SAME_CONTROL_DEFECT",
+      "success": null
+    }
+  ],
+  "next_step": "Assigned queue finished as blocked. Fresh7/gate40 remain unsubmitted; coordinator needs a corrected SHA and new queue."
+}

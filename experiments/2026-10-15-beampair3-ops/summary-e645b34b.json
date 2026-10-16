@@ -1,0 +1,427 @@
+{
+  "schema": "ugrp.ops.beampair3.delivery.v1",
+  "time": "2026-10-15 22:36:14 KST",
+  "analysis_host": "gcp1",
+  "project": "ugrp-act-train-1014",
+  "machine_type": "n4-highcpu-64",
+  "source_sha": "e645b34beb4fa693ab4ddedfe77045ae26b46388",
+  "dependency_sha": "26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+  "profile": "visible_only",
+  "scene": "cargo_v7 / grasp_act_teal_blue_v1",
+  "operation_complete": true,
+  "cohort_complete": false,
+  "verdict": "NOT_READY",
+  "n": 30,
+  "N": 40,
+  "attempted_N": 32,
+  "success_N": 30,
+  "control_failure_N": 2,
+  "cap_end_N": 0,
+  "HOST_ERROR_N": 0,
+  "supervisor_interrupted_N": 0,
+  "unsubmitted_blocked_N": 8,
+  "input_audit": {
+    "checked_N": 32,
+    "passed_N": 32,
+    "invisible_measurements": 0,
+    "held_world_reads": 0,
+    "adapter_held_world_reads": 0,
+    "all_enabled": true,
+    "scope": "Saved raw result and adapter audits; no claim of an independent full source leak audit."
+  },
+  "speed": {
+    "first30_N": 25,
+    "first30_median": 2.347388447461935,
+    "first30_max": 2.5352252135949116,
+    "whole_run_wall_per_sim_median": 2.4140992550437437,
+    "early_success_lt30_N": 6,
+    "own_wrapper_interval_peak": 16,
+    "global_admission_slots_max_at_our_submissions": 28
+  },
+  "speed_limit": "동시 상한16·실제최대16. 시작시각이 분산되어 일정한16동시30SIM초 속도 관문으로는 쓰지 않음.",
+  "failures_ko": [
+    {
+      "seed": 8318620,
+      "gate": "both_align 전",
+      "cause": "r1 접근 명령 중 목표 관측거리0.165→0.435m 증가; r2는 다른 끝 READY.33.7SIM초 handoff, GO/pick 없음.",
+      "remaining": "제어식·명령 변환 중 정확한 항은 추가 분리 필요."
+    },
+    {
+      "seed": 8318626,
+      "gate": "blocked_goal / both_align 전",
+      "cause": "r1은청록READY, r2후보6643개전부거부(서벽memory_margin6643·북벽current_geometry6643은같은후보중복사유),23.0SIM초 handoff.",
+      "remaining": "관측모델의 북벽 형상·서벽 불확실성과 실제 기하의 불일치 여부는 미확인."
+    }
+  ],
+  "visual_review": {
+    "failure_full2hz_timestamps": 116,
+    "failure_last10s_10hz_timestamps": 202,
+    "failure_original_own_frames_viewed": 24,
+    "first_two_full2hz_timestamps": 196,
+    "first_two_original_own_frames_viewed": 24,
+    "scope": "GCP saved-qpos3x overview+r1+r2 playback, ffprobe, strip images. Original1Hz own RGB separately checked; no Mac screen apps."
+  },
+  "retrieval": {
+    "runs": 32,
+    "files": 350,
+    "failed_own_original_frames": 116,
+    "all_local_hashes_verified": true,
+    "original_manifests_verified_on_gcp": 32,
+    "media_hashes_verified": true
+  },
+  "resources": {
+    "own_active_slots_at_finish": 0,
+    "other_admission_slots_at_finish": 9,
+    "idle_guard": "active",
+    "vm_runtime_cap_s": 86400,
+    "budget_stop_state": "ACTIVE",
+    "vm_stopped_by_operator": false
+  },
+  "gate_promotion_authorized": false,
+  "recording_or_training_started": false,
+  "results_pooled": false,
+  "runs": [
+    {
+      "run": "beampair3-gate-8318611-e645b34b",
+      "seed": 8318611,
+      "classification": "success",
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318611-e645b34b",
+      "result_sha256": "7433a36ea046789f1dbf9a21c6947cd439a000840b890489bb64a6e39de1f223",
+      "input_audit_passed": true
+    },
+    {
+      "run": "beampair3-gate-8318604-e645b34b",
+      "seed": 8318604,
+      "classification": "success",
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318604-e645b34b",
+      "result_sha256": "0ecbbc9d64e6b30180172d8cd4aab53aea67790e02716374de1f21501acd7fc3",
+      "input_audit_passed": true
+    },
+    {
+      "run": "beampair3-gate-8318600-e645b34b",
+      "seed": 8318600,
+      "classification": "success",
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318600-e645b34b",
+      "result_sha256": "bc95b97c321d9c27e07b4f1178a106dee942a6968ac999a7ae79b236a0850b15",
+      "input_audit_passed": true
+    },
+    {
+      "run": "beampair3-gate-8318601-e645b34b",
+      "seed": 8318601,
+      "classification": "success",
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318601-e645b34b",
+      "result_sha256": "29eea63b340de83d91fcd8804a322af36dafcfb1b45189035e9b72a0e859084f",
+      "input_audit_passed": true
+    },
+    {
+      "run": "beampair3-gate-8318602-e645b34b",
+      "seed": 8318602,
+      "classification": "success",
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318602-e645b34b",
+      "result_sha256": "bf1c5f23b164ee370da9e3f250c7e750372f9c833afe8966cb332168b67980fd",
+      "input_audit_passed": true
+    },
+    {
+      "run": "beampair3-gate-8318603-e645b34b",
+      "seed": 8318603,
+      "classification": "success",
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318603-e645b34b",
+      "result_sha256": "f8b1b0d7c1dc276f033c7e166a14be816704fe83218de5d632e767c6aa5d5d1f",
+      "input_audit_passed": true
+    },
+    {
+      "run": "beampair3-gate-8318605-e645b34b",
+      "seed": 8318605,
+      "classification": "success",
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318605-e645b34b",
+      "result_sha256": "a549fa97345c19ebd426c5d6bf6388346931a73f7a2b9fa5b3905fa49aebf59b",
+      "input_audit_passed": true
+    },
+    {
+      "run": "beampair3-gate-8318606-e645b34b",
+      "seed": 8318606,
+      "classification": "success",
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318606-e645b34b",
+      "result_sha256": "b28fbe75802e05d1fb5da3ad0f7c75f63e15b9cecf3d17feb18920d82501ea7e",
+      "input_audit_passed": true
+    },
+    {
+      "run": "beampair3-gate-8318607-e645b34b",
+      "seed": 8318607,
+      "classification": "success",
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318607-e645b34b",
+      "result_sha256": "b48ff5db572df9ae6dfc705ed61ee0eb12b8e7294d1dbcdde27041b431cfae43",
+      "input_audit_passed": true
+    },
+    {
+      "run": "beampair3-gate-8318608-e645b34b",
+      "seed": 8318608,
+      "classification": "success",
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318608-e645b34b",
+      "result_sha256": "15ef7188f5fd90ca1e92c69e4fd2886c4a4835384ba2237f60f6166cd75cd713",
+      "input_audit_passed": true
+    },
+    {
+      "run": "beampair3-gate-8318609-e645b34b",
+      "seed": 8318609,
+      "classification": "success",
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318609-e645b34b",
+      "result_sha256": "b5f23f698d10e25f1e477f26eba3f182f35568490844725ca99538b3877a628f",
+      "input_audit_passed": true
+    },
+    {
+      "run": "beampair3-gate-8318610-e645b34b",
+      "seed": 8318610,
+      "classification": "success",
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318610-e645b34b",
+      "result_sha256": "15e40b1d8294b72d40e3b02738a1554d6100e4ede4d065f00e7cf0a017514384",
+      "input_audit_passed": true
+    },
+    {
+      "run": "beampair3-gate-8318612-e645b34b",
+      "seed": 8318612,
+      "classification": "success",
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318612-e645b34b",
+      "result_sha256": "cd4c0cd972124edd2d772f1abe0ab7578f6292e232a86d051b4e6d796cfa772c",
+      "input_audit_passed": true
+    },
+    {
+      "run": "beampair3-gate-8318613-e645b34b",
+      "seed": 8318613,
+      "classification": "success",
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318613-e645b34b",
+      "result_sha256": "98be9810484557a7e18890e09a8e5aad9ab42d035b87298a2211fcb63f905aab",
+      "input_audit_passed": true
+    },
+    {
+      "run": "beampair3-gate-8318614-e645b34b",
+      "seed": 8318614,
+      "classification": "success",
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318614-e645b34b",
+      "result_sha256": "d4c0ec9d6750037a47ef87b932859b99854af7c08cd2d3c3067032de1a0f275e",
+      "input_audit_passed": true
+    },
+    {
+      "run": "beampair3-gate-8318615-e645b34b",
+      "seed": 8318615,
+      "classification": "success",
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318615-e645b34b",
+      "result_sha256": "12187f947373d28d329227cb8f254fc86db5211787c983523fb18534057d5b84",
+      "input_audit_passed": true
+    },
+    {
+      "run": "beampair3-gate-8318616-e645b34b",
+      "seed": 8318616,
+      "classification": "success",
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318616-e645b34b",
+      "result_sha256": "9943c345dea5312fa626059b90b08fd6423542b2bb4981c7f557f8c95edb2337",
+      "input_audit_passed": true
+    },
+    {
+      "run": "beampair3-gate-8318617-e645b34b",
+      "seed": 8318617,
+      "classification": "success",
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318617-e645b34b",
+      "result_sha256": "728854715909a4c42684d7c16aa3bdc1bf4f59a89a49adee25aca5542d316eff",
+      "input_audit_passed": true
+    },
+    {
+      "run": "beampair3-gate-8318618-e645b34b",
+      "seed": 8318618,
+      "classification": "success",
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318618-e645b34b",
+      "result_sha256": "cfa284b89ba30d830e6b7ef850c7203348ca250859a83a3c2267523d610a34ea",
+      "input_audit_passed": true
+    },
+    {
+      "run": "beampair3-gate-8318619-e645b34b",
+      "seed": 8318619,
+      "classification": "success",
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318619-e645b34b",
+      "result_sha256": "1683e82b63e5b712ab6b2f3bf604a23203be6b3eb7b30c4444e197e31a795e46",
+      "input_audit_passed": true
+    },
+    {
+      "run": "beampair3-gate-8318620-e645b34b",
+      "seed": 8318620,
+      "classification": "physical_or_control_failure",
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318620-e645b34b",
+      "result_sha256": "16c8f2785aefb8b69edfd38f23e08cc50d541ecdfeaba0968de473fbc5aabc97",
+      "input_audit_passed": true
+    },
+    {
+      "run": "beampair3-gate-8318621-e645b34b",
+      "seed": 8318621,
+      "classification": "success",
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318621-e645b34b",
+      "result_sha256": "5a8dd2b1db3faadd1cbca2430787653e4041812980a05184a54409d661eca4a3",
+      "input_audit_passed": true
+    },
+    {
+      "run": "beampair3-gate-8318622-e645b34b",
+      "seed": 8318622,
+      "classification": "success",
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318622-e645b34b",
+      "result_sha256": "dd8b89172e6fcc0a009135508799f3225b96faf0e6907a3c6f00bf9e9a1e1c2d",
+      "input_audit_passed": true
+    },
+    {
+      "run": "beampair3-gate-8318623-e645b34b",
+      "seed": 8318623,
+      "classification": "success",
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318623-e645b34b",
+      "result_sha256": "67c00d7feae03784169c5b329e30a177bdd799b1a2e5c6452573ecafefe546b7",
+      "input_audit_passed": true
+    },
+    {
+      "run": "beampair3-gate-8318624-e645b34b",
+      "seed": 8318624,
+      "classification": "success",
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318624-e645b34b",
+      "result_sha256": "09fb030813fab922bd0a1d33f625f88365a6882f29c52902fb165098c3eb4b2b",
+      "input_audit_passed": true
+    },
+    {
+      "run": "beampair3-gate-8318625-e645b34b",
+      "seed": 8318625,
+      "classification": "success",
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318625-e645b34b",
+      "result_sha256": "54640ef8f99fc4fabe2d1f4b36cee5ad14dfec7a5091e91790ccc7ec55179d6f",
+      "input_audit_passed": true
+    },
+    {
+      "run": "beampair3-gate-8318626-e645b34b",
+      "seed": 8318626,
+      "classification": "physical_or_control_failure",
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318626-e645b34b",
+      "result_sha256": "57e4a33c75675c512cdbac702080c39b8ce9a40107210004fd9bb5fd257bdb5d",
+      "input_audit_passed": true
+    },
+    {
+      "run": "beampair3-gate-8318627-e645b34b",
+      "seed": 8318627,
+      "classification": "success",
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318627-e645b34b",
+      "result_sha256": "d3bd15f4e16d3fe12aac6ac5b8f2199b709e33fd4e1d57862cb55fb6176aa484",
+      "input_audit_passed": true
+    },
+    {
+      "run": "beampair3-gate-8318628-e645b34b",
+      "seed": 8318628,
+      "classification": "success",
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318628-e645b34b",
+      "result_sha256": "ed632e717aedc87af553a74bcbedbfb18ea08fd3aeb126fbc94fe4869098934e",
+      "input_audit_passed": true
+    },
+    {
+      "run": "beampair3-gate-8318629-e645b34b",
+      "seed": 8318629,
+      "classification": "success",
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318629-e645b34b",
+      "result_sha256": "5fbe252cd3112677e56811c52e45f97fc9ff2908578e4134723ef90653cad394",
+      "input_audit_passed": true
+    },
+    {
+      "run": "beampair3-gate-8318630-e645b34b",
+      "seed": 8318630,
+      "classification": "success",
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318630-e645b34b",
+      "result_sha256": "261700c9c1c2c7be3c1a3c1783cfd1cea8029bfd32869fe4200eb90ac6e568cf",
+      "input_audit_passed": true
+    },
+    {
+      "run": "beampair3-gate-8318631-e645b34b",
+      "seed": 8318631,
+      "classification": "success",
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318631-e645b34b",
+      "result_sha256": "a9d89d2dc0ca5360935cb13dc15efeed90dd701a3f54e58868b4b0e28c3dd764",
+      "input_audit_passed": true
+    },
+    {
+      "run": "beampair3-gate-8318632-e645b34b",
+      "seed": 8318632,
+      "classification": "unsubmitted_blocked_after_confirmed_failure",
+      "raw": null,
+      "result_sha256": null,
+      "input_audit_passed": null
+    },
+    {
+      "run": "beampair3-gate-8318633-e645b34b",
+      "seed": 8318633,
+      "classification": "unsubmitted_blocked_after_confirmed_failure",
+      "raw": null,
+      "result_sha256": null,
+      "input_audit_passed": null
+    },
+    {
+      "run": "beampair3-gate-8318634-e645b34b",
+      "seed": 8318634,
+      "classification": "unsubmitted_blocked_after_confirmed_failure",
+      "raw": null,
+      "result_sha256": null,
+      "input_audit_passed": null
+    },
+    {
+      "run": "beampair3-gate-8318635-e645b34b",
+      "seed": 8318635,
+      "classification": "unsubmitted_blocked_after_confirmed_failure",
+      "raw": null,
+      "result_sha256": null,
+      "input_audit_passed": null
+    },
+    {
+      "run": "beampair3-gate-8318636-e645b34b",
+      "seed": 8318636,
+      "classification": "unsubmitted_blocked_after_confirmed_failure",
+      "raw": null,
+      "result_sha256": null,
+      "input_audit_passed": null
+    },
+    {
+      "run": "beampair3-gate-8318637-e645b34b",
+      "seed": 8318637,
+      "classification": "unsubmitted_blocked_after_confirmed_failure",
+      "raw": null,
+      "result_sha256": null,
+      "input_audit_passed": null
+    },
+    {
+      "run": "beampair3-gate-8318638-e645b34b",
+      "seed": 8318638,
+      "classification": "unsubmitted_blocked_after_confirmed_failure",
+      "raw": null,
+      "result_sha256": null,
+      "input_audit_passed": null
+    },
+    {
+      "run": "beampair3-gate-8318639-e645b34b",
+      "seed": 8318639,
+      "classification": "unsubmitted_blocked_after_confirmed_failure",
+      "raw": null,
+      "result_sha256": null,
+      "input_audit_passed": null
+    }
+  ],
+  "artifacts": {
+    "final-report.json": {
+      "remote": "/home/ugrp/ugrp-sim/ops-reviews/beampair3-e645b34b/final-report.json",
+      "sha256": "746bb7db6632c1c2e3fa602cb493ebb9d3e137befa6df6c0b2eb0e2314e91c9b"
+    },
+    "funnel.json": {
+      "remote": "/home/ugrp/ugrp-sim/ops-reviews/beampair3-e645b34b/funnel.json",
+      "sha256": "c6c1322eade5f246f45c8914361eeb4860f74f050fb0798f63d332cb7db05f19"
+    },
+    "funnel.md": {
+      "remote": "/home/ugrp/ugrp-sim/ops-reviews/beampair3-e645b34b/funnel.md",
+      "sha256": "f7b2c94438dbe626c28a202c5d872cb9fed798e84b2ed70a24cae38aeafc1a94"
+    },
+    "failure-review.json": {
+      "remote": "/home/ugrp/ugrp-sim/ops-reviews/beampair3-e645b34b/failure-review.json",
+      "sha256": "31129c43d6e2562834a455658731af81f86853660e70a1a9ff2e9ae521b1ddf7"
+    },
+    "failure-review.md": {
+      "remote": "/home/ugrp/ugrp-sim/ops-reviews/beampair3-e645b34b/failure-review.md",
+      "sha256": "6b98c62db002302b10b36214ffaae9bff07c3a1866be423ff4c9362d0de16968"
+    }
+  }
+}

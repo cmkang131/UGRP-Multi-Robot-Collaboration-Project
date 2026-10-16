@@ -1,0 +1,1559 @@
+{
+  "schema": "ugrp.gcp_ops_summary.v1",
+  "written_at": "2026-10-15 15:49:26 KST",
+  "status": "COMPLETE_ASSIGNED_QUEUE_OPERATIONS",
+  "verdict": "NOT_READY_180S_RECOVERY_EXHAUSTED",
+  "queue": "20261015-selfmap6-safety-smooth.json",
+  "source_sha": "c8d9b6e51a601dba5e0724e83fd1eae8929fc9d2",
+  "pr": 506,
+  "project": "ugrp-act-train-1014",
+  "host": "gcp1",
+  "machine_type": "n4-highcpu-64",
+  "bundle_id": "selfmap6-opt-in-v1",
+  "scene_version": "floor_light_v1",
+  "pool_with_previous_results": false,
+  "planned_N": 3,
+  "submitted_N": 2,
+  "retrieved_N": 2,
+  "first30_review": {
+    "n": 1,
+    "N": 1,
+    "note": "acquisition reviewed; not complete-map success"
+  },
+  "diagnostic180": {
+    "n": 0,
+    "submitted_N": 1,
+    "planned_N": 2,
+    "HOST_ERROR_N": 1,
+    "blocked_not_submitted_N": 1
+  },
+  "mapping_complete": {
+    "n": 0,
+    "N": 2
+  },
+  "gate_submitted_N": 0,
+  "training_N": 0,
+  "model_calls": 0,
+  "source_edits_N": 0,
+  "runs": [
+    {
+      "name": "selfmap6-smooth-93560-c8d9b6e5",
+      "stage": "first30",
+      "seed": 93560,
+      "planned_cap_s": 30,
+      "result": {
+        "status": "RECORDED",
+        "source_sha": "c8d9b6e51a601dba5e0724e83fd1eae8929fc9d2",
+        "seed": 93560,
+        "model_calls": 0,
+        "complete": false,
+        "physical_success_unverified": true,
+        "frames": 301,
+        "scene_version": "floor_light_v1",
+        "render_profile": "floor_light_v1",
+        "revision_gate": "selfmap4_revision_gate_v2",
+        "multiframe_registration": "selfmap4_multiframe_registration_v1",
+        "pool_with_previous_results": false,
+        "correction_safety": "selfmap6_correction_safety_v1",
+        "authored_static_map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b",
+        "elapsed_sim_s": 30.0,
+        "stop_reason": "sim_time_cap",
+        "rgb_ledger_verified": true,
+        "frontier_selections": 1,
+        "frontier_arrivals": 0,
+        "map_updated_frames": 276,
+        "pose_sources": {
+          "bootstrap": 4,
+          "command_only": 245,
+          "visual_update": 52
+        },
+        "wall_s": 162.35558303200014,
+        "input_audit": {
+          "schema": "ugrp.selfmap_input_audit.v1",
+          "measured": true,
+          "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+          "own_rgb_frames": 301,
+          "issued_command_records": 157,
+          "top_rgb_frames": 0,
+          "peer_rgb_frames": 0,
+          "truth_pose_inputs": 0,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "rejected_inputs": 0,
+          "authored_static_map_inputs": 1
+        },
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "evaluation": {
+          "scope": "static geometry only; all predicted occupied cells scored against wall surfaces",
+          "occupancy_iou": 0.2647058823529412,
+          "occupancy_intersection": 90,
+          "occupancy_union": 340,
+          "predicted_occupied": 148,
+          "truth_occupied": 282,
+          "false_occupied_outside_domain": 49,
+          "free_coverage_n": 908,
+          "free_coverage_N": 2773,
+          "free_coverage": 0.3274432023079697,
+          "reachable_free_coverage_n": 908,
+          "reachable_free_coverage_N": 2773,
+          "known_coverage_n": 1061,
+          "known_coverage_N": 3055,
+          "wall_error_rmse_m": 0.05582610548886655,
+          "wall_error_predicted_N": 148,
+          "all_wall_to_prediction_p95_m": 3.2250968977691192,
+          "all_wall_samples_N": 544,
+          "origin_eval_only": [
+            3.2499769814030164,
+            0.7500014642137653,
+            3.1415865465521784
+          ],
+          "pose_error_N": 301,
+          "trace_N": 301,
+          "pose_rmse_m": 0.0248184633779687,
+          "yaw_rmse_rad": 0.04267343958668054
+        }
+      },
+      "result_sha256": "8179b03b0b271deffba4390b4cad8a44f213a7fb9a235e47228c7702c1161306",
+      "bundle_exact_match": true,
+      "first30": {
+        "elapsed_sim_s": 30.0,
+        "frames": 301,
+        "stage": "stopped",
+        "wall_per_sim": 5.289661437499914,
+        "pose_sources": {
+          "bootstrap": 4,
+          "command_only": 245,
+          "visual_update": 52
+        },
+        "input_audit": {
+          "schema": "ugrp.selfmap_input_audit.v1",
+          "measured": true,
+          "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+          "own_rgb_frames": 301,
+          "issued_command_records": 157,
+          "top_rgb_frames": 0,
+          "peer_rgb_frames": 0,
+          "truth_pose_inputs": 0,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "rejected_inputs": 0,
+          "authored_static_map_inputs": 1
+        },
+        "frontier_arrivals": 0
+      },
+      "total_wall_per_sim": 5.411852767733338,
+      "trace_recount": {
+        "N": 301,
+        "map_updated": 276,
+        "pose_sources": {
+          "bootstrap": 4,
+          "command_only": 245,
+          "visual_update": 52
+        },
+        "visual_ratio": 0.17275747508305647,
+        "features": {
+          "n": 301,
+          "min": 0,
+          "median": 35,
+          "max": 79
+        },
+        "matches": {
+          "n": 301,
+          "min": 0,
+          "median": 5,
+          "max": 17
+        },
+        "inliers": {
+          "n": 301,
+          "min": 0,
+          "median": 0,
+          "max": 13
+        },
+        "stages": {
+          "pan": 142,
+          "spin": 152,
+          "select": 2,
+          "drive": 4,
+          "stopped": 1
+        },
+        "insertion_blockers": {
+          "camera_unsettled": 25
+        },
+        "completion_blockers": [
+          "prior_map_unverified",
+          "unresolved_observed_boundary",
+          "map_not_stable",
+          "required_zone_unconfirmed"
+        ],
+        "static_updated": 43,
+        "static_registered_frames": 0,
+        "max_confirmations": 0,
+        "geometry_axes": {
+          "0": 151,
+          "1": 59,
+          "2": 91
+        },
+        "max_buffered_frames": 124,
+        "rebuilds": [],
+        "sweep": [
+          {
+            "t": 11.3,
+            "reason": "sensor_sweep_requested",
+            "cause": "selfmap_observe"
+          },
+          {
+            "t": 11.3,
+            "reason": "sensor_sweep_started",
+            "cause": "selfmap_observe"
+          },
+          {
+            "t": 23.7,
+            "reason": "sensor_sweep_completed",
+            "rotation_rad": 6.31615154314027,
+            "duration_s": 12.399999999999999
+          },
+          {
+            "t": 28.5,
+            "reason": "sensor_sweep_requested",
+            "cause": "selfmap_observe"
+          },
+          {
+            "t": 28.5,
+            "reason": "sensor_sweep_started",
+            "cause": "selfmap_observe"
+          }
+        ],
+        "frontier_selections": 1,
+        "frontier_arrivals": 0,
+        "zero_hold_drive_intervals": []
+      },
+      "safety_recount": {
+        "name": "selfmap6-smooth-93560-c8d9b6e5",
+        "trace_N": 301,
+        "admission_N": 52,
+        "accepted_N": 52,
+        "rejected_N": 0,
+        "accepted_outlier_N": 0,
+        "admission_schema_complete_N": 52,
+        "admission_reasons": {
+          "within_innovation_gate": 52
+        },
+        "admission_sources": {
+          "visual": 52
+        },
+        "nis": {
+          "N": 52,
+          "min": 1.9335243418481788e-29,
+          "median": 0.019408695127781726,
+          "max": 3.9664470827603715
+        },
+        "max_competing_hypotheses": 0,
+        "quarantine_releases": [],
+        "quarantine_release_deadline_ok": true,
+        "rebuilds": [],
+        "s2_ambiguity_rows_N": 301,
+        "s2_ambiguity_evaluated_N": 0,
+        "s2_candidate_count": {},
+        "s2_unique_N": 0,
+        "static_registered_frames_N": 0,
+        "static_max_confirmations": 0,
+        "ORB_features": {
+          "N": 301,
+          "min": 0,
+          "median": 35,
+          "max": 79
+        },
+        "ORB_matches": {
+          "N": 301,
+          "min": 0,
+          "median": 5,
+          "max": 17
+        },
+        "ORB_inliers": {
+          "N": 301,
+          "min": 0,
+          "median": 0,
+          "max": 13
+        },
+        "pose_error_evaluation": {
+          "scope": "static geometry only; all predicted occupied cells scored against wall surfaces",
+          "occupancy_iou": 0.2647058823529412,
+          "occupancy_intersection": 90,
+          "occupancy_union": 340,
+          "predicted_occupied": 148,
+          "truth_occupied": 282,
+          "false_occupied_outside_domain": 49,
+          "free_coverage_n": 908,
+          "free_coverage_N": 2773,
+          "free_coverage": 0.3274432023079697,
+          "reachable_free_coverage_n": 908,
+          "reachable_free_coverage_N": 2773,
+          "known_coverage_n": 1061,
+          "known_coverage_N": 3055,
+          "wall_error_rmse_m": 0.05582610548886655,
+          "wall_error_predicted_N": 148,
+          "all_wall_to_prediction_p95_m": 3.2250968977691192,
+          "all_wall_samples_N": 544,
+          "origin_eval_only": [
+            3.2499769814030164,
+            0.7500014642137653,
+            3.1415865465521784
+          ],
+          "pose_error_N": 301,
+          "trace_N": 301,
+          "pose_rmse_m": 0.0248184633779687,
+          "yaw_rmse_rad": 0.04267343958668054
+        },
+        "no_completion_certification_from_rollback": true
+      },
+      "frame_review": {
+        "directly_viewed": true,
+        "selected": [
+          {
+            "robot_id": "r3",
+            "frame_id": 1,
+            "sim_time": 1.3,
+            "sha256": "5557a1712e90164d984723ee9c1ef514f5c865112697d04cc3f69d874157b5e5",
+            "camera": "robot_cam",
+            "actuator_state": {
+              "motor_commands": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "servo_pulses": {
+                "1": 2000,
+                "3": 740,
+                "4": 2320,
+                "5": 1320,
+                "6": 1500
+              }
+            },
+            "path": "robots/r3/rgb/00000.jpg",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 740,
+              "4": 2320,
+              "5": 1320,
+              "6": 1500
+            },
+            "elapsed_sim_s": 0.0
+          },
+          {
+            "robot_id": "r3",
+            "frame_id": 61,
+            "sim_time": 7.3,
+            "sha256": "8144335fa56b4fe4a6ba92965a1126ea32cab010241562e2a38620ba7e9546f2",
+            "camera": "robot_cam",
+            "actuator_state": {
+              "motor_commands": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "servo_pulses": {
+                "1": 2000,
+                "3": 740,
+                "4": 2320,
+                "5": 1320,
+                "6": 1500
+              }
+            },
+            "path": "robots/r3/rgb/00060.jpg",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 740,
+              "4": 2320,
+              "5": 1320,
+              "6": 1500
+            },
+            "elapsed_sim_s": 6.0
+          },
+          {
+            "robot_id": "r3",
+            "frame_id": 121,
+            "sim_time": 13.3,
+            "sha256": "320c6cb6e23812fe8b2d1594b5546d9b0baf1dcd305b0bdec2ac8f13162f76c4",
+            "camera": "robot_cam",
+            "actuator_state": {
+              "motor_commands": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "servo_pulses": {
+                "1": 2000,
+                "3": 740,
+                "4": 2320,
+                "5": 1320,
+                "6": 1500
+              }
+            },
+            "path": "robots/r3/rgb/00120.jpg",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 740,
+              "4": 2320,
+              "5": 1320,
+              "6": 1500
+            },
+            "elapsed_sim_s": 12.0
+          },
+          {
+            "robot_id": "r3",
+            "frame_id": 181,
+            "sim_time": 19.3,
+            "sha256": "8b5638f37c0d26471853df2245c5eb9fda8e8c702dbc6ac22c7d4f3ba2caab6a",
+            "camera": "robot_cam",
+            "actuator_state": {
+              "motor_commands": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "servo_pulses": {
+                "1": 2000,
+                "3": 740,
+                "4": 2320,
+                "5": 1320,
+                "6": 1500
+              }
+            },
+            "path": "robots/r3/rgb/00180.jpg",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 740,
+              "4": 2320,
+              "5": 1320,
+              "6": 1500
+            },
+            "elapsed_sim_s": 18.0
+          },
+          {
+            "robot_id": "r3",
+            "frame_id": 241,
+            "sim_time": 25.3,
+            "sha256": "47c954b52b4415ae100763c202e627c33f0401843e9fcf01a596801f51a86048",
+            "camera": "robot_cam",
+            "actuator_state": {
+              "motor_commands": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "servo_pulses": {
+                "1": 2000,
+                "3": 740,
+                "4": 2320,
+                "5": 1320,
+                "6": 1500
+              }
+            },
+            "path": "robots/r3/rgb/00240.jpg",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 740,
+              "4": 2320,
+              "5": 1320,
+              "6": 1500
+            },
+            "elapsed_sim_s": 24.0
+          },
+          {
+            "robot_id": "r3",
+            "frame_id": 301,
+            "sim_time": 31.3,
+            "sha256": "4cff8a0bdb5e0fddc3a227e573adeffc0fc652438b74fb1d3450a02476bc8003",
+            "camera": "robot_cam",
+            "actuator_state": {
+              "motor_commands": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "servo_pulses": {
+                "1": 2000,
+                "3": 740,
+                "4": 2320,
+                "5": 1320,
+                "6": 1500
+              }
+            },
+            "path": "robots/r3/rgb/00300.jpg",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 740,
+              "4": 2320,
+              "5": 1320,
+              "6": 1500
+            },
+            "elapsed_sim_s": 30.0
+          }
+        ],
+        "montage": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/selfmap6-c8d9b6e5-ops/selfmap6-smooth-93560-c8d9b6e5-montage.jpg",
+        "camera": "own r3",
+        "overview_r1_r2": "not captured in approved single-active-r3 bundle",
+        "observed": "r3 own0/6/12/18/24/30s6frames: walls, floor and zone markings change during body/pan scan; distant idle peer through doorway at12/24s; no direct blocking visible. Only r3 own camera captured."
+      },
+      "verification": {
+        "remote": {
+          "exit": "0",
+          "all_vm_sha_pass": true,
+          "manifest_sha256": "a2cf0f2b3d2262c891e270c0efb3f6b590a94ff4d2a1f2ccad3531a7e12cf3fc",
+          "manifest_files": 345,
+          "ledger_N": 301,
+          "all_rgb_sha_pass": true,
+          "cadence_ok": true,
+          "selected": [
+            {
+              "robot_id": "r3",
+              "frame_id": 1,
+              "sim_time": 1.3,
+              "sha256": "5557a1712e90164d984723ee9c1ef514f5c865112697d04cc3f69d874157b5e5",
+              "camera": "robot_cam",
+              "actuator_state": {
+                "motor_commands": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "servo_pulses": {
+                  "1": 2000,
+                  "3": 740,
+                  "4": 2320,
+                  "5": 1320,
+                  "6": 1500
+                }
+              },
+              "path": "robots/r3/rgb/00000.jpg",
+              "commanded_servo": {
+                "1": 2000,
+                "3": 740,
+                "4": 2320,
+                "5": 1320,
+                "6": 1500
+              },
+              "elapsed_sim_s": 0.0
+            },
+            {
+              "robot_id": "r3",
+              "frame_id": 61,
+              "sim_time": 7.3,
+              "sha256": "8144335fa56b4fe4a6ba92965a1126ea32cab010241562e2a38620ba7e9546f2",
+              "camera": "robot_cam",
+              "actuator_state": {
+                "motor_commands": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "servo_pulses": {
+                  "1": 2000,
+                  "3": 740,
+                  "4": 2320,
+                  "5": 1320,
+                  "6": 1500
+                }
+              },
+              "path": "robots/r3/rgb/00060.jpg",
+              "commanded_servo": {
+                "1": 2000,
+                "3": 740,
+                "4": 2320,
+                "5": 1320,
+                "6": 1500
+              },
+              "elapsed_sim_s": 6.0
+            },
+            {
+              "robot_id": "r3",
+              "frame_id": 121,
+              "sim_time": 13.3,
+              "sha256": "320c6cb6e23812fe8b2d1594b5546d9b0baf1dcd305b0bdec2ac8f13162f76c4",
+              "camera": "robot_cam",
+              "actuator_state": {
+                "motor_commands": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "servo_pulses": {
+                  "1": 2000,
+                  "3": 740,
+                  "4": 2320,
+                  "5": 1320,
+                  "6": 1500
+                }
+              },
+              "path": "robots/r3/rgb/00120.jpg",
+              "commanded_servo": {
+                "1": 2000,
+                "3": 740,
+                "4": 2320,
+                "5": 1320,
+                "6": 1500
+              },
+              "elapsed_sim_s": 12.0
+            },
+            {
+              "robot_id": "r3",
+              "frame_id": 181,
+              "sim_time": 19.3,
+              "sha256": "8b5638f37c0d26471853df2245c5eb9fda8e8c702dbc6ac22c7d4f3ba2caab6a",
+              "camera": "robot_cam",
+              "actuator_state": {
+                "motor_commands": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "servo_pulses": {
+                  "1": 2000,
+                  "3": 740,
+                  "4": 2320,
+                  "5": 1320,
+                  "6": 1500
+                }
+              },
+              "path": "robots/r3/rgb/00180.jpg",
+              "commanded_servo": {
+                "1": 2000,
+                "3": 740,
+                "4": 2320,
+                "5": 1320,
+                "6": 1500
+              },
+              "elapsed_sim_s": 18.0
+            },
+            {
+              "robot_id": "r3",
+              "frame_id": 241,
+              "sim_time": 25.3,
+              "sha256": "47c954b52b4415ae100763c202e627c33f0401843e9fcf01a596801f51a86048",
+              "camera": "robot_cam",
+              "actuator_state": {
+                "motor_commands": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "servo_pulses": {
+                  "1": 2000,
+                  "3": 740,
+                  "4": 2320,
+                  "5": 1320,
+                  "6": 1500
+                }
+              },
+              "path": "robots/r3/rgb/00240.jpg",
+              "commanded_servo": {
+                "1": 2000,
+                "3": 740,
+                "4": 2320,
+                "5": 1320,
+                "6": 1500
+              },
+              "elapsed_sim_s": 24.0
+            },
+            {
+              "robot_id": "r3",
+              "frame_id": 301,
+              "sim_time": 31.3,
+              "sha256": "4cff8a0bdb5e0fddc3a227e573adeffc0fc652438b74fb1d3450a02476bc8003",
+              "camera": "robot_cam",
+              "actuator_state": {
+                "motor_commands": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "servo_pulses": {
+                  "1": 2000,
+                  "3": 740,
+                  "4": 2320,
+                  "5": 1320,
+                  "6": 1500
+                }
+              },
+              "path": "robots/r3/rgb/00300.jpg",
+              "commanded_servo": {
+                "1": 2000,
+                "3": 740,
+                "4": 2320,
+                "5": 1320,
+                "6": 1500
+              },
+              "elapsed_sim_s": 30.0
+            }
+          ]
+        },
+        "local_manifest_matched_files": 44,
+        "compressed_original_sha_verified_N": 7,
+        "selected_rgb_sha_pass": true
+      },
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/selfmap6-smooth-93560-c8d9b6e5/raw",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/selfmap6-smooth-93560-c8d9b6e5"
+    },
+    {
+      "name": "selfmap6-smooth-93561-c8d9b6e5",
+      "stage": "diagnostic180_1",
+      "seed": 93561,
+      "planned_cap_s": 180,
+      "result": {
+        "status": "HOST_ERROR",
+        "source_sha": "c8d9b6e51a601dba5e0724e83fd1eae8929fc9d2",
+        "seed": 93561,
+        "model_calls": 0,
+        "complete": false,
+        "physical_success_unverified": true,
+        "frames": 580,
+        "scene_version": "floor_light_v1",
+        "render_profile": "floor_light_v1",
+        "revision_gate": "selfmap4_revision_gate_v2",
+        "multiframe_registration": "selfmap4_multiframe_registration_v1",
+        "pool_with_previous_results": false,
+        "correction_safety": "selfmap6_correction_safety_v1",
+        "authored_static_map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b",
+        "elapsed_sim_s": 57.900000000000006,
+        "stop_reason": "selfmap4_relocalization_exhausted",
+        "rgb_ledger_verified": true,
+        "frontier_selections": 1,
+        "frontier_arrivals": 0,
+        "map_updated_frames": 263,
+        "pose_sources": {
+          "bootstrap": 4,
+          "command_only": 515,
+          "visual_update": 61
+        },
+        "wall_s": 262.15705625800183,
+        "input_audit": {
+          "schema": "ugrp.selfmap_input_audit.v1",
+          "measured": true,
+          "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+          "own_rgb_frames": 580,
+          "issued_command_records": 297,
+          "top_rgb_frames": 0,
+          "peer_rgb_frames": 0,
+          "truth_pose_inputs": 0,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "rejected_inputs": 0,
+          "authored_static_map_inputs": 1
+        },
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "result_sha256": "769e9cbc9f187dc06a9e6598a8a3b5d16f3c1818f6f511f734365648ee3d63dd",
+      "bundle_exact_match": true,
+      "first30": {
+        "elapsed_sim_s": 30.0,
+        "frames": 301,
+        "stage": "spin",
+        "wall_per_sim": 4.961345655599993,
+        "pose_sources": {
+          "bootstrap": 4,
+          "command_only": 253,
+          "visual_update": 44
+        },
+        "input_audit": {
+          "schema": "ugrp.selfmap_input_audit.v1",
+          "measured": true,
+          "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+          "own_rgb_frames": 301,
+          "issued_command_records": 157,
+          "top_rgb_frames": 0,
+          "peer_rgb_frames": 0,
+          "truth_pose_inputs": 0,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "rejected_inputs": 0,
+          "authored_static_map_inputs": 1
+        },
+        "frontier_arrivals": 0
+      },
+      "total_wall_per_sim": 4.5277557212090125,
+      "trace_recount": {
+        "N": 580,
+        "map_updated": 263,
+        "pose_sources": {
+          "bootstrap": 4,
+          "command_only": 515,
+          "visual_update": 61
+        },
+        "visual_ratio": 0.10517241379310345,
+        "features": {
+          "n": 580,
+          "min": 0,
+          "median": 32.0,
+          "max": 82
+        },
+        "matches": {
+          "n": 580,
+          "min": 0,
+          "median": 3.0,
+          "max": 17
+        },
+        "inliers": {
+          "n": 580,
+          "min": 0,
+          "median": 0.0,
+          "max": 15
+        },
+        "stages": {
+          "pan": 195,
+          "spin": 372,
+          "select": 6,
+          "drive": 6,
+          "stopped": 1
+        },
+        "insertion_blockers": {
+          "camera_unsettled": 35,
+          "pose_uncertain": 292
+        },
+        "completion_blockers": [
+          "pose_uncertain",
+          "prior_map_unverified",
+          "unresolved_observed_boundary",
+          "map_not_stable",
+          "required_zone_unconfirmed"
+        ],
+        "static_updated": 100,
+        "static_registered_frames": 0,
+        "max_confirmations": 0,
+        "geometry_axes": {
+          "0": 210,
+          "1": 102,
+          "2": 268
+        },
+        "max_buffered_frames": 124,
+        "rebuilds": [],
+        "sweep": [
+          {
+            "t": 11.3,
+            "reason": "sensor_sweep_requested",
+            "cause": "selfmap_observe"
+          },
+          {
+            "t": 11.3,
+            "reason": "sensor_sweep_started",
+            "cause": "selfmap_observe"
+          },
+          {
+            "t": 23.7,
+            "reason": "sensor_sweep_completed",
+            "rotation_rad": 6.31615154314027,
+            "duration_s": 12.399999999999999
+          },
+          {
+            "t": 28.7,
+            "reason": "sensor_sweep_requested",
+            "cause": "selfmap_observe"
+          },
+          {
+            "t": 28.7,
+            "reason": "sensor_sweep_started",
+            "cause": "selfmap_observe"
+          },
+          {
+            "t": 41.1,
+            "reason": "sensor_sweep_completed",
+            "rotation_rad": 6.316151543140064,
+            "duration_s": 12.400000000000002
+          },
+          {
+            "t": 46.5,
+            "reason": "sensor_sweep_requested",
+            "cause": "selfmap_observe"
+          },
+          {
+            "t": 46.5,
+            "reason": "sensor_sweep_started",
+            "cause": "selfmap_observe"
+          },
+          {
+            "t": 58.9,
+            "reason": "sensor_sweep_completed",
+            "rotation_rad": 6.316151543139993,
+            "duration_s": 12.399999999999999
+          }
+        ],
+        "frontier_selections": 1,
+        "frontier_arrivals": 0,
+        "zero_hold_drive_intervals": []
+      },
+      "safety_recount": {
+        "name": "selfmap6-smooth-93561-c8d9b6e5",
+        "trace_N": 580,
+        "admission_N": 71,
+        "accepted_N": 61,
+        "rejected_N": 10,
+        "accepted_outlier_N": 0,
+        "admission_schema_complete_N": 71,
+        "admission_reasons": {
+          "within_innovation_gate": 61,
+          "outlier_pending": 10
+        },
+        "admission_sources": {
+          "visual": 71
+        },
+        "nis": {
+          "N": 71,
+          "min": 1.8505371441186834e-28,
+          "median": 0.0591689137040044,
+          "max": 134.49780627286364
+        },
+        "max_competing_hypotheses": 1,
+        "quarantine_releases": [],
+        "quarantine_release_deadline_ok": true,
+        "rebuilds": [],
+        "s2_ambiguity_rows_N": 580,
+        "s2_ambiguity_evaluated_N": 0,
+        "s2_candidate_count": {},
+        "s2_unique_N": 0,
+        "static_registered_frames_N": 0,
+        "static_max_confirmations": 0,
+        "ORB_features": {
+          "N": 580,
+          "min": 0,
+          "median": 32.0,
+          "max": 82
+        },
+        "ORB_matches": {
+          "N": 580,
+          "min": 0,
+          "median": 3.0,
+          "max": 17
+        },
+        "ORB_inliers": {
+          "N": 580,
+          "min": 0,
+          "median": 0.0,
+          "max": 15
+        },
+        "pose_error_evaluation": null,
+        "no_completion_certification_from_rollback": true
+      },
+      "frame_review": {
+        "directly_viewed": true,
+        "selected": [
+          {
+            "robot_id": "r3",
+            "frame_id": 1,
+            "sim_time": 1.3,
+            "sha256": "962bbf4ae6965445313bf1d0ad20ad76a16b1df6bff65da6bd780b4f00d35481",
+            "camera": "robot_cam",
+            "actuator_state": {
+              "motor_commands": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "servo_pulses": {
+                "1": 2000,
+                "3": 740,
+                "4": 2320,
+                "5": 1320,
+                "6": 1500
+              }
+            },
+            "path": "robots/r3/rgb/00000.jpg",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 740,
+              "4": 2320,
+              "5": 1320,
+              "6": 1500
+            },
+            "elapsed_sim_s": 0.0
+          },
+          {
+            "robot_id": "r3",
+            "frame_id": 117,
+            "sim_time": 12.9,
+            "sha256": "06ee64f28faee0cbfd3e45082335afbada6423843e5ca98bcb9943e5a498bfc3",
+            "camera": "robot_cam",
+            "actuator_state": {
+              "motor_commands": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "servo_pulses": {
+                "1": 2000,
+                "3": 740,
+                "4": 2320,
+                "5": 1320,
+                "6": 1500
+              }
+            },
+            "path": "robots/r3/rgb/00116.jpg",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 740,
+              "4": 2320,
+              "5": 1320,
+              "6": 1500
+            },
+            "elapsed_sim_s": 11.6
+          },
+          {
+            "robot_id": "r3",
+            "frame_id": 233,
+            "sim_time": 24.5,
+            "sha256": "e0cbce674c93840af5d6d2a170cb5376234f7dbf1b5d839b81c2c065b0e362ec",
+            "camera": "robot_cam",
+            "actuator_state": {
+              "motor_commands": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "servo_pulses": {
+                "1": 2000,
+                "3": 740,
+                "4": 2320,
+                "5": 1320,
+                "6": 1500
+              }
+            },
+            "path": "robots/r3/rgb/00232.jpg",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 740,
+              "4": 2320,
+              "5": 1320,
+              "6": 1500
+            },
+            "elapsed_sim_s": 23.2
+          },
+          {
+            "robot_id": "r3",
+            "frame_id": 348,
+            "sim_time": 36.0,
+            "sha256": "b4983b747f612c35e0cf5a004d98ea0a9b2664950c593d66f8c8cdc8b2423020",
+            "camera": "robot_cam",
+            "actuator_state": {
+              "motor_commands": [
+                -0.35,
+                0.35,
+                -0.35,
+                0.35
+              ],
+              "servo_pulses": {
+                "1": 2000,
+                "3": 740,
+                "4": 2320,
+                "5": 1320,
+                "6": 1500
+              }
+            },
+            "path": "robots/r3/rgb/00347.jpg",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 740,
+              "4": 2320,
+              "5": 1320,
+              "6": 1500
+            },
+            "elapsed_sim_s": 34.7
+          },
+          {
+            "robot_id": "r3",
+            "frame_id": 464,
+            "sim_time": 47.6,
+            "sha256": "89cb619300e87e766c1cdea5e3bfce232e9d87894f500403f5e9745086961ca7",
+            "camera": "robot_cam",
+            "actuator_state": {
+              "motor_commands": [
+                -0.35,
+                0.35,
+                -0.35,
+                0.35
+              ],
+              "servo_pulses": {
+                "1": 2000,
+                "3": 740,
+                "4": 2320,
+                "5": 1320,
+                "6": 1399
+              }
+            },
+            "path": "robots/r3/rgb/00463.jpg",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 740,
+              "4": 2320,
+              "5": 1320,
+              "6": 1500
+            },
+            "elapsed_sim_s": 46.300000000000004
+          },
+          {
+            "robot_id": "r3",
+            "frame_id": 580,
+            "sim_time": 59.2,
+            "sha256": "47c9f87ba2d59369218183027fcb7fde0bffa1c0ad45dde6203a1a1f8b5232ef",
+            "camera": "robot_cam",
+            "actuator_state": {
+              "motor_commands": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "servo_pulses": {
+                "1": 2000,
+                "3": 740,
+                "4": 2320,
+                "5": 1320,
+                "6": 1399
+              }
+            },
+            "path": "robots/r3/rgb/00579.jpg",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 740,
+              "4": 2320,
+              "5": 1320,
+              "6": 1500
+            },
+            "elapsed_sim_s": 57.900000000000006
+          }
+        ],
+        "montage": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/selfmap6-c8d9b6e5-ops/selfmap6-smooth-93561-c8d9b6e5-montage.jpg",
+        "camera": "own r3",
+        "overview_r1_r2": "not captured in approved single-active-r3 bundle",
+        "observed": "idle robot stays distant beyond doorway at11.6/23.2/46.3/57.9s; no direct peer blocking visible; walls and floor views repeat during body scans; no sustained forward frontier travel in sampled images; additional0–30s6frames viewed."
+      },
+      "verification": {
+        "remote": {
+          "exit": "1",
+          "all_vm_sha_pass": true,
+          "manifest_sha256": "dd6f4a9dbd684d8a8a7749e4190f57a8454e0ed4cfa0872aab1875196fdcaf30",
+          "manifest_files": 623,
+          "ledger_N": 580,
+          "all_rgb_sha_pass": true,
+          "cadence_ok": true,
+          "selected": [
+            {
+              "robot_id": "r3",
+              "frame_id": 1,
+              "sim_time": 1.3,
+              "sha256": "962bbf4ae6965445313bf1d0ad20ad76a16b1df6bff65da6bd780b4f00d35481",
+              "camera": "robot_cam",
+              "actuator_state": {
+                "motor_commands": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "servo_pulses": {
+                  "1": 2000,
+                  "3": 740,
+                  "4": 2320,
+                  "5": 1320,
+                  "6": 1500
+                }
+              },
+              "path": "robots/r3/rgb/00000.jpg",
+              "commanded_servo": {
+                "1": 2000,
+                "3": 740,
+                "4": 2320,
+                "5": 1320,
+                "6": 1500
+              },
+              "elapsed_sim_s": 0.0
+            },
+            {
+              "robot_id": "r3",
+              "frame_id": 117,
+              "sim_time": 12.9,
+              "sha256": "06ee64f28faee0cbfd3e45082335afbada6423843e5ca98bcb9943e5a498bfc3",
+              "camera": "robot_cam",
+              "actuator_state": {
+                "motor_commands": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "servo_pulses": {
+                  "1": 2000,
+                  "3": 740,
+                  "4": 2320,
+                  "5": 1320,
+                  "6": 1500
+                }
+              },
+              "path": "robots/r3/rgb/00116.jpg",
+              "commanded_servo": {
+                "1": 2000,
+                "3": 740,
+                "4": 2320,
+                "5": 1320,
+                "6": 1500
+              },
+              "elapsed_sim_s": 11.6
+            },
+            {
+              "robot_id": "r3",
+              "frame_id": 233,
+              "sim_time": 24.5,
+              "sha256": "e0cbce674c93840af5d6d2a170cb5376234f7dbf1b5d839b81c2c065b0e362ec",
+              "camera": "robot_cam",
+              "actuator_state": {
+                "motor_commands": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "servo_pulses": {
+                  "1": 2000,
+                  "3": 740,
+                  "4": 2320,
+                  "5": 1320,
+                  "6": 1500
+                }
+              },
+              "path": "robots/r3/rgb/00232.jpg",
+              "commanded_servo": {
+                "1": 2000,
+                "3": 740,
+                "4": 2320,
+                "5": 1320,
+                "6": 1500
+              },
+              "elapsed_sim_s": 23.2
+            },
+            {
+              "robot_id": "r3",
+              "frame_id": 348,
+              "sim_time": 36.0,
+              "sha256": "b4983b747f612c35e0cf5a004d98ea0a9b2664950c593d66f8c8cdc8b2423020",
+              "camera": "robot_cam",
+              "actuator_state": {
+                "motor_commands": [
+                  -0.35,
+                  0.35,
+                  -0.35,
+                  0.35
+                ],
+                "servo_pulses": {
+                  "1": 2000,
+                  "3": 740,
+                  "4": 2320,
+                  "5": 1320,
+                  "6": 1500
+                }
+              },
+              "path": "robots/r3/rgb/00347.jpg",
+              "commanded_servo": {
+                "1": 2000,
+                "3": 740,
+                "4": 2320,
+                "5": 1320,
+                "6": 1500
+              },
+              "elapsed_sim_s": 34.7
+            },
+            {
+              "robot_id": "r3",
+              "frame_id": 464,
+              "sim_time": 47.6,
+              "sha256": "89cb619300e87e766c1cdea5e3bfce232e9d87894f500403f5e9745086961ca7",
+              "camera": "robot_cam",
+              "actuator_state": {
+                "motor_commands": [
+                  -0.35,
+                  0.35,
+                  -0.35,
+                  0.35
+                ],
+                "servo_pulses": {
+                  "1": 2000,
+                  "3": 740,
+                  "4": 2320,
+                  "5": 1320,
+                  "6": 1399
+                }
+              },
+              "path": "robots/r3/rgb/00463.jpg",
+              "commanded_servo": {
+                "1": 2000,
+                "3": 740,
+                "4": 2320,
+                "5": 1320,
+                "6": 1500
+              },
+              "elapsed_sim_s": 46.300000000000004
+            },
+            {
+              "robot_id": "r3",
+              "frame_id": 580,
+              "sim_time": 59.2,
+              "sha256": "47c9f87ba2d59369218183027fcb7fde0bffa1c0ad45dde6203a1a1f8b5232ef",
+              "camera": "robot_cam",
+              "actuator_state": {
+                "motor_commands": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "servo_pulses": {
+                  "1": 2000,
+                  "3": 740,
+                  "4": 2320,
+                  "5": 1320,
+                  "6": 1399
+                }
+              },
+              "path": "robots/r3/rgb/00579.jpg",
+              "commanded_servo": {
+                "1": 2000,
+                "3": 740,
+                "4": 2320,
+                "5": 1320,
+                "6": 1500
+              },
+              "elapsed_sim_s": 57.900000000000006
+            }
+          ]
+        },
+        "local_manifest_matched_files": 43,
+        "compressed_original_sha_verified_N": 7,
+        "selected_rgb_sha_pass": true
+      },
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/selfmap6-smooth-93561-c8d9b6e5/raw",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/selfmap6-smooth-93561-c8d9b6e5"
+    }
+  ],
+  "failure_summary": {
+    "confirmed_cause": "23.2SIM초 path_blocked_or_no_progress로 복구 진입→28.8초 yaw sigma5° 초과·지도삽입 차단→두 번의 pan/360° sweep으로 시각 자세 품질 회복 못함(정적등록0)→3회째 복구 진입 직후57.9초 selfmap4_relocalization_exhausted HOST_ERROR; rebuild/rollback 발생0",
+    "direct_frames_reviewed": true,
+    "reviewed_elapsed_sim_s": [
+      0.0,
+      11.6,
+      23.2,
+      34.7,
+      46.3,
+      57.9
+    ],
+    "additional_first30_reviewed_elapsed_sim_s": [
+      0,
+      6,
+      12,
+      18,
+      24,
+      30
+    ],
+    "camera": "own r3 only; overview/r1/r2 not captured in approved single-active-r3 bundle",
+    "observed_peer_relation": "idle robot stays distant beyond doorway at11.6/23.2/46.3/57.9s; no direct peer blocking visible; walls and floor views repeat during body scans",
+    "evidence": {
+      "result_status": "HOST_ERROR",
+      "elapsed_sim_s": 57.9,
+      "recovery_enter_elapsed_sim_s": [
+        23.2,
+        40.0,
+        57.8
+      ],
+      "recovery_elapsed_at_stop_s": 34.7,
+      "recovery_deadline_s": 80,
+      "recovery_attempt_limit": 2,
+      "attempt_count_at_stop": 3,
+      "pose_uncertain_first_elapsed_s": 28.8,
+      "pose_uncertain_rows_N": 292,
+      "final_sigma_yaw_rad": 0.1303896623948514,
+      "static_registration_N": 0,
+      "rebuilds_N": 0,
+      "quarantine_releases_N": 0,
+      "visual_admissions_accepted_N": 61,
+      "visual_admissions_rejected_N": 10,
+      "S2_ambiguity_evaluated_N": 0
+    },
+    "limits": "why initial route has no progress and why fresh views cannot reduce covariance are not fully established; not a claim of physical collision or repeated-room match error"
+  },
+  "input_audit": {
+    "measured_N": 2,
+    "invisible_measurements": [
+      0,
+      0
+    ],
+    "held_world_reads": [
+      0,
+      0
+    ],
+    "truth_pose_inputs": [
+      0,
+      0
+    ],
+    "top_rgb_frames": [
+      0,
+      0
+    ],
+    "peer_rgb_frames": [
+      0,
+      0
+    ]
+  },
+  "speed": {
+    "policy": "record-only; warn>3.5, block>6 or incomplete/HOST_ERROR",
+    "first30_wall_per_sim": [
+      5.289661437499914,
+      4.961345655599993
+    ],
+    "median_first30": 5.125503546549954,
+    "total_wall_per_sim": [
+      5.411852767733338,
+      4.5277557212090125
+    ],
+    "warning_N": 2,
+    "above6_N": 0,
+    "blocked_by_HOST_ERROR": true
+  },
+  "safety_verification": {
+    "large_yaw_proposals_rejected_N": 10,
+    "large_yaw_deg_range": [
+      45.000096382293556,
+      45.126243049870126
+    ],
+    "max_NIS": 134.49780627286364,
+    "all_123_admissions_have_P_R_NIS_evidence_source_confirmations": true,
+    "rollback_exercised": false,
+    "S2_global_ambiguity_evaluated_N": 0,
+    "competing_hypotheses_max": 1,
+    "limits": "Large-proposal rejection observed; rollback and repeated-room candidate selection were not exercised and are not certified. Failed result has no post-stop evaluation; no physical success claim."
+  },
+  "supervisor": {
+    "stop_record": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/stop-selfmap6-c8d9b6e5-20261015T154725.json",
+    "marker_sha256": "b656798c040639718d5187388fb9e9ddff00c24f146c0adbf07d4ae1909319f2",
+    "sigint_sent_pids": [],
+    "already_exited": true,
+    "note": "Natural HOST_ERROR and EXIT1 preceded inspection; no owned simulation PID remained to signal. Added marker hashes separately; original SHA256SUMS remained valid."
+  },
+  "blocked_not_submitted": [
+    {
+      "name": "selfmap6-smooth-93562-c8d9b6e5",
+      "reason": "same source; previous180s HOST_ERROR; no retry on this SHA"
+    }
+  ],
+  "frame_review": {
+    "first30_elapsed_sim_s": [
+      0,
+      6,
+      12,
+      18,
+      24,
+      30
+    ],
+    "failed_full_elapsed_sim_s": [
+      0.0,
+      11.6,
+      23.2,
+      34.7,
+      46.3,
+      57.9
+    ],
+    "failed_additional_first30_elapsed_sim_s": [
+      0,
+      6,
+      12,
+      18,
+      24,
+      30
+    ],
+    "failed_unique_frames_N": 11,
+    "camera": "r3 own only; overview/r1/r2 not recorded in approved bundle",
+    "peer_relation": "idle robot stays distant beyond doorway at11.6/23.2/46.3/57.9s; no direct peer blocking visible; walls and floor views repeat during body scans"
+  },
+  "integrity": {
+    "native_rgb_sha_verified_N": 881,
+    "native_manifest_files_verified_N": 968,
+    "local_lite_manifest_files_verified_N": 87,
+    "decompressed_original_sha_verified_N": 14,
+    "all_cadence_10Hz": true
+  },
+  "guards": {
+    "checked_at": "2026-10-15 15:36:22 KST",
+    "vm": {
+      "status": "RUNNING",
+      "machineType": "https://www.googleapis.com/compute/v1/projects/ugrp-act-train-1014/zones/asia-northeast3-a/machineTypes/n4-highcpu-64",
+      "scheduling": {
+        "automaticRestart": true,
+        "instanceTerminationAction": "STOP",
+        "maxRunDuration": {
+          "nanos": 0,
+          "seconds": "28800"
+        },
+        "onHostMaintenance": "MIGRATE",
+        "preemptible": false,
+        "provisioningModel": "STANDARD"
+      }
+    },
+    "budget_stop": {
+      "name": "projects/ugrp-act-train-1014/locations/us-central1/functions/budget-stop",
+      "state": "ACTIVE",
+      "eventTrigger": {
+        "eventType": "google.cloud.pubsub.topic.v1.messagePublished",
+        "pubsubTopic": "projects/ugrp-act-train-1014/topics/budget-stop",
+        "retryPolicy": "RETRY_POLICY_DO_NOT_RETRY",
+        "serviceAccountEmail": "budget-stopper@ugrp-act-train-1014.iam.gserviceaccount.com",
+        "trigger": "projects/ugrp-act-train-1014/locations/us-central1/triggers/budget-stop-492685",
+        "triggerRegion": "us-central1"
+      }
+    },
+    "idle_timer_live": "active",
+    "remote_free_gib": 219.44,
+    "mac_free_gib": 74,
+    "seed_collision_scan": {
+      "seeds": [
+        93560,
+        93561,
+        93562
+      ],
+      "raw_bundle_matches": 0,
+      "run_names_exist": false
+    },
+    "scope": "no billing or credit inspection; active function and existing guard configuration verified"
+  },
+  "final_remote_state": {
+    "exit": "1",
+    "marker_sha256": "b656798c040639718d5187388fb9e9ddff00c24f146c0adbf07d4ae1909319f2",
+    "all_original_manifest_hashes_still_valid": true,
+    "own_lease_released": true,
+    "active_sim_cli_count": 0,
+    "active": [],
+    "blocked_next_run_exists": false,
+    "idle_guard_timer": "active"
+  },
+  "raw_retention": "All881 own JPEGs and original ledgers remain on GCP persistent disk. Lite text/manifests and selected JPEGs retrieved; no independent full-raw backup.",
+  "next_step": "Coordinator needs corrected source/new approved queue. Do not submit93562 on currentSHA; no gate, recording promotion, training, texture integration or other queue work.",
+  "operations": "Only assigned queue operated; no VM create/resize/stop, billing/credit, host failover, browser, Mac simulation, model calls or ARM write. Verified own leases released; idle20min timer active.",
+  "pr_comment": {
+    "written_at": "2026-10-15 15:50:00 KST",
+    "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/506#issuecomment-6186275398",
+    "id": 6186275398,
+    "body_sha256": "a53d8a8d981591e2f9dbe5ab6f266106381653fa862a919e2ba1bf7895e030ac",
+    "verified_readback": true,
+    "line_count": 3
+  }
+}

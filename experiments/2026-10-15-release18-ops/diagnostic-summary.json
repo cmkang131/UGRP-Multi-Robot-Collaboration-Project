@@ -1,0 +1,3381 @@
+{
+  "schema": "ugrp.gcp-ops.release18.v1",
+  "recorded_at": "2026-10-15 16:37:39 KST",
+  "task_finished": false,
+  "verdict": "DIAGNOSTIC_PASS_AWAITING_GATE40_APPROVAL",
+  "queue": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-release-gate-a3bbc90e.json",
+  "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+  "branch": "claude/grasp-act-probes",
+  "pr": 491,
+  "pr_head_note": "PR491 branch differs; grasp-act-probes source SHA pinned independently",
+  "profile": "release18_v1",
+  "plan_sha256": "0992588d19049dfba5ed58a99c6490c49d481392f0a4016d29ed18389a8daf12",
+  "host": {
+    "ssh": "gcp1",
+    "instance": "ugrp-sim-gcp1",
+    "project": "ugrp-act-train-1014",
+    "zone": "asia-northeast3-a",
+    "machine_type": "n4-highcpu-64"
+  },
+  "stages": {
+    "development_reproduction": {
+      "n": 2,
+      "N": 2,
+      "submitted": 2,
+      "completed": 2
+    },
+    "fresh_diagnostic": {
+      "n": 7,
+      "N": 7,
+      "submitted": 7,
+      "completed": 7,
+      "approval": "coordinator review_passed 2026-10-15T16:23:01+09:00, max_parallel7"
+    },
+    "speed": {
+      "separate_runs": 0,
+      "first30_wall_sim_median_approx": 2.850726052080112,
+      "warn_over_3_5": false,
+      "block_over_6": false,
+      "fresh_first30_wall_sim_median_approx": 2.875412517642435
+    },
+    "gate40": {
+      "N": 40,
+      "required": 38,
+      "submitted": 0,
+      "n": null,
+      "approved": false,
+      "reason": "current coordinator approval explicitly diagnostic only; no automatic promotion"
+    }
+  },
+  "input_audit": {
+    "runs_checked": 9,
+    "invisible_measurements_sum": 0,
+    "held_world_reads_sum": 0,
+    "enabled_field": "not separately supplied; runtime audit object and counters present",
+    "scope": "release decision interval; prefix uses excluded truth-based scene preparation"
+  },
+  "performance": {
+    "overall_wall_sim_median": 3.083304939956747,
+    "shared_host_note": "other concurrent jobs vary; no dedicated speed cohort",
+    "fresh_overall_wall_sim_median": 3.083304939956747
+  },
+  "visual_review": {
+    "unique_final_montage_frames_viewed": 192,
+    "minimum_timepoints_each": 6,
+    "max_gap_s": 60,
+    "additional_live_reviews": "viewed, overlap excluded from final count"
+  },
+  "preservation": {
+    "original_files_verified": 4224,
+    "lite_files_verified": 166,
+    "compressed_and_decoded_files_verified": 40,
+    "raw_storage": "GCP persistent disk; lite logs and selected frames fetched to Mac; full raw is not independently backed up",
+    "weld": "off",
+    "training_rgb": false,
+    "student_execution": false,
+    "eight_hour_stop": "28800s STOP verified, unchanged",
+    "idle_guard": "20 minute timer active, unchanged",
+    "budget_stop": "ACTIVE PubSub budget-stop trigger verified read-only before fresh submission; unchanged",
+    "credit_remaining": "unverified, outside scope"
+  },
+  "no_pooling": true,
+  "runs": [
+    {
+      "name": "r18d-00-a3bbc90e",
+      "seed": 74963,
+      "cohort": "development_reproduction",
+      "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+      "submitted": true,
+      "exit": "0",
+      "status": "complete",
+      "success": true,
+      "outcome": "teacher_done",
+      "failure_reasons": [],
+      "prefix_held": true,
+      "sim_s": 80.69999999977692,
+      "wall_s": 242.56348918799995,
+      "wall_sim": 3.005743360454405,
+      "first30_wall_sim_approx": 2.845412528154946,
+      "first30_method": "eval JPEG mtime delta / teacher SIM row delta, approximately 0 to30.3 SIMs, startup excluded",
+      "input_audit": {
+        "held_object": "hidden_v1",
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "evaluation_last": {
+        "t": 82.39999999977947,
+        "fit": true,
+        "z": -0.00010775542021617014,
+        "tilt_deg": 7.773192622373657e-09,
+        "contact_n": {
+          "r1": [
+            0.0,
+            0.0
+          ],
+          "r2": [
+            0.0,
+            0.0
+          ]
+        },
+        "grip_to_beam_m": [
+          0.2333988322405461,
+          0.2647017929622769
+        ],
+        "open_pwm": {
+          "r1": 2000,
+          "r2": 2000
+        },
+        "beam_xy_yaw": [
+          4.7671173425308195,
+          0.5602025592120675,
+          -1.6937707535651116
+        ]
+      },
+      "evaluation_settled_s": 2.5,
+      "sequence_world_t": [
+        {
+          "t": 10.1,
+          "phase": "look"
+        },
+        {
+          "t": 10.8,
+          "phase": "await_look"
+        },
+        {
+          "t": 10.9,
+          "phase": "lower"
+        },
+        {
+          "t": 13.3,
+          "phase": "await_open"
+        },
+        {
+          "t": 13.4,
+          "phase": "open"
+        },
+        {
+          "t": 14.9,
+          "phase": "observe_back"
+        },
+        {
+          "t": 16.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 20.5,
+          "phase": "observe_back"
+        },
+        {
+          "t": 23.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 27.5,
+          "phase": "observe_move"
+        },
+        {
+          "t": 28.5,
+          "phase": "observe"
+        },
+        {
+          "t": 29.1,
+          "phase": "await_observe"
+        },
+        {
+          "t": 29.2,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 33.8,
+          "phase": "approach"
+        },
+        {
+          "t": 35.1,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 35.8,
+          "phase": "repick"
+        },
+        {
+          "t": 41.9,
+          "phase": "regrasp_check"
+        },
+        {
+          "t": 55.7,
+          "phase": "await_regrasp"
+        },
+        {
+          "t": 55.8,
+          "phase": "shift"
+        },
+        {
+          "t": 57.6,
+          "phase": "lower"
+        },
+        {
+          "t": 60.0,
+          "phase": "await_open"
+        },
+        {
+          "t": 60.1,
+          "phase": "open"
+        },
+        {
+          "t": 61.5,
+          "phase": "observe_back"
+        },
+        {
+          "t": 62.6,
+          "phase": "lookaround"
+        },
+        {
+          "t": 67.1,
+          "phase": "observe_back"
+        },
+        {
+          "t": 69.6,
+          "phase": "lookaround"
+        },
+        {
+          "t": 74.1,
+          "phase": "observe_move"
+        },
+        {
+          "t": 75.1,
+          "phase": "observe"
+        },
+        {
+          "t": 75.8,
+          "phase": "await_observe"
+        },
+        {
+          "t": 75.9,
+          "phase": "done"
+        }
+      ],
+      "shift_moves": 1,
+      "done_entry_sim_s": 74.09999999993298,
+      "code_decisions": [
+        {
+          "action": "lower",
+          "lo": null,
+          "hi": null,
+          "evidence": [
+            "none",
+            "none"
+          ],
+          "exact": {
+            "r1": false,
+            "r2": false
+          },
+          "t": 10.899999999997272
+        },
+        {
+          "action": "shift",
+          "shift_m": 0.2,
+          "reason": "localized_margin_correction",
+          "t": 29.200000000048412,
+          "margins_m": [
+            0.03833027082091711,
+            0.7564736452235508
+          ]
+        },
+        {
+          "action": "lower",
+          "reason": "localized_margins_inside",
+          "t": 75.89999999993317,
+          "margins_m": [
+            0.22769784872040355,
+            0.5428311265583711
+          ],
+          "release_goal_region": "inside_margins_v1"
+        }
+      ],
+      "regrasp_rgb_confirmation": [
+        {
+          "epoch": 1,
+          "confirmed": {
+            "r1": true,
+            "r2": true
+          },
+          "attempts": {
+            "r1": 1,
+            "r2": 1
+          },
+          "failure": null
+        }
+      ],
+      "rejections": {},
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18d-00-a3bbc90e",
+      "lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r18d-00-a3bbc90e",
+      "result_sha256": {
+        "sha256": "c7e41b15dc26f5723cef4514b2e24d406b68ccf4183c40f5b93e705515875dc9",
+        "bytes": 65437,
+        "decoded_sha256": "13b3f96e862eaecfa5dff72fcb6acb1027a22934b94cbe525e6cf01217c27f93"
+      },
+      "decoded_verified": [
+        {
+          "file": "eval-only.jsonl.zst",
+          "sha256": "f9511118f25d17368dccbc48394529cdaabf247793ac924f5950bd3a603bd2f0",
+          "decoded_sha256": "ee04ac03db15f5a8db407bdaa05d627708406bc4ddb363993a0a5fb3c250ea3b"
+        },
+        {
+          "file": "result.json.zst",
+          "sha256": "c7e41b15dc26f5723cef4514b2e24d406b68ccf4183c40f5b93e705515875dc9",
+          "decoded_sha256": "13b3f96e862eaecfa5dff72fcb6acb1027a22934b94cbe525e6cf01217c27f93"
+        },
+        {
+          "file": "teacher-r1.jsonl.zst",
+          "sha256": "ecd2f0d15deb8e55e0935cb1d6efbefc297b86806e2542b92140ca4c28e4b71e",
+          "decoded_sha256": "72fb1034161ffe90fb39837a9ec7128efec184bab5cb5590fca42e8b616f8886"
+        },
+        {
+          "file": "teacher-r2.jsonl.zst",
+          "sha256": "a000cea840f64a70d66c5aee29e190a4cab0e046be8f38b7c2092abcf1ccc3d7",
+          "decoded_sha256": "f0b3de2f78b7b1d14345d86f718917a00ce42f9613a68043970288fc16e05ebc"
+        }
+      ],
+      "sha256sums_verified": true,
+      "original_files_verified": 333,
+      "lite_files_verified": 18,
+      "manifest_sha256": "917de665d40547e28e5b9edce1d93dd6e3024406dc494dc2ba9ec38ca5f96962",
+      "visual_review": {
+        "frames_viewed": 33,
+        "times_sim_s": [
+          0.0,
+          6.0,
+          12.3,
+          15.3,
+          18.3,
+          24.3,
+          30.3,
+          31.3,
+          46.3,
+          62.3,
+          77.3
+        ],
+        "views": [
+          "eval-overview",
+          "r1",
+          "r2"
+        ],
+        "montages": [
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release18-a3bbc90e-ops/r18d-00-a3bbc90e/montage-0.jpg",
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release18-a3bbc90e-ops/r18d-00-a3bbc90e/montage-1.jpg"
+        ],
+        "observation": "opposite ends maintained, setdown and real lookaround visible, final beam left in destination without either robot holding it"
+      },
+      "training_exclusions": {
+        "prefix": {
+          "included": false,
+          "reason": "truth contact/height termination; scene preparation only",
+          "start_world_t": 1.8000000000001848,
+          "end_world_t": 10.099999999999136
+        },
+        "release": {
+          "included": false,
+          "reason": "success measurement; no student writer or gate admission"
+        }
+      },
+      "cap_timing": {
+        "control_loop_end_sim_s": 78.19999999983604,
+        "remaining_at_control_loop_end_s": 101.80000000016396,
+        "run": "r18d-00-a3bbc90e",
+        "cap_s": 180,
+        "done_entry_sim_s": 74.09999999993298,
+        "last_control_trace_sim_s": 78.0999999998384,
+        "remaining_at_last_control_trace_s": 101.9000000001616,
+        "flag_within10s_of_cap": false,
+        "final_sim_including_postrun_evaluation_s": 80.69999999977692,
+        "shift_moves": 1,
+        "regrasp_epochs": 1,
+        "note": "control loop and evaluation separated; final result.sim_s includes post-loop evaluation"
+      }
+    },
+    {
+      "name": "r18d-01-a3bbc90e",
+      "seed": 74976,
+      "cohort": "development_reproduction",
+      "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+      "submitted": true,
+      "exit": "0",
+      "status": "complete",
+      "success": true,
+      "outcome": "teacher_done",
+      "failure_reasons": [],
+      "prefix_held": true,
+      "sim_s": 180.2999999974217,
+      "wall_s": 556.4214134370013,
+      "wall_sim": 3.0860865970324913,
+      "first30_wall_sim_approx": 2.7593039758078066,
+      "first30_method": "eval JPEG mtime delta / teacher SIM row delta, approximately 0 to30.3 SIMs, startup excluded",
+      "input_audit": {
+        "held_object": "hidden_v1",
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "evaluation_last": {
+        "t": 181.99999999742425,
+        "fit": true,
+        "z": -0.00010775542021616747,
+        "tilt_deg": 7.773985154655766e-09,
+        "contact_n": {
+          "r1": [
+            0.0,
+            0.0
+          ],
+          "r2": [
+            0.0,
+            0.0
+          ]
+        },
+        "grip_to_beam_m": [
+          0.27189394209131684,
+          0.2675528049069552
+        ],
+        "open_pwm": {
+          "r1": 2000,
+          "r2": 2000
+        },
+        "beam_xy_yaw": [
+          4.53681693734406,
+          0.22248303546793738,
+          1.5768485692869658
+        ]
+      },
+      "evaluation_settled_s": 2.5,
+      "sequence_world_t": [
+        {
+          "t": 10.1,
+          "phase": "look"
+        },
+        {
+          "t": 10.8,
+          "phase": "await_look"
+        },
+        {
+          "t": 10.9,
+          "phase": "lower"
+        },
+        {
+          "t": 13.3,
+          "phase": "await_open"
+        },
+        {
+          "t": 13.4,
+          "phase": "open"
+        },
+        {
+          "t": 14.9,
+          "phase": "observe_back"
+        },
+        {
+          "t": 16.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 20.5,
+          "phase": "observe_back"
+        },
+        {
+          "t": 23.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 27.5,
+          "phase": "observe_move"
+        },
+        {
+          "t": 28.5,
+          "phase": "observe"
+        },
+        {
+          "t": 29.1,
+          "phase": "await_observe"
+        },
+        {
+          "t": 29.2,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 34.7,
+          "phase": "approach"
+        },
+        {
+          "t": 35.9,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 36.6,
+          "phase": "repick"
+        },
+        {
+          "t": 42.7,
+          "phase": "regrasp_check"
+        },
+        {
+          "t": 56.5,
+          "phase": "await_regrasp"
+        },
+        {
+          "t": 56.6,
+          "phase": "shift"
+        },
+        {
+          "t": 58.4,
+          "phase": "lower"
+        },
+        {
+          "t": 60.8,
+          "phase": "await_open"
+        },
+        {
+          "t": 60.9,
+          "phase": "open"
+        },
+        {
+          "t": 62.3,
+          "phase": "observe_back"
+        },
+        {
+          "t": 63.4,
+          "phase": "lookaround"
+        },
+        {
+          "t": 67.9,
+          "phase": "observe_back"
+        },
+        {
+          "t": 70.4,
+          "phase": "lookaround"
+        },
+        {
+          "t": 74.9,
+          "phase": "observe_move"
+        },
+        {
+          "t": 75.9,
+          "phase": "observe"
+        },
+        {
+          "t": 76.6,
+          "phase": "await_observe"
+        },
+        {
+          "t": 76.7,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 82.4,
+          "phase": "approach"
+        },
+        {
+          "t": 83.7,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 84.4,
+          "phase": "repick"
+        },
+        {
+          "t": 90.5,
+          "phase": "regrasp_check"
+        },
+        {
+          "t": 104.3,
+          "phase": "await_regrasp"
+        },
+        {
+          "t": 104.4,
+          "phase": "shift"
+        },
+        {
+          "t": 106.2,
+          "phase": "lower"
+        },
+        {
+          "t": 108.6,
+          "phase": "await_open"
+        },
+        {
+          "t": 108.7,
+          "phase": "open"
+        },
+        {
+          "t": 110.2,
+          "phase": "observe_back"
+        },
+        {
+          "t": 111.3,
+          "phase": "lookaround"
+        },
+        {
+          "t": 115.8,
+          "phase": "observe_back"
+        },
+        {
+          "t": 118.3,
+          "phase": "lookaround"
+        },
+        {
+          "t": 122.8,
+          "phase": "observe_move"
+        },
+        {
+          "t": 123.8,
+          "phase": "observe"
+        },
+        {
+          "t": 124.5,
+          "phase": "await_observe"
+        },
+        {
+          "t": 124.6,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 131.8,
+          "phase": "approach"
+        },
+        {
+          "t": 133.1,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 135.3,
+          "phase": "repick"
+        },
+        {
+          "t": 141.4,
+          "phase": "regrasp_check"
+        },
+        {
+          "t": 155.2,
+          "phase": "await_regrasp"
+        },
+        {
+          "t": 155.3,
+          "phase": "shift"
+        },
+        {
+          "t": 157.1,
+          "phase": "lower"
+        },
+        {
+          "t": 159.5,
+          "phase": "await_open"
+        },
+        {
+          "t": 159.6,
+          "phase": "open"
+        },
+        {
+          "t": 161.1,
+          "phase": "observe_back"
+        },
+        {
+          "t": 162.2,
+          "phase": "lookaround"
+        },
+        {
+          "t": 166.7,
+          "phase": "observe_back"
+        },
+        {
+          "t": 169.2,
+          "phase": "lookaround"
+        },
+        {
+          "t": 173.7,
+          "phase": "observe_move"
+        },
+        {
+          "t": 174.7,
+          "phase": "observe"
+        },
+        {
+          "t": 175.4,
+          "phase": "await_observe"
+        },
+        {
+          "t": 175.5,
+          "phase": "done"
+        }
+      ],
+      "shift_moves": 3,
+      "done_entry_sim_s": 173.69999999757778,
+      "code_decisions": [
+        {
+          "action": "lower",
+          "lo": null,
+          "hi": null,
+          "evidence": [
+            "none",
+            "none"
+          ],
+          "exact": {
+            "r1": false,
+            "r2": false
+          },
+          "t": 10.899999999997272
+        },
+        {
+          "action": "shift",
+          "shift_m": 0.2,
+          "reason": "localized_margin_correction",
+          "t": 29.200000000048412,
+          "margins_m": [
+            -0.4408468720168577,
+            1.146317542231034
+          ]
+        },
+        {
+          "action": "shift",
+          "shift_m": 0.2,
+          "reason": "localized_margin_correction",
+          "t": 76.69999999991425,
+          "margins_m": [
+            -0.2522208831170385,
+            0.9473097706060623
+          ]
+        },
+        {
+          "action": "shift",
+          "shift_m": 0.2,
+          "reason": "localized_margin_correction",
+          "t": 124.59999999878157,
+          "margins_m": [
+            -0.04238873970886692,
+            0.7506880711422801
+          ]
+        },
+        {
+          "action": "lower",
+          "reason": "localized_margins_inside",
+          "t": 175.49999999757796,
+          "margins_m": [
+            0.16523136926347715,
+            0.5500674564031774
+          ],
+          "release_goal_region": "inside_margins_v1"
+        }
+      ],
+      "regrasp_rgb_confirmation": [
+        {
+          "epoch": 1,
+          "confirmed": {
+            "r1": true,
+            "r2": true
+          },
+          "attempts": {
+            "r1": 1,
+            "r2": 1
+          },
+          "failure": null
+        },
+        {
+          "epoch": 2,
+          "confirmed": {
+            "r1": true,
+            "r2": true
+          },
+          "attempts": {
+            "r1": 1,
+            "r2": 1
+          },
+          "failure": null
+        },
+        {
+          "epoch": 3,
+          "confirmed": {
+            "r1": true,
+            "r2": true
+          },
+          "attempts": {
+            "r1": 1,
+            "r2": 1
+          },
+          "failure": null
+        }
+      ],
+      "rejections": {},
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18d-01-a3bbc90e",
+      "lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r18d-01-a3bbc90e",
+      "result_sha256": {
+        "sha256": "0b335e4cf4ba948e449d2ce7aafa57900b3e7ccefe30acc3ec34299ed45c3c6e",
+        "bytes": 162412,
+        "decoded_sha256": "42f05ab043329472867ca086efa3646177cf375e90ea7e6cf4946bdfaf90bcf5"
+      },
+      "decoded_verified": [
+        {
+          "file": "manifest.json.zst",
+          "decoded_sha256": "74c3a7af1fa17fa7d4cf1d8dacdb4aa615e5b4ef41c5ea07fccffd6bbfe81b95"
+        },
+        {
+          "file": "eval-only.jsonl.zst",
+          "sha256": "0ecb4032e084922b1a3e8b2c6cddda294a41d4ef5887bbb2b78c5301860be12f",
+          "decoded_sha256": "90279343a9d1081f7a3af1881d0fd7187bccfa649c2ae10d44ba2483852f80d1"
+        },
+        {
+          "file": "result.json.zst",
+          "sha256": "0b335e4cf4ba948e449d2ce7aafa57900b3e7ccefe30acc3ec34299ed45c3c6e",
+          "decoded_sha256": "42f05ab043329472867ca086efa3646177cf375e90ea7e6cf4946bdfaf90bcf5"
+        },
+        {
+          "file": "teacher-r1.jsonl.zst",
+          "sha256": "89bb793de103acb508e9f1c4de21a7a53768ca61f533a3a5f79d6a4574f539af",
+          "decoded_sha256": "30c29b07a1e9fe9428117f8ef1b08b076968925247008c823d32db888a590ec1"
+        },
+        {
+          "file": "teacher-r2.jsonl.zst",
+          "sha256": "17f36ac13bfbc8ab168ecad90b23a9de60dd701d9f2907a9aa56e5849570a1aa",
+          "decoded_sha256": "f1002beb9db728ee34f2f5ff8a8e9ef5562822bb81840c87dc008e199d94aeac"
+        }
+      ],
+      "sha256sums_verified": true,
+      "original_files_verified": 801,
+      "lite_files_verified": 19,
+      "manifest_sha256": "637d5b60de9d102544e9115b7ed2ce32ae55f0e56194e6e3581927b31060dff6",
+      "visual_review": {
+        "frames_viewed": 33,
+        "times_sim_s": [
+          0.0,
+          6.0,
+          12.3,
+          18.3,
+          24.3,
+          30.3,
+          35.3,
+          71.3,
+          106.3,
+          142.3,
+          177.3
+        ],
+        "views": [
+          "eval-overview",
+          "r1",
+          "r2"
+        ],
+        "montages": [
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release18-a3bbc90e-ops/r18d-01-a3bbc90e/montage-0.jpg",
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release18-a3bbc90e-ops/r18d-01-a3bbc90e/montage-1.jpg"
+        ],
+        "observation": "opposite ends maintained, setdown and real lookaround visible, final beam left in destination without either robot holding it"
+      },
+      "training_exclusions": {
+        "prefix": {
+          "included": false,
+          "reason": "truth contact/height termination; scene preparation only",
+          "start_world_t": 1.8000000000001848,
+          "end_world_t": 10.099999999999136
+        },
+        "release": {
+          "included": false,
+          "reason": "success measurement; no student writer or gate admission"
+        }
+      },
+      "cap_timing": {
+        "control_loop_end_sim_s": 177.79999999748082,
+        "remaining_at_control_loop_end_s": 2.2000000025191753,
+        "run": "r18d-01-a3bbc90e",
+        "cap_s": 180,
+        "done_entry_sim_s": 173.69999999757778,
+        "last_control_trace_sim_s": 177.6999999974832,
+        "remaining_at_last_control_trace_s": 2.3000000025168106,
+        "flag_within10s_of_cap": true,
+        "final_sim_including_postrun_evaluation_s": 180.2999999974217,
+        "shift_moves": 3,
+        "regrasp_epochs": 3,
+        "note": "control loop and evaluation separated; final result.sim_s includes post-loop evaluation"
+      }
+    },
+    {
+      "name": "r18n-00-a3bbc90e",
+      "seed": 78520,
+      "cohort": "fresh_diagnostic",
+      "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+      "submitted": true,
+      "exit": "0",
+      "status": "complete",
+      "success": true,
+      "outcome": "teacher_done",
+      "failure_reasons": [],
+      "prefix_held": true,
+      "sim_s": 33.90000000007927,
+      "wall_s": 100.84545831099967,
+      "wall_sim": 2.9747922805535065,
+      "first30_wall_sim_approx": 2.883696351501802,
+      "first30_method": "eval JPEG mtime delta / teacher SIM row delta, approximately 0 to30.3 SIMs, startup excluded",
+      "input_audit": {
+        "held_object": "hidden_v1",
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "evaluation_last": {
+        "t": 35.60000000007897,
+        "fit": true,
+        "z": -0.00010775542021617014,
+        "tilt_deg": 7.776047458267985e-09,
+        "contact_n": {
+          "r1": [
+            0.0,
+            0.0
+          ],
+          "r2": [
+            0.0,
+            0.0
+          ]
+        },
+        "grip_to_beam_m": [
+          0.2692083513627523,
+          0.2004019688657073
+        ],
+        "open_pwm": {
+          "r1": 2000,
+          "r2": 2000
+        },
+        "beam_xy_yaw": [
+          4.473525453043753,
+          0.6729017013142443,
+          1.650550333216451
+        ]
+      },
+      "evaluation_settled_s": 2.5,
+      "sequence_world_t": [
+        {
+          "t": 10.1,
+          "phase": "look"
+        },
+        {
+          "t": 10.8,
+          "phase": "await_look"
+        },
+        {
+          "t": 10.9,
+          "phase": "lower"
+        },
+        {
+          "t": 13.3,
+          "phase": "await_open"
+        },
+        {
+          "t": 13.4,
+          "phase": "open"
+        },
+        {
+          "t": 14.9,
+          "phase": "observe_back"
+        },
+        {
+          "t": 16.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 20.5,
+          "phase": "observe_back"
+        },
+        {
+          "t": 23.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 27.5,
+          "phase": "observe_move"
+        },
+        {
+          "t": 28.5,
+          "phase": "observe"
+        },
+        {
+          "t": 29.1,
+          "phase": "await_observe"
+        },
+        {
+          "t": 29.2,
+          "phase": "done"
+        }
+      ],
+      "shift_moves": 0,
+      "done_entry_sim_s": 27.40000000004823,
+      "code_decisions": [
+        {
+          "action": "lower",
+          "lo": null,
+          "hi": null,
+          "evidence": [
+            "none",
+            "none"
+          ],
+          "exact": {
+            "r1": false,
+            "r2": false
+          },
+          "t": 10.899999999997272
+        },
+        {
+          "action": "lower",
+          "reason": "localized_margins_inside",
+          "t": 29.200000000048412,
+          "margins_m": [
+            0.6421000190452415,
+            0.07514409408590839
+          ],
+          "release_goal_region": "inside_margins_v1"
+        }
+      ],
+      "regrasp_rgb_confirmation": [],
+      "rejections": {},
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18n-00-a3bbc90e",
+      "lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r18n-00-a3bbc90e",
+      "result_sha256": {
+        "sha256": "28f1fdf41c54c40fed08914954ed52c83fdb1bbcb1fecf797dc0afaeeb185310",
+        "bytes": 32244,
+        "decoded_sha256": "5bdaff83c148f8fa06d2d7b6d143fd7e3246f457b373c3b7adbf0835c5f028c3"
+      },
+      "decoded_verified": [
+        {
+          "file": "eval-only.jsonl.zst",
+          "sha256": "bd53ad6e8b75f103bf6c4f96bff7b9fe2a88e5e6a6129bb6aa228dfd5a8d1dc8",
+          "decoded_sha256": "f02e0f195f2125511fdf9b07b0cd1e82b128440a3bf9822fb24746e97822cefa"
+        },
+        {
+          "file": "result.json.zst",
+          "sha256": "28f1fdf41c54c40fed08914954ed52c83fdb1bbcb1fecf797dc0afaeeb185310",
+          "decoded_sha256": "5bdaff83c148f8fa06d2d7b6d143fd7e3246f457b373c3b7adbf0835c5f028c3"
+        },
+        {
+          "file": "teacher-r1.jsonl.zst",
+          "sha256": "786121f7f2046760628a89ca4ec435c4600fd60962bae83cb2988c5ba2eafb67",
+          "decoded_sha256": "4e946114c14d674e332281b1bc64a92e14d50be453666cee19e6fa3fbac8bbdb"
+        },
+        {
+          "file": "teacher-r2.jsonl.zst",
+          "sha256": "41a84d4b0252ec6f3c2526f0cee96c563d7e3f47a0beb42615eb74d3ddb8f544",
+          "decoded_sha256": "9bd7470926eebec42294adcb59c3dcead807e0a29b019c6b2dc1d7e37ed41fce"
+        }
+      ],
+      "sha256sums_verified": true,
+      "original_files_verified": 129,
+      "lite_files_verified": 18,
+      "manifest_sha256": "7f025dcdc110f72deac4d94ef6c0efe38defd265ee39c24fb5d61b32f7ed9eef",
+      "visual_review": {
+        "frames_viewed": 18,
+        "times_sim_s": [
+          0.0,
+          6.0,
+          12.3,
+          18.3,
+          25.3,
+          31.3
+        ],
+        "views": [
+          "eval-overview",
+          "r1",
+          "r2"
+        ],
+        "montages": [
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release18-a3bbc90e-ops/r18n-00-a3bbc90e/montage-0.jpg"
+        ],
+        "observation": "opposite ends maintained, setdown and real lookaround visible, final beam left in destination without either robot holding it"
+      },
+      "training_exclusions": {
+        "prefix": {
+          "included": false,
+          "reason": "truth contact/height termination; scene preparation only",
+          "start_world_t": 1.8000000000001848,
+          "end_world_t": 10.099999999999136
+        },
+        "release": {
+          "included": false,
+          "reason": "success measurement; no student writer or gate admission"
+        }
+      },
+      "cap_timing": {
+        "control_loop_end_sim_s": 31.400000000067326,
+        "remaining_at_control_loop_end_s": 148.59999999993266,
+        "run": "r18n-00-a3bbc90e",
+        "cap_s": 180,
+        "done_entry_sim_s": 27.40000000004823,
+        "last_control_trace_sim_s": 31.30000000006685,
+        "remaining_at_last_control_trace_s": 148.69999999993314,
+        "flag_within10s_of_cap": false,
+        "final_sim_including_postrun_evaluation_s": 33.90000000007927,
+        "shift_moves": 0,
+        "regrasp_epochs": 0,
+        "note": "control loop and evaluation separated; final result.sim_s includes post-loop evaluation"
+      }
+    },
+    {
+      "name": "r18n-01-a3bbc90e",
+      "seed": 78521,
+      "cohort": "fresh_diagnostic",
+      "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+      "submitted": true,
+      "exit": "0",
+      "status": "complete",
+      "success": true,
+      "outcome": "teacher_done",
+      "failure_reasons": [],
+      "prefix_held": true,
+      "sim_s": 80.59999999977929,
+      "wall_s": 238.21982384700095,
+      "wall_sim": 2.955580941037882,
+      "first30_wall_sim_approx": 2.8170956872813107,
+      "first30_method": "eval JPEG mtime delta / teacher SIM row delta, approximately 0 to30.3 SIMs, startup excluded",
+      "input_audit": {
+        "held_object": "hidden_v1",
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "evaluation_last": {
+        "t": 82.29999999978183,
+        "fit": true,
+        "z": -0.00010775542021616967,
+        "tilt_deg": 7.77351764526858e-09,
+        "contact_n": {
+          "r1": [
+            0.0,
+            0.0
+          ],
+          "r2": [
+            0.0,
+            0.0
+          ]
+        },
+        "grip_to_beam_m": [
+          0.23528562428753008,
+          0.2690919656586939
+        ],
+        "open_pwm": {
+          "r1": 2000,
+          "r2": 2000
+        },
+        "beam_xy_yaw": [
+          4.584333000082769,
+          0.5294097639963509,
+          -1.5904909240158558
+        ]
+      },
+      "evaluation_settled_s": 2.5,
+      "sequence_world_t": [
+        {
+          "t": 10.1,
+          "phase": "look"
+        },
+        {
+          "t": 10.8,
+          "phase": "await_look"
+        },
+        {
+          "t": 10.9,
+          "phase": "lower"
+        },
+        {
+          "t": 13.3,
+          "phase": "await_open"
+        },
+        {
+          "t": 13.4,
+          "phase": "open"
+        },
+        {
+          "t": 14.9,
+          "phase": "observe_back"
+        },
+        {
+          "t": 16.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 20.5,
+          "phase": "observe_back"
+        },
+        {
+          "t": 23.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 27.5,
+          "phase": "observe_move"
+        },
+        {
+          "t": 28.5,
+          "phase": "observe"
+        },
+        {
+          "t": 29.1,
+          "phase": "await_observe"
+        },
+        {
+          "t": 29.2,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 33.5,
+          "phase": "approach"
+        },
+        {
+          "t": 34.8,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 35.7,
+          "phase": "repick"
+        },
+        {
+          "t": 41.8,
+          "phase": "regrasp_check"
+        },
+        {
+          "t": 55.6,
+          "phase": "await_regrasp"
+        },
+        {
+          "t": 55.7,
+          "phase": "shift"
+        },
+        {
+          "t": 57.5,
+          "phase": "lower"
+        },
+        {
+          "t": 59.9,
+          "phase": "await_open"
+        },
+        {
+          "t": 60.0,
+          "phase": "open"
+        },
+        {
+          "t": 61.4,
+          "phase": "observe_back"
+        },
+        {
+          "t": 62.5,
+          "phase": "lookaround"
+        },
+        {
+          "t": 67.0,
+          "phase": "observe_back"
+        },
+        {
+          "t": 69.5,
+          "phase": "lookaround"
+        },
+        {
+          "t": 74.0,
+          "phase": "observe_move"
+        },
+        {
+          "t": 75.0,
+          "phase": "observe"
+        },
+        {
+          "t": 75.7,
+          "phase": "await_observe"
+        },
+        {
+          "t": 75.8,
+          "phase": "done"
+        }
+      ],
+      "shift_moves": 1,
+      "done_entry_sim_s": 73.99999999993534,
+      "code_decisions": [
+        {
+          "action": "lower",
+          "lo": null,
+          "hi": null,
+          "evidence": [
+            "none",
+            "none"
+          ],
+          "exact": {
+            "r1": false,
+            "r2": false
+          },
+          "t": 10.899999999997272
+        },
+        {
+          "action": "shift",
+          "shift_m": 0.2,
+          "reason": "localized_margin_correction",
+          "t": 29.200000000048412,
+          "margins_m": [
+            0.02632700200355409,
+            0.7220826144173851
+          ]
+        },
+        {
+          "action": "lower",
+          "reason": "localized_margins_inside",
+          "t": 75.79999999993554,
+          "margins_m": [
+            0.23337628018206136,
+            0.5031649988964823
+          ],
+          "release_goal_region": "inside_margins_v1"
+        }
+      ],
+      "regrasp_rgb_confirmation": [
+        {
+          "epoch": 1,
+          "confirmed": {
+            "r1": true,
+            "r2": true
+          },
+          "attempts": {
+            "r1": 1,
+            "r2": 1
+          },
+          "failure": null
+        }
+      ],
+      "rejections": {},
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18n-01-a3bbc90e",
+      "lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r18n-01-a3bbc90e",
+      "result_sha256": {
+        "sha256": "3d1c4490ea4ba7dbd92b086491eb4827642dd1e7151d316a5296b16a36b790a5",
+        "bytes": 66484,
+        "decoded_sha256": "447d054e31697c8fc06fa79d64e430e2b06786092d5426a11152022d6bf670a5"
+      },
+      "decoded_verified": [
+        {
+          "file": "eval-only.jsonl.zst",
+          "sha256": "c306f3d9634ac82503f787ef8a6aa455c050db5d0d69a0edc18b59104eaeb9c7",
+          "decoded_sha256": "f07155e956c8c806f07b4f44aca9d9a3a0a8e729167bed99b6f2213aa58d3822"
+        },
+        {
+          "file": "result.json.zst",
+          "sha256": "3d1c4490ea4ba7dbd92b086491eb4827642dd1e7151d316a5296b16a36b790a5",
+          "decoded_sha256": "447d054e31697c8fc06fa79d64e430e2b06786092d5426a11152022d6bf670a5"
+        },
+        {
+          "file": "teacher-r1.jsonl.zst",
+          "sha256": "522c5bccb8af0a8b0bd2330792b51b176c7328f0a3cfc38bf25b81722ea3b744",
+          "decoded_sha256": "c63badff7da4dbed140aa9f75154eed3a8d61e103bd3042390737c58213f2d0e"
+        },
+        {
+          "file": "teacher-r2.jsonl.zst",
+          "sha256": "6d5433584c89e1982bd55bfbfdc303423722554ea276cb38987a259b5531385a",
+          "decoded_sha256": "89a50741504fd93e78a32995a3543bfa3f0f51e068159691bc2e39e8b2732852"
+        }
+      ],
+      "sha256sums_verified": true,
+      "original_files_verified": 332,
+      "lite_files_verified": 18,
+      "manifest_sha256": "1e65d0236b7b1c62b45ede3be5e81327a0e6a81379dad8c3d072713fc1522898",
+      "visual_review": {
+        "frames_viewed": 18,
+        "times_sim_s": [
+          0.0,
+          15.3,
+          31.3,
+          46.3,
+          62.3,
+          77.3
+        ],
+        "views": [
+          "eval-overview",
+          "r1",
+          "r2"
+        ],
+        "montages": [
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release18-a3bbc90e-ops/r18n-01-a3bbc90e/montage-0.jpg"
+        ],
+        "observation": "opposite ends maintained, setdown and real lookaround visible, final beam left in destination without either robot holding it"
+      },
+      "training_exclusions": {
+        "prefix": {
+          "included": false,
+          "reason": "truth contact/height termination; scene preparation only",
+          "start_world_t": 1.8000000000001848,
+          "end_world_t": 10.099999999999136
+        },
+        "release": {
+          "included": false,
+          "reason": "success measurement; no student writer or gate admission"
+        }
+      },
+      "cap_timing": {
+        "control_loop_end_sim_s": 78.0999999998384,
+        "remaining_at_control_loop_end_s": 101.9000000001616,
+        "run": "r18n-01-a3bbc90e",
+        "cap_s": 180,
+        "done_entry_sim_s": 73.99999999993534,
+        "last_control_trace_sim_s": 77.99999999984077,
+        "remaining_at_last_control_trace_s": 102.00000000015923,
+        "flag_within10s_of_cap": false,
+        "final_sim_including_postrun_evaluation_s": 80.59999999977929,
+        "shift_moves": 1,
+        "regrasp_epochs": 1,
+        "note": "control loop and evaluation separated; final result.sim_s includes post-loop evaluation"
+      }
+    },
+    {
+      "name": "r18n-02-a3bbc90e",
+      "seed": 78522,
+      "cohort": "fresh_diagnostic",
+      "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+      "submitted": true,
+      "exit": "0",
+      "status": "complete",
+      "success": true,
+      "outcome": "teacher_done",
+      "failure_reasons": [],
+      "prefix_held": true,
+      "sim_s": 82.8999999997249,
+      "wall_s": 252.10273181100274,
+      "wall_sim": 3.0410462220969765,
+      "first30_wall_sim_approx": 2.850726052080112,
+      "first30_method": "eval JPEG mtime delta / teacher SIM row delta, approximately 0 to30.3 SIMs, startup excluded",
+      "input_audit": {
+        "held_object": "hidden_v1",
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "evaluation_last": {
+        "t": 84.59999999972744,
+        "fit": true,
+        "z": -0.00010775542021617028,
+        "tilt_deg": 7.77474597042656e-09,
+        "contact_n": {
+          "r1": [
+            0.0,
+            0.0
+          ],
+          "r2": [
+            0.0,
+            0.0
+          ]
+        },
+        "grip_to_beam_m": [
+          0.2668982484597585,
+          0.26785683843574254
+        ],
+        "open_pwm": {
+          "r1": 2000,
+          "r2": 2000
+        },
+        "beam_xy_yaw": [
+          4.631617141127531,
+          0.18123722654690427,
+          1.6862590887789126
+        ]
+      },
+      "evaluation_settled_s": 2.5,
+      "sequence_world_t": [
+        {
+          "t": 10.1,
+          "phase": "look"
+        },
+        {
+          "t": 10.8,
+          "phase": "await_look"
+        },
+        {
+          "t": 10.9,
+          "phase": "lower"
+        },
+        {
+          "t": 13.3,
+          "phase": "await_open"
+        },
+        {
+          "t": 13.4,
+          "phase": "open"
+        },
+        {
+          "t": 14.9,
+          "phase": "observe_back"
+        },
+        {
+          "t": 16.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 20.5,
+          "phase": "observe_back"
+        },
+        {
+          "t": 23.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 27.5,
+          "phase": "observe_move"
+        },
+        {
+          "t": 28.5,
+          "phase": "observe"
+        },
+        {
+          "t": 29.1,
+          "phase": "await_observe"
+        },
+        {
+          "t": 29.2,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 35.1,
+          "phase": "approach"
+        },
+        {
+          "t": 36.4,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 38.0,
+          "phase": "repick"
+        },
+        {
+          "t": 44.1,
+          "phase": "regrasp_check"
+        },
+        {
+          "t": 57.9,
+          "phase": "await_regrasp"
+        },
+        {
+          "t": 58.0,
+          "phase": "shift"
+        },
+        {
+          "t": 59.8,
+          "phase": "lower"
+        },
+        {
+          "t": 62.2,
+          "phase": "await_open"
+        },
+        {
+          "t": 62.3,
+          "phase": "open"
+        },
+        {
+          "t": 63.7,
+          "phase": "observe_back"
+        },
+        {
+          "t": 64.8,
+          "phase": "lookaround"
+        },
+        {
+          "t": 69.3,
+          "phase": "observe_back"
+        },
+        {
+          "t": 71.8,
+          "phase": "lookaround"
+        },
+        {
+          "t": 76.3,
+          "phase": "observe_move"
+        },
+        {
+          "t": 77.3,
+          "phase": "observe"
+        },
+        {
+          "t": 78.0,
+          "phase": "await_observe"
+        },
+        {
+          "t": 78.1,
+          "phase": "done"
+        }
+      ],
+      "shift_moves": 1,
+      "done_entry_sim_s": 76.29999999988095,
+      "code_decisions": [
+        {
+          "action": "lower",
+          "lo": null,
+          "hi": null,
+          "evidence": [
+            "none",
+            "none"
+          ],
+          "exact": {
+            "r1": false,
+            "r2": false
+          },
+          "t": 10.899999999997272
+        },
+        {
+          "action": "shift",
+          "shift_m": 0.2,
+          "reason": "localized_margin_correction",
+          "t": 29.200000000048412,
+          "margins_m": [
+            -0.09356913016285007,
+            0.7879720840300611
+          ]
+        },
+        {
+          "action": "lower",
+          "reason": "localized_margins_inside",
+          "t": 78.09999999988115,
+          "margins_m": [
+            0.11892816512712079,
+            0.5872555019188591
+          ],
+          "release_goal_region": "inside_margins_v1"
+        }
+      ],
+      "regrasp_rgb_confirmation": [
+        {
+          "epoch": 1,
+          "confirmed": {
+            "r1": true,
+            "r2": true
+          },
+          "attempts": {
+            "r1": 1,
+            "r2": 1
+          },
+          "failure": null
+        }
+      ],
+      "rejections": {},
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18n-02-a3bbc90e",
+      "lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r18n-02-a3bbc90e",
+      "result_sha256": {
+        "sha256": "71330abf09874d8709a92c7de17cda069c2cddd56769999e642f6684d0d364d5",
+        "bytes": 74778,
+        "decoded_sha256": "6af3db01e508f97e10813f8896214ca9b0bd1ce64859fe317baeac25e741dd01"
+      },
+      "decoded_verified": [
+        {
+          "file": "eval-only.jsonl.zst",
+          "sha256": "fd42877d74fcbff9194f0532da6870241c04493bf5a3f0c6257a6528f2047c23",
+          "decoded_sha256": "5b63929ff781a9f2943f5ba3bf9096d3de96dd362320ec61d845b32b7383eb96"
+        },
+        {
+          "file": "result.json.zst",
+          "sha256": "71330abf09874d8709a92c7de17cda069c2cddd56769999e642f6684d0d364d5",
+          "decoded_sha256": "6af3db01e508f97e10813f8896214ca9b0bd1ce64859fe317baeac25e741dd01"
+        },
+        {
+          "file": "teacher-r1.jsonl.zst",
+          "sha256": "0b778a79fcaad9d725b0fac4ff6e8e4ecffe73690e9ddcec25f7dbfe42058e8b",
+          "decoded_sha256": "6f01828e0a96614d90d91741f370486dbfdf2f95b697ad7d9cf7ee353c731da0"
+        },
+        {
+          "file": "teacher-r2.jsonl.zst",
+          "sha256": "e32511bb8fe43714f1b715be9ca42dbf823ecfc551bfbbae4cdf7a0dab3ba2c1",
+          "decoded_sha256": "959b0de1681a408eedfb52ba4a4ff9025725db37db52242146fe70d3b814ea54"
+        }
+      ],
+      "sha256sums_verified": true,
+      "original_files_verified": 354,
+      "lite_files_verified": 18,
+      "manifest_sha256": "d3017629bc25f738f86d7ac61756b2f808bc0aa2b25f4fc7e2c1b85a742164f7",
+      "visual_review": {
+        "frames_viewed": 18,
+        "times_sim_s": [
+          0.0,
+          16.3,
+          32.3,
+          48.3,
+          64.3,
+          80.3
+        ],
+        "views": [
+          "eval-overview",
+          "r1",
+          "r2"
+        ],
+        "montages": [
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release18-a3bbc90e-ops/r18n-02-a3bbc90e/montage-0.jpg"
+        ],
+        "observation": "opposite ends maintained, setdown and real lookaround visible, final beam left in destination without either robot holding it"
+      },
+      "training_exclusions": {
+        "prefix": {
+          "included": false,
+          "reason": "truth contact/height termination; scene preparation only",
+          "start_world_t": 1.8000000000001848,
+          "end_world_t": 10.099999999999136
+        },
+        "release": {
+          "included": false,
+          "reason": "success measurement; no student writer or gate admission"
+        }
+      },
+      "cap_timing": {
+        "control_loop_end_sim_s": 80.39999999978401,
+        "remaining_at_control_loop_end_s": 99.60000000021599,
+        "run": "r18n-02-a3bbc90e",
+        "cap_s": 180,
+        "done_entry_sim_s": 76.29999999988095,
+        "last_control_trace_sim_s": 80.29999999978638,
+        "remaining_at_last_control_trace_s": 99.70000000021362,
+        "flag_within10s_of_cap": false,
+        "final_sim_including_postrun_evaluation_s": 82.8999999997249,
+        "shift_moves": 1,
+        "regrasp_epochs": 1,
+        "note": "control loop and evaluation separated; final result.sim_s includes post-loop evaluation"
+      }
+    },
+    {
+      "name": "r18n-03-a3bbc90e",
+      "seed": 78523,
+      "cohort": "fresh_diagnostic",
+      "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+      "submitted": true,
+      "exit": "0",
+      "status": "complete",
+      "success": true,
+      "outcome": "teacher_done",
+      "failure_reasons": [],
+      "prefix_held": true,
+      "sim_s": 81.59999999975564,
+      "wall_s": 260.1681136650004,
+      "wall_sim": 3.1883347262963175,
+      "first30_wall_sim_approx": 2.975412516697998,
+      "first30_method": "eval JPEG mtime delta / teacher SIM row delta, approximately 0 to30.3 SIMs, startup excluded",
+      "input_audit": {
+        "held_object": "hidden_v1",
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "evaluation_last": {
+        "t": 83.29999999975819,
+        "fit": true,
+        "z": -0.00010775542021616812,
+        "tilt_deg": 7.770124844284422e-09,
+        "contact_n": {
+          "r1": [
+            0.0,
+            0.0
+          ],
+          "r2": [
+            0.0,
+            0.0
+          ]
+        },
+        "grip_to_beam_m": [
+          0.2651566158884501,
+          0.264285360913061
+        ],
+        "open_pwm": {
+          "r1": 2000,
+          "r2": 2000
+        },
+        "beam_xy_yaw": [
+          4.384887609534758,
+          0.12092394700838847,
+          -1.483678305731265
+        ]
+      },
+      "evaluation_settled_s": 2.5,
+      "sequence_world_t": [
+        {
+          "t": 10.1,
+          "phase": "look"
+        },
+        {
+          "t": 10.8,
+          "phase": "await_look"
+        },
+        {
+          "t": 10.9,
+          "phase": "lower"
+        },
+        {
+          "t": 13.3,
+          "phase": "await_open"
+        },
+        {
+          "t": 13.4,
+          "phase": "open"
+        },
+        {
+          "t": 14.9,
+          "phase": "observe_back"
+        },
+        {
+          "t": 16.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 20.5,
+          "phase": "observe_back"
+        },
+        {
+          "t": 23.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 27.5,
+          "phase": "observe_move"
+        },
+        {
+          "t": 28.5,
+          "phase": "observe"
+        },
+        {
+          "t": 29.1,
+          "phase": "await_observe"
+        },
+        {
+          "t": 29.2,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 34.7,
+          "phase": "approach"
+        },
+        {
+          "t": 36.0,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 36.7,
+          "phase": "repick"
+        },
+        {
+          "t": 42.8,
+          "phase": "regrasp_check"
+        },
+        {
+          "t": 56.6,
+          "phase": "await_regrasp"
+        },
+        {
+          "t": 56.7,
+          "phase": "shift"
+        },
+        {
+          "t": 58.5,
+          "phase": "lower"
+        },
+        {
+          "t": 60.9,
+          "phase": "await_open"
+        },
+        {
+          "t": 61.0,
+          "phase": "open"
+        },
+        {
+          "t": 62.4,
+          "phase": "observe_back"
+        },
+        {
+          "t": 63.5,
+          "phase": "lookaround"
+        },
+        {
+          "t": 68.0,
+          "phase": "observe_back"
+        },
+        {
+          "t": 70.5,
+          "phase": "lookaround"
+        },
+        {
+          "t": 75.0,
+          "phase": "observe_move"
+        },
+        {
+          "t": 76.0,
+          "phase": "observe"
+        },
+        {
+          "t": 76.7,
+          "phase": "await_observe"
+        },
+        {
+          "t": 76.8,
+          "phase": "done"
+        }
+      ],
+      "shift_moves": 1,
+      "done_entry_sim_s": 74.9999999999117,
+      "code_decisions": [
+        {
+          "action": "lower",
+          "lo": null,
+          "hi": null,
+          "evidence": [
+            "none",
+            "none"
+          ],
+          "exact": {
+            "r1": false,
+            "r2": false
+          },
+          "t": 10.899999999997272
+        },
+        {
+          "action": "shift",
+          "shift_m": -0.2,
+          "reason": "localized_margin_correction",
+          "t": 29.200000000048412,
+          "margins_m": [
+            0.8776732627534739,
+            -0.12648576086597996
+          ]
+        },
+        {
+          "action": "lower",
+          "reason": "localized_margins_inside",
+          "t": 76.79999999991189,
+          "margins_m": [
+            0.6688635201891608,
+            0.07657015227545083
+          ],
+          "release_goal_region": "inside_margins_v1"
+        }
+      ],
+      "regrasp_rgb_confirmation": [
+        {
+          "epoch": 1,
+          "confirmed": {
+            "r1": true,
+            "r2": true
+          },
+          "attempts": {
+            "r1": 1,
+            "r2": 1
+          },
+          "failure": null
+        }
+      ],
+      "rejections": {},
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18n-03-a3bbc90e",
+      "lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r18n-03-a3bbc90e",
+      "result_sha256": {
+        "sha256": "57b6d9c091898b211ee86a696c3aeda4e607116610ce26c2d8a4c7105e421a8c",
+        "bytes": 76865,
+        "decoded_sha256": "d1b13b8c99ba53956a7792252f41da46ed400fa7a26357aa8cab9bfc8e561b01"
+      },
+      "decoded_verified": [
+        {
+          "file": "eval-only.jsonl.zst",
+          "sha256": "af2c2cb0f5db3a1dfd7c847a31dec8a2ec9c73824e5671e9a8dea08f39c14556",
+          "decoded_sha256": "475c9cb99926c458cb5d79a52bcc48f65d641df0c4bde27e790f7c6d5fdb237b"
+        },
+        {
+          "file": "result.json.zst",
+          "sha256": "57b6d9c091898b211ee86a696c3aeda4e607116610ce26c2d8a4c7105e421a8c",
+          "decoded_sha256": "d1b13b8c99ba53956a7792252f41da46ed400fa7a26357aa8cab9bfc8e561b01"
+        },
+        {
+          "file": "teacher-r1.jsonl.zst",
+          "sha256": "68f19d86de877d1e9d579a33e0fe24e4f23e328240244d86ecd83221c46dbb9e",
+          "decoded_sha256": "eae38fc995857c7bc6b0716bfb9d50a0108ad4b2fc014d69c5ed4d97387346dc"
+        },
+        {
+          "file": "teacher-r2.jsonl.zst",
+          "sha256": "7168278845662dceb5dc978917441a601d010db4cb92bbc9bb27fb2807190a79",
+          "decoded_sha256": "6906b98f87263948eb8ecaed4d75714692440d1924593ad8716fd10a14195776"
+        }
+      ],
+      "sha256sums_verified": true,
+      "original_files_verified": 341,
+      "lite_files_verified": 18,
+      "manifest_sha256": "95fd73f02e33d33344374fcecd32abaa7f2ed2973ad2a8e446a40a2d5b29af5c",
+      "visual_review": {
+        "frames_viewed": 18,
+        "times_sim_s": [
+          0.0,
+          15.3,
+          31.3,
+          47.3,
+          62.3,
+          78.3
+        ],
+        "views": [
+          "eval-overview",
+          "r1",
+          "r2"
+        ],
+        "montages": [
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release18-a3bbc90e-ops/r18n-03-a3bbc90e/montage-0.jpg"
+        ],
+        "observation": "opposite ends maintained, setdown and real lookaround visible, final beam left in destination without either robot holding it"
+      },
+      "training_exclusions": {
+        "prefix": {
+          "included": false,
+          "reason": "truth contact/height termination; scene preparation only",
+          "start_world_t": 1.8000000000001848,
+          "end_world_t": 10.099999999999136
+        },
+        "release": {
+          "included": false,
+          "reason": "success measurement; no student writer or gate admission"
+        }
+      },
+      "cap_timing": {
+        "control_loop_end_sim_s": 79.09999999981476,
+        "remaining_at_control_loop_end_s": 100.90000000018524,
+        "run": "r18n-03-a3bbc90e",
+        "cap_s": 180,
+        "done_entry_sim_s": 74.9999999999117,
+        "last_control_trace_sim_s": 78.99999999981712,
+        "remaining_at_last_control_trace_s": 101.00000000018288,
+        "flag_within10s_of_cap": false,
+        "final_sim_including_postrun_evaluation_s": 81.59999999975564,
+        "shift_moves": 1,
+        "regrasp_epochs": 1,
+        "note": "control loop and evaluation separated; final result.sim_s includes post-loop evaluation"
+      }
+    },
+    {
+      "name": "r18n-04-a3bbc90e",
+      "seed": 78524,
+      "cohort": "fresh_diagnostic",
+      "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+      "submitted": true,
+      "exit": "0",
+      "status": "complete",
+      "success": true,
+      "outcome": "teacher_done",
+      "failure_reasons": [],
+      "prefix_held": true,
+      "sim_s": 131.09999999858513,
+      "wall_s": 409.431522400002,
+      "wall_sim": 3.1230474630390592,
+      "first30_wall_sim_approx": 2.875412517642435,
+      "first30_method": "eval JPEG mtime delta / teacher SIM row delta, approximately 0 to30.3 SIMs, startup excluded",
+      "input_audit": {
+        "held_object": "hidden_v1",
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "evaluation_last": {
+        "t": 132.79999999858768,
+        "fit": true,
+        "z": -0.00010775542021617018,
+        "tilt_deg": 7.773601602873666e-09,
+        "contact_n": {
+          "r1": [
+            0.0,
+            0.0
+          ],
+          "r2": [
+            0.0,
+            0.0
+          ]
+        },
+        "grip_to_beam_m": [
+          0.26724097576276984,
+          0.2594296266142853
+        ],
+        "open_pwm": {
+          "r1": 2000,
+          "r2": 2000
+        },
+        "beam_xy_yaw": [
+          4.597009784935627,
+          0.17111109799388222,
+          1.5705724337288944
+        ]
+      },
+      "evaluation_settled_s": 2.5,
+      "sequence_world_t": [
+        {
+          "t": 10.1,
+          "phase": "look"
+        },
+        {
+          "t": 10.8,
+          "phase": "await_look"
+        },
+        {
+          "t": 10.9,
+          "phase": "lower"
+        },
+        {
+          "t": 13.3,
+          "phase": "await_open"
+        },
+        {
+          "t": 13.4,
+          "phase": "open"
+        },
+        {
+          "t": 14.9,
+          "phase": "observe_back"
+        },
+        {
+          "t": 16.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 20.5,
+          "phase": "observe_back"
+        },
+        {
+          "t": 23.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 27.5,
+          "phase": "observe_move"
+        },
+        {
+          "t": 28.5,
+          "phase": "observe"
+        },
+        {
+          "t": 29.1,
+          "phase": "await_observe"
+        },
+        {
+          "t": 29.2,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 35.1,
+          "phase": "approach"
+        },
+        {
+          "t": 36.4,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 37.1,
+          "phase": "repick"
+        },
+        {
+          "t": 43.2,
+          "phase": "regrasp_check"
+        },
+        {
+          "t": 57.0,
+          "phase": "await_regrasp"
+        },
+        {
+          "t": 57.1,
+          "phase": "shift"
+        },
+        {
+          "t": 58.9,
+          "phase": "lower"
+        },
+        {
+          "t": 61.3,
+          "phase": "await_open"
+        },
+        {
+          "t": 61.4,
+          "phase": "open"
+        },
+        {
+          "t": 62.8,
+          "phase": "observe_back"
+        },
+        {
+          "t": 63.9,
+          "phase": "lookaround"
+        },
+        {
+          "t": 68.4,
+          "phase": "observe_back"
+        },
+        {
+          "t": 70.9,
+          "phase": "lookaround"
+        },
+        {
+          "t": 75.4,
+          "phase": "observe_move"
+        },
+        {
+          "t": 76.4,
+          "phase": "observe"
+        },
+        {
+          "t": 77.1,
+          "phase": "await_observe"
+        },
+        {
+          "t": 77.2,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 83.9,
+          "phase": "approach"
+        },
+        {
+          "t": 85.2,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 86.1,
+          "phase": "repick"
+        },
+        {
+          "t": 92.2,
+          "phase": "regrasp_check"
+        },
+        {
+          "t": 106.0,
+          "phase": "await_regrasp"
+        },
+        {
+          "t": 106.1,
+          "phase": "shift"
+        },
+        {
+          "t": 107.9,
+          "phase": "lower"
+        },
+        {
+          "t": 110.3,
+          "phase": "await_open"
+        },
+        {
+          "t": 110.4,
+          "phase": "open"
+        },
+        {
+          "t": 111.9,
+          "phase": "observe_back"
+        },
+        {
+          "t": 113.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 117.5,
+          "phase": "observe_back"
+        },
+        {
+          "t": 120.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 124.5,
+          "phase": "observe_move"
+        },
+        {
+          "t": 125.5,
+          "phase": "observe"
+        },
+        {
+          "t": 126.2,
+          "phase": "await_observe"
+        },
+        {
+          "t": 126.3,
+          "phase": "done"
+        }
+      ],
+      "shift_moves": 2,
+      "done_entry_sim_s": 124.49999999874117,
+      "code_decisions": [
+        {
+          "action": "lower",
+          "lo": null,
+          "hi": null,
+          "evidence": [
+            "none",
+            "none"
+          ],
+          "exact": {
+            "r1": false,
+            "r2": false
+          },
+          "t": 10.899999999997272
+        },
+        {
+          "action": "shift",
+          "shift_m": 0.2,
+          "reason": "localized_margin_correction",
+          "t": 29.200000000048412,
+          "margins_m": [
+            -0.296298071789729,
+            1.0226083811369349
+          ]
+        },
+        {
+          "action": "shift",
+          "shift_m": 0.2,
+          "reason": "localized_margin_correction",
+          "t": 77.19999999990243,
+          "margins_m": [
+            -0.08794386002031529,
+            0.8216989935352701
+          ]
+        },
+        {
+          "action": "lower",
+          "reason": "localized_margins_inside",
+          "t": 126.29999999874137,
+          "margins_m": [
+            0.10087847035921926,
+            0.6142433167211322
+          ],
+          "release_goal_region": "inside_margins_v1"
+        }
+      ],
+      "regrasp_rgb_confirmation": [
+        {
+          "epoch": 1,
+          "confirmed": {
+            "r1": true,
+            "r2": true
+          },
+          "attempts": {
+            "r1": 1,
+            "r2": 1
+          },
+          "failure": null
+        },
+        {
+          "epoch": 2,
+          "confirmed": {
+            "r1": true,
+            "r2": true
+          },
+          "attempts": {
+            "r1": 1,
+            "r2": 1
+          },
+          "failure": null
+        }
+      ],
+      "rejections": {},
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18n-04-a3bbc90e",
+      "lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r18n-04-a3bbc90e",
+      "result_sha256": {
+        "sha256": "cf3fb928ff09c27d3536c8af977691a834f47d99b4f6763925593aae58415131",
+        "bytes": 115672,
+        "decoded_sha256": "21a281d0fb3100953115d72fff76dcc19c379d173b268f1dae7d40a4edae3d4f"
+      },
+      "decoded_verified": [
+        {
+          "file": "manifest.json.zst",
+          "decoded_sha256": "b025830c133ad6a269bc4a9d0082e868dfcd49d4fe6def184fbcec98b1575c92"
+        },
+        {
+          "file": "eval-only.jsonl.zst",
+          "sha256": "f236b36121ad7c6eda0f2b6455b3b59379ada390fedbced3e5d33c4b1677c835",
+          "decoded_sha256": "8d49122de01a9bee4bfb6d60cb70c745f8964415b944d739e5628b314023eb2d"
+        },
+        {
+          "file": "result.json.zst",
+          "sha256": "cf3fb928ff09c27d3536c8af977691a834f47d99b4f6763925593aae58415131",
+          "decoded_sha256": "21a281d0fb3100953115d72fff76dcc19c379d173b268f1dae7d40a4edae3d4f"
+        },
+        {
+          "file": "teacher-r1.jsonl.zst",
+          "sha256": "6609bf0f6d79d12f3e81c66a8b71262baffb53e464a3c74820a446fcac7eb31e",
+          "decoded_sha256": "0543a2e47476d8549220a9d23d397ea765bbaa5e4173a7fa6964b3255014e0e4"
+        },
+        {
+          "file": "teacher-r2.jsonl.zst",
+          "sha256": "8c8330ed1f13b40c47814d640ef28479a74d76158fd285ab16e457754c9b13de",
+          "decoded_sha256": "a43ac4a530881beac6c116a9853cb57cf1ced54c6c09bdda485da12ca6d0d8ad"
+        }
+      ],
+      "sha256sums_verified": true,
+      "original_files_verified": 575,
+      "lite_files_verified": 19,
+      "manifest_sha256": "33ef474a79e7951c7e26d686777096ce0bce4289c7e09620b8ac9d776a3b2db1",
+      "visual_review": {
+        "frames_viewed": 18,
+        "times_sim_s": [
+          0.0,
+          25.3,
+          51.3,
+          77.3,
+          102.3,
+          128.3
+        ],
+        "views": [
+          "eval-overview",
+          "r1",
+          "r2"
+        ],
+        "montages": [
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release18-a3bbc90e-ops/r18n-04-a3bbc90e/montage-0.jpg"
+        ],
+        "observation": "opposite ends maintained, setdown and real lookaround visible, final beam left in destination without either robot holding it"
+      },
+      "training_exclusions": {
+        "prefix": {
+          "included": false,
+          "reason": "truth contact/height termination; scene preparation only",
+          "start_world_t": 1.8000000000001848,
+          "end_world_t": 10.099999999999136
+        },
+        "release": {
+          "included": false,
+          "reason": "success measurement; no student writer or gate admission"
+        }
+      },
+      "cap_timing": {
+        "control_loop_end_sim_s": 128.59999999864425,
+        "remaining_at_control_loop_end_s": 51.40000000135575,
+        "run": "r18n-04-a3bbc90e",
+        "cap_s": 180,
+        "done_entry_sim_s": 124.49999999874117,
+        "last_control_trace_sim_s": 128.49999999864662,
+        "remaining_at_last_control_trace_s": 51.500000001353385,
+        "flag_within10s_of_cap": false,
+        "final_sim_including_postrun_evaluation_s": 131.09999999858513,
+        "shift_moves": 2,
+        "regrasp_epochs": 2,
+        "note": "control loop and evaluation separated; final result.sim_s includes post-loop evaluation"
+      }
+    },
+    {
+      "name": "r18n-05-a3bbc90e",
+      "seed": 78525,
+      "cohort": "fresh_diagnostic",
+      "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+      "submitted": true,
+      "exit": "0",
+      "status": "complete",
+      "success": true,
+      "outcome": "teacher_done",
+      "failure_reasons": [],
+      "prefix_held": true,
+      "sim_s": 130.79999999859223,
+      "wall_s": 403.2962861420019,
+      "wall_sim": 3.083304939956747,
+      "first30_wall_sim_approx": 2.8411220874665224,
+      "first30_method": "eval JPEG mtime delta / teacher SIM row delta, approximately 0 to30.3 SIMs, startup excluded",
+      "input_audit": {
+        "held_object": "hidden_v1",
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "evaluation_last": {
+        "t": 132.49999999859477,
+        "fit": true,
+        "z": -0.00010775542021617005,
+        "tilt_deg": 7.771484803604072e-09,
+        "contact_n": {
+          "r1": [
+            0.0,
+            0.0
+          ],
+          "r2": [
+            0.0,
+            0.0
+          ]
+        },
+        "grip_to_beam_m": [
+          0.26272784078482503,
+          0.2607850009685505
+        ],
+        "open_pwm": {
+          "r1": 2000,
+          "r2": 2000
+        },
+        "beam_xy_yaw": [
+          4.661255998809329,
+          0.25037532835339826,
+          -1.6993124005006555
+        ]
+      },
+      "evaluation_settled_s": 2.5,
+      "sequence_world_t": [
+        {
+          "t": 10.1,
+          "phase": "look"
+        },
+        {
+          "t": 10.8,
+          "phase": "await_look"
+        },
+        {
+          "t": 10.9,
+          "phase": "lower"
+        },
+        {
+          "t": 13.3,
+          "phase": "await_open"
+        },
+        {
+          "t": 13.4,
+          "phase": "open"
+        },
+        {
+          "t": 14.9,
+          "phase": "observe_back"
+        },
+        {
+          "t": 16.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 20.5,
+          "phase": "observe_back"
+        },
+        {
+          "t": 23.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 27.5,
+          "phase": "observe_move"
+        },
+        {
+          "t": 28.5,
+          "phase": "observe"
+        },
+        {
+          "t": 29.1,
+          "phase": "await_observe"
+        },
+        {
+          "t": 29.2,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 34.7,
+          "phase": "approach"
+        },
+        {
+          "t": 36.0,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 36.7,
+          "phase": "repick"
+        },
+        {
+          "t": 42.8,
+          "phase": "regrasp_check"
+        },
+        {
+          "t": 56.6,
+          "phase": "await_regrasp"
+        },
+        {
+          "t": 56.7,
+          "phase": "shift"
+        },
+        {
+          "t": 58.5,
+          "phase": "lower"
+        },
+        {
+          "t": 60.9,
+          "phase": "await_open"
+        },
+        {
+          "t": 61.0,
+          "phase": "open"
+        },
+        {
+          "t": 62.4,
+          "phase": "observe_back"
+        },
+        {
+          "t": 63.5,
+          "phase": "lookaround"
+        },
+        {
+          "t": 68.0,
+          "phase": "observe_back"
+        },
+        {
+          "t": 70.5,
+          "phase": "lookaround"
+        },
+        {
+          "t": 75.0,
+          "phase": "observe_move"
+        },
+        {
+          "t": 76.0,
+          "phase": "observe"
+        },
+        {
+          "t": 76.7,
+          "phase": "await_observe"
+        },
+        {
+          "t": 76.8,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 82.7,
+          "phase": "approach"
+        },
+        {
+          "t": 84.0,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 85.8,
+          "phase": "repick"
+        },
+        {
+          "t": 91.9,
+          "phase": "regrasp_check"
+        },
+        {
+          "t": 105.7,
+          "phase": "await_regrasp"
+        },
+        {
+          "t": 105.8,
+          "phase": "shift"
+        },
+        {
+          "t": 107.6,
+          "phase": "lower"
+        },
+        {
+          "t": 110.0,
+          "phase": "await_open"
+        },
+        {
+          "t": 110.1,
+          "phase": "open"
+        },
+        {
+          "t": 111.6,
+          "phase": "observe_back"
+        },
+        {
+          "t": 112.7,
+          "phase": "lookaround"
+        },
+        {
+          "t": 117.2,
+          "phase": "observe_back"
+        },
+        {
+          "t": 119.7,
+          "phase": "lookaround"
+        },
+        {
+          "t": 124.2,
+          "phase": "observe_move"
+        },
+        {
+          "t": 125.2,
+          "phase": "observe"
+        },
+        {
+          "t": 125.9,
+          "phase": "await_observe"
+        },
+        {
+          "t": 126.0,
+          "phase": "done"
+        }
+      ],
+      "shift_moves": 2,
+      "done_entry_sim_s": 124.19999999874827,
+      "code_decisions": [
+        {
+          "action": "lower",
+          "lo": null,
+          "hi": null,
+          "evidence": [
+            "none",
+            "none"
+          ],
+          "exact": {
+            "r1": false,
+            "r2": false
+          },
+          "t": 10.899999999997272
+        },
+        {
+          "action": "shift",
+          "shift_m": -0.2,
+          "reason": "localized_margin_correction",
+          "t": 29.200000000048412,
+          "margins_m": [
+            0.9393668743375709,
+            -0.20386980996177917
+          ]
+        },
+        {
+          "action": "shift",
+          "shift_m": -0.2,
+          "reason": "localized_margin_correction",
+          "t": 76.79999999991189,
+          "margins_m": [
+            0.7395705688108731,
+            -0.006003085525568608
+          ]
+        },
+        {
+          "action": "lower",
+          "reason": "localized_margins_inside",
+          "t": 125.99999999874846,
+          "margins_m": [
+            0.5345875972450751,
+            0.1953984235962707
+          ],
+          "release_goal_region": "inside_margins_v1"
+        }
+      ],
+      "regrasp_rgb_confirmation": [
+        {
+          "epoch": 1,
+          "confirmed": {
+            "r1": true,
+            "r2": true
+          },
+          "attempts": {
+            "r1": 1,
+            "r2": 1
+          },
+          "failure": null
+        },
+        {
+          "epoch": 2,
+          "confirmed": {
+            "r1": true,
+            "r2": true
+          },
+          "attempts": {
+            "r1": 1,
+            "r2": 1
+          },
+          "failure": null
+        }
+      ],
+      "rejections": {},
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18n-05-a3bbc90e",
+      "lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r18n-05-a3bbc90e",
+      "result_sha256": {
+        "sha256": "7436e8dd38b02aeef7ea78b6afd9087e7f8024330c35a1c69f79f3e5227b919f",
+        "bytes": 116840,
+        "decoded_sha256": "8f09ddf4bba07e1c375f4cc80ca561475fb38c3e997ce9c2326765417f934f99"
+      },
+      "decoded_verified": [
+        {
+          "file": "manifest.json.zst",
+          "decoded_sha256": "7308f2a3cc6adbb4c13628036ed90d7298f4de186d87e8cf89dbf3c6189fd3ca"
+        },
+        {
+          "file": "eval-only.jsonl.zst",
+          "sha256": "7fd76e262b2f2dcc0eff996c64306a517c84950a82d83536c3ead2c385238c7c",
+          "decoded_sha256": "10bdf2ac277d82f14d064690e74c0a6f46c273ec2fc57225eeda48e207019214"
+        },
+        {
+          "file": "result.json.zst",
+          "sha256": "7436e8dd38b02aeef7ea78b6afd9087e7f8024330c35a1c69f79f3e5227b919f",
+          "decoded_sha256": "8f09ddf4bba07e1c375f4cc80ca561475fb38c3e997ce9c2326765417f934f99"
+        },
+        {
+          "file": "teacher-r1.jsonl.zst",
+          "sha256": "e64b43dbb6e4d0456acab9cb6f49c7981ff6008bd01ea6067fa5c2db15d1b60c",
+          "decoded_sha256": "2aff9bd55b7354ee043059ffa9faab242296910e83d64b46ae0378caf8c8fdd0"
+        },
+        {
+          "file": "teacher-r2.jsonl.zst",
+          "sha256": "354bf0a9395955583db5ae2163e2f5adac65a4adfd71460508b6e7463b7a7dd4",
+          "decoded_sha256": "5949a2cedac978dba5a9c521889b2b41e394c45da39ca3f6ef879d09ed42044c"
+        }
+      ],
+      "sha256sums_verified": true,
+      "original_files_verified": 569,
+      "lite_files_verified": 19,
+      "manifest_sha256": "1a7c789074ba7f242813a7f5e4c873906514a3dcab04dc7cc67496ce42ba0e27",
+      "visual_review": {
+        "frames_viewed": 18,
+        "times_sim_s": [
+          0.0,
+          25.3,
+          51.3,
+          76.3,
+          102.3,
+          127.3
+        ],
+        "views": [
+          "eval-overview",
+          "r1",
+          "r2"
+        ],
+        "montages": [
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release18-a3bbc90e-ops/r18n-05-a3bbc90e/montage-0.jpg"
+        ],
+        "observation": "opposite ends maintained, setdown and real lookaround visible, final beam left in destination without either robot holding it"
+      },
+      "training_exclusions": {
+        "prefix": {
+          "included": false,
+          "reason": "truth contact/height termination; scene preparation only",
+          "start_world_t": 1.8000000000001848,
+          "end_world_t": 10.099999999999136
+        },
+        "release": {
+          "included": false,
+          "reason": "success measurement; no student writer or gate admission"
+        }
+      },
+      "cap_timing": {
+        "control_loop_end_sim_s": 128.29999999865134,
+        "remaining_at_control_loop_end_s": 51.700000001348656,
+        "run": "r18n-05-a3bbc90e",
+        "cap_s": 180,
+        "done_entry_sim_s": 124.19999999874827,
+        "last_control_trace_sim_s": 128.1999999986537,
+        "remaining_at_last_control_trace_s": 51.80000000134629,
+        "flag_within10s_of_cap": false,
+        "final_sim_including_postrun_evaluation_s": 130.79999999859223,
+        "shift_moves": 2,
+        "regrasp_epochs": 2,
+        "note": "control loop and evaluation separated; final result.sim_s includes post-loop evaluation"
+      }
+    },
+    {
+      "name": "r18n-06-a3bbc90e",
+      "seed": 78526,
+      "cohort": "fresh_diagnostic",
+      "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+      "submitted": true,
+      "exit": "0",
+      "status": "complete",
+      "success": true,
+      "outcome": "teacher_done",
+      "failure_reasons": [],
+      "prefix_held": true,
+      "sim_s": 179.49999999744063,
+      "wall_s": 581.545492751,
+      "wall_sim": 3.23980775910469,
+      "first30_wall_sim_approx": 3.0071946889985677,
+      "first30_method": "eval JPEG mtime delta / teacher SIM row delta, approximately 0 to30.3 SIMs, startup excluded",
+      "input_audit": {
+        "held_object": "hidden_v1",
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "evaluation_last": {
+        "t": 181.19999999744317,
+        "fit": true,
+        "z": -0.00010775542021617022,
+        "tilt_deg": 7.772605525885586e-09,
+        "contact_n": {
+          "r1": [
+            0.0,
+            0.0
+          ],
+          "r2": [
+            0.0,
+            0.0
+          ]
+        },
+        "grip_to_beam_m": [
+          0.2680453442268247,
+          0.256819274722862
+        ],
+        "open_pwm": {
+          "r1": 2000,
+          "r2": 2000
+        },
+        "beam_xy_yaw": [
+          4.426887041005629,
+          0.24718298269257366,
+          1.6019520330307926
+        ]
+      },
+      "evaluation_settled_s": 2.5,
+      "sequence_world_t": [
+        {
+          "t": 10.1,
+          "phase": "look"
+        },
+        {
+          "t": 10.8,
+          "phase": "await_look"
+        },
+        {
+          "t": 10.9,
+          "phase": "lower"
+        },
+        {
+          "t": 13.3,
+          "phase": "await_open"
+        },
+        {
+          "t": 13.4,
+          "phase": "open"
+        },
+        {
+          "t": 14.9,
+          "phase": "observe_back"
+        },
+        {
+          "t": 16.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 20.5,
+          "phase": "observe_back"
+        },
+        {
+          "t": 23.0,
+          "phase": "lookaround"
+        },
+        {
+          "t": 27.5,
+          "phase": "observe_move"
+        },
+        {
+          "t": 28.5,
+          "phase": "observe"
+        },
+        {
+          "t": 29.1,
+          "phase": "await_observe"
+        },
+        {
+          "t": 29.2,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 34.6,
+          "phase": "approach"
+        },
+        {
+          "t": 35.9,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 37.5,
+          "phase": "repick"
+        },
+        {
+          "t": 43.6,
+          "phase": "regrasp_check"
+        },
+        {
+          "t": 57.4,
+          "phase": "await_regrasp"
+        },
+        {
+          "t": 57.5,
+          "phase": "shift"
+        },
+        {
+          "t": 59.3,
+          "phase": "lower"
+        },
+        {
+          "t": 61.7,
+          "phase": "await_open"
+        },
+        {
+          "t": 61.8,
+          "phase": "open"
+        },
+        {
+          "t": 63.2,
+          "phase": "observe_back"
+        },
+        {
+          "t": 64.3,
+          "phase": "lookaround"
+        },
+        {
+          "t": 68.8,
+          "phase": "observe_back"
+        },
+        {
+          "t": 71.3,
+          "phase": "lookaround"
+        },
+        {
+          "t": 75.8,
+          "phase": "observe_move"
+        },
+        {
+          "t": 76.8,
+          "phase": "observe"
+        },
+        {
+          "t": 77.5,
+          "phase": "await_observe"
+        },
+        {
+          "t": 77.6,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 84.0,
+          "phase": "approach"
+        },
+        {
+          "t": 85.3,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 86.7,
+          "phase": "repick"
+        },
+        {
+          "t": 92.8,
+          "phase": "regrasp_check"
+        },
+        {
+          "t": 106.6,
+          "phase": "await_regrasp"
+        },
+        {
+          "t": 106.7,
+          "phase": "shift"
+        },
+        {
+          "t": 108.5,
+          "phase": "lower"
+        },
+        {
+          "t": 110.9,
+          "phase": "await_open"
+        },
+        {
+          "t": 111.0,
+          "phase": "open"
+        },
+        {
+          "t": 112.5,
+          "phase": "observe_back"
+        },
+        {
+          "t": 113.6,
+          "phase": "lookaround"
+        },
+        {
+          "t": 118.1,
+          "phase": "observe_back"
+        },
+        {
+          "t": 120.6,
+          "phase": "lookaround"
+        },
+        {
+          "t": 125.1,
+          "phase": "observe_move"
+        },
+        {
+          "t": 126.1,
+          "phase": "observe"
+        },
+        {
+          "t": 126.8,
+          "phase": "await_observe"
+        },
+        {
+          "t": 126.9,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 132.2,
+          "phase": "approach"
+        },
+        {
+          "t": 133.6,
+          "phase": "line_recheck"
+        },
+        {
+          "t": 134.5,
+          "phase": "repick"
+        },
+        {
+          "t": 140.6,
+          "phase": "regrasp_check"
+        },
+        {
+          "t": 154.4,
+          "phase": "await_regrasp"
+        },
+        {
+          "t": 154.5,
+          "phase": "shift"
+        },
+        {
+          "t": 156.3,
+          "phase": "lower"
+        },
+        {
+          "t": 158.7,
+          "phase": "await_open"
+        },
+        {
+          "t": 158.8,
+          "phase": "open"
+        },
+        {
+          "t": 160.3,
+          "phase": "observe_back"
+        },
+        {
+          "t": 161.4,
+          "phase": "lookaround"
+        },
+        {
+          "t": 165.9,
+          "phase": "observe_back"
+        },
+        {
+          "t": 168.4,
+          "phase": "lookaround"
+        },
+        {
+          "t": 172.9,
+          "phase": "observe_move"
+        },
+        {
+          "t": 173.9,
+          "phase": "observe"
+        },
+        {
+          "t": 174.6,
+          "phase": "await_observe"
+        },
+        {
+          "t": 174.7,
+          "phase": "done"
+        }
+      ],
+      "shift_moves": 3,
+      "done_entry_sim_s": 172.8999999975967,
+      "code_decisions": [
+        {
+          "action": "lower",
+          "lo": null,
+          "hi": null,
+          "evidence": [
+            "none",
+            "none"
+          ],
+          "exact": {
+            "r1": false,
+            "r2": false
+          },
+          "t": 10.899999999997272
+        },
+        {
+          "action": "shift",
+          "shift_m": 0.2,
+          "reason": "localized_margin_correction",
+          "t": 29.200000000048412,
+          "margins_m": [
+            -0.3984014364373494,
+            1.1451537578446107
+          ]
+        },
+        {
+          "action": "shift",
+          "shift_m": 0.2,
+          "reason": "localized_margin_correction",
+          "t": 77.59999999989297,
+          "margins_m": [
+            -0.2014467614732427,
+            0.951023908072568
+          ]
+        },
+        {
+          "action": "shift",
+          "shift_m": 0.2,
+          "reason": "localized_margin_correction",
+          "t": 126.89999999872718,
+          "margins_m": [
+            -0.00027408468204859204,
+            0.7459773811262559
+          ]
+        },
+        {
+          "action": "lower",
+          "reason": "localized_margins_inside",
+          "t": 174.69999999759688,
+          "margins_m": [
+            0.20459354392914336,
+            0.5510175996875745
+          ],
+          "release_goal_region": "inside_margins_v1"
+        }
+      ],
+      "regrasp_rgb_confirmation": [
+        {
+          "epoch": 1,
+          "confirmed": {
+            "r1": true,
+            "r2": true
+          },
+          "attempts": {
+            "r1": 1,
+            "r2": 1
+          },
+          "failure": null
+        },
+        {
+          "epoch": 2,
+          "confirmed": {
+            "r1": true,
+            "r2": true
+          },
+          "attempts": {
+            "r1": 1,
+            "r2": 1
+          },
+          "failure": null
+        },
+        {
+          "epoch": 3,
+          "confirmed": {
+            "r1": true,
+            "r2": true
+          },
+          "attempts": {
+            "r1": 1,
+            "r2": 1
+          },
+          "failure": null
+        }
+      ],
+      "rejections": {},
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r18n-06-a3bbc90e",
+      "lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r18n-06-a3bbc90e",
+      "result_sha256": {
+        "sha256": "4e90654420bc01ae22cb4b4dec97d6ae4f2762c85471bff3e02da49dc0261576",
+        "bytes": 160867,
+        "decoded_sha256": "c5b5cb882970d8f8e69c8d84bf1c29fe4157f97acc5a84aa3a3417eb4f7bd71b"
+      },
+      "decoded_verified": [
+        {
+          "file": "manifest.json.zst",
+          "decoded_sha256": "4b21cf7375368370bdd62d7ca20ad944f87b63fd7a46ea879b9f9429aa2579c8"
+        },
+        {
+          "file": "eval-only.jsonl.zst",
+          "sha256": "d33d5d054267e2d51f5b802189314754fba75a1968fa1ea57b8acc88276d2256",
+          "decoded_sha256": "b3c38aed9cff49fba974c867e33c7d5a7be531a2d5c48e28b9b5ee148e1cd887"
+        },
+        {
+          "file": "result.json.zst",
+          "sha256": "4e90654420bc01ae22cb4b4dec97d6ae4f2762c85471bff3e02da49dc0261576",
+          "decoded_sha256": "c5b5cb882970d8f8e69c8d84bf1c29fe4157f97acc5a84aa3a3417eb4f7bd71b"
+        },
+        {
+          "file": "teacher-r1.jsonl.zst",
+          "sha256": "5c549bfb6f5c4a91c43ca1e374243c14661fce6d39f9f568c157c5f102e70729",
+          "decoded_sha256": "2455d2d1591d26adc6ce89797a721b5a83d701de0e9f9c725b895a73c0d02c4a"
+        },
+        {
+          "file": "teacher-r2.jsonl.zst",
+          "sha256": "d81ddf1e5dcae40e26bcc374c9be1989d901912ad5efb49bfb7ff6aff291485a",
+          "decoded_sha256": "2d1ed627dde588923b3bc76b6846029daeb91936f32961552761689352949d1c"
+        }
+      ],
+      "sha256sums_verified": true,
+      "original_files_verified": 790,
+      "lite_files_verified": 19,
+      "manifest_sha256": "abb2fd84ec17eaf70e713984a66a97cba00d0f9bf4084a2c72190025ec3a28ad",
+      "visual_review": {
+        "frames_viewed": 18,
+        "times_sim_s": [
+          0.0,
+          35.3,
+          70.3,
+          105.3,
+          141.3,
+          176.3
+        ],
+        "views": [
+          "eval-overview",
+          "r1",
+          "r2"
+        ],
+        "montages": [
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release18-a3bbc90e-ops/r18n-06-a3bbc90e/montage-0.jpg"
+        ],
+        "observation": "opposite ends maintained, setdown and real lookaround visible, final beam left in destination without either robot holding it"
+      },
+      "training_exclusions": {
+        "prefix": {
+          "included": false,
+          "reason": "truth contact/height termination; scene preparation only",
+          "start_world_t": 1.8000000000001848,
+          "end_world_t": 10.099999999999136
+        },
+        "release": {
+          "included": false,
+          "reason": "success measurement; no student writer or gate admission"
+        }
+      },
+      "cap_timing": {
+        "control_loop_end_sim_s": 176.99999999749974,
+        "remaining_at_control_loop_end_s": 3.000000002500258,
+        "run": "r18n-06-a3bbc90e",
+        "cap_s": 180,
+        "done_entry_sim_s": 172.8999999975967,
+        "last_control_trace_sim_s": 176.8999999975021,
+        "remaining_at_last_control_trace_s": 3.100000002497893,
+        "flag_within10s_of_cap": true,
+        "final_sim_including_postrun_evaluation_s": 179.49999999744063,
+        "shift_moves": 3,
+        "regrasp_epochs": 3,
+        "note": "control loop and evaluation separated; final result.sim_s includes post-loop evaluation"
+      }
+    }
+  ],
+  "cap_warnings": [
+    {
+      "control_loop_end_sim_s": 177.79999999748082,
+      "remaining_at_control_loop_end_s": 2.2000000025191753,
+      "run": "r18d-01-a3bbc90e",
+      "cap_s": 180,
+      "done_entry_sim_s": 173.69999999757778,
+      "last_control_trace_sim_s": 177.6999999974832,
+      "remaining_at_last_control_trace_s": 2.3000000025168106,
+      "flag_within10s_of_cap": true,
+      "final_sim_including_postrun_evaluation_s": 180.2999999974217,
+      "shift_moves": 3,
+      "regrasp_epochs": 3,
+      "note": "control loop and evaluation separated; final result.sim_s includes post-loop evaluation"
+    },
+    {
+      "control_loop_end_sim_s": 176.99999999749974,
+      "remaining_at_control_loop_end_s": 3.000000002500258,
+      "run": "r18n-06-a3bbc90e",
+      "cap_s": 180,
+      "done_entry_sim_s": 172.8999999975967,
+      "last_control_trace_sim_s": 176.8999999975021,
+      "remaining_at_last_control_trace_s": 3.100000002497893,
+      "flag_within10s_of_cap": true,
+      "final_sim_including_postrun_evaluation_s": 179.49999999744063,
+      "shift_moves": 3,
+      "regrasp_epochs": 3,
+      "note": "control loop and evaluation separated; final result.sim_s includes post-loop evaluation"
+    }
+  ],
+  "subsets": {
+    "fresh_correction_required": {
+      "n": 6,
+      "N": 6
+    },
+    "fresh_initially_inside": {
+      "n": 1,
+      "N": 1
+    },
+    "near_cap": {
+      "n": 2,
+      "N": 2
+    }
+  },
+  "remaining": [
+    "gate40 approval/new ready run manifest required; no gate run submitted",
+    "no training or student execution authorized"
+  ]
+}

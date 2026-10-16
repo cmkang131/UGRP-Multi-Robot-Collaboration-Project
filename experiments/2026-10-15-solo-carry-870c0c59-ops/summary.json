@@ -1,0 +1,1341 @@
+{
+  "schema": "ugrp.gcp-ops-report.v1",
+  "written_at": "2026-10-15 12:57:01 KST",
+  "queue_file": "20261015-solo-carry-870c0c59.json",
+  "source_sha": "870c0c59f3c2eae556abaa809ac1eddf33dce5ca",
+  "plan_sha256": "81927cea27c4ad9dbd0d15311e3cf07f79b354bbcc7a46a994d1a5cd6883ae3e",
+  "source_clean_before_and_after": true,
+  "pr": 505,
+  "host": {
+    "ssh": "gcp1",
+    "instance": "ugrp-sim-gcp1",
+    "project": "ugrp-act-train-1014",
+    "zone": "asia-northeast3-a",
+    "machine_type": "n4-highcpu-64"
+  },
+  "profile": {
+    "teacher": "solo_visible_only_v1",
+    "stability": "align_relook_v1",
+    "carry_pose": "own_command_v2",
+    "amcl": "off",
+    "top_rgb_control_allowed": false,
+    "training_rgb": false,
+    "weld": "off"
+  },
+  "verdict": "NOT_READY_CONFIRMED_CONTROL_DEFECT",
+  "ops_task_state": "CLOSED_AFTER_REQUIRED_STOP",
+  "counts": {
+    "planned": 8,
+    "submitted": 1,
+    "completed_normally": 0,
+    "success_confirmed": 0,
+    "supervisor_stopped": 1,
+    "host_error": 0,
+    "not_submitted_blocked": 7,
+    "denominator_note": "0/1 submitted with one supervisor interruption, not 0/8 completed trials. Original result.physical_success=null, not a completed failure score."
+  },
+  "gate": {
+    "submitted": 0,
+    "authorized": false,
+    "n_of_40": null,
+    "reason": "DEV diagnostic aborted; no gate or training promotion"
+  },
+  "runs": [
+    {
+      "name": "solo-carry-93220-870c0c59",
+      "seed": 93220,
+      "kind": "cyan",
+      "submitted": true,
+      "status": "SUPERVISOR_STOPPED",
+      "success_confirmed": false,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 65,
+        "blocked_held": 0,
+        "measurements_by_phase": {
+          "pickup_search": 1,
+          "approach": 471
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "raw_result": {
+        "status": "interrupted",
+        "source_sha": "870c0c59f3c2eae556abaa809ac1eddf33dce5ca",
+        "execution_host": {
+          "provider": "gcp",
+          "project_id": "ugrp-act-train-1014",
+          "instance": "ugrp-sim-gcp1",
+          "machine_type": "n4-highcpu-64",
+          "zone": "asia-northeast3-a",
+          "cpu_count": 64,
+          "schema": "ugrp.grasp_act.host.v1"
+        },
+        "student_execution": false,
+        "recording_mode": "success_measurement",
+        "object_kind": "cyan",
+        "weld": "off",
+        "training_rgb": false,
+        "recording_stage": null,
+        "recording_approval": null,
+        "solo_truth_free_lookaround_v1": true,
+        "teacher_stability": "align_relook_v1",
+        "reach_mode": "pad_window_v2",
+        "rgb_lift_mode": "solo_lift_lookback_v1",
+        "negative_probe": false,
+        "solo_lift_lookback_margin_v1": true,
+        "gate_eligible": false,
+        "physical_success": null,
+        "placement_task": "carry to authored v6 destination zone",
+        "plan_sha256": "144839cca3ceb0080687e1a24688a915a02fba040a25cb17373d20be5e732dd2",
+        "solo_carry_to_zone_v1": true,
+        "destination_zone": "A",
+        "research_result": false,
+        "error_type": "KeyboardInterrupt",
+        "error": "",
+        "wall_s": 180.93688333200043,
+        "input_audit": {
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "blocked_hidden": 65,
+          "blocked_held": 0,
+          "measurements_by_phase": {
+            "pickup_search": 1,
+            "approach": 471
+          },
+          "scope": "decision input boundary only; evaluation excluded"
+        },
+        "visibility": {
+          "max_invisible_s": 6.500000000003769,
+          "by_phase": {
+            "start": {
+              "seconds": 0.1000000000000334,
+              "visible_s": 0.0,
+              "max_invisible_s": 0.1000000000000334,
+              "N": 1,
+              "visible_ratio": 0.0
+            },
+            "fold": {
+              "seconds": 0.6000000000002002,
+              "visible_s": 0.0,
+              "max_invisible_s": 0.6000000000002002,
+              "N": 6,
+              "visible_ratio": 0.0
+            },
+            "pickup_search": {
+              "seconds": 5.900000000003658,
+              "visible_s": 0.10000000000012221,
+              "max_invisible_s": 5.800000000003536,
+              "N": 59,
+              "visible_ratio": 0.01694915254238309
+            },
+            "approach": {
+              "seconds": 47.00000000016722,
+              "visible_s": 47.00000000016722,
+              "max_invisible_s": 0.0,
+              "N": 470,
+              "visible_ratio": 1.0
+            }
+          }
+        }
+      },
+      "exit": 130,
+      "sim_s_from_final_trace": 53.60000000017111,
+      "result_wall_s": 180.93688333200043,
+      "wall_per_recorded_sim": 3.3756881218549037,
+      "first30": {
+        "method": "review-own frame mtime interval; excludes setup and post-render finalization",
+        "sim_s": 30.0,
+        "wall_s": 89.12463688850403,
+        "wall_per_sim": 2.970821229616801,
+        "warning_above3_5": false,
+        "blocked_above6": false
+      },
+      "raw_remote": "gcp1:/home/ugrp/ugrp-sim/runs/solo-carry-93220-870c0c59",
+      "fetch_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93220-870c0c59",
+      "manifest_sha256": "7e02f2748726727de7e57d469048d6ce7eb54e7c5600445eaf73b5e5698b3f1b"
+    },
+    {
+      "name": "solo-carry-93221-870c0c59",
+      "seed": 93221,
+      "kind": "red",
+      "submitted": false,
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "success_confirmed": null,
+      "input_audit": null,
+      "reason": "Same frozen source; confirmed first-run control defect. No substitute or refill."
+    },
+    {
+      "name": "solo-carry-93222-870c0c59",
+      "seed": 93222,
+      "kind": "green",
+      "submitted": false,
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "success_confirmed": null,
+      "input_audit": null,
+      "reason": "Same frozen source; confirmed first-run control defect. No substitute or refill."
+    },
+    {
+      "name": "solo-carry-93223-870c0c59",
+      "seed": 93223,
+      "kind": "yellow",
+      "submitted": false,
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "success_confirmed": null,
+      "input_audit": null,
+      "reason": "Same frozen source; confirmed first-run control defect. No substitute or refill."
+    },
+    {
+      "name": "solo-carry-93224-870c0c59",
+      "seed": 93224,
+      "kind": "cyan",
+      "submitted": false,
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "success_confirmed": null,
+      "input_audit": null,
+      "reason": "Same frozen source; confirmed first-run control defect. No substitute or refill."
+    },
+    {
+      "name": "solo-carry-93225-870c0c59",
+      "seed": 93225,
+      "kind": "red",
+      "submitted": false,
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "success_confirmed": null,
+      "input_audit": null,
+      "reason": "Same frozen source; confirmed first-run control defect. No substitute or refill."
+    },
+    {
+      "name": "solo-carry-93226-870c0c59",
+      "seed": 93226,
+      "kind": "green",
+      "submitted": false,
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "success_confirmed": null,
+      "input_audit": null,
+      "reason": "Same frozen source; confirmed first-run control defect. No substitute or refill."
+    },
+    {
+      "name": "solo-carry-93227-870c0c59",
+      "seed": 93227,
+      "kind": "yellow",
+      "submitted": false,
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "success_confirmed": null,
+      "input_audit": null,
+      "reason": "Same frozen source; confirmed first-run control defect. No substitute or refill."
+    }
+  ],
+  "input_audit": {
+    "scope": "1 submitted run, 537 recorded control ticks; never entered held/carry phase",
+    "invisible_measurements": 0,
+    "held_world_reads": 0,
+    "unexpected_control_camera_rows": 0,
+    "held_visible_measurement_rows": 0
+  },
+  "physical_outcomes": {
+    "lift": "not reached",
+    "whole_footprint_zone_release": "not reached",
+    "no_drop_during_carry": "unmeasured, carry not entered",
+    "final_zone_success": "unmeasured"
+  },
+  "failure": {
+    "observed": "Visible target ~0.893 m ahead; approach issued zero wheels after 20.8 SIM s and remained unchanged through final53.6s (32.8s no drive). No uncertainty-guard override or automatic retry.",
+    "mechanism": "Command-pose drift transforms static map walls into the local approach goal. Saved-input A* returns no path at21,30,53.6s; runner returns all-zero motion indefinitely, without alternative/re-observation.",
+    "source_refs": [
+      "scripts/run_solo_grasp_act_teacher.py:202",
+      "scripts/run_solo_grasp_act_teacher.py:211",
+      "scripts/run_solo_grasp_act_teacher.py:215",
+      "sim/grasp_act_solo_teacher.py:437"
+    ],
+    "diagnosis": {
+      "scope": "saved allowed inputs, pure A* geometry; no simulation/render/model; ablations are diagnosis not measured task success",
+      "source_sha": "870c0c59f3c2eae556abaa809ac1eddf33dce5ca",
+      "station_m": 0.2002,
+      "snapshots": [
+        {
+          "sim_s": 20.000000000010672,
+          "goal_body": [
+            0.8411824974158814,
+            0.34854129435514625
+          ],
+          "visible_target_body": [
+            0.9663491646851313,
+            0.19229358907692823
+          ],
+          "command_zero": false,
+          "checks": {
+            "full": {
+              "path_exists": true,
+              "point_count": 18
+            },
+            "static_only": {
+              "path_exists": true,
+              "point_count": 18
+            },
+            "rgb_only": {
+              "path_exists": true,
+              "point_count": 18
+            },
+            "empty": {
+              "path_exists": true,
+              "point_count": 18
+            }
+          },
+          "discs": [
+            {
+              "kind": "green",
+              "body_disc": [
+                -1.085133466680675,
+                -0.9555787593212446,
+                0.17600165637837384
+              ],
+              "goal_dist": 2.3262463988009,
+              "blocked": false
+            },
+            {
+              "kind": "robot",
+              "body_disc": [
+                0.43959229772265107,
+                -2.6362785891205105,
+                0.729143031380971
+              ],
+              "goal_dist": 3.011714532501592,
+              "blocked": false
+            },
+            {
+              "kind": "red",
+              "body_disc": [
+                -2.3642340894918936,
+                -2.431383437192818,
+                0.30999929255995223
+              ],
+              "goal_dist": 4.242956163890396,
+              "blocked": false
+            },
+            {
+              "kind": "red",
+              "body_disc": [
+                -2.273589949143923,
+                -2.4023516920141645,
+                0.30513324186652485
+              ],
+              "goal_dist": 4.1556250572331495,
+              "blocked": false
+            },
+            {
+              "kind": "red",
+              "body_disc": [
+                -2.604631201349588,
+                -3.0129331378809363,
+                0.36034111905290256
+              ],
+              "goal_dist": 4.8138490218510865,
+              "blocked": false
+            },
+            {
+              "kind": "heavy_crate",
+              "body_disc": [
+                -2.199774770517407,
+                -2.1630453872284967,
+                0.38890513788267145
+              ],
+              "goal_dist": 3.9440447214128573,
+              "blocked": false
+            },
+            {
+              "kind": "cyan",
+              "body_disc": [
+                1.8190249761629582,
+                -1.3407862553960992,
+                0.36161448950521247
+              ],
+              "goal_dist": 1.9519230219429182,
+              "blocked": false
+            },
+            {
+              "kind": "cyan",
+              "body_disc": [
+                0.5928727405805643,
+                0.6475662597373432,
+                0.15648681162210035
+              ],
+              "goal_dist": 0.38868195901204156,
+              "blocked": false
+            }
+          ],
+          "static_goal_clearance_min_m": 0.15048448398751094,
+          "evaluation_only_truth_pose_static_counterfactual": {
+            "path_exists": true,
+            "points": 18,
+            "min_goal_wall_clearance_m": 0.6750000000000002
+          }
+        },
+        {
+          "sim_s": 21.000000000015447,
+          "goal_body": [
+            0.7764297974010241,
+            0.29694302597872135
+          ],
+          "visible_target_body": [
+            0.8938944688446187,
+            0.1348255039070822
+          ],
+          "command_zero": true,
+          "checks": {
+            "full": {
+              "path_exists": false,
+              "point_count": 0
+            },
+            "static_only": {
+              "path_exists": false,
+              "point_count": 0
+            },
+            "rgb_only": {
+              "path_exists": true,
+              "point_count": 17
+            },
+            "empty": {
+              "path_exists": true,
+              "point_count": 17
+            }
+          },
+          "discs": [
+            {
+              "kind": "green",
+              "body_disc": [
+                -1.2467523735116648,
+                -0.8986932269848734,
+                0.17600165637837384
+              ],
+              "goal_dist": 2.350066413125341,
+              "blocked": false
+            },
+            {
+              "kind": "robot",
+              "body_disc": [
+                0.1687492790016145,
+                -2.67236051434594,
+                0.7341430313808659
+              ],
+              "goal_dist": 3.0308479221212576,
+              "blocked": false
+            },
+            {
+              "kind": "red",
+              "body_disc": [
+                -2.6165320701400154,
+                -2.290742591486151,
+                0.30999929255995223
+              ],
+              "goal_dist": 4.26711929636636,
+              "blocked": false
+            },
+            {
+              "kind": "red",
+              "body_disc": [
+                -2.5242349114620573,
+                -2.267495292556669,
+                0.30513324186652485
+              ],
+              "goal_dist": 4.179800403118171,
+              "blocked": false
+            },
+            {
+              "kind": "red",
+              "body_disc": [
+                -2.893188448396359,
+                -2.8559435063209064,
+                0.36034111905290256
+              ],
+              "goal_dist": 4.8380565886981355,
+              "blocked": false
+            },
+            {
+              "kind": "heavy_crate",
+              "body_disc": [
+                -2.4354489782027717,
+                -2.0333302948283296,
+                0.38890513788267145
+              ],
+              "goal_dist": 3.9681656995190187,
+              "blocked": false
+            },
+            {
+              "kind": "cyan",
+              "body_disc": [
+                1.6272693603998498,
+                -1.466601801648492,
+                0.36161448950521247
+              ],
+              "goal_dist": 1.9580649430023334,
+              "blocked": false
+            },
+            {
+              "kind": "cyan",
+              "body_disc": [
+                0.521496536885065,
+                0.6191938189677417,
+                0.1536046942480431
+              ],
+              "goal_dist": 0.41089723885583646,
+              "blocked": false
+            }
+          ],
+          "static_goal_clearance_min_m": 0.13028262277940414,
+          "evaluation_only_truth_pose_static_counterfactual": {
+            "path_exists": true,
+            "points": 17,
+            "min_goal_wall_clearance_m": 0.6749999999999998
+          }
+        },
+        {
+          "sim_s": 30.00000000005842,
+          "goal_body": [
+            0.7760339680095254,
+            0.2967606179860248
+          ],
+          "visible_target_body": [
+            0.8934697011612114,
+            0.1346221321810624
+          ],
+          "command_zero": true,
+          "checks": {
+            "full": {
+              "path_exists": false,
+              "point_count": 0
+            },
+            "static_only": {
+              "path_exists": false,
+              "point_count": 0
+            },
+            "rgb_only": {
+              "path_exists": true,
+              "point_count": 17
+            },
+            "empty": {
+              "path_exists": true,
+              "point_count": 17
+            }
+          },
+          "discs": [
+            {
+              "kind": "green",
+              "body_disc": [
+                -1.2467523735116648,
+                -0.8986932269848734,
+                0.17600165637837384
+              ],
+              "goal_dist": 2.349632839168789,
+              "blocked": false
+            },
+            {
+              "kind": "robot",
+              "body_disc": [
+                0.1687492790016145,
+                -2.67236051434594,
+                0.7341430313808659
+              ],
+              "goal_dist": 3.030589875249319,
+              "blocked": false
+            },
+            {
+              "kind": "red",
+              "body_disc": [
+                -2.6165320701400154,
+                -2.290742591486151,
+                0.30999929255995223
+              ],
+              "goal_dist": 4.266693940539265,
+              "blocked": false
+            },
+            {
+              "kind": "red",
+              "body_disc": [
+                -2.5242349114620573,
+                -2.267495292556669,
+                0.30513324186652485
+              ],
+              "goal_dist": 4.179375916516933,
+              "blocked": false
+            },
+            {
+              "kind": "red",
+              "body_disc": [
+                -2.893188448396359,
+                -2.8559435063209064,
+                0.36034111905290256
+              ],
+              "goal_dist": 4.8376374850206965,
+              "blocked": false
+            },
+            {
+              "kind": "heavy_crate",
+              "body_disc": [
+                -2.4354489782027717,
+                -2.0333302948283296,
+                0.38890513788267145
+              ],
+              "goal_dist": 3.967738193957919,
+              "blocked": false
+            },
+            {
+              "kind": "cyan",
+              "body_disc": [
+                1.6272693603998498,
+                -1.466601801648492,
+                0.36161448950521247
+              ],
+              "goal_dist": 1.9580727045330077,
+              "blocked": false
+            },
+            {
+              "kind": "cyan",
+              "body_disc": [
+                0.521496536885065,
+                0.6191938189677417,
+                0.1536046942480431
+              ],
+              "goal_dist": 0.41079492808304685,
+              "blocked": false
+            }
+          ],
+          "static_goal_clearance_min_m": 0.13069856322427972,
+          "evaluation_only_truth_pose_static_counterfactual": {
+            "path_exists": true,
+            "points": 17,
+            "min_goal_wall_clearance_m": 0.6749999999999995
+          }
+        },
+        {
+          "sim_s": 53.60000000017111,
+          "goal_body": [
+            0.7759475516378115,
+            0.29707302035623534
+          ],
+          "visible_target_body": [
+            0.8934416161822847,
+            0.13497679955877456
+          ],
+          "command_zero": true,
+          "checks": {
+            "full": {
+              "path_exists": false,
+              "point_count": 0
+            },
+            "static_only": {
+              "path_exists": false,
+              "point_count": 0
+            },
+            "rgb_only": {
+              "path_exists": true,
+              "point_count": 17
+            },
+            "empty": {
+              "path_exists": true,
+              "point_count": 17
+            }
+          },
+          "discs": [
+            {
+              "kind": "green",
+              "body_disc": [
+                -1.2467523735116648,
+                -0.8986932269848734,
+                0.17600165637837384
+              ],
+              "goal_dist": 2.3497174097069493,
+              "blocked": false
+            },
+            {
+              "kind": "robot",
+              "body_disc": [
+                0.1687492790016145,
+                -2.67236051434594,
+                0.7341430313808659
+              ],
+              "goal_dist": 3.030878628270396,
+              "blocked": false
+            },
+            {
+              "kind": "red",
+              "body_disc": [
+                -2.6165320701400154,
+                -2.290742591486151,
+                0.30999929255995223
+              ],
+              "goal_dist": 4.266814693078786,
+              "blocked": false
+            },
+            {
+              "kind": "red",
+              "body_disc": [
+                -2.5242349114620573,
+                -2.267495292556669,
+                0.30513324186652485
+              ],
+              "goal_dist": 4.179499362525236,
+              "blocked": false
+            },
+            {
+              "kind": "red",
+              "body_disc": [
+                -2.893188448396359,
+                -2.8559435063209064,
+                0.36034111905290256
+              ],
+              "goal_dist": 4.837775542979019,
+              "blocked": false
+            },
+            {
+              "kind": "heavy_crate",
+              "body_disc": [
+                -2.4354489782027717,
+                -2.0333302948283296,
+                0.38890513788267145
+              ],
+              "goal_dist": 3.967851721435083,
+              "blocked": false
+            },
+            {
+              "kind": "cyan",
+              "body_disc": [
+                1.6272693603998498,
+                -1.466601801648492,
+                0.36161448950521247
+              ],
+              "goal_dist": 1.9583916104414039,
+              "blocked": false
+            },
+            {
+              "kind": "cyan",
+              "body_disc": [
+                0.521496536885065,
+                0.6191938189677417,
+                0.1536046942480431
+              ],
+              "goal_dist": 0.4104961970674236,
+              "blocked": false
+            }
+          ],
+          "static_goal_clearance_min_m": 0.13074423477554034,
+          "evaluation_only_truth_pose_static_counterfactual": {
+            "path_exists": true,
+            "points": 17,
+            "min_goal_wall_clearance_m": 0.6749999999999997
+          }
+        }
+      ]
+    },
+    "multi_robot_relation": "Single active robot. Other robots were parked. Captured top view cctv_top omits the active northern pickup region, so cross-robot spatial relations cannot be fully assessed from this view. No r2 own camera was recorded by the solo runner.",
+    "stop_record": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/stop-solo-carry-870c0c59-20261015.json"
+  },
+  "odometry_evaluation_only": {
+    "issued_path_m": 1.4349921652900617,
+    "gt_path_m": 1.0718707911903305,
+    "issued_to_gt_path_ratio": 1.3387734576631936,
+    "by_phase": {
+      "start": {
+        "issued_m": 0.0,
+        "gt_m": 5.098675477400386e-07,
+        "sim_s": 0.1000000000000334,
+        "issued_to_gt_path_ratio": null
+      },
+      "fold": {
+        "issued_m": 0.0,
+        "gt_m": 2.000168755463547e-06,
+        "sim_s": 0.6000000000002002,
+        "issued_to_gt_path_ratio": null
+      },
+      "pickup_search": {
+        "issued_m": 0.0,
+        "gt_m": 0.002742971092988325,
+        "sim_s": 5.900000000003658,
+        "issued_to_gt_path_ratio": null
+      },
+      "approach": {
+        "issued_m": 1.4349921652900617,
+        "gt_m": 1.069125310061039,
+        "sim_s": 47.00000000016722,
+        "issued_to_gt_path_ratio": 1.3422113869964734
+      }
+    },
+    "initial_setup_evaluation": {
+      "declared_pose": [
+        -0.7,
+        -0.85,
+        0.0
+      ],
+      "gt_base_xyz": [
+        -0.707597716041263,
+        -0.8435661976196046,
+        0.03201375482276341
+      ],
+      "xy_error_m": 0.009955857678454761,
+      "yaw_error_rad": -0.0029479803430585427
+    },
+    "drift_samples": [
+      {
+        "sim_s": 0.0,
+        "issued_path_m": 0.0,
+        "gt_path_m": 0.0,
+        "issued_to_gt_path_ratio": null,
+        "xy_error_m": 0.009955857678454761,
+        "yaw_error_rad": -0.0029479803430585427,
+        "sigma_m_m_rad": [
+          0.05,
+          0.05,
+          0.05235987755982989
+        ],
+        "rgb_fixes": 0,
+        "phase": "start"
+      },
+      {
+        "sim_s": 9.999999999996321,
+        "issued_path_m": 0.1874227942596448,
+        "gt_path_m": 0.1364114968630103,
+        "issued_to_gt_path_ratio": 1.373951599166616,
+        "xy_error_m": 0.06135080942394057,
+        "yaw_error_rad": 0.31488232419820505,
+        "sigma_m_m_rad": [
+          0.09749207514882488,
+          0.09712155466476068,
+          0.28262771812391185
+        ],
+        "rgb_fixes": 0,
+        "phase": "approach"
+      },
+      {
+        "sim_s": 20.000000000010672,
+        "issued_path_m": 1.3279185361030674,
+        "gt_path_m": 0.9884982062828097,
+        "issued_to_gt_path_ratio": 1.3433696972467235,
+        "xy_error_m": 0.5674757058609893,
+        "yaw_error_rad": 0.4836840220790961,
+        "sigma_m_m_rad": [
+          0.4136095757103211,
+          0.38599875254277216,
+          0.5299222736632689
+        ],
+        "rgb_fixes": 0,
+        "phase": "approach"
+      },
+      {
+        "sim_s": 30.00000000005842,
+        "issued_path_m": 1.4349921652900617,
+        "gt_path_m": 1.0717417100609008,
+        "issued_to_gt_path_ratio": 1.3389347002353016,
+        "xy_error_m": 0.6144584828108128,
+        "yaw_error_rad": 0.4983475276450853,
+        "sigma_m_m_rad": [
+          0.4447600411993168,
+          0.412762950185704,
+          0.5564339402859063
+        ],
+        "rgb_fixes": 0,
+        "phase": "approach"
+      },
+      {
+        "sim_s": 40.00000000010617,
+        "issued_path_m": 1.4349921652900617,
+        "gt_path_m": 1.071801211915663,
+        "issued_to_gt_path_ratio": 1.3388603682629323,
+        "xy_error_m": 0.6144704540284843,
+        "yaw_error_rad": 0.49851922046877917,
+        "sigma_m_m_rad": [
+          0.4447600411993168,
+          0.412762950185704,
+          0.5564339402859063
+        ],
+        "rgb_fixes": 0,
+        "phase": "approach"
+      },
+      {
+        "sim_s": 50.00000000015392,
+        "issued_path_m": 1.4349921652900617,
+        "gt_path_m": 1.0718295161198015,
+        "issued_to_gt_path_ratio": 1.3388250124749024,
+        "xy_error_m": 0.6144976302661219,
+        "yaw_error_rad": 0.4986331516208491,
+        "sigma_m_m_rad": [
+          0.4447600411993168,
+          0.412762950185704,
+          0.5564339402859063
+        ],
+        "rgb_fixes": 0,
+        "phase": "approach"
+      },
+      {
+        "sim_s": 53.60000000017111,
+        "issued_path_m": 1.4349921652900617,
+        "gt_path_m": 1.0718707911903305,
+        "issued_to_gt_path_ratio": 1.3387734576631936,
+        "xy_error_m": 0.6144972267647589,
+        "yaw_error_rad": 0.4987073373198063,
+        "sigma_m_m_rad": [
+          0.4447600411993168,
+          0.412762950185704,
+          0.5564339402859063
+        ],
+        "rgb_fixes": 0,
+        "phase": "approach"
+      }
+    ],
+    "max_xy_error_m": 0.6164004225136913
+  },
+  "speed": {
+    "first30": {
+      "method": "review-own frame mtime interval; excludes setup and post-render finalization",
+      "sim_s": 30.0,
+      "wall_s": 89.12463688850403,
+      "wall_per_sim": 2.970821229616801,
+      "warning_above3_5": false,
+      "blocked_above6": false
+    },
+    "full_result_wall_s": 180.93688333200043,
+    "recorded_sim_s": 53.60000000017111,
+    "full_wall_per_recorded_sim": 3.3756881218549037
+  },
+  "visual_review": {
+    "reviews": [
+      {
+        "sim_s": [
+          0,
+          6,
+          12,
+          18,
+          24,
+          30
+        ],
+        "views": [
+          "top evaluation",
+          "r1 own"
+        ],
+        "frames": 12
+      },
+      {
+        "sim_s": [
+          0,
+          8,
+          17,
+          25,
+          34,
+          42
+        ],
+        "views": [
+          "top evaluation",
+          "r1 own"
+        ],
+        "frames": 12
+      },
+      {
+        "sim_s": [
+          0,
+          11,
+          21,
+          32,
+          42,
+          53
+        ],
+        "views": [
+          "top evaluation",
+          "r1 own"
+        ],
+        "frames": 12
+      }
+    ],
+    "unique_frames_seen": 32,
+    "range_sim_s": [
+      0,
+      53
+    ],
+    "r2_own": "unavailable; solo runner records r1 only",
+    "top_limitation": "cctv_top field of view excludes active northern pickup region",
+    "review_directory": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-870c0c59-ops"
+  },
+  "retrieval": {
+    "vm_entire_manifest_verified": true,
+    "manifest_sha256": "7e02f2748726727de7e57d469048d6ce7eb54e7c5600445eaf73b5e5698b3f1b",
+    "local_files_checked": 20,
+    "selected_frames_checked": 32,
+    "decoded_originals_checked": 2,
+    "mismatches": [],
+    "stale_live_snapshots_excluded": [
+      "raw/teacher-commands.jsonl",
+      "raw/eval-only.jsonl"
+    ],
+    "raw_preserved": "All original raw remains on GCP persistent disk; selected frames and fetch-lite only on Mac. No ARM or Drive writes."
+  },
+  "runtime": {
+    "own_processes": [],
+    "active_simulation_driver_processes": [
+      {
+        "pid": 77628,
+        "args": [
+          ".venv-sim/bin/python",
+          "-m",
+          "scripts.run_grasp_act_batch",
+          "--root",
+          "../../runs/grasp-search17-repro3-gcp-4fdf7f84",
+          "--plan",
+          "experiments/2026-10-14-e2e18-grasp-rootcause/teacher-search17-repro3-plan.json",
+          "--concurrency",
+          "3",
+          "--cap-s",
+          "60",
+          "--execution-host",
+          "gcp1",
+          "--speed-gate-limit",
+          "6.0",
+          "--diagnostic-only",
+          "--teacher-profile",
+          "visible_only",
+          "--teacher-stability",
+          "align_relook_v1",
+          "--teacher-search",
+          "search_body_scan_v2",
+          "--approach-goal-set",
+          "approach_goal_set_v1",
+          "--nominal-blocked-handoff",
+          "nominal_blocked_handoff_v1",
+          "--approach-progress",
+          "approach_progress_v1",
+          "--approach-recovery",
+          "progress_view_recovery_v3",
+          "--approach-coordination",
+          "off",
+          "--handoff-observation",
+          "visible_handoff_v1",
+          "--failure-stop-scope",
+          "repeated_cause_v1",
+          "--peer-reobserve",
+          "peer_reobserve_v1",
+          "--obstacle-reobserve",
+          "obstacle_reobserve_v1",
+          "--pregrasp-sampling",
+          "pregrasp_sampling_v1",
+          "--search17-candidates",
+          "search17_candidates_v1",
+          "--search17-escape",
+          "search17_escape_v1",
+          "--search17-odometry",
+          "search17_fixed_v1"
+        ]
+      },
+      {
+        "pid": 77629,
+        "args": [
+          "/home/ugrp/ugrp-sim/src/4fdf7f8407074572e59566ac719f398f913e9286/.venv-sim/bin/python",
+          "-m",
+          "scripts.sim_cli",
+          "workflow",
+          "run",
+          "grasp-act-teacher",
+          "--",
+          "--plan",
+          "/home/ugrp/ugrp-sim/src/4fdf7f8407074572e59566ac719f398f913e9286/experiments/2026-10-14-e2e18-grasp-rootcause/teacher-search17-repro3-plan.json",
+          "--episode",
+          "0",
+          "--out",
+          "/home/ugrp/ugrp-sim/runs/grasp-search17-repro3-gcp-4fdf7f84/diagnostic/episode-000/raw",
+          "--cap-s",
+          "60.0",
+          "--teacher-profile",
+          "visible_only",
+          "--execution-host",
+          "gcp1",
+          "--teacher-stability",
+          "align_relook_v1",
+          "--teacher-search",
+          "search_body_scan_v2",
+          "--approach-goal-set",
+          "approach_goal_set_v1",
+          "--nominal-blocked-handoff",
+          "nominal_blocked_handoff_v1",
+          "--approach-progress",
+          "approach_progress_v1",
+          "--approach-recovery",
+          "progress_view_recovery_v3",
+          "--approach-coordination",
+          "off",
+          "--handoff-observation",
+          "visible_handoff_v1",
+          "--peer-reobserve",
+          "peer_reobserve_v1",
+          "--obstacle-reobserve",
+          "obstacle_reobserve_v1",
+          "--pregrasp-sampling",
+          "pregrasp_sampling_v1",
+          "--search17-candidates",
+          "search17_candidates_v1",
+          "--search17-escape",
+          "search17_escape_v1",
+          "--search17-odometry",
+          "search17_fixed_v1"
+        ]
+      },
+      {
+        "pid": 77630,
+        "args": [
+          "/home/ugrp/ugrp-sim/src/4fdf7f8407074572e59566ac719f398f913e9286/.venv-sim/bin/python",
+          "-m",
+          "scripts.sim_cli",
+          "workflow",
+          "run",
+          "grasp-act-teacher",
+          "--",
+          "--plan",
+          "/home/ugrp/ugrp-sim/src/4fdf7f8407074572e59566ac719f398f913e9286/experiments/2026-10-14-e2e18-grasp-rootcause/teacher-search17-repro3-plan.json",
+          "--episode",
+          "1",
+          "--out",
+          "/home/ugrp/ugrp-sim/runs/grasp-search17-repro3-gcp-4fdf7f84/diagnostic/episode-001/raw",
+          "--cap-s",
+          "60.0",
+          "--teacher-profile",
+          "visible_only",
+          "--execution-host",
+          "gcp1",
+          "--teacher-stability",
+          "align_relook_v1",
+          "--teacher-search",
+          "search_body_scan_v2",
+          "--approach-goal-set",
+          "approach_goal_set_v1",
+          "--nominal-blocked-handoff",
+          "nominal_blocked_handoff_v1",
+          "--approach-progress",
+          "approach_progress_v1",
+          "--approach-recovery",
+          "progress_view_recovery_v3",
+          "--approach-coordination",
+          "off",
+          "--handoff-observation",
+          "visible_handoff_v1",
+          "--peer-reobserve",
+          "peer_reobserve_v1",
+          "--obstacle-reobserve",
+          "obstacle_reobserve_v1",
+          "--pregrasp-sampling",
+          "pregrasp_sampling_v1",
+          "--search17-candidates",
+          "search17_candidates_v1",
+          "--search17-escape",
+          "search17_escape_v1",
+          "--search17-odometry",
+          "search17_fixed_v1"
+        ]
+      },
+      {
+        "pid": 77631,
+        "args": [
+          "/home/ugrp/ugrp-sim/src/4fdf7f8407074572e59566ac719f398f913e9286/.venv-sim/bin/python",
+          "-m",
+          "scripts.sim_cli",
+          "workflow",
+          "run",
+          "grasp-act-teacher",
+          "--",
+          "--plan",
+          "/home/ugrp/ugrp-sim/src/4fdf7f8407074572e59566ac719f398f913e9286/experiments/2026-10-14-e2e18-grasp-rootcause/teacher-search17-repro3-plan.json",
+          "--episode",
+          "2",
+          "--out",
+          "/home/ugrp/ugrp-sim/runs/grasp-search17-repro3-gcp-4fdf7f84/diagnostic/episode-002/raw",
+          "--cap-s",
+          "60.0",
+          "--teacher-profile",
+          "visible_only",
+          "--execution-host",
+          "gcp1",
+          "--teacher-stability",
+          "align_relook_v1",
+          "--teacher-search",
+          "search_body_scan_v2",
+          "--approach-goal-set",
+          "approach_goal_set_v1",
+          "--nominal-blocked-handoff",
+          "nominal_blocked_handoff_v1",
+          "--approach-progress",
+          "approach_progress_v1",
+          "--approach-recovery",
+          "progress_view_recovery_v3",
+          "--approach-coordination",
+          "off",
+          "--handoff-observation",
+          "visible_handoff_v1",
+          "--peer-reobserve",
+          "peer_reobserve_v1",
+          "--obstacle-reobserve",
+          "obstacle_reobserve_v1",
+          "--pregrasp-sampling",
+          "pregrasp_sampling_v1",
+          "--search17-candidates",
+          "search17_candidates_v1",
+          "--search17-escape",
+          "search17_escape_v1",
+          "--search17-odometry",
+          "search17_fixed_v1"
+        ]
+      },
+      {
+        "pid": 77704,
+        "args": [
+          "/home/ugrp/ugrp-sim/src/4fdf7f8407074572e59566ac719f398f913e9286/.venv-sim/bin/python",
+          "-m",
+          "scripts.run_grasp_act_teacher",
+          "--plan",
+          "/home/ugrp/ugrp-sim/src/4fdf7f8407074572e59566ac719f398f913e9286/experiments/2026-10-14-e2e18-grasp-rootcause/teacher-search17-repro3-plan.json",
+          "--episode",
+          "0",
+          "--out",
+          "/home/ugrp/ugrp-sim/runs/grasp-search17-repro3-gcp-4fdf7f84/diagnostic/episode-000/raw",
+          "--cap-s",
+          "60.0",
+          "--teacher-profile",
+          "visible_only",
+          "--execution-host",
+          "gcp1",
+          "--teacher-stability",
+          "align_relook_v1",
+          "--teacher-search",
+          "search_body_scan_v2",
+          "--approach-goal-set",
+          "approach_goal_set_v1",
+          "--nominal-blocked-handoff",
+          "nominal_blocked_handoff_v1",
+          "--approach-progress",
+          "approach_progress_v1",
+          "--approach-recovery",
+          "progress_view_recovery_v3",
+          "--approach-coordination",
+          "off",
+          "--handoff-observation",
+          "visible_handoff_v1",
+          "--peer-reobserve",
+          "peer_reobserve_v1",
+          "--obstacle-reobserve",
+          "obstacle_reobserve_v1",
+          "--pregrasp-sampling",
+          "pregrasp_sampling_v1",
+          "--search17-candidates",
+          "search17_candidates_v1",
+          "--search17-escape",
+          "search17_escape_v1",
+          "--search17-odometry",
+          "search17_fixed_v1"
+        ]
+      },
+      {
+        "pid": 77706,
+        "args": [
+          "/home/ugrp/ugrp-sim/src/4fdf7f8407074572e59566ac719f398f913e9286/.venv-sim/bin/python",
+          "-m",
+          "scripts.run_grasp_act_teacher",
+          "--plan",
+          "/home/ugrp/ugrp-sim/src/4fdf7f8407074572e59566ac719f398f913e9286/experiments/2026-10-14-e2e18-grasp-rootcause/teacher-search17-repro3-plan.json",
+          "--episode",
+          "1",
+          "--out",
+          "/home/ugrp/ugrp-sim/runs/grasp-search17-repro3-gcp-4fdf7f84/diagnostic/episode-001/raw",
+          "--cap-s",
+          "60.0",
+          "--teacher-profile",
+          "visible_only",
+          "--execution-host",
+          "gcp1",
+          "--teacher-stability",
+          "align_relook_v1",
+          "--teacher-search",
+          "search_body_scan_v2",
+          "--approach-goal-set",
+          "approach_goal_set_v1",
+          "--nominal-blocked-handoff",
+          "nominal_blocked_handoff_v1",
+          "--approach-progress",
+          "approach_progress_v1",
+          "--approach-recovery",
+          "progress_view_recovery_v3",
+          "--approach-coordination",
+          "off",
+          "--handoff-observation",
+          "visible_handoff_v1",
+          "--peer-reobserve",
+          "peer_reobserve_v1",
+          "--obstacle-reobserve",
+          "obstacle_reobserve_v1",
+          "--pregrasp-sampling",
+          "pregrasp_sampling_v1",
+          "--search17-candidates",
+          "search17_candidates_v1",
+          "--search17-escape",
+          "search17_escape_v1",
+          "--search17-odometry",
+          "search17_fixed_v1"
+        ]
+      },
+      {
+        "pid": 77708,
+        "args": [
+          "/home/ugrp/ugrp-sim/src/4fdf7f8407074572e59566ac719f398f913e9286/.venv-sim/bin/python",
+          "-m",
+          "scripts.run_grasp_act_teacher",
+          "--plan",
+          "/home/ugrp/ugrp-sim/src/4fdf7f8407074572e59566ac719f398f913e9286/experiments/2026-10-14-e2e18-grasp-rootcause/teacher-search17-repro3-plan.json",
+          "--episode",
+          "2",
+          "--out",
+          "/home/ugrp/ugrp-sim/runs/grasp-search17-repro3-gcp-4fdf7f84/diagnostic/episode-002/raw",
+          "--cap-s",
+          "60.0",
+          "--teacher-profile",
+          "visible_only",
+          "--execution-host",
+          "gcp1",
+          "--teacher-stability",
+          "align_relook_v1",
+          "--teacher-search",
+          "search_body_scan_v2",
+          "--approach-goal-set",
+          "approach_goal_set_v1",
+          "--nominal-blocked-handoff",
+          "nominal_blocked_handoff_v1",
+          "--approach-progress",
+          "approach_progress_v1",
+          "--approach-recovery",
+          "progress_view_recovery_v3",
+          "--approach-coordination",
+          "off",
+          "--handoff-observation",
+          "visible_handoff_v1",
+          "--peer-reobserve",
+          "peer_reobserve_v1",
+          "--obstacle-reobserve",
+          "obstacle_reobserve_v1",
+          "--pregrasp-sampling",
+          "pregrasp_sampling_v1",
+          "--search17-candidates",
+          "search17_candidates_v1",
+          "--search17-escape",
+          "search17_escape_v1",
+          "--search17-odometry",
+          "search17_fixed_v1"
+        ]
+      }
+    ],
+    "own_lease_removed": true,
+    "own_lease_exists_after": false,
+    "idle_guard_timer": "active",
+    "exit": "130",
+    "not_submitted_names_exist": [],
+    "at": "2026-10-15 12:55:46 KST"
+  },
+  "vm_state_at_report": "RUNNING; other task active, no stop requested. Existing idle20min and8h STOP retained.",
+  "remaining_work": "New coordinator-provided fixed SHA/plan required. No further submission authorized in this task.",
+  "models": {
+    "calls": 0,
+    "cost": 0,
+    "scope": "teacher diagnostic; no model API requested"
+  },
+  "cost_admission": "budget-stop ACTIVE, latest observed net-cost event0/1000KRW at2026-10-15T03:46:58Z; credit balance not checked, no billing mutation"
+}

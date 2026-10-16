@@ -1,0 +1,242 @@
+{
+  "schema": "ugrp.ops.search19.result.v1",
+  "written_at": "2026-10-15 16:25:14 KST",
+  "queue": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-grasp-search19-06558d64-diag.json",
+  "source_sha": "06558d64a2fd1bd34e59cfea7e0b40045b6dab77",
+  "pr": 484,
+  "host": "gcp1",
+  "project_id": "ugrp-act-train-1014",
+  "machine_type": "n4-highcpu-64",
+  "profiles": {
+    "teacher_profile": "visible_only",
+    "self_pose_source": "issued",
+    "teacher_stability": "align_relook_v1",
+    "teacher_search": "search_body_scan_v2",
+    "approach_goal_set": "approach_goal_set_v1",
+    "nominal_blocked_handoff": "nominal_blocked_handoff_v1",
+    "approach_progress": "approach_progress_v1",
+    "approach_recovery": "progress_view_recovery_v3",
+    "approach_coordination": "off",
+    "handoff_observation": "visible_handoff_v1",
+    "failure_stop_scope": "repeated_cause_v1",
+    "peer_reobserve": "peer_reobserve_v1",
+    "obstacle_reobserve": "obstacle_reobserve_v1",
+    "pregrasp_sampling": "pregrasp_sampling_v1",
+    "search17_candidates": "search17_candidates_v1",
+    "search17_escape": "search17_escape_v1",
+    "search17_odometry": "search17_fixed_v1",
+    "search18_footprint": "off",
+    "search18_start_plan": "search18_start_plan_v1",
+    "search18_free_space": "search18_free_space_v1",
+    "search19_motion": "search19_motion_v1",
+    "search19_footprint": "search19_footprint_v1"
+  },
+  "verdict": "BLOCKED_CONFIRMED_CONTROL_FAILURE",
+  "scope": "DEV diagnostics only; first2 approved reproductions",
+  "n": 0,
+  "N_completed": 2,
+  "N_submitted": 2,
+  "N_planned": 16,
+  "N_not_submitted_blocked": 14,
+  "reproduction": {
+    "n": 0,
+    "completed": 2,
+    "planned": 4,
+    "blocked_seeds": [
+      8311711,
+      8311723
+    ]
+  },
+  "novel": {
+    "submitted": 0,
+    "planned": 12,
+    "status": "BLOCKED"
+  },
+  "gate": {
+    "submitted": 0,
+    "planned": 0,
+    "qualification_denominator": 0,
+    "authorized": false,
+    "reason": "queue is diagnostic only; no gate plan and first2 failed"
+  },
+  "recording": false,
+  "training": false,
+  "pool_with_other_results": false,
+  "host_errors": 0,
+  "supervisor_interrupted": 0,
+  "input_audit": {
+    "enabled_N": 2,
+    "invisible_measurements": [
+      0,
+      0
+    ],
+    "held_world_reads": [
+      0,
+      0
+    ],
+    "measurement_rows": [
+      1630,
+      884
+    ],
+    "missing_N": 0
+  },
+  "speed": {
+    "first30_measured_N": 1,
+    "first30_median_wall_per_sim": 3.561625390292906,
+    "completed_before30_N": 1,
+    "early_complete_wall_per_sim": 5.70587461420406,
+    "full_run_median_wall_per_sim": 4.59963004396347,
+    "record_warn_over": 3.5,
+    "block_over": 6.0,
+    "status": "WARN; early failure cannot furnish full30s sample; no speed/gate promotion"
+  },
+  "frames_reviewed_N": 36,
+  "episodes": [
+    {
+      "episode": "episode-000",
+      "seed": 315709,
+      "status": "complete",
+      "physical_success": false,
+      "sim_s": 31.900000000069713,
+      "wall_s": 111.4389966120034,
+      "wall_per_sim": 3.4933854737228796,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1630,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "result_file": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search19-repro4-gcp-06558d64/diagnostic/episode-000/raw/result.json.zst",
+      "result_sha256": "56bb6ab6206baa305f85bd246998706bf3d7fd1fdc5fb1ea48891753f5d38b29",
+      "result_decoded_sha256": "bdc8e0a3498062e8aa5c602f5b1d4fda4cc05cce3d840ca359e6c3511b3570d4",
+      "selected_timestamps": [
+        0.0,
+        6.0,
+        12.0,
+        19.0,
+        25.0,
+        31.0
+      ],
+      "montage": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/search19-06558d64-ops/grasp-search19-repro4-gcp-06558d64-episode-000-montage.jpg",
+      "failure_reason": "alignment_no_progress",
+      "peer_outcome": "episode_timeout",
+      "cause": "r1 reaches blue end and remains in alignment; final80 commands (8s) have all wheels zero, 3 no-visible-error-progress events, 2 relook cycles then third recovery attempt terminates; r2 stays ready at teal end. Same-end approach/mutual blocking not observed. Precise internal reason for zero-motion alignment remains unisolated.",
+      "first30_wall_per_sim": 3.561625390292906,
+      "frame_review": {
+        "times_s": [
+          0,
+          6,
+          12,
+          19,
+          25,
+          31
+        ],
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "N": 18
+      },
+      "root_cause_scope": "observed controller stall; internal zero-motion decision cause not isolated"
+    },
+    {
+      "episode": "episode-001",
+      "seed": 8311709,
+      "status": "complete",
+      "physical_success": false,
+      "sim_s": 17.600000000001433,
+      "wall_s": 100.42339320999963,
+      "wall_per_sim": 5.70587461420406,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 884,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "result_file": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search19-repro4-gcp-06558d64/diagnostic/episode-001/raw/result.json.zst",
+      "result_sha256": "78ab971d1ca391f344508110c9dc472c17567081fba1cb7982f6f63be3f3c32b",
+      "result_decoded_sha256": "86a774e3f94b88d8973c55cd3bd4bfe4cc458e70962d112dc21faf19a5b01afa",
+      "selected_timestamps": [
+        0.0,
+        3.0,
+        7.0,
+        10.0,
+        14.0,
+        17.0
+      ],
+      "montage": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/search19-06558d64-ops/grasp-search19-repro4-gcp-06558d64-episode-001-montage.jpg",
+      "failure_reason": "approach_blocked_handoff",
+      "peer_outcome": "peer_approach_handoff",
+      "cause": "r2 ready at teal end while r1 approaches blue near tile. Body fallback initially admitted8 candidates; later replans reject all9 geometrically usable goals as blocked and terminate after3 blocked SIM seconds. Goal-set rejections at final3 replans: blocked_goal9/ik_unreachable16/gripper_angle24. No same-end approach or mutual blocking observed; deeper geometry rejection cause needs author investigation.",
+      "first30_wall_per_sim": null,
+      "early_complete_wall_per_sim": 5.70587461420406,
+      "frame_review": {
+        "times_s": [
+          0,
+          3,
+          7,
+          10,
+          14,
+          17
+        ],
+        "views": [
+          "overview",
+          "r1",
+          "r2"
+        ],
+        "N": 18
+      },
+      "root_cause_scope": "observed candidate-loss handoff; deeper geometry rejection cause not isolated"
+    }
+  ],
+  "evidence": {
+    "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-search19-repro4-gcp-06558d64",
+    "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search19-repro4-gcp-06558d64",
+    "manifest_sha256": "ba1059d15c6a14e47cf1ac40ed5aef051b4942870e90f5305ed6f6204bd3debc",
+    "remote_original_manifest_entries": 199,
+    "remote_original_manifest_all_hashes": "PASS",
+    "local_original_manifest_verified_N": 85,
+    "compressed_decoded_verified_N": 8,
+    "selected_frames_hashes": "PASS",
+    "post_finish_stop_marker_hashes": {
+      "/home/ugrp/ugrp-sim/runs/grasp-search19-repro4-gcp-06558d64/SUPERVISOR_STOP.json": "f23a39eab35b8d8ae45af01ae422ae37a49f0d888dac87dcc1715f40a3b35d04",
+      "/home/ugrp/ugrp-sim/runs/grasp-search19-repro4-gcp-06558d64/diagnostic/episode-001/raw/SUPERVISOR_STOP.json": "f23a39eab35b8d8ae45af01ae422ae37a49f0d888dac87dcc1715f40a3b35d04",
+      "/home/ugrp/ugrp-sim/runs/grasp-search19-repro4-gcp-06558d64/diagnostic/episode-000/raw/SUPERVISOR_STOP.json": "f23a39eab35b8d8ae45af01ae422ae37a49f0d888dac87dcc1715f40a3b35d04"
+    },
+    "post_finish_stop_markers_download_verified": true,
+    "raw_backup": "originals remain on GCP persistent disk; lite and selected frames retrieved locally; no full raw backup claimed"
+  },
+  "stop": {
+    "record": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/stop-search19-06558d64.json",
+    "signals_sent": [],
+    "reason": "batch already EXIT0 when cause confirmed; no active owned PID to signal",
+    "remaining14_blocked": true
+  },
+  "guards": {
+    "budget_stop": "ACTIVE; latest logged net cost0KRW with reporting delay; remaining credit unverified; no billing operations",
+    "vm_max_run_s": 28800,
+    "termination_action": "STOP",
+    "idle_guard_s": 1200,
+    "unchanged": true
+  },
+  "final_host": {
+    "own_process_N": 0,
+    "other_process_N": 0,
+    "own_lease_exists": false,
+    "own_admission_reservation": "released",
+    "idle_guard": "active",
+    "lease_release_basis": "EXIT0 and repeated remote full manifest verification; lite/stop hashes verified; no active owned controller"
+  },
+  "next": "author fixes alignment stall and blocked-goal recovery; require new SHA/queue/approval; no same-SHA remainder submission",
+  "limitations": [
+    "315709 internal zero-motion selection cause not isolated by operator; observed stall sufficient to block batch",
+    "8311709 internal geometry source of final candidate rejection not isolated; observed finite handoff prevents physical success",
+    "Only2 completed reproductions; do not report0/4,0/16 or0/40",
+    "No separate speed stage or gate authorized in this queue"
+  ]
+}

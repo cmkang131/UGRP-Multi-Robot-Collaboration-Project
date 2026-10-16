@@ -1,0 +1,497 @@
+{
+  "schema": "ugrp.gcp_ops_summary.v1",
+  "written_at": "2026-10-15 11:57:02 KST",
+  "queue": "20261015-solo-carry-84a1b7b8.json",
+  "pr": 505,
+  "sha": "84a1b7b85bcbeb036ddd51a843b0908f8feb341b",
+  "host": {
+    "provider": "gcp",
+    "project_id": "ugrp-act-train-1014",
+    "instance": "ugrp-sim-gcp1",
+    "machine_type": "n4-highcpu-64",
+    "zone": "asia-northeast3-a",
+    "cpu_count": 64,
+    "schema": "ugrp.grasp_act.host.v1"
+  },
+  "teacher_profile": "solo_visible_only_v1",
+  "status": "BLOCKED_CONFIRMED_CONTROL_FAILURE",
+  "planned_N": 8,
+  "submitted_N": 1,
+  "completed_N": 1,
+  "success_n": 0,
+  "completed_failure_N": 1,
+  "HOST_ERROR_N": 0,
+  "interrupted_N": 0,
+  "not_submitted_N": 7,
+  "denominator_note": "0/1 submitted diagnostic failed; the seven blocked rows are not observed failures. No gate or training promotion authorized.",
+  "runs": [
+    {
+      "name": "solo-carry-93200-84a1b7b8",
+      "seed": 93200,
+      "kind": "cyan",
+      "sha": "84a1b7b85bcbeb036ddd51a843b0908f8feb341b",
+      "stage": "diagnostic",
+      "status": "complete_failure",
+      "exit": 0,
+      "physical_success": false,
+      "termination_reason": "phase_timeout",
+      "sim_s": 60.60000000020453,
+      "wall_s": 148.49269212699983,
+      "wall_per_sim": 2.450374457532981,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 607,
+        "blocked_held": 0,
+        "measurements_by_phase": {},
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "raw_result_sha256": "e7e9bdcfd9b5af2d47d6992460fbab9333c0b66c9f9a77ec0c10151f167a757c"
+    },
+    {
+      "name": "solo-carry-93201-84a1b7b8",
+      "seed": 93201,
+      "kind": "red",
+      "sha": "84a1b7b85bcbeb036ddd51a843b0908f8feb341b",
+      "stage": "diagnostic",
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "physical_success": null,
+      "reason": "shared target-acquisition control defect confirmed in first diagnostic"
+    },
+    {
+      "name": "solo-carry-93202-84a1b7b8",
+      "seed": 93202,
+      "kind": "green",
+      "sha": "84a1b7b85bcbeb036ddd51a843b0908f8feb341b",
+      "stage": "diagnostic",
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "physical_success": null,
+      "reason": "shared target-acquisition control defect confirmed in first diagnostic"
+    },
+    {
+      "name": "solo-carry-93203-84a1b7b8",
+      "seed": 93203,
+      "kind": "yellow",
+      "sha": "84a1b7b85bcbeb036ddd51a843b0908f8feb341b",
+      "stage": "diagnostic",
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "physical_success": null,
+      "reason": "shared target-acquisition control defect confirmed in first diagnostic"
+    },
+    {
+      "name": "solo-carry-93204-84a1b7b8",
+      "seed": 93204,
+      "kind": "cyan",
+      "sha": "84a1b7b85bcbeb036ddd51a843b0908f8feb341b",
+      "stage": "diagnostic",
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "physical_success": null,
+      "reason": "shared target-acquisition control defect confirmed in first diagnostic"
+    },
+    {
+      "name": "solo-carry-93205-84a1b7b8",
+      "seed": 93205,
+      "kind": "red",
+      "sha": "84a1b7b85bcbeb036ddd51a843b0908f8feb341b",
+      "stage": "diagnostic",
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "physical_success": null,
+      "reason": "shared target-acquisition control defect confirmed in first diagnostic"
+    },
+    {
+      "name": "solo-carry-93206-84a1b7b8",
+      "seed": 93206,
+      "kind": "green",
+      "sha": "84a1b7b85bcbeb036ddd51a843b0908f8feb341b",
+      "stage": "diagnostic",
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "physical_success": null,
+      "reason": "shared target-acquisition control defect confirmed in first diagnostic"
+    },
+    {
+      "name": "solo-carry-93207-84a1b7b8",
+      "seed": 93207,
+      "kind": "yellow",
+      "sha": "84a1b7b85bcbeb036ddd51a843b0908f8feb341b",
+      "stage": "diagnostic",
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "physical_success": null,
+      "reason": "shared target-acquisition control defect confirmed in first diagnostic"
+    }
+  ],
+  "cause": {
+    "observed": "Target never became visible at the new authored task start; only camera pan scanning occurred, with no chassis movement commands, followed by approach phase_timeout.",
+    "evidence": {
+      "trace_ticks": 607,
+      "visible_target_measurements": 0,
+      "wheel_motion_command_ticks": 0,
+      "approach_command_ticks": 600,
+      "invisible_blocked_ticks": 607,
+      "camera_scan_pwm6_distinct": 20,
+      "frames_seen": 12,
+      "review_sim_s": [
+        0,
+        12,
+        24,
+        36,
+        48,
+        60
+      ],
+      "cameras": [
+        "evaluation overview",
+        "r1 own RGB"
+      ],
+      "r2_own_rgb": "not recorded by this one-robot runner; no peer interaction attribution"
+    },
+    "source": "sim/grasp_act_solo_teacher.py:382-394; measurement=None returns _hold, routing is only reached after target measurement",
+    "interpretation": "The new start condition has no effective body exploration when the assigned target is outside the available gaze scan. This diagnosis does not establish the optical reason for every hidden sample."
+  },
+  "input_audit": {
+    "invisible_measurements": 0,
+    "held_world_reads": 0,
+    "blocked_hidden": 607,
+    "blocked_held": 0,
+    "measurements_by_phase": {},
+    "scope": "decision input boundary only; evaluation excluded"
+  },
+  "first30": {
+    "sim_s": 30,
+    "wall_s_from_frame_mtimes": 73.2940001487732,
+    "wall_per_sim": 2.44313333829244,
+    "same_machine_concurrency": 1,
+    "other_host_jobs_present": true,
+    "speed_limit": 3.5,
+    "speed_pass": true,
+    "unexpected_control_camera_rows": 0,
+    "command_belief_max_translation_residual_m": 0.0,
+    "command_belief_max_yaw_residual_rad": 0.0,
+    "scope": "301 trace rows with zero wheel-motion commands; consistency is verified only for stationary belief. No moved-belief or post-release landmark fix validation. End-of-run audit 0/0 covers this prefix.",
+    "admission_of_remaining_seven": false
+  },
+  "task_start_evaluation": {
+    "declared_pose_m_rad": [
+      -0.7,
+      -0.85,
+      0.0
+    ],
+    "measured_base_xyz": [
+      -0.6957551735074264,
+      -0.8511373062512075,
+      0.032013760690374406
+    ],
+    "initial_xy_error_m": 0.004394544056109778,
+    "initial_yaw_error_rad": 0.02575596307311878,
+    "scope": "evaluation only; measured values not fed into control"
+  },
+  "transport_metrics": {
+    "lift_success": false,
+    "whole_footprint_zone_release": null,
+    "no_drop_during_carry": null,
+    "carry_sim_s": null,
+    "task_sim_s": 60.60000000020453,
+    "carry_samples": 0,
+    "drop_samples": 0,
+    "scope": "Grasp/carry/release never attempted. No-drop false in raw result arises from zero carry samples; no observed drop is claimed."
+  },
+  "raw": {
+    "remote": "gcp1:/home/ugrp/ugrp-sim/runs/solo-carry-93200-84a1b7b8",
+    "fetched_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93200-84a1b7b8",
+    "manifest_sha256": "b7d001e45be05ca5890492d8ec4e80443342c23429eb8f94667221c8fc6613ea",
+    "result_sha256": "e7e9bdcfd9b5af2d47d6992460fbab9333c0b66c9f9a77ec0c10151f167a757c",
+    "vm_full_manifest_verified": true,
+    "local_hash_checked_files": 30,
+    "decoded_hash_checks": [
+      {
+        "path": "eval-only.jsonl.zst",
+        "decoded_sha256": "9d48cd33b1e0593eea0511ce101bc18b8ee1c27b867a297ae475ef6a4c298508",
+        "ok": true
+      },
+      {
+        "path": "teacher-commands.jsonl.zst",
+        "decoded_sha256": "178808524203895408ebe36b846ba52db41637afd596816b9f2b28ba34cce6fe",
+        "ok": true
+      }
+    ],
+    "unretrieved_frames_retained_on_vm": 110,
+    "full_raw_archive_elsewhere": false
+  },
+  "stop": {
+    "at": "2026-10-15 11:53:48 KST",
+    "operator": "codex-solo-carry-ops",
+    "queue": "20261015-solo-carry-84a1b7b8.json",
+    "sha": "84a1b7b85bcbeb036ddd51a843b0908f8feb341b",
+    "run": "solo-carry-93200-84a1b7b8",
+    "reason": "First diagnostic cannot acquire assigned cyan target: no visible measurements over 60.6 SIM s; stationary overview and repeated own-camera view scan; phase_timeout. Do not admit remaining seven with this source/configuration.",
+    "reviewed_sim_s": [
+      0,
+      12,
+      24,
+      36,
+      48,
+      60
+    ],
+    "reviewed_cameras": [
+      "evaluation overview",
+      "r1 own RGB"
+    ],
+    "remaining_not_submitted": 7,
+    "run_already_complete": true,
+    "owned_matching_processes": [],
+    "exit_before_stop": "0"
+  },
+  "vm_finish": {
+    "state": "RUNNING",
+    "own_processes": 0,
+    "idle20min_guard": "active",
+    "max_runtime_s": 28800,
+    "termination_action": "STOP",
+    "action": "Do not stop another task; leave automatic idle guard enabled. Stopped-state verification is deferred until shared VM is idle.",
+    "other_active_tasks": [
+      "grasp-search-gate40-gcp-752b0cbb",
+      "grasp-search-speed16-gcp-752b0cbb",
+      "map-amcl-record-b2387ac1"
+    ],
+    "verified_latest": {
+      "other_processes": [
+        {
+          "pid": 36806,
+          "run_names": [
+            "map-amcl-record-b2387ac1",
+            "map-amcl-record-b2387ac1"
+          ],
+          "is_own": false
+        },
+        {
+          "pid": 37440,
+          "run_names": [
+            "grasp-search-gate40-gcp-752b0cbb",
+            "grasp-search-speed16-gcp-752b0cbb"
+          ],
+          "is_own": false
+        },
+        {
+          "pid": 41005,
+          "run_names": [
+            "grasp-search-gate40-gcp-752b0cbb"
+          ],
+          "is_own": false
+        },
+        {
+          "pid": 41006,
+          "run_names": [
+            "grasp-search-gate40-gcp-752b0cbb"
+          ],
+          "is_own": false
+        },
+        {
+          "pid": 41007,
+          "run_names": [
+            "grasp-search-gate40-gcp-752b0cbb"
+          ],
+          "is_own": false
+        },
+        {
+          "pid": 41008,
+          "run_names": [
+            "grasp-search-gate40-gcp-752b0cbb"
+          ],
+          "is_own": false
+        },
+        {
+          "pid": 41009,
+          "run_names": [
+            "grasp-search-gate40-gcp-752b0cbb"
+          ],
+          "is_own": false
+        },
+        {
+          "pid": 41010,
+          "run_names": [
+            "grasp-search-gate40-gcp-752b0cbb"
+          ],
+          "is_own": false
+        },
+        {
+          "pid": 41011,
+          "run_names": [
+            "grasp-search-gate40-gcp-752b0cbb"
+          ],
+          "is_own": false
+        },
+        {
+          "pid": 41012,
+          "run_names": [
+            "grasp-search-gate40-gcp-752b0cbb"
+          ],
+          "is_own": false
+        },
+        {
+          "pid": 41013,
+          "run_names": [
+            "grasp-search-gate40-gcp-752b0cbb"
+          ],
+          "is_own": false
+        },
+        {
+          "pid": 41014,
+          "run_names": [
+            "grasp-search-gate40-gcp-752b0cbb"
+          ],
+          "is_own": false
+        },
+        {
+          "pid": 41015,
+          "run_names": [
+            "grasp-search-gate40-gcp-752b0cbb"
+          ],
+          "is_own": false
+        },
+        {
+          "pid": 41016,
+          "run_names": [
+            "grasp-search-gate40-gcp-752b0cbb"
+          ],
+          "is_own": false
+        },
+        {
+          "pid": 41017,
+          "run_names": [
+            "grasp-search-gate40-gcp-752b0cbb"
+          ],
+          "is_own": false
+        },
+        {
+          "pid": 41018,
+          "run_names": [
+            "grasp-search-gate40-gcp-752b0cbb"
+          ],
+          "is_own": false
+        },
+        {
+          "pid": 41020,
+          "run_names": [
+            "grasp-search-gate40-gcp-752b0cbb"
+          ],
+          "is_own": false
+        },
+        {
+          "pid": 41396,
+          "run_names": [
+            "grasp-search-gate40-gcp-752b0cbb"
+          ],
+          "is_own": false
+        },
+        {
+          "pid": 41397,
+          "run_names": [
+            "grasp-search-gate40-gcp-752b0cbb"
+          ],
+          "is_own": false
+        },
+        {
+          "pid": 41398,
+          "run_names": [
+            "grasp-search-gate40-gcp-752b0cbb"
+          ],
+          "is_own": false
+        },
+        {
+          "pid": 41402,
+          "run_names": [
+            "grasp-search-gate40-gcp-752b0cbb"
+          ],
+          "is_own": false
+        },
+        {
+          "pid": 41407,
+          "run_names": [
+            "grasp-search-gate40-gcp-752b0cbb"
+          ],
+          "is_own": false
+        },
+        {
+          "pid": 41409,
+          "run_names": [
+            "grasp-search-gate40-gcp-752b0cbb"
+          ],
+          "is_own": false
+        },
+        {
+          "pid": 41411,
+          "run_names": [
+            "grasp-search-gate40-gcp-752b0cbb"
+          ],
+          "is_own": false
+        },
+        {
+          "pid": 41413,
+          "run_names": [
+            "grasp-search-gate40-gcp-752b0cbb"
+          ],
+          "is_own": false
+        },
+        {
+          "pid": 41415,
+          "run_names": [
+            "grasp-search-gate40-gcp-752b0cbb"
+          ],
+          "is_own": false
+        },
+        {
+          "pid": 41417,
+          "run_names": [
+            "grasp-search-gate40-gcp-752b0cbb"
+          ],
+          "is_own": false
+        },
+        {
+          "pid": 41418,
+          "run_names": [
+            "grasp-search-gate40-gcp-752b0cbb"
+          ],
+          "is_own": false
+        },
+        {
+          "pid": 41421,
+          "run_names": [
+            "grasp-search-gate40-gcp-752b0cbb"
+          ],
+          "is_own": false
+        },
+        {
+          "pid": 41426,
+          "run_names": [
+            "grasp-search-gate40-gcp-752b0cbb"
+          ],
+          "is_own": false
+        },
+        {
+          "pid": 41429,
+          "run_names": [
+            "grasp-search-gate40-gcp-752b0cbb"
+          ],
+          "is_own": false
+        },
+        {
+          "pid": 41435,
+          "run_names": [
+            "grasp-search-gate40-gcp-752b0cbb"
+          ],
+          "is_own": false
+        }
+      ],
+      "own_processes": [],
+      "own_lease_exists": false,
+      "own_remaining_run_dirs": [
+        "solo-carry-93200-84a1b7b8"
+      ],
+      "idle_guard": "active",
+      "at": "2026-10-15 11:59:29 KST",
+      "vm_state": "RUNNING (SSH verified)"
+    }
+  },
+  "pr_comment": {
+    "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/505#issuecomment-6183362993",
+    "verified_body_lines": 3
+  }
+}

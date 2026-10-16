@@ -1,0 +1,3661 @@
+{
+  "schema": "ugrp.gcp.operations.solo_carry.reloc10.v1",
+  "at": "2026-10-15 18:44:49 KST",
+  "verdict": "NOT_READY",
+  "scope": "assigned queue only; DEV diagnostic; no gate promotion, recording or training",
+  "queue": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-solo-carry-987d033f.json",
+  "queue_sha256": "d91a90ff1f081ec1db7b5e85334f960ea2913f54924dc0c5a7d5491a2d8966e5",
+  "source_sha": "987d033f28b40aa6182c1cde0dff2982e1d546d6",
+  "plan_sha256": "b473ddd9272ae34447f22475edaabbf6869d9a780cab356bf17a25ec3d05fa5e",
+  "host": "gcp1",
+  "project": "ugrp-act-train-1014",
+  "machine_type": "n4-highcpu-64",
+  "pr": 505,
+  "source_worktree": "/Users/changmin/projects/ugrp-wt/map-carry-zone",
+  "pooling_with_other_sha_profile_host": false,
+  "rotation": {
+    "passed": true,
+    "at": "2026-10-15 18:31:06 KST",
+    "n": 4,
+    "N": 4,
+    "source_sha": "987d033f28b40aa6182c1cde0dff2982e1d546d6",
+    "ledger_recomputed": [
+      {
+        "target_deg": 90.0,
+        "ledger_rows": 141,
+        "issued_yaw_recomputed": 1.5452185974234016,
+        "reported_issued": 1.5452185974233754,
+        "match": true,
+        "ratio": 1.0209832659170317,
+        "actual_from_ledger": 1.5776347025009536,
+        "ratio_recomputed": 1.0209783296237858
+      },
+      {
+        "target_deg": -90.0,
+        "ledger_rows": 127,
+        "issued_yaw_recomputed": -1.5462686446549103,
+        "reported_issued": -1.546268644654889,
+        "match": true,
+        "ratio": 0.9494985301458351,
+        "actual_from_ledger": -1.4681798053104096,
+        "ratio_recomputed": 0.949498530145822
+      },
+      {
+        "target_deg": 180.0,
+        "ledger_rows": 262,
+        "issued_yaw_recomputed": 3.1165234825916137,
+        "reported_issued": 3.1165234825915773,
+        "match": true,
+        "ratio": 1.042082839518111,
+        "actual_from_ledger": 3.2476756401639033,
+        "ratio_recomputed": 1.042082839518099
+      },
+      {
+        "target_deg": -180.0,
+        "ledger_rows": 234,
+        "issued_yaw_recomputed": -3.1158605472220864,
+        "reported_issued": -3.115860547222026,
+        "match": true,
+        "ratio": 0.9461354918637999,
+        "actual_from_ledger": -2.94802625142492,
+        "ratio_recomputed": 0.9461354918637814
+      }
+    ],
+    "result_sha256": "0e542c75a2ecc30d6c15acf7705b22a350ee4b5e656936801609152dba802b02",
+    "first30_wall_per_sim": 2.0841667265292356,
+    "review_frames": 6,
+    "input_audit": {
+      "applicability": "rotation checker has no InputAudit; evaluator yaw post-run score only",
+      "invisible_measurements": null,
+      "held_world_reads": null
+    }
+  },
+  "counts": {
+    "planned_including_rotation": 23,
+    "submitted_and_retrieved": 17,
+    "carry_planned": 22,
+    "carry_submitted": 16,
+    "carry_confirmed_successes": 0,
+    "carry_completed_control_failures": 1,
+    "carry_supervisor_interrupted": 15,
+    "carry_unsubmitted_blocked": 6,
+    "mission_success_rate": "not estimated: batch stopped on confirmed shared control defect"
+  },
+  "candidates": {
+    "rotation": {
+      "planned": 11,
+      "submitted": 8,
+      "confirmed_successes": 0,
+      "completed_control_failures": 0,
+      "supervisor_interrupted": 8,
+      "not_submitted_blocked": 3,
+      "first30_wall_per_sim_median": 3.133113999177196,
+      "first30_wall_per_sim_max": 3.7213098277260532,
+      "rate_interpretation": "aborted diagnostic; interrupted and unsubmitted episodes have no mission verdict, no completed-cohort success rate"
+    },
+    "rotation_wall_search": {
+      "planned": 11,
+      "submitted": 8,
+      "confirmed_successes": 0,
+      "completed_control_failures": 1,
+      "supervisor_interrupted": 7,
+      "not_submitted_blocked": 3,
+      "first30_wall_per_sim_median": 3.136231814477182,
+      "first30_wall_per_sim_max": 3.6727892770262187,
+      "rate_interpretation": "aborted diagnostic; interrupted and unsubmitted episodes have no mission verdict, no completed-cohort success rate"
+    }
+  },
+  "input_audit": {
+    "carry_runs_checked": 16,
+    "invisible_measurements": 0,
+    "held_world_reads": 0,
+    "per_run_all_zero": true,
+    "rotation": "not instrumented with InputAudit; no cargo held and evaluator yaw never controls commands"
+  },
+  "speed": {
+    "method": "runner first30.json; each candidate reported separately, interleaved submission up to 16 own runs",
+    "by_candidate": {
+      "rotation": {
+        "n": 8,
+        "median_wall_per_sim": 3.133113999177196,
+        "max_wall_per_sim": 3.7213098277260532
+      },
+      "rotation_wall_search": {
+        "n": 8,
+        "median_wall_per_sim": 3.136231814477182,
+        "max_wall_per_sim": 3.6727892770262187
+      }
+    },
+    "pooled_candidate_metric": false,
+    "speed_gate": "record only; both candidate medians below 6.0; stopping reason is control defect"
+  },
+  "defect": {
+    "at": "2026-10-15 18:39:15 KST",
+    "source_sha": "987d033f28b40aa6182c1cde0dff2982e1d546d6",
+    "run": "solo-carry-93266-rotation_wall_search-987d033f",
+    "result_termination_reason": "carry_recovery_no_progress",
+    "recovery_events": [
+      {
+        "t": 23.30000000002024,
+        "event": "stop_reobserve",
+        "reason": "pose_budget",
+        "fixes": null,
+        "pose": [
+          -0.13792048570880325,
+          0.2347081352711428,
+          0.09515563256010129
+        ],
+        "sigmas": [
+          0.40030727389892823,
+          0.38265748993359144,
+          0.2522709228934285
+        ],
+        "distance_since_fix": 1.2985558577610998,
+        "turn_since_fix": 0.14237445696615356
+      },
+      {
+        "t": 33.500000000068944,
+        "event": "accepted_replan",
+        "reason": null,
+        "fixes": 1
+      },
+      {
+        "t": 44.50000000012147,
+        "event": "stop_reobserve",
+        "reason": "pose_budget",
+        "fixes": null,
+        "pose": [
+          -0.20500063442646355,
+          0.15974592276833566,
+          0.4938017169070541
+        ],
+        "sigmas": [
+          0.019738161253677812,
+          0.018450181890352878,
+          0.6425834090888938
+        ],
+        "distance_since_fix": 0.0,
+        "turn_since_fix": 1.274885492278646
+      },
+      {
+        "t": 61.10000000020073,
+        "event": "accepted_replan",
+        "reason": null,
+        "fixes": 2
+      },
+      {
+        "t": 71.30000000004195,
+        "event": "stop_reobserve",
+        "reason": "pose_budget",
+        "fixes": null,
+        "pose": [
+          -0.22754071361906963,
+          0.16786084300458068,
+          0.4544104587176836
+        ],
+        "sigmas": [
+          0.016720410974143732,
+          0.016645624181536534,
+          0.5840689749501581
+        ],
+        "distance_since_fix": 0.0,
+        "turn_since_fix": 1.1708132071946749
+      }
+    ],
+    "failure_frames_s": [
+      0,
+      14,
+      28,
+      42,
+      56,
+      70
+    ],
+    "review": "6 own RGB frames viewed; solo robot only, TOP disabled by approved plan; no r2 camera exists",
+    "causal_chain": [
+      "RGB reobservation accepted",
+      "cargo reacquisition turns consume yaw uncertainty budget",
+      "approach lasts 0.1 s before needs_recovery restarts scanning",
+      "three recovery anchors remain within 0.15 m and controller terminates carry_recovery_no_progress"
+    ],
+    "shared_path": [
+      "sim/grasp_act_solo_teacher.py:535-538",
+      "sim/grasp_act_solo_teacher.py:602-607",
+      "sim/solo_carry_to_zone.py:296-319"
+    ],
+    "applicable_candidates": [
+      "rotation",
+      "rotation_wall_search"
+    ],
+    "not_a_log_only_stop": true,
+    "causal_evidence": {
+      "failed_seed": 93266,
+      "reobserve_accepted_world_s": [
+        33.5,
+        61.1
+      ],
+      "reacquire_to_approach_sim_s": [
+        43.1,
+        69.9
+      ],
+      "immediate_reobserve_or_failure_sim_s": [
+        43.2,
+        70.0
+      ],
+      "yaw_sigma_at_return_rad": [
+        0.6425834090888938,
+        0.5840689749501581
+      ],
+      "yaw_threshold_rad": 0.2792526803190927,
+      "issued_translation_since_fix_m": [
+        0.0,
+        0.0
+      ],
+      "issued_turn_since_fix_rad": [
+        1.274885492278646,
+        1.1708132071946749
+      ]
+    }
+  },
+  "stop_receipt": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-987d033f-ops/stop-receipt.json",
+  "retrieval": {
+    "verified_runs": 17,
+    "full_VM_SHA256SUMS_verified": true,
+    "local_lite_and_selected_frames_verified": true,
+    "compressed_decoded_hashes_verified": true,
+    "full_RGB_backup": false,
+    "raw_preserved_on": "gcp1 persistent disk; no ARM copy attempted",
+    "selected_final_frames_viewed": 102
+  },
+  "remaining_issues": [
+    "common reacquisition-to-approach recovery loop needs source fix and new queue",
+    "all 6 unsubmitted episodes remain blocked",
+    "15 interrupted runs have no completed mission outcome",
+    "gate40 not authorized or run"
+  ],
+  "runs": [
+    {
+      "name": "solo-carry-rotation-check-987d033f",
+      "stage": "rotation_check",
+      "seed": null,
+      "kind": null,
+      "candidate": null,
+      "submitted": true,
+      "source_sha": "987d033f28b40aa6182c1cde0dff2982e1d546d6",
+      "host": "gcp1",
+      "machine_type": "n4-highcpu-64",
+      "status": "complete",
+      "exit": "0",
+      "result_sha256": "0e542c75a2ecc30d6c15acf7705b22a350ee4b5e656936801609152dba802b02",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/solo-carry-rotation-check-987d033f",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-rotation-check-987d033f",
+      "retrieval_receipt": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-987d033f-ops/solo-carry-rotation-check-987d033f-retrieval.json",
+      "review": {
+        "run": "solo-carry-rotation-check-987d033f",
+        "frames": [
+          "raw/own-rgb/1.400.jpg",
+          "raw/own-rgb/16.800.jpg",
+          "raw/own-rgb/31.800.jpg",
+          "raw/own-rgb/43.800.jpg",
+          "raw/own-rgb/58.800.jpg",
+          "raw/own-rgb/74.200.jpg"
+        ],
+        "frame_times_s": [
+          1.4,
+          16.8,
+          31.8,
+          43.8,
+          58.8,
+          74.2
+        ],
+        "directly_viewed": true,
+        "montage": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-987d033f-ops/solo-carry-rotation-check-987d033f-montage.jpg",
+        "montage_sha256": "3f348dca6a2d09110ca7e6e100d9c430ee3b884a3f9cc8560d003212475522fe",
+        "scope": "one active solo robot r1; own camera only; TOP capture disabled, r2 own camera not recorded"
+      },
+      "result_fields": {
+        "physical_success": null,
+        "lift_success": null,
+        "zone_placement_success": null,
+        "release_success": null,
+        "no_drop_during_carry": null,
+        "termination_reason": null,
+        "error_type": null,
+        "error": null
+      },
+      "input_audit": null,
+      "training_rgb": false,
+      "top_rgb_control_allowed": false,
+      "operator_outcome": "ROTATION_PASS",
+      "rotation": {
+        "passed": true,
+        "at": "2026-10-15 18:31:06 KST",
+        "n": 4,
+        "N": 4,
+        "source_sha": "987d033f28b40aa6182c1cde0dff2982e1d546d6",
+        "ledger_recomputed": [
+          {
+            "target_deg": 90.0,
+            "ledger_rows": 141,
+            "issued_yaw_recomputed": 1.5452185974234016,
+            "reported_issued": 1.5452185974233754,
+            "match": true,
+            "ratio": 1.0209832659170317,
+            "actual_from_ledger": 1.5776347025009536,
+            "ratio_recomputed": 1.0209783296237858
+          },
+          {
+            "target_deg": -90.0,
+            "ledger_rows": 127,
+            "issued_yaw_recomputed": -1.5462686446549103,
+            "reported_issued": -1.546268644654889,
+            "match": true,
+            "ratio": 0.9494985301458351,
+            "actual_from_ledger": -1.4681798053104096,
+            "ratio_recomputed": 0.949498530145822
+          },
+          {
+            "target_deg": 180.0,
+            "ledger_rows": 262,
+            "issued_yaw_recomputed": 3.1165234825916137,
+            "reported_issued": 3.1165234825915773,
+            "match": true,
+            "ratio": 1.042082839518111,
+            "actual_from_ledger": 3.2476756401639033,
+            "ratio_recomputed": 1.042082839518099
+          },
+          {
+            "target_deg": -180.0,
+            "ledger_rows": 234,
+            "issued_yaw_recomputed": -3.1158605472220864,
+            "reported_issued": -3.115860547222026,
+            "match": true,
+            "ratio": 0.9461354918637999,
+            "actual_from_ledger": -2.94802625142492,
+            "ratio_recomputed": 0.9461354918637814
+          }
+        ],
+        "result_sha256": "0e542c75a2ecc30d6c15acf7705b22a350ee4b5e656936801609152dba802b02",
+        "first30_wall_per_sim": 2.0841667265292356,
+        "review_frames": 6,
+        "input_audit": {
+          "applicability": "rotation checker has no InputAudit; evaluator yaw post-run score only",
+          "invisible_measurements": null,
+          "held_world_reads": null
+        }
+      }
+    },
+    {
+      "name": "solo-carry-93261-rotation-987d033f",
+      "stage": "reproductions",
+      "seed": 93261,
+      "kind": "green",
+      "candidate": "rotation",
+      "submitted": true,
+      "source_sha": "987d033f28b40aa6182c1cde0dff2982e1d546d6",
+      "host": "gcp1",
+      "machine_type": "n4-highcpu-64",
+      "status": "interrupted",
+      "exit": "130",
+      "result_sha256": "61c76e8661ccae9a0100157abc85e2bba09101e4ed7396101674fd4b3300fd46",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/solo-carry-93261-rotation-987d033f",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93261-rotation-987d033f",
+      "retrieval_receipt": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-987d033f-ops/solo-carry-93261-rotation-987d033f-retrieval.json",
+      "review": {
+        "run": "solo-carry-93261-rotation-987d033f",
+        "frames": [
+          "raw/review-own/000000.jpg",
+          "raw/review-own/000250.jpg",
+          "raw/review-own/000500.jpg",
+          "raw/review-own/000750.jpg",
+          "raw/review-own/001000.jpg",
+          "raw/review-own/001250.jpg"
+        ],
+        "frame_times_s": [
+          0.0,
+          25.0,
+          50.0,
+          75.0,
+          100.0,
+          125.0
+        ],
+        "directly_viewed": true,
+        "montage": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-987d033f-ops/solo-carry-93261-rotation-987d033f-montage.jpg",
+        "montage_sha256": "f0efe9528938aefa0009fcff935e505e29285583dd1cf441a35c043d3a3b1e40",
+        "scope": "one active solo robot r1; own camera only; TOP capture disabled, r2 own camera not recorded"
+      },
+      "result_fields": {
+        "physical_success": null,
+        "lift_success": null,
+        "zone_placement_success": null,
+        "release_success": null,
+        "no_drop_during_carry": null,
+        "termination_reason": null,
+        "error_type": "KeyboardInterrupt",
+        "error": ""
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 943,
+        "blocked_held": 188,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "pickup_search": 1,
+          "approach": 92,
+          "align": 16,
+          "hover": 3,
+          "carry_reacquire": 1,
+          "carry_reobserve": 1
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "training_rgb": false,
+      "top_rgb_control_allowed": false,
+      "top_rgb_control_evidence": "per-tick map_pose ledger",
+      "episode_plan_sha256": "5f4bbe530404900470f5678e501ffb17d4a0b54fecbd956605b7b33729dd3c49",
+      "first30": {
+        "elapsed_sim_s": 30.00000000005842,
+        "wall_elapsed_s": 87.88573259599798,
+        "wall_per_sim": 2.9295244327275767,
+        "top_capture": false
+      },
+      "phase_transitions": [
+        {
+          "sim_s": 0.0,
+          "phase": "fold",
+          "yaw_sigma_rad": 0.05235987755982989,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 0.6,
+          "phase": "pickup_search",
+          "yaw_sigma_rad": 0.05235987755982989,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 0.7,
+          "phase": "approach",
+          "yaw_sigma_rad": 0.05235987755982989,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 9.8,
+          "phase": "align",
+          "yaw_sigma_rad": 0.14899338924787153,
+          "issued_distance_since_fix_m": 0.9161753997482929,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 11.4,
+          "phase": "hover",
+          "yaw_sigma_rad": 0.15762914713195234,
+          "issued_distance_since_fix_m": 1.0025329785891008,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 12.4,
+          "phase": "descent",
+          "yaw_sigma_rad": 0.15762914713195234,
+          "issued_distance_since_fix_m": 1.0025329785891008,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 14.0,
+          "phase": "close",
+          "yaw_sigma_rad": 0.15762914713195234,
+          "issued_distance_since_fix_m": 1.0025329785891008,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 15.1,
+          "phase": "lift",
+          "yaw_sigma_rad": 0.15762914713195234,
+          "issued_distance_since_fix_m": 1.0025329785891008,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 16.6,
+          "phase": "lift_settle",
+          "yaw_sigma_rad": 0.15762914713195234,
+          "issued_distance_since_fix_m": 1.0025329785891008,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 19.8,
+          "phase": "lookback_pose",
+          "yaw_sigma_rad": 0.15762914713195234,
+          "issued_distance_since_fix_m": 1.0025329785891008,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 20.9,
+          "phase": "lookback",
+          "yaw_sigma_rad": 0.15762914713195234,
+          "issued_distance_since_fix_m": 1.0025329785891008,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 23.4,
+          "phase": "lookback_settle",
+          "yaw_sigma_rad": 0.1729046314112253,
+          "issued_distance_since_fix_m": 1.1552878213818305,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 23.9,
+          "phase": "verify_lift",
+          "yaw_sigma_rad": 0.1729046314112253,
+          "issued_distance_since_fix_m": 1.1552878213818305,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 25.0,
+          "phase": "hold",
+          "yaw_sigma_rad": 0.1729046314112253,
+          "issued_distance_since_fix_m": 1.1552878213818305,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 28.0,
+          "phase": "carry_prepare",
+          "yaw_sigma_rad": 0.1729046314112253,
+          "issued_distance_since_fix_m": 1.1552878213818305,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 29.0,
+          "phase": "carry_to_zone",
+          "yaw_sigma_rad": 0.1729046314112253,
+          "issued_distance_since_fix_m": 1.1552878213818305,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 31.1,
+          "phase": "carry_recover_lower",
+          "yaw_sigma_rad": 0.1897863896506603,
+          "issued_distance_since_fix_m": 1.3241054037761804,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 32.1,
+          "phase": "carry_recover_open",
+          "yaw_sigma_rad": 0.1897863896506603,
+          "issued_distance_since_fix_m": 1.3241054037761804,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 32.8,
+          "phase": "carry_recover_retract",
+          "yaw_sigma_rad": 0.1897863896506603,
+          "issued_distance_since_fix_m": 1.3241054037761804,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 34.6,
+          "phase": "carry_recover_backoff",
+          "yaw_sigma_rad": 0.1897863896506603,
+          "issued_distance_since_fix_m": 1.3241054037761804,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 37.1,
+          "phase": "carry_reobserve",
+          "yaw_sigma_rad": 0.20506187392993325,
+          "issued_distance_since_fix_m": 1.47686024656891,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 63.4,
+          "phase": "carry_recover_restore",
+          "yaw_sigma_rad": 1.3287311209707073,
+          "issued_distance_since_fix_m": 1.47686024656891,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 64.5,
+          "phase": "carry_reacquire",
+          "yaw_sigma_rad": 0.023461561361333295,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 1
+        },
+        {
+          "sim_s": 73.4,
+          "phase": "approach",
+          "yaw_sigma_rad": 0.44054035310484707,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 1
+        },
+        {
+          "sim_s": 73.5,
+          "phase": "carry_reobserve",
+          "yaw_sigma_rad": 0.44054035310484707,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 1
+        }
+      ],
+      "last_trace_sim_s": 125.099999998739,
+      "last_phase": "carry_reobserve",
+      "review_frames_s": [
+        0.0,
+        25.0,
+        50.0,
+        75.0,
+        100.0,
+        125.0
+      ],
+      "evaluation_samples": 1252,
+      "wall_per_sim_including_setup_and_shutdown": 3.345699036804306,
+      "operator_outcome": "SUPERVISOR_INTERRUPTED",
+      "success_confirmed": false,
+      "stop_marker_sha256": "3c2a01ccf547c6bbdf1738e99f46840d5c7f1b1411e68e29a4682ae7d8faf554"
+    },
+    {
+      "name": "solo-carry-93261-rotation_wall_search-987d033f",
+      "stage": "reproductions",
+      "seed": 93261,
+      "kind": "green",
+      "candidate": "rotation_wall_search",
+      "submitted": true,
+      "source_sha": "987d033f28b40aa6182c1cde0dff2982e1d546d6",
+      "host": "gcp1",
+      "machine_type": "n4-highcpu-64",
+      "status": "interrupted",
+      "exit": "130",
+      "result_sha256": "3e958b6711daae8e223bd11e448f215498d4766106d72f5697629493b76863fa",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/solo-carry-93261-rotation_wall_search-987d033f",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93261-rotation_wall_search-987d033f",
+      "retrieval_receipt": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-987d033f-ops/solo-carry-93261-rotation_wall_search-987d033f-retrieval.json",
+      "review": {
+        "run": "solo-carry-93261-rotation_wall_search-987d033f",
+        "frames": [
+          "raw/review-own/000000.jpg",
+          "raw/review-own/000230.jpg",
+          "raw/review-own/000460.jpg",
+          "raw/review-own/000700.jpg",
+          "raw/review-own/000930.jpg",
+          "raw/review-own/001160.jpg"
+        ],
+        "frame_times_s": [
+          0.0,
+          23.0,
+          46.0,
+          70.0,
+          93.0,
+          116.0
+        ],
+        "directly_viewed": true,
+        "montage": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-987d033f-ops/solo-carry-93261-rotation_wall_search-987d033f-montage.jpg",
+        "montage_sha256": "1f7d30f245bff6dc78b38a8a0ac31206d01ebcfd299f4cf98239c106c754e2e3",
+        "scope": "one active solo robot r1; own camera only; TOP capture disabled, r2 own camera not recorded"
+      },
+      "result_fields": {
+        "physical_success": null,
+        "lift_success": null,
+        "zone_placement_success": null,
+        "release_success": null,
+        "no_drop_during_carry": null,
+        "termination_reason": null,
+        "error_type": "KeyboardInterrupt",
+        "error": ""
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 524,
+        "blocked_held": 486,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "pickup_search": 1,
+          "approach": 98,
+          "align": 43,
+          "hover": 6,
+          "carry_reacquire": 2,
+          "carry_reobserve": 1,
+          "carry_recover_restore": 1
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "training_rgb": false,
+      "top_rgb_control_allowed": false,
+      "top_rgb_control_evidence": "per-tick map_pose ledger",
+      "episode_plan_sha256": "fd56182bfaed9ab78f481586892cb98019f71592cc01c73732c2d4975f6dac7c",
+      "first30": {
+        "elapsed_sim_s": 30.00000000005842,
+        "wall_elapsed_s": 90.74994336899908,
+        "wall_per_sim": 3.024998122427426,
+        "top_capture": false
+      },
+      "phase_transitions": [
+        {
+          "sim_s": 0.0,
+          "phase": "fold",
+          "yaw_sigma_rad": 0.05235987755982989,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 0.6,
+          "phase": "pickup_search",
+          "yaw_sigma_rad": 0.05235987755982989,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 0.7,
+          "phase": "approach",
+          "yaw_sigma_rad": 0.05235987755982989,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 9.8,
+          "phase": "align",
+          "yaw_sigma_rad": 0.14899338924787153,
+          "issued_distance_since_fix_m": 0.9161753997482929,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 11.4,
+          "phase": "hover",
+          "yaw_sigma_rad": 0.15762914713195234,
+          "issued_distance_since_fix_m": 1.0025329785891008,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 12.4,
+          "phase": "descent",
+          "yaw_sigma_rad": 0.15762914713195234,
+          "issued_distance_since_fix_m": 1.0025329785891008,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 14.0,
+          "phase": "close",
+          "yaw_sigma_rad": 0.15762914713195234,
+          "issued_distance_since_fix_m": 1.0025329785891008,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 15.1,
+          "phase": "lift",
+          "yaw_sigma_rad": 0.15762914713195234,
+          "issued_distance_since_fix_m": 1.0025329785891008,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 16.6,
+          "phase": "lift_settle",
+          "yaw_sigma_rad": 0.15762914713195234,
+          "issued_distance_since_fix_m": 1.0025329785891008,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 19.8,
+          "phase": "lookback_pose",
+          "yaw_sigma_rad": 0.15762914713195234,
+          "issued_distance_since_fix_m": 1.0025329785891008,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 20.9,
+          "phase": "lookback",
+          "yaw_sigma_rad": 0.15762914713195234,
+          "issued_distance_since_fix_m": 1.0025329785891008,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 23.4,
+          "phase": "lookback_settle",
+          "yaw_sigma_rad": 0.1729046314112253,
+          "issued_distance_since_fix_m": 1.1552878213818305,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 23.9,
+          "phase": "verify_lift",
+          "yaw_sigma_rad": 0.1729046314112253,
+          "issued_distance_since_fix_m": 1.1552878213818305,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 25.0,
+          "phase": "hold",
+          "yaw_sigma_rad": 0.1729046314112253,
+          "issued_distance_since_fix_m": 1.1552878213818305,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 28.0,
+          "phase": "carry_prepare",
+          "yaw_sigma_rad": 0.1729046314112253,
+          "issued_distance_since_fix_m": 1.1552878213818305,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 29.0,
+          "phase": "carry_to_zone",
+          "yaw_sigma_rad": 0.1729046314112253,
+          "issued_distance_since_fix_m": 1.1552878213818305,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 31.1,
+          "phase": "carry_recover_lower",
+          "yaw_sigma_rad": 0.1897863896506603,
+          "issued_distance_since_fix_m": 1.3241054037761804,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 32.1,
+          "phase": "carry_recover_open",
+          "yaw_sigma_rad": 0.1897863896506603,
+          "issued_distance_since_fix_m": 1.3241054037761804,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 32.8,
+          "phase": "carry_recover_retract",
+          "yaw_sigma_rad": 0.1897863896506603,
+          "issued_distance_since_fix_m": 1.3241054037761804,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 34.6,
+          "phase": "carry_recover_backoff",
+          "yaw_sigma_rad": 0.1897863896506603,
+          "issued_distance_since_fix_m": 1.3241054037761804,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 37.1,
+          "phase": "carry_reobserve",
+          "yaw_sigma_rad": 0.20506187392993325,
+          "issued_distance_since_fix_m": 1.47686024656891,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 63.4,
+          "phase": "carry_recover_restore",
+          "yaw_sigma_rad": 1.3287311209707073,
+          "issued_distance_since_fix_m": 1.47686024656891,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 64.5,
+          "phase": "carry_reacquire",
+          "yaw_sigma_rad": 0.023461561361333295,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 1
+        },
+        {
+          "sim_s": 67.6,
+          "phase": "approach",
+          "yaw_sigma_rad": 0.23912488986012853,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 1
+        },
+        {
+          "sim_s": 68.2,
+          "phase": "carry_reobserve",
+          "yaw_sigma_rad": 0.2887843733058966,
+          "issued_distance_since_fix_m": 0.04698978084280132,
+          "rgb_fixes": 1
+        },
+        {
+          "sim_s": 78.6,
+          "phase": "carry_recover_restore",
+          "yaw_sigma_rad": 0.6639760474205151,
+          "issued_distance_since_fix_m": 0.04698978084280132,
+          "rgb_fixes": 1
+        },
+        {
+          "sim_s": 79.7,
+          "phase": "carry_reacquire",
+          "yaw_sigma_rad": 0.007771353213669448,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 2
+        },
+        {
+          "sim_s": 79.9,
+          "phase": "approach",
+          "yaw_sigma_rad": 0.014172459066955348,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 2
+        },
+        {
+          "sim_s": 80.0,
+          "phase": "align",
+          "yaw_sigma_rad": 0.014172459066955348,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 2
+        },
+        {
+          "sim_s": 82.7,
+          "phase": "hover",
+          "yaw_sigma_rad": 0.14818955606057907,
+          "issued_distance_since_fix_m": 0.09934121991466294,
+          "rgb_fixes": 2
+        },
+        {
+          "sim_s": 83.7,
+          "phase": "descent",
+          "yaw_sigma_rad": 0.14818955606057907,
+          "issued_distance_since_fix_m": 0.09934121991466294,
+          "rgb_fixes": 2
+        },
+        {
+          "sim_s": 85.3,
+          "phase": "close",
+          "yaw_sigma_rad": 0.14818955606057907,
+          "issued_distance_since_fix_m": 0.09934121991466294,
+          "rgb_fixes": 2
+        },
+        {
+          "sim_s": 86.5,
+          "phase": "lift",
+          "yaw_sigma_rad": 0.14818955606057907,
+          "issued_distance_since_fix_m": 0.09934121991466294,
+          "rgb_fixes": 2
+        },
+        {
+          "sim_s": 88.1,
+          "phase": "lift_settle",
+          "yaw_sigma_rad": 0.14818955606057907,
+          "issued_distance_since_fix_m": 0.09934121991466294,
+          "rgb_fixes": 2
+        },
+        {
+          "sim_s": 91.3,
+          "phase": "lookback_pose",
+          "yaw_sigma_rad": 0.14818955606057907,
+          "issued_distance_since_fix_m": 0.09934121991466294,
+          "rgb_fixes": 2
+        },
+        {
+          "sim_s": 92.5,
+          "phase": "lookback",
+          "yaw_sigma_rad": 0.14818955606057907,
+          "issued_distance_since_fix_m": 0.09934121991466294,
+          "rgb_fixes": 2
+        },
+        {
+          "sim_s": 95.0,
+          "phase": "lookback_settle",
+          "yaw_sigma_rad": 0.16346504033985204,
+          "issued_distance_since_fix_m": 0.2520960627073926,
+          "rgb_fixes": 2
+        },
+        {
+          "sim_s": 95.5,
+          "phase": "verify_lift",
+          "yaw_sigma_rad": 0.16346504033985204,
+          "issued_distance_since_fix_m": 0.2520960627073926,
+          "rgb_fixes": 2
+        },
+        {
+          "sim_s": 96.6,
+          "phase": "hold",
+          "yaw_sigma_rad": 0.16346504033985204,
+          "issued_distance_since_fix_m": 0.2520960627073926,
+          "rgb_fixes": 2
+        },
+        {
+          "sim_s": 99.6,
+          "phase": "carry_prepare",
+          "yaw_sigma_rad": 0.16346504033985204,
+          "issued_distance_since_fix_m": 0.2520960627073926,
+          "rgb_fixes": 2
+        },
+        {
+          "sim_s": 100.7,
+          "phase": "carry_to_zone",
+          "yaw_sigma_rad": 0.16346504033985204,
+          "issued_distance_since_fix_m": 0.2520960627073926,
+          "rgb_fixes": 2
+        },
+        {
+          "sim_s": 113.2,
+          "phase": "carry_recover_lower",
+          "yaw_sigma_rad": 0.27963893578358395,
+          "issued_distance_since_fix_m": 1.413835017144712,
+          "rgb_fixes": 2
+        },
+        {
+          "sim_s": 114.3,
+          "phase": "carry_recover_open",
+          "yaw_sigma_rad": 0.27963893578358395,
+          "issued_distance_since_fix_m": 1.413835017144712,
+          "rgb_fixes": 2
+        },
+        {
+          "sim_s": 115.1,
+          "phase": "carry_recover_retract",
+          "yaw_sigma_rad": 0.27963893578358395,
+          "issued_distance_since_fix_m": 1.413835017144712,
+          "rgb_fixes": 2
+        }
+      ],
+      "last_trace_sim_s": 116.79999999893526,
+      "last_phase": "carry_recover_retract",
+      "review_frames_s": [
+        0.0,
+        23.0,
+        46.0,
+        70.0,
+        93.0,
+        116.0
+      ],
+      "evaluation_samples": 1169,
+      "wall_per_sim_including_setup_and_shutdown": 3.46958944306244,
+      "operator_outcome": "SUPERVISOR_INTERRUPTED",
+      "success_confirmed": false,
+      "stop_marker_sha256": "725b3cab15b80e352db37335965c8a54b806fd5d3190766bb474c355088ff0c0"
+    },
+    {
+      "name": "solo-carry-93262-rotation-987d033f",
+      "stage": "reproductions",
+      "seed": 93262,
+      "kind": "yellow",
+      "candidate": "rotation",
+      "submitted": true,
+      "source_sha": "987d033f28b40aa6182c1cde0dff2982e1d546d6",
+      "host": "gcp1",
+      "machine_type": "n4-highcpu-64",
+      "status": "interrupted",
+      "exit": "130",
+      "result_sha256": "6e7b6e6ce10b5d0c122b8ae5f5a2f395858b8784d68d617858d7102e245e0504",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/solo-carry-93262-rotation-987d033f",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93262-rotation-987d033f",
+      "retrieval_receipt": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-987d033f-ops/solo-carry-93262-rotation-987d033f-retrieval.json",
+      "review": {
+        "run": "solo-carry-93262-rotation-987d033f",
+        "frames": [
+          "raw/review-own/000000.jpg",
+          "raw/review-own/000240.jpg",
+          "raw/review-own/000470.jpg",
+          "raw/review-own/000710.jpg",
+          "raw/review-own/000940.jpg",
+          "raw/review-own/001180.jpg"
+        ],
+        "frame_times_s": [
+          0.0,
+          24.0,
+          47.0,
+          71.0,
+          94.0,
+          118.0
+        ],
+        "directly_viewed": true,
+        "montage": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-987d033f-ops/solo-carry-93262-rotation-987d033f-montage.jpg",
+        "montage_sha256": "0e152cbb90d07efd7a660d751f4a0e656c0fa7f6b30e670d272368fe87f5203f",
+        "scope": "one active solo robot r1; own camera only; TOP capture disabled, r2 own camera not recorded"
+      },
+      "result_fields": {
+        "physical_success": null,
+        "lift_success": null,
+        "zone_placement_success": null,
+        "release_success": null,
+        "no_drop_during_carry": null,
+        "termination_reason": null,
+        "error_type": "KeyboardInterrupt",
+        "error": ""
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 957,
+        "blocked_held": 0,
+        "measurements_by_phase": {
+          "pickup_search": 1,
+          "approach": 160,
+          "carry_reobserve": 68,
+          "carry_reacquire": 1
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "training_rgb": false,
+      "top_rgb_control_allowed": false,
+      "top_rgb_control_evidence": "per-tick map_pose ledger",
+      "episode_plan_sha256": "e911936d8684fc02ec8acd27369397c50a0f3af3d23b2410cb3e510753d84b0a",
+      "first30": {
+        "elapsed_sim_s": 30.00000000005842,
+        "wall_elapsed_s": 82.42309744500017,
+        "wall_per_sim": 2.7474365933946054,
+        "top_capture": false
+      },
+      "phase_transitions": [
+        {
+          "sim_s": 0.0,
+          "phase": "fold",
+          "yaw_sigma_rad": 0.05235987755982989,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 0.6,
+          "phase": "pickup_search",
+          "yaw_sigma_rad": 0.05235987755982989,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 7.4,
+          "phase": "approach",
+          "yaw_sigma_rad": 0.05235987755982989,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 23.3,
+          "phase": "carry_reobserve",
+          "yaw_sigma_rad": 0.279878393714423,
+          "issued_distance_since_fix_m": 1.2104697120641696,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 45.9,
+          "phase": "carry_recover_restore",
+          "yaw_sigma_rad": 1.4149598398013767,
+          "issued_distance_since_fix_m": 1.2104697120641696,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 46.9,
+          "phase": "carry_reacquire",
+          "yaw_sigma_rad": 0.023461695742231885,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 1
+        },
+        {
+          "sim_s": 56.3,
+          "phase": "approach",
+          "yaw_sigma_rad": 0.6187645400978199,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 1
+        },
+        {
+          "sim_s": 56.4,
+          "phase": "carry_reobserve",
+          "yaw_sigma_rad": 0.6187645400978199,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 1
+        }
+      ],
+      "last_trace_sim_s": 118.49999999889506,
+      "last_phase": "carry_reobserve",
+      "review_frames_s": [
+        0.0,
+        24.0,
+        47.0,
+        71.0,
+        94.0,
+        118.0
+      ],
+      "evaluation_samples": 1186,
+      "wall_per_sim_including_setup_and_shutdown": 3.301997701819803,
+      "operator_outcome": "SUPERVISOR_INTERRUPTED",
+      "success_confirmed": false,
+      "stop_marker_sha256": "6ba571ca01c4c12ecacc5daed73d6142e15f7d4ed60220cf821c34ee637510f1"
+    },
+    {
+      "name": "solo-carry-93262-rotation_wall_search-987d033f",
+      "stage": "reproductions",
+      "seed": 93262,
+      "kind": "yellow",
+      "candidate": "rotation_wall_search",
+      "submitted": true,
+      "source_sha": "987d033f28b40aa6182c1cde0dff2982e1d546d6",
+      "host": "gcp1",
+      "machine_type": "n4-highcpu-64",
+      "status": "interrupted",
+      "exit": "130",
+      "result_sha256": "f8375b46ddcd752cca1bad4b2498c279f92e1a51a496c79d4d170d5c97637a56",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/solo-carry-93262-rotation_wall_search-987d033f",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93262-rotation_wall_search-987d033f",
+      "retrieval_receipt": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-987d033f-ops/solo-carry-93262-rotation_wall_search-987d033f-retrieval.json",
+      "review": {
+        "run": "solo-carry-93262-rotation_wall_search-987d033f",
+        "frames": [
+          "raw/review-own/000000.jpg",
+          "raw/review-own/000230.jpg",
+          "raw/review-own/000470.jpg",
+          "raw/review-own/000700.jpg",
+          "raw/review-own/000940.jpg",
+          "raw/review-own/001170.jpg"
+        ],
+        "frame_times_s": [
+          0.0,
+          23.0,
+          47.0,
+          70.0,
+          94.0,
+          117.0
+        ],
+        "directly_viewed": true,
+        "montage": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-987d033f-ops/solo-carry-93262-rotation_wall_search-987d033f-montage.jpg",
+        "montage_sha256": "8359e207c39826d5a5b910dd15bed5753017691f20f19679462fb16c8b7e3fda",
+        "scope": "one active solo robot r1; own camera only; TOP capture disabled, r2 own camera not recorded"
+      },
+      "result_fields": {
+        "physical_success": null,
+        "lift_success": null,
+        "zone_placement_success": null,
+        "release_success": null,
+        "no_drop_during_carry": null,
+        "termination_reason": null,
+        "error_type": "KeyboardInterrupt",
+        "error": ""
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 944,
+        "blocked_held": 0,
+        "measurements_by_phase": {
+          "pickup_search": 1,
+          "approach": 160,
+          "carry_reobserve": 72,
+          "carry_reacquire": 1
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "training_rgb": false,
+      "top_rgb_control_allowed": false,
+      "top_rgb_control_evidence": "per-tick map_pose ledger",
+      "episode_plan_sha256": "b24c9b892a00ea31b2942f6bd6b70fcda259452006c3b84e790320741da60c4a",
+      "first30": {
+        "elapsed_sim_s": 30.00000000005842,
+        "wall_elapsed_s": 84.39907633799885,
+        "wall_per_sim": 2.8133025553612026,
+        "top_capture": false
+      },
+      "phase_transitions": [
+        {
+          "sim_s": 0.0,
+          "phase": "fold",
+          "yaw_sigma_rad": 0.05235987755982989,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 0.6,
+          "phase": "pickup_search",
+          "yaw_sigma_rad": 0.05235987755982989,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 7.4,
+          "phase": "approach",
+          "yaw_sigma_rad": 0.05235987755982989,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 23.3,
+          "phase": "carry_reobserve",
+          "yaw_sigma_rad": 0.279878393714423,
+          "issued_distance_since_fix_m": 1.2104697120641696,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 45.9,
+          "phase": "carry_recover_restore",
+          "yaw_sigma_rad": 1.4149598398013767,
+          "issued_distance_since_fix_m": 1.2104697120641696,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 46.9,
+          "phase": "carry_reacquire",
+          "yaw_sigma_rad": 0.023461723676294226,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 1
+        },
+        {
+          "sim_s": 55.8,
+          "phase": "approach",
+          "yaw_sigma_rad": 0.5867590387654528,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 1
+        },
+        {
+          "sim_s": 55.9,
+          "phase": "carry_reobserve",
+          "yaw_sigma_rad": 0.5867590387654528,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 1
+        }
+      ],
+      "last_trace_sim_s": 117.69999999891398,
+      "last_phase": "carry_reobserve",
+      "review_frames_s": [
+        0.0,
+        23.0,
+        47.0,
+        70.0,
+        94.0,
+        117.0
+      ],
+      "evaluation_samples": 1178,
+      "wall_per_sim_including_setup_and_shutdown": 3.20700363490637,
+      "operator_outcome": "SUPERVISOR_INTERRUPTED",
+      "success_confirmed": false,
+      "stop_marker_sha256": "1b030dce959c95f41ddd660df33e26c44cc2a6a8d42ca157fa69e22d26edc237"
+    },
+    {
+      "name": "solo-carry-93266-rotation-987d033f",
+      "stage": "reproductions",
+      "seed": 93266,
+      "kind": "yellow",
+      "candidate": "rotation",
+      "submitted": true,
+      "source_sha": "987d033f28b40aa6182c1cde0dff2982e1d546d6",
+      "host": "gcp1",
+      "machine_type": "n4-highcpu-64",
+      "status": "interrupted",
+      "exit": "130",
+      "result_sha256": "3ddad403fb26925bceb6af2cfdae97f3e91cff639d014333369f5e5c58877b27",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/solo-carry-93266-rotation-987d033f",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93266-rotation-987d033f",
+      "retrieval_receipt": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-987d033f-ops/solo-carry-93266-rotation-987d033f-retrieval.json",
+      "review": {
+        "run": "solo-carry-93266-rotation-987d033f",
+        "frames": [
+          "raw/review-own/000000.jpg",
+          "raw/review-own/000220.jpg",
+          "raw/review-own/000430.jpg",
+          "raw/review-own/000650.jpg",
+          "raw/review-own/000860.jpg",
+          "raw/review-own/001080.jpg"
+        ],
+        "frame_times_s": [
+          0.0,
+          22.0,
+          43.0,
+          65.0,
+          86.0,
+          108.0
+        ],
+        "directly_viewed": true,
+        "montage": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-987d033f-ops/solo-carry-93266-rotation-987d033f-montage.jpg",
+        "montage_sha256": "e7ff6340474aaa8a6f834d42083d91b6bac2ae5f5b279097a1e3b833ff306ff2",
+        "scope": "one active solo robot r1; own camera only; TOP capture disabled, r2 own camera not recorded"
+      },
+      "result_fields": {
+        "physical_success": null,
+        "lift_success": null,
+        "zone_placement_success": null,
+        "release_success": null,
+        "no_drop_during_carry": null,
+        "termination_reason": null,
+        "error_type": "KeyboardInterrupt",
+        "error": ""
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 813,
+        "blocked_held": 0,
+        "measurements_by_phase": {
+          "pickup_search": 1,
+          "approach": 157,
+          "carry_reobserve": 114,
+          "carry_reacquire": 1
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "training_rgb": false,
+      "top_rgb_control_allowed": false,
+      "top_rgb_control_evidence": "per-tick map_pose ledger",
+      "episode_plan_sha256": "f0834aa330c3990553220a5fcdd797ce3f4c0509e3db4a24ff01599675321351",
+      "first30": {
+        "elapsed_sim_s": 30.00000000005842,
+        "wall_elapsed_s": 89.21081082300225,
+        "wall_per_sim": 2.9736937114609034,
+        "top_capture": false
+      },
+      "phase_transitions": [
+        {
+          "sim_s": 0.0,
+          "phase": "fold",
+          "yaw_sigma_rad": 0.05235987755982989,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 0.6,
+          "phase": "pickup_search",
+          "yaw_sigma_rad": 0.05235987755982989,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 6.4,
+          "phase": "approach",
+          "yaw_sigma_rad": 0.05235987755982989,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 22.0,
+          "phase": "carry_reobserve",
+          "yaw_sigma_rad": 0.2522709228934285,
+          "issued_distance_since_fix_m": 1.2985558577610998,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 32.2,
+          "phase": "carry_recover_restore",
+          "yaw_sigma_rad": 0.6274625970080467,
+          "issued_distance_since_fix_m": 1.2985558577610998,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 33.2,
+          "phase": "carry_reacquire",
+          "yaw_sigma_rad": 0.015275035466876377,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 1
+        },
+        {
+          "sim_s": 44.0,
+          "phase": "approach",
+          "yaw_sigma_rad": 0.7001933617684668,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 1
+        },
+        {
+          "sim_s": 44.1,
+          "phase": "carry_reobserve",
+          "yaw_sigma_rad": 0.7001933617684668,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 1
+        }
+      ],
+      "last_trace_sim_s": 108.49999999913153,
+      "last_phase": "carry_reobserve",
+      "review_frames_s": [
+        0.0,
+        22.0,
+        43.0,
+        65.0,
+        86.0,
+        108.0
+      ],
+      "evaluation_samples": 1086,
+      "wall_per_sim_including_setup_and_shutdown": 3.334113677455234,
+      "operator_outcome": "SUPERVISOR_INTERRUPTED",
+      "success_confirmed": false,
+      "stop_marker_sha256": "9241cfae382938b9d1f81c3589d9cae3aca799bcab88a4facc7dea53ede69da9"
+    },
+    {
+      "name": "solo-carry-93266-rotation_wall_search-987d033f",
+      "stage": "reproductions",
+      "seed": 93266,
+      "kind": "yellow",
+      "candidate": "rotation_wall_search",
+      "submitted": true,
+      "source_sha": "987d033f28b40aa6182c1cde0dff2982e1d546d6",
+      "host": "gcp1",
+      "machine_type": "n4-highcpu-64",
+      "status": "complete",
+      "exit": "0",
+      "result_sha256": "edb01ff1b157d3a8a449d2cc980325c75198ff45417866d72c42f02d6093156f",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/solo-carry-93266-rotation_wall_search-987d033f",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93266-rotation_wall_search-987d033f",
+      "retrieval_receipt": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-987d033f-ops/solo-carry-93266-rotation_wall_search-987d033f-retrieval.json",
+      "review": {
+        "run": "solo-carry-93266-rotation_wall_search-987d033f",
+        "frames": [
+          "raw/review-own/000000.jpg",
+          "raw/review-own/000140.jpg",
+          "raw/review-own/000280.jpg",
+          "raw/review-own/000420.jpg",
+          "raw/review-own/000560.jpg",
+          "raw/review-own/000700.jpg"
+        ],
+        "frame_times_s": [
+          0.0,
+          14.0,
+          28.0,
+          42.0,
+          56.0,
+          70.0
+        ],
+        "directly_viewed": true,
+        "montage": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-987d033f-ops/solo-carry-93266-rotation_wall_search-987d033f-montage.jpg",
+        "montage_sha256": "125ff1be08b4359d8c79bfdfcdaaba70b00195bbf1b806d1a5c588a515a50d85",
+        "scope": "one active solo robot r1; own camera only; TOP capture disabled, r2 own camera not recorded"
+      },
+      "result_fields": {
+        "physical_success": false,
+        "lift_success": false,
+        "zone_placement_success": false,
+        "release_success": false,
+        "no_drop_during_carry": false,
+        "termination_reason": "carry_recovery_no_progress",
+        "error_type": null,
+        "error": null
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 528,
+        "blocked_held": 0,
+        "measurements_by_phase": {
+          "pickup_search": 1,
+          "approach": 158,
+          "carry_reobserve": 12,
+          "carry_reacquire": 2
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "training_rgb": false,
+      "top_rgb_control_allowed": false,
+      "top_rgb_control_evidence": "per-tick map_pose ledger",
+      "episode_plan_sha256": "231b6d7dbc7d129435ef2535efae398af63826746ccfefea9d779a89084d2149",
+      "first30": {
+        "elapsed_sim_s": 30.00000000005842,
+        "wall_elapsed_s": 92.3619179640009,
+        "wall_per_sim": 3.0787306182939647,
+        "top_capture": false
+      },
+      "phase_transitions": [
+        {
+          "sim_s": 0.0,
+          "phase": "fold",
+          "yaw_sigma_rad": 0.05235987755982989,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 0.6,
+          "phase": "pickup_search",
+          "yaw_sigma_rad": 0.05235987755982989,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 6.4,
+          "phase": "approach",
+          "yaw_sigma_rad": 0.05235987755982989,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 22.0,
+          "phase": "carry_reobserve",
+          "yaw_sigma_rad": 0.2522709228934285,
+          "issued_distance_since_fix_m": 1.2985558577610998,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 32.2,
+          "phase": "carry_recover_restore",
+          "yaw_sigma_rad": 0.6274625970080467,
+          "issued_distance_since_fix_m": 1.2985558577610998,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 33.2,
+          "phase": "carry_reacquire",
+          "yaw_sigma_rad": 0.015275035466876377,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 1
+        },
+        {
+          "sim_s": 43.1,
+          "phase": "approach",
+          "yaw_sigma_rad": 0.6425834090888938,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 1
+        },
+        {
+          "sim_s": 43.2,
+          "phase": "carry_reobserve",
+          "yaw_sigma_rad": 0.6425834090888938,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 1
+        },
+        {
+          "sim_s": 59.8,
+          "phase": "carry_recover_restore",
+          "yaw_sigma_rad": 1.3929667573181232,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 1
+        },
+        {
+          "sim_s": 60.8,
+          "phase": "carry_reacquire",
+          "yaw_sigma_rad": 0.007969448154427811,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 2
+        },
+        {
+          "sim_s": 69.9,
+          "phase": "approach",
+          "yaw_sigma_rad": 0.5840689749501581,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 2
+        },
+        {
+          "sim_s": 70.0,
+          "phase": "failed",
+          "yaw_sigma_rad": 0.5840689749501581,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 2
+        }
+      ],
+      "last_trace_sim_s": 70.00000000004194,
+      "last_phase": "failed",
+      "review_frames_s": [
+        0.0,
+        14.0,
+        28.0,
+        42.0,
+        56.0,
+        70.0
+      ],
+      "evaluation_samples": 701,
+      "wall_per_sim_including_setup_and_shutdown": 3.5877569504121514,
+      "operator_outcome": "CONTROL_FAILURE",
+      "success_confirmed": false
+    },
+    {
+      "name": "solo-carry-93310-rotation-987d033f",
+      "stage": "fresh_eight",
+      "seed": 93310,
+      "kind": "cyan",
+      "candidate": "rotation",
+      "submitted": true,
+      "source_sha": "987d033f28b40aa6182c1cde0dff2982e1d546d6",
+      "host": "gcp1",
+      "machine_type": "n4-highcpu-64",
+      "status": "interrupted",
+      "exit": "130",
+      "result_sha256": "98ad1224973971fb01ca2d3438b9a428b6d970c9eba1fecfc1fda46034379869",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/solo-carry-93310-rotation-987d033f",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93310-rotation-987d033f",
+      "retrieval_receipt": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-987d033f-ops/solo-carry-93310-rotation-987d033f-retrieval.json",
+      "review": {
+        "run": "solo-carry-93310-rotation-987d033f",
+        "frames": [
+          "raw/review-own/000000.jpg",
+          "raw/review-own/000190.jpg",
+          "raw/review-own/000390.jpg",
+          "raw/review-own/000580.jpg",
+          "raw/review-own/000780.jpg",
+          "raw/review-own/000970.jpg"
+        ],
+        "frame_times_s": [
+          0.0,
+          19.0,
+          39.0,
+          58.0,
+          78.0,
+          97.0
+        ],
+        "directly_viewed": true,
+        "montage": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-987d033f-ops/solo-carry-93310-rotation-987d033f-montage.jpg",
+        "montage_sha256": "9f6668c7e318ec7777588b441323bb72d938198cd9017ab191508e58c4d9c996",
+        "scope": "one active solo robot r1; own camera only; TOP capture disabled, r2 own camera not recorded"
+      },
+      "result_fields": {
+        "physical_success": null,
+        "lift_success": null,
+        "zone_placement_success": null,
+        "release_success": null,
+        "no_drop_during_carry": null,
+        "termination_reason": null,
+        "error_type": "KeyboardInterrupt",
+        "error": ""
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 645,
+        "blocked_held": 0,
+        "measurements_by_phase": {
+          "pickup_search": 1,
+          "approach": 168,
+          "carry_reobserve": 163,
+          "carry_reacquire": 1
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "training_rgb": false,
+      "top_rgb_control_allowed": false,
+      "top_rgb_control_evidence": "per-tick map_pose ledger",
+      "episode_plan_sha256": "2430b0949b3531a5a0cf33475c2ef9d14839534031db1a8916ecffcb9e74320e",
+      "first30": {
+        "elapsed_sim_s": 30.00000000005842,
+        "wall_elapsed_s": 88.84798329600017,
+        "wall_per_sim": 2.9615994589276475,
+        "top_capture": false
+      },
+      "phase_transitions": [
+        {
+          "sim_s": 0.0,
+          "phase": "fold",
+          "yaw_sigma_rad": 0.05235987755982989,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 0.6,
+          "phase": "pickup_search",
+          "yaw_sigma_rad": 0.05235987755982989,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 7.4,
+          "phase": "approach",
+          "yaw_sigma_rad": 0.05235987755982989,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 24.1,
+          "phase": "carry_reobserve",
+          "yaw_sigma_rad": 0.23975391554355108,
+          "issued_distance_since_fix_m": 1.2729615694318626,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 46.7,
+          "phase": "carry_recover_restore",
+          "yaw_sigma_rad": 1.3748353616305045,
+          "issued_distance_since_fix_m": 1.2729615694318626,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 47.7,
+          "phase": "carry_reacquire",
+          "yaw_sigma_rad": 0.02419412553464046,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 1
+        },
+        {
+          "sim_s": 58.0,
+          "phase": "approach",
+          "yaw_sigma_rad": 0.6771069225698015,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 1
+        },
+        {
+          "sim_s": 58.1,
+          "phase": "carry_reobserve",
+          "yaw_sigma_rad": 0.6771069225698015,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 1
+        }
+      ],
+      "last_trace_sim_s": 97.69999999938692,
+      "last_phase": "carry_reobserve",
+      "review_frames_s": [
+        0.0,
+        19.0,
+        39.0,
+        58.0,
+        78.0,
+        97.0
+      ],
+      "evaluation_samples": 978,
+      "wall_per_sim_including_setup_and_shutdown": 3.4226922156714337,
+      "operator_outcome": "SUPERVISOR_INTERRUPTED",
+      "success_confirmed": false,
+      "stop_marker_sha256": "37454baff621d6cdb797a32dc206cc09b085618abdee2b10b1a149ccea372fb2"
+    },
+    {
+      "name": "solo-carry-93310-rotation_wall_search-987d033f",
+      "stage": "fresh_eight",
+      "seed": 93310,
+      "kind": "cyan",
+      "candidate": "rotation_wall_search",
+      "submitted": true,
+      "source_sha": "987d033f28b40aa6182c1cde0dff2982e1d546d6",
+      "host": "gcp1",
+      "machine_type": "n4-highcpu-64",
+      "status": "interrupted",
+      "exit": "130",
+      "result_sha256": "bc459a93d6c25766d1c7095186fb0a06b5ba9c230a5fd551e0d319bff3347f4f",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/solo-carry-93310-rotation_wall_search-987d033f",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93310-rotation_wall_search-987d033f",
+      "retrieval_receipt": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-987d033f-ops/solo-carry-93310-rotation_wall_search-987d033f-retrieval.json",
+      "review": {
+        "run": "solo-carry-93310-rotation_wall_search-987d033f",
+        "frames": [
+          "raw/review-own/000000.jpg",
+          "raw/review-own/000190.jpg",
+          "raw/review-own/000380.jpg",
+          "raw/review-own/000580.jpg",
+          "raw/review-own/000770.jpg",
+          "raw/review-own/000960.jpg"
+        ],
+        "frame_times_s": [
+          0.0,
+          19.0,
+          38.0,
+          58.0,
+          77.0,
+          96.0
+        ],
+        "directly_viewed": true,
+        "montage": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-987d033f-ops/solo-carry-93310-rotation_wall_search-987d033f-montage.jpg",
+        "montage_sha256": "538e41f52b0a3914f6f49d4d54fe8ef45beaeb6a6df667049fddbbb5a0a6edb0",
+        "scope": "one active solo robot r1; own camera only; TOP capture disabled, r2 own camera not recorded"
+      },
+      "result_fields": {
+        "physical_success": null,
+        "lift_success": null,
+        "zone_placement_success": null,
+        "release_success": null,
+        "no_drop_during_carry": null,
+        "termination_reason": null,
+        "error_type": "KeyboardInterrupt",
+        "error": ""
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 764,
+        "blocked_held": 0,
+        "measurements_by_phase": {
+          "pickup_search": 1,
+          "approach": 168,
+          "carry_reobserve": 36,
+          "carry_reacquire": 1
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "training_rgb": false,
+      "top_rgb_control_allowed": false,
+      "top_rgb_control_evidence": "per-tick map_pose ledger",
+      "episode_plan_sha256": "1419df877b1af96899e6976333de8b88e2627a7011ea814e140f53799c6aaae8",
+      "first30": {
+        "elapsed_sim_s": 30.00000000005842,
+        "wall_elapsed_s": 91.15736218999882,
+        "wall_per_sim": 3.0385787644940385,
+        "top_capture": false
+      },
+      "phase_transitions": [
+        {
+          "sim_s": 0.0,
+          "phase": "fold",
+          "yaw_sigma_rad": 0.05235987755982989,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 0.6,
+          "phase": "pickup_search",
+          "yaw_sigma_rad": 0.05235987755982989,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 7.4,
+          "phase": "approach",
+          "yaw_sigma_rad": 0.05235987755982989,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 24.1,
+          "phase": "carry_reobserve",
+          "yaw_sigma_rad": 0.23975391554355108,
+          "issued_distance_since_fix_m": 1.2729615694318626,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 46.7,
+          "phase": "carry_recover_restore",
+          "yaw_sigma_rad": 1.3748353616305045,
+          "issued_distance_since_fix_m": 1.2729615694318626,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 47.7,
+          "phase": "carry_reacquire",
+          "yaw_sigma_rad": 0.02419412553464046,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 1
+        },
+        {
+          "sim_s": 56.5,
+          "phase": "approach",
+          "yaw_sigma_rad": 0.5810903347705132,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 1
+        },
+        {
+          "sim_s": 56.6,
+          "phase": "carry_reobserve",
+          "yaw_sigma_rad": 0.5810903347705132,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 1
+        }
+      ],
+      "last_trace_sim_s": 96.89999999940584,
+      "last_phase": "carry_reobserve",
+      "review_frames_s": [
+        0.0,
+        19.0,
+        38.0,
+        58.0,
+        77.0,
+        96.0
+      ],
+      "evaluation_samples": 970,
+      "wall_per_sim_including_setup_and_shutdown": 3.34247492122794,
+      "operator_outcome": "SUPERVISOR_INTERRUPTED",
+      "success_confirmed": false,
+      "stop_marker_sha256": "05d6ffefb96f853d5582e86500eda349548e96e5d2fc0741166021149b987a82"
+    },
+    {
+      "name": "solo-carry-93311-rotation-987d033f",
+      "stage": "fresh_eight",
+      "seed": 93311,
+      "kind": "red",
+      "candidate": "rotation",
+      "submitted": true,
+      "source_sha": "987d033f28b40aa6182c1cde0dff2982e1d546d6",
+      "host": "gcp1",
+      "machine_type": "n4-highcpu-64",
+      "status": "interrupted",
+      "exit": "130",
+      "result_sha256": "4455be3fe10b28f63150cb1fa454fdf01acb763e0247fecd2855b905c965d159",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/solo-carry-93311-rotation-987d033f",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93311-rotation-987d033f",
+      "retrieval_receipt": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-987d033f-ops/solo-carry-93311-rotation-987d033f-retrieval.json",
+      "review": {
+        "run": "solo-carry-93311-rotation-987d033f",
+        "frames": [
+          "raw/review-own/000000.jpg",
+          "raw/review-own/000170.jpg",
+          "raw/review-own/000350.jpg",
+          "raw/review-own/000520.jpg",
+          "raw/review-own/000700.jpg",
+          "raw/review-own/000870.jpg"
+        ],
+        "frame_times_s": [
+          0.0,
+          17.0,
+          35.0,
+          52.0,
+          70.0,
+          87.0
+        ],
+        "directly_viewed": true,
+        "montage": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-987d033f-ops/solo-carry-93311-rotation-987d033f-montage.jpg",
+        "montage_sha256": "7579299fa2ff4bf070cef69bc38fd015f9f36ba3924e29ab973f68378b94e287",
+        "scope": "one active solo robot r1; own camera only; TOP capture disabled, r2 own camera not recorded"
+      },
+      "result_fields": {
+        "physical_success": null,
+        "lift_success": null,
+        "zone_placement_success": null,
+        "release_success": null,
+        "no_drop_during_carry": null,
+        "termination_reason": null,
+        "error_type": "KeyboardInterrupt",
+        "error": ""
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 567,
+        "blocked_held": 214,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "pickup_search": 1,
+          "approach": 61,
+          "align": 19,
+          "hover": 3
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "training_rgb": false,
+      "top_rgb_control_allowed": false,
+      "top_rgb_control_evidence": "per-tick map_pose ledger",
+      "episode_plan_sha256": "c2652a2b5b3d1270fcad77ffd586aa05efef2c0cec2f8ab7f336f77f5f29e67a",
+      "first30": {
+        "elapsed_sim_s": 30.00000000005842,
+        "wall_elapsed_s": 104.87453521700081,
+        "wall_per_sim": 3.4958178637265354,
+        "top_capture": false
+      },
+      "phase_transitions": [
+        {
+          "sim_s": 0.0,
+          "phase": "fold",
+          "yaw_sigma_rad": 0.05235987755982989,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 0.6,
+          "phase": "pickup_search",
+          "yaw_sigma_rad": 0.05235987755982989,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 0.7,
+          "phase": "approach",
+          "yaw_sigma_rad": 0.05235987755982989,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 6.8,
+          "phase": "align",
+          "yaw_sigma_rad": 0.12671715142416257,
+          "issued_distance_since_fix_m": 0.6107963136310612,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 8.7,
+          "phase": "hover",
+          "yaw_sigma_rad": 0.1368751363008065,
+          "issued_distance_since_fix_m": 0.7123761623975006,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 9.7,
+          "phase": "descent",
+          "yaw_sigma_rad": 0.1368751363008065,
+          "issued_distance_since_fix_m": 0.7123761623975006,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 11.3,
+          "phase": "close",
+          "yaw_sigma_rad": 0.1368751363008065,
+          "issued_distance_since_fix_m": 0.7123761623975006,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 12.5,
+          "phase": "lift",
+          "yaw_sigma_rad": 0.1368751363008065,
+          "issued_distance_since_fix_m": 0.7123761623975006,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 14.1,
+          "phase": "lift_settle",
+          "yaw_sigma_rad": 0.1368751363008065,
+          "issued_distance_since_fix_m": 0.7123761623975006,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 17.3,
+          "phase": "lookback_pose",
+          "yaw_sigma_rad": 0.1368751363008065,
+          "issued_distance_since_fix_m": 0.7123761623975006,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 18.4,
+          "phase": "lookback",
+          "yaw_sigma_rad": 0.1368751363008065,
+          "issued_distance_since_fix_m": 0.7123761623975006,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 20.9,
+          "phase": "lookback_settle",
+          "yaw_sigma_rad": 0.15215062058007944,
+          "issued_distance_since_fix_m": 0.8651310051902302,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 21.4,
+          "phase": "verify_lift",
+          "yaw_sigma_rad": 0.15215062058007944,
+          "issued_distance_since_fix_m": 0.8651310051902302,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 22.5,
+          "phase": "hold",
+          "yaw_sigma_rad": 0.15215062058007944,
+          "issued_distance_since_fix_m": 0.8651310051902302,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 25.5,
+          "phase": "carry_prepare",
+          "yaw_sigma_rad": 0.15215062058007944,
+          "issued_distance_since_fix_m": 0.8651310051902302,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 26.5,
+          "phase": "carry_to_zone",
+          "yaw_sigma_rad": 0.15215062058007944,
+          "issued_distance_since_fix_m": 0.8651310051902302,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 31.0,
+          "phase": "carry_recover_lower",
+          "yaw_sigma_rad": 0.19837402159068696,
+          "issued_distance_since_fix_m": 1.3273650152963055,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 32.0,
+          "phase": "carry_recover_open",
+          "yaw_sigma_rad": 0.19837402159068696,
+          "issued_distance_since_fix_m": 1.3273650152963055,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 32.7,
+          "phase": "carry_recover_retract",
+          "yaw_sigma_rad": 0.19837402159068696,
+          "issued_distance_since_fix_m": 1.3273650152963055,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 34.5,
+          "phase": "carry_recover_backoff",
+          "yaw_sigma_rad": 0.19837402159068696,
+          "issued_distance_since_fix_m": 1.3273650152963055,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 37.0,
+          "phase": "carry_reobserve",
+          "yaw_sigma_rad": 0.21364950586995995,
+          "issued_distance_since_fix_m": 1.4801198580890351,
+          "rgb_fixes": 0
+        }
+      ],
+      "last_trace_sim_s": 87.09999999963757,
+      "last_phase": "carry_reobserve",
+      "review_frames_s": [
+        0.0,
+        17.0,
+        35.0,
+        52.0,
+        70.0,
+        87.0
+      ],
+      "evaluation_samples": 872,
+      "wall_per_sim_including_setup_and_shutdown": 3.5946476687749844,
+      "operator_outcome": "SUPERVISOR_INTERRUPTED",
+      "success_confirmed": false,
+      "stop_marker_sha256": "e977b87a91b47dd47511994b43bb747f3e2b34a2ab4efb5a5f3c4746b77540ad"
+    },
+    {
+      "name": "solo-carry-93311-rotation_wall_search-987d033f",
+      "stage": "fresh_eight",
+      "seed": 93311,
+      "kind": "red",
+      "candidate": "rotation_wall_search",
+      "submitted": true,
+      "source_sha": "987d033f28b40aa6182c1cde0dff2982e1d546d6",
+      "host": "gcp1",
+      "machine_type": "n4-highcpu-64",
+      "status": "interrupted",
+      "exit": "130",
+      "result_sha256": "b48027a79968a150c86e2800d887d215d4e9cf125c5d84669025ef8b6af172fc",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/solo-carry-93311-rotation_wall_search-987d033f",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93311-rotation_wall_search-987d033f",
+      "retrieval_receipt": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-987d033f-ops/solo-carry-93311-rotation_wall_search-987d033f-retrieval.json",
+      "review": {
+        "run": "solo-carry-93311-rotation_wall_search-987d033f",
+        "frames": [
+          "raw/review-own/000000.jpg",
+          "raw/review-own/000170.jpg",
+          "raw/review-own/000330.jpg",
+          "raw/review-own/000500.jpg",
+          "raw/review-own/000660.jpg",
+          "raw/review-own/000830.jpg"
+        ],
+        "frame_times_s": [
+          0.0,
+          17.0,
+          33.0,
+          50.0,
+          66.0,
+          83.0
+        ],
+        "directly_viewed": true,
+        "montage": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-987d033f-ops/solo-carry-93311-rotation_wall_search-987d033f-montage.jpg",
+        "montage_sha256": "10fcca17e3be12ff1b3262c431f43f8c4ae3da0247b0a9451e53beae5e131178",
+        "scope": "one active solo robot r1; own camera only; TOP capture disabled, r2 own camera not recorded"
+      },
+      "result_fields": {
+        "physical_success": null,
+        "lift_success": null,
+        "zone_placement_success": null,
+        "release_success": null,
+        "no_drop_during_carry": null,
+        "termination_reason": null,
+        "error_type": "KeyboardInterrupt",
+        "error": ""
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 530,
+        "blocked_held": 214,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "pickup_search": 1,
+          "approach": 61,
+          "align": 19,
+          "hover": 3
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "training_rgb": false,
+      "top_rgb_control_allowed": false,
+      "top_rgb_control_evidence": "per-tick map_pose ledger",
+      "episode_plan_sha256": "461b5c097865fff0bd23fca587b0283a7f981061d26371af410c4aab9e242ec2",
+      "first30": {
+        "elapsed_sim_s": 30.00000000005842,
+        "wall_elapsed_s": 106.5819067750017,
+        "wall_per_sim": 3.552730240326485,
+        "top_capture": false
+      },
+      "phase_transitions": [
+        {
+          "sim_s": 0.0,
+          "phase": "fold",
+          "yaw_sigma_rad": 0.05235987755982989,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 0.6,
+          "phase": "pickup_search",
+          "yaw_sigma_rad": 0.05235987755982989,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 0.7,
+          "phase": "approach",
+          "yaw_sigma_rad": 0.05235987755982989,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 6.8,
+          "phase": "align",
+          "yaw_sigma_rad": 0.12671715142416257,
+          "issued_distance_since_fix_m": 0.6107963136310612,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 8.7,
+          "phase": "hover",
+          "yaw_sigma_rad": 0.1368751363008065,
+          "issued_distance_since_fix_m": 0.7123761623975006,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 9.7,
+          "phase": "descent",
+          "yaw_sigma_rad": 0.1368751363008065,
+          "issued_distance_since_fix_m": 0.7123761623975006,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 11.3,
+          "phase": "close",
+          "yaw_sigma_rad": 0.1368751363008065,
+          "issued_distance_since_fix_m": 0.7123761623975006,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 12.5,
+          "phase": "lift",
+          "yaw_sigma_rad": 0.1368751363008065,
+          "issued_distance_since_fix_m": 0.7123761623975006,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 14.1,
+          "phase": "lift_settle",
+          "yaw_sigma_rad": 0.1368751363008065,
+          "issued_distance_since_fix_m": 0.7123761623975006,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 17.3,
+          "phase": "lookback_pose",
+          "yaw_sigma_rad": 0.1368751363008065,
+          "issued_distance_since_fix_m": 0.7123761623975006,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 18.4,
+          "phase": "lookback",
+          "yaw_sigma_rad": 0.1368751363008065,
+          "issued_distance_since_fix_m": 0.7123761623975006,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 20.9,
+          "phase": "lookback_settle",
+          "yaw_sigma_rad": 0.15215062058007944,
+          "issued_distance_since_fix_m": 0.8651310051902302,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 21.4,
+          "phase": "verify_lift",
+          "yaw_sigma_rad": 0.15215062058007944,
+          "issued_distance_since_fix_m": 0.8651310051902302,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 22.5,
+          "phase": "hold",
+          "yaw_sigma_rad": 0.15215062058007944,
+          "issued_distance_since_fix_m": 0.8651310051902302,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 25.5,
+          "phase": "carry_prepare",
+          "yaw_sigma_rad": 0.15215062058007944,
+          "issued_distance_since_fix_m": 0.8651310051902302,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 26.5,
+          "phase": "carry_to_zone",
+          "yaw_sigma_rad": 0.15215062058007944,
+          "issued_distance_since_fix_m": 0.8651310051902302,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 31.0,
+          "phase": "carry_recover_lower",
+          "yaw_sigma_rad": 0.19837402159068696,
+          "issued_distance_since_fix_m": 1.3273650152963055,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 32.0,
+          "phase": "carry_recover_open",
+          "yaw_sigma_rad": 0.19837402159068696,
+          "issued_distance_since_fix_m": 1.3273650152963055,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 32.7,
+          "phase": "carry_recover_retract",
+          "yaw_sigma_rad": 0.19837402159068696,
+          "issued_distance_since_fix_m": 1.3273650152963055,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 34.5,
+          "phase": "carry_recover_backoff",
+          "yaw_sigma_rad": 0.19837402159068696,
+          "issued_distance_since_fix_m": 1.3273650152963055,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 37.0,
+          "phase": "carry_reobserve",
+          "yaw_sigma_rad": 0.21364950586995995,
+          "issued_distance_since_fix_m": 1.4801198580890351,
+          "rgb_fixes": 0
+        }
+      ],
+      "last_trace_sim_s": 83.39999999972507,
+      "last_phase": "carry_reobserve",
+      "review_frames_s": [
+        0.0,
+        17.0,
+        33.0,
+        50.0,
+        66.0,
+        83.0
+      ],
+      "evaluation_samples": 835,
+      "wall_per_sim_including_setup_and_shutdown": 3.6241836667505596,
+      "operator_outcome": "SUPERVISOR_INTERRUPTED",
+      "success_confirmed": false,
+      "stop_marker_sha256": "4f04d47572d4e83bf1400b4259449d44eceb616d292a7c093393d1feae8fb025"
+    },
+    {
+      "name": "solo-carry-93312-rotation-987d033f",
+      "stage": "fresh_eight",
+      "seed": 93312,
+      "kind": "green",
+      "candidate": "rotation",
+      "submitted": true,
+      "source_sha": "987d033f28b40aa6182c1cde0dff2982e1d546d6",
+      "host": "gcp1",
+      "machine_type": "n4-highcpu-64",
+      "status": "interrupted",
+      "exit": "130",
+      "result_sha256": "cfebc7699c15fc98a80c60170b9a45faf43c0566163403c5af42322ba6ae3007",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/solo-carry-93312-rotation-987d033f",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93312-rotation-987d033f",
+      "retrieval_receipt": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-987d033f-ops/solo-carry-93312-rotation-987d033f-retrieval.json",
+      "review": {
+        "run": "solo-carry-93312-rotation-987d033f",
+        "frames": [
+          "raw/review-own/000000.jpg",
+          "raw/review-own/000160.jpg",
+          "raw/review-own/000320.jpg",
+          "raw/review-own/000470.jpg",
+          "raw/review-own/000630.jpg",
+          "raw/review-own/000790.jpg"
+        ],
+        "frame_times_s": [
+          0.0,
+          16.0,
+          32.0,
+          47.0,
+          63.0,
+          79.0
+        ],
+        "directly_viewed": true,
+        "montage": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-987d033f-ops/solo-carry-93312-rotation-987d033f-montage.jpg",
+        "montage_sha256": "37ecbef506dbcf6abbb4d5f8aafa483e19c19076e4898e60736371bff15d0a6c",
+        "scope": "one active solo robot r1; own camera only; TOP capture disabled, r2 own camera not recorded"
+      },
+      "result_fields": {
+        "physical_success": null,
+        "lift_success": null,
+        "zone_placement_success": null,
+        "release_success": null,
+        "no_drop_during_carry": null,
+        "termination_reason": null,
+        "error_type": "KeyboardInterrupt",
+        "error": ""
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 486,
+        "blocked_held": 189,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "pickup_search": 1,
+          "approach": 91,
+          "align": 17,
+          "hover": 3,
+          "carry_reacquire": 1,
+          "carry_reobserve": 1
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "training_rgb": false,
+      "top_rgb_control_allowed": false,
+      "top_rgb_control_evidence": "per-tick map_pose ledger",
+      "episode_plan_sha256": "368fa602fec547d92a2bffb00f1735ef410e16e6fd60c4e00b05249e49f3f1fd",
+      "first30": {
+        "elapsed_sim_s": 30.00000000005842,
+        "wall_elapsed_s": 107.57269619300132,
+        "wall_per_sim": 3.585756556959728,
+        "top_capture": false
+      },
+      "phase_transitions": [
+        {
+          "sim_s": 0.0,
+          "phase": "fold",
+          "yaw_sigma_rad": 0.05235987755982989,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 0.6,
+          "phase": "pickup_search",
+          "yaw_sigma_rad": 0.05235987755982989,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 0.7,
+          "phase": "approach",
+          "yaw_sigma_rad": 0.05235987755982989,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 9.7,
+          "phase": "align",
+          "yaw_sigma_rad": 0.1471001843148484,
+          "issued_distance_since_fix_m": 0.9070539610464041,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 11.4,
+          "phase": "hover",
+          "yaw_sigma_rad": 0.1566415204250743,
+          "issued_distance_since_fix_m": 1.002467322148663,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 12.4,
+          "phase": "descent",
+          "yaw_sigma_rad": 0.1566415204250743,
+          "issued_distance_since_fix_m": 1.002467322148663,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 14.0,
+          "phase": "close",
+          "yaw_sigma_rad": 0.1566415204250743,
+          "issued_distance_since_fix_m": 1.002467322148663,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 15.1,
+          "phase": "lift",
+          "yaw_sigma_rad": 0.1566415204250743,
+          "issued_distance_since_fix_m": 1.002467322148663,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 16.6,
+          "phase": "lift_settle",
+          "yaw_sigma_rad": 0.1566415204250743,
+          "issued_distance_since_fix_m": 1.002467322148663,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 19.8,
+          "phase": "lookback_pose",
+          "yaw_sigma_rad": 0.1566415204250743,
+          "issued_distance_since_fix_m": 1.002467322148663,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 20.9,
+          "phase": "lookback",
+          "yaw_sigma_rad": 0.1566415204250743,
+          "issued_distance_since_fix_m": 1.002467322148663,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 23.4,
+          "phase": "lookback_settle",
+          "yaw_sigma_rad": 0.17191700470434723,
+          "issued_distance_since_fix_m": 1.1552221649413927,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 23.9,
+          "phase": "verify_lift",
+          "yaw_sigma_rad": 0.17191700470434723,
+          "issued_distance_since_fix_m": 1.1552221649413927,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 25.0,
+          "phase": "hold",
+          "yaw_sigma_rad": 0.17191700470434723,
+          "issued_distance_since_fix_m": 1.1552221649413927,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 28.0,
+          "phase": "carry_prepare",
+          "yaw_sigma_rad": 0.17191700470434723,
+          "issued_distance_since_fix_m": 1.1552221649413927,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 29.0,
+          "phase": "carry_to_zone",
+          "yaw_sigma_rad": 0.17191700470434723,
+          "issued_distance_since_fix_m": 1.1552221649413927,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 31.2,
+          "phase": "carry_recover_lower",
+          "yaw_sigma_rad": 0.18909014032191584,
+          "issued_distance_since_fix_m": 1.3269535211170784,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 32.2,
+          "phase": "carry_recover_open",
+          "yaw_sigma_rad": 0.18909014032191584,
+          "issued_distance_since_fix_m": 1.3269535211170784,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 32.9,
+          "phase": "carry_recover_retract",
+          "yaw_sigma_rad": 0.18909014032191584,
+          "issued_distance_since_fix_m": 1.3269535211170784,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 34.7,
+          "phase": "carry_recover_backoff",
+          "yaw_sigma_rad": 0.18909014032191584,
+          "issued_distance_since_fix_m": 1.3269535211170784,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 37.2,
+          "phase": "carry_reobserve",
+          "yaw_sigma_rad": 0.2043656246011888,
+          "issued_distance_since_fix_m": 1.479708363909808,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 63.5,
+          "phase": "carry_recover_restore",
+          "yaw_sigma_rad": 1.3280348716419619,
+          "issued_distance_since_fix_m": 1.479708363909808,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 64.6,
+          "phase": "carry_reacquire",
+          "yaw_sigma_rad": 0.02346157802852767,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 1
+        },
+        {
+          "sim_s": 71.2,
+          "phase": "approach",
+          "yaw_sigma_rad": 0.37385594397255595,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 1
+        },
+        {
+          "sim_s": 71.3,
+          "phase": "carry_reobserve",
+          "yaw_sigma_rad": 0.37385594397255595,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 1
+        }
+      ],
+      "last_trace_sim_s": 79.49999999981729,
+      "last_phase": "carry_reobserve",
+      "review_frames_s": [
+        0.0,
+        16.0,
+        32.0,
+        47.0,
+        63.0,
+        79.0
+      ],
+      "evaluation_samples": 796,
+      "wall_per_sim_including_setup_and_shutdown": 3.6744432584738402,
+      "operator_outcome": "SUPERVISOR_INTERRUPTED",
+      "success_confirmed": false,
+      "stop_marker_sha256": "6b59b79a38f3fe49cd3e796a6e24753eb39bd99791be1e9ecc4c1d4e8ec38b3e"
+    },
+    {
+      "name": "solo-carry-93312-rotation_wall_search-987d033f",
+      "stage": "fresh_eight",
+      "seed": 93312,
+      "kind": "green",
+      "candidate": "rotation_wall_search",
+      "submitted": true,
+      "source_sha": "987d033f28b40aa6182c1cde0dff2982e1d546d6",
+      "host": "gcp1",
+      "machine_type": "n4-highcpu-64",
+      "status": "interrupted",
+      "exit": "130",
+      "result_sha256": "a9ba33c3fda520c8593f788f94b07687bdb0c310b7e8e5e327d4df1ce4b853fb",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/solo-carry-93312-rotation_wall_search-987d033f",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93312-rotation_wall_search-987d033f",
+      "retrieval_receipt": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-987d033f-ops/solo-carry-93312-rotation_wall_search-987d033f-retrieval.json",
+      "review": {
+        "run": "solo-carry-93312-rotation_wall_search-987d033f",
+        "frames": [
+          "raw/review-own/000000.jpg",
+          "raw/review-own/000150.jpg",
+          "raw/review-own/000300.jpg",
+          "raw/review-own/000460.jpg",
+          "raw/review-own/000610.jpg",
+          "raw/review-own/000760.jpg"
+        ],
+        "frame_times_s": [
+          0.0,
+          15.0,
+          30.0,
+          46.0,
+          61.0,
+          76.0
+        ],
+        "directly_viewed": true,
+        "montage": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-987d033f-ops/solo-carry-93312-rotation_wall_search-987d033f-montage.jpg",
+        "montage_sha256": "f8f68a1c6f52e418fe9a31d7a1da72f3b82ebbfc5cc8e003436f3c576171b872",
+        "scope": "one active solo robot r1; own camera only; TOP capture disabled, r2 own camera not recorded"
+      },
+      "result_fields": {
+        "physical_success": null,
+        "lift_success": null,
+        "zone_placement_success": null,
+        "release_success": null,
+        "no_drop_during_carry": null,
+        "termination_reason": null,
+        "error_type": "KeyboardInterrupt",
+        "error": ""
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 449,
+        "blocked_held": 189,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "pickup_search": 1,
+          "approach": 99,
+          "align": 19,
+          "hover": 3,
+          "carry_reacquire": 1,
+          "carry_reobserve": 1
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "training_rgb": false,
+      "top_rgb_control_allowed": false,
+      "top_rgb_control_evidence": "per-tick map_pose ledger",
+      "episode_plan_sha256": "ee64440550143774eeea7706ef089d9398c4a7576070634e0b64f2f79dc886f0",
+      "first30": {
+        "elapsed_sim_s": 30.00000000005842,
+        "wall_elapsed_s": 108.00376391600003,
+        "wall_per_sim": 3.6001254754262466,
+        "top_capture": false
+      },
+      "phase_transitions": [
+        {
+          "sim_s": 0.0,
+          "phase": "fold",
+          "yaw_sigma_rad": 0.05235987755982989,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 0.6,
+          "phase": "pickup_search",
+          "yaw_sigma_rad": 0.05235987755982989,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 0.7,
+          "phase": "approach",
+          "yaw_sigma_rad": 0.05235987755982989,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 9.7,
+          "phase": "align",
+          "yaw_sigma_rad": 0.1471001843148484,
+          "issued_distance_since_fix_m": 0.9070539610464041,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 11.4,
+          "phase": "hover",
+          "yaw_sigma_rad": 0.1566415204250743,
+          "issued_distance_since_fix_m": 1.002467322148663,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 12.4,
+          "phase": "descent",
+          "yaw_sigma_rad": 0.1566415204250743,
+          "issued_distance_since_fix_m": 1.002467322148663,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 14.0,
+          "phase": "close",
+          "yaw_sigma_rad": 0.1566415204250743,
+          "issued_distance_since_fix_m": 1.002467322148663,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 15.1,
+          "phase": "lift",
+          "yaw_sigma_rad": 0.1566415204250743,
+          "issued_distance_since_fix_m": 1.002467322148663,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 16.6,
+          "phase": "lift_settle",
+          "yaw_sigma_rad": 0.1566415204250743,
+          "issued_distance_since_fix_m": 1.002467322148663,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 19.8,
+          "phase": "lookback_pose",
+          "yaw_sigma_rad": 0.1566415204250743,
+          "issued_distance_since_fix_m": 1.002467322148663,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 20.9,
+          "phase": "lookback",
+          "yaw_sigma_rad": 0.1566415204250743,
+          "issued_distance_since_fix_m": 1.002467322148663,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 23.4,
+          "phase": "lookback_settle",
+          "yaw_sigma_rad": 0.17191700470434723,
+          "issued_distance_since_fix_m": 1.1552221649413927,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 23.9,
+          "phase": "verify_lift",
+          "yaw_sigma_rad": 0.17191700470434723,
+          "issued_distance_since_fix_m": 1.1552221649413927,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 25.0,
+          "phase": "hold",
+          "yaw_sigma_rad": 0.17191700470434723,
+          "issued_distance_since_fix_m": 1.1552221649413927,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 28.0,
+          "phase": "carry_prepare",
+          "yaw_sigma_rad": 0.17191700470434723,
+          "issued_distance_since_fix_m": 1.1552221649413927,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 29.0,
+          "phase": "carry_to_zone",
+          "yaw_sigma_rad": 0.17191700470434723,
+          "issued_distance_since_fix_m": 1.1552221649413927,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 31.2,
+          "phase": "carry_recover_lower",
+          "yaw_sigma_rad": 0.18909014032191584,
+          "issued_distance_since_fix_m": 1.3269535211170784,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 32.2,
+          "phase": "carry_recover_open",
+          "yaw_sigma_rad": 0.18909014032191584,
+          "issued_distance_since_fix_m": 1.3269535211170784,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 32.9,
+          "phase": "carry_recover_retract",
+          "yaw_sigma_rad": 0.18909014032191584,
+          "issued_distance_since_fix_m": 1.3269535211170784,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 34.7,
+          "phase": "carry_recover_backoff",
+          "yaw_sigma_rad": 0.18909014032191584,
+          "issued_distance_since_fix_m": 1.3269535211170784,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 37.2,
+          "phase": "carry_reobserve",
+          "yaw_sigma_rad": 0.2043656246011888,
+          "issued_distance_since_fix_m": 1.479708363909808,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 63.5,
+          "phase": "carry_recover_restore",
+          "yaw_sigma_rad": 1.3280348716419619,
+          "issued_distance_since_fix_m": 1.479708363909808,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 64.6,
+          "phase": "carry_reacquire",
+          "yaw_sigma_rad": 0.02346157802852767,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 1
+        },
+        {
+          "sim_s": 66.7,
+          "phase": "approach",
+          "yaw_sigma_rad": 0.1672371303610578,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 1
+        },
+        {
+          "sim_s": 67.6,
+          "phase": "align",
+          "yaw_sigma_rad": 0.25353790542874066,
+          "issued_distance_since_fix_m": 0.07714355051663561,
+          "rgb_fixes": 1
+        },
+        {
+          "sim_s": 67.8,
+          "phase": "carry_reobserve",
+          "yaw_sigma_rad": 0.2845049474695933,
+          "issued_distance_since_fix_m": 0.07714355051663561,
+          "rgb_fixes": 1
+        }
+      ],
+      "last_trace_sim_s": 76.79999999988114,
+      "last_phase": "carry_reobserve",
+      "review_frames_s": [
+        0.0,
+        15.0,
+        30.0,
+        46.0,
+        61.0,
+        76.0
+      ],
+      "evaluation_samples": 769,
+      "wall_per_sim_including_setup_and_shutdown": 3.6726290358911244,
+      "operator_outcome": "SUPERVISOR_INTERRUPTED",
+      "success_confirmed": false,
+      "stop_marker_sha256": "a4c054d901ee20f0951592b24ace5b42e67ae5947e209834d30aa6f97402f83d"
+    },
+    {
+      "name": "solo-carry-93313-rotation-987d033f",
+      "stage": "fresh_eight",
+      "seed": 93313,
+      "kind": "yellow",
+      "candidate": "rotation",
+      "submitted": true,
+      "source_sha": "987d033f28b40aa6182c1cde0dff2982e1d546d6",
+      "host": "gcp1",
+      "machine_type": "n4-highcpu-64",
+      "status": "interrupted",
+      "exit": "130",
+      "result_sha256": "4b78e6622b6b655f88e2af4b4b4592e81c29318315ca1db68bba87f1f939bcd3",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/solo-carry-93313-rotation-987d033f",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93313-rotation-987d033f",
+      "retrieval_receipt": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-987d033f-ops/solo-carry-93313-rotation-987d033f-retrieval.json",
+      "review": {
+        "run": "solo-carry-93313-rotation-987d033f",
+        "frames": [
+          "raw/review-own/000000.jpg",
+          "raw/review-own/000150.jpg",
+          "raw/review-own/000290.jpg",
+          "raw/review-own/000440.jpg",
+          "raw/review-own/000580.jpg",
+          "raw/review-own/000730.jpg"
+        ],
+        "frame_times_s": [
+          0.0,
+          15.0,
+          29.0,
+          44.0,
+          58.0,
+          73.0
+        ],
+        "directly_viewed": true,
+        "montage": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-987d033f-ops/solo-carry-93313-rotation-987d033f-montage.jpg",
+        "montage_sha256": "5333def18519408c374369e123d41d74fb100a5540bcb0efc614bf5f595e490a",
+        "scope": "one active solo robot r1; own camera only; TOP capture disabled, r2 own camera not recorded"
+      },
+      "result_fields": {
+        "physical_success": null,
+        "lift_success": null,
+        "zone_placement_success": null,
+        "release_success": null,
+        "no_drop_during_carry": null,
+        "termination_reason": null,
+        "error_type": "KeyboardInterrupt",
+        "error": ""
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 561,
+        "blocked_held": 0,
+        "measurements_by_phase": {
+          "pickup_search": 1,
+          "approach": 157,
+          "carry_reobserve": 15,
+          "carry_reacquire": 1
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "training_rgb": false,
+      "top_rgb_control_allowed": false,
+      "top_rgb_control_evidence": "per-tick map_pose ledger",
+      "episode_plan_sha256": "1a2439feee79094d932f36ee8faf13d2381c8b6fb14ba5790d0b3bb4d6b44f6f",
+      "first30": {
+        "elapsed_sim_s": 30.00000000005842,
+        "wall_elapsed_s": 111.63929427999756,
+        "wall_per_sim": 3.7213098277260532,
+        "top_capture": false
+      },
+      "phase_transitions": [
+        {
+          "sim_s": 0.0,
+          "phase": "fold",
+          "yaw_sigma_rad": 0.05235987755982989,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 0.6,
+          "phase": "pickup_search",
+          "yaw_sigma_rad": 0.05235987755982989,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 6.5,
+          "phase": "approach",
+          "yaw_sigma_rad": 0.05235987755982989,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 22.1,
+          "phase": "carry_reobserve",
+          "yaw_sigma_rad": 0.25466152485463894,
+          "issued_distance_since_fix_m": 1.2975168271924835,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 32.3,
+          "phase": "carry_recover_restore",
+          "yaw_sigma_rad": 0.6298531989692576,
+          "issued_distance_since_fix_m": 1.2975168271924835,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 33.3,
+          "phase": "carry_reacquire",
+          "yaw_sigma_rad": 0.015038533629467494,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 1
+        },
+        {
+          "sim_s": 41.9,
+          "phase": "approach",
+          "yaw_sigma_rad": 0.5591325311587684,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 1
+        },
+        {
+          "sim_s": 42.0,
+          "phase": "carry_reobserve",
+          "yaw_sigma_rad": 0.5591325311587684,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 1
+        }
+      ],
+      "last_trace_sim_s": 73.39999999996154,
+      "last_phase": "carry_reobserve",
+      "review_frames_s": [
+        0.0,
+        15.0,
+        29.0,
+        44.0,
+        58.0,
+        73.0
+      ],
+      "evaluation_samples": 735,
+      "wall_per_sim_including_setup_and_shutdown": 3.6996509301381986,
+      "operator_outcome": "SUPERVISOR_INTERRUPTED",
+      "success_confirmed": false,
+      "stop_marker_sha256": "d0c6bc00450caecb4516fdb34acffbd91d783beda6c770fb2528d7d248f130a8"
+    },
+    {
+      "name": "solo-carry-93313-rotation_wall_search-987d033f",
+      "stage": "fresh_eight",
+      "seed": 93313,
+      "kind": "yellow",
+      "candidate": "rotation_wall_search",
+      "submitted": true,
+      "source_sha": "987d033f28b40aa6182c1cde0dff2982e1d546d6",
+      "host": "gcp1",
+      "machine_type": "n4-highcpu-64",
+      "status": "interrupted",
+      "exit": "130",
+      "result_sha256": "1a4947294631beb6320e99463242b182da78dd63cb86906ac040c877ea9f543e",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/solo-carry-93313-rotation_wall_search-987d033f",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93313-rotation_wall_search-987d033f",
+      "retrieval_receipt": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-987d033f-ops/solo-carry-93313-rotation_wall_search-987d033f-retrieval.json",
+      "review": {
+        "run": "solo-carry-93313-rotation_wall_search-987d033f",
+        "frames": [
+          "raw/review-own/000000.jpg",
+          "raw/review-own/000140.jpg",
+          "raw/review-own/000280.jpg",
+          "raw/review-own/000420.jpg",
+          "raw/review-own/000560.jpg",
+          "raw/review-own/000700.jpg"
+        ],
+        "frame_times_s": [
+          0.0,
+          14.0,
+          28.0,
+          42.0,
+          56.0,
+          70.0
+        ],
+        "directly_viewed": true,
+        "montage": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-987d033f-ops/solo-carry-93313-rotation_wall_search-987d033f-montage.jpg",
+        "montage_sha256": "d0a72ce36281db37f9fc559464bb8144f84ddad033ac481d43c04cc74bf51fb2",
+        "scope": "one active solo robot r1; own camera only; TOP capture disabled, r2 own camera not recorded"
+      },
+      "result_fields": {
+        "physical_success": null,
+        "lift_success": null,
+        "zone_placement_success": null,
+        "release_success": null,
+        "no_drop_during_carry": null,
+        "termination_reason": null,
+        "error_type": "KeyboardInterrupt",
+        "error": ""
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 534,
+        "blocked_held": 0,
+        "measurements_by_phase": {
+          "pickup_search": 1,
+          "approach": 157,
+          "carry_reobserve": 15,
+          "carry_reacquire": 1
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "training_rgb": false,
+      "top_rgb_control_allowed": false,
+      "top_rgb_control_evidence": "per-tick map_pose ledger",
+      "episode_plan_sha256": "cc5b8a23bb1a38320fb97825a9f18ef7b75e20dd5300143d9776df8b189f653e",
+      "first30": {
+        "elapsed_sim_s": 30.00000000005842,
+        "wall_elapsed_s": 110.18367761199988,
+        "wall_per_sim": 3.6727892770262187,
+        "top_capture": false
+      },
+      "phase_transitions": [
+        {
+          "sim_s": 0.0,
+          "phase": "fold",
+          "yaw_sigma_rad": 0.05235987755982989,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 0.6,
+          "phase": "pickup_search",
+          "yaw_sigma_rad": 0.05235987755982989,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 6.5,
+          "phase": "approach",
+          "yaw_sigma_rad": 0.05235987755982989,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 22.1,
+          "phase": "carry_reobserve",
+          "yaw_sigma_rad": 0.25466152485463894,
+          "issued_distance_since_fix_m": 1.2975168271924835,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 32.3,
+          "phase": "carry_recover_restore",
+          "yaw_sigma_rad": 0.6298531989692576,
+          "issued_distance_since_fix_m": 1.2975168271924835,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 33.3,
+          "phase": "carry_reacquire",
+          "yaw_sigma_rad": 0.015038533629467494,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 1
+        },
+        {
+          "sim_s": 42.0,
+          "phase": "approach",
+          "yaw_sigma_rad": 0.5655336370120543,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 1
+        },
+        {
+          "sim_s": 42.1,
+          "phase": "carry_reobserve",
+          "yaw_sigma_rad": 0.5655336370120543,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 1
+        }
+      ],
+      "last_trace_sim_s": 70.60000000002775,
+      "last_phase": "carry_reobserve",
+      "review_frames_s": [
+        0.0,
+        14.0,
+        28.0,
+        42.0,
+        56.0,
+        70.0
+      ],
+      "evaluation_samples": 707,
+      "wall_per_sim_including_setup_and_shutdown": 3.673820803468806,
+      "operator_outcome": "SUPERVISOR_INTERRUPTED",
+      "success_confirmed": false,
+      "stop_marker_sha256": "f053898d075f90f5d6eea161c08c905be2e6e8ecfccd7f9d32ebaaaff561bffd"
+    },
+    {
+      "name": "solo-carry-93314-rotation-987d033f",
+      "stage": "fresh_eight",
+      "seed": 93314,
+      "kind": "cyan",
+      "candidate": "rotation",
+      "submitted": true,
+      "source_sha": "987d033f28b40aa6182c1cde0dff2982e1d546d6",
+      "host": "gcp1",
+      "machine_type": "n4-highcpu-64",
+      "status": "interrupted",
+      "exit": "130",
+      "result_sha256": "ca3d91b186a428cb4e3a5a380c79aa0f6994542e71d873ba5367e5a12519300f",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/solo-carry-93314-rotation-987d033f",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93314-rotation-987d033f",
+      "retrieval_receipt": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-987d033f-ops/solo-carry-93314-rotation-987d033f-retrieval.json",
+      "review": {
+        "run": "solo-carry-93314-rotation-987d033f",
+        "frames": [
+          "raw/review-own/000000.jpg",
+          "raw/review-own/000140.jpg",
+          "raw/review-own/000280.jpg",
+          "raw/review-own/000430.jpg",
+          "raw/review-own/000570.jpg",
+          "raw/review-own/000710.jpg"
+        ],
+        "frame_times_s": [
+          0.0,
+          14.0,
+          28.0,
+          43.0,
+          57.0,
+          71.0
+        ],
+        "directly_viewed": true,
+        "montage": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-987d033f-ops/solo-carry-93314-rotation-987d033f-montage.jpg",
+        "montage_sha256": "8c4dcaec56129f505758fc5765a3e85fe1207e59409cde5570d21305c65f68bd",
+        "scope": "one active solo robot r1; own camera only; TOP capture disabled, r2 own camera not recorded"
+      },
+      "result_fields": {
+        "physical_success": null,
+        "lift_success": null,
+        "zone_placement_success": null,
+        "release_success": null,
+        "no_drop_during_carry": null,
+        "termination_reason": null,
+        "error_type": "KeyboardInterrupt",
+        "error": ""
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 537,
+        "blocked_held": 0,
+        "measurements_by_phase": {
+          "pickup_search": 1,
+          "approach": 153,
+          "carry_reobserve": 24,
+          "carry_reacquire": 1
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "training_rgb": false,
+      "top_rgb_control_allowed": false,
+      "top_rgb_control_evidence": "per-tick map_pose ledger",
+      "episode_plan_sha256": "08209a8aa183e4a714023f39abe09d7d3a50700f9288dd844b7326a57843cefa",
+      "first30": {
+        "elapsed_sim_s": 30.00000000005842,
+        "wall_elapsed_s": 98.77602801699686,
+        "wall_per_sim": 3.292534286893488,
+        "top_capture": false
+      },
+      "phase_transitions": [
+        {
+          "sim_s": 0.0,
+          "phase": "fold",
+          "yaw_sigma_rad": 0.05235987755982989,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 0.6,
+          "phase": "pickup_search",
+          "yaw_sigma_rad": 0.05235987755982989,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 6.5,
+          "phase": "approach",
+          "yaw_sigma_rad": 0.05235987755982989,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 21.7,
+          "phase": "carry_reobserve",
+          "yaw_sigma_rad": 0.2799411121258911,
+          "issued_distance_since_fix_m": 1.261293760563318,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 37.2,
+          "phase": "carry_recover_restore",
+          "yaw_sigma_rad": 1.0407837717497623,
+          "issued_distance_since_fix_m": 1.261293760563318,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 38.2,
+          "phase": "carry_reacquire",
+          "yaw_sigma_rad": 0.01884459248883567,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 1
+        },
+        {
+          "sim_s": 53.1,
+          "phase": "approach",
+          "yaw_sigma_rad": 0.9662082587751475,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 1
+        },
+        {
+          "sim_s": 53.2,
+          "phase": "carry_reobserve",
+          "yaw_sigma_rad": 0.9662082587751475,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 1
+        }
+      ],
+      "last_trace_sim_s": 71.40000000000883,
+      "last_phase": "carry_reobserve",
+      "review_frames_s": [
+        0.0,
+        14.0,
+        28.0,
+        43.0,
+        57.0,
+        71.0
+      ],
+      "evaluation_samples": 715,
+      "wall_per_sim_including_setup_and_shutdown": 3.4652274943833277,
+      "operator_outcome": "SUPERVISOR_INTERRUPTED",
+      "success_confirmed": false,
+      "stop_marker_sha256": "3124de65fb00ae1c2a4ff7338cca023f4dbf797d9c3be56a2784220cfe7ddd6d"
+    },
+    {
+      "name": "solo-carry-93314-rotation_wall_search-987d033f",
+      "stage": "fresh_eight",
+      "seed": 93314,
+      "kind": "cyan",
+      "candidate": "rotation_wall_search",
+      "submitted": true,
+      "source_sha": "987d033f28b40aa6182c1cde0dff2982e1d546d6",
+      "host": "gcp1",
+      "machine_type": "n4-highcpu-64",
+      "status": "interrupted",
+      "exit": "130",
+      "result_sha256": "76ecd5dd167499960ea5ced7b292b1f72e607fbc7763b38bfe9ec9de4a5487bf",
+      "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/solo-carry-93314-rotation_wall_search-987d033f",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93314-rotation_wall_search-987d033f",
+      "retrieval_receipt": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-987d033f-ops/solo-carry-93314-rotation_wall_search-987d033f-retrieval.json",
+      "review": {
+        "run": "solo-carry-93314-rotation_wall_search-987d033f",
+        "frames": [
+          "raw/review-own/000000.jpg",
+          "raw/review-own/000140.jpg",
+          "raw/review-own/000280.jpg",
+          "raw/review-own/000410.jpg",
+          "raw/review-own/000550.jpg",
+          "raw/review-own/000690.jpg"
+        ],
+        "frame_times_s": [
+          0.0,
+          14.0,
+          28.0,
+          41.0,
+          55.0,
+          69.0
+        ],
+        "directly_viewed": true,
+        "montage": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-987d033f-ops/solo-carry-93314-rotation_wall_search-987d033f-montage.jpg",
+        "montage_sha256": "36af2369009faee8ed8f0034d94e14b640d9b37e5564c7aa4e507f90bb3b00d0",
+        "scope": "one active solo robot r1; own camera only; TOP capture disabled, r2 own camera not recorded"
+      },
+      "result_fields": {
+        "physical_success": null,
+        "lift_success": null,
+        "zone_placement_success": null,
+        "release_success": null,
+        "no_drop_during_carry": null,
+        "termination_reason": null,
+        "error_type": "KeyboardInterrupt",
+        "error": ""
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 503,
+        "blocked_held": 0,
+        "measurements_by_phase": {
+          "pickup_search": 1,
+          "approach": 153,
+          "carry_reobserve": 34,
+          "carry_reacquire": 1
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "training_rgb": false,
+      "top_rgb_control_allowed": false,
+      "top_rgb_control_evidence": "per-tick map_pose ledger",
+      "episode_plan_sha256": "8db77cf06abadb7a67b78b6c080ef9a6dd0279864530dd6caf6a052d66c616ac",
+      "first30": {
+        "elapsed_sim_s": 30.00000000005842,
+        "wall_elapsed_s": 95.81198972000129,
+        "wall_per_sim": 3.1937330106604,
+        "top_capture": false
+      },
+      "phase_transitions": [
+        {
+          "sim_s": 0.0,
+          "phase": "fold",
+          "yaw_sigma_rad": 0.05235987755982989,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 0.6,
+          "phase": "pickup_search",
+          "yaw_sigma_rad": 0.05235987755982989,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 6.5,
+          "phase": "approach",
+          "yaw_sigma_rad": 0.05235987755982989,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 21.7,
+          "phase": "carry_reobserve",
+          "yaw_sigma_rad": 0.2799411121258911,
+          "issued_distance_since_fix_m": 1.261293760563318,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 37.2,
+          "phase": "carry_recover_restore",
+          "yaw_sigma_rad": 1.0407837717497623,
+          "issued_distance_since_fix_m": 1.261293760563318,
+          "rgb_fixes": 0
+        },
+        {
+          "sim_s": 38.2,
+          "phase": "carry_reacquire",
+          "yaw_sigma_rad": 0.01884459248883567,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 1
+        },
+        {
+          "sim_s": 54.2,
+          "phase": "approach",
+          "yaw_sigma_rad": 1.036620423161293,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 1
+        },
+        {
+          "sim_s": 54.3,
+          "phase": "carry_reobserve",
+          "yaw_sigma_rad": 1.036620423161293,
+          "issued_distance_since_fix_m": 0.0,
+          "rgb_fixes": 1
+        }
+      ],
+      "last_trace_sim_s": 69.10000000006322,
+      "last_phase": "carry_reobserve",
+      "review_frames_s": [
+        0.0,
+        14.0,
+        28.0,
+        41.0,
+        55.0,
+        69.0
+      ],
+      "evaluation_samples": 692,
+      "wall_per_sim_including_setup_and_shutdown": 3.4169711310388315,
+      "operator_outcome": "SUPERVISOR_INTERRUPTED",
+      "success_confirmed": false,
+      "stop_marker_sha256": "63576da7c0035e6902e2964e5694bef9afda6622e512aa4bbf1bfc059137fa6e"
+    },
+    {
+      "name": "solo-carry-93315-rotation-987d033f",
+      "stage": "fresh_eight",
+      "seed": 93315,
+      "kind": "red",
+      "candidate": "rotation",
+      "submitted": false,
+      "source_sha": "987d033f28b40aa6182c1cde0dff2982e1d546d6",
+      "host": "gcp1",
+      "machine_type": "n4-highcpu-64",
+      "operator_outcome": "BLOCKED_SAME_DEFECT",
+      "result": null
+    },
+    {
+      "name": "solo-carry-93315-rotation_wall_search-987d033f",
+      "stage": "fresh_eight",
+      "seed": 93315,
+      "kind": "red",
+      "candidate": "rotation_wall_search",
+      "submitted": false,
+      "source_sha": "987d033f28b40aa6182c1cde0dff2982e1d546d6",
+      "host": "gcp1",
+      "machine_type": "n4-highcpu-64",
+      "operator_outcome": "BLOCKED_SAME_DEFECT",
+      "result": null
+    },
+    {
+      "name": "solo-carry-93316-rotation-987d033f",
+      "stage": "fresh_eight",
+      "seed": 93316,
+      "kind": "green",
+      "candidate": "rotation",
+      "submitted": false,
+      "source_sha": "987d033f28b40aa6182c1cde0dff2982e1d546d6",
+      "host": "gcp1",
+      "machine_type": "n4-highcpu-64",
+      "operator_outcome": "BLOCKED_SAME_DEFECT",
+      "result": null
+    },
+    {
+      "name": "solo-carry-93316-rotation_wall_search-987d033f",
+      "stage": "fresh_eight",
+      "seed": 93316,
+      "kind": "green",
+      "candidate": "rotation_wall_search",
+      "submitted": false,
+      "source_sha": "987d033f28b40aa6182c1cde0dff2982e1d546d6",
+      "host": "gcp1",
+      "machine_type": "n4-highcpu-64",
+      "operator_outcome": "BLOCKED_SAME_DEFECT",
+      "result": null
+    },
+    {
+      "name": "solo-carry-93317-rotation-987d033f",
+      "stage": "fresh_eight",
+      "seed": 93317,
+      "kind": "yellow",
+      "candidate": "rotation",
+      "submitted": false,
+      "source_sha": "987d033f28b40aa6182c1cde0dff2982e1d546d6",
+      "host": "gcp1",
+      "machine_type": "n4-highcpu-64",
+      "operator_outcome": "BLOCKED_SAME_DEFECT",
+      "result": null
+    },
+    {
+      "name": "solo-carry-93317-rotation_wall_search-987d033f",
+      "stage": "fresh_eight",
+      "seed": 93317,
+      "kind": "yellow",
+      "candidate": "rotation_wall_search",
+      "submitted": false,
+      "source_sha": "987d033f28b40aa6182c1cde0dff2982e1d546d6",
+      "host": "gcp1",
+      "machine_type": "n4-highcpu-64",
+      "operator_outcome": "BLOCKED_SAME_DEFECT",
+      "result": null
+    }
+  ],
+  "completion_checks": {
+    "own_live_python": [],
+    "other_active_runs": [
+      "crate18-full-reproduction-79314-487579ea",
+      "crate18-no_clearance-reproduction-79451-487579ea"
+    ],
+    "own_leases": [],
+    "own_active_reservations": [],
+    "top_capture_files_or_dirs": [],
+    "idle_guard": "active",
+    "remote_free_bytes": 136025915392,
+    "at": "2026-10-15 18:44:16 KST"
+  }
+}

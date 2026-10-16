@@ -1,0 +1,375 @@
+{
+  "scope": "GCP raw evaluator diagnostics only; no replay or new simulation; numeric heading error is evaluation-only. All six cases have 6 own-camera frames per robot directly reviewed.",
+  "rows": [
+    {
+      "episode": "episode-000",
+      "seed": 315709,
+      "scene": "cargo_v6",
+      "category": "cap_end",
+      "cap_end_reason": "planning_wall_safety_cap",
+      "raw": "/home/ugrp/ugrp-sim/runs/search26-comparison32-f92b07aa/diagnostic/episode-000/raw",
+      "decoded_result_sha256": "3c0f1571933d68ae75e775e2d9ba1c98409591a457247950f9489ec426743657",
+      "robots": [
+        {
+          "rid": "r1",
+          "assigned_end": "blue",
+          "outcome": null,
+          "final_phase": "approach",
+          "evaluator_end_distance_m": 0.13876731557811287,
+          "evaluator_inward_yaw_error_deg": 113.05885401913734,
+          "evaluation_only": true,
+          "candidate_rejections": [
+            {
+              "reason": "endpoint_feasible",
+              "blocked_object": "none:endpoint_feasible",
+              "N": 51
+            },
+            {
+              "reason": "blocked_goal",
+              "blocked_object": "yellow_1",
+              "N": 26
+            },
+            {
+              "reason": "blocked_retreat",
+              "blocked_object": "yellow_1",
+              "N": 13
+            },
+            {
+              "reason": "feasible",
+              "blocked_object": "yellow_1",
+              "N": 1
+            }
+          ],
+          "final_command_reject_N": 6,
+          "final_command_min_gap_m_range": [
+            0.00015845240282495732,
+            0.0007118246109096352
+          ],
+          "last_recovery_events": [
+            {
+              "t": 32.10000000006226,
+              "recovery": "last_view_then_near_scan",
+              "unseen_s": 14.400000000068758
+            }
+          ]
+        },
+        {
+          "rid": "r2",
+          "assigned_end": "teal",
+          "outcome": null,
+          "final_phase": "ready",
+          "evaluator_end_distance_m": 0.20268078426006286,
+          "evaluator_inward_yaw_error_deg": 0.06050599912345147,
+          "evaluation_only": true,
+          "candidate_rejections": [],
+          "final_command_reject_N": 0,
+          "final_command_min_gap_m_range": null,
+          "last_recovery_events": []
+        }
+      ],
+      "observed_relation": "different assigned ends; no evidence of both selecting the same end in reviewed frames"
+    },
+    {
+      "episode": "episode-001",
+      "seed": 315709,
+      "scene": "off",
+      "category": "teacher_failure",
+      "cap_end_reason": "teacher_terminal",
+      "raw": "/home/ugrp/ugrp-sim/runs/search26-comparison32-f92b07aa/diagnostic/episode-001/raw",
+      "decoded_result_sha256": "9bccab809dfd7ae993e593e1d02fb00388c8dfff6fee69bf03a1ad50518fd689",
+      "robots": [
+        {
+          "rid": "r1",
+          "assigned_end": "blue",
+          "outcome": "approach_blocked_handoff",
+          "final_phase": "approach",
+          "evaluator_end_distance_m": 0.14060467878965838,
+          "evaluator_inward_yaw_error_deg": 126.6676965018609,
+          "evaluation_only": true,
+          "candidate_rejections": [
+            {
+              "reason": "unsafe_body_sweep",
+              "blocked_object": "band_blue",
+              "N": 5824
+            },
+            {
+              "reason": "blocked_goal",
+              "blocked_object": "can_1",
+              "N": 4407
+            },
+            {
+              "reason": "endpoint_feasible",
+              "blocked_object": "none:endpoint_feasible",
+              "N": 51
+            },
+            {
+              "reason": "feasible",
+              "blocked_object": "can_1",
+              "N": 1
+            }
+          ],
+          "final_command_reject_N": 71,
+          "final_command_min_gap_m_range": [
+            -0.0016658526357572513,
+            -0.00024024721587798462
+          ],
+          "last_recovery_events": [
+            {
+              "t": 31.800000000060827,
+              "recovery": "last_view_then_near_scan",
+              "unseen_s": 14.400000000068758
+            }
+          ]
+        },
+        {
+          "rid": "r2",
+          "assigned_end": "teal",
+          "outcome": "peer_approach_handoff",
+          "final_phase": "ready",
+          "evaluator_end_distance_m": 0.20219824779863751,
+          "evaluator_inward_yaw_error_deg": 0.02113834493953389,
+          "evaluation_only": true,
+          "candidate_rejections": [],
+          "final_command_reject_N": 0,
+          "final_command_min_gap_m_range": null,
+          "last_recovery_events": []
+        }
+      ],
+      "observed_relation": "different assigned ends; no evidence of both selecting the same end in reviewed frames"
+    },
+    {
+      "episode": "episode-004",
+      "seed": 8311723,
+      "scene": "off",
+      "category": "teacher_failure",
+      "cap_end_reason": "teacher_terminal",
+      "raw": "/home/ugrp/ugrp-sim/runs/search26-comparison32-f92b07aa/diagnostic/episode-004/raw",
+      "decoded_result_sha256": "123ea62cdbea16de8e793bf0709899a6082b334293ccc5c0087f3d69f0c13d48",
+      "robots": [
+        {
+          "rid": "r1",
+          "assigned_end": "blue",
+          "outcome": "approach_blocked_handoff",
+          "final_phase": "approach",
+          "evaluator_end_distance_m": 1.1480109742434843,
+          "evaluator_inward_yaw_error_deg": 160.3545984263876,
+          "evaluation_only": true,
+          "candidate_rejections": [
+            {
+              "reason": "blocked_goal",
+              "blocked_object": "can_1",
+              "N": 4368
+            }
+          ],
+          "final_command_reject_N": 0,
+          "final_command_min_gap_m_range": null,
+          "last_recovery_events": []
+        },
+        {
+          "rid": "r2",
+          "assigned_end": "teal",
+          "outcome": "peer_approach_handoff",
+          "final_phase": "approach",
+          "evaluator_end_distance_m": 0.2797917863860718,
+          "evaluator_inward_yaw_error_deg": 134.76081540977262,
+          "evaluation_only": true,
+          "candidate_rejections": [],
+          "final_command_reject_N": 0,
+          "final_command_min_gap_m_range": null,
+          "last_recovery_events": []
+        }
+      ],
+      "observed_relation": "different assigned ends; no evidence of both selecting the same end in reviewed frames"
+    },
+    {
+      "episode": "episode-005",
+      "seed": 8311723,
+      "scene": "cargo_v6",
+      "category": "teacher_failure",
+      "cap_end_reason": "teacher_terminal",
+      "raw": "/home/ugrp/ugrp-sim/runs/search26-comparison32-f92b07aa/diagnostic/episode-005/raw",
+      "decoded_result_sha256": "cabf0473ff785ce4199d4c54aa57a2b6139343c9d04407e8dae6234d46954c39",
+      "robots": [
+        {
+          "rid": "r1",
+          "assigned_end": "blue",
+          "outcome": "approach_blocked_handoff",
+          "final_phase": "approach",
+          "evaluator_end_distance_m": 1.1481372568559003,
+          "evaluator_inward_yaw_error_deg": 159.96928123562975,
+          "evaluation_only": true,
+          "candidate_rejections": [
+            {
+              "reason": "blocked_goal",
+              "blocked_object": "red_1",
+              "N": 4368
+            }
+          ],
+          "final_command_reject_N": 0,
+          "final_command_min_gap_m_range": null,
+          "last_recovery_events": []
+        },
+        {
+          "rid": "r2",
+          "assigned_end": "teal",
+          "outcome": "peer_approach_handoff",
+          "final_phase": "approach",
+          "evaluator_end_distance_m": 0.22279705977000533,
+          "evaluator_inward_yaw_error_deg": 137.58418161412547,
+          "evaluation_only": true,
+          "candidate_rejections": [],
+          "final_command_reject_N": 0,
+          "final_command_min_gap_m_range": null,
+          "last_recovery_events": []
+        }
+      ],
+      "observed_relation": "different assigned ends; no evidence of both selecting the same end in reviewed frames"
+    },
+    {
+      "episode": "episode-006",
+      "seed": 8311711,
+      "scene": "off",
+      "category": "teacher_failure",
+      "cap_end_reason": "teacher_terminal",
+      "raw": "/home/ugrp/ugrp-sim/runs/search26-comparison32-f92b07aa/diagnostic/episode-006/raw",
+      "decoded_result_sha256": "864b79b64d06ae1b692bda6a5ee452e8dd7f82d43eb866109df0afaa1a25915c",
+      "robots": [
+        {
+          "rid": "r1",
+          "assigned_end": "blue",
+          "outcome": "peer_approach_handoff",
+          "final_phase": "approach",
+          "evaluator_end_distance_m": 0.15074510992248796,
+          "evaluator_inward_yaw_error_deg": 88.67735216248818,
+          "evaluation_only": true,
+          "candidate_rejections": [],
+          "final_command_reject_N": 0,
+          "final_command_min_gap_m_range": null,
+          "last_recovery_events": []
+        },
+        {
+          "rid": "r2",
+          "assigned_end": "teal",
+          "outcome": "approach_blocked_handoff",
+          "final_phase": "approach",
+          "evaluator_end_distance_m": 0.3022641290548719,
+          "evaluator_inward_yaw_error_deg": 140.63703279678347,
+          "evaluation_only": true,
+          "candidate_rejections": [],
+          "final_command_reject_N": 0,
+          "final_command_min_gap_m_range": null,
+          "last_recovery_events": [
+            {
+              "t": 16.59999999998825,
+              "recovery": "safe_prefix",
+              "endpoint": [
+                1.575000000000001,
+                -0.3249999999999975
+              ],
+              "points": 81
+            },
+            {
+              "t": 17.599999999993024,
+              "recovery": "safe_prefix",
+              "endpoint": [
+                1.637500000000002,
+                -0.31249999999999734
+              ],
+              "points": 72
+            },
+            {
+              "t": 18.5999999999978,
+              "recovery": "safe_prefix",
+              "endpoint": [
+                1.637500000000002,
+                -0.31249999999999734
+              ],
+              "points": 61
+            },
+            {
+              "t": 24.700000000026925,
+              "recovery": "peer_and_own_no_progress_handoff",
+              "own_best_distance_m": 0.4699669806087272,
+              "own_best_angle_rad": 2.4534125131248197,
+              "fresh_peer_motion_age_s": 8.000000000038199
+            }
+          ]
+        }
+      ],
+      "observed_relation": "different assigned ends; no evidence of both selecting the same end in reviewed frames"
+    },
+    {
+      "episode": "episode-007",
+      "seed": 8311711,
+      "scene": "cargo_v6",
+      "category": "teacher_failure",
+      "cap_end_reason": "teacher_terminal",
+      "raw": "/home/ugrp/ugrp-sim/runs/search26-comparison32-f92b07aa/diagnostic/episode-007/raw",
+      "decoded_result_sha256": "a6e2d662815e4a7ca205a589dcd31bd278d73dbaf5a21f7ab4173b1f981ff190",
+      "robots": [
+        {
+          "rid": "r1",
+          "assigned_end": "blue",
+          "outcome": "peer_approach_handoff",
+          "final_phase": "approach",
+          "evaluator_end_distance_m": 0.15006713923006734,
+          "evaluator_inward_yaw_error_deg": 85.46050554852118,
+          "evaluation_only": true,
+          "candidate_rejections": [],
+          "final_command_reject_N": 0,
+          "final_command_min_gap_m_range": null,
+          "last_recovery_events": []
+        },
+        {
+          "rid": "r2",
+          "assigned_end": "teal",
+          "outcome": "approach_blocked_handoff",
+          "final_phase": "approach",
+          "evaluator_end_distance_m": 0.3153996583948449,
+          "evaluator_inward_yaw_error_deg": 138.82426982227315,
+          "evaluation_only": true,
+          "candidate_rejections": [],
+          "final_command_reject_N": 0,
+          "final_command_min_gap_m_range": null,
+          "last_recovery_events": [
+            {
+              "t": 16.59999999998825,
+              "recovery": "safe_prefix",
+              "endpoint": [
+                1.3000000000000007,
+                -0.1999999999999993
+              ],
+              "points": 41
+            },
+            {
+              "t": 17.599999999993024,
+              "recovery": "safe_prefix",
+              "endpoint": [
+                1.4900000000000007,
+                -0.29999999999999716
+              ],
+              "points": 56
+            },
+            {
+              "t": 18.5999999999978,
+              "recovery": "safe_prefix",
+              "endpoint": [
+                1.3500000000000014,
+                -0.25
+              ],
+              "points": 22
+            },
+            {
+              "t": 24.800000000027403,
+              "recovery": "peer_and_own_no_progress_handoff",
+              "own_best_distance_m": 0.47701655563284895,
+              "own_best_angle_rad": 2.436258641757864,
+              "fresh_peer_motion_age_s": 8.000000000038199
+            }
+          ]
+        }
+      ],
+      "observed_relation": "different assigned ends; no evidence of both selecting the same end in reviewed frames"
+    }
+  ]
+}

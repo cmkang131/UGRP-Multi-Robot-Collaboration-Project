@@ -1,0 +1,275 @@
+{
+  "schema": "ugrp.gcp_ops_summary.v1",
+  "at": "2026-10-15 13:32:03 KST",
+  "queue": "20261015-solo-carry-c6d2f5a4.json",
+  "pr": 505,
+  "source_sha": "c6d2f5a436da4822d1c05d288604d2e542d43c82",
+  "plan_sha256": "b7979254aedfd62e2e3f6d79a783fe6fc534356b577cef3858a18879ee23262c",
+  "host": "gcp1",
+  "machine_type": "n4-highcpu-64",
+  "project": "ugrp-act-train-1014",
+  "profile": "solo_visible_only_v1 / carry5_active_localization_v1 / drive_model_deadband_v1=on",
+  "research_result": false,
+  "student_execution": false,
+  "training_rgb": false,
+  "status": "BLOCKED_FIRST_DIAGNOSTIC_FAILED",
+  "stages": [
+    {
+      "name": "first_one",
+      "submitted": 1,
+      "completed": 1,
+      "success": 0,
+      "N": 1,
+      "verdict": "FAIL"
+    },
+    {
+      "name": "remaining_seven",
+      "submitted": 0,
+      "N": 7,
+      "verdict": "BLOCKED"
+    },
+    {
+      "name": "gate_training",
+      "authorized": false,
+      "submitted": 0,
+      "verdict": "NOT_AUTHORIZED"
+    }
+  ],
+  "counts": {
+    "planned": 8,
+    "submitted": 1,
+    "completed": 1,
+    "success": 0,
+    "failed": 1,
+    "HOST_ERROR": 0,
+    "blocked_unsubmitted": 7
+  },
+  "runs": [
+    {
+      "name": "solo-carry-93240-c6d2f5a4",
+      "seed": 93240,
+      "kind": "cyan",
+      "status": "complete",
+      "exit": 0,
+      "physical_success": false,
+      "lift_success": false,
+      "zone_placement_success": false,
+      "no_drop_during_carry": false,
+      "no_drop_interpretation": "not exercised: no lift or carry samples",
+      "final_footprint_inside_zone": false,
+      "termination_reason": "carry_relocalization_unconfirmed",
+      "sim_s": 20.800000000014492,
+      "wall_s": 53.17363310399924,
+      "wall_per_sim": 2.5564246684597207,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 31,
+        "blocked_held": 0,
+        "measurements_by_phase": {
+          "pickup_search": 1,
+          "approach": 158,
+          "carry_reobserve": 19
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "top_control_camera_rows": 0,
+      "held_target_control_measurement_rows": 0,
+      "obstacle_truth_reads": 0,
+      "raw_remote": "gcp1:/home/ugrp/ugrp-sim/runs/solo-carry-93240-c6d2f5a4",
+      "raw_local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93240-c6d2f5a4",
+      "result_sha256": "c0c6c69abb622231a88b199c4707b918f2a383db300243b442f50ff6b9f92550"
+    },
+    {
+      "name": "solo-carry-93241-c6d2f5a4",
+      "seed": 93241,
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "input_audit": null,
+      "reason": "first diagnostic failed; first30 incomplete"
+    },
+    {
+      "name": "solo-carry-93242-c6d2f5a4",
+      "seed": 93242,
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "input_audit": null,
+      "reason": "first diagnostic failed; first30 incomplete"
+    },
+    {
+      "name": "solo-carry-93243-c6d2f5a4",
+      "seed": 93243,
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "input_audit": null,
+      "reason": "first diagnostic failed; first30 incomplete"
+    },
+    {
+      "name": "solo-carry-93244-c6d2f5a4",
+      "seed": 93244,
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "input_audit": null,
+      "reason": "first diagnostic failed; first30 incomplete"
+    },
+    {
+      "name": "solo-carry-93245-c6d2f5a4",
+      "seed": 93245,
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "input_audit": null,
+      "reason": "first diagnostic failed; first30 incomplete"
+    },
+    {
+      "name": "solo-carry-93246-c6d2f5a4",
+      "seed": 93246,
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "input_audit": null,
+      "reason": "first diagnostic failed; first30 incomplete"
+    },
+    {
+      "name": "solo-carry-93247-c6d2f5a4",
+      "seed": 93247,
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "input_audit": null,
+      "reason": "first diagnostic failed; first30 incomplete"
+    }
+  ],
+  "failure_analysis": {
+    "evaluation_only": true,
+    "origin_sim_s": 1.3000000000000178,
+    "task_start_setup_error_xy_m": 0.021346570106330818,
+    "task_start_setup_error_yaw_rad": 0.005826486890261329,
+    "recovery_started_absolute_sim_s": 18.399999999996844,
+    "recovery_started_task_sim_s": 17.099999999996825,
+    "recovery_ended_task_sim_s": 20.800000000014492,
+    "recovery_elapsed_s": 3.700000000017667,
+    "recovery_attempts": 1,
+    "measured_views": 3,
+    "accepted_fixes": 0,
+    "view_rejections": [
+      {
+        "t": 20.300000000005916,
+        "pose_rank": 2,
+        "groups": [
+          "floor:0"
+        ],
+        "inlier_fraction": 1.0,
+        "residual_count": 2
+      },
+      {
+        "t": 21.200000000010213,
+        "pose_rank": 3,
+        "groups": [
+          "wall_south:n",
+          "wall_west:e"
+        ],
+        "inlier_fraction": 0.5892857142857143,
+        "residual_count": 56
+      },
+      {
+        "t": 22.10000000001451,
+        "pose_rank": 2,
+        "groups": [
+          "wall_south:n"
+        ],
+        "inlier_fraction": 0.7547169811320755,
+        "residual_count": 53
+      }
+    ],
+    "issued_distance_m_to_recovery": 1.3035960234791932,
+    "gt_path_length_m_to_recovery": 1.116058375164236,
+    "gt_displacement_m_to_recovery": 1.0627572699616232,
+    "issued_over_gt_path_ratio": 1.1680356982110007,
+    "max_pose_error_m": 0.20487091664045812,
+    "max_pose_yaw_error_rad": 0.21420469766358252,
+    "no_stuck_over_20s_evidence": true,
+    "scope_limit": "single failed DEV diagnostic; carry and release never reached; full 30 SIM seconds unavailable"
+  },
+  "first30": {
+    "complete": false,
+    "reason": "run terminated at20.8 SIM s",
+    "verdict": "INCOMPLETE_BLOCKS_NEXT_STAGE",
+    "available_0_to_20_frame_mtime_wall_per_sim": 2.3808341145515444,
+    "full_wall_per_sim": 2.5564246684597207,
+    "scope": "frame mtime proxy is not a complete first30 measurement"
+  },
+  "visual_review": {
+    "remaining_allowed": false,
+    "reason": "first diagnostic failed before grasp; complete first30 unavailable",
+    "reviewed_at": "2026-10-15 13:32:03 KST",
+    "physical_success": false,
+    "reviewed_frames": 12,
+    "task_sim_times_s": [
+      0,
+      4,
+      8,
+      12,
+      16,
+      20
+    ],
+    "views": [
+      "evaluation top",
+      "r1 own RGB"
+    ],
+    "r2_own_camera": "not recorded by solo runner; no second active robot in this diagnostic",
+    "visual_observation": "Cyan cargo stays on floor while r1 approaches; view pans during reobservation. No grasp/carry/new-zone release reached. No visible peer blocking of r1 in the viewed overview frames.",
+    "localization_attempts": 1,
+    "localization_views": 3,
+    "accepted_fixes": 0,
+    "issued_over_gt_path_ratio": 1.1680356982110007,
+    "first30_complete": false
+  },
+  "safety": {
+    "budget_stop": "ACTIVE; latest costAmount=0 KRW in delayed budget log; balance unverified",
+    "max_run_duration_seconds": 28800,
+    "idle_guard": "20min retained",
+    "stop_record": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/stop-solo-carry-c6d2f5a4-20261015.json",
+    "sigint_targets": [],
+    "sigint_note": "already EXIT0; no live owned process to signal",
+    "other_queues_submitted": 0,
+    "host_or_sha_pooling": false
+  },
+  "preflight": {
+    "at": "2026-10-15 13:25:25 KST",
+    "sha": "c6d2f5a436da4822d1c05d288604d2e542d43c82",
+    "plan_sha256": "b7979254aedfd62e2e3f6d79a783fe6fc534356b577cef3858a18879ee23262c",
+    "passed": true,
+    "remote_seed_files": 2526,
+    "other_processes": [
+      " 101861  101858  101858 python          .venv-sim/bin/python -m scripts.sim_cli workflow run self-map-diagnostic -- --output /home/ugrp/ugrp-sim/runs/selfmap-93531-d8a7530a/raw --expected-source-sha d8a7530a9f3f6f11d77d0ea7d06838db1486d296 --seed 93531 --cap-s 180 --execution-host gcp1 --project ugrp-act-train-1014 --self-map-executor frontier_drive_v1 --bootstrap command_prior_v1 --initial-sweep required_360_v1 --recovery-profile selfmap4_recovery_v1 --execute",
+      " 101886  101861  101886 python          /home/ugrp/ugrp-sim/src/d8a7530a9f3f6f11d77d0ea7d06838db1486d296/.venv-sim/bin/python -m scripts.run_self_map_diagnostic --output /home/ugrp/ugrp-sim/runs/selfmap-93531-d8a7530a/raw --expected-source-sha d8a7530a9f3f6f11d77d0ea7d06838db1486d296 --seed 93531 --cap-s 180 --execution-host gcp1 --project ugrp-act-train-1014 --self-map-executor frontier_drive_v1 --bootstrap command_prior_v1 --initial-sweep required_360_v1 --recovery-profile selfmap4_recovery_v1 --execute"
+    ],
+    "storage_ok": true,
+    "credit_balance": "unverified; budget messages inspected separately"
+  },
+  "remaining_issues": [
+    "No complete first30 sample.",
+    "No cargo lift/carry/new-zone release observed.",
+    "Three localization views all rejected (rank/groups or <0.8 inlier fraction).",
+    "Requires a corrected frozen SHA/new approved queue; no measurement filling or automatic promotion.",
+    "GCP full raw retained on persistent VM disk; no off-host full backup created."
+  ],
+  "retrieval": {
+    "original_manifest_sha256": "19169dc1222418571c5d8c53479642720406e69b3ab6d2cea6780088e31336c5",
+    "remote_original_manifest_files": 60,
+    "local_original_files_verified": 18,
+    "local_extra_supervisor_files_verified": 2,
+    "review_frames_verified": 12,
+    "all_local_hashes_passed": true,
+    "local_raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93240-c6d2f5a4",
+    "remote_raw": "gcp1:/home/ugrp/ugrp-sim/runs/solo-carry-93240-c6d2f5a4",
+    "scope": "fetch-lite plus 12 individually selected review frames; full raw stays on persistent GCP disk"
+  },
+  "final_runtime": {
+    "extra_hashes": {
+      "SUPERVISOR_STOP.json": "42a8ff10ee8dca70359630cabe05273f0946d1453263ffa12f0c797218e67412",
+      "raw/SUPERVISOR_STOP.json": "42a8ff10ee8dca70359630cabe05273f0946d1453263ffa12f0c797218e67412"
+    },
+    "exit": "0",
+    "idle_active": "active",
+    "processes": [],
+    "vm_status": "RUNNING 34.64.92.21 n4-highcpu-64",
+    "scope": "No stop/start issued after completion. Idle guard owns idle shutdown; STOP status not yet observed."
+  },
+  "pr_comment": {
+    "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/505#issuecomment-6184469910",
+    "verified": true,
+    "lines": 3
+  }
+}

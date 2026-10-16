@@ -1,0 +1,627 @@
+{
+  "schema": "ugrp.gcp_ops_summary.v1",
+  "date": "2026-10-15 12:54:32 KST",
+  "queue": "20261015-selfmap-380277b8.json",
+  "pr": 506,
+  "host": "gcp1",
+  "machine_type": "n4-highcpu-64",
+  "project": "ugrp-act-train-1014",
+  "source_sha": "380277b85911af71d5fcec58905cc650f44aab97",
+  "verdict": "NOT_READY_CONFIRMED_CONTROL_LIVENESS_DEFECT",
+  "planned_N": 3,
+  "submitted_N": 2,
+  "recorded_n": 1,
+  "internal_complete_n": 0,
+  "HOST_ERROR_N": 1,
+  "physical_failure_N": 0,
+  "pending_not_submitted_N": 1,
+  "runs": [
+    {
+      "name": "selfmap-93520-380277b8",
+      "result": {
+        "status": "RECORDED",
+        "source_sha": "380277b85911af71d5fcec58905cc650f44aab97",
+        "seed": 93520,
+        "model_calls": 0,
+        "complete": false,
+        "physical_success_unverified": true,
+        "frames": 301,
+        "elapsed_sim_s": 30.0,
+        "stop_reason": "sim_time_cap",
+        "rgb_ledger_verified": true,
+        "frontier_selections": 1,
+        "frontier_arrivals": 0,
+        "map_updated_frames": 282,
+        "pose_sources": {
+          "bootstrap": 4,
+          "command_only": 253,
+          "visual_update": 44
+        },
+        "wall_s": 180.02316861200052,
+        "input_audit": {
+          "schema": "ugrp.selfmap_input_audit.v1",
+          "measured": true,
+          "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+          "own_rgb_frames": 301,
+          "issued_command_records": 157,
+          "top_rgb_frames": 0,
+          "peer_rgb_frames": 0,
+          "truth_pose_inputs": 0,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "rejected_inputs": 0
+        },
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "evaluation": {
+          "scope": "static geometry only; all predicted occupied cells scored against wall surfaces",
+          "occupancy_iou": 0.1807511737089202,
+          "occupancy_intersection": 77,
+          "occupancy_union": 426,
+          "predicted_occupied": 221,
+          "truth_occupied": 282,
+          "false_occupied_outside_domain": 92,
+          "free_coverage_n": 1654,
+          "free_coverage_N": 2773,
+          "free_coverage": 0.5964659213847818,
+          "reachable_free_coverage_n": 1654,
+          "reachable_free_coverage_N": 2773,
+          "known_coverage_n": 1856,
+          "known_coverage_N": 3055,
+          "wall_error_rmse_m": 0.12852495928173266,
+          "wall_error_predicted_N": 221,
+          "all_wall_to_prediction_p95_m": 3.2249999999999996,
+          "all_wall_samples_N": 544,
+          "origin_eval_only": [
+            3.249977084565323,
+            0.7500008632604982,
+            3.141590082743009
+          ],
+          "pose_error_N": 301,
+          "trace_N": 301,
+          "pose_rmse_m": 0.03356942895257186,
+          "yaw_rmse_rad": 0.008849866694353357
+        }
+      },
+      "result_sha256": "060a5fdaa5653844c95b5319f99985c365c297c7b8e5039aecb526b6d5aac827",
+      "first30_wall_per_sim": 5.8863222459999935,
+      "total_wall_per_sim": 6.000772287066684,
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/selfmap-93520-380277b8/raw"
+    },
+    {
+      "name": "selfmap-93521-380277b8",
+      "result": {
+        "status": "HOST_ERROR",
+        "source_sha": "380277b85911af71d5fcec58905cc650f44aab97",
+        "seed": 93521,
+        "model_calls": 0,
+        "complete": false,
+        "physical_success_unverified": true,
+        "frames": 1363,
+        "failure": {
+          "type": "KeyboardInterrupt",
+          "message": "owned diagnostic interrupted"
+        },
+        "frontier_selections": 3,
+        "frontier_arrivals": 0,
+        "map_updated_frames": 880,
+        "pose_sources": {
+          "bootstrap": 4,
+          "command_only": 1243,
+          "visual_update": 116
+        },
+        "wall_s": 842.5140645909996,
+        "input_audit": {
+          "schema": "ugrp.selfmap_input_audit.v1",
+          "measured": true,
+          "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+          "own_rgb_frames": 1364,
+          "issued_command_records": 688,
+          "top_rgb_frames": 0,
+          "peer_rgb_frames": 0,
+          "truth_pose_inputs": 0,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "rejected_inputs": 0
+        },
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "result_sha256": "bcd5e561cf57858b48b40452dcd6ee1d174547ca69ac34fde93fceba03d9125a",
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/selfmap-93521-380277b8/raw",
+      "elapsed_sim_s_last_completed_trace": 136.2,
+      "elapsed_sim_s_camera": 136.29999999999998,
+      "first30_wall_per_sim": 5.001980983400002,
+      "total_wall_per_sim_from_last_trace": 6.185859505073419,
+      "timing_scope": "842.514 wall seconds through supervisor interruption / 136.2 SIM seconds of completed trace; first30 loop ratio recorded separately",
+      "status": "SUPERVISOR_STOP_CONFIRMED_CONTROL_DEFECT",
+      "poststop_evaluation": {
+        "scope": "static geometry only; all predicted occupied cells scored against wall surfaces",
+        "occupancy_iou": 0.12162162162162163,
+        "occupancy_intersection": 63,
+        "occupancy_union": 518,
+        "predicted_occupied": 299,
+        "truth_occupied": 282,
+        "false_occupied_outside_domain": 111,
+        "free_coverage_n": 1770,
+        "free_coverage_N": 2773,
+        "free_coverage": 0.6382978723404256,
+        "reachable_free_coverage_n": 1770,
+        "reachable_free_coverage_N": 2773,
+        "known_coverage_n": 2050,
+        "known_coverage_N": 3055,
+        "wall_error_rmse_m": 0.20454186510819689,
+        "wall_error_predicted_N": 299,
+        "all_wall_to_prediction_p95_m": 3.007515656631397,
+        "all_wall_samples_N": 544,
+        "origin_eval_only": [
+          3.2499767639769903,
+          0.7500015342991768,
+          3.1415901020445824
+        ],
+        "pose_error_N": 1363,
+        "pose_rmse_m": 0.03168696735148279,
+        "yaw_rmse_rad": 0.08222933524627826,
+        "max_pose_error_m": 0.07830316926508629,
+        "pose_drift_every30": [
+          {
+            "elapsed_sim_s": 0.0,
+            "xy_error_m": 0.0,
+            "yaw_error_rad": 0.0
+          },
+          {
+            "elapsed_sim_s": 30.0,
+            "xy_error_m": 0.010302612516956923,
+            "yaw_error_rad": 0.00273657102452729
+          },
+          {
+            "elapsed_sim_s": 60.0,
+            "xy_error_m": 0.039697762552324926,
+            "yaw_error_rad": 0.1223567292076897
+          },
+          {
+            "elapsed_sim_s": 90.0,
+            "xy_error_m": 0.04958644180199936,
+            "yaw_error_rad": 0.12439105316286758
+          },
+          {
+            "elapsed_sim_s": 120.0,
+            "xy_error_m": 0.023595162467515536,
+            "yaw_error_rad": 0.07808413109858359
+          }
+        ],
+        "pose_drift_last": {
+          "elapsed_sim_s": 136.2,
+          "xy_error_m": 0.01879798701415177,
+          "yaw_error_rad": 0.07764616148663972
+        }
+      },
+      "poststop_evaluation_scope": "read-only post-supervisor-stop scoring; never fed to control; not original result evaluation"
+    },
+    {
+      "name": "selfmap-93522-380277b8",
+      "status": "NOT_SUBMITTED_SHARED_CONTROL_DEFECT"
+    }
+  ],
+  "first30_review": {
+    "passed": true,
+    "visual_update_frames": 44,
+    "map_insertions": 282,
+    "frontier_selections": 1,
+    "frontier_arrivals": 0,
+    "actual_sweep_rad_eval_only": 6.352556318204231,
+    "actual_sweep_deg_eval_only": 363.9746661522676,
+    "sweep_xy_displacement_m_eval_only": 0.0030085266591348514,
+    "max_estimated_pose_step_m": 0.05311030265529966,
+    "max_physical_step_m_eval_only": 0.00872951500644149,
+    "occupancy_iou": 0.1807511737089202,
+    "free_coverage": 0.5964659213847818,
+    "false_occupied_outside_domain": 92,
+    "limitations": "known low map quality, prior contributions, no completion or driving safety promotion; no physical success claim"
+  },
+  "input_audit": {
+    "schema": "ugrp.selfmap_input_audit.v1",
+    "measured": true,
+    "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+    "own_rgb_frames": 301,
+    "issued_command_records": 157,
+    "top_rgb_frames": 0,
+    "peer_rgb_frames": 0,
+    "truth_pose_inputs": 0,
+    "invisible_measurements": 0,
+    "held_world_reads": 0,
+    "rejected_inputs": 0
+  },
+  "frame_review": {
+    "directly_viewed": true,
+    "own_robot": "r3",
+    "frame_ids": [
+      1,
+      61,
+      121,
+      181,
+      241,
+      301
+    ],
+    "elapsed_sim_s": [
+      0,
+      6,
+      12,
+      18,
+      24,
+      30
+    ],
+    "montage": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/selfmap-380277b8-ops/first30-montage.jpg",
+    "observed": "stationary pan, body sweep shows changing wall/door views, selected frontier then changes heading; no peer blocking visible",
+    "overview_r1_r2": "not captured in approved single active r3 recording"
+  },
+  "verification": {
+    "vm_sha256sum_c_pass": true,
+    "local_files_sha_verified": 44,
+    "local_hash_failures": [],
+    "native_jpeg_ledger": {
+      "JPEG_N": 301,
+      "hash_failures": [],
+      "top_image_N": 0,
+      "camera_types": [
+        "robot_cam"
+      ]
+    },
+    "cadence_verified": true,
+    "trace_N": 301
+  },
+  "raw_retention": "all301+1364 JPEGs retained on GCP persistent disk; lite text plus22 selected JPEGs retrieved; no independent full-raw backup",
+  "raw_retrieval_complete": false,
+  "next_step": "fixed source SHA and new coordinator queue required; same-SHA remaining run blocked, designated queue work ended",
+  "approval_requested_at": "2026-10-15 12:33:38 KST",
+  "pr_first30_comment": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/506#issuecomment-6183790435",
+  "coordinator_followup_approval": {
+    "approved": true,
+    "time": "2026-10-15T12:34:28+09:00",
+    "after": "first30 review 12:33 (sweep 364deg, insert 282/301, IoU 18.08%, free 59.65%, out-of-bounds occupied 92, frontier select 1/arrive 0, wall/SIM 5.886 warn <6.0)",
+    "runs": [
+      "93521",
+      "93522"
+    ],
+    "mode": "180 SIM s, serial, as in queue",
+    "basis": "diagnostic: does frontier exploration arrive and map grow over 180 s; record out-of-bounds occupied cells and issued-vs-GT pose drift over time (GT evaluation only)",
+    "stop_if": "confirmed control defect (e.g. frontier never reachable / robot stuck >20 SIM s) -> SUPERVISOR_STOP per rules",
+    "gate_promotion_authorized_if_all_conditions_pass": false
+  },
+  "HOST_ERROR_explanation": "original result reports KeyboardInterrupt from supervisor SIGINT; not an infrastructure failure or completed 180s run",
+  "supervisor_stop_N": 1,
+  "stages": {
+    "first30": {
+      "review_pass_n": 1,
+      "N": 1,
+      "complete_n": 0
+    },
+    "180s_diagnostics": {
+      "planned_N": 2,
+      "submitted_N": 1,
+      "completed_180s_n": 0,
+      "internal_complete_n": 0,
+      "supervisor_stopped_N": 1,
+      "not_submitted_N": 1
+    }
+  },
+  "failure_cause": {
+    "kind": "pan restart livelock after repeated pose-map revisions",
+    "source_sha": "380277b85911af71d5fcec58905cc650f44aab97",
+    "evidence": {
+      "elapsed_sim_s_trace_end": 136.2,
+      "elapsed_sim_s_camera_end": 136.29999999999998,
+      "continuous_final_pan_start": 93.2,
+      "continuous_final_pan_duration": 43.0,
+      "last_nonzero_drive_command_elapsed": 93.0,
+      "last_map_insertion_elapsed": 93.0,
+      "map_revision_resets": [
+        {
+          "elapsed_sim_s": 93.2,
+          "cause": "pose_map_revision"
+        },
+        {
+          "elapsed_sim_s": 98.6,
+          "cause": "pose_map_revision"
+        },
+        {
+          "elapsed_sim_s": 104.0,
+          "cause": "pose_map_revision"
+        },
+        {
+          "elapsed_sim_s": 109.4,
+          "cause": "pose_map_revision"
+        },
+        {
+          "elapsed_sim_s": 114.8,
+          "cause": "pose_map_revision"
+        },
+        {
+          "elapsed_sim_s": 120.2,
+          "cause": "pose_map_revision"
+        },
+        {
+          "elapsed_sim_s": 125.6,
+          "cause": "pose_map_revision"
+        },
+        {
+          "elapsed_sim_s": 131.0,
+          "cause": "pose_map_revision"
+        }
+      ],
+      "physical_path_after100_m_eval_only": 0.01319582348644998,
+      "net_translation_after100_m_eval_only": 0.0011291842927216346,
+      "last_rebuild_count": 8,
+      "selected_review_jpegs_N": 16,
+      "selected_review_jpegs_bad_sha": [],
+      "untraced_last_camera_frame_preserved": 1
+    },
+    "mechanism": "map rebuild changes count every5.4SIMs -> executor look resets pan_index0 and next_pan -> nine-position pan needs~9SIMs -> sweep/drive never resumed for43SIMs",
+    "code": [
+      "harness/self_map_executor.py:79",
+      "harness/self_map_executor.py:119",
+      "harness/self_map_executor.py:124",
+      "harness/self_map_executor.py:125",
+      "harness/self_map_integration.py:269"
+    ],
+    "scope": "confirmed controller liveness defect, not claim of physical collision or grasp failure"
+  },
+  "input_audits_by_run": {
+    "selfmap-93520-380277b8": {
+      "schema": "ugrp.selfmap_input_audit.v1",
+      "measured": true,
+      "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+      "own_rgb_frames": 301,
+      "issued_command_records": 157,
+      "top_rgb_frames": 0,
+      "peer_rgb_frames": 0,
+      "truth_pose_inputs": 0,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "rejected_inputs": 0
+    },
+    "selfmap-93521-380277b8": {
+      "schema": "ugrp.selfmap_input_audit.v1",
+      "measured": true,
+      "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+      "own_rgb_frames": 1364,
+      "issued_command_records": 688,
+      "top_rgb_frames": 0,
+      "peer_rgb_frames": 0,
+      "truth_pose_inputs": 0,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "rejected_inputs": 0
+    }
+  },
+  "input_audit_scope": "writer->controller payload boundary; excludes plant/evaluation internal reads; measured true, invisible/held/top/peer/truth/rejected all0 in both runs",
+  "frame_reviews_by_run": {
+    "selfmap-93520-380277b8": {
+      "directly_viewed": true,
+      "own_robot": "r3",
+      "frame_ids": [
+        1,
+        61,
+        121,
+        181,
+        241,
+        301
+      ],
+      "elapsed_sim_s": [
+        0,
+        6,
+        12,
+        18,
+        24,
+        30
+      ],
+      "montage": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/selfmap-380277b8-ops/first30-montage.jpg",
+      "observed": "stationary pan, body sweep shows changing wall/door views, selected frontier then changes heading; no peer blocking visible",
+      "overview_r1_r2": "not captured in approved single active r3 recording"
+    },
+    "selfmap-93521-380277b8": {
+      "directly_viewed": true,
+      "robot": "r3",
+      "elapsed_sim_s": [
+        0,
+        10,
+        20,
+        30,
+        40,
+        48,
+        60,
+        80,
+        88,
+        96,
+        104,
+        112,
+        120,
+        124,
+        130,
+        136.2
+      ],
+      "unique_frames_N": 16,
+      "montages": [
+        "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/selfmap-380277b8-ops/93521-early-montage.jpg",
+        "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/selfmap-380277b8-ops/93521-stall-montage.jpg",
+        "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/selfmap-380277b8-ops/93521-final-montage.jpg"
+      ],
+      "observed": "body reached orange floor patch then repeated pan views of same surrounding wall/floor; no visible peer obstruction",
+      "overview_r1_r2": "not captured in this approved single-active-r3 recording"
+    }
+  },
+  "verification_by_run": {
+    "selfmap-93520-380277b8": {
+      "vm_sha256sum_c_pass": true,
+      "local_files_sha_verified": 44,
+      "local_hash_failures": [],
+      "compressed_original_and_archive": [
+        {
+          "path": "raw/eval_only/camera.jsonl.zst",
+          "original_sha_ok": true,
+          "archive_sha_ok": true
+        },
+        {
+          "path": "raw/eval_only/contacts.jsonl.zst",
+          "original_sha_ok": true,
+          "archive_sha_ok": true
+        },
+        {
+          "path": "raw/eval_only/servo.jsonl.zst",
+          "original_sha_ok": true,
+          "archive_sha_ok": true
+        },
+        {
+          "path": "raw/eval_only/trajectory.jsonl.zst",
+          "original_sha_ok": true,
+          "archive_sha_ok": true
+        },
+        {
+          "path": "raw/map.json.zst",
+          "original_sha_ok": true,
+          "archive_sha_ok": true
+        },
+        {
+          "path": "raw/robots/r3/frames.jsonl.zst",
+          "original_sha_ok": true,
+          "archive_sha_ok": true
+        },
+        {
+          "path": "raw/trace.jsonl.zst",
+          "original_sha_ok": true,
+          "archive_sha_ok": true
+        }
+      ],
+      "ledger_N": 301,
+      "trace_N": 301,
+      "cadence_10hz_ok": true,
+      "native_rgb": {
+        "JPEG_N": 301,
+        "hash_failures": [],
+        "top_image_N": 0,
+        "camera_types": [
+          "robot_cam"
+        ]
+      }
+    },
+    "selfmap-93521-380277b8": {
+      "vm_sha256sum_c_pass": true,
+      "local_files_sha_verified": 45,
+      "local_hash_failures": [],
+      "compressed_original_and_archive": [
+        {
+          "path": "raw/eval_only/camera.jsonl.zst",
+          "original_sha_ok": true,
+          "archive_sha_ok": true
+        },
+        {
+          "path": "raw/eval_only/contacts.jsonl.zst",
+          "original_sha_ok": true,
+          "archive_sha_ok": true
+        },
+        {
+          "path": "raw/eval_only/servo.jsonl.zst",
+          "original_sha_ok": true,
+          "archive_sha_ok": true
+        },
+        {
+          "path": "raw/eval_only/trajectory.jsonl.zst",
+          "original_sha_ok": true,
+          "archive_sha_ok": true
+        },
+        {
+          "path": "raw/map.json.zst",
+          "original_sha_ok": true,
+          "archive_sha_ok": true
+        },
+        {
+          "path": "raw/robots/r3/frames.jsonl.zst",
+          "original_sha_ok": true,
+          "archive_sha_ok": true
+        },
+        {
+          "path": "raw/trace.jsonl.zst",
+          "original_sha_ok": true,
+          "archive_sha_ok": true
+        }
+      ],
+      "ledger_N": 1364,
+      "trace_N": 1363,
+      "cadence_10hz_ok": true,
+      "native_rgb": {
+        "JPEG_N": 1364,
+        "hash_failures": [],
+        "camera_types": [
+          "robot_cam"
+        ],
+        "top_image_N": 0
+      }
+    }
+  },
+  "interruption_recording_boundary": {
+    "result_frames": 1363,
+    "trace_rows": 1363,
+    "camera_ledger_and_JPEGs": 1364,
+    "audit_delivered_RGB": 1364,
+    "explanation": "SIGINT arrived while processing the last delivered frame, before trace/result.frames update; last JPEG remains preserved; not a completed180s ledger"
+  },
+  "stop_record": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/stop-selfmap-380277b8-20261015.json",
+  "resource_completion": {
+    "at_utc": "2026-10-15T03:52:50.709200+00:00",
+    "owned_processes": [],
+    "all_active_sim_cli": 0,
+    "receipts": [
+      {
+        "name": "selfmap-93520-380277b8",
+        "exit": "0",
+        "source_sha": "380277b85911af71d5fcec58905cc650f44aab97",
+        "manifest_sha256": "20e758291fe6b424745d2950813f10b23e3fe707572ff4c1a5cd217e2a1eb57a",
+        "loadavg_at_start": "0.55 0.77 1.51 1/695 55920",
+        "vm_sha256_verified": true,
+        "owned_lease_absent": true
+      },
+      {
+        "name": "selfmap-93521-380277b8",
+        "exit": "1",
+        "source_sha": "380277b85911af71d5fcec58905cc650f44aab97",
+        "manifest_sha256": "aa23c6a1aae458f51ae043f47da3919b1ee87f197417d6ba27b36c81bed972f2",
+        "loadavg_at_start": "0.31 1.59 1.82 1/707 64447",
+        "vm_sha256_verified": true,
+        "owned_lease_absent": true
+      }
+    ],
+    "blocked_run_absent": true,
+    "idle_timer": "active",
+    "vm_stop_action": "none; leave idle20m guard",
+    "raw_location": "GCP persistent disk; no independent full-raw backup",
+    "vm_state": "RUNNING",
+    "machine_type": "n4-highcpu-64",
+    "scheduling": {
+      "automaticRestart": true,
+      "instanceTerminationAction": "STOP",
+      "maxRunDuration": {
+        "nanos": 0,
+        "seconds": "28800"
+      },
+      "onHostMaintenance": "MIGRATE",
+      "preemptible": false,
+      "provisioningModel": "STANDARD"
+    }
+  },
+  "operator_analysis_attempts": [
+    {
+      "attempt": "poststop score first",
+      "status": "failed exit1: digest helper received decoded text; no raw modifications"
+    },
+    {
+      "attempt": "poststop score corrected",
+      "status": "completed read-only; stdout JSON retained"
+    },
+    {
+      "attempt": "local inspection first under source worktree python",
+      "status": "zstandard unavailable in that interpreter; rerun with existing /opt/anaconda3/bin/python3 succeeded; no install"
+    }
+  ],
+  "pr_final_comment": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/506#issuecomment-6184012783",
+  "selected_retrieved_JPEG_hashes_verified": 22
+}

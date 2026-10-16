@@ -1,0 +1,389 @@
+{
+  "schema": "ugrp.ops_summary.v1",
+  "at": "2026-10-15 16:38:58 KST",
+  "queue": "20261015-solo-carry-0459c03c.json",
+  "sha": "0459c03c15dfad0ab7016fa2a15050ffc2d3ccd7",
+  "host": "gcp1",
+  "machine_type": "n4-highcpu-64",
+  "project": "ugrp-act-train-1014",
+  "status": "BLOCKED_CONFIRMED_CONTROL_FAILURE",
+  "submitted": 2,
+  "planned": 11,
+  "observed_success": {
+    "n": 0,
+    "N": 2,
+    "normal_completed": 1,
+    "supervisor_interrupted": 1
+  },
+  "not_submitted_blocked": 9,
+  "gate40_submitted": 0,
+  "gate40_verdict": "NOT_RUN; not gate eligible",
+  "audit_zero_runs": 2,
+  "first30_wall_per_sim": {
+    "runs": [
+      2.9993844509124754,
+      2.7294281244277956
+    ],
+    "median": 2.8644062876701355,
+    "metric": "review JPEG wall mtimes delta / SIM time delta, excludes initialization"
+  },
+  "failure": {
+    "run": "solo-carry-93262-0459c03c",
+    "own_final_scan_elapsed_sim_s": [
+      129,
+      131,
+      133,
+      137,
+      140,
+      142,
+      146,
+      149
+    ],
+    "final_reacquire_rows_N": 208,
+    "usable_visible_measurements_N": 0,
+    "final_scan_camera_observation": "floor dominates; yellow thin strip at left edge near146s, no usable full cargo view",
+    "memory_point_eval_only": [
+      -0.10099500963705321,
+      0.8708543552463607,
+      0.0238752879962831
+    ],
+    "cargo_xyz_eval_only": [
+      -0.0859451685396254,
+      0.5684449257409316,
+      0.015892244579783943
+    ],
+    "memory_to_actual_cargo_xy_error_m_eval_only": 0.30278368643448555,
+    "own_pose_xy_error_m_at_reacquire_eval_only": 0.16628589629585286,
+    "source_memory_rebase_is_present": true,
+    "geometric_root_cause": "issued setdown memory and corrected own pose point gaze to an off-target floor location; contribution of setdown kinematics versus pose estimate is not separated",
+    "code_scan_offsets_deg": [
+      0,
+      -25,
+      25,
+      0
+    ],
+    "physical_drop_samples": 0,
+    "actual_failure": "carry_reacquire_unconfirmed",
+    "input_audit": {
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "blocked_hidden": 1018,
+      "blocked_held": 205,
+      "measurements_by_phase": {
+        "pickup_search": 1,
+        "approach": 244,
+        "carry_reobserve": 2,
+        "carry_recover_restore": 3,
+        "carry_reacquire": 1,
+        "align": 22,
+        "hover": 4
+      },
+      "scope": "decision input boundary only; evaluation excluded"
+    }
+  },
+  "no_pooling": true,
+  "raw_preservation": "GCP persistent disk, lite and selected frames local; no ARM/Drive copy",
+  "training_RGB": false,
+  "model_calls": 0,
+  "runs": [
+    {
+      "run": "solo-carry-93261-0459c03c",
+      "result_status": "interrupted",
+      "exit": "130",
+      "physical_success": null,
+      "termination_reason": "SUPERVISOR_STOP same-defect batch",
+      "sim_s_result": null,
+      "sim_s_last_command": 187.19999999727054,
+      "wall_s": 600.6558753440004,
+      "wall_per_sim": 3.208631812781828,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 1357,
+        "blocked_held": 360,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "pickup_search": 1,
+          "approach": 92,
+          "align": 44,
+          "hover": 7,
+          "carry_recover_restore": 5,
+          "carry_reacquire": 1
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "audit_zero": true,
+      "views": {
+        "N": 15,
+        "accepted": 1,
+        "rejected": 14,
+        "ambiguous": 2,
+        "partial": 1,
+        "accepted_errors_eval_only": [
+          {
+            "t": 121.49999999885488,
+            "error_xy_m": 0.07435010356752755,
+            "error_yaw_deg": 0.5572897226740409
+          }
+        ]
+      },
+      "physical_metrics": {
+        "lift_success": null,
+        "zone_placement_success": null,
+        "release_success": null,
+        "no_drop_during_carry": null,
+        "drop_samples": null,
+        "intermediate_controlled_setdowns": null,
+        "uninterrupted_carry": null,
+        "final_footprint_inside_zone": null,
+        "carry_sim_s": null
+      },
+      "phases": {
+        "fold": 6,
+        "pickup_search": 1,
+        "approach": 92,
+        "align": 44,
+        "hover": 20,
+        "descent": 32,
+        "close": 23,
+        "lift": 31,
+        "lift_settle": 64,
+        "lookback_pose": 23,
+        "lookback": 50,
+        "lookback_settle": 10,
+        "verify_lift": 22,
+        "hold": 60,
+        "carry_prepare": 11,
+        "carry_to_zone": 21,
+        "carry_recover_lower": 30,
+        "carry_recover_open": 15,
+        "carry_recover_retract": 37,
+        "carry_recover_backoff": 50,
+        "carry_reobserve": 1219,
+        "carry_recover_restore": 11,
+        "carry_reacquire": 1
+      },
+      "visual_review": {
+        "directly_viewed": true,
+        "current_full_selection_unique_own_frames": 43,
+        "including_first30_unique_own_frames": 59,
+        "paired_top_frames_same_N": true,
+        "range_elapsed_sim_s": [
+          0.0,
+          187.0
+        ],
+        "recovery_intervals": [
+          [
+            37.10000000009232,
+            120.19999999885486
+          ],
+          [
+            121.29999999882885,
+            121.39999999882649
+          ],
+          [
+            148.49999999818567,
+            187.19999999727054
+          ]
+        ],
+        "exact_native_recovery_RGB_saved": false,
+        "limitation": "native per-view RGB absent; nearest 1Hz 320x240 own review. Very short reacquire intervals have only one unique review frame. r2 not captured in single-active-r1 bundle. Top evaluation only."
+      },
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/solo-carry-93261-0459c03c",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93261-0459c03c",
+      "result_sha256": "86e3322b00ee9e49225056b3571d0da71408586aa64e2eacc916a798136ce6df",
+      "manifest_sha256": "822f0133a8390db18409de2bfcb1b73af44595d50842acba1ede319eebfdf056",
+      "all_VM_manifest_verified": true,
+      "VM_manifest_file_N": 402,
+      "local_manifest_checked_file_N": 20,
+      "stop_markers_verified_N": 0,
+      "decoded_log_verified_N": 2
+    },
+    {
+      "run": "solo-carry-93262-0459c03c",
+      "result_status": "complete",
+      "exit": "0",
+      "physical_success": false,
+      "termination_reason": "carry_reacquire_unconfirmed",
+      "sim_s_result": 149.89999999815257,
+      "sim_s_last_command": 149.89999999815257,
+      "wall_s": 448.59837704200254,
+      "wall_per_sim": 2.992650947615285,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 1018,
+        "blocked_held": 205,
+        "measurements_by_phase": {
+          "pickup_search": 1,
+          "approach": 244,
+          "carry_reobserve": 2,
+          "carry_recover_restore": 3,
+          "carry_reacquire": 1,
+          "align": 22,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "audit_zero": true,
+      "views": {
+        "N": 8,
+        "accepted": 2,
+        "rejected": 6,
+        "ambiguous": 3,
+        "partial": 1,
+        "accepted_errors_eval_only": [
+          {
+            "t": 43.000000000114305,
+            "error_xy_m": 0.12832635211418938,
+            "error_yaw_deg": 0.8264040429835467
+          },
+          {
+            "t": 129.29999999867044,
+            "error_xy_m": 0.16638858795695963,
+            "error_yaw_deg": -0.6008846976260674
+          }
+        ]
+      },
+      "physical_metrics": {
+        "lift_success": true,
+        "zone_placement_success": false,
+        "release_success": false,
+        "no_drop_during_carry": true,
+        "drop_samples": 0,
+        "intermediate_controlled_setdowns": 1,
+        "uninterrupted_carry": false,
+        "final_footprint_inside_zone": false,
+        "carry_sim_s": 4.499999999893589
+      },
+      "phases": {
+        "fold": 6,
+        "pickup_search": 68,
+        "approach": 244,
+        "carry_reobserve": 655,
+        "carry_recover_restore": 21,
+        "carry_reacquire": 209,
+        "align": 22,
+        "hover": 9,
+        "descent": 16,
+        "close": 11,
+        "lift": 15,
+        "lift_settle": 32,
+        "lookback_pose": 11,
+        "lookback": 25,
+        "lookback_settle": 5,
+        "verify_lift": 11,
+        "hold": 30,
+        "carry_prepare": 11,
+        "carry_to_zone": 35,
+        "carry_recover_lower": 11,
+        "carry_recover_open": 8,
+        "carry_recover_retract": 19,
+        "carry_recover_backoff": 25,
+        "failed": 1
+      },
+      "visual_review": {
+        "directly_viewed": true,
+        "current_full_selection_unique_own_frames": 40,
+        "including_first30_unique_own_frames": 53,
+        "paired_top_frames_same_N": true,
+        "range_elapsed_sim_s": [
+          0.0,
+          149.0
+        ],
+        "recovery_intervals": [
+          [
+            24.10000000003025,
+            41.70000000011429
+          ],
+          [
+            42.70000000011906,
+            42.80000000011954
+          ],
+          [
+            80.0999999998031,
+            127.99999999867043
+          ],
+          [
+            129.09999999864442,
+            149.89999999815257
+          ]
+        ],
+        "exact_native_recovery_RGB_saved": false,
+        "limitation": "native per-view RGB absent; nearest 1Hz 320x240 own review. Very short reacquire intervals have only one unique review frame. r2 not captured in single-active-r1 bundle. Top evaluation only."
+      },
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/solo-carry-93262-0459c03c",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93262-0459c03c",
+      "result_sha256": "493b7bfbb9163b4c6eb5f122e03233ad1fb12091c5bb63c43e20e5fbe50f50ad",
+      "manifest_sha256": "5a906a40fd369aa9e9241c265200e833ae5f89a8ab0f36e53b85d7ca0b35e242",
+      "all_VM_manifest_verified": true,
+      "VM_manifest_file_N": 321,
+      "local_manifest_checked_file_N": 18,
+      "stop_markers_verified_N": 2,
+      "decoded_log_verified_N": 3
+    }
+  ],
+  "next": "new fixed SHA and approved queue needed; no same-defect further submission",
+  "finished_ownership": [
+    {
+      "run": "solo-carry-93261-0459c03c",
+      "exit": "130",
+      "had_lease": true,
+      "lease_remaining": false,
+      "reservation": {
+        "run": "solo-carry-93261-0459c03c",
+        "owner": "reloc8-0459c03c",
+        "slots": 1,
+        "seeds": [
+          93261
+        ],
+        "at_unix": 1792049073.8872092,
+        "status": "released",
+        "released_at_unix": 1792050007.797563,
+        "reason": "EXIT and raw/lite SHA verified; own driver absent"
+      },
+      "live_pids": [],
+      "stop_markers": [
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/solo-carry-93261-0459c03c/SUPERVISOR_STOP.json",
+          "sha256": "3a0779b4f282bafe42686a366d27a1fc00d0c4832a425e1636c22e82c33b74a0"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/solo-carry-93261-0459c03c/raw/SUPERVISOR_STOP.json",
+          "sha256": "3a0779b4f282bafe42686a366d27a1fc00d0c4832a425e1636c22e82c33b74a0"
+        }
+      ]
+    },
+    {
+      "run": "solo-carry-93262-0459c03c",
+      "exit": "0",
+      "had_lease": true,
+      "lease_remaining": false,
+      "reservation": {
+        "run": "solo-carry-93262-0459c03c",
+        "owner": "reloc8-0459c03c",
+        "slots": 1,
+        "seeds": [
+          93262
+        ],
+        "at_unix": 1792049142.2689664,
+        "status": "released",
+        "released_at_unix": 1792050007.8138857,
+        "reason": "EXIT and raw/lite SHA verified; own driver absent"
+      },
+      "live_pids": [],
+      "stop_markers": [
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/solo-carry-93262-0459c03c/SUPERVISOR_STOP.json",
+          "sha256": "a6e5fe8fc2ac0a18429b5520b2820bdb6f0c01fb4e9d4103bf53026f3dc446e0"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/solo-carry-93262-0459c03c/raw/SUPERVISOR_STOP.json",
+          "sha256": "a6e5fe8fc2ac0a18429b5520b2820bdb6f0c01fb4e9d4103bf53026f3dc446e0"
+        }
+      ]
+    }
+  ],
+  "pr_final_comment": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/505#issuecomment-6187043256"
+}

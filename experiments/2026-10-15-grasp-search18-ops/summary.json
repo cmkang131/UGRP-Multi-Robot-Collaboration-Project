@@ -1,0 +1,966 @@
+{
+  "schema": "ugrp.gcp.search18.operations.result.v1",
+  "at": "2026-10-15 15:37:06 KST",
+  "queue": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-grasp-search18-00620d7a-diag.json",
+  "source_sha": "00620d7ace67ae1b7f39aa0a20d990aff11cf861",
+  "source_branch": "claude/e2e18-grasp-rootcause",
+  "pr": 484,
+  "host": {
+    "alias": "gcp1",
+    "project_id": "ugrp-act-train-1014",
+    "instance": "ugrp-sim-gcp1",
+    "zone": "asia-northeast3-a",
+    "machine_type": "n4-highcpu-64"
+  },
+  "profiles": {
+    "teacher_profile": "visible_only",
+    "self_pose_source": "issued",
+    "teacher_stability": "align_relook_v1",
+    "teacher_search": "search_body_scan_v2",
+    "approach_goal_set": "approach_goal_set_v1",
+    "nominal_blocked_handoff": "nominal_blocked_handoff_v1",
+    "approach_progress": "approach_progress_v1",
+    "approach_recovery": "progress_view_recovery_v3",
+    "approach_coordination": "off",
+    "handoff_observation": "visible_handoff_v1",
+    "failure_stop_scope": "repeated_cause_v1",
+    "peer_reobserve": "peer_reobserve_v1",
+    "obstacle_reobserve": "obstacle_reobserve_v1",
+    "pregrasp_sampling": "pregrasp_sampling_v1",
+    "search17_candidates": "search17_candidates_v1",
+    "search17_escape": "search17_escape_v1",
+    "search17_odometry": "search17_fixed_v1",
+    "search18_footprint": "off",
+    "search18_start_plan": "search18_start_plan_v1",
+    "search18_free_space": "search18_free_space_v1"
+  },
+  "plans_sha256": {
+    "experiments/2026-10-14-e2e18-grasp-rootcause/teacher-search18-repro4-plan.json": "f8631b64d1f8f4b75a0fcbea543828a75d1130edaa7fdbfbda3ea91f9838efec",
+    "experiments/2026-10-14-e2e18-grasp-rootcause/teacher-search18-novel12-plan.json": "4b8987b5ee191082dbc6595eb01c23381776f6712472f65534827cb4bf99808e"
+  },
+  "coordinator_approval": {
+    "approved": true,
+    "note": "not approved; coordinator must approve exact SHA/options/plans before any submission",
+    "enabled": true,
+    "ready": true,
+    "stage_ready": true,
+    "approved_by": "coordinator",
+    "time": "2026-10-15T15:23:30+09:00",
+    "source_sha": "00620d7ace67ae1b7f39aa0a20d990aff11cf861",
+    "max_parallel": 8,
+    "basis": "search18 offline replay: start_plan+free_space change 3/4 failure decisions, 0/11 success regressions; footprint OFF (worsens 9/11)",
+    "conditions": [
+      "toggles: start_plan + free_space only; footprint off",
+      "do not pool with search17/earlier profiles",
+      "DEV diagnostic only: gate promotion, recording, training NOT approved",
+      "submit all planned runs up to max_parallel on gcp1 (already running, no new VM); stop same-defect runs at once on a confirmed physical/control defect, do not fill the denominator",
+      "per run: input audit, >=6 frames first/middle/end for every failure, result hashes",
+      "speed record-only (warn >3.5, block >6.0/incomplete/HOST_ERROR)"
+    ],
+    "credit_and_price": {
+      "remaining_credit": "UNVERIFIED (billing out of agent scope)",
+      "decision": "proceed on running gcp1; budget-stop (net >=1,000 KRW -> stop all VMs) is the binding guard; if it fires submit nothing new and alert coordinator"
+    },
+    "gate_promotion_authorized_if_all_conditions_pass": false
+  },
+  "status": "COMPLETED_DIAGNOSTIC_NOT_READY_FOR_GATE",
+  "stages": [
+    {
+      "stage": "repro4",
+      "run": "grasp-search18-repro4-gcp-00620d7a",
+      "n": 1,
+      "N": 4,
+      "planned_N": 4,
+      "exit": "0",
+      "host_errors": 0,
+      "interrupted": 0,
+      "median_wall_per_sim": 3.1650507030245887,
+      "max_wall_per_sim": 4.467573320508129,
+      "first30": {
+        "reached_30_N": 0,
+        "reached_30_median_wall_per_sim": null,
+        "completed_before_30_N": 4,
+        "full_run_proxy_median": 3.1650507030245887,
+        "missing_N": 0,
+        "no_extra_speed_probe": true,
+        "automatic_promotion": false
+      },
+      "verification": {
+        "remote_full_manifest_verified": true,
+        "local_manifest_verified_N": 157,
+        "decoded_manifest_verified_N": 12,
+        "selected_frames_N": 72,
+        "manifest_sha256": "1bfc8951eb2d9eb0d79800aa51253cbe244168a32fce30cb500aacb669ba81cf"
+      },
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-search18-repro4-gcp-00620d7a",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search18-repro4-gcp-00620d7a",
+      "rows": [
+        {
+          "seed": 315709,
+          "episode": "episode-000",
+          "status": "complete",
+          "physical_success": false,
+          "sim_s": 13.8999999999859,
+          "wall_s": 62.099269155,
+          "wall_per_sim": 4.467573320508129,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 1044,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "result_sha256": "ea61003686d66405faba70c1b21141fb08d52a3e2d6065ed0a4a935ecea42a03",
+          "result_decoded_sha256": "4eec5d9c9b26825817a4e41aa888b1ce1953964b6ffb96b2a43329a1100fc91f",
+          "selected_timestamps": [
+            0.0,
+            3.0,
+            5.0,
+            8.0,
+            10.0,
+            13.0
+          ],
+          "source_sha": "00620d7ace67ae1b7f39aa0a20d990aff11cf861",
+          "host": "gcp1",
+          "stage": "repro4",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-search18-repro4-gcp-00620d7a/diagnostic/episode-000/raw",
+          "teacher_outcomes": {
+            "r1": "approach_blocked_handoff",
+            "r2": "peer_approach_handoff"
+          },
+          "max_stable_hold_s": 0.0,
+          "criteria": {
+            "min_z_m": 0.012,
+            "max_tilt_deg": 10.0,
+            "hold_s": 3.0
+          },
+          "model_calls": 0,
+          "review_frames_N": 18,
+          "approx_frame_time_basis": "run-relative SIM seconds; floor to stored whole second",
+          "failure_analysis": {
+            "observed": "r2는 청록 끝 ready, r1은 반대 파란 끝 원거리 접근 중. 동일 끝 수렴 없음.",
+            "mechanism": "r1 접근 목표에 can 장애물 재관측 후 후보 확장 48개 feasible0, 일부 경로 선택 뒤 가시 목표 오차가 줄지 않아 재계획 후 handoff.",
+            "remaining_unknown": "실제 구동·발행 명령 위치추정·장애물 위치 오차의 기여는 분리 미확인; 로그 사건 수만으로 근본 물리 원인을 확정하지 않음."
+          }
+        },
+        {
+          "seed": 8311702,
+          "episode": "episode-001",
+          "status": "complete",
+          "physical_success": true,
+          "sim_s": 27.30000000004775,
+          "wall_s": 78.80622906500139,
+          "wall_per_sim": 2.886675057321009,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 1000,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "result_sha256": "95ec5d98dcac2ce1248599cb7f2aeb34d7735fb1da4d07a2cdece2a752b710ae",
+          "result_decoded_sha256": "95ec5d98dcac2ce1248599cb7f2aeb34d7735fb1da4d07a2cdece2a752b710ae",
+          "selected_timestamps": [
+            0.0,
+            5.0,
+            11.0,
+            16.0,
+            22.0,
+            27.0
+          ],
+          "source_sha": "00620d7ace67ae1b7f39aa0a20d990aff11cf861",
+          "host": "gcp1",
+          "stage": "repro4",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-search18-repro4-gcp-00620d7a/diagnostic/episode-001/raw",
+          "teacher_outcomes": {
+            "r1": "success",
+            "r2": "success"
+          },
+          "max_stable_hold_s": 3.0000000000143245,
+          "criteria": {
+            "min_z_m": 0.012,
+            "max_tilt_deg": 10.0,
+            "hold_s": 3.0
+          },
+          "model_calls": 0,
+          "review_frames_N": 18,
+          "approx_frame_time_basis": "run-relative SIM seconds; floor to stored whole second"
+        },
+        {
+          "seed": 8311709,
+          "episode": "episode-002",
+          "status": "complete",
+          "physical_success": false,
+          "sim_s": 6.300000000003613,
+          "wall_s": 21.6935859969999,
+          "wall_per_sim": 3.443426348728168,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 339,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "result_sha256": "c5e087637ca654b2b7e43ffa63e571046687f912cd63980294f60938858473a6",
+          "result_decoded_sha256": "f0a35c7f43db17bd5736558da9fb277174870cbb7534a8ba9957ddbc81ff2026",
+          "selected_timestamps": [
+            0.0,
+            1.0,
+            2.0,
+            4.0,
+            5.0,
+            6.0
+          ],
+          "source_sha": "00620d7ace67ae1b7f39aa0a20d990aff11cf861",
+          "host": "gcp1",
+          "stage": "repro4",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-search18-repro4-gcp-00620d7a/diagnostic/episode-002/raw",
+          "teacher_outcomes": {
+            "r1": "approach_blocked_handoff",
+            "r2": "peer_approach_handoff"
+          },
+          "max_stable_hold_s": 0.0,
+          "criteria": {
+            "min_z_m": 0.012,
+            "max_tilt_deg": 10.0,
+            "hold_s": 3.0
+          },
+          "model_calls": 0,
+          "review_frames_N": 18,
+          "approx_frame_time_basis": "run-relative SIM seconds; floor to stored whole second",
+          "failure_analysis": {
+            "observed": "r2는 청록 끝 ready, r1은 파란 끝에서 떨어져 재관측; 동료 직접 충돌/같은 끝 수렴 안 보임.",
+            "mechanism": "r1 goal_set 4회 selected0: blocked_goal96, IK120, gripper_angle256; tile 장애물 재관측 후에도 후보가 남지 않아 all_goals_blocked_handoff.",
+            "remaining_unknown": "정상적인 자리 불가와 인식/위치/형상 보수성의 기여는 미분리; 물리적 파지 시도 없음."
+          }
+        },
+        {
+          "seed": 8311711,
+          "episode": "episode-003",
+          "status": "complete",
+          "physical_success": false,
+          "sim_s": 25.800000000040587,
+          "wall_s": 70.13195787899895,
+          "wall_per_sim": 2.7182929410421948,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 1117,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "result_sha256": "93914bfc5d3be61f5b066d3a79e6af8d051ff6cf52d86f56ba98d96ce5862f04",
+          "result_decoded_sha256": "93914bfc5d3be61f5b066d3a79e6af8d051ff6cf52d86f56ba98d96ce5862f04",
+          "selected_timestamps": [
+            0.0,
+            5.0,
+            10.0,
+            15.0,
+            20.0,
+            25.0
+          ],
+          "source_sha": "00620d7ace67ae1b7f39aa0a20d990aff11cf861",
+          "host": "gcp1",
+          "stage": "repro4",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-search18-repro4-gcp-00620d7a/diagnostic/episode-003/raw",
+          "teacher_outcomes": {
+            "r1": "peer_approach_handoff",
+            "r2": "approach_blocked_handoff"
+          },
+          "max_stable_hold_s": 0.0,
+          "criteria": {
+            "min_z_m": 0.012,
+            "max_tilt_deg": 10.0,
+            "hold_s": 3.0
+          },
+          "model_calls": 0,
+          "review_frames_N": 18,
+          "approx_frame_time_basis": "run-relative SIM seconds; floor to stored whole second",
+          "failure_analysis": {
+            "observed": "두 로봇이 반대 끝으로 접근, r1 blue 정렬 진입; r2는 teal 접근/동료 재관측 뒤 중단.",
+            "mechanism": "r2 peer 재관측 뒤 safe_prefix 경로를 사용했으나 peer_wait_deadline_handoff; 최종 동료기억과 실제 peer 위치 비교 필요.",
+            "remaining_unknown": "ghost 위치 갱신·시선 복구·발행명령 위치추정 오차의 기여 미확정; 공통 구현 결함 확정 아님."
+          }
+        }
+      ]
+    },
+    {
+      "stage": "novel12",
+      "run": "grasp-search18-novel12-gcp-00620d7a",
+      "n": 11,
+      "N": 12,
+      "planned_N": 12,
+      "exit": "0",
+      "host_errors": 0,
+      "interrupted": 0,
+      "median_wall_per_sim": 2.976772708913445,
+      "max_wall_per_sim": 3.4359231817720346,
+      "first30": {
+        "reached_30_N": 5,
+        "reached_30_median_wall_per_sim": 2.8936476315941966,
+        "completed_before_30_N": 7,
+        "full_run_proxy_median": 3.055014969742917,
+        "missing_N": 0,
+        "no_extra_speed_probe": true,
+        "automatic_promotion": false
+      },
+      "verification": {
+        "remote_full_manifest_verified": true,
+        "local_manifest_verified_N": 447,
+        "decoded_manifest_verified_N": 35,
+        "selected_frames_N": 216,
+        "manifest_sha256": "1de0cb8fe185acdcdb919923f71249bd2f300c97699dc612b154d6ba53995fa5"
+      },
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-search18-novel12-gcp-00620d7a",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search18-novel12-gcp-00620d7a",
+      "rows": [
+        {
+          "seed": 8311712,
+          "episode": "episode-000",
+          "status": "complete",
+          "physical_success": true,
+          "sim_s": 33.200000000075924,
+          "wall_s": 97.41704675999972,
+          "wall_per_sim": 2.9342483963788233,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 1066,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "result_sha256": "62002e3acb9552887b58ebeb27fdb474e41fee18248a426422dbbd393b6a6f3a",
+          "result_decoded_sha256": "62002e3acb9552887b58ebeb27fdb474e41fee18248a426422dbbd393b6a6f3a",
+          "selected_timestamps": [
+            0.0,
+            7.0,
+            13.0,
+            20.0,
+            26.0,
+            33.0
+          ],
+          "source_sha": "00620d7ace67ae1b7f39aa0a20d990aff11cf861",
+          "host": "gcp1",
+          "stage": "novel12",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-search18-novel12-gcp-00620d7a/diagnostic/episode-000/raw",
+          "teacher_outcomes": {
+            "r1": "success",
+            "r2": "success"
+          },
+          "max_stable_hold_s": 3.0000000000143245,
+          "criteria": {
+            "min_z_m": 0.012,
+            "max_tilt_deg": 10.0,
+            "hold_s": 3.0
+          },
+          "model_calls": 0,
+          "review_frames_N": 18,
+          "approx_frame_time_basis": "run-relative SIM seconds; floor to stored whole second"
+        },
+        {
+          "seed": 8311713,
+          "episode": "episode-001",
+          "status": "complete",
+          "physical_success": true,
+          "sim_s": 32.30000000007163,
+          "wall_s": 95.18521079900165,
+          "wall_per_sim": 2.9469105510461477,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 1373,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "result_sha256": "16def643a914bd86547089e4f055395194406ff3a6ea6270dd06d1f49a7dd133",
+          "result_decoded_sha256": "16def643a914bd86547089e4f055395194406ff3a6ea6270dd06d1f49a7dd133",
+          "selected_timestamps": [
+            0.0,
+            6.0,
+            13.0,
+            19.0,
+            26.0,
+            32.0
+          ],
+          "source_sha": "00620d7ace67ae1b7f39aa0a20d990aff11cf861",
+          "host": "gcp1",
+          "stage": "novel12",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-search18-novel12-gcp-00620d7a/diagnostic/episode-001/raw",
+          "teacher_outcomes": {
+            "r1": "success",
+            "r2": "success"
+          },
+          "max_stable_hold_s": 3.0000000000143245,
+          "criteria": {
+            "min_z_m": 0.012,
+            "max_tilt_deg": 10.0,
+            "hold_s": 3.0
+          },
+          "model_calls": 0,
+          "review_frames_N": 18,
+          "approx_frame_time_basis": "run-relative SIM seconds; floor to stored whole second"
+        },
+        {
+          "seed": 8311714,
+          "episode": "episode-002",
+          "status": "complete",
+          "physical_success": true,
+          "sim_s": 29.500000000058254,
+          "wall_s": 85.58860125699903,
+          "wall_per_sim": 2.9013085171806785,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 909,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "result_sha256": "d0f56d5ffc9ebdafad212043f2b7dc13621041498f0bbeb455662746336d3582",
+          "result_decoded_sha256": "d0f56d5ffc9ebdafad212043f2b7dc13621041498f0bbeb455662746336d3582",
+          "selected_timestamps": [
+            0.0,
+            6.0,
+            12.0,
+            17.0,
+            23.0,
+            29.0
+          ],
+          "source_sha": "00620d7ace67ae1b7f39aa0a20d990aff11cf861",
+          "host": "gcp1",
+          "stage": "novel12",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-search18-novel12-gcp-00620d7a/diagnostic/episode-002/raw",
+          "teacher_outcomes": {
+            "r1": "success",
+            "r2": "success"
+          },
+          "max_stable_hold_s": 3.0000000000143245,
+          "criteria": {
+            "min_z_m": 0.012,
+            "max_tilt_deg": 10.0,
+            "hold_s": 3.0
+          },
+          "model_calls": 0,
+          "review_frames_N": 18,
+          "approx_frame_time_basis": "run-relative SIM seconds; floor to stored whole second"
+        },
+        {
+          "seed": 8311715,
+          "episode": "episode-003",
+          "status": "complete",
+          "physical_success": true,
+          "sim_s": 23.70000000003056,
+          "wall_s": 72.4038547830005,
+          "wall_per_sim": 3.055014969742917,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 769,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "result_sha256": "045198c128774e3ab1656b62f33ec6d38f91a6ed7727b321777a36f9b791212b",
+          "result_decoded_sha256": "045198c128774e3ab1656b62f33ec6d38f91a6ed7727b321777a36f9b791212b",
+          "selected_timestamps": [
+            0.0,
+            5.0,
+            9.0,
+            14.0,
+            18.0,
+            23.0
+          ],
+          "source_sha": "00620d7ace67ae1b7f39aa0a20d990aff11cf861",
+          "host": "gcp1",
+          "stage": "novel12",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-search18-novel12-gcp-00620d7a/diagnostic/episode-003/raw",
+          "teacher_outcomes": {
+            "r1": "success",
+            "r2": "success"
+          },
+          "max_stable_hold_s": 3.0000000000143245,
+          "criteria": {
+            "min_z_m": 0.012,
+            "max_tilt_deg": 10.0,
+            "hold_s": 3.0
+          },
+          "model_calls": 0,
+          "review_frames_N": 18,
+          "approx_frame_time_basis": "run-relative SIM seconds; floor to stored whole second"
+        },
+        {
+          "seed": 8311716,
+          "episode": "episode-004",
+          "status": "complete",
+          "physical_success": true,
+          "sim_s": 32.30000000007163,
+          "wall_s": 93.58036542899936,
+          "wall_per_sim": 2.8972249358759083,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 921,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "result_sha256": "c450cabe9de8d192320bb4bc10fec4b05531959bc2196678c1e0628d16e550e2",
+          "result_decoded_sha256": "c450cabe9de8d192320bb4bc10fec4b05531959bc2196678c1e0628d16e550e2",
+          "selected_timestamps": [
+            0.0,
+            6.0,
+            13.0,
+            19.0,
+            26.0,
+            32.0
+          ],
+          "source_sha": "00620d7ace67ae1b7f39aa0a20d990aff11cf861",
+          "host": "gcp1",
+          "stage": "novel12",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-search18-novel12-gcp-00620d7a/diagnostic/episode-004/raw",
+          "teacher_outcomes": {
+            "r1": "success",
+            "r2": "success"
+          },
+          "max_stable_hold_s": 3.0000000000143245,
+          "criteria": {
+            "min_z_m": 0.012,
+            "max_tilt_deg": 10.0,
+            "hold_s": 3.0
+          },
+          "model_calls": 0,
+          "review_frames_N": 18,
+          "approx_frame_time_basis": "run-relative SIM seconds; floor to stored whole second"
+        },
+        {
+          "seed": 8311717,
+          "episode": "episode-005",
+          "status": "complete",
+          "physical_success": true,
+          "sim_s": 29.900000000060164,
+          "wall_s": 85.38128939799935,
+          "wall_per_sim": 2.855561518321992,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 956,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "result_sha256": "ca29cf82367407da462d9f304a9e86f9ff7ab0550e123bdb2b4432a0dd7205e1",
+          "result_decoded_sha256": "ca29cf82367407da462d9f304a9e86f9ff7ab0550e123bdb2b4432a0dd7205e1",
+          "selected_timestamps": [
+            0.0,
+            6.0,
+            12.0,
+            17.0,
+            23.0,
+            29.0
+          ],
+          "source_sha": "00620d7ace67ae1b7f39aa0a20d990aff11cf861",
+          "host": "gcp1",
+          "stage": "novel12",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-search18-novel12-gcp-00620d7a/diagnostic/episode-005/raw",
+          "teacher_outcomes": {
+            "r1": "success",
+            "r2": "success"
+          },
+          "max_stable_hold_s": 3.0000000000143245,
+          "criteria": {
+            "min_z_m": 0.012,
+            "max_tilt_deg": 10.0,
+            "hold_s": 3.0
+          },
+          "model_calls": 0,
+          "review_frames_N": 18,
+          "approx_frame_time_basis": "run-relative SIM seconds; floor to stored whole second"
+        },
+        {
+          "seed": 8311718,
+          "episode": "episode-006",
+          "status": "complete",
+          "physical_success": true,
+          "sim_s": 20.600000000015758,
+          "wall_s": 63.38858847300071,
+          "wall_per_sim": 3.0771159452889427,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 849,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "result_sha256": "5d9a34195dca93a38288e736555688a947f9acdab00fdb4e3a5be1f9aecb58f5",
+          "result_decoded_sha256": "5d9a34195dca93a38288e736555688a947f9acdab00fdb4e3a5be1f9aecb58f5",
+          "selected_timestamps": [
+            0.0,
+            4.0,
+            8.0,
+            12.0,
+            16.0,
+            20.0
+          ],
+          "source_sha": "00620d7ace67ae1b7f39aa0a20d990aff11cf861",
+          "host": "gcp1",
+          "stage": "novel12",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-search18-novel12-gcp-00620d7a/diagnostic/episode-006/raw",
+          "teacher_outcomes": {
+            "r1": "success",
+            "r2": "success"
+          },
+          "max_stable_hold_s": 3.0000000000143245,
+          "criteria": {
+            "min_z_m": 0.012,
+            "max_tilt_deg": 10.0,
+            "hold_s": 3.0
+          },
+          "model_calls": 0,
+          "review_frames_N": 18,
+          "approx_frame_time_basis": "run-relative SIM seconds; floor to stored whole second"
+        },
+        {
+          "seed": 8311719,
+          "episode": "episode-007",
+          "status": "complete",
+          "physical_success": true,
+          "sim_s": 25.400000000038677,
+          "wall_s": 75.73037634499997,
+          "wall_per_sim": 2.981510879719868,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 987,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "result_sha256": "32c5856ca5675ccad8a446d719c002692e6021ee8bc95fa0464db52748efa15e",
+          "result_decoded_sha256": "32c5856ca5675ccad8a446d719c002692e6021ee8bc95fa0464db52748efa15e",
+          "selected_timestamps": [
+            0.0,
+            5.0,
+            10.0,
+            15.0,
+            20.0,
+            25.0
+          ],
+          "source_sha": "00620d7ace67ae1b7f39aa0a20d990aff11cf861",
+          "host": "gcp1",
+          "stage": "novel12",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-search18-novel12-gcp-00620d7a/diagnostic/episode-007/raw",
+          "teacher_outcomes": {
+            "r1": "success",
+            "r2": "success"
+          },
+          "max_stable_hold_s": 3.0000000000143245,
+          "criteria": {
+            "min_z_m": 0.012,
+            "max_tilt_deg": 10.0,
+            "hold_s": 3.0
+          },
+          "model_calls": 0,
+          "review_frames_N": 18,
+          "approx_frame_time_basis": "run-relative SIM seconds; floor to stored whole second"
+        },
+        {
+          "seed": 8311720,
+          "episode": "episode-008",
+          "status": "complete",
+          "physical_success": true,
+          "sim_s": 38.50000000010123,
+          "wall_s": 114.6858618740007,
+          "wall_per_sim": 2.9788535551610167,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 1540,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "result_sha256": "c835b04a34022dbaffd6aebd5f09759a31b998c216d48953bd6f39810bf5fb1d",
+          "result_decoded_sha256": "c835b04a34022dbaffd6aebd5f09759a31b998c216d48953bd6f39810bf5fb1d",
+          "selected_timestamps": [
+            0.0,
+            8.0,
+            15.0,
+            23.0,
+            30.0,
+            38.0
+          ],
+          "source_sha": "00620d7ace67ae1b7f39aa0a20d990aff11cf861",
+          "host": "gcp1",
+          "stage": "novel12",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-search18-novel12-gcp-00620d7a/diagnostic-008/episode-008/raw",
+          "teacher_outcomes": {
+            "r1": "success",
+            "r2": "success"
+          },
+          "max_stable_hold_s": 3.0000000000143245,
+          "criteria": {
+            "min_z_m": 0.012,
+            "max_tilt_deg": 10.0,
+            "hold_s": 3.0
+          },
+          "model_calls": 0,
+          "review_frames_N": 18,
+          "approx_frame_time_basis": "run-relative SIM seconds; floor to stored whole second"
+        },
+        {
+          "seed": 8311721,
+          "episode": "episode-009",
+          "status": "complete",
+          "physical_success": true,
+          "sim_s": 27.70000000004966,
+          "wall_s": 84.79709319199901,
+          "wall_per_sim": 3.0612669022327434,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 776,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "result_sha256": "1d059579e58824799fa9118ae1bf3709ac18ff826b4c39587e81eb7e794c6c09",
+          "result_decoded_sha256": "1d059579e58824799fa9118ae1bf3709ac18ff826b4c39587e81eb7e794c6c09",
+          "selected_timestamps": [
+            0.0,
+            5.0,
+            11.0,
+            16.0,
+            22.0,
+            27.0
+          ],
+          "source_sha": "00620d7ace67ae1b7f39aa0a20d990aff11cf861",
+          "host": "gcp1",
+          "stage": "novel12",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-search18-novel12-gcp-00620d7a/diagnostic-008/episode-009/raw",
+          "teacher_outcomes": {
+            "r1": "success",
+            "r2": "success"
+          },
+          "max_stable_hold_s": 3.0000000000143245,
+          "criteria": {
+            "min_z_m": 0.012,
+            "max_tilt_deg": 10.0,
+            "hold_s": 3.0
+          },
+          "model_calls": 0,
+          "review_frames_N": 18,
+          "approx_frame_time_basis": "run-relative SIM seconds; floor to stored whole second"
+        },
+        {
+          "seed": 8311722,
+          "episode": "episode-010",
+          "status": "complete",
+          "physical_success": true,
+          "sim_s": 33.3000000000764,
+          "wall_s": 99.05723902700083,
+          "wall_per_sim": 2.9746918626658725,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 1306,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "result_sha256": "69758f9b39705f041f978410aa05df776da2aeeb24c929f615380bc5a1ffd793",
+          "result_decoded_sha256": "69758f9b39705f041f978410aa05df776da2aeeb24c929f615380bc5a1ffd793",
+          "selected_timestamps": [
+            0.0,
+            7.0,
+            13.0,
+            20.0,
+            26.0,
+            33.0
+          ],
+          "source_sha": "00620d7ace67ae1b7f39aa0a20d990aff11cf861",
+          "host": "gcp1",
+          "stage": "novel12",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-search18-novel12-gcp-00620d7a/diagnostic-008/episode-010/raw",
+          "teacher_outcomes": {
+            "r1": "success",
+            "r2": "success"
+          },
+          "max_stable_hold_s": 3.0000000000143245,
+          "criteria": {
+            "min_z_m": 0.012,
+            "max_tilt_deg": 10.0,
+            "hold_s": 3.0
+          },
+          "model_calls": 0,
+          "review_frames_N": 18,
+          "approx_frame_time_basis": "run-relative SIM seconds; floor to stored whole second"
+        },
+        {
+          "seed": 8311723,
+          "episode": "episode-011",
+          "status": "complete",
+          "physical_success": false,
+          "sim_s": 6.200000000003846,
+          "wall_s": 21.30272372699983,
+          "wall_per_sim": 3.4359231817720346,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 347,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "result_sha256": "d3d2461340d6d710561aef90bfb31c31f1734d84e6ab4c0929426ac38328c4e0",
+          "result_decoded_sha256": "3c57f216626e7ef73c685a3210e36d0d0c76bf41099197356c173c03c473bb71",
+          "selected_timestamps": [
+            0.0,
+            1.0,
+            2.0,
+            4.0,
+            5.0,
+            6.0
+          ],
+          "source_sha": "00620d7ace67ae1b7f39aa0a20d990aff11cf861",
+          "host": "gcp1",
+          "stage": "novel12",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-search18-novel12-gcp-00620d7a/diagnostic-008/episode-011/raw",
+          "teacher_outcomes": {
+            "r1": "approach_blocked_handoff",
+            "r2": "peer_approach_handoff"
+          },
+          "max_stable_hold_s": 0.0,
+          "criteria": {
+            "min_z_m": 0.012,
+            "max_tilt_deg": 10.0,
+            "hold_s": 3.0
+          },
+          "model_calls": 0,
+          "review_frames_N": 18,
+          "approx_frame_time_basis": "run-relative SIM seconds; floor to stored whole second",
+          "failure_analysis": {
+            "observed": "개요와 자기 RGB에서 서로 다른 쪽을 봄. r1 blue 끝 옆 원기둥, r2 반대 teal 접근; 같은 끝 수렴 안 보임.",
+            "mechanism": "r1 goal_set 4회 selected0: blocked_goal96, IK120, gripper_angle256; 모든 후보 제거 후 all_goals_blocked_handoff.",
+            "remaining_unknown": "정상적인 자리 불가와 인식/위치/형상 보수성의 기여 미분리; 미시도 파지를 실제 접촉 실패로 주장하지 않음."
+          }
+        }
+      ]
+    }
+  ],
+  "denominators": {
+    "reproduction": {
+      "n": 1,
+      "N": 4,
+      "seen_seeds": true
+    },
+    "novel_development": {
+      "n": 11,
+      "N": 12,
+      "qualification": false
+    },
+    "qualification": {
+      "n": 0,
+      "N": 0,
+      "planned_gate40_submitted": 0
+    },
+    "do_not_pool_with_other_SHA_profiles_hosts": true
+  },
+  "all_input_audits": {
+    "N": 16,
+    "enabled_N": 16,
+    "invisible_measurements": 0,
+    "held_world_reads": 0,
+    "missing_N": 0,
+    "all_exact_source_profiles_host_weld_and_camera_checks_pass": true
+  },
+  "visual_review": {
+    "unique_frames_directly_viewed": 288,
+    "episodes": 16,
+    "views": [
+      "eval-overview",
+      "eval-own/r1",
+      "eval-own/r2"
+    ],
+    "times_per_episode": 6,
+    "failure_episodes": 4,
+    "failure_frames_directly_viewed": 72,
+    "same_end_convergence_observed_N": 0,
+    "limits": "overview panes are reduced; no continuous video claim; exact times are stored in per-episode rows"
+  },
+  "verification": {
+    "remote_full_manifests": 2,
+    "local_files_verified": 604,
+    "lossless_decoded_files_verified": 47,
+    "result_files_recounted": 16
+  },
+  "next_step": "No speed/gate/recording/training promotion: diagnostics are not all-success, gate explicitly unapproved. Coordinator must decide failure analysis/fix/new SHA and new queue. No 30-minute gate-approval wait because pass precondition was not met and this queue authorizes diagnostic only.",
+  "stop_actions": {
+    "supervisor_stop_sent": false,
+    "signaled_pids": [],
+    "reason": "All episodes ended naturally as successes or documented clean map handoffs; no drop, tilt, HOST_ERROR, or diagnosed shared implementation defect; handoffs are task failures and are not counted as grasp successes."
+  },
+  "model_usage": {
+    "calls": 0,
+    "prompt_tokens": 0,
+    "completion_tokens": 0,
+    "cache_ratio": null,
+    "no_keys_transferred": true
+  },
+  "storage": {
+    "raw": "GCP persistent disk; no full raw download or second-host backup",
+    "mac": "lite logs/manifests, 288 selected frames, montages",
+    "other_projects_or_Azure_used": false
+  },
+  "cost": {
+    "remaining_credit": "unverified; billing work excluded",
+    "budget_stop_verified_active": true,
+    "latest_preflight_budget_message_cost_KRW": 0,
+    "actual_cloud_bill": "unverified"
+  },
+  "artifacts": {
+    "ops_directory": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/search18-00620d7a-ops",
+    "command_review": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/search18-00620d7a-ops/all-first30-command-review.json"
+  },
+  "at_final_host_verification": "2026-10-15 15:37:56 KST",
+  "final_host_check": {
+    "records": [
+      {
+        "run": "grasp-search18-repro4-gcp-00620d7a",
+        "exit": "0",
+        "full_hash_check": "PASS",
+        "lease_present_after": false
+      },
+      {
+        "run": "grasp-search18-novel12-gcp-00620d7a",
+        "exit": "0",
+        "full_hash_check": "PASS",
+        "lease_present_after": false
+      }
+    ],
+    "own_active_processes": 0,
+    "other_simulation_process_rows": [
+      " 189191 python          .venv-sim/bin/python -m scripts.sim_cli workflow run grasp-act-recovery -- --plan experiments/2026-10-15-act-train/act8-gate-plan.json --episode 26 --dependency-root /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --noise experiments/2026-10-15-act-train/act8-noise.json --recovery-mode dart_effort_pulses_v2 --out /home/ugrp/ugrp-sim/runs/act8-gate-8316826-01a892fa/raw --cap-s 90",
+      " 189374 python          /home/ugrp/ugrp-sim/src/01a892fa7a16c6578a9bf3ed9cdf9b33c01a884a/.venv-sim/bin/python -m scripts.run_grasp_act_recovery --plan experiments/2026-10-15-act-train/act8-gate-plan.json --episode 26 --dependency-root /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --noise experiments/2026-10-15-act-train/act8-noise.json --recovery-mode dart_effort_pulses_v2 --out /home/ugrp/ugrp-sim/runs/act8-gate-8316826-01a892fa/raw --cap-s 90",
+      " 189383 python          .venv-sim/bin/python -m scripts.sim_cli workflow run grasp-act-recovery -- --plan experiments/2026-10-15-act-train/act8-gate-plan.json --episode 27 --dependency-root /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --noise experiments/2026-10-15-act-train/act8-noise.json --recovery-mode dart_effort_pulses_v2 --out /home/ugrp/ugrp-sim/runs/act8-gate-8316827-01a892fa/raw --cap-s 90",
+      " 189582 python          /home/ugrp/ugrp-sim/src/01a892fa7a16c6578a9bf3ed9cdf9b33c01a884a/.venv-sim/bin/python -m scripts.run_grasp_act_recovery --plan experiments/2026-10-15-act-train/act8-gate-plan.json --episode 27 --dependency-root /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --noise experiments/2026-10-15-act-train/act8-noise.json --recovery-mode dart_effort_pulses_v2 --out /home/ugrp/ugrp-sim/runs/act8-gate-8316827-01a892fa/raw --cap-s 90",
+      " 189683 python          .venv-sim/bin/python -m scripts.sim_cli workflow run grasp-act-recovery -- --plan experiments/2026-10-15-act-train/act8-gate-plan.json --episode 28 --dependency-root /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --noise experiments/2026-10-15-act-train/act8-noise.json --recovery-mode dart_effort_pulses_v2 --out /home/ugrp/ugrp-sim/runs/act8-gate-8316828-01a892fa/raw --cap-s 90",
+      " 189982 python          /home/ugrp/ugrp-sim/src/01a892fa7a16c6578a9bf3ed9cdf9b33c01a884a/.venv-sim/bin/python -m scripts.run_grasp_act_recovery --plan experiments/2026-10-15-act-train/act8-gate-plan.json --episode 28 --dependency-root /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --noise experiments/2026-10-15-act-train/act8-noise.json --recovery-mode dart_effort_pulses_v2 --out /home/ugrp/ugrp-sim/runs/act8-gate-8316828-01a892fa/raw --cap-s 90",
+      " 190620 python          .venv-sim/bin/python -m scripts.sim_cli workflow run self-map-diagnostic -- --output /home/ugrp/ugrp-sim/runs/selfmap6-smooth-93560-c8d9b6e5/raw --expected-source-sha c8d9b6e51a601dba5e0724e83fd1eae8929fc9d2 --seed 93560 --cap-s 30 --execution-host gcp1 --project ugrp-act-train-1014 --self-map-executor frontier_drive_v1 --bootstrap command_prior_v1 --initial-sweep required_360_v1 --recovery-profile selfmap4_recovery_v1 --revision-gate selfmap4_revision_gate_v2 --multiframe-registration selfmap4_multiframe_registration_v1 --render-profile floor_light_v1 --correction-safety selfmap6_correction_safety_v1 --execute",
+      " 190645 python          /home/ugrp/ugrp-sim/src/c8d9b6e51a601dba5e0724e83fd1eae8929fc9d2/.venv-sim/bin/python -m scripts.run_self_map_diagnostic --output /home/ugrp/ugrp-sim/runs/selfmap6-smooth-93560-c8d9b6e5/raw --expected-source-sha c8d9b6e51a601dba5e0724e83fd1eae8929fc9d2 --seed 93560 --cap-s 30 --execution-host gcp1 --project ugrp-act-train-1014 --self-map-executor frontier_drive_v1 --bootstrap command_prior_v1 --initial-sweep required_360_v1 --recovery-profile selfmap4_recovery_v1 --revision-gate selfmap4_revision_gate_v2 --multiframe-registration selfmap4_multiframe_registration_v1 --render-profile floor_light_v1 --correction-safety selfmap6_correction_safety_v1 --execute"
+    ],
+    "idle_guard": "active",
+    "disk_free_bytes": 230997450752,
+    "vm_action": "none; idle guard retained",
+    "at": "2026-10-15 15:37:56 KST"
+  },
+  "final_pr_comment": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/484#issuecomment-6186111040",
+  "pr_comment_verified_readback": true,
+  "completed_at": "2026-10-15 15:38:59 KST"
+}

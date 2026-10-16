@@ -1,0 +1,408 @@
+{
+  "schema": "ugrp.gcp.act10.ops.v1",
+  "at": "2026-10-15 16:52:03 KST",
+  "queue": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-act10-567dc120.json",
+  "queue_sha256": "d4c514265c97ee44e99af3bfe5c7e72258455bfafae1a2f81905fa34b2cf02ad",
+  "source_sha": "567dc12041b4562ab0d972764f350684a2f267f0",
+  "teacher_dependency_sha": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+  "host": {
+    "name": "gcp1",
+    "project": "ugrp-act-train-1014",
+    "instance": "ugrp-sim-gcp1",
+    "zone": "asia-northeast3-a",
+    "machine": "n4-highcpu-64"
+  },
+  "verdict": "NOT_READY_FIX_FIRST",
+  "stages": {
+    "preflight": "PASS",
+    "approved_first2": "2/2 SUCCESS",
+    "first30": "2/2 COMPLETE",
+    "remaining38": "BLOCKED by coordinator review rejection at 16:48:19; approval wait ended on explicit rejection",
+    "promotion": "NOT_APPROVED",
+    "recording": "NOT_SUBMITTED",
+    "training": "NOT_SUBMITTED"
+  },
+  "gate": {
+    "success_n": 2,
+    "planned_N": 40,
+    "completed_N": 2,
+    "unsubmitted_blocked_N": 38,
+    "physical_failure_N": 0,
+    "HOST_ERROR_N": 0,
+    "supervisor_interrupted_N": 0,
+    "minimum_success": 38,
+    "recovery_success_N": 2,
+    "minimum_recovery_success_N": 20,
+    "gate_passed": false,
+    "pooled_other_sources": false
+  },
+  "input_audit": {
+    "verified_N": 2,
+    "invisible_measurements": 0,
+    "held_world_reads": 0
+  },
+  "speed": {
+    "first30_median_wall_per_sim": 2.8276150981585184,
+    "whole_run_median_wall_per_sim": 2.864342124487993,
+    "first30_complete_N": 2,
+    "warning_threshold": 3.5,
+    "block_threshold": 6.0
+  },
+  "viewed": {
+    "unique_original_frames": 44,
+    "displayed_image_tiles": 60,
+    "elapsed_sim_ranges_s": [
+      [
+        0,
+        42
+      ],
+      [
+        0,
+        43
+      ]
+    ],
+    "cameras": [
+      "r1 own",
+      "evaluation overview"
+    ],
+    "scope": "solo task; r2/r3 are not participating control agents; first/middle/late frames + loss/recovery viewed",
+    "raw_hz": 1
+  },
+  "blocking_review": {
+    "time": "2026-10-15T16:48:19+09:00",
+    "verdict": "FIX_FIRST",
+    "reason": "start-unseen target -> no memory -> recovery_search_exhausted in 2 s (harness/grasp_act_dart.py:139); supervisor double interrupt loses input audit. Remaining 38 NOT approved; superseded by act11 queue. First 2 (2/2 success, recovery 2/2) kept as DEV evidence, not pooled."
+  },
+  "limitations": [
+    "2/40 is incomplete and not gate success",
+    "both visible losses resolved during orient stage; pan/body scan/exhaustion not covered",
+    "review failure is a code-path finding, not a failure observed in the two completed trials",
+    "originals on GCP persistent disk; local retrieval is light evidence, not full backup",
+    "remaining credit/current unit price unverified per coordinator scope; no billing operations",
+    "act11 is outside designated queue scope and was not submitted"
+  ],
+  "planned_run_dispositions": [
+    {
+      "run": "act10-gate-8317000-567dc120",
+      "seed": 8317000,
+      "submitted": true,
+      "outcome": "SUCCESS",
+      "result_sha256": "6f4615eba1dd7fc8393c97ea58988c560eccff790d9d0d5610a1f15daea2df62",
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/act10-gate-8317000-567dc120"
+    },
+    {
+      "run": "act10-gate-8317001-567dc120",
+      "seed": 8317001,
+      "submitted": true,
+      "outcome": "SUCCESS",
+      "result_sha256": "53a98814d18daa7bbd67fa45543c85f167a4b9fa34dc09f5335a3c13c5a81fa7",
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/act10-gate-8317001-567dc120"
+    },
+    {
+      "run": "act10-gate-8317002-567dc120",
+      "seed": 8317002,
+      "submitted": false,
+      "outcome": "BLOCKED_REVIEW_FIX_FIRST",
+      "result_sha256": null,
+      "raw_location": null
+    },
+    {
+      "run": "act10-gate-8317003-567dc120",
+      "seed": 8317003,
+      "submitted": false,
+      "outcome": "BLOCKED_REVIEW_FIX_FIRST",
+      "result_sha256": null,
+      "raw_location": null
+    },
+    {
+      "run": "act10-gate-8317004-567dc120",
+      "seed": 8317004,
+      "submitted": false,
+      "outcome": "BLOCKED_REVIEW_FIX_FIRST",
+      "result_sha256": null,
+      "raw_location": null
+    },
+    {
+      "run": "act10-gate-8317005-567dc120",
+      "seed": 8317005,
+      "submitted": false,
+      "outcome": "BLOCKED_REVIEW_FIX_FIRST",
+      "result_sha256": null,
+      "raw_location": null
+    },
+    {
+      "run": "act10-gate-8317006-567dc120",
+      "seed": 8317006,
+      "submitted": false,
+      "outcome": "BLOCKED_REVIEW_FIX_FIRST",
+      "result_sha256": null,
+      "raw_location": null
+    },
+    {
+      "run": "act10-gate-8317007-567dc120",
+      "seed": 8317007,
+      "submitted": false,
+      "outcome": "BLOCKED_REVIEW_FIX_FIRST",
+      "result_sha256": null,
+      "raw_location": null
+    },
+    {
+      "run": "act10-gate-8317008-567dc120",
+      "seed": 8317008,
+      "submitted": false,
+      "outcome": "BLOCKED_REVIEW_FIX_FIRST",
+      "result_sha256": null,
+      "raw_location": null
+    },
+    {
+      "run": "act10-gate-8317009-567dc120",
+      "seed": 8317009,
+      "submitted": false,
+      "outcome": "BLOCKED_REVIEW_FIX_FIRST",
+      "result_sha256": null,
+      "raw_location": null
+    },
+    {
+      "run": "act10-gate-8317010-567dc120",
+      "seed": 8317010,
+      "submitted": false,
+      "outcome": "BLOCKED_REVIEW_FIX_FIRST",
+      "result_sha256": null,
+      "raw_location": null
+    },
+    {
+      "run": "act10-gate-8317011-567dc120",
+      "seed": 8317011,
+      "submitted": false,
+      "outcome": "BLOCKED_REVIEW_FIX_FIRST",
+      "result_sha256": null,
+      "raw_location": null
+    },
+    {
+      "run": "act10-gate-8317012-567dc120",
+      "seed": 8317012,
+      "submitted": false,
+      "outcome": "BLOCKED_REVIEW_FIX_FIRST",
+      "result_sha256": null,
+      "raw_location": null
+    },
+    {
+      "run": "act10-gate-8317013-567dc120",
+      "seed": 8317013,
+      "submitted": false,
+      "outcome": "BLOCKED_REVIEW_FIX_FIRST",
+      "result_sha256": null,
+      "raw_location": null
+    },
+    {
+      "run": "act10-gate-8317014-567dc120",
+      "seed": 8317014,
+      "submitted": false,
+      "outcome": "BLOCKED_REVIEW_FIX_FIRST",
+      "result_sha256": null,
+      "raw_location": null
+    },
+    {
+      "run": "act10-gate-8317015-567dc120",
+      "seed": 8317015,
+      "submitted": false,
+      "outcome": "BLOCKED_REVIEW_FIX_FIRST",
+      "result_sha256": null,
+      "raw_location": null
+    },
+    {
+      "run": "act10-gate-8317016-567dc120",
+      "seed": 8317016,
+      "submitted": false,
+      "outcome": "BLOCKED_REVIEW_FIX_FIRST",
+      "result_sha256": null,
+      "raw_location": null
+    },
+    {
+      "run": "act10-gate-8317017-567dc120",
+      "seed": 8317017,
+      "submitted": false,
+      "outcome": "BLOCKED_REVIEW_FIX_FIRST",
+      "result_sha256": null,
+      "raw_location": null
+    },
+    {
+      "run": "act10-gate-8317018-567dc120",
+      "seed": 8317018,
+      "submitted": false,
+      "outcome": "BLOCKED_REVIEW_FIX_FIRST",
+      "result_sha256": null,
+      "raw_location": null
+    },
+    {
+      "run": "act10-gate-8317019-567dc120",
+      "seed": 8317019,
+      "submitted": false,
+      "outcome": "BLOCKED_REVIEW_FIX_FIRST",
+      "result_sha256": null,
+      "raw_location": null
+    },
+    {
+      "run": "act10-gate-8317020-567dc120",
+      "seed": 8317020,
+      "submitted": false,
+      "outcome": "BLOCKED_REVIEW_FIX_FIRST",
+      "result_sha256": null,
+      "raw_location": null
+    },
+    {
+      "run": "act10-gate-8317021-567dc120",
+      "seed": 8317021,
+      "submitted": false,
+      "outcome": "BLOCKED_REVIEW_FIX_FIRST",
+      "result_sha256": null,
+      "raw_location": null
+    },
+    {
+      "run": "act10-gate-8317022-567dc120",
+      "seed": 8317022,
+      "submitted": false,
+      "outcome": "BLOCKED_REVIEW_FIX_FIRST",
+      "result_sha256": null,
+      "raw_location": null
+    },
+    {
+      "run": "act10-gate-8317023-567dc120",
+      "seed": 8317023,
+      "submitted": false,
+      "outcome": "BLOCKED_REVIEW_FIX_FIRST",
+      "result_sha256": null,
+      "raw_location": null
+    },
+    {
+      "run": "act10-gate-8317024-567dc120",
+      "seed": 8317024,
+      "submitted": false,
+      "outcome": "BLOCKED_REVIEW_FIX_FIRST",
+      "result_sha256": null,
+      "raw_location": null
+    },
+    {
+      "run": "act10-gate-8317025-567dc120",
+      "seed": 8317025,
+      "submitted": false,
+      "outcome": "BLOCKED_REVIEW_FIX_FIRST",
+      "result_sha256": null,
+      "raw_location": null
+    },
+    {
+      "run": "act10-gate-8317026-567dc120",
+      "seed": 8317026,
+      "submitted": false,
+      "outcome": "BLOCKED_REVIEW_FIX_FIRST",
+      "result_sha256": null,
+      "raw_location": null
+    },
+    {
+      "run": "act10-gate-8317027-567dc120",
+      "seed": 8317027,
+      "submitted": false,
+      "outcome": "BLOCKED_REVIEW_FIX_FIRST",
+      "result_sha256": null,
+      "raw_location": null
+    },
+    {
+      "run": "act10-gate-8317028-567dc120",
+      "seed": 8317028,
+      "submitted": false,
+      "outcome": "BLOCKED_REVIEW_FIX_FIRST",
+      "result_sha256": null,
+      "raw_location": null
+    },
+    {
+      "run": "act10-gate-8317029-567dc120",
+      "seed": 8317029,
+      "submitted": false,
+      "outcome": "BLOCKED_REVIEW_FIX_FIRST",
+      "result_sha256": null,
+      "raw_location": null
+    },
+    {
+      "run": "act10-gate-8317030-567dc120",
+      "seed": 8317030,
+      "submitted": false,
+      "outcome": "BLOCKED_REVIEW_FIX_FIRST",
+      "result_sha256": null,
+      "raw_location": null
+    },
+    {
+      "run": "act10-gate-8317031-567dc120",
+      "seed": 8317031,
+      "submitted": false,
+      "outcome": "BLOCKED_REVIEW_FIX_FIRST",
+      "result_sha256": null,
+      "raw_location": null
+    },
+    {
+      "run": "act10-gate-8317032-567dc120",
+      "seed": 8317032,
+      "submitted": false,
+      "outcome": "BLOCKED_REVIEW_FIX_FIRST",
+      "result_sha256": null,
+      "raw_location": null
+    },
+    {
+      "run": "act10-gate-8317033-567dc120",
+      "seed": 8317033,
+      "submitted": false,
+      "outcome": "BLOCKED_REVIEW_FIX_FIRST",
+      "result_sha256": null,
+      "raw_location": null
+    },
+    {
+      "run": "act10-gate-8317034-567dc120",
+      "seed": 8317034,
+      "submitted": false,
+      "outcome": "BLOCKED_REVIEW_FIX_FIRST",
+      "result_sha256": null,
+      "raw_location": null
+    },
+    {
+      "run": "act10-gate-8317035-567dc120",
+      "seed": 8317035,
+      "submitted": false,
+      "outcome": "BLOCKED_REVIEW_FIX_FIRST",
+      "result_sha256": null,
+      "raw_location": null
+    },
+    {
+      "run": "act10-gate-8317036-567dc120",
+      "seed": 8317036,
+      "submitted": false,
+      "outcome": "BLOCKED_REVIEW_FIX_FIRST",
+      "result_sha256": null,
+      "raw_location": null
+    },
+    {
+      "run": "act10-gate-8317037-567dc120",
+      "seed": 8317037,
+      "submitted": false,
+      "outcome": "BLOCKED_REVIEW_FIX_FIRST",
+      "result_sha256": null,
+      "raw_location": null
+    },
+    {
+      "run": "act10-gate-8317038-567dc120",
+      "seed": 8317038,
+      "submitted": false,
+      "outcome": "BLOCKED_REVIEW_FIX_FIRST",
+      "result_sha256": null,
+      "raw_location": null
+    },
+    {
+      "run": "act10-gate-8317039-567dc120",
+      "seed": 8317039,
+      "submitted": false,
+      "outcome": "BLOCKED_REVIEW_FIX_FIRST",
+      "result_sha256": null,
+      "raw_location": null
+    }
+  ],
+  "report_path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act10-567dc120.json",
+  "report_sha256": "2a8949ff9ce1babe02999252a48642986fe31b52bcecb333f187b14f9c234004"
+}

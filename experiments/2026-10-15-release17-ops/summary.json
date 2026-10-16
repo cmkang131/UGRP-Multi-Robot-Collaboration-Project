@@ -1,0 +1,1084 @@
+{
+  "schema": "ugrp.gcp-ops.release17.v1",
+  "recorded_at": "2026-10-15 15:43:52 KST",
+  "task_finished": true,
+  "verdict": "NOT_READY_REPRODUCTION_1_OF_2_TIMEOUT",
+  "queue": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-release-gate-6b263c9b.json",
+  "host": {
+    "project": "ugrp-act-train-1014",
+    "ssh": "gcp1",
+    "instance": "ugrp-sim-gcp1",
+    "zone": "asia-northeast3-a",
+    "machine_type": "n4-highcpu-64"
+  },
+  "source": {
+    "sha": "6b263c9beb14757f88b76edd01088c6a46182a2f",
+    "branch": "claude/grasp-act-probes",
+    "worktree": "/Users/changmin/projects/ugrp-wt/grasp-act-probes",
+    "pr": 491,
+    "pr_head_note": "PR491 is a different branch; exact source grasp-act-probes SHA pinned independently",
+    "plan_sha256": {
+      "experiments/2026-10-14-e2e18-grasp-rootcause/release17-diagnostic-plan.json": "ba8342a86e5c63677a0002eb27d885d1b9bda7e34dc7c2628a9da8e4ae19c726"
+    },
+    "profile": {
+      "held_object": "hidden_v1",
+      "lookaround": "setdown_global_v1",
+      "pose_anchor": "command_relative_v1",
+      "own_pose_source": "commands",
+      "observe_mode": "backoff_v3",
+      "zone_slots": "zone",
+      "reach_mode": "pad_window_v2",
+      "placement": "global_localized_release_v1",
+      "lateral_recovery": "bounded_v1",
+      "active_recovery": "setdown_lookaround_v1",
+      "command_motion": "yaw_cal_v1",
+      "localization_support": "map_free_v1",
+      "regrasp_check": "own_rgb_lift_v1",
+      "regrasp_recovery": "own_rgb_realign_v1",
+      "release_profile": "release17_v1",
+      "release_fov_step": "release_fov_step_pulse_v1"
+    },
+    "weld": "off",
+    "training_rgb": false,
+    "student_execution": false
+  },
+  "stages": {
+    "development_reproduction": {
+      "success": 1,
+      "N": 2,
+      "submitted": 2,
+      "completed": 2,
+      "HOST_ERROR": 0,
+      "prefix_held": 2
+    },
+    "fresh_diagnostic": {
+      "planned_N": 7,
+      "submitted": 0,
+      "blocked": 7,
+      "success": null,
+      "reason": "reproduction not all successful"
+    },
+    "speed": {
+      "separate_probe_submitted": 0,
+      "mode": "record-only from owned runs first30"
+    },
+    "gate40": {
+      "approved": false,
+      "N": 40,
+      "required": 38,
+      "submitted": 0,
+      "success": null,
+      "reason": "diagnostic-only approval; reproduction prerequisite failed"
+    }
+  },
+  "failure_analysis": {
+    "74976": "3 real opposite-end regrasp/shift cycles, then 180 SIM-second cap expires during last lookaround (world t181.8). Localized corrections were progressing (-.441,-.250,-.037m) and evaluation-only final fit=true, open grippers, zero contacts and settled2.5s. Canonical result remains release_timeout, not success.",
+    "confirmed_physical_grasp_or_yaw_sign_defect": false,
+    "limits": "No extension, rerun, success relabel or controller change. A longer horizon might permit completion but has not been tested. Empty-grip negative N=0; no specificity claim.",
+    "after_completion_only": "truth contacts/geometry read for this audit were not fed to execution"
+  },
+  "subsets": {
+    "alignment_done": {
+      "n": 20,
+      "N": 20
+    },
+    "yaw_sign_verified": {
+      "n": 4,
+      "N": 4
+    },
+    "regrasp_contact_positive": {
+      "n": 10,
+      "N": 10,
+      "scope": "10 robot-test windows, min finger contact>=.5 in all70 samples per window; teacher own-RGB also confirms"
+    },
+    "empty_grip_negative": {
+      "N": 0,
+      "specificity": null
+    }
+  },
+  "input_audit": {
+    "runs_checked": 2,
+    "invisible_measurements_sum": 0,
+    "held_world_reads_sum": 0,
+    "explicit_enabled_counter": "not supplied; audit object and counters present",
+    "top_camera_control": "no explicit runtime counter; static source review only; top images are evaluation writer outputs"
+  },
+  "performance": {
+    "first30_wall_sim_median_approx": 2.9501980051288657,
+    "overall_wall_sim_median": 3.123952324063521,
+    "warning_over_3_5": false,
+    "block_over_6": false,
+    "scope": "two DEV reproductions under varying shared GCP load; no dedicated speed cohort"
+  },
+  "visual_review": {
+    "whole_run_frames": 66,
+    "native_barrier_frames": 18,
+    "final_total_viewed": 84,
+    "live_partial_reviews": "additional live montages viewed; overlaps excluded from final count"
+  },
+  "preservation": {
+    "original_manifest_files_verified": 1356,
+    "fetched_original_files_verified": 38,
+    "compressed_and_decoded_files_verified": 10,
+    "supplemental_stop_markers_verified": 4,
+    "raw_storage": "GCP persistent disk; lite logs and selected originals fetched to Mac. No full off-host raw backup.",
+    "stop_record": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/stop-release17-6b263c9b-20261015.json",
+    "signal_note": "both runs already EXIT0, no active owned PID; no SIGINT sent",
+    "owned_pids": [],
+    "owned_leases": [],
+    "other_jobs_at_final_check": 5,
+    "idle_guard": "active",
+    "eight_hour_stop": "28800 seconds STOP verified preflight; unchanged",
+    "budget_stop": "ACTIVE, PubSub budget-stop verified preflight; unchanged",
+    "credit_remaining": "unverified; no billing/credit operation"
+  },
+  "no_pooling": true,
+  "remaining": [
+    "fresh7 blocked; no diagnostic denominator expansion",
+    "gate40 unapproved/unsubmitted; no recording or training",
+    "coordinator must review finite time horizon/final observation and issue revised execution plan or source before a new run"
+  ],
+  "runs": [
+    {
+      "name": "r17d-00-6b263c9b",
+      "seed": 74963,
+      "cohort": "development_reproduction",
+      "source_sha": "6b263c9beb14757f88b76edd01088c6a46182a2f",
+      "submitted": true,
+      "status": "complete",
+      "exit": "0",
+      "success": true,
+      "outcome": "teacher_done",
+      "failure_reasons": [],
+      "prefix": {
+        "held_sim_s": 8.29999999999895,
+        "outcomes": {
+          "r1": "success",
+          "r2": "success"
+        }
+      },
+      "prefix_held": true,
+      "wall_s": 447.09589220199996,
+      "sim_s": 142.5999999983132,
+      "wall_sim": 3.1353148121128234,
+      "first30": {
+        "wall_sim_approx": 3.0163696181987745,
+        "sim_s": 30.300000000062074,
+        "method": "original evaluation JPEG mtime / actual teacher-r1 SIM row; startup excluded",
+        "fov_step_result_events": 0,
+        "yaw_sign_check_events": 0,
+        "yaw_floor_events": 0,
+        "scope_note": "LineAlign record only; lookaround yaw floors are not separately logged; no first30 yaw-check claim"
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "measurements_by_phase": {
+          "lookaround": {
+            "own_rgb_landmarks": {
+              "n": 2641,
+              "invisible": 0
+            }
+          }
+        },
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "training_exclusions": {
+        "prefix": {
+          "included": false,
+          "reason": "truth contact/height termination; scene preparation only",
+          "start_world_t": 1.8000000000001848,
+          "end_world_t": 10.099999999999136
+        },
+        "release": {
+          "included": false,
+          "reason": "success measurement; no student writer or gate admission"
+        }
+      },
+      "evaluation_last": {
+        "t": 144.29999999831574,
+        "fit": true,
+        "z": -0.00010775542021617071,
+        "tilt_deg": 7.7744738522572e-09,
+        "contact_n": {
+          "r1": [
+            0.0,
+            0.0
+          ],
+          "r2": [
+            0.0,
+            0.0
+          ]
+        },
+        "grip_to_beam_m": [
+          0.26081696762755924,
+          0.26079637869852695
+        ],
+        "open_pwm": {
+          "r1": 2000,
+          "r2": 2000
+        },
+        "beam_xy_yaw": [
+          4.750378728847454,
+          0.40245266049905143,
+          -1.689326970879728
+        ]
+      },
+      "evaluation_settled_s": 2.5,
+      "shift_steps": 2,
+      "decisions": [
+        {
+          "action": "lower",
+          "lo": null,
+          "hi": null,
+          "evidence": [
+            "none",
+            "none"
+          ],
+          "exact": {
+            "r1": false,
+            "r2": false
+          },
+          "t": 10.899999999997272
+        },
+        {
+          "action": "shift",
+          "shift_m": 0.2,
+          "reason": "localized_margin_correction",
+          "t": 29.200000000048412,
+          "margins_m": [
+            0.03833027082091711,
+            0.7564736452235508
+          ]
+        },
+        {
+          "action": "shift",
+          "shift_m": 0.16057051931586275,
+          "reason": "localized_margin_correction",
+          "t": 83.49999999975346,
+          "margins_m": [
+            0.22789507482717297,
+            0.5490361134588985
+          ]
+        },
+        {
+          "action": "lower",
+          "reason": "localized_margins_centered",
+          "t": 137.79999999846945,
+          "margins_m": [
+            0.3938428835072113,
+            0.38013173805705613
+          ]
+        }
+      ],
+      "line_alignment": {
+        "done": 8,
+        "N": 8,
+        "fov_step_verdicts": {
+          "progress": 8
+        },
+        "yaw_sign_verdicts": {
+          "verified": 3
+        },
+        "yaw_floor_modes": {
+          "floor": 2,
+          "single_pulse": 1
+        }
+      },
+      "barriers": [
+        {
+          "epoch": 1,
+          "confirmed": {
+            "r1": true,
+            "r2": true
+          },
+          "attempts": {
+            "r1": 1,
+            "r2": 1
+          },
+          "failure": null,
+          "events": [
+            {
+              "t": 49.50000000014534,
+              "robot": "r1",
+              "epoch": 1,
+              "attempt": 1,
+              "event": "test_start",
+              "commanded_lift_m": 0.02
+            },
+            {
+              "t": 56.30000000017781,
+              "robot": "r1",
+              "epoch": 1,
+              "attempt": 1,
+              "event": "confirmed",
+              "reason": "own_sequential_rgb_lift"
+            },
+            {
+              "t": 56.40000000017829,
+              "robot": "r2",
+              "epoch": 1,
+              "attempt": 1,
+              "event": "test_start",
+              "commanded_lift_m": 0.02
+            },
+            {
+              "t": 63.20000000021076,
+              "robot": "r2",
+              "epoch": 1,
+              "attempt": 1,
+              "event": "confirmed",
+              "reason": "own_sequential_rgb_lift"
+            }
+          ],
+          "scope": "own-RGB hypothesis; contact labels separately audited after execution"
+        },
+        {
+          "epoch": 2,
+          "confirmed": {
+            "r1": true,
+            "r2": true
+          },
+          "attempts": {
+            "r1": 1,
+            "r2": 1
+          },
+          "failure": null,
+          "events": [
+            {
+              "t": 104.09999999926633,
+              "robot": "r1",
+              "epoch": 2,
+              "attempt": 1,
+              "event": "test_start",
+              "commanded_lift_m": 0.02
+            },
+            {
+              "t": 110.89999999910553,
+              "robot": "r1",
+              "epoch": 2,
+              "attempt": 1,
+              "event": "confirmed",
+              "reason": "own_sequential_rgb_lift"
+            },
+            {
+              "t": 110.99999999910317,
+              "robot": "r2",
+              "epoch": 2,
+              "attempt": 1,
+              "event": "test_start",
+              "commanded_lift_m": 0.02
+            },
+            {
+              "t": 117.79999999894237,
+              "robot": "r2",
+              "epoch": 2,
+              "attempt": 1,
+              "event": "confirmed",
+              "reason": "own_sequential_rgb_lift"
+            }
+          ],
+          "scope": "own-RGB hypothesis; contact labels separately audited after execution"
+        }
+      ],
+      "contact_audit": [
+        {
+          "epoch": 1,
+          "robot": "r1",
+          "start": 49.50000000014534,
+          "confirmed": 56.30000000017781,
+          "N": 70,
+          "both_contact": 70,
+          "settled_N": 26,
+          "settled_both_contact": 26,
+          "settled_zero_contact": 0,
+          "beam_z_start": 0.06791612273353881,
+          "beam_z_end": 0.06373007784395393,
+          "contacts_last": {
+            "r1": [
+              5.361164607547913,
+              5.388703955113823
+            ],
+            "r2": [
+              5.377142449660324,
+              5.404058156429703
+            ]
+          }
+        },
+        {
+          "epoch": 1,
+          "robot": "r2",
+          "start": 56.40000000017829,
+          "confirmed": 63.20000000021076,
+          "N": 70,
+          "both_contact": 70,
+          "settled_N": 26,
+          "settled_both_contact": 26,
+          "settled_zero_contact": 0,
+          "beam_z_start": 0.06373007784395393,
+          "beam_z_end": 0.06388026348495544,
+          "contacts_last": {
+            "r1": [
+              5.37622995562688,
+              5.374197637243844
+            ],
+            "r2": [
+              5.376893859775082,
+              5.378392982570251
+            ]
+          }
+        },
+        {
+          "epoch": 2,
+          "robot": "r1",
+          "start": 104.09999999926633,
+          "confirmed": 110.89999999910553,
+          "N": 70,
+          "both_contact": 70,
+          "settled_N": 27,
+          "settled_both_contact": 27,
+          "settled_zero_contact": 0,
+          "beam_z_start": 0.06850115747814844,
+          "beam_z_end": 0.06623166932881658,
+          "contacts_last": {
+            "r1": [
+              5.373383960046384,
+              5.384608282403393
+            ],
+            "r2": [
+              5.368679236559889,
+              5.381273587977477
+            ]
+          }
+        },
+        {
+          "epoch": 2,
+          "robot": "r2",
+          "start": 110.99999999910317,
+          "confirmed": 117.79999999894237,
+          "N": 70,
+          "both_contact": 70,
+          "settled_N": 27,
+          "settled_both_contact": 27,
+          "settled_zero_contact": 0,
+          "beam_z_start": 0.06623166932881658,
+          "beam_z_end": 0.06643902056894466,
+          "contacts_last": {
+            "r1": [
+              5.377190673462317,
+              5.37939912696086
+            ],
+            "r2": [
+              5.3734455627544175,
+              5.378727222672939
+            ]
+          }
+        }
+      ],
+      "visual_review": {
+        "overview_r1_r2_times_sim_s": [
+          0.0,
+          6.0,
+          12.3,
+          18.3,
+          24.3,
+          28.3,
+          30.3,
+          55.3,
+          83.3,
+          111.3,
+          139.3
+        ],
+        "overview_r1_r2_frames_viewed": 33,
+        "barrier_frames_viewed": 6,
+        "montages": [
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release17-6b263c9b-ops/r17d-00-6b263c9b/montage-0.jpg",
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release17-6b263c9b-ops/r17d-00-6b263c9b/montage-1.jpg",
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release17-6b263c9b-ops/r17d-00-6b263c9b/barrier/barrier.jpg"
+        ],
+        "scope": "directly viewed start/middle/end >=6 timepoints; max gap<60 SIMs; first30 and first barrier included"
+      },
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r17d-00-6b263c9b",
+      "lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r17d-00-6b263c9b",
+      "hashes": {
+        "run": "r17d-00-6b263c9b",
+        "compressed_and_decoded_hash_verified": [
+          "manifest.json.zst",
+          "eval-only.jsonl.zst",
+          "result.json.zst",
+          "teacher-r1.jsonl.zst",
+          "teacher-r2.jsonl.zst"
+        ],
+        "result_sha256": "968ec5d3c9103bb7c28568368c24d41235f6649a2fd713b7ddcf35d574bb5dc9",
+        "result_zst_sha256": "12cb4a499111d5c8412a350d401368f73e582aecf1ae26cc1e4252067b13d4c8"
+      },
+      "final_verification": {
+        "run": "r17d-00-6b263c9b",
+        "original_manifest_verified": true,
+        "original_manifest_sha256": "997b64f059c5e45e5d0d8fbc8a3ea51362dbb5e263905f29393d9c240c7e21a8",
+        "original_files": 586,
+        "stop_markers": {
+          "SUPERVISOR_STOP.json": "5bda51dc639004fa88959e47cf55008c5265b1988beefef52e4749fa0556c628",
+          "raw/SUPERVISOR_STOP.json": "5bda51dc639004fa88959e47cf55008c5265b1988beefef52e4749fa0556c628"
+        },
+        "lease_released": true,
+        "raw_bytes": 9536305,
+        "stop_markers_fetched_verified": true,
+        "fetched_original_verified": 19
+      }
+    },
+    {
+      "name": "r17d-01-6b263c9b",
+      "seed": 74976,
+      "cohort": "development_reproduction",
+      "source_sha": "6b263c9beb14757f88b76edd01088c6a46182a2f",
+      "submitted": true,
+      "status": "complete",
+      "exit": "0",
+      "success": false,
+      "outcome": "release_timeout",
+      "failure_reasons": [
+        "release_timeout"
+      ],
+      "prefix": {
+        "held_sim_s": 8.29999999999895,
+        "outcomes": {
+          "r1": "success",
+          "r2": "success"
+        }
+      },
+      "prefix_held": true,
+      "wall_s": 568.3589040480019,
+      "sim_s": 182.59999999736732,
+      "wall_sim": 3.112589836014219,
+      "first30": {
+        "wall_sim_approx": 2.8840263920589573,
+        "sim_s": 30.300000000062074,
+        "method": "original evaluation JPEG mtime / actual teacher-r1 SIM row; startup excluded",
+        "fov_step_result_events": 0,
+        "yaw_sign_check_events": 0,
+        "yaw_floor_events": 0,
+        "scope_note": "LineAlign record only; lookaround yaw floors are not separately logged; no first30 yaw-check claim"
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "measurements_by_phase": {
+          "lookaround": {
+            "own_rgb_landmarks": {
+              "n": 2751,
+              "invisible": 0
+            }
+          }
+        },
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "training_exclusions": {
+        "prefix": {
+          "included": false,
+          "reason": "truth contact/height termination; scene preparation only",
+          "start_world_t": 1.8000000000001848,
+          "end_world_t": 10.099999999999136
+        },
+        "release": {
+          "included": false,
+          "reason": "success measurement; no student writer or gate admission"
+        }
+      },
+      "evaluation_last": {
+        "t": 184.29999999736987,
+        "fit": true,
+        "z": -0.00010775542021616907,
+        "tilt_deg": 7.769975354553853e-09,
+        "contact_n": {
+          "r1": [
+            0.0,
+            0.0
+          ],
+          "r2": [
+            0.0,
+            0.0
+          ]
+        },
+        "grip_to_beam_m": [
+          0.22657220145809984,
+          0.2259228380376819
+        ],
+        "open_pwm": {
+          "r1": 2000,
+          "r2": 2000
+        },
+        "beam_xy_yaw": [
+          4.52822199732629,
+          0.22647207379535955,
+          1.580261162798292
+        ]
+      },
+      "evaluation_settled_s": 2.5,
+      "shift_steps": 3,
+      "decisions": [
+        {
+          "action": "lower",
+          "lo": null,
+          "hi": null,
+          "evidence": [
+            "none",
+            "none"
+          ],
+          "exact": {
+            "r1": false,
+            "r2": false
+          },
+          "t": 10.899999999997272
+        },
+        {
+          "action": "shift",
+          "shift_m": 0.2,
+          "reason": "localized_margin_correction",
+          "t": 29.200000000048412,
+          "margins_m": [
+            -0.4408468720168577,
+            1.146317542231034
+          ]
+        },
+        {
+          "action": "shift",
+          "shift_m": 0.2,
+          "reason": "localized_margin_correction",
+          "t": 84.39999999973217,
+          "margins_m": [
+            -0.24964053351029192,
+            0.9543072037367759
+          ]
+        },
+        {
+          "action": "shift",
+          "shift_m": 0.2,
+          "reason": "localized_margin_correction",
+          "t": 139.49999999842925,
+          "margins_m": [
+            -0.03725503614152392,
+            0.752686710003077
+          ]
+        }
+      ],
+      "line_alignment": {
+        "done": 12,
+        "N": 12,
+        "fov_step_verdicts": {
+          "progress": 27
+        },
+        "yaw_sign_verdicts": {
+          "verified": 1
+        },
+        "yaw_floor_modes": {
+          "single_pulse": 1
+        }
+      },
+      "barriers": [
+        {
+          "epoch": 1,
+          "confirmed": {
+            "r1": true,
+            "r2": true
+          },
+          "attempts": {
+            "r1": 1,
+            "r2": 1
+          },
+          "failure": null,
+          "events": [
+            {
+              "t": 50.40000000014964,
+              "robot": "r1",
+              "epoch": 1,
+              "attempt": 1,
+              "event": "test_start",
+              "commanded_lift_m": 0.02
+            },
+            {
+              "t": 57.20000000018211,
+              "robot": "r1",
+              "epoch": 1,
+              "attempt": 1,
+              "event": "confirmed",
+              "reason": "own_sequential_rgb_lift"
+            },
+            {
+              "t": 57.300000000182585,
+              "robot": "r2",
+              "epoch": 1,
+              "attempt": 1,
+              "event": "test_start",
+              "commanded_lift_m": 0.02
+            },
+            {
+              "t": 64.1000000002122,
+              "robot": "r2",
+              "epoch": 1,
+              "attempt": 1,
+              "event": "confirmed",
+              "reason": "own_sequential_rgb_lift"
+            }
+          ],
+          "scope": "own-RGB hypothesis; contact labels separately audited after execution"
+        },
+        {
+          "epoch": 2,
+          "confirmed": {
+            "r1": true,
+            "r2": true
+          },
+          "attempts": {
+            "r1": 1,
+            "r2": 1
+          },
+          "failure": null,
+          "events": [
+            {
+              "t": 105.49999999923322,
+              "robot": "r1",
+              "epoch": 2,
+              "attempt": 1,
+              "event": "test_start",
+              "commanded_lift_m": 0.02
+            },
+            {
+              "t": 112.29999999907243,
+              "robot": "r1",
+              "epoch": 2,
+              "attempt": 1,
+              "event": "confirmed",
+              "reason": "own_sequential_rgb_lift"
+            },
+            {
+              "t": 112.39999999907006,
+              "robot": "r2",
+              "epoch": 2,
+              "attempt": 1,
+              "event": "test_start",
+              "commanded_lift_m": 0.02
+            },
+            {
+              "t": 119.19999999890926,
+              "robot": "r2",
+              "epoch": 2,
+              "attempt": 1,
+              "event": "confirmed",
+              "reason": "own_sequential_rgb_lift"
+            }
+          ],
+          "scope": "own-RGB hypothesis; contact labels separately audited after execution"
+        },
+        {
+          "epoch": 3,
+          "confirmed": {
+            "r1": true,
+            "r2": true
+          },
+          "attempts": {
+            "r1": 1,
+            "r2": 1
+          },
+          "failure": null,
+          "events": [
+            {
+              "t": 160.5999999979303,
+              "robot": "r1",
+              "epoch": 3,
+              "attempt": 1,
+              "event": "test_start",
+              "commanded_lift_m": 0.02
+            },
+            {
+              "t": 167.3999999977695,
+              "robot": "r1",
+              "epoch": 3,
+              "attempt": 1,
+              "event": "confirmed",
+              "reason": "own_sequential_rgb_lift"
+            },
+            {
+              "t": 167.49999999776713,
+              "robot": "r2",
+              "epoch": 3,
+              "attempt": 1,
+              "event": "test_start",
+              "commanded_lift_m": 0.02
+            },
+            {
+              "t": 174.29999999760634,
+              "robot": "r2",
+              "epoch": 3,
+              "attempt": 1,
+              "event": "confirmed",
+              "reason": "own_sequential_rgb_lift"
+            }
+          ],
+          "scope": "own-RGB hypothesis; contact labels separately audited after execution"
+        }
+      ],
+      "contact_audit": [
+        {
+          "epoch": 1,
+          "robot": "r1",
+          "start": 50.40000000014964,
+          "confirmed": 57.20000000018211,
+          "N": 70,
+          "both_contact": 70,
+          "settled_N": 26,
+          "settled_both_contact": 26,
+          "settled_zero_contact": 0,
+          "beam_z_start": 0.06829029113137855,
+          "beam_z_end": 0.06330798617173146,
+          "contacts_last": {
+            "r1": [
+              5.381204659083734,
+              5.379679880131665
+            ],
+            "r2": [
+              5.3801531181851505,
+              5.370299129195198
+            ]
+          }
+        },
+        {
+          "epoch": 1,
+          "robot": "r2",
+          "start": 57.300000000182585,
+          "confirmed": 64.1000000002122,
+          "N": 70,
+          "both_contact": 70,
+          "settled_N": 26,
+          "settled_both_contact": 26,
+          "settled_zero_contact": 0,
+          "beam_z_start": 0.06330798617173146,
+          "beam_z_end": 0.06417652642288695,
+          "contacts_last": {
+            "r1": [
+              5.378842872579845,
+              5.3785818264054175
+            ],
+            "r2": [
+              5.379316116798163,
+              5.370833869314283
+            ]
+          }
+        },
+        {
+          "epoch": 2,
+          "robot": "r1",
+          "start": 105.49999999923322,
+          "confirmed": 112.29999999907243,
+          "N": 70,
+          "both_contact": 70,
+          "settled_N": 27,
+          "settled_both_contact": 27,
+          "settled_zero_contact": 0,
+          "beam_z_start": 0.06885443914604163,
+          "beam_z_end": 0.06717972200136345,
+          "contacts_last": {
+            "r1": [
+              5.364941690263896,
+              5.388610756843486
+            ],
+            "r2": [
+              5.359874594029602,
+              5.379508059611158
+            ]
+          }
+        },
+        {
+          "epoch": 2,
+          "robot": "r2",
+          "start": 112.39999999907006,
+          "confirmed": 119.19999999890926,
+          "N": 70,
+          "both_contact": 70,
+          "settled_N": 27,
+          "settled_both_contact": 27,
+          "settled_zero_contact": 0,
+          "beam_z_start": 0.06717972200136345,
+          "beam_z_end": 0.06671157229097183,
+          "contacts_last": {
+            "r1": [
+              5.3951480324360475,
+              5.3539937520351675
+            ],
+            "r2": [
+              5.405698473620653,
+              5.359795809259197
+            ]
+          }
+        },
+        {
+          "epoch": 3,
+          "robot": "r1",
+          "start": 160.5999999979303,
+          "confirmed": 167.3999999977695,
+          "N": 70,
+          "both_contact": 70,
+          "settled_N": 27,
+          "settled_both_contact": 27,
+          "settled_zero_contact": 0,
+          "beam_z_start": 0.06830634547697367,
+          "beam_z_end": 0.062472910164848114,
+          "contacts_last": {
+            "r1": [
+              5.369580993517581,
+              5.382863797881228
+            ],
+            "r2": [
+              5.372054444536195,
+              5.378689372990353
+            ]
+          }
+        },
+        {
+          "epoch": 3,
+          "robot": "r2",
+          "start": 167.49999999776713,
+          "confirmed": 174.29999999760634,
+          "N": 70,
+          "both_contact": 70,
+          "settled_N": 27,
+          "settled_both_contact": 27,
+          "settled_zero_contact": 0,
+          "beam_z_start": 0.062472910164848114,
+          "beam_z_end": 0.06317577824105766,
+          "contacts_last": {
+            "r1": [
+              5.36815439873523,
+              5.382695271654684
+            ],
+            "r2": [
+              5.371287955373753,
+              5.380070214458753
+            ]
+          }
+        }
+      ],
+      "visual_review": {
+        "overview_r1_r2_times_sim_s": [
+          0.0,
+          6.0,
+          12.3,
+          18.3,
+          24.3,
+          30.3,
+          36.3,
+          71.3,
+          107.3,
+          143.3,
+          179.3
+        ],
+        "overview_r1_r2_frames_viewed": 33,
+        "barrier_frames_viewed": 12,
+        "montages": [
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release17-6b263c9b-ops/r17d-01-6b263c9b/montage-0.jpg",
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release17-6b263c9b-ops/r17d-01-6b263c9b/montage-1.jpg",
+          "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release17-6b263c9b-ops/r17d-01-6b263c9b/barrier/barrier.jpg"
+        ],
+        "scope": "directly viewed start/middle/end >=6 timepoints; max gap<60 SIMs; first30 and first barrier included"
+      },
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r17d-01-6b263c9b",
+      "lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r17d-01-6b263c9b",
+      "hashes": {
+        "run": "r17d-01-6b263c9b",
+        "compressed_and_decoded_hash_verified": [
+          "manifest.json.zst",
+          "eval-only.jsonl.zst",
+          "result.json.zst",
+          "teacher-r1.jsonl.zst",
+          "teacher-r2.jsonl.zst"
+        ],
+        "result_sha256": "56079cf193860f97672d145a37fbfbef00cd69263dbef325311046538fca36b5",
+        "result_zst_sha256": "6c21ab1a5c9858b42bc3db17fdecd61a6351f0e70140bec7cce4a44815ec9321"
+      },
+      "final_verification": {
+        "run": "r17d-01-6b263c9b",
+        "original_manifest_verified": true,
+        "original_manifest_sha256": "67bae66b2991dcc2ab2bd7bfe8af95e8388258bbbed46674403e28c00cf4e892",
+        "original_files": 770,
+        "stop_markers": {
+          "SUPERVISOR_STOP.json": "36a61aaccc0c87be348de1398494e8f81a02c341e0012a86dfefac220f0d0895",
+          "raw/SUPERVISOR_STOP.json": "36a61aaccc0c87be348de1398494e8f81a02c341e0012a86dfefac220f0d0895"
+        },
+        "lease_released": true,
+        "raw_bytes": 12485996,
+        "stop_markers_fetched_verified": true,
+        "fetched_original_verified": 19
+      }
+    },
+    {
+      "name": "r17n-00-6b263c9b",
+      "seed": 78480,
+      "cohort": "fresh_diagnostic",
+      "source_sha": "6b263c9beb14757f88b76edd01088c6a46182a2f",
+      "submitted": false,
+      "status": "BLOCKED_REPRODUCTION_NOT_ALL_SUCCESS",
+      "success": null,
+      "raw": null
+    },
+    {
+      "name": "r17n-01-6b263c9b",
+      "seed": 78481,
+      "cohort": "fresh_diagnostic",
+      "source_sha": "6b263c9beb14757f88b76edd01088c6a46182a2f",
+      "submitted": false,
+      "status": "BLOCKED_REPRODUCTION_NOT_ALL_SUCCESS",
+      "success": null,
+      "raw": null
+    },
+    {
+      "name": "r17n-02-6b263c9b",
+      "seed": 78482,
+      "cohort": "fresh_diagnostic",
+      "source_sha": "6b263c9beb14757f88b76edd01088c6a46182a2f",
+      "submitted": false,
+      "status": "BLOCKED_REPRODUCTION_NOT_ALL_SUCCESS",
+      "success": null,
+      "raw": null
+    },
+    {
+      "name": "r17n-03-6b263c9b",
+      "seed": 78483,
+      "cohort": "fresh_diagnostic",
+      "source_sha": "6b263c9beb14757f88b76edd01088c6a46182a2f",
+      "submitted": false,
+      "status": "BLOCKED_REPRODUCTION_NOT_ALL_SUCCESS",
+      "success": null,
+      "raw": null
+    },
+    {
+      "name": "r17n-04-6b263c9b",
+      "seed": 78484,
+      "cohort": "fresh_diagnostic",
+      "source_sha": "6b263c9beb14757f88b76edd01088c6a46182a2f",
+      "submitted": false,
+      "status": "BLOCKED_REPRODUCTION_NOT_ALL_SUCCESS",
+      "success": null,
+      "raw": null
+    },
+    {
+      "name": "r17n-05-6b263c9b",
+      "seed": 78485,
+      "cohort": "fresh_diagnostic",
+      "source_sha": "6b263c9beb14757f88b76edd01088c6a46182a2f",
+      "submitted": false,
+      "status": "BLOCKED_REPRODUCTION_NOT_ALL_SUCCESS",
+      "success": null,
+      "raw": null
+    },
+    {
+      "name": "r17n-06-6b263c9b",
+      "seed": 78486,
+      "cohort": "fresh_diagnostic",
+      "source_sha": "6b263c9beb14757f88b76edd01088c6a46182a2f",
+      "submitted": false,
+      "status": "BLOCKED_REPRODUCTION_NOT_ALL_SUCCESS",
+      "success": null,
+      "raw": null
+    }
+  ]
+}
