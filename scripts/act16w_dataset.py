@@ -29,7 +29,7 @@ def main():
     require_gcp2();source=frozen_source(Path(__file__).resolve().parents[1]);frozen_source(a.act_source,ACT_SHA)
     selection=read(a.selection);protocol=read(a.protocol);wanted=set(selection['selected_seeds']);a.root.mkdir(parents=True,exist_ok=False)
     roots=[B/'runs/act16w-resume2-pilot-86821',B/'runs/act16w-resume2-pilot-86822']+sorted(a.batch.glob('group-*'))
-    rows=[];seen=set();views=a.root/'views';views.mkdir()
+    rows=[];seen=set();transport={};views=a.root/'views';views.mkdir()
     for root in roots:
         capture=root/'capture';controller=root/'controller'
         summary=read(capture/'summary.json')
@@ -39,6 +39,7 @@ def main():
         if not audit_path.exists():
             subprocess.run([str(B/'runs/simalt3/warp-env/bin/python'),str(Path(__file__).with_name('audit_act16w_record.py')),str(root),'--out',str(audit_path)],check=True)
         audit=read(audit_path)
+        capture_source=summary.get('record_api_source',API)
         for w in audit['worlds']:
             seed=w['seed']
             if seed not in wanted:continue
@@ -64,9 +65,9 @@ def main():
             derived={**result,'training_rgb':True,'recording_mode':'training','student_execution':False,
                      'record_view':'derived_external_capture_v1','original_controller_training_rgb':result['training_rgb'],
                      'original_controller_result':dict(path=str(original/'result.json' if (original/'result.json').exists() else original/'result.json.zst'),sha256=sha256(original/'result.json' if (original/'result.json').exists() else original/'result.json.zst')),
-                     'external_capture':dict(source_sha=API,adapter_sha256=summary['adapter_sha256'],raw=str(raw),audit_sha256=sha256(audit_path)),
+                     'external_capture':dict(source_sha=capture_source,upstream_source_sha=API,adapter_sha256=summary['adapter_sha256'],raw=str(raw),audit_sha256=sha256(audit_path)),
                      'import_view_source':source,'teacher_library_sha':'6f057f7e97c1a3aec9e8c398b8d9068e27b25df8'}
-            write(dest/'result.json',derived);(view/'SOURCE_SHA').write_text(API+'\n');(view/'EXIT').write_text('0\n')
+            write(dest/'result.json',derived);(view/'SOURCE_SHA').write_text(capture_source+'\n');(view/'EXIT').write_text('0\n');transport[str(seed)]=capture_source
     n=sum(r['success'] for r in rows);N=len(wanted);missing=sorted(wanted-seen)
     gate=dict(n=n,N=N,complete=not missing,passed=not missing and N>=40 and n/N>=.95,missing=missing,rows=rows,source_sha=Q,training_rgb=True,independent_of_warp1_debugging=True,old_debug_seed_range=[8317100,8317139],heldout_excluded=[91620,91659],scope='fresh recording-stage independent confirmation; separate from camera-off bootstrap40/40')
     write(a.root/'fresh-recording-gate.json',gate)
@@ -75,7 +76,7 @@ def main():
     write(a.root/'rejection_table.json',dict(funnel=funnel,rejections=rejections,missing=missing,raw=[str(x) for x in roots],reproduce=sys.argv))
     if not gate['passed']:raise ValueError('fresh recording-stage gate not passed')
     admitted={r['seed'] for r in rows if r['success']}
-    conversion=dict(teacher_sha=Q,train_seeds=[s for s in protocol['train_seeds'] if s in admitted],validation_seeds=[s for s in protocol['validation_seeds'] if s in admitted],run_pattern='{seed}',transport_sha_by_seed={str(s):API for s in admitted},done_label='last_local_row_v1',include_initial_approach_v1=True,run_class='milestone',external_capture_view_v1=True,old_bootstrap_gate_pooled=False)
+    conversion=dict(teacher_sha=Q,train_seeds=[s for s in protocol['train_seeds'] if s in admitted],validation_seeds=[s for s in protocol['validation_seeds'] if s in admitted],run_pattern='{seed}',transport_sha_by_seed=transport,done_label='last_local_row_v1',include_initial_approach_v1=True,run_class='milestone',external_capture_view_v1=True,old_bootstrap_gate_pooled=False)
     if not conversion['train_seeds'] or not conversion['validation_seeds']:raise ValueError('nonempty independent training/validation required')
     sys.path.insert(0,str(a.act_source))
     from harness.grasp_act_data import convert

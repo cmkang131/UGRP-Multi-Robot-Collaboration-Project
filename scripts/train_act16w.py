@@ -16,7 +16,7 @@ import time
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'scripts'))
-from act16w_runtime import ACT_SHA, frozen_source, require_gcp2, sha256, training_admission
+from act16w_runtime import ACT_SHA, LEROBOT_ACT_SHA256, frozen_source, require_gcp2, sha256, training_admission
 from act16w_input import MODES, Act16wActor, save_actor, transform_batch, contract_check
 from act16w_curriculum import StartCurriculum
 
@@ -56,13 +56,17 @@ def main():
     from harness.grasp_act_data import GraspDataset, assert_tensor_keys
     from harness.grasp_act_policy import make_policy
     from harness.grasp_act_loss import completion_priors, policy_loss
+    from lerobot.policies.act import modeling_act
+    runtime_path = Path(modeling_act.__file__)
+    if sha256(runtime_path) != LEROBOT_ACT_SHA256:
+        raise ValueError('shared ACT runtime differs from verified public valid-normalized loss')
     contract_check(c)
     configuration = {'source_sha': source, 'act_source_sha': library,
         'dataset_manifest_sha256': sha256(a.dataset / 'manifest.json'), 'seed': a.seed,
         'history_causal_split_v1': a.history_causal_split_v1,
         'curriculum_starts_sha256': sha256(a.curriculum_starts_v1) if a.curriculum_starts_v1 else None,
         'done_loss': 'balanced_bce_v1', 'batch_size': 8, 'chunk': 8, 'period_s': .1,
-        'schedule_steps': a.schedule_steps}
+        'schedule_steps': a.schedule_steps, 'lerobot_act_sha256': LEROBOT_ACT_SHA256}
     if a.stage == 'main':
         smoke = json.loads(a.smoke_summary.read_text()) if a.smoke_summary else {}
         if (smoke.get('stage') != 'smoke' or not smoke.get('complete') or not smoke.get('readback_verified')
@@ -115,6 +119,8 @@ def main():
         initial_step = step
         def checkpoint():
             nonlocal last_checkpoint
+            if sha256(runtime_path) != LEROBOT_ACT_SHA256:
+                raise ValueError('shared ACT runtime changed during training')
             folder = a.output / f'step-{step:06d}'
             if folder == last_checkpoint:
                 return

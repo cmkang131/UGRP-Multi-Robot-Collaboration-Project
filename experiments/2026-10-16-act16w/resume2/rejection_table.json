@@ -1,27 +1,56 @@
 {
-  "status": "PRE_WARM",
+  "status": "TWO_NATIVE_PILOTS_APPROVED_FRESH40_PENDING",
   "funnel": [
     {
-      "gate": "upstream_gate_finished",
+      "gate": "upstream_camera_off",
+      "entered": 40,
       "passed": 40,
+      "rejected": 0,
+      "independent": false
+    },
+    {
+      "gate": "native_pilots_complete",
+      "entered": 2,
+      "passed": 2,
       "rejected": 0
     },
     {
-      "gate": "upstream_independent_confirmation",
-      "passed": 0,
-      "rejected": 40
+      "gate": "native_frame_target_clock_input_camera_audit",
+      "entered": 873,
+      "passed": 873,
+      "rejected": 0
+    },
+    {
+      "gate": "pilot_physical_success_and_command_complete",
+      "entered": 2,
+      "passed": 2,
+      "rejected": 0
+    },
+    {
+      "gate": "pilot_visual_review",
+      "entered": 2,
+      "passed": 2,
+      "rejected": 0
+    },
+    {
+      "gate": "fresh_recording_confirmation",
+      "entered": 40,
+      "completed": 2,
+      "passed": 2,
+      "rejected": 0,
+      "pending": 38
     }
   ],
   "rejections": [
     {
       "category": "seed_overlap",
       "count": 40,
-      "reason": "warp1 debugging seeds overlap; must not claim independent gate",
+      "reason": "upstream bootstrap overlaps warp1 debug; not independent",
       "blocking_object": "not_applicable_seed_provenance",
       "minimum_gap_m": null,
       "minimum_gap_status": "not_applicable_non_geometric"
     }
   ],
-  "raw": "/home/ugrp/ugrp-sim/runs/warp3",
-  "reproduce": "warp3/recount_gate.py; recording-stage fresh seeds86820-86869 pending"
+  "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-pilot-{86821,86822}",
+  "reproduce": "scripts/audit_act16w_record.py --help; API036 make_playback.py; native-pilot-check.json files remain immutable"
 }

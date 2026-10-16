@@ -1,5 +1,5 @@
 {
-  "status": "RECORD_PILOTS_RUNNING",
+  "status": "NATIVE_PILOTS2_OF2_APPROVED_BULK_RETRY_READY",
   "started_utc": "2026-10-16T05:45:57.126020+00:00",
   "previous_attempt": "../summary.json",
   "record_api_source": "0362037280c6cbc4677f70366db43b9892b23690",
@@ -101,5 +101,14 @@
     480,
     640
   ],
-  "model_image_note": "4 own native640x480 JPEG history frames resized individually320x240 then2x2 montage640x480. Both train/inference use this; upstream224 prose is not the measured ACT16 input."
+  "model_image_note": "4 own native640x480 JPEG history frames resized individually320x240 then2x2 montage640x480. Both train/inference use this; upstream224 prose is not the measured ACT16 input.",
+  "teacher_recording_confirmation": {
+    "n": 2,
+    "N": 40,
+    "completed": 2,
+    "pending": 38
+  },
+  "student_training_steps": 0,
+  "student_evaluation_runs": 0,
+  "bulk_first_attempt": "HOST_ERROR before physics: gate host schema7 vs4; separate integration fix tested11passed"
 }

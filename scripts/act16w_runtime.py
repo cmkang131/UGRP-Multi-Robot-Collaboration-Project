@@ -10,6 +10,7 @@ from urllib.request import Request, ProxyHandler, build_opener
 
 PROJECT = 'ugrp-sim-b-1014'
 ACT_SHA = '3f99d58c5ada0862e669ef4065c0ba957f1b4547'
+LEROBOT_ACT_SHA256 = '8d622935319af7d03f1efd95d51e726af2921010f7e4f5ec3742f62280493111'
 # gcp2 L4 uses g2-standard-8 (live project docs/backend), unlike the historical
 # gcp1 ACT pilot g2-standard-4. New b has the same type; no cost-downsize change.
 HOSTS = {'ugrp-act-l4-gcp2': 'g2-standard-8',
@@ -55,6 +56,32 @@ def frozen_source(root, expected=None):
     if expected is not None and actual != expected:
         raise ValueError('frozen source SHA mismatch')
     return actual
+
+
+def recording_host_schema_approval(path, *, source_sha, gate_host, current_host):
+    """Adapt the four fields actually recorded by the hash-bound warp3 gate.
+
+    The older validator requires schema/provider/cpu_count, which warp3 never
+    recorded. Do not invent those historical values. Match every recorded host
+    field and live metadata; keep all other original recording approval gates.
+    """
+    proof = json.loads(Path(path).read_text())
+    gate = proof.get('corrected_teacher_gate', {})
+    checks = proof.get('pilot_checks', [])
+    keys = ('project_id', 'instance', 'machine_type', 'zone')
+    validate_host(current_host, training=True)
+    n, N = gate.get('n'), gate.get('N')
+    if (proof.get('approved') is not True or proof.get('source_sha') != source_sha
+            or proof.get('gate_promotion_authorized_if_all_conditions_pass') is not False
+            or gate.get('source_sha') != source_sha or gate.get('solo_truth_free_lookaround_v1') is not True
+            or type(n) is not int or type(N) is not int or N < 40 or not 0 <= n <= N or n/N < .95
+            or len(checks) != 2 or len({c.get('path') for c in checks}) != 2
+            or any(c.get('passed') is not True or not c.get('path')
+                   or sha256(c['path']) != c.get('sha256') for c in checks)
+            or any(not gate_host.get(k) or gate_host[k] != current_host.get(k)
+                   or gate_host[k] != gate.get('execution_host', {}).get(k) for k in keys)):
+        raise ValueError('recording approval or actual gate/live host mismatch')
+    return proof
 
 
 def training_admission(path, *, source, dataset, act_source):

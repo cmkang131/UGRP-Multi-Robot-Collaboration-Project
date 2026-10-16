@@ -29,6 +29,8 @@ def main():
         p.add_argument('--'+key, type=Path, required=True)
     p.add_argument('--stage', choices=['pilot', 'batch'], default='pilot')
     p.add_argument('--recording-approval', type=Path)
+    p.add_argument('--act16w-host-schema-v1', action='store_true',
+                   help='explicit four-field warp3 gate/live-metadata compatibility')
     a = p.parse_args()
     if not a.enabled: p.error('recording is default OFF')
     gate = admit(a.qualification, a.qualified_source, a.teacher_source)
@@ -44,7 +46,15 @@ def main():
     import sim
     sim.__path__.append(str(a.qualified_source/'sim'))
     from harness.grasp_act_solo_recording import SoloRecorder, validate_recording, validate_approval
-    validate_approval(a.recording_approval, stage=a.stage, sha=QUALIFIED, host=gate['cohort']['host'])
+    worker_source = None
+    if a.act16w_host_schema_v1:
+        if a.stage != 'batch': p.error('host schema compatibility is batch admission only')
+        from act16w_runtime import recording_host_schema_approval, require_gcp2, frozen_source
+        worker_source = frozen_source(Path(__file__).resolve().parents[1])
+        recording_host_schema_approval(a.recording_approval, source_sha=QUALIFIED,
+            gate_host=gate['cohort']['host'], current_host=require_gcp2(training=True))
+    else:
+        validate_approval(a.recording_approval, stage=a.stage, sha=QUALIFIED, host=gate['cohort']['host'])
     import warp_act_backend
     original = warp_act_backend.WarpTransport.capture
     a.out.mkdir(parents=True, exist_ok=False)
@@ -105,6 +115,10 @@ def main():
         exact_controller_jpeg=True, training_include=False, data_admitted=False,
         reason='pilot/raw recording requires separate inspected dataset admission', worlds=results,
         sha256={str(x.relative_to(a.out)): hashlib.sha256(x.read_bytes()).hexdigest() for x in a.out.rglob('*') if x.is_file()})
+    if worker_source:
+        summary.update(record_api_source=worker_source,
+            upstream_record_api_source='0362037280c6cbc4677f70366db43b9892b23690',
+            host_schema_compatibility='four recorded fields matched live; historical cpu affinity unavailable')
     (a.out/'summary.json').write_text(json.dumps(summary, indent=2)+'\n')
     if error: raise RuntimeError(error)
 

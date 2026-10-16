@@ -66,3 +66,22 @@ def test_fresh_camera_recording_cannot_reuse_bootstrap_or_heldout(tmp_path):
             check({'fresh_record_confirmation':fresh})
     with pytest.raises(ValueError,match='fresh independent'):
         check({'fresh_record_confirmation':{**data['fresh_record_confirmation'],'n':37}})
+
+
+def test_recording_adapts_only_recorded_host_fields_and_binds_pilots(tmp_path):
+    from scripts.act16w_runtime import recording_host_schema_approval
+    host=dict(project_id=PROJECT,instance='ugrp-act-l4-gcp2',machine_type='g2-standard-8',zone='asia-northeast3-a')
+    checks=[]
+    for i in range(2):
+        p=tmp_path/f'pilot-{i}.json';p.write_text('{"passed":true}')
+        checks.append(dict(path=str(p),sha256=sha256(p),passed=True))
+    proof=dict(approved=True,source_sha='qualified',gate_promotion_authorized_if_all_conditions_pass=False,
+        corrected_teacher_gate=dict(source_sha='qualified',solo_truth_free_lookaround_v1=True,n=40,N=40,execution_host=host),pilot_checks=checks)
+    p=tmp_path/'approval.json';p.write_text(json.dumps(proof))
+    assert recording_host_schema_approval(p,source_sha='qualified',gate_host=host,current_host=host)==proof
+    with pytest.raises(ValueError,match='host mismatch'):
+        recording_host_schema_approval(p,source_sha='qualified',gate_host={**host,'instance':'ugrp-act-l4-gcp2b'},current_host=host)
+    from pathlib import Path
+    Path(checks[0]['path']).write_text('{"changed":true}')
+    with pytest.raises(ValueError,match='approval'):
+        recording_host_schema_approval(p,source_sha='qualified',gate_host=host,current_host=host)

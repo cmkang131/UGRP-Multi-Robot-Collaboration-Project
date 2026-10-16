@@ -1,0 +1,96 @@
+{
+  "status": "HOST_ERROR",
+  "source_sha": "9c3819926a58a8e7b20c7a32071fec900d16df1f",
+  "host": {
+    "project_id": "ugrp-sim-b-1014",
+    "instance": "ugrp-act-l4-gcp2",
+    "machine_type": "g2-standard-8",
+    "zone": "asia-northeast3-a"
+  },
+  "started_utc": "2026-10-16T07:30:39.597047+00:00",
+  "groups_total": 4,
+  "planned_fresh_seeds": 40,
+  "selection_sha256": "d3897335632ea8280693abfbb03eb91339e8bd5a428647d65ab7e436464e888d",
+  "pilots_excluded_from_dispatch": [
+    86821,
+    86822
+  ],
+  "speed_gate_override": "User-approved MJWarp throughput backend; recorded pilot-queue exception; report world latency and aggregate throughput; quality unchanged; task8h hard cap.",
+  "deadline": "2026-10-16T13:45:00.019842+00:00",
+  "complete": false,
+  "finished": [
+    {
+      "group": 0,
+      "indices": [
+        0,
+        6,
+        10,
+        14,
+        18,
+        22,
+        26,
+        30,
+        34,
+        36,
+        38,
+        42,
+        46
+      ],
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-data/group-00",
+      "exit_code": 1
+    },
+    {
+      "group": 3,
+      "indices": [
+        5,
+        8,
+        12,
+        16,
+        40,
+        44,
+        45,
+        48,
+        49
+      ],
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-data/group-03",
+      "exit_code": 1
+    },
+    {
+      "group": 2,
+      "indices": [
+        3,
+        7,
+        11,
+        15,
+        19,
+        23,
+        27,
+        31,
+        35,
+        39,
+        43,
+        47
+      ],
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-data/group-02",
+      "exit_code": 1
+    },
+    {
+      "group": 1,
+      "indices": [
+        4,
+        29,
+        32,
+        33
+      ],
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-data/group-01",
+      "exit_code": 1
+    }
+  ],
+  "pending": [],
+  "active": [],
+  "wall_s": 3.0082524980007292,
+  "last_error_group": 1,
+  "physical_rollouts_started": 0,
+  "cause": "legacy7-field host validator rejected authentic4-field gate receipt",
+  "fix": "default-off act16w-host-schema-v1 validates exact recorded4fields vs live metadata; all approval gates retained"
+}

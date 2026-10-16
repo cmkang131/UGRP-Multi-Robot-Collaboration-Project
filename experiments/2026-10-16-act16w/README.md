@@ -1,15 +1,21 @@
 # ACT16w — MJWarp 재기록·학습
 
-상태: **BLOCKED_PREREQUISITE_WAIT_EXPIRED**. 시작 조건의10시간 대기가 끝났다.
-warp3 마지막 보고는29성공 완료/40계획·11진행, RECORD_API_READY 미수신이다.
-act16w 교사 실행·학습 데이터·학습·학생 평가·Release는 모두 미실행이다.
-작업 브랜치 `claude/act16w`, 초기 backend `06870b6d1ad9233c6e5d63eee2c8c7b81efc66f5`.
-Refs #523. 결과는 gcp2/MJWarp 코호트로 구분한다.
+현재는 **2회차 재개 진행 중**이다. warp3 40/40과 RECORD_API_READY `0362037`을
+수신했고, 새 시드86820의3 SIM초 기록 warm2회를 실행했다. native JPEG와
+자기 발행 이력→교사 표적60/60쌍은 정합한다. 의도한 cap_end2회이며 교사
+독립 성공률·완주 데이터·ACT 학습·학생 평가는 아직 없다.
+[2회차 요약](resume2/summary.json), [warm 원본 해시/감사](resume2/warm-receipts.json),
+[파일럿 대기열](resume2/pilot-queue.json), [관문표](resume2/rejection_table.json).
 
-사용자 지시(2026-10-16): `warp1:` 준비 결과와 교사 관문 대기열,
-조정자의 `SCENE_DECISION:`을 5분 간격으로 최대 10시간 확인한다.
-NOT_READY 원인을 보존하고 기다린다. 두 조건 전에 GPU를 임대하거나 실험을 시작하지 않는다.
-Mac에서는 소스 작업·짧은 비물리 검사·요약/몽타주 파일 열람만 한다.
+1회차10시간 대기 종료 기록은 기존 `summary.json`과 `wait-*`에 보존했다.
+warp3의40/40은 시드8317100–8317139가 warp1 디버깅과 겹쳐 독립 확증으로
+세지 않는다. 새 기록86820–86869와 heldout91620–91659를 분리하며,
+기록 단계의 독립 n/N은 별도 집계한다. Refs #523, PR #539 DRAFT.
+
+소스는 교사 라이브러리 `6f057f7e` → 이를 MJWarp·장면·NumPy 실행으로
+연결한 관문 controller `f0db6b1a` → controller를 그대로 호출하고 JPEG를
+기록하는 API `0362037`로 구분한다. 결과는 gcp2/MJWarp 코호트다.
+Mac은 소스·짧은 비물리 검사·요약/몽타주 열람만 한다.
 
 ## 실행 순서와 고정 조건
 
@@ -157,3 +163,22 @@ A/B·DAgger 효과를 측정한 결과로 해석하지 않는다.
 
 Gemma4-31B@DeepInfra 가격+50% 감시 경보를 사용자에게 알렸다. 새 LLM 배치0이며
 [수신 기록](endpoint-alert-receipt.json)은 독립적인 새 가격 측정이 아니다.
+
+## 2회차 warm의 검증 범위
+
+기본 launch는 loop77.88초/3 SIM초=25.96 wall/SIM이었다. 기본 off인
+`whole_control_graph_v1`은 같은400 physics ticks를 한 CUDA graph로 기록하는
+후보이며 capture가 persistent state를 바꾸지 않은 것은 확인했다. 별도 공유
+부하에서46.64 wall/SIM으로 개선은 확인되지 않아 채택하지 않는다.
+이 두 측정은3 SIM초 진단이고 정식 첫30 SIM초 속도 관문이 아니다.
+
+원본 JPEG·네이티브640×480/10Hz·K/D·이전 발행 이력·교사 command와
+phase-before/after를 별도 CPU 감사기로 확인했다. 학습 승인·40회 독립 관문·
+full-skill done 라벨은 아직 검증하지 않았다. 비물리27개 통과이며 CUDA
+ACT 학습·저장/재로딩은 아직 미실행이다.
+
+[공식 MJWarp 성능 문서](https://mujoco.readthedocs.io/en/latest/mjwarp/#performance-tuning)는
+CUDA graph·용량·solver의 순서로 성능 조사를 안내한다.
+[NVIDIA Warp ScopedCapture](https://nvidia.github.io/warp/v1.11/api_reference/_generated/warp.ScopedCapture.html)를
+확인하고 launch 횟수만 바꾼 후보를 측정했다. solver·시간 간격·물리와
+성공 임계값은 바꾸지 않았다. 공유 부하가 달라 두 속도의 인과 차이는 주장하지 않는다.
