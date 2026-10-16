@@ -61,7 +61,13 @@ def bootstrap(a):
         never=int(en.mjSLEEP_NEVER),allowed=int(en.mjSLEEP_ALLOWED))
     fixture=load_fixture(a.fixture,xml)
     meta=json.loads((a.fixture/'fixture.json').read_text())
-    rows=cases();initial=[];controls=[];admissions=[]
+    rows=cases()
+    if getattr(a,'case_filter',None):
+        requested=a.case_filter.split(',')
+        if len(set(requested))!=len(requested) or not set(requested)<={r['name'] for r in rows}:
+            raise ValueError('EXACT_CASE_NAMES_REQUIRED')
+        rows=[r for r in rows if r['name'] in requested]
+    initial=[];controls=[];admissions=[]
     d=mujoco.MjData(m)
     for row in rows:
         d.qpos[:]=fixture[row['pose']+'_qpos'];d.qvel[:]=0
@@ -172,7 +178,8 @@ def run(a):
         mx,my=raw_fisheye_remap(640,480)
         rc=Renderer(m,wm,wd,[('r1','r1__robot_cam',(640,480)),('r2','r2__robot_cam',(640,480)),
             ('overview','cctv_top',(640,480))],enabled=True,texture_after_lighting=True)
-        selected=[0,6,10,8]
+        selected=[i for i,r in enumerate(rows) if r['name'] in
+            ('drive-left-+1-60','drive-left-+1-400','high-left-+1-60','drive-forward-+1-100')]
         for tick in range(0,len(qs),10):
             wp.copy(wd.qpos,wp.array(qs[tick],dtype=wd.qpos.dtype));images=rc.render()
             for i in selected:
@@ -192,6 +199,7 @@ if __name__=='__main__':
     for name in ('renderer-source','renderer-receipt','fixture','queue','output'):p.add_argument('--'+name,type=Path,required=True)
     p.add_argument('--backend',choices=('warp','cpu'),required=True)
     p.add_argument('--record',action='store_true');p.add_argument('--after-forward',action='store_true')
+    p.add_argument('--case-filter',help='comma-separated exact registered case names; no new stimulus')
     p.add_argument('--mapbuild4-pulse-v1',action='store_true');a=p.parse_args()
     if not a.mapbuild4_pulse_v1:p.error('default off: --mapbuild4-pulse-v1 required')
     run(a)
