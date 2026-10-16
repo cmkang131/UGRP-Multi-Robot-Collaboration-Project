@@ -1,4 +1,4 @@
-from sim.spawn_overlap_check import OPTION,assess,classify,check
+from sim.spawn_overlap_check import OPTION,assess,classify,check,cargo_owner
 
 
 def point(a,b,d):
@@ -7,6 +7,14 @@ def point(a,b,d):
 
 def test_default_off_does_not_touch_model():
     assert check(None,None,floor_geoms=set(),cargo_bodies=set(),wall_geoms=set())['status']=='not_checked'
+
+
+def test_nested_collision_parts_inherit_their_cargo_root():
+    from types import SimpleNamespace
+    names=['world','cargo_root','cargo_tip','r1__robot']
+    model=SimpleNamespace(body_parentid=[0,0,1,0],body=lambda i:SimpleNamespace(name=names[i]))
+    assert cargo_owner(model,2,{'cargo_root'})=='cargo_root'
+    assert cargo_owner(model,3,{'cargo_root'}) is None
 
 
 def test_signed_zero_and_floor_are_not_rejections():

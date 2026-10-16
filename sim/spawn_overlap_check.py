@@ -16,6 +16,16 @@ OPTION = 'spawn_overlap_check_v1'
 ALLOWED_DEPTH_M = 0.0
 
 
+def cargo_owner(model, body_id, cargo_bodies):
+    """Collision parts inherit their free cargo root even in nested models."""
+    while body_id:
+        name=model.body(body_id).name
+        if name in cargo_bodies:
+            return name
+        body_id=int(model.body_parentid[body_id])
+    return None
+
+
 def classify(name, body_name, *, floor_geoms, cargo_bodies, wall_geoms):
     if name in floor_geoms:
         return 'floor'
@@ -78,9 +88,10 @@ def check(model, data, *, floor_geoms, cargo_bodies, wall_geoms, option='off'):
         ids=[int(contact.geom1),int(contact.geom2)]
         names=[model.geom(i).name or f'unnamed_geom_{i}' for i in ids]
         bodies=[model.body(int(model.geom_bodyid[i])).name or 'world' for i in ids]
+        owners=[cargo_owner(model,int(model.geom_bodyid[i]),cargo_bodies) for i in ids]
         points.append(dict(geoms=names,bodies=bodies,dist_m=float(contact.dist),
-            classes=[classify(n,b,floor_geoms=floor_geoms,cargo_bodies=cargo_bodies,wall_geoms=wall_geoms)
-                     for n,b in zip(names,bodies)],
+            classes=[classify(n,owner or b,floor_geoms=floor_geoms,cargo_bodies=cargo_bodies,wall_geoms=wall_geoms)
+                     for n,b,owner in zip(names,bodies,owners)],
             geom_margin_m=[float(model.geom_margin[i]) for i in ids],
             solimp=[model.geom_solimp[i].tolist() for i in ids]))
     result=assess(points,option=option)
