@@ -85,6 +85,7 @@ def run(a):
          branch='codex/warpfit', sha=source, pr=None, batch='warpfit'))
     dump(a.output/'result.json', report)
     tape = f[a.case]
+    if tape.ndim==3 and a.engine=='cpu':tape=tape[:,a.lane]
     dt = float(m.opt.timestep)
     stride = round(.1/dt)  # User's fixed 10Hz evaluator ring, independent of control.
     ticks = len(tape) if a.max_sim_s is None else min(len(tape), round(a.max_sim_s/dt))
@@ -121,12 +122,13 @@ def run(a):
             if np.any(wd.overflow.numpy()):
                 raise RuntimeError('warmup CAPACITY_OVERFLOW')
             with unused_efm(m,d): wd=mjw.put_data(m,d,nworld=a.nworld,nconmax=nc,njmax=nf)
+            if tape.ndim==2:tape=tape[:,None,:]
             wt=wp.array(np.asarray(tape,dtype=np.float32),dtype=wp.float32)
             tick=wp.zeros(1,dtype=wp.int32)
             @wp.kernel
-            def control(values:wp.array2d[float],at:wp.array[int],ctrl:wp.array2d[float]):
+            def control(values:wp.array3d[float],at:wp.array[int],ctrl:wp.array2d[float]):
                 w,j=wp.tid()
-                ctrl[w,j]=values[at[0],j]
+                ctrl[w,j]=values[at[0],w%values.shape[1],j]
             @wp.kernel
             def advance(at:wp.array[int]): at[0]+=1
             # Same graph length in every profile. The unchanged native dt is
@@ -222,6 +224,7 @@ def main():
     p.add_argument('--output',type=Path,required=True)
     p.add_argument('--queue',type=Path,required=True)
     p.add_argument('--case',default='tape')
+    p.add_argument('--lane',type=int,default=0,help='C reference lane in a batched drive tape')
     p.add_argument('--engine',choices=['cpu','warp'],default='warp')
     p.add_argument('--profile',default='baseline_noslip10')
     p.add_argument('--nworld',type=int,choices=[1,16,64],default=1)

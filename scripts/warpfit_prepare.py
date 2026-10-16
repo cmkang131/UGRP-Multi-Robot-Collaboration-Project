@@ -124,9 +124,16 @@ def main():
     # ablation is duplicated here; drivecheck owns that separate experiment.
     drive=root/'drive';drive.mkdir()
     orig=inp/'runs/drivecheck/fixture-v3'
-    for name in ('fixture.npz','scene.xml'):(drive/name).write_bytes((orig/name).read_bytes())
+    (drive/'scene.xml').write_bytes((orig/'scene.xml').read_bytes())
+    f=np.load(orig/'fixture.npz');arrays={k:f[k] for k in f.files}
     meta=json.loads((orig/'fixture.json').read_text());meta.update(kind='drive',asset_cwd=str(assets),
         target_geoms=[],finger_geoms=[],original=str(orig),physics_feedback=0)
+    groups=[meta['cases'][:9],meta['cases'][9:]]
+    for i,group in enumerate(groups):
+        length=max(len(f[r['id']]) for r in group)
+        arrays[f'group{i}']=np.stack([np.concatenate([f[r['id']],np.tile(f[r['id']][-1],(length-len(f[r['id']]),1))]) for r in group],axis=1)
+    np.savez_compressed(drive/'fixture.npz',**arrays)
+    meta['groups']={f'group{i}':[r['id'] for r in group] for i,group in enumerate(groups)}
     dump(drive/'fixture.json',meta)
     dump(root/'fixtures.json',{name:{p.name:digest(p) for p in (root/name).iterdir() if p.is_file()}
                               for name in ('box','beam','drive')})
