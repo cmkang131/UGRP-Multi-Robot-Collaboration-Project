@@ -1,6 +1,7 @@
 """Finite R3 reproduction, one CUDA process at a time, no MPS or cloud keys."""
 import argparse
 import datetime
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -74,6 +75,7 @@ def main():
               concurrency=len(indices.split(',')), gpu_shared=False))
         write(out.with_suffix('.command.json'), dict(command=cmd, host='gcp3',
               source_sha=source_sha, planned_world_N=len(indices.split(',')),
+              driver_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
               start_utc=started.isoformat(), price_scope='1.096USD/h inherited estimate, not billing'))
         code = child.wait()
     write(out.with_suffix('.receipt.json'), dict(exit_code=code, pid=child.pid,
@@ -81,7 +83,8 @@ def main():
           status='exited' if code == 0 else 'HOST_ERROR',
           raw_summary_preserved=True, physical_outcome='read raw/result.json; native exit is not physical failure'))
     print(json.dumps(dict(job=a.job, exit_code=code, out=str(out))), flush=True)
+    return 0 if code==0 else 1
 
 
 if __name__ == '__main__':
-    main()
+    raise SystemExit(main())
