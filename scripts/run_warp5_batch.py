@@ -104,6 +104,9 @@ def run(a):
             context=next(lane)
             if context['kind']!='setup':raise ValueError('missing isolated setup barrier')
             contexts.append(context)
+            if q.get('warp10_control_pool_v1'):
+                write(out/'role.json',dict(role='native model/initial state owner plus first issued-command reference',
+                    executed_rollout_physics=0,actual_controller_raw=str(a.output/f'world-{i:03d}'/'raw')))
         report['adapter_ast']=[b.ast_audit for b in bridges]
         write(a.output/'initial-state.json',dict(worlds=[dict(world=i,seed=t['seed'],
             qpos_sha256=hashlib.sha256(c['world'].data.qpos.tobytes()).hexdigest(),origin=c['origin']) for i,(t,c) in enumerate(zip(q['runs'],contexts))]))

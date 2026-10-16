@@ -28,3 +28,11 @@ N1/4/16/64 전후 계측, n4 분리 필요성, 실제 첫30 SIM초와 운반/pla
 - 명령 배열은 로봇/세계 축만 묶고 physics tick 누적 순서는 유지한다. Mac 순수 NumPy N64×3로봇400틱 ABBA에서 0.054–0.055→0.023–0.024초, 전체 tape SHA 일치. 이는 원격 물리/E2E 가속 배율이 아니다.
 - 첫30은 별도의 무계측 N16 교사 운반 진단으로 준비했다(6초기 상태+명시적 반복10, 미채택 reloc21 progress 모두off). CoreWeave live E2E/ACT는 [정적 연결 점검](e2e-preflight.json)의 미완료 조건으로 남는다. 이 교사 진단을 LLM/ACT E2E로 대체 보고하지 않는다.
 - 이전 warp9 R2/R3 자기 영상 띠를 파일로 직접 다시 봤다: 1.7–1.9SIM초 세 장에서 바닥/벽 시야가 거의 그대로이며 운반 구간이 아니다. 성공 비교·전체10초 tail은 없으므로 이동 실패 원인을 이 영상으로 주장하지 않았다.
+
+## CPU 제어 분리 후속 — 진행 중
+
+R2 N64도 wall49.4642초(86.2115초 대비42.6% 감소), 실행당2.5763으로 완료했다. [전후 전체 표](fixed-record/timing-table.md)·[상태 비교 한계](state-comparison.json). 초기 qpos/clock과 실제 물리 설정은 모두 같고 issued ctrl도 정확 일치했으나 별도 실행의 qpos/qvel/warmstart는 비트 불일치다. 같은 GPU 상태의 export/RGB 정확 일치를 물리 궤적 결정성으로 확대하지 않는다. R2 N64의 sampled VmHWM은63,314,988KiB(약60.4GiB)로64GB 호스트에서 여유가 적어, 장시간 N64 임무를 검증했다고 주장하지 않는다.
+
+혼합6초기 상태+반복10의 직렬 첫30 진단은10.1SIM초에서 의도적으로 멈췄다. 부분 관측 중앙값약7.84, wall1183.66초이며 첫30 관문은 **미완료**다. 원본 HOST_ERROR/KeyboardInterrupt/GeneratorExit는 그대로 남기고 감독 중단 근거를 별도 보존한다. 이 값으로 첫30 PASS/FAIL을 만들지 않는다.
+
+새 기본off `warp10_control_pool_v1`은 g2-standard-16의 기존16코어를 먼저 쓰는 조정자 설계(사용자 미확인)다. 각 CPU 프로세스가 같은 교사 코드를 실행하고 부모만 GPU 물리·렌더·평가 export를 소유한다. 기존 export가 쓴 CPU 평가 mirror·자기 명령 상태·기존 JPEG만 복사하고 새로운 행동 측정은 넣지 않는다. 입력 Audit는 원래 교사 그대로이며 학생/E2E가 아니다. CPU 작업자의 native reset 뒤 물리/렌더를 차단하고, 초기 모델/qpos/clock·첫 snapshot·첫 issued command를 대조한다. worker당OpenCV1스레드는 할당한 CPU1개에 맞춘 자원 설정이다. n4의 추가 호스트 분리는 이 로컬 분리로도 부족할 때의 미완료 경로다.
