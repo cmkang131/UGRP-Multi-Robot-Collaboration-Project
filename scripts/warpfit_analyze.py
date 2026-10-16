@@ -70,6 +70,9 @@ def grip(folder,m,meta):
         temporal.extend(dict(world=w,t=float(t[i]),height_m=float(h),slip_m=float(sl),all_fingers=bool(c))
                         for i,h,sl,c in zip(selected,heights,slip,contacts))
         rows.append(dict(world=w,hold_samples=len(selected),all_finger_samples=int(sum(contacts)),
+                         # Existing frozen teacher's12mm loaded-clearance
+                         # criterion, not a newly fitted slip tolerance.
+                         loaded_contact_samples=int(sum(c and h>=.012 for c,h in zip(contacts,heights))),
                          height_m=stats(heights),slip_m=stats(slip),tilt_deg=stats(tilts)))
     return rows,temporal
 
@@ -150,6 +153,9 @@ def main():
             if kind in ('box','beam'):
                 worlds,points=grip(folder,m,meta);row['worlds']=worlds;ref=thresholds.get(row['protocol']+'/'+kind)
                 row['threshold']=ref
+                if points:
+                    row['loaded_contact_rate']=sum(w['loaded_contact_samples'] for w in worlds)/len(points)
+                    row['fully_retained_worlds']=sum(w['loaded_contact_samples']==w['hold_samples'] for w in worlds)
                 if ref and ref['established']:
                     for w in worlds:
                         wp=[v for v in points if v['world']==w['world']]
