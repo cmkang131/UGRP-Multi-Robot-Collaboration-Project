@@ -49,10 +49,9 @@ def main():
     for i, row in enumerate(rows):
         request = row['audit'][0]['request']
         # Same stored own-RGB input and text method as #552, only three sequential calls.
-        messages = json.loads(json.dumps(request['messages']))
-        content = messages[-1]['content']
-        if isinstance(content, str):
-            messages[-1]['content'] = [{'type': 'text', 'text': content}]
+        messages = [{'role': 'system', 'content': request['system']},
+                    {'role': 'user', 'content': [{'type': 'text',
+                     'text': json.dumps(request['input'], ensure_ascii=False)}]}]
         messages[-1]['content'].append({'type': 'image_url', 'image_url': {
             'url': 'data:image/jpeg;base64,' + base64.b64encode(image).decode()}})
         body = orp.upstream_body(dict(model=orp.REGISTERED_MODEL, messages=messages,
