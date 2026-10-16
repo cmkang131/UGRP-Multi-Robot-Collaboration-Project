@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-16T08:39:58.032951+00:00",
+  "updated_utc": "2026-10-16T09:41:40.250359+00:00",
   "project": "ugrp-sim-b-1014",
   "account": "changmin5781@gmail.com",
   "L4_instance": "ugrp-act-l4-gcp2",
@@ -66,5 +66,35 @@
   "native_policy_probe_complete": true,
   "final40_references": "/home/ugrp/ugrp-sim/runs/act16w-resume2-final40-references",
   "final40_groups": "/home/ugrp/ugrp-sim/runs/act16w-resume2-final40-groups/model-groups.json",
-  "latest_worker": "82e81244340042d76b5a96eeb87b8a2a7bc6ae1a"
+  "latest_worker": "82e81244340042d76b5a96eeb87b8a2a7bc6ae1a",
+  "latest_local_commit": "fd94e8231",
+  "latest_deployed_worker": "c674098b1ae8f76fc13ae4e7841644f47c0e9bb5",
+  "status_helper_latest_deployed": "bacd3256c618ef91e66bb754c20342132da4043c",
+  "status_helper_monitor_uses": "24751a1ebeb6ce2e7268017b5ff388244daf254b",
+  "final_status_note": "Use latest helper after cap: it distinguishes resource_cut and requires40 native audits. Old monitor is valid during normal running but final records need latest helper.",
+  "converter_canary": {
+    "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-converter-canary-r1",
+    "rows": 715,
+    "optimizer_updates": 0,
+    "research_data_admitted": false,
+    "proof": "converter-canary.json"
+  },
+  "strict_clock_pilots": {
+    "tolerance_s": 1e-05,
+    "max_period_error_s": 5.689893001203927e-15,
+    "durations_sim_s": [
+      44.8,
+      42.3
+    ],
+    "old_coverage_s": [
+      44.9,
+      42.4
+    ],
+    "proof": "strict-clock-pilot-checks.json"
+  },
+  "package_helper": "scripts/package_act16w.py; --dataset-manifest required; only real stopped/readback-verified checkpoint; --allow-incomplete explicit, never synthetic; no upload credentials on VM",
+  "actual_research_optimizer_steps": 0,
+  "actual_student_evaluations": 0,
+  "study_model_release_count": 0,
+  "ops_alert": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/ops-alert.md"
 }
