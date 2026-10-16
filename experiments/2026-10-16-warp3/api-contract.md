@@ -21,3 +21,5 @@
 학생 진입점은 `scripts/run_warp_act_student.py` (`warp_act_student_smoke.py`). ACT15 가중치 SHA `d90a2b545709df6cd1a5972874db2e20c264007f9a798888f1bdccac22882ed1`로 실제 자기 RGB actor step2회×2world와 선택 chunk reset을 확인했다([영수증](student-api-smoke-r2.json)). `--full-evaluation`은 원래 SoloSequence의 grasp→release와900tick/90SIM를 실행하고 모든 행동이 끝난 뒤 원래 SoloScore로 평가한다. 이 full mode의 학생 임무 성공률, ACT 학습, 기록 본실행은 아직 측정하지 않았다. 학습 자료 승인과 이 API 인수는 별도다.
 
 학습 전용 critic 실측 추가: [training-lane-r1](training-lane-r1.json), 별도 source dfa8457b0/API source2b99e00d8. 한 실제 물리 step 전후 critic512개·정답4필드를 분리 반환했고 critic 읽기가 actor 관측을 바꾸지 않았다. 원본13파일 SHA 불일치0, RL update0이다.
+
+발행 명령 원장 추가(source7303986fd): 평가 owner는 물리 step 전에 `issued-commands.jsonl`에 world/generation/sample/시간/스킬·입력 RGB의 경로와 SHA·발행 action을 기록한다. 정답은 이 원장에 넣지 않는다. [실제 R3 검증](student-api-smoke-r3-audit.json)에서 명령4/4가 actor 출력과 일치하고 RGB 참조16개를 확인했다. 학습 hot path에서는 이 평가용 원장을 끈다. 중단된 student prefix도 summary에 보존한다.
