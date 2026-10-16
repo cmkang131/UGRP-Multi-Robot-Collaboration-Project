@@ -253,7 +253,10 @@ def report(a):
             mask=train['phase']==phase
             value=getattr(np,mode)(train['target'][mask],axis=0)
             p[val['phase']==phase]=value
-        basis['phase_'+mode+'_oracle']=dict(all=metrics(p,val['target']),refresh=metrics(p[val['refresh']],val['target'][val['refresh']]))
+        projected=decoded(p)
+        basis['phase_'+mode+'_oracle']=dict(all=metrics(p,val['target']),
+            all_decoded=metrics(projected,val['target']),
+            refresh=metrics(p[val['refresh']],val['target'][val['refresh']]))
     # Frozen RGB-only nearest neighbor, no parameter fitting or state input.
     for grouping in ('role','phase_role'):
         p=np.empty_like(val['target']);neighbors=np.empty(len(p),np.int64)
