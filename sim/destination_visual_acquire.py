@@ -318,7 +318,7 @@ class DestinationAcquire:
                     path=c.plan_path(c.loc.pose[:2],p,c.static['bounds_m'],c.obstacles.discs(now),rects=c.rects,radius=c.radius)
                     if path:self.point=p;self.path=path;break
                     context=route_context(c.loc.pose[:2],p,c.obstacles.discs(now),c.rects,c.radius,
-                        names=[o['id'] for o in c.static['obstacles']],bounds=c.static['bounds_m'])
+                        names=[o['id'] for o in c.static['obstacles']+c.static.get('fixed_floor_keepouts',[])],bounds=c.static['bounds_m'])
                     self.event(now,'rejection',category='route',reason='ellipse_waypoint_no_path',**context)
                 if self.point is None:
                     self.failure='destination_visual_search_exhausted'; self.mode='failed'
@@ -342,7 +342,7 @@ class DestinationAcquire:
                         # relax clearance. The finite remaining list is tried
                         # afresh from the current allowed pose next tick.
                         context=route_context(c.loc.pose[:2],self.point,c.obstacles.discs(now),c.rects,c.radius,
-                            names=[o['id'] for o in c.static['obstacles']],bounds=c.static['bounds_m'])
+                            names=[o['id'] for o in c.static['obstacles']+c.static.get('fixed_floor_keepouts',[])],bounds=c.static['bounds_m'])
                         self.last.update(category='route',reason='destination_search_path_obstructed',**context)
                         self.event(now,'rejection',category='route',reason='destination_search_path_obstructed',**context)
                         self.point=None;self.path=None
@@ -364,7 +364,7 @@ class DestinationAcquire:
               y+math.sin(a)*drive[0]*dt+math.cos(a)*drive[1]*dt)
         if not segment_free((x,y),goal,c.obstacles.discs(now),c.rects,c.radius):
             context=route_context((x,y),goal,c.obstacles.discs(now),c.rects,c.radius,
-                names=[o['id'] for o in c.static['obstacles']],bounds=c.static['bounds_m'])
+                names=[o['id'] for o in c.static['obstacles']+c.static.get('fixed_floor_keepouts',[])],bounds=c.static['bounds_m'])
             self.last.update(reason='destination_motion_blocked',**context)
             # Rotation is inside the same circular loaded envelope.
             drive=(0.,0.,.1) if not self.camera_pan and segment_free((x,y),(x,y),c.obstacles.discs(now),c.rects,c.radius) else (0.,0.,0.)

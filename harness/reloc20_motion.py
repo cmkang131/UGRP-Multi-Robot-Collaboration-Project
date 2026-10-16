@@ -56,6 +56,7 @@ class LoadedRoute:
         for o in static.get('fixed_floor_keepouts', []):
             self.rects.append((o['id'], (*o['center_m'], *o['half_extents_m'], o['yaw_rad'])))
         self.counts = Counter()
+        self.minimum_gaps = {}
         self.last = {}
         self.events = []
         self.plan_funnel = Counter()
@@ -96,6 +97,7 @@ class LoadedRoute:
         self.last=dict(context)
         key=(context['reason'],context['blocked_object'])
         self.counts[key]+=1
+        self.minimum_gaps[key]=min(self.minimum_gaps.get(key,math.inf),context['minimum_gap_m'])
         # Bounded event history; complete counts and per-tick last are retained.
         if len(self.events)<BUDGET:self.events.append(dict(t=now,**context))
 
@@ -147,7 +149,7 @@ class LoadedRoute:
     def record(self):
         return dict(radius_m=self.radius,issued_cargo_corners_xy=self.footprint,clearance_m=MARGIN_M,
                     map_floor_keepouts=self.static.get('fixed_floor_keepouts',[]),last=self.last,
-                    plan_funnel=dict(self.plan_funnel),rejections=[dict(reason=k[0],blocked_object=k[1],N=v) for k,v in self.counts.items()],events=self.events)
+                    plan_funnel=dict(self.plan_funnel),rejections=[dict(category='loaded_footprint',reason=k[0],blocked_object=k[1],minimum_gap_m=self.minimum_gaps[k],N=v) for k,v in self.counts.items()],events=self.events)
 
 
 class VisualStall:

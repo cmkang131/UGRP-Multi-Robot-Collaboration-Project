@@ -2,6 +2,7 @@
 import argparse,collections,hashlib,importlib.util,json,math,platform,shutil,subprocess
 from pathlib import Path
 import numpy as np
+import cv2
 R=Path('/home/ugrp/ugrp-sim/runs');ROOT=Path(__file__).resolve().parents[2]
 def obj(p):return json.loads(p.read_bytes() if p.exists() else subprocess.check_output(['zstd','-dc',str(p)+'.zst']))
 def rows(p):return [json.loads(s) for s in (p.read_bytes() if p.exists() else subprocess.check_output(['zstd','-dc',str(p)+'.zst'])).splitlines()]
@@ -9,7 +10,7 @@ def mod(name,p):
  s=importlib.util.spec_from_file_location(name,p);m=importlib.util.module_from_spec(s);s.loader.exec_module(m);return m
 
 def gap(points,obstacle):
- p=np.asarray(points);c=np.array(obstacle['center_m']);h=np.array(obstacle['half_extents_m']);a=obstacle.get('yaw_rad',0.);rot=np.array([[math.cos(a),-math.sin(a)],[math.sin(a),math.cos(a)]])
+ p=cv2.convexHull(np.asarray(points,np.float32)).reshape(-1,2).astype(float);c=np.array(obstacle['center_m']);h=np.array(obstacle['half_extents_m']);a=obstacle.get('yaw_rad',0.);rot=np.array([[math.cos(a),-math.sin(a)],[math.sin(a),math.cos(a)]])
  q=np.array([[x,y] for x,y in ((h[0],h[1]),(-h[0],h[1]),(-h[0],-h[1]),(h[0],-h[1]))])@rot.T+c
  axes=[rot[:,0],rot[:,1]]
  for e in np.roll(p,-1,axis=0)-p:
@@ -49,6 +50,20 @@ def main(n,media=False):
    geometry=intervals(times,active & np.array([x[0]<=0 for x in details[:-1]]),details)
    r['geometry_risk_intervals']=geometry;r['geometry_risk_sim_s']=sum(x['sim_s'] for x in geometry)
    r['geometry_scope']='evaluation SAT against initial authored beam and cargo footprint/static walls; not force/contact proof'
+   shadow=np.array([x['map_pose']['reloc18_command_shadow'] for x,e in pairs]);truth=np.array([[*e['base_xyz'][:2],e['base_yaw_rad']] for x,e in pairs])
+   a=truth[0,2]-shadow[0,2];rot=np.array([[math.cos(a),-math.sin(a)],[math.sin(a),math.cos(a)]])
+   aligned=(shadow[:,:2]-shadow[0,:2])@rot.T+truth[0,:2]
+   yaw=(shadow[:,2]+a-truth[:,2]+np.pi)%(2*np.pi)-np.pi
+   r['aligned_command_errors']=dict(xy=summary.dist(np.linalg.norm(aligned-truth[:,:2],axis=1).tolist()),yaw=summary.dist(abs(np.degrees(yaw)).tolist()))
+   r['phase_metrics']={label:{key:summary.dist([float(np.linalg.norm(np.array(x['map_pose'][field])[:2]-np.array(e['base_xyz'])[:2])) if key.endswith('xy') else abs(math.degrees(math.atan2(math.sin(x['map_pose'][field][2]-e['base_yaw_rad']),math.cos(x['map_pose'][field][2]-e['base_yaw_rad'])))) for (x,e),ph in zip(pairs,phase) if ph==label]) for key,field in [('visual_xy','pose_estimate'),('visual_yaw','pose_estimate'),('command_xy','reloc18_command_shadow'),('command_yaw','reloc18_command_shadow')]} for label in ('carry_to_zone','destination_acquire')}
+   groups={}
+   for x,e in pairs:
+    candidates=[x.get('reloc20_motion',{}).get('footprint') or {},x.get('destination_acquisition',{}).get('last') or {}]
+    for rec in candidates:
+     if rec.get('minimum_gap_m') is None or rec.get('reason') in ('route_clear','swept_enclosure_clear'):continue
+     key=(rec.get('reason','unspecified'),rec.get('blocked_object','unspecified'));v=groups.setdefault(key,dict(category='route',reason=key[0],blocked_object=key[1],N=0,minimum_gap_m=math.inf));v['N']+=1;v['minimum_gap_m']=min(v['minimum_gap_m'],rec['minimum_gap_m'])
+   r['route_frame_rejections']=sorted(groups.values(),key=lambda x:-x['N'])
+
    flow=[x.get('reloc20_motion',{}).get('stall') or {} for x,e in pairs]
    r['visual_stall_frame_reasons']=dict(collections.Counter(x.get('reason','off') for x in flow))
    r['visual_stall_intervals']=intervals(times,np.array([bool(x.get('suppressed')) for x in flow[:-1]]),[(0.,'own_camera_stationarity_evidence')]*len(times))
@@ -60,7 +75,7 @@ def main(n,media=False):
     w=x['command']['wheels'];dur=x['command']['duration_s'];lat=-w[0]*dur[0]+w[1]*dur[1]+w[2]*dur[2]-w[3]*dur[3]
     if abs(lat)>1e-10:lateral.append(dict(t=x['t'],lateral_wheel_impulse=lat))
    r['lateral_pulse_ticks']=len(lateral);r['lateral_pulse_examples']=lateral[:6]
-  tables.append(dict(run=t['name'],raw=t['raw'],termination=normalized,cumulative=r.get('gate_cumulative',r.get('registration_frame_funnel')),frame_funnel=r.get('acquisition_frame_funnel'),rejections=r.get('acquisition_frame_rejections'),motion=r.get('reloc20_motion'),visual_stall_frame_reasons=r.get('visual_stall_frame_reasons'),geometry_risk_intervals=r.get('geometry_risk_intervals'),terminal=r.get('terminal_rejections')))
+  tables.append(dict(run=t['name'],raw=t['raw'],termination=normalized,cumulative=r.get('gate_cumulative',r.get('registration_frame_funnel')),frame_funnel=r.get('acquisition_frame_funnel'),rejections=r.get('acquisition_frame_rejections'),motion=r.get('reloc20_motion'),route_frame_rejections=r.get('route_frame_rejections'),visual_stall_frame_reasons=r.get('visual_stall_frame_reasons'),geometry_risk_intervals=r.get('geometry_risk_intervals'),terminal=r.get('terminal_rejections')))
   mf=raw/'failure-rgb/manifest.json'
   if mf.exists() or Path(str(mf)+'.zst').exists():
    frames=obj(mf)['frames'];out=b/'media'/t['name'];out.mkdir(parents=True,exist_ok=True)

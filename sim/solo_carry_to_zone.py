@@ -263,6 +263,16 @@ class CarryToZone:
             goal = (slot[0]-grip_xy[0]-self.advance_m, slot[1]-grip_xy[1])
             final = (goal[0]+self.advance_m, goal[1])
             retreat = (final[0]-.15, final[1])
+            route=getattr(self,'reloc20_route',None)
+            if route is not None:
+                route.plan_funnel['slot_candidates']+=1
+                checks=[route.segment(a,b,discs) for a,b in ((goal,goal),(goal,final),(final,retreat))]
+                if not all(ok for ok,_ in checks):
+                    context=min((c for ok,c in checks if not ok),key=lambda c:c['minimum_gap_m'])
+                    route.reject(dict(context,reason='place_envelope_overlap'),now=now)
+                    route.plan_funnel['slot_envelope_rejected']+=1
+                    continue
+                route.plan_funnel['slot_envelope_clear']+=1
             if not (free(goal, discs, self.rects, self.radius) and
                     segment_free(goal, final, discs, self.rects, self.radius) and
                     segment_free(final, retreat, discs, self.rects, self.radius)):
