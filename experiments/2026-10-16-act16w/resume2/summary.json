@@ -38,7 +38,7 @@
   "warm_scope": "recording API/throughput diagnostic, not data admission or teacher success",
   "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2",
   "teacher_gate_independent": {
-    "n": 11,
+    "n": 24,
     "N": 40,
     "complete": false,
     "passed": false
@@ -96,19 +96,17 @@
   ],
   "model_image_note": "4 own native640x480 JPEG history frames resized individually320x240 then2x2 montage640x480. Both train/inference use this; upstream224 prose is not the measured ACT16 input.",
   "teacher_recording_confirmation": {
-    "provisional_success_n": 12,
-    "native_audited_success_n": 11,
+    "provisional_success_n": 24,
+    "native_audited_success_n": 24,
     "N_requested": 40,
-    "counts": {
-      "running": 28,
-      "success": 12
-    },
+    "completed": 24,
+    "pending": 16,
     "complete": false
   },
   "student_training_steps": 0,
   "student_evaluation_runs": 0,
   "bulk_first_attempt": "HOST_ERROR before physics: gate host schema7 vs4; separate integration fix tested11passed",
-  "updated_utc": "2026-10-16T11:07:17.412685+00:00",
+  "updated_utc": "2026-10-16T11:40:27.455860+00:00",
   "pilot_completed": 2,
   "pilot_success": 2,
   "bulk_raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2",
@@ -135,7 +133,7 @@
     ]
   },
   "research_training_steps": 0,
-  "recording_active_worlds": 38,
+  "recording_active_worlds": 16,
   "recording_pending_worlds": 0,
   "parallel_scheduler_source": "a6d08b6ac397cd0e3a29f3ff9c9490895d863a20",
   "first30_own_rgb_review": "first30-own-rgb-preview.json",
@@ -147,5 +145,15 @@
     "proof": "strict-audits-stage1.json"
   },
   "input_contract_limitation": "same-colour-task-input-review.json",
-  "alignment_diagnostic": "alignment-diagnostic-protocol.json"
+  "alignment_diagnostic": "alignment-diagnostic-protocol.json",
+  "strict_native_audits": {
+    "worlds": 24,
+    "paired_frames": 10639,
+    "max_period_error_s": 5.689893001203927e-15,
+    "clock_tolerance_s": 1e-05,
+    "proof": [
+      "strict-audits-stage1.json",
+      "strict-audits-stage2.json"
+    ]
+  }
 }

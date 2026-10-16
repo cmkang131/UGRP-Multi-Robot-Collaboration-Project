@@ -1,9 +1,9 @@
 # ACT16w — MJWarp 재기록·학습
 
 현재는 **2회차 재개 진행 중**이다. warp3 40/40과 RECORD_API_READY `0362037`을
-수신했고, 새 파일럿2/2와 첫 본 기록 그룹9/9가 성공했다. 완료11회의 native
-JPEG·발행 이력·교사 표적4,813/4,813쌍이 정합했고 입력 감사는 invisible/held0/0이다.
-기존ACT와 같은1e-5초 주기 허용치로 감사했다([근거](resume2/strict-audits-stage1.json)).
+수신했고, 새 파일럿2/2와 본 기록 그룹9/9·13/13이 성공했다. 완료24회의 native
+JPEG·발행 이력·교사 표적10,639/10,639쌍이 정합했고 입력 감사는 invisible/held0/0이다.
+기존ACT와 같은1e-5초 주기 허용치로 감사했다([첫 감사](resume2/strict-audits-stage1.json), [13회 추가 감사](resume2/strict-audits-stage2.json)).
 두 파일럿의 전체2Hz·끝10SIM초10Hz 프레임 띠와 본 기록 첫30초를 직접 검토했다.
 나머지 기록이 진행 중이며 독립40회 관문·데이터 승인·ACT 학습·학생 평가는 아직
 미완료다. 앞선3SIM초 warm2회(cap_end,60쌍)는 학습에서 제외한다.
