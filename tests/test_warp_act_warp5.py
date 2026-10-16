@@ -8,8 +8,18 @@ import pytest
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'scripts'))
 from scripts.warp5_render import blend_native
-from scripts.warp5_batch import transform_runner
+from scripts.warp5_batch import transform_runner,sim_clock
 from scripts.warp5_e2e import AsyncDecisions
+
+
+def test_native_setup_clock_never_moves_backwards_on_gpu_export():
+    # Exact16-world R1d epoch from initial-state.json; old absolute rounding
+    # violated the unchanged control_tape accumulator guard before first step.
+    origin=1.3000000000000178
+    assert 2000*(round(origin,9)-origin)<-1e-12
+    assert sim_clock(origin,0,.1)==origin
+    clocks=[sim_clock(origin,t,.1) for t in range(3001)]
+    assert all(b>a for a,b in zip(clocks,clocks[1:]))
 
 
 def test_native_alpha_keeps_opaque_occluders_and_world_layer_order():

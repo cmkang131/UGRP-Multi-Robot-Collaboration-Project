@@ -12,6 +12,14 @@ from scripts.warp_act_backend import WarpTransport
 from scripts.warp_act_core import SERVOS, control_tape, physics_schedule
 
 
+def sim_clock(origin,tick,period):
+    # Preserve the native setup epoch exactly. R1d origin1.3000000000000178
+    # became1.3 under absolute rounding, moving the port clock backwards by
+    #1.78e-14s (2000PWM/s accumulation then exceeds its existing1e-12 guard).
+    # Round only the integer-tick offset; no tolerance/command guard is relaxed.
+    return origin+round(tick*period,9)
+
+
 class Batch(WarpTransport):
     def initialize(self, contexts, **kwargs):
         self.period=getattr(self,'period',.1)
@@ -24,6 +32,8 @@ class Batch(WarpTransport):
             p=self.out/f'world-{i:03d}';p.mkdir(parents=True,exist_ok=True)
             (p/'scene.xml').write_text(c['world'].scene_xml)
         super().initialize(contexts,**kwargs)
+        self.camera.update(renderer='MJWarp own RGB + '+self.multi_renderer.audit['profile'],
+            quality_requested='no_mip_v1',visual_adapter=self.multi_renderer.audit)
         if self.period!=.1:
             wp,mjw=self.wp,self.mjw
             self.control_steps,self.graph_chunk,self.graph_repeats=physics_schedule(self.period,self.dt)
@@ -105,7 +115,7 @@ class Batch(WarpTransport):
             # Native get_data_into copies GPU contacts/forces. Do not call
             # mj_forward/mj_step to invent CPU contacts for GPU evaluation.
             mjw.get_data_into(c['world'].data,c['world'].model,self.wd,world_id=i)
-            c['world'].data.time=round(c['origin']+self.tick*self.period,9)
+            c['world'].data.time=sim_clock(c['origin'],self.tick,self.period)
         self.rgb=[self.jpeg(i,c.get('rid','r3')) for i,c in enumerate(contexts)]
         self.seconds['render_and_evaluator_export']+=time.perf_counter()-start
 
