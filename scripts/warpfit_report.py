@@ -61,13 +61,15 @@ def main():
     summary=dict(status=('comparison_complete_with_rejections' if errors else 'complete') if terminal else 'partial',
         expected_paired_jobs=28,recorded_paired_jobs=len(selected),completed_paired_jobs=sum(bool(r['completed']) for r in selected),
         rejected_paired_jobs=errors,
-        rows=compact,drive=pulses,thresholds=json.loads((a.analysis/'thresholds.json').read_text()),
+        rows=compact,drive_file='drive-summary.json',drive_csv='drive-table.csv',
+        drive_rows=len(pulses),thresholds=json.loads((a.analysis/'thresholds.json').read_text()),
         world_scope='same fixed fixture repeated; not independent random-seed task trials',
         latency_definition='runtime wall / common SIM horizon',throughput_definition='runtime wall / (world count x SIM horizon)',
         physics_definition='CUDA event ms per batch physics step, including fixed tape kernel; setup/JIT and final writing excluded',
         slip_definition='per-world temporal P95 of object COM displacement relative to gripper axes; summary contains across-world distribution',
         default_changes=0,adopted=False,teacher_gate_rerun_required=True)
     (a.output/'summary.json').write_text(json.dumps(summary,indent=2,allow_nan=False)+'\n')
+    (a.output/'drive-summary.json').write_text(json.dumps(pulses,indent=2,allow_nan=False)+'\n')
     fields=sorted(set().union(*(r.keys() for r in pulses))) if pulses else ['status']
     with (a.output/'drive-table.csv').open('w') as f:
         writer=csv.DictWriter(f,fieldnames=fields);writer.writeheader();writer.writerows(pulses)
