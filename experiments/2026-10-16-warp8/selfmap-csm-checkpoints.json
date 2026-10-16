@@ -1,0 +1,8 @@
+{
+  "initial_panorama_view_count": 3,
+  "source_sha": "8e81b7d96c0c73171635348c90631462adfe1eb0",
+  "source_path": "sim/lookaround_localization.py",
+  "source_contract": "make_plan unknown-map three pans -60/0/+60; script servo wait VIEW_SETTLE_S=.8; open camera settle .25 owner PARAMS; no acceptance threshold introduced",
+  "before": "after first original panorama",
+  "after": "after all recorded repeat/recovery views"
+}
