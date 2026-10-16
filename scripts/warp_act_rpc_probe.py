@@ -74,6 +74,17 @@ def main():
         public = obs0 == A.read_actor(0)
         port_equal = ports == json.loads((A.out/'owner/ports-latest.json').read_text())[0]
         if not all(paused.values()) or not public or not port_equal: raise RuntimeError('terminal world advanced')
+        # Public reset's shared contact counter has a world0 special case in
+        # the installed implementation: exercise a NONZERO world explicitly.
+        frozen = state(A); obs0 = A.read_actor(0)
+        other_fresh = deepcopy(plans[1]); other_fresh['spawns']['r1'] = deepcopy(plans[0]['spawns']['r1'])
+        other_fresh['episode_id'] += '-nonzero-reset'
+        A.reset([other_fresh], [1])
+        nonzero = same(frozen, state(A), 0)
+        if not all(nonzero.values()) or obs0 != A.read_actor(0): raise RuntimeError('nonzero reset changed terminal world')
+        A.step(hold(A))
+        after_nonzero = same(frozen, state(A), 0)
+        if not all(after_nonzero.values()) or obs0 != A.read_actor(0): raise RuntimeError('nonzero reset/step resumed terminal world')
         try: A.read_training(0)
         except RuntimeError: pass
         else: raise RuntimeError('privileged evaluation lane exposed')
@@ -84,6 +95,7 @@ def main():
         else: raise RuntimeError('privileged action canary accepted')
         report.update(status='complete', passed=True, invalid_reset_atomic=atomic,
             terminal_state_equal=paused, terminal_history_clock_frozen=public, terminal_port_frozen=port_equal,
+            nonzero_reset_untouched_equal=nonzero, nonzero_reset_next_step_paused_equal=after_nonzero,
             training_read_rejected=True, privileged_canary_rejected=True)
         report['scope'] = 'exact immediate persistent reset isolation and terminal freeze; next-step numerical drift reported against nondeterministic independent baseline, no bitwise trajectory guarantee or new physics tolerance'
     except BaseException as error:

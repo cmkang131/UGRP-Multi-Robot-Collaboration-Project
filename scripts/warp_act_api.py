@@ -146,6 +146,9 @@ class Owner:
         (self.out/name).write_text(json.dumps(value, indent=2, allow_nan=False)+'\n')
 
     def context(self, plan, index, folder):
+        if (plan['kind'] not in ('cyan', 'red', 'green', 'yellow') or plan['robot_id'] != 'r1'
+                or plan['role'] not in self.c.KIND_ROLES[plan['kind']]):
+            raise ValueError('qualified solo r1 box task and named role required')
         from warp_act_scene import make_scene
         from sim.masterpi_drive_friction_v7 import build_world, PROFILE
         from sim.s2_realism_camera_binding import bind_camera
@@ -271,6 +274,10 @@ class Owner:
         indices = list(range(self.n)) if indices is None else list(indices)
         if not indices or len(plans) != len(indices) or len(set(indices)) != len(indices) or any(type(i) is not int or not 0 <= i < self.n for i in indices):
             raise ValueError('one plan per unique world index required')
+        fixed_task = ('seed', 'scenario_id', 'kind', 'item_id', 'role', 'robot_id')
+        for i, plan in zip(indices, plans):
+            if any(plan.get(k) != self.plans[i].get(k) for k in fixed_task):
+                raise ValueError('reset preserves each world model/task; new model/task requires a new owner and references')
         # Validate EVERY replacement before changing physics or an actor cache.
         # Administrative rejected-attempt files are retained separately.
         proposed = []
