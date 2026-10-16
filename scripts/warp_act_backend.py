@@ -12,7 +12,7 @@ import hashlib
 import time
 from pathlib import Path
 import numpy as np
-from warp_act_core import SERVOS, control_tape, model_key, varying_model_arrays, masked_restore, sleep_scene_xml, runtime_sleep_policy, physics_schedule
+from warp_act_core import SERVOS, control_tape, model_key, varying_model_arrays, masked_restore, sleep_scene_xml, runtime_sleep_policy, physics_schedule, contact_maps
 
 
 class PerceptionWorld:
@@ -110,17 +110,18 @@ class Transport:
     def close(self):
         for world,scene in self.prototypes.values():world.close()
 
-    def capture(self, index, world):
+    def capture(self, index, world, robot_id='r1'):
         if self.native_render:
-            return world.render_jpeg(robot_id='r1', camera='robot_cam')
-        return self.rgb[index]
+            return world.render_jpeg(robot_id=robot_id, camera='robot_cam')
+        return self.rgb_by_robot[robot_id][index]
 
     def record_state(self, index, tick, world):
         self.samples[index].append((tick, world.data.qpos.copy(), world.data.qvel.copy()))
 
     def forces(self, index, model, data, targets, fingers):
         if not self.native_render:
-            return self.contact_forces[index].tolist()
+            channels=[self.finger_channels[g] for g in sorted(fingers,key=fingers.get)]
+            return self.contact_forces[index,channels].tolist()
         import mujoco
         result = [0., 0.]
         force = np.zeros(6)
@@ -159,6 +160,28 @@ class CTransport(Transport):
         pass
 
 
+class CFlowTransport(CTransport):
+    """Explicit N1 comparison caller of the same frozen ctrl tape.
+
+    Separate C cohort, not an MJWarp teacher result. CPU16 throughput uses
+    sixteen processes on gcp2, never a serial N16 loop mislabeled concurrent.
+    """
+    def step(self,contexts,active):
+        import mujoco
+        if len(contexts)!=1:raise ValueError('CPU flow comparison requires N1 process')
+        start=time.perf_counter()
+        if active[0]:
+            c=contexts[0];world=c['world'];tape=np.asarray(c['command_tape'])
+            if tape.shape!=(round(.1/world.model.opt.timestep),world.model.nu):
+                raise ValueError('exact fixed-grid command tape required')
+            for command in tape:
+                world.data.ctrl[:]=command
+                mujoco.mj_step(world.model,world.data)
+            mujoco.mj_kinematics(world.model,world.data)
+            mujoco.mj_camlight(world.model,world.data)
+        self.seconds['physics']+=time.perf_counter()-start
+
+
 class WarpTransport(Transport):
     def initialize(self, contexts, *, compiled_reference=None, compiled_geometry=None, per_world_model_references=None, float32_solver_default_v1=False,sap_segmented_v1=False):
         import mujoco
@@ -171,6 +194,10 @@ class WarpTransport(Transport):
         self.wp, self.mjw = wp, mjw
         self.contexts = contexts
         self.n = len(contexts)
+        self.robot_ids=tuple(contexts[0].get('ports') or {'r1':None})
+        self.finger_channels=dict(contexts[0]['finger_ids'])
+        if any(tuple(c.get('ports') or {'r1':None}) != self.robot_ids for c in contexts):
+            raise ValueError('consistent robot ports required')
         m, d = contexts[0]['world'].model, contexts[0]['world'].data
         self.m, self.dt = m, float(m.opt.timestep)
         self.control_steps,self.graph_chunk,self.graph_repeats=physics_schedule(.1,self.dt)
@@ -181,7 +208,7 @@ class WarpTransport(Transport):
         models=[]
         for index,c in enumerate(contexts):
             model=c['world'].model
-            scene_xml=self.out/f'world-{index:03d}'/'scene.xml'
+            scene_xml=Path(c.get('scene_xml_path',self.out/f'world-{index:03d}'/'scene.xml'))
             xml_hash=hashlib.sha256(scene_xml.read_bytes()).hexdigest()
             if index==0 or c['world'].scene_xml==contexts[0]['world'].scene_xml:
                 actuator_asset,geometry_asset=compiled_reference,compiled_geometry
@@ -250,14 +277,15 @@ class WarpTransport(Transport):
         native_active=np.sum(self.source_sleep[:,self.dof_tree]<0,axis=1)
         active_bounds=[]
         for c in contexts:
-            robot_tree=int(m.body_treeid[m.body('r1__robot').id])
+            robot_trees=[int(m.body_treeid[m.body(r+'__robot').id]) for r in self.robot_ids]
             cargo_tree=int(m.body_treeid[m.geom_bodyid[c['gids'][0]]])
-            active_bounds.append(int(np.count_nonzero(np.isin(self.dof_tree,[robot_tree,cargo_tree]))))
+            active_bounds.append(int(np.count_nonzero(np.isin(self.dof_tree,[*robot_trees,cargo_tree]))))
         bound=max(int(native_active.max()),max(active_bounds))
         self.nvmax=min(int(m.nv),1 << (max(1,bound)-1).bit_length()) if self.native_sleep_policy_compat_v1 else None
         self.sleep_audit={'enabled':self.native_sleep_policy_compat_v1,'native_initial_active_dofs':native_active.tolist(),
             'active_robot_plus_target_dofs':active_bounds,'nvmax':self.nvmax,
             'capacity_basis':'next power of2 of actual native active count and static robot+target DOFs; overflow rejects unexpected activation'}
+        (self.out/'sleep-allocation-audit.json').write_text(json.dumps(self.sleep_audit,indent=2)+'\n')
         d.tree_asleep[:]=self.source_sleep[0]
         with unused_efm(m, d):
             self.wd = mjw.put_data(m,d,nworld=self.n,nconmax=ncon,njmax=njmax,nvmax=self.nvmax)
@@ -267,7 +295,7 @@ class WarpTransport(Transport):
         self.relay_state = np.zeros((self.n,4), int)
         self.tape = wp.zeros((self.control_steps,self.n,m.nu),dtype=float)
         self.graph_tick = wp.zeros(1,dtype=int)
-        self.force_out = wp.zeros((self.n,2),dtype=float)
+        self.force_out = wp.zeros((self.n,len(self.finger_channels)),dtype=float)
         self.init_kernels(contexts)
         # Compile once, then discard the warm-up state before any rollout.
         mjw.step(self.wm,self.wd); wp.synchronize()
@@ -288,7 +316,7 @@ class WarpTransport(Transport):
         # Capture does not run the physics. First render uses canonical initialized state.
         self.rc = mjw.create_render_context(m,nworld=self.n,cam_res=(640,480),
             render_rgb=True,render_depth=False,render_seg=False,use_textures=True,
-            use_shadows=True,enabled_geom_groups=[0,1,2,3],cam_active=['r1__robot_cam'])
+            use_shadows=True,enabled_geom_groups=[0,1,2,3],cam_active=[r+'__robot_cam' for r in self.robot_ids])
         self.device_rgb = wp.zeros((self.n,480,640),dtype=wp.vec3)
         self.mx,self.my = raw_fisheye_remap(640,480)
         self.camera = dict(resolution=[640,480],hz=10,K=scaled_camera_matrix(640,480).tolist(),
@@ -423,25 +451,22 @@ class WarpTransport(Transport):
         @wp.kernel
         def advance(tick:wp.array[int]):
             tick[0]+=1
-        if any(len(c['gids']) != 1 for c in contexts):
-            raise ValueError('warp1 evaluator currently supports the single box collision geom only')
-        self.target_ids=wp.array([c['gids'][0] for c in contexts],dtype=int)
-        self.finger_ids=wp.array([sorted(c['finger_ids'],key=c['finger_ids'].get) for c in contexts],dtype=int)
+        targets, fingers = contact_maps(contexts[0]['world'].model.ngeom,
+            [c['gids'] for c in contexts], [c['finger_ids'] for c in contexts])
+        self.target_mask = wp.array(targets, dtype=int)
+        self.finger_map = wp.array(fingers, dtype=int)
         @wp.kernel
         def evaluate(nacon:wp.array[int],worldid:wp.array[int],geom:wp.array[wp.vec2i],
                      cone:int,njmax:int,frame:wp.array[wp.mat33],friction:wp.array[vec5],
                      condim:wp.array[int],adr:wp.array2d[int],adhesion:wp.array[float],
-                     efc_force:wp.array2d[float],targets:wp.array[int],fingers:wp.array2d[int],out:wp.array2d[float]):
+                     efc_force:wp.array2d[float],targets:wp.array2d[int],fingers:wp.array2d[int],out:wp.array2d[float]):
             i=wp.tid()
             if i<nacon[0]:
                 a,b=geom[i][0],geom[i][1]
                 w=worldid[i]
-                target=targets[w]
-                left,right=fingers[w,0],fingers[w,1]
                 k=int(-1)
-                if a==target or b==target:
-                    if a==left or b==left:k=0
-                    if a==right or b==right:k=1
+                if targets[w,a] != 0:k=fingers[w,b]
+                elif targets[w,b] != 0:k=fingers[w,a]
                 if k>=0:
                     w=worldid[i]
                     force=contact_force_fn(cone,frame,friction,condim,adr,adhesion,efc_force,njmax,nacon,w,i,False)
@@ -462,9 +487,8 @@ class WarpTransport(Transport):
             self.servo_ids.append(ids)
         self.lookup=np.asarray(tables)
 
-    def step(self, contexts, active):
-        wp,mjw=self.wp,self.mjw
-        start=time.perf_counter()
+    def prepare_solo_commands(self,contexts,active):
+        wp=self.wp
         rows=[]
         for i,c in enumerate(contexts):
             p,w=c['port'],c['world']
@@ -490,6 +514,21 @@ class WarpTransport(Transport):
             p._wheel_deadlines=[d if d is not None and d>p._servo_tick_time else None for d in p._wheel_deadlines]
             w.data.ctrl[:]=tape[-1,i]
             w.robot('r1').servo_command_pulses.update(dict(zip(SERVOS,map(int,state['pwm'][i]))))
+
+    def step(self, contexts, active):
+        wp,mjw=self.wp,self.mjw
+        start=time.perf_counter()
+        if any('command_tape' in c for c in contexts):
+            # Frozen per-substep command-only adapters already advanced their
+            # own deadlines/PWM/issued odometry; never decode twice.
+            tape=np.stack([np.asarray(c['command_tape']) if active[i] else
+                np.repeat(c['world'].data.ctrl[None,:],self.control_steps,axis=0)
+                for i,c in enumerate(contexts)],axis=1).astype(np.float32)
+            if tape.shape!=(self.control_steps,self.n,self.m.nu):
+                raise ValueError('command tape must match fixed physics substep schedule')
+            wp.copy(self.tape,wp.array(tape,dtype=float))
+        else:
+            self.prepare_solo_commands(contexts,active)
         self.seconds['command_decode_upload']+=time.perf_counter()-start
         start=time.perf_counter()
         self.graph_tick.zero_()
@@ -518,11 +557,14 @@ class WarpTransport(Transport):
         mjw.camlight(self.wm,self.wd)
         mjw.refit_bvh(self.wm,self.wd,self.rc)
         mjw.render(self.wm,self.wd,self.rc)
-        mjw.get_rgb(self.rc,0,self.device_rgb)
-        wp.synchronize()
+        camera_images={}
+        for camera_index,rid in enumerate(self.robot_ids):
+            mjw.get_rgb(self.rc,camera_index,self.device_rgb)
+            wp.synchronize()
+            camera_images[rid]=np.clip(self.device_rgb.numpy()*255,0,255).astype(np.uint8)
         self.seconds['render']+=time.perf_counter()-start
         start=time.perf_counter()
-        image=np.clip(self.device_rgb.numpy()*255,0,255).astype(np.uint8)
+        self.rgb_by_robot={r:[] for r in self.robot_ids}
         qpos,qvel=self.wd.qpos.numpy(),self.wd.qvel.numpy()
         transforms=None
         if getattr(self,'numpy_teacher_v1',False):
@@ -532,10 +574,12 @@ class WarpTransport(Transport):
             raise RuntimeError('nonfinite Warp state')
         self.rgb=[]
         for i,c in enumerate(contexts):
-            rgb=cv2.remap(image[i],self.mx,self.my,cv2.INTER_LINEAR,borderMode=cv2.BORDER_CONSTANT)
-            buffer=io.BytesIO()
-            Image.fromarray(rgb).save(buffer,format='JPEG',quality=82)  # frozen World.render_jpeg default
-            self.rgb.append(buffer.getvalue())
+            for rid,image in camera_images.items():
+                rgb=cv2.remap(image[i],self.mx,self.my,cv2.INTER_LINEAR,borderMode=cv2.BORDER_CONSTANT)
+                buffer=io.BytesIO()
+                Image.fromarray(rgb).save(buffer,format='JPEG',quality=82)
+                self.rgb_by_robot[rid].append(buffer.getvalue())
+            self.rgb.append(self.rgb_by_robot['r1'][i])
             d=c['world'].data
             d.qpos[:]=qpos[i];d.qvel[:]=qvel[i];d.time=self.origin+self.tick*.1
             # Perception mirror only, no C physics or C contact-force reconstruction.
@@ -549,5 +593,5 @@ class WarpTransport(Transport):
         d=self.wd
         wp.launch(self.eval_kernel,dim=d.naconmax,inputs=[d.nacon,d.contact.worldid,d.contact.geom,
             int(self.m.opt.cone),int(d.njmax),d.contact.frame,d.contact.friction,d.contact.dim,
-            d.contact.efc_address,d.contact.adhesion,d.efc.force,self.target_ids,self.finger_ids,self.force_out])
+            d.contact.efc_address,d.contact.adhesion,d.efc.force,self.target_mask,self.finger_map,self.force_out])
         self.contact_forces=self.force_out.numpy()

@@ -1,0 +1,5 @@
+# Additional leaf dependency for the existing gcp2 MJWarp environment.
+# Match release25's verified CPU environment; install with --no-deps so the
+# shared MuJoCo/Warp/NumPy pins are retained. Do not install requirements-sim
+# over the MJWarp environment (the historical C environment is separate).
+scipy==1.17.1

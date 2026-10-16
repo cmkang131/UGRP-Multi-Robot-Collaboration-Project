@@ -1,0 +1,63 @@
+{
+  "schema": "ugrp.warp4.batch.v1",
+  "status": "HOST_ERROR",
+  "source_sha": "04c686ca5249a7530efedacfc0bf678e134ee902",
+  "host": {
+    "project_id": "ugrp-sim-b-1014",
+    "instance": "ugrp-sim-gcp2",
+    "machine_type": "n4-highcpu-64",
+    "zone": "asia-northeast3-a"
+  },
+  "flow": "beampair",
+  "physics_backend": "mjwarp_batch_v1",
+  "mujoco": "3.12.0",
+  "cases_sha256": "d1ee32874e40302aea5a299b19df8a0d226084a5d5f70edcc7b5fdec4c02a1a5",
+  "world_indices": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "planned_N": 4,
+  "started_N": 1,
+  "completed_N": 0,
+  "success_n": 0,
+  "cap_end": 0,
+  "HOST_ERROR": 1,
+  "training_rgb": false,
+  "model_calls": 0,
+  "weld": "off",
+  "cpu_results_pooled": false,
+  "gate_eligible": false,
+  "shared_load": true,
+  "vm_hourly_usd": 3.1454,
+  "price_basis": "inherited regional VM estimate; billing unverified",
+  "reproduce": [
+    "scripts/run_warp_flow_teacher.py",
+    "--flow",
+    "beampair",
+    "--adapter-source",
+    "/home/ugrp/ugrp-sim/src/835ccef26aa84b08cc8f7e256fd0f43aa1583ef9",
+    "--teacher-source",
+    "/home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+    "--cases",
+    "/home/ugrp/ugrp-sim/ops-reviews/warp4/beampair-short-cases.json",
+    "--cap-s",
+    "60",
+    "--vm-hourly-usd",
+    "3.1454",
+    "--export-compiled-only",
+    "--out",
+    "/home/ugrp/ugrp-sim/runs/warp4/beampair-model-diagnostic-r1"
+  ],
+  "error_type": "ValueError",
+  "error": "non-pose scene/model difference; separate model required: [{\"path\": \"mujoco/worldbody[4]/body[warehouse_oak_plank]/geom[warehouse_oak_plank_geom]\", \"left\": {\"conaffinity\": \"0\", \"contype\": \"0\", \"friction\": \"1.2 .20 .010\", \"group\": \"5\", \"mass\": \"0.1901\", \"name\": \"warehouse_oak_plank_geom\", \"rgba\": \"0 0 0 0\", \"size\": \"0.028252 0.221864 0.019467\", \"type\": \"box\"}, \"right\": {\"conaffinity\": \"0\", \"contype\": \"0\", \"friction\": \"1.2 .20 .010\", \"group\": \"5\", \"mass\": \"0.2125\", \"name\": \"warehouse_oak_plank_geom\", \"rgba\": \"0 0 0 0\", \"size\": \"0.028917 0.190067 0.018945\", \"type\": \"box\"}}, {\"path\": \"mujoco/worldbody[4]/body[warehouse_oak_plank]/geom[warehouse_oak_plank_grain_l]\", \"left\": {\"conaffinity\": \"0\", \"contype\": \"0\", \"group\": \"5\", \"mass\": \"0\", \"name\": \"warehouse_oak_plank_grain_l\", \"pos\": \"-0.020000 0.000000 0.019000\", \"rgba\": \"0 0 0 0\", \"size\": \".003 0.222 .0015\", \"type\": \"box\"}, \"right\": {\"conaffinity\": \"0\", \"contype\": \"0\", \"group\": \"5\", \"mass\": \"0\", \"name\": \"warehouse_oak_plank_grain_l\", \"pos\": \"-0.020000 0.000000 0.019000\", \"rgba\": \"0 0 0 0\", \"size\": \".003 0.190 .0015\", \"type\": \"box\"}}, {\"path\": \"mujoco/worldbody[4]/body[warehouse_oak_plank]/geom[warehouse_oak_plank_grain_r]\", \"left\": {\"conaffinity\": \"0\", \"contype\": \"0\", \"group\": \"5\", \"mass\": \"0\", \"name\": \"warehouse_oak_plank_grain_r\", \"pos\": \"0.020000 0.000000 0.019000\", \"rgba\": \"0 0 0 0\", \"size\": \".003 0.222 .0015\", \"type\": \"box\"}, \"right\": {\"conaffinity\": \"0\", \"contype\": \"0\", \"group\": \"5\", \"mass\": \"0\", \"name\": \"warehouse_oak_plank_grain_r\", \"pos\": \"0.020000 0.000000 0.019000\", \"rgba\": \"0 0 0 0\", \"size\": \".003 0.190 .0015\", \"type\": \"box\"}}, {\"path\": \"mujoco/worldbody[4]/body[warehouse_steel_pipe]/geom[warehouse_steel_pipe_geom]\", \"left\": {\"conaffinity\": \"0\", \"contype\": \"0\", \"friction\": \"1.3 .20 .010\", \"group\": \"5\", \"mass\": \"0.2097\", \"name\": \"warehouse_steel_pipe_geom\", \"rgba\": \"0 0 0 0\", \"size\": \"0.027836 0.222493 0.019887\", \"type\": \"box\"}, \"right\": {\"conaffinity\": \"0\", \"contype\": \"0\", \"friction\": \"1.3 .20 .010\", \"group\": \"5\", \"mass\": \"0.2158\", \"name\": \"warehouse_steel_pipe_geom\", \"rgba\": \"0 0 0 0\", \"size\": \"0.025908 0.218047 0.022368\", \"type\": \"box\"}}, {\"path\": \"mujoco/worldbody[4]/body[warehouse_steel_pipe]/geom[warehouse_steel_pipe_visual]\", \"left\": {\"conaffinity\": \"0\", \"contype\": \"0\", \"euler\": \"1.570796 0 0\", \"group\": \"5\", \"mass\": \"0\", \"name\": \"warehouse_steel_pipe_visual\", \"rgba\": \"0 0 0 0\", \"size\": \"0.0199 0.222\", \"type\": \"cylinder\"}, \"right\": {\"conaffinity\": \"0\", \"contype\": \"0\", \"euler\": \"1.570796 0 0\", \"group\": \"5\", \"mass\": \"0\", \"name\": \"warehouse_steel_pipe_visual\", \"rgba\": \"0 0 0 0\", \"size\": \"0.0224 0.218\", \"type\": \"cylinder\"}}, {\"path\": \"mujoco/worldbody[4]/body[warehouse_wood_crate]/geom[warehouse_wood_crate_geom]\", \"left\": {\"conaffinity\": \"0\", \"contype\": \"0\", \"friction\": \"1.2 .20 .010\", \"group\": \"5\", \"mass\": \"0.2326\", \"name\": \"warehouse_wood_crate_geom\", \"rgba\": \"0 0 0 0\", \"size\": \"0.029599 0.170082 0.021841\", \"type\": \"box\"}, \"right\": {\"conaffinity\": \"0\", \"contype\": \"0\", \"friction\": \"1.2 .20 .010\", \"group\": \"5\", \"mass\": \"0.2159\", \"name\": \"warehouse_wood_crate_geom\", \"rgba\": \"0 0 0 0\", \"size\": \"0.029508 0.164041 0.020796\", \"type\": \"box\"}}]",
+  "traceback": "Traceback (most recent call last):\n  File \"/home/ugrp/ugrp-sim/src/04c686ca5/scripts/run_warp_flow_teacher.py\", line 99, in main\n    contexts.append(next(lane));report['started_N']+=1\n                    ^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/04c686ca5/scripts/warp_flow_episode.py\", line 56, in __next__\n    return self.invoke('__next__')\n           ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/04c686ca5/scripts/warp_flow_episode.py\", line 47, in invoke\n    return getattr(self.generator, method)()\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<warp2-frozen-scheduling-only>\", line 311, in run\n  File \"/home/ugrp/ugrp-sim/src/04c686ca5/scripts/warp_flow_episode.py\", line 210, in execute_runner\n    return (yield from function(*args, **kwargs))\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<warp2-frozen-scheduling-only>\", line 188, in run\n  File \"/home/ugrp/ugrp-sim/src/04c686ca5/scripts/warp_flow_episode.py\", line 203, in build\n    return self.build(original,*a,**kw)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/04c686ca5/scripts/warp_flow_episode.py\", line 143, in build\n    return original(scene, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<warp2-frozen-scheduling-only>\", line 177, in build_world\n  File \"/home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247/sim/masterpi_drive_friction_v7.py\", line 260, in build_world\n    MultiMasterPiProductionV2.__init__(world, xml_transform=transform, **kwargs)\n  File \"/home/ugrp/ugrp-sim/src/04c686ca5/scripts/warp_flow_episode.py\", line 139, in canonical_init\n    return init(world, *args, **kw)\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247/sim/multi_masterpi_production.py\", line 724, in __init__\n    xml = xml_transform(xml)\n          ^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/04c686ca5/scripts/warp_flow_episode.py\", line 130, in final\n    text, audit = canonical_xml(text, self.canonical['xml'])\n                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/04c686ca5/scripts/warp_flow_model.py\", line 55, in canonical_xml\n    raise ValueError('non-pose scene/model difference; separate model required: '+json.dumps(xml_differences(current,target)))\nValueError: non-pose scene/model difference; separate model required: [{\"path\": \"mujoco/worldbody[4]/body[warehouse_oak_plank]/geom[warehouse_oak_plank_geom]\", \"left\": {\"conaffinity\": \"0\", \"contype\": \"0\", \"friction\": \"1.2 .20 .010\", \"group\": \"5\", \"mass\": \"0.1901\", \"name\": \"warehouse_oak_plank_geom\", \"rgba\": \"0 0 0 0\", \"size\": \"0.028252 0.221864 0.019467\", \"type\": \"box\"}, \"right\": {\"conaffinity\": \"0\", \"contype\": \"0\", \"friction\": \"1.2 .20 .010\", \"group\": \"5\", \"mass\": \"0.2125\", \"name\": \"warehouse_oak_plank_geom\", \"rgba\": \"0 0 0 0\", \"size\": \"0.028917 0.190067 0.018945\", \"type\": \"box\"}}, {\"path\": \"mujoco/worldbody[4]/body[warehouse_oak_plank]/geom[warehouse_oak_plank_grain_l]\", \"left\": {\"conaffinity\": \"0\", \"contype\": \"0\", \"group\": \"5\", \"mass\": \"0\", \"name\": \"warehouse_oak_plank_grain_l\", \"pos\": \"-0.020000 0.000000 0.019000\", \"rgba\": \"0 0 0 0\", \"size\": \".003 0.222 .0015\", \"type\": \"box\"}, \"right\": {\"conaffinity\": \"0\", \"contype\": \"0\", \"group\": \"5\", \"mass\": \"0\", \"name\": \"warehouse_oak_plank_grain_l\", \"pos\": \"-0.020000 0.000000 0.019000\", \"rgba\": \"0 0 0 0\", \"size\": \".003 0.190 .0015\", \"type\": \"box\"}}, {\"path\": \"mujoco/worldbody[4]/body[warehouse_oak_plank]/geom[warehouse_oak_plank_grain_r]\", \"left\": {\"conaffinity\": \"0\", \"contype\": \"0\", \"group\": \"5\", \"mass\": \"0\", \"name\": \"warehouse_oak_plank_grain_r\", \"pos\": \"0.020000 0.000000 0.019000\", \"rgba\": \"0 0 0 0\", \"size\": \".003 0.222 .0015\", \"type\": \"box\"}, \"right\": {\"conaffinity\": \"0\", \"contype\": \"0\", \"group\": \"5\", \"mass\": \"0\", \"name\": \"warehouse_oak_plank_grain_r\", \"pos\": \"0.020000 0.000000 0.019000\", \"rgba\": \"0 0 0 0\", \"size\": \".003 0.190 .0015\", \"type\": \"box\"}}, {\"path\": \"mujoco/worldbody[4]/body[warehouse_steel_pipe]/geom[warehouse_steel_pipe_geom]\", \"left\": {\"conaffinity\": \"0\", \"contype\": \"0\", \"friction\": \"1.3 .20 .010\", \"group\": \"5\", \"mass\": \"0.2097\", \"name\": \"warehouse_steel_pipe_geom\", \"rgba\": \"0 0 0 0\", \"size\": \"0.027836 0.222493 0.019887\", \"type\": \"box\"}, \"right\": {\"conaffinity\": \"0\", \"contype\": \"0\", \"friction\": \"1.3 .20 .010\", \"group\": \"5\", \"mass\": \"0.2158\", \"name\": \"warehouse_steel_pipe_geom\", \"rgba\": \"0 0 0 0\", \"size\": \"0.025908 0.218047 0.022368\", \"type\": \"box\"}}, {\"path\": \"mujoco/worldbody[4]/body[warehouse_steel_pipe]/geom[warehouse_steel_pipe_visual]\", \"left\": {\"conaffinity\": \"0\", \"contype\": \"0\", \"euler\": \"1.570796 0 0\", \"group\": \"5\", \"mass\": \"0\", \"name\": \"warehouse_steel_pipe_visual\", \"rgba\": \"0 0 0 0\", \"size\": \"0.0199 0.222\", \"type\": \"cylinder\"}, \"right\": {\"conaffinity\": \"0\", \"contype\": \"0\", \"euler\": \"1.570796 0 0\", \"group\": \"5\", \"mass\": \"0\", \"name\": \"warehouse_steel_pipe_visual\", \"rgba\": \"0 0 0 0\", \"size\": \"0.0224 0.218\", \"type\": \"cylinder\"}}, {\"path\": \"mujoco/worldbody[4]/body[warehouse_wood_crate]/geom[warehouse_wood_crate_geom]\", \"left\": {\"conaffinity\": \"0\", \"contype\": \"0\", \"friction\": \"1.2 .20 .010\", \"group\": \"5\", \"mass\": \"0.2326\", \"name\": \"warehouse_wood_crate_geom\", \"rgba\": \"0 0 0 0\", \"size\": \"0.029599 0.170082 0.021841\", \"type\": \"box\"}, \"right\": {\"conaffinity\": \"0\", \"contype\": \"0\", \"friction\": \"1.2 .20 .010\", \"group\": \"5\", \"mass\": \"0.2159\", \"name\": \"warehouse_wood_crate_geom\", \"rgba\": \"0 0 0 0\", \"size\": \"0.029508 0.164041 0.020796\", \"type\": \"box\"}}]\n",
+  "worlds": [],
+  "wall_s": 5.1658815270000105,
+  "timing": {},
+  "native_initialization_only_sim_s": [
+    1.3000000000000178
+  ],
+  "rejection_table": "/home/ugrp/ugrp-sim/runs/warp4/beampair-model-diagnostic-r1/rejection_table.json"
+}

@@ -144,14 +144,16 @@ def sleep_scene_xml(xml, active_robot):
     flag=option.find('flag')
     if flag is None:flag=ET.SubElement(option,'flag')
     flag.set('sleep','enable')
-    active_found=False
+    active_robots={active_robot} if isinstance(active_robot,str) else set(active_robot)
+    active_found=set()
     for body in root.findall('worldbody/body'):
         free=body.find('freejoint') is not None or any(j.get('type')=='free' for j in body.findall('joint'))
         if not free:continue
-        active=body.get('name')==active_robot+'__robot'
-        active_found|=active
+        matched={r for r in active_robots if body.get('name')==r+'__robot'}
+        active=bool(matched)
+        active_found.update(matched)
         body.set('sleep','never' if active else 'allowed')
-    if not active_found:raise ValueError('active robot root missing')
+    if active_found!=active_robots:raise ValueError('active robot root missing')
     return ET.tostring(root,encoding='unicode')
 
 
@@ -184,3 +186,19 @@ def physics_schedule(period_s, timestep_s, graph_chunk=16):
         raise ValueError('control period must contain an integral number of physics ticks')
     steps=int(ratio);chunk=gcd(steps,graph_chunk)
     return steps,chunk,steps//chunk
+
+
+def contact_maps(ngeom, targets, fingers):
+    """Evaluator-only per-world cargo/finger membership, including multi-geoms."""
+    if len(targets) != len(fingers) or not targets:
+        raise ValueError('matching nonempty per-world contact groups required')
+    target_mask = np.zeros((len(targets), ngeom), dtype=np.int32)
+    finger_map = np.full((len(targets), ngeom), -1, dtype=np.int32)
+    for i, (cargo, mapping) in enumerate(zip(targets, fingers)):
+        if not cargo or set(cargo).intersection(mapping):
+            raise ValueError('cargo and fingers must be distinct')
+        target_mask[i, cargo] = 1
+        for geom, channel in mapping.items():
+            finger_map[i, geom] = channel
+    return target_mask, finger_map
+
