@@ -25,3 +25,5 @@
 09:32UTC gcp2 CPU분석종료후lease0·다른ugrp Python/MuJoCo/ffmpeg0을직전확인하고명시account/project로CPU VM만정지,TERMINATED재조회확인. 디스크원본보존·gcp2 L4무변경. R1-analysis-host-stop.json참조.
 
 2026-10-16T10:45:28.165465+00:00 R2 first30실측5.6024(경고,6미만),완료7독립재계수7일치·진행33·오류0. snapshot1277파일SHA/몽타주메타20파일Mac SHA일치. 진행중최신평가상태1틱지연으로100RGB중99개동기화,종료100요구유지. 진단거부저장위치는teacher trace가아닌diagnostic-snapshot teachers였고v1빈표는수용하지않음. v2peer_destination_reservation5270기록최빈,고유후보아님. world000/028모든2Hz/10Hz몽타주직접검토,새제어결함미확정. gcp2CPU에beamdiag타lease존재(12:00UTC예정),보존·정지금지.
+
+10:46UTC 보조처리량시각검증: 완료7건모두(last_eval-first_eval)==raw.sim_s 확인. 진행세계는초기GPU시각1.7에서,완료세계는교사평가시작2.2에서재던source보조값5.7466을원본그대로보존했다. 교사epoch로통일한분모1153.4SIM·보조wall/SIM5.8288을추가기록했다. 사용자지정배치수용값5.6024에는변경0.
