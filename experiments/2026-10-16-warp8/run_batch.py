@@ -76,7 +76,7 @@ def main():
     with out.with_suffix('.log').open('w') as log:
         child = subprocess.Popen(cmd, cwd=src, env=env, stdin=subprocess.DEVNULL,
                                  stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
-        write(ROOT / 'leases/warp8.json', dict(task='warp8', pid=os.getpid(), pids=[child.pid],
+        write(ROOT / 'leases' / ('warp8-' + a.tag + '.json'), dict(task='warp8', pid=os.getpid(), pids=[child.pid],
               started_at=started.isoformat(), expected_end=deadline.isoformat(),
               source_sha=a.source_sha, stage=a.tag, concurrency=len(indices), gpu_shared=False))
         write(out.with_suffix('.command.json'), dict(command=cmd, host='gcp3', project='ugrp-sim-c-1016',

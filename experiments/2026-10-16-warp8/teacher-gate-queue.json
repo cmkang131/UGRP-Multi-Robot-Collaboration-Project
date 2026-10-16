@@ -1,0 +1,36 @@
+{
+  "schema": "ugrp.warp8.teacher_gate.v1",
+  "status": "RUNNING_BEAM40",
+  "host": "gcp3",
+  "project": "ugrp-sim-c-1016",
+  "source_sha": "f75e3442957e8e00c4ed894056b3e06ee32399f0",
+  "rejection_table": "/home/ugrp/ugrp-sim/ops-reviews/warp8/prior-rejection_table.json",
+  "local_rejection_table": "/Users/changmin/projects/ugrp-wt/warp4/experiments/2026-10-16-warp8/prior-rejection_table.json",
+  "planned_denominators": {
+    "beampair": 40,
+    "release_A": 40,
+    "release_B": 40
+  },
+  "submitted": true,
+  "runs": [
+    {
+      "name": "beam40-r1",
+      "flow": "beampair",
+      "N": 40,
+      "submitted": true,
+      "completed": false,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-r1",
+      "source_sha": "f75e3442957e8e00c4ed894056b3e06ee32399f0",
+      "rejection_table": "/home/ugrp/ugrp-sim/ops-reviews/warp8/prior-rejection_table.json"
+    }
+  ],
+  "placement_graspable_filter_v1": true,
+  "weld": "off",
+  "held_world_reads_required": 0,
+  "training_rgb": false,
+  "CPU_results_pooled": false,
+  "execution_authority": "2026-10-16 user warp8 request",
+  "speed_basis": "batch wall / aggregate world SIM, coordinator decision, user unconfirmed",
+  "simulation_host": "gcp3",
+  "analysis_host": "gcp2_CPU"
+}

@@ -1,0 +1,20 @@
+[
+  {
+    "stage": "boot SSH",
+    "error": "ConnectionRefusedError immediately after VM start",
+    "resolution": "retry approved gcp3 address after host key verification; succeeded",
+    "physical_outcome": false
+  },
+  {
+    "stage": "budget read-only inspection",
+    "error": "404 for incorrect function name/region stop_on_budget asia-northeast3",
+    "resolution": "read gcp3setup exact command; budget-stop us-central1 ACTIVE with correct target",
+    "cloud_settings_changed": false
+  },
+  {
+    "stage": "local record write follow-up",
+    "error": "stray sc p shell command not found",
+    "resolution": "storage-plan.json write succeeded; actual scp executed separately",
+    "impact": "none"
+  }
+]
