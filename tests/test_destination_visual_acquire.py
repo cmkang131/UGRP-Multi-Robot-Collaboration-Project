@@ -181,3 +181,23 @@ def test_recorded_guard_in_actual_acquisition_step_keeps_direction_toggle_off_by
         assert drive[2]==0 and q.last['reason']!='destination_motion_blocked'
     else:
         assert q.last['reason']=='destination_motion_blocked'
+
+@pytest.mark.parametrize('replan',[False,True])
+def test_recorded_new_rgb_obstacle_retires_stale_search_goal_only_when_enabled(replan):
+    import json
+    from pathlib import Path
+    from sim.grasp_act_visible_route import waypoint,free
+    x=json.loads((Path(__file__).resolve().parents[1]/'experiments/2026-10-16-reloc19/search-goal-counterexample.json').read_text())
+    static,_=static_input();c=CarryToZone(static,'A',start=task_start(static))
+    c.loc.own.x=np.asarray(x['pose']);c.rects=x['rects'];c.radius=x['radius'];c.grip_xy=(.2,0);c.slot=c.region['center_m']
+    c.obstacles.discs=lambda now:x['discs']
+    assert waypoint(x['pose'][:2],x['path'],x['discs'],x['rects'],x['radius']) is None
+    assert not free(x['event']['xy'],x['discs'],x['rects'],x['radius'])
+    q=DestinationAcquire(c,search_replan=replan);c.destination_acquire=q;q.started=0.;q.mode='expand';q.point=x['event']['xy'];q.path=x['path']
+    pwm={1:1500,3:777,4:2053,5:1646,6:1500}
+    drive,done,failure=q.step(1.,np.zeros((480,640,3),np.uint8),pwm,pwm,'yellow')
+    assert drive==(0,0,0) and not done and failure is None
+    assert (q.point is None)==replan
+    if replan:
+        assert q.last['reason']=='destination_search_path_obstructed'
+        assert q.last['blocked_object'].startswith('own_rgb_obstacle:') and q.last['minimum_gap_m']<0

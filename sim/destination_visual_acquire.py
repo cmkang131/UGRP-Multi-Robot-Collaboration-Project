@@ -139,7 +139,7 @@ def direction_drive(pose,target):
 
 
 class DestinationAcquire:
-    def __init__(self, carry, *, camera_pan=False, direction_preserve=False):
+    def __init__(self, carry, *, camera_pan=False, direction_preserve=False, search_replan=False):
         self.carry=carry; self.started=None; self.acquired=None; self.confirmed=None
         self.mode='inactive'; self.last={}; self.events=[]; self.turn=0.; self.scan_start=0.
         self.points=[]; self.point=None; self.path=None; self.failure=None; self.valid_since=None
@@ -147,7 +147,7 @@ class DestinationAcquire:
         self.reloc_t=None; self.reloc_scan=False; self.reloc_done=False
         self.reloc_views=[];self.reloc_view=None;self.reloc_settle=None;self.reloc_counts=0
         self._floor_cache=None
-        self.camera_pan=camera_pan;self.direction_preserve=direction_preserve;self.pan_origin=None;self.pan_targets=[]
+        self.camera_pan=camera_pan;self.direction_preserve=direction_preserve;self.search_replan=search_replan;self.pan_origin=None;self.pan_targets=[]
         self.desired_pan=None;self.pan_ready=0.;self.memory_target=None;self.memory_t=None
 
     def event(self,now,event,**kw):
@@ -333,6 +333,20 @@ class DestinationAcquire:
                 else:self.mode='scan';self.scan_start=self.turn;drive=(0.,0.,.1)
             else:
                 target=waypoint(c.loc.pose[:2],self.path,c.obstacles.discs(now),c.rects,c.radius)
+                if self.search_replan:
+                    from sim.grasp_act_visible_route import free
+                    if target is None or not free(self.point,c.obstacles.discs(now),c.rects,c.radius):
+                        # R3 frozen93266: RGB introduced an obstacle at the
+                        # selected goal; its old path returned no waypoint.
+                        # Retire this candidate, never erase the obstacle or
+                        # relax clearance. The finite remaining list is tried
+                        # afresh from the current allowed pose next tick.
+                        context=route_context(c.loc.pose[:2],self.point,c.obstacles.discs(now),c.rects,c.radius,
+                            names=[o['id'] for o in c.static['obstacles']],bounds=c.static['bounds_m'])
+                        self.last.update(category='route',reason='destination_search_path_obstructed',**context)
+                        self.event(now,'rejection',category='route',reason='destination_search_path_obstructed',**context)
+                        self.point=None;self.path=None
+                        return (0.,0.,0.),False,None
                 drive=((direction_drive(c.loc.pose,target) if self.direction_preserve else c.heading_drive(c.loc.pose,target,c.loc.pose[2]))
                        if target is not None else (0.,0.,0.))
         # Every translation retains static/RGB obstacle veto using a single tick
@@ -349,7 +363,7 @@ class DestinationAcquire:
         return drive,False,None
 
     def record(self):
-        return dict(toggle=OPTION,destination_direction_preserve_v1=self.direction_preserve,destination_camera_pan_v1=self.camera_pan,desired_pan=self.desired_pan,mode=self.mode,started_t=self.started,acquired_t=self.acquired,
+        return dict(toggle=OPTION,destination_search_replan_v1=self.search_replan,destination_direction_preserve_v1=self.direction_preserve,destination_camera_pan_v1=self.camera_pan,desired_pan=self.desired_pan,mode=self.mode,started_t=self.started,acquired_t=self.acquired,
             confirmed_t=self.confirmed,acquisition_sim_s=None if self.acquired is None else self.acquired-self.started,
             views=self.views,last=self.last,events=self.events,relocalizations=self.relocalizations,
             failure=self.failure,truth_inputs=0,held_world_reads=0)
