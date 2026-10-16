@@ -1,0 +1,204 @@
+{
+  "status": "complete",
+  "host": {
+    "project_id": "ugrp-sim-b-1014",
+    "instance": "ugrp-act-l4-gcp2",
+    "machine_type": "g2-standard-8",
+    "zone": "asia-northeast3-a"
+  },
+  "source_sha": "299ff1bac539028bcdfaacc0c2ef6e9851d63c24",
+  "scope": "live first30 own-r1 operational preview only; no overview, solo r2 inactive; not full-run/failure/success proof",
+  "seed": 86825,
+  "elapsed_SIM_s": [
+    0,
+    29.9
+  ],
+  "full_sample_Hz": 2,
+  "tail_sample_Hz": 10,
+  "tail_elapsed_SIM_s": [
+    20,
+    29.9
+  ],
+  "speed": 3,
+  "command_prefix_sha256": "84428869b323863232705f971fa0a052db7382411b9fc5374fb2074a8207525a",
+  "raw_rgb": "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-03/capture/world-000/capture",
+  "first30": {
+    "sim_s": 30.0,
+    "loop_wall_s": 8719.186865903,
+    "world_latency_wall_per_SIM": 290.6395621967667,
+    "aggregate_wall_per_world_SIM": 32.29328468852963,
+    "speed_gate_override": "User-approved MJWarp throughput backend; recorded pilot-queue exception; report world latency and aggregate throughput; quality unchanged; task8h hard cap."
+  },
+  "ffprobe": {
+    "streams": [
+      {
+        "index": 0,
+        "codec_name": "h264",
+        "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+        "profile": "High",
+        "codec_type": "video",
+        "codec_tag_string": "avc1",
+        "codec_tag": "0x31637661",
+        "width": 640,
+        "height": 480,
+        "coded_width": 640,
+        "coded_height": 480,
+        "closed_captions": 0,
+        "film_grain": 0,
+        "has_b_frames": 2,
+        "sample_aspect_ratio": "1:1",
+        "display_aspect_ratio": "4:3",
+        "pix_fmt": "yuv420p",
+        "level": 30,
+        "color_range": "tv",
+        "color_space": "bt470bg",
+        "chroma_location": "center",
+        "field_order": "progressive",
+        "refs": 1,
+        "is_avc": "true",
+        "nal_length_size": "4",
+        "id": "0x1",
+        "r_frame_rate": "30/1",
+        "avg_frame_rate": "30/1",
+        "time_base": "1/15360",
+        "start_pts": 0,
+        "start_time": "0.000000",
+        "duration_ts": 153600,
+        "duration": "10.000000",
+        "bit_rate": "101968",
+        "bits_per_raw_sample": "8",
+        "nb_frames": "300",
+        "extradata_size": 50,
+        "disposition": {
+          "default": 1,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "non_diegetic": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0
+        },
+        "tags": {
+          "language": "und",
+          "handler_name": "VideoHandler",
+          "vendor_id": "[0][0][0][0]",
+          "encoder": "Lavc60.31.102 libx264"
+        }
+      }
+    ],
+    "format": {
+      "filename": "/home/ugrp/ugrp-sim/runs/act16w-resume2-first30-own-rgb-r2/own-rgb-first30-3x.mp4",
+      "nb_streams": 1,
+      "nb_programs": 0,
+      "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+      "format_long_name": "QuickTime / MOV",
+      "start_time": "0.000000",
+      "duration": "10.000000",
+      "size": "131920",
+      "bit_rate": "105536",
+      "probe_score": 100,
+      "tags": {
+        "major_brand": "isom",
+        "minor_version": "512",
+        "compatible_brands": "isomiso2avc1mp41",
+        "encoder": "Lavf60.16.100"
+      }
+    }
+  },
+  "files": {
+    "tail10s-10hz-05.jpg": {
+      "bytes": 91937,
+      "sha256": "6044709f46e95317c91fd7213e52cd63f23925e217faa1d763e466753b78d66d"
+    },
+    "full-2hz-03.jpg": {
+      "bytes": 91835,
+      "sha256": "b4ffe26cd5e9c6e95e3d6a7e358aa82c5d8ea19eb731b00f52913475a33dd44a"
+    },
+    "tail10s-10hz-01.jpg": {
+      "bytes": 91815,
+      "sha256": "57e7646f6862ed8b200ec909ef42f103741e0fd34c2ba326c4b2586f3c00838e"
+    },
+    "tail10s-10hz-03.jpg": {
+      "bytes": 91571,
+      "sha256": "8bc28e6c1cb44d24aa9e14649081d64fa56125c3e9a860a85ecb94399782d55f"
+    },
+    "full-2hz-01.jpg": {
+      "bytes": 107285,
+      "sha256": "2aee06ef5d78e5f004e360c64e73df1521db2ab4a9b10356a0db6cb997309e3f"
+    },
+    "tail10s-10hz-04.jpg": {
+      "bytes": 91566,
+      "sha256": "7ce580f315774f7c21a06ad2e75e3100cc888977205afee3097371cfee27904c"
+    },
+    "full-2hz-02.jpg": {
+      "bytes": 96761,
+      "sha256": "8ca6c625449d028167a8bb0bdb832600e570245bc81ce63437ba36114bea17a2"
+    },
+    "tail10s-10hz-02.jpg": {
+      "bytes": 91873,
+      "sha256": "30c4b515752c887f08c8dfbc501c599e07295ea47a19e5389f3272ef45560498"
+    },
+    "own-rgb-first30-3x.mp4": {
+      "bytes": 131920,
+      "sha256": "51d2d5dcd9c4eb4c0b05ada4b300c0af5d2c84573bbc1e9581444d493917dd65"
+    }
+  },
+  "direct_visual_review": {
+    "reviewed_utc": "2026-10-16T10:29:31.988353+00:00",
+    "world": "group-03/world-000",
+    "seed": 86825,
+    "scope": "own RGB prefix only; no completed teacher/student outcome inferred",
+    "full_timeline_2Hz_SIM_s": [
+      0,
+      29.5
+    ],
+    "terminal_strip_10Hz_SIM_s": [
+      20,
+      29.9
+    ],
+    "sheets_inspected": {
+      "full": 3,
+      "tail": 5
+    },
+    "timeline": [
+      {
+        "SIM_s": [
+          0,
+          12.5
+        ],
+        "observation": "red target approaches and moves to lower image boundary"
+      },
+      {
+        "SIM_s": [
+          13,
+          29.9
+        ],
+        "observation": "target absent; blue floor dominates, including dense20-29.9s strip"
+      }
+    ],
+    "raw_confirmation": {
+      "before_pick_absolute_t": 14.000000000000153,
+      "lookback_absolute_t": 26.300000000000153,
+      "answer": "yes",
+      "reason": "pickup_site_proven_empty",
+      "evidence_scope": "removal_only; retention scored separately",
+      "before_sha256": "347af6b33b58657b15935500acd669e03a5252af0e37d76d7038de5c2e6b8d71",
+      "after_sha256": "bffb498f26fed81b5fe5eaaa0d24b7fb2f1c98e426e04a4840afb6cfee0f4878",
+      "evidence_images_directly_inspected": true
+    },
+    "interpretation": "Frozen LookbackObserver compares own RGB against pickup-site projection from issued PWM. It does not turn unknown into yes, and empty site does not prove retained grasp. No teacher defect established from these frames; await separate physical outcome.",
+    "source": "6f057f7e:sim/grasp_act_solo_lookback.py:220-255",
+    "earlier_rejected_contact_sheets": "first30-own-rgb-preview-r1-rejected.json"
+  }
+}
