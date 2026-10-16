@@ -4,6 +4,7 @@ Physical verdicts come from collect_gate.py's frozen evaluator criteria.
 This file verifies recorded invariants and hashes; it never grants admission.
 """
 import argparse
+from collections import Counter
 import datetime as dt
 import hashlib
 import json
@@ -72,7 +73,9 @@ def main():
         recount_sha256=sha(a.recount), N=attempt['N'], completed_N=attempt['completed_N'],
         success_N=attempt['success_N'], cap_end_N=attempt['cap_end_N'],
         HOST_ERROR_world_N=attempt['HOST_ERROR_world_N'],
-        evaluator_agreement_N=len(attempt['worlds']), whole_run_input_audit_pass_N=len(attempt['worlds']),
+        evaluator_agreement_N=len(attempt['worlds']), terminal_control_input_audit_pass_N=len(attempt['worlds']),
+        input_audit_scope_counts=dict(Counter(row['input_audit']['scope'] for row in attempt['worlds'])),
+        privileged_scene_preparation_prefix_excluded=(summary['flow'] == 'release'),
         declared_files_SHA_equal_N=len(declared), declared_file_bytes=total_bytes,
         raw_manifest_sha256=sha(manifest_path), options_N=len(options['worlds']),
         weld='off', model_calls=0, placement_graspable_filter_v1=True,
