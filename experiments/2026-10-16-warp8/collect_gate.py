@@ -48,12 +48,14 @@ def rows(path):
 def beam_recount(raw, root):
     since = None
     last_hold = maximum = 0.
-    last = None
+    last = first = None
     n = 0
     max_gap = 0.
     errors_before = len(READ_ERRORS)
     for row in rows(root / 'eval-only.jsonl'):
         now = row['t']
+        if first is None:
+            first = now
         if last is not None:
             max_gap = max(max_gap, now - last)
         last = now
@@ -67,7 +69,8 @@ def beam_recount(raw, root):
     dense = n > 0 and max_gap <= .1 + 1e-8 and len(READ_ERRORS) == errors_before
     physical = teacher_n == raw['teacher_N'] and last_hold >= 3.
     return dict(success=physical if dense else None, dense_evaluator_rows=dense,
-        evaluator_N=n, max_evaluator_gap_s=max_gap, terminal_hold_s=last_hold,
+        evaluator_N=n, first_evaluator_t=first, last_evaluator_t=last,
+        max_evaluator_gap_s=max_gap, terminal_hold_s=last_hold,
         max_hold_s=maximum, teacher_success_n=teacher_n,
         source_success=raw['physical_success'], agrees=dense and physical == raw['physical_success'])
 
@@ -155,12 +158,27 @@ def main():
         progress = data(run / 'progress.json', {})
         batch_sim = progress.get('batch_sim_s', max(progress.get('world_sim_s', [0.])))
         if first30 and terminal and len(results) == cmd['planned_world_N']:
-            actual = sum(min(w['sim_s'], first30['world_sim_s'][w['world']]) for w in results)
-            first30 = dict(first30, corrected_aggregate_world_sim_s=actual,
-                task_wall_per_SIM=first30['loop_wall_s'] / actual,
+            first30 = dict(first30,
                 admission_per_world_wall_SIM=first30['loop_wall_s'] / (first30['sim_s']*cmd['planned_world_N']),
                 admission_speed_gate_fail=first30['loop_wall_s'] / (first30['sim_s']*cmd['planned_world_N']) > 6.,
-                correction='task throughput excludes padding; admission uses the requested batch SIM*world count; original JSON preserved')
+                recorded_task_clock_scope='source auxiliary metric preserved; completed teacher episodes and active backend clocks can have different startup origins')
+            if summary['flow'] == 'beampair':
+                # Reporting only: actual R2 source evidence showed first eval
+                # 2.2 vs backend origin1.7. Use each recorded origin, never a
+                # new fixed startup constant or acceptance threshold.
+                origins = summary['native_initialization_only_sim_s']
+                episode_clocks = []
+                for world in results:
+                    recount = world['recount']
+                    start, end = recount['first_evaluator_t'], recount['last_evaluator_t']
+                    assert start is not None and end is not None
+                    assert math.isclose(end-start, world['sim_s'], abs_tol=1e-8), 'teacher episode clock disagreement'
+                    startup = start-origins[world['world']]
+                    episode_clocks.append(min(world['sim_s'], max(0., first30['sim_s']-startup)))
+                actual = sum(episode_clocks)
+                first30.update(teacher_episode_aggregate_SIM=actual,
+                    teacher_episode_wall_per_SIM=first30['loop_wall_s']/actual,
+                    episode_clock_correction='first evaluator time minus recorded native origin per world; source auxiliary and admission metrics unchanged')
         table = [dict(reason_category=k[0], blocked_object=k[1], min_gap_m=minimums.get(k), count=v,
                       gap_scope='minimum of recorded finite gaps; null means absent/nongeometric')
                  for k,v in histogram.most_common()]

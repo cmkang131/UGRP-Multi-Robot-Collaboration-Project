@@ -39,7 +39,7 @@ try:
  staging.rmdir()
  receipt=dict(utc=dt.datetime.now(dt.timezone.utc).isoformat(),source_host='gcp3',analysis_host='gcp2_CPU',tags=tags,source_SHA_equal_N=len(manifest['files']),copied_bytes=sum(v['bytes'] for v in received.values()),source_manifest=str(root/manifest_name),receiver_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),original_CPU_batches_overwritten=False)
  (transfers/(a.label+'.json')).write_text(json.dumps(receipt,indent=2)+'\n')
- subprocess.run(['python3',str(r/'ops-reviews/warp8-collect_gate.py'),'--root',str(root),'--out',str(out)],check=True)
+ subprocess.run(['python3',str(ops/'collect_gate-episode-clock.py'),'--root',str(root),'--out',str(out)],check=True)
  print(json.dumps(receipt))
 finally:
  assert json.loads(lease.read_text())['pid']==os.getpid();lease.unlink()

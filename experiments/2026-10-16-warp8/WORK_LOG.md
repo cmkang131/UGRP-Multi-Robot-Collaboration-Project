@@ -41,3 +41,5 @@
 12:14UTC 종료회수 helper 배포 및 R2 Haiku 독립코드 준비: R1 코드의 배치 경로/태그 literal 두 곳만 r2로 변경하고 AST 확인했다. 물리 판정·상수·감사 로직은 불변이며 실제 재계수는 종료 원본 회수 뒤 실행한다. 준비 중 잘못된 literal 개수 assert(3 대신 실제2)는 쓰기 전 실패하여 고쳤다. gcp2 CPU 현재 다른 warpfit-analysis lease가 있어 정지하지 않는다. PR #557 DRAFT에 알려진 시드 성공·post30 속도 저하와 현재 빔14:05UTC 시한/정상 종료 후 별도 유한 release 세션 조건을 반영했다.
 
 R2 독립계수 사본의 원래 생성 코드 trailing whitespace가 새 파일 diff 검사에서 발견됐다. 검사 실패 뒤 기록 커밋이 진행된 운영 실수를 바로잡아 공백만 정리하고 AST 동일성을 확인했다. 배포본/메타 SHA도 갱신하며 물리 판정은 바꾸지 않는다.
+
+12:17UTC 보고용 collector 시각 보정: first/last evaluator 시각을 기록하고 첫30 보조 처리량만 실제 per-world 시작 차이로 계산한다. 기존 mixed-clock source 값은 덮어쓰지 않고 경고 범위를 적는다. 원본 물리 성공식/배치 수용식은 불변. gcp2 CPU 기존 immutable snapshot23건 모두 성공·재계수 일치·episode 시각 일치·JSON오류0으로 확인했다(episode-collector-validation-leased.json). 첫 짧은 검증에서 임시 lease 누락을 발견하여 lease 생성/제거 아래 재검증했다. 원래 collector 사본은 보존하고 종료 receiver만 새 명시 경로의 helper를 쓴다.
