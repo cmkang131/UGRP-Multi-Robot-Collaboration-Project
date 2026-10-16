@@ -38,6 +38,16 @@
 - 사용: `python3 scripts/gcpctl.py start gcp3`, `bash scripts/oracle_run.sh --host gcp3 WORKTREE RUN -- COMMAND`, `python3 scripts/gcpctl.py stop gcp3`. 공용 Git 직접참조·해시/fetch-lite·`outputs/gcp3-runs`/`outputs/gcp3-lifecycle`을 사용한다. 2026-10-16 상한 제거 결정 전 대기 한도는 L4 8h에서 기존 정리 여유30분을 뺀7.5h였다.
 - 실행기는 `leases/<RUN>.json`에 작업·Mac PID/호스트·시작·예상 종료·소스SHA를 기록한다. VM당40개 임대 상한을 파일 잠금 아래 확인한다. GPU 세계 수는 CPU 프로세스 수가 아니며, GPU 배치 제출 전 기존 임대/PID/GPU 메모리를 확인한다. 완료 검증 뒤 자기 임대만 지우고, 다른 임대 또는 ugrp Python/MuJoCo/ffmpeg가 있으면 정지를 거부한다. 원본은 gcp3 영속 디스크에 남기고 gcp1/gcp2 결과와 합산하지 않는다.
 
+## gcp4 — 네 번째 프로젝트 L4 (2026-10-16)
+
+사용자 원문: "프로젝트 하나 더 만들어서 L4 하나 더 써". `changmin5781@gmail.com` / `ugrp-sim-d-1016`(298701037365)에 gcp3와 같은 실행 기반을 추가한다. PR #554/#558 위에 쌓으며 기본 호스트는 gcp2다. gcp1에는 요청을 보내지 않고 gcp2/gcp3 장치는 변경하지 않는다.
+
+- `gcp4` = `ugrp-act-l4-gcp4`, `asia-northeast3-a`, STANDARD `g2-standard-8`·NVIDIA L4×1·140GB `pd-balanced`. 고정 공개 이미지 `deeplearning-platform-release/common-cu129-ubuntu-2404-nvidia-580-v20261001`과 공개 패키지로 설치하며 원본·디스크·키를 복사하지 않는다.
+- 사용자 "8시간 상한 — 이건 좀 없애라"에 따라 실행 시간 상한을 두지 않는다. 유휴20분 가드·`--no-service-account --no-scopes`·프로젝트 SSH 키 차단을 유지한다. 새 개인키는 Mac `~/.ssh/ugrp_gcp4`에만 보관한다.
+- 이 프로젝트 번호만 필터한 월 순비용1,000 KRW(`INCLUDE_ALL_CREDITS`)·50/100% 알림·기본 결제 IAM 이메일 → `budget-stop` → Gen2 함수 `stop_on_budget`, `TARGET_PROJECT=ugrp-sim-d-1016`. e2-micro 수동 발행 시험과 시험 VM/디스크 삭제를 확인한 뒤 L4를 생성한다. 실제 청구 집계 지연·VM 밖 비용은 별도다.
+- 사용: `python3 scripts/gcpctl.py start gcp4`, `bash scripts/oracle_run.sh --host gcp4 WORKTREE RUN -- COMMAND`, `python3 scripts/gcpctl.py stop gcp4`. 임대 JSON·VM당40개 잠금 검사·공용 Git 직접참조·해시/fetch-lite 규칙은 gcp3와 같다. 다른 임대나 ugrp Python/MuJoCo/ffmpeg가 있으면 수동 정지를 거부한다. GPU 배치 수는 제출 전에 임대/PID/GPU 메모리로 별도 결정한다.
+- 환경·시험 시간·정지 상태·관문·해시는 [gcp4setup 기록](../experiments/2026-10-16-gcp4setup/README.md)에 남긴다. `outputs/gcp4-runs`/`outputs/gcp4-lifecycle`을 사용하고 다른 프로젝트 결과와 합산하지 않는다. 짧은 CUDA 배치 스텝은 인프라 확인이며 연구 장면·렌더·교사/학생·E2E 성공 검증은 별도다.
+
 ## gcp1 과거 구성 (보존 기록)
 
 - `gcp1` = 인스턴스 `ugrp-sim-gcp1`, 서울 `asia-northeast3-a`, **n4-highcpu-64**(Intel Xeon 8581C Emerald Rapids, 64 vCPU, 128 GiB), 150 GB hyperdisk-balanced. 이미지 `ugrp-sim-bench-c1f02ac0`(Ubuntu 24.04, `.venv-sim`, 소스 c1f02ac0 포함)에서 만들었다.

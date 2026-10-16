@@ -1,0 +1,33 @@
+{
+  "command": [
+    "gcloud",
+    "functions",
+    "deploy",
+    "budget-stop",
+    "--gen2",
+    "--region=us-central1",
+    "--runtime=python312",
+    "--source=/Users/changmin/projects/ugrp-wt/gcp4setup/experiments/2026-10-16-gcp4setup/function",
+    "--entry-point=stop_on_budget",
+    "--trigger-topic=budget-stop",
+    "--service-account=budget-stopper@ugrp-sim-d-1016.iam.gserviceaccount.com",
+    "--trigger-service-account=budget-stopper@ugrp-sim-d-1016.iam.gserviceaccount.com",
+    "--set-env-vars=TARGET_PROJECT=ugrp-sim-d-1016",
+    "--memory=512Mi",
+    "--cpu=0.3333",
+    "--max-instances=1",
+    "--concurrency=1",
+    "--timeout=60s",
+    "--no-allow-unauthenticated",
+    "--account",
+    "changmin5781@gmail.com",
+    "--project",
+    "ugrp-sim-d-1016",
+    "--quiet",
+    "--format=json"
+  ],
+  "started_utc": "2026-10-16T07:13:42.720875+00:00",
+  "elapsed_s": 170.49142980575562,
+  "returncode": 0,
+  "stderr": "Preparing function...\n.....done.\nDeploying function...\n[Build]...................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................done\n[Service]....................................................................................................................................................................................done\n[Trigger].................................................................................................................done\nDone.\nYou can view your function in the Cloud Console here: https://console.cloud.google.com/functions/details/us-central1/budget-stop?project=ugrp-sim-d-1016\n\n"
+}

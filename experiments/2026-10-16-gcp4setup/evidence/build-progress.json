@@ -1,0 +1,187 @@
+[
+  {
+    "createTime": "2026-10-16T07:14:57.047904626Z",
+    "finishTime": "2026-10-16T07:15:56.157724Z",
+    "id": "0b21862d-e325-49e6-bf6e-4d1f6468326c",
+    "logUrl": "https://console.cloud.google.com/cloud-build/builds;region=us-central1/0b21862d-e325-49e6-bf6e-4d1f6468326c?project=298701037365",
+    "name": "projects/298701037365/locations/us-central1/builds/0b21862d-e325-49e6-bf6e-4d1f6468326c",
+    "options": {
+      "env": [
+        "CNB_APP_DIR=/workspace",
+        "CNB_ANALYZED_PATH=/layers/analyzed.toml",
+        "CNB_BUILDPACKS_DIR=/cnb/buildpacks",
+        "CNB_GROUP_PATH=/layers/group.toml",
+        "CNB_LAYERS_DIR=/layers",
+        "CNB_PLAN_PATH=/layers/plan.toml",
+        "CNB_PLATFORM_DIR=/platform",
+        "CNB_PLATFORM_API=0.11",
+        "CNB_NO_COLOR=true",
+        "CNB_USER_ID=33",
+        "CNB_GROUP_ID=33",
+        "CNB_CACHE_IMAGE=us-central1-docker.pkg.dev/ugrp-sim-d-1016/gcf-artifacts/ugrp--sim--d--1016__us--central1__budget--stop/cache:latest",
+        "CNB_PREVIOUS_IMAGE=us-central1-docker.pkg.dev/ugrp-sim-d-1016/gcf-artifacts/ugrp--sim--d--1016__us--central1__budget--stop:latest"
+      ],
+      "logStreamingOption": "STREAM_OFF",
+      "logging": "CLOUD_LOGGING_ONLY",
+      "pool": {},
+      "volumes": [
+        {
+          "name": "layers",
+          "path": "/layers"
+        },
+        {
+          "name": "platform",
+          "path": "/platform"
+        }
+      ],
+      "workerRelease": "legacy"
+    },
+    "projectId": "ugrp-sim-d-1016",
+    "queueTtl": "360s",
+    "results": {
+      "buildStepImages": [
+        "sha256:2a0b875d5b008f08d91f746137f35e7ce187be1ffc34730f61146364b5814a77",
+        "sha256:e2e2999dc334221c448b8897e3c1be29a478ff48cc3297557a937e8c80dbd324",
+        "sha256:e2e2999dc334221c448b8897e3c1be29a478ff48cc3297557a937e8c80dbd324"
+      ],
+      "buildStepOutputs": [
+        "",
+        "",
+        "eyJtZXRyaWNzIjp7ImMiOnsiMTQiOjEsIjI2IjoxfX0sImVycm9yIjp7ImJ1aWxkcGFja0lkIjoiIiwiYnVpbGRwYWNrVmVyc2lvbiI6IiIsImVycm9yVHlwZSI6Ik9LIiwiY2Fub25pY2FsQ29kZSI6Ik9LIiwiZXJyb3JJZCI6IiIsImVycm9yTWVzc2FnZSI6IiJ9LCJtZXRhZGF0YSI6eyJtIjp7IjEwIjoiY29sZCIsIjgiOiJwaXAiLCI5IjoicmVxdWlyZW1lbnRzLnR4dCJ9fSwic3RhdHMiOlt7ImJ1aWxkcGFja0lkIjoiZ29vZ2xlLnV0aWxzLmFyY2hpdmUtc291cmNlIiwiYnVpbGRwYWNrVmVyc2lvbiI6IjAuMC4xIiwidG90YWxEdXJhdGlvbk1zIjoxNiwidXNlckR1cmF0aW9uTXMiOjE2fSx7ImJ1aWxkcGFja0lkIjoiZ29vZ2xlLnB5dGhvbi5ydW50aW1lIiwiYnVpbGRwYWNrVmVyc2lvbiI6IjAuOS4xIiwidG90YWxEdXJhdGlvbk1zIjoyMzg5LCJ1c2VyRHVyYXRpb25NcyI6MH0seyJidWlsZHBhY2tJZCI6Imdvb2dsZS5weXRob24uZnVuY3Rpb25zLWZyYW1ld29yayIsImJ1aWxkcGFja1ZlcnNpb24iOiIwLjkuNiIsInRvdGFsRHVyYXRpb25NcyI6MTgyLCJ1c2VyRHVyYXRpb25NcyI6MTgyfSx7ImJ1aWxkcGFja0lkIjoiZ29vZ2xlLnB5dGhvbi5waXAiLCJidWlsZHBhY2tWZXJzaW9uIjoiMC45LjIiLCJ0b3RhbER1cmF0aW9uTXMiOjEyODIyLCJ1c2VyRHVyYXRpb25NcyI6MTI4MTR9LHsiYnVpbGRwYWNrSWQiOiJnb29nbGUudXRpbHMubGFiZWwtaW1hZ2UiLCJidWlsZHBhY2tWZXJzaW9uIjoiMC4wLjIiLCJ0b3RhbER1cmF0aW9uTXMiOjAsInVzZXJEdXJhdGlvbk1zIjowfSx7ImJ1aWxkcGFja0lkIjoiZ29vZ2xlLnB5dGhvbi5saW5rLXJ1bnRpbWUiLCJidWlsZHBhY2tWZXJzaW9uIjoiMC4wLjEiLCJ0b3RhbER1cmF0aW9uTXMiOjE2MCwidXNlckR1cmF0aW9uTXMiOjB9XSwid2FybmluZ3MiOm51bGwsImN1c3RvbUltYWdlIjpmYWxzZX0="
+      ],
+      "buildStepResults": {
+        "build": {},
+        "fetch": {},
+        "pre-buildpack": {}
+      }
+    },
+    "serviceAccount": "projects/ugrp-sim-d-1016/serviceAccounts/298701037365-compute@developer.gserviceaccount.com",
+    "sourceProvenance": {},
+    "startTime": "2026-10-16T07:14:57.806937616Z",
+    "status": "SUCCESS",
+    "steps": [
+      {
+        "args": [
+          "--type=ZipArchive",
+          "--location=gs://gcf-v2-sources-298701037365-us-central1/budget-stop/function-source.zip",
+          "--dest_dir=/workspace",
+          "--timeout_gcs=false"
+        ],
+        "id": "fetch",
+        "name": "us-central1-docker.pkg.dev/serverless-runtimes/utilities/gcs-fetcher:base_20260522_18_04_RC00",
+        "pullTiming": {
+          "endTime": "2026-10-16T07:15:03.848631090Z",
+          "startTime": "2026-10-16T07:15:01.774258258Z"
+        },
+        "status": "SUCCESS",
+        "timing": {
+          "endTime": "2026-10-16T07:15:04.633339354Z",
+          "startTime": "2026-10-16T07:15:01.774258258Z"
+        }
+      },
+      {
+        "args": [
+          "--phase=pre",
+          "--app_image_unique=us-central1-docker.pkg.dev/ugrp-sim-d-1016/gcf-artifacts/ugrp--sim--d--1016__us--central1__budget--stop:version_1",
+          "--app_image_stable=us-central1-docker.pkg.dev/ugrp-sim-d-1016/gcf-artifacts/ugrp--sim--d--1016__us--central1__budget--stop:latest",
+          "--cache_image_unique=us-central1-docker.pkg.dev/ugrp-sim-d-1016/gcf-artifacts/ugrp--sim--d--1016__us--central1__budget--stop/cache:0b21862d-e325-49e6-bf6e-4d1f6468326c",
+          "--cache_image_stable=us-central1-docker.pkg.dev/ugrp-sim-d-1016/gcf-artifacts/ugrp--sim--d--1016__us--central1__budget--stop/cache:latest",
+          "--env_var_names=BUILDER_OUTPUT,GOOGLE_RUNTIME,GOOGLE_LABEL_BUILDER_VERSION,GOOGLE_LABEL_BUILDER_IMAGE,GOOGLE_LABEL_RUN_IMAGE,GOOGLE_LABEL_SOURCE,GOOGLE_USE_SERVERLESS_RUNTIMES_TARBALLS,GOOGLE_RUNTIME_IMAGE_REGION,GOOGLE_RUNTIME_VERSION,X_GOOGLE_SKIP_RUNTIME_LAUNCH,GOOGLE_BUILD_ENV,GOOGLE_BUILD_UNIVERSE,GOOGLE_TPC_TARBALL_PROJECT,GOOGLE_TPC_HOSTNAME,GOOGLE_FUNCTION_TARGET,GOOGLE_FUNCTION_SIGNATURE_TYPE,X_GOOGLE_TARGET_PLATFORM,GOOGLE_LABEL_BUILD_ID,GOOGLE_LABEL_BASE_IMAGE,GOOGLE_LABEL_FUNCTION_TARGET,X_GOOGLE_SET_NODE_HEAP_SIZE",
+          "--experimental_skip_retag_cache"
+        ],
+        "entrypoint": "/bin/shim",
+        "env": [
+          "GOOGLE_RUNTIME=python312",
+          "GOOGLE_LABEL_BUILDER_VERSION=python_20260926_RC00",
+          "GOOGLE_LABEL_BUILDER_IMAGE=us-central1-docker.pkg.dev/serverless-runtimes/google-22-full/builder/python:python_20260926_RC00",
+          "GOOGLE_LABEL_RUN_IMAGE=us-central1-docker.pkg.dev/serverless-runtimes/google-22-full/scratch/python312:python312_20260915_3_12_14_RC00",
+          "GOOGLE_LABEL_SOURCE=gs://gcf-v2-sources-298701037365-us-central1/budget-stop/function-source.zip#1792134845386631",
+          "GOOGLE_USE_SERVERLESS_RUNTIMES_TARBALLS=true",
+          "GOOGLE_RUNTIME_IMAGE_REGION=us-central1",
+          "GOOGLE_RUNTIME_VERSION=3.12.14",
+          "X_GOOGLE_SKIP_RUNTIME_LAUNCH=true",
+          "GOOGLE_BUILD_ENV=prod",
+          "GOOGLE_BUILD_UNIVERSE=gdu",
+          "GOOGLE_TPC_TARBALL_PROJECT=",
+          "GOOGLE_TPC_HOSTNAME=",
+          "GOOGLE_FUNCTION_TARGET=stop_on_budget",
+          "GOOGLE_FUNCTION_SIGNATURE_TYPE=event",
+          "X_GOOGLE_TARGET_PLATFORM=gcf",
+          "GOOGLE_LABEL_BUILD_ID=0b21862d-e325-49e6-bf6e-4d1f6468326c",
+          "GOOGLE_LABEL_BASE_IMAGE=us-central1-docker.pkg.dev/serverless-runtimes/google-22-full/runtimes/python312",
+          "GOOGLE_LABEL_FUNCTION_TARGET=stop_on_budget",
+          "X_GOOGLE_SET_NODE_HEAP_SIZE=true"
+        ],
+        "id": "pre-buildpack",
+        "name": "us-central1-docker.pkg.dev/serverless-runtimes/google-22-full/builder/python:python_20260926_RC00",
+        "pullTiming": {
+          "endTime": "2026-10-16T07:15:09.021714752Z",
+          "startTime": "2026-10-16T07:15:04.633621715Z"
+        },
+        "status": "SUCCESS",
+        "timing": {
+          "endTime": "2026-10-16T07:15:09.902542119Z",
+          "startTime": "2026-10-16T07:15:04.633621715Z"
+        }
+      },
+      {
+        "args": [
+          "--tag=us-central1-docker.pkg.dev/ugrp-sim-d-1016/gcf-artifacts/ugrp--sim--d--1016__us--central1__budget--stop:latest",
+          "us-central1-docker.pkg.dev/ugrp-sim-d-1016/gcf-artifacts/ugrp--sim--d--1016__us--central1__budget--stop:version_1"
+        ],
+        "entrypoint": "/cnb/lifecycle/creator",
+        "env": [
+          "CNB_RUN_IMAGE=us-central1-docker.pkg.dev/serverless-runtimes/google-22-full/scratch/python312:python312_20260915_3_12_14_RC00"
+        ],
+        "id": "build",
+        "name": "us-central1-docker.pkg.dev/serverless-runtimes/google-22-full/builder/python:python_20260926_RC00",
+        "pullTiming": {
+          "endTime": "2026-10-16T07:15:09.906635233Z",
+          "startTime": "2026-10-16T07:15:09.902746249Z"
+        },
+        "status": "SUCCESS",
+        "timing": {
+          "endTime": "2026-10-16T07:15:56.261858207Z",
+          "startTime": "2026-10-16T07:15:09.902746249Z"
+        }
+      }
+    ],
+    "substitutions": {
+      "_GOOGLE_BUILD_ENV": "prod",
+      "_GOOGLE_BUILD_UNIVERSE": "gdu",
+      "_GOOGLE_FUNCTION_SIGNATURE_TYPE": "event",
+      "_GOOGLE_FUNCTION_TARGET": "stop_on_budget",
+      "_GOOGLE_LABEL_BASE_IMAGE": "us-central1-docker.pkg.dev/serverless-runtimes/google-22-full/runtimes/python312",
+      "_GOOGLE_LABEL_BUILDER_IMAGE": "us-central1-docker.pkg.dev/serverless-runtimes/google-22-full/builder/python:python_20260926_RC00",
+      "_GOOGLE_LABEL_BUILDER_VERSION": "python_20260926_RC00",
+      "_GOOGLE_LABEL_FUNCTION_TARGET": "stop_on_budget",
+      "_GOOGLE_LABEL_RUN_IMAGE": "us-central1-docker.pkg.dev/serverless-runtimes/google-22-full/scratch/python312:python312_20260915_3_12_14_RC00",
+      "_GOOGLE_LABEL_SOURCE": "gs://gcf-v2-sources-298701037365-us-central1/budget-stop/function-source.zip#1792134845386631",
+      "_GOOGLE_RUNTIME": "python312",
+      "_GOOGLE_RUNTIME_IMAGE_REGION": "us-central1",
+      "_GOOGLE_RUNTIME_VERSION": "3.12.14",
+      "_GOOGLE_TPC_HOSTNAME": "",
+      "_GOOGLE_TPC_TARBALL_PROJECT": "",
+      "_GOOGLE_USE_SERVERLESS_RUNTIMES_TARBALLS": "true",
+      "_X_GOOGLE_SET_NODE_HEAP_SIZE": "true",
+      "_X_GOOGLE_SKIP_RUNTIME_LAUNCH": "true",
+      "_X_GOOGLE_TARGET_PLATFORM": "gcf"
+    },
+    "tags": [
+      "p-gcf",
+      "r-python312",
+      "v-python312_20260915_3_12_14_RC00",
+      "b-python_20260926_RC00",
+      "t-function",
+      "bt-LIFECYCLE",
+      "service_budget-stop"
+    ],
+    "timeout": "1800s",
+    "timing": {
+      "BUILD": {
+        "endTime": "2026-10-16T07:15:56.261994971Z",
+        "startTime": "2026-10-16T07:15:00.857491966Z"
+      }
+    }
+  }
+]

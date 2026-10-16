@@ -26,9 +26,10 @@ def test_every_gcloud_call_names_the_project():
     assert run.call_args.args[0][-2:] == ['--project', 'ugrp-sim-b-1014']
 
 
-def test_gcp3_l4_uses_its_project_gpu_image_without_runtime_cap():
-    command = gcpctl.create_command('gcp3', 'ssh-ed25519 AAAA test')
-    for flag, value in (('--project', 'ugrp-sim-c-1016'), ('--machine-type', 'g2-standard-8'),
+@pytest.mark.parametrize(('host', 'project'), [('gcp3', 'ugrp-sim-c-1016'), ('gcp4', 'ugrp-sim-d-1016')])
+def test_l4_uses_its_project_gpu_image_without_runtime_cap(host, project):
+    command = gcpctl.create_command(host, 'ssh-ed25519 AAAA test')
+    for flag, value in (('--project', project), ('--machine-type', 'g2-standard-8'),
                         ('--image-project', 'deeplearning-platform-release'),
                         ('--accelerator', 'type=nvidia-l4,count=1'), ('--boot-disk-size', '140GB')):
         assert command[command.index(flag) + 1] == value
@@ -36,13 +37,13 @@ def test_gcp3_l4_uses_its_project_gpu_image_without_runtime_cap():
         assert flag in command
     assert not any(part.startswith('--max-run-duration') for part in command)
     assert '--instance-termination-action=STOP' not in command
-    assert gcpctl.GCP_HOSTS['gcp3']['max_run_duration'] is None
-    assert remote_run.wait_budget_s('gcp3') is None
+    assert gcpctl.GCP_HOSTS[host]['max_run_duration'] is None
+    assert remote_run.wait_budget_s(host) is None
     assert remote_run.wait_budget_s('gcp2') == 23.5 * 3600
     assert remote_run.DEFAULT_HOST == gcpctl.DEFAULT_HOST == 'gcp2'
     with patch.object(gcpctl.subprocess, 'run') as run:
-        gcpctl.gcloud('compute', 'instances', 'describe', 'x', host='gcp3')
-    assert run.call_args.args[0][-4:] == ['--account', 'changmin5781@gmail.com', '--project', 'ugrp-sim-c-1016']
+        gcpctl.gcloud('compute', 'instances', 'describe', 'x', host=host)
+    assert run.call_args.args[0][-4:] == ['--account', 'changmin5781@gmail.com', '--project', project]
 
 
 @pytest.mark.parametrize('duration', [None, 'missing', '8h', '24h'])

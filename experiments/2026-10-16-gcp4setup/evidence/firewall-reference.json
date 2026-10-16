@@ -1,0 +1,112 @@
+[
+  {
+    "allowed": [
+      {
+        "IPProtocol": "icmp"
+      }
+    ],
+    "creationTimestamp": "2026-10-16T00:08:20.448-07:00",
+    "description": "Allow ICMP from anywhere",
+    "direction": "INGRESS",
+    "disabled": false,
+    "id": "3861559172776358795",
+    "kind": "compute#firewall",
+    "logConfig": {
+      "enable": false
+    },
+    "name": "default-allow-icmp",
+    "network": "https://www.googleapis.com/compute/v1/projects/ugrp-sim-d-1016/global/networks/default",
+    "priority": 65534,
+    "selfLink": "https://www.googleapis.com/compute/v1/projects/ugrp-sim-d-1016/global/firewalls/default-allow-icmp",
+    "sourceRanges": [
+      "0.0.0.0/0"
+    ]
+  },
+  {
+    "allowed": [
+      {
+        "IPProtocol": "tcp",
+        "ports": [
+          "0-65535"
+        ]
+      },
+      {
+        "IPProtocol": "udp",
+        "ports": [
+          "0-65535"
+        ]
+      },
+      {
+        "IPProtocol": "icmp"
+      }
+    ],
+    "creationTimestamp": "2026-10-16T00:08:20.319-07:00",
+    "description": "Allow internal traffic on the default network",
+    "direction": "INGRESS",
+    "disabled": false,
+    "id": "7251992200026551179",
+    "kind": "compute#firewall",
+    "logConfig": {
+      "enable": false
+    },
+    "name": "default-allow-internal",
+    "network": "https://www.googleapis.com/compute/v1/projects/ugrp-sim-d-1016/global/networks/default",
+    "priority": 65534,
+    "selfLink": "https://www.googleapis.com/compute/v1/projects/ugrp-sim-d-1016/global/firewalls/default-allow-internal",
+    "sourceRanges": [
+      "10.128.0.0/9"
+    ]
+  },
+  {
+    "allowed": [
+      {
+        "IPProtocol": "tcp",
+        "ports": [
+          "3389"
+        ]
+      }
+    ],
+    "creationTimestamp": "2026-10-16T00:08:20.407-07:00",
+    "description": "Allow RDP from anywhere",
+    "direction": "INGRESS",
+    "disabled": false,
+    "id": "2022233183381910411",
+    "kind": "compute#firewall",
+    "logConfig": {
+      "enable": false
+    },
+    "name": "default-allow-rdp",
+    "network": "https://www.googleapis.com/compute/v1/projects/ugrp-sim-d-1016/global/networks/default",
+    "priority": 65534,
+    "selfLink": "https://www.googleapis.com/compute/v1/projects/ugrp-sim-d-1016/global/firewalls/default-allow-rdp",
+    "sourceRanges": [
+      "0.0.0.0/0"
+    ]
+  },
+  {
+    "allowed": [
+      {
+        "IPProtocol": "tcp",
+        "ports": [
+          "22"
+        ]
+      }
+    ],
+    "creationTimestamp": "2026-10-16T00:08:20.365-07:00",
+    "description": "Allow SSH from anywhere",
+    "direction": "INGRESS",
+    "disabled": false,
+    "id": "4857093460542124939",
+    "kind": "compute#firewall",
+    "logConfig": {
+      "enable": false
+    },
+    "name": "default-allow-ssh",
+    "network": "https://www.googleapis.com/compute/v1/projects/ugrp-sim-d-1016/global/networks/default",
+    "priority": 65534,
+    "selfLink": "https://www.googleapis.com/compute/v1/projects/ugrp-sim-d-1016/global/firewalls/default-allow-ssh",
+    "sourceRanges": [
+      "0.0.0.0/0"
+    ]
+  }
+]
