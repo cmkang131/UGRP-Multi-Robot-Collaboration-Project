@@ -158,7 +158,8 @@ def main():
     # ablation is duplicated here; drivecheck owns that separate experiment.
     drive=root/'drive';drive.mkdir()
     orig=inp/'runs/drivecheck/fixture-v3'
-    (drive/'scene.xml').write_bytes((orig/'scene.xml').read_bytes())
+    drive_xml=re.sub(r'/home/ugrp/ugrp-sim/src/[^/]+/',str(assets)+'/',(orig/'scene.xml').read_text())
+    (drive/'scene.xml').write_text(drive_xml)
     f=np.load(orig/'fixture.npz');arrays={k:f[k] for k in f.files}
     meta=json.loads((orig/'fixture.json').read_text());meta.update(kind='drive',asset_cwd=str(assets),
         target_geoms=[],finger_geoms=[],original=str(orig),physics_feedback=0)
