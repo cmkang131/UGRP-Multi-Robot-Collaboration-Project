@@ -75,6 +75,7 @@ funnel = dict(scope='one infrastructure candidate; not a C2 research gate',
     stages=[dict(gate=s,input=1,passed_cumulative=1,rejected=0) for s in stages],
     files=[dict(gate=s,input=1483,passed_cumulative=1483,rejected=0) for s in ['source_hashed','streamed','destination_sha_equal']],
     failed_setup_attempts=read('setup-rejections'),
+    operation_attempts=[dict(gate=g,input=2,passed_cumulative=1,rejected=1) for g in ['service_account_iam','training_package_dependency_import','exact_torchcodec_build']],
     raw_paths=['gcp6:/home/ugrp/ugrp-sim/setup/',str(E.resolve())],
     reproduce=['python3 experiments/2026-10-16-gcp6setup/finalize.py',
                'ssh gcp6 /home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python /home/ugrp/ugrp-sim/setup/smoke.py NEW_RESULT.json'])

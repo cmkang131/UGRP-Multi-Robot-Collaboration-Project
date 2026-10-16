@@ -1,1 +1,1 @@
-gcp6setup: NOT_READY 준비 중; 예산 정지·L4·MJWarp·학습 smoke 미검증
+gcp6setup: READY project=ugrp-sim-f-1016 account=kcm5781kcm5781@gmail.com vm=ugrp-act-l4-gcp6 verified=TERMINATED budget-stop=6.660s test-VM/disk=deleted MJWarp=2worlds/1step ACT-env=50steps/readback-PASS data=1483files/SHA-PASS; C2-main/managed-host-admission=beamact3-task; PR=#561

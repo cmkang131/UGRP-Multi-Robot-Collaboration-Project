@@ -1,0 +1,11 @@
+{
+  "command": [
+    "ssh",
+    "gcp6",
+    "test \"$(find /home/ugrp/ugrp-sim/leases -maxdepth 1 -type f -printf \"%f\\n\")\" = gcp6setup.json && ! pgrep -u ugrp -x \"python[0-9.]*|mujoco|ffmpeg\" >/dev/null && rm /home/ugrp/ugrp-sim/leases/gcp6setup.json && test -z \"$(ls -A /home/ugrp/ugrp-sim/leases)\""
+  ],
+  "returncode": 0,
+  "elapsed_s": 1.2119131088256836,
+  "stdout": "",
+  "stderr": ""
+}
