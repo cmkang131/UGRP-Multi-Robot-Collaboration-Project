@@ -80,7 +80,7 @@ def main():
     if a.stage == 'validate' and (not a.checkpoint or not a.capacity or not a.arm or not a.records):
         p.error('checkpoint/capacity/arm/completed record groups required')
     a.out.mkdir(parents=True, exist_ok=False)
-    lease = B/'leases'/('act16w-native-learning-'+a.stage+'.json')
+    lease = B/'leases'/('act16w-native-learning-'+a.stage+('-'+a.arm if a.arm else '')+'.json')
     report = dict(status='running', complete=False, source_sha=source, host=host,
         stage=a.stage, arm=a.arm, contact_profile='warp_native_contact_v1', wall_cap=None,
         started_utc=datetime.now(timezone.utc).isoformat(), final40_accessed=False)
