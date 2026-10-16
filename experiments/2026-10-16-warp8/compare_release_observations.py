@@ -37,7 +37,7 @@ def main():
     import mujoco
     import numpy as np
     from PIL import Image
-    from scripts import run_grasp_act_release as frozen
+    from sim.grasp_act_scene import make_scene
     from sim.lookaround_localization import LookaroundLocalizer
     from sim.camera_render_quality import configure_model, configure_context, sampling_stages
 
@@ -45,7 +45,7 @@ def main():
     raw = world / 'raw'
     result = read(raw / 'result.json')
     plan = read(raw / 'plan.json')
-    static = frozen.make_scene(plan).config['static_map']
+    static = make_scene(plan).config['static_map']
     states = np.load(a.run / f'world-{a.world:03d}-states.npz')
     indices = {int(t): i for i, t in enumerate(states['ticks'])}
     model = mujoco.MjModel.from_xml_string((raw / 'scene.xml').read_text())
