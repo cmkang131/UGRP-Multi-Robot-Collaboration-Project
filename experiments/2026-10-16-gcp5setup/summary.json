@@ -1,0 +1,207 @@
+{
+  "status": "READY",
+  "created_utc": "2026-10-16T09:47:00.429346+00:00",
+  "project": "ugrp-sim-e-1016",
+  "account": "changmin5781@gmail.com",
+  "source_sha": "7531641c5051144f2fabcd8eed334d4566fd7a6d",
+  "stacked_dependencies": [
+    554,
+    558,
+    559
+  ],
+  "default_host": "gcp2",
+  "recorded_setup_wall_s": 1219.075751,
+  "rejection_table": "/Users/changmin/projects/ugrp-wt/gcp5setup/experiments/2026-10-16-gcp5setup/evidence/funnel.json",
+  "budget": {
+    "net_monthly_krw": 1000,
+    "project_filter": [
+      "projects/1034909621664"
+    ],
+    "default_billing_iam_email_enabled": true,
+    "email_receipt_verified": false,
+    "stopping_s": 6.98329470900353,
+    "terminated_s": 36.47375749994535,
+    "test_vm_disk_deleted": true,
+    "scope": "manual Pub/Sub onward; billing ingestion latency not measured"
+  },
+  "vm": {
+    "alias": "gcp5",
+    "instance": "ugrp-act-l4-gcp5",
+    "machine": "g2-standard-8",
+    "gpu": "NVIDIA L4",
+    "disk_gb": 140,
+    "status": "TERMINATED",
+    "runtime_cap": null,
+    "idle_guard_minutes": 20,
+    "service_accounts": [],
+    "dedicated_key_private_on_mac_only": true
+  },
+  "dataset": {
+    "status": "PASS",
+    "files": 1482,
+    "bytes": 21052237810,
+    "manifest_sha256": "a0f5d8a1c6c9b6c4988122ae40bf412c4c705f3c34740d8d7a91c93fef58d6cd",
+    "all_sha256_match": true,
+    "wall_s": 70.59695649147034
+  },
+  "act_reference_packages": 115,
+  "versions_match": true,
+  "training": {
+    "status": "PASS",
+    "research_result": false,
+    "host": {
+      "project": "ugrp-sim-e-1016",
+      "instance": "ugrp-act-l4-gcp5",
+      "machine": "g2-standard-8"
+    },
+    "source_sha": "bbb757ad3735a98c7778f4d43aab041495a6c201",
+    "steps_requested": 50,
+    "steps_completed": 50,
+    "readback_verified": true,
+    "scope": "environment smoke with beamact3 B modules, not C2 training/mission acceptance",
+    "optimizer_reloaded": true,
+    "dataset_manifest_sha256": "a0f5d8a1c6c9b6c4988122ae40bf412c4c705f3c34740d8d7a91c93fef58d6cd",
+    "training_rows": 60023,
+    "inputs": [
+      "observation.images.own_history",
+      "observation.state"
+    ],
+    "teacher_input_fields": 0,
+    "peak_gpu_bytes": 1572857856,
+    "versions": {
+      "torch": "2.11.0+cu128",
+      "torchvision": "0.26.0+cu128",
+      "lerobot": "0.6.2",
+      "numpy": "2.2.6"
+    },
+    "files_sha256": {
+      "progress.jsonl": "64af90b49200876232903ab155fbc8ebf0010fd59e55a9a6bb06e199d5b4d01a",
+      "optimizer.pt": "491a4c59788613c026a2ff332c00cc880048676b2bc8e798c81874bb509ff716",
+      "actor/SHA256.json": "9cc865713012cb4945f8690f409a120c290409792b5c103c9cca53d175236d0d",
+      "actor/model.safetensors": "2a67f96e1f56a865bc4711f9964cae6ea4570c7e8049706074c7ac126a860bc7",
+      "actor/adapter.json": "d19a0ba9df94a995a4ffa1e7eaffb2b3de150048ccdab8220e8dd139e7c2196c",
+      "actor/config.json": "b63bc05fb84e5c0f53329336a7a147f18ca73f297ed25279b42b968e279f571f"
+    },
+    "wall_s": 97.27005243301392
+  },
+  "mjwarp": {
+    "status": "PASS",
+    "scope": "infrastructure only; no teacher/student/mission gate",
+    "backend": "mjwarp",
+    "nworld": 2,
+    "steps": 1,
+    "sim_time_s": [
+      0.0020000000949949026,
+      0.0020000000949949026
+    ],
+    "python": "3.12.3",
+    "platform": "Linux-7.0.0-1013-gcp-x86_64-with-glibc2.39",
+    "device": "cuda:0",
+    "gpu": "NVIDIA L4, 580.178.04, 23034 MiB",
+    "versions": {
+      "mujoco": "3.16.0",
+      "mujoco-warp": "3.16.0",
+      "warp-lang": "1.15.0",
+      "numpy": "2.5.2",
+      "Pillow": "12.3.0",
+      "opencv-python-headless": "5.0.0.93"
+    },
+    "source_files_sha256": {
+      "_src/types.py": "4c0dc9b93d7490c8156fe335b45624f79c4801d3ef4b435a08f536b38dd743a4",
+      "_src/forward.py": "4acce6f5737ff9edf059b85c5f302b9b87a1f54868af6be3f0d9beafd35e0be6",
+      "_src/io.py": "d496e51ac392731fd1b20d0cc53c573b38dcf38924dbcd04a2d5f85ffeb84310"
+    },
+    "qpos_before": [
+      [
+        0.0,
+        0.0,
+        1.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "qpos_after": [
+      [
+        0.0,
+        0.0,
+        0.9999607801437378,
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.9999607801437378,
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ]
+  },
+  "resolved_issues": [
+    "torchcodec extra-index local CUDA version corrected to exact source PyPI version"
+  ],
+  "runs": [
+    {
+      "name": "initial-act-version-check",
+      "status": "REJECTED",
+      "raw": "/Users/changmin/projects/ugrp-wt/gcp5setup/experiments/2026-10-16-gcp5setup/evidence/environment-rejection-table.json"
+    },
+    {
+      "name": "corrected-act-version-check",
+      "status": "PASS",
+      "raw": "/Users/changmin/projects/ugrp-wt/gcp5setup/experiments/2026-10-16-gcp5setup/evidence/act-freeze.txt"
+    },
+    {
+      "name": "budget-manual-stop",
+      "status": "PASS",
+      "raw": "/Users/changmin/projects/ugrp-wt/gcp5setup/experiments/2026-10-16-gcp5setup/evidence/test-observations.json"
+    },
+    {
+      "name": "mjwarp-two-world-one-step",
+      "status": "PASS",
+      "raw": "/Users/changmin/projects/ugrp-wt/gcp5setup/experiments/2026-10-16-gcp5setup/evidence/smoke-result.json"
+    },
+    {
+      "name": "act-50-step-save-reload",
+      "status": "PASS",
+      "raw": "gcp5:/home/ugrp/ugrp-sim/setup/training-smoke-v1"
+    }
+  ],
+  "verification": {
+    "retrieved_hashes_verified": true,
+    "source_hashes_verified": true,
+    "idle_guard_exact": true,
+    "credentials_absent": true,
+    "own_lease_removed": true,
+    "other_jobs_before_stop": false,
+    "runtime_cap_absent": true,
+    "vm_terminated": true,
+    "act_versions_exact": true,
+    "dataset_all_hashes_match": true,
+    "training_steps": 50,
+    "training_save_reload": true
+  },
+  "other_projects_cost_devices_modified": false,
+  "gcp1_accessed": false,
+  "raw_weights_retained": "gcp5:/home/ugrp/ugrp-sim/setup/training-smoke-v1",
+  "remaining": [
+    "C2 production host admission belongs to beamact3 branch; no C2 training run here",
+    "No student/teacher/mission or render gate measured",
+    "Actual billing email receipt and ingestion lag not tested; stopped VM disk/build storage remain billable"
+  ]
+}

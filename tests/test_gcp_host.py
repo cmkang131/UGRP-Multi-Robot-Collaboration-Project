@@ -26,7 +26,7 @@ def test_every_gcloud_call_names_the_project():
     assert run.call_args.args[0][-2:] == ['--project', 'ugrp-sim-b-1014']
 
 
-@pytest.mark.parametrize(('host', 'project'), [('gcp3', 'ugrp-sim-c-1016'), ('gcp4', 'ugrp-sim-d-1016')])
+@pytest.mark.parametrize(('host', 'project'), [('gcp3', 'ugrp-sim-c-1016'), ('gcp4', 'ugrp-sim-d-1016'), ('gcp5', 'ugrp-sim-e-1016')])
 def test_l4_uses_its_project_gpu_image_without_runtime_cap(host, project):
     command = gcpctl.create_command(host, 'ssh-ed25519 AAAA test')
     for flag, value in (('--project', project), ('--machine-type', 'g2-standard-8'),

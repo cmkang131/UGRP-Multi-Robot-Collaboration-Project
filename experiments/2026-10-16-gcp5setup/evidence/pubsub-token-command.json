@@ -1,0 +1,20 @@
+{
+  "command": [
+    "gcloud",
+    "projects",
+    "add-iam-policy-binding",
+    "ugrp-sim-e-1016",
+    "--member=serviceAccount:service-1034909621664@gcp-sa-pubsub.iam.gserviceaccount.com",
+    "--role=roles/iam.serviceAccountTokenCreator",
+    "--account",
+    "changmin5781@gmail.com",
+    "--project",
+    "ugrp-sim-e-1016",
+    "--quiet",
+    "--format=json"
+  ],
+  "started_utc": "2026-10-16T09:27:17.491737+00:00",
+  "elapsed_s": 1.8090267181396484,
+  "returncode": 0,
+  "stderr": "Updated IAM policy for project [ugrp-sim-e-1016].\n"
+}
