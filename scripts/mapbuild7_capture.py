@@ -7,6 +7,7 @@ import argparse
 from collections import deque
 import hashlib
 import importlib.util
+import importlib.abc
 import json
 import math
 import os
@@ -35,6 +36,16 @@ def run(a):
     for package,name in ((sim,'sim'),(harness,'harness'),(scripts,'scripts')):
         package.__path__.extend([str(a.teacher_source/name),str(a.renderer/name)])
     scripts.__path__.insert(0,str(a.teacher_source/'scripts'))
+    sim.__path__.insert(0,str(a.renderer/'sim'))
+    # The scene/renderer needs the current texture extension API. Route ONLY
+    # frozen demonstration modules to6f; never modify either source copy.
+    class FrozenTeacherFinder(importlib.abc.MetaPathFinder):
+        def find_spec(self,fullname,path=None,target=None):
+            if fullname.startswith(('sim.grasp_act_','harness.grasp_act_')):
+                file=a.teacher_source/Path(*fullname.split('.')).with_suffix('.py')
+                if file.is_file():return importlib.util.spec_from_file_location(fullname,file)
+            return None
+    sys.meta_path.insert(0,FrozenTeacherFinder())
     os.chdir(a.renderer)
     import numpy as np
     import cv2
@@ -99,6 +110,7 @@ def run(a):
     a.output.mkdir(parents=True,exist_ok=False);(a.output/'own-rgb').mkdir()
     static=scene.config['static_map'];dump(a.output/'static-map.json',static);(a.output/'scene.xml').write_text(xml);dump(a.output/'admission.json',admission)
     dump(a.output/'scene.json',scene.manifest)
+    teacher=VisibleTeacher(m,plan,FOLDED,a.output,scene)
     if a.preflight:
         dump(a.output/'preflight.json',dict(accepted=True,cpu_physics_steps=0,mjwarp_physics_steps=0,teacher_class_sha256=sha(module),native_noslip=int(m.opt.noslip_iterations),scene_xml_sha256=hashlib.sha256(xml.encode()).hexdigest()))
         return
@@ -131,7 +143,7 @@ def run(a):
             lookup[k,pwm-500]=float(np.clip(v,*m.jnt_range[jid])) if m.jnt_limited[jid] else v
     wheel_ids=[m.actuator('r1__wheel_'+n+'_drive').id for n in ('fl','fr','rl','rr')]
     applied=np.array([[FOLDED[s] for s in servos]],float);relay=np.zeros((1,4),int);drive=DriveParameters()
-    teacher=VisibleTeacher(m,plan,FOLDED,a.output,scene);prescan=SoloLookaround({},ops=teacher.teacher.ops,truth_free_v1=True);prescan.arm();prescan.start(0.,1500)
+    prescan=SoloLookaround({},ops=teacher.teacher.ops,truth_free_v1=True);prescan.arm();prescan.start(0.,1500)
     camera_stream=CommandCamera(camera_pose=CARRY_OPTION);colour=a.vision/'experiments/2026-10-16-reloc16/colour-calibration.json'
     if sha(colour)!='a37cf96551abbfb8b38df3efc1cd61f3f357ac9eb3a1dcd0b4d9947242e4e24f':raise ValueError('COLOUR_CHANGED')
     state=ColourBoundaryState('walls_floor_contrast_v5_indigo110_s80',json.loads(colour.read_text()),option=RELOC16_OPTION)
