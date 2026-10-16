@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-16T06:49:31.505762+00:00",
+  "updated_utc": "2026-10-16T08:39:58.032951+00:00",
   "project": "ugrp-sim-b-1014",
   "account": "changmin5781@gmail.com",
   "L4_instance": "ugrp-act-l4-gcp2",
@@ -44,15 +44,27 @@
     "scripts/act16w_dagger.py"
   ],
   "next_required": [
-    "Wait full2 pilots; strict native audit with command_complete, inspect playback2Hz+last10s10Hz before recording approval",
-    "Freeze selection40 before training; selected groups0,1,2,3, includes pilot indices1/2.35train5validation. Heldout91620-659 unchanged.",
-    "Deploy latest worker source; source snapshots must clone --reference git-shared.git, never chain references or gc. Sparse worker source permitted because simulator/ACT libraries separate frozen roots.",
-    "Refresh cross-host capacity receipt from Mac for bulk driver (CPU gcp2 alias; no credentials on VM). max40 global, keep foreign leases.",
-    "Create source-f0db recording approval from old camera-off40/40 bootstrap+two inspected pilots; old bootstrap NOT independent. Native fresh40 recording stage independently>=95% required for data.",
-    "Run grouped38 remaining records with existing API, explicit recorded speed override and task hard deadline. No camera/physics/controller changes.",
-    "Run dataset converter (hardlinked derived view preserves original controller training_rgb=false vs external capture=true). Then bind training_admission to bootstrap gate plus fresh independent recording gate/dataset audits.",
-    "Training A/B10000 matched steps via300 smoke+resume; h4C then h5D1 separately. Freeze data/steps/norm. Generic ACT16 evaluation driver and real DAgger oracle integration still need implementation.",
-    "Only validation86865-869 selects policy. Final new40 on selected policy, no tuning. Release used comparison models, full redownload/hash/load; no weights retained on Mac.",
-    "Compress completed >64KiB JSON/JSONL losslessly with proof after consumers close. Preserve original evidence. Update docs/summary/funnel/curves/PR539(Refs523), ops stage lines; clean only own leases/processes."
-  ]
+    "Monitor actual fresh40, exact native audits and >=95% admission; running22/pending16 never failures. Current source20 pipeline waits record completion, then dataset audit/admission/A_B smoke300/main10000.",
+    "Use current frozen source82 for full DAgger collection: it uses exact f0db NumPy IK and frozen visible-obstacle geometry. One initial native policy/oracle pair passed; full trajectories remain unverified.",
+    "A/B complete10000 then validation5 via act16w_eval_batch.py, same D0 references/groups. Only then C h4, D1 DAgger20 TRAIN prefixes/current h0 targets/same stats/freshmatched10000; final40 only after completed comparisons and pre-frozen selection.",
+    "If insufficient8h budget, preserve exact partial steps and unfinished cohorts. Training drains13:43Z, recording13:45Z, all own L4 use ends13:47Z; do not reset from VM reboot.",
+    "Release used models with full redownload/hash/CPU loading; if no research checkpoint exists, say none, never substitute synthetic preflight.",
+    "Final model/data/source/funnel/curve records locally, PR539 draft and ops-alert under primary outputs/e2e18-admin. Preserve COORDINATOR_NOTE.md, other jobs/leases/VM."
+  ],
+  "bulk_source": "813b9113b16e382712a00b911a9dcc7c06fbd77d",
+  "bulk_root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2",
+  "bulk_pid": 34414,
+  "train_pipeline_source": "20a5dd30d5d0914314cdf1d8edaa341557145b60",
+  "train_pipeline_root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training",
+  "train_pipeline_pid": 43413,
+  "status_monitor_session": 7928,
+  "capacity_monitor_session": 1244,
+  "own_task_gpu_processes": [
+    34437,
+    34438
+  ],
+  "native_policy_probe_complete": true,
+  "final40_references": "/home/ugrp/ugrp-sim/runs/act16w-resume2-final40-references",
+  "final40_groups": "/home/ugrp/ugrp-sim/runs/act16w-resume2-final40-groups/model-groups.json",
+  "latest_worker": "82e81244340042d76b5a96eeb87b8a2a7bc6ae1a"
 }

@@ -1,0 +1,99 @@
+{
+  "status": "complete",
+  "complete": true,
+  "source_sha": "82e81244340042d76b5a96eeb87b8a2a7bc6ae1a",
+  "host": {
+    "project_id": "ugrp-sim-b-1014",
+    "instance": "ugrp-act-l4-gcp2",
+    "machine_type": "g2-standard-8",
+    "zone": "asia-northeast3-a"
+  },
+  "interface_probe_only": true,
+  "training_data_admitted": false,
+  "checkpoint_sha256": "cce5c9e70c7d11650df6d959d84dc516c7105858162bd87574e5740d5ed83322",
+  "teacher_actions_executed": 0,
+  "prefix_cap_SIM_s": 30,
+  "scope": "student-induced TRAIN states with h0-only pre-hover labels; capped prefix is not task success",
+  "labels": [
+    {
+      "label_valid": true,
+      "teacher_command": {
+        "t": 1.7000000000001514,
+        "wheels": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "duration_s": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "pwm": {
+          "1": 2000,
+          "3": 740,
+          "4": 2320,
+          "5": 1320,
+          "6": 1500
+        }
+      },
+      "target_visible": true,
+      "sample_id": "warp3-86822-0-g0:0:r1",
+      "t": 1.7000000000001514,
+      "teacher_phase": "start",
+      "phase_after": "fold",
+      "done": false
+    }
+  ],
+  "oracle_audit": {
+    "invisible_measurements": 0,
+    "held_world_reads": 0,
+    "teacher_actions_executed": 0,
+    "queries": 1,
+    "integration_and_actor_inputs_unchanged": true,
+    "scope": "pre-hover h0-only training labels; no teacher action applied"
+  },
+  "student_actions": 0,
+  "research_optimizer_steps": 0,
+  "native_policy_probe": {
+    "checkpoint_synthetic": true,
+    "serialized_history_mode": "wheel_pulse_train_mean",
+    "prediction_shape": [
+      8,
+      14
+    ],
+    "native_jpeg_sha256s": [
+      "05056b08bac0ded4fee9e307071e11262555be28ae53437bf2d96d1a93255377",
+      "05056b08bac0ded4fee9e307071e11262555be28ae53437bf2d96d1a93255377",
+      "05056b08bac0ded4fee9e307071e11262555be28ae53437bf2d96d1a93255377",
+      "05056b08bac0ded4fee9e307071e11262555be28ae53437bf2d96d1a93255377"
+    ],
+    "valid_target_horizons": 1,
+    "future7_padded": true,
+    "pair_audit": {
+      "scope": "pre-hover h0-only DAgger labels; not full-skill oracle",
+      "funnel": [
+        {
+          "gate": "student_oracle_pairs",
+          "passed": 1,
+          "rejected": 0
+        },
+        {
+          "gate": "qualified_oracle_action",
+          "passed": 1,
+          "rejected": 0
+        }
+      ],
+      "rejections": [],
+      "teacher_actions_executed": 0,
+      "valid_horizons_per_sample": 1,
+      "future_student_path_borrowed_as_expert_chunk": false
+    },
+    "policy_commands_executed": 0,
+    "data_admitted": false
+  },
+  "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-native-policy-probe-r1",
+  "summary_sha256": "30815fb334d0064aca2865ac327510bb140499ddcf97604df8f7031cb8d8075a"
+}
