@@ -65,6 +65,9 @@ def run(a):
         gpu=subprocess.check_output(['nvidia-smi','--query-gpu=name,memory.used,memory.total,utilization.gpu','--format=csv,noheader'],text=True)))
     sys.path.insert(0, str(a.renderer_source))
     sys.path.insert(1, str(a.renderer_source/'scripts'))
+    # Compiled XML keeps the pinned renderer's relative texture asset paths.
+    # The sparse recorder checkout intentionally contains no duplicate assets.
+    os.chdir(a.renderer_source)
     import cv2
     import numpy as np
     import mujoco
@@ -162,7 +165,21 @@ def main():
     p.add_argument('--execute',action='store_true')
     a=p.parse_args()
     if not a.execute: p.error('explicit --execute required; default off')
-    run(a)
+    existed = a.output.exists()
+    try:
+        run(a)
+    except BaseException as exc:
+        # Preserve initialization errors too, before a renderer or frame exists.
+        if not existed and a.output.is_dir() and not (a.output/'summary.json').exists():
+            import traceback
+            error=dict(category='HOST_ERROR',reason=repr(exc),blocked_object='recorder_initialization',
+                minimum_gap_m=None,gap_status='not_measured',traceback=traceback.format_exc())
+            dump(a.output/'summary.json',dict(status='HOST_ERROR',frames=0,physics_steps=0,error=error))
+            dump(a.output/'rejection-table.json',dict(stages=[
+                dict(stage='requested_frames',cumulative_pass_n=246,rejected_n=0),
+                dict(stage='rendered_frames',cumulative_pass_n=0,rejected_n=246)],
+                reasons=[error],raw=str(a.output),reproduction=sys.argv))
+        raise
 
 
 if __name__=='__main__': main()
