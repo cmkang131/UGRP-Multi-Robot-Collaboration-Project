@@ -298,6 +298,8 @@ def run(b,out,receipt,*,backend_factory=None):
     from harness.zone_study_decisions import DecisionLimits
     from harness.active_camera import SEARCH
     from sim.e2e_ownmap_live import PhysicsBackend
+    from harness.s4_live_transport import bind_openrouter_bundle
+    b = bind_openrouter_bundle(b, receipt)
     out.mkdir(parents=True,exist_ok=False);write(out/'bundle.json',b)
     result=dict(status='HOST_ERROR',source_sha=b['source_sha'],seed=b['seed'],model=b['driver_profile'],
         condition=b['condition'],options=b['e2e_options'],LLM_operated=False,own_map_completed=False,

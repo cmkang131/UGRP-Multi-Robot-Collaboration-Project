@@ -1,0 +1,17 @@
+{
+  "observed_utc": "2026-10-15T13:35:13Z",
+  "host": "ugrp-act-l4-pilot1",
+  "status": "TERMINATED",
+  "max_run_duration_s": 28800,
+  "termination_action": "STOP",
+  "audit_stop_API_timestamps": [
+    "2026-10-15T13:32:30.543574Z",
+    "2026-10-15T13:33:22.945898Z"
+  ],
+  "audit_method": "v1.compute.instances.stop",
+  "audit_caller_kind": "user account; not budget-stop service account",
+  "stop_command_issued_by_simalt1": false,
+  "final_SSH": "failed because VM terminated; no restart or retry",
+  "retrieval_before_stop": "L4 611/611 manifest verified and results bundle retrieved before stop; raw remains on persistent VM disk",
+  "act15_server_evidence": "PID1670 alive at 13:30:10Z measurement end; not claimed alive after VM stop"
+}

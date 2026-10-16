@@ -4,7 +4,7 @@ cat > /usr/local/sbin/ugrp-idle-guard <<'G'
 #!/bin/bash
 state=/run/ugrp-idle-since
 now=$(date +%s)
-if pgrep -f 'scripts\.sim_cli|gcp_speed_probe|pip install|pip3 install|apt-get|apt install|dpkg|git index-pack|git pack-objects|git reset|pytest|rsync|scp|sshd: ugrp|zstd|tar ' >/dev/null; then
+if pgrep -f 'scripts\.sim_cli|scripts[./](train_grasp_act|prepare_grasp_act_data|evaluate_grasp_act_offline|run_grasp_act_student|grasp_act_student_worker)|gcp_speed_probe|pip install|pip3 install|apt-get|apt install|dpkg|git index-pack|git pack-objects|git reset|pytest|rsync|scp|sshd: ugrp|zstd|tar ' >/dev/null; then
   echo "$now" > "$state"; exit 0
 fi
 [ -f "$state" ] || echo "$now" > "$state"
