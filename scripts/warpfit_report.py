@@ -107,15 +107,16 @@ def main():
     fields=sorted(set().union(*(r.keys() for r in pulses))) if pulses else ['status']
     with (a.output/'drive-table.csv').open('w') as f:
         writer=csv.DictWriter(f,fieldnames=fields);writer.writeheader();writer.writerows(pulses)
-    table=['|N|입력|프로필|GPU ms/배치step|wall/SIM|wall/(N×SIM)|유지 세계|미끄럼 P95 mm|주행 해당축 실제/예측 mm|tilt 최대 °|',
-           '|---:|---|---|---:|---:|---:|---:|---:|---:|---:|']
-    def num(x):return '미완료' if x is None else f'{x:.5f}'
+    table=['|N|입력|프로필|상태|GPU ms/배치step|wall/SIM|wall/(N×SIM)|유지 세계|미끄럼 P95 mm|주행 해당축 실제/예측 mm|tilt 최대 °|',
+           '|---:|---|---|---|---:|---:|---:|---:|---:|---:|---:|']
+    def num(x):return '—' if x is None else f'{x:.5f}'
     for r in sorted(compact,key=lambda r:(r['nworld'],r['kind'],r['case'],r['profile'])):
         retained='해당없음' if r.get('fully_retained_worlds') is None else f"{r['fully_retained_worlds']}/{r['nworld']}"
         slip=r.get('slip_p95_mm')
         actual='해당없음' if r.get('drive_actual_mm') is None else num(r['drive_actual_mm'])+'/'+num(r['drive_predicted_mm'])
         label=r['kind']+'/'+r['case']+('/repeat2' if r.get('cohort_repeat',1)==2 else '')
-        table.append('|'+ '|'.join([str(r['nworld']),label,r['profile'],num(r['physical_gpu_ms_per_step']),
+        state='고정 명령 완료' if r['completed'] else ('LS 한도 탈락' if r.get('rejection_category')=='solver_line_search_limit' else 'HOST_ERROR')
+        table.append('|'+ '|'.join([str(r['nworld']),label,r['profile'],state,num(r['physical_gpu_ms_per_step']),
             num(r['wall_per_sim_s']),num(r['amortized_wall_per_world_sim_s']),retained,num(None if not slip else slip['p95']),
             actual,num(r.get('tilt_max_deg'))])+'|')
     table+=['','유지는 양쪽(빔은 네) 접촉력 양수와 기존 교사12mm 들기 조건이다. 미끄럼 열은 세계별 시간 P95의 세계간 P95다.',
