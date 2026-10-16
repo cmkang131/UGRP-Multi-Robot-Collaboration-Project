@@ -94,6 +94,16 @@ def test_start_dispatch_accepts_numbered_map_speed_and_default_model(monkeypatch
     assert "1. 기본 모델 (configured-model)" in output
 
 
+def test_start_dispatch_offers_fiftieth_speed(monkeypatch, capsys):
+    _interactive(monkeypatch, ["1", "1", "7", "1", "짐을 옮겨"])
+    monkeypatch.setenv("UGRP_SIM_MODEL", "configured-model")
+    monkeypatch.setattr("sim.workflow_manager.run_inprocess",
+                        lambda _root, _kind, argv, _invoke, **_kwargs: argv)
+    command = sim_cli.main(["start"])
+    assert command[command.index("--realtime-factor") + 1] == "50"
+    assert "7. 50× (최고속)" in capsys.readouterr().out
+
+
 def test_start_preview_accepts_numbered_group_and_scene(monkeypatch, capsys):
     maps = preview_maps()
     first_act = next(scene for scene in maps if scene.startswith("act/"))

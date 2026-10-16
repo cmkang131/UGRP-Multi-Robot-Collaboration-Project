@@ -60,6 +60,12 @@ def test_preview_argv_has_no_model_or_task_and_uses_registered_scene():
     assert "--model" not in command and "--task" not in command
 
 
+def test_high_speed_observer_is_explicitly_supported():
+    command = build_command(ROOT, {"mode": "llm_dispatch", "map": "open", "speed": 50,
+                                   "model": "test-model", "task": "go"})
+    assert command[command.index("--realtime-factor") + 1] == "50"
+
+
 @pytest.mark.parametrize("selection", [
     {"mode": "llm_dispatch", "map": "dispatch/open", "speed": 1, "model": "m", "task": "go"},
     {"mode": "llm_dispatch", "map": "unknown", "speed": 1, "model": "m", "task": "go"},

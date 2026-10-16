@@ -1,5 +1,14 @@
 # 로컬 시뮬레이션: 설정 파일 · CLI · Python API
 
+Windows 11 PowerShell에서는 UTF-8 기록과 GLFW 렌더링을 적용하는 실행기를 사용한다.
+
+```powershell
+.\scripts\open_simulation.ps1 doctor
+.\scripts\open_simulation.ps1 run configs/simulation/drive.json --paused --capture
+```
+
+인자를 생략하면 기존 대화형 시작 메뉴가 열린다. 환경 자동 검색이 실패하면 `$env:UGRP_SIM_PYTHON`에 Python 3.12 시뮬레이션 환경의 `python.exe` 전체 경로를 지정한다.
+
 같은 설정을 터미널에서 실행하고 MuJoCo 기본 3D 창으로 확인한다. Python에서는 `Simulation`을 불러와 관측·명령·물리 스텝을 직접 제어한다. 기본 연구 실행은 기존 `run_dispatch_e2e --executor skills`를 사용한다. 자연어 지시를 받은 세 로봇이 plan에 합의하고, 각자의 프로그램으로 기존 RGB 스킬을 실행한다. 수동·설정 실행에는 모델 계정이 필요 없다.
 
 **실행·버전·결과 관리는 [표준 시뮬레이션 관리](simulation_management.md)로 통일한다.** `workflow list/plan/run/runs/show`에서 연구별 실행을 선택하고 이력을 확인한다. 아래 기본 `run/console/dispatch`도 공통 실행 기록에 연결된다.

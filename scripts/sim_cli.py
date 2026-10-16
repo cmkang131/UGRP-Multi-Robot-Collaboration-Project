@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+from contextlib import contextmanager
 import base64
 import hashlib
 import json
@@ -25,13 +26,26 @@ from sim.simulation_launch_options import build_command, dispatch_maps, preview_
 ROOT = Path(__file__).resolve().parents[1]
 
 
+@contextmanager
+def blocked_cleanup_signals(signals):
+    """Atomically replace handlers on POSIX; Windows has no pthread mask."""
+    mask = getattr(signal, "pthread_sigmask", None)
+    previous = mask(signal.SIG_BLOCK, signals) if mask is not None else None
+    try:
+        yield
+    finally:
+        if mask is not None:
+            mask(signal.SIG_SETMASK, previous)
+
+
 def write_json(path, value):
     Path(path).write_text(json.dumps(value, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
 def source_info():
     def git(*args):
-        return subprocess.check_output(["git", "-C", str(ROOT), *args], text=True).strip()
+        return subprocess.check_output(["git", "-C", str(ROOT), *args], text=True,
+                                       encoding="utf-8", errors="replace").strip()
     try:
         return {"source_sha": git("rev-parse", "HEAD"), "source_dirty": bool(git("status", "--porcelain"))}
     except (OSError, subprocess.CalledProcessError):
@@ -254,12 +268,9 @@ def run(config, args):
         # Ctrl-C in the terminal can be followed by the session owner's
         # SIGTERM. Keep both signals from aborting artifact finalization.
         cleanup_signals = {signal.SIGINT, signal.SIGTERM}
-        previous_mask = signal.pthread_sigmask(signal.SIG_BLOCK, cleanup_signals)
-        try:
+        with blocked_cleanup_signals(cleanup_signals):
             previous_int = signal.signal(signal.SIGINT, note_cleanup_interrupt)
             signal.signal(signal.SIGTERM, note_cleanup_interrupt)
-        finally:
-            signal.pthread_sigmask(signal.SIG_SETMASK, previous_mask)
         try:
             if console is not None:
                 console.close()
@@ -307,12 +318,9 @@ def run(config, args):
                 write_json(output / "result.json", result)
                 print(f"Stopped: {result['stop_reason']} | {output.resolve() / 'result.json'}", flush=True)
             finally:
-                previous_mask = signal.pthread_sigmask(signal.SIG_BLOCK, cleanup_signals)
-                try:
+                with blocked_cleanup_signals(cleanup_signals):
                     signal.signal(signal.SIGTERM, previous_term)
                     signal.signal(signal.SIGINT, previous_int)
-                finally:
-                    signal.pthread_sigmask(signal.SIG_SETMASK, previous_mask)
     return 130 if cleanup_interrupted else exit_code
 
 
@@ -451,8 +459,10 @@ def _choose_launch():
         print(f"기본 장면: {default_map}. ACT 등은 관찰용 장면이며 정책 실행·성공 검증이 아닙니다.")
         selected_map = _preview_map_choice(maps)
     speed_prompt = "재생 속도" if selected_mode == "llm_dispatch" else "관찰 속도"
-    speed = _menu_choice(f"{speed_prompt} [2 = 1× 기본; ? 목록]: ", ["0.5", "1", "2", "4"], "1",
-                         labels=["0.5×", "1×", "2×", "4×"])
+    speed = _menu_choice(f"{speed_prompt} [2 = 1× 기본; ? 목록]: ",
+                         ["0.5", "1", "2", "4", "8", "16", "50"], "1",
+                         labels=["0.5×", "1×", "2×", "4×", "8×", "16× (고속)",
+                                 "50× (최고속)"])
     selection = {"mode": selected_mode, "map": selected_map, "speed": speed}
     if selected_mode == "llm_dispatch":
         default_model = os.environ.get("UGRP_SIM_MODEL", "gemini-3.8-flash")
