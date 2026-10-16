@@ -1,0 +1,19 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "e2e-warp-batch-v446",
+      "purpose": "기본 off MJWarp 배치 LLM E2E 통합; pending ACT/전역정합/release는 차단, first30 smoke는 성공 아님",
+      "entry": "scripts/run_e2e_warp.py",
+      "docs": "experiments/2026-10-17-e2ewarp/design.md",
+      "requires": "Linux gcp6 only for execute; current_stack checked queue, own lease, guard receipt, Mac loopback relay; no wall timeout",
+      "version": "0.1.0",
+      "runner": "scripts.run_e2e_warp",
+      "output_flag": "--output",
+      "side_effect": "model_calls",
+      "adapter": "managed_legacy_cli",
+      "required_inputs": [],
+      "output_kind": "directory"
+    }
+  ]
+}
