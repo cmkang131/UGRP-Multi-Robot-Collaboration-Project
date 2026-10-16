@@ -81,7 +81,15 @@ def main():
                       actor_schema=client.read_actor(0)[0]['schema'], actual_inference=True,teacher_constructed=False,privileged_policy_inputs=0,
                       native_camera='640x480/10Hz; four own lags each resized320x240 then2x2 montage640x480')
         terminal_before_close=list(client.terminal)
-        client.close('task_budget_cap_end' if report['resource_cap_end'] else 'evaluation_end')
+        # Completing the registered90SIM observation horizon is a fully
+        # observed evaluation, even when the student did not finish its task.
+        # Active worlds must retain cap_end; an interrupted label would hide
+        # the scientific horizon. No wall limit or action guard is introduced.
+        report.update(sim_cap_end_worlds=[i for i, value in enumerate(terminal_before_close) if not value],
+                      elapsed_SIM_s=(step+1)*.1)
+        close_reason = ('task_budget_cap_end' if report['resource_cap_end'] else
+                        'evaluation_SIM_cap_end' if report['sim_cap_end_worlds'] else 'evaluation_end')
+        client.close(close_reason)
         if a.full_evaluation:
             # Evaluation truth is read ONLY after all policy actions. Reuse the
             # checkpoint's exact evaluator; the owner's teacher Score is a
@@ -131,7 +139,7 @@ def main():
             report['initial_2plus_same_kind_qualified_n']=sum(x['qualified_visible_count']>=2 for x in visibility['rows'])
             report['same_kind_visibility_N']=len(plans)
             report['n_any_same_kind']=sum(row['any_same_kind_success'] for row in report['student_scores'])
-            report.update(complete=all(terminal_before_close) and not report['resource_cap_end'],status='cap_end' if report['resource_cap_end'] else 'complete',n=sum(x['task_success'] for x in report['student_scores']),N=len(plans),n_physical=sum(x['physical_success'] for x in report['student_scores']))
+            report.update(complete=not report['resource_cap_end'],status='cap_end' if report['resource_cap_end'] or report['sim_cap_end_worlds'] else 'complete',n=sum(x['task_success'] for x in report['student_scores']),N=len(plans),n_physical=sum(x['physical_success'] for x in report['student_scores']))
             report['scope'] = 'ACT16 full grasp/release evaluation on MJWarp; no teacher actions, no GT policy inputs'
     except BaseException as error:
         report.update(status='HOST_ERROR', error=repr(error)); raise

@@ -95,6 +95,8 @@ def main():
         visibility=[x for job in finished for x in (read(Path(job['raw'])/'summary.json').get('initial_same_kind_visibility',{}).get('rows',[]) if (Path(job['raw'])/'summary.json').exists() else [])]
         report.update(status='complete' if complete else 'cap_end' if report.get('resource_cap_end') else 'HOST_ERROR' if errors else report.get('submission_stopped','incomplete'),complete=complete,n=sum(r['task_success'] for r in rows),N=len(rows),N_requested=len(requested),rows=rows,teacher_actions_executed=0,selection_tuning_performed=False)
         report.update(n_assigned=report['n'],n_any_same_kind=sum(r['any_same_kind_success'] for r in rows),
+            SIM_cap_end_N=sum(r['cap_end'] for r in rows),
+            resource_cap_end_N=sum(r['resource_cap_end'] for r in rows),
             initial_same_kind_visibility=dict(N=len(visibility),
                 pixel_2plus_n=sum(x['pixel_visible_count']>=2 for x in visibility),
                 any_probe_2plus_n=sum(x['any_probe_visible_count']>=2 for x in visibility),
