@@ -59,7 +59,7 @@ def run(args):
               mjwarp=getattr(mjw,'__version__','unversioned'),physics_steps=0,model_calls=0,
               scene=PROFILE,quality='no_mip_v1',rgb=[640,480],shared_load=True,
               calibration_sha256=digest(args.calibration),calibration=str(args.calibration),
-              renderer_options=dict(samples_per_pixel=args.samples_per_pixel,use_shadows=True,use_textures=True),
+              renderer_options=dict(samples_per_pixel=args.samples_per_pixel,use_shadows=True,use_textures=True,warp5_native_visual_v1=args.warp5_native_visual_v1),
               reproduction=command,pool_with_cpu=False,segmentation='evaluation only')
     write(args.output/'meta.json',meta)
     try:
@@ -82,20 +82,14 @@ def run(args):
         ncon=1 << (max(32,int(data.ncon))-1).bit_length()
         njmax=1 << (max(256,int(data.nefc))-1).bit_length()
         with unused_efm(model,data):wd=mjw.put_data(model,data,nworld=n,nconmax=ncon,njmax=njmax)
-        rc=mjw.create_render_context(model,nworld=n,cam_res=(640,480),render_rgb=True,
-              render_depth=False,render_seg=True,use_textures=True,use_shadows=True,
-              enabled_geom_groups=[0,1,2,3],cam_active=[r+'__robot_cam' for r in old.ROBOTS],
-              samples_per_pixel=args.samples_per_pixel)
-        rgb=wp.zeros((n,480,640),dtype=wp.vec3);seg=wp.zeros((n,480,640),dtype=wp.vec2i)
+        from scripts.warp5_render import Renderer
+        rc=Renderer(model,wm,wd,[(r,r+'__robot_cam',(640,480)) for r in old.ROBOTS],
+              enabled=args.warp5_native_visual_v1,samples_per_pixel=args.samples_per_pixel)
+        write(args.output/(map_path.stem+'-render-compat.json'),rc.audit)
         base=np.stack([f['qpos'] for f in fixtures])
         def render(qpos):
             wp.copy(wd.qpos,wp.array(qpos,dtype=wd.qpos.dtype))
-            mjw.kinematics(wm,wd);mjw.camlight(wm,wd);mjw.refit_bvh(wm,wd,rc);mjw.render(wm,wd,rc)
-            result={}
-            for camera,rid in enumerate(old.ROBOTS):
-                mjw.get_rgb(rc,camera,rgb);mjw.get_segmentation(rc,camera,seg);wp.synchronize()
-                result[rid]=(np.clip(rgb.numpy()*255,0,255).astype(np.uint8),seg.numpy())
-            return result
+            return {rid:(np.clip(value[0],0,255).astype(np.uint8),value[1]) for rid,value in rc.render().items()}
         before=render(base)
         # Same single raw-camera pixel yaw increment as scene-tex5, eval only.
         for rid in old.ROBOTS:
@@ -144,6 +138,7 @@ def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--output',type=Path,required=True)
     p.add_argument('--source-sha',required=True);p.add_argument('--calibration',type=Path,required=True)
     p.add_argument('--samples-per-pixel',type=int,default=1);p.add_argument('--execute',action='store_true')
+    p.add_argument('--warp5-native-visual-v1',action='store_true')
     a=p.parse_args()
     if not a.execute or platform.system()!='Linux' or not platform.node().startswith('ugrp-act-l4-gcp2'):
         p.error('explicit gcp2 L4 execution required')
