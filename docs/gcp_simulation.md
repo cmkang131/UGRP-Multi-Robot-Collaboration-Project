@@ -121,5 +121,5 @@ CPU 세대가 다르면 렌더 이미지 바이트가 달라질 수 있다. 같�
 - 프로젝트만 필터한 월 순비용1,000 KRW 예산(모든 크레딧 포함)·기본 결제 IAM 이메일 → Pub/Sub `budget-stop` → Gen2 `stop_on_budget`(`TARGET_PROJECT=ugrp-sim-f-1016`). e2-micro 발동·시험 VM/디스크 삭제를 확인한 뒤에만 L4를 생성한다. 집계 지연·VM 밖 비용의 한계는 같다.
 - 실행 시간 상한 없이 유휴20분 가드·`--no-service-account --no-scopes`·프로젝트 SSH 키 차단을 유지한다. Mac 전용 새 키는 `~/.ssh/ugrp_gcp6`. `leases/<RUN>.json`, 파일 잠금 아래 VM당40개 상한, GPU 메모리/기존 PID 확인·공용 Git 직접참조·해시/fetch-lite 규칙은 gcp4와 같다. 다른 임대/실행 프로세스가 있으면 수동 정지를 거부한다.
 - `python3 scripts/gcpctl.py start gcp6`, `bash scripts/oracle_run.sh --host gcp6 WORKTREE RUN -- COMMAND`, `python3 scripts/gcpctl.py stop gcp6`. 원본은 gcp6 영속 디스크에 남기고 작은 기록은 `outputs/gcp6-runs`/`outputs/gcp6-lifecycle`로 회수한다. 다른 프로젝트 결과와 합산하지 않는다.
-- 첫 용도를 act16w 학습으로 잡고 gcp2 L4의 ACT 환경을 동일 버전으로 재현하는 것은 조정자 해석(사용자 미확인)이다. 짧은 MJWarp 2세계·1스텝 및 합성 ACT 50스텝 저장·재로딩은 환경 확인이며 실제 데이터 학습·학생/교사/E2E 관문이 아니다. act16w 데이터는 기록 완료·SHA 확인 후 별도 전달한다.
+- 초기 act16w 용도(조정자 해석)는 작업 중 `COORDINATOR_NOTE.md`의 19:00 지시로 beamact3 C2 학습 준비로 바뀌었다. gcp2 L4의 ACT 환경을 동일 버전으로 재현한다. 짧은 MJWarp 2세계·1스텝 및 합성 ACT 50스텝 저장·재로딩은 환경 확인이며 실제 데이터 학습·학생/교사/E2E 관문이 아니다. beamact3의 완료된 dataset-view 원본과 stages 파일만 Mac 중계 SSH 스트림으로 전달하고 파일별 SHA를 대조한다. C2 본 학습은 담당 작업에서 별도로 시작한다.
 - 구성·검증 결과와 정지 상태는 [gcp6setup 기록](../experiments/2026-10-16-gcp6setup/README.md)에 남긴다. PR #559 위에 쌓으며 #554/#558에 의존한다.

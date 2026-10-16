@@ -49,6 +49,7 @@ assert {x.lower() for x in reference}=={x.lower() for x in actual}
 probe=subprocess.run([sys.executable,'scripts/gcpctl.py','stop','gcp6'],capture_output=True,text=True)
 (EVIDENCE/'stop-defers-during-setup.json').write_text(json.dumps(dict(returncode=probe.returncode,stdout=probe.stdout,stderr=probe.stderr),indent=2)+'\n')
 assert probe.returncode==75
+assert json.loads((EVIDENCE/'data-transfer-verification.json').read_text())['all_files_sha256_equal']
 remote('before-stop-audit', 'find /home/ugrp/ugrp-sim/leases -maxdepth 1 -type f -printf "%f\\n"; ps -u ugrp -o pid,comm,args; nvidia-smi --query-compute-apps=pid,process_name,used_gpu_memory --format=csv,noheader')
 remote('release-own-lease', 'test "$(find /home/ugrp/ugrp-sim/leases -maxdepth 1 -type f -printf "%f\\n")" = gcp6setup.json && ! pgrep -u ugrp -x "python[0-9.]*|mujoco|ffmpeg" >/dev/null && rm /home/ugrp/ugrp-sim/leases/gcp6setup.json && test -z "$(ls -A /home/ugrp/ugrp-sim/leases)"')
 r=subprocess.run([sys.executable,'scripts/gcpctl.py','stop','gcp6'],capture_output=True,text=True)
