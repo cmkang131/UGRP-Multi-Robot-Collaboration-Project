@@ -83,6 +83,31 @@ def main():
                     original_xy=original[adr:adr+2].tolist(),selected_xy=d.qpos[adr:adr+2].tolist(),admission=result)
                 break
         else:raise ValueError('NO_CLEAN_START_WITHIN_25_CHECKS')
+    # Require the same start for FOLDED/HIGH: otherwise arm-condition tracking
+    # would be confounded by viewpoint. Use the larger geometry-derived lattice.
+    common_spacing=max(v['spacing_m'] for v in selected.values())
+    baseline=np.asarray(selected['drive']['original_xy'])
+    for index,(x,y) in enumerate(offsets):
+        joint=[];candidate_arrays={};candidate_meta={}
+        for pose in ('drive','high'):
+            pwm,setup=st.fixture(m,d,scene,view,pose,hardware)
+            bid=m.body('r1__robot').id;adr=int(m.jnt_qposadr[int(m.body_jntadr[bid])])
+            d.qpos[adr:adr+2]=baseline+common_spacing*np.array([x,y]);d.qvel[:]=0
+            result=check(m,d,**sets,option=OPTION)
+            joint.append(result['accepted'])
+            records.append(dict(pose=pose,candidate=f'common-lattice-{index}',offset_cells=[x,y],spacing_m=common_spacing,**result))
+            d.ctrl[:]=0
+            for i in range(m.nu):
+                if '__servo_' in m.actuator(i).name:d.ctrl[i]=d.qpos[int(m.jnt_qposadr[int(m.actuator_trnid[i,0])])]
+            candidate_arrays[pose+'_qpos']=d.qpos.copy();candidate_arrays[pose+'_ctrl']=d.ctrl.copy()
+            candidate_meta[pose]=dict(pwm=pwm,setup=setup,offset_cells=[x,y],spacing_m=common_spacing,
+                original_xy=baseline.tolist(),selected_xy=d.qpos[adr:adr+2].tolist(),admission=result)
+        dump(a.output/'spawn-rejection-table.json',dict(raw=str(a.output),reproduction=sys.argv,rows=records,
+            stages=[dict(stage='tested_starts',cumulative_pass_n=len(records),rejected_n=0),
+                    dict(stage='nonpenetrating',cumulative_pass_n=sum(r['accepted'] for r in records),rejected_n=sum(not r['accepted'] for r in records))]))
+        if all(joint):
+            arrays=candidate_arrays;selected=candidate_meta;break
+    else:raise ValueError('NO_COMMON_CLEAN_START_WITHIN_25_JOINT_CHECKS')
     np.savez_compressed(a.output/'fixture.npz',**arrays)
     dump(a.output/'fixture.json',dict(selected=selected,scene_xml_sha256=hashlib.sha256(xml.encode()).hexdigest(),
         fixture_sha256=hashlib.sha256((a.output/'fixture.npz').read_bytes()).hexdigest(),original_scene_files_modified=False,
