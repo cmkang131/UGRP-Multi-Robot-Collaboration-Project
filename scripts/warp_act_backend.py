@@ -255,9 +255,9 @@ class WarpTransport(Transport):
         native_active=np.sum(self.source_sleep[:,self.dof_tree]<0,axis=1)
         active_bounds=[]
         for c in contexts:
-            robot_tree=int(m.body_treeid[m.body('r1__robot').id])
+            robot_trees=[int(m.body_treeid[m.body(r+'__robot').id]) for r in self.robot_ids]
             cargo_tree=int(m.body_treeid[m.geom_bodyid[c['gids'][0]]])
-            active_bounds.append(int(np.count_nonzero(np.isin(self.dof_tree,[robot_tree,cargo_tree]))))
+            active_bounds.append(int(np.count_nonzero(np.isin(self.dof_tree,[*robot_trees,cargo_tree]))))
         bound=max(int(native_active.max()),max(active_bounds))
         self.nvmax=min(int(m.nv),1 << (max(1,bound)-1).bit_length()) if self.native_sleep_policy_compat_v1 else None
         self.sleep_audit={'enabled':self.native_sleep_policy_compat_v1,'native_initial_active_dofs':native_active.tolist(),

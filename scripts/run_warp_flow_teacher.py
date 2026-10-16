@@ -47,6 +47,9 @@ def parser():
     p.add_argument('--export-compiled-only',action='store_true')
     p.add_argument('--compiled-reference-v1',type=Path)
     p.add_argument('--compiled-geometry-312-v1',type=Path)
+    p.add_argument('--per-world-model-references-v1',type=Path)
+    p.add_argument('--world-model-parameters-v1',action='store_true',help='retain exact heterogeneous parameters on one topology, never normalize masses')
+    p.add_argument('--native-sleep-policy-compat-v1',action='store_true')
     p.add_argument('--vm-hourly-usd',type=float,required=True)
     return p
 
@@ -78,8 +81,10 @@ def main():
     import mujoco
     from warp_act_backend import WarpTransport
     from warp_flow_model import model_arrays_equal
-    hooks=WarpTransport(host,source,a.physics_backend,a.out)
+    hooks=WarpTransport(host,source,a.physics_backend,a.out,native_sleep_policy_compat_v1=a.native_sleep_policy_compat_v1)
     hooks.scene_v5_v1=True
+    hooks.world_model_parameters_v1=a.world_model_parameters_v1
+    hooks.batch_sleep_v1=a.world_model_parameters_v1
     canonical={'xml':a.canonical_xml.read_text() if a.canonical_xml else None}
     report=dict(schema='ugrp.warp4.batch.v1',status='running',source_sha=source,
         host=host,flow=a.flow,physics_backend=a.physics_backend,mujoco=mujoco.__version__,
@@ -98,19 +103,29 @@ def main():
             lanes.append(lane);bridges.append(bridge)
             contexts.append(next(lane));report['started_N']+=1
         write(a.out/'single-model-audit.json',model_arrays_equal([c['world'].model for c in contexts]))
-        if not model_arrays_equal([c['world'].model for c in contexts])['exact']:
+        if not model_arrays_equal([c['world'].model for c in contexts])['exact'] and not a.world_model_parameters_v1:
             raise ValueError('single-model post-setup arrays differ; no SLEEP exception admitted')
         (a.out/'canonical-scene.xml').write_text(canonical['xml'])
         write(a.out/'canonical-poses.json',[b.model_audit for b in bridges])
         if a.export_compiled_only:
             if mujoco.__version__!='3.12.0':raise ValueError('C312 reference export requires3.12')
             from simalt_compiled_compat import export_reference,export_geometry
-            xml=a.out/'canonical-scene.xml';m=contexts[0]['world'].model
-            export_reference(m,xml,mujoco.__version__,a.out/'compiled-312.json')
-            export_geometry(m,xml,mujoco.__version__,a.out/'compiled-geometry312.npz')
+            references={}
+            for c in contexts:
+                xml=Path(c['scene_xml_path']);m=c['world'].model
+                sha=hashlib.sha256(xml.read_bytes()).hexdigest()
+                if sha in references:continue
+                folder=a.out/'references'/sha;folder.mkdir(parents=True)
+                export_reference(m,xml,mujoco.__version__,folder/'compiled-312.json')
+                export_geometry(m,xml,mujoco.__version__,folder/'compiled-geometry312.npz')
+                references[sha]=dict(actuator=str(folder/'compiled-312.json'),geometry=str(folder/'compiled-geometry312.npz'))
+            write(a.out/'per-world-references.json',references)
         if a.initialize_only or a.export_compiled_only:
             report['status']='initialization_only';return
-        hooks.initialize(contexts,compiled_reference=a.compiled_reference_v1,compiled_geometry=a.compiled_geometry_312_v1)
+        references=json.loads(a.per_world_model_references_v1.read_text()) if a.per_world_model_references_v1 else None
+        first=references[hashlib.sha256(Path(contexts[0]['scene_xml_path']).read_bytes()).hexdigest()] if references else {}
+        hooks.initialize(contexts,compiled_reference=Path(first['actuator']) if first else a.compiled_reference_v1,
+            compiled_geometry=Path(first['geometry']) if first else a.compiled_geometry_312_v1,per_world_model_references=references)
         report.update(camera=hooks.camera,capacities=hooks.capacities,compatibility=hooks.compat,
             initial_state_proof=hooks.initial_state_proof(contexts),setup_compile_s=time.perf_counter()-start)
         loop=time.perf_counter()

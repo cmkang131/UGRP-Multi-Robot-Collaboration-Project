@@ -144,14 +144,16 @@ def sleep_scene_xml(xml, active_robot):
     flag=option.find('flag')
     if flag is None:flag=ET.SubElement(option,'flag')
     flag.set('sleep','enable')
-    active_found=False
+    active_robots={active_robot} if isinstance(active_robot,str) else set(active_robot)
+    active_found=set()
     for body in root.findall('worldbody/body'):
         free=body.find('freejoint') is not None or any(j.get('type')=='free' for j in body.findall('joint'))
         if not free:continue
-        active=body.get('name')==active_robot+'__robot'
-        active_found|=active
+        matched={r for r in active_robots if body.get('name')==r+'__robot'}
+        active=bool(matched)
+        active_found.update(matched)
         body.set('sleep','never' if active else 'allowed')
-    if not active_found:raise ValueError('active robot root missing')
+    if active_found!=active_robots:raise ValueError('active robot root missing')
     return ET.tostring(root,encoding='unicode')
 
 

@@ -28,7 +28,7 @@ def free_roots(root):
             any(j.get('type') == 'free' for j in b.findall('joint'))}
 
 
-def canonical_xml(xml, reference):
+def canonical_xml(xml, reference, *, world_parameters=False):
     """Require exact structure/materials/dynamics; change only free-root pose."""
     current, target = ET.fromstring(xml), ET.fromstring(reference)
     bodies, originals = free_roots(current), free_roots(target)
@@ -49,12 +49,23 @@ def canonical_xml(xml, reference):
             element.attrib.clear();element.attrib.update(attributes)
     result = ET.tostring(current, encoding='unicode')
     expected = ET.tostring(target, encoding='unicode')
-    if result != expected:
+    differences=xml_differences(current,target)
+    if result != expected and not world_parameters:
         # Never pool a different cargo shape or static obstacle arrangement.
         import json
         raise ValueError('non-pose scene/model difference; separate model required: '+json.dumps(xml_differences(current,target)))
+    # A common topology may retain exact per-world model parameters. This is
+    # distinct from a strictly identical physical model. The device converter
+    # must still reject every unsupported field; none is approximated here.
+    if world_parameters:
+        def topology(root):
+            return [(e.tag,e.get('name'),e.get('type')) for e in root.iter()
+                    if e.tag in ('body','joint','freejoint','geom','actuator')]
+        if topology(current)!=topology(target):
+            raise ValueError('joint/body/geom topology differs')
     return result, dict(profile='single_model_free_pose_v1', moved=moved,
         canonical_xml_sha256=hashlib.sha256(expected.encode()).hexdigest(),
+        strict_identical_model=not differences,world_parameter_differences=differences,
         mass_size_friction_unchanged=True, sleep_exception_used=False)
 
 

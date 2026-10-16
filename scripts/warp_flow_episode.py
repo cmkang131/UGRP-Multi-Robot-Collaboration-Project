@@ -124,10 +124,13 @@ class Bridge:
             transform = kw['xml_transform']
             def final(xml):
                 text = transform(xml)
+                if self.hooks.native_sleep_policy_compat_v1:
+                    from warp_act_core import sleep_scene_xml
+                    text=sleep_scene_xml(text,('r1','r2'))
                 if self.canonical.get('xml') is None:
                     self.canonical['xml'] = canonical_xml(text,text)[0]
                 try:
-                    text, audit = canonical_xml(text, self.canonical['xml'])
+                    text, audit = canonical_xml(text, self.canonical['xml'],world_parameters=getattr(self.hooks,'world_model_parameters_v1',False))
                 except ValueError:
                     self.output.mkdir(parents=True,exist_ok=True)
                     (self.output/'incompatible-scene.xml').write_text(text)
