@@ -1,0 +1,21 @@
+{
+  "command": [
+    "gcloud",
+    "pubsub",
+    "topics",
+    "add-iam-policy-binding",
+    "budget-stop",
+    "--member=serviceAccount:billing-budget-alert@system.gserviceaccount.com",
+    "--role=roles/pubsub.publisher",
+    "--account",
+    "kcm5781kcm5781@gmail.com",
+    "--project",
+    "ugrp-sim-f-1016",
+    "--quiet",
+    "--format=json"
+  ],
+  "started_utc": "2026-10-16T09:37:58.606111+00:00",
+  "elapsed_s": 1.7062981128692627,
+  "returncode": 0,
+  "stderr": "Updated IAM policy for topic [budget-stop].\n"
+}

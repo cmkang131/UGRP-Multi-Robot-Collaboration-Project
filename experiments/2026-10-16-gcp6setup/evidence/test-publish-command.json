@@ -1,0 +1,20 @@
+{
+  "command": [
+    "gcloud",
+    "pubsub",
+    "topics",
+    "publish",
+    "budget-stop",
+    "--message={\"costAmount\": 1000, \"budgetAmount\": 1000, \"currencyCode\": \"KRW\", \"budgetDisplayName\": \"gcp6 manual stop test\"}",
+    "--account",
+    "kcm5781kcm5781@gmail.com",
+    "--project",
+    "ugrp-sim-f-1016",
+    "--quiet",
+    "--format=json"
+  ],
+  "started_utc": "2026-10-16T09:41:10.507340+00:00",
+  "elapsed_s": 0.46742987632751465,
+  "returncode": 0,
+  "stderr": ""
+}

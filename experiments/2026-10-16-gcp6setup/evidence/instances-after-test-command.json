@@ -1,0 +1,19 @@
+{
+  "command": [
+    "gcloud",
+    "compute",
+    "instances",
+    "list",
+    "--filter=name=ugrp-budget-test-gcp6",
+    "--account",
+    "kcm5781kcm5781@gmail.com",
+    "--project",
+    "ugrp-sim-f-1016",
+    "--quiet",
+    "--format=json"
+  ],
+  "started_utc": "2026-10-16T09:42:13.571795+00:00",
+  "elapsed_s": 1.028371810913086,
+  "returncode": 0,
+  "stderr": "WARNING: The following filter keys were not present in any resource : name\n"
+}
