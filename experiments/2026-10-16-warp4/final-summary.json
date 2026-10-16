@@ -1,0 +1,1473 @@
+{
+  "schema": "ugrp.warp4.status.v1",
+  "status": "NOT_READY",
+  "checked_UTC": "2026-10-16T05:03:32.296129+00:00",
+  "final_round": [
+    {
+      "run": "/home/ugrp/ugrp-sim/runs/warp4/beampair-short-r3-mps",
+      "source_sha": "a2216618a207481c84277aeab5fe0fd208e48e01",
+      "flow": "beampair",
+      "original_status": "HOST_ERROR",
+      "planned_N": 4,
+      "started_N": 4,
+      "completed_N": 0,
+      "success_n": 0,
+      "error_type": "RuntimeError",
+      "error": "Warp copy error: Warp CUDA error 700: an illegal memory access was encountered (in function wp_memcpy_d2h, /builds/omniverse/warp/warp/native/warp.cu:1091)",
+      "mujoco": "3.16.0",
+      "last_progress": {
+        "ticks": 10,
+        "active_N": 4,
+        "completed_N": 0,
+        "sim_s": 1.0,
+        "loop_wall_s": 228.64502677899873,
+        "timing": {
+          "render": 0.752002735996939,
+          "readback_remap_jpeg_kinematics": 0.34652794501016615,
+          "command_decode_upload": 0.01610270300443517,
+          "physics": 225.54990625000937
+        }
+      },
+      "terminal_receipt": {
+        "status": "HOST_ERROR",
+        "exit_code": 1,
+        "evidence": "/home/ugrp/ugrp-sim/runs/warp4/r3-mps-supervisor.log",
+        "original_summary_status": "HOST_ERROR",
+        "reason_category": "CUDA_ILLEGAL_MEMORY_ACCESS_700",
+        "physical_outcome": "unclassified; no completed trial",
+        "original_summary_preserved": true
+      },
+      "placement_admissions": [
+        {
+          "world": "world-000",
+          "mode": "placement_graspable_filter_v1",
+          "accepted": true,
+          "ends": {
+            "teal": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            },
+            "blue": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            }
+          },
+          "criterion": "assigned end must have >0 existing certified poses",
+          "basis": "user 2026-10-16 zero-pose rejection; PR542/beampair6/9 certified family",
+          "setup_only": true,
+          "runtime_truth_used": false
+        },
+        {
+          "world": "world-001",
+          "mode": "placement_graspable_filter_v1",
+          "accepted": true,
+          "ends": {
+            "teal": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            },
+            "blue": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            }
+          },
+          "criterion": "assigned end must have >0 existing certified poses",
+          "basis": "user 2026-10-16 zero-pose rejection; PR542/beampair6/9 certified family",
+          "setup_only": true,
+          "runtime_truth_used": false
+        },
+        {
+          "world": "world-002",
+          "mode": "placement_graspable_filter_v1",
+          "accepted": true,
+          "ends": {
+            "teal": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            },
+            "blue": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            }
+          },
+          "criterion": "assigned end must have >0 existing certified poses",
+          "basis": "user 2026-10-16 zero-pose rejection; PR542/beampair6/9 certified family",
+          "setup_only": true,
+          "runtime_truth_used": false
+        },
+        {
+          "world": "world-003",
+          "mode": "placement_graspable_filter_v1",
+          "accepted": true,
+          "ends": {
+            "teal": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            },
+            "blue": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            }
+          },
+          "criterion": "assigned end must have >0 existing certified poses",
+          "basis": "user 2026-10-16 zero-pose rejection; PR542/beampair6/9 certified family",
+          "setup_only": true,
+          "runtime_truth_used": false
+        }
+      ]
+    },
+    {
+      "run": "/home/ugrp/ugrp-sim/runs/warp4/release-s1-short-r3-mps",
+      "source_sha": "a2216618a207481c84277aeab5fe0fd208e48e01",
+      "flow": "release",
+      "original_status": "running",
+      "planned_N": 6,
+      "started_N": 6,
+      "completed_N": 0,
+      "success_n": 0,
+      "error_type": null,
+      "error": null,
+      "mujoco": "3.16.0",
+      "last_progress": {
+        "ticks": 6,
+        "active_N": 6,
+        "completed_N": 0,
+        "sim_s": 0.6000000000000001,
+        "loop_wall_s": 186.62567003799995,
+        "timing": {
+          "render": 0.7490341369957605,
+          "readback_remap_jpeg_kinematics": 0.3391482599945448,
+          "command_decode_upload": 0.01481071700618486,
+          "physics": 184.10004189399842
+        }
+      },
+      "terminal_receipt": {
+        "status": "HOST_ERROR",
+        "exit_code": -11,
+        "evidence": "/home/ugrp/ugrp-sim/runs/warp4/r3-mps-supervisor.log",
+        "original_summary_status": "running",
+        "reason_category": "NATIVE_SIGSEGV_MPS_COHORT",
+        "physical_outcome": "unclassified; no completed trial",
+        "original_summary_preserved": true
+      },
+      "placement_admissions": [
+        {
+          "world": "world-000",
+          "mode": "placement_graspable_filter_v1",
+          "accepted": true,
+          "ends": {
+            "teal": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            },
+            "blue": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            }
+          },
+          "criterion": "assigned end must have >0 existing certified poses",
+          "basis": "user 2026-10-16 zero-pose rejection; PR542/beampair6/9 certified family",
+          "setup_only": true,
+          "runtime_truth_used": false
+        },
+        {
+          "world": "world-001",
+          "mode": "placement_graspable_filter_v1",
+          "accepted": true,
+          "ends": {
+            "teal": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            },
+            "blue": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            }
+          },
+          "criterion": "assigned end must have >0 existing certified poses",
+          "basis": "user 2026-10-16 zero-pose rejection; PR542/beampair6/9 certified family",
+          "setup_only": true,
+          "runtime_truth_used": false
+        },
+        {
+          "world": "world-002",
+          "mode": "placement_graspable_filter_v1",
+          "accepted": true,
+          "ends": {
+            "teal": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            },
+            "blue": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            }
+          },
+          "criterion": "assigned end must have >0 existing certified poses",
+          "basis": "user 2026-10-16 zero-pose rejection; PR542/beampair6/9 certified family",
+          "setup_only": true,
+          "runtime_truth_used": false
+        },
+        {
+          "world": "world-003",
+          "mode": "placement_graspable_filter_v1",
+          "accepted": true,
+          "ends": {
+            "teal": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            },
+            "blue": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            }
+          },
+          "criterion": "assigned end must have >0 existing certified poses",
+          "basis": "user 2026-10-16 zero-pose rejection; PR542/beampair6/9 certified family",
+          "setup_only": true,
+          "runtime_truth_used": false
+        },
+        {
+          "world": "world-004",
+          "mode": "placement_graspable_filter_v1",
+          "accepted": true,
+          "ends": {
+            "teal": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            },
+            "blue": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            }
+          },
+          "criterion": "assigned end must have >0 existing certified poses",
+          "basis": "user 2026-10-16 zero-pose rejection; PR542/beampair6/9 certified family",
+          "setup_only": true,
+          "runtime_truth_used": false
+        },
+        {
+          "world": "world-005",
+          "mode": "placement_graspable_filter_v1",
+          "accepted": true,
+          "ends": {
+            "teal": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            },
+            "blue": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            }
+          },
+          "criterion": "assigned end must have >0 existing certified poses",
+          "basis": "user 2026-10-16 zero-pose rejection; PR542/beampair6/9 certified family",
+          "setup_only": true,
+          "runtime_truth_used": false
+        }
+      ]
+    },
+    {
+      "run": "/home/ugrp/ugrp-sim/runs/warp4/release-s3-short-r3-mps",
+      "source_sha": "a2216618a207481c84277aeab5fe0fd208e48e01",
+      "flow": "release",
+      "original_status": "running",
+      "planned_N": 2,
+      "started_N": 2,
+      "completed_N": 0,
+      "success_n": 0,
+      "error_type": null,
+      "error": null,
+      "mujoco": "3.16.0",
+      "last_progress": {
+        "ticks": 14,
+        "active_N": 2,
+        "completed_N": 0,
+        "sim_s": 1.4000000000000001,
+        "loop_wall_s": 269.43934090100083,
+        "timing": {
+          "render": 0.9392200990077981,
+          "readback_remap_jpeg_kinematics": 0.2690351130004274,
+          "command_decode_upload": 0.015682077999372268,
+          "physics": 267.1802320079987
+        }
+      },
+      "terminal_receipt": {
+        "status": "HOST_ERROR",
+        "exit_code": -11,
+        "evidence": "/home/ugrp/ugrp-sim/runs/warp4/r3-mps-supervisor.log",
+        "original_summary_status": "running",
+        "reason_category": "NATIVE_SIGSEGV_MPS_COHORT",
+        "physical_outcome": "unclassified; no completed trial",
+        "original_summary_preserved": true
+      },
+      "placement_admissions": [
+        {
+          "world": "world-000",
+          "mode": "placement_graspable_filter_v1",
+          "accepted": true,
+          "ends": {
+            "teal": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            },
+            "blue": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            }
+          },
+          "criterion": "assigned end must have >0 existing certified poses",
+          "basis": "user 2026-10-16 zero-pose rejection; PR542/beampair6/9 certified family",
+          "setup_only": true,
+          "runtime_truth_used": false
+        },
+        {
+          "world": "world-001",
+          "mode": "placement_graspable_filter_v1",
+          "accepted": true,
+          "ends": {
+            "teal": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            },
+            "blue": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            }
+          },
+          "criterion": "assigned end must have >0 existing certified poses",
+          "basis": "user 2026-10-16 zero-pose rejection; PR542/beampair6/9 certified family",
+          "setup_only": true,
+          "runtime_truth_used": false
+        }
+      ]
+    }
+  ],
+  "all_attempts": [
+    {
+      "run": "/home/ugrp/ugrp-sim/runs/warp4/beampair-native-quiet-r2",
+      "source_sha": "f309fbff0181439a6ad7da0e51a859d82bbd4e5f",
+      "flow": "beampair",
+      "original_status": "initialization_only",
+      "planned_N": 4,
+      "started_N": 4,
+      "completed_N": 0,
+      "success_n": 0,
+      "error_type": null,
+      "error": null,
+      "mujoco": "3.16.0",
+      "last_progress": null,
+      "placement_admissions": [
+        {
+          "world": "world-000",
+          "mode": "placement_graspable_filter_v1",
+          "accepted": true,
+          "ends": {
+            "teal": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            },
+            "blue": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            }
+          },
+          "criterion": "assigned end must have >0 existing certified poses",
+          "basis": "user 2026-10-16 zero-pose rejection; PR542/beampair6/9 certified family",
+          "setup_only": true,
+          "runtime_truth_used": false
+        },
+        {
+          "world": "world-001",
+          "mode": "placement_graspable_filter_v1",
+          "accepted": true,
+          "ends": {
+            "teal": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            },
+            "blue": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            }
+          },
+          "criterion": "assigned end must have >0 existing certified poses",
+          "basis": "user 2026-10-16 zero-pose rejection; PR542/beampair6/9 certified family",
+          "setup_only": true,
+          "runtime_truth_used": false
+        },
+        {
+          "world": "world-002",
+          "mode": "placement_graspable_filter_v1",
+          "accepted": true,
+          "ends": {
+            "teal": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            },
+            "blue": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            }
+          },
+          "criterion": "assigned end must have >0 existing certified poses",
+          "basis": "user 2026-10-16 zero-pose rejection; PR542/beampair6/9 certified family",
+          "setup_only": true,
+          "runtime_truth_used": false
+        },
+        {
+          "world": "world-003",
+          "mode": "placement_graspable_filter_v1",
+          "accepted": true,
+          "ends": {
+            "teal": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            },
+            "blue": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            }
+          },
+          "criterion": "assigned end must have >0 existing certified poses",
+          "basis": "user 2026-10-16 zero-pose rejection; PR542/beampair6/9 certified family",
+          "setup_only": true,
+          "runtime_truth_used": false
+        }
+      ]
+    },
+    {
+      "run": "/home/ugrp/ugrp-sim/runs/warp4/beampair-short-r1-attempt2",
+      "source_sha": "d2363495d018137cdf8dcf686166b4a1d1725bb2",
+      "flow": "beampair",
+      "original_status": "HOST_ERROR",
+      "planned_N": 4,
+      "started_N": 4,
+      "completed_N": 0,
+      "success_n": 0,
+      "error_type": "ModuleNotFoundError",
+      "error": "No module named 'sim'",
+      "mujoco": "3.16.0",
+      "last_progress": null
+    },
+    {
+      "run": "/home/ugrp/ugrp-sim/runs/warp4/beampair-short-r1-attempt3",
+      "source_sha": "d06697e8f1440fef8edc02011e71dcf5971933ab",
+      "flow": "beampair",
+      "original_status": "HOST_ERROR",
+      "planned_N": 4,
+      "started_N": 4,
+      "completed_N": 0,
+      "success_n": 0,
+      "error_type": "KeyboardInterrupt",
+      "error": "",
+      "mujoco": "3.16.0",
+      "last_progress": {
+        "ticks": 5,
+        "active_N": 4,
+        "completed_N": 0,
+        "sim_s": 0.5,
+        "loop_wall_s": 101.9246295289995,
+        "timing": {
+          "render": 0.8678303529995901,
+          "readback_remap_jpeg_kinematics": 0.2232639000067138,
+          "command_decode_upload": 0.009539799997583032,
+          "physics": 100.66570686400155
+        }
+      },
+      "placement_admissions": [
+        {
+          "world": "world-000",
+          "mode": "placement_graspable_filter_v1",
+          "accepted": true,
+          "ends": {
+            "teal": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            },
+            "blue": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            }
+          },
+          "criterion": "assigned end must have >0 existing certified poses",
+          "basis": "user 2026-10-16 zero-pose rejection; PR542/beampair6/9 certified family",
+          "setup_only": true,
+          "runtime_truth_used": false
+        },
+        {
+          "world": "world-001",
+          "mode": "placement_graspable_filter_v1",
+          "accepted": true,
+          "ends": {
+            "teal": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            },
+            "blue": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            }
+          },
+          "criterion": "assigned end must have >0 existing certified poses",
+          "basis": "user 2026-10-16 zero-pose rejection; PR542/beampair6/9 certified family",
+          "setup_only": true,
+          "runtime_truth_used": false
+        },
+        {
+          "world": "world-002",
+          "mode": "placement_graspable_filter_v1",
+          "accepted": true,
+          "ends": {
+            "teal": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            },
+            "blue": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            }
+          },
+          "criterion": "assigned end must have >0 existing certified poses",
+          "basis": "user 2026-10-16 zero-pose rejection; PR542/beampair6/9 certified family",
+          "setup_only": true,
+          "runtime_truth_used": false
+        },
+        {
+          "world": "world-003",
+          "mode": "placement_graspable_filter_v1",
+          "accepted": true,
+          "ends": {
+            "teal": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            },
+            "blue": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            }
+          },
+          "criterion": "assigned end must have >0 existing certified poses",
+          "basis": "user 2026-10-16 zero-pose rejection; PR542/beampair6/9 certified family",
+          "setup_only": true,
+          "runtime_truth_used": false
+        }
+      ]
+    },
+    {
+      "run": "/home/ugrp/ugrp-sim/runs/warp4/beampair-short-r2",
+      "source_sha": "f309fbff0181439a6ad7da0e51a859d82bbd4e5f",
+      "flow": "beampair",
+      "original_status": "HOST_ERROR",
+      "planned_N": 4,
+      "started_N": 4,
+      "completed_N": 0,
+      "success_n": 0,
+      "error_type": "KeyboardInterrupt",
+      "error": "",
+      "mujoco": "3.16.0",
+      "last_progress": {
+        "ticks": 22,
+        "active_N": 4,
+        "completed_N": 0,
+        "sim_s": 2.2,
+        "loop_wall_s": 565.1195313470016,
+        "timing": {
+          "render": 1.3843629389921261,
+          "readback_remap_jpeg_kinematics": 0.815335542003595,
+          "command_decode_upload": 0.03803525500188698,
+          "physics": 556.255728979002
+        }
+      },
+      "placement_admissions": [
+        {
+          "world": "world-000",
+          "mode": "placement_graspable_filter_v1",
+          "accepted": true,
+          "ends": {
+            "teal": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            },
+            "blue": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            }
+          },
+          "criterion": "assigned end must have >0 existing certified poses",
+          "basis": "user 2026-10-16 zero-pose rejection; PR542/beampair6/9 certified family",
+          "setup_only": true,
+          "runtime_truth_used": false
+        },
+        {
+          "world": "world-001",
+          "mode": "placement_graspable_filter_v1",
+          "accepted": true,
+          "ends": {
+            "teal": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            },
+            "blue": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            }
+          },
+          "criterion": "assigned end must have >0 existing certified poses",
+          "basis": "user 2026-10-16 zero-pose rejection; PR542/beampair6/9 certified family",
+          "setup_only": true,
+          "runtime_truth_used": false
+        },
+        {
+          "world": "world-002",
+          "mode": "placement_graspable_filter_v1",
+          "accepted": true,
+          "ends": {
+            "teal": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            },
+            "blue": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            }
+          },
+          "criterion": "assigned end must have >0 existing certified poses",
+          "basis": "user 2026-10-16 zero-pose rejection; PR542/beampair6/9 certified family",
+          "setup_only": true,
+          "runtime_truth_used": false
+        },
+        {
+          "world": "world-003",
+          "mode": "placement_graspable_filter_v1",
+          "accepted": true,
+          "ends": {
+            "teal": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            },
+            "blue": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            }
+          },
+          "criterion": "assigned end must have >0 existing certified poses",
+          "basis": "user 2026-10-16 zero-pose rejection; PR542/beampair6/9 certified family",
+          "setup_only": true,
+          "runtime_truth_used": false
+        }
+      ]
+    },
+    {
+      "run": "/home/ugrp/ugrp-sim/runs/warp4/beampair-short-r3-mps",
+      "source_sha": "a2216618a207481c84277aeab5fe0fd208e48e01",
+      "flow": "beampair",
+      "original_status": "HOST_ERROR",
+      "planned_N": 4,
+      "started_N": 4,
+      "completed_N": 0,
+      "success_n": 0,
+      "error_type": "RuntimeError",
+      "error": "Warp copy error: Warp CUDA error 700: an illegal memory access was encountered (in function wp_memcpy_d2h, /builds/omniverse/warp/warp/native/warp.cu:1091)",
+      "mujoco": "3.16.0",
+      "last_progress": {
+        "ticks": 10,
+        "active_N": 4,
+        "completed_N": 0,
+        "sim_s": 1.0,
+        "loop_wall_s": 228.64502677899873,
+        "timing": {
+          "render": 0.752002735996939,
+          "readback_remap_jpeg_kinematics": 0.34652794501016615,
+          "command_decode_upload": 0.01610270300443517,
+          "physics": 225.54990625000937
+        }
+      },
+      "terminal_receipt": {
+        "status": "HOST_ERROR",
+        "exit_code": 1,
+        "evidence": "/home/ugrp/ugrp-sim/runs/warp4/r3-mps-supervisor.log",
+        "original_summary_status": "HOST_ERROR",
+        "reason_category": "CUDA_ILLEGAL_MEMORY_ACCESS_700",
+        "physical_outcome": "unclassified; no completed trial",
+        "original_summary_preserved": true
+      },
+      "placement_admissions": [
+        {
+          "world": "world-000",
+          "mode": "placement_graspable_filter_v1",
+          "accepted": true,
+          "ends": {
+            "teal": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            },
+            "blue": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            }
+          },
+          "criterion": "assigned end must have >0 existing certified poses",
+          "basis": "user 2026-10-16 zero-pose rejection; PR542/beampair6/9 certified family",
+          "setup_only": true,
+          "runtime_truth_used": false
+        },
+        {
+          "world": "world-001",
+          "mode": "placement_graspable_filter_v1",
+          "accepted": true,
+          "ends": {
+            "teal": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            },
+            "blue": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            }
+          },
+          "criterion": "assigned end must have >0 existing certified poses",
+          "basis": "user 2026-10-16 zero-pose rejection; PR542/beampair6/9 certified family",
+          "setup_only": true,
+          "runtime_truth_used": false
+        },
+        {
+          "world": "world-002",
+          "mode": "placement_graspable_filter_v1",
+          "accepted": true,
+          "ends": {
+            "teal": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            },
+            "blue": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            }
+          },
+          "criterion": "assigned end must have >0 existing certified poses",
+          "basis": "user 2026-10-16 zero-pose rejection; PR542/beampair6/9 certified family",
+          "setup_only": true,
+          "runtime_truth_used": false
+        },
+        {
+          "world": "world-003",
+          "mode": "placement_graspable_filter_v1",
+          "accepted": true,
+          "ends": {
+            "teal": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            },
+            "blue": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            }
+          },
+          "criterion": "assigned end must have >0 existing certified poses",
+          "basis": "user 2026-10-16 zero-pose rejection; PR542/beampair6/9 certified family",
+          "setup_only": true,
+          "runtime_truth_used": false
+        }
+      ]
+    },
+    {
+      "run": "/home/ugrp/ugrp-sim/runs/warp4/release-s1-short-r2",
+      "source_sha": "f309fbff0181439a6ad7da0e51a859d82bbd4e5f",
+      "flow": "release",
+      "original_status": "HOST_ERROR",
+      "planned_N": 6,
+      "started_N": 0,
+      "completed_N": 0,
+      "success_n": 0,
+      "error_type": "ModuleNotFoundError",
+      "error": "No module named 'scipy'",
+      "mujoco": "3.16.0",
+      "last_progress": null
+    },
+    {
+      "run": "/home/ugrp/ugrp-sim/runs/warp4/release-s1-short-r3",
+      "source_sha": "f309fbff0181439a6ad7da0e51a859d82bbd4e5f",
+      "flow": "release",
+      "original_status": "HOST_ERROR",
+      "planned_N": 6,
+      "started_N": 0,
+      "completed_N": 0,
+      "success_n": 0,
+      "error_type": "ModuleNotFoundError",
+      "error": "No module named 'sim.grasp_act_search24'",
+      "mujoco": "3.16.0",
+      "last_progress": null
+    },
+    {
+      "run": "/home/ugrp/ugrp-sim/runs/warp4/release-s1-short-r3-attempt2",
+      "source_sha": "cdc17f481488e98c16575b300ffc16e1704794d2",
+      "flow": "release",
+      "original_status": "HOST_ERROR",
+      "planned_N": 6,
+      "started_N": 6,
+      "completed_N": 0,
+      "success_n": 0,
+      "error_type": "KeyboardInterrupt",
+      "error": "",
+      "mujoco": "3.16.0",
+      "last_progress": {
+        "ticks": 5,
+        "active_N": 6,
+        "completed_N": 0,
+        "sim_s": 0.5,
+        "loop_wall_s": 202.52377644499938,
+        "timing": {
+          "render": 0.7545920380034659,
+          "readback_remap_jpeg_kinematics": 0.2759007050008222,
+          "command_decode_upload": 0.012039950001053512,
+          "physics": 200.74160486199617
+        }
+      },
+      "placement_admissions": [
+        {
+          "world": "world-000",
+          "mode": "placement_graspable_filter_v1",
+          "accepted": true,
+          "ends": {
+            "teal": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            },
+            "blue": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            }
+          },
+          "criterion": "assigned end must have >0 existing certified poses",
+          "basis": "user 2026-10-16 zero-pose rejection; PR542/beampair6/9 certified family",
+          "setup_only": true,
+          "runtime_truth_used": false
+        },
+        {
+          "world": "world-001",
+          "mode": "placement_graspable_filter_v1",
+          "accepted": true,
+          "ends": {
+            "teal": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            },
+            "blue": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            }
+          },
+          "criterion": "assigned end must have >0 existing certified poses",
+          "basis": "user 2026-10-16 zero-pose rejection; PR542/beampair6/9 certified family",
+          "setup_only": true,
+          "runtime_truth_used": false
+        },
+        {
+          "world": "world-002",
+          "mode": "placement_graspable_filter_v1",
+          "accepted": true,
+          "ends": {
+            "teal": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            },
+            "blue": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            }
+          },
+          "criterion": "assigned end must have >0 existing certified poses",
+          "basis": "user 2026-10-16 zero-pose rejection; PR542/beampair6/9 certified family",
+          "setup_only": true,
+          "runtime_truth_used": false
+        },
+        {
+          "world": "world-003",
+          "mode": "placement_graspable_filter_v1",
+          "accepted": true,
+          "ends": {
+            "teal": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            },
+            "blue": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            }
+          },
+          "criterion": "assigned end must have >0 existing certified poses",
+          "basis": "user 2026-10-16 zero-pose rejection; PR542/beampair6/9 certified family",
+          "setup_only": true,
+          "runtime_truth_used": false
+        },
+        {
+          "world": "world-004",
+          "mode": "placement_graspable_filter_v1",
+          "accepted": true,
+          "ends": {
+            "teal": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            },
+            "blue": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            }
+          },
+          "criterion": "assigned end must have >0 existing certified poses",
+          "basis": "user 2026-10-16 zero-pose rejection; PR542/beampair6/9 certified family",
+          "setup_only": true,
+          "runtime_truth_used": false
+        },
+        {
+          "world": "world-005",
+          "mode": "placement_graspable_filter_v1",
+          "accepted": true,
+          "ends": {
+            "teal": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            },
+            "blue": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            }
+          },
+          "criterion": "assigned end must have >0 existing certified poses",
+          "basis": "user 2026-10-16 zero-pose rejection; PR542/beampair6/9 certified family",
+          "setup_only": true,
+          "runtime_truth_used": false
+        }
+      ]
+    },
+    {
+      "run": "/home/ugrp/ugrp-sim/runs/warp4/release-s1-short-r3-mps",
+      "source_sha": "a2216618a207481c84277aeab5fe0fd208e48e01",
+      "flow": "release",
+      "original_status": "running",
+      "planned_N": 6,
+      "started_N": 6,
+      "completed_N": 0,
+      "success_n": 0,
+      "error_type": null,
+      "error": null,
+      "mujoco": "3.16.0",
+      "last_progress": {
+        "ticks": 6,
+        "active_N": 6,
+        "completed_N": 0,
+        "sim_s": 0.6000000000000001,
+        "loop_wall_s": 186.62567003799995,
+        "timing": {
+          "render": 0.7490341369957605,
+          "readback_remap_jpeg_kinematics": 0.3391482599945448,
+          "command_decode_upload": 0.01481071700618486,
+          "physics": 184.10004189399842
+        }
+      },
+      "terminal_receipt": {
+        "status": "HOST_ERROR",
+        "exit_code": -11,
+        "evidence": "/home/ugrp/ugrp-sim/runs/warp4/r3-mps-supervisor.log",
+        "original_summary_status": "running",
+        "reason_category": "NATIVE_SIGSEGV_MPS_COHORT",
+        "physical_outcome": "unclassified; no completed trial",
+        "original_summary_preserved": true
+      },
+      "placement_admissions": [
+        {
+          "world": "world-000",
+          "mode": "placement_graspable_filter_v1",
+          "accepted": true,
+          "ends": {
+            "teal": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            },
+            "blue": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            }
+          },
+          "criterion": "assigned end must have >0 existing certified poses",
+          "basis": "user 2026-10-16 zero-pose rejection; PR542/beampair6/9 certified family",
+          "setup_only": true,
+          "runtime_truth_used": false
+        },
+        {
+          "world": "world-001",
+          "mode": "placement_graspable_filter_v1",
+          "accepted": true,
+          "ends": {
+            "teal": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            },
+            "blue": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            }
+          },
+          "criterion": "assigned end must have >0 existing certified poses",
+          "basis": "user 2026-10-16 zero-pose rejection; PR542/beampair6/9 certified family",
+          "setup_only": true,
+          "runtime_truth_used": false
+        },
+        {
+          "world": "world-002",
+          "mode": "placement_graspable_filter_v1",
+          "accepted": true,
+          "ends": {
+            "teal": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            },
+            "blue": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            }
+          },
+          "criterion": "assigned end must have >0 existing certified poses",
+          "basis": "user 2026-10-16 zero-pose rejection; PR542/beampair6/9 certified family",
+          "setup_only": true,
+          "runtime_truth_used": false
+        },
+        {
+          "world": "world-003",
+          "mode": "placement_graspable_filter_v1",
+          "accepted": true,
+          "ends": {
+            "teal": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            },
+            "blue": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            }
+          },
+          "criterion": "assigned end must have >0 existing certified poses",
+          "basis": "user 2026-10-16 zero-pose rejection; PR542/beampair6/9 certified family",
+          "setup_only": true,
+          "runtime_truth_used": false
+        },
+        {
+          "world": "world-004",
+          "mode": "placement_graspable_filter_v1",
+          "accepted": true,
+          "ends": {
+            "teal": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            },
+            "blue": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            }
+          },
+          "criterion": "assigned end must have >0 existing certified poses",
+          "basis": "user 2026-10-16 zero-pose rejection; PR542/beampair6/9 certified family",
+          "setup_only": true,
+          "runtime_truth_used": false
+        },
+        {
+          "world": "world-005",
+          "mode": "placement_graspable_filter_v1",
+          "accepted": true,
+          "ends": {
+            "teal": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            },
+            "blue": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            }
+          },
+          "criterion": "assigned end must have >0 existing certified poses",
+          "basis": "user 2026-10-16 zero-pose rejection; PR542/beampair6/9 certified family",
+          "setup_only": true,
+          "runtime_truth_used": false
+        }
+      ]
+    },
+    {
+      "run": "/home/ugrp/ugrp-sim/runs/warp4/release-s3-short-r2",
+      "source_sha": "f309fbff0181439a6ad7da0e51a859d82bbd4e5f",
+      "flow": "release",
+      "original_status": "HOST_ERROR",
+      "planned_N": 2,
+      "started_N": 0,
+      "completed_N": 0,
+      "success_n": 0,
+      "error_type": "ModuleNotFoundError",
+      "error": "No module named 'scipy'",
+      "mujoco": "3.16.0",
+      "last_progress": null
+    },
+    {
+      "run": "/home/ugrp/ugrp-sim/runs/warp4/release-s3-short-r3",
+      "source_sha": "f309fbff0181439a6ad7da0e51a859d82bbd4e5f",
+      "flow": "release",
+      "original_status": "HOST_ERROR",
+      "planned_N": 2,
+      "started_N": 0,
+      "completed_N": 0,
+      "success_n": 0,
+      "error_type": "ModuleNotFoundError",
+      "error": "No module named 'sim.grasp_act_search24'",
+      "mujoco": "3.16.0",
+      "last_progress": null
+    },
+    {
+      "run": "/home/ugrp/ugrp-sim/runs/warp4/release-s3-short-r3-attempt2",
+      "source_sha": "cdc17f481488e98c16575b300ffc16e1704794d2",
+      "flow": "release",
+      "original_status": "HOST_ERROR",
+      "planned_N": 2,
+      "started_N": 2,
+      "completed_N": 0,
+      "success_n": 0,
+      "error_type": "KeyboardInterrupt",
+      "error": "",
+      "mujoco": "3.16.0",
+      "last_progress": {
+        "ticks": 12,
+        "active_N": 2,
+        "completed_N": 0,
+        "sim_s": 1.2000000000000002,
+        "loop_wall_s": 284.4335452410014,
+        "timing": {
+          "render": 0.8663743630022509,
+          "readback_remap_jpeg_kinematics": 0.2800470670008508,
+          "command_decode_upload": 0.012592388000484789,
+          "physics": 282.64861573899543
+        }
+      },
+      "placement_admissions": [
+        {
+          "world": "world-000",
+          "mode": "placement_graspable_filter_v1",
+          "accepted": true,
+          "ends": {
+            "teal": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            },
+            "blue": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            }
+          },
+          "criterion": "assigned end must have >0 existing certified poses",
+          "basis": "user 2026-10-16 zero-pose rejection; PR542/beampair6/9 certified family",
+          "setup_only": true,
+          "runtime_truth_used": false
+        },
+        {
+          "world": "world-001",
+          "mode": "placement_graspable_filter_v1",
+          "accepted": true,
+          "ends": {
+            "teal": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            },
+            "blue": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            }
+          },
+          "criterion": "assigned end must have >0 existing certified poses",
+          "basis": "user 2026-10-16 zero-pose rejection; PR542/beampair6/9 certified family",
+          "setup_only": true,
+          "runtime_truth_used": false
+        }
+      ]
+    },
+    {
+      "run": "/home/ugrp/ugrp-sim/runs/warp4/release-s3-short-r3-mps",
+      "source_sha": "a2216618a207481c84277aeab5fe0fd208e48e01",
+      "flow": "release",
+      "original_status": "running",
+      "planned_N": 2,
+      "started_N": 2,
+      "completed_N": 0,
+      "success_n": 0,
+      "error_type": null,
+      "error": null,
+      "mujoco": "3.16.0",
+      "last_progress": {
+        "ticks": 14,
+        "active_N": 2,
+        "completed_N": 0,
+        "sim_s": 1.4000000000000001,
+        "loop_wall_s": 269.43934090100083,
+        "timing": {
+          "render": 0.9392200990077981,
+          "readback_remap_jpeg_kinematics": 0.2690351130004274,
+          "command_decode_upload": 0.015682077999372268,
+          "physics": 267.1802320079987
+        }
+      },
+      "terminal_receipt": {
+        "status": "HOST_ERROR",
+        "exit_code": -11,
+        "evidence": "/home/ugrp/ugrp-sim/runs/warp4/r3-mps-supervisor.log",
+        "original_summary_status": "running",
+        "reason_category": "NATIVE_SIGSEGV_MPS_COHORT",
+        "physical_outcome": "unclassified; no completed trial",
+        "original_summary_preserved": true
+      },
+      "placement_admissions": [
+        {
+          "world": "world-000",
+          "mode": "placement_graspable_filter_v1",
+          "accepted": true,
+          "ends": {
+            "teal": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            },
+            "blue": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            }
+          },
+          "criterion": "assigned end must have >0 existing certified poses",
+          "basis": "user 2026-10-16 zero-pose rejection; PR542/beampair6/9 certified family",
+          "setup_only": true,
+          "runtime_truth_used": false
+        },
+        {
+          "world": "world-001",
+          "mode": "placement_graspable_filter_v1",
+          "accepted": true,
+          "ends": {
+            "teal": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            },
+            "blue": {
+              "certified_N": 91,
+              "free_goal_N": 91,
+              "blocked_object": "none:all_certified_stances_clear",
+              "min_gap_m": null
+            }
+          },
+          "criterion": "assigned end must have >0 existing certified poses",
+          "basis": "user 2026-10-16 zero-pose rejection; PR542/beampair6/9 certified family",
+          "setup_only": true,
+          "runtime_truth_used": false
+        }
+      ]
+    }
+  ],
+  "raw_files": 1641,
+  "raw_bytes": 49836988,
+  "integrity": {
+    "manifests": 73,
+    "declared_files": 1219,
+    "matched": 1219,
+    "missing": [],
+    "mismatched": []
+  },
+  "raw_manifest": "/home/ugrp/ugrp-sim/ops-reviews/warp4/final/raw-sha256.json",
+  "raw_manifest_sha256": "527373117fd5f4064a6ddb41c37dc809b04478931957c767f1f61fb2ad6c4507",
+  "rejection_table": "/home/ugrp/ugrp-sim/ops-reviews/warp4/final/final-rejection_table.json",
+  "completed_final_world_N": 0,
+  "HOST_ERROR_final_world_N": 12,
+  "qualified_beampair": "not submitted /40",
+  "qualified_release_A": "not submitted /40",
+  "qualified_release_B": "not submitted /40",
+  "throughput": {
+    "N16": null,
+    "N64": null,
+    "N256": null,
+    "CPU16": null,
+    "scope": "not admitted; no successful full scenario or completed steady-state comparison"
+  },
+  "CPU_results_pooled": false,
+  "model_calls": 0,
+  "Mac_physics_render_GUI": 0,
+  "caveats": [
+    "release25 privileged grasp prefix remains setup-only; not visible-only teacher proof",
+    "partial alpha rendering difference remains, as in warp3",
+    "R3 SIGSEGV lost in-memory terminal10Hz ring for8 release worlds; future adapter now persists a disk ring, unit-tested only"
+  ]
+}

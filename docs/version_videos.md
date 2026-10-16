@@ -111,3 +111,9 @@ SHA256 `69bdd4f62546e3e38ea024cf94b6bc12b86cef39b8a187ee155b7f11794a1c69`.
 고른 이유는 source plan0의 첫 완료 케이스이기 때문이다. ≥40회 관문·학생·일반 성공률을 보이지 못한다. 최적화 sleep/SAP 후보와는 별도 코호트이며, N1 pause가 포함된 wall 시간은 처리량으로 쓰지 않는다. 반투명 구역의 C/Warp RGB 차이도 남아 있다. 원본/경로/한계는 [warp1 기록](../experiments/2026-10-16-warp1/README.md)에 있다.
 
 같은 작업의 별도 기본 off `native_sleep_policy_compat_v1`, source `8d157d6c`는 N1 시드8317100 1회와 N16 동일 시드 복제16세계에서 모두40.6SIM초 파지·들기·놓기를 완료했다. [native N16 world0 3배속](../experiments/2026-10-16-warp1/videos/warp1-native-mjwarp-n16-world0-8317100-3x.mp4)·[해시/ffprobe](../experiments/2026-10-16-warp1/video-native.json). 첫 사전 지정 시드의 world0 전체2Hz 및 마지막10SIM초10Hz를 검토했다. 독립 시드는1개이며 ≥40회 관문·학생 검증이 아니다. 추가 시드8317104의17SIM초 자원 cap_end는 별도 원장에 남겼다. 기본 no-sleep/C 결과와 합산하지 않는다.
+
+## 2026-10-16 warp4 미자격 MJWarp 배치 후보
+
+[실행 기록](../experiments/2026-10-16-warp4/README.md), [3배속 부분 재생](../experiments/2026-10-16-warp4/partial-beam-replay-3x.mp4).
+source f309fbff0 / beam8318711 / world1.7–3.9(+0–2.2SIM), HOST_ERROR/감독 중단 prefix의 개요+r1+r2다. 개요는 평가 qpos의 사후 재구성이고 자기 JPEG는 실제 기록이다.16,381바이트, SHA256 `b09aaa07511e7f8caf2e7a3fdcc1f88628aa0cdacaa83db01ffad2b0da1e3bcd`.
+전체 교사 성공·관문·학생·실물 성공으로 일반화하지 않는다. 최종 R3는 CUDA700/SIGSEGV,12world 미완료이며40/A40/B40은 미제출이다.

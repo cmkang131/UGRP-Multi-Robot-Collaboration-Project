@@ -1,0 +1,1 @@
+warp4: beampair 0/40 release A0/40 B0/40 (관문 미제출) | 단일모델 빔 공통관절+정확한 세계별 값, release S1/S3 분리 | 처리량 미자격/미측정 | PR https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/549 DRAFT | 최종12world HOST_ERROR(CUDA700/SIGSEGV),완주0,타작업 유지
