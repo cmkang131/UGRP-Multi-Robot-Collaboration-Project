@@ -23,7 +23,7 @@ number=json.loads((EVIDENCE/'project.json').read_text())['projectNumber']
 assert budget['budgetFilter']['projects']==['projects/'+number]
 assert budget['budgetFilter']['creditTypesTreatment']=='INCLUDE_ALL_CREDITS'
 assert budget['amount']['specifiedAmount']=={'currencyCode':'KRW','units':'1000'}
-assert not budget['allUpdatesRule'].get('disableDefaultIamRecipients',False)
+assert not budget['notificationsRule'].get('disableDefaultIamRecipients',False)
 key=Path.home()/'.ssh/ugrp_gcp4'
 assert not key.exists(), 'Do not overwrite an existing dedicated SSH key'
 subprocess.run(['ssh-keygen','-q','-t','ed25519','-N','','-C','ugrp-gcp4','-f',str(key)],check=True)
