@@ -50,6 +50,7 @@ def parser():
     p.add_argument('--per-world-model-references-v1',type=Path)
     p.add_argument('--world-model-parameters-v1',action='store_true',help='retain exact heterogeneous parameters on one topology, never normalize masses')
     p.add_argument('--native-sleep-policy-compat-v1',action='store_true')
+    p.add_argument('--placement-graspable-filter-v1',action='store_true')
     p.add_argument('--vm-hourly-usd',type=float,required=True)
     return p
 
@@ -85,6 +86,7 @@ def main():
     hooks.scene_v5_v1=True
     hooks.world_model_parameters_v1=a.world_model_parameters_v1
     hooks.batch_sleep_v1=a.world_model_parameters_v1
+    hooks.placement_graspable_filter_v1=a.placement_graspable_filter_v1
     canonical={'xml':a.canonical_xml.read_text() if a.canonical_xml else None}
     report=dict(schema='ugrp.warp4.batch.v1',status='running',source_sha=source,
         host=host,flow=a.flow,physics_backend=a.physics_backend,mujoco=mujoco.__version__,
@@ -92,6 +94,7 @@ def main():
         planned_N=len(indices),started_N=0,completed_N=0,success_n=0,cap_end=0,HOST_ERROR=0,
         training_rgb=False,model_calls=0,weld='off',cpu_results_pooled=False,
         gate_eligible=False,shared_load=True,vm_hourly_usd=a.vm_hourly_usd,
+        placement_graspable_filter_v1=a.placement_graspable_filter_v1,
         price_basis='inherited regional VM estimate; billing unverified',reproduce=sys.argv)
     write(a.out/'summary.json',report)
     lanes=[];bridges=[];contexts=[];results={};recent=[deque(maxlen=100) for _ in indices]
@@ -147,7 +150,9 @@ def main():
                 sim_s=ticks*.1,loop_wall_s=time.perf_counter()-loop,timing=dict(hooks.seconds)))
         report['status']='complete'
     except BaseException as error:
-        report.update(status='HOST_ERROR',HOST_ERROR=1,error_type=type(error).__name__,error=str(error),traceback=traceback.format_exc())
+        rejected=type(error).__name__=='PlacementRejected'
+        report.update(status='admission_rejected' if rejected else 'HOST_ERROR',HOST_ERROR=0 if rejected else 1,
+            error_type=type(error).__name__,error=str(error),traceback=traceback.format_exc())
         raise
     finally:
         for lane in lanes:

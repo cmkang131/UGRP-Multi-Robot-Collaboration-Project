@@ -118,6 +118,13 @@ class Bridge:
     def build(self, original, scene, **kwargs):
         from sim import masterpi_drive_friction_v7 as drive
         from warp_flow_model import canonical_xml
+        from warp_flow_admission import scene_admission,MODE,PlacementRejected
+        import json
+        admission=scene_admission(self.plan,scene,mode=MODE if getattr(self.hooks,'placement_graspable_filter_v1',False) else 'off')
+        self.output.mkdir(parents=True,exist_ok=True)
+        (self.output/'placement-admission.json').write_text(json.dumps(admission,indent=2)+'\n')
+        if not admission['accepted']:
+            raise PlacementRejected(json.dumps(admission))
         cls = drive.MultiMasterPiProductionV2
         init = cls.__init__
         def canonical_init(world, *args, **kw):
@@ -259,6 +266,7 @@ class Bridge:
 def make_lane(adapter_source, teacher_source, plan, out, hooks, index, cap_s, *, flow='beampair', profile=None, canonical=None):
     bridge = Bridge(hooks, index)
     bridge.output = Path(out)
+    bridge.plan = plan
     bridge.canonical = canonical if canonical is not None else {}
     def factory():
         bridge.install_scene_quality()

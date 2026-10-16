@@ -21,3 +21,15 @@ def test_dof_length_is_not_exempted():
     audit=model_arrays_equal(models)
     assert not audit['exact']
     assert audit['differences'][0]['field']=='dof_length'
+
+
+def test_zero_grasp_support_rejected_before_world_construction():
+    from scripts.warp_flow_admission import certify,MODE
+    family=[(0.,.2,None,'existing-certificate')]
+    # Both assigned ends need support; a single blocked end rejects the setup.
+    blocked=certify([0,0,0],[('cargo',(0,0,1,1,0))],family,
+        lambda goal,discs,rects:-1. if goal[0]<0 else 1.,0.,mode=MODE)
+    assert not blocked['accepted'] and blocked['ends']['teal']['free_goal_N']==0
+    assert blocked['ends']['teal']['blocked_object']=='cargo'
+    assert certify([0,0,0],[],family,lambda *a:1.,0.,mode=MODE)['accepted']
+    assert certify([0,0,0],[('cargo',(0,0,1,1,0))],family,lambda *a:-1.,0.)['accepted']
