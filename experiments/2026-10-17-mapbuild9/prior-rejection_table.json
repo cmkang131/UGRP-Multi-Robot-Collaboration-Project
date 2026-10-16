@@ -1,0 +1,424 @@
+{
+  "prior_raw": {
+    "schema": "ugrp.mapbuild8.funnel.v1",
+    "ready": false,
+    "scope": "separate candidates; no pooled performance rate",
+    "host": "gcp5",
+    "cohorts": [
+      {
+        "run": "r1",
+        "source_sha": "cfaf3b52c071675bdc1b38d566c1599e9afc373d",
+        "raw": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r1",
+        "frame_funnel": [
+          {
+            "stage": "frames",
+            "cumulative_pass_n": 277,
+            "rejected_n": 0
+          },
+          {
+            "stage": "visible_wall",
+            "cumulative_pass_n": 134,
+            "rejected_n": 143
+          },
+          {
+            "stage": "scheduled_supported",
+            "cumulative_pass_n": 10,
+            "rejected_n": 124
+          },
+          {
+            "stage": "adopted_pose_correction",
+            "cumulative_pass_n": 0,
+            "rejected_n": 10
+          }
+        ],
+        "reasons": [
+          {
+            "category": "map_correction",
+            "reason": "no_visible_scan",
+            "n": 143,
+            "blocked_object": "own_observed_wall",
+            "minimum_gap_m": null,
+            "gap_status": "not_measured"
+          },
+          {
+            "category": "map_correction",
+            "reason": "new_submap_motion_anchor",
+            "n": 2,
+            "blocked_object": "own_observed_wall",
+            "minimum_gap_m": null,
+            "gap_status": "not_measured"
+          },
+          {
+            "category": "map_correction",
+            "reason": "sim_keyframe_interval",
+            "n": 116,
+            "blocked_object": "own_observed_wall",
+            "minimum_gap_m": null,
+            "gap_status": "not_measured"
+          },
+          {
+            "category": "map_correction",
+            "reason": "search_boundary",
+            "n": 8,
+            "blocked_object": "own_observed_wall",
+            "minimum_gap_m": null,
+            "gap_status": "not_measured"
+          },
+          {
+            "category": "map_correction",
+            "reason": "insufficient_near_points",
+            "n": 8,
+            "blocked_object": "own_observed_wall",
+            "minimum_gap_m": null,
+            "gap_status": "not_measured"
+          }
+        ],
+        "reproduction": {
+          "argv": [
+            "/home/ugrp/ugrp-sim/src/mapbuild8-capture1/scripts/mapbuild7_capture.py",
+            "--enabled",
+            "--map-correction",
+            "--body-sweep",
+            "--queue",
+            "/home/ugrp/ugrp-sim/ops-reviews/mapbuild8/capture-r1-queue.json",
+            "--renderer",
+            "/home/ugrp/ugrp-sim/src/drivecheck-renderer-5974a181",
+            "--teacher-source",
+            "/home/ugrp/ugrp-sim/src/mapbuild7-teacher-6f057f7e",
+            "--vision",
+            "/home/ugrp/ugrp-sim/src/mapbuild5b-complete-vision597",
+            "--pickup",
+            "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79800-6f057f7e/plan.json",
+            "--output",
+            "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r1"
+          ],
+          "provenance": "reconstructed from frozen source, recorded queue and explicit options; original complete argv not retrieved",
+          "execute": false
+        },
+        "route_funnel": [
+          {
+            "stage": "run",
+            "cumulative_pass_n": 1,
+            "rejected_n": 0
+          },
+          {
+            "stage": "initial_static_registration",
+            "cumulative_pass_n": 0,
+            "rejected_n": 1
+          },
+          {
+            "stage": "actual_transport",
+            "cumulative_pass_n": 0,
+            "rejected_n": 0
+          }
+        ],
+        "route_rejection": {
+          "category": "static_wall_registration",
+          "reason": "ambiguous_modes",
+          "blocked_object": "authored_wall_geometry",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured",
+          "residual_m": 0.004075045825594696,
+          "second_sensor_gap": 0.01622301601581012
+        }
+      },
+      {
+        "run": "r2",
+        "source_sha": "fcc80b7a59c85bd830e2b853f5a3f0e3406bb78f",
+        "raw": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r2",
+        "frame_funnel": [
+          {
+            "stage": "frames",
+            "cumulative_pass_n": 378,
+            "rejected_n": 0
+          },
+          {
+            "stage": "visible_wall",
+            "cumulative_pass_n": 330,
+            "rejected_n": 48
+          },
+          {
+            "stage": "scheduled_supported",
+            "cumulative_pass_n": 35,
+            "rejected_n": 295
+          },
+          {
+            "stage": "adopted_pose_correction",
+            "cumulative_pass_n": 5,
+            "rejected_n": 30
+          }
+        ],
+        "reasons": [
+          {
+            "category": "map_correction",
+            "reason": "no_visible_scan",
+            "n": 48,
+            "blocked_object": "own_observed_wall",
+            "minimum_gap_m": null,
+            "gap_status": "not_measured"
+          },
+          {
+            "category": "map_correction",
+            "reason": "new_submap_motion_anchor",
+            "n": 1,
+            "blocked_object": "own_observed_wall",
+            "minimum_gap_m": null,
+            "gap_status": "not_measured"
+          },
+          {
+            "category": "map_correction",
+            "reason": "sim_keyframe_interval",
+            "n": 293,
+            "blocked_object": "own_observed_wall",
+            "minimum_gap_m": null,
+            "gap_status": "not_measured"
+          },
+          {
+            "category": "map_correction",
+            "reason": "search_boundary",
+            "n": 29,
+            "blocked_object": "own_observed_wall",
+            "minimum_gap_m": null,
+            "gap_status": "not_measured"
+          },
+          {
+            "category": "map_correction",
+            "reason": "insufficient_near_points",
+            "n": 2,
+            "blocked_object": "own_observed_wall",
+            "minimum_gap_m": null,
+            "gap_status": "not_measured"
+          },
+          {
+            "category": "map_correction",
+            "reason": "accepted",
+            "n": 5,
+            "blocked_object": "own_observed_wall",
+            "minimum_gap_m": null,
+            "gap_status": "not_measured"
+          }
+        ],
+        "reproduction": {
+          "argv": [
+            "/home/ugrp/ugrp-sim/src/mapbuild8-capture2b/scripts/mapbuild7_capture.py",
+            "--enabled",
+            "--map-correction",
+            "--body-sweep",
+            "--sweep-camera-folded",
+            "--sweep-model",
+            "/home/ugrp/ugrp-sim/ops-reviews/mapbuild8/own-sweep-model-r1.json",
+            "--queue",
+            "/home/ugrp/ugrp-sim/ops-reviews/mapbuild8/capture-r2-queue.json",
+            "--renderer",
+            "/home/ugrp/ugrp-sim/src/drivecheck-renderer-5974a181",
+            "--teacher-source",
+            "/home/ugrp/ugrp-sim/src/mapbuild7-teacher-6f057f7e",
+            "--vision",
+            "/home/ugrp/ugrp-sim/src/mapbuild5b-complete-vision597",
+            "--pickup",
+            "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79800-6f057f7e/plan.json",
+            "--output",
+            "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r2"
+          ],
+          "provenance": "reconstructed from frozen source, recorded queue and explicit options; original complete argv not retrieved",
+          "execute": false
+        },
+        "route_funnel": [
+          {
+            "stage": "run",
+            "cumulative_pass_n": 1,
+            "rejected_n": 0
+          },
+          {
+            "stage": "initial_static_registration",
+            "cumulative_pass_n": 0,
+            "rejected_n": 1
+          },
+          {
+            "stage": "actual_transport",
+            "cumulative_pass_n": 0,
+            "rejected_n": 0
+          }
+        ],
+        "route_rejection": {
+          "category": "static_wall_registration",
+          "reason": "high_residual",
+          "blocked_object": "authored_wall_geometry",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured",
+          "residual_m": 0.1698033443455892,
+          "second_sensor_gap": 0.6650472100983205
+        }
+      },
+      {
+        "run": "r3",
+        "source_sha": "2f7cfacca3afc92344eda96a204bc86dda0c0b64",
+        "raw": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3",
+        "frame_funnel": [
+          {
+            "stage": "frames",
+            "cumulative_pass_n": 389,
+            "rejected_n": 0
+          },
+          {
+            "stage": "visible_wall",
+            "cumulative_pass_n": 341,
+            "rejected_n": 48
+          },
+          {
+            "stage": "scheduled_supported",
+            "cumulative_pass_n": 35,
+            "rejected_n": 306
+          },
+          {
+            "stage": "adopted_pose_correction",
+            "cumulative_pass_n": 12,
+            "rejected_n": 23
+          }
+        ],
+        "reasons": [
+          {
+            "category": "map_correction",
+            "reason": "no_visible_scan",
+            "n": 48,
+            "blocked_object": "own_observed_wall",
+            "minimum_gap_m": null,
+            "gap_status": "not_measured"
+          },
+          {
+            "category": "map_correction",
+            "reason": "new_submap_motion_anchor",
+            "n": 1,
+            "blocked_object": "own_observed_wall",
+            "minimum_gap_m": null,
+            "gap_status": "not_measured"
+          },
+          {
+            "category": "map_correction",
+            "reason": "sim_keyframe_interval",
+            "n": 302,
+            "blocked_object": "own_observed_wall",
+            "minimum_gap_m": null,
+            "gap_status": "not_measured"
+          },
+          {
+            "category": "map_correction",
+            "reason": "accepted",
+            "n": 12,
+            "blocked_object": "own_observed_wall",
+            "minimum_gap_m": null,
+            "gap_status": "not_measured"
+          },
+          {
+            "category": "map_correction",
+            "reason": "insufficient_near_points",
+            "n": 4,
+            "blocked_object": "own_observed_wall",
+            "minimum_gap_m": null,
+            "gap_status": "not_measured"
+          },
+          {
+            "category": "map_correction",
+            "reason": "search_boundary",
+            "n": 22,
+            "blocked_object": "own_observed_wall",
+            "minimum_gap_m": null,
+            "gap_status": "not_measured"
+          }
+        ],
+        "reproduction": {
+          "argv": [
+            "/home/ugrp/ugrp-sim/src/mapbuild8-capture3b/scripts/mapbuild7_capture.py",
+            "--enabled",
+            "--map-correction",
+            "--body-sweep",
+            "--sweep-camera-folded",
+            "--sweep-model",
+            "/home/ugrp/ugrp-sim/ops-reviews/mapbuild8/own-sweep-model-r1.json",
+            "--own-motion-model",
+            "/home/ugrp/ugrp-sim/ops-reviews/mapbuild8/own-command-calibration-r2.json",
+            "--queue",
+            "/home/ugrp/ugrp-sim/ops-reviews/mapbuild8/capture-r3-queue.json",
+            "--renderer",
+            "/home/ugrp/ugrp-sim/src/drivecheck-renderer-5974a181",
+            "--teacher-source",
+            "/home/ugrp/ugrp-sim/src/mapbuild7-teacher-6f057f7e",
+            "--vision",
+            "/home/ugrp/ugrp-sim/src/mapbuild5b-complete-vision597",
+            "--pickup",
+            "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79800-6f057f7e/plan.json",
+            "--output",
+            "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3"
+          ],
+          "provenance": "recorded runtime argv",
+          "execute": false
+        },
+        "route_funnel": [
+          {
+            "stage": "run",
+            "cumulative_pass_n": 1,
+            "rejected_n": 0
+          },
+          {
+            "stage": "initial_static_registration",
+            "cumulative_pass_n": 0,
+            "rejected_n": 1
+          },
+          {
+            "stage": "actual_transport",
+            "cumulative_pass_n": 0,
+            "rejected_n": 0
+          }
+        ],
+        "route_rejection": {
+          "category": "static_wall_registration",
+          "reason": "ambiguous_modes",
+          "blocked_object": "authored_wall_geometry",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured",
+          "residual_m": 0.08607783614044001,
+          "second_sensor_gap": 0.4266553702419933
+        }
+      }
+    ],
+    "provenance": "R1/R2 post-recording funnel reconstructed from original decision ledger; R3 runtime funnel; each queue references its preceding analysis table",
+    "missing_actual_route_events": [
+      "map_to_near_teacher_handoff",
+      "loaded_transport",
+      "door",
+      "zone",
+      "return",
+      "setdown",
+      "post_setdown_lookaround"
+    ],
+    "raw_base": "/home/ugrp/ugrp-sim/runs/mapbuild8"
+  },
+  "distribution": [
+    {
+      "category": "self_submap_wrong_accept",
+      "n": 4,
+      "total_nonzero": 4,
+      "blocked_object": "correlated_own_wall_submap",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "global_initialization_ambiguous",
+      "n": 2,
+      "total_runs": 3,
+      "blocked_object": "static_wall_symmetry",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "global_initialization_high_residual",
+      "n": 1,
+      "total_runs": 3,
+      "blocked_object": "static_wall_registration",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    }
+  ],
+  "raw": "experiments/2026-10-17-mapbuild8/",
+  "reproduction": "mapbuild8/reproduce.json"
+}
