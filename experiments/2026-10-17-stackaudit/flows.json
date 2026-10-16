@@ -1,0 +1,2363 @@
+{
+  "schema": "ugrp.stackaudit.flows.v1",
+  "base_sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+  "scope": "static + locally retrieved manifests; no VM/SSH/sim/render; latest means this evidence scope only",
+  "flows": {
+    "warp8_beam": {
+      "flow": "beam_pair",
+      "ref": "warp8",
+      "description": "native 빔 관문; 회수 summary/queue 범위",
+      "evidence": [
+        "warp_recount",
+        "warp_queue",
+        "warp_release"
+      ]
+    },
+    "warp8_release": {
+      "flow": "release",
+      "ref": "warp8",
+      "description": "native A-S1; 다음 제출 보류. 구 localizer 교체 필요",
+      "evidence": [
+        "warp_queue",
+        "warp_release",
+        "warp_frozen",
+        "old_release",
+        "old_hough"
+      ]
+    },
+    "act16w_teacher": {
+      "flow": "teacher_gate",
+      "ref": "act16w",
+      "description": "native 교사40 관문; 실제 localizer 없는 truth-free scan",
+      "evidence": [
+        "act_gate",
+        "act_episode",
+        "solo_look"
+      ]
+    },
+    "act16w_record": {
+      "flow": "record",
+      "ref": "act16w",
+      "description": "native 기록; 최근 완료는 ops 보고만, 원격 원본 독립 확인 없음",
+      "evidence": [
+        "act_gate",
+        "act_episode",
+        "solo_look",
+        "scene_act"
+      ]
+    },
+    "act16w_train": {
+      "flow": "train",
+      "ref": "act16w",
+      "description": "native provenance 전달 코드; 진행 상태는 별도, 학습 성능 주장 없음",
+      "evidence": [
+        "act_train"
+      ]
+    },
+    "act16w_eval": {
+      "flow": "act_eval",
+      "ref": "act16w",
+      "description": "다음 학생 평가: native 검증 + RPC 경로, 최종평가 미실행",
+      "evidence": [
+        "act_eval",
+        "input"
+      ]
+    },
+    "mapbuild6": {
+      "flow": "self_map",
+      "ref": "mapbuild6",
+      "description": "v7 실제 경로 후보; LK/RBPF 판정 대기, 채택/운반 성공 미확인",
+      "evidence": [
+        "map_scene",
+        "localization",
+        "localization_pending"
+      ]
+    },
+    "act_cpu_check": {
+      "flow": "act_eval",
+      "ref": "main",
+      "description": "보존 CPU 확인 경로. CPU 자체는 승인된 비교지만 새 실행에는 noslip/scene 갱신 또는 승인 이탈 필요",
+      "evidence": [
+        "cpu_eval",
+        "cpu_physics",
+        "cpu_contact"
+      ]
+    },
+    "llm_e2e": {
+      "flow": "e2e_llm",
+      "ref": "main",
+      "description": "main study integration 기준. 최신 MJWarp+ACT+자기지도 통합 실행 manifest 확인 안 됨",
+      "evidence": [
+        "e2e",
+        "cpu_physics",
+        "cpu_contact",
+        "llm"
+      ]
+    },
+    "beam_pair_teacher": {
+      "flow": "beam_pair",
+      "ref": "warp8",
+      "description": "다음 빔 짝 교사: MJWarp wrapper가 동결 교사 사용; 녹화/학생 인수와 별개",
+      "evidence": [
+        "physics",
+        "warp_frozen",
+        "warp_recount"
+      ]
+    }
+  },
+  "counts": {
+    "최신": 66,
+    "모름": 190,
+    "해당없음": 116,
+    "옛": 8
+  },
+  "cells": {
+    "warp8_beam": {
+      "physics_backend": {
+        "status": "최신",
+        "evidence": [
+          "warp_recount",
+          "warp_queue"
+        ],
+        "note": "회수 실행 명령/적용 profile.options noslip0. 빔 summary 증거를 release 성공으로 승계하지 않음; release 명령은 같은 native 소스."
+      },
+      "contact_profile": {
+        "status": "최신",
+        "evidence": [
+          "warp_recount",
+          "warp_queue"
+        ],
+        "note": "회수 실행 명령/적용 profile.options noslip0. 빔 summary 증거를 release 성공으로 승계하지 않음; release 명령은 같은 native 소스."
+      },
+      "noslip_iterations": {
+        "status": "최신",
+        "evidence": [
+          "warp_recount",
+          "warp_queue"
+        ],
+        "note": "회수 실행 명령/적용 profile.options noslip0. 빔 summary 증거를 release 성공으로 승계하지 않음; release 명령은 같은 native 소스."
+      },
+      "scene_profile": {
+        "status": "최신",
+        "evidence": [
+          "warp_release",
+          "scene"
+        ],
+        "note": "require_case_profiles에서 scene 고정. source static이며 각 raw scene hash 별도 필요."
+      },
+      "end_color_scene": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "cargo_version": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "scenario_version": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "heavy_crate": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "localization_path": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "rbpf": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "localization_engine": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "setdown_lookaround_v1": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "held_object_hidden_v1": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "held_world_reads": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "teacher_visibility": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "invisible_measurements": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "nearfield_executor": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "weld": {
+        "status": "최신",
+        "evidence": [
+          "warp_queue"
+        ],
+        "note": "queue 선언값; 실제 장치 상태 독립 재검증 아님"
+      },
+      "top_camera_control": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "planner_model": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "planner_provider": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "planner_quantization": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "planner_fallbacks": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "planner_own_rgb_count": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "planner_cache_order": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "heading_mode": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "ultrasonic_front": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "wall_cap": {
+        "status": "최신",
+        "evidence": [
+          "warp_queue"
+        ],
+        "note": "queue 선언값; 실제 장치 상태 독립 재검증 아님"
+      },
+      "speed_gate": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "speed_metric": {
+        "status": "최신",
+        "evidence": [
+          "warp_release"
+        ],
+        "note": "--batch-per-world-speed-v1 및 회수 first30 per_world_wall_SIM; 기록 전용 여부는 별도 미확인"
+      },
+      "gcp_host": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "gcp_guards": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "no_pooling": {
+        "status": "최신",
+        "evidence": [
+          "warp_queue"
+        ],
+        "note": "queue 선언값; 실제 장치 상태 독립 재검증 아님"
+      },
+      "planning_cap_basis": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "rejection_ledger": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "cap_end_label": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "gcp_project": {
+        "status": "최신",
+        "evidence": [
+          "warp_queue"
+        ],
+        "note": "project=ugrp-sim-c-1016; account actual remains unknown"
+      },
+      "gcp_account": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 host/project/account 조합 manifest 미확인"
+      }
+    },
+    "warp8_release": {
+      "physics_backend": {
+        "status": "최신",
+        "evidence": [
+          "warp_recount",
+          "warp_queue"
+        ],
+        "note": "회수 실행 명령/적용 profile.options noslip0. 빔 summary 증거를 release 성공으로 승계하지 않음; release 명령은 같은 native 소스."
+      },
+      "contact_profile": {
+        "status": "최신",
+        "evidence": [
+          "warp_recount",
+          "warp_queue"
+        ],
+        "note": "회수 실행 명령/적용 profile.options noslip0. 빔 summary 증거를 release 성공으로 승계하지 않음; release 명령은 같은 native 소스."
+      },
+      "noslip_iterations": {
+        "status": "최신",
+        "evidence": [
+          "warp_recount",
+          "warp_queue"
+        ],
+        "note": "회수 실행 명령/적용 profile.options noslip0. 빔 summary 증거를 release 성공으로 승계하지 않음; release 명령은 같은 native 소스."
+      },
+      "scene_profile": {
+        "status": "최신",
+        "evidence": [
+          "warp_release",
+          "scene"
+        ],
+        "note": "require_case_profiles에서 scene 고정. source static이며 각 raw scene hash 별도 필요."
+      },
+      "end_color_scene": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "cargo_version": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "scenario_version": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "heavy_crate": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "localization_path": {
+        "status": "옛",
+        "evidence": [
+          "warp_frozen",
+          "old_release",
+          "old_hough"
+        ],
+        "note": "RELEASE_SHA=8e81b7d의 setdown_global_v1→zone_solo_cyan_landmarks/Hough/global consensus; 질감 장면용 LK 경로 아님"
+      },
+      "rbpf": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "localization_engine": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "setdown_lookaround_v1": {
+        "status": "최신",
+        "evidence": [
+          "warp_release"
+        ],
+        "note": "기능 계열: setdown_global_v1/hidden_v1. 최신 localizer인지와 별개"
+      },
+      "held_object_hidden_v1": {
+        "status": "최신",
+        "evidence": [
+          "warp_release"
+        ],
+        "note": "기능 계열: setdown_global_v1/hidden_v1. 최신 localizer인지와 별개"
+      },
+      "held_world_reads": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "teacher_visibility": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "invisible_measurements": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "nearfield_executor": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "weld": {
+        "status": "최신",
+        "evidence": [
+          "warp_queue"
+        ],
+        "note": "queue 선언값; 실제 장치 상태 독립 재검증 아님"
+      },
+      "top_camera_control": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "planner_model": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "planner_provider": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "planner_quantization": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "planner_fallbacks": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "planner_own_rgb_count": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "planner_cache_order": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "heading_mode": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "ultrasonic_front": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "wall_cap": {
+        "status": "최신",
+        "evidence": [
+          "warp_queue"
+        ],
+        "note": "queue 선언값; 실제 장치 상태 독립 재검증 아님"
+      },
+      "speed_gate": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "speed_metric": {
+        "status": "최신",
+        "evidence": [
+          "warp_release"
+        ],
+        "note": "--batch-per-world-speed-v1 및 회수 first30 per_world_wall_SIM; 기록 전용 여부는 별도 미확인"
+      },
+      "gcp_host": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "gcp_guards": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "no_pooling": {
+        "status": "최신",
+        "evidence": [
+          "warp_queue"
+        ],
+        "note": "queue 선언값; 실제 장치 상태 독립 재검증 아님"
+      },
+      "planning_cap_basis": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "rejection_ledger": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "cap_end_label": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "gcp_project": {
+        "status": "최신",
+        "evidence": [
+          "warp_queue"
+        ],
+        "note": "project=ugrp-sim-c-1016; account actual remains unknown"
+      },
+      "gcp_account": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 host/project/account 조합 manifest 미확인"
+      }
+    },
+    "act16w_teacher": {
+      "physics_backend": {
+        "status": "최신",
+        "evidence": [
+          "act_gate",
+          "act_episode",
+          "native"
+        ],
+        "note": "native gate/record code provenance, 기록 원본은 이 작업에서 재회수하지 않음"
+      },
+      "contact_profile": {
+        "status": "최신",
+        "evidence": [
+          "act_gate",
+          "act_episode",
+          "native"
+        ],
+        "note": "native gate/record code provenance, 기록 원본은 이 작업에서 재회수하지 않음"
+      },
+      "noslip_iterations": {
+        "status": "최신",
+        "evidence": [
+          "act_gate",
+          "act_episode",
+          "native"
+        ],
+        "note": "native gate/record code provenance, 기록 원본은 이 작업에서 재회수하지 않음"
+      },
+      "scene_profile": {
+        "status": "최신",
+        "evidence": [
+          "scene_act"
+        ],
+        "note": "실행 factory scene_v5 선택 코드. raw manifest 전체를 읽은 것은 아님"
+      },
+      "end_color_scene": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "cargo_version": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "scenario_version": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "heavy_crate": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "localization_path": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "rbpf": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "localization_engine": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "setdown_lookaround_v1": {
+        "status": "최신",
+        "evidence": [
+          "act_episode",
+          "act_gate",
+          "solo_look"
+        ],
+        "note": "교사 visible-only/hidden/look 설정 및 회수 감사 원장 요약. truth-free scan은 localizer 성공 아님"
+      },
+      "held_object_hidden_v1": {
+        "status": "최신",
+        "evidence": [
+          "act_episode",
+          "act_gate",
+          "solo_look"
+        ],
+        "note": "교사 visible-only/hidden/look 설정 및 회수 감사 원장 요약. truth-free scan은 localizer 성공 아님"
+      },
+      "held_world_reads": {
+        "status": "최신",
+        "evidence": [
+          "act_episode",
+          "act_gate",
+          "solo_look"
+        ],
+        "note": "교사 visible-only/hidden/look 설정 및 회수 감사 원장 요약. truth-free scan은 localizer 성공 아님"
+      },
+      "teacher_visibility": {
+        "status": "최신",
+        "evidence": [
+          "act_episode",
+          "act_gate",
+          "solo_look"
+        ],
+        "note": "교사 visible-only/hidden/look 설정 및 회수 감사 원장 요약. truth-free scan은 localizer 성공 아님"
+      },
+      "invisible_measurements": {
+        "status": "최신",
+        "evidence": [
+          "act_episode",
+          "act_gate",
+          "solo_look"
+        ],
+        "note": "교사 visible-only/hidden/look 설정 및 회수 감사 원장 요약. truth-free scan은 localizer 성공 아님"
+      },
+      "nearfield_executor": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "weld": {
+        "status": "최신",
+        "evidence": [
+          "act_episode",
+          "act_gate",
+          "solo_look"
+        ],
+        "note": "교사 visible-only/hidden/look 설정 및 회수 감사 원장 요약. truth-free scan은 localizer 성공 아님"
+      },
+      "top_camera_control": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "planner_model": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "planner_provider": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "planner_quantization": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "planner_fallbacks": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "planner_own_rgb_count": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "planner_cache_order": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "heading_mode": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "ultrasonic_front": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "wall_cap": {
+        "status": "최신",
+        "evidence": [
+          "act_gate"
+        ],
+        "note": "wall_cap=null"
+      },
+      "speed_gate": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "speed_metric": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "gcp_host": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "gcp_guards": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "no_pooling": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "planning_cap_basis": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "rejection_ledger": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "cap_end_label": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "gcp_project": {
+        "status": "최신",
+        "evidence": [
+          "act_gate"
+        ],
+        "note": "host.project_id=ugrp-sim-b-1014; account actual remains unknown"
+      },
+      "gcp_account": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 host/project/account 조합 manifest 미확인"
+      }
+    },
+    "act16w_record": {
+      "physics_backend": {
+        "status": "최신",
+        "evidence": [
+          "act_gate",
+          "act_episode",
+          "native"
+        ],
+        "note": "native gate/record code provenance, 기록 원본은 이 작업에서 재회수하지 않음"
+      },
+      "contact_profile": {
+        "status": "최신",
+        "evidence": [
+          "act_gate",
+          "act_episode",
+          "native"
+        ],
+        "note": "native gate/record code provenance, 기록 원본은 이 작업에서 재회수하지 않음"
+      },
+      "noslip_iterations": {
+        "status": "최신",
+        "evidence": [
+          "act_gate",
+          "act_episode",
+          "native"
+        ],
+        "note": "native gate/record code provenance, 기록 원본은 이 작업에서 재회수하지 않음"
+      },
+      "scene_profile": {
+        "status": "최신",
+        "evidence": [
+          "scene_act"
+        ],
+        "note": "실행 factory scene_v5 선택 코드. raw manifest 전체를 읽은 것은 아님"
+      },
+      "end_color_scene": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "cargo_version": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "scenario_version": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "heavy_crate": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "localization_path": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "rbpf": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "localization_engine": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "setdown_lookaround_v1": {
+        "status": "최신",
+        "evidence": [
+          "act_episode",
+          "act_gate",
+          "solo_look"
+        ],
+        "note": "교사 visible-only/hidden/look 설정 및 회수 감사 원장 요약. truth-free scan은 localizer 성공 아님"
+      },
+      "held_object_hidden_v1": {
+        "status": "최신",
+        "evidence": [
+          "act_episode",
+          "act_gate",
+          "solo_look"
+        ],
+        "note": "교사 visible-only/hidden/look 설정 및 회수 감사 원장 요약. truth-free scan은 localizer 성공 아님"
+      },
+      "held_world_reads": {
+        "status": "최신",
+        "evidence": [
+          "act_episode",
+          "act_gate",
+          "solo_look"
+        ],
+        "note": "교사 visible-only/hidden/look 설정 및 회수 감사 원장 요약. truth-free scan은 localizer 성공 아님"
+      },
+      "teacher_visibility": {
+        "status": "최신",
+        "evidence": [
+          "act_episode",
+          "act_gate",
+          "solo_look"
+        ],
+        "note": "교사 visible-only/hidden/look 설정 및 회수 감사 원장 요약. truth-free scan은 localizer 성공 아님"
+      },
+      "invisible_measurements": {
+        "status": "최신",
+        "evidence": [
+          "act_episode",
+          "act_gate",
+          "solo_look"
+        ],
+        "note": "교사 visible-only/hidden/look 설정 및 회수 감사 원장 요약. truth-free scan은 localizer 성공 아님"
+      },
+      "nearfield_executor": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "weld": {
+        "status": "최신",
+        "evidence": [
+          "act_episode",
+          "act_gate",
+          "solo_look"
+        ],
+        "note": "교사 visible-only/hidden/look 설정 및 회수 감사 원장 요약. truth-free scan은 localizer 성공 아님"
+      },
+      "top_camera_control": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "planner_model": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "planner_provider": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "planner_quantization": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "planner_fallbacks": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "planner_own_rgb_count": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "planner_cache_order": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "heading_mode": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "ultrasonic_front": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "wall_cap": {
+        "status": "최신",
+        "evidence": [
+          "act_gate"
+        ],
+        "note": "wall_cap=null"
+      },
+      "speed_gate": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "speed_metric": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "gcp_host": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "gcp_guards": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "no_pooling": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "planning_cap_basis": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "rejection_ledger": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "cap_end_label": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "gcp_project": {
+        "status": "최신",
+        "evidence": [
+          "act_gate"
+        ],
+        "note": "host.project_id=ugrp-sim-b-1014; account actual remains unknown"
+      },
+      "gcp_account": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 host/project/account 조합 manifest 미확인"
+      }
+    },
+    "act16w_train": {
+      "physics_backend": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "contact_profile": {
+        "status": "최신",
+        "evidence": [
+          "act_train"
+        ],
+        "note": "admission contact_profile→training configuration 전달. 전체 데이터 manifest 검증과 별개"
+      },
+      "noslip_iterations": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "scene_profile": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "end_color_scene": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "cargo_version": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "scenario_version": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "heavy_crate": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "localization_path": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "rbpf": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "localization_engine": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "setdown_lookaround_v1": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "held_object_hidden_v1": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "held_world_reads": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "teacher_visibility": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "invisible_measurements": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "nearfield_executor": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "weld": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "top_camera_control": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "planner_model": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "planner_provider": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "planner_quantization": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "planner_fallbacks": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "planner_own_rgb_count": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "planner_cache_order": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "heading_mode": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "ultrasonic_front": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "wall_cap": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "speed_gate": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "speed_metric": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "gcp_host": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "gcp_guards": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "no_pooling": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "planning_cap_basis": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "rejection_ledger": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "cap_end_label": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "gcp_project": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 host/project/account 조합 manifest 미확인"
+      },
+      "gcp_account": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 host/project/account 조합 manifest 미확인"
+      }
+    },
+    "act16w_eval": {
+      "physics_backend": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "contact_profile": {
+        "status": "최신",
+        "evidence": [
+          "act_eval"
+        ],
+        "note": "ACT actor; UGRP_ACT16W_NATIVE_GATE와 checkpoint provenance 동등성 검사, 실행 시 환경값은 미확인"
+      },
+      "noslip_iterations": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "scene_profile": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "end_color_scene": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "cargo_version": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "scenario_version": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "heavy_crate": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "localization_path": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "rbpf": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "localization_engine": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "setdown_lookaround_v1": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "held_object_hidden_v1": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "held_world_reads": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "teacher_visibility": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "invisible_measurements": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "nearfield_executor": {
+        "status": "최신",
+        "evidence": [
+          "act_eval"
+        ],
+        "note": "ACT actor; UGRP_ACT16W_NATIVE_GATE와 checkpoint provenance 동등성 검사, 실행 시 환경값은 미확인"
+      },
+      "weld": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "top_camera_control": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "planner_model": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "planner_provider": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "planner_quantization": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "planner_fallbacks": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "planner_own_rgb_count": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "planner_cache_order": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "heading_mode": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "ultrasonic_front": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "wall_cap": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "speed_gate": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "speed_metric": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "gcp_host": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "gcp_guards": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "no_pooling": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "planning_cap_basis": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "rejection_ledger": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "cap_end_label": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "gcp_project": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 host/project/account 조합 manifest 미확인"
+      },
+      "gcp_account": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 host/project/account 조합 manifest 미확인"
+      }
+    },
+    "mapbuild6": {
+      "physics_backend": {
+        "status": "최신",
+        "evidence": [
+          "map_scene",
+          "localization",
+          "lk"
+        ],
+        "note": "고정 소스의 native XML + MJWarp capture, s1_normal_mixed_v7, OpenCV LK/색 경계 비교. 실제 관문 통과 미확인"
+      },
+      "contact_profile": {
+        "status": "최신",
+        "evidence": [
+          "map_scene",
+          "localization",
+          "lk"
+        ],
+        "note": "고정 소스의 native XML + MJWarp capture, s1_normal_mixed_v7, OpenCV LK/색 경계 비교. 실제 관문 통과 미확인"
+      },
+      "noslip_iterations": {
+        "status": "최신",
+        "evidence": [
+          "map_scene",
+          "localization",
+          "lk"
+        ],
+        "note": "고정 소스의 native XML + MJWarp capture, s1_normal_mixed_v7, OpenCV LK/색 경계 비교. 실제 관문 통과 미확인"
+      },
+      "scene_profile": {
+        "status": "최신",
+        "evidence": [
+          "map_scene",
+          "localization",
+          "lk"
+        ],
+        "note": "고정 소스의 native XML + MJWarp capture, s1_normal_mixed_v7, OpenCV LK/색 경계 비교. 실제 관문 통과 미확인"
+      },
+      "end_color_scene": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "cargo_version": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "scenario_version": {
+        "status": "최신",
+        "evidence": [
+          "map_scene",
+          "localization",
+          "lk"
+        ],
+        "note": "고정 소스의 native XML + MJWarp capture, s1_normal_mixed_v7, OpenCV LK/색 경계 비교. 실제 관문 통과 미확인"
+      },
+      "heavy_crate": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "localization_path": {
+        "status": "최신",
+        "evidence": [
+          "map_scene",
+          "localization",
+          "lk"
+        ],
+        "note": "고정 소스의 native XML + MJWarp capture, s1_normal_mixed_v7, OpenCV LK/색 경계 비교. 실제 관문 통과 미확인"
+      },
+      "rbpf": {
+        "status": "모름",
+        "evidence": [
+          "localization_pending"
+        ],
+        "note": "LK/RBPF 비교 후보이며 mapbuild6 판정 대기. 기본 채택 없음"
+      },
+      "localization_engine": {
+        "status": "최신",
+        "evidence": [
+          "map_scene",
+          "localization",
+          "lk"
+        ],
+        "note": "고정 소스의 native XML + MJWarp capture, s1_normal_mixed_v7, OpenCV LK/색 경계 비교. 실제 관문 통과 미확인"
+      },
+      "setdown_lookaround_v1": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "held_object_hidden_v1": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "held_world_reads": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "teacher_visibility": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "invisible_measurements": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "nearfield_executor": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "weld": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "top_camera_control": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "planner_model": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "planner_provider": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "planner_quantization": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "planner_fallbacks": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "planner_own_rgb_count": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "planner_cache_order": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "heading_mode": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "ultrasonic_front": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "wall_cap": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "speed_gate": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "speed_metric": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "gcp_host": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "gcp_guards": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "no_pooling": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "planning_cap_basis": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "rejection_ledger": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "cap_end_label": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "gcp_project": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 host/project/account 조합 manifest 미확인"
+      },
+      "gcp_account": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 host/project/account 조합 manifest 미확인"
+      }
+    },
+    "act_cpu_check": {
+      "physics_backend": {
+        "status": "옛",
+        "evidence": [
+          "cpu_eval",
+          "cpu_physics",
+          "cpu_contact",
+          "e2e"
+        ],
+        "note": "main의 CPU mj_step + cargo_noslip_v1/noslip10. CPU 확인은 비교 허용이나 새 실행 이탈을 명시해야 함; E2E primary는 MJWarp로 교체 대상"
+      },
+      "contact_profile": {
+        "status": "옛",
+        "evidence": [
+          "cpu_eval",
+          "cpu_physics",
+          "cpu_contact",
+          "e2e"
+        ],
+        "note": "main의 CPU mj_step + cargo_noslip_v1/noslip10. CPU 확인은 비교 허용이나 새 실행 이탈을 명시해야 함; E2E primary는 MJWarp로 교체 대상"
+      },
+      "noslip_iterations": {
+        "status": "옛",
+        "evidence": [
+          "cpu_eval",
+          "cpu_physics",
+          "cpu_contact",
+          "e2e"
+        ],
+        "note": "main의 CPU mj_step + cargo_noslip_v1/noslip10. CPU 확인은 비교 허용이나 새 실행 이탈을 명시해야 함; E2E primary는 MJWarp로 교체 대상"
+      },
+      "scene_profile": {
+        "status": "옛",
+        "evidence": [
+          "cpu_eval"
+        ],
+        "note": "floor_light_v1. 최신 벽/바닥 질감·색 분리 미적용"
+      },
+      "end_color_scene": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "cargo_version": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "scenario_version": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "heavy_crate": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "localization_path": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "rbpf": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "localization_engine": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "setdown_lookaround_v1": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "held_object_hidden_v1": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "held_world_reads": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "teacher_visibility": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "invisible_measurements": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "nearfield_executor": {
+        "status": "최신",
+        "evidence": [
+          "cpu_eval",
+          "input"
+        ],
+        "note": "ACT 학생 경로"
+      },
+      "weld": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "top_camera_control": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "planner_model": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "planner_provider": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "planner_quantization": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "planner_fallbacks": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "planner_own_rgb_count": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "planner_cache_order": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "heading_mode": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "ultrasonic_front": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "wall_cap": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "speed_gate": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "speed_metric": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "gcp_host": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "gcp_guards": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "no_pooling": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "planning_cap_basis": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "rejection_ledger": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "cap_end_label": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "gcp_project": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 host/project/account 조합 manifest 미확인"
+      },
+      "gcp_account": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 host/project/account 조합 manifest 미확인"
+      }
+    },
+    "llm_e2e": {
+      "physics_backend": {
+        "status": "옛",
+        "evidence": [
+          "cpu_eval",
+          "cpu_physics",
+          "cpu_contact",
+          "e2e"
+        ],
+        "note": "main의 CPU mj_step + cargo_noslip_v1/noslip10. CPU 확인은 비교 허용이나 새 실행 이탈을 명시해야 함; E2E primary는 MJWarp로 교체 대상"
+      },
+      "contact_profile": {
+        "status": "옛",
+        "evidence": [
+          "cpu_eval",
+          "cpu_physics",
+          "cpu_contact",
+          "e2e"
+        ],
+        "note": "main의 CPU mj_step + cargo_noslip_v1/noslip10. CPU 확인은 비교 허용이나 새 실행 이탈을 명시해야 함; E2E primary는 MJWarp로 교체 대상"
+      },
+      "noslip_iterations": {
+        "status": "옛",
+        "evidence": [
+          "cpu_eval",
+          "cpu_physics",
+          "cpu_contact",
+          "e2e"
+        ],
+        "note": "main의 CPU mj_step + cargo_noslip_v1/noslip10. CPU 확인은 비교 허용이나 새 실행 이탈을 명시해야 함; E2E primary는 MJWarp로 교체 대상"
+      },
+      "scene_profile": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "end_color_scene": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "cargo_version": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "scenario_version": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "heavy_crate": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "localization_path": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "rbpf": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "localization_engine": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "setdown_lookaround_v1": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "held_object_hidden_v1": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "held_world_reads": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "teacher_visibility": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "invisible_measurements": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "nearfield_executor": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "weld": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "top_camera_control": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "planner_model": {
+        "status": "최신",
+        "evidence": [
+          "llm"
+        ],
+        "note": "현행 endpoint config는 CoreWeave fp4. 실제 다음 bundle.llm_upstream/요청 manifest는 확인 안 됨"
+      },
+      "planner_provider": {
+        "status": "최신",
+        "evidence": [
+          "llm"
+        ],
+        "note": "현행 endpoint config는 CoreWeave fp4. 실제 다음 bundle.llm_upstream/요청 manifest는 확인 안 됨"
+      },
+      "planner_quantization": {
+        "status": "최신",
+        "evidence": [
+          "llm"
+        ],
+        "note": "현행 endpoint config는 CoreWeave fp4. 실제 다음 bundle.llm_upstream/요청 manifest는 확인 안 됨"
+      },
+      "planner_fallbacks": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "planner_own_rgb_count": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "planner_cache_order": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "heading_mode": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "ultrasonic_front": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "wall_cap": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "speed_gate": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "speed_metric": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "gcp_host": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "gcp_guards": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "no_pooling": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "planning_cap_basis": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "rejection_ledger": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "cap_end_label": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "gcp_project": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 host/project/account 조합 manifest 미확인"
+      },
+      "gcp_account": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 host/project/account 조합 manifest 미확인"
+      }
+    },
+    "beam_pair_teacher": {
+      "physics_backend": {
+        "status": "최신",
+        "evidence": [
+          "warp_recount",
+          "warp_queue"
+        ],
+        "note": "회수 실행 명령/적용 profile.options noslip0. 빔 summary 증거를 release 성공으로 승계하지 않음; release 명령은 같은 native 소스."
+      },
+      "contact_profile": {
+        "status": "최신",
+        "evidence": [
+          "warp_recount",
+          "warp_queue"
+        ],
+        "note": "회수 실행 명령/적용 profile.options noslip0. 빔 summary 증거를 release 성공으로 승계하지 않음; release 명령은 같은 native 소스."
+      },
+      "noslip_iterations": {
+        "status": "최신",
+        "evidence": [
+          "warp_recount",
+          "warp_queue"
+        ],
+        "note": "회수 실행 명령/적용 profile.options noslip0. 빔 summary 증거를 release 성공으로 승계하지 않음; release 명령은 같은 native 소스."
+      },
+      "scene_profile": {
+        "status": "최신",
+        "evidence": [
+          "warp_release",
+          "scene"
+        ],
+        "note": "require_case_profiles에서 scene 고정. source static이며 각 raw scene hash 별도 필요."
+      },
+      "end_color_scene": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "cargo_version": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "scenario_version": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "heavy_crate": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "localization_path": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "rbpf": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "localization_engine": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "setdown_lookaround_v1": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "held_object_hidden_v1": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "held_world_reads": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "teacher_visibility": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "invisible_measurements": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "nearfield_executor": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "weld": {
+        "status": "최신",
+        "evidence": [
+          "warp_queue"
+        ],
+        "note": "queue 선언값; 실제 장치 상태 독립 재검증 아님"
+      },
+      "top_camera_control": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "planner_model": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "planner_provider": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "planner_quantization": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "planner_fallbacks": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "planner_own_rgb_count": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "planner_cache_order": {
+        "status": "해당없음",
+        "evidence": [],
+        "note": "기준표 적용 흐름 밖"
+      },
+      "heading_mode": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "ultrasonic_front": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "wall_cap": {
+        "status": "최신",
+        "evidence": [
+          "warp_queue"
+        ],
+        "note": "queue 선언값; 실제 장치 상태 독립 재검증 아님"
+      },
+      "speed_gate": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "speed_metric": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "gcp_host": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "gcp_guards": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "no_pooling": {
+        "status": "최신",
+        "evidence": [
+          "warp_queue"
+        ],
+        "note": "queue 선언값; 실제 장치 상태 독립 재검증 아님"
+      },
+      "planning_cap_basis": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "rejection_ledger": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "cap_end_label": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 적용값/manifest 필드 미확인"
+      },
+      "gcp_project": {
+        "status": "최신",
+        "evidence": [
+          "warp_queue"
+        ],
+        "note": "project=ugrp-sim-c-1016; account actual remains unknown"
+      },
+      "gcp_account": {
+        "status": "모름",
+        "evidence": [],
+        "note": "실제 host/project/account 조합 manifest 미확인"
+      }
+    }
+  },
+  "old_cells": [
+    {
+      "flow": "warp8_release",
+      "id": "localization_path",
+      "status": "옛",
+      "evidence": [
+        "warp_frozen",
+        "old_release",
+        "old_hough"
+      ],
+      "note": "RELEASE_SHA=8e81b7d의 setdown_global_v1→zone_solo_cyan_landmarks/Hough/global consensus; 질감 장면용 LK 경로 아님"
+    },
+    {
+      "flow": "act_cpu_check",
+      "id": "physics_backend",
+      "status": "옛",
+      "evidence": [
+        "cpu_eval",
+        "cpu_physics",
+        "cpu_contact",
+        "e2e"
+      ],
+      "note": "main의 CPU mj_step + cargo_noslip_v1/noslip10. CPU 확인은 비교 허용이나 새 실행 이탈을 명시해야 함; E2E primary는 MJWarp로 교체 대상"
+    },
+    {
+      "flow": "act_cpu_check",
+      "id": "contact_profile",
+      "status": "옛",
+      "evidence": [
+        "cpu_eval",
+        "cpu_physics",
+        "cpu_contact",
+        "e2e"
+      ],
+      "note": "main의 CPU mj_step + cargo_noslip_v1/noslip10. CPU 확인은 비교 허용이나 새 실행 이탈을 명시해야 함; E2E primary는 MJWarp로 교체 대상"
+    },
+    {
+      "flow": "act_cpu_check",
+      "id": "noslip_iterations",
+      "status": "옛",
+      "evidence": [
+        "cpu_eval",
+        "cpu_physics",
+        "cpu_contact",
+        "e2e"
+      ],
+      "note": "main의 CPU mj_step + cargo_noslip_v1/noslip10. CPU 확인은 비교 허용이나 새 실행 이탈을 명시해야 함; E2E primary는 MJWarp로 교체 대상"
+    },
+    {
+      "flow": "act_cpu_check",
+      "id": "scene_profile",
+      "status": "옛",
+      "evidence": [
+        "cpu_eval"
+      ],
+      "note": "floor_light_v1. 최신 벽/바닥 질감·색 분리 미적용"
+    },
+    {
+      "flow": "llm_e2e",
+      "id": "physics_backend",
+      "status": "옛",
+      "evidence": [
+        "cpu_eval",
+        "cpu_physics",
+        "cpu_contact",
+        "e2e"
+      ],
+      "note": "main의 CPU mj_step + cargo_noslip_v1/noslip10. CPU 확인은 비교 허용이나 새 실행 이탈을 명시해야 함; E2E primary는 MJWarp로 교체 대상"
+    },
+    {
+      "flow": "llm_e2e",
+      "id": "contact_profile",
+      "status": "옛",
+      "evidence": [
+        "cpu_eval",
+        "cpu_physics",
+        "cpu_contact",
+        "e2e"
+      ],
+      "note": "main의 CPU mj_step + cargo_noslip_v1/noslip10. CPU 확인은 비교 허용이나 새 실행 이탈을 명시해야 함; E2E primary는 MJWarp로 교체 대상"
+    },
+    {
+      "flow": "llm_e2e",
+      "id": "noslip_iterations",
+      "status": "옛",
+      "evidence": [
+        "cpu_eval",
+        "cpu_physics",
+        "cpu_contact",
+        "e2e"
+      ],
+      "note": "main의 CPU mj_step + cargo_noslip_v1/noslip10. CPU 확인은 비교 허용이나 새 실행 이탈을 명시해야 함; E2E primary는 MJWarp로 교체 대상"
+    }
+  ]
+}

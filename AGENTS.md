@@ -81,6 +81,8 @@
 
 2026-09-24 사용자 요청(2026-09-26 Kiro 추가)에 따라 Claude·Codex·Kiro가 같은 Mac·저장소에서 동시에 작업할 때 다음을 지킨다. 브랜치 접두사(`claude/`, `codex/`, `kiro/`)로 작업 주체를 구분한다.
 
+- **최신 스택 제출 관문 (2026-10-17 사용자: "이런 것들, 최신으로 업데이트 좀 제대로 해봐. 왜 자꾸 까먹는 거야"):** 새 대기열·실행 제출 전 `python3 scripts/check_current_stack.py <queue/manifest/summary.json> --flow <흐름> --output <새 결과.json>`을 통과해야 하며(이탈은 항목별 이유·사용자/조정자 승인 근거를 `stack_deviations`에 명시, 과거 재생은 `replay_of`로 구분), 조정자는 입력·기준표 SHA가 맞는 점검 결과 파일 없는 대기열을 승인하지 않는다; 사용자 결정이 바뀌면 같은 PR에서 `configs/current_stack.json`을 고친다([계약·사용법](experiments/2026-10-17-stackaudit/README.md)).
+
 - **시작 전 확인:** `git fetch origin`과 `gh pr list`로 열린 PR과 관련 `experiments/` 기록을 읽는다. 같은 주제의 작업이 있으면 범위·가설·결과를 그 PR 코멘트로 알리고 중복 구현을 피한다. 상대 결과를 자신의 증거로 합산하지 않는다. 에이전트 사이의 피드백은 PR 코멘트와 실험 기록으로 남긴다.
 - **물리·학습 잠금:** Mac realtime native 실행과 Mac에서의 학습·추론 속도 측정은 시작 전에 `python3 scripts/agent_lock.py acquire --owner <claude|codex|kiro> --branch <브랜치> --purpose <목적> --pid <드라이버 PID> --expected-minutes <분>`으로 배타 잠금을 잡고, 끝나면 `release`한다. 다른 에이전트는 `status`로 잠금을 확인하고, 잠금이 있는 동안 물리·학습을 새로 시작하지 않는다. 잠금 없이 도는 동기 모드 SIM 시간 실험도 실행마다 부하 평균을 기록한다. 기록된 PID가 죽은 잠금만 `--stale`로 해제하며 다른 작업의 프로세스는 종료하지 않는다. oracle-x86의 속도 비교는 잠금 없이 짝지어 동시 실행하며 "가벼운 개발 진행"의 시뮬레이션 항목을 따른다.
 - **Kiro:** `kiro-cli`는 단독 실행 시 `kiro/` 브랜치의 자기 worktree에서 작업한다. Claude·Codex가 `kiro-plugin-cc` 등으로 Kiro를 하위 도구로 부르면 호출한 에이전트의 브랜치·worktree 안에서만 실행하고 결과·검증 책임도 호출자가 진다. `--trust-all-tools`(파일 수정·명령 실행 무확인)는 해당 worktree 안에서만 허용하고 기본 체크아웃에서는 `--no-trust-all-tools`를 쓴다. Kiro 모델은 2026-09-26 사용자 요청에 따라 `claude-opus-5`·effort `max`이며, `kiro-cli` 전역 설정(`chat.defaultModel`, `chat.modelDefaults`)으로 적용한다. Kiro 출력은 별도 검증 전까지 증거로 합산하지 않는다.
