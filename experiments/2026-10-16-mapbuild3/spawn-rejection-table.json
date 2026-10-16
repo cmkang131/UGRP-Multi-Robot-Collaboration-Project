@@ -1,0 +1,1537 @@
+{
+  "raw": "/home/ugrp/ugrp-sim/runs/mapbuild3/prepare-r1b",
+  "reproduction": [
+    "scripts/mapbuild3_prepare.py",
+    "--renderer-source",
+    "/home/ugrp/ugrp-sim/src/drivecheck-renderer-5974a181",
+    "--output",
+    "/home/ugrp/ugrp-sim/runs/mapbuild3/prepare-r1b",
+    "--spawn-overlap-check-v1"
+  ],
+  "rows": [
+    {
+      "pose": "drive",
+      "candidate": "original_mapbuild2",
+      "enabled": true,
+      "accepted": false,
+      "status": "rejected",
+      "allowed_depth_m": 0.0,
+      "contact_points_n": 4,
+      "rejected_contact_points_n": 4,
+      "pair_count": 1,
+      "reasons": {
+        "robot_nonfloor": 4
+      },
+      "minimum_gap_m": -0.015344881182340743,
+      "gap_status": "measured_contact_subset",
+      "rejections": [
+        {
+          "category": "robot_nonfloor",
+          "reason": "t0_geometric_penetration",
+          "blocked_object": "r1__base_lower_collision <-> cargo_box_00_geom",
+          "geoms": [
+            "r1__base_lower_collision",
+            "cargo_box_00_geom"
+          ],
+          "bodies": [
+            "r1__robot",
+            "cargo_box_00"
+          ],
+          "minimum_gap_m": -0.015344881182340743,
+          "penetration_depth_m": 0.015344881182340743,
+          "gap_status": "measured",
+          "geom_margin_m": [
+            0.0,
+            0.0
+          ],
+          "solimp": [
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ],
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ]
+          ]
+        },
+        {
+          "category": "robot_nonfloor",
+          "reason": "t0_geometric_penetration",
+          "blocked_object": "r1__base_lower_collision <-> cargo_box_00_geom",
+          "geoms": [
+            "r1__base_lower_collision",
+            "cargo_box_00_geom"
+          ],
+          "bodies": [
+            "r1__robot",
+            "cargo_box_00"
+          ],
+          "minimum_gap_m": -0.015344881182340743,
+          "penetration_depth_m": 0.015344881182340743,
+          "gap_status": "measured",
+          "geom_margin_m": [
+            0.0,
+            0.0
+          ],
+          "solimp": [
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ],
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ]
+          ]
+        },
+        {
+          "category": "robot_nonfloor",
+          "reason": "t0_geometric_penetration",
+          "blocked_object": "r1__base_lower_collision <-> cargo_box_00_geom",
+          "geoms": [
+            "r1__base_lower_collision",
+            "cargo_box_00_geom"
+          ],
+          "bodies": [
+            "r1__robot",
+            "cargo_box_00"
+          ],
+          "minimum_gap_m": -0.015344881182340743,
+          "penetration_depth_m": 0.015344881182340743,
+          "gap_status": "measured",
+          "geom_margin_m": [
+            0.0,
+            0.0
+          ],
+          "solimp": [
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ],
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ]
+          ]
+        },
+        {
+          "category": "robot_nonfloor",
+          "reason": "t0_geometric_penetration",
+          "blocked_object": "r1__base_lower_collision <-> cargo_box_00_geom",
+          "geoms": [
+            "r1__base_lower_collision",
+            "cargo_box_00_geom"
+          ],
+          "bodies": [
+            "r1__robot",
+            "cargo_box_00"
+          ],
+          "minimum_gap_m": -0.015344881182340743,
+          "penetration_depth_m": 0.015344881182340743,
+          "gap_status": "measured",
+          "geom_margin_m": [
+            0.0,
+            0.0
+          ],
+          "solimp": [
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ],
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ]
+          ]
+        }
+      ],
+      "time_sim_s": 0.0,
+      "all_contact_points_n": 68,
+      "floor_geoms": [
+        "floor"
+      ],
+      "cargo_bodies": [
+        "blue_block",
+        "cargo_box_00",
+        "cargo_box_01",
+        "cargo_box_02",
+        "cargo_box_03",
+        "cargo_tex2_beam",
+        "dispatch_box",
+        "red_block",
+        "team_beam",
+        "warehouse_oak_plank",
+        "warehouse_steel_pipe",
+        "warehouse_wood_crate",
+        "yellow_block"
+      ],
+      "wall_geoms": [
+        "zone_wall_divider_1",
+        "zone_wall_divider_2",
+        "zone_wall_east",
+        "zone_wall_h1_east_cross",
+        "zone_wall_h1_east_lower",
+        "zone_wall_h1_east_middle",
+        "zone_wall_h1_east_upper",
+        "zone_wall_north",
+        "zone_wall_south",
+        "zone_wall_west"
+      ],
+      "scope": "native mj_forward contact subset at supplied setup; no CPU integration; no actor feedback"
+    },
+    {
+      "pose": "high",
+      "candidate": "original_mapbuild2",
+      "enabled": true,
+      "accepted": false,
+      "status": "rejected",
+      "allowed_depth_m": 0.0,
+      "contact_points_n": 4,
+      "rejected_contact_points_n": 4,
+      "pair_count": 1,
+      "reasons": {
+        "robot_nonfloor": 4
+      },
+      "minimum_gap_m": -0.015344881182340743,
+      "gap_status": "measured_contact_subset",
+      "rejections": [
+        {
+          "category": "robot_nonfloor",
+          "reason": "t0_geometric_penetration",
+          "blocked_object": "r1__base_lower_collision <-> cargo_box_00_geom",
+          "geoms": [
+            "r1__base_lower_collision",
+            "cargo_box_00_geom"
+          ],
+          "bodies": [
+            "r1__robot",
+            "cargo_box_00"
+          ],
+          "minimum_gap_m": -0.015344881182340743,
+          "penetration_depth_m": 0.015344881182340743,
+          "gap_status": "measured",
+          "geom_margin_m": [
+            0.0,
+            0.0
+          ],
+          "solimp": [
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ],
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ]
+          ]
+        },
+        {
+          "category": "robot_nonfloor",
+          "reason": "t0_geometric_penetration",
+          "blocked_object": "r1__base_lower_collision <-> cargo_box_00_geom",
+          "geoms": [
+            "r1__base_lower_collision",
+            "cargo_box_00_geom"
+          ],
+          "bodies": [
+            "r1__robot",
+            "cargo_box_00"
+          ],
+          "minimum_gap_m": -0.015344881182340743,
+          "penetration_depth_m": 0.015344881182340743,
+          "gap_status": "measured",
+          "geom_margin_m": [
+            0.0,
+            0.0
+          ],
+          "solimp": [
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ],
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ]
+          ]
+        },
+        {
+          "category": "robot_nonfloor",
+          "reason": "t0_geometric_penetration",
+          "blocked_object": "r1__base_lower_collision <-> cargo_box_00_geom",
+          "geoms": [
+            "r1__base_lower_collision",
+            "cargo_box_00_geom"
+          ],
+          "bodies": [
+            "r1__robot",
+            "cargo_box_00"
+          ],
+          "minimum_gap_m": -0.015344881182340743,
+          "penetration_depth_m": 0.015344881182340743,
+          "gap_status": "measured",
+          "geom_margin_m": [
+            0.0,
+            0.0
+          ],
+          "solimp": [
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ],
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ]
+          ]
+        },
+        {
+          "category": "robot_nonfloor",
+          "reason": "t0_geometric_penetration",
+          "blocked_object": "r1__base_lower_collision <-> cargo_box_00_geom",
+          "geoms": [
+            "r1__base_lower_collision",
+            "cargo_box_00_geom"
+          ],
+          "bodies": [
+            "r1__robot",
+            "cargo_box_00"
+          ],
+          "minimum_gap_m": -0.015344881182340743,
+          "penetration_depth_m": 0.015344881182340743,
+          "gap_status": "measured",
+          "geom_margin_m": [
+            0.0,
+            0.0
+          ],
+          "solimp": [
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ],
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ]
+          ]
+        }
+      ],
+      "time_sim_s": 0.0,
+      "all_contact_points_n": 68,
+      "floor_geoms": [
+        "floor"
+      ],
+      "cargo_bodies": [
+        "blue_block",
+        "cargo_box_00",
+        "cargo_box_01",
+        "cargo_box_02",
+        "cargo_box_03",
+        "cargo_tex2_beam",
+        "dispatch_box",
+        "red_block",
+        "team_beam",
+        "warehouse_oak_plank",
+        "warehouse_steel_pipe",
+        "warehouse_wood_crate",
+        "yellow_block"
+      ],
+      "wall_geoms": [
+        "zone_wall_divider_1",
+        "zone_wall_divider_2",
+        "zone_wall_east",
+        "zone_wall_h1_east_cross",
+        "zone_wall_h1_east_lower",
+        "zone_wall_h1_east_middle",
+        "zone_wall_h1_east_upper",
+        "zone_wall_north",
+        "zone_wall_south",
+        "zone_wall_west"
+      ],
+      "scope": "native mj_forward contact subset at supplied setup; no CPU integration; no actor feedback"
+    },
+    {
+      "pose": "drive",
+      "candidate": "common-lattice-0",
+      "offset_cells": [
+        0,
+        0
+      ],
+      "spacing_m": 0.42797363978083836,
+      "enabled": true,
+      "accepted": false,
+      "status": "rejected",
+      "allowed_depth_m": 0.0,
+      "contact_points_n": 4,
+      "rejected_contact_points_n": 4,
+      "pair_count": 1,
+      "reasons": {
+        "robot_nonfloor": 4
+      },
+      "minimum_gap_m": -0.015344881182340743,
+      "gap_status": "measured_contact_subset",
+      "rejections": [
+        {
+          "category": "robot_nonfloor",
+          "reason": "t0_geometric_penetration",
+          "blocked_object": "r1__base_lower_collision <-> cargo_box_00_geom",
+          "geoms": [
+            "r1__base_lower_collision",
+            "cargo_box_00_geom"
+          ],
+          "bodies": [
+            "r1__robot",
+            "cargo_box_00"
+          ],
+          "minimum_gap_m": -0.015344881182340743,
+          "penetration_depth_m": 0.015344881182340743,
+          "gap_status": "measured",
+          "geom_margin_m": [
+            0.0,
+            0.0
+          ],
+          "solimp": [
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ],
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ]
+          ]
+        },
+        {
+          "category": "robot_nonfloor",
+          "reason": "t0_geometric_penetration",
+          "blocked_object": "r1__base_lower_collision <-> cargo_box_00_geom",
+          "geoms": [
+            "r1__base_lower_collision",
+            "cargo_box_00_geom"
+          ],
+          "bodies": [
+            "r1__robot",
+            "cargo_box_00"
+          ],
+          "minimum_gap_m": -0.015344881182340743,
+          "penetration_depth_m": 0.015344881182340743,
+          "gap_status": "measured",
+          "geom_margin_m": [
+            0.0,
+            0.0
+          ],
+          "solimp": [
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ],
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ]
+          ]
+        },
+        {
+          "category": "robot_nonfloor",
+          "reason": "t0_geometric_penetration",
+          "blocked_object": "r1__base_lower_collision <-> cargo_box_00_geom",
+          "geoms": [
+            "r1__base_lower_collision",
+            "cargo_box_00_geom"
+          ],
+          "bodies": [
+            "r1__robot",
+            "cargo_box_00"
+          ],
+          "minimum_gap_m": -0.015344881182340743,
+          "penetration_depth_m": 0.015344881182340743,
+          "gap_status": "measured",
+          "geom_margin_m": [
+            0.0,
+            0.0
+          ],
+          "solimp": [
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ],
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ]
+          ]
+        },
+        {
+          "category": "robot_nonfloor",
+          "reason": "t0_geometric_penetration",
+          "blocked_object": "r1__base_lower_collision <-> cargo_box_00_geom",
+          "geoms": [
+            "r1__base_lower_collision",
+            "cargo_box_00_geom"
+          ],
+          "bodies": [
+            "r1__robot",
+            "cargo_box_00"
+          ],
+          "minimum_gap_m": -0.015344881182340743,
+          "penetration_depth_m": 0.015344881182340743,
+          "gap_status": "measured",
+          "geom_margin_m": [
+            0.0,
+            0.0
+          ],
+          "solimp": [
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ],
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ]
+          ]
+        }
+      ],
+      "time_sim_s": 0.0,
+      "all_contact_points_n": 68,
+      "floor_geoms": [
+        "floor"
+      ],
+      "cargo_bodies": [
+        "blue_block",
+        "cargo_box_00",
+        "cargo_box_01",
+        "cargo_box_02",
+        "cargo_box_03",
+        "cargo_tex2_beam",
+        "dispatch_box",
+        "red_block",
+        "team_beam",
+        "warehouse_oak_plank",
+        "warehouse_steel_pipe",
+        "warehouse_wood_crate",
+        "yellow_block"
+      ],
+      "wall_geoms": [
+        "zone_wall_divider_1",
+        "zone_wall_divider_2",
+        "zone_wall_east",
+        "zone_wall_h1_east_cross",
+        "zone_wall_h1_east_lower",
+        "zone_wall_h1_east_middle",
+        "zone_wall_h1_east_upper",
+        "zone_wall_north",
+        "zone_wall_south",
+        "zone_wall_west"
+      ],
+      "scope": "native mj_forward contact subset at supplied setup; no CPU integration; no actor feedback"
+    },
+    {
+      "pose": "high",
+      "candidate": "common-lattice-0",
+      "offset_cells": [
+        0,
+        0
+      ],
+      "spacing_m": 0.42797363978083836,
+      "enabled": true,
+      "accepted": false,
+      "status": "rejected",
+      "allowed_depth_m": 0.0,
+      "contact_points_n": 4,
+      "rejected_contact_points_n": 4,
+      "pair_count": 1,
+      "reasons": {
+        "robot_nonfloor": 4
+      },
+      "minimum_gap_m": -0.015344881182340743,
+      "gap_status": "measured_contact_subset",
+      "rejections": [
+        {
+          "category": "robot_nonfloor",
+          "reason": "t0_geometric_penetration",
+          "blocked_object": "r1__base_lower_collision <-> cargo_box_00_geom",
+          "geoms": [
+            "r1__base_lower_collision",
+            "cargo_box_00_geom"
+          ],
+          "bodies": [
+            "r1__robot",
+            "cargo_box_00"
+          ],
+          "minimum_gap_m": -0.015344881182340743,
+          "penetration_depth_m": 0.015344881182340743,
+          "gap_status": "measured",
+          "geom_margin_m": [
+            0.0,
+            0.0
+          ],
+          "solimp": [
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ],
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ]
+          ]
+        },
+        {
+          "category": "robot_nonfloor",
+          "reason": "t0_geometric_penetration",
+          "blocked_object": "r1__base_lower_collision <-> cargo_box_00_geom",
+          "geoms": [
+            "r1__base_lower_collision",
+            "cargo_box_00_geom"
+          ],
+          "bodies": [
+            "r1__robot",
+            "cargo_box_00"
+          ],
+          "minimum_gap_m": -0.015344881182340743,
+          "penetration_depth_m": 0.015344881182340743,
+          "gap_status": "measured",
+          "geom_margin_m": [
+            0.0,
+            0.0
+          ],
+          "solimp": [
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ],
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ]
+          ]
+        },
+        {
+          "category": "robot_nonfloor",
+          "reason": "t0_geometric_penetration",
+          "blocked_object": "r1__base_lower_collision <-> cargo_box_00_geom",
+          "geoms": [
+            "r1__base_lower_collision",
+            "cargo_box_00_geom"
+          ],
+          "bodies": [
+            "r1__robot",
+            "cargo_box_00"
+          ],
+          "minimum_gap_m": -0.015344881182340743,
+          "penetration_depth_m": 0.015344881182340743,
+          "gap_status": "measured",
+          "geom_margin_m": [
+            0.0,
+            0.0
+          ],
+          "solimp": [
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ],
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ]
+          ]
+        },
+        {
+          "category": "robot_nonfloor",
+          "reason": "t0_geometric_penetration",
+          "blocked_object": "r1__base_lower_collision <-> cargo_box_00_geom",
+          "geoms": [
+            "r1__base_lower_collision",
+            "cargo_box_00_geom"
+          ],
+          "bodies": [
+            "r1__robot",
+            "cargo_box_00"
+          ],
+          "minimum_gap_m": -0.015344881182340743,
+          "penetration_depth_m": 0.015344881182340743,
+          "gap_status": "measured",
+          "geom_margin_m": [
+            0.0,
+            0.0
+          ],
+          "solimp": [
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ],
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ]
+          ]
+        }
+      ],
+      "time_sim_s": 0.0,
+      "all_contact_points_n": 68,
+      "floor_geoms": [
+        "floor"
+      ],
+      "cargo_bodies": [
+        "blue_block",
+        "cargo_box_00",
+        "cargo_box_01",
+        "cargo_box_02",
+        "cargo_box_03",
+        "cargo_tex2_beam",
+        "dispatch_box",
+        "red_block",
+        "team_beam",
+        "warehouse_oak_plank",
+        "warehouse_steel_pipe",
+        "warehouse_wood_crate",
+        "yellow_block"
+      ],
+      "wall_geoms": [
+        "zone_wall_divider_1",
+        "zone_wall_divider_2",
+        "zone_wall_east",
+        "zone_wall_h1_east_cross",
+        "zone_wall_h1_east_lower",
+        "zone_wall_h1_east_middle",
+        "zone_wall_h1_east_upper",
+        "zone_wall_north",
+        "zone_wall_south",
+        "zone_wall_west"
+      ],
+      "scope": "native mj_forward contact subset at supplied setup; no CPU integration; no actor feedback"
+    },
+    {
+      "pose": "drive",
+      "candidate": "common-lattice-1",
+      "offset_cells": [
+        -1,
+        0
+      ],
+      "spacing_m": 0.42797363978083836,
+      "enabled": true,
+      "accepted": false,
+      "status": "rejected",
+      "allowed_depth_m": 0.0,
+      "contact_points_n": 11,
+      "rejected_contact_points_n": 11,
+      "pair_count": 6,
+      "reasons": {
+        "robot_nonfloor": 11
+      },
+      "minimum_gap_m": -0.017999999999999888,
+      "gap_status": "measured_contact_subset",
+      "rejections": [
+        {
+          "category": "robot_nonfloor",
+          "reason": "t0_geometric_penetration",
+          "blocked_object": "r1__forearm_collision <-> r2__camera_bracket",
+          "geoms": [
+            "r1__forearm_collision",
+            "r2__camera_bracket"
+          ],
+          "bodies": [
+            "r1__elbow_link",
+            "r2__gripper"
+          ],
+          "minimum_gap_m": -0.002239662150879159,
+          "penetration_depth_m": 0.002239662150879159,
+          "gap_status": "measured",
+          "geom_margin_m": [
+            0.0,
+            0.0
+          ],
+          "solimp": [
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ],
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ]
+          ]
+        },
+        {
+          "category": "robot_nonfloor",
+          "reason": "t0_geometric_penetration",
+          "blocked_object": "r1__forearm_collision <-> r2__camera_bracket",
+          "geoms": [
+            "r1__forearm_collision",
+            "r2__camera_bracket"
+          ],
+          "bodies": [
+            "r1__elbow_link",
+            "r2__gripper"
+          ],
+          "minimum_gap_m": -0.0022376327338706576,
+          "penetration_depth_m": 0.0022376327338706576,
+          "gap_status": "measured",
+          "geom_margin_m": [
+            0.0,
+            0.0
+          ],
+          "solimp": [
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ],
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ]
+          ]
+        },
+        {
+          "category": "robot_nonfloor",
+          "reason": "t0_geometric_penetration",
+          "blocked_object": "r1__wrist_collision <-> r2__wrist_collision",
+          "geoms": [
+            "r1__wrist_collision",
+            "r2__wrist_collision"
+          ],
+          "bodies": [
+            "r1__wrist_link",
+            "r2__wrist_link"
+          ],
+          "minimum_gap_m": -0.017999999999999888,
+          "penetration_depth_m": 0.017999999999999888,
+          "gap_status": "measured",
+          "geom_margin_m": [
+            0.0,
+            0.0
+          ],
+          "solimp": [
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ],
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ]
+          ]
+        },
+        {
+          "category": "robot_nonfloor",
+          "reason": "t0_geometric_penetration",
+          "blocked_object": "r1__wrist_collision <-> r2__camera_bracket",
+          "geoms": [
+            "r1__wrist_collision",
+            "r2__camera_bracket"
+          ],
+          "bodies": [
+            "r1__wrist_link",
+            "r2__gripper"
+          ],
+          "minimum_gap_m": -0.007660619531484056,
+          "penetration_depth_m": 0.007660619531484056,
+          "gap_status": "measured",
+          "geom_margin_m": [
+            0.0,
+            0.0
+          ],
+          "solimp": [
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ],
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ]
+          ]
+        },
+        {
+          "category": "robot_nonfloor",
+          "reason": "t0_geometric_penetration",
+          "blocked_object": "r2__forearm_collision <-> r1__camera_bracket",
+          "geoms": [
+            "r2__forearm_collision",
+            "r1__camera_bracket"
+          ],
+          "bodies": [
+            "r2__elbow_link",
+            "r1__gripper"
+          ],
+          "minimum_gap_m": -0.002239662150879159,
+          "penetration_depth_m": 0.002239662150879159,
+          "gap_status": "measured",
+          "geom_margin_m": [
+            0.0,
+            0.0
+          ],
+          "solimp": [
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ],
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ]
+          ]
+        },
+        {
+          "category": "robot_nonfloor",
+          "reason": "t0_geometric_penetration",
+          "blocked_object": "r2__forearm_collision <-> r1__camera_bracket",
+          "geoms": [
+            "r2__forearm_collision",
+            "r1__camera_bracket"
+          ],
+          "bodies": [
+            "r2__elbow_link",
+            "r1__gripper"
+          ],
+          "minimum_gap_m": -0.0022376327338706576,
+          "penetration_depth_m": 0.0022376327338706576,
+          "gap_status": "measured",
+          "geom_margin_m": [
+            0.0,
+            0.0
+          ],
+          "solimp": [
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ],
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ]
+          ]
+        },
+        {
+          "category": "robot_nonfloor",
+          "reason": "t0_geometric_penetration",
+          "blocked_object": "r2__wrist_collision <-> r1__camera_bracket",
+          "geoms": [
+            "r2__wrist_collision",
+            "r1__camera_bracket"
+          ],
+          "bodies": [
+            "r2__wrist_link",
+            "r1__gripper"
+          ],
+          "minimum_gap_m": -0.007660619531484056,
+          "penetration_depth_m": 0.007660619531484056,
+          "gap_status": "measured",
+          "geom_margin_m": [
+            0.0,
+            0.0
+          ],
+          "solimp": [
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ],
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ]
+          ]
+        },
+        {
+          "category": "robot_nonfloor",
+          "reason": "t0_geometric_penetration",
+          "blocked_object": "r1__camera_bracket <-> r2__camera_bracket",
+          "geoms": [
+            "r1__camera_bracket",
+            "r2__camera_bracket"
+          ],
+          "bodies": [
+            "r1__gripper",
+            "r2__gripper"
+          ],
+          "minimum_gap_m": -0.016157474273580774,
+          "penetration_depth_m": 0.016157474273580774,
+          "gap_status": "measured",
+          "geom_margin_m": [
+            0.0,
+            0.0
+          ],
+          "solimp": [
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ],
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ]
+          ]
+        },
+        {
+          "category": "robot_nonfloor",
+          "reason": "t0_geometric_penetration",
+          "blocked_object": "r1__camera_bracket <-> r2__camera_bracket",
+          "geoms": [
+            "r1__camera_bracket",
+            "r2__camera_bracket"
+          ],
+          "bodies": [
+            "r1__gripper",
+            "r2__gripper"
+          ],
+          "minimum_gap_m": -0.016157474273580778,
+          "penetration_depth_m": 0.016157474273580778,
+          "gap_status": "measured",
+          "geom_margin_m": [
+            0.0,
+            0.0
+          ],
+          "solimp": [
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ],
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ]
+          ]
+        },
+        {
+          "category": "robot_nonfloor",
+          "reason": "t0_geometric_penetration",
+          "blocked_object": "r1__camera_bracket <-> r2__camera_bracket",
+          "geoms": [
+            "r1__camera_bracket",
+            "r2__camera_bracket"
+          ],
+          "bodies": [
+            "r1__gripper",
+            "r2__gripper"
+          ],
+          "minimum_gap_m": -0.010588718108698901,
+          "penetration_depth_m": 0.010588718108698901,
+          "gap_status": "measured",
+          "geom_margin_m": [
+            0.0,
+            0.0
+          ],
+          "solimp": [
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ],
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ]
+          ]
+        },
+        {
+          "category": "robot_nonfloor",
+          "reason": "t0_geometric_penetration",
+          "blocked_object": "r1__camera_bracket <-> r2__camera_bracket",
+          "geoms": [
+            "r1__camera_bracket",
+            "r2__camera_bracket"
+          ],
+          "bodies": [
+            "r1__gripper",
+            "r2__gripper"
+          ],
+          "minimum_gap_m": -0.010588718108698898,
+          "penetration_depth_m": 0.010588718108698898,
+          "gap_status": "measured",
+          "geom_margin_m": [
+            0.0,
+            0.0
+          ],
+          "solimp": [
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ],
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ]
+          ]
+        }
+      ],
+      "time_sim_s": 0.0,
+      "all_contact_points_n": 75,
+      "floor_geoms": [
+        "floor"
+      ],
+      "cargo_bodies": [
+        "blue_block",
+        "cargo_box_00",
+        "cargo_box_01",
+        "cargo_box_02",
+        "cargo_box_03",
+        "cargo_tex2_beam",
+        "dispatch_box",
+        "red_block",
+        "team_beam",
+        "warehouse_oak_plank",
+        "warehouse_steel_pipe",
+        "warehouse_wood_crate",
+        "yellow_block"
+      ],
+      "wall_geoms": [
+        "zone_wall_divider_1",
+        "zone_wall_divider_2",
+        "zone_wall_east",
+        "zone_wall_h1_east_cross",
+        "zone_wall_h1_east_lower",
+        "zone_wall_h1_east_middle",
+        "zone_wall_h1_east_upper",
+        "zone_wall_north",
+        "zone_wall_south",
+        "zone_wall_west"
+      ],
+      "scope": "native mj_forward contact subset at supplied setup; no CPU integration; no actor feedback"
+    },
+    {
+      "pose": "high",
+      "candidate": "common-lattice-1",
+      "offset_cells": [
+        -1,
+        0
+      ],
+      "spacing_m": 0.42797363978083836,
+      "enabled": true,
+      "accepted": false,
+      "status": "rejected",
+      "allowed_depth_m": 0.0,
+      "contact_points_n": 3,
+      "rejected_contact_points_n": 3,
+      "pair_count": 3,
+      "reasons": {
+        "robot_nonfloor": 3
+      },
+      "minimum_gap_m": -0.02,
+      "gap_status": "measured_contact_subset",
+      "rejections": [
+        {
+          "category": "robot_nonfloor",
+          "reason": "t0_geometric_penetration",
+          "blocked_object": "r1__upper_arm_collision <-> r2__forearm_collision",
+          "geoms": [
+            "r1__upper_arm_collision",
+            "r2__forearm_collision"
+          ],
+          "bodies": [
+            "r1__shoulder_link",
+            "r2__elbow_link"
+          ],
+          "minimum_gap_m": -0.008226425538416559,
+          "penetration_depth_m": 0.008226425538416559,
+          "gap_status": "measured",
+          "geom_margin_m": [
+            0.0,
+            0.0
+          ],
+          "solimp": [
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ],
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ]
+          ]
+        },
+        {
+          "category": "robot_nonfloor",
+          "reason": "t0_geometric_penetration",
+          "blocked_object": "r1__forearm_collision <-> r2__upper_arm_collision",
+          "geoms": [
+            "r1__forearm_collision",
+            "r2__upper_arm_collision"
+          ],
+          "bodies": [
+            "r1__elbow_link",
+            "r2__shoulder_link"
+          ],
+          "minimum_gap_m": -0.008226425538416559,
+          "penetration_depth_m": 0.008226425538416559,
+          "gap_status": "measured",
+          "geom_margin_m": [
+            0.0,
+            0.0
+          ],
+          "solimp": [
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ],
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ]
+          ]
+        },
+        {
+          "category": "robot_nonfloor",
+          "reason": "t0_geometric_penetration",
+          "blocked_object": "r1__forearm_collision <-> r2__forearm_collision",
+          "geoms": [
+            "r1__forearm_collision",
+            "r2__forearm_collision"
+          ],
+          "bodies": [
+            "r1__elbow_link",
+            "r2__elbow_link"
+          ],
+          "minimum_gap_m": -0.02,
+          "penetration_depth_m": 0.02,
+          "gap_status": "measured",
+          "geom_margin_m": [
+            0.0,
+            0.0
+          ],
+          "solimp": [
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ],
+            [
+              0.9,
+              0.95,
+              0.001,
+              0.5,
+              2.0
+            ]
+          ]
+        }
+      ],
+      "time_sim_s": 0.0,
+      "all_contact_points_n": 67,
+      "floor_geoms": [
+        "floor"
+      ],
+      "cargo_bodies": [
+        "blue_block",
+        "cargo_box_00",
+        "cargo_box_01",
+        "cargo_box_02",
+        "cargo_box_03",
+        "cargo_tex2_beam",
+        "dispatch_box",
+        "red_block",
+        "team_beam",
+        "warehouse_oak_plank",
+        "warehouse_steel_pipe",
+        "warehouse_wood_crate",
+        "yellow_block"
+      ],
+      "wall_geoms": [
+        "zone_wall_divider_1",
+        "zone_wall_divider_2",
+        "zone_wall_east",
+        "zone_wall_h1_east_cross",
+        "zone_wall_h1_east_lower",
+        "zone_wall_h1_east_middle",
+        "zone_wall_h1_east_upper",
+        "zone_wall_north",
+        "zone_wall_south",
+        "zone_wall_west"
+      ],
+      "scope": "native mj_forward contact subset at supplied setup; no CPU integration; no actor feedback"
+    },
+    {
+      "pose": "drive",
+      "candidate": "common-lattice-2",
+      "offset_cells": [
+        0,
+        -1
+      ],
+      "spacing_m": 0.42797363978083836,
+      "enabled": true,
+      "accepted": true,
+      "status": "accepted",
+      "allowed_depth_m": 0.0,
+      "contact_points_n": 0,
+      "rejected_contact_points_n": 0,
+      "pair_count": 0,
+      "reasons": {},
+      "minimum_gap_m": null,
+      "gap_status": "no_relevant_contacts; noncontact_clearance_not_measured",
+      "rejections": [],
+      "time_sim_s": 0.0,
+      "all_contact_points_n": 64,
+      "floor_geoms": [
+        "floor"
+      ],
+      "cargo_bodies": [
+        "blue_block",
+        "cargo_box_00",
+        "cargo_box_01",
+        "cargo_box_02",
+        "cargo_box_03",
+        "cargo_tex2_beam",
+        "dispatch_box",
+        "red_block",
+        "team_beam",
+        "warehouse_oak_plank",
+        "warehouse_steel_pipe",
+        "warehouse_wood_crate",
+        "yellow_block"
+      ],
+      "wall_geoms": [
+        "zone_wall_divider_1",
+        "zone_wall_divider_2",
+        "zone_wall_east",
+        "zone_wall_h1_east_cross",
+        "zone_wall_h1_east_lower",
+        "zone_wall_h1_east_middle",
+        "zone_wall_h1_east_upper",
+        "zone_wall_north",
+        "zone_wall_south",
+        "zone_wall_west"
+      ],
+      "scope": "native mj_forward contact subset at supplied setup; no CPU integration; no actor feedback"
+    },
+    {
+      "pose": "high",
+      "candidate": "common-lattice-2",
+      "offset_cells": [
+        0,
+        -1
+      ],
+      "spacing_m": 0.42797363978083836,
+      "enabled": true,
+      "accepted": true,
+      "status": "accepted",
+      "allowed_depth_m": 0.0,
+      "contact_points_n": 0,
+      "rejected_contact_points_n": 0,
+      "pair_count": 0,
+      "reasons": {},
+      "minimum_gap_m": null,
+      "gap_status": "no_relevant_contacts; noncontact_clearance_not_measured",
+      "rejections": [],
+      "time_sim_s": 0.0,
+      "all_contact_points_n": 64,
+      "floor_geoms": [
+        "floor"
+      ],
+      "cargo_bodies": [
+        "blue_block",
+        "cargo_box_00",
+        "cargo_box_01",
+        "cargo_box_02",
+        "cargo_box_03",
+        "cargo_tex2_beam",
+        "dispatch_box",
+        "red_block",
+        "team_beam",
+        "warehouse_oak_plank",
+        "warehouse_steel_pipe",
+        "warehouse_wood_crate",
+        "yellow_block"
+      ],
+      "wall_geoms": [
+        "zone_wall_divider_1",
+        "zone_wall_divider_2",
+        "zone_wall_east",
+        "zone_wall_h1_east_cross",
+        "zone_wall_h1_east_lower",
+        "zone_wall_h1_east_middle",
+        "zone_wall_h1_east_upper",
+        "zone_wall_north",
+        "zone_wall_south",
+        "zone_wall_west"
+      ],
+      "scope": "native mj_forward contact subset at supplied setup; no CPU integration; no actor feedback"
+    }
+  ],
+  "stages": [
+    {
+      "stage": "tested_starts",
+      "cumulative_pass_n": 8,
+      "rejected_n": 0
+    },
+    {
+      "stage": "nonpenetrating",
+      "cumulative_pass_n": 2,
+      "rejected_n": 6
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # Headless 시간순 검토
 
-새 FOLDED/HIGH와 이전 mapbuild2 FOLDED를 각각 개요+r1+r2로 확인했다. 각 실행의 전체0–4 SIM초를2Hz(0,.5,…,4;9장/카메라), 같은 전체를10Hz(0,.1,…,4;41장/카메라) 띠18개로 직접 파일에서 읽었다. 4초 전체가 마지막10초 요구 범위 안이다. gcp2 ffmpeg 합성·3배속 MP4, ffprobe 확인; Mac GUI/브라우저/open/QuickTime/osascript0. 새 영상은 각각41프레임이며 마지막 몽타주 빈42번째 칸은 관측 프레임이 아니다.
+새 FOLDED/HIGH와 이전 mapbuild2 FOLDED를 각각 개요+r1+r2로 확인했다. 각 실행의 전체0–4 SIM초를2Hz(0,.5,…,4;9장/카메라), 같은 전체를10Hz(0,.1,…,4;41장/카메라) 띠18개로 직접 파일에서 읽었다. 4초 전체가 마지막10초 요구 범위 안이다. gcp2 ffmpeg 합성·3배속 MP4, ffprobe 확인; Mac GUI/브라우저/open/QuickTime/osascript0. 최종 r2 영상은 각각41프레임이며 마지막 몽타주 빈42번째 칸은 관측 프레임이 아니다.
 
 - **이전 실패(mapbuild2 drive-off):** 0→0.1초에 상대 로봇이 자기 화면 중앙에서 위로 급히 이동하고, 약0.5–1.1초에는 높게 유지된다. 1.1–1.5초에는 다시 아래로 내려와0.5초 간격만 보았을 때보다 초기 자세 변동과 시야 가림이 분명하다. 2.0–3.0초에는 바닥 패치가 옆으로 조금 이동하고3.0초 이후 회전 변화가 보인다. r2 화면도 중앙 로봇이 이동한다. 영상 자체로 관통 깊이나 힘을 판정하지 않으며, 기존 초기 관통·tilt의 원인은 drivecheck의 원본 개입 재현을 따른다.
 - **새 FOLDED(추적 유지 예시, 임무 성공 아님):** 0–1초는 벽/바닥 경계가 안정되고1.0–1.1초 전진 명령 뒤 바닥 특징이 약간 커진다. 1.1–2.0초 정지 후,2.0–3.0초 횡 펄스 구간의 큰 지속 이동은 보이지 않는다. 3.0–3.1초 이후 바닥 특징이 회전에 따라 옆으로 이동하고3.4–4.0초에는 다시 안정된다. 전 구간 r1 화면에 상대 로봇이 없고 r2 영상의 상자/바닥은 거의 고정이다. 10Hz에서도 반복적인 큰 왕복·상호 막힘·대상 화면 이탈은 보이지 않는다. 수mm 변위/미끄럼의 원인은 이 띠만으로 구분할 수 없다.
@@ -8,4 +8,6 @@
 
 새 시작은 y좌표와 동료 가림도 함께 달라졌다. 지도 개선을 tilt 하나나 알고리즘 수정의 단독 효과로 주장하지 않는다. 초기 큰 전진 붕괴가 회복됐다는 수치는 별도 평가 좌표로만 산출했다. 횡이동 불일치의 물리 원인은 미확정이며, friction/actuator/v122를 재맞추지 않았다.
 
-Mac 검토물: `/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/mapbuild3/`(새2개), 기존 `.../mapbuild2/drive-off/`. 새 원본/합성/ffprobe/해시는 gcp2 `runs/mapbuild3/analysis-r1/playback/receipts.json`에 있다.
+첫 합성 r1은 ffprobe15프레임으로 거부했다. 입력을30fps로 읽는 r2로 바꾸어 원본41프레임 전부·3배속1.366667초를 확인했다. 2Hz/10Hz 띠는 r1/r2 전부 byte 동일이며 직접 검토 범위는 바뀌지 않았다. 실패 r1 영상/영수증도 보존한다.
+
+Mac 최종 검토물: `/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/mapbuild3/r2/`(새2개), 기존 `.../mapbuild2/drive-off/`. 새 원본/합성/ffprobe/해시는 gcp2 `runs/mapbuild3/analysis-r1/playback-r2/receipts.json`에 있다.

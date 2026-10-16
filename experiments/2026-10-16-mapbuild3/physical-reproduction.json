@@ -1,0 +1,33 @@
+{
+  "prepare": [
+    "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+    "/home/ugrp/ugrp-sim/src/mapbuild3-76da1162/scripts/mapbuild3_prepare.py",
+    "--spawn-overlap-check-v1",
+    "--renderer-source",
+    "/home/ugrp/ugrp-sim/src/drivecheck-renderer-5974a181",
+    "--output",
+    "/home/ugrp/ugrp-sim/runs/mapbuild3/NEW-prepare"
+  ],
+  "capture": [
+    "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+    "/home/ugrp/ugrp-sim/src/mapbuild3-eb3ae01d/scripts/mapbuild3_capture.py",
+    "--mapbuild3-v1",
+    "--queue",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild3/queue-r1c.json",
+    "--fixture",
+    "/home/ugrp/ugrp-sim/runs/mapbuild3/prepare-r1b",
+    "--renderer-source",
+    "/home/ugrp/ugrp-sim/src/drivecheck-renderer-5974a181",
+    "--renderer-receipt",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild3/renderer-receipt.json",
+    "--output",
+    "/home/ugrp/ugrp-sim/runs/mapbuild3/NEW-capture"
+  ],
+  "environment": {
+    "MUJOCO_GL": "osmesa",
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1"
+  },
+  "host": "gcp5",
+  "scope": "new output paths required; original source snapshots and queue preserved; no new physical execution"
+}

@@ -1,0 +1,402 @@
+[
+  {
+    "cohort": "warp8_beam",
+    "seed": 8318724,
+    "state_scope": "authored_reset_before_native_settle",
+    "original_task_tick0": false,
+    "asset_remaps": [
+      {
+        "original": "/home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247/sim/assets/masterpi_drive_friction_v2/fuji_roller.stl",
+        "resolved": "/home/ugrp/ugrp-sim/src/drivecheck-renderer-5974a181/sim/assets/masterpi_drive_friction_v2/fuji_roller.stl",
+        "sha256": "2bea3228aa5766e2ce42f4f4a46cdf4bc3e63802958fa7f0ffb9688d9393a424"
+      }
+    ],
+    "plan": "/home/ugrp/ugrp-sim/ops-reviews/mapbuild3/audit-input-warp/beam40-r2/world-025/raw/plan.json",
+    "xml": "/home/ugrp/ugrp-sim/ops-reviews/mapbuild3/audit-input-warp/beam40-r2/world-025/raw/scene.xml",
+    "enabled": true,
+    "accepted": false,
+    "status": "rejected",
+    "allowed_depth_m": 0.0,
+    "contact_points_n": 4,
+    "rejected_contact_points_n": 4,
+    "pair_count": 2,
+    "reasons": {
+      "robot_nonfloor": 4
+    },
+    "minimum_gap_m": -0.001146953243292121,
+    "gap_status": "measured_contact_subset",
+    "rejections": [
+      {
+        "category": "robot_nonfloor",
+        "reason": "t0_geometric_penetration",
+        "blocked_object": "zone_wall_east <-> r3__left_finger",
+        "geoms": [
+          "zone_wall_east",
+          "r3__left_finger"
+        ],
+        "bodies": [
+          "world",
+          "r3__left_jaw"
+        ],
+        "minimum_gap_m": -0.001146953243292121,
+        "penetration_depth_m": 0.001146953243292121,
+        "gap_status": "measured",
+        "geom_margin_m": [
+          0.0,
+          0.0
+        ],
+        "solimp": [
+          [
+            0.9,
+            0.95,
+            0.001,
+            0.5,
+            2.0
+          ],
+          [
+            0.9,
+            0.97,
+            0.002,
+            0.5,
+            2.0
+          ]
+        ]
+      },
+      {
+        "category": "robot_nonfloor",
+        "reason": "t0_geometric_penetration",
+        "blocked_object": "zone_wall_east <-> r3__left_finger",
+        "geoms": [
+          "zone_wall_east",
+          "r3__left_finger"
+        ],
+        "bodies": [
+          "world",
+          "r3__left_jaw"
+        ],
+        "minimum_gap_m": -0.001146953243292121,
+        "penetration_depth_m": 0.001146953243292121,
+        "gap_status": "measured",
+        "geom_margin_m": [
+          0.0,
+          0.0
+        ],
+        "solimp": [
+          [
+            0.9,
+            0.95,
+            0.001,
+            0.5,
+            2.0
+          ],
+          [
+            0.9,
+            0.97,
+            0.002,
+            0.5,
+            2.0
+          ]
+        ]
+      },
+      {
+        "category": "robot_nonfloor",
+        "reason": "t0_geometric_penetration",
+        "blocked_object": "zone_wall_east <-> r3__right_finger",
+        "geoms": [
+          "zone_wall_east",
+          "r3__right_finger"
+        ],
+        "bodies": [
+          "world",
+          "r3__right_jaw"
+        ],
+        "minimum_gap_m": -0.001146953243292121,
+        "penetration_depth_m": 0.001146953243292121,
+        "gap_status": "measured",
+        "geom_margin_m": [
+          0.0,
+          0.0
+        ],
+        "solimp": [
+          [
+            0.9,
+            0.95,
+            0.001,
+            0.5,
+            2.0
+          ],
+          [
+            0.9,
+            0.97,
+            0.002,
+            0.5,
+            2.0
+          ]
+        ]
+      },
+      {
+        "category": "robot_nonfloor",
+        "reason": "t0_geometric_penetration",
+        "blocked_object": "zone_wall_east <-> r3__right_finger",
+        "geoms": [
+          "zone_wall_east",
+          "r3__right_finger"
+        ],
+        "bodies": [
+          "world",
+          "r3__right_jaw"
+        ],
+        "minimum_gap_m": -0.001146953243292121,
+        "penetration_depth_m": 0.001146953243292121,
+        "gap_status": "measured",
+        "geom_margin_m": [
+          0.0,
+          0.0
+        ],
+        "solimp": [
+          [
+            0.9,
+            0.95,
+            0.001,
+            0.5,
+            2.0
+          ],
+          [
+            0.9,
+            0.97,
+            0.002,
+            0.5,
+            2.0
+          ]
+        ]
+      }
+    ],
+    "time_sim_s": 0.0,
+    "all_contact_points_n": 24,
+    "floor_geoms": [
+      "floor"
+    ],
+    "cargo_bodies": [
+      "blue_block",
+      "cargo_beam_1",
+      "cargo_cyan_1",
+      "cargo_red_1",
+      "dispatch_box",
+      "red_block",
+      "team_beam",
+      "warehouse_oak_plank",
+      "warehouse_steel_pipe",
+      "warehouse_wood_crate",
+      "yellow_block"
+    ],
+    "wall_geoms": [
+      "zone_wall_divider_1",
+      "zone_wall_divider_2",
+      "zone_wall_east",
+      "zone_wall_north",
+      "zone_wall_south",
+      "zone_wall_west"
+    ],
+    "scope": "native mj_forward contact subset at supplied setup; no CPU integration; no actor feedback"
+  },
+  {
+    "cohort": "warp8_beam_R1",
+    "seed": 8318724,
+    "state_scope": "authored_reset_before_native_settle",
+    "original_task_tick0": false,
+    "asset_remaps": [
+      {
+        "original": "/home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247/sim/assets/masterpi_drive_friction_v2/fuji_roller.stl",
+        "resolved": "/home/ugrp/ugrp-sim/src/drivecheck-renderer-5974a181/sim/assets/masterpi_drive_friction_v2/fuji_roller.stl",
+        "sha256": "2bea3228aa5766e2ce42f4f4a46cdf4bc3e63802958fa7f0ffb9688d9393a424"
+      }
+    ],
+    "plan": "/home/ugrp/ugrp-sim/ops-reviews/mapbuild3/audit-input-warp/beam40-r1/world-025/raw/plan.json",
+    "xml": "/home/ugrp/ugrp-sim/ops-reviews/mapbuild3/audit-input-warp/beam40-r1/world-025/raw/scene.xml",
+    "enabled": true,
+    "accepted": false,
+    "status": "rejected",
+    "allowed_depth_m": 0.0,
+    "contact_points_n": 4,
+    "rejected_contact_points_n": 4,
+    "pair_count": 2,
+    "reasons": {
+      "robot_nonfloor": 4
+    },
+    "minimum_gap_m": -0.001146953243292121,
+    "gap_status": "measured_contact_subset",
+    "rejections": [
+      {
+        "category": "robot_nonfloor",
+        "reason": "t0_geometric_penetration",
+        "blocked_object": "zone_wall_east <-> r3__left_finger",
+        "geoms": [
+          "zone_wall_east",
+          "r3__left_finger"
+        ],
+        "bodies": [
+          "world",
+          "r3__left_jaw"
+        ],
+        "minimum_gap_m": -0.001146953243292121,
+        "penetration_depth_m": 0.001146953243292121,
+        "gap_status": "measured",
+        "geom_margin_m": [
+          0.0,
+          0.0
+        ],
+        "solimp": [
+          [
+            0.9,
+            0.95,
+            0.001,
+            0.5,
+            2.0
+          ],
+          [
+            0.9,
+            0.97,
+            0.002,
+            0.5,
+            2.0
+          ]
+        ]
+      },
+      {
+        "category": "robot_nonfloor",
+        "reason": "t0_geometric_penetration",
+        "blocked_object": "zone_wall_east <-> r3__left_finger",
+        "geoms": [
+          "zone_wall_east",
+          "r3__left_finger"
+        ],
+        "bodies": [
+          "world",
+          "r3__left_jaw"
+        ],
+        "minimum_gap_m": -0.001146953243292121,
+        "penetration_depth_m": 0.001146953243292121,
+        "gap_status": "measured",
+        "geom_margin_m": [
+          0.0,
+          0.0
+        ],
+        "solimp": [
+          [
+            0.9,
+            0.95,
+            0.001,
+            0.5,
+            2.0
+          ],
+          [
+            0.9,
+            0.97,
+            0.002,
+            0.5,
+            2.0
+          ]
+        ]
+      },
+      {
+        "category": "robot_nonfloor",
+        "reason": "t0_geometric_penetration",
+        "blocked_object": "zone_wall_east <-> r3__right_finger",
+        "geoms": [
+          "zone_wall_east",
+          "r3__right_finger"
+        ],
+        "bodies": [
+          "world",
+          "r3__right_jaw"
+        ],
+        "minimum_gap_m": -0.001146953243292121,
+        "penetration_depth_m": 0.001146953243292121,
+        "gap_status": "measured",
+        "geom_margin_m": [
+          0.0,
+          0.0
+        ],
+        "solimp": [
+          [
+            0.9,
+            0.95,
+            0.001,
+            0.5,
+            2.0
+          ],
+          [
+            0.9,
+            0.97,
+            0.002,
+            0.5,
+            2.0
+          ]
+        ]
+      },
+      {
+        "category": "robot_nonfloor",
+        "reason": "t0_geometric_penetration",
+        "blocked_object": "zone_wall_east <-> r3__right_finger",
+        "geoms": [
+          "zone_wall_east",
+          "r3__right_finger"
+        ],
+        "bodies": [
+          "world",
+          "r3__right_jaw"
+        ],
+        "minimum_gap_m": -0.001146953243292121,
+        "penetration_depth_m": 0.001146953243292121,
+        "gap_status": "measured",
+        "geom_margin_m": [
+          0.0,
+          0.0
+        ],
+        "solimp": [
+          [
+            0.9,
+            0.95,
+            0.001,
+            0.5,
+            2.0
+          ],
+          [
+            0.9,
+            0.97,
+            0.002,
+            0.5,
+            2.0
+          ]
+        ]
+      }
+    ],
+    "time_sim_s": 0.0,
+    "all_contact_points_n": 24,
+    "floor_geoms": [
+      "floor"
+    ],
+    "cargo_bodies": [
+      "blue_block",
+      "cargo_beam_1",
+      "cargo_cyan_1",
+      "cargo_red_1",
+      "dispatch_box",
+      "red_block",
+      "team_beam",
+      "warehouse_oak_plank",
+      "warehouse_steel_pipe",
+      "warehouse_wood_crate",
+      "yellow_block"
+    ],
+    "wall_geoms": [
+      "zone_wall_divider_1",
+      "zone_wall_divider_2",
+      "zone_wall_east",
+      "zone_wall_north",
+      "zone_wall_south",
+      "zone_wall_west"
+    ],
+    "scope": "native mj_forward contact subset at supplied setup; no CPU integration; no actor feedback"
+  }
+]

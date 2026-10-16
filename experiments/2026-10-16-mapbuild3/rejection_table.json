@@ -1,21 +1,1103 @@
 {
-  "status": "REGISTERED_BEFORE_RUN",
-  "raw": "/home/ugrp/ugrp-sim/runs/mapbuild3",
-  "reproduction": "python -m scripts.mapbuild3_prepare --help",
-  "stages": [
+  "raw": "/home/ugrp/ugrp-sim/runs/mapbuild3/gcp5-original-r2/capture-r1c",
+  "reproduction": [
+    [
+      "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+      "-m",
+      "scripts.mapbuild1_replay",
+      "--mapbuild1-v1",
+      "--candidate",
+      "legacy",
+      "--input",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/gcp5-original-r2/capture-r1c",
+      "--evaluation-labels",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/gcp5-original-r2/capture-r1c/eval-only.json",
+      "--output",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/analysis-r1/legacy"
+    ],
+    [
+      "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+      "-m",
+      "scripts.mapbuild1_replay",
+      "--mapbuild1-v1",
+      "--candidate",
+      "orange-columns-fast7",
+      "--input",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/gcp5-original-r2/capture-r1c",
+      "--evaluation-labels",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/gcp5-original-r2/capture-r1c/eval-only.json",
+      "--output",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/analysis-r1/orange-columns-fast7"
+    ],
+    [
+      "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+      "/home/ugrp/ugrp-sim/src/96ac9d4279f0a5507d31d90c6696ee04dc905f13/scripts/mapbuild2_map.py",
+      "--execute",
+      "--input",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/gcp5-original-r2/capture-r1c",
+      "--trajectory",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/analysis-r1/legacy/trajectory.json",
+      "--vision-source",
+      "/home/ugrp/ugrp-sim/src/drivecheck-renderer-5974a181",
+      "--output",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/analysis-r1/legacy-maps"
+    ],
+    [
+      "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+      "-m",
+      "scripts.mapbuild2_map_eval",
+      "--predicted",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/analysis-r1/legacy-maps/drive-off-predicted.json",
+      "--static-map",
+      "/home/ugrp/ugrp-sim/src/drivecheck-renderer-5974a181/maps/zones_final_v3/zone_hardmaps1_h1_final_v3.json",
+      "--origin",
+      "-0.2750000059604645",
+      "-1.2779736518859863",
+      "-3.141592653589793",
+      "--output",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/analysis-r1/legacy-maps/drive-off-score.json"
+    ],
+    [
+      "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+      "-m",
+      "scripts.mapbuild2_map_eval",
+      "--predicted",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/analysis-r1/legacy-maps/high-off-predicted.json",
+      "--static-map",
+      "/home/ugrp/ugrp-sim/src/drivecheck-renderer-5974a181/maps/zones_final_v3/zone_hardmaps1_h1_final_v3.json",
+      "--origin",
+      "-0.2750000059604645",
+      "-1.2779736518859863",
+      "-3.141592653589793",
+      "--output",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/analysis-r1/legacy-maps/high-off-score.json"
+    ],
+    [
+      "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+      "/home/ugrp/ugrp-sim/src/96ac9d4279f0a5507d31d90c6696ee04dc905f13/scripts/mapbuild2_map.py",
+      "--execute",
+      "--input",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/gcp5-original-r2/capture-r1c",
+      "--trajectory",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/analysis-r1/orange-columns-fast7/trajectory.json",
+      "--vision-source",
+      "/home/ugrp/ugrp-sim/src/drivecheck-renderer-5974a181",
+      "--output",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/analysis-r1/orange-columns-fast7-maps"
+    ],
+    [
+      "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+      "-m",
+      "scripts.mapbuild2_map_eval",
+      "--predicted",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/analysis-r1/orange-columns-fast7-maps/drive-off-predicted.json",
+      "--static-map",
+      "/home/ugrp/ugrp-sim/src/drivecheck-renderer-5974a181/maps/zones_final_v3/zone_hardmaps1_h1_final_v3.json",
+      "--origin",
+      "-0.2750000059604645",
+      "-1.2779736518859863",
+      "-3.141592653589793",
+      "--output",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/analysis-r1/orange-columns-fast7-maps/drive-off-score.json"
+    ],
+    [
+      "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+      "-m",
+      "scripts.mapbuild2_map_eval",
+      "--predicted",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/analysis-r1/orange-columns-fast7-maps/high-off-predicted.json",
+      "--static-map",
+      "/home/ugrp/ugrp-sim/src/drivecheck-renderer-5974a181/maps/zones_final_v3/zone_hardmaps1_h1_final_v3.json",
+      "--origin",
+      "-0.2750000059604645",
+      "-1.2779736518859863",
+      "-3.141592653589793",
+      "--output",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/analysis-r1/orange-columns-fast7-maps/high-off-score.json"
+    ],
+    [
+      "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+      "/home/ugrp/ugrp-sim/src/96ac9d4279f0a5507d31d90c6696ee04dc905f13/scripts/mapbuild2_camera_eval.py",
+      "--input",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/gcp5-original-r2/capture-r1c",
+      "--vision-source",
+      "/home/ugrp/ugrp-sim/src/drivecheck-renderer-5974a181",
+      "--output",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/analysis-r1/camera-eval.json"
+    ],
+    [
+      "ffmpeg",
+      "-nostdin",
+      "-loglevel",
+      "error",
+      "-framerate",
+      "10",
+      "-i",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/gcp5-original-r2/capture-r1c/drive-off/overview-%04d.jpg",
+      "-framerate",
+      "10",
+      "-i",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/gcp5-original-r2/capture-r1c/drive-off/r1-%04d.jpg",
+      "-framerate",
+      "10",
+      "-i",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/gcp5-original-r2/capture-r1c/drive-off/r2-%04d.jpg",
+      "-filter_complex",
+      "[0:v][1:v][2:v]hstack=inputs=3,setpts=PTS/3[v]",
+      "-map",
+      "[v]",
+      "-frames:v",
+      "41",
+      "-fps_mode",
+      "vfr",
+      "-an",
+      "-c:v",
+      "libx264",
+      "-crf",
+      "28",
+      "-pix_fmt",
+      "yuv420p",
+      "-threads",
+      "1",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/analysis-r1/playback/drive-off/review-3x.mp4"
+    ],
+    [
+      "ffmpeg",
+      "-nostdin",
+      "-loglevel",
+      "error",
+      "-framerate",
+      "10",
+      "-i",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/gcp5-original-r2/capture-r1c/drive-off/overview-%04d.jpg",
+      "-vf",
+      "select=not(mod(n\\,5)),scale=320:240,tile=3x3",
+      "-frames:v",
+      "1",
+      "-threads",
+      "1",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/analysis-r1/playback/drive-off/overview-whole-2hz.jpg"
+    ],
+    [
+      "ffmpeg",
+      "-nostdin",
+      "-loglevel",
+      "error",
+      "-framerate",
+      "10",
+      "-i",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/gcp5-original-r2/capture-r1c/drive-off/overview-%04d.jpg",
+      "-vf",
+      "scale=320:240,tile=7x6",
+      "-frames:v",
+      "1",
+      "-threads",
+      "1",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/analysis-r1/playback/drive-off/overview-terminal-10hz.jpg"
+    ],
+    [
+      "ffmpeg",
+      "-nostdin",
+      "-loglevel",
+      "error",
+      "-framerate",
+      "10",
+      "-i",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/gcp5-original-r2/capture-r1c/drive-off/r1-%04d.jpg",
+      "-vf",
+      "select=not(mod(n\\,5)),scale=320:240,tile=3x3",
+      "-frames:v",
+      "1",
+      "-threads",
+      "1",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/analysis-r1/playback/drive-off/r1-whole-2hz.jpg"
+    ],
+    [
+      "ffmpeg",
+      "-nostdin",
+      "-loglevel",
+      "error",
+      "-framerate",
+      "10",
+      "-i",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/gcp5-original-r2/capture-r1c/drive-off/r1-%04d.jpg",
+      "-vf",
+      "scale=320:240,tile=7x6",
+      "-frames:v",
+      "1",
+      "-threads",
+      "1",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/analysis-r1/playback/drive-off/r1-terminal-10hz.jpg"
+    ],
+    [
+      "ffmpeg",
+      "-nostdin",
+      "-loglevel",
+      "error",
+      "-framerate",
+      "10",
+      "-i",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/gcp5-original-r2/capture-r1c/drive-off/r2-%04d.jpg",
+      "-vf",
+      "select=not(mod(n\\,5)),scale=320:240,tile=3x3",
+      "-frames:v",
+      "1",
+      "-threads",
+      "1",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/analysis-r1/playback/drive-off/r2-whole-2hz.jpg"
+    ],
+    [
+      "ffmpeg",
+      "-nostdin",
+      "-loglevel",
+      "error",
+      "-framerate",
+      "10",
+      "-i",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/gcp5-original-r2/capture-r1c/drive-off/r2-%04d.jpg",
+      "-vf",
+      "scale=320:240,tile=7x6",
+      "-frames:v",
+      "1",
+      "-threads",
+      "1",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/analysis-r1/playback/drive-off/r2-terminal-10hz.jpg"
+    ],
+    [
+      "ffmpeg",
+      "-nostdin",
+      "-loglevel",
+      "error",
+      "-framerate",
+      "10",
+      "-i",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/gcp5-original-r2/capture-r1c/high-off/overview-%04d.jpg",
+      "-framerate",
+      "10",
+      "-i",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/gcp5-original-r2/capture-r1c/high-off/r1-%04d.jpg",
+      "-framerate",
+      "10",
+      "-i",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/gcp5-original-r2/capture-r1c/high-off/r2-%04d.jpg",
+      "-filter_complex",
+      "[0:v][1:v][2:v]hstack=inputs=3,setpts=PTS/3[v]",
+      "-map",
+      "[v]",
+      "-frames:v",
+      "41",
+      "-fps_mode",
+      "vfr",
+      "-an",
+      "-c:v",
+      "libx264",
+      "-crf",
+      "28",
+      "-pix_fmt",
+      "yuv420p",
+      "-threads",
+      "1",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/analysis-r1/playback/high-off/review-3x.mp4"
+    ],
+    [
+      "ffmpeg",
+      "-nostdin",
+      "-loglevel",
+      "error",
+      "-framerate",
+      "10",
+      "-i",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/gcp5-original-r2/capture-r1c/high-off/overview-%04d.jpg",
+      "-vf",
+      "select=not(mod(n\\,5)),scale=320:240,tile=3x3",
+      "-frames:v",
+      "1",
+      "-threads",
+      "1",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/analysis-r1/playback/high-off/overview-whole-2hz.jpg"
+    ],
+    [
+      "ffmpeg",
+      "-nostdin",
+      "-loglevel",
+      "error",
+      "-framerate",
+      "10",
+      "-i",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/gcp5-original-r2/capture-r1c/high-off/overview-%04d.jpg",
+      "-vf",
+      "scale=320:240,tile=7x6",
+      "-frames:v",
+      "1",
+      "-threads",
+      "1",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/analysis-r1/playback/high-off/overview-terminal-10hz.jpg"
+    ],
+    [
+      "ffmpeg",
+      "-nostdin",
+      "-loglevel",
+      "error",
+      "-framerate",
+      "10",
+      "-i",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/gcp5-original-r2/capture-r1c/high-off/r1-%04d.jpg",
+      "-vf",
+      "select=not(mod(n\\,5)),scale=320:240,tile=3x3",
+      "-frames:v",
+      "1",
+      "-threads",
+      "1",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/analysis-r1/playback/high-off/r1-whole-2hz.jpg"
+    ],
+    [
+      "ffmpeg",
+      "-nostdin",
+      "-loglevel",
+      "error",
+      "-framerate",
+      "10",
+      "-i",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/gcp5-original-r2/capture-r1c/high-off/r1-%04d.jpg",
+      "-vf",
+      "scale=320:240,tile=7x6",
+      "-frames:v",
+      "1",
+      "-threads",
+      "1",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/analysis-r1/playback/high-off/r1-terminal-10hz.jpg"
+    ],
+    [
+      "ffmpeg",
+      "-nostdin",
+      "-loglevel",
+      "error",
+      "-framerate",
+      "10",
+      "-i",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/gcp5-original-r2/capture-r1c/high-off/r2-%04d.jpg",
+      "-vf",
+      "select=not(mod(n\\,5)),scale=320:240,tile=3x3",
+      "-frames:v",
+      "1",
+      "-threads",
+      "1",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/analysis-r1/playback/high-off/r2-whole-2hz.jpg"
+    ],
+    [
+      "ffmpeg",
+      "-nostdin",
+      "-loglevel",
+      "error",
+      "-framerate",
+      "10",
+      "-i",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/gcp5-original-r2/capture-r1c/high-off/r2-%04d.jpg",
+      "-vf",
+      "scale=320:240,tile=7x6",
+      "-frames:v",
+      "1",
+      "-threads",
+      "1",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/analysis-r1/playback/high-off/r2-terminal-10hz.jpg"
+    ]
+  ],
+  "lk_tracking": [
     {
-      "stage": "planned_candidate",
-      "cumulative_pass_n": 1,
-      "rejected_n": 0
+      "candidate": "legacy",
+      "unit": "adjacent_pair",
+      "stages": [
+        {
+          "stage": "input_pairs",
+          "cumulative_pass_n": 80,
+          "rejected_n": 0
+        },
+        {
+          "stage": "qualified_camera",
+          "cumulative_pass_n": 40,
+          "rejected_n": 40
+        },
+        {
+          "stage": "measured_LK",
+          "cumulative_pass_n": 39,
+          "rejected_n": 1
+        }
+      ],
+      "reasons": {
+        "unknown_rigid_consensus": 1,
+        "unknown_camera:loaded_or_unknown_load_not_qualified": 40
+      },
+      "rejection_fields": "trajectory: category/reason/blocked_object/minimum_gap_m/gap_status"
+    },
+    {
+      "candidate": "orange-columns-fast7",
+      "unit": "adjacent_pair",
+      "stages": [
+        {
+          "stage": "input_pairs",
+          "cumulative_pass_n": 80,
+          "rejected_n": 0
+        },
+        {
+          "stage": "qualified_camera",
+          "cumulative_pass_n": 40,
+          "rejected_n": 40
+        },
+        {
+          "stage": "measured_LK",
+          "cumulative_pass_n": 39,
+          "rejected_n": 1
+        }
+      ],
+      "reasons": {
+        "unknown_rigid_consensus": 1,
+        "unknown_camera:loaded_or_unknown_load_not_qualified": 40
+      },
+      "rejection_fields": "trajectory: category/reason/blocked_object/minimum_gap_m/gap_status"
     }
   ],
-  "reasons": [
-    {
-      "category": "known_prior_spawn_overlap",
-      "reason": "drivecheck original reproduction; not a new measurement",
-      "blocked_object": "r1 lower body <-> cargo_box_00_geom",
-      "minimum_gap_m": -0.0153449,
-      "gap_status": "prior_measured"
+  "tracking": {
+    "legacy": {
+      "stages": [
+        {
+          "stage": "pairs",
+          "cumulative_pass_n": 80,
+          "rejected_n": 0
+        },
+        {
+          "stage": "orb_feature_support",
+          "cumulative_pass_n": 34,
+          "rejected_n": 46
+        },
+        {
+          "stage": "orb_rigid_tracking",
+          "cumulative_pass_n": 0,
+          "rejected_n": 34
+        }
+      ],
+      "reasons": {
+        "insufficient_matches": 40,
+        "unqualified_camera:loaded_or_unknown_load_not_qualified": 40
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild3/gcp5-original-r2/capture-r1c",
+      "reproduction": [
+        "/home/ugrp/ugrp-sim/src/96ac9d4279f0a5507d31d90c6696ee04dc905f13/scripts/mapbuild1_replay.py",
+        "--mapbuild1-v1",
+        "--candidate",
+        "legacy",
+        "--input",
+        "/home/ugrp/ugrp-sim/runs/mapbuild3/gcp5-original-r2/capture-r1c",
+        "--evaluation-labels",
+        "/home/ugrp/ugrp-sim/runs/mapbuild3/gcp5-original-r2/capture-r1c/eval-only.json",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/mapbuild3/analysis-r1/legacy"
+      ],
+      "rejection_fields": "trajectory.json: category/reason/blocked_object/minimum_gap_m/gap_status"
+    },
+    "orange-columns-fast7": {
+      "stages": [
+        {
+          "stage": "pairs",
+          "cumulative_pass_n": 80,
+          "rejected_n": 0
+        },
+        {
+          "stage": "orb_feature_support",
+          "cumulative_pass_n": 40,
+          "rejected_n": 40
+        },
+        {
+          "stage": "orb_rigid_tracking",
+          "cumulative_pass_n": 1,
+          "rejected_n": 39
+        }
+      ],
+      "reasons": {
+        "insufficient_matches": 39,
+        "unqualified_camera:loaded_or_unknown_load_not_qualified": 40
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild3/gcp5-original-r2/capture-r1c",
+      "reproduction": [
+        "/home/ugrp/ugrp-sim/src/96ac9d4279f0a5507d31d90c6696ee04dc905f13/scripts/mapbuild1_replay.py",
+        "--mapbuild1-v1",
+        "--candidate",
+        "orange-columns-fast7",
+        "--input",
+        "/home/ugrp/ugrp-sim/runs/mapbuild3/gcp5-original-r2/capture-r1c",
+        "--evaluation-labels",
+        "/home/ugrp/ugrp-sim/runs/mapbuild3/gcp5-original-r2/capture-r1c/eval-only.json",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/mapbuild3/analysis-r1/orange-columns-fast7"
+      ],
+      "rejection_fields": "trajectory.json: category/reason/blocked_object/minimum_gap_m/gap_status"
     }
-  ]
+  },
+  "mapping": {
+    "legacy": {
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild3/gcp5-original-r2/capture-r1c",
+      "reproduction": [
+        "/home/ugrp/ugrp-sim/src/96ac9d4279f0a5507d31d90c6696ee04dc905f13/scripts/mapbuild2_map.py",
+        "--execute",
+        "--input",
+        "/home/ugrp/ugrp-sim/runs/mapbuild3/gcp5-original-r2/capture-r1c",
+        "--trajectory",
+        "/home/ugrp/ugrp-sim/runs/mapbuild3/analysis-r1/legacy/trajectory.json",
+        "--vision-source",
+        "/home/ugrp/ugrp-sim/src/drivecheck-renderer-5974a181",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/mapbuild3/analysis-r1/legacy-maps"
+      ],
+      "stages": [
+        {
+          "stage": "frames",
+          "cumulative_pass_n": 82,
+          "rejected_n": 0
+        },
+        {
+          "stage": "qualified_camera",
+          "cumulative_pass_n": 41,
+          "rejected_n": 41
+        },
+        {
+          "stage": "visual_pose",
+          "cumulative_pass_n": 40,
+          "rejected_n": 1
+        },
+        {
+          "stage": "supported_wall_contacts",
+          "cumulative_pass_n": 40,
+          "rejected_n": 0
+        }
+      ],
+      "reasons": {
+        "observed_wall_contacts": 40,
+        "unqualified_camera:loaded_or_unknown_load_not_qualified": 41,
+        "unknown_visual_pose:unknown_rigid_consensus": 1
+      }
+    },
+    "orange-columns-fast7": {
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild3/gcp5-original-r2/capture-r1c",
+      "reproduction": [
+        "/home/ugrp/ugrp-sim/src/96ac9d4279f0a5507d31d90c6696ee04dc905f13/scripts/mapbuild2_map.py",
+        "--execute",
+        "--input",
+        "/home/ugrp/ugrp-sim/runs/mapbuild3/gcp5-original-r2/capture-r1c",
+        "--trajectory",
+        "/home/ugrp/ugrp-sim/runs/mapbuild3/analysis-r1/orange-columns-fast7/trajectory.json",
+        "--vision-source",
+        "/home/ugrp/ugrp-sim/src/drivecheck-renderer-5974a181",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/mapbuild3/analysis-r1/orange-columns-fast7-maps"
+      ],
+      "stages": [
+        {
+          "stage": "frames",
+          "cumulative_pass_n": 82,
+          "rejected_n": 0
+        },
+        {
+          "stage": "qualified_camera",
+          "cumulative_pass_n": 41,
+          "rejected_n": 41
+        },
+        {
+          "stage": "visual_pose",
+          "cumulative_pass_n": 40,
+          "rejected_n": 1
+        },
+        {
+          "stage": "supported_wall_contacts",
+          "cumulative_pass_n": 40,
+          "rejected_n": 0
+        }
+      ],
+      "reasons": {
+        "observed_wall_contacts": 40,
+        "unqualified_camera:loaded_or_unknown_load_not_qualified": 41,
+        "unknown_visual_pose:unknown_rigid_consensus": 1
+      }
+    }
+  },
+  "gate4": {
+    "status": "WITHHELD",
+    "reason": "warp10 final NOT_READY; repeated CPU contact export HOST_ERROR before30SIM; no same-seed qualified arrival reference",
+    "blocked_object": "warp10:CPU_contact_export",
+    "minimum_gap_m": null,
+    "gap_status": "not_measured"
+  },
+  "spawn": {
+    "raw": "/home/ugrp/ugrp-sim/runs/mapbuild3/gcp5-original-r2/prepare-r1b",
+    "unit": "shared XY candidate, both camera postures",
+    "stages": [
+      {
+        "stage": "tested_shared_starts",
+        "cumulative_pass_n": 3,
+        "rejected_n": 0
+      },
+      {
+        "stage": "both_postures_nonpenetrating",
+        "cumulative_pass_n": 1,
+        "rejected_n": 2
+      }
+    ],
+    "point_reasons": {
+      "robot_nonfloor": 6
+    },
+    "reason_fields": "spawn-rejection-table.json rows[].rejections[]"
+  },
+  "audit": {
+    "raw": "/home/ugrp/ugrp-sim/runs/mapbuild3/audit-r3",
+    "cohorts": [
+      {
+        "cohort": "act16w_record",
+        "scope": "authored_reset_before_native_settle",
+        "planned_n": 40,
+        "checked_n": 40,
+        "missing_unknown_n": 0,
+        "overlapping_n": 0,
+        "accepted_n": 40,
+        "reasons": {},
+        "stages": [
+          {
+            "stage": "planned",
+            "cumulative_pass_n": 40,
+            "rejected_n": 0
+          },
+          {
+            "stage": "available_state",
+            "cumulative_pass_n": 40,
+            "rejected_n": 0
+          },
+          {
+            "stage": "nonpenetrating",
+            "cumulative_pass_n": 40,
+            "rejected_n": 0
+          }
+        ]
+      },
+      {
+        "cohort": "act16w_record",
+        "scope": "saved_task_tick0",
+        "planned_n": 40,
+        "checked_n": 26,
+        "missing_unknown_n": 14,
+        "overlapping_n": 0,
+        "accepted_n": 26,
+        "reasons": {},
+        "stages": [
+          {
+            "stage": "planned",
+            "cumulative_pass_n": 40,
+            "rejected_n": 0
+          },
+          {
+            "stage": "available_state",
+            "cumulative_pass_n": 26,
+            "rejected_n": 14
+          },
+          {
+            "stage": "nonpenetrating",
+            "cumulative_pass_n": 26,
+            "rejected_n": 0
+          }
+        ]
+      },
+      {
+        "cohort": "act16w_heldout",
+        "scope": "authored_reset_before_native_settle",
+        "planned_n": 40,
+        "checked_n": 40,
+        "missing_unknown_n": 0,
+        "overlapping_n": 0,
+        "accepted_n": 40,
+        "reasons": {},
+        "stages": [
+          {
+            "stage": "planned",
+            "cumulative_pass_n": 40,
+            "rejected_n": 0
+          },
+          {
+            "stage": "available_state",
+            "cumulative_pass_n": 40,
+            "rejected_n": 0
+          },
+          {
+            "stage": "nonpenetrating",
+            "cumulative_pass_n": 40,
+            "rejected_n": 0
+          }
+        ]
+      },
+      {
+        "cohort": "act16w_heldout",
+        "scope": "saved_task_tick0",
+        "planned_n": 40,
+        "checked_n": 0,
+        "missing_unknown_n": 40,
+        "overlapping_n": 0,
+        "accepted_n": 0,
+        "reasons": {},
+        "stages": [
+          {
+            "stage": "planned",
+            "cumulative_pass_n": 40,
+            "rejected_n": 0
+          },
+          {
+            "stage": "available_state",
+            "cumulative_pass_n": 0,
+            "rejected_n": 40
+          },
+          {
+            "stage": "nonpenetrating",
+            "cumulative_pass_n": 0,
+            "rejected_n": 0
+          }
+        ]
+      },
+      {
+        "cohort": "warp8_beam",
+        "scope": "authored_reset_before_native_settle",
+        "planned_n": 40,
+        "checked_n": 40,
+        "missing_unknown_n": 0,
+        "overlapping_n": 1,
+        "accepted_n": 39,
+        "reasons": {
+          "robot_nonfloor": 1
+        },
+        "stages": [
+          {
+            "stage": "planned",
+            "cumulative_pass_n": 40,
+            "rejected_n": 0
+          },
+          {
+            "stage": "available_state",
+            "cumulative_pass_n": 40,
+            "rejected_n": 0
+          },
+          {
+            "stage": "nonpenetrating",
+            "cumulative_pass_n": 39,
+            "rejected_n": 1
+          }
+        ]
+      },
+      {
+        "cohort": "warp8_beam",
+        "scope": "saved_task_tick0",
+        "planned_n": 40,
+        "checked_n": 0,
+        "missing_unknown_n": 40,
+        "overlapping_n": 0,
+        "accepted_n": 0,
+        "reasons": {},
+        "stages": [
+          {
+            "stage": "planned",
+            "cumulative_pass_n": 40,
+            "rejected_n": 0
+          },
+          {
+            "stage": "available_state",
+            "cumulative_pass_n": 0,
+            "rejected_n": 40
+          },
+          {
+            "stage": "nonpenetrating",
+            "cumulative_pass_n": 0,
+            "rejected_n": 0
+          }
+        ]
+      },
+      {
+        "cohort": "warp8_beam_R1",
+        "scope": "authored_reset_before_native_settle",
+        "planned_n": 40,
+        "checked_n": 40,
+        "missing_unknown_n": 0,
+        "overlapping_n": 1,
+        "accepted_n": 39,
+        "reasons": {
+          "robot_nonfloor": 1
+        },
+        "stages": [
+          {
+            "stage": "planned",
+            "cumulative_pass_n": 40,
+            "rejected_n": 0
+          },
+          {
+            "stage": "available_state",
+            "cumulative_pass_n": 40,
+            "rejected_n": 0
+          },
+          {
+            "stage": "nonpenetrating",
+            "cumulative_pass_n": 39,
+            "rejected_n": 1
+          }
+        ]
+      },
+      {
+        "cohort": "warp8_beam_R1",
+        "scope": "saved_task_tick0",
+        "planned_n": 40,
+        "checked_n": 40,
+        "missing_unknown_n": 0,
+        "overlapping_n": 0,
+        "accepted_n": 40,
+        "reasons": {},
+        "stages": [
+          {
+            "stage": "planned",
+            "cumulative_pass_n": 40,
+            "rejected_n": 0
+          },
+          {
+            "stage": "available_state",
+            "cumulative_pass_n": 40,
+            "rejected_n": 0
+          },
+          {
+            "stage": "nonpenetrating",
+            "cumulative_pass_n": 40,
+            "rejected_n": 0
+          }
+        ]
+      },
+      {
+        "cohort": "warp8_release_A",
+        "scope": "authored_reset_before_native_settle",
+        "planned_n": 40,
+        "checked_n": 40,
+        "missing_unknown_n": 0,
+        "overlapping_n": 0,
+        "accepted_n": 40,
+        "reasons": {},
+        "stages": [
+          {
+            "stage": "planned",
+            "cumulative_pass_n": 40,
+            "rejected_n": 0
+          },
+          {
+            "stage": "available_state",
+            "cumulative_pass_n": 40,
+            "rejected_n": 0
+          },
+          {
+            "stage": "nonpenetrating",
+            "cumulative_pass_n": 40,
+            "rejected_n": 0
+          }
+        ]
+      },
+      {
+        "cohort": "warp8_release_A",
+        "scope": "saved_task_tick0",
+        "planned_n": 40,
+        "checked_n": 0,
+        "missing_unknown_n": 40,
+        "overlapping_n": 0,
+        "accepted_n": 0,
+        "reasons": {},
+        "stages": [
+          {
+            "stage": "planned",
+            "cumulative_pass_n": 40,
+            "rejected_n": 0
+          },
+          {
+            "stage": "available_state",
+            "cumulative_pass_n": 0,
+            "rejected_n": 40
+          },
+          {
+            "stage": "nonpenetrating",
+            "cumulative_pass_n": 0,
+            "rejected_n": 0
+          }
+        ]
+      },
+      {
+        "cohort": "warp8_release_B",
+        "scope": "authored_reset_before_native_settle",
+        "planned_n": 40,
+        "checked_n": 40,
+        "missing_unknown_n": 0,
+        "overlapping_n": 0,
+        "accepted_n": 40,
+        "reasons": {},
+        "stages": [
+          {
+            "stage": "planned",
+            "cumulative_pass_n": 40,
+            "rejected_n": 0
+          },
+          {
+            "stage": "available_state",
+            "cumulative_pass_n": 40,
+            "rejected_n": 0
+          },
+          {
+            "stage": "nonpenetrating",
+            "cumulative_pass_n": 40,
+            "rejected_n": 0
+          }
+        ],
+        "same_start_alias": true
+      },
+      {
+        "cohort": "warp8_release_B",
+        "scope": "saved_task_tick0",
+        "planned_n": 40,
+        "checked_n": 0,
+        "missing_unknown_n": 40,
+        "overlapping_n": 0,
+        "accepted_n": 0,
+        "reasons": {},
+        "stages": [
+          {
+            "stage": "planned",
+            "cumulative_pass_n": 40,
+            "rejected_n": 0
+          },
+          {
+            "stage": "available_state",
+            "cumulative_pass_n": 0,
+            "rejected_n": 40
+          },
+          {
+            "stage": "nonpenetrating",
+            "cumulative_pass_n": 0,
+            "rejected_n": 0
+          }
+        ],
+        "same_start_alias": true
+      }
+    ]
+  },
+  "map_cells": [
+    {
+      "candidate_sequence": "legacy/drive-off",
+      "unit": "predicted_cell",
+      "stages": [
+        {
+          "stage": "predicted",
+          "cumulative_pass_n": 38,
+          "rejected_n": 0
+        },
+        {
+          "stage": "inside_truth_domain",
+          "cumulative_pass_n": 38,
+          "rejected_n": 0
+        },
+        {
+          "stage": "correct_occupancy",
+          "cumulative_pass_n": 38,
+          "rejected_n": 0
+        }
+      ]
+    },
+    {
+      "candidate_sequence": "legacy/high-off",
+      "unit": "predicted_cell",
+      "stages": [
+        {
+          "stage": "predicted",
+          "cumulative_pass_n": 0,
+          "rejected_n": 0
+        },
+        {
+          "stage": "inside_truth_domain",
+          "cumulative_pass_n": 0,
+          "rejected_n": 0
+        },
+        {
+          "stage": "correct_occupancy",
+          "cumulative_pass_n": 0,
+          "rejected_n": 0
+        }
+      ]
+    },
+    {
+      "candidate_sequence": "orange-columns-fast7/drive-off",
+      "unit": "predicted_cell",
+      "stages": [
+        {
+          "stage": "predicted",
+          "cumulative_pass_n": 38,
+          "rejected_n": 0
+        },
+        {
+          "stage": "inside_truth_domain",
+          "cumulative_pass_n": 38,
+          "rejected_n": 0
+        },
+        {
+          "stage": "correct_occupancy",
+          "cumulative_pass_n": 38,
+          "rejected_n": 0
+        }
+      ]
+    },
+    {
+      "candidate_sequence": "orange-columns-fast7/high-off",
+      "unit": "predicted_cell",
+      "stages": [
+        {
+          "stage": "predicted",
+          "cumulative_pass_n": 0,
+          "rejected_n": 0
+        },
+        {
+          "stage": "inside_truth_domain",
+          "cumulative_pass_n": 0,
+          "rejected_n": 0
+        },
+        {
+          "stage": "correct_occupancy",
+          "cumulative_pass_n": 0,
+          "rejected_n": 0
+        }
+      ]
+    }
+  ],
+  "physical_reproduction": {
+    "prepare": [
+      "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+      "/home/ugrp/ugrp-sim/src/mapbuild3-76da1162/scripts/mapbuild3_prepare.py",
+      "--spawn-overlap-check-v1",
+      "--renderer-source",
+      "/home/ugrp/ugrp-sim/src/drivecheck-renderer-5974a181",
+      "--output",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/NEW-prepare"
+    ],
+    "capture": [
+      "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+      "/home/ugrp/ugrp-sim/src/mapbuild3-eb3ae01d/scripts/mapbuild3_capture.py",
+      "--mapbuild3-v1",
+      "--queue",
+      "/home/ugrp/ugrp-sim/ops-reviews/mapbuild3/queue-r1c.json",
+      "--fixture",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/prepare-r1b",
+      "--renderer-source",
+      "/home/ugrp/ugrp-sim/src/drivecheck-renderer-5974a181",
+      "--renderer-receipt",
+      "/home/ugrp/ugrp-sim/ops-reviews/mapbuild3/renderer-receipt.json",
+      "--output",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/NEW-capture"
+    ],
+    "environment": {
+      "MUJOCO_GL": "osmesa",
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1"
+    },
+    "host": "gcp5",
+    "scope": "new output paths required; original source snapshots and queue preserved; no new physical execution"
+  },
+  "final_playback": "/home/ugrp/ugrp-sim/runs/mapbuild3/analysis-r1/playback-r2/receipts.json"
 }

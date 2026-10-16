@@ -37,8 +37,8 @@
   },
   {
     "attempt": "capture-r1c",
-    "status": "RUNNING",
-    "reason": "clean shared start, actual MJWarp wheels; not complete yet",
+    "status": "cap_end",
+    "reason": "2 worlds,82 own frames,16000 physics steps/world; same clean start; not mission success",
     "category": "capture",
     "blocked_object": "not_applicable:running",
     "minimum_gap_m": null,
@@ -68,6 +68,69 @@
     "reason": "gcp2 CPU manual stop/setScheduling during transfer; gcp5 original cap_end preserved; restart authorized, no budget-stop evidence",
     "category": "host_operation",
     "blocked_object": "gcp2_cpu",
+    "minimum_gap_m": null,
+    "gap_status": "not_measured"
+  },
+  {
+    "attempt": "analysis-r1",
+    "status": "COMPLETE_NOT_READY",
+    "reason": "LK39/40 FOLDED, HIGH unknown; map38/2990, wrong free0, obstacle0/11",
+    "category": "offline_analysis",
+    "blocked_object": "not_observed:small lateral displacement cause unresolved",
+    "minimum_gap_m": null,
+    "gap_status": "not_measured"
+  },
+  {
+    "attempt": "audit-r3",
+    "status": "COMPLETE_WITH_EXPLICIT_UNKNOWN",
+    "reason": "additional all40 saved warp8 R1 task-origin states, overlap0; pre-settle seed8318724 overlap retained separately",
+    "category": "read_only_audit",
+    "blocked_object": "r3 fingers <-> east wall (authored only)",
+    "minimum_gap_m": -0.001146953243292121,
+    "gap_status": "measured"
+  },
+  {
+    "attempt": "obstacle-eval-r1",
+    "status": "ERROR_BEFORE_SCORING",
+    "reason": "PYTHONPATH selected frozen scripts package before own pure scorer; corrected import order",
+    "category": "analysis_import",
+    "blocked_object": "scripts.score_mapbuild1",
+    "minimum_gap_m": null,
+    "gap_status": "not_measured"
+  },
+  {
+    "attempt": "obstacle-eval-r2",
+    "status": "COMPLETE_UNOBSERVED",
+    "reason": "5 reset collision boxes ->11 raster obstacle samples, predicted0/11",
+    "category": "obstacle_scoring",
+    "blocked_object": "not_observed",
+    "minimum_gap_m": null,
+    "gap_status": "not_measured"
+  },
+  {
+    "attempt": "playback-r1",
+    "status": "REJECTED",
+    "reason": "ffprobe found15 frames, setpts rounding dropped video frames; 41-frame10Hz montage unaffected",
+    "category": "playback_recording",
+    "blocked_object": "encoder_timebase",
+    "minimum_gap_m": null,
+    "gap_status": "not_measured"
+  },
+  {
+    "attempt": "playback-r2",
+    "status": "VERIFIED",
+    "reason": "input30fps, source10Hz all41 retained at3x,1.366667s each;14 file hashes match; montage bytes unchanged",
+    "category": "playback_recording",
+    "blocked_object": "none:verified",
+    "minimum_gap_m": null,
+    "gap_status": "not_applicable"
+  },
+  {
+    "attempt": "origin-hash-check-r1",
+    "status": "HOST_ERROR_THEN_VERIFIED",
+    "reason": "ACT L4 restarted by its owner/address changed; old IP timed out and premature empty-receipt comparison rejected; refreshed current IP read-only and all466 origin hashes match",
+    "category": "retrieval_verification",
+    "blocked_object": "old_ACT_L4_IP",
     "minimum_gap_m": null,
     "gap_status": "not_measured"
   }

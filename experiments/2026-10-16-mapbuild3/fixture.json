@@ -1,0 +1,317 @@
+{
+  "selected": {
+    "drive": {
+      "pwm": {
+        "1": 2000,
+        "3": 740,
+        "4": 2320,
+        "5": 1320,
+        "6": 1500
+      },
+      "setup": {
+        "pose": "drive",
+        "view": {
+          "wall": "wall_west",
+          "distance_m": 0.75,
+          "xyyaw": [
+            -0.275,
+            -0.85,
+            -3.141592653589793
+          ],
+          "minimum_wall_gap_m": 0.75,
+          "span_m": 4.6
+        },
+        "pwm": {
+          "1": 2000,
+          "3": 740,
+          "4": 2320,
+          "5": 1320,
+          "6": 1500
+        },
+        "test_setup_ground_truth": true,
+        "source": "HIGH: harness.zone_pair_highpose; drive: scripts.zone_teacher.FOLDED",
+        "contact_or_grasp_success_claimed": false,
+        "r1_fixture_xyyaw": [
+          -0.275,
+          -0.85,
+          -3.141592653589793
+        ],
+        "pwm_mode": "FOLDED",
+        "positive_colour_fixture": false,
+        "positive_expected_target_masks": [],
+        "minimum_wall_gap_m": 0.75,
+        "wall_gap_definition": "horizontal robot/body center to original wall-box boundary; not body collision clearance",
+        "actual_robot_xyz": {
+          "r3": [
+            -0.8982,
+            -2.25,
+            0.032355118817659255
+          ],
+          "r2": [
+            -0.8982,
+            -0.85,
+            0.032355118817659255
+          ],
+          "r1": [
+            -0.275,
+            -0.85,
+            0.032355118817659255
+          ]
+        },
+        "actual_object_xyz": {
+          "cargo_box_00": [
+            -0.2,
+            -0.85,
+            0.016
+          ],
+          "cargo_box_01": [
+            1.0,
+            -1.65,
+            0.016
+          ],
+          "cargo_box_02": [
+            0.4,
+            -2.45,
+            0.016
+          ],
+          "cargo_box_03": [
+            -0.2,
+            -1.65,
+            0.016
+          ],
+          "cargo_tex2_beam": [
+            0.7,
+            -0.85,
+            0.0005
+          ]
+        },
+        "object_center_wall_gap_m": {
+          "cargo_box_00": 0.8250000000000001,
+          "cargo_box_01": 1.1750000000000003,
+          "cargo_box_02": 0.6749999999999997,
+          "cargo_box_03": 0.8250000000000001,
+          "cargo_tex2_beam": 1.4750000000000003
+        },
+        "qpos_sha256": "42af22ad32a2b4bf5abbb6ae9b32e3cc122d70a74028be0ed5cf9ff3ff302881"
+      },
+      "offset_cells": [
+        0,
+        -1
+      ],
+      "spacing_m": 0.42797363978083836,
+      "original_xy": [
+        -0.275,
+        -0.85
+      ],
+      "selected_xy": [
+        -0.275,
+        -1.2779736397808383
+      ],
+      "admission": {
+        "enabled": true,
+        "accepted": true,
+        "status": "accepted",
+        "allowed_depth_m": 0.0,
+        "contact_points_n": 0,
+        "rejected_contact_points_n": 0,
+        "pair_count": 0,
+        "reasons": {},
+        "minimum_gap_m": null,
+        "gap_status": "no_relevant_contacts; noncontact_clearance_not_measured",
+        "rejections": [],
+        "time_sim_s": 0.0,
+        "all_contact_points_n": 64,
+        "floor_geoms": [
+          "floor"
+        ],
+        "cargo_bodies": [
+          "blue_block",
+          "cargo_box_00",
+          "cargo_box_01",
+          "cargo_box_02",
+          "cargo_box_03",
+          "cargo_tex2_beam",
+          "dispatch_box",
+          "red_block",
+          "team_beam",
+          "warehouse_oak_plank",
+          "warehouse_steel_pipe",
+          "warehouse_wood_crate",
+          "yellow_block"
+        ],
+        "wall_geoms": [
+          "zone_wall_divider_1",
+          "zone_wall_divider_2",
+          "zone_wall_east",
+          "zone_wall_h1_east_cross",
+          "zone_wall_h1_east_lower",
+          "zone_wall_h1_east_middle",
+          "zone_wall_h1_east_upper",
+          "zone_wall_north",
+          "zone_wall_south",
+          "zone_wall_west"
+        ],
+        "scope": "native mj_forward contact subset at supplied setup; no CPU integration; no actor feedback"
+      }
+    },
+    "high": {
+      "pwm": {
+        "3": 896,
+        "4": 2035,
+        "5": 1894,
+        "6": 1500,
+        "1": 1500
+      },
+      "setup": {
+        "pose": "high",
+        "view": {
+          "wall": "wall_west",
+          "distance_m": 0.75,
+          "xyyaw": [
+            -0.275,
+            -0.85,
+            -3.141592653589793
+          ],
+          "minimum_wall_gap_m": 0.75,
+          "span_m": 4.6
+        },
+        "pwm": {
+          "3": 896,
+          "4": 2035,
+          "5": 1894,
+          "6": 1500,
+          "1": 1500
+        },
+        "test_setup_ground_truth": true,
+        "source": "HIGH: harness.zone_pair_highpose; drive: scripts.zone_teacher.FOLDED",
+        "contact_or_grasp_success_claimed": false,
+        "r1_fixture_xyyaw": [
+          -0.275,
+          -0.85,
+          -3.141592653589793
+        ],
+        "pwm_mode": "HIGH",
+        "positive_colour_fixture": false,
+        "positive_expected_target_masks": [],
+        "minimum_wall_gap_m": 0.75,
+        "wall_gap_definition": "horizontal robot/body center to original wall-box boundary; not body collision clearance",
+        "actual_robot_xyz": {
+          "r3": [
+            -0.8982,
+            -2.25,
+            0.032355118817659255
+          ],
+          "r2": [
+            -0.8982,
+            -0.85,
+            0.032355118817659255
+          ],
+          "r1": [
+            -0.275,
+            -0.85,
+            0.032355118817659255
+          ]
+        },
+        "actual_object_xyz": {
+          "cargo_box_00": [
+            -0.2,
+            -0.85,
+            0.016
+          ],
+          "cargo_box_01": [
+            1.0,
+            -1.65,
+            0.016
+          ],
+          "cargo_box_02": [
+            0.4,
+            -2.45,
+            0.016
+          ],
+          "cargo_box_03": [
+            -0.2,
+            -1.65,
+            0.016
+          ],
+          "cargo_tex2_beam": [
+            0.7,
+            -0.85,
+            0.0005
+          ]
+        },
+        "object_center_wall_gap_m": {
+          "cargo_box_00": 0.8250000000000001,
+          "cargo_box_01": 1.1750000000000003,
+          "cargo_box_02": 0.6749999999999997,
+          "cargo_box_03": 0.8250000000000001,
+          "cargo_tex2_beam": 1.4750000000000003
+        },
+        "qpos_sha256": "9a6520689c437834f24d4d8c8d14efe629320278d913a2e45fa6b25469ee63d8"
+      },
+      "offset_cells": [
+        0,
+        -1
+      ],
+      "spacing_m": 0.42797363978083836,
+      "original_xy": [
+        -0.275,
+        -0.85
+      ],
+      "selected_xy": [
+        -0.275,
+        -1.2779736397808383
+      ],
+      "admission": {
+        "enabled": true,
+        "accepted": true,
+        "status": "accepted",
+        "allowed_depth_m": 0.0,
+        "contact_points_n": 0,
+        "rejected_contact_points_n": 0,
+        "pair_count": 0,
+        "reasons": {},
+        "minimum_gap_m": null,
+        "gap_status": "no_relevant_contacts; noncontact_clearance_not_measured",
+        "rejections": [],
+        "time_sim_s": 0.0,
+        "all_contact_points_n": 64,
+        "floor_geoms": [
+          "floor"
+        ],
+        "cargo_bodies": [
+          "blue_block",
+          "cargo_box_00",
+          "cargo_box_01",
+          "cargo_box_02",
+          "cargo_box_03",
+          "cargo_tex2_beam",
+          "dispatch_box",
+          "red_block",
+          "team_beam",
+          "warehouse_oak_plank",
+          "warehouse_steel_pipe",
+          "warehouse_wood_crate",
+          "yellow_block"
+        ],
+        "wall_geoms": [
+          "zone_wall_divider_1",
+          "zone_wall_divider_2",
+          "zone_wall_east",
+          "zone_wall_h1_east_cross",
+          "zone_wall_h1_east_lower",
+          "zone_wall_h1_east_middle",
+          "zone_wall_h1_east_upper",
+          "zone_wall_north",
+          "zone_wall_south",
+          "zone_wall_west"
+        ],
+        "scope": "native mj_forward contact subset at supplied setup; no CPU integration; no actor feedback"
+      }
+    }
+  },
+  "scene_xml_sha256": "6c4c907cd59c34e6bb717c7c991152d963f67ee2f6f25fdd134afd955c63890f",
+  "fixture_sha256": "58defc5b9d200ca827e1e12916d261cc8a5167ef7c61ce125a4dd0952a504a91",
+  "original_scene_files_modified": false,
+  "changes": "r1 initial XY only; original authored cargo, robots2/3, model, camera, physics unchanged",
+  "cpu_integration_steps": 0
+}

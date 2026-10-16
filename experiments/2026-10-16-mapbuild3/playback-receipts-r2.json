@@ -1,0 +1,320 @@
+[
+  {
+    "case": "drive-off",
+    "sim_range": [
+      0,
+      4
+    ],
+    "video_probe": {
+      "streams": [
+        {
+          "index": 0,
+          "codec_name": "h264",
+          "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+          "profile": "High",
+          "codec_type": "video",
+          "codec_tag_string": "avc1",
+          "codec_tag": "0x31637661",
+          "width": 1920,
+          "height": 480,
+          "coded_width": 1920,
+          "coded_height": 480,
+          "closed_captions": 0,
+          "film_grain": 0,
+          "has_b_frames": 2,
+          "sample_aspect_ratio": "1:1",
+          "display_aspect_ratio": "4:1",
+          "pix_fmt": "yuv420p",
+          "level": 31,
+          "chroma_location": "left",
+          "field_order": "progressive",
+          "refs": 1,
+          "is_avc": "true",
+          "nal_length_size": "4",
+          "id": "0x1",
+          "r_frame_rate": "30/1",
+          "avg_frame_rate": "30/1",
+          "time_base": "1/15360",
+          "start_pts": 0,
+          "start_time": "0.000000",
+          "duration_ts": 20992,
+          "duration": "1.366667",
+          "bit_rate": "211346",
+          "bits_per_raw_sample": "8",
+          "nb_frames": "41",
+          "extradata_size": 46,
+          "disposition": {
+            "default": 1,
+            "dub": 0,
+            "original": 0,
+            "comment": 0,
+            "lyrics": 0,
+            "karaoke": 0,
+            "forced": 0,
+            "hearing_impaired": 0,
+            "visual_impaired": 0,
+            "clean_effects": 0,
+            "attached_pic": 0,
+            "timed_thumbnails": 0,
+            "non_diegetic": 0,
+            "captions": 0,
+            "descriptions": 0,
+            "metadata": 0,
+            "dependent": 0,
+            "still_image": 0
+          },
+          "tags": {
+            "language": "und",
+            "handler_name": "VideoHandler",
+            "vendor_id": "[0][0][0][0]",
+            "encoder": "Lavc60.31.102 libx264"
+          }
+        }
+      ],
+      "format": {
+        "filename": "/home/ugrp/ugrp-sim/runs/mapbuild3/analysis-r1/playback-r2/drive-off/review-3x.mp4",
+        "nb_streams": 1,
+        "nb_programs": 0,
+        "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+        "format_long_name": "QuickTime / MOV",
+        "start_time": "0.000000",
+        "duration": "1.366667",
+        "size": "37472",
+        "bit_rate": "219348",
+        "probe_score": 100,
+        "tags": {
+          "major_brand": "isom",
+          "minor_version": "512",
+          "compatible_brands": "isomiso2avc1mp41",
+          "encoder": "Lavf60.16.100"
+        }
+      }
+    },
+    "reproduction": [
+      "ffmpeg",
+      "-nostdin",
+      "-loglevel",
+      "error",
+      "-framerate",
+      "30",
+      "-i",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/gcp5-original-r2/capture-r1c/drive-off/overview-%04d.jpg",
+      "-framerate",
+      "30",
+      "-i",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/gcp5-original-r2/capture-r1c/drive-off/r1-%04d.jpg",
+      "-framerate",
+      "30",
+      "-i",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/gcp5-original-r2/capture-r1c/drive-off/r2-%04d.jpg",
+      "-filter_complex",
+      "[0:v][1:v][2:v]hstack=inputs=3[v]",
+      "-map",
+      "[v]",
+      "-frames:v",
+      "41",
+      "-fps_mode",
+      "vfr",
+      "-an",
+      "-c:v",
+      "libx264",
+      "-crf",
+      "28",
+      "-pix_fmt",
+      "yuv420p",
+      "-threads",
+      "1",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/analysis-r1/playback-r2/drive-off/review-3x.mp4"
+    ],
+    "files": {
+      "r2-terminal-10hz.jpg": {
+        "bytes": 116487,
+        "sha256": "dca1ce95e0a97a24f7a781ea12593712544e0259ebdf4164e94e74bc59c8b17e"
+      },
+      "r1-terminal-10hz.jpg": {
+        "bytes": 86623,
+        "sha256": "c73a151bc8b27036475aff1bada7fbd10e40634bd54b3183950df1190c0b14b3"
+      },
+      "r2-whole-2hz.jpg": {
+        "bytes": 31307,
+        "sha256": "53f79e28a6329eba646569f4a829dfa5ce514c4efe563f2fd96f45b0c71f1ec8"
+      },
+      "overview-whole-2hz.jpg": {
+        "bytes": 41327,
+        "sha256": "0b61764caa646b1d7590cba9ddf6958da0885c89130451b2457139dc6fc697c2"
+      },
+      "overview-terminal-10hz.jpg": {
+        "bytes": 148184,
+        "sha256": "51ab3bc7bdbd0183ea848180fe4ee8ca9ef45815d46300e308f893aca25355ec"
+      },
+      "r1-whole-2hz.jpg": {
+        "bytes": 22186,
+        "sha256": "735d97e3e0b10e6d23f58812622ba7a75f9e1d91c4d9f5b31687efdfa03ea841"
+      },
+      "review-3x.mp4": {
+        "bytes": 37472,
+        "sha256": "5aa3b65c502bf9e8f14b8e6fc2ca3cce876f0c46a675d35e8eca5c7c4e792020"
+      }
+    },
+    "scope": "input rate30fps gives3x playback of source10Hz; all41 frames retained; montage hashes unchanged"
+  },
+  {
+    "case": "high-off",
+    "sim_range": [
+      0,
+      4
+    ],
+    "video_probe": {
+      "streams": [
+        {
+          "index": 0,
+          "codec_name": "h264",
+          "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+          "profile": "High",
+          "codec_type": "video",
+          "codec_tag_string": "avc1",
+          "codec_tag": "0x31637661",
+          "width": 1920,
+          "height": 480,
+          "coded_width": 1920,
+          "coded_height": 480,
+          "closed_captions": 0,
+          "film_grain": 0,
+          "has_b_frames": 2,
+          "sample_aspect_ratio": "1:1",
+          "display_aspect_ratio": "4:1",
+          "pix_fmt": "yuv420p",
+          "level": 31,
+          "chroma_location": "left",
+          "field_order": "progressive",
+          "refs": 1,
+          "is_avc": "true",
+          "nal_length_size": "4",
+          "id": "0x1",
+          "r_frame_rate": "30/1",
+          "avg_frame_rate": "30/1",
+          "time_base": "1/15360",
+          "start_pts": 0,
+          "start_time": "0.000000",
+          "duration_ts": 20992,
+          "duration": "1.366667",
+          "bit_rate": "216948",
+          "bits_per_raw_sample": "8",
+          "nb_frames": "41",
+          "extradata_size": 46,
+          "disposition": {
+            "default": 1,
+            "dub": 0,
+            "original": 0,
+            "comment": 0,
+            "lyrics": 0,
+            "karaoke": 0,
+            "forced": 0,
+            "hearing_impaired": 0,
+            "visual_impaired": 0,
+            "clean_effects": 0,
+            "attached_pic": 0,
+            "timed_thumbnails": 0,
+            "non_diegetic": 0,
+            "captions": 0,
+            "descriptions": 0,
+            "metadata": 0,
+            "dependent": 0,
+            "still_image": 0
+          },
+          "tags": {
+            "language": "und",
+            "handler_name": "VideoHandler",
+            "vendor_id": "[0][0][0][0]",
+            "encoder": "Lavc60.31.102 libx264"
+          }
+        }
+      ],
+      "format": {
+        "filename": "/home/ugrp/ugrp-sim/runs/mapbuild3/analysis-r1/playback-r2/high-off/review-3x.mp4",
+        "nb_streams": 1,
+        "nb_programs": 0,
+        "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+        "format_long_name": "QuickTime / MOV",
+        "start_time": "0.000000",
+        "duration": "1.366667",
+        "size": "38429",
+        "bit_rate": "224950",
+        "probe_score": 100,
+        "tags": {
+          "major_brand": "isom",
+          "minor_version": "512",
+          "compatible_brands": "isomiso2avc1mp41",
+          "encoder": "Lavf60.16.100"
+        }
+      }
+    },
+    "reproduction": [
+      "ffmpeg",
+      "-nostdin",
+      "-loglevel",
+      "error",
+      "-framerate",
+      "30",
+      "-i",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/gcp5-original-r2/capture-r1c/high-off/overview-%04d.jpg",
+      "-framerate",
+      "30",
+      "-i",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/gcp5-original-r2/capture-r1c/high-off/r1-%04d.jpg",
+      "-framerate",
+      "30",
+      "-i",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/gcp5-original-r2/capture-r1c/high-off/r2-%04d.jpg",
+      "-filter_complex",
+      "[0:v][1:v][2:v]hstack=inputs=3[v]",
+      "-map",
+      "[v]",
+      "-frames:v",
+      "41",
+      "-fps_mode",
+      "vfr",
+      "-an",
+      "-c:v",
+      "libx264",
+      "-crf",
+      "28",
+      "-pix_fmt",
+      "yuv420p",
+      "-threads",
+      "1",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/analysis-r1/playback-r2/high-off/review-3x.mp4"
+    ],
+    "files": {
+      "r2-terminal-10hz.jpg": {
+        "bytes": 93169,
+        "sha256": "9aea26673f1e06a6a2c18ffc35315e93c0711843fdeedadece86e4c32c76f4e7"
+      },
+      "r1-terminal-10hz.jpg": {
+        "bytes": 89013,
+        "sha256": "201110202a3ae8b5e2aedbbaa580c16189bab10040cc7ab41429fd863d06462c"
+      },
+      "r2-whole-2hz.jpg": {
+        "bytes": 25161,
+        "sha256": "daedd80812b35f396ee0a44d1079c42227a474107b9603408bb1b11135d808a2"
+      },
+      "overview-whole-2hz.jpg": {
+        "bytes": 41659,
+        "sha256": "721a5d11838e45d540bcce0b6c6d9161188a8386a66be2bc320d39d08d382684"
+      },
+      "overview-terminal-10hz.jpg": {
+        "bytes": 149798,
+        "sha256": "3ba8eb44eafa139bf3f43cab778c1bf7cb9d2ed53ea909d831db755c20cefcd3"
+      },
+      "r1-whole-2hz.jpg": {
+        "bytes": 22713,
+        "sha256": "e9e1c2899af081d97fc7e320dca4b84292dc94a004b8d9d955f1e1b0a617f8f9"
+      },
+      "review-3x.mp4": {
+        "bytes": 38429,
+        "sha256": "7af8d742b4d72cabc28f0c2e8778c558ac5cbd748ce1243d70af78be08b92ff4"
+      }
+    },
+    "scope": "input rate30fps gives3x playback of source10Hz; all41 frames retained; montage hashes unchanged"
+  }
+]
