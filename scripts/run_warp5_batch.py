@@ -30,11 +30,18 @@ def run(a):
     if not rejection.is_absolute() or not rejection.is_file():raise ValueError('existing absolute rejection_table required')
     if not a.setup_only:
         gate=json.loads(Path(q['render_gate']).read_text())
-        if not gate.get('admitted',False):raise ValueError('MJWarp renderer not qualified; control batch withheld')
+        diagnostic=q.get('diagnostic_only') is True
+        # The user explicitly requests N16 motion diagnosis after measuring
+        # native-image accuracy. Keep incomplete recall NOT_READY; an explicit
+        # DEV queue may investigate it only with complete labels/hashes and
+        # zero falsely accepted components. Never promote this to E2E-ready.
+        measured=gate.get('checks',{})
+        diagnostic_admitted=diagnostic and all(measured.get(k) is True for k in ('semantic_labels_present','hashes_match','no_false_components'))
+        if not gate.get('admitted',False) and not diagnostic_admitted:raise ValueError('MJWarp visual admission missing; control batch withheld')
         if len(q['runs'])<16:raise ValueError('N16 minimum for run-first batch')
     host=identity();a.output.mkdir(parents=True,exist_ok=False)
     for key,value in q.get('environment',{}).items():
-        if not key.startswith(('UGRP_SCENE_','UGRP_RELOC','UGRP_WARP5_')):raise ValueError('unapproved simulation environment field')
+        if not key.startswith(('UGRP_SCENE_','UGRP_RELOC','UGRP_WARP5_','UGRP_WARP7_')):raise ValueError('unapproved simulation environment field')
         os.environ[key]=str(value)
     base=Path('/home/ugrp/ugrp-sim');leases=[json.loads(p.read_text()) for p in (base/'leases').glob('*.json')]
     task=q.get('task','warp5')
@@ -47,7 +54,8 @@ def run(a):
         gpu=subprocess.check_output(['nvidia-smi','--query-gpu=name,memory.used,memory.total,utilization.gpu','--format=csv,noheader'],text=True),shared_load=True))
     write(a.output/'queue.json',q)
     report=dict(status='RUNNING',source_sha=sha,host=host,shared_load=True,model_calls=0,
-        physics_backend='mjwarp_batch_v1',pool_with_cpu=False,attempted=len(q['runs']),worlds=[],errors=[])
+        physics_backend='mjwarp_batch_v1',pool_with_cpu=False,attempted=len(q['runs']),worlds=[],errors=[],
+        diagnostic_only=q.get('diagnostic_only',False),visual_qualified=gate.get('admitted',False) if not a.setup_only else False)
     hooks=Batch(host,sha,'mjwarp_batch_v1',a.output)
     hooks.warp5_native_visual_v1=q.get('warp5_native_visual_v1',False)
     hooks.warp5_native_visual_v2=q.get('warp5_native_visual_v2',False)
@@ -74,11 +82,16 @@ def run(a):
         hooks.initialize(contexts)
         report.update(camera=hooks.camera,compatibility=hooks.compat,capacities=hooks.capacities)
         loop=time.perf_counter()
+        targets=np.array([c['origin'] for c in contexts],float)
         while active.any():
             for i in np.flatnonzero(active):
+                # A .2 s capture lane must not resume after only one .1 s GPU
+                # step. Targets are absolute SIM times, rounded like export.
+                if round(float(contexts[i]['world'].data.time),9)<round(float(targets[i]),9):continue
                 try:
                     event=next(lanes[i])
                     if event['kind']!='step':raise ValueError('missing step barrier')
+                    targets[i]=event['target']
                 except StopIteration as done:
                     active[i]=False;result=done.value
                     report['worlds'].append(dict(world=int(i),seed=q['runs'][i]['seed'],result=result))

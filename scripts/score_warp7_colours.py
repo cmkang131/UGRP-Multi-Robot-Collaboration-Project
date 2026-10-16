@@ -18,11 +18,14 @@ def write(path,value):
 
 
 def score(root,out):
-    from harness.floor_goal import detect_floor,FloorGoalOptions
     from harness.zone_color_boxes import detect_own,OWN_PROFILE_ZONE,OWN_MIN_AREA_PX
     from scripts.probe_scene_tex2 import mask_score
     from harness.warp5_perception import install
-    install();cv2.setNumThreads(1)
+    from harness.warp7_perception import install as install7,enabled,paint_mask
+    install();install7();cv2.setNumThreads(1)
+    # Resolve after installation: a cached local function would silently score
+    # the old floor detector while the destination path uses the new profile.
+    from harness.floor_goal import detect_floor,FloorGoalOptions
     out.mkdir(parents=True,exist_ok=False)
     manifest=json.loads((root/'SHA256SUMS.json').read_text())
     mismatches=[n for n,h in manifest.items() if hashlib.sha256((root/n).read_bytes()).hexdigest()!=h]
@@ -70,7 +73,8 @@ def score(root,out):
             row=dict(case=case,zone=zone,visible_pixels=int(masks[target].sum()),accepted=centre is not None,detail=detail)
             if centre is not None:
                 lo,hi=PAINT_HUE[zone];h,w=bgr.shape[:2]
-                mask=((hsv[...,0]>=lo-5)&(hsv[...,0]<=hi+5)&(hsv[...,1]>=30)&(hsv[...,2]>=30)&_usable_region(w,h))
+                mask=(paint_mask(bgr,zone)&_usable_region(w,h) if enabled() else
+                    ((hsv[...,0]>=lo-5)&(hsv[...,0]<=hi+5)&(hsv[...,1]>=30)&(hsv[...,2]>=30)&_usable_region(w,h)))
                 n,labels,stats,_=cv2.connectedComponentsWithStats(mask.astype(np.uint8),8)
                 pred=labels==(1+int(np.argmax(stats[1:,cv2.CC_STAT_AREA])))
                 label,overlaps=assign(pred);row.update(label=label,correct=label==target,overlaps=overlaps)

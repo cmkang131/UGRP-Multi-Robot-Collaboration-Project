@@ -1,0 +1,479 @@
+{
+  "host": "ugrp-sim-gcp2.asia-northeast3-a.c.ugrp-sim-b-1014.internal",
+  "cohort": "inherited CPU, separate from warp7 MJWarp",
+  "runs": [
+    {
+      "run": "reloc21-r1-carry-baseline-93266-6acde414",
+      "seed": 93266,
+      "condition": "baseline",
+      "plan_funnel": {
+        "slot_candidates": 1,
+        "slot_envelope_clear": 1,
+        "candidates": 279,
+        "endpoints_clear": 279,
+        "accepted": 279
+      },
+      "rejections": [
+        {
+          "category": "loaded_footprint",
+          "reason": "direct_route_overlap_replan",
+          "blocked_object": "wall_divider_1",
+          "minimum_gap_m": -0.2800138613026251,
+          "N": 205
+        },
+        {
+          "category": "loaded_footprint",
+          "reason": "direct_route_overlap_replan",
+          "blocked_object": "wall_divider_2",
+          "minimum_gap_m": -0.2800139551640164,
+          "N": 53
+        },
+        {
+          "category": "loaded_footprint",
+          "reason": "direct_route_overlap_replan",
+          "blocked_object": "own_rgb_cyan_track_1",
+          "minimum_gap_m": -0.34981494473333685,
+          "N": 21
+        }
+      ],
+      "destination": {
+        "toggle": "destination_visual_acquire_v1",
+        "destination_search_replan_v1": true,
+        "destination_direction_preserve_v1": true,
+        "destination_camera_pan_v1": true,
+        "desired_pan": null,
+        "mode": "inactive",
+        "started_t": null,
+        "acquired_t": null,
+        "confirmed_t": null,
+        "acquisition_sim_s": null,
+        "views": 0,
+        "last": {},
+        "events": [],
+        "relocalizations": 0,
+        "failure": null,
+        "truth_inputs": 0,
+        "held_world_reads": 0
+      },
+      "source_result": "/home/ugrp/ugrp-sim/runs/reloc21-r1-carry-baseline-93266-6acde414/raw/result.json",
+      "decoded_sha256": "bd9d3024125a6c316cb17697c9a325787aae07fe49e7fa4834fdb94f6a1d01e0"
+    },
+    {
+      "run": "reloc21-r1-carry-progress-93266-6acde414",
+      "seed": 93266,
+      "condition": "progress",
+      "plan_funnel": {
+        "candidates": 1771,
+        "endpoints_clear": 6,
+        "accepted": 6,
+        "rejected_start": 1765
+      },
+      "rejections": [
+        {
+          "category": "loaded_footprint",
+          "reason": "start_enclosure_overlap",
+          "blocked_object": "wall_divider_1",
+          "minimum_gap_m": -0.031820265046638874,
+          "N": 1765
+        },
+        {
+          "category": "loaded_footprint",
+          "reason": "issued_motion_enclosure_overlap",
+          "blocked_object": "wall_divider_1",
+          "minimum_gap_m": -0.03470861922081387,
+          "N": 98
+        },
+        {
+          "category": "loaded_footprint",
+          "reason": "direct_route_overlap_replan",
+          "blocked_object": "wall_divider_1",
+          "minimum_gap_m": -0.2800112234405294,
+          "N": 5
+        },
+        {
+          "category": "loaded_footprint",
+          "reason": "direct_route_overlap_replan",
+          "blocked_object": "own_rgb_cyan_track_1",
+          "minimum_gap_m": -0.34981494473333685,
+          "N": 1
+        }
+      ],
+      "destination": {
+        "toggle": "destination_visual_acquire_v1",
+        "destination_search_replan_v1": true,
+        "destination_direction_preserve_v1": true,
+        "destination_camera_pan_v1": true,
+        "desired_pan": null,
+        "mode": "inactive",
+        "started_t": null,
+        "acquired_t": null,
+        "confirmed_t": null,
+        "acquisition_sim_s": null,
+        "views": 0,
+        "last": {},
+        "events": [],
+        "relocalizations": 0,
+        "failure": null,
+        "truth_inputs": 0,
+        "held_world_reads": 0
+      },
+      "source_result": "/home/ugrp/ugrp-sim/runs/reloc21-r1-carry-progress-93266-6acde414/raw/result.json",
+      "decoded_sha256": "d314ff43e9dff68751d7fba950650490f19f9f7c0897bb954f9cad156ad09c1f"
+    },
+    {
+      "run": "reloc21-r1-carry-complete-93266-6acde414",
+      "seed": 93266,
+      "condition": "complete",
+      "plan_funnel": {
+        "candidates": 1795,
+        "endpoints_clear": 30,
+        "accepted": 30,
+        "rejected_start": 1765
+      },
+      "rejections": [
+        {
+          "category": "loaded_footprint",
+          "reason": "start_enclosure_overlap",
+          "blocked_object": "wall_divider_1",
+          "minimum_gap_m": -0.031820265046638874,
+          "N": 1765
+        },
+        {
+          "category": "loaded_footprint",
+          "reason": "issued_motion_enclosure_overlap",
+          "blocked_object": "wall_divider_1",
+          "minimum_gap_m": -0.03470861922081387,
+          "N": 98
+        },
+        {
+          "category": "loaded_footprint",
+          "reason": "direct_route_overlap_replan",
+          "blocked_object": "wall_divider_1",
+          "minimum_gap_m": -0.2800112234405294,
+          "N": 25
+        },
+        {
+          "category": "loaded_footprint",
+          "reason": "direct_route_overlap_replan",
+          "blocked_object": "own_rgb_cyan_track_1",
+          "minimum_gap_m": -0.483047500459395,
+          "N": 4
+        },
+        {
+          "category": "loaded_footprint",
+          "reason": "direct_route_overlap_replan",
+          "blocked_object": "wall_divider_2",
+          "minimum_gap_m": -0.2800117477669085,
+          "N": 1
+        }
+      ],
+      "destination": {
+        "toggle": "destination_visual_acquire_v1",
+        "destination_search_replan_v1": true,
+        "destination_direction_preserve_v1": true,
+        "destination_camera_pan_v1": true,
+        "desired_pan": null,
+        "mode": "inactive",
+        "started_t": null,
+        "acquired_t": null,
+        "confirmed_t": null,
+        "acquisition_sim_s": null,
+        "views": 0,
+        "last": {},
+        "events": [],
+        "relocalizations": 0,
+        "failure": null,
+        "truth_inputs": 0,
+        "held_world_reads": 0
+      },
+      "source_result": "/home/ugrp/ugrp-sim/runs/reloc21-r1-carry-complete-93266-6acde414/raw/result.json",
+      "decoded_sha256": "0d75a9c15fc2d2b1fe7040cab51120693880a472b05dee5f13befb0807f2e403"
+    },
+    {
+      "run": "reloc21-r1-carry-baseline-93315-6acde414",
+      "seed": 93315,
+      "condition": "baseline",
+      "plan_funnel": {
+        "slot_candidates": 1,
+        "slot_envelope_clear": 1,
+        "candidates": 256,
+        "endpoints_clear": 256,
+        "accepted": 256
+      },
+      "rejections": [
+        {
+          "category": "loaded_footprint",
+          "reason": "direct_route_overlap_replan",
+          "blocked_object": "wall_divider_1",
+          "minimum_gap_m": -0.2800139857063979,
+          "N": 256
+        }
+      ],
+      "destination": {
+        "toggle": "destination_visual_acquire_v1",
+        "destination_search_replan_v1": true,
+        "destination_direction_preserve_v1": true,
+        "destination_camera_pan_v1": true,
+        "desired_pan": null,
+        "mode": "inactive",
+        "started_t": null,
+        "acquired_t": null,
+        "confirmed_t": null,
+        "acquisition_sim_s": null,
+        "views": 0,
+        "last": {},
+        "events": [],
+        "relocalizations": 0,
+        "failure": null,
+        "truth_inputs": 0,
+        "held_world_reads": 0
+      },
+      "source_result": "/home/ugrp/ugrp-sim/runs/reloc21-r1-carry-baseline-93315-6acde414/raw/result.json",
+      "decoded_sha256": "cd8262da8a1d5714903c98ce37e69f3b640aa0969fa482858002f4d684aa3ed6"
+    },
+    {
+      "run": "reloc21-r1-carry-progress-93315-6acde414",
+      "seed": 93315,
+      "condition": "progress",
+      "plan_funnel": {
+        "candidates": 11,
+        "endpoints_clear": 9,
+        "accepted": 9,
+        "rejected_goal": 2
+      },
+      "rejections": [
+        {
+          "category": "loaded_footprint",
+          "reason": "direct_route_overlap_replan",
+          "blocked_object": "wall_divider_1",
+          "minimum_gap_m": -0.28000593260468803,
+          "N": 7
+        },
+        {
+          "category": "loaded_footprint",
+          "reason": "goal_enclosure_overlap",
+          "blocked_object": "wall_divider_1",
+          "minimum_gap_m": -0.2743435499117832,
+          "N": 2
+        }
+      ],
+      "destination": {
+        "toggle": "destination_visual_acquire_v1",
+        "destination_search_replan_v1": true,
+        "destination_direction_preserve_v1": true,
+        "destination_camera_pan_v1": true,
+        "desired_pan": 1491,
+        "mode": "expand",
+        "started_t": 170.39999999769856,
+        "acquired_t": null,
+        "confirmed_t": null,
+        "acquisition_sim_s": null,
+        "views": 1253,
+        "last": {
+          "t": 301.19999999460555,
+          "scene_floor_mask": {
+            "option": "scene_floor_landmark_mask_v1",
+            "wall_class_pixels": 0,
+            "excluded_visible_pixels": 0,
+            "floor_lk_changed": false,
+            "doors_clear_changed": false,
+            "truth_inputs": 0
+          },
+          "reason": "destination_colour_absent",
+          "pixels": 0,
+          "place_gate": false
+        },
+        "events": [
+          {
+            "t": 170.39999999769856,
+            "event": "destination_acquire_start",
+            "ellipse_candidates": 30,
+            "covariance": [
+              [
+                0.6310646618560379,
+                -0.12154005683424261,
+                -0.5051492851938548
+              ],
+              [
+                -0.12154005683424221,
+                0.5710634835983991,
+                0.30358512756001005
+              ],
+              [
+                -0.5051492851938548,
+                0.30358512756001005,
+                0.7695319890862422
+              ]
+            ],
+            "expected_bearing_rad": 0.9758483222391974
+          },
+          {
+            "t": 173.5999999976229,
+            "event": "rejection",
+            "category": "route",
+            "reason": "ellipse_waypoint_no_path",
+            "blocked_object": "wall_divider_1",
+            "minimum_gap_m": -0.275014,
+            "gap_scope": "101 samples of requested straight corridor; not a proof that no detour exists",
+            "diagnostic_checks": 808
+          },
+          {
+            "t": 173.5999999976229,
+            "event": "rejection",
+            "category": "route",
+            "reason": "ellipse_waypoint_no_path",
+            "blocked_object": "wall_divider_1",
+            "minimum_gap_m": -0.22326308355473087,
+            "gap_scope": "101 samples of requested straight corridor; not a proof that no detour exists",
+            "diagnostic_checks": 808
+          },
+          {
+            "t": 173.5999999976229,
+            "event": "ellipse_search_waypoint",
+            "xy": [
+              3.016653634618741,
+              -0.8996811297382888
+            ]
+          },
+          {
+            "t": 237.69999999610712,
+            "event": "ellipse_search_waypoint",
+            "xy": [
+              3.119075001152227,
+              -1.742005214445246
+            ]
+          }
+        ],
+        "relocalizations": 0,
+        "failure": null,
+        "truth_inputs": 0,
+        "held_world_reads": 0
+      },
+      "source_result": "/home/ugrp/ugrp-sim/runs/reloc21-r1-carry-progress-93315-6acde414/raw/result.json",
+      "decoded_sha256": "f6e35ce61f371c7d43d11e7b85fdb2e159918e38d8b62414356b2d14fb59233b"
+    },
+    {
+      "run": "reloc21-r1-carry-complete-93315-6acde414",
+      "seed": 93315,
+      "condition": "complete",
+      "plan_funnel": {
+        "candidates": 39,
+        "endpoints_clear": 37,
+        "accepted": 37,
+        "rejected_goal": 2
+      },
+      "rejections": [
+        {
+          "category": "loaded_footprint",
+          "reason": "direct_route_overlap_replan",
+          "blocked_object": "wall_divider_1",
+          "minimum_gap_m": -0.28001152422425685,
+          "N": 35
+        },
+        {
+          "category": "loaded_footprint",
+          "reason": "goal_enclosure_overlap",
+          "blocked_object": "wall_divider_1",
+          "minimum_gap_m": -0.2743435499117832,
+          "N": 2
+        }
+      ],
+      "destination": {
+        "toggle": "destination_visual_acquire_v1",
+        "destination_search_replan_v1": true,
+        "destination_direction_preserve_v1": true,
+        "destination_camera_pan_v1": true,
+        "desired_pan": 1491,
+        "mode": "expand",
+        "started_t": 170.39999999769856,
+        "acquired_t": null,
+        "confirmed_t": null,
+        "acquisition_sim_s": null,
+        "views": 1253,
+        "last": {
+          "t": 301.19999999460555,
+          "scene_floor_mask": {
+            "option": "scene_floor_landmark_mask_v1",
+            "wall_class_pixels": 0,
+            "excluded_visible_pixels": 0,
+            "floor_lk_changed": false,
+            "doors_clear_changed": false,
+            "truth_inputs": 0
+          },
+          "reason": "destination_colour_absent",
+          "pixels": 0,
+          "place_gate": false
+        },
+        "events": [
+          {
+            "t": 170.39999999769856,
+            "event": "destination_acquire_start",
+            "ellipse_candidates": 30,
+            "covariance": [
+              [
+                0.6310646618560379,
+                -0.12154005683424261,
+                -0.5051492851938548
+              ],
+              [
+                -0.12154005683424221,
+                0.5710634835983991,
+                0.30358512756001005
+              ],
+              [
+                -0.5051492851938548,
+                0.30358512756001005,
+                0.7695319890862422
+              ]
+            ],
+            "expected_bearing_rad": 0.9758483222391974
+          },
+          {
+            "t": 173.5999999976229,
+            "event": "rejection",
+            "category": "route",
+            "reason": "ellipse_waypoint_no_path",
+            "blocked_object": "wall_divider_1",
+            "minimum_gap_m": -0.275014,
+            "gap_scope": "101 samples of requested straight corridor; not a proof that no detour exists",
+            "diagnostic_checks": 808
+          },
+          {
+            "t": 173.5999999976229,
+            "event": "rejection",
+            "category": "route",
+            "reason": "ellipse_waypoint_no_path",
+            "blocked_object": "wall_divider_1",
+            "minimum_gap_m": -0.22326308355473087,
+            "gap_scope": "101 samples of requested straight corridor; not a proof that no detour exists",
+            "diagnostic_checks": 808
+          },
+          {
+            "t": 173.5999999976229,
+            "event": "ellipse_search_waypoint",
+            "xy": [
+              3.016653634618741,
+              -0.8996811297382888
+            ]
+          },
+          {
+            "t": 237.69999999610712,
+            "event": "ellipse_search_waypoint",
+            "xy": [
+              3.119075001152227,
+              -1.742005214445246
+            ]
+          }
+        ],
+        "relocalizations": 0,
+        "failure": null,
+        "truth_inputs": 0,
+        "held_world_reads": 0
+      },
+      "source_result": "/home/ugrp/ugrp-sim/runs/reloc21-r1-carry-complete-93315-6acde414/raw/result.json",
+      "decoded_sha256": "3472d339a6f0b7b8e4b52ff42571bb21c84e8945bf8e93a472d8addb057786ec"
+    }
+  ],
+  "reproduction": "read queue reloc21-round1 and result teacher.carry.reloc20_motion.footprint",
+  "rejection_table": "/home/ugrp/ugrp-sim/runs/warp7/prior-rejection-table.json"
+}
