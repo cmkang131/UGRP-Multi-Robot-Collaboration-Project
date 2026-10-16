@@ -31,9 +31,11 @@ def main(a):
     calibration=a.vision/'experiments/2026-10-16-reloc16/colour-calibration.json'
     if sha(calibration)!='a37cf96551abbfb8b38df3efc1cd61f3f357ac9eb3a1dcd0b4d9947242e4e24f':raise ValueError('COLOUR_CHANGED')
     state=ColourBoundaryState('walls_floor_contrast_v5_indigo110_s80',read(calibration),option=RELOC16_OPTION)
-    saved_rows=read(a.saved/'trajectory.json') if a.saved else None;saved_scans=read(a.saved/'scans.json') if a.saved else None
+    saved_path=(a.saved/('trajectory.json' if (a.saved/'trajectory.json').is_file() else 'online-trajectory.json')) if a.saved else None
+    saved_rows=read(saved_path) if a.saved else None;saved_scans=read(a.saved/'scans.json') if a.saved else None
     if saved_rows and [r['frame_id'] for r in saved_rows]!=[f['frame_id'] for f in frames]:raise ValueError('FRAME_JOIN_REQUIRED')
     rows=[];scans=[];events=[];raw_lk=np.zeros(3)
+    registration_times={e['t']:e['event'] for e in read(a.input/'events.json') if e['event'] in ('prescan','rescan','postpickup','postsetdown')}
     from harness.e2e_rgb_vo import compose
     for i,f in enumerate(frames):
         file=a.input/f['rgb']
@@ -51,6 +53,8 @@ def main(a):
         rows.append(dict(t=f['t'],frame_id=f['frame_id'],off_pose=no,on_pose=yes,lk_pose=raw_lk.tolist(),rbpf_pose=rb,
             motion_delta=e0['motion_delta'],motion_covariance=e0['motion_covariance'],lk=flow,servo=f['servo']))
         scans.append(scan);events.append(dict(t=f['t'],correction=e1,rbpf=e2))
+        if f['t'] in registration_times:
+            result=on.initialize_static();events[-1]['registration']=dict(label=registration_times[f['t']],**result)
         if i%100==0:print(json.dumps(dict(frame=i,t=f['t'],inserted=len(on.frames),accepted=sum(e['accepted'] for e in on.ledger))),flush=True)
     dump(a.output/'trajectory.json',rows);dump(a.output/'scans.json',scans);dump(a.output/'events.json',events)
     dump(a.output/'submaps.json',dict(active=on.frames,ledger=on.ledger))
@@ -58,7 +62,8 @@ def main(a):
     # a successful end-of-recording anchor is NOT backfilled into past frames.
     registration=on.initialize_static();dump(a.output/'static-registration.json',registration)
     sources=[a.input/'own.json',a.input/'commands.json',a.input/'static-map.json',a.rejection_table,Path(__file__),root/'harness/selfmap_map_correction.py',root/'harness/self_map_csm.py']
-    if a.saved:sources.extend([a.saved/'trajectory.json',a.saved/'scans.json'])
+    if a.saved:sources.extend([saved_path,a.saved/'scans.json'])
+    sources.append(a.input/'events.json')
     dump(a.output/'prediction-seal.json',dict(scale=1,truth_inputs=0,input_sha256={str(p):sha(p) for p in sources},
         prediction_sha256={p.name:sha(p) for p in a.output.glob('*.json')}))
     eligible=[e for e in on.ledger if e['attempted']];accepted=[e for e in eligible if e['accepted']]

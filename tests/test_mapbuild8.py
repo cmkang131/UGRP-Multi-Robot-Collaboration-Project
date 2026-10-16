@@ -23,7 +23,7 @@ def test_off_and_unregistered_global_are_explicit():
     assert m.initialize_static()['static_from_own'] is None
 
 
-def test_current_scan_is_absent_from_reference_and_rejection_does_not_poison_map(monkeypatch):
+def test_current_scan_is_absent_from_reference_and_rejected_correction_keeps_motion_uncertainty(monkeypatch):
     m=SelfMapCorrection(STATIC,option=OPTION)
     _,first=m.step(0,0,[0,0,0],np.zeros((3,3)),dict(status='bootstrap'),SCAN)
     assert first['inserted'] and not first['accepted']
@@ -33,7 +33,8 @@ def test_current_scan_is_absent_from_reference_and_rejection_does_not_poison_map
         return dict(status='rejected',reason='ambiguous_modes',pose=m.pose.tolist(),candidates=27)
     monkeypatch.setattr(m,'_match',reject)
     _,event=m.step(1,1,[.1,0,0],np.diag([.01]*3),dict(status='unknown'),SCAN)
-    assert not event['accepted'] and not event['inserted']
+    assert not event['accepted'] and event['inserted'] and event['insertion_policy']=='motion_prior_uncorrected'
+    np.testing.assert_array_equal(event['covariance'],event['prior_covariance'])
     np.testing.assert_array_equal(m.frames[0]['world_segments'],old)
     assert m.static_from_own is None and 'ambiguous_modes' in event['reason']
 

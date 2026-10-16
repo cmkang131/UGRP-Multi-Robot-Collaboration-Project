@@ -35,7 +35,7 @@ class StaticRegistration:
         if not len(self.reference):raise ValueError('STATIC_WALLS_REQUIRED')
         self.field=DistanceField(self.reference,self.options.field_resolution_m,1.) if option!= 'off' else None
 
-    def register(self,own_segments,*,camera_origins=None,diagnostic_callback=None):
+    def register(self,own_segments,*,camera_origins=None,diagnostic_callback=None,pose_covariances=None,body_origins=None):
         """own_segments are observed wall contacts already in own-map gauge.
 
         Result transform composes on the LEFT of any own-map SE2 pose. No
@@ -57,11 +57,19 @@ class StaticRegistration:
         if camera_origins is None:return out('source_camera_origins_required')
         origins=np.asarray(camera_origins,float)
         if origins.shape!=(len(seg),2) or not np.isfinite(origins).all():raise ValueError('INVALID_SOURCE_CAMERAS')
-        parts=[];sources=[]
-        for s,origin in zip(seg,origins):
+        covariance_supplied=pose_covariances is not None
+        if covariance_supplied:
+            covariances=np.asarray(pose_covariances,float);body=np.asarray(body_origins,float)
+            if covariances.shape!=(len(seg),3,3) or body.shape!=(len(seg),2) or not np.isfinite(np.r_[covariances.ravel(),body.ravel()]).all():raise ValueError('SOURCE_POSE_COVARIANCE_REQUIRED')
+            if not np.allclose(covariances,covariances.transpose(0,2,1)) or np.linalg.eigvalsh(covariances).min()<-1e-12:raise ValueError('SOURCE_POSE_COVARIANCE_PSD_REQUIRED')
+        elif body_origins is not None:raise ValueError('BODY_ORIGIN_WITHOUT_COVARIANCE')
+        parts=[];sources=[];pose_sources=[];body_sources=[]
+        for j,(s,origin) in enumerate(zip(seg,origins)):
             if np.linalg.norm(s[1]-s[0])<=1e-6:continue # verbatim sample_segments
             part=np.linspace(s[0],s[1],max(2,int(math.ceil(np.linalg.norm(s[1]-s[0])/.10))+1))
             parts.append(part);sources.append(np.repeat(origin[None],len(part),axis=0))
+            if covariance_supplied:
+                pose_sources.append(np.repeat(covariances[j][None],len(part),axis=0));body_sources.append(np.repeat(body[j][None],len(part),axis=0))
         if not parts:return out('insufficient_near_points',points=0)
         points=np.vstack(parts);sources=np.vstack(sources)
         _,idx=np.unique(np.floor(points/.10).astype(int),axis=0,return_index=True);idx=np.sort(idx)
@@ -77,6 +85,15 @@ class StaticRegistration:
         # Exact CorrelativeMatcher.match formula and frozen CSMOptions.
         sigma=np.sqrt(o.calibration_floor_m**2+o.field_resolution_m**2/12+
                       (o.pixel_sigma*radii**2/(o.focal_y_px*o.height_lower_bound_m))**2)
+        if covariance_supplied:
+            P=np.vstack(pose_sources)[idx];lever=points-np.vstack(body_sources)[idx]
+            J=np.zeros((len(points),2,3));J[:,0,0]=1;J[:,1,1]=1;J[:,0,2]=-lever[:,1];J[:,1,2]=lever[:,0]
+            # Same marginal ray-position propagation as self_map_prob.py
+            # insertion_weight: trace(J P J.T)/2. No fitted multiplier.
+            # Common odometry bias remains correlated; effective_points cap is
+            # unchanged, and this is NOT a calibrated global posterior claim.
+            variance=np.einsum('nai,nij,naj->n',J,P,J)/2
+            sigma=np.sqrt(sigma**2+np.maximum(0,variance))
         poses=[];costs=[]
         # Per yaw table: no candidate truncation and no wall-clock exit.
         for angle in yaw:
@@ -105,6 +122,7 @@ class StaticRegistration:
         result=out(reason,points=len(points),best_candidate=best.tolist(),residual_m=residual,overlap=overlap,
             second_sensor_gap=gap,hessian_eigenvalues=eigen.tolist(),observable_rank=int(observed.sum()),
             sensor_sigma_min_max_m=[float(sigma.min()),float(sigma.max())],
+            source_pose_covariance_supplied=covariance_supplied,
             source_constants='unchanged CSMOptions: .05m/1deg, .08m floor + original range pixel variance, overlap .60/.20m, residual .15m, mode .15/.50, rank3 mathematical SE2 requirement')
         if reason=='accepted':
             result['static_from_own']=best.tolist();result['covariance']=(np.linalg.inv(H)+o.floor()).tolist()

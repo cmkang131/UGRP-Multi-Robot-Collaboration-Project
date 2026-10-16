@@ -158,7 +158,7 @@ def run(a):
         from scripts.mapbuild7_contact_eval import NativeContactRecorder
         if len(teacher.gids)!=1:raise ValueError('ONE_BOX_COLLISION_GEOM_REQUIRED')
         contact_recorder=NativeContactRecorder(m,wd,teacher.gids[0],[m.geom('r1__'+x+'_finger').id for x in ('left','right')])
-    own=[];labels=[];saved=[];saved_vel=[];issued=[];trace=[];events=[];teacher_rows=[];wall_ledger=[];camera_ledger=[];ring=deque(maxlen=101)
+    own=[];recorded_scans=[];labels=[];saved=[];saved_vel=[];issued=[];trace=[];events=[];teacher_rows=[];wall_ledger=[];camera_ledger=[];ring=deque(maxlen=101)
     pose=np.zeros(3);raw_pose=np.zeros(3);anchor=None;old=None;previous=None;last_servo=None;stage='prescan';sweep_pose=None;sweep_angle=0.;sweep_ticks=0;sweep_budget=None;route=None;goal=None;start_return=None;status='cap_end';error=None;source_sha=q['source_sha'];start=time.monotonic();next_scan=0.
     d_eval=mujoco.MjData(m)
     body=m.body('r1__robot').id;adr=int(m.jnt_qposadr[int(m.body_jntadr[body])])
@@ -186,6 +186,7 @@ def run(a):
             servo={s:int(v) for s,v in zip(servos,np.rint(applied[0]))};flow={'status':'bootstrap'}
             delta=np.asarray(command_delta(previous,.1)) if previous else np.zeros(3);cov=np.diag(motion_variance(delta))
             flow,scan=camera_stream.observe(t,old,rgb['r1'],servo,state)
+            recorded_scans.append(dict(t=t,**scan)) # recording only, same camera cadence
             increment=np.asarray(flow['delta']) if flow['status']=='measured' else delta;C=np.asarray(flow['covariance']) if flow['status']=='measured' else cov
             raw_pose=compose(raw_pose,increment);map_event=None
             if correction:
@@ -212,7 +213,13 @@ def run(a):
                         action=proportional_drive((0.,0.,0.),(0.,0.),(0.,0.),math.pi/2)
                         w,ds=duty([0.,0.,.65*action['turn']]);probe=dict(wheels=w,duration_s=ds)
                         sweep_budget=math.ceil(2*math.pi/abs(command_delta(probe,.1)[2]))
-                        events.append(dict(t=t,event='body_sweep_start',command_budget=sweep_budget,basis='one full revolution / existing6f nominal command yaw increment; no wall budget'))
+                        budget_basis='one full revolution / existing6f nominal command yaw increment; no wall budget'
+                        if a.sweep_model:
+                            model=json.loads(a.sweep_model.read_text())
+                            if model['schema']!='ugrp.mapbuild8.own_sweep.v1' or model['interval_s']!=.1 or model['positive_yaw_p05_rad']<=0:raise ValueError('OWN_SWEEP_RESPONSE_REQUIRED')
+                            sweep_budget=math.ceil(2*math.pi/model['positive_yaw_p05_rad'])
+                            budget_basis='2pi / frozen R1 own measured yaw increment P05; source '+model['source_sha256']
+                        events.append(dict(t=t,event='body_sweep_start',command_budget=sweep_budget,basis=budget_basis))
                     else:
                         if stage=='rescan' and anchor is None:status='MAP_REGISTRATION_REQUIRED';break
                         stage='pickup';events.append(dict(t=t,event='map_to_teacher_handoff',student=False,navigation_before_handoff=False))
@@ -264,7 +271,7 @@ def run(a):
                 print(json.dumps(progress),flush=True)
     except BaseException as exc:error=repr(exc);status='HOST_ERROR';raise
     finally:
-        dump(a.output/'own.json',dict(schema='ugrp.mapbuild1.own.v1',backend='mjwarp_render',physics_backend='mjwarp',frames=own));dump(a.output/'commands.json',issued);dump(a.output/'online-trajectory.json',trace)
+        dump(a.output/'own.json',dict(schema='ugrp.mapbuild1.own.v1',backend='mjwarp_render',physics_backend='mjwarp',frames=own));dump(a.output/'commands.json',issued);dump(a.output/'online-trajectory.json',trace);dump(a.output/'scans.json',recorded_scans)
         dump(a.output/'eval-only.json',dict(evaluation_only=True,frames=labels));np.savez_compressed(a.output/'eval-state.npz',qpos=np.asarray(saved),qvel=np.asarray(saved_vel));dump(a.output/'events.json',events);dump(a.output/'teacher-input-audit.json',teacher.audit.record());dump(a.output/'teacher-ledger.json',teacher_rows)
         dump(a.output/'teacher-result.json',teacher.teacher.diagnostic());dump(a.output/'wall-ledger.json',dict(segments=wall_ledger,camera_origins=camera_ledger))
         if correction:
@@ -280,4 +287,5 @@ if __name__=='__main__':
     p.add_argument('--body-sweep',action='store_true',help='default off; whole own-yaw/nominal-command revolution then inherited six-view rescan')
     p.add_argument('--record-native-contact',action='store_true',help='recording only; native force evaluator never feeds commands')
     p.add_argument('--map-correction',action='store_true',help='default off selfmap_map_correction_v1; mapbuild8 lease required')
+    p.add_argument('--sweep-model',type=Path,help='default off frozen own-VO sweep response; never evaluation data')
     run(p.parse_args())

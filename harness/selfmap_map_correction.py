@@ -29,10 +29,11 @@ class SelfMapCorrection:
         self.registration=StaticRegistration(static_map,option=STATIC)
         self.pose=np.zeros(3);self.covariance=np.zeros((3,3));self.frames=[];self.ledger=[]
         self.static_from_own=None;self.static_covariance=None;self.last_t=None;self.last_scan=-math.inf
-        self.global_segments=[];self.global_origins=[]
+        self.global_segments=[];self.global_origins=[];self.global_body_origins=[];self.global_pose_covariances=[]
 
     def initialize_static(self):
-        result=self.registration.register(self.global_segments,camera_origins=self.global_origins)
+        result=self.registration.register(self.global_segments,camera_origins=self.global_origins,
+            pose_covariances=self.global_pose_covariances,body_origins=self.global_body_origins)
         if result['status']=='accepted':
             self.static_from_own=np.asarray(result['static_from_own']);self.static_covariance=np.asarray(result['covariance'])
         return result
@@ -98,15 +99,23 @@ class SelfMapCorrection:
         else:
             reasons=[v['reason'] for v in (event['self_match'],event['static_match']) if v]
             event.update(status='rejected',reason=';'.join(reasons) or 'no_observable_reference')
-        # Accepted/first scans only. Past scans are immutable and current scan
-        # is absent from both references during all matching/admission decisions.
-        if chosen or not past:
+        # Grisetti motion-proposal insertion / existing mapbuild5
+        # rbpf_composition.insert_selective_v1: a rejected pose correction is
+        # NOT a rejected RGB observation. Insert valid scans at the unchanged
+        # motion prior WITH its covariance; never shrink uncertainty on failure.
+        # This fixes the observed R1 starvation (2 bootstrap maps, no further
+        # reference insertion), without changing score/window constants.
+        # Past frames stay immutable; this scan was absent during both matches.
+        if len(local):
             world=transform(local.reshape(-1,2),self.pose).reshape(-1,2,2)
             anchor=past[0]['anchor_covariance'] if past else self.covariance.tolist()
-            row=dict(t=float(t),frame_id=int(frame_id),pose=self.pose.tolist(),world_segments=world.tolist(),anchor_covariance=anchor)
-            self.frames=(past+[row])[-o.submap_keyframes:];event['inserted']=True
+            policy='matched' if chosen else 'bootstrap' if not past else 'motion_prior_uncorrected'
+            row=dict(t=float(t),frame_id=int(frame_id),pose=self.pose.tolist(),world_segments=world.tolist(),anchor_covariance=anchor,
+                     covariance=self.covariance.tolist(),insertion_policy=policy)
+            self.frames=(past+[row])[-o.submap_keyframes:];event.update(inserted=True,insertion_policy=policy)
         # Separate visual-only initialization ledger, not an adopted static map.
         self.global_segments.extend(transform(local.reshape(-1,2),self.pose).reshape(-1,2,2).tolist())
         origin=transform([scan['camera']],self.pose)[0].tolist();self.global_origins.extend([origin for _ in local])
+        self.global_body_origins.extend([self.pose[:2].tolist() for _ in local]);self.global_pose_covariances.extend([self.covariance.tolist() for _ in local])
         event.update(pose=self.pose.tolist(),covariance=self.covariance.tolist())
         return self.pose.tolist(),event
