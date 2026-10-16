@@ -49,6 +49,11 @@ def scene_admission(plan,scene,*,mode='off'):
         if item.item_id=='beam_1':continue
         half=BOX_HALF[:2] if item.kind in COLORS else item.spec().landing_half_extents_m
         rects.append((item.item_id,(*item.pose[:2],*half,item.pose[2])))
+    # Colour boxes are stored outside Scene.cargo by ScenarioFinalV3Scene.
+    # Their authored setup uses axis-aligned boxes (the same existing builder).
+    for name,item in scene.config['setup_only'].get('objects',{}).items():
+        if name=='beam_1' or any(name==c.item_id for c in scene.cargo):continue
+        rects.append((name,(*item['position_m'][:2],*item['half_extents_m'][:2],0.)))
     beam=kind('long_beam')
     family=reachability_map(beam.grasps[0].grip_xyz[2])
     return certify(plan['beam_pose'],rects,family,body_clearance,FRESH_MARGIN_M,
