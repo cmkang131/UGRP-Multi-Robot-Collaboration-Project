@@ -84,10 +84,13 @@ def main():
                     before=state[:,begin:begin+len(c.ROLES)].clone()
                     if before[0,:2].sum()!=1:raise ValueError('beam role must be teal/blue')
                     state[:,begin:begin+2]=state[:,begin:begin+2].flip(-1)
-                    swapped=transform_batch({**inputs,'observation.state':state},actor.arm)
-                    with torch.inference_mode():out=actor.policy.predict_action_chunk(swapped).cpu().numpy()
-                    other=actor.decode_predictions(out)[0,0]
-                    orig=predicted[index];u=np.array(wheel_motion(orig));v=np.array(wheel_motion(other))
+                    # Evaluate both members in the same batch/shape so a batch8
+                    # versus batch1 numerical change is not a role intervention.
+                    paired={k:torch.cat((v,state if k=='observation.state' else v),0) for k,v in inputs.items()}
+                    paired=transform_batch(paired,actor.arm)
+                    with torch.inference_mode():out=actor.policy.predict_action_chunk(paired).cpu().numpy()
+                    orig,other=actor.decode_predictions(out)[:,0]
+                    u=np.array(wheel_motion(orig));v=np.array(wheel_motion(other))
                     report['role_interventions'].append(dict(seed=ep['seed'],robot=ep['robot_id'],probe=name,
                         t=metadata[index]['t'],phase=phase[index],original_role=metadata[index]['role'],
                         swapped_role='blue' if metadata[index]['role']=='teal' else 'teal',

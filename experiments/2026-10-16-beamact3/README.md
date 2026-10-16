@@ -15,3 +15,5 @@ Gemma 공급가50% 인상 경보는 시작 시 확인했다. 이 경로는 판�
 기준 검증: Mac 비물리16pass/2skip (분류 loss/serializer 실제 연산은 GCP2에서 수행). 학습·폐루프·배포 완료 전에는 성공 수를 채우지 않는다.
 
 참고: [PyTorch CrossEntropyLoss](https://docs.pytorch.org/docs/2.14/generated/torch.nn.CrossEntropyLoss.html)의 class-index 표적/유효행 평균; [고정 LeRobot ACT](https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/src/lerobot/policies/act/modeling_act.py)는 웹 열람 실패, 대신 L4 설치 원문을 직접 확인해 한 번의 forward와 valid×14 분모·동일 decoder 출력 head를 유지했다. [ACT 원 논문](https://arxiv.org/abs/2304.13705)은 기존 구조의 출처이며 wheel CE의 성능을 보증하지 않는다. actdiag 원문을 [로컬 참조](actdiag-reference.md)로 보존했다.
+
+소스와 자원: 학습 core는 `4747c4144a972e348a9ae4c7bbcc769ad116106d`에 고정했다. 후속 평가/기록 SHA는 별도로 남긴다. 원본 및 A/B checkpoint를 보존하면서8GiB 여유 바닥을 지키기 위해 L4 디스크를100→140GB로 온라인 확장하고 파일시스템 여유52,517,224,448B를 확인했다. warp3 프로세스·VM 스케줄·budget-stop 변경0. [실행/저장 예산](resource-plan.json).
