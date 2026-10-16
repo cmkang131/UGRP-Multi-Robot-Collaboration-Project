@@ -15,11 +15,9 @@ def main():
     p=argparse.ArgumentParser();p.add_argument('--enabled',action='store_true');p.add_argument('--interface-probe-only',action='store_true')
     for k in ('physics-python','qualified-source','teacher-source','qualification','references','compiled-reference','compiled-geometry','plans','actor-source','out'):p.add_argument('--'+k,type=Path,required=True)
     p.add_argument('--checkpoint',type=Path);p.add_argument('--dagger-starts',type=Path)
-    p.add_argument('--deadline-utc',required=True);a=p.parse_args()
+    a=p.parse_args()
     if not a.enabled:p.error('DAgger collection default OFF')
     host=require_gcp2(training=True);source=frozen_source(ROOT);frozen_source(a.actor_source,ACT_SHA)
-    deadline=datetime.fromisoformat(a.deadline_utc).timestamp()
-    if deadline>datetime.fromisoformat('2026-10-16T13:47:00.019842+00:00').timestamp():p.error('task8h cap')
     plans=json.loads(a.plans.read_text())['episodes']
     if a.interface_probe_only:
         if len(plans)!=1 or not 86820<=plans[0]['seed']<=86864:p.error('single TRAIN-world interface probe only')
@@ -75,7 +73,6 @@ def main():
                 folder=a.out/f'world-{i:03d}';folder.mkdir()
                 streams.append(((folder/'student-r1.jsonl').open('x'),(folder/'teacher-r1.jsonl').open('x'),(folder/'student-actions.jsonl').open('x')))
             for tick in range(300):  # preregistered coverage prefix, not task evaluation
-                if time.time()>=deadline:resource_cap=True;break
                 active=[not x for x in client.terminal];actions=[];observations=[]
                 for i in range(len(plans)):
                     if active[i] and client.read_actor(i)[0]['skill']!=seq[i].skill:

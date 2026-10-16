@@ -44,8 +44,6 @@ def main():
                   policy_inference=False,task_success_claim=False,rows=rows)
     try:
         for name, indices, raw in units:
-            if time.monotonic()-started >= 600:
-                raise TimeoutError('finite start-only audit resource cap')
             capacity = json.loads((B/'runs/act16w-capacity-receipt.json').read_text())
             if datetime.fromisoformat(capacity['valid_until_utc']) < datetime.now(timezone.utc):
                 raise ValueError('capacity receipt expired')

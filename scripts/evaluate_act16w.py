@@ -18,17 +18,11 @@ def main():
     for key in ('physics-python', 'qualified-source', 'teacher-source', 'qualification', 'references',
                 'compiled-reference', 'compiled-geometry', 'plans', 'actor-source', 'checkpoint', 'out'):
         p.add_argument('--'+key, type=Path, required=True)
-    p.add_argument('--deadline-utc',required=True)
     p.add_argument('--protocol',type=Path,required=True)
     p.add_argument('--split',choices=['validation','final'],required=True)
     p.add_argument('--selection',type=Path)
     a = p.parse_args()
-    from datetime import datetime
-    import time
-    deadline=datetime.fromisoformat(a.deadline_utc).timestamp()
-    if deadline>datetime.fromisoformat('2026-10-16T13:47:00.019842+00:00').timestamp():p.error('task8h cap')
     if not a.enabled or not a.full_evaluation:p.error('explicit --enabled --full-evaluation required')
-    if time.time()>=deadline:p.error('resource deadline already expired')
     import platform
     if platform.system() != 'Linux': p.error('Linux gcp2 only')
     host=require_gcp2(training=True);source=frozen_source(ROOT);frozen_source(a.actor_source,ACT_SHA)
@@ -57,8 +51,6 @@ def main():
         client.reset(plans)
         actions_log = [];inputs_log=(a.out/'actor-inputs.jsonl').open('x')
         for step in range(900):  # frozen90SIMs /0.1SIMs
-            if time.time()>=deadline:
-                report['resource_cap_end']=True;break
             actions = []
             skills = []
             for i, chunk in enumerate(chunks):

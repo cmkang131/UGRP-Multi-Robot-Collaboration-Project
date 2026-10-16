@@ -45,7 +45,8 @@ def main():
     progress = read(progress_path)
     if progress['counts'].get('running') or progress['counts'].get('pending'):
         raise ValueError('stopped-run receipt cannot finalize running/pending records')
-    training = B / 'runs/act16w-resume2-training'
+    pointer = read(B / 'runs/act16w-active-training.json') or {}
+    training = Path(pointer.get('root', str(B / 'runs/act16w-resume2-training')))
     arms, curves, hashes = {}, {}, [receipt(progress_path)]
     for arm in ('A', 'B', 'C', 'D1'):
         stages, points = {}, []
@@ -145,9 +146,8 @@ def main():
           scope='original proof files retain failures/cap_end and raw paths; synthetic checks are not research training',
           records=diagnostics))
     first = datetime.fromisoformat('2026-10-16T05:47:00.019842+00:00')
-    hard = datetime.fromisoformat('2026-10-16T13:47:00.019842+00:00')
     now = datetime.now(timezone.utc)
-    conservative_hours = max(0, (min(now, hard) - first).total_seconds() / 3600)
+    conservative_hours = max(0, (now - first).total_seconds() / 3600)
     write('summary.json', dict(source_sha=source, host=host, observed_utc=now.isoformat(),
           status='stopped; subsequent study stages require verified evidence',
           requested_records=40, counts=progress['counts'],
@@ -158,7 +158,7 @@ def main():
           verified_optimizer_steps_lower_bound=steps, actual_step_count_exact=steps_exact,
           separate_diagnostic_records='diagnostic-receipts.json',
           student_final_evaluation='see separately verified evaluation receipt; not inferred from training',
-          budget=dict(task_first_gpu_utc=first.isoformat(), hard_end_utc=hard.isoformat(),
+          budget=dict(task_first_gpu_utc=first.isoformat(), wall_cap=None,
                       conservative_shared_L4_window_h=conservative_hours,
                       configured_rate_USD_per_h=1.096,
                       configured_shared_window_estimate_USD=conservative_hours * 1.096,

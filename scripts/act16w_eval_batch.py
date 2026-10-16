@@ -24,14 +24,12 @@ def main():
     for k in ('checkpoint','references-root','groups','protocol','capacity-receipt','out'):p.add_argument('--'+k,type=Path,required=True)
     p.add_argument('--split',choices=['validation','final'],required=True);p.add_argument('--selection',type=Path)
     p.add_argument('--name',required=True);p.add_argument('--max-worlds',type=int,default=24);p.add_argument('--speed-gate-override',default='')
-    p.add_argument('--deadline-utc',required=True);a=p.parse_args()
+    a=p.parse_args()
     if not a.enabled or not a.name.replace('-','').isalnum() or not 1<=a.max_worlds<=40:p.error('explicit opt-in, finite capacity and simple unique name required')
     host=require_gcp2(training=True);source=frozen_source(ROOT);protocol=read(a.protocol)
     requested=protocol['validation_seeds' if a.split=='validation' else 'final_evaluation_seeds']
     meta=read(a.checkpoint/'adapter.json');model_hash=sha256(a.checkpoint/'model.safetensors')
     evaluation_seed_guard(meta['provenance'],requested,split=a.split,protocol=protocol,model_sha256=model_hash,selection=read(a.selection) if a.selection else None)
-    deadline=datetime.fromisoformat(a.deadline_utc).timestamp();hard=datetime.fromisoformat('2026-10-16T13:47:00.019842+00:00').timestamp()
-    if deadline>hard-120 or time.time()>=deadline:p.error('reserve final two minutes of task8h for child cleanup')
     plans=read(a.references_root/'plans.json')['episodes'];inventory=read(a.references_root/'inventory.json');wanted=set(requested)
     groups=[(i,[x for x in g['indices'] if plans[x]['seed'] in wanted]) for i,g in enumerate(read(a.groups)['groups'])]
     pending=[(i,g) for i,g in groups if g];indices=[x for _,g in pending for x in g]
@@ -39,8 +37,8 @@ def main():
     a.out.mkdir(parents=True,exist_ok=False);lease=B/'leases'/('act16w-eval-'+a.name+'.json');running={};finished=[];start=time.monotonic();stop={'requested':False}
     report=dict(status='running',complete=False,source_sha=source,host=host,started_utc=datetime.now(timezone.utc).isoformat(),split=a.split,checkpoint_sha256=model_hash,checkpoint_provenance=meta['provenance'],requested_seeds=requested,N_requested=len(requested),speed_gate_override=a.speed_gate_override or None,rejection_table=str(a.out/'rejection_table.json'))
     write(a.out/'rejection_table.json',dict(funnel=[dict(gate='requested',passed=len(requested),rejected=0),dict(gate='completed',passed=0,rejected=0,pending=len(requested))],rejections=[],raw=str(a.out),reproduce=['python3',*__import__('sys').argv]))
-    write(a.out/'queue.json',dict(source_sha=source,checkpoint_sha256=model_hash,split=a.split,rejection_table=report['rejection_table'],deadline_utc=a.deadline_utc,planned_worlds=a.max_worlds,speed_gate_override=a.speed_gate_override or None))
-    with lease.open('x') as f:json.dump(dict(task='act16w-eval-'+a.name,pid=os.getpid(),start=datetime.now(timezone.utc).isoformat(),expected_end=a.deadline_utc,concurrency=0),f)
+    write(a.out/'queue.json',dict(source_sha=source,checkpoint_sha256=model_hash,split=a.split,rejection_table=report['rejection_table'],wall_cap=None,planned_worlds=a.max_worlds,speed_gate_override=a.speed_gate_override or None))
+    with lease.open('x') as f:json.dump(dict(task='act16w-eval-'+a.name,pid=os.getpid(),start=datetime.now(timezone.utc).isoformat(),expected_end='finite requested seeds x90SIM; no wall deadline',concurrency=0),f)
     signal.signal(signal.SIGINT,lambda *_:stop.update(requested=True));signal.signal(signal.SIGTERM,lambda *_:stop.update(requested=True))
     def foreign():
         try:
@@ -53,14 +51,11 @@ def main():
         except (ValueError,KeyError,OSError):return 40
     try:
         while pending or running:
-            if time.time()>=deadline:stop['requested']=True;report['resource_cap_end']=True
             for i,job in list(running.items()):
                 code=job['proc'].poll()
                 if code is not None:
                     job['log'].close();finished.append(dict(group=i,indices=job['indices'],exit_code=code,raw=str(job['out'])));del running[i]
-                elif time.time()>=hard-45:
-                    os.killpg(job['proc'].pid,signal.SIGKILL)
-                elif stop['requested'] and not report.get('resource_cap_end') and not job.get('signaled'):
+                elif stop['requested'] and not job.get('signaled'):
                     os.killpg(job['proc'].pid,signal.SIGINT);job['signaled']=True
                 elif (job['out']/'progress.json').exists() and not (job['out']/'first30.json').exists():
                     try:
@@ -75,12 +70,12 @@ def main():
                     if len(g)>capacity:continue
                     root=a.out/f'group-{i:02d}';root.mkdir();plan=root/'plans.json';write(plan,dict(episodes=[plans[x] for x in g]))
                     first=inventory[g[0]];out=root/'evaluation'
-                    args=[str(PY),'-u',str(ROOT/'scripts/evaluate_act16w.py'),'--enabled','--full-evaluation','--physics-python',str(PHYSICS),'--qualified-source',str(Q),'--teacher-source',str(T),'--qualification',str(B/'runs/warp3/teacher-gate-qualification-r1.json'),'--references',str(a.references_root/'per-world-references.json'),'--compiled-reference',first['actuator'],'--compiled-geometry',first['geometry'],'--plans',str(plan),'--actor-source',str(ACT),'--checkpoint',str(a.checkpoint),'--out',str(out),'--protocol',str(a.protocol),'--split',a.split,'--deadline-utc',a.deadline_utc]
+                    args=[str(PY),'-u',str(ROOT/'scripts/evaluate_act16w.py'),'--enabled','--full-evaluation','--physics-python',str(PHYSICS),'--qualified-source',str(Q),'--teacher-source',str(T),'--qualification',str(B/'runs/warp3/teacher-gate-qualification-r1.json'),'--references',str(a.references_root/'per-world-references.json'),'--compiled-reference',first['actuator'],'--compiled-geometry',first['geometry'],'--plans',str(plan),'--actor-source',str(ACT),'--checkpoint',str(a.checkpoint),'--out',str(out),'--protocol',str(a.protocol),'--split',a.split]
                     if a.selection:args+=['--selection',str(a.selection)]
                     log=(root/'evaluation.log').open('x');proc=subprocess.Popen(args,cwd=Q,stdout=log,stderr=subprocess.STDOUT,start_new_session=True,env={**os.environ,'MUJOCO_GL':'osmesa','OMP_NUM_THREADS':'1','OPENBLAS_NUM_THREADS':'1','LP_NUM_THREADS':'1','PYTHONDONTWRITEBYTECODE':'1'})
                     write(root/'launch.json',dict(pid=proc.pid,args=args,indices=g));running[i]=dict(proc=proc,log=log,indices=g,out=out,started=time.monotonic());pending.remove((i,g));capacity-=len(g)
             report.update(finished=finished,pending=[dict(group=i,indices=g) for i,g in pending],active=[dict(group=i,pid=j['proc'].pid,indices=j['indices']) for i,j in running.items()],wall_s=time.monotonic()-start)
-            write(a.out/'summary.json',report);write(lease,dict(task='act16w-eval-'+a.name,pid=os.getpid(),start_utc=report.get('started_utc'),expected_end=a.deadline_utc,concurrency=sum(len(j['indices']) for j in running.values()),children=report['active']))
+            write(a.out/'summary.json',report);write(lease,dict(task='act16w-eval-'+a.name,pid=os.getpid(),start_utc=report.get('started_utc'),expected_end='finite requested seeds x90SIM; no wall deadline',concurrency=sum(len(j['indices']) for j in running.values()),children=report['active']))
             if not running and (stop['requested'] or report.get('submission_stopped')):break
             time.sleep(1)
         rows=[];errors=[]
