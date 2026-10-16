@@ -12,6 +12,10 @@ def dump(path,value):
     Path(path).write_text(json.dumps(value,indent=2,allow_nan=False)+'\n')
 
 
+def drive_scene(fixture):
+    return 'clear-overlap-v1' if Path(fixture).name=='drive-clear-v1' else 'initial-overlap'
+
+
 def stats(values):
     import numpy as np
     x=np.asarray(values)
@@ -154,7 +158,7 @@ def main():
         kind='box' if 'box' in folder.name else 'beam' if 'beam' in folder.name else 'drive'
         row['kind']=kind;row['case']=case;row['protocol']=protocol(r)
         row['cohort_repeat']=2 if '/R2-box-repeat2/' in str(folder) else 1
-        row['drive_scene']='clear-overlap-v1' if '/drive-clear-v1/' in r.get('fixture','') else 'initial-overlap'
+        row['drive_scene']=drive_scene(r.get('fixture',''))
         if r.get('completed') and not r.get('cap_end'):
             key='drive-clear-v1' if kind=='drive' and row['drive_scene']=='clear-overlap-v1' else kind
             m,meta,f=models[row['protocol']][key]

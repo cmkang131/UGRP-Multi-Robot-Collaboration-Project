@@ -43,6 +43,15 @@ def test_recording_preserves_short_pulse_boundaries():
     assert ticks[0]==0 and ticks[-1]==24000
 
 
+def test_recorded_clear_fixture_routes_with_or_without_trailing_slash():
+    from scripts.warpfit_analyze import drive_scene
+    # Actual result.json stores the directory without a trailing slash. Using
+    # '/drive-clear-v1/' incorrectly routed it to the original pulse metadata.
+    path='/home/ugrp/ugrp-sim/runs/warpfit/primitive-v1/drive-clear-v1'
+    assert drive_scene(path)==drive_scene(path+'/')=='clear-overlap-v1'
+    assert drive_scene('/home/ugrp/ugrp-sim/runs/warpfit/primitive-v1/drive')=='initial-overlap'
+
+
 def test_thirty_lifts_are_not_thirty_frames_and_reference_quantiles_pass(tmp_path, monkeypatch):
     import json
     import os
