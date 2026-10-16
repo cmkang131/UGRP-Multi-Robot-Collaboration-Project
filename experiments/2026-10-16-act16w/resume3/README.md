@@ -31,7 +31,10 @@ wall 상한은 없고 idle20·budget-stop을 유지한다. 새 실행마다 임�
 교사 라이브러리`6f057f7e` → MJWarp controller`f0db6b1a` → 기록 API`0362037`의
 관계를 유지하되 과거 noslip10 관문은 새 물리 관문으로 세지 않는다.
 
-참고: [warpfit 프로필/실측](../../2026-10-16-warpfit/README.md),
-[act16a 실패 분석](../../2026-10-16-act16a/README.md),
+참고: [warpfit 프로필/실측 PR#562](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/562),
+[act16a 실패 분석 PR#528](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/528),
 [2회차 noslip10 기록](../resume2/summary.json), [접촉 어댑터 출처](contact-adapter-provenance.json).
-Refs #523, Draft PR #539. 현재는 실행 준비 단계이며 native 관문·데이터·학생 성공은 아직 없다.
+Refs #523, Draft PR #539. native参照40개 생성 완료이며 교사 rollout0·학습 데이터 승인0이다.
+`act16w-native-gate-r1`(PID51400, source8ad29c869)은 기존VAL 종료를 기다린다.
+기존VAL 원장 재계수 후 native40을 실행하고 결과 검토 경계에서 멈춘다.
+신규 실제 작업 이름을 유휴 판정에 등록했으며20분 기준·budget-stop은 유지했다.

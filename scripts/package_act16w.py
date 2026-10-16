@@ -42,6 +42,9 @@ def main():
     if not a.enabled:p.error('model staging default OFF')
     host=require_gcp2();source=frozen_source(ROOT);ACT=B/'src'/ACT_SHA;frozen_source(ACT,ACT_SHA)
     meta=read(a.checkpoint/'adapter.json');summary=read(a.training_summary)
+    native=meta['provenance'].get('contact_profile')=='warp_native_contact_v1'
+    if native and a.tag=='models-20261016-act16w-v1':
+        p.error('native models require a distinct Release tag; noslip assets are immutable')
     step,complete=check_model(meta,summary,allow_incomplete=a.allow_incomplete)
     dataset=read(a.dataset_manifest)
     if not dataset['complete'] or sha256(a.dataset_manifest)!=meta['provenance']['dataset_manifest_sha256']:
@@ -78,9 +81,12 @@ print(json.dumps(dict(ready=True,device='cpu',history_mode=actor.mode,scope='has
         scope='experimental solo r1 BOX near-field grasp/release; no multi-robot/transport or legacy can/tile/crate capability claim; loading and task success are separate',
         task_instruction_limit='BOX tokens carry kind+west, not an individual same-colour item_id; empirical performance effect unmeasured',
         public_redownload_and_loading_verified=False,original_checkpoint=str(a.checkpoint),optimizer_original_retained=True,raw_dataset_backup_included=False)
+    if native:
+        provenance.update(contact_profile='warp_native_contact_v1',native_gate=dataset['native_gate'],
+            record_host_schema_adapter_sha=dataset['source_sha'],noslip10_data_pooled=False)
     write(stage/'provenance.json',provenance)
     (stage/'README.md').write_text('# ACT16 '+a.arm+' step'+str(step)+'\n\n실험 모델이며 기본 제어기가 아닙니다. '+('등록한10000스텝 학습 완료.' if complete else '중단된 미완료 비교 체크포인트 보존.')+'\n\n기존 고정 ACT 환경에서 `python inference/load_model.py`로 CPU 로딩을 확인합니다. 필수 패키지 버전은 environment.json, 원 학습/교사/데이터 해시는 provenance.json에 있습니다. 로딩 성공은 물리 임무 성공이 아닙니다. 이 ZIP은 가중치·필수 추론 소스·출처만 포함하며 raw 데이터나 optimizer 백업을 대체하지 않습니다.\n')
-    model_id='act16w-'+a.arm.lower()+'-step'+str(step)+'-20261016';asset=model_id+'.zip';repo='cmkang131/UGRP-Multi-Robot-Collaboration-Project'
+    model_id=('act16w-native-v1-' if native else 'act16w-')+a.arm.lower()+'-step'+str(step)+'-20261016';asset=model_id+'.zip';repo='cmkang131/UGRP-Multi-Robot-Collaboration-Project'
     row=dict(id=model_id,status='available',description='ACT16 '+a.arm+' experimental '+('10000-step model' if complete else 'incomplete comparison snapshot'),source_sha=meta['provenance']['source_sha'],training_source_sha=meta['provenance']['source_sha'],packaging_source_sha=source,
         release=dict(tag=a.tag,asset=asset,url=f'https://github.com/{repo}/releases/download/{a.tag}/{asset}'),
         files=[dict(path=str(f.relative_to(stage)),bytes=f.stat().st_size,sha256=sha256(f)) for f in sorted(stage.rglob('*')) if f.is_file()],

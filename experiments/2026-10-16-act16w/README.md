@@ -1,6 +1,10 @@
 # ACT16w — MJWarp 재기록·학습
 
-현재는 **2회차 A/B 학습 진행 중**이다. 새 독립 시드의 교사 기록40/40이 성공했고,
+현재는 **3회차 native contact 재관문 준비 중**이다.
+[현재 지시·조건·진행 범위](resume3/README.md)를 따른다. 아래2회차는 noslip10 기준값이며
+새 물리의 데이터·모델과 합산하지 않는다.2회차 A/B10000은 끝났고 VAL5×A/B는 계속 둔다.
+
+2회차 새 독립 시드의 교사 기록40/40이 성공했고,
 native JPEG·발행 이력·교사 표적17,706/17,706쌍이 정합했다. 입력 감사는 invisible/held0/0이며,
 기존 ACT와 같은1e-5초 주기 허용치로 전체40회를 재감사했다
 ([전체 감사](resume2/strict-audits-final40.json), [기록 관문](resume2/fresh-recording-gate.json)).
