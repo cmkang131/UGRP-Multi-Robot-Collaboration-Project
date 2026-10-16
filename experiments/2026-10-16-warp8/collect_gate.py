@@ -112,10 +112,17 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument('--root', type=Path, required=True)
     p.add_argument('--out', type=Path, required=True)
+    p.add_argument('--tags', help='explicit comma-separated attempts; preserve separate contact cohorts')
     a = p.parse_args()
     a.out.mkdir(parents=True, exist_ok=True)
     attempts = []
-    for path in sorted(a.root.glob('*.command.json')):
+    paths=sorted(a.root.glob('*.command.json'))
+    if a.tags:
+        tags=a.tags.split(',')
+        assert len(tags)==len(set(tags)) and all(Path(t).name==t and t not in ('.','..') for t in tags)
+        paths=[path for path in paths if path.name.removesuffix('.command.json') in tags]
+        assert len(paths)==len(tags),'all requested attempts must exist'
+    for path in paths:
         name = path.name.removesuffix('.command.json')
         run = a.root / name
         cmd, receipt, summary = data(path), data(run.with_suffix('.receipt.json')), data(run / 'summary.json', {})
@@ -189,6 +196,7 @@ def main():
         setup = summary.get('started_N', 0)
         setup_rejected = int(terminal and setup < n and bool(summary.get('error_type')))
         attempt = dict(name=name, host='gcp3', source_sha=cmd['source_sha'], export_only=export,
+            contact_profile=summary.get('contact_profile'),
             status=('HOST_ERROR' if receipt and receipt['exit_code'] else summary.get('status', 'missing')),
             terminal=terminal, command=cmd['command'], raw=str(run), N=n, completed_N=completed,
             success_N=success, cap_end_N=sum(w['cap_end'] for w in results),
