@@ -150,7 +150,19 @@ class Bridge:
         cls.__init__ = canonical_init
         kwargs.update(render=False, width=640, height=480)
         try:
-            return original(scene, **kwargs)
+            world=original(scene, **kwargs)
+            if self.hooks.native_sleep_policy_compat_v1:
+                setup=scene.setup
+                def quiet_setup(w):
+                    w.data.qfrc_applied[:]=-0.0
+                    setup(w)
+                    w.data.qfrc_applied[:]=0.0
+                    # Reuse PR534's existing .4s quiet native initialization.
+                    # This is setup, not an acceptance/policy time threshold.
+                    for _ in range(round(.4/w.model.opt.timestep)):
+                        w._physics_step_for(w.robot('r1'))
+                scene.setup=quiet_setup
+            return world
         finally:
             cls.__init__ = init
 

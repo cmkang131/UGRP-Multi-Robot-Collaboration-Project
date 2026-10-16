@@ -263,6 +263,7 @@ class WarpTransport(Transport):
         self.sleep_audit={'enabled':self.native_sleep_policy_compat_v1,'native_initial_active_dofs':native_active.tolist(),
             'active_robot_plus_target_dofs':active_bounds,'nvmax':self.nvmax,
             'capacity_basis':'next power of2 of actual native active count and static robot+target DOFs; overflow rejects unexpected activation'}
+        (self.out/'sleep-allocation-audit.json').write_text(json.dumps(self.sleep_audit,indent=2)+'\n')
         d.tree_asleep[:]=self.source_sleep[0]
         with unused_efm(m, d):
             self.wd = mjw.put_data(m,d,nworld=self.n,nconmax=ncon,njmax=njmax,nvmax=self.nvmax)

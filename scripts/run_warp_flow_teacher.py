@@ -108,6 +108,14 @@ def main():
             lanes.append(lane);bridges.append(bridge)
             contexts.append(next(lane));report['started_N']+=1
         write(a.out/'single-model-audit.json',model_arrays_equal([c['world'].model for c in contexts]))
+        native=[]
+        for c in contexts:
+            m,d=c['world'].model,c['world'].data
+            trees=m.body_treeid[m.dof_bodyid]
+            native.append(dict(nv=int(m.nv),tree_asleep=d.tree_asleep.tolist(),
+                active_dofs=int(np.sum(d.tree_asleep[trees]<0)),
+                robot_dofs={r:int(np.count_nonzero(trees==m.body_treeid[m.body(r+'__robot').id])) for r in c['ports']}))
+        write(a.out/'native-setup-audit.json',native)
         if not model_arrays_equal([c['world'].model for c in contexts])['exact'] and not a.world_model_parameters_v1:
             raise ValueError('single-model post-setup arrays differ; no SLEEP exception admitted')
         (a.out/'canonical-scene.xml').write_text(canonical['xml'])
@@ -133,6 +141,8 @@ def main():
             compiled_geometry=Path(first['geometry']) if first else a.compiled_geometry_312_v1,per_world_model_references=references)
         report.update(camera=hooks.camera,capacities=hooks.capacities,compatibility=hooks.compat,
             initial_state_proof=hooks.initial_state_proof(contexts),setup_compile_s=time.perf_counter()-start)
+        report.update(started_N=len(contexts),model_batch_audit=hooks.model_batch_audit,sleep_audit=hooks.sleep_audit)
+        write(a.out/'summary.json',report)
         loop=time.perf_counter()
         while active.any():
             for i in np.flatnonzero(active):
