@@ -1,0 +1,20 @@
+{
+  "verified_utc": "2026-10-16T14:40:29.454841+00:00",
+  "category": "HOST_ERROR_asset_resolution",
+  "count": 1,
+  "teacher_rollouts": 0,
+  "reason": "MjModel.from_xml_path resolves scene-relative textures from exported evidence directory instead of frozen source root",
+  "blocking_object": "not_applicable_host_asset_loader",
+  "minimum_gap_m": null,
+  "minimum_gap_status": "not_applicable_non_geometric",
+  "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-gate-r1.log",
+  "fix": "compile unchanged XML string from qualified source root Q, matching original factory",
+  "probe": {
+    "host": "ugrp-act-l4-gcp2",
+    "nq": 243,
+    "ngeom": 1387,
+    "noslip": 0,
+    "steps": 0
+  },
+  "round": "infrastructure retry, not teacher failure round"
+}

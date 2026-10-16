@@ -9,6 +9,7 @@ import argparse
 import dataclasses
 import hashlib
 import json
+import os
 from pathlib import Path
 import sys
 
@@ -55,8 +56,13 @@ def main():
     wp.init(); args.out.mkdir(parents=True, exist_ok=False)
     inventory = json.loads((args.references/'inventory.json').read_text())
     groups, rows = {}, []
+    # The frozen world factory compiles this exact XML string with Q as its
+    # asset root. from_xml_path instead treats the exported evidence directory
+    # as the root and cannot resolve its relative scene texture paths. Preserve
+    # XML bytes/hashes and the factory's original asset lookup; no scene edit.
+    os.chdir(Q)
     for row in inventory:
-        xml = Path(row['scene_xml']); model = mujoco.MjModel.from_xml_path(str(xml))
+        xml = Path(row['scene_xml']); model = mujoco.MjModel.from_xml_string(xml.read_text())
         apply_geometry(model, xml, Path(row['geometry'])); apply_reference(model, xml, Path(row['actuator']))
         if model.opt.noslip_iterations != 0 or model.opt.impratio != 5:
             raise ValueError('native exact reference profile required')
