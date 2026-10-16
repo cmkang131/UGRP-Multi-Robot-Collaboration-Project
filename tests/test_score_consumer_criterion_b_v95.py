@@ -83,7 +83,7 @@ def simulate(plan, start, n=7400, dt=.05):
 
 def build_map(root, mid, commitment, negate_r2=False):
     case_dir = root / mid
-    bundle = {**v.bundle(mid), 'case': v.cases(v.CHECK, mid)[0], 'source_sha': s.SOURCE}
+    bundle = {**v.bundle(mid, contact_profile='cargo_noslip_v1'), 'case': v.cases(v.CHECK, mid)[0], 'source_sha': s.SOURCE}
     dump(case_dir / 'bundle.json', bundle)
     events = v.schedule(v.CHECK, mid)
     dump(case_dir / 'inputs/schedule.json', events)

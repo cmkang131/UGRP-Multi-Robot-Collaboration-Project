@@ -208,7 +208,7 @@ def _configuration(root, options):
         'memory': options['memory'], 'sensors': {'ultrasonic_front': options['ultrasonic_front']},
         'pair_policy': {'id': 'b-v6h1', 'adoption': 'pending_pr292_acceptance_and_review',
                         'roles': 'r1_end_neg_r2_end_pos_r3_solo', 'status_channel': 'same_all_four_conditions'},
-        'contact_profile': 'cargo_noslip_v1', 'weld': 'off',
+        'contact_profile': 'cargo_native_v1', 'contact_execution_bundle_id': 'noslip-off-v445', 'weld': 'off',
         'timing': {'mode': 'sync_sim', 'frame_period_s': 0.2, 'executor_tick_s': 0.1},
         'llm': {'driver_profile': 'main_study_gemini_v1', 'requested_model': llm['model'],
                 'effective_model': 'unmeasured_requires_coordinator_preflight',

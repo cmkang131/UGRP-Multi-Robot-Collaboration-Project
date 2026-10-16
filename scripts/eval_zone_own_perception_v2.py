@@ -64,7 +64,7 @@ from scripts.eval_zone_own_perception import (UNMAPPED_BLOCK, _nearest_interior_
 
 SPLIT_FILE = ROOT/'experiments/2026-09-26-zone-own-perception-v2/split.json'
 SCHEMA = 'ugrp.zone_own_perception_v2_eval.v1'
-CONTACT_PROFILE = 'cargo_noslip_v1'
+CONTACT_PROFILE = 'cargo_native_v1'
 
 EVAL_GOAL = {'A': {'cyan': 1, 'red': 1}, 'B': {'cyan': 1, 'green': 1}, 'C': {'yellow': 1, 'green': 1}}
 EXTRA_BOXES = {'cyan': 1, 'yellow': 1}

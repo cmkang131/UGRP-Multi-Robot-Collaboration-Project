@@ -424,7 +424,7 @@ def run_case(case, out):
     spec = {'map': case.get('map', MAP_ID), 'seed': case['seed'], 'goal': {target: {'cyan': 1}}, 'pair_policy': case.get('pair_policy', 'v5h'),
             'team_cargo': [{'item_id': 'cargoX', 'kind': 'long_beam', 'pose': list(case['beam_xyyaw'])}],
             'pair_order_sheets': {'cargoX': sheet}, 'order_sheet': order_for(target),
-            'contact_profile': 'cargo_noslip_v1', 'job_sim_limit_s': 900.}
+            'contact_profile': case.get('contact_profile', 'cargo_native_v1'), 'job_sim_limit_s': 900.}
     student = {'mode': 'm1', 'calibration': CALIBRATION,
                'skill_module': 'harness.wrist_zone_skill_v9', 'skill_class': 'WristZoneDeliveryV9'}
     scene = make_scene(spec)
@@ -551,7 +551,7 @@ def run_case(case, out):
               'seed': case['seed'], 'labels': sp.LABELS, 'probe_version': sp.PROBE_VERSION,
               'controller': {'pair_policy': case.get('pair_policy', 'v5h'), 'execution_bundle_id_on_main': EXECUTION_BUNDLE_ID,
                              'factory': 'harness.zone_pair_executor.m2_controller (unchanged) + probe entry/exit wrapper'},
-              'weld': False, 'contact_profile': 'cargo_noslip_v1', 'model_calls': 0, 'ultrasonic': 'off (not connected)'}
+              'weld': False, 'contact_profile': spec['contact_profile'], 'model_calls': 0, 'ultrasonic': 'off (not connected)'}
     result['diag_patch'] = case.get('diag_patch')
     result['loadavg_case_start'] = list(os.getloadavg())
     IMAGE_VALID_REAL.clear()

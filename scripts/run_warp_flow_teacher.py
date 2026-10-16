@@ -41,6 +41,8 @@ def parser():
         help='Initialize model groups and cameras, then stop before teacher/transport rollout')
     p.add_argument('--export-compiled-only', action='store_true')
     p.add_argument('--vm-hourly-usd', type=float, required=True)
+    from sim.execution_contact_profile import add_argument
+    add_argument(p, warp=True)
     return p
 
 
@@ -63,6 +65,7 @@ def main():
         p.error('existing gcp2 L4 required')
     if a.physics_backend == 'c_pilot_v1' and a.nworld != 1:
         p.error('CPU concurrency uses separate N1 processes')
+    from warp_act_backend import CTransport, WarpTransport, ExactModelGroups  # capture current contact policy before lane imports
     from warp_flow_episode import ADAPTER_SHA, TEACHER_SHA, make_lane
     require_source(a.adapter_source, ADAPTER_SHA)
     require_source(a.teacher_source, TEACHER_SHA)
@@ -83,7 +86,7 @@ def main():
     from warp_act_backend import CTransport, WarpTransport, ExactModelGroups
     a.out.mkdir(parents=True, exist_ok=False)
     report = dict(schema='ugrp.warp2.batch.v1', status='running', source_sha=source,
-        adapter_sha=ADAPTER_SHA, teacher_sha=TEACHER_SHA, physics_backend=a.physics_backend,
+        adapter_sha=ADAPTER_SHA, teacher_sha=TEACHER_SHA, physics_backend=a.physics_backend,contact_profile=a.contact_profile,
         host=host, nworld=a.nworld, seed=plan['seed'], world_seeds=[e['seed'] for e in selected], cap_s=a.cap_s,
         plan_sha256=hashlib.sha256(a.plan.read_bytes()).hexdigest(), mujoco=mujoco.__version__,
         gate_eligible=False, scene_status='HOLD_SCENE', training_rgb=False, student_execution=False,
@@ -93,7 +96,7 @@ def main():
             cap_end=0, HOST_ERROR=0, unstarted=a.nworld))
     write(a.out/'summary.json', report)
     transport = ExactModelGroups if a.exact_model_groups_v1 else WarpTransport
-    hooks = (transport if a.physics_backend == 'mjwarp_batch_v1' else CTransport)(host, source, a.physics_backend, a.out)
+    hooks = (transport if a.physics_backend == 'mjwarp_batch_v1' else CTransport)(host, source, a.physics_backend, a.out, contact_profile=a.contact_profile)
     lanes, bridges, contexts, results = [], [], [], {}
     active = np.ones(a.nworld, dtype=bool)
     ticks = np.zeros(a.nworld, dtype=int)

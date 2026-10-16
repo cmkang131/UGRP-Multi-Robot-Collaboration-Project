@@ -30,7 +30,8 @@ def current_source_v5h():
     from scripts.zone_pair_grasp_contract import grasp_contract
     p = committed_v5h()
     assert p.get('execution_authorization') is None
-    p.update(scene_contract=dev.scene_contract(), grasp_contract=grasp_contract())
+    p.update(scene_contract=dev.scene_contract(), grasp_contract=grasp_contract(),
+             contact_profile_contract=dev.profile_contract())
     p['registration_sha256'] = digest(registration_payload(p))
     return p
 

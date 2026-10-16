@@ -424,7 +424,8 @@ def current_registration():
     from scripts import run_zone_pair_dev as dev
     from scripts.zone_pair_grasp_contract import grasp_contract
     p = json.loads(dev.PREREG_V5B.read_text())
-    p.update(scene_contract=dev.scene_contract(), grasp_contract=grasp_contract())
+    p.update(scene_contract=dev.scene_contract(), grasp_contract=grasp_contract(),
+             contact_profile_contract=dev.profile_contract())
     return p
 
 

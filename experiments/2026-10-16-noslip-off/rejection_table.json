@@ -1,0 +1,19 @@
+{
+  "raw_path": "/Users/changmin/projects/ugrp-wt/nsoff/experiments/2026-10-16-noslip-off/compile_receipts.json",
+  "reproduce": "PYTHONPATH=. python -m scripts.check_noslip_defaults",
+  "funnel": [
+    {
+      "gate": "actual_model_load",
+      "passed": 15,
+      "rejected": 0
+    },
+    {
+      "gate": "selected_noslip_and_weld_off",
+      "passed": 15,
+      "rejected": 0
+    }
+  ],
+  "rejections": [],
+  "runtime_gpu_conversion": "not_measured",
+  "physics_success": "not_measured"
+}

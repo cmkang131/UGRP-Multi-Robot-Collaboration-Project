@@ -113,7 +113,7 @@ class Bridge:
         original = factory.build_world
         def build(*a, **kw):
             kw['render'] = self.hooks.native_render
-            return original(*a, **kw)
+            return self.hooks.build_world(original, *a, **kw)
         factory.build_world = build
         namespace = runner.__dict__.copy()
         namespace['__warp2_bridge__'] = self

@@ -233,7 +233,7 @@ class HysteresisWorld(FrictionWorld):
             for c in self.controllers.values():c._presentation_dirty=True
 
 
-def build_world(scene, *, drive_profile, params=None, roller_collision='mesh', idle_robot_contacts='off', exact_speedups=None, **kwargs):
+def build_world(scene, *, drive_profile, contact_profile='cargo_native_v1', params=None, roller_collision='mesh', idle_robot_contacts='off', exact_speedups=None, **kwargs):
     if drive_profile != PROFILE:
         raise ValueError('explicit '+PROFILE+' required')
     if roller_collision not in ROLLER_COLLISION_MODES:
@@ -244,6 +244,7 @@ def build_world(scene, *, drive_profile, params=None, roller_collision='mesh', i
     from sim.masterpi_model_v3 import v3_hardware
     from sim.masterpi_robot_models import V3_DRAWING_HARDWARE_KEYS
     from sim.zone_cargo_contact import apply
+    from sim.execution_contact_profile import cargo_name
     if not isinstance(scene, Scene) or not hasattr(scene, 'robot_transform'):
         raise ValueError('requires standard v3 Scene adapter')
     world = HysteresisWorld.__new__(HysteresisWorld)
@@ -252,7 +253,7 @@ def build_world(scene, *, drive_profile, params=None, roller_collision='mesh', i
     configure(world, exact_speedups)
 
     def transform(xml):
-        xml = apply(scene.transform(xml), 'cargo_noslip_v1')
+        xml = apply(scene.transform(xml), cargo_name(contact_profile))
         xml = scene.robot_transform(xml, hardware=world.physical_params,
                                     calibrated_keys=world.calibration_parameters)
         return transform_xml(xml, world.drive_parameters, roller_collision, idle_robot_contacts)

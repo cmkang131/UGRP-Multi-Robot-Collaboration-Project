@@ -20,7 +20,7 @@ CARGO_SET_SCHEMA = 'ugrp.zone_cargo_set.v1'
 class CargoZoneScene(ZoneScene):
     @classmethod
     def from_cargo_config(cls, variant, seed, *, cargo, goal=None, extra_boxes=None,
-                          contact_profile='local_contact_fine', base_dir=ROOT):
+                          contact_profile='cargo_native_v1', base_dir=ROOT):
         from sim.zone_cargo_contact import CARGO_PROFILES, base_profile
         if variant not in VARIANTS:
             raise ValueError('unknown zone arena variant')

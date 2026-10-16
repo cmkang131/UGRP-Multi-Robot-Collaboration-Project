@@ -29,7 +29,7 @@ def design():
     from scripts.zone_team_teacher import GRIP_LOST_S, LIFT_CLEAR_Z_M
     return dict(schema='ugrp.drive_pair_beam.v1', seed=SEED, map=MAP_ID,
         beam_pose=list(LOADED_BEAM_POSE), beam_kind='long_beam', mass_kg=.3,
-        contact_profile='cargo_noslip_v1', staging=PREROLLS['high_held'],
+        contact_profile='cargo_native_v1', staging=PREROLLS['high_held'],
         command={'r1':[-.35,.35,.35,-.35], 'r2':[0.,0.,0.,0.]},
         drive_s=DRIVE_S, stop_s=STOP_S, sample_s=.01,
         finger_min_n=FINGER_MIN_N, grip_lost_s=GRIP_LOST_S,
@@ -170,7 +170,7 @@ def run_pair_case(profile,output:Path,world_options=None):
         for r,(x,y,yaw) in stations(scene.config['static_map'],plan['beam_pose']).items():
             scene.config['setup_only']['spawns'][r]=[x,y,.0325,yaw]
         kwargs=dict(seed=SEED,render=False,warehouse_layout=scene.engine_layout,use_calibration_manifest=False)
-        world=build_world(scene,drive_profile=PROFILE,**(world_options or {}),**kwargs) if profile==PROFILE else legacy(scene,'cargo_noslip_v1',initial_sim_cap_s=45.,**kwargs)
+        world=build_world(scene,drive_profile=PROFILE,**(world_options or {}),**kwargs) if profile==PROFILE else legacy(scene,'cargo_native_v1',initial_sim_cap_s=45.,**kwargs)
         scene.setup(world);m,d=world.model,world.data
         active_welds=[i for i in range(m.neq) if m.eq_type[i]==mujoco.mjtEq.mjEQ_WELD and d.eq_active[i]]
         if active_welds:raise ValueError('weld must be OFF')
