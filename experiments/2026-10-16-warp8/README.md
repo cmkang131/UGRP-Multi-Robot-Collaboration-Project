@@ -1,3 +1,83 @@
+# warp8f — 정적 지도 CSM API 오프라인 연결 완료 / NOT_READY
+
+`nocap-ack nocpu-ack nativecontact-ack ownership-ack latest-ack`.
+새 기본 off `release_reloc_selfmap_v1(lk)` + `mapbuild_static_csm_v1` 어댑터로
+저장된 native release A-S1 **14세계·28로봇·418뷰**를 점검했다.
+mapbuild7 `0ace43f25d3121e8f466c4ecefc9789f52958d41`의 모듈은 byte 그대로 사용했다.
+**전역 위치 채택 0/28, 요구 오차 통과 0/14세계**다. 새 release A40/B40 대기열은 만들거나
+제출하지 않았다. 기존 빔40/40·옛 release0/14·noslip10·CPU 결과와 합산하지 않는다.
+
+|로봇별 정합 funnel|전: 기존 첫 3-pan 종료|후: 전체 저장 뷰 종료|
+|---|---:|---:|
+|시도|28|28|
+|채택|0|0|
+|모호하여 None (`ambiguous_modes`)|4|17|
+|전역 SE2 관측 부족|20|11|
+|벽 선분 없음 / 가까운 점 부족|3 / 1|0 / 0|
+|전체 거부(None)|28|28|
+|오채택 / 인계 요구 오차 통과|0 / 0|0 / 0|
+
+전후 모두 채택된 지도 위치가 없어 **채택 위치 XY/yaw 오차는 null(미정합)**이다.
+거부된 최선 후보의 오차와 첫 평가 SE2에 맞춘 상대 drift는 평가 전용 칸에 따로 기록했다.
+이를 채택·성공으로 세지 않고, 정답 시작 위치를 추정기에 대입하지 않았다.
+[28로봇 전후 오차표](selfmap-csm-r1-error-table.md), [기계 판독 오차표](selfmap-csm-r1-error-table.json),
+[funnel·거부표](selfmap-csm-r1-rejection_table.json), [실행 전체 요약](warp8f-summary.json).
+요구값은 mapbuild6 `requirements.json`을 byte 그대로 고정했다:
+XY ≤200.751mm와 yaw+atan2(XY,848.315mm−XY) ≤21.423deg를 함께 요구한다.
+이 역사적 교사 envelope를 학생·native 물리 성공 범위로 승계하지 않는다.
+자리60mm·문 통과·실제 적재/운반 구간은 이번 sparse 입력으로 검증하지 않았다.
+
+새 경로의 벽 검출은190/418뷰·7,653열로 이전 입력 감사와 일치했다.
+바닥 특징417뷰·77,571개와 구역 색 보조 성분은 동일 JPEG의 이전 입력 감사값을 출처와 함께
+검출표에 연결했다(바닥 검출기 재실행0). 이는 전역 정합의 추가 증거가 아니다.
+LK는 bootstrap28·servo 변경 unknown390·실측0이다. 발행 명령의 상대 변화만으로 자세를
+전파하며, 카메라 원점과 벽 선분을 같은 자기 좌표계로 합성해 API에 전달했다.
+[검출표](selfmap-csm-r1-detection-table.json), [출처·입력 경계](selfmap-csm-provenance.json),
+[2,091파일 owner SHA 목록](selfmap-csm-owner-manifest.json).
+옛 floor-line Hough·global_consensus 호출0, spawn 대체0, 물리·TOP·모델0이다.
+
+입력은 이전 두 native 렌더 간 JPEG418/418 일치가 확인된 파일을 그대로 재사용했다.
+이번에는 렌더·물리를 새로 실행하지 않았다. sparse capture는 기존 자기 서보 명령 후
+0.8/1초 wait 계약으로 열린 카메라의0.25초 정착 구간을 만족하는 뷰로 처리했다.
+측정 관절이나 평가 FK는 입력으로 사용하지 않았다.
+**실제 적재 FK 자격·실제 운반 경로·LK/RBPF 선택은 mapbuild 소유자 관문에서 아직 ready가 아니다.**
+이 어댑터는 오프라인 부품 연결이며 release 물리 실행기 교체 연결이나 실제 임무 성공이 아니다.
+
+실행 소스 `a40eb399481e2996899f84a7bf65ca7228902c1b`, 감독자 `951d4c669`,
+독립 재계수 `d8c9ec262`(압축 호환 검증 `bba5745d3`)를 커밋한 뒤 사용했다.
+첫 운영 감독자 인용 SyntaxError는 추정기 시작 전 발생했고 원격 로그로 보존했다.
+커밋된 감독자로 고친 뒤 오프라인 한 라운드가 predict/score 종료코드0/0으로 끝났다.
+[명령](selfmap-csm-r1-command.json), [완료 receipt](selfmap-csm-r1-receipt.json).
+동일 결함을 고쳐 세 번 반복한 실험이 아니며 물리 라운드는0이다.
+
+원본: `gcp3:/home/ugrp/ugrp-sim/runs/warp8/selfmap-csm-r1`.
+독립 원본 재계수56/56 일치, prediction141파일·입력JPEG418·owner2,091파일 SHA 일치,
+기존 RUN_META 보정54개+summary 주석2개 SHA56/56 일치다. 원래 라벨·scene의noslip10 표기는
+기존 보정 파일에서 실제native0와 구분한다. 정식 admission 부재로
+`gate_eligible=false`인 과거 원본을 소급 승인하지 않는다.
+[독립 재계수](selfmap-csm-r1-independent-recount.json), [147파일 SHA 목록](selfmap-csm-r1-artifact-integrity.json),
+[재검증](selfmap-csm-r1-integrity-verification.json).
+큰 JSON14개를 zstd 후 해제SHA 검증해 동일 원본 바이트를 무손실 보존했다
+([압축 manifest](selfmap-csm-r1-compression-manifest.json)).
+Mac에는 요약·표·SHA·명령/receipt12개만 회수하고 SHA12/12를 확인했다
+([회수](selfmap-csm-r1-transfer.json)). 원본 JPEG/상태/궤적 전체는 회수하지 않았다.
+
+실패000/001의 기존 자기 카메라 몽타주4개64프레임(17.9–37.4 world SIM초)을 이번에 직접 봤다.
+pan에 따라 벽–바닥 경계·문·질감과 파트너 가림이 보이며, sparse 영상만으로 빠른 진동이나
+운반 LK 성능을 주장하지 않는다. 기존 native 대표 성공·실패 영상 각1개의 SHA/ffprobe도 재확인했다.
+[직접 검토·영상 기록](warp8f-playback-review.json). 새 GUI 호출0이다.
+
+비물리 단위시험 **5 passed**, 새 시험의 CI shard1회 포함·Python 구문·diff 검사를 확인했다.
+전체 CI·물리 성공·release 관문 통과는 별도다. 오프라인 요구 관문 미통과로 새 A40/B40 대기열은 없으며,
+향후 제출 전 stackaudit PR#569 `check_current_stack.py`와 `dialogue_language` 검사를 요구한다.
+API의 관측 부족/모호성 원본을 mapbuild 소유자에게 전달하고 이 작업에서 상수를 조정하지 않는다.
+
+자기 lease 제거 뒤 타lease0·ugrp 작업PID0·GPU client0·idle20 ACTIVE를 확인하고 VM을 정지했다.
+**gcp3 TERMINATED·상한 필드 없음**을 조회했다([정지 전](warp8f-prestop.json), [정지 확인](warp8f-host-stop.json)).
+CPU VM 시작0·다른 VM 변경0·키 전송0·Drive 사용0이다.
+
+아래는 warp8e 및 이전 실행의 당시 기록이다.
+
 # warp8e — 자기 지도 입력 14세계 오프라인 점검 완료 / NOT_READY
 
 `nocap-ack nocpu-ack nativecontact-ack ownership-ack latest-ack`.

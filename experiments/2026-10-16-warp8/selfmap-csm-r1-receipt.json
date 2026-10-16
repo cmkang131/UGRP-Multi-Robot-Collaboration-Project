@@ -1,0 +1,56 @@
+{
+  "source_sha": "a40eb3994",
+  "owner_sha": "0ace43f25d3121e8f466c4ecefc9789f52958d41",
+  "commands": [
+    [
+      "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+      "/home/ugrp/ugrp-sim/src/warp8f-adapter-a40eb3994/experiments/2026-10-16-warp8/probe_static_selfmap.py",
+      "--stage",
+      "predict",
+      "--enabled",
+      "--owner",
+      "/home/ugrp/ugrp-sim/src/warp8f-selfmap-0ace43f25",
+      "--adapter",
+      "/home/ugrp/ugrp-sim/src/warp8f-adapter-a40eb3994",
+      "--input",
+      "/home/ugrp/ugrp-sim/runs/warp8/selfmap-open-r1",
+      "--output",
+      "/home/ugrp/ugrp-sim/runs/warp8/selfmap-csm-r1",
+      "--queue",
+      "/home/ugrp/ugrp-sim/src/warp8f-adapter-a40eb3994/experiments/2026-10-16-warp8/selfmap-csm-offline-queue.json",
+      "--checkpoint-file",
+      "/home/ugrp/ugrp-sim/src/warp8f-adapter-a40eb3994/experiments/2026-10-16-warp8/selfmap-csm-checkpoints.json",
+      "--requirements",
+      "/home/ugrp/ugrp-sim/src/warp8f-adapter-a40eb3994/experiments/2026-10-16-warp8/selfmap-csm-requirements.json"
+    ],
+    [
+      "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+      "/home/ugrp/ugrp-sim/src/warp8f-adapter-a40eb3994/experiments/2026-10-16-warp8/probe_static_selfmap.py",
+      "--stage",
+      "score",
+      "--enabled",
+      "--owner",
+      "/home/ugrp/ugrp-sim/src/warp8f-selfmap-0ace43f25",
+      "--adapter",
+      "/home/ugrp/ugrp-sim/src/warp8f-adapter-a40eb3994",
+      "--input",
+      "/home/ugrp/ugrp-sim/runs/warp8/selfmap-open-r1",
+      "--output",
+      "/home/ugrp/ugrp-sim/runs/warp8/selfmap-csm-r1",
+      "--queue",
+      "/home/ugrp/ugrp-sim/src/warp8f-adapter-a40eb3994/experiments/2026-10-16-warp8/selfmap-csm-offline-queue.json",
+      "--checkpoint-file",
+      "/home/ugrp/ugrp-sim/src/warp8f-adapter-a40eb3994/experiments/2026-10-16-warp8/selfmap-csm-checkpoints.json",
+      "--requirements",
+      "/home/ugrp/ugrp-sim/src/warp8f-adapter-a40eb3994/experiments/2026-10-16-warp8/selfmap-csm-requirements.json"
+    ]
+  ],
+  "started_utc": "2026-10-16T17:18:55.431014+00:00",
+  "physics_steps": 0,
+  "supervisor_wall_deadline": null,
+  "returncodes": [
+    0,
+    0
+  ],
+  "completed_utc": "2026-10-16T17:22:28.196404+00:00"
+}

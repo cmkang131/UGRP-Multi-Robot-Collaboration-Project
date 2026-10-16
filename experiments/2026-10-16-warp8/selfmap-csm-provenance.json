@@ -1,0 +1,37 @@
+{
+  "owner_sha": "0ace43f25d3121e8f466c4ecefc9789f52958d41",
+  "files_sha256": {
+    "harness/mapbuild_camera.py": "18219e99ea7aa50d422d78d5ca56c2fb5cf9d7375173343e9cc43b4998532910",
+    "harness/mapbuild_rbpf.py": "08ff31763b23aecd2e434a9d8f375da612ecd5db61e46f36344fe00a4183e926",
+    "harness/mapbuild_static_registration.py": "ee20544f39d41d64b2bff31d5e2e14da4832122c4df9c42cf9a4ea2bbe7ba101",
+    "harness/servo_camera_fk.py": "8a0156044a83430d1fe5979ae9bdb2f097f6b4b656015510c194d3fb5e80b32a",
+    "experiments/2026-10-17-mapbuild7/API.md": "c544d1db1cd3fa6e87e1c77efb025eba0824562ac9230afd17c00577d21006c3",
+    "experiments/2026-10-17-mapbuild6/requirements.json": "d9f3c1f3a00273be3aa901613d01386fa493b1ed5edb561e40a58d367360875c"
+  },
+  "owner_bytes_modified": false,
+  "source_sha": "a40eb399481e2996899f84a7bf65ca7228902c1b",
+  "supervisor_sha": "951d4c669b58e660e87a7688fb401b700372cc79",
+  "recount_source_sha": "d8c9ec262f461306b0b116acff93f27ee11811fd",
+  "options": {
+    "release_reloc_selfmap_v1": "lk",
+    "mapbuild_static_csm_v1": true,
+    "servo_fk_carry_v1": true
+  },
+  "legacy_release_adapter_unmodified": true,
+  "physical_release_runner_connected": false,
+  "scope": "API candidate integration for saved open-gripper views; LK/RBPF choice, actual loaded camera and actual route not qualified",
+  "constants": "No new acceptance/tolerance/search budget constants; inherited mapbuild CSMOptions and requirements.json, reporting checkpoint first original 3-pan script",
+  "frozen_source_settle": {
+    "source": "8e81b7d96:sim/lookaround_localization.py script",
+    "open_camera_settle_s": 0.25,
+    "original_view_wait_s": 0.8,
+    "qualification": "recorded own-command capture contract only; no measured servo state"
+  },
+  "launch_error": {
+    "type": "operational_supervisor_shell_quoting_SyntaxError",
+    "prediction_started": false,
+    "physics_steps": 0,
+    "preserved_remote_log": "/home/ugrp/ugrp-sim/ops-reviews/warp8/selfmap-csm-r1-launch-quoting-error.log",
+    "fixed_by": "committed run_static_selfmap.py; no automatic retry or control change"
+  }
+}

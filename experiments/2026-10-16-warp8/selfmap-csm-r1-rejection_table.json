@@ -1,0 +1,100 @@
+{
+  "stages": [
+    {
+      "stage": "saved_robot_streams",
+      "cumulative_pass_n": 28,
+      "rejected_n": 0
+    },
+    {
+      "stage": "CSM_attempted",
+      "cumulative_pass_n": 28,
+      "rejected_n": 0
+    },
+    {
+      "stage": "CSM_accepted",
+      "cumulative_pass_n": 0,
+      "rejected_n": 28
+    },
+    {
+      "stage": "handoff_error_requirement",
+      "cumulative_pass_n": 0,
+      "rejected_n": 0
+    }
+  ],
+  "counts": {
+    "before": {
+      "attempts": 28,
+      "accepted": 0,
+      "ambiguous_none": 4,
+      "rejected_none": 28,
+      "wrong_acceptances": 0,
+      "requirement_pass": 0
+    },
+    "after": {
+      "attempts": 28,
+      "accepted": 0,
+      "ambiguous_none": 17,
+      "rejected_none": 28,
+      "wrong_acceptances": 0,
+      "requirement_pass": 0
+    }
+  },
+  "reasons": [
+    {
+      "category": "static_wall_registration",
+      "reason": "unobservable_global_SE2",
+      "count": 31,
+      "blocking_object": "authored_wall_geometry",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "static_wall_registration",
+      "reason": "ambiguous_modes",
+      "count": 21,
+      "blocking_object": "authored_wall_geometry",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "static_wall_registration",
+      "reason": "no_observed_wall_segments",
+      "count": 3,
+      "blocking_object": "authored_wall_geometry",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "static_wall_registration",
+      "reason": "insufficient_near_points",
+      "count": 1,
+      "blocking_object": "authored_wall_geometry",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    }
+  ],
+  "raw": "/home/ugrp/ugrp-sim/runs/warp8/selfmap-csm-r1",
+  "reproduction": [
+    "/home/ugrp/ugrp-sim/src/warp8f-adapter-a40eb3994/experiments/2026-10-16-warp8/probe_static_selfmap.py",
+    "--stage",
+    "score",
+    "--enabled",
+    "--owner",
+    "/home/ugrp/ugrp-sim/src/warp8f-selfmap-0ace43f25",
+    "--adapter",
+    "/home/ugrp/ugrp-sim/src/warp8f-adapter-a40eb3994",
+    "--input",
+    "/home/ugrp/ugrp-sim/runs/warp8/selfmap-open-r1",
+    "--output",
+    "/home/ugrp/ugrp-sim/runs/warp8/selfmap-csm-r1",
+    "--queue",
+    "/home/ugrp/ugrp-sim/src/warp8f-adapter-a40eb3994/experiments/2026-10-16-warp8/selfmap-csm-offline-queue.json",
+    "--checkpoint-file",
+    "/home/ugrp/ugrp-sim/src/warp8f-adapter-a40eb3994/experiments/2026-10-16-warp8/selfmap-csm-checkpoints.json",
+    "--requirements",
+    "/home/ugrp/ugrp-sim/src/warp8f-adapter-a40eb3994/experiments/2026-10-16-warp8/selfmap-csm-requirements.json"
+  ],
+  "requirements_sha256": "d9f3c1f3a00273be3aa901613d01386fa493b1ed5edb561e40a58d367360875c",
+  "attempts_unit": "before+after robot registrations; 56 total",
+  "world_pass_n": 0
+}

@@ -1,0 +1,96 @@
+{
+  "schema": "ugrp.warp8f.static_selfmap.v1",
+  "host": "gcp3",
+  "world_n": 14,
+  "robot_n": 28,
+  "views": 418,
+  "counts": {
+    "before": {
+      "attempts": 28,
+      "accepted": 0,
+      "ambiguous_none": 4,
+      "rejected_none": 28,
+      "wrong_acceptances": 0,
+      "requirement_pass": 0
+    },
+    "after": {
+      "attempts": 28,
+      "accepted": 0,
+      "ambiguous_none": 17,
+      "rejected_none": 28,
+      "wrong_acceptances": 0,
+      "requirement_pass": 0
+    }
+  },
+  "reason_counts": {
+    "unobservable_global_SE2": 31,
+    "ambiguous_modes": 21,
+    "no_observed_wall_segments": 3,
+    "insufficient_near_points": 1
+  },
+  "world_pass_n": 0,
+  "offline_error_gate_pass": false,
+  "physical_release_ready": false,
+  "release_A40_submitted": false,
+  "release_B40_submitted": false,
+  "requirements_sha256": "d9f3c1f3a00273be3aa901613d01386fa493b1ed5edb561e40a58d367360875c",
+  "handoff_requirements": {
+    "n": 40,
+    "nominal_relative_xy_m": [
+      -0.7406386176759693,
+      0.10522862179352094
+    ],
+    "position_error_m": 0.2007512557246549,
+    "yaw_error_rad": 0.3739074138060199,
+    "nominal_target_range_m": 0.8483145702460003,
+    "target_range_p5_p50_p95_m": [
+      0.6475633145213454,
+      0.8483145702460003,
+      1.0801825034610726
+    ],
+    "position_quantiles_m": {
+      "5": 0.13690794312467064,
+      "50": 0.41159323499547806,
+      "95": 0.8152064826828641,
+      "100": 0.9193349344687011
+    },
+    "facing_quantiles_deg": {
+      "5": 1.8993921893216328,
+      "50": 13.572353085704405,
+      "95": 21.42331673973655,
+      "100": 24.104012905143325
+    },
+    "definition": "XY <= min(P50(range)-P5(range),P95(range)-P50(range)); abs(yaw error)+atan2(XY error,P50(range)-XY error) <= P95(abs(facing error))",
+    "limitation": "empirical teacher radial/facing envelope; joint support/student acceptance unverified; start-cloud residual P95 is diagnostic only",
+    "release_injected_pose_p95_m": 0.11547187886063774,
+    "release_injected_yaw_p95_rad": 0.06923989684612426
+  },
+  "truth_scope": "scorer only after prediction seal; no alignment/fallback supplied to estimator",
+  "loaded_camera_qualified": false,
+  "carry_LK_qualified": false,
+  "owner_actual_route_ready": false,
+  "physics_steps": 0,
+  "model_calls": 0,
+  "legacy_floor_line_calls": 0,
+  "raw": "/home/ugrp/ugrp-sim/runs/warp8/selfmap-csm-r1",
+  "reproduction": [
+    "/home/ugrp/ugrp-sim/src/warp8f-adapter-a40eb3994/experiments/2026-10-16-warp8/probe_static_selfmap.py",
+    "--stage",
+    "score",
+    "--enabled",
+    "--owner",
+    "/home/ugrp/ugrp-sim/src/warp8f-selfmap-0ace43f25",
+    "--adapter",
+    "/home/ugrp/ugrp-sim/src/warp8f-adapter-a40eb3994",
+    "--input",
+    "/home/ugrp/ugrp-sim/runs/warp8/selfmap-open-r1",
+    "--output",
+    "/home/ugrp/ugrp-sim/runs/warp8/selfmap-csm-r1",
+    "--queue",
+    "/home/ugrp/ugrp-sim/src/warp8f-adapter-a40eb3994/experiments/2026-10-16-warp8/selfmap-csm-offline-queue.json",
+    "--checkpoint-file",
+    "/home/ugrp/ugrp-sim/src/warp8f-adapter-a40eb3994/experiments/2026-10-16-warp8/selfmap-csm-checkpoints.json",
+    "--requirements",
+    "/home/ugrp/ugrp-sim/src/warp8f-adapter-a40eb3994/experiments/2026-10-16-warp8/selfmap-csm-requirements.json"
+  ]
+}

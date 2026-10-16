@@ -1,0 +1,85 @@
+{
+  "schema": "ugrp.warp8f.delivery.v1",
+  "status": "NOT_READY",
+  "source_sha": "a40eb399481e2996899f84a7bf65ca7228902c1b",
+  "owner_sha": "0ace43f25d3121e8f466c4ecefc9789f52958d41",
+  "host": "gcp3",
+  "account": "changmin5781@gmail.com",
+  "project": "ugrp-sim-c-1016",
+  "vm": "ugrp-act-l4-gcp3",
+  "vm_wall_cap": null,
+  "supervisor_wall_deadline": null,
+  "operations": [
+    {
+      "name": "initial_supervisor_launch",
+      "status": "HOST_LAUNCH_ERROR",
+      "reason": "shell quoting SyntaxError before predictor start",
+      "physics_steps": 0,
+      "prediction_steps": 0,
+      "preserved_log": "/home/ugrp/ugrp-sim/ops-reviews/warp8/selfmap-csm-r1-launch-quoting-error.log"
+    },
+    {
+      "name": "selfmap-csm-r1",
+      "status": "complete_offline_NOT_READY",
+      "returncodes": [
+        0,
+        0
+      ],
+      "raw": "/home/ugrp/ugrp-sim/runs/warp8/selfmap-csm-r1",
+      "worlds": 14,
+      "views": 418,
+      "counts": {
+        "before": {
+          "attempts": 28,
+          "accepted": 0,
+          "ambiguous_none": 4,
+          "rejected_none": 28,
+          "wrong_acceptances": 0,
+          "requirement_pass": 0
+        },
+        "after": {
+          "attempts": 28,
+          "accepted": 0,
+          "ambiguous_none": 17,
+          "rejected_none": 28,
+          "wrong_acceptances": 0,
+          "requirement_pass": 0
+        }
+      }
+    }
+  ],
+  "physics_steps": 0,
+  "model_calls": 0,
+  "CPU_VM_starts": 0,
+  "new_physical_gates": 0,
+  "release_A40_queue_created": false,
+  "release_B40_queue_created": false,
+  "reason": "offline accepted map poses 0/28; handoff requirement gate 0/14 worlds",
+  "current_stack_check": {
+    "required_before_any_new_physics_queue": true,
+    "owner_branch": "codex/stackaudit PR569",
+    "must_include": "dialogue_language",
+    "not_run_reason": "offline prerequisite failed; no new A40/B40 queue exists"
+  },
+  "adopted_absolute_pose_errors_measured": false,
+  "rejected_proposal_errors_measured": true,
+  "evaluation_alignment": "one initial SE2 used only for relative drift scoring; never feeds predictor",
+  "owner_route_ready": false,
+  "loaded_camera_qualified": false,
+  "carry_LK_qualified": false,
+  "LK_RBPF_choice": "not decided; sparse open views have bootstrap28/servo-change390, measured LK0",
+  "integrity": {
+    "independent_recount": true,
+    "input_JPEG": 418,
+    "owner_files": 2091,
+    "prediction_files": 141,
+    "metadata_corrections": 56,
+    "raw": "selfmap-csm-r1-artifact-integrity.json",
+    "verification": "selfmap-csm-r1-integrity-verification.json"
+  },
+  "no_pooling": true,
+  "host_final_status": "TERMINATED",
+  "host_stop_record": "warp8f-host-stop.json",
+  "prestop_record": "warp8f-prestop.json",
+  "transfer_SHA_verified": 12
+}

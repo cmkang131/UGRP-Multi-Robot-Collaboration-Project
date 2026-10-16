@@ -1,0 +1,32 @@
+{
+  "lastStartTimestamp": "2026-10-16T10:15:43.464-07:00",
+  "machineType": "https://www.googleapis.com/compute/v1/projects/ugrp-sim-c-1016/zones/asia-northeast3-a/machineTypes/g2-standard-8",
+  "name": "ugrp-act-l4-gcp3",
+  "scheduling": {
+    "automaticRestart": true,
+    "onHostMaintenance": "TERMINATE",
+    "preemptible": false,
+    "provisioningModel": "STANDARD"
+  },
+  "status": "RUNNING",
+  "account": "changmin5781@gmail.com",
+  "project": "ugrp-sim-c-1016",
+  "started_without_cap_flags": true,
+  "vm_wall_cap": null,
+  "supervisor_wall_deadline": null,
+  "CPU_VM_starts": 0,
+  "budget_stop": [
+    {
+      "eventTrigger": {
+        "eventType": "google.cloud.pubsub.topic.v1.messagePublished",
+        "pubsubTopic": "projects/ugrp-sim-c-1016/topics/budget-stop",
+        "retryPolicy": "RETRY_POLICY_DO_NOT_RETRY",
+        "serviceAccountEmail": "budget-stopper@ugrp-sim-c-1016.iam.gserviceaccount.com",
+        "trigger": "projects/ugrp-sim-c-1016/locations/us-central1/triggers/budget-stop-965507",
+        "triggerRegion": "us-central1"
+      },
+      "name": "projects/ugrp-sim-c-1016/locations/us-central1/functions/budget-stop",
+      "state": "ACTIVE"
+    }
+  ]
+}
