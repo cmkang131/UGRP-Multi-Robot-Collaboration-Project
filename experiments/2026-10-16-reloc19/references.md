@@ -3,7 +3,7 @@
 2026-10-16 웹 원문을 먼저 확인했다. 아래 문헌은 방법 선택 근거이며 이 장면 성공 보장은 아니다.
 
 - [Chaumette & Hutchinson 2006, Visual Servo Control I](https://web.mit.edu/amcp/OldFiles/drg/Chaumette_Part_I.pdf): pp82–86, 시각 특징 오차·카메라 보정·IBVS/PBVS와 큰 초기 오차의 국소 수렴 한계 확인. 구현은 명목 바닥 역투영 패치 중심 오차를 사용하는2D 서보이며 논문의6DOF 제어 전체를 구현하지 않았다. 가려진 패치의 중앙을 구역 중심으로 부르지 않는다.
-- [Burgard, Fox, Thrun 1997, Active Mobile Robot Localization](https://www.ijcai.org/Proceedings/97-2/Papers/080.pdf): 행동과 센서 방향을 선택하여 기대 불확실성을 줄이는 능동 위치 추정. PDF와 초록 확인. 현재 후보는 공분산-구역 폭 trigger와 유한 회전/타원 격자이며 전체 belief entropy 기대값 최적화는 **미구현**. 다음 라운드에서 관측 가능성과 실제 보정 감소를 본다.
+- [Burgard, Fox, Thrun 1997, Active Mobile Robot Localization](https://www.ijcai.org/Proceedings/97-2/Papers/080.pdf): 행동과 센서 방향을 선택하여 기대 불확실성을 줄이는 능동 위치 추정. PDF와 초록 확인. 현재 후보는 공분산-구역 폭 trigger와 유한 회전/타원 격자이며 전체 belief entropy 기대값 최적화는 **미구현**. 3라운드에서 실제 관측·보정을 확인했으나 목적지 획득과 place는0이었다.
 - [Nav2 recovery BT 공식 문서](https://docs.nav2.org/rolling/getting_started/nav2_behavior_trees/detailed_behavior_tree_walkthrough/detailed_behavior_tree_walkthrough/): RecoveryNode, RoundRobin spin/wait/backup, 유한 retry와 실패 전파 확인. ROS를 설치하거나 costmap을 지우지 않으며 기존 정적/RGB 충돌 거부를 유지한다.
 
 상수: 색은 기존 CarryToZone.place_visible H±5/S,V≥30; 최소600픽셀은 기존 regions.qualified의 바닥 footprint 최소치, 바닥 fit1.2m는 zone_own_perception.SLOT_MAX_RANGE_M. 범위오차 .06+.08*range는 solo_carry_obstacles의 기존 원근 오차다. 이것은 물리 교정 확률이 아니다. 속도(.08/−.05m/s, 좌우.06m/s, 회전.1rad/s), 비례계수.9, 도착.025m는 기존 CarryToZone과 같다. 2π는 완전1회 둘러보기의 기하 정의, 타원5.991464547는2DOF χ²95%의 수학값이며 실제 coverage는 미확인이다. 격자 간격은 목적 구역의 작은 전체 폭, 재관측 재시도 간격도 그 폭이다. 재위치 trigger는95%타원 반경이 구역의 작은 반폭을 넘을 때다. 원본 carry 오차 p95 .85–2.38m가 반폭보다 큰 문제에 대응하는 공간적 설계이며 성공 판정 오차를 바꾸지 않는다. A의 SIM 예산180초는 기존 carry_to_zone 한도, 배치 cap300초는reloc18과 같다. 시간제한은 모두SIM 또는 명령 회전량이다.
@@ -19,3 +19,5 @@ R3 추가후보 `destination_camera_pan_v1`(기본off): 기존pan끝500/2500을�
 R3 B는기존 `CarryTracker`가 `loaded_or_unknown_prediction_only`로알리는경우XY metric fix가금지됨을그대로따른다. 정보량예측과관측수용은별개이므로이상태에서는기존내려놓기/둘러보기로즉시전환한다. 새로운측정상수나집게폐쇄관문완화는없다. 이기존카메라자격제약으로들고있는상태의XY재위치는여전히미지원이다.
 
 후속 방향 보존 후보 `destination_direction_preserve_v1`(기본 off, 물리 미실행): R2의 안전한 waypoint 선분210개가 전후/좌우 독립 clip 뒤에는 한 틱 검사에서210/210 거부됐다. 같은 전후+.08/−.05·좌우.06m/s 한도 중 가장 작은 공통 배율을 두 성분에 같이 곱하면 방향을 보존한다. 실제 후보 함수로210/210이 **동일한 기존** segment_free를 통과했다. clearance·색·SIM 시간·성공 수용 수치는 바꾸지 않았다. 이것은 저장 추정 상태의 기하 재생이며 실제 주행·place 성공은 아니다. 3라운드 상한을 지켜 추가 물리 실행은 내지 않았다. [실제 반례](direction-counterexample.json), [후속 함수 재생](direction-candidate-replay-summary.json). 이 후보의 재생 결과와 물리 R3의 source SHA를 분리한다.
+
+후속 `destination_search_replan_v1`(기본 off, 물리 미실행): R3·93266의 RGB 장애물 갱신 뒤 선택 목표와 기존 경로가 막혀 waypoint가 없어졌다(목표까지.367m). 정적/RGB 충돌 관문을 통과하지 못한 목표를 원인·물체·최소 틈과 함께 폐기하고 남은 유한 후보를 새로 계획한다. Nav2의 유한 복구/실패 전파 원칙과 실제 저장 반례를 따른다. 장애물 삭제·여유 완화·새 수용 상수는 없다. [원장 반례](search-goal-counterexample.json), 실제 단계 토글off/on 검사 포함35 pass. 방향 보존 후보는 R3의1597틱(서로 독립인1597장면이 아니라 같은 자세1개)에서도 동일 충돌 관문을 통과했다. 두 수정은3라운드 상한 후의 비물리 후보이며 성공 근거가 아니다.

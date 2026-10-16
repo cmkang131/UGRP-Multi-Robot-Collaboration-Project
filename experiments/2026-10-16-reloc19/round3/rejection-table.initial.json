@@ -1,0 +1,202 @@
+{
+  "source_queue": "/home/ugrp/ugrp-sim/runs/reloc19-round3/queue.json",
+  "reproduce": "PYTHONPATH=. python /home/ugrp/ugrp-sim/src/e042139b0930ee7b31eae08a917ff501ee01075f/experiments/2026-10-16-reloc19/summarize.py --round 3",
+  "runs": [
+    {
+      "run": "reloc19-r3-carry-A_pan-93266-e042139b",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r3-carry-A_pan-93266-e042139b/raw",
+      "valid": true,
+      "cumulative": {
+        "started": 1,
+        "lift_success": 1,
+        "travel_entered": 1,
+        "authored_arrival": 1,
+        "place_view": 0,
+        "place_advance": 0,
+        "lower": 0,
+        "open": 0,
+        "place_success": 0
+      },
+      "frame_funnel": {
+        "recorded_acquisition_frames": 1535,
+        "colour_component_or_footprint": 0,
+        "nominal_ground_or_footprint": 0,
+        "full_footprint_rgb_gate": 0
+      },
+      "frame_rejection_distribution": {
+        "destination_colour_absent": 1535
+      },
+      "rejections": [
+        {
+          "category": "terminal_cap_end",
+          "reason": "cap_end",
+          "N": 1,
+          "blocked_object": "carry_route_or_localization",
+          "minimum_gap_m": null,
+          "gap_scope": "not_applicable_visual_or_localization_terminal; original collision gaps retained in preceding events"
+        }
+      ]
+    },
+    {
+      "run": "reloc19-r3-carry-AB_pan-93266-e042139b",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r3-carry-AB_pan-93266-e042139b/raw",
+      "valid": true,
+      "cumulative": {
+        "started": 1,
+        "lift_success": 1,
+        "travel_entered": 1,
+        "authored_arrival": 0,
+        "place_view": 0,
+        "place_advance": 0,
+        "lower": 0,
+        "open": 0,
+        "place_success": 0
+      },
+      "frame_funnel": {
+        "recorded_acquisition_frames": 0,
+        "colour_component_or_footprint": 0,
+        "nominal_ground_or_footprint": 0,
+        "full_footprint_rgb_gate": 0
+      },
+      "frame_rejection_distribution": {},
+      "rejections": [
+        {
+          "category": "reloc19_loaded_metric_camera_unqualified",
+          "N": 3,
+          "blocked_object": "own_rgb_or_route_evidence",
+          "minimum_gap_m": null,
+          "gap_scope": "not_applicable_localization_or_original_gap_missing"
+        },
+        {
+          "category": "accepted_replan",
+          "N": 3,
+          "blocked_object": "own_rgb_or_route_evidence",
+          "minimum_gap_m": null,
+          "gap_scope": "not_applicable_localization_or_original_gap_missing"
+        },
+        {
+          "category": "terminal_cap_end",
+          "reason": "cap_end",
+          "N": 1,
+          "blocked_object": "carry_route_or_localization",
+          "minimum_gap_m": null,
+          "gap_scope": "not_applicable_visual_or_localization_terminal; original collision gaps retained in preceding events"
+        }
+      ]
+    },
+    {
+      "run": "reloc19-r3-carry-A_pan-93315-e042139b",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r3-carry-A_pan-93315-e042139b/raw",
+      "valid": true,
+      "cumulative": {
+        "started": 1,
+        "lift_success": 1,
+        "travel_entered": 1,
+        "authored_arrival": 1,
+        "place_view": 0,
+        "place_advance": 0,
+        "lower": 0,
+        "open": 0,
+        "place_success": 0
+      },
+      "frame_funnel": {
+        "recorded_acquisition_frames": 1772,
+        "colour_component_or_footprint": 0,
+        "nominal_ground_or_footprint": 0,
+        "full_footprint_rgb_gate": 0
+      },
+      "frame_rejection_distribution": {
+        "destination_colour_absent": 175,
+        "destination_motion_blocked": 1597
+      },
+      "rejections": [
+        {
+          "category": "terminal_phase_timeout",
+          "reason": "phase_timeout",
+          "N": 1,
+          "blocked_object": "carry_route_or_localization",
+          "minimum_gap_m": null,
+          "gap_scope": "not_applicable_visual_or_localization_terminal; original collision gaps retained in preceding events"
+        }
+      ]
+    },
+    {
+      "run": "reloc19-r3-carry-AB_pan-93315-e042139b",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r3-carry-AB_pan-93315-e042139b/raw",
+      "valid": true,
+      "cumulative": {
+        "started": 1,
+        "lift_success": 1,
+        "travel_entered": 1,
+        "authored_arrival": 0,
+        "place_view": 0,
+        "place_advance": 0,
+        "lower": 0,
+        "open": 0,
+        "place_success": 0
+      },
+      "frame_funnel": {
+        "recorded_acquisition_frames": 0,
+        "colour_component_or_footprint": 0,
+        "nominal_ground_or_footprint": 0,
+        "full_footprint_rgb_gate": 0
+      },
+      "frame_rejection_distribution": {},
+      "rejections": [
+        {
+          "category": "reloc19_loaded_metric_camera_unqualified",
+          "N": 2,
+          "blocked_object": "own_rgb_or_route_evidence",
+          "minimum_gap_m": null,
+          "gap_scope": "not_applicable_localization_or_original_gap_missing"
+        },
+        {
+          "category": "accepted_replan",
+          "N": 4,
+          "blocked_object": "own_rgb_or_route_evidence",
+          "minimum_gap_m": null,
+          "gap_scope": "not_applicable_localization_or_original_gap_missing"
+        },
+        {
+          "category": "carry_no_route",
+          "N": 3,
+          "blocked_object": "own_rgb_or_route_evidence",
+          "minimum_gap_m": null,
+          "gap_scope": "not_applicable_localization_or_original_gap_missing"
+        },
+        {
+          "category": "terminal_cap_end",
+          "reason": "cap_end",
+          "N": 1,
+          "blocked_object": "carry_route_or_localization",
+          "minimum_gap_m": null,
+          "gap_scope": "not_applicable_visual_or_localization_terminal; original collision gaps retained in preceding events"
+        }
+      ]
+    },
+    {
+      "run": "reloc19-r3-selfmap-short_regression-93584-e042139b",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r3-selfmap-short_regression-93584-e042139b/raw",
+      "valid": true,
+      "cumulative": {
+        "candidates": 0,
+        "accepted": 0
+      },
+      "frame_funnel": null,
+      "frame_rejection_distribution": null,
+      "rejections": []
+    },
+    {
+      "run": "reloc19-r3-selfmap-short_regression-93583-e042139b",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r3-selfmap-short_regression-93583-e042139b/raw",
+      "valid": true,
+      "cumulative": {
+        "candidates": 0,
+        "accepted": 0
+      },
+      "frame_funnel": null,
+      "frame_rejection_distribution": null,
+      "rejections": []
+    }
+  ]
+}

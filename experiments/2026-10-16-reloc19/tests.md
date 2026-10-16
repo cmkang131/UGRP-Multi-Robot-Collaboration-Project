@@ -16,3 +16,12 @@ R1 22 pass, 도착→획득 handoff 추가 후24 pass, R2 벽 제외·정보량 
 물리 R3 소스는 `e042139b0930ee7b31eae08a917ff501ee01075f`로 고정했다. 이후 `destination_direction_preserve_v1` 기본 off 후보는 저장 원장의 실제 반례와 획득 단계 통합 검사까지 추가해 **33 pass**. 같은 실제 후보 함수로 R2 원장210/210건의 방향 왜곡 거부를 재생해 기존 관문 통과를 확인했다. **후속 후보 물리0회**이며 R3 결과를 이 후보의 성공 근거로 쓰지 않는다.
 
 R3의 새 RGB 장애물이 기존 검색 목표를 막은 실제 원장을 추가했다. `destination_search_replan_v1` 기본 off는 막힌 경로를 기록하고 폐기하여 다음 유한 후보를 다시 고른다. 기존 충돌 관문을 완화하지 않는다. 두 토글의 실제 단계 검사 포함 최종 **35 passed in 1.32s** (`tests/test_destination_visual_acquire.py tests/test_reloc18_innovation.py`, Mac 비물리). 검색 재계획 후보도 물리 0회다.
+
+최종 재현 명령(worktree에서):
+
+```sh
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
+  tests/test_destination_visual_acquire.py tests/test_reloc18_innovation.py
+```
+
+결과: `35 passed in 1.32s`.

@@ -1,5 +1,6 @@
 """GCP2-only terminal evidence. Never launches physics or modifies raw runs."""
-import argparse,collections,hashlib,importlib.util,json,platform,subprocess
+import argparse,collections,hashlib,importlib.util,json,math,platform,subprocess
+import numpy as np
 from pathlib import Path
 RUNS=Path('/home/ugrp/ugrp-sim/runs')
 def digest(p):return hashlib.sha256(p.read_bytes()).hexdigest()
@@ -44,9 +45,22 @@ def main(n,source,analyzer,build=False,media=False):
   if media and ((raw/'playback/manifest.json').exists() or (raw/'playback/manifest.json.zst').exists()):
    out=b/'media'/t['name']/'playback'
    if not out.exists():review.make(raw.parent,out)
-  row=dict(run=t['name'],raw=str(raw),source_sha=t['source_sha'],valid=r.get('valid_for_comparison',False))
+  term=r.get('termination');normal=dict(raw_status=r.get('status'),raw_reason=term,category='cap_end' if term in ('cap_end','phase_timeout') else 'HOST_ERROR' if r.get('status')=='HOST_ERROR' else 'controller_stop',cap_scope='phase_SIM' if term=='phase_timeout' else 'whole_run_SIM' if term=='cap_end' else None)
+  row=dict(run=t['name'],raw=str(raw),source_sha=t['source_sha'],valid=r.get('valid_for_comparison',False),termination_normalized=normal)
   if t['kind']=='carry':
    c=[json.loads(x) for x in lines(raw/'teacher-commands.jsonl')];seen={}
+   ev={round(x['t'],5):x for x in (json.loads(v) for v in lines(raw/'eval-only.jsonl')) if 'base_xyz' in x}
+   travel=[]
+   for x in c:
+    e=ev.get(round(x['t'],5))
+    if e is None or x.get('phase_before',x['phase'])!='carry_to_zone':continue
+    pose=x['map_pose']['pose_estimate'];truth=e['base_xyz'];dyaw=pose[2]-e['base_yaw_rad']
+    travel.append(dict(t=x['t'],xy=math.dist(pose[:2],truth[:2]),yaw_deg=abs(math.degrees(math.atan2(math.sin(dyaw),math.cos(dyaw)))),base=truth[:2]))
+   def stats(v):return dict(N=len(v),p50=float(np.percentile(v,50)),p95=float(np.percentile(v,95))) if v else dict(N=0)
+   row['transport_evaluation']=dict(scope='evaluation only, carry_to_zone before-action frames; includes held reobservation pauses, excludes pickup/acquisition/recovery phases',
+     xy_m=stats([x['xy'] for x in travel]),yaw_deg=stats([x['yaw_deg'] for x in travel]),
+     max_base_displacement_from_first_carry_m=max((math.dist(x['base'],travel[0]['base']) for x in travel),default=None))
+
    zone=d['destination_zone'];phase=r.get('phases',{})
    stages=dict(started=1,lift_success=int(d.get('lift_success') is True),travel_entered=int(phase.get('carry_to_zone',0)>0),
       authored_arrival=int(r.get('gate_cumulative',{}).get('authored_arrival',0)),
@@ -90,7 +104,7 @@ def main(n,source,analyzer,build=False,media=False):
   tables.append(row)
   brief.append({**{k:r.get(k) for k in ('name','kind','condition','seed','status','termination','place_success','sim_s','errors','drive_errors','registered_errors','tracker','heading','input_audit','raw')},
     'source_sha':t['source_sha'],'destination_acquisition':{k:a.get(k) for k in ('mode','started_t','acquired_t','confirmed_t','acquisition_sim_s','relocalizations','destination_camera_pan_v1')},
-    'event_funnel':row.get('cumulative'),'frame_funnel':row.get('frame_funnel')})
+    'event_funnel':row.get('cumulative'),'frame_funnel':row.get('frame_funnel'),'termination_normalized':normal,'transport_evaluation':row.get('transport_evaluation')})
  tablepath=b/'rejection-table.json';initial=b/'rejection-table.initial.json'
  if not initial.exists():initial.write_bytes(tablepath.read_bytes())
  (b/'rejection-table.json').write_text(json.dumps(dict(source_queue=str(b/'queue.json'),initial_table=str(initial),initial_sha256=digest(initial),

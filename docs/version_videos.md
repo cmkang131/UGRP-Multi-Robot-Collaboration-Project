@@ -116,3 +116,9 @@ SHA256 `69bdd4f62546e3e38ea024cf94b6bc12b86cef39b8a187ee155b7f11794a1c69`.
 |버전·소스|case|결과|영상·원본|검토 범위·한계|
 |---|---|---|---|---|
 |reloc18 R3 · `133c12f4cbd5efafba5f94f761d494f45bef075a`|gcp2 n4-highcpu-64 C MuJoCo CPU, carry93315, DEV pose-budget observe-only|78.4SIM초·place0/2·destination_floor_not_visible·NOT_READY|[4배속 대표 실패](../experiments/2026-10-16-reloc18/videos/representative-carry93315-r3-failure.mp4), 35552bytes, SHA256 `c8470138b36d30370d36a4479b403853d2a5e3186ec260fa676f63d690c324fa`; raw `/home/ugrp/ugrp-sim/runs/reloc18-r3-carry-candidate-93315-133c12f4/raw`|개요+r1+r2+r3 전체2Hz1.5–79.5SIM초·마지막10초10Hz 직접검토. 제어는 자기RGB, 개요는 평가전용. 목적지 색0/31·실제xy오차1.19m. 원본milestone 보존·영상/자료hash는[기록](../experiments/2026-10-16-reloc18/README.md). 성공영상 없음, 완주/학생/실물 성공 근거 아님.|
+
+## reloc19 목적지 시각 획득 실패 (2026-10-16)
+
+|버전·소스|case|결과|영상·원본|검토 범위·한계|
+|---|---|---|---|---|
+|reloc19 R3 · `e042139b0930ee7b31eae08a917ff501ee01075f`|gcp2 CPU, carry A_pan93315|place0/4·획득0/4·NOT_READY|[4배속 대표 실패](../experiments/2026-10-16-reloc19/videos/representative-r3-A-pan93315-failure.mp4),69,467bytes,SHA256 `96062f52226221a83297965c7193650fbc02e5890d3a9948823fb39ef6a400b6`; raw `/home/ugrp/ugrp-sim/runs/reloc19-r3-carry-A_pan-93315-e042139b/raw`|개요+r1+r2+r3 전체2Hz1.5–256.5SIM초·마지막10초10Hz 직접검토. C를 못 보고 방향별clip 뒤 경로 거부로 정지. 개요는 평가전용. [18회 기록·해시](../experiments/2026-10-16-reloc19/README.md). 후속 수정 물리0, 성공영상 없음. 학생·학습·실물 성공 근거 아님.|

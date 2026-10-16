@@ -1,0 +1,63 @@
+{
+  "checked_at": "2026-10-16T00:18:35.835712+00:00",
+  "host": "gcp2",
+  "project": "ugrp-sim-b-1014",
+  "account": "changmin5781@gmail.com",
+  "other_leases": [],
+  "ugrp_python_mujoco_ffmpeg_processes": [],
+  "own_lease_before": {
+    "task": "reloc19",
+    "pid": 480746,
+    "started": "2026-10-15T22:51:13.727623+00:00",
+    "expected_end": "2026-10-16T00:59:25.195710+00:00",
+    "concurrency": 6,
+    "stage": "round3",
+    "source_sha": "e042139b0930ee7b31eae08a917ff501ee01075f",
+    "pids": [
+      480771,
+      480775,
+      480777,
+      480781,
+      480782,
+      480785
+    ],
+    "expected_end_basis": "remaining finite R2/R3 + <=1h host timeout per concurrent wave + terminal analysis/retrieval; estimate only"
+  },
+  "can_stop": true,
+  "raw_and_derived_directory_bytes": {
+    "reloc19-r1-selfmap-short_regression-93583-3da9f8d9": 24467247,
+    "reloc19-r1-carry-A-93266-3da9f8d9": 44467008,
+    "reloc19-r1-carry-AB-93266-3da9f8d9": 34935436,
+    "reloc19-r1-carry-A-93315-3da9f8d9": 35231614,
+    "reloc19-r1-selfmap-short_regression-93584-3da9f8d9": 26634886,
+    "reloc19-r1-carry-AB-93315-3da9f8d9": 34234567,
+    "reloc19-r2-carry-A-93315-595b3eec": 41447893,
+    "reloc19-r2-selfmap-short_regression-93583-595b3eec": 24467286,
+    "reloc19-r2-carry-A-93266-595b3eec": 44487732,
+    "reloc19-r2-carry-AB-93315-595b3eec": 50308654,
+    "reloc19-r2-selfmap-short_regression-93584-595b3eec": 26634925,
+    "reloc19-r2-carry-AB-93266-595b3eec": 42041957,
+    "reloc19-r3-selfmap-short_regression-93583-e042139b": 24467314,
+    "reloc19-r3-selfmap-short_regression-93584-e042139b": 26634929,
+    "reloc19-r3-carry-A_pan-93315-e042139b": 43102779,
+    "reloc19-r3-carry-A_pan-93266-e042139b": 44748997,
+    "reloc19-r3-carry-AB_pan-93266-e042139b": 46736675,
+    "reloc19-r3-carry-AB_pan-93315-e042139b": 51299181
+  },
+  "total_bytes": 666349080,
+  "source_alternates": {
+    "3da9f8d970c": "/home/ugrp/ugrp-sim/git-shared.git/objects",
+    "595b3eec3fa27b1dde2369a1e6aa7f73b977c434": "/home/ugrp/ugrp-sim/git-shared.git/objects",
+    "e042139b0930ee7b31eae08a917ff501ee01075f": "/home/ugrp/ugrp-sim/git-shared.git/objects"
+  },
+  "raw_preserved": true,
+  "shared_git_preserved": true,
+  "first_project_accessed": false,
+  "own_lease_removed": true,
+  "leases_after": [],
+  "vm_status_observed": "TERMINATED",
+  "stop_requested": true,
+  "stop_command": "python scripts/gcpctl.py stop gcp2",
+  "disk_preserved": true,
+  "vm_status_checked_at": "2026-10-16T00:20:24.356154+00:00"
+}

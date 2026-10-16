@@ -1,33 +1,84 @@
 {
   "source_queue": "/home/ugrp/ugrp-sim/runs/reloc19-round2/queue.json",
-  "reproduce": "PYTHONPATH=. python /home/ugrp/ugrp-sim/src/e042139b0930ee7b31eae08a917ff501ee01075f/experiments/2026-10-16-reloc19/summarize.py --round 2",
+  "initial_table": "/home/ugrp/ugrp-sim/runs/reloc19-round2/rejection-table.initial.json",
+  "initial_sha256": "63d0db570f0f71543c36334637ab5f1029d4c26a39145934f08d9a352050a591",
+  "analysis_code_sha256": "27a06c785d15aef81fed5ccd6aad1cd07a63a217038efd039cd99d77cd98f41d",
+  "reproduce": "PYTHONPATH=/home/ugrp/ugrp-sim/src/e042139b0930ee7b31eae08a917ff501ee01075f python /home/ugrp/ugrp-sim/analysis-tools/reloc19-finalize-evidence.py --round 2 --source /home/ugrp/ugrp-sim/src/e042139b0930ee7b31eae08a917ff501ee01075f --analyzer /home/ugrp/ugrp-sim/analysis-tools/reloc19-analyze.py",
+  "missing_telemetry_scope": "R1 total views/events known; absent per-frame gates remain null",
   "runs": [
     {
       "run": "reloc19-r2-carry-A-93266-595b3eec",
       "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r2-carry-A-93266-595b3eec/raw",
+      "source_sha": "595b3eec3fa27b1dde2369a1e6aa7f73b977c434",
       "valid": true,
+      "termination_normalized": {
+        "raw_status": "complete",
+        "raw_reason": "cap_end",
+        "category": "cap_end",
+        "cap_scope": "whole_run_SIM"
+      },
+      "transport_evaluation": {
+        "scope": "evaluation only, carry_to_zone before-action frames; includes held reobservation pauses, excludes pickup/acquisition/recovery phases",
+        "xy_m": {
+          "N": 881,
+          "p50": 0.6919638529699448,
+          "p95": 2.309495225941333
+        },
+        "yaw_deg": {
+          "N": 881,
+          "p50": 13.365245617621824,
+          "p95": 39.852753823849454
+        },
+        "max_base_displacement_from_first_carry_m": 3.529719497698848
+      },
+      "unit": "one reached event per run; independent frame family",
       "cumulative": {
         "started": 1,
         "lift_success": 1,
         "travel_entered": 1,
         "authored_arrival": 1,
+        "acquisition_entered": 1,
+        "detector_colour_acquired": 0,
+        "rgb_footprint_confirmed": 0,
         "place_view": 0,
         "place_advance": 0,
         "lower": 0,
         "open": 0,
-        "place_success": 0
+        "evaluator_place_success": 0
       },
       "frame_funnel": {
-        "recorded_acquisition_frames": 1591,
-        "colour_component_or_footprint": 0,
-        "nominal_ground_or_footprint": 0,
-        "full_footprint_rgb_gate": 0
+        "analysis_views": 1591,
+        "persisted_analysis_frame_N": 1591,
+        "colour_component_or_direct_footprint": 0,
+        "nominal_ground_or_direct_footprint": 0,
+        "rgb_full_footprint": 0,
+        "missing_per_frame_telemetry": false
       },
-      "frame_rejection_distribution": {
-        "destination_colour_absent": 1557,
-        "destination_motion_blocked": 34
+      "frame_rejections": [
+        {
+          "category": "visual_acquisition",
+          "reason": "destination_colour_absent",
+          "blocked_object": "zone_A",
+          "N": 1557,
+          "minimum_gap_m": null,
+          "gap_scope": "not_applicable_visual_measurement; no physical blocker inferred"
+        },
+        {
+          "category": "route",
+          "reason": "destination_motion_blocked",
+          "blocked_object": "own_rgb_obstacle:3",
+          "N": 34,
+          "minimum_gap_m": -0.0005771827102775129,
+          "gap_scope": "101 samples of requested straight corridor; not a proof that no detour exists"
+        }
+      ],
+      "frame_ledger": {
+        "path": "/home/ugrp/ugrp-sim/runs/reloc19-round2/reloc19-r2-carry-A-93266-595b3eec-frame-ledger.json.zst",
+        "sha256": "1afce2cdcd9aeee8cf9e73608950908b93790867af978b7232265e989616c284",
+        "decoded_sha256": "88660a0362f7cc144568aab8a23344ba14008fce03a50bcf2967958fa6c1f846",
+        "N": 1591
       },
-      "rejections": [
+      "terminal_rejections": [
         {
           "category": "terminal_cap_end",
           "reason": "cap_end",
@@ -36,52 +87,61 @@
           "minimum_gap_m": null,
           "gap_scope": "not_applicable_visual_or_localization_terminal; original collision gaps retained in preceding events"
         }
-      ]
+      ],
+      "recovery_reasons": {},
+      "detector_is_not_evaluator_success": true
     },
     {
       "run": "reloc19-r2-carry-AB-93266-595b3eec",
       "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r2-carry-AB-93266-595b3eec/raw",
+      "source_sha": "595b3eec3fa27b1dde2369a1e6aa7f73b977c434",
       "valid": true,
+      "termination_normalized": {
+        "raw_status": "complete",
+        "raw_reason": "carry_recovery_setdown_envelope_blocked",
+        "category": "controller_stop",
+        "cap_scope": null
+      },
+      "transport_evaluation": {
+        "scope": "evaluation only, carry_to_zone before-action frames; includes held reobservation pauses, excludes pickup/acquisition/recovery phases",
+        "xy_m": {
+          "N": 596,
+          "p50": 0.24974865064953966,
+          "p95": 0.49452316590679013
+        },
+        "yaw_deg": {
+          "N": 596,
+          "p50": 9.394746612181319,
+          "p95": 37.73487149224356
+        },
+        "max_base_displacement_from_first_carry_m": 2.8074285366219476
+      },
+      "unit": "one reached event per run; independent frame family",
       "cumulative": {
         "started": 1,
         "lift_success": 1,
         "travel_entered": 1,
         "authored_arrival": 0,
+        "acquisition_entered": 0,
+        "detector_colour_acquired": 0,
+        "rgb_footprint_confirmed": 0,
         "place_view": 0,
         "place_advance": 0,
         "lower": 0,
         "open": 0,
-        "place_success": 0
+        "evaluator_place_success": 0
       },
       "frame_funnel": {
-        "recorded_acquisition_frames": 0,
-        "colour_component_or_footprint": 0,
-        "nominal_ground_or_footprint": 0,
-        "full_footprint_rgb_gate": 0
+        "analysis_views": 0,
+        "persisted_analysis_frame_N": 0,
+        "colour_component_or_direct_footprint": 0,
+        "nominal_ground_or_direct_footprint": 0,
+        "rgb_full_footprint": 0,
+        "missing_per_frame_telemetry": false
       },
-      "frame_rejection_distribution": {},
-      "rejections": [
-        {
-          "category": "reloc19_unobservable_loaded_view",
-          "N": 3,
-          "blocked_object": "own_rgb_or_route_evidence",
-          "minimum_gap_m": null,
-          "gap_scope": "not_applicable_localization_or_original_gap_missing"
-        },
-        {
-          "category": "accepted_replan",
-          "N": 3,
-          "blocked_object": "own_rgb_or_route_evidence",
-          "minimum_gap_m": null,
-          "gap_scope": "not_applicable_localization_or_original_gap_missing"
-        },
-        {
-          "category": "carry_no_route",
-          "N": 1,
-          "blocked_object": "own_rgb_or_route_evidence",
-          "minimum_gap_m": null,
-          "gap_scope": "not_applicable_localization_or_original_gap_missing"
-        },
+      "frame_rejections": [],
+      "frame_ledger": null,
+      "terminal_rejections": [
         {
           "t": 274.3999999952393,
           "event": "rejection",
@@ -105,35 +165,103 @@
           "minimum_gap_m": null,
           "gap_scope": "not_applicable_visual_or_localization_terminal; original collision gaps retained in preceding events"
         }
-      ]
+      ],
+      "recovery_reasons": {
+        "reloc19_unobservable_loaded_view": 3,
+        "accepted_replan": 3,
+        "carry_no_route": 1
+      },
+      "detector_is_not_evaluator_success": true
     },
     {
       "run": "reloc19-r2-carry-A-93315-595b3eec",
       "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r2-carry-A-93315-595b3eec/raw",
+      "source_sha": "595b3eec3fa27b1dde2369a1e6aa7f73b977c434",
       "valid": true,
+      "termination_normalized": {
+        "raw_status": "complete",
+        "raw_reason": "phase_timeout",
+        "category": "cap_end",
+        "cap_scope": "phase_SIM"
+      },
+      "transport_evaluation": {
+        "scope": "evaluation only, carry_to_zone before-action frames; includes held reobservation pauses, excludes pickup/acquisition/recovery phases",
+        "xy_m": {
+          "N": 492,
+          "p50": 0.5880551371126657,
+          "p95": 1.0407376280007339
+        },
+        "yaw_deg": {
+          "N": 492,
+          "p50": 31.906326764270865,
+          "p95": 89.26148783534715
+        },
+        "max_base_displacement_from_first_carry_m": 2.5749361784454567
+      },
+      "unit": "one reached event per run; independent frame family",
       "cumulative": {
         "started": 1,
         "lift_success": 1,
         "travel_entered": 1,
         "authored_arrival": 1,
+        "acquisition_entered": 1,
+        "detector_colour_acquired": 0,
+        "rgb_footprint_confirmed": 0,
         "place_view": 0,
         "place_advance": 0,
         "lower": 0,
         "open": 0,
-        "place_success": 0
+        "evaluator_place_success": 0
       },
       "frame_funnel": {
-        "recorded_acquisition_frames": 1800,
-        "colour_component_or_footprint": 0,
-        "nominal_ground_or_footprint": 0,
-        "full_footprint_rgb_gate": 0
+        "analysis_views": 1800,
+        "persisted_analysis_frame_N": 1800,
+        "colour_component_or_direct_footprint": 0,
+        "nominal_ground_or_direct_footprint": 0,
+        "rgb_full_footprint": 0,
+        "missing_per_frame_telemetry": false
       },
-      "frame_rejection_distribution": {
-        "destination_colour_absent": 1568,
-        "destination_component_small": 56,
-        "destination_motion_blocked": 176
+      "frame_rejections": [
+        {
+          "category": "visual_acquisition",
+          "reason": "destination_colour_absent",
+          "blocked_object": "zone_C",
+          "N": 1568,
+          "minimum_gap_m": null,
+          "gap_scope": "not_applicable_visual_measurement; no physical blocker inferred"
+        },
+        {
+          "category": "route",
+          "reason": "destination_motion_blocked",
+          "blocked_object": "wall_divider_1",
+          "N": 107,
+          "minimum_gap_m": -0.0032139708397587174,
+          "gap_scope": "101 samples of requested straight corridor; not a proof that no detour exists"
+        },
+        {
+          "category": "route",
+          "reason": "destination_motion_blocked",
+          "blocked_object": "own_rgb_obstacle:0",
+          "N": 69,
+          "minimum_gap_m": -0.038879287481642905,
+          "gap_scope": "101 samples of requested straight corridor; not a proof that no detour exists"
+        },
+        {
+          "category": "visual_acquisition",
+          "reason": "destination_component_small",
+          "blocked_object": "zone_C",
+          "N": 56,
+          "minimum_gap_m": null,
+          "gap_scope": "not_applicable_visual_measurement; no physical blocker inferred"
+        }
+      ],
+      "frame_ledger": {
+        "path": "/home/ugrp/ugrp-sim/runs/reloc19-round2/reloc19-r2-carry-A-93315-595b3eec-frame-ledger.json.zst",
+        "sha256": "e1a7cfa9544c04ce17a593a4d6578b33877f5ad2aa0e8ceadb3bb319ff3f1663",
+        "decoded_sha256": "6b909a9240fb7a8f9425262a7ff3885cc947c8aa94ad426558e82560a3d0dfa9",
+        "N": 1800
       },
-      "rejections": [
+      "terminal_rejections": [
         {
           "category": "terminal_phase_timeout",
           "reason": "phase_timeout",
@@ -142,52 +270,61 @@
           "minimum_gap_m": null,
           "gap_scope": "not_applicable_visual_or_localization_terminal; original collision gaps retained in preceding events"
         }
-      ]
+      ],
+      "recovery_reasons": {},
+      "detector_is_not_evaluator_success": true
     },
     {
       "run": "reloc19-r2-carry-AB-93315-595b3eec",
       "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r2-carry-AB-93315-595b3eec/raw",
+      "source_sha": "595b3eec3fa27b1dde2369a1e6aa7f73b977c434",
       "valid": true,
+      "termination_normalized": {
+        "raw_status": "complete",
+        "raw_reason": "cap_end",
+        "category": "cap_end",
+        "cap_scope": "whole_run_SIM"
+      },
+      "transport_evaluation": {
+        "scope": "evaluation only, carry_to_zone before-action frames; includes held reobservation pauses, excludes pickup/acquisition/recovery phases",
+        "xy_m": {
+          "N": 366,
+          "p50": 0.10520786366431367,
+          "p95": 0.31604596558632914
+        },
+        "yaw_deg": {
+          "N": 366,
+          "p50": 18.637420617073122,
+          "p95": 47.523254784885985
+        },
+        "max_base_displacement_from_first_carry_m": 1.1886749772292
+      },
+      "unit": "one reached event per run; independent frame family",
       "cumulative": {
         "started": 1,
         "lift_success": 1,
         "travel_entered": 1,
         "authored_arrival": 0,
+        "acquisition_entered": 0,
+        "detector_colour_acquired": 0,
+        "rgb_footprint_confirmed": 0,
         "place_view": 0,
         "place_advance": 0,
         "lower": 0,
         "open": 0,
-        "place_success": 0
+        "evaluator_place_success": 0
       },
       "frame_funnel": {
-        "recorded_acquisition_frames": 0,
-        "colour_component_or_footprint": 0,
-        "nominal_ground_or_footprint": 0,
-        "full_footprint_rgb_gate": 0
+        "analysis_views": 0,
+        "persisted_analysis_frame_N": 0,
+        "colour_component_or_direct_footprint": 0,
+        "nominal_ground_or_direct_footprint": 0,
+        "rgb_full_footprint": 0,
+        "missing_per_frame_telemetry": false
       },
-      "frame_rejection_distribution": {},
-      "rejections": [
-        {
-          "category": "reloc19_unobservable_loaded_view",
-          "N": 2,
-          "blocked_object": "own_rgb_or_route_evidence",
-          "minimum_gap_m": null,
-          "gap_scope": "not_applicable_localization_or_original_gap_missing"
-        },
-        {
-          "category": "accepted_replan",
-          "N": 4,
-          "blocked_object": "own_rgb_or_route_evidence",
-          "minimum_gap_m": null,
-          "gap_scope": "not_applicable_localization_or_original_gap_missing"
-        },
-        {
-          "category": "carry_no_route",
-          "N": 2,
-          "blocked_object": "own_rgb_or_route_evidence",
-          "minimum_gap_m": null,
-          "gap_scope": "not_applicable_localization_or_original_gap_missing"
-        },
+      "frame_rejections": [],
+      "frame_ledger": null,
+      "terminal_rejections": [
         {
           "category": "terminal_cap_end",
           "reason": "cap_end",
@@ -196,31 +333,145 @@
           "minimum_gap_m": null,
           "gap_scope": "not_applicable_visual_or_localization_terminal; original collision gaps retained in preceding events"
         }
-      ]
+      ],
+      "recovery_reasons": {
+        "reloc19_unobservable_loaded_view": 2,
+        "accepted_replan": 4,
+        "carry_no_route": 2
+      },
+      "detector_is_not_evaluator_success": true
     },
     {
       "run": "reloc19-r2-selfmap-short_regression-93584-595b3eec",
       "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r2-selfmap-short_regression-93584-595b3eec/raw",
+      "source_sha": "595b3eec3fa27b1dde2369a1e6aa7f73b977c434",
       "valid": true,
-      "cumulative": {
-        "candidates": 0,
-        "accepted": 0
+      "termination_normalized": {
+        "raw_status": "HOST_ERROR",
+        "raw_reason": "selfmap4_relocalization_exhausted",
+        "category": "HOST_ERROR",
+        "cap_scope": null
       },
-      "frame_funnel": null,
-      "frame_rejection_distribution": null,
-      "rejections": []
+      "unit": "selfmap registration frame family",
+      "cumulative": {
+        "unit": "ordered global/relocalization frames, not independent trials",
+        "cumulative": {
+          "frames": 119,
+          "sensor_update": 63,
+          "pf_resolved": 50,
+          "dominant_mode": 50,
+          "raw_covariance": 50,
+          "independent_axes": 48,
+          "global_unique": 30,
+          "three_views": 2,
+          "registered": 2
+        },
+        "first_rejections": [
+          {
+            "category": "sensor_update",
+            "N": 56,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          },
+          {
+            "category": "three_views",
+            "N": 28,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          },
+          {
+            "category": "global_unique",
+            "N": 18,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          },
+          {
+            "category": "pf_resolved",
+            "N": 13,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          },
+          {
+            "category": "independent_axes",
+            "N": 2,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          }
+        ]
+      },
+      "rejections": {},
+      "termination": "selfmap4_relocalization_exhausted"
     },
     {
       "run": "reloc19-r2-selfmap-short_regression-93583-595b3eec",
       "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r2-selfmap-short_regression-93583-595b3eec/raw",
+      "source_sha": "595b3eec3fa27b1dde2369a1e6aa7f73b977c434",
       "valid": true,
-      "cumulative": {
-        "candidates": 0,
-        "accepted": 0
+      "termination_normalized": {
+        "raw_status": "HOST_ERROR",
+        "raw_reason": "selfmap4_relocalization_exhausted",
+        "category": "HOST_ERROR",
+        "cap_scope": null
       },
-      "frame_funnel": null,
-      "frame_rejection_distribution": null,
-      "rejections": []
+      "unit": "selfmap registration frame family",
+      "cumulative": {
+        "unit": "ordered global/relocalization frames, not independent trials",
+        "cumulative": {
+          "frames": 81,
+          "sensor_update": 34,
+          "pf_resolved": 28,
+          "dominant_mode": 28,
+          "raw_covariance": 28,
+          "independent_axes": 26,
+          "global_unique": 23,
+          "three_views": 1,
+          "registered": 1
+        },
+        "first_rejections": [
+          {
+            "category": "sensor_update",
+            "N": 47,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          },
+          {
+            "category": "three_views",
+            "N": 22,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          },
+          {
+            "category": "pf_resolved",
+            "N": 6,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          },
+          {
+            "category": "global_unique",
+            "N": 3,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          },
+          {
+            "category": "independent_axes",
+            "N": 2,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          }
+        ]
+      },
+      "rejections": {},
+      "termination": "selfmap4_relocalization_exhausted"
     }
   ]
 }

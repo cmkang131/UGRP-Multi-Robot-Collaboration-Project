@@ -1,0 +1,162 @@
+{
+  "source_queue": "/home/ugrp/ugrp-sim/runs/reloc19-round1/queue.json",
+  "reproduce": "PYTHONPATH=. python /home/ugrp/ugrp-sim/src/595b3eec3fa27b1dde2369a1e6aa7f73b977c434/experiments/2026-10-16-reloc19/summarize.py --round 1",
+  "runs": [
+    {
+      "run": "reloc19-r1-carry-A-93266-3da9f8d9",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r1-carry-A-93266-3da9f8d9/raw",
+      "valid": true,
+      "cumulative": {
+        "started": 1,
+        "lift_success": 1,
+        "travel_entered": 1,
+        "authored_arrival": 1,
+        "place_view": 0,
+        "place_advance": 0,
+        "lower": 0,
+        "open": 0,
+        "place_success": 0
+      },
+      "frame_funnel": {
+        "recorded_acquisition_frames": 0,
+        "colour_component_or_footprint": 0,
+        "nominal_ground_or_footprint": 0,
+        "full_footprint_rgb_gate": 0
+      },
+      "frame_rejection_distribution": {},
+      "rejections": [
+        {
+          "category": "terminal_cap_end",
+          "reason": "cap_end",
+          "N": 1,
+          "blocked_object": "carry_route_or_localization",
+          "minimum_gap_m": null,
+          "gap_scope": "not_applicable_visual_or_localization_terminal; original collision gaps retained in preceding events"
+        }
+      ]
+    },
+    {
+      "run": "reloc19-r1-carry-AB-93266-3da9f8d9",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r1-carry-AB-93266-3da9f8d9/raw",
+      "valid": true,
+      "cumulative": {
+        "started": 1,
+        "lift_success": 1,
+        "travel_entered": 1,
+        "authored_arrival": 0,
+        "place_view": 0,
+        "place_advance": 0,
+        "lower": 0,
+        "open": 0,
+        "place_success": 0
+      },
+      "frame_funnel": {
+        "recorded_acquisition_frames": 0,
+        "colour_component_or_footprint": 0,
+        "nominal_ground_or_footprint": 0,
+        "full_footprint_rgb_gate": 0
+      },
+      "frame_rejection_distribution": {},
+      "rejections": [
+        {
+          "category": "terminal_phase_timeout",
+          "reason": "phase_timeout",
+          "N": 1,
+          "blocked_object": "carry_route_or_localization",
+          "minimum_gap_m": null,
+          "gap_scope": "not_applicable_visual_or_localization_terminal; original collision gaps retained in preceding events"
+        }
+      ]
+    },
+    {
+      "run": "reloc19-r1-carry-A-93315-3da9f8d9",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r1-carry-A-93315-3da9f8d9/raw",
+      "valid": true,
+      "cumulative": {
+        "started": 1,
+        "lift_success": 1,
+        "travel_entered": 1,
+        "authored_arrival": 1,
+        "place_view": 1,
+        "place_advance": 0,
+        "lower": 0,
+        "open": 0,
+        "place_success": 0
+      },
+      "frame_funnel": {
+        "recorded_acquisition_frames": 0,
+        "colour_component_or_footprint": 0,
+        "nominal_ground_or_footprint": 0,
+        "full_footprint_rgb_gate": 0
+      },
+      "frame_rejection_distribution": {},
+      "rejections": [
+        {
+          "category": "terminal_destination_floor_not_visible",
+          "reason": "destination_floor_not_visible",
+          "N": 1,
+          "blocked_object": "zone_C",
+          "minimum_gap_m": null,
+          "gap_scope": "not_applicable_visual_or_localization_terminal; original collision gaps retained in preceding events"
+        }
+      ]
+    },
+    {
+      "run": "reloc19-r1-carry-AB-93315-3da9f8d9",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r1-carry-AB-93315-3da9f8d9/raw",
+      "valid": true,
+      "cumulative": {
+        "started": 1,
+        "lift_success": 1,
+        "travel_entered": 1,
+        "authored_arrival": 0,
+        "place_view": 0,
+        "place_advance": 0,
+        "lower": 0,
+        "open": 0,
+        "place_success": 0
+      },
+      "frame_funnel": {
+        "recorded_acquisition_frames": 0,
+        "colour_component_or_footprint": 0,
+        "nominal_ground_or_footprint": 0,
+        "full_footprint_rgb_gate": 0
+      },
+      "frame_rejection_distribution": {},
+      "rejections": [
+        {
+          "category": "terminal_phase_timeout",
+          "reason": "phase_timeout",
+          "N": 1,
+          "blocked_object": "carry_route_or_localization",
+          "minimum_gap_m": null,
+          "gap_scope": "not_applicable_visual_or_localization_terminal; original collision gaps retained in preceding events"
+        }
+      ]
+    },
+    {
+      "run": "reloc19-r1-selfmap-short_regression-93584-3da9f8d9",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r1-selfmap-short_regression-93584-3da9f8d9/raw",
+      "valid": true,
+      "cumulative": {
+        "candidates": 0,
+        "accepted": 0
+      },
+      "frame_funnel": null,
+      "frame_rejection_distribution": null,
+      "rejections": []
+    },
+    {
+      "run": "reloc19-r1-selfmap-short_regression-93583-3da9f8d9",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r1-selfmap-short_regression-93583-3da9f8d9/raw",
+      "valid": true,
+      "cumulative": {
+        "candidates": 0,
+        "accepted": 0
+      },
+      "frame_funnel": null,
+      "frame_rejection_distribution": null,
+      "rejections": []
+    }
+  ]
+}
