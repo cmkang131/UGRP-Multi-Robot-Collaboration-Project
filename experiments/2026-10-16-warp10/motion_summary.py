@@ -1,5 +1,5 @@
 """CPU-only prefix exposure funnel. Issued phases are not physical success."""
-import argparse,collections,hashlib,json,math
+import argparse,collections,hashlib,json,gzip
 from pathlib import Path
 
 def read(p):return json.loads(p.read_text())
@@ -12,7 +12,10 @@ def main():
     worlds=[];source={};raw_status=collections.Counter();reasons=collections.Counter();phase_ticks=collections.Counter()
     for i,run in enumerate(q['runs']):
         raw=a.raw/f'world-{i:03d}'/'raw';trace=raw/'teacher-commands.jsonl'
-        rows=[json.loads(line) for line in trace.read_text().splitlines()] if trace.exists() else []
+        if not trace.exists() and trace.with_suffix(trace.suffix+'.gz').exists():trace=trace.with_suffix(trace.suffix+'.gz')
+        if not trace.exists():raise FileNotFoundError('original command trace missing: '+str(raw))
+        text=gzip.open(trace,'rt').read() if trace.suffix=='.gz' else trace.read_text()
+        rows=[json.loads(line) for line in text.splitlines()]
         if trace.exists():source[str(trace)]=sha(trace)
         result=read(raw/'result.json') if (raw/'result.json').exists() else {'status':'RUNNING'}
         raw_status[result['status']]+=1;phases={r['phase'] for r in rows};phase_ticks.update(r['phase'] for r in rows)

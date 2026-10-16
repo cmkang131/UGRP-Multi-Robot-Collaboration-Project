@@ -1,0 +1,100 @@
+{
+  "scope": "supervisor-stopped serial prefix, not completed mission failures/successes",
+  "method": "gcp2 ffmpeg4x + ffprobe; all 2Hz/10Hz sheets directly viewed via file image tool, no GUI",
+  "runs": [
+    {
+      "world": 0,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/raw/first30/n16/world-000/raw",
+      "local": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/warp10-serial/world-000",
+      "whole_range": [
+        2.0000000000001514,
+        11.500000000000153
+      ],
+      "tail_range": [
+        1.8000000000001515,
+        11.800000000000152
+      ],
+      "whole_2hz_N": 20,
+      "tail_10hz_N": 101,
+      "directly_viewed": [
+        "whole-2hz-00.jpg",
+        "tail-10hz.jpg"
+      ],
+      "sha_mismatches": [],
+      "video_bytes": {
+        "overview-r1-r2-4x.mp4": 18946,
+        "own-tail-4x.mp4": 20018
+      }
+    },
+    {
+      "world": 1,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/raw/first30/n16/world-001/raw",
+      "local": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/warp10-serial/world-001",
+      "whole_range": [
+        2.0000000000001514,
+        11.500000000000153
+      ],
+      "tail_range": [
+        1.8000000000001515,
+        11.800000000000152
+      ],
+      "whole_2hz_N": 20,
+      "tail_10hz_N": 101,
+      "directly_viewed": [
+        "whole-2hz-00.jpg",
+        "tail-10hz.jpg"
+      ],
+      "sha_mismatches": [],
+      "video_bytes": {
+        "overview-r1-r2-4x.mp4": 17994,
+        "own-tail-4x.mp4": 17980
+      }
+    },
+    {
+      "world": 2,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/raw/first30/n16/world-002/raw",
+      "local": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/warp10-serial/world-002",
+      "whole_range": [
+        2.0000000000001514,
+        11.500000000000153
+      ],
+      "tail_range": [
+        1.8000000000001515,
+        11.800000000000152
+      ],
+      "whole_2hz_N": 20,
+      "tail_10hz_N": 101,
+      "directly_viewed": [
+        "whole-2hz-00.jpg",
+        "tail-10hz.jpg"
+      ],
+      "sha_mismatches": [],
+      "video_bytes": {
+        "overview-r1-r2-4x.mp4": 19271,
+        "own-tail-4x.mp4": 21491
+      }
+    }
+  ],
+  "success_comparison_available": false,
+  "timelines": {
+    "world000": [
+      "2.0\u20132.5 floor/wall",
+      "3.0\u20136.2 long yellow cargo enters view while camera turns",
+      "6.3\u20137.7 cargo leaves upper view as camera looks down",
+      "7.8\u201311.8 wall/floor returns, tiny yellow objects; no grasp/place observed"
+    ],
+    "world001": [
+      "2.0\u20134.0 red box near image centre",
+      "4.5\u20137.5 red box grows and approaches lower edge",
+      "8.0\u201310.3 box near lower edge with short shifts",
+      "10.4\u201311.8 box exits downward; floor only"
+    ],
+    "world002": [
+      "same early pan as world000 through6.2",
+      "6.3\u20137.7 floor only",
+      "7.8\u201311.8 wall/floor and yellow objects return at different camera bearing"
+    ]
+  },
+  "ten_hz_difference": "Exact downward exits at6.3 (yellow-view) and10.4 (red-view), plus short edge shifts, visible in10Hz sheets; 2Hz cannot locate their0.1s timing. No physical failure cause inferred.",
+  "limits": "All3 are incomplete prefixes, no full same-condition success run; no transport/place/complete claim. Host timing cause is supported by measured phases/source scheduling, not by inferred RGB motion."
+}

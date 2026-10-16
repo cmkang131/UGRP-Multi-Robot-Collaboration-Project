@@ -1,0 +1,34 @@
+{
+  "utc": "2026-10-16T09:54:00.314386+00:00",
+  "pid": 11200,
+  "launcher": 11173,
+  "source_sha": "01bfbae4369d6c4c183c72745d122338e858094b",
+  "reason": "partial mixed-model first30 shows serial host control cost; preserve incomplete diagnostic before CPU worker separation",
+  "progress": {
+    "sim_s": 10.100000000000001,
+    "active": 16,
+    "completed": 0,
+    "wall_s": 1183.6611758159997,
+    "timing": [
+      {
+        "render_and_evaluator_export": 66.47198870300281,
+        "command_and_physics": 326.02814592100276
+      },
+      {
+        "render_and_evaluator_export": 98.46119236100185,
+        "command_and_physics": 343.1468171120032
+      }
+    ]
+  },
+  "observed": {
+    "status": "observed partial, not first30 gate",
+    "last_sim_s": 10.100000000000001,
+    "observed_intervals": 27,
+    "median_per_execution": 7.835965684374631,
+    "active_worlds": 16
+  },
+  "first30_complete": false,
+  "wall_cap": false,
+  "models": 0,
+  "next": "default-off CPU controller process pool; no physics or observation changes"
+}
