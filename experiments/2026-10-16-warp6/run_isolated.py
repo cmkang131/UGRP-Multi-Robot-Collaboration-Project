@@ -21,6 +21,7 @@ def main():
     p.add_argument('--job', choices=['beampair', 'release-s1', 'release-s3'], required=True)
     p.add_argument('--memcheck', action='store_true')
     p.add_argument('--debug', action='store_true')
+    p.add_argument('--trace', action='store_true')
     a = p.parse_args()
     src = ROOT / 'src' / a.source_sha
     jobs = {'beampair': ('beampair', '0,1,2,3', 60),
@@ -46,6 +47,8 @@ def main():
         cmd += ['--teacher-source', str(ROOT / 'src/26f84d0f0ada1c33473c83cca2d3415ce51bd247')]
     if a.debug:
         cmd += ['--warp-debug-v1']
+    if a.trace:
+        cmd += ['--warp-workspace-trace-v1']
     if a.memcheck:
         cmd = ['/usr/local/cuda/bin/compute-sanitizer', '--tool', 'memcheck',
                '--error-exitcode', '86', '--print-limit', '20', '--log-file',
