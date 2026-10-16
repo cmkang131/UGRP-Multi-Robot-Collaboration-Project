@@ -13,7 +13,7 @@ def resources():
 def main():
     p=argparse.ArgumentParser();p.add_argument('--sizes',nargs='+',type=int,choices=(1,4,16,64),default=[1,4,16,64])
     p.add_argument('--output',type=Path,required=True);p.add_argument('--uninstrumented',action='store_true')
-    p.add_argument('--first30',action='store_true');p.add_argument('--motion-first30',action='store_true');p.add_argument('--control-pool',action='store_true');a=p.parse_args()
+    p.add_argument('--first30',action='store_true');p.add_argument('--motion-first30',action='store_true');p.add_argument('--control-pool',action='store_true');p.add_argument('--eval-arena-reset',action='store_true');a=p.parse_args()
     if a.motion_first30:
         if a.sizes!=[16]:raise ValueError('registered motion cohort is N16; specify --sizes 16')
         a.first30=True;a.uninstrumented=True
@@ -43,6 +43,7 @@ def main():
                 warp9_state_snapshot_v1=True,warp10_render_stage_v1=True,warp10_eval_export_v1=True,
                 warp10_command_batch_v1=True,warp10_same_state_audit_v1=True,warp10_speed_per_execution_v1=True,
                 warp10_control_pool_v1=a.control_pool,
+                warp10_eval_arena_reset_v1=a.eval_arena_reset,
                 warp10_fixed_work_v1=not a.first30,warp10_first30_only_v1=a.first30,
                 independent_initial_cases=1,duplicate_isolation_worlds=n-1,
                 interpretation='fixed initial replica diagnostic, not independent task success')
@@ -64,6 +65,9 @@ def main():
                     LLM_ACT_scope='not integrated; not an E2E gate')
                 write(table,selected)
             if a.first30:q['warp9_profile_v1']=False
+            if a.eval_arena_reset:
+                selected=json.loads(table.read_text());selected['previous_same_fault_table']=str(ROOT/'experiments/2026-10-16-warp10/pre-parent-fix-rejection-table.json')
+                write(table,selected)
             for key,value in q['environment'].items():
                 if key.endswith('CALIBRATION'):q['environment'][key]=str(ROOT/'experiments'/value.split('/experiments/',1)[1])
             q['storage_budget']['reserved_bytes']=0

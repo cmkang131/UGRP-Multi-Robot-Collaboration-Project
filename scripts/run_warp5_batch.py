@@ -132,7 +132,7 @@ def run(a):
             transport.batch_sleep_v1=transport.native_model_batch_v1
             transport.warp9_full_period_graph_v1=q.get('warp9_full_period_graph_v1',False)
             transport.warp9_physics_event_trace_v1=q.get('warp9_physics_event_trace_v1',False)
-            for toggle in ('warp10_render_stage_v1','warp10_eval_export_v1','warp10_command_batch_v1','warp10_same_state_audit_v1','warp10_control_pool_v1'):
+            for toggle in ('warp10_render_stage_v1','warp10_eval_export_v1','warp10_command_batch_v1','warp10_same_state_audit_v1','warp10_control_pool_v1','warp10_eval_arena_reset_v1'):
                 setattr(transport,toggle,q.get(toggle,False))
             if q.get('warp9_profile_v1'):
                 import warp as wp
@@ -238,6 +238,8 @@ def run(a):
                 export=getattr(h,'export_profile_audit',None),
                 rgb_same_state=getattr(h,'warp10_rgb_audit',None),
                 export_same_state=getattr(h,'warp10_export_audit',None),
+                evaluator_arena_reset=getattr(h,'warp10_eval_arena_reset_v1',False),
+                evaluator_contact_domain_checks=getattr(h,'eval_contact_checks',None),
                 command_input='issued ctrl + own command histories',new_actor_truth_fields=0) for ii,cc,h in groups]))
     except BaseException as exc:
         report.update(status='HOST_ERROR',errors=[dict(category='HOST_ERROR',reason=repr(exc),blocked_object='batch_adapter',minimum_gap_m=None,gap_status='not_measured',traceback=traceback.format_exc())])

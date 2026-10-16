@@ -1,0 +1,223 @@
+{
+  "raw": "/home/ugrp/ugrp-sim/runs/warp10/first30-pool-r2/n16",
+  "source_sha": "14aec45a14294703827625107014841b3f32feb4",
+  "status": "HOST_ERROR",
+  "errors": [
+    {
+      "category": "HOST_ERROR",
+      "reason": "RuntimeError('controller worker 1: IndexError(\\'Invalid index 1072693248. Valid indices from 0 to 1385\\')\\nTraceback (most recent call last):\\n  File \"/home/ugrp/ugrp-sim/src/14aec45a1-warp10-pool/scripts/warp10_control.py\", line 105, in worker\\n    event=next(lane)\\n          ^^^^^^^^^^\\n  File \"/home/ugrp/ugrp-sim/src/14aec45a1-warp10-pool/scripts/warp5_episode.py\", line 28, in __next__\\n    def __next__(self):return self.invoke(\\'__next__\\')\\n                              ^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/home/ugrp/ugrp-sim/src/14aec45a1-warp10-pool/scripts/warp5_episode.py\", line 22, in invoke\\n    return getattr(self.generator,method)()\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"<warp5-scheduling-adapter>\", line 562, in run\\nIndexError: Invalid index 1072693248. Valid indices from 0 to 1385\\n')",
+      "blocked_object": "batch_adapter",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/ugrp/ugrp-sim/src/14aec45a1-warp10-pool/scripts/run_warp5_batch.py\", line 172, in run\n    response=pool.receive(int(i),contexts[i])\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/14aec45a1-warp10-pool/scripts/warp10_control.py\", line 144, in receive\n    if result['kind']=='error':raise RuntimeError('controller worker '+str(i)+': '+result['reason']+'\\n'+result['traceback'])\n                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: controller worker 1: IndexError('Invalid index 1072693248. Valid indices from 0 to 1385')\nTraceback (most recent call last):\n  File \"/home/ugrp/ugrp-sim/src/14aec45a1-warp10-pool/scripts/warp10_control.py\", line 105, in worker\n    event=next(lane)\n          ^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/14aec45a1-warp10-pool/scripts/warp5_episode.py\", line 28, in __next__\n    def __next__(self):return self.invoke('__next__')\n                              ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/14aec45a1-warp10-pool/scripts/warp5_episode.py\", line 22, in invoke\n    return getattr(self.generator,method)()\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<warp5-scheduling-adapter>\", line 562, in run\nIndexError: Invalid index 1072693248. Valid indices from 0 to 1385\n\n"
+    }
+  ],
+  "progress": {
+    "sim_s": 11.600000000000001,
+    "active": 16,
+    "completed": 0,
+    "wall_s": 1043.052014119001,
+    "timing": [
+      {
+        "render_and_evaluator_export": 74.28151095100657,
+        "command_and_physics": 391.0609726549992
+      },
+      {
+        "render_and_evaluator_export": 107.34771330998956,
+        "command_and_physics": 414.5035466289992
+      }
+    ]
+  },
+  "audit": {
+    "mode": "local spawn CPU lanes; same gcp4; no n4 offload",
+    "workers": [
+      {
+        "world": 0,
+        "pid": 19344,
+        "initial_exact": true,
+        "mirror_exact": true,
+        "opencv_threads": 1,
+        "initial_command_exact": true,
+        "ticks": 117,
+        "mirror_exact_ticks": 117,
+        "compute_wall_s": 38.63754515398796
+      },
+      {
+        "world": 1,
+        "pid": 19345,
+        "initial_exact": true,
+        "mirror_exact": true,
+        "opencv_threads": 1,
+        "initial_command_exact": true,
+        "ticks": 116,
+        "mirror_exact_ticks": 116,
+        "compute_wall_s": 33.093975465993935
+      },
+      {
+        "world": 2,
+        "pid": 19346,
+        "initial_exact": true,
+        "mirror_exact": true,
+        "opencv_threads": 1,
+        "initial_command_exact": true,
+        "ticks": 116,
+        "mirror_exact_ticks": 116,
+        "compute_wall_s": 38.7846372299955
+      },
+      {
+        "world": 3,
+        "pid": 19347,
+        "initial_exact": true,
+        "mirror_exact": true,
+        "opencv_threads": 1,
+        "initial_command_exact": true,
+        "ticks": 116,
+        "mirror_exact_ticks": 116,
+        "compute_wall_s": 31.912667712000257
+      },
+      {
+        "world": 4,
+        "pid": 19348,
+        "initial_exact": true,
+        "mirror_exact": true,
+        "opencv_threads": 1,
+        "initial_command_exact": true,
+        "ticks": 116,
+        "mirror_exact_ticks": 116,
+        "compute_wall_s": 37.39090253399627
+      },
+      {
+        "world": 5,
+        "pid": 19349,
+        "initial_exact": true,
+        "mirror_exact": true,
+        "opencv_threads": 1,
+        "initial_command_exact": true,
+        "ticks": 116,
+        "mirror_exact_ticks": 116,
+        "compute_wall_s": 38.6081601449896
+      },
+      {
+        "world": 6,
+        "pid": 19350,
+        "initial_exact": true,
+        "mirror_exact": true,
+        "opencv_threads": 1,
+        "initial_command_exact": true,
+        "ticks": 116,
+        "mirror_exact_ticks": 116,
+        "compute_wall_s": 38.36740974701024
+      },
+      {
+        "world": 7,
+        "pid": 19351,
+        "initial_exact": true,
+        "mirror_exact": true,
+        "opencv_threads": 1,
+        "initial_command_exact": true,
+        "ticks": 116,
+        "mirror_exact_ticks": 116,
+        "compute_wall_s": 32.975218428004155
+      },
+      {
+        "world": 8,
+        "pid": 19352,
+        "initial_exact": true,
+        "mirror_exact": true,
+        "opencv_threads": 1,
+        "initial_command_exact": true,
+        "ticks": 116,
+        "mirror_exact_ticks": 116,
+        "compute_wall_s": 36.86967454099613
+      },
+      {
+        "world": 9,
+        "pid": 19353,
+        "initial_exact": true,
+        "mirror_exact": true,
+        "opencv_threads": 1,
+        "initial_command_exact": true,
+        "ticks": 116,
+        "mirror_exact_ticks": 116,
+        "compute_wall_s": 31.85600536000311
+      },
+      {
+        "world": 10,
+        "pid": 19354,
+        "initial_exact": true,
+        "mirror_exact": true,
+        "opencv_threads": 1,
+        "initial_command_exact": true,
+        "ticks": 116,
+        "mirror_exact_ticks": 116,
+        "compute_wall_s": 37.00191806800103
+      },
+      {
+        "world": 11,
+        "pid": 19355,
+        "initial_exact": true,
+        "mirror_exact": true,
+        "opencv_threads": 1,
+        "initial_command_exact": true,
+        "ticks": 116,
+        "mirror_exact_ticks": 116,
+        "compute_wall_s": 36.94060450499455
+      },
+      {
+        "world": 12,
+        "pid": 19356,
+        "initial_exact": true,
+        "mirror_exact": true,
+        "opencv_threads": 1,
+        "initial_command_exact": true,
+        "ticks": 116,
+        "mirror_exact_ticks": 116,
+        "compute_wall_s": 39.36625159899995
+      },
+      {
+        "world": 13,
+        "pid": 19357,
+        "initial_exact": true,
+        "mirror_exact": true,
+        "opencv_threads": 1,
+        "initial_command_exact": true,
+        "ticks": 116,
+        "mirror_exact_ticks": 116,
+        "compute_wall_s": 31.608612574009385
+      },
+      {
+        "world": 14,
+        "pid": 19358,
+        "initial_exact": true,
+        "mirror_exact": true,
+        "opencv_threads": 1,
+        "initial_command_exact": true,
+        "ticks": 116,
+        "mirror_exact_ticks": 116,
+        "compute_wall_s": 39.880572717993346
+      },
+      {
+        "world": 15,
+        "pid": 19359,
+        "initial_exact": true,
+        "mirror_exact": true,
+        "opencv_threads": 1,
+        "initial_command_exact": true,
+        "ticks": 116,
+        "mirror_exact_ticks": 116,
+        "compute_wall_s": 32.958839514009014
+      }
+    ],
+    "new_actor_fields": 0,
+    "worker_physics_and_render": "blocked after native setup",
+    "observation_contract": "unchanged visible-only teacher InputAudit; evaluator mirror is not an added actor input"
+  },
+  "sha256": {
+    "summary.json": "c90bcda336dda2c51524390b95d72b0007beee495ee69b6da752fd4a586d9129",
+    "progress.json": "c1ac3197b574b9048ab6ff85a27fb53ce79c548a45067922b5a165272fcd2d8c",
+    "control-pool-audit.json": "defa6aff196daaab5b135af6c382ed69eb7c1f4ef6aea7aed689325a9b19ca05"
+  },
+  "first30_complete": false,
+  "same_contact_fault_attempt": 2,
+  "interpretation": "Every received mirror was exact; receiver arena reset did not solve invalid geom IDs. Parent export path is now the hypothesis, not proven allocation root cause."
+}

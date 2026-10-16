@@ -37,6 +37,8 @@ def review_cameras(camera_names,actors):
 
 class Batch(WarpTransport):
     def initialize(self, contexts, **kwargs):
+        if getattr(self,'warp10_eval_arena_reset_v1',False) and not getattr(self,'warp10_eval_export_v1',False):
+            raise ValueError('evaluator arena reset requires staged export')
         self.period=getattr(self,'period',.1)
         self.all_contexts=contexts
         self.actor_histories=[{} for _ in contexts]
@@ -213,8 +215,31 @@ class Batch(WarpTransport):
                 if self.done[i]:continue
                 # Native get_data_into copies GPU contacts/forces. Do not call
                 # mj_forward/mj_step to invent CPU contacts for GPU evaluation.
+                if getattr(self,'warp10_eval_arena_reset_v1',False):
+                    # Two matching-ABI CPU-pool attempts retained exact mirror
+                    # bytes yet failed native geom lookup around SIM11.5.
+                    # Isolate upstream CPU arena reuse; GPU state is untouched.
+                    import mujoco
+                    mujoco.mj_resetData(c['world'].model,c['world'].data)
                 if getattr(self,'warp10_control_pool_v1',False):self.eval_staging.writes.clear()
                 export(c['world'].data,c['world'].model,self.wd,world_id=i)
+                if getattr(self,'warp10_eval_arena_reset_v1',False):
+                    from scripts.warp10_host import validate_evaluation_contacts
+                    try:
+                        validate_evaluation_contacts(c['world'].data,c['world'].model)
+                        if not hasattr(self,'eval_contact_checks'):self.eval_contact_checks={}
+                        self.eval_contact_checks[i]=self.eval_contact_checks.get(i,0)+1
+                    except ValueError:
+                        # Retain the actual staged GPU inputs plus CPU contact
+                        # outputs for offline diagnosis; never feed to an actor.
+                        arrays={}
+                        for path in self.eval_staging.paths:
+                            value=self.wd
+                            for part in path:value=getattr(value,part)
+                            if value is not None:arrays['.'.join(path)]=self.eval_staging.read(value)
+                        arrays.update(cpu_geom1=c['world'].data.contact.geom1.copy(),cpu_geom2=c['world'].data.contact.geom2.copy())
+                        np.savez_compressed(self.out/f'invalid-evaluator-{self.tick}-{i}.npz',**arrays)
+                        raise
                 if getattr(self,'warp10_control_pool_v1',False):
                     if not hasattr(self,'exported_fields'):self.exported_fields={}
                     self.exported_fields[i]=tuple(sorted(self.eval_staging.writes))

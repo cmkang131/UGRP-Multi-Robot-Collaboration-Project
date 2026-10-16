@@ -178,6 +178,19 @@ def blend_staged(opaque,layers,alpha,order):
     return out
 
 
+def validate_evaluation_contacts(data,model):
+    """Evaluator structural check, never an actor observation or gap gate.
+
+    Registered warp10 scenes contain rigid geoms only. Bounds come directly
+    from MjModel, not a fitted acceptance constant. Fail before native lookup.
+    """
+    if model.nflex:raise ValueError('warp10 evaluator arena audit requires rigid-only registered scene')
+    a,b=data.contact.geom1,data.contact.geom2
+    if np.any((a<0)|(a>=model.ngeom)|(b<0)|(b>=model.ngeom)):
+        raise ValueError('invalid evaluator contact geom index before controller dispatch')
+    return int(data.ncon)
+
+
 def command_tapes(row_groups,relays,tables,**kwargs):
     """Vectorize robot and world axes, retaining the exact tick recurrence.
 

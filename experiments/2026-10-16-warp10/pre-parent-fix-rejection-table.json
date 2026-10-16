@@ -1,0 +1,33 @@
+{
+  "unit": "CPU_pool_motion_attempt",
+  "same_contact_fault_attempts": 2,
+  "stages": [
+    {
+      "stage": "initial_model_command_mirror_exact",
+      "cumulative_pass_n": 2,
+      "rejected_n": 0
+    },
+    {
+      "stage": "first30_complete",
+      "cumulative_pass_n": 0,
+      "rejected_n": 2
+    }
+  ],
+  "distribution": [
+    {
+      "category": "invalid_evaluator_contact_geom",
+      "n": 2,
+      "blocked_object": "CPU exported contact table",
+      "minimum_gap_m": null,
+      "gap_scope": "native_layout_not_physical_gap",
+      "evidence": [
+        "pool-failure.json",
+        "pool-r2-failure.json"
+      ]
+    }
+  ],
+  "observed": "1072693248 outside native model geom0..1385",
+  "next": "third and last same-fault attempt: reset parent evaluator arena, domain-check before controller; dump GPU staging+CPU contact outputs on violation",
+  "reproduction": "see exact queue/command in raw first30-pool[-r2]/n16/queue.json",
+  "raw": "/home/ugrp/ugrp-sim/runs/warp10/"
+}

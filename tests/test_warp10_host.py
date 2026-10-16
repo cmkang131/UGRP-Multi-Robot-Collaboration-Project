@@ -125,3 +125,14 @@ def test_per_execution_gate_does_not_drop_batch_measurement():
     assert result['batch_median_wall_per_sim']==83
     assert summarize(samples,shared_load=False,nworld=16)['status']=='SPEED_GATE_FAIL'
     with pytest.raises(ValueError):summarize(samples,shared_load=False,nworld=0,per_execution=True)
+
+
+def test_evaluator_contact_bounds_use_registered_model_domain_and_fail_before_lookup():
+    from scripts.warp10_host import validate_evaluation_contacts
+    d=SimpleNamespace(ncon=2,contact=SimpleNamespace(geom1=np.array([0,3]),geom2=np.array([2,1])))
+    m=SimpleNamespace(nflex=0,ngeom=4)
+    assert validate_evaluation_contacts(d,m)==2
+    d.contact.geom2[1]=1072693248
+    with pytest.raises(ValueError,match='before controller dispatch'):validate_evaluation_contacts(d,m)
+    d.contact.geom2[1]=-1
+    with pytest.raises(ValueError,match='before controller dispatch'):validate_evaluation_contacts(d,m)
