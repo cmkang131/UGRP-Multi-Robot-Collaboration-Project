@@ -91,5 +91,13 @@
     "smoke_readback_verified": true,
     "status": "main_running",
     "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-training-r1"
+  },
+  "native_learning_status": "A/B fixed10000 complete and exact checkpoint prediction readback verified; native VAL8 each running",
+  "native_training_curves": {
+    "path": "native-ab-learning-curves.png",
+    "receipt": "native-ab-learning-curves.json",
+    "reviewed": true,
+    "scope": "actual logged losses, no physical performance claim",
+    "note": "movement L1 decreases; intermittent completion BCE spikes remain; no outcome-based retraining"
   }
 }
