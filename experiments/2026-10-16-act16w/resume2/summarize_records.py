@@ -15,7 +15,8 @@ def read(p,lines=False):
     if p.exists():data=p.read_bytes()
     elif Path(str(p)+'.zst').exists():data=subprocess.check_output(['zstd','-dc',str(p)+'.zst'])
     else:return None
-    return [json.loads(x) for x in data.splitlines() if x.strip()] if lines else json.loads(data)
+    try:return [json.loads(x) for x in data.splitlines() if x.strip()] if lines else json.loads(data)
+    except json.JSONDecodeError:return None  # live controller writes are not all atomic
 
 
 def main():
@@ -33,7 +34,7 @@ def main():
         if seed in locations:
             root,i=locations[seed];original=root/'controller'/f'world-{i:03d}';progress=read(root/'controller/progress.json');result=read(original/'result.json');row['raw']=str(root);row['world']=i
             if progress:row['SIM_s']=progress['ticks'][i]*.1
-            if result:
+            if result and all(k in result for k in ('cap_end','physical_success','input_audit')):
                 commands=read(original/'teacher-commands.jsonl',True) or []
                 command_complete=bool(commands and commands[-1]['phase']=='complete')
                 row.update(status='cap_end' if result['cap_end'] else 'success' if result['physical_success'] and command_complete else 'teacher_failure',physical_success=result['physical_success'],command_complete=command_complete,input_audit=result['input_audit'],original_result_sha256=sha256(original/'result.json' if (original/'result.json').exists() else original/'result.json.zst'))
