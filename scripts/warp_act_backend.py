@@ -298,7 +298,12 @@ class WarpTransport(Transport):
         self.force_out = wp.zeros((self.n,len(self.finger_channels)),dtype=float)
         self.init_kernels(contexts)
         # Compile once, then discard the warm-up state before any rollout.
-        mjw.step(self.wm,self.wd); wp.synchronize()
+        original_verify=wp.config.verify_cuda
+        try:
+            if getattr(self,'verify_cuda_v1',False):wp.config.verify_cuda=True
+            mjw.step(self.wm,self.wd); wp.synchronize()
+        finally:
+            wp.config.verify_cuda=original_verify
         if getattr(self,'workspace_trace_v1',False):self.trace_workspace('warmup')
         d.tree_asleep[:]=self.source_sleep[0]
         with unused_efm(m,d):
@@ -308,12 +313,14 @@ class WarpTransport(Transport):
             compact_cls_tol=self.wd.cls_tol.numpy().tolist(),nvmax_pad=int(self.wd.cM.shape[-1]) if self.wd.ctol.size else None,
             compact_basis='pinned io.py1791-1797: max(source tolerance,1e-6)*nv/nvmax_pad; separate compact cohort')
         # Capture exactly the 400 physics ticks, not a host wall budget.
-        with wp.ScopedCapture() as capture:
-            for _ in range(self.graph_chunk):
-                wp.launch(self.command_kernel, dim=(self.n,m.nu),inputs=[self.tape,self.graph_tick,self.wd.ctrl])
-                mjw.step(self.wm,self.wd)
-                wp.launch(self.advance_kernel,dim=1,inputs=[self.graph_tick])
-        self.graph = capture.graph
+        self.graph=None
+        if not getattr(self,'verify_cuda_v1',False):
+            with wp.ScopedCapture() as capture:
+                for _ in range(self.graph_chunk):
+                    wp.launch(self.command_kernel, dim=(self.n,m.nu),inputs=[self.tape,self.graph_tick,self.wd.ctrl])
+                    mjw.step(self.wm,self.wd)
+                    wp.launch(self.advance_kernel,dim=1,inputs=[self.graph_tick])
+            self.graph = capture.graph
         # Capture does not run the physics. First render uses canonical initialized state.
         self.rc = mjw.create_render_context(m,nworld=self.n,cam_res=(640,480),
             render_rgb=True,render_depth=False,render_seg=False,use_textures=True,
@@ -534,12 +541,27 @@ class WarpTransport(Transport):
         start=time.perf_counter()
         self.graph_tick.zero_()
         if getattr(self,'workspace_trace_v1',False):self.trace_workspace('before_control')
-        for graph_index in range(self.graph_repeats):
-            wp.capture_launch(self.graph)
-            if getattr(self,'workspace_trace_v1',False):
-                # Observe after the existing 16-step graph chunk. This is a
-                # diagnostic synchronization, never a control observation.
-                self.trace_workspace('after_graph',graph_index=graph_index)
+        original_verify=wp.config.verify_cuda
+        try:
+            if getattr(self,'verify_cuda_v1',False):wp.config.verify_cuda=True
+            for graph_index in range(self.graph_repeats):
+                if getattr(self,'verify_cuda_v1',False):
+                    # Warp verification is incompatible with CUDA capture.
+                    # Keep all original substeps/commands in the same order;
+                    # change only dispatch and synchronization for diagnosis.
+                    for substep in range(self.graph_chunk):
+                        wp.launch(self.command_kernel,dim=(self.n,self.m.nu),inputs=[self.tape,self.graph_tick,self.wd.ctrl])
+                        mjw.step(self.wm,self.wd)
+                        wp.launch(self.advance_kernel,dim=1,inputs=[self.graph_tick])
+                        if getattr(self,'workspace_trace_v1',False):
+                            self.trace_workspace('after_substep',graph_index=graph_index,substep=substep)
+                else:
+                    wp.capture_launch(self.graph)
+                    if getattr(self,'workspace_trace_v1',False):
+                        # Existing 16-step graph; diagnostics never enter control.
+                        self.trace_workspace('after_graph',graph_index=graph_index)
+        finally:
+            wp.config.verify_cuda=original_verify
         wp.synchronize()
         self.tick+=1
         niter=self.wd.solver_niter.numpy()

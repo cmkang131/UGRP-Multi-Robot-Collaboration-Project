@@ -22,6 +22,7 @@ def main():
     p.add_argument('--memcheck', action='store_true')
     p.add_argument('--debug', action='store_true')
     p.add_argument('--trace', action='store_true')
+    p.add_argument('--verify', action='store_true')
     a = p.parse_args()
     src = ROOT / 'src' / a.source_sha
     jobs = {'beampair': ('beampair', '0,1,2,3', 60),
@@ -49,6 +50,8 @@ def main():
         cmd += ['--warp-debug-v1']
     if a.trace:
         cmd += ['--warp-workspace-trace-v1']
+    if a.verify:
+        cmd += ['--warp-verify-cuda-v1']
     if a.memcheck:
         cmd = ['/usr/local/cuda/bin/compute-sanitizer', '--tool', 'memcheck',
                '--error-exitcode', '86', '--print-limit', '20', '--log-file',
