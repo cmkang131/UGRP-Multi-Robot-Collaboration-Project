@@ -1,0 +1,16 @@
+{
+  "toggle": "drivecheck_v1",
+  "enabled": true,
+  "scope": "diagnostic_only_no_production_defaults",
+  "renderer_source": "5974a181a2cec9731339a6ce3aadc0464b8dddcf",
+  "scene": "zone_hardmaps1_h1_final_v3 / walls_floor_contrast_v5_indigo110_s80",
+  "robot": "r1 / FOLDED / original camera and geometry",
+  "wheel_command": 0.35,
+  "pulse_seconds": [0.25, 0.5, 1, 2, 4],
+  "initial_settle_seconds": 1,
+  "stop_tail_seconds": 1,
+  "original_mapbuild2_pulses": {"forward": 0.1, "left": 0.06, "turn": 0.1},
+  "budget": {"worlds_per_batch": 18, "maximum_sim_seconds_per_world": 6, "estimated_raw_total_gib": 2, "mac_summary_only": true},
+  "constants_basis": "35 percent and 1 second settle/stop reproduce mapbuild2; pulse durations explicitly requested by user; 10 Hz evaluator recording per user, no research acceptance constants added",
+  "rejection_table": "/home/ugrp/ugrp-sim/runs/drivecheck/admission-funnel.json"
+}
