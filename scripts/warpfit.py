@@ -4,6 +4,7 @@ Evaluation state is recorded at 10Hz for every world for deferred own-camera
 reconstruction on gcp2. No rendered image or evaluator output changes a tape.
 """
 import argparse
+from collections import deque
 from contextlib import nullcontext
 import hashlib
 import json
@@ -91,6 +92,8 @@ def load(a):
 
 def run(a):
     host()
+    # Existing simalt memory/geometry adapters use sibling script imports.
+    sys.path.insert(0,str(Path(__file__).resolve().parent))
     import numpy as np
     import mujoco
     q = json.loads(a.queue.read_text())
@@ -124,6 +127,7 @@ def run(a):
         raise ValueError('fixed work must end on the recorded 10Hz boundary')
     events=recording_ticks(meta,a.case,ticks,dt)
     samples=[]; all_contacts=[]; setup=time.perf_counter()
+    rgb_ring=deque(maxlen=100)  # User: last10 SIM s at10Hz; never policy input.
     max_nc=int(d.ncon); max_nf=int(d.nefc)
     target_ids={m.geom(n).id for n in meta.get('target_geoms',[])}
     fingers={m.geom(n).id:k for k,n in enumerate(meta.get('finger_geoms',[]))}
@@ -176,6 +180,23 @@ def run(a):
                     wp.launch(advance,dim=1,inputs=[tick])
             report['graph_steps']=graph_steps
             first,last=wp.Event(enable_timing=True),wp.Event(enable_timing=True)
+            if a.record_own_rgb_ring:
+                import cv2
+                from sim.masterpi_camera_profile import raw_fisheye_remap
+                cv2.setNumThreads(1)
+                cameras=[f'{rid}__robot_cam' for rid in ('r1','r2') if mujoco.mj_name2id(m,mujoco.mjtObj.mjOBJ_CAMERA,f'{rid}__robot_cam')>=0]
+                # A dedicated one-world recording context avoids the N64 render
+                # allocation that OOMed warp9. This records representative world0;
+                # every other world's full10Hz state remains available on gcp2.
+                with unused_efm(m,d):record_data=mjw.put_data(m,d,nworld=1,nconmax=nc,njmax=nf)
+                render_context=mjw.create_render_context(m,nworld=1,cam_res=(640,480),
+                    render_rgb=True,render_depth=False,render_seg=False,use_textures=True,
+                    use_shadows=True,enabled_geom_groups=[0,1,2,3],cam_active=cameras)
+                pixels=wp.zeros((1,480,640),dtype=wp.vec3)
+                mx,my=raw_fisheye_remap(640,480)
+                report['rgb_recording']=dict(worlds=[0],cameras=cameras,hz=10,terminal_sim_s=10,
+                    source='recording-only MJWarp renderer on exact same-step world0 qpos; separate from training/control',
+                    other_worlds='full10Hz state; deferred own-camera reconstruction on gcp2',wall_s=0.,frames=0)
         report.update(status='running',setup_jit_s=time.perf_counter()-setup)
         dump(a.output/'result.json',report)
         start=time.perf_counter()
@@ -206,6 +227,20 @@ def run(a):
                 if fid in fingers and dist[j]<=0:
                     finger_force[int(ids[j]),fingers[fid]]+=max(0.,float(normal[j]))
             samples.append((begin*dt,qp.copy(),qv.copy(),nc_world.copy(),nefc.copy(),finger_force))
+            if a.engine=='warp' and a.record_own_rgb_ring and begin%stride==0:
+                rs=time.perf_counter();record_data.qpos.assign(qp[:1])
+                mjw.kinematics(wm,record_data);mjw.camlight(wm,record_data)
+                mjw.refit_bvh(wm,record_data,render_context);mjw.render(wm,record_data,render_context)
+                frames={}
+                for ci,camera in enumerate(cameras):
+                    mjw.get_rgb(render_context,ci,pixels)
+                    raw=np.clip(pixels.numpy()[0]*255,0,255).astype(np.uint8)
+                    raw=cv2.remap(raw,mx,my,cv2.INTER_LINEAR,borderMode=cv2.BORDER_CONSTANT)
+                    ok,encoded=cv2.imencode('.jpg',cv2.cvtColor(raw,cv2.COLOR_RGB2BGR),[cv2.IMWRITE_JPEG_QUALITY,82])
+                    if not ok:raise RuntimeError('recording JPEG encoder failed')
+                    frames[camera]=encoded.tobytes()
+                rgb_ring.append((begin*dt,frames));report['rgb_recording']['wall_s']+=time.perf_counter()-rs
+                report['rgb_recording']['frames']+=len(frames)
             # Contacts are evaluator output only. World0 retains all pairs for
             # inspecting blocked objects/minimum gaps without hidden control.
             sel=np.flatnonzero(ids==0)
@@ -236,6 +271,16 @@ def run(a):
     except BaseException as error:
         report.update(status='HOST_ERROR',HOST_ERROR=1,error=repr(error),traceback=traceback.format_exc())
     finally:
+        if rgb_ring:
+            folder=a.output/'own-rgb-terminal';folder.mkdir()
+            records=[]
+            for i,(t,frames) in enumerate(rgb_ring):
+                for name,data in frames.items():
+                    path=folder/f'{i:04d}-{name}.jpg';path.write_bytes(data)
+                    records.append(dict(t=t,camera=name,file=path.name,bytes=len(data),sha256=hashlib.sha256(data).hexdigest()))
+            dump(folder/'manifest.json',dict(world=0,records=records,bytes=sum(r['bytes'] for r in records),
+                 scope='recording only; other worlds saved as evaluator states; no controller input'))
+            report['rgb_recording']['retained_bytes']=sum(r['bytes'] for r in records)
         if samples:
             np.savez_compressed(a.output/'states.npz',t=[s[0] for s in samples],qpos=[s[1] for s in samples],
                 qvel=[s[2] for s in samples],ncon=[s[3] for s in samples],nefc=[s[4] for s in samples],
@@ -270,6 +315,7 @@ def main():
     p.add_argument('--nconmax',type=int)
     p.add_argument('--njmax',type=int)
     p.add_argument('--max-sim-s',type=float)
+    p.add_argument('--record-own-rgb-ring',action='store_true',help='recording only, no control/physics change; representative world0')
     a=p.parse_args()
     if not a.enabled:p.error('explicit --enabled required')
     if a.engine=='cpu' and a.nworld!=1:p.error('C distribution is a separate N1 reference')

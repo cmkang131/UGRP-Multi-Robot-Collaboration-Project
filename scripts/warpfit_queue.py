@@ -20,14 +20,18 @@ def main():
     p.add_argument('--source',type=Path,required=True)
     p.add_argument('--round',type=int,choices=[1,2,3],required=True)
     p.add_argument('--reference-only',action='store_true')
+    p.add_argument('--attempt-tag',choices=['','retry1'],default='')
+    p.add_argument('--preceding-funnel',type=Path)
     p.add_argument('--enabled',action='store_true')
     a=p.parse_args()
     if not a.enabled:p.error('--enabled required')
     host();root=a.root.resolve();source=a.source.resolve()
-    phase=root/(f'R{a.round}-Cref' if a.reference_only else f'R{a.round}')
+    phase=root/((f'R{a.round}-Cref' if a.reference_only else f'R{a.round}')+
+                ('-'+a.attempt_tag if a.attempt_tag else ''))
     phase.mkdir(exist_ok=False)
     rejection=(source/'experiments/2026-10-16-warpfit/rejection_table.json' if a.round==1
                else root/f'R{a.round-1}/funnel.json')
+    if a.preceding_funnel:rejection=a.preceding_funnel.resolve()
     if not rejection.is_file():raise ValueError('preceding rejection funnel missing')
     queue=dict(enabled=True,round=a.round,source=str(source),root=str(root),rejection_table=str(rejection),
         maximum_sim_s_per_case=None,profiles=PROFILES,models=0,planning_limit_kind='fixed physics ticks',
@@ -58,6 +62,7 @@ def main():
                        else root/'drive-capacity-reference.json')
             if reference.is_file():cmd+=['--capacity-reference',str(reference)]
             if a.round==1:cmd+=['--max-sim-s','.1','--nconmax','128','--njmax','512']
+            else:cmd+=['--record-own-rgb-ring']
         entry=dict(profile=pr,kind=kind,case=case,output=str(out),command=cmd,status='running',
                    started_utc=datetime.now(timezone.utc).isoformat())
         results.append(entry);dump(phase/'attempts.json',results)
