@@ -307,7 +307,7 @@ def main(argv=None):
         rows = []
         inspection = capture_usage() if a.allow_legacy_completed else None
         summary = defaultdict(lambda: {'bytes': 0, 'files': 0, 'runs': 0, 'skipped': Counter()})
-        for root in sorted(found):
+        for index, root in enumerate(sorted(found), 1):
             meta = json.loads((root / 'RUN_META.json').read_text())
             number = meta.get('pr') if a.all_closed_dev else a.pr
             try:
@@ -336,6 +336,8 @@ def main(argv=None):
             if 'skipped' in row:
                 bucket['skipped'][row['skipped']] += 1
             rows.append(row)
+            if index % 100 == 0:
+                print(f'planned {index}/{len(found)} runs', file=sys.stderr, flush=True)
         print(json.dumps({'schema': 'ugrp.evidence-prune.v1', 'pr': info,
                           'dry_run': not a.execute, 'metadata_runs': len(found), 'runs': rows,
                           'by_pr': dict(summary),

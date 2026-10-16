@@ -12,6 +12,7 @@ raises Refused.
 from __future__ import annotations
 
 import math
+from bisect import bisect_left
 import os
 from pathlib import Path
 import re
@@ -29,6 +30,26 @@ def processes_using(path: Path, listing=None) -> list[dict]:
     """Processes of this user whose cwd or open files are inside path (via lsof)."""
     # lsof reports kernel (resolved) paths; also accept the path as given.
     targets = {os.path.realpath(path), os.path.abspath(path)}
+    if isinstance(listing, dict):
+        entries, names = listing['entries'], listing['names']
+        found = {}
+        for target in targets:
+            indices = set()
+            i = bisect_left(names, target)
+            while i < len(names) and names[i] == target:
+                indices.add(i)
+                i += 1
+            prefix = target + os.sep
+            i = bisect_left(names, prefix)
+            while i < len(names) and names[i].startswith(prefix):
+                indices.add(i)
+                i += 1
+            for i in indices:
+                value, pid, command, fd = entries[i]
+                entry = found.setdefault(pid, {'pid': pid, 'command': command, 'files': []})
+                if len(entry['files']) < 5:
+                    entry['files'].append(f'{fd}:{value}')
+        return sorted(found.values(), key=lambda row: row['pid'])
     result = listing if listing is not None else subprocess.run(
         ["lsof", "-n", "-P", "-w", "-F", "pcfn"], capture_output=True, text=True)
     if result.returncode not in (0, 1) or not result.stdout:
@@ -128,7 +149,20 @@ def capture_usage():
     commands = subprocess.run(["ps", "-ww", "-Ao", "pid=,command="], capture_output=True, text=True)
     if opened.returncode not in (0, 1) or not opened.stdout or commands.returncode != 0:
         raise Refused('cannot capture process usage; refusing')
-    return opened, commands, own_ancestry()
+    entries = []
+    pid, command, fd = None, '', ''
+    for line in opened.stdout.splitlines():
+        tag, value = line[:1], line[1:]
+        if tag == 'p':
+            pid, command = int(value), ''
+        elif tag == 'c':
+            command = value
+        elif tag == 'f':
+            fd = value
+        elif tag == 'n' and pid is not None and pid != os.getpid():
+            entries.append((value, pid, command, fd))
+    entries.sort()
+    return {'entries': entries, 'names': [r[0] for r in entries]}, commands, own_ancestry()
 
 
 def refuse_if_in_use(path: Path, idle_minutes: float, gitdir: Path | None, *, inspection=None) -> None:

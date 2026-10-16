@@ -125,6 +125,7 @@ python3 scripts/ugrp_session.py run \
 
 - `disk_report.py`: 프로젝트·worktree·환경·outputs 크기를 읽기 전용으로 측정한다. 파일명으로 추정한 기존 retention 표시를 실제 삭제 허가로 쓰지 않는다. 저장 예산 제출 검사는 새 도구가 맡는다.
 - `agent_worktree.py new`: sparse checkout, 에이전트당 등록 8개. 은퇴는 `retire`만 쓴다. 무시 raw를 옮기고 전체 파일 수·바이트·SHA-256 대조 후 제거한다. 사용 중/60분 안 변경 worktree는 거부한다. 미병합 HEAD는 원격 보관 SHA가 같은 경우만 은퇴한다. 직접 `git worktree remove`, force, reset, clean을 쓰지 않는다.
+  Mac에서 Git 제거가 부분 실패해 등록만 사라졌다면 `retire <경로> --recover-receipt <원래 RETIRED.json> --archive-ref <보관 브랜치>`로 먼저 dry-run한다. 원본 이동 검증 영수증·원격 HEAD 일치·등록 부재·열린 PR 부재·실제 미사용을 다시 검사한다. `--execute`는 남은 checkout 전부를 휴지통으로 옮기고 전체 파일 해시를 재검증하며 직접 삭제하지 않는다.
 - `harness/frame_storage.py`·`FrameSink`: 기존 캡처 프로필과 쓰기 상한은 실행 번들의 일부다. 이번 저장 변경이 입력 프레임 빈도·물리·제어기를 바꾸지 않는다. study는 원본 전부를 남기는 프로필과 사전 등록 크기를 사용한다. 개발 캡처·모델 요청 텍스트·원본 이미지 해시를 구별한다.
 - `write_cap_guard.py`: 설정된 증가분 상한을 넘으면 자기 프로세스 그룹만 정리한다. 쓰기 상한 초과는 설정 중단이며 ENOSPC와 구분한다. `pack_frames.py`의 옛 날짜 검사·손실 영상 전환을 PR 기반 prune의 대체로 쓰지 않는다.
 - 실행 중 ENOSPC/EDQUOT는 **HOST_ERROR**다. 실패 시도의 요약·원장·해시·원본 위치도 기록하며 실행 중·미회수 자료를 완료로 표시하지 않는다. 본 연구의 분모·재실행 규칙은 사전 등록에 둔다. 과거 판정은 소급 변경하지 않는다.
