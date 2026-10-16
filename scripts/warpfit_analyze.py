@@ -37,6 +37,7 @@ def model(folder,assets):
     os.chdir(assets)
     xml=(folder/'scene.xml').read_text()
     xml=xml.replace('/home/ugrp/ugrp-sim/src/warpfit-teacher-6f057f7e',str(assets))
+    xml=xml.replace('/home/ugrp/ugrp-sim/runs/warpfit/inputs/src/drivecheck-renderer-5974a181',str(assets))
     m=mujoco.MjModel.from_xml_string(xml)
     f=__import__('numpy').load(folder/'fixture.npz')
     for k in ('cam_pos','cam_quat','cam_resolution','cam_sensorsize','cam_intrinsic'):
@@ -128,7 +129,11 @@ def main():
                         samples=len(points),positive_finger_samples=sum(v['all_fingers'] for v in points),
                         source=str(folder),source_states_sha256=hashlib.sha256((folder/'states.npz').read_bytes()).hexdigest(),
                         basis='fixed C3.12 reference temporal P05 height / P95 relative-hand displacement; no extra tolerance',
-                        established=all(v['all_fingers'] for v in points) and min(v['height_m'] for v in points)>0)
+                        # Frozen teacher min_clearance_m=.012, source6f057f7e
+                        # sim/grasp_act_solo_evaluation.py:10. Only establishes
+                        # that the reference is loaded; candidate bounds below
+                        # are measured C percentiles, with no invented margin.
+                        established=all(v['all_fingers'] for v in points) and min(v['height_m'] for v in points)>=.012)
     for rp in folders:
         r=json.loads(rp.read_text());folder=rp.parent
         row=dict(path=str(folder),**{k:r.get(k) for k in ('engine','round','nworld','status','completed','HOST_ERROR','cap_end','sim_s',
