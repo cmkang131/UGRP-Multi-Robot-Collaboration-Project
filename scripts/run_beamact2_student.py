@@ -49,7 +49,7 @@ def run(plan, output, dependency, model, actor_python, *, mode='off', cap_s=60.)
         loadavg_at_start=os.getloadavg())
     if candidate_arm != 'off':
         report.update(beamact3_v1=candidate_arm,compact_history=model_meta['compact_history'])
-    write_json(output/'RUN_META.json', dict(**{'class':'milestone'}, pr=540,
+    write_json(output/'RUN_META.json', dict(**{'class':'milestone'}, pr=545 if candidate_arm!='off' else 540,
         branch='codex/beamact3' if candidate_arm!='off' else 'codex/beamact1', sha=source,
         batch='beamact3-'+candidate_arm+'-heldout20' if candidate_arm!='off' else 'beamact2-heldout20',
         keep=['commands.jsonl', 'student-inputs.jsonl', 'eval-only.jsonl', 'review']))

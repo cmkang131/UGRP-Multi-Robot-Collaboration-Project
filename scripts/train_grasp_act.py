@@ -107,7 +107,7 @@ def main():
         'selection': 'fixed final step; validation never selects checkpoint'}
     write_summary(a.output / 'summary.json', report)
     write_json(a.output / 'RUN_META.json', {'class': a.run_class, 'sha': source,
-        'pr': None if a.execution_host_profile == 'beamact1_gcp2' else 504,
+        'pr': 545 if a.beamact3_v1 != 'off' else None if a.execution_host_profile == 'beamact1_gcp2' else 504,
         'branch': 'codex/beamact3' if a.beamact3_v1 != 'off' else 'codex/beamact1' if a.execution_host_profile == 'beamact1_gcp2' else 'claude/act-train',
         'batch': a.output.name})
     started, last_checkpoint = time.monotonic(), None
