@@ -55,7 +55,9 @@ class IntegratedController:
     navigation: observe(OwnFrame), task_candidates(completed), start(instruction,
       phase), command(sim_s), confirm_act(frame,skill), on_messages(rows),
       accept_release_fix(report). Reports use handoff_ready, destination_arrived,
-      holding_status, evidence_revision; all must derive from allowed inputs.
+      holding_status, evidence_revision, map_correction_active; all must derive
+      from allowed inputs. map_correction_active means own/static-map correction
+      is enabled, not that every frame is accepted as a position fix.
     release: start(instruction,own_report), observe(OwnFrame), command(sim_s).
       A report must say relocalized=true AND static_map_registered=true before
       navigation.accept_release_fix can permit the next task.
@@ -97,6 +99,8 @@ class IntegratedController:
         self.frame = frame
         self.act.observe(frame)
         self.report = self.navigation.observe(frame)
+        if self.report.get('map_correction_active') is not True:
+            raise ValueError('HOST_ERROR:owner own/static-map correction must be enabled')
         if self.phase == 'APPROACH' and self.report.get('handoff_ready') is True:
             self.set_phase('GRASP_AUTH', 'owner own-RGB/map nearfield handoff')
         elif self.phase == 'CARRY':

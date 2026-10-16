@@ -1,0 +1,14 @@
+{
+  "source_sha": "e0e1244839d993424cd232836c55357e49ac7d51",
+  "run_id": 38934527951,
+  "failing_job": 117087406784,
+  "failures": [
+    {
+      "test": "tests/test_simulation_workflow_manager.py::WorkflowManagerTests::test_every_catalog_workflow_has_a_read_only_explicit_plan",
+      "reason": "KeyError: 'e2e-warp-batch-v446'",
+      "fix": "add the new workflow to existing read-only catalog plan examples"
+    }
+  ],
+  "local_recheck": "24 passed in 3.26s (23 own-input/component tests + catalog read-only plan regression)",
+  "latest_ci": "new head not independently verified; see PR570 checks"
+}

@@ -82,24 +82,37 @@ R3의 old modulo 동작은 off로 보존한다. **수정 뒤 GPU 재실행은 �
   전체 E2E 제어기를 만들 필요 없이 navigation/release 어댑터 두 개를 연결한다.
   학생 입력은 기존 이미지/명령 이력+이산 토큰이고, GPU actor 로딩은 artifact hash·native
   provenance로 차단한다. 실제 checkpoint 로딩/추론·새 mission 흐름은 물리 미검증이다.
-- 최종 Mac 검증은 비물리21 tests pass, compile/whitespace, vendor334 SHA 일치다.
+- 최종 Mac 검증은 비물리24 tests pass(통합23 + workflow 계획1), compile/whitespace, vendor334 SHA 일치다.
   source/native smoke는 위 e0e124483에 한정하며 후속 mission 조합/키프레임 후보에
   그 물리 결과를 승계하지 않는다. Mac 물리 step/render0, 추가 GPU 라운드0.
 - queue와 실제 XML/manifest의 current_stack 점검은 pass이지만
   localization/nearfield/setdown **3개 승인된 smoke 이탈**이 있어 current_compliant=false다.
   [점검 결과](r3/runtime-stack-check.json)의 선언 범위와 실제 관문 증거를 구분한다.
 
+최신 stackaudit `45623168`에는 영어 대화와 `selfmap_map_correction=on`이 추가됐다.
+새 조건은 `no_comm/peer_en/leader_en/structured`이고 topology 검증만 기존 계약으로
+투영한다. full mission은 mapbuild8의 이동량 예측 → 자기 지도 축적 → 사전 창 안에서
+자기 지도·정적 지도와 주변 인식 정합·위치 보정이 준비돼야 한다. ready manifest와
+매 관측의 map_correction_active를 검사하고 odometry-only 어댑터는 차단한다.
+R3의 원본 `peer_ko`와 지도 보정 off는 그대로 보존하며 **최신 요구에는 미준수**다
+([후행 점검](r3/latest-policy-review.json)). 최신 설정 준비는
+[선언 검사](latest-policy-admission.json)에서만 통과했고 새 물리 검증은 없다.
+
+이전 CI는 새 workflow의 read-only 계획 예제 누락으로1건 실패했다. 예제를 추가해
+해당 검사와 통합 단위 시험을 함께24건 통과했다([CI 기록](ci-review.json)). 최신 CI
+결과는 draft PR에서 별도로 확인한다.
+
 ## 남은 의존 / ops-alert 상태 (종료 시 확인)
 
 | 부품 | 소유자 | 최신 수신 / 남은 것 |
 |---|---|---|
 | native ACT 최종 학생 | act16w4, PR539 | A/B 각10000 step·재로딩 완료, VAL8×A/B 진행 소식. 최종 선택·종류/스킬 범위·public artifact·독립 성공 인수 미수신 |
-| LK/RBPF 실제 운반 판정 | mapbuild7, PR556 | mapbuild6 실제 운반 진입0 / NOT_READY 인수. 새 보정 없음/있음·실제 경로 판정 대기 |
-| 운반 자세 명령 FK | mapbuild7 | 01:43 scope-ack, 예상02:35 KST. 기존 grip<=1600 거부 유지, 승인된 loaded API 미수신 |
-| 자기 RGB→정적 지도 초기/주기 정합 | mapbuild7 | 01:55 조정자 지시 확인, 예상03:20 KST. spawn/평가 앵커 금지, 새 API·검증 미수신 |
-| release_reloc_selfmap_v1 | warp8e, PR557 | 관측 어댑터 byte vendor 완료. decision은 항상 미수용; 실제 명령/정합/물리 관문은 미완성 |
+| LK/RBPF 실제 운반 판정 | mapbuild8, PR556 | mapbuild6 운반 진입0 / NOT_READY. 02:24 scope-ack, 실제 경로 OFF/ON 판정06:00 KST 예상 |
+| 운반 자세 명령 FK | mapbuild8 | 02:24 scope-ack. 보정/FK API 예상04:15 KST. 기존 grip<=1600 거부 유지, 승인된 loaded API 미수신 |
+| 자기 RGB→정적 지도 초기/주기 정합 | mapbuild8 | 이동량 사전 창에서 자기 지도·정적 지도 정합 필수. 사전 창 표03:15, API04:15, 실제 경로06:00 KST 예상. spawn/평가 앵커 금지 |
+| release_reloc_selfmap_v1 | warp8f, PR557 | warp8e 관측 어댑터 byte vendor. 오프라인14세계 CSM0/28 채택(모호17/관측부족11); mapbuild8 보정 API 뒤 재평가, A40/B40 보류 |
 | noslip0 | nsoff PR568 / warpfit2 PR562 | byte vendor/runtime GPU0 확인. nsoff 최신 CI 이슈는 소유자 담당, 원본 변경0 |
-| current_stack/checker | stackaudit PR569 | 8fc1b1bc byte vendor, queue/실제 XML 점검 완료 |
+| current_stack/checker | stackaudit PR569 | 최신45623168 byte vendor. R3 원본 점검은8fc1b1bc; 최신 기준 재판정 별도 |
 | 이 작업 키프레임 수정 | e2ewarp PR570 | 코드·회귀 시험만. 수정 후 실제 지도 삽입/운반 미검증 |
 
 공용 ops-alert에 ownership/latest-ack, 설계 완료, 첫30 점검, 종료를 append했다.

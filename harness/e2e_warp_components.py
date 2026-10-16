@@ -9,7 +9,8 @@ import importlib
 import json
 from pathlib import Path
 
-REQUIRED = ('navigation', 'loaded_camera_fk', 'static_map_registration', 'release_relocalization')
+REQUIRED = ('navigation', 'loaded_camera_fk', 'static_map_registration',
+            'selfmap_map_correction', 'release_relocalization')
 
 
 def require_components(path, root):
@@ -20,6 +21,10 @@ def require_components(path, root):
         record = manifest.get(name, {})
         if record.get('ready') is not True or not record.get('owner') or not record.get('evidence'):
             raise ValueError('DEPENDENCY_WAIT:' + name)
+    correction = manifest['selfmap_map_correction']
+    if (correction.get('mode') != 'on' or correction.get('own_and_static_map') is not True
+            or correction.get('spawn_anchor_used') is not False):
+        raise ValueError('DEPENDENCY_WAIT:own/static map correction without spawn anchor required')
     for name in ('navigation_factory', 'release_factory', 'evaluator_factory'):
         item = manifest.get(name, {})
         module, sep, attr = item.get('entry', '').partition(':')

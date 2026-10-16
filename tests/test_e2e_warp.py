@@ -35,7 +35,7 @@ def test_no_comm_has_no_inbox_and_rejects_message():
 
 
 def test_leader_star_and_world_isolation():
-    a, b = Channels('leader_ko', 601), Channels('leader_ko', 601)
+    a, b = Channels('leader_en', 601), Channels('leader_en', 601)
     assert a.leader == 'r2'
     with pytest.raises(ContractViolation):
         a.send('r1', {'recipients': ['r3'], 'body': {'text': '기다려'}}, now=0)
@@ -180,7 +180,7 @@ def mission_fixture():
     instruction=dict(order_id='one',object_kind='cyan',role='west',destination_zone='A',route='west',participants=['r1'])
     class Navigation:
         def __init__(self):
-            self.report={'evidence_revision':'initial'};self.starts=[];self.confirm=True;self.messages=[]
+            self.report={'evidence_revision':'initial','map_correction_active':True};self.starts=[];self.confirm=True;self.messages=[]
         def observe(self, f):return self.report.copy()
         def task_candidates(self, completed):
             return ([dict(id='finish',skill='finish',expected_cost='own completion claim')]
@@ -229,6 +229,21 @@ def test_act_done_without_rgb_confirmation_returns_unknown():
     choose('grasp',.1);nav.confirm=None;ctl.command(.1)
     assert ctl.phase=='UNCERTAIN' and not ctl.complete
     assert 'carry' not in {r['id'] for r in ctl.candidates()}
+
+
+def test_mission_rejects_odometry_only_owner_adapter():
+    ctl,nav,release,calls,observe,choose=mission_fixture()
+    nav.report['map_correction_active']=False
+    with pytest.raises(ValueError,match='own/static-map correction'):
+        observe(0)
+
+
+def test_new_channels_use_english_external_conditions_only():
+    channel=Channels('peer_en',601)
+    channel.send('r1',{'recipients':['r2'],'body':{'text':'Wait for my own view.'}},now=0)
+    assert channel.condition=='peer_en' and channel.inbox('r2')['inbox'][0]['body']['text'].startswith('Wait')
+    with pytest.raises(ValueError,match='four main'):
+        Channels('peer_ko',601)
 
 
 def test_wait_wakes_only_on_own_semantic_event_or_channel_message():

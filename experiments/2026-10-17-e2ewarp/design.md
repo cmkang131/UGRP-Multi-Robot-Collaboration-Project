@@ -54,7 +54,7 @@ ACT는 자기 RGB 이력·자기 명령 이력·이산 skill/kind/role/destinati
 | v7 명령 relay/PWM interpolation·warp_act_core | byte vendor | 배치 world×robot 명령 tape; 자기 명령만 사용 |
 | CPU mj_step·렌더·settling | 교체 | MJWarp step/renderer만; noslip0 runtime 검증 |
 | 기존 RGB/명령 LK | mapbuild FK qualification과 연결 | RGB unknown은 정지 증거가 아님; command prediction 별도 표시 |
-| 구 Hough 바닥선 release localizer | 승계 금지 | warp8e 자기 지도 release adapter 대기 |
+| 구 Hough 바닥선 release localizer | 승계 금지 | warp8f 자기 지도 release adapter 대기 |
 | 손으로 짠 근거리 파지 | 승계 금지 | act16w GPU 학생; artifact 없으면 dependency wait |
 | OpenRouter upstream·journal·Keychain | Mac 재사용 | VM은 localhost relay만 접근 |
 | evaluator/성공 조건 | 별도 capability | 실제 운반 검증 전에는 E2E_success=false |
@@ -62,9 +62,11 @@ ACT는 자기 RGB 이력·자기 명령 이력·이산 skill/kind/role/destinati
 
 ## 통신 네 조건
 
-기존 MAIN_CONDITIONS `no_comm`, `peer_ko`, `leader_ko`, `structured`를 쓴다.
-no_comm은 inbox 자체가 없다. peer_ko는 수신자별 자유 한국어, leader_ko는 seed로
-고정한 순환 leader의 star 연결만 허용한다. structured는 고정 schema만 전달한다.
+최신 외부 조건은 `no_comm`, `peer_en`, `leader_en`, `structured`다.
+no_comm은 inbox 자체가 없다. peer_en은 수신자별 자유 영어, leader_en은 seed로
+고정한 순환 leader의 star 연결만 허용한다. topology/schema 검증만 기존 legacy_condition
+함수로 투영하고 외부 실행 ID는 영어로 보존한다. structured는 고정 schema만 전달한다.
+R3는 앞선8fc 정책의 peer_ko 원본으로 별도 보존하며 최신 준수 실행으로 세지 않는다.
 같은 LLM 응답에서 선택과 메시지를 함께 받는다. 후보/실행 상태는 다른 로봇에게
 직접 공유하지 않는다. 최소 GO/ACK 실행 동기화도 과제 판단의 옆길로 쓰지 않는다.
 처음 1–2세계 점검은 전체 4조건 비교/통신 효과 검증이 아니다.
@@ -73,19 +75,27 @@ no_comm은 inbox 자체가 없다. peer_ko는 수신자별 자유 한국어, lea
 
 | 의존 | 소유자 | 확인한 상태 / 연결 조건 | ops-alert |
 |---|---|---|---|
-| 최종 native ACT 학생 checkpoint | act16w4 / claude/act16w | native 기록40 완료·A/B 학습 중; 최종 선택/재평가 미확인. inventory/hash/adapter/학습 출처 필요 | 준비된 commit/API/hash 요청 |
-| LK/RBPF 판정 | mapbuild6 / codex/mapbuild1 | 실제 운반 경로 녹화 3라운드 종료, 운반 진입0. 채택 판정 대기 | 현 상태 확인 |
-| 운반 자세 명령 FK | mapbuild6 | grip<=1600 거부 유지; 보정/자격을 임의 완화하지 않음 | warp8e·조정자 scope 요청 확인 |
-| 정적 지도 전역 정합 | mapbuild6 | own-gauge→static map API 미완성 | 위 scope 요청 확인 |
-| release 위치 재획득 | warp8e / codex/warp6 | release_reloc_selfmap_v1 오프라인 준비; 옛 Hough 승계 금지 | 준비된 commit/API/hash 요청 |
-| native noslip0 | nsoff PR #568 / warpfit2 PR #562 | native owner SHA a5c8d370... byte vendor | 기존 완료 보고 확인 |
-| current_stack/check_current_stack | stackaudit | JSON 로컬 초안 확인, remote ref/점검기 준비 대기 | commit/ref 요청 |
+| 최종 native ACT 학생 checkpoint | act16w4 / claude/act16w | native A/B 각10000 step·reload 완료, VAL8×A/B 진행. 선택/public artifact/범위/독립관문 대기 | 최신 수신, final40 미개봉 |
+| LK/RBPF 판정 | mapbuild8 / codex/mapbuild1 | mapbuild6 운반 진입0·NOT_READY; 새 보정 OFF/ON 실제 경로 대기 | 02:24 scope-ack, 06:00 KST 예상 |
+| 운반 자세 명령 FK | mapbuild8 | grip<=1600 거부 유지; 보정/자격을 임의 완화하지 않음 | 보정/FK API04:15 예상 |
+| 자기 지도·정적 지도 보정 | mapbuild8 | 이동량 사전 창 안 정합, spawn/GT 앵커 금지. 모호 모드 표→API→실제 경로 | 표03:15/API04:15 예상, 미수신 |
+| release 위치 재획득 | warp8f / codex/warp6 | 관측 byte vendor만. 오프라인14세계418뷰 전역CSM0/28 채택(모호17/관측부족11), A40/B40보류 | mapbuild8 보정 API 기다림 |
+| native noslip0 | nsoff PR #568 / warpfit2 PR #562 | native owner SHA a5c8d370... byte vendor/runtimeGPU0 | 원본 변경0 |
+| current_stack/check_current_stack | stackaudit PR569 | 최신45623168 byte vendor; 영어·map correction 필수 | R3 원8fc 판정과 최신 미준수 분리 |
 
 외부 부품은 `manifest + observe(own) + candidates() + execute(selection)` 계약으로
 연결한다. 최종 조합은 `harness/e2e_warp_mission.py`가 맡고, owner에게는 navigation와
 release 부품 factory만 요구한다. ACT 이미지/명령 이력 구성과 기존 청크 실행도 이
 조합 경로에서 수행한다. 완료·성공·실측 여부를 어댑터가 지어내지 않는다. runtime/own inputs를
 보존하고 각 dependency가 ready여도 처음→끝 새 물리 검증 없이는 ready 판정하지 않는다.
+
+최신 `selfmap_map_correction=on`은 이동량 예측만으로 대체할 수 없다. own RGB와
+발행 명령으로 이동량을 예측하고 자기 지도를 쌓은 뒤, 예측 위치의 사전 창 안에서
+현재 인식/자기 지도/정적 지도를 정합해 위치를 보정한다. global registration·loaded FK와
+함께 readiness를 인수하며 factory manifest에 own_and_static_map=true,
+spawn_anchor_used=false를 요구한다. navigation 보고의 map_correction_active=false/누락은
+HOST_ERROR다. 실제 보정 수용/오차/재획득은 owner 원장과 새 물리 관문에서 검증한다.
+소유자는 mapbuild8이며 의존이 준비되기 전 mission/운반 대기열을 내지 않는다.
 
 ## 실행·검증 계획
 

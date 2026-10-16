@@ -18,9 +18,9 @@ import traceback
 from urllib.request import urlopen
 
 from harness.e2e_warp_runtime import (OPTION, OwnFrame, Channels, Planner, DiagnosticTask,
-                                     encode, sha, rejection, first30)
+                                     COMM_CONDITIONS, encode, sha, rejection, first30)
 from harness.e2e_warp_components import require_components, MissionRobot, load_actor, factory
-from harness.zone_study_contract import MAIN_CONDITIONS, ROBOTS
+from harness.zone_study_contract import ROBOTS
 
 ROOT = Path(__file__).resolve().parents[1]
 BUNDLE_ID = 'e2e-warp-batch-v446'
@@ -48,10 +48,11 @@ def prepare(a):
     values = {r['id']: r['current'] for r in stack['rules'] if 'e2e_llm' in r['flows']}
     values['gcp_host'] = INSTANCE
     values['gcp_project'], values['gcp_account'] = PROJECT, ACCOUNT
+    values['dialogue_language'] = a.condition
     deviations = []
     if a.mode == 'smoke':
         actual = dict(nearfield_executor='dependency_wait', localization_path='own_gauge_LK_diagnostic',
-                      setdown_lookaround_v1=False)
+                      setdown_lookaround_v1=False, selfmap_map_correction='off')
         for key, value in actual.items():
             values[key] = value
             deviations.append(dict(id=key, reason='first30 diagnostic; incomplete component blocked; no transport/student success',
@@ -69,7 +70,7 @@ def prepare(a):
         host=dict(instance=INSTANCE, project_id=PROJECT, account=ACCOUNT),
         no_pooling=True, rejection_table=str(prior or funnel.resolve()),
         record_tail=dict(hz=10, sim_s=10, purpose='recording_only; no control changes'),
-        dependency_status='waiting for selected ACT / loaded FK / global registration / release API')
+        dependency_status='waiting for selected ACT / loaded FK / mapbuild8 own+static map correction / release API')
     a.output.mkdir(parents=True, exist_ok=False)
     write(funnel, dict(raw=str(a.output.resolve()), reproduction=a.command,
         stages=[dict(stage='queue_prepared', cumulative_pass_n=a.nworld, rejected_n=0),
@@ -154,7 +155,7 @@ def run(a, queue):
             scenario = context['scene'].scene['params']['scenario_setup']
             static = dict(orders=scenario['orders'], static_map=context['static_map'],
                           condition=a.condition, communication_schema=dict(
-                              free=dict(body={'text': '한국어 문장'}), structured=dict(body={'act': 'inform', 'state': 'unknown'})),
+                              free=dict(body={'text': 'English sentence'}), structured=dict(body={'act': 'inform', 'state': 'unknown'})),
                           input_boundary='own RGB and own issued commands only; no top/GT/contact')
             channels.append(Channels(a.condition, a.seed))
             for robot in ROBOTS:
@@ -348,7 +349,7 @@ def main(argv=None):
     p.add_argument('--round', type=int, choices=(1, 2, 3), default=1)
     p.add_argument('--nworld', type=int, choices=range(1, 41), default=1)
     p.add_argument('--seed', type=int, default=601)
-    p.add_argument('--condition', choices=MAIN_CONDITIONS, default='no_comm')
+    p.add_argument('--condition', choices=COMM_CONDITIONS, default='no_comm')
     p.add_argument('--prepare', action='store_true')
     p.add_argument('--execute', action='store_true')
     p.add_argument('--queue', type=Path)

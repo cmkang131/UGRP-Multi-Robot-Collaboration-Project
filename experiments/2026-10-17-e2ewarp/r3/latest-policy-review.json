@@ -1,0 +1,632 @@
+{
+  "scope": "retrospective policy review only; does not change original R3 manifest or approvals",
+  "stack_source_sha": "45623168348b9a8fc0711820a0355ef21f2e2823",
+  "raw_source_sha": "e0e1244839d993424cd232836c55357e49ac7d51",
+  "current_compliant": false,
+  "rows": [
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "physics_backend",
+      "expected": "mjwarp_batch_v1",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.physics_backend",
+          "value": "mjwarp_batch_v1"
+        }
+      ],
+      "status": "current"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "contact_profile",
+      "expected": "warp_native_contact_v1",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.contact_profile",
+          "value": "warp_native_contact_v1"
+        },
+        {
+          "field": "parent[0].contact_profile.profile",
+          "value": "warp_native_contact_v1"
+        }
+      ],
+      "status": "current"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "noslip_iterations",
+      "expected": 0,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.noslip_iterations",
+          "value": 0
+        },
+        {
+          "field": "parent[0].contact_profile.noslip_iterations",
+          "value": 0
+        }
+      ],
+      "status": "current"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "scene_profile",
+      "expected": "walls_floor_contrast_v5_indigo110_s80",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.scene_profile",
+          "value": "walls_floor_contrast_v5_indigo110_s80"
+        }
+      ],
+      "status": "current"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "end_color_scene",
+      "expected": "grasp_act_teal_blue_v1",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.end_color_scene",
+          "value": "grasp_act_teal_blue_v1"
+        }
+      ],
+      "status": "current"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "cargo_version",
+      "expected": "v6",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.cargo_version",
+          "value": "v6"
+        }
+      ],
+      "status": "current"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "scenario_version",
+      "expected": "v7",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.scenario_version",
+          "value": "v7"
+        }
+      ],
+      "status": "current"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "heavy_crate",
+      "expected": false,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.heavy_crate",
+          "value": false
+        }
+      ],
+      "status": "current"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "localization_path",
+      "expected": "texture_self_map_lk",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.localization_path",
+          "value": "own_gauge_LK_diagnostic"
+        }
+      ],
+      "status": "approved_deviation",
+      "original_status": "deviation",
+      "approval": {
+        "id": "localization_path",
+        "reason": "first30 diagnostic; incomplete component blocked; no transport/student success",
+        "approval": {
+          "authority": "user",
+          "evidence": "2026-10-17 e2ewarp request §3(b): marked substitutions permitted for first30; pending parts interface/toggle only"
+        }
+      }
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "rbpf",
+      "expected": "off",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.rbpf",
+          "value": "off"
+        }
+      ],
+      "status": "current"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "localization_engine",
+      "expected": "OpenCV",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.localization_engine",
+          "value": "OpenCV"
+        }
+      ],
+      "status": "current"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "setdown_lookaround_v1",
+      "expected": true,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.setdown_lookaround_v1",
+          "value": false
+        }
+      ],
+      "status": "approved_deviation",
+      "original_status": "deviation",
+      "approval": {
+        "id": "setdown_lookaround_v1",
+        "reason": "first30 diagnostic; incomplete component blocked; no transport/student success",
+        "approval": {
+          "authority": "user",
+          "evidence": "2026-10-17 e2ewarp request §3(b): marked substitutions permitted for first30; pending parts interface/toggle only"
+        }
+      }
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "held_object_hidden_v1",
+      "expected": true,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.held_object_hidden_v1",
+          "value": true
+        }
+      ],
+      "status": "current"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "held_world_reads",
+      "expected": 0,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.held_world_reads",
+          "value": 0
+        }
+      ],
+      "status": "current"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "nearfield_executor",
+      "expected": "ACT",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.nearfield_executor",
+          "value": "dependency_wait"
+        }
+      ],
+      "status": "approved_deviation",
+      "original_status": "deviation",
+      "approval": {
+        "id": "nearfield_executor",
+        "reason": "first30 diagnostic; incomplete component blocked; no transport/student success",
+        "approval": {
+          "authority": "user",
+          "evidence": "2026-10-17 e2ewarp request §3(b): marked substitutions permitted for first30; pending parts interface/toggle only"
+        }
+      }
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "weld",
+      "expected": false,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.weld",
+          "value": false
+        }
+      ],
+      "status": "current"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "top_camera_control",
+      "expected": false,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.top_camera_control",
+          "value": false
+        }
+      ],
+      "status": "current"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "planner_model",
+      "expected": "google/gemma-4-31b-it",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.planner_model",
+          "value": "google/gemma-4-31b-it"
+        }
+      ],
+      "status": "current"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "planner_provider",
+      "expected": "CoreWeave",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.planner_provider",
+          "value": "CoreWeave"
+        }
+      ],
+      "status": "current"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "planner_quantization",
+      "expected": "fp4",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.planner_quantization",
+          "value": "fp4"
+        }
+      ],
+      "status": "current"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "planner_fallbacks",
+      "expected": false,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.planner_fallbacks",
+          "value": false
+        }
+      ],
+      "status": "current"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "planner_own_rgb_count",
+      "expected": 1,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.planner_own_rgb_count",
+          "value": 1
+        }
+      ],
+      "status": "current"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "planner_cache_order",
+      "expected": [
+        "system",
+        "static",
+        "dynamic",
+        "image"
+      ],
+      "observed": [
+        {
+          "field": "parent[0].stack_values.planner_cache_order",
+          "value": [
+            "system",
+            "static",
+            "dynamic",
+            "image"
+          ]
+        }
+      ],
+      "status": "current"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "heading_mode",
+      "expected": "on",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.heading_mode",
+          "value": "on"
+        }
+      ],
+      "status": "current"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "ultrasonic_front",
+      "expected": "off",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.ultrasonic_front",
+          "value": "off"
+        }
+      ],
+      "status": "current"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "wall_cap",
+      "expected": null,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.wall_cap",
+          "value": null
+        }
+      ],
+      "status": "current"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "speed_gate",
+      "expected": "record_only",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.speed_gate",
+          "value": "record_only"
+        }
+      ],
+      "status": "current"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "speed_metric",
+      "expected": "wall_s/(sim_s*nworld)",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.speed_metric",
+          "value": "wall_s/(sim_s*nworld)"
+        }
+      ],
+      "status": "current"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "gcp_host",
+      "expected": [
+        "ugrp-act-l4-gcp2",
+        "ugrp-act-l4-gcp3",
+        "ugrp-act-l4-gcp4",
+        "ugrp-act-l4-gcp5",
+        "ugrp-act-l4-gcp6"
+      ],
+      "observed": [
+        {
+          "field": "parent[0].stack_values.gcp_host",
+          "value": "ugrp-act-l4-gcp6"
+        },
+        {
+          "field": "parent[0].host.instance",
+          "value": "ugrp-act-l4-gcp6"
+        },
+        {
+          "field": "host.project_id",
+          "value": "ugrp-sim-f-1016"
+        },
+        {
+          "field": "stack_values.gcp_project",
+          "value": "ugrp-sim-f-1016"
+        },
+        {
+          "field": "host.account",
+          "value": "kcm5781kcm5781@gmail.com"
+        },
+        {
+          "field": "stack_values.gcp_account",
+          "value": "kcm5781kcm5781@gmail.com"
+        },
+        {
+          "field": "host.project_id",
+          "value": "ugrp-sim-f-1016"
+        },
+        {
+          "field": "stack_values.gcp_project",
+          "value": "ugrp-sim-f-1016"
+        },
+        {
+          "field": "host.account",
+          "value": "kcm5781kcm5781@gmail.com"
+        },
+        {
+          "field": "stack_values.gcp_account",
+          "value": "kcm5781kcm5781@gmail.com"
+        }
+      ],
+      "status": "current"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "gcp_guards",
+      "expected": {
+        "idle_minutes": 20,
+        "budget_stop": true,
+        "credentials_on_vm": false
+      },
+      "observed": [
+        {
+          "field": "parent[0].stack_values.gcp_guards",
+          "value": {
+            "idle_minutes": 20,
+            "budget_stop": true,
+            "credentials_on_vm": false
+          }
+        }
+      ],
+      "status": "current"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "no_pooling",
+      "expected": true,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.no_pooling",
+          "value": true
+        }
+      ],
+      "status": "current"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "planning_cap_basis",
+      "expected": "compute_or_sim",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.planning_cap_basis",
+          "value": "compute_or_sim"
+        }
+      ],
+      "status": "current"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "rejection_ledger",
+      "expected": [
+        "reason_category",
+        "blocked_object",
+        "minimum_gap_m"
+      ],
+      "observed": [
+        {
+          "field": "parent[0].stack_values.rejection_ledger",
+          "value": [
+            "reason_category",
+            "blocked_object",
+            "minimum_gap_m"
+          ]
+        }
+      ],
+      "status": "current"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "cap_end_label",
+      "expected": "cap_end",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.cap_end_label",
+          "value": "cap_end"
+        }
+      ],
+      "status": "current"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "gcp_project",
+      "expected": [
+        "ugrp-sim-b-1014",
+        "ugrp-sim-c-1016",
+        "ugrp-sim-d-1016",
+        "ugrp-sim-e-1016",
+        "ugrp-sim-f-1016"
+      ],
+      "observed": [
+        {
+          "field": "parent[0].stack_values.gcp_project",
+          "value": "ugrp-sim-f-1016"
+        },
+        {
+          "field": "parent[0].host.project_id",
+          "value": "ugrp-sim-f-1016"
+        }
+      ],
+      "status": "current"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "gcp_account",
+      "expected": [
+        "changmin5781@gmail.com",
+        "kcm5781kcm5781@gmail.com"
+      ],
+      "observed": [
+        {
+          "field": "parent[0].stack_values.gcp_account",
+          "value": "kcm5781kcm5781@gmail.com"
+        },
+        {
+          "field": "parent[0].host.account",
+          "value": "kcm5781kcm5781@gmail.com"
+        }
+      ],
+      "status": "current"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "dialogue_language",
+      "expected": "peer_en",
+      "observed": [
+        {
+          "field": "parent[0].condition",
+          "value": "peer_ko"
+        }
+      ],
+      "status": "deviation"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "selfmap_map_correction",
+      "expected": "on",
+      "observed": [
+        {
+          "field": "parent[0].localization.map_correction",
+          "value": "off"
+        }
+      ],
+      "status": "deviation"
+    }
+  ],
+  "derived_inputs": {
+    "condition": {
+      "value": "peer_ko",
+      "source": "r3/queue.json"
+    },
+    "localization.map_correction": {
+      "value": "off",
+      "source": "e0e124483 scripts.run_e2e_warp smoke own_map LK only; no global map correction"
+    }
+  }
+}

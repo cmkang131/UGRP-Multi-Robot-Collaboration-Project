@@ -45,7 +45,7 @@
     }
   ],
   "validation": {
-    "Mac_nonphysics_tests": 21,
+    "Mac_nonphysics_tests": 24,
     "vendor_files": 334,
     "vendor_hash_mismatch": 0,
     "Mac_physics_steps": 0,
@@ -54,13 +54,13 @@
   },
   "pending": [
     "ACT selected checkpoint and coverage",
-    "loaded camera FK qualification",
-    "LK/RBPF transport-route decision and static-map registration",
-    "release_reloc_selfmap_v1 physical adapter/gate"
+    "mapbuild8 loaded camera FK qualification",
+    "mapbuild8 prior-window own/static map correction and actual-route LK/RBPF gate",
+    "warp8f release_reloc_selfmap_v1 correction and physical gate"
   ],
   "stopping_condition_met": false,
   "runtime_verified_source": "e0e1244839d993424cd232836c55357e49ac7d51",
-  "latest_code_validation_scope": "post-R3 mission composition and default-off elapsed-SIM keyframe candidate; no physical rerun",
+  "latest_code_validation_scope": "post-R3 mission composition, elapsed-SIM keyframe candidate, English channels and mandatory own/static map correction; compile/24 nonphysics tests only",
   "vm": {
     "lastStopTimestamp": "2026-10-16T10:05:09.532-07:00",
     "status": "TERMINATED",
@@ -100,10 +100,10 @@
     "/home/ugrp/ugrp-sim/ops-reviews/e2ewarp/packing.json": "ca0a5cfe0504f7cc85c58240ce329d07356f6bf62765931ca62631f9dc016806"
   },
   "code_sha256": {
-    "harness/e2e_warp_runtime.py": "8d1912c9dd59744aa6f580288b659bc3c572a9869ce8673e40ea6559dd5e7b61",
-    "harness/e2e_warp_components.py": "c937577a3ea01a86d01876ea5b1b6ad0bcfe16fa9993fc5a1048f6db893b7841",
-    "harness/e2e_warp_mission.py": "310f15d483962c9a43b4948b6ae63dadc35c6015da55c97d0dfd891f3cc36ae3",
-    "scripts/run_e2e_warp.py": "8aac13fad9c28b85e32041eb835210bd7fe8b2c4fc0dca2c773e57ea74a930c4",
+    "harness/e2e_warp_runtime.py": "1eff93e8b5dd000931e791051f4131c4adf852849f4cec9509ad99d638a45d69",
+    "harness/e2e_warp_components.py": "9a5fdd906ea43c4576498979b2f66ef7eae4093e973ec3a9de2919e28d350be3",
+    "harness/e2e_warp_mission.py": "b9a810747733c1908c13a8d2832bfde3afa3f5ca303af72d71d8d52718d651d3",
+    "scripts/run_e2e_warp.py": "5d29d74c90e3a71208dd190fc19625e0b7cdcd11596996685bdd8c013081ad03",
     "scripts/e2e_warp_physics.py": "d4ba3c32efe89a96fcd81a4b19d38cd7125de0827341857754375ca3310c5543",
     "scripts/e2e_warp_relay.py": "d8b64618f882d266a668a6d02801cd20ed1efa1a7beea192e5a08f8dfe3b1a41",
     "scripts/e2e_warp_inspect.py": "8908ad71265993b2009bce58af60952df228f999c58047a22cba559b4f66452a"
@@ -118,5 +118,14 @@
     "mac_relay_listening": false,
     "own_tunnel_closed": true,
     "other_worktrees_modified": false
+  },
+  "latest_policy": {
+    "stackaudit_source_sha": "45623168348b9a8fc0711820a0355ef21f2e2823",
+    "dialogue_language": "en",
+    "selfmap_map_correction": "on",
+    "R3_latest_compliant": false,
+    "R3_historical_policy": "8fc1b1bc39d0b47a59d180f7b282c6da731d8b3c",
+    "latest_declaration_only_pass": true,
+    "physical_rerun": false
   }
 }

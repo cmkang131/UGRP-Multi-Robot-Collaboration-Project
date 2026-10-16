@@ -6,7 +6,7 @@
 ## Mac 비물리 확인
 
 ```sh
-/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_e2e_warp.py
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_e2e_warp.py tests/test_simulation_workflow_manager.py::WorkflowManagerTests::test_every_catalog_workflow_has_a_read_only_explicit_plan
 python3 -m compileall -q harness/e2e_warp_runtime.py harness/e2e_warp_mission.py harness/e2e_warp_components.py scripts/run_e2e_warp.py scripts/e2e_warp_physics.py scripts/e2e_warp_relay.py
 python3 -m scripts.run_e2e_warp --output outputs/e2ewarp-preview
 ```
@@ -51,6 +51,9 @@ idle20/budget-stop·임대·GPU/PID·저장 예산 점검을 다시 한다.
 
 새 소스의 키프레임 후보는 prepare에 `--map-keyframe-admission elapsed_sim_v1`을
 명시한다. 해당 queue의 map_keyframe_admission과 runtime-applied 값을 함께 남긴다.
+새 실행의 자유 대화는 peer_en/leader_en이며 R3의 peer_ko는 기록된 소스 재생 전용이다.
+최신 stackaudit45623168의 selfmap_map_correction=on을 mission에 인수한다. smoke의
+보정 off는 지정 진단 이탈이며 실제 지도/운반 성공이 아니다.
 예전 off와 결과를 합산하지 않고 지도 관문을 다시 잰다. 기록된 R3 frame funnel을
 새 queue의 절대경로 rejection_table로 연결한다.
 
@@ -63,6 +66,9 @@ full mission에는 다음 hash-bound factory만 필요하다. E2E orchestration�
 | release_factory | robot_id, static | start; 실제 자기 RGB observe/command; relocalized+static_map_registered 인수 |
 | evaluator_factory | raw 디렉터리(제어 종료 뒤) | source SHA·evaluation-state SHA·정확한 world IDs·한 에피소드 처음→끝 실제 운반 판정 |
 
+navigation은 매 observe 보고에 map_correction_active=true(정책 활성)를 명시해야 한다.
+이동량 사전 창 안에서 own map·static map과 인식을 정합해 보정하는 mapbuild8 API가
+필수이며, GT/spawn 앵커나 odometry-only로 readiness를 채우지 않는다.
 navigation의 evidence_revision은 의미 있는 자기 관측 사건에서만 바꾼다(매 프레임 시각으로
 바꾸지 않는다). WAIT는 이 사건이나 허용 채널의 새 메시지에만 다시 LLM을 부른다.
 ACT의 done만으로 phase를 넘기지 않고 자기 RGB 확인을 요구한다. release 관측 어댑터의

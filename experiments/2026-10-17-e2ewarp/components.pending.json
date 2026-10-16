@@ -1,11 +1,49 @@
 {
   "schema": "ugrp.e2ewarp.components.v1",
-  "navigation": {"ready": false, "owner": "mapbuild7", "evidence": "actual transport route qualification pending"},
-  "loaded_camera_fk": {"ready": false, "owner": "mapbuild6/mapbuild7", "evidence": "closed gripper command currently unqualified"},
-  "static_map_registration": {"ready": false, "owner": "mapbuild6/mapbuild7", "evidence": "own gauge to static map API pending"},
-  "release_relocalization": {"ready": false, "owner": "warp8e", "evidence": "release_reloc_selfmap_v1 observation adapter only; physics connection pending"},
-  "ACT": {"ready": false, "owner": "act16w4", "native_contact": "warp_native_contact_v1", "evidence": "native A/B training; final selected artifact and gate pending"},
-  "navigation_factory": {"entry": "", "sha256": ""},
-  "release_factory": {"entry": "", "sha256": ""},
-  "evaluator_factory": {"entry": "", "sha256": ""}
+  "navigation": {
+    "ready": false,
+    "owner": "mapbuild8",
+    "evidence": "actual transport route qualification pending"
+  },
+  "loaded_camera_fk": {
+    "ready": false,
+    "owner": "mapbuild8",
+    "evidence": "closed gripper command currently unqualified"
+  },
+  "static_map_registration": {
+    "ready": false,
+    "owner": "mapbuild8",
+    "evidence": "own gauge to static map API pending"
+  },
+  "release_relocalization": {
+    "ready": false,
+    "owner": "warp8f",
+    "evidence": "observation adapter only; global CSM accepted0/28 offline; prior-window mapbuild8 correction and physical gate pending"
+  },
+  "ACT": {
+    "ready": false,
+    "owner": "act16w4",
+    "native_contact": "warp_native_contact_v1",
+    "evidence": "native A/B training; final selected artifact and gate pending"
+  },
+  "navigation_factory": {
+    "entry": "",
+    "sha256": ""
+  },
+  "release_factory": {
+    "entry": "",
+    "sha256": ""
+  },
+  "evaluator_factory": {
+    "entry": "",
+    "sha256": ""
+  },
+  "selfmap_map_correction": {
+    "ready": false,
+    "owner": "mapbuild8",
+    "evidence": "02:24 scope-ack; prior-window own/static map correction API and actual route gate pending",
+    "mode": "on",
+    "own_and_static_map": true,
+    "spawn_anchor_used": false
+  }
 }
