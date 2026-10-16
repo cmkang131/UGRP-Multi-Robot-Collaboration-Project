@@ -1,0 +1,296 @@
+{
+  "schema": "ugrp.current_stack.check.v1",
+  "ok": false,
+  "current_compliant": false,
+  "checker_sha256": "bdef5ad98b8e5ee8a21126f75430a58193d5f44f11f23fa60fd9ca487511eb3b",
+  "scope": "declared manifest fields; not independent runtime/physics verification",
+  "inputs": [
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/stackaudit/experiments/2026-10-17-stackaudit/inputs/act16w-native-gate-summary.json",
+      "sha256": "08ee20d37203f9543b4f8f8e8d77d7559b1193b8df8fb6a328c411b249fee9f9"
+    }
+  ],
+  "rows": [
+    {
+      "record": "$",
+      "flow": "teacher_gate",
+      "id": "physics_backend",
+      "expected": "mjwarp_batch_v1",
+      "observed": [],
+      "status": "unknown",
+      "input": "experiments/2026-10-17-stackaudit/inputs/act16w-native-gate-summary.json"
+    },
+    {
+      "record": "$",
+      "flow": "teacher_gate",
+      "id": "contact_profile",
+      "expected": "warp_native_contact_v1",
+      "observed": [
+        {
+          "field": "parent[0].contact_profile",
+          "value": "warp_native_contact_v1"
+        }
+      ],
+      "status": "current",
+      "input": "experiments/2026-10-17-stackaudit/inputs/act16w-native-gate-summary.json"
+    },
+    {
+      "record": "$",
+      "flow": "teacher_gate",
+      "id": "noslip_iterations",
+      "expected": 0,
+      "observed": [],
+      "status": "unknown",
+      "input": "experiments/2026-10-17-stackaudit/inputs/act16w-native-gate-summary.json"
+    },
+    {
+      "record": "$",
+      "flow": "teacher_gate",
+      "id": "scene_profile",
+      "expected": "walls_floor_contrast_v5_indigo110_s80",
+      "observed": [],
+      "status": "unknown",
+      "input": "experiments/2026-10-17-stackaudit/inputs/act16w-native-gate-summary.json"
+    },
+    {
+      "record": "$",
+      "flow": "teacher_gate",
+      "id": "cargo_version",
+      "expected": "v6",
+      "observed": [],
+      "status": "unknown",
+      "input": "experiments/2026-10-17-stackaudit/inputs/act16w-native-gate-summary.json"
+    },
+    {
+      "record": "$",
+      "flow": "teacher_gate",
+      "id": "scenario_version",
+      "expected": "v7",
+      "observed": [],
+      "status": "unknown",
+      "input": "experiments/2026-10-17-stackaudit/inputs/act16w-native-gate-summary.json"
+    },
+    {
+      "record": "$",
+      "flow": "teacher_gate",
+      "id": "heavy_crate",
+      "expected": false,
+      "observed": [],
+      "status": "unknown",
+      "input": "experiments/2026-10-17-stackaudit/inputs/act16w-native-gate-summary.json"
+    },
+    {
+      "record": "$",
+      "flow": "teacher_gate",
+      "id": "setdown_lookaround_v1",
+      "expected": true,
+      "observed": [],
+      "status": "unknown",
+      "input": "experiments/2026-10-17-stackaudit/inputs/act16w-native-gate-summary.json"
+    },
+    {
+      "record": "$",
+      "flow": "teacher_gate",
+      "id": "held_object_hidden_v1",
+      "expected": true,
+      "observed": [],
+      "status": "unknown",
+      "input": "experiments/2026-10-17-stackaudit/inputs/act16w-native-gate-summary.json"
+    },
+    {
+      "record": "$",
+      "flow": "teacher_gate",
+      "id": "held_world_reads",
+      "expected": 0,
+      "observed": [],
+      "status": "unknown",
+      "input": "experiments/2026-10-17-stackaudit/inputs/act16w-native-gate-summary.json"
+    },
+    {
+      "record": "$",
+      "flow": "teacher_gate",
+      "id": "teacher_visibility",
+      "expected": "visible_only",
+      "observed": [],
+      "status": "unknown",
+      "input": "experiments/2026-10-17-stackaudit/inputs/act16w-native-gate-summary.json"
+    },
+    {
+      "record": "$",
+      "flow": "teacher_gate",
+      "id": "invisible_measurements",
+      "expected": 0,
+      "observed": [],
+      "status": "unknown",
+      "input": "experiments/2026-10-17-stackaudit/inputs/act16w-native-gate-summary.json"
+    },
+    {
+      "record": "$",
+      "flow": "teacher_gate",
+      "id": "weld",
+      "expected": false,
+      "observed": [],
+      "status": "unknown",
+      "input": "experiments/2026-10-17-stackaudit/inputs/act16w-native-gate-summary.json"
+    },
+    {
+      "record": "$",
+      "flow": "teacher_gate",
+      "id": "top_camera_control",
+      "expected": false,
+      "observed": [],
+      "status": "unknown",
+      "input": "experiments/2026-10-17-stackaudit/inputs/act16w-native-gate-summary.json"
+    },
+    {
+      "record": "$",
+      "flow": "teacher_gate",
+      "id": "ultrasonic_front",
+      "expected": "off",
+      "observed": [],
+      "status": "unknown",
+      "input": "experiments/2026-10-17-stackaudit/inputs/act16w-native-gate-summary.json"
+    },
+    {
+      "record": "$",
+      "flow": "teacher_gate",
+      "id": "wall_cap",
+      "expected": null,
+      "observed": [
+        {
+          "field": "parent[0].wall_cap",
+          "value": null
+        }
+      ],
+      "status": "current",
+      "input": "experiments/2026-10-17-stackaudit/inputs/act16w-native-gate-summary.json"
+    },
+    {
+      "record": "$",
+      "flow": "teacher_gate",
+      "id": "speed_gate",
+      "expected": "record_only",
+      "observed": [],
+      "status": "unknown",
+      "input": "experiments/2026-10-17-stackaudit/inputs/act16w-native-gate-summary.json"
+    },
+    {
+      "record": "$",
+      "flow": "teacher_gate",
+      "id": "speed_metric",
+      "expected": "wall_s/(sim_s*nworld)",
+      "observed": [],
+      "status": "unknown",
+      "input": "experiments/2026-10-17-stackaudit/inputs/act16w-native-gate-summary.json"
+    },
+    {
+      "record": "$",
+      "flow": "teacher_gate",
+      "id": "gcp_host",
+      "expected": [
+        "ugrp-act-l4-gcp2",
+        "ugrp-act-l4-gcp3",
+        "ugrp-act-l4-gcp4",
+        "ugrp-act-l4-gcp5",
+        "ugrp-act-l4-gcp6"
+      ],
+      "observed": [
+        {
+          "field": "parent[0].host.instance",
+          "value": "ugrp-act-l4-gcp2"
+        },
+        {
+          "field": "host.project_id",
+          "value": "ugrp-sim-b-1014"
+        }
+      ],
+      "status": "unknown",
+      "input": "experiments/2026-10-17-stackaudit/inputs/act16w-native-gate-summary.json"
+    },
+    {
+      "record": "$",
+      "flow": "teacher_gate",
+      "id": "gcp_guards",
+      "expected": {
+        "idle_minutes": 20,
+        "budget_stop": true,
+        "credentials_on_vm": false
+      },
+      "observed": [],
+      "status": "unknown",
+      "input": "experiments/2026-10-17-stackaudit/inputs/act16w-native-gate-summary.json"
+    },
+    {
+      "record": "$",
+      "flow": "teacher_gate",
+      "id": "no_pooling",
+      "expected": true,
+      "observed": [],
+      "status": "unknown",
+      "input": "experiments/2026-10-17-stackaudit/inputs/act16w-native-gate-summary.json"
+    },
+    {
+      "record": "$",
+      "flow": "teacher_gate",
+      "id": "rejection_ledger",
+      "expected": [
+        "reason_category",
+        "blocked_object",
+        "minimum_gap_m"
+      ],
+      "observed": [],
+      "status": "unknown",
+      "input": "experiments/2026-10-17-stackaudit/inputs/act16w-native-gate-summary.json"
+    },
+    {
+      "record": "$",
+      "flow": "teacher_gate",
+      "id": "cap_end_label",
+      "expected": "cap_end",
+      "observed": [],
+      "status": "unknown",
+      "input": "experiments/2026-10-17-stackaudit/inputs/act16w-native-gate-summary.json"
+    },
+    {
+      "record": "$",
+      "flow": "teacher_gate",
+      "id": "gcp_project",
+      "expected": [
+        "ugrp-sim-b-1014",
+        "ugrp-sim-c-1016",
+        "ugrp-sim-d-1016",
+        "ugrp-sim-e-1016",
+        "ugrp-sim-f-1016"
+      ],
+      "observed": [
+        {
+          "field": "parent[0].host.project_id",
+          "value": "ugrp-sim-b-1014"
+        }
+      ],
+      "status": "current",
+      "input": "experiments/2026-10-17-stackaudit/inputs/act16w-native-gate-summary.json"
+    },
+    {
+      "record": "$",
+      "flow": "teacher_gate",
+      "id": "gcp_account",
+      "expected": [
+        "changmin5781@gmail.com",
+        "kcm5781kcm5781@gmail.com"
+      ],
+      "observed": [],
+      "status": "unknown",
+      "input": "experiments/2026-10-17-stackaudit/inputs/act16w-native-gate-summary.json"
+    }
+  ],
+  "stack": {
+    "path": "/Users/changmin/projects/ugrp-wt/stackaudit/configs/current_stack.json",
+    "sha256": "2c8a6ebc084f6a8ae1d6db59fee093209ad511aa1feb3b3f67dd78e4f425c6f6"
+  },
+  "counts": {
+    "unknown": 22,
+    "current": 3
+  },
+  "admission": "blocked"
+}
