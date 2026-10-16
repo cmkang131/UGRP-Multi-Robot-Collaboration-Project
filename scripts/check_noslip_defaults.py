@@ -3,6 +3,7 @@ import hashlib
 import importlib
 import inspect
 import json
+import subprocess
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
@@ -53,6 +54,11 @@ def audit():
             scene = FinalV3Scene.from_spec(spec,base_profile(profile))
             w = factory.build_world(scene,profile,render=False)
             receipt('sim.zone_final_v3_scene.build_world / '+profile,profile,w.model,w.scene_xml)
+        from sim.zone_masterpi_v3_scene import MasterPiV3ZoneScene, build_world
+        native_spec = {**spec, 'map': 'zone_wide_door_geometry_v3'}
+        scene = MasterPiV3ZoneScene.from_spec(native_spec, 'local_contact_fine')
+        w = build_world(scene,render=False)
+        receipt('sim.zone_masterpi_v3_scene.build_world default',p.CPU_DEFAULT,w.model,w.scene_xml)
         scene = CargoZoneScene.from_cargo_config('zone_wide',11,cargo=[])
         xml = scene.transform(build_multi_robot_xml({}))
         receipt('CargoZoneScene.from_cargo_config default',p.CPU_DEFAULT,mujoco.MjModel.from_xml_string(xml),xml)
@@ -71,7 +77,7 @@ def main():
         'scripts/check_noslip_defaults.py','scripts/warp_act_backend.py','scripts/warp_act_episode.py','scripts/warp_flow_episode.py']
     files += [str(f.relative_to(ROOT)) for f in sorted((ROOT/'sim').glob('masterpi_drive_friction*.py'))]
     files += ['sim/zone_final_v3_scene.py','sim/zone_scenario_scene.py','sim/zone_cargo_scene.py']
-    report = dict(schema='ugrp.noslip_compile_audit.v1',execution_bundle_id=BUNDLE_ID,mujoco=version,
+    report = dict(schema='ugrp.noslip_compile_audit.v1',execution_bundle_id=BUNDLE_ID,mujoco=version,source_commit=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
         physics_steps=0,forward_calls=0,renders=0,training=0,vm_used=False,rows=rows,
         source_sha256={f:hashlib.sha256((ROOT/f).read_bytes()).hexdigest() for f in files})
     (out/'compile_receipts.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
@@ -91,6 +97,7 @@ def main():
         lines.append(f'| `scripts/{name}.py` | `{CPU_DEFAULT}` | 확인 안 됨: 직접 실행은 step/render 포함; 위 CPU factory/scene만 확인 |')
     lines += ['', '기존 prereg/버전 JSON 입력 재생 경로는 기록된 프로필 유지. 접촉 안정성·교사 성공·E2E 성공은 미검증.',
         '재현: `PYTHONPATH=. python -m scripts.check_noslip_defaults` (기존 공유 sim 환경 Python). 원본: `compile_receipts.json` (XML·소스 SHA-256).']
+    lines += ['', '生成 계약: zone_final_pair_contract / zone_solo_cyan_contract_v106 / zone_s3_contract / zone_s3_door_contract / pair_llm_contract 기본 cargo_native_v1. 새 접촉 정책 ID를 별도 기록; 전체 계약 생성은 CI 확인.', 'fresh run_pair_stage_probes / probe_zone_pair_bootstrap은 case에 명시한 profile을 따르고 미지정이면 cargo_native_v1. 직접 CLI는 확인 안 됨.']
     (out/'entrypoints.md').write_text('\n'.join(lines)+'\n')
     funnel=dict(raw_path=str(out/'compile_receipts.json'),reproduce='PYTHONPATH=. python -m scripts.check_noslip_defaults',
         funnel=[dict(gate='actual_model_load',passed=len(rows),rejected=0),dict(gate='selected_noslip_and_weld_off',passed=len(rows),rejected=0)],
