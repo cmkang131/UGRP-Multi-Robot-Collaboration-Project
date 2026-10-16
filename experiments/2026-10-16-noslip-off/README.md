@@ -27,3 +27,7 @@ PYTHONPATH=. /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m sc
 - [warpfit PR #562](https://github.com/kcm0127-dotcom/ugrp/pull/562), `origin/codex/warpfit:experiments/2026-10-16-warpfit`: 사용자 승인 v1 출처. vendor `sim/warp_native_contact.py` SHA-256 `a5c8d370755034b9f9615f66a94b87883327b7d7ecc4e13082eac2c2d4751c6a`, 바이트 그대로 보존. v1의 noslip0/elliptic/implicitfast/impratio5와 원래 Newton/LS80/50을 사용하며 신규 판정 상수는 없다.
 
 최종 GPU 경로 점검에서 CPU tolerance 강제 복사는 legacy 재생에만 남겼다. native는 고정 MJWarp 변환기의 float32 기본값을 따른다(warpfit v1과 동일한 방식). 이 GPU-only 분기는 Mac 컴파일 15경로 이후 수정했으며 GPU 실제 값/동작은 미확인이다. 컴파일 원본의 source_commit 및 해시는 당시 소스를 정확히 가리키며 C 옵션은 이 후속 변경에서 바뀌지 않았다.
+
+## CI 전체 회귀 1차
+
+`757632c42` / Actions `38921776177`은 8 shard에서 총 262개 실패했다. [전체 원장](ci-round1-summary.json)과 shard별 사유 분포·원본 로그 SHA-256을 보존했다. 과거 분석기는 과거 Git 소스/legacy 프로필로 검증하고 새 실행 기본은 별도로 검사하도록 테스트 경계를 고쳤다. 동결 판정기·원본 등록/실험은 수정하지 않았다. 실제 수정은 v95 native 프로필 admission 누락과 collection builder의 명시 legacy 인수 전달이며, 오프라인 엔진 선택 의존성과 fake weld OFF 상태도 보완했다. 로컬 물리·추가 pytest는 실행하지 않았으며 전체 확인은 다음 CI에서 한다.
