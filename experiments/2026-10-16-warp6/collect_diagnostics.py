@@ -50,8 +50,9 @@ def main():
                     scope='saved prefix only' if summary.get('status')!='complete' else 'completed result'))
         n = cmd['planned_world_N']
         completed = len(worlds)
-        category = ('DIAGNOSTIC_SUPERVISOR_STOP' if stop else summary.get('error_type') or
+        category = (stop.get('category','DIAGNOSTIC_SUPERVISOR_STOP') if stop else summary.get('error_type') or
                     ('NATIVE_PROCESS_EXIT' if receipt.get('exit_code', 0) else 'running'))
+        if stop and category=='HOST_ERROR':category='DIAGNOSTIC_INSTRUMENTATION_STOP'
         terminal=bool(receipt)
         prefix_complete=summary.get('status')=='diagnostic_prefix_complete'
         counts = Counter('cap_end' if w.get('cap_end') else 'teacher_failure'

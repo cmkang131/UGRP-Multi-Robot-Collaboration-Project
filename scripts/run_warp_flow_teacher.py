@@ -71,6 +71,8 @@ def parser():
     p.add_argument('--warp-workspace-trace-v1',action='store_true',help='synchronize and persist allocations after each existing graph chunk; default OFF')
     p.add_argument('--warp-verify-cuda-v1',action='store_true',help='uncaptured identical physics schedule with launch verification; default OFF')
     p.add_argument('--diagnostic-ticks',type=int,help='optional finite control-tick budget; never a teacher trial or SIM cap_end')
+    p.add_argument('--sap-segmented-v1',action='store_true',help='existing upstream segmented sweep-and-prune candidate; default OFF')
+    p.add_argument('--physics-profile-v1',action='store_true',help='record one discarded warmup step kernel timings; default OFF')
     p.add_argument('--mps-shared-v1',action='store_true',help='explicit private warp4 MPS runtime cohort; default OFF')
     p.add_argument('--vm-hourly-usd',type=float,required=True)
     return p
@@ -134,6 +136,7 @@ def main():
     hooks.placement_graspable_filter_v1=a.placement_graspable_filter_v1
     hooks.workspace_trace_v1=a.warp_workspace_trace_v1
     hooks.verify_cuda_v1=a.warp_verify_cuda_v1
+    hooks.physics_profile_v1=a.physics_profile_v1
     canonical={'xml':a.canonical_xml.read_text() if a.canonical_xml else None}
     report=dict(schema='ugrp.warp4.batch.v1',status='running',source_sha=source,
         host=host,flow=a.flow,physics_backend=a.physics_backend,mujoco=mujoco.__version__,
@@ -144,6 +147,7 @@ def main():
         workspace_trace_v1=a.warp_workspace_trace_v1,
         warp_verify_cuda_v1=a.warp_verify_cuda_v1,
         diagnostic_ticks=a.diagnostic_ticks,
+        sap_segmented_v1=a.sap_segmented_v1,physics_profile_v1=a.physics_profile_v1,
         gate_eligible=False,shared_load=not a.gcp3_isolated_v1,vm_hourly_usd=a.vm_hourly_usd,
         placement_graspable_filter_v1=a.placement_graspable_filter_v1,
         cuda_runtime_profile=('gcp3_isolated_no_mps_v1' if a.gcp3_isolated_v1 else
@@ -191,9 +195,11 @@ def main():
         first=references[hashlib.sha256(Path(contexts[0]['scene_xml_path']).read_bytes()).hexdigest()] if references else {}
         if a.physics_backend=='mjwarp_batch_v1':
             hooks.initialize(contexts,compiled_reference=Path(first['actuator']) if first else a.compiled_reference_v1,
-                compiled_geometry=Path(first['geometry']) if first else a.compiled_geometry_312_v1,per_world_model_references=references)
+                compiled_geometry=Path(first['geometry']) if first else a.compiled_geometry_312_v1,
+                per_world_model_references=references,sap_segmented_v1=a.sap_segmented_v1)
             report.update(camera=hooks.camera,capacities=hooks.capacities,compatibility=hooks.compat,
-                initial_state_proof=hooks.initial_state_proof(contexts),model_batch_audit=hooks.model_batch_audit,sleep_audit=hooks.sleep_audit)
+                initial_state_proof=hooks.initial_state_proof(contexts),model_batch_audit=hooks.model_batch_audit,
+                sleep_audit=hooks.sleep_audit,solver_numerics=hooks.solver_numerics)
         report.update(started_N=len(contexts),setup_compile_s=time.perf_counter()-start)
         write(a.out/'summary.json',report)
         loop=time.perf_counter()
@@ -251,6 +257,7 @@ def main():
                 certification_sha=TEACHER_SHA,teacher_sha=TEACHER_SHA if a.flow=='beampair' else RELEASE_SHA,
                 ast_transforms=[b.transforms for b in bridges]),
             native_initialization_only_sim_s=[float(c['origin']) for c in contexts])
+        report['solver_samples']=getattr(hooks,'solver_samples',[])
         sim=sum(r['sim_s'] for r in worlds)
         report.update(aggregate_completed_task_sim_s=sim,loop_wall_s=loop_wall,
             warm_loop_sim_s_per_wall_s=sim/loop_wall if loop_wall and report['status']=='complete' else None,

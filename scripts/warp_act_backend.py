@@ -305,6 +305,24 @@ class WarpTransport(Transport):
         finally:
             wp.config.verify_cuda=original_verify
         if getattr(self,'workspace_trace_v1',False):self.trace_workspace('warmup')
+        if getattr(self,'physics_profile_v1',False):
+            # Installed Warp1.15 ScopedTimer/TIMING_KERNEL API. Compilation
+            # happened in the preceding warmup; this extra step is discarded
+            # with the same fresh put_data + initial-state restore below.
+            with wp.ScopedTimer('discarded physics profile',print=False,cuda_filter=wp.TIMING_KERNEL) as timing:
+                mjw.step(self.wm,self.wd);wp.synchronize()
+            grouped={}
+            events=[]
+            for row in timing.timing_results:
+                event=dict(name=row.name,elapsed_ms=float(row.elapsed),device=str(row.device),filter=int(row.filter))
+                events.append(event)
+                entry=grouped.setdefault(row.name,dict(name=row.name,calls=0,total_ms=0.))
+                entry['calls']+=1;entry['total_ms']+=event['elapsed_ms']
+            profile=dict(scope='one discarded post-compilation warmup step; not rollout throughput or a physical trial',
+                dt_s=self.dt,nworld=self.n,ngeom=int(m.ngeom),nv=int(m.nv),nvmax=int(self.wd.nvmax),
+                broadphase=self.wm.opt.broadphase.name,total_kernel_ms=sum(r['elapsed_ms'] for r in events),
+                grouped=sorted(grouped.values(),key=lambda r:-r['total_ms']),events=events)
+            (self.out/'physics-kernel-profile.json').write_text(json.dumps(profile,indent=2)+'\n')
         d.tree_asleep[:]=self.source_sleep[0]
         with unused_efm(m,d):
             self.wd = mjw.put_data(m,d,nworld=self.n,nconmax=ncon,njmax=njmax,nvmax=self.nvmax)

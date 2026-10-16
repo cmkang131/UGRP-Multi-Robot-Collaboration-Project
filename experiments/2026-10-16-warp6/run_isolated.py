@@ -29,6 +29,8 @@ def main():
     p.add_argument('--trace', action='store_true')
     p.add_argument('--verify', action='store_true')
     p.add_argument('--diagnostic-ticks',type=int)
+    p.add_argument('--sap-segmented',action='store_true')
+    p.add_argument('--profile',action='store_true')
     a = p.parse_args()
     src = ROOT / 'src' / a.source_sha
     jobs = {'beampair': ('beampair', '0,1,2,3', 60),
@@ -60,6 +62,10 @@ def main():
         cmd += ['--warp-verify-cuda-v1']
     if a.diagnostic_ticks is not None:
         cmd += ['--diagnostic-ticks',str(a.diagnostic_ticks)]
+    if a.sap_segmented:
+        cmd += ['--sap-segmented-v1']
+    if a.profile:
+        cmd += ['--physics-profile-v1']
     if a.memcheck:
         cmd = ['/usr/local/cuda/bin/compute-sanitizer', '--tool', 'memcheck',
                '--error-exitcode', '86', '--print-limit', '20', '--log-file',
