@@ -37,16 +37,15 @@ def main():
     p.add_argument('--schedule-steps', type=int, default=10000,
                    help='fixed total curriculum schedule, identical in smoke and main')
     p.add_argument('--seed', type=int, default=20261015)
-    p.add_argument('--max-wall-s', type=float, required=True, help='resource cap only; fixed steps define training')
     p.add_argument('--history-causal-split-v1', choices=MODES, default='off')
     p.add_argument('--curriculum-starts-v1', type=Path)
     p.add_argument('--resume', type=Path)
     p.add_argument('--smoke-summary', type=Path)
     a = p.parse_args()
-    if not 0 < a.max_wall_s <= 8*3600 or not 1 <= a.steps <= a.schedule_steps <= 100000:
-        p.error('finite <=8h resource cap and optimizer steps required')
-    if a.stage == 'smoke' and (a.steps > 500 or a.max_wall_s > 1800 or a.resume):
-        p.error('smoke: <=500 steps, <=1800s, fresh initialization')
+    if not 1 <= a.steps <= a.schedule_steps <= 100000:
+        p.error('finite optimizer steps required')
+    if a.stage == 'smoke' and (a.steps > 500 or a.resume):
+        p.error('smoke: <=500 steps, fresh initialization')
     host = require_gcp2(training=True)  # Before torch, checkpoint or metadata inputs.
     source = frozen_source(ROOT)
     library = frozen_source(a.act_source, ACT_SHA)
@@ -137,7 +136,7 @@ def main():
             while step < a.steps:
                 if (a.output/'SUPERVISOR_STOP.json').exists():
                     stop['requested'] = True
-                if stop['requested'] or time.monotonic()-started >= a.max_wall_s:
+                if stop['requested']:
                     break
                 eligible = curriculum.eligible(step/a.schedule_steps) if curriculum else None
                 indices = torch.randint(len(eligible) if curriculum else len(data), (8,), generator=generator).tolist()
@@ -171,7 +170,7 @@ def main():
         with torch.inference_mode():
             if not torch.equal(policy.predict_action_chunk(inputs), restored.policy.predict_action_chunk(inputs)):
                 raise ValueError('checkpoint prediction readback mismatch')
-        report.update(status='complete' if step == a.steps else 'SUPERVISOR_STOP' if stop['requested'] else 'RESOURCE_CAP',
+        report.update(status='complete' if step == a.steps else 'SUPERVISOR_STOP',
                       complete=step == a.steps, steps_completed=step, readback_verified=True,
                       peak_gpu_bytes=torch.cuda.max_memory_allocated(),
                       input_audit={'keys': sorted(inputs), 'teacher_input_fields': 0,
