@@ -18,8 +18,20 @@ XML을 바꾸지 않고 원래 world factory와 같은 Q 작업 디렉터리에�
 `from_xml_string`으로 읽게 수정했다. L4의 비물리 로딩 nq243/ngeom1387/noslip0,
 step0 확인 후, 같은 사전 고정40개87220–87259를 r2로 제출했다.
 소스 e40ff44ce, dispatcher52916. [실행 인수](native-r2-launch.json),
-[준비 거부 표](rejection_table.json). 실행 시작은14:41:54Z이며 완료·통과는 아직 미확정이다.
-새 기록 참조87420–87459의 생성은 CPU setup만이며 실제 학습 카메라 기록은 관문 뒤다.
+[준비 거부 표](rejection_table.json). 40/40 PASS(종류별10/10), invisible/held0/0이다.
+원시 평가 시퀀스로 Score40개를 독립 재계산했고8254개 원본 파일 SHA가 일치했다
+([독립 관문](native-gate-independent.json), [실행 요약](native-gate-summary.json),
+[실제 관문표](native-gate-rejection_table.json)). 기준값·score 모듈·원본은 바꾸지 않았다.
+대표성공87244의 전체0–41SIM초2Hz·마지막31.1–41.0초10Hz를 직접 검토했다
+([타임라인](native-teacher-playback-review.json)). 학생 성공으로 세지 않는다.
+
+이후 별도 시드87420–87459의40개 기록을 시작했다. 소스c27a9d537, dispatcher64948,
+32TRAIN/8VAL을 사전 고정했다. [기록 제출](native-record-launch.json),
+[메모리·디스크·속도 수신](native-record-preflight.json). 첫30의 세계별 지연 중앙값34.292 wall/SIM은
+속도 관문FAIL이며 물리 성공과 별개다.40세계가7호환 모델 그룹을 한L4에서 공유한 실제 부하이며,
+사용자가 요구한 MJWarp·카메라·접촉을 유지하고 기록을 계속하는 사유를
+`--speed-gate-override`에 남겼다. 속도 통과·성능 개선으로 보고하지 않는다.
+기록 전체 성공·표적/영상/시계 감사와 데이터 승인은 아직 대기이며 학습0이다.
 
 교사 라이브러리6f057f7e → MJWarp controller f0db6b1a → 기록API0362037의
 출처 관계를 유지한다. warpfit df5a1f86a의 프로필 파일 SHA256

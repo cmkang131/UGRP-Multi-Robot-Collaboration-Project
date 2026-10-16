@@ -1,0 +1,65 @@
+{
+  "status": "NATIVE_RECORD_RUNNING",
+  "complete": false,
+  "contact_profile": "warp_native_contact_v1",
+  "noslip_baseline": {
+    "A": {
+      "n": 0,
+      "N": 5
+    },
+    "B": {
+      "n": 0,
+      "N": 5
+    },
+    "pooled": false,
+    "recount": "noslip-baseline-recount.json"
+  },
+  "native_gate": {
+    "n": 40,
+    "N": 40,
+    "kinds": {
+      "cyan": {
+        "n": 10,
+        "N": 10
+      },
+      "red": {
+        "n": 10,
+        "N": 10
+      },
+      "green": {
+        "n": 10,
+        "N": 10
+      },
+      "yellow": {
+        "n": 10,
+        "N": 10
+      }
+    },
+    "independent_raw_scores_matched": 40,
+    "manifest_files_verified": 8254,
+    "input_audit_violations": 0,
+    "source": "e40ff44ce97219d075b1a58eabd48007b6f8b2ac",
+    "independent_audit_source": "c27a9d537eaae873c7e7bc2ceaeeada69696cc48",
+    "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-gate-r2"
+  },
+  "native_record": {
+    "status": "running",
+    "N_requested": 40,
+    "seeds": [
+      87420,
+      87459
+    ],
+    "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-record-r1"
+  },
+  "new_training_steps": 0,
+  "student_evaluation": null,
+  "final40_accessed": false,
+  "wall_cap": null,
+  "host": "ugrp-act-l4-gcp2",
+  "cpu_VM_started": false,
+  "raw_retrieval": "summaries and montage only; originals retained on L4",
+  "rejection_tables": [
+    "native-gate-rejection_table.json",
+    "rejection_table.json"
+  ]
+}
