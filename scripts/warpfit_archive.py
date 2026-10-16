@@ -7,6 +7,12 @@ if str(root) not in ['/home/ugrp/ugrp-sim/runs/warpfit','/home/ugrp/ugrp-sim/ops
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 lock=(root/'.warpfit-archive.lock').open('a+')
 fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
+# Fixed matrix: original N16 diagnostic16 + box repeat4 + cleared drive4 +
+# N64 final12. An unsubmitted or interrupted queue is never archive-complete.
+for phase,count in [('R2-retry1',16),('R2-box-repeat2',4),('R2-drive-clear-v1',4),('R3',12)]:
+ attempts=json.loads((root/phase/'attempts.json').read_text())
+ if len(attempts)!=count or any(r['status'] not in ('complete','HOST_ERROR') for r in attempts):
+  raise ValueError('unfinished queue '+phase)
 for p in root.glob('R*/**/result.json'):
  if json.loads(p.read_text()).get('status') not in ('complete','HOST_ERROR'):
   raise ValueError('unfinished result '+str(p))
