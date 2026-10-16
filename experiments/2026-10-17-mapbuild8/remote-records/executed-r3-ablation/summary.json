@@ -1,0 +1,34 @@
+{
+  "raw": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3",
+  "frames": 389,
+  "sim_s": 38.8,
+  "attempts": 35,
+  "accepted": 12,
+  "original_files_verified": 800,
+  "motion_status": {
+    "bootstrap": 1,
+    "unknown_servo_change": 17,
+    "unknown_camera_unsettled": 45,
+    "measured": 301,
+    "unknown_rigid_consensus": 25
+  },
+  "reasons": {
+    "no_visible_scan": 48,
+    "new_submap_motion_anchor": 1,
+    "sim_keyframe_interval": 302,
+    "accepted": 12,
+    "insufficient_near_points": 4,
+    "search_boundary": 22
+  },
+  "rejection_table": "/home/ugrp/ugrp-sim/runs/mapbuild8/executed-r3-ablation/rejection_table.json",
+  "reproduction": [
+    "/home/ugrp/ugrp-sim/src/mapbuild8-audit-final/scripts/mapbuild8_freeze_online.py",
+    "--nominal-ablation",
+    "--input",
+    "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3",
+    "--rejection-table",
+    "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3/rejection_table.json",
+    "--output",
+    "/home/ugrp/ugrp-sim/runs/mapbuild8/executed-r3-ablation"
+  ]
+}

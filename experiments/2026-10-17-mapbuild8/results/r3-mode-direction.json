@@ -1,0 +1,109 @@
+{
+  "raw": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3",
+  "registration": {
+    "status": "rejected",
+    "reason": "ambiguous_modes",
+    "static_from_own": null,
+    "category": "static_wall_registration",
+    "blocked_object": "authored_wall_geometry",
+    "minimum_gap_m": null,
+    "gap_status": "not_measured",
+    "work": {
+      "candidates": 4258800,
+      "point_checks": 1166911200,
+      "wall_seconds_used_as_gate": 0
+    },
+    "truth_inputs": 0,
+    "scale": 1,
+    "points": 274,
+    "best_candidate": [
+      -0.4,
+      -2.1,
+      -0.6981317007977318
+    ],
+    "residual_m": 0.08607783614044001,
+    "overlap": 0.9562043795620438,
+    "second_sensor_gap": 0.4266553702419933,
+    "hessian_eigenvalues": [
+      78.0270827337046,
+      233.97155156213645,
+      324.1996102364018
+    ],
+    "observable_rank": 3,
+    "sensor_sigma_min_max_m": [
+      0.08308800796168994,
+      0.37872894295358267
+    ],
+    "source_pose_covariance_supplied": true,
+    "source_constants": "unchanged CSMOptions: .05m/1deg, .08m floor + original range pixel variance, overlap .60/.20m, residual .15m, mode .15/.50, rank3 mathematical SE2 requirement"
+  },
+  "exact_executed_comparison": {
+    "points": true,
+    "best_candidate": true,
+    "residual_m": true,
+    "second_sensor_gap": true,
+    "observable_rank": true,
+    "sensor_sigma_min_max_m": true
+  },
+  "competing_modes_n": 2,
+  "candidate_band_n": 12,
+  "modes": [
+    {
+      "static_from_own_candidate": [
+        -0.4,
+        -2.1,
+        -0.6981317007977318
+      ],
+      "current_body_candidate": [
+        -0.565577918266082,
+        -2.1307111637114495,
+        -0.7209779544096003
+      ],
+      "cost_gap": 0.0,
+      "conditional_one_sigma_modes_n": 1,
+      "one_sigma_current_body": [
+        0.0925286773806702,
+        0.09653466380528916,
+        0.04755174310248672
+      ]
+    },
+    {
+      "static_from_own_candidate": [
+        1.55,
+        0.4,
+        2.443460952792061
+      ],
+      "current_body_candidate": [
+        1.715577918266082,
+        0.4307111637114496,
+        2.4206146991801925
+      ],
+      "cost_gap": 0.4266553702419933,
+      "conditional_one_sigma_modes_n": 1,
+      "one_sigma_current_body": [
+        0.0925286773806702,
+        0.09653466380528916,
+        0.04755174310248672
+      ]
+    }
+  ],
+  "conditional_single_windows_n": 2,
+  "conditional_multiple_windows_n": 0,
+  "valid_static_prior": false,
+  "actual_prior_window_unique": null,
+  "definition": "inherited .15m-separated SE2 candidates inside .50 sensor-cost band; conditional body-pose +/-1sigma, NOT an invented global prior",
+  "truth_inputs": 0,
+  "source_sha256": {
+    "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3/online-trajectory.json": "316f3cc47739b8a1c5ac44d05a41f7d10ac74a3019a58bfd5217bedd642eff26",
+    "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3/scans.json": "844c9c09864e6a2db8e5cf367fb91595dad4cb4ccd1eb2bf0f5378b1f39a5f40",
+    "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3/events.json": "c30fb23ce3b8db85931da8c8b392180c79afd5257b0613074c2a4a34f762737b",
+    "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3/static-map.json": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17"
+  },
+  "reproduction": [
+    "/home/ugrp/ugrp-sim/src/mapbuild8-audit-final/scripts/mapbuild8_final_modes.py",
+    "--input",
+    "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3",
+    "--output",
+    "/home/ugrp/ugrp-sim/runs/mapbuild8/final-modes-r3"
+  ]
+}

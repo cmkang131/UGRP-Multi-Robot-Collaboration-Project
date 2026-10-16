@@ -1,0 +1,183 @@
+{
+  "host": "gcp5",
+  "account": "changmin5781@gmail.com",
+  "project": "ugrp-sim-e-1016",
+  "zone": "asia-northeast3-a",
+  "python": "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+  "analysis_source_sha": "438546cfb",
+  "scan_audit_source_sha": "0e0f66826",
+  "commands": {
+    "capture_r1": {
+      "argv": [
+        "/home/ugrp/ugrp-sim/src/mapbuild8-capture1/scripts/mapbuild7_capture.py",
+        "--enabled",
+        "--map-correction",
+        "--body-sweep",
+        "--queue",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild8/capture-r1-queue.json",
+        "--renderer",
+        "/home/ugrp/ugrp-sim/src/drivecheck-renderer-5974a181",
+        "--teacher-source",
+        "/home/ugrp/ugrp-sim/src/mapbuild7-teacher-6f057f7e",
+        "--vision",
+        "/home/ugrp/ugrp-sim/src/mapbuild5b-complete-vision597",
+        "--pickup",
+        "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79800-6f057f7e/plan.json",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r1"
+      ],
+      "provenance": "reconstructed from frozen source, recorded queue and explicit options; original complete argv not retrieved",
+      "execute": false
+    },
+    "freeze_r1": [
+      "/home/ugrp/ugrp-sim/src/mapbuild8-audit-final/scripts/mapbuild8_freeze_online.py",
+      "--input",
+      "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r1",
+      "--rejection-table",
+      "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r1/rejection_table.json",
+      "--output",
+      "/home/ugrp/ugrp-sim/runs/mapbuild8/executed-r1"
+    ],
+    "evaluate_r1": [
+      "/home/ugrp/ugrp-sim/src/mapbuild8-audit-final/scripts/mapbuild8_evaluate.py",
+      "--input",
+      "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r1",
+      "--prediction",
+      "/home/ugrp/ugrp-sim/runs/mapbuild8/executed-r1",
+      "--requirements",
+      "/home/ugrp/ugrp-sim/ops-reviews/mapbuild6/requirements-r2.json",
+      "--output",
+      "/home/ugrp/ugrp-sim/runs/mapbuild8/evaluation-executed-r1"
+    ],
+    "capture_r2": {
+      "argv": [
+        "/home/ugrp/ugrp-sim/src/mapbuild8-capture2b/scripts/mapbuild7_capture.py",
+        "--enabled",
+        "--map-correction",
+        "--body-sweep",
+        "--sweep-camera-folded",
+        "--sweep-model",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild8/own-sweep-model-r1.json",
+        "--queue",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild8/capture-r2-queue.json",
+        "--renderer",
+        "/home/ugrp/ugrp-sim/src/drivecheck-renderer-5974a181",
+        "--teacher-source",
+        "/home/ugrp/ugrp-sim/src/mapbuild7-teacher-6f057f7e",
+        "--vision",
+        "/home/ugrp/ugrp-sim/src/mapbuild5b-complete-vision597",
+        "--pickup",
+        "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79800-6f057f7e/plan.json",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r2"
+      ],
+      "provenance": "reconstructed from frozen source, recorded queue and explicit options; original complete argv not retrieved",
+      "execute": false
+    },
+    "freeze_r2": [
+      "scripts/mapbuild8_freeze_online.py",
+      "--input",
+      "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r2",
+      "--rejection-table",
+      "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r2/prior-r3-rejection_table.json",
+      "--output",
+      "/home/ugrp/ugrp-sim/runs/mapbuild8/executed-r2"
+    ],
+    "evaluate_r2": [
+      "/home/ugrp/ugrp-sim/src/mapbuild8-audit-final/scripts/mapbuild8_evaluate.py",
+      "--input",
+      "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r2",
+      "--prediction",
+      "/home/ugrp/ugrp-sim/runs/mapbuild8/executed-r2",
+      "--requirements",
+      "/home/ugrp/ugrp-sim/ops-reviews/mapbuild6/requirements-r2.json",
+      "--output",
+      "/home/ugrp/ugrp-sim/runs/mapbuild8/evaluation-executed-r2-final"
+    ],
+    "capture_r3": {
+      "argv": [
+        "/home/ugrp/ugrp-sim/src/mapbuild8-capture3b/scripts/mapbuild7_capture.py",
+        "--enabled",
+        "--map-correction",
+        "--body-sweep",
+        "--sweep-camera-folded",
+        "--sweep-model",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild8/own-sweep-model-r1.json",
+        "--own-motion-model",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild8/own-command-calibration-r2.json",
+        "--queue",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild8/capture-r3-queue.json",
+        "--renderer",
+        "/home/ugrp/ugrp-sim/src/drivecheck-renderer-5974a181",
+        "--teacher-source",
+        "/home/ugrp/ugrp-sim/src/mapbuild7-teacher-6f057f7e",
+        "--vision",
+        "/home/ugrp/ugrp-sim/src/mapbuild5b-complete-vision597",
+        "--pickup",
+        "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79800-6f057f7e/plan.json",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3"
+      ],
+      "provenance": "recorded runtime argv",
+      "execute": false
+    },
+    "freeze_r3": [
+      "/home/ugrp/ugrp-sim/src/mapbuild8-audit-final/scripts/mapbuild8_freeze_online.py",
+      "--nominal-ablation",
+      "--input",
+      "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3",
+      "--rejection-table",
+      "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3/rejection_table.json",
+      "--output",
+      "/home/ugrp/ugrp-sim/runs/mapbuild8/executed-r3-ablation"
+    ],
+    "evaluate_r3": [
+      "/home/ugrp/ugrp-sim/src/mapbuild8-audit-final/scripts/mapbuild8_evaluate.py",
+      "--input",
+      "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3",
+      "--prediction",
+      "/home/ugrp/ugrp-sim/runs/mapbuild8/executed-r3-ablation",
+      "--requirements",
+      "/home/ugrp/ugrp-sim/ops-reviews/mapbuild6/requirements-r2.json",
+      "--output",
+      "/home/ugrp/ugrp-sim/runs/mapbuild8/evaluation-r3-ablation"
+    ],
+    "global_modes_r3": [
+      "/home/ugrp/ugrp-sim/src/mapbuild8-audit-final/scripts/mapbuild8_final_modes.py",
+      "--input",
+      "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3",
+      "--output",
+      "/home/ugrp/ugrp-sim/runs/mapbuild8/final-modes-r3"
+    ],
+    "scan_error_r3": [
+      "/home/ugrp/ugrp-sim/ops-reviews/mapbuild8/mapbuild8_scan_error_audit.py",
+      "--input",
+      "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3",
+      "--prediction",
+      "/home/ugrp/ugrp-sim/runs/mapbuild8/executed-r3-ablation",
+      "--source",
+      "/home/ugrp/ugrp-sim/src/mapbuild8-audit-final",
+      "--output",
+      "/home/ugrp/ugrp-sim/runs/mapbuild8/scan-error-r3.json"
+    ],
+    "vo_audit_r3": [
+      "/home/ugrp/ugrp-sim/src/mapbuild8-audit-final/scripts/mapbuild8_vo_audit.py",
+      "--input",
+      "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3",
+      "--prediction",
+      "/home/ugrp/ugrp-sim/runs/mapbuild8/executed-r3-ablation",
+      "--vision",
+      "/home/ugrp/ugrp-sim/src/mapbuild5b-complete-vision597",
+      "--output",
+      "/home/ugrp/ugrp-sim/runs/mapbuild8/vo-audit-r3"
+    ]
+  },
+  "order": [
+    "preserved source snapshots and named queue/requirements",
+    "current 3-round cap exhausted; no new physical run",
+    "freeze and verify original hashes before evaluator",
+    "GT only in evaluator/scan audit, never freeze/matching",
+    "analysis on gcp5 only; output path must be new; never overwrite originals"
+  ],
+  "known_scope_limit": "capture uses frozen 6f route kernel, not the latest heading-first shared adapter"
+}

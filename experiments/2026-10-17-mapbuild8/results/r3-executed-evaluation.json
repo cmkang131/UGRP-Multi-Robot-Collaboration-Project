@@ -1,0 +1,565 @@
+{
+  "status": "NOT_READY",
+  "decision": "no default adoption until all actual-route requirements pass",
+  "raw": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3",
+  "prediction": "/home/ugrp/ugrp-sim/runs/mapbuild8/executed-r3-ablation",
+  "frames": 389,
+  "sim_s": 38.8,
+  "path_m": 0.21460078172298563,
+  "reference": "chassis SE2; start-only alignment; scale=1",
+  "methods": {
+    "lk": {
+      "frames": 389,
+      "path_m": 0.21460078172298563,
+      "start_xy_m": 0.0,
+      "start_yaw_deg": 0.0,
+      "xy_rmse_m": 0.03530507347679081,
+      "final_xy_m": 0.050166150233136454,
+      "final_yaw_deg": 2.999857950421284,
+      "maximum_xy_m": 0.055247094095608476,
+      "maximum_yaw_deg": 4.374117332576011,
+      "final_drift_percent": 23.376499298074652,
+      "absolute_error_over_phase_path_percent": 23.376499298074652,
+      "final_handoff_pass": true,
+      "final_direction_coupled_deg": 6.596347717038033,
+      "slot_pass": true
+    },
+    "off": {
+      "frames": 389,
+      "path_m": 0.21460078172298563,
+      "start_xy_m": 0.0,
+      "start_yaw_deg": 0.0,
+      "xy_rmse_m": 0.02976917228153624,
+      "final_xy_m": 0.04321617265198149,
+      "final_yaw_deg": 3.3111603489547874,
+      "maximum_xy_m": 0.0480280921489641,
+      "maximum_yaw_deg": 4.597864981301048,
+      "final_drift_percent": 20.137938130983358,
+      "absolute_error_over_phase_path_percent": 20.137938130983358,
+      "final_handoff_pass": true,
+      "final_direction_coupled_deg": 6.383741592373614,
+      "slot_pass": true
+    },
+    "on": {
+      "frames": 389,
+      "path_m": 0.21460078172298563,
+      "start_xy_m": 0.0,
+      "start_yaw_deg": 0.0,
+      "xy_rmse_m": 0.08061124777050359,
+      "final_xy_m": 0.14983595490949855,
+      "final_yaw_deg": 5.59753308571319,
+      "maximum_xy_m": 0.1519778142709621,
+      "maximum_yaw_deg": 6.884237718059451,
+      "final_drift_percent": 69.82078709429501,
+      "absolute_error_over_phase_path_percent": 69.82078709429501,
+      "final_handoff_pass": true,
+      "final_direction_coupled_deg": 17.7049922385715,
+      "slot_pass": false
+    },
+    "rbpf": {
+      "frames": 389,
+      "path_m": 0.21460078172298563,
+      "start_xy_m": 0.0,
+      "start_yaw_deg": 0.0,
+      "xy_rmse_m": 0.04043546340324419,
+      "final_xy_m": 0.04634559334010237,
+      "final_yaw_deg": 3.3608064319318207,
+      "maximum_xy_m": 0.06733922516698723,
+      "maximum_yaw_deg": 7.001132577846834,
+      "final_drift_percent": 21.59619036240367,
+      "absolute_error_over_phase_path_percent": 21.59619036240367,
+      "final_handoff_pass": true,
+      "final_direction_coupled_deg": 6.6682370612288135,
+      "slot_pass": true
+    },
+    "nominal_off": {
+      "frames": 389,
+      "path_m": 0.21460078172298563,
+      "start_xy_m": 0.0,
+      "start_yaw_deg": 0.0,
+      "xy_rmse_m": 0.051543348013376226,
+      "final_xy_m": 0.07138666887462185,
+      "final_yaw_deg": 28.049098171848527,
+      "maximum_xy_m": 0.0752870882737152,
+      "maximum_yaw_deg": 28.279308772306138,
+      "final_drift_percent": 33.26486898205726,
+      "absolute_error_over_phase_path_percent": 33.26486898205726,
+      "final_handoff_pass": false,
+      "final_direction_coupled_deg": 33.298880508885944,
+      "slot_pass": false
+    }
+  },
+  "phases": {
+    "lk": {
+      "commanded_closed": {
+        "frames": 0,
+        "status": "not_recorded"
+      },
+      "actual_transport_command_interval": {
+        "frames": 0,
+        "status": "not_recorded"
+      }
+    },
+    "off": {
+      "commanded_closed": {
+        "frames": 0,
+        "status": "not_recorded"
+      },
+      "actual_transport_command_interval": {
+        "frames": 0,
+        "status": "not_recorded"
+      }
+    },
+    "on": {
+      "commanded_closed": {
+        "frames": 0,
+        "status": "not_recorded"
+      },
+      "actual_transport_command_interval": {
+        "frames": 0,
+        "status": "not_recorded"
+      }
+    },
+    "rbpf": {
+      "commanded_closed": {
+        "frames": 0,
+        "status": "not_recorded"
+      },
+      "actual_transport_command_interval": {
+        "frames": 0,
+        "status": "not_recorded"
+      }
+    },
+    "nominal_off": {
+      "commanded_closed": {
+        "frames": 0,
+        "status": "not_recorded"
+      },
+      "actual_transport_command_interval": {
+        "frames": 0,
+        "status": "not_recorded"
+      }
+    }
+  },
+  "checkpoints": [
+    {
+      "t": 5.8,
+      "event": "prescan",
+      "methods": {
+        "lk": {
+          "xy_m": 0.0035484859065537827,
+          "yaw_deg": 0.21790539046890914,
+          "direction_coupled_deg": 0.45857801463229514,
+          "handoff_pass": true,
+          "slot_pass": true
+        },
+        "off": {
+          "xy_m": 0.0035484859065537827,
+          "yaw_deg": 0.21790539046890914,
+          "direction_coupled_deg": 0.45857801463229514,
+          "handoff_pass": true,
+          "slot_pass": true
+        },
+        "on": {
+          "xy_m": 0.0035484859065537827,
+          "yaw_deg": 0.21790539046890914,
+          "direction_coupled_deg": 0.45857801463229514,
+          "handoff_pass": true,
+          "slot_pass": true
+        },
+        "rbpf": {
+          "xy_m": 0.0026246394299517303,
+          "yaw_deg": 0.14199255803135208,
+          "direction_coupled_deg": 0.3198121982799668,
+          "handoff_pass": true,
+          "slot_pass": true
+        },
+        "nominal_off": {
+          "xy_m": 0.0035484859065537827,
+          "yaw_deg": 0.21790539046890914,
+          "direction_coupled_deg": 0.45857801463229514,
+          "handoff_pass": true,
+          "slot_pass": true
+        }
+      }
+    },
+    {
+      "t": 5.8,
+      "event": "body_sweep_start",
+      "methods": {
+        "lk": {
+          "xy_m": 0.0035484859065537827,
+          "yaw_deg": 0.21790539046890914,
+          "direction_coupled_deg": 0.45857801463229514,
+          "handoff_pass": true,
+          "slot_pass": true
+        },
+        "off": {
+          "xy_m": 0.0035484859065537827,
+          "yaw_deg": 0.21790539046890914,
+          "direction_coupled_deg": 0.45857801463229514,
+          "handoff_pass": true,
+          "slot_pass": true
+        },
+        "on": {
+          "xy_m": 0.0035484859065537827,
+          "yaw_deg": 0.21790539046890914,
+          "direction_coupled_deg": 0.45857801463229514,
+          "handoff_pass": true,
+          "slot_pass": true
+        },
+        "rbpf": {
+          "xy_m": 0.0026246394299517303,
+          "yaw_deg": 0.14199255803135208,
+          "direction_coupled_deg": 0.3198121982799668,
+          "handoff_pass": true,
+          "slot_pass": true
+        },
+        "nominal_off": {
+          "xy_m": 0.0035484859065537827,
+          "yaw_deg": 0.21790539046890914,
+          "direction_coupled_deg": 0.45857801463229514,
+          "handoff_pass": true,
+          "slot_pass": true
+        }
+      }
+    },
+    {
+      "t": 6.4,
+      "event": "fixed_folded_sweep_pose_issued_settled",
+      "methods": {
+        "lk": {
+          "xy_m": 0.0035346844757453756,
+          "yaw_deg": 0.224779975868527,
+          "direction_coupled_deg": 0.46451262567932916,
+          "handoff_pass": true,
+          "slot_pass": true
+        },
+        "off": {
+          "xy_m": 0.0035346844757453756,
+          "yaw_deg": 0.224779975868527,
+          "direction_coupled_deg": 0.46451262567932916,
+          "handoff_pass": true,
+          "slot_pass": true
+        },
+        "on": {
+          "xy_m": 0.0035346844757453756,
+          "yaw_deg": 0.224779975868527,
+          "direction_coupled_deg": 0.46451262567932916,
+          "handoff_pass": true,
+          "slot_pass": true
+        },
+        "rbpf": {
+          "xy_m": 0.002637236216197405,
+          "yaw_deg": 0.13511797263173425,
+          "direction_coupled_deg": 0.31379370256656314,
+          "handoff_pass": true,
+          "slot_pass": true
+        },
+        "nominal_off": {
+          "xy_m": 0.0035346844757453756,
+          "yaw_deg": 0.224779975868527,
+          "direction_coupled_deg": 0.46451262567932916,
+          "handoff_pass": true,
+          "slot_pass": true
+        }
+      }
+    },
+    {
+      "t": 32.9,
+      "event": "body_sweep_end",
+      "methods": {
+        "lk": {
+          "xy_m": 0.05145512618654733,
+          "yaw_deg": 4.160329311201091,
+          "direction_coupled_deg": 7.85492596944155,
+          "handoff_pass": true,
+          "slot_pass": true
+        },
+        "off": {
+          "xy_m": 0.044719127606129734,
+          "yaw_deg": 4.471631709734595,
+          "direction_coupled_deg": 7.656788270324717,
+          "handoff_pass": true,
+          "slot_pass": true
+        },
+        "on": {
+          "xy_m": 0.1467202886490675,
+          "yaw_deg": 6.758004446492997,
+          "direction_coupled_deg": 18.5697106801681,
+          "handoff_pass": true,
+          "slot_pass": false
+        },
+        "rbpf": {
+          "xy_m": 0.06307005509362093,
+          "yaw_deg": 1.7205207053157503,
+          "direction_coupled_deg": 6.312602690454042,
+          "handoff_pass": true,
+          "slot_pass": false
+        },
+        "nominal_off": {
+          "xy_m": 0.07325946271129345,
+          "yaw_deg": 26.888626811068715,
+          "direction_coupled_deg": 32.28827396794002,
+          "handoff_pass": false,
+          "slot_pass": false
+        }
+      }
+    },
+    {
+      "t": 38.8,
+      "event": "rescan",
+      "methods": {
+        "lk": {
+          "xy_m": 0.050166150233136454,
+          "yaw_deg": 2.999857950421284,
+          "direction_coupled_deg": 6.596347717038033,
+          "handoff_pass": true,
+          "slot_pass": true
+        },
+        "off": {
+          "xy_m": 0.04321617265198149,
+          "yaw_deg": 3.3111603489547874,
+          "direction_coupled_deg": 6.383741592373614,
+          "handoff_pass": true,
+          "slot_pass": true
+        },
+        "on": {
+          "xy_m": 0.14983595490949855,
+          "yaw_deg": 5.59753308571319,
+          "direction_coupled_deg": 17.7049922385715,
+          "handoff_pass": true,
+          "slot_pass": false
+        },
+        "rbpf": {
+          "xy_m": 0.04634559334010237,
+          "yaw_deg": 3.3608064319318207,
+          "direction_coupled_deg": 6.6682370612288135,
+          "handoff_pass": true,
+          "slot_pass": true
+        },
+        "nominal_off": {
+          "xy_m": 0.07138666887462185,
+          "yaw_deg": 28.049098171848527,
+          "direction_coupled_deg": 33.298880508885944,
+          "handoff_pass": false,
+          "slot_pass": false
+        }
+      }
+    }
+  ],
+  "door_crossings": [],
+  "missing": [
+    "zone_arrival",
+    "return",
+    "setdown_lookaround",
+    "door_crossing",
+    "map_to_near_teacher_handoff",
+    "visual_static_registration"
+  ],
+  "correction_counts": {
+    "attempts": 35,
+    "accepted": 12,
+    "xy_worsened": 4,
+    "yaw_worsened": 4
+  },
+  "correction_evaluation": [
+    {
+      "t": 1.4,
+      "selected": "self_submap",
+      "before_xy_m": 0.0024165874687834435,
+      "after_xy_m": 0.0024165874687834435,
+      "before_yaw_deg": 1.0940408908925139,
+      "after_yaw_deg": 1.0940408908925139,
+      "xy_worsened": false,
+      "yaw_worsened": false
+    },
+    {
+      "t": 2.4,
+      "selected": "self_submap",
+      "before_xy_m": 0.002147715272812132,
+      "after_xy_m": 0.002147715272812132,
+      "before_yaw_deg": 0.9344443066517325,
+      "after_yaw_deg": 0.9344443066517325,
+      "xy_worsened": false,
+      "yaw_worsened": false
+    },
+    {
+      "t": 3.4,
+      "selected": "self_submap",
+      "before_xy_m": 0.003755715579792636,
+      "after_xy_m": 0.003755715579792636,
+      "before_yaw_deg": 0.23624201944451922,
+      "after_yaw_deg": 0.23624201944451922,
+      "xy_worsened": false,
+      "yaw_worsened": false
+    },
+    {
+      "t": 7.6,
+      "selected": "self_submap",
+      "before_xy_m": 0.008007690796393945,
+      "after_xy_m": 0.008007690796393945,
+      "before_yaw_deg": 0.6432467630629493,
+      "after_yaw_deg": 0.6432467630629493,
+      "xy_worsened": false,
+      "yaw_worsened": false
+    },
+    {
+      "t": 25.6,
+      "selected": "self_submap",
+      "before_xy_m": 0.034925966123773126,
+      "after_xy_m": 0.04707680932304584,
+      "before_yaw_deg": 3.3603658061091286,
+      "after_yaw_deg": 3.9063734426225873,
+      "xy_worsened": true,
+      "yaw_worsened": true
+    },
+    {
+      "t": 26.6,
+      "selected": "self_submap",
+      "before_xy_m": 0.05051381370614755,
+      "after_xy_m": 0.06085813463402166,
+      "before_yaw_deg": 4.825227014054222,
+      "after_yaw_deg": 5.09347313306911,
+      "xy_worsened": true,
+      "yaw_worsened": true
+    },
+    {
+      "t": 27.6,
+      "selected": "self_submap",
+      "before_xy_m": 0.06055334339486864,
+      "after_xy_m": 0.08274238233292641,
+      "before_yaw_deg": 5.061137858331694,
+      "after_yaw_deg": 5.415881822445874,
+      "xy_worsened": true,
+      "yaw_worsened": true
+    },
+    {
+      "t": 28.6,
+      "selected": "self_submap",
+      "before_xy_m": 0.08096261312750849,
+      "after_xy_m": 0.14930482936906883,
+      "before_yaw_deg": 5.511231382234019,
+      "after_yaw_deg": 6.628606399349915,
+      "xy_worsened": true,
+      "yaw_worsened": true
+    },
+    {
+      "t": 33.6,
+      "selected": "self_submap",
+      "before_xy_m": 0.14654014016301717,
+      "after_xy_m": 0.14654014016301717,
+      "before_yaw_deg": 6.40295255391862,
+      "after_yaw_deg": 6.40295255391862,
+      "xy_worsened": false,
+      "yaw_worsened": false
+    },
+    {
+      "t": 34.6,
+      "selected": "self_submap",
+      "before_xy_m": 0.14740328441428788,
+      "after_xy_m": 0.14740328441428788,
+      "before_yaw_deg": 6.061024671953727,
+      "after_yaw_deg": 6.061024671953727,
+      "xy_worsened": false,
+      "yaw_worsened": false
+    },
+    {
+      "t": 35.6,
+      "selected": "self_submap",
+      "before_xy_m": 0.14933475258485773,
+      "after_xy_m": 0.14933475258485773,
+      "before_yaw_deg": 5.95994453881349,
+      "after_yaw_deg": 5.95994453881349,
+      "xy_worsened": false,
+      "yaw_worsened": false
+    },
+    {
+      "t": 36.8,
+      "selected": "self_submap",
+      "before_xy_m": 0.14965899421715068,
+      "after_xy_m": 0.14965899421715068,
+      "before_yaw_deg": 5.790114133158531,
+      "after_yaw_deg": 5.790114133158531,
+      "xy_worsened": false,
+      "yaw_worsened": false
+    }
+  ],
+  "rejection_distribution": [
+    {
+      "category": "measured_rotation",
+      "n": 239,
+      "xy_increment_residual_sum_m": 0.43104194469611745,
+      "xy_increment_residual_p95_m": 0.003968554177642104,
+      "blocked_object": "own_floor_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "command_prediction_unknown_rigid_consensus",
+      "n": 25,
+      "xy_increment_residual_sum_m": 0.022891112412790165,
+      "xy_increment_residual_p95_m": 0.0014936497240058187,
+      "blocked_object": "own_floor_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "command_prediction_unknown_camera_unsettled",
+      "n": 45,
+      "xy_increment_residual_sum_m": 0.012665300962329875,
+      "xy_increment_residual_p95_m": 0.0009143013882718598,
+      "blocked_object": "own_floor_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "servo_change",
+      "n": 17,
+      "xy_increment_residual_sum_m": 0.011694434110696511,
+      "xy_increment_residual_p95_m": 0.0013030377238935837,
+      "blocked_object": "own_floor_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "measured_translation_or_rest",
+      "n": 62,
+      "xy_increment_residual_sum_m": 0.006883367767664956,
+      "xy_increment_residual_p95_m": 0.000432526861418845,
+      "blocked_object": "own_floor_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    }
+  ],
+  "truth_to_control": 0,
+  "scale_fitting": 0,
+  "accepted_global_registration_evaluation": [],
+  "wrong_global_accepts": 0,
+  "prior_sigma_coverage": {
+    "attempts": 35,
+    "inside_all": 18,
+    "inside_each_axis": [
+      25,
+      26,
+      18
+    ],
+    "scope": "evaluation only; no sigma scale fitted"
+  },
+  "upstream_map_navigation_verified": false,
+  "student_execution": false,
+  "phase_scope": "closed grip is a command label, not proof of load; actual transport starts at own-RGB hold confirmation; physical lift independently evaluated",
+  "requirements_sha256": "d9f3c1f3a00273be3aa901613d01386fa493b1ed5edb561e40a58d367360875c",
+  "prediction_seal_sha256": "f568e0fe4d4212cf020ac3aec3c3839e7312e92025663f6c81083f85cea74676",
+  "reproduction": [
+    "/home/ugrp/ugrp-sim/src/mapbuild8-audit-final/scripts/mapbuild8_evaluate.py",
+    "--input",
+    "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3",
+    "--prediction",
+    "/home/ugrp/ugrp-sim/runs/mapbuild8/executed-r3-ablation",
+    "--requirements",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild6/requirements-r2.json",
+    "--output",
+    "/home/ugrp/ugrp-sim/runs/mapbuild8/evaluation-r3-ablation"
+  ]
+}

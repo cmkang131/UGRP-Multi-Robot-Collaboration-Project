@@ -1,0 +1,87 @@
+{
+  "raw": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3",
+  "reproduction": [
+    "/home/ugrp/ugrp-sim/src/mapbuild8-audit-final/scripts/mapbuild8_freeze_online.py",
+    "--nominal-ablation",
+    "--input",
+    "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3",
+    "--rejection-table",
+    "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3/rejection_table.json",
+    "--output",
+    "/home/ugrp/ugrp-sim/runs/mapbuild8/executed-r3-ablation"
+  ],
+  "stages": [
+    {
+      "stage": "frames",
+      "cumulative_pass_n": 389,
+      "rejected_n": 0
+    },
+    {
+      "stage": "visible_wall",
+      "cumulative_pass_n": 341,
+      "rejected_n": 48
+    },
+    {
+      "stage": "scheduled_supported",
+      "cumulative_pass_n": 35,
+      "rejected_n": 306
+    },
+    {
+      "stage": "adopted_pose_correction",
+      "cumulative_pass_n": 12,
+      "rejected_n": 23
+    }
+  ],
+  "distribution": [
+    {
+      "category": "map_correction",
+      "reason": "no_visible_scan",
+      "n": 48,
+      "blocked_object": "own_observed_wall",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "map_correction",
+      "reason": "new_submap_motion_anchor",
+      "n": 1,
+      "blocked_object": "own_observed_wall",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "map_correction",
+      "reason": "sim_keyframe_interval",
+      "n": 302,
+      "blocked_object": "own_observed_wall",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "map_correction",
+      "reason": "accepted",
+      "n": 12,
+      "blocked_object": "own_observed_wall",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "map_correction",
+      "reason": "insufficient_near_points",
+      "n": 4,
+      "blocked_object": "own_observed_wall",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "map_correction",
+      "reason": "search_boundary",
+      "n": 22,
+      "blocked_object": "own_observed_wall",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    }
+  ],
+  "raw_manifest_sha256": "1ab4b7f70810e0518d8e8e28db586f1a279fbf751f4ac667158a08083c482cdb",
+  "original_files_verified": 800
+}

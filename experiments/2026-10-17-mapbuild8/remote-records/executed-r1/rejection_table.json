@@ -1,0 +1,78 @@
+{
+  "raw": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r1",
+  "reproduction": [
+    "/home/ugrp/ugrp-sim/src/mapbuild8-audit-final/scripts/mapbuild8_freeze_online.py",
+    "--input",
+    "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r1",
+    "--rejection-table",
+    "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r1/rejection_table.json",
+    "--output",
+    "/home/ugrp/ugrp-sim/runs/mapbuild8/executed-r1"
+  ],
+  "stages": [
+    {
+      "stage": "frames",
+      "cumulative_pass_n": 277,
+      "rejected_n": 0
+    },
+    {
+      "stage": "visible_wall",
+      "cumulative_pass_n": 134,
+      "rejected_n": 143
+    },
+    {
+      "stage": "scheduled_supported",
+      "cumulative_pass_n": 10,
+      "rejected_n": 124
+    },
+    {
+      "stage": "adopted_pose_correction",
+      "cumulative_pass_n": 0,
+      "rejected_n": 10
+    }
+  ],
+  "distribution": [
+    {
+      "category": "map_correction",
+      "reason": "no_visible_scan",
+      "n": 143,
+      "blocked_object": "own_observed_wall",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "map_correction",
+      "reason": "new_submap_motion_anchor",
+      "n": 2,
+      "blocked_object": "own_observed_wall",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "map_correction",
+      "reason": "sim_keyframe_interval",
+      "n": 116,
+      "blocked_object": "own_observed_wall",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "map_correction",
+      "reason": "search_boundary",
+      "n": 8,
+      "blocked_object": "own_observed_wall",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "map_correction",
+      "reason": "insufficient_near_points",
+      "n": 8,
+      "blocked_object": "own_observed_wall",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    }
+  ],
+  "raw_manifest_sha256": "fec9b26856e52f87cebe14a54e3be0b47fec3448f4de5a565a6152176e293f9e",
+  "original_files_verified": 574
+}

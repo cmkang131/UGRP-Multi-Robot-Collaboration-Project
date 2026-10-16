@@ -1,0 +1,59 @@
+{
+  "source_sha": "438546cfb",
+  "host": "gcp5",
+  "scope": "non-physics only; not whole project CI or actual route",
+  "unique_selected_tests": 103,
+  "all_selected_tests_final_pass": true,
+  "first_pass": {
+    "passed": 100,
+    "failed": 3,
+    "cause": "c++ executable absent on VM",
+    "log": "experiments/2026-10-17-mapbuild8/remote-records/operations/final-tests.log",
+    "sha256": "a272d7c685cc9a8f1fc44a2bafc0c14525397173fc76a68692f1dee1b4388051"
+  },
+  "retry": {
+    "passed": 21,
+    "failed": 0,
+    "scope": "tests/test_e2e_rgb_vo.py after installing g++; covers all 3 initial failures",
+    "log": "experiments/2026-10-17-mapbuild8/remote-records/operations/final-vo-retry.log",
+    "sha256": "e92aabd550d8606ae980d1f4db00ce1a221b90523432efc4f7106655cc22a30a"
+  },
+  "command": [
+    "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/test_mapbuild1.py",
+    "tests/test_mapbuild2.py",
+    "tests/test_mapbuild4.py",
+    "tests/test_mapbuild5.py",
+    "tests/test_mapbuild6.py",
+    "tests/test_mapbuild7.py",
+    "tests/test_mapbuild8.py",
+    "tests/test_servo_camera_fk.py",
+    "tests/test_self_map_csm.py",
+    "tests/test_self_map_csm_v2.py",
+    "tests/test_e2e_rgb_vo.py",
+    "tests/test_rbpf_rejection.py",
+    "tests/test_rbpf_composition.py"
+  ],
+  "api_sha256_matches": {
+    "harness/servo_camera_fk.py": true,
+    "harness/data/servo_camera_v3_chain.json": true,
+    "harness/mapbuild_camera.py": true,
+    "harness/mapbuild_static_registration.py": true,
+    "harness/self_map_csm.py": true,
+    "harness/selfmap_map_correction.py": true,
+    "harness/mapbuild_command_prior.py": true,
+    "experiments/2026-10-17-mapbuild8/calibration/own-command-calibration-r2.json": true
+  },
+  "source_reference_missing_objects": 0,
+  "raw_files_verified": 2151,
+  "raw_hash_mismatches": 0,
+  "prediction_files_verified": 8,
+  "prediction_hash_mismatches": 0,
+  "physical_rounds": 3,
+  "actual_routes": 0,
+  "scan_error_audit_executed": true,
+  "scan_error_audit_script_sha256": "a9c0c1839f60bcade430ec133229ce1f75ecdb728c3b9431e4b105423e7078c9"
+}
