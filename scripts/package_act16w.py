@@ -76,6 +76,7 @@ print(json.dumps(dict(ready=True,device='cpu',history_mode=actor.mode,scope='has
         teacher_library_sha='6f057f7e97c1a3aec9e8c398b8d9068e27b25df8',qualified_controller_sha='f0db6b1abb842ea65b71c433738210254f300a7c',
         record_API_upstream_sha='0362037280c6cbc4677f70366db43b9892b23690',record_host_schema_adapter_sha='813b9113b16e382712a00b911a9dcc7c06fbd77d',
         scope='experimental solo r1 BOX near-field grasp/release; no multi-robot/transport or legacy can/tile/crate capability claim; loading and task success are separate',
+        task_instruction_limit='BOX tokens carry kind+west, not an individual same-colour item_id; empirical performance effect unmeasured',
         public_redownload_and_loading_verified=False,original_checkpoint=str(a.checkpoint),optimizer_original_retained=True,raw_dataset_backup_included=False)
     write(stage/'provenance.json',provenance)
     (stage/'README.md').write_text('# ACT16 '+a.arm+' step'+str(step)+'\n\n실험 모델이며 기본 제어기가 아닙니다. '+('등록한10000스텝 학습 완료.' if complete else '8시간 예산 안의 미완료 비교 체크포인트 보존.')+'\n\n기존 고정 ACT 환경에서 `python inference/load_model.py`로 CPU 로딩을 확인합니다. 필수 패키지 버전은 environment.json, 원 학습/교사/데이터 해시는 provenance.json에 있습니다. 로딩 성공은 물리 임무 성공이 아닙니다. 이 ZIP은 가중치·필수 추론 소스·출처만 포함하며 raw 데이터나 optimizer 백업을 대체하지 않습니다.\n')
@@ -83,7 +84,7 @@ print(json.dumps(dict(ready=True,device='cpu',history_mode=actor.mode,scope='has
     row=dict(id=model_id,status='available',description='ACT16 '+a.arm+' experimental '+('10000-step model' if complete else 'incomplete comparison snapshot'),source_sha=meta['provenance']['source_sha'],training_source_sha=meta['provenance']['source_sha'],packaging_source_sha=source,
         release=dict(tag=a.tag,asset=asset,url=f'https://github.com/{repo}/releases/download/{a.tag}/{asset}'),
         files=[dict(path=str(f.relative_to(stage)),bytes=f.stat().st_size,sha256=sha256(f)) for f in sorted(stage.rglob('*')) if f.is_file()],
-        limitations=['experimental; not a default controller','public re-download/hash/loading verification pending','matched10000 steps complete' if complete else 'incomplete matched comparison; not eligible for final40 evaluation'],
+        limitations=['experimental; not a default controller','BOX task tokens do not distinguish same-colour item instances; effect unmeasured','public re-download/hash/loading verification pending','matched10000 steps complete' if complete else 'incomplete matched comparison; not eligible for final40 evaluation'],
         verification=dict(state='PENDING',scope='no deployment or task-success claim before public checks'))
     archive=pack(row,stage,a.out/asset);row['archive']={k:archive[k] for k in ('sha256','bytes')}
     write(a.out/'registry-entry.pending.json',row);write(a.out/'package-summary.json',dict(status='staged_not_uploaded',registry_entry=str(a.out/'registry-entry.pending.json'),archive=archive,synthetic=False,complete_training=complete))
