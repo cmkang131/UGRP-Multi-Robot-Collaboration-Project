@@ -23,3 +23,14 @@ def test_host_identity_is_derived_from_measured_report(tmp_path):
     r=collect(tmp_path)
     assert r['rows'][0]['load']=='exclusive_ugrp-act-l4-gcp4'
     assert r['rows'][1]['load']=='unverified'
+
+
+def test_oom_without_finalizer_keeps_host_error_and_missing_timings(tmp_path):
+    (tmp_path/'n64').mkdir()
+    (tmp_path/'n64/failure-evidence.json').write_text(json.dumps(dict(status='HOST_ERROR',
+        errors=[dict(category='HOST_ERROR',reason='kernel OOM SIGKILL',blocked_object='host RAM',minimum_gap_m=None)],
+        host=dict(instance='ugrp-act-l4-gcp4'),shared_load=False,source_sha='pinned')))
+    row=collect(tmp_path)['rows'][-1]
+    assert row['status']=='HOST_ERROR' and row['timing'] is None
+    assert row['load']=='exclusive_ugrp-act-l4-gcp4'
+    assert row['errors'][0]['reason']=='kernel OOM SIGKILL'

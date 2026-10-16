@@ -11,7 +11,13 @@ def collect(root):
         raw=root/f'n{n}';summary=raw/'summary.json';profile=raw/'profile.json'
         row=dict(nworld=n,load='unverified',status='UNRETRIEVED',raw=str(raw),timing=None)
         if not summary.is_file():
-            if raw.exists():row['status']='RUNNING_OR_HOST_ERROR_UNRESOLVED'
+            failure=raw/'failure-evidence.json'
+            if failure.is_file():
+                value=json.loads(failure.read_text())
+                row.update(status=value['status'],errors=value['errors'],host=value['host'],source_sha=value['source_sha'],
+                    load=('shared_' if value['shared_load'] else 'exclusive_')+value['host']['instance'],
+                    failure_evidence_sha256=hashlib.sha256(failure.read_bytes()).hexdigest())
+            elif raw.exists():row['status']='RUNNING_OR_HOST_ERROR_UNRESOLVED'
             rows.append(row);continue
         report=json.loads(summary.read_text());row.update(status=report['status'],
             source_sha=report['source_sha'],host=report['host'],shared_load=report['shared_load'],
@@ -30,6 +36,7 @@ def collect(root):
             row['timing']=dict(
                 physics_device_s=total(lambda k:k=='physics_graph','device_s'),
                 render_device_s=total(lambda k:k in ('render_refit_gpu','render_extract_gpu','render_kinematics_gpu'),'device_s'),
+                render_cpu_wall_s=total(lambda k:k in ('render_cpu_convert','render_blend_cpu','jpeg_cpu'),'wall_s'),
                 python_control_wall_s=total(lambda k:k in ('command_python','controller_python'),'wall_s'),
                 h2d_allocate_copy_wall_s=total(lambda k:k in ('command_h2d','render_model_h2d'),'wall_s'),
                 d2h_blocking_wall_s=total(lambda k:'d2h' in k,'wall_s'),
@@ -49,13 +56,15 @@ def collect(root):
 
 
 def markdown(result):
-    text=['|load|N|status|SIM s|physics GPU s|render GPU s|Python s|H2D alloc/copy s|D2H blocking s|explicit wait s|numpy calls|',
-          '|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|']
+    text=['|load|N|status|SIM s|physics GPU s|render GPU s|render CPU s|control Python s|H2D alloc/copy s|D2H blocking s|D2H GB|explicit wait s|numpy calls|',
+          '|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|']
     for row in result['rows']:
         t=row['timing'] or {}
         values=[row['load'],row['nworld'],row['status'],row.get('sim_s')]
-        values += [t.get(k) for k in ('physics_device_s','render_device_s','python_control_wall_s',
-            'h2d_allocate_copy_wall_s','d2h_blocking_wall_s','explicit_completion_wait_s','blocking_numpy_calls')]
+        values += [t.get(k) for k in ('physics_device_s','render_device_s','render_cpu_wall_s','python_control_wall_s',
+            'h2d_allocate_copy_wall_s','d2h_blocking_wall_s')]
+        values += [t['d2h_bytes']/1e9 if 'd2h_bytes' in t else None]
+        values += [t.get(k) for k in ('explicit_completion_wait_s','blocking_numpy_calls')]
         text.append('|'+ '|'.join('—' if v is None else f'{v:.6f}' if isinstance(v,float) else str(v) for v in values)+'|')
     text += ['', 'Shared gcp2 warp7 R3 (별도 코호트): N16·2그룹·0.4 SIM s / loop145.099 s; command+physics97.792 s, render+평가복사35.126 s. 분리 계측 없음.',
              '', result['scope']]
