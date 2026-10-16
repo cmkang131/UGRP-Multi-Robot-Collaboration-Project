@@ -55,8 +55,10 @@ def main():
                         (int(x[3])==floor and int(x[2]) in gs) for x in rows],dtype=bool)]
                     counts.append(len(wheelrows));forces.append(float(wheelrows[:,17].sum()))
                 initial.append(dict(run=folder.name,case=case['id'],initial_base_box_gap_m=gap,
-                    nonoverlap=gap>=0,settled_wheel_floor_contacts_fl_fr_rl_rr=counts,
-                    settled_wheel_floor_normal_N_fl_fr_rl_rr=forces,geometry_evaluator='C312 box-box geometry on recorded state; contact counts/forces from actual engine'))
+                    nonoverlap=gap>=0,contact_instrumentation_valid=r.get('roller_contact_geoms')==36,
+                    settled_wheel_floor_contacts_fl_fr_rl_rr=counts if r.get('roller_contact_geoms')==36 else None,
+                    settled_wheel_floor_normal_N_fl_fr_rl_rr=forces if r.get('roller_contact_geoms')==36 else None,
+                    geometry_evaluator='C312 box-box geometry on recorded state; valid contact counts/forces from actual engine'))
             if not np.isfinite(s['qpos']).all() or not np.isfinite(s['qvel']).all() or not np.isfinite(c).all():
                 bad.append(dict(category='NONFINITE_RAW',reason='state/contact contains nonfinite values',blocked_object=folder.name,minimum_gap_m=None,gap_status='not_applicable'))
         records.append(dict(run=folder.name,status=r['status'],planned_tape_complete=bool(iscomplete),
