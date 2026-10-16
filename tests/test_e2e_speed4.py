@@ -69,7 +69,12 @@ def test_pixel_budget_adapter_does_not_change_camera_or_physics():
 def test_particle_budget_and_wall_endpoints_are_independent(monkeypatch):
     from harness import active_wall_mapping as m
     from harness.self_map_rbpf import RBPFOptions
-    assert RBPFOptions(particles=50).particles == 50
+    with pytest.raises(ValueError, match='30_OR_100'):
+        RBPFOptions(particles=50)
+    with using(Options(rbpf_particles=50)):
+        assert RBPFOptions(particles=50).particles == 50
+    with pytest.raises(ValueError, match='30_OR_100'):
+        RBPFOptions(particles=50)
     captured = []
     monkeypatch.setattr(m, 'receive_rays', lambda *a: captured.append(a[3]))
     monkeypatch.setattr(m, 'clear_current_footprint', lambda *a: None)
@@ -84,6 +89,8 @@ def test_particle_budget_and_wall_endpoints_are_independent(monkeypatch):
 
 
 def test_new_robot_gets_particle_budget_without_global_mutation(monkeypatch):
+    pytest.importorskip('mujoco', exc_type=ModuleNotFoundError)
+    pytest.importorskip('matplotlib', exc_type=ModuleNotFoundError)
     from scripts.replay_e2e_receive_speed import build_robots
     from harness import e2e_live_mapping as mapping
     original = mapping.Robot

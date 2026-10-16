@@ -1,0 +1,133 @@
+{
+  "scope": "complete successful command trace, saved-state replay; no new task success judgment",
+  "sample_hz": 2,
+  "playback_sim_speed": 4,
+  "range_sim_s": [
+    0,
+    43.400000000000006
+  ],
+  "frames": 87,
+  "ffprobe": {
+    "format": {
+      "duration": "10.875000",
+      "size": "59761"
+    }
+  },
+  "timeline": {
+    "fold": {
+      "first_sim_s": 0.0,
+      "last_sim_s": 0.5,
+      "frames": 6
+    },
+    "approach": {
+      "first_sim_s": 0.6000000000000001,
+      "last_sim_s": 7.800000000000001,
+      "frames": 73
+    },
+    "align": {
+      "first_sim_s": 7.9,
+      "last_sim_s": 10.3,
+      "frames": 25
+    },
+    "hover": {
+      "first_sim_s": 10.4,
+      "last_sim_s": 11.3,
+      "frames": 10
+    },
+    "descent": {
+      "first_sim_s": 11.4,
+      "last_sim_s": 12.9,
+      "frames": 16
+    },
+    "close": {
+      "first_sim_s": 13.0,
+      "last_sim_s": 14.100000000000001,
+      "frames": 12
+    },
+    "lift": {
+      "first_sim_s": 14.200000000000001,
+      "last_sim_s": 15.600000000000001,
+      "frames": 15
+    },
+    "lift_settle": {
+      "first_sim_s": 15.700000000000001,
+      "last_sim_s": 18.8,
+      "frames": 32
+    },
+    "lookback_pose": {
+      "first_sim_s": 18.900000000000002,
+      "last_sim_s": 19.900000000000002,
+      "frames": 11
+    },
+    "lookback": {
+      "first_sim_s": 20.0,
+      "last_sim_s": 22.0,
+      "frames": 21
+    },
+    "lookback_settle": {
+      "first_sim_s": 22.1,
+      "last_sim_s": 22.5,
+      "frames": 5
+    },
+    "verify_lift": {
+      "first_sim_s": 22.6,
+      "last_sim_s": 23.6,
+      "frames": 11
+    },
+    "hold": {
+      "first_sim_s": 23.700000000000003,
+      "last_sim_s": 26.6,
+      "frames": 30
+    },
+    "lookback_return": {
+      "first_sim_s": 26.700000000000003,
+      "last_sim_s": 28.700000000000003,
+      "frames": 21
+    },
+    "lower": {
+      "first_sim_s": 28.8,
+      "last_sim_s": 30.700000000000003,
+      "frames": 20
+    },
+    "open": {
+      "first_sim_s": 30.8,
+      "last_sim_s": 31.400000000000002,
+      "frames": 7
+    },
+    "retract": {
+      "first_sim_s": 31.5,
+      "last_sim_s": 33.2,
+      "frames": 18
+    },
+    "backoff": {
+      "first_sim_s": 33.300000000000004,
+      "last_sim_s": 35.300000000000004,
+      "frames": 21
+    },
+    "lookaround": {
+      "first_sim_s": 35.4,
+      "last_sim_s": 41.2,
+      "frames": 59
+    },
+    "complete": {
+      "first_sim_s": 41.300000000000004,
+      "last_sim_s": 43.300000000000004,
+      "frames": 21
+    }
+  },
+  "failure_review": "No executed task failure; C stopped before physics, pre-import HOST_ERROR has no video",
+  "raw_paths": [
+    "/home/ugrp/ugrp-sim/outputs/simalt1-l4-states"
+  ],
+  "reproduce": [
+    "/home/ugrp/ugrp-sim/outputs/simalt_review_trace.py",
+    "--source",
+    "/home/ugrp/ugrp-sim/outputs/simalt1-source",
+    "--plan",
+    "/home/ugrp/ugrp-sim/outputs/plan.json",
+    "--states",
+    "/home/ugrp/ugrp-sim/outputs/simalt1-l4-states",
+    "--out",
+    "/home/ugrp/ugrp-sim/outputs/simalt1-review"
+  ]
+}

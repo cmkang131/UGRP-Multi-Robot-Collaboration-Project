@@ -1,6 +1,6 @@
 """New Ling registrations over the unchanged v387 Gemma planner settings."""
 import copy
-from harness.task_planner_model import LING, GEMMA_FP4, GEMMA_JSON, DEEPSEEK, ModelSelection, DEFAULT_MODEL
+from harness.task_planner_model import LING, GEMMA_FP4, GEMMA_JSON, DEEPSEEK, ModelSelection, DEFAULT_MODEL, DEFAULT_PROVIDER
 
 VERSIONS = {'off': 401, 'static_first_v1': 402}
 JSON_VERSIONS = {'off':405,'static_first_v1':406}
@@ -8,7 +8,7 @@ DEEPSEEK_VERSIONS = {'off':432,'static_first_v2':433}
 GEMMA_VERSIONS = {'off': 403, 'static_first_v1': 404}
 
 
-def compose(bundle, model=DEFAULT_MODEL, provider='DeepInfra', reasoning='default', prompt_order='off', response_format='off'):
+def compose(bundle, model=DEFAULT_MODEL, provider=DEFAULT_PROVIDER, reasoning='default', prompt_order='off', response_format='off'):
     selection = ModelSelection(model, provider, reasoning, response_format)
     if selection == ModelSelection() and prompt_order == 'off': return ()
     versions=DEEPSEEK_VERSIONS if selection==DEEPSEEK else JSON_VERSIONS if selection==GEMMA_JSON else GEMMA_VERSIONS if selection==GEMMA_FP4 else VERSIONS

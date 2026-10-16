@@ -2,7 +2,7 @@
 from dataclasses import dataclass
 
 DEFAULT_MODEL = 'google/gemma-4-31b-it'
-DEFAULT_PROVIDER = 'DeepInfra'
+DEFAULT_PROVIDER = 'CoreWeave'
 MAX_TOKENS = 768
 
 
@@ -30,7 +30,7 @@ class ModelSelection:
 
     @property
     def response_provider(self):
-        return "DeepInfra" if self.provider.startswith("deepinfra/") else self.provider
+        return "DeepInfra" if self.provider.startswith("deepinfra/") else "CoreWeave" if self.provider.startswith("coreweave/") else self.provider
 
     def request_options(self):
         value={'reasoning': {'enabled': False}} if self.reasoning == 'off' else {}

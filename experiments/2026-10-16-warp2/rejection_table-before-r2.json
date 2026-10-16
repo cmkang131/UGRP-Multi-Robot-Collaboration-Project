@@ -1,0 +1,51 @@
+{
+  "schema": "ugrp.warp2.pre_r2_rejections.v1",
+  "updated_utc": "2026-10-15T18:36:09.788599+00:00",
+  "populations_separate": true,
+  "static_funnel": [
+    {
+      "stage": "known_six_XML_read",
+      "input_N": 6,
+      "passed_cumulative_N": 6,
+      "rejected_N": 0
+    },
+    {
+      "stage": "exact_same_XML_as_seed0",
+      "input_N": 6,
+      "passed_cumulative_N": 1,
+      "rejected_N": 5
+    },
+    {
+      "stage": "static_model_key_as_seed0",
+      "input_N": 6,
+      "passed_cumulative_N": 1,
+      "rejected_N": 5
+    }
+  ],
+  "rejection_distribution": [
+    {
+      "reason_category": "seed_dependent_prop_geometry_and_mass",
+      "blocked_object": "warehouse_oak_plank,warehouse_steel_pipe,warehouse_wood_crate",
+      "min_gap_m": null,
+      "gap_scope": "static model identity; geometric clearance not applicable",
+      "count": 5
+    }
+  ],
+  "actual_execution": [
+    {
+      "round": 1,
+      "backend": "mjwarp_batch_v1",
+      "nworld": 1,
+      "seed": 8318726,
+      "status": "HOST_ERROR",
+      "end_reason": "SUPERVISOR_STOP_for_mixed_model_admission_review",
+      "physical_failure_claim": false,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp2/r1-70553d2f/n1",
+      "source_sha": "70553d2f4235b28648c188b26f9b2a03fa32a19d"
+    }
+  ],
+  "correction_scope": "Reuse warp1 model_key, retain different-model rejection. R2 homogeneous seed8318631; five known models remain unvalidated on GPU. No shape/mass changes to force pooling.",
+  "timing_note": "Static source observation preceded implementation; this persisted table follows the merge and precedes every R2 physical run.",
+  "raw": "mixed-admission-audit.json",
+  "reproduce": "Compute model_key for the six gcp2 CPU scene.xml files listed in mixed-admission-audit.json"
+}

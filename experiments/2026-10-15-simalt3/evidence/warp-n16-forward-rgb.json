@@ -1,0 +1,147 @@
+{
+  "sha": "01cd2a9c",
+  "engine": "warp",
+  "mujoco_version": "3.16.0",
+  "nworld": 16,
+  "script_sha256": "6ef918f9c1576713bd9c6a6b9752fd05f7b9e28877fb79eecf8ccb5245c4a593",
+  "fixture_sha256": "d3548742053aa18ee526297baa2611bb37b32f923b504097dc5a0c17f4184577",
+  "xml_sha256": "ad46cd87ef4188daa9a4dbebd79c470fac6f1b3fcb5e5a1fe0d9dfa3c2261849",
+  "training": false,
+  "renderer": "MJWarp batch RGB640x480 at10Hz, readback+OpenCV fisheye; no policy/training/JPEG time",
+  "status": "complete",
+  "attempted": 1,
+  "completed": 1,
+  "failure": 0,
+  "HOST_ERROR": 0,
+  "cap_end": false,
+  "steps_accepted": 256000,
+  "cases": [
+    {
+      "name": "forward",
+      "status": "complete",
+      "max_ncon": 20,
+      "max_nefc": 97,
+      "physics_wall_s": 76.26764234399934,
+      "evaluator_wall_s": 0.3624165720016208,
+      "batch_render_wall_s": 0.18538607900018178,
+      "readback_fisheye_wall_s": 3.836178385997755,
+      "RGB_frames": 640,
+      "sim_s": 4.0,
+      "wall_s": 80.65422962399998,
+      "sample_count": 40,
+      "physics_only_SIM_s_per_wall_s": 0.8391501039370395,
+      "physics_plus_RGB_SIM_s_per_wall_s": 0.7971183493224908,
+      "total_sim_seconds_per_wall_second": 0.7935107267860315,
+      "per_world_sim_seconds_per_wall_second": 0.049594420184315355
+    }
+  ],
+  "physics_overrides": {},
+  "rejection_table": "/home/ugrp/ugrp-sim/runs/simalt3/warp-n16-forward-rgb/rejection_table.json",
+  "execution_host": {
+    "project_id": "ugrp-sim-b-1014",
+    "instance": "ugrp-act-l4-gcp2",
+    "machine_type": "g2-standard-8",
+    "zone": "asia-northeast3-a"
+  },
+  "unused_efm_v1": true,
+  "options": {
+    "timestep": 0.00025,
+    "iterations": 80.0,
+    "ls_iterations": 50.0,
+    "noslip_iterations": 10.0,
+    "noslip_tolerance": 1e-06,
+    "tolerance": 1e-08,
+    "integrator": 3.0,
+    "cone": 1.0,
+    "solver": 2.0
+  },
+  "physics_hashes": {
+    "geom_friction": "08593369156c366597bac102a551af05ab3eecfee0fb6f5d4fb69a8a8e265947",
+    "pair_friction": "0f938b07114d30ffbb590621228001874a0e2848542f15afd27ae4bbbb359cac",
+    "body_mass": "e4abc27f0089096c2a15703ab001a653b88a430a3c5dd93cfbca361f5346d3ee",
+    "body_inertia": "0fb4f413ba95e8889c088ce1ac928d251fa58d9643a018f34b5cb9ef089698fd",
+    "geom_solref": "478e247fec389d3ede7f87078b1a18dbdd016711a116232f416d01eb5b6fd000",
+    "geom_solimp": "14e0918211d0a18544873512cd928dbd13df270f8ab50fd85815d469e86d413b"
+  },
+  "camera": {
+    "name": "r1__robot_cam",
+    "resolution": [
+      640,
+      480
+    ],
+    "mount_pos_m": [
+      0.052982009925558314,
+      0.0,
+      0.028152173913043477
+    ],
+    "mount_quat_wxyz": [
+      0.4545194776720437,
+      0.5416752204197018,
+      -0.5416752204197018,
+      -0.4545194776720437
+    ],
+    "intrinsic": [
+      619.5194702148438,
+      622.1654663085938,
+      32.31089401245117,
+      21.303133010864258
+    ],
+    "sensorsize": [
+      640.0,
+      480.0
+    ],
+    "K": [
+      [
+        619.5194540517232,
+        0.0,
+        287.68910608896766
+      ],
+      [
+        0.0,
+        622.1654884818748,
+        218.69686648455726
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "D": [
+      -0.0199819517209417,
+      -0.1707593617153504,
+      -0.2568318201202376,
+      0.9650933421665181
+    ],
+    "raw_fisheye_map_sha256": "eb9b67fbe2cd9323054c779f34e925507caec635b6e74306241469c5d9c32e42",
+    "post_integration_transforms": true,
+    "enabled_geom_groups": [
+      0,
+      1,
+      2,
+      3
+    ]
+  },
+  "warp_version": "1.15.0",
+  "backend_solver_tolerance": 9.99999993922529e-09,
+  "backend_solver_tolerance_before_preservation": 9.999999974752427e-07,
+  "capacities": {
+    "nconmax": 32,
+    "njmax": 128,
+    "basis": "next power of 2 of observed C3.12 trace maxima and actual C3.16 import counts"
+  },
+  "put_data_passed": true,
+  "first_step_passed": true,
+  "RGB_ring": {
+    "path": "/home/ugrp/ugrp-sim/runs/simalt3/warp-n16-forward-rgb/own-RGB-ring",
+    "hz": 10,
+    "max_frames": 100,
+    "saved_frames": 40,
+    "world": 0,
+    "bytes": 738832,
+    "recording_only": true
+  },
+  "gpu_memory_end": "406, 23034, 0",
+  "wall_s": 84.63458748600033,
+  "rejections": []
+}

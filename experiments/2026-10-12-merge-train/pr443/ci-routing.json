@@ -1,0 +1,34 @@
+{
+  "scope": "CI engine dependency routing; controller unchanged",
+  "failed_run": 38230959850,
+  "cause": "Robot.receive imports static MuJoCo geometry in one test; offline shard does not install the engine",
+  "engine_installed": {
+    "passed": 12
+  },
+  "engine_unavailable": {
+    "passed": 11,
+    "skipped": 1
+  },
+  "full_file_required_in_engine_ci": true,
+  "logs": [
+    {
+      "path": "outputs/merge-train-20261012/pr443-engine-tests.txt",
+      "sha256": "7994975acd8cf905a7d7f2586f4740ce5b1d3c163c406e3f938e4b28f44ae039"
+    },
+    {
+      "path": "outputs/merge-train-20261012/pr443-no-engine-tests.txt",
+      "sha256": "3f276d15485f88fd88fd80b73fcafc6255bf333744bfe58d7e06bc60c7002330"
+    },
+    {
+      "path": "outputs/merge-train-20261012/pr443-failed-shard4.log",
+      "sha256": "3d3066dae85f43d24bc24d080e2c8a48f907a3b09a19b5caa7cfbecc6f52f5cd"
+    }
+  ],
+  "references": [
+    {
+      "url": "https://docs.pytest.org/en/stable/reference/reference.html#pytest-importorskip",
+      "use": "Skip only the explicit optional dependency import; run the full file in the engine-installed CI job."
+    }
+  ],
+  "physical_execution": false
+}

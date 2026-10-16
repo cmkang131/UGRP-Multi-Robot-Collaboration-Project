@@ -29,6 +29,13 @@ ENDPOINT = 'https://openrouter.ai/api/v1/chat/completions'
 MODEL = DEFAULT_MODEL
 REGISTERED_MODEL = 'gemma-4-31b-it'      # model name the driver sends
 PROVIDER_ORDER = (DEFAULT_PROVIDER,)
+# Main's user-approved CoreWeave fp4 default; DeepInfra is explicit replay.
+PROFILES = {
+    ('CoreWeave',): ('coreweave_fp4_v1', 'coreweave/fp4'),
+    ('coreweave/fp4',): ('coreweave_fp4_v1', 'coreweave/fp4'),
+    ('DeepInfra',): ('deepinfra_fp4_replay_v1', 'deepinfra/turbo'),
+    ('deepinfra/turbo',): ('deepinfra_fp4_replay_v1', 'deepinfra/turbo'),
+}
 SERVICE, ACCOUNT = 'ugrp-openrouter', 'openrouter'
 DROPPED_FIELDS = ('reasoning_effort',)
 RETRY_STATUSES = (429, 500, 502, 503, 504)
@@ -51,6 +58,13 @@ def config(provider_order=PROVIDER_ORDER, *, selection=None, max_attempts=MAX_AT
                 reasoning=choice.reasoning, max_calls=max_calls,
                 max_attempts=max_attempts, retry_statuses=list(RETRY_STATUSES), retry_delay_s=RETRY_DELAY_S,
                 key_location='macOS Keychain: ' + SERVICE)
+    if choice.model == DEFAULT_MODEL:
+        try:
+            profile, tag = PROFILES[tuple(provider_order)]
+        except KeyError:
+            raise ValueError('unregistered_OpenRouter_provider_profile') from None
+        value.update(profile=profile, provider=provider_order[0], quantization='fp4',
+                     quantizations=['fp4'], tag=tag)
     if rate_limit_policy != 'off':
         from scripts.openrouter_ling_policy import POLICY,PARAMETERS
         from harness.task_planner_model import LING, GEMMA_FP4, GEMMA_JSON, DEEPSEEK
@@ -74,6 +88,8 @@ def upstream_body(request, provider_order=PROVIDER_ORDER, *, selection=None):
     body['usage'] = {'include': True}
     body['provider'] = {'order': list(provider_order), 'allow_fallbacks': False}
     if choice.response_format!='off':body['provider']['require_parameters']=True
+    if choice.model == DEFAULT_MODEL:
+        body['provider']['quantizations'] = config(provider_order, selection=selection)['quantizations']
     return body
 
 
@@ -93,6 +109,7 @@ class OpenRouter:
     def __init__(self, root, *, key=None, send=http_send, sleep=time.sleep, provider_order=PROVIDER_ORDER,
                  selection=None, max_attempts=MAX_ATTEMPTS, max_calls=None, rate_limit_policy='off', max_usd=None,
                  random_fn=random.random, monotonic=time.monotonic):
+        self.config = config(provider_order, selection=selection, max_attempts=max_attempts, max_calls=max_calls, rate_limit_policy=rate_limit_policy, max_usd=max_usd)
         self.root = Path(root); self.root.mkdir(parents=True, exist_ok=True)
         self._key = keychain_key() if key is None else key
         self.send, self.sleep = send, sleep
@@ -241,7 +258,8 @@ class OpenRouter:
         result.update(upstream=UPSTREAM_ID, model=data.get('model') or self.model_id, provider=provider,
             ugrp_upstream_forwarded=True, ugrp_upstream_wall_s=wall,
             ugrp_openrouter=dict(requested_model=self.model_id, provider_order=list(self.provider_order),
-                provider_returned=provider, prompt_tokens=usage.get('prompt_tokens'),
+                provider_returned=provider, quantizations=self.config.get('quantizations'),
+                tag=self.config.get('tag'), profile=self.config.get('profile'), prompt_tokens=usage.get('prompt_tokens'),
                 completion_tokens=usage.get('completion_tokens'), cost=usage.get('cost'),
                 latency_s=wall, http_status=status, retries=len(attempts) - 1, attempts=attempts,
                 total_cost=sum(x['cost'] for x in attempts if x['cost'] is not None),

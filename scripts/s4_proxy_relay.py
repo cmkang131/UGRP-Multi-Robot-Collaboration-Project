@@ -14,7 +14,7 @@ from harness.zone_study_llm_driver import live_proxy, load_registry
 from harness.zone_study_llm_transport import no_redirect_opener
 from harness.s4_live_transport import URL, MAX_RELAY_SECONDS
 from harness.s4_relay_journal import Journal
-from harness.task_planner_model import add_model_options, selected, DEFAULT_MODEL, ModelSelection
+from harness.task_planner_model import add_model_options, selected, DEFAULT_MODEL, DEFAULT_PROVIDER, ModelSelection
 
 
 def accepted_call_id(value):
@@ -120,12 +120,12 @@ def main():
         choice = selected(a)
         kwargs = dict(selection=choice, max_attempts=a.openrouter_max_attempts or (3 if choice.model == DEFAULT_MODEL else 1), max_calls=a.openrouter_max_calls,rate_limit_policy=a.openrouter_rate_policy,max_usd=a.openrouter_max_usd)
         if a.openrouter_providers is not None:
-            if choice.model != DEFAULT_MODEL or choice.provider != 'DeepInfra' or choice.reasoning != 'default':
+            if choice.model != DEFAULT_MODEL or choice.provider != DEFAULT_PROVIDER or choice.reasoning != 'default':
                 raise ValueError('USE_PLANNER_PROVIDER_WITH_PLANNER_MODEL')
             kwargs.update(selection=None, provider_order=tuple(x.strip() for x in a.openrouter_providers.split(',') if x.strip()))
         orp_cfg = orp.config(**kwargs)
         if choice != ModelSelection():orp_cfg['selection_source_sha256'] = hashlib.sha256((Path(__file__).resolve().parents[1]/'harness/task_planner_model.py').read_bytes()).hexdigest()
-        fallback = orp.OpenRouter(a.gemma_state/'openrouter', **kwargs)
+        fallback = orp.OpenRouter(a.gemma_state/'openrouter'/orp_cfg.get('profile','planner'), **kwargs)
     elif a.gemma_fallback or single:
         from scripts.gemma_fallback_proxy import Gemma
         registered = profile['model']['model'] if single else load_registry()['driver_profiles']['dev_gemini_gemma_fallback_v1']['fallback']['model_id']
@@ -164,7 +164,7 @@ def main():
     if openrouter:
         receipt.update(driver_profile=a.driver_profile, single_model=True, fallback_enabled=False,
             upstream='openrouter_v1', openrouter_v1=dict(orp_cfg, source_sha256=hashlib.sha256(fb_source.read_bytes()).hexdigest()),
-            cohort='openrouter_v1; separate from AI Studio runs')
+            cohort=orp_cfg['profile'] + '; separate from other providers/quantizations and AI Studio runs')
     elif fallback:
         from scripts.gemma_fallback_proxy import PROFILE
         receipt.update(driver_profile=PROFILE, dev_only=True, gemma_fallback=dict(

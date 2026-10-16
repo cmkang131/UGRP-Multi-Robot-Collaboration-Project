@@ -279,6 +279,11 @@ def install(goal, option='off', *, retry='off', coverage='off', frame='off'):
     if coverage != 'off' and (option == 'off' or not goal.dev_light): raise ValueError('DEV_BOUNDARY_VIEWS_REQUIRED_BEFORE_NATIVE_COVERAGE')
     if option == 'off': return goal
     if option not in OPTIONS: raise ValueError('UNKNOWN_B_BOUNDARY_VIEWS')
+    # map_to_odom connects two self-SLAM frames, not the surveyed static map.
+    # No RGB-derived static-map registration is wired into this live adapter.
+    # Keep offline plans and historical bundles, but reject their live use.
+    if option == STANDOFF_OPTION:
+        raise ValueError('STATIC_MAP_TO_OWN_RGB_REGISTRATION_REQUIRED')
     old = goal.explorer.navigator
     if type(old) is not Navigator: raise ValueError('FRONTIER_PROGRESS_V1_REQUIRED_BEFORE_VIEWS')
     goal.explorer.navigator = CandidateNavigator(old.driver, goal)

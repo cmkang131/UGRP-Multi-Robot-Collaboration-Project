@@ -27,7 +27,11 @@ def validate_receipt(receipt, now=None, *, remote_url=URL, planner_selection=Non
     expected=hashlib.sha256((Path(__file__).resolve().parents[1]/source).read_bytes()).hexdigest() if single else PROXY_SHA256
     if openrouter:
         from scripts.openrouter_upstream import config
-        expected_cfg=dict(config(),source_sha256=expected)
+        try:
+            pinned = config(receipt.get('openrouter_v1', {}).get('provider_order', ()))
+        except (ValueError, TypeError):
+            raise HostError('registered OpenRouter profile required') from None
+        expected_cfg=dict(pinned,source_sha256=expected)
         if planner_selection is not None:
             from harness.task_planner_model import LING, GEMMA_FP4, GEMMA_JSON, DEEPSEEK
             if planner_selection not in (LING,GEMMA_FP4,GEMMA_JSON,DEEPSEEK) or receipt.get('task_planner_v1') is not True:
@@ -65,6 +69,18 @@ def validate_receipt(receipt, now=None, *, remote_url=URL, planner_selection=Non
             or receipt.get('audit_per_post') is not True):
         raise HostError('S4 SSH relay identity expired or mismatched')
     return receipt
+
+
+def bind_openrouter_bundle(bundle, receipt_path):
+    """Pin the verified routing config in a NEW run bundle; never rewrite saved artifacts."""
+    receipt = json.loads(Path(receipt_path).read_text())
+    if receipt.get('upstream') != 'openrouter_v1':
+        return bundle
+    validate_receipt(receipt, remote_url=receipt['remote_url'])
+    pin = receipt['openrouter_v1']
+    if 'llm_upstream' in bundle and bundle['llm_upstream'] != pin:
+        raise HostError('bundle OpenRouter profile differs from relay')
+    return dict(bundle, llm_upstream=pin)
 
 
 class TunnelLedger(PairLiveLedger):

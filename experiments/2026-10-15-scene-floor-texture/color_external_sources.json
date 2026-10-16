@@ -1,0 +1,91 @@
+{
+  "sources": {
+    "beam": {
+      "sha": "870c0c59f3c2eae556abaa809ac1eddf33dce5ca",
+      "path": "scripts/probe_carry_lookaround.py",
+      "file_sha256": "0c3c8da26ca71032a5d738b5c16ac98d61e366bf20be0967aa55e1b7ba4bad23",
+      "excerpts": [
+        {
+          "line": 48,
+          "text": "BAND_HSV={'teal':((70,120,90),(90,255,255)),'blue':((110,120,60),(130,255,255))}   # OpenCV HSV of sim/grasp_act_scene COLORS"
+        }
+      ]
+    },
+    "crate": {
+      "sha": "727de2af0e5ec10dda0b954e757c2fe42e694766",
+      "path": "sim/crate_rgb_lift.py",
+      "file_sha256": "e07ea607eca1a5382fe52466e8537c62ab9ba77b55045d7c44f94778965d9654",
+      "excerpts": [
+        {
+          "line": 25,
+          "text": "def masks(rgb, end):"
+        },
+        {
+          "line": 26,
+          "text": "    \"\"\"Boolean masks of (own lug colour, crate body pink) for a uint8 HxWx3 frame.\"\"\""
+        },
+        {
+          "line": 27,
+          "text": "    f = rgb.astype(np.int16)"
+        },
+        {
+          "line": 28,
+          "text": "    r, g, b = f[..., 0], f[..., 1], f[..., 2]"
+        },
+        {
+          "line": 29,
+          "text": "    blue = (b > 140) & (r < 90) & (g < 90)"
+        },
+        {
+          "line": 30,
+          "text": "    teal = (g > 140) & (b > 60) & (b < g) & (r < 90)"
+        },
+        {
+          "line": 31,
+          "text": "    lug = teal if end == 'teal' else blue"
+        },
+        {
+          "line": 32,
+          "text": "    pink = (r > 90) & (r > g+25) & (b > g-5) & (r > b) & ~lug"
+        },
+        {
+          "line": 33,
+          "text": "    return lug, pink"
+        }
+      ]
+    }
+  },
+  "beam_source": "870c0c59f3c2eae556abaa809ac1eddf33dce5ca:scripts/probe_carry_lookaround.py:48",
+  "crate_source": "727de2af0e5ec10dda0b954e757c2fe42e694766:sim/crate_rgb_lift.py:25-33",
+  "beam_ranges": {
+    "teal": [
+      [
+        70,
+        120,
+        90
+      ],
+      [
+        90,
+        255,
+        255
+      ]
+    ],
+    "blue": [
+      [
+        110,
+        120,
+        60
+      ],
+      [
+        130,
+        255,
+        255
+      ]
+    ]
+  },
+  "crate_expressions": {
+    "crate_blue": "B>140 and R<90 and G<90",
+    "crate_teal": "G>140 and B>60 and B<G and R<90",
+    "crate_pink": "R>90 and R>G+25 and B>G-5 and R>B and not lug"
+  }
+}
