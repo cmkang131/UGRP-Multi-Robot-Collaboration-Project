@@ -78,6 +78,7 @@ def parser():
     p.add_argument('--gcp3-isolated-v1',action='store_true',help='explicit warp6 L4 host admission; default OFF')
     p.add_argument('--batch-per-world-speed-v1',action='store_true',help='warp8 admission recording: batch wall / (batch SIM * world count); task throughput separate; default OFF')
     p.add_argument('--full-active-dof-workspace-v1',action='store_true',help='exact full-model nvmax workspace for legal wakeups; default OFF; no physics settings changed')
+    p.add_argument('--warp-native-contact-v1',action='store_true',help='user-approved warpfit contact profile; separate cohort, legacy default unchanged')
     p.add_argument('--rejection-table',type=Path,help='absolute existing prior funnel for the warp8 gate')
     p.add_argument('--warp-debug-v1',action='store_true',help='Warp bounds checks and CUDA line information; default OFF')
     p.add_argument('--warp-workspace-trace-v1',action='store_true',help='synchronize and persist allocations after each existing graph chunk; default OFF')
@@ -154,7 +155,19 @@ def main():
     hooks.workspace_trace_v1=a.warp_workspace_trace_v1
     hooks.verify_cuda_v1=a.warp_verify_cuda_v1
     hooks.physics_profile_v1=a.physics_profile_v1
-    canonical={'xml':a.canonical_xml.read_text() if a.canonical_xml else None}
+    hooks.warp_native_contact_v1=a.warp_native_contact_v1
+    contact_profile=None
+    if a.warp_native_contact_v1:
+        # User 2026-10-16: use warpfit's byte-exact module; no other physics
+        # compatibility profile changes until warpfit supplies its inventory.
+        from sim.warp_native_contact import apply,record
+        hooks.contact_xml_transform=lambda xml:apply(xml,'warp_native_contact_v1')
+        contact_profile=record('warp_native_contact_v1')
+        contact_profile.update(module_sha256=hashlib.sha256((ROOT/'sim/warp_native_contact.py').read_bytes()).hexdigest(),
+            origin_commit='df5a1f86aad420f2fab2c10e3ee77cdb5ec11807',origin_PR=562)
+    canonical_xml=a.canonical_xml.read_text() if a.canonical_xml else None
+    if canonical_xml and a.warp_native_contact_v1:canonical_xml=hooks.contact_xml_transform(canonical_xml)
+    canonical={'xml':canonical_xml}
     report=dict(schema='ugrp.warp4.batch.v1',status='running',source_sha=source,
         host=host,flow=a.flow,physics_backend=a.physics_backend,mujoco=mujoco.__version__,
         cases_sha256=hashlib.sha256(a.cases.read_bytes()).hexdigest(),world_indices=indices,
@@ -169,6 +182,7 @@ def main():
         placement_graspable_filter_v1=a.placement_graspable_filter_v1,
         batch_per_world_speed_v1=a.batch_per_world_speed_v1,
         full_active_dof_workspace_v1=a.full_active_dof_workspace_v1,
+        contact_profile=contact_profile,
         prior_rejection_table=str(a.rejection_table) if a.rejection_table else None,
         cuda_runtime_profile=('gcp3_isolated_no_mps_v1' if a.gcp3_isolated_v1 else
             'warp4_private_mps_v1' if a.mps_shared_v1 else 'shared_contexts_baseline'),
@@ -192,6 +206,18 @@ def main():
                 active_dofs=int(np.sum(d.tree_asleep[trees]<0)),
                 robot_dofs={r:int(np.count_nonzero(trees==m.body_treeid[m.body(r+'__robot').id])) for r in c['ports']}))
         write(a.out/'native-setup-audit.json',native)
+        if a.warp_native_contact_v1:
+            contact_options=[]
+            for c in contexts:
+                opt=c['world'].model.opt
+                values=dict(noslip_iterations=int(opt.noslip_iterations),cone=int(opt.cone),
+                    integrator=int(opt.integrator),impratio=float(opt.impratio),
+                    iterations=int(opt.iterations),ls_iterations=int(opt.ls_iterations))
+                if values!=dict(noslip_iterations=0,cone=int(mujoco.mjtCone.mjCONE_ELLIPTIC),
+                        integrator=int(mujoco.mjtIntegrator.mjINT_IMPLICITFAST),impratio=5.,iterations=80,ls_iterations=50):
+                    raise ValueError('warpfit native-v1 options or retained Newton/LS80/50 differ: '+str(values))
+                contact_options.append(values)
+            write(a.out/'native-contact-options.json',dict(profile=contact_profile,worlds=contact_options))
         if not model_arrays_equal([c['world'].model for c in contexts])['exact'] and not a.world_model_parameters_v1:
             raise ValueError('single-model post-setup arrays differ; no SLEEP exception admitted')
         (a.out/'canonical-scene.xml').write_text(canonical['xml'])

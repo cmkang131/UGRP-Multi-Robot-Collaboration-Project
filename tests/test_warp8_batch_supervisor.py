@@ -2,11 +2,13 @@
 import datetime as dt
 import importlib.util
 import json
+import pytest
 from pathlib import Path
 from unittest.mock import Mock
 
 
-def test_batch_finishes_after_eight_hours_without_host_deadline(tmp_path, monkeypatch):
+@pytest.mark.parametrize('native',[False,True])
+def test_batch_finishes_after_eight_hours_without_host_deadline(tmp_path, monkeypatch,native):
     path = Path(__file__).resolve().parents[1] / 'experiments/2026-10-16-warp8/run_batch.py'
     spec = importlib.util.spec_from_file_location('warp8_batch', path)
     batch = importlib.util.module_from_spec(spec)
@@ -38,7 +40,7 @@ def test_batch_finishes_after_eight_hours_without_host_deadline(tmp_path, monkey
     monkeypatch.setattr(batch.dt, 'datetime', Clock)
     monkeypatch.setattr('sys.argv', ['run_batch', '--source-sha', 'test-sha', '--tag', 'release-test',
         '--flow', 'release', '--cases', str(cases), '--indices', '0', '--references', str(refs),
-        '--rejection-table', str(table)])
+        '--rejection-table', str(table)]+(['--warp-native-contact-v1'] if native else []))
     assert batch.main() == 0
     child.send_signal.assert_not_called()
     receipt = json.loads((tmp_path / 'runs/warp8/release-test.receipt.json').read_text())
@@ -51,3 +53,4 @@ def test_batch_finishes_after_eight_hours_without_host_deadline(tmp_path, monkey
     # The original release SIM cap is still passed unchanged to the teacher.
     cap_index = command['command'].index('--cap-s')
     assert command['command'][cap_index + 1] == '180'
+    assert ('--warp-native-contact-v1' in command['command']) is native

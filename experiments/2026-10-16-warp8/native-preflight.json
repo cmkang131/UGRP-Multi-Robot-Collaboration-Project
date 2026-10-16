@@ -1,0 +1,36 @@
+{
+  "utc": "2026-10-16T14:18:34.909305+00:00",
+  "worker": "warp8c",
+  "acks": [
+    "nocap-ack",
+    "nocpu-ack",
+    "nativecontact-ack",
+    "ownership-ack",
+    "cap-ack"
+  ],
+  "profile": "warp_native_contact_v1",
+  "vendor_origin": "origin/codex/warpfit@df5a1f86aad420f2fab2c10e3ee77cdb5ec11807",
+  "vendor_sha256": "a5c8d370755034b9f9615f66a94b87883327b7d7ecc4e13082eac2c2d4751c6a",
+  "no_pooling": [
+    "noslip10 beam R1/R2",
+    "noslip10 release A-S1",
+    "CPU beampair7/release25",
+    "other hosts"
+  ],
+  "old_release": {
+    "tag": "releaseA-s1-r1",
+    "status": "SUPERVISOR_STOP",
+    "completed": false,
+    "classification": "not_a_defect_profile_switch",
+    "raw_preserved": true
+  },
+  "tests": "33 nonphysics PASS",
+  "vm_before": "TERMINATED, maxRunDuration/instanceTerminationAction absent",
+  "future_wall_cap": null,
+  "analysis_host": "gcp3 CPU only",
+  "guards": [
+    "idle20",
+    "budget-stop ACTIVE / target C / 1000KRW net / PubSub verified"
+  ],
+  "gcp2_operations": 0
+}

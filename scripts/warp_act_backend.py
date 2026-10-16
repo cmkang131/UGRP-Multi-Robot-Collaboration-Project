@@ -228,8 +228,9 @@ class WarpTransport(Transport):
             compat={}
             if geometry_asset:compat['geometry']=apply_geometry(model,scene_xml,geometry_asset)
             if actuator_asset:compat['damping']=apply_reference(model,scene_xml,actuator_asset)
-            if model.opt.noslip_iterations!=10 or np.any(c['world'].data.eq_active):
-                raise ValueError('noslip10 / weld OFF required in every world')
+            expected_noslip=0 if getattr(self,'warp_native_contact_v1',False) else 10
+            if model.opt.noslip_iterations!=expected_noslip or np.any(c['world'].data.eq_active):
+                raise ValueError(f'noslip{expected_noslip} / weld OFF required in every world')
             if self.native_sleep_policy_compat_v1:
                 enum=mujoco.mjtSleepPolicy
                 original=model.tree_sleep_policy.copy()
@@ -265,7 +266,7 @@ class WarpTransport(Transport):
             'effective_tolerance':float(self.wm.opt.tolerance.numpy().item()),
             'basis':'pinned io.py433 clamps float64 C tolerance to minimum1e-6 to avoid float32 needless iterations; task Score unchanged'}
         self.solver_samples=[]
-        if self.wm.opt.noslip_iterations != 10:
+        if self.wm.opt.noslip_iterations != expected_noslip:
             raise RuntimeError('noslip lost in Warp conversion')
         self.compat['collision'] = install_legacy_plane(m)
         # Existing simalt4 dense trace observed max nefc134, rounded to256.

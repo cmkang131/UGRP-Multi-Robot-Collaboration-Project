@@ -141,6 +141,7 @@ class Bridge:
             transform = kw['xml_transform']
             def final(xml):
                 text = transform(xml)
+                if getattr(self.hooks,'contact_xml_transform',None):text=self.hooks.contact_xml_transform(text)
                 if self.hooks.native_sleep_policy_compat_v1:
                     from warp_act_core import sleep_scene_xml
                     text=sleep_scene_xml(text,('r1','r2'))

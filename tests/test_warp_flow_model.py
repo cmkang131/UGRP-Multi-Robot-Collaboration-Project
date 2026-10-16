@@ -99,3 +99,23 @@ def test_task_throughput_does_not_credit_padding_after_teacher_returns():
     clocks=world_sim_clocks(contexts,{0:{'sim_s':5.}})
     assert clocks==[5.,30.]
     assert sum(clocks)==35.
+
+
+def test_vendored_native_contact_changes_only_approved_options():
+    import hashlib
+    import xml.etree.ElementTree as ET
+    from pathlib import Path
+    from sim.warp_native_contact import apply
+    module=Path(__file__).resolve().parents[1]/'sim/warp_native_contact.py'
+    assert hashlib.sha256(module.read_bytes()).hexdigest()=='a5c8d370755034b9f9615f66a94b87883327b7d7ecc4e13082eac2c2d4751c6a'
+    xml='<mujoco><option noslip_iterations="10" cone="elliptic" integrator="implicitfast" impratio="5" iterations="80" ls_iterations="50"/><worldbody><body name="cargo"><freejoint/><geom friction="1 .1 .1"/></body></worldbody><equality><weld active="false"/></equality></mujoco>'
+    native=apply(xml,'warp_native_contact_v1')
+    baseline=ET.fromstring(xml)
+    baseline.find('option').set('noslip_iterations','0')
+    assert ET.tostring(ET.fromstring(native))==ET.tostring(baseline)
+    assert apply(xml)==xml
+    assert apply(native,'warp_native_contact_v1')==native
+    normalized=canonical_xml(native,native,world_parameters=True)[0]
+    assert ET.fromstring(normalized).find('option').attrib==ET.fromstring(native).find('option').attrib
+    with pytest.raises(ValueError,match='weld'):
+        apply(xml.replace('active="false"','active="true"'),'warp_native_contact_v1')
