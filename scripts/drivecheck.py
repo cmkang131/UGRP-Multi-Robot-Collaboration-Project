@@ -49,6 +49,8 @@ def prepare(a):
         raise ValueError('pinned renderer source required')
     sys.path.insert(0, str(a.renderer_source))
     sys.path.insert(1, str(a.renderer_source / 'scripts'))
+    import scripts
+    scripts.__path__.insert(0, str(a.renderer_source / 'scripts'))
     import numpy as np
     import mujoco
     from scripts import probe_scene_tex2 as st
@@ -147,6 +149,9 @@ def run(a):
     np.savez_compressed(a.out/'compiled.npz', **{key:getattr(m,key) for key in FIELDS})
     dump(a.out/'result.json', report)
     dt = meta['dt']; stride = round(.1/dt)
+    boundaries={round(r['settle_s']/dt) for r in cases}
+    boundaries.update(round((r['settle_s']+r['duration_s'])/dt) for r in cases)
+    boundaries.update(len(f[r['id']]) for r in cases)
     body = m.body('r1__robot').id
     report['base_qposadr'] = int(m.jnt_qposadr[m.body_jntadr[body]])
     geomwheel = np.full(m.ngeom, -1, int)
@@ -166,7 +171,7 @@ def run(a):
                 mujoco.mj_forward(m,d)
                 tape=f[case['id']]
                 for tick in range(len(tape)+1):
-                    if tick % stride == 0 or tick == len(tape):
+                    if tick % stride == 0 or tick in boundaries:
                         samples.append((ci,tick*dt,d.qpos.copy(),d.qvel.copy(),int(d.ncon),int(d.nefc)))
                         for j,c in enumerate(d.contact):
                             g0,g1=map(int,c.geom)
@@ -222,7 +227,7 @@ def run(a):
                     value=contact_force_fn(cone,frame,friction,condim,adr,adhesion,efc_force,njmax,nacon,worldid[i],i,False)
                     for k in range(6):out[i,k]=value[k]
             for tick in range(0,max_ticks+1,substeps):
-                if tick % stride == 0 or tick==max_ticks:
+                if tick % stride == 0 or tick in boundaries:
                     wp.synchronize()
                     if np.any(wd.overflow.numpy()):raise RuntimeError('CAPACITY_OVERFLOW '+str(wd.overflow.numpy().tolist()))
                     qp,qv=wd.qpos.numpy(),wd.qvel.numpy()
