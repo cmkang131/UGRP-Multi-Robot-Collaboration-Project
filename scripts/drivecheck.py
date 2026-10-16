@@ -124,7 +124,8 @@ def load_fixture(a):
     if a.noslip_off_v1:
         m.opt.noslip_iterations = 0  # explicit diagnostic ablation; source value 10.
     meta = json.loads((a.fixture/'fixture.json').read_text())
-    cases = [r for r in meta['cases'] if not a.only or r['id'] == a.only]
+    cases = [r for r in meta['cases'] if not a.only or r['id'] in a.only.split(',')]
+    if not cases:raise ValueError('no selected diagnostic cases')
     return m, f, meta, cases
 
 
