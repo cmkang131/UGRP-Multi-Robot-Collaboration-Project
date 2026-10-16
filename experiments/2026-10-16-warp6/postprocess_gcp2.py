@@ -16,6 +16,7 @@ def main():
     p.add_argument('--receive',action='store_true')
     p.add_argument('--run',required=True)
     p.add_argument('--asset-root',type=Path)
+    p.add_argument('--label-existing',action='store_true')
     a=p.parse_args()
     if a.run not in ('graph-isolated-beampair','graph-isolated-release-s3'):
         raise ValueError('selected diagnostic evidence only')
@@ -36,11 +37,16 @@ def main():
             return
         if a.asset_root is None:raise ValueError('explicit frozen asset root required')
         out=ROOT/'ops-reviews/warp6/playback'/a.run
-        subprocess.run([str(ROOT/'ugrp/.venv-sim/bin/python'),
-            str(ROOT/'ops-reviews/warp6/make_playback.py'),
-            '--run',str(ROOT/'runs/warp6'/a.run),'--out',str(out),
-            '--asset-root',str(a.asset_root)],check=True,cwd=a.asset_root,
-            env={**os.environ,'OMP_NUM_THREADS':'1','OPENBLAS_NUM_THREADS':'1','MUJOCO_GL':'osmesa'})
+        if not a.label_existing:
+            subprocess.run([str(ROOT/'ugrp/.venv-sim/bin/python'),
+                str(ROOT/'ops-reviews/warp6/make_playback.py'),
+                '--run',str(ROOT/'runs/warp6'/a.run),'--out',str(out),
+                '--asset-root',str(a.asset_root)],check=True,cwd=a.asset_root,
+                env={**os.environ,'OMP_NUM_THREADS':'1','OPENBLAS_NUM_THREADS':'1','MUJOCO_GL':'osmesa'})
+        meta=out/'playback-meta.json';data=json.loads(meta.read_text())
+        data.update(simulation_host='gcp3',analysis_host='gcp2',
+            scope='finite diagnostic prefix, not a completed teacher trial; original own RGB, evaluator-only overview; no physics step')
+        meta.write_text(json.dumps(data,indent=2)+'\n')
         print(out,flush=True)
     finally:
         if json.loads(lease.read_text()).get('pid')!=os.getpid():
