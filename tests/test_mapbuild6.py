@@ -31,3 +31,16 @@ def test_command_prediction_uses_issued_width_and_persists_no_truth():
     assert math.isclose(forward[0],.0325*150*2*math.pi/60*.35*.05)
     assert forward[1:]==[0.,0.]
     assert command_delta({'wheels':[0]*4,'duration_s':[0]*4},.1)==[0.,0.,0.]
+
+
+def test_chassis_alignment_removes_only_initial_se2_not_scale():
+    import numpy as np
+    from scripts.mapbuild6_evaluate import relative_trajectory,errors
+    # World path is 1m north from a chassis facing north. A free initial
+    # SE2 alignment yields 1m forward, while a wrong 2x estimate stays wrong.
+    gt=relative_trajectory([[3,4,math.pi/2],[3,5,math.pi/2],[2,5,math.pi]])
+    assert np.allclose(gt,[[0,0,0],[1,0,0],[1,1,math.pi/2]])
+    prediction=gt.copy();prediction[:,:2]*=2
+    xy,yaw=errors(prediction,gt)
+    assert np.allclose(xy,[0,1,math.sqrt(2)])
+    assert np.allclose(yaw,0)
