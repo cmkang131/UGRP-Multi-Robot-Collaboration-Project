@@ -40,8 +40,9 @@ def main():
         worlds = summary.get('worlds', [])
         n = cmd['planned_world_N']
         completed = len(worlds)
-        category = (stop.get('reason') or summary.get('error_type') or
+        category = ('DIAGNOSTIC_SUPERVISOR_STOP' if stop else summary.get('error_type') or
                     ('NATIVE_PROCESS_EXIT' if receipt.get('exit_code', 0) else 'running'))
+        terminal=bool(receipt)
         counts = Counter('cap_end' if w.get('cap_end') else 'teacher_failure'
                          for w in worlds if not w.get('success'))
         if receipt and receipt['exit_code'] != 0:
@@ -50,9 +51,9 @@ def main():
             source_sha=summary.get('source_sha', cmd['source_sha']),
             funnel=[dict(stage='requested', passed_cumulative_N=n, rejected_N=0),
                     dict(stage='native_setup', passed_cumulative_N=summary.get('started_N', 0),
-                         rejected_N=n-summary.get('started_N', 0)),
+                         rejected_N=n-summary.get('started_N', 0) if terminal else 0),
                     dict(stage='completed_teacher', passed_cumulative_N=completed,
-                         rejected_N=n-completed),
+                         rejected_N=n-completed if terminal else 0, pending_N=0 if terminal else n-completed),
                     dict(stage='success', passed_cumulative_N=sum(bool(w.get('success')) for w in worlds),
                          rejected_N=sum(not w.get('success') for w in worlds))],
             rejections=[dict(reason_category=k, blocked_object='software:diagnostic' if receipt.get('exit_code',0) else 'none:unclassified',
@@ -62,7 +63,8 @@ def main():
             HOST_ERROR_world_N=n-completed if receipt.get('exit_code',0) else 0,
             incomplete_world_N=n-completed, worlds=worlds)
         attempts.append(dict(name=name, command=cmd, receipt=receipt, supervisor_stop=stop,
-            status=summary.get('status','not_started'), progress=progress,
+            status='HOST_ERROR' if receipt.get('exit_code',0) else summary.get('status','not_started'),
+            original_summary_status=summary.get('status'),progress=progress,
             capacities=summary.get('capacities'), trace_rows=len(trace),
             first_overflow=next((r for r in trace if any(r['overflow'])),None),
             max_nacon=max((max(r['nacon']) for r in trace),default=None),
