@@ -67,6 +67,8 @@ def parser():
     p.add_argument('--native-sleep-policy-compat-v1',action='store_true')
     p.add_argument('--placement-graspable-filter-v1',action='store_true')
     p.add_argument('--gcp3-isolated-v1',action='store_true',help='explicit warp6 L4 host admission; default OFF')
+    p.add_argument('--batch-per-world-speed-v1',action='store_true',help='warp8 recording: batch wall / sum of world SIM seconds; default OFF')
+    p.add_argument('--rejection-table',type=Path,help='absolute existing prior funnel for the warp8 gate')
     p.add_argument('--warp-debug-v1',action='store_true',help='Warp bounds checks and CUDA line information; default OFF')
     p.add_argument('--warp-workspace-trace-v1',action='store_true',help='synchronize and persist allocations after each existing graph chunk; default OFF')
     p.add_argument('--warp-verify-cuda-v1',action='store_true',help='uncaptured identical physics schedule with launch verification; default OFF')
@@ -86,6 +88,9 @@ def main():
         p.error('finite existing SIM cap and explicit positive hourly price required')
     if a.diagnostic_ticks is not None and a.diagnostic_ticks<=0:
         p.error('positive diagnostic control-tick budget required')
+    if a.batch_per_world_speed_v1 and (not a.gcp3_isolated_v1 or a.rejection_table is None
+            or not a.rejection_table.is_absolute() or not a.rejection_table.is_file()):
+        p.error('warp8 speed recording requires isolated gcp3 and an absolute existing rejection table')
     if a.mps_shared_v1 and os.environ.get('CUDA_MPS_PIPE_DIRECTORY')!='/home/ugrp/ugrp-sim/runs/warp4/mps/pipe':
         p.error('private task-owned MPS pipe required; no global GPU configuration changes')
     from simalt_host import gcp2_identity
@@ -150,6 +155,8 @@ def main():
         sap_segmented_v1=a.sap_segmented_v1,physics_profile_v1=a.physics_profile_v1,
         gate_eligible=False,shared_load=not a.gcp3_isolated_v1,vm_hourly_usd=a.vm_hourly_usd,
         placement_graspable_filter_v1=a.placement_graspable_filter_v1,
+        batch_per_world_speed_v1=a.batch_per_world_speed_v1,
+        prior_rejection_table=str(a.rejection_table) if a.rejection_table else None,
         cuda_runtime_profile=('gcp3_isolated_no_mps_v1' if a.gcp3_isolated_v1 else
             'warp4_private_mps_v1' if a.mps_shared_v1 else 'shared_contexts_baseline'),
         price_basis='inherited regional VM estimate; billing unverified',reproduce=sys.argv)
@@ -218,8 +225,25 @@ def main():
                     active[i]=False;results[int(i)]=done.value
             if active.any():hooks.step(contexts,active)
             ticks+=1
-            write(a.out/'progress.json',dict(ticks=ticks,active_N=int(active.sum()),completed_N=len(results),
-                sim_s=ticks*.1,loop_wall_s=time.perf_counter()-loop,timing=dict(hooks.seconds)))
+            elapsed=time.perf_counter()-loop
+            progress=dict(ticks=ticks,active_N=int(active.sum()),completed_N=len(results),
+                sim_s=ticks*.1,loop_wall_s=elapsed,timing=dict(hooks.seconds))
+            if a.batch_per_world_speed_v1:
+                # Coordinator decision 2026-10-16, user unconfirmed: the existing
+                # >6 speed threshold uses batch wall / aggregate world SIM.
+                # Actual clocks avoid crediting completed/frozen lanes as active.
+                clocks=[max(0.,float(c['world'].data.time)-float(c['origin'])) for c in contexts]
+                aggregate=sum(clocks)
+                progress.update(world_sim_s=clocks,aggregate_world_sim_s=aggregate,
+                    per_world_wall_SIM=elapsed/aggregate if aggregate else None,
+                    batch_wall_SIM=elapsed/max(clocks) if max(clocks,default=0.) else None)
+                if max(clocks,default=0.)>=30.-1e-8 and not (a.out/'first30-speed.json').exists():
+                    write(a.out/'first30-speed.json',dict(progress,
+                        scope='first batch clock >=30 SIM; setup/compile excluded; completed lanes frozen',
+                        basis='coordinator decision 2026-10-16, user unconfirmed',
+                        block_threshold=6.,warning_threshold=3.5,
+                        speed_gate_fail=progress['per_world_wall_SIM']>6.))
+            write(a.out/'progress.json',progress)
             if a.diagnostic_ticks is not None and ticks>=a.diagnostic_ticks:break
         report['status']='diagnostic_prefix_complete' if active.any() else 'complete'
     except BaseException as error:

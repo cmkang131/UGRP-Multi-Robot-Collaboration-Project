@@ -1,0 +1,555 @@
+{
+  "populations": "attempts kept separate; no trial pooling",
+  "attempts": [
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp6/full-isolated-beampair",
+      "reproduce": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+        "/home/ugrp/ugrp-sim/src/warp6-prefix/scripts/run_warp_flow_teacher.py",
+        "--flow",
+        "beampair",
+        "--adapter-source",
+        "/home/ugrp/ugrp-sim/src/835ccef26aa84b08cc8f7e256fd0f43aa1583ef9",
+        "--cases",
+        "/home/ugrp/ugrp-sim/ops-reviews/warp4/beampair-short-cases.json",
+        "--indices",
+        "0,1,2,3",
+        "--cap-s",
+        "60",
+        "--vm-hourly-usd",
+        "1.096",
+        "--gcp3-isolated-v1",
+        "--placement-graspable-filter-v1",
+        "--world-model-parameters-v1",
+        "--native-sleep-policy-compat-v1",
+        "--per-world-model-references-v1",
+        "/home/ugrp/ugrp-sim/runs/warp4/beampair-references-d236/per-world-references.json",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/warp6/full-isolated-beampair",
+        "--teacher-source",
+        "/home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247"
+      ],
+      "host": "gcp3",
+      "source_sha": "82a623ee37c166ac7a9f8eaef7216c905ac1c816",
+      "funnel": [
+        {
+          "stage": "requested",
+          "passed_cumulative_N": 4,
+          "rejected_N": 0
+        },
+        {
+          "stage": "native_setup",
+          "passed_cumulative_N": 4,
+          "rejected_N": 0
+        },
+        {
+          "stage": "completed_teacher",
+          "passed_cumulative_N": 0,
+          "rejected_N": 4,
+          "pending_N": 0,
+          "not_requested_N": 0
+        },
+        {
+          "stage": "success",
+          "passed_cumulative_N": 0,
+          "rejected_N": 0
+        }
+      ],
+      "rejections": [
+        {
+          "reason_category": "SPEED_ADMISSION_LOWER_BOUND",
+          "blocked_object": "software:diagnostic",
+          "min_gap_m": null,
+          "count": 4,
+          "gap_scope": "nongeometric diagnostic error; no geometric claim"
+        }
+      ],
+      "cap_end_N": 0,
+      "HOST_ERROR_world_N": 4,
+      "incomplete_world_N": 4,
+      "worlds": []
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp6/graph-isolated-beampair",
+      "reproduce": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+        "/home/ugrp/ugrp-sim/src/warp6-prefix/scripts/run_warp_flow_teacher.py",
+        "--flow",
+        "beampair",
+        "--adapter-source",
+        "/home/ugrp/ugrp-sim/src/835ccef26aa84b08cc8f7e256fd0f43aa1583ef9",
+        "--cases",
+        "/home/ugrp/ugrp-sim/ops-reviews/warp4/beampair-short-cases.json",
+        "--indices",
+        "0,1,2,3",
+        "--cap-s",
+        "60",
+        "--vm-hourly-usd",
+        "1.096",
+        "--gcp3-isolated-v1",
+        "--placement-graspable-filter-v1",
+        "--world-model-parameters-v1",
+        "--native-sleep-policy-compat-v1",
+        "--per-world-model-references-v1",
+        "/home/ugrp/ugrp-sim/runs/warp4/beampair-references-d236/per-world-references.json",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/warp6/graph-isolated-beampair",
+        "--teacher-source",
+        "/home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+        "--diagnostic-ticks",
+        "15"
+      ],
+      "host": "gcp3",
+      "source_sha": "82a623ee37c166ac7a9f8eaef7216c905ac1c816",
+      "funnel": [
+        {
+          "stage": "requested",
+          "passed_cumulative_N": 4,
+          "rejected_N": 0
+        },
+        {
+          "stage": "native_setup",
+          "passed_cumulative_N": 4,
+          "rejected_N": 0
+        },
+        {
+          "stage": "requested_diagnostic_prefix",
+          "passed_cumulative_N": 4,
+          "rejected_N": 0
+        },
+        {
+          "stage": "completed_teacher",
+          "passed_cumulative_N": 0,
+          "rejected_N": 0,
+          "pending_N": 0,
+          "not_requested_N": 4
+        },
+        {
+          "stage": "success",
+          "passed_cumulative_N": 0,
+          "rejected_N": 0
+        }
+      ],
+      "rejections": [],
+      "cap_end_N": 0,
+      "HOST_ERROR_world_N": 0,
+      "incomplete_world_N": 4,
+      "worlds": []
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp6/graph-isolated-release-s1",
+      "reproduce": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+        "/home/ugrp/ugrp-sim/src/warp6-prefix/scripts/run_warp_flow_teacher.py",
+        "--flow",
+        "release",
+        "--adapter-source",
+        "/home/ugrp/ugrp-sim/src/8e81b7d96c0c73171635348c90631462adfe1eb0",
+        "--cases",
+        "/home/ugrp/ugrp-sim/ops-reviews/warp4/release-short-cases.json",
+        "--indices",
+        "0,1,3,4,5,7",
+        "--cap-s",
+        "180",
+        "--vm-hourly-usd",
+        "1.096",
+        "--gcp3-isolated-v1",
+        "--placement-graspable-filter-v1",
+        "--world-model-parameters-v1",
+        "--native-sleep-policy-compat-v1",
+        "--per-world-model-references-v1",
+        "/home/ugrp/ugrp-sim/runs/warp4/release-s1-references-d236/per-world-references.json",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/warp6/graph-isolated-release-s1",
+        "--diagnostic-ticks",
+        "15"
+      ],
+      "host": "gcp3",
+      "source_sha": "82a623ee37c166ac7a9f8eaef7216c905ac1c816",
+      "funnel": [
+        {
+          "stage": "requested",
+          "passed_cumulative_N": 6,
+          "rejected_N": 0
+        },
+        {
+          "stage": "native_setup",
+          "passed_cumulative_N": 6,
+          "rejected_N": 0
+        },
+        {
+          "stage": "requested_diagnostic_prefix",
+          "passed_cumulative_N": 6,
+          "rejected_N": 0
+        },
+        {
+          "stage": "completed_teacher",
+          "passed_cumulative_N": 0,
+          "rejected_N": 0,
+          "pending_N": 0,
+          "not_requested_N": 6
+        },
+        {
+          "stage": "success",
+          "passed_cumulative_N": 0,
+          "rejected_N": 0
+        }
+      ],
+      "rejections": [],
+      "cap_end_N": 0,
+      "HOST_ERROR_world_N": 0,
+      "incomplete_world_N": 6,
+      "worlds": []
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp6/graph-isolated-release-s3",
+      "reproduce": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+        "/home/ugrp/ugrp-sim/src/warp6-prefix/scripts/run_warp_flow_teacher.py",
+        "--flow",
+        "release",
+        "--adapter-source",
+        "/home/ugrp/ugrp-sim/src/8e81b7d96c0c73171635348c90631462adfe1eb0",
+        "--cases",
+        "/home/ugrp/ugrp-sim/ops-reviews/warp4/release-short-cases.json",
+        "--indices",
+        "2,6",
+        "--cap-s",
+        "180",
+        "--vm-hourly-usd",
+        "1.096",
+        "--gcp3-isolated-v1",
+        "--placement-graspable-filter-v1",
+        "--world-model-parameters-v1",
+        "--native-sleep-policy-compat-v1",
+        "--per-world-model-references-v1",
+        "/home/ugrp/ugrp-sim/runs/warp4/release-s3-references-d236/per-world-references.json",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/warp6/graph-isolated-release-s3",
+        "--diagnostic-ticks",
+        "15"
+      ],
+      "host": "gcp3",
+      "source_sha": "82a623ee37c166ac7a9f8eaef7216c905ac1c816",
+      "funnel": [
+        {
+          "stage": "requested",
+          "passed_cumulative_N": 2,
+          "rejected_N": 0
+        },
+        {
+          "stage": "native_setup",
+          "passed_cumulative_N": 2,
+          "rejected_N": 0
+        },
+        {
+          "stage": "requested_diagnostic_prefix",
+          "passed_cumulative_N": 2,
+          "rejected_N": 0
+        },
+        {
+          "stage": "completed_teacher",
+          "passed_cumulative_N": 0,
+          "rejected_N": 0,
+          "pending_N": 0,
+          "not_requested_N": 2
+        },
+        {
+          "stage": "success",
+          "passed_cumulative_N": 0,
+          "rejected_N": 0
+        }
+      ],
+      "rejections": [],
+      "cap_end_N": 0,
+      "HOST_ERROR_world_N": 0,
+      "incomplete_world_N": 2,
+      "worlds": []
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp6/profile-nxn-beampair",
+      "reproduce": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+        "/home/ugrp/ugrp-sim/src/warp6-profile/scripts/run_warp_flow_teacher.py",
+        "--flow",
+        "beampair",
+        "--adapter-source",
+        "/home/ugrp/ugrp-sim/src/835ccef26aa84b08cc8f7e256fd0f43aa1583ef9",
+        "--cases",
+        "/home/ugrp/ugrp-sim/ops-reviews/warp4/beampair-short-cases.json",
+        "--indices",
+        "0,1,2,3",
+        "--cap-s",
+        "60",
+        "--vm-hourly-usd",
+        "1.096",
+        "--gcp3-isolated-v1",
+        "--placement-graspable-filter-v1",
+        "--world-model-parameters-v1",
+        "--native-sleep-policy-compat-v1",
+        "--per-world-model-references-v1",
+        "/home/ugrp/ugrp-sim/runs/warp4/beampair-references-d236/per-world-references.json",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/warp6/profile-nxn-beampair",
+        "--teacher-source",
+        "/home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+        "--diagnostic-ticks",
+        "1",
+        "--physics-profile-v1"
+      ],
+      "host": "gcp3",
+      "source_sha": "400cdb0da18b538ae94e6bd42c8b0c45d7091d9f",
+      "funnel": [
+        {
+          "stage": "requested",
+          "passed_cumulative_N": 4,
+          "rejected_N": 0
+        },
+        {
+          "stage": "native_setup",
+          "passed_cumulative_N": 4,
+          "rejected_N": 0
+        },
+        {
+          "stage": "requested_diagnostic_prefix",
+          "passed_cumulative_N": 4,
+          "rejected_N": 0
+        },
+        {
+          "stage": "completed_teacher",
+          "passed_cumulative_N": 0,
+          "rejected_N": 0,
+          "pending_N": 0,
+          "not_requested_N": 4
+        },
+        {
+          "stage": "success",
+          "passed_cumulative_N": 0,
+          "rejected_N": 0
+        }
+      ],
+      "rejections": [],
+      "cap_end_N": 0,
+      "HOST_ERROR_world_N": 0,
+      "incomplete_world_N": 4,
+      "worlds": []
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp6/r1-memcheck-beampair",
+      "reproduce": [
+        "/usr/local/cuda/bin/compute-sanitizer",
+        "--tool",
+        "memcheck",
+        "--error-exitcode",
+        "86",
+        "--print-limit",
+        "20",
+        "--log-file",
+        "/home/ugrp/ugrp-sim/runs/warp6/r1-memcheck-beampair.memcheck.log",
+        "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+        "/home/ugrp/ugrp-sim/src/a1cac293d17c3c0811b843d49c0855a8ba0759fa/scripts/run_warp_flow_teacher.py",
+        "--flow",
+        "beampair",
+        "--adapter-source",
+        "/home/ugrp/ugrp-sim/src/835ccef26aa84b08cc8f7e256fd0f43aa1583ef9",
+        "--cases",
+        "/home/ugrp/ugrp-sim/ops-reviews/warp4/beampair-short-cases.json",
+        "--indices",
+        "0,1,2,3",
+        "--cap-s",
+        "60",
+        "--vm-hourly-usd",
+        "1.096",
+        "--gcp3-isolated-v1",
+        "--placement-graspable-filter-v1",
+        "--world-model-parameters-v1",
+        "--native-sleep-policy-compat-v1",
+        "--per-world-model-references-v1",
+        "/home/ugrp/ugrp-sim/runs/warp4/beampair-references-d236/per-world-references.json",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/warp6/r1-memcheck-beampair",
+        "--teacher-source",
+        "/home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247"
+      ],
+      "host": "gcp3",
+      "source_sha": "a1cac293d17c3c0811b843d49c0855a8ba0759fa",
+      "funnel": [
+        {
+          "stage": "requested",
+          "passed_cumulative_N": 4,
+          "rejected_N": 0
+        },
+        {
+          "stage": "native_setup",
+          "passed_cumulative_N": 4,
+          "rejected_N": 0
+        },
+        {
+          "stage": "completed_teacher",
+          "passed_cumulative_N": 0,
+          "rejected_N": 4,
+          "pending_N": 0,
+          "not_requested_N": 0
+        },
+        {
+          "stage": "success",
+          "passed_cumulative_N": 0,
+          "rejected_N": 0
+        }
+      ],
+      "rejections": [
+        {
+          "reason_category": "DIAGNOSTIC_INSTRUMENTATION_STOP",
+          "blocked_object": "software:diagnostic",
+          "min_gap_m": null,
+          "count": 4,
+          "gap_scope": "nongeometric diagnostic error; no geometric claim"
+        }
+      ],
+      "cap_end_N": 0,
+      "HOST_ERROR_world_N": 4,
+      "incomplete_world_N": 4,
+      "worlds": []
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp6/r2-debug-trace-beampair",
+      "reproduce": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+        "/home/ugrp/ugrp-sim/src/5c37a18ca/scripts/run_warp_flow_teacher.py",
+        "--flow",
+        "beampair",
+        "--adapter-source",
+        "/home/ugrp/ugrp-sim/src/835ccef26aa84b08cc8f7e256fd0f43aa1583ef9",
+        "--cases",
+        "/home/ugrp/ugrp-sim/ops-reviews/warp4/beampair-short-cases.json",
+        "--indices",
+        "0,1,2,3",
+        "--cap-s",
+        "60",
+        "--vm-hourly-usd",
+        "1.096",
+        "--gcp3-isolated-v1",
+        "--placement-graspable-filter-v1",
+        "--world-model-parameters-v1",
+        "--native-sleep-policy-compat-v1",
+        "--per-world-model-references-v1",
+        "/home/ugrp/ugrp-sim/runs/warp4/beampair-references-d236/per-world-references.json",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/warp6/r2-debug-trace-beampair",
+        "--teacher-source",
+        "/home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+        "--warp-debug-v1",
+        "--warp-workspace-trace-v1"
+      ],
+      "host": "gcp3",
+      "source_sha": "5c37a18caf03f150a6fab6aba8ce39811fbe360f",
+      "funnel": [
+        {
+          "stage": "requested",
+          "passed_cumulative_N": 4,
+          "rejected_N": 0
+        },
+        {
+          "stage": "native_setup",
+          "passed_cumulative_N": 0,
+          "rejected_N": 4
+        },
+        {
+          "stage": "completed_teacher",
+          "passed_cumulative_N": 0,
+          "rejected_N": 4,
+          "pending_N": 0,
+          "not_requested_N": 0
+        },
+        {
+          "stage": "success",
+          "passed_cumulative_N": 0,
+          "rejected_N": 0
+        }
+      ],
+      "rejections": [
+        {
+          "reason_category": "DIAGNOSTIC_INSTRUMENTATION_STOP",
+          "blocked_object": "software:diagnostic",
+          "min_gap_m": null,
+          "count": 4,
+          "gap_scope": "nongeometric diagnostic error; no geometric claim"
+        }
+      ],
+      "cap_end_N": 0,
+      "HOST_ERROR_world_N": 4,
+      "incomplete_world_N": 4,
+      "worlds": []
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp6/r3-verify-trace-beampair",
+      "reproduce": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+        "/home/ugrp/ugrp-sim/src/warp6-verify/scripts/run_warp_flow_teacher.py",
+        "--flow",
+        "beampair",
+        "--adapter-source",
+        "/home/ugrp/ugrp-sim/src/835ccef26aa84b08cc8f7e256fd0f43aa1583ef9",
+        "--cases",
+        "/home/ugrp/ugrp-sim/ops-reviews/warp4/beampair-short-cases.json",
+        "--indices",
+        "0,1,2,3",
+        "--cap-s",
+        "60",
+        "--vm-hourly-usd",
+        "1.096",
+        "--gcp3-isolated-v1",
+        "--placement-graspable-filter-v1",
+        "--world-model-parameters-v1",
+        "--native-sleep-policy-compat-v1",
+        "--per-world-model-references-v1",
+        "/home/ugrp/ugrp-sim/runs/warp4/beampair-references-d236/per-world-references.json",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/warp6/r3-verify-trace-beampair",
+        "--teacher-source",
+        "/home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+        "--warp-workspace-trace-v1",
+        "--warp-verify-cuda-v1"
+      ],
+      "host": "gcp3",
+      "source_sha": "0b97fc83f8afd20635925577e8599a258f65f21b",
+      "funnel": [
+        {
+          "stage": "requested",
+          "passed_cumulative_N": 4,
+          "rejected_N": 0
+        },
+        {
+          "stage": "native_setup",
+          "passed_cumulative_N": 4,
+          "rejected_N": 0
+        },
+        {
+          "stage": "completed_teacher",
+          "passed_cumulative_N": 0,
+          "rejected_N": 4,
+          "pending_N": 0,
+          "not_requested_N": 0
+        },
+        {
+          "stage": "success",
+          "passed_cumulative_N": 0,
+          "rejected_N": 0
+        }
+      ],
+      "rejections": [
+        {
+          "reason_category": "DIAGNOSTIC_PREFIX_END",
+          "blocked_object": "software:diagnostic",
+          "min_gap_m": null,
+          "count": 4,
+          "gap_scope": "nongeometric diagnostic error; no geometric claim"
+        }
+      ],
+      "cap_end_N": 0,
+      "HOST_ERROR_world_N": 4,
+      "incomplete_world_N": 4,
+      "worlds": []
+    }
+  ]
+}
