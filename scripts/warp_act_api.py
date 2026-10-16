@@ -21,8 +21,9 @@ QUALIFIED = 'f0db6b1abb842ea65b71c433738210254f300a7c'
 GATE_RAW_SHA = 'a7f0a28cf927f718245c4c1c31bcf4cc760ad5526be5ff62bfe4a5727bd329be'
 TEACHER = '6f057f7e97c1a3aec9e8c398b8d9068e27b25df8'
 # Native mjSTATE_INTEGRATION plus documented persistent history/sleep state.
-# Compact solver values are derived again at the next step; replay checks that
-# restoring these owners also preserves the untouched world's NEXT dynamics.
+# Compact solver values are derived again at the next step. Independent GPU
+# baselines diverge numerically; only immediate reset/terminal state boundaries
+# are byte-verified. No bitwise guarantee for the untouched NEXT trajectory.
 STATE = ('qpos', 'qvel', 'act', 'history', 'ctrl', 'qacc_warmstart',
          'qfrc_applied', 'xfrc_applied', 'mocap_pos', 'mocap_quat',
          'eq_active', 'time', 'tree_asleep', 'tree_awake',

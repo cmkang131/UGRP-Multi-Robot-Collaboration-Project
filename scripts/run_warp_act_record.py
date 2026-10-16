@@ -6,6 +6,7 @@ it supplies no input or action. Labels are paired after the controller exits.
 Pilot/cap/error recordings are never automatically admitted as training data.
 """
 import argparse
+from copy import deepcopy
 import hashlib
 import inspect
 import json
@@ -65,7 +66,7 @@ def main():
         folder = a.out/f'world-{index:03d}'/'capture'; folder.mkdir(parents=True, exist_ok=True)
         path = folder/f'{len(rows[index]):06d}.jpg'; path.write_bytes(jpeg)
         rows[index].append(dict(t=local['now'], skill=teacher.skill, phase=teacher.phase,
-            previous=local['previous'], path=str(path), sha256=hashlib.sha256(jpeg).hexdigest()))
+            previous=deepcopy(local['previous']), path=str(path), sha256=hashlib.sha256(jpeg).hexdigest()))
         return jpeg
 
     warp_act_backend.WarpTransport.capture = capture
@@ -77,28 +78,33 @@ def main():
         error = repr(exc)
     finally:
         warp_act_backend.WarpTransport.capture = original
-    import cv2
-    import numpy as np
     controller_out = Path(args[args.index('--out')+1])
     results = []
-    for i, frames in rows.items():
-        folder = a.out/f'world-{i:03d}'
-        (folder/'capture-context.json').write_text(json.dumps(frames, indent=2)+'\n')
-        commands = read_jsonl(controller_out/f'world-{i:03d}'/'teacher-commands.jsonl')
-        if len(commands) != len(frames): raise RuntimeError('unpaired capture/command trace')
-        recorder = SoloRecorder(folder, plans[i], frames[0]['previous'])
-        try:
-            for frame, command in zip(frames, commands):
-                jpeg = Path(frame['path']).read_bytes()
-                if hashlib.sha256(jpeg).hexdigest() != frame['sha256'] or frame['t'] != command['t']:
-                    raise RuntimeError('capture bytes/command clock changed')
-                bgr = cv2.imdecode(np.frombuffer(jpeg, np.uint8), cv2.IMREAD_COLOR)
-                recorder.observe(frame['t'], jpeg, bgr, skill=frame['skill'], phase=frame['phase'], previous=frame['previous'])
-                context = command['student_context']
-                recorder.target(command['command'], skill_after=context['skill'], phase_after=command['phase'], complete=command['phase']=='complete')
-            results.append(dict(world=i, seed=plans[i]['seed'], **recorder.record()))
-        finally:
-            recorder.close()
+    try:
+        import cv2
+        import numpy as np
+        for i, frames in rows.items():
+            folder = a.out/f'world-{i:03d}'
+            (folder/'capture-context.json').write_text(json.dumps(frames, indent=2)+'\n')
+            commands = read_jsonl(controller_out/f'world-{i:03d}'/'teacher-commands.jsonl')
+            if len(commands) != len(frames): raise RuntimeError('unpaired capture/command trace')
+            recorder = SoloRecorder(folder, plans[i], frames[0]['previous'])
+            try:
+                for frame, command in zip(frames, commands):
+                    jpeg = Path(frame['path']).read_bytes()
+                    if hashlib.sha256(jpeg).hexdigest() != frame['sha256'] or frame['t'] != command['t']:
+                        raise RuntimeError('capture bytes/command clock changed')
+                    bgr = cv2.imdecode(np.frombuffer(jpeg, np.uint8), cv2.IMREAD_COLOR)
+                    recorder.observe(frame['t'], jpeg, bgr, skill=frame['skill'], phase=frame['phase'], previous=frame['previous'])
+                    context = command['student_context']
+                    recorder.target(command['command'], skill_after=context['skill'], phase_after=command['phase'], complete=command['phase']=='complete')
+                results.append(dict(world=i, seed=plans[i]['seed'], **recorder.record()))
+            finally:
+                recorder.close()
+    except BaseException as exc:
+        # Preserve raw controller/capture bytes and a terminal ledger even when
+        # offline pairing/decoding fails; never promote incomplete samples.
+        error = '; '.join(x for x in (error, 'postprocess: '+repr(exc)) if x)
     summary = dict(status='HOST_ERROR' if error else 'recording_complete', error=error,
         controller_source=QUALIFIED, adapter_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         raw_controller=str(controller_out), stage=a.stage, gate_n=gate['n'], gate_N=gate['N'],

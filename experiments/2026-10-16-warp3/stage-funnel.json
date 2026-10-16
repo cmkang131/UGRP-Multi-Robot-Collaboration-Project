@@ -1,0 +1,81 @@
+{
+  "recorded_utc": "2026-10-16T06:54:58.425868+00:00",
+  "scope": "ordered execution stages, not pooled teacher cohorts",
+  "stages": [
+    {
+      "name": "distinct_start",
+      "candidates": 16,
+      "passed": 16,
+      "rejected": 0,
+      "independent_teacher_n": 0,
+      "raw": "distinct-proof.json"
+    },
+    {
+      "name": "teacher",
+      "candidates": 40,
+      "passed": 40,
+      "rejected": 0,
+      "cap_end": 0,
+      "HOST_ERROR": 0,
+      "raw": "teacher-gate-qualification-r1.json",
+      "rejection_table": "gate-rejection_table-r1.json"
+    },
+    {
+      "name": "API_probe",
+      "attempts": 6,
+      "passed": 2,
+      "HOST_ERROR": 4,
+      "rejection_category": "independent_baseline_numerical_drift",
+      "blocking_object": "GPU solver reproducibility",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "numerical assertion, not geometry",
+      "raw": "/home/ugrp/ugrp-sim/runs/warp3/api-probe-r{1,2,3,4-rpc,5-rpc,8-rpc}/summary.json",
+      "reason": "Initial bitwise next-step assertion failed even for independent identical baselines; retained HOST_ERROR and explicitly limited later proof to immediate/terminal boundaries."
+    },
+    {
+      "name": "native_record_pilot",
+      "attempts": 1,
+      "paired": 30,
+      "unpaired": 0,
+      "controller_cap_end": 1,
+      "HOST_ERROR": 0,
+      "data_admitted": false,
+      "raw": "record-api-audit-r1.json"
+    },
+    {
+      "name": "student_ACT15_prefix",
+      "attempts": 2,
+      "passed": 2,
+      "full_task_N": 0,
+      "raw": "student-api-smoke-r2.json"
+    },
+    {
+      "name": "warm_C16",
+      "attempts": 2,
+      "passed": 1,
+      "unqualified_shared": 1,
+      "replica_cap_end": 32,
+      "HOST_ERROR": 0,
+      "reason": "r1 sampled foreign Python PID23613; r2 unshared",
+      "blocking_object": "PID23613",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "resource contention, not geometry",
+      "raw": "/home/ugrp/ugrp-sim/runs/warp3-warm-c16-r{1,2}/summary.json"
+    },
+    {
+      "name": "warm_GPU",
+      "status": "WAIT_FOREIGN_GPU",
+      "qualified_N64": false,
+      "qualified_N256": false,
+      "blocking_object": "beamact3-B/act16w live CUDA and CPU workers",
+      "reason": "preserve foreign tasks; global GPU quota1 prevents additional L4",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "resource contention, not geometry",
+      "raw": "/home/ugrp/ugrp-sim/runs/warp3-warm-gpu-r1/progress.json"
+    }
+  ],
+  "reproduce": [
+    "python experiments/2026-10-16-warp3/recount_gate.py --help",
+    "See raw summary.reproduce / operations.warm_queue and scripts/*warm.py --help; explicit Linux gcp2 --enabled required"
+  ]
+}
