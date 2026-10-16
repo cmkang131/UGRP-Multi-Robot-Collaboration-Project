@@ -60,6 +60,8 @@ def main():
         if not a.reference_only:
             reference=(root/f'R1-Cref/{kind}-tape-baseline_noslip10/result.json' if kind!='drive'
                        else root/'drive-capacity-reference.json')
+            measured=root/f'{kind}-capacity-reference.json'
+            if measured.is_file():reference=measured
             if reference.is_file():cmd+=['--capacity-reference',str(reference)]
             if a.round==1:cmd+=['--max-sim-s','.1','--nconmax','128','--njmax','512']
             else:cmd+=['--record-own-rgb-ring']
