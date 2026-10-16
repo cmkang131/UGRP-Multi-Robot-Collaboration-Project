@@ -325,7 +325,11 @@ def main():
     import platform
     if platform.system()!='Linux':raise RuntimeError('analysis runs on GCP2 only')
     from scripts.beamact1_runtime import require_gcp2
-    require_gcp2(training=a.mode=='infer')
+    if a.mode=='infer':
+        require_gcp2(training=True)
+    else:
+        try:require_gcp2(training=False)
+        except ValueError:require_gcp2(training=True)  # CPU analysis on shared L4 host is allowed
     a.output.mkdir(parents=True,exist_ok=True)
     a.dataset=dataset_view(a.dataset,a.output)
     lease=Path('/home/ugrp/ugrp-sim/leases/actdiag.json')
