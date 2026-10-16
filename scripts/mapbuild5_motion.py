@@ -2,12 +2,14 @@
 import argparse
 import hashlib
 import json
+import os
 from pathlib import Path
 import sys
 
 
 def make(vision, base, output):
     sys.path[:0]=[str(vision),str(vision/'scripts')]
+    os.chdir(vision)
     import numpy as np
     from scripts.probe_scene_tex2 import build_model
     from scripts.generate_scene_textures import MAPS
