@@ -32,6 +32,7 @@ def offline_only(monkeypatch):
 
 def test_v84_history_and_explicit_v6h_successors_keep_their_own_receipts():
     from tests.v6h_successor_pins import SEAL, successor_blob
+    from tests.pinned_source_bundle import bundle_at
     record = env.read(env.ROOT / RECORD)
     # #292's already-reviewed source/test migrations are separate from v84.
     # Do not rewrite its receipt or claim current bundle bytes are the old run.
@@ -47,18 +48,22 @@ def test_v84_history_and_explicit_v6h_successors_keep_their_own_receipts():
         assert hashlib.sha256(original).hexdigest() == sha, path
         expected = (subprocess.check_output(['git', 'show', f'{successors[path]}:{path}'], cwd=env.ROOT)
                     if path in successors else original)
-        actual = successor_blob(path) if successors.get(path) == SEAL else (env.ROOT / path).read_bytes()
+        # Historical records pin their acquisition source. Current shared
+        # runners legitimately change; new-bundle tests below cover them.
+        actual = (successor_blob(path) if successors.get(path) == SEAL else
+                  subprocess.check_output(['git', 'show', f'{successors.get(path, record["source_sha"])}:{path}'], cwd=env.ROOT))
         assert actual == expected, path
     for key, sha in record['bundles'].items():
         mid, check = key.split('/')
         current = old.bundle(mid, check=check)
         assert env.digest(current) != sha, 'a successor must not inherit the historical bundle identity'
-        historical = copy.deepcopy(current)
+        historical = bundle_at(record['source_sha'], old.__name__, mid, check,
+                               tuple(record['files_sha256']))
         assert historical['source_sha256'].keys() <= record['files_sha256'].keys()
         # All non-source bundle fields and the source closure remain exact;
         # only substitute the independently checked historical Git hashes.
         historical['source_sha256'] = {path: record['files_sha256'][path]
-                                       for path in current['source_sha256']}
+                                       for path in historical['source_sha256']}
         assert env.digest(historical) == sha, key
 
 

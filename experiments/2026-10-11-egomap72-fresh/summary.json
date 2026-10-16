@@ -1,10 +1,11 @@
 {
   "round": "egomap72",
-  "status": "REVISED_B_RETURN_REGISTERED",
+  "source_sha": "29c0c169bdfd7eff91186bb90af901393340f2a1",
+  "host": "azure",
   "class": "dev",
   "pr": 405,
-  "base_sha": "a7e30c5c0cabbf018007e00535d16cc6a3890d10",
-  "seeds": [
+  "registered": 12,
+  "paired_seeds": [
     63001,
     63002,
     63003,
@@ -12,1146 +13,1110 @@
     63005,
     63006
   ],
-  "conditions": [
-    "off",
-    "on"
+  "conditions": {
+    "off": {
+      "registered": 6,
+      "attempted": 6,
+      "measured": 6,
+      "completed": 4,
+      "host_errors": 1,
+      "statuses": {
+        "PHYSICAL_FAILURE": 1,
+        "RECORDED": 4,
+        "HOST_ERROR": 1
+      },
+      "true_B": 3,
+      "true_return": 0,
+      "return_stage_entered": 4,
+      "wall_s": 17119.765021135998,
+      "commands": 7509,
+      "model_calls": 0,
+      "false_return": {
+        "count": 4,
+        "runs_with_event": 4,
+        "registered_run_denominator": 6,
+        "measured_run_denominator": 6,
+        "completed_run_denominator": 4,
+        "declaration_denominator": 4
+      },
+      "false_B": {
+        "count": 1,
+        "runs_with_event": 1,
+        "registered_run_denominator": 6,
+        "measured_run_denominator": 6,
+        "completed_run_denominator": 4,
+        "declaration_denominator": 4
+      }
+    },
+    "on": {
+      "registered": 6,
+      "attempted": 6,
+      "measured": 6,
+      "completed": 4,
+      "host_errors": 2,
+      "statuses": {
+        "RECORDED": 4,
+        "HOST_ERROR": 2
+      },
+      "true_B": 0,
+      "true_return": 0,
+      "return_stage_entered": 0,
+      "wall_s": 17840.393173204,
+      "commands": 7292,
+      "model_calls": 0,
+      "false_return": {
+        "count": 0,
+        "runs_with_event": 0,
+        "registered_run_denominator": 6,
+        "measured_run_denominator": 6,
+        "completed_run_denominator": 4,
+        "declaration_denominator": 0
+      },
+      "false_B": {
+        "count": 0,
+        "runs_with_event": 0,
+        "registered_run_denominator": 6,
+        "measured_run_denominator": 6,
+        "completed_run_denominator": 4,
+        "declaration_denominator": 0
+      }
+    }
+  },
+  "runs": [
+    {
+      "name": "egomap72-63001-off",
+      "seed": 63001,
+      "condition": "off",
+      "status": "PHYSICAL_FAILURE",
+      "exit_code": 1,
+      "pid": 27092,
+      "cpu": 0,
+      "failure": {
+        "type": "PhysicalStop",
+        "message": "WALL_CONTACT"
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/egomap72-b-return-29c0c169/data/egomap72-63001-off",
+      "result_sha256": "8bf34ef050ecacef25c78996931b51945a087dd0b473defe289ccae9ef2468a3",
+      "wall_s": 509.05459596699984,
+      "model_calls": 0,
+      "samples": 305,
+      "declarations": [],
+      "stage": null,
+      "sim_s": 62.8,
+      "commands": 305,
+      "B_arrived": false,
+      "returned": false,
+      "return_stage_entered": false,
+      "command_counts": {
+        "turn": 203,
+        "translation": 101,
+        "hold": 1
+      },
+      "host_error": false,
+      "false_return": 0,
+      "false_B": 0
+    },
+    {
+      "name": "egomap72-63001-on",
+      "seed": 63001,
+      "condition": "on",
+      "status": "RECORDED",
+      "exit_code": 0,
+      "pid": 27093,
+      "cpu": 1,
+      "failure": null,
+      "raw": "/home/ugrp/ugrp-sim/runs/egomap72-b-return-29c0c169/data/egomap72-63001-on",
+      "result_sha256": "f86c15a868eaa6b198b8d1f13002564796aa54bc75009171894e530cc80800d2",
+      "wall_s": 3653.1849341499997,
+      "model_calls": 0,
+      "samples": 1341,
+      "declarations": [],
+      "stage": "budget_exhausted",
+      "sim_s": 270.0,
+      "commands": 1341,
+      "B_arrived": false,
+      "returned": false,
+      "return_stage_entered": false,
+      "command_counts": {
+        "turn": 987,
+        "translation": 351,
+        "hold": 3
+      },
+      "host_error": false,
+      "false_return": 0,
+      "false_B": 0
+    },
+    {
+      "name": "egomap72-63002-on",
+      "seed": 63002,
+      "condition": "on",
+      "status": "RECORDED",
+      "exit_code": 0,
+      "pid": 27176,
+      "cpu": 2,
+      "failure": null,
+      "raw": "/home/ugrp/ugrp-sim/runs/egomap72-b-return-29c0c169/data/egomap72-63002-on",
+      "result_sha256": "8d5f156cad2966be884f98b59f3a57f875e7e5d99eb3e845c93ac42126c489c1",
+      "wall_s": 3271.5026966319997,
+      "model_calls": 0,
+      "samples": 1341,
+      "declarations": [],
+      "stage": "budget_exhausted",
+      "sim_s": 270.0,
+      "commands": 1341,
+      "B_arrived": false,
+      "returned": false,
+      "return_stage_entered": false,
+      "command_counts": {
+        "turn": 864,
+        "translation": 318,
+        "hold": 159
+      },
+      "host_error": false,
+      "false_return": 0,
+      "false_B": 0
+    },
+    {
+      "name": "egomap72-63002-off",
+      "seed": 63002,
+      "condition": "off",
+      "status": "RECORDED",
+      "exit_code": 0,
+      "pid": 27177,
+      "cpu": 3,
+      "failure": null,
+      "raw": "/home/ugrp/ugrp-sim/runs/egomap72-b-return-29c0c169/data/egomap72-63002-off",
+      "result_sha256": "bb514a0cae4beffa5cbc7efbf4db51be610ee0b687e464a4d7c882cdcd4b8d17",
+      "wall_s": 3919.3333274229994,
+      "model_calls": 0,
+      "samples": 1569,
+      "declarations": [
+        {
+          "t": 182.7,
+          "kind": "goal_reached",
+          "valid": true,
+          "evaluation_xy": [
+            4.732935416663894,
+            -1.6616814384528413
+          ]
+        },
+        {
+          "t": 316.9,
+          "kind": "return_start_declared",
+          "valid": false,
+          "evaluation_xy": [
+            3.5328384872989598,
+            0.6637831084135855
+          ]
+        }
+      ],
+      "stage": "declared",
+      "sim_s": 315.59999999999997,
+      "commands": 1569,
+      "B_arrived": true,
+      "returned": false,
+      "return_stage_entered": true,
+      "command_counts": {
+        "turn": 1068,
+        "translation": 495,
+        "hold": 6
+      },
+      "host_error": false,
+      "false_return": 1,
+      "false_B": 0
+    },
+    {
+      "name": "egomap72-63003-off",
+      "seed": 63003,
+      "condition": "off",
+      "status": "RECORDED",
+      "exit_code": 0,
+      "pid": 27297,
+      "cpu": 4,
+      "failure": null,
+      "raw": "/home/ugrp/ugrp-sim/runs/egomap72-b-return-29c0c169/data/egomap72-63003-off",
+      "result_sha256": "7d3a2f5fbf4486de16ddfe517836d2ce657bca6eea4885954bb2949151c5ece3",
+      "wall_s": 3988.1972899219995,
+      "model_calls": 0,
+      "samples": 1633,
+      "declarations": [
+        {
+          "t": 202.9,
+          "kind": "goal_reached",
+          "valid": false,
+          "evaluation_xy": [
+            3.875144422053007,
+            -2.170790629027769
+          ]
+        },
+        {
+          "t": 329.7,
+          "kind": "return_start_declared",
+          "valid": false,
+          "evaluation_xy": [
+            3.57957723146171,
+            0.6306282431025316
+          ]
+        }
+      ],
+      "stage": "declared",
+      "sim_s": 328.4,
+      "commands": 1633,
+      "B_arrived": false,
+      "returned": false,
+      "return_stage_entered": true,
+      "command_counts": {
+        "turn": 1033,
+        "translation": 595,
+        "hold": 5
+      },
+      "host_error": false,
+      "false_return": 1,
+      "false_B": 1
+    },
+    {
+      "name": "egomap72-63003-on",
+      "seed": 63003,
+      "condition": "on",
+      "status": "HOST_ERROR",
+      "exit_code": 1,
+      "pid": 27298,
+      "cpu": 5,
+      "failure": {
+        "type": "AttributeError",
+        "message": "pose"
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/egomap72-b-return-29c0c169/data/egomap72-63003-on",
+      "result_sha256": "8e95dc4db30d38446acbbbcbfbb9c7bd7c780aecdb218eca50d0c3151cead634",
+      "wall_s": 2437.365520105,
+      "model_calls": 0,
+      "samples": 1035,
+      "declarations": [],
+      "stage": null,
+      "sim_s": 209.0,
+      "commands": 1035,
+      "B_arrived": false,
+      "returned": false,
+      "return_stage_entered": false,
+      "command_counts": {
+        "turn": 560,
+        "translation": 280,
+        "hold": 195
+      },
+      "host_error": true,
+      "false_return": 0,
+      "false_B": 0
+    },
+    {
+      "name": "egomap72-63004-on",
+      "seed": 63004,
+      "condition": "on",
+      "status": "HOST_ERROR",
+      "exit_code": 1,
+      "pid": 27399,
+      "cpu": 6,
+      "failure": {
+        "type": "AttributeError",
+        "message": "pose"
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/egomap72-b-return-29c0c169/data/egomap72-63004-on",
+      "result_sha256": "832b817f646fdb85e3dc1ca9b978b04e9587a7c470e21cc17519e97068f8a9e2",
+      "wall_s": 2332.572345973,
+      "model_calls": 0,
+      "samples": 893,
+      "declarations": [],
+      "stage": null,
+      "sim_s": 180.6,
+      "commands": 893,
+      "B_arrived": false,
+      "returned": false,
+      "return_stage_entered": false,
+      "command_counts": {
+        "turn": 510,
+        "translation": 227,
+        "hold": 156
+      },
+      "host_error": true,
+      "false_return": 0,
+      "false_B": 0
+    },
+    {
+      "name": "egomap72-63004-off",
+      "seed": 63004,
+      "condition": "off",
+      "status": "HOST_ERROR",
+      "exit_code": 1,
+      "pid": 27400,
+      "cpu": 7,
+      "failure": {
+        "type": "TimeoutError",
+        "message": ""
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/egomap72-b-return-29c0c169/data/egomap72-63004-off",
+      "result_sha256": "a54d2d57b9059d57d0921b6bb44cc7c47288313de36f9fa5f3dd3058885187dd",
+      "wall_s": 2216.109089469,
+      "model_calls": 0,
+      "samples": 883,
+      "declarations": [],
+      "stage": null,
+      "sim_s": 178.6,
+      "commands": 883,
+      "B_arrived": false,
+      "returned": false,
+      "return_stage_entered": false,
+      "command_counts": {
+        "turn": 583,
+        "translation": 297,
+        "hold": 3
+      },
+      "host_error": true,
+      "false_return": 0,
+      "false_B": 0
+    },
+    {
+      "name": "egomap72-63005-off",
+      "seed": 63005,
+      "condition": "off",
+      "status": "RECORDED",
+      "exit_code": 0,
+      "pid": 27561,
+      "cpu": 8,
+      "failure": null,
+      "raw": "/home/ugrp/ugrp-sim/runs/egomap72-b-return-29c0c169/data/egomap72-63005-off",
+      "result_sha256": "c1ceda52a6e49da9e1587ef150c4dd0aada19d503e0c160bb64cd8879e11fe87",
+      "wall_s": 3325.7440281579998,
+      "model_calls": 0,
+      "samples": 1737,
+      "declarations": [
+        {
+          "t": 183.9,
+          "kind": "goal_reached",
+          "valid": true,
+          "evaluation_xy": [
+            4.343103060418512,
+            -2.2631529098224132
+          ]
+        },
+        {
+          "t": 350.5,
+          "kind": "return_start_declared",
+          "valid": false,
+          "evaluation_xy": [
+            3.410675562786826,
+            0.5080342444435199
+          ]
+        }
+      ],
+      "stage": "declared",
+      "sim_s": 349.2,
+      "commands": 1737,
+      "B_arrived": true,
+      "returned": false,
+      "return_stage_entered": true,
+      "command_counts": {
+        "turn": 1157,
+        "translation": 577,
+        "hold": 3
+      },
+      "host_error": false,
+      "false_return": 1,
+      "false_B": 0
+    },
+    {
+      "name": "egomap72-63005-on",
+      "seed": 63005,
+      "condition": "on",
+      "status": "RECORDED",
+      "exit_code": 0,
+      "pid": 27562,
+      "cpu": 9,
+      "failure": null,
+      "raw": "/home/ugrp/ugrp-sim/runs/egomap72-b-return-29c0c169/data/egomap72-63005-on",
+      "result_sha256": "3f788f5c378a6d07a70a73df267d52a926e50bcc9a59ba6b2e17538dd60c8607",
+      "wall_s": 2646.5833962469997,
+      "model_calls": 0,
+      "samples": 1341,
+      "declarations": [],
+      "stage": "budget_exhausted",
+      "sim_s": 270.0,
+      "commands": 1341,
+      "B_arrived": false,
+      "returned": false,
+      "return_stage_entered": false,
+      "command_counts": {
+        "turn": 1047,
+        "translation": 285,
+        "hold": 9
+      },
+      "host_error": false,
+      "false_return": 0,
+      "false_B": 0
+    },
+    {
+      "name": "egomap72-63006-on",
+      "seed": 63006,
+      "condition": "on",
+      "status": "RECORDED",
+      "exit_code": 0,
+      "pid": 27696,
+      "cpu": 10,
+      "failure": null,
+      "raw": "/home/ugrp/ugrp-sim/runs/egomap72-b-return-29c0c169/data/egomap72-63006-on",
+      "result_sha256": "f018c3936c8e41d65d5c1d0505b6427ee679570f0739c1d63245dba9d0c4a973",
+      "wall_s": 3499.184280097,
+      "model_calls": 0,
+      "samples": 1341,
+      "declarations": [],
+      "stage": "budget_exhausted",
+      "sim_s": 270.0,
+      "commands": 1341,
+      "B_arrived": false,
+      "returned": false,
+      "return_stage_entered": false,
+      "command_counts": {
+        "turn": 979,
+        "translation": 361,
+        "hold": 1
+      },
+      "host_error": false,
+      "false_return": 0,
+      "false_B": 0
+    },
+    {
+      "name": "egomap72-63006-off",
+      "seed": 63006,
+      "condition": "off",
+      "status": "RECORDED",
+      "exit_code": 0,
+      "pid": 27697,
+      "cpu": 11,
+      "failure": null,
+      "raw": "/home/ugrp/ugrp-sim/runs/egomap72-b-return-29c0c169/data/egomap72-63006-off",
+      "result_sha256": "c66e18ed5aef9304aad6c8f50b856f02ae71340c28be61cf8b73f498939b246d",
+      "wall_s": 3161.3266901970005,
+      "model_calls": 0,
+      "samples": 1382,
+      "declarations": [
+        {
+          "t": 170.3,
+          "kind": "goal_reached",
+          "valid": true,
+          "evaluation_xy": [
+            4.5183439005418435,
+            -2.098938064233772
+          ]
+        },
+        {
+          "t": 279.5,
+          "kind": "return_start_declared",
+          "valid": false,
+          "evaluation_xy": [
+            3.475646655441366,
+            0.8271282894316838
+          ]
+        }
+      ],
+      "stage": "declared",
+      "sim_s": 278.2,
+      "commands": 1382,
+      "B_arrived": true,
+      "returned": false,
+      "return_stage_entered": true,
+      "command_counts": {
+        "turn": 814,
+        "translation": 566,
+        "hold": 2
+      },
+      "host_error": false,
+      "false_return": 1,
+      "false_B": 0
+    }
   ],
-  "registered": 12,
-  "schedule": "same_run_own_B_discovery (up to270 SIM seconds), then existing B270/return270 schedule; maximum810; no checkpoint",
-  "checkpoint_inputs": false,
-  "external_RGB_bank": false,
-  "control_static_map": false,
-  "control_GT": false,
-  "rgb_home": "first own graph frame captured after decisions, fixed thereafter",
-  "toggles": {
-    "on": [
-      "two_view_rgb_v1",
-      "nees_stratified_v1"
-    ],
-    "off": [
-      "off",
-      "off"
-    ]
-  },
-  "budgets": {
-    "workers": 12,
-    "cpus": [
-      0,
-      1,
-      2,
-      3,
-      4,
-      5,
-      6,
-      7,
-      8,
-      9,
-      10,
-      11
-    ],
-    "per_run_wall_s": 6000,
-    "batch_wall_s": 7200,
-    "VM_task_wall_s": 10800,
-    "archive_reserve_s": 1800,
-    "raw_per_run_MiB": 512,
-    "other_jobs_remaining_MiB": 4096,
-    "Mac_fetch_lite_MiB": 128,
-    "remaining_task_wall_s": 9000,
-    "source_shipping_MiB": 3072
-  },
+  "host_errors": [
+    {
+      "name": "egomap72-63003-on",
+      "seed": 63003,
+      "condition": "on",
+      "status": "HOST_ERROR",
+      "exit_code": 1,
+      "pid": 27298,
+      "cpu": 5,
+      "failure": {
+        "type": "AttributeError",
+        "message": "pose"
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/egomap72-b-return-29c0c169/data/egomap72-63003-on",
+      "result_sha256": "8e95dc4db30d38446acbbbcbfbb9c7bd7c780aecdb218eca50d0c3151cead634",
+      "wall_s": 2437.365520105,
+      "model_calls": 0,
+      "samples": 1035,
+      "declarations": [],
+      "stage": null,
+      "sim_s": 209.0,
+      "commands": 1035,
+      "B_arrived": false,
+      "returned": false,
+      "return_stage_entered": false,
+      "command_counts": {
+        "turn": 560,
+        "translation": 280,
+        "hold": 195
+      },
+      "host_error": true,
+      "false_return": 0,
+      "false_B": 0
+    },
+    {
+      "name": "egomap72-63004-on",
+      "seed": 63004,
+      "condition": "on",
+      "status": "HOST_ERROR",
+      "exit_code": 1,
+      "pid": 27399,
+      "cpu": 6,
+      "failure": {
+        "type": "AttributeError",
+        "message": "pose"
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/egomap72-b-return-29c0c169/data/egomap72-63004-on",
+      "result_sha256": "832b817f646fdb85e3dc1ca9b978b04e9587a7c470e21cc17519e97068f8a9e2",
+      "wall_s": 2332.572345973,
+      "model_calls": 0,
+      "samples": 893,
+      "declarations": [],
+      "stage": null,
+      "sim_s": 180.6,
+      "commands": 893,
+      "B_arrived": false,
+      "returned": false,
+      "return_stage_entered": false,
+      "command_counts": {
+        "turn": 510,
+        "translation": 227,
+        "hold": 156
+      },
+      "host_error": true,
+      "false_return": 0,
+      "false_B": 0
+    },
+    {
+      "name": "egomap72-63004-off",
+      "seed": 63004,
+      "condition": "off",
+      "status": "HOST_ERROR",
+      "exit_code": 1,
+      "pid": 27400,
+      "cpu": 7,
+      "failure": {
+        "type": "TimeoutError",
+        "message": ""
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/egomap72-b-return-29c0c169/data/egomap72-63004-off",
+      "result_sha256": "a54d2d57b9059d57d0921b6bb44cc7c47288313de36f9fa5f3dd3058885187dd",
+      "wall_s": 2216.109089469,
+      "model_calls": 0,
+      "samples": 883,
+      "declarations": [],
+      "stage": null,
+      "sim_s": 178.6,
+      "commands": 883,
+      "B_arrived": false,
+      "returned": false,
+      "return_stage_entered": false,
+      "command_counts": {
+        "turn": 583,
+        "translation": 297,
+        "hold": 3
+      },
+      "host_error": true,
+      "false_return": 0,
+      "false_B": 0
+    }
+  ],
   "prior_egomap71": {
-    "path": "experiments/2026-10-11-egomap-reconfirmation/summary.json",
+    "summary_path": "experiments/2026-10-11-egomap-reconfirmation/summary.json",
     "sha256": "52b2705f46ac55734c613e7a7766398dce6f0d5978cf0905f0282b0706c42447",
     "host_errors": [
       {
         "name": "egomap71-63001-off",
         "seed": 63001,
         "condition": "off",
-        "output": "/home/ugrp/ugrp-sim/runs/egomap71-azure-paired-81342485/data/egomap71-63001-off",
-        "checkpoint_sha256": "f5ab5467bb1de487fd95cf6d377eedc4ad8bb139204da917c08621908aa7a256",
-        "command": [
-          "/home/ugrp/ugrp-sim/src/813424857666340176ebfcf96707641bba1e3eb6/.venv-sim/bin/python",
-          "-m",
-          "scripts.run_egomap_reconfirmation",
-          "--mode",
-          "stage",
-          "--seed",
-          "63001",
-          "--condition",
-          "off",
-          "--inputs",
-          "/home/ugrp/ugrp-sim/inputs/egomap71-azure-paired-81342485",
-          "--rgb-reconfirmation",
-          "off",
-          "--covariance-inflation",
-          "off",
-          "--output",
-          "/home/ugrp/ugrp-sim/runs/egomap71-azure-paired-81342485/data/egomap71-63001-off"
-        ],
         "status": "HOST_ERROR_INPUT_ADMISSION",
         "failure": "FileNotFoundError(PosixPath('/home/ugrp/ugrp-sim/arm/egomap63-batch/data/prepare-63001/own-contacts.jsonl'))",
-        "false_return": 0,
-        "false_B": 0,
-        "return_declarations": 0,
-        "B_declarations": 0,
-        "wall_s": null,
-        "model_calls": 0,
-        "host_error": true
+        "output": "/home/ugrp/ugrp-sim/runs/egomap71-azure-paired-81342485/data/egomap71-63001-off"
       },
       {
         "name": "egomap71-63001-on",
         "seed": 63001,
         "condition": "on",
-        "output": "/home/ugrp/ugrp-sim/runs/egomap71-azure-paired-81342485/data/egomap71-63001-on",
-        "checkpoint_sha256": "f5ab5467bb1de487fd95cf6d377eedc4ad8bb139204da917c08621908aa7a256",
-        "command": [
-          "/home/ugrp/ugrp-sim/src/813424857666340176ebfcf96707641bba1e3eb6/.venv-sim/bin/python",
-          "-m",
-          "scripts.run_egomap_reconfirmation",
-          "--mode",
-          "stage",
-          "--seed",
-          "63001",
-          "--condition",
-          "on",
-          "--inputs",
-          "/home/ugrp/ugrp-sim/inputs/egomap71-azure-paired-81342485",
-          "--rgb-reconfirmation",
-          "two_view_rgb_v1",
-          "--covariance-inflation",
-          "nees_stratified_v1",
-          "--output",
-          "/home/ugrp/ugrp-sim/runs/egomap71-azure-paired-81342485/data/egomap71-63001-on"
-        ],
         "status": "HOST_ERROR_INPUT_ADMISSION",
         "failure": "FileNotFoundError(PosixPath('/home/ugrp/ugrp-sim/arm/egomap63-batch/data/prepare-63001/own-contacts.jsonl'))",
-        "false_return": 0,
-        "false_B": 0,
-        "return_declarations": 0,
-        "B_declarations": 0,
-        "wall_s": null,
-        "model_calls": 0,
-        "host_error": true
+        "output": "/home/ugrp/ugrp-sim/runs/egomap71-azure-paired-81342485/data/egomap71-63001-on"
       },
       {
         "name": "egomap71-63002-on",
         "seed": 63002,
         "condition": "on",
-        "output": "/home/ugrp/ugrp-sim/runs/egomap71-azure-paired-81342485/data/egomap71-63002-on",
-        "checkpoint_sha256": "f39ffb0e5f8654f2808e88408a4321763c850ca47b2bf555764bde2a7da52943",
-        "command": [
-          "/home/ugrp/ugrp-sim/src/813424857666340176ebfcf96707641bba1e3eb6/.venv-sim/bin/python",
-          "-m",
-          "scripts.run_egomap_reconfirmation",
-          "--mode",
-          "stage",
-          "--seed",
-          "63002",
-          "--condition",
-          "on",
-          "--inputs",
-          "/home/ugrp/ugrp-sim/inputs/egomap71-azure-paired-81342485",
-          "--rgb-reconfirmation",
-          "two_view_rgb_v1",
-          "--covariance-inflation",
-          "nees_stratified_v1",
-          "--output",
-          "/home/ugrp/ugrp-sim/runs/egomap71-azure-paired-81342485/data/egomap71-63002-on"
-        ],
         "status": "HOST_ERROR_INPUT_ADMISSION",
         "failure": "FileNotFoundError(PosixPath('/home/ugrp/ugrp-sim/arm/egomap63-batch/data/prepare-63001/own-contacts.jsonl'))",
-        "false_return": 0,
-        "false_B": 0,
-        "return_declarations": 0,
-        "B_declarations": 0,
-        "wall_s": null,
-        "model_calls": 0,
-        "host_error": true
+        "output": "/home/ugrp/ugrp-sim/runs/egomap71-azure-paired-81342485/data/egomap71-63002-on"
       },
       {
         "name": "egomap71-63002-off",
         "seed": 63002,
         "condition": "off",
-        "output": "/home/ugrp/ugrp-sim/runs/egomap71-azure-paired-81342485/data/egomap71-63002-off",
-        "checkpoint_sha256": "f39ffb0e5f8654f2808e88408a4321763c850ca47b2bf555764bde2a7da52943",
-        "command": [
-          "/home/ugrp/ugrp-sim/src/813424857666340176ebfcf96707641bba1e3eb6/.venv-sim/bin/python",
-          "-m",
-          "scripts.run_egomap_reconfirmation",
-          "--mode",
-          "stage",
-          "--seed",
-          "63002",
-          "--condition",
-          "off",
-          "--inputs",
-          "/home/ugrp/ugrp-sim/inputs/egomap71-azure-paired-81342485",
-          "--rgb-reconfirmation",
-          "off",
-          "--covariance-inflation",
-          "off",
-          "--output",
-          "/home/ugrp/ugrp-sim/runs/egomap71-azure-paired-81342485/data/egomap71-63002-off"
-        ],
         "status": "HOST_ERROR_INPUT_ADMISSION",
         "failure": "FileNotFoundError(PosixPath('/home/ugrp/ugrp-sim/arm/egomap63-batch/data/prepare-63001/own-contacts.jsonl'))",
-        "false_return": 0,
-        "false_B": 0,
-        "return_declarations": 0,
-        "B_declarations": 0,
-        "wall_s": null,
-        "model_calls": 0,
-        "host_error": true
+        "output": "/home/ugrp/ugrp-sim/runs/egomap71-azure-paired-81342485/data/egomap71-63002-off"
       },
       {
         "name": "egomap71-63003-off",
         "seed": 63003,
         "condition": "off",
-        "output": "/home/ugrp/ugrp-sim/runs/egomap71-azure-paired-81342485/data/egomap71-63003-off",
-        "checkpoint_sha256": "fbb1159a172daa9b4151fbd05ba74dda29d9d9f65b908ee08db8d0f041dc4824",
-        "command": [
-          "/home/ugrp/ugrp-sim/src/813424857666340176ebfcf96707641bba1e3eb6/.venv-sim/bin/python",
-          "-m",
-          "scripts.run_egomap_reconfirmation",
-          "--mode",
-          "stage",
-          "--seed",
-          "63003",
-          "--condition",
-          "off",
-          "--inputs",
-          "/home/ugrp/ugrp-sim/inputs/egomap71-azure-paired-81342485",
-          "--rgb-reconfirmation",
-          "off",
-          "--covariance-inflation",
-          "off",
-          "--output",
-          "/home/ugrp/ugrp-sim/runs/egomap71-azure-paired-81342485/data/egomap71-63003-off"
-        ],
         "status": "HOST_ERROR_INPUT_ADMISSION",
         "failure": "FileNotFoundError(PosixPath('/home/ugrp/ugrp-sim/arm/egomap63-batch/data/prepare-63001/own-contacts.jsonl'))",
-        "false_return": 0,
-        "false_B": 0,
-        "return_declarations": 0,
-        "B_declarations": 0,
-        "wall_s": null,
-        "model_calls": 0,
-        "host_error": true
+        "output": "/home/ugrp/ugrp-sim/runs/egomap71-azure-paired-81342485/data/egomap71-63003-off"
       },
       {
         "name": "egomap71-63003-on",
         "seed": 63003,
         "condition": "on",
-        "output": "/home/ugrp/ugrp-sim/runs/egomap71-azure-paired-81342485/data/egomap71-63003-on",
-        "checkpoint_sha256": "fbb1159a172daa9b4151fbd05ba74dda29d9d9f65b908ee08db8d0f041dc4824",
-        "command": [
-          "/home/ugrp/ugrp-sim/src/813424857666340176ebfcf96707641bba1e3eb6/.venv-sim/bin/python",
-          "-m",
-          "scripts.run_egomap_reconfirmation",
-          "--mode",
-          "stage",
-          "--seed",
-          "63003",
-          "--condition",
-          "on",
-          "--inputs",
-          "/home/ugrp/ugrp-sim/inputs/egomap71-azure-paired-81342485",
-          "--rgb-reconfirmation",
-          "two_view_rgb_v1",
-          "--covariance-inflation",
-          "nees_stratified_v1",
-          "--output",
-          "/home/ugrp/ugrp-sim/runs/egomap71-azure-paired-81342485/data/egomap71-63003-on"
-        ],
         "status": "HOST_ERROR_INPUT_ADMISSION",
         "failure": "FileNotFoundError(PosixPath('/home/ugrp/ugrp-sim/arm/egomap63-batch/data/prepare-63001/own-contacts.jsonl'))",
-        "false_return": 0,
-        "false_B": 0,
-        "return_declarations": 0,
-        "B_declarations": 0,
-        "wall_s": null,
-        "model_calls": 0,
-        "host_error": true
+        "output": "/home/ugrp/ugrp-sim/runs/egomap71-azure-paired-81342485/data/egomap71-63003-on"
       },
       {
         "name": "egomap71-63004-on",
         "seed": 63004,
         "condition": "on",
-        "output": "/home/ugrp/ugrp-sim/runs/egomap71-azure-paired-81342485/data/egomap71-63004-on",
-        "checkpoint_sha256": "8de23b945657ebc3fa09a051b8411284937df363e1aec00b57096b7d3be6d1c2",
-        "command": [
-          "/home/ugrp/ugrp-sim/src/813424857666340176ebfcf96707641bba1e3eb6/.venv-sim/bin/python",
-          "-m",
-          "scripts.run_egomap_reconfirmation",
-          "--mode",
-          "stage",
-          "--seed",
-          "63004",
-          "--condition",
-          "on",
-          "--inputs",
-          "/home/ugrp/ugrp-sim/inputs/egomap71-azure-paired-81342485",
-          "--rgb-reconfirmation",
-          "two_view_rgb_v1",
-          "--covariance-inflation",
-          "nees_stratified_v1",
-          "--output",
-          "/home/ugrp/ugrp-sim/runs/egomap71-azure-paired-81342485/data/egomap71-63004-on"
-        ],
         "status": "HOST_ERROR_INPUT_ADMISSION",
         "failure": "FileNotFoundError(PosixPath('/home/ugrp/ugrp-sim/arm/egomap63-batch/data/prepare-63001/own-contacts.jsonl'))",
-        "false_return": 0,
-        "false_B": 0,
-        "return_declarations": 0,
-        "B_declarations": 0,
-        "wall_s": null,
-        "model_calls": 0,
-        "host_error": true
+        "output": "/home/ugrp/ugrp-sim/runs/egomap71-azure-paired-81342485/data/egomap71-63004-on"
       },
       {
         "name": "egomap71-63004-off",
         "seed": 63004,
         "condition": "off",
-        "output": "/home/ugrp/ugrp-sim/runs/egomap71-azure-paired-81342485/data/egomap71-63004-off",
-        "checkpoint_sha256": "8de23b945657ebc3fa09a051b8411284937df363e1aec00b57096b7d3be6d1c2",
-        "command": [
-          "/home/ugrp/ugrp-sim/src/813424857666340176ebfcf96707641bba1e3eb6/.venv-sim/bin/python",
-          "-m",
-          "scripts.run_egomap_reconfirmation",
-          "--mode",
-          "stage",
-          "--seed",
-          "63004",
-          "--condition",
-          "off",
-          "--inputs",
-          "/home/ugrp/ugrp-sim/inputs/egomap71-azure-paired-81342485",
-          "--rgb-reconfirmation",
-          "off",
-          "--covariance-inflation",
-          "off",
-          "--output",
-          "/home/ugrp/ugrp-sim/runs/egomap71-azure-paired-81342485/data/egomap71-63004-off"
-        ],
         "status": "HOST_ERROR_INPUT_ADMISSION",
         "failure": "FileNotFoundError(PosixPath('/home/ugrp/ugrp-sim/arm/egomap63-batch/data/prepare-63001/own-contacts.jsonl'))",
-        "false_return": 0,
-        "false_B": 0,
-        "return_declarations": 0,
-        "B_declarations": 0,
-        "wall_s": null,
-        "model_calls": 0,
-        "host_error": true
+        "output": "/home/ugrp/ugrp-sim/runs/egomap71-azure-paired-81342485/data/egomap71-63004-off"
       },
       {
         "name": "egomap71-63005-off",
         "seed": 63005,
         "condition": "off",
-        "output": "/home/ugrp/ugrp-sim/runs/egomap71-azure-paired-81342485/data/egomap71-63005-off",
-        "checkpoint_sha256": "81c8c4a4eef2fe82f87a92b713bbc0e445ad93368489faa755bbe9424fd51d24",
-        "command": [
-          "/home/ugrp/ugrp-sim/src/813424857666340176ebfcf96707641bba1e3eb6/.venv-sim/bin/python",
-          "-m",
-          "scripts.run_egomap_reconfirmation",
-          "--mode",
-          "stage",
-          "--seed",
-          "63005",
-          "--condition",
-          "off",
-          "--inputs",
-          "/home/ugrp/ugrp-sim/inputs/egomap71-azure-paired-81342485",
-          "--rgb-reconfirmation",
-          "off",
-          "--covariance-inflation",
-          "off",
-          "--output",
-          "/home/ugrp/ugrp-sim/runs/egomap71-azure-paired-81342485/data/egomap71-63005-off"
-        ],
         "status": "HOST_ERROR_INPUT_ADMISSION",
         "failure": "FileNotFoundError(PosixPath('/home/ugrp/ugrp-sim/arm/egomap63-batch/data/prepare-63001/own-contacts.jsonl'))",
-        "false_return": 0,
-        "false_B": 0,
-        "return_declarations": 0,
-        "B_declarations": 0,
-        "wall_s": null,
-        "model_calls": 0,
-        "host_error": true
+        "output": "/home/ugrp/ugrp-sim/runs/egomap71-azure-paired-81342485/data/egomap71-63005-off"
       },
       {
         "name": "egomap71-63005-on",
         "seed": 63005,
         "condition": "on",
-        "output": "/home/ugrp/ugrp-sim/runs/egomap71-azure-paired-81342485/data/egomap71-63005-on",
-        "checkpoint_sha256": "81c8c4a4eef2fe82f87a92b713bbc0e445ad93368489faa755bbe9424fd51d24",
-        "command": [
-          "/home/ugrp/ugrp-sim/src/813424857666340176ebfcf96707641bba1e3eb6/.venv-sim/bin/python",
-          "-m",
-          "scripts.run_egomap_reconfirmation",
-          "--mode",
-          "stage",
-          "--seed",
-          "63005",
-          "--condition",
-          "on",
-          "--inputs",
-          "/home/ugrp/ugrp-sim/inputs/egomap71-azure-paired-81342485",
-          "--rgb-reconfirmation",
-          "two_view_rgb_v1",
-          "--covariance-inflation",
-          "nees_stratified_v1",
-          "--output",
-          "/home/ugrp/ugrp-sim/runs/egomap71-azure-paired-81342485/data/egomap71-63005-on"
-        ],
         "status": "HOST_ERROR_INPUT_ADMISSION",
         "failure": "FileNotFoundError(PosixPath('/home/ugrp/ugrp-sim/arm/egomap63-batch/data/prepare-63001/own-contacts.jsonl'))",
-        "false_return": 0,
-        "false_B": 0,
-        "return_declarations": 0,
-        "B_declarations": 0,
-        "wall_s": null,
-        "model_calls": 0,
-        "host_error": true
+        "output": "/home/ugrp/ugrp-sim/runs/egomap71-azure-paired-81342485/data/egomap71-63005-on"
       },
       {
         "name": "egomap71-63006-on",
         "seed": 63006,
         "condition": "on",
-        "output": "/home/ugrp/ugrp-sim/runs/egomap71-azure-paired-81342485/data/egomap71-63006-on",
-        "checkpoint_sha256": "dc782d73c2e7c621d987309aadf205022f2423e7cc26cbbee8cd8014ca067174",
-        "command": [
-          "/home/ugrp/ugrp-sim/src/813424857666340176ebfcf96707641bba1e3eb6/.venv-sim/bin/python",
-          "-m",
-          "scripts.run_egomap_reconfirmation",
-          "--mode",
-          "stage",
-          "--seed",
-          "63006",
-          "--condition",
-          "on",
-          "--inputs",
-          "/home/ugrp/ugrp-sim/inputs/egomap71-azure-paired-81342485",
-          "--rgb-reconfirmation",
-          "two_view_rgb_v1",
-          "--covariance-inflation",
-          "nees_stratified_v1",
-          "--output",
-          "/home/ugrp/ugrp-sim/runs/egomap71-azure-paired-81342485/data/egomap71-63006-on"
-        ],
         "status": "HOST_ERROR_INPUT_ADMISSION",
         "failure": "FileNotFoundError(PosixPath('/home/ugrp/ugrp-sim/arm/egomap63-batch/data/prepare-63001/own-contacts.jsonl'))",
-        "false_return": 0,
-        "false_B": 0,
-        "return_declarations": 0,
-        "B_declarations": 0,
-        "wall_s": null,
-        "model_calls": 0,
-        "host_error": true
+        "output": "/home/ugrp/ugrp-sim/runs/egomap71-azure-paired-81342485/data/egomap71-63006-on"
       },
       {
         "name": "egomap71-63006-off",
         "seed": 63006,
         "condition": "off",
-        "output": "/home/ugrp/ugrp-sim/runs/egomap71-azure-paired-81342485/data/egomap71-63006-off",
-        "checkpoint_sha256": "dc782d73c2e7c621d987309aadf205022f2423e7cc26cbbee8cd8014ca067174",
-        "command": [
-          "/home/ugrp/ugrp-sim/src/813424857666340176ebfcf96707641bba1e3eb6/.venv-sim/bin/python",
-          "-m",
-          "scripts.run_egomap_reconfirmation",
-          "--mode",
-          "stage",
-          "--seed",
-          "63006",
-          "--condition",
-          "off",
-          "--inputs",
-          "/home/ugrp/ugrp-sim/inputs/egomap71-azure-paired-81342485",
-          "--rgb-reconfirmation",
-          "off",
-          "--covariance-inflation",
-          "off",
-          "--output",
-          "/home/ugrp/ugrp-sim/runs/egomap71-azure-paired-81342485/data/egomap71-63006-off"
-        ],
         "status": "HOST_ERROR_INPUT_ADMISSION",
         "failure": "FileNotFoundError(PosixPath('/home/ugrp/ugrp-sim/arm/egomap63-batch/data/prepare-63001/own-contacts.jsonl'))",
-        "false_return": 0,
-        "false_B": 0,
-        "return_declarations": 0,
-        "B_declarations": 0,
-        "wall_s": null,
-        "model_calls": 0,
-        "host_error": true
+        "output": "/home/ugrp/ugrp-sim/runs/egomap71-azure-paired-81342485/data/egomap71-63006-off"
       }
-    ]
+    ],
+    "registered": 12,
+    "measured": 0,
+    "block_reason": "BLOCKED_CHECKPOINT_PREFIX_MISSING",
+    "lost_inputs": "own-contacts.jsonl checkpoint prefixes and egomap68 RGB bank unavailable after Oracle x86 shutdown; prior records unchanged"
   },
-  "references": [
-    {
-      "url": "https://raw.githubusercontent.com/UZ-SLAMLab/ORB_SLAM3/master/src/Tracking.cc",
-      "scope": "fresh-map/keyframe lifecycle reference only; no code copied, no 3D SLAM claim"
-    },
-    {
-      "url": "https://raw.githubusercontent.com/UZ-SLAMLab/ORB_SLAM3/master/src/LoopClosing.cc",
-      "scope": "existing geometric reconfirmation structure; thresholds unchanged"
-    },
-    {
-      "path": "experiments/2026-10-11-egomap-reconfirmation/gate_references.md",
-      "scope": "existing classical and recent-source comparison; no new model or parameter fitting"
-    }
-  ],
-  "execution_sha": "92f52205f832fe75715d12606cc04b112547e638",
+  "checkpoint_inputs": false,
+  "external_RGB_bank": false,
+  "control_static_map": false,
+  "control_GT": false,
+  "schedule": "own B exploration up to 270s; original B270/return270 after own discovery; max810s",
+  "confirmation": false,
+  "threshold_retuning": false,
+  "model_calls": 0,
+  "scope": "same six DEV seeds, both toggles combined; not separate effects or transport E2E",
+  "status": "TERMINAL",
+  "raw_summary_sha256": "7c4fa44163c036386a0e543b600cc31ad1187ff6912f7c2a4cdce945759b70ad",
+  "delivery_scope": {
+    "tensorboard_actions": 0,
+    "browser_GUI_opened": 0,
+    "output": "summary.json and short report",
+    "Mac_raw_media_fetched": false
+  },
   "attempts": [
     {
       "batch": "egomap72-fresh-92f52205",
-      "status": "HOST_ERROR",
-      "runs": [
-        {
-          "name": "egomap72-63001-off",
-          "seed": 63001,
-          "condition": "off",
-          "status": "HOST_ERROR",
-          "exit_code": 1,
-          "pid": 16839,
-          "cpu": 12,
-          "failure": {
-            "type": "ModuleNotFoundError",
-            "message": "No module named 'matplotlib'"
-          },
-          "raw": "/home/ugrp/ugrp-sim/runs/egomap72-fresh-92f52205/data/egomap72-63001-off",
-          "result_sha256": "366f8e2cf81dd9f89d8580bf3c41b590a0118378218989f3eaa4b14170070df2",
-          "wall_s": 32.45245641500014,
-          "model_calls": 0,
-          "samples": 4,
-          "declarations": [],
-          "stage": null,
-          "sim_s": 2.8,
-          "commands": 4,
-          "B_arrived": false,
-          "returned": false,
-          "return_stage_entered": false,
-          "command_counts": {
-            "turn": 4
-          },
-          "host_error": true,
-          "false_return": 0,
-          "false_B": 0
-        },
-        {
-          "name": "egomap72-63001-on",
-          "seed": 63001,
-          "condition": "on",
-          "status": "HOST_ERROR",
-          "exit_code": 1,
-          "pid": 16840,
-          "cpu": 13,
-          "failure": {
-            "type": "ModuleNotFoundError",
-            "message": "No module named 'matplotlib'"
-          },
-          "raw": "/home/ugrp/ugrp-sim/runs/egomap72-fresh-92f52205/data/egomap72-63001-on",
-          "result_sha256": "f03eae2c1041bdbf418b5fd6419374b5fb6e929822bcb8e1ed1cac67ddb8a637",
-          "wall_s": 32.47522843000024,
-          "model_calls": 0,
-          "samples": 4,
-          "declarations": [],
-          "stage": null,
-          "sim_s": 2.8,
-          "commands": 4,
-          "B_arrived": false,
-          "returned": false,
-          "return_stage_entered": false,
-          "command_counts": {
-            "turn": 4
-          },
-          "host_error": true,
-          "false_return": 0,
-          "false_B": 0
-        },
-        {
-          "name": "egomap72-63002-on",
-          "seed": 63002,
-          "condition": "on",
-          "status": "HOST_ERROR",
-          "exit_code": 1,
-          "pid": 16971,
-          "cpu": 14,
-          "failure": {
-            "type": "ModuleNotFoundError",
-            "message": "No module named 'matplotlib'"
-          },
-          "raw": "/home/ugrp/ugrp-sim/runs/egomap72-fresh-92f52205/data/egomap72-63002-on",
-          "result_sha256": "8a85f99b11b82ff39a09462225d09464b25c133df340e89a7024f1ca1cb8b9be",
-          "wall_s": 26.605476473999715,
-          "model_calls": 0,
-          "samples": 4,
-          "declarations": [],
-          "stage": null,
-          "sim_s": 2.8,
-          "commands": 4,
-          "B_arrived": false,
-          "returned": false,
-          "return_stage_entered": false,
-          "command_counts": {
-            "turn": 4
-          },
-          "host_error": true,
-          "false_return": 0,
-          "false_B": 0
-        },
-        {
-          "name": "egomap72-63002-off",
-          "seed": 63002,
-          "condition": "off",
-          "status": "HOST_ERROR",
-          "exit_code": 1,
-          "pid": 16972,
-          "cpu": 15,
-          "failure": {
-            "type": "ModuleNotFoundError",
-            "message": "No module named 'matplotlib'"
-          },
-          "raw": "/home/ugrp/ugrp-sim/runs/egomap72-fresh-92f52205/data/egomap72-63002-off",
-          "result_sha256": "238761e7efa50811be07520e962850842ad553d860339c14f174373ae83e6f75",
-          "wall_s": 26.586458214999766,
-          "model_calls": 0,
-          "samples": 4,
-          "declarations": [],
-          "stage": null,
-          "sim_s": 2.8,
-          "commands": 4,
-          "B_arrived": false,
-          "returned": false,
-          "return_stage_entered": false,
-          "command_counts": {
-            "turn": 4
-          },
-          "host_error": true,
-          "false_return": 0,
-          "false_B": 0
-        },
-        {
-          "name": "egomap72-63003-off",
-          "seed": 63003,
-          "condition": "off",
-          "status": "HOST_ERROR",
-          "exit_code": 1,
-          "pid": 17486,
-          "cpu": 12,
-          "failure": {
-            "type": "ModuleNotFoundError",
-            "message": "No module named 'matplotlib'"
-          },
-          "raw": "/home/ugrp/ugrp-sim/runs/egomap72-fresh-92f52205/data/egomap72-63003-off",
-          "result_sha256": "09e0ebfb6631c932f2bfe87e993c5b939710da29c26220e04af75d430e7c23a4",
-          "wall_s": 23.233592210000097,
-          "model_calls": 0,
-          "samples": 4,
-          "declarations": [],
-          "stage": null,
-          "sim_s": 2.8,
-          "commands": 4,
-          "B_arrived": false,
-          "returned": false,
-          "return_stage_entered": false,
-          "command_counts": {
-            "turn": 4
-          },
-          "host_error": true,
-          "false_return": 0,
-          "false_B": 0
-        },
-        {
-          "name": "egomap72-63003-on",
-          "seed": 63003,
-          "condition": "on",
-          "status": "HOST_ERROR",
-          "exit_code": 1,
-          "pid": 17487,
-          "cpu": 13,
-          "failure": {
-            "type": "ModuleNotFoundError",
-            "message": "No module named 'matplotlib'"
-          },
-          "raw": "/home/ugrp/ugrp-sim/runs/egomap72-fresh-92f52205/data/egomap72-63003-on",
-          "result_sha256": "1b42f3317f4451ff30d42d1a940c6d3f0a7d939fbe723439302143803930523f",
-          "wall_s": 23.280749775999993,
-          "model_calls": 0,
-          "samples": 4,
-          "declarations": [],
-          "stage": null,
-          "sim_s": 2.8,
-          "commands": 4,
-          "B_arrived": false,
-          "returned": false,
-          "return_stage_entered": false,
-          "command_counts": {
-            "turn": 4
-          },
-          "host_error": true,
-          "false_return": 0,
-          "false_B": 0
-        },
-        {
-          "name": "egomap72-63004-on",
-          "seed": 63004,
-          "condition": "on",
-          "status": "HOST_ERROR",
-          "exit_code": 1,
-          "pid": 17518,
-          "cpu": 14,
-          "failure": {
-            "type": "ModuleNotFoundError",
-            "message": "No module named 'matplotlib'"
-          },
-          "raw": "/home/ugrp/ugrp-sim/runs/egomap72-fresh-92f52205/data/egomap72-63004-on",
-          "result_sha256": "189aca2a1c9bfca53cd05e3a9229a5ae97e8894f84b3042507c62eb818ce116a",
-          "wall_s": 23.17684965599983,
-          "model_calls": 0,
-          "samples": 4,
-          "declarations": [],
-          "stage": null,
-          "sim_s": 2.8,
-          "commands": 4,
-          "B_arrived": false,
-          "returned": false,
-          "return_stage_entered": false,
-          "command_counts": {
-            "turn": 4
-          },
-          "host_error": true,
-          "false_return": 0,
-          "false_B": 0
-        },
-        {
-          "name": "egomap72-63004-off",
-          "seed": 63004,
-          "condition": "off",
-          "status": "HOST_ERROR",
-          "exit_code": 1,
-          "pid": 17519,
-          "cpu": 15,
-          "failure": {
-            "type": "ModuleNotFoundError",
-            "message": "No module named 'matplotlib'"
-          },
-          "raw": "/home/ugrp/ugrp-sim/runs/egomap72-fresh-92f52205/data/egomap72-63004-off",
-          "result_sha256": "a02a9efd407343831fef117a4aa5a3f2ddc7ca78890de295fc93900a558527f1",
-          "wall_s": 23.13500899199971,
-          "model_calls": 0,
-          "samples": 4,
-          "declarations": [],
-          "stage": null,
-          "sim_s": 2.8,
-          "commands": 4,
-          "B_arrived": false,
-          "returned": false,
-          "return_stage_entered": false,
-          "command_counts": {
-            "turn": 4
-          },
-          "host_error": true,
-          "false_return": 0,
-          "false_B": 0
-        },
-        {
-          "name": "egomap72-63005-off",
-          "seed": 63005,
-          "condition": "off",
-          "status": "HOST_ERROR_TASK_DEADLINE_NOT_STARTED",
-          "exit_code": null,
-          "pid": null,
-          "cpu": null,
-          "failure": "finite_batch_budget",
-          "raw": "/home/ugrp/ugrp-sim/runs/egomap72-fresh-92f52205/data/egomap72-63005-off",
-          "result_sha256": null,
-          "wall_s": null,
-          "model_calls": 0,
-          "host_error": true,
-          "false_return": 0,
-          "false_B": 0
-        },
-        {
-          "name": "egomap72-63005-on",
-          "seed": 63005,
-          "condition": "on",
-          "status": "HOST_ERROR_TASK_DEADLINE_NOT_STARTED",
-          "exit_code": null,
-          "pid": null,
-          "cpu": null,
-          "failure": "finite_batch_budget",
-          "raw": "/home/ugrp/ugrp-sim/runs/egomap72-fresh-92f52205/data/egomap72-63005-on",
-          "result_sha256": null,
-          "wall_s": null,
-          "model_calls": 0,
-          "host_error": true,
-          "false_return": 0,
-          "false_B": 0
-        },
-        {
-          "name": "egomap72-63006-on",
-          "seed": 63006,
-          "condition": "on",
-          "status": "HOST_ERROR_TASK_DEADLINE_NOT_STARTED",
-          "exit_code": null,
-          "pid": null,
-          "cpu": null,
-          "failure": "finite_batch_budget",
-          "raw": "/home/ugrp/ugrp-sim/runs/egomap72-fresh-92f52205/data/egomap72-63006-on",
-          "result_sha256": null,
-          "wall_s": null,
-          "model_calls": 0,
-          "host_error": true,
-          "false_return": 0,
-          "false_B": 0
-        },
-        {
-          "name": "egomap72-63006-off",
-          "seed": 63006,
-          "condition": "off",
-          "status": "HOST_ERROR_TASK_DEADLINE_NOT_STARTED",
-          "exit_code": null,
-          "pid": null,
-          "cpu": null,
-          "failure": "finite_batch_budget",
-          "raw": "/home/ugrp/ugrp-sim/runs/egomap72-fresh-92f52205/data/egomap72-63006-off",
-          "result_sha256": null,
-          "wall_s": null,
-          "model_calls": 0,
-          "host_error": true,
-          "false_return": 0,
-          "false_B": 0
-        }
-      ],
+      "reason": "Missing matplotlib (8 started, 4 cancelled before start)",
+      "excluded_from_comparison": true,
+      "source_sha": "92f52205f832fe75715d12606cc04b112547e638",
       "host_errors": [
         {
           "name": "egomap72-63001-off",
           "seed": 63001,
           "condition": "off",
           "status": "HOST_ERROR",
-          "exit_code": 1,
-          "pid": 16839,
-          "cpu": 12,
           "failure": {
             "type": "ModuleNotFoundError",
             "message": "No module named 'matplotlib'"
           },
           "raw": "/home/ugrp/ugrp-sim/runs/egomap72-fresh-92f52205/data/egomap72-63001-off",
-          "result_sha256": "366f8e2cf81dd9f89d8580bf3c41b590a0118378218989f3eaa4b14170070df2",
-          "wall_s": 32.45245641500014,
-          "model_calls": 0,
-          "samples": 4,
-          "declarations": [],
-          "stage": null,
-          "sim_s": 2.8,
-          "commands": 4,
-          "B_arrived": false,
-          "returned": false,
-          "return_stage_entered": false,
-          "command_counts": {
-            "turn": 4
-          },
-          "host_error": true,
-          "false_return": 0,
-          "false_B": 0
+          "result_sha256": "366f8e2cf81dd9f89d8580bf3c41b590a0118378218989f3eaa4b14170070df2"
         },
         {
           "name": "egomap72-63001-on",
           "seed": 63001,
           "condition": "on",
           "status": "HOST_ERROR",
-          "exit_code": 1,
-          "pid": 16840,
-          "cpu": 13,
           "failure": {
             "type": "ModuleNotFoundError",
             "message": "No module named 'matplotlib'"
           },
           "raw": "/home/ugrp/ugrp-sim/runs/egomap72-fresh-92f52205/data/egomap72-63001-on",
-          "result_sha256": "f03eae2c1041bdbf418b5fd6419374b5fb6e929822bcb8e1ed1cac67ddb8a637",
-          "wall_s": 32.47522843000024,
-          "model_calls": 0,
-          "samples": 4,
-          "declarations": [],
-          "stage": null,
-          "sim_s": 2.8,
-          "commands": 4,
-          "B_arrived": false,
-          "returned": false,
-          "return_stage_entered": false,
-          "command_counts": {
-            "turn": 4
-          },
-          "host_error": true,
-          "false_return": 0,
-          "false_B": 0
+          "result_sha256": "f03eae2c1041bdbf418b5fd6419374b5fb6e929822bcb8e1ed1cac67ddb8a637"
         },
         {
           "name": "egomap72-63002-on",
           "seed": 63002,
           "condition": "on",
           "status": "HOST_ERROR",
-          "exit_code": 1,
-          "pid": 16971,
-          "cpu": 14,
           "failure": {
             "type": "ModuleNotFoundError",
             "message": "No module named 'matplotlib'"
           },
           "raw": "/home/ugrp/ugrp-sim/runs/egomap72-fresh-92f52205/data/egomap72-63002-on",
-          "result_sha256": "8a85f99b11b82ff39a09462225d09464b25c133df340e89a7024f1ca1cb8b9be",
-          "wall_s": 26.605476473999715,
-          "model_calls": 0,
-          "samples": 4,
-          "declarations": [],
-          "stage": null,
-          "sim_s": 2.8,
-          "commands": 4,
-          "B_arrived": false,
-          "returned": false,
-          "return_stage_entered": false,
-          "command_counts": {
-            "turn": 4
-          },
-          "host_error": true,
-          "false_return": 0,
-          "false_B": 0
+          "result_sha256": "8a85f99b11b82ff39a09462225d09464b25c133df340e89a7024f1ca1cb8b9be"
         },
         {
           "name": "egomap72-63002-off",
           "seed": 63002,
           "condition": "off",
           "status": "HOST_ERROR",
-          "exit_code": 1,
-          "pid": 16972,
-          "cpu": 15,
           "failure": {
             "type": "ModuleNotFoundError",
             "message": "No module named 'matplotlib'"
           },
           "raw": "/home/ugrp/ugrp-sim/runs/egomap72-fresh-92f52205/data/egomap72-63002-off",
-          "result_sha256": "238761e7efa50811be07520e962850842ad553d860339c14f174373ae83e6f75",
-          "wall_s": 26.586458214999766,
-          "model_calls": 0,
-          "samples": 4,
-          "declarations": [],
-          "stage": null,
-          "sim_s": 2.8,
-          "commands": 4,
-          "B_arrived": false,
-          "returned": false,
-          "return_stage_entered": false,
-          "command_counts": {
-            "turn": 4
-          },
-          "host_error": true,
-          "false_return": 0,
-          "false_B": 0
+          "result_sha256": "238761e7efa50811be07520e962850842ad553d860339c14f174373ae83e6f75"
         },
         {
           "name": "egomap72-63003-off",
           "seed": 63003,
           "condition": "off",
           "status": "HOST_ERROR",
-          "exit_code": 1,
-          "pid": 17486,
-          "cpu": 12,
           "failure": {
             "type": "ModuleNotFoundError",
             "message": "No module named 'matplotlib'"
           },
           "raw": "/home/ugrp/ugrp-sim/runs/egomap72-fresh-92f52205/data/egomap72-63003-off",
-          "result_sha256": "09e0ebfb6631c932f2bfe87e993c5b939710da29c26220e04af75d430e7c23a4",
-          "wall_s": 23.233592210000097,
-          "model_calls": 0,
-          "samples": 4,
-          "declarations": [],
-          "stage": null,
-          "sim_s": 2.8,
-          "commands": 4,
-          "B_arrived": false,
-          "returned": false,
-          "return_stage_entered": false,
-          "command_counts": {
-            "turn": 4
-          },
-          "host_error": true,
-          "false_return": 0,
-          "false_B": 0
+          "result_sha256": "09e0ebfb6631c932f2bfe87e993c5b939710da29c26220e04af75d430e7c23a4"
         },
         {
           "name": "egomap72-63003-on",
           "seed": 63003,
           "condition": "on",
           "status": "HOST_ERROR",
-          "exit_code": 1,
-          "pid": 17487,
-          "cpu": 13,
           "failure": {
             "type": "ModuleNotFoundError",
             "message": "No module named 'matplotlib'"
           },
           "raw": "/home/ugrp/ugrp-sim/runs/egomap72-fresh-92f52205/data/egomap72-63003-on",
-          "result_sha256": "1b42f3317f4451ff30d42d1a940c6d3f0a7d939fbe723439302143803930523f",
-          "wall_s": 23.280749775999993,
-          "model_calls": 0,
-          "samples": 4,
-          "declarations": [],
-          "stage": null,
-          "sim_s": 2.8,
-          "commands": 4,
-          "B_arrived": false,
-          "returned": false,
-          "return_stage_entered": false,
-          "command_counts": {
-            "turn": 4
-          },
-          "host_error": true,
-          "false_return": 0,
-          "false_B": 0
+          "result_sha256": "1b42f3317f4451ff30d42d1a940c6d3f0a7d939fbe723439302143803930523f"
         },
         {
           "name": "egomap72-63004-on",
           "seed": 63004,
           "condition": "on",
           "status": "HOST_ERROR",
-          "exit_code": 1,
-          "pid": 17518,
-          "cpu": 14,
           "failure": {
             "type": "ModuleNotFoundError",
             "message": "No module named 'matplotlib'"
           },
           "raw": "/home/ugrp/ugrp-sim/runs/egomap72-fresh-92f52205/data/egomap72-63004-on",
-          "result_sha256": "189aca2a1c9bfca53cd05e3a9229a5ae97e8894f84b3042507c62eb818ce116a",
-          "wall_s": 23.17684965599983,
-          "model_calls": 0,
-          "samples": 4,
-          "declarations": [],
-          "stage": null,
-          "sim_s": 2.8,
-          "commands": 4,
-          "B_arrived": false,
-          "returned": false,
-          "return_stage_entered": false,
-          "command_counts": {
-            "turn": 4
-          },
-          "host_error": true,
-          "false_return": 0,
-          "false_B": 0
+          "result_sha256": "189aca2a1c9bfca53cd05e3a9229a5ae97e8894f84b3042507c62eb818ce116a"
         },
         {
           "name": "egomap72-63004-off",
           "seed": 63004,
           "condition": "off",
           "status": "HOST_ERROR",
-          "exit_code": 1,
-          "pid": 17519,
-          "cpu": 15,
           "failure": {
             "type": "ModuleNotFoundError",
             "message": "No module named 'matplotlib'"
           },
           "raw": "/home/ugrp/ugrp-sim/runs/egomap72-fresh-92f52205/data/egomap72-63004-off",
-          "result_sha256": "a02a9efd407343831fef117a4aa5a3f2ddc7ca78890de295fc93900a558527f1",
-          "wall_s": 23.13500899199971,
-          "model_calls": 0,
-          "samples": 4,
-          "declarations": [],
-          "stage": null,
-          "sim_s": 2.8,
-          "commands": 4,
-          "B_arrived": false,
-          "returned": false,
-          "return_stage_entered": false,
-          "command_counts": {
-            "turn": 4
-          },
-          "host_error": true,
-          "false_return": 0,
-          "false_B": 0
+          "result_sha256": "a02a9efd407343831fef117a4aa5a3f2ddc7ca78890de295fc93900a558527f1"
         },
         {
           "name": "egomap72-63005-off",
           "seed": 63005,
           "condition": "off",
           "status": "HOST_ERROR_TASK_DEADLINE_NOT_STARTED",
-          "exit_code": null,
-          "pid": null,
-          "cpu": null,
           "failure": "finite_batch_budget",
           "raw": "/home/ugrp/ugrp-sim/runs/egomap72-fresh-92f52205/data/egomap72-63005-off",
-          "result_sha256": null,
-          "wall_s": null,
-          "model_calls": 0,
-          "host_error": true,
-          "false_return": 0,
-          "false_B": 0
+          "result_sha256": null
         },
         {
           "name": "egomap72-63005-on",
           "seed": 63005,
           "condition": "on",
           "status": "HOST_ERROR_TASK_DEADLINE_NOT_STARTED",
-          "exit_code": null,
-          "pid": null,
-          "cpu": null,
           "failure": "finite_batch_budget",
           "raw": "/home/ugrp/ugrp-sim/runs/egomap72-fresh-92f52205/data/egomap72-63005-on",
-          "result_sha256": null,
-          "wall_s": null,
-          "model_calls": 0,
-          "host_error": true,
-          "false_return": 0,
-          "false_B": 0
+          "result_sha256": null
         },
         {
           "name": "egomap72-63006-on",
           "seed": 63006,
           "condition": "on",
           "status": "HOST_ERROR_TASK_DEADLINE_NOT_STARTED",
-          "exit_code": null,
-          "pid": null,
-          "cpu": null,
           "failure": "finite_batch_budget",
           "raw": "/home/ugrp/ugrp-sim/runs/egomap72-fresh-92f52205/data/egomap72-63006-on",
-          "result_sha256": null,
-          "wall_s": null,
-          "model_calls": 0,
-          "host_error": true,
-          "false_return": 0,
-          "false_B": 0
+          "result_sha256": null
         },
         {
           "name": "egomap72-63006-off",
           "seed": 63006,
           "condition": "off",
           "status": "HOST_ERROR_TASK_DEADLINE_NOT_STARTED",
-          "exit_code": null,
-          "pid": null,
-          "cpu": null,
           "failure": "finite_batch_budget",
           "raw": "/home/ugrp/ugrp-sim/runs/egomap72-fresh-92f52205/data/egomap72-63006-off",
-          "result_sha256": null,
-          "wall_s": null,
-          "model_calls": 0,
-          "host_error": true,
-          "false_return": 0,
-          "false_B": 0
+          "result_sha256": null
         }
       ],
       "preservation": {
+        "azure_raw": "/home/ugrp/ugrp-sim/runs/egomap72-fresh-92f52205",
         "arm": "/home/ugrp/ugrp-sim/arm/shutdown-egomap72-fresh-92f52205",
-        "verified": true,
-        "inventory_files": 491,
+        "arm_verified": true,
+        "arm_native": "/home/ubuntu/ugrp-archive/runs/shutdown-egomap72-fresh-92f52205",
+        "archive_kind": "directory",
+        "archive_sha256": null,
+        "files": 491,
         "bytes": 8709965,
-        "archive_receipt_local": "/Users/changmin/projects/ugrp/outputs/egomap72-orchestration/egomap72-fresh-92f52205-archive.json",
-        "archive_receipt_sha256": "9aa652a25621fc69196d07be6f9c49f2f5f477ca70755bff386d306f868349c1",
-        "mac_lite": "/Users/changmin/projects/ugrp/outputs/azure-runs/egomap72-fresh-92f52205",
-        "summary_sha256": "60990853786f398d13a9aa967893cf76c6abe530ee24e6bf67da146252f09741"
+        "receipt_local": "/Users/changmin/projects/ugrp/outputs/egomap72-orchestration/egomap72-fresh-92f52205-archive.json",
+        "receipt_sha256": "9aa652a25621fc69196d07be6f9c49f2f5f477ca70755bff386d306f868349c1",
+        "mac_fetch_lite": "/Users/changmin/projects/ugrp/outputs/azure-runs/egomap72-fresh-92f52205",
+        "mac_files": 76,
+        "mac_bytes": 314480,
+        "mac_hash_verified": true
+      }
+    },
+    {
+      "batch": "egomap72-retry-92f52205",
+      "reason": "Task-flow correction: full adapter included box visit; 4 partial cancelled, 8 not started",
+      "excluded_from_comparison": true,
+      "source_sha": "92f52205f832fe75715d12606cc04b112547e638",
+      "host_errors": [
+        {
+          "name": "egomap72-63001-off",
+          "seed": 63001,
+          "condition": "off",
+          "status": "HOST_ERROR",
+          "failure": {
+            "type": "TimeoutError",
+            "message": "REGISTERED_HOST_BUDGET"
+          },
+          "raw": "/home/ugrp/ugrp-sim/runs/egomap72-retry-92f52205/data/egomap72-63001-off",
+          "result_sha256": "ede17e8e37e5e5e5807f81d0bbb1a37ac232b939e5e85dabaf4e6a21cdbedabb"
+        },
+        {
+          "name": "egomap72-63001-on",
+          "seed": 63001,
+          "condition": "on",
+          "status": "HOST_ERROR",
+          "failure": {
+            "type": "TimeoutError",
+            "message": "REGISTERED_HOST_BUDGET"
+          },
+          "raw": "/home/ugrp/ugrp-sim/runs/egomap72-retry-92f52205/data/egomap72-63001-on",
+          "result_sha256": "12f871e9e5a3103e559714f8fe6dc15aafd3169dea465189365293ad7591090d"
+        },
+        {
+          "name": "egomap72-63002-on",
+          "seed": 63002,
+          "condition": "on",
+          "status": "HOST_ERROR",
+          "failure": {
+            "type": "TimeoutError",
+            "message": "REGISTERED_HOST_BUDGET"
+          },
+          "raw": "/home/ugrp/ugrp-sim/runs/egomap72-retry-92f52205/data/egomap72-63002-on",
+          "result_sha256": "1ecbee7b5883d71aee6a20e06618655497579eed254cb1fda515e375f04f1db8"
+        },
+        {
+          "name": "egomap72-63002-off",
+          "seed": 63002,
+          "condition": "off",
+          "status": "HOST_ERROR",
+          "failure": {
+            "type": "TimeoutError",
+            "message": "REGISTERED_HOST_BUDGET"
+          },
+          "raw": "/home/ugrp/ugrp-sim/runs/egomap72-retry-92f52205/data/egomap72-63002-off",
+          "result_sha256": "674272be25ce237e22ee3f0b0024700687bfe6c082630b4a3de1fcce64511459"
+        },
+        {
+          "name": "egomap72-63003-off",
+          "seed": 63003,
+          "condition": "off",
+          "status": "HOST_ERROR_TASK_DEADLINE_NOT_STARTED",
+          "failure": "finite_batch_budget",
+          "raw": "/home/ugrp/ugrp-sim/runs/egomap72-retry-92f52205/data/egomap72-63003-off",
+          "result_sha256": null
+        },
+        {
+          "name": "egomap72-63003-on",
+          "seed": 63003,
+          "condition": "on",
+          "status": "HOST_ERROR_TASK_DEADLINE_NOT_STARTED",
+          "failure": "finite_batch_budget",
+          "raw": "/home/ugrp/ugrp-sim/runs/egomap72-retry-92f52205/data/egomap72-63003-on",
+          "result_sha256": null
+        },
+        {
+          "name": "egomap72-63004-on",
+          "seed": 63004,
+          "condition": "on",
+          "status": "HOST_ERROR_TASK_DEADLINE_NOT_STARTED",
+          "failure": "finite_batch_budget",
+          "raw": "/home/ugrp/ugrp-sim/runs/egomap72-retry-92f52205/data/egomap72-63004-on",
+          "result_sha256": null
+        },
+        {
+          "name": "egomap72-63004-off",
+          "seed": 63004,
+          "condition": "off",
+          "status": "HOST_ERROR_TASK_DEADLINE_NOT_STARTED",
+          "failure": "finite_batch_budget",
+          "raw": "/home/ugrp/ugrp-sim/runs/egomap72-retry-92f52205/data/egomap72-63004-off",
+          "result_sha256": null
+        },
+        {
+          "name": "egomap72-63005-off",
+          "seed": 63005,
+          "condition": "off",
+          "status": "HOST_ERROR_TASK_DEADLINE_NOT_STARTED",
+          "failure": "finite_batch_budget",
+          "raw": "/home/ugrp/ugrp-sim/runs/egomap72-retry-92f52205/data/egomap72-63005-off",
+          "result_sha256": null
+        },
+        {
+          "name": "egomap72-63005-on",
+          "seed": 63005,
+          "condition": "on",
+          "status": "HOST_ERROR_TASK_DEADLINE_NOT_STARTED",
+          "failure": "finite_batch_budget",
+          "raw": "/home/ugrp/ugrp-sim/runs/egomap72-retry-92f52205/data/egomap72-63005-on",
+          "result_sha256": null
+        },
+        {
+          "name": "egomap72-63006-on",
+          "seed": 63006,
+          "condition": "on",
+          "status": "HOST_ERROR_TASK_DEADLINE_NOT_STARTED",
+          "failure": "finite_batch_budget",
+          "raw": "/home/ugrp/ugrp-sim/runs/egomap72-retry-92f52205/data/egomap72-63006-on",
+          "result_sha256": null
+        },
+        {
+          "name": "egomap72-63006-off",
+          "seed": 63006,
+          "condition": "off",
+          "status": "HOST_ERROR_TASK_DEADLINE_NOT_STARTED",
+          "failure": "finite_batch_budget",
+          "raw": "/home/ugrp/ugrp-sim/runs/egomap72-retry-92f52205/data/egomap72-63006-off",
+          "result_sha256": null
+        }
+      ],
+      "preservation": {
+        "azure_raw": "/home/ugrp/ugrp-sim/runs/egomap72-retry-92f52205",
+        "arm": "/home/ugrp/ugrp-sim/arm/shutdown-egomap72-retry-92f52205",
+        "arm_verified": true,
+        "arm_native": "/home/ubuntu/ugrp-archive/runs/shutdown-egomap72-retry-92f52205",
+        "archive_kind": "directory",
+        "archive_sha256": null,
+        "files": 1247,
+        "bytes": 44220229,
+        "receipt_local": "/Users/changmin/projects/ugrp/outputs/egomap72-orchestration/egomap72-retry-92f52205-archive.json",
+        "receipt_sha256": "deba9d0aa5a8f706a660d6b30f08a0084d6523ed4fabb997ee0cdb404f0a3113",
+        "mac_fetch_lite": "/Users/changmin/projects/ugrp/outputs/azure-runs/egomap72-retry-92f52205",
+        "mac_files": 44,
+        "mac_bytes": 649529,
+        "mac_hash_verified": true
       }
     }
   ],
+  "preservation": {
+    "azure_raw": "/home/ugrp/ugrp-sim/runs/egomap72-b-return-29c0c169",
+    "arm": "/home/ugrp/ugrp-sim/arm/packed-egomap72-b-return-29c0c169",
+    "arm_verified": true,
+    "arm_native": "/home/ubuntu/ugrp-archive/runs/packed-egomap72-b-return-29c0c169",
+    "archive_kind": "tar.zst",
+    "archive_sha256": "cdac11444e991699c9a96eed5e986e017de55eaeb522701c5cf418dda8bca756",
+    "files": 15473,
+    "bytes": 607742153,
+    "receipt_local": "/Users/changmin/projects/ugrp/outputs/egomap72-orchestration/egomap72-b-return-29c0c169-archive.json",
+    "receipt_sha256": "9befaa4c44a2278ea3e11754c7b3a7b0919c023fc8482e42464e06807eda470b",
+    "mac_fetch_lite": "/Users/changmin/projects/ugrp/outputs/azure-runs/egomap72-b-return-29c0c169",
+    "mac_files": 97,
+    "mac_bytes": 5734137,
+    "mac_hash_verified": true,
+    "arm_native_verification": {
+      "arm_native_path": "/home/ubuntu/ugrp-archive/runs/packed-egomap72-b-return-29c0c169",
+      "verified": true,
+      "member_count": 15473,
+      "archive_sha256": "cdac11444e991699c9a96eed5e986e017de55eaeb522701c5cf418dda8bca756",
+      "inventory_canonical_sha256": "0fe2ad22975a80f879497d139f17bb381f63421930fa108f67aed0e834f4f1e0"
+    },
+    "archive_helper_sha256": "e5743c3558aede65d3e2a814f9420b610e0d4e19b0c98f816a0bf7610738fe57",
+    "lifecycle_helper_sha256": "700600c8ed050eba520d3bfc24c79eacf6db0a7c0d051e6e3cb33ccd93f44acb",
+    "coordination_lock": "/home/ugrp/ugrp-sim/lifecycle/archive-locks/egomap72-b-return-29c0c169.lock",
+    "trace_compression": {
+      "files": 231,
+      "saved_bytes": 2346407161,
+      "sha256_verified": true,
+      "original_images_retained": true
+    }
+  },
+  "cleanup": {
+    "completed_utc": "2026-10-11T12:21:06.800675+00:00",
+    "start_bound_utc": "2026-10-11T10:41:23+00:00",
+    "elapsed_upper_bound_s": 5983.800675,
+    "limit_s": 10800,
+    "removed_own_leases": [
+      "egomap72-b-return-29c0c169",
+      "egomap72-delivery"
+    ],
+    "remaining_other_leases": [
+      "e2e433-bootstrap",
+      "e2eaz1-gemini-s61001-on",
+      "egomap70view-calib_traversed_zone-s63003",
+      "s3-continuous-20261011-v186"
+    ],
+    "VM_stop_issued": false,
+    "VM_retained": true,
+    "own_simulation_processes": 0,
+    "archive_source_unchanged": true
+  },
+  "operational_sources": {
+    "executed_launcher_source_sha": "29c0c169bdfd7eff91186bb90af901393340f2a1",
+    "executed_launcher_sha256": "c0146580d3ccb047cbd299de32526de16ea3d8c11006c7e4016329a4b8c18e96",
+    "resource_governor_v1_sha256": "7b46e6465310924991073069ec64c3291663bd436a1d46643ff80b73135800ac",
+    "resource_governor_v2_sha256": "0506d523b89e6e07deced9013d3fc613497ec40efc2428dea2ddbcd29a2407f5",
+    "collector_sha256": "7df2ba4036a2bf83c61727d29a511672b938bb69278145a16b9f115b911aaa2f"
+  },
   "orchestration_errors": [
     {
       "stage": "retry_storage_admission",
@@ -1168,8 +1133,36 @@
       "status": "HOST_ERROR_LAUNCHER_STATUS_EXIT75",
       "meaning": "azure_shutdown status returns 75 while leases/unarchived evidence exist; no VM stop was issued; first raw archive and lite fetch already verified",
       "recovery": "allow status codes 0/75 and inspect JSON; retry launcher corrected"
+    },
+    {
+      "stage": "final_directory_archive",
+      "status": "HOST_ERROR_ARCHIVE_SWITCH",
+      "exit_code": 255,
+      "reason": "Own rsync archive group deliberately terminated after about 6 minutes / 1275 copied files; partial directory preserved; switched to full-member-verified tar.zst",
+      "physical_runs": 0
+    },
+    {
+      "stage": "tar_archive_initial_lock",
+      "status": "HOST_ERROR_ARCHIVE_LOCK_BUSY",
+      "attempts": 2,
+      "reason": "Two attempts used an overly broad scheduled-archive global lock and were blocked. Inspection found manual archive-one uses a per-run lock; fallback now uses that same per-run lock and active-writer checks. Other locks were untouched",
+      "physical_runs": 0
     }
   ],
+  "archive_switch": {
+    "utc_epoch": 1791720770.9939435,
+    "action": "directory_to_verified_tar_stream",
+    "terminated_own_archive_group": [
+      74114,
+      74116,
+      74218,
+      74219,
+      74220
+    ],
+    "source_modified": false,
+    "partial_preserved": true,
+    "reason": "1275 files / 6 minutes; switch to one verified stream within finite task budget"
+  },
   "environment_repair": {
     "missing": "matplotlib",
     "installed": "3.11.2",
@@ -1180,24 +1173,1062 @@
     "physics_controller_source_changed": false,
     "reference": "https://matplotlib.org/stable/users/explain/figure/backends.html"
   },
-  "retry": {
-    "batch": "egomap72-retry-92f52205",
-    "source_sha": "92f52205f832fe75715d12606cc04b112547e638",
-    "registered": 12,
-    "status": "RUNNING",
-    "vm_task_wall_s_remaining": 10200,
-    "batch_wall_s": 8400
-  },
+  "references": [
+    {
+      "url": "https://raw.githubusercontent.com/UZ-SLAMLab/ORB_SLAM3/master/src/Tracking.cc",
+      "scope": "fresh-map/keyframe lifecycle reference only; no code copied, no 3D SLAM claim"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/UZ-SLAMLab/ORB_SLAM3/master/src/LoopClosing.cc",
+      "scope": "existing geometric reconfirmation structure; thresholds unchanged"
+    },
+    {
+      "path": "experiments/2026-10-11-egomap-reconfirmation/gate_references.md",
+      "scope": "existing classical and recent-source comparison; no new model or parameter fitting"
+    },
+    {
+      "url": "https://docs.python.org/3/library/os.html#os.sched_setaffinity",
+      "scope": "CPU affinity only, no process priority change"
+    },
+    {
+      "url": "https://docs.python.org/3/library/tarfile.html",
+      "scope": "Streaming archive fallback; every ARM member verified against source SHA256 inventory if used"
+    }
+  ],
   "validation": {
-    "tests": 23,
     "files": [
       "tests/test_own_rgb_reconfirmation.py",
       "tests/test_egomap_fresh_pair.py",
       "tests/test_egomap_covariance.py"
     ],
     "mac_physics": 0,
-    "changed_schedule_tests": "tests/test_egomap_fresh_pair.py and tests/test_own_rgb_reconfirmation.py"
+    "changed_schedule_tests": "tests/test_egomap_fresh_pair.py and tests/test_own_rgb_reconfirmation.py",
+    "schedule_revision": "19 relevant tests passed on two changed test files; initial 23 tests on three files passed separately",
+    "test_counts_not_added": true,
+    "initial_source_tests": {
+      "sha": "92f52205f832fe75715d12606cc04b112547e638",
+      "passed": 23,
+      "files": [
+        "tests/test_own_rgb_reconfirmation.py",
+        "tests/test_egomap_fresh_pair.py",
+        "tests/test_egomap_covariance.py"
+      ]
+    },
+    "frozen_source_tests": {
+      "sha": "29c0c169bdfd7eff91186bb90af901393340f2a1",
+      "passed": 19,
+      "files": [
+        "tests/test_egomap_fresh_pair.py",
+        "tests/test_own_rgb_reconfirmation.py"
+      ]
+    },
+    "terminal_audit_scope": "Configuration, initial warmup images and recorded successful receive frames only; does not override terminal physical/runtime errors",
+    "terminal_audit": {
+      "source_sha": "29c0c169bdfd7eff91186bb90af901393340f2a1",
+      "pairs": [
+        {
+          "seed": 63001,
+          "warmup_11_RGB_sha256": {
+            "off": "8bfca7cd482279c89aea8b4b848e90a7fe6f9974d8460e6ffcd59a7c09d86bb9",
+            "on": "8bfca7cd482279c89aea8b4b848e90a7fe6f9974d8460e6ffcd59a7c09d86bb9"
+          },
+          "same_warmup": true,
+          "same_common_bundle": true
+        },
+        {
+          "seed": 63002,
+          "warmup_11_RGB_sha256": {
+            "off": "d5d17f0493e221caef3c9a6c2381daca92ba0b44dd5d02df134db85f4f6b46dc",
+            "on": "d5d17f0493e221caef3c9a6c2381daca92ba0b44dd5d02df134db85f4f6b46dc"
+          },
+          "same_warmup": true,
+          "same_common_bundle": true
+        },
+        {
+          "seed": 63003,
+          "warmup_11_RGB_sha256": {
+            "off": "840b43853267f634a846a20631d0376f2d9ca3c7a2ad0cbf143387031d584e67",
+            "on": "840b43853267f634a846a20631d0376f2d9ca3c7a2ad0cbf143387031d584e67"
+          },
+          "same_warmup": true,
+          "same_common_bundle": true
+        },
+        {
+          "seed": 63004,
+          "warmup_11_RGB_sha256": {
+            "off": "515223979f99c56cb8a5c9306fe8d83fb313586fc9dc6db8ce2b5f6089ec174c",
+            "on": "515223979f99c56cb8a5c9306fe8d83fb313586fc9dc6db8ce2b5f6089ec174c"
+          },
+          "same_warmup": true,
+          "same_common_bundle": true
+        },
+        {
+          "seed": 63005,
+          "warmup_11_RGB_sha256": {
+            "off": "1cc98f2b7319ca2720d84f2285c25f1f57f4be9545c2b25ebe905b6ea42925e0",
+            "on": "1cc98f2b7319ca2720d84f2285c25f1f57f4be9545c2b25ebe905b6ea42925e0"
+          },
+          "same_warmup": true,
+          "same_common_bundle": true
+        },
+        {
+          "seed": 63006,
+          "warmup_11_RGB_sha256": {
+            "off": "1cc98f2b7319ca2720d84f2285c25f1f57f4be9545c2b25ebe905b6ea42925e0",
+            "on": "1cc98f2b7319ca2720d84f2285c25f1f57f4be9545c2b25ebe905b6ea42925e0"
+          },
+          "same_warmup": true,
+          "same_common_bundle": true
+        }
+      ],
+      "runs": [
+        {
+          "name": "egomap72-63001-off",
+          "checks": {
+            "source": true,
+            "class_pr": true,
+            "fresh": true,
+            "toggles": true,
+            "execution_path": true,
+            "bank_source": true,
+            "bank_capture": true,
+            "checkpoint_absent": true
+          },
+          "execution_rows": 305,
+          "invalid_execution_rows": 0,
+          "bank_captures": 0,
+          "bank_acquisition_count": 0,
+          "first_acquisition": [],
+          "initial_rgb_sha256": "330cfcf5e7e2accafa59614938c23e569e397f7a23db1bf0f87ff16d303cf453"
+        },
+        {
+          "name": "egomap72-63001-on",
+          "checks": {
+            "source": true,
+            "class_pr": true,
+            "fresh": true,
+            "toggles": true,
+            "execution_path": true,
+            "bank_source": true,
+            "bank_capture": true,
+            "checkpoint_absent": true
+          },
+          "execution_rows": 1341,
+          "invalid_execution_rows": 0,
+          "bank_captures": 950,
+          "bank_acquisition_count": 10,
+          "first_acquisition": [
+            {
+              "key": "('B', 1)",
+              "started_t": 6.7,
+              "yaw": 0.3399502234348648,
+              "index": 1,
+              "status": "exhausted",
+              "phase_started_t": 7.5,
+              "ended_t": 9.3
+            }
+          ],
+          "initial_rgb_sha256": "330cfcf5e7e2accafa59614938c23e569e397f7a23db1bf0f87ff16d303cf453"
+        },
+        {
+          "name": "egomap72-63002-off",
+          "checks": {
+            "source": true,
+            "class_pr": true,
+            "fresh": true,
+            "toggles": true,
+            "execution_path": true,
+            "bank_source": true,
+            "bank_capture": true,
+            "checkpoint_absent": true
+          },
+          "execution_rows": 1569,
+          "invalid_execution_rows": 0,
+          "bank_captures": 0,
+          "bank_acquisition_count": 0,
+          "first_acquisition": [],
+          "initial_rgb_sha256": "3c1fd7faedae18141d231e8fde8a4c825685daf0446b5d3921d36a7f35ae1724"
+        },
+        {
+          "name": "egomap72-63002-on",
+          "checks": {
+            "source": true,
+            "class_pr": true,
+            "fresh": true,
+            "toggles": true,
+            "execution_path": true,
+            "bank_source": true,
+            "bank_capture": true,
+            "checkpoint_absent": true
+          },
+          "execution_rows": 1341,
+          "invalid_execution_rows": 0,
+          "bank_captures": 832,
+          "bank_acquisition_count": 11,
+          "first_acquisition": [
+            {
+              "key": "('corridor', 21)",
+              "started_t": 13.3,
+              "yaw": 0.9886196812914809,
+              "index": 1,
+              "status": "exhausted",
+              "phase_started_t": 14.9,
+              "ended_t": 16.3
+            }
+          ],
+          "initial_rgb_sha256": "3c1fd7faedae18141d231e8fde8a4c825685daf0446b5d3921d36a7f35ae1724"
+        },
+        {
+          "name": "egomap72-63003-off",
+          "checks": {
+            "source": true,
+            "class_pr": true,
+            "fresh": true,
+            "toggles": true,
+            "execution_path": true,
+            "bank_source": true,
+            "bank_capture": true,
+            "checkpoint_absent": true
+          },
+          "execution_rows": 1633,
+          "invalid_execution_rows": 0,
+          "bank_captures": 0,
+          "bank_acquisition_count": 0,
+          "first_acquisition": [],
+          "initial_rgb_sha256": "47d20fbe9a830d035a2f4f65925a596faf3bd921d9ff39c1c39223e61c99cbc2"
+        },
+        {
+          "name": "egomap72-63003-on",
+          "checks": {
+            "source": true,
+            "class_pr": true,
+            "fresh": true,
+            "toggles": true,
+            "execution_path": true,
+            "bank_source": true,
+            "bank_capture": true,
+            "checkpoint_absent": true
+          },
+          "execution_rows": 1035,
+          "invalid_execution_rows": 0,
+          "bank_captures": 546,
+          "bank_acquisition_count": 8,
+          "first_acquisition": [
+            {
+              "key": "('B', 7)",
+              "started_t": 21.9,
+              "yaw": 1.6765991364766357,
+              "index": 0,
+              "status": "confirmed",
+              "phase_started_t": 21.9,
+              "ended_t": 22.1
+            }
+          ],
+          "initial_rgb_sha256": "47d20fbe9a830d035a2f4f65925a596faf3bd921d9ff39c1c39223e61c99cbc2"
+        },
+        {
+          "name": "egomap72-63004-off",
+          "checks": {
+            "source": true,
+            "class_pr": true,
+            "fresh": true,
+            "toggles": true,
+            "execution_path": true,
+            "bank_source": true,
+            "bank_capture": true,
+            "checkpoint_absent": true
+          },
+          "execution_rows": 883,
+          "invalid_execution_rows": 0,
+          "bank_captures": 0,
+          "bank_acquisition_count": 0,
+          "first_acquisition": [],
+          "initial_rgb_sha256": "aa283c32841e36465420f1af22615912407b83388c3128dfd32f7336b9e36740"
+        },
+        {
+          "name": "egomap72-63004-on",
+          "checks": {
+            "source": true,
+            "class_pr": true,
+            "fresh": true,
+            "toggles": true,
+            "execution_path": true,
+            "bank_source": true,
+            "bank_capture": true,
+            "checkpoint_absent": true
+          },
+          "execution_rows": 893,
+          "invalid_execution_rows": 0,
+          "bank_captures": 489,
+          "bank_acquisition_count": 5,
+          "first_acquisition": [
+            {
+              "key": "('corridor', 107)",
+              "started_t": 43.5,
+              "yaw": 0.18022309431213301,
+              "index": 1,
+              "status": "exhausted",
+              "phase_started_t": 44.5,
+              "ended_t": 46.5
+            }
+          ],
+          "initial_rgb_sha256": "aa283c32841e36465420f1af22615912407b83388c3128dfd32f7336b9e36740"
+        },
+        {
+          "name": "egomap72-63005-off",
+          "checks": {
+            "source": true,
+            "class_pr": true,
+            "fresh": true,
+            "toggles": true,
+            "execution_path": true,
+            "bank_source": true,
+            "bank_capture": true,
+            "checkpoint_absent": true
+          },
+          "execution_rows": 1737,
+          "invalid_execution_rows": 0,
+          "bank_captures": 0,
+          "bank_acquisition_count": 0,
+          "first_acquisition": [],
+          "initial_rgb_sha256": "b12992e17503c7b7782e4ef4abf9fc49e4840cf5b3865c74e5b34a0324879fd6"
+        },
+        {
+          "name": "egomap72-63005-on",
+          "checks": {
+            "source": true,
+            "class_pr": true,
+            "fresh": true,
+            "toggles": true,
+            "execution_path": true,
+            "bank_source": true,
+            "bank_capture": true,
+            "checkpoint_absent": true
+          },
+          "execution_rows": 1341,
+          "invalid_execution_rows": 0,
+          "bank_captures": 1012,
+          "bank_acquisition_count": 9,
+          "first_acquisition": [
+            {
+              "key": "('corridor', 14)",
+              "started_t": 13.3,
+              "yaw": 0.6975989747990639,
+              "index": 1,
+              "status": "exhausted",
+              "phase_started_t": 14.3,
+              "ended_t": 16.3
+            }
+          ],
+          "initial_rgb_sha256": "b12992e17503c7b7782e4ef4abf9fc49e4840cf5b3865c74e5b34a0324879fd6"
+        },
+        {
+          "name": "egomap72-63006-off",
+          "checks": {
+            "source": true,
+            "class_pr": true,
+            "fresh": true,
+            "toggles": true,
+            "execution_path": true,
+            "bank_source": true,
+            "bank_capture": true,
+            "checkpoint_absent": true
+          },
+          "execution_rows": 1382,
+          "invalid_execution_rows": 0,
+          "bank_captures": 0,
+          "bank_acquisition_count": 0,
+          "first_acquisition": [],
+          "initial_rgb_sha256": "b12992e17503c7b7782e4ef4abf9fc49e4840cf5b3865c74e5b34a0324879fd6"
+        },
+        {
+          "name": "egomap72-63006-on",
+          "checks": {
+            "source": true,
+            "class_pr": true,
+            "fresh": true,
+            "toggles": true,
+            "execution_path": true,
+            "bank_source": true,
+            "bank_capture": true,
+            "checkpoint_absent": true
+          },
+          "execution_rows": 1341,
+          "invalid_execution_rows": 0,
+          "bank_captures": 940,
+          "bank_acquisition_count": 11,
+          "first_acquisition": [
+            {
+              "key": "('corridor', 61)",
+              "started_t": 23.3,
+              "yaw": 1.029475916167792,
+              "index": 1,
+              "status": "exhausted",
+              "phase_started_t": 24.3,
+              "ended_t": 26.1
+            }
+          ],
+          "initial_rgb_sha256": "b12992e17503c7b7782e4ef4abf9fc49e4840cf5b3865c74e5b34a0324879fd6"
+        }
+      ],
+      "all_passed": true,
+      "helper_sha256": "e19ab74d16e8fe389fc4a8536ed8950730258912c0e2a1c40179bcb763de376f"
+    },
+    "terminal_audit_sha256": "4e6d670b3c824c2fa8dc722cc20e9ea90d0f9764511874128017981cbe59df0b"
   },
-  "schedule_revision_reason": "egomap71 compares B approach and return; first full-path adapter also included a box visit, so that partial attempt is excluded from the paired performance comparison",
-  "resource_change": "other physical jobs ended; verified only our four workers and an archive compressor before stopping this partial attempt; use 12 free vCPUs, reserve four"
+  "scoring": {
+    "B": "Post-run true robot XY inside static-map zone_B rectangle",
+    "returned": "Post-run true robot XY within 0.20 m of first evaluated robot XY",
+    "control_access": "Evaluation is post-run only; no GT or static map supplied to controller",
+    "counts": "Declaration denominator and registered/measured/completed run denominators are reported separately"
+  },
+  "host_error_counts": {
+    "egomap71_prior": 12,
+    "egomap72_environment_attempt": 12,
+    "egomap72_task_flow_cancelled_attempt": 12,
+    "final_batch": 3,
+    "orchestration_error_records": 4,
+    "orchestration_error_occurrences": 5
+  },
+  "terminal_runs": 12,
+  "physical_failures": [
+    {
+      "seed": 63001,
+      "condition": "off",
+      "status": "PHYSICAL_FAILURE",
+      "failure": {
+        "type": "PhysicalStop",
+        "message": "WALL_CONTACT"
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/egomap72-b-return-29c0c169/data/egomap72-63001-off"
+    }
+  ],
+  "comparison_conclusion": "On made no B/return declarations and had two runtime errors. Zero false declarations therefore does not establish improved accuracy or mission completion. Both conditions had zero valid return declarations.",
+  "metric_definition": "true_B and true_return count runs with evaluation-valid declarations, not every incidental physical visit to a region.",
+  "completion_definition": "RECORDED means the registered controller loop ended; it does not imply true B arrival or true return. PHYSICAL_FAILURE and HOST_ERROR are separate terminal statuses.",
+  "budgets": {
+    "per_run_wall_s": 6000,
+    "batch_wall_s": 7200,
+    "total_task_wall_s": 10800,
+    "absolute_deadline_utc": "2026-10-11T13:41:30Z"
+  },
+  "metadata_limitations": [
+    "Inherited bundle schedule.host_cap_s=3600 is a legacy field; actual registered signal alarm is bundle.host_alarm_s=6000 on both conditions. No timing speed comparison because CPU contention and OS pauses occurred."
+  ],
+  "interpretation": "Combined-toggle DEV comparison. False declarations use evaluated declarations as denominator; physical failures and non-declaration runs remain in registered/measured run counts. No claim of isolated toggle effects or transport E2E.",
+  "resources": {
+    "ledger_sha256": "2ced925ec7c2e746bc012155bde1780655f17828adf398c5baedd010d7ba367a",
+    "events": [
+      {
+        "utc_epoch": 1791718049.4877496,
+        "action": "pause_cpu_overlap",
+        "name": "egomap72-63001-on",
+        "pid": 27093,
+        "cpu": 1,
+        "other_reservations": [
+          {
+            "pid": 40031,
+            "cpus": [
+              1
+            ]
+          },
+          {
+            "pid": 40032,
+            "cpus": [
+              3
+            ]
+          },
+          {
+            "pid": 40033,
+            "cpus": [
+              4
+            ]
+          },
+          {
+            "pid": 40034,
+            "cpus": [
+              2
+            ]
+          },
+          {
+            "pid": 40035,
+            "cpus": [
+              0
+            ]
+          },
+          {
+            "pid": 40036,
+            "cpus": [
+              6
+            ]
+          },
+          {
+            "pid": 40037,
+            "cpus": [
+              5
+            ]
+          },
+          {
+            "pid": 40038,
+            "cpus": [
+              7
+            ]
+          }
+        ]
+      },
+      {
+        "utc_epoch": 1791718049.4878657,
+        "action": "pause_cpu_overlap",
+        "name": "egomap72-63002-on",
+        "pid": 27176,
+        "cpu": 2,
+        "other_reservations": [
+          {
+            "pid": 40031,
+            "cpus": [
+              1
+            ]
+          },
+          {
+            "pid": 40032,
+            "cpus": [
+              3
+            ]
+          },
+          {
+            "pid": 40033,
+            "cpus": [
+              4
+            ]
+          },
+          {
+            "pid": 40034,
+            "cpus": [
+              2
+            ]
+          },
+          {
+            "pid": 40035,
+            "cpus": [
+              0
+            ]
+          },
+          {
+            "pid": 40036,
+            "cpus": [
+              6
+            ]
+          },
+          {
+            "pid": 40037,
+            "cpus": [
+              5
+            ]
+          },
+          {
+            "pid": 40038,
+            "cpus": [
+              7
+            ]
+          }
+        ]
+      },
+      {
+        "utc_epoch": 1791718049.4879167,
+        "action": "pause_cpu_overlap",
+        "name": "egomap72-63002-off",
+        "pid": 27177,
+        "cpu": 3,
+        "other_reservations": [
+          {
+            "pid": 40031,
+            "cpus": [
+              1
+            ]
+          },
+          {
+            "pid": 40032,
+            "cpus": [
+              3
+            ]
+          },
+          {
+            "pid": 40033,
+            "cpus": [
+              4
+            ]
+          },
+          {
+            "pid": 40034,
+            "cpus": [
+              2
+            ]
+          },
+          {
+            "pid": 40035,
+            "cpus": [
+              0
+            ]
+          },
+          {
+            "pid": 40036,
+            "cpus": [
+              6
+            ]
+          },
+          {
+            "pid": 40037,
+            "cpus": [
+              5
+            ]
+          },
+          {
+            "pid": 40038,
+            "cpus": [
+              7
+            ]
+          }
+        ]
+      },
+      {
+        "utc_epoch": 1791718049.4879613,
+        "action": "pause_cpu_overlap",
+        "name": "egomap72-63003-off",
+        "pid": 27297,
+        "cpu": 4,
+        "other_reservations": [
+          {
+            "pid": 40031,
+            "cpus": [
+              1
+            ]
+          },
+          {
+            "pid": 40032,
+            "cpus": [
+              3
+            ]
+          },
+          {
+            "pid": 40033,
+            "cpus": [
+              4
+            ]
+          },
+          {
+            "pid": 40034,
+            "cpus": [
+              2
+            ]
+          },
+          {
+            "pid": 40035,
+            "cpus": [
+              0
+            ]
+          },
+          {
+            "pid": 40036,
+            "cpus": [
+              6
+            ]
+          },
+          {
+            "pid": 40037,
+            "cpus": [
+              5
+            ]
+          },
+          {
+            "pid": 40038,
+            "cpus": [
+              7
+            ]
+          }
+        ]
+      },
+      {
+        "utc_epoch": 1791718049.4879985,
+        "action": "pause_cpu_overlap",
+        "name": "egomap72-63003-on",
+        "pid": 27298,
+        "cpu": 5,
+        "other_reservations": [
+          {
+            "pid": 40031,
+            "cpus": [
+              1
+            ]
+          },
+          {
+            "pid": 40032,
+            "cpus": [
+              3
+            ]
+          },
+          {
+            "pid": 40033,
+            "cpus": [
+              4
+            ]
+          },
+          {
+            "pid": 40034,
+            "cpus": [
+              2
+            ]
+          },
+          {
+            "pid": 40035,
+            "cpus": [
+              0
+            ]
+          },
+          {
+            "pid": 40036,
+            "cpus": [
+              6
+            ]
+          },
+          {
+            "pid": 40037,
+            "cpus": [
+              5
+            ]
+          },
+          {
+            "pid": 40038,
+            "cpus": [
+              7
+            ]
+          }
+        ]
+      },
+      {
+        "utc_epoch": 1791718049.4880342,
+        "action": "pause_cpu_overlap",
+        "name": "egomap72-63004-on",
+        "pid": 27399,
+        "cpu": 6,
+        "other_reservations": [
+          {
+            "pid": 40031,
+            "cpus": [
+              1
+            ]
+          },
+          {
+            "pid": 40032,
+            "cpus": [
+              3
+            ]
+          },
+          {
+            "pid": 40033,
+            "cpus": [
+              4
+            ]
+          },
+          {
+            "pid": 40034,
+            "cpus": [
+              2
+            ]
+          },
+          {
+            "pid": 40035,
+            "cpus": [
+              0
+            ]
+          },
+          {
+            "pid": 40036,
+            "cpus": [
+              6
+            ]
+          },
+          {
+            "pid": 40037,
+            "cpus": [
+              5
+            ]
+          },
+          {
+            "pid": 40038,
+            "cpus": [
+              7
+            ]
+          }
+        ]
+      },
+      {
+        "utc_epoch": 1791718049.4880812,
+        "action": "pause_cpu_overlap",
+        "name": "egomap72-63004-off",
+        "pid": 27400,
+        "cpu": 7,
+        "other_reservations": [
+          {
+            "pid": 40031,
+            "cpus": [
+              1
+            ]
+          },
+          {
+            "pid": 40032,
+            "cpus": [
+              3
+            ]
+          },
+          {
+            "pid": 40033,
+            "cpus": [
+              4
+            ]
+          },
+          {
+            "pid": 40034,
+            "cpus": [
+              2
+            ]
+          },
+          {
+            "pid": 40035,
+            "cpus": [
+              0
+            ]
+          },
+          {
+            "pid": 40036,
+            "cpus": [
+              6
+            ]
+          },
+          {
+            "pid": 40037,
+            "cpus": [
+              5
+            ]
+          },
+          {
+            "pid": 40038,
+            "cpus": [
+              7
+            ]
+          }
+        ]
+      },
+      {
+        "utc_epoch": 1791718489.6480672,
+        "action": "resume_cpu_available",
+        "name": "egomap72-63001-on",
+        "pid": 27093,
+        "cpu": 1
+      },
+      {
+        "utc_epoch": 1791718500.0268307,
+        "action": "governor_v2_handoff",
+        "old_pid": 44747,
+        "paused_workers_preserved": true
+      },
+      {
+        "utc_epoch": 1791718500.0653417,
+        "action": "migrate_free_cpu",
+        "name": "egomap72-63002-on",
+        "pid": 27176,
+        "old_cpus": [
+          2
+        ],
+        "cpu": 0
+      },
+      {
+        "utc_epoch": 1791718500.065417,
+        "action": "resume_cpu_available",
+        "name": "egomap72-63002-on",
+        "pid": 27176,
+        "cpus": [
+          0
+        ]
+      },
+      {
+        "utc_epoch": 1791718500.0655174,
+        "action": "migrate_free_cpu",
+        "name": "egomap72-63002-off",
+        "pid": 27177,
+        "old_cpus": [
+          3
+        ],
+        "cpu": 2
+      },
+      {
+        "utc_epoch": 1791718500.0655684,
+        "action": "resume_cpu_available",
+        "name": "egomap72-63002-off",
+        "pid": 27177,
+        "cpus": [
+          2
+        ]
+      },
+      {
+        "utc_epoch": 1791718500.0657923,
+        "action": "migrate_free_cpu",
+        "name": "egomap72-63003-off",
+        "pid": 27297,
+        "old_cpus": [
+          4
+        ],
+        "cpu": 3
+      },
+      {
+        "utc_epoch": 1791718500.065859,
+        "action": "resume_cpu_available",
+        "name": "egomap72-63003-off",
+        "pid": 27297,
+        "cpus": [
+          3
+        ]
+      },
+      {
+        "utc_epoch": 1791718500.0659502,
+        "action": "migrate_free_cpu",
+        "name": "egomap72-63003-on",
+        "pid": 27298,
+        "old_cpus": [
+          5
+        ],
+        "cpu": 12
+      },
+      {
+        "utc_epoch": 1791718500.0660157,
+        "action": "resume_cpu_available",
+        "name": "egomap72-63003-on",
+        "pid": 27298,
+        "cpus": [
+          12
+        ]
+      },
+      {
+        "utc_epoch": 1791718500.0661204,
+        "action": "migrate_free_cpu",
+        "name": "egomap72-63004-on",
+        "pid": 27399,
+        "old_cpus": [
+          6
+        ],
+        "cpu": 13
+      },
+      {
+        "utc_epoch": 1791718500.0661888,
+        "action": "resume_cpu_available",
+        "name": "egomap72-63004-on",
+        "pid": 27399,
+        "cpus": [
+          13
+        ]
+      },
+      {
+        "utc_epoch": 1791718500.066336,
+        "action": "migrate_free_cpu",
+        "name": "egomap72-63004-off",
+        "pid": 27400,
+        "old_cpus": [
+          7
+        ],
+        "cpu": 14
+      },
+      {
+        "utc_epoch": 1791718500.0664005,
+        "action": "resume_cpu_available",
+        "name": "egomap72-63004-off",
+        "pid": 27400,
+        "cpus": [
+          14
+        ]
+      },
+      {
+        "utc_epoch": 1791720280.694585,
+        "action": "governor_finished"
+      }
+    ],
+    "pause_intervals": [
+      {
+        "name": "egomap72-63001-on",
+        "start_epoch": 1791718049.4877496,
+        "end_epoch": 1791718489.6480672,
+        "seconds": 440.16031765937805
+      },
+      {
+        "name": "egomap72-63002-on",
+        "start_epoch": 1791718049.4878657,
+        "end_epoch": 1791718500.065417,
+        "seconds": 450.5775513648987
+      },
+      {
+        "name": "egomap72-63002-off",
+        "start_epoch": 1791718049.4879167,
+        "end_epoch": 1791718500.0655684,
+        "seconds": 450.5776517391205
+      },
+      {
+        "name": "egomap72-63003-off",
+        "start_epoch": 1791718049.4879613,
+        "end_epoch": 1791718500.065859,
+        "seconds": 450.5778977870941
+      },
+      {
+        "name": "egomap72-63003-on",
+        "start_epoch": 1791718049.4879985,
+        "end_epoch": 1791718500.0660157,
+        "seconds": 450.57801723480225
+      },
+      {
+        "name": "egomap72-63004-on",
+        "start_epoch": 1791718049.4880342,
+        "end_epoch": 1791718500.0661888,
+        "seconds": 450.5781545639038
+      },
+      {
+        "name": "egomap72-63004-off",
+        "start_epoch": 1791718049.4880812,
+        "end_epoch": 1791718500.0664005,
+        "seconds": 450.57831931114197
+      }
+    ],
+    "unclosed_pauses": {},
+    "other_processes_modified": false,
+    "priority_changed": false,
+    "overlap_detected": true,
+    "overlap_scope": "Sibling reservations appeared on own CPU0-7; overlap occurred before detection. Seven own workers paused, then migrated/resumed as CPUs became available.",
+    "policy": "Only own processes migrated or paused; per-run and total deadlines not extended"
+  },
+  "host_error_annotations": [
+    {
+      "name": "egomap72-63003-on",
+      "cause": "Information-gain hypothetical-grid cloning loses the covariance proxy odometry pose; active_information_gain.py:44 via egomap_covariance.py:75"
+    },
+    {
+      "name": "egomap72-63004-on",
+      "cause": "Information-gain hypothetical-grid cloning loses the covariance proxy odometry pose; active_information_gain.py:44 via egomap_covariance.py:75"
+    },
+    {
+      "name": "egomap72-63004-off",
+      "cause": "Render executor future.result(timeout=30.0), multi_masterpi_production.py:886; CPU contention and SIGSTOP pause are recorded potential contributors, not separately established causes"
+    }
+  ],
+  "remaining_issues": [
+    {
+      "issue": "CovarianceView forecast clone initializes owner/driver but not base; pose delegation fails",
+      "source": "harness/active_information_gain.py:97 and harness/egomap_covariance.py:73",
+      "scope": "Observed on-condition runtime error; no within-cohort fix or rerun"
+    },
+    {
+      "issue": "Renderer wall timeout with CPU contention/OS pause",
+      "source": "sim/multi_masterpi_production.py:886",
+      "scope": "Preserved HOST_ERROR; pause causality not isolated"
+    },
+    {
+      "issue": "Zero observed declarations is not proof of accurate arrival/return",
+      "scope": "Use declaration and run denominators; report incomplete/failed runs"
+    }
+  ]
 }

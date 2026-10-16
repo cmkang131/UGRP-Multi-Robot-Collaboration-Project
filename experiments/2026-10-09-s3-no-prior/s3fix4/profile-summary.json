@@ -1,0 +1,132 @@
+{
+  "schema": "ugrp.s3_exact_profile.v2",
+  "physics_runs": 0,
+  "scope": "locked cProfile of saved own inputs; rendering and physics excluded; profiler overhead included",
+  "nested_times_not_additive": true,
+  "unchanged_commands_and_state": true,
+  "runs": {
+    "profile-v1": {
+      "wall_s": 65.38043408299563,
+      "frames": 442,
+      "command_sha256": "95c7bb1babc22263fd45c83e16f352b6ba746a5f97a9cf8ecf93bcca838d4065",
+      "state_sha256": "6138376fcdab9317a77c4ef47ac1625beaa71b4f4d04311f0b0160e06762bb8a",
+      "counters": {
+        "posterior_summary": {
+          "calls": 27,
+          "self_s": 0.043791868000000005,
+          "cumulative_s": 0.9195988770000001
+        },
+        "best_cluster_extract": {
+          "calls": 475,
+          "self_s": 0.549903186,
+          "cumulative_s": 1.3056409260000001
+        },
+        "content_digest_key": {
+          "calls": 10090,
+          "self_s": 0.051186014,
+          "cumulative_s": 9.163453691
+        },
+        "snapshot_validation": {
+          "calls": 0,
+          "self_s": 0,
+          "cumulative_s": 0
+        },
+        "KLD": {
+          "calls": 24,
+          "self_s": 0.530705866,
+          "cumulative_s": 0.8844397060000001
+        },
+        "head_ranking": {
+          "calls": 21,
+          "self_s": 0.00152756,
+          "cumulative_s": 0.317751124
+        }
+      },
+      "cache_audit": {
+        "r1": {
+          "option": "posterior_content_v1",
+          "hits": 3326,
+          "misses": 186,
+          "distribution_changed": false
+        },
+        "r2": {
+          "option": "posterior_content_v1",
+          "hits": 3316,
+          "misses": 187,
+          "distribution_changed": false
+        },
+        "r3": {
+          "option": "posterior_content_v1",
+          "hits": 2946,
+          "misses": 129,
+          "distribution_changed": false
+        }
+      },
+      "implementation_sha": "b73ce1931dae5d803bf2562ad5fa090cb71d2dfb",
+      "raw": "/Users/changmin/projects/ugrp/outputs/s3fix4-20261009/profile-v1",
+      "profile_sha256": "2014a9171c099dd16344c71e8034a4f781f2666a2984ca68fb0a7f16f370e7cb"
+    },
+    "profile-v2": {
+      "wall_s": 51.50935875001596,
+      "frames": 442,
+      "command_sha256": "95c7bb1babc22263fd45c83e16f352b6ba746a5f97a9cf8ecf93bcca838d4065",
+      "state_sha256": "6138376fcdab9317a77c4ef47ac1625beaa71b4f4d04311f0b0160e06762bb8a",
+      "counters": {
+        "posterior_summary": {
+          "calls": 27,
+          "self_s": 0.043666427,
+          "cumulative_s": 0.8187572070000001
+        },
+        "best_cluster_extract": {
+          "calls": 475,
+          "self_s": 0.520336083,
+          "cumulative_s": 1.237865134
+        },
+        "content_digest_key": {
+          "calls": 0,
+          "self_s": 0,
+          "cumulative_s": 0
+        },
+        "snapshot_validation": {
+          "calls": 10090,
+          "self_s": 0.009965297000000001,
+          "cumulative_s": 0.38836042800000004
+        },
+        "KLD": {
+          "calls": 24,
+          "self_s": 0.513471373,
+          "cumulative_s": 0.8519804200000001
+        },
+        "head_ranking": {
+          "calls": 21,
+          "self_s": 0.001294709,
+          "cumulative_s": 0.29754525200000004
+        }
+      },
+      "cache_audit": {
+        "r1": {
+          "option": "posterior_content_v2",
+          "hits": 3326,
+          "misses": 186,
+          "distribution_changed": false
+        },
+        "r2": {
+          "option": "posterior_content_v2",
+          "hits": 3316,
+          "misses": 187,
+          "distribution_changed": false
+        },
+        "r3": {
+          "option": "posterior_content_v2",
+          "hits": 2946,
+          "misses": 129,
+          "distribution_changed": false
+        }
+      },
+      "implementation_sha": "b73ce1931dae5d803bf2562ad5fa090cb71d2dfb",
+      "raw": "/Users/changmin/projects/ugrp/outputs/s3fix4-20261009/profile-v2",
+      "profile_sha256": "450e77f9fa1c74387fa37d859822fd4018d3bdf9fc3ea57affb4b8c979b2010a"
+    }
+  },
+  "wall_ratio_v2_over_v1": 0.7878405745154373
+}

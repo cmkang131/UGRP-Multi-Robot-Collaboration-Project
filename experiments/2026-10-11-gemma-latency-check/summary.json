@@ -1,0 +1,73 @@
+{
+ "purpose": "Gemma 4 31B latency/500 diagnosis via Mac proxy engine; no simulation; request = E2E gemma s61001 r6 call-0002 wire request (1558 input tokens incl 258 image, max_tokens 800, reasoning_effort none)",
+ "date": "2026-10-11",
+ "runs": {
+  "multi": {
+   "path": "/Users/changmin/projects/ugrp/outputs/gemma-latency-check-20261011/multi/report.json",
+   "sha256": "4a3fddc32eac68b89cba49cd89a9a59ebf45abb4488b813662a2e607b4f35e83",
+   "multi_key_v1": true,
+   "threads": 2,
+   "summary": {
+    "n": 14,
+    "status": {
+     "200": 13,
+     "500": 1
+    },
+    "wall_median_s": 35.75048279762268,
+    "wall_p90_s": 70.59222912788391,
+    "wall_max_s": 72.30126214027405,
+    "retried": 7,
+    "first_failure": 7,
+    "keys_used": [
+     1,
+     2,
+     3,
+     4,
+     5
+    ]
+   }
+  },
+  "legacy": {
+   "path": "/Users/changmin/projects/ugrp/outputs/gemma-latency-check-20261011/legacy/report.json",
+   "sha256": "75ae7487247bd525dc61a5a2b9756c3dbf9f2164678549bc658f774790063ce6",
+   "multi_key_v1": false,
+   "threads": 2,
+   "summary": {
+    "n": 8,
+    "status": {
+     "200": 6,
+     "500": 2
+    },
+    "wall_median_s": 29.368362069129944,
+    "wall_p90_s": 40.332234144210815,
+    "wall_max_s": 40.729488134384155,
+    "retried": 0,
+    "first_failure": 0,
+    "keys_used": []
+   }
+  }
+ },
+ "attempt_level_multi": {
+  "attempts": 23,
+  "http_500_503": 9,
+  "note": "500s spread over keys 1-5; ~39% of attempts failed; retry on another key recovered 6/7 first failures"
+ },
+ "e2e_r2_r3_receipts": {
+  "gemma_200_wall_s": [
+   42.4,
+   5.9,
+   34.7,
+   16.4,
+   21.0,
+   28.0,
+   33.3
+  ],
+  "gemma_503_wall_s": [
+   63.5,
+   37.9
+  ],
+  "completion_tokens": "44-86",
+  "thoughts_tokens": null,
+  "cached_503_replays": 9
+ }
+}

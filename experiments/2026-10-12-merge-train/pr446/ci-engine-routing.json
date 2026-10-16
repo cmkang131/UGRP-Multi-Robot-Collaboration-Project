@@ -1,0 +1,15 @@
+{
+  "cause": "Real combined Robot.receive requires static geometry from optional engine modules",
+  "fix": "One function skips without engine; whole file explicitly added to engine-installed CI",
+  "validation": {
+    "engine_available": "8 passed",
+    "engine_unavailable": "7 passed, 1 skipped"
+  },
+  "logs": {
+    "outputs/merge-train-20261012/pr446-engine-tests.txt": "1e2ddd4d31739c7e64e89586cf502ffab97ee6d81c029ad1c9279926993175d0",
+    "outputs/merge-train-20261012/pr446-no-engine-tests.txt": "61dd59fa8b553e8e56e2b09ab80781bb13bc2ecbfe270145e70b9b1ec9be03ac"
+  },
+  "reference": "https://docs.pytest.org/en/stable/reference/reference.html#pytest-importorskip",
+  "controller_source_changed": false,
+  "physical_runs": 0
+}

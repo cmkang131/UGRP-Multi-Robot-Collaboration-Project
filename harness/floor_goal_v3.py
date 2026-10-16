@@ -8,6 +8,7 @@ import math
 
 import cv2
 import numpy as np
+from harness.e2e_exact_speedups import track_cells_enabled
 
 from harness.floor_goal import FloorGoalMemory, FloorGoalOptions, commanded_camera, floor_intersections, optical_rays
 from harness.floor_goal_v2 import FloorGoalV2Options, detect_floor_v2
@@ -20,11 +21,13 @@ class FloorGoalV3Options(FloorGoalV2Options):
     minimum_observed_area_m2: float = .005
     temporal_overlap_min: float = .35
     temporal_center_max_m: float = .10
+    known_region_width_m: float = .6
 
     def __post_init__(self):
         super().__post_init__()
         if not (0 < self.minimum_observed_area_m2 < .84 and 0 < self.temporal_overlap_min <= 1 and
-                0 < self.temporal_center_max_m <= 1):
+                0 < self.temporal_center_max_m <= 1 and math.isfinite(self.known_region_width_m) and
+                0 < self.known_region_width_m <= 1.4):
             raise ValueError('INVALID_GOAL_V3_OPTIONS')
 
 
@@ -47,7 +50,7 @@ def metric_rejection(shape, options):
     if shape['observed_area_m2'] < options.minimum_observed_area_m2:
         return 'metric_area'
     short, long = shape['rect_sides_m']
-    if short < .03 or short > .6*1.2 or long > 1.4*1.2:
+    if short < .03 or short > options.known_region_width_m*1.2 or long > 1.4*1.2:
         return 'metric_size'
     if shape['footprint_solidity'] < .25:
         return 'metric_shape'
@@ -152,7 +155,11 @@ class FloorGoalMemoryV3(FloorGoalMemory):
             used.add(track['id'])
             track['last_center'], track['last_hull'] = center, hull
             cells = np.floor(transform(patch.pop('_points_body_m'), pose)/self.options.cell_m).astype(int)
-            track['cells'].update(tuple(x) for x in cells)
+            if track_cells_enabled() and type(cells) is np.ndarray and cells.ndim == 2 and cells.shape[1] == 2:
+                # Same np.int64 scalars, values and insertion order as tuple(row).
+                track['cells'].update(zip(cells[:, 0], cells[:, 1]))
+            else:
+                track['cells'].update(tuple(x) for x in cells)
             track['box'] = np.array([np.minimum(track['box'][0], hull.min(axis=0)), np.maximum(track['box'][1], hull.max(axis=0))])
             track['views'][frame_id] = (t, tuple(pose))
             track['last_t'] = t

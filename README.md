@@ -9,6 +9,7 @@
 - **[연구 TODO와 우선순위](docs/research_todo.md)** — 독립 에이전트의 무통신·정형·자연어 비교를 중심으로 실행 기반·본실험·ACT/Jev 보조 과제 정리(§0 로드맵 상태 2026-09-29 갱신)
 - **[Kaggle CLI 배치 실행](docs/kaggle_simulation.md)** — 비공개 CPU·오프라인 실행·결과 회수 검증 완료; 신규 계정은 최초 인증 필요
 - **[Colab CLI 시뮬레이션·평가](docs/colab_simulation.md)** — 선택 가능한 원격 배치 경로; 실제 런타임 검증 상태는 안내 참조
+- **[Azure CPU 실행 서버](docs/azure_simulation.md)** — 비용·만료·유휴 가드, 작업 후 할당 해제와 Oracle ARM 원본 보관
 
 - **[현재 상태와 실행 경로](docs/current_status.md)** — 2026-09-30 저녁 요약: 단계 인수 재생·조건부 예측·열린 검토와 E2E의 남은 관문
 - **[Ubuntu 설치·무료 데모](docs/ubuntu_quickstart.md)** — 새 팀원은 여기서 시작
@@ -27,6 +28,11 @@
 
 ## 현재 검증 범위
 
+- [S4 집게 이탈 저장 영상 감사](experiments/2026-10-06-s4-llm/s4grip/README.md): 실제 모델 응답·이탈 영상 부족으로 S4 정확도 미측정. 기존 CV 참고 진단, 접촉 라벨 평가 전용, 물리/렌더/모델0.
+
+- [S4 빔 공동 출발 준비](experiments/2026-10-06-s4-llm/s4live4/README.md): 기본 OFF LLM claim→GO/ACK→공동 출발·자기 RGB 이탈 정지, 오프라인 준비만. S3 확정 SHA 대기, 4조건×seed601 사전 목록, 실제 모델/물리 0.
+- [S4 실제 모델·Oracle x86 배관 확인](experiments/2026-10-06-s4-llm/s4live1/README.md): 네 통신 조건 각90 SIM초·모델7호출, claim→출발 허가→r3 cyan 약1m 운반 명령 연결. 빔 claim-only, 호스트 중단/재실행 분리, `research_result=false`·배송/E2E 성공 아님. README·TensorBoard·원본 해시 대조 기록.
+
 - [진행 방향 주행 기본 on · v145](experiments/2026-10-09-s2-heading/default-on/README.md): 새 S2·공통 S3/S4 주행은 회전 후 전진, `--heading-mode off`로 옆걸음 재현. 자기 지도 계획 어댑터도 같은 선택기를 사용한다. 고정 v143 비교는 성공1/3, 1068 시야 상실 원인·선택 수정안과 적용 표를 기록했다.
 
 - [S2 손목 카메라 검토·공식 자료와 새 도면 후보](experiments/2026-10-06-robot-camera-review/README.md): 실물 기록1.35%·7.92%, v3 들기5.63%; #403 중간 내려놓기 OFF 및 원래 자리 재관측 파지 확인·재집기 옵션 구현(오프라인). 기본값·기존 번들 유지, #404 확정 뒤 새 카메라+구동 S2 재검증 필요.
@@ -39,6 +45,8 @@
 | [ACT 공동 운반 비교](experiments/2026-09-18-act-pair-carry/README.md) | 운반 진입 3조건에서 교사 3/3, ACT seed18 1/3·seed19 0/3 | 네 번째 조건은 접근 중단; 확정 계획 재생, 새 LLM 호출 없음. ACT는 기존 경로를 대체하지 않음 |
 
 자기 RGB·공용 top RGB·자기 발행 명령을 사용하고 승인된 지도 경로에서는 정적 지도를 제공한다. 교사 정답은 학습용이며 실행 중 평가 좌표·접촉·관절 측정으로 행동을 보정하지 않는다. 카메라 배치/FOV와 weld OFF를 유지한다. 시뮬레이션 결과는 실물 MasterPi 검증과 구분한다.
+
+> 현행 규칙(2026-10-03 [#366](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/366))상 공용 top 카메라는 평가·검토 영상 전용이며 제어·지도 만들기·위치 추정 입력으로 금지한다. 이 기존 경로는 아직 TOP 사용(미이행)이다.
 
 이전 단독 운반·접근·동기화·지도 주행 결과는 [과거 검증 요약](docs/archive/validation_summary_20260917.md)에 보존했다.
 
@@ -75,3 +83,25 @@ cache를 기본 사용한다. `UGRP_V7_EXACT_SPEEDUPS=off` 또는 Python
 v107/v108 중 기존 v3 물리를 쓰는 경로를 v7로 바꾸는 변경은 포함하지 않는다.
 
 [경로별 바이트 동등성·속도·끄기 방법](experiments/2026-10-09-sim-speed-core/README.md).
+
+새 공통 host reset은 `UGRP_CONTROLLER_EXACT_SPEEDUPS=exact-v1`(기본)으로
+순수 posterior 계산과 지원되는 자기 지도 계산을 재사용한다. `off`로 끈다.
+실제 적용 항목·지원되지 않은 adapter·소스 해시·유한 캐시 통계는
+`controller-speedups.json`과 `runtime-bundle.json`에 기록한다.
+분포·RNG·물리·관측/렌더 주기는 그대로이며 지원 소스가 달라지면 해당 항목은 적용하지 않는다.
+현재 가속 후보의 측정·동등성 인수는 [speedctrl 기록](experiments/2026-10-09-sim-speed-ctrl/README.md)에 남긴다.
+[후속 정합·타이머 밖 비용·무손실 기록](experiments/2026-10-10-sim-speed-ctrl2/README.md)은
+같은 입력의 ABBA·부하·복원 바이트를 구분한다. 첫 55001에서 느려진 정합 캐시는 기본 off이며,
+2m 후보 제한도 결과가 바뀔 수 있어 기본 off다. 새 물리/온라인 ≤1.5 검증은 아직 없다.
+[Oracle 지연 렌더 비교](experiments/2026-10-10-sim-speed-ctrl3/README.md)는
+`UGRP_CAMERA_RENDER=lazy-v1` 선택 시 소비 시점에 카메라를 생성한다. 기본은
+`eager`이며 기존 JPEG·프레임 원장을 모두 보존한다. 기록 대상이거나 실제 읽는
+프레임은 생략하지 않는다. Mac 물리·렌더 없이 Oracle에서 A4/B4를 동시에 비교하고
+원본·행동 동등성, wall/SIM·CPU/SIM·부하 평균을 분리한다. JSON 키 순서와
+명시된 실측 추론 지연만 분리하며 명령·SIM 시각·원본 JPEG는 직접 비교한다.
+근거는 [Thrun 등, Probabilistic Robotics 4·6·8장](https://mitpress.mit.edu/9780262201629/probabilistic-robotics/),
+[AMCL 거리장 구현](https://github.com/ros-navigation/navigation2/blob/main/nav2_amcl/src/map/map_cspace.cpp),
+[Olson 2009 스캔 정합](https://april.eecs.umich.edu/media/pdfs/olson2009icra.pdf)이다.
+원문 열람 범위와 정확한 계산 재사용 경계는 위 실험 기록의 참고 자료에 적었다.
+
+- [s4grip2 유지/외란 RGB 진단 결과](experiments/2026-10-06-s4-llm/s4grip2/README.md): 24사례 완료; 확증 정탐4/6, 유지 경보0/6, r3 조기경보·unknown으로 안전 감지기 not-ready.

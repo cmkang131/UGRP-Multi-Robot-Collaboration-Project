@@ -1,0 +1,38 @@
+{
+  "gt_evaluation_only": true,
+  "baseline_pose_records_exact": true,
+  "table": {
+    "off": {
+      "source": "/Users/changmin/projects/ugrp/outputs/s3fix5-20261009/replay-off",
+      "prediction_sha256": "c4eb1ce4cbac7763623fa70cae83f6f6e87322ea98dd69c7643a91805882bdcb",
+      "frames": 5493,
+      "evaluated_frames": 5249,
+      "final_error_m": 0.3879645010194854,
+      "final_sigma_m": 0.005400484834371477,
+      "final_error_over_sigma": 71.83882797897677,
+      "xy_rmse_m": 0.3487254109402608,
+      "over_3sigma": 4006,
+      "over_3sigma_fraction": 0.7631929891407887,
+      "final_yaw_error_deg": 0.2714493395275076,
+      "correct_certificates": 0,
+      "false_certificates": 2549
+    },
+    "on": {
+      "source": "/Users/changmin/projects/ugrp/outputs/s3fix5-20261009/replay-on",
+      "prediction_sha256": "c195d36855cfbbd109434722aedcb2425a23a63b87ad40e76c8187e174edb024",
+      "frames": 5493,
+      "evaluated_frames": 5249,
+      "final_error_m": 0.372112932724566,
+      "final_sigma_m": 0.00553237824983801,
+      "final_error_over_sigma": 67.26093479516908,
+      "xy_rmse_m": 0.3205812167528972,
+      "over_3sigma": 4545,
+      "over_3sigma_fraction": 0.8658792150885883,
+      "final_yaw_error_deg": 4.340367225531336,
+      "correct_certificates": 1215,
+      "false_certificates": 2925
+    }
+  },
+  "smoke_option": "off",
+  "selection_rule": "preregistered calibration XY RMSE lower; final r2 error and >3sigma fraction not worse; no posthoc tuning"
+}

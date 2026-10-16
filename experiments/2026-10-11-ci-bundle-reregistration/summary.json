@@ -1,0 +1,51 @@
+{
+  "class": "dev",
+  "pr": 416,
+  "branch": "codex/s3-no-prior-smoke",
+  "base_sha": "2d5fc9944b208bf2dfd89633f7766f001e303b03",
+  "bundle_id": "zone-s3-recovery-v188",
+  "historical_bundle": "zone-s3-recovery-v152",
+  "historical_source_hashes": {
+    "matched": 379,
+    "total": 379,
+    "source_sha": "981baa95"
+  },
+  "new_source_files": 431,
+  "changed_historical_consumers": [
+    "harness/controller_exact_speedups.py",
+    "harness/zone_final_pair_guards.py",
+    "harness/zone_own_sweep.py",
+    "harness/zone_pair_guards.py",
+    "sim/final_environment_checks.py",
+    "sim/solo_cyan_v106.py"
+  ],
+  "controller_behavior_changes": false,
+  "simulation_runs": 0,
+  "local_tests": [
+    {
+      "file": "tests/test_s3_recovery.py",
+      "passed": 15,
+      "failed": 0,
+      "seconds": 149.81
+    },
+    {
+      "file": "tests/test_simulation_workflow_manager.py",
+      "passed": 21,
+      "failed": 0,
+      "seconds": 2.27
+    }
+  ],
+  "ci": "pending after push; final remote checks recorded in PR body",
+  "ci_raw_location": "GitHub Actions / PR416 checks",
+  "local_final_ci_record": "outputs/ci-bundle-reregistration/pr416/summary.json",
+  "references": [
+    "https://git-scm.com/docs/git-show",
+    "https://git-scm.com/docs/git-archive"
+  ],
+  "artifact_sha256": {
+    "retired-bundles.json": "17dc4ea465057ec643087c5321cd7937bc23fab9a3d94698c338c53d33c5c604",
+    "registration-v188.json": "fafd76bea90a0f4d50c3a3c1bffac6215cb10e28697c3b6c6a6c69d412eb1ba1",
+    "source-seal-v188.json": "7adcac5d7cb26242ab3dd85fe1a681d139e53d23a5541afdb538f1001f426b41",
+    "reservation-scan.json": "1971aa16f4ae73e4aaa88f3a389408eb927c46fd4d91094c4b10cae862fe0ebc"
+  }
+}

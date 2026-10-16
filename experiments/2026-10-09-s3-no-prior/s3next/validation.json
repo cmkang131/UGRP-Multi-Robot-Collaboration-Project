@@ -1,0 +1,27 @@
+{
+  "tests": [
+    "tests/test_s3_camera_render.py",
+    "tests/test_s3_no_prior.py"
+  ],
+  "passed": 13,
+  "wall_s": 20.04,
+  "physics_steps": 0,
+  "render_scope": "shared render method with renderer double; first actual RGB checked during next smoke",
+  "preparation": {
+    "tests": [
+      "tests/test_s3_camera_render.py",
+      "tests/test_s3_no_prior.py",
+      "tests/test_simulation_workflow_manager.py"
+    ],
+    "passed": 32,
+    "wall_s": 64.58,
+    "initial_failure": "main v7-exact-speed-benchmark missing explicit planning sample; added required suite/source args",
+    "heading_integration_pending": true,
+    "simulation_runs": 0
+  },
+  "dependency_refusal_test": {
+    "passed": 1,
+    "deselected": 11,
+    "wall_s": 43.03
+  }
+}

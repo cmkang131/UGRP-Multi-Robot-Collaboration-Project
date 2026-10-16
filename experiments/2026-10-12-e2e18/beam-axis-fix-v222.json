@@ -1,0 +1,27 @@
+{
+  "bundle": "e2e18-v222",
+  "toggle": "beam_axis=undirected_v1",
+  "cause": "Own-camera axis ray points away from robot; opposite near end reverses angle by pi. Directed abs(yaw)<=5deg rejected equivalent rectangle footprint. seed61004 replay:0/30 accepted,6/30 within5deg modulo pi.",
+  "raw": "beam-axis-replay.json",
+  "fix": "abs(0.5 atan2(sin2yaw,cos2yaw)); directed grip and center reconstruction unchanged; >5deg line error still rejected; no GT input",
+  "tests": "44 passed: beam_axis + route_guard + goal_route",
+  "references": [
+    "https://docs.opencv.org/4.5.3/d1/dee/tutorial_introduction_to_pca.html"
+  ],
+  "replacement_seeds": [
+    61001,
+    61002,
+    61007,
+    61008
+  ],
+  "continuing_seeds": [
+    61003,
+    61004,
+    61005,
+    61006,
+    61009,
+    61010,
+    61011,
+    61012
+  ]
+}

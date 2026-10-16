@@ -1,0 +1,968 @@
+{
+  "schema": "ugrp.e2e11.v1",
+  "status": "COMPLETE_WITH_FAILURES",
+  "pr": 433,
+  "run_class": "dev",
+  "research_result": false,
+  "source_sha": "540193bab171b85069fb5b47333cb292625490bf",
+  "initial_failed_source_sha": "a63f626bbe004d8d626474fe388ff9efef71460e",
+  "execution_bundle": "e2e-stall-odometry-v198",
+  "workflow_version": "7.91.0",
+  "diagnosis": {
+    "file": "diagnosis.json",
+    "definition": "Evaluation only: issued-command XY increment >=5mm, actual 50ms-sampled path length <20 percent of that increment. Exact frame/truth time alignment. Contact attribution is association, not causal proof.",
+    "rpp_r2_stall_fraction_range": [
+      0.3127147766,
+      0.6695059625
+    ],
+    "max_map_error_m": 6.979864712696211,
+    "r2_A61001": {
+      "stall_s": 94.8,
+      "issued_m": 6.12569812848129,
+      "actual_path_m": 0.8218324241330888
+    },
+    "r2_A61002": {
+      "stall_s": 157.2,
+      "issued_m": 10.157803225709504,
+      "actual_path_m": 1.437617803269483
+    },
+    "selected_pair_rgb": {
+      "stalled": {
+        "n": 144,
+        "status_counts": {
+          "stationary_view": 71,
+          "changed_view": 73
+        },
+        "median_px": 1.0053313970565796,
+        "p90_px": 1.4518373906612398,
+        "mean_abs_diff": 0.31093207555302205
+      },
+      "moving": {
+        "n": 196,
+        "status_counts": {
+          "stationary_view": 11,
+          "changed_view": 185
+        },
+        "median_px": 2.0719615817070007,
+        "p90_px": 4.42897276878357,
+        "mean_abs_diff": 1.301407400178098
+      }
+    }
+  },
+  "replay": {
+    "file": "replay-comparison.json",
+    "scope": "Fixed actual issued commands and 394 individually selected saved RGB frames (5,924,681 bytes), no simulation or model calls. 18 windows chosen from long stalls and moving segments; missing images reset detector and keep nominal odometry. Command estimator only; RBPF maps and recovery actions not replayed. Not held-out evidence.",
+    "selected": "rgb_pulse_gate_v1",
+    "image_hash_matches": 394,
+    "off_max_abs_reproduction_error": 2.4868995751603507e-14,
+    "windows": 18,
+    "mean_window_endpoint_increment_error_m": {
+      "off": 0.16344299511202404,
+      "rgb_gate_v1": 0.1490633618622202,
+      "rgb_pulse_gate_v1": 0.1376159231959825
+    },
+    "pulse_confusion": {
+      "gated_stall": 36,
+      "ungated_stall": 108,
+      "gated_moving": 0,
+      "ungated_moving": 196
+    },
+    "pulse_windows": {
+      "improved": 9,
+      "worse": 1,
+      "unchanged": 8,
+      "max_worsening_m": 0.000103067234629
+    },
+    "noise_and_recovery_effect": "not evaluated by fixed-command mean replay; deterministic integration tests only",
+    "images_individually_retrieved": true,
+    "candidate_v1_confusion": {
+      "gated_stall": 20,
+      "ungated_stall": 124,
+      "gated_moving": 0,
+      "ungated_moving": 196
+    }
+  },
+  "preregistration": {
+    "max_runs": 4,
+    "seed": [
+      61001,
+      61002
+    ],
+    "conditions": {
+      "A": "RPP + Gemma + rgb_pulse_gate_v1 + backup_replan_v1 + amcl_alpha_v1",
+      "B": "RPP + Gemma; all new toggles off"
+    },
+    "pairing": "A/B per seed submitted in the same four-run batch",
+    "deadline_ready_utc": "2026-10-11T19:45:00Z",
+    "wall_end_before_utc": "2026-10-11T21:40:00Z",
+    "guard_cap_utc": "2026-10-11T21:50:00Z",
+    "success": "LLM_operated AND own_map_completed AND start_to_finish_transport in the same run",
+    "failure": "runtime/physical failure or finite wall/storage cap; conservative DEV guards logged only",
+    "early_check_wall_s": 210
+  },
+  "counting": {
+    "launch_attempts": 8,
+    "initial_host_errors_before_locomotion": 4,
+    "positive_sim_time_runs": 4,
+    "max_concurrent_simulations": 4,
+    "denominator": "outcomes_all_launches includes all eight attempts; A/B comparison includes four positive-SIM runs."
+  },
+  "outcomes_all_launches": {
+    "N": 8,
+    "LLM_operated": 4,
+    "own_map_completed": 0,
+    "start_to_finish_transport": 0,
+    "E2E_success": 0
+  },
+  "conditions": {
+    "A": {
+      "n": 2,
+      "LLM_operated": 2,
+      "own_map_completed": 0,
+      "start_to_finish_transport": 0,
+      "E2E_success": 0
+    },
+    "B": {
+      "n": 2,
+      "LLM_operated": 2,
+      "own_map_completed": 0,
+      "start_to_finish_transport": 0,
+      "E2E_success": 0
+    }
+  },
+  "model_accounting": {
+    "provider_calls": 12,
+    "known_cost_usd": 0.00166752,
+    "missing_cost_calls": 0,
+    "initial_failed_provider_calls": 0,
+    "ledger_artifact": "model-accounting.json.zst",
+    "scope": "Model usage only; VM compute cost is separate."
+  },
+  "retrieval": {
+    "completed": 8,
+    "expected": 8,
+    "files": 24088,
+    "hash_matches": 24088,
+    "mac_lite_bytes": 54460577
+  },
+  "completed_launches": 8,
+  "unfinished_launches": 0,
+  "remaining": [
+    "The binary RGB stationarity gate misses nonzero partial slip and cannot correct heading drift. R2 max error improved for seed61001 but worsened for seed61002; no uniform improvement or E2E readiness claim.",
+    "All four runs hit inherited internal 270s navigation budget despite outer 1800s case cap. v199 finite-budget repair passed 31 offline tests only and was not executed after readiness deadline.",
+    "A61001 r1 earlier exhausted reachable frontiers after one sweep; exploration_finished is not B boundary completion. It remains unresolved.",
+    "A combines gate, backup, and alpha inflation; this four-case DEV comparison cannot isolate component causal effects.",
+    "PR remains draft; merge conflicts, required review, and remote checks must be resolved before adoption."
+  ],
+  "last_recorded_utc": "2026-10-11T20:04:11.265815+00:00",
+  "evaluation_scope": "Ground truth used only for post-run diagnostic scoring in each own-start frame; no truth enters controller. Actual command replay supplies ungated stall denominator for both conditions. Fixed270s active comparison, full-run metrics, and matched shorter-run metrics are separate DEV evidence.",
+  "budget_mismatch": {
+    "first_terminal_sim_s": 270.2,
+    "affected_runs": 4,
+    "affected_mapping_robots": 8,
+    "outer_cap_s": 1800.0,
+    "inner_cap_s": 270.0,
+    "termination_class": "operational_configuration_error",
+    "stop_reason": "OUTER_1800S_INNER_270S_MAPPING_BUDGET_MISMATCH",
+    "proof": "operations.json.zst",
+    "post_270s_idle_tail_excluded_from_active_comparison": true,
+    "physical_failure": false,
+    "success": false,
+    "source": "harness/goal_route_continuous.py: legacy fixed 270s per leg; e2e_live_mapping.make_goal disables route selection/arrival so leg_start never resets."
+  },
+  "prepared_fix": {
+    "status": "PREPARED_NOT_EXECUTED_AFTER_CUTOFF",
+    "bundle": "e2e-stall-budget-v199",
+    "workflow_version": "7.92.0",
+    "toggle": "--mapping-budget case_cap_v1",
+    "default": "off; legacy 270s preserved",
+    "effect": "Pass explicit finite outer 1800s case budget to inner GoalRoute. No implicit infinite budget.",
+    "actual_execution": false,
+    "reason_not_executed": "Discovered and repaired after 2026-10-11 19:45 UTC readiness deadline; VM stayed off after retrieval.",
+    "number_audit": "budget-repair-bundle-audit.json",
+    "adopted": false,
+    "retirement": "v198 remains a frozen DEV result; v199 is not yet adopted.",
+    "code_files": {
+      "harness/goal_route_continuous.py": "a06a381c73a6cc9a8352bb0e29c7b5dc1c0505b5404b94eae88da8f469e64f4c",
+      "harness/e2e_live_mapping.py": "fceb6202586d065c426b6dccb9ff846da18dbcbcda423f2c83fc4a9d8ad30f68",
+      "scripts/run_e2e_ownmap_live.py": "1d66e956aafee566746d5b90903b4b939029f5514797a5b60fb7b98c2de75d3f",
+      "configs/simulation_workflows.d/e2e_stall_budget_v199.json": "4f3334239ab4232d28876b15280f43ae3b9829c533f9d3eaa3738dd27c86fb6b",
+      "tests/test_e2e_stall_odometry.py": "0fd10b4b8df63ac29eb7f32c75f7549bc2560c1c0a205289d462c13bd29521ef"
+    }
+  },
+  "tests": {
+    "initial": {
+      "files": [
+        "tests/test_e2e_stall_odometry.py",
+        "tests/test_e2e_explore_posefix.py",
+        "tests/test_e2e_rpp_path.py"
+      ],
+      "passed": 27,
+      "scope": "offline only",
+      "resolved_failures": [
+        "Bound callback deepcopy recursively cloned the RBPF owner; clone predictor data without callbacks.",
+        "Two new test callers erroneously included t in Robot.commanded action; corrected fixture to actual action ABI."
+      ]
+    },
+    "relay_fix": {
+      "files": [
+        "tests/test_e2e_stall_odometry.py",
+        "tests/test_e2e_s4_live.py"
+      ],
+      "passed": 47,
+      "seconds": 8.65
+    },
+    "budget_fix": {
+      "files": [
+        "tests/test_e2e_stall_odometry.py",
+        "tests/test_goal_route_continuous.py"
+      ],
+      "passed": 31,
+      "seconds": 10.26,
+      "scope": "Offline only: actual Robot receive path at 269.8/270/1799.8/1800s; finite validation and bundle/catalog wiring."
+    },
+    "count_scope": "Separate revisions; do not add passed counts as unique tests."
+  },
+  "active_comparison": {
+    "sim_window_s": [
+      0,
+      270.0
+    ],
+    "artifact": "active-first270.json.zst",
+    "r2_max_map_error_m_B_to_A": {
+      "61001": [
+        6.023382061756469,
+        3.2535192403317668
+      ],
+      "61002": [
+        3.626234732754522,
+        6.137647666254563
+      ]
+    },
+    "scope": "Common active prefix before inner budget expires; full-run maximum/median per run below."
+  },
+  "runs": [
+    {
+      "id": "e2e11-a-s61001",
+      "batch": "A",
+      "seed": 61001,
+      "source_sha": "a63f626bbe004d8d626474fe388ff9efef71460e",
+      "status": "HOST_ERROR",
+      "exit": 1,
+      "cause": "relay namespace rejected e2e11 call ID with HTTP 400 before provider forwarding",
+      "frames": 1,
+      "sim_s": 0.0,
+      "wall_s": 15.37714164700003,
+      "LLM_operated": false,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "furthest_stage": "mapping_initial_frame",
+      "model_calls_attempted": 3,
+      "initial_check": {
+        "passed": false,
+        "elapsed_since_submit_s": 42.768232107162476,
+        "checks": {
+          "no_exceptions": false,
+          "frames_increased": false,
+          "sim_time_increased": false,
+          "actual_translation": false,
+          "ownmap_trace": false,
+          "mapping_phase_entered": true,
+          "normal_model_response": false,
+          "translation_command": false,
+          "model_response_accepted": false
+        }
+      },
+      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e11-a-s61001",
+      "arm_raw": "oracle-codex:/home/ubuntu/ugrp-archive/runs/native-e2e11-a-s61001",
+      "summary_sha256": "0515b77948c768fe80cf8721ed438416b7eb6ef741274f760434823bcb833018",
+      "model": {
+        "provider_calls": 0,
+        "known_cost_usd": 0
+      },
+      "evaluation": {
+        "status": "NOT_APPLICABLE_NO_LOCOMOTION",
+        "stall_segments": 0,
+        "stall_duration_s": 0,
+        "map_error_m": null,
+        "frame_jump_m": null
+      },
+      "archive_proof": "operations.json.zst"
+    },
+    {
+      "id": "e2e11-b-s61001",
+      "batch": "B",
+      "seed": 61001,
+      "source_sha": "a63f626bbe004d8d626474fe388ff9efef71460e",
+      "status": "HOST_ERROR",
+      "exit": 1,
+      "cause": "relay namespace rejected e2e11 call ID with HTTP 400 before provider forwarding",
+      "frames": 1,
+      "sim_s": 0.0,
+      "wall_s": 15.413686728000016,
+      "LLM_operated": false,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "furthest_stage": "mapping_initial_frame",
+      "model_calls_attempted": 3,
+      "initial_check": {
+        "passed": false,
+        "elapsed_since_submit_s": 41.48827886581421,
+        "checks": {
+          "no_exceptions": false,
+          "frames_increased": false,
+          "sim_time_increased": false,
+          "actual_translation": false,
+          "ownmap_trace": false,
+          "mapping_phase_entered": true,
+          "normal_model_response": false,
+          "translation_command": false,
+          "model_response_accepted": false
+        }
+      },
+      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e11-b-s61001",
+      "arm_raw": "oracle-codex:/home/ubuntu/ugrp-archive/runs/native-e2e11-b-s61001",
+      "summary_sha256": "1866ecb939ffb2009172d87159d444f5542197a1f1de40dbc549432172a2c922",
+      "model": {
+        "provider_calls": 0,
+        "known_cost_usd": 0
+      },
+      "evaluation": {
+        "status": "NOT_APPLICABLE_NO_LOCOMOTION",
+        "stall_segments": 0,
+        "stall_duration_s": 0,
+        "map_error_m": null,
+        "frame_jump_m": null
+      },
+      "archive_proof": "operations.json.zst"
+    },
+    {
+      "id": "e2e11-a-s61002",
+      "batch": "A",
+      "seed": 61002,
+      "source_sha": "a63f626bbe004d8d626474fe388ff9efef71460e",
+      "status": "HOST_ERROR",
+      "exit": 1,
+      "cause": "relay namespace rejected e2e11 call ID with HTTP 400 before provider forwarding",
+      "frames": 1,
+      "sim_s": 0.0,
+      "wall_s": 15.462724406000007,
+      "LLM_operated": false,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "furthest_stage": "mapping_initial_frame",
+      "model_calls_attempted": 3,
+      "initial_check": {
+        "passed": false,
+        "elapsed_since_submit_s": 40.231945514678955,
+        "checks": {
+          "no_exceptions": false,
+          "frames_increased": false,
+          "sim_time_increased": false,
+          "actual_translation": false,
+          "ownmap_trace": false,
+          "mapping_phase_entered": true,
+          "normal_model_response": false,
+          "translation_command": false,
+          "model_response_accepted": false
+        }
+      },
+      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e11-a-s61002",
+      "arm_raw": "oracle-codex:/home/ubuntu/ugrp-archive/runs/native-e2e11-a-s61002",
+      "summary_sha256": "9eb6d239789d2c2b042b0ed1fa2ddc4c316064a5b98a4a9c87f33464a65f65e9",
+      "model": {
+        "provider_calls": 0,
+        "known_cost_usd": 0
+      },
+      "evaluation": {
+        "status": "NOT_APPLICABLE_NO_LOCOMOTION",
+        "stall_segments": 0,
+        "stall_duration_s": 0,
+        "map_error_m": null,
+        "frame_jump_m": null
+      },
+      "archive_proof": "operations.json.zst"
+    },
+    {
+      "id": "e2e11-b-s61002",
+      "batch": "B",
+      "seed": 61002,
+      "source_sha": "a63f626bbe004d8d626474fe388ff9efef71460e",
+      "status": "HOST_ERROR",
+      "exit": 1,
+      "cause": "relay namespace rejected e2e11 call ID with HTTP 400 before provider forwarding",
+      "frames": 1,
+      "sim_s": 0.0,
+      "wall_s": 15.45429647800006,
+      "LLM_operated": false,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "furthest_stage": "mapping_initial_frame",
+      "model_calls_attempted": 3,
+      "initial_check": {
+        "passed": false,
+        "elapsed_since_submit_s": 38.967008113861084,
+        "checks": {
+          "no_exceptions": false,
+          "frames_increased": false,
+          "sim_time_increased": false,
+          "actual_translation": false,
+          "ownmap_trace": false,
+          "mapping_phase_entered": true,
+          "normal_model_response": false,
+          "translation_command": false,
+          "model_response_accepted": false
+        }
+      },
+      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e11-b-s61002",
+      "arm_raw": "oracle-codex:/home/ubuntu/ugrp-archive/runs/native-e2e11-b-s61002",
+      "summary_sha256": "8e77aecc28207a990d94e5ac5f4c4b0c0afd1d66ba6e18736890bfc17be4d068",
+      "model": {
+        "provider_calls": 0,
+        "known_cost_usd": 0
+      },
+      "evaluation": {
+        "status": "NOT_APPLICABLE_NO_LOCOMOTION",
+        "stall_segments": 0,
+        "stall_duration_s": 0,
+        "map_error_m": null,
+        "frame_jump_m": null
+      },
+      "archive_proof": "operations.json.zst"
+    },
+    {
+      "id": "e2e11-a-s61001-r2",
+      "batch": "A",
+      "seed": 61001,
+      "source_sha": "540193bab171b85069fb5b47333cb292625490bf",
+      "status": "EARLY_STOP",
+      "exit": 130,
+      "cause": "OUTER_1800S_INNER_270S_MAPPING_BUDGET_MISMATCH",
+      "termination_class": "operational_configuration_error",
+      "frames": 2002,
+      "sim_s": 400.23525,
+      "wall_s": 4522.205725389,
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "furthest_stage": "B_candidate_before_boundary_confirmation",
+      "furthest_stage_timing": {
+        "first_B_candidate_sim_s": 2.4,
+        "first_B_candidate_robot": "r1",
+        "wall_s_at_candidate": null,
+        "wall_timing_scope": "No wall timestamp per ownmap row; total driver wall_s is measured separately."
+      },
+      "model": {
+        "relay_receipts": 3,
+        "provider_calls": 3,
+        "http_attempts": 3,
+        "prompt_tokens": 4612,
+        "completion_tokens": 146,
+        "known_cost_usd": 0.00033927999999999996,
+        "missing_cost_calls": 0,
+        "latency_median_s": 6.609646499971859
+      },
+      "model_calls_attempted": 3,
+      "initial_check": {
+        "passed": true,
+        "elapsed_since_submit_s": 210.45966482162476,
+        "proof": "operations.json.zst"
+      },
+      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e11-a-s61001-r2",
+      "arm_raw": "oracle-codex:/home/ubuntu/ugrp-archive/runs/native-e2e11-a-s61001-r2",
+      "result_sha256": "a7f8fd4d562484dcbb468944d48c724647a73d1bacdfb26bbc58753ebd46a28c",
+      "summary_sha256": "4f61a2a4b55e2ad332fed868237f308747cfe2c6eb2995ccfc00cf6b309bf9e4",
+      "evaluation": {
+        "r1": {
+          "status": "SCORED",
+          "frames": 2002,
+          "map_error_m": {
+            "max": 1.81565187874657,
+            "median": 1.7814368640786853
+          },
+          "control_error_m": {
+            "max": 0.5651377454433367,
+            "median": 0.5648798804834534
+          },
+          "map_frame_jump_m": {
+            "max": 0.15570970126018974,
+            "median": 0.0,
+            "over_5cm": 5,
+            "over_20cm": 0
+          },
+          "control_frame_jump_m": {
+            "max": 0.01292341377316771,
+            "median": 0.0,
+            "over_5cm": 0,
+            "over_20cm": 0
+          },
+          "stall_segments": 0,
+          "stall_duration_s": 0,
+          "issued_during_stall_m": 0,
+          "actual_path_during_stall_m": 0,
+          "gated_frames": 0,
+          "gated_moving_intervals": 0,
+          "moving_intervals": 299
+        },
+        "r2": {
+          "status": "SCORED",
+          "frames": 2002,
+          "map_error_m": {
+            "max": 3.2535192403317668,
+            "median": 2.4509436974544263
+          },
+          "control_error_m": {
+            "max": 5.187379496961881,
+            "median": 3.487353375469496
+          },
+          "map_frame_jump_m": {
+            "max": 0.3101598263274056,
+            "median": 0.012923413773166616,
+            "over_5cm": 18,
+            "over_20cm": 4
+          },
+          "control_frame_jump_m": {
+            "max": 0.012923413773168217,
+            "median": 0.002820629349281442,
+            "over_5cm": 0,
+            "over_20cm": 0
+          },
+          "stall_segments": 8,
+          "stall_duration_s": 21.40000000000002,
+          "issued_during_stall_m": 1.3828052737289085,
+          "actual_path_during_stall_m": 0.1414503179813034,
+          "gated_frames": 103,
+          "gated_moving_intervals": 0,
+          "moving_intervals": 577
+        }
+      },
+      "navigation_exhaustion": {
+        "r1": {
+          "frames": 931,
+          "first_sim_s": 84.0,
+          "last_sim_s": 270.0,
+          "observed_duration_s": 186.20000000000002,
+          "frontier_finish_events": 1
+        },
+        "r2": {
+          "frames": 0,
+          "first_sim_s": null,
+          "last_sim_s": null,
+          "observed_duration_s": 0.0,
+          "frontier_finish_events": 0
+        }
+      },
+      "archive_proof": "operations.json.zst"
+    },
+    {
+      "id": "e2e11-b-s61001-r2",
+      "batch": "B",
+      "seed": 61001,
+      "source_sha": "540193bab171b85069fb5b47333cb292625490bf",
+      "status": "EARLY_STOP",
+      "exit": 130,
+      "cause": "OUTER_1800S_INNER_270S_MAPPING_BUDGET_MISMATCH",
+      "termination_class": "operational_configuration_error",
+      "frames": 1955,
+      "sim_s": 391.0,
+      "wall_s": 4522.23936055,
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "furthest_stage": "B_candidate_before_boundary_confirmation",
+      "furthest_stage_timing": {
+        "first_B_candidate_sim_s": 2.4,
+        "first_B_candidate_robot": "r1",
+        "wall_s_at_candidate": null,
+        "wall_timing_scope": "No wall timestamp per ownmap row; total driver wall_s is measured separately."
+      },
+      "model": {
+        "relay_receipts": 3,
+        "provider_calls": 3,
+        "http_attempts": 3,
+        "prompt_tokens": 4612,
+        "completion_tokens": 146,
+        "known_cost_usd": 0.00046471999999999996,
+        "missing_cost_calls": 0,
+        "latency_median_s": 5.6019543330185115
+      },
+      "model_calls_attempted": 3,
+      "initial_check": {
+        "passed": true,
+        "elapsed_since_submit_s": 212.24427938461304,
+        "proof": "operations.json.zst"
+      },
+      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e11-b-s61001-r2",
+      "arm_raw": "oracle-codex:/home/ubuntu/ugrp-archive/runs/native-e2e11-b-s61001-r2",
+      "result_sha256": "22af4fc15e186639bd6d0db2b3c5ffb855379e5756676c9236842de52cad1329",
+      "summary_sha256": "f5f2dec9ce88ff6ed2a0b881a0f8e2520c6e1850e701bc4fcf39a5c5b16545e0",
+      "evaluation": {
+        "r1": {
+          "status": "SCORED",
+          "frames": 1955,
+          "map_error_m": {
+            "max": 4.3761142937502004,
+            "median": 2.108700592252741
+          },
+          "control_error_m": {
+            "max": 3.998201114804028,
+            "median": 1.302085285814664
+          },
+          "map_frame_jump_m": {
+            "max": 0.51535039656558,
+            "median": 0.012923413773166983,
+            "over_5cm": 10,
+            "over_20cm": 2
+          },
+          "control_frame_jump_m": {
+            "max": 0.012923413773168349,
+            "median": 0.012923413773167042,
+            "over_5cm": 0,
+            "over_20cm": 0
+          },
+          "stall_segments": 0,
+          "stall_duration_s": 0,
+          "issued_during_stall_m": 0,
+          "actual_path_during_stall_m": 0,
+          "gated_frames": 0,
+          "gated_moving_intervals": 0,
+          "moving_intervals": 980
+        },
+        "r2": {
+          "status": "SCORED",
+          "frames": 1955,
+          "map_error_m": {
+            "max": 6.024104760950433,
+            "median": 5.479960009693085
+          },
+          "control_error_m": {
+            "max": 6.565903851187988,
+            "median": 5.3867858297503135
+          },
+          "map_frame_jump_m": {
+            "max": 0.48378422562595996,
+            "median": 0.01292341377316675,
+            "over_5cm": 13,
+            "over_20cm": 3
+          },
+          "control_frame_jump_m": {
+            "max": 0.012923413773168593,
+            "median": 0.012923413773166909,
+            "over_5cm": 0,
+            "over_20cm": 0
+          },
+          "stall_segments": 78,
+          "stall_duration_s": 94.7999999999999,
+          "issued_during_stall_m": 6.125698128481292,
+          "actual_path_during_stall_m": 0.8218324241330888,
+          "gated_frames": 0,
+          "gated_moving_intervals": 0,
+          "moving_intervals": 361
+        }
+      },
+      "navigation_exhaustion": {
+        "r1": {
+          "frames": 0,
+          "first_sim_s": null,
+          "last_sim_s": null,
+          "observed_duration_s": 0.0,
+          "frontier_finish_events": 0
+        },
+        "r2": {
+          "frames": 0,
+          "first_sim_s": null,
+          "last_sim_s": null,
+          "observed_duration_s": 0.0,
+          "frontier_finish_events": 0
+        }
+      },
+      "archive_proof": "operations.json.zst"
+    },
+    {
+      "id": "e2e11-a-s61002-r2",
+      "batch": "A",
+      "seed": 61002,
+      "source_sha": "540193bab171b85069fb5b47333cb292625490bf",
+      "status": "EARLY_STOP",
+      "exit": 130,
+      "cause": "OUTER_1800S_INNER_270S_MAPPING_BUDGET_MISMATCH",
+      "termination_class": "operational_configuration_error",
+      "frames": 1709,
+      "sim_s": 341.65,
+      "wall_s": 4522.205855266,
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "furthest_stage": "B_candidate_before_boundary_confirmation",
+      "furthest_stage_timing": {
+        "first_B_candidate_sim_s": 2.4,
+        "first_B_candidate_robot": "r1",
+        "wall_s_at_candidate": null,
+        "wall_timing_scope": "No wall timestamp per ownmap row; total driver wall_s is measured separately."
+      },
+      "model": {
+        "relay_receipts": 3,
+        "provider_calls": 3,
+        "http_attempts": 3,
+        "prompt_tokens": 4615,
+        "completion_tokens": 140,
+        "known_cost_usd": 0.00046295000000000006,
+        "missing_cost_calls": 0,
+        "latency_median_s": 5.338473666983191
+      },
+      "model_calls_attempted": 3,
+      "initial_check": {
+        "passed": true,
+        "elapsed_since_submit_s": 211.03339910507202,
+        "proof": "operations.json.zst"
+      },
+      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e11-a-s61002-r2",
+      "arm_raw": "oracle-codex:/home/ubuntu/ugrp-archive/runs/native-e2e11-a-s61002-r2",
+      "result_sha256": "b1aad132888e85f6ddb1696edc58820aeacd6fa74e87cc62e084328756105dc9",
+      "summary_sha256": "d57ce5fbfdf3bdb531565c4ab6e9f8b24c8adfc7047ee9853a67781dabdd2eae",
+      "evaluation": {
+        "r1": {
+          "status": "SCORED",
+          "frames": 1709,
+          "map_error_m": {
+            "max": 1.985264200317793,
+            "median": 0.8858139203393776
+          },
+          "control_error_m": {
+            "max": 2.6135173510680225,
+            "median": 0.5253770045868941
+          },
+          "map_frame_jump_m": {
+            "max": 0.18947646775762156,
+            "median": 0.01292341377316716,
+            "over_5cm": 11,
+            "over_20cm": 0
+          },
+          "control_frame_jump_m": {
+            "max": 0.012923413773168345,
+            "median": 0.012923413773167167,
+            "over_5cm": 0,
+            "over_20cm": 0
+          },
+          "stall_segments": 13,
+          "stall_duration_s": 47.20000000000002,
+          "issued_during_stall_m": 3.0499256504674923,
+          "actual_path_during_stall_m": 0.4281248698454479,
+          "gated_frames": 23,
+          "gated_moving_intervals": 0,
+          "moving_intervals": 836
+        },
+        "r2": {
+          "status": "SCORED",
+          "frames": 1709,
+          "map_error_m": {
+            "max": 6.137647666254563,
+            "median": 2.0766507530924416
+          },
+          "control_error_m": {
+            "max": 6.224311512865857,
+            "median": 2.263038967596217
+          },
+          "map_frame_jump_m": {
+            "max": 0.4757385019464529,
+            "median": 0.012923413773167013,
+            "over_5cm": 20,
+            "over_20cm": 5
+          },
+          "control_frame_jump_m": {
+            "max": 0.012923413773168522,
+            "median": 0.012923413773167074,
+            "over_5cm": 0,
+            "over_20cm": 0
+          },
+          "stall_segments": 18,
+          "stall_duration_s": 17.000000000000025,
+          "issued_during_stall_m": 1.0984901707192345,
+          "actual_path_during_stall_m": 0.14640463277407054,
+          "gated_frames": 40,
+          "gated_moving_intervals": 0,
+          "moving_intervals": 752
+        }
+      },
+      "navigation_exhaustion": {
+        "r1": {
+          "frames": 0,
+          "first_sim_s": null,
+          "last_sim_s": null,
+          "observed_duration_s": 0.0,
+          "frontier_finish_events": 0
+        },
+        "r2": {
+          "frames": 0,
+          "first_sim_s": null,
+          "last_sim_s": null,
+          "observed_duration_s": 0.0,
+          "frontier_finish_events": 0
+        }
+      },
+      "archive_proof": "operations.json.zst"
+    },
+    {
+      "id": "e2e11-b-s61002-r2",
+      "batch": "B",
+      "seed": 61002,
+      "source_sha": "540193bab171b85069fb5b47333cb292625490bf",
+      "status": "EARLY_STOP",
+      "exit": 130,
+      "cause": "OUTER_1800S_INNER_270S_MAPPING_BUDGET_MISMATCH",
+      "termination_class": "operational_configuration_error",
+      "frames": 2091,
+      "sim_s": 418.15,
+      "wall_s": 4522.206112805001,
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "furthest_stage": "B_candidate_before_boundary_confirmation",
+      "furthest_stage_timing": {
+        "first_B_candidate_sim_s": 2.4,
+        "first_B_candidate_robot": "r1",
+        "wall_s_at_candidate": null,
+        "wall_timing_scope": "No wall timestamp per ownmap row; total driver wall_s is measured separately."
+      },
+      "model": {
+        "relay_receipts": 3,
+        "provider_calls": 3,
+        "http_attempts": 3,
+        "prompt_tokens": 4615,
+        "completion_tokens": 141,
+        "known_cost_usd": 0.00040057,
+        "missing_cost_calls": 0,
+        "latency_median_s": 5.288840292021632
+      },
+      "model_calls_attempted": 3,
+      "initial_check": {
+        "passed": true,
+        "elapsed_since_submit_s": 212.82281064987183,
+        "proof": "operations.json.zst"
+      },
+      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e11-b-s61002-r2",
+      "arm_raw": "oracle-codex:/home/ubuntu/ugrp-archive/runs/native-e2e11-b-s61002-r2",
+      "result_sha256": "0fb483273aeb8093f25312527622f1955f5716ec4f22cd32fd54d10d51d6b87d",
+      "summary_sha256": "87016e382a66728425486ae9b3d76719461178505cefc81106728e0942d2efac",
+      "evaluation": {
+        "r1": {
+          "status": "SCORED",
+          "frames": 2091,
+          "map_error_m": {
+            "max": 6.309282206532107,
+            "median": 4.48672205198584
+          },
+          "control_error_m": {
+            "max": 2.266714329323016,
+            "median": 1.2917566162463903
+          },
+          "map_frame_jump_m": {
+            "max": 0.5282307231724874,
+            "median": 0.012923413773166867,
+            "over_5cm": 10,
+            "over_20cm": 2
+          },
+          "control_frame_jump_m": {
+            "max": 0.012923413773168326,
+            "median": 0.012923413773166914,
+            "over_5cm": 0,
+            "over_20cm": 0
+          },
+          "stall_segments": 8,
+          "stall_duration_s": 5.199999999999989,
+          "issued_during_stall_m": 0.3360087581023478,
+          "actual_path_during_stall_m": 0.04915307500685967,
+          "gated_frames": 0,
+          "gated_moving_intervals": 0,
+          "moving_intervals": 768
+        },
+        "r2": {
+          "status": "SCORED",
+          "frames": 2091,
+          "map_error_m": {
+            "max": 3.626234732754522,
+            "median": 2.0970645996503716
+          },
+          "control_error_m": {
+            "max": 4.522176824130333,
+            "median": 3.047326810016361
+          },
+          "map_frame_jump_m": {
+            "max": 0.13548605643030268,
+            "median": 0.012923413773166883,
+            "over_5cm": 4,
+            "over_20cm": 0
+          },
+          "control_frame_jump_m": {
+            "max": 0.012923413773168366,
+            "median": 0.012923413773166957,
+            "over_5cm": 0,
+            "over_20cm": 0
+          },
+          "stall_segments": 122,
+          "stall_duration_s": 157.20000000000002,
+          "issued_during_stall_m": 10.157803225709506,
+          "actual_path_during_stall_m": 1.437617803269483,
+          "gated_frames": 0,
+          "gated_moving_intervals": 0,
+          "moving_intervals": 22
+        }
+      },
+      "navigation_exhaustion": {
+        "r1": {
+          "frames": 0,
+          "first_sim_s": null,
+          "last_sim_s": null,
+          "observed_duration_s": 0.0,
+          "frontier_finish_events": 0
+        },
+        "r2": {
+          "frames": 0,
+          "first_sim_s": null,
+          "last_sim_s": null,
+          "observed_duration_s": 0.0,
+          "frontier_finish_events": 0
+        }
+      },
+      "archive_proof": "operations.json.zst"
+    }
+  ],
+  "vm": {
+    "verified_utc": "2026-10-11T20:00:57.803508+00:00",
+    "subscription": "88b7ee7f-f2f3-4a0d-a0ce-cf7306943676",
+    "resource_group": "UGRP-SIM-RG",
+    "vm": "ugrp-sim-azure",
+    "state": "PowerState/deallocated",
+    "proof": "operations.json.zst"
+  },
+  "raw_analysis": {
+    "path": "/Users/changmin/projects/ugrp/outputs/e2e11-stall-odometry",
+    "full_interval_diagnosis": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e11-stall-odometry/diagnosis/intervals.json.zst",
+      "bytes": 4975782,
+      "sha256": "f53545f30eb4b228af5e99493a028fe9976e6901305cccc259b8beba9225bb25"
+    }
+  },
+  "detail": "round-complete-detail.json.zst",
+  "references": "references/sources.json",
+  "retention": {
+    "class": "dev",
+    "pr": 433,
+    "pr_status": "open/draft",
+    "heavy_raw": "Retained on ARM while PR remains open; remove only at merge/close with checksum inventory and cleanup-records.",
+    "permanent": "summary, adjudication, LLM text, commands, hashes, representative version videos"
+  },
+  "artifacts": {
+    "path": "artifact-inventory.json.zst",
+    "bytes": 1584,
+    "sha256": "0e32a6024f8a871fccc063baba11815b17bb3fec62973c328e93877b7728d06b"
+  }
+}

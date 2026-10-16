@@ -1,0 +1,93 @@
+{
+  "cpu": [
+    {
+      "cohort": "cpu-prefix1-analysis.json",
+      "files": 704,
+      "mismatches": 0
+    },
+    {
+      "cohort": "cpu-prefix1-n64-analysis.json",
+      "files": 2816,
+      "mismatches": 0
+    },
+    {
+      "cohort": "cpu-prefix1-n256-analysis.json",
+      "files": 11264,
+      "mismatches": 0
+    },
+    {
+      "cohort": "cpu-mixed6-analysis.json",
+      "files": 1730,
+      "mismatches": 0
+    },
+    {
+      "cohort": "cpu-seed8318631-analysis.json",
+      "files": 1248,
+      "mismatches": 0
+    }
+  ],
+  "gpu": [
+    {
+      "round": "r1-70553d2f",
+      "job": "export",
+      "status": "complete",
+      "files": 17,
+      "mismatches": 0
+    },
+    {
+      "round": "r1-70553d2f",
+      "job": "n1",
+      "status": "supervisor_stop_or_HOST_ERROR",
+      "files": 86,
+      "mismatches": 0
+    },
+    {
+      "round": "r2-54563a38",
+      "job": "export-seed5",
+      "status": "complete",
+      "files": 17,
+      "mismatches": 0
+    },
+    {
+      "round": "r2-54563a38",
+      "job": "n1",
+      "status": "complete",
+      "files": 79,
+      "mismatches": 0
+    },
+    {
+      "round": "r3-521f2585",
+      "job": "prefix-n16",
+      "status": "complete",
+      "files": 660,
+      "mismatches": 0
+    },
+    {
+      "round": "r3-521f2585",
+      "job": "prefix-n64",
+      "status": "supervisor_stop_or_HOST_ERROR",
+      "files": 1541,
+      "mismatches": 0
+    }
+  ],
+  "gpu_summary_local_hash_matches_reconciliation": true,
+  "official_runtime_sources_match": [
+    {
+      "path": "_src/types.py",
+      "match": true,
+      "commit": "57b4692f4d3cdf4d27d916b4b8c4759ba36e9148"
+    },
+    {
+      "path": "_src/forward.py",
+      "match": true,
+      "commit": "57b4692f4d3cdf4d27d916b4b8c4759ba36e9148"
+    },
+    {
+      "path": "_src/io.py",
+      "match": true,
+      "commit": "57b4692f4d3cdf4d27d916b4b8c4759ba36e9148"
+    }
+  ],
+  "five_cpu_analysis_remote_local_hash_matches": true,
+  "scope": "storage and source audit; cohorts are not pooled for success or throughput"
+}

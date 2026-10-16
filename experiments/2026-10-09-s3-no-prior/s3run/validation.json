@@ -1,0 +1,58 @@
+{
+  "source": "7f2675ac4aa5951cccc06d1cc74d25a85da06cd2",
+  "command": "PYTHONPATH=. .venv-sim-worker-mac/bin/python -m pytest -q tests/test_s3_camera_render.py",
+  "passed": 2,
+  "failed": 0,
+  "physical_runs": 0,
+  "heading_poll": {
+    "first_kst": "2026-10-09 18:28:49",
+    "remote": "d9b2a39e5cdef086ffb64f6e1491b921e751f987",
+    "common_default_on": false,
+    "interval_s": 300,
+    "deadline_kst": "2026-10-09 19:28:49"
+  },
+  "heading_dependency_sha": "d89912703432117e47b5306bbe50ec9c31a0663c",
+  "integration": {
+    "files": [
+      "tests/test_s3_no_prior.py",
+      "tests/test_path_heading_default.py",
+      "tests/test_simulation_workflow_manager.py"
+    ],
+    "passed": 41,
+    "failed": 0,
+    "wall_s": 115.19
+  },
+  "storage_contract_recheck": {
+    "passed": 1,
+    "deselected": 13,
+    "failed": 0,
+    "wall_s": 42.76
+  },
+  "frozen_catalog_sha256": "fc5bdf913a9f672bb3adb9597e1925b88a163a7ce1a1b30fb4fed9cf7ad0c813",
+  "physical_runs_scope": "Initial host-render regression above only; completed smoke is recorded separately below.",
+  "smoke": {
+    "source_sha": "3daa830f65f6ed72b94a95b376accc4949b7b7e6",
+    "physical_runs": 1,
+    "status": "DEV_NOT_DELIVERED",
+    "correct_first_convergence_n": 0,
+    "robots": 3,
+    "delivered_orders": 0,
+    "orders": 2,
+    "host_errors": 0,
+    "raw_files_verified": 2569,
+    "raw_bytes_verified": 82280565,
+    "raw_all_hashes_match": true,
+    "tensorboard_scalar_values_verified": 24,
+    "tensorboard_ui_verified": true,
+    "video_4x_browser_playback_verified": true,
+    "copied_evidence_matches_raw": [
+      "smoke-report.json",
+      "raw-verification.json",
+      "video-verification.json",
+      "smoke-tensorboard-verification.json",
+      "launch-verification.json"
+    ],
+    "posthoc_scripts_syntax_and_successful_execution": true,
+    "no_further_physical_runs": true
+  }
+}

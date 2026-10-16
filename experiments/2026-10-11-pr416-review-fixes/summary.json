@@ -1,0 +1,242 @@
+{
+  "class": "dev",
+  "pr": 416,
+  "branch": "codex/s3-no-prior-smoke",
+  "reviewed_head": "bca75e2562c68ceab70493af3d0a3d30da54d178",
+  "main_reference_sha": "996f0b84969298106088b45734fbf10349fd1156",
+  "status": "FIXES_COMMITTED_PUSHED_LOCAL_TESTS_PASSED",
+  "bundle_id": "zone-s3-recovery-v193",
+  "workflow_version": "7.86.0",
+  "retired_bundle": "zone-s3-recovery-v190",
+  "registration_decision": "execution_versioning.md change step 2 forbids overwriting an existing registration even without recorded runs; fresh main/open-PR max v192 / 7.85.0 then v193 / 7.86.0",
+  "frozen_sources": {
+    "matched": 6,
+    "total": 6,
+    "receipt": "experiments/2026-10-11-pr416-review-fixes/frozen-source-checks.json"
+  },
+  "s2_admission": [
+    {
+      "bundle_id": "zone-s2-realism-v127",
+      "admission": "admitted",
+      "reason": null,
+      "changed_shared_sources": [],
+      "pulse_predictor_sha256": "44a51b1bc5a95aa35f87d039741c2813101a90c87c287873947150f2d85d89be",
+      "registered_pulse_predictor_sha256": "44a51b1bc5a95aa35f87d039741c2813101a90c87c287873947150f2d85d89be"
+    },
+    {
+      "bundle_id": "zone-s2-realism-v128",
+      "admission": "retired_in_current_main",
+      "reason": "shared behavior changed from registered matched baseline: harness/idle_robot_contacts_contract.py",
+      "changed_shared_sources": [
+        "harness/idle_robot_contacts_contract.py",
+        "harness/zone_solo_cyan_contract_v106.py",
+        "harness/zone_solo_cyan_real_carry.py",
+        "harness/zone_solo_cyan_real_hover.py",
+        "sim/final_environment_checks.py",
+        "sim/masterpi_drive_friction_v7.py",
+        "sim/solo_cyan_v106.py",
+        "sim/workflow_manager.py"
+      ],
+      "pulse_predictor_sha256": "44a51b1bc5a95aa35f87d039741c2813101a90c87c287873947150f2d85d89be",
+      "registered_pulse_predictor_sha256": "44a51b1bc5a95aa35f87d039741c2813101a90c87c287873947150f2d85d89be"
+    },
+    {
+      "bundle_id": "zone-s2-realism-v129",
+      "admission": "retired_in_current_main",
+      "reason": "shared behavior changed from registered matched baseline: harness/idle_robot_contacts_contract.py",
+      "changed_shared_sources": [
+        "harness/idle_robot_contacts_contract.py",
+        "harness/zone_solo_cyan_contract_v106.py",
+        "harness/zone_solo_cyan_real_carry.py",
+        "harness/zone_solo_cyan_real_hover.py",
+        "sim/final_environment_checks.py",
+        "sim/masterpi_drive_friction_v7.py",
+        "sim/solo_cyan_v106.py",
+        "sim/workflow_manager.py"
+      ],
+      "pulse_predictor_sha256": "44a51b1bc5a95aa35f87d039741c2813101a90c87c287873947150f2d85d89be",
+      "registered_pulse_predictor_sha256": "44a51b1bc5a95aa35f87d039741c2813101a90c87c287873947150f2d85d89be"
+    }
+  ],
+  "local_tests": {
+    "passed": 45,
+    "failed": 0,
+    "files": [
+      {
+        "file": "tests/test_s3_recovery.py",
+        "passed": 17,
+        "failed": 0,
+        "seconds": 143.594,
+        "receipt": "outputs/pr416-review-fixes/s3-final-tests.xml"
+      },
+      {
+        "file": "tests/test_s2_slip_full.py",
+        "passed": 3,
+        "failed": 0,
+        "seconds": 28.411,
+        "receipt": "outputs/pr416-review-fixes/initial-local-tests.xml"
+      },
+      {
+        "file": "tests/test_s2_slip_matched.py",
+        "passed": 3,
+        "failed": 0,
+        "seconds": 28.143,
+        "receipt": "outputs/pr416-review-fixes/initial-local-tests.xml"
+      },
+      {
+        "file": "tests/test_s2_slip_recovery_full.py",
+        "passed": 3,
+        "failed": 0,
+        "seconds": 30.946,
+        "receipt": "outputs/pr416-review-fixes/initial-local-tests.xml"
+      },
+      {
+        "file": "tests/test_zone_final_pair_highpose.py",
+        "passed": 19,
+        "failed": 0,
+        "seconds": 42.491,
+        "receipt": "outputs/pr416-review-fixes/initial-local-tests.xml"
+      }
+    ],
+    "initial_attempt": {
+      "passed": 44,
+      "failed": 1,
+      "error_cases": 6,
+      "reason": "Synthetic fixture still passed the removed common SweepRecheck keyword and omitted explicit S3 PairRecheck opt-in. Fixed the fixture import/call; preserved original failure.",
+      "receipt": "outputs/pr416-review-fixes/initial-local-tests.xml"
+    },
+    "repeat_scope": "Only tests/test_s3_recovery.py rerun after S3 adapter/probe updates; common/S2/highpose sources unchanged from their passing checks."
+  },
+  "synthetic_stage_probe": {
+    "commands": 3190,
+    "errors": 0,
+    "scope": "Synthetic stage entry, real controller/command ports over fake motor sink; no physics, perception success, or entire task completion."
+  },
+  "simulation_runs": 0,
+  "model_calls": 0,
+  "verification_scope": "45 selected offline test cases; 6 frozen source byte/hash comparisons; v127 admission restored, v128/v129 fail closed on 8 main changes; no physical/model validation. Historical 700 selector cases and 68 stage entries/3190 commands are not an entire physical trajectory comparison.",
+  "pushed": true,
+  "ci": {
+    "status": "pending/in_progress",
+    "head_sha": "cadf4da866b01b082469bf86e75ac55606aca4bb",
+    "snapshot": {
+      "pr": 416,
+      "state": "OPEN",
+      "source_commit": "cadf4da866b01b082469bf86e75ac55606aca4bb",
+      "remote_head": "cadf4da866b01b082469bf86e75ac55606aca4bb",
+      "head_matches": true,
+      "mergeable": "MERGEABLE",
+      "checks": {
+        "IN_PROGRESS": 1
+      },
+      "required_check": "pending",
+      "pr_url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/416"
+    },
+    "scope": "New review-fix source checks only; snapshot immediately after source push"
+  },
+  "raw_locations": {
+    "local": "outputs/pr416-review-fixes",
+    "remote": "GitHub PR416 (after push)"
+  },
+  "raw_files": {
+    "outputs/pr416-review-fixes/initial/sweep.json": {
+      "sha256": "5174a6805a33cf4e8bb080cea4794dffe90ccbe8875be953d378b72ac3f25afe",
+      "bytes": 22298,
+      "original_path": "/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-994/test_full_existing_sweep_on_ne0/sweep.json",
+      "uncompressed_sha256": "5174a6805a33cf4e8bb080cea4794dffe90ccbe8875be953d378b72ac3f25afe",
+      "uncompressed_bytes": 22298
+    },
+    "outputs/pr416-review-fixes/initial/progress.json": {
+      "sha256": "e06a234960e7f14fd7e9b0ff66067fb9e598f8a0008374ddbeb29af8637aa525",
+      "bytes": 15152,
+      "original_path": "/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-994/test_full_existing_sweep_on_ne0/progress.json",
+      "uncompressed_sha256": "e06a234960e7f14fd7e9b0ff66067fb9e598f8a0008374ddbeb29af8637aa525",
+      "uncompressed_bytes": 15152
+    },
+    "outputs/pr416-review-fixes/initial/commands.json.zst": {
+      "sha256": "a143c7089b75d5d63b73af9efb0bc94dfb5ccdae60d5746dcb261b877c2c93f6",
+      "bytes": 14502,
+      "original_path": "/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-994/test_full_existing_sweep_on_ne0/commands.json",
+      "uncompressed_sha256": "78511e04bf49b1539fad45f88602c342c48c3b667b0e36d1cabd1f2ba954be60",
+      "uncompressed_bytes": 377679
+    },
+    "outputs/pr416-review-fixes/final/sweep.json": {
+      "sha256": "d625e73996f3fe558196eb545741a4b3cb4a5ca9c862931c6566df4cc835e7ca",
+      "bytes": 11817,
+      "original_path": "/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-995/test_full_existing_sweep_on_ne0/sweep.json",
+      "uncompressed_sha256": "d625e73996f3fe558196eb545741a4b3cb4a5ca9c862931c6566df4cc835e7ca",
+      "uncompressed_bytes": 11817
+    },
+    "outputs/pr416-review-fixes/final/progress.json": {
+      "sha256": "41294c0bd5b91c0123ca82726c908e6902ac08d7e73c4e7abb89ea3fe91c3600",
+      "bytes": 10484,
+      "original_path": "/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-995/test_full_existing_sweep_on_ne0/progress.json",
+      "uncompressed_sha256": "41294c0bd5b91c0123ca82726c908e6902ac08d7e73c4e7abb89ea3fe91c3600",
+      "uncompressed_bytes": 10484
+    },
+    "outputs/pr416-review-fixes/final/commands.json.zst": {
+      "sha256": "ac8389603aee4f807b28040d2295f0b70d217dfd05badc249274ae2a13dc351f",
+      "bytes": 14554,
+      "original_path": "/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-995/test_full_existing_sweep_on_ne0/commands.json",
+      "uncompressed_sha256": "341d0d4d00ab3d655bc05ce60ef1d226bf7b0b2b70df4734f6d239fef72a8d74",
+      "uncompressed_bytes": 378687
+    },
+    "outputs/pr416-review-fixes/s3-final-tests.xml": {
+      "sha256": "01c8ccb9e6c362ae0167a75e2f69fc3d8fbc3e94beffa2005b702c14e030d9e0",
+      "bytes": 2309
+    },
+    "outputs/pr416-review-fixes/initial-local-tests.xml": {
+      "sha256": "f6c603c3b456f34792adcfb6bf527fcbaa707b0253671afaa3902da5d51c8acc",
+      "bytes": 7728
+    },
+    "outputs/pr416-review-fixes/local-tests.xml": {
+      "sha256": "f6c603c3b456f34792adcfb6bf527fcbaa707b0253671afaa3902da5d51c8acc",
+      "bytes": 7728
+    },
+    "outputs/pr416-review-fixes/local-tests.log": {
+      "sha256": "24879b771b1a9be9329c08b552e8c8a7002c0783e7a9d875b12f8a9d65f450dd",
+      "bytes": 1831
+    },
+    "outputs/pr416-review-fixes/initial-local-tests.log": {
+      "sha256": "24879b771b1a9be9329c08b552e8c8a7002c0783e7a9d875b12f8a9d65f450dd",
+      "bytes": 1831
+    },
+    "outputs/pr416-review-fixes/s3-final-tests.log": {
+      "sha256": "b478d3d71254e19f2a20d171e4691d7660f816a437ffdae3d4526bb9fa5f6aa4",
+      "bytes": 111
+    },
+    "outputs/pr416-review-fixes/RUN_META.json": {
+      "sha256": "7c0fdc89c2868991909880b31323728d348c33d44e883a60652f7dccb899a89c",
+      "bytes": 358
+    },
+    "outputs/pr416-review-fixes/reservation-scan.json": {
+      "sha256": "2d81dd27ed4bae3420cd92e1342cada7ca442950f5f40b85b8ec669898c77692",
+      "bytes": 3182
+    },
+    "outputs/pr416-review-fixes/source-push-receipt.json": {
+      "sha256": "f6179837adb12bf7751f0f8db8add6b3c416af726c5f7d04c9ebc380c813210a",
+      "bytes": 374
+    }
+  },
+  "artifact_sha256": {
+    "experiments/2026-10-11-pr416-review-fixes/RUN_META.json": "7c0fdc89c2868991909880b31323728d348c33d44e883a60652f7dccb899a89c",
+    "experiments/2026-10-11-pr416-review-fixes/frozen-source-checks.json": "fec0964ef82e84e68c8fa3c9d65f4d568448513be1fd0032d7c3b4cbc9e219b2",
+    "experiments/2026-10-11-pr416-review-fixes/README.md": "dcc53821df14fc75a33c46da8b1e8811e4b28baed3c12a26ef5555f66b2d7a69",
+    "experiments/2026-10-11-pr416-review-fixes/s2-admission.json": "c7332f02ceb5cdff323160b5ccf1252445a1826f93fff32906c9791e8c76ab2c",
+    "experiments/2026-10-11-pr416-review-fixes/reservation-scan.json": "a4d16697711d5ce50ac27fd935caacda417321c7e7153d64f879bc4ca0a14570",
+    "experiments/2026-10-11-pr416-review-fixes/source-seal-v193.json": "2c0d4feb94af785776d35e9923f9bedb34791d9a4e21fa0c28b346d2bbddacd8",
+    "experiments/2026-10-11-pr416-review-fixes/registration-v193.json": "2aa5987792c4e8f66d72af04a31cabac483151f091a5d3611df235b966e1fbd5"
+  },
+  "method": "Standard subclass override and explicit per-instance opt-in; reuse frozen implementations and fixed calibration transform without a new control algorithm.",
+  "references": [
+    "https://docs.python.org/3/tutorial/classes.html#inheritance",
+    "https://docs.python.org/3/tutorial/controlflow.html#keyword-arguments"
+  ],
+  "remaining": [
+    "CI and independent review of changed scope before merge"
+  ],
+  "code_commit": "cadf4da866b01b082469bf86e75ac55606aca4bb",
+  "pushed_source_commit": "cadf4da866b01b082469bf86e75ac55606aca4bb",
+  "push_receipt": "outputs/pr416-review-fixes/source-push-receipt.json",
+  "delivery_receipt": "outputs/pr416-review-fixes/delivery-receipt.json (written after the final record push; exact final head/check snapshot/comment URL)"
+}

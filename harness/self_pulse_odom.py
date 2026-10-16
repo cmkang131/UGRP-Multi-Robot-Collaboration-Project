@@ -60,6 +60,7 @@ class PulseOdometry:
         self.loaded, self.active = False, None
         self.covariance = CSMOptions().floor()
         self.step_callback = None
+        self.motion_filter = None  # opt-in own-RGB gate; default numerical path unchanged
         self.profiles = model()['profiles']
 
     @property
@@ -81,6 +82,8 @@ class PulseOdometry:
                 delta[:2] = np.array([[c,s],[-s,c]])@delta[:2]
                 fraction = max(0., min(b,p['times'][-1])-min(a,p['times'][-1]))/p['times'][-1]
                 variance = np.asarray(p['prediction_variance'])*fraction
+                if self.motion_filter is not None:
+                    delta, variance = self.motion_filter(delta, variance)
                 c, s = math.cos(self._pose[2]), math.sin(self._pose[2])
                 R = np.array([[c,-s,0],[s,c,0],[0,0,1.]])
                 world_delta = R@delta

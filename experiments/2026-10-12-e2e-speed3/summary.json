@@ -1,0 +1,432 @@
+{
+  "schema": "ugrp.e2e_speed3.v1",
+  "status": "MEASURED_AND_ARCHIVED_WITH_SHUTDOWN_INCIDENT",
+  "research_result": false,
+  "source_sha": "b5374ed436634c4b937be6a23c95354069b08280",
+  "variants": [
+    "baseline:0.25ms/5Hz",
+    "adaptive:2ms mapping,0.25ms issued arm manipulation/2.5Hz"
+  ],
+  "seeds": [
+    61001,
+    61002,
+    61003
+  ],
+  "planned_concurrency": 6,
+  "measure_sim_s": 60,
+  "success_criterion": "median wall/SIM <=3 plus finite staged plausibility",
+  "tests": {
+    "initial_speed_regression": 79,
+    "gate": 20,
+    "latest_speed3_regression": 10,
+    "latest_gate_regression": 20
+  },
+  "raw": [
+    "azure3:/home/ugrp/ugrp-sim/runs/e2e-speed3-probe-r1",
+    "azure3:/home/ugrp/ugrp-sim/runs/e2e-speed3-probe-baseline-r1",
+    "azure3:/home/ugrp/ugrp-sim/runs/e2e-speed3-probe-adaptive-r1",
+    "azure3:/home/ugrp/ugrp-sim/runs/e2e-speed3-measure-r1",
+    "azure3:/home/ugrp/ugrp-sim/runs/e2e-speed3-measure-r2",
+    "azure3:/home/ugrp/ugrp-sim/runs/e2e-speed3-gate-r1"
+  ],
+  "references": [
+    "https://mujoco.readthedocs.io/en/3.6.0/computation/#numerical-integration"
+  ],
+  "notes": [
+    "Baseline dt is 0.00025, from dispatch_contact_profile local_contact_fine; 4096 step/SIM profile estimate included setup.",
+    "Measurement audit disabled for fair unprofiled comparison; final-only digest supported.",
+    "No past result inheritance; DT2 observation period explicitly changed.",
+    "Initial failed run has a separately verified zstd archive representation; original sealed archive retained."
+  ],
+  "selected_candidate": "adaptive_v1",
+  "candidate_bundle": "e2e-speed3-v215",
+  "candidate_source": "79a192774dc1833b2baa7b359ee4dd80e8cbd0de",
+  "initial_failed_batch": {
+    "name": "e2e-speed3-measure-r1",
+    "n": 0,
+    "N": 6,
+    "sim_s": 0,
+    "reason": "high-level drive incorrectly validated as port pulse; fixed in 79a19277"
+  },
+  "probe_candidates": {
+    "dt1_v1": {
+      "n": 2,
+      "N": 4
+    },
+    "dt2_v1": {
+      "n": 2,
+      "N": 4
+    },
+    "baseline_contact": {
+      "n": 2,
+      "N": 2
+    },
+    "adaptive_v1": {
+      "n": 4,
+      "N": 4,
+      "scope": "2ms drive/turn; 0.25ms preselected for known grasp fixtures. Runtime issued-command switch tested without physics.",
+      "numbers": {
+        "forward_m": 0.3327369112602532,
+        "turn_deg": 145.51716573879634,
+        "single_cargo_min_z_m": 0.14838925233540304,
+        "pair_beam_min_z_m": 0.07146895267490164,
+        "pair_max_slip_m": 7.740685716976528e-07,
+        "pair_max_penetration_m": 0.0010883573884158497,
+        "pair_max_robot_tilt_deg": 3.0180688625635494
+      }
+    }
+  },
+  "probe_correction": "Fine contact profile selected by issued arm action, never evaluation state",
+  "old_execution_archive": "experiments/2026-10-12-e2e-idle/speed-stop-archive.json",
+  "measurement": {
+    "source_sha": "79a192774dc1833b2baa7b359ee4dd80e8cbd0de",
+    "sim_s": 60,
+    "simultaneous_start_count": 6,
+    "per_arm_n": 3,
+    "candidate_wall_per_sim": [
+      3.09815627316666,
+      2.9843935258666687,
+      2.8898496582333335
+    ],
+    "candidate_median": 2.9843935258666687,
+    "denominator_scope": "includes setup, LLM latency and finalization; RBPF audit none; no cProfile",
+    "scope": "60s mapping segment, not full E2E transport runtime",
+    "concurrency_note": "Six start together; faster candidates finish before baselines. Later baseline tail has three remaining processes, conservatively favoring baseline.",
+    "baseline_wall_per_sim": [
+      9.02807857066667,
+      8.686677363716672,
+      9.027847761966678
+    ],
+    "baseline_median": 9.027847761966678,
+    "reduction_pct": 66.94235874867553,
+    "expected_limit_stop_n": 6,
+    "N": 6,
+    "initial_health_n": 6,
+    "initial_health_scope": "all6 actual position changes, forward commands, frames/SIM increase, mapping entered, no runtime exception; external initial-speed-check.json",
+    "model_accounting": [
+      {
+        "run": "e2e-speed3-adaptive-s61001-r2",
+        "model_calls": 3,
+        "model_usage": {
+          "upstream_generation_requests_confirmed": 3,
+          "local_quota_wait_responses": 0,
+          "upstream_generation_status_unknown": 0,
+          "requests": 3,
+          "blocked": 0,
+          "by_model": {
+            "DeepInfra/google/gemma-4-31b-it": {
+              "requests": 3,
+              "tokens_total_known": 4751,
+              "usage_unknown_requests": 0
+            }
+          },
+          "upstream_by_model": {},
+          "tokens_prompt": 4605,
+          "tokens_completion": 146,
+          "tokens_total_known": 4751,
+          "usage_unknown_requests": 0,
+          "tokens_complete": true,
+          "api_error_requests": 0,
+          "api_error_fraction": 0.0,
+          "api_clean": true,
+          "latency_ms": {
+            "n": 3,
+            "sum": 13226.878,
+            "max": 6556.272,
+            "median": 3509.459
+          },
+          "failure_classes": {},
+          "response_models": [
+            "google/gemma-4-31b-it"
+          ]
+        },
+        "E2E_success": false,
+        "failure": "MEASUREMENT_SIM_LIMIT"
+      },
+      {
+        "run": "e2e-speed3-adaptive-s61002-r2",
+        "model_calls": 3,
+        "model_usage": {
+          "upstream_generation_requests_confirmed": 3,
+          "local_quota_wait_responses": 0,
+          "upstream_generation_status_unknown": 0,
+          "requests": 3,
+          "blocked": 0,
+          "by_model": {
+            "DeepInfra/google/gemma-4-31b-it": {
+              "requests": 3,
+              "tokens_total_known": 4773,
+              "usage_unknown_requests": 0
+            }
+          },
+          "upstream_by_model": {},
+          "tokens_prompt": 4633,
+          "tokens_completion": 140,
+          "tokens_total_known": 4773,
+          "usage_unknown_requests": 0,
+          "tokens_complete": true,
+          "api_error_requests": 0,
+          "api_error_fraction": 0.0,
+          "api_clean": true,
+          "latency_ms": {
+            "n": 3,
+            "sum": 12087.851,
+            "max": 5547.499,
+            "median": 3359.874
+          },
+          "failure_classes": {},
+          "response_models": [
+            "google/gemma-4-31b-it"
+          ]
+        },
+        "E2E_success": false,
+        "failure": "MEASUREMENT_SIM_LIMIT"
+      },
+      {
+        "run": "e2e-speed3-adaptive-s61003-r2",
+        "model_calls": 3,
+        "model_usage": {
+          "upstream_generation_requests_confirmed": 3,
+          "local_quota_wait_responses": 0,
+          "upstream_generation_status_unknown": 0,
+          "requests": 3,
+          "blocked": 0,
+          "by_model": {
+            "DeepInfra/google/gemma-4-31b-it": {
+              "requests": 3,
+              "tokens_total_known": 4766,
+              "usage_unknown_requests": 0
+            }
+          },
+          "upstream_by_model": {},
+          "tokens_prompt": 4618,
+          "tokens_completion": 148,
+          "tokens_total_known": 4766,
+          "usage_unknown_requests": 0,
+          "tokens_complete": true,
+          "api_error_requests": 0,
+          "api_error_fraction": 0.0,
+          "api_clean": true,
+          "latency_ms": {
+            "n": 3,
+            "sum": 14620.041,
+            "max": 6664.718,
+            "median": 4270.231
+          },
+          "failure_classes": {},
+          "response_models": [
+            "google/gemma-4-31b-it"
+          ]
+        },
+        "E2E_success": false,
+        "failure": "MEASUREMENT_SIM_LIMIT"
+      },
+      {
+        "run": "e2e-speed3-base-s61001-r2",
+        "model_calls": 3,
+        "model_usage": {
+          "upstream_generation_requests_confirmed": 3,
+          "local_quota_wait_responses": 0,
+          "upstream_generation_status_unknown": 0,
+          "requests": 3,
+          "blocked": 0,
+          "by_model": {
+            "DeepInfra/google/gemma-4-31b-it": {
+              "requests": 3,
+              "tokens_total_known": 4751,
+              "usage_unknown_requests": 0
+            }
+          },
+          "upstream_by_model": {},
+          "tokens_prompt": 4612,
+          "tokens_completion": 139,
+          "tokens_total_known": 4751,
+          "usage_unknown_requests": 0,
+          "tokens_complete": true,
+          "api_error_requests": 0,
+          "api_error_fraction": 0.0,
+          "api_clean": true,
+          "latency_ms": {
+            "n": 3,
+            "sum": 16435.122,
+            "max": 9121.522,
+            "median": 4478.758
+          },
+          "failure_classes": {},
+          "response_models": [
+            "google/gemma-4-31b-it"
+          ]
+        },
+        "E2E_success": false,
+        "failure": "MEASUREMENT_SIM_LIMIT"
+      },
+      {
+        "run": "e2e-speed3-base-s61002-r2",
+        "model_calls": 3,
+        "model_usage": {
+          "upstream_generation_requests_confirmed": 3,
+          "local_quota_wait_responses": 0,
+          "upstream_generation_status_unknown": 0,
+          "requests": 3,
+          "blocked": 0,
+          "by_model": {
+            "DeepInfra/google/gemma-4-31b-it": {
+              "requests": 3,
+              "tokens_total_known": 4768,
+              "usage_unknown_requests": 0
+            }
+          },
+          "upstream_by_model": {},
+          "tokens_prompt": 4615,
+          "tokens_completion": 153,
+          "tokens_total_known": 4768,
+          "usage_unknown_requests": 0,
+          "tokens_complete": true,
+          "api_error_requests": 0,
+          "api_error_fraction": 0.0,
+          "api_clean": true,
+          "latency_ms": {
+            "n": 3,
+            "sum": 12869.112,
+            "max": 4511.739,
+            "median": 4325.052
+          },
+          "failure_classes": {},
+          "response_models": [
+            "google/gemma-4-31b-it"
+          ]
+        },
+        "E2E_success": false,
+        "failure": "MEASUREMENT_SIM_LIMIT"
+      },
+      {
+        "run": "e2e-speed3-base-s61003-r2",
+        "model_calls": 3,
+        "model_usage": {
+          "upstream_generation_requests_confirmed": 3,
+          "local_quota_wait_responses": 0,
+          "upstream_generation_status_unknown": 0,
+          "requests": 3,
+          "blocked": 0,
+          "by_model": {
+            "DeepInfra/google/gemma-4-31b-it": {
+              "requests": 3,
+              "tokens_total_known": 4792,
+              "usage_unknown_requests": 0
+            }
+          },
+          "upstream_by_model": {},
+          "tokens_prompt": 4615,
+          "tokens_completion": 177,
+          "tokens_total_known": 4792,
+          "usage_unknown_requests": 0,
+          "tokens_complete": true,
+          "api_error_requests": 0,
+          "api_error_fraction": 0.0,
+          "api_clean": true,
+          "latency_ms": {
+            "n": 3,
+            "sum": 10639.024,
+            "max": 4182.955,
+            "median": 3592.95
+          },
+          "failure_classes": {},
+          "response_models": [
+            "google/gemma-4-31b-it"
+          ]
+        },
+        "E2E_success": false,
+        "failure": "MEASUREMENT_SIM_LIMIT"
+      }
+    ],
+    "E2E_success_n": 0,
+    "E2E_success_qualification": "Intentionally limited speed probes, not research success denominator"
+  },
+  "remaining_issues": [
+    "Full E2E mission and dynamic manipulation transition were not physically rerun.",
+    "Constant1/2ms contact profiles are rejected; contact phase retains0.25ms.",
+    "Our shutdown raced with a newly started speed4 run; its raw, EXIT and hash remain unretrieved. Managed disk existence is not file-level preservation proof."
+  ],
+  "speed_gate": {
+    "source_sha": "b5374ed436634c4b937be6a23c95354069b08280",
+    "planned_concurrency": 6,
+    "probe_sim_s": 30,
+    "limit": 4.0,
+    "warning_limit": 6.0,
+    "warning_duration_s": 600,
+    "status": "SPEED_GATE_PASS",
+    "override_used": false,
+    "research_cohort_started": false,
+    "completed": 6,
+    "median_wall_per_sim": 3.249957300616643,
+    "samples_wall_per_sim": [
+      3.384641180266681,
+      3.2652604690333344,
+      3.250800705666643,
+      3.1701312382333526,
+      3.2089645152666586,
+      3.249113895566643
+    ],
+    "initial_health_n": 6,
+    "proposed_limit": 4.0,
+    "proposal_basis": "30s six-way median3.250 includes setup/LLM latency;4.0 leaves23% headroom.60s paired median2.984 reaches target3."
+  },
+  "pr": {
+    "number": 454,
+    "base": "codex/e2e-idle",
+    "draft": true,
+    "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/454"
+  },
+  "gate_result_sha256": "3966c63107754709bb31b19929f0be5962b38a3c912ae9e2f2447a5d9d16b426",
+  "environment": {
+    "host": "ugrp-sim-azure3",
+    "simulation_host": "Azure Linux Zen4",
+    "local_simulation": false,
+    "cohort": "speed3 DEV only; previous outcomes excluded"
+  },
+  "changes": {
+    "physics": "2ms mapping, permanent 0.25ms from first issued non-search arm command; implicitfast, solver80/noslip10",
+    "exact_speedups": 10,
+    "observation_period_s": 0.4,
+    "rbpf_audit": "none in measurement and preflight; final_v1 optional",
+    "capture": "same-SIM-time cache avoids repeated render/encoding/hash; only scheduled observations",
+    "camera": "640x480, original FOV/mount preserved; weld OFF"
+  },
+  "metadata_clarification": {
+    "probe_baseline_RUN_META": "Immutable archived metadata says branch master and pr null from detached deployment; actual task branch codex/e2e-speed3, PR454, source670a5644ebe0893e1b06bceaa4d33b77dc5c90cf. No source or outcome substitution."
+  },
+  "ci": {
+    "checked_source": "b5374ed436634c4b937be6a23c95354069b08280",
+    "status": "preflight passed; remaining jobs queued",
+    "full_pass_verified": false
+  },
+  "archive": {
+    "record": "archive-summary.json",
+    "sha256": "d5bfde364941cd602bb70774cbe7ec5bedc0aaae8d1d3048735a5f78058b45a0",
+    "verified_paths": 8,
+    "scope": "6 execution batches plus immutable compressed preservation copy and unstarted intent metadata",
+    "all_speed3_full_file_hashes_match": true,
+    "mac_retrieval": "lite only; no images/video/arrays"
+  },
+  "vm": {
+    "VM3": "deallocated",
+    "VM4": "deallocated",
+    "VM1_VM2_started": false,
+    "new_VM_created": false,
+    "research_cohort_started": false,
+    "local_relay_and_tunnel": "own sessions stopped"
+  },
+  "shutdown_incident": {
+    "status": "OTHER_RUN_UNRETRIEVED",
+    "responsibility": "Our shutdown shell continued after rejection; deallocation interrupted concurrent task",
+    "run": "speed4-map-baseline-s61001",
+    "raw": "azure3:/home/ugrp/ugrp-sim/runs/speed4-map-baseline-s61001",
+    "recovered": false,
+    "raw_file_preservation_verified": false,
+    "managed_os_disk_exists": true,
+    "restarted": false,
+    "followup": "At coordinator next VM3 boot, recover and verify this raw before new admission",
+    "notice": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/455#issuecomment-6122832694",
+    "details": "archive-summary.json#/vm3_shutdown/shutdown_race"
+  }
+}

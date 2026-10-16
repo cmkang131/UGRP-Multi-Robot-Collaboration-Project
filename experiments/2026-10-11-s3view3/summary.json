@@ -1,0 +1,747 @@
+{
+  "status": "COMPLETED",
+  "base_sha": "98fd3ffed52f91db0130124024d38f09bf8208f4",
+  "execution_sha": "713bd7134e87a58a314efbc868a1f5fdcc3a87e0",
+  "oracle_only": true,
+  "tensorboard": false,
+  "model_calls": 0,
+  "tests": "3 passed",
+  "originals": {
+    "s3fix21-on-pair-c0-r1": {
+      "source_sha": "71c656e726235b11a2a45562eecbd17f6aa67b78",
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix21-on-pair-c0-r1/raw",
+      "start_sim_s": 2.35,
+      "end_sim_s": 57.95,
+      "issued_commands": 2755,
+      "commands_sha256": {
+        "r1": "405cc99b118b0833ea280e49e51edc4237d2ea595bb24468d673fb699f220d8e",
+        "r2": "2ffeec76fec69b0707f5e49dc43da465e4ee8e247dac992ef99be67f8bf3ad47",
+        "r3": "1e9abd5c124e9a3c5a468170a6d0be1b42c02d546b8126e9e0d1a55fda5465a1"
+      },
+      "outcome": {
+        "status": "DEV_STAGE_FINISHED",
+        "stage_end": "first_setdown_release_commanded",
+        "check_sim_s": 55.6
+      }
+    },
+    "s3fix21-on-pair-c3-r1": {
+      "source_sha": "71c656e726235b11a2a45562eecbd17f6aa67b78",
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix21-on-pair-c3-r1/raw",
+      "start_sim_s": 2.35,
+      "end_sim_s": 59.45,
+      "issued_commands": 2761,
+      "commands_sha256": {
+        "r1": "d2a5509bff36e6e06a6b4327c2ae0469d44390c93b73efee7d0db2f8dd0fa2c1",
+        "r2": "2e7654736a4f12f6f6007b16e92fb8d179c52dcd08b3798dcf52b9697dd3bf46",
+        "r3": "1e9abd5c124e9a3c5a468170a6d0be1b42c02d546b8126e9e0d1a55fda5465a1"
+      },
+      "outcome": {
+        "status": "DEV_STAGE_FINISHED",
+        "stage_end": "first_setdown_release_commanded",
+        "check_sim_s": 57.1
+      }
+    },
+    "s3fix21-multi-three-c5-r2": {
+      "source_sha": "9d50e37d3415b2cfe065fe836df855befee664ed",
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix21-multi-three-c5-r2/raw",
+      "start_sim_s": 2.35,
+      "end_sim_s": 58.5,
+      "issued_commands": 2756,
+      "commands_sha256": {
+        "r1": "db2fd801cc5da75094075a8b589c964d3ceb850feba9e446735b882f8a021cef",
+        "r2": "42fa02d3017f43a28c7e406e470c62b35f1799362d92fc8457bd8d50961db51a",
+        "r3": "1e9abd5c124e9a3c5a468170a6d0be1b42c02d546b8126e9e0d1a55fda5465a1"
+      },
+      "outcome": {
+        "status": "HOST_ERROR",
+        "failure": "Traceback (most recent call last):\n  File \"/home/ubuntu/ugrp-sim/src/9d50e37d3415b2cfe065fe836df855befee664ed/scripts/run_s3_alignment_probe.py\", line 176, in run\n    actions=pair.step(now)+pair.arm_step(now)\n            ^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/9d50e37d3415b2cfe065fe836df855befee664ed/harness/zone_pair_highpose_runtime.py\", line 804, in step\n    return self._vetoed('step', now, collect, lambda t: None)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/9d50e37d3415b2cfe065fe836df855befee664ed/harness/zone_pair_highpose_runtime.py\", line 789, in _vetoed\n    issued = call(now)\n             ^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/9d50e37d3415b2cfe065fe836df855befee664ed/harness/zone_pair_highpose_runtime.py\", line 803, in collect\n    return self.look_recovery.filter(self, t, parent(t))\n                                              ^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/9d50e37d3415b2cfe065fe836df855befee664ed/harness/zone_final_pair_runtime.py\", line 67, in step\n    decision = own.step(now)\n               ^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/9d50e37d3415b2cfe065fe836df855befee664ed/harness/zone_own_executor.py\", line 535, in step\n    return getattr(self, '_step_' + job.kind)(now, job)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/9d50e37d3415b2cfe065fe836df855befee664ed/harness/zone_own_executor.py\", line 565, in _step_pair_carry\n    return self._pair.step(now)\n           ^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/9d50e37d3415b2cfe065fe836df855befee664ed/harness/zone_pair_highpose_runtime.py\", line 664, in step\n    return run(now)\n           ^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/9d50e37d3415b2cfe065fe836df855befee664ed/harness/zone_pair_executor.py\", line 374, in step\n    self.controller.tick(now)\n  File \"/home/ubuntu/ugrp-sim/src/9d50e37d3415b2cfe065fe836df855befee664ed/harness/zone_s3_alignment_ownership.py\", line 104, in owned_tick\n    return super(PairAlignRelook,ctl).tick(now)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/9d50e37d3415b2cfe065fe836df855befee664ed/scripts/run_m2_pair.py\", line 428, in tick\n    return super().tick(now)\n           ^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/9d50e37d3415b2cfe065fe836df855befee664ed/scripts/run_m2_pair.py\", line 216, in tick\n    handler(now, arm_idle)\n  File \"/home/ubuntu/ugrp-sim/src/9d50e37d3415b2cfe065fe836df855befee664ed/harness/zone_s3_coarse_fine.py\", line 230, in align\n    obs = ctl.look(now)\n          ^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/9d50e37d3415b2cfe065fe836df855befee664ed/harness/zone_pair_grasp.py\", line 66, in look\n    self.record_standoff(now, obs)\n  File \"/home/ubuntu/ugrp-sim/src/9d50e37d3415b2cfe065fe836df855befee664ed/harness/zone_pair_executor.py\", line 185, in record_standoff\n    return execution.command_guard.observe_standoff(now, obs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/9d50e37d3415b2cfe065fe836df855befee664ed/harness/zone_pair_guards.py\", line 496, in observe_standoff\n    ok = self.beam_track.observe_standoff(obs, own.servo, self.ep.controller.seg)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/9d50e37d3415b2cfe065fe836df855befee664ed/harness/zone_pair_highpose_blind_close.py\", line 181, in observe_standoff\n    ok = super().observe_standoff(obs, servo, segment)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/9d50e37d3415b2cfe065fe836df855befee664ed/harness/zone_pair_beam_track.py\", line 159, in observe_standoff\n    beam = self._standoff(obs, servo)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/9d50e37d3415b2cfe065fe836df855befee664ed/harness/zone_s3_coarse_fine.py\", line 215, in standoff\n    return vision(pulses[6]).beam_track()._standoff(obs, pulses)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/9d50e37d3415b2cfe065fe836df855befee664ed/harness/zone_final_pair_vision.py\", line 79, in _standoff\n    return measured_standoff(obs, servo, points=vision.points,\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/9d50e37d3415b2cfe065fe836df855befee664ed/harness/zone_pair_beam_track.py\", line 45, in standoff_estimate\n    beam = observe_beam(obs['image'], servo)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/9d50e37d3415b2cfe065fe836df855befee664ed/harness/owncam_pair_beam_v2.py\", line 78, in observe_beam\n    base = v1.observe_beam(frame, pose)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/9d50e37d3415b2cfe065fe836df855befee664ed/harness/owncam_pair_beam.py\", line 88, in observe_beam\n    origin, rays, xs, ys, valid = base_rays(pose, RAY_STEP)\n                                  ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/9d50e37d3415b2cfe065fe836df855befee664ed/harness/zone_final_pair_vision.py\", line 63, in base_rays\n    record = camera_record(self.calibration, 'unloaded', servo)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/9d50e37d3415b2cfe065fe836df855befee664ed/harness/zone_final_pair_contract.py\", line 85, in camera_record\n    raise CalibrationError(f'UNMEASURED_V3_CAMERA_POSTURE: {state}:{key}')\nharness.vision_pose_source_final.CalibrationError: UNMEASURED_V3_CAMERA_POSTURE: unloaded:807,1897,2187,1568\n",
+        "check_sim_s": 56.15
+      }
+    }
+  },
+  "pr": 432,
+  "source_archive": {
+    "mode": "complete git archive 8e88e142 then independent RAM copy and git-archived changed file for713bd713",
+    "changed_files_verified": [
+      "scripts/replay_s3_overview.py"
+    ],
+    "script_sha256": "f5d51a27c3e31a3f421b08cd87db643ea2a37e99ff2fdd1705f4c3e1385733b5"
+  },
+  "references": [
+    {
+      "url": "https://mujoco.readthedocs.io/en/stable/programming/visualization.html",
+      "used": "independent observer model/data, free-camera fovy and averaged stereo camera axes for bounding-box fitting"
+    },
+    {
+      "url": "https://github.com/google-deepmind/mujoco/blob/main/src/engine/engine_vis_interact.c",
+      "used": "camera averaging and forward/up convention cross-check"
+    }
+  ],
+  "framing": {
+    "initial75": "below 1/3 during gripper descent; no full physical rerun launched with this angle",
+    "candidate55": "initial frame below1/3; rejected",
+    "selected_offset_deg": 65,
+    "recorded_qpos_preview_only": true,
+    "minimum_full_frame_bbox_fraction": {
+      "on-pair-c0-r1": 0.3755821885837653,
+      "on-pair-c3-r1": 0.36179455248730785,
+      "multi-three-c5-r2": 0.3681939813616013
+    }
+  },
+  "first_submissions": {
+    "at_unix": 1791652912.4651668,
+    "runs": {
+      "on-pair-c0-r1": {
+        "health": null,
+        "exit": "1",
+        "log": ",a.output)\n  File \"/dev/shm/ugrp-s3view3/src/713bd7134e87a58a314efbc868a1f5fdcc3a87e0/scripts/run_s3_x86_probe.py\", line 62, in archive_guard\n    if shutil.disk_usage(output.parent).free < 11*1024**3: raise OSError('10GiB reserve plus1GiB probe budget required')\n                                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nOSError: 10GiB reserve plus1GiB probe budget required\nCommand exited with non-zero status 1\nwall=0.31 cpu=0.26+0.04\n"
+      },
+      "on-pair-c3-r1": {
+        "health": null,
+        "exit": "1",
+        "log": ",a.output)\n  File \"/dev/shm/ugrp-s3view3/src/713bd7134e87a58a314efbc868a1f5fdcc3a87e0/scripts/run_s3_x86_probe.py\", line 62, in archive_guard\n    if shutil.disk_usage(output.parent).free < 11*1024**3: raise OSError('10GiB reserve plus1GiB probe budget required')\n                                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nOSError: 10GiB reserve plus1GiB probe budget required\nCommand exited with non-zero status 1\nwall=0.31 cpu=0.25+0.05\n"
+      },
+      "multi-three-c5-r2": {
+        "health": null,
+        "exit": "1",
+        "log": ",a.output)\n  File \"/dev/shm/ugrp-s3view3/src/713bd7134e87a58a314efbc868a1f5fdcc3a87e0/scripts/run_s3_x86_probe.py\", line 62, in archive_guard\n    if shutil.disk_usage(output.parent).free < 11*1024**3: raise OSError('10GiB reserve plus1GiB probe budget required')\n                                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nOSError: 10GiB reserve plus1GiB probe budget required\nCommand exited with non-zero status 1\nwall=0.31 cpu=0.25+0.05\n"
+      }
+    },
+    "qualification": "all refused by disk reserve guard at0SIM; raw absent, no replay performed; logs retained at original remote run roots"
+  },
+  "storage": "own RAM run roots on x86, durable ARM rsync copy after completion, original evidence untouched",
+  "ram_initial_health": {
+    "at_unix": 1791653087.7574418,
+    "loadavg": [
+      1.76953125,
+      53.9560546875,
+      108.70263671875
+    ],
+    "runs": {
+      "on-pair-c0-r1": {
+        "health": {
+          "status": "RUNNING",
+          "relative_sim_s": 6.0,
+          "wall_s": 22.026809621999746,
+          "video_frames": 31,
+          "pid": 106543,
+          "loadavg": [
+            1.662109375,
+            54.81640625,
+            109.27392578125
+          ]
+        },
+        "exit": null,
+        "log": ""
+      },
+      "on-pair-c3-r1": {
+        "health": {
+          "status": "RUNNING",
+          "relative_sim_s": 6.0,
+          "wall_s": 22.2138982940005,
+          "video_frames": 31,
+          "pid": 106757,
+          "loadavg": [
+            1.76953125,
+            53.9560546875,
+            108.70263671875
+          ]
+        },
+        "exit": null,
+        "log": ""
+      },
+      "multi-three-c5-r2": {
+        "health": {
+          "status": "RUNNING",
+          "relative_sim_s": 6.0,
+          "wall_s": 21.706588422001005,
+          "video_frames": 31,
+          "pid": 106553,
+          "loadavg": [
+            1.662109375,
+            54.81640625,
+            109.27392578125
+          ]
+        },
+        "exit": null,
+        "log": ""
+      }
+    }
+  },
+  "prechecks": {
+    "initial75": {
+      "s3fix21-on-pair-c0-r1": {
+        "status": "ERROR",
+        "at": 6.75,
+        "error": "observer framing must show all carriers/beam and fill >=1/3: 0.32883452172229766, [ 28.8000555  119.88799866], [860.1554336 362.9079339]"
+      },
+      "s3fix21-on-pair-c3-r1": {
+        "status": "ERROR",
+        "at": 8.35,
+        "error": "observer framing must show all carriers/beam and fill >=1/3: 0.32694604077721995, [ 28.79996091 120.65063181], [865.18374595 360.82225044]"
+      },
+      "s3fix21-multi-three-c5-r2": {
+        "status": "ERROR",
+        "at": 7.35,
+        "error": "observer framing must show all carriers/beam and fill >=1/3: 0.32685340055207085, [ 28.80002149 123.13496504], [861.08673853 364.42048022]"
+      }
+    },
+    "candidate55": {
+      "s3fix21-on-pair-c0-r1": {
+        "status": "ERROR",
+        "at": 2.35,
+        "error": "observer framing must show all carriers/beam and fill >=1/3: 0.3152084951502336, [150.07438286  95.09960322], [727.1763595  430.67998114]"
+      },
+      "s3fix21-on-pair-c3-r1": {
+        "status": "ERROR",
+        "at": 2.35,
+        "error": "observer framing must show all carriers/beam and fill >=1/3: 0.3265834482837015, [138.88155272  95.00596105], [736.6426546  430.67997864]"
+      },
+      "s3fix21-multi-three-c5-r2": {
+        "status": "ERROR",
+        "at": 2.35,
+        "error": "observer framing must show all carriers/beam and fill >=1/3: 0.31729675176148686, [149.49750323  93.78817967], [728.16142751 430.67996798]"
+      }
+    },
+    "candidate_angles": {
+      "65": {
+        "s3fix21-on-pair-c0-r1": {
+          "frames": 278,
+          "minimum_full_frame_bbox_fraction": 0.3755821885837653,
+          "at": 57.75
+        },
+        "s3fix21-on-pair-c3-r1": {
+          "frames": 286,
+          "minimum_full_frame_bbox_fraction": 0.36179455248730785,
+          "at": 59.35
+        },
+        "s3fix21-multi-three-c5-r2": {
+          "frames": 281,
+          "minimum_full_frame_bbox_fraction": 0.3681939813616013,
+          "at": 58.35
+        }
+      },
+      "68": {
+        "s3fix21-on-pair-c0-r1": {
+          "frames": 278,
+          "minimum_full_frame_bbox_fraction": 0.36154977545655925,
+          "at": 8.95
+        },
+        "s3fix21-on-pair-c3-r1": {
+          "frames": 286,
+          "minimum_full_frame_bbox_fraction": 0.3579933280717892,
+          "at": 10.55
+        },
+        "s3fix21-multi-three-c5-r2": {
+          "frames": 281,
+          "minimum_full_frame_bbox_fraction": 0.3661945365732289,
+          "at": 9.35
+        }
+      },
+      "70": {
+        "s3fix21-on-pair-c0-r1": {
+          "frames": 278,
+          "minimum_full_frame_bbox_fraction": 0.34351083807215443,
+          "at": 8.95
+        },
+        "s3fix21-on-pair-c3-r1": {
+          "frames": 286,
+          "minimum_full_frame_bbox_fraction": 0.3404064994288603,
+          "at": 10.55
+        },
+        "s3fix21-multi-three-c5-r2": {
+          "frames": 281,
+          "minimum_full_frame_bbox_fraction": 0.34778597528042904,
+          "at": 9.55
+        }
+      }
+    }
+  },
+  "path_checks": {
+    "s3view3-check": {
+      "status": "PATH_CHECK",
+      "raw": "/home/ubuntu/ugrp-sim/runs/s3view3-check/raw",
+      "initial_state_exact": true
+    },
+    "s3view3-check65": {
+      "status": "PATH_CHECK",
+      "raw": "/home/ubuntu/ugrp-sim/runs/s3view3-check65/raw",
+      "initial_state_exact": true,
+      "summary_sha256": "3e0bc200dc0f79beb2e50fc19396913c5f1f763e0090d24d9439b5b4c748a559"
+    }
+  },
+  "simultaneous_replays": 3,
+  "health_after_three_minutes": {
+    "at_unix": 1791653286.3961668,
+    "loadavg": [
+      4.052734375,
+      30.33203125,
+      89.00048828125
+    ],
+    "runs": {
+      "on-pair-c0-r1": {
+        "health": {
+          "status": "COMPLETED",
+          "wall_s": 191.77302625100037
+        },
+        "exit": "0"
+      },
+      "on-pair-c3-r1": {
+        "health": {
+          "status": "COMPLETED",
+          "wall_s": 196.6738175649998
+        },
+        "exit": "0"
+      },
+      "multi-three-c5-r2": {
+        "health": {
+          "status": "COMPLETED",
+          "wall_s": 190.93325712499973
+        },
+        "exit": "0"
+      }
+    }
+  },
+  "health_check_timing": {
+    "estimated_elapsed_s": {
+      "on-pair-c0-r1": 220.66553466434289,
+      "on-pair-c3-r1": 220.85262333634364,
+      "multi-three-c5-r2": 220.34531346434414
+    },
+    "qualification": "after3minutes; SSH login latency delayed the read, all three completed normally when checked"
+  },
+  "admission_failures": {
+    "on-pair-c0-r1": {
+      "status": "HOST_ERROR",
+      "sim_seconds": 0,
+      "exit": "1",
+      "log_sha256": "a62163c6d5ef8e9e5d136818e85abae3b8d7ad5832ba8611cee87ca841aaa232",
+      "remote": "/home/ubuntu/ugrp-sim/runs/s3view3-on-pair-c0-r1"
+    },
+    "on-pair-c3-r1": {
+      "status": "HOST_ERROR",
+      "sim_seconds": 0,
+      "exit": "1",
+      "log_sha256": "c6de21e15183f5499a02e8f414fe70d61de6401e4bf60ef41a1b4ff72295f716",
+      "remote": "/home/ubuntu/ugrp-sim/runs/s3view3-on-pair-c3-r1"
+    },
+    "multi-three-c5-r2": {
+      "status": "HOST_ERROR",
+      "sim_seconds": 0,
+      "exit": "1",
+      "log_sha256": "c6de21e15183f5499a02e8f414fe70d61de6401e4bf60ef41a1b4ff72295f716",
+      "remote": "/home/ubuntu/ugrp-sim/runs/s3view3-multi-three-c5-r2"
+    }
+  },
+  "runs": {
+    "on-pair-c0-r1": {
+      "status": "COMPLETED",
+      "name": "s3fix21-on-pair-c0-r1",
+      "execution_sha": "713bd7134e87a58a314efbc868a1f5fdcc3a87e0",
+      "base_sha": "98fd3ffed52f91db0130124024d38f09bf8208f4",
+      "original_source_sha": "71c656e726235b11a2a45562eecbd17f6aa67b78",
+      "original_path": "/home/ubuntu/ugrp-sim/runs/s3fix21-on-pair-c0-r1",
+      "changed_unused_runners": {
+        "scripts/run_s3_integer_carry.py": {
+          "original": "ad7183fc8b7b03a1ecb852ed7a690f8ce0e1b0f220bc6c40e7535272fe96b7c0",
+          "current": "9c2e07ae9d2f6c4e0ebc15afd1a4ea94004f061bc5db99e361efee0dcdd2c9d0",
+          "imported": false
+        },
+        "scripts/run_s3_stage_origin.py": {
+          "original": "75e26efc4a69dbf1f0f80dd35ff11a2e4e38fc2b63493e5384a02de1cf333303",
+          "current": "53c6b60902490b710c5d8392bc3f5790844e997158509c45e08e13c5a9f7a3c4",
+          "imported": false
+        }
+      },
+      "evaluation_only": true,
+      "model_calls": 0,
+      "controller_run": false,
+      "physics_correction": false,
+      "same_tick_order": "r1 then r2, each original per-robot order preserved; coupled grip predicate audited invariant on all motion ticks",
+      "start_sim_s": 2.35,
+      "end_sim_s": 57.95,
+      "playback_speed": 4,
+      "width": 1280,
+      "height": 480,
+      "font_sha256": "69071005e523e3a2bf276b35b0066f68a7ec0d942c860941ad188ef15ef69c51",
+      "loadavg_start": [
+        0.0751953125,
+        58.22998046875,
+        111.53466796875
+      ],
+      "initial_state_exact": true,
+      "video_frames": 278,
+      "minimum_full_frame_bbox_fraction": 0.3755821885837653,
+      "wall_s": 191.77302625100037,
+      "loadavg_end": [
+        6.11474609375,
+        33.435546875,
+        91.89208984375
+      ],
+      "comparison": {
+        "robots/r1/commands.jsonl": {
+          "original": "405cc99b118b0833ea280e49e51edc4237d2ea595bb24468d673fb699f220d8e",
+          "replay": "405cc99b118b0833ea280e49e51edc4237d2ea595bb24468d673fb699f220d8e"
+        },
+        "robots/r2/commands.jsonl": {
+          "original": "2ffeec76fec69b0707f5e49dc43da465e4ee8e247dac992ef99be67f8bf3ad47",
+          "replay": "2ffeec76fec69b0707f5e49dc43da465e4ee8e247dac992ef99be67f8bf3ad47"
+        },
+        "robots/r3/commands.jsonl": {
+          "original": "1e9abd5c124e9a3c5a468170a6d0be1b42c02d546b8126e9e0d1a55fda5465a1",
+          "replay": "1e9abd5c124e9a3c5a468170a6d0be1b42c02d546b8126e9e0d1a55fda5465a1"
+        },
+        "eval_only/r1/trajectory.jsonl": {
+          "original": "58c107e94f543073903dee2991a4084e3608397436ed679016814adb8d5321d2",
+          "replay": "58c107e94f543073903dee2991a4084e3608397436ed679016814adb8d5321d2"
+        },
+        "eval_only/r2/trajectory.jsonl": {
+          "original": "b50ce1ff450976f066b939b6c846babc7c79100b805cc8a4c17648ead243ed7e",
+          "replay": "b50ce1ff450976f066b939b6c846babc7c79100b805cc8a4c17648ead243ed7e"
+        },
+        "eval_only/r3/trajectory.jsonl": {
+          "original": "d228907236b2ecae9d0548f851cf9f5f5fec59b619edab5acdc76577f38855ba",
+          "replay": "d228907236b2ecae9d0548f851cf9f5f5fec59b619edab5acdc76577f38855ba"
+        },
+        "eval_only/r1/render_camera.jsonl": {
+          "original": "8d8a496214f9b4ef7a30beaabda75fdf262f38efd6053d15dfc75a66c1c0cac4",
+          "replay": "8d8a496214f9b4ef7a30beaabda75fdf262f38efd6053d15dfc75a66c1c0cac4"
+        },
+        "eval_only/r2/render_camera.jsonl": {
+          "original": "6efa4039dd0f93e5545006609adeb931bbdfcc9190c8b61356915761ced594da",
+          "replay": "6efa4039dd0f93e5545006609adeb931bbdfcc9190c8b61356915761ced594da"
+        },
+        "eval_only/r3/render_camera.jsonl": {
+          "original": "e8a00b0eb3ccb6a534ae2d69ee11f4939668b48b4f23a8086ebbba77a8a4ae34",
+          "replay": "e8a00b0eb3ccb6a534ae2d69ee11f4939668b48b4f23a8086ebbba77a8a4ae34"
+        },
+        "robots/r1/frames.jsonl": {
+          "original": "46abab633ebc90df7367fcab092b3f5a4e63cf959fa48b13fdcfc131c341bcb0",
+          "replay": "46abab633ebc90df7367fcab092b3f5a4e63cf959fa48b13fdcfc131c341bcb0"
+        },
+        "robots/r2/frames.jsonl": {
+          "original": "316f398fba5e17500e40a953506ba505b9c49bdc5c69891fc8e357fe40a228b0",
+          "replay": "316f398fba5e17500e40a953506ba505b9c49bdc5c69891fc8e357fe40a228b0"
+        },
+        "robots/r3/frames.jsonl": {
+          "original": "fc422a020127c4da2ec7e2f7219527ff938c955c1caeb9356cab6ca8a34dde8e",
+          "replay": "fc422a020127c4da2ec7e2f7219527ff938c955c1caeb9356cab6ca8a34dde8e"
+        }
+      },
+      "command_trajectory_match": true,
+      "evaluation_trajectory_match": true,
+      "camera_and_qpos_match": true,
+      "video_sha256": "8e0d9b4f146526be8d1dcb657f412fa587bb8778798586dd4c222d68caee5bdd",
+      "delivery": {
+        "video_path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3view3-on-pair-c0-r1/overview.mp4",
+        "sha256": "8e0d9b4f146526be8d1dcb657f412fa587bb8778798586dd4c222d68caee5bdd",
+        "bytes": 950755,
+        "metadata": {
+          "programs": [],
+          "stream_groups": [],
+          "streams": [
+            {
+              "width": 1280,
+              "height": 480,
+              "r_frame_rate": "20/1",
+              "nb_frames": "278"
+            }
+          ],
+          "format": {
+            "duration": "13.900000"
+          }
+        },
+        "full_decode": true,
+        "remote_hash_match": true
+      },
+      "source_dependencies_verified": 513,
+      "original_outcome": {
+        "status": "DEV_STAGE_FINISHED",
+        "stage_end": "first_setdown_release_commanded",
+        "check_sim_s": 55.6
+      },
+      "remote_raw": "/home/ubuntu/ugrp-sim/runs/s3view3-on-pair-c0-r1-ram-r1/raw",
+      "durable_raw": "/home/ubuntu/ugrp-archive/runs/s3view3-on-pair-c0-r1-ram-r1/raw"
+    },
+    "on-pair-c3-r1": {
+      "status": "COMPLETED",
+      "name": "s3fix21-on-pair-c3-r1",
+      "execution_sha": "713bd7134e87a58a314efbc868a1f5fdcc3a87e0",
+      "base_sha": "98fd3ffed52f91db0130124024d38f09bf8208f4",
+      "original_source_sha": "71c656e726235b11a2a45562eecbd17f6aa67b78",
+      "original_path": "/home/ubuntu/ugrp-sim/runs/s3fix21-on-pair-c3-r1",
+      "changed_unused_runners": {
+        "scripts/run_s3_integer_carry.py": {
+          "original": "ad7183fc8b7b03a1ecb852ed7a690f8ce0e1b0f220bc6c40e7535272fe96b7c0",
+          "current": "9c2e07ae9d2f6c4e0ebc15afd1a4ea94004f061bc5db99e361efee0dcdd2c9d0",
+          "imported": false
+        },
+        "scripts/run_s3_stage_origin.py": {
+          "original": "75e26efc4a69dbf1f0f80dd35ff11a2e4e38fc2b63493e5384a02de1cf333303",
+          "current": "53c6b60902490b710c5d8392bc3f5790844e997158509c45e08e13c5a9f7a3c4",
+          "imported": false
+        }
+      },
+      "evaluation_only": true,
+      "model_calls": 0,
+      "controller_run": false,
+      "physics_correction": false,
+      "same_tick_order": "r1 then r2, each original per-robot order preserved; coupled grip predicate audited invariant on all motion ticks",
+      "start_sim_s": 2.35,
+      "end_sim_s": 59.45,
+      "playback_speed": 4,
+      "width": 1280,
+      "height": 480,
+      "font_sha256": "69071005e523e3a2bf276b35b0066f68a7ec0d942c860941ad188ef15ef69c51",
+      "loadavg_start": [
+        0.0751953125,
+        58.22998046875,
+        111.53466796875
+      ],
+      "initial_state_exact": true,
+      "video_frames": 286,
+      "minimum_full_frame_bbox_fraction": 0.36179455248730785,
+      "wall_s": 196.6738175649998,
+      "loadavg_end": [
+        5.548828125,
+        32.416015625,
+        90.93408203125
+      ],
+      "comparison": {
+        "robots/r1/commands.jsonl": {
+          "original": "d2a5509bff36e6e06a6b4327c2ae0469d44390c93b73efee7d0db2f8dd0fa2c1",
+          "replay": "d2a5509bff36e6e06a6b4327c2ae0469d44390c93b73efee7d0db2f8dd0fa2c1"
+        },
+        "robots/r2/commands.jsonl": {
+          "original": "2e7654736a4f12f6f6007b16e92fb8d179c52dcd08b3798dcf52b9697dd3bf46",
+          "replay": "2e7654736a4f12f6f6007b16e92fb8d179c52dcd08b3798dcf52b9697dd3bf46"
+        },
+        "robots/r3/commands.jsonl": {
+          "original": "1e9abd5c124e9a3c5a468170a6d0be1b42c02d546b8126e9e0d1a55fda5465a1",
+          "replay": "1e9abd5c124e9a3c5a468170a6d0be1b42c02d546b8126e9e0d1a55fda5465a1"
+        },
+        "eval_only/r1/trajectory.jsonl": {
+          "original": "aca16521d53d3099df658da9ef9c31686bea1ea1f6e2e1a0b2be4f9a351d77e7",
+          "replay": "aca16521d53d3099df658da9ef9c31686bea1ea1f6e2e1a0b2be4f9a351d77e7"
+        },
+        "eval_only/r2/trajectory.jsonl": {
+          "original": "c4ad9352003e19a73d7d4a84b283c1649015d55d08f55165709cdd15fe6d9975",
+          "replay": "c4ad9352003e19a73d7d4a84b283c1649015d55d08f55165709cdd15fe6d9975"
+        },
+        "eval_only/r3/trajectory.jsonl": {
+          "original": "2e9cbe0dc7aea1a30e3c6021b580db8a1e79db75b0a0a5c0da3a4bd9bb7421b8",
+          "replay": "2e9cbe0dc7aea1a30e3c6021b580db8a1e79db75b0a0a5c0da3a4bd9bb7421b8"
+        },
+        "eval_only/r1/render_camera.jsonl": {
+          "original": "fa35b0241c3e965227d2432db137e3740bafdbb8c8c908d9203b292957acd375",
+          "replay": "fa35b0241c3e965227d2432db137e3740bafdbb8c8c908d9203b292957acd375"
+        },
+        "eval_only/r2/render_camera.jsonl": {
+          "original": "247e4830973f3f907ed1ca6a4bdf5768954a6ab5ca49b692cf8d262cd8cd1117",
+          "replay": "247e4830973f3f907ed1ca6a4bdf5768954a6ab5ca49b692cf8d262cd8cd1117"
+        },
+        "eval_only/r3/render_camera.jsonl": {
+          "original": "aab23bc2d384d4a9e7f8fed0c98a78dc8cbd9f0cd4aaca4a21b31f8b08ddc8c0",
+          "replay": "aab23bc2d384d4a9e7f8fed0c98a78dc8cbd9f0cd4aaca4a21b31f8b08ddc8c0"
+        },
+        "robots/r1/frames.jsonl": {
+          "original": "1689e4d4977c09e7eebafe95651cd1949bf077cc25853dd957a82b4670eeae69",
+          "replay": "1689e4d4977c09e7eebafe95651cd1949bf077cc25853dd957a82b4670eeae69"
+        },
+        "robots/r2/frames.jsonl": {
+          "original": "d5b97bef33508b0184b62ddff915f45c4d07d4bfd99316c271360f57ab8bc484",
+          "replay": "d5b97bef33508b0184b62ddff915f45c4d07d4bfd99316c271360f57ab8bc484"
+        },
+        "robots/r3/frames.jsonl": {
+          "original": "5d8ead6ebebc6caf7d3d8b6a3baa7517982783ab207ff82e1fcd7b90bff1508c",
+          "replay": "5d8ead6ebebc6caf7d3d8b6a3baa7517982783ab207ff82e1fcd7b90bff1508c"
+        }
+      },
+      "command_trajectory_match": true,
+      "evaluation_trajectory_match": true,
+      "camera_and_qpos_match": true,
+      "video_sha256": "88d7cc5ade6dd3baf7a2e1599d044da8fcbdd33a3a6294af08e0e6cebbe95ad2",
+      "delivery": {
+        "video_path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3view3-on-pair-c3-r1/overview.mp4",
+        "sha256": "88d7cc5ade6dd3baf7a2e1599d044da8fcbdd33a3a6294af08e0e6cebbe95ad2",
+        "bytes": 984073,
+        "metadata": {
+          "programs": [],
+          "stream_groups": [],
+          "streams": [
+            {
+              "width": 1280,
+              "height": 480,
+              "r_frame_rate": "20/1",
+              "nb_frames": "286"
+            }
+          ],
+          "format": {
+            "duration": "14.300000"
+          }
+        },
+        "full_decode": true,
+        "remote_hash_match": true
+      },
+      "source_dependencies_verified": 513,
+      "original_outcome": {
+        "status": "DEV_STAGE_FINISHED",
+        "stage_end": "first_setdown_release_commanded",
+        "check_sim_s": 57.1
+      },
+      "remote_raw": "/home/ubuntu/ugrp-sim/runs/s3view3-on-pair-c3-r1-ram-r1/raw",
+      "durable_raw": "/home/ubuntu/ugrp-archive/runs/s3view3-on-pair-c3-r1-ram-r1/raw"
+    },
+    "multi-three-c5-r2": {
+      "status": "COMPLETED",
+      "name": "s3fix21-multi-three-c5-r2",
+      "execution_sha": "713bd7134e87a58a314efbc868a1f5fdcc3a87e0",
+      "base_sha": "98fd3ffed52f91db0130124024d38f09bf8208f4",
+      "original_source_sha": "9d50e37d3415b2cfe065fe836df855befee664ed",
+      "original_path": "/home/ubuntu/ugrp-sim/runs/s3fix21-multi-three-c5-r2",
+      "changed_unused_runners": {},
+      "evaluation_only": true,
+      "model_calls": 0,
+      "controller_run": false,
+      "physics_correction": false,
+      "same_tick_order": "r1 then r2, each original per-robot order preserved; coupled grip predicate audited invariant on all motion ticks",
+      "start_sim_s": 2.35,
+      "end_sim_s": 58.5,
+      "playback_speed": 4,
+      "width": 1280,
+      "height": 480,
+      "font_sha256": "69071005e523e3a2bf276b35b0066f68a7ec0d942c860941ad188ef15ef69c51",
+      "loadavg_start": [
+        0.0751953125,
+        58.22998046875,
+        111.53466796875
+      ],
+      "initial_state_exact": true,
+      "video_frames": 281,
+      "minimum_full_frame_bbox_fraction": 0.3681939813616013,
+      "wall_s": 190.93325712499973,
+      "loadavg_end": [
+        6.11474609375,
+        33.435546875,
+        91.89208984375
+      ],
+      "comparison": {
+        "robots/r1/commands.jsonl": {
+          "original": "db2fd801cc5da75094075a8b589c964d3ceb850feba9e446735b882f8a021cef",
+          "replay": "db2fd801cc5da75094075a8b589c964d3ceb850feba9e446735b882f8a021cef"
+        },
+        "robots/r2/commands.jsonl": {
+          "original": "42fa02d3017f43a28c7e406e470c62b35f1799362d92fc8457bd8d50961db51a",
+          "replay": "42fa02d3017f43a28c7e406e470c62b35f1799362d92fc8457bd8d50961db51a"
+        },
+        "robots/r3/commands.jsonl": {
+          "original": "1e9abd5c124e9a3c5a468170a6d0be1b42c02d546b8126e9e0d1a55fda5465a1",
+          "replay": "1e9abd5c124e9a3c5a468170a6d0be1b42c02d546b8126e9e0d1a55fda5465a1"
+        },
+        "eval_only/r1/trajectory.jsonl": {
+          "original": "d7e7594e94d27b6151cd57bb8ba445196ff0e2fea14d55dc04c98de88a6f8e26",
+          "replay": "d7e7594e94d27b6151cd57bb8ba445196ff0e2fea14d55dc04c98de88a6f8e26"
+        },
+        "eval_only/r2/trajectory.jsonl": {
+          "original": "e822b8a5ac73e19f3edf90fc243b0c54f77ca7702fe88359a22e09c0c0ca040d",
+          "replay": "e822b8a5ac73e19f3edf90fc243b0c54f77ca7702fe88359a22e09c0c0ca040d"
+        },
+        "eval_only/r3/trajectory.jsonl": {
+          "original": "c620ccb99e8e3eec794caed3419e316b9d0d5b42413eec02e974d0c32bf4aa29",
+          "replay": "c620ccb99e8e3eec794caed3419e316b9d0d5b42413eec02e974d0c32bf4aa29"
+        },
+        "eval_only/r1/render_camera.jsonl": {
+          "original": "5e827b1bfce19b5002dd0548eb27cec4ac332a093a23d00d1e4cd4a797dbfd36",
+          "replay": "5e827b1bfce19b5002dd0548eb27cec4ac332a093a23d00d1e4cd4a797dbfd36"
+        },
+        "eval_only/r2/render_camera.jsonl": {
+          "original": "b0f0f2ce2d541999bccb0b3c75f03254afbf0972982dc743689bfb3cf39acecc",
+          "replay": "b0f0f2ce2d541999bccb0b3c75f03254afbf0972982dc743689bfb3cf39acecc"
+        },
+        "eval_only/r3/render_camera.jsonl": {
+          "original": "a3d707a61497626032e001f0c57b2e086194c4eb0004ba379b04d0fc61919aa9",
+          "replay": "a3d707a61497626032e001f0c57b2e086194c4eb0004ba379b04d0fc61919aa9"
+        },
+        "robots/r1/frames.jsonl": {
+          "original": "001f38b08595058c090e6a63f66f97cd6dcc4eeb2f51db0fb70d7dda52c08a3e",
+          "replay": "001f38b08595058c090e6a63f66f97cd6dcc4eeb2f51db0fb70d7dda52c08a3e"
+        },
+        "robots/r2/frames.jsonl": {
+          "original": "2a11403520107a76247b169a5859312cb6d67f01ff7a06f92d947061470b5702",
+          "replay": "2a11403520107a76247b169a5859312cb6d67f01ff7a06f92d947061470b5702"
+        },
+        "robots/r3/frames.jsonl": {
+          "original": "5ddc90fe66fb29b10d36fd3258255c37980e6c1c8f61ebc406267ef08bf4e3ac",
+          "replay": "5ddc90fe66fb29b10d36fd3258255c37980e6c1c8f61ebc406267ef08bf4e3ac"
+        }
+      },
+      "command_trajectory_match": true,
+      "evaluation_trajectory_match": true,
+      "camera_and_qpos_match": true,
+      "video_sha256": "83cc7ec13213c66c60220846c9553e3e3784f3f2e67cfc2a5e3e75b1be5a1540",
+      "delivery": {
+        "video_path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3view3-multi-three-c5-r2/overview.mp4",
+        "sha256": "83cc7ec13213c66c60220846c9553e3e3784f3f2e67cfc2a5e3e75b1be5a1540",
+        "bytes": 947462,
+        "metadata": {
+          "programs": [],
+          "stream_groups": [],
+          "streams": [
+            {
+              "width": 1280,
+              "height": 480,
+              "r_frame_rate": "20/1",
+              "nb_frames": "281"
+            }
+          ],
+          "format": {
+            "duration": "14.050000"
+          }
+        },
+        "full_decode": true,
+        "remote_hash_match": true
+      },
+      "source_dependencies_verified": 516,
+      "original_outcome": {
+        "status": "HOST_ERROR",
+        "failure": "Traceback (most recent call last):\n  File \"/home/ubuntu/ugrp-sim/src/9d50e37d3415b2cfe065fe836df855befee664ed/scripts/run_s3_alignment_probe.py\", line 176, in run\n    actions=pair.step(now)+pair.arm_step(now)\n            ^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/9d50e37d3415b2cfe065fe836df855befee664ed/harness/zone_pair_highpose_runtime.py\", line 804, in step\n    return self._vetoed('step', now, collect, lambda t: None)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/9d50e37d3415b2cfe065fe836df855befee664ed/harness/zone_pair_highpose_runtime.py\", line 789, in _vetoed\n    issued = call(now)\n             ^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/9d50e37d3415b2cfe065fe836df855befee664ed/harness/zone_pair_highpose_runtime.py\", line 803, in collect\n    return self.look_recovery.filter(self, t, parent(t))\n                                              ^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/9d50e37d3415b2cfe065fe836df855befee664ed/harness/zone_final_pair_runtime.py\", line 67, in step\n    decision = own.step(now)\n               ^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/9d50e37d3415b2cfe065fe836df855befee664ed/harness/zone_own_executor.py\", line 535, in step\n    return getattr(self, '_step_' + job.kind)(now, job)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/9d50e37d3415b2cfe065fe836df855befee664ed/harness/zone_own_executor.py\", line 565, in _step_pair_carry\n    return self._pair.step(now)\n           ^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/9d50e37d3415b2cfe065fe836df855befee664ed/harness/zone_pair_highpose_runtime.py\", line 664, in step\n    return run(now)\n           ^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/9d50e37d3415b2cfe065fe836df855befee664ed/harness/zone_pair_executor.py\", line 374, in step\n    self.controller.tick(now)\n  File \"/home/ubuntu/ugrp-sim/src/9d50e37d3415b2cfe065fe836df855befee664ed/harness/zone_s3_alignment_ownership.py\", line 104, in owned_tick\n    return super(PairAlignRelook,ctl).tick(now)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/9d50e37d3415b2cfe065fe836df855befee664ed/scripts/run_m2_pair.py\", line 428, in tick\n    return super().tick(now)\n           ^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/9d50e37d3415b2cfe065fe836df855befee664ed/scripts/run_m2_pair.py\", line 216, in tick\n    handler(now, arm_idle)\n  File \"/home/ubuntu/ugrp-sim/src/9d50e37d3415b2cfe065fe836df855befee664ed/harness/zone_s3_coarse_fine.py\", line 230, in align\n    obs = ctl.look(now)\n          ^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/9d50e37d3415b2cfe065fe836df855befee664ed/harness/zone_pair_grasp.py\", line 66, in look\n    self.record_standoff(now, obs)\n  File \"/home/ubuntu/ugrp-sim/src/9d50e37d3415b2cfe065fe836df855befee664ed/harness/zone_pair_executor.py\", line 185, in record_standoff\n    return execution.command_guard.observe_standoff(now, obs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/9d50e37d3415b2cfe065fe836df855befee664ed/harness/zone_pair_guards.py\", line 496, in observe_standoff\n    ok = self.beam_track.observe_standoff(obs, own.servo, self.ep.controller.seg)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/9d50e37d3415b2cfe065fe836df855befee664ed/harness/zone_pair_highpose_blind_close.py\", line 181, in observe_standoff\n    ok = super().observe_standoff(obs, servo, segment)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/9d50e37d3415b2cfe065fe836df855befee664ed/harness/zone_pair_beam_track.py\", line 159, in observe_standoff\n    beam = self._standoff(obs, servo)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/9d50e37d3415b2cfe065fe836df855befee664ed/harness/zone_s3_coarse_fine.py\", line 215, in standoff\n    return vision(pulses[6]).beam_track()._standoff(obs, pulses)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/9d50e37d3415b2cfe065fe836df855befee664ed/harness/zone_final_pair_vision.py\", line 79, in _standoff\n    return measured_standoff(obs, servo, points=vision.points,\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/9d50e37d3415b2cfe065fe836df855befee664ed/harness/zone_pair_beam_track.py\", line 45, in standoff_estimate\n    beam = observe_beam(obs['image'], servo)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/9d50e37d3415b2cfe065fe836df855befee664ed/harness/owncam_pair_beam_v2.py\", line 78, in observe_beam\n    base = v1.observe_beam(frame, pose)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/9d50e37d3415b2cfe065fe836df855befee664ed/harness/owncam_pair_beam.py\", line 88, in observe_beam\n    origin, rays, xs, ys, valid = base_rays(pose, RAY_STEP)\n                                  ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/9d50e37d3415b2cfe065fe836df855befee664ed/harness/zone_final_pair_vision.py\", line 63, in base_rays\n    record = camera_record(self.calibration, 'unloaded', servo)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/9d50e37d3415b2cfe065fe836df855befee664ed/harness/zone_final_pair_contract.py\", line 85, in camera_record\n    raise CalibrationError(f'UNMEASURED_V3_CAMERA_POSTURE: {state}:{key}')\nharness.vision_pose_source_final.CalibrationError: UNMEASURED_V3_CAMERA_POSTURE: unloaded:807,1897,2187,1568\n",
+        "check_sim_s": 56.15
+      },
+      "remote_raw": "/home/ubuntu/ugrp-sim/runs/s3view3-multi-three-c5-r2-ram-r1/raw",
+      "durable_raw": "/home/ubuntu/ugrp-archive/runs/s3view3-multi-three-c5-r2-ram-r1/raw"
+    }
+  },
+  "command_trajectory_match_n_of_3": 3,
+  "evaluation_trajectory_match_n_of_3": 3,
+  "camera_and_qpos_match_n_of_3": 3,
+  "verification": {
+    "dimensions": [
+      1280,
+      480
+    ],
+    "playback_speed": 4,
+    "framerate": "20/1",
+    "sample_rate_sim_hz": 5,
+    "whole_video_decode": true,
+    "video_sha256_remote_equals_mac": true,
+    "visual": "initial oblique zoom, c0 lift, c3 lowering, multi-case terminal vicinity, r1/r2 own images and Korean stage/SIM captions inspected",
+    "object_coverage": "projected union bounding box of visible carrier/beam geometry occupies >=1/3 of full1280x480 frame; minimum0.36179",
+    "ARM_full_raw_copy": "rsync -a then rsync -anc empty comparison for all3; independent ARM video SHA and raw existence confirmed"
+  },
+  "qualifications": [
+    "Original c0/c3 first-segment outcomes and multi-three failure are preserved; this replay does not assert a fresh multi-segment success.",
+    "No controller or model client runs; truth coordinates used only for original setup reproduction and independent observer camera fitting.",
+    "Original self cameras, physics, and actuator commands unchanged; no state corrections or weld added.",
+    "Original logs remain untouched; three failed admissions and framing candidates retained."
+  ],
+  "issues": [
+    {
+      "issue": "transient x86 overload and SSH login latency",
+      "resolution": "resource rechecked before submission, then own SSH multiplex connection used for retrieval and closed at end"
+    },
+    {
+      "issue": "disk fell below guard threshold during first concurrent submission",
+      "resolution": "all3 refused at0SIM, preserved; own RAM retry succeeded and generated raw durably copied to ARM"
+    }
+  ]
+}

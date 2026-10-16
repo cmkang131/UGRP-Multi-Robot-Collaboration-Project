@@ -1,0 +1,16 @@
+{
+  "pr": 443,
+  "original_head": "ee3d656bf8b03341d3dc6252db957be6b6aa96ce",
+  "parent": "9ffbc553e4c6f688e7b1e8a32c59901d64fb4047",
+  "review_fix": "Skip exactly repeated path points; retain current heading and terminal rotation footprint check",
+  "original_registration_v199_v208_changed": false,
+  "source_seal_v209_mismatches": [],
+  "physical_runs": 0,
+  "research": {
+    "source": "https://github.com/ros-navigation/navigation2/blob/main/nav2_navfn_planner/src/navfn_planner.cpp",
+    "scope": "NavFn zero/one-point path corner-case handling; repo adapter retains terminal orientation safety rather than inventing a direction for a repeated point"
+  },
+  "local_tests": "23 passed in 38.96s",
+  "log": "outputs/merge-train-20261012/pr443-tests.txt",
+  "log_sha256": "81926641fa4788cbe3252e4c8dc2bc0c930476a0971e2d067ffda9146fb045c7"
+}

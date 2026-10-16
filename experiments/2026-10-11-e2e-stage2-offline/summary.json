@@ -1,0 +1,457 @@
+{
+  "id": "e2e-stage2-offline",
+  "status": "OFFLINE_PASS_PHYSICAL_UNVERIFIED",
+  "source_base": "572bdb80d6f8b364ce510acefbdf7bdb2d64a309",
+  "new_physics": 0,
+  "model_calls": 0,
+  "oracle_x86_connections": 0,
+  "azure_submissions": 0,
+  "E2E_success": 0,
+  "tests": {
+    "passed": 86,
+    "total": 86,
+    "files": [
+      "tests/test_e2e_s3_route.py",
+      "tests/test_e2e_goal_route.py",
+      "tests/test_goal_route_continuous.py"
+    ],
+    "prior_attempts": [
+      {
+        "file": "pytest.txt",
+        "passed": 48,
+        "failed": 34,
+        "reason": "initial fixture setup/source-seal mismatch plus NumPy coordinate type and camera test extrinsic"
+      },
+      {
+        "file": "pytest-r2.txt",
+        "passed": 80,
+        "failed": 2,
+        "reason": "OwnRoute rejected NumPy scalar pose"
+      },
+      {
+        "file": "pytest-r3.txt",
+        "passed": 82,
+        "failed": 0
+      },
+      {
+        "file": "pytest-final.txt",
+        "passed": 84,
+        "failed": 0
+      }
+    ],
+    "final_log": "pytest-final-r2.txt"
+  },
+  "toggles_default": {
+    "own_route": "off",
+    "pulse_budget": "off",
+    "arrival_gate": "off",
+    "covariance_inflation": "off",
+    "setdown_reobserve": "off"
+  },
+  "S3_original": "harness/zone_s3_synchronized_carry.py:pulse_schedule (unchanged); E2E attaches between synchronized and integer dispatch and uses ResidualPulsePort expiry",
+  "replay": {
+    "improved": 6,
+    "N": 6,
+    "scope": "Actual saved integer dispatch ticks replayed with calibrated linear duration response; other observed errors frozen. Counterfactual, not physical validation.",
+    "rows": [
+      {
+        "run": "s4live11-leader_ko-s601-v182",
+        "option": "off",
+        "complete_saved_route": true,
+        "saved_error_m": 0.4490449374312462,
+        "predicted_error_m": 0.4490449374312462,
+        "command_delta_xy_m": [
+          2.7755575615628914e-17,
+          0.0
+        ]
+      },
+      {
+        "run": "s4live11-leader_ko-s601-v182",
+        "option": "fractional_duration_v1",
+        "complete_saved_route": true,
+        "saved_error_m": 0.4490449374312462,
+        "predicted_error_m": 0.09987292875869008,
+        "command_delta_xy_m": [
+          -0.012312783703393282,
+          0.3541794279575927
+        ]
+      },
+      {
+        "run": "s4live11-leader_ko-s601-v182",
+        "option": "tick_duration_v1",
+        "complete_saved_route": true,
+        "saved_error_m": 0.4490449374312462,
+        "predicted_error_m": 0.10530656793838578,
+        "command_delta_xy_m": [
+          -0.006469360905670685,
+          0.34673253617874333
+        ]
+      },
+      {
+        "run": "s4live11-peer_ko-s601-v182",
+        "option": "off",
+        "complete_saved_route": true,
+        "saved_error_m": 0.5259685196915462,
+        "predicted_error_m": 0.5259685196915462,
+        "command_delta_xy_m": [
+          2.7755575615628914e-17,
+          0.0
+        ]
+      },
+      {
+        "run": "s4live11-peer_ko-s601-v182",
+        "option": "fractional_duration_v1",
+        "complete_saved_route": true,
+        "saved_error_m": 0.5259685196915462,
+        "predicted_error_m": 0.19199266250476185,
+        "command_delta_xy_m": [
+          -0.012312783703393282,
+          0.3541794279575927
+        ]
+      },
+      {
+        "run": "s4live11-peer_ko-s601-v182",
+        "option": "tick_duration_v1",
+        "complete_saved_route": true,
+        "saved_error_m": 0.5259685196915462,
+        "predicted_error_m": 0.19557197474699903,
+        "command_delta_xy_m": [
+          -0.006469360905670685,
+          0.34673253617874333
+        ]
+      },
+      {
+        "run": "s4live11-structured-s601-v182",
+        "option": "off",
+        "complete_saved_route": true,
+        "saved_error_m": 0.4460220804949463,
+        "predicted_error_m": 0.4460220804949463,
+        "command_delta_xy_m": [
+          2.7755575615628914e-17,
+          0.0
+        ]
+      },
+      {
+        "run": "s4live11-structured-s601-v182",
+        "option": "fractional_duration_v1",
+        "complete_saved_route": true,
+        "saved_error_m": 0.4460220804949463,
+        "predicted_error_m": 0.11495026469430338,
+        "command_delta_xy_m": [
+          -0.012312783703393282,
+          0.3541794279575927
+        ]
+      },
+      {
+        "run": "s4live11-structured-s601-v182",
+        "option": "tick_duration_v1",
+        "complete_saved_route": true,
+        "saved_error_m": 0.4460220804949463,
+        "predicted_error_m": 0.11719403763001919,
+        "command_delta_xy_m": [
+          -0.006469360905670685,
+          0.34673253617874333
+        ]
+      },
+      {
+        "run": "s4live11-no_comm-s601-v182",
+        "option": "off",
+        "complete_saved_route": false,
+        "saved_error_m": 1.8780563645871187,
+        "predicted_error_m": 1.8780563645871187,
+        "command_delta_xy_m": [
+          2.7755575615628914e-17,
+          0.0
+        ]
+      },
+      {
+        "run": "s4live11-no_comm-s601-v182",
+        "option": "fractional_duration_v1",
+        "complete_saved_route": false,
+        "saved_error_m": 1.8780563645871187,
+        "predicted_error_m": 1.8321454754367281,
+        "command_delta_xy_m": [
+          -0.00795639185169661,
+          0.3541794279575927
+        ]
+      },
+      {
+        "run": "s4live11-no_comm-s601-v182",
+        "option": "tick_duration_v1",
+        "complete_saved_route": false,
+        "saved_error_m": 1.8780563645871187,
+        "predicted_error_m": 1.8311005653929502,
+        "command_delta_xy_m": [
+          -0.006469360905670685,
+          0.34673253617874333
+        ]
+      }
+    ],
+    "lateral_ceil_excess_m": 0.3541794279575926,
+    "incomplete_no_comm": "Preserved as context, excluded from completed-route denominator",
+    "sources": [
+      {
+        "name": "s4live11-leader_ko-s601-v182",
+        "raw": "/home/ubuntu/ugrp-archive/runs/s4live11-leader_ko-s601-v182/raw",
+        "student_record_sha256": "f1e2fa101e3d07d0b24d45320e7a2775c35f85edbeb9fad0c068263ca5271f09"
+      },
+      {
+        "name": "s4live11-peer_ko-s601-v182",
+        "raw": "/home/ubuntu/ugrp-archive/runs/s4live11-peer_ko-s601-v182/raw",
+        "student_record_sha256": "f0ac1a2e3a9655e9c351d163d228af3101dbbcb5e68ce96e41bd503f19726805"
+      },
+      {
+        "name": "s4live11-structured-s601-v182",
+        "raw": "/home/ubuntu/ugrp-archive/runs/s4live11-structured-s601-v182/raw",
+        "student_record_sha256": "59eb61649d1cd42216349ba534c06227e099bb8149e664f59b0cd0965ec7b7d6"
+      },
+      {
+        "name": "s4live11-no_comm-s601-v182",
+        "raw": "/home/ubuntu/ugrp-archive/runs/s4live11-no_comm-s601-v182/raw",
+        "student_record_sha256": "5040686114d7371fecea183f9de94159a81b88670641185e50518b039703d691"
+      }
+    ]
+  },
+  "own_B": {
+    "source": "r1 GoalRoute remembered own RGB; complete observed blue quadrilateral + 3 white markers",
+    "path": "Known-free observed grid with full pair footprint and inflated uncertainty -> cardinal S3 legs",
+    "agreement": "Private full-map route digest bound to actual compact S4 message digest; no_comm and stale/revised route approval fail closed",
+    "setdown": "3 fresh geometry-verified RGB boundaries -> endpoint replan -> invalidate approval/GO/ACK -> approve new digest/new epoch -> whole own-observed beam footprint containment before native lower barrier",
+    "GT_control": false,
+    "legacy_static_runtime": "still rejected; no authored shell reused"
+  },
+  "NEES": {
+    "xy_scale": 4.154338462020465,
+    "fit_samples": 739,
+    "fit_seed": 63001,
+    "check_seed": 63002,
+    "condition": "calib_traversed",
+    "check_tail_n": 41,
+    "check_N": 1260,
+    "check_rate": 0.03253968253968254,
+    "nominal_rate": 0.0027,
+    "method": "max(1, fit mean NEES / 2, fit q99.73 / chi2_2(99.73))",
+    "scope": "8 archived egomap70 wave1 records, 2 seeds; not the full 24-condition cohort",
+    "coverage_validated": false,
+    "reason": "Held-out tail 3.25% exceeds nominal .27%; frames are correlated, yaw/r1 transfer and full 24-cohort coverage unverified."
+  },
+  "next_physical_plan": "azure-plan.json",
+  "remaining": [
+    "No new physical verification or E2E success",
+    "Fractional response and full-boundary visibility need physical validation",
+    "Preliminary NEES scale leaves held-out tails; no uncertainty guarantee"
+  ],
+  "raw": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e-stage2-offline-20261011/saved-commands.json",
+      "bytes": 65101,
+      "sha256": "78184f0cf1fa14a23c3094974228a70299d106b824f1e9e0d8c3592176b5384b"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e-stage2-offline-20261011/pulse-replay.json",
+      "bytes": 26587,
+      "sha256": "802e0a3d51cb9a8f56fa199c67031aacf79f57e7fecee2fdf219716b84acb568"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e-stage2-offline-20261011/nees-calibration.json",
+      "bytes": 6349,
+      "sha256": "38d5611ddaaccd696ffb35e6b16f195f2570e1b257b9b8a6176bf8017ce4a307"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e-stage2-offline-20261011/pytest-final.txt",
+      "bytes": 179,
+      "sha256": "75abebce90c84a85657e18e9a304be4ca7823e933199990d7250b6cb18a341eb"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e-stage2-offline-20261011/pytest-final-r2.txt",
+      "bytes": 179,
+      "sha256": "6fb38b902f708bbf2b57ad1c6f7cafc5b650184e33e30c7a41387289c762df7b"
+    }
+  ],
+  "diagnosis": {
+    "source_commit": "591acf56",
+    "path": "/Users/changmin/projects/ugrp/outputs/s4live12-offline/prior-diagnosis-v3.json",
+    "sha256": "00148837c111ad15efd05b83d272c994b6a2cae07b7722def9e50c6bda546880"
+  },
+  "NEES_originals": [
+    {
+      "raw": "/home/ubuntu/ugrp-archive/runs/egomap70-wave1/data/egomap70-63001-baseline",
+      "files": {
+        "eval_only/trajectory.jsonl": "361736c0dd07836e9bcd56349c1362c4958ef3eda229c05d87a003a7b1d519c0",
+        "own-controller.jsonl": "dfb89e7eb7c0b430793d130a4415ffa54c93db90558c5b388a8ab8d733836c80",
+        "frontend-covariances.jsonl": "9a34fcc48fb41af39a4d0bfcafaffc706ed49fdfbf0c245673216b8f624b6c32"
+      },
+      "samples": 3069,
+      "over3": 2297,
+      "mean_nees": 252.4202341855417,
+      "max_nees": 3119.3328800991408,
+      "seed": 63001,
+      "condition": "baseline",
+      "split": "context",
+      "inflated_mean_nees": 60.76063288853383,
+      "inflated_tail_exceedances": 2075
+    },
+    {
+      "raw": "/home/ubuntu/ugrp-archive/runs/egomap70-wave1/data/egomap70-63001-calib",
+      "files": {
+        "eval_only/trajectory.jsonl": "95df802405e2b0f975a1c0180b13383c0695f7727904ec1f5fe523e66c24f696",
+        "own-controller.jsonl": "4bef89e5056ea93756ca35f277e5a8d3eb1dbd3d38a1a9bd073273d6344c8fdf",
+        "frontend-covariances.jsonl": "2ba8c382a3f7780babb99276c3b7f6e6331fdb017f8f63166611ff0cf8848da0"
+      },
+      "samples": 739,
+      "over3": 182,
+      "mean_nees": 8.30867692404093,
+      "max_nees": 43.827551406731935,
+      "seed": 63001,
+      "condition": "calib",
+      "split": "context",
+      "inflated_mean_nees": 2.0,
+      "inflated_tail_exceedances": 0
+    },
+    {
+      "raw": "/home/ubuntu/ugrp-archive/runs/egomap70-wave1/data/egomap70-63001-calib_traversed",
+      "files": {
+        "eval_only/trajectory.jsonl": "95df802405e2b0f975a1c0180b13383c0695f7727904ec1f5fe523e66c24f696",
+        "own-controller.jsonl": "ac99a98d89ff39f982868c3922aaba851a4a86f6ed7f91a87fe32014eee158a0",
+        "frontend-covariances.jsonl": "2ba8c382a3f7780babb99276c3b7f6e6331fdb017f8f63166611ff0cf8848da0"
+      },
+      "samples": 739,
+      "over3": 182,
+      "mean_nees": 8.30867692404093,
+      "max_nees": 43.827551406731935,
+      "seed": 63001,
+      "condition": "calib_traversed",
+      "split": "fit",
+      "inflated_mean_nees": 2.0,
+      "inflated_tail_exceedances": 0
+    },
+    {
+      "raw": "/home/ubuntu/ugrp-archive/runs/egomap70-wave1/data/egomap70-63001-calib_traversed_zone",
+      "files": {
+        "eval_only/trajectory.jsonl": "95df802405e2b0f975a1c0180b13383c0695f7727904ec1f5fe523e66c24f696",
+        "own-controller.jsonl": "20d9d6ee141157516625ed5e3caccdba7971ec279f1f0be4b42616a20a38786a",
+        "frontend-covariances.jsonl": "2ba8c382a3f7780babb99276c3b7f6e6331fdb017f8f63166611ff0cf8848da0"
+      },
+      "samples": 739,
+      "over3": 182,
+      "mean_nees": 8.30867692404093,
+      "max_nees": 43.827551406731935,
+      "seed": 63001,
+      "condition": "calib_traversed_zone",
+      "split": "context",
+      "inflated_mean_nees": 2.0,
+      "inflated_tail_exceedances": 0
+    },
+    {
+      "raw": "/home/ubuntu/ugrp-archive/runs/egomap70-wave1/data/egomap70-63002-baseline",
+      "files": {
+        "eval_only/trajectory.jsonl": "8fbfa61a99a036a33b5d873ee5dbaf36617ca766e9ff6819a08da7188765dcb1",
+        "own-controller.jsonl": "12833cef5af7e48377e94e38ec82d9f487f47df904490b48a6e24d4af2bf4e19",
+        "frontend-covariances.jsonl": "4853367efd9470c69be2c8fad5570e8d5a554137fec615a57b085505dbdf8ee4"
+      },
+      "samples": 1625,
+      "over3": 217,
+      "mean_nees": 33.84583410218588,
+      "max_nees": 2310.7795639874826,
+      "seed": 63002,
+      "condition": "baseline",
+      "split": "context",
+      "inflated_mean_nees": 8.14710558891847,
+      "inflated_tail_exceedances": 664
+    },
+    {
+      "raw": "/home/ubuntu/ugrp-archive/runs/egomap70-wave1/data/egomap70-63002-calib",
+      "files": {
+        "eval_only/trajectory.jsonl": "c0bcfc1c88f19c158d20a4ceb73851646d92362711f8ca9b02ea209aabf7e2b8",
+        "own-controller.jsonl": "5a443bea737a3923108b020b8c430b9d6b31eb8b5240de65851de68a07e94d61",
+        "frontend-covariances.jsonl": "23481c5ed8761e21c5d903e935594bd6289c4363e9e271bdbe66eb4773c98b48"
+      },
+      "samples": 2095,
+      "over3": 738,
+      "mean_nees": 18.485736165204468,
+      "max_nees": 226.18506518226525,
+      "seed": 63002,
+      "condition": "calib",
+      "split": "context",
+      "inflated_mean_nees": 4.449742440151089,
+      "inflated_tail_exceedances": 160
+    },
+    {
+      "raw": "/home/ubuntu/ugrp-archive/runs/egomap70-wave1/data/egomap70-63002-calib_traversed",
+      "files": {
+        "eval_only/trajectory.jsonl": "4a438d89dd267beb99f9376f1719b522bb439e906df44cea298877993cc1e713",
+        "own-controller.jsonl": "1a9279a7284801950b35002f38327acdd811843c9756d18851f1694ba7eeb6e6",
+        "frontend-covariances.jsonl": "4364078d0beb209d2268dcea80971a2a24cdd875af4d3cf7c4486bfa248b9ac0"
+      },
+      "samples": 1260,
+      "over3": 121,
+      "mean_nees": 7.479727943452343,
+      "max_nees": 67.58517010830774,
+      "seed": 63002,
+      "condition": "calib_traversed",
+      "split": "check",
+      "inflated_mean_nees": 1.8004618573650288,
+      "inflated_tail_exceedances": 41
+    },
+    {
+      "raw": "/home/ubuntu/ugrp-archive/runs/egomap70-wave1/data/egomap70-63002-calib_traversed_zone",
+      "files": {
+        "eval_only/trajectory.jsonl": "d0bbb13bc013a3842a9e23db5faa9d6c75ad28f4969f39eb6ba2ded3fd15aa3a",
+        "own-controller.jsonl": "e718fee6a3e0cd92a0613f7344c2f55f67552d8d4869e9fd669605da15a3b3ad",
+        "frontend-covariances.jsonl": "e0f6b1d2aa445636f55b04412bb97836d703925d40e9427bef529051325e06d1"
+      },
+      "samples": 860,
+      "over3": 0,
+      "mean_nees": 4.543718169784199,
+      "max_nees": 14.66509086270569,
+      "seed": 63002,
+      "condition": "calib_traversed_zone",
+      "split": "context",
+      "inflated_mean_nees": 1.0937284507084577,
+      "inflated_tail_exceedances": 0
+    }
+  ],
+  "references": [
+    {
+      "url": "https://docs.opencv.org/4.x/d1/de0/tutorial_py_feature_homography.html",
+      "method": "Ratio matching + RANSAC homography geometric verification; use ORB/Hamming and reciprocal matches for existing RGB-only stack.",
+      "status": "verified official docs"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/UZ-SLAMLab/ORB_SLAM3/master/src/LoopClosing.cc",
+      "method": "Repeated geometric validation before loop acceptance (>=3 confirmations); own gate uses 3 fresh RGB frames and existing start-node CSM check, not full Sim3 SLAM.",
+      "status": "verified source lines 335-375"
+    },
+    {
+      "url": "https://arxiv.org/html/2505.21754v1",
+      "method": "LoopGNN 2025: review of multi-keyframe consensus plus geometric verification; learned graph network not implemented or claimed. Classical verifier selected to fit the existing RGB-only stack without new learned assets.",
+      "status": "verified primary paper"
+    },
+    {
+      "url": "https://docs.openvins.com/eval-metrics.html",
+      "method": "NEES error normalized by covariance, expected mean equals state dimension. Our offline scalar inflation rule is stated explicitly; not a paper-provided guarantee.",
+      "status": "verified official metrics"
+    }
+  ],
+  "class": "DEV_CODE_ONLY",
+  "source_sha256": {
+    "configs/e2e_nees_egomap70_dev_v1.json": "9edf15a01e2c8ce30d37cfcce6ff1a277c9fb10f5773f97a4879d3e584d82c82",
+    "configs/e2e_stage2_options_v1.json": "53bd74ba11655c1cca642d455a25d032874ed18534253bec0e80271100480b41",
+    "harness/e2e_covariance.py": "40e3ed79ad4219d452d34d9315d3e4b88f7e0a8016b2364f6155feb358bc3345",
+    "harness/e2e_goal_route.py": "a892188892265f5402ed0d3d5a988b047142a171eda65c27d3150874365f24ea",
+    "harness/e2e_pulse_budget.py": "898b2bb965061dbabc6370d4ca8b40e07d9258baeb92d08458806626b85a39bb",
+    "harness/e2e_rgb_gate.py": "452a2d8614e4b462b5496410f124a744cf487dfb5bdcf4b9acc37375af679ec0",
+    "harness/e2e_s3_route.py": "ffaf744e341682bb40496fbed007b5b9675b9c54644717d821d90e4833a9a30f",
+    "harness/goal_route_continuous.py": "0a36b9de0ea611532710662b4267220fa466fe3cb6ccfe5edb7dc1cf9b5227de",
+    "harness/self_map_closed_loop.py": "ea23d42311193845efe005b11e8f459c9a4f7d6cd328aa2f9e610fbc08ecfd47",
+    "scripts/calibrate_e2e_covariance.py": "544b8347ca48c85a6154ade3ef7910bd021c6a92f6d5e50ddcaf395fa4077938",
+    "scripts/replay_e2e_pulses.py": "b931012e6a1c2839c4a8d4294279ac01f1d0a9c7429c1f493e08d1934f289600",
+    "scripts/run_ci_tests.py": "f2d8d4f9e9c4c752c8b3e28b434820f1e4ec223f477353bb2a49d20bd99580f5",
+    "sim/e2e_pulse_port.py": "2d97fe977da93c88c75768ab593d96f2f5eab49731638724a14acf61314f0e72",
+    "tests/test_e2e_goal_route.py": "f1991bb81e3a4fd44d57de92d59fe1b5832f46ff20daf8514d6be5f2a9be9312",
+    "tests/test_e2e_s3_route.py": "4d8599d2ce585d54add7b9c4fd0429fa829948932317da7bbcc6ad54bd2733c5",
+    "tests/test_goal_route_continuous.py": "a3c0b097ee2358b410d0190569a28ee07b16ab07bd9edf6fe6f21df852575bd9"
+  },
+  "plan_sha256": "b0f2a02a3542a7579fafe9fe379175c21acdc3092ef9bd177acb535a23b03ae8",
+  "source_commit": "5a2c4fec601b692f28ae4ba3c8396c70aad03ce0"
+}

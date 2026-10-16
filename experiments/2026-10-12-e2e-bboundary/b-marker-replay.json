@@ -1,0 +1,289 @@
+{
+ "schema": "ugrp.e2e-bboundary.b-marker-replay.v1",
+ "status": "OFFLINE_FIXED_INPUT_REPLAY",
+ "research_result": false,
+ "source_sha": "026709ec",
+ "toggle": {
+  "name": "b_marker_detect",
+  "values": [
+   "off",
+   "contrast_v1"
+  ],
+  "default": "off",
+  "entry": "harness.e2e_live_mapping.make_goal/Robot(b_marker_detect=...) -> ArrivalGate.marker_detect; Python API only, no CLI/bundle/workflow registered"
+ },
+ "execution": {
+  "physics": 0,
+  "render": 0,
+  "simulations": 0,
+  "model_calls": 0,
+  "VM_connections": 0
+ },
+ "cause": {
+  "scene": "azure-runs/e2e10-a-s6100{1,2}-r2/raw/scene.xml (built by sim/zone_arena.py build_zone_xml)",
+  "slot_B_rgba": ".95 .95 .95 .35 (z=.0013)",
+  "zone_B_rgba": ".20 .40 .95 .30 (z=.0006)",
+  "floor": "checker .36/.62 grey, texrepeat 14 (0.57 m squares)",
+  "measured_r1_frame": "e2e10-a-s61002-r2 r1 00015/00016: light-tile blue RGB(88,110,168) S121 V168 -> mark (130,147,193) S83 V193; dark-tile blue (63,85,145) S144 V145 -> mark (116,133,179) S90 V179",
+  "explanation": "35%-alpha white over 30%-alpha blue: mark keeps floor hue 112, S only drops to 83-90 (fixed rule needs S<55); the checker gives B two tones. Lighting profile floor_light_v1 changes V, not hue.",
+  "real_robot_spec": "no marker spec document found in docs/ (unverified); real tape is expected opaque",
+  "environment_changed": false,
+  "possible_fix": "opaque slot rgba as a NEW map/scene version (user decision)"
+ },
+ "method": {
+  "rule": "mark pixel = inner & lens_valid & min(RGB) >= 1.3*open(min(RGB)) & min(RGB)-open >= 12 & S <= 0.78*close(S_reliable); S_reliable excludes V<50 and outside the lens; 3x3 binary opening; islands touching the region border cleared",
+  "kernel": "square, 0.25*sqrt(region area px), clipped 15..151, odd",
+  "unchanged": [
+   "blue mask",
+   "area>=100",
+   "convex 4-vertex quad",
+   "border margin 3 px",
+   "self-mask overlap 0",
+   "exactly 3 islands of >=9 px",
+   "4 valid floor corners",
+   "exactly 1 accepted component"
+  ],
+  "tuning_note": "thresholds set from measured pixels and iterated on these same 394 frames (dev exploration); not a confirmatory result"
+ },
+ "inputs": {
+  "frames": "outputs/e2e11-stall-odometry/selected-frames (394 JPEG, sha256-checked against frames.jsonl)",
+  "by_robot": {
+   "r1": 152,
+   "r2": 242
+  }
+ },
+ "labels": {
+  "scope": "evaluation only, computed after detection: eval_only trajectory + scene.xml B/slot/wall geometry through the own camera model; 2-D wall occlusion; never passed to the gate",
+  "classes": {
+   "none": 352,
+   "partial": 42
+  },
+  "slots_in_view": {
+   "0": 352,
+   "2": 38,
+   "3": 4
+  },
+  "B_corners_in_view": {
+   "0": 352,
+   "1": 42
+  },
+  "sanity": "e2e10-a-s61002-r2 r1 00015: projected slots (464,172),(290,230) vs visible marks (460,170),(290,228); third slot at x=-53 off-screen"
+ },
+ "results": {
+  "contrast_v1@0.7": {
+   "B_not_in_view": {
+    "N": 352,
+    "complete_boundary": 0,
+    "frames_any_island": 1,
+    "frames_three_islands": 0
+   },
+   "all3_slots_in_view": {
+    "N": 4,
+    "complete_boundary": 0,
+    "three_islands": 0
+   },
+   "complete_boundary_frames": 0,
+   "frames_with_mark_detected": {
+    "B_corners_in_view_lt4": 42,
+    "N": 42
+   },
+   "frames_with_three_island_component": 5,
+   "islands_off_marks": 144,
+   "islands_total": 232,
+   "slot_marks_in_view": {
+    "frames": 42,
+    "islands_on_marks": 88,
+    "marks": 88,
+    "marks_detected": 84
+   },
+   "three_islands_but_incomplete": {
+    "B_corners_in_view_lt4": 5,
+    "component_not_convex_quad": 5,
+    "total": 5
+   }
+  },
+  "contrast_v1@1.0": {
+   "B_not_in_view": {
+    "N": 352,
+    "complete_boundary": 0,
+    "frames_any_island": 1,
+    "frames_three_islands": 0
+   },
+   "all3_slots_in_view": {
+    "N": 4,
+    "complete_boundary": 0,
+    "three_islands": 1
+   },
+   "complete_boundary_frames": 0,
+   "frames_with_mark_detected": {
+    "B_corners_in_view_lt4": 42,
+    "N": 42
+   },
+   "frames_with_three_island_component": 9,
+   "islands_off_marks": 82,
+   "islands_total": 168,
+   "slot_marks_in_view": {
+    "frames": 42,
+    "islands_on_marks": 86,
+    "marks": 88,
+    "marks_detected": 84
+   },
+   "three_islands_but_incomplete": {
+    "B_corners_in_view_lt4": 9,
+    "component_not_convex_quad": 9,
+    "total": 9
+   }
+  },
+  "contrast_v1@1.3": {
+   "B_not_in_view": {
+    "N": 352,
+    "complete_boundary": 0,
+    "frames_any_island": 1,
+    "frames_three_islands": 0
+   },
+   "all3_slots_in_view": {
+    "N": 4,
+    "complete_boundary": 0,
+    "three_islands": 0
+   },
+   "complete_boundary_frames": 0,
+   "frames_with_mark_detected": {
+    "B_corners_in_view_lt4": 42,
+    "N": 42
+   },
+   "frames_with_three_island_component": 7,
+   "islands_off_marks": 74,
+   "islands_total": 160,
+   "slot_marks_in_view": {
+    "frames": 42,
+    "islands_on_marks": 86,
+    "marks": 88,
+    "marks_detected": 84
+   },
+   "three_islands_but_incomplete": {
+    "B_corners_in_view_lt4": 7,
+    "component_not_convex_quad": 7,
+    "total": 7
+   }
+  },
+  "off@0.7": {
+   "B_not_in_view": {
+    "N": 352,
+    "complete_boundary": 0,
+    "frames_any_island": 0,
+    "frames_three_islands": 0
+   },
+   "all3_slots_in_view": {
+    "N": 4,
+    "complete_boundary": 0,
+    "three_islands": 0
+   },
+   "complete_boundary_frames": 0,
+   "frames_with_mark_detected": {
+    "B_corners_in_view_lt4": 0,
+    "N": 0
+   },
+   "frames_with_three_island_component": 0,
+   "islands_off_marks": 0,
+   "islands_total": 0,
+   "slot_marks_in_view": {
+    "frames": 42,
+    "islands_on_marks": 0,
+    "marks": 88,
+    "marks_detected": 0
+   },
+   "three_islands_but_incomplete": {
+    "B_corners_in_view_lt4": 0,
+    "component_not_convex_quad": 0,
+    "total": 0
+   }
+  },
+  "off@1.0": {
+   "B_not_in_view": {
+    "N": 352,
+    "complete_boundary": 0,
+    "frames_any_island": 0,
+    "frames_three_islands": 0
+   },
+   "all3_slots_in_view": {
+    "N": 4,
+    "complete_boundary": 0,
+    "three_islands": 0
+   },
+   "complete_boundary_frames": 0,
+   "frames_with_mark_detected": {
+    "B_corners_in_view_lt4": 0,
+    "N": 0
+   },
+   "frames_with_three_island_component": 0,
+   "islands_off_marks": 0,
+   "islands_total": 0,
+   "slot_marks_in_view": {
+    "frames": 42,
+    "islands_on_marks": 0,
+    "marks": 88,
+    "marks_detected": 0
+   },
+   "three_islands_but_incomplete": {
+    "B_corners_in_view_lt4": 0,
+    "component_not_convex_quad": 0,
+    "total": 0
+   }
+  },
+  "off@1.3": {
+   "B_not_in_view": {
+    "N": 352,
+    "complete_boundary": 0,
+    "frames_any_island": 0,
+    "frames_three_islands": 0
+   },
+   "all3_slots_in_view": {
+    "N": 4,
+    "complete_boundary": 0,
+    "three_islands": 0
+   },
+   "complete_boundary_frames": 0,
+   "frames_with_mark_detected": {
+    "B_corners_in_view_lt4": 0,
+    "N": 0
+   },
+   "frames_with_three_island_component": 0,
+   "islands_off_marks": 0,
+   "islands_total": 0,
+   "slot_marks_in_view": {
+    "frames": 42,
+    "islands_on_marks": 0,
+    "marks": 88,
+    "marks_detected": 0
+   },
+   "three_islands_but_incomplete": {
+    "B_corners_in_view_lt4": 0,
+    "component_not_convex_quad": 0,
+    "total": 0
+   }
+  }
+ },
+ "max_time_residual_s": 0.0,
+ "raw": {
+  "rows": "/Users/changmin/projects/ugrp/outputs/e2e-bboundary-20261012/b-marker-replay-rows.json.zst",
+  "rows_sha256": "c509ccd87ed6aced9daa5362dfdeb445541747f7b56ad37982aeb98e78644a81",
+  "rows_decoded_sha256": "10ac9599cd83190fb20cb4c2b7f7bf7d5e6a63b82dcb03c496e210979e930a3c",
+  "summary": "/Users/changmin/projects/ugrp/outputs/e2e-bboundary-20261012/b-marker-replay-summary.json",
+  "summary_sha256": "276b40887b69e74b2c164c1a971da2b7ea02bafb5767f76e50073cc10250d6d0",
+  "storage": "Mac local only, not a GitHub raw backup"
+ },
+ "tests": {
+  "files": [
+   "tests/test_e2e_b_marker_detect.py",
+   "tests/test_e2e_goal_route.py",
+   "tests/test_e2e_boundary_views.py"
+  ],
+  "passed": 54,
+  "total": 54
+ },
+ "remaining": [
+  "no replay frame shows the full B square (B corners in view <=1 in all 42 B frames) -> complete boundary 0->0; needs candidate_views_v1 stand-off approach together with contrast_v1",
+  "extra non-mark islands (82 over 394 frames at gain 1.0) at tile edges next to marks would break the exactly-3 rule even with a full view (conservative: rejects, does not accept)",
+  "closed-loop effect, new success, runtime unverified"
+ ]
+}

@@ -1,0 +1,1225 @@
+{
+  "schema": "ugrp.s3_persistent_replay.v1",
+  "task": "s3fix20",
+  "status": "completed",
+  "recorded_utc": "2026-10-10T15:34:30.599675+00:00",
+  "source_sha": "ce06a201b571c9e0bbc14374298f74ace156bd22",
+  "host": "oracle-x86",
+  "scope": "DEV same frozen twenty conditions; not E2E or confirmation; prior lost raw not recovered",
+  "persistent_storage": {
+    "raw_root": "/home/ubuntu/ugrp-sim/runs/s3fix20-batch-r1/cohort",
+    "filesystem": "ext4 /dev/sda1",
+    "all_worker_EXIT_zero": true,
+    "source_verification": {
+      "source_sha": "ce06a201b571c9e0bbc14374298f74ace156bd22",
+      "git_blob_files_verified": 11541,
+      "unchanged_files_hardlinked": 11535,
+      "source_path": "/home/ubuntu/ugrp-sim/src/ce06a201b571c9e0bbc14374298f74ace156bd22",
+      "source_storage": "ext4 persistent",
+      "new_free_bytes": 12159651840
+    },
+    "raw_storage": "persistent disk only"
+  },
+  "initial_checks": {
+    "n": 20,
+    "healthy": 20,
+    "elapsed_wall_s_range": [
+      180.08169369000007,
+      180.204313147
+    ],
+    "sim_s_range": [
+      15.35,
+      17.35
+    ],
+    "frames_range": [
+      260,
+      300
+    ]
+  },
+  "admission": {
+    "load1_range": [
+      34.654296875,
+      34.654296875
+    ],
+    "min_mem_available_bytes": 56985022464,
+    "peak_load1_live_observed": 640.6640625,
+    "scope": "admission below51; later load increased; no priority or environment changes"
+  },
+  "retrieval": {
+    "n": 20,
+    "full_raw_retrieved": 20,
+    "local_sha256_verified_files": 69796,
+    "all_hashes_match": true,
+    "local_root": "/Users/changmin/projects/ugrp/outputs/oracle-runs",
+    "last_worker_fetch_utc": "2026-10-10T15:31:46.341922+00:00",
+    "verification_path": "/Users/changmin/projects/ugrp/outputs/s3fix20-control-20261011/local-raw-verification.json",
+    "verification_sha256": "c36c580a2bcc70eac6c8fa3e0231e0641e99db1f8445566446c7fa8c16036b44"
+  },
+  "remaining_causes": {
+    "plan_start_x_m": 1.3,
+    "registered_goal_xy_m": [
+      1.4518,
+      0.05
+    ],
+    "nominal_leg_dx_m": 0.1518,
+    "carry_start_x_deficit_mm": [
+      25.568056892283142,
+      36.10420932134528
+    ],
+    "integer_actual_dx_mm": [
+      153.2862594689055,
+      155.501359681401
+    ],
+    "integer_lateral_drift_mm": [
+      -15.658228259680357,
+      -10.11263491467048
+    ],
+    "integer_endpoint_error_mm": [
+      24.510593196003146,
+      36.54646541497047
+    ],
+    "baseline_endpoint_error_mm": [
+      16.48332453276261,
+      53.98650513719097
+    ],
+    "classification": "endpoint criterion failed in6/6; commanded displacement agrees with151.8mm within1.5–3.7mm; initial x deficit25.6–36.1mm plus lateral drift10.1–15.7mm remains; decomposition is evaluation only, causal mechanism not established",
+    "next_candidates": [
+      "audit static route entry versus probe setup/settled grasp contract",
+      "own RGB segment-start estimate and command-calibrated lateral correction; preregister before testing"
+    ]
+  },
+  "timing": {
+    "wall_s_range": [
+      454.12968996199993,
+      538.2946663970001
+    ],
+    "sim_s_range": [
+      54.6,
+      60.0
+    ],
+    "median_wall_per_sim": 8.341028680648037,
+    "wall_per_sim_range": [
+      8.094147672749562,
+      8.971577773283336
+    ]
+  },
+  "verification": {
+    "local_pytest": "tests/test_s3_integer_carry.py -k \"identical_retry or intermediate_release\"",
+    "passed": 2,
+    "deselected": 10,
+    "elapsed_s": 0.57,
+    "controller_source_changes": 0,
+    "CI_wait": false,
+    "PR": 416,
+    "PR_draft": true
+  },
+  "receipts": {
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix20-eval-r1/summary.json": "c12b354614a04684133749a578bc16182c23242aab193fbfeeb1b863ee1e4263",
+    "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix20-eval-r1/endpoint-decomposition.json": "b39b508bc3e1960b1cb7dbd6a58a0f1a6a59d1158490f87199c10cfb334c40cf",
+    "/Users/changmin/projects/ugrp/outputs/s3fix20-control-20261011/cohort.json": "dbf4be31554c8c830e79e849be4e3474c6ed3ec67e83647e223cdcf32672b795",
+    "/Users/changmin/projects/ugrp/outputs/s3fix20-control-20261011/initial-checks-live.json": "e96ae4b9c45610254ef5638f95c042a414389a7185e10f5c471154912d9582cb",
+    "/Users/changmin/projects/ugrp/outputs/s3fix20-control-20261011/source-verification.json": "a36d1eb5003eac2e0bb0479cf4a48df0de15ae5f4dc970dc5f355012538b98d2",
+    "/Users/changmin/projects/ugrp/outputs/s3fix20-control-20261011/cache-dedup.json": "c4f515097685d1a39c0f634e3c2add45d35284b1b5e7b348149a35849e2910a8",
+    "/Users/changmin/projects/ugrp/outputs/s3fix20-control-20261011/cache-dedup-small.json": "73ffa6346ffc2988b107394ac04f05a3c5f62bbfeaf74adaaca96df7a1671816",
+    "/Users/changmin/projects/ugrp/outputs/s3fix20-control-20261011/record-detail.json": "1933bc9a7c0dbaa145874fdb5bbd12910c62f85a5b833f7c645034e0911b80d5"
+  },
+  "n": 20,
+  "by_option": {
+    "off": {
+      "n": 10,
+      "pair_n": 6,
+      "cyan_n": 4,
+      "counts": {
+        "alignment": 10,
+        "grasp": 10,
+        "lift": 10,
+        "carry": 10
+      },
+      "pulse_count_correct": 0,
+      "endpoint_reached": 1,
+      "setdown": 6,
+      "drop_aborts": 0,
+      "tilt_aborts": 0,
+      "host_errors": 0,
+      "cyan_regression_carry": 4
+    },
+    "integer_ticks_v1": {
+      "n": 10,
+      "pair_n": 6,
+      "cyan_n": 4,
+      "counts": {
+        "alignment": 10,
+        "grasp": 10,
+        "lift": 10,
+        "carry": 10
+      },
+      "pulse_count_correct": 6,
+      "endpoint_reached": 0,
+      "setdown": 6,
+      "drop_aborts": 0,
+      "tilt_aborts": 0,
+      "host_errors": 0,
+      "cyan_regression_carry": 4
+    }
+  },
+  "second_stage_gate_passed": false,
+  "preregistration": {
+    "original": "experiments/2026-10-10-s3-integer-carry/summary.json",
+    "original_sha256": "e79e978532a41a3c8878e220237ee39444865729fd2e173fe50aad88eaee80d6",
+    "attempt": 3,
+    "conditions": "pair c0-c5 + cyan c0/c3/c4/c5, both off/integer_ticks_v1; A setdown; seed14201+condition",
+    "command_receipt": "/Users/changmin/projects/ugrp/outputs/s3fix20-control-20261011/preregistration.json",
+    "command_receipt_sha256": "b089523c015f998e99cbd7270a3d41bebd10f46a25e3b02ec872f4d2f88f4cab",
+    "initial_check_wall_s": 180,
+    "criteria": "pair: exactly12 nonzero first-leg carry commands per robot; matching mirrored commands/common timestamps; first-leg static endpoint error<=20mm. Setdown: original s3fix18 floor>=.1N, COM<=25mm, |vz|<=20mm/s, tilt<10deg for>=.20SIM after both full-open; zero physical/host/controller terminal. Cyan: unchanged alignment/grasp/lift/carry>=20mm regression; no pair pulse contract or artificial cyan final-stage bypass."
+  },
+  "runs": [
+    {
+      "name": "s3fix19-off-cyan-c0-r3",
+      "case": "cyan",
+      "condition": 0,
+      "seed": 14201,
+      "option": "off",
+      "status": "DEV_STAGE_FINISHED",
+      "wall_s": 519.4878924459999,
+      "sim_s": 60.0,
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "setdown": null,
+      "issued_pulses": null,
+      "pulse_count_correct": null,
+      "first_leg_endpoint_error_m": null,
+      "raw": {
+        "remote": "/home/ubuntu/ugrp-sim/runs/s3fix20-batch-r1/cohort/s3fix19-off-cyan-c0-r3/raw",
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix19-off-cyan-c0-r3/raw",
+        "manifest_sha256": "25069b830b25139891ab5e7e067d8a5bc2e57420b0d93b012dff4c73a805d9d7",
+        "files": 3640,
+        "local_sha256_verified": true
+      },
+      "initial_check": {
+        "healthy": true,
+        "elapsed_wall_s": 180.127835709,
+        "sim_s": 15.35,
+        "frames": 260
+      },
+      "physical_stops": {
+        "drop": 0,
+        "tilt": 0
+      },
+      "max_cargo_tilt_deg": 24.007881855100173,
+      "controller_failures": null,
+      "fetch_utc": "2026-10-10T15:31:12.354202+00:00"
+    },
+    {
+      "name": "s3fix19-off-cyan-c3-r3",
+      "case": "cyan",
+      "condition": 3,
+      "seed": 14204,
+      "option": "off",
+      "status": "DEV_STAGE_FINISHED",
+      "wall_s": 515.27755628,
+      "sim_s": 60.0,
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "setdown": null,
+      "issued_pulses": null,
+      "pulse_count_correct": null,
+      "first_leg_endpoint_error_m": null,
+      "raw": {
+        "remote": "/home/ubuntu/ugrp-sim/runs/s3fix20-batch-r1/cohort/s3fix19-off-cyan-c3-r3/raw",
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix19-off-cyan-c3-r3/raw",
+        "manifest_sha256": "d9c7c5ee6e622e8842d8597afdca7c21286321df82ff280b7ebf1288ec253f4f",
+        "files": 3640,
+        "local_sha256_verified": true
+      },
+      "initial_check": {
+        "healthy": true,
+        "elapsed_wall_s": 180.099251299,
+        "sim_s": 15.35,
+        "frames": 260
+      },
+      "physical_stops": {
+        "drop": 0,
+        "tilt": 0
+      },
+      "max_cargo_tilt_deg": 23.92296009580853,
+      "controller_failures": null,
+      "fetch_utc": "2026-10-10T15:31:23.169504+00:00"
+    },
+    {
+      "name": "s3fix19-off-cyan-c4-r3",
+      "case": "cyan",
+      "condition": 4,
+      "seed": 14205,
+      "option": "off",
+      "status": "DEV_STAGE_FINISHED",
+      "wall_s": 534.6153916349999,
+      "sim_s": 60.0,
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "setdown": null,
+      "issued_pulses": null,
+      "pulse_count_correct": null,
+      "first_leg_endpoint_error_m": null,
+      "raw": {
+        "remote": "/home/ubuntu/ugrp-sim/runs/s3fix20-batch-r1/cohort/s3fix19-off-cyan-c4-r3/raw",
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix19-off-cyan-c4-r3/raw",
+        "manifest_sha256": "10b9c6694a4a50bbc9930ab0ee284b7cc5895f487a3e1d1f1f22d983d96ab00f",
+        "files": 3640,
+        "local_sha256_verified": true
+      },
+      "initial_check": {
+        "healthy": true,
+        "elapsed_wall_s": 180.12188719000005,
+        "sim_s": 15.35,
+        "frames": 260
+      },
+      "physical_stops": {
+        "drop": 0,
+        "tilt": 0
+      },
+      "max_cargo_tilt_deg": 24.226980325617344,
+      "controller_failures": null,
+      "fetch_utc": "2026-10-10T15:31:44.544087+00:00"
+    },
+    {
+      "name": "s3fix19-off-cyan-c5-r3",
+      "case": "cyan",
+      "condition": 5,
+      "seed": 14206,
+      "option": "off",
+      "status": "DEV_STAGE_FINISHED",
+      "wall_s": 538.2946663970001,
+      "sim_s": 60.0,
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "setdown": null,
+      "issued_pulses": null,
+      "pulse_count_correct": null,
+      "first_leg_endpoint_error_m": null,
+      "raw": {
+        "remote": "/home/ubuntu/ugrp-sim/runs/s3fix20-batch-r1/cohort/s3fix19-off-cyan-c5-r3/raw",
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix19-off-cyan-c5-r3/raw",
+        "manifest_sha256": "5dbe8e545612d4b7ecc3d1110aca04edd89b758dd66421d0f64f811980ac1048",
+        "files": 3640,
+        "local_sha256_verified": true
+      },
+      "initial_check": {
+        "healthy": true,
+        "elapsed_wall_s": 180.104711716,
+        "sim_s": 15.35,
+        "frames": 260
+      },
+      "physical_stops": {
+        "drop": 0,
+        "tilt": 0
+      },
+      "max_cargo_tilt_deg": 24.074704880097475,
+      "controller_failures": null,
+      "fetch_utc": "2026-10-10T15:31:46.341922+00:00"
+    },
+    {
+      "name": "s3fix19-off-pair-c0-r3",
+      "case": "pair",
+      "condition": 0,
+      "seed": 14201,
+      "option": "off",
+      "status": "DEV_STAGE_FINISHED",
+      "wall_s": 458.4405130639999,
+      "sim_s": 55.6,
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "setdown": true,
+      "issued_pulses": {
+        "r1": 17,
+        "r2": 17
+      },
+      "pulse_count_correct": false,
+      "first_leg_endpoint_error_m": 0.04248599405523146,
+      "command_sync": true,
+      "raw": {
+        "remote": "/home/ubuntu/ugrp-sim/runs/s3fix20-batch-r1/cohort/s3fix19-off-pair-c0-r3/raw",
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix19-off-pair-c0-r3/raw",
+        "manifest_sha256": "a45474e727f9e732b11e2e368c6bca5196abcdc824e9725d6365635697d6eaa9",
+        "files": 3375,
+        "local_sha256_verified": true
+      },
+      "initial_check": {
+        "healthy": true,
+        "elapsed_wall_s": 180.135434421,
+        "sim_s": 17.35,
+        "frames": 300
+      },
+      "physical_stops": {
+        "drop": 0,
+        "tilt": 0
+      },
+      "max_cargo_tilt_deg": 1.4431126301902513,
+      "controller_failures": {},
+      "fetch_utc": "2026-10-10T15:28:21.255321+00:00",
+      "eval_only_carry_xy": {
+        "carry_start_xy_m": [
+          1.2703618802899923,
+          0.054833137165661454
+        ],
+        "carry_end_xy_m": [
+          1.4925859534340695,
+          0.03810186177021416
+        ],
+        "carry_delta_xy_m": [
+          0.22222407314407722,
+          -0.016731275395447297
+        ]
+      }
+    },
+    {
+      "name": "s3fix19-off-pair-c1-r3",
+      "case": "pair",
+      "condition": 1,
+      "seed": 14202,
+      "option": "off",
+      "status": "DEV_STAGE_FINISHED",
+      "wall_s": 460.6024592389999,
+      "sim_s": 55.1,
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "setdown": true,
+      "issued_pulses": {
+        "r1": 17,
+        "r2": 17
+      },
+      "pulse_count_correct": false,
+      "first_leg_endpoint_error_m": 0.04859257254709302,
+      "command_sync": true,
+      "raw": {
+        "remote": "/home/ubuntu/ugrp-sim/runs/s3fix20-batch-r1/cohort/s3fix19-off-pair-c1-r3/raw",
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix19-off-pair-c1-r3/raw",
+        "manifest_sha256": "5ddbd6b12853bb2a0897e7a3cdea69113656e6bf18433b21b23620f52717d843",
+        "files": 3345,
+        "local_sha256_verified": true
+      },
+      "initial_check": {
+        "healthy": true,
+        "elapsed_wall_s": 180.09892400900003,
+        "sim_s": 16.35,
+        "frames": 280
+      },
+      "physical_stops": {
+        "drop": 0,
+        "tilt": 0
+      },
+      "max_cargo_tilt_deg": 0.6808774388444393,
+      "controller_failures": {},
+      "fetch_utc": "2026-10-10T15:29:31.312453+00:00",
+      "eval_only_carry_xy": {
+        "carry_start_xy_m": [
+          1.2704885559709627,
+          0.04496855395201421
+        ],
+        "carry_end_xy_m": [
+          1.4935468110346994,
+          0.025131508385557205
+        ],
+        "carry_delta_xy_m": [
+          0.22305825506373678,
+          -0.019837045566457007
+        ]
+      }
+    },
+    {
+      "name": "s3fix19-off-pair-c2-r3",
+      "case": "pair",
+      "condition": 2,
+      "seed": 14203,
+      "option": "off",
+      "status": "DEV_STAGE_FINISHED",
+      "wall_s": 461.43890442099985,
+      "sim_s": 56.6,
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "setdown": true,
+      "issued_pulses": {
+        "r1": 14,
+        "r2": 14
+      },
+      "pulse_count_correct": false,
+      "first_leg_endpoint_error_m": 0.01648332453276261,
+      "command_sync": true,
+      "raw": {
+        "remote": "/home/ubuntu/ugrp-sim/runs/s3fix20-batch-r1/cohort/s3fix19-off-pair-c2-r3/raw",
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix19-off-pair-c2-r3/raw",
+        "manifest_sha256": "5899b5f2e31722f341426c233959143835b7c6e4dee17a9e487a16e6d0cddbe1",
+        "files": 3434,
+        "local_sha256_verified": true
+      },
+      "initial_check": {
+        "healthy": true,
+        "elapsed_wall_s": 180.204313147,
+        "sim_s": 16.35,
+        "frames": 280
+      },
+      "physical_stops": {
+        "drop": 0,
+        "tilt": 0
+      },
+      "max_cargo_tilt_deg": 0.5805696473828124,
+      "controller_failures": {},
+      "fetch_utc": "2026-10-10T15:30:30.886268+00:00",
+      "eval_only_carry_xy": {
+        "carry_start_xy_m": [
+          1.2638957906786548,
+          0.04981401751642917
+        ],
+        "carry_end_xy_m": [
+          1.448278336663125,
+          0.03389727119417074
+        ],
+        "carry_delta_xy_m": [
+          0.18438254598447035,
+          -0.01591674632225843
+        ]
+      }
+    },
+    {
+      "name": "s3fix19-off-pair-c3-r3",
+      "case": "pair",
+      "condition": 3,
+      "seed": 14204,
+      "option": "off",
+      "status": "DEV_STAGE_FINISHED",
+      "wall_s": 462.17583211400006,
+      "sim_s": 57.1,
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "setdown": true,
+      "issued_pulses": {
+        "r1": 16,
+        "r2": 16
+      },
+      "pulse_count_correct": false,
+      "first_leg_endpoint_error_m": 0.037276042216569494,
+      "command_sync": true,
+      "raw": {
+        "remote": "/home/ubuntu/ugrp-sim/runs/s3fix20-batch-r1/cohort/s3fix19-off-pair-c3-r3/raw",
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix19-off-pair-c3-r3/raw",
+        "manifest_sha256": "4d9021235bf3428d7ff5ad0a4e8109cffcdbe38ac3e6f27511116dc1a018710d",
+        "files": 3464,
+        "local_sha256_verified": true
+      },
+      "initial_check": {
+        "healthy": true,
+        "elapsed_wall_s": 180.12066409399995,
+        "sim_s": 17.35,
+        "frames": 300
+      },
+      "physical_stops": {
+        "drop": 0,
+        "tilt": 0
+      },
+      "max_cargo_tilt_deg": 0.5115396631559215,
+      "controller_failures": {},
+      "fetch_utc": "2026-10-10T15:29:12.979727+00:00",
+      "eval_only_carry_xy": {
+        "carry_start_xy_m": [
+          1.2741246612242136,
+          0.04958463347121165
+        ],
+        "carry_end_xy_m": [
+          1.4839229856765308,
+          0.031089232840604244
+        ],
+        "carry_delta_xy_m": [
+          0.20979832445231716,
+          -0.018495400630607405
+        ]
+      }
+    },
+    {
+      "name": "s3fix19-off-pair-c4-r3",
+      "case": "pair",
+      "condition": 4,
+      "seed": 14205,
+      "option": "off",
+      "status": "DEV_STAGE_FINISHED",
+      "wall_s": 455.89094672,
+      "sim_s": 54.6,
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "setdown": true,
+      "issued_pulses": {
+        "r1": 17,
+        "r2": 17
+      },
+      "pulse_count_correct": false,
+      "first_leg_endpoint_error_m": 0.0503658974224308,
+      "command_sync": true,
+      "raw": {
+        "remote": "/home/ubuntu/ugrp-sim/runs/s3fix20-batch-r1/cohort/s3fix19-off-pair-c4-r3/raw",
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix19-off-pair-c4-r3/raw",
+        "manifest_sha256": "0dfd9064b12747bf307a829c862fa868e020e70dbafffba0ac198af070a0e90f",
+        "files": 3315,
+        "local_sha256_verified": true
+      },
+      "initial_check": {
+        "healthy": true,
+        "elapsed_wall_s": 180.11113731299997,
+        "sim_s": 16.35,
+        "frames": 280
+      },
+      "physical_stops": {
+        "drop": 0,
+        "tilt": 0
+      },
+      "max_cargo_tilt_deg": 1.1757855655469895,
+      "controller_failures": {},
+      "fetch_utc": "2026-10-10T15:28:27.576470+00:00",
+      "eval_only_carry_xy": {
+        "carry_start_xy_m": [
+          1.274431943107717,
+          0.04903939094970936
+        ],
+        "carry_end_xy_m": [
+          1.4992097807948779,
+          0.03299893214681887
+        ],
+        "carry_delta_xy_m": [
+          0.22477783768716098,
+          -0.01604045880289049
+        ]
+      }
+    },
+    {
+      "name": "s3fix19-off-pair-c5-r3",
+      "case": "pair",
+      "condition": 5,
+      "seed": 14206,
+      "option": "off",
+      "status": "DEV_STAGE_FINISHED",
+      "wall_s": 457.89309189999994,
+      "sim_s": 56.1,
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "setdown": true,
+      "issued_pulses": {
+        "r1": 17,
+        "r2": 17
+      },
+      "pulse_count_correct": false,
+      "first_leg_endpoint_error_m": 0.053986505137190964,
+      "command_sync": true,
+      "raw": {
+        "remote": "/home/ubuntu/ugrp-sim/runs/s3fix20-batch-r1/cohort/s3fix19-off-pair-c5-r3/raw",
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix19-off-pair-c5-r3/raw",
+        "manifest_sha256": "5bdd131cc2cae6142c58ccf5440e6835968cca216efb7c9874dd6d9895664569",
+        "files": 3405,
+        "local_sha256_verified": true
+      },
+      "initial_check": {
+        "healthy": true,
+        "elapsed_wall_s": 180.09924173299999,
+        "sim_s": 16.35,
+        "frames": 280
+      },
+      "physical_stops": {
+        "drop": 0,
+        "tilt": 0
+      },
+      "max_cargo_tilt_deg": 0.8277517844513641,
+      "controller_failures": {},
+      "fetch_utc": "2026-10-10T15:29:16.982257+00:00",
+      "eval_only_carry_xy": {
+        "carry_start_xy_m": [
+          1.272745213613993,
+          0.04823645890735258
+        ],
+        "carry_end_xy_m": [
+          1.4990618490674943,
+          0.02390669895070089
+        ],
+        "carry_delta_xy_m": [
+          0.22631663545350134,
+          -0.024329759956651688
+        ]
+      }
+    },
+    {
+      "name": "s3fix19-on-cyan-c0-r3",
+      "case": "cyan",
+      "condition": 0,
+      "seed": 14201,
+      "option": "integer_ticks_v1",
+      "status": "DEV_STAGE_FINISHED",
+      "wall_s": 515.610951131,
+      "sim_s": 60.0,
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "setdown": null,
+      "issued_pulses": null,
+      "pulse_count_correct": null,
+      "first_leg_endpoint_error_m": null,
+      "raw": {
+        "remote": "/home/ubuntu/ugrp-sim/runs/s3fix20-batch-r1/cohort/s3fix19-on-cyan-c0-r3/raw",
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix19-on-cyan-c0-r3/raw",
+        "manifest_sha256": "b81ad79bd706d921ce3ed6837688ad0659a0736f753b8c968fc752a94fc62587",
+        "files": 3640,
+        "local_sha256_verified": true
+      },
+      "initial_check": {
+        "healthy": true,
+        "elapsed_wall_s": 180.08169369000007,
+        "sim_s": 15.35,
+        "frames": 260
+      },
+      "physical_stops": {
+        "drop": 0,
+        "tilt": 0
+      },
+      "max_cargo_tilt_deg": 24.007881855100173,
+      "controller_failures": null,
+      "fetch_utc": "2026-10-10T15:30:53.049051+00:00"
+    },
+    {
+      "name": "s3fix19-on-cyan-c3-r3",
+      "case": "cyan",
+      "condition": 3,
+      "seed": 14204,
+      "option": "integer_ticks_v1",
+      "status": "DEV_STAGE_FINISHED",
+      "wall_s": 516.919845527,
+      "sim_s": 60.0,
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "setdown": null,
+      "issued_pulses": null,
+      "pulse_count_correct": null,
+      "first_leg_endpoint_error_m": null,
+      "raw": {
+        "remote": "/home/ubuntu/ugrp-sim/runs/s3fix20-batch-r1/cohort/s3fix19-on-cyan-c3-r3/raw",
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix19-on-cyan-c3-r3/raw",
+        "manifest_sha256": "d8b29c3bd1d8b0e11f363465ca28e3056214f204121a46787707ffd8fba1a5d4",
+        "files": 3640,
+        "local_sha256_verified": true
+      },
+      "initial_check": {
+        "healthy": true,
+        "elapsed_wall_s": 180.17119709600001,
+        "sim_s": 15.35,
+        "frames": 260
+      },
+      "physical_stops": {
+        "drop": 0,
+        "tilt": 0
+      },
+      "max_cargo_tilt_deg": 23.92296009580853,
+      "controller_failures": null,
+      "fetch_utc": "2026-10-10T15:30:52.000673+00:00"
+    },
+    {
+      "name": "s3fix19-on-cyan-c4-r3",
+      "case": "cyan",
+      "condition": 4,
+      "seed": 14205,
+      "option": "integer_ticks_v1",
+      "status": "DEV_STAGE_FINISHED",
+      "wall_s": 534.806532096,
+      "sim_s": 60.0,
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "setdown": null,
+      "issued_pulses": null,
+      "pulse_count_correct": null,
+      "first_leg_endpoint_error_m": null,
+      "raw": {
+        "remote": "/home/ubuntu/ugrp-sim/runs/s3fix20-batch-r1/cohort/s3fix19-on-cyan-c4-r3/raw",
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix19-on-cyan-c4-r3/raw",
+        "manifest_sha256": "a618be6b87199e62b8d5798560eb3127620f0d97c253fb0ac0f7734ec96cb82d",
+        "files": 3640,
+        "local_sha256_verified": true
+      },
+      "initial_check": {
+        "healthy": true,
+        "elapsed_wall_s": 180.11890583000002,
+        "sim_s": 15.35,
+        "frames": 260
+      },
+      "physical_stops": {
+        "drop": 0,
+        "tilt": 0
+      },
+      "max_cargo_tilt_deg": 24.226980325617344,
+      "controller_failures": null,
+      "fetch_utc": "2026-10-10T15:31:28.924831+00:00"
+    },
+    {
+      "name": "s3fix19-on-cyan-c5-r3",
+      "case": "cyan",
+      "condition": 5,
+      "seed": 14206,
+      "option": "integer_ticks_v1",
+      "status": "DEV_STAGE_FINISHED",
+      "wall_s": 537.4088247710001,
+      "sim_s": 60.0,
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "setdown": null,
+      "issued_pulses": null,
+      "pulse_count_correct": null,
+      "first_leg_endpoint_error_m": null,
+      "raw": {
+        "remote": "/home/ubuntu/ugrp-sim/runs/s3fix20-batch-r1/cohort/s3fix19-on-cyan-c5-r3/raw",
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix19-on-cyan-c5-r3/raw",
+        "manifest_sha256": "e68ffe9ee7d021ae347440303e958ae06920994c5cabde44adbd3f5c0694c009",
+        "files": 3640,
+        "local_sha256_verified": true
+      },
+      "initial_check": {
+        "healthy": true,
+        "elapsed_wall_s": 180.141606915,
+        "sim_s": 15.35,
+        "frames": 260
+      },
+      "physical_stops": {
+        "drop": 0,
+        "tilt": 0
+      },
+      "max_cargo_tilt_deg": 24.074704880097475,
+      "controller_failures": null,
+      "fetch_utc": "2026-10-10T15:31:30.472751+00:00"
+    },
+    {
+      "name": "s3fix19-on-pair-c0-r3",
+      "case": "pair",
+      "condition": 0,
+      "seed": 14201,
+      "option": "integer_ticks_v1",
+      "status": "DEV_STAGE_FINISHED",
+      "wall_s": 458.49855304799985,
+      "sim_s": 55.6,
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "setdown": true,
+      "issued_pulses": {
+        "r1": 12,
+        "r2": 12
+      },
+      "pulse_count_correct": true,
+      "first_leg_endpoint_error_m": 0.0286581849593314,
+      "command_sync": true,
+      "raw": {
+        "remote": "/home/ubuntu/ugrp-sim/runs/s3fix20-batch-r1/cohort/s3fix19-on-pair-c0-r3/raw",
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix19-on-pair-c0-r3/raw",
+        "manifest_sha256": "70823e1e10a63d1fb2eb0264625826c5b0269dbe7452f7eb6c145b7e7cb1b355",
+        "files": 3375,
+        "local_sha256_verified": true
+      },
+      "initial_check": {
+        "healthy": true,
+        "elapsed_wall_s": 180.08533636899995,
+        "sim_s": 17.35,
+        "frames": 300
+      },
+      "physical_stops": {
+        "drop": 0,
+        "tilt": 0
+      },
+      "max_cargo_tilt_deg": 1.3126699869396397,
+      "controller_failures": {},
+      "fetch_utc": "2026-10-10T15:30:33.776557+00:00",
+      "eval_only_carry_xy": {
+        "carry_start_xy_m": [
+          1.2703618802899923,
+          0.054833137165661454
+        ],
+        "carry_end_xy_m": [
+          1.4241845479019917,
+          0.042339819154494814
+        ],
+        "carry_delta_xy_m": [
+          0.15382266761199936,
+          -0.01249331801116664
+        ]
+      }
+    },
+    {
+      "name": "s3fix19-on-pair-c1-r3",
+      "case": "pair",
+      "condition": 1,
+      "seed": 14202,
+      "option": "integer_ticks_v1",
+      "status": "DEV_STAGE_FINISHED",
+      "wall_s": 459.11558836799986,
+      "sim_s": 55.1,
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "setdown": true,
+      "issued_pulses": {
+        "r1": 12,
+        "r2": 12
+      },
+      "pulse_count_correct": true,
+      "first_leg_endpoint_error_m": 0.033828148944417116,
+      "command_sync": true,
+      "raw": {
+        "remote": "/home/ubuntu/ugrp-sim/runs/s3fix20-batch-r1/cohort/s3fix19-on-pair-c1-r3/raw",
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix19-on-pair-c1-r3/raw",
+        "manifest_sha256": "c7b46966bcca7ad114a091bb0a9ccd450c211fd41734b425678078f6e0cfca29",
+        "files": 3345,
+        "local_sha256_verified": true
+      },
+      "initial_check": {
+        "healthy": true,
+        "elapsed_wall_s": 180.14250803699997,
+        "sim_s": 16.35,
+        "frames": 280
+      },
+      "physical_stops": {
+        "drop": 0,
+        "tilt": 0
+      },
+      "max_cargo_tilt_deg": 0.7358937630214566,
+      "controller_failures": {},
+      "fetch_utc": "2026-10-10T15:30:30.817824+00:00",
+      "eval_only_carry_xy": {
+        "carry_start_xy_m": [
+          1.2704885559709627,
+          0.04496855395201421
+        ],
+        "carry_end_xy_m": [
+          1.4239292406506514,
+          0.030828029983949082
+        ],
+        "carry_delta_xy_m": [
+          0.15344068467968874,
+          -0.01414052396806513
+        ]
+      }
+    },
+    {
+      "name": "s3fix19-on-pair-c2-r3",
+      "case": "pair",
+      "condition": 2,
+      "seed": 14203,
+      "option": "integer_ticks_v1",
+      "status": "DEV_STAGE_FINISHED",
+      "wall_s": 462.418920739,
+      "sim_s": 56.6,
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "setdown": true,
+      "issued_pulses": {
+        "r1": 12,
+        "r2": 12
+      },
+      "pulse_count_correct": true,
+      "first_leg_endpoint_error_m": 0.03654646541497047,
+      "command_sync": true,
+      "raw": {
+        "remote": "/home/ubuntu/ugrp-sim/runs/s3fix20-batch-r1/cohort/s3fix19-on-pair-c2-r3/raw",
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix19-on-pair-c2-r3/raw",
+        "manifest_sha256": "f28182ad45417bb9db6d90e22155e44ab052b3d418b7e21d66936e3cd84b2c11",
+        "files": 3434,
+        "local_sha256_verified": true
+      },
+      "initial_check": {
+        "healthy": true,
+        "elapsed_wall_s": 180.13982367900007,
+        "sim_s": 17.35,
+        "frames": 300
+      },
+      "physical_stops": {
+        "drop": 0,
+        "tilt": 0
+      },
+      "max_cargo_tilt_deg": 0.5777791720192005,
+      "controller_failures": {},
+      "fetch_utc": "2026-10-10T15:29:52.300130+00:00",
+      "eval_only_carry_xy": {
+        "carry_start_xy_m": [
+          1.2638957906786548,
+          0.04981401751642917
+        ],
+        "carry_end_xy_m": [
+          1.4171820501475603,
+          0.038284980480528995
+        ],
+        "carry_delta_xy_m": [
+          0.1532862594689055,
+          -0.011529037035900178
+        ]
+      }
+    },
+    {
+      "name": "s3fix19-on-pair-c3-r3",
+      "case": "pair",
+      "condition": 3,
+      "seed": 14204,
+      "option": "integer_ticks_v1",
+      "status": "DEV_STAGE_FINISHED",
+      "wall_s": 465.62288122300004,
+      "sim_s": 57.1,
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "setdown": true,
+      "issued_pulses": {
+        "r1": 12,
+        "r2": 12
+      },
+      "pulse_count_correct": true,
+      "first_leg_endpoint_error_m": 0.027235953881903245,
+      "command_sync": true,
+      "raw": {
+        "remote": "/home/ubuntu/ugrp-sim/runs/s3fix20-batch-r1/cohort/s3fix19-on-pair-c3-r3/raw",
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix19-on-pair-c3-r3/raw",
+        "manifest_sha256": "797271e07dd824105977ce0daa46cd0147f1dbee9f0ec6e36f113ca8e9cef968",
+        "files": 3464,
+        "local_sha256_verified": true
+      },
+      "initial_check": {
+        "healthy": true,
+        "elapsed_wall_s": 180.15882678999992,
+        "sim_s": 16.35,
+        "frames": 280
+      },
+      "physical_stops": {
+        "drop": 0,
+        "tilt": 0
+      },
+      "max_cargo_tilt_deg": 1.3168296344822858,
+      "controller_failures": {},
+      "fetch_utc": "2026-10-10T15:30:51.940898+00:00",
+      "eval_only_carry_xy": {
+        "carry_start_xy_m": [
+          1.2741246612242136,
+          0.04958463347121165
+        ],
+        "carry_end_xy_m": [
+          1.4282605249825922,
+          0.03629998905978603
+        ],
+        "carry_delta_xy_m": [
+          0.1541358637583785,
+          -0.013284644411425621
+        ]
+      }
+    },
+    {
+      "name": "s3fix19-on-pair-c4-r3",
+      "case": "pair",
+      "condition": 4,
+      "seed": 14205,
+      "option": "integer_ticks_v1",
+      "status": "DEV_STAGE_FINISHED",
+      "wall_s": 454.12968996199993,
+      "sim_s": 54.6,
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "setdown": true,
+      "issued_pulses": {
+        "r1": 12,
+        "r2": 12
+      },
+      "pulse_count_correct": true,
+      "first_leg_endpoint_error_m": 0.024510593196003145,
+      "command_sync": true,
+      "raw": {
+        "remote": "/home/ubuntu/ugrp-sim/runs/s3fix20-batch-r1/cohort/s3fix19-on-pair-c4-r3/raw",
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix19-on-pair-c4-r3/raw",
+        "manifest_sha256": "0943869f23b14c3a117595b3cd2d6a350e9faad77b8a5d409cc9ef47b1d03b49",
+        "files": 3315,
+        "local_sha256_verified": true
+      },
+      "initial_check": {
+        "healthy": true,
+        "elapsed_wall_s": 180.10480717199994,
+        "sim_s": 16.35,
+        "frames": 280
+      },
+      "physical_stops": {
+        "drop": 0,
+        "tilt": 0
+      },
+      "max_cargo_tilt_deg": 1.2292681082085857,
+      "controller_failures": {},
+      "fetch_utc": "2026-10-10T15:30:14.386247+00:00",
+      "eval_only_carry_xy": {
+        "carry_start_xy_m": [
+          1.274431943107717,
+          0.04903939094970936
+        ],
+        "carry_end_xy_m": [
+          1.429933302789118,
+          0.03892675603503888
+        ],
+        "carry_delta_xy_m": [
+          0.155501359681401,
+          -0.01011263491467048
+        ]
+      }
+    },
+    {
+      "name": "s3fix19-on-pair-c5-r3",
+      "case": "pair",
+      "condition": 5,
+      "seed": 14206,
+      "option": "integer_ticks_v1",
+      "status": "DEV_STAGE_FINISHED",
+      "wall_s": 456.27191954700004,
+      "sim_s": 56.1,
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "setdown": true,
+      "issued_pulses": {
+        "r1": 12,
+        "r2": 12
+      },
+      "pulse_count_correct": true,
+      "first_leg_endpoint_error_m": 0.0302452884716433,
+      "command_sync": true,
+      "raw": {
+        "remote": "/home/ubuntu/ugrp-sim/runs/s3fix20-batch-r1/cohort/s3fix19-on-pair-c5-r3/raw",
+        "local": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s3fix19-on-pair-c5-r3/raw",
+        "manifest_sha256": "4a88d9ad7e7de25a965187a6231ec1683c7de4a662979b78279729d641cae4c9",
+        "files": 3405,
+        "local_sha256_verified": true
+      },
+      "initial_check": {
+        "healthy": true,
+        "elapsed_wall_s": 180.16406610299998,
+        "sim_s": 16.35,
+        "frames": 280
+      },
+      "physical_stops": {
+        "drop": 0,
+        "tilt": 0
+      },
+      "max_cargo_tilt_deg": 0.8277517844513641,
+      "controller_failures": {},
+      "fetch_utc": "2026-10-10T15:28:14.974074+00:00",
+      "eval_only_carry_xy": {
+        "carry_start_xy_m": [
+          1.272745213613993,
+          0.04823645890735258
+        ],
+        "carry_end_xy_m": [
+          1.427076338714357,
+          0.03257823064767222
+        ],
+        "carry_delta_xy_m": [
+          0.15433112510036406,
+          -0.015658228259680357
+        ]
+      }
+    }
+  ],
+  "next_stage": {
+    "n": 3,
+    "status": "not_run",
+    "reason": "frozen second_stage_gate_passed=false: integer endpoint_reached0/6, required6/6; no threshold change",
+    "registered_cases": [
+      "s3fix19-multi-left-c0",
+      "s3fix19-multi-right-c3",
+      "s3fix19-multi-three-c5"
+    ],
+    "source_registration": "experiments/2026-10-10-s3-integer-carry/summary.json:next_stage_preregistration"
+  }
+}

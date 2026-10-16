@@ -1,0 +1,55 @@
+{
+  "schema": "ugrp.storage-review-fixes.v1",
+  "pr": 435,
+  "branch": "codex/storage-rules",
+  "base_sha": "fbc390acace1fcb6e3c1e874e3b95f9b6c7082bc",
+  "scope": "로컬 합성 임시 자료 회귀검사; 실험 raw 정리·원격 배포·CI 조회·병합 미실행",
+  "changes": [
+    "LLM 이름 키워드 9개가 있는 JSON/JSONL 및 .zst는 크기·압축 전 크기와 무관하게 보존; episode.jsonl 포함",
+    "os.walk followlinks=False 유지; 루트의 모든 상위 경로와 탐색 중 하위 경로의 링크 차단",
+    "prune 삭제 직전 링크 여부와 대상 realpath의 루트 realpath 내부 여부 재검사; 압축 원본 삭제에도 같은 검사 적용"
+  ],
+  "verification": {
+    "command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_storage_tools.py",
+    "attempts": [
+      {
+        "result": "1 failed, 26 passed, 2 subtests passed",
+        "cause": "macOS /var 임시 경로 자체가 링크라 기존 wrapper 시험 fixture가 거부됨; fixture를 실제 /private/var 경로로 수정"
+      },
+      {
+        "result": "27 passed, 2 subtests passed",
+        "seconds": 0.56
+      },
+      {
+        "result": "27 passed, 2 subtests passed",
+        "seconds": 0.47,
+        "note": "최종 반례는 inventory 검사 후 같은 inode를 가리키는 상위 링크 교체를 주입하여 삭제 직전 거부 확인"
+      }
+    ],
+    "changed_test_files_only": true,
+    "ci_polled": false,
+    "real_evidence_pruned": false
+  },
+  "source_sha256": {
+    "scripts/evidence_prune.py": "7e9da5ddce677bd36e6c84d56f3a23d8a59fc033cf44a49c6d4d2f4d54196c95",
+    "scripts/storage_common.py": "d7560cebb295287fbc783e9b9cb6ffb810fa1450208f42fcdb0237ba63ac36a6",
+    "scripts/compress_json_traces.py": "777170016bbdb4459f8864de0154d25f1df095bc6949eba3dd4f95d4393fa195",
+    "tests/test_storage_tools.py": "0c02db9b64ce8b7922204763333c83d5abbe74947c2295fc84e3265ecabd71c7"
+  },
+  "references": [
+    {
+      "url": "https://docs.python.org/3/library/os.html#os.walk",
+      "verified": true,
+      "note": "공식 표준 os.walk의 followlinks=False와 topdown dirs 목록 변경으로 링크 하위 탐색 차단"
+    },
+    {
+      "url": "https://docs.python.org/3/library/pathlib.html#pathlib.Path.resolve",
+      "verified": true,
+      "note": "공식 Path.resolve 실경로 해석 후 is_relative_to로 경계 확인; 파일·상위 링크도 별도 검사"
+    }
+  ],
+  "remaining": [
+    "CI는 사용자 요청으로 조회하지 않음",
+    "PR 병합 및 설치된 서버 도구 갱신은 이 작업 범위에 포함하지 않음"
+  ]
+}

@@ -1,0 +1,354 @@
+{
+  "status": "PASS",
+  "vm": "ugrp-sim-azure2",
+  "subscription": "88b7ee7f-f2f3-4a0d-a0ce-cf7306943676",
+  "resource_group": "UGRP-SIM-RG",
+  "region": "koreacentral",
+  "size": "Standard_D16as_v5",
+  "os_disk_gib": 128,
+  "source_sha": "a45f99a04f98adcfa70e7004d0104c162412417e",
+  "identity": {
+    "principal": "3768e562-6abf-41a2-8f64-dfb80cbc092d",
+    "assignments": [
+      {
+        "roleDefinitionId": "/subscriptions/88b7ee7f-f2f3-4a0d-a0ce-cf7306943676/providers/Microsoft.Authorization/roleDefinitions/7b327b09-c7ad-5fea-a260-6a079521da91",
+        "principalId": "3768e562-6abf-41a2-8f64-dfb80cbc092d",
+        "principalType": "ServicePrincipal",
+        "scope": "/subscriptions/88b7ee7f-f2f3-4a0d-a0ce-cf7306943676/resourceGroups/UGRP-SIM-RG/providers/Microsoft.Compute/virtualMachines/ugrp-sim-azure2",
+        "condition": null,
+        "conditionVersion": null,
+        "createdOn": "2026-10-12T00:34:29.1528042Z",
+        "updatedOn": "2026-10-12T00:34:29.5565804Z",
+        "createdBy": null,
+        "updatedBy": "67a43555-7084-4352-9ac0-90a44b767b62",
+        "delegatedManagedIdentityResourceId": null,
+        "description": null
+      },
+      {
+        "roleDefinitionId": "/subscriptions/88b7ee7f-f2f3-4a0d-a0ce-cf7306943676/providers/Microsoft.Authorization/roleDefinitions/1970c1fc-18fa-569a-9f20-6115f6b61641",
+        "principalId": "3768e562-6abf-41a2-8f64-dfb80cbc092d",
+        "principalType": "ServicePrincipal",
+        "scope": "/subscriptions/88b7ee7f-f2f3-4a0d-a0ce-cf7306943676/resourceGroups/UGRP-SIM-RG/providers/Microsoft.Compute/virtualMachines/ugrp-sim-azure2",
+        "condition": null,
+        "conditionVersion": null,
+        "createdOn": "2026-10-12T00:34:41.8099892Z",
+        "updatedOn": "2026-10-12T00:34:42.2519968Z",
+        "createdBy": null,
+        "updatedBy": "67a43555-7084-4352-9ac0-90a44b767b62",
+        "delegatedManagedIdentityResourceId": null,
+        "description": null
+      },
+      {
+        "roleDefinitionId": "/subscriptions/88b7ee7f-f2f3-4a0d-a0ce-cf7306943676/providers/Microsoft.Authorization/roleDefinitions/1970c1fc-18fa-569a-9f20-6115f6b61641",
+        "principalId": "26a8adba-7d58-4bf9-a12c-effc2389c6e4",
+        "principalType": "ServicePrincipal",
+        "scope": "/subscriptions/88b7ee7f-f2f3-4a0d-a0ce-cf7306943676/resourceGroups/UGRP-SIM-RG/providers/Microsoft.Compute/virtualMachines/ugrp-sim-azure2",
+        "condition": null,
+        "conditionVersion": null,
+        "createdOn": "2026-10-12T00:34:51.7558932Z",
+        "updatedOn": "2026-10-12T00:34:52.1878948Z",
+        "createdBy": null,
+        "updatedBy": "67a43555-7084-4352-9ac0-90a44b767b62",
+        "delegatedManagedIdentityResourceId": null,
+        "description": null
+      }
+    ],
+    "roles": [
+      {
+        "id": "/subscriptions/88b7ee7f-f2f3-4a0d-a0ce-cf7306943676/providers/Microsoft.Authorization/roleDefinitions/7b327b09-c7ad-5fea-a260-6a079521da91",
+        "actions": [
+          "Microsoft.Compute/virtualMachines/read",
+          "Microsoft.Compute/virtualMachines/instanceView/read",
+          "Microsoft.Compute/virtualMachines/deallocate/action"
+        ]
+      },
+      {
+        "id": "/subscriptions/88b7ee7f-f2f3-4a0d-a0ce-cf7306943676/providers/Microsoft.Authorization/roleDefinitions/1970c1fc-18fa-569a-9f20-6115f6b61641",
+        "actions": [
+          "Microsoft.Compute/virtualMachines/runCommands/write",
+          "Microsoft.Compute/virtualMachines/runCommands/read"
+        ]
+      }
+    ],
+    "probe": {
+      "state": "Succeeded",
+      "view": {
+        "endTime": "2026-10-12T00:40:28+00:00",
+        "error": "",
+        "executionMessage": "Execution completed",
+        "executionState": "Succeeded",
+        "exitCode": 0,
+        "output": "VM2_IDENTITY_PROBE_OK",
+        "startTime": "2026-10-12T00:40:28+00:00"
+      }
+    },
+    "verified_assignments": [
+      {
+        "role": "UGRP VM Deallocator",
+        "scope": "/subscriptions/88b7ee7f-f2f3-4a0d-a0ce-cf7306943676/resourceGroups/UGRP-SIM-RG/providers/Microsoft.Compute/virtualMachines/ugrp-sim-azure2"
+      },
+      {
+        "role": "UGRP Graceful VM Stop Command",
+        "scope": "/subscriptions/88b7ee7f-f2f3-4a0d-a0ce-cf7306943676/resourceGroups/UGRP-SIM-RG/providers/Microsoft.Compute/virtualMachines/ugrp-sim-azure2"
+      }
+    ]
+  },
+  "safety": {
+    "runbook": {
+      "state": "Published",
+      "sha256": "81264d45ad0b04e722886490a21baf1ec9bb51f692e42efa1687353b0f81723b",
+      "discovery": "same subscription VM list query discovers VM2; no shutdown runbook invoked",
+      "vm2_discovered": true,
+      "stop_usd": 150,
+      "expiry_utc": "2026-11-18T15:00:00Z"
+    },
+    "schedules": {
+      "daily-backup-kst": {
+        "description": null,
+        "startTime": "2026-10-12T00:00:00+09:00",
+        "startTimeOffsetMinutes": 540.0,
+        "expiryTime": "9999-12-31T23:59:59.9999999+00:00",
+        "expiryTimeOffsetMinutes": 0.0,
+        "isEnabled": true,
+        "nextRun": "2026-10-13T00:00:00+09:00",
+        "nextRunOffsetMinutes": 540.0,
+        "interval": 1,
+        "frequency": "Day",
+        "creationTime": "2026-10-11T10:10:24.57+00:00",
+        "lastModifiedTime": "2026-10-11T10:10:24.57+00:00",
+        "timeZone": "Asia/Seoul",
+        "advancedSchedule": null
+      },
+      "credit-expiry-kst": {
+        "description": null,
+        "startTime": "2026-11-19T00:00:00+09:00",
+        "startTimeOffsetMinutes": 540.0,
+        "expiryTime": "2026-11-19T00:00:00+09:00",
+        "expiryTimeOffsetMinutes": 540.0,
+        "isEnabled": true,
+        "nextRun": "2026-11-19T00:00:00+09:00",
+        "nextRunOffsetMinutes": 540.0,
+        "interval": null,
+        "frequency": "OneTime",
+        "creationTime": "2026-10-11T07:26:46.7433333+00:00",
+        "lastModifiedTime": "2026-10-11T07:26:46.7433333+00:00",
+        "timeZone": "Asia/Seoul",
+        "advancedSchedule": null
+      },
+      "hourly-credit-check": {
+        "description": null,
+        "startTime": "2026-10-11T07:36:00+00:00",
+        "startTimeOffsetMinutes": 0.0,
+        "expiryTime": "2026-11-18T15:00:00+00:00",
+        "expiryTimeOffsetMinutes": 0.0,
+        "isEnabled": true,
+        "nextRun": "2026-10-12T00:36:00+00:00",
+        "nextRunOffsetMinutes": 0.0,
+        "interval": 1,
+        "frequency": "Hour",
+        "creationTime": "2026-10-11T07:26:47.89+00:00",
+        "lastModifiedTime": "2026-10-11T07:26:47.89+00:00",
+        "timeZone": "Etc/UTC",
+        "advancedSchedule": null
+      }
+    },
+    "bindings": [
+      {
+        "jobScheduleId": "7c0d49a4-c523-41eb-bc92-fb0d4199ccae",
+        "runbook": {
+          "name": "Stop-UgrpVMs"
+        },
+        "schedule": {
+          "name": "credit-expiry-kst"
+        },
+        "runOn": null,
+        "parameters": {
+          "Mode": "Force"
+        }
+      },
+      {
+        "jobScheduleId": "41a3fbf5-928c-4f8c-98bc-f89648225f20",
+        "runbook": {
+          "name": "Stop-UgrpVMs"
+        },
+        "schedule": {
+          "name": "daily-backup-kst"
+        },
+        "runOn": null,
+        "parameters": {
+          "Mode": "Daily"
+        }
+      },
+      {
+        "jobScheduleId": "d9a9d10d-0a85-40c4-8d4b-ab4434845218",
+        "runbook": {
+          "name": "Stop-UgrpVMs"
+        },
+        "schedule": {
+          "name": "hourly-credit-check"
+        },
+        "runOn": null,
+        "parameters": {
+          "Mode": "Cost"
+        }
+      }
+    ],
+    "idle_seconds": 1200,
+    "max_uptime_seconds": 28800,
+    "archive_native": "on_v1",
+    "idle_actual_verified": true,
+    "idle_deallocated": {
+      "utc": "2026-10-12T01:11:03.429176+00:00",
+      "statuses": [
+        {
+          "code": "ProvisioningState/succeeded",
+          "displayStatus": "Provisioning succeeded",
+          "level": "Info",
+          "time": "2026-10-12T01:11:01.7335111+00:00"
+        },
+        {
+          "code": "PowerState/deallocated",
+          "displayStatus": "VM deallocated",
+          "level": "Info"
+        }
+      ]
+    },
+    "trigger_log_retrieval": "verified",
+    "idle_guest_events": [
+      {
+        "id": "08366e4146484c17b4be5e6c2a243f28",
+        "action": "stop",
+        "reason": "twenty_minutes_idle",
+        "boot_id": "ccae29e9-883e-4b01-b55b-1baa988cbc15",
+        "status": "complete",
+        "signalled": [],
+        "archived": [
+          "azure2-smoke-20261012-01"
+        ],
+        "failed": [],
+        "elapsed_seconds": 0.039
+      }
+    ]
+  },
+  "clone": {
+    "retained": true,
+    "excluded_from_vm2_runs": true,
+    "raw_deleted": false,
+    "path": "azure2:~/ugrp-sim/clone-excluded-vm1-20261012",
+    "vm1_manifest_matches": 76,
+    "vm1_source_paths_exist": 76,
+    "arm_files": 244455,
+    "arm_hash_matches": 244455,
+    "archive_count": 76,
+    "scope": "Live VM1 verified archival manifests and source existence; live ARM every manifest file including packed tar members. Cloned active/unmarked data stays quarantined, no deletion."
+  },
+  "smoke": {
+    "actual_runs": 1,
+    "passed": 1,
+    "summary": {
+      "status": "PASS",
+      "source_sha": "a45f99a04f98adcfa70e7004d0104c162412417e",
+      "model_calls": 0,
+      "physical_success": null,
+      "scope": "S3 scene reset, hold, 0.5 SIM seconds and three own RGB cameras",
+      "gl": "osmesa",
+      "loadavg": [
+        1.06689453125,
+        0.896484375,
+        0.49560546875
+      ],
+      "reset_sim_s": 1.3,
+      "step_sim_s": 0.5,
+      "camera_frames": 6,
+      "image_sha256": {
+        "robots/r1/rgb/00000.jpg": "104bed3d641a971665037c81b78bb698fea33d2648e00a19bba78eeda5186aea",
+        "robots/r1/rgb/00001.jpg": "7acdbc258241dc47d6f53f442175cea893d29e6d49eb633837a4f1e7ca3c7009",
+        "robots/r2/rgb/00000.jpg": "580ceea8c5e4a2cdf56654a2a5591d96f87f9da276def73fbf5c245eedc9a1ad",
+        "robots/r2/rgb/00001.jpg": "684408f7aaea297198687d91dbb9fc2846aedb199bd23cfd7701a0311a2296a4",
+        "robots/r3/rgb/00000.jpg": "d8a7ea3a88b9ad0f9417dca5b5253d792e89a8503cc1149e434669bf9e40355c",
+        "robots/r3/rgb/00001.jpg": "d8a7ea3a88b9ad0f9417dca5b5253d792e89a8503cc1149e434669bf9e40355c"
+      },
+      "wall_s": 12.320824638999966
+    },
+    "raw": "azure2:~/ugrp-sim/runs/azure2-smoke-20261012-01",
+    "archive": {
+      "verified": true,
+      "schema": "ugrp.archive-native.v1",
+      "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-azure2-smoke-20261012-01",
+      "files": 37,
+      "hash_matches": 37,
+      "inventory_sha256": "298fe07b190c8f75127fa209512ba5df9b4d93aaf121178744d1cc97a211f6c6",
+      "reused": false,
+      "receiver_seconds": 0.3
+    }
+  },
+  "admission_failures": [
+    {
+      "reason": "Full-source staging cancelled before run; expected SHA argument corrected before first process",
+      "physical_runs": 0
+    },
+    {
+      "reason": "Transient ProxyJump SSH failure while fetching lifecycle; prestart admission refused",
+      "physical_runs": 0
+    }
+  ],
+  "tests": {
+    "passed": 50,
+    "skipped": 12,
+    "files": [
+      "tests/test_azure_vm_target.py",
+      "tests/test_azure_lifecycle.py",
+      "tests/test_azure_shutdown.py"
+    ],
+    "skip_reason": "PowerShell unavailable; no Mac simulation/render"
+  },
+  "references": [
+    "https://learn.microsoft.com/en-us/azure/virtual-machines/linux/tutorial-manage-disks",
+    "https://learn.microsoft.com/en-us/azure/virtual-machines/linux/run-command-managed",
+    "https://git-scm.com/docs/git-pack-objects",
+    "https://git-scm.com/docs/gitrepository-layout"
+  ],
+  "last_recorded_utc": "2026-10-12T01:12:35.838560+00:00",
+  "artifacts": [
+    {
+      "path": "arm-clone-audit-final.json",
+      "bytes": 32186,
+      "sha256": "53e7340a07bc007c080cbce7bb8871dcaa304f15ef062dca88fcc9cb8916b8a8"
+    },
+    {
+      "path": "vm1-manifest-verification.json",
+      "bytes": 6020,
+      "sha256": "0f3b82ee5cd7377e8e37d8d4b66daeeccb191ce771109e9348cfa54c9270187b"
+    },
+    {
+      "path": "README.md",
+      "bytes": 284,
+      "sha256": "2a12c3471eece493bad642001a69fdd70e5009c8eae72d180babd17ab9115bfd"
+    },
+    {
+      "path": "operations.json.zst",
+      "bytes": 5933,
+      "sha256": "f6585be4a375732b5deefca1b38eb3ff3aff4afc3e9f05341a3429181d4cc125"
+    },
+    {
+      "path": "idle-guard-event.json",
+      "bytes": 324,
+      "sha256": "86ba955e4e77243545f988f4bfa9e730121d5c62579b0a8f0cd5d9e96d4fcdc6"
+    }
+  ],
+  "network": {
+    "public_ip": "20.194.104.249",
+    "ssh_alias": "azure2",
+    "proxy_jump": "oracle-codex",
+    "nsg": [
+      {
+        "access": "Allow",
+        "destinationPort": "22",
+        "direction": "Inbound",
+        "name": "allow-ssh-from-oracle",
+        "source": "161.33.46.134/32"
+      }
+    ],
+    "bootstrap_egress_rule_removed": true
+  }
+}

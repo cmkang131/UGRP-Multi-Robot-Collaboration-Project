@@ -135,8 +135,10 @@ exec python3 /usr/local/lib/ugrp-storage/scripts/remote_run_finish.py --source "
         status=subprocess.run(['ssh','-o','BatchMode=yes','azure','python3 /usr/local/lib/ugrp-storage/scripts/azure_shutdown.py status'],capture_output=True,text=True)
         if status.returncode not in (0,75):raise RuntimeError('LEASE_STATUS_FAILED')
         remaining=json.loads(status.stdout)
-        if remaining.get('leases'):
-            print('VM_RETAINED_OTHER_LEASES',remaining['leases'],flush=True)
+        all_leases=json.loads(ssh('python3 -c '+shlex.quote(
+            'import json;from pathlib import Path;print(json.dumps([p.name for p in (Path.home()/"ugrp-sim/leases").iterdir()]))')))
+        if all_leases:
+            print('VM_RETAINED_OTHER_LEASES',all_leases,flush=True)
         else:
             subprocess.run([sys.executable,str(args.runner_root/'scripts/azctl.py'),'stop'],check=True)
         print('TASK_ELAPSED_SECONDS',round(time.monotonic()-started,2),flush=True)

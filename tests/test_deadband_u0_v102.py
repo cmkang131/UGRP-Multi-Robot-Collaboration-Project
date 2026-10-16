@@ -127,10 +127,18 @@ def test_dev_validator_accepts_u0_and_rejects_malformed_values(tmp_path, monkeyp
             c.dev_pilot_calibration(path, c.base.sha(path), MAPS[0])
 
 
-def test_shared_sources_are_main_bytes_and_swap_is_scoped():
+def test_shared_motion_functions_are_main_bytes_and_swap_is_scoped():
+    import ast
     import subprocess
-    for path in ('harness/zone_final_pair_skill.py', 'harness/vision_pose_source_pair_v3.py'):
-        assert subprocess.run(['git', 'diff', '--quiet', 'origin/main', '--', path]).returncode == 0, path
+    from pathlib import Path
+    # Additive E2E entry points do not change the v102 shared motion functions.
+    for path, name in (('harness/zone_final_pair_skill.py', 'motor_command'),
+                       ('harness/vision_pose_source_pair_v3.py', 'pair_motion_module')):
+        original = subprocess.check_output(['git', 'show', 'origin/main:'+path], text=True)
+        def function(source):
+            node = next(n for n in ast.parse(source).body if isinstance(n, ast.FunctionDef) and n.name == name)
+            return ast.dump(node, include_attributes=False)
+        assert function(Path(path).read_text()) == function(original), path
     shared = skill.motor_command
     with mv.shared_motor_command():
         assert skill.motor_command is not shared

@@ -1,0 +1,110 @@
+{
+  "scope": "Mac saved-text microbenchmark, NOT historical Azure RBPF or total map time; no controller change",
+  "source": {
+    "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e11-b-s61001-r2/raw/robots/r1/frames.jsonl.zst",
+    "sha256": "7dcea61a7354ba862ca8ec3a8b88ee787d9e6ee40fe498757e2e56315d3acc6d"
+  },
+  "samples": [
+    {
+      "n": 51,
+      "sim_s": 10.0,
+      "median_s": 0.00015004200395196676,
+      "list_membership_comparisons": 1326
+    },
+    {
+      "n": 151,
+      "sim_s": 30.0,
+      "median_s": 0.0005980830173939466,
+      "list_membership_comparisons": 11476
+    },
+    {
+      "n": 301,
+      "sim_s": 60.0,
+      "median_s": 0.0015822499990463257,
+      "list_membership_comparisons": 45451
+    },
+    {
+      "n": 601,
+      "sim_s": 120.0,
+      "median_s": 0.0048318750923499465,
+      "list_membership_comparisons": 180901
+    },
+    {
+      "n": 901,
+      "sim_s": 180.0,
+      "median_s": 0.009825333021581173,
+      "list_membership_comparisons": 406351
+    },
+    {
+      "n": 1201,
+      "sim_s": 240.0,
+      "median_s": 0.016666334006004035,
+      "list_membership_comparisons": 721801
+    },
+    {
+      "n": 1351,
+      "sim_s": 270.0,
+      "median_s": 0.020774625008925796,
+      "list_membership_comparisons": 913276
+    }
+  ],
+  "profile": [
+    {
+      "file": "/Users/changmin/projects/ugrp-wt/e2e-integration/harness/e2e_own_inputs.py",
+      "line": 62,
+      "name": "rgb_ref",
+      "calls": 1351,
+      "self_s": 0.018416674,
+      "cumulative_s": 0.026055926
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<built-in method builtins.any>",
+      "calls": 1351,
+      "self_s": 0.003205125,
+      "cumulative_s": 0.0070288500000000005
+    },
+    {
+      "file": "/Users/changmin/projects/ugrp-wt/e2e-integration/harness/e2e_own_inputs.py",
+      "line": 67,
+      "name": "<genexpr>",
+      "calls": 87815,
+      "self_s": 0.003823725,
+      "cumulative_s": 0.003823725
+    },
+    {
+      "file": "/Users/changmin/projects/ugrp-wt/e2e-integration/harness/e2e_own_inputs.py",
+      "line": 38,
+      "name": "closed",
+      "calls": 1351,
+      "self_s": 0.000423456,
+      "cumulative_s": 0.0004893720000000001
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<built-in method builtins.isinstance>",
+      "calls": 2702,
+      "self_s": 0.000119004,
+      "cumulative_s": 0.000119004
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<built-in method builtins.len>",
+      "calls": 1351,
+      "self_s": 6.794200000000001e-05,
+      "cumulative_s": 6.794200000000001e-05
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "name": "<method 'disable' of '_lsprof.Profiler' objects>",
+      "calls": 1,
+      "self_s": 7.917e-06,
+      "cumulative_s": 7.917e-06
+    }
+  ],
+  "source_sha256": "fa84f63244517fa7d40eda7925fe3b5d25d7ba0230271025fb5a24bd4a7c57d9"
+}

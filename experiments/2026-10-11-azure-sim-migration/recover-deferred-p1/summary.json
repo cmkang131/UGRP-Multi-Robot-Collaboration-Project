@@ -1,0 +1,64 @@
+{
+  "id": "azure-recover-deferred-p1-20261011",
+  "class": "dev",
+  "pr": 438,
+  "branch": "codex/azure-sim",
+  "base_sha": "4c20f4c02cf8576a9bce52f1ce68f89b2cb1c7e3",
+  "scope": "Local mocked unit tests only; no Azure deployment/restart, cloud/SSH calls, simulation or merge.",
+  "fix": "Deferred archive workers cannot bypass failed registration. Recover accepts only verified unchanged-source archive markers for inactive runs, preserving pending leases and return code 74 until verification.",
+  "sources_sha256": {
+    "scripts/azure_shutdown.py": "a93470eda05d9f51e09a1b4d18c1f65110d164367775766b75c727cf86a4228b",
+    "tests/test_azure_shutdown.py": "416b9a44b5b08aa38079f4ed52ae6fa266b8d891c1d054704b11f86d6b708068"
+  },
+  "runs": [
+    {
+      "id": "red",
+      "source_sha": "4c20f4c02cf8576a9bce52f1ce68f89b2cb1c7e3",
+      "tests": "tests/test_azure_shutdown.py -k recover_failed_copy_then_scheduled_copy",
+      "exit_code": 1,
+      "failed": 1,
+      "deselected": 44,
+      "cause": "Recovery copy failed once; scheduled rsync started before retry; recover incorrectly returned 0 with failed=[] and no verified marker."
+    },
+    {
+      "id": "green",
+      "tests": "tests/test_azure_shutdown.py -q -ra",
+      "exit_code": 0,
+      "passed": 37,
+      "skipped": 12,
+      "failed": 0,
+      "line": "37 passed, 12 skipped in 0.36s",
+      "new_regressions": "5/5 passed: failed-copy/deferred CLI+azctl refusal; mixed runs with missing/unverified/changed/verified markers."
+    }
+  ],
+  "remaining": [
+    "PowerShell parser/runtime unavailable: 12 existing mocked PowerShell cases skipped.",
+    "This source has not been deployed or tested against live VM archival."
+  ],
+  "raw": [
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/recover-deferred-p1-20261011/commands.json",
+      "bytes": 442,
+      "sha256": "7c1df2d7a46f74e08ce96f6d3d5581edb48f5bad37c611965b5f3ae3cc4836b9"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/recover-deferred-p1-20261011/green.txt",
+      "bytes": 293,
+      "sha256": "dbb6e55005ed269bcbaf35daf90615ed555a1d339fcaec9e8087170c6d3ecac7"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/recover-deferred-p1-20261011/red.txt",
+      "bytes": 1927,
+      "sha256": "94afa21dd13bc6a2222551d745154d41d2ba27ab3626abeb13633be9110816cf"
+    }
+  ],
+  "research": {
+    "summary": "Reuse the existing checksum-verified publication marker. A running rsync is pending work; recovery must not report success before verification. No changes to the copy/publish protocol.",
+    "references": [
+      {
+        "url": "https://github.com/RsyncProject/rsync/blob/master/rsync.1.md#exit-values",
+        "verified_scope": "Official exit values: 0 means success; 23 means partial transfer due to error."
+      }
+    ]
+  }
+}

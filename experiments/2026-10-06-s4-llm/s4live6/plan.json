@@ -1,0 +1,200 @@
+{
+  "schema": "ugrp.s4live6.plan.v1",
+  "research_result": false,
+  "max_concurrent": 8,
+  "LP_NUM_THREADS": 4,
+  "cap_sim_s": 90,
+  "seed": 601,
+  "variants": [
+    "off",
+    "accepted_carry_reply_v1"
+  ],
+  "loadavg_limit": 51,
+  "mem_available_min_GiB": 6,
+  "judgment": {
+    "continue_transport": "both endpoints enter a later carry segment and contact-supported beam translation >=20mm in that segment",
+    "goal": "contact-supported beam COM within20mm of the controller registered route final XY; static route recorded before departure; no control feedback",
+    "lowering": "both endpoints enter lower or refix_setdown; stable placement: beam floor-supported, z range <=5mm and speed<=.03m/s for final .5SIMs; drop: before floor support, >=20mm descent without finger support and downward speed>.10m/s",
+    "renewal": "only admitted carry decision, normal validated released response, same committed epoch, request own RGB age<10SIMs, current lease unexpired; rejected command cannot renew",
+    "host_error": "ENOSPC/exception; lease refusal/expiry is an outcome, never auto-retry",
+    "health": "within240wallsec increasing frame/SIM time, both actual base/arm movement, mixed servo/motion commands and grasp/lift core phase"
+  },
+  "runs": [
+    {
+      "name": "s4live6-off-no_comm-s601-v169",
+      "condition": "no_comm",
+      "seed": 601,
+      "variant": "off",
+      "argv": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s4_pair_live6",
+        "--expected-source-sha",
+        "<SOURCE_SHA>",
+        "--output",
+        "outputs/s4live6-off-no_comm-s601-v169/raw",
+        "--condition",
+        "no_comm",
+        "--carry-lease-renewal",
+        "off",
+        "--relay-receipt",
+        "/home/ubuntu/ugrp-sim/s4live6-relay.json",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s4live6-off-peer_ko-s601-v169",
+      "condition": "peer_ko",
+      "seed": 601,
+      "variant": "off",
+      "argv": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s4_pair_live6",
+        "--expected-source-sha",
+        "<SOURCE_SHA>",
+        "--output",
+        "outputs/s4live6-off-peer_ko-s601-v169/raw",
+        "--condition",
+        "peer_ko",
+        "--carry-lease-renewal",
+        "off",
+        "--relay-receipt",
+        "/home/ubuntu/ugrp-sim/s4live6-relay.json",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s4live6-off-leader_ko-s601-v169",
+      "condition": "leader_ko",
+      "seed": 601,
+      "variant": "off",
+      "argv": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s4_pair_live6",
+        "--expected-source-sha",
+        "<SOURCE_SHA>",
+        "--output",
+        "outputs/s4live6-off-leader_ko-s601-v169/raw",
+        "--condition",
+        "leader_ko",
+        "--carry-lease-renewal",
+        "off",
+        "--relay-receipt",
+        "/home/ubuntu/ugrp-sim/s4live6-relay.json",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s4live6-off-structured-s601-v169",
+      "condition": "structured",
+      "seed": 601,
+      "variant": "off",
+      "argv": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s4_pair_live6",
+        "--expected-source-sha",
+        "<SOURCE_SHA>",
+        "--output",
+        "outputs/s4live6-off-structured-s601-v169/raw",
+        "--condition",
+        "structured",
+        "--carry-lease-renewal",
+        "off",
+        "--relay-receipt",
+        "/home/ubuntu/ugrp-sim/s4live6-relay.json",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s4live6-on-no_comm-s601-v169",
+      "condition": "no_comm",
+      "seed": 601,
+      "variant": "accepted_carry_reply_v1",
+      "argv": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s4_pair_live6",
+        "--expected-source-sha",
+        "<SOURCE_SHA>",
+        "--output",
+        "outputs/s4live6-on-no_comm-s601-v169/raw",
+        "--condition",
+        "no_comm",
+        "--carry-lease-renewal",
+        "accepted_carry_reply_v1",
+        "--relay-receipt",
+        "/home/ubuntu/ugrp-sim/s4live6-relay.json",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s4live6-on-peer_ko-s601-v169",
+      "condition": "peer_ko",
+      "seed": 601,
+      "variant": "accepted_carry_reply_v1",
+      "argv": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s4_pair_live6",
+        "--expected-source-sha",
+        "<SOURCE_SHA>",
+        "--output",
+        "outputs/s4live6-on-peer_ko-s601-v169/raw",
+        "--condition",
+        "peer_ko",
+        "--carry-lease-renewal",
+        "accepted_carry_reply_v1",
+        "--relay-receipt",
+        "/home/ubuntu/ugrp-sim/s4live6-relay.json",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s4live6-on-leader_ko-s601-v169",
+      "condition": "leader_ko",
+      "seed": 601,
+      "variant": "accepted_carry_reply_v1",
+      "argv": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s4_pair_live6",
+        "--expected-source-sha",
+        "<SOURCE_SHA>",
+        "--output",
+        "outputs/s4live6-on-leader_ko-s601-v169/raw",
+        "--condition",
+        "leader_ko",
+        "--carry-lease-renewal",
+        "accepted_carry_reply_v1",
+        "--relay-receipt",
+        "/home/ubuntu/ugrp-sim/s4live6-relay.json",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s4live6-on-structured-s601-v169",
+      "condition": "structured",
+      "seed": 601,
+      "variant": "accepted_carry_reply_v1",
+      "argv": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s4_pair_live6",
+        "--expected-source-sha",
+        "<SOURCE_SHA>",
+        "--output",
+        "outputs/s4live6-on-structured-s601-v169/raw",
+        "--condition",
+        "structured",
+        "--carry-lease-renewal",
+        "accepted_carry_reply_v1",
+        "--relay-receipt",
+        "/home/ubuntu/ugrp-sim/s4live6-relay.json",
+        "--execute"
+      ]
+    }
+  ]
+}

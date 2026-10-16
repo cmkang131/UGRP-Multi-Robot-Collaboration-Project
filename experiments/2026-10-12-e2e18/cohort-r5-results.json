@@ -1,0 +1,1110 @@
+[
+  {
+    "seed": 61001,
+    "vm": "azure3",
+    "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v219-s61001-r5/raw",
+    "result": {
+      "status": "EARLY_STOP",
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "finalization_complete": true,
+      "finalization_errors": [],
+      "failure": "SIGNAL_SIGINT",
+      "wall_s": 368.14390490399995,
+      "stage_milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 17.56770435200002
+        },
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 17.56770435200002
+        },
+        "B_boundary": {
+          "sim_s": 3.0,
+          "wall_s": 24.184705553000015
+        }
+      },
+      "sim_s": 152.39999999999998,
+      "controller_failure": null
+    },
+    "progress": {
+      "wall_s": 367.256216405,
+      "sim_s": 152.0,
+      "frames": 381,
+      "model_attempts": 3,
+      "first_model_response": true,
+      "own_map_B_generated": true,
+      "own_B_boundary_remembered": true,
+      "own_route_generated": false,
+      "phase": "mapping",
+      "setdowns": 0,
+      "robots": {
+        "r1": {
+          "pose_own_m": [
+            0.5334211599722767,
+            0.07462255815356325,
+            -2.099441671682956
+          ],
+          "stage": "explore",
+          "map_frames": 381,
+          "command": {
+            "kind": "mecanum",
+            "forward": 0.35,
+            "left": 0.0,
+            "turn": 0.0,
+            "duration_s": 0.1
+          },
+          "translation_commands": 623
+        },
+        "r2": {
+          "pose_own_m": [
+            0.8033868713316872,
+            1.5054578125002067,
+            -0.9570836767622124
+          ],
+          "stage": "explore",
+          "map_frames": 381,
+          "command": {
+            "kind": "mecanum",
+            "forward": 0.35,
+            "left": 0.0,
+            "turn": 0.0,
+            "duration_s": 0.1
+          },
+          "translation_commands": 621
+        },
+        "r3": {
+          "pose_own_m": [
+            -0.08882053283621888,
+            -0.02244466163282406,
+            0.022489203477945807
+          ],
+          "stage": "explore",
+          "map_frames": 381,
+          "command": {
+            "kind": "hold"
+          },
+          "translation_commands": 0
+        }
+      },
+      "latest_route_wait": null
+    }
+  },
+  {
+    "seed": 61002,
+    "vm": "azure3",
+    "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v219-s61002-r5/raw",
+    "result": {
+      "status": "EARLY_STOP",
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "finalization_complete": true,
+      "finalization_errors": [],
+      "failure": "SIGNAL_SIGINT",
+      "wall_s": 368.186337738,
+      "stage_milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 17.684781111999996
+        },
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 17.684781111999996
+        },
+        "B_boundary": {
+          "sim_s": 3.0,
+          "wall_s": 24.291640739
+        }
+      },
+      "sim_s": 139.6,
+      "controller_failure": null
+    },
+    "progress": {
+      "wall_s": 366.87486846,
+      "sim_s": 139.0,
+      "frames": 348,
+      "model_attempts": 3,
+      "first_model_response": true,
+      "own_map_B_generated": true,
+      "own_B_boundary_remembered": true,
+      "own_route_generated": false,
+      "phase": "mapping",
+      "setdowns": 0,
+      "robots": {
+        "r1": {
+          "pose_own_m": [
+            -2.9671558703872103,
+            1.399227218027261,
+            2.9833588656147203
+          ],
+          "stage": "explore",
+          "map_frames": 348,
+          "command": {
+            "kind": "mecanum",
+            "forward": 0.35,
+            "left": 0.0,
+            "turn": 0.0,
+            "duration_s": 0.1
+          },
+          "translation_commands": 610
+        },
+        "r2": {
+          "pose_own_m": [
+            0.35656059988018995,
+            1.2120447223677155,
+            -0.044396259864616816
+          ],
+          "stage": "explore",
+          "map_frames": 348,
+          "command": {
+            "kind": "mecanum",
+            "forward": 0.35,
+            "left": 0.0,
+            "turn": 0.0,
+            "duration_s": 0.1
+          },
+          "translation_commands": 562
+        },
+        "r3": {
+          "pose_own_m": [
+            -0.08293087600558653,
+            0.034367272527119214,
+            0.017254996628599528
+          ],
+          "stage": "explore",
+          "map_frames": 348,
+          "command": {
+            "kind": "hold"
+          },
+          "translation_commands": 0
+        }
+      },
+      "latest_route_wait": "S3_OWN_AXES_BEAM_ALIGNMENT_REQUIRED"
+    }
+  },
+  {
+    "seed": 61003,
+    "vm": "azure3",
+    "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v219-s61003-r5/raw",
+    "result": {
+      "status": "EARLY_STOP",
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "finalization_complete": true,
+      "finalization_errors": [],
+      "failure": "SIGNAL_SIGINT",
+      "wall_s": 368.03483574100005,
+      "stage_milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 17.505435191999993
+        },
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 17.505435191999993
+        },
+        "B_boundary": {
+          "sim_s": 3.0,
+          "wall_s": 23.982029479999994
+        }
+      },
+      "sim_s": 134.39999999999998,
+      "controller_failure": null
+    },
+    "progress": {
+      "wall_s": 367.08669450700006,
+      "sim_s": 134.0,
+      "frames": 336,
+      "model_attempts": 3,
+      "first_model_response": true,
+      "own_map_B_generated": true,
+      "own_B_boundary_remembered": true,
+      "own_route_generated": false,
+      "phase": "mapping",
+      "setdowns": 0,
+      "robots": {
+        "r1": {
+          "pose_own_m": [
+            -1.77981266358319,
+            -1.4883801953386122,
+            -1.0962250926948882
+          ],
+          "stage": "explore",
+          "map_frames": 336,
+          "command": {
+            "kind": "mecanum",
+            "forward": 0.35,
+            "left": 0.0,
+            "turn": 0.0,
+            "duration_s": 0.1
+          },
+          "translation_commands": 545
+        },
+        "r2": {
+          "pose_own_m": [
+            2.68792457796054,
+            -0.08687919030284615,
+            -1.1361071666166218
+          ],
+          "stage": "explore",
+          "map_frames": 336,
+          "command": {
+            "kind": "mecanum",
+            "forward": 0.0,
+            "left": 0.0,
+            "turn": 0.35,
+            "duration_s": 0.1
+          },
+          "translation_commands": 524
+        },
+        "r3": {
+          "pose_own_m": [
+            -0.08159531498806197,
+            0.04850190400741567,
+            0.0037848521090548815
+          ],
+          "stage": "explore",
+          "map_frames": 336,
+          "command": {
+            "kind": "hold"
+          },
+          "translation_commands": 0
+        }
+      },
+      "latest_route_wait": "S3_OWN_AXES_BEAM_ALIGNMENT_REQUIRED"
+    }
+  },
+  {
+    "seed": 61004,
+    "vm": "azure3",
+    "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v219-s61004-r5/raw",
+    "result": {
+      "status": "EARLY_STOP",
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "finalization_complete": true,
+      "finalization_errors": [],
+      "failure": "SIGNAL_SIGINT",
+      "wall_s": 367.967895266,
+      "stage_milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 17.58439389
+        },
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 17.58439389
+        },
+        "B_boundary": {
+          "sim_s": 3.0,
+          "wall_s": 24.104309958999977
+        }
+      },
+      "sim_s": 143.64999999999998,
+      "controller_failure": null
+    },
+    "progress": {
+      "wall_s": 366.36458088999996,
+      "sim_s": 143.0,
+      "frames": 358,
+      "model_attempts": 3,
+      "first_model_response": true,
+      "own_map_B_generated": true,
+      "own_B_boundary_remembered": true,
+      "own_route_generated": false,
+      "phase": "mapping",
+      "setdowns": 0,
+      "robots": {
+        "r1": {
+          "pose_own_m": [
+            -2.779514265068042,
+            -0.30111333428267234,
+            1.9948475571988462
+          ],
+          "stage": "explore",
+          "map_frames": 358,
+          "command": {
+            "kind": "mecanum",
+            "forward": 0.35,
+            "left": 0.0,
+            "turn": 0.0,
+            "duration_s": 0.1
+          },
+          "translation_commands": 608
+        },
+        "r2": {
+          "pose_own_m": [
+            2.1209383186751585,
+            0.8908808849662275,
+            1.285119866335167
+          ],
+          "stage": "explore",
+          "map_frames": 358,
+          "command": {
+            "kind": "mecanum",
+            "forward": 0.0,
+            "left": 0.0,
+            "turn": -0.35,
+            "duration_s": 0.1
+          },
+          "translation_commands": 600
+        },
+        "r3": {
+          "pose_own_m": [
+            -0.08668455580553688,
+            -0.008768894448511654,
+            0.02155603831712183
+          ],
+          "stage": "explore",
+          "map_frames": 358,
+          "command": {
+            "kind": "hold"
+          },
+          "translation_commands": 0
+        }
+      },
+      "latest_route_wait": "S3_OWN_AXES_BEAM_ALIGNMENT_REQUIRED"
+    }
+  },
+  {
+    "seed": 61005,
+    "vm": "azure3",
+    "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v219-s61005-r5/raw",
+    "result": {
+      "status": "EARLY_STOP",
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "finalization_complete": true,
+      "finalization_errors": [],
+      "failure": "SIGNAL_SIGINT",
+      "wall_s": 368.20495276900004,
+      "stage_milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 19.90710995300003
+        },
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 19.90710995300003
+        },
+        "B_boundary": {
+          "sim_s": 3.0,
+          "wall_s": 26.441631885999982
+        }
+      },
+      "sim_s": 150.0,
+      "controller_failure": null
+    },
+    "progress": {
+      "wall_s": 364.650128315,
+      "sim_s": 149.0,
+      "frames": 373,
+      "model_attempts": 3,
+      "first_model_response": true,
+      "own_map_B_generated": true,
+      "own_B_boundary_remembered": true,
+      "own_route_generated": false,
+      "phase": "mapping",
+      "setdowns": 0,
+      "robots": {
+        "r1": {
+          "pose_own_m": [
+            -1.3623801287306234,
+            0.3882618798506819,
+            -2.406717028703798
+          ],
+          "stage": "explore",
+          "map_frames": 373,
+          "command": {
+            "kind": "mecanum",
+            "forward": 0.35,
+            "left": 0.0,
+            "turn": 0.0,
+            "duration_s": 0.1
+          },
+          "translation_commands": 512
+        },
+        "r2": {
+          "pose_own_m": [
+            3.80757755957471,
+            -0.9560684863218567,
+            -2.945409944567986
+          ],
+          "stage": "explore",
+          "map_frames": 373,
+          "command": {
+            "kind": "hold"
+          },
+          "translation_commands": 554
+        },
+        "r3": {
+          "pose_own_m": [
+            -0.08496498892416524,
+            -0.030585943718641824,
+            0.018623498713856712
+          ],
+          "stage": "explore",
+          "map_frames": 373,
+          "command": {
+            "kind": "hold"
+          },
+          "translation_commands": 0
+        }
+      },
+      "latest_route_wait": "S3_OWN_AXES_BEAM_ALIGNMENT_REQUIRED"
+    }
+  },
+  {
+    "seed": 61006,
+    "vm": "azure3",
+    "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v219-s61006-r5/raw",
+    "result": {
+      "status": "EARLY_STOP",
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "finalization_complete": true,
+      "finalization_errors": [],
+      "failure": "SIGNAL_SIGINT",
+      "wall_s": 368.041776171,
+      "stage_milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 18.246875629999977
+        },
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 18.246875629999977
+        },
+        "B_boundary": {
+          "sim_s": 3.0,
+          "wall_s": 24.80632429299999
+        }
+      },
+      "sim_s": 145.812,
+      "controller_failure": null
+    },
+    "progress": {
+      "wall_s": 366.298073343,
+      "sim_s": 145.0,
+      "frames": 363,
+      "model_attempts": 3,
+      "first_model_response": true,
+      "own_map_B_generated": true,
+      "own_B_boundary_remembered": true,
+      "own_route_generated": false,
+      "phase": "mapping",
+      "setdowns": 0,
+      "robots": {
+        "r1": {
+          "pose_own_m": [
+            1.31668611783209,
+            2.772218670142293,
+            2.6088167362146084
+          ],
+          "stage": "explore",
+          "map_frames": 363,
+          "command": {
+            "kind": "mecanum",
+            "forward": 0.35,
+            "left": 0.0,
+            "turn": 0.0,
+            "duration_s": 0.1
+          },
+          "translation_commands": 548
+        },
+        "r2": {
+          "pose_own_m": [
+            3.098913639668762,
+            0.7006404224815497,
+            -1.0508219073186664
+          ],
+          "stage": "explore",
+          "map_frames": 363,
+          "command": {
+            "kind": "hold"
+          },
+          "translation_commands": 530
+        },
+        "r3": {
+          "pose_own_m": [
+            -0.07985241486723708,
+            0.036344255890513946,
+            0.0032798030902747577
+          ],
+          "stage": "explore",
+          "map_frames": 363,
+          "command": {
+            "kind": "hold"
+          },
+          "translation_commands": 0
+        }
+      },
+      "latest_route_wait": "S3_OWN_AXES_BEAM_ALIGNMENT_REQUIRED"
+    }
+  },
+  {
+    "seed": 61007,
+    "vm": "azure4",
+    "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v219-s61007-r5/raw",
+    "result": {
+      "status": "EARLY_STOP",
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "finalization_complete": true,
+      "finalization_errors": [],
+      "failure": "SIGNAL_SIGINT",
+      "wall_s": 362.70974402499996,
+      "stage_milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 21.06803361599998
+        },
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 21.06803361599998
+        },
+        "B_boundary": {
+          "sim_s": 3.0,
+          "wall_s": 27.596842789999982
+        }
+      },
+      "sim_s": 147.6,
+      "controller_failure": null
+    },
+    "progress": {
+      "wall_s": 361.561160006,
+      "sim_s": 147.0,
+      "frames": 368,
+      "model_attempts": 3,
+      "first_model_response": true,
+      "own_map_B_generated": true,
+      "own_B_boundary_remembered": true,
+      "own_route_generated": false,
+      "phase": "mapping",
+      "setdowns": 0,
+      "robots": {
+        "r1": {
+          "pose_own_m": [
+            1.91862503782011,
+            -1.1114325621472347,
+            2.2380765126719515
+          ],
+          "stage": "explore",
+          "map_frames": 368,
+          "command": {
+            "kind": "hold"
+          },
+          "translation_commands": 504
+        },
+        "r2": {
+          "pose_own_m": [
+            2.5684951185674776,
+            -0.22212348000591306,
+            -1.4469007144445174
+          ],
+          "stage": "explore",
+          "map_frames": 368,
+          "command": {
+            "kind": "mecanum",
+            "forward": 0.35,
+            "left": 0.0,
+            "turn": 0.0,
+            "duration_s": 0.1
+          },
+          "translation_commands": 598
+        },
+        "r3": {
+          "pose_own_m": [
+            -0.08660035810306159,
+            -0.008984812434026863,
+            0.024785619444798623
+          ],
+          "stage": "explore",
+          "map_frames": 368,
+          "command": {
+            "kind": "hold"
+          },
+          "translation_commands": 0
+        }
+      },
+      "latest_route_wait": null
+    }
+  },
+  {
+    "seed": 61008,
+    "vm": "azure4",
+    "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v219-s61008-r5/raw",
+    "result": {
+      "status": "EARLY_STOP",
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "finalization_complete": true,
+      "finalization_errors": [],
+      "failure": "SIGNAL_SIGINT",
+      "wall_s": 362.906691973,
+      "stage_milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 15.368090609000035
+        },
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 15.368090609000035
+        },
+        "B_boundary": {
+          "sim_s": 3.0,
+          "wall_s": 21.460786842000005
+        }
+      },
+      "sim_s": 137.6,
+      "controller_failure": null
+    },
+    "progress": {
+      "wall_s": 360.32315957,
+      "sim_s": 137.0,
+      "frames": 343,
+      "model_attempts": 3,
+      "first_model_response": true,
+      "own_map_B_generated": true,
+      "own_B_boundary_remembered": true,
+      "own_route_generated": false,
+      "phase": "mapping",
+      "setdowns": 0,
+      "robots": {
+        "r1": {
+          "pose_own_m": [
+            -4.301947820618802,
+            1.3707972584812784,
+            -2.442386649776486
+          ],
+          "stage": "explore",
+          "map_frames": 343,
+          "command": {
+            "kind": "mecanum",
+            "forward": 0.35,
+            "left": 0.0,
+            "turn": 0.0,
+            "duration_s": 0.1
+          },
+          "translation_commands": 552
+        },
+        "r2": {
+          "pose_own_m": [
+            0.23003186097905443,
+            0.6826725576555515,
+            -1.0582496882806414
+          ],
+          "stage": "explore",
+          "map_frames": 343,
+          "command": {
+            "kind": "mecanum",
+            "forward": 0.35,
+            "left": 0.0,
+            "turn": 0.0,
+            "duration_s": 0.1
+          },
+          "translation_commands": 524
+        },
+        "r3": {
+          "pose_own_m": [
+            -0.08496498892416524,
+            -0.030585943718641824,
+            0.018623498713856712
+          ],
+          "stage": "explore",
+          "map_frames": 343,
+          "command": {
+            "kind": "hold"
+          },
+          "translation_commands": 0
+        }
+      },
+      "latest_route_wait": "S3_OWN_AXES_BEAM_ALIGNMENT_REQUIRED"
+    }
+  },
+  {
+    "seed": 61009,
+    "vm": "azure4",
+    "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v219-s61009-r5/raw",
+    "result": {
+      "status": "EARLY_STOP",
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "finalization_complete": true,
+      "finalization_errors": [],
+      "failure": "SIGNAL_SIGINT",
+      "wall_s": 362.860024066,
+      "stage_milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 19.578654296000025
+        },
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 19.578654296000025
+        },
+        "B_boundary": {
+          "sim_s": 3.0,
+          "wall_s": 26.010405742000046
+        }
+      },
+      "sim_s": 142.79999999999998,
+      "controller_failure": null
+    },
+    "progress": {
+      "wall_s": 360.90332972900006,
+      "sim_s": 142.0,
+      "frames": 356,
+      "model_attempts": 3,
+      "first_model_response": true,
+      "own_map_B_generated": true,
+      "own_B_boundary_remembered": true,
+      "own_route_generated": false,
+      "phase": "mapping",
+      "setdowns": 0,
+      "robots": {
+        "r1": {
+          "pose_own_m": [
+            -2.0503569548660923,
+            0.9025439992660222,
+            -2.6548078888821025
+          ],
+          "stage": "explore",
+          "map_frames": 356,
+          "command": {
+            "kind": "mecanum",
+            "forward": 0.35,
+            "left": 0.0,
+            "turn": 0.0,
+            "duration_s": 0.1
+          },
+          "translation_commands": 445
+        },
+        "r2": {
+          "pose_own_m": [
+            2.8658968128741877,
+            0.053400701247899925,
+            1.6760789334866004
+          ],
+          "stage": "explore",
+          "map_frames": 356,
+          "command": {
+            "kind": "mecanum",
+            "forward": 0.0,
+            "left": 0.0,
+            "turn": 0.35,
+            "duration_s": 0.1
+          },
+          "translation_commands": 386
+        },
+        "r3": {
+          "pose_own_m": [
+            -0.08204176423130416,
+            0.024559126696462753,
+            0.01631473376697734
+          ],
+          "stage": "explore",
+          "map_frames": 356,
+          "command": {
+            "kind": "hold"
+          },
+          "translation_commands": 0
+        }
+      },
+      "latest_route_wait": "S3_OWN_AXES_BEAM_ALIGNMENT_REQUIRED"
+    }
+  },
+  {
+    "seed": 61010,
+    "vm": "azure4",
+    "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v219-s61010-r5/raw",
+    "result": {
+      "status": "EARLY_STOP",
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "finalization_complete": true,
+      "finalization_errors": [],
+      "failure": "SIGNAL_SIGINT",
+      "wall_s": 362.707644831,
+      "stage_milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 17.181428221999965
+        },
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 17.181428221999965
+        },
+        "B_boundary": {
+          "sim_s": 3.0,
+          "wall_s": 23.432493128999965
+        }
+      },
+      "sim_s": 144.39999999999998,
+      "controller_failure": null
+    },
+    "progress": {
+      "wall_s": 362.50957399500004,
+      "sim_s": 144.0,
+      "frames": 361,
+      "model_attempts": 3,
+      "first_model_response": true,
+      "own_map_B_generated": true,
+      "own_B_boundary_remembered": true,
+      "own_route_generated": false,
+      "phase": "mapping",
+      "setdowns": 0,
+      "robots": {
+        "r1": {
+          "pose_own_m": [
+            -1.3778433848909935,
+            -3.2177820844958487,
+            -0.9160466303770374
+          ],
+          "stage": "explore",
+          "map_frames": 361,
+          "command": {
+            "kind": "mecanum",
+            "forward": 0.0,
+            "left": 0.0,
+            "turn": 0.35,
+            "duration_s": 0.1
+          },
+          "translation_commands": 490
+        },
+        "r2": {
+          "pose_own_m": [
+            2.5406106360118006,
+            -0.0008887160966984534,
+            -0.4201026144496187
+          ],
+          "stage": "explore",
+          "map_frames": 361,
+          "command": {
+            "kind": "mecanum",
+            "forward": 0.35,
+            "left": 0.0,
+            "turn": 0.0,
+            "duration_s": 0.1
+          },
+          "translation_commands": 393
+        },
+        "r3": {
+          "pose_own_m": [
+            -0.08639189441581065,
+            0.012575686242552885,
+            0.013575393837134353
+          ],
+          "stage": "explore",
+          "map_frames": 361,
+          "command": {
+            "kind": "hold"
+          },
+          "translation_commands": 0
+        }
+      },
+      "latest_route_wait": "S3_OWN_AXES_BEAM_ALIGNMENT_REQUIRED"
+    }
+  },
+  {
+    "seed": 61011,
+    "vm": "azure4",
+    "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v219-s61011-r5/raw",
+    "result": {
+      "status": "EARLY_STOP",
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "finalization_complete": true,
+      "finalization_errors": [],
+      "failure": "SIGNAL_SIGINT",
+      "wall_s": 362.90258359700005,
+      "stage_milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 23.959849066000004
+        },
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 23.959849066000004
+        },
+        "B_boundary": {
+          "sim_s": 3.0,
+          "wall_s": 30.53851495600003
+        }
+      },
+      "sim_s": 131.79999999999998,
+      "controller_failure": null
+    },
+    "progress": {
+      "wall_s": 345.866430536,
+      "sim_s": 131.0,
+      "frames": 328,
+      "model_attempts": 3,
+      "first_model_response": true,
+      "own_map_B_generated": true,
+      "own_B_boundary_remembered": true,
+      "own_route_generated": false,
+      "phase": "mapping",
+      "setdowns": 0,
+      "robots": {
+        "r1": {
+          "pose_own_m": [
+            -3.3969807944309838,
+            0.2509268349140096,
+            -0.5901409849824129
+          ],
+          "stage": "explore",
+          "map_frames": 328,
+          "command": {
+            "kind": "mecanum",
+            "forward": 0.35,
+            "left": 0.0,
+            "turn": 0.0,
+            "duration_s": 0.1
+          },
+          "translation_commands": 562
+        },
+        "r2": {
+          "pose_own_m": [
+            1.1449863082165013,
+            -2.5977359790064876,
+            1.9711830122525633
+          ],
+          "stage": "explore",
+          "map_frames": 328,
+          "command": {
+            "kind": "mecanum",
+            "forward": 0.35,
+            "left": 0.0,
+            "turn": 0.0,
+            "duration_s": 0.1
+          },
+          "translation_commands": 556
+        },
+        "r3": {
+          "pose_own_m": [
+            -0.07675249630967239,
+            0.032854810643525516,
+            0.027808870150142884
+          ],
+          "stage": "explore",
+          "map_frames": 328,
+          "command": {
+            "kind": "hold"
+          },
+          "translation_commands": 0
+        }
+      },
+      "latest_route_wait": "S3_OWN_AXES_BEAM_ALIGNMENT_REQUIRED"
+    }
+  },
+  {
+    "seed": 61012,
+    "vm": "azure4",
+    "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v219-s61012-r5/raw",
+    "result": {
+      "status": "EARLY_STOP",
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "finalization_complete": true,
+      "finalization_errors": [],
+      "failure": "SIGNAL_SIGINT",
+      "wall_s": 362.728579637,
+      "stage_milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 17.867771586999993
+        },
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 17.867771586999993
+        },
+        "B_boundary": {
+          "sim_s": 3.0,
+          "wall_s": 24.16124919600003
+        }
+      },
+      "sim_s": 144.79999999999998,
+      "controller_failure": null
+    },
+    "progress": {
+      "wall_s": 361.306497493,
+      "sim_s": 144.0,
+      "frames": 361,
+      "model_attempts": 3,
+      "first_model_response": true,
+      "own_map_B_generated": true,
+      "own_B_boundary_remembered": true,
+      "own_route_generated": false,
+      "phase": "mapping",
+      "setdowns": 0,
+      "robots": {
+        "r1": {
+          "pose_own_m": [
+            -0.169435613741006,
+            1.861703501319755,
+            -1.5005742830658688
+          ],
+          "stage": "explore",
+          "map_frames": 361,
+          "command": {
+            "kind": "hold"
+          },
+          "translation_commands": 392
+        },
+        "r2": {
+          "pose_own_m": [
+            2.913136428437645,
+            0.2040797838870993,
+            -0.9204256837849494
+          ],
+          "stage": "explore",
+          "map_frames": 361,
+          "command": {
+            "kind": "hold"
+          },
+          "translation_commands": 422
+        },
+        "r3": {
+          "pose_own_m": [
+            -0.0849364985068071,
+            -0.030524862774292203,
+            0.018582786861679246
+          ],
+          "stage": "explore",
+          "map_frames": 361,
+          "command": {
+            "kind": "hold"
+          },
+          "translation_commands": 0
+        }
+      },
+      "latest_route_wait": "S3_OWN_AXES_BEAM_ALIGNMENT_REQUIRED"
+    }
+  }
+]

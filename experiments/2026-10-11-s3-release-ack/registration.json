@@ -1,0 +1,99 @@
+{
+  "schema": "ugrp.s3_release_ack.registration.v1",
+  "pr": 416,
+  "batch": "s3-release-ack-20261011-v187",
+  "host": "ugrp-sim-azure",
+  "runs": [
+    {
+      "name": "s3ack-d0p85-s18601-off",
+      "distance_m": 0.85,
+      "seed": 18601,
+      "option": "off"
+    },
+    {
+      "name": "s3ack-d0p85-s18601-on",
+      "distance_m": 0.85,
+      "seed": 18601,
+      "option": "issued_open_v1"
+    },
+    {
+      "name": "s3ack-d0p85-s18602-off",
+      "distance_m": 0.85,
+      "seed": 18602,
+      "option": "off"
+    },
+    {
+      "name": "s3ack-d0p85-s18602-on",
+      "distance_m": 0.85,
+      "seed": 18602,
+      "option": "issued_open_v1"
+    },
+    {
+      "name": "s3ack-d1p5-s18601-off",
+      "distance_m": 1.5,
+      "seed": 18601,
+      "option": "off"
+    },
+    {
+      "name": "s3ack-d1p5-s18601-on",
+      "distance_m": 1.5,
+      "seed": 18601,
+      "option": "issued_open_v1"
+    },
+    {
+      "name": "s3ack-d1p5-s18602-off",
+      "distance_m": 1.5,
+      "seed": 18602,
+      "option": "off"
+    },
+    {
+      "name": "s3ack-d1p5-s18602-on",
+      "distance_m": 1.5,
+      "seed": 18602,
+      "option": "issued_open_v1"
+    }
+  ],
+  "eval_only_limits": {
+    "tilt_deg": 10.0,
+    "persistent_grip_loss_s": 0.2,
+    "endpoint_shortfall_m": 0.02,
+    "axis_displacement_disagreement_m": 0.02,
+    "opposed_heading_drift_rad": 0.1
+  },
+  "criteria": {
+    "primary": "DEV_STAGE_FINISHED and bilateral final release, no HOST_ERROR or physical drop/tilt stop",
+    "comparison": "same distance and seed; release_ack is the only control option changed",
+    "secondary": "carry distance, bilateral contacts, fixed 20mm axis criterion, frame/SIM/base motion and command checks at180wall seconds",
+    "pose": "existing12 raw audit; no fitted coordinate correction or truth prior"
+  },
+  "storage": {
+    "per_run_mib": 512,
+    "fetch_lite_per_run_mib": 32,
+    "reserved_other_write_mib": 4096,
+    "grade": "dev",
+    "permanent": [
+      "summary",
+      "command trajectories",
+      "LLM text",
+      "all sha256",
+      "representative evidence"
+    ],
+    "raw_retention": "open PR preserved; heavy DEV cleanup at PR merge/close"
+  },
+  "references": [
+    {
+      "url": "https://design.ros2.org/articles/actions.html",
+      "accessed": "2026-10-11",
+      "method": "Separate accepted/queued, executing and completed. Transition after own host-issued OPEN receipt; receipt is not physical release."
+    },
+    {
+      "url": "https://github.com/ros-infrastructure/rep/blob/master/rep-0105.rst",
+      "accessed": "2026-10-11",
+      "method": "Name map/odom/base frames before comparing poses. Here both use world metres; test rigid offsets, axes, IDs and report time."
+    },
+    {
+      "url": "https://github.com/ros-navigation/navigation2/blob/main/nav2_amcl/src/pf/pf.c",
+      "method": "All-particle convergence and cluster statistics; existing posterior_consensus_v1 certificate kept. Local source inspected; upstream exact current implementation not yet checked."
+    }
+  ]
+}

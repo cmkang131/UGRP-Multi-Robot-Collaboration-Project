@@ -1,0 +1,435 @@
+{
+  "sim_s": 60.0,
+  "wall_s": 1358.24797508,
+  "cpu_s": 1185.158299564,
+  "wall_per_sim": 22.637466251333333,
+  "cpu_per_sim": 19.752638326066666,
+  "rbpf_hash_wall_s": 157.50880269899892,
+  "profiling": true,
+  "includes_setup_and_finalization": true,
+  "mujoco_timers": [
+    {
+      "timer": "mjTIMER_STEP",
+      "duration_s": 169.8514717629945,
+      "calls": 245200,
+      "wall_per_sim": 2.830857862716575
+    },
+    {
+      "timer": "mjTIMER_FORWARD",
+      "duration_s": 164.65525614902248,
+      "calls": 246122,
+      "wall_per_sim": 2.7442542691503746
+    },
+    {
+      "timer": "mjTIMER_INVERSE",
+      "duration_s": 0.0,
+      "calls": 0,
+      "wall_per_sim": 0.0
+    },
+    {
+      "timer": "mjTIMER_POSITION",
+      "duration_s": 119.6698691520848,
+      "calls": 246122,
+      "wall_per_sim": 1.9944978192014133
+    },
+    {
+      "timer": "mjTIMER_VELOCITY",
+      "duration_s": 4.029010149002886,
+      "calls": 246122,
+      "wall_per_sim": 0.0671501691500481
+    },
+    {
+      "timer": "mjTIMER_ACTUATION",
+      "duration_s": 0.603924081002674,
+      "calls": 246122,
+      "wall_per_sim": 0.010065401350044568
+    },
+    {
+      "timer": "mjTIMER_CONSTRAINT",
+      "duration_s": 38.8258358769707,
+      "calls": 246122,
+      "wall_per_sim": 0.6470972646161783
+    },
+    {
+      "timer": "mjTIMER_ADVANCE",
+      "duration_s": 5.49831709796382,
+      "calls": 245200,
+      "wall_per_sim": 0.091638618299397
+    },
+    {
+      "timer": "mjTIMER_POS_KINEMATICS",
+      "duration_s": 11.154400959907548,
+      "calls": 246122,
+      "wall_per_sim": 0.1859066826651258
+    },
+    {
+      "timer": "mjTIMER_POS_INERTIA",
+      "duration_s": 3.218044138006235,
+      "calls": 246122,
+      "wall_per_sim": 0.05363406896677058
+    },
+    {
+      "timer": "mjTIMER_POS_COLLISION",
+      "duration_s": 39.13897768599372,
+      "calls": 246122,
+      "wall_per_sim": 0.652316294766562
+    },
+    {
+      "timer": "mjTIMER_POS_MAKE",
+      "duration_s": 5.838496312028326,
+      "calls": 246122,
+      "wall_per_sim": 0.09730827186713877
+    },
+    {
+      "timer": "mjTIMER_POS_PROJECT",
+      "duration_s": 59.53500195598565,
+      "calls": 246122,
+      "wall_per_sim": 0.9922500325997609
+    },
+    {
+      "timer": "mjTIMER_COL_BROAD",
+      "duration_s": 11.906133828943325,
+      "calls": 246122,
+      "wall_per_sim": 0.19843556381572208
+    },
+    {
+      "timer": "mjTIMER_COL_NARROW",
+      "duration_s": 26.941470141010825,
+      "calls": 246122,
+      "wall_per_sim": 0.44902450235018043
+    }
+  ],
+  "expected_stop": true,
+  "cprofile_top20": [
+    {
+      "file": "/home/ugrp/ugrp-sim/src/7821864aa7a37005e67749f368e152495b520ae8/scripts/e2e_speed_measure.py",
+      "line": 44,
+      "function": "receive",
+      "calls": 900,
+      "self_s": 5.6998514920000005,
+      "cumulative_s": 967.913708171,
+      "cumulative_wall_per_sim": 16.131895136183335
+    },
+    {
+      "file": "/home/ugrp/ugrp-sim/src/7821864aa7a37005e67749f368e152495b520ae8/harness/e2e_live_mapping.py",
+      "line": 88,
+      "function": "receive",
+      "calls": 900,
+      "self_s": 0.26393588100000004,
+      "cumulative_s": 810.38185324,
+      "cumulative_wall_per_sim": 13.506364220666667
+    },
+    {
+      "file": "/home/ugrp/ugrp-sim/src/7821864aa7a37005e67749f368e152495b520ae8/harness/e2e_stall_odometry.py",
+      "line": 204,
+      "function": "received",
+      "calls": 900,
+      "self_s": 0.122142894,
+      "cumulative_s": 743.0960407790001,
+      "cumulative_wall_per_sim": 12.384934012983335
+    },
+    {
+      "file": "/home/ugrp/ugrp-sim/src/7821864aa7a37005e67749f368e152495b520ae8/harness/e2e_exploration.py",
+      "line": 135,
+      "function": "receive_progress",
+      "calls": 900,
+      "self_s": 0.009568628000000001,
+      "cumulative_s": 732.87877143,
+      "cumulative_wall_per_sim": 12.2146461905
+    },
+    {
+      "file": "/home/ugrp/ugrp-sim/src/7821864aa7a37005e67749f368e152495b520ae8/harness/ego_pose_continuity.py",
+      "line": 274,
+      "function": "receive_pose",
+      "calls": 900,
+      "self_s": 0.05438283,
+      "cumulative_s": 732.8683956460001,
+      "cumulative_wall_per_sim": 12.214473260766669
+    },
+    {
+      "file": "/home/ugrp/ugrp-sim/src/7821864aa7a37005e67749f368e152495b520ae8/harness/e2e_setdown_relook.py",
+      "line": 97,
+      "function": "receive_rgb",
+      "calls": 900,
+      "self_s": 0.042214779,
+      "cumulative_s": 730.222512151,
+      "cumulative_wall_per_sim": 12.170375202516668
+    },
+    {
+      "file": "/home/ugrp/ugrp-sim/src/7821864aa7a37005e67749f368e152495b520ae8/harness/grid_acceleration.py",
+      "line": 105,
+      "function": "receive",
+      "calls": 900,
+      "self_s": 0.021633824000000003,
+      "cumulative_s": 713.62958876,
+      "cumulative_wall_per_sim": 11.893826479333335
+    },
+    {
+      "file": "/home/ugrp/ugrp-sim/src/7821864aa7a37005e67749f368e152495b520ae8/harness/e2e_goal_route.py",
+      "line": 66,
+      "function": "receive",
+      "calls": 900,
+      "self_s": 0.10557972600000001,
+      "cumulative_s": 713.5628683140001,
+      "cumulative_wall_per_sim": 11.892714471900002
+    },
+    {
+      "file": "/home/ugrp/ugrp-sim/src/7821864aa7a37005e67749f368e152495b520ae8/harness/goal_route_continuous.py",
+      "line": 246,
+      "function": "receive",
+      "calls": 900,
+      "self_s": 0.224403017,
+      "cumulative_s": 701.816797079,
+      "cumulative_wall_per_sim": 11.696946617983334
+    },
+    {
+      "file": "/home/ugrp/ugrp-sim/src/7821864aa7a37005e67749f368e152495b520ae8/harness/active_wall_recovery.py",
+      "line": 143,
+      "function": "receive",
+      "calls": 900,
+      "self_s": 0.131377419,
+      "cumulative_s": 430.69169446700005,
+      "cumulative_wall_per_sim": 7.178194907783334
+    },
+    {
+      "file": "/home/ugrp/ugrp-sim/src/7821864aa7a37005e67749f368e152495b520ae8/scripts/e2e_speed_measure.py",
+      "line": 54,
+      "function": "advance_to",
+      "calls": 1200,
+      "self_s": 0.008457854,
+      "cumulative_s": 195.250676551,
+      "cumulative_wall_per_sim": 3.254177942516667
+    },
+    {
+      "file": "/home/ugrp/ugrp-sim/src/7821864aa7a37005e67749f368e152495b520ae8/sim/s3_buffered_io.py",
+      "line": 57,
+      "function": "advance_to",
+      "calls": 1200,
+      "self_s": 0.016085867,
+      "cumulative_s": 195.240943073,
+      "cumulative_wall_per_sim": 3.2540157178833335
+    },
+    {
+      "file": "/home/ugrp/ugrp-sim/src/7821864aa7a37005e67749f368e152495b520ae8/sim/final_pair_highpose_clock.py",
+      "line": 76,
+      "function": "advance_to",
+      "calls": 1200,
+      "self_s": 2.5894014100000002,
+      "cumulative_s": 195.19228993000002,
+      "cumulative_wall_per_sim": 3.253204832166667
+    },
+    {
+      "file": "/home/ugrp/ugrp-sim/src/7821864aa7a37005e67749f368e152495b520ae8/sim/masterpi_drive_friction_v7.py",
+      "line": 212,
+      "function": "_physics_step_for",
+      "calls": 245200,
+      "self_s": 7.330586155000001,
+      "cumulative_s": 190.31928111300002,
+      "cumulative_wall_per_sim": 3.1719880185500005
+    },
+    {
+      "file": "~",
+      "line": 0,
+      "function": "<built-in method mujoco._functions.mj_step>",
+      "calls": 245748,
+      "self_s": 171.04079508,
+      "cumulative_s": 171.04079508,
+      "cumulative_wall_per_sim": 2.850679918
+    },
+    {
+      "file": "/home/ugrp/ugrp-sim/src/7821864aa7a37005e67749f368e152495b520ae8/harness/active_wall_recovery.py",
+      "line": 101,
+      "function": "_rays",
+      "calls": 2258,
+      "self_s": 0.016476233,
+      "cumulative_s": 154.71124765000002,
+      "cumulative_wall_per_sim": 2.578520794166667
+    },
+    {
+      "file": "/home/ugrp/ugrp-sim/src/7821864aa7a37005e67749f368e152495b520ae8/harness/active_wall_mapping.py",
+      "line": 117,
+      "function": "_rays",
+      "calls": 2258,
+      "self_s": 0.502893255,
+      "cumulative_s": 154.694771417,
+      "cumulative_wall_per_sim": 2.578246190283333
+    },
+    {
+      "file": "/home/ugrp/ugrp-sim/src/7821864aa7a37005e67749f368e152495b520ae8/scripts/e2e_speed_measure.py",
+      "line": 19,
+      "function": "rbpf_digest",
+      "calls": 900,
+      "self_s": 7.7525581180000005,
+      "cumulative_s": 151.82956541800002,
+      "cumulative_wall_per_sim": 2.530492756966667
+    },
+    {
+      "file": "/home/ugrp/ugrp-sim/src/7821864aa7a37005e67749f368e152495b520ae8/harness/public_navigation_raytrace.py",
+      "line": 23,
+      "function": "receive_rays",
+      "calls": 2258,
+      "self_s": 10.578860156000001,
+      "cumulative_s": 148.686921872,
+      "cumulative_wall_per_sim": 2.478115364533333
+    },
+    {
+      "file": "/home/ugrp/ugrp-sim/src/7821864aa7a37005e67749f368e152495b520ae8/sim/s3_buffered_io.py",
+      "line": 51,
+      "function": "capture",
+      "calls": 300,
+      "self_s": 0.013839014,
+      "cumulative_s": 128.64940242100002,
+      "cumulative_wall_per_sim": 2.144156707016667
+    }
+  ],
+  "pyspy": {
+    "samples": 130363,
+    "reported_errors": 281,
+    "format": "speedscope",
+    "native": true,
+    "self_top20": [
+      {
+        "name": "0x7b58a58fa3a3",
+        "file": "/usr/lib/python3.12/lib-dynload/_json.cpython-312-x86_64-linux-gnu.so",
+        "line": 0,
+        "col": null,
+        "sample_weight": 50.129999999998596
+      },
+      {
+        "name": "mju_sqrMatTDSparseSymbolic",
+        "file": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/lib/python3.12/site-packages/mujoco/libmujoco.so.3.12.0",
+        "line": 0,
+        "col": null,
+        "sample_weight": 42.43000000000013
+      },
+      {
+        "name": "rbpf_digest",
+        "file": "/home/ugrp/ugrp-sim/src/7821864aa7a37005e67749f368e152495b520ae8/scripts/e2e_speed_measure.py",
+        "line": 28,
+        "col": null,
+        "sample_weight": 40.5500000000005
+      },
+      {
+        "name": "0x7b58a5e0abfb",
+        "file": "[vdso]",
+        "line": 0,
+        "col": null,
+        "sample_weight": 35.97000000000141
+      },
+      {
+        "name": "ufunc_generic_fastcall",
+        "file": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/lib/python3.12/site-packages/numpy/_core/_multiarray_umath.cpython-312-x86_64-linux-gnu.so",
+        "line": 0,
+        "col": null,
+        "sample_weight": 24.070000000000963
+      },
+      {
+        "name": "DOUBLE_add_X86_V3",
+        "file": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/lib/python3.12/site-packages/numpy/_core/_multiarray_umath.cpython-312-x86_64-linux-gnu.so",
+        "line": 0,
+        "col": null,
+        "sample_weight": 20.820000000000455
+      },
+      {
+        "name": "cell",
+        "file": "/home/ugrp/ugrp-sim/src/7821864aa7a37005e67749f368e152495b520ae8/harness/own_map_navigation.py",
+        "line": 89,
+        "col": null,
+        "sample_weight": 20.27000000000037
+      },
+      {
+        "name": "array_item",
+        "file": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/lib/python3.12/site-packages/numpy/_core/_multiarray_umath.cpython-312-x86_64-linux-gnu.so",
+        "line": 0,
+        "col": null,
+        "sample_weight": 20.14000000000035
+      },
+      {
+        "name": "reduce_loop",
+        "file": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/lib/python3.12/site-packages/numpy/_core/_multiarray_umath.cpython-312-x86_64-linux-gnu.so",
+        "line": 0,
+        "col": null,
+        "sample_weight": 19.520000000000252
+      },
+      {
+        "name": "PyArray_NewFromDescr_int",
+        "file": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/lib/python3.12/site-packages/numpy/_core/_multiarray_umath.cpython-312-x86_64-linux-gnu.so",
+        "line": 0,
+        "col": null,
+        "sample_weight": 15.289999999999718
+      },
+      {
+        "name": "<genexpr>",
+        "file": "/home/ugrp/ugrp-sim/src/7821864aa7a37005e67749f368e152495b520ae8/harness/own_map_navigation.py",
+        "line": 89,
+        "col": null,
+        "sample_weight": 14.009999999999746
+      },
+      {
+        "name": "mapiter_get",
+        "file": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/lib/python3.12/site-packages/numpy/_core/_multiarray_umath.cpython-312-x86_64-linux-gnu.so",
+        "line": 0,
+        "col": null,
+        "sample_weight": 13.519999999999756
+      },
+      {
+        "name": "PyArray_DiscoverDTypeAndShape_Recursive",
+        "file": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/lib/python3.12/site-packages/numpy/_core/_multiarray_umath.cpython-312-x86_64-linux-gnu.so",
+        "line": 0,
+        "col": null,
+        "sample_weight": 13.429999999999758
+      },
+      {
+        "name": "0x7b58a58f9be5",
+        "file": "/usr/lib/python3.12/lib-dynload/_json.cpython-312-x86_64-linux-gnu.so",
+        "line": 0,
+        "col": null,
+        "sample_weight": 13.33999999999976
+      },
+      {
+        "name": "mju_sqrMatTDSparseNumeric",
+        "file": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/lib/python3.12/site-packages/mujoco/libmujoco.so.3.12.0",
+        "line": 0,
+        "col": null,
+        "sample_weight": 12.83999999999977
+      },
+      {
+        "name": "mj_collision",
+        "file": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/lib/python3.12/site-packages/mujoco/libmujoco.so.3.12.0",
+        "line": 0,
+        "col": null,
+        "sample_weight": 12.41999999999978
+      },
+      {
+        "name": "mj_collideOBB",
+        "file": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/lib/python3.12/site-packages/mujoco/libmujoco.so.3.12.0",
+        "line": 0,
+        "col": null,
+        "sample_weight": 10.249999999999826
+      },
+      {
+        "name": "solNoSlip.llvm.3387571532395310891",
+        "file": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/lib/python3.12/site-packages/mujoco/libmujoco.so.3.12.0",
+        "line": 0,
+        "col": null,
+        "sample_weight": 7.839999999999877
+      },
+      {
+        "name": "BOOL_logical_and_X86_V3",
+        "file": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/lib/python3.12/site-packages/numpy/_core/_multiarray_umath.cpython-312-x86_64-linux-gnu.so",
+        "line": 0,
+        "col": null,
+        "sample_weight": 7.809999999999878
+      },
+      {
+        "name": "0x7b58a58fa0a5",
+        "file": "/usr/lib/python3.12/lib-dynload/_json.cpython-312-x86_64-linux-gnu.so",
+        "line": 0,
+        "col": null,
+        "sample_weight": 7.519999999999884
+      }
+    ],
+    "sampling_notes": "100 Hz with subprocesses; startup reported lag up to 2.23s. Sampling and cProfile overhead not a production speed baseline."
+  },
+  "audit_overhead_note": "157.51s was added RBPF hashing; excluded from production bottleneck ranking. Function cumulative spans overlap and must not be summed."
+}

@@ -1,0 +1,40 @@
+{
+  "markers": {
+    "s3-continuous-20261011-v186": {
+      "accepted": true,
+      "source_preserved": true,
+      "marker_sha256": "13bab87feee91a673c36914e1db626b9370468706740fef6f33616990d247e52"
+    },
+    "s3-release-ack-20261011-v187": {
+      "accepted": true,
+      "source_preserved": true,
+      "marker_sha256": "06718bf338fbfca8fe2465ed0a2e077191219a1c0ef31d61d51a3f3f921d4614"
+    }
+  },
+  "native_environment": {
+    "UGRP_ARCHIVE_NATIVE": "on_v1",
+    "UGRP_ARCHIVE_NATIVE_HOST": "ubuntu@161.33.46.134",
+    "UGRP_ARCHIVE_NATIVE_IDENTITY": "/home/ugrp/.ssh/id_ed25519_arm_archive"
+  },
+  "services": "EnvironmentFiles=/etc/ugrp/archive-native.env (ignore_errors=yes)\nId=ugrp-auto-archive.service\n\nEnvironmentFiles=/etc/ugrp/archive-native.env (ignore_errors=yes)\nId=ugrp-azure-recover.service\n\nEnvironmentFiles=/etc/ugrp/archive-native.env (ignore_errors=yes)\nId=ugrp-azure-guard.service\n",
+  "azure_free_bytes": 14384840704,
+  "arm": {
+    "arm_free_bytes": 89972346880,
+    "runs": {
+      "s3-continuous-20261011-v186": {
+        "partial_exists": true,
+        "partial_regular_files": 32967,
+        "published_exists": true,
+        "published_regular_files": 55223
+      },
+      "s3-release-ack-20261011-v187": {
+        "partial_exists": true,
+        "partial_regular_files": 1158,
+        "published_exists": true,
+        "published_regular_files": 29744
+      }
+    },
+    "receiver_sha256": "e7150d57adf0d50f5ca88fe347b8c22cd030c1827990578a5e64416b149af11e"
+  },
+  "utc": "2026-10-11T14:21:58.059314+00:00"
+}

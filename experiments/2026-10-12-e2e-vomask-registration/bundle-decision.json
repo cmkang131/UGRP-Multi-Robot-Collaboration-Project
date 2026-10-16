@@ -1,0 +1,18 @@
+{
+  "selected": "homography_turn_off",
+  "bundle_id": "e2e-vomask-turn-v207",
+  "workflow_version": "7.100.0",
+  "baseline": "e2e-usstall-v206",
+  "rationale": "User condition: moving and rotation pair-error sums no worse than off in both translation and yaw; this non-map exploratory policy qualifies.",
+  "registration_amendment": "Supersedes only registration.json no-bundle-without-map clause. Selection was made after the same observed DEV replay; no claim of preregistered confirmation.",
+  "map_projection": "Still unavailable: zero anchored static-world poses. Not enabled or represented as validated by v207.",
+  "overfitting_warning": "Already seen 124 frames, only four 6-second crash windows; policy chosen using their scoring. Generalization, stationary segments and closed-loop effect unverified.",
+  "seeds": [
+    61001,
+    61002,
+    61003
+  ],
+  "runs": 6,
+  "wall_cap_s": 25200,
+  "execute": false
+}

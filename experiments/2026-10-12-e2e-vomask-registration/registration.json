@@ -1,0 +1,26 @@
+{
+  "pr": 452,
+  "classification": "dev",
+  "frames": 124,
+  "pairs": 120,
+  "seeds": [
+    61001,
+    61002,
+    61003,
+    61004
+  ],
+  "scope": "previously observed crash windows; exploratory fixed-command replay",
+  "conditions": [
+    "off",
+    "homography_v1",
+    "map_v1",
+    "geom_v1"
+  ],
+  "rotation_candidates": [
+    "homography_turn_off",
+    "homography_turn_command"
+  ],
+  "decision": "Compare sums of pair translation and yaw error separately in moving and rotation; both must be no worse than off. Missing registration never counts as a valid map comparison. No bundle without measured map-mask comparison.",
+  "inputs": "Saved ownmap controller rows only. Do not invent missing last-frame pose or use local map_to_odom as authored world transform.",
+  "execution": "Saved image arithmetic only; no simulator, VM operation or provider call."
+}
