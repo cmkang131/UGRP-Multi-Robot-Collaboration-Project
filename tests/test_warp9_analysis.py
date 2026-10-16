@@ -11,3 +11,6 @@ def test_running_missing_and_error_are_not_reported_as_zero_or_success(tmp_path)
     assert [x['status'] for x in r['rows']]==['RUNNING_OR_HOST_ERROR_UNRESOLVED','HOST_ERROR','UNRETRIEVED','UNRETRIEVED']
     assert all(x['timing'] is None for x in r['rows'])
     assert '0.000000' not in markdown(r)
+    (tmp_path/'n4/summary.json').write_text(json.dumps(dict(status='PROFILE_COMPLETE',source_sha='test',
+        host={},shared_load=False,errors=[],batch_sim_s=.3)))
+    assert collect(tmp_path)['rows'][1]['status']=='PROFILE_ARTIFACT_MISSING'

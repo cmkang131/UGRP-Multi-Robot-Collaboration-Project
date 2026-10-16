@@ -127,6 +127,7 @@ def run(a):
         report.update(model_groups=[dict(worlds=ii.tolist(),camera=h.camera,compatibility=h.compat,capacities=h.capacities,
             model_batch=h.model_batch_audit,native_model_adapter=getattr(h,'native_model_adapter',None)) for ii,cc,h in groups])
         loop=time.perf_counter()
+        interval_start=loop;previous_elapsed=0.;speed_samples=[]
         for ii,cc,h in groups:
             if getattr(h,'warp9_profile',None):h.warp9_profile.rows.clear()
         targets=np.array([c['origin'] for c in contexts],float)
@@ -148,6 +149,9 @@ def run(a):
                 for indices,cc,transport in groups:
                     if active[indices].any():transport.step(cc,active[indices])
             elapsed=max(h.tick*.1 for ii,cc,h in groups)
+            interval_end=time.perf_counter()
+            speed_samples.append(dict(sim_s=elapsed,delta_sim_s=elapsed-previous_elapsed,wall_s=interval_end-interval_start))
+            interval_start=interval_end;previous_elapsed=elapsed
             write(a.output/'progress.json',dict(sim_s=elapsed,active=int(active.sum()),completed=len(report['worlds']),wall_s=time.perf_counter()-loop,timing=[dict(h.seconds) for ii,cc,h in groups]))
             if q.get('warp9_profile_v1'):
                 write(a.output/'profile.json',dict(groups=[dict(worlds=ii.tolist(),
@@ -158,8 +162,15 @@ def run(a):
                     report.update(status='PROFILE_COMPLETE',batch_sim_s=elapsed,task_outcome='unmeasured')
                     break
             if elapsed>=30 and not (a.output/'first30.json').exists():
-                ratio=(time.perf_counter()-loop)/elapsed
-                write(a.output/'first30.json',dict(sim_s=elapsed,wall_per_sim=ratio,shared_load=not exclusive,status='SPEED_GATE_FAIL' if ratio>6 else 'PASS'))
+                from scripts.warp9_first30 import summarize
+                first30=summarize(speed_samples,shared_load=not exclusive)
+                first30.update(total_wall_s=time.perf_counter()-loop,intervals=speed_samples)
+                write(a.output/'first30.json',first30)
+                if first30['status']=='SPEED_GATE_FAIL':
+                    report.update(status='SPEED_GATE_FAIL',batch_sim_s=elapsed,task_outcome='unmeasured')
+                    report['errors'].append(dict(category='throughput',reason='first30_median_wall_per_sim_above6',
+                        blocked_object='batch_pipeline',minimum_gap_m=None,gap_scope='timing_not_physical_gap'))
+                    break
         if report['status']=='RUNNING':report.update(status='COMPLETE',batch_sim_s=elapsed)
     except BaseException as exc:
         report.update(status='HOST_ERROR',errors=[dict(category='HOST_ERROR',reason=repr(exc),blocked_object='batch_adapter',minimum_gap_m=None,gap_status='not_measured',traceback=traceback.format_exc())])

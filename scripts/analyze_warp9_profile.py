@@ -16,6 +16,9 @@ def collect(root):
         report=json.loads(summary.read_text());row.update(status=report['status'],
             source_sha=report['source_sha'],host=report['host'],shared_load=report['shared_load'],
             sim_s=report.get('batch_sim_s'),task_outcome='unmeasured',errors=report['errors'])
+        if report['status']=='PROFILE_COMPLETE' and not profile.is_file():
+            row.update(status='PROFILE_ARTIFACT_MISSING',errors=[dict(category='HOST_ERROR',
+                reason='completed marker without required profile.json',blocked_object=str(profile),minimum_gap_m=None)])
         if profile.is_file():
             value=json.loads(profile.read_text());phases={}
             for group in value['groups']:
@@ -62,7 +65,7 @@ def main():
     p=argparse.ArgumentParser();p.add_argument('--root',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
     a=p.parse_args();a.output.mkdir(parents=True,exist_ok=False)
     result=collect(a.root)
-    (a.output/'summary.json').write_text(json.dumps(result,indent=2)+'\n')
+    (a.output/'summary.json').write_text(json.dumps(result,indent=2,allow_nan=False)+'\n')
     (a.output/'timing-table.md').write_text(markdown(result))
 
 
