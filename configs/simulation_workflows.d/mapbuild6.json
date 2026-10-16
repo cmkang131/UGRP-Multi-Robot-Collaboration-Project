@@ -3,11 +3,11 @@
   "workflows": [
     {
       "id": "mapbuild6-task-route",
-      "purpose": "기본 off gcp5 native MJWarp v7 실제 파지 재생·지도 주행 경로의 자기 RGB 기록",
+      "purpose": "기본 off gcp5 native MJWarp v7 실제 경로 녹화 전 파지 재생·입력 관문 진단(미인수)",
       "entry": "scripts/mapbuild6_capture.py",
       "docs": "experiments/2026-10-17-mapbuild6/README.md",
       "requires": "gcp5 only; --enabled; pinned source/requirements/funnel; own lease; existing v7 texture extension; noslip0; no wall cap",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "runner": "scripts.mapbuild6_capture",
       "output_flag": "--output",
       "side_effect": "local_simulation",

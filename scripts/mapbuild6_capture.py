@@ -184,12 +184,16 @@ def run(a):
     wheel_ids=[m.actuator('r1__wheel_'+n+'_drive').id for n in ('fl','fr','rl','rr')]
     applied=np.array([[commands[0]['command']['pwm'][str(s)] for s in servos]],float);relay=np.zeros((1,4),int)
     drive=DriveParameters();own=[];labels=[];saved=[];issued=[];trace=[];ring=deque(maxlen=101)
-    old=None;previous=None;pose=np.zeros(3);origin=plan['spawns']['r1'];start_pose=[origin[0],origin[1],origin[3]]
+    old=None;previous=None;pose=np.zeros(3)
+    # A scene spawn is setup truth, not a map-localization input. This probe
+    # has no admitted own-RGB global registration producer yet. Fail closed
+    # before map pursuit instead of relabelling the spawn as a task prior.
+    start_pose=None
     dump(a.output/'recording-plan.json',dict(queue=queue,source_commands=str(a.commands),source_commands_sha256=sha(a.commands),
         source_plan=str(a.pickup),source_plan_sha256=sha(a.pickup),scenario='s1_normal_mixed_v7',
         changed_setup='archived successful solo teacher diagnostic spawns; v7 original cargo/geometry unchanged',
         texture_extension='gatesv5_release_extension' if a.texture_extension else 'off',
-        absolute_route_prior='declared diagnostic start only; estimator remains zero-gauge; no runtime GT',
+        absolute_route_prior='unavailable; spawn-derived anchors forbidden; own RGB registration required',
         route_stage='existing zone_teacher plan_path/proportional_drive; no LLM/student success claim',
         controls='own RGB LK / issued-command fallback; static map; archived pickup PWM/wheel prefix',
         sim_budget_s=a.sim_budget,source_budget='s1 v7 eval.budget.sim_seconds=1800; no host wall cap',
@@ -241,6 +245,11 @@ def run(a):
                 if phase=='lookaround' and (tick==release_tick or release[tick-release_tick-1]['phase']!='lookaround'):
                     events.append(dict(t=t,event='post_setdown_lookaround_start'))
             else:
+                if start_pose is None:
+                    events.append(dict(t=t,event='map_anchor_unavailable',category='input_boundary',
+                        reason='no_admitted_own_rgb_map_registration',blocked_object='not_observed',
+                        minimum_gap_m=None,gap_status='not_measured'))
+                    status='MAP_REGISTRATION_REQUIRED';break
                 if not route_started:
                     route_started=True;events.append(dict(t=t,event='pickup_prefix_end',physical_success='evaluation_only'))
                 if release_tick is not None and not returning:
