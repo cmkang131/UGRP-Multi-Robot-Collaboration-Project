@@ -20,6 +20,7 @@ def main():
     p.add_argument('--label', default='v1')
     p.add_argument('--worlds', default='0,1')
     p.add_argument('--terminal', action='store_true')
+    p.add_argument('--host-error', action='store_true')
     a = p.parse_args()
     assert a.snapshot.is_absolute() and a.snapshot.parent == ROOT / 'runs'
     lease = ROOT / 'leases/warp8-prefix-playback.json'
@@ -105,9 +106,14 @@ def main():
                 spec=importlib.util.spec_from_file_location('counter',counter_path)
                 counter=importlib.util.module_from_spec(spec);spec.loader.exec_module(counter)
                 raw=counter.data(world/'raw/result.json')
-                assert raw['status']=='complete'
-                recount=counter.beam_recount(raw,world/'raw')
-                assert recount['agrees'], recount
+                if a.host_error:
+                    assert source_summary['status']=='HOST_ERROR'
+                    recount=dict(success=None,status='HOST_ERROR',physical_outcome_unknown=True,
+                        error=source_summary.get('error'),source_world_status=raw.get('status'))
+                else:
+                    assert raw['status']=='complete'
+                    recount=counter.beam_recount(raw,world/'raw')
+                    assert recount['agrees'], recount
                 # Early full frames are2Hz, terminal native frames10Hz. Display
                 # at3x, holding early samples on a30fps output; no new evidence.
                 full_times=info['sim_world_range'][0]
@@ -131,6 +137,8 @@ def main():
                     representative_video=dict(path=str(video),bytes=video.stat().st_size,
                         sha256=hashlib.sha256(video.read_bytes()).hexdigest(),ffprobe=probe),
                     display_sampling='full prefix2Hz then terminal10Hz,3x playback; early images held on30fps display')
+                if a.host_error:
+                    info['scope']='HOST_ERROR: last valid pre-overflow RGB/evaluator states; not physical failure; no physics step'
             meta.write_text(json.dumps(info,indent=2)+'\n')
             print(str(playback),flush=True)
     finally:
