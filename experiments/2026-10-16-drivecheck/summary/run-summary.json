@@ -1,0 +1,477 @@
+{
+  "scope": "diagnostic_only",
+  "runs": [
+    {
+      "host": "ugrp-sim-gcp2",
+      "engine": "cpu",
+      "mujoco": "3.12.0",
+      "source_sha": "ee3f6eb8a9800b27f51b3da842799651cde9dd0c",
+      "status": "cap_end",
+      "completed_cases": 18,
+      "samples": 680,
+      "contact_rows": 3621,
+      "wall_s": 88.72745161900002,
+      "recording_bytes": 2040181,
+      "capacities": null,
+      "toggles": {
+        "legacy_plane_v1": false,
+        "dense_capacity_v1": false,
+        "noslip_off_v1": false
+      },
+      "fixture_ablation": null,
+      "fixture_sha256": "c0af9f714766876a8a1cb201df6124cefcf6afd3c92bb77a6fd1bedaba39e45b",
+      "xml_sha256": "6c4c907cd59c34e6bb717c7c991152d963f67ee2f6f25fdd134afd955c63890f",
+      "initial_qpos_sha256": null,
+      "online_own_rgb_ring": null,
+      "error": null,
+      "run": "cpu312-v2",
+      "raw": "/home/ugrp/ugrp-sim/runs/drivecheck/cpu312-v2",
+      "result_sha256": "fb58d8cf36568e7927889d5f7a5db3e9738a1cc9af980b741c472f117f5d1d3b"
+    },
+    {
+      "host": "ugrp-act-l4-gcp5",
+      "engine": "cpu",
+      "mujoco": "3.16.0",
+      "source_sha": "ee3f6eb8a9800b27f51b3da842799651cde9dd0c",
+      "status": "cap_end",
+      "completed_cases": 18,
+      "samples": 680,
+      "contact_rows": 7578,
+      "wall_s": 260.66808286599996,
+      "recording_bytes": 2287593,
+      "capacities": null,
+      "toggles": {
+        "legacy_plane_v1": false,
+        "dense_capacity_v1": false,
+        "noslip_off_v1": false
+      },
+      "fixture_ablation": null,
+      "fixture_sha256": "c0af9f714766876a8a1cb201df6124cefcf6afd3c92bb77a6fd1bedaba39e45b",
+      "xml_sha256": "6c4c907cd59c34e6bb717c7c991152d963f67ee2f6f25fdd134afd955c63890f",
+      "initial_qpos_sha256": null,
+      "online_own_rgb_ring": null,
+      "error": null,
+      "run": "cpu316-v2",
+      "raw": "/home/ugrp/ugrp-sim/runs/drivecheck/cpu316-v2",
+      "result_sha256": "7c39cfa0f12ef71c13bea2aae3f9dcab417ef6ccbb29f129ce33db7890755045"
+    },
+    {
+      "host": "ugrp-act-l4-gcp5",
+      "engine": "warp",
+      "mujoco": "3.16.0",
+      "source_sha": "ee3f6eb8a9800b27f51b3da842799651cde9dd0c",
+      "status": "cap_end",
+      "completed_cases": 18,
+      "samples": 680,
+      "contact_rows": 7748,
+      "wall_s": 3055.4267126699997,
+      "recording_bytes": 1232581,
+      "capacities": {
+        "nconmax": 128,
+        "njmax": 512,
+        "basis": "import power of two; dense additionally uses observed reference maxima"
+      },
+      "toggles": {
+        "legacy_plane_v1": false,
+        "dense_capacity_v1": false,
+        "noslip_off_v1": false
+      },
+      "fixture_ablation": null,
+      "fixture_sha256": "c0af9f714766876a8a1cb201df6124cefcf6afd3c92bb77a6fd1bedaba39e45b",
+      "xml_sha256": "6c4c907cd59c34e6bb717c7c991152d963f67ee2f6f25fdd134afd955c63890f",
+      "initial_qpos_sha256": null,
+      "online_own_rgb_ring": null,
+      "error": null,
+      "run": "warp-baseline-v2",
+      "raw": "/home/ugrp/ugrp-sim/runs/drivecheck/warp-baseline-v2",
+      "result_sha256": "3bd0ed51ea95910d7266dfcf35accdedd251560ba81496911c0c074ad126a6e8"
+    },
+    {
+      "host": "ugrp-sim-gcp2",
+      "engine": "cpu",
+      "mujoco": "3.12.0",
+      "source_sha": "26f5905c785f5c98bae9442681269b1456e46b4a",
+      "status": "cap_end",
+      "completed_cases": 18,
+      "samples": 680,
+      "contact_rows": 3281,
+      "wall_s": 86.95760628400012,
+      "recording_bytes": 1902152,
+      "capacities": null,
+      "toggles": {
+        "legacy_plane_v1": false,
+        "dense_capacity_v1": false,
+        "noslip_off_v1": false,
+        "clear_overlap_v1": true
+      },
+      "fixture_ablation": {
+        "object": "cargo_box_00",
+        "before_xyz": [
+          -0.2,
+          -0.85,
+          0.016
+        ],
+        "after_xyz": [
+          -0.2,
+          -0.5966790755859117,
+          0.016
+        ],
+        "lateral_shift_m": 0.2533209244140883,
+        "basis": "2 * (original base XY bounding radius + original box XY bounding radius)",
+        "physical_contacts_disabled": false,
+        "production_fix": false
+      },
+      "fixture_sha256": "c0af9f714766876a8a1cb201df6124cefcf6afd3c92bb77a6fd1bedaba39e45b",
+      "xml_sha256": "6c4c907cd59c34e6bb717c7c991152d963f67ee2f6f25fdd134afd955c63890f",
+      "initial_qpos_sha256": null,
+      "online_own_rgb_ring": null,
+      "error": null,
+      "run": "cpu312-clear-v1",
+      "raw": "/home/ugrp/ugrp-sim/runs/drivecheck/cpu312-clear-v1",
+      "result_sha256": "3089cfa2f23e828c345ce16470af077a42cdebb72378669695e09141b18f8c2b"
+    },
+    {
+      "host": "ugrp-act-l4-gcp5",
+      "engine": "cpu",
+      "mujoco": "3.16.0",
+      "source_sha": "ca5c3bb372b10645141e6dacbdd63b7c60182407",
+      "status": "cap_end",
+      "completed_cases": 1,
+      "samples": 22,
+      "contact_rows": 409,
+      "wall_s": 23.11620982799991,
+      "recording_bytes": 117561,
+      "capacities": null,
+      "toggles": {
+        "legacy_plane_v1": false,
+        "dense_capacity_v1": false,
+        "noslip_off_v1": false,
+        "clear_overlap_v1": true
+      },
+      "fixture_ablation": {
+        "object": "cargo_box_00",
+        "before_xyz": [
+          -0.2,
+          -0.85,
+          0.016
+        ],
+        "after_xyz": [
+          -0.2,
+          -0.5966790755859117,
+          0.016
+        ],
+        "lateral_shift_m": 0.2533209244140883,
+        "basis": "2 * (original base XY bounding radius + original box XY bounding radius)",
+        "physical_contacts_disabled": false,
+        "production_fix": false
+      },
+      "fixture_sha256": "c0af9f714766876a8a1cb201df6124cefcf6afd3c92bb77a6fd1bedaba39e45b",
+      "xml_sha256": "6c4c907cd59c34e6bb717c7c991152d963f67ee2f6f25fdd134afd955c63890f",
+      "initial_qpos_sha256": null,
+      "online_own_rgb_ring": {
+        "hz": 10,
+        "terminal_sim_s": 10,
+        "frames": 44,
+        "bytes": 1055973,
+        "cameras": [
+          "r1",
+          "r2"
+        ],
+        "renderer": "native rasterizer of isolated evaluator mirror",
+        "control_feedback": 0
+      },
+      "error": null,
+      "run": "cpu316-clear-rgb-v1",
+      "raw": "/home/ugrp/ugrp-sim/runs/drivecheck/cpu316-clear-rgb-v1",
+      "result_sha256": "b148f9e0b2cf5361e71506963c56e8ff7d2f8767f55c51292660a8da4d83aa40"
+    },
+    {
+      "host": "ugrp-act-l4-gcp5",
+      "engine": "warp",
+      "mujoco": "3.16.0",
+      "source_sha": "fbe22e808edbdf77a5f793e2f24aceb0e34bb955",
+      "status": "cap_end",
+      "completed_cases": 1,
+      "samples": 22,
+      "contact_rows": 409,
+      "wall_s": 1176.743480718,
+      "recording_bytes": 84568,
+      "capacities": {
+        "nconmax": 128,
+        "njmax": 512,
+        "basis": "import power of two; dense additionally uses observed reference maxima"
+      },
+      "toggles": {
+        "legacy_plane_v1": false,
+        "dense_capacity_v1": true,
+        "noslip_off_v1": false,
+        "clear_overlap_v1": true
+      },
+      "fixture_ablation": {
+        "object": "cargo_box_00",
+        "before_xyz": [
+          -0.2,
+          -0.85,
+          0.016
+        ],
+        "after_xyz": [
+          -0.2,
+          -0.5966790755859117,
+          0.016
+        ],
+        "lateral_shift_m": 0.2533209244140883,
+        "basis": "2 * (original base XY bounding radius + original box XY bounding radius)",
+        "physical_contacts_disabled": false,
+        "production_fix": false
+      },
+      "fixture_sha256": "c0af9f714766876a8a1cb201df6124cefcf6afd3c92bb77a6fd1bedaba39e45b",
+      "xml_sha256": "6c4c907cd59c34e6bb717c7c991152d963f67ee2f6f25fdd134afd955c63890f",
+      "initial_qpos_sha256": "7d6c2e3cd2b61a65d18de0d299d27ac068e6f734c7947d594afb8a24a5311bf7",
+      "online_own_rgb_ring": {
+        "hz": 10,
+        "terminal_sim_s": 10,
+        "frames": 44,
+        "bytes": 1055629,
+        "cameras": [
+          "r1",
+          "r2"
+        ],
+        "renderer": "native rasterizer of isolated evaluator mirror",
+        "control_feedback": 0
+      },
+      "error": null,
+      "run": "warp-clear-v2",
+      "raw": "/home/ugrp/ugrp-sim/runs/drivecheck/warp-clear-v2",
+      "result_sha256": "d1376758fb5b2684ffc6a15a8e96b4b429b8ad40ba9157b77e8669513d2f73e8"
+    },
+    {
+      "host": "ugrp-act-l4-gcp5",
+      "engine": "warp",
+      "mujoco": "3.16.0",
+      "source_sha": "26f5905c785f5c98bae9442681269b1456e46b4a",
+      "status": "cap_end",
+      "completed_cases": 3,
+      "samples": 71,
+      "contact_rows": 852,
+      "wall_s": 118.73363604899998,
+      "recording_bytes": 158791,
+      "capacities": {
+        "nconmax": 128,
+        "njmax": 512,
+        "basis": "import power of two; dense additionally uses observed reference maxima"
+      },
+      "toggles": {
+        "legacy_plane_v1": false,
+        "dense_capacity_v1": false,
+        "noslip_off_v1": true,
+        "clear_overlap_v1": false
+      },
+      "fixture_ablation": null,
+      "fixture_sha256": "c0af9f714766876a8a1cb201df6124cefcf6afd3c92bb77a6fd1bedaba39e45b",
+      "xml_sha256": "6c4c907cd59c34e6bb717c7c991152d963f67ee2f6f25fdd134afd955c63890f",
+      "initial_qpos_sha256": null,
+      "online_own_rgb_ring": null,
+      "error": null,
+      "run": "warp-L0D0N0",
+      "raw": "/home/ugrp/ugrp-sim/runs/drivecheck/warp-L0D0N0",
+      "result_sha256": "9b4f69fa0db24c480d228385ab5588e67e07bc86b86cdbecd471949cafec4e73"
+    },
+    {
+      "host": "ugrp-act-l4-gcp5",
+      "engine": "warp",
+      "mujoco": "3.16.0",
+      "source_sha": "26f5905c785f5c98bae9442681269b1456e46b4a",
+      "status": "cap_end",
+      "completed_cases": 3,
+      "samples": 71,
+      "contact_rows": 852,
+      "wall_s": 125.80494834000001,
+      "recording_bytes": 158738,
+      "capacities": {
+        "nconmax": 128,
+        "njmax": 512,
+        "basis": "import power of two; dense additionally uses observed reference maxima"
+      },
+      "toggles": {
+        "legacy_plane_v1": false,
+        "dense_capacity_v1": true,
+        "noslip_off_v1": true,
+        "clear_overlap_v1": false
+      },
+      "fixture_ablation": null,
+      "fixture_sha256": "c0af9f714766876a8a1cb201df6124cefcf6afd3c92bb77a6fd1bedaba39e45b",
+      "xml_sha256": "6c4c907cd59c34e6bb717c7c991152d963f67ee2f6f25fdd134afd955c63890f",
+      "initial_qpos_sha256": null,
+      "online_own_rgb_ring": null,
+      "error": null,
+      "run": "warp-L0D1N0",
+      "raw": "/home/ugrp/ugrp-sim/runs/drivecheck/warp-L0D1N0",
+      "result_sha256": "af52fe64d2008676324ab2291b1c373cb8de673ff8bd2e35ba63803fc96689f9"
+    },
+    {
+      "host": "ugrp-act-l4-gcp5",
+      "engine": "warp",
+      "mujoco": "3.16.0",
+      "source_sha": "26f5905c785f5c98bae9442681269b1456e46b4a",
+      "status": "cap_end",
+      "completed_cases": 3,
+      "samples": 71,
+      "contact_rows": 823,
+      "wall_s": 2341.6269804780004,
+      "recording_bytes": 164413,
+      "capacities": {
+        "nconmax": 128,
+        "njmax": 512,
+        "basis": "import power of two; dense additionally uses observed reference maxima"
+      },
+      "toggles": {
+        "legacy_plane_v1": false,
+        "dense_capacity_v1": true,
+        "noslip_off_v1": false,
+        "clear_overlap_v1": false
+      },
+      "fixture_ablation": null,
+      "fixture_sha256": "c0af9f714766876a8a1cb201df6124cefcf6afd3c92bb77a6fd1bedaba39e45b",
+      "xml_sha256": "6c4c907cd59c34e6bb717c7c991152d963f67ee2f6f25fdd134afd955c63890f",
+      "initial_qpos_sha256": null,
+      "online_own_rgb_ring": null,
+      "error": null,
+      "run": "warp-L0D1N1",
+      "raw": "/home/ugrp/ugrp-sim/runs/drivecheck/warp-L0D1N1",
+      "result_sha256": "245acb6fb2163e110e6fdb00a406805e514edd6b8dbf9c980750628b9750b0cf"
+    },
+    {
+      "host": "ugrp-act-l4-gcp5",
+      "engine": "warp",
+      "mujoco": "3.16.0",
+      "source_sha": "26f5905c785f5c98bae9442681269b1456e46b4a",
+      "status": "cap_end",
+      "completed_cases": 3,
+      "samples": 71,
+      "contact_rows": 408,
+      "wall_s": 167.9241943909999,
+      "recording_bytes": 144348,
+      "capacities": {
+        "nconmax": 128,
+        "njmax": 512,
+        "basis": "import power of two; dense additionally uses observed reference maxima"
+      },
+      "toggles": {
+        "legacy_plane_v1": true,
+        "dense_capacity_v1": false,
+        "noslip_off_v1": true,
+        "clear_overlap_v1": false
+      },
+      "fixture_ablation": null,
+      "fixture_sha256": "c0af9f714766876a8a1cb201df6124cefcf6afd3c92bb77a6fd1bedaba39e45b",
+      "xml_sha256": "6c4c907cd59c34e6bb717c7c991152d963f67ee2f6f25fdd134afd955c63890f",
+      "initial_qpos_sha256": null,
+      "online_own_rgb_ring": null,
+      "error": null,
+      "run": "warp-L1D0N0",
+      "raw": "/home/ugrp/ugrp-sim/runs/drivecheck/warp-L1D0N0",
+      "result_sha256": "cf30b5e0d39242f10c0998cd1e89364fb2163b342e65d4d5041b104c375e4d6c"
+    },
+    {
+      "host": "ugrp-act-l4-gcp5",
+      "engine": "warp",
+      "mujoco": "3.16.0",
+      "source_sha": "26f5905c785f5c98bae9442681269b1456e46b4a",
+      "status": "cap_end",
+      "completed_cases": 3,
+      "samples": 71,
+      "contact_rows": 419,
+      "wall_s": 2194.6109955240004,
+      "recording_bytes": 150879,
+      "capacities": {
+        "nconmax": 128,
+        "njmax": 512,
+        "basis": "import power of two; dense additionally uses observed reference maxima"
+      },
+      "toggles": {
+        "legacy_plane_v1": true,
+        "dense_capacity_v1": false,
+        "noslip_off_v1": false,
+        "clear_overlap_v1": false
+      },
+      "fixture_ablation": null,
+      "fixture_sha256": "c0af9f714766876a8a1cb201df6124cefcf6afd3c92bb77a6fd1bedaba39e45b",
+      "xml_sha256": "6c4c907cd59c34e6bb717c7c991152d963f67ee2f6f25fdd134afd955c63890f",
+      "initial_qpos_sha256": null,
+      "online_own_rgb_ring": null,
+      "error": null,
+      "run": "warp-L1D0N1",
+      "raw": "/home/ugrp/ugrp-sim/runs/drivecheck/warp-L1D0N1",
+      "result_sha256": "9d5f13d4544fcfcc8a33cd0746654f7d3baa795e13b01918045af05a1a204ab7"
+    },
+    {
+      "host": "ugrp-act-l4-gcp5",
+      "engine": "warp",
+      "mujoco": "3.16.0",
+      "source_sha": "26f5905c785f5c98bae9442681269b1456e46b4a",
+      "status": "cap_end",
+      "completed_cases": 3,
+      "samples": 71,
+      "contact_rows": 408,
+      "wall_s": 168.3502098250001,
+      "recording_bytes": 144721,
+      "capacities": {
+        "nconmax": 128,
+        "njmax": 512,
+        "basis": "import power of two; dense additionally uses observed reference maxima"
+      },
+      "toggles": {
+        "legacy_plane_v1": true,
+        "dense_capacity_v1": true,
+        "noslip_off_v1": true,
+        "clear_overlap_v1": false
+      },
+      "fixture_ablation": null,
+      "fixture_sha256": "c0af9f714766876a8a1cb201df6124cefcf6afd3c92bb77a6fd1bedaba39e45b",
+      "xml_sha256": "6c4c907cd59c34e6bb717c7c991152d963f67ee2f6f25fdd134afd955c63890f",
+      "initial_qpos_sha256": null,
+      "online_own_rgb_ring": null,
+      "error": null,
+      "run": "warp-L1D1N0",
+      "raw": "/home/ugrp/ugrp-sim/runs/drivecheck/warp-L1D1N0",
+      "result_sha256": "8c49689b42e73d5dbbea35f30a0c5e580e3d1ad0bc0c575dbe15fcd843f44533"
+    },
+    {
+      "host": "ugrp-act-l4-gcp5",
+      "engine": "warp",
+      "mujoco": "3.16.0",
+      "source_sha": "26f5905c785f5c98bae9442681269b1456e46b4a",
+      "status": "cap_end",
+      "completed_cases": 3,
+      "samples": 71,
+      "contact_rows": 427,
+      "wall_s": 2188.508790168,
+      "recording_bytes": 151008,
+      "capacities": {
+        "nconmax": 128,
+        "njmax": 512,
+        "basis": "import power of two; dense additionally uses observed reference maxima"
+      },
+      "toggles": {
+        "legacy_plane_v1": true,
+        "dense_capacity_v1": true,
+        "noslip_off_v1": false,
+        "clear_overlap_v1": false
+      },
+      "fixture_ablation": null,
+      "fixture_sha256": "c0af9f714766876a8a1cb201df6124cefcf6afd3c92bb77a6fd1bedaba39e45b",
+      "xml_sha256": "6c4c907cd59c34e6bb717c7c991152d963f67ee2f6f25fdd134afd955c63890f",
+      "initial_qpos_sha256": null,
+      "online_own_rgb_ring": null,
+      "error": null,
+      "run": "warp-L1D1N1",
+      "raw": "/home/ugrp/ugrp-sim/runs/drivecheck/warp-L1D1N1",
+      "result_sha256": "47f23441a9039ac93976cfc073861e5e94806eb5989e0bf32629f434da980825"
+    }
+  ],
+  "completed": true,
+  "raw": "/home/ugrp/ugrp-sim/runs/drivecheck",
+  "analysis": "/home/ugrp/ugrp-sim/runs/drivecheck/analysis-final",
+  "detailed_table": "/home/ugrp/ugrp-sim/runs/drivecheck/analysis-final/pulse-table.json.zst",
+  "no_load_reference_note": "v7 no-load model mechanical reference, not calibrated traction prediction; missing v122 curves remain null"
+}

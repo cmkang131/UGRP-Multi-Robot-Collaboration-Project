@@ -1,0 +1,17 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [{
+    "id": "drivecheck-diagnostic",
+    "version": "0.1.0",
+    "purpose": "고정 명령 펄스의 C CPU/MJWarp 변위·접촉·tilt 진단, 기본 off",
+    "entry": "scripts/drivecheck.py",
+    "runner": "scripts.drivecheck",
+    "docs": "experiments/2026-10-16-drivecheck/README.md",
+    "requires": "Linux gcp2 CPU/gcp5 only; own drivecheck lease, frozen fixture and queue with existing absolute rejection_table; run requires explicit --enabled; evaluation-only truth; no model calls or production defaults",
+    "output_flag": {"prepare": "--out", "run": "--out"},
+    "output_kind": "directory",
+    "required_inputs": {"prepare": ["--renderer-source"], "run": ["--engine", "--fixture", "--queue"]},
+    "side_effect": "local_simulation",
+    "adapter": "managed_legacy_cli"
+  }]
+}
