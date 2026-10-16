@@ -67,7 +67,7 @@ def compile_function(text, name, namespace, *, runner=False):
     """Fail closed when the frozen function no longer has the expected shape."""
     tree = ast.parse(text)
     function = next(n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name == name)
-    edits = {'advance_definition': 0, 'advance_call': 0, 'runner_call': 0}
+    edits = {'advance_definition': 0, 'advance_call': 0, 'runner_call': 0,'evaluation_rows':0}
 
     class Rewrite(ast.NodeTransformer):
         def visit_FunctionDef(self, node):
@@ -81,6 +81,13 @@ def compile_function(text, name, namespace, *, runner=False):
 
         def visit_Call(self, node):
             self.generic_visit(node)
+            if (runner and namespace.get('__warp4_release__') and isinstance(node.func,ast.Attribute)
+                    and isinstance(node.func.value,ast.Name) and node.func.value.id=='report' and node.func.attr=='update'
+                    and any(k.arg=='release_success' and not isinstance(k.value,ast.Constant) for k in node.keywords)):
+                # Persist the original evaluator rows, including GPU force
+                # samples during the terminal2.4s check. No row enters control.
+                node.keywords.append(ast.keyword(arg='evaluation_checks',value=ast.Name(id='checks',ctx=ast.Load())))
+                edits['evaluation_rows']+=1
             if runner and isinstance(node.func, ast.Name) and node.func.id == 'advance':
                 edits['advance_call'] += 1
                 return ast.copy_location(ast.YieldFrom(value=node), node)
@@ -94,11 +101,12 @@ def compile_function(text, name, namespace, *, runner=False):
             return node
 
     Rewrite().visit(function)
-    expected = {'advance_definition': 1, 'advance_call': 2, 'runner_call': 0} if runner else {
-        'advance_definition': 0, 'advance_call': 0, 'runner_call': 1}
+    expected = {'advance_definition': 1, 'advance_call': 2, 'runner_call': 0,'evaluation_rows':0} if runner else {
+        'advance_definition': 0, 'advance_call': 0, 'runner_call': 1,'evaluation_rows':0}
     if runner and name == 'run' and namespace.get('__warp4_release__'):
         # Freeze the observed release25 scheduling call count in the audit.
         expected['advance_call'] = 4
+        expected['evaluation_rows'] = 1
     if edits != expected:
         raise ValueError(f'frozen scheduling shape changed: {edits} != {expected}')
     module = ast.fix_missing_locations(ast.Module(body=[function], type_ignores=[]))
