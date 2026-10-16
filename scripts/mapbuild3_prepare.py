@@ -22,7 +22,9 @@ def named_sets(m):
     import mujoco
     floor={m.geom(i).name for i in range(m.ngeom) if int(m.geom_type[i])==int(mujoco.mjtGeom.mjGEOM_PLANE)
            and any(word in m.geom(i).name.lower() for word in ('floor','ground'))}
-    cargo={m.body(i).name for i in range(m.nbody) if m.body(i).name.startswith(('cargo_','beam_'))}
+    cargo={m.body(i).name for i in range(1,m.nbody)
+           if int(m.body_jntnum[i]) and int(m.jnt_type[int(m.body_jntadr[i])])==int(mujoco.mjtJoint.mjJNT_FREE)
+           and not m.body(i).name.startswith(('r1__','r2__','r3__'))}
     wall={m.geom(i).name for i in range(m.ngeom) if 'wall' in m.geom(i).name.lower()}
     if not floor or not cargo or not wall:raise ValueError('EXPLICIT_SCENE_CLASSIFICATION_REQUIRED')
     return dict(floor_geoms=floor,cargo_bodies=cargo,wall_geoms=wall)
