@@ -74,6 +74,9 @@ def main():
     for row in progress['rows']:
         raw = Path(row['raw'])
         for path in (raw / 'capture/summary.json', raw / 'controller/summary.json',
+                     raw / 'controller/rejection_table.json', raw / 'launch.json',
+                     raw / 'runner-args.json', raw / 'dataset-audit.json',
+                     raw / 'strict-native-audit-r1.json',
                      raw / 'controller' / f'world-{row["world"]:03d}' / 'result.json'):
             actual = path if path.exists() else Path(str(path) + '.zst')
             if actual.exists() and str(actual) not in {h['path'] for h in hashes}:
@@ -109,6 +112,8 @@ def main():
         plt.close(figure)
     write('rejection_table.json', dict(funnel=progress['funnel'],
           rejections=progress['rejections'], rows=progress['rows'],
+          upstream_event_funnels=[h for h in hashes if h['path'].endswith('/controller/rejection_table.json')],
+          run_configuration_receipts=[h for h in hashes if h['path'].endswith(('/launch.json', '/runner-args.json'))],
           raw=progress['raw'], reproduce=progress['reproduce']))
     write('raw-receipts.json', dict(source_sha=source, files=hashes))
     first = datetime.fromisoformat('2026-10-16T05:47:00.019842+00:00')
