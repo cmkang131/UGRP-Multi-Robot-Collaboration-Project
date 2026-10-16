@@ -1,1 +1,1 @@
-warp8: 진행 중 | gcp3 단독 L4·MPS OFF | 빔40/release A40·B40 준비 | 배치 wall/(SIM×세계수), >6은 환산값 적용(조정자 결정·사용자 미확인) | CUDA700 단독 환경에서 미재현·원인미확정 | CPU 합산 금지 | PR#557 DRAFT
+warp8: RUNNING | gcp3 단독 L4·MPS OFF | 빔40 9.3SIM/완료0, 중간 wall/(SIM×40)≈3.87·첫30 미완료 | release A/B 각 S1 14·S3 13·S6 13 참조 준비 | CUDA700 단독 환경에서 미재현·원인미확정 | prefix 0–7SIM 2Hz30장 검토·최종 성공/실패 영상 미회수 | PR#557 DRAFT
