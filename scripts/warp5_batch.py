@@ -137,6 +137,7 @@ class Batch(WarpTransport):
                 self.parity_rows=[];self.parity_motion=False
             self._multi_camera=True
         start=time.perf_counter()
+        staged_parity=None
         if getattr(self,'warp10_render_stage_v1',False):
             from scripts.warp10_host import Readback
             if not hasattr(self,'render_staging'):self.render_staging=Readback(wp,self,'render')
@@ -145,9 +146,15 @@ class Batch(WarpTransport):
                 now=sim_clock(contexts[0]['origin'],self.tick,self.period)
                 if self.review_renderer is not None and review_due(self.camera_cache,self.n,self.review_names,now):
                     pending.append(self.review_renderer.enqueue_render(self.render_staging))
+                if getattr(self,'camera_demand_v1',False):
+                    issued=tuple(tuple(p._motor_commands)+tuple(p._servo_applied.values()) for c in contexts for p in c['ports'].values())
+                    if not hasattr(self,'parity_initial_issued') or (issued!=self.parity_initial_issued and not self.parity_motion):
+                        parity_finish=self.parity_renderer.enqueue_render(self.render_staging)
+                    else:parity_finish=None
                 values=self.render_staging.finish()
             rendered={}
             for finish in pending:rendered.update(finish(values))
+            if getattr(self,'camera_demand_v1',False) and parity_finish is not None:staged_parity=parity_finish(values)
         else:rendered=self.multi_renderer.render()
         if getattr(self,'warp10_same_state_audit_v1',False) and not hasattr(self,'warp10_rgb_audit'):
             # Same GPU state, old reference renderer, no physics between calls.
@@ -167,7 +174,7 @@ class Batch(WarpTransport):
             if initial:self.parity_initial_issued=issued
             changed=issued!=self.parity_initial_issued
             if initial or (changed and not self.parity_motion):
-                full=self.parity_renderer.render();checks=[]
+                full=staged_parity if staged_parity is not None else self.parity_renderer.render();checks=[]
                 for rid in contexts[0]['ports']:
                     aa,bb=(np.clip(x,0,255).astype(np.uint8) for x in (rendered[rid][0],full[rid][0]))
                     checks.append(dict(robot=rid,exact=bool(np.array_equal(aa,bb)),max_delta=int(np.abs(aa.astype(int)-bb).max())))
