@@ -86,8 +86,17 @@ class InstanceMetrics:
 
     def unchanged(self, before, public):
         after = self.owner.integration()
-        if (public != self.owner.current
-                or any(not self.np.array_equal(value, after[key]) for key, value in before.items())):
+        differences = {key: dict(shape_before=list(value.shape), shape_after=list(after[key].shape),
+            numeric_equal=bool(self.np.array_equal(value, after[key])),
+            bytes_equal=value.dtype == after[key].dtype and value.shape == after[key].shape and value.tobytes() == after[key].tobytes())
+            for key, value in before.items()}
+        # Bitwise identity is stronger than numeric equality (+0/-0), and does
+        # not falsely flag an unchanged NaN payload in unused workspace state.
+        if public != self.owner.current or any(not value['bytes_equal'] for value in differences.values()):
+            self.owner.write('instance-evaluation-state-diff.json', dict(
+                actor_inputs_equal=public == self.owner.current, fields=differences))
+            self.np.savez_compressed(self.owner.out/'instance-evaluation-state-before.npz', **before)
+            self.np.savez_compressed(self.owner.out/'instance-evaluation-state-after.npz', **after)
             raise RuntimeError('private instance evaluation changed actor input or integration state')
         self.checks += 1
 

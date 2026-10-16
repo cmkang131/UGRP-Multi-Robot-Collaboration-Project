@@ -90,7 +90,8 @@ def main():
     finally:
         try:
             if client is not None:
-                client.close('start_frame_audit_only')
+                try: client.close('start_frame_audit_only')
+                except BaseException as error: report['close_error']=repr(error)
             report['wall_s']=time.monotonic()-started
             (args.out/'summary.json').write_text(json.dumps(report,indent=2)+'\n')
         finally:
