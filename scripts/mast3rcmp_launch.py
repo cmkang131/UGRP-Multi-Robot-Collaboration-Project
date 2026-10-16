@@ -4,6 +4,7 @@ No simulator/model credentials, no truth. GPU samples measure the exclusive VM
 total (contexts/allocator overhead included); torch peaks are reported separately.
 """
 import argparse
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -48,7 +49,10 @@ def launch(repo,entry,prepared,output):
     summary=dict(returncode=rc,traceback_detected=fatal.is_set(),wall_seconds=time.perf_counter()-start,
                  expected_frames=receipt['all_frames'],gpu_memory_samples=samples,
                  sampled_peak_gpu_total_mib=max((r['memory_used_mib'] for r in samples),default=None),
-                 resource_scope='exclusive_gcp4_whole_gpu_including_all_SLAM_children',command=command)
+                 resource_scope='exclusive_gcp4_whole_gpu_including_all_SLAM_children',command=command,
+                 source_sha=os.environ['MAST3RCMP_SOURCE_SHA'],
+                 entry_sha256=hashlib.sha256(Path(entry).read_bytes()).hexdigest(),
+                 input_receipt_sha256=hashlib.sha256((prepared/'input-receipt.json').read_bytes()).hexdigest())
     if rc or fatal.is_set():
         rows=[]
         ledger=output/'probe/frames-online.jsonl'
