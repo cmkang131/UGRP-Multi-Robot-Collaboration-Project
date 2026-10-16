@@ -1,8 +1,16 @@
 """CPU-only prefix exposure funnel. Issued phases are not physical success."""
-import argparse,collections,hashlib,json,gzip
+import argparse,collections,hashlib,json,gzip,subprocess
 from pathlib import Path
 
-def read(p):return json.loads(p.read_text())
+def existing(p):
+    for candidate in (p,Path(str(p)+'.zst'),Path(str(p)+'.gz')):
+        if candidate.exists():return candidate
+    return p
+def decoded(p):
+    if p.suffix=='.zst':return subprocess.check_output(['zstd','-qdc',str(p)])
+    if p.suffix=='.gz':return gzip.decompress(p.read_bytes())
+    return p.read_bytes()
+def read(p):return json.loads(decoded(existing(p)))
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 def main():
     p=argparse.ArgumentParser();p.add_argument('--raw',type=Path,required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args()
@@ -11,13 +19,15 @@ def main():
     supervisor=read(note) if note.exists() else None
     worlds=[];source={};raw_status=collections.Counter();reasons=collections.Counter();phase_ticks=collections.Counter()
     for i,run in enumerate(q['runs']):
-        raw=a.raw/f'world-{i:03d}'/'raw';trace=raw/'teacher-commands.jsonl'
-        if not trace.exists() and trace.with_suffix(trace.suffix+'.gz').exists():trace=trace.with_suffix(trace.suffix+'.gz')
+        raw=a.raw/f'world-{i:03d}'/'raw';trace=existing(raw/'teacher-commands.jsonl')
         if not trace.exists():raise FileNotFoundError('original command trace missing: '+str(raw))
-        text=gzip.open(trace,'rt').read() if trace.suffix=='.gz' else trace.read_text()
+        payload=decoded(trace);text=payload.decode()
+        manifest=read(raw/'manifest.json')
+        entry=manifest[str(trace.relative_to(raw))]
+        if entry.get('decoded_sha256',entry['sha256'])!=hashlib.sha256(payload).hexdigest():raise ValueError('decoded trace hash mismatch')
         rows=[json.loads(line) for line in text.splitlines()]
         if trace.exists():source[str(trace)]=sha(trace)
-        result=read(raw/'result.json') if (raw/'result.json').exists() else {'status':'RUNNING'}
+        result=read(raw/'result.json') if existing(raw/'result.json').exists() else {'status':'RUNNING'}
         raw_status[result['status']]+=1;phases={r['phase'] for r in rows};phase_ticks.update(r['phase'] for r in rows)
         error=result.get('error_type');interpretation=result['status']
         if error=='GeneratorExit':
