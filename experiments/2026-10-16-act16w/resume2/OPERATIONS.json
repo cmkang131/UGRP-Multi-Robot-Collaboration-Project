@@ -1,0 +1,58 @@
+{
+  "updated_utc": "2026-10-16T06:49:31.505762+00:00",
+  "project": "ugrp-sim-b-1014",
+  "account": "changmin5781@gmail.com",
+  "L4_instance": "ugrp-act-l4-gcp2",
+  "zone": "asia-northeast3-a",
+  "L4_IP": "34.158.203.173",
+  "remote_helper": "/tmp/ugrp-act16w-remote.py",
+  "deploy_helper": "/tmp/ugrp-act16w-deploy.py",
+  "local_monitor_session": 98961,
+  "monitor_script": "/tmp/act16w-monitor.py",
+  "hard_end_UTC": "2026-10-16T13:47:00.019842+00:00",
+  "drain_UTC": "2026-10-16T13:45:00.019842+00:00",
+  "L4_reboot": "automatic8h stop06:00:38Z, restarted by warp7 account06:01:09Z, task cap not reset",
+  "roots": {
+    "pilots": [
+      "/home/ugrp/ugrp-sim/runs/act16w-resume2-pilot-86821",
+      "/home/ugrp/ugrp-sim/runs/act16w-resume2-pilot-86822"
+    ],
+    "references": "/home/ugrp/ugrp-sim/runs/act16w-resume2-record-references",
+    "groups": "/home/ugrp/ugrp-sim/runs/act16w-resume2-record-groups",
+    "qualified": "/home/ugrp/ugrp-sim/src/f0db6b1abb842ea65b71c433738210254f300a7c",
+    "teacher": "/home/ugrp/ugrp-sim/src/warp1-teacher-snapshot-6f057f7e",
+    "API": "/home/ugrp/ugrp-sim/src/0362037280c6cbc4677f70366db43b9892b23690",
+    "ACT": "/home/ugrp/ugrp-sim/src/3f99d58c5ada0862e669ef4065c0ba957f1b4547"
+  },
+  "python": {
+    "warp": "/home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python",
+    "C_compile": "/home/ugrp/ugrp-sim/runs/simalt3/c-env/bin/python",
+    "ACT": "/home/ugrp/ugrp-rl1b-act-env/bin/python"
+  },
+  "pilot_driver_source": "27ae19eccc67d44e5276d95ca1ab91ba83e28ba1",
+  "pilot_driver_pids": [
+    2224,
+    2225
+  ],
+  "pilot_2h_cap": "2026-10-16T08:02:58.539954+00:00",
+  "implemented_prepared": [
+    "scripts/act16w_record_batch.py",
+    "scripts/act16w_dataset.py",
+    "scripts/train_act16w.py",
+    "scripts/act16w_input.py",
+    "scripts/act16w_curriculum.py",
+    "scripts/act16w_dagger.py"
+  ],
+  "next_required": [
+    "Wait full2 pilots; strict native audit with command_complete, inspect playback2Hz+last10s10Hz before recording approval",
+    "Freeze selection40 before training; selected groups0,1,2,3, includes pilot indices1/2.35train5validation. Heldout91620-659 unchanged.",
+    "Deploy latest worker source; source snapshots must clone --reference git-shared.git, never chain references or gc. Sparse worker source permitted because simulator/ACT libraries separate frozen roots.",
+    "Refresh cross-host capacity receipt from Mac for bulk driver (CPU gcp2 alias; no credentials on VM). max40 global, keep foreign leases.",
+    "Create source-f0db recording approval from old camera-off40/40 bootstrap+two inspected pilots; old bootstrap NOT independent. Native fresh40 recording stage independently>=95% required for data.",
+    "Run grouped38 remaining records with existing API, explicit recorded speed override and task hard deadline. No camera/physics/controller changes.",
+    "Run dataset converter (hardlinked derived view preserves original controller training_rgb=false vs external capture=true). Then bind training_admission to bootstrap gate plus fresh independent recording gate/dataset audits.",
+    "Training A/B10000 matched steps via300 smoke+resume; h4C then h5D1 separately. Freeze data/steps/norm. Generic ACT16 evaluation driver and real DAgger oracle integration still need implementation.",
+    "Only validation86865-869 selects policy. Final new40 on selected policy, no tuning. Release used comparison models, full redownload/hash/load; no weights retained on Mac.",
+    "Compress completed >64KiB JSON/JSONL losslessly with proof after consumers close. Preserve original evidence. Update docs/summary/funnel/curves/PR539(Refs523), ops stage lines; clean only own leases/processes."
+  ]
+}

@@ -1,5 +1,5 @@
 {
-  "status": "WARM_PASS_RECORD_GATE_PENDING",
+  "status": "RECORD_PILOTS_RUNNING",
   "started_utc": "2026-10-16T05:45:57.126020+00:00",
   "previous_attempt": "../summary.json",
   "record_api_source": "0362037280c6cbc4677f70366db43b9892b23690",
@@ -75,5 +75,31 @@
     "passed": 27,
     "command": "python3 -m pytest -q tests/test_act16w_runtime.py tests/test_warp_act_core.py tests/test_warp_act_api.py"
   },
-  "next": "full fresh pilots86821(red)/86822(green), original launch schedule; first30 speed gate; no bulk admission yet"
+  "next": "full fresh pilots86821(red)/86822(green), original launch schedule; first30 speed gate; no bulk admission yet",
+  "recording_selection": "record-selection.json",
+  "selected_fresh_records_planned": 40,
+  "train_records_planned": 35,
+  "validation_records_planned": 5,
+  "model_reference_candidates": 50,
+  "compatible_groups": 7,
+  "selected_groups": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "cuda_preflight": "cuda-preflight.json",
+  "gpu_task_first_utc": "2026-10-16T05:47:00.019842+00:00",
+  "gpu_task_hard_end_utc": "2026-10-16T13:47:00.019842+00:00",
+  "speed_exception": "pilot-queue.json:speed_gate_override",
+  "running_pilots": [
+    86821,
+    86822
+  ],
+  "sap_candidate": "not_adopted_no_verified_speed_gain",
+  "actual_model_image_hw": [
+    480,
+    640
+  ],
+  "model_image_note": "4 own native640x480 JPEG history frames resized individually320x240 then2x2 montage640x480. Both train/inference use this; upstream224 prose is not the measured ACT16 input."
 }

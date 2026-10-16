@@ -1,0 +1,46 @@
+{
+  "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-cuda-preflight-r1/summary.json",
+  "sha256": "836a0057a8288a00a437a93a7bbe669c4936fc8afa75cbcbb30bfbc7a4b66006",
+  "value": {
+    "status": "complete",
+    "research_result": false,
+    "research_optimizer_steps": 0,
+    "synthetic_optimizer_steps": 1,
+    "host": {
+      "project_id": "ugrp-sim-b-1014",
+      "instance": "ugrp-act-l4-gcp2",
+      "machine_type": "g2-standard-8",
+      "zone": "asia-northeast3-a"
+    },
+    "source_sha": "ff16c5f3f6360d49c74ec0dd8ffc7e09738ed848",
+    "act_source_sha": "3f99d58c5ada0862e669ef4065c0ba957f1b4547",
+    "loss": 102.20851135253906,
+    "gradient_norm": 1652.4439697265625,
+    "passed": true,
+    "batch": 8,
+    "chunk": 8,
+    "model_input_hw": [
+      480,
+      640
+    ],
+    "adapter_mode": "wheel_pulse_train_mean",
+    "readback_exact": true,
+    "optimizer_reload": true,
+    "peak_gpu_bytes": 1506787840,
+    "gpu": "NVIDIA L4",
+    "metrics": {
+      "legacy_l1_loss": 0.4921785891056061,
+      "movement_l1_loss": 0.414801187813282,
+      "done_bce_loss": 0.7321987152099609,
+      "kld_loss": 10.10615062713623
+    },
+    "wall_s": 18.35142655100003,
+    "files": {
+      "optimizer.pt": "694f6f23c03ab9f2060c1d4bff5d1859602c3f38597e10590cc62777c99ac4b0",
+      "actor/SHA256.json": "5804b90d66928c8d7c6d5f5148f935b9628ceea6c08339ddd602966ff8d5456e",
+      "actor/model.safetensors": "cce5c9e70c7d11650df6d959d84dc516c7105858162bd87574e5740d5ed83322",
+      "actor/adapter.json": "99a26812a8cda9a29d1018199ed17efd842022773281c2ceb342f3659589e687",
+      "actor/config.json": "b63bc05fb84e5c0f53329336a7a147f18ca73f297ed25279b42b968e279f571f"
+    }
+  }
+}

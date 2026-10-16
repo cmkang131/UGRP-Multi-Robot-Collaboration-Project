@@ -28,9 +28,9 @@ def admission_fixture(tmp_path):
     data = dict(approved=True, source_sha='source', act_source_sha='act',
                 dataset_manifest_sha256=sha256(dataset / 'manifest.json'),
                 backend='mjwarp_batch_v1', project_id=PROJECT, training_rgb_during_gate=False,
-                input_audit_violations=0, teacher_success_n=38, teacher_attempts_N=40,
+                input_audit_violations=0, fresh_record_confirmation=dict(n=38,N=40,seeds=list(range(80000,80040)),independent_of_warp1_debugging=True),teacher_success_n=38, teacher_attempts_N=40,
                 valid_future_action_targets_verified=True)
-    for name in ('gate_summary', 'rejection_table', 'scene_decision', 'dataset_audit'):
+    for name in ('gate_summary', 'fresh_recording_gate','rejection_table', 'scene_decision', 'dataset_audit'):
         evidence = tmp_path / (name + '.json'); evidence.write_text('{"reviewed": true}')
         data[name] = dict(path=str(evidence), sha256=sha256(evidence))
     path = tmp_path / 'admission.json'
@@ -56,3 +56,13 @@ def test_missing_or_changed_funnel_evidence_cannot_admit(tmp_path):
     Path(data['rejection_table']['path']).write_text('{"changed": true}')
     with pytest.raises(ValueError):
         check()
+
+
+def test_fresh_camera_recording_cannot_reuse_bootstrap_or_heldout(tmp_path):
+    check,data=admission_fixture(tmp_path)
+    for seed in (8317100,91620):
+        fresh={**data['fresh_record_confirmation'],'seeds':[seed,*range(80001,80040)]}
+        with pytest.raises(ValueError,match='fresh independent'):
+            check({'fresh_record_confirmation':fresh})
+    with pytest.raises(ValueError,match='fresh independent'):
+        check({'fresh_record_confirmation':{**data['fresh_record_confirmation'],'n':37}})

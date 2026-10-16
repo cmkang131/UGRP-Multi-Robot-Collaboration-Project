@@ -74,7 +74,17 @@ def training_admission(path, *, source, dataset, act_source):
     n, N = data.get('teacher_success_n'), data.get('teacher_attempts_N')
     if type(n) is not int or type(N) is not int or N < 40 or not 0 <= n <= N or n / N < .95:
         raise ValueError('MJWarp teacher gate must pass >=95% over >=40 attempts')
-    for name in ('gate_summary', 'rejection_table', 'scene_decision', 'dataset_audit'):
+    # The bootstrap40 overlaps warp1 debugging. It cannot replace the new
+    # independently sampled recording-stage confirmation requested on10/16.
+    fresh=data.get('fresh_record_confirmation', {})
+    fn,fN=fresh.get('n'),fresh.get('N')
+    seeds=fresh.get('seeds', [])
+    if (type(fn) is not int or type(fN) is not int or fN<40 or not 0<=fn<=fN or fn/fN<.95
+            or len(seeds)!=fN or len(set(seeds))!=fN
+            or any(type(s) is not int or 8317100<=s<=8317139 or 91620<=s<=91659 for s in seeds)
+            or fresh.get('independent_of_warp1_debugging') is not True):
+        raise ValueError('fresh independent recording-stage teacher confirmation required')
+    for name in ('gate_summary', 'fresh_recording_gate', 'rejection_table', 'scene_decision', 'dataset_audit'):
         item = data.get(name, {})
         if not item.get('path') or sha256(item['path']) != item.get('sha256'):
             raise ValueError('missing/hash-mismatched admission evidence: ' + name)

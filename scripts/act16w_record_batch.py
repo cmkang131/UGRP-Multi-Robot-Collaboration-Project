@@ -50,7 +50,7 @@ def main():
         receipt=read(a.capacity_receipt)
         # Mac refreshes each45s; receipt expires after one missed refresh.
         if receipt.get('project_id')!='ugrp-sim-b-1014' or datetime.fromisoformat(receipt['valid_until_utc']).timestamp()<time.time():return 40
-        count=max(a.foreign_cpu_worlds,int(receipt['foreign_cpu_worlds']))
+        count=int(receipt['foreign_cpu_worlds'])
         for item in lease.parent.glob('*.json'):
             if item.name.startswith('act16w'):continue
             try:count+=int(read(item).get('concurrency',0))
