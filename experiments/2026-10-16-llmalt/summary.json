@@ -1,0 +1,548 @@
+{
+  "schema": "ugrp.experiment_summary.v1",
+  "id": "2026-10-16-llmalt",
+  "date": "2026-10-16",
+  "purpose": "Measure open-weight vision LLM alternatives after Gemma 4 31B @DeepInfra +50% price increase alert (prompt 0.09->0.135, completion 0.34->0.51, cache 0.05->0.075 $/M). Measurement and recommendation only; configs/model_endpoints.json unchanged.",
+  "host": "Mac (OpenRouter API calls only; no simulation, physics, rendering, or GUI)",
+  "method": "Reproduced 2026-10-14 rate_probe.py: first 40 stored planner requests from outputs/task-planner-ling-vl-main-20261013/off-calls.jsonl + 1 stored own-RGB jpg (r80-r1-00000.jpg), 1 submit every 1.5 s (~40/min), 6 workers, temperature=0, max_tokens=300, provider tag pinned, allow_fallbacks=False. valid_json_act = response parses as JSON with non-empty act field. act_agreement compares chosen act against Gemma 4 31B @DeepInfra (NOT task accuracy).",
+  "inputs": {
+    "requests_source": "/Users/changmin/projects/ugrp-wt/e2e18-planner/outputs/task-planner-ling-vl-main-20261013/off-calls.jsonl",
+    "requests_source_sha256": "e9d4fa6688936f52d86c1aa726c9e2cda15d1662b8b7eaa3265577bacc44d4bc",
+    "stored_gemma_reference": "/Users/changmin/projects/ugrp-wt/e2e18-planner/outputs/task-planner-gemma-json-20261014/off-calls.jsonl.zst",
+    "stored_gemma_reference_sha256": "d95c65381af521d2f04bab7ae7254cd15f14259365458fd1e7b0b9b5350d3a6f",
+    "image_source": "/Users/changmin/projects/ugrp-wt/e2e18-planner/outputs/task-planner-ling-vl-image/r80-r1-00000.jpg",
+    "image_sha256": "15673f61873991c84cfe449747efa858b4986e36d8f48c5874f483574ec0cfc3",
+    "image_bytes": 13858
+  },
+  "balance_check": {
+    "min_required_usd": 1.5,
+    "max_spend_cap_usd": 1.0,
+    "before": {
+      "credits": {
+        "total_credits": 25,
+        "total_usage": 18.278935789
+      },
+      "key": {
+        "is_management_key": false,
+        "is_provisioning_key": false,
+        "limit": 20,
+        "limit_reset": null,
+        "limit_remaining": 12.171668325999999,
+        "include_byok_in_limit": false,
+        "budgets": [
+          {
+            "scope": "key_limit",
+            "guardrail_id": null,
+            "budget_id": null,
+            "limit_usd": 20,
+            "spend_usd": 7.828331674,
+            "remaining_usd": 12.171668325999999,
+            "reset_interval": null,
+            "resets_at": null,
+            "include_byok": false
+          }
+        ],
+        "effective_budget": {
+          "scope": "key_limit",
+          "guardrail_id": null,
+          "budget_id": null,
+          "limit_usd": 20,
+          "spend_usd": 7.828331674,
+          "remaining_usd": 12.171668325999999,
+          "reset_interval": null,
+          "resets_at": null,
+          "include_byok": false
+        },
+        "usage": 7.828331674,
+        "usage_daily": 0.000485842,
+        "usage_weekly": 7.770639514,
+        "usage_monthly": 7.828331674,
+        "byok_usage": 0,
+        "byok_usage_daily": 0,
+        "byok_usage_weekly": 0,
+        "byok_usage_monthly": 0,
+        "is_free_tier": false,
+        "expires_at": null,
+        "allowed_data_regions": [
+          "global"
+        ],
+        "free_model_daily_requests": {
+          "used": 0,
+          "limit": 1000,
+          "remaining": 1000
+        },
+        "rate_limit": {
+          "requests": -1,
+          "interval": "10s",
+          "note": "This field is deprecated and safe to ignore."
+        }
+      },
+      "credits_remaining_usd": 6.721064,
+      "key_remaining_usd": 12.171668
+    },
+    "after": {
+      "credits": {
+        "total_credits": 25,
+        "total_usage": 18.280691539
+      },
+      "key": {
+        "is_management_key": false,
+        "is_provisioning_key": false,
+        "limit": 20,
+        "limit_reset": null,
+        "limit_remaining": 12.169912576,
+        "include_byok_in_limit": false,
+        "budgets": [
+          {
+            "scope": "key_limit",
+            "guardrail_id": null,
+            "budget_id": null,
+            "limit_usd": 20,
+            "spend_usd": 7.830087424,
+            "remaining_usd": 12.169912576,
+            "reset_interval": null,
+            "resets_at": null,
+            "include_byok": false
+          }
+        ],
+        "effective_budget": {
+          "scope": "key_limit",
+          "guardrail_id": null,
+          "budget_id": null,
+          "limit_usd": 20,
+          "spend_usd": 7.830087424,
+          "remaining_usd": 12.169912576,
+          "reset_interval": null,
+          "resets_at": null,
+          "include_byok": false
+        },
+        "usage": 7.830087424,
+        "usage_daily": 0.002241592,
+        "usage_weekly": 7.772395264,
+        "usage_monthly": 7.830087424,
+        "byok_usage": 0,
+        "byok_usage_daily": 0,
+        "byok_usage_weekly": 0,
+        "byok_usage_monthly": 0,
+        "is_free_tier": false,
+        "expires_at": null,
+        "allowed_data_regions": [
+          "global"
+        ],
+        "free_model_daily_requests": {
+          "used": 0,
+          "limit": 1000,
+          "remaining": 1000
+        },
+        "rate_limit": {
+          "requests": -1,
+          "interval": "10s",
+          "note": "This field is deprecated and safe to ignore."
+        }
+      },
+      "credits_remaining_usd": 6.719308,
+      "key_remaining_usd": 12.169913
+    },
+    "total_probe_reported_cost_usd": 0.134234
+  },
+  "gemma_31b_deepinfra_price_increase_impact": {
+    "model": "google/gemma-4-31b-it",
+    "provider_tag": "deepinfra/turbo",
+    "quantization": "fp4",
+    "old_usd_per_million": {
+      "prompt": 0.09,
+      "completion": 0.34,
+      "input_cache_read": 0.05
+    },
+    "new_usd_per_million": {
+      "prompt": 0.135,
+      "completion": 0.51,
+      "input_cache_read": 0.075
+    },
+    "r4_ledger_4917in_61out_0pct_cache": {
+      "old_usd_per_call": 0.000463,
+      "new_usd_per_call": 0.000695
+    },
+    "r4_ledger_4917in_61out_26pct_cache": {
+      "old_usd_per_call": 0.000412,
+      "new_usd_per_call": 0.000618
+    }
+  },
+  "results": [
+    {
+      "role": "baseline_now",
+      "model": "google/gemma-4-31b-it",
+      "provider_name": "DeepInfra",
+      "provider_tag": "deepinfra/turbo",
+      "quantization": "fp4",
+      "official_usd_per_million": {
+        "prompt": 0.135,
+        "completion": 0.51,
+        "input_cache_read": 0.075
+      },
+      "n": 40,
+      "ok_http200": 40,
+      "valid_json_act": 40,
+      "http429": 0,
+      "other_err": 0,
+      "latency_med_s": 5.18,
+      "latency_p90_s": 8.97,
+      "latency_max_s": 16.63,
+      "over_8s_count": 5,
+      "prompt_tokens_med": 4015.5,
+      "completion_tokens_med": 53.0,
+      "cache_ratio": 0.0667,
+      "probe_total_reported_cost_usd": 0.02428,
+      "probe_reported_cost_per_ok_call_usd": 0.000607,
+      "probe_formula_cost_per_ok_call_usd": 0.000607,
+      "r4_ledger_formula_cost_per_call_usd": {
+        "no_cache_4917in_61out": 0.000695,
+        "cache_26pct_4917in_61out": 0.000618
+      },
+      "act_agreement_vs_gemma31b_deepinfra_live_img": {
+        "matched": 40,
+        "total": 40,
+        "ratio": 1.0,
+        "note": "act field agreement only; NOT task accuracy"
+      },
+      "act_agreement_vs_gemma31b_deepinfra_stored_v405": {
+        "matched": 34,
+        "total": 40,
+        "ratio": 0.85,
+        "note": "act field agreement only; NOT task accuracy"
+      },
+      "err_sample": null,
+      "act_and_args_agreement_vs_gemma31b_deepinfra_live_img": {
+        "matched": 40,
+        "total": 40,
+        "ratio": 1.0,
+        "note": "exact (act, args) agreement only; NOT task accuracy"
+      }
+    },
+    {
+      "role": "candidate_a1",
+      "model": "google/gemma-4-31b-it",
+      "provider_name": "CoreWeave",
+      "provider_tag": "coreweave/fp4",
+      "quantization": "fp4",
+      "official_usd_per_million": {
+        "prompt": 0.1,
+        "completion": 0.34,
+        "input_cache_read": 0.1
+      },
+      "n": 40,
+      "ok_http200": 40,
+      "valid_json_act": 40,
+      "http429": 0,
+      "other_err": 0,
+      "latency_med_s": 2.6,
+      "latency_p90_s": 3.91,
+      "latency_max_s": 5.05,
+      "over_8s_count": 0,
+      "prompt_tokens_med": 4016.5,
+      "completion_tokens_med": 56.0,
+      "cache_ratio": 0.0941,
+      "probe_total_reported_cost_usd": 0.018436,
+      "probe_reported_cost_per_ok_call_usd": 0.000461,
+      "probe_formula_cost_per_ok_call_usd": 0.000461,
+      "r4_ledger_formula_cost_per_call_usd": {
+        "no_cache_4917in_61out": 0.000512,
+        "cache_26pct_4917in_61out": 0.000512
+      },
+      "act_agreement_vs_gemma31b_deepinfra_live_img": {
+        "matched": 36,
+        "total": 40,
+        "ratio": 0.9,
+        "note": "act field agreement only; NOT task accuracy"
+      },
+      "act_agreement_vs_gemma31b_deepinfra_stored_v405": {
+        "matched": 38,
+        "total": 40,
+        "ratio": 0.95,
+        "note": "act field agreement only; NOT task accuracy"
+      },
+      "err_sample": null,
+      "act_and_args_agreement_vs_gemma31b_deepinfra_live_img": {
+        "matched": 35,
+        "total": 40,
+        "ratio": 0.875,
+        "note": "exact (act, args) agreement only; NOT task accuracy"
+      }
+    },
+    {
+      "role": "candidate_a2",
+      "model": "google/gemma-4-31b-it",
+      "provider_name": "Chutes",
+      "provider_tag": "chutes/fp4",
+      "quantization": "fp4",
+      "official_usd_per_million": {
+        "prompt": 0.12,
+        "completion": 0.37,
+        "input_cache_read": 0.012
+      },
+      "n": 40,
+      "ok_http200": 40,
+      "valid_json_act": 40,
+      "http429": 0,
+      "other_err": 0,
+      "latency_med_s": 5.08,
+      "latency_p90_s": 6.37,
+      "latency_max_s": 9.17,
+      "over_8s_count": 2,
+      "prompt_tokens_med": 4014.5,
+      "completion_tokens_med": 56.0,
+      "cache_ratio": 0.0044,
+      "probe_total_reported_cost_usd": 0.021957,
+      "probe_reported_cost_per_ok_call_usd": 0.000549,
+      "probe_formula_cost_per_ok_call_usd": 0.000549,
+      "r4_ledger_formula_cost_per_call_usd": {
+        "no_cache_4917in_61out": 0.000613,
+        "cache_26pct_4917in_61out": 0.000475
+      },
+      "act_agreement_vs_gemma31b_deepinfra_live_img": {
+        "matched": 35,
+        "total": 40,
+        "ratio": 0.875,
+        "note": "act field agreement only; NOT task accuracy"
+      },
+      "act_agreement_vs_gemma31b_deepinfra_stored_v405": {
+        "matched": 39,
+        "total": 40,
+        "ratio": 0.975,
+        "note": "act field agreement only; NOT task accuracy"
+      },
+      "err_sample": null,
+      "act_and_args_agreement_vs_gemma31b_deepinfra_live_img": {
+        "matched": 34,
+        "total": 40,
+        "ratio": 0.85,
+        "note": "exact (act, args) agreement only; NOT task accuracy"
+      }
+    },
+    {
+      "role": "candidate_a3",
+      "model": "google/gemma-4-31b-it",
+      "provider_name": "Parasail",
+      "provider_tag": "parasail/fp8",
+      "quantization": "fp8",
+      "official_usd_per_million": {
+        "prompt": 0.15,
+        "completion": 0.4,
+        "input_cache_read": 0.06
+      },
+      "n": 40,
+      "ok_http200": 40,
+      "valid_json_act": 40,
+      "http429": 0,
+      "other_err": 0,
+      "latency_med_s": 1.3,
+      "latency_p90_s": 1.76,
+      "latency_max_s": 2.57,
+      "over_8s_count": 0,
+      "prompt_tokens_med": 4015.5,
+      "completion_tokens_med": 55.0,
+      "cache_ratio": 0.1853,
+      "probe_total_reported_cost_usd": 0.024452,
+      "probe_reported_cost_per_ok_call_usd": 0.000611,
+      "probe_formula_cost_per_ok_call_usd": 0.000611,
+      "r4_ledger_formula_cost_per_call_usd": {
+        "no_cache_4917in_61out": 0.000762,
+        "cache_26pct_4917in_61out": 0.000647
+      },
+      "act_agreement_vs_gemma31b_deepinfra_live_img": {
+        "matched": 37,
+        "total": 40,
+        "ratio": 0.925,
+        "note": "act field agreement only; NOT task accuracy"
+      },
+      "act_agreement_vs_gemma31b_deepinfra_stored_v405": {
+        "matched": 37,
+        "total": 40,
+        "ratio": 0.925,
+        "note": "act field agreement only; NOT task accuracy"
+      },
+      "err_sample": null,
+      "act_and_args_agreement_vs_gemma31b_deepinfra_live_img": {
+        "matched": 37,
+        "total": 40,
+        "ratio": 0.925,
+        "note": "exact (act, args) agreement only; NOT task accuracy"
+      }
+    },
+    {
+      "role": "candidate_b1",
+      "model": "google/gemma-4-26b-a4b-it",
+      "provider_name": "NextBit",
+      "provider_tag": "nextbit/bf16",
+      "quantization": "bf16",
+      "official_usd_per_million": {
+        "prompt": 0.0765,
+        "completion": 0.255,
+        "input_cache_read": 0.0425
+      },
+      "n": 40,
+      "ok_http200": 40,
+      "valid_json_act": 40,
+      "http429": 0,
+      "other_err": 0,
+      "latency_med_s": 1.56,
+      "latency_p90_s": 2.0,
+      "latency_max_s": 2.97,
+      "over_8s_count": 0,
+      "prompt_tokens_med": 4015.5,
+      "completion_tokens_med": 55.0,
+      "cache_ratio": 0.1059,
+      "probe_total_reported_cost_usd": 0.013455,
+      "probe_reported_cost_per_ok_call_usd": 0.000336,
+      "probe_formula_cost_per_ok_call_usd": 0.000336,
+      "r4_ledger_formula_cost_per_call_usd": {
+        "no_cache_4917in_61out": 0.000392,
+        "cache_26pct_4917in_61out": 0.000348
+      },
+      "act_agreement_vs_gemma31b_deepinfra_live_img": {
+        "matched": 35,
+        "total": 40,
+        "ratio": 0.875,
+        "note": "act field agreement only; NOT task accuracy"
+      },
+      "act_agreement_vs_gemma31b_deepinfra_stored_v405": {
+        "matched": 35,
+        "total": 40,
+        "ratio": 0.875,
+        "note": "act field agreement only; NOT task accuracy"
+      },
+      "err_sample": null,
+      "act_and_args_agreement_vs_gemma31b_deepinfra_live_img": {
+        "matched": 34,
+        "total": 40,
+        "ratio": 0.85,
+        "note": "exact (act, args) agreement only; NOT task accuracy"
+      }
+    },
+    {
+      "role": "candidate_b2",
+      "model": "mistralai/mistral-small-3.2-24b-instruct",
+      "provider_name": "DeepInfra",
+      "provider_tag": "deepinfra/fp8",
+      "quantization": "fp8",
+      "official_usd_per_million": {
+        "prompt": 0.075,
+        "completion": 0.2,
+        "input_cache_read": null
+      },
+      "n": 40,
+      "ok_http200": 40,
+      "valid_json_act": 40,
+      "http429": 0,
+      "other_err": 0,
+      "latency_med_s": 2.93,
+      "latency_p90_s": 3.56,
+      "latency_max_s": 4.92,
+      "over_8s_count": 0,
+      "prompt_tokens_med": 4132.0,
+      "completion_tokens_med": 70.0,
+      "cache_ratio": 0.0,
+      "probe_total_reported_cost_usd": 0.014211,
+      "probe_reported_cost_per_ok_call_usd": 0.000355,
+      "probe_formula_cost_per_ok_call_usd": 0.000355,
+      "r4_ledger_formula_cost_per_call_usd": {
+        "no_cache_4917in_61out": 0.000381,
+        "cache_26pct_4917in_61out": 0.000381
+      },
+      "act_agreement_vs_gemma31b_deepinfra_live_img": {
+        "matched": 27,
+        "total": 40,
+        "ratio": 0.675,
+        "note": "act field agreement only; NOT task accuracy"
+      },
+      "act_agreement_vs_gemma31b_deepinfra_stored_v405": {
+        "matched": 32,
+        "total": 40,
+        "ratio": 0.8,
+        "note": "act field agreement only; NOT task accuracy"
+      },
+      "err_sample": null,
+      "act_and_args_agreement_vs_gemma31b_deepinfra_live_img": {
+        "matched": 26,
+        "total": 40,
+        "ratio": 0.65,
+        "note": "exact (act, args) agreement only; NOT task accuracy"
+      }
+    },
+    {
+      "role": "candidate_b3",
+      "model": "meta-llama/llama-4-scout",
+      "provider_name": "DeepInfra",
+      "provider_tag": "deepinfra/fp8",
+      "quantization": "fp8",
+      "official_usd_per_million": {
+        "prompt": 0.1,
+        "completion": 0.3,
+        "input_cache_read": null
+      },
+      "n": 40,
+      "ok_http200": 40,
+      "valid_json_act": 40,
+      "http429": 0,
+      "other_err": 0,
+      "latency_med_s": 1.44,
+      "latency_p90_s": 1.97,
+      "latency_max_s": 2.28,
+      "over_8s_count": 0,
+      "prompt_tokens_med": 3935.0,
+      "completion_tokens_med": 48.0,
+      "cache_ratio": 0.0,
+      "probe_total_reported_cost_usd": 0.017443,
+      "probe_reported_cost_per_ok_call_usd": 0.000436,
+      "probe_formula_cost_per_ok_call_usd": 0.000436,
+      "r4_ledger_formula_cost_per_call_usd": {
+        "no_cache_4917in_61out": 0.00051,
+        "cache_26pct_4917in_61out": 0.00051
+      },
+      "act_agreement_vs_gemma31b_deepinfra_live_img": {
+        "matched": 23,
+        "total": 40,
+        "ratio": 0.575,
+        "note": "act field agreement only; NOT task accuracy"
+      },
+      "act_agreement_vs_gemma31b_deepinfra_stored_v405": {
+        "matched": 29,
+        "total": 40,
+        "ratio": 0.725,
+        "note": "act field agreement only; NOT task accuracy"
+      },
+      "err_sample": null,
+      "act_and_args_agreement_vs_gemma31b_deepinfra_live_img": {
+        "matched": 21,
+        "total": 40,
+        "ratio": 0.525,
+        "note": "exact (act, args) agreement only; NOT task accuracy"
+      }
+    }
+  ],
+  "recommendations": {
+    "rank_1": {
+      "model": "google/gemma-4-31b-it",
+      "provider_name": "CoreWeave",
+      "provider_tag": "coreweave/fp4",
+      "quantization": "fp4",
+      "why": "Same model and quantization (fp4) as current baseline; 40/40 valid JSON, 0 HTTP 429, 0 calls >8s, median latency 2.60s (vs DeepInfra 5.18s), probe cost $0.000461/call (-24% vs DeepInfra $0.000607/call), r4 ledger cost $0.000512/call, 36/40 (90.0%) live act agreement and 38/40 (95.0%) stored v405 act agreement.",
+      "caveat": "No cache read discount ($0.10/M cache = $0.10/M prompt); requires first-30-SIM-s 429 check under 16-run live load."
+    },
+    "rank_2": {
+      "model": "google/gemma-4-26b-a4b-it",
+      "provider_name": "NextBit",
+      "provider_tag": "nextbit/bf16",
+      "quantization": "bf16",
+      "why": "Explicit bf16 quantization (unlike Darkbloom unknown), 40/40 valid JSON, 0 HTTP 429, 0 calls >8s, median latency 1.56s, probe cost $0.000336/call (-45% vs DeepInfra 31B), r4 ledger cost $0.000348/call (26% cache) / $0.000392/call (0% cache), 35/40 (87.5%) act agreement with Gemma 4 31B.",
+      "caveat": "Different model (26B-A4B MoE vs 31B dense); task accuracy on r4 400-decision benchmark is unverified and results cannot be pooled with 31B runs."
+    },
+    "same_model_fast_fp8_option": {
+      "model": "google/gemma-4-31b-it",
+      "provider_name": "Parasail",
+      "provider_tag": "parasail/fp8",
+      "quantization": "fp8",
+      "why": "Higher precision (fp8), fastest latency (1.30s median, max 2.57s, 0 >8s), highest act agreement (37/40 = 92.5% on both act and act+args), cheaper cache read ($0.06/M) and completion ($0.40/M), probe cost $0.000611/call (same as new DeepInfra $0.000607/call)."
+    }
+  }
+}

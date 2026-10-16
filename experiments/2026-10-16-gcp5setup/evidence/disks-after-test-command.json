@@ -1,0 +1,19 @@
+{
+  "command": [
+    "gcloud",
+    "compute",
+    "disks",
+    "list",
+    "--filter=name=ugrp-budget-test-gcp5",
+    "--account",
+    "changmin5781@gmail.com",
+    "--project",
+    "ugrp-sim-e-1016",
+    "--quiet",
+    "--format=json"
+  ],
+  "started_utc": "2026-10-16T09:31:18.307936+00:00",
+  "elapsed_s": 1.2103171348571777,
+  "returncode": 0,
+  "stderr": "WARNING: The following filter keys were not present in any resource : name\n"
+}

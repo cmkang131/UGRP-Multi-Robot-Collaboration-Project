@@ -1,7 +1,7 @@
 """Configured GCP simulation host lifecycle (gcp2 by default).
 
 Every gcloud call names the account and project. CPU simulation VMs keep a 24 h cap;
-gcp3/gcp4/gcp6 L4 training/MJWarp VMs have no runtime cap. gcp6 uses its own account.
+gcp3/gcp4/gcp5/gcp6 L4 training/MJWarp VMs have no runtime cap. gcp6 uses its own account.
 Configured caps use STOP on termination.
 VMs have no service account (no cloud credentials on the VM) and the 20-minute
 idle guard from gcp_idle_guard_startup.sh. Stop refuses while a lease or a simulation

@@ -1,7 +1,8 @@
 """Committed-source Oracle/Azure/GCP runner, with finite Azure/GCP lifecycle by default.
 
 Usage: remote_run.py [--host gcp2] WORKTREE NAME -- COMMAND [ARGS...]
-The default host is configured in configs/gcp_hosts.json; gcp3/gcp4/gcp6 select L4 hosts.
+Optional L4 aliases, including gcp5, resolve through configs/gcp_hosts.json.
+The default host is configured in configs/gcp_hosts.json; gcp3/gcp4/gcp5/gcp6 select L4 hosts.
 gcp6 uses its separate account. Azure waits, fetches
 lite evidence, waits for verified ARM archival, then deallocates when no jobs remain.
 GCP starts the configured VM with gcloud, runs, waits,

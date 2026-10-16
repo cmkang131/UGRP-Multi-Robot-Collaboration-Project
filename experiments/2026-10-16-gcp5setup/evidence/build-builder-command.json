@@ -1,0 +1,20 @@
+{
+  "command": [
+    "gcloud",
+    "projects",
+    "add-iam-policy-binding",
+    "ugrp-sim-e-1016",
+    "--member=serviceAccount:1034909621664-compute@developer.gserviceaccount.com",
+    "--role=roles/cloudbuild.builds.builder",
+    "--account",
+    "changmin5781@gmail.com",
+    "--project",
+    "ugrp-sim-e-1016",
+    "--quiet",
+    "--format=json"
+  ],
+  "started_utc": "2026-10-16T09:27:13.322231+00:00",
+  "elapsed_s": 1.892068862915039,
+  "returncode": 0,
+  "stderr": "Updated IAM policy for project [ugrp-sim-e-1016].\n"
+}

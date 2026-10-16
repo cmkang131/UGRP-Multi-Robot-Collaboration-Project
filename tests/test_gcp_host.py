@@ -29,6 +29,7 @@ def test_every_gcloud_call_names_the_project():
 @pytest.mark.parametrize(('host', 'project', 'account'), [
     ('gcp3', 'ugrp-sim-c-1016', 'changmin5781@gmail.com'),
     ('gcp4', 'ugrp-sim-d-1016', 'changmin5781@gmail.com'),
+    ('gcp5', 'ugrp-sim-e-1016', 'changmin5781@gmail.com'),
     ('gcp6', 'ugrp-sim-f-1016', 'kcm5781kcm5781@gmail.com'),
 ])
 def test_l4_uses_its_project_gpu_image_without_runtime_cap(host, project, account):
