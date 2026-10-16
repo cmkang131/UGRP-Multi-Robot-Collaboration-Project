@@ -51,6 +51,11 @@ def main():
                     else: raise ValueError('owner request whitelist mismatch')
                 print(json.dumps(response, allow_nan=False), file=protocol, flush=True)
             except ValueError as error:
+                with (a.out/'rejections.jsonl').open('a') as ledger:
+                    ledger.write(json.dumps(dict(category='input_contract_rejection',reason=str(error),
+                        blocking_object='not_applicable',minimum_gap_m=None,
+                        minimum_gap_status='format/static-task validation, not geometric obstruction',
+                        request_fields=sorted(request)))+'\n')
                 print(json.dumps(dict(error_type=type(error).__name__, error=str(error))), file=protocol, flush=True)
     except BaseException as error:
         close_reason = 'HOST_ERROR'
