@@ -2,6 +2,7 @@
 import importlib.util
 import json
 import os
+import sys
 from pathlib import Path
 import tempfile
 import unittest
@@ -11,6 +12,7 @@ import cv2
 import numpy as np
 
 ROOT=Path(__file__).resolve().parents[2]
+sys.path.insert(0,str(ROOT/'scripts'))
 
 
 def module(name):
@@ -22,6 +24,7 @@ def module(name):
 prepare=module('mast3rcmp_prepare')
 evaluate=module('mast3rcmp_evaluate')
 transfer=module('mast3rcmp_transfer')
+comparison=module('mast3rcmp_compare')
 
 
 class EvidenceTests(unittest.TestCase):
@@ -90,6 +93,27 @@ class EvidenceTests(unittest.TestCase):
             self.assertEqual(receipt['verification'],dict(files=2,mismatches=[]))
             self.assertEqual(len(list(dest.rglob('*.png'))),2)
             self.assertEqual(list(dest.rglob('*.json')),[])
+
+    def test_camera_offset_rotates_with_body(self):
+        camera=comparison.body_to_camera([[0,0,0],[1,0,np.pi/2]],[.1,.2,.3])
+        np.testing.assert_allclose(camera,[[.1,.2,.3],[.8,.1,.3]],atol=1e-12)
+
+    def test_paired_ate_uses_same_surviving_frames_without_hiding_failure(self):
+        with tempfile.TemporaryDirectory() as td:
+            d=Path(td);body=[[0,0,0],[1,0,np.pi/2],[1,1,np.pi],[0,1,-np.pi/2]]
+            camera=comparison.body_to_camera(body,[.1,.2,.3])
+            ml=[dict(index=i,t_sim_s=i,success=i!=3,status='initialized' if i==0 else ('tracked' if i!=3 else 'tracking_failed'),pose_sim3_final=(2*p).tolist()+[0,0,0,1,1]) for i,p in enumerate(camera)]
+            base=[dict(frame_id=i,t=i,lk_pose=p,rbpf_pose=p,lk=dict(status='measured'),motion_source='measured_LK') for i,p in enumerate(body)]
+            gt=[dict(frame_id=i,t=i,camera_xyz_m=p.tolist()) for i,p in enumerate(camera)]
+            payloads=dict(ml=dict(frames=ml),base=base,gt=dict(frames=gt),cal=dict(camera_origin_body_m=[.1,.2,.3]),scale=dict(scale=.5,truth_reads=0))
+            for name,payload in payloads.items():(d/name).write_text(json.dumps(payload))
+            result=comparison.compare(d/'ml',d/'scale',d/'base',d/'gt',d/'cal',d/'out')
+            self.assertEqual(result['full_denominator'],4)
+            self.assertEqual(result['paired_indices'],[0,1,2])
+            self.assertEqual(result['methods'][0]['tracking_failed'],1)
+            for row in result['methods']:
+                self.assertEqual(row['paired_ate_frames'],3)
+                self.assertLess(row['se3_allowed_scale']['rmse_m'],1e-12)
 
 
 if __name__=='__main__':unittest.main()
