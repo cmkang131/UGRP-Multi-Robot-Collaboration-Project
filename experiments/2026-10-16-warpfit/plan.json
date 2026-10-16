@@ -1,0 +1,32 @@
+{
+  "enabled": true,
+  "profiles": [
+    "baseline_noslip10",
+    "warp_native_contact_v1",
+    "warp_native_contact_v2",
+    "warp_native_fast_v1"
+  ],
+  "nworld": [
+    16,
+    64
+  ],
+  "round_limit": 3,
+  "rounds": [
+    "R1 import and 0.1 SIM second smoke for every profile/model",
+    "R2 N16 fixed command suite, C reference distribution",
+    "R3 N64 same fixed suite; no speculative retuning"
+  ],
+  "gcp": {
+    "account": "kcm5781kcm5781@gmail.com",
+    "project": "ugrp-sim-f-1016",
+    "instance": "ugrp-act-l4-gcp6"
+  },
+  "rejection_table": "/Users/changmin/projects/ugrp-wt/gcp6setup/experiments/2026-10-16-warpfit/rejection_table.json",
+  "raw_budget_gib": 3,
+  "mac_budget_mib": 150,
+  "control_feedback": 0,
+  "default_changes": 0,
+  "trial_scope": "same box fixture across batch worlds; 30 temporal contact/hold samples at10Hz; repeated worlds are not independent randomized task trials",
+  "acceptance": "derive slip p95 and clearance p5 from C3.12 fixed reference; never use arbitrary extra-mm allowance",
+  "drivecheck": "reuse unchanged fixture-v3 and pulse definitions; no duplicate C-vs-Warp cause experiment"
+}

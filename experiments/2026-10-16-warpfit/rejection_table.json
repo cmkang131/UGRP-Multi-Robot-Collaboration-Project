@@ -1,0 +1,47 @@
+{
+  "stage": "before_candidate_measurement",
+  "distribution": [
+    {
+      "category": "physics_cost",
+      "reason": "warp9 last captured 16-step interval: NoSlip 0.125856 / step 0.148061 s, approx85%; not entire run",
+      "blocked_object": "NoSlip solver",
+      "minimum_gap_m": null,
+      "gap_status": "not_geometric",
+      "count": 1
+    },
+    {
+      "category": "host_memory",
+      "reason": "warp9 N64 host OOM; no task completion or timings",
+      "blocked_object": "host RAM",
+      "minimum_gap_m": null,
+      "gap_status": "not_geometric",
+      "count": 1
+    },
+    {
+      "category": "fixture_contact",
+      "reason": "drivecheck observed initial box/chassis overlap; causal ablation is owned by drivecheck and still running",
+      "blocked_object": "cargo_box_00",
+      "minimum_gap_m": null,
+      "gap_status": "pending_drivecheck_measured_gap",
+      "count": 1
+    }
+  ],
+  "funnel": [
+    {
+      "gate": "requested_profiles",
+      "cumulative_pass": 3,
+      "rejected": 0
+    },
+    {
+      "gate": "measured_profiles",
+      "cumulative_pass": 0,
+      "rejected": 0,
+      "status": "pending"
+    }
+  ],
+  "raw_paths": [
+    "/Users/changmin/projects/ugrp-wt/warp5/experiments/2026-10-16-warp9/resume2/final-v2",
+    "gcp2:/home/ugrp/ugrp-sim/runs/drivecheck/analysis-v4"
+  ],
+  "reproduce": "scripts/warpfit.py --enabled; see each run reproduce argv"
+}
