@@ -46,6 +46,16 @@ def main():
                 actual_over_v122_p50=None if not ratios else med(ratios),
                 tilt_deg_p95=med([v['tilt_deg']['p95'] for v in valid]),tilt_deg_max=max(v['tilt_deg']['max'] for v in valid),
                 calibration_valid=False,fixture_limit='original chassis/cargo_box_00 interpenetration; see drivecheck'))
+        if r['kind']=='drive':
+            valid=[v for v in r.get('pulses',[]) if 'translation_mm' in v]
+            entry['tilt_max_deg']=max((v['tilt_deg']['max'] for v in valid),default=None)
+            reference_case='left-0.06' if r['case']=='tail2' else 'forward-0.1'
+            reference=[v for v in valid if v['case']==reference_case and v['phase']=='pulse_plus_stop']
+            if reference:
+                entry['drive_reference_case']=reference_case+' +1s stop'
+                entry['drive_actual_mm']=med([v['translation_mm'] for v in reference])
+                pred=reference[0]['v122_delta']
+                entry['drive_predicted_mm']=None if pred is None else float(np.linalg.norm(pred[:2])*1000)
     terminal=len(selected)==28 and all(r['status'] in ('complete','HOST_ERROR') for r in selected)
     errors=sum(bool(r['HOST_ERROR']) for r in selected)
     summary=dict(status=('comparison_complete_with_rejections' if errors else 'complete') if terminal else 'partial',
@@ -61,16 +71,19 @@ def main():
     fields=sorted(set().union(*(r.keys() for r in pulses))) if pulses else ['status']
     with (a.output/'drive-table.csv').open('w') as f:
         writer=csv.DictWriter(f,fieldnames=fields);writer.writeheader();writer.writerows(pulses)
-    table=['|N|입력|프로필|GPU ms/배치step|wall/SIM|wall/(N×SIM)|유지 세계|미끄럼 P95 mm|',
-           '|---:|---|---|---:|---:|---:|---:|---:|']
+    table=['|N|입력|프로필|GPU ms/배치step|wall/SIM|wall/(N×SIM)|유지 세계|미끄럼 P95 mm|주행 실제/예측 mm|tilt 최대 °|',
+           '|---:|---|---|---:|---:|---:|---:|---:|---:|---:|']
     def num(x):return '미완료' if x is None else f'{x:.5f}'
     for r in sorted(compact,key=lambda r:(r['nworld'],r['kind'],r['case'],r['profile'])):
         retained='해당없음' if r.get('fully_retained_worlds') is None else f"{r['fully_retained_worlds']}/{r['nworld']}"
         slip=r.get('slip_p95_mm')
+        actual='해당없음' if r.get('drive_actual_mm') is None else num(r['drive_actual_mm'])+'/'+num(r['drive_predicted_mm'])
         table.append('|'+ '|'.join([str(r['nworld']),r['kind']+'/'+r['case'],r['profile'],num(r['physical_gpu_ms_per_step']),
-            num(r['wall_per_sim_s']),num(r['amortized_wall_per_world_sim_s']),retained,num(None if not slip else slip['p95'])])+'|')
+            num(r['wall_per_sim_s']),num(r['amortized_wall_per_world_sim_s']),retained,num(None if not slip else slip['p95']),
+            actual,num(r.get('tilt_max_deg'))])+'|')
     table+=['','유지는 양쪽(빔은 네) 접촉력 양수와 기존 교사12mm 들기 조건이다. 미끄럼 열은 세계별 시간 P95의 세계간 P95다.',
         '상자는 세계당30표본·3초, 빔은3표본·0.3초 유지다. 같은 초기 조건의 복제이며 독립 일반화 성공률이 아니다.',
+        '주행 요약은group16/group64 전진100ms, tail2 횡60ms 뒤1초 정지다. 전체18펄스·회전각·펄스 끝/정지 후는drive-table.csv에 있다. 초기 관통 때문에 보정에 쓸 수 없다.',
         'C 분포의 높이 P05/미끄럼 P95 동시 비교는 별도 JSON에 있으며 유지 판정과 혼동하지 않는다. 기본값·채택 변경0이다.']
     (a.output/'timing-table.md').write_text('\n'.join(table)+'\n')
     print(json.dumps({k:summary[k] for k in ('status','recorded_paired_jobs','completed_paired_jobs')}))
