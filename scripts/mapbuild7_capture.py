@@ -198,7 +198,7 @@ def run(a):
                 wall_ledger.extend([transform(s,pose).tolist() for s in scan['segments']]);camera_ledger.extend([transform([scan['camera']],pose)[0].tolist() for _ in scan['segments']]);next_scan=t+1.
             file=a.output/'own-rgb'/f'r1-{tick:05d}.jpg'
             own.append(dict(sequence='actual-v7-route',robot_id='r1',frame_id=tick,t=t,rgb=str(file.relative_to(a.output)),sha256=sha(file),servo={str(s):v for s,v in servo.items()},command_delta=delta.tolist(),command_covariance=cov.tolist()))
-            trace.append(dict(t=t,frame_id=tick,lk_pose=raw_pose.tolist(),corrected_pose=pose.tolist(),map_event=map_event,rbpf_pose=estimate,lk=flow,motion_delta=increment.tolist(),motion_covariance=C.tolist(),wall_event=wall_event))
+            trace.append(dict(t=t,frame_id=tick,stage=stage,lk_pose=raw_pose.tolist(),corrected_pose=pose.tolist(),map_event=map_event,rbpf_pose=estimate,lk=flow,motion_delta=increment.tolist(),motion_covariance=C.tolist(),wall_event=wall_event))
             # Separate evaluation channel. Only the visible-only teacher below
             # gets a perception mirror; mapper, FK and route never see it.
             labels.append(dict(frame_id=tick,t=t,pose=np.r_[qp[adr:adr+2],quaternion_heading(qp[adr+3:adr+7])].tolist(),finger_forces=contact_recorder.record() if contact_recorder else None));saved.append(qp);saved_vel.append(wd.qvel.numpy()[0].copy());ring.append(tick)
@@ -243,7 +243,7 @@ def run(a):
                 action=proportional_drive((0.,0.,0.),(0.,0.),(0.,0.),math.pi/2)
                 w,ds=duty([0.,0.,.65*action['turn']]);cmd=dict(t=t,wheels=w,duration_s=ds,pwm=sweep_pose)
                 if sweep_angle>=2*math.pi or sweep_ticks>=sweep_budget:
-                    events.append(dict(t=t,event='body_sweep_end',own_yaw_travel_rad=sweep_angle,issued_ticks=sweep_ticks,command_budget=sweep_budget,reason='own_measured_revolution' if sweep_angle>=2*math.pi else 'nominal_command_revolution_budget_end',actual_revolution='evaluation_only'))
+                    events.append(dict(t=t,event='body_sweep_end',own_yaw_travel_rad=sweep_angle,issued_ticks=sweep_ticks,command_budget=sweep_budget,reason='own_measured_revolution' if sweep_angle>=2*math.pi else 'step_cap_end',actual_revolution='evaluation_only'))
                     prescan=SoloLookaround({},ops=teacher.teacher.ops,truth_free_v1=True);prescan.arm();prescan.start(t,int(sweep_pose['6']));stage='rescan'
                     cmd={**cmd,'wheels':[0.]*4,'duration_s':[0.]*4}
             elif stage in ('pickup','release'):
@@ -292,7 +292,24 @@ def run(a):
         if correction:
             dump(a.output/'map-correction.json',dict(option=CORRECTION,ledger=correction.ledger,active_submap=correction.frames,
                 static_from_own=correction.static_from_own.tolist() if correction.static_from_own is not None else None))
+            from collections import Counter
+            visible=sum(bool(s['segments']) for s in recorded_scans);attempted=sum(e['attempted'] for e in correction.ledger);accepted=sum(e['accepted'] for e in correction.ledger)
+            dump(a.output/'rejection_table.json',dict(raw=str(a.output),reproduction=sys.argv,
+                stages=[dict(stage='frames',cumulative_pass_n=len(own),rejected_n=0),dict(stage='visible_wall',cumulative_pass_n=visible,rejected_n=len(own)-visible),
+                    dict(stage='scheduled_supported',cumulative_pass_n=attempted,rejected_n=visible-attempted),dict(stage='adopted_pose_correction',cumulative_pass_n=accepted,rejected_n=attempted-accepted)],
+                mapping_branch=dict(supported=attempted,inserted=sum(e['inserted'] for e in correction.ledger),policy='immutable observations at corrected or covariance-retaining motion prior; correction rejection does not mean zero uncertainty'),
+                distribution=[dict(category='map_correction',reason=k,n=v,blocked_object='own_observed_wall',minimum_gap_m=None,gap_status='not_measured') for k,v in Counter(e['reason'] for e in correction.ledger).items()]))
         dump(a.output/'summary.json',dict(status=status,error=error,frames=len(own),sim_s=(len(own)-1)/10,wall_s=time.monotonic()-start,source_sha=source_sha,teacher_sha=TEACHER,scene='walls_floor_contrast_v5_indigo110_s80',physics_backend='mjwarp',contact_profile=dict(profile='warp_native_contact_v1',noslip_iterations=int(m.opt.noslip_iterations),gpu_noslip_iterations=int(wm.opt.noslip_iterations)),cpu_physics_steps=0,top_camera_frames=0,terminal_ring=dict(indices=list(ring),hz=10),required_route_complete=status=='ROUTE_COMMAND_COMPLETE',input_audit=teacher.audit.record(),student_success=False,llm_success=False,wall_cap=None))
+        # Recording-only runtime declarations; preserve the original source
+        # manifest (including its pre-native noslip10 annotation) as evidence.
+        # Actual CPU/GPU options above are authoritative, never that annotation.
+        if correction:
+            summary=json.loads((a.output/'summary.json').read_text())
+            summary.update(flow='self_map',selfmap_map_correction_v1='on',localization=dict(path='texture_self_map_lk',engine='OpenCV',map_correction='on',
+                correction_attempts=attempted,correction_adopted=accepted,static_registered=anchor is not None),camera_pose=CARRY_OPTION,
+                rejection_table=str(a.output/'rejection_table.json'),top_camera_control=False,held_object_hidden_v1=True,
+                planning_cap_basis='compute_or_sim',cap_end_label='cap_end')
+            dump(a.output/'summary.json',summary)
         dump(a.output/'SHA256SUMS.json',{str(p.relative_to(a.output)):sha(p) for p in a.output.rglob('*') if p.is_file()})
 
 if __name__=='__main__':

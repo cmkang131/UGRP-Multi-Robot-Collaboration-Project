@@ -220,7 +220,13 @@ class CorrelativeMatcher:
         projected_distances = field.query(transform(points, corrected))
         overlap = float(np.mean(projected_distances <= o.overlap_distance_m))
         residual = float(np.sqrt(np.mean(projected_distances**2)))
-        boundary = bool(np.any((np.abs(candidates[best]) >= window-step*.49) & (np.diag(projector) > .1)))
+        # With an explicit sigma box smaller than one historical grid cell,
+        # window-step*.49 can become NEGATIVE: even zero motion was falsely
+        # labelled boundary (R2 counterexample: +/-2mm, delta exactly zero).
+        # Use this grid's actual spacing. No window/score threshold is widened;
+        # the legacy caller retains the bit-identical original expression.
+        boundary_step=np.minimum(step,window) if prior_window is not None else step
+        boundary = bool(np.any((np.abs(candidates[best]) >= window-boundary_step*.49) & (np.diag(projector) > .1)))
         reason = ('unobservable' if not observable.any() else
                   'search_boundary' if boundary else
                   'low_overlap' if overlap < o.min_overlap else
@@ -244,7 +250,8 @@ class CorrelativeMatcher:
                 'best_sensor_cost': float(sensor[best]), 'second_sensor_gap': gap,
                 'second_delta': candidates[second].tolist() if second is not None else None,
                 'hessian_eigenvalues': eigen.tolist(), 'observable_axes_scaled': V.T.tolist(),
-                'search_window': window.tolist(), 'search_boundary': boundary, 'candidates': len(candidates)}
+                'search_window': window.tolist(), 'search_boundary': boundary, 'candidates': len(candidates),
+                'points':len(points),'point_checks':len(points)*len(candidates)}
 
 
 class CorrectedOdomGrid(OdomGrid):

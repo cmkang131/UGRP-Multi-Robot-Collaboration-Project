@@ -1,0 +1,95 @@
+{
+  "raw": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r2",
+  "reason_distribution": {
+    "no_visible_scan": 48,
+    "new_submap_motion_anchor": 1,
+    "sim_keyframe_interval": 293,
+    "search_boundary": 29,
+    "insufficient_near_points": 2,
+    "accepted": 5
+  },
+  "counterexample": {
+    "status": "rejected",
+    "reason": "search_boundary",
+    "delta": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "pose": [
+      0,
+      0,
+      0
+    ],
+    "covariance": [
+      [
+        4e-06,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        4e-06,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1e-06
+      ]
+    ],
+    "prior_covariance": [
+      [
+        4e-06,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        4e-06,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1e-06
+      ]
+    ],
+    "overlap": 1.0,
+    "residual_m": 0.007606000241218894,
+    "best_cost": 0.0875263464061145,
+    "best_sensor_cost": 0.0875263464061145,
+    "second_sensor_gap": null,
+    "second_delta": null,
+    "hessian_eigenvalues": [
+      25.74652034647835,
+      550.6147576378014,
+      1125.1123353298076
+    ],
+    "observable_axes_scaled": [
+      [
+        0.9556518606318299,
+        0.1840952036746728,
+        -0.22986621599291682
+      ],
+      [
+        -0.09065513586637028,
+        0.9265264758295759,
+        0.3651442672805858
+      ]
+    ],
+    "search_window": [
+      0.002,
+      0.002,
+      0.001
+    ],
+    "search_boundary": true,
+    "candidates": 27
+  },
+  "conclusion": "existing half grid step boundary expression is negative for tiny explicit prior windows; even zero delta is falsely on boundary",
+  "source": "fcc80b7a5:self_map_csm.py",
+  "truth_inputs": 0,
+  "blocked_object": "numerical_search_boundary",
+  "minimum_gap_m": null,
+  "gap_status": "not_measured"
+}

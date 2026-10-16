@@ -53,8 +53,15 @@ def main(a):
             values[method]=dict(xy_m=float(xy[k]),yaw_deg=float(np.degrees(yaw[k])),direction_coupled_deg=float(np.degrees(coupled)),
                 handoff_pass=bool(xy[k]<=req['handoff']['position_error_m'] and coupled<=req['handoff']['yaw_error_rad']),slot_pass=bool(xy[k]<=req['arrival']['slot_center_error_m']))
         points.append(dict(t=e['t'],event=e['event'],methods=values))
-    corrections=[]
+    corrections=[];registrations=[]
     for k,e in enumerate(events):
+        reg=e.get('registration')
+        if reg and reg.get('status')=='accepted':
+            from harness.e2e_rgb_vo import compose
+            absolute=compose(reg['static_from_own'],rows[k]['on_pose']);xy,yaw=errors([absolute],[world[k]])
+            coupled=float(yaw[0]+math.atan2(xy[0],req['handoff']['nominal_target_range_m']-xy[0]))
+            registrations.append(dict(t=e['t'],absolute_body_pose=absolute.tolist(),xy_m=float(xy[0]),yaw_deg=float(np.degrees(yaw[0])),
+                direction_coupled_deg=float(np.degrees(coupled)),within_handoff_budget=bool(xy[0]<=req['handoff']['position_error_m'] and coupled<=req['handoff']['yaw_error_rad'])))
         e=e['correction']
         if not e['accepted']:continue
         before_xy,before_yaw=errors([e['prior_pose']],[gt[k]]);after_xy,after_yaw=errors([e['pose']],[gt[k]])
@@ -101,6 +108,7 @@ def main(a):
         methods=methods,phases=phases,checkpoints=points,door_crossings=crossings,missing=missing,
         correction_counts=dict(attempts=sum(e['correction']['attempted'] for e in events),accepted=len(corrections),xy_worsened=sum(e['xy_worsened'] for e in corrections),yaw_worsened=sum(e['yaw_worsened'] for e in corrections)),
         correction_evaluation=corrections,rejection_distribution=distribution,truth_to_control=0,scale_fitting=0,
+        accepted_global_registration_evaluation=registrations,wrong_global_accepts=sum(not r['within_handoff_budget'] for r in registrations),
         phase_scope='closed grip is a command label, not proof of load; actual transport starts at own-RGB hold confirmation; physical lift independently evaluated',
         requirements_sha256=sha(a.requirements),prediction_seal_sha256=sha(a.prediction/'prediction-seal.json'),reproduction=sys.argv)
     dump(a.output/'summary.json',result);dump(a.output/'intervals.json',intervals)

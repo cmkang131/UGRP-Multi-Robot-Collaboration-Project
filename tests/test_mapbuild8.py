@@ -62,3 +62,20 @@ def test_zero_command_noise_does_not_discard_observed_passive_motion():
     p,e=m.step(0,0,[0,0,0],np.zeros((3,3)),dict(status='measured',delta=[.01,0,0],covariance=np.diag([.001]*3)),dict(segments=[],camera=[0,0]))
     np.testing.assert_allclose(p,[.01,0,0]);assert e['fusion']=='vo_replaced'
     np.testing.assert_allclose(m.covariance,np.diag([.001]*3))
+
+
+def test_stationary_small_prior_is_interior_not_a_negative_grid_boundary():
+    points=np.array([[x,1] for x in np.linspace(.2,1.2,12)]+[[1.2,y] for y in np.linspace(.3,1,8)])
+    P=np.diag([.002**2,.002**2,.001**2])
+    result=CorrelativeMatcher().match([0,0,0],P,points,[0,0],SCAN['segments'],np.zeros((3,3)),prior_window=np.sqrt(np.diag(P)))
+    assert result['status']=='accepted' and not result['search_boundary']
+    np.testing.assert_array_equal(result['delta'],[0,0,0])
+
+
+def test_registered_tracking_never_silently_runs_global_initialization(monkeypatch):
+    m=SelfMapCorrection(STATIC,option=OPTION);m.static_from_own=np.array([.1,.2,.3]);m.covariance=np.diag([.001]*3)
+    def forbidden(*a,**kw):raise AssertionError('GLOBAL_SEARCH_WITH_VALID_LOCAL_PRIOR')
+    monkeypatch.setattr(m.registration,'register',forbidden)
+    result=m.initialize_static();assert result['reason']=='registered_local_tracking_only'
+    assert result['static_from_own'] is None
+    np.testing.assert_array_equal(m.static_from_own,[.1,.2,.3])

@@ -32,8 +32,16 @@ class SelfMapCorrection:
         self.global_segments=[];self.global_origins=[];self.global_body_origins=[];self.global_pose_covariances=[]
 
     def initialize_static(self):
+        # Global search is initialization or LOST relocalization only. Normal
+        # tracking already matches the static reference in the motion window.
+        lost=bool(np.any(np.sqrt(np.diag(self.covariance))>np.array([self.options.translation_window_m]*2+[math.radians(self.options.yaw_window_deg)])))
+        if self.static_from_own is not None and not lost:
+            return dict(status='deferred',reason='registered_local_tracking_only',static_from_own=None,
+                search_scope='local_tracking',work=dict(candidates=0,point_checks=0,wall_seconds_used_as_gate=0),
+                category='static_wall_registration',blocked_object='not_observed',minimum_gap_m=None,gap_status='not_measured',truth_inputs=0,scale=1)
         result=self.registration.register(self.global_segments,camera_origins=self.global_origins,
             pose_covariances=self.global_pose_covariances,body_origins=self.global_body_origins)
+        result['search_scope']='initialization' if self.static_from_own is None else 'lost_relocalization'
         if result['status']=='accepted':
             self.static_from_own=np.asarray(result['static_from_own']);self.static_covariance=np.asarray(result['covariance'])
         return result
