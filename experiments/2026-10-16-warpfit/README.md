@@ -18,3 +18,7 @@
 - [공개 TIAGo 바퀴 모델](https://github.com/google-deepmind/mujoco_menagerie/blob/62ab00f2bc44f6f20c1c9b7a13f3fb1dd41a4e35/pal_tiago/tiago.xml): implicitfast·condim6. 일반 바퀴 예제이며 mecanum 롤러/집게의 condim6 정당화로 쓰지 않고 기존값을 유지한다.
 
 공개 예제의 설정은 무미끄럼 보증이나 우리 장면의 검증 결과가 아니다. 원문 URL·고정 커밋·읽은 파일 SHA는 sources.json, 최초 실패 분포와 관문은 rejection_table.json에 있다. Drive·화면 앱·모델 호출·VM 자격증명 전송은 사용하지 않는다.
+
+## 측정 작업량 정리 (R2 첫 기준 계측 뒤, 물리값 불변)
+
+N16 상자 긴 시연의 4.1 SIM초에서 GPU147.011초를 관측했다. 사용자 요청은 작은 상자의 접촉·들기·3초 유지와 빔 짧은 구간이므로, 불필요한 돌아보기 시연을 성능 분모에 넣지 않는 별도 primitive-v1을 만든다. 기존 긴 시연 원본은 별도 long-probe로 보존하며 최종 짝 표와 합산하지 않는다. 세 물리 후보의 값은 수정하지 않는다. 주행은 같은18펄스를 N16에는16+2, N64에는18을 한 배치로 묶어 같은N·같은 명령으로 기준과 비교한다. 상자 유지 구간과 빔 시작 시각·C 기준은 새 fixture의 정확한 원본 인덱스와 함께 기록한다.

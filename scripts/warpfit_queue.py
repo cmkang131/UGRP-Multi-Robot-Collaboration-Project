@@ -22,6 +22,7 @@ def main():
     p.add_argument('--reference-only',action='store_true')
     p.add_argument('--attempt-tag',choices=['','retry1'],default='')
     p.add_argument('--preceding-funnel',type=Path)
+    p.add_argument('--fixture-version',choices=['original','primitive-v1'],default='original')
     p.add_argument('--enabled',action='store_true')
     a=p.parse_args()
     if not a.enabled:p.error('--enabled required')
@@ -29,11 +30,13 @@ def main():
     phase=root/((f'R{a.round}-Cref' if a.reference_only else f'R{a.round}')+
                 ('-'+a.attempt_tag if a.attempt_tag else ''))
     phase.mkdir(exist_ok=False)
+    fixtures=root if a.fixture_version=='original' else root/a.fixture_version
     rejection=(source/'experiments/2026-10-16-warpfit/rejection_table.json' if a.round==1
                else root/f'R{a.round-1}/funnel.json')
     if a.preceding_funnel:rejection=a.preceding_funnel.resolve()
     if not rejection.is_file():raise ValueError('preceding rejection funnel missing')
     queue=dict(enabled=True,round=a.round,source=str(source),root=str(root),rejection_table=str(rejection),
+        fixture_version=a.fixture_version,
         maximum_sim_s_per_case=None,profiles=PROFILES,models=0,planning_limit_kind='fixed physics ticks',
         resource_watchdog_s=10800,resource_watchdog_basis='user target 2-3h; host-only, never selects robot actions')
     dump(phase/'queue.json',queue)
@@ -45,16 +48,18 @@ def main():
     env=os.environ.copy();env.update(PYTHONPATH=str(source),MUJOCO_GL='disable',OMP_NUM_THREADS='1')
     cpu='/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python'
     warp='/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python'
+    cases=CASES if a.fixture_version=='original' else [('box','tape'),('beam','tape')]+(
+        [('drive','group64')] if a.round==3 else [('drive','group16'),('drive','tail2')])
     jobs=([('baseline_noslip10','box','tape'),('baseline_noslip10','beam','tape')] if a.reference_only
-          else [(pr,kind,case) for kind,case in CASES for pr in (PROFILES if a.round!=3 else list(reversed(PROFILES)))])
+          else [(pr,kind,case) for kind,case in cases for pr in (PROFILES if a.round!=3 else list(reversed(PROFILES)))])
     results=[];started=time.monotonic()
     for pr,kind,case in jobs:
         out=phase/f'{kind}-{case}-{pr}'
         n=1 if a.reference_only or a.round==1 else 16 if a.round==2 else 64
         exe=cpu if a.reference_only else warp
         cmd=[exe,'-m','scripts.sim_cli','workflow','run','warpfit','--record',str(out)+'-managed',
-            '--input',str(root/kind),'--input',str(phase/'queue.json'),'--',
-            '--enabled','--fixture',str(root/kind),'--output',str(out),'--queue',str(phase/'queue.json'),
+            '--input',str(fixtures/kind),'--input',str(phase/'queue.json'),'--',
+            '--enabled','--fixture',str(fixtures/kind),'--output',str(out),'--queue',str(phase/'queue.json'),
             '--profile',pr,'--nworld',str(n),'--round',str(a.round),'--case',case,
             '--engine','cpu' if a.reference_only else 'warp']
         if not a.reference_only:
