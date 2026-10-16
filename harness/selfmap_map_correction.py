@@ -49,7 +49,13 @@ class SelfMapCorrection:
         if self.last_t is not None and t<=self.last_t:raise ValueError('NONCAUSAL_FRAME')
         self.last_t=t;o=self.options
         if flow.get('status')=='measured':
-            delta,Q,nis,how=fuse(command_delta,command_covariance,flow['delta'],flow['covariance'])
+            # The inherited command model returns EXACTLY zero Q for a zero
+            # issued pulse. It has no calibration for passive body motion.
+            # Do not use that singular algebraic value as perfect stationarity
+            # and discard a measured visual increment. Reuse VO's existing
+            # replace mode/covariance; no invented process-noise floor.
+            mode='replace' if not np.any(command_covariance) else 'fused'
+            delta,Q,nis,how=fuse(command_delta,command_covariance,flow['delta'],flow['covariance'],mode=mode)
         else:delta=np.asarray(command_delta);Q=np.asarray(command_covariance);nis=None;how='command_kept'
         c,s=np.cos(self.pose[2]),np.sin(self.pose[2]);R=np.array([[c,-s,0],[s,c,0],[0,0,1]])
         d=R@delta;F=np.eye(3);F[:2,2]=[-d[1],d[0]]

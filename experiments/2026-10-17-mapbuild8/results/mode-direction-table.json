@@ -1,0 +1,383 @@
+{
+  "cases": [
+    {
+      "case": "r2",
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild6/recording-r2",
+      "registration": {
+        "status": "rejected",
+        "reason": "ambiguous_modes",
+        "static_from_own": null,
+        "category": "static_wall_registration",
+        "blocked_object": "authored_wall_geometry",
+        "minimum_gap_m": null,
+        "gap_status": "not_measured",
+        "work": {
+          "candidates": 4258800,
+          "point_checks": 523832400,
+          "wall_seconds_used_as_gate": 0
+        },
+        "truth_inputs": 0,
+        "scale": 1,
+        "points": 123,
+        "best_candidate": [
+          2.25,
+          -2.0,
+          -0.7504915783575616
+        ],
+        "residual_m": 0.07184961172477246,
+        "overlap": 0.983739837398374,
+        "second_sensor_gap": 0.051158883265067345,
+        "hessian_eigenvalues": [
+          49.031769308103755,
+          119.27130258510667,
+          921.506833118219
+        ],
+        "observable_rank": 3,
+        "sensor_sigma_min_max_m": [
+          0.08445132134200266,
+          0.2541067268870148
+        ],
+        "source_constants": "unchanged CSMOptions: .05m/1deg, .08m floor + original range pixel variance, overlap .60/.20m, residual .15m, mode .15/.50, rank3 mathematical SE2 requirement"
+      },
+      "competing_modes_n": 5,
+      "candidate_band_n": 61,
+      "second_gap": 0.051158883265067345,
+      "competing_modes": [
+        {
+          "pose": [
+            2.25,
+            -2.0,
+            -0.7504915783575616
+          ],
+          "cost_gap": 0.0,
+          "conditional_one_sigma_modes": 1
+        },
+        {
+          "pose": [
+            4.25,
+            -1.7000000000000002,
+            0.8203047484373349
+          ],
+          "cost_gap": 0.051158883265067345,
+          "conditional_one_sigma_modes": 1
+        },
+        {
+          "pose": [
+            2.0500000000000003,
+            0.30000000000000004,
+            2.3911010752322315
+          ],
+          "cost_gap": 0.07841523041743992,
+          "conditional_one_sigma_modes": 1
+        },
+        {
+          "pose": [
+            0.05,
+            0.0,
+            -2.321287905152458
+          ],
+          "cost_gap": 0.0819025757227907,
+          "conditional_one_sigma_modes": 1
+        },
+        {
+          "pose": [
+            -0.9,
+            -2.0,
+            -0.7504915783575616
+          ],
+          "cost_gap": 0.08608832040694336,
+          "conditional_one_sigma_modes": 1
+        }
+      ],
+      "conditional_single_windows_n": 5,
+      "conditional_multiple_windows_n": 0,
+      "propagated_own_covariance": [
+        [
+          0.0003583686763362935,
+          -0.00010694433372833576,
+          -0.0001217432806031895
+        ],
+        [
+          -0.00010694433372833578,
+          0.0005219568353353278,
+          0.00027455468907342163
+        ],
+        [
+          -0.0001217432806031895,
+          0.00027455468907342163,
+          0.0013302839355152903
+        ]
+      ],
+      "one_sigma_own": [
+        0.018930627996352725,
+        0.022846374665038822,
+        0.03647305766610869
+      ],
+      "valid_static_prior": false,
+      "actual_prior_window_unique": null,
+      "prior_status": "unregistered: no accepted static-from-own anchor in these runs; conditional mode-centred windows are NOT a motion prior",
+      "definition": "CSM .15m separated candidates within .50 sensor cost of optimum; may describe a continuous ridge, not independent Gaussian peaks"
+    },
+    {
+      "case": "r3",
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild6/recording-r3",
+      "registration": {
+        "status": "rejected",
+        "reason": "ambiguous_modes",
+        "static_from_own": null,
+        "category": "static_wall_registration",
+        "blocked_object": "authored_wall_geometry",
+        "minimum_gap_m": null,
+        "gap_status": "not_measured",
+        "work": {
+          "candidates": 4258800,
+          "point_checks": 506797200,
+          "wall_seconds_used_as_gate": 0
+        },
+        "truth_inputs": 0,
+        "scale": 1,
+        "points": 119,
+        "best_candidate": [
+          2.25,
+          -2.0,
+          -0.7504915783575616
+        ],
+        "residual_m": 0.0711503691486915,
+        "overlap": 0.9831932773109243,
+        "second_sensor_gap": 0.04210161091193321,
+        "hessian_eigenvalues": [
+          48.98953823502401,
+          114.69013681096516,
+          938.5773646343346
+        ],
+        "observable_rank": 3,
+        "sensor_sigma_min_max_m": [
+          0.08445132134200266,
+          0.25410672688701474
+        ],
+        "source_constants": "unchanged CSMOptions: .05m/1deg, .08m floor + original range pixel variance, overlap .60/.20m, residual .15m, mode .15/.50, rank3 mathematical SE2 requirement"
+      },
+      "competing_modes_n": 5,
+      "candidate_band_n": 58,
+      "second_gap": 0.04210161091193321,
+      "competing_modes": [
+        {
+          "pose": [
+            2.25,
+            -2.0,
+            -0.7504915783575616
+          ],
+          "cost_gap": 0.0,
+          "conditional_one_sigma_modes": 1
+        },
+        {
+          "pose": [
+            -0.9,
+            -2.0,
+            -0.7504915783575616
+          ],
+          "cost_gap": 0.04210161091193321,
+          "conditional_one_sigma_modes": 1
+        },
+        {
+          "pose": [
+            4.25,
+            -1.7000000000000002,
+            0.8203047484373349
+          ],
+          "cost_gap": 0.05335413036495096,
+          "conditional_one_sigma_modes": 1
+        },
+        {
+          "pose": [
+            2.0500000000000003,
+            0.30000000000000004,
+            2.3911010752322315
+          ],
+          "cost_gap": 0.08233680123741749,
+          "conditional_one_sigma_modes": 1
+        },
+        {
+          "pose": [
+            0.05,
+            0.0,
+            -2.321287905152458
+          ],
+          "cost_gap": 0.08416844266372125,
+          "conditional_one_sigma_modes": 1
+        }
+      ],
+      "conditional_single_windows_n": 5,
+      "conditional_multiple_windows_n": 0,
+      "propagated_own_covariance": [
+        [
+          0.00041240988110549935,
+          -9.308034973334661e-05,
+          0.00026471166462175633
+        ],
+        [
+          -9.308034973334658e-05,
+          0.0005559496702594823,
+          0.00023249879493313902
+        ],
+        [
+          0.00026471166462175633,
+          0.00023249879493313902,
+          0.0019006651507611346
+        ]
+      ],
+      "one_sigma_own": [
+        0.020307877316585784,
+        0.023578584992731907,
+        0.043596618570264534
+      ],
+      "valid_static_prior": false,
+      "actual_prior_window_unique": null,
+      "prior_status": "unregistered: no accepted static-from-own anchor in these runs; conditional mode-centred windows are NOT a motion prior",
+      "definition": "CSM .15m separated candidates within .50 sensor cost of optimum; may describe a continuous ridge, not independent Gaussian peaks"
+    },
+    {
+      "case": "recording-r2-postpickup",
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild7/recording-r2",
+      "registration": {
+        "status": "rejected",
+        "reason": "ambiguous_modes",
+        "static_from_own": null,
+        "category": "static_wall_registration",
+        "blocked_object": "authored_wall_geometry",
+        "minimum_gap_m": null,
+        "gap_status": "not_measured",
+        "work": {
+          "candidates": 4258800,
+          "point_checks": 357739200,
+          "wall_seconds_used_as_gate": 0
+        },
+        "truth_inputs": 0,
+        "scale": 1,
+        "points": 84,
+        "best_candidate": [
+          2.7,
+          -2.1,
+          -0.7504915783575616
+        ],
+        "residual_m": 0.018114518185604077,
+        "overlap": 1.0,
+        "second_sensor_gap": 0.009777862629367612,
+        "hessian_eigenvalues": [
+          105.3400706131019,
+          223.38746051178288,
+          908.1270383249423
+        ],
+        "observable_rank": 3,
+        "sensor_sigma_min_max_m": [
+          0.08274113809688181,
+          0.1765240116917993
+        ],
+        "source_constants": "unchanged CSMOptions: .05m/1deg, .08m floor + original range pixel variance, overlap .60/.20m, residual .15m, mode .15/.50, rank3 mathematical SE2 requirement"
+      },
+      "competing_modes_n": 6,
+      "candidate_band_n": 43,
+      "second_gap": 0.009777862629367612,
+      "competing_modes": [
+        {
+          "pose": [
+            2.7,
+            -2.1,
+            -0.7504915783575616
+          ],
+          "cost_gap": 0.0,
+          "conditional_one_sigma_modes": 1
+        },
+        {
+          "pose": [
+            1.6,
+            0.4,
+            2.3911010752322315
+          ],
+          "cost_gap": 0.009777862629367612,
+          "conditional_one_sigma_modes": 1
+        },
+        {
+          "pose": [
+            -0.05,
+            -0.45,
+            -2.321287905152458
+          ],
+          "cost_gap": 0.06256624138409611,
+          "conditional_one_sigma_modes": 1
+        },
+        {
+          "pose": [
+            4.3500000000000005,
+            -1.25,
+            0.8203047484373349
+          ],
+          "cost_gap": 0.09230305518946275,
+          "conditional_one_sigma_modes": 1
+        },
+        {
+          "pose": [
+            3.2,
+            -0.45,
+            -2.303834612632515
+          ],
+          "cost_gap": 0.23266245383816925,
+          "conditional_one_sigma_modes": 1
+        },
+        {
+          "pose": [
+            -0.5,
+            -2.1,
+            -0.7504915783575616
+          ],
+          "cost_gap": 0.37347953511490223,
+          "conditional_one_sigma_modes": 1
+        }
+      ],
+      "conditional_single_windows_n": 6,
+      "conditional_multiple_windows_n": 0,
+      "propagated_own_covariance": [
+        [
+          0.0003727398090798642,
+          -8.838147933628042e-05,
+          0.00030143223451723595
+        ],
+        [
+          -8.838147933628045e-05,
+          0.0004899143388544491,
+          0.0001234180778589603
+        ],
+        [
+          0.00030143223451723595,
+          0.0001234180778589603,
+          0.0015390503867481855
+        ]
+      ],
+      "one_sigma_own": [
+        0.019306470653122083,
+        0.022134008648558197,
+        0.03923073268176603
+      ],
+      "valid_static_prior": false,
+      "actual_prior_window_unique": null,
+      "prior_status": "unregistered: no accepted static-from-own anchor in these runs; conditional mode-centred windows are NOT a motion prior",
+      "definition": "CSM .15m separated candidates within .50 sensor cost of optimum; may describe a continuous ridge, not independent Gaussian peaks"
+    }
+  ],
+  "truth_inputs": 0,
+  "scale": 1,
+  "reproduction": [
+    "/home/ugrp/ugrp-sim/src/mapbuild8-audit/scripts/mapbuild8_modes.py",
+    "--runs",
+    "/home/ugrp/ugrp-sim/runs",
+    "--vision",
+    "/home/ugrp/ugrp-sim/src/mapbuild5b-complete-vision597",
+    "--output",
+    "/home/ugrp/ugrp-sim/runs/mapbuild8/modes-r1"
+  ],
+  "source_sha256": {
+    "/home/ugrp/ugrp-sim/src/mapbuild8-audit/scripts/mapbuild8_modes.py": "5e46515fbb6599bba4880d3d7750c13e9066f983e5ef43301c02ad634b4a948f",
+    "/home/ugrp/ugrp-sim/src/mapbuild8-audit/harness/mapbuild_static_registration.py": "4c9eaabd6f75e1aa9d511541069e84bdfaaf01b24ec63cbf7cba66b8a1a0aa75"
+  },
+  "conclusion": "A prior window cannot initialize unknown global gauge. Own-submap matching can use own-gauge motion prior; static matching needs a separately accepted visual anchor."
+}

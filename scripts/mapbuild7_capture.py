@@ -29,7 +29,8 @@ def run(a):
     for name,h in json.loads((ROOT/'SOURCE_FILES.json').read_text()).items():
         if sha(ROOT/name)!=h:raise ValueError('SOURCE_BYTES_CHANGED:'+name)
     if not Path(q['rejection_table']).is_file():raise ValueError('PRIOR_FUNNEL_REQUIRED')
-    if not Path('/home/ugrp/ugrp-sim/leases/mapbuild7.json').is_file():raise ValueError('OWN_LEASE_REQUIRED')
+    task='mapbuild8' if a.map_correction else 'mapbuild7'
+    if not Path('/home/ugrp/ugrp-sim/leases/'+task+'.json').is_file():raise ValueError('OWN_LEASE_REQUIRED')
     vendor=ROOT/'experiments/2026-10-17-mapbuild7/vendor'
     sys.path[:0]=[str(vendor),str(ROOT),str(a.teacher_source/'scripts'),str(ROOT/'scripts'),str(a.teacher_source),str(a.renderer),str(a.renderer/'scripts')]
     import sim,harness,scripts
@@ -148,13 +149,17 @@ def run(a):
     if sha(colour)!='a37cf96551abbfb8b38df3efc1cd61f3f357ac9eb3a1dcd0b4d9947242e4e24f':raise ValueError('COLOUR_CHANGED')
     state=ColourBoundaryState('walls_floor_contrast_v5_indigo110_s80',json.loads(colour.read_text()),option=RELOC16_OPTION)
     registration=StaticRegistration(static,option=STATIC);rbpf=MapbuildRBPF(FOLDED,option=RBPF)
+    correction=None
+    if a.map_correction:
+        from harness.selfmap_map_correction import SelfMapCorrection,OPTION as CORRECTION
+        correction=SelfMapCorrection(static,option=CORRECTION)
     contact_recorder=None
     if a.record_native_contact:
         from scripts.mapbuild7_contact_eval import NativeContactRecorder
         if len(teacher.gids)!=1:raise ValueError('ONE_BOX_COLLISION_GEOM_REQUIRED')
         contact_recorder=NativeContactRecorder(m,wd,teacher.gids[0],[m.geom('r1__'+x+'_finger').id for x in ('left','right')])
     own=[];labels=[];saved=[];saved_vel=[];issued=[];trace=[];events=[];teacher_rows=[];wall_ledger=[];camera_ledger=[];ring=deque(maxlen=101)
-    pose=np.zeros(3);anchor=None;old=None;previous=None;last_servo=None;stage='prescan';sweep_pose=None;sweep_angle=0.;sweep_ticks=0;sweep_budget=None;route=None;goal=None;start_return=None;status='cap_end';error=None;source_sha=q['source_sha'];start=time.monotonic();next_scan=0.
+    pose=np.zeros(3);raw_pose=np.zeros(3);anchor=None;old=None;previous=None;last_servo=None;stage='prescan';sweep_pose=None;sweep_angle=0.;sweep_ticks=0;sweep_budget=None;route=None;goal=None;start_return=None;status='cap_end';error=None;source_sha=q['source_sha'];start=time.monotonic();next_scan=0.
     d_eval=mujoco.MjData(m)
     body=m.body('r1__robot').id;adr=int(m.jnt_qposadr[int(m.body_jntadr[body])])
     region=static['regions']['zone_A'];from harness.visual_arm_v3 import MOUNT_X_M
@@ -162,7 +167,8 @@ def run(a):
     rects=[(*o['center_m'],*o['half_extents_m'],o.get('yaw_rad',0.)) for o in static['obstacles']]
     def try_register(t,label):
         nonlocal anchor
-        result=registration.register(wall_ledger,camera_origins=camera_ledger);events.append(dict(t=t,event=label,**result))
+        result=correction.initialize_static() if correction else registration.register(wall_ledger,camera_origins=camera_ledger)
+        events.append(dict(t=t,event=label,**result))
         if result['status']=='accepted':anchor=np.asarray(result['static_from_own'])
         dump(a.output/('registration-'+label+'.json'),result)
         return result
@@ -180,13 +186,18 @@ def run(a):
             servo={s:int(v) for s,v in zip(servos,np.rint(applied[0]))};flow={'status':'bootstrap'}
             delta=np.asarray(command_delta(previous,.1)) if previous else np.zeros(3);cov=np.diag(motion_variance(delta))
             flow,scan=camera_stream.observe(t,old,rgb['r1'],servo,state)
-            increment=np.asarray(flow['delta']) if flow['status']=='measured' else delta;C=np.asarray(flow['covariance']) if flow['status']=='measured' else cov;pose=compose(pose,increment)
+            increment=np.asarray(flow['delta']) if flow['status']=='measured' else delta;C=np.asarray(flow['covariance']) if flow['status']=='measured' else cov
+            raw_pose=compose(raw_pose,increment);map_event=None
+            if correction:
+                corrected,map_event=correction.step(t,tick,delta,cov,flow,scan);pose=np.asarray(corrected)
+                increment=np.asarray(map_event['motion_delta']);C=np.asarray(map_event['motion_covariance'])
+            else:pose=raw_pose.copy()
             estimate,wall_event=rbpf.step(t,tick,increment,C,scan,servo=servo)
             if scan['segments'] and t>=next_scan:
                 wall_ledger.extend([transform(s,pose).tolist() for s in scan['segments']]);camera_ledger.extend([transform([scan['camera']],pose)[0].tolist() for _ in scan['segments']]);next_scan=t+1.
             file=a.output/'own-rgb'/f'r1-{tick:05d}.jpg'
             own.append(dict(sequence='actual-v7-route',robot_id='r1',frame_id=tick,t=t,rgb=str(file.relative_to(a.output)),sha256=sha(file),servo={str(s):v for s,v in servo.items()},command_delta=delta.tolist(),command_covariance=cov.tolist()))
-            trace.append(dict(t=t,frame_id=tick,lk_pose=pose.tolist(),rbpf_pose=estimate,lk=flow,motion_delta=increment.tolist(),motion_covariance=C.tolist(),wall_event=wall_event))
+            trace.append(dict(t=t,frame_id=tick,lk_pose=raw_pose.tolist(),corrected_pose=pose.tolist(),map_event=map_event,rbpf_pose=estimate,lk=flow,motion_delta=increment.tolist(),motion_covariance=C.tolist(),wall_event=wall_event))
             # Separate evaluation channel. Only the visible-only teacher below
             # gets a perception mirror; mapper, FK and route never see it.
             labels.append(dict(frame_id=tick,t=t,pose=np.r_[qp[adr:adr+2],quaternion_heading(qp[adr+3:adr+7])].tolist(),finger_forces=contact_recorder.record() if contact_recorder else None));saved.append(qp);saved_vel.append(wd.qvel.numpy()[0].copy());ring.append(tick)
@@ -256,6 +267,9 @@ def run(a):
         dump(a.output/'own.json',dict(schema='ugrp.mapbuild1.own.v1',backend='mjwarp_render',physics_backend='mjwarp',frames=own));dump(a.output/'commands.json',issued);dump(a.output/'online-trajectory.json',trace)
         dump(a.output/'eval-only.json',dict(evaluation_only=True,frames=labels));np.savez_compressed(a.output/'eval-state.npz',qpos=np.asarray(saved),qvel=np.asarray(saved_vel));dump(a.output/'events.json',events);dump(a.output/'teacher-input-audit.json',teacher.audit.record());dump(a.output/'teacher-ledger.json',teacher_rows)
         dump(a.output/'teacher-result.json',teacher.teacher.diagnostic());dump(a.output/'wall-ledger.json',dict(segments=wall_ledger,camera_origins=camera_ledger))
+        if correction:
+            dump(a.output/'map-correction.json',dict(option=CORRECTION,ledger=correction.ledger,active_submap=correction.frames,
+                static_from_own=correction.static_from_own.tolist() if correction.static_from_own is not None else None))
         dump(a.output/'summary.json',dict(status=status,error=error,frames=len(own),sim_s=(len(own)-1)/10,wall_s=time.monotonic()-start,source_sha=source_sha,teacher_sha=TEACHER,scene='walls_floor_contrast_v5_indigo110_s80',physics_backend='mjwarp',contact_profile=dict(profile='warp_native_contact_v1',noslip_iterations=int(m.opt.noslip_iterations),gpu_noslip_iterations=int(wm.opt.noslip_iterations)),cpu_physics_steps=0,top_camera_frames=0,terminal_ring=dict(indices=list(ring),hz=10),required_route_complete=status=='ROUTE_COMMAND_COMPLETE',input_audit=teacher.audit.record(),student_success=False,llm_success=False,wall_cap=None))
         dump(a.output/'SHA256SUMS.json',{str(p.relative_to(a.output)):sha(p) for p in a.output.rglob('*') if p.is_file()})
 
@@ -265,4 +279,5 @@ if __name__=='__main__':
     p.add_argument('--sim-budget',type=float,default=1800.);p.add_argument('--preflight',action='store_true')
     p.add_argument('--body-sweep',action='store_true',help='default off; whole own-yaw/nominal-command revolution then inherited six-view rescan')
     p.add_argument('--record-native-contact',action='store_true',help='recording only; native force evaluator never feeds commands')
+    p.add_argument('--map-correction',action='store_true',help='default off selfmap_map_correction_v1; mapbuild8 lease required')
     run(p.parse_args())
