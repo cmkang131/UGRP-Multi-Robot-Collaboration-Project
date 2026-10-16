@@ -28,8 +28,14 @@ def main():
     def run(args):subprocess.run(['ffmpeg','-hide_banner','-loglevel','error',*args],check=True)
     def stamp(start,size):return rf"drawtext=text='r1 seed86825 SIM %{{eif\:(n+{start})/10\:d}}.%{{eif\:mod(n+{start}\,10)\:d}}s':x=4:y=4:fontsize={size}:fontcolor=white:box=1:boxcolor=black"
     try:
-        run(['-framerate','10','-start_number','0','-i',str(rgb/'%06d.jpg'),'-vf','scale=320:240,'+stamp(0,16)+",select='not(mod(n,5))',tile=4x5",'-frames:v','3','-q:v','3',str(a.out/'full-2hz-%02d.jpg')])
-        run(['-framerate','10','-start_number','200','-i',str(rgb/'%06d.jpg'),'-vf','scale=320:240,'+stamp(200,16)+',tile=4x5','-frames:v','5','-q:v','3',str(a.out/'tail10s-10hz-%02d.jpg')])
+        run(['-framerate','10','-start_number','0','-i',str(rgb/'%06d.jpg'),'-vf','scale=320:240,'+stamp(0,16)+",select='not(mod(n,5))',tile=4x5",'-fps_mode','passthrough','-frames:v','3','-q:v','3',str(a.out/'full-2hz-%02d.jpg')])
+        run(['-framerate','10','-start_number','200','-i',str(rgb/'%06d.jpg'),'-vf','scale=320:240,'+stamp(200,16)+',tile=4x5','-fps_mode','passthrough','-frames:v','5','-q:v','3',str(a.out/'tail10s-10hz-%02d.jpg')])
+        # 30s*2Hz/20 cells =3 sheets; 10s*10Hz/20 =5. Timestamp overlays
+        # make even a stationary camera's sheets distinct. Default image2 sync
+        # duplicated the first tile; never accept that as a complete review.
+        for pattern,expected in [('full-2hz-*.jpg',3),('tail10s-10hz-*.jpg',5)]:
+            files=list(a.out.glob(pattern))
+            if len(files)!=expected or len({sha256(f) for f in files})!=expected:raise ValueError('missing/duplicated temporal sheets')
         movie=a.out/'own-rgb-first30-3x.mp4'
         run(['-framerate','10','-start_number','0','-i',str(rgb/'%06d.jpg'),'-vf',stamp(0,20)+',setpts=PTS/3','-frames:v','300','-r','30','-c:v','libx264','-preset','fast','-crf','28','-pix_fmt','yuv420p',str(movie)])
         probe=json.loads(subprocess.check_output(['ffprobe','-v','error','-show_streams','-show_format','-of','json',str(movie)],text=True))
