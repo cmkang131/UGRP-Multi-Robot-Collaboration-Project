@@ -26,6 +26,12 @@ assert read('guard-final-stop')['returncode']==0
 assert read('gcp2-function-reference')==read('gcp2-function-after')
 assert read('gcp2-topic-policy-reference')==read('gcp2-topic-policy-after')
 assert read('function-active')['serviceConfig']['environmentVariables']['TARGET_PROJECT']=='ugrp-sim-c-1016'
+metadata = {p['key']:p['value'] for p in final[0]['metadata']['items']}
+startup = (ROOT.parents[1]/'scripts/gcp_idle_guard_startup.sh').read_text()
+assert metadata['startup-script']==startup
+assert metadata['block-project-ssh-keys']=='true'
+assert not final[0].get('serviceAccounts')
+assert final[0]['scheduling']['maxRunDuration']['seconds']=='28800'
 source = ROOT/'function/main.py'
 assert source.read_bytes()==(ROOT.parent/'2026-10-15-gcp2setup/evidence/budget-stop-main.py').read_bytes()
 
@@ -55,7 +61,8 @@ write(ROOT/'summary.json',dict(schema='ugrp.gcp3setup.v1',ready=True,readiness_s
     project='ugrp-sim-c-1016',account='changmin5781@gmail.com',default_host='gcp2',host='gcp3',
     instance='ugrp-act-l4-gcp3',machine='g2-standard-8',gpu='NVIDIA L4 x1',disk_gb=140,
     vm_status=final[0]['status'],max_run_s=28800,termination_action='STOP',idle_s=1200,
-    source_sha=read('probe-source')['source_sha'],results_pooled=False,
+    source_sha=read('probe-source')['source_sha'],
+    final_guard_source_sha='9752ff2ba',startup_sha256=hashlib.sha256(startup.encode()).hexdigest(),results_pooled=False,
     budget=dict(net_krw=1000,credits='INCLUDE_ALL_CREDITS',filter_projects=['projects/443356522325'],
                 default_billing_iam_email_enabled=True,email_delivery_tested=False,
                 manual_publish_stopping_s=next(x['elapsed_s'] for x in observations if x['status']=='STOPPING'),
