@@ -94,6 +94,10 @@ class Act16wActor:
         from harness.grasp_act_data import IMAGE_HW, MODEL_IMAGE_HW, IMAGE_KEYS, sha256
         from harness.grasp_act_policy import UPSTREAM_SHA, GraspActor, make_policy
         from harness.grasp_act_loss import DONE_MODES
+        from act16w_runtime import LEROBOT_ACT_SHA256
+        from lerobot.policies.act import modeling_act
+        if sha256(Path(modeling_act.__file__)) != LEROBOT_ACT_SHA256:
+            raise ValueError('ACT runtime differs from verified public source')
         contract_check(c)
         root = Path(root)
         hashes = json.loads((root / "SHA256.json").read_text())

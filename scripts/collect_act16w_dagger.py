@@ -14,16 +14,20 @@ ROOT=Path(__file__).resolve().parents[1]
 def main():
     p=argparse.ArgumentParser();p.add_argument('--enabled',action='store_true');p.add_argument('--interface-probe-only',action='store_true')
     for k in ('physics-python','qualified-source','teacher-source','qualification','references','compiled-reference','compiled-geometry','plans','actor-source','out'):p.add_argument('--'+k,type=Path,required=True)
-    p.add_argument('--checkpoint',type=Path);p.add_argument('--deadline-utc',required=True);a=p.parse_args()
+    p.add_argument('--checkpoint',type=Path);p.add_argument('--dagger-starts',type=Path)
+    p.add_argument('--deadline-utc',required=True);a=p.parse_args()
     if not a.enabled:p.error('DAgger collection default OFF')
     host=require_gcp2(training=True);source=frozen_source(ROOT);frozen_source(a.actor_source,ACT_SHA)
     deadline=datetime.fromisoformat(a.deadline_utc).timestamp()
     if deadline>datetime.fromisoformat('2026-10-16T13:47:00.019842+00:00').timestamp():p.error('task8h cap')
     plans=json.loads(a.plans.read_text())['episodes']
     if a.interface_probe_only:
-        if len(plans)!=1:p.error('single-world interface probe only')
+        if len(plans)!=1 or not 86820<=plans[0]['seed']<=86864:p.error('single TRAIN-world interface probe only')
     else:
-        if a.checkpoint is None:p.error('trained ACT checkpoint required')
+        if a.checkpoint is None or a.dagger_starts is None:p.error('trained ACT checkpoint and preregistered TRAIN starts required')
+        seeds=[x['seed'] for x in plans];registered=json.loads(a.dagger_starts.read_text())['seeds']
+        if len(seeds)!=len(set(seeds)) or not set(seeds)<=set(registered) or any(not 86820<=s<=86864 for s in seeds):
+            raise ValueError('DAgger visits must use preregistered D0 TRAIN starts')
         meta=json.loads((a.checkpoint/'adapter.json').read_text());prov=meta['provenance']
         if prov.get('synthetic_only') or prov.get('step')!=10000:raise ValueError('completed fixed10000-step research checkpoint required')
     sys.path.insert(0,str(a.actor_source))

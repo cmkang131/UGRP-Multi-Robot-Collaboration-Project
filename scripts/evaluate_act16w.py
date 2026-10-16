@@ -8,7 +8,7 @@ import sys
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,'/home/ugrp/ugrp-sim/src/0362037280c6cbc4677f70366db43b9892b23690/scripts')
 from warp_act_rpc import Client
-from act16w_runtime import require_gcp2,frozen_source,ACT_SHA
+from act16w_runtime import require_gcp2,frozen_source,ACT_SHA,evaluation_seed_guard
 
 
 def main():
@@ -19,6 +19,9 @@ def main():
                 'compiled-reference', 'compiled-geometry', 'plans', 'actor-source', 'checkpoint', 'out'):
         p.add_argument('--'+key, type=Path, required=True)
     p.add_argument('--deadline-utc',required=True)
+    p.add_argument('--protocol',type=Path,required=True)
+    p.add_argument('--split',choices=['validation','final'],required=True)
+    p.add_argument('--selection',type=Path)
     a = p.parse_args()
     from datetime import datetime
     import time
@@ -31,13 +34,17 @@ def main():
     host=require_gcp2(training=True);source=frozen_source(ROOT);frozen_source(a.actor_source,ACT_SHA)
     model = a.checkpoint/'model.safetensors'
     expected=hashlib.sha256(model.read_bytes()).hexdigest()
+    plans = json.loads(a.plans.read_text())['episodes']
+    meta=json.loads((a.checkpoint/'adapter.json').read_text())
+    evaluation_seed_guard(meta['provenance'],[x['seed'] for x in plans],split=a.split,
+        protocol=json.loads(a.protocol.read_text()),model_sha256=expected,
+        selection=json.loads(a.selection.read_text()) if a.selection else None)
     sys.path.insert(0, str(a.actor_source))
     from harness.grasp_act_policy import ChunkExecutor
     from act16w_input import Act16wActor
     from harness.grasp_act_contract import validate_observation
     from harness.grasp_act_rollout import SoloSequence, SoloScore
     actor = Act16wActor.load(a.checkpoint, device='cuda')
-    plans = json.loads(a.plans.read_text())['episodes']
     chunks = [ChunkExecutor(actor.predict) for _ in plans]
     sequences = [SoloSequence(with_release=True) for _ in plans]
     client = Client(python=a.physics_python, qualified_source=a.qualified_source, teacher_source=a.teacher_source,
@@ -45,7 +52,7 @@ def main():
         compiled_geometry=a.compiled_geometry, out=a.out, nworld=len(plans), enabled=True,
         on_reset=lambda indices: [chunks[i].reset() for i in indices])
     report = dict(status='running', complete=False,api_checks_passed=False, source_sha=source,host=host,checkpoint_sha256=expected,resource_cap_end=False,
-                  scope='ACT16 full grasp/release evaluation, post-action truth scoring')
+                  split=a.split,scope='ACT16 full grasp/release evaluation, post-action truth scoring')
     try:
         client.reset(plans)
         actions_log = [];inputs_log=(a.out/'actor-inputs.jsonl').open('x')

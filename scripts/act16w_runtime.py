@@ -84,6 +84,24 @@ def recording_host_schema_approval(path, *, source_sha, gate_host, current_host)
     return proof
 
 
+def evaluation_seed_guard(provenance, seeds, *, split, protocol, model_sha256, selection=None):
+    """Reject unfinished/synthetic models and final-outcome selection leaks."""
+    if (provenance.get('synthetic_only') or provenance.get('step') != 10000
+            or provenance.get('schedule_steps') != 10000
+            or provenance.get('lerobot_act_sha256') != LEROBOT_ACT_SHA256):
+        raise ValueError('completed registered10000-step research model required')
+    key={'validation':'validation_seeds','final':'final_evaluation_seeds'}.get(split)
+    if (not key or not seeds or len(seeds)!=len(set(seeds))
+            or not set(seeds)<=set(protocol[key]) or set(seeds)&set(protocol['train_seeds'])):
+        raise ValueError('evaluation split/seed provenance mismatch')
+    if split=='final':
+        s=selection or {}
+        if (s.get('approved') is not True or s.get('frozen_before_final') is not True
+                or s.get('checkpoint_sha256')!=model_sha256 or s.get('validation_complete') is not True
+                or any(s.get('completed_comparisons',{}).get(k) is not True for k in ('A_B','h4','h5'))):
+            raise ValueError('frozen validation selection after required comparisons needed for final40')
+
+
 def training_admission(path, *, source, dataset, act_source):
     """An execution receipt produced only after reviewing the actual MJWarp gate.
 

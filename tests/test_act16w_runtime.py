@@ -85,3 +85,17 @@ def test_recording_adapts_only_recorded_host_fields_and_binds_pilots(tmp_path):
     Path(checks[0]['path']).write_text('{"changed":true}')
     with pytest.raises(ValueError,match='approval'):
         recording_host_schema_approval(p,source_sha='qualified',gate_host=host,current_host=host)
+
+
+def test_final_seeds_require_completed_comparisons_and_pre_frozen_selection():
+    from scripts.act16w_runtime import evaluation_seed_guard,LEROBOT_ACT_SHA256
+    model=dict(step=10000,schedule_steps=10000,lerobot_act_sha256=LEROBOT_ACT_SHA256)
+    protocol=dict(train_seeds=[86820],validation_seeds=[86865],final_evaluation_seeds=[91620])
+    evaluation_seed_guard(model,[86865],split='validation',protocol=protocol,model_sha256='hash')
+    for provenance,seeds in [({**model,'step':300},[86865]),({**model,'synthetic_only':True},[86865]),(model,[91620])]:
+        with pytest.raises(ValueError):evaluation_seed_guard(provenance,seeds,split='validation',protocol=protocol,model_sha256='hash')
+    with pytest.raises(ValueError,match='required comparisons'):
+        evaluation_seed_guard(model,[91620],split='final',protocol=protocol,model_sha256='hash')
+    selection=dict(approved=True,frozen_before_final=True,checkpoint_sha256='hash',validation_complete=True,completed_comparisons=dict(A_B=True,h4=True,h5=True))
+    evaluation_seed_guard(model,[91620],split='final',protocol=protocol,model_sha256='hash',selection=selection)
+    with pytest.raises(ValueError):evaluation_seed_guard(model,[91620],split='final',protocol=protocol,model_sha256='changed',selection=selection)
