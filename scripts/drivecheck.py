@@ -74,12 +74,7 @@ def prepare(a):
     for i in range(m.nu):
         if '__servo_' in m.actuator(i).name:
             d.ctrl[i] = d.qpos[int(m.jnt_qposadr[int(m.actuator_trnid[i, 0])])]
-    import xml.etree.ElementTree as ET
-    portable=ET.fromstring(xml)
-    for item in portable.iter():
-        if 'file' in item.attrib and not Path(item.get('file')).is_absolute():
-            item.set('file', str(a.renderer_source / item.get('file')))
-    (a.out / 'scene.xml').write_text(ET.tostring(portable,encoding='unicode'))
+    (a.out / 'scene.xml').write_text(xml)
     cases = []
     # Pulse lengths requested by user. Original 60/100ms cases reproduce mapbuild2.
     for axis in PATTERNS:
@@ -121,7 +116,8 @@ def prepare(a):
 def load_fixture(a):
     import numpy as np
     import mujoco
-    m = mujoco.MjModel.from_xml_path(str(a.fixture/'scene.xml'))
+    os.chdir('/home/ugrp/ugrp-sim/src/drivecheck-renderer-5974a181')
+    m = mujoco.MjModel.from_xml_string((a.fixture/'scene.xml').read_text())
     f = np.load(a.fixture/'fixture.npz')
     for field in ('tree_sleep_policy', 'cam_pos', 'cam_quat', 'cam_resolution', 'cam_sensorsize', 'cam_intrinsic'):
         getattr(m, field)[:] = f[field]
