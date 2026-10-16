@@ -112,3 +112,14 @@ CPU 세대가 다르면 렌더 이미지 바이트가 달라질 수 있다. 같�
 - [C4/N4와 Hyperdisk 부팅 디스크](https://cloud.google.com/compute/docs/general-purpose-machines)
 - [예산 알림으로 자원 정지](https://cloud.google.com/billing/docs/how-to/notify#cap_disable_billing_to_stop_usage)
 - [OpenSSH ProxyCommand](https://man.openbsd.org/ssh_config#ProxyCommand)
+
+## gcp6 — 여섯 번째 프로젝트 L4·다른 계정 (2026-10-16)
+
+사용자 원문: "쳐낼 거 쳐내고, 빠르게 할 건 더 빠르게 할 수 없나", "프로젝트 하나 더 만들어서 L4 하나 더 써", "gcp 계정 하나 더 추가할래". 프로젝트 `ugrp-sim-f-1016`(503325597974)은 **`kcm5781kcm5781@gmail.com`**, 결제 `010CD7-4B991B-84AAC7`을 쓴다. 모든 gcloud에 이 계정·프로젝트를 명시하고 Mac 기본 계정 `changmin5781@gmail.com`과 기본 호스트 gcp2는 유지한다. 다른 계정 사용자에게 IAM 접근 권한을 부여하지 않는다.
+
+- `gcp6` = `ugrp-act-l4-gcp6`, 서울 `asia-northeast3-a`, STANDARD `g2-standard-8`·NVIDIA L4×1·140GB `pd-balanced`. gcp4와 같은 공개 고정 이미지·패키지에서 새로 설치한다. 원본·디스크·개인키·모델/에이전트 자격 증명은 복사하지 않는다.
+- 프로젝트만 필터한 월 순비용1,000 KRW 예산(모든 크레딧 포함)·기본 결제 IAM 이메일 → Pub/Sub `budget-stop` → Gen2 `stop_on_budget`(`TARGET_PROJECT=ugrp-sim-f-1016`). e2-micro 발동·시험 VM/디스크 삭제를 확인한 뒤에만 L4를 생성한다. 집계 지연·VM 밖 비용의 한계는 같다.
+- 실행 시간 상한 없이 유휴20분 가드·`--no-service-account --no-scopes`·프로젝트 SSH 키 차단을 유지한다. Mac 전용 새 키는 `~/.ssh/ugrp_gcp6`. `leases/<RUN>.json`, 파일 잠금 아래 VM당40개 상한, GPU 메모리/기존 PID 확인·공용 Git 직접참조·해시/fetch-lite 규칙은 gcp4와 같다. 다른 임대/실행 프로세스가 있으면 수동 정지를 거부한다.
+- `python3 scripts/gcpctl.py start gcp6`, `bash scripts/oracle_run.sh --host gcp6 WORKTREE RUN -- COMMAND`, `python3 scripts/gcpctl.py stop gcp6`. 원본은 gcp6 영속 디스크에 남기고 작은 기록은 `outputs/gcp6-runs`/`outputs/gcp6-lifecycle`로 회수한다. 다른 프로젝트 결과와 합산하지 않는다.
+- 첫 용도를 act16w 학습으로 잡고 gcp2 L4의 ACT 환경을 동일 버전으로 재현하는 것은 조정자 해석(사용자 미확인)이다. 짧은 MJWarp 2세계·1스텝 및 합성 ACT 50스텝 저장·재로딩은 환경 확인이며 실제 데이터 학습·학생/교사/E2E 관문이 아니다. act16w 데이터는 기록 완료·SHA 확인 후 별도 전달한다.
+- 구성·검증 결과와 정지 상태는 [gcp6setup 기록](../experiments/2026-10-16-gcp6setup/README.md)에 남긴다. PR #559 위에 쌓으며 #554/#558에 의존한다.

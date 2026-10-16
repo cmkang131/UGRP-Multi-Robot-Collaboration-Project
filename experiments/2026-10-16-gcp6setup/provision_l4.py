@@ -18,7 +18,7 @@ observations = json.loads((EVIDENCE/'test-observations.json').read_text())
 assert any(x['status']=='STOPPING' for x in observations) and observations[-1]['status']=='TERMINATED'
 assert json.loads((EVIDENCE/'instances-after-test.json').read_text()) == []
 assert json.loads((EVIDENCE/'disks-after-test.json').read_text()) == []
-budget=json.loads((EVIDENCE/'budget-create.json').read_text())
+budget=json.loads((EVIDENCE/'budget-create-resume.json').read_text())
 number=json.loads((EVIDENCE/'project.json').read_text())['projectNumber']
 assert budget['budgetFilter']['projects']==['projects/'+number]
 assert budget['budgetFilter']['creditTypesTreatment']=='INCLUDE_ALL_CREDITS'
@@ -49,7 +49,7 @@ sha=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
 lease=dict(task='gcp6setup',pid=os.getpid(),owner_host=socket.gethostname(),source_sha=sha,
            started_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),expected_end_utc=(datetime.datetime.now(datetime.timezone.utc)+datetime.timedelta(hours=1)).isoformat())
 subprocess.run(['ssh','gcp6','mkdir -p /home/ugrp/ugrp-sim/{setup,leases} && cat > /home/ugrp/ugrp-sim/leases/gcp6setup.json'],input=json.dumps(lease)+'\n',text=True,check=True)
-files=[ROOT/n for n in ('setup_guest.sh','smoke.py','audit_guest.py')]
+files=[ROOT/n for n in ('setup_guest.sh','smoke.py','audit_guest.py','act_smoke.py','act-requirements.txt')]
 subprocess.run(['scp',*map(str,files),'gcp6:/home/ugrp/ugrp-sim/setup/'],check=True)
 source={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in files}
 (EVIDENCE/'probe-source.json').write_text(json.dumps(dict(source_sha=sha,files_sha256=source),indent=2)+'\n')
