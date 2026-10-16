@@ -29,3 +29,5 @@
 10:46UTC 보조처리량시각검증: 완료7건모두(last_eval-first_eval)==raw.sim_s 확인. 진행세계는초기GPU시각1.7에서,완료세계는교사평가시작2.2에서재던source보조값5.7466을원본그대로보존했다. 교사epoch로통일한분모1153.4SIM·보조wall/SIM5.8288을추가기록했다. 사용자지정배치수용값5.6024에는변경0.
 
 종료회수준비: export_terminal_light.py는gcp3종료receipt/PID부재를확인한배치의메타/로그만stream한다. receive_terminal_light.py는gcp2임시별도폴더에서전체SHA재검증후신규배치경로만추가하며기존R1/R2파일이있으면거부한다. 아직R2종료회수는미실행이다.
+
+11:18UTC R2경과35.8SIM·17성공/23진행·누적환산6.3817. first30수용5.6024와별도로post30성능저하를R2-post30-performance.json에보존했다. 전체실행속도통과를주장하지않고기존first30창및14:05UTC자원시한을유지한다. NoSlip설정변경0.
