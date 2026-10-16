@@ -34,6 +34,11 @@ Mac은 소스·짧은 비물리 검사·요약/몽타주 열람만 한다.
 [DAgger GPU 조회 시험](resume2/oracle-interface-probe.json)은 첫 라벨1개가 검증된
 교사와 같고 물리/RGB/발행 이력을 바꾸지 않았음을 확인한 범위다. 실제 DAgger
 궤적 수집·학습 효과는 아직 검증하지 않았다.
+[native 입력 연결](resume2/native-policy-interface-probe.json)은 합성 체크포인트로8×14 출력을 만들고 명령을 실행하지 않은 범위다.
+[변환 canary](resume2/converter-canary.json)는 두 TRAIN 파일럿715행의 실제 텐서 로딩을
+확인했으며 optimizer0·학생행동0·본 데이터 승인0이다. 별도 통계를 써서 D0에는 영향을 주지 않는다.
+[배포 시계 재감사](resume2/strict-clock-pilot-checks.json)는 기존ACT의1e-5초 허용치로 통과했다.
+44.8/42.3초는 타임스탬프 범위이며, 기존 감사의44.9/42.4는 표본 수×0.1초 coverage였다.
 
 ## 실행 순서와 고정 조건
 
