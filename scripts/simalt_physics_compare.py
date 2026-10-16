@@ -190,7 +190,7 @@ def run(a):
         wm=mjw.put_model(m)
         report['warp_version']=wp.__version__
         report['backend_solver_tolerance']=float(wm.opt.tolerance.numpy().item())
-        if a.gcp2_v1:
+        if a.gcp2_v1 and a.contact_profile in ('legacy_noslip10', 'cargo_noslip_v1', 'baseline_noslip10'):
             # io.py:433-436 at pinned 57b4692 clamps to 1e-6 for float32.
             # Preserve the source scene's 1e-8, rather than silently relaxing it.
             wm.opt.tolerance.fill_(float(m.opt.tolerance))

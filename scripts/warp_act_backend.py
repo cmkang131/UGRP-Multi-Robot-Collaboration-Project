@@ -4,7 +4,7 @@ The scalar teacher is a transitional client. Physics, command relay/interpolatio
 and RGB are batched. C MjData is a kinematic/raycast perception mirror only;
 GPU contact forces have a separate evaluator-only channel.
 """
-from sim.execution_contact_profile import CPU_DEFAULT, WARP_DEFAULT, assert_model_profile, build_world_with_contact
+from sim.execution_contact_profile import CPU_DEFAULT, WARP_DEFAULT, assert_model_profile, build_world_with_contact, LEGACY_NAMES
 from collections import defaultdict
 import hashlib
 import time
@@ -137,7 +137,10 @@ class WarpTransport(Transport):
         else:
             self.wm=mjw.put_model(m)
             self.model_batch_audit={'mode':'same_static_model','varying_fields':[]}
-        self.wm.opt.tolerance.fill_(float(m.opt.tolerance))
+        if self.contact_profile in LEGACY_NAMES:
+            self.wm.opt.tolerance.fill_(float(m.opt.tolerance))
+        # Native v1 retains the pinned MJWarp converter's float32 tolerance.
+        # CPU tolerance preservation belongs only to recorded legacy replay.
         assert_model_profile(self.wm, self.contact_profile)
         self.compat['collision'] = install_legacy_plane(m)
         # Existing simalt4 dense trace observed max nefc134, rounded to256.

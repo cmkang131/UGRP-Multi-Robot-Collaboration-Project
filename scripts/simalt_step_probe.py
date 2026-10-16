@@ -190,7 +190,8 @@ def main():
                 metadata['compiled_compatibility']['put_model_bias_exact_float32'] = True
             # Pinned upstream io.py:433 adjusts to 1e-6 for float32. Match C's
             # original solver configuration; this does not change m.opt.
-            wm.opt.tolerance.fill_(float(m.opt.tolerance))
+            if a.contact_profile in ('legacy_noslip10', 'cargo_noslip_v1', 'baseline_noslip10'):
+                wm.opt.tolerance.fill_(float(m.opt.tolerance))
             if a.backend_mode.startswith('legacy-plane'):
                 from simalt_collision_compat import install_legacy_plane
                 metadata['collision_adapter']=install_legacy_plane(m)
