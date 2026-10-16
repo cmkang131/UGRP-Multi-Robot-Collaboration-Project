@@ -35,6 +35,7 @@ TEST_PATTERNS = (
     "tests/test_reloc10_*.py",
     "tests/test_reloc9_shared.py",
     "tests/test_reloc9_selfmap.py",
+    "tests/test_warp_act*.py",  # array math/admission only; no physics or renderer
     "tests/test_e2e18.py",
     "tests/test_e2e18_beam_axis.py",
     "tests/test_e2e18_cadence.py",

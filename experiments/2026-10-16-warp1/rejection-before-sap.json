@@ -1,0 +1,74 @@
+{
+  "stage": "before SAP_SEGMENTED candidate",
+  "observed_utc": "2026-10-15T20:40:12.216126+00:00",
+  "category": "physics_full_scene_cost",
+  "blocking_object": "1390geom broadphase / current NXN default",
+  "minimum_gap_m": null,
+  "minimum_gap_status": "performance hypothesis, not collision cause",
+  "rows": [
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n16-prefix4/progress.json",
+      "progress": {
+        "ticks": [
+          40,
+          40,
+          40,
+          40,
+          40,
+          40,
+          40,
+          40,
+          40,
+          40,
+          40,
+          40,
+          40,
+          40,
+          40,
+          40
+        ],
+        "active": 0,
+        "loop_wall_s": 1450.7049889100003,
+        "timing": {
+          "render": 0.5319496399993113,
+          "readback_remap_jpeg_kinematics": 5.450342591999743,
+          "teacher_visibility_rgb_eval_logging": 3.394655022000279,
+          "command_decode_upload": 2.4029795509995893,
+          "physics": 1439.0781568520001
+        }
+      }
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/policy-qual-n16-seed0/progress.json",
+      "progress": {
+        "ticks": [
+          110,
+          110,
+          110,
+          110,
+          110,
+          110,
+          110,
+          110,
+          110,
+          110,
+          110,
+          110,
+          110,
+          110,
+          110,
+          110
+        ],
+        "active": 16,
+        "loop_wall_s": 1434.3128860740007,
+        "timing": {
+          "render": 1.6857840089987803,
+          "readback_remap_jpeg_kinematics": 15.604570746003446,
+          "teacher_visibility_rgb_eval_logging": 8.244722021998314,
+          "command_decode_upload": 7.214536568997573,
+          "physics": 1401.5156687539939
+        }
+      }
+    }
+  ]
+}

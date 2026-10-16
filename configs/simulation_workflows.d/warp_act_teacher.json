@@ -1,0 +1,26 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "warp-act-teacher",
+      "purpose": "기본 off gcp2 MJWarp 배치 ACT solo 교사 DEV; 장면/기록 관문 대기",
+      "entry": "scripts/run_warp_act_teacher.py",
+      "docs": "experiments/2026-10-16-warp1/README.md",
+      "requires": "Linux gcp2 only; frozen teacher source; explicit backend and same-XML compiled312 assets; no automatic training admission",
+      "version": "0.1.0",
+      "runner": "scripts.run_warp_act_teacher",
+      "output_flag": "--out",
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli",
+      "required_inputs": [
+        "--teacher-source",
+        "--plan",
+        "--physics-backend",
+        "--vm-hourly-usd",
+        "--compiled-reference-v1",
+        "--compiled-geometry-312-v1"
+      ],
+      "output_kind": "directory"
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "checked_UTC": "2026-10-16T00:05:15.077718+00:00",
+  "leases": {
+    "warp3.json": {
+      "task": "warp3",
+      "pid": 17430,
+      "start": "2026-10-15T22:02:08.673132+00:00",
+      "expected_end": "2026-10-16T05:59:25.154+00:00",
+      "source_sha": "f0db6b1abb842ea65b71c433738210254f300a7c",
+      "stage": "teacher gate R1: 29 worlds active in groups0/2/3; other11 worlds paused, no terminal results yet",
+      "pids": [
+        7804,
+        8648,
+        8649,
+        8650,
+        8651,
+        8652,
+        8653
+      ],
+      "remaining_not_submitted": 0,
+      "paused_pids": [
+        8651,
+        8648,
+        8652,
+        8653
+      ],
+      "active_pids": [
+        7804,
+        8649,
+        8650
+      ],
+      "scheduling_note": "three largest model groups active; smaller groups paused, source/SIM state preserved",
+      "scheduler_pid": 17430,
+      "pid_scope": "finite stage2 gate scheduler; active/paused worker PIDs listed separately"
+    },
+    "beamact2.json": {
+      "task": "beamact2",
+      "pid": 12199,
+      "started": "2026-10-15T22:42:54.156320+00:00",
+      "expected_end": "2026-10-16T05:42:54.156339+00:00",
+      "stage": "smoke300 then main10000",
+      "source_sha": "ee1e2275bc5cb4a15278220214ebf1861d131fe7",
+      "concurrency": 0,
+      "gpu_shared": true
+    }
+  },
+  "gpu_processes": "7804, /home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python, 864 MiB\n8653, /home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python, 796 MiB\n8652, /home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python, 798 MiB\n8648, /home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python, 828 MiB\n8651, /home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python, 832 MiB\n8650, /home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python, 832 MiB\n8649, /home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python, 828 MiB\n14151, /home/ugrp/ugrp-rl1b-act-env/bin/python, 2308 MiB\n",
+  "disk": "Filesystem        1B-blocks        Used   Available Use% Mounted on\n/dev/root      102888095744 87261913088 15609405440  85% /\n"
+}
