@@ -1,0 +1,222 @@
+{
+  "schema": "ugrp.mapbuild6.funnel.v1",
+  "raw": "/home/ugrp/ugrp-sim/runs/mapbuild6",
+  "reproduction": [
+    [
+      "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+      "-u",
+      "/home/ugrp/ugrp-sim/src/mapbuild6-60db80c1a/scripts/mapbuild6_capture.py",
+      "--enabled",
+      "--renderer",
+      "/home/ugrp/ugrp-sim/src/drivecheck-renderer-5974a181",
+      "--queue",
+      "/home/ugrp/ugrp-sim/ops-reviews/mapbuild6/capture-r1-queue.json",
+      "--pickup",
+      "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79800-6f057f7e/plan.json",
+      "--commands",
+      "/home/ugrp/ugrp-sim/src/mapbuild6-60db80c1a/experiments/2026-10-17-mapbuild6/pickup-replay.json.zst",
+      "--output",
+      "/home/ugrp/ugrp-sim/runs/mapbuild6/recording-r1",
+      "--sim-budget",
+      "1800"
+    ],
+    [
+      "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+      "-u",
+      "/home/ugrp/ugrp-sim/src/mapbuild6-f4923f21a/scripts/mapbuild6_capture.py",
+      "--enabled",
+      "--renderer",
+      "/home/ugrp/ugrp-sim/src/drivecheck-renderer-5974a181",
+      "--queue",
+      "/home/ugrp/ugrp-sim/ops-reviews/mapbuild6/capture-r2-queue.json",
+      "--pickup",
+      "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79800-6f057f7e/plan.json",
+      "--commands",
+      "/home/ugrp/ugrp-sim/src/mapbuild6-f4923f21a/experiments/2026-10-17-mapbuild6/pickup-replay.json.zst",
+      "--output",
+      "/home/ugrp/ugrp-sim/runs/mapbuild6/recording-r2",
+      "--sim-budget",
+      "1800",
+      "--texture-extension"
+    ],
+    [
+      "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+      "-u",
+      "/home/ugrp/ugrp-sim/src/mapbuild6-c7477b1f6/scripts/mapbuild6_capture.py",
+      "--enabled",
+      "--renderer",
+      "/home/ugrp/ugrp-sim/src/drivecheck-renderer-5974a181",
+      "--queue",
+      "/home/ugrp/ugrp-sim/ops-reviews/mapbuild6/capture-r3-queue.json",
+      "--pickup",
+      "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79800-6f057f7e/plan.json",
+      "--commands",
+      "/home/ugrp/ugrp-sim/src/mapbuild6-c7477b1f6/experiments/2026-10-17-mapbuild6/pickup-replay.json.zst",
+      "--output",
+      "/home/ugrp/ugrp-sim/runs/mapbuild6/recording-r3",
+      "--sim-budget",
+      "1800",
+      "--texture-extension"
+    ]
+  ],
+  "route_candidates": [
+    {
+      "stage": "submitted_attempts",
+      "cumulative_pass_n": 3,
+      "rejected_n": 0
+    },
+    {
+      "stage": "scene_extension_resolved",
+      "cumulative_pass_n": 2,
+      "rejected_n": 1
+    },
+    {
+      "stage": "native_physics_started",
+      "cumulative_pass_n": 2,
+      "rejected_n": 0
+    },
+    {
+      "stage": "required_actual_transport_recording",
+      "cumulative_pass_n": 0,
+      "rejected_n": 2
+    }
+  ],
+  "r3_frame_stages": [
+    {
+      "stage": "recorded_frames",
+      "cumulative_pass_n": 247,
+      "rejected_n": 0
+    },
+    {
+      "stage": "camera_FK_qualified",
+      "cumulative_pass_n": 138,
+      "rejected_n": 109
+    },
+    {
+      "stage": "adjacent_command_pose_unchanged",
+      "cumulative_pass_n": 102,
+      "rejected_n": 36
+    },
+    {
+      "stage": "visible_wall_scan",
+      "cumulative_pass_n": 65,
+      "rejected_n": 37
+    },
+    {
+      "stage": "settled",
+      "cumulative_pass_n": 62,
+      "rejected_n": 3
+    },
+    {
+      "stage": "SIM_keyframe_schedule",
+      "cumulative_pass_n": 7,
+      "rejected_n": 55
+    },
+    {
+      "stage": "bootstrap_or_match_accepted",
+      "cumulative_pass_n": 5,
+      "rejected_n": 2
+    }
+  ],
+  "r3_match_notes": {
+    "bootstrap": 1,
+    "matching_attempts": 6,
+    "accepted_matches": 4,
+    "rejected_high_residual": 2,
+    "map_insertions": 7,
+    "rejected_matches_inserted_at_odometry": 2
+  },
+  "motion": {
+    "bootstrap": 1,
+    "unknown_rigid_consensus": 26,
+    "measured": 75,
+    "unknown_servo_change": 51,
+    "unknown_loaded_or_unknown_load_not_qualified": 94
+  },
+  "columns": {
+    "NO_UNOCCLUDED_LINE_CONSENSUS": 24,
+    "returned_wall_floor_contact": 5794,
+    "peer_rgb_column": 773,
+    "NO_NEIGHBOUR_CONTINUITY": 7,
+    "NO_VISIBLE_WALL_FLOOR_TRANSITION": 6650,
+    "loaded_or_unknown_load_not_qualified": 10464
+  },
+  "work": {
+    "particles": 30,
+    "colour_line_pair_checks": 291248,
+    "proposal_candidates": 174704
+  },
+  "reasons": [
+    {
+      "category": "recording_gate",
+      "reason": "v7 pinned texture extension argument missing",
+      "count": 1,
+      "blocked_object": "zone_wall_divider_1",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "recording_gate",
+      "reason": "unhandled loaded-camera FK rejection",
+      "count": 1,
+      "blocked_object": "unqualified_loaded_camera",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "recording_gate",
+      "reason": "native pickup replay never lifted cargo; supervisor stop",
+      "count": 1,
+      "blocked_object": "cargo_cyan_2",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    }
+  ],
+  "task_events": {
+    "map_to_ACT_handoff": {
+      "observed": 0,
+      "error": null,
+      "reason": "not_reached",
+      "blocked_object": "cargo_cyan_2",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    "door_crossing": {
+      "observed": 0,
+      "error": null,
+      "reason": "not_reached",
+      "blocked_object": "cargo_cyan_2",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    "zone_arrival": {
+      "observed": 0,
+      "error": null,
+      "reason": "not_reached",
+      "blocked_object": "cargo_cyan_2",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    "return": {
+      "observed": 0,
+      "error": null,
+      "reason": "not_reached",
+      "blocked_object": "cargo_cyan_2",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    "post_setdown_lookaround": {
+      "observed": 0,
+      "error": null,
+      "reason": "not_reached",
+      "blocked_object": "cargo_cyan_2",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    }
+  },
+  "static_audit": {
+    "original_capture_source": "c7477b1f6",
+    "spawn_derived_anchor_branch": "inadmissible but never executed; all commands are archived prefix",
+    "post_round_fix": "9c4f171c5; fail closed pending own-RGB registration; no new simulation"
+  }
+}

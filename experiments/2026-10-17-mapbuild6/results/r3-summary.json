@@ -1,0 +1,98 @@
+{
+  "status": "NOT_READY",
+  "decision": "no default adoption; required actual-route gates missing",
+  "missing_required_evidence": [
+    "zone_arrival",
+    "door_or_corridor_crossing",
+    "post_setdown_lookaround",
+    "return",
+    "map_to_ACT_handoff_after_navigation",
+    "independent_full_cargo_transport_recount"
+  ],
+  "reference": "chassis centre SE2; start-only alignment; scale=1",
+  "measured_path_m": 0.8392993103640173,
+  "frames": 247,
+  "sim_s": 24.6,
+  "methods": {
+    "lk": {
+      "ate_xy_rmse_m": 0.09186746115012888,
+      "xy_p95_m": 0.11495825379618298,
+      "maximum_xy_m": 0.11932817209416047,
+      "maximum_xy_t": 7.0,
+      "final_xy_m": 0.06857829923109732,
+      "yaw_rmse_deg": 3.617376632832461,
+      "maximum_yaw_deg": 5.037008490647892,
+      "final_yaw_deg": 3.77457566173115,
+      "final_drift_percent": 8.17089903259349,
+      "maximum_xy_over_total_distance_percent": 14.217594441058932
+    },
+    "rbpf": {
+      "ate_xy_rmse_m": 0.09805374567938843,
+      "xy_p95_m": 0.12239204577769391,
+      "maximum_xy_m": 0.12731283767612525,
+      "maximum_xy_t": 7.0,
+      "final_xy_m": 0.07232819483326886,
+      "yaw_rmse_deg": 0.9321573190701539,
+      "maximum_yaw_deg": 3.1322812073097706,
+      "final_yaw_deg": 0.4353353767368291,
+      "final_drift_percent": 8.617687866548941,
+      "maximum_xy_over_total_distance_percent": 15.168943439368213
+    }
+  },
+  "checkpoints": [],
+  "passage_crossings": [],
+  "motion_status_counts": {
+    "bootstrap": 1,
+    "unknown_rigid_consensus": 26,
+    "measured": 75,
+    "unknown_servo_change": 51,
+    "unknown_loaded_or_unknown_load_not_qualified": 94
+  },
+  "rejection_distribution": [
+    {
+      "category": "motion_observation",
+      "reason": "unknown_loaded_or_unknown_load_not_qualified",
+      "count": 94,
+      "blocked_object": "own_camera_support",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "motion_observation",
+      "reason": "unknown_servo_change",
+      "count": 51,
+      "blocked_object": "own_camera_support",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "motion_observation",
+      "reason": "unknown_rigid_consensus",
+      "count": 26,
+      "blocked_object": "own_camera_support",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    }
+  ],
+  "cause_status": "counts are symptoms; inspect >=6 own frames and playback before assigning cause",
+  "requirements_sha256": "d9f3c1f3a00273be3aa901613d01386fa493b1ed5edb561e40a58d367360875c",
+  "prediction_seal_sha256": "64c1087920ca64307bfa3cf018d2f67ceb16beb3fac503c0cc171f0cec0609bc",
+  "raw": {
+    "recording": "/home/ugrp/ugrp-sim/runs/mapbuild6/recording-r3",
+    "prediction": "/home/ugrp/ugrp-sim/runs/mapbuild6/replay-r3"
+  },
+  "reproduction": [
+    "/home/ugrp/ugrp-sim/src/mapbuild6-c7477b1f6/scripts/mapbuild6_evaluate.py",
+    "--input",
+    "/home/ugrp/ugrp-sim/runs/mapbuild6/recording-r3",
+    "--prediction",
+    "/home/ugrp/ugrp-sim/runs/mapbuild6/replay-r3",
+    "--requirements",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild6/requirements-r2.json",
+    "--output",
+    "/home/ugrp/ugrp-sim/runs/mapbuild6/evaluation-r3"
+  ],
+  "truth_inputs_to_control": 0,
+  "scale_fitting": 0,
+  "parameter_tuning": 0
+}

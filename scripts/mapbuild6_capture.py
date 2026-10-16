@@ -1,7 +1,8 @@
-"""gcp5 native MJWarp task-route attempt, own camera/commands only.
+"""gcp5 native MJWarp task-route precondition probe (NOT_ADMITTED).
 
 Replay an archived successful teacher's issued pickup commands, then run the
-existing map planner/pursuit toward its v7 delivery region. This is a replay
+existing map pursuit only after admitted own-RGB map registration. The
+current probe has no admitted anchor and stops before pursuit. This is a replay
 attempt, not a new teacher/student/LLM success. A separate evaluator may stop
 an actually failed pickup; no evaluator value changes an action.
 """

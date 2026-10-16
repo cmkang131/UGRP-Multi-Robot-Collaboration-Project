@@ -1,0 +1,54 @@
+{
+  "raw": "/home/ugrp/ugrp-sim/runs/mapbuild6/recording-r2",
+  "source_sha": "f4923f21a2bbcb45d485f7740e7d5a5b1cba179b",
+  "reproduction": "/home/ugrp/ugrp-sim/ops-reviews/mapbuild6/capture-r2-argv.json",
+  "stages": [
+    {
+      "stage": "attempts",
+      "cumulative_pass_n": 2,
+      "rejected_n": 0
+    },
+    {
+      "stage": "scene_assets",
+      "cumulative_pass_n": 1,
+      "rejected_n": 1
+    },
+    {
+      "stage": "physics_frames_started",
+      "cumulative_pass_n": 1,
+      "rejected_n": 0
+    },
+    {
+      "stage": "route_recording_complete",
+      "cumulative_pass_n": 0,
+      "rejected_n": 1
+    }
+  ],
+  "reasons": [
+    {
+      "category": "setup_asset",
+      "reason": "pinned_extension_not_enabled",
+      "count": 1,
+      "blocked_object": "zone_wall_divider_1",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "camera_qualification",
+      "reason": "loaded_or_unknown_load_not_qualified exception",
+      "count": 1,
+      "blocked_object": "unqualified_loaded_camera",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    }
+  ],
+  "frame_motion_reasons": {
+    "bootstrap": 1,
+    "unknown_rigid_consensus": 27,
+    "measured": 74,
+    "unknown_servo_change": 39
+  },
+  "frames": 141,
+  "sim_s": 14.0,
+  "change": "r3 preserves original camera qualification; converts unqualified into explicit unknown and uses same inherited issued prediction; no FK relaxation or parameter fitting"
+}

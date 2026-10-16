@@ -1,0 +1,103 @@
+{
+  "raw": "/home/ugrp/ugrp-sim/runs/mapbuild6/recording-r3",
+  "reproduction": [
+    "/home/ugrp/ugrp-sim/src/mapbuild6-c7477b1f6/scripts/mapbuild6_replay.py",
+    "--enabled",
+    "--input",
+    "/home/ugrp/ugrp-sim/runs/mapbuild6/recording-r3",
+    "--vision",
+    "/home/ugrp/ugrp-sim/src/mapbuild5b-complete-vision597",
+    "--queue",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild6/capture-r3-queue.json",
+    "--output",
+    "/home/ugrp/ugrp-sim/runs/mapbuild6/replay-r3"
+  ],
+  "stages": [
+    {
+      "stage": "recorded_frames",
+      "cumulative_pass_n": 247,
+      "rejected_n": 0
+    },
+    {
+      "stage": "qualified_wall_scan",
+      "cumulative_pass_n": 65,
+      "rejected_n": 182
+    },
+    {
+      "stage": "inserted_keyframe",
+      "cumulative_pass_n": 7,
+      "rejected_n": 58
+    }
+  ],
+  "motion_reasons": {
+    "bootstrap": 1,
+    "unknown_rigid_consensus": 26,
+    "measured": 75,
+    "unknown_servo_change": 51,
+    "unknown_loaded_or_unknown_load_not_qualified": 94
+  },
+  "scan_reasons": {
+    "unsettled": 3,
+    "bootstrap": 1,
+    "sim_keyframe_interval": 55,
+    "no_visible_scan": 182,
+    "improved_proposal": 4,
+    "high_residual": 2
+  },
+  "column_reasons": {
+    "NO_UNOCCLUDED_LINE_CONSENSUS": 24,
+    "returned_wall_floor_contact": 5794,
+    "peer_rgb_column": 773,
+    "NO_NEIGHBOUR_CONTINUITY": 7,
+    "NO_VISIBLE_WALL_FLOOR_TRANSITION": 6650,
+    "loaded_or_unknown_load_not_qualified": 10464
+  },
+  "reasons": [
+    {
+      "category": "motion_observation",
+      "reason": "bootstrap",
+      "count": 1,
+      "blocked_object": "own_camera_support",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "motion_observation",
+      "reason": "unknown_rigid_consensus",
+      "count": 26,
+      "blocked_object": "own_camera_support",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "motion_observation",
+      "reason": "measured",
+      "count": 75,
+      "blocked_object": "own_camera_support",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "motion_observation",
+      "reason": "unknown_servo_change",
+      "count": 51,
+      "blocked_object": "own_camera_support",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "motion_observation",
+      "reason": "unknown_loaded_or_unknown_load_not_qualified",
+      "count": 94,
+      "blocked_object": "own_camera_support",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    }
+  ],
+  "constants": "mapbuild5 unchanged; moving servo updates use exact same adjacent PWM equality as LK; no GT calibration",
+  "work": {
+    "particles": 30,
+    "colour_line_pair_checks": 291248,
+    "proposal_candidates": 174704
+  }
+}

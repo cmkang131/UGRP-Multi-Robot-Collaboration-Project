@@ -110,3 +110,9 @@ SHA256 `69bdd4f62546e3e38ea024cf94b6bc12b86cef39b8a187ee155b7f11794a1c69`.
 |버전·소스|대표 case|결과|영상·해시|범위와 한계|
 |---|---|---|---|---|
 |ACT15 DAgger1; 학습1535c8a3, 실행686cccb6|91420, ACT14 p0 실패와 같은 seed; 최다 거부 단계인 정렬 실패 선택|90 SIM초 cap_end, 안정 들기/완료0; 전체 같은20 0/20·새20 0/20|[자기 RGB4배속](../experiments/2026-10-15-act-train/videos/act15-91420-4x.mp4),22.5초/900프레임/169401bytes;SHA256 `e9a95fd808c256f12d37ffa5b753a29bf8e441201340100f4b5ca3d2bb3a34fd`|접근 후 목표가 화면 밖으로 빠지는 사례. 단일 원인·일반화·E2E·실물·기본 채택 아님. [원본·milestone 복제·해시](../experiments/2026-10-15-act-train/act15-video.json), [전체 결과](../experiments/2026-10-15-act-train/act15.md).|
+
+## 2026-10-17 mapbuild6 native 경로 녹화 전 실패
+
+|버전·소스|대표 case|결과|영상·해시|범위와 한계|
+|---|---|---|---|---|
+|mapbuild6_task_route_v1 / c7477b1f6; native_contact_v1·noslip0|R3, s1 v7 cyan_2→A 시도|24.6SIM SUPERVISOR_STOP, 실제 지도 운반0|[3배속 개요+r1+r2](../experiments/2026-10-17-mapbuild6/videos/native-r3-failure-3x.mp4),247프레임/8.233333초/55816bytes; SHA256 `c56466da17f7ea5e06c82eb719686029eac15982ef6d53eb75ff5832ccda3572`|평가 전용 개요는 저장 상태에서 사후 MJWarp 렌더. 과거 명령 prefix의 파지 재생 실패이며 학생·LLM·실제 운반·위치 추정 채택 근거 아님. [결과](../experiments/2026-10-17-mapbuild6/README.md).|

@@ -1,0 +1,38 @@
+{
+  "status": "NOT_READY",
+  "goal_completed": false,
+  "actual_transport_paths": 0,
+  "rounds_used": 3,
+  "selected_estimator": null,
+  "rbpf_default": "off",
+  "capture_source": "c7477b1f64910f498b52e1697488c28b2c4569e1",
+  "sim_s": 24.6,
+  "frames": 247,
+  "measured_path_m": 0.8392993103640173,
+  "valid_task_checkpoints": 0,
+  "input_static_boundary_admitted": false,
+  "post_round_anchor_guard": "9c4f171c5; not physically rerun",
+  "primary_result": "failed pickup command replay; actual map transport not entered; LK/RBPF adoption cannot be decided",
+  "reference": "chassis SE2; initial-only alignment; scale=1; prefix metrics in results/r3-summary.json",
+  "reproduction": "reproduce.json",
+  "raw": "/home/ugrp/ugrp-sim/runs/mapbuild6",
+  "rejection_table": "/Users/changmin/projects/ugrp-wt/mapbuild1/experiments/2026-10-17-mapbuild6/rejection_table.json",
+  "remaining": [
+    "native closed-loop teacher route",
+    "own RGB map registration",
+    "qualified loaded camera transform",
+    "metre-scale route/door/arrival/return/setdown-lookaround scoring",
+    "same-native success video"
+  ],
+  "validation": {
+    "non_physics_pytest_passed": 5,
+    "physical_success": false,
+    "merge": false
+  },
+  "host_shutdown": {
+    "status": "TERMINATED",
+    "kst": "2026-10-17T01:34:44.069000+09:00",
+    "receipt": "operations/gcp5-after-stop.json",
+    "preflight": "operations/close-preflight.json"
+  }
+}

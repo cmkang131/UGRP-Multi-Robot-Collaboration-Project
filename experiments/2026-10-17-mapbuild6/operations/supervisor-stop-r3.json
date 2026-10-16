@@ -1,0 +1,31 @@
+{
+  "status": "SUPERVISOR_STOP",
+  "task": "mapbuild6",
+  "source_sha": "c7477b1f6",
+  "pid": 4160,
+  "utc": "2026-10-16T15:53:40.171965+00:00",
+  "category": "PHYSICAL_REPLAY_FAILURE",
+  "reason": "cargo remained on floor after archived lift and lift_settle commands",
+  "blocked_object": "cargo_cyan_2",
+  "minimum_gap_m": null,
+  "gap_status": "not_measured",
+  "evaluation_only": true,
+  "basis": {
+    "cargo_center_z": 0.015892399474978447,
+    "original_box_half_height_m": 0.016,
+    "original_teacher_min_lift_clearance_m": 0.012,
+    "source": "6f057f7e saved result.criteria.min_clearance_m and sim.zone_arena.BOX_HALF; no new criterion",
+    "progress": {
+      "evaluation_only": true,
+      "sim_s": 24.0,
+      "phase": "hold",
+      "cargo_xyz": [
+        0.3943411111831665,
+        -2.4489269256591797,
+        0.015892399474978447
+      ]
+    }
+  },
+  "scope": "stops owned failed replay; no GT passed to estimator or action correction",
+  "root_cause": "unassigned pending saved trajectory and >=6 own frames"
+}

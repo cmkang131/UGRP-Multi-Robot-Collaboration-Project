@@ -1,0 +1,76 @@
+{
+  "status": "PHYSICAL_REPLAY_FAILURE",
+  "frames": 247,
+  "source": "saved native states after prediction seal",
+  "lift": {
+    "n": 104,
+    "max_minimum_box_z_m": -0.00010760124466527993,
+    "original_teacher_required_clearance_m": 0.012,
+    "qualifying_frames": 0
+  },
+  "close": {
+    "n": 12,
+    "minimum_surface_gap_lower_bound_m": 0.0,
+    "provably_separated_both_fingers_frames": 0
+  },
+  "intervals": [
+    {
+      "reason": "measured",
+      "n": 75,
+      "xy_residual_sum_m": 0.21590963929834284,
+      "xy_residual_p95_m": 0.006674151126110258,
+      "yaw_residual_sum_deg": 8.652284122288124,
+      "category": "interval_motion_residual",
+      "blocked_object": "own_camera_support",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "reason": "unknown_rigid_consensus",
+      "n": 26,
+      "xy_residual_sum_m": 0.07659060249775279,
+      "xy_residual_p95_m": 0.004056329662174752,
+      "yaw_residual_sum_deg": 5.299037369092438,
+      "category": "interval_motion_residual",
+      "blocked_object": "own_camera_support",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "reason": "unknown_servo_change",
+      "n": 51,
+      "xy_residual_sum_m": 0.053666943072956545,
+      "xy_residual_p95_m": 0.004141723205898409,
+      "yaw_residual_sum_deg": 6.503106271419854,
+      "category": "interval_motion_residual",
+      "blocked_object": "own_camera_support",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "reason": "unknown_loaded_or_unknown_load_not_qualified",
+      "n": 94,
+      "xy_residual_sum_m": 0.05111501280670934,
+      "xy_residual_p95_m": 0.0032104645762560074,
+      "yaw_residual_sum_deg": 3.683472961269742,
+      "category": "interval_motion_residual",
+      "blocked_object": "own_camera_support",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    }
+  ],
+  "interpretation": "residual sums diagnose intervals, not an additive decomposition of final SE2 error",
+  "cpu_physics_steps": 0,
+  "control_feedback": 0,
+  "parameter_fitting": 0,
+  "sources": {
+    "/home/ugrp/ugrp-sim/runs/mapbuild6/recording-r3/eval-state.npz": "f32e420c9eaf270374e1ed9038592d29608023b64b487b0ef44f6efbed0604da",
+    "/home/ugrp/ugrp-sim/runs/mapbuild6/recording-r3/scene.xml": "555b33d7e05b2bf9de013c8b42ecde555613f3af1cb55bd3759ce1fdc6440d0d",
+    "/home/ugrp/ugrp-sim/runs/mapbuild6/replay-r3/prediction-seal.json": "64c1087920ca64307bfa3cf018d2f67ceb16beb3fac503c0cc171f0cec0609bc",
+    "/home/ugrp/ugrp-sim/src/mapbuild6-c7477b1f6/experiments/2026-10-17-mapbuild6/pickup-replay.json.zst": "174d5048a9c2aba5a9b8c8b055350747a13300179365461a3b3e832930858f0b"
+  },
+  "full_record": {
+    "path": "/home/ugrp/ugrp-sim/runs/mapbuild6/diagnosis-r3.json",
+    "sha256": "0e416a2028b663cdceb85a7e278a2b26094579286653f37d98367932cb8862fd"
+  }
+}
