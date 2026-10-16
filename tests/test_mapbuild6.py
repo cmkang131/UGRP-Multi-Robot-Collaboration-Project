@@ -44,3 +44,15 @@ def test_chassis_alignment_removes_only_initial_se2_not_scale():
     xy,yaw=errors(prediction,gt)
     assert np.allclose(xy,[0,1,math.sqrt(2)])
     assert np.allclose(yaw,0)
+
+
+def test_unqualified_loaded_camera_never_runs_lk(monkeypatch):
+    import sys
+    from types import SimpleNamespace
+    from scripts.mapbuild6_capture import qualified_pair
+    called=[]
+    monkeypatch.setitem(sys.modules,'harness.servo_camera_fk',SimpleNamespace(
+        transform_from_commands=lambda *a,**kw:(None,'loaded_or_unknown_load_not_qualified')))
+    monkeypatch.setitem(sys.modules,'harness.e2e_rgb_vo',SimpleNamespace(ground_pair=lambda *a:called.append(a)))
+    assert qualified_pair(None,None,{1:1500})=={'status':'unknown_loaded_or_unknown_load_not_qualified'}
+    assert called==[]

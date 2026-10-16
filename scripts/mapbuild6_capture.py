@@ -51,6 +51,14 @@ def duty(drive):
     return w,duration
 
 
+def qualified_pair(before,after,servo):
+    """Preserve the original FK qualification; unknown is not a zero-motion fix."""
+    from harness.servo_camera_fk import transform_from_commands
+    from harness.e2e_rgb_vo import ground_pair
+    camera,reason=transform_from_commands(servo,camera_pose='servo_fk_v1')
+    return ground_pair(before,after,servo) if camera is not None else dict(status='unknown_'+reason)
+
+
 def build(a):
     sys.path[:0]=[str(a.renderer),str(a.renderer/'scripts'),str(ROOT),str(ROOT/'scripts')]
     os.chdir(a.renderer)
@@ -215,7 +223,7 @@ def run(a):
             delta=np.array(command_delta(previous,.1)) if previous else np.zeros(3)
             covariance=np.diag(motion_variance(delta));flow=dict(status='bootstrap')
             if old is not None:
-                flow=ground_pair(old,rgb1,{int(k):v for k,v in pwm.items()}) if pwm==own[-1]['servo'] else dict(status='unknown_servo_change')
+                flow=qualified_pair(old,rgb1,{int(k):v for k,v in pwm.items()}) if pwm==own[-1]['servo'] else dict(status='unknown_servo_change')
             increment=np.array(flow['delta']) if flow['status']=='measured' else delta
             pose=compose(pose,increment)
             own.append(dict(sequence='task-route',robot_id='r1',frame_id=tick,t=t,rgb=str(jpg.relative_to(a.output)),sha256=sha(jpg),

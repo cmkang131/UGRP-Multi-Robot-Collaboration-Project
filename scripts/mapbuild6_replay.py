@@ -29,6 +29,8 @@ def run(a):
     from harness.scene_colour_boundary import ColourBoundaryState,RELOC16_OPTION
     from mapbuild1_replay import read_frame
     from mapbuild5_replay import predicted
+    from mapbuild6_capture import qualified_pair
+    from harness.servo_camera_fk import transform_from_commands
     cv2.setNumThreads(1)
     calibration=a.vision/'experiments/2026-10-16-reloc16/colour-calibration.json'
     if hashlib.sha256(calibration.read_bytes()).hexdigest()!='a37cf96551abbfb8b38df3efc1cd61f3f357ac9eb3a1dcd0b4d9947242e4e24f':
@@ -45,11 +47,18 @@ def run(a):
         flow=dict(status='bootstrap')
         if previous is not None:
             if frame['t']<=old['t']:raise ValueError('CAUSAL_FRAMES_REQUIRED')
-            flow=ground_pair(previous,rgb,servo) if servo==last_servo else dict(status='unknown_servo_change')
+            flow=qualified_pair(previous,rgb,servo) if servo==last_servo else dict(status='unknown_servo_change')
         delta=np.array(flow['delta']) if flow['status']=='measured' else np.array(frame['command_delta'])
         covariance=np.array(flow['covariance']) if flow['status']=='measured' else np.array(frame['command_covariance'])
         pose=compose(pose,delta)
-        scan=virtual_scan(rgb,servo,state)
+        camera,reason=transform_from_commands(servo,camera_pose='servo_fk_v1')
+        if camera is None:
+            scan=dict(segments=[],features=[],camera=None,qualification=reason,
+                columns=[dict(column_index=i,status='unknown',reason=reason,range_m=None,bearing_rad=None,
+                    blocked_object='unqualified_camera_pose',minimum_gap_m=None,gap_status='not_measured') for i in range(96)],
+                work=dict(line_pair_checks=0),truth_inputs=0,unknown_as_max_range=0)
+        else:
+            scan=virtual_scan(rgb,servo,state)
         # The previous fixed-camera adapter never had moving-arm intervals.
         # During a declared command-pose change, do not admit a wall update.
         # No new fitted delay/count: exact adjacent-command equality is the
