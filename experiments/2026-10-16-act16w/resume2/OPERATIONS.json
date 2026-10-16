@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-10-16T10:29:31.988353+00:00",
+  "updated_utc": "2026-10-16T11:04:28.236170+00:00",
   "project": "ugrp-sim-b-1014",
   "account": "changmin5781@gmail.com",
   "L4_instance": "ugrp-act-l4-gcp2",
@@ -49,7 +49,9 @@
     "A/B complete10000 then validation5 via act16w_eval_batch.py, same D0 references/groups. Only then C h4, D1 DAgger20 TRAIN prefixes/current h0 targets/same stats/freshmatched10000; final40 only after completed comparisons and pre-frozen selection.",
     "If insufficient8h budget, preserve exact partial steps and unfinished cohorts. Training drains13:43Z, recording13:45Z, all own L4 use ends13:47Z; do not reset from VM reboot.",
     "Release used models with full redownload/hash/CPU loading; if no research checkpoint exists, say none, never substitute synthetic preflight.",
-    "Final model/data/source/funnel/curve records locally, PR539 draft and ops-alert under primary outputs/e2e18-admin. Preserve COORDINATOR_NOTE.md, other jobs/leases/VM."
+    "Final model/data/source/funnel/curve records locally, PR539 draft and ops-alert under primary outputs/e2e18-admin. Preserve COORDINATOR_NOTE.md, other jobs/leases/VM.",
+    "For validation tie-break, run audit_act16w_alignment.py --enabled --world-root <evaluation>/owner/world-XXX --actions <evaluation>/actor-actions.jsonl --action-format student --world-index i from qualified fullQ cwd. Saved actor states default world-root/states.npz. Aggregate alignment_rejection over all5 runs; metric fixed before any student outcome. Never inject this evaluation truth into actor.",
+    "At task end check fresh foreign leases AND non-owned UGRP processes before VM stop. If foreign work remains, leave VM running. If none, finish compact retrieval and safely stop L4 within original8h; CPU gcp2 foreign work must remain. Record actual check/result separately from helpers vm_stop_attempted=false."
   ],
   "bulk_source": "813b9113b16e382712a00b911a9dcc7c06fbd77d",
   "bulk_root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2",
@@ -69,8 +71,8 @@
   "final40_references": "/home/ugrp/ugrp-sim/runs/act16w-resume2-final40-references",
   "final40_groups": "/home/ugrp/ugrp-sim/runs/act16w-resume2-final40-groups/model-groups.json",
   "latest_worker": "82e81244340042d76b5a96eeb87b8a2a7bc6ae1a",
-  "latest_local_commit": "a6d08b6ac397cd0e3a29f3ff9c9490895d863a20",
-  "latest_deployed_worker": "a6d08b6ac397cd0e3a29f3ff9c9490895d863a20",
+  "latest_local_commit": "c567a4724df2604d275f8abaaf4885388af8e4da",
+  "latest_deployed_worker": "c567a4724df2604d275f8abaaf4885388af8e4da",
   "status_helper_latest_deployed": "bacd3256c618ef91e66bb754c20342132da4043c",
   "status_helper_monitor_uses": "24751a1ebeb6ce2e7268017b5ff388244daf254b",
   "final_status_note": "Use latest helper after cap: it distinguishes resource_cut and requires40 native audits. Old monitor is valid during normal running but final records need latest helper.",
@@ -104,5 +106,7 @@
   "parallel_scheduler_source": "a6d08b6ac397cd0e3a29f3ff9c9490895d863a20",
   "parallel_scheduler_root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-record-parallel-r1",
   "recording_active_worlds": 38,
-  "recording_pending_worlds": 0
+  "recording_pending_worlds": 0,
+  "finalize_helper_source": "ef267b521ba119dc74b172afdfa5702e9753240d",
+  "alignment_helper_source": "c567a4724df2604d275f8abaaf4885388af8e4da"
 }
