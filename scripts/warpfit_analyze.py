@@ -151,6 +151,7 @@ def main():
         argv=r['reproduce'];case=argv[argv.index('--case')+1] if '--case' in argv else 'tape'
         kind='box' if 'box' in folder.name else 'beam' if 'beam' in folder.name else 'drive'
         row['kind']=kind;row['case']=case;row['protocol']=protocol(r)
+        row['cohort_repeat']=2 if '/R2-box-repeat2/' in str(folder) else 1
         if r.get('completed') and not r.get('cap_end'):
             m,meta,f=models[row['protocol']][kind]
             if kind in ('box','beam'):

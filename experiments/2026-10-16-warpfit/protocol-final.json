@@ -58,5 +58,14 @@
   "rejection_table": "/Users/changmin/projects/ugrp-wt/gcp6setup/experiments/2026-10-16-warpfit/rejection_table.json",
   "raw": "gcp6:/home/ugrp/ugrp-sim/runs/warpfit",
   "analysis": "gcp2:/home/ugrp/ugrp-sim/ops-reviews/warpfit",
-  "trial_scope": "repeated same fixture across batch worlds, not independent randomized task trials"
+  "trial_scope": "repeated same fixture across batch worlds, not independent randomized task trials",
+  "last_revised_utc": "2026-10-16T12:42:04.062971+00:00",
+  "count_revision_reason": "distinguish requested30 contact/lift/hold trajectories from30 temporal hold frames",
+  "known_at_count_revision": "first N16 box batch complete; repeat2 and N64 not yet submitted; no profile retuning",
+  "requested_box_trials": 30,
+  "box_trial_order": {
+    "N16": "firstbatch worlds0..15 then repeat2 worlds0..13; all32 retained",
+    "N64": "worlds0..29; all64 retained"
+  },
+  "paired_jobs": 32
 }

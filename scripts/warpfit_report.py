@@ -22,7 +22,7 @@ def main():
     for r in selected:
         entry={k:r.get(k) for k in ('path','round','nworld','kind','case','profile','status','completed','HOST_ERROR','cap_end',
             'sim_s','physical_gpu_ms_per_step','wall_per_sim_s','amortized_wall_per_world_sim_s','runtime_wall_s','setup_jit_s',
-            'loaded_contact_rate','fully_retained_worlds','hold_contact_rate','acceptance_sample_rate','slip_p95_mm','max_ncon','max_nefc','error','rejection_category')}
+            'loaded_contact_rate','fully_retained_worlds','hold_contact_rate','acceptance_sample_rate','slip_p95_mm','max_ncon','max_nefc','error','rejection_category','cohort_repeat')}
         if r.get('worlds'):
             entry['height_min_mm']=min(w['height_m']['min'] for w in r['worlds'])*1000
             entry['tilt_max_deg']=max(w['tilt_deg']['max'] for w in r['worlds'])
@@ -58,11 +58,28 @@ def main():
                 entry['drive_actual_mm']=med([v['translation_mm'] for v in reference])
                 pred=reference[0]['v122_delta']
                 entry['drive_predicted_mm']=None if pred is None else float(np.linalg.norm(pred[:2])*1000)
-    terminal=len(selected)==28 and all(r['status'] in ('complete','HOST_ERROR') for r in selected)
+    box30=[]
+    for n in (16,64):
+        for profile in sorted({r['profile'] for r in selected}):
+            cases=sorted([r for r in selected if r['nworld']==n and r['profile']==profile and r['kind']=='box'],
+                         key=lambda r:r.get('cohort_repeat',1))
+            trials=[dict(path=r['path'],repeat=r.get('cohort_repeat',1),**w) for r in cases for w in r.get('worlds',[])]
+            # User requested30 contact/lift/hold attempts. Fixed index order,
+            # including all first-batch worlds before repeat2, never cherry-pick.
+            chosen=trials[:30]
+            box30.append(dict(nworld=n,profile=profile,available_world_trajectories=len(trials),requested=30,selected=len(chosen),
+                selection=[dict(repeat=w['repeat'],world=w['world'],raw=w['path']) for w in chosen],
+                loaded_retained=sum(w['loaded_contact_samples']==w['hold_samples'] for w in chosen),
+                strict_C_quantile_retained=sum(w.get('pass_samples',0)==w['hold_samples'] for w in chosen),
+                slip_p95_mm=None if not chosen else float(np.percentile([w['slip_m']['p95']*1000 for w in chosen],95)),
+                scope='same fixed initial condition, separate batch worlds; not independent random-seed trials'))
+    terminal=len(selected)==32 and all(r['status'] in ('complete','HOST_ERROR') for r in selected)
     errors=sum(bool(r['HOST_ERROR']) for r in selected)
     summary=dict(status=('comparison_complete_with_rejections' if errors else 'complete') if terminal else 'partial',
-        expected_paired_jobs=28,recorded_paired_jobs=len(selected),completed_paired_jobs=sum(bool(r['completed']) for r in selected),
+        expected_paired_jobs=32,recorded_paired_jobs=len(selected),completed_paired_jobs=sum(bool(r['completed']) for r in selected),
         rejected_paired_jobs=errors,
+        box30=[{k:v for k,v in row.items() if k!='selection'} for row in box30],
+        box30_selection_file='box30-selection.json',
         rows=compact,drive_file='drive-summary.json',drive_csv='drive-table.csv',
         drive_rows=len(pulses),thresholds=json.loads((a.analysis/'thresholds.json').read_text()),
         world_scope='same fixed fixture repeated; not independent random-seed task trials',
@@ -72,6 +89,8 @@ def main():
         default_changes=0,adopted=False,teacher_gate_rerun_required=True)
     (a.output/'summary.json').write_text(json.dumps(summary,indent=2,allow_nan=False)+'\n')
     (a.output/'drive-summary.json').write_text(json.dumps(pulses,indent=2,allow_nan=False)+'\n')
+    (a.output/'box30-selection.json').write_text(json.dumps([
+        {k:row[k] for k in ('nworld','profile','selection')} for row in box30],indent=2)+'\n')
     fields=sorted(set().union(*(r.keys() for r in pulses))) if pulses else ['status']
     with (a.output/'drive-table.csv').open('w') as f:
         writer=csv.DictWriter(f,fieldnames=fields);writer.writeheader();writer.writerows(pulses)
@@ -82,11 +101,12 @@ def main():
         retained='해당없음' if r.get('fully_retained_worlds') is None else f"{r['fully_retained_worlds']}/{r['nworld']}"
         slip=r.get('slip_p95_mm')
         actual='해당없음' if r.get('drive_actual_mm') is None else num(r['drive_actual_mm'])+'/'+num(r['drive_predicted_mm'])
-        table.append('|'+ '|'.join([str(r['nworld']),r['kind']+'/'+r['case'],r['profile'],num(r['physical_gpu_ms_per_step']),
+        label=r['kind']+'/'+r['case']+('/repeat2' if r.get('cohort_repeat',1)==2 else '')
+        table.append('|'+ '|'.join([str(r['nworld']),label,r['profile'],num(r['physical_gpu_ms_per_step']),
             num(r['wall_per_sim_s']),num(r['amortized_wall_per_world_sim_s']),retained,num(None if not slip else slip['p95']),
             actual,num(r.get('tilt_max_deg'))])+'|')
     table+=['','유지는 양쪽(빔은 네) 접촉력 양수와 기존 교사12mm 들기 조건이다. 미끄럼 열은 세계별 시간 P95의 세계간 P95다.',
-        '상자는 세계당30표본·3초, 빔은3표본·0.3초 유지다. 같은 초기 조건의 복제이며 독립 일반화 성공률이 아니다.',
+        '상자는 세계당30표본·3초, 빔은3표본·0.3초 유지다. 별도 box30에는 N16 두 배치32궤적 중 순서상 처음30, N64 처음30궤적의 결과를 싣는다. 같은 초기 조건이며 독립 일반화 성공률이 아니다.',
         '주행 요약은group16/group64 전진100ms, tail2 횡60ms 뒤1초 정지다. 전체18펄스·회전각·펄스 끝/정지 후는drive-table.csv에 있다. 초기 관통 때문에 보정에 쓸 수 없다.',
         'v122는 등록된 짧은 펄스만 쓰며,1초 정지 뒤 비교에는 등록곡선0.2초 끝값을 유지한다.0.2초 이후 drift를 예측한 값은 아니다.',
         'C 분포의 높이 P05/미끄럼 P95 동시 비교는 별도 JSON에 있으며 유지 판정과 혼동하지 않는다. 기본값·채택 변경0이다.']
