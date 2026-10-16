@@ -1,0 +1,170 @@
+{
+  "utc": "2026-10-16T10:45:27.580799+00:00",
+  "source_sha": "175281c8922453465f8bf32707e22988e78b8812",
+  "source_raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-r2",
+  "snapshot": "/home/ugrp/ugrp-sim/runs/warp8-r2-first30/beam40-r2",
+  "snapshot_SHA_equal_N": 1277,
+  "analyzer_sha256": "31d1f5d36bb8f53db2d892e29d39bf36a07772606b4196e9179f1326eb683bb0",
+  "funnel": [
+    {
+      "stage": "requested",
+      "passed_cumulative_N": 40,
+      "rejected_N": 0
+    },
+    {
+      "stage": "initialized",
+      "passed_cumulative_N": 40,
+      "rejected_N": 0
+    },
+    {
+      "stage": "completed_teacher_trial",
+      "passed_cumulative_N": 7,
+      "rejected_N": 0,
+      "pending_N": 33
+    },
+    {
+      "stage": "physical_success",
+      "passed_cumulative_N": 7,
+      "rejected_N": 0
+    }
+  ],
+  "reason_distribution": [
+    {
+      "reason_category": "peer_destination_reservation",
+      "blocked_object": "reserved:teal_stance",
+      "min_gap_m": -0.23464355610806076,
+      "record_occurrences": 5270
+    },
+    {
+      "reason_category": "peer_goal",
+      "blocked_object": "r2",
+      "min_gap_m": -0.10046995945664214,
+      "record_occurrences": 176
+    },
+    {
+      "reason_category": "cargo_goal",
+      "blocked_object": "beam_1",
+      "min_gap_m": 0.05299999999999991,
+      "record_occurrences": 156
+    },
+    {
+      "reason_category": "reservation_goal",
+      "blocked_object": "reserved:teal_stance",
+      "min_gap_m": -0.3248208657578795,
+      "record_occurrences": 139
+    },
+    {
+      "reason_category": "peer_goal",
+      "blocked_object": "r1",
+      "min_gap_m": -0.1649075244666828,
+      "record_occurrences": 125
+    },
+    {
+      "reason_category": "peer_goal",
+      "blocked_object": "r3",
+      "min_gap_m": -0.26725140870068603,
+      "record_occurrences": 90
+    },
+    {
+      "reason_category": "checked_virtual_start",
+      "blocked_object": "reserved:teal_stance",
+      "min_gap_m": -0.23464355610806076,
+      "record_occurrences": 3
+    },
+    {
+      "reason_category": "connector_feasible",
+      "blocked_object": "none:all_checks_passed",
+      "min_gap_m": 0.003924156867507966,
+      "record_occurrences": 3
+    },
+    {
+      "reason_category": "prediction_horizon_elapsed",
+      "blocked_object": "beam_1",
+      "min_gap_m": 0.6837172155736861,
+      "record_occurrences": 1
+    }
+  ],
+  "phase_distribution": [
+    {
+      "phases": {
+        "r1": "pick",
+        "r2": "pick"
+      },
+      "N": 10
+    },
+    {
+      "phases": {
+        "r1": "complete",
+        "r2": "complete"
+      },
+      "N": 9
+    },
+    {
+      "phases": {
+        "r1": "approach",
+        "r2": "ready"
+      },
+      "N": 7
+    },
+    {
+      "phases": {
+        "r1": "align",
+        "r2": "ready"
+      },
+      "N": 5
+    },
+    {
+      "phases": {
+        "r1": "ready",
+        "r2": "align"
+      },
+      "N": 2
+    },
+    {
+      "phases": {
+        "r1": "ready",
+        "r2": "approach"
+      },
+      "N": 2
+    },
+    {
+      "phases": {
+        "r1": "search",
+        "r2": "ready"
+      },
+      "N": 2
+    },
+    {
+      "phases": {
+        "r1": "pick",
+        "r2": "ready"
+      },
+      "N": 1
+    },
+    {
+      "phases": {
+        "r1": "ready",
+        "r2": "ready"
+      },
+      "N": 1
+    },
+    {
+      "phases": {
+        "r1": "align",
+        "r2": "align"
+      },
+      "N": 1
+    }
+  ],
+  "reproduce": [
+    "python3",
+    "/home/ugrp/ugrp-sim/ops-reviews/warp8/analyze_prefix.py",
+    "--snapshot",
+    "/home/ugrp/ugrp-sim/runs/warp8-r2-first30",
+    "--batch",
+    "beam40-r2",
+    "--out",
+    "/home/ugrp/ugrp-sim/ops-reviews/warp8/R2-first30-reproduce"
+  ],
+  "scope": "live first30 diagnostic record occurrences; no unique-candidate or complete40 gate claim; choose a fresh output path when reproducing"
+}

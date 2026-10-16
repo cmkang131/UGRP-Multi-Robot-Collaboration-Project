@@ -1,0 +1,1213 @@
+{
+  "utc": "2026-10-16T10:40:31.030661+00:00",
+  "simulation_host": "gcp3",
+  "analysis_host": "gcp2_CPU",
+  "source_sha": "175281c8922453465f8bf32707e22988e78b8812",
+  "raw": "/home/ugrp/ugrp-sim/runs/warp8-r2-first30/beam40-r2",
+  "first30": {
+    "ticks": 300,
+    "active_N": 33,
+    "completed_N": 7,
+    "sim_s": 30.0,
+    "loop_wall_s": 6722.93408065,
+    "timing": {
+      "render": 86.47650808300335,
+      "readback_remap_jpeg_kinematics": 59.82272517499541,
+      "command_decode_upload": 2.8038160630038647,
+      "physics": 5978.558332767002
+    },
+    "world_sim_s": [
+      30.0,
+      30.0,
+      30.0,
+      27.200000000000003,
+      30.0,
+      30.0,
+      27.5,
+      28.5,
+      30.0,
+      27.5,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      27.6,
+      30.0,
+      30.0,
+      24.200000000000003,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      17.400000000000002,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0
+    ],
+    "aggregate_world_sim_s": 1169.9,
+    "batch_sim_s": 30.0,
+    "per_world_wall_SIM": 5.6024450672083335,
+    "task_wall_per_SIM": 5.746588666253526,
+    "batch_wall_SIM": 224.09780268833336,
+    "scope": "first batch clock >=30 SIM; setup/compile excluded; admission denominator=batch SIM*world count",
+    "basis": "coordinator decision 2026-10-16, user unconfirmed",
+    "block_threshold": 6.0,
+    "warning_threshold": 3.5,
+    "speed_gate_fail": false
+  },
+  "live_snapshot_progress": {
+    "ticks": 300,
+    "active_N": 33,
+    "completed_N": 7,
+    "sim_s": 30.0,
+    "loop_wall_s": 6722.93408065,
+    "timing": {
+      "render": 86.47650808300335,
+      "readback_remap_jpeg_kinematics": 59.82272517499541,
+      "command_decode_upload": 2.8038160630038647,
+      "physics": 5978.558332767002
+    },
+    "world_sim_s": [
+      30.0,
+      30.0,
+      30.0,
+      27.200000000000003,
+      30.0,
+      30.0,
+      27.5,
+      28.5,
+      30.0,
+      27.5,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      27.6,
+      30.0,
+      30.0,
+      24.200000000000003,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      17.400000000000002,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0
+    ],
+    "aggregate_world_sim_s": 1169.9,
+    "batch_sim_s": 30.0,
+    "per_world_wall_SIM": 5.6024450672083335,
+    "task_wall_per_SIM": 5.746588666253526,
+    "batch_wall_SIM": 224.09780268833336
+  },
+  "snapshot_SHA_equal_N": 1277,
+  "snapshot_skipped": [],
+  "source_files_changed_during_read": [],
+  "phase_distribution": [
+    {
+      "phases": {
+        "r1": "pick",
+        "r2": "pick"
+      },
+      "N": 10
+    },
+    {
+      "phases": {
+        "r1": "complete",
+        "r2": "complete"
+      },
+      "N": 9
+    },
+    {
+      "phases": {
+        "r1": "approach",
+        "r2": "ready"
+      },
+      "N": 7
+    },
+    {
+      "phases": {
+        "r1": "align",
+        "r2": "ready"
+      },
+      "N": 5
+    },
+    {
+      "phases": {
+        "r1": "ready",
+        "r2": "align"
+      },
+      "N": 2
+    },
+    {
+      "phases": {
+        "r1": "ready",
+        "r2": "approach"
+      },
+      "N": 2
+    },
+    {
+      "phases": {
+        "r1": "search",
+        "r2": "ready"
+      },
+      "N": 2
+    },
+    {
+      "phases": {
+        "r1": "pick",
+        "r2": "ready"
+      },
+      "N": 1
+    },
+    {
+      "phases": {
+        "r1": "ready",
+        "r2": "ready"
+      },
+      "N": 1
+    },
+    {
+      "phases": {
+        "r1": "align",
+        "r2": "align"
+      },
+      "N": 1
+    }
+  ],
+  "worlds": [
+    {
+      "world": "world-000",
+      "raw_status": "running",
+      "phase_progress_sim_s": 29.0,
+      "phases": {
+        "r1": "align",
+        "r2": "ready"
+      },
+      "diagnostic_sim_s": 29.0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1728,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "reason_source": "diagnostic-snapshot teachers, falling back to terminal raw teachers"
+    },
+    {
+      "world": "world-001",
+      "raw_status": "running",
+      "phase_progress_sim_s": 29.0,
+      "phases": {
+        "r1": "approach",
+        "r2": "ready"
+      },
+      "diagnostic_sim_s": 29.0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1318,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "reason_source": "diagnostic-snapshot teachers, falling back to terminal raw teachers"
+    },
+    {
+      "world": "world-002",
+      "raw_status": "running",
+      "phase_progress_sim_s": 29.0,
+      "phases": {
+        "r1": "ready",
+        "r2": "align"
+      },
+      "diagnostic_sim_s": 29.0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1224,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "reason_source": "diagnostic-snapshot teachers, falling back to terminal raw teachers"
+    },
+    {
+      "world": "world-003",
+      "raw_status": "complete",
+      "phase_progress_sim_s": 27.0,
+      "phases": {
+        "r1": "complete",
+        "r2": "complete"
+      },
+      "diagnostic_sim_s": 27.0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 984,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "reason_source": "diagnostic-snapshot teachers, falling back to terminal raw teachers"
+    },
+    {
+      "world": "world-004",
+      "raw_status": "running",
+      "phase_progress_sim_s": 29.0,
+      "phases": {
+        "r1": "ready",
+        "r2": "approach"
+      },
+      "diagnostic_sim_s": 29.0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1118,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "reason_source": "diagnostic-snapshot teachers, falling back to terminal raw teachers"
+    },
+    {
+      "world": "world-005",
+      "raw_status": "running",
+      "phase_progress_sim_s": 29.0,
+      "phases": {
+        "r1": "align",
+        "r2": "ready"
+      },
+      "diagnostic_sim_s": 29.0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1660,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "reason_source": "diagnostic-snapshot teachers, falling back to terminal raw teachers"
+    },
+    {
+      "world": "world-006",
+      "raw_status": "complete",
+      "phase_progress_sim_s": 27.0,
+      "phases": {
+        "r1": "complete",
+        "r2": "complete"
+      },
+      "diagnostic_sim_s": 27.0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 922,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "reason_source": "diagnostic-snapshot teachers, falling back to terminal raw teachers"
+    },
+    {
+      "world": "world-007",
+      "raw_status": "complete",
+      "phase_progress_sim_s": 28.0,
+      "phases": {
+        "r1": "complete",
+        "r2": "complete"
+      },
+      "diagnostic_sim_s": 28.0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 755,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "reason_source": "diagnostic-snapshot teachers, falling back to terminal raw teachers"
+    },
+    {
+      "world": "world-008",
+      "raw_status": "running",
+      "phase_progress_sim_s": 29.0,
+      "phases": {
+        "r1": "pick",
+        "r2": "pick"
+      },
+      "diagnostic_sim_s": 29.0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1002,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "reason_source": "diagnostic-snapshot teachers, falling back to terminal raw teachers"
+    },
+    {
+      "world": "world-009",
+      "raw_status": "complete",
+      "phase_progress_sim_s": 27.0,
+      "phases": {
+        "r1": "complete",
+        "r2": "complete"
+      },
+      "diagnostic_sim_s": 27.0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1136,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "reason_source": "diagnostic-snapshot teachers, falling back to terminal raw teachers"
+    },
+    {
+      "world": "world-010",
+      "raw_status": "running",
+      "phase_progress_sim_s": 29.0,
+      "phases": {
+        "r1": "approach",
+        "r2": "ready"
+      },
+      "diagnostic_sim_s": 29.0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1575,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "reason_source": "diagnostic-snapshot teachers, falling back to terminal raw teachers"
+    },
+    {
+      "world": "world-011",
+      "raw_status": "running",
+      "phase_progress_sim_s": 29.0,
+      "phases": {
+        "r1": "approach",
+        "r2": "ready"
+      },
+      "diagnostic_sim_s": 29.0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 973,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "reason_source": "diagnostic-snapshot teachers, falling back to terminal raw teachers"
+    },
+    {
+      "world": "world-012",
+      "raw_status": "running",
+      "phase_progress_sim_s": 29.0,
+      "phases": {
+        "r1": "approach",
+        "r2": "ready"
+      },
+      "diagnostic_sim_s": 29.0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1156,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "reason_source": "diagnostic-snapshot teachers, falling back to terminal raw teachers"
+    },
+    {
+      "world": "world-013",
+      "raw_status": "running",
+      "phase_progress_sim_s": 29.0,
+      "phases": {
+        "r1": "pick",
+        "r2": "ready"
+      },
+      "diagnostic_sim_s": 29.0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1285,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "reason_source": "diagnostic-snapshot teachers, falling back to terminal raw teachers"
+    },
+    {
+      "world": "world-014",
+      "raw_status": "running",
+      "phase_progress_sim_s": 29.0,
+      "phases": {
+        "r1": "complete",
+        "r2": "complete"
+      },
+      "diagnostic_sim_s": 29.0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 801,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "reason_source": "diagnostic-snapshot teachers, falling back to terminal raw teachers"
+    },
+    {
+      "world": "world-015",
+      "raw_status": "running",
+      "phase_progress_sim_s": 29.0,
+      "phases": {
+        "r1": "ready",
+        "r2": "approach"
+      },
+      "diagnostic_sim_s": 29.0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1372,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "reason_source": "diagnostic-snapshot teachers, falling back to terminal raw teachers"
+    },
+    {
+      "world": "world-016",
+      "raw_status": "complete",
+      "phase_progress_sim_s": 27.0,
+      "phases": {
+        "r1": "complete",
+        "r2": "complete"
+      },
+      "diagnostic_sim_s": 27.0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1037,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "reason_source": "diagnostic-snapshot teachers, falling back to terminal raw teachers"
+    },
+    {
+      "world": "world-017",
+      "raw_status": "running",
+      "phase_progress_sim_s": 29.0,
+      "phases": {
+        "r1": "pick",
+        "r2": "pick"
+      },
+      "diagnostic_sim_s": 29.0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1211,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "reason_source": "diagnostic-snapshot teachers, falling back to terminal raw teachers"
+    },
+    {
+      "world": "world-018",
+      "raw_status": "running",
+      "phase_progress_sim_s": 29.0,
+      "phases": {
+        "r1": "pick",
+        "r2": "pick"
+      },
+      "diagnostic_sim_s": 29.0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1300,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "reason_source": "diagnostic-snapshot teachers, falling back to terminal raw teachers"
+    },
+    {
+      "world": "world-019",
+      "raw_status": "complete",
+      "phase_progress_sim_s": 24.0,
+      "phases": {
+        "r1": "complete",
+        "r2": "complete"
+      },
+      "diagnostic_sim_s": 24.0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 607,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "reason_source": "diagnostic-snapshot teachers, falling back to terminal raw teachers"
+    },
+    {
+      "world": "world-020",
+      "raw_status": "running",
+      "phase_progress_sim_s": 29.0,
+      "phases": {
+        "r1": "pick",
+        "r2": "pick"
+      },
+      "diagnostic_sim_s": 29.0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1591,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "reason_source": "diagnostic-snapshot teachers, falling back to terminal raw teachers"
+    },
+    {
+      "world": "world-021",
+      "raw_status": "running",
+      "phase_progress_sim_s": 29.0,
+      "phases": {
+        "r1": "pick",
+        "r2": "pick"
+      },
+      "diagnostic_sim_s": 29.0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1014,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "reason_source": "diagnostic-snapshot teachers, falling back to terminal raw teachers"
+    },
+    {
+      "world": "world-022",
+      "raw_status": "running",
+      "phase_progress_sim_s": 29.0,
+      "phases": {
+        "r1": "pick",
+        "r2": "pick"
+      },
+      "diagnostic_sim_s": 29.0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1085,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "reason_source": "diagnostic-snapshot teachers, falling back to terminal raw teachers"
+    },
+    {
+      "world": "world-023",
+      "raw_status": "running",
+      "phase_progress_sim_s": 29.0,
+      "phases": {
+        "r1": "approach",
+        "r2": "ready"
+      },
+      "diagnostic_sim_s": 29.0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1191,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "reason_source": "diagnostic-snapshot teachers, falling back to terminal raw teachers"
+    },
+    {
+      "world": "world-024",
+      "raw_status": "running",
+      "phase_progress_sim_s": 29.0,
+      "phases": {
+        "r1": "align",
+        "r2": "ready"
+      },
+      "diagnostic_sim_s": 29.0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1141,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "reason_source": "diagnostic-snapshot teachers, falling back to terminal raw teachers"
+    },
+    {
+      "world": "world-025",
+      "raw_status": "running",
+      "phase_progress_sim_s": 29.0,
+      "phases": {
+        "r1": "pick",
+        "r2": "pick"
+      },
+      "diagnostic_sim_s": 29.0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1244,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "reason_source": "diagnostic-snapshot teachers, falling back to terminal raw teachers"
+    },
+    {
+      "world": "world-026",
+      "raw_status": "running",
+      "phase_progress_sim_s": 29.0,
+      "phases": {
+        "r1": "complete",
+        "r2": "complete"
+      },
+      "diagnostic_sim_s": 29.0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1066,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "reason_source": "diagnostic-snapshot teachers, falling back to terminal raw teachers"
+    },
+    {
+      "world": "world-027",
+      "raw_status": "running",
+      "phase_progress_sim_s": 29.0,
+      "phases": {
+        "r1": "ready",
+        "r2": "ready"
+      },
+      "diagnostic_sim_s": 29.0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1515,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "reason_source": "diagnostic-snapshot teachers, falling back to terminal raw teachers"
+    },
+    {
+      "world": "world-028",
+      "raw_status": "complete",
+      "phase_progress_sim_s": 17.0,
+      "phases": {
+        "r1": "complete",
+        "r2": "complete"
+      },
+      "diagnostic_sim_s": 17.0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 329,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "reason_source": "diagnostic-snapshot teachers, falling back to terminal raw teachers"
+    },
+    {
+      "world": "world-029",
+      "raw_status": "running",
+      "phase_progress_sim_s": 29.0,
+      "phases": {
+        "r1": "pick",
+        "r2": "pick"
+      },
+      "diagnostic_sim_s": 29.0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1581,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "reason_source": "diagnostic-snapshot teachers, falling back to terminal raw teachers"
+    },
+    {
+      "world": "world-030",
+      "raw_status": "running",
+      "phase_progress_sim_s": 29.0,
+      "phases": {
+        "r1": "pick",
+        "r2": "pick"
+      },
+      "diagnostic_sim_s": 29.0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 740,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "reason_source": "diagnostic-snapshot teachers, falling back to terminal raw teachers"
+    },
+    {
+      "world": "world-031",
+      "raw_status": "running",
+      "phase_progress_sim_s": 29.0,
+      "phases": {
+        "r1": "ready",
+        "r2": "align"
+      },
+      "diagnostic_sim_s": 29.0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1353,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "reason_source": "diagnostic-snapshot teachers, falling back to terminal raw teachers"
+    },
+    {
+      "world": "world-032",
+      "raw_status": "running",
+      "phase_progress_sim_s": 29.0,
+      "phases": {
+        "r1": "align",
+        "r2": "ready"
+      },
+      "diagnostic_sim_s": 29.0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1003,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "reason_source": "diagnostic-snapshot teachers, falling back to terminal raw teachers"
+    },
+    {
+      "world": "world-033",
+      "raw_status": "running",
+      "phase_progress_sim_s": 29.0,
+      "phases": {
+        "r1": "approach",
+        "r2": "ready"
+      },
+      "diagnostic_sim_s": 29.0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1347,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "reason_source": "diagnostic-snapshot teachers, falling back to terminal raw teachers"
+    },
+    {
+      "world": "world-034",
+      "raw_status": "running",
+      "phase_progress_sim_s": 29.0,
+      "phases": {
+        "r1": "align",
+        "r2": "ready"
+      },
+      "diagnostic_sim_s": 29.0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 804,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "reason_source": "diagnostic-snapshot teachers, falling back to terminal raw teachers"
+    },
+    {
+      "world": "world-035",
+      "raw_status": "running",
+      "phase_progress_sim_s": 29.0,
+      "phases": {
+        "r1": "approach",
+        "r2": "ready"
+      },
+      "diagnostic_sim_s": 29.0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1274,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "reason_source": "diagnostic-snapshot teachers, falling back to terminal raw teachers"
+    },
+    {
+      "world": "world-036",
+      "raw_status": "running",
+      "phase_progress_sim_s": 29.0,
+      "phases": {
+        "r1": "pick",
+        "r2": "pick"
+      },
+      "diagnostic_sim_s": 29.0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1179,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "reason_source": "diagnostic-snapshot teachers, falling back to terminal raw teachers"
+    },
+    {
+      "world": "world-037",
+      "raw_status": "running",
+      "phase_progress_sim_s": 29.0,
+      "phases": {
+        "r1": "align",
+        "r2": "align"
+      },
+      "diagnostic_sim_s": 29.0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1342,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "reason_source": "diagnostic-snapshot teachers, falling back to terminal raw teachers"
+    },
+    {
+      "world": "world-038",
+      "raw_status": "running",
+      "phase_progress_sim_s": 29.0,
+      "phases": {
+        "r1": "search",
+        "r2": "ready"
+      },
+      "diagnostic_sim_s": 29.0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 850,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "reason_source": "diagnostic-snapshot teachers, falling back to terminal raw teachers"
+    },
+    {
+      "world": "world-039",
+      "raw_status": "running",
+      "phase_progress_sim_s": 29.0,
+      "phases": {
+        "r1": "search",
+        "r2": "ready"
+      },
+      "diagnostic_sim_s": 29.0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 832,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "reason_source": "diagnostic-snapshot teachers, falling back to terminal raw teachers"
+    }
+  ],
+  "completed_recounts": [
+    {
+      "world": "world-003",
+      "recount": {
+        "success": true,
+        "dense_evaluator_rows": true,
+        "evaluator_N": 273,
+        "max_evaluator_gap_s": 0.10000000000000142,
+        "terminal_hold_s": 3.0,
+        "max_hold_s": 3.0,
+        "teacher_success_n": 2,
+        "source_success": true,
+        "agrees": true
+      },
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 984,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "sim_s": 27.200000000000003
+    },
+    {
+      "world": "world-006",
+      "recount": {
+        "success": true,
+        "dense_evaluator_rows": true,
+        "evaluator_N": 276,
+        "max_evaluator_gap_s": 0.10000000000000142,
+        "terminal_hold_s": 3.0,
+        "max_hold_s": 3.0,
+        "teacher_success_n": 2,
+        "source_success": true,
+        "agrees": true
+      },
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 922,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "sim_s": 27.5
+    },
+    {
+      "world": "world-007",
+      "recount": {
+        "success": true,
+        "dense_evaluator_rows": true,
+        "evaluator_N": 286,
+        "max_evaluator_gap_s": 0.10000000000000142,
+        "terminal_hold_s": 3.0,
+        "max_hold_s": 3.0,
+        "teacher_success_n": 2,
+        "source_success": true,
+        "agrees": true
+      },
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 755,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "sim_s": 28.5
+    },
+    {
+      "world": "world-009",
+      "recount": {
+        "success": true,
+        "dense_evaluator_rows": true,
+        "evaluator_N": 276,
+        "max_evaluator_gap_s": 0.10000000000000142,
+        "terminal_hold_s": 3.0,
+        "max_hold_s": 3.0,
+        "teacher_success_n": 2,
+        "source_success": true,
+        "agrees": true
+      },
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1136,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "sim_s": 27.5
+    },
+    {
+      "world": "world-016",
+      "recount": {
+        "success": true,
+        "dense_evaluator_rows": true,
+        "evaluator_N": 277,
+        "max_evaluator_gap_s": 0.10000000000000142,
+        "terminal_hold_s": 3.0,
+        "max_hold_s": 3.0,
+        "teacher_success_n": 2,
+        "source_success": true,
+        "agrees": true
+      },
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1037,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "sim_s": 27.6
+    },
+    {
+      "world": "world-019",
+      "recount": {
+        "success": true,
+        "dense_evaluator_rows": true,
+        "evaluator_N": 243,
+        "max_evaluator_gap_s": 0.10000000000000142,
+        "terminal_hold_s": 3.0,
+        "max_hold_s": 3.0,
+        "teacher_success_n": 2,
+        "source_success": true,
+        "agrees": true
+      },
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 607,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "sim_s": 24.200000000000003
+    },
+    {
+      "world": "world-028",
+      "recount": {
+        "success": true,
+        "dense_evaluator_rows": true,
+        "evaluator_N": 175,
+        "max_evaluator_gap_s": 0.10000000000000142,
+        "terminal_hold_s": 3.0000000000000036,
+        "max_hold_s": 3.0000000000000036,
+        "teacher_success_n": 2,
+        "source_success": true,
+        "agrees": true
+      },
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 329,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "sim_s": 17.400000000000002
+    }
+  ],
+  "read_errors": [],
+  "reason_distribution": [
+    {
+      "reason_category": "peer_destination_reservation",
+      "blocked_object": "reserved:teal_stance",
+      "min_gap_m": -0.23464355610806076,
+      "record_occurrences": 5270
+    },
+    {
+      "reason_category": "peer_goal",
+      "blocked_object": "r2",
+      "min_gap_m": -0.10046995945664214,
+      "record_occurrences": 176
+    },
+    {
+      "reason_category": "cargo_goal",
+      "blocked_object": "beam_1",
+      "min_gap_m": 0.05299999999999991,
+      "record_occurrences": 156
+    },
+    {
+      "reason_category": "reservation_goal",
+      "blocked_object": "reserved:teal_stance",
+      "min_gap_m": -0.3248208657578795,
+      "record_occurrences": 139
+    },
+    {
+      "reason_category": "peer_goal",
+      "blocked_object": "r1",
+      "min_gap_m": -0.1649075244666828,
+      "record_occurrences": 125
+    },
+    {
+      "reason_category": "peer_goal",
+      "blocked_object": "r3",
+      "min_gap_m": -0.26725140870068603,
+      "record_occurrences": 90
+    },
+    {
+      "reason_category": "checked_virtual_start",
+      "blocked_object": "reserved:teal_stance",
+      "min_gap_m": -0.23464355610806076,
+      "record_occurrences": 3
+    },
+    {
+      "reason_category": "connector_feasible",
+      "blocked_object": "none:all_checks_passed",
+      "min_gap_m": 0.003924156867507966,
+      "record_occurrences": 3
+    },
+    {
+      "reason_category": "prediction_horizon_elapsed",
+      "blocked_object": "beam_1",
+      "min_gap_m": 0.6837172155736861,
+      "record_occurrences": 1
+    }
+  ],
+  "funnel": [
+    {
+      "stage": "requested",
+      "passed_cumulative_N": 40,
+      "rejected_N": 0
+    },
+    {
+      "stage": "initialized",
+      "passed_cumulative_N": 40,
+      "rejected_N": 0
+    },
+    {
+      "stage": "completed_teacher_trial",
+      "passed_cumulative_N": 7,
+      "rejected_N": 0,
+      "pending_N": 33
+    },
+    {
+      "stage": "physical_success",
+      "passed_cumulative_N": 7,
+      "rejected_N": 0
+    }
+  ],
+  "scope": "live per-file prefix, no full40 gate verdict; reasons are record occurrences, not unique candidate IDs; partial trailing JSONL rows remain identified in read_errors"
+}

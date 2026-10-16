@@ -100,6 +100,8 @@ def main():
             summary = dict(source_summary, native_initialization_only_sim_s=[origin])
             (derived/'summary.json').write_text(json.dumps(summary))
             terminal_rows=[]
+            tail_jpeg_pairs=0
+            tail_missing_state_times=[]
             ring=world/'tail-ring-10hz'
             if a.terminal or a.tail_preview:
                 # Existing ring is100 samples=10 SIM seconds at10Hz. Older
@@ -110,9 +112,14 @@ def main():
                         image=ring/Path(item['path']).name
                         if image.exists() and hashlib.sha256(image.read_bytes()).hexdigest()==item['sha256']:
                             files[rid]=str(image)
-                    if len(files)==len(record['files']) and round(record['world_t']*10) in index:
-                        terminal_rows.append(dict(world_t=record['world_t'],files=files))
-                assert len(terminal_rows)==100, 'terminal last10 SIM/10Hz evidence incomplete'
+                    if len(files)==len(record['files']):
+                        tail_jpeg_pairs+=1
+                        if round(record['world_t']*10) in index:
+                            terminal_rows.append(dict(world_t=record['world_t'],files=files))
+                        else:
+                            tail_missing_state_times.append(record['world_t'])
+                if a.terminal:
+                    assert len(terminal_rows)==100, 'terminal last10 SIM/10Hz evidence incomplete'
             (folder/'tail-10hz.json').write_text(json.dumps(terminal_rows))
             playback = ROOT/'ops-reviews/warp8/playback'/a.snapshot.name/f'{a.label}-world-{world_id:03d}'
             subprocess.run([str(ROOT/'ugrp/.venv-sim/bin/python'),
@@ -128,7 +135,9 @@ def main():
                 native_evaluator_overlap_exact_N=overlap,authoritative_backend_origin=origin,
                 terminal_10hz_scope='not included in this nonterminal preview; native recording rings remain on gcp3')
             if a.tail_preview:
-                info['terminal_10hz_scope']='100 hash-verified native JPEG pairs from live prefix; not a terminal outcome'
+                info['terminal_10hz_scope']=f'{len(terminal_rows)} hash-verified native JPEG pairs with exact saved evaluator states; live prefix, not a terminal outcome'
+                info['live_tail_evidence']=dict(JPEG_pairs_verified_N=tail_jpeg_pairs,
+                    synchronized_N=len(terminal_rows),missing_saved_state_times=tail_missing_state_times)
             if a.terminal:
                 counter_path=ROOT/'ops-reviews/warp8-collect_gate.py'
                 spec=importlib.util.spec_from_file_location('counter',counter_path)

@@ -1,1 +1,1 @@
-warp8: 빔40 R2실행중(08:38:49UTC,175281c89,full nv222,실패seed8318706먼저) | R1성공완료1/cap_end0/HOST_ERROR39:NVMAX128<156 | CUDA700 단독환경미재현 | release미제출 | gcp3단독·8hSTOP복원·기존14:05UTC정리유지 | 대표성공1/HOST중단1 native동기화·Mac SHA/ffprobe검증 | PR#557 DRAFT
+warp8: gcp3단독 빔40 R2진행중(175281c89/full nv222) | first30=6722.934wall/(30SIM×40)=5.6024:경고·6미만(조정자결정/사용자미확인) | first30완료7독립재계수7일치·진행33·CUDA700/NVMAX미재현 | 전체관문미완료·release미제출 | R1 HOST_ERROR39/성공완료1 별도보존 | 첫30원본/18몽타주직접검토·SHA확인 | 8hSTOP/14:05UTC정리유지 | gcp2CPU beamdiag타lease보존·L4무변경 | PR#557 DRAFT

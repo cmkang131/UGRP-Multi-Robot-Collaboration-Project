@@ -25,9 +25,12 @@ try:
  summary=counter.data(run/'summary.json');first=counter.data(run/'first30-speed.json');progress=counter.data(run/'progress.json');phases=Counter();hist=Counter();gaps={};worlds=[];complete=[]
  for folder in sorted(run.glob('world-*')):
   if not folder.is_dir():continue
-  raw=counter.data(folder/'raw/result.json',{});state=counter.data(folder/'raw/progress.json',{});pair=tuple(sorted(state.get('phases',{}).items()));phases[pair]+=1
-  worlds.append(dict(world=folder.name,raw_status=raw.get('status'),phase_progress_sim_s=state.get('sim_s'),phases=state.get('phases')))
+  raw=counter.data(folder/'raw/result.json',{});state=counter.data(folder/'raw/progress.json',{});diagnostic=counter.data(folder/'raw/diagnostic-snapshot.json',{});pair=tuple(sorted(state.get('phases',{}).items()));phases[pair]+=1
+  worlds.append(dict(world=folder.name,raw_status=raw.get('status'),phase_progress_sim_s=state.get('sim_s'),phases=state.get('phases'),diagnostic_sim_s=diagnostic.get('sim_s'),input_audit=diagnostic.get('input_audit'),reason_source='diagnostic-snapshot teachers, falling back to terminal raw teachers'))
   if raw.get('status')=='complete':complete.append(dict(world=folder.name,recount=counter.beam_recount(raw,folder/'raw'),audit=raw.get('input_audit'),sim_s=raw.get('sim_s')))
+  for reason,obj,gap in counter.reasons(diagnostic.get('teachers') or raw.get('teachers',{})):
+   hist[(reason,obj)]+=1
+   if isinstance(gap,(int,float)) and __import__('math').isfinite(gap):gaps[(reason,obj)]=min(gaps.get((reason,obj),float('inf')),gap)
   for trace in sorted((folder/'raw').glob('teacher-*.jsonl*')):
    if trace.suffix=='.zst' and trace.with_suffix('').exists():continue
    for row in counter.rows(trace.with_suffix('') if trace.suffix=='.zst' else trace):
