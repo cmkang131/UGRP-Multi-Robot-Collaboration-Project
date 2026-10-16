@@ -23,10 +23,10 @@ def remote(name, command):
 
 assert remote('installation', 'test "$(cat /home/ugrp/ugrp-sim/setup/install.EXIT)" = 0; cat /home/ugrp/ugrp-sim/setup/install.EXIT').strip()=='0'
 remote('smoke-command', 'cd /home/ugrp/ugrp-sim/setup && /home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python smoke.py smoke-result.json > smoke.log 2>&1')
-remote('act-smoke-command', 'cd /home/ugrp/ugrp-sim/setup && /home/ugrp/ugrp-rl1b-act-env/bin/python act_smoke.py act-smoke-result.json > act-smoke.log 2>&1')
+remote('act-smoke-command', 'cd /home/ugrp/ugrp-sim/setup && /home/ugrp/ugrp-rl1b-act-env/bin/python beamact_smoke.py act-smoke-result.json > act-smoke.log 2>&1')
 remote('audit-command', 'cd /home/ugrp/ugrp-sim/setup && sudo python3 audit_guest.py guest-audit.json')
 files=['smoke-result.json','guest-audit.json','warp-freeze.txt','cpu-freeze.txt','act-freeze.txt','act-smoke-result.json']
-sources=['setup_guest.sh','smoke.py','audit_guest.py','act_smoke.py','act-requirements.txt']
+sources=['setup_guest.sh','smoke.py','audit_guest.py','act_smoke.py','act-requirements.txt','beamact_smoke.py']
 checks=remote('retrieval-hashes', 'cd /home/ugrp/ugrp-sim/setup && sha256sum '+' '.join(files+sources))
 subprocess.run(['scp',*[f'gcp6:/home/ugrp/ugrp-sim/setup/{p}' for p in files],str(EVIDENCE)+'/'],check=True)
 expected={line.split()[1]:line.split()[0] for line in checks.splitlines()}
@@ -64,5 +64,5 @@ assert metadata['block-project-ssh-keys']=='true' and metadata['startup-script']
 cloud('instances-final','compute','instances','list')
 cloud('disks-final','compute','disks','list')
 cloud('l4-disk-final','compute','disks','describe','ugrp-act-l4-gcp6','--zone=asia-northeast3-a')
-(EVIDENCE/'verification.json').write_text(json.dumps(dict(retrieved_hashes_verified=True,source_hashes_verified=True,idle_guard_exact=True,credentials_absent=True,own_lease_removed=True,other_jobs_before_stop=False,runtime_cap_absent=True,vm_terminated=True,act_versions_equal=True,synthetic_act_50steps_readback=True),indent=2)+'\n')
+(EVIDENCE/'verification.json').write_text(json.dumps(dict(retrieved_hashes_verified=True,source_hashes_verified=True,idle_guard_exact=True,credentials_absent=True,own_lease_removed=True,other_jobs_before_stop=False,runtime_cap_absent=True,vm_terminated=True,act_versions_equal=True,beamact3_50steps_readback=True),indent=2)+'\n')
 print('gcp6 GPU infrastructure verified and TERMINATED',flush=True)
