@@ -1,5 +1,5 @@
 {
-  "status": "A_B_TRAINING",
+  "status": "A_B_TRAINED_VALIDATION_RUNNING",
   "started_utc": "2026-10-16T05:45:57.126020+00:00",
   "previous_attempt": "../summary.json",
   "record_api_source": "0362037280c6cbc4677f70366db43b9892b23690",
@@ -52,7 +52,7 @@
     }
   },
   "recorded_admitted_episodes": 40,
-  "optimizer_steps": "live per-arm summaries; actual research optimization in progress",
+  "optimizer_steps": 20000,
   "evaluation_N": 0,
   "rejection_table": "experiments/2026-10-16-act16w/resume2/rejection_table.json",
   "warm_receipts": "warm-receipts.json",
@@ -112,13 +112,12 @@
     "complete": false
   },
   "student_training_steps": {
-    "A": 2740,
-    "B": 2740,
-    "as_of_utc": "2026-10-16T13:09:00Z",
-    "exact_snapshot": false,
-    "live_root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training-r2"
+    "A": 10000,
+    "B": 10000,
+    "readback_verified": true,
+    "source_sha": "78485f10596b4512e731fdcd8ee25eafd6d8fcad"
   },
-  "student_evaluation_runs": 0,
+  "student_evaluation_runs": "native validation5 per arm running; no finalized count",
   "bulk_first_attempt": "HOST_ERROR before physics: gate host schema7 vs4; separate integration fix tested11passed",
   "updated_utc": "2026-10-16T13:11:04.028217+00:00",
   "pilot_completed": 2,
@@ -146,7 +145,7 @@
       "warp7"
     ]
   },
-  "research_training_steps": 0,
+  "research_training_steps": 20000,
   "recording_active_worlds": 0,
   "recording_pending_worlds": 0,
   "parallel_scheduler_source": "a6d08b6ac397cd0e3a29f3ff9c9490895d863a20",
@@ -181,5 +180,11 @@
     "proof": "dataset-row-accounting.json"
   },
   "student_kind_stratification_required": true,
-  "analysis_host": "owned gcp2 L4 CPU; CPU VM not started or used"
+  "analysis_host": "owned gcp2 L4 CPU; CPU VM not started or used",
+  "checkpoint_release": {
+    "staged": 2,
+    "uploaded": 0,
+    "verified": 0
+  },
+  "teacher_forced_validation": "A/B-teacher-forced-validation.json;1812 VAL rows, not closed-loop success"
 }
