@@ -26,7 +26,7 @@ def main():
     a.out.mkdir(parents=True,exist_ok=False);lease=B/'leases/act16w-first30-preview.json';now=datetime.now(timezone.utc)
     with lease.open('x') as f:json.dump(dict(task='act16w-first30-preview',pid=os.getpid(),start=now.isoformat(),expected_end=(now+timedelta(minutes=3)).isoformat(),concurrency=0,scope='ffmpeg CPU postprocessing only'),f)
     def run(args):subprocess.run(['ffmpeg','-hide_banner','-loglevel','error',*args],check=True)
-    def stamp(start,size):return f"drawtext=text='r1 seed86825 SIM %{{eif\:(n+{start})/10\:d}}.%{{eif\:mod(n+{start}\,10)\:d}}s':x=4:y=4:fontsize={size}:fontcolor=white:box=1:boxcolor=black"
+    def stamp(start,size):return rf"drawtext=text='r1 seed86825 SIM %{{eif\:(n+{start})/10\:d}}.%{{eif\:mod(n+{start}\,10)\:d}}s':x=4:y=4:fontsize={size}:fontcolor=white:box=1:boxcolor=black"
     try:
         run(['-framerate','10','-start_number','0','-i',str(rgb/'%06d.jpg'),'-vf','scale=320:240,'+stamp(0,16)+",select='not(mod(n,5))',tile=4x5",'-frames:v','3','-q:v','3',str(a.out/'full-2hz-%02d.jpg')])
         run(['-framerate','10','-start_number','200','-i',str(rgb/'%06d.jpg'),'-vf','scale=320:240,'+stamp(200,16)+',tile=4x5','-frames:v','5','-q:v','3',str(a.out/'tail10s-10hz-%02d.jpg')])
