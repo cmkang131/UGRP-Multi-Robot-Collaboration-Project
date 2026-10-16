@@ -747,11 +747,16 @@
           "localization.rbpf",
           "rbpf"
         ],
-        "method": "all present values must agree; missing is 확인 안 됨; source config alone is not runtime evidence",
+        "method": "all present values must agree; missing is 확인 안 됨; source config alone is not runtime evidence; 2026-10-17 user map-correction decision: correction method (RBPF vs prior-bounded matching/pose graph) is decided by mapbuild8, so both values allowed; see selfmap_map_correction",
         "source_artifact": "source_confirmed_runtime_separate",
         "applied_runtime": "확인 안 됨: 입력 manifest/summary별 점검 필요"
       },
-      "notes": "조정자 판정 절차: 둘 다 통과하면 LK; LK 실패/RBPF만 통과 때 채택. 비교 실행은 승인된 stack_deviations 필요."
+      "notes": "조정자 판정 절차: 둘 다 통과하면 LK; LK 실패/RBPF만 통과 때 채택. 비교 실행은 승인된 stack_deviations 필요.",
+      "operator": "one_of",
+      "allowed": [
+        "off",
+        "on"
+      ]
     },
     {
       "id": "localization_engine",
@@ -2619,6 +2624,42 @@
         "no_comm",
         "structured"
       ]
+    },
+    {
+      "id": "selfmap_map_correction",
+      "current": "on",
+      "decision_date": "2026-10-17",
+      "source": {
+        "references": [
+          {
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "AGENTS.md",
+            "lines": [
+              45
+            ],
+            "note": "사용자 2026-10-17 대화 원문; 지도 경로 예외(정적 지도 허용)"
+          }
+        ],
+        "decision_text": "지도 제대로 해줘. 이동 얼마나 했는지 판단하면서 지도 그리고, 또한 그 지도와 주변 인식을 바탕으로 내 위치 보정하게 해야지"
+      },
+      "supersedes": [
+        "odometry-only self-map (LK + command prediction, no map-based correction)"
+      ],
+      "flows": [
+        "release",
+        "self_map",
+        "e2e_llm"
+      ],
+      "verification": {
+        "paths": [
+          "stack_values.selfmap_map_correction",
+          "localization.map_correction",
+          "selfmap_map_correction_v1"
+        ],
+        "method": "self-map runs must estimate motion (own commands + own-camera VO), build an own map, and correct pose against own map and static map from own perception; toggle selfmap_map_correction_v1 on; GT only in error columns, no spawn anchor",
+        "source_artifact": "source_confirmed_runtime_separate",
+        "applied_runtime": "확인 안 됨: 구현 전(mapbuild8)"
+      }
     }
   ]
 }
