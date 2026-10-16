@@ -32,3 +32,12 @@ complete license. This is a numerical port, not a ROS node or binary ABI.
 
 Probabilistic Robotics motion/sensor/filter chapters and Fox 2001 are algorithm
 references, not evidence that RGB virtual scans attain lidar accuracy.
+
+## Fixed-population diagnostic profiles
+
+`fixed_population_v1` sets min=max=100000 (existing global cap), retaining the
+same motion, sigma, likelihood, and multinomial resampling. It tests whether
+early KLD reduction discards hypotheses. `nav2_sigma_fixed_v1` differs only by
+Nav2's published sigma_hit=.2m. Both are standard documented parameter settings,
+not fitted to new truth or new scan matchers. Candidate calibration profile stays
+separate; an unready candidate is never executed as transport.

@@ -31,7 +31,7 @@ def run(a):
     if len(saved)!=len(own) or len(scans)!=len(own):raise ValueError('FRAME_COUNT_MISMATCH')
     if [r['frame_id'] for r in saved]!=[f['frame_id'] for f in own]:raise ValueError('EXACT_FRAME_JOIN_REQUIRED')
     calibration=read(a.calibration);req=read(a.requirements)
-    amcl=StaticAMCL(read(a.input/'static-map.json'),calibration,req,option=OPTION,seed=a.seed)
+    amcl=StaticAMCL(read(a.input/'static-map.json'),calibration,req,option=OPTION,seed=a.seed,profile=a.profile)
     from harness.mapbuild_command_prior import CommandPrior,OPTION as COMMAND
     from harness.selfmap_map_correction import SelfMapCorrection
     prior=CommandPrior(read(a.command_model),option=COMMAND)
@@ -69,7 +69,7 @@ def run(a):
         distribution=[dict(category='static_amcl',reason=k,n=v,blocked_object='observed_wall_or_global_ambiguity',minimum_gap_m=None,gap_status='not_measured') for k,v in reasons.items()]))
     sources=[a.input/'own.json',a.input/'static-map.json',a.saved/'trajectory.json',scan_path,a.command_model,a.input/'commands.json',a.calibration,a.requirements,a.queue,a.stack_check,root/'configs/current_stack.json',root/'harness/mapbuild_amcl.py',root/'harness/mapbuild_amcl_vendor/algorithms.py',Path(__file__)]
     dump(a.output/'prediction-seal.json',dict(input_sha256={str(p):sha(p) for p in sources},prediction_sha256={p.name:sha(p) for p in a.output.iterdir() if p.is_file()},truth_inputs=0,top_inputs=0,held_world_reads=0,spawn_inputs=0,seed=a.seed,scale=1))
-    summary=dict(status='PREDICTIONS_SEALED_UNSCORED',raw=str(a.input),saved=str(a.saved),frames=len(rows),method=METHOD,map_correction=OPTION,
+    summary=dict(status='PREDICTIONS_SEALED_UNSCORED',raw=str(a.input),saved=str(a.saved),frames=len(rows),method=METHOD,profile=a.profile,map_correction=OPTION,
         measured_updates=len(attempts),ready_updates=len(ready),first_converged_sim_s=ready[0]['t'] if ready else None,
         motion_sources=dict(motion_sources),full_posterior=amcl.current,own_map_frames=len(amcl.local_map),rejection_table=str(a.output/'rejection_table.json'),truth_inputs=0,seed=a.seed)
     dump(a.output/'summary.json',summary);print(json.dumps(summary),flush=True)
@@ -78,4 +78,4 @@ def run(a):
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__)
     for k in ('input','saved','output','calibration','requirements','queue','stack-check','command-model'):p.add_argument('--'+k,type=Path,required=True)
-    p.add_argument('--scan-source',type=Path);p.add_argument('--seed',type=int,default=20261017);run(p.parse_args())
+    p.add_argument('--profile',choices=['calibrated_kld_v1','fixed_population_v1','nav2_sigma_fixed_v1'],default='calibrated_kld_v1');p.add_argument('--scan-source',type=Path);p.add_argument('--seed',type=int,default=20261017);run(p.parse_args())

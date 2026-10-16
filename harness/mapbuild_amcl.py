@@ -52,11 +52,17 @@ class StaticField:
 
 
 class StaticAMCL:
-    def __init__(self, static_map, calibration, requirements, *, option='off', method=METHOD, seed=20261017):
+    def __init__(self, static_map, calibration, requirements, *, option='off', method=METHOD, seed=20261017, profile='calibrated_kld_v1'):
         if option not in ('off', OPTION) or method != METHOD:
             raise ValueError('UNKNOWN_AMCL_OPTION')
         if calibration.get('truth_inputs') != 0:
             raise ValueError('OWN_CALIBRATION_REQUIRED')
+        if profile not in ('calibrated_kld_v1','fixed_population_v1','nav2_sigma_fixed_v1'):
+            raise ValueError('UNKNOWN_AMCL_PROFILE')
+        self.profile=profile
+        # Controlled standard settings, not a new matcher: min=max=100000
+        # is Nav2's fixed-population MCL setting. .2m is its documented sigma.
+        self.minimum_particles=2000 if profile=='calibrated_kld_v1' else 100000
         self.option = option; self.method = method
         self.field = StaticField(static_map); self.rng = np.random.default_rng(seed)
         self.alphas = np.asarray(calibration['alphas'], float)
@@ -66,7 +72,7 @@ class StaticAMCL:
         # sigma directly (not fitted to these replays). It is NOT a confidence
         # bound or proof of sensor Gaussianity. The prior diagnostic used GT
         # only to measure scan error, not to fit motion or initialize poses.
-        self.sigma_hit = .0202
+        self.sigma_hit = .2 if profile=='nav2_sigma_fixed_v1' else .0202
         self.requirements = requirements
         self.particles = self.uniform_free(100000) if option != 'off' else None
         self.weights = np.ones(100000)/100000 if self.particles is not None else None
@@ -121,7 +127,7 @@ class StaticAMCL:
         row = dict(t=t, frame_id=frame_id, reason='no_visible_wall', category='static_amcl',
             blocked_object='own_observed_wall', minimum_gap_m=None, gap_status='not_measured',
             attempted=False, converged=False, ready_for_handoff=False, adopted_pose=None,
-            method=self.method, truth_inputs=0, top_inputs=0, held_world_reads=0,
+            method=self.method, profile=self.profile, truth_inputs=0, top_inputs=0, held_world_reads=0,
             work=dict(particles=0, point_checks=0, wall_seconds_used_as_gate=0))
         if self.option == 'off':
             row['reason']='off'; self.ledger.append(row); return row
@@ -160,7 +166,7 @@ class StaticAMCL:
                 point_checks=len(self.particles)*len(points[::max(1,(len(points)-1)//59)]), wall_seconds_used_as_gate=0))
         # Standard adaptive resampling each sensor update, Nav2 interval=1.
         self.particles, stats = nav2.resample(self.particles, self.weights, self.rng,
-            self.uniform_free, injection)
+            self.uniform_free, injection, minimum=self.minimum_particles)
         self.weights = np.ones(len(self.particles))/len(self.particles)
         if injection>0:
             self.slow=self.fast=0.
