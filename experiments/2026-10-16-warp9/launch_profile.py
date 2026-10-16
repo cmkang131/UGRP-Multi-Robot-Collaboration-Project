@@ -34,6 +34,10 @@ def main():
     parser=argparse.ArgumentParser()
     parser.add_argument('--wait',action='store_true')
     parser.add_argument('--host',choices=('gcp3','gcp4'),default='gcp3')
+    parser.add_argument('--sizes',type=int,nargs='+',choices=(1,4,16,64),default=(1,4,16,64))
+    parser.add_argument('--full-period-graph',action='store_true')
+    parser.add_argument('--physics-trace',action='store_true')
+    parser.add_argument('--state-snapshot',action='store_true')
     parser.add_argument('--output',type=Path,required=True)
     args=parser.parse_args()
     if platform.node().split('.')[0]!='ugrp-act-l4-'+args.host:raise ValueError('requested registered L4 only')
@@ -54,7 +58,7 @@ def main():
                 if not state['leases'] and not state['gpu_processes']:
                     with lease.open('x') as f:
                         json.dump(dict(task='warp9',pid=os.getpid(),started_at=state['utc'],
-                            expected_end='finite four sizes x0.3 SIM s; no wall cap',concurrency=64,
+                            expected_end='finite requested sizes x0.3 SIM s; no wall cap',concurrency=max(args.sizes),
                             stage='exclusive scaling profile',source_sha=sha,gpu_shared=False),f,indent=2)
                     claimed=True
             if not claimed:
@@ -62,7 +66,7 @@ def main():
                 # Resource polling is not a planner or task time budget.
                 time.sleep(30)
         original=json.loads((ROOT/'experiments/2026-10-16-warp9/warp7-r3-queue.json').read_text())
-        for n in (1,4,16,64):
+        for n in args.sizes:
             q=copy.deepcopy(original)
             table=args.output/f'n{n}-selection.json'
             write(table,dict(unit='explicit_world_replica',unique_initial_cases=1,independent_task_trials=0,
@@ -75,6 +79,9 @@ def main():
                 render_gate=str(ROOT/'experiments/2026-10-16-warp7/colour/r5-summary.json'),
                 runs=[copy.deepcopy(original['runs'][0]) for _ in range(n)],
                 warp9_exclusive_host_v1=args.host,warp9_profile_v1=True,profile_sim_s=.3,
+                warp9_full_period_graph_v1=args.full_period_graph,
+                warp9_physics_event_trace_v1=args.physics_trace,
+                warp9_state_snapshot_v1=args.state_snapshot,
                 independent_initial_cases=1,duplicate_isolation_worlds=n-1,
                 interpretation='fixed-work scaling diagnostic, not task qualification')
             # Source-relative calibration paths keep the exact saved hashes.

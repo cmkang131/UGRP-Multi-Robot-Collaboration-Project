@@ -179,6 +179,16 @@ def run(a):
                         blocked_object='batch_pipeline',minimum_gap_m=None,gap_scope='timing_not_physical_gap'))
                     break
         if report['status']=='RUNNING':report.update(status='COMPLETE',batch_sim_s=elapsed)
+        if q.get('warp9_state_snapshot_v1',False):
+            # Recording-only comparison of genuine GPU integration state,
+            # after timed fixed work; never supplied to an actor/policy.
+            for j,(ii,cc,h) in enumerate(groups):
+                arrays={name:getattr(h.wd,name).numpy().copy() for name in h.initial_state}
+                np.savez_compressed(a.output/f'group-{j}-final-state.npz',**arrays)
+            write(a.output/'physics-settings.json',dict(groups=[dict(worlds=ii.tolist(),
+                dt=h.dt,noslip_iterations=int(h.wm.opt.noslip_iterations),solver=str(h.wm.opt.solver),
+                iterations=int(h.wm.opt.iterations),ls_iterations=int(h.wm.opt.ls_iterations),
+                numerics=h.solver_numerics,capacities=h.capacities) for ii,cc,h in groups]))
     except BaseException as exc:
         report.update(status='HOST_ERROR',errors=[dict(category='HOST_ERROR',reason=repr(exc),blocked_object='batch_adapter',minimum_gap_m=None,gap_status='not_measured',traceback=traceback.format_exc())])
         raise
