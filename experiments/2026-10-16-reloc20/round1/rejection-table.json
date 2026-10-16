@@ -1,0 +1,1311 @@
+{
+  "source_queue": "/home/ugrp/ugrp-sim/runs/reloc20-round1/queue.json",
+  "reproduce": "PYTHONPATH=/home/ugrp/ugrp-sim/src/e12b0ff0c8b70117c2bcbc8ae8635ff4601e1cbf python /home/ugrp/ugrp-sim/src/e12b0ff0c8b70117c2bcbc8ae8635ff4601e1cbf/experiments/2026-10-16-reloc20/analyze.py --round 1",
+  "runs": [
+    {
+      "run": "reloc20-r1-carry-baseline-93266-aede24d6",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc20-r1-carry-baseline-93266-aede24d6/raw",
+      "termination": "cap_end",
+      "cumulative": {
+        "started": 1,
+        "lift_success": 1,
+        "travel_entered": 1,
+        "authored_arrival": 1,
+        "place_view": 0,
+        "place_advance": 0,
+        "lower": 0,
+        "open": 0,
+        "place_success": 0
+      },
+      "frame_funnel": {
+        "recorded_acquisition_frames": 1535,
+        "colour_component_or_footprint": 0,
+        "nominal_ground_or_footprint": 0,
+        "full_footprint_rgb_gate": 0
+      },
+      "rejections": {
+        "destination_colour_absent": 1535
+      },
+      "motion": null,
+      "route_frame_rejections": [],
+      "visual_stall_frame_reasons": {
+        "off": 3000
+      },
+      "geometry_risk_intervals": [
+        {
+          "start_t": 127.59999999871063,
+          "end_t": 136.89999999849073,
+          "sim_s": 9.299999999780098,
+          "ticks": 93,
+          "minimum_gap_m": -0.003914308547973366,
+          "blocked_object": "wall_divider_1"
+        },
+        {
+          "start_t": 136.99999999848836,
+          "end_t": 137.099999998486,
+          "sim_s": 0.09999999999763531,
+          "ticks": 1,
+          "minimum_gap_m": -4.29153442116359e-07,
+          "blocked_object": "wall_divider_1"
+        },
+        {
+          "start_t": 138.4999999984529,
+          "end_t": 140.69999999840087,
+          "sim_s": 2.199999999947977,
+          "ticks": 22,
+          "minimum_gap_m": -0.0009421825408932882,
+          "blocked_object": "wall_divider_1"
+        },
+        {
+          "start_t": 143.99999999832283,
+          "end_t": 144.09999999832047,
+          "sim_s": 0.09999999999763531,
+          "ticks": 1,
+          "minimum_gap_m": -6.675720212179215e-07,
+          "blocked_object": "wall_divider_1"
+        }
+      ],
+      "terminal": [
+        {
+          "category": "terminal_cap_end",
+          "reason": "cap_end",
+          "N": 1,
+          "blocked_object": "carry_route_or_localization",
+          "minimum_gap_m": null,
+          "gap_scope": "not_applicable_visual_or_localization_terminal; original collision gaps retained in preceding events"
+        }
+      ]
+    },
+    {
+      "run": "reloc20-r1-carry-candidate-93266-aede24d6",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc20-r1-carry-candidate-93266-aede24d6/raw",
+      "termination": "cap_end",
+      "cumulative": {
+        "started": 1,
+        "lift_success": 1,
+        "travel_entered": 1,
+        "authored_arrival": 0,
+        "place_view": 0,
+        "place_advance": 0,
+        "lower": 0,
+        "open": 0,
+        "place_success": 0
+      },
+      "frame_funnel": {
+        "recorded_acquisition_frames": 0,
+        "colour_component_or_footprint": 0,
+        "nominal_ground_or_footprint": 0,
+        "full_footprint_rgb_gate": 0
+      },
+      "rejections": {},
+      "motion": {
+        "heading_forward": true,
+        "footprint": {
+          "radius_m": 0.275014,
+          "issued_cargo_corners_xy": [
+            [
+              0.18201147245178959,
+              -0.01915962144886612
+            ],
+            [
+              0.18201147245178959,
+              -0.01915962144886612
+            ],
+            [
+              0.18176014669316723,
+              0.020839588985379368
+            ],
+            [
+              0.18176014669316723,
+              0.020839588985379368
+            ],
+            [
+              0.21601080132089825,
+              -0.018945994554037116
+            ],
+            [
+              0.21601080132089825,
+              -0.018945994554037116
+            ],
+            [
+              0.2157594755622759,
+              0.02105321588020837
+            ],
+            [
+              0.2157594755622759,
+              0.02105321588020837
+            ]
+          ],
+          "clearance_m": 0.015014,
+          "map_floor_keepouts": [
+            {
+              "id": "cargo_beam_1",
+              "center_m": [
+                0.125,
+                -2.15
+              ],
+              "yaw_rad": 1.5708,
+              "half_extents_m": [
+                0.3,
+                0.02
+              ],
+              "geometry_source": "sim/zone_cargo.py long_beam bar 600x40mm"
+            }
+          ],
+          "last": {
+            "category": "loaded_footprint",
+            "blocked_object": "own_rgb_disc_3",
+            "minimum_gap_m": -0.027616569330799992,
+            "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+            "reason": "start_enclosure_overlap"
+          },
+          "plan_funnel": {
+            "candidates": 119,
+            "endpoints_clear": 116,
+            "accepted": 116,
+            "rejected_start": 3
+          },
+          "rejections": [
+            {
+              "reason": "direct_route_overlap_replan",
+              "blocked_object": "own_rgb_disc_1",
+              "N": 21
+            },
+            {
+              "reason": "direct_route_overlap_replan",
+              "blocked_object": "wall_divider_2",
+              "N": 31
+            },
+            {
+              "reason": "direct_route_overlap_replan",
+              "blocked_object": "wall_divider_1",
+              "N": 42
+            },
+            {
+              "reason": "start_enclosure_overlap",
+              "blocked_object": "own_rgb_disc_3",
+              "N": 3
+            },
+            {
+              "reason": "direct_route_overlap_replan",
+              "blocked_object": "own_rgb_disc_3",
+              "N": 22
+            }
+          ],
+          "events": [
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "own_rgb_disc_1",
+              "minimum_gap_m": -0.34981494473333685,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "own_rgb_disc_1",
+              "minimum_gap_m": -0.34981494473333685,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "own_rgb_disc_1",
+              "minimum_gap_m": -0.34981494473333685,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "own_rgb_disc_1",
+              "minimum_gap_m": -0.34981494473333685,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "own_rgb_disc_1",
+              "minimum_gap_m": -0.34981494473333685,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "own_rgb_disc_1",
+              "minimum_gap_m": -0.34981494473333685,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "own_rgb_disc_1",
+              "minimum_gap_m": -0.34981494473333685,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "own_rgb_disc_1",
+              "minimum_gap_m": -0.34981494473333685,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "own_rgb_disc_1",
+              "minimum_gap_m": -0.34981494473333685,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "own_rgb_disc_1",
+              "minimum_gap_m": -0.34981494473333685,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "own_rgb_disc_1",
+              "minimum_gap_m": -0.34981494473333685,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "own_rgb_disc_1",
+              "minimum_gap_m": -0.34981494473333685,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "own_rgb_disc_1",
+              "minimum_gap_m": -0.34981494473333685,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "own_rgb_disc_1",
+              "minimum_gap_m": -0.34981494473333685,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "own_rgb_disc_1",
+              "minimum_gap_m": -0.34981494473333685,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "own_rgb_disc_1",
+              "minimum_gap_m": -0.34981494473333685,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "own_rgb_disc_1",
+              "minimum_gap_m": -0.34981494473333685,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "own_rgb_disc_1",
+              "minimum_gap_m": -0.34346189106457176,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "own_rgb_disc_1",
+              "minimum_gap_m": -0.32645511487316825,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "own_rgb_disc_1",
+              "minimum_gap_m": -0.30721878472257896,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "own_rgb_disc_1",
+              "minimum_gap_m": -0.28625882326210983,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_2",
+              "minimum_gap_m": -0.2800128694008192,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_2",
+              "minimum_gap_m": -0.2800050555938671,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_2",
+              "minimum_gap_m": -0.2800093423385733,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_2",
+              "minimum_gap_m": -0.2800139551640164,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_2",
+              "minimum_gap_m": -0.28000667323060807,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_2",
+              "minimum_gap_m": -0.2800118533847938,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_2",
+              "minimum_gap_m": -0.28000496058229185,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_2",
+              "minimum_gap_m": -0.280010765960514,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_2",
+              "minimum_gap_m": -0.28000431316998486,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_2",
+              "minimum_gap_m": -0.280010807616206,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_2",
+              "minimum_gap_m": -0.28000485114343304,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_2",
+              "minimum_gap_m": -0.2800121050914214,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_2",
+              "minimum_gap_m": -0.28000670724941085,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_2",
+              "minimum_gap_m": -0.2800015688097935,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_2",
+              "minimum_gap_m": -0.2800100281898205,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_2",
+              "minimum_gap_m": -0.28000555176352565,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_2",
+              "minimum_gap_m": -0.28000138651978485,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_2",
+              "minimum_gap_m": -0.2800112417498713,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_2",
+              "minimum_gap_m": -0.28000785853589055,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_2",
+              "minimum_gap_m": -0.27675749077311596,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_2",
+              "minimum_gap_m": -0.2585681398697424,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_2",
+              "minimum_gap_m": -0.24000260470923063,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_2",
+              "minimum_gap_m": -0.22092476698601865,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_2",
+              "minimum_gap_m": -0.20174742693943412,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_2",
+              "minimum_gap_m": -0.18224514528002103,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_2",
+              "minimum_gap_m": -0.16239311602552092,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_2",
+              "minimum_gap_m": -0.14218413299615892,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_2",
+              "minimum_gap_m": -0.12160967308099316,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_2",
+              "minimum_gap_m": -0.10066041656265719,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_2",
+              "minimum_gap_m": -0.07938981905812942,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_2",
+              "minimum_gap_m": -0.05774569025888735,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_1",
+              "minimum_gap_m": -0.04094625748313718,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_1",
+              "minimum_gap_m": -0.06490498329815038,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_1",
+              "minimum_gap_m": -0.08929476364735767,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_1",
+              "minimum_gap_m": -0.11414056097951347,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_1",
+              "minimum_gap_m": -0.1394198794984473,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_1",
+              "minimum_gap_m": -0.16512614785138555,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_1",
+              "minimum_gap_m": -0.19133681633063912,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_1",
+              "minimum_gap_m": -0.21776229820356133,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_1",
+              "minimum_gap_m": -0.24498176536172203,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_1",
+              "minimum_gap_m": -0.2716724543136205,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "own_rgb_disc_3",
+              "minimum_gap_m": -0.009856450644331174,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "start_enclosure_overlap"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "own_rgb_disc_3",
+              "minimum_gap_m": -0.1303252230731636,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "own_rgb_disc_3",
+              "minimum_gap_m": -0.1303252230731636,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "own_rgb_disc_3",
+              "minimum_gap_m": -0.1303252230731636,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "own_rgb_disc_3",
+              "minimum_gap_m": -0.1303252230731636,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "own_rgb_disc_3",
+              "minimum_gap_m": -0.1303252230731636,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "own_rgb_disc_3",
+              "minimum_gap_m": -0.1303252230731636,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "own_rgb_disc_3",
+              "minimum_gap_m": -0.1303252230731636,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "own_rgb_disc_3",
+              "minimum_gap_m": -0.1303252230731636,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "own_rgb_disc_3",
+              "minimum_gap_m": -0.1303252230731636,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "own_rgb_disc_3",
+              "minimum_gap_m": -0.1303252230731636,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "own_rgb_disc_3",
+              "minimum_gap_m": -0.1303252230731636,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "own_rgb_disc_3",
+              "minimum_gap_m": -0.1303252230731636,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "own_rgb_disc_3",
+              "minimum_gap_m": -0.1303252230731636,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "own_rgb_disc_3",
+              "minimum_gap_m": -0.1303252230731636,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "own_rgb_disc_3",
+              "minimum_gap_m": -0.1447757675754918,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "own_rgb_disc_3",
+              "minimum_gap_m": -0.17484999398623297,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "own_rgb_disc_3",
+              "minimum_gap_m": -0.21078538683441558,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "own_rgb_disc_3",
+              "minimum_gap_m": -0.24968571154284322,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "own_rgb_disc_3",
+              "minimum_gap_m": -0.2887252542800525,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "own_rgb_disc_3",
+              "minimum_gap_m": -0.3279788237076244,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "own_rgb_disc_3",
+              "minimum_gap_m": -0.018489453183419283,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "start_enclosure_overlap"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_1",
+              "minimum_gap_m": -0.13972606875744073,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_1",
+              "minimum_gap_m": -0.13972606875744073,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_1",
+              "minimum_gap_m": -0.13972606875744073,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_1",
+              "minimum_gap_m": -0.13972606875744073,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_1",
+              "minimum_gap_m": -0.13972606875744073,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_1",
+              "minimum_gap_m": -0.13972606875744073,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_1",
+              "minimum_gap_m": -0.13972606875744073,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_1",
+              "minimum_gap_m": -0.13972606875744073,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_1",
+              "minimum_gap_m": -0.13972606875744073,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_1",
+              "minimum_gap_m": -0.13972606875744073,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_1",
+              "minimum_gap_m": -0.13972606875744073,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_1",
+              "minimum_gap_m": -0.13972606875744073,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_1",
+              "minimum_gap_m": -0.13972606875744073,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_1",
+              "minimum_gap_m": -0.13972606875744073,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_1",
+              "minimum_gap_m": -0.13972606875744073,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_1",
+              "minimum_gap_m": -0.13972606875744073,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_1",
+              "minimum_gap_m": -0.13972606875744073,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_1",
+              "minimum_gap_m": -0.14960228728034414,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_1",
+              "minimum_gap_m": -0.17371400306261534,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_1",
+              "minimum_gap_m": -0.17537974928081035,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_1",
+              "minimum_gap_m": -0.1753799127762744,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_1",
+              "minimum_gap_m": -0.17537991279803544,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_1",
+              "minimum_gap_m": -0.17537991279803544,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_1",
+              "minimum_gap_m": -0.17537991279803544,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_1",
+              "minimum_gap_m": -0.17537991279803544,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_1",
+              "minimum_gap_m": -0.1945278391212423,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_1",
+              "minimum_gap_m": -0.2260159246468278,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_1",
+              "minimum_gap_m": -0.259249977026896,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_1",
+              "minimum_gap_m": -0.2800021203410247,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_1",
+              "minimum_gap_m": -0.2800118306497042,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_1",
+              "minimum_gap_m": -0.2800046415013747,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "wall_divider_1",
+              "minimum_gap_m": -0.27999877349204344,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "own_rgb_disc_3",
+              "minimum_gap_m": -0.30653876367094024,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "own_rgb_disc_3",
+              "minimum_gap_m": -0.3089252329862342,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "direct_route_overlap_replan"
+            },
+            {
+              "t": null,
+              "category": "loaded_footprint",
+              "blocked_object": "own_rgb_disc_3",
+              "minimum_gap_m": -0.027616569330799992,
+              "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+              "reason": "start_enclosure_overlap"
+            }
+          ]
+        },
+        "stall": {
+          "last": {
+            "t": 301.19999999460555,
+            "status": "warming_up",
+            "category": "visual_stall",
+            "reason": "insufficient_command_window",
+            "blocked_object": "own_camera_stationarity_evidence",
+            "minimum_gap_m": null,
+            "gap_scope": "not_applicable_image_evidence",
+            "suppressed": false
+          },
+          "events": [],
+          "stall_ticks": 0,
+          "stall_sim_s": 0.0,
+          "recovering": false,
+          "metric_vo": false
+        }
+      },
+      "route_frame_rejections": [
+        {
+          "category": "route",
+          "reason": "start_enclosure_overlap",
+          "blocked_object": "own_rgb_disc_3",
+          "N": 1882,
+          "minimum_gap_m": -0.027616569330799992
+        }
+      ],
+      "visual_stall_frame_reasons": {
+        "insufficient_command_window": 2701,
+        "unknown_texture": 287,
+        "camera_command_or_yaw_changed": 12
+      },
+      "geometry_risk_intervals": [],
+      "terminal": [
+        {
+          "category": "terminal_cap_end",
+          "reason": "cap_end",
+          "N": 1,
+          "blocked_object": "carry_route_or_localization",
+          "minimum_gap_m": null,
+          "gap_scope": "not_applicable_visual_or_localization_terminal; original collision gaps retained in preceding events"
+        }
+      ]
+    },
+    {
+      "run": "reloc20-r1-carry-baseline-93315-aede24d6",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc20-r1-carry-baseline-93315-aede24d6/raw",
+      "termination": "cap_end",
+      "cumulative": {
+        "started": 1,
+        "lift_success": 1,
+        "travel_entered": 1,
+        "authored_arrival": 1,
+        "place_view": 0,
+        "place_advance": 0,
+        "lower": 0,
+        "open": 0,
+        "place_success": 0
+      },
+      "frame_funnel": {
+        "recorded_acquisition_frames": 1772,
+        "colour_component_or_footprint": 0,
+        "nominal_ground_or_footprint": 0,
+        "full_footprint_rgb_gate": 0
+      },
+      "rejections": {
+        "destination_colour_absent": 175,
+        "destination_motion_blocked": 1597
+      },
+      "motion": null,
+      "route_frame_rejections": [
+        {
+          "category": "route",
+          "reason": "destination_motion_blocked",
+          "blocked_object": "wall_divider_1",
+          "N": 1598,
+          "minimum_gap_m": -0.0017525427311914643
+        }
+      ],
+      "visual_stall_frame_reasons": {
+        "off": 2555
+      },
+      "geometry_risk_intervals": [
+        {
+          "start_t": 47.30000000013484,
+          "end_t": 55.700000000174946,
+          "sim_s": 8.400000000040109,
+          "ticks": 84,
+          "minimum_gap_m": -0.02846310034893329,
+          "blocked_object": "cargo_beam_1"
+        }
+      ],
+      "terminal": [
+        {
+          "category": "terminal_phase_timeout",
+          "reason": "phase_timeout",
+          "N": 1,
+          "blocked_object": "carry_route_or_localization",
+          "minimum_gap_m": null,
+          "gap_scope": "not_applicable_visual_or_localization_terminal; original collision gaps retained in preceding events"
+        }
+      ]
+    },
+    {
+      "run": "reloc20-r1-carry-candidate-93315-aede24d6",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc20-r1-carry-candidate-93315-aede24d6/raw",
+      "termination": "HOST_ERROR",
+      "cumulative": {
+        "started": 1,
+        "control_started": 0
+      },
+      "frame_funnel": null,
+      "rejections": null,
+      "motion": null,
+      "route_frame_rejections": null,
+      "visual_stall_frame_reasons": null,
+      "geometry_risk_intervals": null,
+      "terminal": [
+        {
+          "category": "HOST_ERROR",
+          "reason": "fixed-floor declaration scenario hash mismatch",
+          "N": 1,
+          "blocked_object": "authored_map_declaration",
+          "minimum_gap_m": null,
+          "gap_scope": "not_applicable_precontrol_configuration"
+        }
+      ]
+    },
+    {
+      "run": "reloc20-r1-selfmap-short_regression-93584-aede24d6",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc20-r1-selfmap-short_regression-93584-aede24d6/raw",
+      "termination": "HOST_ERROR",
+      "cumulative": {
+        "candidates": 0,
+        "accepted": 0
+      },
+      "frame_funnel": null,
+      "rejections": null,
+      "motion": null,
+      "route_frame_rejections": null,
+      "visual_stall_frame_reasons": null,
+      "geometry_risk_intervals": null,
+      "terminal": null
+    },
+    {
+      "run": "reloc20-r1-selfmap-short_regression-93583-aede24d6",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc20-r1-selfmap-short_regression-93583-aede24d6/raw",
+      "termination": "HOST_ERROR",
+      "cumulative": {
+        "candidates": 0,
+        "accepted": 0
+      },
+      "frame_funnel": null,
+      "rejections": null,
+      "motion": null,
+      "route_frame_rejections": null,
+      "visual_stall_frame_reasons": null,
+      "geometry_risk_intervals": null,
+      "terminal": null
+    }
+  ]
+}

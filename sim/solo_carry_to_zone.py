@@ -235,8 +235,14 @@ class CarryToZone:
         self.loc.observe_own(bgr, now, camera=camera)
 
     def refresh_obstacles(self, bgr, pwm, now, *, holding, kind, grasp_pwm):
+        route=getattr(self,'reloc20_route',None)
+        if route is not None:
+            route.update_load(holding,kind,grasp_pwm,pwm)
+            self.radius=route.radius
         self.obstacles.observe(bgr, pwm, self.loc.pose, now, holding=holding,
                                kind=kind, grasp_pwm=grasp_pwm, pose_sigma=self.loc.sigmas())
+        if route is not None:
+            route.disc_names=[f"own_rgb_{o['kind']}_track_{o.get('id',i)}" for i,o in enumerate(self.obstacles.tracks)]
         self.last_plan = -math.inf  # a newly visible obstacle invalidates the route
 
     def start(self, now, grip_xy):
@@ -259,6 +265,16 @@ class CarryToZone:
             goal = (slot[0]-grip_xy[0]-self.advance_m, slot[1]-grip_xy[1])
             final = (goal[0]+self.advance_m, goal[1])
             retreat = (final[0]-.15, final[1])
+            route=getattr(self,'reloc20_route',None)
+            if route is not None:
+                route.plan_funnel['slot_candidates']+=1
+                checks=[route.segment(a,b,discs) for a,b in ((goal,goal),(goal,final),(final,retreat))]
+                if not all(ok for ok,_ in checks):
+                    context=min((c for ok,c in checks if not ok),key=lambda c:c['minimum_gap_m'])
+                    route.reject(dict(context,reason='place_envelope_overlap'),now=now)
+                    route.plan_funnel['slot_envelope_rejected']+=1
+                    continue
+                route.plan_funnel['slot_envelope_clear']+=1
             if not (free(goal, discs, self.rects, self.radius) and
                     segment_free(goal, final, discs, self.rects, self.radius) and
                     segment_free(final, retreat, discs, self.rects, self.radius)):
@@ -274,6 +290,9 @@ class CarryToZone:
                 self.failure = 'carry_no_static_route'
 
     def step(self, now):
+        if getattr(self,'reloc20_stall',None) is not None and self.reloc20_stall.recovering:
+            from harness.reloc20_motion import guard
+            return guard(self,(0.,0.,0.),now), False, None
         if self.active_recovery and self.needs_recovery(now):
             return (0., 0., 0.), False, self.failure
         if self.failure:
@@ -294,7 +313,11 @@ class CarryToZone:
             self.arrived = now
             return (0., 0., 0.), True, None
         if distance <= .025:
-            return (0., 0., max(-.1, min(.1, -.6*wrap(pose[2])))), False, None
+            drive=(0., 0., max(-.1, min(.1, -.6*wrap(pose[2]))))
+            if getattr(self,'reloc20_route',None) is not None:
+                from harness.reloc20_motion import guard
+                drive=guard(self,drive,now)
+            return drive, False, None
         if now-self.last_plan >= 1.:
             self.path = self.plan_path(pose[:2], self.goal, self.static['bounds_m'], discs, rects=self.rects, radius=self.radius)
             self.last_plan = now
@@ -305,6 +328,9 @@ class CarryToZone:
                 return (0., 0., 0.), False, self.failure
             return (0., 0., 0.), False, 'carry_no_static_route'
         if self.active_recovery:
+            if getattr(self,'reloc20_heading',False) or getattr(self,'reloc20_stall',None) is not None or getattr(self,'reloc20_route',None) is not None:
+                from harness.reloc20_motion import travel_drive,guard
+                return guard(self,travel_drive(self,pose,target),now), False, None
             return self.heading_drive(pose, target, self.travel_heading), False, None
         cmd = proportional_drive(pose, self.goal, target, 0.)
         return (max(-.05, min(.08, cmd['forward'])), max(-.06, min(.06, cmd['left'])),
@@ -437,6 +463,11 @@ class CarryToZone:
 
     def record(self):
         return {'toggle': OPTION, 'destination_zone': self.zone, 'slot_xy': self.slot,
+                **({'reloc20_motion':dict(heading_forward=getattr(self,'reloc20_heading',False),
+                    footprint=None if getattr(self,'reloc20_route',None) is None else self.reloc20_route.record(),
+                    stall=None if getattr(self,'reloc20_stall',None) is None else self.reloc20_stall.record(),
+                    turn_density=None if getattr(self,'reloc20_turn_density',None) is None else self.reloc20_turn_density.record())}
+                   if any((getattr(self,'reloc20_heading',False),getattr(self,'reloc20_route',None),getattr(self,'reloc20_stall',None))) else {}),
                 'stand_off_xy': self.goal, 'radius_m': self.radius, 'map_sha256': self.map_sha256,
                 'self_pose': self.loc.record(), 'carry_started_t': self.started,
                 'map_arrival_estimated_t': self.arrived, 'failure': self.failure,

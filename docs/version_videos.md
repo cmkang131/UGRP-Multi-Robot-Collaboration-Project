@@ -122,3 +122,15 @@ SHA256 `69bdd4f62546e3e38ea024cf94b6bc12b86cef39b8a187ee155b7f11794a1c69`.
 |버전·소스|case|결과|영상·원본|검토 범위·한계|
 |---|---|---|---|---|
 |reloc19 R3 · `e042139b0930ee7b31eae08a917ff501ee01075f`|gcp2 CPU, carry A_pan93315|place0/4·획득0/4·NOT_READY|[4배속 대표 실패](../experiments/2026-10-16-reloc19/videos/representative-r3-A-pan93315-failure.mp4),69,467bytes,SHA256 `96062f52226221a83297965c7193650fbc02e5890d3a9948823fb39ef6a400b6`; raw `/home/ugrp/ugrp-sim/runs/reloc19-r3-carry-A_pan-93315-e042139b/raw`|개요+r1+r2+r3 전체2Hz1.5–256.5SIM초·마지막10초10Hz 직접검토. C를 못 보고 방향별clip 뒤 경로 거부로 정지. 개요는 평가전용. [18회 기록·해시](../experiments/2026-10-16-reloc19/README.md). 후속 수정 물리0, 성공영상 없음. 학생·학습·실물 성공 근거 아님.|
+
+## reloc20 화물 footprint·명령 예측 DEV (2026-10-16)
+
+긴 운반 전체 성공0. 기본 off 후보이며 실물·학생 ACT·LLM E2E 검증이 아니다.
+
+|소스/조건|결과|개요+자기 RGB4배속|SHA256|
+|---|---|---|---|
+|reloc20-r3-carry-candidate-93266-cb8b37c2|place 실패/cap_end|[영상](../experiments/2026-10-16-reloc20/videos/r3-candidate-93266-4x.mp4)|`ef5b4c534dfbad9d79aa0969ea7e0a4df5f9980fc1884ab74b3b4b18cd74ca89`|
+|reloc20-r3-carry-density-93266-cb8b37c2|place 실패/cap_end|[영상](../experiments/2026-10-16-reloc20/videos/r3-density-93266-4x.mp4)|`62890ec7e1ec3603710ea692bdafe1355c69b1bbecfbd6a23353e791e599f3f9`|
+|reloc20-r1-carry-baseline-93315-aede24d6|place 실패/cap_end|[영상](../experiments/2026-10-16-reloc20/videos/r1-baseline-93315-4x.mp4)|`96062f52226221a83297965c7193650fbc02e5890d3a9948823fb39ef6a400b6`|
+
+[전체 결과·회수 범위·직접 검토](../experiments/2026-10-16-reloc20/README.md). 영상은 gcp2 ffmpeg/ffprobe로 생성·확인했고 Mac 화면 앱은 열지 않았다.

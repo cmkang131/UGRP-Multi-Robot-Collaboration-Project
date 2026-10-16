@@ -281,6 +281,11 @@ class SoloTeacher:
 
     def _drive(self, now, forward=0., left=0., turn=0.):
         wheels, duration = self.ops.duty([3*forward, 3*left, .65*turn])
+        density=getattr(self.carry,'reloc20_turn_density',None) if self.carry is not None else None
+        if density is not None:
+            if self.phase in ('carry_to_zone','destination_acquire'):
+                wheels,duration=density.apply(wheels,duration,now)
+            else:density.reset()
         if self.teacher_stability == 'align_relook_v1' and self.phase == 'align':
             # Same candidate floor as b16930dc; physical response unmeasured.
             # Fine alignment selects one axis, preserving wheel ratios.

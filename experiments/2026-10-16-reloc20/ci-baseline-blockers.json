@@ -1,0 +1,23 @@
+{
+  "prior_ci": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/38834458727",
+  "prior_source": "1b31086019b0d24a696a8069c790f9113d572e0e",
+  "base_sha": "b73e815f6d93cdf5ec70f8b98267277f7fedf3a3",
+  "base_reproduced": "4 failed in 5.21s",
+  "cases": [
+    "tests/test_disk_report.py::test_report_splits_worktrees_tiers_and_budget_without_writing",
+    "tests/test_consumer_criterion_b_v91.py::test_frozen_files_registrations_and_handoff_prefix_are_byte_identical",
+    "tests/test_zone_environment_registry.py::test_legacy_tag_inputs_and_frozen_sources_follow_their_sealed_versions",
+    "tests/test_zone_final_pair_loaded.py::test_schedule_archive_and_preserved_sources"
+  ],
+  "base_reproduction_log_sha256": "c2fdbcd9475eccaca3233e6c8d91fb9673a432138ec93568979176ce8118557f",
+  "unchanged_since_base": [
+    "configs/simulation_workflows.json",
+    "scripts/zone_teacher.py",
+    "scripts/disk_report.py",
+    "tests/test_disk_report.py",
+    "tests/test_consumer_criterion_b_v91.py",
+    "tests/test_zone_environment_registry.py",
+    "tests/test_zone_final_pair_loaded.py"
+  ],
+  "scope": "Only four read-only non-physics tests on existing clean reloc19 worktree. Baseline failures retained; no frozen records or unrelated disk tooling changed."
+}

@@ -318,7 +318,7 @@ class DestinationAcquire:
                     path=c.plan_path(c.loc.pose[:2],p,c.static['bounds_m'],c.obstacles.discs(now),rects=c.rects,radius=c.radius)
                     if path:self.point=p;self.path=path;break
                     context=route_context(c.loc.pose[:2],p,c.obstacles.discs(now),c.rects,c.radius,
-                        names=[o['id'] for o in c.static['obstacles']],bounds=c.static['bounds_m'])
+                        names=[o['id'] for o in c.static['obstacles']+c.static.get('fixed_floor_keepouts',[])],bounds=c.static['bounds_m'])
                     self.event(now,'rejection',category='route',reason='ellipse_waypoint_no_path',**context)
                 if self.point is None:
                     self.failure='destination_visual_search_exhausted'; self.mode='failed'
@@ -342,13 +342,21 @@ class DestinationAcquire:
                         # relax clearance. The finite remaining list is tried
                         # afresh from the current allowed pose next tick.
                         context=route_context(c.loc.pose[:2],self.point,c.obstacles.discs(now),c.rects,c.radius,
-                            names=[o['id'] for o in c.static['obstacles']],bounds=c.static['bounds_m'])
+                            names=[o['id'] for o in c.static['obstacles']+c.static.get('fixed_floor_keepouts',[])],bounds=c.static['bounds_m'])
                         self.last.update(category='route',reason='destination_search_path_obstructed',**context)
                         self.event(now,'rejection',category='route',reason='destination_search_path_obstructed',**context)
                         self.point=None;self.path=None
                         return (0.,0.,0.),False,None
                 drive=((direction_drive(c.loc.pose,target) if self.direction_preserve else c.heading_drive(c.loc.pose,target,c.loc.pose[2]))
                        if target is not None else (0.,0.,0.))
+        if getattr(c,'reloc20_heading',False) and (drive[0] or drive[1]):
+            from harness.reloc20_motion import heading_forward
+            # Reorient toward the same body-relative servo/waypoint ray.
+            # Camera pan carries its own issued FK and must return before place.
+            drive=heading_forward((0.,0.,0.),drive[:2])
+        if getattr(c,'reloc20_route',None) is not None or getattr(c,'reloc20_stall',None) is not None:
+            from harness.reloc20_motion import guard
+            drive=guard(c,drive,now)
         # Every translation retains static/RGB obstacle veto using a single tick
         # at current10Hz. A rejected candidate never gets silently executed.
         dt=.1; x,y,a=c.loc.pose
@@ -356,7 +364,7 @@ class DestinationAcquire:
               y+math.sin(a)*drive[0]*dt+math.cos(a)*drive[1]*dt)
         if not segment_free((x,y),goal,c.obstacles.discs(now),c.rects,c.radius):
             context=route_context((x,y),goal,c.obstacles.discs(now),c.rects,c.radius,
-                names=[o['id'] for o in c.static['obstacles']],bounds=c.static['bounds_m'])
+                names=[o['id'] for o in c.static['obstacles']+c.static.get('fixed_floor_keepouts',[])],bounds=c.static['bounds_m'])
             self.last.update(reason='destination_motion_blocked',**context)
             # Rotation is inside the same circular loaded envelope.
             drive=(0.,0.,.1) if not self.camera_pan and segment_free((x,y),(x,y),c.obstacles.discs(now),c.rects,c.radius) else (0.,0.,0.)
