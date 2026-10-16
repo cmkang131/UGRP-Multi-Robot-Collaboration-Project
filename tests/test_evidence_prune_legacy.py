@@ -43,12 +43,16 @@ class LegacyPruneTests(unittest.TestCase):
 
     def test_nested_ownership_different_pr_parent_keep_and_protected_class(self):
         (self.root / 'EXIT').write_text('0')
+        (self.root / 'old-trace.json.zst').write_bytes(b'old')
+        (self.root / 'COMPRESSED.jsonl').write_text(json.dumps({
+            'compressed': 'old-trace.json.zst', 'verified': True}) + '\n')
         child = self.root / 'nested'
         child.mkdir()
         (child / 'RUN_META.json').write_text('{"class":"dev","pr":2}')
         (child / 'EXIT').write_text('1')
         (child / 'frame.jpg').write_bytes(b'child')
         self.assertEqual([r['path'] for r in prune.plan(self.root, 1)['candidates']], ['frame.jpg'])
+        self.assertEqual(prune.plan(self.root, 1)['unknown_original_sizes'], ['old-trace.json.zst'])
         self.assertEqual(prune.plan(child, 2)['bytes'], 5)
         (self.root / 'RUN_META.json').write_text('{"class":"dev","pr":1,"keep":["nested"]}')
         self.assertEqual(prune.plan(child, 2)['bytes'], 0)

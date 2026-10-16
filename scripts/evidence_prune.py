@@ -148,11 +148,21 @@ def plan(root: Path, number: int | None, *, idle_hours=0, allow_legacy_completed
     ancestor_keeps = [(parent, json.loads((parent / 'RUN_META.json').read_text()))
                       for parent in root.parents if (parent / 'RUN_META.json').is_file()]
     original_sizes = {}
+    unknown_original_sizes = []
     manifest = root / 'COMPRESSED.jsonl'
     if manifest.exists():
         for line in manifest.read_text().splitlines():
             item = json.loads(line)
-            original_sizes[item['compressed_path']] = item['bytes']
+            compressed = item.get('compressed_path', item.get('compressed'))
+            if not isinstance(compressed, str):
+                raise ValueError(f'invalid compression manifest: {manifest}')
+            size = item.get('bytes')
+            if not isinstance(size, int) or isinstance(size, bool) or size < 0:
+                # Old manifests sometimes contain hashes but no original size.
+                # Preserve these traces rather than guess or abort the batch.
+                size = 0
+                unknown_original_sizes.append(compressed)
+            original_sizes[compressed] = size
     rows = []
     # Retain a representative MP4 per run even for legacy metadata without keep.
     mp4s = sorted(p.relative_to(root) for p in paths if p.suffix.lower() == '.mp4')
@@ -177,7 +187,7 @@ def plan(root: Path, number: int | None, *, idle_hours=0, allow_legacy_completed
             rows.append({'path': relative.as_posix(), 'bytes': before[2],
                          'sha256': digest, 'snapshot': before})
     return {'run': str(root), 'bytes': sum(r['bytes'] for r in rows), 'candidates': rows,
-            'completion_basis': completed}
+            'completion_basis': completed, 'unknown_original_sizes': unknown_original_sizes}
 
 
 def execute(root: Path, number: int | None, records: Path, *, catalog=None, idle_hours=0,
@@ -217,6 +227,7 @@ def execute(root: Path, number: int | None, records: Path, *, catalog=None, idle
                   'bytes': planned['bytes'], 'files': planned['candidates'], 'status': 'planned',
                   'all_hashes': str(root / 'ALL-hashes.tsv'), 'completed': []}
         record['completion_basis'] = planned['completion_basis']
+        record['unknown_original_sizes'] = planned['unknown_original_sizes']
         progress = receipt.with_suffix('.progress.jsonl')
         record['progress_journal'] = str(progress)
         atomic_text(receipt, json.dumps(record, indent=2) + '\n')
