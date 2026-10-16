@@ -64,3 +64,5 @@ PYTHONPATH=/home/ugrp/ugrp-sim/src/e042139b0930ee7b31eae08a917ff501ee01075f \
 새 제어 비물리 검사35개가 통과했다. CI는 로컬 검사와 별개이며 최신 PR 상태를 확인해야 한다. 후속 두 기본 off 후보는 물리0회다. 목적지의 완전한 구역 중심 복원·B구역 원뿔 전용 검출·미래 경로 전체 정보이득 최적화는 구현하지 않았다. 현재 서보 특징은 보이는 바닥 패치 중심이며 큰 초기 위치 오류에서의 획득은 계속 실패했다. 다음 실행을 승인하기 전 이 한계와 기본 off 후보를 따로 검증해야 한다.
 
 다른 lease와 UGRP python·mujoco·ffmpeg가0임을 확인해 자기 lease를 제거하고 gcp2 **TERMINATED**를 재확인했다. 디스크·원본은 보존했다. [cleanup.json](cleanup.json). PR은 DRAFT/NOT_READY로 유지하며 병합하지 않았다. primary checkout은 변경하지 않았다(공유 ops-alert 추가 제외).
+
+최종 확인 시 모델 감시기의 활성 경보 파일에 Gemma4-31B@DeepInfra 가격이 설정 기준보다50% 높다고 기록돼 있었다. 이는 기존 감시기 경보 확인이며 새 공급자 가격 측정은 아니다. reloc19의 LLM 호출·새 LLM 배치는0이며 모델/공급자를 바꾸지 않았다. [경보 수신 기록](endpoint-alert-receipt.json).
