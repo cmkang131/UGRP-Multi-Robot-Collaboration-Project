@@ -2,14 +2,20 @@
 from pathlib import Path
 import json,hashlib,subprocess,sys,datetime,os,fcntl
 root=Path(sys.argv[1]).resolve()
-if str(root) not in ['/home/ugrp/ugrp-sim/runs/warpfit','/home/ugrp/ugrp-sim/ops-reviews/warpfit/raw']:
+analysis_only=str(root)=='/home/ugrp/ugrp-sim/ops-reviews/warpfit-ownhost'
+if str(root) not in ['/home/ugrp/ugrp-sim/runs/warpfit','/home/ugrp/ugrp-sim/ops-reviews/warpfit/raw'] and not analysis_only:
  raise ValueError('only own raw root')
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 lock=(root/'.warpfit-archive.lock').open('a+')
 fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
 # Fixed matrix: original N16 diagnostic16 + box repeat4 + cleared drive4 +
 # N64 final12. An unsubmitted or interrupted queue is never archive-complete.
-for phase,count in [('R2-retry1',16),('R2-box-repeat2',4),('R2-drive-clear-v1',4),('R3',12)]:
+phases=[] if analysis_only else [('R2-retry1',16),('R2-box-repeat2',4),('R2-drive-clear-v1',4),('R3',12)]
+if analysis_only:
+ summary=json.loads((root/'report-final-v1/summary.json').read_text())
+ if summary['status'] not in ('complete','comparison_complete_with_rejections'):
+  raise ValueError('unfinished analysis report')
+for phase,count in phases:
  attempts=json.loads((root/phase/'attempts.json').read_text())
  if len(attempts)!=count or any(r['status'] not in ('complete','HOST_ERROR') for r in attempts):
   raise ValueError('unfinished queue '+phase)
