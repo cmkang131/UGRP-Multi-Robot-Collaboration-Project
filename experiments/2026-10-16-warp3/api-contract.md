@@ -19,3 +19,5 @@
 기록 진입점은 `scripts/run_warp_act_record.py`. 승인된 f0db 교사를 수정하지 않고 `capture`가 돌려준 **동일 JPEG**와 호출 직전 스킬·phase·발행 명령을 저장한다. 종료 뒤 원래 SoloRecorder와 command trace로 관측/표적을 짝짓는다. gate controller SHA와 adapter SHA를 구분한다. [실제 기록 pilot](record-api-audit-r1.json)은 fresh train seed88960, 3SIM cap에서 JPEG30/30 바이트 일치·표적30/30·unpaired0을 확인했다. cap_end이며 데이터셋 승인·성공 시연이 아니다. bulk는 별도 승인 및 검토한 pilot2개를 요구한다. 후속 직렬화 수정은 previous의 deep copy와 후처리 실패 HOST_ERROR 기록만이며 f0db 행동 코드는 그대로다.
 
 학생 진입점은 `scripts/run_warp_act_student.py` (`warp_act_student_smoke.py`). ACT15 가중치 SHA `d90a2b545709df6cd1a5972874db2e20c264007f9a798888f1bdccac22882ed1`로 실제 자기 RGB actor step2회×2world와 선택 chunk reset을 확인했다([영수증](student-api-smoke-r2.json)). `--full-evaluation`은 원래 SoloSequence의 grasp→release와900tick/90SIM를 실행하고 모든 행동이 끝난 뒤 원래 SoloScore로 평가한다. 이 full mode의 학생 임무 성공률, ACT 학습, 기록 본실행은 아직 측정하지 않았다. 학습 자료 승인과 이 API 인수는 별도다.
+
+학습 전용 critic 실측 추가: [training-lane-r1](training-lane-r1.json), 별도 source dfa8457b0/API source2b99e00d8. 한 실제 물리 step 전후 critic512개·정답4필드를 분리 반환했고 critic 읽기가 actor 관측을 바꾸지 않았다. 원본13파일 SHA 불일치0, RL update0이다.

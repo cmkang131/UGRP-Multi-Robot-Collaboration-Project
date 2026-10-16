@@ -63,6 +63,29 @@
       "raw": "/home/ugrp/ugrp-sim/runs/warp3-warm-c16-r{1,2}/summary.json"
     },
     {
+      "name": "training_critic_probe",
+      "attempts": 1,
+      "passed": 1,
+      "cap_end": 1,
+      "HOST_ERROR": 0,
+      "RL_updates": 0,
+      "raw": "training-lane-r1.json"
+    },
+    {
+      "name": "GPU_queue_preflight",
+      "attempts": 1,
+      "physics_workers_started": 0,
+      "category": "configuration_path",
+      "reason": "wrong geometry filename caught during wait; own queue interrupted before any worker; corrected in r2",
+      "blocking_object": "/case-04/geometry.npz",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "missing file, not geometry clearance",
+      "raw": "warm-queue-r1-interrupted.json",
+      "cancelled_before_execution": 1,
+      "no_original_summary": true,
+      "posthoc_receipt": true
+    },
+    {
       "name": "warm_GPU",
       "status": "WAIT_FOREIGN_GPU",
       "qualified_N64": false,
@@ -71,7 +94,7 @@
       "reason": "preserve foreign tasks; global GPU quota1 prevents additional L4",
       "minimum_gap_m": null,
       "minimum_gap_status": "resource contention, not geometry",
-      "raw": "/home/ugrp/ugrp-sim/runs/warp3-warm-gpu-r1/progress.json"
+      "raw": "/home/ugrp/ugrp-sim/runs/warp3-warm-gpu-r2/progress.json"
     }
   ],
   "reproduce": [

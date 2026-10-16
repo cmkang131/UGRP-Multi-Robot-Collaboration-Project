@@ -138,7 +138,7 @@
     "API reset fixed model/seed/task fresh starts; immediate/terminal boundaries byte verified, next-trajectory bitwise consistency unverified.",
     "Actual recording30JPEG/30target cap pilot only; ACT15 actual2-step inference/chunk reset only; no bulk data admission/full task score/training.",
     "C16 r1 shared attempt excluded; r2 unshared8.181462972SIM/s. Warm rate is bounded SIM3..6 approach prefix, not whole mission.",
-    "25 nonphysics tests passed; latest GitHub CI pending, historical e97433/33.",
+    "26 nonphysics tests passed; latest GitHub CI pending, historical e97433/33.",
     "No Mac physics/render/GUI/model calls, no Drive, no GCP1 operations; no foreign tasks or VMs stopped.",
     "preexisting COORDINATOR_NOTE.md untouched."
   ],
@@ -173,9 +173,9 @@
   },
   "controller_source": "f0db6b1abb842ea65b71c433738210254f300a7c",
   "warm_queue": {
-    "pid": 20738,
-    "root": "/home/ugrp/ugrp-sim/runs/warp3-warm-gpu-r1",
-    "source": "46113bb18862b2b7041124750960413aded2e664",
+    "pid": 22584,
+    "root": "/home/ugrp/ugrp-sim/runs/warp3-warm-gpu-r2",
+    "source": "2b99e00d82f1f9a15769a9e41d4e599969571c9d",
     "status": "WAIT_FOREIGN_GPU"
   },
   "CPU_cleanup": {
@@ -184,5 +184,11 @@
       "warp7.json"
     ],
     "vm_stopped": false
+  },
+  "student_full_running": {
+    "root": "/home/ugrp/ugrp-sim/runs/warp3/student-full-r1",
+    "session_pid": 23170,
+    "scope": "one DEV old ACT15 checkpoint case, shared GPU; not throughput or heldout performance",
+    "resource_cap_wall_s": 7200
   }
 }
