@@ -43,6 +43,19 @@ def main(a):
         delta=np.asarray(r['motion_delta']);c,s=np.cos(pose[2]),np.sin(pose[2]);R=np.array([[c,-s,0],[s,c,0],[0,0,1]])
         d=R@delta;F=np.eye(3);F[:2,2]=[-d[1],d[0]];P=F@P@F.T+R@np.asarray(r['motion_covariance'])@R.T;pose=compose(pose,delta)
     cases.append(('recording-r2-postpickup',recording,ledger['segments'],ledger['camera_origins'],P))
+    # The recording's prescan used an elapsed-1SIM schedule independent of
+    # RBPF insertion. Rebuild that exact ledger from the frozen same-frame
+    # own-camera replay, never from any setup/evaluation coordinates.
+    scans=read(a.runs/'mapbuild7/replay-r2/scans.json');rrows=read(a.runs/'mapbuild7/replay-r2/trajectory.json')
+    seg=[];origins=[];P=np.zeros((3,3));pose=np.zeros(3);next_scan=0.
+    for r,s in zip(rrows,scans):
+        if r['t']>5.8:break # exact recorded prescan event time, not admission threshold
+        delta=np.asarray(r['motion_delta']);c,ss=np.cos(pose[2]),np.sin(pose[2]);R=np.array([[c,-ss,0],[ss,c,0],[0,0,1]])
+        d=R@delta;F=np.eye(3);F[:2,2]=[-d[1],d[0]];P=F@P@F.T+R@np.asarray(r['motion_covariance'])@R.T;pose=compose(pose,delta)
+        if s['segments'] and r['t']>=next_scan:
+            seg.extend([transform(x,pose).tolist() for x in s['segments']]);origins.extend([transform([s['camera']],pose)[0].tolist() for _ in s['segments']]);next_scan=r['t']+1.
+    cases.append(('recording-r2-prescan',recording,seg,origins,P))
+    if a.prescan_only:cases=cases[-1:]
     results=[]
     for label,recording,segments,origins,P in cases:
         reg=StaticRegistration(read(recording/'static-map.json'),option=OPTION);detail={}
@@ -84,4 +97,5 @@ def main(a):
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__)
     for k in ('runs','vision','output'):p.add_argument('--'+k,type=Path,required=True)
+    p.add_argument('--prescan-only',action='store_true')
     main(p.parse_args())
