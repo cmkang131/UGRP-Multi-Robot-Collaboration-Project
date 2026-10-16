@@ -16,6 +16,17 @@ def main():
     for kind in ('box','beam'):
         shutil.copytree(old/kind,out/kind)
     src=old/'drive-clear-v1';dst=out/'drive';shutil.copytree(src,dst)
+    # Prior warpfit archival compressed large JSON losslessly. Restore only
+    # required compile inputs in this new fixture copy; never alter originals.
+    import subprocess
+    restored=[]
+    for kind in ('box','beam','drive'):
+        path=out/kind/'actuator312.json'
+        if not path.exists():
+            packed=Path(str(path)+'.zst')
+            subprocess.run(['zstd','-q','-d',str(packed),'-o',str(path)],check=True)
+            restored.append(dict(file=str(path),packed_sha256=digest(packed),restored_sha256=digest(path)))
+    dump(a.root/'restored-compile-inputs.json',restored)
     f=np.load(src/'fixture.npz');original=np.load(old/'drive/fixture.npz')
     arrays={k:f[k] for k in f.files if k in ('qpos','qvel','ctrl','qacc_warmstart','tree_sleep_policy',
         'cam_pos','cam_quat','cam_resolution','cam_sensorsize','cam_intrinsic')}
