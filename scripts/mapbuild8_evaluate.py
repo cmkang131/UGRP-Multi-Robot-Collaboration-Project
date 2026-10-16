@@ -40,9 +40,10 @@ def main(a):
             indices=np.flatnonzero(mask)
             if not len(indices):return dict(frames=0,status='not_recorded')
             k=indices[-1];length=dist[k]-dist[indices[0]]
-            return dict(frames=len(indices),path_m=float(length),xy_rmse_m=float(np.sqrt(np.mean(xy[indices]**2))),
+            return dict(frames=len(indices),path_m=float(length),start_xy_m=float(xy[indices[0]]),start_yaw_deg=float(np.degrees(yaw[indices[0]])),xy_rmse_m=float(np.sqrt(np.mean(xy[indices]**2))),
                 final_xy_m=float(xy[k]),final_yaw_deg=float(np.degrees(yaw[k])),maximum_xy_m=float(xy[indices].max()),
-                maximum_yaw_deg=float(np.degrees(yaw[indices].max())),final_drift_percent=float(100*xy[k]/length) if length>0 else None,
+                maximum_yaw_deg=float(np.degrees(yaw[indices].max())),final_drift_percent=float(100*xy[k]/dist[k]) if dist[k]>0 else None,
+                absolute_error_over_phase_path_percent=float(100*xy[k]/length) if length>0 else None,
                 final_handoff_pass=bool(xy[k]<=req['handoff']['position_error_m'] and coupled[k]<=req['handoff']['yaw_error_rad']),
                 final_direction_coupled_deg=float(np.degrees(coupled[k])),slot_pass=bool(xy[k]<=req['arrival']['slot_center_error_m']))
         methods[method]=metric(masks['all']);phases[method]={name:metric(mask) for name,mask in masks.items() if name!='all'}
@@ -53,7 +54,7 @@ def main(a):
             values[method]=dict(xy_m=float(xy[k]),yaw_deg=float(np.degrees(yaw[k])),direction_coupled_deg=float(np.degrees(coupled)),
                 handoff_pass=bool(xy[k]<=req['handoff']['position_error_m'] and coupled<=req['handoff']['yaw_error_rad']),slot_pass=bool(xy[k]<=req['arrival']['slot_center_error_m']))
         points.append(dict(t=e['t'],event=e['event'],methods=values))
-    corrections=[];registrations=[]
+    corrections=[];registrations=[];prior_coverage=[]
     for k,e in enumerate(events):
         reg=e.get('registration')
         if reg and reg.get('status')=='accepted':
@@ -63,6 +64,10 @@ def main(a):
             registrations.append(dict(t=e['t'],absolute_body_pose=absolute.tolist(),xy_m=float(xy[0]),yaw_deg=float(np.degrees(yaw[0])),
                 direction_coupled_deg=float(np.degrees(coupled)),within_handoff_budget=bool(xy[0]<=req['handoff']['position_error_m'] and coupled<=req['handoff']['yaw_error_rad'])))
         e=e['correction']
+        if e['attempted']:
+            error=np.asarray(e['prior_pose'])-gt[k];error[2]=math.atan2(math.sin(error[2]),math.cos(error[2]));sigma=np.sqrt(np.maximum(0,np.diag(e['prior_covariance'])))
+            inside=np.abs(error)<=sigma
+            prior_coverage.append(dict(t=e['t'],error_only=error.tolist(),sigma=sigma.tolist(),inside_axes=inside.tolist(),inside_all=bool(inside.all())))
         if not e['accepted']:continue
         before_xy,before_yaw=errors([e['prior_pose']],[gt[k]]);after_xy,after_yaw=errors([e['pose']],[gt[k]])
         corrections.append(dict(t=e['t'],selected=e['selected'],before_xy_m=float(before_xy[0]),after_xy_m=float(after_xy[0]),
@@ -91,17 +96,20 @@ def main(a):
             if world[k-1,axis]==world[k,axis] or abs(world[k,other]-c[other])>p['width_m']/2:continue
             values={}
             for method,(xy,yaw) in arrays.items():
-                pred=np.asarray(rows[k][method+'_pose']);lateral=abs(pred[other]-gt[k,other])
-                # GT and own gauge may be rotated. Conservatively report radial
-                # error as a bound separately; do not call it lateral error.
+                pred=np.asarray(rows[k][method+'_pose']);c0,s0=np.cos(world[0,2]),np.sin(world[0,2]);R0=np.array([[c0,-s0],[s0,c0]])
+                # This is exactly the SAME initial SE2 alignment, not a fresh
+                # alignment at the passage. Rotate the error into map axes.
+                lateral=abs((R0@(pred[:2]-gt[k,:2]))[other])
                 support=req['passage']['robot_half_length_m']*abs(np.sin(yaw[k]))+req['passage']['robot_half_width_m']*abs(np.cos(yaw[k]))
-                values[method]=dict(xy_error_bound_m=float(xy[k]),yaw_deg=float(np.degrees(yaw[k])),chassis_bound_pass=bool(xy[k]+support<=p['width_m']/2),held_footprint_pass=None)
+                values[method]=dict(lateral_error_m=float(lateral),xy_error_bound_m=float(xy[k]),yaw_deg=float(np.degrees(yaw[k])),
+                    chassis_budget_pass=bool(lateral+support<=p['width_m']/2),radial_chassis_bound_pass=bool(xy[k]+support<=p['width_m']/2),held_footprint_pass=None)
             crossings.append(dict(t=rows[k]['t'],passage=p['id'],methods=values))
     names={e['event'] for e in route};missing=[]
     for key,name in [('estimated_zone_arrival','zone_arrival'),('estimated_return_arrival','return'),('post_setdown_lookaround_end','setdown_lookaround')]:
         if key not in names:missing.append(name)
     if not crossings:missing.append('door_crossing')
-    if not any(e['event']=='map_to_teacher_handoff' and e.get('navigation_before_handoff') for e in route):missing.append('map_to_ACT_handoff_after_navigation')
+    if not any(e['event']=='map_to_teacher_handoff' for e in route):missing.append('map_to_near_teacher_handoff')
+    if not registrations:missing.append('visual_static_registration')
     # A visible-only demonstration is not a learned ACT or LLM execution.
     result=dict(status='NOT_READY' if missing else 'route_recorded_requires_physical_recount',decision='no default adoption until all actual-route requirements pass',
         raw=str(a.input),prediction=str(a.prediction),frames=len(rows),sim_s=rows[-1]['t'],path_m=float(dist[-1]),reference='chassis SE2; start-only alignment; scale=1',
@@ -109,9 +117,13 @@ def main(a):
         correction_counts=dict(attempts=sum(e['correction']['attempted'] for e in events),accepted=len(corrections),xy_worsened=sum(e['xy_worsened'] for e in corrections),yaw_worsened=sum(e['yaw_worsened'] for e in corrections)),
         correction_evaluation=corrections,rejection_distribution=distribution,truth_to_control=0,scale_fitting=0,
         accepted_global_registration_evaluation=registrations,wrong_global_accepts=sum(not r['within_handoff_budget'] for r in registrations),
+        prior_sigma_coverage=dict(attempts=len(prior_coverage),inside_all=sum(r['inside_all'] for r in prior_coverage),
+            inside_each_axis=np.sum([r['inside_axes'] for r in prior_coverage],axis=0).tolist() if prior_coverage else [0,0,0],scope='evaluation only; no sigma scale fitted'),
+        upstream_map_navigation_verified=any(e['event']=='map_to_teacher_handoff' and e.get('navigation_before_handoff') for e in route),student_execution=False,
         phase_scope='closed grip is a command label, not proof of load; actual transport starts at own-RGB hold confirmation; physical lift independently evaluated',
         requirements_sha256=sha(a.requirements),prediction_seal_sha256=sha(a.prediction/'prediction-seal.json'),reproduction=sys.argv)
     dump(a.output/'summary.json',result);dump(a.output/'intervals.json',intervals)
+    dump(a.output/'prior-sigma-coverage.json',prior_coverage)
     dump(a.output/'frame-errors.json',[dict(t=r['t'],methods={m:dict(xy_m=float(xy[k]),yaw_deg=float(np.degrees(yaw[k]))) for m,(xy,yaw) in arrays.items()}) for k,r in enumerate(rows)])
     print(json.dumps({k:v for k,v in result.items() if k not in ('checkpoints','correction_evaluation','rejection_distribution')}))
 

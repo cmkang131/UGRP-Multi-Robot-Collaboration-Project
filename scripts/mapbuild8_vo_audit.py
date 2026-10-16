@@ -35,7 +35,7 @@ def main(a):
     for k in range(1,len(rows)):
         r=rows[k];truth=between(gt[k-1]['pose'],gt[k]['pose']);turn=frames[k]['command_delta'][2]!=0
         category=('measured_turn' if turn else 'measured_other') if r['lk']['status']=='measured' else ('command_turn_' if turn else 'command_other_')+r['lk']['status']
-        used=np.array(r['motion_delta']);command=np.array(frames[k]['command_delta'])
+        used=np.array(r['motion_delta']);command=np.array(frames[k].get('command_delta_nominal',frames[k]['command_delta']))
         groups[category].append(dict(t=r['t'],used_yaw_error_deg=float(np.degrees(wrap(used[2]-truth[2]))),
             nominal_yaw_error_deg=float(np.degrees(wrap(command[2]-truth[2]))),
             visual_yaw_error_deg=float(np.degrees(wrap(r['lk']['delta'][2]-truth[2]))) if r['lk']['status']=='measured' else None,
