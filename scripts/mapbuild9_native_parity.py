@@ -45,7 +45,7 @@ static const double *draws;static int draw_index;
 double pf_ran_gaussian(double sigma){return sigma*draws[draw_index++];}
 pf_vector_t pf_vector_sub(pf_vector_t a,pf_vector_t b){pf_vector_t r;for(int i=0;i<3;i++)r.v[i]=a.v[i]-b.v[i];return r;}
 namespace angleutils {double angle_diff(double a,double b){return atan2(sin(a-b),cos(a-b));}}
-class DifferentialMotionModel {double alpha1_,alpha2_,alpha3_,alpha4_;
+class DifferentialMotionModel {double alpha1_,alpha2_,alpha3_,alpha4_,alpha5_;
 public: void initialize(double,double,double,double,double);void odometryUpdate(pf_t*,const pf_vector_t&,const pf_vector_t&);};
 '''
     trailer=r'''
@@ -62,7 +62,9 @@ extern "C" int run_limit(int k){pf_t pf{};pf.min_samples=2000;pf.max_samples=100
         tmp=Path(tmp);source=tmp/'upstream.cpp';library=tmp/'upstream.so'
         source.write_text(prelude+'\n'+'\n'.join(parts)+'\n'+trailer)
         command=['g++','-std=c++17','-O2','-fPIC','-shared',str(source),'-o',str(library)]
-        subprocess.run(command,check=True,capture_output=True)
+        result=subprocess.run(command,capture_output=True,text=True)
+        if result.returncode:
+            raise RuntimeError(result.stderr)
         lib=ctypes.CDLL(str(library));pointer=ctypes.POINTER(ctypes.c_double)
         lib.run_motion.argtypes=[ctypes.c_int,pointer,pointer,pointer,pointer];lib.run_limit.argtypes=[ctypes.c_int];lib.run_limit.restype=ctypes.c_int
         rng=np.random.default_rng(100);results=[];alpha=np.array([.0755723472,.0001127158,.0812268715,.0141937258],float)

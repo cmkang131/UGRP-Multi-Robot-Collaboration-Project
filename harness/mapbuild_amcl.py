@@ -109,7 +109,8 @@ class StaticAMCL:
         ready = bool(xy95<=req['position_error_m'] and coupled<=req['yaw_error_rad'] and ess>=len(w)/2)
         return dict(candidate_pose=[float(xy[0]), float(xy[1]), yaw], covariance=cov.tolist(),
             xy_p95_m=xy95, yaw_p95_rad=yaw95, direction_coupled_p95_rad=coupled,
-            ess=ess, samples=len(w), converged=ready, ready_for_handoff=ready,
+            ess=ess, samples=len(w), converged=ready, ready_for_handoff=False,
+            runtime_qualified=False,
             circular_resultant=math.hypot(c, s))
 
     def step(self, t, frame_id, delta, scan, *, servo=None):
@@ -177,12 +178,13 @@ class StaticAMCL:
         self.current['post_resample_ess']=self.current['ess']
         self.current['ess']=ess
         self.current['converged']=bool(self.current['converged'] and ess>=row['work']['particles']/2)
-        self.current['ready_for_handoff']=self.current['converged']
+        self.current['ready_for_handoff']=False  # all offline profiles failed; no live admission
         row.update(self.current)
         if row['converged']:
-            row['reason']='posterior_converged'
-            row['adopted_pose']=row['candidate_pose']
-            if self.local_map and self.local_map[-1]['frame_id']==frame_id:
-                self.local_map[-1]['static_pose_if_converged']=row['adopted_pose']
+            row['reason']='posterior_converged_unqualified'
+            # Narrow belief alone produced a 4.69m false convergence in R3.
+            # Keep it a diagnostic proposal until a future offline/actual-route
+            # admission exists; this failed method supplies NO adopted pose.
+            row['proposal_pose']=row['candidate_pose']
         self.ledger.append(row)
         return row

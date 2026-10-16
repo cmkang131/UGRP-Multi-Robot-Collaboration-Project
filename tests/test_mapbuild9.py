@@ -75,3 +75,14 @@ def test_equal_weight_resampling_cannot_fake_good_sensor_ess(monkeypatch):
     row=m.step(0,0,[0,0,0],dict(segments=[[[0,.9],[.1,.9]]]))
     assert row['post_resample_ess']==3 and row['pre_resample_ess']<1.01
     assert not row['converged'] and row['adopted_pose'] is None
+
+
+def test_compact_belief_in_failed_profile_is_never_live_handoff_admission(monkeypatch):
+    m=StaticAMCL(STATIC,CAL,REQ,option=OPTION)
+    m.particles=np.zeros((4,3));m.weights=np.ones(4)/4
+    monkeypatch.setattr(n,'likelihood',lambda *args:np.ones(4))
+    monkeypatch.setattr(n,'resample',lambda *args,**kwargs:(np.zeros((4,3)),dict(samples=4)))
+    row=m.step(0,0,[0,0,0],dict(segments=[[[0,.9],[.1,.9]]]))
+    assert row['converged']
+    assert not row['runtime_qualified'] and not row['ready_for_handoff']
+    assert row['adopted_pose'] is None and row['proposal_pose']==[0,0,0]
