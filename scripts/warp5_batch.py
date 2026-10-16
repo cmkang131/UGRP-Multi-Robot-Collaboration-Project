@@ -10,6 +10,7 @@ from pathlib import Path
 import numpy as np
 from scripts.warp_act_backend import WarpTransport
 from scripts.warp_act_core import SERVOS, control_tape, physics_schedule
+from scripts.warp9_profile import phase
 
 
 def sim_clock(origin,tick,period):
@@ -116,14 +117,14 @@ class Batch(WarpTransport):
             self.review_names=review_cameras(self.camera_names,contexts[0]['ports'])
             self.multi_renderer=Renderer(self.m,self.wm,self.wd,actor_names if getattr(self,'camera_demand_v1',False) else self.camera_names,
                 enabled=getattr(self,'warp5_native_visual_v1',False) or getattr(self,'warp5_native_visual_v2',False),
-                texture_after_lighting=getattr(self,'warp5_native_visual_v2',False))
+                texture_after_lighting=getattr(self,'warp5_native_visual_v2',False),profile=getattr(self,'warp9_profile',None))
             self.review_renderer=(Renderer(self.m,self.wm,self.wd,self.review_names,
                 enabled=getattr(self,'warp5_native_visual_v1',False) or getattr(self,'warp5_native_visual_v2',False),
-                texture_after_lighting=getattr(self,'warp5_native_visual_v2',False)) if getattr(self,'camera_demand_v1',False) and self.review_names else None)
+                texture_after_lighting=getattr(self,'warp5_native_visual_v2',False),profile=getattr(self,'warp9_profile',None)) if getattr(self,'camera_demand_v1',False) and self.review_names else None)
             if getattr(self,'camera_demand_v1',False):
                 self.parity_renderer=Renderer(self.m,self.wm,self.wd,self.camera_names,
                     enabled=getattr(self,'warp5_native_visual_v1',False) or getattr(self,'warp5_native_visual_v2',False),
-                    texture_after_lighting=getattr(self,'warp5_native_visual_v2',False))
+                    texture_after_lighting=getattr(self,'warp5_native_visual_v2',False),profile=getattr(self,'warp9_profile',None))
                 self.parity_rows=[];self.parity_motion=False
             self._multi_camera=True
         start=time.perf_counter()
@@ -155,14 +156,21 @@ class Batch(WarpTransport):
                 if rid in ('r1','r2','r3'):
                     rgb=cv2.remap(rgb,self.mx,self.my,cv2.INTER_LINEAR,borderMode=cv2.BORDER_CONSTANT)
                     self.rgb_arrays[(i,rid)]=rgb
-                b=io.BytesIO();Image.fromarray(rgb).save(b,format='JPEG',quality=82)
+                with phase(self,'jpeg_cpu'):
+                    b=io.BytesIO();Image.fromarray(rgb).save(b,format='JPEG',quality=82)
                 self.camera_cache[(i,rid)]=b.getvalue()
-        for i,c in enumerate(contexts):
-            if self.done[i]:continue
-            # Native get_data_into copies GPU contacts/forces. Do not call
-            # mj_forward/mj_step to invent CPU contacts for GPU evaluation.
-            mjw.get_data_into(c['world'].data,c['world'].model,self.wd,world_id=i)
-            c['world'].data.time=sim_clock(c['origin'],self.tick,self.period)
+        export=mjw.get_data_into
+        profile=getattr(self,'warp9_profile',None)
+        if profile:
+            from scripts.warp9_profile import exporter
+            export,self.export_profile_audit=exporter(export,lambda a:profile.numpy(a,name='evaluator_d2h'))
+        with phase(self,'evaluator_export_total'):
+            for i,c in enumerate(contexts):
+                if self.done[i]:continue
+                # Native get_data_into copies GPU contacts/forces. Do not call
+                # mj_forward/mj_step to invent CPU contacts for GPU evaluation.
+                export(c['world'].data,c['world'].model,self.wd,world_id=i)
+                c['world'].data.time=sim_clock(c['origin'],self.tick,self.period)
         self.rgb=[self.jpeg(i,c.get('rid','r3')) for i,c in enumerate(contexts)]
         self.seconds['render_and_evaluator_export']+=time.perf_counter()-start
 
@@ -199,13 +207,21 @@ class Batch(WarpTransport):
                 c['world'].robot(rid).servo_command_pulses.update(dict(zip(SERVOS,map(int,state['pwm'][i]))))
         combined=np.repeat(ctrl[None,:,:],self.control_steps,axis=0).astype(np.float32)
         for tape,ids in tapes:combined[:,:,ids]=tape[:,:,ids]
-        wp.copy(self.tape,wp.array(combined,dtype=float));self.graph_tick.zero_()
-        for _ in range(self.graph_repeats):wp.capture_launch(self.graph)
-        wp.synchronize();self.tick+=1
+        if getattr(self,'warp9_profile',None):
+            self.warp9_profile.rows.append(dict(phase='command_python',wall_s=time.perf_counter()-start,
+                submit_s=time.perf_counter()-start,wait_s=0.,device_s=None,bytes=0,implicit_syncs=0,explicit_syncs=0,status='COMPLETE'))
+        with phase(self,'command_h2d',device=True,nbytes=combined.nbytes):
+            wp.copy(self.tape,wp.array(combined,dtype=float));self.graph_tick.zero_()
+        with phase(self,'physics_graph',device=True):
+            for _ in range(self.graph_repeats):wp.capture_launch(self.graph)
+        with phase(self,'physics_existing_sync',explicit_syncs=1):
+            wp.synchronize()
+        self.tick+=1
         for name,value in frozen.items():
             current=getattr(self.wd,name).numpy();current[self.done]=value[self.done]
             wp.copy(getattr(self.wd,name),wp.array(current,dtype=getattr(self.wd,name).dtype))
-        if np.any(self.wd.overflow.numpy()):raise RuntimeError('MJWarp workspace overflow')
+        with phase(self,'overflow_d2h',implicit_syncs=1,nbytes=self.n*4):
+            if np.any(self.wd.overflow.numpy()):raise RuntimeError('MJWarp workspace overflow')
         self.seconds['command_and_physics']+=time.perf_counter()-start
         self.sync_render(contexts)
 

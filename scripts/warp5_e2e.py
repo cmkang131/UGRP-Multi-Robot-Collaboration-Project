@@ -60,7 +60,7 @@ class LocalRuleClient:
         return self.last_text
 
 
-def make_e2e(source,bundle,out,receipt,host,*,expected_sha,decision_backend='rule_v1',body_receipt=None):
+def make_e2e(source,bundle,out,receipt,host,*,expected_sha,decision_backend='rule_v1',body_receipt=None,coreweave_rate_v1=False):
     import subprocess
     source=Path(source)
     sha=subprocess.check_output(['git','rev-parse','HEAD'],cwd=source,text=True).strip()
@@ -69,8 +69,14 @@ def make_e2e(source,bundle,out,receipt,host,*,expected_sha,decision_backend='rul
         raise ValueError('live E2E transport/ACT/relay integration is unverified; CoreWeave price alert is resolved, not the integration gate')
     if bundle['e2e_options'].get('planner')!='rule_v1':raise ValueError('rule-only bundle required')
     bridge=Bridge(host)
+    from scripts.warp9_planner import install_coreweave_rate_v1
     def factory():
         prepare_modules(host)
+        rate_audit=None
+        if coreweave_rate_v1:
+            from scripts import openrouter_upstream
+            from harness import task_planner_model
+            rate_audit=install_coreweave_rate_v1(openrouter_upstream,task_planner_model)
         from scripts import run_e2e_ownmap_live as runner
         from harness import zone_study_llm_driver as driver
         def clients(profile,**kw):
@@ -80,6 +86,6 @@ def make_e2e(source,bundle,out,receipt,host,*,expected_sha,decision_backend='rul
         driver.client_factory=clients
         function,audit=transform_runner(Path(runner.__file__).read_text(),runner.__dict__,bridge,'e2e')
         bridge.ast_audit=dict(audit,dependency_sha=sha,decision_backend=decision_backend,
-            model_calls=0,Mac_relay='preserved in pinned source; live execution blocked')
+            model_calls=0,coreweave_rate=rate_audit,Mac_relay='preserved in pinned source; live execution blocked')
         return function(bundle,Path(out),Path(receipt),body_receipt=body_receipt)
     return Lane(factory,source),bridge
