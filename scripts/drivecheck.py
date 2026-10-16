@@ -15,6 +15,7 @@ import subprocess
 import sys
 import time
 import traceback
+from collections import deque
 
 PATTERNS = {'forward': [1, 1, 1, 1], 'left': [-1, 1, 1, -1], 'turn': [-1, 1, -1, 1]}
 RENDER_SHA = '5974a181a2cec9731339a6ce3aadc0464b8dddcf'
@@ -37,6 +38,46 @@ def dump(path, value):
 
 def sha(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+class OwnRGBRing:
+    """Recording only: own cameras on a separate MjData, never policy input."""
+    def __init__(self, model, worlds, out):
+        import mujoco
+        import cv2
+        from sim.masterpi_camera_profile import raw_fisheye_remap
+        self.m=model;self.d=mujoco.MjData(model);self.out=out
+        self.renderer=mujoco.Renderer(model,height=480,width=640)
+        self.mx,self.my=raw_fisheye_remap(640,480)
+        self.opt=mujoco.MjvOption();self.opt.geomgroup[4:]=0
+        # User requirement: terminal 10 SIM seconds at 10 Hz, two own cameras.
+        self.rings=[deque(maxlen=100) for _ in range(worlds)]
+
+    def capture(self,index,t,qpos,qvel):
+        import mujoco
+        import cv2
+        if abs(t*10-round(t*10))>1e-7:return
+        self.d.qpos[:]=qpos;self.d.qvel[:]=qvel;self.d.time=t
+        mujoco.mj_kinematics(self.m,self.d);mujoco.mj_camlight(self.m,self.d)
+        images=[]
+        for robot in ('r1','r2'):
+            self.renderer.update_scene(self.d,camera=robot+'__robot_cam',scene_option=self.opt)
+            rgb=cv2.remap(self.renderer.render().copy(),self.mx,self.my,cv2.INTER_LINEAR,borderMode=cv2.BORDER_CONSTANT)
+            ok,jpg=cv2.imencode('.jpg',cv2.cvtColor(rgb,cv2.COLOR_RGB2BGR),[cv2.IMWRITE_JPEG_QUALITY,82])
+            if not ok:raise RuntimeError('own RGB recording encode failed')
+            images.append((robot,jpg.tobytes()))
+        self.rings[index].append((t,images))
+
+    def save(self):
+        total=0;frames=0
+        for i,ring in enumerate(self.rings):
+            folder=self.out/'own-rgb-ring'/f'world-{i:03d}';folder.mkdir(parents=True,exist_ok=True)
+            for t,images in ring:
+                for robot,blob in images:
+                    (folder/f'{robot}-{t:.2f}.jpg').write_bytes(blob);total+=len(blob);frames+=1
+        self.renderer.close()
+        return dict(hz=10,terminal_sim_s=10,frames=frames,bytes=total,cameras=['r1','r2'],
+                    renderer='native rasterizer of isolated evaluator mirror',control_feedback=0)
 
 
 def host(engine=None):
@@ -195,6 +236,7 @@ def run(a):
     report['roller_contact_geoms'] = int(np.count_nonzero(geomwheel >= 0))
     report['floor_geoms'] = [m.geom(int(i)).name for i in planes]
     samples=[]; contacts=[]; started=time.perf_counter(); dense_ncon=0; dense_nefc=0
+    rgb_ring=OwnRGBRing(m,len(cases),a.out) if a.record_own_rgb_ring else None
     try:
         if a.engine == 'cpu':
             for ci, case in enumerate(cases):
@@ -204,6 +246,7 @@ def run(a):
                 for tick in range(len(tape)+1):
                     if tick % stride == 0 or tick in boundaries:
                         samples.append((ci,tick*dt,d.qpos.copy(),d.qvel.copy(),int(d.ncon),int(d.nefc)))
+                        if rgb_ring:rgb_ring.capture(ci,tick*dt,d.qpos,d.qvel)
                         for j,c in enumerate(d.contact):
                             g0,g1=map(int,c.geom)
                             if robotgeom[g0] or robotgeom[g1]:
@@ -273,6 +316,7 @@ def run(a):
                     for ci,case in enumerate(cases):
                         if tick<=len(f[case['id']]):
                             samples.append((ci,tick*dt,qp[ci].copy(),qv[ci].copy(),int(np.count_nonzero(ids[:nc]==ci)),int(ne[ci])))
+                            if rgb_ring:rgb_ring.capture(ci,tick*dt,qp[ci],qv[ci])
                     for j in range(nc):
                         ci=int(ids[j]);g0,g1=map(int,gs[j])
                         if tick<=len(f[cases[ci]['id']]) and (robotgeom[g0] or robotgeom[g1]):
@@ -290,6 +334,7 @@ def run(a):
             minimum_gap_m=None,gap_status='not_measured'),traceback=traceback.format_exc())
         raise
     finally:
+        if rgb_ring:report['online_own_rgb_ring']=rgb_ring.save()
         if samples:
             np.savez_compressed(a.out/'states.npz',case=np.asarray([s[0] for s in samples]),t=np.asarray([s[1] for s in samples]),
                 qpos=np.asarray([s[2] for s in samples]),qvel=np.asarray([s[3] for s in samples]),
@@ -320,6 +365,7 @@ def main():
     b.add_argument('--legacy-plane-v1',action='store_true');b.add_argument('--dense-capacity-v1',action='store_true')
     b.add_argument('--noslip-off-v1',action='store_true');b.add_argument('--capacity-reference',type=Path)
     b.add_argument('--clear-overlap-v1',action='store_true',help='default OFF causal setup diagnostic: relocate only the observed blocking box laterally')
+    b.add_argument('--record-own-rgb-ring',action='store_true',help='recording-only option: terminal 10 SIM seconds, own RGB at 10Hz; no control feedback')
     a=p.parse_args()
     if a.action=='prepare':prepare(a)
     elif a.enabled:run(a)
