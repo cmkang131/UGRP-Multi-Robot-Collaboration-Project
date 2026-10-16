@@ -106,7 +106,7 @@ R3의 원본 `peer_ko`와 지도 보정 off는 그대로 보존하며 **최신 �
 
 | 부품 | 소유자 | 최신 수신 / 남은 것 |
 |---|---|---|
-| native ACT 최종 학생 | act16w4, PR539 | A/B 각10000 step·재로딩 완료, VAL8×A/B 진행 소식. 최종 선택·종류/스킬 범위·public artifact·독립 성공 인수 미수신 |
+| native ACT 최종 학생 | act16w4, PR539 | owner ops 보고: A/B10000 step·재로딩 완료, VAL8 A0/8·B0/8(정렬 탈락 각8/8), h4 새 학습 시작. 선택/public artifact/독립 성공 인수 미수신 |
 | LK/RBPF 실제 운반 판정 | mapbuild8, PR556 | mapbuild6 운반 진입0 / NOT_READY. 02:24 scope-ack, 실제 경로 OFF/ON 판정06:00 KST 예상 |
 | 운반 자세 명령 FK | mapbuild8 | 02:24 scope-ack. 보정/FK API 예상04:15 KST. 기존 grip<=1600 거부 유지, 승인된 loaded API 미수신 |
 | 자기 RGB→정적 지도 초기/주기 정합 | mapbuild8 | 이동량 사전 창에서 자기 지도·정적 지도 정합 필수. 사전 창 표03:15, API04:15, 실제 경로06:00 KST 예상. spawn/평가 앵커 금지 |

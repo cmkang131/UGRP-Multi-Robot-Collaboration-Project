@@ -75,7 +75,7 @@ R3는 앞선8fc 정책의 peer_ko 원본으로 별도 보존하며 최신 준수
 
 | 의존 | 소유자 | 확인한 상태 / 연결 조건 | ops-alert |
 |---|---|---|---|
-| 최종 native ACT 학생 checkpoint | act16w4 / claude/act16w | native A/B 각10000 step·reload 완료, VAL8×A/B 진행. 선택/public artifact/범위/독립관문 대기 | 최신 수신, final40 미개봉 |
+| 최종 native ACT 학생 checkpoint | act16w4 / claude/act16w | owner ops 보고: native A/B10000 step·reload, VAL8 A0/8·B0/8; h4 새 학습. 선택/public artifact/독립관문 대기 | 최신 수신, final40 미개봉 |
 | LK/RBPF 판정 | mapbuild8 / codex/mapbuild1 | mapbuild6 운반 진입0·NOT_READY; 새 보정 OFF/ON 실제 경로 대기 | 02:24 scope-ack, 06:00 KST 예상 |
 | 운반 자세 명령 FK | mapbuild8 | grip<=1600 거부 유지; 보정/자격을 임의 완화하지 않음 | 보정/FK API04:15 예상 |
 | 자기 지도·정적 지도 보정 | mapbuild8 | 이동량 사전 창 안 정합, spawn/GT 앵커 금지. 모호 모드 표→API→실제 경로 | 표03:15/API04:15 예상, 미수신 |
