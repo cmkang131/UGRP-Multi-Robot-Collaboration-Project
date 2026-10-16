@@ -148,8 +148,13 @@ def run(a):
     if sha(colour)!='a37cf96551abbfb8b38df3efc1cd61f3f357ac9eb3a1dcd0b4d9947242e4e24f':raise ValueError('COLOUR_CHANGED')
     state=ColourBoundaryState('walls_floor_contrast_v5_indigo110_s80',json.loads(colour.read_text()),option=RELOC16_OPTION)
     registration=StaticRegistration(static,option=STATIC);rbpf=MapbuildRBPF(FOLDED,option=RBPF)
-    own=[];labels=[];saved=[];issued=[];trace=[];events=[];teacher_rows=[];wall_ledger=[];camera_ledger=[];ring=deque(maxlen=101)
-    pose=np.zeros(3);anchor=None;old=None;previous=None;last_servo=None;stage='prescan';route=None;goal=None;start_return=None;status='cap_end';error=None;source_sha=q['source_sha'];start=time.monotonic();next_scan=0.
+    contact_recorder=None
+    if a.record_native_contact:
+        from scripts.mapbuild7_contact_eval import NativeContactRecorder
+        if len(teacher.gids)!=1:raise ValueError('ONE_BOX_COLLISION_GEOM_REQUIRED')
+        contact_recorder=NativeContactRecorder(m,wd,teacher.gids[0],[m.geom('r1__'+x+'_finger').id for x in ('left','right')])
+    own=[];labels=[];saved=[];saved_vel=[];issued=[];trace=[];events=[];teacher_rows=[];wall_ledger=[];camera_ledger=[];ring=deque(maxlen=101)
+    pose=np.zeros(3);anchor=None;old=None;previous=None;last_servo=None;stage='prescan';sweep_pose=None;sweep_angle=0.;sweep_ticks=0;sweep_budget=None;route=None;goal=None;start_return=None;status='cap_end';error=None;source_sha=q['source_sha'];start=time.monotonic();next_scan=0.
     d_eval=mujoco.MjData(m)
     body=m.body('r1__robot').id;adr=int(m.jnt_qposadr[int(m.body_jntadr[body])])
     region=static['regions']['zone_A'];from harness.visual_arm_v3 import MOUNT_X_M
@@ -184,13 +189,30 @@ def run(a):
             trace.append(dict(t=t,frame_id=tick,lk_pose=pose.tolist(),rbpf_pose=estimate,lk=flow,motion_delta=increment.tolist(),motion_covariance=C.tolist(),wall_event=wall_event))
             # Separate evaluation channel. Only the visible-only teacher below
             # gets a perception mirror; mapper, FK and route never see it.
-            labels.append(dict(frame_id=tick,t=t,pose=np.r_[qp[adr:adr+2],quaternion_heading(qp[adr+3:adr+7])].tolist()));saved.append(qp);ring.append(tick)
+            labels.append(dict(frame_id=tick,t=t,pose=np.r_[qp[adr:adr+2],quaternion_heading(qp[adr+3:adr+7])].tolist(),finger_forces=contact_recorder.record() if contact_recorder else None));saved.append(qp);saved_vel.append(wd.qvel.numpy()[0].copy());ring.append(tick)
             old=rgb['r1'];last_servo=servo
             if tick==round(a.sim_budget*10):break
-            if stage=='prescan':
+            if stage in ('prescan','rescan'):
                 cmd,done=prescan.step(t,servo,lambda:rgb['r1'])
                 if done:
-                    try_register(t,'prescan');stage='pickup';events.append(dict(t=t,event='map_to_teacher_handoff',student=False))
+                    result=try_register(t,stage)
+                    if stage=='prescan' and a.body_sweep:
+                        stage='body_sweep';sweep_pose=dict(cmd['pwm']);sweep_angle=0.;sweep_ticks=0
+                        action=proportional_drive((0.,0.,0.),(0.,0.),(0.,0.),math.pi/2)
+                        w,ds=duty([0.,0.,.65*action['turn']]);probe=dict(wheels=w,duration_s=ds)
+                        sweep_budget=math.ceil(2*math.pi/abs(command_delta(probe,.1)[2]))
+                        events.append(dict(t=t,event='body_sweep_start',command_budget=sweep_budget,basis='one full revolution / existing6f nominal command yaw increment; no wall budget'))
+                    else:
+                        if stage=='rescan' and anchor is None:status='MAP_REGISTRATION_REQUIRED';break
+                        stage='pickup';events.append(dict(t=t,event='map_to_teacher_handoff',student=False,navigation_before_handoff=False))
+            elif stage=='body_sweep':
+                sweep_angle+=float(increment[2]);sweep_ticks+=1
+                action=proportional_drive((0.,0.,0.),(0.,0.),(0.,0.),math.pi/2)
+                w,ds=duty([0.,0.,.65*action['turn']]);cmd=dict(t=t,wheels=w,duration_s=ds,pwm=sweep_pose)
+                if sweep_angle>=2*math.pi or sweep_ticks>=sweep_budget:
+                    events.append(dict(t=t,event='body_sweep_end',own_yaw_travel_rad=sweep_angle,issued_ticks=sweep_ticks,command_budget=sweep_budget,reason='own_measured_revolution' if sweep_angle>=2*math.pi else 'nominal_command_revolution_budget_end',actual_revolution='evaluation_only'))
+                    prescan=SoloLookaround({},ops=teacher.teacher.ops,truth_free_v1=True);prescan.arm();prescan.start(t,int(sweep_pose['6']));stage='rescan'
+                    cmd={**cmd,'wheels':[0.]*4,'duration_s':[0.]*4}
             elif stage in ('pickup','release'):
                 # Own-camera visible demonstration teacher exception, not an
                 # input to visual odometry or static registration.
@@ -232,7 +254,7 @@ def run(a):
     except BaseException as exc:error=repr(exc);status='HOST_ERROR';raise
     finally:
         dump(a.output/'own.json',dict(schema='ugrp.mapbuild1.own.v1',backend='mjwarp_render',physics_backend='mjwarp',frames=own));dump(a.output/'commands.json',issued);dump(a.output/'online-trajectory.json',trace)
-        dump(a.output/'eval-only.json',dict(evaluation_only=True,frames=labels));np.savez_compressed(a.output/'eval-state.npz',qpos=np.asarray(saved));dump(a.output/'events.json',events);dump(a.output/'teacher-input-audit.json',teacher.audit.record());dump(a.output/'teacher-ledger.json',teacher_rows)
+        dump(a.output/'eval-only.json',dict(evaluation_only=True,frames=labels));np.savez_compressed(a.output/'eval-state.npz',qpos=np.asarray(saved),qvel=np.asarray(saved_vel));dump(a.output/'events.json',events);dump(a.output/'teacher-input-audit.json',teacher.audit.record());dump(a.output/'teacher-ledger.json',teacher_rows)
         dump(a.output/'teacher-result.json',teacher.teacher.diagnostic());dump(a.output/'wall-ledger.json',dict(segments=wall_ledger,camera_origins=camera_ledger))
         dump(a.output/'summary.json',dict(status=status,error=error,frames=len(own),sim_s=(len(own)-1)/10,wall_s=time.monotonic()-start,source_sha=source_sha,teacher_sha=TEACHER,scene='walls_floor_contrast_v5_indigo110_s80',physics_backend='mjwarp',contact_profile=dict(profile='warp_native_contact_v1',noslip_iterations=int(m.opt.noslip_iterations),gpu_noslip_iterations=int(wm.opt.noslip_iterations)),cpu_physics_steps=0,top_camera_frames=0,terminal_ring=dict(indices=list(ring),hz=10),required_route_complete=status=='ROUTE_COMMAND_COMPLETE',input_audit=teacher.audit.record(),student_success=False,llm_success=False,wall_cap=None))
         dump(a.output/'SHA256SUMS.json',{str(p.relative_to(a.output)):sha(p) for p in a.output.rglob('*') if p.is_file()})
@@ -241,4 +263,6 @@ if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--enabled',action='store_true')
     for n in ('queue','renderer','teacher-source','vision','pickup','output'):p.add_argument('--'+n,type=Path,required=True)
     p.add_argument('--sim-budget',type=float,default=1800.);p.add_argument('--preflight',action='store_true')
+    p.add_argument('--body-sweep',action='store_true',help='default off; whole own-yaw/nominal-command revolution then inherited six-view rescan')
+    p.add_argument('--record-native-contact',action='store_true',help='recording only; native force evaluator never feeds commands')
     run(p.parse_args())

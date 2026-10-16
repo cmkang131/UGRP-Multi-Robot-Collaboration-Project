@@ -56,7 +56,7 @@ def main(a):
     dump(a.output/'summary.json',dict(raw=str(a.input),frames=len(rows),camera_option=CARRY_OPTION,registration=result,
         motion_status=dict(reasons),wall_visible_frames=sum(bool(s['segments']) for s in scans),
         inserted=sum(bool(e.get('inserted')) for e in events),truth_inputs=0,parameter_tuning=0,
-        loaded_physical_qualification='not established by unladen/failed-pickup recordings',reproduction=sys.argv))
+        loaded_physical_qualification='independent physical/camera evaluation required; never inferred from grip PWM',reproduction=sys.argv))
     dump(a.output/'rejection_table.json',dict(raw=str(a.input),reproduction=sys.argv,motion_status=dict(reasons),
         stages=[dict(stage='recorded',cumulative_pass_n=len(rows),rejected_n=0),dict(stage='unchanged_servo',cumulative_pass_n=sum(r['lk']['status']!='unknown_servo_change' for r in rows),rejected_n=sum(r['lk']['status']=='unknown_servo_change' for r in rows))],
         registration=result))

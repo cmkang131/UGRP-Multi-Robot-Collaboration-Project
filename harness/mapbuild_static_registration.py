@@ -35,7 +35,7 @@ class StaticRegistration:
         if not len(self.reference):raise ValueError('STATIC_WALLS_REQUIRED')
         self.field=DistanceField(self.reference,self.options.field_resolution_m,1.) if option!= 'off' else None
 
-    def register(self,own_segments,*,camera_origins=None):
+    def register(self,own_segments,*,camera_origins=None,diagnostic_callback=None):
         """own_segments are observed wall contacts already in own-map gauge.
 
         Result transform composes on the LEFT of any own-map SE2 pose. No
@@ -87,6 +87,9 @@ class StaticRegistration:
                 poses.append(np.column_stack([chunk,np.full(len(chunk),angle)]));costs.append(cost)
                 work['candidates']+=len(chunk);work['point_checks']+=dist.size
         poses=np.vstack(poses);cost=np.concatenate(costs);index=int(cost.argmin());best=poses[index]
+        # Offline inspection only. No evaluation labels, prior anchor or change
+        # to the frozen search/cost/admission contract enters this callback.
+        if diagnostic_callback is not None:diagnostic_callback(poses,cost,points,sigma)
         difference=poses-best;difference[:,2]=np.arctan2(np.sin(difference[:,2]),np.cos(difference[:,2]))
         # Existing CSM metric scales yaw to displacement at 2m.
         separated=np.linalg.norm(difference*[1,1,2],axis=1)>=o.mode_distance_m-1e-9

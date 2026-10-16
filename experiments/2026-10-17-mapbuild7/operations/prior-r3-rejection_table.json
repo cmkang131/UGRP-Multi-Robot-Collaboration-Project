@@ -1,0 +1,125 @@
+{
+  "raw": "/home/ugrp/ugrp-sim/runs/mapbuild7/recording-r2",
+  "source_sha": "7a16faf442b1e8be4cfa7a3c198b47c27447a94f",
+  "reproduction": "recording-r2-argv.json",
+  "registration": [
+    {
+      "status": "rejected",
+      "reason": "ambiguous_modes",
+      "static_from_own": null,
+      "category": "static_wall_registration",
+      "blocked_object": "authored_wall_geometry",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured",
+      "work": {
+        "candidates": 4258800,
+        "point_checks": 102211200,
+        "wall_seconds_used_as_gate": 0
+      },
+      "truth_inputs": 0,
+      "scale": 1,
+      "points": 24,
+      "best_candidate": [
+        4.4,
+        -2.9000000000000004,
+        0.8552113334772214
+      ],
+      "residual_m": 0.0006299850144946844,
+      "overlap": 1.0,
+      "second_sensor_gap": 9.486769009248164e-17,
+      "hessian_eigenvalues": [
+        48.81037148161128,
+        195.07918872888817,
+        1626.122255603131
+      ],
+      "observable_rank": 3,
+      "sensor_sigma_min_max_m": [
+        0.08274113809688181,
+        0.0959322037075161
+      ],
+      "source_constants": "unchanged CSMOptions: .05m/1deg, .08m floor + original range pixel variance, overlap .60/.20m, residual .15m, mode .15/.50, rank3 mathematical SE2 requirement"
+    },
+    {
+      "status": "rejected",
+      "reason": "ambiguous_modes",
+      "static_from_own": null,
+      "category": "static_wall_registration",
+      "blocked_object": "authored_wall_geometry",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured",
+      "work": {
+        "candidates": 4258800,
+        "point_checks": 357739200,
+        "wall_seconds_used_as_gate": 0
+      },
+      "truth_inputs": 0,
+      "scale": 1,
+      "points": 84,
+      "best_candidate": [
+        2.7,
+        -2.1,
+        -0.7504915783575616
+      ],
+      "residual_m": 0.018114518185604077,
+      "overlap": 1.0,
+      "second_sensor_gap": 0.009777862629367612,
+      "hessian_eigenvalues": [
+        105.3400706131019,
+        223.38746051178288,
+        908.1270383249423
+      ],
+      "observable_rank": 3,
+      "sensor_sigma_min_max_m": [
+        0.08274113809688181,
+        0.1765240116917993
+      ],
+      "source_constants": "unchanged CSMOptions: .05m/1deg, .08m floor + original range pixel variance, overlap .60/.20m, residual .15m, mode .15/.50, rank3 mathematical SE2 requirement"
+    }
+  ],
+  "rejections": [
+    {
+      "category": "global_registration",
+      "reason": "ambiguous_modes",
+      "blocked_object": "multiple_static_wall_alignments",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    }
+  ],
+  "proposal": "add one complete measured-own-yaw body sweep, no threshold/calibration retuning; log native finger forces for evaluator only",
+  "funnels": {
+    "runs": [
+      {
+        "gate": "requested",
+        "cumulative_pass_n": 1,
+        "rejected_n": 0
+      },
+      {
+        "gate": "native_no_HOST_ERROR",
+        "cumulative_pass_n": 1,
+        "rejected_n": 0
+      },
+      {
+        "gate": "own_RGB_hold_confirmed",
+        "cumulative_pass_n": 1,
+        "rejected_n": 0
+      },
+      {
+        "gate": "static_registered",
+        "cumulative_pass_n": 0,
+        "rejected_n": 1
+      },
+      {
+        "gate": "actual_map_transport",
+        "cumulative_pass_n": 0,
+        "rejected_n": 0
+      }
+    ],
+    "frame_motion_status": {
+      "bootstrap": 1,
+      "unknown_servo_change": 62,
+      "unknown_camera_unsettled": 81,
+      "measured": 185,
+      "unknown_rigid_consensus": 5
+    }
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "raw": "/home/ugrp/ugrp-sim/runs/mapbuild6/recording-r3",
+  "frames": 247,
+  "camera_option": "servo_fk_carry_v1",
+  "registration": {
+    "status": "rejected",
+    "reason": "ambiguous_modes",
+    "static_from_own": null,
+    "category": "static_wall_registration",
+    "blocked_object": "authored_wall_geometry",
+    "minimum_gap_m": null,
+    "gap_status": "not_measured",
+    "work": {
+      "candidates": 4258800,
+      "point_checks": 506797200,
+      "wall_seconds_used_as_gate": 0
+    },
+    "truth_inputs": 0,
+    "scale": 1,
+    "points": 119,
+    "best_candidate": [
+      2.25,
+      -2.0,
+      -0.7504915783575616
+    ],
+    "residual_m": 0.0711503691486915,
+    "overlap": 0.9831932773109243,
+    "second_sensor_gap": 0.04210161091193321,
+    "hessian_eigenvalues": [
+      48.98953823502401,
+      114.69013681096516,
+      938.5773646343346
+    ],
+    "observable_rank": 3,
+    "sensor_sigma_min_max_m": [
+      0.08445132134200266,
+      0.25410672688701474
+    ],
+    "source_constants": "unchanged CSMOptions: .05m/1deg, .08m floor + original range pixel variance, overlap .60/.20m, residual .15m, mode .15/.50, rank3 mathematical SE2 requirement"
+  },
+  "motion_status": {
+    "bootstrap": 1,
+    "unknown_camera_unsettled": 56,
+    "measured": 120,
+    "unknown_servo_change": 51,
+    "unknown_rigid_consensus": 19
+  },
+  "wall_visible_frames": 54,
+  "inserted": 7,
+  "truth_inputs": 0,
+  "parameter_tuning": 0,
+  "loaded_physical_qualification": "not established by unladen/failed-pickup recordings",
+  "reproduction": [
+    "/home/ugrp/ugrp-sim/src/mapbuild7-7a16faf44/scripts/mapbuild7_offline.py",
+    "--enabled",
+    "--input",
+    "/home/ugrp/ugrp-sim/runs/mapbuild6/recording-r3",
+    "--vision",
+    "/home/ugrp/ugrp-sim/src/mapbuild5b-complete-vision597",
+    "--queue",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild7/capture-7a16faf44-queue.json",
+    "--output",
+    "/home/ugrp/ugrp-sim/runs/mapbuild7/offline-v2-r3"
+  ]
+}
