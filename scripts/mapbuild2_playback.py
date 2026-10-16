@@ -19,7 +19,7 @@ def main():
             inputs+=['-framerate','10','-i',str(a.input/case/(camera+'-%04d.jpg'))]
         video=folder/'review-3x.mp4'
         subprocess.run(['ffmpeg','-nostdin','-loglevel','error',*inputs,'-filter_complex',
-            '[0:v][1:v][2:v]hstack=inputs=3,settb=1/30,setpts=N[v]','-map','[v]','-an','-r','30','-fps_mode','passthrough',
+            '[0:v][1:v][2:v]hstack=inputs=3,settb=1/30,setpts=N[v]','-map','[v]','-an','-r','30','-frames:v','41',
             '-c:v','libx264','-crf','28','-pix_fmt','yuv420p','-threads','1',str(video)],check=True)
         label="drawtext=text='frame %{n}':x=5:y=5:fontsize=24:fontcolor=red:box=1:boxcolor=white@0.8"
         for camera in ('overview','r1','r2'):
