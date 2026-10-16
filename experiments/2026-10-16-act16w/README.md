@@ -1,11 +1,15 @@
 # ACT16w — MJWarp 재기록·학습
 
 현재는 **2회차 재개 진행 중**이다. warp3 40/40과 RECORD_API_READY `0362037`을
-수신했고, 새 시드86820의3 SIM초 기록 warm2회를 실행했다. native JPEG와
-자기 발행 이력→교사 표적60/60쌍은 정합한다. 의도한 cap_end2회이며 교사
-독립 성공률·완주 데이터·ACT 학습·학생 평가는 아직 없다.
+수신했고, 새86821/86822 파일럿은 **교사2/2 성공**, native JPEG·발행 이력·
+교사 표적873/873쌍이 정합했다. 보이지 않는 대상/held 세계 좌표의 입력 감사는
+0/0이다. 두 실행의 전체2Hz·끝10SIM초10Hz 프레임 띠를 직접 검토했다.
+기록 승인 뒤 남은38회가 진행 중이며 독립40회 성공률·데이터 승인·ACT 학습·
+학생 평가는 아직 미완료다. 앞선3SIM초 warm2회(cap_end,60쌍)는 학습에서 제외한다.
 [2회차 요약](resume2/summary.json), [warm 원본 해시/감사](resume2/warm-receipts.json),
 [파일럿 대기열](resume2/pilot-queue.json), [관문표](resume2/rejection_table.json).
+[실제 파일럿 감사](resume2/native-pilot-checks.json), [시계열 검토](resume2/pilot-playback-review.json),
+[기록 승인](resume2/recording-approval.json), [독립 시드/비교 조건](resume2/comparison-protocol-v2.json).
 
 1회차10시간 대기 종료 기록은 기존 `summary.json`과 `wait-*`에 보존했다.
 warp3의40/40은 시드8317100–8317139가 warp1 디버깅과 겹쳐 독립 확증으로
@@ -16,6 +20,20 @@ warp3의40/40은 시드8317100–8317139가 warp1 디버깅과 겹쳐 독립 확
 연결한 관문 controller `f0db6b1a` → controller를 그대로 호출하고 JPEG를
 기록하는 API `0362037`로 구분한다. 결과는 gcp2/MJWarp 코호트다.
 Mac은 소스·짧은 비물리 검사·요약/몽타주 열람만 한다.
+
+일괄 기록 첫 제출은 구형 호스트 검사7필드와 원본 관문4필드의 불일치로 물리
+실행 전에 HOST_ERROR였다. `813b9113b`의 명시적 호환 옵션은 원본에 실제 있는
+4필드를 현재 메타데이터와 모두 대조하며, 교사·물리·카메라는 바꾸지 않는다.
+원본 관문/실패 로그는 보존한다. 새 기록40개는 결과를 보기 전에 호환그룹과
+8시간 예산으로 골랐고35TRAIN/5VAL이다. 최종91620–91659는 그대로다.
+
+모델 입력은 자기640×480 원본 이력4장을 각각320×240으로 줄여 붙인640×480
+몽타주다. 원본 카메라/FOV/주기는 유지한다. 공유 ACT 라이브러리는 공개 고정
+소스의 유효 horizon 정규화 손실과 파일 해시가 일치했고, 학습/로딩 때 다시 검사한다.
+합성 CUDA 업데이트1회는 저장·재로딩 시험이며 실제 ACT16 학습 스텝에 넣지 않는다.
+[DAgger GPU 조회 시험](resume2/oracle-interface-probe.json)은 첫 라벨1개가 검증된
+교사와 같고 물리/RGB/발행 이력을 바꾸지 않았음을 확인한 범위다. 실제 DAgger
+궤적 수집·학습 효과는 아직 검증하지 않았다.
 
 ## 실행 순서와 고정 조건
 
@@ -70,10 +88,18 @@ L4 합계 최대 8시간(교사/기록/학습/평가의 GPU 점유 모두 포함
 - `scripts/act16w_runtime.py`: gcp2 실제 metadata와 고정 ACT 소스,
   교사 관문·장면·데이터 감사 파일의 해시를 검증한다.
 - `scripts/train_act16w.py`: 기존 ACT 라이브러리 `3f99d58c`를 별도 source에서
-  재사용하는 유한 학습 실행기. CUDA 실제 학습·저장·로딩 검증은 아직 안 했다.
+  재사용하는 유한 학습 실행기. 합성 CUDA 저장/재로딩은 통과했고 실제 데이터 학습은 대기 중이다.
 - `scripts/act16w_curriculum.py`: TRAIN 시작 거리·절대 각도의 종류별 경험
   백분위 순위를 합해 쉬운 에피소드부터 연다. optimizer 진행률에 따라 허용
   에피소드 수를 선형으로 늘리는 조정자 설계다. 기존 표집은 기본값이다.
+- `scripts/act16w_train_pipeline.py`: fresh40 관문·전체 텐서 감사·소스/해시 승인 후
+  A/B300 smoke→총10000스텝으로 이어진다. 13:43Z에 자기 학습을 정리하며
+  최초GPU05:47Z 기준 총8시간13:47Z를 넘기지 않는다. 미완료 arm은 선택하지 않는다.
+- `scripts/act16w_dagger_owner.py`, `collect_act16w_dagger.py`, `act16w_dagger_dataset.py`:
+  학습 전용 라벨 채널·학생 TRAIN 방문·h0 표적 결합. 원래 학생 명령을 그대로 실행하고
+  닫기 뒤에는 질의를 영구 차단하며 D0 정규화 통계를 그대로 쓴다. 전체 DAgger 실행은 미검증이다.
+- `scripts/evaluate_act16w.py`: 훈련10000스텝과 validation/final 시드 경계를 검사한다.
+  최종 평가는 A/B·h4·h5 비교 후 고정한 선택 증거가 있어야 시작한다. 실제 학생 평가는 대기 중이다.
 
 03:22 KST: 원격 `claude/act16w` push 확인. 기반 `claude/warp-act`가 아직
 원격에 없어 해당 base의 draft PR 생성은 실패했다(Branch not found).
