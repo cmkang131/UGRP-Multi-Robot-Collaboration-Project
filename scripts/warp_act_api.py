@@ -78,7 +78,7 @@ class History:
 
 class Owner:
     def __init__(self, plans, out, *, qualified_source, teacher_source, qualification,
-                 references, compiled_reference, compiled_geometry, enabled=False, training=False):
+                 references, compiled_reference, compiled_geometry, enabled=False, training=False, audit_state=False):
         if not enabled:
             raise ValueError('MJWarp actor API is default OFF')
         gate = admit(qualification, qualified_source, teacher_source)
@@ -97,6 +97,7 @@ class Owner:
         self.np, self.mj, self.c = np, mujoco, c
         self.out = Path(out); self.out.mkdir(parents=True, exist_ok=False)
         self.plans, self.n, self.training = deepcopy(plans), len(plans), training
+        self.audit_state = audit_state
         if not 1 <= self.n <= 256:
             raise ValueError('one to256 worlds required')
         self.contexts, self.generations = [], [0]*self.n
@@ -139,6 +140,7 @@ class Owner:
         self.write('RUN_META.json', dict(backend='mjwarp_batch_v1', controller_source=QUALIFIED,
                    gate_raw_sha256=GATE_RAW_SHA, host=self.host, camera=self.hooks.camera,
                    teacher_constructed=False, training=training, weld='off', reset_scope='new free-body starts; fixed static model'))
+        self.audit()
 
     def write(self, name, value):
         (self.out/name).write_text(json.dumps(value, indent=2, allow_nan=False)+'\n')
@@ -246,6 +248,15 @@ class Owner:
         return {name: getattr(h.wd, name).numpy().copy() for name in STATE
                 if hasattr(h.wd, name) and hasattr(getattr(h.wd, name), 'numpy')}
 
+    def audit(self):
+        if not self.audit_state: return
+        # Private probe-only files, NEVER part of the actor RPC response.
+        self.np.savez_compressed(self.out/'state-latest.npz', **self.integration(),
+            relay=self.hooks.relay_state, ages=self.ages)
+        ports = [{k: v for k, v in vars(c['port']).items() if k.startswith('_') and not hasattr(v, 'model')}
+                 for c in self.contexts]
+        self.write('ports-latest.json', ports)
+
     def restore(self, snapshot, indices):
         h = self.hooks
         for name, before in snapshot.items():
@@ -336,6 +347,7 @@ class Owner:
             h.prototypes.pop(key)[0].close()
         self.write(f'reset-audit-{attempt:04d}.json', dict(indices=indices, untouched=untouched,
                    integration_equal=equal, scope='immediate isolation; paired next-step test required separately'))
+        self.audit()
         return [self.read_actor(i) for i in range(self.n)]
 
     def step(self, actions):
@@ -396,6 +408,7 @@ class Owner:
                 self.save_ring(i)
                 (self.contexts[i]['folder']/'result.json').write_text(json.dumps(dict(status='cap_end' if cap else 'complete', cap_end=bool(cap), issued_done=action['done'], evaluation=evaluation), indent=2)+'\n')
         self.log.flush()
+        self.audit()
         return (~self.active).tolist()
 
     def save_ring(self, i):

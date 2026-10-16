@@ -9,9 +9,10 @@ import subprocess
 class Client:
     def __init__(self, *, python, qualified_source, teacher_source, qualification,
                  references, compiled_reference, compiled_geometry, out, nworld,
-                 enabled=False, training=False):
+                 enabled=False, training=False, audit_state=False):
         if not enabled: raise ValueError('MJWarp client is default OFF')
         self.python, self.nworld, self.training = str(python), nworld, training
+        self.audit_state = audit_state
         self.options = dict(qualified_source=qualified_source, teacher_source=teacher_source,
                             qualification=qualification, references=references,
                             compiled_reference=compiled_reference, compiled_geometry=compiled_geometry)
@@ -51,6 +52,7 @@ class Client:
             argv = [self.python, '-u', str(Path(__file__).with_name('warp_act_owner.py')), '--enabled', '--plans', str(p), '--out', str(self.out/'owner')]
             for key, value in self.options.items(): argv += ['--'+key.replace('_', '-'), str(value)]
             if self.training: argv += ['--training']
+            if self.audit_state: argv += ['--audit-state']
             self.stderr = (self.out/'owner.stderr.log').open('x')
             self.proc = subprocess.Popen(argv, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=self.stderr, text=True, bufsize=1)
             return self.receive()

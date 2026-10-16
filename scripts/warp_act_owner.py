@@ -13,6 +13,7 @@ from warp_act_api import Owner
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--enabled', action='store_true'); p.add_argument('--training', action='store_true')
+    p.add_argument('--audit-state', action='store_true', help='private probe files; never actor response')
     for key in ('qualified-source', 'teacher-source', 'qualification', 'references',
                 'compiled-reference', 'compiled-geometry', 'plans', 'out'):
         p.add_argument('--'+key, type=Path, required=True)
@@ -32,7 +33,7 @@ def main():
                 qualified_source=a.qualified_source, teacher_source=a.teacher_source,
                 qualification=a.qualification, references=json.loads(a.references.read_text()),
                 compiled_reference=a.compiled_reference, compiled_geometry=a.compiled_geometry,
-                enabled=True, training=a.training)
+                enabled=True, training=a.training, audit_state=a.audit_state)
         print(json.dumps(reply(), allow_nan=False), file=protocol, flush=True)
         for line in sys.stdin:
             request = json.loads(line)
