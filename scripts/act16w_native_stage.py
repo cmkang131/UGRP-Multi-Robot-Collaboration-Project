@@ -137,7 +137,9 @@ def main():
         if [p['seed'] for p in plans] != protocol[args.stage+'_seeds']:
             raise ValueError('native preregistered ordered40 seeds mismatch')
         inventory = read(args.references/'inventory.json')
-        groups = [(i, g['indices']) for i,g in enumerate(read(args.references/'model-groups.json')['groups'])]
+        subprocess.run([str(WARP), str(ROOT/'scripts/act16w_native_groups.py'), '--enabled',
+            '--references', str(args.references), '--out', str(args.out/'exact-groups')], check=True)
+        groups = [(i, g['indices']) for i,g in enumerate(read(args.out/'exact-groups/model-groups.json')['groups'])]
         if sorted(x for _,indices in groups for x in indices) != list(range(40)):
             raise ValueError('model groups changed requested denominator')
         # Host is assigned exclusively. Never overlap remaining baseline children,
