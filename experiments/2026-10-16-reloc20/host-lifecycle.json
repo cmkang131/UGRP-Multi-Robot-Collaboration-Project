@@ -1,0 +1,34 @@
+{
+  "task": "reloc20",
+  "checked_at": "2026-10-16T02:35:54.208623+00:00",
+  "project": "ugrp-sim-b-1014",
+  "account": "changmin5781@gmail.com",
+  "vm": "ugrp-sim-gcp2",
+  "own_lease": {
+    "task": "reloc20",
+    "pid": 28718,
+    "started_at": "2026-10-16T00:45:35.822105+00:00",
+    "expected_end": "2026-10-16T06:00:00Z",
+    "concurrency": 6,
+    "stage": "round3",
+    "controller": "Mac SSH; no credentials on VM",
+    "source_sha": "cb8b37c2994f5c77bcfaea469341bf987c7d3779",
+    "pids": [
+      28746,
+      28747,
+      28748,
+      28752,
+      28756,
+      28757
+    ]
+  },
+  "other_leases": [],
+  "active_user_python_mujoco_ffmpeg": [],
+  "stop_permitted": true,
+  "own_lease_removed": true,
+  "final_vm_status": "TERMINATED",
+  "last_stop_timestamp": "2026-10-15T19:37:21.103-07:00",
+  "verified_with": "gcloud compute instances describe ugrp-sim-gcp2 --zone asia-northeast3-a --account changmin5781@gmail.com --project ugrp-sim-b-1014 --format=json(name,status,machineType,lastStopTimestamp)",
+  "source_preserved": true,
+  "raw_disks_preserved": true
+}

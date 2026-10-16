@@ -67,6 +67,8 @@ def main(n,media=False):
    flow=[x.get('reloc20_motion',{}).get('stall') or {} for x,e in pairs]
    r['visual_stall_frame_reasons']=dict(collections.Counter(x.get('reason','off') for x in flow))
    r['visual_stall_intervals']=intervals(times,np.array([bool(x.get('suppressed')) for x in flow[:-1]]),[(0.,'own_camera_stationarity_evidence')]*len(times))
+   for event in r['visual_stall_intervals']:
+    event.update(category='visual_stall',blocked_object='unidentified_own_rgb_stall',minimum_gap_m=None,gap_scope='not_observed_pixel_stationarity_only')
    # Actual issued actuator pulses, invert kinematics. No lateral pulse may
    # hide under a controller function named heading_drive.
    lateral=[]
@@ -105,7 +107,7 @@ def main(n,media=False):
    if media and r.get('errors') and t['kind']=='carry' and ((raw/'playback/manifest.json').exists() or (raw/'playback/manifest.json.zst').exists()) and not (out/'playback').exists():review.make(raw.parent,out/'playback')
  d['integrity']=integrity;d['speed']=obj(b/'speed-gate.json');d['status']='NOT_READY' if any(r.get('place_success') is not True for r in d['runs'] if r['kind']=='carry') else 'PILOT_ONLY'
  (b/'summary.json').write_text(json.dumps(d,indent=2)+'\n')
- (b/'rejection-table.json').write_text(json.dumps(dict(source_queue=str(b/'queue.json'),reproduce=f'PYTHONPATH={ROOT} python {__file__} --round {n}',runs=tables),indent=2)+'\n')
+ (b/'rejection-table.json').write_text(json.dumps(dict(source_queue=str(b/'queue.json'),reproduce=f'PYTHONPATH={ROOT} python {__file__} --controller-source {ROOT} --round {n} --media',runs=tables),indent=2)+'\n')
  brief=dict(round=n,status=d['status'],source_sha=q['source_sha'],speed=d['speed'],files_verified=sum(x['integrity']['files'] for x in integrity),runs=[{k:v for k,v in r.items() if k not in ('destination_acquisition','drift_bins','reloc20_motion','source_hashes')} for r in d['runs']])
  (b/'brief.json').write_text(json.dumps(brief,indent=2)+'\n')
  for name in ('summary.json','rejection-table.json','brief.json'):
@@ -117,4 +119,8 @@ def main(n,media=False):
  print('FINAL',json.dumps(dict(round=n,files_verified=brief['files_verified'],runs=[dict(name=r['name'],place=r.get('place_success'),termination=r['termination_normalized'],errors=r.get('errors'),geometry_s=r.get('geometry_risk_sim_s'),lateral_ticks=r.get('lateral_pulse_ticks')) for r in d['runs']])))
 
 if __name__=='__main__':
- p=argparse.ArgumentParser();p.add_argument('--round',type=int,required=True);p.add_argument('--media',action='store_true');a=p.parse_args();main(a.round,a.media)
+ p=argparse.ArgumentParser();p.add_argument('--round',type=int,required=True);p.add_argument('--media',action='store_true');p.add_argument('--controller-source',type=Path);a=p.parse_args()
+ if a.controller_source:
+  ROOT=a.controller_source.resolve()
+  assert subprocess.check_output(['git','-C',str(ROOT),'rev-parse','HEAD'],text=True).strip()==obj(R/f'reloc20-round{a.round}/queue.json')['source_sha']
+ main(a.round,a.media)
