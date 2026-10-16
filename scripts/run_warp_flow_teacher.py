@@ -37,7 +37,7 @@ def require_source(path, expected):
 
 def parser():
     p=argparse.ArgumentParser(description=__doc__)
-    p.add_argument('--physics-backend',choices=['mjwarp_batch_v1'],default='mjwarp_batch_v1')
+    p.add_argument('--physics-backend',choices=['mjwarp_batch_v1','c_pilot_v1'],default='mjwarp_batch_v1')
     p.add_argument('--flow',choices=['beampair','release'],required=True)
     p.add_argument('--adapter-source',type=Path,required=True)
     p.add_argument('--teacher-source',type=Path)
@@ -69,7 +69,7 @@ def main():
         p.error('private task-owned MPS pipe required; no global GPU configuration changes')
     from simalt_host import gcp2_identity
     host=gcp2_identity()
-    if not (a.initialize_only or a.export_compiled_only) and host['instance']!='ugrp-act-l4-gcp2':
+    if a.physics_backend=='mjwarp_batch_v1' and not (a.initialize_only or a.export_compiled_only) and host['instance']!='ugrp-act-l4-gcp2':
         p.error('existing gcp2 L4 required for rollout')
     from warp_flow_episode import ADAPTER_SHA,TEACHER_SHA,RELEASE_SHA,make_lane
     require_source(a.adapter_source,ADAPTER_SHA if a.flow=='beampair' else RELEASE_SHA)
@@ -88,9 +88,12 @@ def main():
     a.out.mkdir(parents=True,exist_ok=False)
     import numpy as np
     import mujoco
-    from warp_act_backend import WarpTransport
+    from warp_act_backend import WarpTransport,CFlowTransport
     from warp_flow_model import model_arrays_equal
-    hooks=WarpTransport(host,source,a.physics_backend,a.out,native_sleep_policy_compat_v1=a.native_sleep_policy_compat_v1)
+    if a.physics_backend=='c_pilot_v1' and (len(indices)!=1 or host['instance']!='ugrp-sim-gcp2'):
+        p.error('CPU comparison is one process/world on existing gcp2 CPU host')
+    transport=WarpTransport if a.physics_backend=='mjwarp_batch_v1' else CFlowTransport
+    hooks=transport(host,source,a.physics_backend,a.out,native_sleep_policy_compat_v1=a.native_sleep_policy_compat_v1)
     hooks.scene_v5_v1=True
     hooks.world_model_parameters_v1=a.world_model_parameters_v1
     hooks.batch_sleep_v1=a.world_model_parameters_v1
@@ -144,11 +147,12 @@ def main():
             report['status']='initialization_only';return
         references=json.loads(a.per_world_model_references_v1.read_text()) if a.per_world_model_references_v1 else None
         first=references[hashlib.sha256(Path(contexts[0]['scene_xml_path']).read_bytes()).hexdigest()] if references else {}
-        hooks.initialize(contexts,compiled_reference=Path(first['actuator']) if first else a.compiled_reference_v1,
-            compiled_geometry=Path(first['geometry']) if first else a.compiled_geometry_312_v1,per_world_model_references=references)
-        report.update(camera=hooks.camera,capacities=hooks.capacities,compatibility=hooks.compat,
-            initial_state_proof=hooks.initial_state_proof(contexts),setup_compile_s=time.perf_counter()-start)
-        report.update(started_N=len(contexts),model_batch_audit=hooks.model_batch_audit,sleep_audit=hooks.sleep_audit)
+        if a.physics_backend=='mjwarp_batch_v1':
+            hooks.initialize(contexts,compiled_reference=Path(first['actuator']) if first else a.compiled_reference_v1,
+                compiled_geometry=Path(first['geometry']) if first else a.compiled_geometry_312_v1,per_world_model_references=references)
+            report.update(camera=hooks.camera,capacities=hooks.capacities,compatibility=hooks.compat,
+                initial_state_proof=hooks.initial_state_proof(contexts),model_batch_audit=hooks.model_batch_audit,sleep_audit=hooks.sleep_audit)
+        report.update(started_N=len(contexts),setup_compile_s=time.perf_counter()-start)
         write(a.out/'summary.json',report)
         loop=time.perf_counter()
         while active.any():
@@ -174,6 +178,7 @@ def main():
             error_type=type(error).__name__,error=str(error),traceback=traceback.format_exc())
         raise
     finally:
+        loop_wall=time.perf_counter()-loop if loop is not None else None
         for lane in lanes:
             try:lane.close()
             except BaseException as error:report.setdefault('close_errors',[]).append(str(error))
@@ -202,6 +207,13 @@ def main():
                 certification_sha=TEACHER_SHA,teacher_sha=TEACHER_SHA if a.flow=='beampair' else RELEASE_SHA,
                 ast_transforms=[b.transforms for b in bridges]),
             native_initialization_only_sim_s=[float(c['origin']) for c in contexts])
+        sim=sum(r['sim_s'] for r in worlds)
+        report.update(aggregate_completed_task_sim_s=sim,loop_wall_s=loop_wall,
+            warm_loop_sim_s_per_wall_s=sim/loop_wall if loop_wall and report['status']=='complete' else None,
+            warm_loop_sim_s_per_usd=3600*sim/loop_wall/a.vm_hourly_usd if loop_wall and report['status']=='complete' else None,
+            warm_scope='full fixed-scenario task after model/graph warmup; includes teacher/RGB/recording; incomplete runs have no throughput',
+            vm_cost_estimate_usd=report['wall_s']*a.vm_hourly_usd/3600,
+            cost_scope='whole VM estimate over this interval; overlapping shared jobs must not be summed; not billing')
         categories=Counter('cap_end' if r['cap_end'] else 'teacher_failure' for r in worlds if not r['success'])
         if report['HOST_ERROR']:categories[report['error_type']]+=1
         table=dict(raw=str(a.out),reproduce=sys.argv,funnel=[

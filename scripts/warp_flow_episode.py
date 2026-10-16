@@ -158,7 +158,7 @@ class Bridge:
             kw['xml_transform'] = final
             return init(world, *args, **kw)
         cls.__init__ = canonical_init
-        kwargs.update(render=False, width=640, height=480)
+        kwargs.update(render=self.hooks.native_render, width=640, height=480)
         try:
             world=original(scene, **kwargs)
             if self.hooks.native_sleep_policy_compat_v1:
@@ -181,6 +181,7 @@ class Bridge:
         from sim.scene_contrast_v5 import verify_model
         original = gatesv5_scene.scene_bindings
         def bindings(*args, **kwargs):
+            if self.hooks.native_render:return original(*args,**kwargs)
             pair = original(*args, **kwargs)
             if pair is None:
                 raise ValueError('warp4 requires selected scene-v5')

@@ -160,6 +160,28 @@ class CTransport(Transport):
         pass
 
 
+class CFlowTransport(CTransport):
+    """Explicit N1 comparison caller of the same frozen ctrl tape.
+
+    Separate C cohort, not an MJWarp teacher result. CPU16 throughput uses
+    sixteen processes on gcp2, never a serial N16 loop mislabeled concurrent.
+    """
+    def step(self,contexts,active):
+        import mujoco
+        if len(contexts)!=1:raise ValueError('CPU flow comparison requires N1 process')
+        start=time.perf_counter()
+        if active[0]:
+            c=contexts[0];world=c['world'];tape=np.asarray(c['command_tape'])
+            if tape.shape!=(round(.1/world.model.opt.timestep),world.model.nu):
+                raise ValueError('exact fixed-grid command tape required')
+            for command in tape:
+                world.data.ctrl[:]=command
+                mujoco.mj_step(world.model,world.data)
+            mujoco.mj_kinematics(world.model,world.data)
+            mujoco.mj_camlight(world.model,world.data)
+        self.seconds['physics']+=time.perf_counter()-start
+
+
 class WarpTransport(Transport):
     def initialize(self, contexts, *, compiled_reference=None, compiled_geometry=None, per_world_model_references=None, float32_solver_default_v1=False,sap_segmented_v1=False):
         import mujoco
