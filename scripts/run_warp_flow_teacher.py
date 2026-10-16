@@ -66,6 +66,8 @@ def parser():
     p.add_argument('--world-model-parameters-v1',action='store_true',help='retain exact heterogeneous parameters on one topology, never normalize masses')
     p.add_argument('--native-sleep-policy-compat-v1',action='store_true')
     p.add_argument('--placement-graspable-filter-v1',action='store_true')
+    p.add_argument('--gcp3-isolated-v1',action='store_true',help='explicit warp6 L4 host admission; default OFF')
+    p.add_argument('--warp-debug-v1',action='store_true',help='Warp bounds checks and CUDA line information; default OFF')
     p.add_argument('--mps-shared-v1',action='store_true',help='explicit private warp4 MPS runtime cohort; default OFF')
     p.add_argument('--vm-hourly-usd',type=float,required=True)
     return p
@@ -80,9 +82,22 @@ def main():
     if a.mps_shared_v1 and os.environ.get('CUDA_MPS_PIPE_DIRECTORY')!='/home/ugrp/ugrp-sim/runs/warp4/mps/pipe':
         p.error('private task-owned MPS pipe required; no global GPU configuration changes')
     from simalt_host import gcp2_identity
-    host=gcp2_identity()
-    if a.physics_backend=='mjwarp_batch_v1' and not (a.initialize_only or a.export_compiled_only) and host['instance']!='ugrp-act-l4-gcp2':
+    if a.gcp3_isolated_v1 and (a.mps_shared_v1 or not a.placement_graspable_filter_v1):
+        p.error('isolated gcp3 requires placement filter ON and MPS OFF')
+    host=gcp2_identity(gcp3_v1=a.gcp3_isolated_v1)
+    if a.physics_backend=='mjwarp_batch_v1' and not (a.initialize_only or a.export_compiled_only) and host['instance'] not in ('ugrp-act-l4-gcp2','ugrp-act-l4-gcp3'):
         p.error('existing gcp2 L4 required for rollout')
+    if a.gcp3_isolated_v1:
+        # Fail closed before creating a CUDA context. No MPS daemon is managed here.
+        if any(k.startswith('CUDA_MPS_') for k in os.environ):
+            p.error('isolated gcp3 forbids CUDA_MPS environment')
+        gpu=subprocess.check_output(['nvidia-smi','--query-compute-apps=pid','--format=csv,noheader'],text=True).strip()
+        mps=subprocess.run(['pgrep','-f','[n]vidia-cuda-mps'],capture_output=True,text=True)
+        if gpu or mps.returncode!=1:
+            p.error('isolated gcp3 requires no existing GPU clients or MPS daemon')
+    if a.warp_debug_v1:
+        import warp as wp
+        wp.config.mode='debug'
     from warp_flow_episode import ADAPTER_SHA,TEACHER_SHA,RELEASE_SHA,make_lane
     require_source(a.adapter_source,ADAPTER_SHA if a.flow=='beampair' else RELEASE_SHA)
     if a.flow=='beampair':
@@ -118,6 +133,7 @@ def main():
         cases_sha256=hashlib.sha256(a.cases.read_bytes()).hexdigest(),world_indices=indices,
         planned_N=len(indices),started_N=0,completed_N=0,success_n=0,cap_end=0,HOST_ERROR=0,
         training_rgb=False,model_calls=0,weld='off',cpu_results_pooled=False,
+        gcp3_isolated_v1=a.gcp3_isolated_v1,warp_debug_v1=a.warp_debug_v1,
         gate_eligible=False,shared_load=True,vm_hourly_usd=a.vm_hourly_usd,
         placement_graspable_filter_v1=a.placement_graspable_filter_v1,
         cuda_runtime_profile='warp4_private_mps_v1' if a.mps_shared_v1 else 'shared_contexts_baseline',

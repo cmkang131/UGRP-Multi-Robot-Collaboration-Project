@@ -29,3 +29,29 @@ def test_metadata_binds_project_instance_and_machine(monkeypatch,project,instanc
     else:
         with pytest.raises(RuntimeError,match='unapproved'):
             simalt_host.gcp2_identity()
+
+
+@pytest.mark.parametrize('enabled,project,instance,accepted',[
+    (False,'ugrp-sim-c-1016','ugrp-act-l4-gcp3',False),
+    (True,'ugrp-sim-c-1016','ugrp-act-l4-gcp3',True),
+    (True,'ugrp-sim-b-1014','ugrp-act-l4-gcp2',False),
+    (True,'ugrp-act-train-1014','ugrp-act-l4-gcp3',False),
+])
+def test_isolated_host_is_explicit_and_project_bound(monkeypatch,enabled,project,instance,accepted):
+    monkeypatch.setattr(simalt_host.platform,'system',lambda:'Linux')
+    values={'project/project-id':project,'instance/name':instance,
+            'instance/machine-type':'g2-standard-8','instance/zone':'asia-northeast3-a'}
+    class Opener:
+        @contextmanager
+        def open(self,request,timeout):
+            key=request.full_url.split('/computeMetadata/v1/')[1]
+            assert key in values
+            class Response:
+                def read(self,n):return values[key].encode()
+            yield Response()
+    monkeypatch.setattr(simalt_host,'build_opener',lambda *args:Opener())
+    if accepted:
+        assert simalt_host.gcp2_identity(gcp3_v1=enabled)['instance']==instance
+    else:
+        with pytest.raises(RuntimeError,match='unapproved'):
+            simalt_host.gcp2_identity(gcp3_v1=enabled)

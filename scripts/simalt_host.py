@@ -3,7 +3,7 @@ import platform
 from urllib.request import Request, ProxyHandler, build_opener
 
 
-def gcp2_identity():
+def gcp2_identity(*, gcp3_v1=False):
     if platform.system() != 'Linux':
         raise RuntimeError('simalt3 physics/render requires Linux gcp2')
     base = 'http://169.254.169.254/computeMetadata/v1/'
@@ -15,6 +15,11 @@ def gcp2_identity():
            'machine_type': get('instance/machine-type').rsplit('/', 1)[-1],
            'zone': get('instance/zone').rsplit('/', 1)[-1]}
     allowed = {'ugrp-act-l4-gcp2': 'g2-standard-8', 'ugrp-sim-gcp2': 'n4-highcpu-64'}
+    if gcp3_v1:
+        if (row['project_id'], row['instance'], row['machine_type'], row['zone']) != (
+                'ugrp-sim-c-1016', 'ugrp-act-l4-gcp3', 'g2-standard-8', 'asia-northeast3-a'):
+            raise RuntimeError(f'unapproved isolated warp6 host: {row}')
+        return row
     if (row['project_id'] != 'ugrp-sim-b-1014'
             or row['instance'] not in allowed
             or row['machine_type'] != allowed[row['instance']]
