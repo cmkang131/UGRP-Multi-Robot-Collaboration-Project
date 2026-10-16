@@ -5,7 +5,8 @@ import cv2
 
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--input',type=Path,required=True);p.add_argument('--calibration',type=Path,required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--input',type=Path,required=True);p.add_argument('--calibration',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
+    p.add_argument('--perception-profile',choices=('rendered_v1','rendered_robot_columns_v1'),default='rendered_v1');a=p.parse_args()
     if platform.system()!='Linux' or not platform.node().startswith(('ugrp-sim-gcp2','ugrp-act-l4-gcp2')):p.error('gcp2 analysis only')
     from scripts.calibrate_warp5_perception import calibrate
     from scripts.score_scene_tex5 import signal
@@ -15,7 +16,7 @@ def main():
     from scripts.analyze_warp5_render import analyze
     root=a.input.resolve();a.output.mkdir(parents=True,exist_ok=False)
     cal_path=calibrate(root,a.calibration.resolve());cal=json.loads(cal_path.read_text())
-    os.environ.update(UGRP_WARP5_PERCEPTION='rendered_v1',UGRP_SCENE_COLOUR_CALIBRATION=str(cal_path),
+    os.environ.update(UGRP_WARP5_PERCEPTION=a.perception_profile,UGRP_SCENE_COLOUR_CALIBRATION=str(cal_path),
         UGRP_SCENE_COLOUR_CALIBRATION_SHA256=hashlib.sha256(cal_path.read_bytes()).hexdigest())
     install();cv2.setNumThreads(1)
     names=json.loads((root/'index.json').read_text())
@@ -31,7 +32,7 @@ def main():
             source_sha=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
             motion_LK='original measurements preserved; no new motion/render')
         (a.output/(name+'.json')).write_text(json.dumps(r,indent=2)+'\n')
-    meta=json.loads((root/'meta.json').read_text());meta.update(perception_profile='rendered_v1',calibration=str(cal_path),fitting_and_evaluation='same88 DEV; no independent holdout')
+    meta=json.loads((root/'meta.json').read_text());meta.update(perception_profile=a.perception_profile,calibration=str(cal_path),fitting_and_evaluation='same88 DEV; no independent holdout')
     (a.output/'meta.json').write_text(json.dumps(meta,indent=2)+'\n');(a.output/'index.json').write_text(json.dumps(names))
     manifest={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in a.output.iterdir() if p.is_file()}
     (a.output/'SHA256SUMS.json').write_text(json.dumps(manifest,indent=2)+'\n')

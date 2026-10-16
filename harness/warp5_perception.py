@@ -17,13 +17,20 @@ def calibration(path,sha):
 
 def exclude_wall(mask,bgr):
     if os.environ.get(ENV,'off')=='off':return mask
-    if os.environ[ENV]!='rendered_v1':raise ValueError('UNKNOWN_WARP5_PERCEPTION')
+    if os.environ[ENV] not in ('rendered_v1','rendered_robot_columns_v1'):raise ValueError('UNKNOWN_WARP5_PERCEPTION')
     from harness.scene_colour_boundary import surface_masks
     c=calibration(os.environ['UGRP_SCENE_COLOUR_CALIBRATION'],os.environ['UGRP_SCENE_COLOUR_CALIBRATION_SHA256'])
     surfaces,_=surface_masks(bgr,c,expanded_wall_value=True)
     # Reuse the measured wall RGB class. No GT mask, new HSV threshold,
     # minimum area, floor-plane distance or success tolerance is introduced.
-    return mask & ~surfaces['wall']
+    result=mask & ~surfaces['wall']
+    if os.environ[ENV]=='rendered_robot_columns_v1':
+        from harness.opencv_wall_observation_robot_mask import robot_occluded_columns
+        # Same VGA RGB orange-column mask/closing as the existing wall
+        # observer. It rejects peer-looking orange columns (including dark
+        # sensor gaps), never projects a measured robot pose onto the image.
+        result[:,robot_occluded_columns(bgr)]=0
+    return result
 
 
 def install():
