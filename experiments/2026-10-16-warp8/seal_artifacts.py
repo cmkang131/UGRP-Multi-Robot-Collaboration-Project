@@ -13,9 +13,13 @@ def sha(path):
         return hashlib.file_digest(stream, 'sha256').hexdigest()
 
 
-def index(root):
+def index(root, tags=None):
+    def selected(path):
+        rel = path.relative_to(root)
+        return (tags is None or rel.parts[0] in tags or
+                (len(rel.parts) == 1 and any(path.name.startswith(tag + '.') for tag in tags)))
     return {str(p):dict(bytes=p.stat().st_size, sha256=sha(p))
-            for p in sorted(root.rglob('*')) if p.is_file()}
+            for p in sorted(root.rglob('*')) if p.is_file() and selected(p)}
 
 
 def compress(path):
@@ -45,6 +49,7 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument('--root', type=Path, default=Path('/home/ugrp/ugrp-sim/runs/warp8'))
     p.add_argument('--out', type=Path, required=True)
+    p.add_argument('--tags', help='seal only these terminal attempts; preserve other cohorts')
     a = p.parse_args()
     assert socket.gethostname().split('.')[0] == 'ugrp-act-l4-gcp3'
     assert a.root.resolve() == Path('/home/ugrp/ugrp-sim/runs/warp8')
@@ -53,6 +58,11 @@ def main():
     assert not any((a.out/name).exists() for name in
         ('compression-manifest.json','compression-manifest.json.zst')), 'already sealed; preserve the prior mapping'
     commands = sorted(a.root.glob('*.command.json'))
+    tags = a.tags.split(',') if a.tags else None
+    if tags is not None:
+        assert len(tags) == len(set(tags)) and all(Path(tag).name == tag and tag not in ('.','..') for tag in tags)
+        commands = [p for p in commands if p.name.removesuffix('.command.json') in tags]
+        assert len(commands) == len(tags)
     assert commands
     receipts = []
     # Finish all assertions before any byte-exact replacement is attempted.
@@ -63,7 +73,7 @@ def main():
         proc = Path('/proc')/str(receipt['pid'])/'cmdline'
         assert not proc.exists() or str(a.root/name).encode() not in proc.read_bytes().split(b'\0')
         receipts.append(dict(name=name, **receipt))
-    before = index(a.root)
+    before = index(a.root, tags)
     declared = dict(checked_N=0, missing=[], mismatch=[], finalizer_absent=[])
     for command in commands:
         name = command.name.removesuffix('.command.json')
@@ -89,11 +99,12 @@ def main():
     compressed = []
     # AGENTS.md disk rule: finished JSON/JSONL larger than64 KiB is compressed
     # losslessly, and every decoded byte is verified before replacing plaintext.
-    for path in sorted(a.root.rglob('*')):
+    for name in sorted(before):
+        path = Path(name)
         if path.is_file() and path.suffix in ('.json','.jsonl') and path.stat().st_size > 65536:
             compressed.append(compress(path))
-    after = index(a.root)
-    second = index(a.root)
+    after = index(a.root, tags)
+    second = index(a.root, tags)
     assert after == second, 'artifact changed during sealing'
     after_file = write('raw-sha256.json', after)
     index_archives = [compress(path) for path in (before_file,after_file) if path.stat().st_size > 65536]
@@ -102,7 +113,7 @@ def main():
     if compression_file.stat().st_size > 65536:
         write('compression-index-archive.json', compress(compression_file))
     verification = dict(utc=dt.datetime.now(dt.timezone.utc).isoformat(), root=str(a.root),
-        attempts=len(commands), receipts=receipts, declared_manifest_verification=declared,
+        attempts=len(commands), selected_tags=tags, receipts=receipts, declared_manifest_verification=declared,
         before_file_N=len(before), before_bytes=sum(v['bytes'] for v in before.values()),
         after_file_N=len(after), after_bytes=sum(v['bytes'] for v in after.values()),
         all_current_file_hashes_recomputed_equal=True, compressed_N=len(compressed),
