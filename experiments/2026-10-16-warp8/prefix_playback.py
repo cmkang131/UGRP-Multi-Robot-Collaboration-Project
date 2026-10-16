@@ -58,7 +58,9 @@ def main():
                 for image in sorted((world/'review-2hz'/rid).glob('*.jpg')):
                     if round((origin+int(image.stem)/10)*10) in index:
                         (out/image.name).symlink_to(image)
-            asset = ROOT / 'src/26f84d0f0ada1c33473c83cca2d3415ce51bd247'
+            # scene-v5 textures belong to the frozen adapter, not its older
+            # grasp dependency. Same verified asset root as warp6 playback.
+            asset = ROOT / 'src/835ccef26aa84b08cc8f7e256fd0f43aa1583ef9'
             os.chdir(asset)
             model = mujoco.MjModel.from_xml_string((world/'raw/scene.xml').read_text())
             np.savez_compressed(derived/'world-000-states.npz', ticks=list(index),
