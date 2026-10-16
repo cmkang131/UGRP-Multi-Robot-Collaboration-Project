@@ -34,6 +34,8 @@ def load_corpus(path):
         if digest(raw) != row['sha256']: raise ValueError('corpus_hash_mismatch')
         body = json.loads(raw)
         if images(body) != row['image_sha256']: raise ValueError('corpus_image_hash_mismatch')
+        if body.get('stream') or body.get('tools') or body.get('model') != 'gemma-4-31b-it':
+            raise ValueError('unsupported_corpus_request')
         requests.append((row, body))
     return manifest, requests
 
@@ -76,8 +78,9 @@ def summarize(rows, elapsed, hourly_usd, allocation_s=None):
         wall_median_s=statistics.median(walls) if walls else None,
         accepted_wall_median_s=statistics.median(accepted_walls) if accepted_walls else None,
         over_8s=sum(w > SLOW_S for w in walls),
-        images_forwarded=sum(len(r['image_sha256']) == 1 for r in rows),
-        image_scope='wire SHA verified; semantic image use not established',
+        images_forwarded=sum(r.get('image_forward_attempted', False) for r in rows),
+        image_http_acknowledged=sum(r.get('image_http_acknowledged', False) for r in rows),
+        image_scope='HTTP attempts with wire SHA; timeouts are ambiguous; semantic use unverified',
         cache_ratio=sum(r['cached_tokens'] for r in known) / prompt if prompt else None,
         cache_usage_coverage=len(known), response_journal_cache=False,
         offered_rpm=RPM, completed_rpm=len(rows) * 60 / elapsed if elapsed else None,
@@ -86,7 +89,8 @@ def summarize(rows, elapsed, hourly_usd, allocation_s=None):
         allocation_s=allocation_s,
         allocation_compute_usd=hourly_usd * allocation_s / 3600 if allocation_s is not None else None,
         cost_scope='whole G2 VM; disk/network/tax excluded; startup cost requires allocation_s',
-        rejection_distribution=dict(Counter(r['reason_category'] for r in rows)))
+        rejection_distribution=dict(Counter(r['reason_category'] for r in rows
+                                            if r['reason_category'] != 'accepted')))
 
 
 def metrics_snapshot(endpoint):
@@ -108,18 +112,23 @@ def prefix_counts(raw):
 def benchmark(corpus, output, candidate, hourly_usd, rate_source, *, send=http_send, allocation_s=None):
     check_alerts()
     manifest, requests = load_corpus(corpus)
+    # Validate all 40 before dispatch; never send a partial corpus then discover
+    # a local shape error halfway through the comparison.
+    requests = [(row, upstream_body(body, candidate)) for row, body in requests]
     output = Path(output); output.mkdir(parents=True, exist_ok=False)
     cfg = identity(candidate); endpoint = loopback(cfg['endpoint'])
     before = metrics_snapshot(endpoint)
     started = time.monotonic()
 
-    def one(index, row, original):
+    def one(index, row, body):
         delay = started + index * 60 / RPM - time.monotonic()
         if delay > 0: time.sleep(delay)  # offered traffic pacing, not robot planning
-        began = time.monotonic(); body = upstream_body(original, candidate)
+        began = time.monotonic()
         status, raw, error = 0, b'{}', None
+        attempted = False
         try:
             check_alerts()
+            attempted = True
             status, raw, _ = send(body, endpoint)
             response = json.loads(raw)
             if not isinstance(response, dict): raise ValueError('response_not_object')
@@ -131,6 +140,7 @@ def benchmark(corpus, output, candidate, hourly_usd, rate_source, *, send=http_s
         usage = response.get('usage') or {}; details = usage.get('prompt_tokens_details') or {}
         result = dict(i=index, request_sha256=row['sha256'], wire_sha256=digest(json.dumps(body).encode()),
             image_sha256=images(body), response_sha256=digest(raw), status=status,
+            image_forward_attempted=attempted, image_http_acknowledged=status > 0,
             wall_s=wall, dispatch_lag_s=began - (started + index * 60 / RPM),
             prompt_tokens=usage.get('prompt_tokens'), completion_tokens=usage.get('completion_tokens'),
             cached_tokens=details.get('cached_tokens'), usage=usage, error=error,

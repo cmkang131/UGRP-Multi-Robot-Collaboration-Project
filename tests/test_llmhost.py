@@ -160,3 +160,31 @@ def test_no_coordinator_approval_no_cloud_operation(tmp_path, monkeypatch):
     monkeypatch.setattr(ctl, 'describe', denied)
     file = tmp_path/'approval.json'; common.write_json(file, {'approved':False})
     with pytest.raises(ValueError, match='approval'): ctl.start('31b_awq', file)
+
+
+def test_all_40_mock_replies_failures_and_funnel_are_retained(tmp_path, monkeypatch):
+    # Only the test clock's pacing is removed. No real server, GPU, or model call.
+    monkeypatch.setattr(bench, 'check_alerts', lambda: None)
+    monkeypatch.setattr(bench.time, 'sleep', lambda _: None)
+    snapshots = iter(['vllm:prefix_cache_hits_total 0\nvllm:prefix_cache_queries_total 0',
+                      'vllm:prefix_cache_hits_total 100\nvllm:prefix_cache_queries_total 200'])
+    monkeypatch.setattr(bench, 'metrics_snapshot', lambda _: next(snapshots))
+    paths = []
+    for i in range(40):
+        body = request(); body['messages'][0]['content'][0]['text'] = str(i)
+        file = tmp_path/f'{i}.json'; file.write_text(json.dumps(body)); paths.append(file)
+    manifest = tmp_path/'corpus.json'; bench.prepare(paths, manifest, 'fixture-only')
+    def send(body, _endpoint):
+        i = int(body['messages'][0]['content'][0]['text'])
+        if i == 1: raise TimeoutError('fixture')
+        return 200, json.dumps(dict(model=body['model'],
+            choices=[dict(finish_reason='length' if i == 0 else 'stop', message=dict(content='{"act":"wait"}'))],
+            usage=dict(prompt_tokens=100, completion_tokens=5, prompt_tokens_details=dict(cached_tokens=50)))).encode(), None
+    out = tmp_path/'result'; result = bench.benchmark(manifest, out, '31b_awq', 1, 'fixture', send=send)
+    s = result['summary']
+    assert s['n'] == 40 and s['success'] == 38
+    assert s['images_forwarded'] == 40 and s['image_http_acknowledged'] == 39
+    assert s['cache_ratio'] == .5 and s['server_prefix_cache_ratio'] == .5
+    assert len(list(out.glob('*-response.json'))) == 40
+    assert [r['passed'] for r in json.loads((out/'funnel.json').read_text())['cumulative']] == [39, 39, 38]
+    assert s['rejection_distribution'] == {'non_stop_finish':1, 'HOST_ERROR':1}

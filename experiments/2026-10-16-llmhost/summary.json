@@ -1,6 +1,6 @@
 {
   "schema": "ugrp.llmhost.preparation.v1",
-  "observed_at": "2026-10-16T03:31:40.000947+00:00",
+  "observed_at": "2026-10-16T03:39:38.589611+00:00",
   "research_result": false,
   "gpu_started": false,
   "model_calls": 0,
@@ -18,27 +18,28 @@
     "gcp2:/home/ugrp/ugrp-sim/llmhost/models/"
   ],
   "verification": {
-    "cpu_tests": "24 passed in 0.82s",
+    "cpu_tests": "25 passed in 0.90s",
     "gpu_runtime": "NOT_RUN",
     "image_semantics": "NOT_RUN",
     "throughput": "NOT_RUN",
     "CI_registration": "listed in 8-shard CI inventory; remote CI not run yet",
     "unapproved_start": "CLI exits 2 before cloud/GPU access",
-    "image_metadata": "linux/amd64 entrypoint vllm serve; CUDA13.0.2; compressed layers8818322020B; no pull or GPU init"
+    "image_metadata": "linux/amd64 entrypoint vllm serve; CUDA13.0.2; compressed layers8818322020B; no pull or GPU init",
+    "mock_40_replay": "40 local mock outcomes retained; length + timeout excluded; HTTP-image acknowledgment distinguished; funnel39→39→38; no real model"
   },
   "source_sha256": {
     "configs/llmhost.json": "7cb9963eeae1424035ffece5d306f08e88196f156d9178c224fcb1501b4a99cc",
     "scripts/llmhost_weights.py": "6e6677e2d8e5377ac5ebc947581ebb282005fa0a410885ea46517c650a975c39",
     "scripts/llmhost_guest.py": "0da0a3c5826f6045ce218b8a51d88a384b067af59e501a38e01b0216644b5b78",
     "scripts/llmhost_ctl.py": "6d4086a0eb19f385823aff7358985861a574d2d914194ca3a9eea5beeb308e4b",
-    "scripts/llmhost_benchmark.py": "fcadc5852bf4c2c8f24ac221b63589d86d07aa74bfbf6c3bad7141290ca25920",
+    "scripts/llmhost_benchmark.py": "5168b45fd2b5ce2bf5fb5c2f350995baa97c0e67652e15ec32d99a56491d1027",
     "scripts/llmhost_trial.py": "585efcee8310d21b0c774b7823587146e8697ab1c3fde0cf16b0d0d067608200",
     "scripts/self_gcp_upstream.py": "4009c6f2d9042a3a2dffd360f940b393e4144d391ec3d89ee887b65b4ff2a596",
     "scripts/llmhost_common.py": "9502bc42b36213165a0576fd1dc08897368881b9b23b3b8aa6c52aa4bc09ba40",
-    "tests/test_llmhost.py": "efdc36a6d3378b14a768b1c991d9260e52f1daf339ce2a0a81fddcfaa1166f03"
+    "tests/test_llmhost.py": "b4dc15f8a03557e18d14d36d7f602de613cdb08ee29dab91f06f36c55c2ef83b"
   },
   "evidence_sha256": {
-    "experiments/2026-10-16-llmhost/cpu-tests.txt": "3d8368623148bc6a58821dd99733c97c9c4d65adf1ecee9563131fb11137bf4a",
+    "experiments/2026-10-16-llmhost/cpu-tests.txt": "343aabf842954052ce1f78084b6abc1b36cc92f1f3b2ee1aba26007bb40ee663",
     "experiments/2026-10-16-llmhost/l4-preparation-state.json": "5bd9c7e210a2e494f07635b5f92d99cc753c24c89669ef863adce3b7ee8440d6",
     "experiments/2026-10-16-llmhost/31b_awq-upstream-config.json": "c25109feaf0fbfc0eb306538a146244955013b796e5dd850eca623394988b63c",
     "experiments/2026-10-16-llmhost/26b_a4b_awq-upstream-config.json": "95e9e9c2e83e79d4f59dab35a586cd2b096464432786899cbccfb7ca713480f6",

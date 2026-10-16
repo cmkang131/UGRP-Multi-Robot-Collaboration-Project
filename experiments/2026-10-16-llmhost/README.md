@@ -177,7 +177,8 @@ CPU `7704-213B-8EF9` 8×$0.03208986 + RAM `00B1-E347-5D28` 32×$0.003759429 =
 산출물은 성공/40, 모든 요청의 latency·중앙값·8초 초과·429·형식 거부·HOST_ERROR·
 이미지 SHA 전달·usage cached/prompt token 비율·server prefix counter 차분과 원본 응답이다.
 cache usage 미제공은 `null` 및 coverage로 표시한다. prefix KV cache와 response journal
-재생을 분리한다. image 전달은 wire 바이트 검증이며 semantic image use는 별도 관문이다.
+재생을 분리한다. image 전달은 HTTP 시도와 응답 확인 수를 나누고 wire SHA를 보존한다. timeout 시 수신은
+미확정이며 semantic image use는 별도 관문이다.
 `finish_reason=length` 등 정상 stop이 아닌 응답은 비용·기록은 남기되 성공으로 세지 않는다.
 funnel은 HTTP→model identity→stop+act JSON 순서 누적 통과/거부와 재현 명령을 남긴다.
 LLM act 형식 성공은 로봇 과제 정확도·운반·실물 성공이 아니다.
@@ -188,7 +189,7 @@ CPU 전용 테스트는 `tests/test_llmhost.py`, 기존 `tests/test_openrouter_u
 프레이밍 실제 subprocess 왕복, 조각 해시 손상 시 원본 게시 금지/임대 정리,
 기본 off·GPU 명령·계정/프로젝트·8h·승인 만료·경보 차단·자기 RGB 바이트 보존·
 length 거부·캐시 미측정·비용 산식·중계 identity 변경 거부를 검사한다.
-최종 24 passed(0.82초). CI shard 목록에도 새 시험 파일이 포함됨을 확인했다.
+최종 25 passed. 시간은 cpu-tests.txt에 기록했다. CI shard 목록에도 새 시험 파일이 포함됨을 확인했다.
 물리·렌더·GPU·실제 모델 호출은 0이다. GPU runtime/메모리/engine/kernel/idle 정지는
 실제로 검증하지 않았으며 mock/CPU 검사로 대체하여 성공을 선언하지 않는다.
 
