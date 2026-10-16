@@ -3,6 +3,8 @@
 - [2026-10-15 reloc14 등록 후 추적·v7 운반](2026-10-15-reloc14/README.md): gcp1 3라운드16회, 첫등록4/4·첫오0/4 유지·제어오류284/662·목적지놓기0/2, NOT_READY; 연속PF/장면/계약 수정과55개회귀, 후속큐차단.
 - [reloc8 자기 카메라 재위치 추정](2026-10-15-reloc8/README.md): 기본 off 공통 시점 선택·명령/다중 RGB 후보, 저장 재생 및 미승인 큐; 실제 복구 미검증.
 - [e2e1 입력·상태 계약](2026-10-11-e2e-one-beam/README.md): 기본 off 자기 payload·S3 세 입력 계약과 정적 fallback 차단, 새 빔 한 주문/B .80×1.40m 시나리오; 실제 E2E는 후속 단계.
+
+- [2026-10-16 plannerswap](2026-10-16-plannerswap/README.md) — 새 판단 공급자 CoreWeave fp4; 실제 3/3, 경보 0, E2E 첫 30 SIM초 점검 TODO.
 - [2026-10-10 S3 내려놓기 v166](2026-10-10-s3-setdown/README.md): 기준0/2, A2/2·B2/2·C4/4(공통2/2), 후보 조기 개방·실제 정지·HOST0; 기본 off A 선택, 끝점 오차16–54mm 미해결.
 - [S3 s3fix19 정수 tick 운반](2026-10-10-s3-integer-carry/README.md): 관련22시험 통과·20조건 on/off 등록; 디스크 거부/원본 소실/SSH 단절로 물리 판정 미완료.
 - [2026-10-10 S3 공동 운반 v164/v165](2026-10-10-s3-synchronized-carry/README.md): x86 동시10조건 v165 정렬·집기·상승·20mm 운반10/10; pair endpoint1/6, 이후 하강 낙하가드4/6·포즈계약 실패2/6, HOST_ERROR0. 기본 off·미채택.
