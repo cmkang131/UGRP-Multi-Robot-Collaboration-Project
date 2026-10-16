@@ -44,15 +44,21 @@ def main():
         plans, receipt = read(group/'plans.json'); receipts.append(receipt); plans=plans['episodes']
         actions, receipt = read(ev/'actor-actions.jsonl',lines=True); receipts.append(receipt)
         assigned=[SoloScore() for _ in plans]; same={}
+        observed=[dict(max_grasp_bilateral_finger_n=0.,max_grasp_clearance_m=None) for _ in plans]
         for filename, is_same in (('evaluation-only.jsonl',False),('same-kind-evaluation-only.jsonl',True)):
             values, receipt=read(ev/'owner'/filename,lines=True); receipts.append(receipt)
             for value in values:
                 if 'min_z' not in value: continue
                 world=value['world']; i=max(0,round(value['elapsed_sim_s']/.1)-1)
                 score=same.setdefault((world,value['item_id']),SoloScore()) if is_same else assigned[world]
-                score.add(value['t'],skill=actions[min(i,len(actions)-1)]['skills'][world],
+                skill=actions[min(i,len(actions)-1)]['skills'][world]
+                score.add(value['t'],skill=skill,
                     linear_speed=value['speed'],clearance=value['min_z'],tilt=value['tilt_deg'],
                     forces=value['finger_forces'],weld=value['weld_active'])
+                if not is_same and skill=='grasp':
+                    peak=observed[world]
+                    peak['max_grasp_bilateral_finger_n']=max(peak['max_grasp_bilateral_finger_n'],min(value['finger_forces']))
+                    peak['max_grasp_clearance_m']=max(value['min_z'],peak['max_grasp_clearance_m']) if peak['max_grasp_clearance_m'] is not None else value['min_z']
         for world, plan in enumerate(plans):
             score=assigned[world].record({},with_release=True)
             original,receipt=read(ev/'owner'/f'world-{world:03d}'/'result.json');receipts.append(receipt)
@@ -68,6 +74,8 @@ def main():
                 task_success=success,any_same_kind_success=bool(any_same),cap_end=original['cap_end'],
                 resource_cap_end=expected['resource_cap_end'],issued_sequence_complete=original['issued_done'],
                 **{key:score[key] for key in ('lift_success','release_success','physical_success','drop_detected')},
+                **observed[world],
+                bilateral_load_observed=observed[world]['max_grasp_bilateral_finger_n']>=assigned[world].lift.CRITERIA['finger_each_n'],
                 raw_world=str(ev/'owner'/f'world-{world:03d}')))
     if len(rows)!=parent['N'] or {r['seed'] for r in rows}!=set(parent['requested_seeds']):
         raise ValueError('exact registered denominator/seeds required')
@@ -82,6 +90,9 @@ def main():
         kinds={k:dict(n=sum(r['task_success'] for r in rows if r['kind']==k),N=sum(r['kind']==k for r in rows)) for k in ('cyan','red','green','yellow')},
         funnel=[dict(gate=g,passed=n,rejected=counts[i-1]-n if i else 0) for i,(g,n) in enumerate(zip(('requested','sequence_done','stable_lift','stable_release','task_success'),counts))],
         cap_end=sum(r['cap_end'] for r in rows),resource_cap_end=sum(r['resource_cap_end'] for r in rows),
+        independent_stage_counts={key:sum(r[key] for r in rows) for key in ('bilateral_load_observed','lift_success','release_success','issued_sequence_complete','task_success')},
+        bilateral_load_threshold_n=assigned[0].lift.CRITERIA['finger_each_n'],
+        threshold_source='unchanged frozen3f99d58c LiftScore.CRITERIA finger_each_n; additional descriptive metric, no new task acceptance rule',
         rows=rows,raw_receipts=receipts,raw_recomputed_metrics_match_original=True,
         limitation='chunk done timestamps unavailable; failure-message wording not independently reconstructed',reproduce=sys.argv)
     with a.out.open('x') as stream:
