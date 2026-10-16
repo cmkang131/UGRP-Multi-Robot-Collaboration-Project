@@ -210,6 +210,7 @@ def run(a):
         toggles=dict(legacy_plane_v1=a.legacy_plane_v1, dense_capacity_v1=a.dense_capacity_v1,
                      noslip_off_v1=a.noslip_off_v1,clear_overlap_v1=a.clear_overlap_v1), cases=cases, dt=meta['dt'],
         fixture_ablation=a.fixture_ablation,
+        initial_qpos_sha256=hashlib.sha256(f['qpos'].tobytes()).hexdigest(),
         options={k:float(getattr(m.opt,k)) for k in ('timestep','iterations','ls_iterations','noslip_iterations','tolerance','solver','cone','integrator')},
         physics_hashes={key:hashlib.sha256(getattr(m,key).tobytes()).hexdigest() for key in FIELDS},
         control_feedback=dict(truth=0, contacts=0, measured_joints=0, models=0),
@@ -303,7 +304,11 @@ def run(a):
             for tick in range(0,max_ticks+1,substeps):
                 if tick % stride == 0 or tick in boundaries:
                     wp.synchronize()
-                    if np.any(wd.overflow.numpy()):raise RuntimeError('CAPACITY_OVERFLOW '+str(wd.overflow.numpy().tolist()))
+                    overflow=wd.overflow.numpy()
+                    if np.any(overflow):
+                        report['overflow_snapshot']=dict(bits=overflow.tolist(),nacon=wd.nacon.numpy().tolist(),
+                            nefc=wd.nefc.numpy().tolist(),sim_s=tick*dt)
+                        raise RuntimeError('CAPACITY_OVERFLOW '+str(overflow.tolist()))
                     qp,qv=wd.qpos.numpy(),wd.qvel.numpy()
                     if not np.isfinite(qp).all() or not np.isfinite(qv).all():raise RuntimeError('NONFINITE_STATE')
                     nc=int(wd.nacon.numpy()[0]);ne=wd.nefc.numpy()
