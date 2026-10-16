@@ -42,3 +42,27 @@ def test_native_gate_train_validation_and_final_starts_are_disjoint():
     assert len(sets[1]) == 32 and len(sets[2]) == 8
     assert set(p['dagger_train_seeds']) <= sets[1] and len(p['dagger_train_seeds']) == 20
     assert not set.union(*sets[:3]) & (set(range(86820, 86870)) | set(range(8317100, 8317140)))
+
+
+def test_native_recount_uses_all_original_results_and_requires_zero_audit(tmp_path, monkeypatch):
+    monkeypatch.syspath_prepend(str(ROOT/'scripts'))
+    from act16w_native_stage import recount
+    refs = tmp_path/'refs'; refs.mkdir()
+    out = tmp_path/'run'; controller = out/'group-00/controller'; controller.mkdir(parents=True)
+    (refs/'plans.json').write_text(json.dumps(dict(episodes=[dict(seed=87220+i, kind=('cyan','red','green','yellow')[i%4]) for i in range(40)])))
+    (controller/'native-contact.json').write_text(json.dumps(dict(gpu_noslip=0, cpu_noslip=[0]*40, cpu_impratio=5)))
+    value = dict(status='complete', physical_success=True, cap_end=False, training_rgb=False,
+                 lift_success=True, release_success=True, input_audit=dict(invisible_measurements=0, held_world_reads=0))
+    for i in range(40):
+        folder = controller/f'world-{i:03d}'; folder.mkdir(); (folder/'result.json').write_text(json.dumps(value))
+    assert recount(out, refs, [(0,list(range(40)))])['passed']
+    for i in (0, 1):
+        (controller/f'world-{i:03d}/result.json').write_text(json.dumps({**value, 'physical_success': False}))
+    r = recount(out, refs, [(0,list(range(40)))])
+    assert (r['n'],r['N'],r['passed']) == (38,40,True)
+    (controller/'world-002/result.json').write_text(json.dumps({**value, 'input_audit':dict(invisible_measurements=1, held_world_reads=0)}))
+    r = recount(out, refs, [(0,list(range(40)))])
+    assert (r['n'],r['N'],r['passed']) == (37,40,False)
+    (controller/'world-039/result.json').unlink()
+    r = recount(out, refs, [(0,list(range(40)))])
+    assert r['N'] == 40 and not r['complete'] and not r['passed']
