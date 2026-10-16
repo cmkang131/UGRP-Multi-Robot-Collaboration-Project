@@ -26,21 +26,61 @@ def test_every_gcloud_call_names_the_project():
     assert run.call_args.args[0][-2:] == ['--project', 'ugrp-sim-b-1014']
 
 
-def test_gcp3_l4_uses_its_project_gpu_image_and_eight_hour_cap():
+def test_gcp3_l4_uses_its_project_gpu_image_without_runtime_cap():
     command = gcpctl.create_command('gcp3', 'ssh-ed25519 AAAA test')
     for flag, value in (('--project', 'ugrp-sim-c-1016'), ('--machine-type', 'g2-standard-8'),
                         ('--image-project', 'deeplearning-platform-release'),
                         ('--accelerator', 'type=nvidia-l4,count=1'), ('--boot-disk-size', '140GB')):
         assert command[command.index(flag) + 1] == value
-    for flag in ('--max-run-duration=8h', '--instance-termination-action=STOP',
-                 '--maintenance-policy=TERMINATE', '--no-service-account', '--no-scopes'):
+    for flag in ('--maintenance-policy=TERMINATE', '--no-service-account', '--no-scopes'):
         assert flag in command
-    assert remote_run.wait_budget_s('gcp3') == 7.5 * 3600
+    assert not any(part.startswith('--max-run-duration') for part in command)
+    assert '--instance-termination-action=STOP' not in command
+    assert gcpctl.GCP_HOSTS['gcp3']['max_run_duration'] is None
+    assert remote_run.wait_budget_s('gcp3') is None
     assert remote_run.wait_budget_s('gcp2') == 23.5 * 3600
     assert remote_run.DEFAULT_HOST == gcpctl.DEFAULT_HOST == 'gcp2'
     with patch.object(gcpctl.subprocess, 'run') as run:
         gcpctl.gcloud('compute', 'instances', 'describe', 'x', host='gcp3')
     assert run.call_args.args[0][-4:] == ['--account', 'changmin5781@gmail.com', '--project', 'ugrp-sim-c-1016']
+
+
+@pytest.mark.parametrize('duration', [None, 'missing', '8h', '24h'])
+def test_optional_runtime_cap_preserves_explicit_settings(monkeypatch, duration):
+    cfg = dict(gcpctl.GCP_HOSTS['gcp3'])
+    if duration == 'missing':
+        cfg.pop('max_run_duration')
+    else:
+        cfg['max_run_duration'] = duration
+    monkeypatch.setitem(gcpctl.GCP_HOSTS, 'gcp3', cfg)
+    command = gcpctl.create_command('gcp3', 'ssh-ed25519 AAAA test')
+    runtime_flags = [part for part in command if part.startswith('--max-run-duration')]
+    if duration in (None, 'missing'):
+        assert runtime_flags == []
+        assert remote_run.wait_budget_s('gcp3') is None
+    else:
+        assert runtime_flags == [f'--max-run-duration={duration}']
+        assert '--instance-termination-action=STOP' in command
+        assert remote_run.wait_budget_s('gcp3') == float(duration[:-1]) * 3600 - 1800
+
+
+def test_uncapped_runner_polls_until_completion_and_keeps_evidence(tmp_path):
+    with patch.object(remote_run, 'ssh') as ssh, \
+            patch.object(remote_run.subprocess, 'run') as run, \
+            patch.object(remote_run, 'fetch', return_value='fetched') as fetch, \
+            patch.object(gcpctl, 'status', return_value=('RUNNING', 'ip', 'g2-standard-8')), \
+            patch.object(remote_run, 'PRIMARY', tmp_path), \
+            patch.object(remote_run.time, 'monotonic', side_effect=AssertionError('unexpected runtime deadline')), \
+            patch.object(remote_run.time, 'sleep'):
+        # Poll until completion without consulting a runtime deadline.
+        ssh.return_value.stdout.strip.side_effect = ['', '0', 'manifest-sha', 'loadavg']
+        run.return_value.returncode = 0
+        assert remote_run.wait_gcp('gcp3', 'nocap', 'root', 'lease', 'sha', 0) == (True, '0')
+    fetch.assert_called_once_with('gcp3', 'nocap')
+    import json
+    evidence = json.loads((tmp_path / 'outputs/gcp3-lifecycle/nocap.json').read_text())
+    assert evidence['sha256sums_verified_on_vm'] is True
+    assert evidence['sha256sums_file_sha256'] == 'manifest-sha'
 
 
 def test_gcp3_stop_is_blocked_by_an_unwrapped_python_or_ffmpeg_job():
