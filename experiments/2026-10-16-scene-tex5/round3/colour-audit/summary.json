@@ -1,0 +1,133 @@
+{
+  "reports": [
+    {
+      "material": "floor_light_textured_v1",
+      "quality": "native",
+      "equal": {
+        "png": 88,
+        "jpeg90": 88,
+        "pil82": 88
+      },
+      "changes": {
+        "png": [],
+        "jpeg90": [],
+        "pil82": []
+      },
+      "pass": true
+    },
+    {
+      "material": "floor_light_textured_v1",
+      "quality": "no_mip_v1",
+      "equal": {
+        "png": 88,
+        "jpeg90": 88,
+        "pil82": 88
+      },
+      "changes": {
+        "png": [],
+        "jpeg90": [],
+        "pil82": []
+      },
+      "pass": true
+    },
+    {
+      "material": "walls_floor_contrast_v5_indigo100",
+      "quality": "no_mip_v1",
+      "equal": {
+        "png": 88,
+        "jpeg90": 88,
+        "pil82": 88
+      },
+      "changes": {
+        "png": [],
+        "jpeg90": [],
+        "pil82": []
+      },
+      "pass": true
+    },
+    {
+      "material": "walls_floor_contrast_v5_indigo110_s80",
+      "quality": "no_mip_v1",
+      "equal": {
+        "png": 88,
+        "jpeg90": 88,
+        "pil82": 88
+      },
+      "changes": {
+        "png": [],
+        "jpeg90": [],
+        "pil82": []
+      },
+      "pass": true
+    },
+    {
+      "material": "walls_floor_contrast_v5_indigo125_s65",
+      "quality": "no_mip_v1",
+      "equal": {
+        "png": 88,
+        "jpeg90": 88,
+        "pil82": 87
+      },
+      "changes": {
+        "png": [],
+        "jpeg90": [],
+        "pil82": [
+          {
+            "case": "zone_wide_corridor_final_v3--view0--paint_A--r1",
+            "v1": {
+              "visual_goal_A": 0,
+              "visual_goal_B": 0,
+              "visual_goal_C": 0,
+              "visual_orange_obstacles": 0,
+              "visual_magenta_peers": 0,
+              "floor_goal_B_patches": 0,
+              "B_quad_off": 0,
+              "B_quad_contrast_v2": 0
+            },
+            "candidate": {
+              "visual_goal_A": 0,
+              "visual_goal_B": 0,
+              "visual_goal_C": 0,
+              "visual_orange_obstacles": 0,
+              "visual_magenta_peers": 0,
+              "floor_goal_B_patches": 2,
+              "B_quad_off": 0,
+              "B_quad_contrast_v2": 0
+            }
+          }
+        ]
+      },
+      "pass": false
+    }
+  ],
+  "sources": [
+    {
+      "root": "/home/ugrp/ugrp-sim/runs/scenetex5-r1-v1-native",
+      "verified_files": 658,
+      "summary_sha256": "106fdf90778525dbaf5edc3b4885e2a9eba577c0bc8c77096d9fba92e5d4717e"
+    },
+    {
+      "root": "/home/ugrp/ugrp-sim/runs/scenetex5-r1-v1-no_mip",
+      "verified_files": 658,
+      "summary_sha256": "1f9bd0bb3c03f292e7276e4e3f469882d52509b5744e06c245198b93a60b22b8"
+    },
+    {
+      "root": "/home/ugrp/ugrp-sim/runs/scenetex5-r2-indigo100",
+      "verified_files": 658,
+      "summary_sha256": "5c5f8abbdb378218619dd93f03eabdcdc26422f9e567103605d24c71a6cc0527"
+    },
+    {
+      "root": "/home/ugrp/ugrp-sim/runs/scenetex5-r3-indigo110_s80",
+      "verified_files": 658,
+      "summary_sha256": "bb8ca68b04fd7ab3088bec99753550a779522b1b4811953ec2ba28d307c2e9df"
+    },
+    {
+      "root": "/home/ugrp/ugrp-sim/runs/scenetex5-r3-indigo125_s65",
+      "verified_files": 658,
+      "summary_sha256": "4f687c3d42101f18f29e325e1e3002c14b4520840de15a322299dec495c33ea6"
+    }
+  ],
+  "script_sha256": "3db448b1dc5c0cfc3d663cc270f924a381c1f79d17e0f283084c275e78aaf0a1",
+  "scope": "actual existing visual goal A/B/C, orange obstacle, magenta peer component counts, floor_goal B patches and B complete-quad/white-island gates; numeric ranges unchanged; own RGB and own commanded camera only",
+  "other_scopes": "box/legacy dark beam already in main audit; teal/blue and archived colour rules are pixel-range support only; top camera not used"
+}

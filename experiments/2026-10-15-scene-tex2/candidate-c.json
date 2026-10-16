@@ -1,0 +1,25 @@
+{
+  "candidate": "C",
+  "status": "PNG_VERIFIED_CAMERA_PENDING",
+  "manifest_sha256": "ea58773c500dd9bc5dbf3ede4edf5419535c306d3f9c3c11de935a5089af9858",
+  "profile_sha256": "f6d825b6a52b2c86a80b6a02ed697b1337888224d49aad47325691e8d44d710d",
+  "PNG_wall_orb": {
+    "min": 12,
+    "median": 225.5,
+    "max": 800
+  },
+  "PNG_floor_640x480_orb": [
+    793,
+    767,
+    772,
+    793
+  ],
+  "fixed_range_overlap_hits": 0,
+  "source_reference": {
+    "url": "https://github.com/google-deepmind/mujoco/blob/3.12.0/src/render/classic/render_gl3.c#L225",
+    "tag_sha": "13827e9ee56f097f57acf69ae52b078f9839682d",
+    "local_file_sha256": "97e7235fe013b4b3e3b47716c7bb05f9a2ced09e8a4e2448e31aa3030fc5ff64"
+  },
+  "reason": "B montage radial wall stretching; v2 per-face mapping now texuniform=false. B JPEG interior S99 wall24/floor22 vs sourceS16; C S8. Native HSV overlap remains 0; rendered tails require remeasurement.",
+  "camera_verified": false
+}

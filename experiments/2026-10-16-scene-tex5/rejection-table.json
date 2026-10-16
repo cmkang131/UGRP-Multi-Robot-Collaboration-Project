@@ -1,0 +1,1233 @@
+{
+  "decision": "NOT_READY",
+  "round_budget": {
+    "used": 3,
+    "maximum": 3
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "analysis": "/home/ugrp/ugrp-sim/runs/scenetex5-r1-analysis",
+      "extended_colour_analysis": "/home/ugrp/ugrp-sim/runs/scenetex5-r1-colour-audit",
+      "sources": [
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/scenetex5-r1-v1-native",
+          "source_sha": "3b36eb9d6d76d468165d1c66faf8503db7bf8491",
+          "verified_files": 658,
+          "summary_sha256": "106fdf90778525dbaf5edc3b4885e2a9eba577c0bc8c77096d9fba92e5d4717e"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/scenetex5-r1-v1-no_mip",
+          "source_sha": "3b36eb9d6d76d468165d1c66faf8503db7bf8491",
+          "verified_files": 658,
+          "summary_sha256": "1f9bd0bb3c03f292e7276e4e3f469882d52509b5744e06c245198b93a60b22b8"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/scenetex5-r1b-violet150",
+          "source_sha": "32e36dfebc4120d9f7e380987ca1b93fee98aa32",
+          "verified_files": 658,
+          "summary_sha256": "40aaf3c51dbf0ca4d275145ead0fd161138159e416f12b069d7ba8385570327a"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/scenetex5-r1b-violet175",
+          "source_sha": "32e36dfebc4120d9f7e380987ca1b93fee98aa32",
+          "verified_files": 658,
+          "summary_sha256": "fcf74893124cc23f5cf8b47fa1508f705e334e1b44bd77cf6f00be63a78e6c1b"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/scenetex5-r1b-violet195",
+          "source_sha": "32e36dfebc4120d9f7e380987ca1b93fee98aa32",
+          "verified_files": 658,
+          "summary_sha256": "8f4e5c8064bf8bf52feb77a74da49b230d6e9ab8710fc0755bd2b5fd71223d75"
+        }
+      ],
+      "candidates": [
+        {
+          "material": "walls_floor_contrast_v5_violet150",
+          "quality": "no_mip_v1",
+          "ready": false,
+          "stages": [
+            {
+              "stage": "same88_pose_physics_camera",
+              "input_n": 88,
+              "cumulative_pass_n": 88,
+              "rejected_n": 0,
+              "independent_pass": true,
+              "category": "SAME88_POSE_PHYSICS_CAMERA",
+              "blocking_object": "wall/floor material, RGB occlusion or existing colour extraction",
+              "minimum_gap_m": null,
+              "minimum_gap_reason": "static image distribution, not a physical clearance gate",
+              "reason": "passed",
+              "changed_cases": []
+            },
+            {
+              "stage": "existing_colour_semantic_counts",
+              "input_n": 88,
+              "cumulative_pass_n": 28,
+              "rejected_n": 60,
+              "independent_pass": false,
+              "category": "EXISTING_COLOUR_SEMANTIC_COUNTS",
+              "blocking_object": "wall/floor material, RGB occlusion or existing colour extraction",
+              "minimum_gap_m": null,
+              "minimum_gap_reason": "static image distribution, not a physical clearance gate",
+              "reason": "requested candidate-level distribution comparison; exact semantic changes listed",
+              "changed_cases": [
+                "zone_hardmaps1_h1_final_v3--view0--beam_end_bands--r1",
+                "zone_hardmaps1_h1_final_v3--view0--beam_end_bands--r2",
+                "zone_hardmaps1_h1_final_v3--view0--box_palette--r1",
+                "zone_hardmaps1_h1_final_v3--view0--box_palette--r2",
+                "zone_hardmaps1_h1_final_v3--view0--drive--r1",
+                "zone_hardmaps1_h1_final_v3--view0--drive--r2",
+                "zone_hardmaps1_h1_final_v3--view0--high--r1",
+                "zone_hardmaps1_h1_final_v3--view0--paint_A--r1",
+                "zone_hardmaps1_h1_final_v3--view0--paint_A--r2",
+                "zone_hardmaps1_h1_final_v3--view0--paint_B--r1",
+                "zone_hardmaps1_h1_final_v3--view0--paint_B--r2",
+                "zone_hardmaps1_h1_final_v3--view0--paint_C--r1",
+                "zone_hardmaps1_h1_final_v3--view0--paint_C--r2",
+                "zone_hardmaps1_h1_final_v3--view1--drive--r1",
+                "zone_hardmaps1_h1_final_v3--view1--drive--r2",
+                "zone_hardmaps1_h2_final_v3--view0--beam_end_bands--r1",
+                "zone_hardmaps1_h2_final_v3--view0--beam_end_bands--r2",
+                "zone_hardmaps1_h2_final_v3--view0--box_palette--r1",
+                "zone_hardmaps1_h2_final_v3--view0--box_palette--r2",
+                "zone_hardmaps1_h2_final_v3--view0--drive--r1",
+                "zone_hardmaps1_h2_final_v3--view0--drive--r2",
+                "zone_hardmaps1_h2_final_v3--view0--high--r1",
+                "zone_hardmaps1_h2_final_v3--view0--paint_A--r1",
+                "zone_hardmaps1_h2_final_v3--view0--paint_A--r2",
+                "zone_hardmaps1_h2_final_v3--view0--paint_B--r1",
+                "zone_hardmaps1_h2_final_v3--view0--paint_B--r2",
+                "zone_hardmaps1_h2_final_v3--view0--paint_C--r1",
+                "zone_hardmaps1_h2_final_v3--view0--paint_C--r2",
+                "zone_hardmaps1_h2_final_v3--view1--drive--r1",
+                "zone_hardmaps1_h2_final_v3--view1--drive--r2",
+                "zone_wide_corridor_final_v3--view0--beam_end_bands--r1",
+                "zone_wide_corridor_final_v3--view0--beam_end_bands--r2",
+                "zone_wide_corridor_final_v3--view0--box_palette--r1",
+                "zone_wide_corridor_final_v3--view0--box_palette--r2",
+                "zone_wide_corridor_final_v3--view0--drive--r1",
+                "zone_wide_corridor_final_v3--view0--drive--r2",
+                "zone_wide_corridor_final_v3--view0--high--r1",
+                "zone_wide_corridor_final_v3--view0--paint_A--r1",
+                "zone_wide_corridor_final_v3--view0--paint_A--r2",
+                "zone_wide_corridor_final_v3--view0--paint_B--r1",
+                "zone_wide_corridor_final_v3--view0--paint_B--r2",
+                "zone_wide_corridor_final_v3--view0--paint_C--r1",
+                "zone_wide_corridor_final_v3--view0--paint_C--r2",
+                "zone_wide_corridor_final_v3--view1--drive--r1",
+                "zone_wide_corridor_final_v3--view1--drive--r2",
+                "zone_wide_two_doors_final_v3--view0--beam_end_bands--r1",
+                "zone_wide_two_doors_final_v3--view0--beam_end_bands--r2",
+                "zone_wide_two_doors_final_v3--view0--box_palette--r1",
+                "zone_wide_two_doors_final_v3--view0--box_palette--r2",
+                "zone_wide_two_doors_final_v3--view0--drive--r1",
+                "zone_wide_two_doors_final_v3--view0--drive--r2",
+                "zone_wide_two_doors_final_v3--view0--high--r1",
+                "zone_wide_two_doors_final_v3--view0--paint_A--r1",
+                "zone_wide_two_doors_final_v3--view0--paint_A--r2",
+                "zone_wide_two_doors_final_v3--view0--paint_B--r1",
+                "zone_wide_two_doors_final_v3--view0--paint_B--r2",
+                "zone_wide_two_doors_final_v3--view0--paint_C--r1",
+                "zone_wide_two_doors_final_v3--view0--paint_C--r2",
+                "zone_wide_two_doors_final_v3--view1--drive--r1",
+                "zone_wide_two_doors_final_v3--view1--drive--r2"
+              ]
+            },
+            {
+              "stage": "boundary_distribution",
+              "input_n": 28,
+              "cumulative_pass_n": 0,
+              "rejected_n": 28,
+              "independent_pass": false,
+              "category": "BOUNDARY_DISTRIBUTION",
+              "blocking_object": "wall/floor material, RGB occlusion or existing colour extraction",
+              "minimum_gap_m": null,
+              "minimum_gap_reason": "static image distribution, not a physical clearance gate",
+              "reason": "requested candidate-level distribution comparison; exact semantic changes listed",
+              "changed_cases": []
+            },
+            {
+              "stage": "floor_feature_matching_distribution",
+              "input_n": 0,
+              "cumulative_pass_n": 0,
+              "rejected_n": 0,
+              "independent_pass": true,
+              "category": "FLOOR_FEATURE_MATCHING_DISTRIBUTION",
+              "blocking_object": "wall/floor material, RGB occlusion or existing colour extraction",
+              "minimum_gap_m": null,
+              "minimum_gap_reason": "static image distribution, not a physical clearance gate",
+              "reason": "passed",
+              "changed_cases": []
+            },
+            {
+              "stage": "LK_distribution",
+              "input_n": 0,
+              "cumulative_pass_n": 0,
+              "rejected_n": 0,
+              "independent_pass": false,
+              "category": "LK_DISTRIBUTION",
+              "blocking_object": "wall/floor material, RGB occlusion or existing colour extraction",
+              "minimum_gap_m": null,
+              "minimum_gap_reason": "static image distribution, not a physical clearance gate",
+              "reason": "requested candidate-level distribution comparison; exact semantic changes listed",
+              "changed_cases": []
+            }
+          ],
+          "independent_gates": {
+            "same88_pose_physics_camera": true,
+            "existing_detectors_all_encodings": true,
+            "boundary_distribution_all_encodings": false,
+            "floor_feature_matching_distribution_all_encodings": true,
+            "LK_distribution_all_encodings": false,
+            "extended_existing_colour_outputs": false
+          }
+        },
+        {
+          "material": "walls_floor_contrast_v5_violet175",
+          "quality": "no_mip_v1",
+          "ready": false,
+          "stages": [
+            {
+              "stage": "same88_pose_physics_camera",
+              "input_n": 88,
+              "cumulative_pass_n": 88,
+              "rejected_n": 0,
+              "independent_pass": true,
+              "category": "SAME88_POSE_PHYSICS_CAMERA",
+              "blocking_object": "wall/floor material, RGB occlusion or existing colour extraction",
+              "minimum_gap_m": null,
+              "minimum_gap_reason": "static image distribution, not a physical clearance gate",
+              "reason": "passed",
+              "changed_cases": []
+            },
+            {
+              "stage": "existing_colour_semantic_counts",
+              "input_n": 88,
+              "cumulative_pass_n": 28,
+              "rejected_n": 60,
+              "independent_pass": false,
+              "category": "EXISTING_COLOUR_SEMANTIC_COUNTS",
+              "blocking_object": "wall/floor material, RGB occlusion or existing colour extraction",
+              "minimum_gap_m": null,
+              "minimum_gap_reason": "static image distribution, not a physical clearance gate",
+              "reason": "requested candidate-level distribution comparison; exact semantic changes listed",
+              "changed_cases": [
+                "zone_hardmaps1_h1_final_v3--view0--beam_end_bands--r1",
+                "zone_hardmaps1_h1_final_v3--view0--beam_end_bands--r2",
+                "zone_hardmaps1_h1_final_v3--view0--box_palette--r1",
+                "zone_hardmaps1_h1_final_v3--view0--box_palette--r2",
+                "zone_hardmaps1_h1_final_v3--view0--drive--r1",
+                "zone_hardmaps1_h1_final_v3--view0--drive--r2",
+                "zone_hardmaps1_h1_final_v3--view0--high--r1",
+                "zone_hardmaps1_h1_final_v3--view0--paint_A--r1",
+                "zone_hardmaps1_h1_final_v3--view0--paint_A--r2",
+                "zone_hardmaps1_h1_final_v3--view0--paint_B--r1",
+                "zone_hardmaps1_h1_final_v3--view0--paint_B--r2",
+                "zone_hardmaps1_h1_final_v3--view0--paint_C--r1",
+                "zone_hardmaps1_h1_final_v3--view0--paint_C--r2",
+                "zone_hardmaps1_h1_final_v3--view1--drive--r1",
+                "zone_hardmaps1_h1_final_v3--view1--drive--r2",
+                "zone_hardmaps1_h2_final_v3--view0--beam_end_bands--r1",
+                "zone_hardmaps1_h2_final_v3--view0--beam_end_bands--r2",
+                "zone_hardmaps1_h2_final_v3--view0--box_palette--r1",
+                "zone_hardmaps1_h2_final_v3--view0--box_palette--r2",
+                "zone_hardmaps1_h2_final_v3--view0--drive--r1",
+                "zone_hardmaps1_h2_final_v3--view0--drive--r2",
+                "zone_hardmaps1_h2_final_v3--view0--high--r1",
+                "zone_hardmaps1_h2_final_v3--view0--paint_A--r1",
+                "zone_hardmaps1_h2_final_v3--view0--paint_A--r2",
+                "zone_hardmaps1_h2_final_v3--view0--paint_B--r1",
+                "zone_hardmaps1_h2_final_v3--view0--paint_B--r2",
+                "zone_hardmaps1_h2_final_v3--view0--paint_C--r1",
+                "zone_hardmaps1_h2_final_v3--view0--paint_C--r2",
+                "zone_hardmaps1_h2_final_v3--view1--drive--r1",
+                "zone_hardmaps1_h2_final_v3--view1--drive--r2",
+                "zone_wide_corridor_final_v3--view0--beam_end_bands--r1",
+                "zone_wide_corridor_final_v3--view0--beam_end_bands--r2",
+                "zone_wide_corridor_final_v3--view0--box_palette--r1",
+                "zone_wide_corridor_final_v3--view0--box_palette--r2",
+                "zone_wide_corridor_final_v3--view0--drive--r1",
+                "zone_wide_corridor_final_v3--view0--drive--r2",
+                "zone_wide_corridor_final_v3--view0--high--r1",
+                "zone_wide_corridor_final_v3--view0--paint_A--r1",
+                "zone_wide_corridor_final_v3--view0--paint_A--r2",
+                "zone_wide_corridor_final_v3--view0--paint_B--r1",
+                "zone_wide_corridor_final_v3--view0--paint_B--r2",
+                "zone_wide_corridor_final_v3--view0--paint_C--r1",
+                "zone_wide_corridor_final_v3--view0--paint_C--r2",
+                "zone_wide_corridor_final_v3--view1--drive--r1",
+                "zone_wide_corridor_final_v3--view1--drive--r2",
+                "zone_wide_two_doors_final_v3--view0--beam_end_bands--r1",
+                "zone_wide_two_doors_final_v3--view0--beam_end_bands--r2",
+                "zone_wide_two_doors_final_v3--view0--box_palette--r1",
+                "zone_wide_two_doors_final_v3--view0--box_palette--r2",
+                "zone_wide_two_doors_final_v3--view0--drive--r1",
+                "zone_wide_two_doors_final_v3--view0--drive--r2",
+                "zone_wide_two_doors_final_v3--view0--high--r1",
+                "zone_wide_two_doors_final_v3--view0--paint_A--r1",
+                "zone_wide_two_doors_final_v3--view0--paint_A--r2",
+                "zone_wide_two_doors_final_v3--view0--paint_B--r1",
+                "zone_wide_two_doors_final_v3--view0--paint_B--r2",
+                "zone_wide_two_doors_final_v3--view0--paint_C--r1",
+                "zone_wide_two_doors_final_v3--view0--paint_C--r2",
+                "zone_wide_two_doors_final_v3--view1--drive--r1",
+                "zone_wide_two_doors_final_v3--view1--drive--r2"
+              ]
+            },
+            {
+              "stage": "boundary_distribution",
+              "input_n": 28,
+              "cumulative_pass_n": 0,
+              "rejected_n": 28,
+              "independent_pass": false,
+              "category": "BOUNDARY_DISTRIBUTION",
+              "blocking_object": "wall/floor material, RGB occlusion or existing colour extraction",
+              "minimum_gap_m": null,
+              "minimum_gap_reason": "static image distribution, not a physical clearance gate",
+              "reason": "requested candidate-level distribution comparison; exact semantic changes listed",
+              "changed_cases": []
+            },
+            {
+              "stage": "floor_feature_matching_distribution",
+              "input_n": 0,
+              "cumulative_pass_n": 0,
+              "rejected_n": 0,
+              "independent_pass": false,
+              "category": "FLOOR_FEATURE_MATCHING_DISTRIBUTION",
+              "blocking_object": "wall/floor material, RGB occlusion or existing colour extraction",
+              "minimum_gap_m": null,
+              "minimum_gap_reason": "static image distribution, not a physical clearance gate",
+              "reason": "requested candidate-level distribution comparison; exact semantic changes listed",
+              "changed_cases": []
+            },
+            {
+              "stage": "LK_distribution",
+              "input_n": 0,
+              "cumulative_pass_n": 0,
+              "rejected_n": 0,
+              "independent_pass": false,
+              "category": "LK_DISTRIBUTION",
+              "blocking_object": "wall/floor material, RGB occlusion or existing colour extraction",
+              "minimum_gap_m": null,
+              "minimum_gap_reason": "static image distribution, not a physical clearance gate",
+              "reason": "requested candidate-level distribution comparison; exact semantic changes listed",
+              "changed_cases": []
+            }
+          ],
+          "independent_gates": {
+            "same88_pose_physics_camera": true,
+            "existing_detectors_all_encodings": true,
+            "boundary_distribution_all_encodings": false,
+            "floor_feature_matching_distribution_all_encodings": false,
+            "LK_distribution_all_encodings": false,
+            "extended_existing_colour_outputs": false
+          }
+        },
+        {
+          "material": "walls_floor_contrast_v5_violet195",
+          "quality": "no_mip_v1",
+          "ready": false,
+          "stages": [
+            {
+              "stage": "same88_pose_physics_camera",
+              "input_n": 88,
+              "cumulative_pass_n": 88,
+              "rejected_n": 0,
+              "independent_pass": true,
+              "category": "SAME88_POSE_PHYSICS_CAMERA",
+              "blocking_object": "wall/floor material, RGB occlusion or existing colour extraction",
+              "minimum_gap_m": null,
+              "minimum_gap_reason": "static image distribution, not a physical clearance gate",
+              "reason": "passed",
+              "changed_cases": []
+            },
+            {
+              "stage": "existing_colour_semantic_counts",
+              "input_n": 88,
+              "cumulative_pass_n": 28,
+              "rejected_n": 60,
+              "independent_pass": false,
+              "category": "EXISTING_COLOUR_SEMANTIC_COUNTS",
+              "blocking_object": "wall/floor material, RGB occlusion or existing colour extraction",
+              "minimum_gap_m": null,
+              "minimum_gap_reason": "static image distribution, not a physical clearance gate",
+              "reason": "requested candidate-level distribution comparison; exact semantic changes listed",
+              "changed_cases": [
+                "zone_hardmaps1_h1_final_v3--view0--beam_end_bands--r1",
+                "zone_hardmaps1_h1_final_v3--view0--beam_end_bands--r2",
+                "zone_hardmaps1_h1_final_v3--view0--box_palette--r1",
+                "zone_hardmaps1_h1_final_v3--view0--box_palette--r2",
+                "zone_hardmaps1_h1_final_v3--view0--drive--r1",
+                "zone_hardmaps1_h1_final_v3--view0--drive--r2",
+                "zone_hardmaps1_h1_final_v3--view0--high--r1",
+                "zone_hardmaps1_h1_final_v3--view0--paint_A--r1",
+                "zone_hardmaps1_h1_final_v3--view0--paint_A--r2",
+                "zone_hardmaps1_h1_final_v3--view0--paint_B--r1",
+                "zone_hardmaps1_h1_final_v3--view0--paint_B--r2",
+                "zone_hardmaps1_h1_final_v3--view0--paint_C--r1",
+                "zone_hardmaps1_h1_final_v3--view0--paint_C--r2",
+                "zone_hardmaps1_h1_final_v3--view1--drive--r1",
+                "zone_hardmaps1_h1_final_v3--view1--drive--r2",
+                "zone_hardmaps1_h2_final_v3--view0--beam_end_bands--r1",
+                "zone_hardmaps1_h2_final_v3--view0--beam_end_bands--r2",
+                "zone_hardmaps1_h2_final_v3--view0--box_palette--r1",
+                "zone_hardmaps1_h2_final_v3--view0--box_palette--r2",
+                "zone_hardmaps1_h2_final_v3--view0--drive--r1",
+                "zone_hardmaps1_h2_final_v3--view0--drive--r2",
+                "zone_hardmaps1_h2_final_v3--view0--high--r1",
+                "zone_hardmaps1_h2_final_v3--view0--paint_A--r1",
+                "zone_hardmaps1_h2_final_v3--view0--paint_A--r2",
+                "zone_hardmaps1_h2_final_v3--view0--paint_B--r1",
+                "zone_hardmaps1_h2_final_v3--view0--paint_B--r2",
+                "zone_hardmaps1_h2_final_v3--view0--paint_C--r1",
+                "zone_hardmaps1_h2_final_v3--view0--paint_C--r2",
+                "zone_hardmaps1_h2_final_v3--view1--drive--r1",
+                "zone_hardmaps1_h2_final_v3--view1--drive--r2",
+                "zone_wide_corridor_final_v3--view0--beam_end_bands--r1",
+                "zone_wide_corridor_final_v3--view0--beam_end_bands--r2",
+                "zone_wide_corridor_final_v3--view0--box_palette--r1",
+                "zone_wide_corridor_final_v3--view0--box_palette--r2",
+                "zone_wide_corridor_final_v3--view0--drive--r1",
+                "zone_wide_corridor_final_v3--view0--drive--r2",
+                "zone_wide_corridor_final_v3--view0--high--r1",
+                "zone_wide_corridor_final_v3--view0--paint_A--r1",
+                "zone_wide_corridor_final_v3--view0--paint_A--r2",
+                "zone_wide_corridor_final_v3--view0--paint_B--r1",
+                "zone_wide_corridor_final_v3--view0--paint_B--r2",
+                "zone_wide_corridor_final_v3--view0--paint_C--r1",
+                "zone_wide_corridor_final_v3--view0--paint_C--r2",
+                "zone_wide_corridor_final_v3--view1--drive--r1",
+                "zone_wide_corridor_final_v3--view1--drive--r2",
+                "zone_wide_two_doors_final_v3--view0--beam_end_bands--r1",
+                "zone_wide_two_doors_final_v3--view0--beam_end_bands--r2",
+                "zone_wide_two_doors_final_v3--view0--box_palette--r1",
+                "zone_wide_two_doors_final_v3--view0--box_palette--r2",
+                "zone_wide_two_doors_final_v3--view0--drive--r1",
+                "zone_wide_two_doors_final_v3--view0--drive--r2",
+                "zone_wide_two_doors_final_v3--view0--high--r1",
+                "zone_wide_two_doors_final_v3--view0--paint_A--r1",
+                "zone_wide_two_doors_final_v3--view0--paint_A--r2",
+                "zone_wide_two_doors_final_v3--view0--paint_B--r1",
+                "zone_wide_two_doors_final_v3--view0--paint_B--r2",
+                "zone_wide_two_doors_final_v3--view0--paint_C--r1",
+                "zone_wide_two_doors_final_v3--view0--paint_C--r2",
+                "zone_wide_two_doors_final_v3--view1--drive--r1",
+                "zone_wide_two_doors_final_v3--view1--drive--r2"
+              ]
+            },
+            {
+              "stage": "boundary_distribution",
+              "input_n": 28,
+              "cumulative_pass_n": 0,
+              "rejected_n": 28,
+              "independent_pass": false,
+              "category": "BOUNDARY_DISTRIBUTION",
+              "blocking_object": "wall/floor material, RGB occlusion or existing colour extraction",
+              "minimum_gap_m": null,
+              "minimum_gap_reason": "static image distribution, not a physical clearance gate",
+              "reason": "requested candidate-level distribution comparison; exact semantic changes listed",
+              "changed_cases": []
+            },
+            {
+              "stage": "floor_feature_matching_distribution",
+              "input_n": 0,
+              "cumulative_pass_n": 0,
+              "rejected_n": 0,
+              "independent_pass": false,
+              "category": "FLOOR_FEATURE_MATCHING_DISTRIBUTION",
+              "blocking_object": "wall/floor material, RGB occlusion or existing colour extraction",
+              "minimum_gap_m": null,
+              "minimum_gap_reason": "static image distribution, not a physical clearance gate",
+              "reason": "requested candidate-level distribution comparison; exact semantic changes listed",
+              "changed_cases": []
+            },
+            {
+              "stage": "LK_distribution",
+              "input_n": 0,
+              "cumulative_pass_n": 0,
+              "rejected_n": 0,
+              "independent_pass": false,
+              "category": "LK_DISTRIBUTION",
+              "blocking_object": "wall/floor material, RGB occlusion or existing colour extraction",
+              "minimum_gap_m": null,
+              "minimum_gap_reason": "static image distribution, not a physical clearance gate",
+              "reason": "requested candidate-level distribution comparison; exact semantic changes listed",
+              "changed_cases": []
+            }
+          ],
+          "independent_gates": {
+            "same88_pose_physics_camera": true,
+            "existing_detectors_all_encodings": true,
+            "boundary_distribution_all_encodings": false,
+            "floor_feature_matching_distribution_all_encodings": false,
+            "LK_distribution_all_encodings": false,
+            "extended_existing_colour_outputs": false
+          }
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "analysis": "/home/ugrp/ugrp-sim/runs/scenetex5-r2-analysis",
+      "extended_colour_analysis": "/home/ugrp/ugrp-sim/runs/scenetex5-r2-colour-audit-b",
+      "sources": [
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/scenetex5-r1-v1-native",
+          "source_sha": "3b36eb9d6d76d468165d1c66faf8503db7bf8491",
+          "verified_files": 658,
+          "summary_sha256": "106fdf90778525dbaf5edc3b4885e2a9eba577c0bc8c77096d9fba92e5d4717e"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/scenetex5-r1-v1-no_mip",
+          "source_sha": "3b36eb9d6d76d468165d1c66faf8503db7bf8491",
+          "verified_files": 658,
+          "summary_sha256": "1f9bd0bb3c03f292e7276e4e3f469882d52509b5744e06c245198b93a60b22b8"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/scenetex5-r2-indigo100",
+          "source_sha": "3724052a159b4572e0368f28973b403ffdebdd31",
+          "verified_files": 658,
+          "summary_sha256": "5c5f8abbdb378218619dd93f03eabdcdc26422f9e567103605d24c71a6cc0527"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/scenetex5-r2-indigo85",
+          "source_sha": "3724052a159b4572e0368f28973b403ffdebdd31",
+          "verified_files": 658,
+          "summary_sha256": "4042a93fbd1a66337fc13cc31fb54842081f268d83696456d4c492c4fe78d0c6"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/scenetex5-r2-indigo100_flat",
+          "source_sha": "3724052a159b4572e0368f28973b403ffdebdd31",
+          "verified_files": 658,
+          "summary_sha256": "db47a43e370e83cbb58b2ae9eb5931c3833580233cc38565654fb64d9d1ed883"
+        }
+      ],
+      "candidates": [
+        {
+          "material": "walls_floor_contrast_v5_indigo100",
+          "quality": "no_mip_v1",
+          "ready": false,
+          "stages": [
+            {
+              "stage": "same88_pose_physics_camera",
+              "input_n": 88,
+              "cumulative_pass_n": 88,
+              "rejected_n": 0,
+              "independent_pass": true,
+              "category": "SAME88_POSE_PHYSICS_CAMERA",
+              "blocking_object": "wall/floor material, RGB occlusion or existing colour extraction",
+              "minimum_gap_m": null,
+              "minimum_gap_reason": "static image distribution, not a physical clearance gate",
+              "reason": "passed",
+              "changed_cases": []
+            },
+            {
+              "stage": "existing_colour_semantic_counts",
+              "input_n": 88,
+              "cumulative_pass_n": 88,
+              "rejected_n": 0,
+              "independent_pass": true,
+              "category": "EXISTING_COLOUR_SEMANTIC_COUNTS",
+              "blocking_object": "wall/floor material, RGB occlusion or existing colour extraction",
+              "minimum_gap_m": null,
+              "minimum_gap_reason": "static image distribution, not a physical clearance gate",
+              "reason": "passed",
+              "changed_cases": []
+            },
+            {
+              "stage": "boundary_distribution",
+              "input_n": 88,
+              "cumulative_pass_n": 0,
+              "rejected_n": 88,
+              "independent_pass": false,
+              "category": "BOUNDARY_DISTRIBUTION",
+              "blocking_object": "wall/floor material, RGB occlusion or existing colour extraction",
+              "minimum_gap_m": null,
+              "minimum_gap_reason": "static image distribution, not a physical clearance gate",
+              "reason": "requested candidate-level distribution comparison; exact semantic changes listed",
+              "changed_cases": []
+            },
+            {
+              "stage": "floor_feature_matching_distribution",
+              "input_n": 0,
+              "cumulative_pass_n": 0,
+              "rejected_n": 0,
+              "independent_pass": true,
+              "category": "FLOOR_FEATURE_MATCHING_DISTRIBUTION",
+              "blocking_object": "wall/floor material, RGB occlusion or existing colour extraction",
+              "minimum_gap_m": null,
+              "minimum_gap_reason": "static image distribution, not a physical clearance gate",
+              "reason": "passed",
+              "changed_cases": []
+            },
+            {
+              "stage": "LK_distribution",
+              "input_n": 0,
+              "cumulative_pass_n": 0,
+              "rejected_n": 0,
+              "independent_pass": false,
+              "category": "LK_DISTRIBUTION",
+              "blocking_object": "wall/floor material, RGB occlusion or existing colour extraction",
+              "minimum_gap_m": null,
+              "minimum_gap_reason": "static image distribution, not a physical clearance gate",
+              "reason": "requested candidate-level distribution comparison; exact semantic changes listed",
+              "changed_cases": []
+            }
+          ],
+          "independent_gates": {
+            "same88_pose_physics_camera": true,
+            "existing_detectors_all_encodings": true,
+            "boundary_distribution_all_encodings": false,
+            "floor_feature_matching_distribution_all_encodings": true,
+            "LK_distribution_all_encodings": false,
+            "extended_existing_colour_outputs": true
+          }
+        },
+        {
+          "material": "walls_floor_contrast_v5_indigo85",
+          "quality": "no_mip_v1",
+          "ready": false,
+          "stages": [
+            {
+              "stage": "same88_pose_physics_camera",
+              "input_n": 88,
+              "cumulative_pass_n": 88,
+              "rejected_n": 0,
+              "independent_pass": true,
+              "category": "SAME88_POSE_PHYSICS_CAMERA",
+              "blocking_object": "wall/floor material, RGB occlusion or existing colour extraction",
+              "minimum_gap_m": null,
+              "minimum_gap_reason": "static image distribution, not a physical clearance gate",
+              "reason": "passed",
+              "changed_cases": []
+            },
+            {
+              "stage": "existing_colour_semantic_counts",
+              "input_n": 88,
+              "cumulative_pass_n": 87,
+              "rejected_n": 1,
+              "independent_pass": false,
+              "category": "EXISTING_COLOUR_SEMANTIC_COUNTS",
+              "blocking_object": "wall/floor material, RGB occlusion or existing colour extraction",
+              "minimum_gap_m": null,
+              "minimum_gap_reason": "static image distribution, not a physical clearance gate",
+              "reason": "requested candidate-level distribution comparison; exact semantic changes listed",
+              "changed_cases": [
+                "zone_wide_corridor_final_v3--view0--paint_C--r1"
+              ]
+            },
+            {
+              "stage": "boundary_distribution",
+              "input_n": 87,
+              "cumulative_pass_n": 0,
+              "rejected_n": 87,
+              "independent_pass": false,
+              "category": "BOUNDARY_DISTRIBUTION",
+              "blocking_object": "wall/floor material, RGB occlusion or existing colour extraction",
+              "minimum_gap_m": null,
+              "minimum_gap_reason": "static image distribution, not a physical clearance gate",
+              "reason": "requested candidate-level distribution comparison; exact semantic changes listed",
+              "changed_cases": []
+            },
+            {
+              "stage": "floor_feature_matching_distribution",
+              "input_n": 0,
+              "cumulative_pass_n": 0,
+              "rejected_n": 0,
+              "independent_pass": true,
+              "category": "FLOOR_FEATURE_MATCHING_DISTRIBUTION",
+              "blocking_object": "wall/floor material, RGB occlusion or existing colour extraction",
+              "minimum_gap_m": null,
+              "minimum_gap_reason": "static image distribution, not a physical clearance gate",
+              "reason": "passed",
+              "changed_cases": []
+            },
+            {
+              "stage": "LK_distribution",
+              "input_n": 0,
+              "cumulative_pass_n": 0,
+              "rejected_n": 0,
+              "independent_pass": false,
+              "category": "LK_DISTRIBUTION",
+              "blocking_object": "wall/floor material, RGB occlusion or existing colour extraction",
+              "minimum_gap_m": null,
+              "minimum_gap_reason": "static image distribution, not a physical clearance gate",
+              "reason": "requested candidate-level distribution comparison; exact semantic changes listed",
+              "changed_cases": []
+            }
+          ],
+          "independent_gates": {
+            "same88_pose_physics_camera": true,
+            "existing_detectors_all_encodings": true,
+            "boundary_distribution_all_encodings": false,
+            "floor_feature_matching_distribution_all_encodings": true,
+            "LK_distribution_all_encodings": false,
+            "extended_existing_colour_outputs": false
+          }
+        },
+        {
+          "material": "walls_floor_contrast_v5_indigo100_flat",
+          "quality": "no_mip_v1",
+          "ready": false,
+          "stages": [
+            {
+              "stage": "same88_pose_physics_camera",
+              "input_n": 88,
+              "cumulative_pass_n": 88,
+              "rejected_n": 0,
+              "independent_pass": true,
+              "category": "SAME88_POSE_PHYSICS_CAMERA",
+              "blocking_object": "wall/floor material, RGB occlusion or existing colour extraction",
+              "minimum_gap_m": null,
+              "minimum_gap_reason": "static image distribution, not a physical clearance gate",
+              "reason": "passed",
+              "changed_cases": []
+            },
+            {
+              "stage": "existing_colour_semantic_counts",
+              "input_n": 88,
+              "cumulative_pass_n": 88,
+              "rejected_n": 0,
+              "independent_pass": true,
+              "category": "EXISTING_COLOUR_SEMANTIC_COUNTS",
+              "blocking_object": "wall/floor material, RGB occlusion or existing colour extraction",
+              "minimum_gap_m": null,
+              "minimum_gap_reason": "static image distribution, not a physical clearance gate",
+              "reason": "passed",
+              "changed_cases": []
+            },
+            {
+              "stage": "boundary_distribution",
+              "input_n": 88,
+              "cumulative_pass_n": 0,
+              "rejected_n": 88,
+              "independent_pass": false,
+              "category": "BOUNDARY_DISTRIBUTION",
+              "blocking_object": "wall/floor material, RGB occlusion or existing colour extraction",
+              "minimum_gap_m": null,
+              "minimum_gap_reason": "static image distribution, not a physical clearance gate",
+              "reason": "requested candidate-level distribution comparison; exact semantic changes listed",
+              "changed_cases": []
+            },
+            {
+              "stage": "floor_feature_matching_distribution",
+              "input_n": 0,
+              "cumulative_pass_n": 0,
+              "rejected_n": 0,
+              "independent_pass": true,
+              "category": "FLOOR_FEATURE_MATCHING_DISTRIBUTION",
+              "blocking_object": "wall/floor material, RGB occlusion or existing colour extraction",
+              "minimum_gap_m": null,
+              "minimum_gap_reason": "static image distribution, not a physical clearance gate",
+              "reason": "passed",
+              "changed_cases": []
+            },
+            {
+              "stage": "LK_distribution",
+              "input_n": 0,
+              "cumulative_pass_n": 0,
+              "rejected_n": 0,
+              "independent_pass": false,
+              "category": "LK_DISTRIBUTION",
+              "blocking_object": "wall/floor material, RGB occlusion or existing colour extraction",
+              "minimum_gap_m": null,
+              "minimum_gap_reason": "static image distribution, not a physical clearance gate",
+              "reason": "requested candidate-level distribution comparison; exact semantic changes listed",
+              "changed_cases": []
+            }
+          ],
+          "independent_gates": {
+            "same88_pose_physics_camera": true,
+            "existing_detectors_all_encodings": true,
+            "boundary_distribution_all_encodings": false,
+            "floor_feature_matching_distribution_all_encodings": true,
+            "LK_distribution_all_encodings": false,
+            "extended_existing_colour_outputs": true
+          }
+        }
+      ]
+    },
+    {
+      "round": 3,
+      "analysis": "/home/ugrp/ugrp-sim/runs/scenetex5-r3-analysis",
+      "extended_colour_analysis": "/home/ugrp/ugrp-sim/runs/scenetex5-r3-colour-audit",
+      "sources": [
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/scenetex5-r1-v1-native",
+          "source_sha": "3b36eb9d6d76d468165d1c66faf8503db7bf8491",
+          "verified_files": 658,
+          "summary_sha256": "106fdf90778525dbaf5edc3b4885e2a9eba577c0bc8c77096d9fba92e5d4717e"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/scenetex5-r1-v1-no_mip",
+          "source_sha": "3b36eb9d6d76d468165d1c66faf8503db7bf8491",
+          "verified_files": 658,
+          "summary_sha256": "1f9bd0bb3c03f292e7276e4e3f469882d52509b5744e06c245198b93a60b22b8"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/scenetex5-r2-indigo100",
+          "source_sha": "3724052a159b4572e0368f28973b403ffdebdd31",
+          "verified_files": 658,
+          "summary_sha256": "5c5f8abbdb378218619dd93f03eabdcdc26422f9e567103605d24c71a6cc0527"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/scenetex5-r3-indigo110_s80",
+          "source_sha": "a68106fd86c314d7c1d10cd321475b0c86c93310",
+          "verified_files": 658,
+          "summary_sha256": "bb8ca68b04fd7ab3088bec99753550a779522b1b4811953ec2ba28d307c2e9df"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/scenetex5-r3-indigo125_s65",
+          "source_sha": "a68106fd86c314d7c1d10cd321475b0c86c93310",
+          "verified_files": 658,
+          "summary_sha256": "4f687c3d42101f18f29e325e1e3002c14b4520840de15a322299dec495c33ea6"
+        }
+      ],
+      "candidates": [
+        {
+          "material": "walls_floor_contrast_v5_indigo100",
+          "quality": "no_mip_v1",
+          "ready": false,
+          "stages": [
+            {
+              "stage": "same88_pose_physics_camera",
+              "input_n": 88,
+              "cumulative_pass_n": 88,
+              "rejected_n": 0,
+              "independent_pass": true,
+              "category": "SAME88_POSE_PHYSICS_CAMERA",
+              "blocking_object": "wall/floor material, RGB occlusion or existing colour extraction",
+              "minimum_gap_m": null,
+              "minimum_gap_reason": "static image distribution, not a physical clearance gate",
+              "reason": "passed",
+              "changed_cases": []
+            },
+            {
+              "stage": "existing_colour_semantic_counts",
+              "input_n": 88,
+              "cumulative_pass_n": 88,
+              "rejected_n": 0,
+              "independent_pass": true,
+              "category": "EXISTING_COLOUR_SEMANTIC_COUNTS",
+              "blocking_object": "wall/floor material, RGB occlusion or existing colour extraction",
+              "minimum_gap_m": null,
+              "minimum_gap_reason": "static image distribution, not a physical clearance gate",
+              "reason": "passed",
+              "changed_cases": []
+            },
+            {
+              "stage": "boundary_distribution",
+              "input_n": 88,
+              "cumulative_pass_n": 0,
+              "rejected_n": 88,
+              "independent_pass": false,
+              "category": "BOUNDARY_DISTRIBUTION",
+              "blocking_object": "wall/floor material, RGB occlusion or existing colour extraction",
+              "minimum_gap_m": null,
+              "minimum_gap_reason": "static image distribution, not a physical clearance gate",
+              "reason": "requested candidate-level distribution comparison; exact semantic changes listed",
+              "changed_cases": []
+            },
+            {
+              "stage": "floor_feature_matching_distribution",
+              "input_n": 0,
+              "cumulative_pass_n": 0,
+              "rejected_n": 0,
+              "independent_pass": true,
+              "category": "FLOOR_FEATURE_MATCHING_DISTRIBUTION",
+              "blocking_object": "wall/floor material, RGB occlusion or existing colour extraction",
+              "minimum_gap_m": null,
+              "minimum_gap_reason": "static image distribution, not a physical clearance gate",
+              "reason": "passed",
+              "changed_cases": []
+            },
+            {
+              "stage": "LK_distribution",
+              "input_n": 0,
+              "cumulative_pass_n": 0,
+              "rejected_n": 0,
+              "independent_pass": false,
+              "category": "LK_DISTRIBUTION",
+              "blocking_object": "wall/floor material, RGB occlusion or existing colour extraction",
+              "minimum_gap_m": null,
+              "minimum_gap_reason": "static image distribution, not a physical clearance gate",
+              "reason": "requested candidate-level distribution comparison; exact semantic changes listed",
+              "changed_cases": []
+            }
+          ],
+          "independent_gates": {
+            "same88_pose_physics_camera": true,
+            "existing_detectors_all_encodings": true,
+            "boundary_distribution_all_encodings": false,
+            "floor_feature_matching_distribution_all_encodings": true,
+            "LK_distribution_all_encodings": false,
+            "extended_existing_colour_outputs": true
+          }
+        },
+        {
+          "material": "walls_floor_contrast_v5_indigo110_s80",
+          "quality": "no_mip_v1",
+          "ready": false,
+          "stages": [
+            {
+              "stage": "same88_pose_physics_camera",
+              "input_n": 88,
+              "cumulative_pass_n": 88,
+              "rejected_n": 0,
+              "independent_pass": true,
+              "category": "SAME88_POSE_PHYSICS_CAMERA",
+              "blocking_object": "wall/floor material, RGB occlusion or existing colour extraction",
+              "minimum_gap_m": null,
+              "minimum_gap_reason": "static image distribution, not a physical clearance gate",
+              "reason": "passed",
+              "changed_cases": []
+            },
+            {
+              "stage": "existing_colour_semantic_counts",
+              "input_n": 88,
+              "cumulative_pass_n": 88,
+              "rejected_n": 0,
+              "independent_pass": true,
+              "category": "EXISTING_COLOUR_SEMANTIC_COUNTS",
+              "blocking_object": "wall/floor material, RGB occlusion or existing colour extraction",
+              "minimum_gap_m": null,
+              "minimum_gap_reason": "static image distribution, not a physical clearance gate",
+              "reason": "passed",
+              "changed_cases": []
+            },
+            {
+              "stage": "boundary_distribution",
+              "input_n": 88,
+              "cumulative_pass_n": 0,
+              "rejected_n": 88,
+              "independent_pass": false,
+              "category": "BOUNDARY_DISTRIBUTION",
+              "blocking_object": "wall/floor material, RGB occlusion or existing colour extraction",
+              "minimum_gap_m": null,
+              "minimum_gap_reason": "static image distribution, not a physical clearance gate",
+              "reason": "requested candidate-level distribution comparison; exact semantic changes listed",
+              "changed_cases": []
+            },
+            {
+              "stage": "floor_feature_matching_distribution",
+              "input_n": 0,
+              "cumulative_pass_n": 0,
+              "rejected_n": 0,
+              "independent_pass": true,
+              "category": "FLOOR_FEATURE_MATCHING_DISTRIBUTION",
+              "blocking_object": "wall/floor material, RGB occlusion or existing colour extraction",
+              "minimum_gap_m": null,
+              "minimum_gap_reason": "static image distribution, not a physical clearance gate",
+              "reason": "passed",
+              "changed_cases": []
+            },
+            {
+              "stage": "LK_distribution",
+              "input_n": 0,
+              "cumulative_pass_n": 0,
+              "rejected_n": 0,
+              "independent_pass": false,
+              "category": "LK_DISTRIBUTION",
+              "blocking_object": "wall/floor material, RGB occlusion or existing colour extraction",
+              "minimum_gap_m": null,
+              "minimum_gap_reason": "static image distribution, not a physical clearance gate",
+              "reason": "requested candidate-level distribution comparison; exact semantic changes listed",
+              "changed_cases": []
+            }
+          ],
+          "independent_gates": {
+            "same88_pose_physics_camera": true,
+            "existing_detectors_all_encodings": true,
+            "boundary_distribution_all_encodings": false,
+            "floor_feature_matching_distribution_all_encodings": true,
+            "LK_distribution_all_encodings": false,
+            "extended_existing_colour_outputs": true
+          }
+        },
+        {
+          "material": "walls_floor_contrast_v5_indigo125_s65",
+          "quality": "no_mip_v1",
+          "ready": false,
+          "stages": [
+            {
+              "stage": "same88_pose_physics_camera",
+              "input_n": 88,
+              "cumulative_pass_n": 88,
+              "rejected_n": 0,
+              "independent_pass": true,
+              "category": "SAME88_POSE_PHYSICS_CAMERA",
+              "blocking_object": "wall/floor material, RGB occlusion or existing colour extraction",
+              "minimum_gap_m": null,
+              "minimum_gap_reason": "static image distribution, not a physical clearance gate",
+              "reason": "passed",
+              "changed_cases": []
+            },
+            {
+              "stage": "existing_colour_semantic_counts",
+              "input_n": 88,
+              "cumulative_pass_n": 87,
+              "rejected_n": 1,
+              "independent_pass": false,
+              "category": "EXISTING_COLOUR_SEMANTIC_COUNTS",
+              "blocking_object": "wall/floor material, RGB occlusion or existing colour extraction",
+              "minimum_gap_m": null,
+              "minimum_gap_reason": "static image distribution, not a physical clearance gate",
+              "reason": "requested candidate-level distribution comparison; exact semantic changes listed",
+              "changed_cases": [
+                "zone_wide_corridor_final_v3--view0--paint_A--r1"
+              ]
+            },
+            {
+              "stage": "boundary_distribution",
+              "input_n": 87,
+              "cumulative_pass_n": 0,
+              "rejected_n": 87,
+              "independent_pass": false,
+              "category": "BOUNDARY_DISTRIBUTION",
+              "blocking_object": "wall/floor material, RGB occlusion or existing colour extraction",
+              "minimum_gap_m": null,
+              "minimum_gap_reason": "static image distribution, not a physical clearance gate",
+              "reason": "requested candidate-level distribution comparison; exact semantic changes listed",
+              "changed_cases": []
+            },
+            {
+              "stage": "floor_feature_matching_distribution",
+              "input_n": 0,
+              "cumulative_pass_n": 0,
+              "rejected_n": 0,
+              "independent_pass": true,
+              "category": "FLOOR_FEATURE_MATCHING_DISTRIBUTION",
+              "blocking_object": "wall/floor material, RGB occlusion or existing colour extraction",
+              "minimum_gap_m": null,
+              "minimum_gap_reason": "static image distribution, not a physical clearance gate",
+              "reason": "passed",
+              "changed_cases": []
+            },
+            {
+              "stage": "LK_distribution",
+              "input_n": 0,
+              "cumulative_pass_n": 0,
+              "rejected_n": 0,
+              "independent_pass": false,
+              "category": "LK_DISTRIBUTION",
+              "blocking_object": "wall/floor material, RGB occlusion or existing colour extraction",
+              "minimum_gap_m": null,
+              "minimum_gap_reason": "static image distribution, not a physical clearance gate",
+              "reason": "requested candidate-level distribution comparison; exact semantic changes listed",
+              "changed_cases": []
+            }
+          ],
+          "independent_gates": {
+            "same88_pose_physics_camera": true,
+            "existing_detectors_all_encodings": true,
+            "boundary_distribution_all_encodings": false,
+            "floor_feature_matching_distribution_all_encodings": true,
+            "LK_distribution_all_encodings": false,
+            "extended_existing_colour_outputs": false
+          }
+        }
+      ]
+    }
+  ],
+  "raw_sources": [
+    {
+      "root": "/home/ugrp/ugrp-sim/runs/scenetex5-r1-v1-native",
+      "source_sha": "3b36eb9d6d76d468165d1c66faf8503db7bf8491",
+      "status": "MEASURED",
+      "frames": 88,
+      "verified_original_files": 658,
+      "original_manifest_sha256": "041e5fea7723c5374d993e2c1ce8283b5d9fa51c104e3c3d9047fcd4153405e2",
+      "current_files": 662,
+      "bytes": 19968806,
+      "original_mismatches": [],
+      "errors": [],
+      "cap_end": false
+    },
+    {
+      "root": "/home/ugrp/ugrp-sim/runs/scenetex5-r1-v1-no_mip",
+      "source_sha": "3b36eb9d6d76d468165d1c66faf8503db7bf8491",
+      "status": "MEASURED",
+      "frames": 88,
+      "verified_original_files": 658,
+      "original_manifest_sha256": "ab1c5a1992c41c15c5f179853950dce80391710ccf5544b5c2fdbd49a8102cf7",
+      "current_files": 662,
+      "bytes": 20879649,
+      "original_mismatches": [],
+      "errors": [],
+      "cap_end": false
+    },
+    {
+      "root": "/home/ugrp/ugrp-sim/runs/scenetex5-r1b-violet150",
+      "source_sha": "32e36dfebc4120d9f7e380987ca1b93fee98aa32",
+      "status": "MEASURED",
+      "frames": 88,
+      "verified_original_files": 658,
+      "original_manifest_sha256": "5d65b1d863e7390342b1c8ef9821a267c9a6c867b79dd43073cf23b116704725",
+      "current_files": 662,
+      "bytes": 21265763,
+      "original_mismatches": [],
+      "errors": [],
+      "cap_end": false
+    },
+    {
+      "root": "/home/ugrp/ugrp-sim/runs/scenetex5-r1b-violet175",
+      "source_sha": "32e36dfebc4120d9f7e380987ca1b93fee98aa32",
+      "status": "MEASURED",
+      "frames": 88,
+      "verified_original_files": 658,
+      "original_manifest_sha256": "3761bd441d61070dbf67249c9c7f3c9043160eb1d2b5355efce283786c4a2ae0",
+      "current_files": 662,
+      "bytes": 21355977,
+      "original_mismatches": [],
+      "errors": [],
+      "cap_end": false
+    },
+    {
+      "root": "/home/ugrp/ugrp-sim/runs/scenetex5-r1b-violet195",
+      "source_sha": "32e36dfebc4120d9f7e380987ca1b93fee98aa32",
+      "status": "MEASURED",
+      "frames": 88,
+      "verified_original_files": 658,
+      "original_manifest_sha256": "7ce673c5be4bf32bed404732a0b277ba0691d10d588f8b24c4bc2bcd3cda16a8",
+      "current_files": 662,
+      "bytes": 21395033,
+      "original_mismatches": [],
+      "errors": [],
+      "cap_end": false
+    },
+    {
+      "root": "/home/ugrp/ugrp-sim/runs/scenetex5-r2-indigo100",
+      "source_sha": "3724052a159b4572e0368f28973b403ffdebdd31",
+      "status": "MEASURED",
+      "frames": 88,
+      "verified_original_files": 658,
+      "original_manifest_sha256": "106441f987040c6b2dad83319b8cf8304c0a14ee4fdf76be344474bbd6f11cda",
+      "current_files": 662,
+      "bytes": 21068925,
+      "original_mismatches": [],
+      "errors": [],
+      "cap_end": false
+    },
+    {
+      "root": "/home/ugrp/ugrp-sim/runs/scenetex5-r2-indigo85",
+      "source_sha": "3724052a159b4572e0368f28973b403ffdebdd31",
+      "status": "MEASURED",
+      "frames": 88,
+      "verified_original_files": 658,
+      "original_manifest_sha256": "11dd8b24439a5c12f8151c6c20301492645189aff256f6d64c0a70e651169cc4",
+      "current_files": 662,
+      "bytes": 21059130,
+      "original_mismatches": [],
+      "errors": [],
+      "cap_end": false
+    },
+    {
+      "root": "/home/ugrp/ugrp-sim/runs/scenetex5-r2-indigo100_flat",
+      "source_sha": "3724052a159b4572e0368f28973b403ffdebdd31",
+      "status": "MEASURED",
+      "frames": 88,
+      "verified_original_files": 658,
+      "original_manifest_sha256": "00398f39dab961e4c70c8bb8aa9e4886cc79ea045bc98fc91571015be4f89eaf",
+      "current_files": 662,
+      "bytes": 21086125,
+      "original_mismatches": [],
+      "errors": [],
+      "cap_end": false
+    },
+    {
+      "root": "/home/ugrp/ugrp-sim/runs/scenetex5-r3-indigo110_s80",
+      "source_sha": "a68106fd86c314d7c1d10cd321475b0c86c93310",
+      "status": "MEASURED",
+      "frames": 88,
+      "verified_original_files": 658,
+      "original_manifest_sha256": "664f17df5b5d5cc0a9dee52ce3e4b4048760c2400cd0e0205947f2fb12a40957",
+      "current_files": 662,
+      "bytes": 21072111,
+      "original_mismatches": [],
+      "errors": [],
+      "cap_end": false
+    },
+    {
+      "root": "/home/ugrp/ugrp-sim/runs/scenetex5-r3-indigo125_s65",
+      "source_sha": "a68106fd86c314d7c1d10cd321475b0c86c93310",
+      "status": "MEASURED",
+      "frames": 88,
+      "verified_original_files": 658,
+      "original_manifest_sha256": "48a4b749f5e84a50a6f49ed8264e4238acd8c509991ffe7bdadc08020062393d",
+      "current_files": 662,
+      "bytes": 21060622,
+      "original_mismatches": [],
+      "errors": [],
+      "cap_end": false
+    },
+    {
+      "root": "/home/ugrp/ugrp-sim/runs/scenetex5-r1-violet150",
+      "source_sha": "3b36eb9d6d76d468165d1c66faf8503db7bf8491",
+      "status": "INCOMPLETE_OR_HOST_ERROR",
+      "frames": 0,
+      "verified_original_files": 5,
+      "original_manifest_sha256": "c99b3c35b87aad9b154b41f95440a6bd6c10ee87567b4d09ed9fdadbbffa22e2",
+      "current_files": 8,
+      "bytes": 5792,
+      "original_mismatches": [],
+      "errors": [
+        {
+          "category": "HOST_ERROR",
+          "blocking_object": "camera_probe",
+          "minimum_gap_m": null,
+          "minimum_gap_reason": "static image diagnosis, no clearance gate",
+          "reason": "ValueError(\"floor_light_nearclip_v1 needs a floor_light_v1 scene, got 'walls_floor_contrast_v5_violet150'\")",
+          "traceback": "Traceback (most recent call last):\n  File \"/home/ugrp/ugrp-sim/src/scenetex5-3b36eb9d/scripts/probe_scene_tex3.py\", line 183, in run\n    model, scene, hardware, xml, audit = old.build_model(map_path, material)\n                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/scenetex5-3b36eb9d/scripts/probe_scene_tex2.py\", line 512, in build_model\n    scene = wrap(module.install(scene, profile_name))\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/scenetex5-3b36eb9d/sim/final_pair_highpose_nearclip.py\", line 73, in wrap\n    raise ValueError(f'{ID} needs a {BASE_PROFILE} scene, got {getattr(scene, \"_render_profile_name\", None)!r}')\nValueError: floor_light_nearclip_v1 needs a floor_light_v1 scene, got 'walls_floor_contrast_v5_violet150'\n"
+        }
+      ],
+      "cap_end": false
+    },
+    {
+      "root": "/home/ugrp/ugrp-sim/runs/scenetex5-r1-violet175",
+      "source_sha": "3b36eb9d6d76d468165d1c66faf8503db7bf8491",
+      "status": "INCOMPLETE_OR_HOST_ERROR",
+      "frames": 0,
+      "verified_original_files": 5,
+      "original_manifest_sha256": "5fde40d67c33b61f5ef76385106840ccb40a167b304bbef449a3f782f36eda7f",
+      "current_files": 8,
+      "bytes": 5792,
+      "original_mismatches": [],
+      "errors": [
+        {
+          "category": "HOST_ERROR",
+          "blocking_object": "camera_probe",
+          "minimum_gap_m": null,
+          "minimum_gap_reason": "static image diagnosis, no clearance gate",
+          "reason": "ValueError(\"floor_light_nearclip_v1 needs a floor_light_v1 scene, got 'walls_floor_contrast_v5_violet175'\")",
+          "traceback": "Traceback (most recent call last):\n  File \"/home/ugrp/ugrp-sim/src/scenetex5-3b36eb9d/scripts/probe_scene_tex3.py\", line 183, in run\n    model, scene, hardware, xml, audit = old.build_model(map_path, material)\n                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/scenetex5-3b36eb9d/scripts/probe_scene_tex2.py\", line 512, in build_model\n    scene = wrap(module.install(scene, profile_name))\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/scenetex5-3b36eb9d/sim/final_pair_highpose_nearclip.py\", line 73, in wrap\n    raise ValueError(f'{ID} needs a {BASE_PROFILE} scene, got {getattr(scene, \"_render_profile_name\", None)!r}')\nValueError: floor_light_nearclip_v1 needs a floor_light_v1 scene, got 'walls_floor_contrast_v5_violet175'\n"
+        }
+      ],
+      "cap_end": false
+    },
+    {
+      "root": "/home/ugrp/ugrp-sim/runs/scenetex5-r1-violet195",
+      "source_sha": "3b36eb9d6d76d468165d1c66faf8503db7bf8491",
+      "status": "INCOMPLETE_OR_HOST_ERROR",
+      "frames": 0,
+      "verified_original_files": 5,
+      "original_manifest_sha256": "723d3c5e52bf5ec992072d10fb54567775a95598e974b696b7f161121e9e49eb",
+      "current_files": 8,
+      "bytes": 5792,
+      "original_mismatches": [],
+      "errors": [
+        {
+          "category": "HOST_ERROR",
+          "blocking_object": "camera_probe",
+          "minimum_gap_m": null,
+          "minimum_gap_reason": "static image diagnosis, no clearance gate",
+          "reason": "ValueError(\"floor_light_nearclip_v1 needs a floor_light_v1 scene, got 'walls_floor_contrast_v5_violet195'\")",
+          "traceback": "Traceback (most recent call last):\n  File \"/home/ugrp/ugrp-sim/src/scenetex5-3b36eb9d/scripts/probe_scene_tex3.py\", line 183, in run\n    model, scene, hardware, xml, audit = old.build_model(map_path, material)\n                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/scenetex5-3b36eb9d/scripts/probe_scene_tex2.py\", line 512, in build_model\n    scene = wrap(module.install(scene, profile_name))\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/scenetex5-3b36eb9d/sim/final_pair_highpose_nearclip.py\", line 73, in wrap\n    raise ValueError(f'{ID} needs a {BASE_PROFILE} scene, got {getattr(scene, \"_render_profile_name\", None)!r}')\nValueError: floor_light_nearclip_v1 needs a floor_light_v1 scene, got 'walls_floor_contrast_v5_violet195'\n"
+        }
+      ],
+      "cap_end": false
+    }
+  ],
+  "reproduction": "probe_scene_tex5, score_scene_tex5, audit_scene_tex5_colours; full argv in raw meta/analysis rejection tables",
+  "threshold_basis": "user2026-10-16: columns median/p10 >=v1; error median/p95 <=v1; floor and LK median/p10 >=v1; exact old semantic kind/count parity. IoU and HSV intrusions record-only."
+}

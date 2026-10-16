@@ -9,6 +9,10 @@ OPTION='appearance_contact_v1'
 
 def detect(hfw,und_bgr,cm,*,params,loaded=False,wall_detector='off',contact_rule='off',
            contact_state=None,frame_id=None,odometry_pose=None):
+    if wall_detector == 'scene_colour_transition_v1':
+        if contact_rule != 'off': raise ValueError('SCENE_COLOUR_REQUIRES_CONTACT_RULE_OFF')
+        from harness.scene_colour_boundary import detect as colour_detect
+        return colour_detect(hfw,und_bgr,cm,params=params,loaded=loaded,state=contact_state)
     if contact_rule not in ('off','bottom_up_connected_v1','floor_appearance_ulrich_v1','lorigo_window_v1'):
         raise ValueError('UNKNOWN_CONTACT_RULE')
     if contact_rule=='lorigo_window_v1':

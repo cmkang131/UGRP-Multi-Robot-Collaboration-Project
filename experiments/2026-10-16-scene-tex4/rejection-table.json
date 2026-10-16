@@ -1,0 +1,303 @@
+{
+  "decision": "NOT_READY",
+  "round_budget": {
+    "used": 3,
+    "maximum": 3
+  },
+  "before_change": "scenetex3: native features reject57/88; wall_no_mip features reject47/88 + matches6/40",
+  "round1": {
+    "status": "REJECTED_INCOMPLETE",
+    "raw": "/home/ugrp/ugrp-sim/runs/scenetex4-r1b-*",
+    "reason": "uniform geom rgba override, reviewed before stop",
+    "complete": 0,
+    "partial_frames_not_pooled": 287,
+    "initial_host_error_frames": 0
+  },
+  "round2": "/Users/changmin/projects/ugrp-wt/scene-tex2/experiments/2026-10-16-scene-tex4/round2-final/rejection-table.json.zst",
+  "round3": "/Users/changmin/projects/ugrp-wt/scene-tex2/experiments/2026-10-16-scene-tex4/round3/rejection-table.json.zst",
+  "conditions": [
+    {
+      "profile": "walls_floor_contrast_v4_dark",
+      "quality": "native",
+      "ready": false,
+      "detectors": {
+        "png": 88,
+        "jpeg90": 88,
+        "pil82": 88
+      },
+      "boundary_pass": {
+        "png": false,
+        "jpeg90": false
+      },
+      "independent_failures": {
+        "intrusions": 60,
+        "support": 2,
+        "floor_features": 52,
+        "floor_matches": 46,
+        "LK": 10
+      }
+    },
+    {
+      "profile": "walls_floor_contrast_v4_dark",
+      "quality": "no_mip_v1",
+      "ready": false,
+      "detectors": {
+        "png": 88,
+        "jpeg90": 88,
+        "pil82": 88
+      },
+      "boundary_pass": {
+        "png": false,
+        "jpeg90": false
+      },
+      "independent_failures": {
+        "intrusions": 72,
+        "support": 5,
+        "floor_features": 41,
+        "floor_matches": 29,
+        "LK": 5
+      }
+    },
+    {
+      "profile": "walls_floor_contrast_v4_light",
+      "quality": "native",
+      "ready": false,
+      "detectors": {
+        "png": 88,
+        "jpeg90": 88,
+        "pil82": 88
+      },
+      "boundary_pass": {
+        "png": false,
+        "jpeg90": false
+      },
+      "independent_failures": {
+        "intrusions": 60,
+        "support": 2,
+        "floor_features": 59,
+        "floor_matches": 59,
+        "LK": 4
+      }
+    },
+    {
+      "profile": "walls_floor_contrast_v4_light",
+      "quality": "no_mip_v1",
+      "ready": false,
+      "detectors": {
+        "png": 88,
+        "jpeg90": 88,
+        "pil82": 88
+      },
+      "boundary_pass": {
+        "png": false,
+        "jpeg90": false
+      },
+      "independent_failures": {
+        "intrusions": 72,
+        "support": 5,
+        "floor_features": 54,
+        "floor_matches": 39,
+        "LK": 5
+      }
+    },
+    {
+      "profile": "walls_floor_contrast_v4_skirt",
+      "quality": "native",
+      "ready": false,
+      "detectors": {
+        "png": 88,
+        "jpeg90": 88,
+        "pil82": 88
+      },
+      "boundary_pass": {
+        "png": false,
+        "jpeg90": false
+      },
+      "independent_failures": {
+        "intrusions": 60,
+        "support": 2,
+        "floor_features": 42,
+        "floor_matches": 42,
+        "LK": 8
+      }
+    },
+    {
+      "profile": "walls_floor_contrast_v4_skirt",
+      "quality": "no_mip_v1",
+      "ready": false,
+      "detectors": {
+        "png": 88,
+        "jpeg90": 88,
+        "pil82": 88
+      },
+      "boundary_pass": {
+        "png": false,
+        "jpeg90": false
+      },
+      "independent_failures": {
+        "intrusions": 72,
+        "support": 4,
+        "floor_features": 39,
+        "floor_matches": 27,
+        "LK": 6
+      }
+    },
+    {
+      "profile": "walls_floor_contrast_v4_flat",
+      "quality": "native",
+      "ready": false,
+      "detectors": {
+        "png": 88,
+        "jpeg90": 88,
+        "pil82": 88
+      },
+      "boundary_pass": {
+        "png": false,
+        "jpeg90": false
+      },
+      "independent_failures": {
+        "intrusions": 60,
+        "support": 2,
+        "floor_features": 52,
+        "floor_matches": 45,
+        "LK": 8
+      }
+    },
+    {
+      "profile": "walls_floor_contrast_v4_flat",
+      "quality": "no_mip_v1",
+      "ready": false,
+      "detectors": {
+        "png": 88,
+        "jpeg90": 88,
+        "pil82": 88
+      },
+      "boundary_pass": {
+        "png": false,
+        "jpeg90": false
+      },
+      "independent_failures": {
+        "intrusions": 72,
+        "support": 4,
+        "floor_features": 39,
+        "floor_matches": 29,
+        "LK": 3
+      }
+    },
+    {
+      "profile": "walls_floor_contrast_v4_luma",
+      "quality": "native",
+      "ready": false,
+      "detectors": {
+        "png": 88,
+        "jpeg90": 88,
+        "pil82": 88
+      },
+      "boundary_pass": {
+        "png": true,
+        "jpeg90": true
+      },
+      "independent_failures": {
+        "intrusions": 60,
+        "support": 3,
+        "floor_features": 16,
+        "floor_matches": 16,
+        "LK": 0
+      }
+    },
+    {
+      "profile": "walls_floor_contrast_v4_luma",
+      "quality": "no_mip_v1",
+      "ready": false,
+      "detectors": {
+        "png": 88,
+        "jpeg90": 88,
+        "pil82": 88
+      },
+      "boundary_pass": {
+        "png": false,
+        "jpeg90": true
+      },
+      "independent_failures": {
+        "intrusions": 72,
+        "support": 4,
+        "floor_features": 23,
+        "floor_matches": 12,
+        "LK": 5
+      }
+    }
+  ],
+  "raw_sources": [
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/scenetex3-r3-complete",
+      "source_sha": "31286f8774e81a02aef016e95f3deb6edabff98e",
+      "verified_files": 2616,
+      "summary_sha256": "49d9ef82fefe571a17c2705ad25b3b951a2d816961ea94828dfddd421b1d6ccf"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/scenetex4-r2-dark-native",
+      "source_sha": "10f2a7b7e35f3a0cf807a1b23c28c158ca8adca9",
+      "verified_files": 658,
+      "summary_sha256": "1cbe248e0d0a894be2a06d9a6d84c08a8da2ba31bc96fa1ff14612c363ba240a"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/scenetex4-r2-dark-no_mip_v1",
+      "source_sha": "10f2a7b7e35f3a0cf807a1b23c28c158ca8adca9",
+      "verified_files": 658,
+      "summary_sha256": "84c959e642331d8e111eb1a7282df74bfbe00986ecdfccd4f7ee07e5f8455aae"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/scenetex4-r2-light-native",
+      "source_sha": "10f2a7b7e35f3a0cf807a1b23c28c158ca8adca9",
+      "verified_files": 658,
+      "summary_sha256": "d13cfb6d16ab6019572f5ce99e119f483d1066aaaaacf860ed4e3fe22c78f9c0"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/scenetex4-r2-light-no_mip_v1",
+      "source_sha": "10f2a7b7e35f3a0cf807a1b23c28c158ca8adca9",
+      "verified_files": 658,
+      "summary_sha256": "e4ea7ec0a863a162117530e6f5102a103247915d8a331e5011749ffa4a1a15a4"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/scenetex4-r2-skirt-native",
+      "source_sha": "10f2a7b7e35f3a0cf807a1b23c28c158ca8adca9",
+      "verified_files": 658,
+      "summary_sha256": "775775c8a45f763eb17282b4eb453122f5486009e899aeb7e72ab656828d96fc"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/scenetex4-r2-skirt-no_mip_v1",
+      "source_sha": "10f2a7b7e35f3a0cf807a1b23c28c158ca8adca9",
+      "verified_files": 658,
+      "summary_sha256": "98b7b3f0536766267c49dbc3ddc0ad1297b3d89d21d46291819eb493418f6f74"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/scenetex4-r3-flat-native",
+      "source_sha": "e7b90b7f934abf77a6b9b8e03279018249ff1679",
+      "verified_files": 658,
+      "summary_sha256": "3904f8fc58c669f78eaf3e4487e3618f6c715dda583d595963fdac7cc64f81ff"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/scenetex4-r3-flat-no_mip_v1",
+      "source_sha": "e7b90b7f934abf77a6b9b8e03279018249ff1679",
+      "verified_files": 658,
+      "summary_sha256": "0dc5e5a2c9c120eeb09bc21444b2714c30556c3c26a47befaf7adcddad13381f"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/scenetex4-r3-luma-native",
+      "source_sha": "e7b90b7f934abf77a6b9b8e03279018249ff1679",
+      "verified_files": 658,
+      "summary_sha256": "13dee39dee91ed013830c36c5237ff425d365e51b9eddf523b5671eb6a56cda4"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/scenetex4-r3-luma-no_mip_v1",
+      "source_sha": "e7b90b7f934abf77a6b9b8e03279018249ff1679",
+      "verified_files": 658,
+      "summary_sha256": "6bbe844a85f02dc9dc653a9bb91c6667509c8e8a33bf8f2caf0b381098d31484"
+    }
+  ],
+  "reproduction": [
+    "MUJOCO_GL=osmesa python -m scripts.probe_scene_tex4 --execute --source-sha <round-source> --materials <profile> --qualities <quality> --output <new-raw>",
+    "python -m scripts.score_scene_tex4 --inputs /home/ugrp/ugrp-sim/runs/scenetex3-r3-complete <new-raws> --output <new-analysis>"
+  ],
+  "threshold_basis": "2026-10-16 user: zero paired floor regression; boundary columns median/p10 >= v1 and error percentiles <= v1; existing detectors fixed; IoU distribution reported without invented threshold"
+}

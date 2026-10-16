@@ -1,0 +1,57 @@
+{
+  "peer_HEAD": "644289a755ee60df99e916224931c2dec80298eb",
+  "selfmap_source": "/Users/changmin/projects/ugrp-wt/map-selfmap/harness/selfmap4_geometry.py",
+  "selfmap_source_sha256": "cdca5233574bacb7fa8742d682722f0a264da45240b2babcc30fb4fe68ef59a5",
+  "wall_observation_lines": [
+    60,
+    115
+  ],
+  "plane_flow_lines": [
+    118,
+    141
+  ],
+  "comparisons": [
+    {
+      "path": "harness/e2e_rgb_vo.py",
+      "records": [
+        {
+          "checkout": "/Users/changmin/projects/ugrp-wt/scene-tex2",
+          "file_sha256": "62d34bf4a45a59f92456bd0ffa2113ccaea394dd160f56a4db250cf777f781bf",
+          "functions": {
+            "image_mask": "5eeb7b0062eb31c6be98c4b0b2b29475915409aaab2f4c282fe8aff2264c3269",
+            "ground_pair": "7142c200de19d899ed308355f0af1c0df5883b26052185f5961c2791b543ef0c"
+          }
+        },
+        {
+          "checkout": "/Users/changmin/projects/ugrp-wt/map-selfmap",
+          "file_sha256": "62d34bf4a45a59f92456bd0ffa2113ccaea394dd160f56a4db250cf777f781bf",
+          "functions": {
+            "image_mask": "5eeb7b0062eb31c6be98c4b0b2b29475915409aaab2f4c282fe8aff2264c3269",
+            "ground_pair": "7142c200de19d899ed308355f0af1c0df5883b26052185f5961c2791b543ef0c"
+          }
+        }
+      ],
+      "function_bodies_identical": true
+    },
+    {
+      "path": "harness/active_camera.py",
+      "records": [
+        {
+          "checkout": "/Users/changmin/projects/ugrp-wt/scene-tex2",
+          "file_sha256": "bbfdcf48d6c21e1fee2da8f400ca010df8f7b821fea8c51e949b63ffae4da3f1",
+          "functions": {
+            "transform": "fcf1ede2e85398e82fe33fe1b42bd1b7c9d095ce8db1821a3dd26a7334983058"
+          }
+        },
+        {
+          "checkout": "/Users/changmin/projects/ugrp-wt/map-selfmap",
+          "file_sha256": "bbfdcf48d6c21e1fee2da8f400ca010df8f7b821fea8c51e949b63ffae4da3f1",
+          "functions": {
+            "transform": "fcf1ede2e85398e82fe33fe1b42bd1b7c9d095ce8db1821a3dd26a7334983058"
+          }
+        }
+      ],
+      "function_bodies_identical": true
+    }
+  ]
+}

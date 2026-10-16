@@ -1,0 +1,58 @@
+{
+  "material": "floor_light_textured_v1",
+  "quality": "native",
+  "stages": [
+    {
+      "stage": "complete_88",
+      "input_n": 88,
+      "cumulative_pass_n": 88,
+      "rejected_n": 0,
+      "rejections": []
+    },
+    {
+      "stage": "box_png_and_jpeg90_equal_v1",
+      "input_n": 88,
+      "cumulative_pass_n": 88,
+      "rejected_n": 0,
+      "rejections": []
+    },
+    {
+      "stage": "positive_colour_support_at_least_v1",
+      "input_n": 88,
+      "cumulative_pass_n": 88,
+      "rejected_n": 0,
+      "rejections": []
+    },
+    {
+      "stage": "camera_features_at_least_v1",
+      "input_n": 88,
+      "cumulative_pass_n": 88,
+      "rejected_n": 0,
+      "rejections": []
+    },
+    {
+      "stage": "consecutive_matches_at_least_v1",
+      "input_n": 88,
+      "cumulative_pass_n": 88,
+      "rejected_n": 0,
+      "rejections": []
+    }
+  ],
+  "box_changes": [],
+  "remaining_issues": [
+    {
+      "category": "REAL_FRAME_UNAVAILABLE",
+      "blocking_object": "archived physical RGB missing at recorded paths",
+      "minimum_gap_m": null,
+      "minimum_gap_reason": "image availability, no clearance",
+      "reason": "physical feature/sharpness comparison unverified"
+    }
+  ],
+  "ready": false,
+  "raw_path": "/home/ugrp/ugrp-sim/runs/scenetex3-r3-complete",
+  "reproduction_command": [
+    "combine_scene_tex3",
+    "/home/ugrp/ugrp-sim/runs/scenetex3-r3/native",
+    "/home/ugrp/ugrp-sim/runs/scenetex3-r3/wall_no_mip_v1"
+  ]
+}

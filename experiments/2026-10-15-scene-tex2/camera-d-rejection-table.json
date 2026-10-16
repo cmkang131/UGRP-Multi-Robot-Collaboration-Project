@@ -1,0 +1,53 @@
+{
+  "schema": "ugrp.scene_tex2_rejection_analysis.v1",
+  "source_sha": "89b50131bf86e257511d5eb099c312a00b0c18ab",
+  "raw": "/home/ugrp/ugrp-sim/runs/scenetex2-89b50131-static-d",
+  "status": "MEASURED_STATIC_ONLY",
+  "frames": 264,
+  "sample_distribution": {
+    "drive_r1_saved_sampled_frames": 7,
+    "wall_interior_ORB_positive_png": 0,
+    "wall_interior_ORB_positive_jpeg": 0,
+    "wall_ORB_png_counts": [
+      24,
+      1,
+      24,
+      5,
+      0,
+      10,
+      0
+    ]
+  },
+  "scope": "Saved per-frame metrics read on GCP before final aggregate; sample is explicit and not pooled with C.",
+  "reasons": [
+    {
+      "category": "COARSE_SMOOTH_TEXTURE_NO_INTERIOR_SUPPORT",
+      "blocking_object": "512x512 cube face / interpolated wear edges",
+      "minimum_gap_m": null,
+      "reason": "D drive samples retain no whole wall descriptor. 6.5m face with512texels is12.7mm per texel before GPU filtering; increase texture resolution and restore fine irregular wear for separate E driver-only check."
+    },
+    {
+      "category": "PAINT_C_FIXTURE_OCCLUDED",
+      "blocking_object": "divider wall west of C",
+      "minimum_gap_m": null,
+      "reason": "C positive-support baseline and v2 all show0/8 visible paint_C. Fix evaluator observer pose south of C only."
+    }
+  ],
+  "minimum_gap_reason": "appearance sampling/evaluation viewpoint, not collision gap",
+  "reproduction_command": "python scripts/summarize_scene_tex2_probe.py --input /home/ugrp/ugrp-sim/runs/scenetex2-89b50131-static-d --output <new-output>",
+  "final_aggregate": {
+    "v2_frames": 88,
+    "wall_interior_ORB_positive_frames_png": 0,
+    "wall_interior_ORB_positive_frames_jpeg": 0,
+    "png_wall_ORB_min_median_max": [
+      0,
+      0.5,
+      28
+    ],
+    "jpeg_wall_ORB_min_median_max": [
+      0,
+      1,
+      33
+    ]
+  }
+}

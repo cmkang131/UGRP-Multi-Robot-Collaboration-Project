@@ -1,0 +1,49 @@
+{
+  "source_sha": "cb8ba009a6a12af37f6677780a3307d419219d1f",
+  "host": "ugrp-sim-gcp2.asia-northeast3-a.c.ugrp-sim-b-1014.internal",
+  "mujoco": "3.12.0",
+  "opencv": "5.0.0",
+  "materials": [
+    "floor_light_v1",
+    "floor_light_textured_v1",
+    "walls_floor_textured_v2"
+  ],
+  "qualities": [
+    "native",
+    "ss2_area_v1",
+    "msaa8_v1",
+    "cubic_v1",
+    "mip_nearest_v1",
+    "no_mip_v1"
+  ],
+  "physics_steps": 0,
+  "model_calls": 0,
+  "sim_s": 0,
+  "cap_end": false,
+  "reproduction_command": [
+    "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+    "-m",
+    "scripts.probe_scene_tex3",
+    "--execute",
+    "--source-sha",
+    "cb8ba009a6a12af37f6677780a3307d419219d1f",
+    "--output",
+    "/home/ugrp/ugrp-sim/runs/scenetex3-r1-cb8ba009"
+  ],
+  "scope": "static fixture sequence, NOT motion/VO/localization success",
+  "matching_increment": "one raw fisheye center pixel horizontal angle atan(1/fx), evaluation-only base yaw",
+  "segmentation_palette_source": "v2",
+  "rejection_table": "/home/ugrp/ugrp-sim/runs/scenetex3-r1-cb8ba009/rejection-table.json",
+  "frames": 0,
+  "status": "HOST_ERROR",
+  "errors": [
+    {
+      "category": "HOST_ERROR",
+      "blocking_object": "camera_probe",
+      "minimum_gap_m": null,
+      "minimum_gap_reason": "static image diagnosis, no clearance gate",
+      "reason": "TypeError('Object of type int64 is not JSON serializable')",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/ugrp/ugrp-sim/src/scenetex3-cb8ba009/scripts/probe_scene_tex3.py\", line 248, in run\n    path = write(args.output/(stem+'.json'), row)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/scenetex3-cb8ba009/scripts/probe_scene_tex3.py\", line 33, in write\n    return old.write(path, value)\n           ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/scenetex3-cb8ba009/scripts/probe_scene_tex2.py\", line 134, in write\n    raw = (json.dumps(value, ensure_ascii=False, indent=None if compact else 2,\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/json/__init__.py\", line 238, in dumps\n    **kw).encode(obj)\n          ^^^^^^^^^^^\n  File \"/usr/lib/python3.12/json/encoder.py\", line 202, in encode\n    chunks = list(chunks)\n             ^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/json/encoder.py\", line 432, in _iterencode\n    yield from _iterencode_dict(o, _current_indent_level)\n  File \"/usr/lib/python3.12/json/encoder.py\", line 406, in _iterencode_dict\n    yield from chunks\n  File \"/usr/lib/python3.12/json/encoder.py\", line 406, in _iterencode_dict\n    yield from chunks\n  File \"/usr/lib/python3.12/json/encoder.py\", line 406, in _iterencode_dict\n    yield from chunks\n  [Previous line repeated 1 more time]\n  File \"/usr/lib/python3.12/json/encoder.py\", line 439, in _iterencode\n    o = _default(o)\n        ^^^^^^^^^^^\n  File \"/usr/lib/python3.12/json/encoder.py\", line 180, in default\n    raise TypeError(f'Object of type {o.__class__.__name__} '\nTypeError: Object of type int64 is not JSON serializable\n"
+    }
+  ]
+}

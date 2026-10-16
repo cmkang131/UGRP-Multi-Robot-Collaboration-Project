@@ -1,0 +1,53 @@
+{
+  "schema": "ugrp.scene_tex2_prechange_funnel.v1",
+  "source_sha": "7c45215ea5d875092dd03a05c2799fd13f75e113",
+  "raw": "/home/ugrp/ugrp-sim/runs/scenetex2-7c45215e-static-b",
+  "png": {
+    "frames": 48,
+    "walls_visible": 20,
+    "wall_interior_descriptor_support_positive": 3
+  },
+  "funnel": [
+    {
+      "gate": "all_frames",
+      "cumulative_pass_n": 48,
+      "rejected_n": 0
+    },
+    {
+      "gate": "any_wall_visible",
+      "cumulative_pass_n": 20,
+      "rejected_n": 28,
+      "reason_category": "WALL_OUT_OF_VIEW_OR_OCCLUDED",
+      "blocking_object": "HIGH camera framing / beam / peer",
+      "minimum_gap_m": null,
+      "gap_scope": "image visibility, no geometric clearance measured"
+    },
+    {
+      "gate": "interior_wall_ORB_positive",
+      "cumulative_pass_n": 3,
+      "rejected_n": 17,
+      "reason_category": "NO_INTERIOR_WALL_DESCRIPTOR_SUPPORT",
+      "blocking_object": "wall material / mapping / projected support",
+      "minimum_gap_m": null,
+      "gap_scope": "image visibility, no geometric clearance measured"
+    }
+  ],
+  "fully_occluded_fixture": {
+    "N": 16,
+    "wall_visible": 0,
+    "wall_ORB": 0,
+    "beam_and_peer_visible": 16
+  },
+  "jpeg_S99_interior": {
+    "floor": 22,
+    "wall": 24,
+    "authored_S": 16
+  },
+  "visual_review": "GCP ffmpeg 24-tile montage read as file; r1 four maps drive wall texture shows radial smearing; all four occluded r1 tiles have beam/floor and no wall",
+  "fix_order": [
+    "do not claim localization from wall when invisible",
+    "correct v2 cube mapping using MuJoCo3.12 classic TexGen source",
+    "reduce material S below measured JPEG tail; repeat static comparison"
+  ],
+  "primary_reference": "https://github.com/google-deepmind/mujoco/blob/3.12.0/src/render/classic/render_gl3.c#L225"
+}

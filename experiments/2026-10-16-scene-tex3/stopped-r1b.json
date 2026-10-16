@@ -1,0 +1,40 @@
+{
+  "source_sha": "41bcc86a108433ee00abcbb11274e9f5d176792c",
+  "host": "ugrp-sim-gcp2.asia-northeast3-a.c.ugrp-sim-b-1014.internal",
+  "mujoco": "3.12.0",
+  "opencv": "5.0.0",
+  "materials": [
+    "floor_light_v1",
+    "floor_light_textured_v1",
+    "walls_floor_textured_v2"
+  ],
+  "qualities": [
+    "native",
+    "ss2_area_v1",
+    "msaa8_v1",
+    "cubic_v1",
+    "mip_nearest_v1",
+    "no_mip_v1"
+  ],
+  "physics_steps": 0,
+  "model_calls": 0,
+  "sim_s": 0,
+  "cap_end": false,
+  "reproduction_command": [
+    "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+    "-m",
+    "scripts.probe_scene_tex3",
+    "--execute",
+    "--source-sha",
+    "41bcc86a108433ee00abcbb11274e9f5d176792c",
+    "--output",
+    "/home/ugrp/ugrp-sim/runs/scenetex3-r1b-41bcc86a"
+  ],
+  "scope": "static fixture sequence, NOT motion/VO/localization success",
+  "matching_increment": "one raw fisheye center pixel horizontal angle atan(1/fx), evaluation-only base yaw",
+  "segmentation_palette_source": "v2",
+  "rejection_table": "/home/ugrp/ugrp-sim/runs/scenetex3-r1b-41bcc86a/rejection-table.json",
+  "frames": 64,
+  "status": "MEASURED",
+  "errors": []
+}

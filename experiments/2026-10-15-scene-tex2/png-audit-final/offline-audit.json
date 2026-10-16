@@ -1,0 +1,354 @@
+{
+  "schema": "ugrp.scene_tex2_png_audit.v1",
+  "scope": "all PNG pixels only",
+  "profile": "walls_floor_textured_v2",
+  "manifest_sha256": "7d65a69a2805af70bd2df4c7a0669ecf0e6210d670a853b8b05c75cdcfe444b5",
+  "python": "3.12.13",
+  "opencv": "5.0.0",
+  "numpy": "2.5.2",
+  "palettes": {
+    "floor": {
+      "rgb_min": [
+        146,
+        142,
+        136
+      ],
+      "rgb_max": [
+        180,
+        175,
+        168
+      ],
+      "hsv_min": [
+        16,
+        16,
+        146
+      ],
+      "hsv_max": [
+        18,
+        18,
+        180
+      ],
+      "unique_rgb": 35
+    },
+    "walls": {
+      "rgb_min": [
+        91,
+        93,
+        98
+      ],
+      "rgb_max": [
+        125,
+        127,
+        134
+      ],
+      "hsv_min": [
+        110,
+        16,
+        98
+      ],
+      "hsv_max": [
+        116,
+        18,
+        134
+      ],
+      "unique_rgb": 37
+    }
+  },
+  "V_interval_gap": 12,
+  "Lab_bounding_boxes": {
+    "floor": [
+      [
+        151,
+        128,
+        132
+      ],
+      [
+        183.0,
+        129.0,
+        132.0
+      ]
+    ],
+    "walls": [
+      [
+        101,
+        128,
+        124
+      ],
+      [
+        136.0,
+        129.0,
+        125.0
+      ]
+    ]
+  },
+  "color_ranges_per_surface": 108,
+  "contextual_checks": [
+    {
+      "label": "pil_beam_edge_direct",
+      "sources": [
+        "harness/own_beam_edge.py:29-30,68-71",
+        "harness/zone_pair_highpose_edge.py:68-73"
+      ],
+      "expression": "h,s,v = uint8(PIL.Image.fromarray(rgb).convert(\"HSV\")); beam = (h > 25) & (h < 90) & (s > 100) & (v > 60)",
+      "status": "definition_recorded_not_evaluated",
+      "all_pixel_nonoverlap_zero_claim": false,
+      "validation_scope": "Exact pixel-class overlap can be measured with PIL HSV; H uses 0..255, not OpenCV 0..179. No rounded H conversion. Column/row/run/line acceptance must be checked separately.",
+      "color_space": "PIL uint8 HSV 0..255 per channel",
+      "pixel_overlap_measurable": true
+    },
+    {
+      "label": "relative_white_marker",
+      "sources": [
+        "harness/e2e_rgb_gate.py:37-38,52-74",
+        "sim/masterpi_camera_profile.py"
+      ],
+      "expression": "w=min(R,G,B); valid=lens_valid; k=clip(.25*sqrt(region_area_px2),15,151)|1; wb=OPEN(where(valid,w,255),rect(k,k)); sb=CLOSE(where(valid & (V>=50),S,0),rect(k,k)); mask=inner & valid & (w>=1.3*wb) & (w-wb>=12) & (S<=.78*sb); OPEN(mask,3x3); remove components touching inner edge",
+      "status": "definition_recorded_not_evaluated",
+      "all_pixel_nonoverlap_zero_claim": false,
+      "validation_scope": "Frame/region-relative local contrast, lens support and component topology. Evaluate complete detector on own RGB/JPEG with the same region candidate; no fixed HSV interval or all-texture zero claim."
+    },
+    {
+      "label": "relative_handle_dark",
+      "sources": [
+        "harness/zone_own_perception_v2.py:189-192,594-602",
+        "harness/zone_own_perception.py:100-104,235-238"
+      ],
+      "expression": "val_ref=percentile(frame.V,75); dark=(V<=.34*val_ref) & (S<=90) & usable; near_cargo=dilate(kind_colour_mask,14x14); handle_mask=OPEN(dark & near_cargo,3x3)",
+      "status": "definition_recorded_not_evaluated",
+      "all_pixel_nonoverlap_zero_claim": false,
+      "validation_scope": "Relative brightness plus colored-cargo adjacency and morphology. The V<=86.7/S<=90 bound is only a mathematical superset because frame V75<=255; its raw hits are not a handle false-positive verdict."
+    },
+    {
+      "label": "relative_peer_materials",
+      "sources": [
+        "harness/zone_own_perception_v2.py:116-131,251-270",
+        "harness/zone_own_perception.py:100-104,235-238"
+      ],
+      "expression": "sat_ref,val_ref=percentile(frame.[S,V],75); orange=(12<=H<=26)&(S>=max(120,.55*sat_ref))&(V>=28)&region; grey=(S<=70)&(V>=.22*val_ref)&(V<=min(1.35*val_ref,245))&region; dark=(V<=.38*val_ref)&region",
+      "status": "definition_recorded_not_evaluated",
+      "all_pixel_nonoverlap_zero_claim": false,
+      "validation_scope": "Grey floor/wall pixels can intentionally match the grey intermediate class; dark upper envelope is V<=96.9. Check complete peer/object judgment and candidate regions, not zero overlap with intermediate material classes."
+    },
+    {
+      "label": "paint_item_contrast_hue_signature",
+      "sources": [
+        "harness/zone_own_perception.py:81-90,100,126-127,390-411,677-694"
+      ],
+      "expression": "ring_median_bgr=median(ring.BGR); centre_delta=max(abs(centre.BGR-ring_median_bgr),axis=channel); differing=centre_delta>38; close=OR((H>=lo-8)&(H<=hi+8) for lo,hi in APPEARANCE[kind].hue); bright=V>=28; kind_share=mean(differing & close & bright); no S floor",
+      "status": "definition_recorded_not_evaluated",
+      "all_pixel_nonoverlap_zero_claim": false,
+      "validation_scope": "Hue-only intermediate signature is combined with local BGR contrast and projected region support. Raw hue hits alone are not fixed cargo-color false positives. Use complete judgment on own-camera frames.",
+      "appearance_hues_opencv": {
+        "cyan": [
+          [
+            84,
+            100
+          ]
+        ],
+        "green": [
+          [
+            54,
+            72
+          ]
+        ],
+        "red": [
+          [
+            0,
+            8
+          ],
+          [
+            170,
+            179
+          ]
+        ],
+        "yellow": [
+          [
+            21,
+            34
+          ]
+        ],
+        "can": [
+          [
+            124,
+            139
+          ]
+        ],
+        "tile": [
+          [
+            150,
+            170
+          ]
+        ],
+        "long_beam": [
+          [
+            36,
+            54
+          ]
+        ],
+        "heavy_crate": [
+          [
+            160,
+            176
+          ]
+        ],
+        "tri_frame": [
+          [
+            14,
+            26
+          ]
+        ]
+      }
+    },
+    {
+      "label": "active_wall_free_floor_support",
+      "sources": [
+        "harness/active_wall_vision.py:57-70"
+      ],
+      "expression": "For columns with finite observed wall bottom vb, sample rows from ceil(vb)+3 to HEIGHT-4 in steps of 12; keep samples with S<=128 and V>=30; project only these below-contact samples",
+      "status": "definition_recorded_not_evaluated",
+      "all_pixel_nonoverlap_zero_claim": false,
+      "validation_scope": "Intended floor/free-space support; matching neutral floor pixels is expected. Compare support retention and false free-space reports; no zero overlap requirement."
+    },
+    {
+      "label": "rgb_vo_support",
+      "sources": [
+        "harness/e2e_rgb_vo.py:43-51,117-124",
+        "harness/active_camera.py",
+        "harness/floor_goal_self_mask.py",
+        "sim/masterpi_camera_profile.py"
+      ],
+      "expression": "bad=(S>100)|(V<25); bad=dilate(bad,11x11); mask=floor_mask(own_issued_servo); mask[bad]=0",
+      "status": "definition_recorded_not_evaluated",
+      "all_pixel_nonoverlap_zero_claim": false,
+      "validation_scope": "Intended own-camera visual odometry support with calibration/self-mask geometry. Compare surviving keypoints/track validity and motion error; floor/wall raw support hits are not target-color overlap."
+    },
+    {
+      "label": "visual_fix_flow_support",
+      "sources": [
+        "harness/zone_solo_cyan_visual_fix.py:49-59"
+      ],
+      "expression": "mask[40:380,64:576]=255; occluded=(S>100)|(V<25); mask[dilate(occluded,11x11)>0]=0",
+      "status": "definition_recorded_not_evaluated",
+      "all_pixel_nonoverlap_zero_claim": false,
+      "validation_scope": "Intended neutral-scene flow support. Check track availability/accuracy; overlap with support is not a foreground false positive."
+    },
+    {
+      "label": "checkpoint_visual_floor_support",
+      "sources": [
+        "harness/zone_s3_checkpoint_visual.py:17-20,23-44",
+        "harness/owncam_view.py",
+        "sim/masterpi_camera_profile.py"
+      ],
+      "expression": "mask=valid_pixel_mask(1)&(S<=150)&(V>=90); intersect with calibrated forward/downward floor-plane ray support and max planar range .8m",
+      "status": "definition_recorded_not_evaluated",
+      "all_pixel_nonoverlap_zero_claim": false,
+      "validation_scope": "Intended floor feature support. Compare retained features and floor-plane correctness separately; neutral raw hits are expected."
+    },
+    {
+      "label": "goal_floor_ring_and_explicit_options",
+      "sources": [
+        "harness/floor_goal.py:21-34,110-129",
+        "harness/floor_goal_v2.py:16-22,30-45,64-68",
+        "harness/floor_goal_v3.py:101-110"
+      ],
+      "expression": "goal=(H in options.hue interval)&(S>=options.saturation_min)&(V>=options.value_min)&valid; floor_support=(S<=options.floor_saturation_max)&(V>=options.value_min)&valid; ring=dilate(component,3x3)&~component; support=mean(floor_support on ring)",
+      "status": "definition_recorded_not_evaluated",
+      "all_pixel_nonoverlap_zero_claim": false,
+      "validation_scope": "Baseline fixed goal HSV is already in the main table. v2/v3 allow explicit frozen DEV options, so record actual supplied options for each camera comparison. Floor-ring support intentionally overlaps neutral floor; no universal bound over arbitrary caller options."
+    },
+    {
+      "label": "opencv_wall_occluder_and_uniform_band",
+      "sources": [
+        "harness/opencv_wall_observation.py:16,26-56",
+        "harness/own_image_gates.py:14-17,20-34",
+        "configs/calibration/own_image_gates_floor_light_v1.json",
+        "experiments/2026-09-26-markerless-probe/markerless_probe.py:75-93,457-520"
+      ],
+      "expression": "saturated=dilate(inRange(HSV,(0,wall_band_saturation_max,30),(179,255,255)),5x5)>0; reject a wall band touching saturated pixels; require one candidate per column; legacy detector std=sqrt(var(strip_mean_luminance)+var(strip_mean_(B-R)))<=3 plus contrast and geometry tests",
+      "status": "definition_recorded_not_evaluated",
+      "all_pixel_nonoverlap_zero_claim": false,
+      "validation_scope": "Wall/occluder and uniform-band acceptance is not a cargo-color range. Preserve baseline or use a separately named, calibrated v2 adapter; actual values/config hashes must accompany camera evaluation."
+    },
+    {
+      "label": "hsi_wall_floor_histogram_support",
+      "sources": [
+        "harness/wall_floor_boundary.py:15-28,32-40,98-101",
+        "harness/wall_floor_ulrich.py"
+      ],
+      "expression": "filtered=GaussianBlur(BGR,5x5); I=(R+G+B)/3 in [0,1]; S_HSI=1-min(R,G,B)/max(I,1e-12); hue=atan2(sqrt(3)*(G-B),2*R-G-B) mod 2pi; valid_hue=(I>10/255)&(S_HSI>.1); obstacle=((valid_hue & (reference_hue_hist[Hbin]<60))|(reference_intensity_hist[Ibin]<80)) & support",
+      "status": "definition_recorded_not_evaluated",
+      "all_pixel_nonoverlap_zero_claim": false,
+      "validation_scope": "HSI/current reference histograms and calibration support, not fixed OpenCV HSV intervals. Validate full boundary/contact output against baseline; no texture-wide zero overlap claim."
+    },
+    {
+      "label": "lorigo_window_histogram_support",
+      "sources": [
+        "harness/wall_floor_lorigo.py:11-15,33-47",
+        "harness/wall_floor_boundary.py"
+      ],
+      "expression": "resize BGR to 64x64; normalizedRGB=BGR/sum(BGR); float OpenCV HSV: hue/360 and saturation; set hue/saturation bins to -1 when S<.033; 32-bin edge/normalizedR/normalizedG/H/S features; compare 20x10-window histograms to own current-frame bottom reference with L1 thresholds [80,80,80], median fusion",
+      "status": "definition_recorded_not_evaluated",
+      "all_pixel_nonoverlap_zero_claim": false,
+      "validation_scope": "Appearance/window reference contact estimator; no fixed semantic wall/cargo class. Evaluate final contacts/false boundaries; raw feature bins are not subject to zero overlap."
+    },
+    {
+      "label": "heading_background_difference",
+      "sources": [
+        "harness/camera_varied_start_heading.py:58-90"
+      ],
+      "expression": "hard_color=(12<H<45)&(S>110)&(V>90); hard_foreground=hard_color & (mean(abs(image-background),channel)>12); soft_yellow=clip((S-70)/100,0,1)*clip((V-50)/150,0,1)*clip((mean(abs(image-background),channel)-6)/24,0,1)*(12<H<45)",
+      "status": "definition_recorded_not_evaluated",
+      "all_pixel_nonoverlap_zero_claim": false,
+      "validation_scope": "Additional HSV entries measure only the hard or nonzero soft color supersets; complete estimator requires background difference and subsequent component/fit conditions. No assertion that raw color hits alone equal final false detections."
+    }
+  ],
+  "source_inventory_count": 93,
+  "floor_native_crops": [
+    {
+      "orb_count": 785,
+      "distant_hamming_le24_n": 0,
+      "descriptor_N": 785,
+      "distant_repeat_fraction": 0.0,
+      "highpass_ncc_lags_32_64_128_256_max": 0.007137552829500494,
+      "duplicate_32px_patch_fraction": 0.0
+    },
+    {
+      "orb_count": 738,
+      "distant_hamming_le24_n": 0,
+      "descriptor_N": 738,
+      "distant_repeat_fraction": 0.0,
+      "highpass_ncc_lags_32_64_128_256_max": 0.010268076196275507,
+      "duplicate_32px_patch_fraction": 0.0
+    },
+    {
+      "orb_count": 754,
+      "distant_hamming_le24_n": 0,
+      "descriptor_N": 754,
+      "distant_repeat_fraction": 0.0,
+      "highpass_ncc_lags_32_64_128_256_max": 0.0042204021903312905,
+      "duplicate_32px_patch_fraction": 0.0
+    },
+    {
+      "orb_count": 776,
+      "distant_hamming_le24_n": 0,
+      "descriptor_N": 776,
+      "distant_repeat_fraction": 0.0,
+      "highpass_ncc_lags_32_64_128_256_max": 0.017147349181992764,
+      "duplicate_32px_patch_fraction": 0.0
+    }
+  ],
+  "camera_verified": false,
+  "ready_for_execution": false,
+  "image-metrics": {
+    "path": "image-metrics.json",
+    "sha256": "3dc0a620896977b410fc66d3ee77c2d0830db1dc92f81daff4c16a55a28a2f68"
+  },
+  "color-hits-floor": {
+    "path": "color-hits-floor.json",
+    "sha256": "73a11befd2576aebd898f116a2fcea606cd3c7df8a0405e7cb27ec72fccfdbe7"
+  },
+  "color-hits-walls": {
+    "path": "color-hits-walls.json",
+    "sha256": "ae5345a93493682681d0bec0745b614127252ec443ae90fd011b40f57666baa0"
+  }
+}

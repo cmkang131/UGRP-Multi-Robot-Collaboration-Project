@@ -1,0 +1,37 @@
+{
+  "round": 2,
+  "rejection_table": "/home/ugrp/ugrp-sim/runs/scenetex5-r1-analysis/rejection-table.json",
+  "observed_static_cases": [
+    "H1 view0 drive r1 normal contact",
+    "H1 view0 paint_B r1: detector returns paint front 66px below wall",
+    "H2 view0 paint_C r1: paint front mistaken for wall 152px",
+    "two_doors view0 paint_C r1: same paint-front return"
+  ],
+  "largest_causes": [
+    {
+      "category": "COLOUR_CLASS_COLLISION",
+      "blocking_object": "existing blue B/purple C paint",
+      "minimum_gap_m": null,
+      "reason": "Lab envelope/projection alone accepts existing paint; actual existing zone C is purple"
+    },
+    {
+      "category": "LOW_COVERAGE",
+      "blocking_object": "RGB robot mask / rejected continuity / incorrect paint contact",
+      "minimum_gap_m": null,
+      "reason": "median71.5 <88; p1046.5 <73.5"
+    },
+    {
+      "category": "LK_LOWER_TAIL",
+      "blocking_object": "untextured walls included in geometry-only homography mask",
+      "minimum_gap_m": null,
+      "reason": "median89 >80, p100 <4, will retain v1 low-amplitude surface variation"
+    }
+  ],
+  "changes": [
+    "hue133 dark indigo to avoid purple C and avoid RGB clipping; record all old ranges even where infeasible",
+    "wall HSV interval from wall-pixel p01/p99 in addition to Lab; RGB-only runtime",
+    "strongest local luminance step within inherited3px transition window; integer row ABI",
+    "v1 common-mode texture amplitude 3 authored levels, no new pattern/marker"
+  ],
+  "scope": "SIM0 static image sequence, not dynamic playback; no claims about oscillation or temporal behavior"
+}

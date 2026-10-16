@@ -1,0 +1,73 @@
+{
+  "case": "zone_hardmaps1_h1_final_v3--view0--paint_A--r1",
+  "truth_visible_boundary_columns": 96,
+  "wall_support_in_inherited_band10": 96,
+  "neutral_floor_support_at_below_window3": 96,
+  "examples": [
+    {
+      "u": 10,
+      "boundary_v": 86,
+      "below_BGR": [
+        109,
+        109,
+        109
+      ],
+      "below_HSV": [
+        0,
+        0,
+        109
+      ],
+      "floor_class": true
+    },
+    {
+      "u": 17,
+      "boundary_v": 86,
+      "below_BGR": [
+        111,
+        111,
+        111
+      ],
+      "below_HSV": [
+        0,
+        0,
+        111
+      ],
+      "floor_class": true
+    },
+    {
+      "u": 23,
+      "boundary_v": 86,
+      "below_BGR": [
+        112,
+        112,
+        112
+      ],
+      "below_HSV": [
+        0,
+        0,
+        112
+      ],
+      "floor_class": true
+    }
+  ],
+  "rejected_hypothesis": "static evaluation: neutral-floor support rejects wall/paint-A adjacency. Existing below-window is colour contrast only; new detector demands calibrated floor class. No new fourth-round change.",
+  "correction": "Both colour supports are96/96, so the neutral-floor hypothesis is REFUTED. The broad orange-columns rule also matches painted zone A and excludes every line seed.",
+  "orange_veto_columns": 96,
+  "available_nonorange_seed_columns": 0,
+  "final_signal": {
+    "qualified": true,
+    "status": "measured",
+    "columns": 0,
+    "residuals_px": [],
+    "false_columns": 0,
+    "visible_boundary_columns": 96,
+    "LK_tracks": 75,
+    "LK_inliers": 75,
+    "segments": 0,
+    "reasons": {
+      "NO_UNOCCLUDED_LINE_CONSENSUS": 96
+    }
+  },
+  "confirmed_mechanism": "primary colour transitions exist; all96 have NO_UNOCCLUDED_LINE_CONSENSUS. No nonorange seed pair exists. The generic orange rule is not robot recognition (its original documented limit).",
+  "scope": "diagnosis only after3 rounds; no algorithm change, no fourth candidate/run"
+}

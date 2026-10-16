@@ -1,0 +1,626 @@
+{
+  "raw_runs": [
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/scenetex4-r1-dark-native",
+      "source_sha": "598f57b08206aaa97d3e16617400d17bf7dc1448",
+      "status": "INCOMPLETE_OR_HOST_ERROR",
+      "frames": 0,
+      "planned_frames": 88,
+      "errors": [
+        {
+          "category": "HOST_ERROR",
+          "blocking_object": "camera_probe",
+          "minimum_gap_m": null,
+          "minimum_gap_reason": "static image diagnosis, no clearance gate",
+          "reason": "TypeError('only 0-dimensional arrays can be converted to Python scalars')",
+          "traceback": "Traceback (most recent call last):\n  File \"/home/ugrp/ugrp-sim/src/598f57b08206aaa97d3e16617400d17bf7dc1448/scripts/probe_scene_tex3.py\", line 183, in run\n    model, scene, hardware, xml, audit = old.build_model(map_path, material)\n                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/598f57b08206aaa97d3e16617400d17bf7dc1448/scripts/probe_scene_tex2.py\", line 543, in build_model\n    'render_profile': module.verify_model(model, profile_name),\n                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/598f57b08206aaa97d3e16617400d17bf7dc1448/sim/scene_contrast_v4.py\", line 104, in verify_model\n    material = model.mat(int(floor.matid))\n                         ^^^^^^^^^^^^^^^^\nTypeError: only 0-dimensional arrays can be converted to Python scalars\n"
+        }
+      ],
+      "cap_end": false,
+      "verified_recorded_files": 5,
+      "files": 7,
+      "bytes": 5698,
+      "bad_hashes": [],
+      "all_file_manifest": "/home/ugrp/ugrp-sim/runs/scenetex4-preservation/scenetex4-r1-dark-native-hashes.json",
+      "all_file_manifest_sha256": "2cdb9bf31a3cffae254b9a72ca193da01b3ef4329514a30c3d23d36f6fa064d4",
+      "run_meta": {
+        "class": "dev",
+        "pr": 527,
+        "branch": "claude/scene-tex2",
+        "sha": "598f57b08206aaa97d3e16617400d17bf7dc1448",
+        "batch": "scenetex4-r1"
+      },
+      "supervisor_stop": false
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/scenetex4-r1-dark-no_mip_v1",
+      "source_sha": "598f57b08206aaa97d3e16617400d17bf7dc1448",
+      "status": "INCOMPLETE_OR_HOST_ERROR",
+      "frames": 0,
+      "planned_frames": 88,
+      "errors": [
+        {
+          "category": "HOST_ERROR",
+          "blocking_object": "camera_probe",
+          "minimum_gap_m": null,
+          "minimum_gap_reason": "static image diagnosis, no clearance gate",
+          "reason": "TypeError('only 0-dimensional arrays can be converted to Python scalars')",
+          "traceback": "Traceback (most recent call last):\n  File \"/home/ugrp/ugrp-sim/src/598f57b08206aaa97d3e16617400d17bf7dc1448/scripts/probe_scene_tex3.py\", line 183, in run\n    model, scene, hardware, xml, audit = old.build_model(map_path, material)\n                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/598f57b08206aaa97d3e16617400d17bf7dc1448/scripts/probe_scene_tex2.py\", line 543, in build_model\n    'render_profile': module.verify_model(model, profile_name),\n                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/598f57b08206aaa97d3e16617400d17bf7dc1448/sim/scene_contrast_v4.py\", line 104, in verify_model\n    material = model.mat(int(floor.matid))\n                         ^^^^^^^^^^^^^^^^\nTypeError: only 0-dimensional arrays can be converted to Python scalars\n"
+        }
+      ],
+      "cap_end": false,
+      "verified_recorded_files": 5,
+      "files": 7,
+      "bytes": 5731,
+      "bad_hashes": [],
+      "all_file_manifest": "/home/ugrp/ugrp-sim/runs/scenetex4-preservation/scenetex4-r1-dark-no_mip_v1-hashes.json",
+      "all_file_manifest_sha256": "838f4c31734b3c550d3a45a43d9bfe54d96e04385d35fb953ae5d61c0fc61868",
+      "run_meta": {
+        "class": "dev",
+        "pr": 527,
+        "branch": "claude/scene-tex2",
+        "sha": "598f57b08206aaa97d3e16617400d17bf7dc1448",
+        "batch": "scenetex4-r1"
+      },
+      "supervisor_stop": false
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/scenetex4-r1-light-native",
+      "source_sha": "598f57b08206aaa97d3e16617400d17bf7dc1448",
+      "status": "INCOMPLETE_OR_HOST_ERROR",
+      "frames": 0,
+      "planned_frames": 88,
+      "errors": [
+        {
+          "category": "HOST_ERROR",
+          "blocking_object": "camera_probe",
+          "minimum_gap_m": null,
+          "minimum_gap_reason": "static image diagnosis, no clearance gate",
+          "reason": "TypeError('only 0-dimensional arrays can be converted to Python scalars')",
+          "traceback": "Traceback (most recent call last):\n  File \"/home/ugrp/ugrp-sim/src/598f57b08206aaa97d3e16617400d17bf7dc1448/scripts/probe_scene_tex3.py\", line 183, in run\n    model, scene, hardware, xml, audit = old.build_model(map_path, material)\n                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/598f57b08206aaa97d3e16617400d17bf7dc1448/scripts/probe_scene_tex2.py\", line 543, in build_model\n    'render_profile': module.verify_model(model, profile_name),\n                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/598f57b08206aaa97d3e16617400d17bf7dc1448/sim/scene_contrast_v4.py\", line 104, in verify_model\n    material = model.mat(int(floor.matid))\n                         ^^^^^^^^^^^^^^^^\nTypeError: only 0-dimensional arrays can be converted to Python scalars\n"
+        }
+      ],
+      "cap_end": false,
+      "verified_recorded_files": 5,
+      "files": 7,
+      "bytes": 5709,
+      "bad_hashes": [],
+      "all_file_manifest": "/home/ugrp/ugrp-sim/runs/scenetex4-preservation/scenetex4-r1-light-native-hashes.json",
+      "all_file_manifest_sha256": "cb884e604f20bfcd36389b014c296a0202237f559a58c02c2285d4b5b6535856",
+      "run_meta": {
+        "class": "dev",
+        "pr": 527,
+        "branch": "claude/scene-tex2",
+        "sha": "598f57b08206aaa97d3e16617400d17bf7dc1448",
+        "batch": "scenetex4-r1"
+      },
+      "supervisor_stop": false
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/scenetex4-r1-light-no_mip_v1",
+      "source_sha": "598f57b08206aaa97d3e16617400d17bf7dc1448",
+      "status": "INCOMPLETE_OR_HOST_ERROR",
+      "frames": 0,
+      "planned_frames": 88,
+      "errors": [
+        {
+          "category": "HOST_ERROR",
+          "blocking_object": "camera_probe",
+          "minimum_gap_m": null,
+          "minimum_gap_reason": "static image diagnosis, no clearance gate",
+          "reason": "TypeError('only 0-dimensional arrays can be converted to Python scalars')",
+          "traceback": "Traceback (most recent call last):\n  File \"/home/ugrp/ugrp-sim/src/598f57b08206aaa97d3e16617400d17bf7dc1448/scripts/probe_scene_tex3.py\", line 183, in run\n    model, scene, hardware, xml, audit = old.build_model(map_path, material)\n                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/598f57b08206aaa97d3e16617400d17bf7dc1448/scripts/probe_scene_tex2.py\", line 543, in build_model\n    'render_profile': module.verify_model(model, profile_name),\n                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/598f57b08206aaa97d3e16617400d17bf7dc1448/sim/scene_contrast_v4.py\", line 104, in verify_model\n    material = model.mat(int(floor.matid))\n                         ^^^^^^^^^^^^^^^^\nTypeError: only 0-dimensional arrays can be converted to Python scalars\n"
+        }
+      ],
+      "cap_end": false,
+      "verified_recorded_files": 5,
+      "files": 7,
+      "bytes": 5742,
+      "bad_hashes": [],
+      "all_file_manifest": "/home/ugrp/ugrp-sim/runs/scenetex4-preservation/scenetex4-r1-light-no_mip_v1-hashes.json",
+      "all_file_manifest_sha256": "17eb93bb60c6067ef143b34d5ac4e539d9a36053273f0c8584a7769c4cb0b994",
+      "run_meta": {
+        "class": "dev",
+        "pr": 527,
+        "branch": "claude/scene-tex2",
+        "sha": "598f57b08206aaa97d3e16617400d17bf7dc1448",
+        "batch": "scenetex4-r1"
+      },
+      "supervisor_stop": false
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/scenetex4-r1-skirt-native",
+      "source_sha": "598f57b08206aaa97d3e16617400d17bf7dc1448",
+      "status": "INCOMPLETE_OR_HOST_ERROR",
+      "frames": 0,
+      "planned_frames": 88,
+      "errors": [
+        {
+          "category": "HOST_ERROR",
+          "blocking_object": "camera_probe",
+          "minimum_gap_m": null,
+          "minimum_gap_reason": "static image diagnosis, no clearance gate",
+          "reason": "TypeError('only 0-dimensional arrays can be converted to Python scalars')",
+          "traceback": "Traceback (most recent call last):\n  File \"/home/ugrp/ugrp-sim/src/598f57b08206aaa97d3e16617400d17bf7dc1448/scripts/probe_scene_tex3.py\", line 183, in run\n    model, scene, hardware, xml, audit = old.build_model(map_path, material)\n                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/598f57b08206aaa97d3e16617400d17bf7dc1448/scripts/probe_scene_tex2.py\", line 543, in build_model\n    'render_profile': module.verify_model(model, profile_name),\n                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/598f57b08206aaa97d3e16617400d17bf7dc1448/sim/scene_contrast_v4.py\", line 104, in verify_model\n    material = model.mat(int(floor.matid))\n                         ^^^^^^^^^^^^^^^^\nTypeError: only 0-dimensional arrays can be converted to Python scalars\n"
+        }
+      ],
+      "cap_end": false,
+      "verified_recorded_files": 5,
+      "files": 7,
+      "bytes": 5709,
+      "bad_hashes": [],
+      "all_file_manifest": "/home/ugrp/ugrp-sim/runs/scenetex4-preservation/scenetex4-r1-skirt-native-hashes.json",
+      "all_file_manifest_sha256": "33da460b1d26a756eaa842eb8dc1539adb9d42caf169e3038d3e0ad2dc218fee",
+      "run_meta": {
+        "class": "dev",
+        "pr": 527,
+        "branch": "claude/scene-tex2",
+        "sha": "598f57b08206aaa97d3e16617400d17bf7dc1448",
+        "batch": "scenetex4-r1"
+      },
+      "supervisor_stop": false
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/scenetex4-r1-skirt-no_mip_v1",
+      "source_sha": "598f57b08206aaa97d3e16617400d17bf7dc1448",
+      "status": "INCOMPLETE_OR_HOST_ERROR",
+      "frames": 0,
+      "planned_frames": 88,
+      "errors": [
+        {
+          "category": "HOST_ERROR",
+          "blocking_object": "camera_probe",
+          "minimum_gap_m": null,
+          "minimum_gap_reason": "static image diagnosis, no clearance gate",
+          "reason": "TypeError('only 0-dimensional arrays can be converted to Python scalars')",
+          "traceback": "Traceback (most recent call last):\n  File \"/home/ugrp/ugrp-sim/src/598f57b08206aaa97d3e16617400d17bf7dc1448/scripts/probe_scene_tex3.py\", line 183, in run\n    model, scene, hardware, xml, audit = old.build_model(map_path, material)\n                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/598f57b08206aaa97d3e16617400d17bf7dc1448/scripts/probe_scene_tex2.py\", line 543, in build_model\n    'render_profile': module.verify_model(model, profile_name),\n                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/598f57b08206aaa97d3e16617400d17bf7dc1448/sim/scene_contrast_v4.py\", line 104, in verify_model\n    material = model.mat(int(floor.matid))\n                         ^^^^^^^^^^^^^^^^\nTypeError: only 0-dimensional arrays can be converted to Python scalars\n"
+        }
+      ],
+      "cap_end": false,
+      "verified_recorded_files": 5,
+      "files": 7,
+      "bytes": 5742,
+      "bad_hashes": [],
+      "all_file_manifest": "/home/ugrp/ugrp-sim/runs/scenetex4-preservation/scenetex4-r1-skirt-no_mip_v1-hashes.json",
+      "all_file_manifest_sha256": "30d72ad23abb678b5b41504cda8d7d9525169138d0161c7e3f25407c401fd737",
+      "run_meta": {
+        "class": "dev",
+        "pr": 527,
+        "branch": "claude/scene-tex2",
+        "sha": "598f57b08206aaa97d3e16617400d17bf7dc1448",
+        "batch": "scenetex4-r1"
+      },
+      "supervisor_stop": false
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/scenetex4-r1b-dark-native",
+      "source_sha": "f689b49a56b9657c56ac60361f301831a33e07c2",
+      "status": "INCOMPLETE_OR_HOST_ERROR",
+      "frames": 46,
+      "planned_frames": 88,
+      "errors": [
+        {
+          "category": "SUPERVISOR_STOP",
+          "blocking_object": "camera_probe",
+          "minimum_gap_m": null,
+          "minimum_gap_reason": "static image diagnosis, no clearance gate",
+          "reason": "KeyboardInterrupt()",
+          "traceback": "Traceback (most recent call last):\n  File \"/home/ugrp/ugrp-sim/src/f689b49a56b9657c56ac60361f301831a33e07c2/scripts/probe_scene_tex3.py\", line 256, in run\n    colours = old.colour_metrics(image, masks['final'], ranges)\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/f689b49a56b9657c56ac60361f301831a33e07c2/scripts/probe_scene_tex2.py\", line 311, in colour_metrics\n    'target_support_pixels': {k: int((mask & v).sum()) for k, v in true_masks.items()\n                                     ^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/ugrp/.venv-sim/lib/python3.12/site-packages/numpy/_core/_methods.py\", line 47, in _sum\n    def _sum(a, axis=None, dtype=None, out=None, keepdims=False,\n    \nKeyboardInterrupt\n"
+        }
+      ],
+      "cap_end": false,
+      "verified_recorded_files": 350,
+      "files": 352,
+      "bytes": 11199761,
+      "bad_hashes": [],
+      "all_file_manifest": "/home/ugrp/ugrp-sim/runs/scenetex4-preservation/scenetex4-r1b-dark-native-hashes.json",
+      "all_file_manifest_sha256": "7d8ed8a6d90526955599ec3e797732b87a1deb17eff20f26b337234e0d37ce6a",
+      "run_meta": {
+        "class": "dev",
+        "pr": 527,
+        "branch": "claude/scene-tex2",
+        "sha": "f689b49a56b9657c56ac60361f301831a33e07c2",
+        "batch": "scenetex4-r1b"
+      },
+      "supervisor_stop": true
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/scenetex4-r1b-dark-no_mip_v1",
+      "source_sha": "f689b49a56b9657c56ac60361f301831a33e07c2",
+      "status": "INCOMPLETE_OR_HOST_ERROR",
+      "frames": 48,
+      "planned_frames": 88,
+      "errors": [
+        {
+          "category": "SUPERVISOR_STOP",
+          "blocking_object": "camera_probe",
+          "minimum_gap_m": null,
+          "minimum_gap_reason": "static image diagnosis, no clearance gate",
+          "reason": "KeyboardInterrupt()",
+          "traceback": "Traceback (most recent call last):\n  File \"/home/ugrp/ugrp-sim/src/f689b49a56b9657c56ac60361f301831a33e07c2/scripts/probe_scene_tex3.py\", line 259, in run\n    'semantic': semantic(image, pwm),\n                ^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/f689b49a56b9657c56ac60361f301831a33e07c2/scripts/probe_scene_tex3.py\", line 80, in semantic\n    result = old.detector_results(bgr, pwm)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/f689b49a56b9657c56ac60361f301831a33e07c2/scripts/probe_scene_tex2.py\", line 602, in detector_results\n    'beam_legacy_dark_band_v2': observe_beam(bgr, pwm)}\n                                ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/f689b49a56b9657c56ac60361f301831a33e07c2/harness/owncam_pair_beam_v2.py\", line 78, in observe_beam\n    base = v1.observe_beam(frame, pose)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/f689b49a56b9657c56ac60361f301831a33e07c2/harness/owncam_pair_beam.py\", line 95, in observe_beam\n    ok = (s > 0) & (np.linalg.norm(pts, axis=1) < 2.5)\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/ugrp/.venv-sim/lib/python3.12/site-packages/numpy/linalg/_linalg.py\", line 2594, in _norm_dispatcher\n    def _norm_dispatcher(x, ord=None, axis=None, keepdims=None):\n    \nKeyboardInterrupt\n"
+        }
+      ],
+      "cap_end": false,
+      "verified_recorded_files": 362,
+      "files": 364,
+      "bytes": 12049175,
+      "bad_hashes": [],
+      "all_file_manifest": "/home/ugrp/ugrp-sim/runs/scenetex4-preservation/scenetex4-r1b-dark-no_mip_v1-hashes.json",
+      "all_file_manifest_sha256": "0c5de741a01d378ed6e0d084191eef902ec2ac77c7df8fa9c416c592396fe036",
+      "run_meta": {
+        "class": "dev",
+        "pr": 527,
+        "branch": "claude/scene-tex2",
+        "sha": "f689b49a56b9657c56ac60361f301831a33e07c2",
+        "batch": "scenetex4-r1b"
+      },
+      "supervisor_stop": true
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/scenetex4-r1b-light-native",
+      "source_sha": "f689b49a56b9657c56ac60361f301831a33e07c2",
+      "status": "INCOMPLETE_OR_HOST_ERROR",
+      "frames": 49,
+      "planned_frames": 88,
+      "errors": [
+        {
+          "category": "SUPERVISOR_STOP",
+          "blocking_object": "camera_probe",
+          "minimum_gap_m": null,
+          "minimum_gap_reason": "static image diagnosis, no clearance gate",
+          "reason": "KeyboardInterrupt()",
+          "traceback": "Traceback (most recent call last):\n  File \"/home/ugrp/ugrp-sim/src/f689b49a56b9657c56ac60361f301831a33e07c2/scripts/probe_scene_tex3.py\", line 256, in run\n    colours = old.colour_metrics(image, masks['final'], ranges)\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/f689b49a56b9657c56ac60361f301831a33e07c2/scripts/probe_scene_tex2.py\", line 309, in colour_metrics\n    return {label: {'pixels': int(mask.sum()),\n                                  ^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/ugrp/.venv-sim/lib/python3.12/site-packages/numpy/_core/_methods.py\", line 49, in _sum\n    return umr_sum(a, axis, dtype, out, keepdims, initial, where)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nKeyboardInterrupt\n"
+        }
+      ],
+      "cap_end": false,
+      "verified_recorded_files": 371,
+      "files": 373,
+      "bytes": 11818025,
+      "bad_hashes": [],
+      "all_file_manifest": "/home/ugrp/ugrp-sim/runs/scenetex4-preservation/scenetex4-r1b-light-native-hashes.json",
+      "all_file_manifest_sha256": "513069a5f7c4952a1366cee8d7d46271e7aaf082102e1cd399f61463bbc7c58f",
+      "run_meta": {
+        "class": "dev",
+        "pr": 527,
+        "branch": "claude/scene-tex2",
+        "sha": "f689b49a56b9657c56ac60361f301831a33e07c2",
+        "batch": "scenetex4-r1b"
+      },
+      "supervisor_stop": true
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/scenetex4-r1b-light-no_mip_v1",
+      "source_sha": "f689b49a56b9657c56ac60361f301831a33e07c2",
+      "status": "INCOMPLETE_OR_HOST_ERROR",
+      "frames": 48,
+      "planned_frames": 88,
+      "errors": [
+        {
+          "category": "SUPERVISOR_STOP",
+          "blocking_object": "camera_probe",
+          "minimum_gap_m": null,
+          "minimum_gap_reason": "static image diagnosis, no clearance gate",
+          "reason": "KeyboardInterrupt()",
+          "traceback": "Traceback (most recent call last):\n  File \"/home/ugrp/ugrp-sim/src/f689b49a56b9657c56ac60361f301831a33e07c2/scripts/probe_scene_tex3.py\", line 281, in run\n    row['matches'][enc] = matching(before, b, masks['final'], after_masks['final'])\n                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/f689b49a56b9657c56ac60361f301831a33e07c2/scripts/probe_scene_tex3.py\", line 107, in matching\n    ka, da = features(a, ma[surface], fast)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/f689b49a56b9657c56ac60361f301831a33e07c2/scripts/probe_scene_tex3.py\", line 38, in features\n    kp, desc = cv2.ORB_create(nfeatures=800, fastThreshold=fast).detectAndCompute(\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nKeyboardInterrupt\n"
+        }
+      ],
+      "cap_end": false,
+      "verified_recorded_files": 366,
+      "files": 368,
+      "bytes": 12087200,
+      "bad_hashes": [],
+      "all_file_manifest": "/home/ugrp/ugrp-sim/runs/scenetex4-preservation/scenetex4-r1b-light-no_mip_v1-hashes.json",
+      "all_file_manifest_sha256": "d471b79c34a6fb574182f78c3a29ce2616c1c4c4dd646468ddf1763c80cab634",
+      "run_meta": {
+        "class": "dev",
+        "pr": 527,
+        "branch": "claude/scene-tex2",
+        "sha": "f689b49a56b9657c56ac60361f301831a33e07c2",
+        "batch": "scenetex4-r1b"
+      },
+      "supervisor_stop": true
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/scenetex4-r1b-skirt-native",
+      "source_sha": "f689b49a56b9657c56ac60361f301831a33e07c2",
+      "status": "INCOMPLETE_OR_HOST_ERROR",
+      "frames": 48,
+      "planned_frames": 88,
+      "errors": [
+        {
+          "category": "SUPERVISOR_STOP",
+          "blocking_object": "camera_probe",
+          "minimum_gap_m": null,
+          "minimum_gap_reason": "static image diagnosis, no clearance gate",
+          "reason": "KeyboardInterrupt()",
+          "traceback": "Traceback (most recent call last):\n  File \"/home/ugrp/ugrp-sim/src/f689b49a56b9657c56ac60361f301831a33e07c2/scripts/probe_scene_tex3.py\", line 238, in run\n    renderer.render()\n  File \"/home/ugrp/ugrp-sim/ugrp/.venv-sim/lib/python3.12/site-packages/mujoco/rendering/classic/renderer.py\", line 184, in render\n    mujoco.mjr_render(self._rect, self._scene, self._mjr_context)\nKeyboardInterrupt\n"
+        }
+      ],
+      "cap_end": false,
+      "verified_recorded_files": 361,
+      "files": 363,
+      "bytes": 11621550,
+      "bad_hashes": [],
+      "all_file_manifest": "/home/ugrp/ugrp-sim/runs/scenetex4-preservation/scenetex4-r1b-skirt-native-hashes.json",
+      "all_file_manifest_sha256": "2e6bd45880229b56f21fe2cb648d031f387b266294c4eca53aeea943205eabe9",
+      "run_meta": {
+        "class": "dev",
+        "pr": 527,
+        "branch": "claude/scene-tex2",
+        "sha": "f689b49a56b9657c56ac60361f301831a33e07c2",
+        "batch": "scenetex4-r1b"
+      },
+      "supervisor_stop": true
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/scenetex4-r1b-skirt-no_mip_v1",
+      "source_sha": "f689b49a56b9657c56ac60361f301831a33e07c2",
+      "status": "INCOMPLETE_OR_HOST_ERROR",
+      "frames": 48,
+      "planned_frames": 88,
+      "errors": [
+        {
+          "category": "SUPERVISOR_STOP",
+          "blocking_object": "camera_probe",
+          "minimum_gap_m": null,
+          "minimum_gap_reason": "static image diagnosis, no clearance gate",
+          "reason": "KeyboardInterrupt()",
+          "traceback": "Traceback (most recent call last):\n  File \"/home/ugrp/ugrp-sim/src/f689b49a56b9657c56ac60361f301831a33e07c2/scripts/probe_scene_tex3.py\", line 256, in run\n    colours = old.colour_metrics(image, masks['final'], ranges)\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/f689b49a56b9657c56ac60361f301831a33e07c2/scripts/probe_scene_tex2.py\", line 310, in colour_metrics\n    'surface_false_pixels': {k: int((mask & true_masks[k]).sum()) for k in ('wall', 'floor')},\n                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/ugrp/.venv-sim/lib/python3.12/site-packages/numpy/_core/_methods.py\", line 49, in _sum\n    return umr_sum(a, axis, dtype, out, keepdims, initial, where)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nKeyboardInterrupt\n"
+        }
+      ],
+      "cap_end": false,
+      "verified_recorded_files": 362,
+      "files": 364,
+      "bytes": 12126051,
+      "bad_hashes": [],
+      "all_file_manifest": "/home/ugrp/ugrp-sim/runs/scenetex4-preservation/scenetex4-r1b-skirt-no_mip_v1-hashes.json",
+      "all_file_manifest_sha256": "10de20cc4d43c7d2c050d92c63aafcdbdf052199348fcac1f76c47dc6b647ffb",
+      "run_meta": {
+        "class": "dev",
+        "pr": 527,
+        "branch": "claude/scene-tex2",
+        "sha": "f689b49a56b9657c56ac60361f301831a33e07c2",
+        "batch": "scenetex4-r1b"
+      },
+      "supervisor_stop": true
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/scenetex4-r2-dark-native",
+      "source_sha": "10f2a7b7e35f3a0cf807a1b23c28c158ca8adca9",
+      "status": "MEASURED",
+      "frames": 88,
+      "planned_frames": 88,
+      "errors": [],
+      "cap_end": false,
+      "verified_recorded_files": 658,
+      "files": 661,
+      "bytes": 20086861,
+      "bad_hashes": [],
+      "all_file_manifest": "/home/ugrp/ugrp-sim/runs/scenetex4-preservation/scenetex4-r2-dark-native-hashes.json.zst",
+      "all_file_manifest_sha256": "08582749c456b6073f50d05cce7bd44d5a5899662ae581da52cde304cb57f1cb",
+      "run_meta": {
+        "class": "dev",
+        "pr": 527,
+        "branch": "claude/scene-tex2",
+        "sha": "10f2a7b7e35f3a0cf807a1b23c28c158ca8adca9",
+        "batch": "scenetex4-r2"
+      },
+      "supervisor_stop": false
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/scenetex4-r2-dark-no_mip_v1",
+      "source_sha": "10f2a7b7e35f3a0cf807a1b23c28c158ca8adca9",
+      "status": "MEASURED",
+      "frames": 88,
+      "planned_frames": 88,
+      "errors": [],
+      "cap_end": false,
+      "verified_recorded_files": 658,
+      "files": 661,
+      "bytes": 20970587,
+      "bad_hashes": [],
+      "all_file_manifest": "/home/ugrp/ugrp-sim/runs/scenetex4-preservation/scenetex4-r2-dark-no_mip_v1-hashes.json.zst",
+      "all_file_manifest_sha256": "9dc38f17f34997c01d4f06c138e79a06dbeebb90cc8cb003faccc0caff445f01",
+      "run_meta": {
+        "class": "dev",
+        "pr": 527,
+        "branch": "claude/scene-tex2",
+        "sha": "10f2a7b7e35f3a0cf807a1b23c28c158ca8adca9",
+        "batch": "scenetex4-r2"
+      },
+      "supervisor_stop": false
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/scenetex4-r2-light-native",
+      "source_sha": "10f2a7b7e35f3a0cf807a1b23c28c158ca8adca9",
+      "status": "MEASURED",
+      "frames": 88,
+      "planned_frames": 88,
+      "errors": [],
+      "cap_end": false,
+      "verified_recorded_files": 658,
+      "files": 661,
+      "bytes": 20245585,
+      "bad_hashes": [],
+      "all_file_manifest": "/home/ugrp/ugrp-sim/runs/scenetex4-preservation/scenetex4-r2-light-native-hashes.json.zst",
+      "all_file_manifest_sha256": "1c6ddc89853e269bed3a21bc237f94a4ec90fb9f52a0e7eecb4a92eafa5e86ae",
+      "run_meta": {
+        "class": "dev",
+        "pr": 527,
+        "branch": "claude/scene-tex2",
+        "sha": "10f2a7b7e35f3a0cf807a1b23c28c158ca8adca9",
+        "batch": "scenetex4-r2"
+      },
+      "supervisor_stop": false
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/scenetex4-r2-light-no_mip_v1",
+      "source_sha": "10f2a7b7e35f3a0cf807a1b23c28c158ca8adca9",
+      "status": "MEASURED",
+      "frames": 88,
+      "planned_frames": 88,
+      "errors": [],
+      "cap_end": false,
+      "verified_recorded_files": 658,
+      "files": 661,
+      "bytes": 21141159,
+      "bad_hashes": [],
+      "all_file_manifest": "/home/ugrp/ugrp-sim/runs/scenetex4-preservation/scenetex4-r2-light-no_mip_v1-hashes.json.zst",
+      "all_file_manifest_sha256": "0db0bfb5d5f42eda6bba0329f8c856f5463bab96575758fa1baadad6129e7f03",
+      "run_meta": {
+        "class": "dev",
+        "pr": 527,
+        "branch": "claude/scene-tex2",
+        "sha": "10f2a7b7e35f3a0cf807a1b23c28c158ca8adca9",
+        "batch": "scenetex4-r2"
+      },
+      "supervisor_stop": false
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/scenetex4-r2-skirt-native",
+      "source_sha": "10f2a7b7e35f3a0cf807a1b23c28c158ca8adca9",
+      "status": "MEASURED",
+      "frames": 88,
+      "planned_frames": 88,
+      "errors": [],
+      "cap_end": false,
+      "verified_recorded_files": 658,
+      "files": 661,
+      "bytes": 20247876,
+      "bad_hashes": [],
+      "all_file_manifest": "/home/ugrp/ugrp-sim/runs/scenetex4-preservation/scenetex4-r2-skirt-native-hashes.json.zst",
+      "all_file_manifest_sha256": "70440d432d70ebf4729e5d56dfaf5787c6d37babf82f2bdba5ca3c9121794b13",
+      "run_meta": {
+        "class": "dev",
+        "pr": 527,
+        "branch": "claude/scene-tex2",
+        "sha": "10f2a7b7e35f3a0cf807a1b23c28c158ca8adca9",
+        "batch": "scenetex4-r2"
+      },
+      "supervisor_stop": false
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/scenetex4-r2-skirt-no_mip_v1",
+      "source_sha": "10f2a7b7e35f3a0cf807a1b23c28c158ca8adca9",
+      "status": "MEASURED",
+      "frames": 88,
+      "planned_frames": 88,
+      "errors": [],
+      "cap_end": false,
+      "verified_recorded_files": 658,
+      "files": 661,
+      "bytes": 21073493,
+      "bad_hashes": [],
+      "all_file_manifest": "/home/ugrp/ugrp-sim/runs/scenetex4-preservation/scenetex4-r2-skirt-no_mip_v1-hashes.json.zst",
+      "all_file_manifest_sha256": "5d3511c7fdc0605cc6e0936a6740a848a55ff4ea960076800c99e556bdd8961f",
+      "run_meta": {
+        "class": "dev",
+        "pr": 527,
+        "branch": "claude/scene-tex2",
+        "sha": "10f2a7b7e35f3a0cf807a1b23c28c158ca8adca9",
+        "batch": "scenetex4-r2"
+      },
+      "supervisor_stop": false
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/scenetex4-r3-flat-native",
+      "source_sha": "e7b90b7f934abf77a6b9b8e03279018249ff1679",
+      "status": "MEASURED",
+      "frames": 88,
+      "planned_frames": 88,
+      "errors": [],
+      "cap_end": false,
+      "verified_recorded_files": 658,
+      "files": 661,
+      "bytes": 20078454,
+      "bad_hashes": [],
+      "all_file_manifest": "/home/ugrp/ugrp-sim/runs/scenetex4-preservation/scenetex4-r3-flat-native-hashes.json.zst",
+      "all_file_manifest_sha256": "1d3aebe1707f0dd12398bfcbe3d4dc3fddacf9dab06f7d024d36c1134c92b933",
+      "run_meta": {
+        "class": "dev",
+        "pr": 527,
+        "branch": "claude/scene-tex2",
+        "sha": "e7b90b7f934abf77a6b9b8e03279018249ff1679",
+        "batch": "scenetex4-r3"
+      },
+      "supervisor_stop": false
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/scenetex4-r3-flat-no_mip_v1",
+      "source_sha": "e7b90b7f934abf77a6b9b8e03279018249ff1679",
+      "status": "MEASURED",
+      "frames": 88,
+      "planned_frames": 88,
+      "errors": [],
+      "cap_end": false,
+      "verified_recorded_files": 658,
+      "files": 661,
+      "bytes": 20963809,
+      "bad_hashes": [],
+      "all_file_manifest": "/home/ugrp/ugrp-sim/runs/scenetex4-preservation/scenetex4-r3-flat-no_mip_v1-hashes.json.zst",
+      "all_file_manifest_sha256": "d4c9c3e7a72a0d1fc8191f7bf2855c3da079aa4ea98f6740c703205ddf2c5b5c",
+      "run_meta": {
+        "class": "dev",
+        "pr": 527,
+        "branch": "claude/scene-tex2",
+        "sha": "e7b90b7f934abf77a6b9b8e03279018249ff1679",
+        "batch": "scenetex4-r3"
+      },
+      "supervisor_stop": false
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/scenetex4-r3-luma-native",
+      "source_sha": "e7b90b7f934abf77a6b9b8e03279018249ff1679",
+      "status": "MEASURED",
+      "frames": 88,
+      "planned_frames": 88,
+      "errors": [],
+      "cap_end": false,
+      "verified_recorded_files": 658,
+      "files": 661,
+      "bytes": 20066923,
+      "bad_hashes": [],
+      "all_file_manifest": "/home/ugrp/ugrp-sim/runs/scenetex4-preservation/scenetex4-r3-luma-native-hashes.json.zst",
+      "all_file_manifest_sha256": "bc434efc3518fe32374909eceb95e001614a6f4d4f4e542fec8cf6e77c521d4e",
+      "run_meta": {
+        "class": "dev",
+        "pr": 527,
+        "branch": "claude/scene-tex2",
+        "sha": "e7b90b7f934abf77a6b9b8e03279018249ff1679",
+        "batch": "scenetex4-r3"
+      },
+      "supervisor_stop": false
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/scenetex4-r3-luma-no_mip_v1",
+      "source_sha": "e7b90b7f934abf77a6b9b8e03279018249ff1679",
+      "status": "MEASURED",
+      "frames": 88,
+      "planned_frames": 88,
+      "errors": [],
+      "cap_end": false,
+      "verified_recorded_files": 658,
+      "files": 661,
+      "bytes": 20977330,
+      "bad_hashes": [],
+      "all_file_manifest": "/home/ugrp/ugrp-sim/runs/scenetex4-preservation/scenetex4-r3-luma-no_mip_v1-hashes.json.zst",
+      "all_file_manifest_sha256": "8a2b884ba85b9c7edc959f3a2709f50608d825f7669cd4847ac5fb0cd6850065",
+      "run_meta": {
+        "class": "dev",
+        "pr": 527,
+        "branch": "claude/scene-tex2",
+        "sha": "e7b90b7f934abf77a6b9b8e03279018249ff1679",
+        "batch": "scenetex4-r3"
+      },
+      "supervisor_stop": false
+    }
+  ],
+  "bad_hashes": 0,
+  "completed_new_arms": 10,
+  "completed_new_frames": 880,
+  "partial_frames_not_pooled": 287,
+  "physics_steps": 0,
+  "model_calls": 0,
+  "raw_deleted": false,
+  "gcp1_access": false
+}

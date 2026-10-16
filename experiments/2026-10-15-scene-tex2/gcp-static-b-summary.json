@@ -1,0 +1,159 @@
+{
+  "schema": "ugrp.scene_tex2_camera_probe.v1",
+  "status": "MEASURED_STATIC_ONLY",
+  "source_sha": "7c45215ea5d875092dd03a05c2799fd13f75e113",
+  "scope": "static mj_forward-only evaluation; no step, controller, planner, model or grasp success",
+  "host": "ugrp-sim-gcp2.asia-northeast3-a.c.ugrp-sim-b-1014.internal",
+  "platform": "Linux-7.0.0-1014-gcp-x86_64-with-glibc2.39",
+  "mujoco": "3.12.0",
+  "opencv": "5.0.0",
+  "numpy": "2.5.2",
+  "MUJOCO_GL": "osmesa",
+  "setup_proof": {
+    "path": "/home/ugrp/ugrp-sim/scenetex2-setup-proof.md",
+    "sha256": "0b1a2de62aef4d8b1363d7cc7182e9f7673cd0fb487000a8a8fbbdad6f4bf6f3",
+    "pass_line": "gcp2setup: PASS | 비용 정지 장치 시험 PASS(RUNNING→STOPPING 9.0s→TERMINATED 55.5s) | VM ugrp-sim-gcp2 HOST_READY(TERMINATED, 시작해서 사용) | ssh 별칭 gcp2 | 계정 changmin5781@gmail.com 프로젝트 ugrp-sim-b-1014 | 조정자 확인 2026-10-15 23:30 KST"
+  },
+  "profiles": [
+    "floor_light_v1",
+    "floor_light_textured_v1",
+    "walls_floor_textured_v2"
+  ],
+  "model_calls": 0,
+  "physics_steps": 0,
+  "colour_sources": {
+    "path": "colour-sources.json.zst",
+    "sha256": "8f382b4118d93db9ebc2a469beb358b43f597f21233df01daf0c015f708b7111"
+  },
+  "sim_s": 0.0,
+  "models": [
+    {
+      "map": "zone_hardmaps1_h1_final_v3",
+      "profile": "floor_light_v1",
+      "physics_identical": true,
+      "camera_identical": true,
+      "audit_file": "eval_only/zone_hardmaps1_h1_final_v3--floor_light_v1-model-audit.json"
+    },
+    {
+      "map": "zone_hardmaps1_h1_final_v3",
+      "profile": "floor_light_textured_v1",
+      "physics_identical": true,
+      "camera_identical": true,
+      "audit_file": "eval_only/zone_hardmaps1_h1_final_v3--floor_light_textured_v1-model-audit.json"
+    },
+    {
+      "map": "zone_hardmaps1_h1_final_v3",
+      "profile": "walls_floor_textured_v2",
+      "physics_identical": true,
+      "camera_identical": true,
+      "audit_file": "eval_only/zone_hardmaps1_h1_final_v3--walls_floor_textured_v2-model-audit.json"
+    },
+    {
+      "map": "zone_hardmaps1_h2_final_v3",
+      "profile": "floor_light_v1",
+      "physics_identical": true,
+      "camera_identical": true,
+      "audit_file": "eval_only/zone_hardmaps1_h2_final_v3--floor_light_v1-model-audit.json"
+    },
+    {
+      "map": "zone_hardmaps1_h2_final_v3",
+      "profile": "floor_light_textured_v1",
+      "physics_identical": true,
+      "camera_identical": true,
+      "audit_file": "eval_only/zone_hardmaps1_h2_final_v3--floor_light_textured_v1-model-audit.json"
+    },
+    {
+      "map": "zone_hardmaps1_h2_final_v3",
+      "profile": "walls_floor_textured_v2",
+      "physics_identical": true,
+      "camera_identical": true,
+      "audit_file": "eval_only/zone_hardmaps1_h2_final_v3--walls_floor_textured_v2-model-audit.json"
+    },
+    {
+      "map": "zone_wide_corridor_final_v3",
+      "profile": "floor_light_v1",
+      "physics_identical": true,
+      "camera_identical": true,
+      "audit_file": "eval_only/zone_wide_corridor_final_v3--floor_light_v1-model-audit.json"
+    },
+    {
+      "map": "zone_wide_corridor_final_v3",
+      "profile": "floor_light_textured_v1",
+      "physics_identical": true,
+      "camera_identical": true,
+      "audit_file": "eval_only/zone_wide_corridor_final_v3--floor_light_textured_v1-model-audit.json"
+    },
+    {
+      "map": "zone_wide_corridor_final_v3",
+      "profile": "walls_floor_textured_v2",
+      "physics_identical": true,
+      "camera_identical": true,
+      "audit_file": "eval_only/zone_wide_corridor_final_v3--walls_floor_textured_v2-model-audit.json"
+    },
+    {
+      "map": "zone_wide_two_doors_final_v3",
+      "profile": "floor_light_v1",
+      "physics_identical": true,
+      "camera_identical": true,
+      "audit_file": "eval_only/zone_wide_two_doors_final_v3--floor_light_v1-model-audit.json"
+    },
+    {
+      "map": "zone_wide_two_doors_final_v3",
+      "profile": "floor_light_textured_v1",
+      "physics_identical": true,
+      "camera_identical": true,
+      "audit_file": "eval_only/zone_wide_two_doors_final_v3--floor_light_textured_v1-model-audit.json"
+    },
+    {
+      "map": "zone_wide_two_doors_final_v3",
+      "profile": "walls_floor_textured_v2",
+      "physics_identical": true,
+      "camera_identical": true,
+      "audit_file": "eval_only/zone_wide_two_doors_final_v3--walls_floor_textured_v2-model-audit.json"
+    }
+  ],
+  "unexecuted": [],
+  "source_paths": [
+    "/home/ugrp/ugrp-sim/src/7c45215e-scenetex2/maps/zones_final_v3/zone_hardmaps1_h1_final_v3.json",
+    "/home/ugrp/ugrp-sim/src/7c45215e-scenetex2/maps/zones_final_v3/zone_hardmaps1_h2_final_v3.json",
+    "/home/ugrp/ugrp-sim/src/7c45215e-scenetex2/maps/zones_final_v3/zone_wide_corridor_final_v3.json",
+    "/home/ugrp/ugrp-sim/src/7c45215e-scenetex2/maps/zones_final_v3/zone_wide_two_doors_final_v3.json"
+  ],
+  "source_map_sha256": {
+    "zone_hardmaps1_h1_final_v3.json": "4a8dadad960108c9c912c50e0fe3fccd9c8b4678e1b166e797d533ef05cb1690",
+    "zone_hardmaps1_h2_final_v3.json": "9b597764ce58c1ad43413d7023e6d23efaa1d9f3d1b3977ce261f20de57e1574",
+    "zone_wide_corridor_final_v3.json": "6973f0a74dc4339c5a3981af9bf58eefde7c878f891808c1baefa818a0f472f2",
+    "zone_wide_two_doors_final_v3.json": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+  },
+  "baseline": "floor_light_v1",
+  "acceptance_thresholds": "none added; raw distributions and exact parity reported",
+  "limits": [
+    "static fixtures do not establish delivery, localization or physical grasp success",
+    "colour range masks do not replace full detector geometry checks",
+    "grasp_act_scene consumer/toggle absent; exact pinned end RGBA copied into eval fixture only",
+    "legacy black-band detector is reported independently of the pinned teal/blue HSV masks"
+  ],
+  "reproduction_command": [
+    "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+    "-m",
+    "scripts.probe_scene_tex2",
+    "--execute",
+    "--source-sha",
+    "7c45215ea5d875092dd03a05c2799fd13f75e113",
+    "--setup-proof",
+    "/home/ugrp/ugrp-sim/scenetex2-setup-proof.md",
+    "--output",
+    "/home/ugrp/ugrp-sim/runs/scenetex2-7c45215e-static-b",
+    "--profiles",
+    "floor_light_v1",
+    "floor_light_textured_v1",
+    "walls_floor_textured_v2"
+  ],
+  "rejection_table": "/home/ugrp/ugrp-sim/runs/scenetex2-7c45215e-static-b/rejection-table.json",
+  "sha256_manifest": "/home/ugrp/ugrp-sim/runs/scenetex2-7c45215e-static-b/SHA256SUMS.json.zst",
+  "frame_count": 144,
+  "frame_index": {
+    "path": "frame-index.json",
+    "sha256": "1e6cd404c6f6bfcdb9834a440a0b61bde7f6845d1db2b0ff9820b413436fcc6d"
+  }
+}

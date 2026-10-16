@@ -1,0 +1,310 @@
+{
+  "arms": [
+    {
+      "material": "floor_light_textured_v1",
+      "quality": "native",
+      "stages": [
+        {
+          "stage": "same88_pose_physics_camera",
+          "input_n": 88,
+          "cumulative_pass_n": 88,
+          "rejected_n": 0,
+          "rejection": null
+        },
+        {
+          "stage": "existing_detectors_all_encodings",
+          "input_n": 88,
+          "cumulative_pass_n": 88,
+          "rejected_n": 0,
+          "rejection": null
+        },
+        {
+          "stage": "boundary_distribution_all_encodings",
+          "input_n": 88,
+          "cumulative_pass_n": 88,
+          "rejected_n": 0,
+          "rejection": null
+        },
+        {
+          "stage": "floor_feature_matching_distribution_all_encodings",
+          "input_n": 88,
+          "cumulative_pass_n": 88,
+          "rejected_n": 0,
+          "rejection": null
+        },
+        {
+          "stage": "LK_distribution_all_encodings",
+          "input_n": 88,
+          "cumulative_pass_n": 88,
+          "rejected_n": 0,
+          "rejection": null
+        }
+      ]
+    },
+    {
+      "material": "floor_light_textured_v1",
+      "quality": "no_mip_v1",
+      "stages": [
+        {
+          "stage": "same88_pose_physics_camera",
+          "input_n": 88,
+          "cumulative_pass_n": 88,
+          "rejected_n": 0,
+          "rejection": null
+        },
+        {
+          "stage": "existing_detectors_all_encodings",
+          "input_n": 88,
+          "cumulative_pass_n": 88,
+          "rejected_n": 0,
+          "rejection": null
+        },
+        {
+          "stage": "boundary_distribution_all_encodings",
+          "input_n": 88,
+          "cumulative_pass_n": 88,
+          "rejected_n": 0,
+          "rejection": null
+        },
+        {
+          "stage": "floor_feature_matching_distribution_all_encodings",
+          "input_n": 88,
+          "cumulative_pass_n": 88,
+          "rejected_n": 0,
+          "rejection": null
+        },
+        {
+          "stage": "LK_distribution_all_encodings",
+          "input_n": 88,
+          "cumulative_pass_n": 88,
+          "rejected_n": 0,
+          "rejection": null
+        }
+      ]
+    },
+    {
+      "material": "walls_floor_contrast_v5_violet150",
+      "quality": "no_mip_v1",
+      "stages": [
+        {
+          "stage": "same88_pose_physics_camera",
+          "input_n": 88,
+          "cumulative_pass_n": 88,
+          "rejected_n": 0,
+          "rejection": null
+        },
+        {
+          "stage": "existing_detectors_all_encodings",
+          "input_n": 88,
+          "cumulative_pass_n": 88,
+          "rejected_n": 0,
+          "rejection": null
+        },
+        {
+          "stage": "boundary_distribution_all_encodings",
+          "input_n": 88,
+          "cumulative_pass_n": 0,
+          "rejected_n": 88,
+          "rejection": {
+            "category": "BOUNDARY_DISTRIBUTION_ALL_ENCODINGS",
+            "blocking_object": "wall/floor visual appearance or RGB occlusion",
+            "minimum_gap_m": null,
+            "minimum_gap_reason": "static RGB distribution gate, not collision clearance",
+            "reason": "requested comparison failed; see report fields"
+          }
+        },
+        {
+          "stage": "floor_feature_matching_distribution_all_encodings",
+          "input_n": 0,
+          "cumulative_pass_n": 0,
+          "rejected_n": 0,
+          "rejection": null
+        },
+        {
+          "stage": "LK_distribution_all_encodings",
+          "input_n": 0,
+          "cumulative_pass_n": 0,
+          "rejected_n": 0,
+          "rejection": {
+            "category": "LK_DISTRIBUTION_ALL_ENCODINGS",
+            "blocking_object": "wall/floor visual appearance or RGB occlusion",
+            "minimum_gap_m": null,
+            "minimum_gap_reason": "static RGB distribution gate, not collision clearance",
+            "reason": "requested comparison failed; see report fields"
+          }
+        }
+      ]
+    },
+    {
+      "material": "walls_floor_contrast_v5_violet175",
+      "quality": "no_mip_v1",
+      "stages": [
+        {
+          "stage": "same88_pose_physics_camera",
+          "input_n": 88,
+          "cumulative_pass_n": 88,
+          "rejected_n": 0,
+          "rejection": null
+        },
+        {
+          "stage": "existing_detectors_all_encodings",
+          "input_n": 88,
+          "cumulative_pass_n": 88,
+          "rejected_n": 0,
+          "rejection": null
+        },
+        {
+          "stage": "boundary_distribution_all_encodings",
+          "input_n": 88,
+          "cumulative_pass_n": 0,
+          "rejected_n": 88,
+          "rejection": {
+            "category": "BOUNDARY_DISTRIBUTION_ALL_ENCODINGS",
+            "blocking_object": "wall/floor visual appearance or RGB occlusion",
+            "minimum_gap_m": null,
+            "minimum_gap_reason": "static RGB distribution gate, not collision clearance",
+            "reason": "requested comparison failed; see report fields"
+          }
+        },
+        {
+          "stage": "floor_feature_matching_distribution_all_encodings",
+          "input_n": 0,
+          "cumulative_pass_n": 0,
+          "rejected_n": 0,
+          "rejection": {
+            "category": "FLOOR_FEATURE_MATCHING_DISTRIBUTION_ALL_ENCODINGS",
+            "blocking_object": "wall/floor visual appearance or RGB occlusion",
+            "minimum_gap_m": null,
+            "minimum_gap_reason": "static RGB distribution gate, not collision clearance",
+            "reason": "requested comparison failed; see report fields"
+          }
+        },
+        {
+          "stage": "LK_distribution_all_encodings",
+          "input_n": 0,
+          "cumulative_pass_n": 0,
+          "rejected_n": 0,
+          "rejection": {
+            "category": "LK_DISTRIBUTION_ALL_ENCODINGS",
+            "blocking_object": "wall/floor visual appearance or RGB occlusion",
+            "minimum_gap_m": null,
+            "minimum_gap_reason": "static RGB distribution gate, not collision clearance",
+            "reason": "requested comparison failed; see report fields"
+          }
+        }
+      ]
+    },
+    {
+      "material": "walls_floor_contrast_v5_violet195",
+      "quality": "no_mip_v1",
+      "stages": [
+        {
+          "stage": "same88_pose_physics_camera",
+          "input_n": 88,
+          "cumulative_pass_n": 88,
+          "rejected_n": 0,
+          "rejection": null
+        },
+        {
+          "stage": "existing_detectors_all_encodings",
+          "input_n": 88,
+          "cumulative_pass_n": 88,
+          "rejected_n": 0,
+          "rejection": null
+        },
+        {
+          "stage": "boundary_distribution_all_encodings",
+          "input_n": 88,
+          "cumulative_pass_n": 0,
+          "rejected_n": 88,
+          "rejection": {
+            "category": "BOUNDARY_DISTRIBUTION_ALL_ENCODINGS",
+            "blocking_object": "wall/floor visual appearance or RGB occlusion",
+            "minimum_gap_m": null,
+            "minimum_gap_reason": "static RGB distribution gate, not collision clearance",
+            "reason": "requested comparison failed; see report fields"
+          }
+        },
+        {
+          "stage": "floor_feature_matching_distribution_all_encodings",
+          "input_n": 0,
+          "cumulative_pass_n": 0,
+          "rejected_n": 0,
+          "rejection": {
+            "category": "FLOOR_FEATURE_MATCHING_DISTRIBUTION_ALL_ENCODINGS",
+            "blocking_object": "wall/floor visual appearance or RGB occlusion",
+            "minimum_gap_m": null,
+            "minimum_gap_reason": "static RGB distribution gate, not collision clearance",
+            "reason": "requested comparison failed; see report fields"
+          }
+        },
+        {
+          "stage": "LK_distribution_all_encodings",
+          "input_n": 0,
+          "cumulative_pass_n": 0,
+          "rejected_n": 0,
+          "rejection": {
+            "category": "LK_DISTRIBUTION_ALL_ENCODINGS",
+            "blocking_object": "wall/floor visual appearance or RGB occlusion",
+            "minimum_gap_m": null,
+            "minimum_gap_reason": "static RGB distribution gate, not collision clearance",
+            "reason": "requested comparison failed; see report fields"
+          }
+        }
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/scenetex5-r1-v1-native",
+      "source_sha": "3b36eb9d6d76d468165d1c66faf8503db7bf8491",
+      "verified_files": 658,
+      "summary_sha256": "106fdf90778525dbaf5edc3b4885e2a9eba577c0bc8c77096d9fba92e5d4717e"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/scenetex5-r1-v1-no_mip",
+      "source_sha": "3b36eb9d6d76d468165d1c66faf8503db7bf8491",
+      "verified_files": 658,
+      "summary_sha256": "1f9bd0bb3c03f292e7276e4e3f469882d52509b5744e06c245198b93a60b22b8"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/scenetex5-r1b-violet150",
+      "source_sha": "32e36dfebc4120d9f7e380987ca1b93fee98aa32",
+      "verified_files": 658,
+      "summary_sha256": "40aaf3c51dbf0ca4d275145ead0fd161138159e416f12b069d7ba8385570327a"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/scenetex5-r1b-violet175",
+      "source_sha": "32e36dfebc4120d9f7e380987ca1b93fee98aa32",
+      "verified_files": 658,
+      "summary_sha256": "fcf74893124cc23f5cf8b47fa1508f705e334e1b44bd77cf6f00be63a78e6c1b"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/scenetex5-r1b-violet195",
+      "source_sha": "32e36dfebc4120d9f7e380987ca1b93fee98aa32",
+      "verified_files": 658,
+      "summary_sha256": "8f4e5c8064bf8bf52feb77a74da49b230d6e9ab8710fc0755bd2b5fd71223d75"
+    }
+  ],
+  "reproduction_command": [
+    "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+    "-m",
+    "scripts.score_scene_tex5",
+    "--inputs",
+    "/home/ugrp/ugrp-sim/runs/scenetex5-r1-v1-native",
+    "/home/ugrp/ugrp-sim/runs/scenetex5-r1-v1-no_mip",
+    "/home/ugrp/ugrp-sim/runs/scenetex5-r1b-violet150",
+    "/home/ugrp/ugrp-sim/runs/scenetex5-r1b-violet175",
+    "/home/ugrp/ugrp-sim/runs/scenetex5-r1b-violet195",
+    "--output",
+    "/home/ugrp/ugrp-sim/runs/scenetex5-r1-analysis"
+  ],
+  "basis": "2026-10-16 user distribution gates; no added slack",
+  "raw_inputs": [
+    "/home/ugrp/ugrp-sim/runs/scenetex5-r1-v1-native",
+    "/home/ugrp/ugrp-sim/runs/scenetex5-r1-v1-no_mip",
+    "/home/ugrp/ugrp-sim/runs/scenetex5-r1b-violet150",
+    "/home/ugrp/ugrp-sim/runs/scenetex5-r1b-violet175",
+    "/home/ugrp/ugrp-sim/runs/scenetex5-r1b-violet195"
+  ]
+}

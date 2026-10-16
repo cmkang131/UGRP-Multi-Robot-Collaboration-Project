@@ -1,0 +1,36 @@
+{
+  "task": "scenetex3-camera-quality-first",
+  "round": 1,
+  "source_sha": "2eaafdf754ff0f2a976fa5bd8a1e0ce9580abbbc",
+  "host": "gcp2",
+  "project": "ugrp-sim-b-1014",
+  "account": "changmin5781@gmail.com",
+  "rejection_table": "/Users/changmin/projects/ugrp-wt/scene-tex2/experiments/2026-10-16-scene-tex3/rejection-table.json",
+  "status": "COMPLETE_STATIC_AUDIT_NOT_READY",
+  "ready_for_research_use": false,
+  "concurrent_own_jobs": 6,
+  "concurrent_host_limit": 40,
+  "physics_steps": 0,
+  "model_calls": 0,
+  "materials": [
+    "floor_light_v1",
+    "floor_light_textured_v1",
+    "walls_floor_textured_v2"
+  ],
+  "qualities": [
+    "native",
+    "ss2_area_v1",
+    "msaa8_v1",
+    "cubic_v1",
+    "mip_nearest_v1",
+    "no_mip_v1"
+  ],
+  "frames_per_arm": 264,
+  "raw_budget_mib_per_arm": 512,
+  "gcp2_free_gib_at_start": 355,
+  "mac_free_gib_at_start": 41,
+  "preservation": "dev PR527 open; no pruning; summaries and small montages only to Mac",
+  "other_job": "beampair4-gcp2 owns host lease; VM must remain running",
+  "resume_source_sha": "573c1c8be0603c0bd01f11496e574fb42cbdf9f6",
+  "prior_rejection_table": "/Users/changmin/projects/ugrp-wt/scene-tex2/experiments/2026-10-16-scene-tex3/before-material-rejection.json"
+}

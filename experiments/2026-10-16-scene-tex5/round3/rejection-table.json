@@ -1,0 +1,298 @@
+{
+  "arms": [
+    {
+      "material": "floor_light_textured_v1",
+      "quality": "native",
+      "stages": [
+        {
+          "stage": "same88_pose_physics_camera",
+          "input_n": 88,
+          "cumulative_pass_n": 88,
+          "rejected_n": 0,
+          "rejection": null
+        },
+        {
+          "stage": "existing_detectors_all_encodings",
+          "input_n": 88,
+          "cumulative_pass_n": 88,
+          "rejected_n": 0,
+          "rejection": null
+        },
+        {
+          "stage": "boundary_distribution_all_encodings",
+          "input_n": 88,
+          "cumulative_pass_n": 88,
+          "rejected_n": 0,
+          "rejection": null
+        },
+        {
+          "stage": "floor_feature_matching_distribution_all_encodings",
+          "input_n": 88,
+          "cumulative_pass_n": 88,
+          "rejected_n": 0,
+          "rejection": null
+        },
+        {
+          "stage": "LK_distribution_all_encodings",
+          "input_n": 88,
+          "cumulative_pass_n": 88,
+          "rejected_n": 0,
+          "rejection": null
+        }
+      ]
+    },
+    {
+      "material": "floor_light_textured_v1",
+      "quality": "no_mip_v1",
+      "stages": [
+        {
+          "stage": "same88_pose_physics_camera",
+          "input_n": 88,
+          "cumulative_pass_n": 88,
+          "rejected_n": 0,
+          "rejection": null
+        },
+        {
+          "stage": "existing_detectors_all_encodings",
+          "input_n": 88,
+          "cumulative_pass_n": 88,
+          "rejected_n": 0,
+          "rejection": null
+        },
+        {
+          "stage": "boundary_distribution_all_encodings",
+          "input_n": 88,
+          "cumulative_pass_n": 88,
+          "rejected_n": 0,
+          "rejection": null
+        },
+        {
+          "stage": "floor_feature_matching_distribution_all_encodings",
+          "input_n": 88,
+          "cumulative_pass_n": 88,
+          "rejected_n": 0,
+          "rejection": null
+        },
+        {
+          "stage": "LK_distribution_all_encodings",
+          "input_n": 88,
+          "cumulative_pass_n": 88,
+          "rejected_n": 0,
+          "rejection": null
+        }
+      ]
+    },
+    {
+      "material": "walls_floor_contrast_v5_indigo100",
+      "quality": "no_mip_v1",
+      "stages": [
+        {
+          "stage": "same88_pose_physics_camera",
+          "input_n": 88,
+          "cumulative_pass_n": 88,
+          "rejected_n": 0,
+          "rejection": null
+        },
+        {
+          "stage": "existing_detectors_all_encodings",
+          "input_n": 88,
+          "cumulative_pass_n": 88,
+          "rejected_n": 0,
+          "rejection": null
+        },
+        {
+          "stage": "boundary_distribution_all_encodings",
+          "input_n": 88,
+          "cumulative_pass_n": 0,
+          "rejected_n": 88,
+          "rejection": {
+            "category": "BOUNDARY_DISTRIBUTION_ALL_ENCODINGS",
+            "blocking_object": "wall/floor visual appearance or RGB occlusion",
+            "minimum_gap_m": null,
+            "minimum_gap_reason": "static RGB distribution gate, not collision clearance",
+            "reason": "requested comparison failed; see report fields"
+          }
+        },
+        {
+          "stage": "floor_feature_matching_distribution_all_encodings",
+          "input_n": 0,
+          "cumulative_pass_n": 0,
+          "rejected_n": 0,
+          "rejection": null
+        },
+        {
+          "stage": "LK_distribution_all_encodings",
+          "input_n": 0,
+          "cumulative_pass_n": 0,
+          "rejected_n": 0,
+          "rejection": {
+            "category": "LK_DISTRIBUTION_ALL_ENCODINGS",
+            "blocking_object": "wall/floor visual appearance or RGB occlusion",
+            "minimum_gap_m": null,
+            "minimum_gap_reason": "static RGB distribution gate, not collision clearance",
+            "reason": "requested comparison failed; see report fields"
+          }
+        }
+      ]
+    },
+    {
+      "material": "walls_floor_contrast_v5_indigo110_s80",
+      "quality": "no_mip_v1",
+      "stages": [
+        {
+          "stage": "same88_pose_physics_camera",
+          "input_n": 88,
+          "cumulative_pass_n": 88,
+          "rejected_n": 0,
+          "rejection": null
+        },
+        {
+          "stage": "existing_detectors_all_encodings",
+          "input_n": 88,
+          "cumulative_pass_n": 88,
+          "rejected_n": 0,
+          "rejection": null
+        },
+        {
+          "stage": "boundary_distribution_all_encodings",
+          "input_n": 88,
+          "cumulative_pass_n": 0,
+          "rejected_n": 88,
+          "rejection": {
+            "category": "BOUNDARY_DISTRIBUTION_ALL_ENCODINGS",
+            "blocking_object": "wall/floor visual appearance or RGB occlusion",
+            "minimum_gap_m": null,
+            "minimum_gap_reason": "static RGB distribution gate, not collision clearance",
+            "reason": "requested comparison failed; see report fields"
+          }
+        },
+        {
+          "stage": "floor_feature_matching_distribution_all_encodings",
+          "input_n": 0,
+          "cumulative_pass_n": 0,
+          "rejected_n": 0,
+          "rejection": null
+        },
+        {
+          "stage": "LK_distribution_all_encodings",
+          "input_n": 0,
+          "cumulative_pass_n": 0,
+          "rejected_n": 0,
+          "rejection": {
+            "category": "LK_DISTRIBUTION_ALL_ENCODINGS",
+            "blocking_object": "wall/floor visual appearance or RGB occlusion",
+            "minimum_gap_m": null,
+            "minimum_gap_reason": "static RGB distribution gate, not collision clearance",
+            "reason": "requested comparison failed; see report fields"
+          }
+        }
+      ]
+    },
+    {
+      "material": "walls_floor_contrast_v5_indigo125_s65",
+      "quality": "no_mip_v1",
+      "stages": [
+        {
+          "stage": "same88_pose_physics_camera",
+          "input_n": 88,
+          "cumulative_pass_n": 88,
+          "rejected_n": 0,
+          "rejection": null
+        },
+        {
+          "stage": "existing_detectors_all_encodings",
+          "input_n": 88,
+          "cumulative_pass_n": 88,
+          "rejected_n": 0,
+          "rejection": null
+        },
+        {
+          "stage": "boundary_distribution_all_encodings",
+          "input_n": 88,
+          "cumulative_pass_n": 0,
+          "rejected_n": 88,
+          "rejection": {
+            "category": "BOUNDARY_DISTRIBUTION_ALL_ENCODINGS",
+            "blocking_object": "wall/floor visual appearance or RGB occlusion",
+            "minimum_gap_m": null,
+            "minimum_gap_reason": "static RGB distribution gate, not collision clearance",
+            "reason": "requested comparison failed; see report fields"
+          }
+        },
+        {
+          "stage": "floor_feature_matching_distribution_all_encodings",
+          "input_n": 0,
+          "cumulative_pass_n": 0,
+          "rejected_n": 0,
+          "rejection": null
+        },
+        {
+          "stage": "LK_distribution_all_encodings",
+          "input_n": 0,
+          "cumulative_pass_n": 0,
+          "rejected_n": 0,
+          "rejection": {
+            "category": "LK_DISTRIBUTION_ALL_ENCODINGS",
+            "blocking_object": "wall/floor visual appearance or RGB occlusion",
+            "minimum_gap_m": null,
+            "minimum_gap_reason": "static RGB distribution gate, not collision clearance",
+            "reason": "requested comparison failed; see report fields"
+          }
+        }
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/scenetex5-r1-v1-native",
+      "source_sha": "3b36eb9d6d76d468165d1c66faf8503db7bf8491",
+      "verified_files": 658,
+      "summary_sha256": "106fdf90778525dbaf5edc3b4885e2a9eba577c0bc8c77096d9fba92e5d4717e"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/scenetex5-r1-v1-no_mip",
+      "source_sha": "3b36eb9d6d76d468165d1c66faf8503db7bf8491",
+      "verified_files": 658,
+      "summary_sha256": "1f9bd0bb3c03f292e7276e4e3f469882d52509b5744e06c245198b93a60b22b8"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/scenetex5-r2-indigo100",
+      "source_sha": "3724052a159b4572e0368f28973b403ffdebdd31",
+      "verified_files": 658,
+      "summary_sha256": "5c5f8abbdb378218619dd93f03eabdcdc26422f9e567103605d24c71a6cc0527"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/scenetex5-r3-indigo110_s80",
+      "source_sha": "a68106fd86c314d7c1d10cd321475b0c86c93310",
+      "verified_files": 658,
+      "summary_sha256": "bb8ca68b04fd7ab3088bec99753550a779522b1b4811953ec2ba28d307c2e9df"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/scenetex5-r3-indigo125_s65",
+      "source_sha": "a68106fd86c314d7c1d10cd321475b0c86c93310",
+      "verified_files": 658,
+      "summary_sha256": "4f687c3d42101f18f29e325e1e3002c14b4520840de15a322299dec495c33ea6"
+    }
+  ],
+  "reproduction_command": [
+    "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+    "-m",
+    "scripts.score_scene_tex5",
+    "--inputs",
+    "/home/ugrp/ugrp-sim/runs/scenetex5-r1-v1-native",
+    "/home/ugrp/ugrp-sim/runs/scenetex5-r1-v1-no_mip",
+    "/home/ugrp/ugrp-sim/runs/scenetex5-r2-indigo100",
+    "/home/ugrp/ugrp-sim/runs/scenetex5-r3-indigo110_s80",
+    "/home/ugrp/ugrp-sim/runs/scenetex5-r3-indigo125_s65",
+    "--output",
+    "/home/ugrp/ugrp-sim/runs/scenetex5-r3-analysis"
+  ],
+  "basis": "2026-10-16 user distribution gates; no added slack",
+  "raw_inputs": [
+    "/home/ugrp/ugrp-sim/runs/scenetex5-r1-v1-native",
+    "/home/ugrp/ugrp-sim/runs/scenetex5-r1-v1-no_mip",
+    "/home/ugrp/ugrp-sim/runs/scenetex5-r2-indigo100",
+    "/home/ugrp/ugrp-sim/runs/scenetex5-r3-indigo110_s80",
+    "/home/ugrp/ugrp-sim/runs/scenetex5-r3-indigo125_s65"
+  ]
+}

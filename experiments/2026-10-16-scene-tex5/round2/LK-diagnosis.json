@@ -1,0 +1,26 @@
+{
+  "scope": "evaluation only, never fed back to control",
+  "unchanged_rule": "image_mask rejects S>100 and dilates11px",
+  "measurements": [
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/scenetex5-r1-v1-native",
+      "case": "zone_wide_corridor_final_v3--view0--paint_A--r1",
+      "initial_corners": 59,
+      "eval_surface_of_corners": {
+        "floor": 0,
+        "wall": 59
+      },
+      "mask_pixels": 193447
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/scenetex5-r2-indigo100",
+      "case": "zone_wide_corridor_final_v3--view0--paint_A--r1",
+      "initial_corners": 0,
+      "eval_surface_of_corners": {
+        "floor": 0,
+        "wall": 0
+      },
+      "mask_pixels": 0
+    }
+  ]
+}
