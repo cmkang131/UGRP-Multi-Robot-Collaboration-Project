@@ -1,0 +1,577 @@
+{
+  "schema": "ugrp.mapbuild2.summary.v1",
+  "status": "NOT_READY",
+  "host": "ugrp-act-l4-gcp2.asia-northeast3-a.c.ugrp-sim-b-1014.internal",
+  "project": "ugrp-sim-b-1014",
+  "shared": true,
+  "speed_admission": false,
+  "capture": {
+    "status": "cap_end",
+    "frames": 164,
+    "worlds": 4,
+    "physics_steps": 16000,
+    "wall_s": 2466.387518255,
+    "scene": "walls_floor_contrast_v5_indigo110_s80",
+    "scene_xml_sha256": "1c14a5170b2d25e043e1a1183d254425386f08d27faaaaa9b2366928cd0f4720",
+    "input_audit": {
+      "top_actor_reads": 0,
+      "truth_feedback": 0,
+      "cpu_physics_steps": 0
+    }
+  },
+  "tracking": [
+    {
+      "candidate": "legacy",
+      "sequence": "drive-off",
+      "method": "lk",
+      "tracked_n": 37,
+      "pairs": 40,
+      "longest_tracked_pairs": 29,
+      "status_counts": {
+        "bootstrap": 1,
+        "unknown_texture": 1,
+        "unknown_rigid_consensus": 2,
+        "measured": 37
+      },
+      "ate_xy_m": {
+        "n": 41,
+        "p50": 0.017678853165561007,
+        "p95": 0.025286498456020014,
+        "max": 0.025380798689533374
+      },
+      "ate_yaw_deg": {
+        "n": 41,
+        "p50": 0.32635418741996414,
+        "p95": 0.9443699800970495,
+        "max": 0.9586568447824738
+      },
+      "rpe_xy_m": {
+        "n": 40,
+        "p50": 0.001095940130753625,
+        "p95": 0.005635873696699383,
+        "max": 0.010560520732825072
+      },
+      "visual_rpe_xy_m": {
+        "n": 37,
+        "p50": 0.0010239367129792137,
+        "p95": 0.005996216130474525,
+        "max": 0.010560520732825072
+      },
+      "translation_scale_ratio": {
+        "n": 37,
+        "p50": 13.137572849638286,
+        "p95": 869.3435492631229,
+        "max": 4109.02489869238
+      },
+      "loop_xy_m": 0.025380798689533374,
+      "termination": "cap_end"
+    },
+    {
+      "candidate": "legacy",
+      "sequence": "drive-on_v1",
+      "method": "lk",
+      "tracked_n": 37,
+      "pairs": 40,
+      "longest_tracked_pairs": 29,
+      "status_counts": {
+        "bootstrap": 1,
+        "unknown_texture": 1,
+        "unknown_rigid_consensus": 2,
+        "measured": 37
+      },
+      "ate_xy_m": {
+        "n": 41,
+        "p50": 0.017422625966407812,
+        "p95": 0.024179367106498463,
+        "max": 0.024597991841285527
+      },
+      "ate_yaw_deg": {
+        "n": 41,
+        "p50": 0.35191003812289934,
+        "p95": 1.2348270041538945,
+        "max": 1.3232031939992037
+      },
+      "rpe_xy_m": {
+        "n": 40,
+        "p50": 0.001305636966824474,
+        "p95": 0.006052325117298965,
+        "max": 0.010507037355708092
+      },
+      "visual_rpe_xy_m": {
+        "n": 37,
+        "p50": 0.0011889750491653967,
+        "p95": 0.006266079434731826,
+        "max": 0.010507037355708092
+      },
+      "translation_scale_ratio": {
+        "n": 37,
+        "p50": 12.734763083322264,
+        "p95": 172.74656236232155,
+        "max": 449.07458047380567
+      },
+      "loop_xy_m": 0.024597991841285527,
+      "termination": "cap_end"
+    },
+    {
+      "candidate": "legacy",
+      "sequence": "high-off",
+      "method": "lk",
+      "tracked_n": 0,
+      "pairs": 40,
+      "longest_tracked_pairs": 0,
+      "status_counts": {
+        "unknown_camera:loaded_or_unknown_load_not_qualified": 41
+      },
+      "ate_xy_m": {
+        "n": 41,
+        "p50": 0.008724026425009078,
+        "p95": 0.009336528474917753,
+        "max": 0.009787987175668016
+      },
+      "ate_yaw_deg": {
+        "n": 41,
+        "p50": 0.03833102162211156,
+        "p95": 3.4253224625286958,
+        "max": 3.4270846513345594
+      },
+      "rpe_xy_m": {
+        "n": 40,
+        "p50": 2.6179390509472986e-05,
+        "p95": 0.003277991183321502,
+        "max": 0.005847660900153405
+      },
+      "visual_rpe_xy_m": {
+        "n": 0,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "translation_scale_ratio": {
+        "n": 34,
+        "p50": 0.0,
+        "p95": 2.803847889982965,
+        "max": 7.092314723916135
+      },
+      "loop_xy_m": 0.009023254857522542,
+      "termination": "cap_end"
+    },
+    {
+      "candidate": "legacy",
+      "sequence": "high-on_v1",
+      "method": "lk",
+      "tracked_n": 0,
+      "pairs": 40,
+      "longest_tracked_pairs": 0,
+      "status_counts": {
+        "unknown_camera:loaded_or_unknown_load_not_qualified": 41
+      },
+      "ate_xy_m": {
+        "n": 41,
+        "p50": 0.008723634169442667,
+        "p95": 0.009334667787591303,
+        "max": 0.009784809568778686
+      },
+      "ate_yaw_deg": {
+        "n": 41,
+        "p50": 0.03856324805389199,
+        "p95": 3.423874462424653,
+        "max": 3.427070990956219
+      },
+      "rpe_xy_m": {
+        "n": 40,
+        "p50": 2.2804994935186576e-05,
+        "p95": 0.0032774947979974834,
+        "max": 0.00584760583266449
+      },
+      "visual_rpe_xy_m": {
+        "n": 0,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "translation_scale_ratio": {
+        "n": 36,
+        "p50": 0.0,
+        "p95": 2.7155171751020584,
+        "max": 7.092395735846904
+      },
+      "loop_xy_m": 0.009001735834964955,
+      "termination": "cap_end"
+    },
+    {
+      "candidate": "orange-columns-fast7",
+      "sequence": "drive-off",
+      "method": "lk",
+      "tracked_n": 37,
+      "pairs": 40,
+      "longest_tracked_pairs": 37,
+      "status_counts": {
+        "bootstrap": 1,
+        "unknown_rigid_consensus": 3,
+        "measured": 37
+      },
+      "ate_xy_m": {
+        "n": 41,
+        "p50": 0.006799103632809945,
+        "p95": 0.010524163078193642,
+        "max": 0.013629933790072971
+      },
+      "ate_yaw_deg": {
+        "n": 41,
+        "p50": 0.1331861392812554,
+        "p95": 0.8004989249051533,
+        "max": 0.9705039655278651
+      },
+      "rpe_xy_m": {
+        "n": 40,
+        "p50": 0.00037163239439060405,
+        "p95": 0.0039043783407996715,
+        "max": 0.004882873347105063
+      },
+      "visual_rpe_xy_m": {
+        "n": 37,
+        "p50": 0.00038288022244281134,
+        "p95": 0.00397053870290193,
+        "max": 0.004882873347105063
+      },
+      "translation_scale_ratio": {
+        "n": 37,
+        "p50": 4.931023574210614,
+        "p95": 104.67028491310583,
+        "max": 836.6820122341277
+      },
+      "loop_xy_m": 0.010435694183061736,
+      "termination": "cap_end"
+    },
+    {
+      "candidate": "orange-columns-fast7",
+      "sequence": "drive-on_v1",
+      "method": "lk",
+      "tracked_n": 38,
+      "pairs": 40,
+      "longest_tracked_pairs": 38,
+      "status_counts": {
+        "bootstrap": 1,
+        "unknown_rigid_consensus": 2,
+        "measured": 38
+      },
+      "ate_xy_m": {
+        "n": 41,
+        "p50": 0.014955900182216158,
+        "p95": 0.01888732634611361,
+        "max": 0.022238332030176014
+      },
+      "ate_yaw_deg": {
+        "n": 41,
+        "p50": 0.29658405231319884,
+        "p95": 1.17353910935734,
+        "max": 1.2516462553535745
+      },
+      "rpe_xy_m": {
+        "n": 40,
+        "p50": 0.00043699299304656596,
+        "p95": 0.004110654414385713,
+        "max": 0.00812881125515121
+      },
+      "visual_rpe_xy_m": {
+        "n": 38,
+        "p50": 0.00043699299304656596,
+        "p95": 0.004291208092274774,
+        "max": 0.00812881125515121
+      },
+      "translation_scale_ratio": {
+        "n": 37,
+        "p50": 4.860708783248362,
+        "p95": 133.55969632604464,
+        "max": 1214.4168504512852
+      },
+      "loop_xy_m": 0.01877991624669337,
+      "termination": "cap_end"
+    },
+    {
+      "candidate": "orange-columns-fast7",
+      "sequence": "high-off",
+      "method": "lk",
+      "tracked_n": 0,
+      "pairs": 40,
+      "longest_tracked_pairs": 0,
+      "status_counts": {
+        "unknown_camera:loaded_or_unknown_load_not_qualified": 41
+      },
+      "ate_xy_m": {
+        "n": 41,
+        "p50": 0.008724026425009078,
+        "p95": 0.009336528474917753,
+        "max": 0.009787987175668016
+      },
+      "ate_yaw_deg": {
+        "n": 41,
+        "p50": 0.03833102162211156,
+        "p95": 3.4253224625286958,
+        "max": 3.4270846513345594
+      },
+      "rpe_xy_m": {
+        "n": 40,
+        "p50": 2.6179390509472986e-05,
+        "p95": 0.003277991183321502,
+        "max": 0.005847660900153405
+      },
+      "visual_rpe_xy_m": {
+        "n": 0,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "translation_scale_ratio": {
+        "n": 34,
+        "p50": 0.0,
+        "p95": 2.803847889982965,
+        "max": 7.092314723916135
+      },
+      "loop_xy_m": 0.009023254857522542,
+      "termination": "cap_end"
+    },
+    {
+      "candidate": "orange-columns-fast7",
+      "sequence": "high-on_v1",
+      "method": "lk",
+      "tracked_n": 0,
+      "pairs": 40,
+      "longest_tracked_pairs": 0,
+      "status_counts": {
+        "unknown_camera:loaded_or_unknown_load_not_qualified": 41
+      },
+      "ate_xy_m": {
+        "n": 41,
+        "p50": 0.008723634169442667,
+        "p95": 0.009334667787591303,
+        "max": 0.009784809568778686
+      },
+      "ate_yaw_deg": {
+        "n": 41,
+        "p50": 0.03856324805389199,
+        "p95": 3.423874462424653,
+        "max": 3.427070990956219
+      },
+      "rpe_xy_m": {
+        "n": 40,
+        "p50": 2.2804994935186576e-05,
+        "p95": 0.0032774947979974834,
+        "max": 0.00584760583266449
+      },
+      "visual_rpe_xy_m": {
+        "n": 0,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "translation_scale_ratio": {
+        "n": 36,
+        "p50": 0.0,
+        "p95": 2.7155171751020584,
+        "max": 7.092395735846904
+      },
+      "loop_xy_m": 0.009001735834964955,
+      "termination": "cap_end"
+    },
+    {
+      "candidate": "command",
+      "sequence": "drive-off",
+      "method": "lk",
+      "tracked_n": 0,
+      "pairs": 40,
+      "longest_tracked_pairs": 0,
+      "status_counts": {
+        "command_only": 41
+      },
+      "ate_xy_m": {
+        "n": 41,
+        "p50": 0.009817082245583171,
+        "p95": 0.010331576540609557,
+        "max": 0.01043913510799543
+      },
+      "ate_yaw_deg": {
+        "n": 41,
+        "p50": 0.0876043344180734,
+        "p95": 2.569752636181091,
+        "max": 2.5700804852612515
+      },
+      "rpe_xy_m": {
+        "n": 40,
+        "p50": 6.364103168621512e-05,
+        "p95": 0.004577911165069,
+        "max": 0.006052926557018663
+      },
+      "visual_rpe_xy_m": {
+        "n": 0,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "translation_scale_ratio": {
+        "n": 37,
+        "p50": 0.0,
+        "p95": 2.679021022607971,
+        "max": 5.5177137911918575
+      },
+      "loop_xy_m": 0.010209777508176227,
+      "termination": "cap_end"
+    },
+    {
+      "candidate": "command",
+      "sequence": "drive-on_v1",
+      "method": "lk",
+      "tracked_n": 0,
+      "pairs": 40,
+      "longest_tracked_pairs": 0,
+      "status_counts": {
+        "command_only": 41
+      },
+      "ate_xy_m": {
+        "n": 41,
+        "p50": 0.00981433297766049,
+        "p95": 0.010284574543413109,
+        "max": 0.01043767135307857
+      },
+      "ate_yaw_deg": {
+        "n": 41,
+        "p50": 0.08704425890613238,
+        "p95": 2.571842674067115,
+        "max": 2.5723890892007155
+      },
+      "rpe_xy_m": {
+        "n": 40,
+        "p50": 7.956376092326881e-05,
+        "p95": 0.004563889809650919,
+        "max": 0.006050525513856957
+      },
+      "visual_rpe_xy_m": {
+        "n": 0,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "translation_scale_ratio": {
+        "n": 37,
+        "p50": 0.0,
+        "p95": 2.679190256846519,
+        "max": 5.53901736299574
+      },
+      "loop_xy_m": 0.00989433348285337,
+      "termination": "cap_end"
+    },
+    {
+      "candidate": "command",
+      "sequence": "high-off",
+      "method": "lk",
+      "tracked_n": 0,
+      "pairs": 40,
+      "longest_tracked_pairs": 0,
+      "status_counts": {
+        "command_only": 41
+      },
+      "ate_xy_m": {
+        "n": 41,
+        "p50": 0.008724026425009078,
+        "p95": 0.009336528474917753,
+        "max": 0.009787987175668016
+      },
+      "ate_yaw_deg": {
+        "n": 41,
+        "p50": 0.03833102162211156,
+        "p95": 3.4253224625286958,
+        "max": 3.4270846513345594
+      },
+      "rpe_xy_m": {
+        "n": 40,
+        "p50": 2.6179390509472986e-05,
+        "p95": 0.003277991183321502,
+        "max": 0.005847660900153405
+      },
+      "visual_rpe_xy_m": {
+        "n": 0,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "translation_scale_ratio": {
+        "n": 34,
+        "p50": 0.0,
+        "p95": 2.803847889982965,
+        "max": 7.092314723916135
+      },
+      "loop_xy_m": 0.009023254857522542,
+      "termination": "cap_end"
+    },
+    {
+      "candidate": "command",
+      "sequence": "high-on_v1",
+      "method": "lk",
+      "tracked_n": 0,
+      "pairs": 40,
+      "longest_tracked_pairs": 0,
+      "status_counts": {
+        "command_only": 41
+      },
+      "ate_xy_m": {
+        "n": 41,
+        "p50": 0.008723634169442667,
+        "p95": 0.009334667787591303,
+        "max": 0.009784809568778686
+      },
+      "ate_yaw_deg": {
+        "n": 41,
+        "p50": 0.03856324805389199,
+        "p95": 3.423874462424653,
+        "max": 3.427070990956219
+      },
+      "rpe_xy_m": {
+        "n": 40,
+        "p50": 2.2804994935186576e-05,
+        "p95": 0.0032774947979974834,
+        "max": 0.00584760583266449
+      },
+      "visual_rpe_xy_m": {
+        "n": 0,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "translation_scale_ratio": {
+        "n": 36,
+        "p50": 0.0,
+        "p95": 2.7155171751020584,
+        "max": 7.092395735846904
+      },
+      "loop_xy_m": 0.009001735834964955,
+      "termination": "cap_end"
+    }
+  ],
+  "sparse_slam_tracked_pairs": {
+    "legacy": 0,
+    "orange-columns-fast7": 0,
+    "command": 0
+  },
+  "heading_label_correction_max_deg": 0.007199019385194234,
+  "map_coverage": {
+    "drive-on_v1": 0.012709030100334449,
+    "high-on_v1": 0.0,
+    "drive-off": 0.012374581939799331,
+    "high-off": 0.0
+  },
+  "map_wrong_free": {
+    "drive-on_v1": 7,
+    "high-on_v1": 0,
+    "drive-off": 7,
+    "high-off": 0
+  },
+  "remaining": [
+    "HIGH/actual held-load camera qualification absent",
+    "sparse map anchor correspondence80/80 insufficient for FOLDED",
+    "partial map wrong-free7 and false semantics; obstacle class has no static targets",
+    "full frontier exploration and warp10 same-seed comparison not performed",
+    "real camera original paths unavailable",
+    "existing shared-host8h configuration requires natural stop to clear"
+  ],
+  "scope": "one map/start/seed; short fixed issued-command acquisition, no holdout or delivered mission success"
+}

@@ -1,0 +1,297 @@
+{
+  "raw": "/home/ugrp/ugrp-sim/runs/mapbuild2",
+  "reproduction": {
+    "capture": [
+      "/home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python",
+      "-u",
+      "/home/ugrp/ugrp-sim/src/mapbuild2-r3/scripts/mapbuild2_capture.py",
+      "--execute",
+      "--queue",
+      "/home/ugrp/ugrp-sim/runs/mapbuild2/capture-r4-queue.json",
+      "--renderer-source",
+      "/home/ugrp/ugrp-sim/src/5974a181a",
+      "--output",
+      "/home/ugrp/ugrp-sim/runs/mapbuild2/capture-r4"
+    ],
+    "replay": {
+      "source_sha": "ef0dd1d74dcc02cf4e9c4b68fd20d3c9972d0e03",
+      "rejection_table": "/home/ugrp/ugrp-sim/runs/mapbuild2/capture-r4/rejection-table.json",
+      "input": "/home/ugrp/ugrp-sim/runs/mapbuild2/capture-r4",
+      "output": "/home/ugrp/ugrp-sim/runs/mapbuild2/analysis-r1"
+    },
+    "mapping": {
+      "source_sha": "e39dc1cc8",
+      "script_sha256": "3e8ef17213fcfbe66f298f654d6e8b1da4d50ec4a6bc1995320df59380152dc9",
+      "rejection_table": "/home/ugrp/ugrp-sim/runs/mapbuild2/analysis-r1/rejection-table.json",
+      "command": [
+        "/home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python",
+        "/home/ugrp/ugrp-sim/runs/mapbuild2-map-r3.py",
+        "--execute",
+        "--input",
+        "/home/ugrp/ugrp-sim/runs/mapbuild2/capture-r4",
+        "--trajectory",
+        "/home/ugrp/ugrp-sim/runs/mapbuild2/analysis-r1/orange-columns-fast7-trajectory.json",
+        "--vision-source",
+        "/home/ugrp/ugrp-sim/src/5974a181a",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/mapbuild2/map-r3"
+      ]
+    }
+  },
+  "tracking": [
+    {
+      "candidate": "legacy",
+      "method": "lk",
+      "unit": "pair",
+      "stages": [
+        {
+          "stage": "pairs",
+          "cumulative_pass_n": 160,
+          "rejected_n": 0
+        },
+        {
+          "stage": "qualified_camera",
+          "cumulative_pass_n": 80,
+          "rejected_n": 80
+        },
+        {
+          "stage": "feature_support",
+          "cumulative_pass_n": 78,
+          "rejected_n": 2
+        },
+        {
+          "stage": "geometric_tracking",
+          "cumulative_pass_n": 74,
+          "rejected_n": 4
+        }
+      ],
+      "reasons": {
+        "unknown_texture": 2,
+        "unknown_rigid_consensus": 4,
+        "unknown_camera:loaded_or_unknown_load_not_qualified": 80
+      }
+    },
+    {
+      "candidate": "legacy",
+      "method": "slam",
+      "unit": "pair",
+      "stages": [
+        {
+          "stage": "pairs",
+          "cumulative_pass_n": 160,
+          "rejected_n": 0
+        },
+        {
+          "stage": "qualified_camera",
+          "cumulative_pass_n": 80,
+          "rejected_n": 80
+        },
+        {
+          "stage": "feature_support",
+          "cumulative_pass_n": 80,
+          "rejected_n": 0
+        },
+        {
+          "stage": "geometric_tracking",
+          "cumulative_pass_n": 0,
+          "rejected_n": 80
+        }
+      ],
+      "reasons": {
+        "insufficient_matches": 80,
+        "unqualified_camera:loaded_or_unknown_load_not_qualified": 80
+      }
+    },
+    {
+      "candidate": "orange-columns-fast7",
+      "method": "lk",
+      "unit": "pair",
+      "stages": [
+        {
+          "stage": "pairs",
+          "cumulative_pass_n": 160,
+          "rejected_n": 0
+        },
+        {
+          "stage": "qualified_camera",
+          "cumulative_pass_n": 80,
+          "rejected_n": 80
+        },
+        {
+          "stage": "feature_support",
+          "cumulative_pass_n": 80,
+          "rejected_n": 0
+        },
+        {
+          "stage": "geometric_tracking",
+          "cumulative_pass_n": 75,
+          "rejected_n": 5
+        }
+      ],
+      "reasons": {
+        "unknown_rigid_consensus": 5,
+        "unknown_camera:loaded_or_unknown_load_not_qualified": 80
+      }
+    },
+    {
+      "candidate": "orange-columns-fast7",
+      "method": "slam",
+      "unit": "pair",
+      "stages": [
+        {
+          "stage": "pairs",
+          "cumulative_pass_n": 160,
+          "rejected_n": 0
+        },
+        {
+          "stage": "qualified_camera",
+          "cumulative_pass_n": 80,
+          "rejected_n": 80
+        },
+        {
+          "stage": "feature_support",
+          "cumulative_pass_n": 80,
+          "rejected_n": 0
+        },
+        {
+          "stage": "geometric_tracking",
+          "cumulative_pass_n": 0,
+          "rejected_n": 80
+        }
+      ],
+      "reasons": {
+        "insufficient_matches": 80,
+        "unqualified_camera:loaded_or_unknown_load_not_qualified": 80
+      }
+    }
+  ],
+  "map_frames": {
+    "raw": "/home/ugrp/ugrp-sim/runs/mapbuild2/capture-r4",
+    "reproduction": [
+      "/home/ugrp/ugrp-sim/runs/mapbuild2-map-r3.py",
+      "--execute",
+      "--input",
+      "/home/ugrp/ugrp-sim/runs/mapbuild2/capture-r4",
+      "--trajectory",
+      "/home/ugrp/ugrp-sim/runs/mapbuild2/analysis-r1/orange-columns-fast7-trajectory.json",
+      "--vision-source",
+      "/home/ugrp/ugrp-sim/src/5974a181a",
+      "--output",
+      "/home/ugrp/ugrp-sim/runs/mapbuild2/map-r3"
+    ],
+    "stages": [
+      {
+        "stage": "frames",
+        "cumulative_pass_n": 164,
+        "rejected_n": 0
+      },
+      {
+        "stage": "qualified_camera",
+        "cumulative_pass_n": 82,
+        "rejected_n": 82
+      },
+      {
+        "stage": "visual_pose",
+        "cumulative_pass_n": 77,
+        "rejected_n": 5
+      },
+      {
+        "stage": "supported_wall_contacts",
+        "cumulative_pass_n": 77,
+        "rejected_n": 0
+      }
+    ],
+    "reasons": {
+      "observed_wall_contacts": 77,
+      "unqualified_camera:loaded_or_unknown_load_not_qualified": 82,
+      "unknown_visual_pose:unknown_rigid_consensus": 5
+    }
+  },
+  "map_cells": [
+    {
+      "sequence": "drive-on_v1",
+      "unit": "predicted_grid_cell",
+      "stages": [
+        {
+          "stage": "predicted",
+          "cumulative_pass_n": 78,
+          "rejected_n": 0
+        },
+        {
+          "stage": "inside_truth_domain",
+          "cumulative_pass_n": 38,
+          "rejected_n": 40
+        },
+        {
+          "stage": "correct_occupancy_label",
+          "cumulative_pass_n": 31,
+          "rejected_n": 7
+        }
+      ]
+    },
+    {
+      "sequence": "high-on_v1",
+      "unit": "predicted_grid_cell",
+      "stages": [
+        {
+          "stage": "predicted",
+          "cumulative_pass_n": 0,
+          "rejected_n": 0
+        },
+        {
+          "stage": "inside_truth_domain",
+          "cumulative_pass_n": 0,
+          "rejected_n": 0
+        },
+        {
+          "stage": "correct_occupancy_label",
+          "cumulative_pass_n": 0,
+          "rejected_n": 0
+        }
+      ]
+    },
+    {
+      "sequence": "drive-off",
+      "unit": "predicted_grid_cell",
+      "stages": [
+        {
+          "stage": "predicted",
+          "cumulative_pass_n": 75,
+          "rejected_n": 0
+        },
+        {
+          "stage": "inside_truth_domain",
+          "cumulative_pass_n": 37,
+          "rejected_n": 38
+        },
+        {
+          "stage": "correct_occupancy_label",
+          "cumulative_pass_n": 30,
+          "rejected_n": 7
+        }
+      ]
+    },
+    {
+      "sequence": "high-off",
+      "unit": "predicted_grid_cell",
+      "stages": [
+        {
+          "stage": "predicted",
+          "cumulative_pass_n": 0,
+          "rejected_n": 0
+        },
+        {
+          "stage": "inside_truth_domain",
+          "cumulative_pass_n": 0,
+          "rejected_n": 0
+        },
+        {
+          "stage": "correct_occupancy_label",
+          "cumulative_pass_n": 0,
+          "rejected_n": 0
+        }
+      ]
+    }
+  ],
+  "rejection_fields": "raw trajectories/events retain category/reason/blocked_object/minimum_gap_m/gap_status"
+}

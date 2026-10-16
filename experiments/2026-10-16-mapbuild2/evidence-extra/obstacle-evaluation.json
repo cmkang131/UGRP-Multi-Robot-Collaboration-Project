@@ -1,0 +1,420 @@
+{
+  "scope": "evaluation only, actual reset cargo collision boxes; no actor change",
+  "reference_time_sim": 0,
+  "cargo_motion_not_assumed_static_during_future_exploration": true,
+  "rectangles": [
+    {
+      "id": "reset_eval_cargo_box_00_geom",
+      "kind": "reset_cargo",
+      "center_m": [
+        -0.20000000298023224,
+        -0.8500000238418579
+      ],
+      "half_extents_m": [
+        0.017,
+        0.02
+      ],
+      "yaw_rad": 0.0,
+      "height_m": 0.032
+    },
+    {
+      "id": "reset_eval_cargo_box_01_geom",
+      "kind": "reset_cargo",
+      "center_m": [
+        1.0,
+        -1.649999976158142
+      ],
+      "half_extents_m": [
+        0.017,
+        0.02
+      ],
+      "yaw_rad": 0.0,
+      "height_m": 0.032
+    },
+    {
+      "id": "reset_eval_cargo_box_02_geom",
+      "kind": "reset_cargo",
+      "center_m": [
+        0.4000000059604645,
+        -2.450000047683716
+      ],
+      "half_extents_m": [
+        0.017,
+        0.02
+      ],
+      "yaw_rad": 0.0,
+      "height_m": 0.032
+    },
+    {
+      "id": "reset_eval_cargo_box_03_geom",
+      "kind": "reset_cargo",
+      "center_m": [
+        -0.20000000298023224,
+        -1.649999976158142
+      ],
+      "half_extents_m": [
+        0.017,
+        0.02
+      ],
+      "yaw_rad": 0.0,
+      "height_m": 0.032
+    },
+    {
+      "id": "reset_eval_cargo_tex2_beam__bar",
+      "kind": "reset_cargo",
+      "center_m": [
+        0.699999988079071,
+        -0.8500000238418579
+      ],
+      "half_extents_m": [
+        0.3,
+        0.02
+      ],
+      "yaw_rad": 0.0,
+      "height_m": 0.032
+    }
+  ],
+  "excluded_non_box_geoms": [],
+  "scores": {
+    "high-on_v1": {
+      "geometry": {
+        "wall": {
+          "predicted_n": 0,
+          "truth_n": 338,
+          "predicted_to_truth_m": {
+            "n": 0,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "truth_to_predicted_m": {
+            "n": 0,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "status": "unobserved"
+        },
+        "door": {
+          "predicted_n": 0,
+          "truth_n": 55,
+          "predicted_to_truth_m": {
+            "n": 0,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "truth_to_predicted_m": {
+            "n": 0,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "status": "unobserved"
+        },
+        "obstacle": {
+          "predicted_n": 0,
+          "truth_n": 22,
+          "predicted_to_truth_m": {
+            "n": 0,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "truth_to_predicted_m": {
+            "n": 0,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "status": "unobserved"
+        },
+        "destination": {
+          "predicted_n": 0,
+          "truth_n": 315,
+          "predicted_to_truth_m": {
+            "n": 0,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "truth_to_predicted_m": {
+            "n": 0,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "status": "unobserved"
+        }
+      },
+      "total_truth_cells": 2990,
+      "observed_truth_cells": 0,
+      "coverage": 0.0,
+      "unknown_truth_cells": 2990,
+      "out_of_truth_cells": 0,
+      "occupied_tp": 0,
+      "occupied_fp": 0,
+      "occupied_fn_including_unknown": 360,
+      "occupied_iou": 0.0,
+      "wrong_free_cells": 0,
+      "false_occupied_area_m2": 0.0,
+      "missed_occupied_area_m2": 3.6000000000000005,
+      "geometry_missing_false_counts": "grid confusion only; object instance identity not inferred from sample points"
+    },
+    "high-off": {
+      "geometry": {
+        "wall": {
+          "predicted_n": 0,
+          "truth_n": 338,
+          "predicted_to_truth_m": {
+            "n": 0,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "truth_to_predicted_m": {
+            "n": 0,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "status": "unobserved"
+        },
+        "door": {
+          "predicted_n": 0,
+          "truth_n": 55,
+          "predicted_to_truth_m": {
+            "n": 0,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "truth_to_predicted_m": {
+            "n": 0,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "status": "unobserved"
+        },
+        "obstacle": {
+          "predicted_n": 0,
+          "truth_n": 22,
+          "predicted_to_truth_m": {
+            "n": 0,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "truth_to_predicted_m": {
+            "n": 0,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "status": "unobserved"
+        },
+        "destination": {
+          "predicted_n": 0,
+          "truth_n": 315,
+          "predicted_to_truth_m": {
+            "n": 0,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "truth_to_predicted_m": {
+            "n": 0,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "status": "unobserved"
+        }
+      },
+      "total_truth_cells": 2990,
+      "observed_truth_cells": 0,
+      "coverage": 0.0,
+      "unknown_truth_cells": 2990,
+      "out_of_truth_cells": 0,
+      "occupied_tp": 0,
+      "occupied_fp": 0,
+      "occupied_fn_including_unknown": 360,
+      "occupied_iou": 0.0,
+      "wrong_free_cells": 0,
+      "false_occupied_area_m2": 0.0,
+      "missed_occupied_area_m2": 3.6000000000000005,
+      "geometry_missing_false_counts": "grid confusion only; object instance identity not inferred from sample points"
+    },
+    "drive-off": {
+      "geometry": {
+        "wall": {
+          "predicted_n": 19,
+          "truth_n": 338,
+          "predicted_to_truth_m": {
+            "n": 19,
+            "p50": 0.40000000000000013,
+            "p95": 0.40000000000000013,
+            "max": 0.40000000000000013
+          },
+          "truth_to_predicted_m": {
+            "n": 338,
+            "p50": 4.405619682629565,
+            "p95": 6.517013653502135,
+            "max": 6.705221845696085
+          },
+          "status": "measured"
+        },
+        "door": {
+          "predicted_n": 7,
+          "truth_n": 55,
+          "predicted_to_truth_m": {
+            "n": 7,
+            "p50": 3.4205262752974144,
+            "p95": 3.5848338636471095,
+            "max": 3.6138621999185303
+          },
+          "truth_to_predicted_m": {
+            "n": 55,
+            "p50": 3.9446165846632044,
+            "p95": 5.052214534252633,
+            "max": 5.096076922496364
+          },
+          "status": "measured"
+        },
+        "obstacle": {
+          "predicted_n": 0,
+          "truth_n": 22,
+          "predicted_to_truth_m": {
+            "n": 0,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "truth_to_predicted_m": {
+            "n": 0,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "status": "unobserved"
+        },
+        "destination": {
+          "predicted_n": 65,
+          "truth_n": 315,
+          "predicted_to_truth_m": {
+            "n": 65,
+            "p50": 4.4,
+            "p95": 5.300000000000001,
+            "max": 5.4
+          },
+          "truth_to_predicted_m": {
+            "n": 315,
+            "p50": 5.385164807134505,
+            "p95": 5.873241505814502,
+            "max": 6.040695324215583
+          },
+          "status": "measured"
+        }
+      },
+      "total_truth_cells": 2990,
+      "observed_truth_cells": 37,
+      "coverage": 0.012374581939799331,
+      "unknown_truth_cells": 2953,
+      "out_of_truth_cells": 38,
+      "occupied_tp": 0,
+      "occupied_fp": 0,
+      "occupied_fn_including_unknown": 360,
+      "occupied_iou": 0.0,
+      "wrong_free_cells": 7,
+      "false_occupied_area_m2": 0.0,
+      "missed_occupied_area_m2": 3.6000000000000005,
+      "geometry_missing_false_counts": "grid confusion only; object instance identity not inferred from sample points"
+    },
+    "drive-on_v1": {
+      "geometry": {
+        "wall": {
+          "predicted_n": 20,
+          "truth_n": 338,
+          "predicted_to_truth_m": {
+            "n": 20,
+            "p50": 0.40000000000000013,
+            "p95": 0.40000000000000013,
+            "max": 0.40000000000000013
+          },
+          "truth_to_predicted_m": {
+            "n": 338,
+            "p50": 4.405619682629565,
+            "p95": 6.517013653502135,
+            "max": 6.705221845696085
+          },
+          "status": "measured"
+        },
+        "door": {
+          "predicted_n": 7,
+          "truth_n": 55,
+          "predicted_to_truth_m": {
+            "n": 7,
+            "p50": 3.4205262752974144,
+            "p95": 3.5848338636471095,
+            "max": 3.6138621999185303
+          },
+          "truth_to_predicted_m": {
+            "n": 55,
+            "p50": 3.9446165846632044,
+            "p95": 5.052214534252633,
+            "max": 5.096076922496364
+          },
+          "status": "measured"
+        },
+        "obstacle": {
+          "predicted_n": 0,
+          "truth_n": 22,
+          "predicted_to_truth_m": {
+            "n": 0,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "truth_to_predicted_m": {
+            "n": 0,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "status": "unobserved"
+        },
+        "destination": {
+          "predicted_n": 67,
+          "truth_n": 315,
+          "predicted_to_truth_m": {
+            "n": 67,
+            "p50": 4.4,
+            "p95": 5.4,
+            "max": 6.7
+          },
+          "truth_to_predicted_m": {
+            "n": 315,
+            "p50": 5.385164807134505,
+            "p95": 5.873241505814502,
+            "max": 6.040695324215583
+          },
+          "status": "measured"
+        }
+      },
+      "total_truth_cells": 2990,
+      "observed_truth_cells": 38,
+      "coverage": 0.012709030100334449,
+      "unknown_truth_cells": 2952,
+      "out_of_truth_cells": 40,
+      "occupied_tp": 0,
+      "occupied_fp": 0,
+      "occupied_fn_including_unknown": 360,
+      "occupied_iou": 0.0,
+      "wrong_free_cells": 7,
+      "false_occupied_area_m2": 0.0,
+      "missed_occupied_area_m2": 3.6000000000000005,
+      "geometry_missing_false_counts": "grid confusion only; object instance identity not inferred from sample points"
+    }
+  }
+}
