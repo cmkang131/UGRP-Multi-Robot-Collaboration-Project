@@ -1,6 +1,6 @@
 # warp6 — gcp3 단독 MJWarp 진단 / NOT_READY
 
-warp4 R3의 CUDA700·release SIGSEGV를 조사했다. **최초 실패 커널·버퍼와 수정안은 확보하지 못했다. 빔40·release A40/B40은 모두 미제출**이다. CPU beampair7·release25와 합산하지 않았다. `codex/warp6`는 `claude/warp4`의 `0a733c80615f1b72ff300c96777c4f0b2fc3700f` 위에 쌓았다.
+warp4 R3의 CUDA700·release SIGSEGV를 조사했다. **최초 실패 커널·버퍼와 수정안은 확보하지 못했다. 빔40·release A40/B40은 모두 미제출**이다. CPU beampair7·release25와 합산하지 않았다. [PR #557](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/557)은 DRAFT이며 병합하지 않았다. `codex/warp6`는 `claude/warp4`의 `0a733c80615f1b72ff300c96777c4f0b2fc3700f` 위에 쌓았다.
 
 ## 확인한 결과
 
