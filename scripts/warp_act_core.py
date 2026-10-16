@@ -184,3 +184,19 @@ def physics_schedule(period_s, timestep_s, graph_chunk=16):
         raise ValueError('control period must contain an integral number of physics ticks')
     steps=int(ratio);chunk=gcd(steps,graph_chunk)
     return steps,chunk,steps//chunk
+
+
+def contact_maps(ngeom, targets, fingers):
+    """Evaluator-only per-world cargo/finger membership, including multi-geoms."""
+    if len(targets) != len(fingers) or not targets:
+        raise ValueError('matching nonempty per-world contact groups required')
+    target_mask = np.zeros((len(targets), ngeom), dtype=np.int32)
+    finger_map = np.full((len(targets), ngeom), -1, dtype=np.int32)
+    for i, (cargo, mapping) in enumerate(zip(targets, fingers)):
+        if not cargo or set(cargo).intersection(mapping):
+            raise ValueError('cargo and fingers must be distinct')
+        target_mask[i, cargo] = 1
+        for geom, channel in mapping.items():
+            finger_map[i, geom] = channel
+    return target_mask, finger_map
+
