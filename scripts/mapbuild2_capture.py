@@ -57,7 +57,13 @@ def run(a):
     q=json.loads(a.queue.read_text()); table=Path(q['rejection_table'])
     if not table.is_absolute() or not table.is_file():raise ValueError('EXISTING_ABSOLUTE_FUNNEL_REQUIRED')
     if q['toggle']!=task+'_v1' or q['enabled'] is not True:raise ValueError('EXPLICIT_CANDIDATE_REQUIRED')
+    if v3 and q.get('spawn_overlap_check')!='spawn_overlap_check_v1':raise ValueError('SPAWN_CHECK_REQUIRED')
     for source, expected in ((ROOT,q['source_sha']),(a.renderer_source,RENDERER_SHA)):
+        if v3 and source==a.renderer_source and (source/'.git').exists() is False:
+            receipt=json.loads(a.renderer_receipt.read_text())
+            if receipt['source_sha']!=expected or any(sha(source/p)!=h for p,h in receipt['files'].items()):
+                raise ValueError('PINNED_RENDERER_HASH_MISMATCH')
+            continue
         if v3 and source==ROOT and (source/'SOURCE_SHA').is_file():
             receipt=json.loads((source/'SOURCE_FILES.json').read_text())
             if (source/'SOURCE_SHA').read_text().strip()!=expected or any(sha(source/p)!=h for p,h in receipt.items()):

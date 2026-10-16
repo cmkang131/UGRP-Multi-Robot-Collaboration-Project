@@ -8,7 +8,7 @@ from mapbuild2_capture import run,dump
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
-    for name in ('queue','renderer-source','fixture','output'):p.add_argument('--'+name,type=Path,required=True)
+    for name in ('queue','renderer-source','renderer-receipt','fixture','output'):p.add_argument('--'+name,type=Path,required=True)
     p.add_argument('--mapbuild3-v1',action='store_true');a=p.parse_args()
     if not a.mapbuild3_v1:p.error('default off; explicit --mapbuild3-v1 required')
     try:run(a)
