@@ -1,0 +1,329 @@
+{
+  "utc": "2026-10-16T11:46:50.293502+00:00",
+  "host": "gcp2_CPU",
+  "source_sha": "175281c8922453465f8bf32707e22988e78b8812",
+  "seed": 8318706,
+  "world": 0,
+  "meta": {
+    "run": "/home/ugrp/ugrp-sim/runs/warp8-r2-known-success/derived-known-success-world-000",
+    "world": 0,
+    "sim_world_range": [
+      2.200000000000151,
+      40.20000000000015
+    ],
+    "mujoco": "3.12.0",
+    "asset_root": "/home/ugrp/ugrp-sim/src/835ccef26aa84b08cc8f7e256fd0f43aa1583ef9",
+    "sim_relative_range": [
+      0.4999999999999998,
+      38.5
+    ],
+    "full_2hz_frames": 77,
+    "terminal_10hz_frames": 100,
+    "native_six_times": [
+      30.400000000000155,
+      32.30000000000015,
+      34.30000000000015,
+      36.30000000000015,
+      38.30000000000015,
+      40.30000000000015
+    ],
+    "video_bytes": 81748,
+    "video_sha256": "5ec0b82845fdf0139cc49e9f15359677e747d25a8f36592b7bae1ee20d79f60e",
+    "ffprobe": {
+      "streams": [
+        {
+          "index": 0,
+          "codec_name": "h264",
+          "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+          "profile": "High",
+          "codec_type": "video",
+          "codec_tag_string": "avc1",
+          "codec_tag": "0x31637661",
+          "width": 960,
+          "height": 270,
+          "coded_width": 960,
+          "coded_height": 270,
+          "closed_captions": 0,
+          "film_grain": 0,
+          "has_b_frames": 2,
+          "sample_aspect_ratio": "1:1",
+          "display_aspect_ratio": "32:9",
+          "pix_fmt": "yuv420p",
+          "level": 22,
+          "color_range": "tv",
+          "color_space": "bt470bg",
+          "chroma_location": "center",
+          "field_order": "progressive",
+          "refs": 1,
+          "is_avc": "true",
+          "nal_length_size": "4",
+          "id": "0x1",
+          "r_frame_rate": "6/1",
+          "avg_frame_rate": "6/1",
+          "time_base": "1/12288",
+          "start_pts": 0,
+          "start_time": "0.000000",
+          "duration_ts": 157696,
+          "duration": "12.833333",
+          "bit_rate": "49870",
+          "bits_per_raw_sample": "8",
+          "nb_frames": "77",
+          "extradata_size": 50,
+          "disposition": {
+            "default": 1,
+            "dub": 0,
+            "original": 0,
+            "comment": 0,
+            "lyrics": 0,
+            "karaoke": 0,
+            "forced": 0,
+            "hearing_impaired": 0,
+            "visual_impaired": 0,
+            "clean_effects": 0,
+            "attached_pic": 0,
+            "timed_thumbnails": 0,
+            "non_diegetic": 0,
+            "captions": 0,
+            "descriptions": 0,
+            "metadata": 0,
+            "dependent": 0,
+            "still_image": 0
+          },
+          "tags": {
+            "language": "und",
+            "handler_name": "VideoHandler",
+            "vendor_id": "[0][0][0][0]",
+            "encoder": "Lavc60.31.102 libx264"
+          }
+        }
+      ],
+      "format": {
+        "filename": "/home/ugrp/ugrp-sim/ops-reviews/warp8/playback/warp8-r2-known-success/known-success-world-000/playback-3x.mp4",
+        "nb_streams": 1,
+        "nb_programs": 0,
+        "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+        "format_long_name": "QuickTime / MOV",
+        "start_time": "0.000000",
+        "duration": "12.833333",
+        "size": "81748",
+        "bit_rate": "50959",
+        "probe_score": 100,
+        "tags": {
+          "major_brand": "isom",
+          "minor_version": "512",
+          "compatible_brands": "isomiso2avc1mp41",
+          "encoder": "Lavf60.16.100"
+        }
+      }
+    },
+    "scope": "completed individual beam teacher world; whole40-world gate still pending; evaluator-only reconstruction, no physics step",
+    "postprocessor_sha256": "1dfc5edbeaaca06a436e02ea658507cb2bed930362b671e60b879a1b0b2bf655",
+    "playback_helper_sha256": "3aa7c290fdbb2620a1a7d17c1f3b633208ccf64c4535e2d8fd8a9486ca851481",
+    "original_world": 0,
+    "source_snapshot": "/home/ugrp/ugrp-sim/runs/warp8-r2-known-success/beam40-r2",
+    "simulation_host": "gcp3",
+    "analysis_host": "gcp2_CPU",
+    "reconstruction": "native NPZ + exact evaluator qpos for missing terminal states; missing qvel=0 unused by renderer",
+    "native_state_file": null,
+    "native_evaluator_overlap_exact_N": 0,
+    "authoritative_backend_origin": 1.7000000000001514,
+    "terminal_10hz_scope": "100 hash-verified native JPEG pairs at exact evaluator times",
+    "recount": {
+      "success": true,
+      "dense_evaluator_rows": true,
+      "evaluator_N": 382,
+      "max_evaluator_gap_s": 0.10000000000000142,
+      "terminal_hold_s": 3.0,
+      "max_hold_s": 3.0,
+      "teacher_success_n": 2,
+      "source_success": true,
+      "agrees": true
+    },
+    "counter_sha256": "a272086231ea51ee7737af879b8dc38c5d4dc45ca28d2cc35fbfd5043e1d3c7d",
+    "representative_video": {
+      "path": "/home/ugrp/ugrp-sim/ops-reviews/warp8/playback/warp8-r2-known-success/known-success-world-000/playback-full-tail-3x.mp4",
+      "bytes": 104162,
+      "sha256": "a36f8810066b13bf4787a06e74e2cf8400e89bf9214c1fcc9e06beab2c3448b6",
+      "ffprobe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "width": 960,
+            "height": 270,
+            "coded_width": 960,
+            "coded_height": 270,
+            "closed_captions": 0,
+            "film_grain": 0,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "32:9",
+            "pix_fmt": "yuv420p",
+            "level": 30,
+            "color_range": "tv",
+            "color_space": "bt470bg",
+            "chroma_location": "center",
+            "field_order": "progressive",
+            "refs": 1,
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "30/1",
+            "avg_frame_rate": "30/1",
+            "time_base": "1/15360",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 197632,
+            "duration": "12.866667",
+            "bit_rate": "61344",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "386",
+            "extradata_size": 50,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "vendor_id": "[0][0][0][0]",
+              "encoder": "Lavc60.31.102 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "/home/ugrp/ugrp-sim/ops-reviews/warp8/playback/warp8-r2-known-success/known-success-world-000/playback-full-tail-3x.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "12.866667",
+          "size": "104162",
+          "bit_rate": "64763",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf60.16.100"
+          }
+        }
+      }
+    },
+    "display_sampling": "full prefix2Hz then terminal10Hz,3x playback; early images held on30fps display"
+  },
+  "raw_summary": {
+    "status": "complete",
+    "sim_s": 38.1,
+    "physical_success": true,
+    "max_stable_hold_s": 3.0,
+    "teacher_success_n": 2,
+    "teacher_N": 2,
+    "weld": "off",
+    "cap_end": false,
+    "input_audit": {
+      "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+      "enabled": true,
+      "measurement_rows": 1790,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "gt_self_pose_comparison": false
+    }
+  },
+  "prior_evaluator_rows_exact_N": 295,
+  "prior_own_RGB_SHA_equal_N": 122,
+  "scene_XML_equal": true,
+  "overview_composite_SHA_equal_N": 0,
+  "overview_difference": "make_playback.py31-41 fits evaluator-only top camera to entire trajectory bounds; longer history changes overview; original robot RGB and exact qpos unchanged",
+  "snapshot_files_SHA_equal_N": 1179,
+  "files": {
+    "playback-meta.json": {
+      "bytes": 7439,
+      "sha256": "91b647cb89f076b59ba7e0351cd106f778623e1029a4d4cb13b04da10d2dfc94"
+    },
+    "full-2hz-02.jpg": {
+      "bytes": 276290,
+      "sha256": "64b9bb7fc2072560367dfb2a9c398e1bee44d7dcb02bb444e8e8f4fdba0d50b9"
+    },
+    "full-2hz-04.jpg": {
+      "bytes": 95548,
+      "sha256": "137a5484c23b13c58dc3003866a52f3ef87aef5041da5919b2bf3825d4bbab9b"
+    },
+    "full-2hz-01.jpg": {
+      "bytes": 277269,
+      "sha256": "01e03b1949c320c02648c9d0427f1032ec1e2071e4107c460b2d447c2e1aadc1"
+    },
+    "full-2hz-00.jpg": {
+      "bytes": 271108,
+      "sha256": "e64a6f75e80a8be93fd02ddd4177a76ddf837a64d711ee08ccac624d186a63ad"
+    },
+    "last10s-10hz-03.jpg": {
+      "bytes": 254119,
+      "sha256": "d8781917494e812c6e5802d49ac03eea6eac4baae66df67707d06257979da68a"
+    },
+    "last10s-10hz-01.jpg": {
+      "bytes": 258987,
+      "sha256": "48131c40e1aca67b690eaa5ffe0f418bc18460d054c5853db0cf471583538aa5"
+    },
+    "last10s-10hz-05.jpg": {
+      "bytes": 157231,
+      "sha256": "b337e39ca2b270b07b6274e1020798163a2a26d603458aa67722f9041502d3be"
+    },
+    "last10s-10hz-04.jpg": {
+      "bytes": 251880,
+      "sha256": "cdbd40afa79f80916b3cb171ca7eb1be7ff35b88e9c2ad7f10e2a5dfb5ef16e5"
+    },
+    "full-2hz-03.jpg": {
+      "bytes": 259112,
+      "sha256": "204d4cae4d94240973f60bc852b63f184ce5d3046a83792df68ddb532f8b8826"
+    },
+    "last10s-10hz-02.jpg": {
+      "bytes": 257769,
+      "sha256": "cb8efb623270de653113ab607d98936b0de3a394c9b33534d5ac8eecb2a7cb04"
+    },
+    "last10s-10hz-00.jpg": {
+      "bytes": 264335,
+      "sha256": "66b3beb3b52ab38329a2b735a3eb5ebefe01e9ff80085327ef14bc811d9bc71b"
+    }
+  },
+  "scope": "completed known seed only; full40 gate pending; native NPZ not yet flushed, first.5SIM absent from evaluator reconstruction",
+  "Mac_SHA_equal_N": 12,
+  "direct_visual_review": {
+    "full_2hz_N": 77,
+    "full_range_SIM": [
+      0.5,
+      38.5
+    ],
+    "tail_10hz_N": 100,
+    "tail_range_SIM": [
+      28.7,
+      38.6
+    ],
+    "montage_files_read": 11,
+    "complete_individual_teacher_only": true,
+    "whole40_gate_complete": false,
+    "GUI_opened": false
+  }
+}

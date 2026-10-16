@@ -31,3 +31,5 @@
 종료회수준비: export_terminal_light.py는gcp3종료receipt/PID부재를확인한배치의메타/로그만stream한다. receive_terminal_light.py는gcp2임시별도폴더에서전체SHA재검증후신규배치경로만추가하며기존R1/R2파일이있으면거부한다. 아직R2종료회수는미실행이다.
 
 11:18UTC R2경과35.8SIM·17성공/23진행·누적환산6.3817. first30수용5.6024와별도로post30성능저하를R2-post30-performance.json에보존했다. 전체실행속도통과를주장하지않고기존first30창및14:05UTC자원시한을유지한다. NoSlip설정변경0.
+
+2026-10-16T11:48:43.771595+00:00 알려진8318706/world000이R2에서38.1SIM성공. CPU382행재계수·3초hold·2/2교사·weldOFF·감사0/0일치.11몽타주전체77/100프레임직접검토. 합성개요전체59JPEGbyte동일가정은틀려검사를중단했고,원본RGB122/평가295/XML동일을확인하여평가카메라자동bbox차이로한정했다. R2-known-seed-success.json참조.
