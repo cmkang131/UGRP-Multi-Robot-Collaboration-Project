@@ -140,6 +140,7 @@ class Bridge:
 
     def install_scene_quality(self):
         from sim import gatesv5_scene
+        from sim.scene_contrast_v5 import verify_model
         original = gatesv5_scene.scene_bindings
         def bindings(*args, **kwargs):
             pair = original(*args, **kwargs)
@@ -147,7 +148,6 @@ class Bridge:
                 raise ValueError('warp4 requires selected scene-v5')
             install, _ = pair
             def configure(world, out):
-                from sim.scene_contrast_v5 import verify_model
                 import json
                 record = dict(scene_profile='walls_floor_contrast_v5_indigo110_s80',
                     camera_quality='no_mip_v1', profile=verify_model(world.model,'walls_floor_contrast_v5_indigo110_s80'),
