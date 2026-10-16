@@ -26,7 +26,7 @@
 
 ## 검증과 남은 작업
 
-비물리 검사5개(분석적 척도 정렬, 실패 분모, manifest/이미지 변조 거부, 정답 없는 바닥 척도, 실제 tar 파이프 전송·정답 파일 제외)와 Python compile/whitespace 통과. 주 가중치·검색 가중치 로딩과 실제 자기RGB 추적을 확인했다. 전체CI·본 비교·ATE는 아직 미확인이다. 첫 설치는 C++ 컴파일러 부재로 HOST_ERROR였으며 [거부 분포·수정](install-attempts.json)에 기록한 뒤 build-essential을 추가했다.
+비물리 검사7개(분석적 척도 정렬, 실패 분모, manifest/이미지 변조 거부, 정답 없는 바닥 척도, 실제 tar 파이프 전송·정답 파일 제외, 회전한 카메라 오프셋, 공통 프레임 ATE)와 Python compile/whitespace 통과. 주 가중치·검색 가중치 로딩과 실제 자기RGB 추적을 확인했다. 전체CI·본 비교·ATE는 아직 미확인이다. 첫 설치는 C++ 컴파일러 부재로 HOST_ERROR였으며 [거부 분포·수정](install-attempts.json)에 기록한 뒤 build-essential을 추가했다.
 
 [재현 명령](reproduce.json), [순차 누적 funnel](rejection_table.json), [대기열](next-queue.json), [회수 SHA 대조](retrieval-verification.json)를 보존했다. 본 비교표는 본 녹화 추정·채점 후 추가한다. 원본은 gcp4 영속 디스크에 보존하고 프로젝트 예외에 따라 로컬/GitHub에 기록한다.
 
@@ -46,3 +46,5 @@
 gcp4는 자기 Python/MuJoCo/ffmpeg·GPU 프로세스0, 남은 lease JSON0을 확인하고 직접 정지했다. 다른 작업자의 오래된 `.warp9-claim.lock`·`.warp10-claim.lock`은 그대로 보존했다([종료 전 확인](gcp4-practice-close.txt)). [TERMINATED 확인](gcp4-after-practice-stop.json)의 `lastStopTimestamp`는 **2026-10-16T14:19:14.155Z (23:19:14.155 KST)**다. 실행 시간 상한 없이 idle20·budget-stop을 유지했다. 본 녹화가 도착하기 전까지 gcp4를 다시 시작하지 않는다.
 
 설치 원문 로그는 공백·CR까지 보존하는 [install.log.gz](installation/install.log.gz)로 버전 관리한다. [복원 SHA 검증](installation/install-log-compression.json)을 통과했으며 VM 원문과 같은 hash다.
+
+[공통 카메라중심 채점기](../../scripts/mast3rcmp_compare.py)는 세 방법의 같은 유효 프레임 교집합에 Sim(3)/허용척도 SE(3) ATE를 계산한다. 전체 분모·실패·제외 개수는 별도로 유지하고, LK/RBPF는 모든 출력 프레임의 허용척도 ATE도 보존한다. 실제 카메라 정답은 제공자의 저장 qpos/동일 장면 `mj_forward` 평가 파일로 요청했으며, 차체2D 정답에 명목 외부 보정을 붙인 값을 실제 카메라 정답으로 대체하지 않는다.
