@@ -485,6 +485,9 @@ raise SystemExit(3 if a.fail else 0)
         samples['warp-act-teacher'] = ['--teacher-source', str(model), '--plan', str(source),
             '--physics-backend', 'mjwarp_batch_v1', '--vm-hourly-usd', '1.096',
             '--compiled-reference-v1', str(source), '--compiled-geometry-312-v1', str(source)]
+        samples['mapbuild2-issued-diagnostic'] = ['--execute', '--queue', str(source), '--renderer-source', str(model)]
+        samples['mapbuild3-clean-start'] = ['--mapbuild3-v1', '--queue', str(source), '--renderer-source', str(model),
+            '--renderer-receipt', str(source), '--fixture', str(model)]
         retired_invalid = {'e2e-rpp-lookahead-v196'}
         with mock.patch.dict(os.environ, {"UGRP_SIM_TOKEN": "secret"}), \
              mock.patch.object(subprocess, "Popen", side_effect=AssertionError("planning launched a child")):
