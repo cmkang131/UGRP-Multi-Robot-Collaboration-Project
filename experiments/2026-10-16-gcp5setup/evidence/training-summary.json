@@ -1,0 +1,38 @@
+{
+  "status": "PASS",
+  "research_result": false,
+  "host": {
+    "project": "ugrp-sim-e-1016",
+    "instance": "ugrp-act-l4-gcp5",
+    "machine": "g2-standard-8"
+  },
+  "source_sha": "bbb757ad3735a98c7778f4d43aab041495a6c201",
+  "steps_requested": 50,
+  "steps_completed": 50,
+  "readback_verified": true,
+  "scope": "environment smoke with beamact3 B modules, not C2 training/mission acceptance",
+  "optimizer_reloaded": true,
+  "dataset_manifest_sha256": "a0f5d8a1c6c9b6c4988122ae40bf412c4c705f3c34740d8d7a91c93fef58d6cd",
+  "training_rows": 60023,
+  "inputs": [
+    "observation.images.own_history",
+    "observation.state"
+  ],
+  "teacher_input_fields": 0,
+  "peak_gpu_bytes": 1572857856,
+  "versions": {
+    "torch": "2.11.0+cu128",
+    "torchvision": "0.26.0+cu128",
+    "lerobot": "0.6.2",
+    "numpy": "2.2.6"
+  },
+  "files_sha256": {
+    "progress.jsonl": "64af90b49200876232903ab155fbc8ebf0010fd59e55a9a6bb06e199d5b4d01a",
+    "optimizer.pt": "491a4c59788613c026a2ff332c00cc880048676b2bc8e798c81874bb509ff716",
+    "actor/SHA256.json": "9cc865713012cb4945f8690f409a120c290409792b5c103c9cca53d175236d0d",
+    "actor/model.safetensors": "2a67f96e1f56a865bc4711f9964cae6ea4570c7e8049706074c7ac126a860bc7",
+    "actor/adapter.json": "d19a0ba9df94a995a4ffa1e7eaffb2b3de150048ccdab8220e8dd139e7c2196c",
+    "actor/config.json": "b63bc05fb84e5c0f53329336a7a147f18ca73f297ed25279b42b968e279f571f"
+  },
+  "wall_s": 97.27005243301392
+}

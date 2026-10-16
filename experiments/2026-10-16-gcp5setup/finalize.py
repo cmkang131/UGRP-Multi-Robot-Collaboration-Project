@@ -54,6 +54,7 @@ funnel = dict(schema='ugrp.gcp_setup.funnel.v1', created_utc=stamp,
     event_pipeline=[stage(k, 1, str(EVIDENCE/'test-observations.json'),
         'Read test-observations.json and test-function-log.json')
         for k in ('manual_pubsub', 'function_stop_all', 'vm_stopping')],
+    version_candidates_pipeline=[dict(gate='exact_ACT_freeze', entered=2, cumulative_pass=1, rejected=1, reason_category='version_mismatch', package='torchcodec', blocking_object='not_applicable_infrastructure', minimum_gap='not_measured_infrastructure', raw=str(EVIDENCE/'environment-rejection-table.json'), reproduce='Compare initial PyTorch-index selection and pin_act_codec.sh repair')],
     frames=0, scope='infrastructure/environment only; not C2 or teacher/student acceptance')
 funnel_path.write_text(json.dumps(funnel, indent=2)+'\n')
 summary = dict(status='READY', created_utc=stamp, project=PROJECT, account='changmin5781@gmail.com',
@@ -70,7 +71,10 @@ summary = dict(status='READY', created_utc=stamp, project=PROJECT, account='chan
         service_accounts=[], dedicated_key_private_on_mac_only=True),
     dataset=dataset, act_reference_packages=len((EVIDENCE/'act-freeze-reference.txt').read_text().splitlines()),
     versions_match=True, training=training, mjwarp=warp,
-    runs=[dict(name='budget-manual-stop', status='PASS', raw=str(EVIDENCE/'test-observations.json')),
+    resolved_issues=['torchcodec extra-index local CUDA version corrected to exact source PyPI version'],
+    runs=[dict(name='initial-act-version-check', status='REJECTED', raw=str(EVIDENCE/'environment-rejection-table.json')),
+          dict(name='corrected-act-version-check', status='PASS', raw=str(EVIDENCE/'act-freeze.txt')),
+          dict(name='budget-manual-stop', status='PASS', raw=str(EVIDENCE/'test-observations.json')),
           dict(name='mjwarp-two-world-one-step', status='PASS', raw=str(EVIDENCE/'smoke-result.json')),
           dict(name='act-50-step-save-reload', status='PASS', raw='gcp5:/home/ugrp/ugrp-sim/setup/training-smoke-v1')],
     verification=verification, other_projects_cost_devices_modified=False, gcp1_accessed=False,

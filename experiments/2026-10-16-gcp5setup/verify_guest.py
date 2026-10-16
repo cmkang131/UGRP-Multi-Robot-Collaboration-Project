@@ -25,12 +25,12 @@ assert remote('installation', 'test "$(cat /home/ugrp/ugrp-sim/setup/install.EXI
 remote('smoke-command', 'cd /home/ugrp/ugrp-sim/setup && /home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python smoke.py smoke-result.json > smoke.log 2>&1')
 remote('audit-command', 'cd /home/ugrp/ugrp-sim/setup && sudo python3 audit_guest.py guest-audit.json')
 files=['smoke-result.json','guest-audit.json','warp-freeze.txt','cpu-freeze.txt','act-freeze.txt','dataset-verification.json','training-summary.json']
-checks=remote('retrieval-hashes', 'cd /home/ugrp/ugrp-sim/setup && sha256sum '+' '.join(files+['setup_guest.sh','smoke.py','audit_guest.py','training_smoke.py']))
+checks=remote('retrieval-hashes', 'cd /home/ugrp/ugrp-sim/setup && sha256sum '+' '.join(files+['setup_guest.sh','smoke.py','audit_guest.py','training_smoke.py','pin_act_codec.sh']))
 subprocess.run(['scp',*[f'gcp5:/home/ugrp/ugrp-sim/setup/{p}' for p in files],str(EVIDENCE)+'/'],check=True)
 expected={line.split()[1]:line.split()[0] for line in checks.splitlines()}
 for name in files:
     assert hashlib.sha256((EVIDENCE/name).read_bytes()).hexdigest()==expected[name]
-for name in ['setup_guest.sh','smoke.py','audit_guest.py','training_smoke.py']:
+for name in ['setup_guest.sh','smoke.py','audit_guest.py','training_smoke.py','pin_act_codec.sh']:
     assert hashlib.sha256((ROOT/name).read_bytes()).hexdigest()==expected[name]
 training=json.loads((EVIDENCE/'training-summary.json').read_text())
 assert training['status']=='PASS' and training['steps_completed']==50 and training['readback_verified'] and training['optimizer_reloaded']
