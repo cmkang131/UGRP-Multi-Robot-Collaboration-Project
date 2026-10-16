@@ -1,0 +1,11 @@
+{
+  "command": [
+    "ssh",
+    "gcp5",
+    "cd /home/ugrp/ugrp-sim/setup && sha256sum smoke-result.json guest-audit.json warp-freeze.txt cpu-freeze.txt act-freeze.txt dataset-verification.json training-summary.json setup_guest.sh smoke.py audit_guest.py training_smoke.py pin_act_codec.sh"
+  ],
+  "returncode": 0,
+  "elapsed_s": 0.9735240936279297,
+  "stdout": "a852c5a6012aebe83b79969dc3b35f1c25cced933d9af82adb82ded22d3bcb5a  smoke-result.json\ncd5c745cfa0bb9d69b29d65b8e8f6110fe8be1a33f9f3253bb88a65bd47fb19a  guest-audit.json\nd7f5a61637967b535ea82c94b87c0800f5ccf648f1a982f012b6c698490c0828  warp-freeze.txt\n85a5664d7b4e7f82f0cd62a3b3925a1868233025879146ce3cd5f438976d478a  cpu-freeze.txt\nf572282838a26572993024eb7a070ef58832ca012d6db29a2b9b9b3c20322983  act-freeze.txt\nfb92274f3b50d20259384e216510850c3e7f1bf2bc2e7263fc20595293158a7e  dataset-verification.json\nb0d9ffb8dc680ef993cdf0eccd5c5c42f3b64db7d65ee7cefaaab7a82db98b8c  training-summary.json\n54e22e67cb4c487226dfdea9953c7ef8444c783b53e608555e3591121095cf8f  setup_guest.sh\n02f3d204fd195500a268e2f02b14e8f579f0bc649b5b856bfd384ae66193140f  smoke.py\n56f61132779a5dafdebd1eae33ded5285c8ce2687bab862359dc3ec59f9122be  audit_guest.py\n64ddeda25d0b9d4f0a4663db208cd2d955b8e3982a1ecb39aaaf0c54a8d7c31e  training_smoke.py\nc919a717601fc5d5de9ec0d2e9a4e3106a82b608ad2dad3dbbc7dca0763c85d5  pin_act_codec.sh\n",
+  "stderr": ""
+}

@@ -18,7 +18,8 @@ from harness.zone_pair_status import MAX_SEGMENTS, ARM_S, CONTROL_S, EPS, PROFIL
 
 PROFILE = 'zone_pair_executor_v7_dev'
 PAIR = ('r1', 'r2')                 # frozen M2 roles: end_neg / end_pos
-CONTACT_PROFILE = 'cargo_noslip_v1'
+CONTACT_PROFILE = 'cargo_native_v1'
+ACCEPTED_CONTACT_PROFILES = (CONTACT_PROFILE, 'warp_native_contact_v1', 'cargo_noslip_v1')
 
 
 def _digest(value):
@@ -549,7 +550,7 @@ class PairTeam:
                 return refuse('PAIR_SUBMISSION_MISMATCH')
         if rid not in PAIR or partner_id not in PAIR or rid == partner_id or partner_id not in self.executors:
             return refuse('UNSUPPORTED_PAIR')
-        if self.contact_profile != CONTACT_PROFILE or self.weld is not False:
+        if self.contact_profile not in ('cargo_native_v1', 'warp_native_contact_v1', 'cargo_noslip_v1') or self.weld is not False:
             return refuse('PAIR_REQUIRES_NOSLIP_WELD_OFF')
         if _digest(ex.params) != _digest(self.params):
             return refuse('PAIR_CALIBRATION_MISMATCH')

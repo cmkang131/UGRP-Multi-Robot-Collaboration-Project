@@ -623,7 +623,7 @@ def main():
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     p.add_argument('--seed', type=int, choices=sorted(SCENARIOS), required=True)
     p.add_argument('--stage', choices=('open_floor', 'door'), default='open_floor')
-    p.add_argument('--contact-profile', choices=CONTACT_PROFILES, default='cargo_noslip_v1')
+    p.add_argument('--contact-profile', choices=CONTACT_PROFILES, default='cargo_native_v1')
     p.add_argument('--status-channel', choices=('on', 'off'), default='on',
                    help='executor status channel (aligning/ready/lift/carry/put_down/abort; no task or plan '
                         'content). User decision 2026-09-26: ON in all conditions incl. no_comm. '

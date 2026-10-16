@@ -45,8 +45,8 @@ RUNNER = 'zone_owncam_runner_v5'
 SCHEMA = 'ugrp.zone_owncam_skill.v5'
 VARIANT = 'zone_wide_door'
 GT_POSE_SOURCE = 'gt_stub_eval_only'
-CONTACT_PROFILES = ('local_contact_fine', 'cargo_noslip_v1')
-DEFAULT_CONTACT_PROFILE = 'cargo_noslip_v1'     # primary, pending the user's decision (PR 189 audit)
+CONTACT_PROFILES = ('cargo_native_v1', 'warp_native_contact_v1', 'local_contact_fine', 'cargo_noslip_v1')
+DEFAULT_CONTACT_PROFILE = 'cargo_native_v1'     # primary, pending the user's decision (PR 189 audit)
 SIM_LIMIT_S, STEP_LIMIT = 420., 900
 BAY_HALF_M = (.25, .25)
 # Order-sheet bay table (static, east section of zone_wide_door). A bay is coarse on purpose.

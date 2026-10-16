@@ -345,7 +345,7 @@ def parser():
     r.add_argument('--output', type=Path, required=True)
     r.add_argument('--variant', default='zone_wide')
     r.add_argument('--seed', type=int, default=11)
-    r.add_argument('--contact-profile', default='cargo_noslip_v1')
+    r.add_argument('--contact-profile', default='cargo_native_v1')
     r.add_argument('--posture', default='look_p20', choices=sorted(SWEEP))
     r.add_argument('--posture-pwm', type=json.loads, default=None,
                    help='explicit {"3": .., "4": .., "5": .., "6": ..} instead of a named posture')

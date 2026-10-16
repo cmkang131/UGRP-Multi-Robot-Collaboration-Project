@@ -85,7 +85,7 @@ def run_case(profile, case, loaded, output, wheel_input=None, drive_s=1.5, torqu
               'model_calls': 0, 'physical_success': None, 'loadavg_start': os.getloadavg()}
     try:
         world = (build_world(scene, drive_profile=profile, **(world_options or {}), **kwargs) if profile in CONTACT_PROFILES else
-                 legacy_world(scene, 'cargo_noslip_v1', initial_sim_cap_s=30., **kwargs))
+                 legacy_world(scene, 'cargo_native_v1', initial_sim_cap_s=30., **kwargs))
         scene.setup(world)
         if post_build is not None:
             post_build(world)  # profiling ablation only; recorded below

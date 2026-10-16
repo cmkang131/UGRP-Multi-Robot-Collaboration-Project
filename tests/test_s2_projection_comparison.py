@@ -1,6 +1,7 @@
 """Pinned S2 geometry reuse and GT-free prediction boundary (no runtime actor)."""
 import ast
 import copy
+import inspect
 from pathlib import Path
 import sys
 import numpy as np
@@ -11,6 +12,25 @@ sys.path[:0]=[str(ROOT/'experiments/2026-10-07-s2-projection-comparison/code'),
               str(ROOT/'experiments/2026-10-07-camera-pose-projection/code')]
 import s2_path
 import audit as a
+
+
+@pytest.fixture(autouse=True)
+def historical_projection_sources(tmp_path, monkeypatch):
+    """Keep the recorded projection snapshot; verify live geometry is identical."""
+    root = tmp_path/'pinned-geometry-root'
+    for name in ('harness/zone_final_pair_camera.py', 'harness/vision_pose_source_final.py',
+                 'harness/zone_final_pair_contract.py'):
+        data = (s2_path.EXP/s2_path.MANIFEST['files'][name]['copy']).read_bytes()
+        if name == 'harness/zone_final_pair_contract.py':
+            original = next(n for n in ast.parse(data).body if isinstance(n,ast.FunctionDef) and n.name=='camera_record')
+            current = ast.parse(inspect.getsource(s2_path.camera_record)).body[0]
+            assert ast.dump(current,include_attributes=False) == ast.dump(original,include_attributes=False)
+        else:
+            assert (ROOT/name).read_bytes() == data
+        path = root/name
+        path.parent.mkdir(parents=True,exist_ok=True)
+        path.write_bytes(data)
+    monkeypatch.setattr(s2_path,'ROOT',root)
 
 SEARCH={1:2000,3:740,4:2320,5:1320,6:1500}
 

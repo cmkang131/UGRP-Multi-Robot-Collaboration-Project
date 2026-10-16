@@ -17,7 +17,8 @@ from harness.zone_pair_status import CONTROL_S, EPS, PairStatusEndpoint, finite
 PROFILE = 'heavy_crate_lug_decisions_v1'
 ROLES = {'r1': 'west', 'r2': 'east'}  # T07 owns symmetric/r3 expansion.
 MASS_KG = .900
-CONTACT_PROFILE = 'cargo_noslip_v1'
+CONTACT_PROFILE = 'cargo_native_v1'
+ACCEPTED_CONTACT_PROFILES = (CONTACT_PROFILE, 'warp_native_contact_v1', 'cargo_noslip_v1')
 
 
 def capability():

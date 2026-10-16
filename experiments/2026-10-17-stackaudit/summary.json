@@ -1,0 +1,50 @@
+{
+  "schema": "ugrp.stackaudit.summary.v1",
+  "status": "AUDIT_COMPLETE_DRAFT_PR",
+  "base_sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+  "rules": 38,
+  "flows": 10,
+  "cells": 380,
+  "counts": {
+    "최신": 66,
+    "모름": 190,
+    "해당없음": 116,
+    "옛": 8
+  },
+  "top5": [
+    "release old Hough localization",
+    "LLM E2E CPU primary",
+    "LLM E2E cargo_noslip_v1/10",
+    "ACT CPU check cargo_noslip_v1/10",
+    "ACT CPU check floor_light_v1"
+  ],
+  "tests": {
+    "passed": 3,
+    "failed_final": 0
+  },
+  "verification_scope": "local source/static + previously retrieved JSON + checker-only tests; not live runtime or physics",
+  "runs": {
+    "VM": 0,
+    "SSH": 0,
+    "sim": 0,
+    "render": 0,
+    "model_calls": 0,
+    "training": 0,
+    "GUI": 0
+  },
+  "others_worktree_mutations": 0,
+  "raw_locations": [
+    "inputs/warp8-native-queue.json",
+    "inputs/act16w-native-gate-summary.json",
+    "input-sources.json",
+    "evidence.json"
+  ],
+  "merge_owner": "coordinator",
+  "remaining": [
+    "assign 8 old cells",
+    "obtain evidence for 190 unknown cells",
+    "mapbuild6 LK/RBPF decision pending",
+    "PR #568 integration pending",
+    "full CI/review/merge pending"
+  ]
+}

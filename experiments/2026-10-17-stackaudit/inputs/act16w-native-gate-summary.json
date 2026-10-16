@@ -1,0 +1,131 @@
+{
+  "status": "PASS_REQUIRES_RECORD_REVIEW",
+  "complete": true,
+  "source_sha": "e40ff44ce97219d075b1a58eabd48007b6f8b2ac",
+  "host": {
+    "project_id": "ugrp-sim-b-1014",
+    "instance": "ugrp-act-l4-gcp2",
+    "machine_type": "g2-standard-8",
+    "zone": "asia-northeast3-a"
+  },
+  "started_utc": "2026-10-16T14:41:54.720013+00:00",
+  "wall_cap": null,
+  "contact_profile": "warp_native_contact_v1",
+  "stage": "gate",
+  "final40_accessed": false,
+  "groups": [
+    [
+      0,
+      [
+        0,
+        2,
+        6,
+        8,
+        10,
+        14,
+        22,
+        26,
+        30,
+        32,
+        34,
+        38
+      ]
+    ],
+    [
+      1,
+      [
+        1,
+        4,
+        9,
+        17,
+        18,
+        33,
+        36
+      ]
+    ],
+    [
+      2,
+      [
+        3,
+        7,
+        11,
+        15,
+        19,
+        23,
+        27,
+        31,
+        35,
+        39
+      ]
+    ],
+    [
+      3,
+      [
+        5,
+        16,
+        20,
+        21,
+        25,
+        29
+      ]
+    ],
+    [
+      4,
+      [
+        12,
+        13,
+        37
+      ]
+    ],
+    [
+      5,
+      [
+        24
+      ]
+    ],
+    [
+      6,
+      [
+        28
+      ]
+    ]
+  ],
+  "active": [],
+  "finished": [
+    {
+      "group": 6,
+      "exit_code": 0
+    },
+    {
+      "group": 5,
+      "exit_code": 0
+    },
+    {
+      "group": 4,
+      "exit_code": 0
+    },
+    {
+      "group": 3,
+      "exit_code": 0
+    },
+    {
+      "group": 1,
+      "exit_code": 0
+    },
+    {
+      "group": 2,
+      "exit_code": 0
+    },
+    {
+      "group": 0,
+      "exit_code": 0
+    }
+  ],
+  "n": 40,
+  "N": 40,
+  "gate_passed": true,
+  "input_audit_violations": 0,
+  "next": "inspect native raw/review before next stage",
+  "ended_utc": "2026-10-16T15:07:09.205881+00:00",
+  "vm_stop_attempted": false
+}

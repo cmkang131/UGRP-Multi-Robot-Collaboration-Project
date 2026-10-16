@@ -1,0 +1,1 @@
+gcp4setup: READY project=ugrp-sim-d-1016 host=gcp4 VM=ugrp-act-l4-gcp4 TERMINATED; budget-stop 6.364s STOPPING/140.309s TERMINATED, test VM/disk deleted; CUDA MJWarp 2world x1step PASS; runtime-cap none, idle20m, leases empty; 17 nonphysics tests PASS; depends on #554/#558; research gates untested.

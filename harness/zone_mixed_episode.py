@@ -153,7 +153,7 @@ def mixed_episode(variant, seed, *, goal, extra_boxes=None, extra_cargo=None, co
     return config
 
 
-def scene_for(config, contact_profile='cargo_noslip_v1'):
+def scene_for(config, contact_profile='cargo_native_v1'):
     """The standard cargo zone scene for a mixed episode (checked against it)."""
     from sim.zone_cargo_scene import CargoZoneScene
     scene = CargoZoneScene.from_cargo_config(config['variant'], config['seed'], cargo=config['cargo_items'],

@@ -1,7 +1,9 @@
 """Configured GCP simulation host lifecycle (gcp2 by default).
 
-Every gcloud call names the account and project. Simulation VMs have a 24 h cap, STOP on
-termination, no service account (no cloud credentials on the VM) and the 20-minute
+Every gcloud call names the account and project. CPU simulation VMs keep a 24 h cap;
+gcp3/gcp4/gcp5/gcp6 L4 training/MJWarp VMs have no runtime cap. gcp6 uses its own account.
+Configured caps use STOP on termination.
+VMs have no service account (no cloud credentials on the VM) and the 20-minute
 idle guard from gcp_idle_guard_startup.sh. Stop refuses while a lease or a simulation
 process exists. Cost cut-off: the existing budget -> Pub/Sub -> budget-stop function
 stops every VM in the project; this module does not touch it.
@@ -43,15 +45,22 @@ def create_command(host, public_key, machine=None, image=None):
     require_lifecycle(host)
     cfg = GCP_HOSTS[host]
     name, zone, default_machine, disk = target(host)
-    image_args = ['--image', image or cfg['image']] if image or cfg.get('image') else [
+    image_args = (['--image', image or cfg['image']] +
+                  (['--image-project', cfg['image_project']] if cfg.get('image_project') else [])) if image or cfg.get('image') else [
         '--image-family', cfg['image_family'], '--image-project', cfg['image_project']]
-    # 24h: 2026-10-15 user decision, inherited by gcp2. 400GB: see gcp2setup disk plan.
+    gpu_args = (['--accelerator', f"type={cfg['accelerator']},count={cfg['accelerator_count']}",
+                 '--maintenance-policy=TERMINATE'] if cfg.get('accelerator') else [])
+    # 2026-10-16 user: "8시간 상한 — 이건 좀 없애라". Missing/null means no cap;
+    # preserve explicit caps (including the CPU simulation VM's existing 24h).
+    duration = cfg.get('max_run_duration')
+    runtime_args = ([f'--max-run-duration={duration}', '--instance-termination-action=STOP']
+                    if duration is not None else [])
     return ['gcloud', 'compute', 'instances', 'create', name, '--account', cfg['account'],
             '--project', cfg['project'], '--zone', zone,
-            '--machine-type', machine or default_machine, *image_args,
+            '--machine-type', machine or default_machine, *image_args, *gpu_args,
             '--boot-disk-size', f"{cfg['disk_gb']}GB", '--boot-disk-type', disk,
             '--provisioning-model=STANDARD',
-            f"--max-run-duration={cfg['max_run_duration']}", '--instance-termination-action=STOP',
+            *runtime_args,
             '--no-service-account', '--no-scopes',
             '--metadata-from-file', f'startup-script={STARTUP}',
             '--metadata', f'ssh-keys=ugrp:{public_key},block-project-ssh-keys=true',
@@ -74,8 +83,12 @@ def external_ip(host):
 
 def guest_busy(host):
     """True when leases or simulation/archival processes exist on the VM."""
-    probe = ("test -z \"$(ls -A ~/ugrp-sim/leases 2>/dev/null)\" && "
-             "! pgrep -f 'scripts\\.sim_[c]li|[r]emote_run_finish|gcp_speed_[p]robe|[r]un_wrapper' >/dev/null")  # [x]: do not match this probe's own command line
+    # Probe only executables owned by ugrp: Python/MuJoCo/ffmpeg in another job
+    # must block stop even when it did not use remote_run's wrapper/lease.
+    probe = ("test -d ~/ugrp-sim/leases && "
+             "test -z \"$(ls -A ~/ugrp-sim/leases)\" && "
+             "! pgrep -u ugrp -x 'python[0-9.]*|mujoco|ffmpeg' >/dev/null && "
+             "! pgrep -f 'scripts\\.sim_[c]li|[r]emote_run_finish|gcp_speed_[p]robe|[r]un_wrapper' >/dev/null")
     return subprocess.run(['ssh', '-o', 'BatchMode=yes', '-o', 'ConnectTimeout=10', host, probe]).returncode != 0
 
 

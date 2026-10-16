@@ -32,7 +32,8 @@ def test_defaults_keep_training_and_gpu_disabled():
     assert config['render_backend']=='legacy'
     assert config['egl_l4_v1'] is False
     assert config['stage_D_training'] is False
-    assert Path(config['rejection_table']).is_file()
+    # Stored author worktree path is historical; check its local artifact.
+    assert (p.parent / Path(config['rejection_table']).name).is_file()
 
 
 def test_trace_rejects_nonfinite_clock(tmp_path):

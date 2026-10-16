@@ -1,0 +1,88 @@
+{
+  "scope": "One infrastructure candidate; no research mission gate",
+  "stages": [
+    {
+      "gate": "authorized_project_and_quota",
+      "input": 1,
+      "passed_cumulative": 1,
+      "rejected": 0
+    },
+    {
+      "gate": "scoped_net_budget_and_active_function",
+      "input": 1,
+      "passed_cumulative": 1,
+      "rejected": 0
+    },
+    {
+      "gate": "manual_stop_observed",
+      "input": 1,
+      "passed_cumulative": 1,
+      "rejected": 0
+    },
+    {
+      "gate": "test_vm_and_disk_deleted",
+      "input": 1,
+      "passed_cumulative": 1,
+      "rejected": 0
+    },
+    {
+      "gate": "uncapped_guarded_l4_created",
+      "input": 1,
+      "passed_cumulative": 1,
+      "rejected": 0
+    },
+    {
+      "gate": "cuda_two_world_one_step",
+      "input": 1,
+      "passed_cumulative": 1,
+      "rejected": 0
+    },
+    {
+      "gate": "source_and_retrieved_hash_audit",
+      "input": 1,
+      "passed_cumulative": 1,
+      "rejected": 0
+    },
+    {
+      "gate": "own_lease_removed_no_other_jobs",
+      "input": 1,
+      "passed_cumulative": 1,
+      "rejected": 0
+    },
+    {
+      "gate": "l4_terminated",
+      "input": 1,
+      "passed_cumulative": 1,
+      "rejected": 0
+    }
+  ],
+  "worlds": [
+    {
+      "gate": "requested",
+      "input": 2,
+      "passed_cumulative": 2,
+      "rejected": 0
+    },
+    {
+      "gate": "stepped",
+      "input": 2,
+      "passed_cumulative": 2,
+      "rejected": 0
+    },
+    {
+      "gate": "finite_time_advanced",
+      "input": 2,
+      "passed_cumulative": 2,
+      "rejected": 0
+    }
+  ],
+  "failed_setup_attempts": [],
+  "raw_paths": [
+    "gcp4:/home/ugrp/ugrp-sim/setup/",
+    "/Users/changmin/projects/ugrp-wt/gcp4setup/experiments/2026-10-16-gcp4setup/evidence"
+  ],
+  "reproduce": [
+    "python3 experiments/2026-10-16-gcp4setup/finalize.py",
+    "ssh gcp4 /home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python /home/ugrp/ugrp-sim/setup/smoke.py NEW_RESULT.json"
+  ]
+}

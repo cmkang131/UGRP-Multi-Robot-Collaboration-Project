@@ -37,9 +37,9 @@ def scene_spec(scenario, seed):
     if not report.ok:
         raise ValueError(f'invalid scenario setup: {report.problems}')
     setup = scenario['eval']['setup']
-    if (setup['weld'] != 'off' or setup['contact_profile'] != 'cargo_noslip_v1'
+    if (setup['weld'] != 'off' or setup['contact_profile'] not in ('cargo_native_v1', 'warp_native_contact_v1', 'cargo_noslip_v1')
             or (setup['robot_spawns'] != 'arena_default' and scenario['scenario_id'] != 'e2e_one_beam_ownmap')):
-        raise ValueError('scenario scene requires cargo_noslip_v1, weld off and arena_default')
+        raise ValueError('scenario scene requires a supported native or recorded legacy contact profile, weld off and arena_default')
     # ZoneScene reset uses the production box's identity quaternion. Refuse
     # unsupported colour yaw rather than silently resetting an authored rotation.
     boxes = [p for p in setup['placements'] if p['kind'] in COLORS]

@@ -164,7 +164,7 @@ def test_cargo_noslip_profile_is_opt_in_versioned_and_changes_only_the_solver_op
     assert record == profile_record('cargo_noslip_v1') and len(record['sha256']) == 64
     assert base_profile('cargo_noslip_v1') == 'local_contact_fine' and base_profile('local_contact_fine') == 'local_contact_fine'
     items = [{'item_id': 'c', 'kind': 'heavy_crate', 'pose': [2.5, .2, 0.]}]
-    plain = CargoZoneScene.from_cargo_config('zone_wide', 11, cargo=items)
+    plain = CargoZoneScene.from_cargo_config('zone_wide', 11, cargo=items, contact_profile='local_contact_fine')
     noslip = CargoZoneScene.from_cargo_config('zone_wide', 11, cargo=items, contact_profile='cargo_noslip_v1')
     a, b = _scene_xml(plain), _scene_xml(noslip)
     assert a.model.opt.noslip_iterations == 0 and b.model.opt.noslip_iterations == 10
@@ -175,7 +175,7 @@ def test_cargo_noslip_profile_is_opt_in_versioned_and_changes_only_the_solver_op
     assert not b.data.eq_active.any()
     with pytest.raises(ValueError):
         CargoZoneScene.from_cargo_config('zone_wide', 11, cargo=items, contact_profile='glue')
-    assert set(CARGO_PROFILES) == {'cargo_noslip_v1'}
+    assert set(CARGO_PROFILES) == {'cargo_noslip_v1', 'cargo_native_v1', 'warp_native_contact_v1'}
 
 
 def test_dispatch_contact_profiles_are_unchanged():

@@ -1,0 +1,11 @@
+{
+  "command": [
+    "ssh",
+    "gcp5",
+    "find /home/ugrp/ugrp-sim/leases -maxdepth 1 -type f -printf \"%f\\n\"; ps -u ugrp -o pid,comm,args; nvidia-smi --query-compute-apps=pid,process_name,used_gpu_memory --format=csv,noheader"
+  ],
+  "returncode": 0,
+  "elapsed_s": 0.9556641578674316,
+  "stdout": "gcp5setup.json\n    PID COMMAND         COMMAND\n   6870 systemd         /usr/lib/systemd/systemd --user\n   6871 (sd-pam)        (sd-pam)\n   7509 sshd            sshd: ugrp@notty\n   7510 bash            bash -c find /home/ugrp/ugrp-sim/leases -maxdepth 1 -type f -printf \"%f\\n\"; ps -u ugrp -o pid,comm,args; nvidia-smi --query-compute-apps=pid,process_name,used_gpu_memory --format=csv,noheader\n   7512 ps              ps -u ugrp -o pid,comm,args\n",
+  "stderr": ""
+}

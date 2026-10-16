@@ -1,0 +1,11 @@
+{
+  "command": [
+    "ssh",
+    "gcp6",
+    "cd /home/ugrp/ugrp-sim/setup && cp setup_guest.sh setup_guest.initial.sh && /home/ugrp/ugrp-rl1b-act-env/bin/pip install --no-deps --force-reinstall --index-url https://pypi.org/simple torchcodec==0.10.0 && /home/ugrp/ugrp-rl1b-act-env/bin/pip check && /home/ugrp/ugrp-rl1b-act-env/bin/pip freeze > act-freeze.txt"
+  ],
+  "elapsed_s": 4.8627378940582275,
+  "returncode": 0,
+  "stdout": "Collecting torchcodec==0.10.0\n  Downloading torchcodec-0.10.0-cp312-cp312-manylinux_2_28_x86_64.whl.metadata (11 kB)\nDownloading torchcodec-0.10.0-cp312-cp312-manylinux_2_28_x86_64.whl (2.1 MB)\n   \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501 2.1/2.1 MB 26.8 MB/s eta 0:00:00\nInstalling collected packages: torchcodec\n  Attempting uninstall: torchcodec\n    Found existing installation: torchcodec 0.10.0+cu128\n    Uninstalling torchcodec-0.10.0+cu128:\n      Successfully uninstalled torchcodec-0.10.0+cu128\nSuccessfully installed torchcodec-0.10.0\nNo broken requirements found.\n",
+  "stderr": ""
+}

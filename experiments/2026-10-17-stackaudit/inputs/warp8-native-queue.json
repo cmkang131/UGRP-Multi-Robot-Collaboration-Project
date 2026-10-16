@@ -1,0 +1,51 @@
+{
+  "schema": "ugrp.warp8.native_teacher_gate.v1",
+  "status": "RELEASE_A_S1_RUNNING",
+  "profile": "warp_native_contact_v1",
+  "host": "gcp3",
+  "project": "ugrp-sim-c-1016",
+  "source_sha": "3170d909089865c45e2cbc6089beb6a2d05e576f",
+  "rejection_table": "/home/ugrp/ugrp-sim/ops-reviews/warp8/beam-r1-rejection_table.json",
+  "ready": false,
+  "submitted": true,
+  "planned_denominators": {
+    "beam": 40,
+    "release_A": 40,
+    "release_B": 40
+  },
+  "runs": [
+    {
+      "name": "beam40-native-r1",
+      "N": 40,
+      "completed": true,
+      "terminal": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-native-r1",
+      "driver_PID": 3149,
+      "child_PID": 3151,
+      "rejection_table": "/home/ugrp/ugrp-sim/ops-reviews/warp8/beam-r1-rejection_table.json",
+      "success_N": 40,
+      "cap_end_N": 0,
+      "HOST_ERROR_world_N": 0,
+      "raw_recount": "beam40-native-r1-summary.json",
+      "terminal_proof": "beam40-native-r1-terminal-proof.json",
+      "playback_review": "beam40-native-r1-playback-review.json",
+      "admission": "beam40-native-r1-admission.json"
+    },
+    {
+      "name": "releaseA-s1-native-r1",
+      "N": 14,
+      "completed": false,
+      "terminal": false,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp8/releaseA-s1-native-r1",
+      "driver_PID": 17837,
+      "child_PID": 17839,
+      "rejection_table": "/home/ugrp/ugrp-sim/ops-reviews/warp8/release-topology-rejection_table.json"
+    }
+  ],
+  "no_pooling": true,
+  "VM_wall_cap": null,
+  "supervisor_wall_deadline": null,
+  "placement_graspable_filter_v1": true,
+  "weld": "off",
+  "held_world_reads_required": 0
+}
