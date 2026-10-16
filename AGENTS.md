@@ -107,6 +107,8 @@
 
 2026-09-24 사용자 요청(2026-09-26 Kiro 추가)에 따라 Claude·Codex·Kiro가 같은 Mac·저장소에서 동시에 작업할 때 다음을 지킨다. 브랜치 접두사(`claude/`, `codex/`, `kiro/`)로 작업 주체를 구분한다.
 
+- **최신 스택 제출 관문 (2026-10-17 사용자: "이런 것들, 최신으로 업데이트 좀 제대로 해봐. 왜 자꾸 까먹는 거야"):** 새 대기열·실행 제출 전 `python3 scripts/check_current_stack.py <queue/manifest/summary.json> --flow <흐름> --output <새 결과.json>`을 통과해야 하며(이탈은 항목별 이유·사용자/조정자 승인 근거를 `stack_deviations`에 명시, 과거 재생은 `replay_of`로 구분), 조정자는 입력·기준표 SHA가 맞는 점검 결과 파일 없는 대기열을 승인하지 않는다; 사용자 결정이 바뀌면 같은 PR에서 `configs/current_stack.json`을 고친다([계약·사용법](experiments/2026-10-17-stackaudit/README.md)).
+
 - **시작 전 확인:** `git fetch origin`과 `gh pr list`로 열린 PR과 관련 `experiments/` 기록을 읽는다. 같은 주제의 작업이 있으면 범위·가설·결과를 그 PR 코멘트로 알리고 중복 구현을 피한다. 상대 결과를 자신의 증거로 합산하지 않는다. 에이전트 사이의 피드백은 PR 코멘트와 실험 기록으로 남긴다.
 - **물리·학습 잠금:** Mac realtime native 실행과 Mac에서의 학습·추론 속도 측정은 시작 전에 `python3 scripts/agent_lock.py acquire --owner <claude|codex|kiro> --branch <브랜치> --purpose <목적> --pid <드라이버 PID> --expected-minutes <분>`으로 배타 잠금을 잡고, 끝나면 `release`한다. 다른 에이전트는 `status`로 잠금을 확인하고, 잠금이 있는 동안 물리·학습을 새로 시작하지 않는다. 잠금 없이 도는 동기 모드 SIM 시간 실험도 실행마다 부하 평균을 기록한다. 기록된 PID가 죽은 잠금만 `--stale`로 해제하며 다른 작업의 프로세스는 종료하지 않는다. oracle-x86의 속도 비교는 잠금 없이 짝지어 동시 실행하며 "가벼운 개발 진행"의 시뮬레이션 항목을 따른다.
 - **Codex 작업은 돌려서 결함 찾기 (2026-10-15 사용자: "sonnet 검토 걍 하지 말고 그럼, 돌려보고 결함을 빨리빨리 찾자"):** 같은 날 도입한 Sonnet 짝 검토(사용자: "6.1 sol 좀 못 믿음직스러운데, 하나의 일에 2명 붙여서 검토하면서 하게 하는 게 어떨까", "검토를 너무 많이 하는 거 같기도 하고")는 폐지한다. 근거(조정자 집계, 독립 재검증 아님): 검토 7건 중 APPROVE 2건이었고 그 2건(act9, release18)도 GCP 실행에서 제어 결함으로 멈췄다. 검토자도 오프라인 재생만 봐서 폐루프 진동 같은 결함을 놓쳤다. 아래 적용 방식은 조정자 설계(사용자 미확인)다.
