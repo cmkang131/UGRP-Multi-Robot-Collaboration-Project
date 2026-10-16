@@ -31,11 +31,15 @@ def checkpoint_record(runtime_record, checkpoint):
     rows = {}
     for rid, robot in session['robots'].items():
         events = robot['events']
-        stopped = [e for e in events if e['event'] == 'checkpoint_high_stop' and e['seg'] == wanted]
+        # v98 sigma re-fix (zone_pair_highpose_refix): a set-down at this stop replaces the HIGH stop; its receipt
+        # is the own fix taken on the floor, raised again to HIGH (kind 'floor_refix', never labelled 'fix').
+        stopped = [e for e in events if (e['event'] == 'checkpoint_high_stop' and e['seg'] == wanted)
+                   or (e['event'] == 'refix_set_down' and e.get('stop') == wanted)]
         # v98: a fresh fix after the stop, or the own DR receipt within the unchanged budget (kind kept per row).
         from harness.zone_pair_highpose_dr_checkpoint import RECEIPT_EVENTS
-        observed = [{**e, 'receipt': RECEIPT_EVENTS[e['event']]} for e in events
-                    if e['event'] in RECEIPT_EVENTS and e['seg'] == wanted]
+        receipts = {**RECEIPT_EVENTS, 'refix_resumed_high': 'floor_refix'}
+        observed = [{**e, 'receipt': receipts[e['event']]} for e in events
+                    if e['event'] in receipts and e['seg'] == wanted]
         # Every preceding leg must have started under a carry GO. A receipt
         # name alone cannot stand in for carrying the route from the dock.
         carried = {e.get('seg') for e in events if e['event'] == 'state' and e.get('state') == 'carry'}

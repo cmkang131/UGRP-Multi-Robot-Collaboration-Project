@@ -5,8 +5,10 @@ EVALUATION ONLY. Nothing here is fed back to control: the scorer runs after the 
 backend wrote (``eval_only/<rid>/camera_labels.jsonl``) and writes ``eval_only/dr_receipt_nees.json``. No module
 under ``harness/`` imports this file (``tests/test_highpose_receipt_nees.py`` checks it).
 
-Why: the v98 HIGH checkpoint accepts an own report whose sigma is inside the unchanged 50 mm / 3 deg budget as a
-DR receipt (``harness/zone_pair_highpose_dr_checkpoint.py``). The particle filter was measured to be
+Why: the v98 HIGH checkpoint accepts an own report whose sigma is inside the derived 67.43 mm / 2.89 deg budget
+(``GATE_LOADED`` 70 mm / 3 deg x (1 - 1.645/sqrt(2000)), decision v6-3; earlier records used 50 mm / 3 deg and are
+not pooled) as a DR receipt (``harness/zone_pair_highpose_dr_checkpoint.py``). The scoring below does not use the
+budget value. The particle filter was measured to be
 over-confident (reported sigma 3.5-8 mm at 147-178 mm true error, independent review P1-3 of PR #363), so such a
 receipt says "the filter *thinks* it is inside the budget", not "the robot *is* inside the budget". The
 receipt is therefore named a sigma-budget receipt and every one is scored here with the Normalised Estimation
