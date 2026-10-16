@@ -42,7 +42,15 @@ def run(argv,**kw):
 
 
 def cloud(args):
-    return json.loads(run(['gcloud',*args,'--account',ACCOUNT,'--project',PROJECT,'--format=json']))
+    # Retry only the read-only budget log query; never turn an uncertain
+    # budget check into permission for a new submission or VM restart.
+    attempts=3 if args[:2]==['logging','read'] else 1
+    for attempt in range(attempts):
+        try:return json.loads(run(['gcloud',*args,'--account',ACCOUNT,'--project',PROJECT,'--format=json']))
+        except (subprocess.CalledProcessError,subprocess.TimeoutExpired) as exc:
+            if attempt+1==attempts:raise
+            event('budget_read_retry',attempt=attempt+1,error_type=type(exc).__name__,new_submission=False)
+            time.sleep(2**attempt)
 
 
 def budget(force=False):
