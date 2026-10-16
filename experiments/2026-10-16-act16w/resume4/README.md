@@ -50,7 +50,7 @@ A/B는 각각 고정10000스텝과 저장/재로딩 예측 일치 검사를 완�
 [거부 표A](native-validation-A-rejection_table-enriched.json),
 [거부 표B](native-validation-B-rejection_table-enriched.json)를 보존한다.
 A/B87429 실패의 전체2Hz·끝10초10Hz를 직접 검토했다. 학생 성공0이라 교사 성공 참고와 구분한다.
-C는 동일D0·고정10000스텝에서 TRAIN 커리큘럼만 켜 학습 중이다.
+C는 동일D0에서 TRAIN 커리큘럼만 켜 고정10000스텝 학습과 저장/재로딩 예측 일치를 완료했고 VAL8을 진행 중이다.
 실제 표집 대상 행이1367→7219로 넓어지는 로그와 D0 동일 해시를 확인했다
 ([진행 중 근거](native-C-curriculum-live-receipt.json)).
 [후속 실행기](native-experiment-launch.json)는 기존 A/B를 재제출하지 않고,
@@ -104,3 +104,6 @@ B는 이128열을 정규화 좌표의0(=TRAIN 평균)으로 바꾸고, 서보PWM
 겹침0을 확인했고,87429는 validation으로 분리됐다.
 [A/B 검증 소속](native-validation-split-annotation.json)은 실제8시드가 protocol VAL과 같음을
 확인한다. 원본 plan·학습 자료·평가 원장은 덮어쓰지 않았다.
+
+C87429의 첫30SIM초 원본61장(2Hz)을 직접 보았다. 약5초에 대상이 오른쪽으로 나간 뒤30초까지 다시 보이지 않았다.
+[부분 검토](native-C-first30-review.json)는 전체 검증·말기10Hz 검토와 구분하며 성공 판정으로 사용하지 않는다.

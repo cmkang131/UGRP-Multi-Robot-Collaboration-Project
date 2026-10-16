@@ -1,5 +1,5 @@
 {
-  "status": "NATIVE_A_B_TRAINING",
+  "status": "NATIVE_C_VALIDATION",
   "complete": false,
   "contact_profile": "warp_native_contact_v1",
   "noslip_baseline": {
@@ -55,7 +55,7 @@
     "independent_score_matches": 40,
     "manifest_files_verified": 8315
   },
-  "new_training_steps": 0,
+  "new_training_steps": 30000,
   "student_evaluation": null,
   "final40_accessed": false,
   "wall_cap": null,
@@ -89,16 +89,15 @@
     "target_steps_each": 10000,
     "smoke_steps_each": 300,
     "smoke_readback_verified": true,
-    "status": "main_running",
+    "status": "A/B/C_10000_complete_readback_verified",
     "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-training-r1"
   },
   "native_learning_status": "C10000 readback complete; native VAL8 running. A/B0/8 each, DAgger/D1/final40 not started.",
   "native_training_curves": {
-    "path": "native-ab-learning-curves.png",
-    "receipt": "native-ab-learning-curves.json",
+    "path": "native-abc-learning-curves.png",
+    "receipt": "native-abc-learning-curves.json",
     "reviewed": true,
-    "scope": "actual logged losses, no physical performance claim",
-    "note": "movement L1 decreases; intermittent completion BCE spikes remain; no outcome-based retraining"
+    "scope": "actual logged A/B/C losses, no physical performance claim"
   },
   "provenance_annotations": {
     "receipt": "native-provenance-annotations.json",
@@ -282,7 +281,7 @@
     "history": "off",
     "curriculum": true,
     "same_D0_as_A": true,
-    "validation": "RUNNING8,20\u201326SIM at18:02Z, no result yet",
+    "validation": "RUNNING8; no completed outcome yet",
     "curve": "native-abc-learning-curves.png",
     "model": "native-model-C-pending.json"
   }

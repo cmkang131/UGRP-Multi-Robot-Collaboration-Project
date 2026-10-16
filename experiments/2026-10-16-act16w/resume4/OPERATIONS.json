@@ -49,10 +49,10 @@
     "B": "0/5",
     "pooled": false
   },
-  "progress": "C10000 +exact checkpoint readback COMPLETE, native VAL8 started17:56Z,14\u201319SIM at18:00Z. No C outcome yet. A/B0/8 each kept; final40 unopened.",
+  "progress": "C10000 exact readback COMPLETE; native VAL8 running, C87429 first30 reviewed; A/B0/8 retained; final40 unopened",
   "next": [
     "Observe existing orchestrator73402 at /home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1; execution source c27a9d537 unchanged. Never resubmit existing A/B/validation jobs. Summary errors require original diagnosis, no automatic retry.",
-    "At WAIT_REVIEW_A_B, run independent student raw recount for each validation root with analysis8e5f18480/scripts/audit_act16w_native_student.py. Native A87429 full review exists; B87429 is first30-only and requires full terminal review. Inspect two failures plus one actual student success if available; if none exists explicitly state it, retain clearly labeled teacher reference. Render on L4 using c27 playback; ffprobe only; retrieve only montage/strips/metadata, verify transfer hashes.",
+    "A/B review complete/acked. At WAIT_REVIEW_C, independently recount C raw scores, inspect completed C87429 full2Hz and terminal10Hz playback (queued read-only waiter), then write evidence-matched review-C.json. Repeat D1 with actual DAgger coverage qualification.",
     "Write root/review-A_B.json with approved=true, exact validation_sha256 map from review-A_B-request.json, nonempty playback_receipts list {path:absolute existing VM review JSON,sha256}. This is agent evidence review under authorized task, not user approval. Repeat at WAIT_REVIEW_C and WAIT_REVIEW_D1. Controller automatically trains fresh C and D1, all10000 same c27 source, after each review; do not manually duplicate.",
     "Controller freezes validation-based selected model only after A/B,h4,h5; then creates final91620\u201391659 references and evaluates once. Do not open final seeds early or tune after final outcomes. Complete pipeline still requires raw recount/playback/public model distribution/report.",
     "All4 staged model paths root/model-A,B,C,D1. Pending catalog files/ZIPs ready only after respective training. Distinct native Release tag models-20261016-act16w-native-v1. Use local publish_act16w_stream.py memory-only relay; no VM credentials or Mac weight files. Add all4 rows to model_artifacts registry, immutable Release/catelog/checksums. New clone references primary git-shared; run verify_act16w_release.py with existing ACT environment CPU: anonymous public download, archive+all file hashes, real CPU loading. Scope not clean venv/physics success.",
@@ -138,6 +138,14 @@
     "pid": 89180,
     "exec_session": 33508,
     "out": "/home/ugrp/ugrp-sim/runs/act16w-native-C-87429-first30",
-    "scope": "read-only until existing group04 reaches30SIM; then compose first30 images, or report early complete"
+    "scope": "read-only until existing group04 reaches30SIM; then compose first30 images, or report early complete",
+    "status": "complete;61 frames reviewed and hashes verified"
+  },
+  "C_first30_review": "native-C-first30-review.json",
+  "C_playback_waiter": {
+    "pid": 90089,
+    "script": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/delivery-ops/C-playback-wait.py",
+    "out": "/home/ugrp/ugrp-sim/runs/act16w-native-playback-C-87429",
+    "scope": "wait for completed seed87429 then saved-state render only; no native physics or model calls"
   }
 }

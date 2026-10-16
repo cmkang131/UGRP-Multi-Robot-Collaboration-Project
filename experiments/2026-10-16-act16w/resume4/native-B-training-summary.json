@@ -1,0 +1,93 @@
+{
+  "source_sha": "c27a9d537eaae873c7e7bc2ceaeeada69696cc48",
+  "act_source_sha": "3f99d58c5ada0862e669ef4065c0ba957f1b4547",
+  "dataset_manifest_sha256": "3d0a1c4907f0c91a5674d23e52c9fbf339f03952ce3bcf92dee21f7e8ab7dbd2",
+  "seed": 20261015,
+  "history_causal_split_v1": "wheel_pulse_train_mean",
+  "curriculum_starts_sha256": null,
+  "done_loss": "balanced_bce_v1",
+  "batch_size": 8,
+  "chunk": 8,
+  "period_s": 0.1,
+  "schedule_steps": 10000,
+  "lerobot_act_sha256": "8d622935319af7d03f1efd95d51e726af2921010f7e4f5ec3742f62280493111",
+  "contact_profile": "warp_native_contact_v1",
+  "status": "complete",
+  "complete": true,
+  "stage": "main",
+  "host": {
+    "project_id": "ugrp-sim-b-1014",
+    "instance": "ugrp-act-l4-gcp2",
+    "machine_type": "g2-standard-8",
+    "zone": "asia-northeast3-a"
+  },
+  "steps_requested": 10000,
+  "steps_completed": 10000,
+  "readback_verified": true,
+  "selection": "fixed final optimizer step; no final evaluation checkpoint selection",
+  "admission_sha256": "03aee81862658009a9a4dbd5c40a4e14e872eefd9be06b953064fcb508cfde6a",
+  "teacher_gate": {
+    "teacher_success_n": 40,
+    "teacher_attempts_N": 40
+  },
+  "class": "dev",
+  "research_result": false,
+  "environment": {
+    "torch": "2.11.0+cu128",
+    "torchvision": "0.26.0+cu128",
+    "lerobot": "0.6.2",
+    "numpy": "2.2.6"
+  },
+  "gpu": "NVIDIA L4",
+  "cuda": "12.8",
+  "training_rows": 11860,
+  "done_class_counts": {
+    "grasp": {
+      "positive_n": 32,
+      "rows_N": 9055,
+      "positive_fraction": 0.00353395913859746
+    },
+    "release": {
+      "positive_n": 32,
+      "rows_N": 2805,
+      "positive_fraction": 0.01140819964349376
+    }
+  },
+  "latest": {
+    "step": 10000,
+    "loss": 0.21307750046253204,
+    "legacy_l1_loss": 0.6910673379898071,
+    "movement_l1_loss": 0.186750590801239,
+    "done_bce_loss": 0.0005012377514503896,
+    "kld_loss": 0.0025825686752796173,
+    "gradient_norm": 11.50345230102539,
+    "wall_s": 3160.5622945449995,
+    "eligible_rows": 11860
+  },
+  "last_checkpoint": "/home/ugrp/ugrp-sim/runs/act16w-native-training-r1/B/main/step-010000",
+  "peak_gpu_bytes": 1548071424,
+  "input_audit": {
+    "keys": [
+      "observation.images.own_history",
+      "observation.state"
+    ],
+    "teacher_input_fields": 0,
+    "train_inference_same_transform": true
+  },
+  "wall_s": 3164.6981861019995,
+  "artifacts": {
+    "progress.jsonl": "477f6cfa2b40181755be43b163990ea21c9386096b79adefb204e096b9667276",
+    "step-010000/resume.json": "7ae1a95fad7bc5663df2ba53783d0328f4dab49268d4786e8740e2bb938e59b6",
+    "step-010000/optimizer.pt": "350308c4b9c17f8139c2e73eeea3a313ee42c8fd3e14a8449a7caa5173156138",
+    "step-005000/resume.json": "477187f307e9e9f4821d036ed330192c05e4e102bbd16713fb74fa95be4e6add",
+    "step-005000/optimizer.pt": "62c63859e2e59ca15b3b1b27015f8f2501271e6ed17652956eb9fa6d2b3855a2",
+    "step-010000/actor/SHA256.json": "0ee9b2be8d952dc0c01619742129da75290508e749838f0cb31a7ae3a3fd2e38",
+    "step-010000/actor/model.safetensors": "fcf12d01877340bdf225519547d34be071b5b05ce0aceeae2aadc51f9492004c",
+    "step-010000/actor/adapter.json": "8ed8904de56b7c0e1f7554d3a4dd13edb99c6d7d033922ac5d853bb54157e1e5",
+    "step-010000/actor/config.json": "b63bc05fb84e5c0f53329336a7a147f18ca73f297ed25279b42b968e279f571f",
+    "step-005000/actor/SHA256.json": "4d8785737da292b0b46f962863ca37e46ee83c9543ee33d1b855bf9c2a6be3b6",
+    "step-005000/actor/model.safetensors": "c17e5653f1ea15635c4de5d8964d43455e1f7eee35dcbae9401c7e3a16f32085",
+    "step-005000/actor/adapter.json": "80b8423b6b8734aefe54ea54a48782f91603387c31c6c884ca5fb3ec2cb13230",
+    "step-005000/actor/config.json": "b63bc05fb84e5c0f53329336a7a147f18ca73f297ed25279b42b968e279f571f"
+  }
+}
