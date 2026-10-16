@@ -1,0 +1,21 @@
+{
+  "status": "REGISTERED_BEFORE_RUN",
+  "raw": "/home/ugrp/ugrp-sim/runs/mapbuild3",
+  "reproduction": "python -m scripts.mapbuild3_prepare --help",
+  "stages": [
+    {
+      "stage": "planned_candidate",
+      "cumulative_pass_n": 1,
+      "rejected_n": 0
+    }
+  ],
+  "reasons": [
+    {
+      "category": "known_prior_spawn_overlap",
+      "reason": "drivecheck original reproduction; not a new measurement",
+      "blocked_object": "r1 lower body <-> cargo_box_00_geom",
+      "minimum_gap_m": -0.0153449,
+      "gap_status": "prior_measured"
+    }
+  ]
+}
