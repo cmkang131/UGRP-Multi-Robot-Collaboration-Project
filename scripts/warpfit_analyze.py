@@ -143,7 +143,7 @@ def main():
     for rp in folders:
         r=json.loads(rp.read_text());folder=rp.parent
         row=dict(path=str(folder),**{k:r.get(k) for k in ('engine','round','nworld','status','completed','HOST_ERROR','cap_end','sim_s',
-            'physical_gpu_ms_per_step','wall_per_sim_s','amortized_wall_per_world_sim_s','setup_jit_s','runtime_wall_s','max_ncon','max_nefc')},
+            'physical_gpu_ms_per_step','wall_per_sim_s','amortized_wall_per_world_sim_s','setup_jit_s','runtime_wall_s','max_ncon','max_nefc','error')},
             profile=r['profile']['profile'])
         argv=r['reproduce'];case=argv[argv.index('--case')+1] if '--case' in argv else 'tape'
         kind='box' if 'box' in folder.name else 'beam' if 'beam' in folder.name else 'drive'
@@ -183,7 +183,13 @@ def main():
                 row['valid_for_odom_calibration']=False
                 row['fixture_limit']='unchanged drivecheck initial chassis/cargo_box_00 overlap; causal fix owned by drivecheck'
         if not r.get('completed'):
-            rejections.append(dict(category='HOST_ERROR',reason=r.get('error','incomplete'),blocked_object='physics_engine',minimum_gap_m=None,gap_status='not_geometric',raw=str(folder)))
+            error=r.get('error','incomplete')
+            # Pinned OverflowType.LS_ITERATIONS=1024. Historical benchmark
+            # error text said CAPACITY_OVERFLOW for every overflow bit; retain
+            # it verbatim while distinguishing the actual solver limit.
+            category='solver_line_search_limit' if '1024' in error else 'HOST_ERROR'
+            row['rejection_category']=category
+            rejections.append(dict(category=category,reason=error,blocked_object='physics_engine',minimum_gap_m=None,gap_status='not_geometric',raw=str(folder)))
         results.append(row)
     dump(a.output/'thresholds.json',thresholds)
     dump(a.output/'rows.json',results)
@@ -192,7 +198,7 @@ def main():
         dict(gate='full_protocol_not_smoke',cumulative_pass=sum(bool(r['completed']) and not r['cap_end'] for r in results),rejected=sum(bool(r['cap_end']) for r in results))],reasons=rejections,
         sample_funnels=sample_funnels,raw=str(a.root),reproduce=sys.argv))
     dump(a.output/'summary.json',dict(runs=len(results),completed=sum(bool(r['completed']) for r in results),
-        HOST_ERROR=sum(r['category']=='HOST_ERROR' for r in rejections),thresholds=thresholds,default_changes=0,source='gcp6 only; gcp2 analysis; C references separate',reproduce=sys.argv))
+        HOST_ERROR=sum(bool(r['HOST_ERROR']) for r in results),thresholds=thresholds,default_changes=0,source='gcp6 only; gcp2 analysis; C references separate',reproduce=sys.argv))
     print(json.dumps(dict(runs=len(results),HOST_ERROR=sum(r['category']=='HOST_ERROR' for r in rejections),thresholds=thresholds)))
 
 

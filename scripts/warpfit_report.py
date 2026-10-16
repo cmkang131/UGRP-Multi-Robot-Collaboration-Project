@@ -22,7 +22,7 @@ def main():
     for r in selected:
         entry={k:r.get(k) for k in ('path','round','nworld','kind','case','profile','status','completed','HOST_ERROR','cap_end',
             'sim_s','physical_gpu_ms_per_step','wall_per_sim_s','amortized_wall_per_world_sim_s','runtime_wall_s','setup_jit_s',
-            'loaded_contact_rate','fully_retained_worlds','hold_contact_rate','acceptance_sample_rate','slip_p95_mm','max_ncon','max_nefc')}
+            'loaded_contact_rate','fully_retained_worlds','hold_contact_rate','acceptance_sample_rate','slip_p95_mm','max_ncon','max_nefc','error','rejection_category')}
         if r.get('worlds'):
             entry['height_min_mm']=min(w['height_m']['min'] for w in r['worlds'])*1000
             entry['tilt_max_deg']=max(w['tilt_deg']['max'] for w in r['worlds'])
@@ -46,8 +46,11 @@ def main():
                 actual_over_v122_p50=None if not ratios else med(ratios),
                 tilt_deg_p95=med([v['tilt_deg']['p95'] for v in valid]),tilt_deg_max=max(v['tilt_deg']['max'] for v in valid),
                 calibration_valid=False,fixture_limit='original chassis/cargo_box_00 interpenetration; see drivecheck'))
-    summary=dict(status='complete' if len(selected)==28 and all(r['completed'] and not r['cap_end'] for r in selected) else 'partial',
+    terminal=len(selected)==28 and all(r['status'] in ('complete','HOST_ERROR') for r in selected)
+    errors=sum(bool(r['HOST_ERROR']) for r in selected)
+    summary=dict(status=('comparison_complete_with_rejections' if errors else 'complete') if terminal else 'partial',
         expected_paired_jobs=28,recorded_paired_jobs=len(selected),completed_paired_jobs=sum(bool(r['completed']) for r in selected),
+        rejected_paired_jobs=errors,
         rows=compact,drive=pulses,thresholds=json.loads((a.analysis/'thresholds.json').read_text()),
         world_scope='same fixed fixture repeated; not independent random-seed task trials',
         latency_definition='runtime wall / common SIM horizon',throughput_definition='runtime wall / (world count x SIM horizon)',
