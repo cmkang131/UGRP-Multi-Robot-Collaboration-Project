@@ -8,6 +8,7 @@ import argparse
 from collections import Counter, deque
 import hashlib
 import json
+import os
 from pathlib import Path
 import platform
 import subprocess
@@ -53,6 +54,7 @@ def parser():
     p.add_argument('--world-model-parameters-v1',action='store_true',help='retain exact heterogeneous parameters on one topology, never normalize masses')
     p.add_argument('--native-sleep-policy-compat-v1',action='store_true')
     p.add_argument('--placement-graspable-filter-v1',action='store_true')
+    p.add_argument('--mps-shared-v1',action='store_true',help='explicit private warp4 MPS runtime cohort; default OFF')
     p.add_argument('--vm-hourly-usd',type=float,required=True)
     return p
 
@@ -63,6 +65,8 @@ def main():
         p.error('Mac physics/render forbidden; Linux gcp2 required')
     if not 0<a.cap_s<=180 or not 0<a.vm_hourly_usd<float('inf'):
         p.error('finite existing SIM cap and explicit positive hourly price required')
+    if a.mps_shared_v1 and os.environ.get('CUDA_MPS_PIPE_DIRECTORY')!='/home/ugrp/ugrp-sim/runs/warp4/mps/pipe':
+        p.error('private task-owned MPS pipe required; no global GPU configuration changes')
     from simalt_host import gcp2_identity
     host=gcp2_identity()
     if not (a.initialize_only or a.export_compiled_only) and host['instance']!='ugrp-act-l4-gcp2':
@@ -99,6 +103,7 @@ def main():
         training_rgb=False,model_calls=0,weld='off',cpu_results_pooled=False,
         gate_eligible=False,shared_load=True,vm_hourly_usd=a.vm_hourly_usd,
         placement_graspable_filter_v1=a.placement_graspable_filter_v1,
+        cuda_runtime_profile='warp4_private_mps_v1' if a.mps_shared_v1 else 'shared_contexts_baseline',
         price_basis='inherited regional VM estimate; billing unverified',reproduce=sys.argv)
     write(a.out/'summary.json',report)
     lanes=[];bridges=[];contexts=[];results={};recent=[deque(maxlen=100) for _ in indices]
