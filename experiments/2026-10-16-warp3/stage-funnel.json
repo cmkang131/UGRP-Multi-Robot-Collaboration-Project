@@ -3,12 +3,37 @@
   "scope": "ordered execution stages, not pooled teacher cohorts",
   "stages": [
     {
+      "name": "scene_export_bootstrap",
+      "attempts": 3,
+      "compiled_export": 1,
+      "HOST_ERROR": 2,
+      "independent_teacher_N": 0,
+      "reason": "first nearclip scene-name guard, then missing pinned legacy wall texture; exact scene composition and release geometry extension resolved before N16",
+      "blocking_object": [
+        "floor_light_nearclip_v1",
+        "zone_wall_divider_1_250_14750_2000"
+      ],
+      "minimum_gap_m": null,
+      "minimum_gap_status": "scene construction, not geometry clearance",
+      "raw": "bootstrap-rejection_table.json"
+    },
+    {
       "name": "distinct_start",
       "candidates": 16,
       "passed": 16,
       "rejected": 0,
       "independent_teacher_n": 0,
       "raw": "distinct-proof.json"
+    },
+    {
+      "name": "numpy_teacher_prefix",
+      "attempts": 1,
+      "replica_worlds": 16,
+      "completed_prefixes": 16,
+      "cap_end": 16,
+      "HOST_ERROR": 0,
+      "independent_teacher_N": 0,
+      "raw": "numpy-prefix-summary.json"
     },
     {
       "name": "teacher",
@@ -144,5 +169,13 @@
   ],
   "reproduce": [
     "See reproduction-commands.json for actual command arrays, environment, source SHA, fresh output and lease preconditions."
+  ],
+  "run_summary_inventory": "run-summary-inventory-r1.json",
+  "auxiliary_funnels": [
+    "bootstrap-rejection_table.json",
+    "playback-preflight.json",
+    "result-reader-rejection_table.json",
+    "command-transport-rejection_table-r1.json",
+    "postprocess-rejection_table-r1.json"
   ]
 }
