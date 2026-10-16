@@ -1,0 +1,186 @@
+{
+  "cpu": {
+    "leases": {},
+    "ugrp_execution_processes": [],
+    "checked_at": "2026-10-16T10:24:35.558670+00:00",
+    "stop_performed": true,
+    "final_state": {
+      "lastStartTimestamp": "2026-10-16T02:34:24.690-07:00",
+      "lastStopTimestamp": "2026-10-16T03:27:19.887-07:00",
+      "machineType": "https://www.googleapis.com/compute/v1/projects/ugrp-sim-b-1014/zones/asia-northeast3-a/machineTypes/n4-highcpu-64",
+      "name": "ugrp-sim-gcp2",
+      "scheduling": {
+        "automaticRestart": true,
+        "instanceTerminationAction": "STOP",
+        "maxRunDuration": {
+          "nanos": 0,
+          "seconds": "86400"
+        },
+        "onHostMaintenance": "MIGRATE",
+        "preemptible": false,
+        "provisioningModel": "STANDARD"
+      },
+      "status": "TERMINATED"
+    },
+    "final_stop_check": "cpu-final-stop-check.json"
+  },
+  "gpu": {
+    "leases": {
+      "act16w-record-parallel.json": {
+        "task": "act16w-record-parallel",
+        "pid": 93226,
+        "start": "2026-10-16T10:19:46.014958+00:00",
+        "expected_end": "2026-10-16T13:45:00.019842+00:00",
+        "concurrency": 16,
+        "children": [
+          {
+            "group": 0,
+            "pid": 34437,
+            "indices": [
+              0,
+              6,
+              10,
+              14,
+              18,
+              22,
+              26,
+              30,
+              34,
+              36,
+              38,
+              42,
+              46
+            ]
+          },
+          {
+            "group": 3,
+            "pid": 34438,
+            "indices": [
+              5,
+              8,
+              12,
+              16,
+              40,
+              44,
+              45,
+              48,
+              49
+            ]
+          },
+          {
+            "group": 2,
+            "pid": 93295,
+            "indices": [
+              3,
+              7,
+              11,
+              15,
+              19,
+              23,
+              27,
+              31,
+              35,
+              39,
+              43,
+              47
+            ]
+          },
+          {
+            "group": 1,
+            "pid": 93296,
+            "indices": [
+              4,
+              29,
+              32,
+              33
+            ]
+          }
+        ]
+      },
+      "act16w-train-pipeline.json": {
+        "task": "act16w-train-pipeline",
+        "pid": 43413,
+        "start": "2026-10-16T08:03:18.904581+00:00",
+        "expected_end": "2026-10-16T13:47:00.019842Z",
+        "concurrency": 0,
+        "gpu_shared": true
+      },
+      "act16w-record.json": {
+        "task": "act16w-record",
+        "pid": 34414,
+        "start": "2026-10-16T07:34:16.311089+00:00",
+        "expected_end": "2026-10-16T13:45:00.019842+00:00",
+        "concurrency": 22,
+        "children": [
+          {
+            "group": 0,
+            "indices": [
+              0,
+              6,
+              10,
+              14,
+              18,
+              22,
+              26,
+              30,
+              34,
+              36,
+              38,
+              42,
+              46
+            ],
+            "pid": 34437
+          },
+          {
+            "group": 3,
+            "indices": [
+              5,
+              8,
+              12,
+              16,
+              40,
+              44,
+              45,
+              48,
+              49
+            ],
+            "pid": 34438
+          }
+        ],
+        "dispatcher_paused_by": 93226,
+        "deadline_supervised_by": "act16w-record-parallel"
+      }
+    },
+    "ugrp_execution_processes": [
+      "  34414       1 python3 -u /home/ugrp/ugrp-sim/src/813b9113b16e382712a00b911a9dcc7c06fbd77d/scripts/act16w_record_batch.py --enabled --root /home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2 --references /home/ugrp/ugrp-sim/runs/act16w-resume2-record-references --groups /home/ugrp/ugrp-sim/runs/act16w-resume2-record-groups --approval /home/ugrp/ugrp-sim/runs/act16w-resume2-admission/recording-approval.json --capacity-receipt /home/ugrp/ugrp-sim/runs/act16w-capacity-receipt.json --selection /home/ugrp/ugrp-sim/src/813b9113b16e382712a00b911a9dcc7c06fbd77d/experiments/2026-10-16-act16w/resume2/record-selection.json --max-worlds 24 --foreign-cpu-worlds 0 --deadline-utc 2026-10-16T13:45:00.019842+00:00 --speed-gate-override User-approved MJWarp throughput backend; recorded pilot-queue exception; report world latency and aggregate throughput; quality unchanged; task8h hard cap.",
+      "  34437   34414 /home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python -u /home/ugrp/ugrp-sim/src/813b9113b16e382712a00b911a9dcc7c06fbd77d/scripts/run_warp_act_record.py --enabled --act16w-host-schema-v1 --qualified-source /home/ugrp/ugrp-sim/src/f0db6b1abb842ea65b71c433738210254f300a7c --teacher-source /home/ugrp/ugrp-sim/src/warp1-teacher-snapshot-6f057f7e --qualification /home/ugrp/ugrp-sim/runs/warp3/teacher-gate-qualification-r1.json --runner-args-json /home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-00/runner-args.json --stage batch --recording-approval /home/ugrp/ugrp-sim/runs/act16w-resume2-admission/recording-approval.json --out /home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-00/capture",
+      "  34438   34414 /home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python -u /home/ugrp/ugrp-sim/src/813b9113b16e382712a00b911a9dcc7c06fbd77d/scripts/run_warp_act_record.py --enabled --act16w-host-schema-v1 --qualified-source /home/ugrp/ugrp-sim/src/f0db6b1abb842ea65b71c433738210254f300a7c --teacher-source /home/ugrp/ugrp-sim/src/warp1-teacher-snapshot-6f057f7e --qualification /home/ugrp/ugrp-sim/runs/warp3/teacher-gate-qualification-r1.json --runner-args-json /home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-03/runner-args.json --stage batch --recording-approval /home/ugrp/ugrp-sim/runs/act16w-resume2-admission/recording-approval.json --out /home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-03/capture",
+      "  43413       1 python3 -u /home/ugrp/ugrp-sim/src/20a5dd30d5d0914314cdf1d8edaa341557145b60/scripts/act16w_train_pipeline.py --enabled --batch /home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2 --out /home/ugrp/ugrp-sim/runs/act16w-resume2-training",
+      "  93226       1 python3 -u /home/ugrp/ugrp-sim/src/a6d08b6ac397cd0e3a29f3ff9c9490895d863a20/scripts/act16w_record_parallel.py --enabled --out /home/ugrp/ugrp-sim/runs/act16w-resume2-record-parallel-r1",
+      "  93295   93226 /home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python -u /home/ugrp/ugrp-sim/src/813b9113b16e382712a00b911a9dcc7c06fbd77d/scripts/run_warp_act_record.py --enabled --act16w-host-schema-v1 --qualified-source /home/ugrp/ugrp-sim/src/f0db6b1abb842ea65b71c433738210254f300a7c --teacher-source /home/ugrp/ugrp-sim/src/warp1-teacher-snapshot-6f057f7e --qualification /home/ugrp/ugrp-sim/runs/warp3/teacher-gate-qualification-r1.json --runner-args-json /home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-02/runner-args.json --stage batch --recording-approval /home/ugrp/ugrp-sim/runs/act16w-resume2-admission/recording-approval.json --out /home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-02/capture",
+      "  93296   93226 /home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python -u /home/ugrp/ugrp-sim/src/813b9113b16e382712a00b911a9dcc7c06fbd77d/scripts/run_warp_act_record.py --enabled --act16w-host-schema-v1 --qualified-source /home/ugrp/ugrp-sim/src/f0db6b1abb842ea65b71c433738210254f300a7c --teacher-source /home/ugrp/ugrp-sim/src/warp1-teacher-snapshot-6f057f7e --qualification /home/ugrp/ugrp-sim/runs/warp3/teacher-gate-qualification-r1.json --runner-args-json /home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-01/runner-args.json --stage batch --recording-approval /home/ugrp/ugrp-sim/runs/act16w-resume2-admission/recording-approval.json --out /home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-01/capture"
+    ],
+    "checked_at": "2026-10-16T10:24:35.936651+00:00",
+    "stop_performed": false,
+    "final_state": {
+      "lastStartTimestamp": "2026-10-15T23:01:09.361-07:00",
+      "lastStopTimestamp": "2026-10-15T23:00:38.656-07:00",
+      "machineType": "https://www.googleapis.com/compute/v1/projects/ugrp-sim-b-1014/zones/asia-northeast3-a/machineTypes/g2-standard-8",
+      "name": "ugrp-act-l4-gcp2",
+      "scheduling": {
+        "automaticRestart": true,
+        "instanceTerminationAction": "STOP",
+        "maxRunDuration": {
+          "nanos": 0,
+          "seconds": "28800"
+        },
+        "onHostMaintenance": "TERMINATE",
+        "preemptible": false,
+        "provisioningModel": "STANDARD"
+      },
+      "status": "RUNNING"
+    },
+    "reason": "other leases and7 execution processes; user rule15, keep running"
+  },
+  "verified_at": "2026-10-16T10:28:03.831703+00:00"
+}
