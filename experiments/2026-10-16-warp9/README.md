@@ -1,15 +1,48 @@
-# warp9 — gcp4 단독 분리 계측 진행
+# warp9 — gcp4 단독 계측·세 번째 처리량 중단 (NOT_READY)
 
-사용자 "모두 MJWarp로 바꿔서 하게"에 따라 warp7/PR #550(`claude/warp5`)을 이어 간다. 현재 **NOT_READY**. 위치 추정·운반·place·완주·실제 LLM E2E 완료를 주장하지 않는다.
+warp7/PR #550(`claude/warp5`) 후속이다. 사용자 "모두 MJWarp로 바꿔서 하게"의 전체 위치 추정·운반·LLM E2E 이관은 **미완료**다. 같은 처리량 결함이 R1/R2/R3에 남아 사용자 중단 규칙을 적용했다. 새 관문·모델 호출을 제출하지 않았다.
 
-[참고 자료](references.md), [warp7 R3 원본 대기열](warp7-r3-queue.json). R3는 shared gcp2 L4, command+physics97.792s / render+평가복사35.126s, 0.4 SIM초/loop145.099s였다. 순수 물리·렌더 수치로 재해석하지 않는다.
+## 조사와 단독 계측
 
-## 재개 2 (2026-10-16)
+[공식 문서·공개 코드와 보존 원문](references.md)을 먼저 읽었다. GPU 물리는 gcp4(`ugrp-sim-d-1016` / `ugrp-act-l4-gcp4`, g2-standard-8·L4), CPU 분석은 gcp2다. gcp3의 자기 대기 PID13017만 정리했고 warp8 임대는 불변이다([증거](resume2/gcp3-wait-cleanup.json)). gcp2 L4는 사용하지 않았다.
 
-- 사용자 추가 지시로 gcp4(`ugrp-sim-d-1016` / `ugrp-act-l4-gcp4`)에서 단독 계측을 시작했다. 원본 `/home/ugrp/ugrp-sim/runs/warp9/profile-gcp4-r1`, source `4476e810cad7160d586cd30a4188b9150fe3bea8`, 감독 PID2189. [제출 기록](resume2/dispatch.json). 진행/컴파일을 측정 완료로 세지 않는다.
-- gcp3 PID13017의 정확한 명령·자식 부재·대기 상태를 확인하고 해당 프로세스만 종료했다. warp8 임대 내용 불변, GPU 제출0·VM 정지0. [정리 증거](resume2/gcp3-wait-cleanup.json).
-- gcp4는 기존 임대·GPU PID가 없을 때 자기 임대를 획득했다. [실행 상한 없음](resume2/gcp4-scheduling.json), `ugrp-idle-guard.timer` active 확인. budget-stop·유휴 장치는 변경하지 않았다.
-- 호스트 등록/계측 표기는 기본 off `warp9_exclusive_host_v1=gcp4`로 확장했다. 결과에서 실제 instance를 읽어 shared/exclusive를 표기하며 다른 호스트와 합산하지 않는다. 관련 비물리14 PASS. CoreWeave 공급 감시 경보0(실제 모델 호출0).
+[1·4·16·64 분리 표](resume2/final-v2/timing-table.md), [전체 비용 순위/해시](resume2/final-v2/scaling.json). R1 source `4476e810cad7160d586cd30a4188b9150fe3bea8`, 같은 초기 장면 하나를 명시적으로 복제한 0.3 SIM초 진단이다. 독립 임무 성공 시행이 아니다. setup/JIT 제외, 계측용 event·추가 동기화가 있는 수치이며 각 열은 중복되어 더할 수 없다.
+
+|N|상태|물리 GPU event 초|렌더 GPU event 초|렌더 CPU 초|제어/명령 Python 초|D2H blocking 초 / GB|
+|---:|---|---:|---:|---:|---:|---:|
+|1|완료|6.1665|0.0655|0.3807|0.5622|0.1529 / 0.4847|
+|4|완료|7.3272|0.1327|1.4722|0.9240|0.4935 / 1.9475|
+|16|완료|10.8574|0.4183|6.7481|2.5776|3.3784 / 7.9317|
+|64|HOST_ERROR|미측정|미측정|미측정|미측정|미측정|
+
+N64는 PID25704가 호스트 OOM으로 SIGKILL됐다(anon RSS31,523,792 KiB ≈30.06 GiB). finalizer/summary가 실행되지 않았으므로 완료 시각·0초로 채우지 않는다. [커널 근거와 사유](resume2/n64-failure-evidence.json). 별도 shared gcp2 warp7 R3의 0.4 SIM초/145.099 wall초, command+physics97.792초·render+평가복사35.126초와 합산하거나 직접 가속 배율로 해석하지 않는다.
+
+## 가장 큰 구간의 후보와 결과
+
+R2/R3 source `3da542d67465fc9a1275c3c1a27dc404d7dae3d6`. [세 라운드 전체 수치](resume2/final-v2/variants.json), [상태 비교](resume2/final-v2/state-comparison.json), [사유·관문 funnel](resume2/final-v2/rejection-table.json).
+
+|라운드|N16 고정 0.3 SIM초 wall초|물리 GPU event 초|해석|
+|---|---:|---:|---|
+|R1 기존16틱 graph×25|24.986|10.857|분리 계측|
+|R2 공식 EventTracer 추가|26.098|11.211|세부 계측, 성능 후보 아님|
+|R3 전용 NoSlip 버퍼+400틱 graph×1|29.099|11.928|개선 없음·미채택|
+
+R2 마지막 graph 조각16틱에서 `/step`0.148061초 중 `noslip`0.125856초(약85%)였다. **마지막 조각**의 event 구간이며 400틱 전체의 커널 busy 합계로 확대하지 않는다. [원본 세부 trace](resume2/final-v2/physics-event-trace.json).
+
+기본 off `warp9_full_period_graph_v1`은 동일한400틱을 한 graph로 capture한다. `warp9_noslip_scratch_v1`은 pinned NoSlip 함수의 L/Y/A 할당3개만 전용 버퍼 조회로 바꾸고 원래 커널·인수·산술 순서를 보존한다. 임시 버퍼7,144,448 bytes, source/AST 해시를 원본 summary에 남겼다. 상수는 원래 period/dt/shape에서 계산하며 새 수용 오차를 넣지 않았다.
+
+실제 기록에서 dt·NoSlip10·solver·iterations·ls_iterations·float32 numerics는 같고 초기 qpos/epoch 원장과 최종 issued ctrl도 같다. 최종 qpos/qvel/qacc_warmstart는 비트 동일하지 않다. qpos 최대 차5.6608e-4는 혼합 좌표 단위이며 위치 오차 m로 해석하지 않는다. 기준 배치의 동일 초기 복제 사이에도 차이가 있어 버퍼/graph 효과와 GPU 비결정성을 분리하지 못했다. 속도 개선도 없어 후보를 채택하지 않는다. 두 토글 모두 기본 off다.
+
+## 검증 범위·운영
+
+- 완료한 고정 작업5개(N1/N4/N16/R2 N16/R3 N16)와 N64 HOST_ERROR1개를 모두 기록했다. raw world 결과의 `HOST_ERROR`/빈 error는 profile 종료 후 `lane.close()`의 GeneratorExit 기록이며 그대로 보존하고, 분석 사유는 `fixed_work_profile_end`로 별도 명시했다. 임무 유효 분모는0이다.
+- 첫30 SIM초·운반 진입·place·완주·held 구간 감사·LLM E2E는 미실행이다. `cap_end=0`, 모델 호출0. 초기 감사의0을 운반/held 감사 통과로 확대하지 않는다. CoreWeave fp4 등록 오류의 오프라인 수정은 보존했으나 Mac 중계·실제 E2E 연결은 미검증이다.
+- **n4 CPU 제어+L4 물리 소유자 분리는 미구현**이다. 원본을 n4에서 분석한 것을 제어 분리로 보고하지 않는다. N64 메모리 경로도 해결되지 않았다. 세 번째 처리량 중단 뒤 새 실행을 내지 않았다.
+- 변경 관련 비물리 **20 passed**, diff 검사 통과. 전체 CI·병합·학생 임무 성공을 주장하지 않는다([검증](resume2/validation.json)).
+- gcp4 완료 원본1,067파일 SHA 불일치0. 원본은 gcp4 영속디스크, 분석 사본은 gcp2에 보존했다. Mac 회수는 요약·작은 검토 영상·프레임 띠뿐이다. [회수·검토](resume2/playback-review.json), [원본 검사·임대 해제](resume2/gcp4-lifecycle-before-stop.json).
+- gcp4 자기 임대/프로세스·GPU PID0, 다른 임대0을 확인한 뒤 VM **TERMINATED** 확인([최종 상태](resume2/gcp4-final-state.json)). 실행 상한을 넣지 않았고 유휴20분·budget-stop은 유지했다. gcp2는 자기 분석 임대만 제거하고 VM 정지 시도0이다. Mac 물리/렌더/GUI·VM 키/에이전트 자격 증명 복사0이다.
+
+재현 명령과 원본 경로는 각 queue/dispatch와 [최종 summary](resume2/final-v2/summary.json), [분석 스크립트](analyze_resume2.py)에 있다. 재개 시에도 다른 호스트 결과를 합산하지 않는다.
 
 ## 1회차 진행 기록
 
@@ -24,12 +57,3 @@
 gcp3 Compute Engine scheduling 조회에서 `maxRunDuration`·`terminationTime`가 없는 것을 확인했다. 8h 상한을 다시 넣지 않았고 VM lifecycle 변경0이다. 대기 실행기는 고정 SIM 작업만 수행하며, 유휴20분·budget-stop을 변경하지 않는다.
 
 첫30 실행기는 기존 평균 기록을 문서 기준 중앙값으로 바꾸고 >6.0에서 중단하도록 수정했다(`41481b5a9`). 이는 비물리 회귀 검증만 완료됐고, 실제 첫30 SIM초는 아직 없다. 분석기는 완료 표지 뒤 profile 원본이 없으면 오류로 남긴다. CI 목록에 새 비물리 검사4개가 포함된다.
-
-## 남은 관문
-
-1. gcp4 단독 1·4·16·64세계 분리 계측 완료와 거부/비용 표(진행 중).
-2. 가장 큰 원인 수정, n4 제어/L4 물리 분리와 무계측 속도 확인. NoSlip·dt·solver 유지.
-3. N16 첫30 SIM초·운반·place·완주, 실패/성공 재생·관문 funnel·입력 감사.
-4. CoreWeave fp4 Mac 중계·ACT 연결·LLM 첫30 점검. 같은 결함3라운드 중단.
-
-원본은 GCP에 보존하고 Mac에는 요약·몽타주·실패 프레임만 회수한다. 유휴20분·budget-stop을 유지한다. 다른 작업 임대·프로세스·VM을 정지하지 않는다.

@@ -1,0 +1,285 @@
+{
+  "audit": {
+    "profile": "warp9_physics_event_trace_v1",
+    "recorded_steps": 16,
+    "scope": "last replayed graph chunk; intrusive CUDA event intervals, nested rows overlap",
+    "upstream_tracer_sha256": "c9b56bddc421e8117cdb571c9f4b9a07a58d58c2667aa4fb8ccfc99e99ccc4cc"
+  },
+  "rows": [
+    {
+      "path": "/step",
+      "calls": 16,
+      "device_event_s": 0.14806118297576903
+    },
+    {
+      "path": "/step/forward",
+      "calls": 16,
+      "device_event_s": 0.14508953380584716
+    },
+    {
+      "path": "/step/forward/wake",
+      "calls": 16,
+      "device_event_s": 0.0008355839848518371
+    },
+    {
+      "path": "/step/forward/update_sleep",
+      "calls": 16,
+      "device_event_s": 0.0001454080045223236
+    },
+    {
+      "path": "/step/forward/fwd_position",
+      "calls": 16,
+      "device_event_s": 0.009915392100811004
+    },
+    {
+      "path": "/step/forward/fwd_position/fwd_kinematics",
+      "calls": 16,
+      "device_event_s": 0.001246207967400551
+    },
+    {
+      "path": "/step/forward/fwd_position/fwd_kinematics/kinematics",
+      "calls": 16,
+      "device_event_s": 0.0004556800052523613
+    },
+    {
+      "path": "/step/forward/fwd_position/fwd_kinematics/com_pos",
+      "calls": 16,
+      "device_event_s": 0.00040755199268460273
+    },
+    {
+      "path": "/step/forward/fwd_position/fwd_kinematics/camlight",
+      "calls": 16,
+      "device_event_s": 0.00013209600001573563
+    },
+    {
+      "path": "/step/forward/fwd_position/fwd_kinematics/flex",
+      "calls": 16,
+      "device_event_s": 3.071999992243946e-05
+    },
+    {
+      "path": "/step/forward/fwd_position/fwd_kinematics/tendon",
+      "calls": 16,
+      "device_event_s": 3.174399991985411e-05
+    },
+    {
+      "path": "/step/forward/fwd_position/crb",
+      "calls": 16,
+      "device_event_s": 0.00041369599103927615
+    },
+    {
+      "path": "/step/forward/fwd_position/tendon_armature",
+      "calls": 16,
+      "device_event_s": 3.2767999917268756e-05
+    },
+    {
+      "path": "/step/forward/fwd_position/collision",
+      "calls": 32,
+      "device_event_s": 0.006420480012893677
+    },
+    {
+      "path": "/step/forward/fwd_position/collision/sap_broadphase",
+      "calls": 32,
+      "device_event_s": 0.004166656121611595
+    },
+    {
+      "path": "/step/forward/fwd_position/collision/convex_narrowphase",
+      "calls": 32,
+      "device_event_s": 0.0003778559975326061
+    },
+    {
+      "path": "/step/forward/fwd_position/collision/primitive_narrowphase",
+      "calls": 32,
+      "device_event_s": 0.001583104023709893
+    },
+    {
+      "path": "/step/forward/fwd_position/wake_collision",
+      "calls": 16,
+      "device_event_s": 7.167999912053347e-05
+    },
+    {
+      "path": "/step/forward/fwd_position/update_sleep",
+      "calls": 32,
+      "device_event_s": 0.00029491200763732197
+    },
+    {
+      "path": "/step/forward/fwd_position/make_constraint",
+      "calls": 16,
+      "device_event_s": 0.0005160959959030152
+    },
+    {
+      "path": "/step/forward/fwd_position/wake_equality",
+      "calls": 16,
+      "device_event_s": 5.836800066754222e-05
+    },
+    {
+      "path": "/step/forward/fwd_position/island",
+      "calls": 16,
+      "device_event_s": 0.0003133439887315035
+    },
+    {
+      "path": "/step/forward/fwd_position/island/direct_dsu",
+      "calls": 16,
+      "device_event_s": 0.00025087999552488325
+    },
+    {
+      "path": "/step/forward/fwd_position/transmission",
+      "calls": 16,
+      "device_event_s": 0.00013107199966907502
+    },
+    {
+      "path": "/step/forward/sensor_pos",
+      "calls": 16,
+      "device_event_s": 2.7647999930195514e-05
+    },
+    {
+      "path": "/step/forward/fwd_velocity",
+      "calls": 16,
+      "device_event_s": 0.0012011520490050316
+    },
+    {
+      "path": "/step/forward/fwd_velocity/com_vel",
+      "calls": 16,
+      "device_event_s": 0.00019353600591421127
+    },
+    {
+      "path": "/step/forward/fwd_velocity/passive",
+      "calls": 16,
+      "device_event_s": 0.0003317759931087494
+    },
+    {
+      "path": "/step/forward/fwd_velocity/rne",
+      "calls": 16,
+      "device_event_s": 0.000448512002825737
+    },
+    {
+      "path": "/step/forward/fwd_velocity/tendon_bias",
+      "calls": 16,
+      "device_event_s": 3.071999992243946e-05
+    },
+    {
+      "path": "/step/forward/sensor_vel",
+      "calls": 16,
+      "device_event_s": 3.071999992243946e-05
+    },
+    {
+      "path": "/step/forward/fwd_actuation",
+      "calls": 16,
+      "device_event_s": 0.00020991999935358763
+    },
+    {
+      "path": "/step/forward/fwd_acceleration",
+      "calls": 16,
+      "device_event_s": 0.001309695966541767
+    },
+    {
+      "path": "/step/forward/fwd_acceleration/xfrc_accumulate",
+      "calls": 16,
+      "device_event_s": 0.0001873920038342476
+    },
+    {
+      "path": "/step/forward/fwd_acceleration/update_active_dofs",
+      "calls": 16,
+      "device_event_s": 0.000144384004175663
+    },
+    {
+      "path": "/step/forward/fwd_acceleration/smooth_solve_compact",
+      "calls": 16,
+      "device_event_s": 0.0008089599758386612
+    },
+    {
+      "path": "/step/forward/solve",
+      "calls": 16,
+      "device_event_s": 0.13102387142181396
+    },
+    {
+      "path": "/step/forward/solve/update_active_dofs",
+      "calls": 16,
+      "device_event_s": 0.000144384004175663
+    },
+    {
+      "path": "/step/forward/solve/solve_compact",
+      "calls": 16,
+      "device_event_s": 0.004159487977623939
+    },
+    {
+      "path": "/step/forward/solve/solve_compact/_compact_gather",
+      "calls": 16,
+      "device_event_s": 6.963199935853482e-05
+    },
+    {
+      "path": "/step/forward/solve/solve_compact/_compact_scatter",
+      "calls": 16,
+      "device_event_s": 0.00024575999472290275
+    },
+    {
+      "path": "/step/forward/solve/solve_compact/_compact_scatter/mul_m",
+      "calls": 16,
+      "device_event_s": 0.00013824000209569932
+    },
+    {
+      "path": "/step/forward/solve/noslip",
+      "calls": 16,
+      "device_event_s": 0.12585574340820313
+    },
+    {
+      "path": "/step/forward/solve/noslip/mul_m",
+      "calls": 16,
+      "device_event_s": 0.00014028800278902053
+    },
+    {
+      "path": "/step/forward/solve/compute_island_mapping",
+      "calls": 16,
+      "device_event_s": 0.0007034879997372627
+    },
+    {
+      "path": "/step/forward/sensor_acc",
+      "calls": 16,
+      "device_event_s": 2.867199992761016e-05
+    },
+    {
+      "path": "/step/implicit",
+      "calls": 16,
+      "device_event_s": 0.0028805119544267656
+    },
+    {
+      "path": "/step/implicit/deriv_smooth_vel",
+      "calls": 16,
+      "device_event_s": 0.00021196799911558627
+    },
+    {
+      "path": "/step/implicit/sleep",
+      "calls": 16,
+      "device_event_s": 0.00032767999172210693
+    },
+    {
+      "path": "/step/implicit/fwd_velocity",
+      "calls": 16,
+      "device_event_s": 0.0012042240500450135
+    },
+    {
+      "path": "/step/implicit/fwd_velocity/com_vel",
+      "calls": 16,
+      "device_event_s": 0.0001935360049828887
+    },
+    {
+      "path": "/step/implicit/fwd_velocity/passive",
+      "calls": 16,
+      "device_event_s": 0.0003348479941487312
+    },
+    {
+      "path": "/step/implicit/fwd_velocity/rne",
+      "calls": 16,
+      "device_event_s": 0.00044748800247907636
+    },
+    {
+      "path": "/step/implicit/fwd_velocity/tendon_bias",
+      "calls": 16,
+      "device_event_s": 3.2767999917268756e-05
+    },
+    {
+      "path": "/step/implicit/update_sleep",
+      "calls": 16,
+      "device_event_s": 0.00014848000463098287
+    }
+  ]
+}

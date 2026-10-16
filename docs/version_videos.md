@@ -4,6 +4,14 @@
 
 **영상은 stage probe를 다시 그린 것이다.** 위에서 본 그림은 정답 위치(평가용, 로봇 입력 아님)를 그린 도식이며 top 카메라 영상이 아니다(probe는 공용 top 카메라 프레임을 저장하지 않는다). 아래 곡선은 로봇이 추정한 yaw 불확실도 σ다. E2E 성공, 학생 성공, 성공률이 아니다.
 
+## 2026-10-16 warp9 MJWarp 처리량 후보 (미채택)
+
+source `3da542d67465fc9a1275c3c1a27dc404d7dae3d6`, 기본off NoSlip 버퍼/400틱 graph 후보다.
+[초기 자기 RGB만 4배속](../experiments/2026-10-16-warp9/figures/r3-initial-own-only-4x.mp4)은
+1.7–1.9 SIM초의10Hz 3프레임뿐이며 운반·성공 영상이 아니다. 개요/r2/r3와 성공 비교는 없다.
+[원본·해시·직접 검토 범위](../experiments/2026-10-16-warp9/resume2/playback-review.json),
+[처리량3회 중단·미완료 관문](../experiments/2026-10-16-warp9/README.md).
+
 ## 2026-10-08 자기 지도 감독 승인 DEV (egomap34)
 
 아래 기존 stage-probe 영상과 별개로 새 물리180초를 기록했다. 단 한 번 승인된 seed32002이며

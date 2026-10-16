@@ -1,0 +1,5 @@
+# Selected kernel journal excerpt; trailing line spaces removed. Original retained on gcp4/gcp2.
+Oct 16 07:54:15 ugrp-act-l4-gcp4.asia-northeast3-a.c.ugrp-sim-d-1016.internal kernel: CPU: 1 UID: 1001 PID: 25704 Comm: python Tainted: G           O        7.0.0-1013-gcp #13~24.04.1-Ubuntu PREEMPTLAZY
+Oct 16 07:54:15 ugrp-act-l4-gcp4.asia-northeast3-a.c.ugrp-sim-d-1016.internal kernel: [  25704]  1001 25704 33302657  7901990  7880948    17273      3769 65110016        0             0 python
+Oct 16 07:54:15 ugrp-act-l4-gcp4.asia-northeast3-a.c.ugrp-sim-d-1016.internal kernel: oom-kill:constraint=CONSTRAINT_NONE,nodemask=(null),cpuset=/,mems_allowed=0,global_oom,task_memcg=/user.slice/user-1001.slice/session-12.scope,task=python,pid=25704,uid=1001
+Oct 16 07:54:15 ugrp-act-l4-gcp4.asia-northeast3-a.c.ugrp-sim-d-1016.internal kernel: Out of memory: Killed process 25704 (python) total-vm:133210628kB, anon-rss:31523792kB, file-rss:69092kB, shmem-rss:15076kB, UID:1001 pgtables:63584kB oom_score_adj:0

@@ -1,0 +1,73 @@
+{
+  "unit": "diagnostic_configuration; not task trials",
+  "stages": [
+    {
+      "stage": "submitted_N16_diagnostic_rounds",
+      "cumulative_pass_n": 3,
+      "rejected_n": 0
+    },
+    {
+      "stage": "fixed_0.3_SIM_work_complete",
+      "cumulative_pass_n": 3,
+      "rejected_n": 0
+    },
+    {
+      "stage": "throughput_defect_resolved",
+      "cumulative_pass_n": 0,
+      "rejected_n": 3
+    }
+  ],
+  "rejections": [
+    {
+      "category": "throughput",
+      "reason": "NoSlip dominated physical interval remains after round3",
+      "blocked_object": "MJWarp NoSlip execution",
+      "minimum_gap_m": null,
+      "gap_scope": "timing_not_physical_gap",
+      "n": 3
+    },
+    {
+      "category": "HOST_ERROR",
+      "reason": "N64 kernel global OOM SIGKILL",
+      "blocked_object": "gcp4 host RAM",
+      "minimum_gap_m": null,
+      "gap_scope": "memory_not_physical_gap",
+      "n": 1
+    },
+    {
+      "category": "state_comparison",
+      "reason": "R3 final integration state not bit-identical",
+      "blocked_object": "R3 scratch/full-period candidate",
+      "minimum_gap_m": null,
+      "gap_scope": "mixed_state_coordinates_not_physical_gap",
+      "n": 1
+    }
+  ],
+  "task_funnel": {
+    "valid_trials": 0,
+    "first30": 0,
+    "lift_carry": 0,
+    "transport": 0,
+    "destination": 0,
+    "place": 0,
+    "complete": 0,
+    "cap_end": 0,
+    "LLM": 0
+  },
+  "raw": [
+    "/home/ugrp/ugrp-sim/runs/warp9/retrieved-gcp4-final/profile-gcp4-r1",
+    "/home/ugrp/ugrp-sim/runs/warp9/retrieved-gcp4-final/trace-gcp4-r2",
+    "/home/ugrp/ugrp-sim/runs/warp9/retrieved-gcp4-r3-complete"
+  ],
+  "reproduction": [
+    "/home/ugrp/ugrp-sim/runs/warp9/analyze_resume2.py",
+    "--retrieved",
+    "/home/ugrp/ugrp-sim/runs/warp9/retrieved-gcp4-final",
+    "--candidate",
+    "/home/ugrp/ugrp-sim/runs/warp9/retrieved-gcp4-r3-complete",
+    "--source",
+    "/home/ugrp/ugrp-sim/src/a3718aa52",
+    "--output",
+    "/home/ugrp/ugrp-sim/runs/warp9/final-analysis-resume2"
+  ]
+}

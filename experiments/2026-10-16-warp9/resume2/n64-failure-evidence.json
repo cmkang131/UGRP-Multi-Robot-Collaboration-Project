@@ -1,0 +1,34 @@
+{
+  "status": "HOST_ERROR",
+  "source_sha": "4476e810cad7160d586cd30a4188b9150fe3bea8",
+  "host": {
+    "provider": "gcp",
+    "project_id": "ugrp-sim-d-1016",
+    "instance": "ugrp-act-l4-gcp4",
+    "machine_type": "g2-standard-8",
+    "zone": "asia-northeast3-a",
+    "cpu_count": 8,
+    "schema": "ugrp.grasp_act.host.v1"
+  },
+  "shared_load": false,
+  "observed_utc": "2026-10-16T08:11:53.809226+00:00",
+  "child_pid": 25704,
+  "termination": "kernel_global_OOM_SIGKILL",
+  "anon_rss_kib": 31523792,
+  "summary_missing": true,
+  "timing": null,
+  "errors": [
+    {
+      "category": "HOST_ERROR",
+      "reason": "kernel_global_OOM_SIGKILL_before_profile_finalizer",
+      "blocked_object": "gcp4 host RAM",
+      "minimum_gap_m": null,
+      "gap_scope": "host_memory_not_physical_gap"
+    }
+  ],
+  "raw": "/home/ugrp/ugrp-sim/runs/warp9/profile-gcp4-r1/n64",
+  "evidence": "/home/ugrp/ugrp-sim/runs/warp9/profile-gcp4-r1/n64/oom-kernel.txt",
+  "host_evidence_scope": "same-instance completed N1 metadata plus kernel hostname",
+  "independent_task_trials": 0,
+  "task_gates": "not_run"
+}

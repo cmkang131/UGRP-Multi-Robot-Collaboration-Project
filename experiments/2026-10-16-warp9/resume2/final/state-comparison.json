@@ -1,0 +1,75 @@
+{
+  "initial_equal": true,
+  "physics_settings_equal": {
+    "dt": true,
+    "noslip_iterations": true,
+    "solver": true,
+    "iterations": true,
+    "ls_iterations": true,
+    "numerics": true
+  },
+  "fields": {
+    "qpos": {
+      "exact": false,
+      "max_abs": 0.000566082657314837,
+      "coordinates": "native mixed coordinates; not a position error in metres",
+      "reference_replica_span": 0.0007820688915671781
+    },
+    "qvel": {
+      "exact": false,
+      "max_abs": 0.3158131241798401,
+      "coordinates": "native mixed coordinates; not a position error in metres",
+      "reference_replica_span": 0.26062800735235214
+    },
+    "ctrl": {
+      "exact": true,
+      "max_abs": 0.0,
+      "coordinates": "native mixed coordinates; not a position error in metres",
+      "reference_replica_span": 0.0
+    },
+    "qacc_warmstart": {
+      "exact": false,
+      "max_abs": 110.8392562866211,
+      "coordinates": "native mixed coordinates; not a position error in metres",
+      "reference_replica_span": 89.81383895874023
+    },
+    "qfrc_applied": {
+      "exact": true,
+      "max_abs": 0.0,
+      "coordinates": "native mixed coordinates; not a position error in metres",
+      "reference_replica_span": 0.0
+    },
+    "xfrc_applied": {
+      "exact": true,
+      "max_abs": 0.0,
+      "coordinates": "native mixed coordinates; not a position error in metres",
+      "reference_replica_span": 0.0
+    },
+    "eq_active": {
+      "exact": true,
+      "max_abs": 0.0,
+      "coordinates": "native mixed coordinates; not a position error in metres",
+      "reference_replica_span": 0.0
+    },
+    "time": {
+      "exact": true,
+      "max_abs": 0.0,
+      "coordinates": "native mixed coordinates; not a position error in metres",
+      "reference_replica_span": 0.0
+    },
+    "tree_asleep": {
+      "exact": true,
+      "max_abs": 0.0,
+      "coordinates": "native mixed coordinates; not a position error in metres",
+      "reference_replica_span": 0.0
+    },
+    "tree_awake": {
+      "exact": true,
+      "max_abs": 0.0,
+      "coordinates": "native mixed coordinates; not a position error in metres",
+      "reference_replica_span": 0.0
+    }
+  },
+  "adopted": false,
+  "interpretation": "not bit-identical; allocator/capture effect vs normal GPU nondeterminism not isolated; no equivalence claim"
+}

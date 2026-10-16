@@ -1,5 +1,9 @@
 # 현재 상태와 실행 경로
 
+## 2026-10-16 warp9 — gcp4 단독 계측·처리량3회 중단 NOT_READY
+
+공식 자료 조사 뒤 gcp4 단독 N1/N4/N16 0.3SIM초 분리 계측을 완료했고 N64는 호스트 OOM으로 HOST_ERROR다. N16 wall24.986→trace26.098→전용 NoSlip 버퍼/400틱 graph29.099초로 개선되지 않아 후보 기본off·미채택, 세 번째 반복 규칙으로 새 제출을 멈췄다. NoSlip·dt·solver 설정은 유지했으나 최종 GPU 상태는 비트 불일치이며 원인은 미분리다. n4 제어 분리·첫30SIM초·운반/place/완주·LLM E2E는 미완료, 모델0. gcp3 자기 대기만 정리·warp8 임대 불변, gcp4 TERMINATED·원본 보존. [전체 계측·funnel·사유·검증](../experiments/2026-10-16-warp9/README.md).
+
 ## 2026-10-16 warp7 — MJWarp 자기 영상·운반 배치 NOT_READY
 
 사용자 "모두 MJWarp로 바꿔서 하게"에 따라 CPU 색 결과 동일성 관문을 평가용 visible geom 정탐·오검출 측정으로 교체했다. MJWarp88장 상자 accepted52/52·B4/4·목적지4/4 정답, 오검출0; 상자30건의 전체 검출 누락은 색·윤곽 뒤 바닥 투영 거부다. N16 세 실제 rollout은 초기0.3–0.4SIM초에서 처리량 문제가 반복돼 세 번째 라운드 중단 규칙을 적용했다. 운반/place/완주 유효 시행0, 첫30SIM초·LLM E2E 미완료. [관문표·모든 HOST_ERROR·재현/원본](../experiments/2026-10-16-warp7/README.md). 아래 기록은 각 날짜 당시 상태다.
