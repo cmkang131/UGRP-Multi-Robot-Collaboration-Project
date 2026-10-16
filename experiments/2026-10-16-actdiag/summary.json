@@ -1814,5 +1814,32 @@
     "draft": true,
     "base": "codex/beamact1",
     "merged": false
+  },
+  "hosts": {
+    "cpu": {
+      "instance": "ugrp-sim-gcp2",
+      "ssh_alias": "gcp2",
+      "machine": "n4-highcpu-64",
+      "root": "/home/ugrp/ugrp-sim/ops-reviews/actdiag",
+      "artifacts": [
+        "audit-v1",
+        "solo-v1",
+        "sampler-v1",
+        "loss-curves.png"
+      ]
+    },
+    "gpu": {
+      "instance": "ugrp-act-l4-gcp2",
+      "machine": "g2-standard-8",
+      "root": "/home/ugrp/ugrp-sim/ops-reviews/actdiag",
+      "artifacts": [
+        "infer-final-v1",
+        "report-v1",
+        "probe-v1",
+        "probe-phase-v1",
+        "latent-v1",
+        "artifacts.json"
+      ]
+    }
   }
 }
