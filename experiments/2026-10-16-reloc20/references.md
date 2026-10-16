@@ -1,6 +1,6 @@
 # 표준 방법·상수 근거
 
-2026-10-16 원문 열람. 변경 전 locdiag.md/JSON과 reloc19 R3 거부 표를 먼저 읽었다. locdiag의 L1 heading 증폭 63.1–66.1%, 두 기하 위험 구간의 국소 잔차 24.2–32.9%를 근거로 횡주행/구동 평균과 경로 기하를 우선한다. 전체 위치 오차의 독립적 인과 기여율로 해석하지 않는다.
+2026-10-16 공식 문서·초록 열람. CMU PDF 본문은 timeout으로 미확인. 변경 전 locdiag.md/JSON과 reloc19 R3 거부 표를 먼저 읽었다. locdiag의 L1 heading 증폭 63.1–66.1%, 두 기하 위험 구간의 국소 잔차 24.2–32.9%를 근거로 횡주행/구동 평균과 경로 기하를 우선한다. 전체 위치 오차의 독립적 인과 기여율로 해석하지 않는다.
 
 - [Nav2 footprint](https://docs.nav2.org/rolling/configuration_and_development/first_time_robot_setup_guide/footprint/setup_footprint/): 로봇 형상 footprint와 원형 모델의 차이. 이번 후보는 기존 팔 외접원과 발행 PWM FK의 화물 꼭짓점 외접원을 합친 회전 불변 enclosure를 사용한다. 정밀 SE2보다 좁은 통로 가용성을 줄이는 한계가 있다.
 - [Nav2 footprint collision checker](https://api.nav2.org/nav2-rolling/html/classnav2__costmap__2d_1_1FootprintCollisionChecker.html), [Nav2 tuning](https://github.com/ros-navigation/docs.nav2.org/blob/rolling/docs/configuration_and_development/tuning_guide.md): 원래 형상/전체 경로를 검사하고 inflation은 여유와 경로 비용에 사용한다. 이번 strict A*는 시작·목표와 모든 연결 간격을 검사하고 기존 margin-release 우회를 쓰지 않는다. 경로 검사량은 기존 40,000 노드, 격자는 기존 0.05m다. 간격 .01m 검사의 최대 미관측 거리는 간격/2이며 distance의 1-Lipschitz 성질로 뺀다.

@@ -24,11 +24,16 @@ def launch(n):
     sha=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
     assert not subprocess.check_output(['git','status','--porcelain','--untracked-files=no'])
     rejection=(RUNS/'reloc20-prior/rejection-table.json' if n==1 else RUNS/f'reloc20-round{n-1}/rejection-table.json')
+    if not rejection.is_file():rejection=Path(str(rejection)+'.zst')
     assert rejection.is_file()
     if n>1:
         previous=RUNS/f'reloc20-round{n-1}'
         assert (previous/'DONE').exists()
-        assert json.loads((previous/'speed-gate.json').read_text())['status']=='PASS'
+        speed=json.loads((previous/'speed-gate.json').read_text())
+        if speed['status']!='PASS':
+            resolution=json.loads((previous/'host-error-resolution.json').read_text())
+            assert resolution['resolved'] is True and speed['median'] is not None and speed['median']<=6
+            assert sorted(resolution['missing_first30_resolved'])==sorted(speed['missing'])
     batch=RUNS/f'reloc20-round{n}';batch.mkdir(exist_ok=False)
     prior=json.loads((RUNS/'reloc19-round3/queue.json').read_text())['runs'];tasks=[]
     for old in prior:
@@ -41,7 +46,8 @@ def launch(n):
                 ep.update(batch=f'reloc20-r{n}',destination_visual_acquire_v1=True,carry_relocalize_v1=False,destination_camera_pan_v1=True)
                 candidate=condition=='candidate'
                 ep.update({key:candidate for key in ('reloc20_heading_forward_v1','reloc20_loaded_footprint_v1','reloc20_visual_stall_v1','reloc20_contact_ode_v1','destination_direction_preserve_v1','destination_search_replan_v1')})
-                ep['pr']=None
+                ep['pr']=543
+                ep['reloc20_drive_eval_v1']=True
                 p=folder/'input-plan.json';p.write_text(json.dumps(plan,indent=2)+'\n')
                 cmd[cmd.index('--plan')+1]=str(p);cmd[cmd.index('--out')+1]=str(folder/'raw')
             else:

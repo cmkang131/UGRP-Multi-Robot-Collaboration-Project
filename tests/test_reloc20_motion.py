@@ -89,3 +89,13 @@ def test_issued_load_enclosure_uses_catalogue_and_command_fk():
     r.update_load(True,'yellow',p,p)
     assert r.footprint is not None
     assert all(math.hypot(*x)<r.radius for x in r.footprint)
+
+
+def test_both_required_transport_scenarios_have_hash_bound_map_declarations():
+    import hashlib
+    root=Path(__file__).resolve().parents[1]
+    d=json.loads((root/'experiments/2026-10-16-reloc20/fixed-floor-map.json').read_text())
+    for name in ('s8_mixed_tiers_v7','s7_pair_with_solo_v7'):
+        row=d['scenarios'][name]
+        assert hashlib.sha256((root/row['scenario_source']).read_bytes()).hexdigest()==row['scenario_source_sha256']
+        assert row['obstacles'][0]['id']=='cargo_beam_1'

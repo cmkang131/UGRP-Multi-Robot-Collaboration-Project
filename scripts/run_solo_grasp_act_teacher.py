@@ -177,7 +177,8 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
                 static=deepcopy(static)
                 # Explicit pre-authored initial floor keepout. This is not a
                 # live object pose; the controller never reads scenario eval.
-                declaration=json.loads((ROOT/'experiments/2026-10-16-reloc20/fixed-floor-map.json').read_text())
+                catalog=json.loads((ROOT/'experiments/2026-10-16-reloc20/fixed-floor-map.json').read_text())
+                declaration=catalog['scenarios'][plan['scenario_id']]
                 if declaration['scenario_id']!=plan['scenario_id'] or declaration['scenario_source_sha256']!=plan['scenario_source_sha256']:
                     raise ValueError('fixed-floor declaration scenario hash mismatch')
                 static['fixed_floor_keepouts']=declaration['obstacles']
@@ -546,6 +547,23 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
                      'base_xyz': list(map(float, base)),
                      'base_yaw_rad':float(world.robot(rid).base_rpy()[2]), 'visible_n': visible_n, 'probe_N': probe_N,
                      'lookaround_estimate_xy': list(map(float, relook.loc.own.x[:2])) if relook.loc is not None else None})+'\n')
+            if plan.get('reloc20_drive_eval_v1',False):
+                # Evaluation-only drivetrain evidence. No reference to this
+                # payload is returned to carry, teacher, RGB or command model.
+                controller=world.controllers[rid]
+                joints=model.actuator_trnid[controller.wheel_act,0]
+                dofs=model.jnt_dofadr[joints];qpos=model.jnt_qposadr[joints]
+                contacts=[]
+                for contact_i in range(data.ncon):
+                    contact=data.contact[contact_i]
+                    names=[model.geom(int(g)).name for g in (contact.geom1,contact.geom2)]
+                    if not any(name and name.startswith(rid+'__') for name in names):continue
+                    wrench=np.zeros(6);mujoco.mj_contactForce(model,data,contact_i,wrench)
+                    contacts.append(dict(geoms=names,distance_m=float(contact.dist),force_contact_frame=wrench.tolist()))
+                payload=dict(t=now,scope='evaluation_only_no_controller_consumers',
+                    wheel_qpos_rad=data.qpos[qpos].tolist(),wheel_qvel_rad_s=data.qvel[dofs].tolist(),
+                    base_rpy_rad=list(map(float,world.robot(rid).base_rpy())),contacts=contacts)
+                with (out/'drive-eval-only.jsonl').open('a') as drive_eval:drive_eval.write(json.dumps(payload)+'\n')
             last_eval_pos, last_eval_t = pos, now
             if tick % 5 == 0:
                 cv2.imwrite(str(out/'review-own'/f'{tick:06d}.jpg'), cv2.resize(bgr, (320, 240)))

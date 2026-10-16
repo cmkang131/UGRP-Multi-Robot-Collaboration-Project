@@ -278,6 +278,9 @@ class CarryToZone:
                 self.failure = 'carry_no_static_route'
 
     def step(self, now):
+        if getattr(self,'reloc20_stall',None) is not None and self.reloc20_stall.recovering:
+            from harness.reloc20_motion import guard
+            return guard(self,(0.,0.,0.),now), False, None
         if self.active_recovery and self.needs_recovery(now):
             return (0., 0., 0.), False, self.failure
         if self.failure:
@@ -298,7 +301,11 @@ class CarryToZone:
             self.arrived = now
             return (0., 0., 0.), True, None
         if distance <= .025:
-            return (0., 0., max(-.1, min(.1, -.6*wrap(pose[2])))), False, None
+            drive=(0., 0., max(-.1, min(.1, -.6*wrap(pose[2]))))
+            if getattr(self,'reloc20_route',None) is not None:
+                from harness.reloc20_motion import guard
+                drive=guard(self,drive,now)
+            return drive, False, None
         if now-self.last_plan >= 1.:
             self.path = self.plan_path(pose[:2], self.goal, self.static['bounds_m'], discs, rects=self.rects, radius=self.radius)
             self.last_plan = now

@@ -17,6 +17,9 @@ def main(n):
         if withheld.exists():r.update(status='WITHHELD',reason=obj(withheld));reports.append(r);continue
         if not (folder/'EXIT').exists():raise RuntimeError('RUNNING '+task['name'])
         d=obj(raw/'result.json');r.update(status=d.get('status'),termination=d.get('termination_category'),valid_for_comparison=not invalid.exists(),exit_code=(folder/'EXIT').read_text().strip())
+        if d.get('status')=='HOST_ERROR' and d.get('sim_s') is None and task['kind']=='carry':
+            r.update(error=d.get('error'),place_success=False,input_audit=d.get('input_audit'),termination='HOST_ERROR',gate_cumulative=dict(started=1,control_started=0),terminal_rejections=[dict(category='HOST_ERROR',reason=d.get('error','missing_error'),N=1,blocked_object='authored_map_declaration',minimum_gap_m=None,gap_scope='not_applicable_precontrol_configuration')])
+            reports.append(r);continue
         if invalid.exists():r.update(invalid_reason=obj(invalid))
         r['source_hashes']={str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in (folder/'task.json',raw/'result.json',raw/'result.json.zst',raw/'manifest.json',raw/'manifest.json.zst',raw/'artifacts.sha256.json',raw/'artifacts.sha256.json.zst') if p.is_file()}
         if task['kind']=='selfmap':
