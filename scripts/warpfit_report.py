@@ -44,6 +44,8 @@ def main():
                 v122_translation_mm=None if prediction is None else float(np.linalg.norm(prediction[:2])*1000),
                 v122_yaw_deg=None if prediction is None else float(np.degrees(prediction[2])),
                 actual_over_v122_p50=None if not ratios else med(ratios),
+                prediction_sample_time_s=valid[0].get('prediction_sample_time_s'),
+                prediction_tail_endpoint_held=valid[0].get('prediction_tail_endpoint_held'),
                 tilt_deg_p95=med([v['tilt_deg']['p95'] for v in valid]),tilt_deg_max=max(v['tilt_deg']['max'] for v in valid),
                 calibration_valid=False,fixture_limit='original chassis/cargo_box_00 interpenetration; see drivecheck'))
         if r['kind']=='drive':
@@ -86,6 +88,7 @@ def main():
     table+=['','유지는 양쪽(빔은 네) 접촉력 양수와 기존 교사12mm 들기 조건이다. 미끄럼 열은 세계별 시간 P95의 세계간 P95다.',
         '상자는 세계당30표본·3초, 빔은3표본·0.3초 유지다. 같은 초기 조건의 복제이며 독립 일반화 성공률이 아니다.',
         '주행 요약은group16/group64 전진100ms, tail2 횡60ms 뒤1초 정지다. 전체18펄스·회전각·펄스 끝/정지 후는drive-table.csv에 있다. 초기 관통 때문에 보정에 쓸 수 없다.',
+        'v122는 등록된 짧은 펄스만 쓰며,1초 정지 뒤 비교에는 등록곡선0.2초 끝값을 유지한다.0.2초 이후 drift를 예측한 값은 아니다.',
         'C 분포의 높이 P05/미끄럼 P95 동시 비교는 별도 JSON에 있으며 유지 판정과 혼동하지 않는다. 기본값·채택 변경0이다.']
     (a.output/'timing-table.md').write_text('\n'.join(table)+'\n')
     print(json.dumps({k:summary[k] for k in ('status','recorded_paired_jobs','completed_paired_jobs')}))

@@ -96,14 +96,17 @@ def drive(folder,m,meta,case):
             delta[2]=(delta[2]+math.pi)%(2*math.pi)-math.pi
             c,z=math.cos(a[2]),math.sin(a[2]);delta[:2]=np.array([[c,z],[-z,c]])@delta[:2]
             pred=row.get('v122');prediction=None
+            prediction_time=None;elapsed=float(t[i]-t[start])
             if pred:
-                duration=t[i]-t[start]
-                prediction=[float(np.interp(duration,pred['times'],np.array(pred['mean_curve'])[:,j])) for j in range(3)]
+                prediction_time=float(np.clip(elapsed,pred['times'][0],pred['times'][-1]))
+                prediction=[float(np.interp(prediction_time,pred['times'],np.array(pred['mean_curve'])[:,j])) for j in range(3)]
             actual=abs(delta[2]) if row['axis']=='turn' else np.linalg.norm(delta[:2])
             pv=None if prediction is None else (abs(prediction[2]) if row['axis']=='turn' else np.linalg.norm(prediction[:2]))
             rows.append(dict(world=w,case=name,phase=phase,delta_xyyaw=delta.tolist(),
                 translation_mm=float(np.linalg.norm(delta[:2])*1000),yaw_deg=float(np.degrees(delta[2])),
                 actual_over_prediction=None if not pv else float(actual/pv),v122_delta=prediction,
+                prediction_sample_time_s=prediction_time,prediction_elapsed_s=elapsed,
+                prediction_tail_endpoint_held=prediction_time is not None and elapsed>prediction_time+1e-8,
                 tilt_deg=stats([tilt(qp[j,w,base:base+7]) for j in range(start,i+1)])))
     return rows
 
