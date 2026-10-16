@@ -42,6 +42,7 @@ def run(plan, output, dependency, model, actor_python, *, mode='off', cap_s=60.)
         source_sha=source, dependency_sha=DEPENDENCY_SHA, execution_host=host,
         teacher_actions=0, truth_corrections=0, student_execution=True,
         held_object_hidden_v1=True, weld='off', physical_success=False,
+        contact_assignment='nearest authored colored end; ties ambiguous; evaluation only',
         model_sha256=sha256(model/'model.safetensors'), cap_end=False,
         loadavg_at_start=os.getloadavg())
     write_json(output/'RUN_META.json', dict(**{'class':'milestone'}, pr=540,
@@ -84,7 +85,7 @@ def run(plan, output, dependency, model, actor_python, *, mode='off', cap_s=60.)
             latencies.append(time.monotonic()-at)
             if set(result) != {'chunk'}:
                 raise ValueError('ACT response allowlist mismatch')
-            predictions.write(json.dumps(dict(t=observation['t'], robot=observation['robot_id'], **result))+'\n')
+            predictions.write(json.dumps(dict(t=observation['t'], robot=observation['robot_id'], **result),allow_nan=False)+'\n')
             return result['chunk']
         executors = {r:ChunkExecutor(predict) for r in plan['roles']}
         with dependency_modules(dependency):
@@ -171,7 +172,7 @@ def run(plan, output, dependency, model, actor_python, *, mode='off', cap_s=60.)
                     obs,jpegs,path=histories[rid].observe(now,jpeg,skill='wait' if waiting else 'grasp',
                         object_kind='long_beam',role=plan['roles'][rid])
                     (output/path).write_bytes(jpeg)
-                    inputs.write(json.dumps(obs)+'\n')
+                    inputs.write(json.dumps(obs,allow_nan=False)+'\n')
                     proposal=None;done=False
                     if barrier.pending is None:
                         proposal,done=executors[rid].step(obs,jpegs)
@@ -181,7 +182,7 @@ def run(plan, output, dependency, model, actor_python, *, mode='off', cap_s=60.)
                     apply(port,value,now,previous[rid])
                     histories[rid].issue(value);previous[rid]=value
                     commands.write(json.dumps(dict(t=now,robot=rid,command=value,done=done,
-                        ready=barrier.ready,permit=permits[rid],waiting=waiting))+'\n')
+                        ready=barrier.ready,permit=permits[rid],waiting=waiting),allow_nan=False)+'\n')
                 # Private evaluation truth is created AFTER commands, and never
                 # passed into histories, executor, barrier, worker or sync.
                 truth=snapshot(world,inst,plan['roles'],scene)
@@ -224,7 +225,7 @@ def run(plan, output, dependency, model, actor_python, *, mode='off', cap_s=60.)
                 evaluations.write(json.dumps(dict(t=now,sim_s=now-origin,truth=truth,geometry=geometry,
                     target_finger_contact_rows=contacts,assigned_contact_forces=assigned,
                     target_finger_min_gap_m=target_gap,passed=passed,score=score.record(),
-                    unrestricted_score=unrestricted_score.record()))+'\n')
+                    unrestricted_score=unrestricted_score.record()),allow_nan=False)+'\n')
                 if tick%5==0:  # user: complete sequence at2Hz; cameras unchanged
                     row=dict(t=now,sim_s=now-origin,own={})
                     top=scene.config['static_map']['top_cameras'][0]['name']

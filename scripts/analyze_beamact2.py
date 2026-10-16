@@ -83,6 +83,8 @@ def main():
         analysis_source_sha=analysis_source,
         verdict='READY' if n==20 and completed==20 else 'NOT_READY',source_sha=queue['source_sha'],
         model_sha256=queue['model_sha256'],runs=runs,reason_distribution=dict(reasons),
+        criteria=dict(lift=LiftScore.CRITERIA,contact_assignment='nearest authored colored end; ties ambiguous',
+            both_student_done=True,cap_end=False),
         failure_stage_distribution=dict(failure_stages),
         funnel={s:dict(cumulative_runs=cumulative[s],frame_pass=frame_pass[s],frame_reject=frame_reject[s]) for s in STAGES},
         verification='raw eval/commands/all own-input rows recounted; no teacher results merged')
