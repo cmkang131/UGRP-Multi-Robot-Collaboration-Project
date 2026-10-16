@@ -123,6 +123,8 @@ def run(a):
     cases=[];initial=[];ctrl=[];odoms=[]
     fixture=np.load(a.fixture/'fixture.npz') if v3 else None
     if v3:
+        import sim
+        sim.__path__.append(str(ROOT/'sim'))
         from sim.spawn_overlap_check import check,OPTION
         from mapbuild3_prepare import named_sets
         classifications=named_sets(m)
