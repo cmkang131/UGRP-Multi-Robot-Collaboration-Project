@@ -51,6 +51,25 @@ def main():
             labels,audit=client.labels_for_training_only(selected)
             if before!=[client.read_actor(0)] or not audit['integration_and_actor_inputs_unchanged']:raise ValueError('oracle affected actor state')
             report.update(status='complete',complete=True,labels=labels,oracle_audit=audit,student_actions=0,research_optimizer_steps=0)
+            # A synthetic checkpoint may test the actual RGB transport/adapter,
+            # but its commands are NEVER applied and no pair is admitted as data.
+            if a.checkpoint:
+                import numpy as np
+                from act16w_input import Act16wActor
+                from act16w_dagger import prepare_single_step
+                from harness import grasp_act_contract as c
+                actor=Act16wActor.load(a.checkpoint,device='cuda')
+                obs,jpgs=before[0];prediction=np.asarray(actor.predict(obs,jpgs))
+                if prediction.shape!=(8,14) or not np.isfinite(prediction).all():raise ValueError('native ACT prediction failed')
+                folder=a.out/'probe-actor';folder.mkdir()
+                (folder/'observation.json').write_text(json.dumps(obs,indent=2)+'\n')
+                for ref,jpeg in zip(obs['rgb'],jpgs):
+                    path=folder/ref['path'];path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(jpeg)
+                pairs,pair_audit=prepare_single_step([obs],labels,contract=c,audit=audit)
+                if len(pairs)!=1:raise ValueError('native initial pair not admitted by h0 target boundary')
+                report.update(native_policy_probe=dict(checkpoint_synthetic=bool(json.loads((a.checkpoint/'adapter.json').read_text())['provenance'].get('synthetic_only')),
+                    serialized_history_mode=actor.mode,prediction_shape=list(prediction.shape),native_jpeg_sha256s=[r['sha256'] for r in obs['rgb']],
+                    valid_target_horizons=int((~pairs[0]['action_is_pad']).sum()),future7_padded=True,pair_audit=pair_audit,policy_commands_executed=0,data_admitted=False))
         else:
             for i in range(len(plans)):
                 folder=a.out/f'world-{i:03d}';folder.mkdir()
