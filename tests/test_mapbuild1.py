@@ -4,6 +4,7 @@ import cv2
 import numpy as np
 import pytest
 from scripts.mapbuild1_replay import read_frame, replay, score
+from scripts.score_mapbuild1 import score as map_score
 
 
 def record(path,frame=0):
@@ -44,3 +45,19 @@ def test_evaluation_requires_exact_label_coverage(tmp_path):
         score(rows,dict(frames=[]))
     with pytest.raises(ValueError,match='DUPLICATE_EVALUATION'):
         score(rows,dict(frames=[dict(sequence='blank',frame_id=0,pose=[0,0,0])]*2))
+
+
+def test_map_unknowns_remain_omissions_and_false_occupied_is_not_coverage_success():
+    base=dict(resolution_m=.1,frame='r1/start')
+    truth=dict(**base,cells=[[0,0,'occupied'],[1,0,'free'],[2,0,'occupied']],wall=[[0.,0.],[.2,0.]])
+    predicted=dict(**base,cells=[[0,0,'occupied'],[1,0,'occupied']],wall=[[0.,0.]])
+    result=map_score(predicted,truth)
+    assert result['coverage']==pytest.approx(2/3)
+    assert result['unknown_truth_cells']==1
+    assert (result['occupied_tp'],result['occupied_fp'],result['occupied_fn_including_unknown'])==(1,1,1)
+    assert result['occupied_iou']==pytest.approx(1/3)
+    assert result['geometry']['wall']['truth_to_predicted_m']['max']==pytest.approx(.2)
+    empty=map_score(dict(**base,cells=[]),truth)
+    assert empty['coverage']==0 and empty['occupied_fn_including_unknown']==2
+    assert empty['geometry']['wall']['status']=='unobserved'
+    assert empty['geometry']['wall']['truth_to_predicted_m']['p50'] is None
