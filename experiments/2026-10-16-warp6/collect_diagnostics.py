@@ -39,8 +39,11 @@ def main():
             pass
         worlds = summary.get('worlds', [])
         audits=[]
+        admissions=[]
         for world in sorted(run.glob('world-*')):
             if not world.is_dir():continue
+            admission=read(world/'placement-admission.json')
+            if admission:admissions.append(dict(world=world.name,**admission))
             result=read(world/'raw/result.json')
             if result.get('input_audit') is not None:
                 audits.append(dict(world=world.name,input_audit=result['input_audit'],
@@ -82,7 +85,9 @@ def main():
             max_nacon=max((max(r['nacon']) for r in trace),default=None),
             max_nefc=max((max(r['nefc']) for r in trace),default=None),
             max_awake_dofs=max((max(r['awake_dofs']) for r in trace),default=None),
-            input_audits=audits,funnel=funnel))
+            input_audits=audits,placement_admissions=admissions,
+            placement_accepted_N=sum(bool(v['accepted']) for v in admissions),
+            placement_rejected_N=sum(not v['accepted'] for v in admissions),funnel=funnel))
     for path in sorted(a.root.rglob('*')):
         if path.is_file() and path.suffix not in ('.bundle','.tgz'):
             with path.open('rb') as f:
