@@ -167,6 +167,8 @@ def main():
         n = cmd['planned_world_N']
         completed = len(results)
         success = sum(w['success'] is True for w in results)
+        setup = summary.get('started_N', 0)
+        setup_rejected = int(terminal and setup < n and bool(summary.get('error_type')))
         attempt = dict(name=name, host='gcp3', source_sha=cmd['source_sha'], export_only=export,
             status=('HOST_ERROR' if receipt and receipt['exit_code'] else summary.get('status', 'missing')),
             terminal=terminal, command=cmd['command'], raw=str(run), N=n, completed_N=completed,
@@ -179,10 +181,12 @@ def main():
             task_wall_per_SIM=summary['loop_wall_s']/sim if sim and summary.get('loop_wall_s') else None,
             first30=first30, worlds=results, reason_distribution=table,
             funnel=[dict(stage='requested', passed_cumulative_N=n, rejected_N=0),
-                dict(stage='setup', passed_cumulative_N=summary.get('started_N', 0),
-                     rejected_N=n-summary.get('started_N',0) if terminal else 0),
+                dict(stage='setup', passed_cumulative_N=setup, rejected_N=setup_rejected,
+                     not_attempted_N=n-setup-setup_rejected if terminal else 0,
+                     pending_N=n-setup if not terminal else 0),
                 dict(stage='terminal_teacher_trial', passed_cumulative_N=completed,
-                     rejected_N=n-completed if terminal and not export else 0, not_trial_N=n if export else 0),
+                     rejected_N=setup-completed if terminal and not export else 0,
+                     not_trial_N=setup if export else 0),
                 dict(stage='physical_success', passed_cumulative_N=success, rejected_N=completed-success)])
         attempts.append(attempt)
     result = dict(utc=dt.datetime.now(dt.timezone.utc).isoformat(), simulation_host='gcp3',
