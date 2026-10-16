@@ -1,0 +1,209 @@
+{
+  "scope": "GPU state arrays from separate runs; max_abs uses each field native units. qpos/qvel are mixed linear/angular vectors, not Cartesian position error. No determinism or physics-equivalence claim.",
+  "rows": [
+    {
+      "variant": "after-r2",
+      "nworld": 1,
+      "same_machine": true,
+      "same_initial": true,
+      "scope": "separate GPU runs may differ; same-state render/export audits isolate host-copy fidelity",
+      "physics_settings_exact": true,
+      "state": {
+        "qpos": {
+          "exact": false,
+          "max_abs": 0.00034649705048650503
+        },
+        "qvel": {
+          "exact": false,
+          "max_abs": 0.03986327350139618
+        },
+        "ctrl": {
+          "exact": true,
+          "max_abs": 0.0
+        },
+        "qacc_warmstart": {
+          "exact": false,
+          "max_abs": 80.79077529907227
+        },
+        "qfrc_applied": {
+          "exact": true,
+          "max_abs": 0.0
+        },
+        "xfrc_applied": {
+          "exact": true,
+          "max_abs": 0.0
+        },
+        "eq_active": {
+          "exact": true,
+          "max_abs": 0.0
+        },
+        "time": {
+          "exact": true,
+          "max_abs": 0.0
+        },
+        "tree_asleep": {
+          "exact": true,
+          "max_abs": 0.0
+        },
+        "tree_awake": {
+          "exact": true,
+          "max_abs": 0.0
+        }
+      },
+      "speedup": 1.0596647624595812
+    },
+    {
+      "variant": "after-r2",
+      "nworld": 4,
+      "same_machine": true,
+      "same_initial": true,
+      "scope": "separate GPU runs may differ; same-state render/export audits isolate host-copy fidelity",
+      "physics_settings_exact": true,
+      "state": {
+        "qpos": {
+          "exact": false,
+          "max_abs": 0.0002127564512193203
+        },
+        "qvel": {
+          "exact": false,
+          "max_abs": 0.0845072865486145
+        },
+        "ctrl": {
+          "exact": true,
+          "max_abs": 0.0
+        },
+        "qacc_warmstart": {
+          "exact": false,
+          "max_abs": 81.82527542114258
+        },
+        "qfrc_applied": {
+          "exact": true,
+          "max_abs": 0.0
+        },
+        "xfrc_applied": {
+          "exact": true,
+          "max_abs": 0.0
+        },
+        "eq_active": {
+          "exact": true,
+          "max_abs": 0.0
+        },
+        "time": {
+          "exact": true,
+          "max_abs": 0.0
+        },
+        "tree_asleep": {
+          "exact": true,
+          "max_abs": 0.0
+        },
+        "tree_awake": {
+          "exact": true,
+          "max_abs": 0.0
+        }
+      },
+      "speedup": 1.106283876874232
+    },
+    {
+      "variant": "after-r2",
+      "nworld": 16,
+      "same_machine": true,
+      "same_initial": true,
+      "scope": "separate GPU runs may differ; same-state render/export audits isolate host-copy fidelity",
+      "physics_settings_exact": true,
+      "state": {
+        "qpos": {
+          "exact": false,
+          "max_abs": 0.00046892702812328935
+        },
+        "qvel": {
+          "exact": false,
+          "max_abs": 0.16051974147558212
+        },
+        "ctrl": {
+          "exact": true,
+          "max_abs": 0.0
+        },
+        "qacc_warmstart": {
+          "exact": false,
+          "max_abs": 85.87559509277344
+        },
+        "qfrc_applied": {
+          "exact": true,
+          "max_abs": 0.0
+        },
+        "xfrc_applied": {
+          "exact": true,
+          "max_abs": 0.0
+        },
+        "eq_active": {
+          "exact": true,
+          "max_abs": 0.0
+        },
+        "time": {
+          "exact": true,
+          "max_abs": 0.0
+        },
+        "tree_asleep": {
+          "exact": true,
+          "max_abs": 0.0
+        },
+        "tree_awake": {
+          "exact": true,
+          "max_abs": 0.0
+        }
+      },
+      "speedup": 1.3169661918643154
+    },
+    {
+      "variant": "after-r2",
+      "nworld": 64,
+      "same_machine": true,
+      "same_initial": true,
+      "scope": "separate GPU runs may differ; same-state render/export audits isolate host-copy fidelity",
+      "physics_settings_exact": true,
+      "state": {
+        "qpos": {
+          "exact": false,
+          "max_abs": 0.0006714789196848869
+        },
+        "qvel": {
+          "exact": false,
+          "max_abs": 0.23910874128341675
+        },
+        "ctrl": {
+          "exact": true,
+          "max_abs": 0.0
+        },
+        "qacc_warmstart": {
+          "exact": false,
+          "max_abs": 90.8901481628418
+        },
+        "qfrc_applied": {
+          "exact": true,
+          "max_abs": 0.0
+        },
+        "xfrc_applied": {
+          "exact": true,
+          "max_abs": 0.0
+        },
+        "eq_active": {
+          "exact": true,
+          "max_abs": 0.0
+        },
+        "time": {
+          "exact": true,
+          "max_abs": 0.0
+        },
+        "tree_asleep": {
+          "exact": true,
+          "max_abs": 0.0
+        },
+        "tree_awake": {
+          "exact": true,
+          "max_abs": 0.0
+        }
+      },
+      "speedup": 1.742907631214018
+    }
+  ]
+}
