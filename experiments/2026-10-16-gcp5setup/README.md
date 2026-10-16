@@ -20,6 +20,8 @@
 - MJWarp: `/home/ugrp/ugrp-sim/ugrp/.venv-warp`, MuJoCo/MJWarp3.16.0·Warp1.15.0, pinned MJWarp `57b4692f4d3cdf4d27d916b4b8c4759ba36e9148`.
 - ACT: `/home/ugrp/ugrp-rl1b-act-env`, gcp2 L4의 [115패키지 freeze](evidence/act-freeze-reference.txt)를 공개 소스에서 같은 버전으로 재설치. Torch2.11.0+cu128·torchvision0.26.0+cu128·LeRobot `89236ea0f4f81a81ca566081e20dd1ff5f823cbe`.
 
+PyTorch 추가 인덱스가 `torchcodec==0.10.0`에 CUDA 로컬 버전 `0.10.0+cu128`을 선택하여, [보정 스크립트](pin_act_codec.sh)로 PyPI의 원본 버전을 다시 설치하고 freeze를 재검증한다. 새 설치는 `setup_guest.sh` 뒤 이 스크립트를 실행한다.
+
 전체 OS·패키지 wheel의 바이트 동등성을 주장하지 않는다. 패키지 버전 전체 일치·실제 CUDA 동작을 따로 확인한다. 알려진 자격 증명 경로의 부재와 SSH 파일 목록도 기록한다.
 
 ## 학습 데이터와 smoke

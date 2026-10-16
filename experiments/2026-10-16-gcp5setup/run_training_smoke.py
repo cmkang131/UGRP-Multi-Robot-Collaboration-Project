@@ -1,7 +1,6 @@
 """Launch one finite GPU smoke after complete installation and dataset SHA gate."""
 import hashlib
 import json
-import shlex
 import subprocess
 import time
 from ops import ROOT, EVIDENCE

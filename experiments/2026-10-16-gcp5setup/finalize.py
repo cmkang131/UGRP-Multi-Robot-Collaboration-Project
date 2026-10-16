@@ -73,7 +73,7 @@ summary = dict(status='READY', created_utc=stamp, project=PROJECT, account='chan
     runs=[dict(name='budget-manual-stop', status='PASS', raw=str(EVIDENCE/'test-observations.json')),
           dict(name='mjwarp-two-world-one-step', status='PASS', raw=str(EVIDENCE/'smoke-result.json')),
           dict(name='act-50-step-save-reload', status='PASS', raw='gcp5:/home/ugrp/ugrp-sim/setup/training-smoke-v1')],
-    verification=verification, other_projects_modified=False, gcp1_accessed=False,
+    verification=verification, other_projects_cost_devices_modified=False, gcp1_accessed=False,
     raw_weights_retained='gcp5:/home/ugrp/ugrp-sim/setup/training-smoke-v1',
     remaining=['C2 production host admission belongs to beamact3 branch; no C2 training run here',
                'No student/teacher/mission or render gate measured',
