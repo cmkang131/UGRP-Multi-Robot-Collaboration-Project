@@ -666,7 +666,10 @@
       "description": "DRAFT memory_v3; coordinator registration required, no cohort launched",
       "runner": "scripts.run_m1_owncam_memory_v3",
       "adapter": "managed_legacy_cli",
-      "required_inputs": ["--prereg", "--condition"],
+      "required_inputs": [
+        "--prereg",
+        "--condition"
+      ],
       "output_kind": "directory"
     },
     {
@@ -766,6 +769,24 @@
       "required_inputs": [
         "--seeds",
         "--policy"
+      ],
+      "output_kind": "directory"
+    },
+    {
+      "id": "warpfit",
+      "purpose": "MJWarp contact profiles: finite fixed-tape gcp6 diagnostics; evaluation-only truth",
+      "entry": "scripts/warpfit.py",
+      "docs": "experiments/2026-10-16-warpfit/README.md",
+      "requires": "gcp6 lease, explicit --enabled, queue with rejection_table, C312 compiled fixture assets; no models or Mac physics",
+      "version": "0.1.0",
+      "runner": "scripts.warpfit",
+      "output_flag": "--output",
+      "side_effect": "remote_simulation",
+      "adapter": "managed_legacy_cli",
+      "required_inputs": [
+        "--fixture",
+        "--queue",
+        "--round"
       ],
       "output_kind": "directory"
     }
