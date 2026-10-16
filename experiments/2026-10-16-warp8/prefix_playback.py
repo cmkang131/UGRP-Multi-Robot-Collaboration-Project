@@ -22,8 +22,10 @@ def main():
     p.add_argument('--terminal', action='store_true')
     p.add_argument('--host-error', action='store_true')
     p.add_argument('--origin-proof', type=Path)
+    p.add_argument('--batch', default='beam40-r1')
     a = p.parse_args()
     assert a.snapshot.is_absolute() and a.snapshot.parent == ROOT / 'runs'
+    assert a.batch not in ('.', '..') and Path(a.batch).name == a.batch
     lease = ROOT / 'leases/warp8-prefix-playback.json'
     assert not lease.exists()
     now = dt.datetime.now(dt.timezone.utc)
@@ -34,12 +36,12 @@ def main():
             a.snapshot.mkdir(exist_ok=False)
             with tarfile.open(fileobj=sys.stdin.buffer, mode='r|gz') as archive:
                 for member in archive:
-                    assert member.name.startswith('beam40-r1/')
+                    assert member.name.startswith(a.batch + '/')
                     archive.extract(member, a.snapshot, filter='data')
             return
         import numpy as np
         import mujoco
-        original = a.snapshot / 'beam40-r1'
+        original = a.snapshot / a.batch
         source_summary = json.loads((original/'summary.json').read_text())
         for world_id in map(int,a.worlds.split(',')):
             world = original / f'world-{world_id:03d}'
