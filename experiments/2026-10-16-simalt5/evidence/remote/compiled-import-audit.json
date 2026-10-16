@@ -1,0 +1,71 @@
+{
+  "host": {
+    "project_id": "ugrp-sim-b-1014",
+    "instance": "ugrp-act-l4-gcp2",
+    "machine_type": "g2-standard-8",
+    "zone": "asia-northeast3-a"
+  },
+  "mujoco": "3.16.0",
+  "physics_steps": 0,
+  "put_model_exact_float32": true,
+  "compatibility": {
+    "mode": "compiled-312-v1",
+    "reference": "/home/ugrp/ugrp-sim/runs/simalt5/compiled-312.json",
+    "reference_sha256": "dad1846f0bcd7c3d267fc7baadd07f1e05beb30c7d4f29e899e396a3dc15bd2b",
+    "reference_version": "3.12.0",
+    "xml_sha256": "ad46cd87ef4188daa9a4dbebd79c470fac6f1b3fcb5e5a1fe0d9dfa3c2261849",
+    "copied_array": "actuator_biasprm[:,2]",
+    "changes": [
+      {
+        "actuator": "r1__servo_arm_yaw",
+        "before": -0.9525326956383661,
+        "after": -1.4003999090747683
+      },
+      {
+        "actuator": "r1__servo_shoulder",
+        "before": -0.3514994573664441,
+        "after": -1.3904017267004583
+      },
+      {
+        "actuator": "r1__servo_elbow",
+        "before": -0.05706531248208201,
+        "after": -0.3104011296873109
+      },
+      {
+        "actuator": "r1__servo_wrist",
+        "before": -0.05662326423820336,
+        "after": -0.16026536692805718
+      }
+    ],
+    "other_audited_arrays_exact": true,
+    "source": "https://github.com/google-deepmind/mujoco/commit/b3dd9e617",
+    "new_physical_parameters": false
+  },
+  "C_compiled_sha256": "362ba1e7b566dc523ce06ff9ebd4e9a1023ec96e53a5193731ed13d4a94ce006",
+  "Warp_import_sha256": "d858c2156175ab12688f88e17f8af7518156e463c3b1923838d459d6bfb8bfa7",
+  "C_bias_velocity": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    -1.4003999090747683,
+    -1.3904017267004583,
+    -0.3104011296873109,
+    -0.16026536692805718,
+    0.0,
+    0.0
+  ],
+  "Warp_bias_velocity": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    -1.400399923324585,
+    -1.3904017210006714,
+    -0.31040114164352417,
+    -0.16026537120342255,
+    0.0,
+    0.0
+  ],
+  "script_sha256": "744aff1b15c6590bff915377eafd6540d47b50e47806651f5a56cefe92b26d01"
+}

@@ -33,6 +33,14 @@
 - **결정 모델(d1·Jev):** 기본 off인 비교 옵션이다.
 - **근거:** 작업 수준 결정 331개(8종, 애매 53개 별도). 통신 없음 규칙 123 / Gemma 146 / d1 137, 고정 신호 222 / 201 / 174, 자연어 231 / 219 / 187(`/private/tmp/claude-501/-Users-changmin/2eb0ff27-da4f-4484-8131-64ef091df6ae/scratchpad/tasklevel/results_scored.json`, sha256 `3c6bc4008d86c69fc638ba6fbf66c369cbff9584e624a689055ab541c7c0ca77`, 조정자 재집계). 합성 문장이라 키워드 규칙에 유리할 수 있다(미확인).
 
+## 판단 공급자 갱신 (2026-10-16)
+
+DeepInfra +50% 경보 뒤 사용자 "대안 찾아줘" → 조정자 추천 "CoreWeave fp4" → 사용자 "ㄱㄱ"로 새 OpenRouter 실행의 공급자를 CoreWeave로 변경했다. 모델 `google/gemma-4-31b-it`과 fp4는 유지한다. [PR #552](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/552)의 llmalt는 CoreWeave fp4 40/40·429 0·중앙 2.60 s·8초 초과 0·$0.000461/호출(−24%)·act 일치 36/40, DeepInfra fp4 40/40·5.18 s·8초 초과 5다. act 일치는 과제 정확도나 운반 성공률이 아니다. 측정 원본은 #552에 둔다.
+
+릴레이는 `provider={"order":["CoreWeave"],"allow_fallbacks":false,"quantizations":["fp4"]}`를 전송하고 `identity.json`에 `coreweave_fp4_v1`·`coreweave/fp4`를 기록한다. 새 S4/E2E 실행은 검증한 동일 config를 `bundle.json`의 `llm_upstream`에 묶는다. 공급자별 응답 저널도 별도 경로를 쓴다. `--openrouter-providers DeepInfra`는 `deepinfra_fp4_replay_v1`(재생·비교 전용, `deepinfra/turbo`)을 명시적으로 선택한다. 이미 저장된 번들·실행 config는 수정하지 않으며, 과거 바이트 단위 재생은 해당 원래 소스 SHA를 사용한다. DeepInfra와 CoreWeave 결과를 합산하지 않는다.
+
+가격 기준은 `configs/model_endpoints.json`의 2026-10-16 CoreWeave API 가격이며, DeepInfra는 인상 전 기준과 함께 `retired_endpoints`에 보존한다. **TODO — 조정자:** 다음 E2E 첫 LLM 배치의 첫 30 SIM초에서 형식 오류 수·응답 시간·429 수·캐시 비율·자기 RGB 이미지 전달을 확인한다. 이번 3회 연결 점검은 동시 배치 관문을 대체하지 않는다. [전환 검증 기록](../experiments/2026-10-16-plannerswap/README.md).
+
 ## 1. 역할 분담 (이전 설계 — 현행 아님, 결정 모델을 켤 때 참고)
 
 | 판단 | 담당 | 비고 |

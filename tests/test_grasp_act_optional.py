@@ -36,7 +36,7 @@ def test_real_conditional_act_backward_and_reload(tmp_path):
 
 
 def test_deployed_done_loss_retains_zero_latent_gradient():
-    from scripts.train_grasp_act import deployed_done_loss
+    from scripts.train_grasp_act_multitask import deployed_done_loss
     torch.set_num_threads(2);policy=make_policy('smoke');obs=observation();b=batch(obs,[jpeg()]*RGB_HISTORY,'smoke')
     b['action']=torch.zeros(1,CHUNK,ACTION_DIM);b['action'][:,:, -1]=1
     b['action_is_pad']=torch.zeros(1,CHUNK,dtype=torch.bool)

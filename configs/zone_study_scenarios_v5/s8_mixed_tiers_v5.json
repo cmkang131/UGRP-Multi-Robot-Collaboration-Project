@@ -1,0 +1,119 @@
+{
+  "schema": "ugrp.zone_scenario.v1",
+  "scenario_id": "s8_mixed_tiers_v5",
+  "map_id": "zone_wide_two_doors_final_v3",
+  "landmark_detail": "none",
+  "seeds": [
+    671,
+    672,
+    673
+  ],
+  "orders": [
+    {
+      "order_id": "order-1",
+      "kind": "yellow",
+      "count": 2,
+      "identity": "kind_fungible",
+      "required_robots": 1,
+      "destination_zone": "A",
+      "initial_location": {
+        "pickup_bay": "P1",
+        "slot": "P1-3"
+      }
+    },
+    {
+      "order_id": "order-2",
+      "kind": "can",
+      "count": 1,
+      "identity": "kind_fungible",
+      "required_robots": 1,
+      "destination_zone": "C",
+      "initial_location": {
+        "pickup_bay": "P2",
+        "slot": "P2-3"
+      }
+    },
+    {
+      "order_id": "order-3",
+      "kind": "heavy_crate",
+      "count": 1,
+      "identity": "specific_item",
+      "required_robots": 2,
+      "destination_zone": "B",
+      "initial_location": {
+        "pickup_bay": "P1",
+        "slot": "P1-1"
+      },
+      "item_ids": [
+        "crate_1"
+      ]
+    }
+  ],
+  "eval": {
+    "schema": "ugrp.zone_study_scenario_private.v1",
+    "design_notes_ko": "두 종류(1대·2대)가 한 시행에 섞인다. 이인 운반 중에는 한 대만 남는다. 누구를 어느 작업에 붙이고 어떤 순서로 할지가 시행의 핵심이다. 3대 공동 운반 화물(tri_frame)은 2026-10-14 사용자 결정으로 뺐다.",
+    "tests_ko": "팀 크기 배정: 두 대 편대와 단독 작업의 순서와 인원 배분을 합의하는 비용. 통신이 없으면 각자 같은 관례를 가정해야 하고, 어긋나면 짝이 덜 모인 채 대기한다.",
+    "notes_ko": "숨은 사건은 없다(구조적 조건). 큰 물건 경로는 오프라인 경로 검사로 확인한다. 2대 크레이트 자기 카메라 운반 실행기는 별도로 검증해야 한다. v4 결과와 합치지 않는다.",
+    "setup": {
+      "arena_variant": "zone_wide_two_doors",
+      "map_file_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b",
+      "contact_profile": "cargo_noslip_v1",
+      "weld": "off",
+      "robot_spawns": "arena_default",
+      "placements": [
+        {
+          "item_id": "yellow_1",
+          "kind": "yellow",
+          "order_id": "order-1",
+          "slot": "P1-3",
+          "pose_m": [
+            -0.2,
+            0.75,
+            0.0
+          ]
+        },
+        {
+          "item_id": "yellow_2",
+          "kind": "yellow",
+          "order_id": "order-1",
+          "slot": "P1-3",
+          "pose_m": [
+            0.4,
+            0.75,
+            0.0
+          ]
+        },
+        {
+          "item_id": "can_1",
+          "kind": "can",
+          "order_id": "order-2",
+          "slot": "P2-3",
+          "pose_m": [
+            1.275,
+            0.45,
+            0.0
+          ]
+        },
+        {
+          "item_id": "crate_1",
+          "kind": "heavy_crate",
+          "order_id": "order-3",
+          "slot": "P1-1",
+          "pose_m": [
+            0.125,
+            -2.15,
+            0.0
+          ],
+          "notes_ko": "west/east 두 lug를 동서로 두어 2대가 마주 보고 든다."
+        }
+      ]
+    },
+    "hidden_events": [],
+    "budget": {
+      "sim_seconds": 1800,
+      "http_attempts_per_trial": 90,
+      "http_attempts_per_actor": 30,
+      "output_tokens_per_call": 768
+    }
+  }
+}

@@ -1,0 +1,172 @@
+{
+  "schema": "ugrp.act_main_eval_preparation.v1",
+  "status": "prepared_not_executed",
+  "source_base_sha": "8c4490ba3145f673f24944f405ccc0fea38e9efd",
+  "execution_source": "source_sha in newly generated 20261015-act-train-<SHA8>.json",
+  "coordinator_approval": {
+    "approved": true,
+    "stage": "main+eval",
+    "steps": 10000,
+    "rgb_main_runs": 1,
+    "blank_images": false
+  },
+  "gate_promotion_authorized_if_all_conditions_pass": false,
+  "prior_smoke": {
+    "source_sha": "7caf99447c5d7543b087722957d4d9987c22cbee",
+    "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act-smoke-7caf9944.json",
+    "sha256": "bc93bb38946030fe644af52c4bd100155048706ad9f15d595dba37af43ff85f0",
+    "evidence_scope": "operations worker/coordinator result, locally parsed only; remote status not independently verified",
+    "strict_json_parse": "pass; reported line119 error not reproduced; original unchanged",
+    "convert": {
+      "episodes": 50,
+      "rows_total": 22268,
+      "rows_selected": 17851,
+      "frames": 18318,
+      "skill_count": {
+        "grasp": 13501,
+        "release": 4350
+      },
+      "skill_done": {
+        "grasp": 50,
+        "release": 0
+      },
+      "skill_missing_done_episodes": {
+        "release": 50
+      },
+      "skill_episodes": {
+        "grasp": 50,
+        "release": 50
+      },
+      "split": {
+        "train": 45,
+        "validation": 5
+      }
+    },
+    "input_audit": {
+      "forbidden_input_fields": 0,
+      "teacher_input_fields": 0
+    },
+    "steps": 300,
+    "wall_s": 82.41504376400002,
+    "loss": 2.8261921405792236,
+    "weight_reload": true,
+    "heldout_grasp_done": {
+      "detected": 0,
+      "positive_N": 40,
+      "denominator": "overlapping action horizons across five heldout seeds"
+    },
+    "checkpoint": {
+      "vm_path": "/mnt/act-source/act-pilot1/smoke/step-000300",
+      "vm_disk": "ugrp-act-l4-pilot1 boot disk (kept after stop)",
+      "actor_model_sha256": "4491f94bf08768b89450bd779fb68302824686db8d06d84eff1c700ef6698281"
+    },
+    "prior_queue": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-act-train-7caf9944.json",
+      "sha256": "639dbb713a4881af11474075eca23d88bcf0f94bf7823d53463fa766389a64c3",
+      "preserved": true
+    }
+  },
+  "local_validation": {
+    "test_files": [
+      "tests/test_grasp_act_pilot.py",
+      "tests/test_grasp_act_policy.py"
+    ],
+    "passed": 25,
+    "failed": 0,
+    "pytest_s": 0.3,
+    "junit_path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act-main-eval-local-tests.xml",
+    "junit_sha256": "a24e69d711ae23229415230b77c9e5c75e6a154dd6ef34fc197ea7f9f2eaf696",
+    "scope": "offline serialization/contracts/metrics/sequence/evaluation criteria/queue and static plan correspondence; no neural model or physics",
+    "mac_physics_runs": 0,
+    "mac_render_runs": 0,
+    "mac_training_runs": 0,
+    "remote_connections": 0
+  },
+  "protocol_sha256": "fa75ef5f7a777bbd0e197ee439f267eb3395234f42d26ba26050ac9eda7563d2",
+  "closed_loop_plans": {
+    "seeds": [
+      91100,
+      91101,
+      91102,
+      91103,
+      91104,
+      91105,
+      91106,
+      91107,
+      91108,
+      91109
+    ],
+    "kind_counts": {
+      "cyan": 3,
+      "red": 3,
+      "green": 2,
+      "yellow": 2
+    },
+    "unused_seed_inventory_verified": false,
+    "static_collision_verified": false,
+    "files": {
+      "experiments/2026-10-15-act-train/closed-loop-main-plans/91100.json": "dc34dac8ea53f5d1a66a412d108bc1975f4c5483170bd35bcf6e4c5409431ace",
+      "experiments/2026-10-15-act-train/closed-loop-main-plans/91101.json": "62a04309c96eefcdf7e898625fdc83f04fd253ad714e50c069d55273474c3b9f",
+      "experiments/2026-10-15-act-train/closed-loop-main-plans/91102.json": "16eba061081459c4175c54f8060b0e55acec45dcd453a42832cd9369b77f70fe",
+      "experiments/2026-10-15-act-train/closed-loop-main-plans/91103.json": "75763af9d33269293d0f2844547b966a4bd6e51302de45fceca439a9f67c2db2",
+      "experiments/2026-10-15-act-train/closed-loop-main-plans/91104.json": "4d0d030df39257c93971bdf3518c19e8cb1e0c6d6c6d0c21cd8b0d212ca52184",
+      "experiments/2026-10-15-act-train/closed-loop-main-plans/91105.json": "38044daa05d1ba58e2541485457a4c065000097e7787a434310471344147d37c",
+      "experiments/2026-10-15-act-train/closed-loop-main-plans/91106.json": "60b11e042cd4f16718a16ba727df7deec48bc5bb03ec765f062a44f70f52624f",
+      "experiments/2026-10-15-act-train/closed-loop-main-plans/91107.json": "f7780093591f70edb236d6d1c29914af7c742e41376ea31371c4a2f6b84f34c1",
+      "experiments/2026-10-15-act-train/closed-loop-main-plans/91108.json": "e636d22e67ebd7ff320b45a4f4006107bb9c9694ad068051184495c43f14f98b",
+      "experiments/2026-10-15-act-train/closed-loop-main-plans/91109.json": "836838736e399486de50936ba117ad1b75efd6ea7f71b225d991e62368df61dc"
+    }
+  },
+  "pending_worker_stages": [
+    {
+      "stage": "convert_last_local_row_v1_50",
+      "status": "not_started",
+      "complete": false
+    },
+    {
+      "stage": "new_smoke300",
+      "status": "not_started",
+      "complete": false
+    },
+    {
+      "stage": "offline_smoke",
+      "status": "not_started",
+      "complete": false
+    },
+    {
+      "stage": "main10000",
+      "status": "not_started",
+      "complete": false
+    },
+    {
+      "stage": "offline_main_5",
+      "status": "not_started",
+      "complete": false
+    },
+    {
+      "stage": "closed_loop_gcp1_10",
+      "status": "not_started",
+      "complete": false
+    },
+    {
+      "stage": "checkpoint_release_preservation",
+      "status": "not_started",
+      "complete": false
+    }
+  ],
+  "pending_checks": [
+    "current VM/disk state, credit and budget-stop",
+    "50/50 done per grasp and release and input audit 0/0",
+    "checkpoint full sha256/reload",
+    "operator unused seed and collision inventory",
+    "first30 SIM seconds/speed and CPU latency",
+    "physical grasp-lift-setdown and failure distribution/video review",
+    "retrieval and TERMINATED after each stage"
+  ],
+  "references": {
+    "standard_json": "https://docs.python.org/3/library/json.html#infinite-and-nan-number-values",
+    "act_paper": "https://arxiv.org/html/2304.13705v1",
+    "pinned_act_config": "https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/src/lerobot/policies/act/configuration_act.py",
+    "evaluation_velocity": "https://mujoco.readthedocs.io/en/stable/APIreference/APIfunctions.html#mj-objectvelocity"
+  }
+}

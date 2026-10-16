@@ -117,3 +117,10 @@ SHA256 `69bdd4f62546e3e38ea024cf94b6bc12b86cef39b8a187ee155b7f11794a1c69`.
 개요 카메라는 평가용이며 제어 입력이 아니다. 0–126.3 SIM초의 개요/양쪽RGB 18프레임과
 문제 r2 world_t34.2/34.3/36.0/36.1/36.2/36.3 6장 직접 확인. 기존 문제 단계0펄스/0반전 정착.
 [결과·원본·보존 해시](../experiments/2026-10-14-e2e18-grasp-rootcause/release20.md).
+## 2026-10-15 ACT15 DAgger1 근거리 학생 (실패 비교)
+
+저장된 **자기 RGB** 영상이며 정답 도식/top 카메라가 아니다.
+
+|버전·소스|대표 case|결과|영상·해시|범위와 한계|
+|---|---|---|---|---|
+|ACT15 DAgger1; 학습1535c8a3, 실행686cccb6|91420, ACT14 p0 실패와 같은 seed; 최다 거부 단계인 정렬 실패 선택|90 SIM초 cap_end, 안정 들기/완료0; 전체 같은20 0/20·새20 0/20|[자기 RGB4배속](../experiments/2026-10-15-act-train/videos/act15-91420-4x.mp4),22.5초/900프레임/169401bytes;SHA256 `e9a95fd808c256f12d37ffa5b753a29bf8e441201340100f4b5ca3d2bb3a34fd`|접근 후 목표가 화면 밖으로 빠지는 사례. 단일 원인·일반화·E2E·실물·기본 채택 아님. [원본·milestone 복제·해시](../experiments/2026-10-15-act-train/act15-video.json), [전체 결과](../experiments/2026-10-15-act-train/act15.md).|
