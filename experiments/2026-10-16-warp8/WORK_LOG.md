@@ -35,3 +35,5 @@
 2026-10-16T11:48:43.771595+00:00 알려진8318706/world000이R2에서38.1SIM성공. CPU382행재계수·3초hold·2/2교사·weldOFF·감사0/0일치.11몽타주전체77/100프레임직접검토. 합성개요전체59JPEGbyte동일가정은틀려검사를중단했고,원본RGB122/평가295/XML동일을확인하여평가카메라자동bbox차이로한정했다. R2-known-seed-success.json참조.
 
 공유outputs/e2e18-admin/ops-alert.md에known8318706성공검증·전체미완료·post30성능저하줄을append/readback했다. 기존다른작업줄은보존했다.
+
+기존known-success스냅샷추가CPU진단: 완료23건원본재계수23일치·JSON오류0. 나머지는주로pick/align/approach이며world038/039는33SIM넘는search뒤approach로전환한이력. 영구정지원인으로단정하지않고R2계속.
