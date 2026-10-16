@@ -26,9 +26,16 @@ class VisibleOracle:
         self.boundary = OracleHoldBoundary(initial)
         self.audit, self.valid, self.n = InputAudit(), True, 0
         self.discs, self.rects = [], []
+        self.disc_names,self.rect_names,self.route_rejections=[],[],[]
         def route(goal, context):
             path=plan_path((0.,0.),goal[:2],(-2.,2.,-2.,2.),self.discs,rects=self.rects,radius=.17)
-            if not path:return 0.,0.,0.
+            if not path:
+                from harness.static_keepouts import rect_distance
+                gaps=[(math.hypot(goal[0]-x,goal[1]-y)-r-.17,name) for (x,y,r),name in zip(self.discs,self.disc_names)]
+                gaps += [(rect_distance(goal[:2],rect)-.17,name) for rect,name in zip(self.rects,self.rect_names)]
+                gap,name=min(gaps) if gaps else (None,'none_observed')
+                self.route_rejections.append(dict(category='no_visible_route',reason='frozen A* found no path within existing40000-node budget',blocking_object=name,minimum_gap_m=gap,minimum_gap_scope='nearest currently visible object at requested goal; not unique blocker attribution',search_budget_nodes=40000))
+                return 0.,0.,0.
             point=next((p for p in path if math.hypot(*p)>=.06),goal[:2])
             command=proportional_drive((0.,0.,0.),goal[:2],point,goal[2])
             return command['forward'],command['left'],command['turn']
@@ -66,6 +73,7 @@ class VisibleOracle:
         import numpy as np
         world,teacher=self.ctx['world'],self.teacher
         obs,_=self.owner.read_actor(self.i);now=obs['t'];phase=teacher.phase
+        rejected_before=len(self.route_rejections)
         def label():
             if not self.valid:return dict(label_valid=False,teacher_command=None,rejection_category='oracle_phase_outside_qualified_scope')
             n,N=eyes.region_visible(self.i,self.ctx['gids'])
@@ -76,7 +84,7 @@ class VisibleOracle:
                 return dict(xyz=[float(math.cos(yaw)*dx+math.sin(yaw)*dy),float(-math.sin(yaw)*dx+math.cos(yaw)*dy),float(point[2])],yaw=math.atan2(math.sin(math.atan2(rot[1,0],rot[0,0])-yaw),math.cos(math.atan2(rot[1,0],rot[0,0])-yaw)))
             measurement=self.audit.measure(teacher.phase,visible_n=n,probe_N=N,holding=teacher.holding,read_relative=relative)
             if self.n%5==0:
-                self.discs.clear();self.rects.clear()
+                self.discs.clear();self.rects.clear();self.disc_names.clear();self.rect_names.clear()
                 base=world.robot('r1').base_xyz();yaw=float(world.robot('r1').base_rpy()[2]);co,si=math.cos(yaw),math.sin(yaw)
                 for iid,name,gids in self.obstacles:
                     n_,N_=eyes.region_visible(self.i,gids)
@@ -84,16 +92,19 @@ class VisibleOracle:
                         xy=world.data.body(name).xpos[:2]-base[:2]
                         radius=.17 if iid.startswith('robot:') else max((float(np.linalg.norm(world.data.geom_xpos[g,:2]-world.data.body(name).xpos[:2]))+float(world.model.geom_rbound[g]) for g in gids),default=.2)
                         self.discs.append((co*xy[0]+si*xy[1],-si*xy[0]+co*xy[1],radius))
+                        self.disc_names.append(iid)
                 for g in self.walls:
                     n_,N_=eyes.region_visible(self.i,[g])
                     if N_ and n_>=math.ceil(N_/3):
                         xy=world.data.geom_xpos[g,:2]-base[:2];rot=world.data.geom_xmat[g].reshape(3,3);a=math.atan2(rot[1,0],rot[0,0])-yaw
                         self.rects.append((co*xy[0]+si*xy[1],-si*xy[0]+co*xy[1],*map(float,world.model.geom_size[g,:2]),math.atan2(math.sin(a),math.cos(a))))
+                        self.rect_names.append(world.model.geom(g).name)
             target,_=teacher.step(now,measurement=measurement)
             self.valid=teacher.phase in PHASES
             return dict(label_valid=target is not None and self.valid,teacher_command=target if self.valid else None,target_visible=measurement is not None)
         row=self.boundary.query(obs['issued'],label)
         row.update(sample_id=obs['sample_id'],t=now,teacher_phase=phase,phase_after=teacher.phase,done=False)
+        row['route_rejections']=self.route_rejections[rejected_before:]
         # Mirror only the command already selected by the student. The caller
         # separately applies that same command through the unchanged actor API.
         teacher.sink.pwm.update({int(k):v for k,v in selected['pwm'].items()})
