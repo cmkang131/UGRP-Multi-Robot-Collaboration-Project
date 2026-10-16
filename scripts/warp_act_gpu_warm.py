@@ -25,6 +25,8 @@ def main():
     p.add_argument('--hourly-usd-estimate',type=float,required=True)
     a=p.parse_args()
     if not a.enabled or sys.platform!='linux':p.error('default OFF, Linux gcp2 only')
+    for name in ('python','qualified_source','teacher_source','plan','compiled_reference','compiled_geometry'):
+        if not getattr(a,name).exists():p.error('missing required asset: '+str(getattr(a,name)))
     from warp_act_warm import identity
     from warp_act_c16_warm import foreign as foreign_compute
     host=identity()
