@@ -5,7 +5,6 @@ serialized input transform as deployment. Persistence uses the actual last
 issued command for evaluation only, including in the masked-history arm.
 """
 import argparse
-from datetime import datetime
 import json
 from pathlib import Path
 import sys
@@ -18,11 +17,9 @@ from act16w_input import Act16wActor,transform_batch,HISTORY,STRIDE
 def main():
     p=argparse.ArgumentParser();p.add_argument('--enabled',action='store_true')
     for k in ('act-source','dataset','checkpoint','protocol','out'):p.add_argument('--'+k,type=Path,required=True)
-    p.add_argument('--deadline-utc',required=True);a=p.parse_args()
+    a=p.parse_args()
     if not a.enabled:p.error('validation action audit default OFF')
     host=require_gcp2(training=True);source=frozen_source(Path(__file__).resolve().parents[1]);frozen_source(a.act_source,ACT_SHA)
-    deadline=datetime.fromisoformat(a.deadline_utc).timestamp()
-    if deadline>datetime.fromisoformat('2026-10-16T13:47:00.019842+00:00').timestamp():p.error('task8h cap')
     sys.path.insert(0,str(a.act_source))
     import torch
     from harness.grasp_act_data import GraspDataset,assert_tensor_keys
@@ -39,7 +36,6 @@ def main():
     counts=dict(rows=0,valid_horizons=0,transition_rows=0,done_positives_h0=0)
     try:
         for offset in range(0,len(data),8):
-            if time.time()>=deadline:report['status']='cap_end';break
             ids=list(range(offset,min(len(data),offset+8)))
             batch=torch.utils.data.default_collate([data[i] for i in ids]);assert_tensor_keys(batch,training=True)
             inputs=transform_batch({k:v.to('cuda') for k,v in batch.items() if k.startswith('observation.')},actor.mode)

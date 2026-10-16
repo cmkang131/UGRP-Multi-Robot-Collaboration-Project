@@ -10,6 +10,8 @@ A/B는 동일 초기화·10000스텝으로 학습 중이며, 학생 성공률·h
 앞선3SIM초 warm2회(cap_end,60쌍)는 학습에서 제외했다.
 사용자가 상한을 해제했고 조정자가 VM 설정을 적용했다([결정](resume2/cap-decision.json)).
 작업자 wall 종료 시각을 없앴으며 유휴20분·budget-stop은 유지한다.
+학습 전 고정한 비교 protocol/manifest는 바이트 그대로 보존한다. 그 안의 과거8시간 항목은
+`cap-decision.json`의 사용자 후속 결정이 대체하며 데이터·시드·스텝·입력 조건은 유지한다.
 [2회차 요약](resume2/summary.json), [warm 원본 해시/감사](resume2/warm-receipts.json),
 [파일럿 대기열](resume2/pilot-queue.json), [관문표](resume2/rejection_table.json).
 [실제 파일럿 감사](resume2/native-pilot-checks.json), [시계열 검토](resume2/pilot-playback-review.json),
