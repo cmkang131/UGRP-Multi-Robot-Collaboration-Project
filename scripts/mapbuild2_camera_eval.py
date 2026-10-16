@@ -38,6 +38,10 @@ def run(a):
         body_r=d.xmat[body].reshape(3,3)
         actual_r=body_r.T@d.cam_xmat[camera].reshape(3,3)@np.diag([1.,-1.,-1.])
         actual_origin=body_r.T@(d.cam_xpos[camera]-d.xpos[body])
+        yaw=math.atan2(body_r[1,0],body_r[0,0]);c,s=math.cos(yaw),math.sin(yaw)
+        planar=np.array([[c,-s,0],[s,c,0],[0,0,1.]])
+        ground_r=planar.T@d.cam_xmat[camera].reshape(3,3)@np.diag([1.,-1.,-1.])
+        ground_origin=planar.T@(d.cam_xpos[camera]-[d.xpos[body,0],d.xpos[body,1],0.])
         # Structural FK includes nominal floor-to-body height; compare camera
         # relative translation using that same structural offset convention.
         from harness.servo_camera_fk import model
@@ -46,10 +50,14 @@ def run(a):
         rows.append(dict(sequence=frame['sequence'],frame_id=frame['frame_id'],t=frame['t'],
             qualification=qualification,camera_floor_height_m=float(d.cam_xpos[camera,2]),
             nominal_floor_height_m=float(origin[2]),relative_translation_error_m=float(np.linalg.norm(actual_origin-nominal_local)),
-            relative_orientation_error_deg=angle,body_floor_height_m=float(d.xpos[body,2])))
+            relative_orientation_error_deg=angle,body_floor_height_m=float(d.xpos[body,2]),
+            body_tilt_deg=math.degrees(math.acos(float(np.clip(body_r[2,2],-1,1)))),
+            ground_translation_error_m=float(np.linalg.norm(ground_origin-origin)),
+            ground_orientation_error_deg=math.degrees(math.acos(float(np.clip((np.trace(rotation.T@ground_r)-1)/2,-1,1))))))
     def stats(values):return dict(p50=float(np.median(values)),p95=float(np.percentile(values,95)),max=float(max(values)))
     summary={name:{key:stats([r[key] for r in rows if r['sequence']==name]) for key in
-        ('relative_translation_error_m','relative_orientation_error_deg','camera_floor_height_m','body_floor_height_m')} for name in names}
+        ('relative_translation_error_m','relative_orientation_error_deg','camera_floor_height_m','body_floor_height_m',
+         'body_tilt_deg','ground_translation_error_m','ground_orientation_error_deg')} for name in names}
     a.output.write_text(json.dumps(dict(scope='evaluation-only; actual carried load not exercised; no runtime calibration produced',
         script_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),summary=summary,frames=rows),indent=2,allow_nan=False)+'\n')
 
