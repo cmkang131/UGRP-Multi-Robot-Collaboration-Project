@@ -47,6 +47,15 @@ def require_case_profiles(flow,cases):
                 raise ValueError('release25 hidden/command-relative own-RGB profile required')
 
 
+def world_sim_clocks(contexts, results):
+    # The perception mirror advances every lane's timestamp, including lanes
+    # whose teacher already returned. Use that terminal task duration instead
+    # of crediting padding physics as completed task work.
+    return [max(0.,float(results[i]['sim_s']) if i in results else
+                float(c['world'].data.time)-float(c['origin']))
+            for i,c in enumerate(contexts)]
+
+
 def parser():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--physics-backend',choices=['mjwarp_batch_v1','c_pilot_v1'],default='mjwarp_batch_v1')
@@ -232,7 +241,7 @@ def main():
                 # Coordinator decision 2026-10-16, user unconfirmed: the existing
                 # >6 speed threshold uses batch wall / aggregate world SIM.
                 # Actual clocks avoid crediting completed/frozen lanes as active.
-                clocks=[max(0.,float(c['world'].data.time)-float(c['origin'])) for c in contexts]
+                clocks=world_sim_clocks(contexts,results)
                 aggregate=sum(clocks)
                 progress.update(world_sim_s=clocks,aggregate_world_sim_s=aggregate,
                     per_world_wall_SIM=elapsed/aggregate if aggregate else None,

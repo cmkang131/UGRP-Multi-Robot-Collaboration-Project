@@ -88,3 +88,14 @@ def test_release_cannot_silently_fall_back_to_held_truth_or_other_scene():
     with pytest.raises(ValueError,match='own-RGB'):require_case_profiles('release',[case])
     case['plan']['scene_profile']='off'
     with pytest.raises(ValueError,match='scene-v5'):require_case_profiles('beampair',[case])
+
+
+def test_speed_does_not_credit_padding_after_teacher_returns():
+    from types import SimpleNamespace as NS
+    from scripts.run_warp_flow_teacher import world_sim_clocks
+    # Both mirrors read30 SIM, but one task completed at5. Crediting60 rather
+    # than35 aggregate seconds would turn a speed failure into a false pass.
+    contexts=[{'world':NS(data=NS(time=32.)), 'origin':2.} for _ in range(2)]
+    clocks=world_sim_clocks(contexts,{0:{'sim_s':5.}})
+    assert clocks==[5.,30.]
+    assert 211./sum(clocks)>6.
