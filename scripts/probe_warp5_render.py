@@ -115,7 +115,9 @@ def run(args):
             for backend,first,next_image,mm in [('cpu',cpu['final'],cpu_next['final'],cmasks['final']),('mjwarp',image,nxt,masks)]:
                 raw,jpeg=encode(first);_,next_jpeg=encode(next_image)
                 (args.output/(stem+'--'+backend+'.jpg')).write_bytes(raw)
-                for surface in ('floor','wall'):
+                # All labels stay in this evaluator's artifacts. Perception
+                # functions above receive RGB/PWM, never these masks.
+                for surface in mm:
                     cv2.imwrite(str(args.output/(stem+'--'+backend+'--mask-'+surface+'.png')),mm[surface].astype(np.uint8)*255)
                 row['metrics'][backend]=runtime_metrics(jpeg,f['pwm'],mm,calibration,next_jpeg)
             row['rgb_mae']=float(np.abs(cpu['final'].astype(float)-image).mean())
