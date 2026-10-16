@@ -199,7 +199,7 @@ def main():
         sample_funnels=sample_funnels,raw=str(a.root),reproduce=sys.argv))
     dump(a.output/'summary.json',dict(runs=len(results),completed=sum(bool(r['completed']) for r in results),
         HOST_ERROR=sum(bool(r['HOST_ERROR']) for r in results),thresholds=thresholds,default_changes=0,source='gcp6 only; gcp2 analysis; C references separate',reproduce=sys.argv))
-    print(json.dumps(dict(runs=len(results),HOST_ERROR=sum(r['category']=='HOST_ERROR' for r in rejections),thresholds=thresholds)))
+    print(json.dumps(dict(runs=len(results),HOST_ERROR=sum(bool(r['HOST_ERROR']) for r in results),thresholds=thresholds)))
 
 
 if __name__=='__main__':main()

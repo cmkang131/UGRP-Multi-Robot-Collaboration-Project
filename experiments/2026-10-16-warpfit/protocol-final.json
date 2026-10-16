@@ -1,0 +1,62 @@
+{
+  "registered_utc": "2026-10-16T12:17:17.811257+00:00",
+  "version": "primitive-v1",
+  "physical_profile_retuning": 0,
+  "worlds": [
+    16,
+    64
+  ],
+  "round_limit": 3,
+  "benchmark_commit": "82bff588b08af55aa17dbcedfa84f12f63a61d66",
+  "benchmark_blob": "887bbf83af70c09cec4aed325ce27ec8ee0fe786",
+  "queue_continuation_commit": "c56f1130bb903e82009e149d2dada8690653b72d",
+  "workloads": {
+    "box": {
+      "sim_s": 5.7,
+      "hold_start_s": 2.7,
+      "hold_duration_s": 3.0,
+      "hold_samples_per_world": 30,
+      "fixture": "close1.2s + lift1.5s + settle3s, common C reference initial state"
+    },
+    "beam": {
+      "sim_s": 3.3,
+      "hold_start_s": 3.0,
+      "hold_duration_s": 0.3,
+      "hold_samples_per_world": 3,
+      "fixture": "original tape2.7..6.0s, common C preclose state"
+    },
+    "drive": {
+      "N16_groups": [
+        "group16",
+        "tail2"
+      ],
+      "N64_groups": [
+        "group64"
+      ],
+      "pulses": 18,
+      "fixture": "unchanged drivecheck fixture-v3; exact pulse tape bytes, only lane packing"
+    }
+  },
+  "limits": {
+    "action": "fixed physics ticks and fixed tape; no wall action selection",
+    "host_watchdog_s": 10800,
+    "vm_duration_cap": null,
+    "idle_minutes": 20,
+    "net_budget_KRW": 1000
+  },
+  "boundary": {
+    "truth_feedback": 0,
+    "model_calls": 0,
+    "weld": false,
+    "production_defaults_changed": 0,
+    "collision_adapter": "C312 compiled mesh/actuator + legacy Plane-Mesh held constant"
+  },
+  "rejection_policy": {
+    "line_search_limit": "record HOST_ERROR + solver_line_search_limit; no parameter increase, do not rerun attempted jobs",
+    "unsubmitted": "resume only after exact error review, same round and physical protocol"
+  },
+  "rejection_table": "/Users/changmin/projects/ugrp-wt/gcp6setup/experiments/2026-10-16-warpfit/rejection_table.json",
+  "raw": "gcp6:/home/ugrp/ugrp-sim/runs/warpfit",
+  "analysis": "gcp2:/home/ugrp/ugrp-sim/ops-reviews/warpfit",
+  "trial_scope": "repeated same fixture across batch worlds, not independent randomized task trials"
+}
