@@ -1,0 +1,50 @@
+{
+  "physical_rounds": [
+    {
+      "round": 1,
+      "cases_per_backend": 20,
+      "scope": "clean start pulse matrix",
+      "status": "cap_end"
+    },
+    {
+      "round": 2,
+      "cases_per_backend": 8,
+      "scope": "after forward100ms, left/right60/400ms",
+      "status": "cap_end"
+    },
+    {
+      "round": 3,
+      "cases_per_backend": 28,
+      "scope": "unchanged warpfit native_contact_v1; cold20 + after-forward8",
+      "status": "cap_end"
+    }
+  ],
+  "physics_HOST_ERROR_n": 0,
+  "pre_execution_attempts": [
+    {
+      "category": "HOST_ERROR",
+      "reason": "source archive extraction started before SCP completed; gzip unexpected EOF; no physical model constructed",
+      "blocked_object": "source_archive_transfer",
+      "minimum_gap_m": null,
+      "gap_status": "not_applicable",
+      "resolution": "waited for completed transfer and extracted own source again"
+    },
+    {
+      "category": "offline_smoke",
+      "reason": "vision closure missing colour calibration, then root scripts/robot_actions.py; no physics",
+      "blocked_object": "pinned_vision_dependencies",
+      "minimum_gap_m": null,
+      "gap_status": "not_applicable",
+      "resolution": "exported exact5974a181 harness+experiment dependencies; linked frozen scripts/sim; smoke passed"
+    },
+    {
+      "category": "offline_smoke",
+      "reason": "unknown identical initial RGB made strict anchor stale and prevented a bootstrap command",
+      "blocked_object": "visual_anchor",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured",
+      "resolution": "prepared own-command prior with per-frame visual replacement; unknown frames excluded from map; physical admission0"
+    }
+  ],
+  "stop_reason": "user same-defect third-round stop rule; frontier not run"
+}

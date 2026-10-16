@@ -1,0 +1,209 @@
+{
+  "status": "STOPPED_AFTER_THIRD_ROUND_NOT_READY",
+  "reason": "history-dependent 60ms lateral recoil remains under both profiles; user three-round stop rule",
+  "runs": [
+    {
+      "run": "pulse-warp-r1",
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild4/pulse-warp-r1",
+      "source_sha": "8ca00ad59d405f9f0c98c500010b3c3f8e05e51f",
+      "status": "cap_end",
+      "error": null,
+      "backend": "warp",
+      "worlds": 20,
+      "sim_s": 2.0,
+      "wall_s": 720.1625150139998,
+      "mujoco": "3.16.0",
+      "scene_xml_sha256": "6c4c907cd59c34e6bb717c7c991152d963f67ee2f6f25fdd134afd955c63890f",
+      "noslip_iterations": 10,
+      "after_forward": false,
+      "physics_steps_per_world": 8000,
+      "torque_nm": 0.03138127999999999,
+      "input_audit": {
+        "truth_feedback": 0,
+        "top_actor_reads": 0
+      },
+      "command_grid_s": 0.01
+    },
+    {
+      "run": "pulse-cpu-r1",
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild4/pulse-cpu-r1",
+      "source_sha": "8ca00ad59d405f9f0c98c500010b3c3f8e05e51f",
+      "status": "cap_end",
+      "error": null,
+      "backend": "cpu",
+      "worlds": 20,
+      "sim_s": 2.0,
+      "wall_s": 176.28141100900007,
+      "mujoco": "3.16.0",
+      "scene_xml_sha256": "6c4c907cd59c34e6bb717c7c991152d963f67ee2f6f25fdd134afd955c63890f",
+      "noslip_iterations": 10,
+      "after_forward": false,
+      "physics_steps_per_world": 8000,
+      "torque_nm": 0.03138127999999999,
+      "input_audit": {
+        "truth_feedback": 0,
+        "top_actor_reads": 0
+      },
+      "command_grid_s": 0.01
+    },
+    {
+      "run": "phase-warp-r2",
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild4/phase-warp-r2",
+      "source_sha": "916e1c688ea8df78275ce0c1f3cace986ce39c78",
+      "status": "cap_end",
+      "error": null,
+      "backend": "warp",
+      "worlds": 8,
+      "sim_s": 3.0,
+      "wall_s": 815.2317520500001,
+      "mujoco": "3.16.0",
+      "scene_xml_sha256": "6c4c907cd59c34e6bb717c7c991152d963f67ee2f6f25fdd134afd955c63890f",
+      "noslip_iterations": 10,
+      "after_forward": true,
+      "physics_steps_per_world": 12000,
+      "torque_nm": 0.03138127999999999,
+      "input_audit": {
+        "truth_feedback": 0,
+        "top_actor_reads": 0
+      },
+      "command_grid_s": 0.01
+    },
+    {
+      "run": "phase-cpu-r2",
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild4/phase-cpu-r2",
+      "source_sha": "916e1c688ea8df78275ce0c1f3cace986ce39c78",
+      "status": "cap_end",
+      "error": null,
+      "backend": "cpu",
+      "worlds": 8,
+      "sim_s": 3.0,
+      "wall_s": 111.62128970699996,
+      "mujoco": "3.16.0",
+      "scene_xml_sha256": "6c4c907cd59c34e6bb717c7c991152d963f67ee2f6f25fdd134afd955c63890f",
+      "noslip_iterations": 10,
+      "after_forward": true,
+      "physics_steps_per_world": 12000,
+      "torque_nm": 0.03138127999999999,
+      "input_audit": {
+        "truth_feedback": 0,
+        "top_actor_reads": 0
+      },
+      "command_grid_s": 0.01
+    },
+    {
+      "run": "native-pulse-warp-r3",
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild4/native-pulse-warp-r3",
+      "source_sha": "1b11611040409529080a049121a8cf274390f4ca",
+      "status": "cap_end",
+      "error": null,
+      "backend": "warp",
+      "worlds": 20,
+      "sim_s": 2.0,
+      "wall_s": 46.16574792000006,
+      "mujoco": "3.16.0",
+      "scene_xml_sha256": "dc71d38961bb95dcd6841124889eecc98ec78bddd0d41f6b3bf4a89b6cb3f74d",
+      "noslip_iterations": 0,
+      "after_forward": false,
+      "contact_profile": "warp_native_contact_v1",
+      "effective_tolerance": 9.999999974752427e-07,
+      "physics_steps_per_world": 8000,
+      "torque_nm": 0.03138127999999999,
+      "input_audit": {
+        "truth_feedback": 0,
+        "top_actor_reads": 0
+      },
+      "command_grid_s": 0.01
+    },
+    {
+      "run": "native-pulse-cpu-r3",
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild4/native-pulse-cpu-r3",
+      "source_sha": "1b11611040409529080a049121a8cf274390f4ca",
+      "status": "cap_end",
+      "error": null,
+      "backend": "cpu",
+      "worlds": 20,
+      "sim_s": 2.0,
+      "wall_s": 82.987477915,
+      "mujoco": "3.16.0",
+      "scene_xml_sha256": "dc71d38961bb95dcd6841124889eecc98ec78bddd0d41f6b3bf4a89b6cb3f74d",
+      "noslip_iterations": 0,
+      "after_forward": false,
+      "contact_profile": "warp_native_contact_v1",
+      "effective_tolerance": 1e-08,
+      "physics_steps_per_world": 8000,
+      "torque_nm": 0.03138127999999999,
+      "input_audit": {
+        "truth_feedback": 0,
+        "top_actor_reads": 0
+      },
+      "command_grid_s": 0.01
+    },
+    {
+      "run": "native-phase-warp-r3",
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild4/native-phase-warp-r3",
+      "source_sha": "1b11611040409529080a049121a8cf274390f4ca",
+      "status": "cap_end",
+      "error": null,
+      "backend": "warp",
+      "worlds": 8,
+      "sim_s": 3.0,
+      "wall_s": 58.127352383000016,
+      "mujoco": "3.16.0",
+      "scene_xml_sha256": "dc71d38961bb95dcd6841124889eecc98ec78bddd0d41f6b3bf4a89b6cb3f74d",
+      "noslip_iterations": 0,
+      "after_forward": true,
+      "contact_profile": "warp_native_contact_v1",
+      "effective_tolerance": 9.999999974752427e-07,
+      "physics_steps_per_world": 12000,
+      "torque_nm": 0.03138127999999999,
+      "input_audit": {
+        "truth_feedback": 0,
+        "top_actor_reads": 0
+      },
+      "command_grid_s": 0.01
+    },
+    {
+      "run": "native-phase-cpu-r3",
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild4/native-phase-cpu-r3",
+      "source_sha": "1b11611040409529080a049121a8cf274390f4ca",
+      "status": "cap_end",
+      "error": null,
+      "backend": "cpu",
+      "worlds": 8,
+      "sim_s": 3.0,
+      "wall_s": 50.01821671899984,
+      "mujoco": "3.16.0",
+      "scene_xml_sha256": "dc71d38961bb95dcd6841124889eecc98ec78bddd0d41f6b3bf4a89b6cb3f74d",
+      "noslip_iterations": 0,
+      "after_forward": true,
+      "contact_profile": "warp_native_contact_v1",
+      "effective_tolerance": 1e-08,
+      "physics_steps_per_world": 12000,
+      "torque_nm": 0.03138127999999999,
+      "input_audit": {
+        "truth_feedback": 0,
+        "top_actor_reads": 0
+      },
+      "command_grid_s": 0.01
+    }
+  ],
+  "total_run_n": 8,
+  "map_extension": {
+    "status": "NOT_RUN",
+    "reason": "lateral60ms defect remains; third-round stop rule",
+    "blocked_object": "wheel_floor_response",
+    "minimum_gap_m": null,
+    "gap_status": "not_measured"
+  },
+  "gate4": {
+    "status": "WITHHELD",
+    "reason": "warp10 NOT_READY"
+  },
+  "cpu_scope": "same model C3.16 on gcp5 comparison only; no pooling with MJWarp or prior runs",
+  "input_audit": {
+    "top_actor_reads": 0,
+    "truth_feedback": 0,
+    "model_calls": 0
+  },
+  "frontier_candidate": "prepared default off; physical runs0; no admitted correction"
+}

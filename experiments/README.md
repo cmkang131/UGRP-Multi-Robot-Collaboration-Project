@@ -6,6 +6,8 @@
 - [2026-10-10 S3 공동 운반 v164/v165](2026-10-10-s3-synchronized-carry/README.md): x86 동시10조건 v165 정렬·집기·상승·20mm 운반10/10; pair endpoint1/6, 이후 하강 낙하가드4/6·포즈계약 실패2/6, HOST_ERROR0. 기본 off·미채택.
 # 실험 인덱스
 
+- [2026-10-16 mapbuild4 횡펄스 이력·되밀림 분리](2026-10-16-mapbuild4/README.md): gcp5 MJWarp/C 비교·2접촉 프로필·8실행112조건, cold60ms≈7mm 대 전진후≈0mm·400ms≈44mm 재현. 3라운드 정지 규칙으로 지도 확장0, 관문4 WITHHELD·PR #556 DRAFT/NOT_READY.
+
 - [2026-10-16 mapbuild2 실제 MJWarp 자기 지도 진단](2026-10-16-mapbuild2/README.md): shared4×4SIM·164/164프레임, LK75/80·HIGH미자격·희소SLAM0/80, 명령척도/지면카메라 불일치와 부분지도 잘못된free7로 NOT_READY. PR #556 DRAFT, warp10 비교 보류.
 - [2026-10-15 시나리오 v7 heavy_crate 제외](2026-10-15-scenario-v7/README.md): 선택 버전 8종, s2·s7·s8 crate→2대 long_beam; 화물 33·필요 로봇 작업 수 40 유지, 정적/XML/입력 3시험 통과. 물리·렌더 0, v6 보존·합산 금지.
 - [2026-10-12 PR #405 main 병합 정리](2026-10-12-pr405-main-merge/README.md): 물리0. 충돌2건 합집합, v195 seal 보존 위해 v7 main 바이트 유지·pickle 처리 이전, egomap64/65 재개 계획 퇴역(원본 보존, 재등록 없음).

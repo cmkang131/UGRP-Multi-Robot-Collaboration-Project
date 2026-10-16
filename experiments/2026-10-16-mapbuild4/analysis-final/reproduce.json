@@ -1,0 +1,173 @@
+{
+  "source_snapshots": [
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild4/pulse-warp-r1",
+      "source_sha": "8ca00ad59d405f9f0c98c500010b3c3f8e05e51f"
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild4/pulse-cpu-r1",
+      "source_sha": "8ca00ad59d405f9f0c98c500010b3c3f8e05e51f"
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild4/phase-warp-r2",
+      "source_sha": "916e1c688ea8df78275ce0c1f3cace986ce39c78"
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild4/phase-cpu-r2",
+      "source_sha": "916e1c688ea8df78275ce0c1f3cace986ce39c78"
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild4/native-pulse-warp-r3",
+      "source_sha": "1b11611040409529080a049121a8cf274390f4ca"
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild4/native-pulse-cpu-r3",
+      "source_sha": "1b11611040409529080a049121a8cf274390f4ca"
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild4/native-phase-warp-r3",
+      "source_sha": "1b11611040409529080a049121a8cf274390f4ca"
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild4/native-phase-cpu-r3",
+      "source_sha": "1b11611040409529080a049121a8cf274390f4ca"
+    }
+  ],
+  "r1_launcher": "/home/ugrp/ugrp-sim/ops-reviews/mapbuild4-run.sh",
+  "r1_note": "supervisor was stopped after its own Warp child launch; CPU command launched independently with same arguments to avoid idle waiting",
+  "r2_r3_commands": [
+    [
+      "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+      "/home/ugrp/ugrp-sim/src/mapbuild4-1b1161104/scripts/mapbuild4_pulse.py",
+      "--mapbuild4-pulse-v1",
+      "--contact-profile",
+      "warp_native_contact_v1",
+      "--renderer-source",
+      "/home/ugrp/ugrp-sim/src/drivecheck-renderer-5974a181",
+      "--renderer-receipt",
+      "/home/ugrp/ugrp-sim/ops-reviews/mapbuild3/renderer-receipt.json",
+      "--fixture",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/prepare-r1b",
+      "--queue",
+      "/home/ugrp/ugrp-sim/ops-reviews/mapbuild4/queue-native-r3.json",
+      "--backend",
+      "warp",
+      "--output",
+      "/home/ugrp/ugrp-sim/runs/mapbuild4/native-pulse-warp-r3"
+    ],
+    [
+      "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+      "/home/ugrp/ugrp-sim/src/mapbuild4-1b1161104/scripts/mapbuild4_pulse.py",
+      "--mapbuild4-pulse-v1",
+      "--contact-profile",
+      "warp_native_contact_v1",
+      "--renderer-source",
+      "/home/ugrp/ugrp-sim/src/drivecheck-renderer-5974a181",
+      "--renderer-receipt",
+      "/home/ugrp/ugrp-sim/ops-reviews/mapbuild3/renderer-receipt.json",
+      "--fixture",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/prepare-r1b",
+      "--queue",
+      "/home/ugrp/ugrp-sim/ops-reviews/mapbuild4/queue-native-r3.json",
+      "--backend",
+      "warp",
+      "--output",
+      "/home/ugrp/ugrp-sim/runs/mapbuild4/native-phase-warp-r3",
+      "--after-forward",
+      "--case-filter",
+      "drive-left-+1-60,drive-left--1-60,drive-left-+1-400,drive-left--1-400,high-left-+1-60,high-left--1-60,high-left-+1-400,high-left--1-400"
+    ],
+    [
+      "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+      "/home/ugrp/ugrp-sim/src/mapbuild4-1b1161104/scripts/mapbuild4_pulse.py",
+      "--mapbuild4-pulse-v1",
+      "--contact-profile",
+      "warp_native_contact_v1",
+      "--renderer-source",
+      "/home/ugrp/ugrp-sim/src/drivecheck-renderer-5974a181",
+      "--renderer-receipt",
+      "/home/ugrp/ugrp-sim/ops-reviews/mapbuild3/renderer-receipt.json",
+      "--fixture",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/prepare-r1b",
+      "--queue",
+      "/home/ugrp/ugrp-sim/ops-reviews/mapbuild4/queue-native-r3.json",
+      "--backend",
+      "cpu",
+      "--output",
+      "/home/ugrp/ugrp-sim/runs/mapbuild4/native-pulse-cpu-r3"
+    ],
+    [
+      "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+      "/home/ugrp/ugrp-sim/src/mapbuild4-1b1161104/scripts/mapbuild4_pulse.py",
+      "--mapbuild4-pulse-v1",
+      "--contact-profile",
+      "warp_native_contact_v1",
+      "--renderer-source",
+      "/home/ugrp/ugrp-sim/src/drivecheck-renderer-5974a181",
+      "--renderer-receipt",
+      "/home/ugrp/ugrp-sim/ops-reviews/mapbuild3/renderer-receipt.json",
+      "--fixture",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/prepare-r1b",
+      "--queue",
+      "/home/ugrp/ugrp-sim/ops-reviews/mapbuild4/queue-native-r3.json",
+      "--backend",
+      "cpu",
+      "--output",
+      "/home/ugrp/ugrp-sim/runs/mapbuild4/native-phase-cpu-r3",
+      "--after-forward",
+      "--case-filter",
+      "drive-left-+1-60,drive-left--1-60,drive-left-+1-400,drive-left--1-400,high-left-+1-60,high-left--1-60,high-left-+1-400,high-left--1-400"
+    ],
+    [
+      "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+      "/home/ugrp/ugrp-sim/src/mapbuild4-916e1c688/scripts/mapbuild4_pulse.py",
+      "--mapbuild4-pulse-v1",
+      "--backend",
+      "cpu",
+      "--after-forward",
+      "--case-filter",
+      "drive-left-+1-60,drive-left--1-60,drive-left-+1-400,drive-left--1-400,high-left-+1-60,high-left--1-60,high-left-+1-400,high-left--1-400",
+      "--renderer-source",
+      "/home/ugrp/ugrp-sim/src/drivecheck-renderer-5974a181",
+      "--renderer-receipt",
+      "/home/ugrp/ugrp-sim/ops-reviews/mapbuild3/renderer-receipt.json",
+      "--fixture",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/prepare-r1b",
+      "--queue",
+      "/home/ugrp/ugrp-sim/ops-reviews/mapbuild4/queue-phase-r2.json",
+      "--output",
+      "/home/ugrp/ugrp-sim/runs/mapbuild4/phase-cpu-r2"
+    ],
+    [
+      "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+      "/home/ugrp/ugrp-sim/src/mapbuild4-916e1c688/scripts/mapbuild4_pulse.py",
+      "--mapbuild4-pulse-v1",
+      "--backend",
+      "warp",
+      "--after-forward",
+      "--case-filter",
+      "drive-left-+1-60,drive-left--1-60,drive-left-+1-400,drive-left--1-400,high-left-+1-60,high-left--1-60,high-left-+1-400,high-left--1-400",
+      "--renderer-source",
+      "/home/ugrp/ugrp-sim/src/drivecheck-renderer-5974a181",
+      "--renderer-receipt",
+      "/home/ugrp/ugrp-sim/ops-reviews/mapbuild3/renderer-receipt.json",
+      "--fixture",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/prepare-r1b",
+      "--queue",
+      "/home/ugrp/ugrp-sim/ops-reviews/mapbuild4/queue-phase-r2.json",
+      "--output",
+      "/home/ugrp/ugrp-sim/runs/mapbuild4/phase-warp-r2",
+      "--record"
+    ]
+  ],
+  "analysis_commands": [
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild4-phase-analysis.py",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild4-playback.py",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild4-playback2.py"
+  ],
+  "env": {
+    "MUJOCO_GL": "osmesa",
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1"
+  }
+}

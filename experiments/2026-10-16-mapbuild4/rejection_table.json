@@ -1,20 +1,99 @@
 {
-  "status": "PLANNED",
+  "status": "NOT_READY",
   "raw": "/home/ugrp/ugrp-sim/runs/mapbuild4",
   "reproduction": "reproduce.json",
-  "prior": "prechange-distribution.json",
+  "unit": "diagnostic world per backend/profile/history/primitive",
   "stages": [
     {
-      "stage": "requested_pulse_cases_per_backend",
-      "cumulative_pass_n": 20,
+      "stage": "requested",
+      "cumulative_pass_n": 112,
+      "rejected_n": 0
+    },
+    {
+      "stage": "nonpenetrating_start",
+      "cumulative_pass_n": 112,
+      "rejected_n": 0
+    },
+    {
+      "stage": "completed_cap_end",
+      "cumulative_pass_n": 112,
+      "rejected_n": 0
+    },
+    {
+      "stage": "finite_measurement",
+      "cumulative_pass_n": 112,
       "rejected_n": 0
     }
   ],
+  "reasons": [
+    {
+      "category": "history_dependent_response",
+      "reason": "60ms lateral moves transiently then recoils; same pulse response depends on preceding forward command",
+      "n": 16,
+      "scope": "history60ms x2postures x2directions x2backends x2profiles",
+      "blocked_object": "wheel_floor_roller_contacts",
+      "minimum_gap_m": null,
+      "gap_status": "external_gap_not_measured_no_r1_nonfloor_contacts_at_onset"
+    },
+    {
+      "category": "prediction_support",
+      "reason": "v122 exact primitive key missing",
+      "n": 64,
+      "scope": "all112 diagnostic worlds",
+      "blocked_object": "historical_v122_profile",
+      "minimum_gap_m": null,
+      "gap_status": "not_applicable"
+    },
+    {
+      "category": "prediction_support",
+      "reason": "loaded fine profiles are unqualified transfer",
+      "n": 16,
+      "scope": "16 exact-key rows have an unqualified transfer; disjoint from64 missing-key rows",
+      "blocked_object": "HIGH_camera_and_response",
+      "minimum_gap_m": null,
+      "gap_status": "not_applicable"
+    }
+  ],
+  "v122_profile_distribution": {
+    "missing_exact_key": 64,
+    "historical_CPU_fit": 32,
+    "unqualified_loaded_fine_transfer": 16
+  },
+  "gate3": {
+    "status": "NOT_RUN",
+    "coverage": null,
+    "reason": "third-round stop before frontier physics",
+    "blocked_object": "lateral60ms_response",
+    "minimum_gap_m": null,
+    "gap_status": "not_measured"
+  },
   "gate4": {
     "status": "WITHHELD",
     "reason": "warp10 NOT_READY",
     "blocked_object": "warp10_CPU_contact_export",
     "minimum_gap_m": null,
     "gap_status": "not_measured"
-  }
+  },
+  "prediction_support_funnel": [
+    {
+      "stage": "measured_diagnostic_worlds",
+      "cumulative_pass_n": 112,
+      "rejected_n": 0
+    },
+    {
+      "stage": "exact_v122_primitive_key",
+      "cumulative_pass_n": 48,
+      "rejected_n": 64
+    },
+    {
+      "stage": "no_unqualified_transfer",
+      "cumulative_pass_n": 32,
+      "rejected_n": 16
+    },
+    {
+      "stage": "fresh_context_qualification",
+      "cumulative_pass_n": 0,
+      "rejected_n": 32
+    }
+  ]
 }
