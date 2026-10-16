@@ -1,0 +1,77 @@
+{
+  "reference": "/home/ugrp/ugrp-sim/runs/simalt4/c316-forward",
+  "candidate": "/home/ugrp/ugrp-sim/runs/simalt4/warp-v2-forward",
+  "case": "forward",
+  "steps": 16000,
+  "dt": 0.00025,
+  "same_MuJoCo_version": true,
+  "C_version": "3.16.0",
+  "candidate_MuJoCo": "3.16.0",
+  "physics_hashes_equal": true,
+  "first_raw_qpos_difference": {
+    "step_1based": 1,
+    "SIM_s": 0.00025
+  },
+  "first_contact_or_constraint_count_difference": {
+    "step_1based": 421,
+    "SIM_s": 0.10525
+  },
+  "topology_count_different_steps": 3490,
+  "first_pad_contact_presence_difference": null,
+  "first_reference_pad_contact": null,
+  "first_candidate_pad_contact": null,
+  "reference_max_ncon": 26,
+  "candidate_max_ncon": 26,
+  "reference_max_nefc": 115,
+  "candidate_max_nefc": 115,
+  "candidate_overflow_steps": 0,
+  "candidate_capacities": {
+    "nconmax": 32,
+    "njmax": 128,
+    "naconmax": 32
+  },
+  "base_endpoint_m": 4.446597673862652e-05,
+  "base_endpoint_deg": 0.0,
+  "box_endpoint_m": 4.805571046297544e-08,
+  "box_endpoint_deg": 0.0,
+  "endpoint_pass": true,
+  "reproduce": [
+    "/home/ugrp/ugrp-sim/runs/simalt4/scripts/simalt_step_analysis.py",
+    "--fixture",
+    "/home/ugrp/ugrp-sim/runs/simalt3/fixture",
+    "--reference",
+    "/home/ugrp/ugrp-sim/runs/simalt4/c316-forward",
+    "--candidate",
+    "/home/ugrp/ugrp-sim/runs/simalt4/warp-v2-forward",
+    "--out",
+    "/home/ugrp/ugrp-sim/runs/simalt4/backend-forward"
+  ],
+  "force_semantics": "contact-frame normal and tangential resultant; force API after noslip; no controller feedback",
+  "missing_distance_semantics": "zero if no penetrating contact; consult count before interpreting",
+  "max_abs_difference_by_metric": {
+    "ncon": 3.0,
+    "nefc": 9.0,
+    "overflow": 0.0,
+    "left_contacts": 0.0,
+    "right_contacts": 0.0,
+    "left_min_dist": 0.0,
+    "right_min_dist": 0.0,
+    "left_normal_N": 0.0,
+    "right_normal_N": 0.0,
+    "left_tangent_N": 0.0,
+    "right_tangent_N": 0.0,
+    "plane_mesh_contacts": 3.0,
+    "minimum_dist": 9.337658849294453e-06,
+    "left_joint": 1.6781959555006766e-06,
+    "right_joint": 1.5268874863971927e-06,
+    "left_condim": 0.0,
+    "right_condim": 0.0
+  },
+  "every_step_table": {
+    "path": "/home/ugrp/ugrp-sim/runs/simalt4/backend-forward/every-step.csv.zst",
+    "uncompressed_sha256": "4f3efa40c70a3c466d5c54aa569eecd2fbf0cf94ed8a92279823bb53e92ca525",
+    "compressed_sha256": "9149b1fcc2a3b1a5a8de73c07b11fc61ab45b574402c013d9ddb64e5b510ebdb",
+    "rows": 16000,
+    "restored_hash_verified": true
+  }
+}

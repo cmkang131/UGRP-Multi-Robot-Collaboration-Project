@@ -1,0 +1,18 @@
+{
+  "stage": "inherited simalt4; before simalt5 round1",
+  "basis": "simalt4 raw gcp2 L4 only; same frozen trace, 30 hold time samples, not independent trials",
+  "distribution": [
+    {"reason": "base_endpoint_over_5mm", "count": 1, "blocking_object": "r1__robot / floor", "minimum_gap_m": null, "gap_note": "trajectory discrepancy, no planning clearance query"},
+    {"reason": "unloaded_endpoint_pass", "count": 3, "blocking_object": "none", "minimum_gap_m": null, "gap_note": "trajectory gate"},
+    {"reason": "hold_bilateral_pass", "count": 30, "blocking_object": "cargo_cyan_2_geom", "minimum_gap_m": -0.001177014783024788, "gap_note": "representative hold contact depth; see simalt4 full step table"}
+  ],
+  "funnel": [
+    {"gate": "complete tapes", "entered": 4, "passed": 4, "rejected": 0},
+    {"gate": "endpoint_5mm_2deg", "entered": 4, "passed": 3, "rejected": 1},
+    {"gate": "small_scene_all_requirements", "entered": 1, "passed": 0, "rejected": 1},
+    {"gate": "beam", "entered": 0, "passed": 0, "rejected": 0},
+    {"gate": "throughput", "entered": 0, "passed": 0, "rejected": 0}
+  ],
+  "raw": "/home/ugrp/ugrp-sim/runs/simalt4/legacy-r3-grip/steps.npz",
+  "next": "same XML compiled C312/C316; reciprocal damping ablation; no parameter tuning"
+}

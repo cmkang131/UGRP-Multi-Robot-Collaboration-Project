@@ -1,0 +1,40 @@
+{
+  "stage": "after reciprocal native damping ablation; before native legacy controls",
+  "distribution": [
+    {
+      "reason": "compiled_damping_version_gap",
+      "count": 4,
+      "blocking_object": "r1__servo_arm_yaw/shoulder/elbow/wrist",
+      "minimum_gap_m": null,
+      "gap_note": "not geometric; same XML compiled actuator biasprm velocity coefficients",
+      "C312_damping_only_endpoint_mm": 11.305278956633074
+    },
+    {
+      "reason": "residual_backend_and_interaction_not_yet_split",
+      "count": 1,
+      "blocking_object": "r1__robot / floor",
+      "minimum_gap_m": null,
+      "gap_note": "endpoint vector difference 0.5746557315496988 mm versus C312 with C316 damping"
+    }
+  ],
+  "funnel": [
+    {
+      "gate": "native damping controls",
+      "entered": 2,
+      "passed": 2,
+      "rejected": 0
+    },
+    {
+      "gate": "Warp corrected small scene",
+      "entered": 4,
+      "passed": null,
+      "rejected": null,
+      "status": "running; no acceptance claimed"
+    }
+  ],
+  "raw": [
+    "/home/ugrp/ugrp-sim/runs/simalt4/c312-grip/steps.npz",
+    "/home/ugrp/ugrp-sim/runs/simalt5/c312-damping316-grip/steps.npz"
+  ],
+  "next": "same C316 engine with native legacy plane selection at old and new damping; no new Warp candidate"
+}
