@@ -97,3 +97,5 @@ done 정지를 무시한 검증 wheel MAE는0.054589로 동일했다. 연속 dut
 실패8329001/8329010과 교사 성공8328003의 전체2Hz·마지막10초10Hz 띠를 모두 파일로 직접 검토했다. 8329001은 파트너를 계속 바라보며 접근을 못 끝냈고, 8329010은 처음부터 반대 끝을 택했다. 성공 교사도 집기 때 색 띠가 아래로 사라져 화면 이탈만으로 실패를 설명하지 못한다. 기존 GCP2 ffmpeg 파생 영상을 재사용하고 ffprobe·SHA를 다시 확인했다. Mac GUI는 열지 않았다. 자세한 타임라인은 `actdiag-evidence/playback-review.json`이다.
 
 원본·추론 NPZ는 GCP2 `/home/ugrp/ugrp-sim/ops-reviews/actdiag/`, Mac에는 이 요약·가벼운 원장·곡선만 회수했다. 기존 영상은 `outputs/e2e18-admin/playback/beamact2-*`에 있다. 자체 CPU/L4 분석 프로세스·임대0을 확인했고, reloc20/warp3 임대·실행 때문에 VM을 정지하지 않았다. 전체 파일 SHA와 회수 확인은 `actdiag.json`의 evidence 및 `actdiag-evidence/artifacts.json`에 있다. 원래 데이터·체크포인트·모델 등록·PR#540 상태를 바꾸지 않았다.
+
+보존 PR: [#544 DRAFT](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/544). 이 Git 기록의 요약 JSON은 `summary.json`이며, 기본 checkout 요청 경로의 `actdiag.json`과 같은 내용을 담는다. 분석 코드·기록 보존용이고 병합·학생 채택은 하지 않았다.
