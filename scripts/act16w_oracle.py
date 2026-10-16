@@ -16,6 +16,7 @@ class VisibleOracle:
         from sim.grasp_act_solo_teacher import InputAudit, SoloTeacher, primitives
         from scripts.zone_teacher import plan_path, proportional_drive, OPEN
         from warp_act_scene import make_scene
+        from warp_act_numpy import solve_grip_site_ik
         self.owner, self.i = owner, index
         self.ctx = owner.contexts[index]
         self.plan = owner.plans[index]
@@ -31,9 +32,11 @@ class VisibleOracle:
             point=next((p for p in path if math.hypot(*p)>=.06),goal[:2])
             command=proportional_drive((0.,0.,0.),goal[:2],point,goal[2])
             return command['forward'],command['left'],command['turn']
+        ops=primitives();ops.ik=solve_grip_site_ik  # exact qualified f0db NumPy51-pitch solver
         self.teacher = SoloTeacher(self.plan['kind'],self.plan['role'],
             {int(k):v for k,v in initial['pwm'].items()},profile='solo_visible_only_v1',
-            held_object_hidden_v1=True,teacher_stability='align_relook_v1',reach_mode='pad_window_v2',ops=primitives(),route=route)
+            held_object_hidden_v1=True,teacher_stability='align_relook_v1',reach_mode='pad_window_v2',ops=ops,route=route,
+            rgb_lift_mode='solo_lift_lookback_v1',solo_lift_lookback_margin_v1=True)
         scene=make_scene({**self.plan,'end_color_scene':'off'})
         self.bodies={x.item_id:x.body for x in scene.cargo}
         self.bodies.update({k:v['body_name'] for k,v in scene.config['setup_only']['objects'].items()})
