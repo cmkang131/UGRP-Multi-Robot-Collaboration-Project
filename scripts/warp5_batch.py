@@ -4,7 +4,6 @@ Only the physical owner retains MjData. Actor readers receive JPEG and issued
 commands; evaluation can read exported GPU state. CPU rollout/render is disabled
 after native scene initialization. Shared warp_act_backend.py is not modified.
 """
-from __future__ import annotations
 import ast, base64, hashlib, io, json, math, time
 from collections import deque
 from pathlib import Path
@@ -87,7 +86,8 @@ class Batch(WarpTransport):
             self.camera_names += [(name,name,(320,240)) for name in tops]
             from scripts.warp5_render import Renderer
             self.multi_renderer=Renderer(self.m,self.wm,self.wd,self.camera_names,
-                enabled=getattr(self,'warp5_native_visual_v1',False))
+                enabled=getattr(self,'warp5_native_visual_v1',False) or getattr(self,'warp5_native_visual_v2',False),
+                texture_after_lighting=getattr(self,'warp5_native_visual_v2',False))
             self._multi_camera=True
         start=time.perf_counter()
         rendered=self.multi_renderer.render()

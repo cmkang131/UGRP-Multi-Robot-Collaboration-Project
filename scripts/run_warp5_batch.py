@@ -49,6 +49,7 @@ def run(a):
         physics_backend='mjwarp_batch_v1',pool_with_cpu=False,attempted=len(q['runs']),worlds=[],errors=[])
     hooks=Batch(host,sha,'mjwarp_batch_v1',a.output)
     hooks.warp5_native_visual_v1=q.get('warp5_native_visual_v1',False)
+    hooks.warp5_native_visual_v2=q.get('warp5_native_visual_v2',False)
     lanes=[];bridges=[];contexts=[];active=np.ones(len(q['runs']),bool)
     started=time.perf_counter()
     try:
