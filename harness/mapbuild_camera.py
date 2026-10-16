@@ -35,3 +35,25 @@ def adapters(camera_pose='off'):
     # keyword parameters rather than mutating another module's globals.
     def scan(rgb,servo,state):return rb.virtual_scan(rgb,servo,state,camera_pose=camera_pose)
     return pair,scan
+
+
+class CommandCamera:
+    """Causal pair/scan gate using the existing E2E/OdomGrid settle intervals."""
+    def __init__(self,*,camera_pose='off'):
+        if camera_pose!=CARRY_OPTION:raise ValueError('EXPLICIT_CARRY_CAMERA_REQUIRED')
+        self.pair,self.scan=adapters(camera_pose);self.last=None;self.since=0.;self.previous_t=None
+
+    def observe(self,t,previous,rgb,servo,state):
+        from harness.e2e_rgb_vo import PARAMS
+        key=tuple(sorted(servo.items()));changed=self.last is not None and self.last!=key
+        if self.previous_t is not None and t<=self.previous_t:raise ValueError('NONCAUSAL_CAMERA')
+        if self.last is None or changed:self.since=t
+        settle=PARAMS['settle_s'][int(servo[1]<=1600)]
+        reason=('bootstrap' if previous is None else 'unknown_servo_change' if changed else
+                'unknown_camera_unsettled' if self.previous_t-self.since+1e-8<settle else None)
+        flow=dict(status=reason) if reason else self.pair(previous,rgb,servo)
+        view=self.scan(rgb,servo,state)
+        if t-self.since+1e-8<settle:
+            view={**view,'segments':[],'features':[],'qualification':'unknown_camera_unsettled'}
+        self.last=key;self.previous_t=t
+        return flow,view

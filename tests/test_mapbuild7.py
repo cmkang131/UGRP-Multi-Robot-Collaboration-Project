@@ -51,3 +51,21 @@ def test_runtime_modules_no_truth_or_host_imports():
         imports=[n.module or '' for n in ast.walk(tree) if isinstance(n,ast.ImportFrom)]
         imports += [a.name for n in ast.walk(tree) if isinstance(n,ast.Import) for a in n.names]
         assert not any(any(s in name for s in ('mujoco','evaluate','audit','platform','subprocess')) for name in imports)
+
+
+def test_single_wall_is_not_a_global_SE2_registration():
+    static=dict(bounds_m=[-.1,.1,-.1,.1],obstacles=[dict(id='wall_one',center_m=[0,1],half_extents_m=[1,.02])])
+    value=StaticRegistration(static,option=OPTION).register([[[-.8,.98],[.8,.98]]])
+    assert value['status']=='rejected' and value['static_from_own'] is None
+    assert value['reason'] in ('unobservable_global_SE2','ambiguous_modes')
+    assert value['work']['candidates']==5*5*360
+
+
+def test_asymmetric_complete_geometry_registers_without_pose_prior():
+    from harness.mapbuild_static_registration import wall_segments
+    static=dict(bounds_m=[-.1,.1,-.1,.1],obstacles=[dict(id='wall_a',center_m=[0,1],half_extents_m=[1,.02]),dict(id='wall_b',center_m=[1,.25],half_extents_m=[.02,.55])])
+    segments=np.asarray(wall_segments(static));theta=np.radians(30.);R=np.array([[np.cos(theta),-np.sin(theta)],[np.sin(theta),np.cos(theta)]])
+    own=(segments-[.05,-.05])@R
+    value=StaticRegistration(static,option=OPTION).register(own)
+    assert value['status']=='accepted'
+    np.testing.assert_allclose(value['static_from_own'],[.05,-.05,theta],atol=1e-12)

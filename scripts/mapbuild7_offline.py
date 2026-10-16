@@ -15,7 +15,7 @@ def main(a):
     harness.__path__.append(str(a.vision/'harness'));sim.__path__.append(str(a.vision/'sim'))
     import numpy as np
     import cv2
-    from harness.mapbuild_camera import adapters
+    from harness.mapbuild_camera import adapters,CommandCamera
     from harness.servo_camera_fk import CARRY_OPTION,transform_from_commands
     from harness.mapbuild_static_registration import StaticRegistration,OPTION
     from harness.mapbuild_rbpf import MapbuildRBPF,OPTION as RBPF
@@ -24,7 +24,7 @@ def main(a):
     from harness.self_odom_grid import transform
     q=json.loads(a.queue.read_text())
     if not Path(q['rejection_table']).is_file():raise ValueError('PRIOR_FUNNEL_REQUIRED')
-    cv2.setNumThreads(1);pair,scan=adapters(CARRY_OPTION)
+    cv2.setNumThreads(1);camera_stream=CommandCamera(camera_pose=CARRY_OPTION)
     calibration=a.vision/'experiments/2026-10-16-reloc16/colour-calibration.json'
     if hashlib.sha256(calibration.read_bytes()).hexdigest()!='a37cf96551abbfb8b38df3efc1cd61f3f357ac9eb3a1dcd0b4d9947242e4e24f':raise ValueError('COLOUR_CHANGED')
     state=ColourBoundaryState('walls_floor_contrast_v5_indigo110_s80',json.loads(calibration.read_text()),option=RELOC16_OPTION)
@@ -36,12 +36,10 @@ def main(a):
         jpg=a.input/frame['rgb']
         if hashlib.sha256(jpg.read_bytes()).hexdigest()!=frame['sha256']:raise ValueError('RGB_CHANGED')
         rgb=cv2.cvtColor(cv2.imread(str(jpg)),cv2.COLOR_BGR2RGB);servo={int(k):v for k,v in frame['servo'].items()}
-        flow=dict(status='bootstrap') if old is None else pair(old,rgb,servo) if servo==last else dict(status='unknown_servo_change')
+        flow,view=camera_stream.observe(frame['t'],old,rgb,servo,state)
         delta=flow['delta'] if flow['status']=='measured' else frame['command_delta']
         cov=flow['covariance'] if flow['status']=='measured' else frame['command_covariance'];pose=compose(pose,delta)
-        view=scan(rgb,servo,state)
-        if last is not None and servo!=last:view={**view,'segments':[],'features':[],'qualification':'unknown_servo_change'}
-        estimate,event=rbpf.step(frame['t'],frame['frame_id'],delta,cov,view)
+        estimate,event=rbpf.step(frame['t'],frame['frame_id'],delta,cov,view,servo=servo)
         # Collect at existing 1SIM second scan schedule, never use scoring data.
         if event.get('inserted'):
             segments.extend([transform(s,pose).tolist() for s in view['segments']])

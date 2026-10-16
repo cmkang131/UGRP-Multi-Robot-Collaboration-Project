@@ -129,12 +129,17 @@ class MapbuildRBPF:
         g.odom.advance=MethodType(advance,g.odom)
         self.grid=g;self.last_scan=-math.inf
 
-    def step(self,t,frame_id,delta,covariance,scan):
+    def step(self,t,frame_id,delta,covariance,scan,*,servo=None):
         from harness.e2e_rgb_vo import compose
         g=self.grid
         if t<g.odom.driver.t: raise ValueError('NONCAUSAL_FRAME')
         propagate_covariance(g,delta,covariance)
         g.odom.driver._pose=compose(g.odom.driver._pose,delta);g.odom.driver.t=t
+        if servo is not None:
+            # Explicit moving-camera caller only. Preserve the existing
+            # unloaded/loaded .25/2.25 SIMs settling gate on OWN PWM changes.
+            # The historical fixed-camera API (servo=None) is unchanged.
+            g.odom.driver.command(dict(kind='initial_servo_command',t=t,pulses=servo))
         prior=list(g.odom.pose)
         event=dict(t=t,frame_id=frame_id,reason='no_visible_scan',inserted=False,resampled=False)
         # Existing CSMOptions.keyframe_interval_s=1 SIMs. The ROS 1m/.5rad

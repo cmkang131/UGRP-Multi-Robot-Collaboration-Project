@@ -71,6 +71,7 @@ TEST_PATTERNS = (
     "tests/test_mapbuild4.py",
     "tests/test_mapbuild5.py",
     "tests/test_mapbuild6.py",
+    "tests/test_mapbuild7.py",
     "tests/test_spawn_overlap_check.py",
     "tests/test_self_map_csm.py",
     "tests/test_self_map_csm_v2.py",
