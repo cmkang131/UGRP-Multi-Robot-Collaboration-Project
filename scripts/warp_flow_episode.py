@@ -120,7 +120,8 @@ class Bridge:
         from warp_flow_model import canonical_xml
         from warp_flow_admission import scene_admission,MODE,PlacementRejected
         import json
-        admission=scene_admission(self.plan,scene,mode=MODE if getattr(self.hooks,'placement_graspable_filter_v1',False) else 'off')
+        admission=scene_admission(self.plan,scene,mode=MODE if getattr(self.hooks,'placement_graspable_filter_v1',False) else 'off',
+            certification_source=self.certification_source)
         self.output.mkdir(parents=True,exist_ok=True)
         (self.output/'placement-admission.json').write_text(json.dumps(admission,indent=2)+'\n')
         if not admission['accepted']:
@@ -279,6 +280,7 @@ def make_lane(adapter_source, teacher_source, plan, out, hooks, index, cap_s, *,
     bridge = Bridge(hooks, index)
     bridge.output = Path(out)
     bridge.plan = plan
+    bridge.certification_source=Path(teacher_source) if teacher_source else Path(adapter_source).parent/TEACHER_SHA
     bridge.canonical = canonical if canonical is not None else {}
     def factory():
         bridge.install_scene_quality()

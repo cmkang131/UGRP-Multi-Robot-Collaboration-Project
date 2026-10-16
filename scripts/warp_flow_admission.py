@@ -37,10 +37,7 @@ def certify(pose,rects,family,body_clearance,margin,*,offset=.27,mode='off'):
         setup_only=True,runtime_truth_used=False)
 
 
-def scene_admission(plan,scene,*,mode='off'):
-    from sim.grasp_act_search24 import reachability_map
-    from sim.grasp_act_search18 import body_clearance
-    from sim.grasp_act_search21 import FRESH_MARGIN_M
+def scene_admission(plan,scene,*,mode='off',certification_source=None):
     from sim.zone_cargo import kind
     from sim.zone_arena import BOX_HALF,COLORS
     static=scene.config['static_map']
@@ -55,6 +52,19 @@ def scene_admission(plan,scene,*,mode='off'):
         if name=='beam_1' or any(name==c.item_id for c in scene.cargo):continue
         rects.append((name,(*item['position_m'][:2],*item['half_extents_m'][:2],0.)))
     beam=kind('long_beam')
-    family=reachability_map(beam.grasps[0].grip_xyz[2])
-    return certify(plan['beam_pose'],rects,family,body_clearance,FRESH_MARGIN_M,
-        offset=abs(beam.grasps[0].grip_xyz[0]),mode=mode)
+    # release25 predates search24. Reuse the exact pinned beampair certification
+    # in an isolated setup-only module context, never import it into control.
+    from warp_flow_episode import owned,replace_modules
+    import sys
+    parent={k:v for k,v in sys.modules.copy().items() if owned(k)};search=sys.path[:]
+    try:
+        if certification_source is not None:
+            replace_modules({});sys.path.insert(0,str(certification_source))
+        from sim.grasp_act_search24 import reachability_map
+        from sim.grasp_act_search18 import body_clearance
+        from sim.grasp_act_search21 import FRESH_MARGIN_M
+        family=reachability_map(beam.grasps[0].grip_xyz[2])
+        return certify(plan['beam_pose'],rects,family,body_clearance,FRESH_MARGIN_M,
+            offset=abs(beam.grasps[0].grip_xyz[0]),mode=mode)
+    finally:
+        replace_modules(parent);sys.path[:]=search

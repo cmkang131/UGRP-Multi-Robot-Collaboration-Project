@@ -72,6 +72,8 @@ def main():
     if a.flow=='beampair':
         if not a.teacher_source:p.error('beampair needs pinned teacher source')
         require_source(a.teacher_source,TEACHER_SHA)
+    else:
+        require_source(a.adapter_source.parent/TEACHER_SHA,TEACHER_SHA)
     source=subprocess.check_output(['git','-C',str(ROOT),'rev-parse','HEAD'],text=True).strip()
     require_source(ROOT,source)
     cases=json.loads(a.cases.read_text())
