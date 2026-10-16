@@ -11,7 +11,13 @@ optimizer 모집단 TRAIN12,734행과 검증 전용 VAL1,812행으로 나뉜다.
 release의 비근거리 lookaround2,360행·complete800행은 제외됐다.
 TRAIN은 cyan9/green11/red4/yellow11회로 red 대표성이 작으므로 학생 결과를 종류별 n/N으로도 낸다
 ([정의·계수](resume2/dataset-row-accounting.json)).
-A/B는 동일 초기화·10000스텝으로 학습 중이며, 학생 성공률·h4·h5·최종40회는 미측정이다.
+A/B는 동일 초기화·10000스텝 학습과 저장/재로딩 예측 완전 일치를 마쳤다.
+동일한 VAL5 실행 평가가 진행 중이며 h4·h5·최종40회는 미측정이다.
+[실험 모델 Release](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/tag/models-20261016-act16w-v1)에
+두 모델을 올리고 새 clone의 공개 재다운로드·전체38파일 해시·CPU 로딩을 확인했다
+([검증](resume2/public-model-verification-ab.json)). 모델 로딩은 학생 임무 성공과 별개다.
+[완료된 A/B 학습 곡선](resume2/learning-A-B-complete-r1/learning-curves-progress.png)은
+실제 optimizer 로그만 표시하며, native 학생 성능의 근거는 아니다.
 두 파일럿 전체2Hz·끝10SIM초10Hz와 본 기록 첫30초를 직접 검토했다.
 앞선3SIM초 warm2회(cap_end,60쌍)는 학습에서 제외했다.
 사용자가 상한을 해제했고 조정자가 VM 설정을 적용했다([결정](resume2/cap-decision.json)).
