@@ -1,0 +1,448 @@
+{
+  "scope": "preliminary N16 only; not first30 speed gate or task success",
+  "rows": [
+    {
+      "variant": "before",
+      "source_sha": "2eef73185679c1612ce43ff1312fdf6aa652be34",
+      "host": {
+        "provider": "gcp",
+        "project_id": "ugrp-sim-d-1016",
+        "instance": "ugrp-act-l4-gcp4",
+        "machine_type": "g2-standard-16",
+        "zone": "asia-northeast3-a",
+        "cpu_count": 16,
+        "schema": "ugrp.grasp_act.host.v1"
+      },
+      "status": "PROFILE_COMPLETE",
+      "progress": {
+        "sim_s": 0.30000000000000004,
+        "active": 16,
+        "completed": 0,
+        "wall_s": 24.819298300000014,
+        "timing": [
+          {
+            "render_and_evaluator_export": 30.005098881000094,
+            "command_and_physics": 11.061168943999974
+          }
+        ]
+      },
+      "phases": {
+        "controller_python": {
+          "calls": 48,
+          "wall_s": 2.3010311160006722,
+          "device_s": 0.0,
+          "submit_s": 2.301006927999765,
+          "wait_s": 3.172600042944396e-05,
+          "bytes": 0,
+          "implicit_syncs": 0,
+          "explicit_syncs": 0,
+          "errors": 0
+        },
+        "command_python": {
+          "calls": 3,
+          "wall_s": 0.18029007200004799,
+          "device_s": 0.0,
+          "submit_s": 0.18029239899999538,
+          "wait_s": 0.0,
+          "bytes": 0,
+          "implicit_syncs": 0,
+          "explicit_syncs": 0,
+          "errors": 0
+        },
+        "command_h2d": {
+          "calls": 3,
+          "wall_s": 0.0015608339999744203,
+          "device_s": 0.0012431360185146331,
+          "submit_s": 0.0014389479998726529,
+          "wait_s": 0.00012248800010183913,
+          "bytes": 2304000,
+          "implicit_syncs": 0,
+          "explicit_syncs": 3,
+          "errors": 0
+        },
+        "physics_graph": {
+          "calls": 3,
+          "wall_s": 10.878267705000098,
+          "device_s": 10.878067626953126,
+          "submit_s": 9.191412968000122,
+          "wait_s": 1.6868562979999524,
+          "bytes": 0,
+          "implicit_syncs": 0,
+          "explicit_syncs": 3,
+          "errors": 0
+        },
+        "physics_existing_sync": {
+          "calls": 3,
+          "wall_s": 9.65670000141472e-05,
+          "device_s": 0.0,
+          "submit_s": 9.556700001667195e-05,
+          "wait_s": 1.7020000768752652e-06,
+          "bytes": 0,
+          "implicit_syncs": 0,
+          "explicit_syncs": 3,
+          "errors": 0
+        },
+        "overflow_d2h": {
+          "calls": 3,
+          "wall_s": 0.0006664530001216917,
+          "device_s": 0.0,
+          "submit_s": 0.0006652550000580959,
+          "wait_s": 1.6979998918031924e-06,
+          "bytes": 192,
+          "implicit_syncs": 3,
+          "explicit_syncs": 0,
+          "errors": 0
+        },
+        "render_kinematics_gpu": {
+          "calls": 4,
+          "wall_s": 0.0033696289998488282,
+          "device_s": 0.0030903680324554446,
+          "submit_s": 0.003233690999877581,
+          "wait_s": 0.00013670900000306574,
+          "bytes": 0,
+          "implicit_syncs": 0,
+          "explicit_syncs": 4,
+          "errors": 0
+        },
+        "render_model_d2h": {
+          "calls": 8,
+          "wall_s": 0.0008030639999105915,
+          "device_s": 0.0,
+          "submit_s": 0.0008008899999367713,
+          "wait_s": 3.2440000268252334e-06,
+          "bytes": 88832,
+          "implicit_syncs": 8,
+          "explicit_syncs": 0,
+          "errors": 0
+        },
+        "render_model_h2d": {
+          "calls": 68,
+          "wall_s": 0.019074643999829277,
+          "device_s": 0.013375424005091186,
+          "submit_s": 0.016771817000062583,
+          "wait_s": 0.0023177469997790467,
+          "bytes": 1331648,
+          "implicit_syncs": 0,
+          "explicit_syncs": 68,
+          "errors": 0
+        },
+        "render_refit_gpu": {
+          "calls": 60,
+          "wall_s": 0.36531273799971586,
+          "device_s": 0.3632235527038573,
+          "submit_s": 0.034787843000003704,
+          "wait_s": 0.3305374340003482,
+          "bytes": 0,
+          "implicit_syncs": 0,
+          "explicit_syncs": 60,
+          "errors": 0
+        },
+        "render_allocate": {
+          "calls": 90,
+          "wall_s": 0.012781128999904467,
+          "device_s": 0.0,
+          "submit_s": 0.012754279999626306,
+          "wait_s": 4.233700065015e-05,
+          "bytes": 0,
+          "implicit_syncs": 0,
+          "explicit_syncs": 0,
+          "errors": 0
+        },
+        "render_extract_gpu": {
+          "calls": 90,
+          "wall_s": 0.07747627400010515,
+          "device_s": 0.05255468793213367,
+          "submit_s": 0.015768657999501556,
+          "wait_s": 0.06172370700028296,
+          "bytes": 0,
+          "implicit_syncs": 0,
+          "explicit_syncs": 90,
+          "errors": 0
+        },
+        "render_existing_sync": {
+          "calls": 90,
+          "wall_s": 0.0016777820007973787,
+          "device_s": 0.0,
+          "submit_s": 0.0016537210004798908,
+          "wait_s": 3.381599969998206e-05,
+          "bytes": 0,
+          "implicit_syncs": 0,
+          "explicit_syncs": 90,
+          "errors": 0
+        },
+        "render_d2h": {
+          "calls": 90,
+          "wall_s": 2.9145289339998044,
+          "device_s": 0.0,
+          "submit_s": 2.914459761999751,
+          "wait_s": 8.664300025884586e-05,
+          "bytes": 7741440000,
+          "implicit_syncs": 180,
+          "explicit_syncs": 0,
+          "errors": 0
+        },
+        "render_cpu_convert": {
+          "calls": 90,
+          "wall_s": 2.871415856000567,
+          "device_s": 0.0,
+          "submit_s": 2.871308183999986,
+          "wait_s": 0.0001302279996480138,
+          "bytes": 0,
+          "implicit_syncs": 0,
+          "explicit_syncs": 0,
+          "errors": 0
+        },
+        "render_sort_d2h": {
+          "calls": 8,
+          "wall_s": 0.00150187500003085,
+          "device_s": 0.0,
+          "submit_s": 0.0014987640000754254,
+          "wait_s": 4.613000101016951e-06,
+          "bytes": 1073664,
+          "implicit_syncs": 8,
+          "explicit_syncs": 0,
+          "errors": 0
+        },
+        "render_blend_cpu": {
+          "calls": 6,
+          "wall_s": 3.761228057000153,
+          "device_s": 0.0,
+          "submit_s": 3.761222400000065,
+          "wait_s": 6.8570001303669414e-06,
+          "bytes": 0,
+          "implicit_syncs": 0,
+          "explicit_syncs": 0,
+          "errors": 0
+        },
+        "jpeg_cpu": {
+          "calls": 96,
+          "wall_s": 0.1621344510011795,
+          "device_s": 0.0,
+          "submit_s": 0.16208753300008993,
+          "wait_s": 6.318100054159004e-05,
+          "bytes": 0,
+          "implicit_syncs": 0,
+          "explicit_syncs": 0,
+          "errors": 0
+        },
+        "evaluator_d2h": {
+          "calls": 6048,
+          "wall_s": 0.338696030995834,
+          "device_s": 0.0,
+          "submit_s": 0.33743307100291986,
+          "wait_s": 0.001953693993982597,
+          "bytes": 189087936,
+          "implicit_syncs": 6048,
+          "explicit_syncs": 0,
+          "errors": 0
+        },
+        "evaluator_export_total": {
+          "calls": 3,
+          "wall_s": 0.43203575099994396,
+          "device_s": 0.0,
+          "submit_s": 0.43203477999998086,
+          "wait_s": 1.3119998811816913e-06,
+          "bytes": 0,
+          "implicit_syncs": 0,
+          "explicit_syncs": 0,
+          "errors": 0
+        }
+      },
+      "summary_sha256": "839ae059801df097d8de91cb0c4f6341ccd268453dc63c53d8133154d6c08028"
+    },
+    {
+      "variant": "after-r2",
+      "source_sha": "55e6a64c5e87901aab911529b5064e661dac33f9",
+      "host": {
+        "provider": "gcp",
+        "project_id": "ugrp-sim-d-1016",
+        "instance": "ugrp-act-l4-gcp4",
+        "machine_type": "g2-standard-16",
+        "zone": "asia-northeast3-a",
+        "cpu_count": 16,
+        "schema": "ugrp.grasp_act.host.v1"
+      },
+      "status": "PROFILE_COMPLETE",
+      "progress": {
+        "sim_s": 0.30000000000000004,
+        "active": 16,
+        "completed": 0,
+        "wall_s": 18.845812787999876,
+        "timing": [
+          {
+            "render_and_evaluator_export": 20.248370606999742,
+            "command_and_physics": 11.088458316000015
+          }
+        ]
+      },
+      "phases": {
+        "controller_python": {
+          "calls": 48,
+          "wall_s": 2.2948956570007795,
+          "device_s": 0.0,
+          "submit_s": 2.2948730529988097,
+          "wait_s": 2.9652001103386283e-05,
+          "bytes": 0,
+          "implicit_syncs": 0,
+          "explicit_syncs": 0,
+          "errors": 0
+        },
+        "command_python": {
+          "calls": 3,
+          "wall_s": 0.18686913000010463,
+          "device_s": 0.0,
+          "submit_s": 0.18687178699974538,
+          "wait_s": 0.0,
+          "bytes": 0,
+          "implicit_syncs": 0,
+          "explicit_syncs": 0,
+          "errors": 0
+        },
+        "command_h2d": {
+          "calls": 3,
+          "wall_s": 0.0012685200003943464,
+          "device_s": 0.0009887359738349915,
+          "submit_s": 0.0010904060004577332,
+          "wait_s": 0.00017876499987323768,
+          "bytes": 2304000,
+          "implicit_syncs": 0,
+          "explicit_syncs": 3,
+          "errors": 0
+        },
+        "physics_graph": {
+          "calls": 3,
+          "wall_s": 10.899267508999856,
+          "device_s": 10.8990791015625,
+          "submit_s": 9.203452393000134,
+          "wait_s": 1.6958166079998591,
+          "bytes": 0,
+          "implicit_syncs": 0,
+          "explicit_syncs": 3,
+          "errors": 0
+        },
+        "physics_existing_sync": {
+          "calls": 3,
+          "wall_s": 9.882099993774318e-05,
+          "device_s": 0.0,
+          "submit_s": 9.801299984246725e-05,
+          "wait_s": 1.2189998415124137e-06,
+          "bytes": 0,
+          "implicit_syncs": 0,
+          "explicit_syncs": 3,
+          "errors": 0
+        },
+        "overflow_d2h": {
+          "calls": 3,
+          "wall_s": 0.0006494059998658486,
+          "device_s": 0.0,
+          "submit_s": 0.0006483110000772285,
+          "wait_s": 1.6049998521339148e-06,
+          "bytes": 192,
+          "implicit_syncs": 3,
+          "explicit_syncs": 0,
+          "errors": 0
+        },
+        "render_refit_submit": {
+          "calls": 60,
+          "wall_s": 0.02283992499951637,
+          "device_s": 0.0,
+          "submit_s": 0.0228209139968385,
+          "wait_s": 2.694600152608473e-05,
+          "bytes": 0,
+          "implicit_syncs": 0,
+          "explicit_syncs": 0,
+          "errors": 0
+        },
+        "render_d2h": {
+          "calls": 176,
+          "wall_s": 0.0030983479960013938,
+          "device_s": 0.0,
+          "submit_s": 0.0030561589996978,
+          "wait_s": 6.293499745879672e-05,
+          "bytes": 7225355136,
+          "implicit_syncs": 0,
+          "explicit_syncs": 0,
+          "errors": 0
+        },
+        "render_existing_sync": {
+          "calls": 3,
+          "wall_s": 0.8921902240003874,
+          "device_s": 0.0,
+          "submit_s": 0.8921863840000697,
+          "wait_s": 4.401999831316061e-06,
+          "bytes": 0,
+          "implicit_syncs": 0,
+          "explicit_syncs": 3,
+          "errors": 0
+        },
+        "render_batch_gpu": {
+          "calls": 3,
+          "wall_s": 0.9353954100001829,
+          "device_s": 0.9352028198242187,
+          "submit_s": 0.9352456090005035,
+          "wait_s": 0.0001504299998487113,
+          "bytes": 0,
+          "implicit_syncs": 0,
+          "explicit_syncs": 3,
+          "errors": 0
+        },
+        "render_blend_cpu": {
+          "calls": 6,
+          "wall_s": 3.640734739000891,
+          "device_s": 0.0,
+          "submit_s": 3.6407218220001596,
+          "wait_s": 1.4169000223773764e-05,
+          "bytes": 0,
+          "implicit_syncs": 0,
+          "explicit_syncs": 0,
+          "errors": 0
+        },
+        "jpeg_cpu": {
+          "calls": 96,
+          "wall_s": 0.16124696099859648,
+          "device_s": 0.0,
+          "submit_s": 0.16119848700009243,
+          "wait_s": 6.529300026159035e-05,
+          "bytes": 0,
+          "implicit_syncs": 0,
+          "explicit_syncs": 0,
+          "errors": 0
+        },
+        "evaluator_d2h": {
+          "calls": 411,
+          "wall_s": 0.004502556997067586,
+          "device_s": 0.0,
+          "submit_s": 0.004447019000963337,
+          "wait_s": 9.565899927110877e-05,
+          "bytes": 13470540,
+          "implicit_syncs": 0,
+          "explicit_syncs": 0,
+          "errors": 0
+        },
+        "evaluator_existing_sync": {
+          "calls": 3,
+          "wall_s": 0.0001465459999963059,
+          "device_s": 0.0,
+          "submit_s": 0.00014601800012314925,
+          "wait_s": 9.239997780241538e-07,
+          "bytes": 0,
+          "implicit_syncs": 0,
+          "explicit_syncs": 3,
+          "errors": 0
+        },
+        "evaluator_export_total": {
+          "calls": 3,
+          "wall_s": 0.03436006099991573,
+          "device_s": 0.0,
+          "submit_s": 0.03435854399958771,
+          "wait_s": 2.0140000742685515e-06,
+          "bytes": 0,
+          "implicit_syncs": 0,
+          "explicit_syncs": 0,
+          "errors": 0
+        }
+      },
+      "summary_sha256": "bd112986f1a644718c4422e5676a695cebaf2cd6de6625a25fa0468a2163538c"
+    }
+  ]
+}
