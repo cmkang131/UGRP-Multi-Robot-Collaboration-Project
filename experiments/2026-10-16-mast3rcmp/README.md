@@ -26,7 +26,7 @@
 
 ## 검증과 남은 작업
 
-비물리 검사4개(분석적 척도 정렬, 실패 분모, manifest/이미지 변조 거부, 정답 없는 바닥 척도)와 Python compile/whitespace 통과. 주 가중치·검색 가중치 로딩과 실제 자기RGB 추적을 확인했다. 전체CI·본 비교·ATE는 아직 미확인이다. 첫 설치는 C++ 컴파일러 부재로 HOST_ERROR였으며 [거부 분포·수정](install-attempts.json)에 기록한 뒤 build-essential을 추가했다.
+비물리 검사5개(분석적 척도 정렬, 실패 분모, manifest/이미지 변조 거부, 정답 없는 바닥 척도, 실제 tar 파이프 전송·정답 파일 제외)와 Python compile/whitespace 통과. 주 가중치·검색 가중치 로딩과 실제 자기RGB 추적을 확인했다. 전체CI·본 비교·ATE는 아직 미확인이다. 첫 설치는 C++ 컴파일러 부재로 HOST_ERROR였으며 [거부 분포·수정](install-attempts.json)에 기록한 뒤 build-essential을 추가했다.
 
 [재현 명령](reproduce.json), [순차 누적 funnel](rejection_table.json), [대기열](next-queue.json), [회수 SHA 대조](retrieval-verification.json)를 보존했다. 본 비교표는 본 녹화 추정·채점 후 추가한다. 원본은 gcp4 영속 디스크에 보존하고 프로젝트 예외에 따라 로컬/GitHub에 기록한다.
 
