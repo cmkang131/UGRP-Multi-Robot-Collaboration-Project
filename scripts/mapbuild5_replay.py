@@ -42,6 +42,10 @@ def replay(root,vision,calibration,output):
     state=ColourBoundaryState('walls_floor_contrast_v5_indigo110_s80',json.loads(calibration_path.read_text()),option=RELOC16_OPTION)
     own=json.loads((root/'own.json').read_text())
     if own['physics_backend']!='mjwarp':raise ValueError('MJWARP_RECORDING_REQUIRED')
+    recorded=json.loads((root/'summary.json').read_text())
+    if recorded.get('contact_profile',{}).get('profile')=='warp_native_contact_v1':
+        if json.loads(calibration.read_text())['contact_profile']!='warp_native_contact_v1':
+            raise ValueError('CONTACT_COHORT_MISMATCH')
     frames=own['frames'];commands=json.loads((root/'commands.json').read_text())
     intervals=command_intervals(frames,commands,json.loads(calibration.read_text()))
     output.mkdir(parents=True,exist_ok=False)

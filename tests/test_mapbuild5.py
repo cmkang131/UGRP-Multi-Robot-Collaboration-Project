@@ -56,3 +56,18 @@ def test_unknown_scan_keeps_motion_and_does_not_carve_free():
     assert np.allclose(pose,[.05,0,0])
     assert event['reason']=='no_visible_scan' and not event['resampled']
     assert all(not m.cells for m in r.grid.maps)
+
+
+def test_fixed_floor_calibration_preserves_body_camera_evaluation_transform():
+    from scripts.mapbuild5_manifest import fixed_floor_calibration
+    cal=fixed_floor_calibration(SEARCH)
+    origin=np.asarray(cal['camera_origin_body_m'])
+    rotation=np.asarray(cal['camera_to_body_rotation'])
+    normal=np.asarray(cal['floor_normal_camera'])
+    # Arbitrary body-frame floor points must satisfy the exported camera
+    # plane, and camera-centre evaluation must use the declared lever arm.
+    floor=np.array([[0,0,0],[1,-2,0],[-.3,.7,0]])
+    camera=(floor-origin)@rotation
+    assert np.allclose(camera@normal+cal['camera_height_m'],0)
+    assert np.isclose(np.linalg.norm(normal),1)
+    assert np.allclose(camera@rotation.T+origin,floor)

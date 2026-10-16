@@ -7,7 +7,7 @@ from pathlib import Path
 import sys
 
 
-def make(vision, base, output):
+def make(vision, base, output, *, contact_profile='warp_native_contact_v1'):
     sys.path[:0]=[str(vision),str(vision/'scripts')]
     os.chdir(vision)
     import numpy as np
@@ -19,8 +19,14 @@ def make(vision, base, output):
     body=m.body('r1__robot').id;adr=int(m.jnt_qposadr[int(m.body_jntadr[body])])
     pose=lambda q:np.r_[q[adr:adr+2],quaternion_heading(q[adr+3:adr+7])]
     curves={};sources=[]
-    for name,onset in [('pulse-warp-r1',100),('phase-warp-r2',200)]:
+    names = ([('native-pulse-warp-r3',100),('native-phase-warp-r3',200)]
+             if contact_profile=='warp_native_contact_v1' else
+             [('pulse-warp-r1',100),('phase-warp-r2',200)])
+    for name,onset in names:
         root=base/name
+        summary=json.loads((root/'summary.json').read_text())
+        if summary['backend']!='warp' or summary['contact_profile']!=contact_profile:
+            raise ValueError('CONTACT_COHORT_MISMATCH')
         meta=json.loads((root/'metrics.json').read_text());q=np.load(root/'eval-state.npz')['qpos']
         for i,row in enumerate(meta):
             if row['pose']!='drive':continue
@@ -39,7 +45,7 @@ def make(vision, base, output):
         profiles[key]=dict(times=(np.arange(len(mean))/100).tolist(),curve=mean.tolist(),
                            covariance=cov.tolist(),contexts=len(rows),
                            endpoint_samples=data[:,-1].tolist(),covariance_scope='cold/warm context spread; not repeatability')
-    result=dict(physics_backend='mjwarp',contact_profile='baseline_noslip10',profiles=profiles,sources=sources,
+    result=dict(physics_backend='mjwarp',contact_profile=contact_profile,profiles=profiles,sources=sources,
                 qualification='EXPLORATORY_CONTEXT_SPREAD_NOT_GENERALIZED',
                 mean_source='mapbuild4 saved 100Hz physical MJWarp response, cold and after-forward where available',
                 noise_source='empirical endpoint context covariance + OpenSLAM c716f019 motionmodel.cpp25-35, ROS defaults')
@@ -82,4 +88,5 @@ def command_intervals(frames, commands, calibration):
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__)
     for name in ('vision','base','output'):p.add_argument('--'+name,type=Path,required=True)
-    a=p.parse_args();make(a.vision,a.base,a.output)
+    p.add_argument('--contact-profile',choices=['warp_native_contact_v1','baseline_noslip10'],default='warp_native_contact_v1')
+    a=p.parse_args();make(a.vision,a.base,a.output,contact_profile=a.contact_profile)

@@ -29,7 +29,7 @@ def plan():
 
 
 def run(a):
-    a.backend = 'warp'; a.contact_profile = 'baseline_noslip10'
+    a.backend = 'warp'; a.contact_profile = 'warp_native_contact_v1'
     a.case_filter = 'drive-forward-+1-100'
     m, xml, cases, initial, controls, admission = bootstrap(a)
     import numpy as np
@@ -47,6 +47,8 @@ def run(a):
     queue = json.loads(a.queue.read_text())
     if queue.get('toggle') != 'mapbuild5_recording_v1' or queue.get('enabled') is not True:
         raise ValueError('EXPLICIT_RECORDING_TOGGLE_REQUIRED')
+    if queue.get('contact_profile') != a.contact_profile or int(m.opt.noslip_iterations) != 0:
+        raise ValueError('NATIVE_V1_CONTACT_REQUIRED')
     lease = Path('/home/ugrp/ugrp-sim/leases/mapbuild5.json')
     if not lease.is_file():
         raise ValueError('OWN_LEASE_REQUIRED')
@@ -58,7 +60,16 @@ def run(a):
     dump(a.output/'camera-calibration.json', dict(K=K.tolist(), D=D.tolist(), width=640, height=480,
          source='fixed v3 K/D + harness.servo_camera_fk.transform_from_commands; own PWM only',
          servo=cases[0]['pwm'], renderer_sha='5974a181a2cec9731339a6ce3aadc0464b8dddcf'))
-    wp.init(); wm = mjw.put_model(m); wm.opt.tolerance.fill_(float(m.opt.tolerance))
+    # warpfit df5a1f86a / a5c8d370...: preserve the installed MJWarp native
+    # float32 tolerance floor, as in mapbuild4 native-r3. No C emulation.
+    wp.init(); wm = mjw.put_model(m)
+    contact = dict(profile=a.contact_profile, noslip_iterations=int(m.opt.noslip_iterations),
+        cone=int(m.opt.cone), integrator=int(m.opt.integrator), impratio=float(m.opt.impratio),
+        iterations=int(m.opt.iterations), ls_iterations=int(m.opt.ls_iterations),
+        effective_tolerance=float(wm.opt.tolerance.numpy().item()),
+        owner_source='df5a1f86aad420f2fab2c10e3ee77cdb5ec11807',
+        module_sha256='a5c8d370755034b9f9615f66a94b87883327b7d7ecc4e13082eac2c2d4751c6a')
+    dump(a.output/'contact-profile.json',contact)
     d = mujoco.MjData(m)
     d.qpos[:]=initial[0];mujoco.mj_forward(m,d)
     with unused_efm(m, d):
@@ -148,7 +159,7 @@ def run(a):
     dump(a.output/'summary.json',dict(status='cap_end',source_sha=queue['source_sha'],scene='walls_floor_contrast_v5_indigo110_s80',
          scene_xml_sha256=hashlib.sha256(xml.encode()).hexdigest(),frames=len(own),worlds=1,sim_s=end,
          recording=dict(hz=10,terminal_sim_s=10,retained=list(ring),bytes=sum(p.stat().st_size for p in folder.glob('*.jpg'))),
-         renderer=rc.audit,physics_backend='mjwarp',wall_s=time.monotonic()-t0,
+         renderer=rc.audit,physics_backend='mjwarp',contact_profile=contact,wall_s=time.monotonic()-t0,
          input_audit=dict(top_actor_reads=0,truth_feedback=0,cpu_physics_steps=0),termination='cap_end'))
     dump(a.output/'rejection_table.json',dict(raw=str(a.output),reproduction=sys.argv,
          stages=[dict(stage='requested_frames',cumulative_pass_n=len(saved),rejected_n=0),
