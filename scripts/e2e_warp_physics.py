@@ -35,7 +35,8 @@ def source_module():
             sys.modules.pop('warp_act_core', None)
         else:
             sys.modules['warp_act_core'] = old
-    return backend, core
+    schedule = module_at('_e2ewarp_schedule', VENDOR / 'warp_schedule_core.py')
+    return backend, core, schedule
 
 
 def build_context(seed, out, stack):
@@ -134,7 +135,7 @@ def build_context(seed, out, stack):
 
 
 def transport(contexts, out, sha, stack):
-    backend, core = source_module()
+    backend, core, schedule = source_module()
 
     class NativeE2E(backend.WarpTransport):
         def initialize(self, contexts):
@@ -159,7 +160,7 @@ def transport(contexts, out, sha, stack):
             self.copy_initial_state(contexts)
             self.robot_relay_states = {r: np.zeros((self.n, 4), int) for r in self.robot_ids}
             self.relay_state = self.robot_relay_states['r1']
-            steps, chunk, launches = core.physics_schedule(.1, self.dt)
+            steps, chunk, launches = schedule.physics_schedule(.1, self.dt)
             self.launches = launches
             self.tape = wp.zeros((steps, self.n, m.nu), dtype=float)
             self.graph_tick = wp.zeros(1, dtype=int)

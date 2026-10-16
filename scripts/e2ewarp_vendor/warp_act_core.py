@@ -6,17 +6,6 @@ frozen ACT11 source, rather than new acceptance thresholds.
 """
 import numpy as np
 
-
-def active_dof_workspace(nv, initial_bound, *, full=False):
-    """Default keeps legacy allocation; full uses the model's exact DOF bound.
-
-    warp8 R1: initial110 -> allocation128, but awake156 at control tick226.
-    Full nv222 is a structural bound, not an empirical multiplier. MJWarp's
-    documented default nvmax=nv admits all legal wakeups without changing sleep.
-    See experiments/2026-10-16-warp8/nvmax-evidence.json and references.md.
-    """
-    return int(nv) if full else min(int(nv),1 << (max(1,int(initial_bound))-1).bit_length())
-
 SERVOS = (1, 3, 4, 5, 6)
 
 
@@ -94,6 +83,33 @@ def control_tape(rows, relay_state, *, dt, steps, lookup, wheel_ids, servo_ids,
                       target=target, servo_active=servo_active, servo_time=previous_time)
 
 
+def multi_control_tape(robot_rows, relay_states, bindings, **clock):
+    """Compose existing command tapes on disjoint actuator columns.
+
+    Both robots share ONE world clock and physics step. No measured position,
+    velocity or contact is used. The scalar decoder and its constants are
+    unchanged; this only prevents r2's template overwriting r1's substep tape.
+    """
+    tapes, states, used = {}, {}, set()
+    for rid, rows in robot_rows.items():
+        binding = bindings[rid]
+        columns = list(binding['wheel_ids']) + [j for ids in binding['servo_ids'] for j in ids]
+        if len(set(columns)) != len(columns) or used.intersection(columns):
+            raise ValueError('robot actuator columns must be disjoint')
+        used.update(columns)
+        tape, state = control_tape(rows, relay_states[rid], **binding, **clock)
+        tapes[rid] = (tape, columns)
+        states[rid] = state
+    if not tapes:
+        raise ValueError('nonempty robot command batch required')
+    combined = next(iter(tapes.values()))[0].copy()
+    for tape, columns in tapes.values():
+        if tape.shape != combined.shape:
+            raise ValueError('robots must share world and substep dimensions')
+        combined[:, :, columns] = tape[:, :, columns]
+    return combined, states
+
+
 def model_key(xml):
     """Same scene/model excluding only free-body initial pose declarations.
 
@@ -110,6 +126,21 @@ def model_key(xml):
             for attr in ('pos','quat','euler','axisangle','xyaxes','zaxis'):
                 body.attrib.pop(attr,None)
     return hashlib.sha256(ET.tostring(root)).hexdigest()
+
+
+def contact_maps(ngeom, targets, fingers):
+    """Evaluator-only per-world cargo/finger membership, including multi-geoms."""
+    if len(targets) != len(fingers) or not targets:
+        raise ValueError('matching nonempty per-world contact groups required')
+    target_mask = np.zeros((len(targets), ngeom), dtype=np.int32)
+    finger_map = np.full((len(targets), ngeom), -1, dtype=np.int32)
+    for i, (cargo, mapping) in enumerate(zip(targets, fingers)):
+        if not cargo or set(cargo).intersection(mapping):
+            raise ValueError('cargo and fingers must be distinct')
+        target_mask[i, cargo] = 1
+        for geom, channel in mapping.items():
+            finger_map[i, geom] = channel
+    return target_mask, finger_map
 
 
 def varying_model_arrays(rows, batchable):
@@ -132,84 +163,9 @@ def varying_model_arrays(rows, batchable):
     return out
 
 
-def masked_restore(current, initial, mask):
-    """Restore selected integration rows; preserve every untouched row exactly."""
-    selected=np.asarray(mask)
-    if selected.dtype!=np.bool_ or selected.ndim!=1 or set(current)!=set(initial):
-        raise ValueError('boolean world mask and matching integration fields required')
-    out={}
-    for name,value in current.items():
-        value=np.asarray(value);start=np.asarray(initial[name])
-        if value.shape!=start.shape or value.dtype!=start.dtype or not value.ndim or value.shape[0]!=len(selected):
-            raise ValueError('integration reset layout mismatch: '+name)
-        restored=value.copy();restored[selected]=start[selected];out[name]=restored
-    return out
-
-
-def sleep_scene_xml(xml, active_robot):
-    """Opt-in native sleeping scene; geometry/materials/contact values untouched."""
-    import xml.etree.ElementTree as ET
-    root=ET.fromstring(xml)
-    option=root.find('option')
-    if option is None:raise ValueError('explicit source option required')
-    flag=option.find('flag')
-    if flag is None:flag=ET.SubElement(option,'flag')
-    flag.set('sleep','enable')
-    active_robots={active_robot} if isinstance(active_robot,str) else set(active_robot)
-    active_found=set()
-    for body in root.findall('worldbody/body'):
-        free=body.find('freejoint') is not None or any(j.get('type')=='free' for j in body.findall('joint'))
-        if not free:continue
-        matched={r for r in active_robots if body.get('name')==r+'__robot'}
-        active=bool(matched)
-        active_found.update(matched)
-        body.set('sleep','never' if active else 'allowed')
-    if active_found!=active_robots:raise ValueError('active robot root missing')
-    return ET.tostring(root,encoding='unicode')
-
-
-def runtime_sleep_policy(policy, *, auto, auto_never, auto_allowed, never, allowed):
-    """Exact runtime predicate classes, not a general INIT implementation.
-
-    C3.16 engine_sleep.c125: NEVER or AUTO_NEVER returns false; the remaining
-    ALLOWED/AUTO_ALLOWED path is identical. Pinned MJWarp sleep.py290 accepts
-    AUTO_NEVER as that same false case. INIT has reset semantics and is rejected.
-    """
-    source=np.asarray(policy)
-    if not np.isin(source,[auto,auto_never,auto_allowed,never,allowed]).all():
-        raise ValueError('unsupported sleep policy with separate reset semantics')
-    return np.where(source==never,auto_never,np.where(source==allowed,auto_allowed,source)).astype(source.dtype)
-
-
-def physics_schedule(period_s, timestep_s, graph_chunk=16):
-    """Never silently truncate a control period to a whole graph count.
-
-    The current frozen model uses400 physics ticks per0.1s and chunk16.
-    For any separately approved integral timestep, use an exact divisor of
-    that same implementation chunk. No physics timestep is changed here.
-    """
-    from fractions import Fraction
-    from math import gcd
-    if period_s<=0 or timestep_s<=0 or graph_chunk<=0:
-        raise ValueError('positive physics/control clock required')
-    ratio=Fraction(str(period_s))/Fraction(str(timestep_s))
-    if ratio.denominator!=1:
-        raise ValueError('control period must contain an integral number of physics ticks')
-    steps=int(ratio);chunk=gcd(steps,graph_chunk)
-    return steps,chunk,steps//chunk
-
-
-def contact_maps(ngeom, targets, fingers):
-    """Evaluator-only per-world cargo/finger membership, including multi-geoms."""
-    if len(targets) != len(fingers) or not targets:
-        raise ValueError('matching nonempty per-world contact groups required')
-    target_mask = np.zeros((len(targets), ngeom), dtype=np.int32)
-    finger_map = np.full((len(targets), ngeom), -1, dtype=np.int32)
-    for i, (cargo, mapping) in enumerate(zip(targets, fingers)):
-        if not cargo or set(cargo).intersection(mapping):
-            raise ValueError('cargo and fingers must be distinct')
-        target_mask[i, cargo] = 1
-        for geom, channel in mapping.items():
-            finger_map[i, geom] = channel
-    return target_mask, finger_map
-
+def exact_model_groups(keys):
+    """Stable world-to-model partition; equality only, no approximate matching."""
+    groups = {}
+    for index, key in enumerate(keys):
+        groups.setdefault(key, []).append(index)
+    return list(groups.items())

@@ -128,3 +128,12 @@ def test_mac_execution_rejected_before_importing_physics(tmp_path, monkeypatch):
     a = type('Args', (), dict(e2e_warp_batch='on_v1'))()
     with pytest.raises(ValueError, match='Mac step/render prohibited'):
         runner.admit(a, dict(enabled=True))
+
+
+def test_vendored_backend_core_abi_and_exact_control_clock():
+    # Import/bind only. No MuJoCo/MJWarp import, model, step or render.
+    from scripts.e2e_warp_physics import source_module
+    backend, core, schedule = source_module()
+    assert callable(core.multi_control_tape)
+    assert callable(backend.WarpTransport.prepare_step)
+    assert schedule.physics_schedule(.1, .00025) == (400, 16, 25)
