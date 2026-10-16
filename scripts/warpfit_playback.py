@@ -1,4 +1,4 @@
-"""gcp2-only windowless review: full2Hz + terminal10Hz, ffmpeg3x, ffprobe.
+"""Own-host windowless review: full2Hz + terminal10Hz, ffmpeg3x, ffprobe.
 
 World0's MJWarp ring supplies recorded own RGB when available. Missing earlier
 views and C references are explicitly marked C reconstruction. Overview is an
@@ -23,7 +23,8 @@ def main():
     p.add_argument('--output',type=Path,required=True)
     p.add_argument('--world',type=int,default=0)
     a=p.parse_args()
-    if not os.uname().nodename.startswith('ugrp-sim-gcp2'):raise ValueError('gcp2 review only')
+    if not os.uname().nodename.startswith(('ugrp-sim-gcp2','ugrp-act-l4-gcp6')):
+        raise ValueError('approved simulation host review only; no Mac rendering')
     import cv2
     import numpy as np
     import mujoco

@@ -1,4 +1,4 @@
-"""gcp2 compact result delivery from measured rows; never changes a verdict."""
+"""Own-host compact result delivery from measured rows; never changes a verdict."""
 import argparse
 import csv
 import json
@@ -12,7 +12,8 @@ def main():
     p.add_argument('--analysis',type=Path,required=True)
     p.add_argument('--output',type=Path,required=True)
     a=p.parse_args()
-    if not os.uname().nodename.startswith('ugrp-sim-gcp2'):raise ValueError('gcp2 report only')
+    if not os.uname().nodename.startswith(('ugrp-sim-gcp2','ugrp-act-l4-gcp6')):
+        raise ValueError('approved simulation host report only')
     import numpy as np
     a.output.mkdir(parents=True,exist_ok=False)
     rows=json.loads((a.analysis/'rows.json').read_text())

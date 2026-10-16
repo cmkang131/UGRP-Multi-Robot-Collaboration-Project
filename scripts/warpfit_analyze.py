@@ -1,4 +1,4 @@
-"""gcp2-only analysis of immutable warpfit evaluator records; no stepping."""
+"""Own-host analysis of immutable warpfit evaluator records; no stepping."""
 import argparse
 import hashlib
 import json
@@ -121,7 +121,8 @@ def main():
     p.add_argument('--assets',type=Path,required=True)
     p.add_argument('--output',type=Path,required=True)
     a=p.parse_args()
-    if not os.uname().nodename.startswith('ugrp-sim-gcp2'):raise ValueError('gcp2 analysis only')
+    if not os.uname().nodename.startswith(('ugrp-sim-gcp2','ugrp-act-l4-gcp6')):
+        raise ValueError('approved simulation host analysis only; no Mac physics')
     import numpy as np
     a.output.mkdir(parents=True,exist_ok=False)
     models={'original':{k:model(a.root/k,a.assets) for k in ('box','beam','drive')}}
