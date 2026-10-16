@@ -74,6 +74,7 @@ def test_warp3_handoff_needs_independent_starts_gate_and_record_api():
     running = signals(ready.replace('TEACHER_GATE 38', 'TEACHER_GATE RUNNING 38'), 'warp3')
     assert running['teacher_attempts_N'] == 40
     assert not running['ready_for_queue_inspection']
+    assert not signals(ready.replace('TEACHER_GATE 38/40', 'TEACHER_GATE 38/40 RUNNING'), 'warp3')['ready_for_queue_inspection']
     assert not signals(ready.replace('38/40', '37/40'), 'warp3')['ready_for_queue_inspection']
     assert not signals(ready.replace('38/40', '19/20'), 'warp3')['ready_for_queue_inspection']
     assert not signals(ready.replace('DISTINCT_STARTS PASS', 'DISTINCT_STARTS PENDING'), 'warp3')['ready_for_queue_inspection']

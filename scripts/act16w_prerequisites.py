@@ -39,8 +39,7 @@ def signals(text, upstream_job='warp1'):
                            r'(\d+)\s*/\s*(\d+)\b', gates[-1]) if gates else None
         n, N = map(int, counts.groups()[1:]) if counts else (0, 0)
         gate_pass = (N >= 40 and 0 <= n <= N and n / N >= .95
-                     and counts.group(1) not in ('RUNNING', 'FAIL', 'PENDING')
-                     and 'NOT_READY' not in gates[-1])
+                     and not re.search(r'\b(?:RUNNING|FAIL|PENDING|NOT_READY)\b', gates[-1]))
         distinct_pass = bool(distinct and re.search(r'\bPASS\b', distinct[-1])
                              and 'NOT_READY' not in distinct[-1])
         api_pass = bool(api and 'NOT_READY' not in api[-1])
