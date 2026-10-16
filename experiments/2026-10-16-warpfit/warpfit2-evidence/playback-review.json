@@ -1,0 +1,101 @@
+{
+  "scope": "direct inspection of full2Hz and every tail10Hz strip; no GUI; ffprobe playback validation on gcp6",
+  "assets": [
+    {
+      "run": "box-success",
+      "files": 8,
+      "mismatches": [],
+      "video_bytes": 15154,
+      "frames": 58,
+      "sim_range": [
+        0.0,
+        5.7
+      ]
+    },
+    {
+      "run": "plane-beam-quantile-reject",
+      "files": 6,
+      "mismatches": [],
+      "video_bytes": 28735,
+      "frames": 34,
+      "sim_range": [
+        0.0,
+        3.3000000000000003
+      ]
+    },
+    {
+      "run": "plane-warm60",
+      "files": 6,
+      "mismatches": [],
+      "video_bytes": 27840,
+      "frames": 36,
+      "sim_range": [
+        0.0,
+        3.5
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "run": "box-success",
+      "range": [
+        0,
+        5.7
+      ],
+      "events": [
+        "0–1.2s close with box by gripper",
+        "1.2–2.7s arm raises in overview",
+        "2.7–5.7s box stays adjacent to hand; no gross drop"
+      ],
+      "limit": "r1 recorded own RGB mostly blue surface; cannot independently prove grasp from own RGB, r2 absent in reduced model"
+    },
+    {
+      "run": "plane-beam-quantile-reject",
+      "range": [
+        0,
+        3.3
+      ],
+      "events": [
+        "0–0.1 preclosure configuration",
+        "closures/lift visible over0.1–1.5s; r2 image composition changes around0.7–1.5s",
+        "1.5–3.3s beam remains spanning robots, no gross drop or repeated large oscillation"
+      ],
+      "limit": "native temporal slip quantile rejection, not physical drop; color surfaces dominate own views; sub-mm drift cannot be resolved visually"
+    },
+    {
+      "run": "plane-warm60",
+      "range": [
+        0,
+        3.5
+      ],
+      "events": [
+        "0–1.0s quiet reset",
+        "1.0–1.1s forward100ms (numerical command boundaries)",
+        "1.1–2.1s stop1s",
+        "2.1–2.16s left60ms; video at10Hz cannot sample full60ms waveform",
+        "2.16–3.16s stop; small pose change, no gross collision or rapid oscillation visible"
+      ],
+      "limit": "world4 all three views C3.12 reconstruction from MJWarp10Hz states; return measured from state, not resolved by sparse frame comparison"
+    }
+  ],
+  "observed_hz_difference": "10Hz confirms no large visible repeated back-and-forth skipped by2Hz; cannot identify roller phase or sub-mm slip mechanism",
+  "claim_boundary": "No new causal mechanism established. Runtime variants remain frozen. Rendering success/teacher visibility not established by these fixed-tape primitives.",
+  "reviewed_files": [
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/warpfit2/box-success/full-2hz-00.jpg",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/warpfit2/box-success/tail-10hz-00.jpg",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/warpfit2/box-success/tail-10hz-01.jpg",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/warpfit2/box-success/tail-10hz-02.jpg",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/warpfit2/box-success/tail-10hz-03.jpg",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/warpfit2/box-success/tail-10hz-04.jpg",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/warpfit2/plane-beam-quantile-reject/full-2hz-00.jpg",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/warpfit2/plane-beam-quantile-reject/tail-10hz-00.jpg",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/warpfit2/plane-beam-quantile-reject/tail-10hz-01.jpg",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/warpfit2/plane-beam-quantile-reject/tail-10hz-02.jpg",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/warpfit2/plane-warm60/full-2hz-00.jpg",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/warpfit2/plane-warm60/tail-10hz-00.jpg",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/warpfit2/plane-warm60/tail-10hz-01.jpg",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/warpfit2/plane-warm60/tail-10hz-02.jpg"
+  ],
+  "raw": "/home/ugrp/ugrp-sim/runs/warpfit2/playback",
+  "local": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/warpfit2"
+}

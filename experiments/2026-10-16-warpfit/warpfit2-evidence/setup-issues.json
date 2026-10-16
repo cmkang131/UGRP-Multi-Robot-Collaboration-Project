@@ -25,6 +25,11 @@
       "category": "cloud_function_lookup",
       "reason": "initial guessed name/region did not exist and list --gen2 unsupported",
       "resolution": "list found us-central1 budget-stop ACTIVE/target F; no configuration mutation"
+    },
+    {
+      "category": "playback_EGL_import",
+      "reason": "warp venv PyOpenGL EGL platform unavailable before any frame render",
+      "resolution": "existing C3.12 venv + OSMesa reconstruction only on gcp6; three videos ffprobe verified; no physics rerun/new environment"
     }
   ]
 }

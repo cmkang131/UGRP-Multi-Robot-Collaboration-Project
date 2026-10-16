@@ -22,7 +22,7 @@ def main():
     root=a.root.resolve();out=a.output.resolve();out.mkdir(parents=True,exist_ok=False)
     models={k:load(SimpleNamespace(fixture=root/'fixtures'/k,profile='warp_native_contact_v1',engine='warp'))
             for k in ('box','beam','drive')}
-    rows=[];rejections=[];frames=[];pulses=[]
+    rows=[];rejections=[];frames=[];pulses=[];events=[]
     for phase in sorted(root.glob('R[123]')):
         attempts=phase/'attempts.json'
         if not attempts.exists():continue
@@ -46,6 +46,13 @@ def main():
                 else:
                     row['pulses']=drive(folder,m,meta,j['case'])
                     pulses.extend(dict(round=r['round'],profile=j['profile'],raw=str(folder),**v) for v in row['pulses'])
+                    expected=2*r['nworld']
+                    present=[v for v in row['pulses'] if v.get('status')!='boundary_not_recorded']
+                    finite=[v for v in present if np.isfinite(v['delta_xyyaw']).all()]
+                    events.append(dict(raw=str(folder),unit='world x pulse/stop boundary event',stages=[
+                        dict(gate='planned_boundary_events',cumulative_pass=expected,rejected=0),
+                        dict(gate='exact_boundary_recorded',cumulative_pass=len(present),rejected=expected-len(present)),
+                        dict(gate='finite_signed_body_delta',cumulative_pass=len(finite),rejected=len(present)-len(finite))]))
             else:
                 rejections.append(dict(category='HOST_ERROR' if r['HOST_ERROR'] else 'cap_end',count=1,
                     reason=r.get('error','fixed tape incomplete'),blocked_object='physics_engine',minimum_gap_m=None,
@@ -116,12 +123,19 @@ def main():
     dump(out/'rejection_table.json',dict(stages=[dict(gate='submitted_runs',cumulative_pass=len(rows),rejected=0),
         dict(gate='fixed_work_complete',cumulative_pass=sum(bool(r.get('completed')) for r in rows),rejected=sum(not r.get('completed') for r in rows)),
         dict(gate='no_cap_end',cumulative_pass=sum(bool(r.get('completed')) and not r.get('cap_end') for r in rows),rejected=sum(bool(r.get('cap_end')) for r in rows))],
-        sample_funnels=frames,reasons=rejections,distribution=dict(counts),raw=str(root),reproduce=sys.argv))
+        sample_funnels=frames,event_funnels=events,reasons=rejections,distribution=dict(counts),raw=str(root),reproduce=sys.argv))
     dump(out/'rows.json',rows);dump(out/'box30.json',box);dump(out/'thresholds.json',thresholds);dump(out/'pairs.json',pairs)
     dump(out/'summary.json',dict(runs=len(rows),completed=sum(bool(r.get('completed')) for r in rows),
         HOST_ERROR=sum(bool(r.get('HOST_ERROR')) for r in rows),cap_end=sum(bool(r.get('cap_end')) for r in rows),
+        status='fixed_comparison_complete' if len(rows)==25 and all(r.get('status') in ('complete','HOST_ERROR') for r in rows) else 'completed_rounds_only',
+        analysis_script_sha256=digest(Path(__file__)),physical_source_shas=sorted({r.get('source_sha','missing') for r in rows}),
         box30=[{k:v for k,v in r.items() if k!='selection'} for r in box],pairs=pairs,distribution=dict(counts),
         default_changes=0,teacher_gates=0,models=0,scope='fixed primitive replicas; not independent seeds or teacher/student/E2E acceptance'))
+    keep=('output','kind','profile','round','nworld','repeat','case','source_sha','completed','HOST_ERROR','cap_end','status',
+          'error','fixture_sha256','result_sha256','states_sha256','capacity','every_step_envelope','sim_s','steps',
+          'physical_gpu_ms_per_step','wall_per_sim_s','fully_retained_worlds','measured_worlds','height_p05_mm','slip_p95_mm','tilt_max_deg',
+          'model','options','effective_tolerance')
+    dump(out/'run-ledger.json',[{k:r[k] for k in keep if k in r} for r in rows])
     dump(out/'SHA256.json',{p.name:digest(p) for p in out.iterdir() if p.is_file()})
     print(json.dumps(dict(runs=len(rows),completed=sum(bool(r.get('completed')) for r in rows),distribution=dict(counts))))
 

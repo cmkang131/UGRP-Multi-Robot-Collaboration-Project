@@ -1,0 +1,53 @@
+{
+  "task": "warpfit2",
+  "pr": 562,
+  "branch": "codex/warpfit",
+  "baseline_source": "df5a1f86aad420f2fab2c10e3ee77cdb5ec11807",
+  "physical_source": "4748ef1f0331675ac3849fed5ad9c391b51e6295",
+  "native_contact_module_sha256": "a5c8d370755034b9f9615f66a94b87883327b7d7ecc4e13082eac2c2d4751c6a",
+  "profiles": [
+    "off",
+    "warp_upstream_plane_v1",
+    "warp_measured_capacity_v1"
+  ],
+  "contact_profile": "warp_native_contact_v1",
+  "round_limit": 3,
+  "rounds": {
+    "R1": "N16 baseline/upstream plane; two box batches, beam, warm6 drive; every-step envelope",
+    "R2": "N16 baseline/measured capacity; same fixed suite",
+    "R3": "N64 all three; one box batch, beam, warm6 drive"
+  },
+  "planned_batches": 25,
+  "box_selection": "N16 repeat1 world0..15 + repeat2 world0..13; N64 world0..29",
+  "drive_pose": "FOLDED, existing PR564 cleared initial overlap diagnostic; not a production scene update",
+  "drive_cases": [
+    "forward100ms",
+    "cold-left60ms",
+    "cold-left400ms",
+    "turn100ms",
+    "forward100ms+stop1s+left60ms",
+    "forward100ms+stop1s+left400ms"
+  ],
+  "capacity_basis": "R1 native-v1 every4000Hz tick P100; import included; no multiplier or retuning",
+  "acceptance_basis": "existing6f057f7e 12mm+positive fingers; same-round native-v1 temporal P05/P95 comparison; no new real-hardware tolerance",
+  "recording": {
+    "states_hz": 10,
+    "own_rgb_hz": 10,
+    "own_rgb_worlds": [
+      0
+    ],
+    "retained_terminal_sim_s": 10,
+    "other_worlds": "all10Hz states, explicitly labeled deferred C reconstruction"
+  },
+  "host": "gcp6 L4 g2-standard-8",
+  "account": "kcm5781kcm5781@gmail.com",
+  "project": "ugrp-sim-f-1016",
+  "raw": "/home/ugrp/ugrp-sim/runs/warpfit2",
+  "limits": "finite issued ticks only; no VM/task wall cap; idle20 and budget-stop retained",
+  "model_calls": 0,
+  "default_changes": 0,
+  "adoption": "recommendation only; teacher/student/E2E gates remeasured after adoption; no pooling",
+  "cpu_vm_started": 0,
+  "mac_physics_render": 0,
+  "gui": 0
+}

@@ -29,3 +29,5 @@
 공식 최소 할당은 가장 직접적인 성능 후보이고, upstream plane 복원은 C 모방 제거·주행 접촉 품질의 우선 후보다. 둘을 각각 측정하여 인과를 분리하며 결합 프로필은 이번에 만들지 않는다. 수치 이득은 측정 전에는 알 수 없다. 후보마다 N16 상자30회·빔 짧은 유지·원래 짧은 펄스와 warm 횡60/400ms, R3 N64 같은 조건으로 잰다. 들기 존재는 기존 교사12mm+양의 손가락 힘, 상대 slip/높이는 native-v1 자체 원본 P95/P05를 배율 없이 비교한다. 모든 세계·조건·실패·cap_end를 기록하며 교사 관문·학습·E2E 성공으로 확대하지 않는다.
 
 직전 원본 분포의 전체 재계수: height_below_C_p05 7,535프레임, slip_above_C_p95 3,887프레임, initial_overlap_diagnostic 8실행, solver_line_search_limit 2실행, HOST_ERROR 1실행이다. 단위가 달라 합산 비율로 만들지 않는다. [원본 분포 재계수](warpfit2-evidence/preceding-rejection-distribution.json).
+
+공식 `C3.16-compat`라는 이름의 토글은 이 checkout에서 발견하지 못했다. 실제 묶음은 `--gcp2-v1`의 float64 tolerance 강제·빈 EFM 어댑터와 별도 compiled-reference/geometry 옵션이므로 위에서 나누어 감사했다. CPU 모방과 필요한 API/메모리 호환을 한꺼번에 제거하지 않는다.
