@@ -50,7 +50,8 @@ def main():
     plan = json.loads((root / 'plan.json').read_text())
     if plan['kind'] not in ('cyan', 'red', 'green', 'yellow') or plan['role'] != 'west':
         raise ValueError('qualified solo BOX west geometry only')
-    scene = json.loads((root / 'scene.json').read_text())
+    scene_path = root / 'scene.json' if (root / 'scene.json').exists() else root / 'scene-index.json'
+    scene = json.loads(scene_path.read_text())
     target = scene['box_replicas'][plan['item_id']]['body_name']
     # Qualified scene XML uses paths relative to its source checkout. The
     # caller runs in that same qualified cwd, as the original Owner does.
@@ -115,7 +116,7 @@ def main():
                       evidence='qualified pad_window_v2 physical pad window and existing _seek readiness; values unchanged'),
                   scope='post-action saved-state geometric readiness during grasp; visibility and IK are not tested, task success is unchanged; no C-physics robustness run',
                   raw=[dict(path=str(p), sha256=sha256(p)) for p in
-                       (root/'scene.xml', states_path, root/'plan.json', args.actions)],
+                       (root/'scene.xml', scene_path, states_path, root/'plan.json', args.actions)],
                   points=points, reproduce=sys.argv)
     args.out.parent.mkdir(parents=True, exist_ok=True)
     with args.out.open('x') as stream:

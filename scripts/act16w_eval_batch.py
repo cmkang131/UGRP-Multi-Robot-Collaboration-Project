@@ -97,7 +97,13 @@ def main():
         funnel=[dict(gate=gate,passed=n,rejected=(counts[i-1]-n if i>1 else 0),**({'unfinished':len(requested)-len(rows)} if i==1 else {})) for i,(gate,n) in enumerate(zip(['requested','scored_runs','sequence_done','stable_lift','stable_release','task_success'],counts))]
         table=dict(funnel=funnel,rejections=errors+[dict(seed=r['seed'],category='cap_end' if r['cap_end'] or r['resource_cap_end'] else 'student_task_failure',reason=r.get('failure_reason') or 'physical_or_sequence_gate_failed',raw=str(a.out),blocking_object='not_attributed_before_playback',minimum_gap_m=None,minimum_gap_status='not measured; no geometric cause claim') for r in rows if not r['task_success']],unfinished_seeds=sorted(wanted-{r['seed'] for r in rows}),raw=str(a.out),reproduce=__import__('sys').argv)
         write(a.out/'rejection_table.json',table)
+        visibility=[x for job in finished for x in (read(Path(job['raw'])/'summary.json').get('initial_same_kind_visibility',{}).get('rows',[]) if (Path(job['raw'])/'summary.json').exists() else [])]
         report.update(status='complete' if complete else 'cap_end' if report.get('resource_cap_end') else 'HOST_ERROR' if errors else report.get('submission_stopped','incomplete'),complete=complete,n=sum(r['task_success'] for r in rows),N=len(rows),N_requested=len(requested),rows=rows,teacher_actions_executed=0,selection_tuning_performed=False)
+        report.update(n_assigned=report['n'],n_any_same_kind=sum(r['any_same_kind_success'] for r in rows),
+            initial_same_kind_visibility=dict(N=len(visibility),
+                any_probe_2plus_n=sum(x['any_probe_visible_count']>=2 for x in visibility),
+                qualified_2plus_n=sum(x['qualified_visible_count']>=2 for x in visibility),rows=visibility,
+                scope='geometric probe visibility only; pixel-visible count requires separate saved-frame analysis'))
     except BaseException as error:
         report.update(status='HOST_ERROR',complete=False,error=repr(error))
         write(a.out/'parent-failure.json',dict(category='HOST_ERROR',reason=repr(error),blocking_object='not_applicable_evaluation_dispatch',minimum_gap_m=None,minimum_gap_status='not_applicable_non_geometric'))

@@ -7,7 +7,7 @@ import sys
 
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,'/home/ugrp/ugrp-sim/src/0362037280c6cbc4677f70366db43b9892b23690/scripts')
-from warp_act_rpc import Client
+from act16w_eval_rpc import EvaluationClient as Client
 from act16w_runtime import require_gcp2,frozen_source,ACT_SHA,evaluation_seed_guard
 
 
@@ -110,6 +110,34 @@ def main():
                     issued_sequence_complete=result['issued_done'],resource_cap_end=report['resource_cap_end'] and not terminal_before_close[i], **score.record(seq.done_times, with_release=True)))
             for row in report['student_scores']:
                 row['task_success']=bool(row['physical_success'] and row['issued_sequence_complete'] and not row['cap_end'] and not row['resource_cap_end'])
+            # All privileged instance scoring is consumed only after every
+            # actor action and owner close. It never enters read_actor.
+            instance_scores={}
+            for line in (a.out/'owner/same-kind-evaluation-only.jsonl').read_text().splitlines():
+                ev=json.loads(line);i=ev['world'];index=max(0,round(ev['elapsed_sim_s']/.1)-1)
+                if not actions_log:continue
+                key=(i,ev['item_id']);score=instance_scores.setdefault(key,SoloScore())
+                score.add(ev['t'],skill=actions_log[min(index,len(actions_log)-1)]['skills'][i],
+                    linear_speed=ev['speed'],clearance=ev['min_z'],tilt=ev['tilt_deg'],
+                    forces=ev['finger_forces'],weld=ev['weld_active'])
+            for i,(plan,row,seq) in enumerate(zip(plans,report['student_scores'],sequences)):
+                items=[]
+                for (world,item),score in instance_scores.items():
+                    if world!=i:continue
+                    value=score.record(seq.done_times,with_release=True)
+                    value.update(item_id=item,task_success=bool(value['physical_success'] and row['issued_sequence_complete'] and not row['cap_end'] and not row['resource_cap_end']))
+                    items.append(value)
+                assigned=next(value for value in items if value['item_id']==plan['item_id'])
+                if any(assigned[key]!=row[key] for key in ('lift_success','release_success','physical_success','task_success')):
+                    raise ValueError('private same-kind evaluator changed assigned-item score')
+                row.update(assigned_item_id=plan['item_id'],same_kind_items=items,
+                    any_same_kind_success=any(value['task_success'] for value in items))
+            visibility=json.loads((a.out/'owner/initial-same-kind-visibility.json').read_text())
+            report['initial_same_kind_visibility']=visibility
+            report['initial_2plus_same_kind_any_probe_n']=sum(x['any_probe_visible_count']>=2 for x in visibility['rows'])
+            report['initial_2plus_same_kind_qualified_n']=sum(x['qualified_visible_count']>=2 for x in visibility['rows'])
+            report['same_kind_visibility_N']=len(plans)
+            report['n_any_same_kind']=sum(row['any_same_kind_success'] for row in report['student_scores'])
             report.update(complete=all(terminal_before_close) and not report['resource_cap_end'],status='cap_end' if report['resource_cap_end'] else 'complete',n=sum(x['task_success'] for x in report['student_scores']),N=len(plans),n_physical=sum(x['physical_success'] for x in report['student_scores']))
             report['scope'] = 'ACT16 full grasp/release evaluation on MJWarp; no teacher actions, no GT policy inputs'
     except BaseException as error:
