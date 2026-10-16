@@ -24,12 +24,14 @@ def main():
     p.add_argument('--preceding-funnel',type=Path)
     p.add_argument('--fixture-version',choices=['original','primitive-v1'],default='original')
     p.add_argument('--enabled',action='store_true')
+    p.add_argument('--resume',action='store_true',help='continue unsubmitted jobs; never rerun attempted jobs')
+    p.add_argument('--acknowledged-error',action='append',default=[],help='exact prior error output reviewed before continuation')
     a=p.parse_args()
     if not a.enabled:p.error('--enabled required')
     host();root=a.root.resolve();source=a.source.resolve()
     phase=root/((f'R{a.round}-Cref' if a.reference_only else f'R{a.round}')+
                 ('-'+a.attempt_tag if a.attempt_tag else ''))
-    phase.mkdir(exist_ok=False)
+    phase.mkdir(exist_ok=a.resume)
     fixtures=root if a.fixture_version=='original' else root/a.fixture_version
     rejection=(source/'experiments/2026-10-16-warpfit/rejection_table.json' if a.round==1
                else root/f'R{a.round-1}/funnel.json')
@@ -39,7 +41,22 @@ def main():
         fixture_version=a.fixture_version,
         maximum_sim_s_per_case=None,profiles=PROFILES,models=0,planning_limit_kind='fixed physics ticks',
         resource_watchdog_s=10800,resource_watchdog_basis='user target 2-3h; host-only, never selects robot actions')
-    dump(phase/'queue.json',queue)
+    if a.resume:
+        previous=json.loads((phase/'queue.json').read_text())
+        if any(previous[k]!=queue[k] for k in ('round','fixture_version','profiles','root')):
+            raise ValueError('resume must preserve physical protocol')
+        queue=previous
+        prior=json.loads((phase/'attempts.json').read_text())
+        errors={r['output'] for r in prior if r['status']!='complete'}
+        if errors!=set(a.acknowledged_error):raise ValueError('all exact prior errors require explicit review acknowledgment')
+        # Preserve the stopped queue/funnel before appending unsubmitted work.
+        for name in ('attempts.json','funnel.json'):
+            saved=phase/(name+'.before-resume')
+            if not saved.exists():saved.write_bytes((phase/name).read_bytes())
+        dump(phase/'resume-review.json',dict(acknowledged_errors=sorted(errors),
+            source=str(source),action='only unsubmitted jobs; no physical retuning or error rerun'))
+    else:
+        dump(phase/'queue.json',queue);prior=[]
     lease=Path('/home/ugrp/ugrp-sim/leases/warpfit.json')
     dump(lease,dict(task='warpfit',pid=os.getpid(),started=datetime.now(timezone.utc).isoformat(),
         expected_end=None,round=a.round,phase='C reference' if a.reference_only else 'paired diagnostic',
@@ -52,9 +69,10 @@ def main():
         [('drive','group64')] if a.round==3 else [('drive','group16'),('drive','tail2')])
     jobs=([('baseline_noslip10','box','tape'),('baseline_noslip10','beam','tape')] if a.reference_only
           else [(pr,kind,case) for kind,case in cases for pr in (PROFILES if a.round!=3 else list(reversed(PROFILES)))])
-    results=[];started=time.monotonic()
+    results=prior;started=time.monotonic()
     for pr,kind,case in jobs:
         out=phase/f'{kind}-{case}-{pr}'
+        if any(r['output']==str(out) for r in results):continue
         n=1 if a.reference_only or a.round==1 else 16 if a.round==2 else 64
         exe=cpu if a.reference_only else warp
         cmd=[exe,'-m','scripts.sim_cli','workflow','run','warpfit','--record',str(out)+'-managed',
