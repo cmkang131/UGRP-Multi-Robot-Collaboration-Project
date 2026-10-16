@@ -11,6 +11,7 @@ import os
 from pathlib import Path
 import platform
 import subprocess
+from datetime import datetime, timezone
 
 from act16w_runtime import require_gcp2, frozen_source, sha256
 ROOT = Path(__file__).resolve().parents[1]
@@ -86,7 +87,7 @@ def main():
     if len(step) and not np.all(step==5):raise ValueError('review timeline must be actual2Hz')
     composed=out/'frames';composed.mkdir()
     filters="[0:v]drawtext=text='overview - reframed evaluation only':x=4:y=4:fontsize=12:fontcolor=white[a];[1:v]scale=320:240,drawtext=text='r1 recorded own RGB':x=4:y=4:fontsize=14:fontcolor=white[b];color=c=0x202020:s=320x240:r=2,drawtext=text='r2 N/A - solo r1 task':x=8:y=110:fontsize=18:fontcolor=white[c];[a][b][c]hstack=inputs=3:shortest=1[v]"
-    subprocess.run(['ffmpeg','-y','-loglevel','error','-framerate',str(hz),'-i',str(tops/'%05d.png'),
+    subprocess.run(['ffmpeg','-y','-loglevel','error','-threads','1','-filter_complex_threads','1','-framerate',str(hz),'-i',str(tops/'%05d.png'),
         '-framerate',str(hz),'-i',str(own/'%05d.jpg'),'-filter_complex',filters,'-map','[v]',
         '-frames:v',str(len(selected)),str(composed/'%05d.jpg')],check=True)
     video=out/'playback-3x.mp4'
@@ -111,4 +112,13 @@ def main():
         scope='overview reframed for full recorded r1/target geometry using evaluation states only; r1 own RGB is actual and unchanged, r2 not an actor; no native physics step'),indent=2)+'\n')
 
 
-if __name__=='__main__':main()
+if __name__=='__main__':
+    lease = Path('/home/ugrp/ugrp-sim/leases')/f'act16w-playback-{os.getpid()}.json'
+    with lease.open('x') as stream:
+        json.dump(dict(task='act16w-playback',pid=os.getpid(),start=datetime.now(timezone.utc).isoformat(),
+            expected_end='finite saved timeline and final10SIM seconds; no wall cap',concurrency=0),stream)
+    try:
+        main()
+    finally:
+        if json.loads(lease.read_text()).get('pid') == os.getpid():
+            lease.unlink()

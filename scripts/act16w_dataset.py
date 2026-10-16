@@ -101,6 +101,8 @@ def main():
     if native:
         manifest['contact_profile']='warp_native_contact_v1'
         manifest['native_gate']=dict(path=str(a.native_gate),sha256=sha256(a.native_gate))
+        manifest['source_sha']=source
+        manifest['native_record_dispatch_source_sha']=read(a.batch/'summary.json')['source_sha']
         write(a.root/'dataset/manifest.json',manifest)
     from harness.grasp_act_data import GraspDataset
     from harness.grasp_act_loss import completion_priors
