@@ -16,7 +16,7 @@
   "calibration_contract_sha256": "4ad461c3b980d885b9743f32cb763fb14f2b1d46a695c3acacae6b4a8e3c8e78",
   "own_image_gates": {
     "path": "configs/calibration/own_image_gates_floor_light_v1.json",
-    "sha256": "e71bbe4d80ba371075c0d836d69772a498c9d8b7e360421e55702958e4eb130e",
+    "sha256": "79706fe0cc06e2a1cf0a1d38aa0d7746150df7597991b630d0292b3554c5c1b5",
     "status": "DEV_CALIBRATED",
     "procedure": "docs/own_image_gate_calibration.md",
     "decision": "user 2026-10-03: recalibrate the own-image gates for floor_light_v1 by a documented formal procedure"
@@ -42,7 +42,7 @@
     "supersedes": "v96-cap-2 per-case cap 300 SIM s (3x300 P03), itself replacing the inherited v88 3x120",
     "decision": "experiments/2026-10-03-pair-carry-highpose/fix363/COORDINATOR_DECISION.md",
     "decided_before_p03_data": true,
-    "user_decision": "2026-10-04 \"시간 상한도 늘리셈\"",
+    "user_decision": "2026-10-04 \"\uc2dc\uac04 \uc0c1\ud55c\ub3c4 \ub298\ub9ac\uc148\"",
     "derivation": "DEV ceiling, not a target: full route with sigma-triggered set-down re-fixes estimated 351-517 s (>= 41.4 s per re-fix); 900 s ~ 1.75x the upper estimate. Earlier v96-cap-2 bounds: 63.8/104.2/184.6 s per checkpoint, 190.4-219.3 s full carry"
   },
   "grip_monitor": {
@@ -70,7 +70,23 @@
     "why": "at the fixed floor grasp posture the own camera sees 0 beam pixels, so the pre-close beam track estimate is None there (BEAM_UNCERTAIN -> PREGRASP_NOT_READY, DEV probe raise_high_align 3358372e r1); camera placement and field of view unchanged",
     "method": "look-then-move: the unchanged pre-close check (visual beam track + stationary clearance) runs at the hover, the last calibrated posture where the beam is visible, plus the band's lateral centre on the fixed station line within the align tolerance; then the fixed hover -> grasp descent (71 mm vertical, no base motion) and the unchanged close barrier run blind from that confirmation and own issued commands",
     "limits": "blind window <= fixed descent + CLOSE_WAIT_S + close ramp + 0.5 s slack; issued commands inside the fixed path envelope (no base motion, no pan change, no gripper reopen); drop <= 0.075 m, horizontal <= 0.002 m; resting track age <= 30 s and sigma <= 50 mm / 3 degrees",
-    "abort_codes": ["PREGRASP_HOVER_UNCONFIRMED", "PREGRASP_HOVER_NOT_VISUAL", "PREGRASP_HOVER_POSE_NOT_COMMANDED", "PREGRASP_HOVER_LATERAL_SHIFT", "PREGRASP_BLIND_NOT_CONFIRMED", "PREGRASP_BLIND_BASE_MOVED", "PREGRASP_BLIND_PAN_MOVED", "PREGRASP_BLIND_ARM_OFF_PATH", "PREGRASP_BLIND_GRIPPER_REOPENED", "PREGRASP_BLIND_UNKNOWN_COMMAND", "PREGRASP_BLIND_SEGMENT_CHANGED", "PREGRASP_BLIND_WINDOW_EXPIRED", "PREGRASP_BLIND_DISTANCE_EXCEEDED", "PREGRASP_BLIND_TRACK_UNCERTAIN", "PREGRASP_BEAM_UNSAFE (unchanged close-PWM guard)"],
+    "abort_codes": [
+      "PREGRASP_HOVER_UNCONFIRMED",
+      "PREGRASP_HOVER_NOT_VISUAL",
+      "PREGRASP_HOVER_POSE_NOT_COMMANDED",
+      "PREGRASP_HOVER_LATERAL_SHIFT",
+      "PREGRASP_BLIND_NOT_CONFIRMED",
+      "PREGRASP_BLIND_BASE_MOVED",
+      "PREGRASP_BLIND_PAN_MOVED",
+      "PREGRASP_BLIND_ARM_OFF_PATH",
+      "PREGRASP_BLIND_GRIPPER_REOPENED",
+      "PREGRASP_BLIND_UNKNOWN_COMMAND",
+      "PREGRASP_BLIND_SEGMENT_CHANGED",
+      "PREGRASP_BLIND_WINDOW_EXPIRED",
+      "PREGRASP_BLIND_DISTANCE_EXCEEDED",
+      "PREGRASP_BLIND_TRACK_UNCERTAIN",
+      "PREGRASP_BEAM_UNSAFE (unchanged close-PWM guard)"
+    ],
     "inputs": "own RGB at the hover, measured hover camera model, own issued commands; no ground truth, contact/success flag or shared camera",
     "residual": "a partner nudge of the resting beam during the blind window is not detected before the close; post-close own-grip detection + partner signal stays deferred (grip_monitor log-only)",
     "status": "DESIGN_DRAFT: offline replay of one recorded descent (r1); no closed-loop run"
@@ -175,8 +191,10 @@
         "heldout_status": "VALIDATED_DEV (mean model only; not MEASURED_SIM, not a confirmation sample)",
         "fit": "experiments/2026-10-05-unloaded-gain-calibration-v101/products/fit/fit.json",
         "heldout": "experiments/2026-10-05-unloaded-gain-calibration-v101/products/heldout/heldout.json",
-        "parent": {"path": "/Users/changmin/projects/ugrp/outputs/v92-dev-pilot-c0zero-20261003T104043Z/result/calibration_dev_pilot.json",
-                   "sha256": "398372ae6b9b0fef7344d7f29146ce75b309d334b3ce31af527bc071c0e582f5"}
+        "parent": {
+          "path": "/Users/changmin/projects/ugrp/outputs/v92-dev-pilot-c0zero-20261003T104043Z/result/calibration_dev_pilot.json",
+          "sha256": "398372ae6b9b0fef7344d7f29146ce75b309d334b3ce31af527bc071c0e582f5"
+        }
       },
       "ce447ada62295d24c7f7a5929ce878e70fa297651e16ca192536f4a403cd8c5f": {
         "path": "experiments/2026-10-05-loaded-gain-calibration-v102/products/loaded_v102/calibration_dev_pilot_loaded_v102.json",
@@ -189,21 +207,25 @@
         "heldout_status": "VALIDATED_DEV (mean model only; held-out steps at most 0.36 percent, legs at most 0.21 percent; not MEASURED_SIM, not a confirmation sample)",
         "fit": "experiments/2026-10-05-loaded-gain-calibration-v102/products/fit/fit.json",
         "heldout": "experiments/2026-10-05-loaded-gain-calibration-v102/products/heldout/heldout.json",
-        "parent": {"path": "experiments/2026-10-05-unloaded-gain-calibration-v101/products/C/calibration_dev_pilot_unloaded_v101.json",
-                   "sha256": "aba4ac586b2554844ad5b4b17efe968a4247278664ffb433f83f6785ca1769c4"}
+        "parent": {
+          "path": "experiments/2026-10-05-unloaded-gain-calibration-v101/products/C/calibration_dev_pilot_unloaded_v101.json",
+          "sha256": "aba4ac586b2554844ad5b4b17efe968a4247278664ffb433f83f6785ca1769c4"
+        }
       },
       "a04371f614bd7f6f7583ef4f4121abce1c337fd5652899dbfe0fe6df1703f926": {
         "path": "experiments/2026-10-05-loaded-rest-calibration-v104/products/calibration_dev_pilot_loaded_v102_rest_v104.json",
         "pr": 363,
         "rule": "DEV_PILOT_C0_ZERO_v1",
-        "admitted_by": "coordinator task 2026-10-05 (#363 (가): loaded rest_noise by the unchanged v101 measured rule)",
+        "admitted_by": "coordinator task 2026-10-05 (#363 (\uac00): loaded rest_noise by the unchanged v101 measured rule)",
         "calibration_bundle": "zone-final-pair-loaded-restcal-v104",
         "calibration_variant": "v102 measured loaded calibration with params.motion_loaded.rest_noise = false (v101 rest_rms rule on the v104 rest collection: RMS 1.08 / 1.10 micrometres over 420 windows per carrier, threshold 1 mm); everything else byte-equal to the parent",
         "fills": "params.motion_loaded.rest_noise",
         "heldout_status": "VALIDATED_DEV (rule decision only; loaded noise_abs/noise_rel stay unmeasured; not MEASURED_SIM, not a confirmation sample)",
         "collection": "outputs/calib-loaded-rest-v104-835c8fcd-20261005T0736Z (source 835c8fcdb7c05cd69cf18f6a9c9bfc942b1ae63e, branch claude/loaded-rest-v104)",
-        "parent": {"path": "experiments/2026-10-05-loaded-gain-calibration-v102/products/loaded_v102/calibration_dev_pilot_loaded_v102.json",
-                   "sha256": "ce447ada62295d24c7f7a5929ce878e70fa297651e16ca192536f4a403cd8c5f"}
+        "parent": {
+          "path": "experiments/2026-10-05-loaded-gain-calibration-v102/products/loaded_v102/calibration_dev_pilot_loaded_v102.json",
+          "sha256": "ce447ada62295d24c7f7a5929ce878e70fa297651e16ca192536f4a403cd8c5f"
+        }
       },
       "a75fc9325f8a8b89a158c2be0872cebfd4d11c8d2a7482c720eb9e1f99c41501": {
         "path": "experiments/2026-10-05-loaded-rest-calibration-v104/products_noise/calibration_dev_pilot_loaded_v102_rest_noise.json",
@@ -214,12 +236,14 @@
         "calibration_variant": "rest_noise copy a04371f6 with params.motion_loaded noise_abs / noise_rel (forward, left) measured by the #376 rule: abs 0.002 / 0.002 (floor), rel 0.0156 / 0.0166; turn unchanged",
         "fills": "params.motion_loaded.noise_abs[0:2], params.motion_loaded.noise_rel[0:2]",
         "heldout_status": "VALIDATED_DEV (2-sigma coverage 0.977 held-out >= 0.90; mean NEES 0.11-0.31 still conservative; not MEASURED_SIM, not a confirmation sample)",
-        "parent": {"path": "experiments/2026-10-05-loaded-rest-calibration-v104/products/calibration_dev_pilot_loaded_v102_rest_v104.json",
-                   "sha256": "a04371f614bd7f6f7583ef4f4121abce1c337fd5652899dbfe0fe6df1703f926"}
+        "parent": {
+          "path": "experiments/2026-10-05-loaded-rest-calibration-v104/products/calibration_dev_pilot_loaded_v102_rest_v104.json",
+          "sha256": "a04371f614bd7f6f7583ef4f4121abce1c337fd5652899dbfe0fe6df1703f926"
+        }
       }
     }
   },
-  "qualification": "자기 RGB·정적 지도·자기 명령 기반 새 높은 운반 자세 후보. 인수 미완료.",
+  "qualification": "\uc790\uae30 RGB\u00b7\uc815\uc801 \uc9c0\ub3c4\u00b7\uc790\uae30 \uba85\ub839 \uae30\ubc18 \uc0c8 \ub192\uc740 \uc6b4\ubc18 \uc790\uc138 \ud6c4\ubcf4. \uc778\uc218 \ubbf8\uc644\ub8cc.",
   "supersedes": {
     "bundle": "zone-final-pair-highpose-v96",
     "workflow_version": "3.8.0",

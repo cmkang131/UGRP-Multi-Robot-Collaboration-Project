@@ -4,14 +4,16 @@
   "A2_eval_column_precision_min": 0.95,
   "A3_high_pose_occluder_pass_rate_max": "not above the old filter",
   "A4_eval_frame_false_reject_max": 0.005,
-  "A5_false_accept_on_bad_frames": "not above the old gate"
+  "A5_false_accept_on_bad_frames": "not above the old gate",
+  "A6_wall_observation_pitch_gate": "floor_grasp_columns_rejected"
  },
  "acceptance_passed": {
   "A1": true,
   "A2": true,
   "A3": true,
   "A4": true,
-  "A5": true
+  "A5": true,
+  "A6": true
  },
  "data_sha256": {
   "final-pair-v88-cal-747d2b9f-20261001-r8/calibration-loaded/zone_wide_two_doors_final_v3": {
@@ -42,7 +44,8 @@
   "frame_contrast_spread_min": 15.0,
   "frame_value_std_min": 3.0,
   "wall_band_saturation_max": 80,
-  "wall_edge_step_min": 0.0
+  "wall_edge_step_min": 0.0,
+  "wall_observation_pitch_max_deg": 15.0
  },
  "procedure": "docs/own_image_gate_calibration.md",
  "render_profile": "floor_light_v1",
@@ -151,7 +154,8 @@
   "frame_value_std_min": "round(0.5 x P0.1 of the V std over frame_calibration frames, 2 decimals)",
   "valid_frame": "every frame of a successful nominal run is a valid view; bad frames are made offline by covering the lowest f of the valid circle with black, or constant frames",
   "wall_band_saturation_max": "round(1.2 x P99.9 of the max-S in the boundary-band window over CORRECT candidate columns of column_calibration, to the nearest 10)",
-  "wall_edge_step_min": "round(0.5 x P0.5 of the luminance/chroma edge step over CORRECT candidate columns of column_calibration)"
+  "wall_edge_step_min": "round(0.5 x P0.5 of the luminance/chroma edge step over CORRECT candidate columns of column_calibration)",
+  "wall_observation_pitch_max_deg": "abs(pitch) = -asin(R[2,0]) in degrees; gate returns empty ColumnObs when exceeded"
  },
  "schema": "ugrp.own_image_gates.v1",
  "script": "scripts/calibrate_own_image_gates.py",
@@ -223,6 +227,7 @@
   "frame_contrast_spread_min": 1.0,
   "frame_value_std_min": 0.22,
   "wall_band_saturation_max": 140,
-  "wall_edge_step_min": 10.0
+  "wall_edge_step_min": 10.0,
+  "wall_observation_pitch_max_deg": 15
  }
 }

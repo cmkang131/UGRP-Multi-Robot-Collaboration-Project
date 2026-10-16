@@ -24,8 +24,25 @@ def edge_step(lum, chroma, v, u):
 
 
 def observations(vl, bgr, camera, gates=None):
-    """``gates``: own_image_gates ``values`` (None keeps the pre-2026-10-03 values: S >= 80, no step test)."""
+    """``gates``: own_image_gates ``values`` (None keeps the pre-2026-10-03 values: S >= 80, no step test).
+
+    When the camera pitch (elevation of the optical axis above the floor plane) exceeds
+    wall_observation_pitch_max_deg (15 by default), the camera is looking at the floor
+    rather than the wall and the 77 tile-seam rows are rejected as wall-bottom; the
+    function returns an empty ColumnObs. Pitch is extracted from the camera rotation
+    matrix as pitch = -asin(R[2,0]) in degrees.
+    """
     gates = LEGACY if gates is None else gates
+    threshold = float(gates['wall_observation_pitch_max_deg'])
+    rot = getattr(camera, '_rot', None)
+    pitch_deg = 0.
+    if rot is not None and -1.0 <= float(rot[2, 0]) <= 1.0:
+        pitch_deg = -math.degrees(math.asin(float(rot[2, 0])))
+    if abs(pitch_deg) > threshold:
+        return vl.ColumnObs(
+            np.array([], dtype=np.int64),
+            np.array([], dtype=int), np.array([], dtype=float), np.array([], dtype=float),
+            np.array([], dtype=int), np.array([], dtype=float), np.array([], dtype=float))
     und = vl.mp.undistort(bgr)
     scan = vl.mp.detect_boundaries(und, camera, DETECTOR)
     # Saturated cargo/robot faces are not uniform grey walls. A potential

@@ -14,7 +14,8 @@ ROOT = Path(__file__).resolve().parents[1]
 PATH = 'configs/calibration/own_image_gates_floor_light_v1.json'
 SCHEMA = 'ugrp.own_image_gates.v1'
 LEGACY = {'wall_band_saturation_max': 80, 'wall_edge_step_min': 0.,
-          'frame_contrast_spread_min': 15., 'frame_value_std_min': 3.}
+          'frame_contrast_spread_min': 15., 'frame_value_std_min': 3.,
+          'wall_observation_pitch_max_deg': 15.}
 
 
 def load(path=None, expected_sha256=None):
