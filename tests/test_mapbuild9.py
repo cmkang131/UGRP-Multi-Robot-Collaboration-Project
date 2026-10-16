@@ -64,3 +64,14 @@ def test_kld_strict_count_single_bin_and_determinism():
     a,sa=n.resample(*args,np.random.default_rng(7),lambda k:np.zeros((k,3)),0,5,100)
     b,sb=n.resample(*args,np.random.default_rng(7),lambda k:np.zeros((k,3)),0,5,100)
     np.testing.assert_array_equal(a,b);assert sa==sb
+
+
+def test_equal_weight_resampling_cannot_fake_good_sensor_ess(monkeypatch):
+    m=StaticAMCL(STATIC,CAL,REQ,option=OPTION)
+    m.particles=np.array([[0.,0.,0.],[.5,0.,0.],[-.5,0.,0.]])
+    m.weights=np.ones(3)/3
+    monkeypatch.setattr(n,'likelihood',lambda *args:np.array([1e6,1.,1.]))
+    monkeypatch.setattr(n,'resample',lambda *args,**kwargs:(np.zeros((3,3)),dict(samples=3)))
+    row=m.step(0,0,[0,0,0],dict(segments=[[[0,.9],[.1,.9]]]))
+    assert row['post_resample_ess']==3 and row['pre_resample_ess']<1.01
+    assert not row['converged'] and row['adopted_pose'] is None
