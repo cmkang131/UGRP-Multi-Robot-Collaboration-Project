@@ -77,6 +77,8 @@ def run(b, out, receipt, *, pair_extension=None, backend_factory=None):
     from harness.zone_solo_cyan_v106 import passage_route
     from harness.pair_llm_live import live_records, live_walls
     from harness.zone_s3_no_prior_contract import hp
+    from harness.s4_live_transport import bind_openrouter_bundle
+    b = bind_openrouter_bundle(b, receipt)
     out.mkdir(parents=True, exist_ok=False)
     write(out/'bundle.json', b); write(out/'environment.json', environment_record())
     scenario, mapped, sheet = inputs()
