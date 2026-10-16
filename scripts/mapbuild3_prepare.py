@@ -16,6 +16,19 @@ def dump(path,value):
     path.write_text(json.dumps(value,indent=2,allow_nan=False)+'\n')
 
 
+def load_fixture(folder, scene_xml):
+    """Bind the saved setup bytes to the unchanged scene before GPU upload."""
+    import numpy as np
+    meta=json.loads((folder/'fixture.json').read_text())
+    if hashlib.sha256((folder/'fixture.npz').read_bytes()).hexdigest()!=meta['fixture_sha256']:
+        raise ValueError('FIXTURE_HASH_MISMATCH')
+    if hashlib.sha256(scene_xml.encode()).hexdigest()!=meta['scene_xml_sha256']:
+        raise ValueError('FIXTURE_SCENE_MISMATCH')
+    if meta['selected']['drive']['selected_xy']!=meta['selected']['high']['selected_xy']:
+        raise ValueError('SHARED_POSTURE_START_REQUIRED')
+    return np.load(folder/'fixture.npz')
+
+
 def named_sets(m):
     # Explicit original scene names/types, saved in every audit. Only planes
     # named floor/ground are floor; no ramp, wall or worldbody blanket exemption.

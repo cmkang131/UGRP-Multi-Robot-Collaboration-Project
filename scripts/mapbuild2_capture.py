@@ -121,12 +121,13 @@ def run(a):
         never=int(enum.mjSLEEP_NEVER),allowed=int(enum.mjSLEEP_ALLOWED))
     d=mujoco.MjData(m);view=scene_tools.wall_views(scene.config['static_map'])[0]
     cases=[];initial=[];ctrl=[];odoms=[]
-    fixture=np.load(a.fixture/'fixture.npz') if v3 else None
+    fixture=None
     if v3:
         import sim
         sim.__path__.append(str(ROOT/'sim'))
         from sim.spawn_overlap_check import check,OPTION
-        from mapbuild3_prepare import named_sets
+        from mapbuild3_prepare import named_sets,load_fixture
+        fixture=load_fixture(a.fixture,xml)
         classifications=named_sets(m)
     for pose in ('drive','high'):
         for sensor in (('off',) if v3 else ('off','on_v1')):

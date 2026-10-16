@@ -29,3 +29,30 @@ def test_namespace_is_explicit_not_appearance():
     assert classify('cargo_geom','cargo_1',**kwargs)=='cargo'
     assert classify('wall_1','world',**kwargs)=='wall'
     assert classify('ramp','world',**kwargs)=='other'
+
+
+def test_fixture_requires_exact_saved_bytes_and_scene(tmp_path):
+    import hashlib,json
+    import numpy as np
+    import pytest
+    from scripts.mapbuild3_prepare import load_fixture
+    path=tmp_path/'fixture.npz';np.savez_compressed(path,drive_qpos=[1.,2.])
+    meta=dict(fixture_sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
+              scene_xml_sha256=hashlib.sha256(b'scene').hexdigest(),
+              selected={p:dict(selected_xy=[0.,0.]) for p in ('drive','high')})
+    (tmp_path/'fixture.json').write_text(json.dumps(meta))
+    assert load_fixture(tmp_path,'scene')['drive_qpos'].tolist()==[1.,2.]
+    with pytest.raises(ValueError,match='SCENE_MISMATCH'):load_fixture(tmp_path,'other')
+    path.write_bytes(b'changed')
+    with pytest.raises(ValueError,match='HASH_MISMATCH'):load_fixture(tmp_path,'scene')
+
+
+def test_fixture_rejects_posture_viewpoint_confound(tmp_path):
+    import hashlib,json
+    import numpy as np
+    import pytest
+    from scripts.mapbuild3_prepare import load_fixture
+    path=tmp_path/'fixture.npz';np.savez_compressed(path,x=[1.])
+    (tmp_path/'fixture.json').write_text(json.dumps(dict(fixture_sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
+        scene_xml_sha256=hashlib.sha256(b'scene').hexdigest(),selected=dict(drive=dict(selected_xy=[0,0]),high=dict(selected_xy=[0,1])))))
+    with pytest.raises(ValueError,match='SHARED_POSTURE_START_REQUIRED'):load_fixture(tmp_path,'scene')
