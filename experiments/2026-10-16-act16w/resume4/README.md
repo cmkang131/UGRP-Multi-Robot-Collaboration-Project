@@ -67,3 +67,16 @@ h4 C와 h5 D1은 각각10000스텝 새 초기화로 비교한다.
 [warpfit PR562](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/562),
 [act16a PR528](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/528).
 Refs #523, PR #539 DRAFT.
+
+
+A/B 입력 비교의 정확한 범위는16개 발행 명령의 각 `[wheel4,duration4]`128열이다.
+B는 이128열을 정규화 좌표의0(=TRAIN 평균)으로 바꾸고, 서보PWM5·명령 age·작업 토큰·
+시계는 유지한다. 물리적으로0인 명령으로 바꾸거나 모든 명령 이력을 지우는 실험이 아니다.
+같은 변환 함수가 훈련과 추론에 쓰인다.
+
+직접 확인한 참고 자료와 이번 구현의 범위:
+
+- [ACT 원논문, Zhao et al. 2023](https://arxiv.org/abs/2304.13705): 행동 시퀀스를 학습하는 ACT의 출처. 이번에는 고정 chunk8·temporal ensemble OFF이며 원논문의 로봇·성공률을 전용하지 않는다.
+- [DAgger, Ross et al. 2011](https://proceedings.mlr.press/v15/ross11a.html): 자기 행동이 후속 관측 분포를 바꾸는 모방학습 문제의 동기. 이번 h5는 TRAIN20 시작의 최대30SIM초 방문 상태를 한 번 재라벨하며 h0만 유효·나머지7표적은 padding이다. 원형 전체 알고리즘이나 이론 보장을 재현했다는 주장은 하지 않는다.
+- [Curriculum Learning, Bengio et al. 2009, ICML 공식 초록](https://icml.cc/Conferences/2009/abstracts.html): 쉬운 예제에서 복잡한 예제로 순서를 넓히는 동기. 이번 h4의 구체적 난도는 TRAIN 시작 거리·절대 yaw의 경험 CDF이며 VAL/최종 시드로 맞추지 않는다. 저자 PDF/ACM 직접 열기는 실패해 공식 학회 초록 확인 범위로 기록한다.
+- [MuJoCo 거리 API](https://mujoco.readthedocs.io/en/stable/APIreference/APIfunctions.html#mj-geomdistance), [모델 형식](https://mujoco.readthedocs.io/en/stable/APIreference/APItypes.html): 저장 자세의 이름 있는 기하 거리 검사만 참고했다. 기존 컴파일 geometry를 복원하고 처음·마지막 프레임의 전수 계산과 대조한다. 거리 상한과 legacy CCD 정확도 한계를 보존하며 C 물리 견고성 시험으로 세지 않는다.
