@@ -1,0 +1,91 @@
+{
+  "summary": {
+    "source_sha": "9f12ab366251ca19f55cc642b6d133bd2dde1c7f",
+    "qualification": "staged unloaded setdown only; no E2E/paired grasp/transport evidence",
+    "n": 2,
+    "N": 2,
+    "results": [
+      {
+        "option": "pregrasp_dt1_v1",
+        "status": "COMPLETED_10SIM",
+        "renders": 0,
+        "model_calls": 0,
+        "audit": {
+          "options": {
+            "timestep_s": 0.002,
+            "integrator": "mjINT_IMPLICITFAST",
+            "iterations": 80
+          },
+          "active_welds": [],
+          "samples": 200,
+          "max_penetration_m": 0.0005768847999531894,
+          "max_robot_tilt_deg": 0.061269247471569116,
+          "max_abs_qvel": 3.170324222608121
+        },
+        "cargo_z_range_m": [
+          0.015892244579783825,
+          0.015892244579783832
+        ],
+        "max_cargo_tilt_deg": 0.0,
+        "applied_dt_s": [
+          0.00025
+        ],
+        "plausible": true,
+        "wall_s": 17.924833090999527,
+        "sim_s": 10.0
+      },
+      {
+        "option": "release_dt1_v1",
+        "status": "COMPLETED_10SIM",
+        "renders": 0,
+        "model_calls": 0,
+        "audit": {
+          "options": {
+            "timestep_s": 0.002,
+            "integrator": "mjINT_IMPLICITFAST",
+            "iterations": 80
+          },
+          "active_welds": [],
+          "samples": 200,
+          "max_penetration_m": 0.0007431517149538332,
+          "max_robot_tilt_deg": 0.17037128957351033,
+          "max_abs_qvel": 3.1417276103723166
+        },
+        "cargo_z_range_m": [
+          0.015892244579783825,
+          0.015892244579783835
+        ],
+        "max_cargo_tilt_deg": 0.0,
+        "applied_dt_s": [
+          0.00025,
+          0.001
+        ],
+        "plausible": true,
+        "wall_s": 5.9667243260009855,
+        "sim_s": 10.0
+      }
+    ],
+    "loadavg": [
+      6.28271484375,
+      6.23291015625,
+      6.1044921875
+    ]
+  },
+  "archive": {
+    "verified": true,
+    "native_verification": {
+      "verified": true,
+      "schema": "ugrp.archive-native.v1",
+      "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e18-release-physics-r56",
+      "files": 46,
+      "hash_matches": 46,
+      "inventory_sha256": "21d3bbe916659f6a75b4177a9cedcfaffb185c57e08a4f8ecc43cdd7eb5dfe24",
+      "reused": false,
+      "receiver_seconds": 0.204
+    },
+    "files": 46,
+    "proof_sha256": "f2fed7bcabf8085fb425ef43c5a32b974442c369d1356dc16bee37dca5548da3",
+    "raw": "/home/ugrp/ugrp-sim/runs/e2e18-release-physics-r56"
+  },
+  "fetch_lite": "outputs/azure3-runs/e2e18-release-physics-r56"
+}

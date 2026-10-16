@@ -1,0 +1,63 @@
+[
+  {
+    "host": "azure3",
+    "source_sha": "6633de8129cb0eaf2694dd5a7c6e3a3aeb44ef4e",
+    "raw": "outputs/azure3-runs/speed-gate-e2e18-ugrp-sim-azure3-r53-6633de8129cb",
+    "summary_sha256": "7307ab4d86b02d3be52bff7162d614fdcc3644a273971197cb4832173a32e790",
+    "continuing": 4,
+    "actual_planned_concurrency": 6,
+    "archive_load_during_gate": true,
+    "status": "SPEED_GATE_PASS",
+    "admitted": true,
+    "measured_pass": true,
+    "override_reason": null,
+    "limit_wall_per_sim": 3.0,
+    "probe_sim_s": 30.0,
+    "planned_concurrency": 2,
+    "completed": 2,
+    "median_wall_per_sim": 2.1498002936000074,
+    "invalid_samples": [],
+    "samples": [
+      {
+        "sim_s": 30.0,
+        "wall_s": 64.51412632600113,
+        "cpu_s": 51.81295632,
+        "wall_per_sim": 2.150470877533371,
+        "cpu_per_sim": 1.727098544,
+        "rbpf_hash_wall_s": 0.00020981798661523499,
+        "profiling": false,
+        "includes_setup_and_finalization": true,
+        "mujoco_timers": [],
+        "expected_stop": true,
+        "cprofile_top20": [],
+        "rbpf_audit_hash": "none",
+        "final_hash_wall_s": 0.0,
+        "finalization_errors": [],
+        "finalization_complete": true,
+        "name": "speed-gate-e2e18-v275-s61006-r53",
+        "exit": 1,
+        "raw": "/home/ugrp/ugrp-sim/runs/speed-gate-e2e18-ugrp-sim-azure3-r53-6633de8129cb/speed-gate-e2e18-v275-s61006-r53/raw"
+      },
+      {
+        "sim_s": 30.0,
+        "wall_s": 64.4738912899993,
+        "cpu_s": 52.390360895,
+        "wall_per_sim": 2.1491297096666435,
+        "cpu_per_sim": 1.7463453631666668,
+        "rbpf_hash_wall_s": 0.0002526019979995908,
+        "profiling": false,
+        "includes_setup_and_finalization": true,
+        "mujoco_timers": [],
+        "expected_stop": true,
+        "cprofile_top20": [],
+        "rbpf_audit_hash": "none",
+        "final_hash_wall_s": 0.0,
+        "finalization_errors": [],
+        "finalization_complete": true,
+        "name": "speed-gate-e2e18-v277-s61006-r53",
+        "exit": 1,
+        "raw": "/home/ugrp/ugrp-sim/runs/speed-gate-e2e18-ugrp-sim-azure3-r53-6633de8129cb/speed-gate-e2e18-v277-s61006-r53/raw"
+      }
+    ]
+  }
+]

@@ -1,0 +1,23 @@
+{
+  "base_sha": "495b606fe99e6ced0fa1659a9db89324f51e4c4e",
+  "source_sha256": {
+    "harness/e2e_llm_memory.py": "133c1a993559e649301e36926bd138a073b0fb8f21ec29a1c562dae22d77eacf",
+    "harness/e2e_dialogue.py": "ae5264c3f140b1a80aeecd8ecd4d4b603b952507cfc7fc599b6aab9a3896da30",
+    "harness/e2e_s4_live.py": "36b3c7e6358f8eb2cbdc6aea6a34020d18708ddca707772ea89b82ed78c50f2b",
+    "harness/e2e_runtime_registration.py": "5e8b484c13d5f5e79fe1ebee252f0ddb975a19fd0c6551c3056c68d897442209",
+    "scripts/run_e2e_ownmap_live.py": "8bdb3db510ba6c8a89dc72b33eed4d52dcfe842241ce8ff85fe6e2262093bad2"
+  },
+  "tests": {
+    "command": "python3 -m pytest -q -rs tests/test_e2e_llm_memory.py tests/test_e2e_vote_ref.py tests/test_e2e_s4_live.py",
+    "passed": 62,
+    "skipped": 1,
+    "wall_s": 29.96,
+    "skipped_reason": "mujoco import blocked by no_external_work fixture",
+    "note": "Final canonical log fields rechecked with the same three files."
+  },
+  "candidate_requests_verified": 20,
+  "new_provider_calls": 0,
+  "new_simulation_runs": 0,
+  "evidence_decompression_verified": true,
+  "candidate_request_path": "outputs/llmmemory-candidate-v3"
+}

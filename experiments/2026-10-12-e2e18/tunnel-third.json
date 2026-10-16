@@ -1,0 +1,21 @@
+{
+  "PR": 461,
+  "first_software_sleep_kst": "2026-10-13T05:25:30+09:00",
+  "maintenance_sleep_kst": "2026-10-13T05:25:42+09:00",
+  "maintenance_sleep_s": 954,
+  "first_next_wake_kst": "2026-10-13T05:41:36+09:00",
+  "r47_cohort_launch_utc": "2026-10-12T20:25:45Z",
+  "r47_result": "3/3 HOST_ERROR S4_TUNNEL_RECOVERY_EXHAUSTED, sim0, no accepted model response",
+  "r47_first_timeout_s": 150.181045,
+  "inference": "Mac software/maintenance sleep overlaps entire first model timeout and tunnel retry exhaustion. Reverse SSH detected broken links on the following wake; this is consistent with suspended Mac relay/tunnel, not a missing model key.",
+  "local_relay_alive_at_takeover": true,
+  "VMs_at_takeover": "both deallocated; guarded start completed with safety resources enabled, cumulative cost56.0202USD",
+  "repair": "New finite Mac-only relay identities, reverse tunnels with reconnect, verified VM127.0.0.1:18393 identity equal to Mac receipt; caffeinate -is until16:10KST; explicit sleep/closed lid can still interrupt",
+  "credentials": "Mac Keychain only; no credentials copied",
+  "sleep_log": "outputs/e2e18-admin/sleep-third.txt",
+  "sleep_log_sha256": "5129b923e5865877852655b99bea66d766beffc9dcfbddc43769a92eace1aa1c",
+  "references": [
+    "local man caffeinate(8)",
+    "https://man.openbsd.org/ssh_config"
+  ]
+}

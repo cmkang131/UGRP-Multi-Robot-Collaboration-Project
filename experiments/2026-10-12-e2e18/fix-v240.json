@@ -1,0 +1,34 @@
+{
+  "bundle": "e2e18-v240",
+  "default_off_option": {
+    "camera_hold": "wheel_only_v1"
+  },
+  "raw_cause": "Native zone_s3_host.issue(hold) calls CameraRobotPort.hold, cancelling newly queued arm/pan before tick. Robot own-command target retains the cancelled target.",
+  "evidence": "camera-hold-evidence-v240.json",
+  "evidence_sha256": "f74b54721281379189588968e8859abfc8a238ff4b51640611830c420b95fbbc",
+  "numbers": {
+    "seed61007_r1_mismatched_accepted_frames": "339/374",
+    "max_pwm_error": 617,
+    "same_tick_look_hold": 87
+  },
+  "change": "For normal open-gripper mapping/align only, dispatch hold as existing wait: stop wheels while retaining camera targets. Emergency hold and grasp/carry phases unchanged.",
+  "tests": {
+    "command": "pytest -q tests/test_e2e_camera_hold.py tests/test_e2e_camera_settle.py tests/test_e2e_pulse_admission.py",
+    "passed": 12,
+    "seconds": 7.77,
+    "scope": "Actual native port issue/tick with spies; no physics/model calls"
+  },
+  "research": [
+    {
+      "url": "https://control.ros.org/master/doc/ros2_controllers/joint_trajectory_controller/doc/trajectory.html",
+      "verified": "official documentation read",
+      "adaptation": "Keep independent actuator trajectory active unless explicitly cancelled; use existing wheel-only wait. No joint feedback introduced."
+    },
+    {
+      "url": "https://raw.githubusercontent.com/ros-navigation/navigation2/main/nav2_behavior_tree/plugins/action/wait_action.cpp",
+      "verified": "upstream source read",
+      "adaptation": "Distinguish waiting action from cancellation; no external ROS dependency."
+    }
+  ],
+  "physical_success": false
+}

@@ -5,6 +5,7 @@ experiments/2026-10-07-mapfree-unknown-footprint/REFERENCES.md. Own pose/sensor
 inputs only. Clearing never predicts a future footprint or adds RGB coverage.
 """
 import ctypes
+from harness.native_build_cache import build_target
 import hashlib
 import math
 import subprocess
@@ -32,12 +33,12 @@ def build():
     inputs = sources + [HERE/'bridge.cpp'] + sorted((HERE/'shim').rglob('*.h')) + list(VENDOR.rglob('*.h'))
     digest = hashlib.sha256(b''.join(p.read_bytes() for p in inputs)).hexdigest()[:16]
     target = ROOT/'outputs/mapfree-public-navigation-build'/f'unknown-{digest}.so'
-    if not target.exists():
-        target.parent.mkdir(parents=True, exist_ok=True)
-        subprocess.run(['c++','-std=c++17','-O2','-shared','-fPIC',
-            '-I'+str(HERE/'shim'), '-I'+str(VENDOR/'navigation/navfn/include'),
-            '-I'+str(VENDOR/'m-explore/explore/include'), *map(str,sources), '-o',str(target)],
-            check=True, capture_output=True, text=True)
+    with build_target(target) as output:
+        if output is not None:
+            subprocess.run(['c++','-std=c++17','-O2','-shared','-fPIC',
+                '-I'+str(HERE/'shim'), '-I'+str(VENDOR/'navigation/navfn/include'),
+                '-I'+str(VENDOR/'m-explore/explore/include'), *map(str,sources), '-o',str(output)],
+                check=True, capture_output=True, text=True)
     return target
 
 

@@ -1,0 +1,38 @@
+{
+  "schema": "ugrp.e2e18.dev_candidates.v1",
+  "seed": 61006,
+  "criterion": "staged 10SIM floor cargo .01..03m, tilt<10deg, penetration<=.01m; then unchanged E2E success evaluation",
+  "candidates": [
+    {
+      "bundle": "e2e18-v279",
+      "parent": "e2e18-v275",
+      "mode": "release_dt1_v1"
+    },
+    {
+      "bundle": "e2e18-v280",
+      "parent": "e2e18-v276",
+      "mode": "release_dt1_v1"
+    },
+    {
+      "bundle": "e2e18-v281",
+      "parent": "e2e18-v277",
+      "mode": "release_dt1_v1"
+    },
+    {
+      "bundle": "e2e18-v282",
+      "parent": "e2e18-v278",
+      "mode": "release_dt1_v1"
+    }
+  ],
+  "source": "sim/e2e_stage_physics.py:14",
+  "release_basis": "both issued gripper open commands + relook + .8SIM settle; no measured joints or contact input",
+  "loaded_dt_s": 0.00025,
+  "unloaded_relook_dt_s": 0.001,
+  "default": "off",
+  "references": [
+    "https://mujoco.readthedocs.io/en/stable/modeling.html",
+    "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/461#issuecomment-6136957705"
+  ],
+  "reference_summary": "MuJoCo documents timestep as efficiency/stability tradeoff; solref timeconstant at least 2*dt. Candidate uses staged physical plausibility followed by live E2E comparison.",
+  "status": "unit-tested; physical probe pending free VM3 slot"
+}

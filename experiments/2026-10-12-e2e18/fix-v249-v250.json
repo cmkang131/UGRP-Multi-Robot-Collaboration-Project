@@ -1,0 +1,286 @@
+{
+  "versions": [
+    249,
+    250
+  ],
+  "parent": 246,
+  "default": "off",
+  "raw_diagnosis": [
+    {
+      "host": "azure3",
+      "seed": 61002,
+      "robot": "r1",
+      "navigation_status": "exploration_finished",
+      "nav_command": {
+        "kind": "hold"
+      },
+      "carrier_approach": {
+        "t": 635.6,
+        "status": "acquire_explore",
+        "own_beam_age_s": 296.8,
+        "B_candidate_available": true,
+        "cycle": 18
+      },
+      "actual_shift120_m": 0.030622574064577343,
+      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v241-s61002-r33/raw",
+      "snapshot_sha256": "9a51bf23ab2f7cb60e8224d5fb23f7da384330ba46ac7ed06b8443f2aa24f601"
+    },
+    {
+      "host": "azure3",
+      "seed": 61002,
+      "robot": "r2",
+      "navigation_status": "exploration_finished",
+      "nav_command": {
+        "kind": "hold"
+      },
+      "carrier_approach": {
+        "t": 633.2,
+        "status": "reacquire_own_beam",
+        "station_own_m": [
+          0.9727889344577902,
+          -1.1453973328695872,
+          3.0181404472038755
+        ],
+        "grip_own_m": [
+          0.7711353983352316,
+          -1.1203755150046133
+        ],
+        "distance_m": 0.4979016873893773,
+        "heading_error_rad": -1.6936044798844128,
+        "own_beam_age_s": 5.600000000000023,
+        "camera": "inspect",
+        "basis_yaw_rad": -0.12345220638591758,
+        "search_index": 2,
+        "pan_pulse": 1500
+      },
+      "actual_shift120_m": 0.01206373639763162,
+      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v241-s61002-r33/raw",
+      "snapshot_sha256": "a2a615e518e227ad4b3613a1f35f469d76d3d6fbc306c2f14a5de1c5468a2a81"
+    },
+    {
+      "host": "azure3",
+      "seed": 61004,
+      "robot": "r1",
+      "navigation_status": "exploration_finished",
+      "nav_command": {
+        "kind": "hold"
+      },
+      "carrier_approach": {
+        "t": 582.8,
+        "status": "navigate_pregrasp",
+        "station_own_m": [
+          0.568264857803734,
+          2.2420141118001538,
+          -0.7865978398233129
+        ],
+        "grip_own_m": [
+          0.7117764779603666,
+          2.098157742876083
+        ],
+        "distance_m": 1.1054465024834954,
+        "heading_error_rad": 2.969438812539334,
+        "own_beam_age_s": 1.599999999999909,
+        "camera": "search",
+        "basis_yaw_rad": -0.7865978398233129,
+        "beam_obstacle_source": "own_rgb_center_axis_known_size",
+        "path_points": 75,
+        "rpp": {
+          "path_follow": "rpp_v1",
+          "lookahead_m": 0.6,
+          "carrot_m": [
+            0.7304672241210941,
+            1.3541759490966796
+          ],
+          "carrot_distance_m": 0.6004844826726933,
+          "before": 0.3605816139306921,
+          "after": 0.34974773637685297,
+          "body_error_m": [
+            0.43859125655022524,
+            0.4101454907814867
+          ],
+          "yaw_rad": 0.0,
+          "phase": "forward_path",
+          "heading_error_rad": 0.751895287331865,
+          "goal_distance_m": 1.1054465024834954
+        },
+        "projected_clear": false
+      },
+      "actual_shift120_m": 0.13849103630133036,
+      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v241-s61004-r33/raw",
+      "snapshot_sha256": "7a7ff8ea495d4f86751ac9ff0d2df66a758487a0a797aaf9435179c642f55534"
+    },
+    {
+      "host": "azure3",
+      "seed": 61004,
+      "robot": "r2",
+      "navigation_status": "exploration_finished",
+      "nav_command": {
+        "kind": "hold"
+      },
+      "carrier_approach": {
+        "t": 581.2,
+        "status": "reacquire_own_beam",
+        "station_own_m": [
+          -0.31846575738887556,
+          -0.26189659732385895,
+          0.11393827302542058
+        ],
+        "grip_own_m": [
+          -0.11658329520865512,
+          -0.2387944012366496
+        ],
+        "distance_m": 0.2571516468406038,
+        "heading_error_rad": -0.8735209710730243,
+        "own_beam_age_s": 2.400000000000091,
+        "camera": "search",
+        "basis_yaw_rad": -3.0276543805643725,
+        "search_index": 0,
+        "pan_pulse": 1500
+      },
+      "actual_shift120_m": 0.03255298615459215,
+      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v241-s61004-r33/raw",
+      "snapshot_sha256": "d12b999909a81f2b8e9ce5adbdbf6cbe4ea4491ce7db053e4af86a6745bdf2b2"
+    },
+    {
+      "host": "azure4",
+      "seed": 61011,
+      "robot": "r1",
+      "navigation_status": "exploration_finished",
+      "nav_command": {
+        "kind": "hold"
+      },
+      "carrier_approach": {
+        "t": 626.4,
+        "status": "navigate_pregrasp",
+        "station_own_m": [
+          -0.10849025578765181,
+          -1.6029414625837826,
+          1.5281022186322206
+        ],
+        "grip_own_m": [
+          -0.0998174483493354,
+          -1.3999266296007271
+        ],
+        "distance_m": 0.8800285685872096,
+        "heading_error_rad": -3.0176697815132245,
+        "own_beam_age_s": 0.0,
+        "camera": "search",
+        "basis_yaw_rad": 1.5281022186322206,
+        "correct_end": true,
+        "beam_obstacle_source": "own_rgb_center_axis_known_size",
+        "path_points": 70,
+        "rpp": {
+          "path_follow": "rpp_v1",
+          "lookahead_m": 0.6,
+          "carrot_m": [
+            -0.5627502441406249,
+            -1.1010066986083986
+          ],
+          "carrot_distance_m": 0.6150737903471905,
+          "before": 0.37831576757205954,
+          "after": 0.36644928065112314,
+          "body_error_m": [
+            0.4528392163156427,
+            -0.4162360048562523
+          ],
+          "yaw_rad": 0.0,
+          "phase": "forward_path",
+          "heading_error_rad": -0.7433056144798951,
+          "goal_distance_m": 0.8800285685872096
+        },
+        "projected_clear": false
+      },
+      "actual_shift120_m": 0.23649989530321722,
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v241-s61011-r33/raw",
+      "snapshot_sha256": "359029221fefd01ff56d1928ad7fbccc268c1c109f6d5bda7580c390cfc7336d"
+    },
+    {
+      "host": "azure4",
+      "seed": 61011,
+      "robot": "r2",
+      "navigation_status": "exploration_finished",
+      "nav_command": {
+        "kind": "hold"
+      },
+      "carrier_approach": {
+        "t": 626.4,
+        "status": "acquire_scan",
+        "own_beam_age_s": 574.1999999999999,
+        "B_candidate_available": true,
+        "cycle": 27
+      },
+      "actual_shift120_m": 0.018098754284156516,
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v241-s61011-r33/raw",
+      "snapshot_sha256": "cf4154ab191c991821c8ca38308900dc4f8ab146ca332db51e448bcec97cf3ec"
+    },
+    {
+      "host": "azure4",
+      "seed": 61012,
+      "robot": "r1",
+      "navigation_status": "exploration_finished",
+      "nav_command": {
+        "kind": "hold"
+      },
+      "carrier_approach": {
+        "t": 679.2,
+        "status": "acquire_scan",
+        "own_beam_age_s": 34.40000000000009,
+        "B_candidate_available": true,
+        "cycle": 1
+      },
+      "actual_shift120_m": 0.04335623718745825,
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v241-s61012-r33/raw",
+      "snapshot_sha256": "951e7288c6961621cd0dd291094bb206db0c66318f9cc099e235958f8cec1c11"
+    },
+    {
+      "host": "azure4",
+      "seed": 61012,
+      "robot": "r2",
+      "navigation_status": "exploration_finished",
+      "nav_command": {
+        "kind": "hold"
+      },
+      "carrier_approach": {
+        "t": 680.4,
+        "status": "acquire_explore",
+        "own_beam_age_s": 418.2,
+        "B_candidate_available": true,
+        "cycle": 16
+      },
+      "actual_shift120_m": 0.0058078466669620535,
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v241-s61012-r33/raw",
+      "snapshot_sha256": "dd114664770c0d08fa2328587c36a3de64d69777ad2590276ba0c1de61f1d31a"
+    }
+  ],
+  "hypotheses": {
+    "249": "resume exhausted own frontier navigator and SEARCH posture before 25 SIM navigation window",
+    "250": "same resume plus remembered own RGB beam standoff viewpoint on current own costmap; no current-beam or grasp promotion"
+  },
+  "seeds": {
+    "249": [
+      61002,
+      61012
+    ],
+    "250": [
+      61011
+    ]
+  },
+  "criteria": [
+    "nonzero actual displacement during acquisition exploration",
+    "current own RGB beam reacquired",
+    "fine alignment, grasp, end transport tracked separately"
+  ],
+  "references": [
+    "https://raw.githubusercontent.com/robo-friends/m-explore-ros2/main/explore/src/explore.cpp",
+    "https://api.nav2.org/nav2-jazzy/html/simple__progress__checker_8cpp_source.html"
+  ],
+  "adaptation": "expire action suppression epoch without changing observed map; position-only 0.05m/10SIM progress; calibrated pulse port; old beam only search hypothesis",
+  "tests": {
+    "passed": 29,
+    "files": [
+      "test_e2e_acquisition_mobility.py",
+      "test_e2e_pregrasp_acquire.py",
+      "test_e2e_camera_hold.py"
+    ]
+  }
+}

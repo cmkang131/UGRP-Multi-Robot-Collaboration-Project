@@ -1,0 +1,72 @@
+{
+  "schema": "e2e18.fix.v231",
+  "parent": "e2e18-v230",
+  "hypotheses": [
+    "event route-key projection removes redundant full input validation; actual model requests retain validation",
+    "bounded cached-station navigation and own-progress backup/turn/replan break lost-target and blocked-approach loops"
+  ],
+  "profile": {
+    "host": "azure3",
+    "run": "e2e18-v230-s61004-r16",
+    "raw": "raw/profile-align-v230.raw",
+    "sha256": "cfbe97f71967ebb30ca8275c0063ef22f654d3deaa0bafce5b30bd927e9257a0",
+    "sample_count": 339,
+    "inclusive_own_inputs_at": 93,
+    "inclusive_receive": 150,
+    "errors": 45,
+    "scope": "20 s py-spy sample; inclusive stacks overlap; not an end-to-end speed result"
+  },
+  "observed": {
+    "run": "e2e18-v230-s61004-r16",
+    "sim_s": 233,
+    "stationary_r1_sim_s": 113.45,
+    "beam_age_s": 116.4,
+    "stage": "reacquire_own_beam"
+  },
+  "toggles": {
+    "event_projection": "route_hash_v1",
+    "pregrasp_progress": "backup_replan_v1",
+    "defaults": "off"
+  },
+  "recovery": {
+    "own_pose_progress_m": 0.03,
+    "own_yaw_progress_rad": 0.15,
+    "allowance_s": 8,
+    "minimum_issued_translations": 4,
+    "backup_m": 0.12,
+    "backup_timeout_s": 6,
+    "turn_rad": 1.0471975512,
+    "turn_timeout_s": 6,
+    "cached_navigation_s": 5,
+    "fine_alignment_requires_fresh_rgb": true
+  },
+  "references": [
+    "https://github.com/ros-navigation/navigation2/blob/main/nav2_controller/plugins/simple_progress_checker.cpp",
+    "https://docs.nav2.org/behavior_trees/overview/nav2_specific_nodes.html"
+  ],
+  "deviations": "small slow robot: scaled thresholds; only own RGB/command odometry, no contact or truth; retain existing DEV collision would-stop logging",
+  "tests": {
+    "command": "pytest -q tests/test_e2e_event_projection.py tests/test_e2e_pregrasp_progress.py tests/test_e2e_protocol_progress.py tests/test_e2e_protocol_recovery.py",
+    "passed": 12,
+    "seconds": 5.03,
+    "scope": "offline, no physics/provider"
+  },
+  "prereg": {
+    "seeds": {
+      "azure3": [
+        61004,
+        61006
+      ],
+      "azure4": [
+        61007,
+        61011,
+        61012
+      ]
+    },
+    "gate_limit": 3.0,
+    "total_concurrency_per_vm": 6,
+    "criterion": "one run: actual LLM + own observed map/B + start-to-finish transport; otherwise retain each failure",
+    "wall_cap_s": 10800
+  },
+  "physical_tilt_cause": "unresolved; no dt change in v231"
+}

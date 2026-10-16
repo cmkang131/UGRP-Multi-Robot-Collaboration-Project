@@ -1,0 +1,78 @@
+{
+  "bundle": "e2e18-v226",
+  "status": "LOCAL_TESTED_NOT_YET_RUN",
+  "changes": {
+    "pose_guard": "se2_innovation_v1: wrapped full 3D innovation covariance, chi-square 99% df3=11.344866730144373",
+    "protocol_recovery": "envelope_retry_v1: full actual own proposal syntax, explicit source enumeration; failed stop-completed pre-epoch call gets at most 2 fresh reasks per actor/route/approval; no response repair/replay"
+  },
+  "evidence": {
+    "pose_audit": "pose-audit-first-route.json",
+    "sha256": "9a96eb973ed9df4707ba6c368882ffd6942f7642c1eae90facb650148e0860ae",
+    "scope": "post-run privileged evaluation only; no control inputs",
+    "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v224-s61010-r10/raw",
+    "r1_at_126_sim": {
+      "map_xy_error_m": 1.618,
+      "map_yaw_error_deg": 121.06,
+      "continuous_odom_xy_error_m": 0.584,
+      "continuous_odom_yaw_error_deg": 19.76
+    },
+    "protocol": {
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v225-s61010-r11/raw",
+      "call": "call-0004-r1",
+      "route_sim": 126.0,
+      "finished_sim": 133.55,
+      "stop_sim": 282.996,
+      "error": "OWN_ROUTE_MESSAGE: CLOSED_SCHEMA_REQUIRED",
+      "finish_reason": "stop",
+      "normal_completion": true,
+      "route_received": false,
+      "attempts": 4
+    }
+  },
+  "tests": {
+    "files": [
+      "tests/test_e2e_pose_guard.py",
+      "tests/test_e2e_explore_posefix.py",
+      "tests/test_e2e_protocol_recovery.py"
+    ],
+    "result": "17 passed",
+    "scope": "offline no physics/provider; actual scheduler rejects invalid envelope then fresh fake-provider reply delivers/approves/claims"
+  },
+  "planned_seeds": {
+    "azure3": [
+      61003,
+      61006
+    ],
+    "azure4": [
+      61010,
+      61011,
+      61012
+    ]
+  },
+  "gate": {
+    "limit": 3.0,
+    "preview_sim_s": 30.0,
+    "load": {
+      "azure3": "2 new +4 ongoing",
+      "azure4": "3 new +3 ongoing"
+    }
+  },
+  "references": [
+    {
+      "url": "https://github.com/cra-ros-pkg/robot_localization/blob/rolling-devel/src/filter_base.cpp",
+      "use": "Standard full innovation Mahalanobis rejection"
+    },
+    {
+      "url": "https://github.com/cra-ros-pkg/robot_localization/blob/rolling-devel/src/ekf.cpp",
+      "use": "Wrapped angular innovation and Joseph covariance"
+    },
+    {
+      "url": "https://ai.google.dev/gemma/docs/capabilities/text/function-calling-gemma4",
+      "use": "Explicit structured function arguments and schema; keep actual model output validation"
+    },
+    {
+      "url": "https://ai.google.dev/gemini-api/docs/generate-content/structured-output?hl=en",
+      "use": "Structured output still requires semantic validation; our proxy uses explicit examples and bounded fresh calls, not unverified constrained decoding"
+    }
+  ]
+}

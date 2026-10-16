@@ -1,0 +1,55 @@
+{
+  "class_": "dev",
+  "pr": 461,
+  "seed": [
+    61006,
+    61007,
+    61008,
+    61009
+  ],
+  "source_failure": "r78 v370/v372 seed61006 repeated now=retry_at=64.1; 64.1-49.1=14.999999999999993",
+  "candidates": {
+    "v375": "v369 + integer microsecond ticks",
+    "v376": "v371 + integer microsecond ticks",
+    "v377": "v369 + absolute deadline 1ns tolerance",
+    "v378": "v371 + absolute deadline 1ns tolerance"
+  },
+  "criteria": [
+    "finite scheduler at 64.1 SIM",
+    "route approval and both claims sent",
+    "align to paired grasp SIM",
+    "GO/ACK and carry start",
+    "start to B transport"
+  ],
+  "host": "VM3 only",
+  "concurrency": 16,
+  "speed_gate": 3.5,
+  "deadline_utc": "2026-10-13T13:00:00Z",
+  "references": [
+    "https://docs.python.org/3/tutorial/floatingpoint.html",
+    "https://simpy.readthedocs.io/en/latest/topical_guides/time_and_scheduling.html"
+  ],
+  "validation": {
+    "test_files": [
+      "tests/test_e2e_admission_clock.py",
+      "tests/test_e2e_call_snapshot.py",
+      "tests/test_e2e_dialogue_call_policy.py"
+    ],
+    "unique_passed": 33,
+    "detail": "27 unchanged-file tests passed in first run; final clock file 6/6 after isolating the scheduler from already pending fixture calls",
+    "logs": [
+      {
+        "path": "outputs/e2e18-admin/r79-tests.txt",
+        "sha256": "92aec58504aa02f03912dc37d3131a348d32eb380adc56df90a711a0fc42737a"
+      },
+      {
+        "path": "outputs/e2e18-admin/r79-tests-clock-retry.txt",
+        "sha256": "560a8e1effdf14f2a49a4e4f618d2d757dc84260e50b4de7473ac36bb61baa3e"
+      },
+      {
+        "path": "outputs/e2e18-admin/r79-tests-clock-final.txt",
+        "sha256": "39098a84fc44db5c53f4352422057615c1ed0686ed05f2445c0785230d7387de"
+      }
+    ]
+  }
+}

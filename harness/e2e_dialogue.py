@@ -8,6 +8,7 @@ import copy
 from dataclasses import dataclass, replace
 
 from harness import e2e_own_inputs as own
+from harness import e2e_vote_ref as vote_ref
 from harness import pair_llm_dispatch as pair
 from harness import zone_study_protocol as zp
 from harness.zone_final_pair_binding import bind
@@ -145,13 +146,15 @@ class Dialogue:
             own_go_sent='GO' in self.votes.get(actor, {}), own_ack_sent='ACK' in self.votes.get(actor, {}),
             peer_go_ref=peer['GO']['call_id'] if visible and peer else None,
             transport_admitted=bool(visible and self.allowed(self.key, now)),
-            motion_connected=bool(getattr(self,'motion_connected',False)))
+            motion_connected=bool(getattr(self,'motion_connected',False)),
+            **vote_ref.view_field(self, list(self.key) if visible and self.key else None))
 
     def fresh(self, context, now):
         return context['frame_t'] <= context['requested_at'] <= now < context['frame_t'] + WINDOW_S
 
     def outgoing(self, contract, context):
-        contract = route_contract(contract)
+        from harness.e2e_route_handle import expand
+        contract = route_contract(expand(self,contract,context))
         actor, source = context['actor'], contract['source_message_id']
         if source is None:
             mapped = context['state']['own_map'];route = contract['route']
@@ -180,18 +183,36 @@ class Dialogue:
         receipts = []
         for message in value['messages']:
             contract = message.get('contract')
+            policy = self.trial.call_events if getattr(self.trial, 'dialogue_call_policy', 'off') != 'off' else None
+            if policy is not None and not policy.allow_message(actor, at_sim_s, value['action'], message):
+                # Keep one rejection receipt per generated utterance: wire and
+                # SIM/provider billing remain intact, no silent response edit.
+                receipts.append(zp.Receipt(False, rejection='EVENT_OBSERVATION_SUPPRESSED'))
+                continue
             receipt = transport.send(actor, recipients=message['recipients'], text=message.get('text'),
                 structured=message.get('message'), reply_to=message['reply_to'], at_sim_s=at_sim_s, contract=contract)
             receipts.append(receipt)
+            if receipt.accepted and policy is not None:
+                policy.message_sent(actor, at_sim_s, message)
+            memory = getattr(self.trial, 'memory', None)
+            if receipt.accepted and memory is not None and getattr(self.trial, 'llm_memory', 'off') != 'off':
+                memory.sent_keys[receipt.envelope.message_id] = copy.deepcopy(self.captures[call_id]['view']['key'])
             if receipt.accepted and contract is not None:
                 source = contract['source_message_id']
                 origin = self.origins[source] if source else receipt.envelope.message_id
+                from harness.e2e_route_idempotency import origin as idempotent_origin
+                origin = idempotent_origin(self,contract,origin)
                 self.origins[receipt.envelope.message_id] = origin
                 if source is None:
                     self.outgoing_by_call[call_id] = origin
         return tuple(receipts)
 
     def receive(self, actor, envelope, now):
+        memory = getattr(self.trial, 'memory', None)
+        if memory is not None and getattr(self.trial, 'llm_memory', 'off') != 'off':
+            if envelope not in self.trial.channel.inbox(actor, now_sim_s=now):
+                raise ContractViolation('ACTUAL_COMMITTED_ROUTE_DELIVERY_REQUIRED')
+            memory.receive(actor, envelope, now, self.view(actor, now)['key'])
         contract = envelope['body'].get('contract')
         if contract is None:
             return
@@ -269,7 +290,8 @@ class Dialogue:
             raise ContractViolation('MODEL_RESPONSE_ALREADY_RELEASED')
         self.used_responses.add(call_id)
         actor, kind = context['actor'], action['kind']
-        if call_id in self.outgoing_by_call:
+        from harness.e2e_route_idempotency import resets
+        if call_id in self.outgoing_by_call and resets(self,self.outgoing_by_call[call_id]):
             self.latest_origin = self.outgoing_by_call[call_id]
             self.proposal, self.approved, self.key = None, False, None
             self.claims, self.votes = set(), {}
@@ -291,6 +313,9 @@ class Dialogue:
         def validate(value, **checks):
             try:
                 value = zp.parse(value) if isinstance(value, str) else copy.deepcopy(value)
+                value['action'] = vote_ref.expand(self, value['action'], context)   # off: unchanged
+                if getattr(trial,'body_controller','off')=='jev_v1' and value['action']['kind'] not in ('continue','claim','approve_route','route_vote'):
+                    raise ContractViolation('GEMMA_DIALOGUE_ONLY')
                 clean = copy.deepcopy(value)
                 contracts = [m.pop('contract', None) for m in clean['messages']]
                 if sum(c is not None for c in contracts) > 1:
@@ -314,7 +339,10 @@ class Dialogue:
                 if checked['action']['kind'] == 'route_vote' and 'own_rgb' not in checked['decision_sources']:
                     raise ContractViolation('GO_ACK_OWN_RGB_SOURCE_REQUIRED')
                 return checked
-            except (ContractViolation, KeyError, TypeError, ValueError) as exc:
+            except (ContractViolation, zp.ProtocolError, KeyError, TypeError, ValueError) as exc:
+                memory = getattr(trial, 'memory', None)
+                if memory is not None and getattr(trial, 'llm_memory', 'off') != 'off':
+                    memory.reject(call.call_id, call.actor, value, exc, context)   # own validation only
                 raise zp.ProtocolError(str(exc)) from exc
         private_zp = type('Protocol', (), {'relay': lambda transport, actor, value, **kw:
             self.relay(transport, actor, value, call_id=call.call_id, **kw), 'ProtocolError': zp.ProtocolError})

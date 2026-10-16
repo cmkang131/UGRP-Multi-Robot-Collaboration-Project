@@ -1,5 +1,6 @@
 """Build/load unmodified BSD ROS algorithms, with an explicitly local ABI shim."""
 import ctypes
+from harness.native_build_cache import build_target
 import hashlib
 from pathlib import Path
 import subprocess
@@ -18,12 +19,12 @@ def build():
     inputs = sources + sorted((HERE/'shim').rglob('*.h')) + list(VENDOR.rglob('*.h'))
     digest = hashlib.sha256(b''.join(p.read_bytes() for p in inputs)).hexdigest()[:16]
     target = ROOT/'outputs/mapfree-public-navigation-build'/f'core-{digest}.so'
-    if not target.exists():
-        target.parent.mkdir(parents=True,exist_ok=True)
-        command = ['c++','-std=c++17','-O2','-shared','-fPIC',
-                   '-I'+str(HERE/'shim'),'-I'+str(VENDOR/'navigation/navfn/include'),
-                   '-I'+str(VENDOR/'m-explore/explore/include'),*map(str,sources),'-o',str(target)]
-        subprocess.run(command,check=True,capture_output=True,text=True)
+    with build_target(target) as output:
+        if output is not None:
+            command = ['c++','-std=c++17','-O2','-shared','-fPIC',
+                       '-I'+str(HERE/'shim'),'-I'+str(VENDOR/'navigation/navfn/include'),
+                       '-I'+str(VENDOR/'m-explore/explore/include'),*map(str,sources),'-o',str(output)]
+            subprocess.run(command,check=True,capture_output=True,text=True)
     return target
 
 

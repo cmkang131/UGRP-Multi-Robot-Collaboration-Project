@@ -1,0 +1,53 @@
+{
+  "checked_unix": 1791893092.320113,
+  "status": "TERMINAL",
+  "runs": [
+    {
+      "host": "ugrp-sim-azure3",
+      "name": "e2e18-v344-s61006-r73",
+      "sha": "067ef1514fcdb4c6c067775936a7e58085b3c00e",
+      "raw": "ugrp-sim-azure3:/home/ugrp/ugrp-sim/runs/e2e18-v344-s61006-r73/raw",
+      "exit": "130",
+      "status": "EARLY_STOP",
+      "sim_s": 171.768,
+      "phase": "mapping",
+      "LLM": true,
+      "own_map": false,
+      "transport": false,
+      "failure": "SIGNAL_SIGINT",
+      "paired_grasp": false,
+      "class_": "dev"
+    },
+    {
+      "host": "ugrp-sim-azure3",
+      "name": "e2e18-v345-s61006-r73",
+      "sha": "067ef1514fcdb4c6c067775936a7e58085b3c00e",
+      "raw": "ugrp-sim-azure3:/home/ugrp/ugrp-sim/runs/e2e18-v345-s61006-r73/raw",
+      "exit": "130",
+      "status": "EARLY_STOP",
+      "sim_s": 156.0,
+      "phase": "align",
+      "LLM": true,
+      "own_map": false,
+      "transport": false,
+      "failure": "SIGNAL_SIGINT",
+      "paired_grasp": false,
+      "class_": "dev"
+    }
+  ],
+  "gate": {
+    "file": "speed-gate-r73.json",
+    "sha256": "808acd8b16e45b31c0e8d3ad517c26e5fceb6e93906788eccf21dc5e9e818e5a"
+  },
+  "initial_health": {
+    "file": "initial-health-r73.json",
+    "sha256": "3829bbd1a301577715fd44f12aaa6a677de70f67f1754a2607e2bdfaa5de75af",
+    "passed": 2,
+    "total": 2,
+    "submission_elapsed_s": [
+      197.2816081047058,
+      197.2891526222229
+    ]
+  },
+  "excluded_user_interruptions": 0
+}

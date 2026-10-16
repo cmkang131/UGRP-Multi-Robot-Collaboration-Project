@@ -1,0 +1,54 @@
+{
+  "case": "/home/ugrp/ugrp-sim/runs/e2e18-v352-s61009-r76/raw/wire/000113-call-0113-r2-request.json",
+  "source_sha256": "6ec4f3da19b1a0441b329957739abafc1ba1f3248b695090e61e993210bb7a48",
+  "removed_images_sha256": [
+    "d3b99644950ac4c14be830dc9230dee0d5af1f20272c1e3b1b811a4566b8b5a3"
+  ],
+  "original_last_prompt_tokens": 12757,
+  "results": [
+    {
+      "option": "off",
+      "selected": "WAIT",
+      "speech_chars": 33585,
+      "user_chars": 32829,
+      "protocol_unchanged": true
+    },
+    {
+      "option": "recent4_v1",
+      "selected": "WAIT",
+      "speech_chars": 2454,
+      "user_chars": 1698,
+      "protocol_unchanged": true
+    },
+    {
+      "option": "recent8_v1",
+      "selected": "WAIT",
+      "speech_chars": 3188,
+      "user_chars": 2432,
+      "protocol_unchanged": true
+    }
+  ],
+  "source_reference": "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
+  "interpretation": "Bounded speech-only context; original text retained, full protocol input. Actual provider tokens and E2E require live confirmation.",
+  "tests": {
+    "files": 3,
+    "passed": 41
+  },
+  "versions": {
+    "357": "v352 + recent4",
+    "358": "v354 + recent4",
+    "359": "v356 + recent4",
+    "360": "v356 + recent8"
+  },
+  "seeds": [
+    61006,
+    61007,
+    61008,
+    61009,
+    61010,
+    61011,
+    61012,
+    61013
+  ],
+  "token_cap": 800000
+}

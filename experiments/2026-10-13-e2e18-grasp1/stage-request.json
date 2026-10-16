@@ -1,0 +1,71 @@
+{
+  "schema": "ugrp.grasp_stage_request.v1",
+  "submit_ready": false,
+  "status": "WAITING_CHECKPOINT_AND_RESUME_ADAPTER",
+  "parent_pr": 461,
+  "source_sha": "e8407cffbdbc3c0f99b474d832e8abf605ac98be",
+  "stage": "align_to_both_held",
+  "baseline": "e2e18-v375",
+  "candidates": {
+    "e2e18-v384": "regulated_v1",
+    "e2e18-v385": "gaze_v1",
+    "e2e18-v386": "track_gaze_v1"
+  },
+  "seeds": [
+    61006,
+    61007,
+    61008,
+    61009
+  ],
+  "planned_N": 16,
+  "core_subset_seed": 61008,
+  "vm": "VM3",
+  "concurrency": 16,
+  "speed_gate": {
+    "sim_s": 30,
+    "median_wall_per_sim_max": 3.5
+  },
+  "entry": "same r80 pre-align state per seed; exact own-input histories; no fabricated observations/claims",
+  "required_checkpoint_fields": [
+    "physics integration state",
+    "scene/model/assets hashes",
+    "backend actuation queues and clock",
+    "own maps and pose estimator state",
+    "RGB refs and commanded servo/pulse history",
+    "controller approach/align/queue states",
+    "protocol state and actual approvals",
+    "RNG state",
+    "baseline roundtrip and prefix trajectory equivalence"
+  ],
+  "stop": {
+    "when": "both held evaluation OR actual physical failure OR cap",
+    "stage_sim_cap_s": 540,
+    "scope": "align+grasp only; no carry"
+  },
+  "metrics": [
+    "first-attempt both-held n/N (all + seed61008 subset)",
+    "acquisition begin/reacquisition begin counts",
+    "completed scan cycles",
+    "SIM align->both held median/max (successes; censored separate)",
+    "r1/r2 held time gap",
+    "runtime/actions/model calls/cost"
+  ],
+  "success": "held labels from evaluator AND both controller exits AND zero returns from approach/fine to acquisition AND no completed initial scan cycle AND no regrasp; initial acquisition latency is reported separately",
+  "comparison": "4 variants per same checkpoint+seed; paired deltas only when both finish; failures/HOST_ERROR retained separately",
+  "storage_estimate": {
+    "vm_new_GiB": 24,
+    "arm_new_GiB": 24,
+    "mac_lite_GiB": 0.32,
+    "rule": "1.5 GiB/run conservative cap; supervisor sums existing writes and checks floors"
+  },
+  "preflight_owner": "coordinator: balance, VM lease, storage budget, restore verification, gate",
+  "command_note": "Do not invoke full run_e2e_ownmap_live --execute for this request; stage adapter absent. Bundle generation can use --grasp-once with parent v375 flags.",
+  "preservation": "dev raw stays on persistent host until PR closes; summary, text, ledgers, hashes, representative video retained",
+  "requested_artifacts": [
+    "pre-align checkpoint+hashes",
+    "ownmap/command/transport traces",
+    "rejected-camera records",
+    "first loss RGB pairs",
+    "eval-only held labels and one representative video"
+  ]
+}

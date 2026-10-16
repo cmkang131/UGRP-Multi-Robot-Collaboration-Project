@@ -1,0 +1,1046 @@
+{
+  "script_sha256": "e9ec0ae17805e909b3e233a4b0686563b25b745bbf05fbe2ea5e24d4231ef5f3",
+  "validation": "Final complete ledger token sums and request counts match both saved source SQLite databases; no simulation or model calls",
+  "runs": [
+    {
+      "run": "e2e18-v352-s61006-r76",
+      "sim_s": 30.0,
+      "calls": 17,
+      "recent_30_calls": 17,
+      "provider_prompt_tokens_median": 2161,
+      "provider_prompt_tokens_max": 3212,
+      "known_tokens": 35132,
+      "unknown_usage_calls": 0,
+      "charged_tokens": 35132,
+      "cumulative_tokens_per_sim_s": 1171.0666666666666,
+      "recent_30_tokens_per_sim_s": 1171.0666666666666,
+      "token_cap": 800000,
+      "cap_expected_sim_s_recent_30": 683.1378799954458,
+      "timing_basis": "Settled/pending budget charges attributed to request start SIM; historical cuts are not exact ledger snapshots at that time",
+      "missing_request_time": [],
+      "progress_sha256": "10b97e1d8a57a7ad2320342fba13ab1fdac67b50a907770729d8db742ffb630d",
+      "request_response_hashes": [
+        {
+          "call_id": "call-0001-r1",
+          "request_sha256": "65d7c3f55a3fc3d08d2088b226f2b07f492fdc61af65576e1929d648c2c775d0",
+          "response_sha256": "1023893b46e5119e6448d32752146f241ad2831bf1543adb29bcae440ffb6bf1"
+        },
+        {
+          "call_id": "call-0002-r2",
+          "request_sha256": "0e9dfa2394ae07637efde9874f501919b5a23494c70824156073fbe68bbf8d03",
+          "response_sha256": "cb1abbd3187dcb3a5386ecc2ce36251f4922f6ba74f7330095d549a187000340"
+        },
+        {
+          "call_id": "call-0003-r3",
+          "request_sha256": "390f0e6c51cf1a1f5102fc858a0e043ceeb807890b55d61c27e644288f1d48ba",
+          "response_sha256": "21d88a58651175f2076899d57cffb0eaeac225791513be4db83d2c5a67cede41"
+        },
+        {
+          "call_id": "call-0004-r1",
+          "request_sha256": "078a411128ff3fcdae95e0c1a6ab638131b4328d5344a5f1eee463eb64129119",
+          "response_sha256": "df4e97a46949e2253bbd5d1659beff3ed04d590cdde920a4598317ee9ba86136"
+        },
+        {
+          "call_id": "call-0005-r2",
+          "request_sha256": "fd46d282db3c7994f6409ea6808609c52d8c9b934b58b779959314a410e06e65",
+          "response_sha256": "f3fb53898269457e05e876519a518dc83016a2a2d2d4485c21f7914af5965bc2"
+        },
+        {
+          "call_id": "call-0006-r1",
+          "request_sha256": "6b8ef29011b4f8f7ac9a0224f8c4aa9066f877a20bbdc9986e4401adab5b5d2a",
+          "response_sha256": "1cb5b2f8f62d824503a34e2265ec7ef3813c2046b7da7b4fad29c434b39c7393"
+        },
+        {
+          "call_id": "call-0007-r2",
+          "request_sha256": "c6b967b07d80b5a63b038bf1b32e4be55a1666b28d455b1083fd3bc59449acf2",
+          "response_sha256": "d4597170e4abd52b294501e6b89deb1ddeae4559fe760c4a8fc7df4d7fcf9ecf"
+        },
+        {
+          "call_id": "call-0008-r2",
+          "request_sha256": "70533e9e7431825f575e15d430ca1f7db631d1bf30e5af70e1021ca11bd966e7",
+          "response_sha256": "daf62e3e0c8d9466576917549e8b64bf7208c31eaa19edb35cc730d0d9692069"
+        },
+        {
+          "call_id": "call-0009-r1",
+          "request_sha256": "fb7508fc5bcaf36d796f070d618ea6cd9e61b2d309588b7a419d6e26c4206e89",
+          "response_sha256": "abfb0ac021ef5e5fb0de5c0de76ccb659f4a7cc3606f03a5ae4a00fcf1769b21"
+        },
+        {
+          "call_id": "call-0010-r1",
+          "request_sha256": "aa571a6e617e6101a808b362f0cea0611ba02694bb5704845af6d02f3c4fabb8",
+          "response_sha256": "8a7b2c3b5a664bddba71720546894db76b5b121dc87c7d2fa4a9c1390f5d0606"
+        },
+        {
+          "call_id": "call-0011-r2",
+          "request_sha256": "4eebbea3339840e7454154f67d8ff731b432a608c6916f54a2b6d5a824fe1f02",
+          "response_sha256": "294baaa2b7025c5beeba7380bd1d421bea790117f0ba9ede3cf7c7cb4a8f4c8b"
+        },
+        {
+          "call_id": "call-0012-r1",
+          "request_sha256": "d356bdfb63e59d9597b199d212701e9ebb8537b2219d7f86cada72f5fd999511",
+          "response_sha256": "013815406fab8223985d85af731893e7564529c67e3769b983a615c7b9d9415c"
+        },
+        {
+          "call_id": "call-0013-r2",
+          "request_sha256": "2d548a5182b9aa70e5e11c6430620d6d11ebe45019e2d70ee2dc93ebdfde2474",
+          "response_sha256": "7f3b70d001871552c6773f6967f63a7e59521ad2947c44b9ed46ffaf839c1dbb"
+        },
+        {
+          "call_id": "call-0014-r1",
+          "request_sha256": "c390cff13d3336e22a9f123cb719c3fa62e5a9e632fdd203773ea7ef6255fb12",
+          "response_sha256": "5732a16b3d6a6b00f0bd4bf3c458d484e5c4331ac858c86d052c848b23bc2593"
+        },
+        {
+          "call_id": "call-0015-r2",
+          "request_sha256": "0813d99cd7c941f49b467249543ca98425d61186137dc734042217ec9f4eaf06",
+          "response_sha256": "0a9d45193bddd2e637dba236fdc26681557a9f7d2ace8c2b8cdc17d77935f158"
+        },
+        {
+          "call_id": "call-0016-r2",
+          "request_sha256": "efa3821025d82346a03ac59ed3a111ad1527b922f53727778362fe50ea57292d",
+          "response_sha256": "17611b0b69d72b71d4b4398404462999fb907f7994a7a33e2cedfa06439f8452"
+        },
+        {
+          "call_id": "call-0017-r1",
+          "request_sha256": "0a1b14ec39b63a07adf1a9978bd2c5589c7eca771e00774827f23eab7999dadf",
+          "response_sha256": "86f574d8620b4a5d7f3ba2538f3376e9d7b8faec9ef782304212f81fd68cad2a"
+        }
+      ]
+    },
+    {
+      "run": "e2e18-v352-s61006-r76",
+      "sim_s": 60.0,
+      "calls": 29,
+      "recent_30_calls": 12,
+      "provider_prompt_tokens_median": 2974,
+      "provider_prompt_tokens_max": 4532,
+      "known_tokens": 83324,
+      "unknown_usage_calls": 0,
+      "charged_tokens": 83324,
+      "cumulative_tokens_per_sim_s": 1388.7333333333333,
+      "recent_30_tokens_per_sim_s": 1606.4,
+      "token_cap": 800000,
+      "cap_expected_sim_s_recent_30": 506.1379482071713,
+      "timing_basis": "Settled/pending budget charges attributed to request start SIM; historical cuts are not exact ledger snapshots at that time",
+      "missing_request_time": [],
+      "progress_sha256": "10b97e1d8a57a7ad2320342fba13ab1fdac67b50a907770729d8db742ffb630d",
+      "request_response_hashes": [
+        {
+          "call_id": "call-0001-r1",
+          "request_sha256": "65d7c3f55a3fc3d08d2088b226f2b07f492fdc61af65576e1929d648c2c775d0",
+          "response_sha256": "1023893b46e5119e6448d32752146f241ad2831bf1543adb29bcae440ffb6bf1"
+        },
+        {
+          "call_id": "call-0002-r2",
+          "request_sha256": "0e9dfa2394ae07637efde9874f501919b5a23494c70824156073fbe68bbf8d03",
+          "response_sha256": "cb1abbd3187dcb3a5386ecc2ce36251f4922f6ba74f7330095d549a187000340"
+        },
+        {
+          "call_id": "call-0003-r3",
+          "request_sha256": "390f0e6c51cf1a1f5102fc858a0e043ceeb807890b55d61c27e644288f1d48ba",
+          "response_sha256": "21d88a58651175f2076899d57cffb0eaeac225791513be4db83d2c5a67cede41"
+        },
+        {
+          "call_id": "call-0004-r1",
+          "request_sha256": "078a411128ff3fcdae95e0c1a6ab638131b4328d5344a5f1eee463eb64129119",
+          "response_sha256": "df4e97a46949e2253bbd5d1659beff3ed04d590cdde920a4598317ee9ba86136"
+        },
+        {
+          "call_id": "call-0005-r2",
+          "request_sha256": "fd46d282db3c7994f6409ea6808609c52d8c9b934b58b779959314a410e06e65",
+          "response_sha256": "f3fb53898269457e05e876519a518dc83016a2a2d2d4485c21f7914af5965bc2"
+        },
+        {
+          "call_id": "call-0006-r1",
+          "request_sha256": "6b8ef29011b4f8f7ac9a0224f8c4aa9066f877a20bbdc9986e4401adab5b5d2a",
+          "response_sha256": "1cb5b2f8f62d824503a34e2265ec7ef3813c2046b7da7b4fad29c434b39c7393"
+        },
+        {
+          "call_id": "call-0007-r2",
+          "request_sha256": "c6b967b07d80b5a63b038bf1b32e4be55a1666b28d455b1083fd3bc59449acf2",
+          "response_sha256": "d4597170e4abd52b294501e6b89deb1ddeae4559fe760c4a8fc7df4d7fcf9ecf"
+        },
+        {
+          "call_id": "call-0008-r2",
+          "request_sha256": "70533e9e7431825f575e15d430ca1f7db631d1bf30e5af70e1021ca11bd966e7",
+          "response_sha256": "daf62e3e0c8d9466576917549e8b64bf7208c31eaa19edb35cc730d0d9692069"
+        },
+        {
+          "call_id": "call-0009-r1",
+          "request_sha256": "fb7508fc5bcaf36d796f070d618ea6cd9e61b2d309588b7a419d6e26c4206e89",
+          "response_sha256": "abfb0ac021ef5e5fb0de5c0de76ccb659f4a7cc3606f03a5ae4a00fcf1769b21"
+        },
+        {
+          "call_id": "call-0010-r1",
+          "request_sha256": "aa571a6e617e6101a808b362f0cea0611ba02694bb5704845af6d02f3c4fabb8",
+          "response_sha256": "8a7b2c3b5a664bddba71720546894db76b5b121dc87c7d2fa4a9c1390f5d0606"
+        },
+        {
+          "call_id": "call-0011-r2",
+          "request_sha256": "4eebbea3339840e7454154f67d8ff731b432a608c6916f54a2b6d5a824fe1f02",
+          "response_sha256": "294baaa2b7025c5beeba7380bd1d421bea790117f0ba9ede3cf7c7cb4a8f4c8b"
+        },
+        {
+          "call_id": "call-0012-r1",
+          "request_sha256": "d356bdfb63e59d9597b199d212701e9ebb8537b2219d7f86cada72f5fd999511",
+          "response_sha256": "013815406fab8223985d85af731893e7564529c67e3769b983a615c7b9d9415c"
+        },
+        {
+          "call_id": "call-0013-r2",
+          "request_sha256": "2d548a5182b9aa70e5e11c6430620d6d11ebe45019e2d70ee2dc93ebdfde2474",
+          "response_sha256": "7f3b70d001871552c6773f6967f63a7e59521ad2947c44b9ed46ffaf839c1dbb"
+        },
+        {
+          "call_id": "call-0014-r1",
+          "request_sha256": "c390cff13d3336e22a9f123cb719c3fa62e5a9e632fdd203773ea7ef6255fb12",
+          "response_sha256": "5732a16b3d6a6b00f0bd4bf3c458d484e5c4331ac858c86d052c848b23bc2593"
+        },
+        {
+          "call_id": "call-0015-r2",
+          "request_sha256": "0813d99cd7c941f49b467249543ca98425d61186137dc734042217ec9f4eaf06",
+          "response_sha256": "0a9d45193bddd2e637dba236fdc26681557a9f7d2ace8c2b8cdc17d77935f158"
+        },
+        {
+          "call_id": "call-0016-r2",
+          "request_sha256": "efa3821025d82346a03ac59ed3a111ad1527b922f53727778362fe50ea57292d",
+          "response_sha256": "17611b0b69d72b71d4b4398404462999fb907f7994a7a33e2cedfa06439f8452"
+        },
+        {
+          "call_id": "call-0017-r1",
+          "request_sha256": "0a1b14ec39b63a07adf1a9978bd2c5589c7eca771e00774827f23eab7999dadf",
+          "response_sha256": "86f574d8620b4a5d7f3ba2538f3376e9d7b8faec9ef782304212f81fd68cad2a"
+        },
+        {
+          "call_id": "call-0018-r1",
+          "request_sha256": "c8d0fc12889545947ded7e8246d0c638fec24e0496647a63d4ebbf8099a72169",
+          "response_sha256": "509f6b2a5af15fd2707eb237ee2c5626c6e26da59fad2dd9e75bbd3a4dbdff80"
+        },
+        {
+          "call_id": "call-0019-r2",
+          "request_sha256": "0c08fa217bb6b373fdc81b91d4994e4bc2600f1c7995621279441c191b13ecc6",
+          "response_sha256": "cfe92fff5a80071b12f3a96f67879e50c5dddcd46330ad8ef3176c5fd6997d4b"
+        },
+        {
+          "call_id": "call-0020-r2",
+          "request_sha256": "c8182866191f73001de0d47f89be475df8e450b7c788a629f7b088d022e5f3d0",
+          "response_sha256": "22e7c0f6be5803a4fcc976be170bd4deec295f9a3b91067c9f5d760e70a1a88c"
+        },
+        {
+          "call_id": "call-0021-r1",
+          "request_sha256": "0a7c0b53c04dd17235dc0bcd7ce8a1d48fa30d5d47fa365834c4976663c44cf0",
+          "response_sha256": "fd259b18dd06a2740e9047b3e5f9bcfa7b950d0341db252fa275da9f26c9b44c"
+        },
+        {
+          "call_id": "call-0022-r1",
+          "request_sha256": "0c807700107d9df58766635938ec8d8836be0dfb5776c8c1cfa8c71a4dd0074f",
+          "response_sha256": "adde23166fab21a8695a79b2c0d542e6f66473df9c94c88db2520d85dc719ac9"
+        },
+        {
+          "call_id": "call-0023-r2",
+          "request_sha256": "a4190ac5a1ab2f4677d2d261da8f681ead304172cd574fbae7efa96c24d6bcb9",
+          "response_sha256": "8ed2bef43ab367ebb76d5825aedbca6ee338796d1833d3110750128067f32d7e"
+        },
+        {
+          "call_id": "call-0024-r2",
+          "request_sha256": "0c5338f576086eba95a3dd40d91ae150bdb24d333ff1729d596caa9d018c1475",
+          "response_sha256": "b59b14bd1d54e1af6d94dbcf05ed1a1ba7834257ec17feac6eeb64c319562d23"
+        },
+        {
+          "call_id": "call-0025-r1",
+          "request_sha256": "7e517d4d22c9f608d32b6947a086acb33630719393bd14d4f82c27ad4a920cc9",
+          "response_sha256": "00da0fd72a066e0c42e656789df5f22eb0dc3185622f288856285f40009bc84f"
+        },
+        {
+          "call_id": "call-0026-r1",
+          "request_sha256": "d2ae174fbaf6442055d3c30bdf6e33c66694c9cf5a3100d4ec536476a274dbc1",
+          "response_sha256": "49b0d3d29ecdcd98b141e15e93ef084058a40c3e7aa0b590a30aca4aa796672f"
+        },
+        {
+          "call_id": "call-0027-r2",
+          "request_sha256": "c71c8f6237432833602d9394e361cabb1251f252a757fbf30f1229233911259e",
+          "response_sha256": "3a7c45bc43ad9117f792bd577ecd67889cdd2672b541b1e712e0a7f4496ab499"
+        },
+        {
+          "call_id": "call-0028-r2",
+          "request_sha256": "295c985dc4fb1882ea6d6034f6e03147bf27eea24753e850502af6ba58cd0272",
+          "response_sha256": "1bfa8e6367bd9d90fcd8c2218cb409275b93b1725208792c3a3a85e93c8f4ce4"
+        },
+        {
+          "call_id": "call-0029-r1",
+          "request_sha256": "5be0922e4151a1d75dcd6f2a96130f861670ca85c8c3e1cc974a458b6ecf053f",
+          "response_sha256": "88723c615eb119a251dce23b69b808322720de3e2fb7a45d2d858544d7d9224f"
+        }
+      ]
+    },
+    {
+      "run": "e2e18-v352-s61006-r76",
+      "sim_s": 254.45,
+      "calls": 109,
+      "recent_30_calls": 11,
+      "provider_prompt_tokens_median": 7671,
+      "provider_prompt_tokens_max": 14049,
+      "known_tokens": 811601,
+      "unknown_usage_calls": 0,
+      "charged_tokens": 811601,
+      "cumulative_tokens_per_sim_s": 3189.6286107290234,
+      "recent_30_tokens_per_sim_s": 4685.833333333333,
+      "token_cap": 800000,
+      "cap_expected_sim_s_recent_30": 254.45,
+      "timing_basis": "Settled/pending budget charges attributed to request start SIM; historical cuts are not exact ledger snapshots at that time",
+      "missing_request_time": [],
+      "progress_sha256": "10b97e1d8a57a7ad2320342fba13ab1fdac67b50a907770729d8db742ffb630d",
+      "request_response_hashes": [
+        {
+          "call_id": "call-0001-r1",
+          "request_sha256": "65d7c3f55a3fc3d08d2088b226f2b07f492fdc61af65576e1929d648c2c775d0",
+          "response_sha256": "1023893b46e5119e6448d32752146f241ad2831bf1543adb29bcae440ffb6bf1"
+        },
+        {
+          "call_id": "call-0002-r2",
+          "request_sha256": "0e9dfa2394ae07637efde9874f501919b5a23494c70824156073fbe68bbf8d03",
+          "response_sha256": "cb1abbd3187dcb3a5386ecc2ce36251f4922f6ba74f7330095d549a187000340"
+        },
+        {
+          "call_id": "call-0003-r3",
+          "request_sha256": "390f0e6c51cf1a1f5102fc858a0e043ceeb807890b55d61c27e644288f1d48ba",
+          "response_sha256": "21d88a58651175f2076899d57cffb0eaeac225791513be4db83d2c5a67cede41"
+        },
+        {
+          "call_id": "call-0004-r1",
+          "request_sha256": "078a411128ff3fcdae95e0c1a6ab638131b4328d5344a5f1eee463eb64129119",
+          "response_sha256": "df4e97a46949e2253bbd5d1659beff3ed04d590cdde920a4598317ee9ba86136"
+        },
+        {
+          "call_id": "call-0005-r2",
+          "request_sha256": "fd46d282db3c7994f6409ea6808609c52d8c9b934b58b779959314a410e06e65",
+          "response_sha256": "f3fb53898269457e05e876519a518dc83016a2a2d2d4485c21f7914af5965bc2"
+        },
+        {
+          "call_id": "call-0006-r1",
+          "request_sha256": "6b8ef29011b4f8f7ac9a0224f8c4aa9066f877a20bbdc9986e4401adab5b5d2a",
+          "response_sha256": "1cb5b2f8f62d824503a34e2265ec7ef3813c2046b7da7b4fad29c434b39c7393"
+        },
+        {
+          "call_id": "call-0007-r2",
+          "request_sha256": "c6b967b07d80b5a63b038bf1b32e4be55a1666b28d455b1083fd3bc59449acf2",
+          "response_sha256": "d4597170e4abd52b294501e6b89deb1ddeae4559fe760c4a8fc7df4d7fcf9ecf"
+        },
+        {
+          "call_id": "call-0008-r2",
+          "request_sha256": "70533e9e7431825f575e15d430ca1f7db631d1bf30e5af70e1021ca11bd966e7",
+          "response_sha256": "daf62e3e0c8d9466576917549e8b64bf7208c31eaa19edb35cc730d0d9692069"
+        },
+        {
+          "call_id": "call-0009-r1",
+          "request_sha256": "fb7508fc5bcaf36d796f070d618ea6cd9e61b2d309588b7a419d6e26c4206e89",
+          "response_sha256": "abfb0ac021ef5e5fb0de5c0de76ccb659f4a7cc3606f03a5ae4a00fcf1769b21"
+        },
+        {
+          "call_id": "call-0010-r1",
+          "request_sha256": "aa571a6e617e6101a808b362f0cea0611ba02694bb5704845af6d02f3c4fabb8",
+          "response_sha256": "8a7b2c3b5a664bddba71720546894db76b5b121dc87c7d2fa4a9c1390f5d0606"
+        },
+        {
+          "call_id": "call-0011-r2",
+          "request_sha256": "4eebbea3339840e7454154f67d8ff731b432a608c6916f54a2b6d5a824fe1f02",
+          "response_sha256": "294baaa2b7025c5beeba7380bd1d421bea790117f0ba9ede3cf7c7cb4a8f4c8b"
+        },
+        {
+          "call_id": "call-0012-r1",
+          "request_sha256": "d356bdfb63e59d9597b199d212701e9ebb8537b2219d7f86cada72f5fd999511",
+          "response_sha256": "013815406fab8223985d85af731893e7564529c67e3769b983a615c7b9d9415c"
+        },
+        {
+          "call_id": "call-0013-r2",
+          "request_sha256": "2d548a5182b9aa70e5e11c6430620d6d11ebe45019e2d70ee2dc93ebdfde2474",
+          "response_sha256": "7f3b70d001871552c6773f6967f63a7e59521ad2947c44b9ed46ffaf839c1dbb"
+        },
+        {
+          "call_id": "call-0014-r1",
+          "request_sha256": "c390cff13d3336e22a9f123cb719c3fa62e5a9e632fdd203773ea7ef6255fb12",
+          "response_sha256": "5732a16b3d6a6b00f0bd4bf3c458d484e5c4331ac858c86d052c848b23bc2593"
+        },
+        {
+          "call_id": "call-0015-r2",
+          "request_sha256": "0813d99cd7c941f49b467249543ca98425d61186137dc734042217ec9f4eaf06",
+          "response_sha256": "0a9d45193bddd2e637dba236fdc26681557a9f7d2ace8c2b8cdc17d77935f158"
+        },
+        {
+          "call_id": "call-0016-r2",
+          "request_sha256": "efa3821025d82346a03ac59ed3a111ad1527b922f53727778362fe50ea57292d",
+          "response_sha256": "17611b0b69d72b71d4b4398404462999fb907f7994a7a33e2cedfa06439f8452"
+        },
+        {
+          "call_id": "call-0017-r1",
+          "request_sha256": "0a1b14ec39b63a07adf1a9978bd2c5589c7eca771e00774827f23eab7999dadf",
+          "response_sha256": "86f574d8620b4a5d7f3ba2538f3376e9d7b8faec9ef782304212f81fd68cad2a"
+        },
+        {
+          "call_id": "call-0018-r1",
+          "request_sha256": "c8d0fc12889545947ded7e8246d0c638fec24e0496647a63d4ebbf8099a72169",
+          "response_sha256": "509f6b2a5af15fd2707eb237ee2c5626c6e26da59fad2dd9e75bbd3a4dbdff80"
+        },
+        {
+          "call_id": "call-0019-r2",
+          "request_sha256": "0c08fa217bb6b373fdc81b91d4994e4bc2600f1c7995621279441c191b13ecc6",
+          "response_sha256": "cfe92fff5a80071b12f3a96f67879e50c5dddcd46330ad8ef3176c5fd6997d4b"
+        },
+        {
+          "call_id": "call-0020-r2",
+          "request_sha256": "c8182866191f73001de0d47f89be475df8e450b7c788a629f7b088d022e5f3d0",
+          "response_sha256": "22e7c0f6be5803a4fcc976be170bd4deec295f9a3b91067c9f5d760e70a1a88c"
+        },
+        {
+          "call_id": "call-0021-r1",
+          "request_sha256": "0a7c0b53c04dd17235dc0bcd7ce8a1d48fa30d5d47fa365834c4976663c44cf0",
+          "response_sha256": "fd259b18dd06a2740e9047b3e5f9bcfa7b950d0341db252fa275da9f26c9b44c"
+        },
+        {
+          "call_id": "call-0022-r1",
+          "request_sha256": "0c807700107d9df58766635938ec8d8836be0dfb5776c8c1cfa8c71a4dd0074f",
+          "response_sha256": "adde23166fab21a8695a79b2c0d542e6f66473df9c94c88db2520d85dc719ac9"
+        },
+        {
+          "call_id": "call-0023-r2",
+          "request_sha256": "a4190ac5a1ab2f4677d2d261da8f681ead304172cd574fbae7efa96c24d6bcb9",
+          "response_sha256": "8ed2bef43ab367ebb76d5825aedbca6ee338796d1833d3110750128067f32d7e"
+        },
+        {
+          "call_id": "call-0024-r2",
+          "request_sha256": "0c5338f576086eba95a3dd40d91ae150bdb24d333ff1729d596caa9d018c1475",
+          "response_sha256": "b59b14bd1d54e1af6d94dbcf05ed1a1ba7834257ec17feac6eeb64c319562d23"
+        },
+        {
+          "call_id": "call-0025-r1",
+          "request_sha256": "7e517d4d22c9f608d32b6947a086acb33630719393bd14d4f82c27ad4a920cc9",
+          "response_sha256": "00da0fd72a066e0c42e656789df5f22eb0dc3185622f288856285f40009bc84f"
+        },
+        {
+          "call_id": "call-0026-r1",
+          "request_sha256": "d2ae174fbaf6442055d3c30bdf6e33c66694c9cf5a3100d4ec536476a274dbc1",
+          "response_sha256": "49b0d3d29ecdcd98b141e15e93ef084058a40c3e7aa0b590a30aca4aa796672f"
+        },
+        {
+          "call_id": "call-0027-r2",
+          "request_sha256": "c71c8f6237432833602d9394e361cabb1251f252a757fbf30f1229233911259e",
+          "response_sha256": "3a7c45bc43ad9117f792bd577ecd67889cdd2672b541b1e712e0a7f4496ab499"
+        },
+        {
+          "call_id": "call-0028-r2",
+          "request_sha256": "295c985dc4fb1882ea6d6034f6e03147bf27eea24753e850502af6ba58cd0272",
+          "response_sha256": "1bfa8e6367bd9d90fcd8c2218cb409275b93b1725208792c3a3a85e93c8f4ce4"
+        },
+        {
+          "call_id": "call-0029-r1",
+          "request_sha256": "5be0922e4151a1d75dcd6f2a96130f861670ca85c8c3e1cc974a458b6ecf053f",
+          "response_sha256": "88723c615eb119a251dce23b69b808322720de3e2fb7a45d2d858544d7d9224f"
+        },
+        {
+          "call_id": "call-0030-r1",
+          "request_sha256": "a7e4c85ebfd9c3a53e41ef0ea6c1cb4fa28492cf6fbf20044961dc968a77436e",
+          "response_sha256": "30f6f68cd9d5f4b70fa13f51b3dd47cdfe7d2294f47c8d6ec3d97e638382e55e"
+        },
+        {
+          "call_id": "call-0031-r2",
+          "request_sha256": "c1080f98c10319fd082e7fa728488583061aeda1f813c3f730bd1211ebd0aa78",
+          "response_sha256": "1f689d8b8b6a1f4950a0b611fcf7a18eab74f4849419b2b5f4d4c24097e94e7e"
+        },
+        {
+          "call_id": "call-0032-r1",
+          "request_sha256": "96671404f40361b5704f59da0189b848abacf2c078c83eac1b4845ef96970d30",
+          "response_sha256": "e93e641de8a5aaff435cacab0d596dd3f81980ca377db3d21bc7fe7a6686843c"
+        },
+        {
+          "call_id": "call-0033-r2",
+          "request_sha256": "8cce7264812e714f50d32aabad06333df1d709cdacf613d2155427235a705565",
+          "response_sha256": "ca40c80d840bc9228674d581845ca2f78d5968fc9edf3ca047cfb52ade24bb24"
+        },
+        {
+          "call_id": "call-0034-r1",
+          "request_sha256": "f6085a7c6f56c58ce3f6750e395f6b4596077df638df53f25d2477a6ffad15d6",
+          "response_sha256": "3c73ba81a4ee9e0a6c455ed3918122dd1c1732b7165f48c15a97ccf6d6a8884b"
+        },
+        {
+          "call_id": "call-0035-r2",
+          "request_sha256": "18aba5676d9439488d83e38c01d7778bc6f8d4b5dee26ddc29a987a5841c8fa5",
+          "response_sha256": "47abadad8f568ee772a67a5d1e6d79b5042b65e4d77d9ba6c4718ea80bc85f6d"
+        },
+        {
+          "call_id": "call-0036-r1",
+          "request_sha256": "b4a259a36382e898fd9199e6257aa2c03f4565510d23bfb8f31735e3da77251b",
+          "response_sha256": "330e3d398094fb6e710321e688f7cbafe8a6c50f1a421a4ac2952ae28154208f"
+        },
+        {
+          "call_id": "call-0037-r1",
+          "request_sha256": "6be352637de710ca7fd72f1d24b883d75b8922a151565fcd8443a740dae76af6",
+          "response_sha256": "6c222b4f7ec0b0a1cd595063d68eb2dbd6955839d63e5b402d05b33650807d70"
+        },
+        {
+          "call_id": "call-0038-r2",
+          "request_sha256": "6e5195e2114cb81257a48e7394b42da688b7cd6c93076c429ab423a614d623e8",
+          "response_sha256": "d2c9a6517c5a8684cc653513151610c91c1945f79c065293510d9b2d045b52a4"
+        },
+        {
+          "call_id": "call-0039-r1",
+          "request_sha256": "87b1d72436f21349cc37bd332e7c9bbf33d4a5bfe1497feda5b59bd1b07b345a",
+          "response_sha256": "2b5d4c3a6673b8d2a2f0dc790b111bde7778b9dd3cfa594f8d476d09d454cfd8"
+        },
+        {
+          "call_id": "call-0040-r2",
+          "request_sha256": "b8ceac7bacb7bf5ead716518c1cda37451cc9e2770c4175bafea43d0973605bc",
+          "response_sha256": "7dc2d47c788117c51b7479620fddd144a602fffcd175ca8f488106eb148c1633"
+        },
+        {
+          "call_id": "call-0041-r1",
+          "request_sha256": "f9b3d7b29f119530e47ea3ea20e461b4e0185a34b6543345319b8b176f7b7c35",
+          "response_sha256": "e25a7537e6d58008de86a6023b397f0f42b011659239f5056ce0480002128eb4"
+        },
+        {
+          "call_id": "call-0042-r2",
+          "request_sha256": "9fcd91846446f48ee1cd0ab1db85c10e1023639f881ebbaacd8a44c84c28dd42",
+          "response_sha256": "cba0acc754b155ac1f5e28feb6d2abea28cc884b4b448c2e6fde61dc3c77bc92"
+        },
+        {
+          "call_id": "call-0043-r1",
+          "request_sha256": "28dc54a851c5654656fe77cee377efc42ab567daacc2d5e0486353dcf8466af5",
+          "response_sha256": "22ecfd96272bd3ac2e03ad77bd5b175d9a51eaeb7db2087fc4fd56d5938e60e8"
+        },
+        {
+          "call_id": "call-0044-r1",
+          "request_sha256": "998291ab75b2a4f8ed27cce46a90b28bd9618fb67f50ba317311f2e0e6dbd0f1",
+          "response_sha256": "516ede7f6d68a9169a4462955637d74b03435eb595400ab59f49c1a43ea25b53"
+        },
+        {
+          "call_id": "call-0045-r2",
+          "request_sha256": "3a75668173d276a4906a44c0a068842876c33d296c1e13e5b91f1ed85f9cba85",
+          "response_sha256": "421ec9d38e33326fd2c7639e2b7625b202b62747c614698613bc4fcf894ef59a"
+        },
+        {
+          "call_id": "call-0046-r1",
+          "request_sha256": "c2cea8e59e56ba1df1655ea0fc2fed2733ded362dc78b4c40fec798f240f2912",
+          "response_sha256": "f2726d78e642f4f14f978e11840678f395d0fbdf69ffacdd3190f83d0d2417b6"
+        },
+        {
+          "call_id": "call-0047-r2",
+          "request_sha256": "07334ee3e2129efa92ab57a694a4c00efcafbdfee4388a5c93302009dd4cf1fa",
+          "response_sha256": "b4fd77b7819e8f30cebb07aa8ccf59230fd04ee3d74c16dad69b0faa052f370a"
+        },
+        {
+          "call_id": "call-0048-r1",
+          "request_sha256": "b13ffeb0151d134e11980db9e234d942b0f7fa897fd6b18c2efc007f54f70031",
+          "response_sha256": "31e1ff94ea3f36f5bed22f614110d67d86c89d1141179d14adc2c1d55c3aea5f"
+        },
+        {
+          "call_id": "call-0049-r2",
+          "request_sha256": "bd2e2948f0923bfcabbadb219268497d3e4b3b4ff9e9a180aa2cb1a14b0aac84",
+          "response_sha256": "f79043acd0436e744866dd01596a72e0cf27795087d0c1a0ae3d89a775496fd8"
+        },
+        {
+          "call_id": "call-0050-r1",
+          "request_sha256": "87878d0a618eb40752c5d70c40dd83b121ecd2ef0d557ef0448e4557ff3e9ef7",
+          "response_sha256": "e43fde168bf1bd66f63fd70fb3f38f35cd93aaef8cd71c9c61c10ea9f23e1d1f"
+        },
+        {
+          "call_id": "call-0051-r2",
+          "request_sha256": "963c802cb4debc0ec3446c1c0f3d57ebd854ce8742b19bbf99d0e38c43ec7736",
+          "response_sha256": "67eb6a069e9e8c408a64287a2c6134699916aa7841f3258145a8a5d4f0981511"
+        },
+        {
+          "call_id": "call-0052-r1",
+          "request_sha256": "4aa3946f41109a0dc73c57d76f390815a6fc9b03624bd6adcfbfe1b702acf708",
+          "response_sha256": "2f4f21db28baa8a1eb32e6f718a7318b295a4d288972989c9dcc0ee106d28c80"
+        },
+        {
+          "call_id": "call-0053-r2",
+          "request_sha256": "a2e602ec4926b61f0e79fb617ae2229be853928f53c28192438102ef922b2947",
+          "response_sha256": "41a79714d15c8d6bb592b836dd18fb475604abc9751b325f6cb68ac060d69f4e"
+        },
+        {
+          "call_id": "call-0054-r1",
+          "request_sha256": "a425939882da9258f35c336a91565fcafca0172373e616e3b2e1ec8d538db297",
+          "response_sha256": "e59d3c2dd87e560427e899a60fe9ad4485e3e0691a564da4dcf2d03b3b0d7757"
+        },
+        {
+          "call_id": "call-0055-r2",
+          "request_sha256": "76013c9f217a24b3c768cc6e82f68ed5375f91afc28d3f5f4648b74017d08968",
+          "response_sha256": "8d5fc8843d0f806a2e4b20ad980e50a869eeba7bf7b0311c66c965e9459bc8e5"
+        },
+        {
+          "call_id": "call-0056-r1",
+          "request_sha256": "7a667409e65316bd0fe821aa53a119a38d100d1c6759c056c671f2d13a22f78e",
+          "response_sha256": "25b3dc6fae1ba4bc6f4a75bf8aa1b2c3e3660f8b57e60a4a9499b9a1ab3784e7"
+        },
+        {
+          "call_id": "call-0057-r2",
+          "request_sha256": "18ee5677d28e242de0ee46d6a6809e653fe2938fd9bd4be2c319cfc0135c28e7",
+          "response_sha256": "1b5cdd4f9278acc11c5fe03cb2de1e513d16d32fd9beb9e9fcbabb847ba83ac3"
+        },
+        {
+          "call_id": "call-0058-r1",
+          "request_sha256": "89f33dac6d2bb7ed1532bada707e981a224b40dd2e971ef59eb8ae48f8fb5235",
+          "response_sha256": "72a65d5414c50d7c41c540a0f74d83a53e529b5d6707f02b6f231a624d1bcdb4"
+        },
+        {
+          "call_id": "call-0059-r2",
+          "request_sha256": "62a1ded1480d8b3cd8e65478ed9145dc9bfd101d53459787b6af71ea599b8f1c",
+          "response_sha256": "62f9d8c10f45acd67e3b1a34206df0266eed0cc4aa539b1efd351c805a89a216"
+        },
+        {
+          "call_id": "call-0060-r1",
+          "request_sha256": "112450998fd04b40526bfeb6d3774d3177d0d9a449e778e82ece943c76d4d978",
+          "response_sha256": "145f57f2204d008d618a1f7a82e318700d1cad4521629313cba4f91519ef0d7d"
+        },
+        {
+          "call_id": "call-0061-r2",
+          "request_sha256": "3b03b5253a1249a0bc6e6769d4e2ba6e4974346e5c7e4bcda4db6b60836e5603",
+          "response_sha256": "0025c4edd2f9e7e6b7767c9ef9fdac50cd4c1afb8c3c9713d6d1ff078f2e0fe9"
+        },
+        {
+          "call_id": "call-0062-r1",
+          "request_sha256": "cd78e82eca5a366602c47d4407d0cebf70d59507188393316ed2e69b8e476154",
+          "response_sha256": "3eef84edb5f35274e59cc5670de05ab24cefadfd86545e5cb0f076d3b9d9cf07"
+        },
+        {
+          "call_id": "call-0063-r2",
+          "request_sha256": "b1f0c6fedba854ec9838ef979633604340b6b567a2c1f574aff6e26eb327ffcd",
+          "response_sha256": "a2829e0d1aa2afa77467697f9b8b48c3eed29283ec138c235c23c97dee4b4e14"
+        },
+        {
+          "call_id": "call-0064-r1",
+          "request_sha256": "ea13d99c27e551d4dfa5543076b12b129552fe834a97aa750ce407eb4cc854a1",
+          "response_sha256": "62ee11ddf13b66cca7c13f4d1a95eb62d3634b3c37639f27c36cb07d79f0fe2d"
+        },
+        {
+          "call_id": "call-0065-r2",
+          "request_sha256": "e4b47bec407f8aa62c4468cd4ffe879874eef74007281041f91cc7caf1285e0c",
+          "response_sha256": "20afbdb7df234e63601ef4e9fbb26615b6e7d87a0475f40c31c3d50e70a70441"
+        },
+        {
+          "call_id": "call-0066-r1",
+          "request_sha256": "684a116f83b8492aab45a2edfa1420eb1fe111f8c90e491384c02d94495e5e8d",
+          "response_sha256": "c4bedc85ffe4dfeb31114deb99f244cc03944d481c807b0aedabcdcc723e3508"
+        },
+        {
+          "call_id": "call-0067-r2",
+          "request_sha256": "5ad85fe06160c1f4f7f84b2ead05b3e579cfc6fd762c09323ea46b3a585edbdd",
+          "response_sha256": "6abf4f54bcb66ce1430b7ca7dd48db481296320f51dfda8821759c2691b1f6a4"
+        },
+        {
+          "call_id": "call-0068-r1",
+          "request_sha256": "dc38b84e0b947a7b3ef0cee307ceff68cd5b9183227613fe3a80c2d650ef3ecf",
+          "response_sha256": "09b75bc93159b9141958848d599b937b53a3441ba9883e027d4da7a99424dc47"
+        },
+        {
+          "call_id": "call-0069-r2",
+          "request_sha256": "64dc79eb42c710f0f3e2c6d294435df53f2cd13c8ef25f32799b6b03cf86ee3f",
+          "response_sha256": "40b92a39dd11f7aa521d905ff5c8fc703be35066156f7b2fd4c3b4b61b0032b7"
+        },
+        {
+          "call_id": "call-0070-r1",
+          "request_sha256": "2334c289a6c672b27ce01a221eec150c8bb1aa6c560ca83ca4fbfde2c73c0279",
+          "response_sha256": "9342f7f7886181bb48563005c15eec2dd81d35dc3a3168e5c1d295d853e4f597"
+        },
+        {
+          "call_id": "call-0071-r2",
+          "request_sha256": "d915ff341c14e6266d80ae0799b7df58b9d112d11ff0553b0450989cd0d5c200",
+          "response_sha256": "d57733d8f3da0786ed9b8b1e7cd12738258cb1933a7bf26c25d5f77ee672f07e"
+        },
+        {
+          "call_id": "call-0072-r1",
+          "request_sha256": "6dcc1b72ae6650321596c6b21cd5061fd93c7f3ff670ca05a25db6a945adf37d",
+          "response_sha256": "2d99fdfaecdd76dd04077ed966824ac12e5f34af1af72c2e5b8b70a0cbd67f4f"
+        },
+        {
+          "call_id": "call-0073-r2",
+          "request_sha256": "ae7d3105f4be040ed3f4ece68ee1ef303878b5c544383ee67718948f1650e9f3",
+          "response_sha256": "719c0c882c94bd2c50b8b126b9871cce734a4a08d3e838cd929e74b1847451e5"
+        },
+        {
+          "call_id": "call-0074-r1",
+          "request_sha256": "5c88aa912728c3872aff1d19e4b708a76107471a2ca92c82df89306abbda3334",
+          "response_sha256": "b8975a9d74790138c8616b6420d6d52254aa88e15d1d580ab69303599ba577d2"
+        },
+        {
+          "call_id": "call-0075-r2",
+          "request_sha256": "b2123fbea7493df15de1fd9d1a2dbec1d8f57ebad0b0f800a6c6520e23185d31",
+          "response_sha256": "69c41d915459d76e59256c627dde261f321cb0b9840e3a18fde4be0f499e1fc9"
+        },
+        {
+          "call_id": "call-0076-r1",
+          "request_sha256": "3b77207da669f6d6dc50b16275a846266530e4792d9ab819a170b3b831a49bca",
+          "response_sha256": "8f26058d62eb98dd12249296cfa709572b60dbf15983344249e81ca48ba0b708"
+        },
+        {
+          "call_id": "call-0077-r2",
+          "request_sha256": "10cfc2297be3a417606acc82e2c028f18befd93e9faae0c4cf1a0b4cf4fb823b",
+          "response_sha256": "249d9bd046757e8784d8d99fdff9a2c6178d4b088c1cd7232efe688914d424a4"
+        },
+        {
+          "call_id": "call-0078-r1",
+          "request_sha256": "7847092387698ad5ca10a524855cc6d42e1e180d2d012902918d1d4ea06aceb4",
+          "response_sha256": "a11c76c882dc39213557d901327a871ce989d80f1bb231bf629ca77325ebff8c"
+        },
+        {
+          "call_id": "call-0079-r2",
+          "request_sha256": "5472c460bee1ce3af21add974de2c68031f911a48043771ed25fd09507743c03",
+          "response_sha256": "4e6f8cfa5f6ea0569351f215a1d269ac79bb42ca5f8abea1be956ef1844cb423"
+        },
+        {
+          "call_id": "call-0080-r1",
+          "request_sha256": "cc8b3d5fdd8799f1c592e3a23ef180940d7205127808432437d2d76fcbead37c",
+          "response_sha256": "c53d0524f1241370ae2d2d72d269c3c136be8b44580df9e0361dd5c1fa25cf59"
+        },
+        {
+          "call_id": "call-0081-r2",
+          "request_sha256": "25950c07677227c5d6ab9a3db4009da0c3fd2bff12261258720f6a92617661e3",
+          "response_sha256": "293381c10e17038ab68a459c1f1958cd12c7b57350c48f9794b00a34edd44837"
+        },
+        {
+          "call_id": "call-0082-r1",
+          "request_sha256": "9ab469e8872a0d7df22c50128a2290a3e20cc4250614a654427e1423d1570afa",
+          "response_sha256": "f3e74b75d92e79fc9d679ceef83886a44e01f920f2a5591fc0f0b2501eb56e2c"
+        },
+        {
+          "call_id": "call-0083-r2",
+          "request_sha256": "8c7a1a316392799fa123c076f7d751cab8e09fefc23969f147a59ec62ebeb485",
+          "response_sha256": "a523908fdff0ea239cddc2c1c022f16d789518ebbb75131728782d3963d2e327"
+        },
+        {
+          "call_id": "call-0084-r1",
+          "request_sha256": "820c7340ab1e9eeda39f8ac1910ed269ab0c9d74b74e6c9836cc646cc70015c0",
+          "response_sha256": "cd7c95eb0be4554ba98378ca18616efea70fdfd86c30a9a3d80c2d7c809d65b5"
+        },
+        {
+          "call_id": "call-0085-r2",
+          "request_sha256": "86f54a128261ebf4ec18af4f83b55bb3a41922f8006d5b208afcbaa1455a7353",
+          "response_sha256": "0a166aed1b313f15fcee5c2e912d9377de21e1db803c313790a2b78c4e5e713d"
+        },
+        {
+          "call_id": "call-0086-r1",
+          "request_sha256": "7b63284d0754af383e87093fb3cf2ed6176073a4c25229904509cb02d9ea739b",
+          "response_sha256": "b2d9a3b550867707f569c16124c69a9edb715a540ab1cc40178ba5018e4a7acb"
+        },
+        {
+          "call_id": "call-0087-r2",
+          "request_sha256": "63d886204613f93456817f7b18184aaf7d5bfcc603788f8ff88dfe069c0760d2",
+          "response_sha256": "a6206247ad803ea4204afd30d7eaff6835f627ef92e0999365ff3306d824ac22"
+        },
+        {
+          "call_id": "call-0088-r1",
+          "request_sha256": "c5c00a2699f4465455b16c5f8335238d5bbbd6105c246d100db184b29023cf60",
+          "response_sha256": "004d0bf040f938207f28859dd9e275592a9af4bd2e0d3d6877893507201f0c5e"
+        },
+        {
+          "call_id": "call-0089-r2",
+          "request_sha256": "47076413d5632d412c4b2b569bef24e5566de6f2c2010c1c0eea4b4dc6ee09c1",
+          "response_sha256": "c7c1eab84b1e5734f02935baf74dce034913a30b844f7c95849e28d3917b0742"
+        },
+        {
+          "call_id": "call-0090-r1",
+          "request_sha256": "8672537eb3b88fe11d34aeec85696b86eb5a99579b4f29ba49731e6c9b90ae02",
+          "response_sha256": "631c83e3fee275a42a6bfe27e0388ff4d67bbd674bc485cba50f70be1cb8a684"
+        },
+        {
+          "call_id": "call-0091-r2",
+          "request_sha256": "745427e9fa74c720644df600402b8f3eab4790e4cec217ccc2ffbcb5e16a44dc",
+          "response_sha256": "df6dbdfe47e803eb7f9ba077a6c47c1eeac08868a0252ec7d4e3f39b6da380e3"
+        },
+        {
+          "call_id": "call-0092-r1",
+          "request_sha256": "ee3be26f00be5c5a5384237afafdf44f20699f1c5a395885fb25cc464d8fccfa",
+          "response_sha256": "54bffa40b7d9f5f9d2c99b19304c848dde68e4fd71de59870f868b70ef84d57e"
+        },
+        {
+          "call_id": "call-0093-r2",
+          "request_sha256": "ec557e0863c0724519acec93babfff1074b4d8b00c929e23fa4e0432521193a8",
+          "response_sha256": "f0c22e4dfca0b3127824f248f1fde7903c82bd5928beddbf833648dc602030e2"
+        },
+        {
+          "call_id": "call-0094-r1",
+          "request_sha256": "62a1586f8e8a7c5b01ccb8e4821bc7a9c054297e6f09b95e7b042b20b887bf85",
+          "response_sha256": "f9d0a94c11863e6a2f7d13836872075870d2c42a60c6af5fa74050467d91a56e"
+        },
+        {
+          "call_id": "call-0095-r2",
+          "request_sha256": "95de5afeec435f669a5bb10480750a6e2efed212ada3d39bc7086d0a8c842681",
+          "response_sha256": "fadc8d0307241ea78acd4aaeeb42f8942fc53dd1000896dcdc71cbcff0493e0a"
+        },
+        {
+          "call_id": "call-0096-r1",
+          "request_sha256": "6ca4f28ef81abd9ee3505f214eb042632078ad54e44855c14072b1a91d70ad46",
+          "response_sha256": "29bf303919a60ff2625b6c16e10aaa06c959d9e991190a655468da36708c4694"
+        },
+        {
+          "call_id": "call-0097-r2",
+          "request_sha256": "1d9051feac6db790228b48bd37f030ebef011374f7c4021fb7fb520b54e8f9ca",
+          "response_sha256": "45c8c7bd3207996a58115eb82617acd65add28db9ad984bff2c5945bc65a59be"
+        },
+        {
+          "call_id": "call-0098-r1",
+          "request_sha256": "68d7592a8e5a6f7008a48093ad4bfaa8c0a13cf7f27336ea5526679fa25d6664",
+          "response_sha256": "cf7eef2f77c60a673b88e5ef9353c3fd1aa2e53d9f1605a94beba42d54b2cd69"
+        },
+        {
+          "call_id": "call-0099-r2",
+          "request_sha256": "108d6f752e14360f386f569c44b54348a4e971d4990684ade1a037e61e4b47ac",
+          "response_sha256": "10ac55f1e697f17b07379dd1ad9161a8c403f8464ac02d4adf3c4f696c6070fc"
+        },
+        {
+          "call_id": "call-0100-r1",
+          "request_sha256": "db66cc35a7ecc04844dd62f39d7c8ba16966a3c55ba53c585255814245e8a7f4",
+          "response_sha256": "448b8c3119cab075d091389a858faad95b5557b78f6e0d717c72fe97f757602c"
+        },
+        {
+          "call_id": "call-0101-r2",
+          "request_sha256": "f1bf4d2041c4a4ee32341a4a445da833ffbd258f21f93c0d205cc77400f47384",
+          "response_sha256": "92f27af4c8e0519e13f0ddc95d25991f4cb0db17869f7cff0d4ddb9634867ece"
+        },
+        {
+          "call_id": "call-0102-r1",
+          "request_sha256": "78452af25c123a74a556dfa71d5613bd83604b6ffc210404a3618f801d2c6557",
+          "response_sha256": "38832af73b28f46992ee7e4527d3d2dc70a76e59c018eba975918b4616621c8f"
+        },
+        {
+          "call_id": "call-0103-r2",
+          "request_sha256": "56983378eb3c55b9933f386a94e3927218fbc3460cf05e365ca0219196514a88",
+          "response_sha256": "01c6b9d52ca4c16d2fa6630e1757e94c6e0d4aa3aca24a5833b6e6163a9b8a85"
+        },
+        {
+          "call_id": "call-0104-r1",
+          "request_sha256": "a5a81f644c25a3dec6b0337a8a929d448bdda6dd8766909dbd5f7996c63507d6",
+          "response_sha256": "38fe0ec3b387b3e9581ed4ed4a127dd1c9fdb9a29f3338594b1c86f492e5146e"
+        },
+        {
+          "call_id": "call-0105-r2",
+          "request_sha256": "780a87b26090b4327c02cfee9801e215f616d94270840688502f0b7985dbe843",
+          "response_sha256": "8da05d50e9d60864f4c84ef5044df2634b509d7df768eb1426d172cb6148eba7"
+        },
+        {
+          "call_id": "call-0106-r1",
+          "request_sha256": "3272ec3a70cbb5944043cb85ca7792eb2150fe53fb0493c7ca388269a76f6e7b",
+          "response_sha256": "27b9d5b2e0d4af5a40b33edf4f6d1afb907dabf228971a74bcf5362550f9205a"
+        },
+        {
+          "call_id": "call-0107-r2",
+          "request_sha256": "d7e1970474b8dab5e2c00c42965571884407e60f686350117e13a2f87c7b3d57",
+          "response_sha256": "b042e73c9a049fdf4ac33925abe7568ddff09183e22da09fd77921a29960ec9e"
+        },
+        {
+          "call_id": "call-0108-r1",
+          "request_sha256": "9ba44c19d6df97a310591319c03c9dd0c84aa5e91dfd35395c3759eb629be8f0",
+          "response_sha256": "b7240ebe6ff0ba70a15696f6f53f311d2f3b9aedd72900ef99c93f0f9dc4978b"
+        },
+        {
+          "call_id": "call-0109-r2",
+          "request_sha256": "18b8ec3a2c761b043b2eaaf2bf0b885e3578fe12f895113bd7ab295c09cddc7d",
+          "response_sha256": "3b249a14c83e871dde1a847f344bc17b29208acc059e9cc61f2e3a39d9e7a2cf"
+        }
+      ]
+    },
+    {
+      "run": "e2e18-v324-s61006-r69",
+      "sim_s": 30.0,
+      "calls": 3,
+      "recent_30_calls": 3,
+      "provider_prompt_tokens_median": 1686,
+      "provider_prompt_tokens_max": 1687,
+      "known_tokens": 5025,
+      "unknown_usage_calls": 0,
+      "charged_tokens": 5025,
+      "cumulative_tokens_per_sim_s": 167.5,
+      "recent_30_tokens_per_sim_s": 167.5,
+      "token_cap": 800000,
+      "cap_expected_sim_s_recent_30": 4776.119402985075,
+      "timing_basis": "Settled/pending budget charges attributed to request start SIM; historical cuts are not exact ledger snapshots at that time",
+      "missing_request_time": [],
+      "progress_sha256": "92ec0125a5347d03848623256d1160785b1513401a8d529af0130b16b00dd9f2",
+      "request_response_hashes": [
+        {
+          "call_id": "call-0001-r1",
+          "request_sha256": "b8cf8cfe04037f51a15aefb8d3d0f0f554afde75de64499bbfface23ddbcb044",
+          "response_sha256": "931482ddd7fad70f0ecf176a131410d4a9fdbd30a7cec36b6817971feb79a762"
+        },
+        {
+          "call_id": "call-0002-r2",
+          "request_sha256": "e1b2abe61367f7a8a7f20da01e83212c5e54647b1a3a8ce5dc97ac26a515697e",
+          "response_sha256": "4e0d489289fe5dfd10e10ec25eb56e9ada9e04c21cd2ca885e859a29ca5569b0"
+        },
+        {
+          "call_id": "call-0003-r3",
+          "request_sha256": "1746cc7000cf83c4ca6e5f480a819271e2caa6fcb9e59d5ab8266d9e8022d8f9",
+          "response_sha256": "cc9c987c8dae923ca66dd6b830797bc43e07639cca731004186aef89d7bea3ea"
+        }
+      ]
+    },
+    {
+      "run": "e2e18-v324-s61006-r69",
+      "sim_s": 60.0,
+      "calls": 3,
+      "recent_30_calls": 0,
+      "provider_prompt_tokens_median": 1686,
+      "provider_prompt_tokens_max": 1687,
+      "known_tokens": 5025,
+      "unknown_usage_calls": 0,
+      "charged_tokens": 5025,
+      "cumulative_tokens_per_sim_s": 83.75,
+      "recent_30_tokens_per_sim_s": 0.0,
+      "token_cap": 800000,
+      "cap_expected_sim_s_recent_30": null,
+      "timing_basis": "Settled/pending budget charges attributed to request start SIM; historical cuts are not exact ledger snapshots at that time",
+      "missing_request_time": [],
+      "progress_sha256": "92ec0125a5347d03848623256d1160785b1513401a8d529af0130b16b00dd9f2",
+      "request_response_hashes": [
+        {
+          "call_id": "call-0001-r1",
+          "request_sha256": "b8cf8cfe04037f51a15aefb8d3d0f0f554afde75de64499bbfface23ddbcb044",
+          "response_sha256": "931482ddd7fad70f0ecf176a131410d4a9fdbd30a7cec36b6817971feb79a762"
+        },
+        {
+          "call_id": "call-0002-r2",
+          "request_sha256": "e1b2abe61367f7a8a7f20da01e83212c5e54647b1a3a8ce5dc97ac26a515697e",
+          "response_sha256": "4e0d489289fe5dfd10e10ec25eb56e9ada9e04c21cd2ca885e859a29ca5569b0"
+        },
+        {
+          "call_id": "call-0003-r3",
+          "request_sha256": "1746cc7000cf83c4ca6e5f480a819271e2caa6fcb9e59d5ab8266d9e8022d8f9",
+          "response_sha256": "cc9c987c8dae923ca66dd6b830797bc43e07639cca731004186aef89d7bea3ea"
+        }
+      ]
+    },
+    {
+      "run": "e2e18-v324-s61006-r69",
+      "sim_s": 560.25,
+      "calls": 23,
+      "recent_30_calls": 12,
+      "provider_prompt_tokens_median": 2705.0,
+      "provider_prompt_tokens_max": 2930,
+      "known_tokens": 59193,
+      "unknown_usage_calls": 1,
+      "charged_tokens": 75193,
+      "cumulative_tokens_per_sim_s": 134.21329763498437,
+      "recent_30_tokens_per_sim_s": 1586.1333333333334,
+      "token_cap": 800000,
+      "cap_expected_sim_s_recent_30": 1017.2147360457296,
+      "timing_basis": "Settled/pending budget charges attributed to request start SIM; historical cuts are not exact ledger snapshots at that time",
+      "missing_request_time": [],
+      "progress_sha256": "92ec0125a5347d03848623256d1160785b1513401a8d529af0130b16b00dd9f2",
+      "request_response_hashes": [
+        {
+          "call_id": "call-0001-r1",
+          "request_sha256": "b8cf8cfe04037f51a15aefb8d3d0f0f554afde75de64499bbfface23ddbcb044",
+          "response_sha256": "931482ddd7fad70f0ecf176a131410d4a9fdbd30a7cec36b6817971feb79a762"
+        },
+        {
+          "call_id": "call-0002-r2",
+          "request_sha256": "e1b2abe61367f7a8a7f20da01e83212c5e54647b1a3a8ce5dc97ac26a515697e",
+          "response_sha256": "4e0d489289fe5dfd10e10ec25eb56e9ada9e04c21cd2ca885e859a29ca5569b0"
+        },
+        {
+          "call_id": "call-0003-r3",
+          "request_sha256": "1746cc7000cf83c4ca6e5f480a819271e2caa6fcb9e59d5ab8266d9e8022d8f9",
+          "response_sha256": "cc9c987c8dae923ca66dd6b830797bc43e07639cca731004186aef89d7bea3ea"
+        },
+        {
+          "call_id": "call-0004-r1",
+          "request_sha256": "3bba967f804a3984e750dd984ed205b28a3c92527914e91169fbfa535757d0aa",
+          "response_sha256": "95f317154d29440e909b27840ff0dc2aa7a655f83030e08200f77f47fad06b22"
+        },
+        {
+          "call_id": "call-0005-r2",
+          "request_sha256": "4717877a5a32d81b5dfba4c7ef71d5fad9d568fa941930f5ca9f6bdcd6e00b8c",
+          "response_sha256": "8b4112e77b233bc306f121ff69a932532cc6a7e1b98963b55e2bed51bb33d57e"
+        },
+        {
+          "call_id": "call-0006-r1",
+          "request_sha256": "3940930b515a6224139f2eaecdb77acabe944e83fbdde8fd62c334b9f968127f",
+          "response_sha256": "8d89fed523245d7e37935ee183dc1c87d7b6b5020dd144b445e84c22d98d8b11"
+        },
+        {
+          "call_id": "call-0007-r2",
+          "request_sha256": "06db871e355c92e9a8578358ed51cb5dc9a230cff029ec4ebfc705ad718146dc",
+          "response_sha256": "43a540ac4145d01b87f91c02d66b1367a5eadfbdcdd4193030ef41c6c8144ecc"
+        },
+        {
+          "call_id": "call-0008-r1",
+          "request_sha256": "b554ae4de383eddaa203f5c56bc1bb72561d53deab655eb90745e9f7f10967b4",
+          "response_sha256": "d82d97be58118b7c60a7852c326d2488811d4dce6e6d0dd5055fc86b6b0fc5b0"
+        },
+        {
+          "call_id": "call-0009-r2",
+          "request_sha256": "67dec5a62e86712653cebdceedba524aa129cf775e59e63e4cc31cceca555a1a",
+          "response_sha256": "ccabe183bba5be216191a158b5ecd07c5b971373ec1c4111ab95b12a9a4be08c"
+        },
+        {
+          "call_id": "call-0010-r1",
+          "request_sha256": "a30439a373cb9a31d1b9c550dc679c6491136d939f619b37df629eda7198fea9",
+          "response_sha256": "9faaf09ff41cf34c73ed7ae9c145e63fcbd408695d8dc15afe99c993c161d156"
+        },
+        {
+          "call_id": "call-0011-r2",
+          "request_sha256": "95b771daf89d21b41a9ed976cb3433f6e3acf40509f2bb2807cb43de400ababd",
+          "response_sha256": "05c286e24c1992140f1b2631805e548f0c316d1ffcee563f9899aff7dc493256"
+        },
+        {
+          "call_id": "call-0012-r1",
+          "request_sha256": "8880a16bdb38ee75543f3867a9dd9417a78178dbec94dbfc264ef283175b628a",
+          "response_sha256": "527cfe32a1762df1a3d4d84b5eee95ae81721389a18d7ed57afa7404e9d7e531"
+        },
+        {
+          "call_id": "call-0013-r2",
+          "request_sha256": "fa85b250cb08bf891a08e6e54facfbb85f40b30d9b40a9d6aa81511c750c276e",
+          "response_sha256": "23c0c01b8bd8ae3a0af80da534f124266059fad25a8ca251c63849de96ce22d7"
+        },
+        {
+          "call_id": "call-0014-r1",
+          "request_sha256": "12cb689f5e0546fbd88daa6a7dfcf4b2b91e4e4bf72ca4e219c5842f55b04a67",
+          "response_sha256": "7306cccc5f13c42946ec30379db947215b61febbe7d47a1a9cd3f4cdbc6a86e2"
+        },
+        {
+          "call_id": "call-0015-r2",
+          "request_sha256": "654145624a5e1786aa72345a9ab70078623d9f067b6d9fb71d9c5ce77bee4a31",
+          "response_sha256": "0088dae0e479badfb341bb791f47b26a5ca4d19f0bcdabc03b4957d8aad1c824"
+        },
+        {
+          "call_id": "call-0016-r1",
+          "request_sha256": "6686fbd0e4c2fc0bd65ec2275bbecbe4dd202bb2c533b73d706c296049ece121",
+          "response_sha256": "e4c062b67033b04659285b2932fe5ee9b0a561035f4999049301a77eb7432906"
+        },
+        {
+          "call_id": "call-0017-r2",
+          "request_sha256": "01b68c422849a7e048223a9e66b31f9cf870c87a876b77bace6df1ab79076e34",
+          "response_sha256": "e9a8ada66d76627af4723ec13a6f0daf92581f93b118bf2461c7b2eed82929ab"
+        },
+        {
+          "call_id": "call-0018-r1",
+          "request_sha256": "419a44d261e9caf3de43168c31f222541c26d1c500f23d6467f660d4206d4d28",
+          "response_sha256": "740cafe103d4681d68cbbe8d5335dff7561fb48559548847b93767e8299af51f"
+        },
+        {
+          "call_id": "call-0019-r2",
+          "request_sha256": "1827e3212eb8a3fedfd85eec6d9c6bf4a38cd809d828c5c3c6254d37c18f363c",
+          "response_sha256": "5b8709f930773cba0e4d0fe73be3d3c288eb8852ac64afbb706d70be79a82656"
+        },
+        {
+          "call_id": "call-0020-r1",
+          "request_sha256": "f80c1f9e2438551f0eeb173700c1aa877637328211085feea3b85162e4ba80f1",
+          "response_sha256": "452368d3253035660011c801b0b79b6a4fd64f4b668002bbc8760288527eb745"
+        },
+        {
+          "call_id": "call-0021-r1",
+          "request_sha256": "2f984466da54cf737a2c72dc4fd48e911a68e1b5e404e4b1c2629865f4e0cd2d",
+          "response_sha256": "0c48c20949a0f250b3ee763d306a0c6b2bfd65e833bfd98730dd8e0f7db42190"
+        },
+        {
+          "call_id": "call-0022-r2",
+          "request_sha256": "09ac6afdd3a4cc928cdd88a3df659bbb2a0d27a78c92ff9d67cbbc9dad491b0b",
+          "response_sha256": "7d575a5177cacafb05fd2f4d67a859dd75650f07cb04a35ff874f92fe1cbba58"
+        },
+        {
+          "call_id": "call-0023-r1",
+          "request_sha256": "ce586fd594b28d581966e0befb2356c2e69016a1a19204759e15178fb2864d5e",
+          "response_sha256": null
+        }
+      ]
+    }
+  ]
+}

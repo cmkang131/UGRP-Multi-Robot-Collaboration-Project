@@ -1,0 +1,52 @@
+{
+  "checked_unix": 1791858517.721169,
+  "runs": [
+    {
+      "name": "e2e18-v269-s61006-r50",
+      "exit": 130,
+      "source_sha": "63fb1551d749e1a529f14f238713bfd061fb1172",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/e2e18-v269-s61006-r50/raw",
+      "phase": "align",
+      "result": {
+        "status": "EARLY_STOP",
+        "controller_failure": null,
+        "failure": "SIGNAL_SIGINT",
+        "sim_s": 1316.0,
+        "wall_s": 5376.445658145999,
+        "LLM_operated": true,
+        "own_map_completed": true,
+        "start_to_finish_transport": false,
+        "E2E_success": false,
+        "model_calls": 11,
+        "finalization_complete": true
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-e2e18-v269-s61006-r50",
+        "files": 9814,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e18-v269-s61006-r50",
+          "files": 9814,
+          "hash_matches": 9814,
+          "inventory_sha256": "7f97b0eac780e03ef2450ef91dac8256f7196dab3729b9e89a5145a2e77c4470",
+          "reused": false,
+          "receiver_seconds": 26.959
+        },
+        "inventory_sha256": "bf418d0f0d919023273b0ddeae837a99f972276712cd8541724bda3cc970f079",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/e2e18-v269-s61006-r50.json",
+        "proof_sha256": "4c7c6662a55a9128f8d3d3e3409b154db0b33cf03a1c28d1876370535c3c6e30"
+      },
+      "sha256": {
+        "result.json": "7fb1e495daa56715765ed4bfd9c29cd80a6fa74a0ae5bd925245c246ef0ec1a4",
+        "e2e-progress.json": "52a3a71754820d527e1faaf1137b691e1345174061034e4d97c0ec85e6dc2e38",
+        "transport-trace.json.zst": "5db1d9ebd987f7f55d0fcd834d2a65fdd26af96d72b25d4ed16604ce0304ad6c",
+        "artifacts.sha256.json.zst": "c366b055170f4dace7da2aeb6f5c16642da9ee04dbdf3c7fa76bcf824399b791"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/e2e18-v269-s61006-r50"
+    }
+  ]
+}

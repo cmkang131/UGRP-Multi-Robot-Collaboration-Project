@@ -1,0 +1,28 @@
+{
+  "host": "azure3",
+  "bundle": "e2e18-v232",
+  "source_sha": "e392e0dd497d6a3675bd057eed9b11c90f77fb5b",
+  "median_wall_per_sim": 3.164633263533324,
+  "admitted": false,
+  "cohorts_started": 0,
+  "observed_cpu_per_sim": [
+    2.3325999013,
+    2.3430958636,
+    2.3710954985
+  ],
+  "upstream_response_sum_s": [
+    29.707431,
+    23.521965,
+    16.087442
+  ],
+  "gate_wall_s": [
+    100.692553,
+    94.938998,
+    88.442746
+  ],
+  "model_requests_per_run": 3,
+  "api_errors": 0,
+  "local_quota_waits": 0,
+  "interpretation": "near-identical CPU; wall excess tracks real upstream response duration; network/model latency is retained in failed gate",
+  "retry": "same code/physics/model settings, same total concurrency6, fresh calls, limit3.0; failure retained, no override"
+}

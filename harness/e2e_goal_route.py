@@ -129,6 +129,7 @@ class IntegratedGoalRoute(GoalRoute):
         for ref in goal_sources: own.rgb_ref(ref, 'r1', now, self.e2e_observed)
         sources = copy.deepcopy(self.e2e_observed)
         grid, tf = self.explorer.grid, self.explorer.map_to_odom
+        if getattr(self,'e2e_route_cost','off')=='bounded_morphology_v1':grid._clearance_bounds_v1=True
         if grid.robot_id != 'r1': raise ContractViolation('PEER_GRID_FORBIDDEN')
         covariance = np.asarray(self.pose_covariance())
         margin = .02 + 3*math.sqrt(float(np.linalg.eigvalsh(covariance[:2, :2]).max()))
@@ -271,7 +272,14 @@ class IntegratedGoalRoute(GoalRoute):
         sigma = math.sqrt(float(np.linalg.eigvalsh(np.asarray(self.pose_covariance())[:2,:2]).max()))
         import cv2
         contour = np.asarray(boundary['polygon'], np.float32)
-        return all(cv2.pointPolygonTest(contour, tuple(map(float, p)), True) >= .01+3*sigma for p in polygon)
+        distances=[cv2.pointPolygonTest(contour,tuple(map(float,p)),True) for p in polygon]
+        strict=all(d>=.01+3*sigma for d in distances)
+        if getattr(self,'e2e_dev_nominal_setdown',False):
+            if not strict:self.event(now,'would_stop_setdown_covariance',sigma_xy_m=sigma,
+                strict_margin_m=.01+3*sigma,nominal_margin_m=.01,corner_distances_m=distances,
+                covariance_reset=False,dev_light=True)
+            return all(d>=.01 for d in distances)
+        return strict
 
 
 def attach(controller, *, own_route='off', arrival_gate='off', covariance_inflation='off',

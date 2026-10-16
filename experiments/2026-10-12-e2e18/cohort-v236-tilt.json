@@ -1,0 +1,377 @@
+[
+  {
+    "host": "azure3",
+    "name": "e2e18-v236-s61005-r26",
+    "exit": 1,
+    "result": {
+      "status": "PHYSICAL_STOP",
+      "source_sha": "14b1a120b444a0dd3b0397240207929e3f348c6e",
+      "seed": 61005,
+      "model": "study_gemma4_31b_v1",
+      "condition": "peer_en",
+      "options": {
+        "enabled": true,
+        "own_inputs": "on_v1",
+        "dialogue": "on_v1",
+        "pulse_budget": "off",
+        "own_route": "goal_route_v1",
+        "arrival_gate": "rgb_geometry_v1",
+        "goal_geometry": "e2e_b80_v1",
+        "covariance_inflation": "nees_frozen_v1",
+        "setdown_reobserve": "boundary_reobserve_v1",
+        "setdown_only_when_relook": "on_v1",
+        "decider": "off",
+        "exploration_progress": "frontier_progress_v1",
+        "pose_fix": "innovation",
+        "path_follow": "rpp_v1",
+        "dev_light": true,
+        "stall_odometry": "rgb_vo_us_v1",
+        "stall_recovery": "off",
+        "stall_noise": "off",
+        "mapping_budget": "case_cap_v1",
+        "mapping_budget_s": 1800.0,
+        "boundary_views": "standoff_fullquad_v1",
+        "b_marker_detect": "partial_known_size_v1",
+        "vo_floor_mask": "homography_v1",
+        "vo_rotation_policy": "no_ransac_v1",
+        "explore_deadlock": "replan_v1",
+        "boundary_association": "extent_v1",
+        "boundary_retry": "navigation_v1",
+        "boundary_coverage": "native_v1",
+        "runtime_registration": "reviewed_v1",
+        "pulse_authorization": "current_go_v1",
+        "exact_speedups": {
+          "provenance_index": true,
+          "sha_validation_cache": true,
+          "omit_discarded_copy": true,
+          "scalar_cells": true,
+          "geometry_cache": true,
+          "vector_rays": true,
+          "shared_wall_frontend": true,
+          "lazy_scan_path": true,
+          "vector_costmap_writes": true,
+          "track_cell_tuples": true
+        },
+        "speed3": "adaptive_v1",
+        "b_partial_accept": "on_v1",
+        "speed5": "lean_v3",
+        "observation_cadence": "on_v1",
+        "route_guard": "dev_nominal_v1",
+        "beam_axis": "undirected_v1",
+        "route_coverage": "native_v1",
+        "carrier_axes": "beam_v1",
+        "carrier_approach": "standoff_v1",
+        "route_extent": "goal_envelope_v1",
+        "record_scalars": "python_v1",
+        "pose_guard": "se2_innovation_v1",
+        "protocol_recovery": "envelope_retry_v1",
+        "camera_load": "nominal_command_v1",
+        "route_tokens": "1600_v1",
+        "protocol_progress": "stage_retry_v1",
+        "route_cost": "bounded_morphology_v1",
+        "align_progress": "dev_continue_v1",
+        "pregrasp_recovery": "bounded_search_v1",
+        "pregrasp_gaze": "own_bearing_v1",
+        "search_bearing": "last_seen_v1",
+        "pulse_admission": "finish_active_v1",
+        "event_projection": "route_hash_v1",
+        "pregrasp_progress": "backup_replan_v1",
+        "gaze_cadence": "settled_frames_v1",
+        "stage_physics": "pregrasp_dt1_v1",
+        "protocol_idempotency": "same_route_v1",
+        "route_handle": "typed_ref_v1",
+        "boundary_frame": "observed_own_v1",
+        "beam_end_model": "long_side_v1",
+        "beam_avoidance": "own_obstacle_v1",
+        "pregrasp_acquire": "remember_scan_v1",
+        "align_queues": "per_robot_v1",
+        "beam_decode": "once_v1",
+        "mapping_acquire": "interleaved_v1",
+        "compute_budget": "lean_v1"
+      },
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "setdowns": 0,
+      "model_calls": 11,
+      "physical_hardware": false,
+      "route_source": "own_map",
+      "host": "azure",
+      "class_": "dev",
+      "pr": 461,
+      "finalization_complete": true,
+      "shutdown_signals": [],
+      "finalization_errors": [],
+      "failure_type": "PhysicalStop",
+      "failure": "ROBOT_TILT_LIMIT:r2",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/ugrp/ugrp-sim/src/14b1a120b444a0dd3b0397240207929e3f348c6e/scripts/run_e2e_ownmap_live.py\", line 440, in run\n    backend.eval_sample()\n  File \"/home/ugrp/ugrp-sim/src/14b1a120b444a0dd3b0397240207929e3f348c6e/sim/e2e_s3_test.py\", line 83, in eval_sample\n    try:super().eval_sample()\n        ^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/14b1a120b444a0dd3b0397240207929e3f348c6e/sim/s3_release_epoch.py\", line 61, in eval_sample\n    return super().eval_sample()\n           ^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/14b1a120b444a0dd3b0397240207929e3f348c6e/sim/s3_setdown.py\", line 63, in eval_sample\n    try:super().eval_sample()\n        ^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/14b1a120b444a0dd3b0397240207929e3f348c6e/sim/s3_synchronized_carry.py\", line 31, in eval_sample\n    super().eval_sample()\n  File \"/home/ugrp/ugrp-sim/src/14b1a120b444a0dd3b0397240207929e3f348c6e/sim/s3_stage_safety.py\", line 37, in eval_sample\n    super().eval_sample()\n  File \"/home/ugrp/ugrp-sim/src/14b1a120b444a0dd3b0397240207929e3f348c6e/sim/s3_buffered_io.py\", line 67, in eval_sample\n    return super().eval_sample()\n           ^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/14b1a120b444a0dd3b0397240207929e3f348c6e/sim/zone_s3_no_prior.py\", line 126, in eval_sample\n    raise PhysicalStop('ROBOT_TILT_LIMIT:'+rid)\nsim.zone_s3_no_prior.PhysicalStop: ROBOT_TILT_LIMIT:r2\n",
+      "wall_s": 834.0512925250005,
+      "frames": 686,
+      "stage_milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 21.378554209000868
+        },
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 21.378554209000868
+        },
+        "B_boundary": {
+          "sim_s": 3.0,
+          "wall_s": 27.864658422000502
+        },
+        "route": {
+          "sim_s": 119.0,
+          "wall_s": 315.20235290300116
+        },
+        "align": {
+          "sim_s": 130.0,
+          "wall_s": 404.10769882800014
+        }
+      },
+      "sim_s": 274.05,
+      "controller_failure": null,
+      "model_usage": {
+        "upstream_generation_requests_confirmed": 11,
+        "local_quota_wait_responses": 0,
+        "upstream_generation_status_unknown": 0,
+        "requests": 11,
+        "blocked": 0,
+        "by_model": {
+          "DeepInfra/google/gemma-4-31b-it": {
+            "requests": 11,
+            "tokens_total_known": 27280,
+            "usage_unknown_requests": 0
+          }
+        },
+        "upstream_by_model": {},
+        "tokens_prompt": 26474,
+        "tokens_completion": 806,
+        "tokens_total_known": 27280,
+        "usage_unknown_requests": 0,
+        "tokens_complete": true,
+        "api_error_requests": 0,
+        "api_error_fraction": 0.0,
+        "api_clean": true,
+        "latency_ms": {
+          "n": 11,
+          "sum": 91572.168,
+          "max": 18022.808,
+          "median": 6939.112
+        },
+        "failure_classes": {},
+        "response_models": [
+          "google/gemma-4-31b-it"
+        ]
+      },
+      "response_wall_s": [
+        4.46996,
+        6.279323000000001,
+        4.98988,
+        18.022808,
+        8.166897,
+        4.0804789999999995,
+        11.161192,
+        4.676944000000001,
+        8.472689,
+        6.939112,
+        14.312884
+      ],
+      "drops": 0
+    },
+    "progress": {
+      "wall_s": 834.0151362489996,
+      "sim_s": 274.0,
+      "frames": 686,
+      "model_attempts": 11,
+      "first_model_response": true,
+      "own_map_B_generated": true,
+      "own_B_boundary_remembered": true,
+      "own_route_generated": true,
+      "own_route_observed_complete": false,
+      "phase": "align",
+      "setdowns": 0,
+      "robots": {
+        "r1": {
+          "pose_own_m": [
+            -0.49216202546661747,
+            1.5705054374769505,
+            -0.744088037072637
+          ],
+          "stage": "explore",
+          "map_frames": 686,
+          "command": {
+            "kind": "mecanum",
+            "forward": 0.35,
+            "left": 0.0,
+            "turn": 0.0,
+            "duration_s": 0.1
+          },
+          "translation_commands": 286,
+          "carrier_approach": {
+            "t": 274.0,
+            "status": "reacquire_own_beam",
+            "station_own_m": [
+              -0.564925183069848,
+              1.518795845605581,
+              -0.12702615732953706
+            ],
+            "grip_own_m": [
+              -0.36336236137805844,
+              1.4930534892323994
+            ],
+            "distance_m": 0.08926566526888241,
+            "heading_error_rad": 0.6170618797431002,
+            "own_beam_age_s": 2.3000000000000114,
+            "camera": "search",
+            "basis_yaw_rad": -0.12702615732953706,
+            "search_index": 0,
+            "pan_pulse": 1500
+          }
+        },
+        "r2": {
+          "pose_own_m": [
+            0.28594709023549286,
+            0.3646173342879273,
+            0.939639673980067
+          ],
+          "stage": "explore",
+          "map_frames": 686,
+          "command": {
+            "kind": "hold"
+          },
+          "translation_commands": 540,
+          "carrier_approach": {
+            "t": 273.7,
+            "status": "reacquire_own_beam",
+            "station_own_m": [
+              0.27279418472021205,
+              0.46547605558327143,
+              0.3316473309074235
+            ],
+            "grip_own_m": [
+              0.4649212587405227,
+              0.5316381854491854
+            ],
+            "distance_m": 0.1017127356078176,
+            "heading_error_rad": -0.6079923430726435,
+            "own_beam_age_s": 4.800000000000011,
+            "camera": "inspect",
+            "basis_yaw_rad": -2.8099453226823696,
+            "search_index": 2,
+            "pan_pulse": 1500
+          }
+        },
+        "r3": {
+          "pose_own_m": [
+            -0.07865662165834701,
+            0.01877195234736654,
+            0.004698402425361792
+          ],
+          "stage": "explore",
+          "map_frames": 686,
+          "command": {
+            "kind": "hold"
+          },
+          "translation_commands": 0,
+          "carrier_approach": null
+        }
+      },
+      "latest_route_wait": "OWN_GRID_ROUTE_UNAVAILABLE",
+      "route_diagnostics": {
+        "t": 118.8,
+        "beam_pose_own_m": [
+          -0.6517227354530528,
+          1.7374763245791867,
+          -0.6463433863264696
+        ],
+        "beam_rgb": {
+          "robot_id": "r1",
+          "frame_id": 298,
+          "t_sim": 118.8,
+          "sha256": "4b818f731e4bd2b1261bd43b17c5c9d776a96b3901b9b05dbbc6b5c9ed85714b"
+        },
+        "sigma_xy_m": 0.38801903231139023,
+        "stage": "grid_route",
+        "beam_axis_error_rad": 0.6463433863264696,
+        "strict_margin_m": 1.1840570969341706,
+        "B_own_m": [
+          1.0498565371744992,
+          0.055482088519845596
+        ],
+        "nominal_footprint_cells": {
+          "start": {
+            "free": 151,
+            "unknown": 126,
+            "occupied": 0,
+            "outside": 0
+          },
+          "target": {
+            "free": 0,
+            "unknown": 21,
+            "occupied": 0,
+            "outside": 256
+          }
+        },
+        "planning_extent": {
+          "old_lo": [
+            -93,
+            -10
+          ],
+          "old_hi": [
+            11,
+            82
+          ],
+          "new_lo": [
+            -93,
+            -15
+          ],
+          "new_hi": [
+            37,
+            82
+          ],
+          "added_unknown_cells": 3042,
+          "endpoint_pad_cells": 16
+        },
+        "would_stop_unknown": true,
+        "attempts": [
+          {
+            "margin_m": 1.1840570969341706,
+            "allowed_cells": 0,
+            "total_cells": 9568,
+            "start_clear": false,
+            "target_clear": false,
+            "path_cells": 0
+          },
+          {
+            "margin_m": 0.02,
+            "allowed_cells": 21,
+            "total_cells": 9568,
+            "start_clear": false,
+            "target_clear": false,
+            "path_cells": 0
+          },
+          {
+            "margin_m": 0.02,
+            "coverage": "native_allow_unknown",
+            "allowed_cells": 6348,
+            "total_cells": 12610,
+            "start_clear": true,
+            "target_clear": true,
+            "path_cells": 35
+          }
+        ],
+        "would_stop_sigma": false,
+        "applied_margin_m": 0.02,
+        "pair_dimensions_m": [
+          1.25,
+          0.4
+        ],
+        "observed_coverage_complete": false,
+        "sigma_contribution_unresolved": true
+      }
+    },
+    "result_sha256": "6001946f859ca57a6657ad663c0b2fb48fcca78de021a28ca393f85a80d19261"
+  }
+]

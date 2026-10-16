@@ -1,0 +1,457 @@
+{
+  "checked_unix": 1791854046.652419,
+  "runs": [
+    {
+      "name": "e2e18-v265-s61006-r49",
+      "exit": 130,
+      "source_sha": "5d2270ce1cf2bec95b6ffcb8150dc8fa59c29c6f",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/e2e18-v265-s61006-r49/raw",
+      "phase": "align",
+      "result": {
+        "status": "EARLY_STOP",
+        "failure": "SIGNAL_SIGINT",
+        "sim_s": 847.2,
+        "wall_s": 2606.63309696,
+        "LLM_operated": true,
+        "own_map_completed": true,
+        "start_to_finish_transport": false,
+        "E2E_success": false,
+        "model_calls": 11,
+        "finalization_complete": true
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-e2e18-v265-s61006-r49",
+        "files": 6297,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e18-v265-s61006-r49",
+          "files": 6297,
+          "hash_matches": 6297,
+          "inventory_sha256": "a642f44d7700113acb10cfd12ed717b087badae8ad902e5510707b6db53f45b6",
+          "reused": false,
+          "receiver_seconds": 29.32
+        },
+        "inventory_sha256": "dcd79abc19d6fff5a85a452c1b13e727c9cd600e316412e9d76edd2f4cf4496a",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/e2e18-v265-s61006-r49.json",
+        "proof_sha256": "177c4263eb10c62bba80ccbda4df3920d74215079dc05e78c7884d06ae6d8827"
+      },
+      "sha256": {
+        "result.json": "8b1b17ad59d7fb97382980ae56c8e2c01fcf0630f663504bee7ac8040ebd44ea",
+        "e2e-progress.json": "bb164bca41cfdf6416bddd5f5b872e967382d1f98d11e9000b2c85f46d634323",
+        "transport-trace.json.zst": "ea94349eb5ec59aaa18d2e4c2c13a4d436c9fff6b0cd2e7d78188ccc48a49a9c",
+        "artifacts.sha256.json.zst": "b64513c298040c455435c765098bef040bf09ba98159dbea5c14924322e3ea4e"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/e2e18-v265-s61006-r49",
+      "metrics": {
+        "name": "e2e18-v265-s61006-r49",
+        "status": "EARLY_STOP",
+        "failure": "SIGNAL_SIGINT",
+        "robots": {
+          "r1": {
+            "max_tilt_deg": 0.985681308683787,
+            "sim_s": 848.5,
+            "sha256_uncompressed": "442537b1771f70a0aca9fa774cd56cbd1efd4ab4e5d0f6fcfcf7a290dd2c74f0",
+            "raw": "/home/ugrp/ugrp-sim/runs/e2e18-v265-s61006-r49/raw/eval_only/r1/trajectory.jsonl"
+          },
+          "r2": {
+            "max_tilt_deg": 0.3009128153211493,
+            "sim_s": 848.5,
+            "sha256_uncompressed": "2781b0f37181f22dd890d4a270d63dbef53baeeba88381908ef396fadca1e701",
+            "raw": "/home/ugrp/ugrp-sim/runs/e2e18-v265-s61006-r49/raw/eval_only/r2/trajectory.jsonl"
+          }
+        },
+        "paired_held_samples": 0,
+        "first_held_t": null,
+        "maximum_cargo_z_m": 0.01656918321722399,
+        "ready": [],
+        "first_fine": {
+          "t": 738.0,
+          "event": "s3_coarse_fine",
+          "robot_id": "r2",
+          "phase": "base"
+        }
+      }
+    },
+    {
+      "name": "e2e18-v266-s61006-r49",
+      "exit": 130,
+      "source_sha": "5d2270ce1cf2bec95b6ffcb8150dc8fa59c29c6f",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/e2e18-v266-s61006-r49/raw",
+      "phase": "align",
+      "result": {
+        "status": "EARLY_STOP",
+        "failure": "SIGNAL_SIGINT",
+        "sim_s": 831.2,
+        "wall_s": 2606.6360236409996,
+        "LLM_operated": true,
+        "own_map_completed": true,
+        "start_to_finish_transport": false,
+        "E2E_success": false,
+        "model_calls": 11,
+        "finalization_complete": true
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-e2e18-v266-s61006-r49",
+        "files": 6174,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e18-v266-s61006-r49",
+          "files": 6174,
+          "hash_matches": 6174,
+          "inventory_sha256": "83c907523332e810d558560c7ffcb4b8338c7f46ba2c5d0dca4f07f0cf38c391",
+          "reused": false,
+          "receiver_seconds": 6.589
+        },
+        "inventory_sha256": "59b6beda16d4a258462b7c2c98ec8b1580294a8e061cbaea38ab51be3538600e",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/e2e18-v266-s61006-r49.json",
+        "proof_sha256": "ab9521eb57bb1d60d5222a3befcfc12fb28f72cb16bfb4df098830b67ebdcc5b"
+      },
+      "sha256": {
+        "result.json": "892f3b3e3f85e84911e6b6662fc43937fdb747847a20e6e5e13ee6e81b86258b",
+        "e2e-progress.json": "b5d44a0ffc1e16a5c7add37f39e421e473bb5816238ead1a0f3fbcc970a8a73a",
+        "transport-trace.json.zst": "93fa2d7d0e974482dd6d6ada83d1ab52628cc0679c02dbab6d18cbaf2eaf57f3",
+        "artifacts.sha256.json.zst": "8487e3a95dc91e3c4a4599bb294ddd1fbaf040d62738a1133c3869130e0e57bd"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/e2e18-v266-s61006-r49",
+      "metrics": {
+        "name": "e2e18-v266-s61006-r49",
+        "status": "EARLY_STOP",
+        "failure": "SIGNAL_SIGINT",
+        "robots": {
+          "r1": {
+            "max_tilt_deg": 0.985681308683787,
+            "sim_s": 832.5,
+            "sha256_uncompressed": "1d7b4fd58911d15e4f50ff6bdd0135c39fd85364542a86233c36e94ac9dd7bd1",
+            "raw": "/home/ugrp/ugrp-sim/runs/e2e18-v266-s61006-r49/raw/eval_only/r1/trajectory.jsonl"
+          },
+          "r2": {
+            "max_tilt_deg": 0.31464231161271156,
+            "sim_s": 832.5,
+            "sha256_uncompressed": "c7a1e30fcd94cbcb1cb81029142f8bc9b1f120b7e3129ba4d5afdc00b06b6dc9",
+            "raw": "/home/ugrp/ugrp-sim/runs/e2e18-v266-s61006-r49/raw/eval_only/r2/trajectory.jsonl"
+          }
+        },
+        "paired_held_samples": 0,
+        "first_held_t": null,
+        "maximum_cargo_z_m": 0.0165,
+        "ready": [],
+        "first_fine": {
+          "t": 262.8,
+          "event": "s3_coarse_fine",
+          "robot_id": "r1",
+          "phase": "base"
+        }
+      }
+    },
+    {
+      "name": "e2e18-v266-s61006-r50",
+      "exit": 130,
+      "source_sha": "63fb1551d749e1a529f14f238713bfd061fb1172",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/e2e18-v266-s61006-r50/raw",
+      "phase": "align",
+      "result": {
+        "status": "EARLY_STOP",
+        "failure": "SIGNAL_SIGINT",
+        "sim_s": 333.0,
+        "wall_s": 917.664916231,
+        "LLM_operated": true,
+        "own_map_completed": true,
+        "start_to_finish_transport": false,
+        "E2E_success": false,
+        "model_calls": 11,
+        "finalization_complete": true
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-e2e18-v266-s61006-r50",
+        "files": 2439,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e18-v266-s61006-r50",
+          "files": 2439,
+          "hash_matches": 2439,
+          "inventory_sha256": "fd488d0676733c66cae1847837f7d8196868acc4b8613da1968b11961e92305e",
+          "reused": false,
+          "receiver_seconds": 10.27
+        },
+        "inventory_sha256": "36aaca23c6f1535d0372dc2e991942b74f32e4451936c54a304d8009699dc9d5",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/e2e18-v266-s61006-r50.json",
+        "proof_sha256": "409d70d556bff4736761ce8731889ad91470312299b0821730646469b6d9c470"
+      },
+      "sha256": {
+        "result.json": "d8cbd8459cc1043e3917ca01c6f1e4d8f836f8aa817f19bbd77c654ad188dec8",
+        "e2e-progress.json": "8fd5af741930388d85d891c7b38329d13314645de14f57ed0380d341404acbaa",
+        "transport-trace.json.zst": "fbea147c10947599cb34aaff3c1f11a58c8b9ac5dc110a118518ffef15551b5c",
+        "artifacts.sha256.json.zst": "830611fd1f3cbebaa46a452c3f70769a3264cf057d2f45d0690932aacc25be12"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/e2e18-v266-s61006-r50",
+      "metrics": {
+        "name": "e2e18-v266-s61006-r50",
+        "status": "EARLY_STOP",
+        "failure": "SIGNAL_SIGINT",
+        "robots": {
+          "r1": {
+            "max_tilt_deg": 0.985681308683787,
+            "sim_s": 334.3,
+            "sha256_uncompressed": "439878f6a4ce9b40879bf2f469ca5d67dce8727227667ba544dc80545c2069a2",
+            "raw": "/home/ugrp/ugrp-sim/runs/e2e18-v266-s61006-r50/raw/eval_only/r1/trajectory.jsonl"
+          },
+          "r2": {
+            "max_tilt_deg": 0.31464231161271156,
+            "sim_s": 334.3,
+            "sha256_uncompressed": "2378b5fa0e2317e2932ea25440ce33cc73824f7520033de927ae40f63094b791",
+            "raw": "/home/ugrp/ugrp-sim/runs/e2e18-v266-s61006-r50/raw/eval_only/r2/trajectory.jsonl"
+          }
+        },
+        "paired_held_samples": 0,
+        "first_held_t": null,
+        "maximum_cargo_z_m": 0.0165,
+        "ready": [],
+        "first_fine": {
+          "t": 262.8,
+          "event": "s3_coarse_fine",
+          "robot_id": "r1",
+          "phase": "base"
+        }
+      }
+    },
+    {
+      "name": "e2e18-v265-s61007-r49",
+      "exit": 130,
+      "source_sha": "5d2270ce1cf2bec95b6ffcb8150dc8fa59c29c6f",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/e2e18-v265-s61007-r49/raw",
+      "phase": "align",
+      "result": {
+        "status": "EARLY_STOP",
+        "failure": "SIGNAL_SIGINT",
+        "sim_s": 932.772,
+        "wall_s": 2599.7840288869997,
+        "LLM_operated": true,
+        "own_map_completed": false,
+        "start_to_finish_transport": false,
+        "E2E_success": false,
+        "model_calls": 12,
+        "finalization_complete": true
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-e2e18-v265-s61007-r49",
+        "files": 6504,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e18-v265-s61007-r49",
+          "files": 6504,
+          "hash_matches": 6504,
+          "inventory_sha256": "a7d5e07a6d6ee86877d59d453e91115b47956129e9165afd45202c4a470315f3",
+          "reused": false,
+          "receiver_seconds": 26.056
+        },
+        "inventory_sha256": "67726e131500b5c2a0b62a75b36c24a5c197489367b12c68c28f08cdba434768",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/e2e18-v265-s61007-r49.json",
+        "proof_sha256": "439637744649894fd60d2a22b50824a4cad52c67174c017e2a618fc8e8e60ba6"
+      },
+      "sha256": {
+        "result.json": "4d9e9dd16b43dec3f5d8c3f9029ce1865131721906ba3c377b8a668178474916",
+        "e2e-progress.json": "0cbb80c2bda2854a2e5b29db564b574e2f39adfbe37e0d65fcd21adf49347467",
+        "transport-trace.json.zst": "0c6e511856ae190510f2f7ff2c48904077ba6d1b24199a73e94233539c11f287",
+        "artifacts.sha256.json.zst": "b8f42feb9f4d5d954b15f12c8aeaba83a90f716f5a5e47c870144ff9f24dc635"
+      },
+      "host": "azure4",
+      "fetch_lite": "outputs/azure4-runs/e2e18-v265-s61007-r49",
+      "metrics": {
+        "name": "e2e18-v265-s61007-r49",
+        "status": "EARLY_STOP",
+        "failure": "SIGNAL_SIGINT",
+        "robots": {
+          "r1": {
+            "max_tilt_deg": 1.1992804509371469,
+            "sim_s": 934.05,
+            "sha256_uncompressed": "766c5d7ece0e1e096ff6017b14c1f6a6d816d4528235ce0054dea39fc9c9b22e",
+            "raw": "/home/ugrp/ugrp-sim/runs/e2e18-v265-s61007-r49/raw/eval_only/r1/trajectory.jsonl"
+          },
+          "r2": {
+            "max_tilt_deg": 0.44193668059918145,
+            "sim_s": 934.05,
+            "sha256_uncompressed": "a02435577150097a6bb07848296598bd40b6bbaac782d4430347f88ce0cfb2ba",
+            "raw": "/home/ugrp/ugrp-sim/runs/e2e18-v265-s61007-r49/raw/eval_only/r2/trajectory.jsonl"
+          }
+        },
+        "paired_held_samples": 0,
+        "first_held_t": null,
+        "maximum_cargo_z_m": 0.01664468270580247,
+        "ready": [
+          {
+            "t": 875.2,
+            "event": "s3_coarse_fine",
+            "robot_id": "r2",
+            "phase": "ready"
+          }
+        ],
+        "first_fine": {
+          "t": 624.4,
+          "event": "s3_coarse_fine",
+          "robot_id": "r1",
+          "phase": "base"
+        }
+      }
+    },
+    {
+      "name": "e2e18-v266-s61007-r49",
+      "exit": 130,
+      "source_sha": "5d2270ce1cf2bec95b6ffcb8150dc8fa59c29c6f",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/e2e18-v266-s61007-r49/raw",
+      "phase": "align",
+      "result": {
+        "status": "EARLY_STOP",
+        "failure": "SIGNAL_SIGINT",
+        "sim_s": 949.6,
+        "wall_s": 2599.795796004,
+        "LLM_operated": true,
+        "own_map_completed": false,
+        "start_to_finish_transport": false,
+        "E2E_success": false,
+        "model_calls": 11,
+        "finalization_complete": true
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-e2e18-v266-s61007-r49",
+        "files": 6630,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e18-v266-s61007-r49",
+          "files": 6630,
+          "hash_matches": 6630,
+          "inventory_sha256": "2cb768bc82a7e13532ebd3abf3488847a6cbecaff857db68860cb2aed454d4a0",
+          "reused": false,
+          "receiver_seconds": 22.78
+        },
+        "inventory_sha256": "92cfa7d34ab0310ca6ee1644bf17c1604be71584e5fedb91c6bd7dd591e50661",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/e2e18-v266-s61007-r49.json",
+        "proof_sha256": "f4328e91202b43512374516205db883a65c8353c02d6bd278cdfce04e580150f"
+      },
+      "sha256": {
+        "result.json": "0fd545c5f444f77979bd671201f55a484571fbd9b7e9eac51234e9ee60051786",
+        "e2e-progress.json": "bec98c7fa63db2abc51151f4f67d1502f0c2f35178e8a4e58c8ce8685df51747",
+        "transport-trace.json.zst": "bd60be8f390cacb9ab29822875e823df1447b918ab685e19beea773f779406e4",
+        "artifacts.sha256.json.zst": "59fd90d56bd5cfb228b782aab02c8384e1053b25bb0c1817d748660e32fc5f50"
+      },
+      "host": "azure4",
+      "fetch_lite": "outputs/azure4-runs/e2e18-v266-s61007-r49",
+      "metrics": {
+        "name": "e2e18-v266-s61007-r49",
+        "status": "EARLY_STOP",
+        "failure": "SIGNAL_SIGINT",
+        "robots": {
+          "r1": {
+            "max_tilt_deg": 1.1992804509371469,
+            "sim_s": 950.9,
+            "sha256_uncompressed": "ac82e7c2eea256c161f8e5325614cdada50b73287a90f2eac57aa84f8b9545d4",
+            "raw": "/home/ugrp/ugrp-sim/runs/e2e18-v266-s61007-r49/raw/eval_only/r1/trajectory.jsonl"
+          },
+          "r2": {
+            "max_tilt_deg": 0.44193668059918145,
+            "sim_s": 950.9,
+            "sha256_uncompressed": "00ab11c46ffc627635483e026930a118e1015353e77ce46337ce9f06525cfda3",
+            "raw": "/home/ugrp/ugrp-sim/runs/e2e18-v266-s61007-r49/raw/eval_only/r2/trajectory.jsonl"
+          }
+        },
+        "paired_held_samples": 0,
+        "first_held_t": null,
+        "maximum_cargo_z_m": 0.0165,
+        "ready": [],
+        "first_fine": {
+          "t": 487.6,
+          "event": "s3_coarse_fine",
+          "robot_id": "r1",
+          "phase": "base"
+        }
+      }
+    },
+    {
+      "name": "e2e18-v266-s61007-r50",
+      "exit": 130,
+      "source_sha": "63fb1551d749e1a529f14f238713bfd061fb1172",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/e2e18-v266-s61007-r50/raw",
+      "phase": "align",
+      "result": {
+        "status": "EARLY_STOP",
+        "failure": "SIGNAL_SIGINT",
+        "sim_s": 392.4,
+        "wall_s": 924.2587354160005,
+        "LLM_operated": true,
+        "own_map_completed": false,
+        "start_to_finish_transport": false,
+        "E2E_success": false,
+        "model_calls": 12,
+        "finalization_complete": true
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-e2e18-v266-s61007-r50",
+        "files": 2454,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e18-v266-s61007-r50",
+          "files": 2454,
+          "hash_matches": 2454,
+          "inventory_sha256": "f52609ea1bbbd0f6272c6f130ef9d3a0c9e5865034aefa5837ca0dd532b0daf8",
+          "reused": false,
+          "receiver_seconds": 13.725
+        },
+        "inventory_sha256": "66255fc1cd9bcdd031513f999ee70288686d2523ba4f1d769974f6b29e7eac36",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/e2e18-v266-s61007-r50.json",
+        "proof_sha256": "96f989db9108d3677f46f68e4b9bdd59cd97fadceaf8390bf4ba1a1a9ed186ee"
+      },
+      "sha256": {
+        "result.json": "475ea6013d512f83a5381544f297e8e4a252a7f40867d39599bca47148983b79",
+        "e2e-progress.json": "de07a7239f8ff3667f47afb8e2b1e7323885618080dd24ecb5de8e6fcb585b1e",
+        "transport-trace.json": "ce84b69c3957610d782e8ea9c8047a83e43479d188a5d6cfd8eda26c7e428c2c",
+        "artifacts.sha256.json.zst": "8c3cc9522953a9a36ff5ee7bfd5df54377d8ebc2fd131b3ebfe07e1ea9c900db"
+      },
+      "host": "azure4",
+      "fetch_lite": "outputs/azure4-runs/e2e18-v266-s61007-r50",
+      "metrics": {
+        "name": "e2e18-v266-s61007-r50",
+        "status": "EARLY_STOP",
+        "failure": "SIGNAL_SIGINT",
+        "robots": {
+          "r1": {
+            "max_tilt_deg": 1.1992804509371469,
+            "sim_s": 393.7,
+            "sha256_uncompressed": "550074c8cbcadb1654043ae30e39100968fe40984e55b28b5dd268f54be11cb3",
+            "raw": "/home/ugrp/ugrp-sim/runs/e2e18-v266-s61007-r50/raw/eval_only/r1/trajectory.jsonl"
+          },
+          "r2": {
+            "max_tilt_deg": 0.44193668059918145,
+            "sim_s": 393.7,
+            "sha256_uncompressed": "3bb5279b2de75879d0180958301c9c6993e64f049c209fed5ea69aa86e1b40ed",
+            "raw": "/home/ugrp/ugrp-sim/runs/e2e18-v266-s61007-r50/raw/eval_only/r2/trajectory.jsonl"
+          }
+        },
+        "paired_held_samples": 0,
+        "first_held_t": null,
+        "maximum_cargo_z_m": 0.0165,
+        "ready": [],
+        "first_fine": null
+      }
+    }
+  ]
+}

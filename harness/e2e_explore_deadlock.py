@@ -13,6 +13,7 @@ PARAMS = dict(idle_s=30., issued_gap_s=.4, sweep_limit_s=30.)
 class DeadlockRecovery:
     def __init__(self, goal):
         self.goal = goal
+        self.idle_threshold_s = PARAMS['idle_s']
         self.last_issued = self.idle_since = None
         self.cycles = 0
         self.last_recovery = None
@@ -42,13 +43,13 @@ class DeadlockRecovery:
         if self.last_issued is None or not 0 <= t-self.last_issued <= PARAMS['issued_gap_s']+1e-8:
             self.idle_since = t
             return
-        if self.idle_since is None or t-self.idle_since < PARAMS['idle_s']-1e-8:
+        if self.idle_since is None or t-self.idle_since < self.idle_threshold_s-1e-8:
             return
         self.last_recovery = dict(t=float(t), idle_s=t-self.idle_since,
             finished=n.finished, target=None if n.target is None else n.target.tolist(),
             expired_blacklist=len(n.blacklist), expired_visited=len(n.visited))
         # These lists suppress action targets, not measured obstacles. Expire
-        # the suppression epoch only after 30s of issued zero-motion commands.
+        # the suppression epoch after the registered issued-hold interval.
         n.blacklist.clear()
         n.visited.clear()
         n.reset_action()

@@ -1,0 +1,39 @@
+{
+  "bundle": "e2e18-v356",
+  "workflow_version": "7.249.0",
+  "parent": "e2e18-v354",
+  "source_sha": "3c3364f8b28b8841995ecaff88748cdad7539fd0",
+  "integrated_supervisor_sha": "504c5d0faaf479bb013a15423b3b840119d84743",
+  "option": "--approach-efficiency regulated_v1",
+  "default": "off",
+  "boundary_lifecycle": "abort_v1",
+  "tests": {
+    "passed": 36,
+    "failed": 0,
+    "files": [
+      "tests/test_e2e_approach_efficiency.py",
+      "tests/test_e2e_boundary_lifecycle.py",
+      "tests/test_e2e_body_code.py"
+    ]
+  },
+  "saved_replay": {
+    "input": "approach-v351-own-inputs.json.zst",
+    "result": "approach-v351-replay.json.zst",
+    "same_651_rows": true,
+    "independent_new_scenes": 0,
+    "motion_rows": 537,
+    "gaze_rows": 114,
+    "rate_candidates": 215,
+    "suppressed_gazes": 59,
+    "scope": "policy replay only; same saved observations, no changed trajectory"
+  },
+  "physics_runs": 0,
+  "provider_calls": 0,
+  "submitter": "supervisor",
+  "request": "approach-v356-submission-request.json",
+  "evidence": {
+    "approach-v351-own-inputs.json.zst": "c0d2451352ee90b4a28923000d9f75df3dbc39f5587345eea800371626310614",
+    "approach-v351-replay.json.zst": "ebf5c9ba1f1376d45ba7b49952ef685661b28e0b688b41eb8d92db0db376b90a",
+    "approach-v356-pytest.txt": "f63dec00b7577e02b10de0bc5dec1cc2df429c2284fa7837b21fd7ba1d4ad7f3"
+  }
+}

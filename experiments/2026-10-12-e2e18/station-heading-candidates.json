@@ -1,0 +1,110 @@
+{
+  "PR": 461,
+  "classification": "dev",
+  "candidates": {
+    "264": "continuing baseline plus new matched-seed baseline",
+    "265": "station10_v1 terminal yaw shim",
+    "266": "station20_v1 terminal yaw shim"
+  },
+  "seeds": [
+    61006,
+    61007
+  ],
+  "maximum_concurrent_each_vm": 6,
+  "continuing_versions": [
+    262,
+    263,
+    264
+  ],
+  "replace_versions": [
+    260,
+    261
+  ],
+  "criteria": [
+    "fresh own-RGB fine entry and two robot ready",
+    "paired physical grasp: both finger contacts per carrier and cargo z>0.06m",
+    "LLM operated; own observed route complete; start-to-end transport"
+  ],
+  "diagnosis": {
+    "code": "harness/e2e_rpp_path.py:46-51 and harness/e2e_carrier_approach.py:49-64",
+    "recorded_case": "fine-entry-candidates.json diagnosis.near_r2_counterexample",
+    "xy_error_m": 0.05846523280817426,
+    "goal_yaw_error_rad": 0.3610383799298269,
+    "path_bearing_rad": -1.1221265806930076,
+    "candidate_direction": "goal yaw left instead of path bearing right",
+    "r48_near_case": {
+      "version": 264,
+      "seed": 61006,
+      "rid": "r1",
+      "sim_s": 241.0,
+      "distance_m": 0.077,
+      "heading_error_rad": -0.88,
+      "status": "turn_to_last_seen_beam"
+    },
+    "scope": "saved own RGB and own odometry; no simulator state in controller; camera projection was only a diagnostic"
+  },
+  "parameters": {
+    "radius_candidates_m": [
+      0.1,
+      0.2
+    ],
+    "yaw_tolerance_rad": 0.06,
+    "exit_multiplier": 1.25,
+    "maximum_turn_s": 20.0,
+    "settle_s": 0.45,
+    "final_grasp_tolerances_unchanged": true
+  },
+  "standard": {
+    "source": "https://docs.nav2.org/rolling/configuration_and_development/configuration_guide/controller_plugins/configuring_rotation_shim_controller/",
+    "method": "rotate_to_goal_heading takes control inside XY goal tolerance; adapt to existing calibrated pulse port and bounded own-RGB station memory",
+    "verified": true
+  },
+  "validation": {
+    "command": "python3 -m pytest -q tests/test_e2e_station_heading.py tests/test_e2e_fine_entry.py tests/test_e2e_camera_hold.py",
+    "passed": 43,
+    "seconds": 69.6,
+    "simulation_claim": false
+  },
+  "reservation": {
+    "checked_unix": 1791850673.66916,
+    "rows": [
+      {
+        "ref": "origin/main",
+        "max_id": 225
+      },
+      {
+        "ref": "origin/codex/e2e18",
+        "max_id": 264
+      },
+      {
+        "ref": "origin/claude/e2e-bcones",
+        "max_id": 213
+      },
+      {
+        "ref": "origin/codex/ego-pose-continuity",
+        "max_id": 145
+      },
+      {
+        "ref": "origin/codex/egomap70-overview",
+        "max_id": 145
+      },
+      {
+        "ref": "origin/codex/real-robot-link",
+        "max_id": 2
+      },
+      {
+        "ref": "origin/codex/integ-target-backend",
+        "max_id": 101
+      }
+    ]
+  },
+  "storage": {
+    "per_run_mib": 1024,
+    "previous_max_full1800_sim_bytes": 552397666,
+    "previous_runs_measured": 15,
+    "total_reserved_runs_each_vm": 6,
+    "includes_new_and_continuing_remaining": true,
+    "arm_other_reserved_mib": 2048,
+    "mac_per_run_mib": 80
+  }
+}

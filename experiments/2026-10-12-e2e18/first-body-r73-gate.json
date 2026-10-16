@@ -1,0 +1,132 @@
+[
+  {
+    "name": "speed-gate-e2e18-v344-s61006-r73",
+    "checked_unix": 1791880876.2266076,
+    "cut_sim_s": 29.0,
+    "current_sim_s": 29.0,
+    "phase": "mapping",
+    "frames": 49,
+    "exit": "1",
+    "model_calls": 3,
+    "body_sha256": "0c327c6ac649b61c3e99724857fb086c5a12d1e614bf15e2db0750e00cc50ee8",
+    "robots": {
+      "r1": {
+        "calls": 11,
+        "choices": {
+          "follow_own_path": 6,
+          "move_camera_to_planned_view": 5
+        },
+        "statuses": {
+          "ok": 11
+        },
+        "max_stationary_s": 5.9,
+        "tail_stationary_s": 0.2,
+        "max_same_choice_without_motion_s": 0.0,
+        "tail_same_choice_without_motion_s": 0.0,
+        "max_wait_choice_interval_s": 0.0,
+        "last_interval": {
+          "choice": "move_camera_to_planned_view",
+          "status": "ok",
+          "start": 18.25,
+          "end": 29.0,
+          "n": 5,
+          "all_stationary": false,
+          "duration_s": 10.75
+        },
+        "eval_trajectory_sha256": "fa88a3a51d10ddc89d4e41389ae4df991dccbcc0932b210e71d6a0a3b2f112e8"
+      },
+      "r2": {
+        "calls": 13,
+        "choices": {
+          "follow_own_path": 5,
+          "back_off_and_replan": 6,
+          "scan_right": 2
+        },
+        "statuses": {
+          "ok": 13
+        },
+        "max_stationary_s": 1.75,
+        "tail_stationary_s": 1.3,
+        "max_same_choice_without_motion_s": 0.0,
+        "tail_same_choice_without_motion_s": 0.0,
+        "max_wait_choice_interval_s": 0.0,
+        "last_interval": {
+          "choice": "follow_own_path",
+          "status": "ok",
+          "start": 29.0,
+          "end": 29.0,
+          "n": 1,
+          "all_stationary": true,
+          "duration_s": 0.0
+        },
+        "eval_trajectory_sha256": "bb4bc3d20d4d68d4ba8de8cb578dbe98eb0f20e0edc5683f5e1c9e2d836675bb"
+      }
+    },
+    "failure": "MEASUREMENT_SIM_LIMIT"
+  },
+  {
+    "name": "speed-gate-e2e18-v345-s61006-r73",
+    "checked_unix": 1791880876.235727,
+    "cut_sim_s": 29.0,
+    "current_sim_s": 29.0,
+    "phase": "mapping",
+    "frames": 49,
+    "exit": "1",
+    "model_calls": 3,
+    "body_sha256": "316427d6cc54a5cef3466a51fd4f648b112ba211f5caa925bfa579b9c192f1ef",
+    "robots": {
+      "r1": {
+        "calls": 11,
+        "choices": {
+          "follow_own_path": 6,
+          "move_camera_to_planned_view": 5
+        },
+        "statuses": {
+          "ok": 11
+        },
+        "max_stationary_s": 5.55,
+        "tail_stationary_s": 0.15,
+        "max_same_choice_without_motion_s": 0.0,
+        "tail_same_choice_without_motion_s": 0.0,
+        "max_wait_choice_interval_s": 0.0,
+        "last_interval": {
+          "choice": "follow_own_path",
+          "status": "ok",
+          "start": 28.2,
+          "end": 29.0,
+          "n": 1,
+          "all_stationary": false,
+          "duration_s": 0.8
+        },
+        "eval_trajectory_sha256": "2631f4e0d5007e4152c14d6c24a81386e0bb68dbca7d12a19e57649d98749eaa"
+      },
+      "r2": {
+        "calls": 15,
+        "choices": {
+          "follow_own_path": 7,
+          "back_off_and_replan": 4,
+          "scan_right": 4
+        },
+        "statuses": {
+          "ok": 15
+        },
+        "max_stationary_s": 1.7,
+        "tail_stationary_s": 0.1,
+        "max_same_choice_without_motion_s": 0.0,
+        "tail_same_choice_without_motion_s": 0.0,
+        "max_wait_choice_interval_s": 0.0,
+        "last_interval": {
+          "choice": "follow_own_path",
+          "status": "ok",
+          "start": 28.2,
+          "end": 29.0,
+          "n": 1,
+          "all_stationary": false,
+          "duration_s": 0.8
+        },
+        "eval_trajectory_sha256": "06c4d6e7b563abc6487d7d9ad9e27b0b5dcfdf4d15537f677925cf390be5c96a"
+      }
+    },
+    "failure": "MEASUREMENT_SIM_LIMIT"
+  }
+]

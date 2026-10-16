@@ -1,0 +1,287 @@
+[
+  {
+    "host": "azure3",
+    "name": "e2e18-v233-s61001-r22",
+    "checked_unix": 1791823718.3617299,
+    "sim_s": 565.0,
+    "phase": "mapping",
+    "robots": {
+      "r1": {
+        "translation_commands": 2040,
+        "carrier_approach": null
+      },
+      "r2": {
+        "translation_commands": 2012,
+        "carrier_approach": null
+      }
+    },
+    "eval_only_motion": {
+      "r1": {
+        "first_t": 1.3,
+        "last_t": 566.3,
+        "displacement_m": 2.752225751710368,
+        "stationary_sim_s": 0.34999999999990905,
+        "shift_last30sim_m": 1.0425565192971549,
+        "tail_max_tilt_deg": 0.35342993640670695
+      },
+      "r2": {
+        "first_t": 1.3,
+        "last_t": 566.3,
+        "displacement_m": 3.338187684391944,
+        "stationary_sim_s": 0.75,
+        "shift_last30sim_m": 1.7533208081981377,
+        "tail_max_tilt_deg": 0.3634329604144683
+      }
+    }
+  },
+  {
+    "host": "azure3",
+    "name": "e2e18-v233-s61003-r22",
+    "checked_unix": 1791823718.3617299,
+    "sim_s": 568.0,
+    "phase": "align",
+    "robots": {
+      "r1": {
+        "translation_commands": 1654,
+        "carrier_approach": {
+          "t": 568.0,
+          "status": "navigate_pregrasp",
+          "station_own_m": [
+            -3.8334860851774457,
+            0.5395332370184757,
+            0.3004981866308185
+          ],
+          "grip_own_m": [
+            -3.6393916506364516,
+            0.5996796457243306
+          ],
+          "distance_m": 1.4609583784554125,
+          "heading_error_rad": -2.7860289670198313,
+          "own_beam_age_s": 0.0,
+          "camera": "search",
+          "basis_yaw_rad": 0.3004981866308185,
+          "correct_end": false,
+          "path_points": 61,
+          "rpp": {
+            "path_follow": "rpp_v1",
+            "lookahead_m": 0.6,
+            "carrot_m": [
+              -3.0370441436767575,
+              0.8349594116210931
+            ],
+            "carrot_distance_m": 0.6159618713072981,
+            "before": 0.3794090269043885,
+            "after": 0.36428899001665926,
+            "body_error_m": [
+              0.5965140745821569,
+              0.1535577602395317
+            ],
+            "yaw_rad": 0.0,
+            "phase": "forward_path",
+            "heading_error_rad": 0.25195479357798417,
+            "goal_distance_m": 1.4609583784554128
+          },
+          "projected_clear": true
+        }
+      },
+      "r2": {
+        "translation_commands": 1566,
+        "carrier_approach": {
+          "t": 568.0,
+          "status": "search_own_beam"
+        }
+      }
+    },
+    "eval_only_motion": {
+      "r1": {
+        "first_t": 1.3,
+        "last_t": 569.3,
+        "displacement_m": 2.1447408678115996,
+        "stationary_sim_s": 0.75,
+        "shift_last30sim_m": 0.157385636347563,
+        "tail_max_tilt_deg": 0.3675099006315255
+      },
+      "r2": {
+        "first_t": 1.3,
+        "last_t": 569.3,
+        "displacement_m": 2.3660792991990762,
+        "stationary_sim_s": 31.449999999999932,
+        "shift_last30sim_m": 0.00728264655920169,
+        "tail_max_tilt_deg": 0.3741599102390316
+      }
+    }
+  },
+  {
+    "host": "azure4",
+    "name": "e2e18-v234-s61007-r23",
+    "checked_unix": 1791823718.2921262,
+    "sim_s": 352.0,
+    "phase": "align",
+    "robots": {
+      "r1": {
+        "translation_commands": 410,
+        "carrier_approach": {
+          "t": 352.0,
+          "status": "approach_path_unavailable",
+          "station_own_m": [
+            -2.457736078046512,
+            2.9554553607611953,
+            -0.9353398856916881
+          ],
+          "grip_own_m": [
+            -2.337127750228242,
+            2.7919198255987094
+          ],
+          "distance_m": 0.7828818013212155,
+          "heading_error_rad": -2.962469558733673,
+          "own_beam_age_s": 205.2,
+          "camera": "search",
+          "basis_yaw_rad": -0.9353398856916881,
+          "beam_obstacle_source": "own_rgb_center_axis_known_size",
+          "path_points": 0,
+          "would_stop_path_unavailable": true
+        }
+      },
+      "r2": {
+        "translation_commands": 633,
+        "carrier_approach": {
+          "t": 352.0,
+          "status": "search_own_beam"
+        }
+      }
+    },
+    "eval_only_motion": {
+      "r1": {
+        "first_t": 1.3,
+        "last_t": 353.3,
+        "displacement_m": 2.6815657433226674,
+        "stationary_sim_s": 100.65,
+        "shift_last30sim_m": 0.004423039626856964,
+        "tail_max_tilt_deg": 0.21657438978209295
+      },
+      "r2": {
+        "first_t": 1.3,
+        "last_t": 353.3,
+        "displacement_m": 0.7071400192358208,
+        "stationary_sim_s": 0.75,
+        "shift_last30sim_m": 0.32792540174009904,
+        "tail_max_tilt_deg": 0.22715737096052444
+      }
+    }
+  },
+  {
+    "host": "azure4",
+    "name": "e2e18-v234-s61010-r23",
+    "checked_unix": 1791823718.2921262,
+    "sim_s": 329.0,
+    "phase": "align",
+    "robots": {
+      "r1": {
+        "translation_commands": 793,
+        "carrier_approach": {
+          "t": 303.6,
+          "status": "visual_servo",
+          "station_own_m": [
+            -1.861066951733278,
+            -4.669584698584573,
+            1.6033332236451348
+          ],
+          "grip_own_m": [
+            -1.8676772826917438,
+            -4.4664922479010984
+          ],
+          "distance_m": 0.02646442413631006,
+          "heading_error_rad": 0.027494378263752672,
+          "own_beam_age_s": 0.0,
+          "camera": "inspect",
+          "basis_yaw_rad": 1.6033332236451348,
+          "correct_end": true
+        }
+      },
+      "r2": {
+        "translation_commands": 815,
+        "carrier_approach": {
+          "t": 328.8,
+          "status": "search_own_beam"
+        }
+      }
+    },
+    "eval_only_motion": {
+      "r1": {
+        "first_t": 1.3,
+        "last_t": 330.3,
+        "displacement_m": 3.4240838002570357,
+        "stationary_sim_s": 27.94999999999999,
+        "shift_last30sim_m": 0.018756264029785575,
+        "tail_max_tilt_deg": 0.46327517655361605
+      },
+      "r2": {
+        "first_t": 1.3,
+        "last_t": 330.3,
+        "displacement_m": 0.40298493117505807,
+        "stationary_sim_s": 0.6000000000000227,
+        "shift_last30sim_m": 0.5234122748359835,
+        "tail_max_tilt_deg": 0.3572911839385835
+      }
+    }
+  },
+  {
+    "host": "azure4",
+    "name": "e2e18-v234-s61012-r23",
+    "checked_unix": 1791823718.2921262,
+    "sim_s": 287.0,
+    "phase": "align",
+    "robots": {
+      "r1": {
+        "translation_commands": 371,
+        "carrier_approach": {
+          "t": 286.8,
+          "status": "approach_path_unavailable",
+          "station_own_m": [
+            -2.658915374758202,
+            -1.1593205571650944,
+            1.3738342692135348
+          ],
+          "grip_own_m": [
+            -2.61915095689799,
+            -0.9600493071759441
+          ],
+          "distance_m": 0.8341648071120722,
+          "heading_error_rad": -2.605070824138604,
+          "own_beam_age_s": 0.0,
+          "camera": "search",
+          "basis_yaw_rad": 1.3738342692135348,
+          "correct_end": true,
+          "beam_obstacle_source": "own_rgb_center_axis_known_size",
+          "path_points": 0,
+          "would_stop_path_unavailable": true
+        }
+      },
+      "r2": {
+        "translation_commands": 623,
+        "carrier_approach": {
+          "t": 286.8,
+          "status": "search_own_beam"
+        }
+      }
+    },
+    "eval_only_motion": {
+      "r1": {
+        "first_t": 1.3,
+        "last_t": 288.3,
+        "displacement_m": 2.737792920307307,
+        "stationary_sim_s": 123.35000000000002,
+        "shift_last30sim_m": 2.3222080770860515e-05,
+        "tail_max_tilt_deg": 0.22078625451893594
+      },
+      "r2": {
+        "first_t": 1.3,
+        "last_t": 288.3,
+        "displacement_m": 3.0328164508769175,
+        "stationary_sim_s": 0.9499999999999886,
+        "shift_last30sim_m": 0.5547816887221327,
+        "tail_max_tilt_deg": 0.3342023035113526
+      }
+    }
+  }
+]

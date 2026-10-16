@@ -1,0 +1,23 @@
+{
+  "class_": "dev",
+  "pr": 461,
+  "source_pr": 465,
+  "seed": 61006,
+  "candidates": {
+    "v344": "Liquid d1 bounded body skills",
+    "v345": "Jev bounded body skills"
+  },
+  "planned_concurrency": 2,
+  "speed_gate": {
+    "sim_s": 30,
+    "wall_per_sim_max": 3.0
+  },
+  "initial_raw_check": "first 30\u201360 SIM s: per-robot body choice distribution, longest stationary/repeated-choice interval, errors; >=20 SIM s unchanged selection without motion => SIGINT and PR465",
+  "comparison": {
+    "v321_align_to_grasp_stage_sim_s": 435,
+    "r69_v324_align_to_paired_hold_sim_s": 441.5,
+    "note": "Track both grasp stage start and actual paired hold; do not conflate the two baselines."
+  },
+  "go_ack_policy": "Stop immediately on CURRENT_GO_ACK_TIMEOUT or repeated lower_open failure; protocol decision backend migration is separate.",
+  "deadline_utc": "2026-10-13T13:00:00Z"
+}

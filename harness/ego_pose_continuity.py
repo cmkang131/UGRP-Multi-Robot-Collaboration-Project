@@ -20,8 +20,10 @@ REP105 = 'rep105_offset_v1'
 STATIONARY = 'amcl_min_motion_v1'
 CLUSTER = 'amcl_cluster_v1'
 MAHALANOBIS = 'mahalanobis_v1'
+MAHALANOBIS_SE2 = 'mahalanobis_se2_v1'
 BOUND = 'motion_covariance_v1'
 CHI2_99_XY = 9.210340371976184
+CHI2_99_SE2 = 11.344866730144373
 
 
 @dataclass(frozen=True)
@@ -34,6 +36,7 @@ class Options:
 
     def __post_init__(self):
         for name, value in zip(asdict(self), (REP105, STATIONARY, CLUSTER, MAHALANOBIS, BOUND)):
+            if name=='correction_gate' and getattr(self,name)==MAHALANOBIS_SE2:continue
             if getattr(self, name) not in ('off', value):
                 raise ValueError('UNKNOWN_POSE_OPTION:' + name)
 
@@ -120,8 +123,14 @@ class Reporter:
         d2 = float(innovation[:2]@np.linalg.solve(S[:2, :2], innovation[:2]))
         row = dict(innovation=innovation.tolist(), mahalanobis_xy=d2,
                    threshold=CHI2_99_XY, accepted=True, reason='measurement')
-        if self.options.correction_gate != 'off' and d2 > CHI2_99_XY:
+        statistic,threshold=d2,CHI2_99_XY
+        if self.options.correction_gate==MAHALANOBIS_SE2:
+            statistic=float(innovation@np.linalg.solve(S,innovation));threshold=CHI2_99_SE2
+            row.update(mahalanobis_se2=statistic,threshold=threshold,gate_dof=3,
+                       innovation_covariance=S.tolist())
+        if self.options.correction_gate != 'off' and statistic > threshold:
             row.update(accepted=False, reason='mahalanobis_rejected')
+            if self.options.correction_gate==MAHALANOBIS_SE2:row['reason']='mahalanobis_se2_rejected'
         if self.options.correction_gate != 'off':
             K = np.linalg.solve(S.T, P.T).T
             correction = K@innovation
@@ -275,7 +284,7 @@ def install(controller, options=Options()):
         command, trace = receive(**kw)
         odom = np.asarray(view.base.driver.pose)
         map_pose = np.asarray(trace['local_pose'])
-        trace['pose_continuity'] = dict(options=asdict(options), map_pose=map_pose.tolist(),
+        trace['pose_continuity'] = dict(options=asdict(view.options), map_pose=map_pose.tolist(),
             odom_pose=odom.tolist(), map_to_odom=compose(map_pose, inverse(odom)).tolist(),
             control_pose=(odom if options.pose_continuity != 'off' else map_pose).tolist(),
             control_frame='command_odom' if options.pose_continuity != 'off' else 'local_map',
