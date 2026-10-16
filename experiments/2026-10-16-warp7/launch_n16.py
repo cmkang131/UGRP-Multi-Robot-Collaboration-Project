@@ -8,7 +8,9 @@ BASE=Path('/home/ugrp/ugrp-sim');RUN=BASE/'runs/warp7'
 
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('--attempt',default='r1');parser.add_argument('--warp-native-runtime-v1',action='store_true')
-    parser.add_argument('--prior-rejection-table',type=Path);args=parser.parse_args()
+    parser.add_argument('--prior-rejection-table',type=Path)
+    parser.add_argument('--native-model-batch-v1',action='store_true')
+    parser.add_argument('--sap-segmented-v1',action='store_true');args=parser.parse_args()
     if not re.fullmatch(r'r[1-3][a-z]?',args.attempt):raise ValueError('finite attempt name required')
     name='n16-'+args.attempt
     assert platform.node().startswith('ugrp-act-l4-gcp2')
@@ -70,6 +72,8 @@ def main():
         q.update(native_sleep_policy_compat_v1=True,float32_solver_default_v1=True,warp7_camera_demand_v1=True,
             runtime_profile='warp7_native_runtime_v1',pool_with_all_awake=False,
             runtime_basis='MJWarp official sleeping/compact DoFs; exact existing shared sleep setup and upstream float32 tolerance; actor10Hz/reviewer2Hz unchanged with same-state actor RGB parity')
+    if args.native_model_batch_v1:q['warp7_native_model_batch_v1']=True
+    if args.sap_segmented_v1:q['warp7_sap_segmented_v1']=True
     path=RUN/(name+'-queue.json')
     if path.exists() or (RUN/name).exists():raise ValueError('new attempt paths required')
     path.write_text(json.dumps(q,indent=2)+'\n')

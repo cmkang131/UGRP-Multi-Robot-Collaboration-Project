@@ -88,17 +88,24 @@ def run(a):
         if a.setup_only:
             report.update(status='SETUP_ONLY',physics_steps=0);return
         from scripts.warp_act_core import model_key
-        keys={model_key(c['world'].scene_xml) for c in contexts}
+        if q.get('warp7_native_model_batch_v1',False):
+            from scripts.warp7_native_models import group_key
+            world_keys=[group_key(c['world'].model) for c in contexts]
+        else:world_keys=[model_key(c['world'].scene_xml) for c in contexts]
+        keys=set(world_keys)
         for key in sorted(keys):
-            indices=np.array([i for i,c in enumerate(contexts) if model_key(c['world'].scene_xml)==key])
+            indices=np.array([i for i,k in enumerate(world_keys) if k==key])
             folder=a.output/'groups'/key;folder.mkdir(parents=True)
             transport=Batch(host,sha,'mjwarp_batch_v1',folder,
                 native_sleep_policy_compat_v1=q.get('native_sleep_policy_compat_v1',False))
             transport.warp5_native_visual_v1=hooks.warp5_native_visual_v1;transport.warp5_native_visual_v2=hooks.warp5_native_visual_v2
             transport.camera_demand_v1=q.get('warp7_camera_demand_v1',False)
+            transport.native_model_batch_v1=q.get('warp7_native_model_batch_v1',False)
+            transport.batch_sleep_v1=transport.native_model_batch_v1
             cc=[contexts[i] for i in indices];groups.append((indices,cc,transport));transport.initialize(cc,
-                float32_solver_default_v1=q.get('float32_solver_default_v1',False))
-        report.update(model_groups=[dict(worlds=ii.tolist(),camera=h.camera,compatibility=h.compat,capacities=h.capacities) for ii,cc,h in groups])
+                float32_solver_default_v1=q.get('float32_solver_default_v1',False),sap_segmented_v1=q.get('warp7_sap_segmented_v1',False))
+        report.update(model_groups=[dict(worlds=ii.tolist(),camera=h.camera,compatibility=h.compat,capacities=h.capacities,
+            model_batch=h.model_batch_audit,native_model_adapter=getattr(h,'native_model_adapter',None)) for ii,cc,h in groups])
         loop=time.perf_counter()
         targets=np.array([c['origin'] for c in contexts],float)
         while active.any():

@@ -20,6 +20,20 @@ def sim_clock(origin,tick,period):
     return origin+round(tick*period,9)
 
 
+def review_due(cache,nworld,review_names,now):
+    # Check the requested review keys, independently of any actor cache and
+    # the native setup epoch. No playback request may receive a missing JPEG.
+    missing=any((i,name) not in cache for i in range(nworld) for name,_,_ in review_names)
+    return missing or abs(now*2-round(now*2))<=1e-6
+
+
+def review_cameras(camera_names,actors):
+    # PlaybackRecorder's exact existing contract is cctv_top. R2 selected the
+    # lexicographically first CCTV (cctv_front_left), then failed on cctv_top.
+    if not any(rid=='cctv_top' for rid,_,_ in camera_names):raise ValueError('playback cctv_top camera missing')
+    return [entry for entry in camera_names if entry[0] not in actors and entry[0] in ('r1','r2','r3','cctv_top')]
+
+
 class Batch(WarpTransport):
     def initialize(self, contexts, **kwargs):
         self.period=getattr(self,'period',.1)
@@ -31,7 +45,10 @@ class Batch(WarpTransport):
         for i,c in enumerate(contexts):
             p=self.out/f'world-{i:03d}';p.mkdir(parents=True,exist_ok=True)
             (p/'scene.xml').write_text(c['world'].scene_xml)
-        super().initialize(contexts,**kwargs)
+        if getattr(self,'native_model_batch_v1',False):
+            from scripts.warp7_native_models import initialize
+            initialize(self,contexts,**kwargs)
+        else:super().initialize(contexts,**kwargs)
         self.camera.update(renderer='MJWarp own RGB + '+self.multi_renderer.audit['profile'],
             quality_requested='no_mip_v1',visual_adapter=self.multi_renderer.audit)
         if self.period!=.1:
@@ -96,7 +113,7 @@ class Batch(WarpTransport):
             self.camera_names += [(name,name,(320,240)) for name in tops]
             from scripts.warp5_render import Renderer
             actor_names=[entry for entry in self.camera_names if entry[0] in contexts[0]['ports']]
-            self.review_names=[entry for entry in self.camera_names if entry[0] not in contexts[0]['ports'] and (entry[0] in ('r1','r2','r3') or entry[0]==tops[0])]
+            self.review_names=review_cameras(self.camera_names,contexts[0]['ports'])
             self.multi_renderer=Renderer(self.m,self.wm,self.wd,actor_names if getattr(self,'camera_demand_v1',False) else self.camera_names,
                 enabled=getattr(self,'warp5_native_visual_v1',False) or getattr(self,'warp5_native_visual_v2',False),
                 texture_after_lighting=getattr(self,'warp5_native_visual_v2',False))
@@ -129,7 +146,7 @@ class Batch(WarpTransport):
             # Same exact2Hz predicate as PlaybackRecorder.observe. Actor RGB
             # stays10Hz; only unconsumed peer/overview render calls are omitted.
             now=sim_clock(contexts[0]['origin'],self.tick,self.period)
-            if not self.camera_cache or abs(now*2-round(now*2))<=1e-6:rendered.update(self.review_renderer.render())
+            if review_due(self.camera_cache,self.n,self.review_names,now):rendered.update(self.review_renderer.render())
         if not hasattr(self,'rgb_arrays'):self.rgb_arrays={}
         for camera,(rid,name,(width,height)) in enumerate(self.camera_names):
             if rid not in rendered:continue

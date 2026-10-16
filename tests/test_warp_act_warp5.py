@@ -8,7 +8,7 @@ import pytest
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'scripts'))
 from scripts.warp5_render import blend_native
-from scripts.warp5_batch import transform_runner,sim_clock
+from scripts.warp5_batch import transform_runner,sim_clock,review_due,review_cameras
 from scripts.warp5_e2e import AsyncDecisions
 
 
@@ -20,6 +20,32 @@ def test_native_setup_clock_never_moves_backwards_on_gpu_export():
     assert sim_clock(origin,0,.1)==origin
     clocks=[sim_clock(origin,t,.1) for t in range(3001)]
     assert all(b>a for a,b in zip(clocks,clocks[1:]))
+
+
+def test_review_camera_is_available_before_first_non_grid_playback():
+    # Review cache readiness does not depend on native setup's clock phase.
+    cameras=[('cctv_top','cctv_top',(320,240)),('r2','r2__robot_cam',(640,480))]
+    cache={(0,'r1'):b'own'}
+    assert review_due(cache,1,cameras,1.7)
+    cache.update({(0,'cctv_top'):b'top',(0,'r2'):b'peer'})
+    assert not review_due(cache,1,cameras,1.7)
+    assert review_due(cache,1,cameras,2.)
+    assert review_due(cache,2,cameras,1.7)  # every world, not just world0
+
+
+def test_playback_selects_its_requested_top_not_first_alphabetical_cctv():
+    cameras=[(n,n,(320,240)) for n in ('r1','r2','r3','cctv_front_left','cctv_top','cctv_top_east')]
+    assert [n for n,_,_ in review_cameras(cameras,{'r1'})]==['r2','r3','cctv_top']
+
+
+def test_native_model_group_changes_only_documented_batched_values():
+    from scripts.warp7_native_models import layout_digest
+    aa={'mass':np.array([[1.]]),'index':np.array([2,3])}
+    bb={'mass':np.array([[8.]]),'index':np.array([2,3])}
+    assert layout_digest(aa,{'nv':2},{'mass'})==layout_digest(bb,{'nv':2},{'mass'})
+    bb['index'][1]=4
+    assert layout_digest(aa,{'nv':2},{'mass'})!=layout_digest(bb,{'nv':2},{'mass'})
+    assert layout_digest(aa,{'nv':2},{'mass'})!=layout_digest(aa,{'nv':3},{'mass'})
 
 
 def test_native_alpha_keeps_opaque_occluders_and_world_layer_order():
