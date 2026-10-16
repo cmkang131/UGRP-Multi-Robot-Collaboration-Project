@@ -37,5 +37,16 @@
     "Mac_retrieval": "summaries/montage/failure frames only"
   },
   "authorization": "user resume2: qualified API, run recording admission within task; no additional permission needed for pilot; no automatic bulk promotion",
-  "planned_at": "2026-10-16T05:59:04.361669+00:00"
+  "planned_at": "2026-10-16T05:59:04.361669+00:00",
+  "speed_gate_override": {
+    "enabled": true,
+    "scope": "MJWarp recording dispatch only; native data/pilot/teacher>=95% gates unchanged",
+    "reason": "MJWarp is an explicitly approved throughput backend. N1 pilot latency is not the planned batched throughput; qualified f0db40/40 already uses the same slow physics. Report both world latency and aggregate world-SIM throughput, keep native camera/physics unchanged, and enforce task8h rather than silently abandoning the requested MJWarp recording. AGENTS speed-gate-override permits a recorded reason. This is a task-worker operational choice under user autonomous continuation, not a newly confirmed user threshold.",
+    "formal_first30_latency_gate_pass_claim": false,
+    "basis": "AGENTS.md Azure/GCP speed gate explicit --speed-gate-override reason; official MJWarp docs When To Use MJWarp optimized for throughput, not latency",
+    "task_first_GPU_utc": "2026-10-16T05:47:00.019842+00:00",
+    "task_hard_end_utc": "2026-10-16T13:47:00.019842+00:00",
+    "task_graceful_drain_utc": "2026-10-16T13:45:00.019842+00:00",
+    "recorded_utc": "2026-10-16T06:19:10.482332+00:00"
+  }
 }
