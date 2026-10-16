@@ -99,6 +99,9 @@ def test_stream_hash_atomic_publication_and_cleanup(tmp_path):
     p = subprocess.run([sys.executable, '-c', receiver, str(root)], input=framed, capture_output=True)
     assert p.returncode == 0, p.stderr
     assert (root/'model.safetensors').read_bytes() == chunk and not lease.exists()
+    # A resumed transfer verifies and preserves already complete files.
+    p = subprocess.run([sys.executable, '-c', receiver, str(root)], input=framed, capture_output=True)
+    assert p.returncode == 0 and (root/'model.safetensors').read_bytes() == chunk
     bad_root = tmp_path/'corrupt'
     p = subprocess.run([sys.executable, '-c', receiver, str(bad_root)],
                        input=framed.replace(chunk,b'x'*len(chunk)), capture_output=True)

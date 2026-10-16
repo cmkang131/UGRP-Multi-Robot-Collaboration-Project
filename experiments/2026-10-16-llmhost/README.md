@@ -100,8 +100,8 @@ CPU 원본 경로는
 `gcp2:/home/ugrp/ugrp-sim/llmhost/models/<candidate>/<revision>/`다.
 Mac·receiver 대조 manifest와 조각 해시는 해당 `outputs/llmhost/weights-*/`에 쓴다.
 완료 여부는 `manifest.json.completed`로 판정한다. `.part`나 `mac-verified.json`의
-부분 결과를 완료로 세지 않는다. 중단 시 완료된 파일은 보존하며 같은 목적지에 덮어쓰지 않는다.
-새 기록으로 재개할 때는 원본 전체 해시 검증을 다시 해야 한다.
+부분 결과를 완료로 세지 않는다. 중단 시 완료된 파일은 보존한다. 새 output 기록으로 재개하면 기존 파일도 전체 SHA를
+다시 확인하고, 일치하는 원본은 덮어쓰지 않는다. 불일치는 중단한다.
 
 게이트 모델로 바뀌면 Mac의 기존 HF 로그인을 `--gated`로 읽는 코드 경로를 사용한다.
 토큰은 HTTPS 헤더에만 쓰고 argv·기록·VM에 넣지 않는다. 모델 ID/revision/기본 모델 변경은
@@ -148,7 +148,7 @@ thinking 정책으로 한다. 다른 저장 요청 40개를 대신 골라 동일
 python3 -m scripts.llmhost_benchmark prepare --corpus-id llmalt-40 --output outputs/llmhost/corpus.json <40개_요청_JSON_경로>
 
 # 조정자 승인 + 경보 해소 + 빈 L4 + 가중치 준비 뒤 실행할 한 줄(지금 미실행).
-python3 -m scripts.llmhost_trial --candidate 31b_awq --corpus outputs/llmhost/corpus.json --coordinator-approval /tmp/llmhost-approval.json --output outputs/llmhost/trial-31b-01 --hourly-usd "$LLMHOST_G2_USD_PER_HOUR" --rate-source "$LLMHOST_RATE_SOURCE"
+python3 -m scripts.llmhost_trial --candidate 31b_awq --corpus outputs/llmhost/corpus.json --coordinator-approval /tmp/llmhost-approval.json --output outputs/llmhost/trial-31b-01 --hourly-usd 1.096224308 --rate-source experiments/2026-10-16-llmhost/seoul-skus.json
 ```
 
 승인 JSON 예시(지금 발급·승인된 파일은 없음):
@@ -160,7 +160,10 @@ python3 -m scripts.llmhost_trial --candidate 31b_awq --corpus outputs/llmhost/co
 비용 입력은 **Seoul STANDARD g2-standard-8 전체 VM의 실제 시간당 USD**와 확인 출처/시각이다.
 [공식 accelerator VM 가격표](https://cloud.google.com/products/compute/pricing/accelerator-optimized)를
 지역·소비 모드별로 다시 확인하여 채운다. Spot·다른 지역·GPU 단품 가격을 쓰지 않는다.
-지역 확정 요율을 아직 확보하지 못해 임의 숫자를 기본값으로 넣지 않았다.
+공식 Billing Catalog API 전체7페이지에서 Seoul OnDemand SKU를 조회해
+[`seoul-skus.json`](seoul-skus.json)에 보존했다. GPU `DAF9-4142-CF10` $0.7192037 +
+CPU `7704-213B-8EF9` 8×$0.03208986 + RAM `00B1-E347-5D28` 32×$0.003759429 =
+**$1.096224308/시간**(유효일 2026-10-15, 조회 2026-10-16)이다. 실행일 요율 변경은 재확인한다.
 `benchmark_wall_s/3600×hourly_usd`와 첫 준비·전송·기동·종료를 포함한 trial wall 비용을
 따로 기록하고 디스크·전송·세금은 별도로 표시한다. 크레딧으로 실제 현금 청구가 0이어도
 사용 자원 비용을 0으로 만들지 않는다.
@@ -179,7 +182,7 @@ CPU 전용 테스트는 `tests/test_llmhost.py`, 기존 `tests/test_openrouter_u
 프레이밍 실제 subprocess 왕복, 조각 해시 손상 시 원본 게시 금지/임대 정리,
 기본 off·GPU 명령·계정/프로젝트·8h·승인 만료·경보 차단·자기 RGB 바이트 보존·
 length 거부·캐시 미측정·비용 산식·중계 identity 변경 거부를 검사한다.
-최종 24 passed(0.74초). CI shard 목록에도 새 시험 파일이 포함됨을 확인했다.
+최종 24 passed(0.82초). CI shard 목록에도 새 시험 파일이 포함됨을 확인했다.
 물리·렌더·GPU·실제 모델 호출은 0이다. GPU runtime/메모리/engine/kernel/idle 정지는
 실제로 검증하지 않았으며 mock/CPU 검사로 대체하여 성공을 선언하지 않는다.
 

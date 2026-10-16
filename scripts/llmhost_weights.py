@@ -18,7 +18,7 @@ from scripts.llmhost_common import digest, settings, write_json
 # Framing: one JSON header per file/chunk, followed by exactly n binary bytes.
 # Only this receiver program is copied; authentication stays in the Mac HTTPS client.
 RECEIVER = r'''
-import hashlib,json,os,pathlib,sys,time
+import contextlib,hashlib,json,os,pathlib,sys,time
 root=pathlib.Path(sys.argv[1]); root.mkdir(parents=True,exist_ok=True)
 lease=pathlib.Path('/home/ugrp/ugrp-sim/leases/llmhost-stage.json')
 lease.parent.mkdir(parents=True,exist_ok=True)
@@ -31,18 +31,24 @@ try:
   if not line: break
   meta=json.loads(line); target=root/meta['path']
   if not target.resolve().is_relative_to(root.resolve()): raise ValueError('path_escape')
-  if target.exists(): raise ValueError('destination_exists')
+  reuse=target.exists()
+  if reuse:
+   old=hashlib.sha256()
+   with target.open('rb') as f:
+    while data:=f.read(8*1024**2): old.update(data)
+   if target.stat().st_size!=meta['bytes'] or old.hexdigest()!=meta['sha256']: raise ValueError('existing_destination_hash')
   target.parent.mkdir(parents=True,exist_ok=True)
   part=target.with_name(target.name+'.part'); total=0; full=hashlib.sha256()
-  with part.open('wb') as f:
+  with (contextlib.nullcontext(None) if reuse else part.open('wb')) as f:
    while True:
     header=json.loads(stream.readline())
     if header['n']==0: break
     chunk=stream.read(header['n'])
     if len(chunk)!=header['n'] or hashlib.sha256(chunk).hexdigest()!=header['sha256']: raise ValueError('chunk_hash')
-    f.write(chunk); full.update(chunk); total+=len(chunk)
+    if f is not None: f.write(chunk)
+    full.update(chunk); total+=len(chunk)
   if total!=meta['bytes'] or full.hexdigest()!=meta['sha256']: raise ValueError('whole_file_hash')
-  part.rename(target)
+  if not reuse: part.rename(target)
   print(json.dumps(dict(path=meta['path'],bytes=total,sha256=full.hexdigest())),flush=True)
 finally:
  lease.unlink()
