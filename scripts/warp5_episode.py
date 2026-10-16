@@ -1,6 +1,6 @@
 """Isolated legacy controller lanes; scheduling adapters, no policy rewrite."""
 from __future__ import annotations
-import hashlib,importlib.util,json,sys
+import hashlib,importlib.util,json,sys,os
 from pathlib import Path
 from scripts.warp5_batch import transform_runner
 
@@ -56,7 +56,7 @@ class Bridge:
         return self.context
 
 
-def prepare_modules(host):
+def prepare_modules(host,active_robot='r1'):
     from harness.warp5_perception import install as perception_install
     perception_install()
     from harness.warp7_perception import install as warp7_perception_install
@@ -65,7 +65,22 @@ def prepare_modules(host):
     from sim import reloc16_scene
     from scripts import grasp_act_host
     original=factory.build_world
-    def build(*a,**kw):kw['render']=False;return original(*a,**kw)
+    def build(scene,*a,**kw):
+        kw['render']=False
+        sleep=os.environ.get('UGRP_WARP7_NATIVE_SLEEP','off')
+        if sleep not in ('off','on_v1'):raise ValueError('UNKNOWN_WARP7_NATIVE_SLEEP')
+        if sleep=='on_v1':
+            from scripts.warp_act_core import sleep_scene_xml
+            transform,setup=scene.robot_transform,scene.setup
+            scene.robot_transform=lambda xml,**options:sleep_scene_xml(transform(xml,**options),active_robot)
+            def sleeping_setup(world):
+                # Exact existing shared Transport.make_world sleep setup:
+                # native wake sentinel, ordinary setup, then its .4s folded
+                # quiet settle. No body is artificially fixed; contacts wake it.
+                world.data.qfrc_applied[:]=-0.0;setup(world);world.data.qfrc_applied[:]=0.0
+                for _ in range(round(.4/world.model.opt.timestep)):world._physics_step_for(world.robot(active_robot))
+            scene.setup=sleeping_setup
+        return original(scene,*a,**kw)
     factory.build_world=build
     # Validate model dressing as before; native GL texture-state calls are
     # inapplicable to the new renderer. No GL owner/thread is created.
@@ -81,7 +96,7 @@ def prepare_modules(host):
 def make_carry(source,plan,out,host,kwargs):
     bridge=Bridge(host)
     def factory():
-        prepare_modules(host)
+        prepare_modules(host,plan['robot_id'])
         from scripts import run_solo_grasp_act_teacher as runner
         function,audit=transform_runner(Path(runner.__file__).read_text(),runner.__dict__,bridge,'carry')
         bridge.ast_audit=audit
@@ -92,7 +107,7 @@ def make_carry(source,plan,out,host,kwargs):
 def make_selfmap(source,bundle,out,host):
     bridge=Bridge(host)
     def factory():
-        prepare_modules(host)
+        prepare_modules(host,bundle['task']['robot_id'])
         from scripts import run_self_map_diagnostic as runner
         from sim.own_map_closed_loop import PhysicsBackend
         function,audit=transform_runner(Path(runner.__file__).read_text(),runner.__dict__,bridge,'selfmap')

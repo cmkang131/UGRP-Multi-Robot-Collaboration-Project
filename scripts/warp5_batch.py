@@ -95,14 +95,44 @@ class Batch(WarpTransport):
             tops=sorted(name for name in names if name.startswith('cctv_'))
             self.camera_names += [(name,name,(320,240)) for name in tops]
             from scripts.warp5_render import Renderer
-            self.multi_renderer=Renderer(self.m,self.wm,self.wd,self.camera_names,
+            actor_names=[entry for entry in self.camera_names if entry[0] in contexts[0]['ports']]
+            self.review_names=[entry for entry in self.camera_names if entry[0] not in contexts[0]['ports'] and (entry[0] in ('r1','r2','r3') or entry[0]==tops[0])]
+            self.multi_renderer=Renderer(self.m,self.wm,self.wd,actor_names if getattr(self,'camera_demand_v1',False) else self.camera_names,
                 enabled=getattr(self,'warp5_native_visual_v1',False) or getattr(self,'warp5_native_visual_v2',False),
                 texture_after_lighting=getattr(self,'warp5_native_visual_v2',False))
+            self.review_renderer=(Renderer(self.m,self.wm,self.wd,self.review_names,
+                enabled=getattr(self,'warp5_native_visual_v1',False) or getattr(self,'warp5_native_visual_v2',False),
+                texture_after_lighting=getattr(self,'warp5_native_visual_v2',False)) if getattr(self,'camera_demand_v1',False) and self.review_names else None)
+            if getattr(self,'camera_demand_v1',False):
+                self.parity_renderer=Renderer(self.m,self.wm,self.wd,self.camera_names,
+                    enabled=getattr(self,'warp5_native_visual_v1',False) or getattr(self,'warp5_native_visual_v2',False),
+                    texture_after_lighting=getattr(self,'warp5_native_visual_v2',False))
+                self.parity_rows=[];self.parity_motion=False
             self._multi_camera=True
         start=time.perf_counter()
         rendered=self.multi_renderer.render()
-        self.rgb_arrays={}
+        if getattr(self,'camera_demand_v1',False):
+            issued=tuple(tuple(p._motor_commands)+tuple(p._servo_applied.values()) for c in contexts for p in c['ports'].values())
+            initial=not hasattr(self,'parity_initial_issued')
+            if initial:self.parity_initial_issued=issued
+            changed=issued!=self.parity_initial_issued
+            if initial or (changed and not self.parity_motion):
+                full=self.parity_renderer.render();checks=[]
+                for rid in contexts[0]['ports']:
+                    aa,bb=(np.clip(x,0,255).astype(np.uint8) for x in (rendered[rid][0],full[rid][0]))
+                    checks.append(dict(robot=rid,exact=bool(np.array_equal(aa,bb)),max_delta=int(np.abs(aa.astype(int)-bb).max())))
+                self.parity_rows.append(dict(tick=self.tick,own_command_changed=changed,checks=checks))
+                (self.out/'camera-demand-parity.json').write_text(json.dumps(dict(scope='same GPU state/full vs demanded own cameras; no CPU reference',rows=self.parity_rows),indent=2)+'\n')
+                if not all(c['exact'] for c in checks):raise ValueError('demand rendering changed actor RGB')
+                if changed:self.parity_motion=True
+        if self.review_renderer is not None:
+            # Same exact2Hz predicate as PlaybackRecorder.observe. Actor RGB
+            # stays10Hz; only unconsumed peer/overview render calls are omitted.
+            now=sim_clock(contexts[0]['origin'],self.tick,self.period)
+            if not self.camera_cache or abs(now*2-round(now*2))<=1e-6:rendered.update(self.review_renderer.render())
+        if not hasattr(self,'rgb_arrays'):self.rgb_arrays={}
         for camera,(rid,name,(width,height)) in enumerate(self.camera_names):
+            if rid not in rendered:continue
             values=np.clip(rendered[rid][0],0,255).astype(np.uint8)
             for i,rgb in enumerate(values):
                 if rid in ('r1','r2','r3'):

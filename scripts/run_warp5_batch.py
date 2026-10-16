@@ -92,9 +92,12 @@ def run(a):
         for key in sorted(keys):
             indices=np.array([i for i,c in enumerate(contexts) if model_key(c['world'].scene_xml)==key])
             folder=a.output/'groups'/key;folder.mkdir(parents=True)
-            transport=Batch(host,sha,'mjwarp_batch_v1',folder)
+            transport=Batch(host,sha,'mjwarp_batch_v1',folder,
+                native_sleep_policy_compat_v1=q.get('native_sleep_policy_compat_v1',False))
             transport.warp5_native_visual_v1=hooks.warp5_native_visual_v1;transport.warp5_native_visual_v2=hooks.warp5_native_visual_v2
-            cc=[contexts[i] for i in indices];groups.append((indices,cc,transport));transport.initialize(cc)
+            transport.camera_demand_v1=q.get('warp7_camera_demand_v1',False)
+            cc=[contexts[i] for i in indices];groups.append((indices,cc,transport));transport.initialize(cc,
+                float32_solver_default_v1=q.get('float32_solver_default_v1',False))
         report.update(model_groups=[dict(worlds=ii.tolist(),camera=h.camera,compatibility=h.compat,capacities=h.capacities) for ii,cc,h in groups])
         loop=time.perf_counter()
         targets=np.array([c['origin'] for c in contexts],float)

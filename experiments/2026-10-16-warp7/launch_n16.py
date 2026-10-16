@@ -7,7 +7,7 @@ BASE=Path('/home/ugrp/ugrp-sim');RUN=BASE/'runs/warp7'
 
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--attempt',default='r1');args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--attempt',default='r1');parser.add_argument('--warp-native-runtime-v1',action='store_true');args=parser.parse_args()
     if not re.fullmatch(r'r[1-3][a-z]?',args.attempt):raise ValueError('finite attempt name required')
     name='n16-'+args.attempt
     assert platform.node().startswith('ugrp-act-l4-gcp2')
@@ -56,11 +56,16 @@ def main():
         UGRP_WARP7_PERCEPTION='rendered_hsv_v1',UGRP_WARP7_CALIBRATION=str(cal),
         UGRP_WARP7_CALIBRATION_SHA256=hashlib.sha256(cal.read_bytes()).hexdigest())
     env['UGRP_SCENE_COLOUR_CALIBRATION_SHA256']=hashlib.sha256(Path(env['UGRP_SCENE_COLOUR_CALIBRATION']).read_bytes()).hexdigest()
+    if args.warp_native_runtime_v1:env['UGRP_WARP7_NATIVE_SLEEP']='on_v1'
     q=dict(task='warp7',source_sha=sha,rejection_table=str(table),
         render_gate=str(RUN/'colour-r3-summary.json'),diagnostic_only=True,warp5_native_visual_v2=True,
         measured_storage_budget_v1=True,storage_budget=json.loads((RUN/'storage-measured.json').read_text()),
         environment=env,runs=runs,pool_conditions=False,independent_initial_cases=6,duplicate_isolation_worlds=4,
         interpretation='N16 simultaneous DEV:6 initial cases x2 conditions +4 explicit replicas; no full visual/ACT/E2E qualification')
+    if args.warp_native_runtime_v1:
+        q.update(native_sleep_policy_compat_v1=True,float32_solver_default_v1=True,warp7_camera_demand_v1=True,
+            runtime_profile='warp7_native_runtime_v1',pool_with_all_awake=False,
+            runtime_basis='MJWarp official sleeping/compact DoFs; exact existing shared sleep setup and upstream float32 tolerance; actor10Hz/reviewer2Hz unchanged with same-state actor RGB parity')
     path=RUN/(name+'-queue.json')
     if path.exists() or (RUN/name).exists():raise ValueError('new attempt paths required')
     path.write_text(json.dumps(q,indent=2)+'\n')
