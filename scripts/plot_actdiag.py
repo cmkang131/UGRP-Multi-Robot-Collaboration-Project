@@ -8,7 +8,7 @@ import platform
 def main():
     if platform.system()!='Linux':raise RuntimeError('GCP2 plots only')
     from scripts.beamact1_runtime import require_gcp2
-    require_gcp2(training=True)
+    require_gcp2(training=False)
     import matplotlib
     matplotlib.use('Agg')
     import matplotlib.pyplot as plt
