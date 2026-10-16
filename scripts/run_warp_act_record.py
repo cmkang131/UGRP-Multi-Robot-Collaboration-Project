@@ -30,6 +30,9 @@ def main():
         p.add_argument('--'+key, type=Path, required=True)
     p.add_argument('--stage', choices=['pilot', 'batch'], default='pilot')
     p.add_argument('--recording-approval', type=Path)
+    p.add_argument('--warp3-host-schema-v1','--act16w-host-schema-v1',dest='host_schema_v1',action='store_true',
+                   help='explicit four-field pinned warp3 gate/live host compatibility')
+    p.add_argument('--admission-check-only',action='store_true',help='validate batch proof/live host without physics or capture')
     a = p.parse_args()
     if not a.enabled: p.error('recording is default OFF')
     gate = admit(a.qualification, a.qualified_source, a.teacher_source)
@@ -45,7 +48,24 @@ def main():
     import sim
     sim.__path__.append(str(a.qualified_source/'sim'))
     from harness.grasp_act_solo_recording import SoloRecorder, validate_recording, validate_approval
-    validate_approval(a.recording_approval, stage=a.stage, sha=QUALIFIED, host=gate['cohort']['host'])
+    if a.host_schema_v1:
+        if a.stage!='batch':p.error('recording host schema compatibility is batch-only')
+        from warp_act_record_admission import validate
+        from simalt_host import gcp2_identity
+        validate(a.recording_approval,source_sha=QUALIFIED,gate=gate,current_host=gcp2_identity())
+    else:
+        validate_approval(a.recording_approval, stage=a.stage, sha=QUALIFIED, host=gate['cohort']['host'])
+    if a.admission_check_only:
+        if a.stage!='batch':p.error('admission-only check requires batch stage')
+        a.out.mkdir(parents=True,exist_ok=False)
+        (a.out/'admission-only.json').write_text(json.dumps(dict(status='APPROVED_PINNED',
+            capture_or_physics_executed=False,controller_source=QUALIFIED,
+            gate_raw_sha256=__import__('warp_act_api').GATE_RAW_SHA,
+            adapter_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+            host_schema='warp3_recorded_four_fields_v1' if a.host_schema_v1 else 'legacy',
+            recording_approval=str(a.recording_approval),
+            recording_approval_sha256=hashlib.sha256(a.recording_approval.read_bytes()).hexdigest()),indent=2)+'\n')
+        return
     import warp_act_backend
     original = warp_act_backend.WarpTransport.capture
     a.out.mkdir(parents=True, exist_ok=False)

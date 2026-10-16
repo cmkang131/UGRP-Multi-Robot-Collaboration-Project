@@ -25,6 +25,42 @@ def initial():
     return dict(t=0., wheels=[0.]*4, duration_s=[0.]*4, pwm={str(s): 1500 for s in (1, 3, 4, 5, 6)})
 
 
+def recording_proof(tmp_path):
+    host=dict(project_id='ugrp-sim-b-1014',instance='ugrp-act-l4-gcp2',
+              machine_type='g2-standard-8',zone='asia-northeast3-a')
+    gate=dict(source_sha='frozen',passed=True,n=40,N=40,cohort={'host':host})
+    checks=[]
+    for i in range(2):
+        p=tmp_path/f'pilot-{i}.json';p.write_text('{"passed":true}')
+        checks.append(dict(passed=True,path=str(p),sha256=hashlib.sha256(p.read_bytes()).hexdigest()))
+    proof=dict(approved=True,source_sha='frozen',gate_promotion_authorized_if_all_conditions_pass=False,
+        corrected_teacher_gate=dict(source_sha='frozen',solo_truth_free_lookaround_v1=True,
+                                    n=40,N=40,execution_host=deepcopy(host)),pilot_checks=checks)
+    return host,gate,proof
+
+
+def test_four_field_recording_admission_does_not_invent_historical_fields(tmp_path):
+    from scripts.warp_act_record_admission import validate
+    host,gate,proof=recording_proof(tmp_path)
+    path=tmp_path/'approval.json';path.write_text(json.dumps(proof))
+    assert validate(path,source_sha='frozen',gate=gate,current_host=host)==proof
+    assert set(gate['cohort']['host'])=={'project_id','instance','machine_type','zone'}
+
+
+@pytest.mark.parametrize('failure',['changed_pilot','missing_pilot','other_host','other_project','inflated_count','auto_promotion'])
+def test_recording_admission_rejects_changed_evidence_or_host(tmp_path,failure):
+    from scripts.warp_act_record_admission import validate
+    host,gate,proof=recording_proof(tmp_path)
+    if failure=='changed_pilot':Path(proof['pilot_checks'][0]['path']).write_text('changed')
+    if failure=='missing_pilot':Path(proof['pilot_checks'][0]['path']).unlink()
+    if failure=='other_host':host['instance']='ugrp-act-l4-gcp2b'
+    if failure=='other_project':host['project_id']='ugrp-act-train-1014'
+    if failure=='inflated_count':proof['corrected_teacher_gate'].update(n=80,N=80)
+    if failure=='auto_promotion':proof['gate_promotion_authorized_if_all_conditions_pass']=True
+    path=tmp_path/'approval.json';path.write_text(json.dumps(proof))
+    with pytest.raises(ValueError):validate(path,source_sha='frozen',gate=gate,current_host=host)
+
+
 def test_recording_retains_original_issued_command_and_error_ledger(tmp_path, monkeypatch):
     """A decoder failure must close the raw recording without admitting it."""
     import sys
