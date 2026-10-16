@@ -133,7 +133,7 @@ def run(a):
     if not q.get('enabled') or not Path(q['rejection_table']).is_file():
         raise ValueError('enabled queue with existing absolute rejection_table required')
     report = dict(status='running', engine=a.engine, host=hostname, mujoco=mujoco.__version__,
-        source_sha=subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+        source_sha=a.source_sha or subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
         fixture_sha256=sha(a.fixture/'fixture.npz'), xml_sha256=sha(a.fixture/'scene.xml'),
         toggles=dict(legacy_plane_v1=a.legacy_plane_v1, dense_capacity_v1=a.dense_capacity_v1,
                      noslip_off_v1=a.noslip_off_v1), cases=cases, dt=meta['dt'],
@@ -280,6 +280,7 @@ def main():
     b=sub.add_parser('run');b.add_argument('--enabled',action='store_true');b.add_argument('--fixture',type=Path,required=True)
     b.add_argument('--out',type=Path,required=True);b.add_argument('--engine',choices=('cpu','warp'),required=True)
     b.add_argument('--queue',type=Path,required=True);b.add_argument('--only')
+    b.add_argument('--source-sha',help='original commit of a git archive on a host with shallow shared storage')
     b.add_argument('--legacy-plane-v1',action='store_true');b.add_argument('--dense-capacity-v1',action='store_true')
     b.add_argument('--noslip-off-v1',action='store_true');b.add_argument('--capacity-reference',type=Path)
     a=p.parse_args()
