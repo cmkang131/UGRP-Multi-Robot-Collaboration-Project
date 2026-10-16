@@ -17,3 +17,5 @@
 08:38UTC 후속 기록: R1은08:02:57UTC에 NVMAX128/active156로 exit1. 성공완료1·cap_end0·HOST_ERROR39. 위 실행 중 checkpoint와 release 구소스 지시는 역사적 기록이다. R2는175281c8922453465f8bf32707e22988e78b8812를 사용한다. 새 실패seed8318706 먼저, 원래 canonical XML 명시, full-active-dof-workspace-v1 ON(정확한nv222), 비물리30PASS. R1 lease는 종료receipt/PID부재 확인 후 제거했다.8h VM필드 제거를 발견했고 실행 중 복원은API가 거부했다. 타 lease/GPU client 부재에서gcp3만 정지→28800초 STOP복원→재시작한다. 자체정리14:05UTC는 그대로다. gcp2 무변경.
 
 08:38:49UTC R2 제출: driver1743/child1745,40세계, seed8318706 첫번째, 원래canonical XML+40참조, full nv222. 숨김 .warp9-claim.lock은0바이트·미보유였고 fcntl 비차단잠금 아래 타 JSONlease/GPU client부재를 확인했다. 파일은 보존했다. idle timer 정확한 이름은ugrp-idle-guard.timer이며active. 처음 잘못된이름을 조회한 단계에서는set-e로제출전중단됐으므로 중복실행없다.
+
+08:42UTC R1 CPU재계수 완료: gcp2 CPU가TERMINATED여서 명시project/account로시작했다(새IP조회). 재시작후타JSONlease0, 기존warp3/warp7파일은더이상없었고우리작업이제거하지않았다. R1+종료native export메타2041파일61,270,906바이트를Mac파일저장없이SSH pipe로gcp2에전송했다. 원본manifest2040파일의크기/SHA256전수일치(추가1파일은source manifest자체). R1완료성공1/cap_end0/HOST_ERROR39 재계수일치, evaluator JSON오류0.40세계held_world_reads=0/invisible_measurements=0; 단완료1은전체·미완료39는저장된prefix범위다. R1-summary.json/R1-integrity-audits.json 참조.

@@ -23,5 +23,23 @@
     "resolution": "read warp6 exact playback metadata, verify adapter835ccef2 assets, set cwd before loading XML; v3 two-world preview succeeded",
     "physical_outcome": false,
     "original_failed_derived_directory_preserved": true
+  },
+  {
+    "stage": "8h scheduling restore",
+    "error": "running instance API rejects max run duration update",
+    "resolution": "no active JSONleases/GPUclients; stop gcp3, restore28800s STOP, restart; task deadline14:05UTC unchanged",
+    "physical_outcome": false
+  },
+  {
+    "stage": "R2 pre-admission",
+    "error": "wrong idle timer name then strict all-file lease test found unheld hidden .warp9-claim.lock",
+    "resolution": "no batch submitted at either guard failure; verified actual ugrp-idle-guard.timer active and lock unheld; kept file; admitted R2 under nonblocking claim lock",
+    "physical_outcome": false
+  },
+  {
+    "stage": "gcp2 SSH",
+    "error": "old IP timed out because CPU VM was TERMINATED",
+    "resolution": "started only CPU VM with explicit project/account and queried new IP; no gcp2 L4 action",
+    "physical_outcome": false
   }
 ]
