@@ -1,0 +1,157 @@
+{
+  "1045": {
+    "windows": 757,
+    "counts": {
+      "unknown_texture": 743,
+      "changed_view": 14
+    },
+    "would_stop": []
+  },
+  "1046": {
+    "windows": 134,
+    "counts": {
+      "unknown_texture": 86,
+      "changed_view": 45,
+      "stationary_view": 3
+    },
+    "would_stop": [
+      {
+        "t": 221.4,
+        "end": 222.15,
+        "before_t": 221.4,
+        "commands": [
+          {
+            "t": 221.4,
+            "kind": "mecanum",
+            "forward": 0.0,
+            "left": -0.65,
+            "turn": 0.0,
+            "duration_s": 0.65
+          }
+        ],
+        "expected_delta": [
+          0.0006679662339439436,
+          -0.16694529519717285,
+          0.026159762090627914
+        ],
+        "after_t": 222.15,
+        "frame_id": 4418,
+        "status": "stationary_view",
+        "tracks": 22,
+        "cells": 3,
+        "median_px": 0.4192490726709366,
+        "p90_px": 0.5339053869247438,
+        "stationary_streak": 1,
+        "would_stop": true,
+        "policy": "DEV log only",
+        "seed": 1046,
+        "eval_only": {
+          "distance_m": 0.00010832706851272933,
+          "yaw_deg": 0.015409011157602633
+        }
+      },
+      {
+        "t": 222.35,
+        "end": 223.1,
+        "before_t": 222.35,
+        "commands": [
+          {
+            "t": 222.35,
+            "kind": "mecanum",
+            "forward": 0.0,
+            "left": -0.65,
+            "turn": 0.0,
+            "duration_s": 0.65
+          }
+        ],
+        "expected_delta": [
+          0.0006679662339439436,
+          -0.16694529519717285,
+          0.026159762090627914
+        ],
+        "after_t": 223.1,
+        "frame_id": 4437,
+        "status": "stationary_view",
+        "tracks": 20,
+        "cells": 3,
+        "median_px": 0.5800864100456238,
+        "p90_px": 0.9132958590984345,
+        "stationary_streak": 2,
+        "would_stop": true,
+        "policy": "DEV log only",
+        "seed": 1046,
+        "eval_only": {
+          "distance_m": 6.991116543845015e-05,
+          "yaw_deg": -0.02560862954931002
+        }
+      },
+      {
+        "t": 267.2,
+        "end": 269.55,
+        "before_t": 267.2,
+        "commands": [
+          {
+            "t": 267.2,
+            "kind": "mecanum",
+            "forward": 0.0,
+            "left": -0.35,
+            "turn": 0.0,
+            "duration_s": 0.06
+          },
+          {
+            "t": 267.6,
+            "kind": "mecanum",
+            "forward": 0.0,
+            "left": -0.35,
+            "turn": 0.0,
+            "duration_s": 0.06
+          },
+          {
+            "t": 268.0,
+            "kind": "mecanum",
+            "forward": 0.0,
+            "left": -0.35,
+            "turn": 0.0,
+            "duration_s": 0.06
+          },
+          {
+            "t": 268.4,
+            "kind": "mecanum",
+            "forward": 0.0,
+            "left": -0.35,
+            "turn": 0.0,
+            "duration_s": 0.06
+          },
+          {
+            "t": 268.8,
+            "kind": "mecanum",
+            "forward": 0.0,
+            "left": -0.65,
+            "turn": 0.0,
+            "duration_s": 0.65
+          }
+        ],
+        "expected_delta": [
+          0.00012430115440979777,
+          -0.1960805735812572,
+          0.021817908324712216
+        ],
+        "after_t": 269.55,
+        "frame_id": 5366,
+        "status": "stationary_view",
+        "tracks": 13,
+        "cells": 4,
+        "median_px": 0.9854928255081177,
+        "p90_px": 1.6388740062713627,
+        "stationary_streak": 1,
+        "would_stop": true,
+        "policy": "DEV log only",
+        "seed": 1046,
+        "eval_only": {
+          "distance_m": 0.0013026328154002761,
+          "yaw_deg": 0.1458131248116063
+        }
+      }
+    ]
+  }
+}

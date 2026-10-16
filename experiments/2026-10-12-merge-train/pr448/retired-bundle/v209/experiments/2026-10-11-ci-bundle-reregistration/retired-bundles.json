@@ -1,0 +1,246 @@
+{
+  "schema": "ugrp.retired_execution_bundles.v1",
+  "retired": [
+    {
+      "execution_bundle_id": "zone-s3-recovery-v152",
+      "workflow_version": "7.45.0",
+      "source_sha": "981baa95e77aa78e5ffd6bc87c172cbb97aea7ed",
+      "consumer_source_sha": "a6ff738f5fa24106f5896c9b5b3b8d7f2e3e8e2e",
+      "comparison_path": "experiments/2026-10-09-s3-no-prior/s3fix7/comparison.json",
+      "comparison_sha256": "4a6478c18875ec67f025b668f31c270dbb3bd324d365d955913b7fe5b16b5839",
+      "runtime_source_count": 379,
+      "preserved_files": {
+        "harness/zone_s3_recovery_contract.py": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v152/harness/zone_s3_recovery_contract.py",
+          "sha256": "6a70777cc9d7c8174232a73aaf32da590228b94a18b1a791136c9e9ee8b32662"
+        },
+        "scripts/run_s3_recovery.py": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v152/scripts/run_s3_recovery.py",
+          "sha256": "02d2d79604add7b4b4c18821dfc47ffd3352eb8c3b61d70b5e0bda1e6534d0cb"
+        },
+        "configs/simulation_workflows.d/s3_recovery_v152.json": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v152/configs/simulation_workflows.d/s3_recovery_v152.json",
+          "sha256": "b57be93e5333f111c23c51a6a4ea8bb1807cf63c2a222cdb253d4947fafe0244"
+        },
+        "experiments/2026-10-09-s3-no-prior/s3fix7/registration.json": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v152/experiments/2026-10-09-s3-no-prior/s3fix7/registration.json",
+          "sha256": "12e3fcb4b744925da3370dee91e5ad279263bf7aca46c2de39d6e8b54a6ba2a1"
+        }
+      },
+      "reason": "six source consumers changed after the recorded seal; replay only at original SHA",
+      "replacement": "zone-s3-recovery-v188"
+    },
+    {
+      "execution_bundle_id": "zone-s3-recovery-v188",
+      "workflow_version": "7.81.0",
+      "source_sha": "b3d52826997712e964812eecefe32aeb67d20b7f",
+      "recorded_runs": 0,
+      "preserved_files": {
+        "harness/zone_s3_recovery_contract.py": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v188/harness/zone_s3_recovery_contract.py",
+          "sha256": "1c1b5f59f57a96c38eeddcf76e060f12b507ec2ec8e1cea862f244ffe39ac1eb"
+        },
+        "scripts/run_s3_recovery.py": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v188/scripts/run_s3_recovery.py",
+          "sha256": "fa14f909fa289e994a5000f7d95f07a08e053abe00454a220c57d8b49c17a6ad"
+        },
+        "configs/simulation_workflows.d/s3_recovery_v188.json": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v188/configs/simulation_workflows.d/s3_recovery_v188.json",
+          "sha256": "e2d51f4134c1984d2eeff5395fac517d43e540f6c50312ad790506c9d7534d45"
+        },
+        "experiments/2026-10-11-ci-bundle-reregistration/registration-v188.json": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v188/experiments/2026-10-11-ci-bundle-reregistration/registration-v188.json",
+          "sha256": "fafd76bea90a0f4d50c3a3c1bffac6215cb10e28697c3b6c6a6c69d412eb1ba1"
+        },
+        "experiments/2026-10-11-ci-bundle-reregistration/source-seal-v188.json": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v188/experiments/2026-10-11-ci-bundle-reregistration/source-seal-v188.json",
+          "sha256": "7adcac5d7cb26242ab3dd85fe1a681d139e53d23a5541afdb538f1001f426b41"
+        }
+      },
+      "reason": "Merged main PR422 changes the sealed heading source; registration only",
+      "replacement": "zone-s3-recovery-v190"
+    },
+    {
+      "execution_bundle_id": "zone-s3-recovery-v190",
+      "workflow_version": "7.83.0",
+      "source_sha": "bca75e2562c68ceab70493af3d0a3d30da54d178",
+      "recorded_runs": 0,
+      "preserved_files": {
+        "harness/zone_s3_recovery_contract.py": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v190/harness/zone_s3_recovery_contract.py",
+          "sha256": "fc4daf9e4e15d4c0c9b4c69bed55bc7400fdd2f8e16fe9191a3d0b8425c16330"
+        },
+        "scripts/run_s3_recovery.py": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v190/scripts/run_s3_recovery.py",
+          "sha256": "66b676b06d64c6144e71819ab3dc1ea2315590d8a275c3c16a7c75d69c7edfca"
+        },
+        "configs/simulation_workflows.d/s3_recovery_v190.json": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v190/configs/simulation_workflows.d/s3_recovery_v190.json",
+          "sha256": "1aab08e37f254a74662f846988a5c458061b23a3652ccb3e248faad81e2bea95"
+        },
+        "experiments/2026-10-11-ci-bundle-reregistration/registration-v190.json": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v190/experiments/2026-10-11-ci-bundle-reregistration/registration-v190.json",
+          "sha256": "604abe92803edff3ca2b1a2534d7e6cb172256eeb904c5fbfd7edb9cbc2a7be6"
+        },
+        "experiments/2026-10-11-ci-bundle-reregistration/source-seal-v190.json": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v190/experiments/2026-10-11-ci-bundle-reregistration/source-seal-v190.json",
+          "sha256": "0fa27a45017ee50bc763fb6cd076b13e27c46d3ec6f6bc52c8a486074b6a2691"
+        }
+      },
+      "reason": "PR416 review fixes restore sealed common sources and move S3 behavior into dedicated adapters; registered bundles are never overwritten",
+      "replacement": "zone-s3-recovery-v193"
+    },
+    {
+      "execution_bundle_id": "zone-s3-recovery-v189",
+      "workflow_version": "7.82.0",
+      "source_sha": "69147ab2c2d44287ee5b2d853f80da88f1cb62c4",
+      "recorded_runs": 0,
+      "preserved_files": {
+        "harness/zone_s3_recovery_contract.py": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v189/harness/zone_s3_recovery_contract.py",
+          "sha256": "18cc67e213a3d4def7b1dfd9e1110148dd31be2573d0e4cc5fa09c56cc59f53a"
+        },
+        "scripts/run_s3_recovery.py": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v189/scripts/run_s3_recovery.py",
+          "sha256": "6468085063700d6803d35032c9b23692e5054356c5f86dcc159a2ce64f7868bf"
+        },
+        "configs/simulation_workflows.d/s3_recovery_v189.json": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v189/configs/simulation_workflows.d/s3_recovery_v189.json",
+          "sha256": "894af92035cde2f3996b300331839813eb8110db78397eac6d2978aaafff1990"
+        },
+        "experiments/2026-10-11-ci-bundle-reregistration/registration-v189.json": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v189/experiments/2026-10-11-ci-bundle-reregistration/registration-v189.json",
+          "sha256": "df33ead1e6f6a0fed08c3fed4b74c0a6c81172962182ce98a9a1157a18188065"
+        },
+        "experiments/2026-10-11-ci-bundle-reregistration/source-seal-v189.json": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v189/experiments/2026-10-11-ci-bundle-reregistration/source-seal-v189.json",
+          "sha256": "3c2389e9d87bdf9390deb6f0039fed5b2fc38caac37b136bf7810b45c9655f05"
+        }
+      },
+      "reason": "S4 source composition after main PR422 and explicit pre-merge minimum-command contract; separate current registration",
+      "replacement": "zone-s3-recovery-v191"
+    },
+    {
+      "execution_bundle_id": "zone-s3-recovery-v191",
+      "workflow_version": "7.84.0",
+      "source_sha": "00418638f700d3b19421e0457acbdfe8ad1e07d4",
+      "recorded_runs": 0,
+      "runtime_source_count": 432,
+      "preserved_files": {
+        "harness/zone_s3_recovery_contract.py": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v191/harness/zone_s3_recovery_contract.py",
+          "sha256": "53bce79d2c64dc6304baf2959ce5a9087dd030f1a574eb3fc3f2821ef69af329"
+        },
+        "scripts/run_s3_recovery.py": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v191/scripts/run_s3_recovery.py",
+          "sha256": "e51e79c4d80920c81a7ed4f46a83b5bbbddad226851d0f980a5a022f67813d3f"
+        },
+        "configs/simulation_workflows.d/s3_recovery_v191.json": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v191/configs/simulation_workflows.d/s3_recovery_v191.json",
+          "sha256": "06e6dabed32ae467c63ae6d02099c447c8d00ab8119a1e9312a6fe6f3ed3a851"
+        },
+        "experiments/2026-10-11-ci-bundle-reregistration/registration-v191.json": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v191/experiments/2026-10-11-ci-bundle-reregistration/registration-v191.json",
+          "sha256": "dc097f1237e03467cd07a7f0d9f081f8b41114af8a704a4d49b9a7bb40a30e3f"
+        },
+        "experiments/2026-10-11-ci-bundle-reregistration/source-seal-v191.json": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v191/experiments/2026-10-11-ci-bundle-reregistration/source-seal-v191.json",
+          "sha256": "dd4bfad94b1a2ecae267b0c47077763e1ddc6d0595159e71ee2a2896d38e1adb"
+        },
+        "experiments/2026-10-11-ci-bundle-reregistration/retired-bundles.json": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v191/experiments/2026-10-11-ci-bundle-reregistration/retired-bundles.json",
+          "sha256": "8501be7164763134cbf4a916f761e4365e63b9a14c75389e968fc46361f67abb"
+        }
+      },
+      "reason": "PR425 main sync: preserve merged PR416 v193 registration and S3-only adapters; re-register the S4 consumer composition without inheriting execution results",
+      "replacement": "zone-s3-recovery-v195"
+    },
+    {
+      "execution_bundle_id": "zone-s3-recovery-v193",
+      "workflow_version": "7.86.0",
+      "source_sha": "eebb2490b46934f5c96ab9e2eeb70261875e6364",
+      "registration_source_sha": "cadf4da866b01b082469bf86e75ac55606aca4bb",
+      "recorded_runs": 0,
+      "runtime_source_count": 433,
+      "changed_runtime_sources": [
+        "harness/zone_s3_recovery_contract.py",
+        "harness/zone_study_llm_driver.py",
+        "scripts/run_s3_recovery.py",
+        "sim/zone_s3_no_prior.py"
+      ],
+      "preserved_files": {
+        "harness/zone_s3_recovery_contract.py": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v193/harness/zone_s3_recovery_contract.py",
+          "sha256": "1371985a31be3cccd6c92f6e81f6d51d72cd45c048a92210cfe591d02733b64f"
+        },
+        "scripts/run_s3_recovery.py": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v193/scripts/run_s3_recovery.py",
+          "sha256": "1b76d0c02146188fea8a3fbe5bdf12d1b6d3726ebfb5f22b55da4c323e61e5a8"
+        },
+        "configs/simulation_workflows.d/s3_recovery_v193.json": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v193/configs/simulation_workflows.d/s3_recovery_v193.json",
+          "sha256": "0015db9831629c6e89e668b337b097691e9930c3755124f931fcf4479fba14b5"
+        },
+        "experiments/2026-10-11-pr416-review-fixes/registration-v193.json": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v193/experiments/2026-10-11-pr416-review-fixes/registration-v193.json",
+          "sha256": "2aa5987792c4e8f66d72af04a31cabac483151f091a5d3611df235b966e1fbd5"
+        },
+        "experiments/2026-10-11-pr416-review-fixes/source-seal-v193.json": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v193/experiments/2026-10-11-pr416-review-fixes/source-seal-v193.json",
+          "sha256": "2c0d4feb94af785776d35e9923f9bedb34791d9a4e21fa0c28b346d2bbddacd8"
+        },
+        "experiments/2026-10-11-ci-bundle-reregistration/retired-bundles.json": {
+          "path": "experiments/2026-10-11-ci-bundle-reregistration/retired-bundle/v193/experiments/2026-10-11-ci-bundle-reregistration/retired-bundles.json",
+          "sha256": "cb125b6b07feafbe1d2399d2bacd052a8baf893de1a1f46ab9e9c8134c572f9e"
+        }
+      },
+      "reason": "PR425 changed four of 433 sealed runtime sources; the stale v193 workflow would create a v195 bundle. Preserve records and original sources; replay only at the original SHA.",
+      "replacement": "zone-s3-recovery-v195"
+    },
+    {
+      "execution_bundle_id": "zone-s3-recovery-v195",
+      "workflow_version": "7.88.0",
+      "source_sha": "62110b5402e1a991c00f61a4ee7a1baa3aac8167",
+      "runtime_source_count": 434,
+      "changed_runtime_sources": [
+        "harness/zone_environment_registry.py",
+        "harness/zone_final_environment.py",
+        "harness/zone_final_pair_skill.py",
+        "harness/zone_s3_host.py",
+        "harness/zone_s3_recovery_runtime.py",
+        "harness/zone_solo_cyan_path_heading.py",
+        "sim/workflow_manager.py",
+        "sim/zone_scenario_scene.py"
+      ],
+      "preserved_files": {
+        "harness/zone_s3_recovery_contract.py": {
+          "path": "experiments/2026-10-12-merge-train/pr433/retired-bundle/v195/harness/zone_s3_recovery_contract.py",
+          "sha256": "f2bd6b86261995d6e8ed956b6c44cd7bb4fb25581ed9d7607c85f181dce35fc6"
+        },
+        "scripts/run_s3_recovery.py": {
+          "path": "experiments/2026-10-12-merge-train/pr433/retired-bundle/v195/scripts/run_s3_recovery.py",
+          "sha256": "67aa919063f64235062e3197bc608518b77adbf381707914b5c778fb0f83000e"
+        },
+        "configs/simulation_workflows.d/s3_recovery_v195.json": {
+          "path": "experiments/2026-10-12-merge-train/pr433/retired-bundle/v195/configs/simulation_workflows.d/s3_recovery_v195.json",
+          "sha256": "a4983315407e2f98f5dce5be8ce1fdd249dcf62fe85688a7fa679940197a7a8b"
+        },
+        "experiments/2026-10-11-ci-bundle-reregistration/registration-v195.json": {
+          "path": "experiments/2026-10-12-merge-train/pr433/retired-bundle/v195/experiments/2026-10-11-ci-bundle-reregistration/registration-v195.json",
+          "sha256": "2bd7eca29ead8a20a6cc9043497da8f03076ebee716d0a4c232381e5a2a5dd65"
+        },
+        "experiments/2026-10-11-ci-bundle-reregistration/source-seal-v195.json": {
+          "path": "experiments/2026-10-12-merge-train/pr433/retired-bundle/v195/experiments/2026-10-11-ci-bundle-reregistration/source-seal-v195.json",
+          "sha256": "d97158618647ad88c9c6452a028c3de143e9d6e83c3b49553bd508000b1a74f5"
+        },
+        "experiments/2026-10-11-ci-bundle-reregistration/retired-bundles.json": {
+          "path": "experiments/2026-10-12-merge-train/pr433/retired-bundle/v195/experiments/2026-10-11-ci-bundle-reregistration/retired-bundles.json",
+          "sha256": "0409b47cc44d122de8eb81a2d467a2be34f12b8ea246f2db84dc040f753b0d10"
+        }
+      },
+      "reason": "PR433 source composition changed; replay old bundle only at its original SHA.",
+      "replacement": "zone-s3-recovery-v209",
+      "inherited_results": false
+    }
+  ]
+}

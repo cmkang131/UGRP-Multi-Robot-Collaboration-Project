@@ -1,0 +1,37 @@
+{
+  "schema": "ugrp.s2.dock_augmented.criteria.v1",
+  "option": "augmented_active_v1",
+  "default": "off",
+  "user_confirmation": "2026-10-07 real robot does not know its starting dock or row; no dock prior permitted",
+  "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-18e5e42e-s1052-P1-2-place",
+  "window_sim_s": [1.3, 12.0],
+  "parameters": {
+    "particles": 2000,
+    "prior": "uniform static free space and uniform yaw; no row list",
+    "alpha_slow": 0.001,
+    "alpha_fast": 0.1,
+    "selective_resampling_ess_fraction": 0.5,
+    "observation": "unchanged Nav2 cubic hit/random field; one settled calibrated camera pose per motion epoch while global start unresolved",
+    "active_pans": [1500, 1230, 970, 1770, 2030],
+    "active_sensor_model": "central floor-boundary ray; fixed existing sigma_px; 8px discretization; hit/random mixture; out-of-view is unknown",
+    "active_objective": "Fox 1998 expected entropy reduction, equal-cost sensing; no pose-mean collapse",
+    "active_budget_s": 120,
+    "resolved": "Nav2 all-particle XY convergence 0.5m AND global circular yaw std <=5deg"
+  },
+  "replay_gate": {
+    "default_off_pose_bytes_equal": true,
+    "true_neighborhood_survives": "at least one particle within 0.25m and 15deg throughout stationary scan; evaluation only",
+    "position_error_final_m_at_most": 0.25,
+    "position_error_max_m_at_most": 0.5,
+    "position_rmse_below_baseline_m": 1.4228315035553356,
+    "no_false_resolved": true,
+    "repeated_identical_view_no_update": true
+  },
+  "candidate_count": 1,
+  "no_retuning_on_s1052": true,
+  "active_validation_limit": "Recorded pan views only. Shadow action rankings are model predictions, not newly executed observations. No synthetic RGB, render, or physical run unless all replay gates pass.",
+  "physical_if_pass": {"seed": 1052, "runs": 1, "mode": "S2 full DEV", "freeze": "freeze_v1", "slip_recovery": "off; v129 failed", "start_dock_prior": false},
+  "failure_policy": "retain replay FAIL and default off; no physical run",
+  "host_error": "ENOSPC is HOST_ERROR, not a robot failure",
+  "gt_use": "separate scoring only after prediction files complete"
+}

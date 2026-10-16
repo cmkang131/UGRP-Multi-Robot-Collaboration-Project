@@ -1,0 +1,39 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "zone-s2-realism-v132",
+      "version": "7.25.0",
+      "purpose": "s2v39 landmark start one conditional DEV",
+      "entry": "scripts/run_s2_landmarks_dev.py",
+      "runner": "scripts.run_s2_landmarks_dev",
+      "docs": "experiments/2026-10-06-s2-realism/README.md",
+      "requires": "committed source; offline gate; full additionally physical start proof; agent_lock",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--expected-source-sha",
+        "--mode"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    },
+    {
+      "id": "zone-s2-realism-v133",
+      "version": "7.26.0",
+      "purpose": "s2v39 landmark full one conditional DEV",
+      "entry": "scripts/run_s2_landmarks_dev.py",
+      "runner": "scripts.run_s2_landmarks_dev",
+      "docs": "experiments/2026-10-06-s2-realism/README.md",
+      "requires": "committed source; offline gate; full additionally physical start proof; agent_lock",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--expected-source-sha",
+        "--mode"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}

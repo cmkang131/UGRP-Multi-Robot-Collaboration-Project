@@ -1,0 +1,13 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [{
+    "id": "own-teach-return-dev", "version": "1.0.0",
+    "purpose": "egomap54 four DEV teach/repeat trials after saved handoff replay",
+    "entry": "scripts/run_teach_return_dev.py", "runner": "scripts.run_teach_return_dev",
+    "docs": "experiments/2026-10-09-teach-return-dev/README.md",
+    "requires": "Frozen SHA; offline handoff errors zero; S2v59 then S3 smoke released; exclusive lock",
+    "output_flag": "--output", "output_kind": "directory",
+    "required_inputs": ["--seed", "--expected-source-sha"], "side_effect": "local_simulation",
+    "adapter": "managed_legacy_cli"
+  }]
+}

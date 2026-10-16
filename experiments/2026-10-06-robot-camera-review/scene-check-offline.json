@@ -1,0 +1,372 @@
+{
+  "scope": "synthetic JPEG branch tests only; no physical/SIM grasp success measurement",
+  "base_sha": "3178ad3e743f319aec3ff8a420a0b301a3bb87f1",
+  "config": {
+    "frames": 7,
+    "max_present_for_absent": 1,
+    "min_cyan_px": 90,
+    "min_area_ratio": 0.45,
+    "max_area_ratio": 2.2,
+    "registration_correlation": 0.95,
+    "max_shift_px": 12.0,
+    "min_background_std": 2.0,
+    "floor_color_tolerance": 20.0,
+    "clear_fraction": 0.95,
+    "max_retries": 1
+  },
+  "tests": "25 passed; changed-module tests only",
+  "frozen_v106_source_files_unchanged": 305,
+  "new_simulations": 0,
+  "new_renders": 0,
+  "model_calls": 0,
+  "hardware_commands": 0,
+  "before_image": "/Users/changmin/projects/ugrp/outputs/camera-review-20261006/scene-check-offline-v2/before.jpg",
+  "rows": [
+    {
+      "case": "remains",
+      "expected": "present",
+      "evidence": {
+        "profile": "cyan-pickup-site-scene-change-v1",
+        "before_sha256": "2eb8f15fce7b7e74f7a82cafaee3547a56e8599a93c0c11f66854dda7d7c45ab",
+        "before_frame_id": 1,
+        "before_t": 1.0,
+        "before_cyan_area_px": 5200,
+        "pixel_bbox": [
+          280,
+          250,
+          80,
+          65
+        ],
+        "before_full_cyan_area_px": 5280,
+        "center_base_m_from_own_rgb": [
+          0.2032,
+          0.0
+        ],
+        "view_commands": {
+          "3": 508,
+          "4": 2432,
+          "5": 1320,
+          "6": 1500
+        },
+        "floor_bgr": [
+          128.0,
+          128.0,
+          128.0
+        ],
+        "floor_tolerance": 20.0,
+        "cyan_hsv_median": [
+          90.0,
+          255.0,
+          255.0
+        ],
+        "after_sha256": "2eb8f15fce7b7e74f7a82cafaee3547a56e8599a93c0c11f66854dda7d7c45ab",
+        "after_frame_id": 2,
+        "after_t": 2.0,
+        "decision": "present",
+        "physical_success": null,
+        "after_full_cyan_area_px": 5280,
+        "registration_correlation": 1.000001335563425,
+        "translation_px": [
+          3.8372284905108245e-08,
+          1.4726560415567747e-08
+        ],
+        "after_cyan_area_px": 5280,
+        "area_ratio": 1.0153846153846153,
+        "roi_pixels": 20640,
+        "before_after_changed_pixels": 0,
+        "reason": "cyan_remains_at_pickup_site"
+      },
+      "after_image": "/Users/changmin/projects/ugrp/outputs/camera-review-20261006/scene-check-offline-v2/remains.jpg"
+    },
+    {
+      "case": "absent-held-strip",
+      "expected": "absent",
+      "evidence": {
+        "profile": "cyan-pickup-site-scene-change-v1",
+        "before_sha256": "2eb8f15fce7b7e74f7a82cafaee3547a56e8599a93c0c11f66854dda7d7c45ab",
+        "before_frame_id": 1,
+        "before_t": 1.0,
+        "before_cyan_area_px": 5200,
+        "pixel_bbox": [
+          280,
+          250,
+          80,
+          65
+        ],
+        "before_full_cyan_area_px": 5280,
+        "center_base_m_from_own_rgb": [
+          0.2032,
+          0.0
+        ],
+        "view_commands": {
+          "3": 508,
+          "4": 2432,
+          "5": 1320,
+          "6": 1500
+        },
+        "floor_bgr": [
+          128.0,
+          128.0,
+          128.0
+        ],
+        "floor_tolerance": 20.0,
+        "cyan_hsv_median": [
+          90.0,
+          255.0,
+          255.0
+        ],
+        "after_sha256": "401b12f2000c16fe85d9872af12f77602800131d9d9861107f545d39533a1755",
+        "after_frame_id": 3,
+        "after_t": 3.0,
+        "decision": "absent",
+        "physical_success": null,
+        "after_full_cyan_area_px": 17920,
+        "registration_correlation": 1.0000007572816545,
+        "translation_px": [
+          2.2630979756854686e-08,
+          8.683074703697002e-09
+        ],
+        "after_cyan_area_px": 0,
+        "area_ratio": 0.0,
+        "roi_pixels": 20640,
+        "before_after_changed_pixels": 5566,
+        "clear_floor_fraction": 1.0,
+        "reason": "visible_floor_at_old_cyan_site"
+      },
+      "after_image": "/Users/changmin/projects/ugrp/outputs/camera-review-20261006/scene-check-offline-v2/absent-held-strip.jpg"
+    },
+    {
+      "case": "absent-shift8",
+      "expected": "absent",
+      "evidence": {
+        "profile": "cyan-pickup-site-scene-change-v1",
+        "before_sha256": "2eb8f15fce7b7e74f7a82cafaee3547a56e8599a93c0c11f66854dda7d7c45ab",
+        "before_frame_id": 1,
+        "before_t": 1.0,
+        "before_cyan_area_px": 5200,
+        "pixel_bbox": [
+          280,
+          250,
+          80,
+          65
+        ],
+        "before_full_cyan_area_px": 5280,
+        "center_base_m_from_own_rgb": [
+          0.2032,
+          0.0
+        ],
+        "view_commands": {
+          "3": 508,
+          "4": 2432,
+          "5": 1320,
+          "6": 1500
+        },
+        "floor_bgr": [
+          128.0,
+          128.0,
+          128.0
+        ],
+        "floor_tolerance": 20.0,
+        "cyan_hsv_median": [
+          90.0,
+          255.0,
+          255.0
+        ],
+        "after_sha256": "f109d754cff0176422d4a9519d6576bb40cdb1a9031d4d7119afe81054d74481",
+        "after_frame_id": 4,
+        "after_t": 4.0,
+        "decision": "absent",
+        "physical_success": null,
+        "after_full_cyan_area_px": 17696,
+        "registration_correlation": 0.9999996131174401,
+        "translation_px": [
+          8.000003814697266,
+          -2.521684109524358e-06
+        ],
+        "after_cyan_area_px": 0,
+        "area_ratio": 0.0,
+        "roi_pixels": 20640,
+        "before_after_changed_pixels": 5566,
+        "clear_floor_fraction": 1.0,
+        "reason": "visible_floor_at_old_cyan_site"
+      },
+      "after_image": "/Users/changmin/projects/ugrp/outputs/camera-review-20261006/scene-check-offline-v2/absent-shift8.jpg"
+    },
+    {
+      "case": "occluded",
+      "expected": "unknown",
+      "evidence": {
+        "profile": "cyan-pickup-site-scene-change-v1",
+        "before_sha256": "2eb8f15fce7b7e74f7a82cafaee3547a56e8599a93c0c11f66854dda7d7c45ab",
+        "before_frame_id": 1,
+        "before_t": 1.0,
+        "before_cyan_area_px": 5200,
+        "pixel_bbox": [
+          280,
+          250,
+          80,
+          65
+        ],
+        "before_full_cyan_area_px": 5280,
+        "center_base_m_from_own_rgb": [
+          0.2032,
+          0.0
+        ],
+        "view_commands": {
+          "3": 508,
+          "4": 2432,
+          "5": 1320,
+          "6": 1500
+        },
+        "floor_bgr": [
+          128.0,
+          128.0,
+          128.0
+        ],
+        "floor_tolerance": 20.0,
+        "cyan_hsv_median": [
+          90.0,
+          255.0,
+          255.0
+        ],
+        "after_sha256": "744c45a25559e9ea4fad06002eacd6982eb632c10147211f2fcea205bedf7774",
+        "after_frame_id": 5,
+        "after_t": 5.0,
+        "decision": "unknown",
+        "physical_success": null,
+        "after_full_cyan_area_px": 0,
+        "registration_correlation": 1.000001335563425,
+        "translation_px": [
+          3.8372284905108245e-08,
+          1.4726560415567747e-08
+        ],
+        "after_cyan_area_px": 0,
+        "area_ratio": 0.0,
+        "roi_pixels": 20640,
+        "before_after_changed_pixels": 20640,
+        "clear_floor_fraction": 0.0,
+        "reason": "site_occluded_or_ambiguous"
+      },
+      "after_image": "/Users/changmin/projects/ugrp/outputs/camera-review-20261006/scene-check-offline-v2/occluded.jpg"
+    },
+    {
+      "case": "wrong-view",
+      "expected": "unknown",
+      "evidence": {
+        "profile": "cyan-pickup-site-scene-change-v1",
+        "before_sha256": "2eb8f15fce7b7e74f7a82cafaee3547a56e8599a93c0c11f66854dda7d7c45ab",
+        "before_frame_id": 1,
+        "before_t": 1.0,
+        "before_cyan_area_px": 5200,
+        "pixel_bbox": [
+          280,
+          250,
+          80,
+          65
+        ],
+        "before_full_cyan_area_px": 5280,
+        "center_base_m_from_own_rgb": [
+          0.2032,
+          0.0
+        ],
+        "view_commands": {
+          "3": 508,
+          "4": 2432,
+          "5": 1320,
+          "6": 1500
+        },
+        "floor_bgr": [
+          128.0,
+          128.0,
+          128.0
+        ],
+        "floor_tolerance": 20.0,
+        "cyan_hsv_median": [
+          90.0,
+          255.0,
+          255.0
+        ],
+        "after_sha256": "22d23479ac358f168448576848d16bb73f63712464a03c66d9e8798576c50160",
+        "after_frame_id": 6,
+        "after_t": 6.0,
+        "decision": "unknown",
+        "physical_success": null,
+        "after_full_cyan_area_px": 0,
+        "reason": "registration_failed"
+      },
+      "after_image": "/Users/changmin/projects/ugrp/outputs/camera-review-20261006/scene-check-offline-v2/wrong-view.jpg"
+    },
+    {
+      "case": "held-at-internal-lens-rim",
+      "expected": "unknown",
+      "evidence": {
+        "profile": "cyan-pickup-site-scene-change-v1",
+        "before_sha256": "2eb8f15fce7b7e74f7a82cafaee3547a56e8599a93c0c11f66854dda7d7c45ab",
+        "before_frame_id": 1,
+        "before_t": 1.0,
+        "before_cyan_area_px": 5200,
+        "pixel_bbox": [
+          280,
+          250,
+          80,
+          65
+        ],
+        "before_full_cyan_area_px": 5280,
+        "center_base_m_from_own_rgb": [
+          0.2032,
+          0.0
+        ],
+        "view_commands": {
+          "3": 508,
+          "4": 2432,
+          "5": 1320,
+          "6": 1500
+        },
+        "floor_bgr": [
+          128.0,
+          128.0,
+          128.0
+        ],
+        "floor_tolerance": 20.0,
+        "cyan_hsv_median": [
+          90.0,
+          255.0,
+          255.0
+        ],
+        "after_sha256": "1d1d0cf6890fa9fb82cc1b6ada8a416cd67e68f9b4c1d19de0a4281453cfe94a",
+        "after_frame_id": 7,
+        "after_t": 7.0,
+        "decision": "unknown",
+        "physical_success": null,
+        "after_full_cyan_area_px": 7745,
+        "registration_correlation": 0.9999790515620701,
+        "translation_px": [
+          -0.0002713047433644533,
+          -0.0006507901707664132
+        ],
+        "after_cyan_area_px": 3080,
+        "area_ratio": 0.5923076923076923,
+        "roi_pixels": 20640,
+        "before_after_changed_pixels": 5228,
+        "reason": "held_or_clipped_cyan_overlaps_site"
+      },
+      "after_image": "/Users/changmin/projects/ugrp/outputs/camera-review-20261006/scene-check-offline-v2/held-at-internal-lens-rim.jpg"
+    }
+  ],
+  "fixture_source": "tests/test_solo_cyan_v106_scene_check.py: frame/obs/memory",
+  "code_sha256": {
+    "harness/zone_solo_cyan_camera_v3.py": "c63ab36f08e37d240aa3c5943a10eca71740bfcbf430b006ed7b595a54b4b6af",
+    "harness/zone_solo_cyan_scene_change.py": "8efbab9881b5ca4a7c5f62ab72301af3999abcf886bba9cd8094da6a894bcc54",
+    "harness/zone_solo_cyan_scene_runtime.py": "d420b0b4ff4fa440ecb217208204bb566d3fd4e8b00742695e60688144dff404",
+    "tests/test_solo_cyan_v106_camera_v3.py": "300455e42e8d41c9323a8e624404ca0a71cf8fafa8d8ff9b4b590e77dc32b191",
+    "tests/test_solo_cyan_v106_scene_check.py": "9ecc78ea27f63e26642f8d1eef45751d508ad1f58fe092e5af0cc0dd8a63c139"
+  },
+  "limitations": [
+    "No matched real/v3 pre-align and post-return view sequence exists in saved lift",
+    "Removal may also mean pushed aside; visual confirmation is not contact truth",
+    "ECC can be unavailable on blank floors; UNKNOWN remains unconfirmed in dev_light",
+    "Loaded arm return and moving-load stability pending combined camera+drive S2 after #404"
+  ],
+  "prior_diagnostic_preserved": "/Users/changmin/projects/ugrp/outputs/camera-review-20261006/scene-check-offline/audit.json",
+  "correction": "Treat the calibrated internal fisheye valid-pixel boundary as clipping, not only the outer image edge; no K/D changes"
+}

@@ -300,12 +300,11 @@ class StagedTeam(rt.Team):
 class StagedRuntime(rt.Runtime):
     """v98 Runtime with a staged entry; no opening look_around (it would move the arm)."""
     def __init__(self, static, calibration_path, calibration_sha, *, seed, stage, staging, provider_factory=None):
-        from harness.vision_pose_source_highpose import build_provider
         from harness.zone_pair_highpose_contract import CASE_CAP_S
         team = functools.partial(StagedTeam, stage=stage, staging=staging)
         initialize = rt.bind(rt.PreviousRuntime.__init__, Team=team)
         order = iter(ROLES)
-        base_factory = provider_factory or build_provider
+        base_factory = provider_factory or rt.provider_builder()     # same provider choice as rt.Runtime (#383 P2-c)
 
         def staged_provider(*args, **kwargs):
             # The parent sets the public dock prior once per provider (r1, r2

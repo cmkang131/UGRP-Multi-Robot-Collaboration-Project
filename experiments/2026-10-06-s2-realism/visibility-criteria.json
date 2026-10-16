@@ -1,0 +1,31 @@
+{
+  "schema": "ugrp.s2.visibility.criteria.v1",
+  "seeds": [
+    1045,
+    1046,
+    1047
+  ],
+  "option": "command_geometry_v1",
+  "default": "off",
+  "camera_variant": "unloaded_constant_delta",
+  "measurement_model": "amcl_likelihood_field_v1",
+  "max_update_gap_sim_s": 30.0,
+  "min_independent_updates": 6,
+  "independent_spacing_sim_s": 1.0,
+  "accuracy": "carry xy RMSE strictly improves on saved-original, same-calibration hard-receipt, and unmasked AMCL in every seed; p90 no worse than saved-original and same-calibration hard-receipt",
+  "all_seeds_required": true,
+  "visible_rows_px": [
+    4,
+    470
+  ],
+  "minimum_prior_visible_probability": 0.95,
+  "robot_geometry_padding_m": 0.002,
+  "jaw_geometry": "swept from open to own commanded closure; no encoder/contact input",
+  "cargo_geometry": "own RGB cyan mask using existing scene_change.cyan in undistorted image, 2px dilation; no inferred held pose and no GT",
+  "geometry": "fixed v3 visual link geometry conservative local boxes; exclude invisible collider and camera hardware; command FK with rigid camera/gripper calibration",
+  "measurement": "common columns visible with >=0.95 prior particle weight, and both predicted and detected rays clear of self/cargo; others missing, not max-range evidence; minimum 6 columns",
+  "candidate_budget": "one frozen candidate, no post-result tuning; saved commands only; all three pass before new full DEV",
+  "truth": "separate evaluation process only, never mask/filter or calibration fitting",
+  "poses": "geometry-only HIGH, VIA110, VIA130, physical DELIVERY_CARRY, legacy POSE_CARRY; no command/mount/FOV changes",
+  "cargo_mask_padding_px": 2
+}

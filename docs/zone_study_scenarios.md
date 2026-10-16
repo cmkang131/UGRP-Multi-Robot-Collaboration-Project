@@ -82,7 +82,7 @@ seed는 시나리오끼리 겹치지 않고, 각 시나리오의 세 seed가 `le
 | `can` | 1 | 0.080 kg | 0.038 × 0.038 m | `CATALOGUE` |
 | `long_beam` | 2 | 0.300 kg | 0.600 × 0.040 m | `CATALOGUE` (기하 제약: 장축에서만 집힌다) |
 | `heavy_crate` | 2 | 0.900 kg | 0.240 × 0.100 m | `CATALOGUE` (질량이 1대 가반하중 초과) |
-| `tri_frame` | 3 | 1.500 kg | 0.392 × 0.453 m | `CATALOGUE` (현재 6종에는 사용하지 않음) |
+| `tri_frame` | 3 | 1.500 kg | 0.392 × 0.453 m | `CATALOGUE` (v1·v2 여섯 종에는 없고 v3의 s7·s8에서 처음 쓴다) |
 
 테스트는 이 값을 고정 사본으로 들고 비교한다. `sim/zone_cargo.py`가 바뀌면 조용히 시나리오 의미가 바뀌는 대신 테스트가 실패한다.
 
@@ -100,3 +100,66 @@ pickup bay/slot은 지도의 `regions.pickup`에서 패키지 A가 결정론적�
 - **시행 완주와 조건 간 효율 차이.** 이 패키지는 설정이 연구 계약을 지키는지만 증명한다.
 
 `manifest()`의 `verified`/`not_verified`에 같은 구분이 데이터로 들어 있어 실행 기록에 그대로 남는다.
+
+## 시나리오 v3: 화물 목록 전체와 3대 운반 (2026-09-29)
+
+`configs/zone_study_scenarios_v3/`는 v2 여섯 종(`scenario_id`만 `_v3`으로 바꾼 동일 내용)에 두 종을 더한 여덟 종이다. v1·v2 파일과 해시는 바꾸지 않았다. 새 시나리오는 화물 목록(`sim/zone_cargo.py`)의 빈칸을 채우려고 만들었다.
+
+| 구분 | v2 여섯 종 | v3 추가 |
+|---|---|---|
+| 1대 화물 | cyan·red·green·can·tile | yellow (s8) |
+| 2대 화물 | long_beam, heavy_crate | (s8에서 heavy_crate를 삼자 운반과 함께 둔다) |
+| 3대 화물 | 없음 | tri_frame (s7, s8) |
+
+| ID | 지도 | seeds → 지휘자 | 주문/배치 | 무엇을 검증하는가 |
+|---|---|---|---|---|
+| `s7_trio_rendezvous_v3` | `zone_wide_two_doors_final_v1` | 661→r2, 662→r3, 663→r1 | 3 / 3 | **삼자 결속.** tri_frame 1건과 단독 2건. 세 로봇이 모두 편대에 묶이므로 누가 어느 vertex를 잡고 언제 함께 드는지, 단독 주문을 편대 전후 어디에 넣을지 합의해야 한다 |
+| `s8_mixed_tiers_v3` | `zone_wide_two_doors_final_v1` | 671→r3, 672→r1, 673→r2 | 4 / 5 | **팀 크기 배정.** 1대·2대·3대 화물이 한 시행에 섞인다. 필요 인원 합(1+1+1+2+3=8)이 로봇 3대를 넘어 순서와 인원 배분이 핵심이다 |
+
+- 두 시나리오 모두 숨은 사건이 없는 구조적 조건이다(s4와 같은 성격). 통신이 줄이는 비용은 편대 결속·순서 협상이다.
+- tri_frame은 폭 0.889 m 편대라 폭 1.0 m의 `door_wide`가 있는 두 문 지도에서만 경로가 있다. 0.5 m 문 한 개인 지도에서는 `infeasible`이며 테스트가 음성 대조로 확인한다(PR #169의 B2와 같은 문제).
+- 큰 물건 두 개를 `door_wide` 앞이 아니라 슬롯 안쪽에 두었다(B8: 문 앞에 둔 상자가 삼자 경로를 막았다).
+- 검증: `validate` 통과, 오프라인 경로 검사에서 모든 물건이 `feasible`. 새 seed 661–673은 v2의 601–653과 겹치지 않는다.
+
+**검증하지 않은 것:** 삼자 운반의 물리 성공, 자기 카메라만 쓰는 3대 운반 실행기(아직 없음), 자기 카메라로 본 vertex 파지 인식, 두 시나리오의 실제 완주 시간. 이 두 시나리오는 3대 실행기가 준비되기 전에는 실행할 수 없다. 본연구 사전 등록 초안(#254)은 여섯 시나리오 기준이므로 시나리오 수·블록 수(18의 배수)는 고정 전에 다시 정해야 한다.
+
+## 시나리오 v4: 최종 로봇 v3 지도 (2026-10-05)
+
+`configs/zone_study_scenarios_v4/`는 v3 여덟 종에서 `scenario_id`(`_v4`), `map_id`, `eval.setup.map_file_sha256`만 바꾼 것이다. 지도는 최종 로봇 v3 지도로 바뀐다: `zone_wide_door_geometry_v3`(s1·s3·s5), `zone_wide_two_doors_final_v3`(s2·s6·s7·s8), `zone_wide_corridor_final_v3`(s4). 이 지도들은 이전 지도와 기하가 같고 id·`robot_model`·`version`·부모 해시만 다르다. 주문·배치·사건·예산·seed는 v3와 같으며, v2·v3 파일은 바꾸지 않는다. 생성은 `experiments/2026-10-05-scenarios-v4/build_v4.py`, 시험은 `tests/test_zone_study_scenarios_v4.py`다.
+
+**검증하지 않은 것:** 물리 실행, `harness/zone_final_env.py`의 `FINAL_MAPS`·시나리오 레지스트리에 지도 v3 연결(지금은 옛 지도만 등록), s7·s8의 연구 포함 여부(사전 등록 소유자 결정), 3대·크레이트 자기 카메라 실행기. 연구 시나리오 기준은 이제 v4다([E2E 격차 문서](../experiments/2026-10-05-scenario-e2e-gap/README.md) 5절).
+
+## 시나리오 v5: 3대 공동 운반 화물 제외 (2026-10-14)
+
+사용자 요청(2026-10-14): "3명이서 하는 짐은 뺴주라". 로봇은 3대 그대로이고, 3대가 함께 드는 화물(`tri_frame`)만 연구에서 뺀다. 아래 구체안은 조정자 결정이며 사용자 확인 전이다. 연구 시나리오 기준은 v4에서 v5로 바뀐다(위 v4 절의 "기준은 이제 v4"는 이 절 이전의 기록이다).
+
+`configs/zone_study_scenarios_v5/`는 v4 여덟 종에서 다음만 바꾼 것이다. v4 파일은 바이트 그대로 둔다.
+
+| 파일 | 바뀐 점 |
+|---|---|
+| s1–s6 `_v5` | `scenario_id`만 `_v5`로 바뀐다(내용 동일) |
+| `s7_pair_with_solo_v5` (v4 `s7_trio_rendezvous_v4`) | order-1 `tri_frame`(3대)을 같은 슬롯 P2-1·같은 자리의 `heavy_crate`(`crate_1`, 2대)로 바꾼다. 단독 주문 둘(cyan, tile)은 그대로. 2대가 크레이트를 드는 동안 남은 1대가 단독 주문을 맡는 구조이고, 시나리오 이름과 설명을 이에 맞췄다. seed 661–663 유지 |
+| `s8_mixed_tiers_v5` | order-4 `tri_frame`과 그 배치만 뺀다. 1대·2대 화물만 남는다. seed·예산 유지 |
+
+- 모든 v5 주문의 `required_robots`는 2 이하다. `sim/zone_cargo.py`의 `tri_frame` 정의와 `harness/`의 인식·교사 코드는 과거 결과 재현을 위해 그대로 둔다(v5 장면이 쓰지 않을 뿐이다).
+- **v4와 v5 결과는 합치지 않는다.** s1–s6은 내용이 같지만 이름이 다르며, 합산 여부는 사전 등록 소유자가 정한다.
+- **사용법:** 기본값은 바꾸지 않았다. 새 실행은 시나리오 ID에 `_v5`를 붙인 것(예: `s7_pair_with_solo_v5`)을 `harness.zone_environment_registry.load_scenario`에 주면 `configs/zone_study_scenarios_v5/`에서 읽는다. 생성은 `experiments/2026-10-14-drop-triframe/build_v5.py`, 시험은 `tests/test_zone_study_scenarios_v5.py`다.
+- **검증하지 않은 것:** 물리 실행(2대 크레이트를 자기 카메라로 운반해 B 구역까지 가는 것은 s7 v5에서 아직 한 번도 실행하지 않았다), s7 v5 연구 포함 여부(사전 등록 소유자 결정). 검증한 것: 시나리오 검증(`validate`)·경로 여유(`evaluate`, s7·s8 모든 물건 feasible)·레지스트리 경로 연결.
+
+## 시나리오 v6: tile·can을 작은 상자로 교체 (2026-10-14)
+
+사용자: "걍 타일같은 건 빼는 게 어떄? 보라 캔도 연구 목적과 상관없는 거 같아". "빠진 자리는 어떻게 할까요?"에 "같은 상자로 대체 (Recommended)"를 선택했다. `configs/zone_study_scenarios_v6/`는 v5의 can 4개·tile 3개를 기존 작은 상자로 바꾸고 화물 수·위치·목적 구역·이벤트를 유지한다. 미사용 색부터, 모두 쓰이면 가장 적은 색부터 고르며 동률은 cyan→red→green→yellow다. 기본값은 유지하고 `_v6` ID를 레지스트리와 `ScenarioFinalV3Scene.from_scenario`에 명시한다. **v6 결과는 이전 버전과 합산하지 않는다.** 대응표·같은 색/구역 중복(새 1, 기존 4)·입력 경계·오프라인 검증은 [v6 기록](../experiments/2026-10-14-scenario-v6/README.md)에 있다. 1대 교사의 v6 종류는 `BOX_KINDS`(cyan/red/green/yellow)뿐이며, 물리 운반은 미검증이다.
+
+## 시나리오 v7 — heavy_crate 제외 (2026-10-15)
+
+사용자: "무거운 상자나, 긴 빔이나 둘 다 2명이서 들어야 한다는 건 똑같아서 버려도 돼" ([규칙 PR #518](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/518)). `configs/zone_study_scenarios_v7/`는 v6 여덟 종을 복사한 선택 버전이다. 실제 v6 heavy_crate는 **s2·s7·s8에 각각 하나**다. 세 주문의 `crate_1`을 `beam_1`/`long_beam`(`required_robots: 2`)으로 바꾼다.
+
+| 시나리오 | 주문 | 유지한 슬롯·중심(m) | 빔 yaw(rad) | 목적 구역 |
+|---|---|---|---|---|
+| s2_unmapped_blockage_v7 | order-3 | P2-1 · (1.275, -2.15) | 1.5708 | B |
+| s7_pair_with_solo_v7 | order-1 | P2-1 · (1.275, -2.15) | 1.5708 | B |
+| s8_mixed_tiers_v7 | order-3 | P1-1 · (0.125, -2.15) | 1.5708 | B |
+
+기존 빔의 남북 축 배치·슬롯 형식을 따른다. 주문 수·화물 수·필요 로봇 수·목적 구역·사건·예산·24개 seed는 유지한다. v6 파일과 기본 시나리오 목록은 그대로다. 레지스트리 `load_scenario('s2_unmapped_blockage_v7')` 또는 `ScenarioFinalV3Scene.from_scenario`에 `_v7` ID를 명시한다. 기존 통합 workflow는 같은 경로를 사용하므로 별도 실행기나 기본값 전환은 없다. v7 입력 종류는 작은 상자 네 색과 long_beam으로 제한하고, 이전 종류의 코드·설정은 재생용으로 보존한다.
+
+시나리오 ID·설정 해시·resolved scene 해시가 v6과 구분된다. **v7 결과는 v6 및 이전 버전과 합산하지 않는다.** 정적 검사·XML fixture·네 통신 조건의 입력 검증과 제한은 [v7 기록](../experiments/2026-10-15-scenario-v7/README.md)을 따른다. 정적 적합성은 실제 경로 통과·파지·운반 성공을 뜻하지 않는다.

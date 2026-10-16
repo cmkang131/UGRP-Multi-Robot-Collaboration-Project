@@ -1,0 +1,984 @@
+{
+  "view": {
+    "snapshot": "/Users/changmin/projects/ugrp/outputs/tensorboard/1009-simspeed-core-725f45b1",
+    "url": "http://127.0.0.1:6006/?smoothing=0&runFilter=%5E1009-simspeed-core-725f45b1%2F%28s2%7Cs3%7Cegomap%29-%28A1%7CA2%7CB1%7CB2%29%24&pinnedCards=%5B%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22gate%2Fbytes_identical%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fwall_per_sim%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fwall_s%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fcommands%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fmodel_calls%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fload_start_1m%22%7D%5D#timeseries",
+    "pinned_metrics": [
+      "gate/bytes_identical",
+      "offline/wall_per_sim",
+      "result/wall_s",
+      "result/commands",
+      "result/model_calls",
+      "offline/load_start_1m"
+    ],
+    "default_runs": [
+      "1009-simspeed-core-725f45b1/egomap-A1",
+      "1009-simspeed-core-725f45b1/egomap-A2",
+      "1009-simspeed-core-725f45b1/egomap-B1",
+      "1009-simspeed-core-725f45b1/egomap-B2",
+      "1009-simspeed-core-725f45b1/s2-A1",
+      "1009-simspeed-core-725f45b1/s2-A2",
+      "1009-simspeed-core-725f45b1/s2-B1",
+      "1009-simspeed-core-725f45b1/s2-B2",
+      "1009-simspeed-core-725f45b1/s3-A1",
+      "1009-simspeed-core-725f45b1/s3-A2",
+      "1009-simspeed-core-725f45b1/s3-B1",
+      "1009-simspeed-core-725f45b1/s3-B2"
+    ],
+    "hparams_visible_columns": [
+      "case",
+      "outcome",
+      "policy",
+      "result/wall_s",
+      "result/commands",
+      "result/model_calls"
+    ],
+    "scope": "30 SIM seconds per path, fixed saved commands, n=2/condition ABBA; equality gate is not task success. S3 original evaluator error preserved. Profiles and v1/v2 failures excluded from speed means.",
+    "verification": {
+      "event_and_live_scalars": 132,
+      "scalar_tolerance": 1e-06,
+      "new_videos": 0,
+      "ui_twelve_runs_selected": true,
+      "ui_six_cards_pinned": true,
+      "hparams_six_columns_reapplied": true
+    },
+    "model_response_time": "not measured; model calls 0",
+    "display_limitation": "Shared legacy HParams ignores runFilter. The 12 own ABBA runs and six pinned metrics are verified in Time Series; HParams selected columns match the saved view."
+  },
+  "verified": [
+    {
+      "run": "1009-simspeed-core-725f45b1/egomap-A1",
+      "tag": "offline/wall_per_sim",
+      "expected": 1.187416168032602,
+      "event": 1.1874161958694458,
+      "live": 1.1874161958694458
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/egomap-A1",
+      "tag": "offline/load_start_1m",
+      "expected": 2.64453125,
+      "event": 2.64453125,
+      "live": 2.64453125
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/egomap-A1",
+      "tag": "offline/load_end_1m",
+      "expected": 2.7177734375,
+      "event": 2.7177734375,
+      "live": 2.7177734375
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/egomap-A1",
+      "tag": "offline/steps",
+      "expected": 120000,
+      "event": 120000.0,
+      "live": 120000.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/egomap-A1",
+      "tag": "gate/bytes_identical",
+      "expected": 1,
+      "event": 1.0,
+      "live": 1.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/egomap-A1",
+      "tag": "result/wall_s",
+      "expected": 35.62248504097806,
+      "event": 35.62248611450195,
+      "live": 35.62248611450195
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/egomap-A1",
+      "tag": "result/sim_s",
+      "expected": 30,
+      "event": 30.0,
+      "live": 30.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/egomap-A1",
+      "tag": "result/commands",
+      "expected": 149,
+      "event": 149.0,
+      "live": 149.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/egomap-A1",
+      "tag": "result/model_calls",
+      "expected": 0,
+      "event": 0.0,
+      "live": 0.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/egomap-A1",
+      "tag": "evaluation/reported_success",
+      "expected": 1,
+      "event": 1.0,
+      "live": 1.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/egomap-A2",
+      "tag": "offline/wall_per_sim",
+      "expected": 1.212507822199647,
+      "event": 1.2125078439712524,
+      "live": 1.2125078439712524
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/egomap-A2",
+      "tag": "offline/load_start_1m",
+      "expected": 2.39599609375,
+      "event": 2.39599609375,
+      "live": 2.39599609375
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/egomap-A2",
+      "tag": "offline/load_end_1m",
+      "expected": 4.548828125,
+      "event": 4.548828125,
+      "live": 4.548828125
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/egomap-A2",
+      "tag": "offline/steps",
+      "expected": 120000,
+      "event": 120000.0,
+      "live": 120000.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/egomap-A2",
+      "tag": "gate/bytes_identical",
+      "expected": 1,
+      "event": 1.0,
+      "live": 1.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/egomap-A2",
+      "tag": "result/wall_s",
+      "expected": 36.37523466598941,
+      "event": 36.37523651123047,
+      "live": 36.37523651123047
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/egomap-A2",
+      "tag": "result/sim_s",
+      "expected": 30,
+      "event": 30.0,
+      "live": 30.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/egomap-A2",
+      "tag": "result/commands",
+      "expected": 149,
+      "event": 149.0,
+      "live": 149.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/egomap-A2",
+      "tag": "result/model_calls",
+      "expected": 0,
+      "event": 0.0,
+      "live": 0.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/egomap-A2",
+      "tag": "evaluation/reported_success",
+      "expected": 1,
+      "event": 1.0,
+      "live": 1.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/egomap-B1",
+      "tag": "offline/wall_per_sim",
+      "expected": 0.9960290444665588,
+      "event": 0.9960290193557739,
+      "live": 0.9960290193557739
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/egomap-B1",
+      "tag": "offline/load_start_1m",
+      "expected": 2.7177734375,
+      "event": 2.7177734375,
+      "live": 2.7177734375
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/egomap-B1",
+      "tag": "offline/load_end_1m",
+      "expected": 2.44189453125,
+      "event": 2.44189453125,
+      "live": 2.44189453125
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/egomap-B1",
+      "tag": "offline/steps",
+      "expected": 120000,
+      "event": 120000.0,
+      "live": 120000.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/egomap-B1",
+      "tag": "gate/bytes_identical",
+      "expected": 1,
+      "event": 1.0,
+      "live": 1.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/egomap-B1",
+      "tag": "result/wall_s",
+      "expected": 29.880871333996765,
+      "event": 29.880870819091797,
+      "live": 29.880870819091797
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/egomap-B1",
+      "tag": "result/sim_s",
+      "expected": 30,
+      "event": 30.0,
+      "live": 30.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/egomap-B1",
+      "tag": "result/commands",
+      "expected": 149,
+      "event": 149.0,
+      "live": 149.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/egomap-B1",
+      "tag": "result/model_calls",
+      "expected": 0,
+      "event": 0.0,
+      "live": 0.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/egomap-B1",
+      "tag": "evaluation/reported_success",
+      "expected": 1,
+      "event": 1.0,
+      "live": 1.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/egomap-B2",
+      "tag": "offline/wall_per_sim",
+      "expected": 0.9994796916667837,
+      "event": 0.9994797110557556,
+      "live": 0.9994797110557556
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/egomap-B2",
+      "tag": "offline/load_start_1m",
+      "expected": 2.44189453125,
+      "event": 2.44189453125,
+      "live": 2.44189453125
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/egomap-B2",
+      "tag": "offline/load_end_1m",
+      "expected": 2.39599609375,
+      "event": 2.39599609375,
+      "live": 2.39599609375
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/egomap-B2",
+      "tag": "offline/steps",
+      "expected": 120000,
+      "event": 120000.0,
+      "live": 120000.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/egomap-B2",
+      "tag": "gate/bytes_identical",
+      "expected": 1,
+      "event": 1.0,
+      "live": 1.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/egomap-B2",
+      "tag": "result/wall_s",
+      "expected": 29.984390750003513,
+      "event": 29.984390258789062,
+      "live": 29.984390258789062
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/egomap-B2",
+      "tag": "result/sim_s",
+      "expected": 30,
+      "event": 30.0,
+      "live": 30.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/egomap-B2",
+      "tag": "result/commands",
+      "expected": 149,
+      "event": 149.0,
+      "live": 149.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/egomap-B2",
+      "tag": "result/model_calls",
+      "expected": 0,
+      "event": 0.0,
+      "live": 0.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/egomap-B2",
+      "tag": "evaluation/reported_success",
+      "expected": 1,
+      "event": 1.0,
+      "live": 1.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/egomap-profile-off",
+      "tag": "offline/hotspot_1_percent",
+      "expected": 7.5642938370558905,
+      "event": 7.56429386138916,
+      "live": 7.56429386138916
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/egomap-profile-off",
+      "tag": "offline/hotspot_2_percent",
+      "expected": 5.838291423834603,
+      "event": 5.838291645050049,
+      "live": 5.838291645050049
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/egomap-profile-off",
+      "tag": "offline/hotspot_3_percent",
+      "expected": 1.752735833773253,
+      "event": 1.7527358531951904,
+      "live": 1.7527358531951904
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/egomap-profile-off",
+      "tag": "result/model_calls",
+      "expected": 0,
+      "event": 0.0,
+      "live": 0.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/egomap-profile-on",
+      "tag": "offline/hotspot_1_percent",
+      "expected": 1.9754540974854444,
+      "event": 1.9754540920257568,
+      "live": 1.9754540920257568
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/egomap-profile-on",
+      "tag": "offline/hotspot_2_percent",
+      "expected": 1.328929825928914,
+      "event": 1.3289297819137573,
+      "live": 1.3289297819137573
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/egomap-profile-on",
+      "tag": "offline/hotspot_3_percent",
+      "expected": 0.6864265840840155,
+      "event": 0.68642657995224,
+      "live": 0.68642657995224
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/egomap-profile-on",
+      "tag": "result/model_calls",
+      "expected": 0,
+      "event": 0.0,
+      "live": 0.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s2-A1",
+      "tag": "offline/wall_per_sim",
+      "expected": 1.066995511132215,
+      "event": 1.0669955015182495,
+      "live": 1.0669955015182495
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s2-A1",
+      "tag": "offline/load_start_1m",
+      "expected": 2.7744140625,
+      "event": 2.7744140625,
+      "live": 2.7744140625
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s2-A1",
+      "tag": "offline/load_end_1m",
+      "expected": 2.69921875,
+      "event": 2.69921875,
+      "live": 2.69921875
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s2-A1",
+      "tag": "offline/steps",
+      "expected": 120000,
+      "event": 120000.0,
+      "live": 120000.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s2-A1",
+      "tag": "gate/bytes_identical",
+      "expected": 1,
+      "event": 1.0,
+      "live": 1.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s2-A1",
+      "tag": "result/wall_s",
+      "expected": 32.009865333966445,
+      "event": 32.009864807128906,
+      "live": 32.009864807128906
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s2-A1",
+      "tag": "result/sim_s",
+      "expected": 30,
+      "event": 30.0,
+      "live": 30.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s2-A1",
+      "tag": "result/commands",
+      "expected": 519,
+      "event": 519.0,
+      "live": 519.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s2-A1",
+      "tag": "result/model_calls",
+      "expected": 0,
+      "event": 0.0,
+      "live": 0.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s2-A1",
+      "tag": "evaluation/reported_success",
+      "expected": 1,
+      "event": 1.0,
+      "live": 1.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s2-A2",
+      "tag": "offline/wall_per_sim",
+      "expected": 1.1009299180334589,
+      "event": 1.1009299755096436,
+      "live": 1.1009299755096436
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s2-A2",
+      "tag": "offline/load_start_1m",
+      "expected": 2.78173828125,
+      "event": 2.78173828125,
+      "live": 2.78173828125
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s2-A2",
+      "tag": "offline/load_end_1m",
+      "expected": 2.85595703125,
+      "event": 2.85595703125,
+      "live": 2.85595703125
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s2-A2",
+      "tag": "offline/steps",
+      "expected": 120000,
+      "event": 120000.0,
+      "live": 120000.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s2-A2",
+      "tag": "gate/bytes_identical",
+      "expected": 1,
+      "event": 1.0,
+      "live": 1.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s2-A2",
+      "tag": "result/wall_s",
+      "expected": 33.02789754100377,
+      "event": 33.027896881103516,
+      "live": 33.027896881103516
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s2-A2",
+      "tag": "result/sim_s",
+      "expected": 30,
+      "event": 30.0,
+      "live": 30.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s2-A2",
+      "tag": "result/commands",
+      "expected": 519,
+      "event": 519.0,
+      "live": 519.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s2-A2",
+      "tag": "result/model_calls",
+      "expected": 0,
+      "event": 0.0,
+      "live": 0.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s2-A2",
+      "tag": "evaluation/reported_success",
+      "expected": 1,
+      "event": 1.0,
+      "live": 1.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s2-B1",
+      "tag": "offline/wall_per_sim",
+      "expected": 0.874667166666283,
+      "event": 0.8746671676635742,
+      "live": 0.8746671676635742
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s2-B1",
+      "tag": "offline/load_start_1m",
+      "expected": 2.69921875,
+      "event": 2.69921875,
+      "live": 2.69921875
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s2-B1",
+      "tag": "offline/load_end_1m",
+      "expected": 2.798828125,
+      "event": 2.798828125,
+      "live": 2.798828125
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s2-B1",
+      "tag": "offline/steps",
+      "expected": 120000,
+      "event": 120000.0,
+      "live": 120000.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s2-B1",
+      "tag": "gate/bytes_identical",
+      "expected": 1,
+      "event": 1.0,
+      "live": 1.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s2-B1",
+      "tag": "result/wall_s",
+      "expected": 26.24001499998849,
+      "event": 26.240015029907227,
+      "live": 26.240015029907227
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s2-B1",
+      "tag": "result/sim_s",
+      "expected": 30,
+      "event": 30.0,
+      "live": 30.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s2-B1",
+      "tag": "result/commands",
+      "expected": 519,
+      "event": 519.0,
+      "live": 519.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s2-B1",
+      "tag": "result/model_calls",
+      "expected": 0,
+      "event": 0.0,
+      "live": 0.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s2-B1",
+      "tag": "evaluation/reported_success",
+      "expected": 1,
+      "event": 1.0,
+      "live": 1.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s2-B2",
+      "tag": "offline/wall_per_sim",
+      "expected": 0.8994495125002383,
+      "event": 0.8994495272636414,
+      "live": 0.8994495272636414
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s2-B2",
+      "tag": "offline/load_start_1m",
+      "expected": 2.798828125,
+      "event": 2.798828125,
+      "live": 2.798828125
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s2-B2",
+      "tag": "offline/load_end_1m",
+      "expected": 2.78173828125,
+      "event": 2.78173828125,
+      "live": 2.78173828125
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s2-B2",
+      "tag": "offline/steps",
+      "expected": 120000,
+      "event": 120000.0,
+      "live": 120000.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s2-B2",
+      "tag": "gate/bytes_identical",
+      "expected": 1,
+      "event": 1.0,
+      "live": 1.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s2-B2",
+      "tag": "result/wall_s",
+      "expected": 26.98348537500715,
+      "event": 26.98348617553711,
+      "live": 26.98348617553711
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s2-B2",
+      "tag": "result/sim_s",
+      "expected": 30,
+      "event": 30.0,
+      "live": 30.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s2-B2",
+      "tag": "result/commands",
+      "expected": 519,
+      "event": 519.0,
+      "live": 519.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s2-B2",
+      "tag": "result/model_calls",
+      "expected": 0,
+      "event": 0.0,
+      "live": 0.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s2-B2",
+      "tag": "evaluation/reported_success",
+      "expected": 1,
+      "event": 1.0,
+      "live": 1.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s3-A1",
+      "tag": "offline/wall_per_sim",
+      "expected": 1.9397951721989861,
+      "event": 1.9397951364517212,
+      "live": 1.9397951364517212
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s3-A1",
+      "tag": "offline/load_start_1m",
+      "expected": 2.947265625,
+      "event": 2.947265625,
+      "live": 2.947265625
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s3-A1",
+      "tag": "offline/load_end_1m",
+      "expected": 3.4560546875,
+      "event": 3.4560546875,
+      "live": 3.4560546875
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s3-A1",
+      "tag": "offline/steps",
+      "expected": 120000,
+      "event": 120000.0,
+      "live": 120000.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s3-A1",
+      "tag": "gate/bytes_identical",
+      "expected": 1,
+      "event": 1.0,
+      "live": 1.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s3-A1",
+      "tag": "result/wall_s",
+      "expected": 58.19385516596958,
+      "event": 58.19385528564453,
+      "live": 58.19385528564453
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s3-A1",
+      "tag": "result/sim_s",
+      "expected": 30,
+      "event": 30.0,
+      "live": 30.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s3-A1",
+      "tag": "result/commands",
+      "expected": 2660,
+      "event": 2660.0,
+      "live": 2660.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s3-A1",
+      "tag": "result/model_calls",
+      "expected": 0,
+      "event": 0.0,
+      "live": 0.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s3-A1",
+      "tag": "evaluation/reported_success",
+      "expected": 1,
+      "event": 1.0,
+      "live": 1.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s3-A2",
+      "tag": "offline/wall_per_sim",
+      "expected": 1.8035082444665023,
+      "event": 1.8035082817077637,
+      "live": 1.8035082817077637
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s3-A2",
+      "tag": "offline/load_start_1m",
+      "expected": 2.41748046875,
+      "event": 2.41748046875,
+      "live": 2.41748046875
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s3-A2",
+      "tag": "offline/load_end_1m",
+      "expected": 2.66015625,
+      "event": 2.66015625,
+      "live": 2.66015625
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s3-A2",
+      "tag": "offline/steps",
+      "expected": 120000,
+      "event": 120000.0,
+      "live": 120000.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s3-A2",
+      "tag": "gate/bytes_identical",
+      "expected": 1,
+      "event": 1.0,
+      "live": 1.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s3-A2",
+      "tag": "result/wall_s",
+      "expected": 54.10524733399507,
+      "event": 54.105247497558594,
+      "live": 54.105247497558594
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s3-A2",
+      "tag": "result/sim_s",
+      "expected": 30,
+      "event": 30.0,
+      "live": 30.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s3-A2",
+      "tag": "result/commands",
+      "expected": 2660,
+      "event": 2660.0,
+      "live": 2660.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s3-A2",
+      "tag": "result/model_calls",
+      "expected": 0,
+      "event": 0.0,
+      "live": 0.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s3-A2",
+      "tag": "evaluation/reported_success",
+      "expected": 1,
+      "event": 1.0,
+      "live": 1.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s3-B1",
+      "tag": "offline/wall_per_sim",
+      "expected": 1.7173698971998723,
+      "event": 1.7173699140548706,
+      "live": 1.7173699140548706
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s3-B1",
+      "tag": "offline/load_start_1m",
+      "expected": 3.4560546875,
+      "event": 3.4560546875,
+      "live": 3.4560546875
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s3-B1",
+      "tag": "offline/load_end_1m",
+      "expected": 3.1669921875,
+      "event": 3.1669921875,
+      "live": 3.1669921875
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s3-B1",
+      "tag": "offline/steps",
+      "expected": 120000,
+      "event": 120000.0,
+      "live": 120000.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s3-B1",
+      "tag": "gate/bytes_identical",
+      "expected": 1,
+      "event": 1.0,
+      "live": 1.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s3-B1",
+      "tag": "result/wall_s",
+      "expected": 51.52109691599617,
+      "event": 51.521095275878906,
+      "live": 51.521095275878906
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s3-B1",
+      "tag": "result/sim_s",
+      "expected": 30,
+      "event": 30.0,
+      "live": 30.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s3-B1",
+      "tag": "result/commands",
+      "expected": 2660,
+      "event": 2660.0,
+      "live": 2660.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s3-B1",
+      "tag": "result/model_calls",
+      "expected": 0,
+      "event": 0.0,
+      "live": 0.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s3-B1",
+      "tag": "evaluation/reported_success",
+      "expected": 1,
+      "event": 1.0,
+      "live": 1.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s3-B2",
+      "tag": "offline/wall_per_sim",
+      "expected": 1.6312417819319913,
+      "event": 1.631241798400879,
+      "live": 1.631241798400879
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s3-B2",
+      "tag": "offline/load_start_1m",
+      "expected": 3.1533203125,
+      "event": 3.1533203125,
+      "live": 3.1533203125
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s3-B2",
+      "tag": "offline/load_end_1m",
+      "expected": 2.41748046875,
+      "event": 2.41748046875,
+      "live": 2.41748046875
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s3-B2",
+      "tag": "offline/steps",
+      "expected": 120000,
+      "event": 120000.0,
+      "live": 120000.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s3-B2",
+      "tag": "gate/bytes_identical",
+      "expected": 1,
+      "event": 1.0,
+      "live": 1.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s3-B2",
+      "tag": "result/wall_s",
+      "expected": 48.93725345795974,
+      "event": 48.937252044677734,
+      "live": 48.937252044677734
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s3-B2",
+      "tag": "result/sim_s",
+      "expected": 30,
+      "event": 30.0,
+      "live": 30.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s3-B2",
+      "tag": "result/commands",
+      "expected": 2660,
+      "event": 2660.0,
+      "live": 2660.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s3-B2",
+      "tag": "result/model_calls",
+      "expected": 0,
+      "event": 0.0,
+      "live": 0.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/s3-B2",
+      "tag": "evaluation/reported_success",
+      "expected": 1,
+      "event": 1.0,
+      "live": 1.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/v1-referee-error",
+      "tag": "offline/completed_final_comparison",
+      "expected": 0,
+      "event": 0.0,
+      "live": 0.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/v1-referee-error",
+      "tag": "result/model_calls",
+      "expected": 0,
+      "event": 0.0,
+      "live": 0.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/v2-host-interruption",
+      "tag": "offline/completed_final_comparison",
+      "expected": 0,
+      "event": 0.0,
+      "live": 0.0
+    },
+    {
+      "run": "1009-simspeed-core-725f45b1/v2-host-interruption",
+      "tag": "result/model_calls",
+      "expected": 0,
+      "event": 0.0,
+      "live": 0.0
+    }
+  ],
+  "server": {
+    "pid": 52016,
+    "logdir": "/Users/changmin/projects/ugrp/outputs/tensorboard",
+    "host": "127.0.0.1",
+    "port": 6006,
+    "other_task_server_unchanged": true
+  },
+  "screenshot": {
+    "path": "/Users/changmin/projects/ugrp/outputs/simspeed-core-20261009-tensorboard.jpg",
+    "sha256": "904ce03733b4407cdbfad80ea17f7ac3f0fe0949d3f50977fcd6352749a4da7a"
+  }
+}

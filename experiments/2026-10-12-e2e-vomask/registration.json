@@ -1,0 +1,20 @@
+{
+ "class": "dev",
+ "candidates": [
+  "off",
+  "homography_v1",
+  "geom_v1"
+ ],
+ "data": "same 4 e2e14 crash windows, 31 frames each; already observed DEV data",
+ "decision": "Full geom must have own-RGB-derived map registration and reduce annotated wall contamination; no worse heading/xy per moving/rotation category beyond 1mm/0.1deg; map-unavailable fallback is NOT improvement.",
+ "planned_seeds": [
+  61001,
+  61002,
+  61003
+ ],
+ "planned_runs": 6,
+ "wall_cap_s": 25200,
+ "execution": "forbidden in this task",
+ "map_registration": "Missing in base controller and recorded inputs; no GT/spawn/world identity substitution",
+ "score": "Previously saved evaluation-only increments loaded after all predictions persisted"
+}

@@ -24,6 +24,89 @@ from scripts import agent_lock
 from scripts.check_ci_fixtures import check_fixtures
 
 TEST_PATTERNS = (
+    "tests/test_grasp_act_data.py",
+    "tests/test_grasp_act_policy.py",
+    "tests/test_grasp_act_pilot.py",
+    "tests/test_grasp_act_act4.py",
+    "tests/test_grasp_act_memory.py",
+    "tests/test_grasp_act_act6.py",
+    "tests/test_grasp_act_act7.py",
+    "tests/test_grasp_act_act8.py",
+    "tests/test_grasp_act_act9.py",
+    "tests/test_e2e18.py",
+    "tests/test_e2e18_beam_axis.py",
+    "tests/test_e2e18_cadence.py",
+    "tests/test_e2e18_route_coverage.py",
+    "tests/test_e2e18_route_guard.py",
+    "tests/test_e2e_carrier_axes.py",
+    "tests/test_e2e_record_scalars.py",
+    "tests/test_e2e_route_extent.py",
+    "tests/test_e2e_b_partial.py",
+    "tests/test_e2e_boundary_views.py",
+    "tests/test_e2e_boundary_repair.py",
+    "tests/test_e2e_b_marker_detect.py",
+    "tests/test_e2e_b_quad_v2.py",
+    "tests/test_e2e_rgb_vo.py",
+    "tests/test_e2e_vo_floor_mask.py",
+    "tests/test_e2e_explore_deadlock.py",
+    "tests/test_e2e_us_stall.py",
+    "tests/test_e2e14_combo.py",
+    "tests/test_e2e_exact_speedups2.py",
+    "tests/test_e2e_speed3.py",
+    "tests/test_e2e_speed4.py",
+    "tests/test_e2e_overview_replay.py",
+    "tests/test_e2e_runtime_registration.py",
+    "tests/test_e2e_s4_live.py",
+    "tests/test_e2e_goal_route.py",
+    "tests/test_e2e_dialogue.py",
+    "tests/test_e2e_s3_route.py",
+    "tests/test_e2e_own_inputs.py",
+    "tests/test_ownmap_s2.py",
+    "tests/test_lazy_camera.py",
+    "tests/test_goal_route_continuous.py",
+    "tests/test_own_traversal_graph.py",
+    "tests/test_self_odom_grid.py",
+    "tests/test_self_map_csm.py",
+    "tests/test_self_map_csm_v2.py",
+    "tests/test_self_map_prob.py",
+    "tests/test_map_error_oracle.py",
+    "tests/test_wall_projection_guard.py",
+    "tests/test_wall_confidence.py",
+    "tests/test_wall_floor_boundary.py",
+    "tests/test_wall_parallax.py",
+    "tests/test_wall_texture.py",
+    "tests/test_wall_detector_evaluation.py",
+    "tests/test_servo_camera_fk.py",
+    "tests/test_camera_frame_conventions.py",
+    "tests/test_servo_stiffness.py",
+    "tests/test_arena_wall_map.py",
+    "tests/test_self_pulse_odom.py",
+    "tests/test_self_pulse_rotation.py",
+    "tests/test_self_wall_segments.py",
+    "tests/test_self_wall_export.py",
+    "tests/test_self_map_relocalize.py",
+    "tests/test_self_map_causal.py",
+    "tests/test_self_wall_validation.py",
+    "tests/test_self_wall_pr.py",
+    "tests/test_wall_contact_types.py",
+    "tests/test_wall_bottom_connected.py",
+    "tests/test_wall_floor_ulrich.py",
+    "tests/test_wall_floor_lorigo.py",
+    "tests/test_wall_cell_attribution.py",
+    "tests/test_active_wall_rotleft.py",
+    "tests/test_camera_projection_audit.py",
+    "tests/test_s2_projection_comparison.py",
+    "tests/test_online_camera_pitch.py",
+    "tests/test_self_pose_graph.py",
+    "tests/test_self_wall_robust.py",
+    "tests/test_self_wall_memory.py",
+    "tests/test_coela_runtime_self_walls.py",
+    "tests/test_azure*.py",
+    "tests/test_storage_automation.py",
+    "tests/test_s2_path_heading.py",
+    "tests/test_path_heading_default.py",
+    "tests/test_opencv_wall_robot_mask.py",
+    "tests/test_zone_heldout_maps.py",
     "tests/test_ci_fast_path.py",
     "tests/test_owncam_memory_v3.py",
     "tests/test_owncam_memory_time.py",
@@ -89,8 +172,12 @@ TEST_PATTERNS = (
     "tests/test_zone_identity_jobs.py",  # T13a: own-RGB identity/count and target-job seam (fake only)
     "tests/test_zone_target*.py",
     "tests/test_zone_study_scenarios.py", "tests/test_zone_study_protocol.py",
-    "tests/test_zone_final_env.py",
+    "tests/test_zone_final_env.py", "tests/test_zone_study_scenarios_v3.py", "tests/test_zone_study_scenarios_v4.py",
+    "tests/test_zone_study_scenarios_v5.py",
+    "tests/test_zone_study_scenarios_v6.py",
+    "tests/test_zone_study_scenarios_v7.py",
     "tests/test_zone_environment_registry.py",
+    "tests/test_zone_scenario_scene.py",
     "tests/test_zone_final_environment_runnable.py",
     "tests/test_zone_final_pair_v3.py",
     "tests/test_zone_final_pair_highpose.py",
@@ -104,8 +191,25 @@ TEST_PATTERNS = (
     "tests/test_highpose_start_exit_face.py",  # v98 start relief v2: inside-pair depth to the wall face facing the robot
     "tests/test_highpose_edge_fit.py",  # v98 HIGH beam-edge consensus fit (recorded own frames)
     "tests/test_highpose_final_veto.py",  # v98 same-tick final veto of terminal endpoints' motion (real runner, fake backend)
+    "tests/test_highpose_own_load_occlusion.py",  # v98 own-load occlusion rule: held beam blocking the own camera is no observation, not INVALID_OWN_IMAGE
+    "tests/test_s2_*.py",  # Include real-site, freeze-scope and in-hand S2 option regressions.
+    "tests/test_solo_cyan_v106*.py",  # S2 v3 cyan: own RGB/commands, synthetic backend only
+    "tests/test_s3_host*.py",  # S3 fixed-role host, no physics or model calls
+    "tests/test_s3_pair_heading.py",
+    "tests/test_s3_exact_cache.py",
+    "tests/test_s3_no_prior.py",  # S3 v142 source/input boundary, no physics
+    "tests/test_s3_camera_render.py",  # shared render call and S2 mount parity, no physics
     "tests/test_highpose_pf_consistency.py",  # v98 PF consistency (one stationary view counts once)
     "tests/test_highpose_relook.py",  # v98 dock look pans + bounded look recovery (synthetic closed loop)
+    "tests/test_pair_llm_*.py",  # v100 pair LLM layer: stub model only, fake physics
+    "tests/test_s4_live_stage.py",  # S4 stage admission and transport: stub model, fake physics
+    "tests/test_gemma_fallback_proxy.py",  # Mac DEV fallback/quota/Keychain: fake API only
+    "tests/test_gemma_multi_key.py",  # Opt-in independent key buckets: fake API only
+    "tests/test_s4_study_policy.py",  # English/event/quota policy: offline only
+    "tests/test_s4_live5.py",  # opt-in frozen S3 pair integration, no physics/model
+    "tests/test_s4_grip_r3.py",
+    "tests/test_s4_grip_visual.py",
+    "tests/test_s4_grip_raw.py",  # eval-only recorded contact labels; no physics/model
     "tests/test_zone_final_pair_heldout.py",
     "tests/test_review_352.py",
     "tests/test_review_355.py",
@@ -123,7 +227,9 @@ TEST_PATTERNS = (
     "tests/test_highpose_belief_expansion.py",  # v98 R2: one-shot belief expansion armed only by an arrival-view rejection
     "tests/test_highpose_progress_arming.py",  # v98 loaded no-progress check: carry-leg reset + REQUIRED_MOVEMENT_M motion
     "tests/test_highpose_host_clock.py",  # v98 host clock v2: integer substep SIM time (no float drift, no 612 s cliff)
+    "tests/test_highpose_nearclip.py",  # v98 render near-clip floor_light_nearclip_v1 (znear 0.0004 x extent = 4.4 mm)
     "tests/test_highpose_pf_local_redraw.py",  # v98 R1 random poses redrawn locally next to walls (review #363 P1-2)
+    "tests/test_deadband_u0_v102.py",
     "tests/test_dev_pair_checkpoint.py",  # DEV-only checkpoint/resume for v98 stage probes (reducers, triggers, bit-identity gate)
     "tests/test_zone_final_pair_review_fixes.py",
     "tests/test_review_344*.py",
@@ -134,6 +240,9 @@ TEST_PATTERNS = (
     "tests/test_consumer_criterion_b.py",
     "tests/test_consumer_criterion_b_v91.py",
     "tests/test_consumer_criterion_b_v91_yaw.py",
+    "tests/test_consumer_criterion_b_v95.py",
+    "tests/test_score_consumer_criterion_b_v95.py",
+    "tests/test_zone_final_pair_new_starts.py",
     "tests/test_consumer_criterion_b_rotation.py",
     "tests/test_final_pair_calibration_assembly.py",
     "tests/test_final_pair_calibration_v92.py",
@@ -142,6 +251,8 @@ TEST_PATTERNS = (
     "tests/test_review_346.py",
     "tests/test_final_environment_measurement_v2.py",
     "tests/test_final_environment_gain_calibration_v101.py",
+    "tests/test_final_pair_loaded_gain_v102.py",
+    "tests/test_fit_loaded_gain_calibration.py",
     "tests/test_review_347.py",
     "tests/test_review_e2e_batch_k.py",  # K1: final environment CI collection regression
     "tests/test_scenario_capabilities_docs.py",
@@ -229,8 +340,10 @@ TEST_PATTERNS = (
     "tests/test_v6h_recorder_contract.py",  # pinned recorder consumer contract; JSON only
     "tests/test_v6h_classifier_properties.py",  # 10,000 seeded evidence chains; no physics
     "tests/test_render_pair_probe_video.py",  # stage-probe report video renderer (reads saved cases only)
+    "tests/test_natural_scene_texture.py",  # pinned PNG, pure XML; no renderer
     "tests/test_render_profile.py",  # opt-in shadow/reflection render profiles (default path unchanged)
     "tests/test_carry_relocalization_b1.py",  # 2026-09-29: offline B1 relocalization measurement (pure arithmetic/thresholds)
+    "tests/test_stall_detector_d1.py",  # offline D1 draft reference: NumPy frames only, no controller/simulator
     "tests/test_carry_lateral_error_model.py",  # offline endpoint extraction, grouped validation and paired prediction
     "tests/test_m2_pair_door_v3.py", "tests/test_pair_owncam_approach.py", "tests/test_zone_tagged_cargo_scene.py",
     "tests/test_owncam_localizer.py", "tests/test_zone_landmarks_sim.py",
@@ -297,6 +410,7 @@ TEST_PATTERNS = (
     "tests/test_dispatch_translation_skew_fallback.py",
     "tests/test_dispatch_pair_prefetch.py",
     "tests/test_communication_observer.py",
+    "tests/test_speech_bubble_overlay.py",
     "tests/test_dispatch_solo_cadence.py",
     "tests/test_fine_gain_schedule.py",
     "tests/test_dispatch_coarse_handoff.py",
@@ -339,6 +453,7 @@ TEST_PATTERNS = (
     "tests/test_navigation_evidence.py",
     "tests/test_navigation_temporal.py",
     "tests/test_ugrp_session.py",
+    "tests/test_storage_tools.py",
     "tests/test_sim_speed_tools.py",
     "tests/test_sim_speed_review2.py",
     "tests/test_sim_speed_review3.py",
@@ -347,13 +462,33 @@ TEST_PATTERNS = (
     "tests/test_sim_speed_review6.py",
     "tests/test_sim_slots.py",
     "tests/test_agent_worktree.py", "tests/test_disk_report.py", "tests/test_check_media_size.py",
-    "tests/test_frame_storage.py",
+    "tests/test_frame_storage.py", "tests/test_frame_sink.py",
     "tests/test_tree_manifest.py",
     "tests/test_seed_validation_model.py",
     "tests/test_semantic_pick_policy.py",
     "tests/test_pick_match*.py",
     "tests/test_replay_pick_match.py",
     "tests/test_masterpi_model_v3.py",
+    "tests/test_masterpi_drive_friction.py",
+    "tests/test_masterpi_drive_friction_v2.py",
+    "tests/test_masterpi_drive_friction_v3.py",
+    "tests/test_masterpi_drive_friction_v4.py",
+    "tests/test_masterpi_drive_friction_v5.py",
+    "tests/test_drive_torque_audit.py",
+    "tests/test_masterpi_drive_friction_v5_hard.py",
+    "tests/test_masterpi_drive_friction_v6.py",
+    "tests/test_masterpi_drive_friction_v7.py",
+    "tests/test_v7_exact_speedups.py",
+    "tests/test_v7_speed_benchmark.py",
+    "tests/test_controller_exact_speedups.py",
+    "tests/test_controller_replay.py",
+    "tests/test_masterpi_drive_friction_v7_freeze.py",
+    "tests/test_masterpi_drive_friction_v7_sphere6.py",
+    "tests/test_probe_v7_roller_approx.py",
+    "tests/test_probe_drive_pair_beam.py",
+    "tests/test_masterpi_camera_review_v1.py",
+    "tests/test_masterpi_camera_review_v2.py",
+    "tests/test_masterpi_camera_review_v3.py",
     "tests/test_zone_masterpi_v3_scene.py",
     "tests/test_zone_model_conventions.py",
     "tests/test_visual_arm_v3.py",

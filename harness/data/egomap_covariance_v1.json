@@ -1,0 +1,75 @@
+{
+  "schema": "ugrp.egomap_covariance.v1",
+  "option": "nees_stratified_v1",
+  "target": "xy",
+  "dof": 2,
+  "method": "episode_balanced_scalar_gaussian_ML",
+  "pooled_factor": 39.59948073402795,
+  "factors": {
+    "approach/hold": 14.023961367647907,
+    "approach/translation": 18.48554146729274,
+    "approach/turn_left": 19.117973436664307,
+    "approach/turn_right": 19.140755057671047,
+    "return/translation": 39.59948073402795,
+    "return/turn_left": 39.59948073402795,
+    "return/turn_right": 39.59948073402795
+  },
+  "fit_seeds": [
+    63001
+  ],
+  "check_seeds": [
+    63002
+  ],
+  "fit_counts": {
+    "approach/hold": {
+      "samples": 529,
+      "episodes": 4,
+      "pooled_fallback": false
+    },
+    "approach/translation": {
+      "samples": 549,
+      "episodes": 4,
+      "pooled_fallback": false
+    },
+    "approach/turn_left": {
+      "samples": 797,
+      "episodes": 4,
+      "pooled_fallback": false
+    },
+    "approach/turn_right": {
+      "samples": 589,
+      "episodes": 4,
+      "pooled_fallback": false
+    },
+    "return/translation": {
+      "samples": 474,
+      "episodes": 1,
+      "pooled_fallback": true
+    },
+    "return/turn_left": {
+      "samples": 378,
+      "episodes": 1,
+      "pooled_fallback": true
+    },
+    "return/turn_right": {
+      "samples": 498,
+      "episodes": 1,
+      "pooled_fallback": true
+    }
+  },
+  "min_samples": 30,
+  "min_episodes": 2,
+  "calibration_scope": "previously_seen_DEV_replay_not_confirmation",
+  "source_runs": [
+    "egomap70-63001-baseline",
+    "egomap70-63001-calib",
+    "egomap70-63001-calib_traversed",
+    "egomap70-63001-calib_traversed_zone"
+  ],
+  "modifies_pose": false,
+  "notes": "stage/last-command proxies do not establish the physical cause; temporal rows are correlated",
+  "fit_source_sha256": "875bd43dcfd53aca84f53faea957edc868abfcccbd9fafdc4cedacc7370599dd",
+  "fit_evidence": "experiments/2026-10-11-egomap-reconfirmation/covariance-offline-v1/summary.json",
+  "fetch_manifest_sha256": "eb4562e82e65d1035a75bf629187e228d71ae117e832554ea95f10b441dfb692",
+  "qualification": "DEV_ONLY; one_fit_seed; stratified_not_superior_to_pooled; not_consistency_validated"
+}

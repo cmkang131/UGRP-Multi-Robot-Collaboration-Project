@@ -139,3 +139,5 @@ Codex가 `origin/kiro/sim-speed@eecd2d6`을 읽기 전용으로 검토했다(P0 
   - `scripts/agent_lock.py`(기본 경로·기록 형식), `scripts/ugrp_session.py`(프로세스 그룹 실행) — 대기열 설계에 재사용.
   - PR #201 `scripts/run_m1_owncam.py`, dev-a8 실행 결과(기준), `1b836a1` workflow docs 경로 수정(병합), PR #203/#205 `scripts/run_m2_pair.py`, Codex의 PR #209 검토(2026-09-26).
 - 문서: `docs/execution_versioning.md`, `docs/ubuntu_quickstart.md`, `docs/kaggle_simulation.md`, `docs/colab_simulation.md`, `docs/colab_standard_simulation_review_20260923.md`, `AGENTS.md`.
+
+코드는 커밋 `888447674318bc311e1ef65f71c654692b2b76bb`에서 재현(퇴역 전 소스 복구 기준). 당시 실행 SHA·설정·결과는 본문 기록을 따르며, [퇴역 목록](../../docs/retired_modules.md)을 참고한다.

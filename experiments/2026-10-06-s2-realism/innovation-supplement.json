@@ -1,0 +1,355 @@
+{
+  "scope": "evaluation only, no changes after failed candidate, no GT controller input",
+  "supervisor": "11:25 s2v46; separate single-event bias and peer collision",
+  "event_count": 1,
+  "recordings_with_nonfloor_approach_contact": [
+    1054
+  ],
+  "historical_combined_primary_approach_y_bias_m": {
+    "1051": 0.33248362,
+    "1053": 0.05274908,
+    "1054": -0.17804982
+  },
+  "prior_support": {
+    "scope": "evaluation of sealed v45 diagnostic particles, no controller input",
+    "rows": [
+      {
+        "t": 2.25,
+        "prior_y_yaw_correlation": 0.04723470186666913,
+        "prior_yaw_range_deg": [
+          -35.69898018182965,
+          32.80299202722987
+        ]
+      },
+      {
+        "t": 18.45,
+        "prior_y_yaw_correlation": -0.29207659374124983,
+        "prior_yaw_range_deg": [
+          -21.580397592152412,
+          11.984922859541813
+        ]
+      },
+      {
+        "t": 19.75,
+        "prior_y_yaw_correlation": -0.7018853158452285,
+        "prior_yaw_range_deg": [
+          -11.355866473416553,
+          7.74304115453294
+        ]
+      },
+      {
+        "t": 21.35,
+        "prior_y_yaw_correlation": -0.7932580944081956,
+        "prior_yaw_range_deg": [
+          -10.814428139561663,
+          6.05561908612368
+        ]
+      },
+      {
+        "t": 22.65,
+        "prior_y_yaw_correlation": -0.7374542017548447,
+        "prior_yaw_range_deg": [
+          -9.262618757681436,
+          4.6921841106117
+        ]
+      },
+      {
+        "t": 24.25,
+        "prior_y_yaw_correlation": -0.7434696234947489,
+        "prior_yaw_range_deg": [
+          -9.8394782446704,
+          3.0396993728689385
+        ]
+      },
+      {
+        "t": 36.05,
+        "prior_y_yaw_correlation": -0.5460465974191954,
+        "prior_yaw_range_deg": [
+          -11.622971392986061,
+          5.461225964884187
+        ]
+      },
+      {
+        "t": 57.1,
+        "prior_y_yaw_correlation": -0.008798422866101909,
+        "prior_yaw_range_deg": [
+          -10.569834812142764,
+          6.4895146179850975
+        ]
+      }
+    ]
+  },
+  "contact_path": {
+    "path": {
+      "robot_id": "r3",
+      "event": "path",
+      "t": 12.0,
+      "plan": {
+        "schema": "ugrp.map_goto.v1",
+        "planner": "grid A* (8-connected, no corner cutting, clearance-weighted)",
+        "start_m": [
+          -0.8752901862315332,
+          -2.264945892098699
+        ],
+        "goal_m": [
+          -0.47,
+          -0.85
+        ],
+        "waypoints_m": [
+          [
+            -0.8752901862315332,
+            -2.264945892098699
+          ],
+          [
+            -0.7374999999999999,
+            -2.212500000000003
+          ],
+          [
+            -0.47,
+            -0.85
+          ]
+        ],
+        "length_m": 1.5359446307329543,
+        "regions_touched": [
+          "pickup"
+        ],
+        "resources": [],
+        "envelope": {
+          "x_m": [
+            -0.18,
+            0.28
+          ],
+          "y_m": [
+            -0.18,
+            0.18
+          ]
+        },
+        "margin_m": 0.02,
+        "grid_m": 0.025,
+        "obstacles": [
+          {
+            "id": "wall_north",
+            "center_m": [
+              2.1750000000000003,
+              1.45
+            ],
+            "half_extents_m": [
+              3.25,
+              0.025
+            ],
+            "source": "authored static obstacle"
+          },
+          {
+            "id": "wall_south",
+            "center_m": [
+              2.1750000000000003,
+              -3.15
+            ],
+            "half_extents_m": [
+              3.25,
+              0.025
+            ],
+            "source": "authored static obstacle"
+          },
+          {
+            "id": "wall_west",
+            "center_m": [
+              -1.05,
+              -0.85
+            ],
+            "half_extents_m": [
+              0.025,
+              2.3
+            ],
+            "source": "authored static obstacle"
+          },
+          {
+            "id": "wall_east",
+            "center_m": [
+              5.4,
+              -0.85
+            ],
+            "half_extents_m": [
+              0.025,
+              2.3
+            ],
+            "source": "authored static obstacle"
+          },
+          {
+            "id": "wall_divider_1",
+            "center_m": [
+              2.2,
+              -1.675
+            ],
+            "half_extents_m": [
+              0.025,
+              1.475
+            ],
+            "source": "authored static obstacle"
+          },
+          {
+            "id": "wall_divider_2",
+            "center_m": [
+              2.2,
+              0.875
+            ],
+            "half_extents_m": [
+              0.025,
+              0.575
+            ],
+            "source": "authored static obstacle"
+          }
+        ],
+        "point_keepouts": [],
+        "blocked_regions": [],
+        "penalized_regions": {},
+        "escape_start_m": 0.1,
+        "map_sha256": "2302d273bcd30a9cc9d3166c753f2d40fcf3f03654369d23cd00324b4ca4688d",
+        "scope": "authored static map + supplied RGB obstacle estimates; not physical passage proof",
+        "plan_sha256": "0735aef855a17f4046f2654e250f59c38502a6d3dfbd1f81c23326f878ef37a4"
+      }
+    },
+    "pulse": {
+      "t": 23.85,
+      "state": "search_move",
+      "waypoint": [
+        -0.47,
+        -0.85
+      ],
+      "issued": {
+        "kind": "mecanum",
+        "forward": 0.0,
+        "left": 0.65,
+        "turn": 0.0,
+        "duration_s": 0.65
+      },
+      "profile_key": "0:left:0.65:0.65",
+      "predicted_delta": [
+        0.0005829443450150198,
+        0.16850402690823743,
+        -0.009734377903264832
+      ],
+      "prediction_variance": [
+        2.261451144021893e-06,
+        5.7838889723272055e-06,
+        4.7742612776344265e-05
+      ],
+      "transfer": null,
+      "score": {
+        "before": 0.12768189044828623,
+        "after": 0.07384239521858983,
+        "body_error_m": [
+          0.2617791015330741,
+          0.24321497491793972
+        ],
+        "yaw_rad": -0.06043596791628669
+      }
+    },
+    "r1_registered_spawn_xy": [
+      -0.8982,
+      -0.85
+    ],
+    "r3_at_pulse_xy": [
+      -0.7399,
+      -1.0192
+    ],
+    "registration_reference": "r1 dock reference only, not a new GT input to controller",
+    "registered_r1_center_distance_start_end_m": [
+      0.2316,
+      0.1685
+    ],
+    "collision_source": "23.85 pulse approaches along y before clearing x; planner contains six static walls, no peer obstacle; select_pulse does not recheck swept robot envelope"
+  },
+  "visual_failure": {
+    "complete_pulses": 0,
+    "total_pulses": 15,
+    "contact_pulse_first_intervals": [
+      {
+        "t": 23.9,
+        "from_t": 23.85,
+        "status": "unknown_texture",
+        "tracks": 2,
+        "inliers": 0,
+        "cells": 2,
+        "image_fractions": [
+          {
+            "floor_image_fraction": 0.8788444010416666,
+            "cyan_image_fraction": 0.004117838541666667,
+            "usable_floor_image_fraction": 0.8788444010416666
+          },
+          {
+            "floor_image_fraction": 0.879482421875,
+            "cyan_image_fraction": 0.004104817708333333,
+            "usable_floor_image_fraction": 0.879482421875
+          }
+        ]
+      },
+      {
+        "t": 23.95,
+        "from_t": 23.85,
+        "status": "unknown_texture",
+        "tracks": 3,
+        "inliers": 0,
+        "cells": 3,
+        "image_fractions": [
+          {
+            "floor_image_fraction": 0.8788444010416666,
+            "cyan_image_fraction": 0.004117838541666667,
+            "usable_floor_image_fraction": 0.8788444010416666
+          },
+          {
+            "floor_image_fraction": 0.87880859375,
+            "cyan_image_fraction": 0.004130859375,
+            "usable_floor_image_fraction": 0.87880859375
+          }
+        ]
+      },
+      {
+        "t": 24.0,
+        "from_t": 23.85,
+        "status": "unknown_texture",
+        "tracks": 3,
+        "inliers": 0,
+        "cells": 3,
+        "image_fractions": [
+          {
+            "floor_image_fraction": 0.8788444010416666,
+            "cyan_image_fraction": 0.004117838541666667,
+            "usable_floor_image_fraction": 0.8788444010416666
+          },
+          {
+            "floor_image_fraction": 0.87927734375,
+            "cyan_image_fraction": 0.0040852864583333336,
+            "usable_floor_image_fraction": 0.87927734375
+          }
+        ]
+      },
+      {
+        "t": 24.05,
+        "from_t": 23.85,
+        "status": "unknown_frame"
+      }
+    ],
+    "minimum_tracks_required": 6,
+    "available_tracks": [
+      2,
+      3,
+      3
+    ],
+    "usable_floor_fraction": 0.8788444010416666,
+    "explanation": "surface visible but too few accepted ground feature tracks; max gap then breaks full chain"
+  },
+  "fallback_limitation": {
+    "first_report_times": {
+      "baseline": 12.04,
+      "candidate": 12.0
+    },
+    "status": "all measured profiles preserved but buffered report/query schedule differs; do not interpret score difference as successful VO",
+    "source": [
+      "harness/zone_solo_cyan_flow_fusion.py:190",
+      "harness/zone_study_pose_delay_p03.py:129",
+      "harness/zone_solo_cyan_pulse_cal.py:53"
+    ]
+  },
+  "next": "audit track rejection and causal fallback clock; then own-RGB rotation innovation with calibrated Q/particle recovery; peer collision avoidance separate task"
+}

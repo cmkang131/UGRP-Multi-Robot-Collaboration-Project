@@ -12,10 +12,10 @@ from harness.zone_target_environment import environment_contract, execution_bloc
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG = 'configs/t13_target_checks.json'
-BUNDLE = 'config/rgb_execution_bundles/zone-target-v86.json'
-BUNDLE_ID = 'zone-target-v86'
-WORKFLOW_VERSION = '2.19.0'
-WORKFLOW = 'configs/simulation_workflows.d/target_v86.json'
+BUNDLE = 'config/rgb_execution_bundles/zone-target-v444.json'
+BUNDLE_ID = 'zone-target-v444'
+WORKFLOW_VERSION = '7.337.0'
+WORKFLOW = 'configs/simulation_workflows.d/target_v444.json'
 
 
 def load_config(root=ROOT):

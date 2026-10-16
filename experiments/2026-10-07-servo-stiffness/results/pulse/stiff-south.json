@@ -1,0 +1,253 @@
+{
+  "case": "stiff-south",
+  "split": "confirmation_replay",
+  "frames": 89,
+  "reports": {
+    "baseline": {
+      "points": {
+        "all": {
+          "n": 6281,
+          "median": 0.008162272901275892,
+          "p90": 0.6733782358117523,
+          "rmse": 0.3737342727636806,
+          "precision": 0.8183410284986468
+        },
+        "0-2m": {
+          "n": 5654,
+          "median": 0.008107453249512987,
+          "p90": 0.017038026488590086,
+          "rmse": 0.17251481411833838,
+          "precision": 0.9071453837990803
+        },
+        "2-3m": {
+          "n": 388,
+          "median": 1.2705640417516642,
+          "p90": 1.4503515596279046,
+          "rmse": 1.2558235169169845,
+          "precision": 0.0
+        },
+        "3-4m": {
+          "n": 239,
+          "median": 0.4942098330555772,
+          "p90": 1.2358177832181034,
+          "rmse": 0.6374979123800409,
+          "precision": 0.04602510460251046
+        }
+      },
+      "annotated": {
+        "all": {
+          "predicted": 415,
+          "tp": 342,
+          "positive": 446,
+          "covered": 342,
+          "precision": 0.8240963855421687,
+          "recall": 0.7668161434977578
+        },
+        "0-2m": {
+          "predicted": 372,
+          "tp": 342,
+          "positive": 446,
+          "covered": 342,
+          "precision": 0.9193548387096774,
+          "recall": 0.7668161434977578
+        },
+        "2-3m": {
+          "predicted": 24,
+          "tp": 0,
+          "positive": 0,
+          "covered": 0,
+          "precision": 0.0,
+          "recall": null
+        },
+        "3-4m": {
+          "predicted": 19,
+          "tp": 0,
+          "positive": 0,
+          "covered": 0,
+          "precision": 0.0,
+          "recall": null
+        }
+      }
+    },
+    "candidate": {
+      "points": {
+        "all": {
+          "n": 10,
+          "median": 0.014489168562282329,
+          "p90": 0.05121763988892973,
+          "rmse": 0.029258102535509343,
+          "precision": 1.0
+        },
+        "0-2m": {
+          "n": 10,
+          "median": 0.014489168562282329,
+          "p90": 0.05121763988892973,
+          "rmse": 0.029258102535509343,
+          "precision": 1.0
+        },
+        "2-3m": {
+          "n": 0,
+          "median": null,
+          "p90": null,
+          "rmse": null,
+          "precision": null
+        },
+        "3-4m": {
+          "n": 0,
+          "median": null,
+          "p90": null,
+          "rmse": null,
+          "precision": null
+        }
+      },
+      "annotated": {
+        "all": {
+          "predicted": 0,
+          "tp": 0,
+          "positive": 446,
+          "covered": 0,
+          "precision": null,
+          "recall": 0.0
+        },
+        "0-2m": {
+          "predicted": 0,
+          "tp": 0,
+          "positive": 446,
+          "covered": 0,
+          "precision": null,
+          "recall": 0.0
+        },
+        "2-3m": {
+          "predicted": 0,
+          "tp": 0,
+          "positive": 0,
+          "covered": 0,
+          "precision": null,
+          "recall": null
+        },
+        "3-4m": {
+          "predicted": 0,
+          "tp": 0,
+          "positive": 0,
+          "covered": 0,
+          "precision": null,
+          "recall": null
+        }
+      }
+    }
+  },
+  "checks": {
+    "precision": true,
+    "annotated_precision": false,
+    "recall": false,
+    "median": true,
+    "p90": true,
+    "baseline_nondecrease": true,
+    "labels": true,
+    "annotated_tp": false,
+    "off_golden": true,
+    "own_only": true,
+    "accepted_positive_depth": true
+  },
+  "passed": false,
+  "counts": {
+    "unsettled": 2,
+    "calibrated_unloaded": 89,
+    "reset_tracks": 0,
+    "seeded": 43,
+    "insufficient_views": 18,
+    "zero_baseline": 123,
+    "accepted": 10,
+    "lk_failure": 20,
+    "outside_wall_roi": 21,
+    "low_parallax": 5,
+    "reprojection": 10
+  },
+  "same_candidate_pixels": {
+    "n": 10,
+    "candidate": {
+      "n": 10,
+      "median": 0.014489168562282329,
+      "p90": 0.05121763988892973,
+      "rmse": 0.029258102535509343
+    },
+    "floor": {
+      "n": 10,
+      "median": 0.008851503654564129,
+      "p90": 0.16024620252521157,
+      "rmse": 0.44446740608713114
+    },
+    "floor_invalid": 0
+  },
+  "dr_start_alignment_error": {
+    "n": 10,
+    "median": 0.015661036483421542,
+    "p90": 0.05327744683321512,
+    "rmse": 0.029639373332544464
+  },
+  "confidence_bins": [
+    {
+      "lo": 0.0,
+      "hi": 0.01,
+      "n": 0,
+      "precision": null
+    },
+    {
+      "lo": 0.01,
+      "hi": 0.1,
+      "n": 4,
+      "precision": 1.0
+    },
+    {
+      "lo": 0.1,
+      "hi": 0.5,
+      "n": 6,
+      "precision": 1.0
+    },
+    {
+      "lo": 0.5,
+      "hi": 1.000001,
+      "n": 0,
+      "precision": null
+    }
+  ],
+  "depth_sigma_m": {
+    "n": 10,
+    "median": 0.11152782085118285,
+    "p90": 0.13956652880558426,
+    "rmse": 0.11086509481585809
+  },
+  "predictions_sha256": "fba951ea2bd22a27c4d97bbe75c6b2e34f495a2937700f308f924e7930b3dc96",
+  "source_sha": "0f13be187e164468eb1256f7b26e1f290b0e2015",
+  "evaluation_source_sha": "0f13be187e164468eb1256f7b26e1f290b0e2015",
+  "evaluation_source_hashes": {
+    "harness/wall_parallax.py": "7184dd8664d70f01472cc26094a871825ff52e4bd95d86ecb2b31c06ee645555",
+    "harness/self_map_prob.py": "8473142e17d7fa2274f68e7000d9d4ed7b38253ee4b7c6e8e6e52ff465f0934e",
+    "harness/self_odom_grid.py": "0c70b4f2d34c0a1d6952d81164893b0e9726dc81d9d349aab58e8bc824998798",
+    "harness/wall_camera_calibration.py": "b0edb1493f9aa9aa15c3db1845315f5e2d9da973b52f0eaf2d2788680c98f883",
+    "harness/owncam_localizer.py": "9793f74b008b96d4b6659a5251bde7374c697ac7d4bbb23758d5433098402347",
+    "experiments/2026-09-26-zone-m1-owncam/calibration_m1_dev.json": "126cadaa9265ed2ae2b034f675e67c227193a2e1678f6b0c82dd53b186e6fc72",
+    "experiments/2026-10-05-ego-wall-map-probe/calibration/s2_camera_v3_extrinsic_v1.json": "dc3157dbf77d5df5ab7ee63145e5c2cf7f5e8c0fbfc2231dd60712e26bc77b8c",
+    "experiments/2026-10-05-ego-wall-map-probe/code/height_free_wall.py": "24b6bb522824b1ba4bc2a8fa21aa7c3545900eb77411d1a3cb578e5a9c540591",
+    "experiments/2026-09-26-markerless-probe/markerless_probe.py": "7b6223fbc83e7d9d43cbc3da3c695c4f15335d2bdf217f4dce2cdc7f90a4a13d",
+    "experiments/2026-10-05-ego-wall-map-probe/code/v3_confidence_replay.py": "503b6f9008cf4c50300ca0a0aa14120f89381ef6d38c98414bc126d10bb34cd1",
+    "experiments/2026-10-07-wall-floor-boundary/annotation-sample.json": "e545f71d93b41388ddfd9c93c430a05317cd6ddafcc7f17a7f6d40b413dd674f",
+    "experiments/2026-10-07-wall-floor-boundary/code/evaluate.py": "cf66d75b1890b02df4337dbd7be83a4801962444263eb1335933e05a9e340ef4",
+    "experiments/2026-10-07-wall-parallax/README.md": "a971321216d51e52e2033cb3363a6249304138b6b401ddacd58f3857156c747f",
+    "experiments/2026-10-07-wall-parallax/cohort.json": "53dcf1189b23d11585bbadcbaefe9a33bfbee30611ee2413eb21845f24ecff3b",
+    "experiments/2026-10-07-wall-parallax/new-annotations.json": "4b1699365661b4c20822c45c5a295a274bfceb61998487d99b3d459fc4d83154",
+    "experiments/2026-10-07-wall-parallax/code/common.py": "c4a9fbea14ea56feb855fb0acf0565fef1e9a3d4a97b1d1031964f6e8dee9d1b",
+    "experiments/2026-10-07-wall-parallax/code/replay.py": "022f03abe06775bed7791c1174f011d6181ba84251f970c41f1ed16613c51a97",
+    "harness/self_pulse_odom.py": "8fda076377c1147f0c41f9f05428ac48ed796ee7a05263f7fcaeac6c647089a3",
+    "harness/data/s2_motion_v7_pulse_cal_v122.json": "2245bb9fdcb69d872893dd6ffafb57151750dd42916394a287b6d10bab11d69d",
+    "harness/servo_camera_fk.py": "0083e07af1a78b1da35cefb7f85011f65e1e2c61b5c21c03f337ceaff741a3b3",
+    "harness/data/servo_camera_v3_chain.json": "0cced72fd129556cb1e1ecbeef63155129426e669f77b6d5a70244d3d9b269be",
+    "experiments/2026-10-07-servo-stiffness/cohort.json": "2ae5cc7b9bc4c8a0e8f5e7139416fba041c0a706b90c5dacaf589064dcb1e610",
+    "experiments/2026-10-07-servo-stiffness/new-annotations.json": "56624460695383ab259e71a4932f1552484ebbacb8f41913ef87281d12864170",
+    "experiments/2026-10-07-servo-stiffness/code/replay.py": "f6b5f0d8f7c21d69c9063b67e72d648246659bb187f4085170159f278d248e20"
+  },
+  "evaluation_sources": {
+    "/Users/changmin/projects/ugrp/outputs/servo-stiffness-v1/stiff-south/eval_only/trajectory.jsonl": "21781213f198eac554a15f9192157545d7df2d1ee53acaff9433801cb9bc3fa0",
+    "/Users/changmin/projects/ugrp/outputs/servo-stiffness-v1/stiff-south/inputs/static_map.json": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+  }
+}

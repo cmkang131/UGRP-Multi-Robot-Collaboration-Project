@@ -136,7 +136,7 @@ def test_new_host_keeps_the_parent_guards():
 
 def test_staged_and_case_backends_use_the_clock_and_the_runner_records_it():
     from sim.final_pair_highpose_staged import StagedBackend
-    assert StagedBackend.__mro__[1] is clock.IntegerClock and clock.PhysicsBackend.__mro__[1] is clock.IntegerClock
+    assert StagedBackend.__mro__[2] is clock.IntegerClock and clock.PhysicsBackend.__mro__[2] is clock.IntegerClock  # [1] = NearClip (render near-clip)
     assert StagedBackend.host_clock == clock.PhysicsBackend.host_clock == clock.ID
     from scripts import run_pair_highpose as run
     src = inspect.getsource(run)

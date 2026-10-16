@@ -1,0 +1,25 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "e2e-ownmap-jev-v192",
+      "version": "7.85.0",
+      "purpose": "DEV OpenRouter Gemma messages and RGB grip, Jev semantic_v2 action selection",
+      "entry": "scripts/run_e2e_ownmap_live.py",
+      "runner": "scripts.run_e2e_ownmap_live",
+      "docs": "experiments/2026-10-11-e2e8-openrouter-jev/README.md",
+      "requires": "Explicit e2e-live; committed Azure x86 OSMesa source; current guest guard; persistent runs",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--expected-source-sha",
+        "--seed",
+        "--driver-profile",
+        "--relay-receipt",
+        "--decider"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}

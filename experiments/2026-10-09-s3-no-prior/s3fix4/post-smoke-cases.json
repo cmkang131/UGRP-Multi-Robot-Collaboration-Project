@@ -1,0 +1,442 @@
+{
+  "schema": "ugrp.s3_offline_stage_sweep.v1",
+  "physics_runs": 0,
+  "model_calls": 0,
+  "fixture": "synthetic own pose/state and recorded or fixed perception; no success evidence",
+  "rows": [
+    {
+      "case": "localization_start_scan",
+      "robot": "r1",
+      "result": "pass",
+      "issued": 1,
+      "state": "scan",
+      "known_start_information": false
+    },
+    {
+      "case": "post_reset_heading_native_expiry",
+      "robot": "r1",
+      "result": "pass",
+      "issued": 1
+    },
+    {
+      "case": "localization_start_scan",
+      "robot": "r2",
+      "result": "pass",
+      "issued": 1,
+      "state": "scan",
+      "known_start_information": false
+    },
+    {
+      "case": "post_reset_heading_native_expiry",
+      "robot": "r2",
+      "result": "pass",
+      "issued": 1
+    },
+    {
+      "case": "localization_start_scan",
+      "robot": "r3",
+      "result": "pass",
+      "issued": 1,
+      "state": "scan",
+      "known_start_information": false
+    },
+    {
+      "case": "post_reset_heading_native_expiry",
+      "robot": "r3",
+      "result": "pass",
+      "issued": 1
+    },
+    {
+      "case": "approach_to_align_arm",
+      "robot": "r1",
+      "result": "pass",
+      "issued": 81
+    },
+    {
+      "case": "approach_to_align_arm",
+      "robot": "r2",
+      "result": "pass",
+      "issued": 81
+    },
+    {
+      "case": "final_rgb_alignment",
+      "robot": "r1",
+      "result": "pass",
+      "issued": 1,
+      "state": "align"
+    },
+    {
+      "case": "final_rgb_alignment",
+      "robot": "r2",
+      "result": "pass",
+      "issued": 1,
+      "state": "align"
+    },
+    {
+      "case": "pair_final_alignment_0.01",
+      "robot": "r1",
+      "result": "pass",
+      "issued": 1,
+      "lateral_error_m": 0.01,
+      "stalled": false
+    },
+    {
+      "case": "pair_final_alignment_0.01",
+      "robot": "r2",
+      "result": "pass",
+      "issued": 1,
+      "lateral_error_m": 0.01,
+      "stalled": false
+    },
+    {
+      "case": "pair_final_alignment_0.02",
+      "robot": "r1",
+      "result": "pass",
+      "issued": 1,
+      "lateral_error_m": 0.02,
+      "stalled": false
+    },
+    {
+      "case": "pair_final_alignment_0.02",
+      "robot": "r2",
+      "result": "pass",
+      "issued": 1,
+      "lateral_error_m": 0.02,
+      "stalled": false
+    },
+    {
+      "case": "hover_blind_descent_to_close",
+      "robot": "r1",
+      "result": "pass",
+      "issued": 212,
+      "state": "wait_close"
+    },
+    {
+      "case": "hover_blind_descent_to_close",
+      "robot": "r2",
+      "result": "pass",
+      "issued": 212,
+      "state": "wait_close"
+    },
+    {
+      "case": "mutual_close_GO_actual_arm_queue",
+      "robot": "r1+r2",
+      "result": "pass",
+      "issued": 20,
+      "grants": {
+        "r1": [
+          "close_go_0",
+          15.3
+        ],
+        "r2": [
+          "close_go_0",
+          15.3
+        ]
+      }
+    },
+    {
+      "case": "grasp_activates_own_load",
+      "robot": "r1",
+      "result": "pass",
+      "issued": 0,
+      "loaded": true
+    },
+    {
+      "case": "grasp_activates_own_load",
+      "robot": "r2",
+      "result": "pass",
+      "issued": 0,
+      "loaded": true
+    },
+    {
+      "case": "issued_close_to_grasp_receipt",
+      "robot": "r1",
+      "result": "pass",
+      "issued": 0
+    },
+    {
+      "case": "issued_close_to_grasp_receipt",
+      "robot": "r2",
+      "result": "pass",
+      "issued": 0
+    },
+    {
+      "case": "low_lift_to_HIGH_queue",
+      "robot": "r1",
+      "result": "pass",
+      "issued": 0
+    },
+    {
+      "case": "low_lift_to_HIGH_queue",
+      "robot": "r2",
+      "result": "pass",
+      "issued": 0
+    },
+    {
+      "case": "HIGH_transit_complete",
+      "robot": "r1+r2",
+      "result": "pass",
+      "issued": 720,
+      "states": {
+        "r1": "wait_carry",
+        "r2": "wait_carry"
+      }
+    },
+    {
+      "case": "pair_GO_first_carry_motor",
+      "robot": "r1",
+      "result": "pass",
+      "issued": 1,
+      "go": {
+        "phase": "GO",
+        "go_at_s": 36.5
+      },
+      "state": "carry",
+      "authorized": true
+    },
+    {
+      "case": "pair_GO_first_carry_motor",
+      "robot": "r2",
+      "result": "pass",
+      "issued": 1,
+      "go": {
+        "phase": "GO",
+        "go_at_s": 36.5
+      },
+      "state": "carry",
+      "authorized": true
+    },
+    {
+      "case": "reject_unmatched_lift_enum",
+      "robot": "r1",
+      "result": "expected_rejection",
+      "error": "ValueError: coupled motion requires own grasp and live pair carry GO",
+      "traceback": "Traceback (most recent call last):\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/tests/s3_stage_probe.py\", line 146, in case\n    detail = operation() or {}\n             ^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/tests/s3_stage_probe.py\", line 352, in <lambda>\n    p.case('reject_unmatched_lift_enum','r1',lambda:me.port.apply(\n                                                    ^^^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_s3_pair_alignment.py\", line 51, in apply\n    raise ValueError('coupled motion requires own grasp and live pair carry GO')\nValueError: coupled motion requires own grasp and live pair carry GO\n",
+      "issued": 0
+    },
+    {
+      "case": "coupled_lateral_carry",
+      "robot": "r1",
+      "result": "pass",
+      "issued": 1
+    },
+    {
+      "case": "coupled_lateral_carry",
+      "robot": "r2",
+      "result": "pass",
+      "issued": 1
+    },
+    {
+      "case": "all_axial_and_lateral_door_legs",
+      "robot": "r1",
+      "result": "pass",
+      "issued": 16,
+      "legs": 8
+    },
+    {
+      "case": "all_axial_and_lateral_door_legs",
+      "robot": "r2",
+      "result": "pass",
+      "issued": 16,
+      "legs": 8
+    },
+    {
+      "case": "lower_queue",
+      "robot": "r1",
+      "result": "pass",
+      "issued": 0,
+      "returned": true
+    },
+    {
+      "case": "lower_queue",
+      "robot": "r2",
+      "result": "pass",
+      "issued": 0,
+      "returned": true
+    },
+    {
+      "case": "lower_to_release_barrier",
+      "robot": "r1+r2",
+      "result": "pass",
+      "issued": 960,
+      "states": {
+        "r1": "wait_open",
+        "r2": "wait_open"
+      }
+    },
+    {
+      "case": "release_backoff",
+      "robot": "r1",
+      "result": "pass",
+      "issued": 1
+    },
+    {
+      "case": "release_backoff",
+      "robot": "r2",
+      "result": "pass",
+      "issued": 1
+    },
+    {
+      "case": "checkpoint_retry_backoff",
+      "robot": "r1",
+      "result": "pass",
+      "issued": 1
+    },
+    {
+      "case": "checkpoint_retry_backoff",
+      "robot": "r2",
+      "result": "pass",
+      "issued": 1
+    },
+    {
+      "case": "solo_search_to_align",
+      "robot": "r3",
+      "result": "pass",
+      "issued": 1,
+      "state": "align"
+    },
+    {
+      "case": "solo_final_alignment_0.01",
+      "robot": "r3",
+      "result": "pass",
+      "issued": 6,
+      "lateral_error_m": 0.01,
+      "stalled": false
+    },
+    {
+      "case": "solo_final_alignment_0.02",
+      "robot": "r3",
+      "result": "pass",
+      "issued": 6,
+      "lateral_error_m": 0.02,
+      "stalled": false
+    },
+    {
+      "case": "solo_blind_descent_close",
+      "robot": "r3",
+      "result": "pass",
+      "issued": 20,
+      "state": "grasp"
+    },
+    {
+      "case": "solo_grasp_to_lift",
+      "robot": "r3",
+      "result": "pass",
+      "issued": 481,
+      "state": "lift"
+    },
+    {
+      "case": "solo_lift_to_carry_posture",
+      "robot": "r3",
+      "result": "pass",
+      "issued": 9,
+      "state": "real_carry_transition"
+    },
+    {
+      "case": "solo_carry_posture_to_drive",
+      "robot": "r3",
+      "result": "pass",
+      "issued": 1,
+      "state": "carry"
+    },
+    {
+      "case": "solo_loaded_heading_door_pass",
+      "robot": "r3",
+      "result": "pass",
+      "issued": 1,
+      "state": "carry"
+    },
+    {
+      "case": "solo_lower_release",
+      "robot": "r3",
+      "result": "pass",
+      "issued": 231,
+      "state": "released"
+    },
+    {
+      "case": "solo_release_done",
+      "robot": "r3",
+      "result": "pass",
+      "issued": 1,
+      "state": "done"
+    },
+    {
+      "case": "door_wait_pair_priority",
+      "robot": "r3",
+      "result": "pass",
+      "issued": 1
+    },
+    {
+      "case": "door_clear_solo_handoff",
+      "robot": "r1+r2+r3",
+      "result": "pass",
+      "issued": 1,
+      "door": {
+        "r1": "CLEAR",
+        "r2": "CLEAR",
+        "r3": "USING"
+      }
+    },
+    {
+      "case": "alive_peer_pre_GO_wait_timeout_continues",
+      "robot": "r1",
+      "result": "pass",
+      "issued": 2,
+      "repeated_windows": 2,
+      "advanced_without_GO": false
+    },
+    {
+      "case": "alive_peer_pre_GO_wait_timeout_continues",
+      "robot": "r2",
+      "result": "pass",
+      "issued": 2,
+      "repeated_windows": 2,
+      "advanced_without_GO": false
+    },
+    {
+      "case": "missed_GO_stays_hard_stop",
+      "robot": "r1",
+      "result": "pass",
+      "issued": 1,
+      "hard_stop": "PARTNER_MISSED_GO"
+    },
+    {
+      "case": "consumed_GO_timeout_stays_hard",
+      "robot": "r2",
+      "result": "pass",
+      "issued": 0,
+      "hard_stop": "BARRIER_APPROACH_TIMEOUT",
+      "already_consumed_GO": true
+    },
+    {
+      "case": "reset_retry_heading",
+      "robot": "r1",
+      "result": "pass",
+      "issued": 1
+    },
+    {
+      "case": "reset_retry_heading",
+      "robot": "r2",
+      "result": "pass",
+      "issued": 1
+    },
+    {
+      "case": "reset_retry_heading",
+      "robot": "r3",
+      "result": "pass",
+      "issued": 1
+    },
+    {
+      "case": "final_record_serialization",
+      "robot": "r1+r2+r3",
+      "result": "pass",
+      "issued": 0,
+      "cache": "posterior_content_v2",
+      "nonfinite": false
+    }
+  ],
+  "errors": [],
+  "error_count": 0,
+  "commands": 3165,
+  "returns": "not implemented by existing S3 delivery host"
+}

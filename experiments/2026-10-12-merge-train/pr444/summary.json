@@ -1,0 +1,17 @@
+{
+  "pr": 444,
+  "original_head": "adf4f100dc90dbe6ac3e65739b18f0506e6889c2",
+  "parent": "9ffbc553e4c6f688e7b1e8a32c59901d64fb4047",
+  "review_fix": "Buffer estimator command ingestion until own RGB; apply every timestamp under the complete interval motion filter, including RBPF callback and pose reporter. Physical issuance remains immediate. Fail explicitly on partial plan application.",
+  "replay_fix": "Saved command-only VO replay uses the same between-frame estimator buffering; previous predictions not rewritten",
+  "verification": "46 passed; real Robot known/unknown between-frame checks 2 passed",
+  "physical_runs": 0,
+  "research": {
+    "source": "https://github.com/cra-ros-pkg/robot_localization/blob/rolling-devel/doc/state_estimation_nodes.rst",
+    "principle": "Timestamp-order measurement/control processing for delayed observations; bounded one-frame command queue avoids retroactive cloud rollback in this callback-based estimator."
+  },
+  "logs": {
+    "outputs/merge-train-20261012/pr444-tests.txt": "8b65a9a3facd3a5b27c4aa3373c6c85c7d3b01a78677059f051d370dfa26a63f",
+    "outputs/merge-train-20261012/pr444-between-frame-tests.txt": "ccd2a2ccd9839906a7ff4bce4367e861e5cfa5d95d54fc665ecf3ca0c3644d9c"
+  }
+}

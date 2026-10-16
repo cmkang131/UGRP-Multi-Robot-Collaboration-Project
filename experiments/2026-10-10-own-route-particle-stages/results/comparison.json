@@ -1,0 +1,456 @@
+{
+  "host": "oracle-x86",
+  "source_sha": "88efcd85bb8e8525a625cc0b508396faf7fbba04",
+  "registered_seed_count": 2,
+  "available_seed_count": 1,
+  "registered_slots": 8,
+  "executed_stage_slots": 4,
+  "blocked_slots": 4,
+  "full_runs": 0,
+  "thresholds_changed": false,
+  "scores": [
+    {
+      "seed": 60011,
+      "profile": "baseline",
+      "status": "BLOCKED_PREPARE_B_UNOBSERVED",
+      "samples": 0
+    },
+    {
+      "seed": 60011,
+      "profile": "a",
+      "status": "BLOCKED_PREPARE_B_UNOBSERVED",
+      "samples": 0
+    },
+    {
+      "seed": 60011,
+      "profile": "b",
+      "status": "BLOCKED_PREPARE_B_UNOBSERVED",
+      "samples": 0
+    },
+    {
+      "seed": 60011,
+      "profile": "c",
+      "status": "BLOCKED_PREPARE_B_UNOBSERVED",
+      "samples": 0
+    },
+    {
+      "host": "oracle-x86",
+      "mode": "stage",
+      "profile": "baseline",
+      "seed": 60012,
+      "status": "RECORDED",
+      "source_sha": "88efcd85bb8e8525a625cc0b508396faf7fbba04",
+      "wall_s": 513.343561811,
+      "failure": null,
+      "checkpoint": {
+        "path": "/home/ubuntu/ugrp-sim/runs/egomap60-fixed-batch-v2/data/egomap60-prep-60012-batch/checkpoints/ckpt_00338_t00068.900.pkl.zlib",
+        "sha256": "9a5a4b28a1f59954681402b0b2924fd7659fd6db67e166d4bb768946cdb9db32",
+        "source": "88efcd85bb8e8525a625cc0b508396faf7fbba04",
+        "sim_s": 68.9
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap60-stage-60012-baseline-hostretry1/data",
+      "result_sha256": "7d166d591427ec1e9656f6d18204e012e43e237fb6706e3920770794f63c9a20",
+      "samples": 601,
+      "over_3sigma": 122,
+      "over_3sigma_rate": 0.20299500831946754,
+      "final_error_m": 0.437494295920018,
+      "final_sigma_m": 0.08402748444835992,
+      "final_error_sigma": 5.206561862373558,
+      "path_rmse_m": 0.31983389961408876,
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "declarations": [],
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "final_return_distance_m": 2.0509853151212383,
+      "sim_s": 120.0,
+      "occupied_cells": 500,
+      "tube": {
+        "occupied_cells": 67,
+        "precision_015": 0.4925373134328358,
+        "precision_cell": 0.29850746268656714,
+        "wall_coverage": 1.0,
+        "wall_error_rmse_m": 0.1680582503664036
+      },
+      "tube_wall_samples": 34,
+      "tube_covered_samples": 34,
+      "per_phase": {
+        "approach": {
+          "samples": 300,
+          "over_3sigma": 0,
+          "over_3sigma_rate": 0.0
+        },
+        "return": {
+          "samples": 301,
+          "over_3sigma": 122,
+          "over_3sigma_rate": 0.4053156146179402
+        }
+      },
+      "remote_raw": "/home/ubuntu/ugrp-sim/runs/egomap60-stage-60012-baseline-hostretry1/data",
+      "max_rss_kib": 1657996,
+      "cpu_user_s": 595.02,
+      "cpu_system_s": 215.51,
+      "all_wall_samples": 349,
+      "tube_domain_fraction": 0.09742120343839542,
+      "final_route_summary": {
+        "nodes": 454,
+        "edges": 453,
+        "cursor": 56,
+        "length_m": 19.04939077737087,
+        "matches": 15
+      },
+      "command_counts": {
+        "forward": 216,
+        "left": 0,
+        "turn": 385
+      }
+    },
+    {
+      "host": "oracle-x86",
+      "mode": "stage",
+      "profile": "a",
+      "seed": 60012,
+      "status": "RECORDED",
+      "source_sha": "88efcd85bb8e8525a625cc0b508396faf7fbba04",
+      "wall_s": 685.1766202,
+      "failure": null,
+      "checkpoint": {
+        "path": "/home/ubuntu/ugrp-sim/runs/egomap60-fixed-batch-v2/data/egomap60-prep-60012-batch/checkpoints/ckpt_00338_t00068.900.pkl.zlib",
+        "sha256": "9a5a4b28a1f59954681402b0b2924fd7659fd6db67e166d4bb768946cdb9db32",
+        "source": "88efcd85bb8e8525a625cc0b508396faf7fbba04",
+        "sim_s": 68.9
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap60-stage-60012-a-hostretry1/data",
+      "result_sha256": "ca942fabeedabe2fc6df70984ddb30253a16ef5504cab913189f87768763c607",
+      "samples": 601,
+      "over_3sigma": 10,
+      "over_3sigma_rate": 0.016638935108153077,
+      "final_error_m": 0.14521752244160863,
+      "final_sigma_m": 0.07720054415157587,
+      "final_error_sigma": 1.8810427314668654,
+      "path_rmse_m": 0.24303534891542017,
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "declarations": [],
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "final_return_distance_m": 1.4095696796287283,
+      "sim_s": 120.0,
+      "occupied_cells": 457,
+      "tube": {
+        "occupied_cells": 60,
+        "precision_015": 0.9166666666666666,
+        "precision_cell": 0.4,
+        "wall_coverage": 1.0,
+        "wall_error_rmse_m": 0.08779102140203494
+      },
+      "tube_wall_samples": 36,
+      "tube_covered_samples": 36,
+      "per_phase": {
+        "approach": {
+          "samples": 300,
+          "over_3sigma": 0,
+          "over_3sigma_rate": 0.0
+        },
+        "return": {
+          "samples": 301,
+          "over_3sigma": 10,
+          "over_3sigma_rate": 0.03322259136212625
+        }
+      },
+      "remote_raw": "/home/ubuntu/ugrp-sim/runs/egomap60-stage-60012-a-hostretry1/data",
+      "max_rss_kib": 1792200,
+      "cpu_user_s": 764.19,
+      "cpu_system_s": 209.33,
+      "all_wall_samples": 349,
+      "tube_domain_fraction": 0.10315186246418338,
+      "final_route_summary": {
+        "nodes": 460,
+        "edges": 459,
+        "cursor": 52,
+        "length_m": 20.197319858498243,
+        "matches": 15
+      },
+      "command_counts": {
+        "forward": 255,
+        "left": 0,
+        "turn": 345
+      }
+    },
+    {
+      "host": "oracle-x86",
+      "mode": "stage",
+      "profile": "b",
+      "seed": 60012,
+      "status": "RECORDED",
+      "source_sha": "88efcd85bb8e8525a625cc0b508396faf7fbba04",
+      "wall_s": 495.106429677,
+      "failure": null,
+      "checkpoint": {
+        "path": "/home/ubuntu/ugrp-sim/runs/egomap60-fixed-batch-v2/data/egomap60-prep-60012-batch/checkpoints/ckpt_00338_t00068.900.pkl.zlib",
+        "sha256": "9a5a4b28a1f59954681402b0b2924fd7659fd6db67e166d4bb768946cdb9db32",
+        "source": "88efcd85bb8e8525a625cc0b508396faf7fbba04",
+        "sim_s": 68.9
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap60-stage-60012-b-hostretry1/data",
+      "result_sha256": "cfac19496e15702066660b216a7f39b3b6098d3b6fc081d76a9a813ce31229c0",
+      "samples": 601,
+      "over_3sigma": 122,
+      "over_3sigma_rate": 0.20299500831946754,
+      "final_error_m": 0.43749429592001887,
+      "final_sigma_m": 0.08402748444836063,
+      "final_error_sigma": 5.206561862373524,
+      "path_rmse_m": 0.31983389961408887,
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "declarations": [],
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "final_return_distance_m": 2.0509853151212383,
+      "sim_s": 120.0,
+      "occupied_cells": 500,
+      "tube": {
+        "occupied_cells": 67,
+        "precision_015": 0.4925373134328358,
+        "precision_cell": 0.29850746268656714,
+        "wall_coverage": 1.0,
+        "wall_error_rmse_m": 0.1680582503664036
+      },
+      "tube_wall_samples": 34,
+      "tube_covered_samples": 34,
+      "per_phase": {
+        "approach": {
+          "samples": 300,
+          "over_3sigma": 0,
+          "over_3sigma_rate": 0.0
+        },
+        "return": {
+          "samples": 301,
+          "over_3sigma": 122,
+          "over_3sigma_rate": 0.4053156146179402
+        }
+      },
+      "remote_raw": "/home/ubuntu/ugrp-sim/runs/egomap60-stage-60012-b-hostretry1/data",
+      "max_rss_kib": 1656624,
+      "cpu_user_s": 573.25,
+      "cpu_system_s": 210.67,
+      "all_wall_samples": 349,
+      "tube_domain_fraction": 0.09742120343839542,
+      "final_route_summary": {
+        "nodes": 454,
+        "edges": 453,
+        "cursor": 56,
+        "length_m": 19.049390777370867,
+        "matches": 15
+      },
+      "command_counts": {
+        "forward": 216,
+        "left": 0,
+        "turn": 385
+      }
+    },
+    {
+      "host": "oracle-x86",
+      "mode": "stage",
+      "profile": "c",
+      "seed": 60012,
+      "status": "RECORDED",
+      "source_sha": "88efcd85bb8e8525a625cc0b508396faf7fbba04",
+      "wall_s": 512.042592039,
+      "failure": null,
+      "checkpoint": {
+        "path": "/home/ubuntu/ugrp-sim/runs/egomap60-fixed-batch-v2/data/egomap60-prep-60012-batch/checkpoints/ckpt_00338_t00068.900.pkl.zlib",
+        "sha256": "9a5a4b28a1f59954681402b0b2924fd7659fd6db67e166d4bb768946cdb9db32",
+        "source": "88efcd85bb8e8525a625cc0b508396faf7fbba04",
+        "sim_s": 68.9
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/egomap60-stage-60012-c-hostretry1/data",
+      "result_sha256": "d57ed4247b9ef58867974317b68d61df35eb0a24c86022bf4c249f27d10622b9",
+      "samples": 601,
+      "over_3sigma": 233,
+      "over_3sigma_rate": 0.3876871880199667,
+      "final_error_m": 0.16364543188766345,
+      "final_sigma_m": 0.06826234266251724,
+      "final_error_sigma": 2.397301726029408,
+      "path_rmse_m": 0.3256366248501809,
+      "B_arrived": false,
+      "returned": false,
+      "false_declarations": 0,
+      "declarations": [],
+      "contacts": {
+        "wall": 0,
+        "robot": 0
+      },
+      "final_return_distance_m": 1.540397045541413,
+      "sim_s": 120.0,
+      "occupied_cells": 460,
+      "tube": {
+        "occupied_cells": 51,
+        "precision_015": 0.8431372549019608,
+        "precision_cell": 0.5294117647058824,
+        "wall_coverage": 1.0,
+        "wall_error_rmse_m": 0.08767021578178255
+      },
+      "tube_wall_samples": 25,
+      "tube_covered_samples": 25,
+      "per_phase": {
+        "approach": {
+          "samples": 300,
+          "over_3sigma": 70,
+          "over_3sigma_rate": 0.23333333333333334
+        },
+        "return": {
+          "samples": 301,
+          "over_3sigma": 163,
+          "over_3sigma_rate": 0.5415282392026578
+        }
+      },
+      "remote_raw": "/home/ubuntu/ugrp-sim/runs/egomap60-stage-60012-c-hostretry1/data",
+      "max_rss_kib": 1658136,
+      "cpu_user_s": 591.15,
+      "cpu_system_s": 224.8,
+      "all_wall_samples": 349,
+      "tube_domain_fraction": 0.07163323782234957,
+      "final_route_summary": {
+        "nodes": 460,
+        "edges": 459,
+        "cursor": 78,
+        "length_m": 17.51790587002345,
+        "matches": 11
+      },
+      "command_counts": {
+        "forward": 214,
+        "left": 0,
+        "turn": 387
+      }
+    }
+  ],
+  "selection": {
+    "gates": {
+      "a": {
+        "complete_two": false
+      },
+      "b": {
+        "complete_two": false
+      },
+      "c": {
+        "complete_two": false
+      }
+    },
+    "selected": null,
+    "thresholds_changed": false
+  },
+  "verified_files": 2930,
+  "hash_mismatches": [],
+  "host_interruptions": 4,
+  "host_retry_plan": {
+    "reason": "Supervisor confirmed idle-shutdown bug at09:32:44Z; host restarted09:39Z. EXIT143 host interruption, not simulation failure.",
+    "source_sha": "88efcd85bb8e8525a625cc0b508396faf7fbba04",
+    "checkpoint_sha256": "9a5a4b28a1f59954681402b0b2924fd7659fd6db67e166d4bb768946cdb9db32",
+    "unchanged_conditions": true,
+    "physical_new_preparations": 0,
+    "smoke_repeated": 0,
+    "jobs": [
+      {
+        "name": "egomap60-stage-60012-baseline-hostretry1",
+        "seed": 60012,
+        "profile": "baseline",
+        "source_sha": "88efcd85bb8e8525a625cc0b508396faf7fbba04",
+        "command": [
+          ".venv-sim/bin/python",
+          "-m",
+          "scripts.run_own_route_particle_stages",
+          "--mode",
+          "stage",
+          "--seed",
+          "60012",
+          "--profile",
+          "baseline",
+          "--checkpoint",
+          "/home/ubuntu/ugrp-sim/runs/egomap60-fixed-batch-v2/data/egomap60-prep-60012-batch/checkpoints/ckpt_00338_t00068.900.pkl.zlib",
+          "--output",
+          "outputs/egomap60-stage-60012-baseline-hostretry1/data"
+        ]
+      },
+      {
+        "name": "egomap60-stage-60012-a-hostretry1",
+        "seed": 60012,
+        "profile": "a",
+        "source_sha": "88efcd85bb8e8525a625cc0b508396faf7fbba04",
+        "command": [
+          ".venv-sim/bin/python",
+          "-m",
+          "scripts.run_own_route_particle_stages",
+          "--mode",
+          "stage",
+          "--seed",
+          "60012",
+          "--profile",
+          "a",
+          "--checkpoint",
+          "/home/ubuntu/ugrp-sim/runs/egomap60-fixed-batch-v2/data/egomap60-prep-60012-batch/checkpoints/ckpt_00338_t00068.900.pkl.zlib",
+          "--output",
+          "outputs/egomap60-stage-60012-a-hostretry1/data"
+        ]
+      },
+      {
+        "name": "egomap60-stage-60012-b-hostretry1",
+        "seed": 60012,
+        "profile": "b",
+        "source_sha": "88efcd85bb8e8525a625cc0b508396faf7fbba04",
+        "command": [
+          ".venv-sim/bin/python",
+          "-m",
+          "scripts.run_own_route_particle_stages",
+          "--mode",
+          "stage",
+          "--seed",
+          "60012",
+          "--profile",
+          "b",
+          "--checkpoint",
+          "/home/ubuntu/ugrp-sim/runs/egomap60-fixed-batch-v2/data/egomap60-prep-60012-batch/checkpoints/ckpt_00338_t00068.900.pkl.zlib",
+          "--output",
+          "outputs/egomap60-stage-60012-b-hostretry1/data"
+        ]
+      },
+      {
+        "name": "egomap60-stage-60012-c-hostretry1",
+        "seed": 60012,
+        "profile": "c",
+        "source_sha": "88efcd85bb8e8525a625cc0b508396faf7fbba04",
+        "command": [
+          ".venv-sim/bin/python",
+          "-m",
+          "scripts.run_own_route_particle_stages",
+          "--mode",
+          "stage",
+          "--seed",
+          "60012",
+          "--profile",
+          "c",
+          "--checkpoint",
+          "/home/ubuntu/ugrp-sim/runs/egomap60-fixed-batch-v2/data/egomap60-prep-60012-batch/checkpoints/ckpt_00338_t00068.900.pkl.zlib",
+          "--output",
+          "outputs/egomap60-stage-60012-c-hostretry1/data"
+        ]
+      }
+    ]
+  },
+  "raw": "/Users/changmin/projects/ugrp/outputs/egomap60-delivery/final-input",
+  "source_hashes": {
+    "scores.json": "39a87628d7061f096bc1752378491079303c167abfb4483158ee1fa8a0d22d45",
+    "selection.json": "2a0dc11c9f88fa5ab3172d0510248644cb40405e772b45c457365f1fa0a1402a",
+    "batch-plan.json": "51057b7b9c4a8ea384930f401c3dfb3337734d74713755f59b4a130fdbae43b8",
+    "batch-status.json": "94c028119753339c9f6821202d2a51b2eaae9b33c985d8daee190d5a9ef1f6fe"
+  }
+}

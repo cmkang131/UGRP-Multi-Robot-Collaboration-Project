@@ -1,0 +1,21 @@
+{
+  "checked_utc": "2026-10-11T20:14:00Z",
+  "scope": "Standard candidate methods only; no performance/controller/physics changes in this round",
+  "sources": [
+    {
+      "url": "https://docs.python.org/3.12/library/copy.html",
+      "title": "Python 3.12 copy",
+      "candidate": "Reuse immutable per-frame snapshot and validate once per revision; preserve causal source checks and mutation isolation. Snapshot/deepcopy hypothesis is a code inference, not an exact historical timer."
+    },
+    {
+      "url": "https://mujoco.readthedocs.io/en/3.3.3/modeling.html#performance-tuning",
+      "title": "MuJoCo performance tuning",
+      "candidate": "Measure collision versus solver with built-in CPU timers; then compare sparse Jacobian/solver or collision-filter candidates only in a separately versioned physics cohort. No automatic geometry/contact/timestep reduction."
+    },
+    {
+      "url": "https://mujoco.readthedocs.io/en/3.3.5/programming/",
+      "title": "MuJoCo OpenGL",
+      "candidate": "Persistent render-context reuse; hardware EGL only on available compatible GPU, or exact lazy capture when consumer requests are identical. Existing CPU OSMesa run provides no evidence of GPU availability or equivalent output."
+    }
+  ]
+}

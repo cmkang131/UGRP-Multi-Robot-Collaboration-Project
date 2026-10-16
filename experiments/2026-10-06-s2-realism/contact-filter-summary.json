@@ -1,0 +1,176 @@
+{
+  "schema": "ugrp.s2.contact_filter.summary.v1",
+  "admission_pass": true,
+  "gates": {
+    "off_exact": true,
+    "rmse": true,
+    "updates": true,
+    "stationary": true
+  },
+  "results": [
+    {
+      "option": "off",
+      "source": "/Users/changmin/projects/ugrp/outputs/s2-contact-audit-20261007/replay-off-final.json",
+      "sha256": "99976d77b7f415672870cb678d39abc0c6b8da3993e66fc312de3e66a42aa083",
+      "source_sha": "e89883e304100e3e9e3960c6bf48ffe11fb8f829",
+      "candidate_sha256": "3c95c93a6da2fe6f05967826cb2a7a0c24368ef2f650340740f8a9c213da23de",
+      "criteria_sha256": "eff65420720e4700e795245b9daae9485835dac8bcf769f2845d5bf3ec9d3db3",
+      "carry_rmse_m": 2.1995980883497035,
+      "carry_end_error_m": 3.8759100081318514,
+      "carry_p90_error_m": 3.749418776170624,
+      "carry_updates": 18,
+      "update_times": [
+        80.35,
+        81.95,
+        83.25,
+        84.85,
+        86.15,
+        87.8,
+        89.15,
+        90.8,
+        98.65,
+        107.1,
+        115.85,
+        124.2,
+        141.85,
+        149.55,
+        157.45,
+        194.5,
+        195.9,
+        197.55
+      ],
+      "max_update_gap_sim_s": 39.25,
+      "initial_stationary_max_error_m": 0.08875537445523977,
+      "phase_rmse_m": {
+        "early_floor": 1.1934871148727528,
+        "visible_walls": 1.3644571153512686,
+        "late": 2.8880620322587385
+      },
+      "contact_attempts": 0,
+      "removed_contacts": 0
+    },
+    {
+      "option": "floor_appearance_v1",
+      "source": "/Users/changmin/projects/ugrp/outputs/s2-contact-audit-20261007/replay-floor_appearance_v1.json",
+      "sha256": "8cc3e5bf8e854e86da798a03ad55721a02d3d53add4c46a102bda1bb0b2478fd",
+      "source_sha": "e89883e304100e3e9e3960c6bf48ffe11fb8f829",
+      "candidate_sha256": "3c95c93a6da2fe6f05967826cb2a7a0c24368ef2f650340740f8a9c213da23de",
+      "criteria_sha256": "eff65420720e4700e795245b9daae9485835dac8bcf769f2845d5bf3ec9d3db3",
+      "carry_rmse_m": 2.1258927751959145,
+      "carry_end_error_m": 3.7936306147813617,
+      "carry_p90_error_m": 3.6847154655460157,
+      "carry_updates": 20,
+      "update_times": [
+        80.35,
+        81.95,
+        83.25,
+        84.85,
+        86.15,
+        87.8,
+        89.15,
+        90.8,
+        98.65,
+        107.1,
+        115.85,
+        124.2,
+        141.85,
+        149.55,
+        157.45,
+        185.35,
+        186.95,
+        194.5,
+        195.9,
+        197.55
+      ],
+      "max_update_gap_sim_s": 39.25,
+      "initial_stationary_max_error_m": 0.08875537445523977,
+      "phase_rmse_m": {
+        "early_floor": 1.0852669093389142,
+        "visible_walls": 1.1846932646305917,
+        "late": 2.8410014110278343
+      },
+      "contact_attempts": 24,
+      "removed_contacts": 149
+    }
+  ],
+  "criteria": {
+    "schema": "ugrp.s2.floor_contact.criteria.v1",
+    "source_raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-97fcb5d2-s1050-P1-2-place",
+    "seed": 1050,
+    "role": "exploratory replay, not confirmation",
+    "carry_window_sim_s": [
+      71.0,
+      236.8
+    ],
+    "baseline_visibility_policy": "nav2_observed_v1",
+    "candidate": "floor_appearance_v1",
+    "admission": {
+      "carry_rmse_strictly_less_than_m": 2.1909388706847515,
+      "observed_baseline_rmse_m": 2.1995980883497035,
+      "carry_updates_min": 1,
+      "initial_stationary_max_error_at_most_m": 0.5,
+      "off_replay_max_delta": 0.0
+    },
+    "historical_gap_target_s": 30.0,
+    "gap_target_is_admission_gate": false,
+    "conditional_full": "one fresh seed only after replay admission; freeze ON, all v125 options plus admitted contact/observed options; no GT controls",
+    "training": {
+      "signal": "own RGB manually reviewed floor-only reference rectangles, no GT-derived mask",
+      "times_sim_s": [
+        71.0,
+        98.0
+      ],
+      "rectangle_xyxy": [
+        20,
+        80,
+        620,
+        420
+      ],
+      "raw_resolution": [
+        640,
+        480
+      ],
+      "evaluation_overlap": true,
+      "model": "Ulrich-Nourbakhsh fixed regular-mode hue/intensity histogram OR",
+      "parameters": {
+        "gaussian_kernel": 5,
+        "histogram_bins": 256,
+        "histogram_window": 5,
+        "hue_count_threshold": 60,
+        "intensity_count_threshold": 80,
+        "min_intensity": 0.0392156862745098,
+        "min_saturation": 0.1
+      },
+      "adaptations": "offline manually reviewed floor patches replace odometry-traversed reference queue; frozen table, no online learning; only remove existing contacts when both adjacent 3x5 patches are all classified floor",
+      "patch_rows_above": [
+        -3,
+        -2,
+        -1
+      ],
+      "patch_rows_below": [
+        1,
+        2,
+        3
+      ],
+      "patch_columns": [
+        -2,
+        -1,
+        0,
+        1,
+        2
+      ]
+    },
+    "fixed_constraints": [
+      "no threshold tuning after candidate replay",
+      "no camera/mount/FOV/physics change",
+      "no PF/gate/likelihood/motion/resampling change",
+      "S2 loaded only; default off byte-equivalent",
+      "no full if admission fails"
+    ]
+  },
+  "criteria_sha256": "eff65420720e4700e795245b9daae9485835dac8bcf769f2845d5bf3ec9d3db3",
+  "physics_runs": 0,
+  "model_calls": 0,
+  "gt_usage": "completed prediction scoring only",
+  "new_physical_metrics": null
+}

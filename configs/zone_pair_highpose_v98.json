@@ -81,7 +81,10 @@
     "rule": "DEV_PILOT_C0_ZERO_v1",
     "admitted_calibration_sha256": [
       "398372ae6b9b0fef7344d7f29146ce75b309d334b3ce31af527bc071c0e582f5",
-      "aba4ac586b2554844ad5b4b17efe968a4247278664ffb433f83f6785ca1769c4"
+      "aba4ac586b2554844ad5b4b17efe968a4247278664ffb433f83f6785ca1769c4",
+      "ce447ada62295d24c7f7a5929ce878e70fa297651e16ca192536f4a403cd8c5f",
+      "a04371f614bd7f6f7583ef4f4121abce1c337fd5652899dbfe0fe6df1703f926",
+      "a75fc9325f8a8b89a158c2be0872cebfd4d11c8d2a7482c720eb9e1f99c41501"
     ],
     "runnable": true,
     "run_status": "FUNCTIONAL_DEV",
@@ -174,6 +177,45 @@
         "heldout": "experiments/2026-10-05-unloaded-gain-calibration-v101/products/heldout/heldout.json",
         "parent": {"path": "/Users/changmin/projects/ugrp/outputs/v92-dev-pilot-c0zero-20261003T104043Z/result/calibration_dev_pilot.json",
                    "sha256": "398372ae6b9b0fef7344d7f29146ce75b309d334b3ce31af527bc071c0e582f5"}
+      },
+      "ce447ada62295d24c7f7a5929ce878e70fa297651e16ca192536f4a403cd8c5f": {
+        "path": "experiments/2026-10-05-loaded-gain-calibration-v102/products/loaded_v102/calibration_dev_pilot_loaded_v102.json",
+        "pr": 363,
+        "rule": "DEV_PILOT_C0_ZERO_v1",
+        "admitted_by": "coordinator task 2026-10-05 (measured loaded motion model, classic calibrate-then-correct, Borenstein and Feng 1996)",
+        "calibration_bundle": "zone-final-pair-loaded-gaincal-v102",
+        "calibration_variant": "A (measured loaded gain/lag with an affine dead zone u0 on forward and left; turn, noise, load transition, drift and the unloaded profile unchanged from the parent)",
+        "fills": "params.motion_loaded gain diagonals (forward, left), tau_s, tau_axis_s (forward, left), tau_stop_s and deadband (u0 added; u1 = 1e-6 switches the v6g ramp off on affine axes)",
+        "heldout_status": "VALIDATED_DEV (mean model only; held-out steps at most 0.36 percent, legs at most 0.21 percent; not MEASURED_SIM, not a confirmation sample)",
+        "fit": "experiments/2026-10-05-loaded-gain-calibration-v102/products/fit/fit.json",
+        "heldout": "experiments/2026-10-05-loaded-gain-calibration-v102/products/heldout/heldout.json",
+        "parent": {"path": "experiments/2026-10-05-unloaded-gain-calibration-v101/products/C/calibration_dev_pilot_unloaded_v101.json",
+                   "sha256": "aba4ac586b2554844ad5b4b17efe968a4247278664ffb433f83f6785ca1769c4"}
+      },
+      "a04371f614bd7f6f7583ef4f4121abce1c337fd5652899dbfe0fe6df1703f926": {
+        "path": "experiments/2026-10-05-loaded-rest-calibration-v104/products/calibration_dev_pilot_loaded_v102_rest_v104.json",
+        "pr": 363,
+        "rule": "DEV_PILOT_C0_ZERO_v1",
+        "admitted_by": "coordinator task 2026-10-05 (#363 (가): loaded rest_noise by the unchanged v101 measured rule)",
+        "calibration_bundle": "zone-final-pair-loaded-restcal-v104",
+        "calibration_variant": "v102 measured loaded calibration with params.motion_loaded.rest_noise = false (v101 rest_rms rule on the v104 rest collection: RMS 1.08 / 1.10 micrometres over 420 windows per carrier, threshold 1 mm); everything else byte-equal to the parent",
+        "fills": "params.motion_loaded.rest_noise",
+        "heldout_status": "VALIDATED_DEV (rule decision only; loaded noise_abs/noise_rel stay unmeasured; not MEASURED_SIM, not a confirmation sample)",
+        "collection": "outputs/calib-loaded-rest-v104-835c8fcd-20261005T0736Z (source 835c8fcdb7c05cd69cf18f6a9c9bfc942b1ae63e, branch claude/loaded-rest-v104)",
+        "parent": {"path": "experiments/2026-10-05-loaded-gain-calibration-v102/products/loaded_v102/calibration_dev_pilot_loaded_v102.json",
+                   "sha256": "ce447ada62295d24c7f7a5929ce878e70fa297651e16ca192536f4a403cd8c5f"}
+      },
+      "a75fc9325f8a8b89a158c2be0872cebfd4d11c8d2a7482c720eb9e1f99c41501": {
+        "path": "experiments/2026-10-05-loaded-rest-calibration-v104/products_noise/calibration_dev_pilot_loaded_v102_rest_noise.json",
+        "pr": 363,
+        "rule": "DEV_PILOT_C0_ZERO_v1",
+        "admitted_by": "coordinator task 2026-10-05 (loaded noise_abs/noise_rel by the #376 fit_noise rule, applied after the v103a run failed on sigma margin)",
+        "calibration_bundle": "zone-final-pair-loaded-gaincal-v102 (FIT split, offline fit only)",
+        "calibration_variant": "rest_noise copy a04371f6 with params.motion_loaded noise_abs / noise_rel (forward, left) measured by the #376 rule: abs 0.002 / 0.002 (floor), rel 0.0156 / 0.0166; turn unchanged",
+        "fills": "params.motion_loaded.noise_abs[0:2], params.motion_loaded.noise_rel[0:2]",
+        "heldout_status": "VALIDATED_DEV (2-sigma coverage 0.977 held-out >= 0.90; mean NEES 0.11-0.31 still conservative; not MEASURED_SIM, not a confirmation sample)",
+        "parent": {"path": "experiments/2026-10-05-loaded-rest-calibration-v104/products/calibration_dev_pilot_loaded_v102_rest_v104.json",
+                   "sha256": "a04371f614bd7f6f7583ef4f4121abce1c337fd5652899dbfe0fe6df1703f926"}
       }
     }
   },

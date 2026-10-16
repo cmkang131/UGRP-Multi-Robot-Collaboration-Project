@@ -1,0 +1,741 @@
+{
+  "schema": "ugrp.s2.v133_reproduction.result.v1",
+  "frozen_source_sha": "027c567c45ec05968d7243212fbce1b4aa4d2d59",
+  "registration_sha": "ebb24028e13c45115bdcdd116f76fce92be5c968",
+  "execution_bundle_id": "zone-s2-realism-v133",
+  "runs": [
+    {
+      "seed": 1053,
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s1053-v133-reproduction",
+      "source_sha": "027c567c45ec05968d7243212fbce1b4aa4d2d59",
+      "registration_sha": "ebb24028e13c45115bdcdd116f76fce92be5c968",
+      "execution_bundle_id": "zone-s2-realism-v133",
+      "options": {
+        "camera_profile": "masterpi-camera-user-observation-target-review-v3",
+        "drive_profile": "masterpi_drive_friction_v7",
+        "setdown_relook": "off",
+        "grasp_check": "pickup_site_v1",
+        "min_wheel_cmd": "real_v1",
+        "dead_reckoning": "v7_diag_v1",
+        "stagnation_watch": "window120_v1",
+        "alignment_pulse": "real_fine_v1",
+        "hover_check": "real_pregrasp_v1",
+        "idle_robot_contacts": "freeze_v1",
+        "site_check": "off",
+        "hold_check": "inhand_rgb_v1",
+        "dev_grasp_policy": "log_only_v1",
+        "eval_camera_trace": "pose_v1",
+        "pulse_motion_model": "v7_pulse_cal_v1",
+        "visual_update": "accepted_scan_v1",
+        "visual_stall": "lk_pulse_v1",
+        "carry_pose": "look_ahead_v1",
+        "camera_calibration": "v3_unloaded_sag_v1",
+        "measurement_model": "amcl_likelihood_field_v1",
+        "visibility_mask": "command_geometry_v1",
+        "amcl_update": "ros_motion_v1",
+        "dev_search": "repeat_views_v1",
+        "visibility_policy": "nav2_observed_v1",
+        "contact_filter": "floor_appearance_v1",
+        "slip_detection": "slip_detect_v1",
+        "stall_recovery": "off",
+        "slip_recovery": "slip_recovery_v1",
+        "servo_stiffness": "real_v1",
+        "camera_pitch": "stiff_target_v1",
+        "pregrasp_policy": "log_only_v1",
+        "sensor_landmarks": "floor_zones_doors_v1",
+        "sensor_model": "amcl_likelihood_field_v1",
+        "pose_estimate": "amcl_best_cluster_v1"
+      },
+      "status": "STAGE_REACHED_UNQUALIFIED",
+      "failure": null,
+      "evaluation": {
+        "status": "PROVISIONAL_GEOMETRIC_JUDGE",
+        "success": true,
+        "lifted": true,
+        "inside": true,
+        "floor": true,
+        "stable": true,
+        "settled_s": 2.0,
+        "qualification": "post-run DEV only; no study/physical hardware success claim"
+      },
+      "initial_localization": {
+        "endpoint": "before first nonzero base command",
+        "first_base_command": {
+          "t": 12.0,
+          "kind": "mecanum",
+          "forward": 0.0,
+          "left": 0.65,
+          "turn": 0.0,
+          "duration_s": 0.65
+        },
+        "pose": {
+          "t": 12.0,
+          "t_est": 11.84,
+          "x": -0.8882566566875747,
+          "y": -2.190736490876192,
+          "yaw": -0.013704363852339274,
+          "std_xy_m": 0.1304874279708379,
+          "std_yaw_rad": 0.0405059437534417,
+          "last_fix_t": 2.25,
+          "observation_quality": {
+            "accepted": false,
+            "informative_columns": 36,
+            "diagnostics": {
+              "amcl_update": {
+                "t": 2.25,
+                "accepted": true,
+                "informative": true,
+                "settled": true,
+                "visual_weight_update": true,
+                "absolute_fix": false,
+                "reason": "soft_weight_update",
+                "model": "ros_motion_v1",
+                "columns": 40,
+                "kl": 3.8760092755182733,
+                "odom": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "delta": null
+              },
+              "pose_estimate": {
+                "cluster_count": 1,
+                "maximum_cluster_weight": 0.9999999999999453,
+                "uncertain": false,
+                "selected_cluster_cov": [
+                  [
+                    0.002704659912372081,
+                    -0.0014726896994966244,
+                    0.0
+                  ],
+                  [
+                    -0.0014726896994966242,
+                    0.0143223089460726,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    0.0016407314793569826
+                  ]
+                ],
+                "overall_mean_xy": [
+                  -0.8882566566875741,
+                  -2.1907364908761906
+                ]
+              }
+            },
+            "last_fix_quality": {
+              "t": 2.25,
+              "accepted": true,
+              "informative": true,
+              "settled": true,
+              "visual_weight_update": true,
+              "absolute_fix": false,
+              "reason": "soft_weight_update",
+              "model": "ros_motion_v1",
+              "columns": 40,
+              "kl": 3.8760092755182733,
+              "odom": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "delta": null
+            },
+            "informative": true,
+            "partial": false,
+            "observed_rank": null,
+            "weakest_direction_xy_yaw": null,
+            "partial_fix_rule": "v98_partial_fix_second_eigenvalue_v1"
+          },
+          "last_scan_gate": {
+            "t": 2.25,
+            "accepted": true,
+            "informative": true,
+            "settled": true,
+            "visual_weight_update": true,
+            "absolute_fix": false,
+            "reason": "soft_weight_update",
+            "model": "ros_motion_v1",
+            "columns": 40,
+            "kl": 3.8760092755182733,
+            "odom": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "delta": null
+          }
+        },
+        "gt_xy": [
+          -0.8951053278907434,
+          -2.2504645440151885
+        ],
+        "error_m": 0.06011941973292745,
+        "gt_use": "posthoc only"
+      },
+      "metrics": {
+        "scope": "POSTHOC_EVAL_ONLY_NO_CONTROL_FEEDBACK",
+        "seed": 1053,
+        "cargo_remaining_to_B_region_m": 0.0,
+        "cargo_distance_to_B_center_m": 0.12056892067795368,
+        "robot_remaining_to_B_region_m": 0.005621609643045755,
+        "final_cargo_xy_m": [
+          4.490647131158281,
+          -2.1507820313647703
+        ],
+        "final_robot_xy_m": [
+          4.294378390356954,
+          -2.153418903283476
+        ],
+        "carry_window": [
+          94.8,
+          286.25
+        ],
+        "visual_updates": 28,
+        "max_update_gap_sim_s": 20.650000000000006,
+        "carry_xy_rmse_m": 0.1115193587580202,
+        "actual_visibility": {
+          "sample_hz": 1.0,
+          "sample_frames": 192,
+          "all_columns": {
+            "clear": 18406,
+            "wall_occlusion": 20,
+            "below": 6
+          },
+          "detected_columns": {
+            "clear": 10382,
+            "wall_occlusion": 3,
+            "below": 6
+          },
+          "all_clear_fraction": 0.9985894097222222,
+          "detected_clear_fraction": 0.9991338658454432,
+          "method": "saved actual camera/cargo + static walls, conservative command-body bounds, undistorted rows4..470; not live perception input"
+        },
+        "measurement_claim": "nonconstant AMCL weight updates, not full-rank absolute pose fixes",
+        "update_times": [
+          104.15,
+          105.75,
+          107.05,
+          108.65,
+          116.45,
+          124.35,
+          132.3,
+          140.0,
+          148.35,
+          156.85,
+          177.5,
+          185.2,
+          193.15,
+          201.1,
+          221.75,
+          223.4,
+          224.75,
+          226.4,
+          228.1,
+          229.5,
+          231.2,
+          232.95,
+          238.6,
+          247.9,
+          254.8,
+          264.75,
+          274.35,
+          283.1
+        ],
+        "carry_xy_p90_m": 0.18830149724423592,
+        "carry_end_error_m": 0.1053307922181495,
+        "carry_pose_samples": 3829,
+        "visibility_measurement": {
+          "attempts": 28,
+          "less_than_six_columns": 1,
+          "detected_columns": 1497,
+          "kept_columns": 1497
+        },
+        "status": "COMPLETE"
+      },
+      "wall_contacts": {
+        "wheel": {
+          "contact_samples": 0,
+          "sampled_contact_s": 0.0,
+          "continuous_episodes": 0,
+          "episode_start_times": [],
+          "positive_force_geom_pair_samples": 0,
+          "peak_normal_force_sum_n": 0
+        },
+        "body": {
+          "contact_samples": 0,
+          "sampled_contact_s": 0.0,
+          "continuous_episodes": 0,
+          "episode_start_times": [],
+          "positive_force_geom_pair_samples": 0,
+          "peak_normal_force_sum_n": 0
+        },
+        "finger": {
+          "contact_samples": 0,
+          "sampled_contact_s": 0.0,
+          "continuous_episodes": 0,
+          "episode_start_times": [],
+          "positive_force_geom_pair_samples": 0,
+          "peak_normal_force_sum_n": 0
+        },
+        "cargo": {
+          "contact_samples": 0,
+          "sampled_contact_s": 0.0,
+          "continuous_episodes": 0,
+          "episode_start_times": [],
+          "positive_force_geom_pair_samples": 0,
+          "peak_normal_force_sum_n": 0
+        }
+      },
+      "would_stop": {
+        "ARM_COLLISION_GUARD": 7,
+        "POSE_UNCERTAIN": 200,
+        "GRASP_INHAND_UNCONFIRMED": 1
+      },
+      "wall_s": 545.3518480000203,
+      "sim_s": 308.25,
+      "wall_per_sim": 1.7691868548256942,
+      "commands": 3958,
+      "model_calls": 0,
+      "lock": {
+        "acquired": {
+          "owner": "codex",
+          "branch": "codex/s2-realism",
+          "purpose": "s2v40 frozen v133 reproduction seed 1053",
+          "pid": 65383,
+          "acquired_unix": 1791399077.530572,
+          "expected_end_unix": 1791401177.5305731,
+          "loadavg_at_acquire": [
+            6.517578125,
+            9.47705078125,
+            9.11328125
+          ],
+          "timing_sensitive": true
+        },
+        "released": {
+          "owner": "codex",
+          "branch": "codex/s2-realism",
+          "purpose": "s2v40 frozen v133 reproduction seed 1053",
+          "pid": 65383,
+          "acquired_unix": 1791399077.530572,
+          "expected_end_unix": 1791401177.5305731,
+          "loadavg_at_acquire": [
+            6.517578125,
+            9.47705078125,
+            9.11328125
+          ],
+          "timing_sensitive": true,
+          "pid_alive": true
+        },
+        "status_after": null
+      },
+      "hashes": {
+        "result.json": "2c9d9417c5a9eb86c830c6e7f037ea6810a7cb294bbbe5a5997fb7bb0eb66f46",
+        "bundle.json": "5446bc4130b50f854754305f05108c5cfdce52ea021c38a480ea735103576b01",
+        "student_record.json": "8e3e92e1209131d7c66e6d92e4ae6778a86a6c559b696070aded41bc04632430",
+        "eval_only/trajectory.jsonl": "7abb90985dc9106a800696cda652948bc2aa3ec2b1b93c61ea0fb592bfcba197",
+        "eval_only/wall-contacts.jsonl": "960fc8b32bb1199e961dba66b6730c4c8edc2b77e3b3664d0bcbddfd9d114f79",
+        "lock.json": "4067350e9165e30fc2f3d6509216efc048f4e689fa00ec80bd795fbad92416c4",
+        "reproduction-score.json": "24bbcc04782fc4a7ef8d482ad7decc49d7cad931887cb70227c64ba72347ea28"
+      },
+      "video": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s1053-v133-reproduction/execution.mp4",
+        "sha256": "1af874cf5ca92f04acc2cc51636fcd0bc92c5e70ed726465c27ab84009c6f8e1",
+        "speed": 4,
+        "source_frames": 6080,
+        "source_period_s": 0.05,
+        "ffprobe": {
+          "programs": [],
+          "stream_groups": [],
+          "streams": [
+            {
+              "width": 640,
+              "height": 480,
+              "r_frame_rate": "20/1",
+              "nb_frames": "1520"
+            }
+          ],
+          "format": {
+            "duration": "76.000000",
+            "size": "1382679"
+          }
+        },
+        "full_decode_pass": true
+      }
+    },
+    {
+      "seed": 1054,
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s1054-v133-reproduction",
+      "source_sha": "027c567c45ec05968d7243212fbce1b4aa4d2d59",
+      "registration_sha": "ebb24028e13c45115bdcdd116f76fce92be5c968",
+      "execution_bundle_id": "zone-s2-realism-v133",
+      "options": {
+        "camera_profile": "masterpi-camera-user-observation-target-review-v3",
+        "drive_profile": "masterpi_drive_friction_v7",
+        "setdown_relook": "off",
+        "grasp_check": "pickup_site_v1",
+        "min_wheel_cmd": "real_v1",
+        "dead_reckoning": "v7_diag_v1",
+        "stagnation_watch": "window120_v1",
+        "alignment_pulse": "real_fine_v1",
+        "hover_check": "real_pregrasp_v1",
+        "idle_robot_contacts": "freeze_v1",
+        "site_check": "off",
+        "hold_check": "inhand_rgb_v1",
+        "dev_grasp_policy": "log_only_v1",
+        "eval_camera_trace": "pose_v1",
+        "pulse_motion_model": "v7_pulse_cal_v1",
+        "visual_update": "accepted_scan_v1",
+        "visual_stall": "lk_pulse_v1",
+        "carry_pose": "look_ahead_v1",
+        "camera_calibration": "v3_unloaded_sag_v1",
+        "measurement_model": "amcl_likelihood_field_v1",
+        "visibility_mask": "command_geometry_v1",
+        "amcl_update": "ros_motion_v1",
+        "dev_search": "repeat_views_v1",
+        "visibility_policy": "nav2_observed_v1",
+        "contact_filter": "floor_appearance_v1",
+        "slip_detection": "slip_detect_v1",
+        "stall_recovery": "off",
+        "slip_recovery": "slip_recovery_v1",
+        "servo_stiffness": "real_v1",
+        "camera_pitch": "stiff_target_v1",
+        "pregrasp_policy": "log_only_v1",
+        "sensor_landmarks": "floor_zones_doors_v1",
+        "sensor_model": "amcl_likelihood_field_v1",
+        "pose_estimate": "amcl_best_cluster_v1"
+      },
+      "status": "STAGE_REACHED_UNQUALIFIED",
+      "failure": null,
+      "evaluation": {
+        "status": "PROVISIONAL_GEOMETRIC_JUDGE",
+        "success": true,
+        "lifted": true,
+        "inside": true,
+        "floor": true,
+        "stable": true,
+        "settled_s": 2.0,
+        "qualification": "post-run DEV only; no study/physical hardware success claim"
+      },
+      "initial_localization": {
+        "endpoint": "before first nonzero base command",
+        "first_base_command": {
+          "t": 12.0,
+          "kind": "mecanum",
+          "forward": 0.35,
+          "left": 0.0,
+          "turn": 0.0,
+          "duration_s": 0.1
+        },
+        "pose": {
+          "t": 12.0,
+          "t_est": 11.84,
+          "x": -0.8752901862315332,
+          "y": -2.264945892098699,
+          "yaw": 0.012947361241286072,
+          "std_xy_m": 0.15123596033027548,
+          "std_yaw_rad": 0.05204797317812403,
+          "last_fix_t": 2.25,
+          "observation_quality": {
+            "accepted": false,
+            "informative_columns": 36,
+            "diagnostics": {
+              "amcl_update": {
+                "t": 2.25,
+                "accepted": true,
+                "informative": true,
+                "settled": true,
+                "visual_weight_update": true,
+                "absolute_fix": false,
+                "reason": "soft_weight_update",
+                "model": "ros_motion_v1",
+                "columns": 40,
+                "kl": 3.8846010073382042,
+                "odom": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "delta": null
+              },
+              "pose_estimate": {
+                "cluster_count": 2,
+                "maximum_cluster_weight": 0.9989999999999454,
+                "uncertain": false,
+                "selected_cluster_cov": [
+                  [
+                    0.0017230109147926098,
+                    -4.1447299212643606e-05,
+                    0.0
+                  ],
+                  [
+                    -4.144729921264354e-05,
+                    0.017282222995352706,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    0.004708566616036011
+                  ]
+                ],
+                "overall_mean_xy": [
+                  -0.8753016268970234,
+                  -2.262985893464529
+                ]
+              }
+            },
+            "last_fix_quality": {
+              "t": 2.25,
+              "accepted": true,
+              "informative": true,
+              "settled": true,
+              "visual_weight_update": true,
+              "absolute_fix": false,
+              "reason": "soft_weight_update",
+              "model": "ros_motion_v1",
+              "columns": 40,
+              "kl": 3.8846010073382042,
+              "odom": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "delta": null
+            },
+            "informative": true,
+            "partial": false,
+            "observed_rank": null,
+            "weakest_direction_xy_yaw": null,
+            "partial_fix_rule": "v98_partial_fix_second_eigenvalue_v1"
+          },
+          "last_scan_gate": {
+            "t": 2.25,
+            "accepted": true,
+            "informative": true,
+            "settled": true,
+            "visual_weight_update": true,
+            "absolute_fix": false,
+            "reason": "soft_weight_update",
+            "model": "ros_motion_v1",
+            "columns": 40,
+            "kl": 3.8846010073382042,
+            "odom": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "delta": null
+          }
+        },
+        "gt_xy": [
+          -0.9034034295942919,
+          -2.2499602187564576
+        ],
+        "error_m": 0.03185788533305462,
+        "gt_use": "posthoc only"
+      },
+      "metrics": {
+        "scope": "POSTHOC_EVAL_ONLY_NO_CONTROL_FEEDBACK",
+        "seed": 1054,
+        "cargo_remaining_to_B_region_m": 0.0,
+        "cargo_distance_to_B_center_m": 0.24497386524181725,
+        "robot_remaining_to_B_region_m": 0.06063728929659257,
+        "final_cargo_xy_m": [
+          4.4411821748683655,
+          -1.9134816548647997
+        ],
+        "final_robot_xy_m": [
+          4.239362710703407,
+          -1.9483758394735786
+        ],
+        "carry_window": [
+          203.7,
+          410.3
+        ],
+        "visual_updates": 28,
+        "max_update_gap_sim_s": 24.25,
+        "carry_xy_rmse_m": 0.21583948997751365,
+        "actual_visibility": {
+          "sample_hz": 1.0,
+          "sample_frames": 207,
+          "all_columns": {
+            "clear": 19861,
+            "wall_occlusion": 10,
+            "below": 1
+          },
+          "detected_columns": {
+            "clear": 7991,
+            "wall_occlusion": 9
+          },
+          "all_clear_fraction": 0.9994464573268921,
+          "detected_clear_fraction": 0.998875,
+          "method": "saved actual camera/cargo + static walls, conservative command-body bounds, undistorted rows4..470; not live perception input"
+        },
+        "measurement_claim": "nonconstant AMCL weight updates, not full-rank absolute pose fixes",
+        "update_times": [
+          213.05,
+          214.65,
+          216.0,
+          217.65,
+          225.25,
+          233.35,
+          241.65,
+          249.75,
+          258.05,
+          266.15,
+          290.4,
+          298.4,
+          306.4,
+          314.4,
+          322.4,
+          340.3,
+          341.9,
+          343.2,
+          344.8,
+          346.1,
+          354.05,
+          362.0,
+          369.7,
+          378.05,
+          390.05,
+          391.65,
+          392.95,
+          402.05
+        ],
+        "carry_xy_p90_m": 0.24209440348044994,
+        "carry_end_error_m": 0.1911100404812973,
+        "carry_pose_samples": 4132,
+        "visibility_measurement": {
+          "attempts": 28,
+          "less_than_six_columns": 0,
+          "detected_columns": 1177,
+          "kept_columns": 1177
+        },
+        "status": "COMPLETE"
+      },
+      "wall_contacts": {
+        "wheel": {
+          "contact_samples": 0,
+          "sampled_contact_s": 0.0,
+          "continuous_episodes": 0,
+          "episode_start_times": [],
+          "positive_force_geom_pair_samples": 0,
+          "peak_normal_force_sum_n": 0
+        },
+        "body": {
+          "contact_samples": 0,
+          "sampled_contact_s": 0.0,
+          "continuous_episodes": 0,
+          "episode_start_times": [],
+          "positive_force_geom_pair_samples": 0,
+          "peak_normal_force_sum_n": 0
+        },
+        "finger": {
+          "contact_samples": 0,
+          "sampled_contact_s": 0.0,
+          "continuous_episodes": 0,
+          "episode_start_times": [],
+          "positive_force_geom_pair_samples": 0,
+          "peak_normal_force_sum_n": 0
+        },
+        "cargo": {
+          "contact_samples": 0,
+          "sampled_contact_s": 0.0,
+          "continuous_episodes": 0,
+          "episode_start_times": [],
+          "positive_force_geom_pair_samples": 0,
+          "peak_normal_force_sum_n": 0
+        }
+      },
+      "would_stop": {
+        "ARM_COLLISION_GUARD": 7,
+        "POSE_UNCERTAIN": 312,
+        "CYAN_NOT_UNIQUELY_VISIBLE": 5
+      },
+      "wall_s": 717.0835622500163,
+      "sim_s": 432.3,
+      "wall_per_sim": 1.6587637340967296,
+      "commands": 8920,
+      "model_calls": 0,
+      "lock": {
+        "acquired": {
+          "owner": "codex",
+          "branch": "codex/s2-realism",
+          "purpose": "s2v40 frozen v133 reproduction seed 1054",
+          "pid": 68425,
+          "acquired_unix": 1791399764.805998,
+          "expected_end_unix": 1791401864.805998,
+          "loadavg_at_acquire": [
+            6.779296875,
+            7.3017578125,
+            8.04443359375
+          ],
+          "timing_sensitive": true
+        },
+        "released": {
+          "owner": "codex",
+          "branch": "codex/s2-realism",
+          "purpose": "s2v40 frozen v133 reproduction seed 1054",
+          "pid": 68425,
+          "acquired_unix": 1791399764.805998,
+          "expected_end_unix": 1791401864.805998,
+          "loadavg_at_acquire": [
+            6.779296875,
+            7.3017578125,
+            8.04443359375
+          ],
+          "timing_sensitive": true,
+          "pid_alive": true
+        },
+        "status_after": null
+      },
+      "hashes": {
+        "result.json": "705c768ba61fdc9bfde5f190870c8f653a0f81edfff58c9130290bbae92f1b6f",
+        "bundle.json": "07ee558ad6da458d369ebdc463f36a1aba9984a217ea455de917b7b1aefe3156",
+        "student_record.json": "6a1dbf2b8f9b01fcfb5985b7d3bfd4f75a6160c8b5d25ebd57c34ac0716dfca8",
+        "eval_only/trajectory.jsonl": "629f1d6bf90715d98ff06750c73fe1ce26e1b1a66e6b1ba9f1cf33c5240589ae",
+        "eval_only/wall-contacts.jsonl": "e71833b32c05a782b69eff7be2e696d10dea41c25e072cf32b28473929f8f711",
+        "lock.json": "4fad33e65024e50cb2b7041bbaf0e864acdde4ff7f5067ad163d6170a15a1de5",
+        "reproduction-score.json": "e4c4da8ba0b6648c72d9c1106fa44b162089c7247b904d7f2a12e800b305a6f4"
+      },
+      "video": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s1054-v133-reproduction/execution.mp4",
+        "sha256": "67bcdb049e65d28f6a560243663c65b685715d4ca06641a6697849589714661b",
+        "speed": 4,
+        "source_frames": 8561,
+        "source_period_s": 0.05,
+        "ffprobe": {
+          "programs": [],
+          "stream_groups": [],
+          "streams": [
+            {
+              "width": 640,
+              "height": 480,
+              "r_frame_rate": "20/1",
+              "nb_frames": "2140"
+            }
+          ],
+          "format": {
+            "duration": "107.000000",
+            "size": "1856004"
+          }
+        },
+        "full_decode_pass": true
+      }
+    }
+  ],
+  "runs_requested": 2,
+  "runs_executed": 2,
+  "retries": 0,
+  "model_calls": 0,
+  "options_changed": false,
+  "thresholds_changed": false,
+  "all436_runtime_dependencies_byte_identical": true,
+  "success_scope": "two new-seed solo S2 DEV posthoc geometric judges; no hardware/research graduation claim",
+  "failures": [],
+  "baseline_success_raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-b2de2b30-s1051-landmark-full"
+}

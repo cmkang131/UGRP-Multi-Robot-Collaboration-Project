@@ -1,0 +1,715 @@
+{
+  "features": {
+    "scope": "GT-only geometric feature availability, not image detection or localization; door lines sampled at 4mm intervals",
+    "physics_runs": 0,
+    "rows": [
+      {
+        "seed": 1045,
+        "sampled_frames": 585,
+        "top_visible_columns": 0,
+        "top_total_columns": 56160,
+        "door_jamb_potential_visible_frames": 0,
+        "median_floor_x_range": [
+          0.9652513103843143,
+          0.32922504292243393
+        ]
+      },
+      {
+        "seed": 1046,
+        "sampled_frames": 240,
+        "top_visible_columns": 0,
+        "top_total_columns": 23040,
+        "door_jamb_potential_visible_frames": 106,
+        "median_floor_x_range": [
+          0.9672423111487733,
+          0.3293661538212821
+        ]
+      },
+      {
+        "seed": 1047,
+        "sampled_frames": 167,
+        "top_visible_columns": 0,
+        "top_total_columns": 16032,
+        "door_jamb_potential_visible_frames": 30,
+        "median_floor_x_range": [
+          0.9651235273455907,
+          0.3292249136620199
+        ]
+      }
+    ]
+  },
+  "schema": "ugrp.s2.visibility.summary.v1",
+  "criteria_commit": "e2a4558c",
+  "candidate_commit": "79cfd27d",
+  "criteria": {
+    "schema": "ugrp.s2.visibility.criteria.v1",
+    "seeds": [
+      1045,
+      1046,
+      1047
+    ],
+    "option": "command_geometry_v1",
+    "default": "off",
+    "camera_variant": "unloaded_constant_delta",
+    "measurement_model": "amcl_likelihood_field_v1",
+    "max_update_gap_sim_s": 30.0,
+    "min_independent_updates": 6,
+    "independent_spacing_sim_s": 1.0,
+    "accuracy": "carry xy RMSE strictly improves on saved-original, same-calibration hard-receipt, and unmasked AMCL in every seed; p90 no worse than saved-original and same-calibration hard-receipt",
+    "all_seeds_required": true,
+    "visible_rows_px": [
+      4,
+      470
+    ],
+    "minimum_prior_visible_probability": 0.95,
+    "robot_geometry_padding_m": 0.002,
+    "jaw_geometry": "swept from open to own commanded closure; no encoder/contact input",
+    "cargo_geometry": "own RGB cyan mask using existing scene_change.cyan in undistorted image, 2px dilation; no inferred held pose and no GT",
+    "geometry": "fixed v3 visual link geometry conservative local boxes; exclude invisible collider and camera hardware; command FK with rigid camera/gripper calibration",
+    "measurement": "common columns visible with >=0.95 prior particle weight, and both predicted and detected rays clear of self/cargo; others missing, not max-range evidence; minimum 6 columns",
+    "candidate_budget": "one frozen candidate, no post-result tuning; saved commands only; all three pass before new full DEV",
+    "truth": "separate evaluation process only, never mask/filter or calibration fitting",
+    "poses": "geometry-only HIGH, VIA110, VIA130, physical DELIVERY_CARRY, legacy POSE_CARRY; no command/mount/FOV changes",
+    "cargo_mask_padding_px": 2
+  },
+  "rows": [
+    {
+      "seed": 1045,
+      "variant": "legacy",
+      "carry_window": [
+        87.95,
+        672.45
+      ],
+      "updates": 313,
+      "independent_updates": 27,
+      "max_update_gap_sim_s": 267.45,
+      "frequency_pass": false,
+      "accuracy": {
+        "n": 11690,
+        "rmse_m": 1.7748953735175812,
+        "p50_m": 1.2984710325264135,
+        "p90_m": 3.2995519839103147,
+        "end_m": 3.8393438295447013
+      },
+      "measurement_receipt": "legacy hard receipt"
+    },
+    {
+      "seed": 1045,
+      "variant": "unloaded_constant_delta",
+      "carry_window": [
+        87.95,
+        672.45
+      ],
+      "updates": 1224,
+      "independent_updates": 90,
+      "max_update_gap_sim_s": 107.69999999999999,
+      "frequency_pass": false,
+      "accuracy": {
+        "n": 11690,
+        "rmse_m": 1.825898938508187,
+        "p50_m": 1.1448497852846047,
+        "p90_m": 3.9483122426280124,
+        "end_m": 4.103206187589173
+      },
+      "measurement_receipt": "legacy hard receipt"
+    },
+    {
+      "seed": 1045,
+      "variant": "amcl_likelihood_field_v1",
+      "carry_window": [
+        87.95,
+        672.45
+      ],
+      "updates": 62,
+      "independent_updates": 61,
+      "max_update_gap_sim_s": 184.85000000000002,
+      "frequency_pass": false,
+      "accuracy": {
+        "n": 11690,
+        "rmse_m": 1.6444577065047072,
+        "p50_m": 1.6111648245121748,
+        "p90_m": 2.1281364338673328,
+        "end_m": 1.9148616538425933
+      },
+      "measurement_receipt": "soft weight update, not absolute fix",
+      "accuracy_pass": true,
+      "admission_pass": false
+    },
+    {
+      "seed": 1046,
+      "variant": "legacy",
+      "carry_window": [
+        67.5,
+        307.85
+      ],
+      "updates": 104,
+      "independent_updates": 6,
+      "max_update_gap_sim_s": 222.7,
+      "frequency_pass": false,
+      "accuracy": {
+        "n": 4807,
+        "rmse_m": 1.6819610801858036,
+        "p50_m": 0.4263986239856447,
+        "p90_m": 3.4274731488310133,
+        "end_m": 3.3479475790156936
+      },
+      "measurement_receipt": "legacy hard receipt"
+    },
+    {
+      "seed": 1046,
+      "variant": "unloaded_constant_delta",
+      "carry_window": [
+        67.5,
+        307.85
+      ],
+      "updates": 228,
+      "independent_updates": 12,
+      "max_update_gap_sim_s": 190.70000000000002,
+      "frequency_pass": false,
+      "accuracy": {
+        "n": 4807,
+        "rmse_m": 1.9959707586471018,
+        "p50_m": 0.594874450129949,
+        "p90_m": 3.7915147945399355,
+        "end_m": 3.541830328294815
+      },
+      "measurement_receipt": "legacy hard receipt"
+    },
+    {
+      "seed": 1046,
+      "variant": "amcl_likelihood_field_v1",
+      "carry_window": [
+        67.5,
+        307.85
+      ],
+      "updates": 30,
+      "independent_updates": 30,
+      "max_update_gap_sim_s": 20.200000000000017,
+      "frequency_pass": true,
+      "accuracy": {
+        "n": 4807,
+        "rmse_m": 2.1326956575148834,
+        "p50_m": 0.6020058011853481,
+        "p90_m": 3.9448256012654275,
+        "end_m": 3.759262772847761
+      },
+      "measurement_receipt": "soft weight update, not absolute fix",
+      "accuracy_pass": false,
+      "admission_pass": false
+    },
+    {
+      "seed": 1047,
+      "variant": "legacy",
+      "carry_window": [
+        70.1,
+        237.9
+      ],
+      "updates": 0,
+      "independent_updates": 0,
+      "max_update_gap_sim_s": 167.8,
+      "frequency_pass": false,
+      "accuracy": {
+        "n": 3356,
+        "rmse_m": 0.3510182453133552,
+        "p50_m": 0.25810270846473093,
+        "p90_m": 0.5713375717635356,
+        "end_m": 0.6225955247922654
+      },
+      "measurement_receipt": "legacy hard receipt"
+    },
+    {
+      "seed": 1047,
+      "variant": "unloaded_constant_delta",
+      "carry_window": [
+        70.1,
+        237.9
+      ],
+      "updates": 0,
+      "independent_updates": 0,
+      "max_update_gap_sim_s": 167.8,
+      "frequency_pass": false,
+      "accuracy": {
+        "n": 3356,
+        "rmse_m": 0.6071163434185421,
+        "p50_m": 0.40611989296126416,
+        "p90_m": 0.8930032506942035,
+        "end_m": 0.35745292696235836
+      },
+      "measurement_receipt": "legacy hard receipt"
+    },
+    {
+      "seed": 1047,
+      "variant": "amcl_likelihood_field_v1",
+      "carry_window": [
+        70.1,
+        237.9
+      ],
+      "updates": 21,
+      "independent_updates": 21,
+      "max_update_gap_sim_s": 40.0,
+      "frequency_pass": false,
+      "accuracy": {
+        "n": 3356,
+        "rmse_m": 0.6228687687435803,
+        "p50_m": 0.37896646941257195,
+        "p90_m": 0.923668417104104,
+        "end_m": 0.3675083048697951
+      },
+      "measurement_receipt": "soft weight update, not absolute fix",
+      "accuracy_pass": false,
+      "admission_pass": false
+    },
+    {
+      "seed": 1045,
+      "variant": "command_geometry_v1",
+      "carry_window": [
+        87.95,
+        672.45
+      ],
+      "updates": 67,
+      "independent_updates": 66,
+      "max_update_gap_sim_s": 253.30000000000007,
+      "frequency_pass": false,
+      "accuracy": {
+        "n": 11690,
+        "rmse_m": 1.6851095856094958,
+        "p50_m": 1.6241015744607439,
+        "p90_m": 2.2337711456107843,
+        "end_m": 2.0992957545397295
+      },
+      "accuracy_pass": false,
+      "admission_pass": false,
+      "visibility": {
+        "attempts": 5605,
+        "no_six_visible_columns": 5538,
+        "total_detected_columns": 424173,
+        "total_kept_columns": 4694,
+        "detected_self_shadow": 0,
+        "detected_cargo_shadow": 0
+      },
+      "measurement_receipt": "soft weight update on visible columns; not absolute fix"
+    },
+    {
+      "seed": 1046,
+      "variant": "command_geometry_v1",
+      "carry_window": [
+        67.5,
+        307.85
+      ],
+      "updates": 7,
+      "independent_updates": 7,
+      "max_update_gap_sim_s": 62.75,
+      "frequency_pass": false,
+      "accuracy": {
+        "n": 4807,
+        "rmse_m": 2.098888047198161,
+        "p50_m": 0.5588232638659207,
+        "p90_m": 3.9424647833906397,
+        "end_m": 3.7304713000905414
+      },
+      "accuracy_pass": false,
+      "admission_pass": false,
+      "visibility": {
+        "attempts": 3362,
+        "no_six_visible_columns": 3355,
+        "total_detected_columns": 219855,
+        "total_kept_columns": 239,
+        "detected_self_shadow": 0,
+        "detected_cargo_shadow": 0
+      },
+      "measurement_receipt": "soft weight update on visible columns; not absolute fix"
+    },
+    {
+      "seed": 1047,
+      "variant": "command_geometry_v1",
+      "carry_window": [
+        70.1,
+        237.9
+      ],
+      "updates": 3,
+      "independent_updates": 3,
+      "max_update_gap_sim_s": 117.30000000000001,
+      "frequency_pass": false,
+      "accuracy": {
+        "n": 3356,
+        "rmse_m": 0.6579877207920726,
+        "p50_m": 0.6246844762970125,
+        "p90_m": 0.8930032506942035,
+        "end_m": 0.627253092811145
+      },
+      "accuracy_pass": false,
+      "admission_pass": false,
+      "visibility": {
+        "attempts": 2347,
+        "no_six_visible_columns": 2344,
+        "total_detected_columns": 155430,
+        "total_kept_columns": 103,
+        "detected_self_shadow": 0,
+        "detected_cargo_shadow": 0
+      },
+      "measurement_receipt": "soft weight update on visible columns; not absolute fix"
+    }
+  ],
+  "geometry": {
+    "physics_runs": 0,
+    "model_calls": 0,
+    "gt_usage": "posthoc geometry evaluation only",
+    "limitation": "cargo box intersection exact from eval; robot proxy shadows possible only (command FK, jaw sweep, no signed body tilt). Above/below independent of self-mask; v2 adds map-wall occlusion of bottom segments. geometry.json retained as preliminary no-map-occlusion analysis.",
+    "schema": "ugrp.s2.visibility.geometry.v2",
+    "summaries": [
+      {
+        "seed": 1045,
+        "frames": 585,
+        "clear_frames": 33,
+        "all_columns": {
+          "above": 53378,
+          "clear": 2751,
+          "cargo_gt": 31
+        },
+        "detected_columns": {
+          "above": 39996,
+          "clear": 2104
+        },
+        "previous_sentinel_definition": {
+          "detected": 42100,
+          "visible_detected": 2104,
+          "outside_detected": 39996,
+          "direct_visible_disagreements": 0
+        },
+        "expected_vs_direct_visible_abs_px": {
+          "n": 2782,
+          "median": 2.2280305699950986e-05,
+          "max": 0.00034594429092749124
+        },
+        "camera_to_wall_ground_range_m": {
+          "above": {
+            "n": 53378,
+            "median": 1.7010601222845674,
+            "p05": 1.1278942583617682,
+            "p95": 4.955394101866051
+          },
+          "below": {
+            "n": 0,
+            "median": null,
+            "p05": null,
+            "p95": null
+          },
+          "in_view": {
+            "n": 2782,
+            "median": 0.4790625835305903,
+            "p05": 0.18283223229250603,
+            "p95": 0.7974805776020939
+          }
+        },
+        "posture_counts": {
+          "HIGH": {
+            "samples": 56160,
+            "in_view": 4949,
+            "clear": 4949
+          },
+          "VIA110": {
+            "samples": 56160,
+            "in_view": 874,
+            "clear": 874
+          },
+          "VIA130": {
+            "samples": 56160,
+            "in_view": 1983,
+            "clear": 1983
+          },
+          "REAL_DELIVERY_CARRY": {
+            "samples": 56160,
+            "in_view": 23565,
+            "clear": 23565
+          },
+          "LEGACY_POSE_CARRY": {
+            "samples": 56160,
+            "in_view": 54084,
+            "clear": 54008
+          }
+        }
+      },
+      {
+        "seed": 1046,
+        "frames": 240,
+        "clear_frames": 151,
+        "all_columns": {
+          "above": 12784,
+          "clear": 7192,
+          "wall_occlusion": 1,
+          "below": 2951,
+          "cargo_gt": 112
+        },
+        "detected_columns": {
+          "above": 9857,
+          "clear": 6325,
+          "below": 65
+        },
+        "previous_sentinel_definition": {
+          "detected": 16247,
+          "visible_detected": 6359,
+          "outside_detected": 9888,
+          "direct_visible_disagreements": 133
+        },
+        "expected_vs_direct_visible_abs_px": {
+          "n": 7305,
+          "median": 3.356395058062844e-05,
+          "max": 40.923751131331414
+        },
+        "camera_to_wall_ground_range_m": {
+          "above": {
+            "n": 12784,
+            "median": 3.2303876009231796,
+            "p05": 0.8899144004122364,
+            "p95": 4.692106821241077
+          },
+          "below": {
+            "n": 2951,
+            "median": 0.08007269557174797,
+            "p05": 0.031879576142688326,
+            "p95": 0.14088730334752983
+          },
+          "in_view": {
+            "n": 7305,
+            "median": 0.4119366777788776,
+            "p05": 0.1821810680240845,
+            "p95": 0.7337766305091451
+          }
+        },
+        "posture_counts": {
+          "HIGH": {
+            "samples": 23040,
+            "in_view": 8488,
+            "clear": 8487
+          },
+          "VIA110": {
+            "samples": 23040,
+            "in_view": 2569,
+            "clear": 2569
+          },
+          "VIA130": {
+            "samples": 23040,
+            "in_view": 5914,
+            "clear": 5914
+          },
+          "REAL_DELIVERY_CARRY": {
+            "samples": 23040,
+            "in_view": 10502,
+            "clear": 10409
+          },
+          "LEGACY_POSE_CARRY": {
+            "samples": 23040,
+            "in_view": 13825,
+            "clear": 13777
+          }
+        }
+      },
+      {
+        "seed": 1047,
+        "frames": 167,
+        "clear_frames": 30,
+        "all_columns": {
+          "above": 15305,
+          "clear": 727
+        },
+        "detected_columns": {
+          "above": 9916,
+          "clear": 529
+        },
+        "previous_sentinel_definition": {
+          "detected": 10445,
+          "visible_detected": 529,
+          "outside_detected": 9916,
+          "direct_visible_disagreements": 0
+        },
+        "expected_vs_direct_visible_abs_px": {
+          "n": 727,
+          "median": 1.854080400676139e-05,
+          "max": 0.00014870949806322642
+        },
+        "camera_to_wall_ground_range_m": {
+          "above": {
+            "n": 15305,
+            "median": 2.7973904664992624,
+            "p05": 1.2613354149098026,
+            "p95": 4.625902756147245
+          },
+          "below": {
+            "n": 0,
+            "median": null,
+            "p05": null,
+            "p95": null
+          },
+          "in_view": {
+            "n": 727,
+            "median": 0.6315733847355648,
+            "p05": 0.4013941137577536,
+            "p95": 0.770604982573294
+          }
+        },
+        "posture_counts": {
+          "HIGH": {
+            "samples": 16032,
+            "in_view": 1119,
+            "clear": 1119
+          },
+          "VIA110": {
+            "samples": 16032,
+            "in_view": 5,
+            "clear": 5
+          },
+          "VIA130": {
+            "samples": 16032,
+            "in_view": 455,
+            "clear": 455
+          },
+          "REAL_DELIVERY_CARRY": {
+            "samples": 16032,
+            "in_view": 3080,
+            "clear": 3080
+          },
+          "LEGACY_POSE_CARRY": {
+            "samples": 16032,
+            "in_view": 15430,
+            "clear": 15404
+          }
+        }
+      }
+    ],
+    "posture_geometry_only": {
+      "HIGH": {
+        "servo": {
+          "3": 896,
+          "4": 2035,
+          "5": 1894,
+          "6": 1500
+        },
+        "height_m": 0.19319937749756314,
+        "pitch_deg": -30.050000000000015,
+        "center_column_floor_forward_m": [
+          1.1882603127830595,
+          0.3460986417720453
+        ],
+        "samples": 95232,
+        "in_view": 14556,
+        "clear_of_command_robot": 14555,
+        "in_view_fraction": 0.15284778225806453,
+        "clear_of_command_robot_fraction": 0.1528372815860215
+      },
+      "VIA110": {
+        "servo": {
+          "3": 891,
+          "4": 2036,
+          "5": 2054,
+          "6": 1500
+        },
+        "height_m": 0.15393316266809165,
+        "pitch_deg": -44.99000000000001,
+        "center_column_floor_forward_m": [
+          0.5231044847841877,
+          0.2722046101279647
+        ],
+        "samples": 95232,
+        "in_view": 3448,
+        "clear_of_command_robot": 3448,
+        "in_view_fraction": 0.03620631720430108,
+        "clear_of_command_robot_fraction": 0.03620631720430108
+      },
+      "VIA130": {
+        "servo": {
+          "3": 981,
+          "4": 2152,
+          "5": 1917,
+          "6": 1500
+        },
+        "height_m": 0.17379845300516594,
+        "pitch_deg": -35.00000000000001,
+        "center_column_floor_forward_m": [
+          0.8068398268943572,
+          0.312079910823713
+        ],
+        "samples": 95232,
+        "in_view": 8352,
+        "clear_of_command_robot": 8352,
+        "in_view_fraction": 0.08770161290322581,
+        "clear_of_command_robot_fraction": 0.08770161290322581
+      },
+      "REAL_DELIVERY_CARRY": {
+        "servo": {
+          "3": 600,
+          "4": 2200,
+          "5": 1400,
+          "6": 1500
+        },
+        "height_m": 0.22700718628363312,
+        "pitch_deg": -27.080000000000005,
+        "center_column_floor_forward_m": [
+          1.7360833184880244,
+          0.3260984652133194
+        ],
+        "samples": 95232,
+        "in_view": 37147,
+        "clear_of_command_robot": 37054,
+        "in_view_fraction": 0.39006846438172044,
+        "clear_of_command_robot_fraction": 0.38909190188172044
+      },
+      "LEGACY_POSE_CARRY": {
+        "servo": {
+          "3": 960,
+          "4": 2410,
+          "5": 1215,
+          "6": 1500
+        },
+        "height_m": 0.24835160571022596,
+        "pitch_deg": 3.0699999999999763,
+        "center_column_floor_forward_m": [
+          null,
+          0.8351791272049445
+        ],
+        "samples": 95232,
+        "in_view": 83339,
+        "clear_of_command_robot": 83189,
+        "in_view_fraction": 0.8751155073924731,
+        "clear_of_command_robot_fraction": 0.8735404065860215
+      }
+    },
+    "source_hashes": {
+      "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/eval_only/camera-pose.jsonl": "1ba65659c32701d5851a35e80f2c9a98dca952cc81287eb64309d9f88f125d2e",
+      "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/eval_only/trajectory.jsonl": "90a43f3a354ba171cbacb8a99ea11c62a729d9399d3aeb21e295d9542d43692c",
+      "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/robots/r3/frames.jsonl": "b28472fdda75a2bef4ea5fe25cde4a244800c03d0f4b2345c011a27d9342e739",
+      "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/student_record.json": "c1dbbd376409029e6e25fe573e1a8eea1835f02427094ac34cea7ef2fe117d5c",
+      "/Users/changmin/projects/ugrp/outputs/s2-realism-e619ee57-s1046-P1-2-place/eval_only/camera-pose.jsonl": "83d6eca192116b73487501a3b94cdad1dd25564088588a72b2fad927c368ccb6",
+      "/Users/changmin/projects/ugrp/outputs/s2-realism-e619ee57-s1046-P1-2-place/eval_only/trajectory.jsonl": "00d8b9bffe358b2748df045807f2eef6a50948e969b7904f13236c9a11ebdcb4",
+      "/Users/changmin/projects/ugrp/outputs/s2-realism-e619ee57-s1046-P1-2-place/robots/r3/frames.jsonl": "e3ec694af3b6d7299117be62e63f027089f79275c3daccb06b3a47594cd5a3fe",
+      "/Users/changmin/projects/ugrp/outputs/s2-realism-e619ee57-s1046-P1-2-place/student_record.json": "fb07da15655e262c64e9f561b384aae1f1dea7b7adf2d289b139864ebc8a1db7",
+      "/Users/changmin/projects/ugrp/outputs/s2-realism-1a2dbf5e-s1047-P1-2-place/eval_only/camera-pose.jsonl": "a1815c76f7e88fa0dc7238aa952df1127f1c225cdcc8279104a057cc93bb3c81",
+      "/Users/changmin/projects/ugrp/outputs/s2-realism-1a2dbf5e-s1047-P1-2-place/eval_only/trajectory.jsonl": "93d4b5f98e3efa0b3de659e5bb1258b4ab60f431cea31f151f28d90fa1de1f66",
+      "/Users/changmin/projects/ugrp/outputs/s2-realism-1a2dbf5e-s1047-P1-2-place/robots/r3/frames.jsonl": "6ca5e07d2491090e910fe207c9ffdb5afdb174ea80c441f6866a10d3552323e8",
+      "/Users/changmin/projects/ugrp/outputs/s2-realism-1a2dbf5e-s1047-P1-2-place/student_record.json": "e6b5d7600b2b71a7e0e429f2e94fad1b1ac66cd4f5057b9ba7e8eda6ec43e2b0"
+    }
+  },
+  "full_dev_permitted": false,
+  "physics_runs": 0,
+  "model_calls": 0,
+  "new_seed": null,
+  "source_hashes": {
+    "/Users/changmin/projects/ugrp/outputs/s2-soft-mcl-20261007/summary.json": "84d2230461a208e8f00cc7b268b948094a45f1ace604416693752634123b25f3",
+    "/Users/changmin/projects/ugrp/outputs/s2-visibility-20261007/s1045-command_geometry_v1.json": "9f519d7d93a4c9b870cbee217228c397e5a5148bcce97616a8ce73af6f2f3cef",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/eval_only/trajectory.jsonl": "90a43f3a354ba171cbacb8a99ea11c62a729d9399d3aeb21e295d9542d43692c",
+    "/Users/changmin/projects/ugrp/outputs/s2-visibility-20261007/s1046-command_geometry_v1.json": "ddbd4eceb1497c609c8cee5c01c15500d39ba60b27d4f2dd7164be022e4fafd7",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-e619ee57-s1046-P1-2-place/eval_only/trajectory.jsonl": "00d8b9bffe358b2748df045807f2eef6a50948e969b7904f13236c9a11ebdcb4",
+    "/Users/changmin/projects/ugrp/outputs/s2-visibility-20261007/s1047-command_geometry_v1.json": "5687556c69c8a0b94857fbceb533a4c4bb9450b37ec4d5ebe779ccbaf42fefc7",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-1a2dbf5e-s1047-P1-2-place/eval_only/trajectory.jsonl": "93d4b5f98e3efa0b3de659e5bb1258b4ab60f431cea31f151f28d90fa1de1f66",
+    "/Users/changmin/projects/ugrp/outputs/s2-visibility-20261007/geometry-shadow.json": "67406d49d37e81ff544c2bb2cb9106394a072159fe2cd3bd13b9dba4916020a7",
+    "/Users/changmin/projects/ugrp/outputs/s2-visibility-20261007/feature-geometry.json": "2b150b3a48f27f1bb41e8ea9dc71d84a35f59faebab0db4fbeeb2b12dfbd4655"
+  },
+  "source_code_hashes": {
+    "harness/zone_solo_cyan_visibility.py": "05eca828fa437223b66b7bc3cecf76b2b100265b5cf6cc28ade818e6a835f704",
+    "harness/zone_solo_cyan_likelihood_field.py": "de478dd4d0b71eeb63b2b104cd7b990d4acd463bd4b32a42a9894c80714180ae",
+    "experiments/2026-10-06-s2-realism/replay_visibility.py": "38c1e3c600e130b4b24ffd1e39eef0506ade887b353f7c9d73804eeb5aab2d4c",
+    "experiments/2026-10-06-s2-realism/analyze_visibility.py": "723a984a4f188c48c2805e8ef6636221a517cebd506d1d8212d8437ba591ccda",
+    "experiments/2026-10-06-s2-realism/summarize_visibility.py": "993e38b0975c32a79809c6685ba9d58cc73cf7ed21d695c6a2a85f031bb3fd13",
+    "experiments/2026-10-06-s2-realism/feature_visibility.py": "b3a65e9656157d9f93753843ad5105e0a71c7839f3095b089d992952276247e6"
+  },
+  "scope": "saved commands only; GT posthoc evaluation, not a live mission or admission of unmeasured loaded calibration"
+}

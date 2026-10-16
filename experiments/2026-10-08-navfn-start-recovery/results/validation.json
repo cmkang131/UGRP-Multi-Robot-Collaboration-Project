@@ -1,0 +1,35 @@
+{
+  "tests": {
+    "files": [
+      "tests/test_grid_acceleration.py",
+      "tests/test_active_navfn_start.py",
+      "tests/test_active_frontier_cycle.py"
+    ],
+    "passed": 20,
+    "seconds": 2.54
+  },
+  "physical_sha": "c37f2b23b74d044163b43e139599207f248ae3c1",
+  "original_freeze_files_verified_at_physical_sha": 49,
+  "post_physics_freeze_changes": [
+    "harness/active_navfn_start.py"
+  ],
+  "later_acceleration_shared_kernels": [
+    "harness/self_odom_grid.py",
+    "harness/public_navigation_persistent.py"
+  ],
+  "original_user_files_unchanged": true,
+  "ffmpeg_full_decode_exit": 0,
+  "video_frames": 1801,
+  "video_duration_s": 90.05,
+  "media_visual_checked": [
+    "new-seed.png",
+    "video-check.jpg",
+    "coverage.png"
+  ],
+  "physics_runs": 1,
+  "additional_physics_after_host_error": 0,
+  "experiment_bytes": 500097,
+  "raw_bytes": 464424681,
+  "timing_locks_released": true,
+  "ci": "not awaited; local changed-module checks only"
+}

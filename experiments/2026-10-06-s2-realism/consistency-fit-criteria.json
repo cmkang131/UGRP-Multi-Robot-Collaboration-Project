@@ -1,0 +1,17 @@
+{
+  "option": "nav2_omni_mle_v1",
+  "motion_noise_default": "off",
+  "method": "Gaussian residual MLE; Q=sum(alpha_i B_i) from Nav2 OmniMotionModel; known visual R included; no residual mean removal",
+  "fit_sources": "own RGB slip-diagnostic measured intervals and own issued pulse profiles only",
+  "sample_rule": "earliest measured interval per pulse; no outcome-based filtering; partial pulse is usable only for its explicitly measured interval",
+  "interval_model": "existing S2 mean curve increment and per-pulse covariance times interval/horizon, in interval-start body frame",
+  "visual_covariance": "recorded feature-fit covariance plus existing +/-2.8deg uniform common radial pitch sensitivity; not evaluated actual pitch",
+  "fit_gt_inputs": false,
+  "parameters": "alpha1..5 >=0, L-BFGS-B from all 0.2, maxiter2000 ftol1e-12 gtol1e-8; no multi-start or result-based tuning",
+  "identifiability": "normalized covariance design rank exactly5 and optimizer success; otherwise no fit or on replay for fold",
+  "scope": "only loaded look_ahead coarse lateral profiles actually represented in fit; unloaded, forward, turn, fine, all means and thresholds unchanged",
+  "holdouts": [1051,1053,1054],
+  "admission": "unchanged consistency-criteria.json; all holdouts must pass; unavailable covariance at any primary time fails coverage gate",
+  "off_check": "attach identity test plus byte-identical 300-frame acceptance against previously sealed off; historical full off20,778 frames unchanged source preserved",
+  "limitations": "sparse, visually selected calibration; shared camera systematic errors persist; this is not Censi differential-drive wheel-radius/extrinsic joint calibration"
+}

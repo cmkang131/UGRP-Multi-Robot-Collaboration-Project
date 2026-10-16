@@ -1,0 +1,452 @@
+{
+  "field": {
+    "source_commit": "2fa4bf9a0e8097bcd4d1e1933b7d04e4d54dd965",
+    "path": "harness/zone_solo_cyan_likelihood_field.py",
+    "source_sha256": "36d78230ad7d899e6ee03eb64117b6df157c8a71ae697ffee2a2e0e4ead154e7",
+    "selected": [
+      {
+        "names": [
+          "PARAMS"
+        ],
+        "line_start": 19,
+        "line_end": 21,
+        "sha256": "389c4e1dbf5045611cbaec20da6e5d34d48622020e16dd17987655717a92a186"
+      },
+      {
+        "names": [
+          "Field"
+        ],
+        "line_start": 24,
+        "line_end": 50,
+        "sha256": "a7066e4eb0b26040f2670247ce6ac882a47ae9916e04dac6b6f22136b6c3f7ba"
+      },
+      {
+        "names": [
+          "likelihood"
+        ],
+        "line_start": 70,
+        "line_end": 78,
+        "sha256": "a41a864481e2d738d74c1662115e1f50ca929feb7f53d0e886f0c6217e39a76a"
+      }
+    ],
+    "copy_sha256": "50d41043ead89ddbc5c2c253d281e43ac5c53a1743213b47fdcb482c54b9362b"
+  },
+  "motion": {
+    "source_commit": "2fa4bf9a0e8097bcd4d1e1933b7d04e4d54dd965",
+    "path": "harness/zone_solo_cyan_amcl_update.py",
+    "source_sha256": "f0a3e2a80a27164955fafce9d7a4ec5c4d98cbe03ccf15528166d98c37185ad9",
+    "selected": [
+      {
+        "names": [
+          "BEAM"
+        ],
+        "line_start": 19,
+        "line_end": 19,
+        "sha256": "42673a2b0b4c4029afe9382b05bb9485d0f45156d70529dc6f7c9e9db376bc18"
+      },
+      {
+        "names": [
+          "moved"
+        ],
+        "line_start": 23,
+        "line_end": 25,
+        "sha256": "3c714edd5307e8e8c0f3d15278e68dae14c55bacd99e0dee8051e801740f9663"
+      },
+      {
+        "names": [
+          "converged"
+        ],
+        "line_start": 28,
+        "line_end": 29,
+        "sha256": "5c6de9b716ac9dbf1c755f5bc5512fee7b5b75219dfac7e13ebd4a8b1748814e"
+      },
+      {
+        "names": [
+          "resample"
+        ],
+        "line_start": 48,
+        "line_end": 57,
+        "sha256": "3833bca497ad2b29d961c11054071120f2fecab2c1baaf1c805ae2fb70d7ffc9"
+      }
+    ],
+    "copy_sha256": "ab7b2fd0dfe37ac8526404db4e908f7c703ac5812a83a8f4c9ebedfd2a942657"
+  },
+  "augmented": {
+    "source_commit": "2fa4bf9a0e8097bcd4d1e1933b7d04e4d54dd965",
+    "path": "harness/zone_solo_cyan_augmented_start.py",
+    "source_sha256": "59387e245ff7dd2900ffee06a5d7f6488969505430462c328dfed81d0bdadb04",
+    "selected": [
+      {
+        "names": [
+          "ALPHA_SLOW",
+          "ALPHA_FAST"
+        ],
+        "line_start": 23,
+        "line_end": 23,
+        "sha256": "6117bf4215ad77561b5d066bd694f7b9e44134d07ae18275501a6279ac8fede5"
+      },
+      {
+        "names": [
+          "pose_key"
+        ],
+        "line_start": 105,
+        "line_end": 106,
+        "sha256": "5739adced8c8dbd03bada4b33c44536ec9e4fe7c64a2218226785432b2f343d0"
+      },
+      {
+        "names": [
+          "belief_report"
+        ],
+        "line_start": 109,
+        "line_end": 125,
+        "sha256": "7c0acfa9ce86e0a26348a6e56f193533f87c5c89428e7ce16a4430d9c4fd0207"
+      },
+      {
+        "names": [
+          "Policy"
+        ],
+        "line_start": 128,
+        "line_end": 171,
+        "sha256": "dcab2f0b685e48b5365878c00eff26ec3dd375b4305a96b212fdb96334ede780"
+      }
+    ],
+    "copy_sha256": "d5a58785e0eea945171a57fcc31a950d0488bf99fa588632631cd22e3f5727d3"
+  },
+  "kld": {
+    "source_commit": "2fa4bf9a0e8097bcd4d1e1933b7d04e4d54dd965",
+    "path": "harness/zone_solo_cyan_kld_start.py",
+    "source_sha256": "f0a67b4c4d9cea30a873321c72a6f98596deca5289f1829ba2966e8861e9f1d0",
+    "selected": [
+      {
+        "names": [
+          "PARAMS"
+        ],
+        "line_start": 17,
+        "line_end": 18,
+        "sha256": "96f1a6c2b2e3ef11575cd0bd4df2761b7c949110330accdce7dcdaff48fab1e2"
+      },
+      {
+        "names": [
+          "LATENTS"
+        ],
+        "line_start": 19,
+        "line_end": 19,
+        "sha256": "9b17849b8a12847546b3817a3667a660a6883acd284059e7dd372fa84258e1ab"
+      },
+      {
+        "names": [
+          "sample_limit"
+        ],
+        "line_start": 22,
+        "line_end": 28,
+        "sha256": "28d6c0867b88c48f4516b4420484b14dd8303b5b14b9df273028f991aa9bf12e"
+      },
+      {
+        "names": [
+          "assign"
+        ],
+        "line_start": 31,
+        "line_end": 40,
+        "sha256": "e989e357f1ccfbe8321f8569a91ec2c52ebe6162cf3f733ae889ef2b2fe49b97"
+      },
+      {
+        "names": [
+          "resample"
+        ],
+        "line_start": 43,
+        "line_end": 59,
+        "sha256": "bd7d53b9d2c24f9f9818b4251c6fdae3fe4c5e0ae5afd4507182176c164743a4"
+      },
+      {
+        "names": [
+          "Policy"
+        ],
+        "line_start": 62,
+        "line_end": 79,
+        "sha256": "2addca6e11010ea5efbbb278b1f05ef88b012eab20468c04635016b60dca43af"
+      }
+    ],
+    "copy_sha256": "9178538410ddce3523e3ef92a70fc5e5deb9612627298c7a41432f3b7594f726"
+  },
+  "landmarks": {
+    "source_commit": "6a9e93f1a463ed2e356b044487c6b025ad018b63",
+    "path": "harness/zone_solo_cyan_landmarks.py",
+    "source_sha256": "41bad45345b1b58b9688ef077088a5cb36b91024e0750b1b35a6d63133fe5286",
+    "selected": [
+      {
+        "names": [
+          "OPTION"
+        ],
+        "line_start": 17,
+        "line_end": 17,
+        "sha256": "5d13914c28a895ebcf8ca9d098ae2fdbb3b9bc1b5ccafbede81e513191f4080f",
+        "dedented": false
+      },
+      {
+        "names": [
+          "PARAMS"
+        ],
+        "line_start": 18,
+        "line_end": 25,
+        "sha256": "ca3cb33b6b20ae37a82829e7174451cdddcf9bf3842a18477ba93911d357fd3b",
+        "dedented": false
+      },
+      {
+        "names": [
+          "wrap"
+        ],
+        "line_start": 28,
+        "line_end": 29,
+        "sha256": "31e4b605dd331527ec198ca72b2d22d0d9d4ba0e2b15efde94a0eb10aaf4f3a9",
+        "dedented": false
+      },
+      {
+        "names": [
+          "gaussian"
+        ],
+        "line_start": 32,
+        "line_end": 33,
+        "sha256": "eea508fc9a082e78300126e4f36bffb1e0bff4c9bd8ec43fd703ca6e482e027d",
+        "dedented": false
+      },
+      {
+        "names": [
+          "hue"
+        ],
+        "line_start": 36,
+        "line_end": 37,
+        "sha256": "82e525b6004220696257883ac9953d7d800c6e6a903f8c673b61a04603948bb8",
+        "dedented": false
+      },
+      {
+        "names": [
+          "MapFeatures"
+        ],
+        "line_start": 40,
+        "line_end": 53,
+        "sha256": "850211d8f8ffde3a892731a2dc07d94f4f2dd4f1e76cfb1f83db74dce045398b",
+        "dedented": false
+      },
+      {
+        "names": [
+          "ground"
+        ],
+        "line_start": 56,
+        "line_end": 64,
+        "sha256": "77e16228d3b962892b03823e245af97c8c0967ff8305838518b37f63a9e08d30",
+        "dedented": false
+      },
+      {
+        "names": [
+          "project"
+        ],
+        "line_start": 67,
+        "line_end": 70,
+        "sha256": "ec20ee5835fd3a7802f7f5edb29a8c9a5d538e8c2bbdd54f2b800fc36ec3d22a",
+        "dedented": false
+      },
+      {
+        "names": [
+          "floor_features"
+        ],
+        "line_start": 73,
+        "line_end": 124,
+        "sha256": "bde2e9ae8128bad8b56bd733e2fe79a2e96e76fb375b8523db534fe0eb69de5e",
+        "dedented": false
+      },
+      {
+        "names": [
+          "door_features"
+        ],
+        "line_start": 127,
+        "line_end": 159,
+        "sha256": "69a2d730913017093a37037ef06be66b469c0a50bf30b4cf813feff3421674e2",
+        "dedented": false
+      },
+      {
+        "names": [
+          "landmark_likelihood"
+        ],
+        "line_start": 162,
+        "line_end": 196,
+        "sha256": "eb09a9767593f6fda43e896259b775c9dc47b0303d571c78aa84fc97c2698d11",
+        "dedented": false
+      }
+    ],
+    "copy_sha256": "7c7ad9230d3a0415da6d96924663254cbf59e85a66198924e796ec00d4ea54d9"
+  },
+  "visibility": {
+    "source_commit": "6a9e93f1a463ed2e356b044487c6b025ad018b63",
+    "path": "harness/zone_solo_cyan_visibility.py",
+    "source_sha256": "05eca828fa437223b66b7bc3cecf76b2b100265b5cf6cc28ade818e6a835f704",
+    "selected": [
+      {
+        "names": [
+          "PARAMS"
+        ],
+        "line_start": 20,
+        "line_end": 21,
+        "sha256": "cf5e23c676e834988680db5619984810b674b5a733548fc5aad943335211519f",
+        "dedented": false
+      },
+      {
+        "names": [
+          "LOCAL_OPTICAL"
+        ],
+        "line_start": 22,
+        "line_end": 22,
+        "sha256": "386c32439544efbc71700dbc55734d10260130142b0fa6b0e624dc11ccb66a72",
+        "dedented": false
+      },
+      {
+        "names": [
+          "K"
+        ],
+        "line_start": 23,
+        "line_end": 23,
+        "sha256": "dd6d1c9647f1a9221fa1e6e9e7f3e8411f4f272a9bc7bb0ffd3f4259c5edea89",
+        "dedented": false
+      },
+      {
+        "names": [
+          "K_INV"
+        ],
+        "line_start": 24,
+        "line_end": 24,
+        "sha256": "a444a04daf1edde73e6a4d76dbfaf7424666d8785d24df0c78f53a829e07f044",
+        "dedented": false
+      },
+      {
+        "names": [
+          "numbers"
+        ],
+        "line_start": 27,
+        "line_end": 28,
+        "sha256": "edd09ee3cc4d67c584c644ccc36f4220712e2d76a5a9713fa60eb1aa6a0b9c64",
+        "dedented": false
+      },
+      {
+        "names": [
+          "rotation"
+        ],
+        "line_start": 31,
+        "line_end": 34,
+        "sha256": "2a5da084e641050eb323255cd5a16a51f72efec50312048715ad07cc4d83a9c9",
+        "dedented": false
+      },
+      {
+        "names": [
+          "fixed_robot"
+        ],
+        "line_start": 37,
+        "line_end": 44,
+        "sha256": "284dd46858357079c97405204cdb617f9486f3a9be7bb632551c7bde6fad7b26",
+        "dedented": false
+      },
+      {
+        "names": [
+          "commanded_joints"
+        ],
+        "line_start": 47,
+        "line_end": 54,
+        "sha256": "e6e15e58e8f16da593c234db5c714232d09c6b02d82504bd208cd0b4098bcb1e",
+        "dedented": false
+      },
+      {
+        "names": [
+          "robot_boxes"
+        ],
+        "line_start": 57,
+        "line_end": 108,
+        "sha256": "5033a11b287b8a944a10d1e8498a50ec9f7e83cacc858ef00bb6f6910456660c",
+        "dedented": false
+      },
+      {
+        "names": [
+          "box_depth"
+        ],
+        "line_start": 111,
+        "line_end": 122,
+        "sha256": "96720668382d6ed16c223ce4246239c4faeee892d3f40caa78748039a1b60ecb",
+        "dedented": false
+      },
+      {
+        "names": [
+          "shadow_depths"
+        ],
+        "line_start": 125,
+        "line_end": 129,
+        "sha256": "ba113008f9124ab4f156090e64ab21d5fb76745ccd4cf97459c2ba9852a2cb6c",
+        "dedented": false
+      },
+      {
+        "names": [
+          "pixel_rays"
+        ],
+        "line_start": 132,
+        "line_end": 134,
+        "sha256": "3429a5748fe01fc1f28e03d326f537db8828b783b0d4ac7a5a7a0802f1dd6ea1",
+        "dedented": false
+      },
+      {
+        "names": [
+          "Visibility.depth_image"
+        ],
+        "line_start": 155,
+        "line_end": 161,
+        "sha256": "312b38f6595689bdde388266281084ee05bbb021fba5134968ea017e58a02c2c",
+        "dedented": true
+      }
+    ],
+    "copy_sha256": "9bf722e2410dfa7ce773d78066c61fe4cd56b1dab6ecdf7239a7ab3c39f98b5e"
+  },
+  "landmark_color": {
+    "source_commit": "6a9e93f1a463ed2e356b044487c6b025ad018b63",
+    "path": "harness/zone_solo_cyan_scene_change.py",
+    "source_sha256": "8efbab9881b5ca4a7c5f62ab72301af3999abcf886bba9cd8094da6a894bcc54",
+    "selected": [
+      {
+        "names": [
+          "cyan"
+        ],
+        "line_start": 38,
+        "line_end": 39,
+        "sha256": "38c452465796bbf6c899d739c4af0ebf66986a6a34559af5b112e049656a510b",
+        "dedented": false
+      }
+    ],
+    "copy_sha256": "6c7f355831a03c0cd40e44862c7f68f9d13acd8e978eb2696da062f32ad54702"
+  },
+  "tempering": {
+    "source_commit": "2fa4bf9a0e8097bcd4d1e1933b7d04e4d54dd965",
+    "path": "harness/zone_solo_cyan_bias_tempering.py",
+    "source_sha256": "08cc83deddc6f399c383501213b5057bacc43bed1a1aa3eb85146707ff447541",
+    "selected": [
+      {
+        "names": [
+          "TEMPER"
+        ],
+        "line_start": 16,
+        "line_end": 16,
+        "sha256": "75916200a5ee018a7b155c4cec8df6c4ad4866b707a638d641afe450336c5784"
+      },
+      {
+        "names": [
+          "ALPHA"
+        ],
+        "line_start": 17,
+        "line_end": 17,
+        "sha256": "62b44786999361135a78434d91d67169d1ff5bb6f3bd9b75ea6221740363d4aa"
+      },
+      {
+        "names": [
+          "moments"
+        ],
+        "line_start": 46,
+        "line_end": 53,
+        "sha256": "a34a3db70fea4b3e4db3bb6f354ad03c061094b83fe9156ab0f8a336f6588ac5"
+      }
+    ],
+    "copy_sha256": "b36571f6ee9737154e1402a1b1dc771a9f14224bb14fcac44137ee1d80cdfdc2"
+  }
+}

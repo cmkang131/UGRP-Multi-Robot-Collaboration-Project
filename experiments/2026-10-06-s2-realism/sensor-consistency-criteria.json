@@ -1,0 +1,31 @@
+{
+  "schema": "ugrp.s2.sensor_consistency.prereg.v1",
+  "option": "sensor_consistency=pr_field_temper_ess_v1",
+  "seeds": [1051, 1053, 1054, 1056, 1057, 1058, 1059, 1060, 1061],
+  "parameters": {"z_hit": 0.5, "z_rand": 0.5, "wall_sigma_m": 0.2, "alpha": 0.5, "ess_fraction": 0.5},
+  "gates": {
+    "each_run_must_pass": true,
+    "nees_exceed_fraction_lte": 0.2,
+    "unflagged_gt_25cm_lte": 0,
+    "carry_rmse_nonincrease": true,
+    "near_truth_support_fraction_nondecrease": true,
+    "near_truth_median_mass_nondecrease": true,
+    "off_recorded_pose_bytes_identical": true
+  },
+  "evaluation": {
+    "near_truth_xy_m": 0.1,
+    "near_truth_yaw_deg": 5,
+    "particle_snapshot": "first released frame of each integer SIM second; carry interval",
+    "nees": "full reported XY covariance at fixed original drive decision times; chi2 df2 95% 5.991464547107979; invalid covariance fails coverage",
+    "alarm": "unchanged std_xy > .05 or std_yaw > 5 degrees or missing visual fix",
+    "carry": "original carry state until original real_carry_return; original commands fixed",
+    "gt_use": "evaluation only after prediction artifacts sealed; no fitting",
+    "off_evidence": "all nine baseline pose numeric JSON bytes exactly equal recordings; explicit off attachment and particle hash replay additionally s1060",
+    "floating_tolerance": 1e-12
+  },
+  "scope": "one composite candidate, no sweep or outcome-dependent changes; existing v133/v139 motion, calibration, features, initial KLD, gates unchanged; s2v55 tracking recovery not enabled",
+  "conditional_physics": "only if every gate passes all nine; separately preregister seeds 1062-1064; agent_lock and self-map priority",
+  "physical_runs_now": 0,
+  "raw_budget_gib": 1,
+  "ENOSPC": "HOST_ERROR; preserve partial evidence and do not count as algorithm failure"
+}

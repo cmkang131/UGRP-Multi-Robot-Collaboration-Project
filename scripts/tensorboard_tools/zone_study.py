@@ -16,6 +16,9 @@ from scripts import zone_study_evidence_join as join
 
 RUN_SCHEMA = 'ugrp.zone_study_integration_run.v1'
 MEDIA_SCHEMA = 'ugrp.zone_study_media.v1'
+# Off by default: a missing request image fails the conversion. Set by `export.py --allow-removed-request-images`
+# when the images were removed under the AGENTS.md retention rule (hashes stay in the request rows).
+ALLOW_REMOVED_REQUEST_IMAGES = False
 REQUIRED = {'result.json', 'study/trial_record.json', 'eval_only/evaluation.json',
             'study/frozen_plan.json', 'study/record_index.json'}
 
@@ -71,19 +74,29 @@ def request_images(src, record, w, max_images):
         if {c['request_id'] for c in record['calls']} != {r['request_id'] for r in archive}:
             raise ValueError('Complete trial is missing original model request archives')
     selected = set(sample_indices(len(archive), max_images))
+    hash_only = 0
     for i, request in enumerate(archive):
         w.text('decisions/request', request, i)
         for ref in request.get('image_refs', []):
             sha = ref.get('bytes_sha256')
             relative = f'study/request_images/{sha}.jpg'
-            if sha is None or src.files.get(relative, {}).get('sha256') != sha:
-                raise ValueError(f'Missing/hash-mismatched original model request image: {relative}')
+            if sha is None:
+                raise ValueError('Model request image reference has no bytes_sha256')
+            if relative not in src.files:
+                if not ALLOW_REMOVED_REQUEST_IMAGES:
+                    raise ValueError(f'Missing/hash-mismatched original model request image: {relative}')
+                # The image was removed under the AGENTS.md retention rule and the caller said so explicitly. The
+                # request row and the image hash stay (the hash identifies the image); only the preview is absent.
+                hash_only += 1
+                continue
+            if src.files[relative].get('sha256') != sha:
+                raise ValueError(f'Hash-mismatched model request image: {relative}')
             if i in selected:
                 data = src.image({'path': relative, 'sha256': sha})
                 if data is None:
                     raise ValueError(f'Cannot read original model request image: {relative}')
                 w.image('observations/own/' + str(ref.get('label', 'image')), data, i)
-    return len(archive)
+    return len(archive), hash_only
 
 
 def media_evidence(src):
@@ -209,7 +222,7 @@ def export_study(src, w, result, max_images):
         values['result/commands'] = sum(len(src.read_jsonl(p)) for p in command_files)
     for tag, value in values.items():
         w.scalar(tag, float(value) if isinstance(value, bool) else value)
-    count = request_images(src, record, w, max_images)
+    count, hash_only_images = request_images(src, record, w, max_images)
     videos = media_evidence(src)
     camera = src.read('eval_only/top_camera.json', required='eval_only/top_camera.json' in src.files)
     w.text('evaluation/referee', evaluation)
@@ -227,7 +240,8 @@ def export_study(src, w, result, max_images):
             'referee_status': metrics['referee_status'], 'plumbing_only': result.get('plumbing_only'),
             'success_source_field': 'study/trial_record.json + evaluation-only referee',
             'denominator_trials': 1, 'source_metrics': values,
-            'request_archive_rows': count, 'request_images_verified': sum(p.startswith('study/request_images/') for p in src.files),
+            'request_archive_rows': count, 'request_images_hash_only': hash_only_images,
+            'request_images_verified': sum(p.startswith('study/request_images/') for p in src.files),
             'top_camera_config_present': camera is not None,
             'top_rgb_video_registered': any(v['kind'] == 'top_rgb' for v in videos),
             'video_declarations': videos,

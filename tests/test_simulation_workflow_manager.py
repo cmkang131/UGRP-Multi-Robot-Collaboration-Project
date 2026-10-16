@@ -5,6 +5,7 @@ import json
 import os
 from pathlib import Path
 import select
+import signal
 import subprocess
 import sys
 import tempfile
@@ -84,6 +85,21 @@ raise SystemExit(3 if a.fail else 0)
             wm.run_workflow(self.root, "fixture", [], record_dir=record)
         self.assertTrue((record / "manifest.json").is_file())
 
+    def test_exited_group_permission_error_still_finishes_its_manifest(self):
+        with mock.patch.object(wm.os, 'killpg', side_effect=PermissionError('exited macOS group')):
+            record = wm.run_workflow(self.root, 'fixture', [])
+        data = json.loads((record/'manifest.json').read_text())
+        self.assertEqual(data['status'], 'process_completed')
+        self.assertEqual(data['exit_code'], 0)
+
+    def test_live_group_permission_error_is_not_treated_as_gone(self):
+        child = mock.Mock(pid=12345)
+        child.poll.return_value = None
+        with mock.patch.object(wm.os, 'killpg', side_effect=PermissionError('live')) as kill:
+            with self.assertRaises(PermissionError):
+                wm._signal_owned_group(child, 15)
+        kill.assert_called_once_with(12345, 15)
+
     def test_output_collision_and_duplicate_flag_fail_before_record(self):
         output = self.root / "prior"
         output.mkdir()
@@ -100,6 +116,36 @@ raise SystemExit(3 if a.fail else 0)
         self.assertEqual(row["exit_code"], 124)
         self.assertIsNone(row["physical_success"])
         self.assertIsNotNone(row["child_pid"])
+
+    def test_startup_signal_waits_for_process_handle_then_cleans_owned_group(self):
+        handlers = {}
+        old = {sig: signal.getsignal(sig) for sig in (signal.SIGINT, signal.SIGTERM)}
+        child = mock.Mock(pid=12345, stdout=None)
+        child.poll.return_value = None
+        child.wait.return_value = -signal.SIGTERM
+        real_popen = subprocess.Popen
+        def install(sig, handler):
+            prior = handlers.get(sig, old[sig])
+            handlers[sig] = handler
+            return prior
+        def start(*args, **kwargs):
+            if not kwargs.get("start_new_session"):
+                return real_popen(*args, **kwargs)
+            # The OS child already exists but Popen has not returned its handle.
+            handler = handlers.get(signal.SIGTERM)
+            self.assertTrue(callable(handler), "handler must precede Popen")
+            handler(signal.SIGTERM, None)
+            return child
+        with mock.patch.object(wm.signal, "signal", side_effect=install), \
+             mock.patch.object(wm.subprocess, "Popen", side_effect=start), \
+             mock.patch.object(wm, "_signal_owned_group", return_value=False) as forward:
+            record = wm.run_workflow(self.root, "fixture", [])
+        row = json.loads((record / "manifest.json").read_text())
+        self.assertEqual((row["status"], row["exit_code"], row["child_pid"]),
+                         ("interrupted", 130, child.pid))
+        forward.assert_any_call(child, signal.SIGTERM)
+        child.wait.assert_called()
+        self.assertEqual(handlers, old)
 
     def test_parent_exit_cleans_background_child(self):
         record = wm.run_workflow(self.root, "fixture", ["--spawn"])
@@ -185,7 +231,10 @@ raise SystemExit(3 if a.fail else 0)
 
     def test_catalog_has_registered_workflows_and_distinct_adapters(self):
         data, digest = wm.catalog(PROJECT)
-        self.assertEqual(len(data["workflows"]), 52)
+        ids = [row["id"] for row in data["workflows"]]
+        self.assertEqual(len(ids), len(set(ids)))
+        self.assertTrue({"zone-final-environment-gaincal-v101", "zone-pair-llm-v100",
+                         "zone-final-pair-highpose-v98"}.issubset(ids))
         self.assertEqual(len(digest), 64)
         self.assertEqual(next(r for r in data["workflows"] if r["id"] == "dispatch-skills")["runner"], "scripts.run_dispatch_e2e")
         self.assertEqual(next(r for r in data["workflows"] if r["id"] == "communication")["output_kind"]["prepare"], "file")
@@ -199,6 +248,18 @@ raise SystemExit(3 if a.fail else 0)
         model.mkdir()
         (model / "weights.bin").write_bytes(b"fixture")
         samples = {
+            "active-nav2": ["--case", "new-seed", "--expected-source-sha", "0"*40],
+            "pulse-rotation-audit": ["--expected-source-sha", "0"*40],
+            "active-recovery": ["--case", "new-seed", "--expected-source-sha", "0"*40],
+            "rbpf-wide-confirm": ["--case", "new-seed", "--expected-source-sha", "0"*40],
+            "rbpf-motion-gate": ["--case", "baseline", "--expected-source-sha", "0"*40],
+            "active-wall-map": ["--case", "static", "--expected-source-sha", "0"*40],
+            "arena-wall-map": ["--case", "forward", "--expected-source-sha", "0"*40],
+            "wall-parallax-strafe": ["--case", "strafe-north", "--expected-source-sha", "0"*40],
+            "wall-parallax-texture": ["--case", "preview", "--expected-source-sha", "0"*40,
+                                      "--wall-texture", "tape_v1"],
+            "wall-servo-stiffness": ["--case", "static-on", "--expected-source-sha", "0"*40,
+                                     "--servo-stiffness", "real_v1"],
             "zone-study-pilot": [],
             "local": ["run", str(PROJECT / "configs/simulation/drive.json"), "--headless"], "dispatch": ["--headless"],
             "dispatch-skills": ["--plan-replay", str(source), "--grasp-model-dir", str(model), "--stage-model-dir", str(model)],
@@ -252,13 +313,189 @@ raise SystemExit(3 if a.fail else 0)
             "zone-final-pair-heldout-v90": ["--check", "calibration-unloaded", "--map-id", "zone_wide_corridor_final_v3", "--expected-source-sha", "0" * 40],
             "zone-final-pair-heldout-v91": ["--check", "calibration-unloaded", "--map-id", "zone_wide_corridor_final_v3", "--expected-source-sha", "0" * 40],
             "zone-final-pair-loaded-v92": ["--check", "calibration-loaded", "--map-id", "zone_wide_two_doors_final_v3", "--expected-source-sha", "0" * 40],
+            "zone-final-pair-heldout-v95": ["--check", "calibration-unloaded", "--map-id", "zone_wide_corridor_final_v3", "--expected-source-sha", "0" * 40,
+                                            "--precheck", "/nonexistent/heldout-v95-precheck", "--commitment-comment", "1"],
             "zone-final-environment-floor-light-v2-check": ["--check", "calibration-motion-v2", "--expected-source-sha", "0" * 40],
+            "zone-pair-llm-v100": ["--condition", "no_comm", "--expected-source-sha", "0" * 40],
             "zone-final-environment-gaincal-v101": ["--check", "calibration-gain-v101", "--run-id", "fitA1", "--seed", "1101", "--expected-source-sha", "0" * 40],
+            "zone-final-pair-loaded-gaincal-v102": ["--check", "calibration-loaded", "--run-id", "latA", "--seed", "1201", "--expected-source-sha", "0" * 40],
+            "zone-solo-cyan-v106": ["--expected-source-sha", "0" * 40],
+            "zone-s3-host-v107": ["--expected-source-sha", "0" * 40],
+            "zone-s3-door-yield-v108": ["--expected-source-sha", "0" * 40],
+            "zone-s3-no-prior-v142": ["--expected-source-sha", "0" * 40],
+            "zone-s3-host-heading-v146": ["--expected-source-sha", "0" * 40],
+            "zone-s3-continue-v147": ["--expected-source-sha", "0" * 40],
+            "zone-s3-motion-v148": ["--expected-source-sha", "0" * 40],
+            "zone-s3-sweep-v149": ["--expected-source-sha", "0" * 40],
+            "zone-s3-odometry-v150": ["--expected-source-sha", "0" * 40],
+            "zone-s3-consistency-v151": ["--expected-source-sha", "0" * 40],
+            "zone-s3-recovery-v211": ["--expected-source-sha", "0" * 40],
+            "zone-s3-alignment-probe-v153": ["--expected-source-sha", "0" * 40],
+            "zone-s3-alignment-entry-probe-v154": ["--expected-source-sha", "0" * 40],
+            "zone-s3-oracle-stage-probe-v155": ["--expected-source-sha", "0" * 40],
+            "zone-s3-x86-stage-probe-v156": ["--expected-source-sha", "0" * 40],
+            "zone-s4-live-dev-v157": ["--expected-source-sha", "0" * 40,
+                                      "--condition", "no_comm", "--relay-receipt", str(source)],
+            "zone-s3-x86-pulse-measure-v157": ["--expected-source-sha", "0" * 40],
+            "zone-s3-settled-servo-probe-v159": ["--expected-source-sha", "0" * 40],
+            "zone-s3-coarse-fine-probe-v161": ["--expected-source-sha", "0" * 40],
+            "zone-s3-alignment-ownership-v162": ["--expected-source-sha", "0" * 40],
+            "zone-s4-grip-r3-v165": ["--expected-source-sha", "0" * 40, "--job", "s4grip3-existing-explore-r1"],
+            "zone-s4-grip-dataset-v163": ["--expected-source-sha", "0" * 40, "--job", "s4grip2-r1-hold-r1"],
+            "zone-s3-synchronized-carry-v164": ["--expected-source-sha", "0" * 40],
+            "zone-s3-setdown-v166": ["--expected-source-sha", "0" * 40],
+            "zone-s3-integer-carry-v167": ["--expected-source-sha", "0" * 40],
+            "zone-s3-stage-origin-v170": ["--expected-source-sha", "0" * 40],
+            "zone-s3-route-resume-v172": ["--expected-source-sha", "0" * 40, "--condition", "0", "--route-case", "multi-left", "--seed", "14201"],
+            "zone-s3-full-route-v175": ["--expected-source-sha", "0" * 40, "--condition", "0", "--route-case", "multi-left", "--seed", "14201"],
+            "zone-s3-checkpoint-correction-v177": ["--expected-source-sha", "0" * 40, "--condition", "0", "--route-case", "multi-left", "--seed", "14201"],
+            "e2e-s3-ownroute-v179": ["--expected-source-sha", "0" * 40, "--seed", "61001"],
+            "zone-s3-release-ack-v187": ["--expected-source-sha", "0" * 40],
+            "zone-s3-continuous-distance-v186": ["--expected-source-sha", "0" * 40],
+            "zone-s3-synchronized-start-v165": ["--expected-source-sha", "0" * 40],
+            "zone-s4-pair-live-v166": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source)],
+            "zone-s4-pair-live-v167": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source)],
+            "zone-s4-pair-live-v168": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source)],
+            "zone-s4-pair-live-v169": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source)],
+            "zone-s4-pair-live-v170": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source)],
+            "zone-s4-pair-live-v171": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source)],
+            "zone-s4-pair-live-v173": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source), "--seed", "14201"],
+            "zone-s4-pair-live-v174": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source), "--seed", "14201"],
+            "zone-s4-pair-live-v178": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source), "--seed", "14201"],
+            "zone-s4-pair-live-v180": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source), "--seed", "14201"],
+            "zone-s4-pair-live-v181": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source), "--seed", "14201"],
+            "zone-s4-pair-live-v182": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source), "--seed", "14201"],
+            "zone-s4-pair-live-v183": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source), "--seed", "14201"],
+            "zone-s4-pair-live-v183-gemma-dev-v1": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source), "--seed", "14201", "--gemma-fallback", "on"],
+            "zone-s4-study-v184": ["--expected-source-sha", "0" * 40, "--condition", "no_comm"],
+            "zone-s4-pair-live-v176": ["--expected-source-sha", "0" * 40, "--condition", "no_comm", "--relay-receipt", str(source), "--seed", "14201"],
+            "zone-s3-capture-diagnostic-v160": ["--expected-source-sha", "0" * 40, "--kind", "capture"],
+            "zone-s3-x86-trim-probe-v158": ["--expected-source-sha", "0" * 40, "--model", "/nonexistent/trim.json", "--model-sha256", "0" * 64],
+            "v7-exact-speed-benchmark": ["--suite", str(source), "--expected-source-sha", "0" * 40],
+            "masterpi-drive-friction-probe": ["--expected-source-sha", "0" * 40, "--drive-profile", "masterpi_drive_friction_v7"],
+            "masterpi-v7-roller-approx-probe": ["--expected-source-sha", "0" * 40, "--phase", "profile"],
         }
+        # Explicit samples for preserved S2 bundles; planning never executes.
+        samples.update({name: ["--expected-source-sha", "0" * 40] for name in (
+            'zone-s2-realism-v109',
+            'zone-s2-realism-v110',
+            'zone-s2-realism-v113',
+            'zone-s2-realism-v114',
+            'zone-s2-realism-v115',
+            'zone-s2-realism-v116',
+            'zone-s2-realism-v117',
+            'zone-s2-realism-v118',
+            'zone-s2-realism-v119',
+            'zone-s2-realism-v120',
+            'zone-s2-realism-v121',
+            'zone-s2-realism-v122',
+            'zone-s2-realism-v123',
+            'zone-s2-realism-v124',
+            'zone-s2-realism-v125',
+            'zone-s2-realism-v126',
+            'zone-s2-realism-v127',
+            'zone-s2-realism-v128',
+            'zone-s2-realism-v129',
+            's2-camera-extrinsic-capture-v1',
+            's2-stiff-camera-capture-v1',
+            's2-stiff-start-capture-v1',
+            's2-active-markov-start-v1',
+            's2-load-wall-v1',
+            'zone-s2-realism-v130',
+            'zone-s2-realism-v131',
+            'zone-s2-real-output-diag-v111',
+            'zone-s2-real-output-diag-v112',
+        )})
+        samples['zone-s2-realism-v132'] = ['--expected-source-sha', '0'*40, '--mode', 'start']
+        samples['azure-s3-environment-smoke'] = ['--expected-source-sha', '0'*40]
+        samples['zone-s2-realism-v133'] = ['--expected-source-sha', '0'*40, '--mode', 'full']
+        samples['zone-s2-v133-reproduction'] = ['--expected-registration-sha', '0'*40, '--seed', '1053']
+        samples['zone-s2-v133-baseline-v52'] = ['--expected-registration-sha', '0'*40, '--seed', '1056']
+        samples['zone-s2-unknown-start-v139'] = ['--expected-source-sha', '0'*40, '--seed', '1059']
+        samples['zone-s2-active-observation-v140'] = ['--expected-source-sha', '0'*40, '--seed', '1060']
+        samples['zone-s2-graduation-v141'] = ['--expected-source-sha', '0'*40, '--seed', '1065']
+        samples['grasp-act-student-pilot'] = ['--plan', str(source), '--protocol', str(source), '--model', str(source), '--actor-python', str(source)]
+        samples['grasp-act-recovery'] = ['--plan', str(source), '--episode', '0', '--dependency-root', str(source), '--noise', str(source)]
+        samples['v7-exact-speed-benchmark'] = ['--suite', 's2', '--expected-source-sha', '0'*40]
+        for name in ('controller-replay-profile', 'saved-physics-profile'):
+            samples[name] = ['--kind', 's3', '--raw', str(model), '--adapter', str(model),
+                             '--expected-source-sha', '0'*40]
+        samples['controller-replay-abba'] = ['--plan', str(source),
+            '--priority-receipt', str(source), '--expected-source-sha', '0'*40]
+        samples['lazy-camera-abba'] = ['--kind', 'abba', '--expected-source-sha', '0'*40,
+            '--archive-manifest', str(source), '--archive-manifest-sha256', '0'*64]
+        samples['zone-path-heading-v145'] = ['--expected-source-sha', '0'*40, '--seed', '1066']
+        samples['zone-s2-heading-v143'] = ['--expected-source-sha', '0'*40, '--seed', '1066',
+                                           '--heading-mode', 'path_tangent_v1']
+        samples['zone-s2-side-scan-v134'] = ['--expected-source-sha', '0'*40]
+        samples['s2-loaded-rotation-v1'] = ['--expected-source-sha', '0'*40]
+        for name in ('zone-s2-look-before-move-v135', 'zone-s2-goal-heading-v136',
+                     'zone-s2-staged-approach-v137', 'zone-s2-staging-only-v138'):
+            samples[name] = ['--expected-source-sha', '0'*40, '--seed', '1054']
+        # PR #405 own-map/egomap DEV workflows (planning only; each runner still needs --execute + lock).
+        sha = ['--expected-source-sha', '0'*40]
+        samples.update({
+            'active-frontier-cycle': sha, 'navfn-start-recovery': sha, 'own-map-goal-dev': sha,
+            'active-rotleft-dev': ['--case', 'new-seed', *sha],
+            'frontier-duration': ['--condition', 'baseline', *sha],
+            'egomap-reconfirmation-dev': ['--mode', 'smoke'], 'egomap-fresh-paired-dev': ['--mode', 'smoke'],
+            'own-route-particle-stages-dev': ['--mode', 'smoke', '--seed', '60012'],
+        })
+        for name, seed in (('goal-route-continuous-dev', '55001'), ('goal-route-motion-audit-dev', '55001'),
+                           ('goal-route-preflight-dev', '55001'), ('own-map-return-repeat', '49001'),
+                           ('own-teach-capture', '49002'), ('own-teach-return-dev', '54001')):
+            samples[name] = ['--seed', seed, *sha]
+        e2e_args = ['--expected-source-sha', '0'*40, '--seed', '61001',
+                    '--driver-profile', 'study_gemma4_31b_v1', '--relay-receipt', str(source),
+                    '--decider', 'off', '--exploration-progress', 'off', '--pose-fix', 'off',
+                    '--path-follow', 'off', '--wall-cap-s', '12600', '--stall-odometry', 'off',
+                    '--stall-recovery', 'off', '--stall-noise', 'off', '--mapping-budget', 'off']
+        for name in ('e2e-ownmap-live-v185', 'e2e-ownmap-jev-v192', 'e2e-explore-posefix-v194',
+                     'e2e-rpp-lookahead-v197', 'e2e-stall-odometry-v198', 'e2e-stall-budget-v199',
+                     'e2e-exact-speed-v200', 'e2e-rgb-vo-v201', 'e2e-exact-speed2-v203', 'e2e-reviewed-runtime-v210'):
+            samples[name] = list(e2e_args)
+        for name in ('e2e-combo14-v202', 'e2e-combo14-v204', 'e2e-combo14-vo2-v205', 'e2e-usstall-v206'):
+            samples[name] = [*e2e_args, '--boundary-views', 'off', '--b-marker-detect', 'off']
+        samples['e2e-usstall-v206'] += ['--ultrasonic-front', 'on_v1']
+        samples['e2e-vomask-turn-v207'] = [*samples['e2e-usstall-v206'], '--vo-floor-mask', 'homography_v1', '--vo-rotation-policy', 'no_ransac_v1']
+        samples['e2e-explore-deadlock-v208'] = [*samples['e2e-vomask-turn-v207'], '--explore-deadlock', 'replan_v1']
+        samples['e2e-boundary-repair-v212'] = [*samples['e2e-explore-deadlock-v208'], '--boundary-association', 'extent_v1', '--boundary-retry', 'navigation_v1']
+        samples['e2e-boundary-native-v213'] = [*samples['e2e-boundary-repair-v212'], '--boundary-coverage', 'native_v1', '--dev-light']
+        for version, mode in ((214, 'dt1_v1'), (215, 'adaptive_v1')):
+            samples[f'e2e-speed3-v{version}'] = [*samples['e2e-boundary-native-v213'], '--speed3', mode]
+        samples['e2e-speed3-physics-probe'] = [*sha, '--profiles', 'dt1_v1', '--pr', '454']
+        e2e18_args = [*samples['e2e-speed3-v215'], '--b-partial-accept', 'on_v1', '--speed4', '{}']
+        additions = {
+            217: ['--speed5', 'lean_v1'],
+            220: ['--observation-cadence', 'on_v1'],
+            221: ['--route-guard', 'dev_nominal_v1'],
+            222: ['--beam-axis', 'undirected_v1'],
+            223: ['--route-coverage', 'native_v1'],
+            224: ['--carrier-axes', 'beam_v1', '--carrier-approach', 'standoff_v1'],
+            225: ['--route-extent', 'goal_envelope_v1', '--record-scalars', 'python_v1'],
+        }
+        for version in range(216, 226):
+            e2e18_args += additions.get(version, [])
+            if version in (218, 219):
+                e2e18_args[e2e18_args.index('--speed5')+1] = 'lean_v2' if version == 218 else 'lean_v3'
+            samples[f'e2e18-v{version}'] = list(e2e18_args)
+        samples['e2e-one-beam-ownmap-inputs'] = sha
+        # v196 is the preserved HOST_ERROR catalog: it incorrectly required a
+        # value for this boolean. Keep its original bytes and the rejection.
+        samples['e2e-rpp-lookahead-v196'] = [*e2e_args, '--dev-light']
+        samples['warp-act-teacher'] = ['--teacher-source', str(model), '--plan', str(source),
+            '--physics-backend', 'mjwarp_batch_v1', '--vm-hourly-usd', '1.096',
+            '--compiled-reference-v1', str(source), '--compiled-geometry-312-v1', str(source)]
+        retired_invalid = {'e2e-rpp-lookahead-v196'}
         with mock.patch.dict(os.environ, {"UGRP_SIM_TOKEN": "secret"}), \
              mock.patch.object(subprocess, "Popen", side_effect=AssertionError("planning launched a child")):
-            plans = {row["id"]: wm.plan(PROJECT, row["id"], samples[row["id"]]) for row in data["workflows"]}
-        self.assertEqual(set(plans), set(samples))
+            plans = {row["id"]: wm.plan(PROJECT, row["id"], samples[row["id"]]) for row in data["workflows"] if row["id"] not in retired_invalid}
+            for name in retired_invalid:
+                with self.assertRaises(ValueError):
+                    wm.plan(PROJECT, name, samples[name])
+            with self.assertRaisesRegex(ValueError, "unknown workflow: zone-s3-recovery-v193"):
+                wm.plan(PROJECT, "zone-s3-recovery-v193", ["--expected-source-sha", "0" * 40])
+        self.assertEqual(set(plans) | retired_invalid, set(samples))
         self.assertEqual(plans["physical"]["command"][-1], "<record>/artifacts")
         self.assertEqual(plans["communication"]["output"], "<record>/artifacts.json")
         self.assertEqual(plans["dispatch-skills"]["command"][3:5], ["--executor", "skills"])

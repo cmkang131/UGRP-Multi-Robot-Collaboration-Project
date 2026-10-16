@@ -1,0 +1,239 @@
+{
+  "archive": "/Users/changmin/projects/ugrp/outputs/experiment-archives-20260907/real_traces-20260907.zip",
+  "archive_sha256": "22fba4801d67464203c5607259e0aae31bac99730e9e9d3233f130ca0ffd949c",
+  "manifest": "/Users/changmin/projects/ugrp/outputs/experiment-archives-20260907/real_traces-20260907.manifest.jsonl",
+  "manifest_sha256": "52a9e34dc87519af6aff0baef2e51efd4c50d266a51c4de2c50630bf8455e2bc",
+  "verified_file_members": 5789,
+  "jpeg_members": 4735,
+  "pick_frames": 43,
+  "method": "OpenCV HSV red H<=10 or H>=170; blue H100..130; S>=80,V>=40; no morphology; full 640x480 denominator",
+  "scope": "Historical real post-lift observations, commanded joints only; not independent grasp or hand-eye calibration.",
+  "picks": [
+    {
+      "span": "real_traces/20260831T055135Z-real-d4872c04/skills/20260831T055210Z-pick-b99f23a8",
+      "source": "real_masterpi",
+      "status": "COMPLETED",
+      "exit_code": 0,
+      "positive_grasp_confirmation": false,
+      "post_lift_frames": 9,
+      "color": "red",
+      "whole_color_fraction": {
+        "min": 0.01345703125,
+        "mean": 0.013549262152777778,
+        "max": 0.01365234375
+      },
+      "bottom_component_fraction": {
+        "min": 0.01345703125,
+        "mean": 0.013549262152777778,
+        "max": 0.01365234375
+      },
+      "first": {
+        "archive_member": "real_traces/20260831T055135Z-real-d4872c04/skills/20260831T055210Z-pick-b99f23a8/frames/frame-000012.jpg",
+        "sha256": "3912342899463a742758321611c1797f00c6904da3d89e87f4ffe3240b2c3c7e",
+        "color": "red",
+        "wall_time_utc": "2026-08-31T05:52:27.550373+00:00",
+        "frame_seq": 12,
+        "commanded_pose": {
+          "1": 1500,
+          "3": 600,
+          "4": 2200,
+          "5": 1900,
+          "6": 1571
+        },
+        "after_close": true,
+        "debug_duplicate": false,
+        "whole_color_pixels": 4155,
+        "full_pixels": 307200,
+        "whole_color_fraction": 0.013525390625,
+        "bottom_component_pixels": 4155,
+        "bottom_component_fraction": 0.013525390625,
+        "bottom_component_box_xywh": [
+          243,
+          448,
+          253,
+          32
+        ]
+      },
+      "last": {
+        "archive_member": "real_traces/20260831T055135Z-real-d4872c04/skills/20260831T055210Z-pick-b99f23a8/frames/frame-000020.jpg",
+        "sha256": "7b68d3b8ee9dd2ed0f0adb4acde18e4e9b4c12e3a0669ea9957946064dd4c5cf",
+        "color": "red",
+        "wall_time_utc": "2026-08-31T05:52:28.095753+00:00",
+        "frame_seq": 20,
+        "commanded_pose": {
+          "1": 1500,
+          "3": 600,
+          "4": 2200,
+          "5": 1900,
+          "6": 1571
+        },
+        "after_close": true,
+        "debug_duplicate": false,
+        "whole_color_pixels": 4188,
+        "full_pixels": 307200,
+        "whole_color_fraction": 0.0136328125,
+        "bottom_component_pixels": 4188,
+        "bottom_component_fraction": 0.0136328125,
+        "bottom_component_box_xywh": [
+          243,
+          448,
+          253,
+          32
+        ]
+      }
+    },
+    {
+      "span": "real_traces/20260902T144448Z-real-da601e70/skills/20260902T144743Z-pick-255314b9",
+      "source": "real_masterpi",
+      "status": "FAILED",
+      "exit_code": 1,
+      "positive_grasp_confirmation": false,
+      "post_lift_frames": 2,
+      "color": "blue",
+      "whole_color_fraction": {
+        "min": 0.13347005208333335,
+        "mean": 0.13348470052083333,
+        "max": 0.13349934895833335
+      },
+      "bottom_component_fraction": {
+        "min": 0.12045247395833333,
+        "mean": 0.12046386718749999,
+        "max": 0.12047526041666666
+      },
+      "first": {
+        "archive_member": "real_traces/20260902T144448Z-real-da601e70/skills/20260902T144743Z-pick-255314b9/frames/frame-000007.jpg",
+        "sha256": "a05a8a8c3960522f8649fd777a5159f4060fb19057f23857c269fc86cecdb264",
+        "color": "blue",
+        "wall_time_utc": "2026-09-02T14:48:00.715590+00:00",
+        "frame_seq": 7,
+        "commanded_pose": {
+          "1": 1500,
+          "3": 600,
+          "4": 2200,
+          "5": 1900,
+          "6": 1522
+        },
+        "after_close": true,
+        "debug_duplicate": false,
+        "whole_color_pixels": 41011,
+        "full_pixels": 307200,
+        "whole_color_fraction": 0.13349934895833335,
+        "bottom_component_pixels": 37003,
+        "bottom_component_fraction": 0.12045247395833333,
+        "bottom_component_box_xywh": [
+          147,
+          367,
+          428,
+          113
+        ]
+      },
+      "last": {
+        "archive_member": "real_traces/20260902T144448Z-real-da601e70/skills/20260902T144743Z-pick-255314b9/frames/frame-000008.jpg",
+        "sha256": "2f0d3e8421b5f5a5f9a21e0ae9e9244b1bda74e01919cb9fe2f619796d69829f",
+        "color": "blue",
+        "wall_time_utc": "2026-09-02T14:48:00.778803+00:00",
+        "frame_seq": 8,
+        "commanded_pose": {
+          "1": 1500,
+          "3": 600,
+          "4": 2200,
+          "5": 1900,
+          "6": 1522
+        },
+        "after_close": true,
+        "debug_duplicate": false,
+        "whole_color_pixels": 41002,
+        "full_pixels": 307200,
+        "whole_color_fraction": 0.13347005208333335,
+        "bottom_component_pixels": 37010,
+        "bottom_component_fraction": 0.12047526041666666,
+        "bottom_component_box_xywh": [
+          148,
+          368,
+          427,
+          112
+        ]
+      }
+    },
+    {
+      "span": "real_traces/20260902T145131Z-real-19bb30fd/skills/20260902T145421Z-pick-b5f9a960",
+      "source": "real_masterpi",
+      "status": "COMPLETED",
+      "exit_code": 0,
+      "positive_grasp_confirmation": false,
+      "post_lift_frames": 8,
+      "color": "blue",
+      "whole_color_fraction": {
+        "min": 0.080888671875,
+        "mean": 0.08118937174479166,
+        "max": 0.081552734375
+      },
+      "bottom_component_fraction": {
+        "min": 0.07890950520833333,
+        "mean": 0.07919514973958333,
+        "max": 0.07944661458333334
+      },
+      "first": {
+        "archive_member": "real_traces/20260902T145131Z-real-19bb30fd/skills/20260902T145421Z-pick-b5f9a960/frames/frame-000007.jpg",
+        "sha256": "bb4995e4232e447c796ab8d747d4a8ae219a69d37b446f2babbe5e132e3fbb5d",
+        "color": "blue",
+        "wall_time_utc": "2026-09-02T14:54:38.419234+00:00",
+        "frame_seq": 7,
+        "commanded_pose": {
+          "1": 1500,
+          "3": 600,
+          "4": 2200,
+          "5": 1900,
+          "6": 1667
+        },
+        "after_close": true,
+        "debug_duplicate": false,
+        "whole_color_pixels": 24917,
+        "full_pixels": 307200,
+        "whole_color_fraction": 0.08111002604166667,
+        "bottom_component_pixels": 24283,
+        "bottom_component_fraction": 0.07904622395833333,
+        "bottom_component_box_xywh": [
+          216,
+          353,
+          337,
+          127
+        ]
+      },
+      "last": {
+        "archive_member": "real_traces/20260902T145131Z-real-19bb30fd/skills/20260902T145421Z-pick-b5f9a960/frames/frame-000014.jpg",
+        "sha256": "dc4770715007d5ef9c3172ddb3c6a238db3240dd7fc4adad4e7bdf790af31f32",
+        "color": "blue",
+        "wall_time_utc": "2026-09-02T14:54:38.802701+00:00",
+        "frame_seq": 14,
+        "commanded_pose": {
+          "1": 1500,
+          "3": 600,
+          "4": 2200,
+          "5": 1900,
+          "6": 1667
+        },
+        "after_close": true,
+        "debug_duplicate": false,
+        "whole_color_pixels": 24902,
+        "full_pixels": 307200,
+        "whole_color_fraction": 0.08106119791666666,
+        "bottom_component_pixels": 24241,
+        "bottom_component_fraction": 0.07890950520833333,
+        "bottom_component_box_xywh": [
+          216,
+          394,
+          338,
+          86
+        ]
+      }
+    }
+  ],
+  "unknown": [
+    "camera serial/label and calibration frame linkage",
+    "independent joint angles",
+    "known 3D target/camera correspondences",
+    "actual object dimensions",
+    "external proof of held state; no post-carry frame in the pick spans"
+  ]
+}

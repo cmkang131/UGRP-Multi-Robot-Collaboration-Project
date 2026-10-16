@@ -1,0 +1,32 @@
+{
+  "merge": {
+    "source": "1ba3668b6c42f2f2d1d22b6bd495a84522d87031",
+    "commit": "d9b2a39e5cdef086ffb64f6e1491b921e751f987",
+    "passed": 47,
+    "subtests": 280,
+    "seconds": 22.24,
+    "pushed": true
+  },
+  "changed_tests": {
+    "files": [
+      "tests/test_path_heading_default.py",
+      "tests/test_s2_path_heading.py",
+      "tests/test_simulation_workflow_manager.py"
+    ],
+    "passed": 46,
+    "seconds": 57.73
+  },
+  "resolved_local_failures": [
+    "v145 S2 bundle identity must retain idle-contact admission schema",
+    "s1068 saved counterexample test must use s1068 slot, not s1066 slot"
+  ],
+  "off_initial_record": {
+    "raw_bytes": 149508,
+    "before_default_change_sha256": "47e5aec9d5e1c2029a262c32b2a231f6b5e2c932353e33e9cc9ff6dc45c9839e",
+    "normalized_sha256": "82a64a2ad17655ced84c9a2f09fb5ee261b1576045aaf177b5a73065ff7104cc",
+    "normalization": "checkout absolute root string replaced by $ROOT only"
+  },
+  "off_replay": 1757,
+  "new_physics_runs": 0,
+  "ci_waited": false
+}

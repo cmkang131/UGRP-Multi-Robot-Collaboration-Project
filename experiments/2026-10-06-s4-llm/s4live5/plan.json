@@ -1,0 +1,86 @@
+{
+  "schema": "ugrp.s4live5.plan.v1",
+  "research_result": false,
+  "max_concurrent": 4,
+  "LP_NUM_THREADS": 4,
+  "cap_sim_s": 90,
+  "judgment": "each condition n/1: two actual LLM claims; two accepted GO and seen ACK; both first loaded translation commands within one .05s tick after permit; first carry bilateral-contact COM z>.06m excursion>=.020m. Lowering excluded, exceptions/unknown/failures retained.",
+  "runs": [
+    {
+      "name": "s4live5-no_comm-s601-v166-r1",
+      "condition": "no_comm",
+      "seed": 601,
+      "argv": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s4_pair_live5",
+        "--expected-source-sha",
+        "<SOURCE_SHA>",
+        "--output",
+        "outputs/s4live5-no_comm-s601-v166-r1/raw",
+        "--condition",
+        "no_comm",
+        "--relay-receipt",
+        "/home/ubuntu/ugrp-sim/s4live5-relay.json",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s4live5-peer_ko-s601-v166-r1",
+      "condition": "peer_ko",
+      "seed": 601,
+      "argv": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s4_pair_live5",
+        "--expected-source-sha",
+        "<SOURCE_SHA>",
+        "--output",
+        "outputs/s4live5-peer_ko-s601-v166-r1/raw",
+        "--condition",
+        "peer_ko",
+        "--relay-receipt",
+        "/home/ubuntu/ugrp-sim/s4live5-relay.json",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s4live5-leader_ko-s601-v166-r1",
+      "condition": "leader_ko",
+      "seed": 601,
+      "argv": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s4_pair_live5",
+        "--expected-source-sha",
+        "<SOURCE_SHA>",
+        "--output",
+        "outputs/s4live5-leader_ko-s601-v166-r1/raw",
+        "--condition",
+        "leader_ko",
+        "--relay-receipt",
+        "/home/ubuntu/ugrp-sim/s4live5-relay.json",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s4live5-structured-s601-v166-r1",
+      "condition": "structured",
+      "seed": 601,
+      "argv": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s4_pair_live5",
+        "--expected-source-sha",
+        "<SOURCE_SHA>",
+        "--output",
+        "outputs/s4live5-structured-s601-v166-r1/raw",
+        "--condition",
+        "structured",
+        "--relay-receipt",
+        "/home/ubuntu/ugrp-sim/s4live5-relay.json",
+        "--execute"
+      ]
+    }
+  ]
+}

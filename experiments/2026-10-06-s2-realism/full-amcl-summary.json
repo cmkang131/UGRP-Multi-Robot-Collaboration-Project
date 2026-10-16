@@ -1,0 +1,529 @@
+{
+  "schema": "ugrp.s2.amcl_full.posthoc.v1",
+  "seed": 1050,
+  "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-97fcb5d2-s1050-P1-2-place",
+  "source_sha": "97fcb5d2be8cf714d0866e7b53ed461e1c59ccbf",
+  "execution_bundle_id": "zone-s2-realism-v125",
+  "physics_runs": 1,
+  "additional_physics_runs": 0,
+  "model_calls": 0,
+  "gt_usage": "post-run evaluation only",
+  "source_changed_during_run": false,
+  "options": {
+    "camera_profile": "masterpi-camera-user-observation-target-review-v3",
+    "drive_profile": "masterpi_drive_friction_v7",
+    "setdown_relook": "off",
+    "grasp_check": "pickup_site_v1",
+    "min_wheel_cmd": "real_v1",
+    "dead_reckoning": "v7_diag_v1",
+    "stagnation_watch": "window120_v1",
+    "alignment_pulse": "real_fine_v1",
+    "hover_check": "real_pregrasp_v1",
+    "idle_robot_contacts": "freeze_v1",
+    "site_check": "off",
+    "hold_check": "inhand_rgb_v1",
+    "dev_grasp_policy": "log_only_v1",
+    "eval_camera_trace": "pose_v1",
+    "pulse_motion_model": "v7_pulse_cal_v1",
+    "visual_update": "accepted_scan_v1",
+    "visual_stall": "lk_pulse_v1",
+    "carry_pose": "real_delivery_v1",
+    "camera_calibration": "v3_unloaded_sag_v1",
+    "measurement_model": "amcl_likelihood_field_v1",
+    "visibility_mask": "command_geometry_v1",
+    "amcl_update": "ros_motion_v1",
+    "dev_search": "repeat_views_v1"
+  },
+  "status": "STAGE_REACHED_UNQUALIFIED",
+  "failure": null,
+  "evaluation": {
+    "status": "PROVISIONAL_GEOMETRIC_JUDGE",
+    "success": false,
+    "lifted": true,
+    "inside": false,
+    "floor": true,
+    "stable": true,
+    "settled_s": 2.0,
+    "qualification": "post-run DEV only; no study/physical hardware success claim"
+  },
+  "posthoc_evaluation": {
+    "scope": "POSTHOC_EVAL_ONLY_NO_CONTROL_FEEDBACK",
+    "seed": 1050,
+    "cargo_remaining_to_B_region_m": 3.5480167700053262,
+    "cargo_distance_to_B_center_m": 4.288409617437749,
+    "robot_remaining_to_B_region_m": 3.4034783710802436,
+    "final_cargo_xy_m": [
+      2.109942759013739,
+      1.391428358644133
+    ],
+    "final_robot_xy_m": [
+      2.094540861601055,
+      1.1922220219849247
+    ],
+    "carry_window": [
+      71.0,
+      236.8
+    ],
+    "visual_updates": 0,
+    "max_update_gap_sim_s": 165.8,
+    "carry_xy_rmse_m": 2.1909388706847515,
+    "measurement_claim": "nonconstant AMCL weight updates, not full-rank absolute pose fixes",
+    "carry_xy_p90_m": 3.8939163062308677,
+    "carry_end_error_m": 4.06163806203695,
+    "carry_pose_samples": 3316,
+    "visibility_measurement": {
+      "attempts": 3129,
+      "less_than_six_columns": 3129,
+      "detected_columns": 133331,
+      "kept_columns": 0
+    },
+    "status": "COMPLETE",
+    "actual_visibility": {
+      "sample_hz": 1.0,
+      "sample_frames": 166,
+      "all_columns": {
+        "above": 3545,
+        "clear": 5926,
+        "cargo_gt": 41,
+        "below": 6424
+      },
+      "detected_columns": {
+        "above": 2024,
+        "clear": 5171
+      },
+      "all_clear_fraction": 0.3718624497991968,
+      "detected_clear_fraction": 0.7186935371785963,
+      "method": "saved actual camera/cargo + static walls, conservative command-body bounds, undistorted rows4..470; not live perception input"
+    }
+  },
+  "wall_s": 674.3321265830018,
+  "sim_s": 260.1,
+  "wall_per_sim": 2.5925879530296108,
+  "commands": 3798,
+  "would_stop": {
+    "ARM_COLLISION_GUARD": 7,
+    "POSE_UNCERTAIN": 349,
+    "VISUAL_STALL_SUSPECTED": 3
+  },
+  "hold_status": "probable_held_inhand_rgb",
+  "pickup_site_status": "not_evaluated_inhand_selected",
+  "regrasp_count": 0,
+  "first_wheel_t": 12.0,
+  "stationary": {
+    "max_error_m": 0.08875537445523977,
+    "end_error_m": 0.08639306557758901,
+    "actual_max_displacement_m": 0.0006910416788740831,
+    "updates": 1
+  },
+  "state_samples": [
+    {
+      "state": "scan",
+      "t": 1.3,
+      "t_est": 1.14,
+      "estimated_xy_m": [
+        -0.8144936895164785,
+        -0.8204391461092131
+      ],
+      "actual_xy_m": [
+        -0.8981822013224787,
+        -0.8499952919794175
+      ],
+      "error_m": 0.08875433942632799,
+      "yaw_error_deg": -0.19827133911460318,
+      "std_xy_m": 1.231272289457993
+    },
+    {
+      "state": "search_move",
+      "t": 10.4,
+      "t_est": 10.24,
+      "estimated_xy_m": [
+        -0.8147040243001715,
+        -0.8747495064447928
+      ],
+      "actual_xy_m": [
+        -0.8978138373730201,
+        -0.8502957775863391
+      ],
+      "error_m": 0.08663270678032982,
+      "yaw_error_deg": -0.2027931272310922,
+      "std_xy_m": 1.2022909229932441
+    },
+    {
+      "state": "search",
+      "t": 23.6,
+      "t_est": 23.44,
+      "estimated_xy_m": [
+        -0.48654626249542227,
+        -0.8703039458858035
+      ],
+      "actual_xy_m": [
+        -0.5988581257950327,
+        -0.8286397952990266
+      ],
+      "error_m": 0.11979088480326042,
+      "yaw_error_deg": -0.7734034752503305,
+      "std_xy_m": 1.1815269525296157
+    },
+    {
+      "state": "align",
+      "t": 23.7,
+      "t_est": 23.54,
+      "estimated_xy_m": [
+        -0.48654626249542227,
+        -0.8703039458858035
+      ],
+      "actual_xy_m": [
+        -0.5989409320758938,
+        -0.8285713918906186
+      ],
+      "error_m": 0.11989231757316399,
+      "yaw_error_deg": -0.8022248699944198,
+      "std_xy_m": 1.1815269525296157
+    },
+    {
+      "state": "real_pregrasp",
+      "t": 43.7,
+      "t_est": 43.54,
+      "estimated_xy_m": [
+        0.018374949302732986,
+        -0.815719907952948
+      ],
+      "actual_xy_m": [
+        -0.07728305722242515,
+        -0.8418617194410156
+      ],
+      "error_m": 0.09916576284305414,
+      "yaw_error_deg": -3.8762540402912085,
+      "std_xy_m": 1.1240331126616274
+    },
+    {
+      "state": "hover",
+      "t": 44.5,
+      "t_est": 44.34,
+      "estimated_xy_m": [
+        0.01845204172860027,
+        -0.8151112679308914
+      ],
+      "actual_xy_m": [
+        -0.07709362050916205,
+        -0.8408576517828931
+      ],
+      "error_m": 0.09895377634990578,
+      "yaw_error_deg": -3.8701769257351515,
+      "std_xy_m": 1.1240339811512206
+    },
+    {
+      "state": "blind_descent",
+      "t": 45.8,
+      "t_est": 45.64,
+      "estimated_xy_m": [
+        0.01845204172860027,
+        -0.8151112679308914
+      ],
+      "actual_xy_m": [
+        -0.07677592280110143,
+        -0.8408720986940361
+      ],
+      "error_m": 0.09865082680888948,
+      "yaw_error_deg": -3.888699786884751,
+      "std_xy_m": 1.1240339811512206
+    },
+    {
+      "state": "grasp",
+      "t": 47.0,
+      "t_est": 46.84,
+      "estimated_xy_m": [
+        0.01845204172860027,
+        -0.8151112679308914
+      ],
+      "actual_xy_m": [
+        -0.07692887618005474,
+        -0.8408629580820685
+      ],
+      "error_m": 0.09879609833763586,
+      "yaw_error_deg": -3.8784338654881716,
+      "std_xy_m": 1.1240339811512206
+    },
+    {
+      "state": "lift",
+      "t": 47.9,
+      "t_est": 47.74,
+      "estimated_xy_m": [
+        0.01845204172860027,
+        -0.8151112679308914
+      ],
+      "actual_xy_m": [
+        -0.07695502565123016,
+        -0.8409936585292386
+      ],
+      "error_m": 0.09885548365723024,
+      "yaw_error_deg": -4.0162069057834255,
+      "std_xy_m": 1.1240339811512206
+    },
+    {
+      "state": "real_carry_transition",
+      "t": 69.1,
+      "t_est": 68.94,
+      "estimated_xy_m": [
+        0.01845204172860027,
+        -0.8151112679308914
+      ],
+      "actual_xy_m": [
+        -0.07684648447267471,
+        -0.8409499934292527
+      ],
+      "error_m": 0.0987392973010987,
+      "yaw_error_deg": -3.9493232038633397,
+      "std_xy_m": 1.1240339811512206
+    },
+    {
+      "state": "carry",
+      "t": 71.0,
+      "t_est": 70.84,
+      "estimated_xy_m": [
+        0.01845204172860027,
+        -0.8151112679308914
+      ],
+      "actual_xy_m": [
+        -0.07682754644536653,
+        -0.840949718432843
+      ],
+      "error_m": 0.09872094735638692,
+      "yaw_error_deg": -3.9541074608264504,
+      "std_xy_m": 1.1240339811512206
+    },
+    {
+      "state": "real_carry_return",
+      "t": 236.8,
+      "t_est": 236.64,
+      "estimated_xy_m": [
+        4.372400495949256,
+        -2.096604624723607
+      ],
+      "actual_xy_m": [
+        2.092054586086326,
+        1.262652928750333
+      ],
+      "error_m": 4.060121769011406,
+      "yaw_error_deg": -83.21737118358578,
+      "std_xy_m": 0.5194399702860543
+    },
+    {
+      "state": "lower",
+      "t": 238.7,
+      "t_est": 238.54,
+      "estimated_xy_m": [
+        4.372400495949256,
+        -2.096604624723607
+      ],
+      "actual_xy_m": [
+        2.090352663246098,
+        1.2013011101581306
+      ],
+      "error_m": 4.010476847821345,
+      "yaw_error_deg": -83.50359143524993,
+      "std_xy_m": 0.5194399702860543
+    },
+    {
+      "state": "released",
+      "t": 252.3,
+      "t_est": 252.14,
+      "estimated_xy_m": [
+        4.372400495949256,
+        -2.096604624723607
+      ],
+      "actual_xy_m": [
+        2.0945214634116063,
+        1.1913245514207058
+      ],
+      "error_m": 3.9999013930615437,
+      "yaw_error_deg": -83.92362489724364,
+      "std_xy_m": 0.5194399702860543
+    },
+    {
+      "state": "done",
+      "t": 257.1,
+      "t_est": 256.94,
+      "estimated_xy_m": [
+        4.372400495949256,
+        -2.096604624723607
+      ],
+      "actual_xy_m": [
+        2.094540861601055,
+        1.1922220219849247
+      ],
+      "error_m": 4.000628103922309,
+      "yaw_error_deg": -83.93963084435639,
+      "std_xy_m": 0.5194399702860543
+    }
+  ],
+  "last_pose": {
+    "t": 257.1,
+    "t_est": 256.94,
+    "estimated_xy_m": [
+      4.372400495949256,
+      -2.096604624723607
+    ],
+    "actual_xy_m": [
+      2.094540861601055,
+      1.1922220219849247
+    ],
+    "error_m": 4.000628103922309,
+    "yaw_error_deg": -83.93963084435639,
+    "std_xy_m": 0.5194399702860543
+  },
+  "amcl": {
+    "option": "ros_motion_v1",
+    "scope": "S2 all calibrated stationary arm poses, unloaded and loaded",
+    "parameters": {
+      "z_hit": 0.5,
+      "z_rand": 0.5,
+      "sigma_hit_m": 0.2,
+      "max_occ_dist_m": 2.0,
+      "max_beams": 60,
+      "range_max_m": 100.0,
+      "grid_resolution_m": 0.01,
+      "update_min_d_m": 0.25,
+      "update_min_a_rad": 0.2,
+      "do_beamskip": false,
+      "resample_interval": 1,
+      "recovery_alpha_slow": 0.0,
+      "recovery_alpha_fast": 0.0
+    },
+    "beam": {
+      "distance": 0.5,
+      "threshold": 0.3,
+      "error_threshold": 0.9,
+      "converged_distance": 0.5
+    },
+    "absolute_fix": false,
+    "candidates": 4,
+    "updates": 4,
+    "resamples": 4,
+    "skips": {
+      "no_settled_observation": 1205,
+      "below_motion_threshold": 741,
+      "no_rgb_floor_endpoint": 32,
+      "visibility_unknown": 3131
+    },
+    "adaptations": "RGB endpoints; own pulse odometry; fixed N with latent-state ancestry; no KLD size change",
+    "force_update_on_posture_change": false,
+    "gt_inputs": false
+  },
+  "amcl_updates": [
+    {
+      "t": 2.25,
+      "accepted": true,
+      "informative": true,
+      "settled": true,
+      "visual_weight_update": true,
+      "absolute_fix": false,
+      "reason": "soft_weight_update",
+      "model": "ros_motion_v1",
+      "columns": 46,
+      "kl": 0.018733460195070564,
+      "odom": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta": null,
+      "converged_after": false
+    },
+    {
+      "t": 19.7,
+      "accepted": true,
+      "informative": true,
+      "settled": true,
+      "visual_weight_update": true,
+      "absolute_fix": false,
+      "reason": "soft_weight_update",
+      "model": "ros_motion_v1",
+      "columns": 41,
+      "kl": 0.053382177034787294,
+      "odom": [
+        0.25319305758045524,
+        -0.008646974108265372,
+        -0.006019763672223276
+      ],
+      "delta": [
+        0.25319305758045524,
+        -0.008646974108265372,
+        -0.006019763672223276
+      ],
+      "converged_after": false
+    },
+    {
+      "t": 28.25,
+      "accepted": true,
+      "informative": true,
+      "settled": true,
+      "visual_weight_update": true,
+      "absolute_fix": false,
+      "reason": "soft_weight_update",
+      "model": "ros_motion_v1",
+      "columns": 37,
+      "kl": 0.12755024791301367,
+      "odom": [
+        0.5047307673314709,
+        0.007105527530092278,
+        -0.013238370961894133
+      ],
+      "delta": [
+        0.2515377097510157,
+        0.01575250163835765,
+        -0.007218607289670857
+      ],
+      "converged_after": false
+    },
+    {
+      "t": 38.15,
+      "accepted": true,
+      "informative": true,
+      "settled": true,
+      "visual_weight_update": true,
+      "absolute_fix": false,
+      "reason": "soft_weight_update",
+      "model": "ros_motion_v1",
+      "columns": 1,
+      "kl": 6.573090826592404e-05,
+      "odom": [
+        0.7588271149337235,
+        0.0037081962004762224,
+        -0.015362857077913922
+      ],
+      "delta": [
+        0.2540963476022525,
+        -0.0033973313296160553,
+        -0.0021244861160197893
+      ],
+      "converged_after": false
+    }
+  ],
+  "mask_failure": {
+    "attempts": 3129,
+    "positive_detection_frames": 1900,
+    "positive_detection_frames_with_any_prior_visible_column": 0,
+    "total_detected_columns": 133331,
+    "kept_columns": 0,
+    "self_shadow": 0,
+    "cargo_shadow": 0,
+    "prior_probability_threshold": 0.95
+  },
+  "largest_remaining_cause": "Visibility prior gate starves every loaded update: all 1900 detected frames have zero columns with >=.95 prior in-view probability; detected self/cargo shadow counts are zero. Evaluation sees clear true bottoms in 71.87% of detected columns. No further fix or run in this turn.",
+  "interpretation_limit": "Particle-prior visibility is not RGB visibility. Actual visibility uses saved camera/cargo geometry and conservative command-body bounds at 1 Hz. Visual weight updates are not guaranteed full-rank pose fixes.",
+  "frames_verified": 5117,
+  "frame_range_sim_s": [
+    1.3,
+    257.1
+  ],
+  "source_hashes": {
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-97fcb5d2-s1050-P1-2-place/result.json": "8c47e6846f61821d130c0907ba37e9568dedb1031efc1332e2d8357e65f78645",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-97fcb5d2-s1050-P1-2-place/student_record.json": "a8a64e226f92022bf36ea432630b18cdc0acda0de9e30bbeb28471d7192fe55e",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-97fcb5d2-s1050-P1-2-place/bundle.json": "4d35ba088574ea15fc1dedaa8d0ea6c5282ca1aef73628d5421ddba8ec3a9688",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-97fcb5d2-s1050-P1-2-place/robots/r3/frames.jsonl": "100c0646e69ea5003792f85e34ef83335ca1aa29a9441dcd1e80239e866612ea",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-97fcb5d2-s1050-P1-2-place/eval_only/trajectory.jsonl": "d5e96832527697a99cb904873670d8536c7186b2fe98b86c10dbc9956b6f1043",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-97fcb5d2-s1050-P1-2-place/eval_only/camera-pose.jsonl": "2b42c8e030186641293d96d54f0efb5fab5ae821a4b0c5501c0dc8e1847f8d18",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-97fcb5d2-s1050-P1-2-place/eval_only/metrics.json": "162c3034d67abf78e325ba0a611f0f49ae7a4fc29c83aacdad5053b6879aedfd"
+  }
+}

@@ -55,6 +55,7 @@ CATALOG_SCHEMA = 'ugrp.zone_final_env_catalog.v1'
 WALL_PROFILE = 'walls_v3'
 MAP_VERSION = 4                      # same as the reused zone_wide_door_geometry_v2
 FINAL_MAP_DIR = ROOT / 'maps' / 'zones_final'
+FINAL_V3_MAP_DIR = ROOT / 'maps' / 'zones_final_v3'
 V1_SCENARIO_DIR = ROOT / 'configs' / 'zone_study_scenarios'
 V2_SCENARIO_DIR = ROOT / 'configs' / 'zone_study_scenarios_v2'
 CATALOG_PATH = FINAL_MAP_DIR / 'catalog.json'
@@ -63,6 +64,14 @@ FINAL_MAPS = {
     'zone_wide_door_geometry_v2': ('zone_wide_door', MAP_DIR),
     'zone_wide_two_doors_final_v1': ('zone_wide_two_doors', FINAL_MAP_DIR),
     'zone_wide_corridor_final_v1': ('zone_wide_corridor', FINAL_MAP_DIR),
+    'zone_wide_door_geometry_v3': ('zone_wide_door', MAP_DIR),
+    'zone_wide_two_doors_final_v3': ('zone_wide_two_doors', FINAL_V3_MAP_DIR),
+    'zone_wide_corridor_final_v3': ('zone_wide_corridor', FINAL_V3_MAP_DIR),
+}
+V3_MAP_PARENTS = {
+    'zone_wide_door_geometry_v3': 'zone_wide_door_geometry_v2',
+    'zone_wide_two_doors_final_v3': 'zone_wide_two_doors_final_v1',
+    'zone_wide_corridor_final_v3': 'zone_wide_corridor_final_v1',
 }
 # v1 tag map pinned by the v1 scenarios -> tag-free final map on the same base.
 V1_MAP_TO_FINAL = {
@@ -112,6 +121,12 @@ def final_map(map_id: str) -> dict:
     from sim.zone_arena import apply_wall_profile, authored_map
     if map_id not in FINAL_MAPS:
         raise FinalEnvError(f'unknown final map: {map_id!r}')
+    if map_id in V3_MAP_PARENTS:
+        parent = final_map(V3_MAP_PARENTS[map_id])
+        value = copy.deepcopy(parent)
+        value.update(map_id=map_id, version=5, robot_model='masterpi_v3',
+                     parent_scene={'map_id': parent['map_id'], 'sha256': digest(parent)})
+        return value
     source = authored_map(FINAL_MAPS[map_id][0])
     value = apply_wall_profile(source, WALL_PROFILE)
     value.update(map_id=map_id, version=MAP_VERSION,
@@ -186,7 +201,8 @@ def check_map(map_id: str) -> list[str]:
                 'approach_convention', 'top_cameras'):
         if data.get(key) != base.get(key):
             out.append(f'{map_id}: {key} differs from {base["map_id"]}')
-    extra = sorted(set(data) - set(base) - {'wall_profile', 'base_map'})
+    extra = sorted(set(data) - set(base) - {'wall_profile', 'base_map'}
+                   - ({'robot_model', 'parent_scene'} if map_id in V3_MAP_PARENTS else set()))
     if extra:
         out.append(f'{map_id}: unexpected key(s) {extra}')
     if 'landmarks' in public_map(data, landmark_detail=LANDMARK_DETAIL):
@@ -433,6 +449,8 @@ def catalog() -> dict:
     from sim.research_dispatch_arena import digest
     maps = {}
     for map_id, (base, _) in FINAL_MAPS.items():
+        if map_id in V3_MAP_PARENTS:
+            continue  # Published v1 catalog remains byte-identical; v84 owns v3 pins.
         path = final_map_path(map_id)
         data = json.loads(path.read_text())
         maps[map_id] = {'file': _rel(path), 'file_sha256': sha256_bytes(path.read_bytes()),

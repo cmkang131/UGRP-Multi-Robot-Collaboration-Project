@@ -1,0 +1,646 @@
+{
+  "status": "STOPPED_OFFLINE_VALIDATION",
+  "physical_runs": 0,
+  "preregistered_seed": 29001,
+  "configuration_changed_after_results": false,
+  "exact_off_frames": 891,
+  "whole_trace_bytes_equal": true,
+  "baseline_egomap28": {
+    "baseline": {
+      "case": "baseline",
+      "acquisition": {
+        "status": "RECORDED",
+        "source_sha": "85554a9605ad8b89cab36b1e40d06fcef136d33d",
+        "case": "baseline",
+        "model_calls": 0,
+        "freeze": false,
+        "loadavg_start": [
+          7.1728515625,
+          7.63330078125,
+          9.2294921875
+        ],
+        "start_sim_s": 1.3,
+        "frames": 901,
+        "total_sim_s": 181.3,
+        "prediction_view": "completed_graph",
+        "wall_s": 454.17665562499315,
+        "loadavg_end": [
+          7.34765625,
+          7.68701171875,
+          8.61181640625
+        ]
+      },
+      "full_map": {
+        "occupied_cells": 25,
+        "precision_015": 0.56,
+        "precision_cell": 0.12,
+        "wall_coverage": 0.060790273556231005,
+        "wall_error_rmse_m": 0.3909477703910535
+      },
+      "wall_sample_count": 329,
+      "prediction_view": "completed_graph",
+      "observed_region": {
+        "precision": 0.8235294117647058,
+        "precision_correct": 14,
+        "precision_cells": 17,
+        "recall": 0.145985401459854,
+        "recalled_samples": 20,
+        "visible_samples": 137,
+        "visible_wall_fraction": 0.41641337386018235,
+        "sampled_wall_length_proxy_m": 13.700000000000001,
+        "qualification": "actual camera poses/FOV/range and wall-only occlusion; object/self occlusion not modelled"
+      },
+      "coverage": {
+        "travelled_m": 7.378768056526994,
+        "footprint_union_m2": 2.3125000000000004,
+        "footprint_cells_005m": 925,
+        "frames": 901,
+        "mapped_frames": 7,
+        "occupied_cells": 25
+      },
+      "path": {
+        "n": 891,
+        "rmse_m": 1.666881045395152,
+        "end_m": 1.7414917622606245,
+        "missing_gt_samples": 0
+      },
+      "b": {
+        "first_own_confirmation_s": 41.7,
+        "reached_gt": false,
+        "first_gt_reach_s": null
+      },
+      "wall_contacts": 0,
+      "wrong_door_attempts": [
+        {
+          "t": 58.9,
+          "door": "r3:opening_004"
+        },
+        {
+          "t": 61.9,
+          "door": "r3:opening_005"
+        },
+        {
+          "t": 62.9,
+          "door": "r3:opening_004"
+        },
+        {
+          "t": 65.9,
+          "door": "r3:opening_046"
+        },
+        {
+          "t": 69.9,
+          "door": "r3:opening_004"
+        },
+        {
+          "t": 72.5,
+          "door": "r3:opening_048"
+        },
+        {
+          "t": 85.7,
+          "door": "r3:opening_059"
+        },
+        {
+          "t": 138.7,
+          "door": "r3:opening_013"
+        },
+        {
+          "t": 145.3,
+          "door": "r3:opening_090"
+        },
+        {
+          "t": 149.9,
+          "door": "r3:opening_089"
+        }
+      ],
+      "door_exposure": {
+        "candidate_frames": 727,
+        "feasible_rows": 163,
+        "selected_path_rows": 44
+      },
+      "loop_counts": {
+        "member_scan": 7
+      },
+      "switch_counts": {},
+      "calibration": {
+        "occupancy_ece_diagnostic": {
+          "n": 25,
+          "bins": [
+            {
+              "lo": 0.0,
+              "n": 0,
+              "score": null,
+              "precision": null
+            },
+            {
+              "lo": 0.1,
+              "n": 0,
+              "score": null,
+              "precision": null
+            },
+            {
+              "lo": 0.2,
+              "n": 0,
+              "score": null,
+              "precision": null
+            },
+            {
+              "lo": 0.3,
+              "n": 0,
+              "score": null,
+              "precision": null
+            },
+            {
+              "lo": 0.4,
+              "n": 0,
+              "score": null,
+              "precision": null
+            },
+            {
+              "lo": 0.5,
+              "n": 18,
+              "score": 0.5290217771455299,
+              "precision": 0.3888888888888889
+            },
+            {
+              "lo": 0.6,
+              "n": 2,
+              "score": 0.656598451804286,
+              "precision": 1.0
+            },
+            {
+              "lo": 0.7,
+              "n": 2,
+              "score": 0.7552601688670068,
+              "precision": 1.0
+            },
+            {
+              "lo": 0.8,
+              "n": 3,
+              "score": 0.8669031189395446,
+              "precision": 1.0
+            },
+            {
+              "lo": 0.9,
+              "n": 0,
+              "score": null,
+              "precision": null
+            }
+          ],
+          "gap": 0.16391861561833274
+        },
+        "support_score_gap": {
+          "n": 25,
+          "bins": [
+            {
+              "lo": 0.0,
+              "n": 15,
+              "score": 0.03155219659714797,
+              "precision": 0.26666666666666666
+            },
+            {
+              "lo": 0.1,
+              "n": 3,
+              "score": 0.14637134952858813,
+              "precision": 1.0
+            },
+            {
+              "lo": 0.2,
+              "n": 3,
+              "score": 0.2645457379922543,
+              "precision": 1.0
+            },
+            {
+              "lo": 0.3,
+              "n": 4,
+              "score": 0.3081143672763498,
+              "precision": 1.0
+            },
+            {
+              "lo": 0.4,
+              "n": 0,
+              "score": null,
+              "precision": null
+            },
+            {
+              "lo": 0.5,
+              "n": 0,
+              "score": null,
+              "precision": null
+            },
+            {
+              "lo": 0.6,
+              "n": 0,
+              "score": null,
+              "precision": null
+            },
+            {
+              "lo": 0.7,
+              "n": 0,
+              "score": null,
+              "precision": null
+            },
+            {
+              "lo": 0.8,
+              "n": 0,
+              "score": null,
+              "precision": null
+            },
+            {
+              "lo": 0.9,
+              "n": 0,
+              "score": null,
+              "precision": null
+            }
+          ],
+          "gap": 0.44246033277499414
+        },
+        "qualification": "TSDF support is NOT probability"
+      },
+      "criteria": {
+        "recorded": true,
+        "no_contact": true,
+        "no_wrong_door": false,
+        "distance": true,
+        "area": true,
+        "visible_samples": true,
+        "precision": true,
+        "recall": false,
+        "wall_rmse": false,
+        "path_rmse": false
+      },
+      "passed": false
+    },
+    "baseline_uncertainty": {
+      "endpoint_error_m": 1.7414917622606245,
+      "sigma_xy_m": 0.008149128752020748,
+      "error_sigma_ratio": 213.7028160008866,
+      "error_2sigma_ratio": 106.8514080004433,
+      "path_rmse_m": 1.666881045395152,
+      "over_2sigma": 729,
+      "pose_n": 891,
+      "resamples": 21,
+      "ancestors": 1,
+      "rejected_resamples": 21,
+      "sensor_updates": null,
+      "reasons": {
+        "bootstrap": 1,
+        "gmapping_motion_gate": 836,
+        "improved_proposal": 3,
+        "low_overlap": 47,
+        "insufficient_match_points": 3,
+        "search_boundary": 1
+      },
+      "occupied_cells": 25,
+      "inserted_frames": 7,
+      "full_map": {
+        "occupied_cells": 25,
+        "precision_015": 0.56,
+        "precision_cell": 0.12,
+        "wall_coverage": 0.060790273556231005,
+        "wall_error_rmse_m": 0.3909477703910535
+      },
+      "observed_region": {
+        "precision_correct": 14,
+        "precision_cells": 17,
+        "precision": 0.8235294117647058,
+        "recalled_samples": 20,
+        "visible_samples": 137,
+        "total_samples": 329,
+        "recall": 0.145985401459854,
+        "visible_wall_fraction": 0.41641337386018235
+      },
+      "seal": {
+        "sha256": "2a8d8e1a5a2efc6654a083f08f64abeac65fcd71e764eed727c96bfb655887fd",
+        "gt_read": false,
+        "source_sha": "4ffb1e5b84fedf5e36e8f248679f29b62d0fd197",
+        "inputs": {
+          "own-contacts.jsonl": "fca96d1ebf83b615c76eaf29ec784db57ace0f5de5ceebf519fe2d76764ce81c",
+          "robots/r3/commands.jsonl": "3b90ec1182da8f731171bdba4d8d52b1de30da12142d2e11d4db61de1866a06c",
+          "artifacts.sha256.json": "2fd52845042223a86c22b1e87063aac9d4d780cf50db1e54364672794baa903c"
+        },
+        "legacy_equal": {
+          "poses": true,
+          "grid": false,
+          "decisions": true,
+          "ledger": true
+        }
+      }
+    },
+    "fresh": {
+      "case": "new-seed",
+      "acquisition": {
+        "status": "RECORDED",
+        "source_sha": "cff655e4d02bf11917b2ebe146de1265f80146a0",
+        "case": "new-seed",
+        "model_calls": 0,
+        "freeze": false,
+        "loadavg_start": [
+          7.68212890625,
+          6.9521484375,
+          7.57666015625
+        ],
+        "start_sim_s": 1.3,
+        "frames": 901,
+        "total_sim_s": 181.3,
+        "prediction_view": "completed_graph",
+        "wall_s": 569.6820785000164,
+        "loadavg_end": [
+          8.82763671875,
+          8.26416015625,
+          8.0009765625
+        ]
+      },
+      "full_map": {
+        "occupied_cells": 154,
+        "precision_015": 0.24675324675324675,
+        "precision_cell": 0.09740259740259741,
+        "wall_coverage": 0.1884498480243161,
+        "wall_error_rmse_m": 0.4125322692201222
+      },
+      "wall_sample_count": 329,
+      "prediction_view": "completed_graph",
+      "observed_region": {
+        "precision": 0.1744186046511628,
+        "precision_correct": 15,
+        "precision_cells": 86,
+        "recall": 0.3069306930693069,
+        "recalled_samples": 31,
+        "visible_samples": 101,
+        "visible_wall_fraction": 0.3069908814589666,
+        "sampled_wall_length_proxy_m": 10.100000000000001,
+        "qualification": "actual camera poses/FOV/range and wall-only occlusion; object/self occlusion not modelled"
+      },
+      "coverage": {
+        "travelled_m": 1.0900284644319769,
+        "footprint_union_m2": 0.4850000000000001,
+        "footprint_cells_005m": 194,
+        "frames": 901,
+        "mapped_frames": 22,
+        "occupied_cells": 154
+      },
+      "path": {
+        "n": 891,
+        "rmse_m": 0.5784538904189361,
+        "end_m": 0.6473924712566551,
+        "missing_gt_samples": 0
+      },
+      "b": {
+        "first_own_confirmation_s": 37.1,
+        "reached_gt": false,
+        "first_gt_reach_s": null
+      },
+      "wall_contacts": 0,
+      "wrong_door_attempts": [
+        {
+          "t": 24.7,
+          "door": "r3:opening_003"
+        },
+        {
+          "t": 26.7,
+          "door": "r3:opening_004"
+        },
+        {
+          "t": 27.1,
+          "door": "r3:opening_002"
+        },
+        {
+          "t": 27.1,
+          "door": "r3:opening_004"
+        },
+        {
+          "t": 29.3,
+          "door": "r3:opening_002"
+        }
+      ],
+      "door_exposure": {
+        "candidate_frames": 599,
+        "feasible_rows": 16,
+        "selected_path_rows": 9
+      },
+      "loop_counts": {
+        "member_scan": 34,
+        "temporal_separation": 9,
+        "low_probability": 19,
+        "insufficient_points": 4
+      },
+      "switch_counts": {},
+      "calibration": {
+        "occupancy_ece_diagnostic": {
+          "n": 154,
+          "bins": [
+            {
+              "lo": 0.0,
+              "n": 0,
+              "score": null,
+              "precision": null
+            },
+            {
+              "lo": 0.1,
+              "n": 0,
+              "score": null,
+              "precision": null
+            },
+            {
+              "lo": 0.2,
+              "n": 0,
+              "score": null,
+              "precision": null
+            },
+            {
+              "lo": 0.3,
+              "n": 0,
+              "score": null,
+              "precision": null
+            },
+            {
+              "lo": 0.4,
+              "n": 0,
+              "score": null,
+              "precision": null
+            },
+            {
+              "lo": 0.5,
+              "n": 140,
+              "score": 0.5172946895585123,
+              "precision": 0.18571428571428572
+            },
+            {
+              "lo": 0.6,
+              "n": 7,
+              "score": 0.634385477277473,
+              "precision": 0.7142857142857143
+            },
+            {
+              "lo": 0.7,
+              "n": 3,
+              "score": 0.7093136517775842,
+              "precision": 1.0
+            },
+            {
+              "lo": 0.8,
+              "n": 4,
+              "score": 0.8677086220755369,
+              "precision": 1.0
+            },
+            {
+              "lo": 0.9,
+              "n": 0,
+              "score": null,
+              "precision": null
+            }
+          ],
+          "gap": 0.3141674204780163
+        },
+        "support_score_gap": {
+          "n": 154,
+          "bins": [
+            {
+              "lo": 0.0,
+              "n": 101,
+              "score": 0.0329078476826455,
+              "precision": 0.2376237623762376
+            },
+            {
+              "lo": 0.1,
+              "n": 37,
+              "score": 0.15025144053333556,
+              "precision": 0.1891891891891892
+            },
+            {
+              "lo": 0.2,
+              "n": 5,
+              "score": 0.20602396067906228,
+              "precision": 0.4
+            },
+            {
+              "lo": 0.3,
+              "n": 3,
+              "score": 0.35563356322033707,
+              "precision": 0.6666666666666666
+            },
+            {
+              "lo": 0.4,
+              "n": 3,
+              "score": 0.44579852777490875,
+              "precision": 0.3333333333333333
+            },
+            {
+              "lo": 0.5,
+              "n": 5,
+              "score": 0.5649794358136685,
+              "precision": 0.4
+            },
+            {
+              "lo": 0.6,
+              "n": 0,
+              "score": null,
+              "precision": null
+            },
+            {
+              "lo": 0.7,
+              "n": 0,
+              "score": null,
+              "precision": null
+            },
+            {
+              "lo": 0.8,
+              "n": 0,
+              "score": null,
+              "precision": null
+            },
+            {
+              "lo": 0.9,
+              "n": 0,
+              "score": null,
+              "precision": null
+            }
+          ],
+          "gap": 0.16352127502374114
+        },
+        "qualification": "TSDF support is NOT probability"
+      },
+      "criteria": {
+        "recorded": true,
+        "no_contact": true,
+        "no_wrong_door": false,
+        "distance": false,
+        "area": false,
+        "visible_samples": true,
+        "precision": false,
+        "recall": false,
+        "wall_rmse": false,
+        "path_rmse": false
+      },
+      "passed": false
+    },
+    "frontend": {
+      "endpoint_error_m": 0.6473924712566551,
+      "sigma_xy_m": 0.12040236098126655,
+      "error_sigma_ratio": 5.376908442496266,
+      "over_2sigma": 706,
+      "n": 891,
+      "path_rmse_m": 0.5784538904189361,
+      "yaw_end_deg": -3.352275537906103,
+      "yaw_rmse_deg": 6.485098278908513,
+      "full_map": {
+        "occupied_cells": 154,
+        "precision_015": 0.24675324675324675,
+        "precision_cell": 0.09740259740259741,
+        "wall_coverage": 0.1884498480243161,
+        "wall_error_rmse_m": 0.4125322692201222
+      },
+      "region": {
+        "precision": 0.1744186046511628,
+        "precision_correct": 15,
+        "precision_cells": 86,
+        "recall": 0.3069306930693069,
+        "recalled_samples": 31,
+        "visible_samples": 101,
+        "total_samples": 329
+      },
+      "occupied_cells": 154,
+      "mapped_frames": 22,
+      "resamples": 5,
+      "rejected_resamples": 0,
+      "rejected_csm_updates": 0
+    },
+    "egomap27_gate": {
+      "within_2sigma": false,
+      "precision_improves": true
+    },
+    "qualification": "Single preregistered fresh-seed acquisition; original egomap23 baseline retained. Graph sigma unavailable."
+  },
+  "conditional_navigation": {
+    "input_start": 44.1,
+    "frames": 687,
+    "hold": 57,
+    "moving_requests": 630,
+    "states": {
+      "no_path": 1,
+      "public_static": 434,
+      "recover_spin": 100,
+      "recover_backup": 102,
+      "recover_wait": 50
+    },
+    "permanent_failed_frames": 0,
+    "blacklists": 0,
+    "selected_frontiers": 0,
+    "resets": 7,
+    "first_non_hold": 44.3,
+    "qualification": "Conditional navigation replay: recorded OWN poses/scans and initial requested goal fixed; commands never applied; no physical success or alternative map metrics claimed."
+  },
+  "physical_new_seed": null,
+  "unvalidated": [
+    "recorded-data recovery exhaustion to blacklist to next frontier",
+    "new-seed physical metrics"
+  ],
+  "reason": "Conditional replay assertion blacklists>0 and selected_frontiers>0 failed twice. Frozen OWN poses do not respond to alternative commands; spin/backup timeout, only 4 successful recoveries versus fixed limit 6. Unit exhaustion test passes, but recorded-data transition was not observed. No threshold relaxed and no physics launched.",
+  "tests": {
+    "passed": 9,
+    "files": [
+      "tests/test_active_wall_recovery.py",
+      "tests/test_active_wall_wide.py",
+      "tests/test_simulation_workflow_manager.py::WorkflowManagerTests::test_every_catalog_workflow_has_a_read_only_explicit_plan"
+    ]
+  }
+}

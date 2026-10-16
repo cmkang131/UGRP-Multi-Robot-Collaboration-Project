@@ -1,0 +1,101 @@
+"""No dynamics: homogeneous transforms, own-command equivalence, CV/MJ axes."""
+from pathlib import Path
+import ast
+import importlib.util
+import numpy as np
+from scipy.spatial.transform import Rotation
+
+ROOT=Path(__file__).resolve().parents[1]
+PATH=ROOT/'experiments/2026-10-07-camera-frame-audit/code/kinematics_audit.py'
+spec=importlib.util.spec_from_file_location('frame_audit',PATH)
+audit=importlib.util.module_from_spec(spec)
+spec.loader.exec_module(audit)
+
+
+def test_v1_chain_at_identical_command_angles_and_pan_convention():
+    from harness.servo_camera_fk import commanded_joints,transform_from_commands
+    for pan in (1300,1500,1700):
+        servo={1:2000,3:740,4:2320,5:1320,6:pan}
+        q=commanded_joints(servo)[1]
+        origin,rotation=transform_from_commands(servo,camera_pose='servo_fk_v1')[0]
+        t=audit.chain(q)['camera_cv']
+        np.testing.assert_array_equal(t[:3,3],origin)
+        np.testing.assert_array_equal(t[:3,:3],rotation)
+        assert np.sign(np.arctan2(rotation[1,2],rotation[0,2]))==np.sign(pan-1500)
+
+
+def test_positive_yaw_optical_axes_projection_and_exact_dlt():
+    from harness import wall_parallax as p
+    from harness.servo_camera_fk import transform_from_commands
+    origin,rotation=transform_from_commands({1:2000,3:740,4:2320,5:1320,6:1500},camera_pose='servo_fk_v1')[0]
+    k=np.array([[600.,0,300.],[0,610.,220.],[0,0,1.]])
+    poses=(np.array([.3,-.2,.2]),np.array([.3,-.05,.25]))
+    xyz=np.array([1.,0.,0.])
+    uv=[]
+    for pose in poses:
+        o,r=p.camera(pose,origin,rotation)
+        v=k@r.T@(xyz-o)
+        uv.append(v[:2]/v[2])
+        t=audit.transform(o,r)
+        np.testing.assert_allclose(np.linalg.inv(t)@np.r_[xyz,1.],np.r_[r.T@(xyz-o),1.],atol=1e-14)
+    np.testing.assert_allclose(p.solve(*uv,*poses,origin,rotation,k),p.rz(poses[1][2]).T@(xyz-[*poses[1][:2],0.]),atol=1e-12)
+    np.testing.assert_allclose(p.rz(np.pi/2)@[1.,0.,0.],[0.,1.,0.],atol=1e-14)
+    # OpenCV u goes right = body -y. v goes down = toward ground.
+    assert rotation[1,0]<0 and rotation[2,1]<0 and rotation[0,2]>0
+
+
+def test_audit_never_steps_or_renders_and_legacy_source_is_not_mutated():
+    tree=ast.parse(PATH.read_text())
+    calls={n.func.attr for n in ast.walk(tree) if isinstance(n,ast.Call) and isinstance(n.func,ast.Attribute)}
+    assert not calls & {'mj_step','mj_step1','mj_step2','mj_forward','Renderer','render'}
+    assert {'mj_kinematics','mj_camlight'}<=calls
+    from harness.servo_camera_fk import camera_output
+    from harness.wall_parallax import detect
+    raw=b'{"old": "bytes"}\n'
+    assert camera_output(raw) is raw and detect(raw) is raw
+
+
+def test_registered_grid_is_fixed_and_contains_general_base_attitudes():
+    grid=list(audit.pose_grid())
+    assert len(grid)==21*9*5
+    assert len({tuple(r['rpy']) for r in grid})==5
+    assert {r['joint'] for r in grid}=={None,3,4,5,6}
+
+
+def test_native_camera_intrinsics_use_model_array_api_without_dynamics():
+    import pytest
+    mujoco=pytest.importorskip('mujoco')
+    model=mujoco.MjModel.from_xml_string('<mujoco><worldbody><camera name="c" focalpixel="600 610" principalpixel="20 30" sensorsize="640 480" resolution="640 480"/></worldbody></mujoco>')
+    np.testing.assert_allclose(audit.native_intrinsic(model,0),[[600,0,300],[0,610,210],[0,0,1]],atol=1e-12)
+
+
+def test_evaluation_inverse_recovers_supplied_angles_without_calling_a_controller():
+    import sys
+    sys.path.insert(0,str(PATH.parent))
+    from recorded_frames import inverse_camera_chain
+    base=audit.transform([.3,-.2,.033],Rotation.from_euler('xyz',[.03,-.04,.8]).as_matrix())
+    for q in ({6:0.,5:1.8,4:-1.4,3:-.8},{6:.6,5:1.2,4:-.7,3:.3}):
+        camera=audit.chain(q,base)['camera_cv']
+        result,err=inverse_camera_chain(camera,base,q)
+        np.testing.assert_allclose(list(result.values()),list(q.values()),atol=1e-12)
+        assert max(err.values())<1e-12
+
+
+def test_column_floor_trace_is_the_same_pinhole_ray_plane_intersection():
+    import sys
+    sys.path.insert(0,str(ROOT/'experiments/2026-10-05-ego-wall-map-probe/code'))
+    import v3_confidence_replay as replay
+    cm,offset,_=replay.geometry({1:2000,3:740,4:2320,5:1320,6:1500},'off',camera_pose='servo_fk_v1')
+    dist=np.linspace(.05,2.,len(cm.columns))
+    v=cm.rows(dist)
+    rays=np.column_stack([cm.columns,v,np.ones(len(v))])@replay.mp.K_INV.T@cm._rot.T
+    points=cm.origin-rays*(cm.origin[2]/rays[:,2,None])
+    np.testing.assert_allclose(points[:,:2],cm.q0+dist[:,None]*cm.d,atol=1e-12)
+
+
+def test_static_gravity_moment_sign_for_negative_y_hinge():
+    import sys
+    sys.path.insert(0,str(PATH.parent))
+    from gravity_check import gravity_moment
+    value=gravity_moment(np.array([0.,-1.,0.]),np.zeros(3),np.array([[1.,0.,0.]]),np.array([1.]),np.array([0.,0.,-10.]))
+    assert value==-10.

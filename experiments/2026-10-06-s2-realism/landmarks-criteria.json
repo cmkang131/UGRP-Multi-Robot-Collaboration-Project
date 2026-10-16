@@ -1,0 +1,93 @@
+{
+  "recordings": {
+    "start1052": {
+      "seed": 1052,
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-stiff-cal-20261007/start",
+      "baseline_poses": "/Users/changmin/projects/ugrp/outputs/s2-amcl-sensor-78c71681-replay/start1052-on.json",
+      "window": [
+        1.3,
+        12.0
+      ],
+      "configuration": "stiff_target_v1 + real_v1 + augmented_active_v1 + kld_global_v1; static saved RGB; no known dock + best_cluster on"
+    },
+    "carry1051": {
+      "seed": 1051,
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-b5fbe149-s1051-P1-2-lookahead",
+      "baseline_poses": "/Users/changmin/projects/ugrp/outputs/s2-amcl-sensor-78c71681-replay/carry1051-on.json",
+      "window": [
+        71.85,
+        249.25
+      ],
+      "configuration": "exact v131 options and commands + best_cluster on"
+    }
+  },
+  "conditions": [
+    "off",
+    "on"
+  ],
+  "runs_per_condition": 1,
+  "physical_sequence": "if all offline gates pass, seed1052 start only once; if final error <=.25m, seed1051 full once; agent_lock and ugrp_session mandatory",
+  "gt_use": "scoring only after off/on predictions close",
+  "retuning_after_results": false,
+  "performance_comparison": false,
+  "physics_before_admission": 0,
+  "schema": "ugrp.s2.landmarks.criteria.v1",
+  "base_sha": "55c4fb9ea023da1594f16da94b152a4dbd383ea9",
+  "option": "sensor_landmarks=floor_zones_doors_v1",
+  "default": "off",
+  "pose_estimate": "amcl_best_cluster_v1 in BOTH off and on",
+  "parameters": {
+    "hue_tolerance": 12,
+    "saturation_min": 20,
+    "saturation_max": 150,
+    "value_min": 35,
+    "min_component_px": 300,
+    "min_line_px": 40,
+    "hough_votes": 30,
+    "hough_gap_px": 8,
+    "side_offset_px": 5,
+    "side_support": 0.8,
+    "min_segment_m": 0.12,
+    "max_range_m": 6.0,
+    "max_ground_fit_m": 0.03,
+    "max_floor_lines": 4,
+    "sigma_line_m": 0.1,
+    "sigma_line_angle_rad": 0.08726646259971647,
+    "sigma_range_m": 0.2,
+    "sigma_bearing_rad": 0.05235987755982989,
+    "sigma_width_m": 0.1,
+    "random_fraction": 0.05,
+    "door_depth_jump_m": 0.25,
+    "door_width_m": [
+      0.2,
+      1.0
+    ],
+    "door_edge_support": 0.45,
+    "canny": [
+      30,
+      80
+    ]
+  },
+  "gates": {
+    "start_final_error_m_max": 0.25,
+    "baseline_pose_max_delta": 1e-09
+  },
+  "carry_metrics": "report RMSE and pre-setdown error; no extra posthoc gate",
+  "physics_policy": "exclusive agent_lock + ugrp_session; no concurrent ego-map physics; dev_light",
+  "likelihood_probe": {
+    "source": "/Users/changmin/projects/ugrp/outputs/s2-start-likelihood-208f10f1-final/result.json",
+    "sha256": "f00a775693d658519cbe63ad33a80b4d0d9c85ff5b6c389d1cc9c15a636c600e",
+    "fixed_false_pose": [
+      -0.15000000000000024,
+      0.05000000000000293,
+      -1.5707963267948966
+    ],
+    "GT_pose": "first view truth; same fixed stationary hypothesis as original score; evaluation only",
+    "report": "per-view GT/false and product over 6 views; compare same points/poses, no reselecting false peak"
+  },
+  "sensor_model": "amcl_likelihood_field_v1 in BOTH off and on",
+  "detector_development": "own RGB inspection only; no truth used for extraction or threshold selection; synthetic tests",
+  "association": "Gaussian point range/bearing/width for paired jambs; Gaussian normal-distance/angle for partial floor edge; ML same hue candidates, no blue-region identity prior",
+  "missing": "not negative evidence; no fabricated max range; independent color edges allowed when wall filter returns empty",
+  "random_component": "fixed .05 mixture; uniform over 6m and 2pi (door also 1m width); adapter constants are not book defaults"
+}

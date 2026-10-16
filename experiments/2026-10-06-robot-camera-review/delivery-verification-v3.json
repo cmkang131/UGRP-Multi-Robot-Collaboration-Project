@@ -1,0 +1,42 @@
+{
+  "source_sha": "7495b8d952410aa8bb5965752929e207f04e9c06",
+  "new_dynamic_runs": 1,
+  "sim_s": 19.200000000000664,
+  "wall_s": 16.055424458012567,
+  "matched_current_camera_pairs": 108,
+  "images_sha256_verified": 432,
+  "prior_v2_qpos_and_rgb_exact_match": 324,
+  "unit_tests": "tests/test_masterpi_camera_review_v3.py: 4 passed",
+  "physics_changed_except_camera": false,
+  "default_or_bundles_changed": false,
+  "model_calls": 0,
+  "hardware_calls": 0,
+  "S2_runs": 0,
+  "weld": false,
+  "lock_released_and_status_null": true,
+  "session": "cam-review-v3-lift stopped",
+  "tensorboard_snapshot": "/Users/changmin/projects/ugrp/outputs/tensorboard/1006-camera-review-v3",
+  "tensorboard_runs": 14,
+  "live_scalar_values_verified": 39,
+  "video_id": "f5bdc12a776cf2d19324",
+  "video_http_status": 200,
+  "video_http_sha256_verified": true,
+  "video_decoded_frames": 102,
+  "dashboard_url": "http://127.0.0.1:6006/?pinnedCards=%5B%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fvalid_fraction%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Ffull_fraction%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fwall_s%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fcommands%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fmodel_calls%22%7D%5D&smoothing=0&runFilter=%5E1006-camera-review-v3%2F#timeseries",
+  "ui_verified": false,
+  "hparams_columns_verified": false,
+  "pinned_cards_verified": false,
+  "ui_limit": "Chrome 강: v3 URL opened, then blank page; one reload also blank. Stopped after two blank results. v2 earlier data was visible. No server restarted.",
+  "hparams_visible_columns": [
+    "outcome",
+    "result/wall_s",
+    "result/commands",
+    "result/model_calls"
+  ],
+  "packaging_corrections": [
+    "exporter copy initially renamed cv2 to cv3; corrected before creating snapshot",
+    "contact plate initially used system Python without Pillow; corrected to existing sim venv"
+  ],
+  "raw_backup": "local only; no Drive or remote raw backup",
+  "validation_scope": "one open-loop normal-contact lift, no driving; real archive PROBABLE_HELD not confirmed carrying; visibility target is not calibrated physics"
+}

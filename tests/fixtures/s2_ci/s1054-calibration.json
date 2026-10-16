@@ -1,0 +1,44 @@
+{
+  "option": "forward_scale_v1",
+  "holdout": 1054,
+  "fit_seeds": [
+    1051,
+    1053
+  ],
+  "base_sha256": "2245bb9fdcb69d872893dd6ffafb57151750dd42916394a287b6d10bab11d69d",
+  "fit_gt_inputs": true,
+  "gt_use": "offline physical calibration only; authorization s2v45/supervisor06:05",
+  "groups": {
+    "1050,2035,1894,1500|1:forward:0.35:0.10": {
+      "gain": 0.9051502799803429,
+      "n": 687,
+      "seeds": [
+        1051,
+        1053
+      ],
+      "mean_error_before_m": 0.0012272341412179612,
+      "mean_error_after_m": 1.1867831640598244e-18,
+      "residual_std_m": 0.00040818910446933107
+    },
+    "740,2320,1320,1500|0:forward:0.35:0.10": {
+      "gain": 0.922417452815631,
+      "n": 59,
+      "seeds": [
+        1051,
+        1053
+      ],
+      "mean_error_before_m": 0.0010021460022877468,
+      "mean_error_after_m": 2.940209281316622e-20,
+      "residual_std_m": 0.0003412627473358814
+    }
+  },
+  "criteria_sha256": "e278a2fece6d446fe33ff609d54df0917a7bf4d48c6e93967500332d443f60e7",
+  "input_hashes": {
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-b2de2b30-s1051-landmark-full/student_record.json": "3efeffaf5aaca44ea926173ba22f303184f5bcdde1267a0eedc58c879c589bea",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-b2de2b30-s1051-landmark-full/eval_only/trajectory.jsonl": "c66c183fe432f3a481476ddab73fb936a13c30875d8313bd7c40bf7f4489b8fb",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-b2de2b30-s1051-landmark-full/eval_only/wall-contacts.jsonl": "3f39dc575f6fc45ec05f46ef75a210315112466da169eee062cbb47895344f02",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s1053-v133-reproduction/student_record.json": "8e3e92e1209131d7c66e6d92e4ae6778a86a6c559b696070aded41bc04632430",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s1053-v133-reproduction/eval_only/trajectory.jsonl": "7abb90985dc9106a800696cda652948bc2aa3ec2b1b93c61ea0fb592bfcba197",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s1053-v133-reproduction/eval_only/wall-contacts.jsonl": "960fc8b32bb1199e961dba66b6730c4c8edc2b77e3b3664d0bcbddfd9d114f79"
+  }
+}

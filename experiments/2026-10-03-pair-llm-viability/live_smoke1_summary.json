@@ -1,0 +1,365 @@
+{
+ "schema": "ugrp.pair_llm_live_smoke_summary.v1",
+ "bundle_id": "zone-pair-llm-v99",
+ "workflow_version": "3.11.0",
+ "condition": "peer_nl",
+ "seed": 911,
+ "cap_sim_s": 60,
+ "source_sha": "ad1dda731bd3e86f47cd3651f8962526dfba9f0a",
+ "synthetic_plumbing_calibration": true,
+ "research_result": false,
+ "status": "COLLECTED_UNQUALIFIED",
+ "verdict_reason": "NOT_IN_ZONE",
+ "success": false,
+ "wall_s": 111.959,
+ "case_sim_s": 60.0,
+ "calls": {
+  "posts": 12,
+  "completed": 10,
+  "censored_at_horizon": 2,
+  "errors": 0,
+  "rate_limit": 0,
+  "invalid_json": 0,
+  "schema_rejections": 0,
+  "retries": 0
+ },
+ "tokens": {
+  "prompt": 73614,
+  "completion": 1042,
+  "total": 75029
+ },
+ "tokens_counted_by_scheduler": {
+  "input": 37768,
+  "output": 736
+ },
+ "latency_s": {
+  "sum": 46.908,
+  "median": 4.073,
+  "max": 5.942
+ },
+ "model_cost_sim_s_charged": 30.1,
+ "effective_proxy_settings": {
+  "model": "gemini-3.8-flash-low",
+  "thinking_level": "LOW",
+  "temperature": 0.0,
+  "requested": "gemini-3.8-flash temp 0.2 reasoning none"
+ },
+ "cohort": {
+  "id": "pair-live-smoke-1",
+  "token_cap": 300000,
+  "charged_tokens": 75029,
+  "budget_ledger_id": "17a0b64013b3431d92652c9736e05ddd"
+ },
+ "claims": {
+  "released": 2,
+  "submitted": 0,
+  "accepted": 0,
+  "rejected": 0,
+  "revoked": 0,
+  "not_released_ticks": {
+   "r1": 0,
+   "r2": 0
+  },
+  "refusals": {
+   "r1": {
+    "SELF_UNCERTAIN": 1069
+   },
+   "r2": {
+    "SELF_UNCERTAIN": 1069
+   }
+  }
+ },
+ "per_call": [
+  {
+   "seq": 1,
+   "call_id": "call-0001-r1",
+   "actor": "r1",
+   "start_sim_s": 0.0,
+   "trigger": "start",
+   "latency_s": 3.805,
+   "prompt_tokens": 5980,
+   "completion_tokens": 156,
+   "total_tokens": 6136,
+   "sim_cost_s": 4.2,
+   "censored_at_horizon_elapsed_s": null,
+   "action": {
+    "kind": "claim",
+    "order_id": "cargoX",
+    "role": "end_neg",
+    "destination_zone": "B"
+   },
+   "accepted": true,
+   "request_sha256": "303bd708f9f24758d328e94bc99f1e213cd6393ebc967707279d25deaeb3d065",
+   "response_sha256": "37cf20aa4a23457480f7e7cb322469b1a7f568c7f1e0ee8e7c88d4d4533a9fa8",
+   "http_status": null,
+   "failure_class": null
+  },
+  {
+   "seq": 2,
+   "call_id": "call-0002-r2",
+   "actor": "r2",
+   "start_sim_s": 0.0,
+   "trigger": "start",
+   "latency_s": 4.137,
+   "prompt_tokens": 5978,
+   "completion_tokens": 152,
+   "total_tokens": 6130,
+   "sim_cost_s": 4.1,
+   "censored_at_horizon_elapsed_s": null,
+   "action": {
+    "kind": "claim",
+    "order_id": "cargoX",
+    "role": "end_pos",
+    "destination_zone": "B"
+   },
+   "accepted": true,
+   "request_sha256": "71bf84eccae9ab7dd79043eee334dee999486564ff22f84595a196a285b7d10b",
+   "response_sha256": "1ff9655f9984da57045d4e80cca47856f8e175acdbc653673f46ec11aa2515ae",
+   "http_status": null,
+   "failure_class": null
+  },
+  {
+   "seq": 3,
+   "call_id": "call-0003-r1",
+   "actor": "r1",
+   "start_sim_s": 6.55,
+   "trigger": "idle",
+   "latency_s": 4.284,
+   "prompt_tokens": 6159,
+   "completion_tokens": 81,
+   "total_tokens": 6240,
+   "sim_cost_s": 2.8,
+   "censored_at_horizon_elapsed_s": null,
+   "action": {
+    "kind": "continue"
+   },
+   "accepted": null,
+   "request_sha256": "80d05eb445f308f86599678d58ba87af3842cb05d4afe6a616aff51685476a94",
+   "response_sha256": "525d388c224cb958abbcf3fc04d48f5f5bbe00a4bfa6b433b043334396fc993c",
+   "http_status": null,
+   "failure_class": null
+  },
+  {
+   "seq": 4,
+   "call_id": "call-0004-r2",
+   "actor": "r2",
+   "start_sim_s": 6.55,
+   "trigger": "idle",
+   "latency_s": 4.232,
+   "prompt_tokens": 6165,
+   "completion_tokens": 66,
+   "total_tokens": 6231,
+   "sim_cost_s": 2.7,
+   "censored_at_horizon_elapsed_s": null,
+   "action": {
+    "kind": "continue"
+   },
+   "accepted": null,
+   "request_sha256": "244a82001b6f632f261e99cc954646016697bf6109384ffc2e5a24ad0a8e6c00",
+   "response_sha256": "8287c57a9309a85c900083a081e48b1d3cf48e581864fd0442350b2d8d49e32d",
+   "http_status": null,
+   "failure_class": null
+  },
+  {
+   "seq": 5,
+   "call_id": "call-0005-r2",
+   "actor": "r2",
+   "start_sim_s": 19.25,
+   "trigger": "idle",
+   "latency_s": 3.637,
+   "prompt_tokens": 6169,
+   "completion_tokens": 66,
+   "total_tokens": 6235,
+   "sim_cost_s": 2.7,
+   "censored_at_horizon_elapsed_s": null,
+   "action": {
+    "kind": "continue"
+   },
+   "accepted": null,
+   "request_sha256": "f6c976cf494ad8f6b8a1fb6eff29bce0f7537e3becfd015644b6f9368281139f",
+   "response_sha256": "5819e2c97b9f75a39ef7f8174b40c19e70cfd8cce567af03921b6393d019f4a4",
+   "http_status": null,
+   "failure_class": null
+  },
+  {
+   "seq": 6,
+   "call_id": "call-0006-r1",
+   "actor": "r1",
+   "start_sim_s": 19.35,
+   "trigger": "idle",
+   "latency_s": 4.073,
+   "prompt_tokens": 6164,
+   "completion_tokens": 81,
+   "total_tokens": 6245,
+   "sim_cost_s": 2.8,
+   "censored_at_horizon_elapsed_s": null,
+   "action": {
+    "kind": "continue"
+   },
+   "accepted": null,
+   "request_sha256": "db86cc1de0461fbcfade65bf80e0197431e74f5e77fda8f519927a60541ff84b",
+   "response_sha256": "4a908cca19ad783cfeeee22e0f08de13894ca82ba5023ec6ca6e09fa49bd29a5",
+   "http_status": null,
+   "failure_class": null
+  },
+  {
+   "seq": 7,
+   "call_id": "call-0007-r2",
+   "actor": "r2",
+   "start_sim_s": 31.95,
+   "trigger": "idle",
+   "latency_s": 3.613,
+   "prompt_tokens": 6169,
+   "completion_tokens": 76,
+   "total_tokens": 6432,
+   "sim_cost_s": 2.7,
+   "censored_at_horizon_elapsed_s": null,
+   "action": {
+    "kind": "continue"
+   },
+   "accepted": null,
+   "request_sha256": "b56609bc77843be84223d1c75990720e2af21b6a4d758583f8fca9fa6ffb7d21",
+   "response_sha256": "7468c71d3d1dc7327a60b86ec1c8991259c90e3fc09471fe0a478c57536ef718",
+   "http_status": null,
+   "failure_class": null
+  },
+  {
+   "seq": 8,
+   "call_id": "call-0008-r1",
+   "actor": "r1",
+   "start_sim_s": 32.15,
+   "trigger": "idle",
+   "latency_s": 3.159,
+   "prompt_tokens": 6164,
+   "completion_tokens": 68,
+   "total_tokens": 6232,
+   "sim_cost_s": 2.7,
+   "censored_at_horizon_elapsed_s": null,
+   "action": {
+    "kind": "continue"
+   },
+   "accepted": null,
+   "request_sha256": "018e35459b538bca1230b65f1ccb17b5a802fe3739f52a1d5423b1e6082a2ae1",
+   "response_sha256": "91e09debc2148265538a74dc4ca1c9e04afe21fd9d696c67dced1151159e088e",
+   "http_status": null,
+   "failure_class": null
+  },
+  {
+   "seq": 9,
+   "call_id": "call-0009-r2",
+   "actor": "r2",
+   "start_sim_s": 44.65,
+   "trigger": "idle",
+   "latency_s": 4.222,
+   "prompt_tokens": 6169,
+   "completion_tokens": 68,
+   "total_tokens": 6423,
+   "sim_cost_s": 2.7,
+   "censored_at_horizon_elapsed_s": null,
+   "action": {
+    "kind": "continue"
+   },
+   "accepted": null,
+   "request_sha256": "4de66d57c8d7da66e408cbdee73f69ff7190fb56e01e3aaf55a7993a6cfc82bb",
+   "response_sha256": "3ca5f6cbb5f433d4769292839ed5d2a4e99095ccf5084261fe60c38a955aa556",
+   "http_status": null,
+   "failure_class": null
+  },
+  {
+   "seq": 10,
+   "call_id": "call-0010-r1",
+   "actor": "r1",
+   "start_sim_s": 44.85,
+   "trigger": "idle",
+   "latency_s": 2.717,
+   "prompt_tokens": 6164,
+   "completion_tokens": 76,
+   "total_tokens": 6240,
+   "sim_cost_s": 2.7,
+   "censored_at_horizon_elapsed_s": null,
+   "action": {
+    "kind": "continue"
+   },
+   "accepted": null,
+   "request_sha256": "85a246d30c6363d918369c6822d0b85fc8d3708b9998e54a75c597fcf7570417",
+   "response_sha256": "2477fc83e35999a9924c78abce9aa0291ac7e440e0fa3fbb4f2f58b7e2d1b2c5",
+   "http_status": null,
+   "failure_class": null
+  },
+  {
+   "seq": 11,
+   "call_id": "call-0011-r2",
+   "actor": "r2",
+   "start_sim_s": 57.35,
+   "trigger": "idle",
+   "latency_s": 3.086,
+   "prompt_tokens": 6169,
+   "completion_tokens": 76,
+   "total_tokens": 6245,
+   "sim_cost_s": null,
+   "censored_at_horizon_elapsed_s": 2.65,
+   "action": null,
+   "accepted": null,
+   "request_sha256": "2239de21e738b7278a51b02137e8d016e152366df1d06d30374c0e889b1a237c",
+   "response_sha256": "e27c6c944071aedc36ae00daab4c3e55f6b6d2d231ab0e69c6cbd5a82fb831c2",
+   "http_status": null,
+   "failure_class": null
+  },
+  {
+   "seq": 12,
+   "call_id": "call-0012-r1",
+   "actor": "r1",
+   "start_sim_s": 57.55,
+   "trigger": "idle",
+   "latency_s": 5.942,
+   "prompt_tokens": 6164,
+   "completion_tokens": 76,
+   "total_tokens": 6240,
+   "sim_cost_s": null,
+   "censored_at_horizon_elapsed_s": 2.45,
+   "action": null,
+   "accepted": null,
+   "request_sha256": "308cf8100870b93c1784785c5997e567aaa0c421b9cfd98419bcf4bc6024a751",
+   "response_sha256": "7141aafb85bfb0faaf2986bfbecaed6e453e7397ddd30dcdd1ba6b24d3f3b5b8",
+   "http_status": null,
+   "failure_class": null
+  }
+ ],
+ "messages": [
+  {
+   "call_id": "call-0001-r1",
+   "sender": "r1",
+   "message_id": "w1-r1-1",
+   "hangul_ratio": 0.7058823529411765,
+   "flags": [
+    "non_korean",
+    "code_switch"
+   ],
+   "text": "cargoX를 B로 운반하기 위해 end_neg로 claim합니다."
+  },
+  {
+   "call_id": "call-0002-r2",
+   "sender": "r2",
+   "message_id": "w1-r2-2",
+   "hangul_ratio": 0.6875,
+   "flags": [
+    "non_korean",
+    "code_switch"
+   ],
+   "text": "cargoX 주문에 대해 end_pos로 claim 진행합니다."
+  }
+ ],
+ "hashes": {
+  "bundle.json": "990015876cee0ece369f69dd3bfd79c8d750dc70387a21bca2d2f212f0b6fa35",
+  "metrics.json": "8772603f48af882abe83aaa5345d772b33519570210267eabb7d4fa2225f95e6",
+  "result.json": "179d4b4dc4317f5b10c408c4750ac110cb64dd08a6908c0d54ca2166be390c61",
+  "llm/send_ledger.json": "060420a644109be2707bf2469b58fd7d2bbaad1723b816fb21cfa72a9079524f",
+  "llm/model_calls.jsonl": "ea7deffd153a2561a267d4ce43b1acb07c1657d97f3ddc1f33e532d37fed2a68",
+  "llm/requests.jsonl": "7e4249e167487f1fb2dbd71a3d379fdbe52f0ed2fd8416a749a6fe1d8c9bc498",
+  "llm/live_driver.json": "0b5bbfa6ed06fe847a3c047990c86df3ef83263d0465d05b8a2772164e579487",
+  "artifacts.sha256.json": "45199744f930a310b68c68593965fc4c4fc7c9aa3a13ab9f93170089617f0283"
+ },
+ "budget_sqlite_sha256": "f3fd41c3bbc68a8f9fb0383d6c073de5b060fbbdd3977faa3129c14cea9ac97b",
+ "raw_location": "/Users/changmin/projects/ugrp/outputs/pair-llm-v99-live/smoke1",
+ "artifacts_verified": "2468 files re-hashed against artifacts.sha256.json, 0 mismatches"
+}

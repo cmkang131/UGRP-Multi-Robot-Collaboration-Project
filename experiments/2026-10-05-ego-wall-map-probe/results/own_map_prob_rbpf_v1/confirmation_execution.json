@@ -1,0 +1,246 @@
+{
+  "lock": {
+    "owner": "codex",
+    "branch": "claude/ego-wall-map",
+    "purpose": "PR405 offline probabilistic map replay timing",
+    "pid": 11309,
+    "acquired_unix": 1791297099.3880682,
+    "expected_end_unix": 1791304299.3880682,
+    "loadavg_at_acquire": [
+      4.0380859375,
+      3.46923828125,
+      3.69775390625
+    ],
+    "timing_sensitive": true
+  },
+  "runs": [
+    {
+      "condition": "prob",
+      "case": "s912-r1",
+      "command": [
+        "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+        "/Users/changmin/projects/ugrp-wt/ego-wall-map/experiments/2026-10-05-ego-wall-map-probe/code/own_map_prob_replay.py",
+        "--case",
+        "s912-r1",
+        "--condition",
+        "prob",
+        "--output",
+        "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/self-map-prob-rbpf-v1-complete"
+      ],
+      "exit_code": 0,
+      "started_unix": 1791297099.388223,
+      "process_wall_s": 2.5165629386901855,
+      "stdout": "{\"name\": \"s912-r1\", \"condition\": \"prob\", \"end_m\": 0.1467782966560538, \"wall_s\": 0.6470892920042388, \"rss_mib\": 105.8125, \"success\": true, \"checks\": {\"terminal_30pct_and_075m\": true, \"path_median_not_worse\": true, \"path_p95_not_worse\": true, \"path_rmse_20pct\": true, \"map_precision_not_worse\": true, \"map_recall_within_2pp\": true, \"map_rmse_20pct\": true}}\n",
+      "stderr": ""
+    },
+    {
+      "condition": "prob",
+      "case": "s912-r2",
+      "command": [
+        "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+        "/Users/changmin/projects/ugrp-wt/ego-wall-map/experiments/2026-10-05-ego-wall-map-probe/code/own_map_prob_replay.py",
+        "--case",
+        "s912-r2",
+        "--condition",
+        "prob",
+        "--output",
+        "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/self-map-prob-rbpf-v1-complete"
+      ],
+      "exit_code": 0,
+      "started_unix": 1791297101.905333,
+      "process_wall_s": 4.354202747344971,
+      "stdout": "{\"name\": \"s912-r2\", \"condition\": \"prob\", \"end_m\": 0.2388336304173285, \"wall_s\": 1.357637583016185, \"rss_mib\": 149.828125, \"success\": true, \"checks\": {\"terminal_30pct_and_075m\": true, \"path_median_not_worse\": true, \"path_p95_not_worse\": true, \"path_rmse_20pct\": true, \"map_precision_not_worse\": true, \"map_recall_within_2pp\": true, \"map_rmse_20pct\": true}}\n",
+      "stderr": ""
+    },
+    {
+      "condition": "prob",
+      "case": "s913-r1",
+      "command": [
+        "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+        "/Users/changmin/projects/ugrp-wt/ego-wall-map/experiments/2026-10-05-ego-wall-map-probe/code/own_map_prob_replay.py",
+        "--case",
+        "s913-r1",
+        "--condition",
+        "prob",
+        "--output",
+        "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/self-map-prob-rbpf-v1-complete"
+      ],
+      "exit_code": 0,
+      "started_unix": 1791297106.259891,
+      "process_wall_s": 2.6320958137512207,
+      "stdout": "{\"name\": \"s913-r1\", \"condition\": \"prob\", \"end_m\": 0.8155410292902932, \"wall_s\": 0.629790665989276, \"rss_mib\": 124.578125, \"success\": false, \"checks\": {\"terminal_30pct_and_075m\": false, \"path_median_not_worse\": true, \"path_p95_not_worse\": true, \"path_rmse_20pct\": false, \"map_precision_not_worse\": false, \"map_recall_within_2pp\": true, \"map_rmse_20pct\": true}}\n",
+      "stderr": ""
+    },
+    {
+      "condition": "prob",
+      "case": "s913-r2",
+      "command": [
+        "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+        "/Users/changmin/projects/ugrp-wt/ego-wall-map/experiments/2026-10-05-ego-wall-map-probe/code/own_map_prob_replay.py",
+        "--case",
+        "s913-r2",
+        "--condition",
+        "prob",
+        "--output",
+        "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/self-map-prob-rbpf-v1-complete"
+      ],
+      "exit_code": 0,
+      "started_unix": 1791297108.892472,
+      "process_wall_s": 4.105844974517822,
+      "stdout": "{\"name\": \"s913-r2\", \"condition\": \"prob\", \"end_m\": 0.7628361170834123, \"wall_s\": 1.3240618749987334, \"rss_mib\": 140.984375, \"success\": false, \"checks\": {\"terminal_30pct_and_075m\": false, \"path_median_not_worse\": true, \"path_p95_not_worse\": true, \"path_rmse_20pct\": true, \"map_precision_not_worse\": true, \"map_recall_within_2pp\": true, \"map_rmse_20pct\": true}}\n",
+      "stderr": ""
+    },
+    {
+      "condition": "rbpf30",
+      "case": "s912-r1",
+      "command": [
+        "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+        "/Users/changmin/projects/ugrp-wt/ego-wall-map/experiments/2026-10-05-ego-wall-map-probe/code/own_map_prob_replay.py",
+        "--case",
+        "s912-r1",
+        "--condition",
+        "rbpf30",
+        "--output",
+        "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/self-map-prob-rbpf-v1-complete"
+      ],
+      "exit_code": 0,
+      "started_unix": 1791297112.99872,
+      "process_wall_s": 14.87990927696228,
+      "stdout": "{\"name\": \"s912-r1\", \"condition\": \"rbpf30\", \"end_m\": 0.4678298375789187, \"wall_s\": 12.92376170901116, \"rss_mib\": 104.125, \"success\": false, \"checks\": {\"terminal_30pct_and_075m\": true, \"path_median_not_worse\": true, \"path_p95_not_worse\": true, \"path_rmse_20pct\": true, \"map_precision_not_worse\": false, \"map_recall_within_2pp\": false, \"map_rmse_20pct\": true}}\n",
+      "stderr": ""
+    },
+    {
+      "condition": "rbpf30",
+      "case": "s912-r2",
+      "command": [
+        "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+        "/Users/changmin/projects/ugrp-wt/ego-wall-map/experiments/2026-10-05-ego-wall-map-probe/code/own_map_prob_replay.py",
+        "--case",
+        "s912-r2",
+        "--condition",
+        "rbpf30",
+        "--output",
+        "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/self-map-prob-rbpf-v1-complete"
+      ],
+      "exit_code": 0,
+      "started_unix": 1791297127.879071,
+      "process_wall_s": 32.82499885559082,
+      "stdout": "{\"name\": \"s912-r2\", \"condition\": \"rbpf30\", \"end_m\": 0.4156063977904704, \"wall_s\": 29.52461508300621, \"rss_mib\": 103.96875, \"success\": false, \"checks\": {\"terminal_30pct_and_075m\": true, \"path_median_not_worse\": true, \"path_p95_not_worse\": true, \"path_rmse_20pct\": true, \"map_precision_not_worse\": false, \"map_recall_within_2pp\": true, \"map_rmse_20pct\": true}}\n",
+      "stderr": ""
+    },
+    {
+      "condition": "rbpf30",
+      "case": "s913-r1",
+      "command": [
+        "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+        "/Users/changmin/projects/ugrp-wt/ego-wall-map/experiments/2026-10-05-ego-wall-map-probe/code/own_map_prob_replay.py",
+        "--case",
+        "s913-r1",
+        "--condition",
+        "rbpf30",
+        "--output",
+        "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/self-map-prob-rbpf-v1-complete"
+      ],
+      "exit_code": 0,
+      "started_unix": 1791297160.704592,
+      "process_wall_s": 15.19269323348999,
+      "stdout": "{\"name\": \"s913-r1\", \"condition\": \"rbpf30\", \"end_m\": 0.14607975258725733, \"wall_s\": 13.125346874992829, \"rss_mib\": 98.59375, \"success\": false, \"checks\": {\"terminal_30pct_and_075m\": true, \"path_median_not_worse\": true, \"path_p95_not_worse\": true, \"path_rmse_20pct\": true, \"map_precision_not_worse\": true, \"map_recall_within_2pp\": false, \"map_rmse_20pct\": true}}\n",
+      "stderr": ""
+    },
+    {
+      "condition": "rbpf30",
+      "case": "s913-r2",
+      "command": [
+        "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+        "/Users/changmin/projects/ugrp-wt/ego-wall-map/experiments/2026-10-05-ego-wall-map-probe/code/own_map_prob_replay.py",
+        "--case",
+        "s913-r2",
+        "--condition",
+        "rbpf30",
+        "--output",
+        "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/self-map-prob-rbpf-v1-complete"
+      ],
+      "exit_code": 0,
+      "started_unix": 1791297175.897835,
+      "process_wall_s": 31.634212017059326,
+      "stdout": "{\"name\": \"s913-r2\", \"condition\": \"rbpf30\", \"end_m\": 0.42758687379691535, \"wall_s\": 28.51405591602088, \"rss_mib\": 104.65625, \"success\": true, \"checks\": {\"terminal_30pct_and_075m\": true, \"path_median_not_worse\": true, \"path_p95_not_worse\": true, \"path_rmse_20pct\": true, \"map_precision_not_worse\": true, \"map_recall_within_2pp\": true, \"map_rmse_20pct\": true}}\n",
+      "stderr": ""
+    },
+    {
+      "condition": "rbpf100",
+      "case": "s912-r1",
+      "command": [
+        "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+        "/Users/changmin/projects/ugrp-wt/ego-wall-map/experiments/2026-10-05-ego-wall-map-probe/code/own_map_prob_replay.py",
+        "--case",
+        "s912-r1",
+        "--condition",
+        "rbpf100",
+        "--output",
+        "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/self-map-prob-rbpf-v1-complete"
+      ],
+      "exit_code": 0,
+      "started_unix": 1791297207.5326378,
+      "process_wall_s": 44.09591197967529,
+      "stdout": "{\"name\": \"s912-r1\", \"condition\": \"rbpf100\", \"end_m\": 0.3308505109643112, \"wall_s\": 41.655178874993, \"rss_mib\": 128.578125, \"success\": false, \"checks\": {\"terminal_30pct_and_075m\": true, \"path_median_not_worse\": true, \"path_p95_not_worse\": true, \"path_rmse_20pct\": true, \"map_precision_not_worse\": false, \"map_recall_within_2pp\": true, \"map_rmse_20pct\": true}}\n",
+      "stderr": ""
+    },
+    {
+      "condition": "rbpf100",
+      "case": "s912-r2",
+      "command": [
+        "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+        "/Users/changmin/projects/ugrp-wt/ego-wall-map/experiments/2026-10-05-ego-wall-map-probe/code/own_map_prob_replay.py",
+        "--case",
+        "s912-r2",
+        "--condition",
+        "rbpf100",
+        "--output",
+        "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/self-map-prob-rbpf-v1-complete"
+      ],
+      "exit_code": 0,
+      "started_unix": 1791297251.629172,
+      "process_wall_s": 98.72334504127502,
+      "stdout": "{\"name\": \"s912-r2\", \"condition\": \"rbpf100\", \"end_m\": 0.41132487186211575, \"wall_s\": 94.79113270901144, \"rss_mib\": 139.75, \"success\": false, \"checks\": {\"terminal_30pct_and_075m\": true, \"path_median_not_worse\": true, \"path_p95_not_worse\": true, \"path_rmse_20pct\": true, \"map_precision_not_worse\": false, \"map_recall_within_2pp\": true, \"map_rmse_20pct\": true}}\n",
+      "stderr": ""
+    },
+    {
+      "condition": "rbpf100",
+      "case": "s913-r1",
+      "command": [
+        "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+        "/Users/changmin/projects/ugrp-wt/ego-wall-map/experiments/2026-10-05-ego-wall-map-probe/code/own_map_prob_replay.py",
+        "--case",
+        "s913-r1",
+        "--condition",
+        "rbpf100",
+        "--output",
+        "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/self-map-prob-rbpf-v1-complete"
+      ],
+      "exit_code": 0,
+      "started_unix": 1791297350.353357,
+      "process_wall_s": 46.03167009353638,
+      "stdout": "{\"name\": \"s913-r1\", \"condition\": \"rbpf100\", \"end_m\": 0.28747648754245425, \"wall_s\": 43.51287741700071, \"rss_mib\": 119.375, \"success\": true, \"checks\": {\"terminal_30pct_and_075m\": true, \"path_median_not_worse\": true, \"path_p95_not_worse\": true, \"path_rmse_20pct\": true, \"map_precision_not_worse\": true, \"map_recall_within_2pp\": true, \"map_rmse_20pct\": true}}\n",
+      "stderr": ""
+    },
+    {
+      "condition": "rbpf100",
+      "case": "s913-r2",
+      "command": [
+        "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+        "/Users/changmin/projects/ugrp-wt/ego-wall-map/experiments/2026-10-05-ego-wall-map-probe/code/own_map_prob_replay.py",
+        "--case",
+        "s913-r2",
+        "--condition",
+        "rbpf100",
+        "--output",
+        "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/self-map-prob-rbpf-v1-complete"
+      ],
+      "exit_code": 0,
+      "started_unix": 1791297396.386086,
+      "process_wall_s": 103.4616129398346,
+      "stdout": "{\"name\": \"s913-r2\", \"condition\": \"rbpf100\", \"end_m\": 0.09803820171013079, \"wall_s\": 96.59821529200417, \"rss_mib\": 134.953125, \"success\": true, \"checks\": {\"terminal_30pct_and_075m\": true, \"path_median_not_worse\": true, \"path_p95_not_worse\": true, \"path_rmse_20pct\": true, \"map_precision_not_worse\": true, \"map_recall_within_2pp\": true, \"map_rmse_20pct\": true}}\n",
+      "stderr": ""
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "state": "draft_unfrozen_no_confirmatory_execution",
+  "date": "2026-09-30",
+  "source_base_sha": "a8094cc14e098a55483f53a3c49bf6a0b116043d",
+  "branch": "codex/stall-d1-prereg",
+  "environment": {
+    "python": "3.12.13",
+    "numpy": "2.5.2",
+    "pytest": "9.1.1",
+    "omp_openblas_mkl_threads": 1
+  },
+  "verification": {
+    "exit_code": 0,
+    "passed": 98,
+    "d1_tests": 32,
+    "ci_sharding_tests": 66,
+    "test_command": [
+      "python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/test_stall_detector_d1.py",
+      "tests/test_ci_sharding.py"
+    ],
+    "guard": "scripts.run_ci_tests.run_locked with local_lock_root; released after tests",
+    "offline_ci_files": 329,
+    "shards": 8,
+    "d1_file_occurrences": 1,
+    "syntax": "passed",
+    "local_markdown_links": "passed",
+    "diff_check": "passed"
+  },
+  "scope": {
+    "physics_simulation_render_runs": 0,
+    "model_calls": 0,
+    "controller_changes": false,
+    "new_cohort_results": false,
+    "raw_frames_loaded": false,
+    "tensorboard_conversion": false,
+    "saved_tables_replay": "clean per_run aggregate consistency only",
+    "unverified": [
+      "original-frame D1 decision replay",
+      "noisy per-run summary reproduction",
+      "confirmatory acceptance",
+      "stage manipulation feasibility",
+      "physical or E2E success",
+      "full CI"
+    ]
+  },
+  "files": {
+    "experiments/2026-09-30-stall-detector-d1/d1_detector.py": {
+      "bytes": 8919,
+      "sha256": "82e5a19da729dc36a90b8cf652b3bcc5073f9e2470fec2e5ae35d7bf4a6efb03"
+    },
+    "experiments/2026-09-30-stall-detector-d1/PREREG_DRAFT.md": {
+      "bytes": 17751,
+      "sha256": "e997bce02bd118467894e542d5b70bfa9e18f67d4038cfd1d09133d99a7d2691"
+    },
+    "experiments/2026-09-30-stall-detector-d1/STAGING_PLAN.md": {
+      "bytes": 9596,
+      "sha256": "25f24e4609523159f33e9e861151ab923ff4e26658e48a77da25437ca21c5889"
+    },
+    "tests/test_stall_detector_d1.py": {
+      "bytes": 11945,
+      "sha256": "cbc4373a1282e478f2d4155cc8e7501e057c418e204725d30df92c81cc998259"
+    },
+    "scripts/run_ci_tests.py": {
+      "bytes": 21441,
+      "sha256": "163ec7f374f581269dd10c94b0a72777ba0e73a27aa67d0b6facc213aa16e394"
+    },
+    "experiments/2026-09-30-stall-detection-research/results/stall_detector_offline_r0.4_k2.json": {
+      "bytes": 34911,
+      "sha256": "7c3cdb41808a095ecd999323429446bfef3c99142795effb3568acdbeeac358f"
+    },
+    "experiments/2026-09-30-stall-detection-research/results/stall_detector_offline_r0.5_k3.json": {
+      "bytes": 34867,
+      "sha256": "7ec53636fb5abcf40763bf867c9243d9ef23d78822d132ea25d0bbebfff8b9db"
+    }
+  }
+}

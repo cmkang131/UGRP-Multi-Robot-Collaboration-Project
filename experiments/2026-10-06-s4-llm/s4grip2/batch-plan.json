@@ -1,0 +1,389 @@
+{
+  "schema": "ugrp.s4grip2.plan.v1",
+  "research_result": false,
+  "max_concurrent": 6,
+  "LP_NUM_THREADS": 4,
+  "setup": "s3fix14 O fixed tape; 8 s warmup then 6 s observation",
+  "source_parent": "ad844d13e01f2871e39bf9b6a59c2636365bec7e",
+  "model_calls": 0,
+  "runs": [
+    {
+      "name": "s4grip2-r1-hold-r1",
+      "robot_id": "r1",
+      "variant": "hold",
+      "cases": [
+        {
+          "id": "explore-s32000",
+          "split": "explore",
+          "seed": 32000,
+          "variant": "hold",
+          "onset_s": 2.3,
+          "force_xy_n": [
+            0.511472,
+            -0.529978
+          ]
+        },
+        {
+          "id": "explore-s32001",
+          "split": "explore",
+          "seed": 32001,
+          "variant": "hold",
+          "onset_s": 2.0,
+          "force_xy_n": [
+            -0.357777,
+            -0.182936
+          ]
+        },
+        {
+          "id": "confirm-s42000",
+          "split": "confirm",
+          "seed": 42000,
+          "variant": "hold",
+          "onset_s": 2.3,
+          "force_xy_n": [
+            0.568803,
+            -0.252473
+          ]
+        },
+        {
+          "id": "confirm-s42001",
+          "split": "confirm",
+          "seed": 42001,
+          "variant": "hold",
+          "onset_s": 2.2,
+          "force_xy_n": [
+            0.263577,
+            0.361017
+          ]
+        }
+      ],
+      "argv": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s4_grip_dataset",
+        "--expected-source-sha",
+        "<SOURCE_SHA>",
+        "--output",
+        "outputs/s4grip2-r1-hold-r1/raw",
+        "--job",
+        "s4grip2-r1-hold-r1",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s4grip2-r1-loss-r1",
+      "robot_id": "r1",
+      "variant": "loss",
+      "cases": [
+        {
+          "id": "explore-s32000",
+          "split": "explore",
+          "seed": 32000,
+          "variant": "loss",
+          "onset_s": 2.3,
+          "force_xy_n": [
+            0.511472,
+            -0.529978
+          ]
+        },
+        {
+          "id": "explore-s32001",
+          "split": "explore",
+          "seed": 32001,
+          "variant": "loss",
+          "onset_s": 2.0,
+          "force_xy_n": [
+            -0.357777,
+            -0.182936
+          ]
+        },
+        {
+          "id": "confirm-s42000",
+          "split": "confirm",
+          "seed": 42000,
+          "variant": "loss",
+          "onset_s": 2.3,
+          "force_xy_n": [
+            0.568803,
+            -0.252473
+          ]
+        },
+        {
+          "id": "confirm-s42001",
+          "split": "confirm",
+          "seed": 42001,
+          "variant": "loss",
+          "onset_s": 2.2,
+          "force_xy_n": [
+            0.263577,
+            0.361017
+          ]
+        }
+      ],
+      "argv": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s4_grip_dataset",
+        "--expected-source-sha",
+        "<SOURCE_SHA>",
+        "--output",
+        "outputs/s4grip2-r1-loss-r1/raw",
+        "--job",
+        "s4grip2-r1-loss-r1",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s4grip2-r2-hold-r1",
+      "robot_id": "r2",
+      "variant": "hold",
+      "cases": [
+        {
+          "id": "explore-s32100",
+          "split": "explore",
+          "seed": 32100,
+          "variant": "hold",
+          "onset_s": 2.3,
+          "force_xy_n": [
+            0.437348,
+            0.362295
+          ]
+        },
+        {
+          "id": "explore-s32101",
+          "split": "explore",
+          "seed": 32101,
+          "variant": "hold",
+          "onset_s": 2.3,
+          "force_xy_n": [
+            0.624754,
+            0.479969
+          ]
+        },
+        {
+          "id": "confirm-s42100",
+          "split": "confirm",
+          "seed": 42100,
+          "variant": "hold",
+          "onset_s": 2.2,
+          "force_xy_n": [
+            0.307032,
+            0.537909
+          ]
+        },
+        {
+          "id": "confirm-s42101",
+          "split": "confirm",
+          "seed": 42101,
+          "variant": "hold",
+          "onset_s": 2.0,
+          "force_xy_n": [
+            0.593734,
+            0.031303
+          ]
+        }
+      ],
+      "argv": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s4_grip_dataset",
+        "--expected-source-sha",
+        "<SOURCE_SHA>",
+        "--output",
+        "outputs/s4grip2-r2-hold-r1/raw",
+        "--job",
+        "s4grip2-r2-hold-r1",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s4grip2-r2-loss-r1",
+      "robot_id": "r2",
+      "variant": "loss",
+      "cases": [
+        {
+          "id": "explore-s32100",
+          "split": "explore",
+          "seed": 32100,
+          "variant": "loss",
+          "onset_s": 2.3,
+          "force_xy_n": [
+            0.437348,
+            0.362295
+          ]
+        },
+        {
+          "id": "explore-s32101",
+          "split": "explore",
+          "seed": 32101,
+          "variant": "loss",
+          "onset_s": 2.3,
+          "force_xy_n": [
+            0.624754,
+            0.479969
+          ]
+        },
+        {
+          "id": "confirm-s42100",
+          "split": "confirm",
+          "seed": 42100,
+          "variant": "loss",
+          "onset_s": 2.2,
+          "force_xy_n": [
+            0.307032,
+            0.537909
+          ]
+        },
+        {
+          "id": "confirm-s42101",
+          "split": "confirm",
+          "seed": 42101,
+          "variant": "loss",
+          "onset_s": 2.0,
+          "force_xy_n": [
+            0.593734,
+            0.031303
+          ]
+        }
+      ],
+      "argv": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s4_grip_dataset",
+        "--expected-source-sha",
+        "<SOURCE_SHA>",
+        "--output",
+        "outputs/s4grip2-r2-loss-r1/raw",
+        "--job",
+        "s4grip2-r2-loss-r1",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s4grip2-r3-hold-r1",
+      "robot_id": "r3",
+      "variant": "hold",
+      "cases": [
+        {
+          "id": "explore-s32200",
+          "split": "explore",
+          "seed": 32200,
+          "variant": "hold",
+          "onset_s": 2.3,
+          "force_xy_n": [
+            -0.47945,
+            0.415432
+          ]
+        },
+        {
+          "id": "explore-s32201",
+          "split": "explore",
+          "seed": 32201,
+          "variant": "hold",
+          "onset_s": 2.2,
+          "force_xy_n": [
+            -0.410476,
+            0.141404
+          ]
+        },
+        {
+          "id": "confirm-s42200",
+          "split": "confirm",
+          "seed": 42200,
+          "variant": "hold",
+          "onset_s": 2.0,
+          "force_xy_n": [
+            -0.484575,
+            -0.628718
+          ]
+        },
+        {
+          "id": "confirm-s42201",
+          "split": "confirm",
+          "seed": 42201,
+          "variant": "hold",
+          "onset_s": 2.3,
+          "force_xy_n": [
+            -0.336242,
+            -0.455827
+          ]
+        }
+      ],
+      "argv": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s4_grip_dataset",
+        "--expected-source-sha",
+        "<SOURCE_SHA>",
+        "--output",
+        "outputs/s4grip2-r3-hold-r1/raw",
+        "--job",
+        "s4grip2-r3-hold-r1",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s4grip2-r3-loss-r1",
+      "robot_id": "r3",
+      "variant": "loss",
+      "cases": [
+        {
+          "id": "explore-s32200",
+          "split": "explore",
+          "seed": 32200,
+          "variant": "loss",
+          "onset_s": 2.3,
+          "force_xy_n": [
+            -0.47945,
+            0.415432
+          ]
+        },
+        {
+          "id": "explore-s32201",
+          "split": "explore",
+          "seed": 32201,
+          "variant": "loss",
+          "onset_s": 2.2,
+          "force_xy_n": [
+            -0.410476,
+            0.141404
+          ]
+        },
+        {
+          "id": "confirm-s42200",
+          "split": "confirm",
+          "seed": 42200,
+          "variant": "loss",
+          "onset_s": 2.0,
+          "force_xy_n": [
+            -0.484575,
+            -0.628718
+          ]
+        },
+        {
+          "id": "confirm-s42201",
+          "split": "confirm",
+          "seed": 42201,
+          "variant": "loss",
+          "onset_s": 2.3,
+          "force_xy_n": [
+            -0.336242,
+            -0.455827
+          ]
+        }
+      ],
+      "argv": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s4_grip_dataset",
+        "--expected-source-sha",
+        "<SOURCE_SHA>",
+        "--output",
+        "outputs/s4grip2-r3-loss-r1/raw",
+        "--job",
+        "s4grip2-r3-loss-r1",
+        "--execute"
+      ]
+    }
+  ]
+}

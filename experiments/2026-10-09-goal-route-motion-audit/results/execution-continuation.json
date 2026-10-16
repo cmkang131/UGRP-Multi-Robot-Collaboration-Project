@@ -1,0 +1,68 @@
+{
+  "driver-interruption.json": {
+    "driver_session": "egomap59-p1-nine",
+    "driver_source": "5b33094635804662a8a604718aead132c420b5ba",
+    "observed_exit_code": 143,
+    "physical_completed": [
+      55001,
+      55002
+    ],
+    "remaining": [
+      55003,
+      55004,
+      55005,
+      55006,
+      55007,
+      55008,
+      55009
+    ],
+    "last_score_complete": 55001,
+    "interrupted_during": "55002 post-run scoring; result.json already RECORDED",
+    "reason": "SIGTERM sender/reason not established; no controller/physics exception in either completed result",
+    "physics_retries": 0,
+    "continuation": "clarification pending; shared lock currently S3 v149; no restart while occupied"
+  },
+  "resume-admission.json": {
+    "previous_completed": [
+      55001,
+      55002
+    ],
+    "remaining": [
+      55003,
+      55004,
+      55005,
+      55006,
+      55007,
+      55008,
+      55009
+    ],
+    "source_sha": "5b33094635804662a8a604718aead132c420b5ba",
+    "preceding_s3_status": "DEV_NOT_DELIVERED",
+    "preceding_s3_source": "b73ce1931dae5d803bf2562ad5fa090cb71d2dfb",
+    "evidence": {
+      "/Users/changmin/projects/ugrp/outputs/s3-sweep-b73ce193-s14201-v149/result.json": "1a16ea0b3c13aa55b97d64ab6db31a8c615006d2e9b1414dce4ec9f623eb2e67",
+      "/Users/changmin/projects/ugrp/outputs/s3-sweep-b73ce193-s14201-v149/trial.json": "d71a52579c4802be3961a8da7b79655e8a9f273ef9d3d337c2fa3125e6504810"
+    },
+    "launch_script_sha256": "d61b449b96d423edf1ac4b1b255c666df7264f9135b322ee749c97dfa68e2e1f",
+    "physical_retries": 0
+  },
+  "final_supervisor_instruction": " 감독 지시 (사용자 \"9회도 너무 많으니까 짧게 가\")\negomap59 9회 코호트는 55001·55002 2회로 **종료**한다. 감독이 22:30에 실행기(egomap59-p1-nine)를 55002 종료 직후 중단했다 — 남은 55003–55009는 실행하지 말고 '사용자 지시로 축소, 미실행'으로 README에 기록하라. 결과 2회를 표로 정리·push하고 작업을 끝내라. 회전 중 XY 이동 예측 편차는 S3 작업(s3fix5)이 공통 motion model에서 고치는 중이니 여기서 재적합하지 말 것.\n",
+  "closure": {
+    "attempted": [
+      55001,
+      55002,
+      55003,
+      55004
+    ],
+    "remaining_not_run": [
+      55005,
+      55006,
+      55007,
+      55008,
+      55009
+    ],
+    "last_driver_exit": "SUPERVISOR_CHANGED_REVIEW_BEFORE_NEXT_SLOT",
+    "driver_exited": true,
+    "additional_physics_authorized": false
+  }
+}

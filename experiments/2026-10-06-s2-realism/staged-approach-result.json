@@ -1,0 +1,324 @@
+{
+  "schema": "ugrp.s2_staged_approach_results.v1",
+  "source_sha": "7a5e8d846fd234b26b548a929fb2af5cf6eddce5",
+  "bundle_id": "zone-s2-realism-v137",
+  "workflow_version": "7.30.0",
+  "decision": "NOT_ADMITTED_REPLAY_FAILED",
+  "physical_runs": 0,
+  "full_runs": {
+    "1054": "NOT_RUN_REPLAY_FAILED",
+    "1055": "NOT_RUN_REPLAY_FAILED",
+    "1053": "NOT_RUN_CONDITIONAL_REGRESSION"
+  },
+  "physical_metrics": {
+    "lifted": null,
+    "inside": null,
+    "stable": null,
+    "success": null,
+    "peer_contacts": null,
+    "wall_s": null,
+    "sim_s": null,
+    "nees": null
+  },
+  "failure_cause": "Existing orange-paint candidate plus whole-image STOP zone mistakes remote doorway orange floor/edge for peer:622/699px, original final pulse blocked2/2. This is an appearance/source-adapter failure, not evidence against Nav2 staging separation.",
+  "recommendation": "Use the existing standing-object and multi-material peer-appearance classifier (zone_own_perception_v2) with the fixed v3 camera table; require robot-versus-flat-floor positive/negative replay before any new DEV. Do not lower point/colour thresholds.",
+  "outcome_retuning": false,
+  "replay": {
+    "schema": "ugrp.s2.staged_approach_replay.v1",
+    "runs": [
+      {
+        "seed": 1054,
+        "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-4436222c-s1054-v136-goal-heading",
+        "state": "align",
+        "t": 171.9,
+        "old_unknown": 152,
+        "action": {
+          "kind": "mecanum",
+          "forward": 0.0,
+          "left": -0.35,
+          "turn": 0.0,
+          "duration_s": 0.06
+        },
+        "new_proposals": [
+          [
+            "r3",
+            {
+              "kind": "hold"
+            }
+          ]
+        ],
+        "original_pulse_preserved": false,
+        "observation": {
+          "t": 171.9,
+          "image_sha256": "85d25ff402f15d7f9d8062a412a42c6b2bbb86d5431a5934dda6deb66f567869",
+          "points": 622,
+          "raw_orange_pixels": 622,
+          "self_masked_pixels": 0
+        },
+        "navigation_unknown_still_vetoed": true,
+        "input_hashes": {
+          "student_record.json": "65d843d6390faea4441cda56932f7a0d20219384bb8c1c980d282e724daa6517",
+          "robots/r3/frames.jsonl": "183fb0f2c061dbfc202c5cd2325d51281bc8f8fd7624ecca0c0a47c3c72d71a0"
+        }
+      },
+      {
+        "seed": 1055,
+        "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-4436222c-s1055-v136-goal-heading",
+        "state": "align",
+        "t": 180.25,
+        "old_unknown": 152,
+        "action": {
+          "kind": "mecanum",
+          "forward": 0.0,
+          "left": -0.35,
+          "turn": 0.0,
+          "duration_s": 0.06
+        },
+        "new_proposals": [
+          [
+            "r3",
+            {
+              "kind": "hold"
+            }
+          ]
+        ],
+        "original_pulse_preserved": false,
+        "observation": {
+          "t": 180.25,
+          "image_sha256": "16fbdc358aaf00d1d33dc177384b93e6e2459af0c679ac7579df6bdeca37faed",
+          "points": 699,
+          "raw_orange_pixels": 699,
+          "self_masked_pixels": 0
+        },
+        "navigation_unknown_still_vetoed": true,
+        "input_hashes": {
+          "student_record.json": "80c44bd10fa32f8b029f74670906e156d2ea65d029fdc17737c35457f414379f",
+          "robots/r3/frames.jsonl": "f5896618543499933e2504883bf9282371ba6f9fab1913e5f59974c3f9de1d19"
+        }
+      }
+    ],
+    "positive": {
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-32776381-s1054-v134-side-scan",
+      "frame": "robots/r3/rgb/00309.jpg",
+      "observation": {
+        "t": 16.75,
+        "image_sha256": "c7d3f2baa3abcb332fb18ff7ee6b53652b21d95e6558e89f24bfcac519854950",
+        "points": 4935,
+        "raw_orange_pixels": 4935,
+        "self_masked_pixels": 0
+      },
+      "check": {
+        "t": 16.75,
+        "stop": true,
+        "source_valid": true,
+        "observed_points": 4935,
+        "reason": "OBSERVED_PEER_APPEARANCE",
+        "image_sha256": "c7d3f2baa3abcb332fb18ff7ee6b53652b21d95e6558e89f24bfcac519854950",
+        "free_space_claim": false
+      }
+    },
+    "off": [
+      {
+        "seed": 1051,
+        "commands": 4023,
+        "command_bytes_equal": true,
+        "record_bytes_equal": true,
+        "command_sha256": "0e11a2ab88320da7c10a6a3fb1760368f4a5aa9a77ba9678daaf72727145d798",
+        "scope": "off adapter exact identity over existing tapes; PF not recomputed"
+      },
+      {
+        "seed": 1053,
+        "commands": 3959,
+        "command_bytes_equal": true,
+        "record_bytes_equal": true,
+        "command_sha256": "ff4aab36621c179d2a700074a681f81318f9cd8ef5dece45bb6abaeb4005625d",
+        "scope": "off adapter exact identity over existing tapes; PF not recomputed"
+      },
+      {
+        "seed": 1054,
+        "commands": 8921,
+        "command_bytes_equal": true,
+        "record_bytes_equal": true,
+        "command_sha256": "2f67e89f9ed57630f2ce9d01574218827ff23d9baff36d585ac0531495649752",
+        "scope": "off adapter exact identity over existing tapes; PF not recomputed"
+      }
+    ],
+    "gate_pass": false,
+    "physics_runs": 0,
+    "gt_inputs": false,
+    "scope": "recorded controller proposals plus exact own RGB through stage guard; not PF recomputation or closed-loop completion"
+  },
+  "appearance_audit": {
+    "cases": [
+      {
+        "seed": 1054,
+        "image": "/Users/changmin/projects/ugrp/outputs/s2-realism-4436222c-s1054-v136-goal-heading/robots/r3/rgb/01210.jpg",
+        "image_sha256": "85d25ff402f15d7f9d8062a412a42c6b2bbb86d5431a5934dda6deb66f567869",
+        "points": 622,
+        "components": [
+          {
+            "bbox": [
+              117,
+              40,
+              22,
+              7
+            ],
+            "pixels": 154
+          },
+          {
+            "bbox": [
+              141,
+              40,
+              60,
+              9
+            ],
+            "pixels": 468
+          }
+        ],
+        "interpretation": "posthoc visual inspection: remote orange horizontal floor/edge through doorway, no peer visible",
+        "interpretation_role": "evaluation only; not fed back into detector or controller"
+      },
+      {
+        "seed": 1055,
+        "image": "/Users/changmin/projects/ugrp/outputs/s2-realism-4436222c-s1055-v136-goal-heading/robots/r3/rgb/01359.jpg",
+        "image_sha256": "16fbdc358aaf00d1d33dc177384b93e6e2459af0c679ac7579df6bdeca37faed",
+        "points": 699,
+        "components": [
+          {
+            "bbox": [
+              110,
+              40,
+              92,
+              9
+            ],
+            "pixels": 699
+          }
+        ],
+        "interpretation": "posthoc visual inspection: remote orange horizontal floor/edge through doorway, no peer visible",
+        "interpretation_role": "evaluation only; not fed back into detector or controller"
+      },
+      {
+        "seed": 1054,
+        "image": "/Users/changmin/projects/ugrp/outputs/s2-realism-32776381-s1054-v134-side-scan/robots/r3/rgb/00281.jpg",
+        "image_sha256": "c7d3f2baa3abcb332fb18ff7ee6b53652b21d95e6558e89f24bfcac519854950",
+        "points": 4935,
+        "components": [
+          {
+            "bbox": [
+              41,
+              96,
+              53,
+              71
+            ],
+            "pixels": 1496
+          },
+          {
+            "bbox": [
+              116,
+              121,
+              13,
+              12
+            ],
+            "pixels": 135
+          },
+          {
+            "bbox": [
+              74,
+              128,
+              13,
+              14
+            ],
+            "pixels": 176
+          },
+          {
+            "bbox": [
+              63,
+              145,
+              32,
+              32
+            ],
+            "pixels": 813
+          },
+          {
+            "bbox": [
+              1,
+              179,
+              7,
+              8
+            ],
+            "pixels": 56
+          },
+          {
+            "bbox": [
+              62,
+              189,
+              41,
+              40
+            ],
+            "pixels": 1114
+          },
+          {
+            "bbox": [
+              36,
+              190,
+              9,
+              11
+            ],
+            "pixels": 91
+          },
+          {
+            "bbox": [
+              0,
+              192,
+              37,
+              41
+            ],
+            "pixels": 1054
+          }
+        ],
+        "interpretation": "posthoc visual inspection: standing peer at left edge",
+        "interpretation_role": "evaluation only; not fed back into detector or controller"
+      }
+    ],
+    "physics_runs": 0,
+    "gt_inputs": false,
+    "controller_changes_after_outcome": false
+  },
+  "sources": [
+    {
+      "url": "https://raw.githubusercontent.com/ros-navigation/navigation2/e48c3296a9e49ee88e7e22b7a1c584a26f8620a3/nav2_docking/opennav_docking/src/docking_server.cpp",
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-staged-approach-v50-20261008/sources/docking_server.cpp",
+      "sha256": "4ecc05a117983475b3c92f19cb247704aeb2eb9c21f012f074e417f50db5ad78"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/ros-navigation/navigation2/e48c3296a9e49ee88e7e22b7a1c584a26f8620a3/nav2_collision_monitor/src/collision_monitor_node.cpp",
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-staged-approach-v50-20261008/sources/collision_monitor_node.cpp",
+      "sha256": "73709ddd1dfc091b1975eb8b41502fe1aeaf06880446b846464782bf55058e50"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/ros-navigation/navigation2/e48c3296a9e49ee88e7e22b7a1c584a26f8620a3/nav2_collision_monitor/src/polygon.cpp",
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-staged-approach-v50-20261008/sources/polygon.cpp",
+      "sha256": "c92eba251afda57a28328b39c6cc6f7a71c778d05a29ca6979a85ed30dd5cd7a"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/ros-navigation/navigation2/e48c3296a9e49ee88e7e22b7a1c584a26f8620a3/nav2_costmap_2d/src/layered_costmap.cpp",
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-staged-approach-v50-20261008/sources/layered_costmap.cpp",
+      "sha256": "d67e548f20936c7694a7c6e54997daaa2053701d26b5d012150ae691a20216b7"
+    }
+  ],
+  "related_tests": {
+    "files": [
+      "tests/test_s2_staged_approach.py",
+      "tests/test_s2_look_before_move.py"
+    ],
+    "passed": 13,
+    "wall_s": 24.5
+  },
+  "lock_acquired_by_this_task": false,
+  "raw_backup": "local only; source and numerical result records pushed, raw frames not uploaded",
+  "source_hashes": {
+    "replay.json": "59079a9dc5d1960c706d3cde17b2befa44bf4c69d24b4d784fb09c811bf97909",
+    "appearance-audit.json": "9af94fbf45509d26f7171afd7877ebcbe1e921863b5b4a04ebc478fd218a97d0",
+    "sources/manifest.json": "4915aeaa89a3290b09a6fc39d400b06c75624ff0293087a8a0d3104557bf3b78"
+  }
+}

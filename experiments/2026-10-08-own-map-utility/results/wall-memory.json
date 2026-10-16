@@ -1,0 +1,5355 @@
+{
+  "schema": "ugrp.own_wall_memory.v1",
+  "option": "segments_confidence_v1",
+  "robot_id": "r3",
+  "audience": "own_llm_only",
+  "source": "own",
+  "generated_t_sim": 181.3,
+  "map_revision": "252f0d88a527",
+  "coordinate_frame": {
+    "id": "r3/own_start",
+    "origin": "own initial chassis pose",
+    "x": "forward",
+    "y": "left",
+    "yaw": "counterclockwise positive",
+    "units": {
+      "position": "m",
+      "angle": "rad"
+    },
+    "world_alignment": null,
+    "current_pose_xyyaw": [
+      0.90965448513434,
+      3.3424604026039484,
+      2.7707210405170972
+    ],
+    "current_std_xy_m": 0.10165367902012026
+  },
+  "map_samples": {
+    "occupied_cells": 381,
+    "observed_cells": 2068,
+    "resolution_m": 0.1,
+    "observed_area_m2": 20.680000000000003,
+    "insertion_scans": 64,
+    "exported_segments": 41
+  },
+  "items": [
+    {
+      "obs_id": "r3-wall-252f0d88a527-0001",
+      "t_sim": 173.1,
+      "frame_sha256": "cfa478c9c54215c52ef18711f25f86e39cca005da8300d7300163209f1612ad9",
+      "observer_pose": {
+        "xyyaw": [
+          1.3086485913546515,
+          3.3716538481529024,
+          -1.8585582028827146
+        ],
+        "std_xy_m": 0.10443988454524973,
+        "source": "own_rbpf_pose_ledger",
+        "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+      },
+      "entity": {
+        "kind": "wall_segment",
+        "id": "r3/wall/252f0d88a527/0001"
+      },
+      "claim": {
+        "state": "observed_wall_candidate",
+        "endpoints_m": [
+          [
+            1.2084187382178229,
+            0.9518387389399803
+          ],
+          [
+            1.2924686379661277,
+            2.852544058335601
+          ]
+        ]
+      },
+      "evidence": {
+        "detector": "egomap34_frozen_contacts+odom_grid_hough_tls",
+        "score": 0.014614557304390942,
+        "semantics": "TSDF support; NOT calibrated wall probability",
+        "grid_fit_cells": 20,
+        "nearby_occupied_cells": 23,
+        "scan_count": 8,
+        "observation_ids": [
+          "r3-obs-000151",
+          "r3-obs-000324",
+          "r3-obs-000345",
+          "r3-obs-000393",
+          "r3-obs-000409",
+          "r3-obs-000821",
+          "r3-obs-000855",
+          "r3-obs-000860"
+        ],
+        "observations": [
+          {
+            "obs_id": "r3-obs-000151",
+            "t_sim": 31.3,
+            "frame_id": 151,
+            "frame_sha256": "24ab340ab08fba8db93800c676aeaad07caaf125a9b06111c5b9476c60ca210c",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.8214427056369986,
+                -0.011019523539209304,
+                1.6959303729149262
+              ],
+              "std_xy_m": 0.11944120324196147,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000324",
+            "t_sim": 65.9,
+            "frame_id": 324,
+            "frame_sha256": "1d1d3cfeb168a0f58f37d4908b2e7925d2b4def157bdcb59ce26c935e461958d",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.8343621927186213,
+                -0.3698588653172217,
+                1.3319623496162425
+              ],
+              "std_xy_m": 0.05371666433449921,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000345",
+            "t_sim": 70.1,
+            "frame_id": 345,
+            "frame_sha256": "a413d5d693ba35ef3f2f98d151fd74de8574d4953efc8e29f7467f4067e036e5",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.90256578481621,
+                -0.18970579526129985,
+                1.849335006756756
+              ],
+              "std_xy_m": 0.07178116096580908,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000393",
+            "t_sim": 79.7,
+            "frame_id": 393,
+            "frame_sha256": "ccbab133ae927b62ba149f91cfd24597face378a80f0307df88ca29342a9430f",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.8141683751783417,
+                0.34181318564894647,
+                1.3048012546660361
+              ],
+              "std_xy_m": 0.0723835340588307,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000409",
+            "t_sim": 82.9,
+            "frame_id": 409,
+            "frame_sha256": "abcddf0fcc973443173d115e5e827281c2eac5e1865d39317d44476ab888ac8b",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.8714478622046219,
+                0.49389559062869,
+                1.4257936098657922
+              ],
+              "std_xy_m": 0.07309800861783032,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000821",
+            "t_sim": 165.3,
+            "frame_id": 821,
+            "frame_sha256": "4f670277f17eb46e5f6d9954697ca77f2db4701acf0c786ecb40d82455091c8e",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                1.0560633504038224,
+                3.587575970110964,
+                -0.9101619038148887
+              ],
+              "std_xy_m": 0.22432797197945356,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000855",
+            "t_sim": 172.1,
+            "frame_id": 855,
+            "frame_sha256": "1f6b322628266c669ed689c77a5a1fe7707ab5b0c20cfb827682ed3e0ad9835a",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                1.272178356869934,
+                3.3571970069433537,
+                -1.2558484749415448
+              ],
+              "std_xy_m": 0.19011160118602166,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000860",
+            "t_sim": 173.1,
+            "frame_id": 860,
+            "frame_sha256": "cfa478c9c54215c52ef18711f25f86e39cca005da8300d7300163209f1612ad9",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                1.3086485913546515,
+                3.3716538481529024,
+                -1.8585582028827146
+              ],
+              "std_xy_m": 0.10443988454524973,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          }
+        ],
+        "first_t_sim": 31.3,
+        "last_t_sim": 173.1,
+        "max_observer_std_xy_m": 0.22432797197945356,
+        "view_circular_variance": 0.19778730929634075,
+        "association": "historical endpoint-hit cells within half-cell diagonal of summary line"
+      },
+      "confidence": "unvalidated_support",
+      "source": "own",
+      "age_s": 8.200000000000017
+    },
+    {
+      "obs_id": "r3-wall-252f0d88a527-0002",
+      "t_sim": 157.1,
+      "frame_sha256": "f1e66dafd39b45dba0c35d500abe7052f1a39d0237ec5e7ad294c1c8c7118ba5",
+      "observer_pose": {
+        "xyyaw": [
+          0.8199299568653879,
+          3.549722827337172,
+          0.7221319558116255
+        ],
+        "std_xy_m": 0.24172341242225273,
+        "source": "own_rbpf_pose_ledger",
+        "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+      },
+      "entity": {
+        "kind": "wall_segment",
+        "id": "r3/wall/252f0d88a527/0002"
+      },
+      "claim": {
+        "state": "observed_wall_candidate",
+        "endpoints_m": [
+          [
+            -0.3494192961721082,
+            3.9387174641844847
+          ],
+          [
+            1.2514866938873337,
+            4.02111491912937
+          ]
+        ]
+      },
+      "evidence": {
+        "detector": "egomap34_frozen_contacts+odom_grid_hough_tls",
+        "score": 0.45444792206097845,
+        "semantics": "TSDF support; NOT calibrated wall probability",
+        "grid_fit_cells": 15,
+        "nearby_occupied_cells": 21,
+        "scan_count": 9,
+        "observation_ids": [
+          "r3-obs-000393",
+          "r3-obs-000409",
+          "r3-obs-000415",
+          "r3-obs-000506",
+          "r3-obs-000511",
+          "r3-obs-000590",
+          "r3-obs-000730",
+          "r3-obs-000772",
+          "r3-obs-000780"
+        ],
+        "observations": [
+          {
+            "obs_id": "r3-obs-000393",
+            "t_sim": 79.7,
+            "frame_id": 393,
+            "frame_sha256": "ccbab133ae927b62ba149f91cfd24597face378a80f0307df88ca29342a9430f",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.8141683751783417,
+                0.34181318564894647,
+                1.3048012546660361
+              ],
+              "std_xy_m": 0.0723835340588307,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000409",
+            "t_sim": 82.9,
+            "frame_id": 409,
+            "frame_sha256": "abcddf0fcc973443173d115e5e827281c2eac5e1865d39317d44476ab888ac8b",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.8714478622046219,
+                0.49389559062869,
+                1.4257936098657922
+              ],
+              "std_xy_m": 0.07309800861783032,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000415",
+            "t_sim": 84.1,
+            "frame_id": 415,
+            "frame_sha256": "14bea51cb47f601dfbbf80b6a4206d74a71610535171d0fb48777197dc8ad5ce",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.8764866840254603,
+                0.555345933794402,
+                1.9169649353076599
+              ],
+              "std_xy_m": 0.07845747643726597,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000506",
+            "t_sim": 102.3,
+            "frame_id": 506,
+            "frame_sha256": "dc6647a5a5fcf73429548edfea51ccbc0f64f3f9801a5fa3240fc3f147528a7c",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.40024286147161353,
+                1.372451883147942,
+                1.9949302910767175
+              ],
+              "std_xy_m": 0.10335494399154571,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000511",
+            "t_sim": 103.3,
+            "frame_id": 511,
+            "frame_sha256": "1b03ff604341328c7fbba80eeadf90d253b29030b38b2315bfdb96f93348b718",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.4265365505260718,
+                1.3768651105710012,
+                1.548115978891209
+              ],
+              "std_xy_m": 0.1043779643936027,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000590",
+            "t_sim": 119.1,
+            "frame_id": 590,
+            "frame_sha256": "a6ef0883739963bf094f8ad0a07de599eca961714a45c694f3f691d56d62de7c",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.6033682769920551,
+                2.384944218152007,
+                1.4285465838226088
+              ],
+              "std_xy_m": 0.1686488563825127,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000730",
+            "t_sim": 147.1,
+            "frame_id": 730,
+            "frame_sha256": "4b7e4f8f7cfbedb5125b9151f2f1b87f77a8d5446fb5b4cf7ad0ccc72466fcfe",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.7501822679612353,
+                3.417050543490649,
+                1.460480416647595
+              ],
+              "std_xy_m": 0.22929286343560887,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000772",
+            "t_sim": 155.5,
+            "frame_id": 772,
+            "frame_sha256": "72c9b630132d0ed0ce972f951046ba7ee2f8aadc6261d6a2b55831cda3078a71",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.8368132459816331,
+                3.5783875167758135,
+                0.8548826666562479
+              ],
+              "std_xy_m": 0.26098852343682566,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000780",
+            "t_sim": 157.1,
+            "frame_id": 780,
+            "frame_sha256": "f1e66dafd39b45dba0c35d500abe7052f1a39d0237ec5e7ad294c1c8c7118ba5",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.8199299568653879,
+                3.549722827337172,
+                0.7221319558116255
+              ],
+              "std_xy_m": 0.24172341242225273,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          }
+        ],
+        "first_t_sim": 79.7,
+        "last_t_sim": 157.1,
+        "max_observer_std_xy_m": 0.26098852343682566,
+        "view_circular_variance": 0.031674429322196995,
+        "association": "historical endpoint-hit cells within half-cell diagonal of summary line"
+      },
+      "confidence": "unvalidated_support",
+      "source": "own",
+      "age_s": 24.200000000000017
+    },
+    {
+      "obs_id": "r3-wall-252f0d88a527-0003",
+      "t_sim": 54.9,
+      "frame_sha256": "c8820171d6433904fe31e1c142b1b88212bebedcf2f49745a14d91e4f53c2239",
+      "observer_pose": {
+        "xyyaw": [
+          0.43715392208993353,
+          -0.3140702294110153,
+          -0.7157458568703552
+        ],
+        "std_xy_m": 0.05187348385531669,
+        "source": "own_rbpf_pose_ledger",
+        "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+      },
+      "entity": {
+        "kind": "wall_segment",
+        "id": "r3/wall/252f0d88a527/0003"
+      },
+      "claim": {
+        "state": "observed_wall_candidate",
+        "endpoints_m": [
+          [
+            -0.6477356962516294,
+            -0.7945655055334665
+          ],
+          [
+            0.848402028064611,
+            -0.7185490839379796
+          ]
+        ]
+      },
+      "evidence": {
+        "detector": "egomap34_frozen_contacts+odom_grid_hough_tls",
+        "score": 0.16039398715091205,
+        "semantics": "TSDF support; NOT calibrated wall probability",
+        "grid_fit_cells": 16,
+        "nearby_occupied_cells": 21,
+        "scan_count": 18,
+        "observation_ids": [
+          "r3-obs-000039",
+          "r3-obs-000047",
+          "r3-obs-000052",
+          "r3-obs-000057",
+          "r3-obs-000079",
+          "r3-obs-000085",
+          "r3-obs-000090",
+          "r3-obs-000095",
+          "r3-obs-000191",
+          "r3-obs-000196",
+          "r3-obs-000201",
+          "r3-obs-000211",
+          "r3-obs-000220",
+          "r3-obs-000227",
+          "r3-obs-000232",
+          "r3-obs-000252",
+          "r3-obs-000262",
+          "r3-obs-000269"
+        ],
+        "observations": [
+          {
+            "obs_id": "r3-obs-000039",
+            "t_sim": 8.9,
+            "frame_id": 39,
+            "frame_sha256": "ea854e7b115233b880ab0f4f548eecb02ae30970cf1d5e1a5470465971618f37",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.3124577331488036,
+                -0.03825803316302007,
+                -0.4351586274503223
+              ],
+              "std_xy_m": 0.10447393791204816,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000047",
+            "t_sim": 10.5,
+            "frame_id": 47,
+            "frame_sha256": "27ee486895cd6f9a70a46cf4da9495e8c95e1aa30d78275cc7bcc7574346692f",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.3328294674690094,
+                -0.10085205052792276,
+                -0.9135165976228063
+              ],
+              "std_xy_m": 0.10469230478293513,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000052",
+            "t_sim": 11.5,
+            "frame_id": 52,
+            "frame_sha256": "c23150b21749f7badbd20043cd72d8d7f30e85ae1e6c517b5075d83bc0ec27ae",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.3333093058702866,
+                -0.10651078214956655,
+                -1.223694552637629
+              ],
+              "std_xy_m": 0.10754953727182179,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000057",
+            "t_sim": 12.5,
+            "frame_id": 57,
+            "frame_sha256": "3c5b9f026071597d20de34be11434c63d245771d0efd3aabbdd26100c1945294",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.3282004925045999,
+                -0.08041688728812237,
+                -0.7267858769539948
+              ],
+              "std_xy_m": 0.11418862267621877,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000079",
+            "t_sim": 16.9,
+            "frame_id": 79,
+            "frame_sha256": "268c4f231f918ea5213ba705696ec66f72363c19d30385660e668880516bf2ed",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.3957193496177927,
+                -0.18949046390333468,
+                -1.8004245399352987
+              ],
+              "std_xy_m": 0.12078045745716144,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000085",
+            "t_sim": 18.1,
+            "frame_id": 85,
+            "frame_sha256": "d065abc24f0ac6f0dfa7c4ca4aee2b2971ead7d854987f8845b2e42adacaa417",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.4126804099729323,
+                -0.2511971465683945,
+                -1.4845651638484856
+              ],
+              "std_xy_m": 0.11705483991917247,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000090",
+            "t_sim": 19.1,
+            "frame_id": 90,
+            "frame_sha256": "106a010db978f248b8111a2aac8593562936e7906c75422e720d7bac4e1fd65f",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.409195014067733,
+                -0.261279632113065,
+                -0.9855280180118755
+              ],
+              "std_xy_m": 0.11773401504385612,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000095",
+            "t_sim": 20.1,
+            "frame_id": 95,
+            "frame_sha256": "8a38d31fec36e4d2c4abf41274eac12c3f4e7cb625ede0816df10c58f71f5317",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.4028996904785605,
+                -0.25986549492291,
+                -0.3747782404171063
+              ],
+              "std_xy_m": 0.11950071483578874,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000191",
+            "t_sim": 39.3,
+            "frame_id": 191,
+            "frame_sha256": "b7eb1285f9c807f43d03e55684730c05c7fc508baf041f97b4e90e64d5b79510",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.6778175535907431,
+                0.003894692082335628,
+                -2.8702254296173217
+              ],
+              "std_xy_m": 0.10622774371367959,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000196",
+            "t_sim": 40.3,
+            "frame_id": 196,
+            "frame_sha256": "8efc4d716fafe0f5ffcc744337997e1d1e9603fcb5329de680094c1cd4c71a25",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.7002619275729222,
+                0.04419410098381298,
+                -2.3365998127996184
+              ],
+              "std_xy_m": 0.153961040172378,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000201",
+            "t_sim": 41.3,
+            "frame_id": 201,
+            "frame_sha256": "97a41802a86626a22b0546e7fa82390198248e5e00f059fc8fe9d51027e0c2bb",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.6930460906064468,
+                0.0418105557699513,
+                -2.0027671068126236
+              ],
+              "std_xy_m": 0.18284212089392263,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000211",
+            "t_sim": 43.3,
+            "frame_id": 211,
+            "frame_sha256": "2742b284f1a6301b07770cde2b03b8def5667204516ed1e5c29658a2355e7d62",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.6315514177926699,
+                -0.0002140006106862687,
+                -2.5299085979216707
+              ],
+              "std_xy_m": 0.18967197563396415,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000220",
+            "t_sim": 45.1,
+            "frame_id": 220,
+            "frame_sha256": "071c295019c3777a68f16216abc09e78e64c00dc9d766c9456859114be44cda0",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.5613929067099205,
+                -0.03949637330175712,
+                -2.0041828834411084
+              ],
+              "std_xy_m": 0.19810130989957647,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000227",
+            "t_sim": 46.5,
+            "frame_id": 227,
+            "frame_sha256": "a351b842e34b6088764c55857452ff16f35b2d695c8d10b4a78152ca5a8101f3",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.507354875065494,
+                -0.04385988410670452,
+                -2.368444740070219
+              ],
+              "std_xy_m": 0.0983223449015224,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000232",
+            "t_sim": 47.5,
+            "frame_id": 232,
+            "frame_sha256": "4f78f0344f003aa7bca633e6bbcce72c9c442717a95544cbac2004ea98f96792",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.5074554567914312,
+                -0.034011915310141715,
+                -1.815905895057667
+              ],
+              "std_xy_m": 0.08809757578920538,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000252",
+            "t_sim": 51.5,
+            "frame_id": 252,
+            "frame_sha256": "a481fbebcf4bffd6a7f6afe967fed91c3ae7ec053e79274ab199a68ea110f412",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.4236094036214555,
+                -0.19491538787517382,
+                -1.3359133451056582
+              ],
+              "std_xy_m": 0.046560507568732507,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000262",
+            "t_sim": 53.5,
+            "frame_id": 262,
+            "frame_sha256": "6c3676f7fde1e3d3ecbafa518c24cadac4bf831ac545493e9ef9e4d2bf18819b",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.43859086888264215,
+                -0.2640559955482653,
+                -1.0416168653192028
+              ],
+              "std_xy_m": 0.04397186077435893,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000269",
+            "t_sim": 54.9,
+            "frame_id": 269,
+            "frame_sha256": "c8820171d6433904fe31e1c142b1b88212bebedcf2f49745a14d91e4f53c2239",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.43715392208993353,
+                -0.3140702294110153,
+                -0.7157458568703552
+              ],
+              "std_xy_m": 0.05187348385531669,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          }
+        ],
+        "first_t_sim": 8.9,
+        "last_t_sim": 54.9,
+        "max_observer_std_xy_m": 0.19810130989957647,
+        "view_circular_variance": 0.0025071248771473846,
+        "association": "historical endpoint-hit cells within half-cell diagonal of summary line"
+      },
+      "confidence": "unvalidated_support",
+      "source": "own",
+      "age_s": 126.4
+    },
+    {
+      "obs_id": "r3-wall-252f0d88a527-0004",
+      "t_sim": 180.9,
+      "frame_sha256": "f19da9765aeecfa29129c044cb5fd5e35d75600cb42c384693678810dfb7f259",
+      "observer_pose": {
+        "xyyaw": [
+          0.9083042989679455,
+          3.3390644875084208,
+          2.9778837834722616
+        ],
+        "std_xy_m": 0.10058551445175629,
+        "source": "own_rbpf_pose_ledger",
+        "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+      },
+      "entity": {
+        "kind": "wall_segment",
+        "id": "r3/wall/252f0d88a527/0004"
+      },
+      "claim": {
+        "state": "observed_wall_candidate",
+        "endpoints_m": [
+          [
+            -0.14999250381519136,
+            3.8498436016456066
+          ],
+          [
+            1.1518098833661585,
+            3.9122390873034374
+          ]
+        ]
+      },
+      "evidence": {
+        "detector": "egomap34_frozen_contacts+odom_grid_hough_tls",
+        "score": 0.4780383898835705,
+        "semantics": "TSDF support; NOT calibrated wall probability",
+        "grid_fit_cells": 14,
+        "nearby_occupied_cells": 20,
+        "scan_count": 24,
+        "observation_ids": [
+          "r3-obs-000393",
+          "r3-obs-000409",
+          "r3-obs-000415",
+          "r3-obs-000506",
+          "r3-obs-000511",
+          "r3-obs-000590",
+          "r3-obs-000617",
+          "r3-obs-000658",
+          "r3-obs-000684",
+          "r3-obs-000695",
+          "r3-obs-000700",
+          "r3-obs-000705",
+          "r3-obs-000710",
+          "r3-obs-000715",
+          "r3-obs-000720",
+          "r3-obs-000725",
+          "r3-obs-000730",
+          "r3-obs-000735",
+          "r3-obs-000744",
+          "r3-obs-000752",
+          "r3-obs-000757",
+          "r3-obs-000772",
+          "r3-obs-000780",
+          "r3-obs-000899"
+        ],
+        "observations": [
+          {
+            "obs_id": "r3-obs-000393",
+            "t_sim": 79.7,
+            "frame_id": 393,
+            "frame_sha256": "ccbab133ae927b62ba149f91cfd24597face378a80f0307df88ca29342a9430f",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.8141683751783417,
+                0.34181318564894647,
+                1.3048012546660361
+              ],
+              "std_xy_m": 0.0723835340588307,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000409",
+            "t_sim": 82.9,
+            "frame_id": 409,
+            "frame_sha256": "abcddf0fcc973443173d115e5e827281c2eac5e1865d39317d44476ab888ac8b",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.8714478622046219,
+                0.49389559062869,
+                1.4257936098657922
+              ],
+              "std_xy_m": 0.07309800861783032,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000415",
+            "t_sim": 84.1,
+            "frame_id": 415,
+            "frame_sha256": "14bea51cb47f601dfbbf80b6a4206d74a71610535171d0fb48777197dc8ad5ce",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.8764866840254603,
+                0.555345933794402,
+                1.9169649353076599
+              ],
+              "std_xy_m": 0.07845747643726597,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000506",
+            "t_sim": 102.3,
+            "frame_id": 506,
+            "frame_sha256": "dc6647a5a5fcf73429548edfea51ccbc0f64f3f9801a5fa3240fc3f147528a7c",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.40024286147161353,
+                1.372451883147942,
+                1.9949302910767175
+              ],
+              "std_xy_m": 0.10335494399154571,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000511",
+            "t_sim": 103.3,
+            "frame_id": 511,
+            "frame_sha256": "1b03ff604341328c7fbba80eeadf90d253b29030b38b2315bfdb96f93348b718",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.4265365505260718,
+                1.3768651105710012,
+                1.548115978891209
+              ],
+              "std_xy_m": 0.1043779643936027,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000590",
+            "t_sim": 119.1,
+            "frame_id": 590,
+            "frame_sha256": "a6ef0883739963bf094f8ad0a07de599eca961714a45c694f3f691d56d62de7c",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.6033682769920551,
+                2.384944218152007,
+                1.4285465838226088
+              ],
+              "std_xy_m": 0.1686488563825127,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000617",
+            "t_sim": 124.5,
+            "frame_id": 617,
+            "frame_sha256": "3da91998631dbf6cc8128a43e274c534b92bfbe82da6f7df6b6b0fd3c269a57c",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.6890044092213502,
+                2.6325413146432486,
+                1.5407696859387485
+              ],
+              "std_xy_m": 0.17957382770992447,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000658",
+            "t_sim": 132.7,
+            "frame_id": 658,
+            "frame_sha256": "bf942a96784bcef4d50929e66051faa8e24fd78b47d213f6b507582bdd916b75",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.6625838801701334,
+                3.094937092246123,
+                1.624433842621717
+              ],
+              "std_xy_m": 0.19707963487364355,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000684",
+            "t_sim": 137.9,
+            "frame_id": 684,
+            "frame_sha256": "0fc6206f610c38a912166ac8430edd2c8570623528ec565ca51395c4a0c88fd6",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.6650006460790179,
+                3.3238162776070252,
+                1.4658555050093272
+              ],
+              "std_xy_m": 0.20719528623563757,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000695",
+            "t_sim": 140.1,
+            "frame_id": 695,
+            "frame_sha256": "0eef4d8f329910816e0656b71cdb8b5eb45eae19cad95068e9cbbbd925f9cad4",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.7628657608834956,
+                3.4035219020850604,
+                1.745373392492688
+              ],
+              "std_xy_m": 0.2145795563895935,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000700",
+            "t_sim": 141.1,
+            "frame_id": 700,
+            "frame_sha256": "11c0de6058681ae605c7e36d527e08fc7433286466e750826c45e347bd0af1f2",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.752952434055572,
+                3.429501785877979,
+                1.452491131235841
+              ],
+              "std_xy_m": 0.22027056380616827,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000705",
+            "t_sim": 142.1,
+            "frame_id": 705,
+            "frame_sha256": "1c60b7eca3468ac7ef8e4db6930a5f3626d87dd6e6076eef9aea72e7c597f4a2",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.7518748700635293,
+                3.4481856473977555,
+                1.1667312304167679
+              ],
+              "std_xy_m": 0.24028918831041804,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000710",
+            "t_sim": 143.1,
+            "frame_id": 710,
+            "frame_sha256": "a5467d8b34792556cacfbb77ce2238f6f6f45b041c7d59a7cd533486bfc9692e",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.712659783978231,
+                3.4428217912219528,
+                1.5292878607919453
+              ],
+              "std_xy_m": 0.2288368047536204,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000715",
+            "t_sim": 144.1,
+            "frame_id": 715,
+            "frame_sha256": "907f85364003c390a0dff1a0c73433894e0a18b899ef15bdc9100f083b1344ab",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.7468725601401613,
+                3.417849773747489,
+                1.249551545448604
+              ],
+              "std_xy_m": 0.23244459140797039,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000720",
+            "t_sim": 145.1,
+            "frame_id": 720,
+            "frame_sha256": "d9d8690f565e8ea47f6f00228c034126b54aac0fb4a56aec47f52af724d1115a",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.7571766765164963,
+                3.4411003556324435,
+                0.7092962043389588
+              ],
+              "std_xy_m": 0.2281361073071804,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000725",
+            "t_sim": 146.1,
+            "frame_id": 725,
+            "frame_sha256": "cf41e727934e9ef563cb07846d2b1df311120c4dc5c548342366c5ea16d5d53b",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.7368110250737976,
+                3.4203922276705807,
+                0.9168254478571694
+              ],
+              "std_xy_m": 0.23141116438433293,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000730",
+            "t_sim": 147.1,
+            "frame_id": 730,
+            "frame_sha256": "4b7e4f8f7cfbedb5125b9151f2f1b87f77a8d5446fb5b4cf7ad0ccc72466fcfe",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.7501822679612353,
+                3.417050543490649,
+                1.460480416647595
+              ],
+              "std_xy_m": 0.22929286343560887,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000735",
+            "t_sim": 148.1,
+            "frame_id": 735,
+            "frame_sha256": "7c8c0f7082d688f352cddddcc74be2fb44e3e5f9b1c3047526dd45ea47fdddcc",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.7658675961754138,
+                3.4331880379676227,
+                1.993417516579056
+              ],
+              "std_xy_m": 0.22466699059607065,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000744",
+            "t_sim": 149.9,
+            "frame_id": 744,
+            "frame_sha256": "3937a2b437212dd742fa183dfdc93166ea49533c56adf008bd2b014c506303ac",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.7364399294131274,
+                3.4442394007155173,
+                2.1375142435696084
+              ],
+              "std_xy_m": 0.23989289196108662,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000752",
+            "t_sim": 151.5,
+            "frame_id": 752,
+            "frame_sha256": "3b0f53acc30e21750e42a7bb0e67fae78e27cb899f3c5938f1120cf6718746fc",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.7546054493822208,
+                3.4629971153440753,
+                1.8245549024640262
+              ],
+              "std_xy_m": 0.24956400059797126,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000757",
+            "t_sim": 152.5,
+            "frame_id": 757,
+            "frame_sha256": "4cdcad8882b8726ac86c04d29033a3f6704a3bc3a1dea1fe75b9b19285d8ebf0",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.7609483241947383,
+                3.430046420381051,
+                1.3561526524149308
+              ],
+              "std_xy_m": 0.2551741637968355,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000772",
+            "t_sim": 155.5,
+            "frame_id": 772,
+            "frame_sha256": "72c9b630132d0ed0ce972f951046ba7ee2f8aadc6261d6a2b55831cda3078a71",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.8368132459816331,
+                3.5783875167758135,
+                0.8548826666562479
+              ],
+              "std_xy_m": 0.26098852343682566,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000780",
+            "t_sim": 157.1,
+            "frame_id": 780,
+            "frame_sha256": "f1e66dafd39b45dba0c35d500abe7052f1a39d0237ec5e7ad294c1c8c7118ba5",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.8199299568653879,
+                3.549722827337172,
+                0.7221319558116255
+              ],
+              "std_xy_m": 0.24172341242225273,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000899",
+            "t_sim": 180.9,
+            "frame_id": 899,
+            "frame_sha256": "f19da9765aeecfa29129c044cb5fd5e35d75600cb42c384693678810dfb7f259",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.9083042989679455,
+                3.3390644875084208,
+                2.9778837834722616
+              ],
+              "std_xy_m": 0.10058551445175629,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          }
+        ],
+        "first_t_sim": 79.7,
+        "last_t_sim": 180.9,
+        "max_observer_std_xy_m": 0.26098852343682566,
+        "view_circular_variance": 0.03463033406962416,
+        "association": "historical endpoint-hit cells within half-cell diagonal of summary line"
+      },
+      "confidence": "unvalidated_support",
+      "source": "own",
+      "age_s": 0.4000000000000057
+    },
+    {
+      "obs_id": "r3-wall-252f0d88a527-0005",
+      "t_sim": 46.5,
+      "frame_sha256": "a351b842e34b6088764c55857452ff16f35b2d695c8d10b4a78152ca5a8101f3",
+      "observer_pose": {
+        "xyyaw": [
+          0.507354875065494,
+          -0.04385988410670452,
+          -2.368444740070219
+        ],
+        "std_xy_m": 0.0983223449015224,
+        "source": "own_rbpf_pose_ledger",
+        "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+      },
+      "entity": {
+        "kind": "wall_segment",
+        "id": "r3/wall/252f0d88a527/0005"
+      },
+      "claim": {
+        "state": "observed_wall_candidate",
+        "endpoints_m": [
+          [
+            -2.0491986670531532,
+            -0.8657716507348383
+          ],
+          [
+            -0.9520310025545766,
+            -0.8100262748981479
+          ]
+        ]
+      },
+      "evidence": {
+        "detector": "egomap34_frozen_contacts+odom_grid_hough_tls",
+        "score": 0.03347613018997991,
+        "semantics": "TSDF support; NOT calibrated wall probability",
+        "grid_fit_cells": 12,
+        "nearby_occupied_cells": 12,
+        "scan_count": 4,
+        "observation_ids": [
+          "r3-obs-000191",
+          "r3-obs-000196",
+          "r3-obs-000211",
+          "r3-obs-000227"
+        ],
+        "observations": [
+          {
+            "obs_id": "r3-obs-000191",
+            "t_sim": 39.3,
+            "frame_id": 191,
+            "frame_sha256": "b7eb1285f9c807f43d03e55684730c05c7fc508baf041f97b4e90e64d5b79510",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.6778175535907431,
+                0.003894692082335628,
+                -2.8702254296173217
+              ],
+              "std_xy_m": 0.10622774371367959,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000196",
+            "t_sim": 40.3,
+            "frame_id": 196,
+            "frame_sha256": "8efc4d716fafe0f5ffcc744337997e1d1e9603fcb5329de680094c1cd4c71a25",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.7002619275729222,
+                0.04419410098381298,
+                -2.3365998127996184
+              ],
+              "std_xy_m": 0.153961040172378,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000211",
+            "t_sim": 43.3,
+            "frame_id": 211,
+            "frame_sha256": "2742b284f1a6301b07770cde2b03b8def5667204516ed1e5c29658a2355e7d62",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.6315514177926699,
+                -0.0002140006106862687,
+                -2.5299085979216707
+              ],
+              "std_xy_m": 0.18967197563396415,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000227",
+            "t_sim": 46.5,
+            "frame_id": 227,
+            "frame_sha256": "a351b842e34b6088764c55857452ff16f35b2d695c8d10b4a78152ca5a8101f3",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.507354875065494,
+                -0.04385988410670452,
+                -2.368444740070219
+              ],
+              "std_xy_m": 0.0983223449015224,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          }
+        ],
+        "first_t_sim": 39.3,
+        "last_t_sim": 46.5,
+        "max_observer_std_xy_m": 0.18967197563396415,
+        "view_circular_variance": 5.497642863532456e-05,
+        "association": "historical endpoint-hit cells within half-cell diagonal of summary line"
+      },
+      "confidence": "unvalidated_support",
+      "source": "own",
+      "age_s": 134.8
+    },
+    {
+      "obs_id": "r3-wall-252f0d88a527-0006",
+      "t_sim": 160.5,
+      "frame_sha256": "aff0d6f3c8edffc4e9920973a812eb7d9f19a67c08ea310f48e77968cf0327b5",
+      "observer_pose": {
+        "xyyaw": [
+          0.9232225929126098,
+          3.577056553503363,
+          0.4068858358489722
+        ],
+        "std_xy_m": 0.24562321847019733,
+        "source": "own_rbpf_pose_ledger",
+        "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+      },
+      "entity": {
+        "kind": "wall_segment",
+        "id": "r3/wall/252f0d88a527/0006"
+      },
+      "claim": {
+        "state": "observed_wall_candidate",
+        "endpoints_m": [
+          [
+            1.1523202496941214,
+            4.108596306082839
+          ],
+          [
+            2.2488765742514474,
+            4.170046969922917
+          ]
+        ]
+      },
+      "evidence": {
+        "detector": "egomap34_frozen_contacts+odom_grid_hough_tls",
+        "score": 0.13951829224493464,
+        "semantics": "TSDF support; NOT calibrated wall probability",
+        "grid_fit_cells": 9,
+        "nearby_occupied_cells": 12,
+        "scan_count": 8,
+        "observation_ids": [
+          "r3-obs-000409",
+          "r3-obs-000415",
+          "r3-obs-000511",
+          "r3-obs-000590",
+          "r3-obs-000617",
+          "r3-obs-000725",
+          "r3-obs-000780",
+          "r3-obs-000797"
+        ],
+        "observations": [
+          {
+            "obs_id": "r3-obs-000409",
+            "t_sim": 82.9,
+            "frame_id": 409,
+            "frame_sha256": "abcddf0fcc973443173d115e5e827281c2eac5e1865d39317d44476ab888ac8b",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.8714478622046219,
+                0.49389559062869,
+                1.4257936098657922
+              ],
+              "std_xy_m": 0.07309800861783032,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000415",
+            "t_sim": 84.1,
+            "frame_id": 415,
+            "frame_sha256": "14bea51cb47f601dfbbf80b6a4206d74a71610535171d0fb48777197dc8ad5ce",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.8764866840254603,
+                0.555345933794402,
+                1.9169649353076599
+              ],
+              "std_xy_m": 0.07845747643726597,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000511",
+            "t_sim": 103.3,
+            "frame_id": 511,
+            "frame_sha256": "1b03ff604341328c7fbba80eeadf90d253b29030b38b2315bfdb96f93348b718",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.4265365505260718,
+                1.3768651105710012,
+                1.548115978891209
+              ],
+              "std_xy_m": 0.1043779643936027,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000590",
+            "t_sim": 119.1,
+            "frame_id": 590,
+            "frame_sha256": "a6ef0883739963bf094f8ad0a07de599eca961714a45c694f3f691d56d62de7c",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.6033682769920551,
+                2.384944218152007,
+                1.4285465838226088
+              ],
+              "std_xy_m": 0.1686488563825127,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000617",
+            "t_sim": 124.5,
+            "frame_id": 617,
+            "frame_sha256": "3da91998631dbf6cc8128a43e274c534b92bfbe82da6f7df6b6b0fd3c269a57c",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.6890044092213502,
+                2.6325413146432486,
+                1.5407696859387485
+              ],
+              "std_xy_m": 0.17957382770992447,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000725",
+            "t_sim": 146.1,
+            "frame_id": 725,
+            "frame_sha256": "cf41e727934e9ef563cb07846d2b1df311120c4dc5c548342366c5ea16d5d53b",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.7368110250737976,
+                3.4203922276705807,
+                0.9168254478571694
+              ],
+              "std_xy_m": 0.23141116438433293,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000780",
+            "t_sim": 157.1,
+            "frame_id": 780,
+            "frame_sha256": "f1e66dafd39b45dba0c35d500abe7052f1a39d0237ec5e7ad294c1c8c7118ba5",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.8199299568653879,
+                3.549722827337172,
+                0.7221319558116255
+              ],
+              "std_xy_m": 0.24172341242225273,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000797",
+            "t_sim": 160.5,
+            "frame_id": 797,
+            "frame_sha256": "aff0d6f3c8edffc4e9920973a812eb7d9f19a67c08ea310f48e77968cf0327b5",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.9232225929126098,
+                3.577056553503363,
+                0.4068858358489722
+              ],
+              "std_xy_m": 0.24562321847019733,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          }
+        ],
+        "first_t_sim": 82.9,
+        "last_t_sim": 160.5,
+        "max_observer_std_xy_m": 0.24562321847019733,
+        "view_circular_variance": 0.020569439571035224,
+        "association": "historical endpoint-hit cells within half-cell diagonal of summary line"
+      },
+      "confidence": "unvalidated_support",
+      "source": "own",
+      "age_s": 20.80000000000001
+    },
+    {
+      "obs_id": "r3-wall-252f0d88a527-0007",
+      "t_sim": 65.9,
+      "frame_sha256": "1d1d3cfeb168a0f58f37d4908b2e7925d2b4def157bdcb59ce26c935e461958d",
+      "observer_pose": {
+        "xyyaw": [
+          0.8343621927186213,
+          -0.3698588653172217,
+          1.3319623496162425
+        ],
+        "std_xy_m": 0.05371666433449921,
+        "source": "own_rbpf_pose_ledger",
+        "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+      },
+      "entity": {
+        "kind": "wall_segment",
+        "id": "r3/wall/252f0d88a527/0007"
+      },
+      "claim": {
+        "state": "observed_wall_candidate",
+        "endpoints_m": [
+          [
+            1.1376090601375852,
+            -0.6494520680072828
+          ],
+          [
+            1.181743132364475,
+            0.34859630682057596
+          ]
+        ]
+      },
+      "evidence": {
+        "detector": "egomap34_frozen_contacts+odom_grid_hough_tls",
+        "score": 0.22842778331348665,
+        "semantics": "TSDF support; NOT calibrated wall probability",
+        "grid_fit_cells": 11,
+        "nearby_occupied_cells": 12,
+        "scan_count": 6,
+        "observation_ids": [
+          "r3-obs-000047",
+          "r3-obs-000100",
+          "r3-obs-000146",
+          "r3-obs-000302",
+          "r3-obs-000307",
+          "r3-obs-000324"
+        ],
+        "observations": [
+          {
+            "obs_id": "r3-obs-000047",
+            "t_sim": 10.5,
+            "frame_id": 47,
+            "frame_sha256": "27ee486895cd6f9a70a46cf4da9495e8c95e1aa30d78275cc7bcc7574346692f",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.3328294674690094,
+                -0.10085205052792276,
+                -0.9135165976228063
+              ],
+              "std_xy_m": 0.10469230478293513,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000100",
+            "t_sim": 21.1,
+            "frame_id": 100,
+            "frame_sha256": "7108fb06ea4e56d18c9c7b9c12844bbb984a6d4261bf0d3586386dab5794bdaa",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.4380874020738415,
+                -0.2797640855023884,
+                0.1438735573994765
+              ],
+              "std_xy_m": 0.13140788968618586,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000146",
+            "t_sim": 30.3,
+            "frame_id": 146,
+            "frame_sha256": "add1416a22c16a1781456f8b06a5920f811fdbb60c956bf8e6be913f79e8bf8a",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.816339793319055,
+                0.013481276105646076,
+                1.157034330152067
+              ],
+              "std_xy_m": 0.11566241885007346,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000302",
+            "t_sim": 61.5,
+            "frame_id": 302,
+            "frame_sha256": "ae16726e8047d8d6a0fb0e529b76b43965b98a980ce57c21575d55b610c96b64",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.7424103911241101,
+                -0.4766053686666799,
+                0.2742922606540339
+              ],
+              "std_xy_m": 0.06313545005703998,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000307",
+            "t_sim": 62.5,
+            "frame_id": 307,
+            "frame_sha256": "aae0f6f5b39da40d44c71d3b9900baa2637e254d575540223f53c77bd8acaf94",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.7623486602818379,
+                -0.48111140732662355,
+                0.8164780646213989
+              ],
+              "std_xy_m": 0.04482686488886602,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000324",
+            "t_sim": 65.9,
+            "frame_id": 324,
+            "frame_sha256": "1d1d3cfeb168a0f58f37d4908b2e7925d2b4def157bdcb59ce26c935e461958d",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.8343621927186213,
+                -0.3698588653172217,
+                1.3319623496162425
+              ],
+              "std_xy_m": 0.05371666433449921,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          }
+        ],
+        "first_t_sim": 10.5,
+        "last_t_sim": 65.9,
+        "max_observer_std_xy_m": 0.13140788968618586,
+        "view_circular_variance": 0.03754913953974168,
+        "association": "historical endpoint-hit cells within half-cell diagonal of summary line"
+      },
+      "confidence": "unvalidated_support",
+      "source": "own",
+      "age_s": 115.4
+    },
+    {
+      "obs_id": "r3-wall-252f0d88a527-0008",
+      "t_sim": 62.5,
+      "frame_sha256": "aae0f6f5b39da40d44c71d3b9900baa2637e254d575540223f53c77bd8acaf94",
+      "observer_pose": {
+        "xyyaw": [
+          0.7623486602818379,
+          -0.48111140732662355,
+          0.8164780646213989
+        ],
+        "std_xy_m": 0.04482686488886602,
+        "source": "own_rbpf_pose_ledger",
+        "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+      },
+      "entity": {
+        "kind": "wall_segment",
+        "id": "r3/wall/252f0d88a527/0008"
+      },
+      "claim": {
+        "state": "observed_wall_candidate",
+        "endpoints_m": [
+          [
+            1.0783972680616696,
+            0.44857503507105934
+          ],
+          [
+            1.0283436544432114,
+            -0.5489132921927409
+          ]
+        ]
+      },
+      "evidence": {
+        "detector": "egomap34_frozen_contacts+odom_grid_hough_tls",
+        "score": 0.21397974081283416,
+        "semantics": "TSDF support; NOT calibrated wall probability",
+        "grid_fit_cells": 11,
+        "nearby_occupied_cells": 11,
+        "scan_count": 10,
+        "observation_ids": [
+          "r3-obs-000011",
+          "r3-obs-000039",
+          "r3-obs-000057",
+          "r3-obs-000095",
+          "r3-obs-000100",
+          "r3-obs-000105",
+          "r3-obs-000146",
+          "r3-obs-000269",
+          "r3-obs-000292",
+          "r3-obs-000307"
+        ],
+        "observations": [
+          {
+            "obs_id": "r3-obs-000011",
+            "t_sim": 3.3,
+            "frame_id": 11,
+            "frame_sha256": "4af44c75cb4babc1d343d4e90b4e173e83361aaaee1e87a55564350b7de7e34f",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.024439184945503553,
+                0.021271862511974063,
+                -0.011334270429095739
+              ],
+              "std_xy_m": 0.10151330105142937,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000039",
+            "t_sim": 8.9,
+            "frame_id": 39,
+            "frame_sha256": "ea854e7b115233b880ab0f4f548eecb02ae30970cf1d5e1a5470465971618f37",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.3124577331488036,
+                -0.03825803316302007,
+                -0.4351586274503223
+              ],
+              "std_xy_m": 0.10447393791204816,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000057",
+            "t_sim": 12.5,
+            "frame_id": 57,
+            "frame_sha256": "3c5b9f026071597d20de34be11434c63d245771d0efd3aabbdd26100c1945294",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.3282004925045999,
+                -0.08041688728812237,
+                -0.7267858769539948
+              ],
+              "std_xy_m": 0.11418862267621877,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000095",
+            "t_sim": 20.1,
+            "frame_id": 95,
+            "frame_sha256": "8a38d31fec36e4d2c4abf41274eac12c3f4e7cb625ede0816df10c58f71f5317",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.4028996904785605,
+                -0.25986549492291,
+                -0.3747782404171063
+              ],
+              "std_xy_m": 0.11950071483578874,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000100",
+            "t_sim": 21.1,
+            "frame_id": 100,
+            "frame_sha256": "7108fb06ea4e56d18c9c7b9c12844bbb984a6d4261bf0d3586386dab5794bdaa",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.4380874020738415,
+                -0.2797640855023884,
+                0.1438735573994765
+              ],
+              "std_xy_m": 0.13140788968618586,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000105",
+            "t_sim": 22.1,
+            "frame_id": 105,
+            "frame_sha256": "69a7f836613baa56482e2ae6f5e51ef38f36a135383903f4988f683e45ed1f3d",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.46333977203276944,
+                -0.2631919345709877,
+                0.6500228624469693
+              ],
+              "std_xy_m": 0.13055808995026347,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000146",
+            "t_sim": 30.3,
+            "frame_id": 146,
+            "frame_sha256": "add1416a22c16a1781456f8b06a5920f811fdbb60c956bf8e6be913f79e8bf8a",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.816339793319055,
+                0.013481276105646076,
+                1.157034330152067
+              ],
+              "std_xy_m": 0.11566241885007346,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000269",
+            "t_sim": 54.9,
+            "frame_id": 269,
+            "frame_sha256": "c8820171d6433904fe31e1c142b1b88212bebedcf2f49745a14d91e4f53c2239",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.43715392208993353,
+                -0.3140702294110153,
+                -0.7157458568703552
+              ],
+              "std_xy_m": 0.05187348385531669,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000292",
+            "t_sim": 59.5,
+            "frame_id": 292,
+            "frame_sha256": "0aaea7e74d5944c3eff1c1acf0d924a7c1eba8a065ec2c51802534aad7d657fd",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.6361231099798748,
+                -0.45919385724711875,
+                -0.14979636210241987
+              ],
+              "std_xy_m": 0.0570958024223587,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000307",
+            "t_sim": 62.5,
+            "frame_id": 307,
+            "frame_sha256": "aae0f6f5b39da40d44c71d3b9900baa2637e254d575540223f53c77bd8acaf94",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.7623486602818379,
+                -0.48111140732662355,
+                0.8164780646213989
+              ],
+              "std_xy_m": 0.04482686488886602,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          }
+        ],
+        "first_t_sim": 3.3,
+        "last_t_sim": 62.5,
+        "max_observer_std_xy_m": 0.13140788968618586,
+        "view_circular_variance": 0.054143011547767544,
+        "association": "historical endpoint-hit cells within half-cell diagonal of summary line"
+      },
+      "confidence": "unvalidated_support",
+      "source": "own",
+      "age_s": 118.80000000000001
+    },
+    {
+      "obs_id": "r3-wall-252f0d88a527-0009",
+      "t_sim": 160.5,
+      "frame_sha256": "aff0d6f3c8edffc4e9920973a812eb7d9f19a67c08ea310f48e77968cf0327b5",
+      "observer_pose": {
+        "xyyaw": [
+          0.9232225929126098,
+          3.577056553503363,
+          0.4068858358489722
+        ],
+        "std_xy_m": 0.24562321847019733,
+        "source": "own_rbpf_pose_ledger",
+        "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+      },
+      "entity": {
+        "kind": "wall_segment",
+        "id": "r3/wall/252f0d88a527/0009"
+      },
+      "claim": {
+        "state": "observed_wall_candidate",
+        "endpoints_m": [
+          [
+            1.550694068043048,
+            4.0365149028162675
+          ],
+          [
+            2.448316190510191,
+            4.082714853876962
+          ]
+        ]
+      },
+      "evidence": {
+        "detector": "egomap34_frozen_contacts+odom_grid_hough_tls",
+        "score": 0.02268184510477849,
+        "semantics": "TSDF support; NOT calibrated wall probability",
+        "grid_fit_cells": 10,
+        "nearby_occupied_cells": 10,
+        "scan_count": 5,
+        "observation_ids": [
+          "r3-obs-000590",
+          "r3-obs-000725",
+          "r3-obs-000772",
+          "r3-obs-000780",
+          "r3-obs-000797"
+        ],
+        "observations": [
+          {
+            "obs_id": "r3-obs-000590",
+            "t_sim": 119.1,
+            "frame_id": 590,
+            "frame_sha256": "a6ef0883739963bf094f8ad0a07de599eca961714a45c694f3f691d56d62de7c",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.6033682769920551,
+                2.384944218152007,
+                1.4285465838226088
+              ],
+              "std_xy_m": 0.1686488563825127,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000725",
+            "t_sim": 146.1,
+            "frame_id": 725,
+            "frame_sha256": "cf41e727934e9ef563cb07846d2b1df311120c4dc5c548342366c5ea16d5d53b",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.7368110250737976,
+                3.4203922276705807,
+                0.9168254478571694
+              ],
+              "std_xy_m": 0.23141116438433293,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000772",
+            "t_sim": 155.5,
+            "frame_id": 772,
+            "frame_sha256": "72c9b630132d0ed0ce972f951046ba7ee2f8aadc6261d6a2b55831cda3078a71",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.8368132459816331,
+                3.5783875167758135,
+                0.8548826666562479
+              ],
+              "std_xy_m": 0.26098852343682566,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000780",
+            "t_sim": 157.1,
+            "frame_id": 780,
+            "frame_sha256": "f1e66dafd39b45dba0c35d500abe7052f1a39d0237ec5e7ad294c1c8c7118ba5",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.8199299568653879,
+                3.549722827337172,
+                0.7221319558116255
+              ],
+              "std_xy_m": 0.24172341242225273,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000797",
+            "t_sim": 160.5,
+            "frame_id": 797,
+            "frame_sha256": "aff0d6f3c8edffc4e9920973a812eb7d9f19a67c08ea310f48e77968cf0327b5",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.9232225929126098,
+                3.577056553503363,
+                0.4068858358489722
+              ],
+              "std_xy_m": 0.24562321847019733,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          }
+        ],
+        "first_t_sim": 119.1,
+        "last_t_sim": 160.5,
+        "max_observer_std_xy_m": 0.26098852343682566,
+        "view_circular_variance": 0.012658859530519383,
+        "association": "historical endpoint-hit cells within half-cell diagonal of summary line"
+      },
+      "confidence": "unvalidated_support",
+      "source": "own",
+      "age_s": 20.80000000000001
+    },
+    {
+      "obs_id": "r3-wall-252f0d88a527-0010",
+      "t_sim": 147.1,
+      "frame_sha256": "4b7e4f8f7cfbedb5125b9151f2f1b87f77a8d5446fb5b4cf7ad0ccc72466fcfe",
+      "observer_pose": {
+        "xyyaw": [
+          0.7501822679612353,
+          3.417050543490649,
+          1.460480416647595
+        ],
+        "std_xy_m": 0.22929286343560887,
+        "source": "own_rbpf_pose_ledger",
+        "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+      },
+      "entity": {
+        "kind": "wall_segment",
+        "id": "r3/wall/252f0d88a527/0010"
+      },
+      "claim": {
+        "state": "observed_wall_candidate",
+        "endpoints_m": [
+          [
+            -0.14919637604090807,
+            4.035659732867958
+          ],
+          [
+            0.7479860713241773,
+            4.085937548737113
+          ]
+        ]
+      },
+      "evidence": {
+        "detector": "egomap34_frozen_contacts+odom_grid_hough_tls",
+        "score": 0.3746906326079154,
+        "semantics": "TSDF support; NOT calibrated wall probability",
+        "grid_fit_cells": 9,
+        "nearby_occupied_cells": 9,
+        "scan_count": 4,
+        "observation_ids": [
+          "r3-obs-000409",
+          "r3-obs-000415",
+          "r3-obs-000511",
+          "r3-obs-000730"
+        ],
+        "observations": [
+          {
+            "obs_id": "r3-obs-000409",
+            "t_sim": 82.9,
+            "frame_id": 409,
+            "frame_sha256": "abcddf0fcc973443173d115e5e827281c2eac5e1865d39317d44476ab888ac8b",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.8714478622046219,
+                0.49389559062869,
+                1.4257936098657922
+              ],
+              "std_xy_m": 0.07309800861783032,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000415",
+            "t_sim": 84.1,
+            "frame_id": 415,
+            "frame_sha256": "14bea51cb47f601dfbbf80b6a4206d74a71610535171d0fb48777197dc8ad5ce",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.8764866840254603,
+                0.555345933794402,
+                1.9169649353076599
+              ],
+              "std_xy_m": 0.07845747643726597,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000511",
+            "t_sim": 103.3,
+            "frame_id": 511,
+            "frame_sha256": "1b03ff604341328c7fbba80eeadf90d253b29030b38b2315bfdb96f93348b718",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.4265365505260718,
+                1.3768651105710012,
+                1.548115978891209
+              ],
+              "std_xy_m": 0.1043779643936027,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000730",
+            "t_sim": 147.1,
+            "frame_id": 730,
+            "frame_sha256": "4b7e4f8f7cfbedb5125b9151f2f1b87f77a8d5446fb5b4cf7ad0ccc72466fcfe",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.7501822679612353,
+                3.417050543490649,
+                1.460480416647595
+              ],
+              "std_xy_m": 0.22929286343560887,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          }
+        ],
+        "first_t_sim": 82.9,
+        "last_t_sim": 147.1,
+        "max_observer_std_xy_m": 0.22929286343560887,
+        "view_circular_variance": 0.018781638921870816,
+        "association": "historical endpoint-hit cells within half-cell diagonal of summary line"
+      },
+      "confidence": "unvalidated_support",
+      "source": "own",
+      "age_s": 34.20000000000002
+    },
+    {
+      "obs_id": "r3-wall-252f0d88a527-0011",
+      "t_sim": 39.3,
+      "frame_sha256": "b7eb1285f9c807f43d03e55684730c05c7fc508baf041f97b4e90e64d5b79510",
+      "observer_pose": {
+        "xyyaw": [
+          0.6778175535907431,
+          0.003894692082335628,
+          -2.8702254296173217
+        ],
+        "std_xy_m": 0.10622774371367959,
+        "source": "own_rbpf_pose_ledger",
+        "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+      },
+      "entity": {
+        "kind": "wall_segment",
+        "id": "r3/wall/252f0d88a527/0011"
+      },
+      "claim": {
+        "state": "observed_wall_candidate",
+        "endpoints_m": [
+          [
+            -2.0499999999999994,
+            -0.3500000000000001
+          ],
+          [
+            -2.0499999999999994,
+            0.44999999999999996
+          ]
+        ]
+      },
+      "evidence": {
+        "detector": "egomap34_frozen_contacts+odom_grid_hough_tls",
+        "score": 0.0681922235005233,
+        "semantics": "TSDF support; NOT calibrated wall probability",
+        "grid_fit_cells": 7,
+        "nearby_occupied_cells": 7,
+        "scan_count": 2,
+        "observation_ids": [
+          "r3-obs-000163",
+          "r3-obs-000191"
+        ],
+        "observations": [
+          {
+            "obs_id": "r3-obs-000163",
+            "t_sim": 33.7,
+            "frame_id": 163,
+            "frame_sha256": "ce3fffe256fc1cfa3203b5c4677f579258d98d45881881362a1c2ea34ca82bfc",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.9154571890022599,
+                0.03810375071126097,
+                2.966911183033522
+              ],
+              "std_xy_m": 0.10385468141312475,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000191",
+            "t_sim": 39.3,
+            "frame_id": 191,
+            "frame_sha256": "b7eb1285f9c807f43d03e55684730c05c7fc508baf041f97b4e90e64d5b79510",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.6778175535907431,
+                0.003894692082335628,
+                -2.8702254296173217
+              ],
+              "std_xy_m": 0.10622774371367959,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          }
+        ],
+        "first_t_sim": 33.7,
+        "last_t_sim": 39.3,
+        "max_observer_std_xy_m": 0.10622774371367959,
+        "view_circular_variance": 0.00010645235104562405,
+        "association": "historical endpoint-hit cells within half-cell diagonal of summary line"
+      },
+      "confidence": "unvalidated_support",
+      "source": "own",
+      "age_s": 142.0
+    },
+    {
+      "obs_id": "r3-wall-252f0d88a527-0012",
+      "t_sim": 82.9,
+      "frame_sha256": "abcddf0fcc973443173d115e5e827281c2eac5e1865d39317d44476ab888ac8b",
+      "observer_pose": {
+        "xyyaw": [
+          0.8714478622046219,
+          0.49389559062869,
+          1.4257936098657922
+        ],
+        "std_xy_m": 0.07309800861783032,
+        "source": "own_rbpf_pose_ledger",
+        "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+      },
+      "entity": {
+        "kind": "wall_segment",
+        "id": "r3/wall/252f0d88a527/0012"
+      },
+      "claim": {
+        "state": "observed_wall_candidate",
+        "endpoints_m": [
+          [
+            1.1737503012103598,
+            2.348808218234126
+          ],
+          [
+            1.1337074103155933,
+            1.5508175564230857
+          ]
+        ]
+      },
+      "evidence": {
+        "detector": "egomap34_frozen_contacts+odom_grid_hough_tls",
+        "score": 0.006811734707436613,
+        "semantics": "TSDF support; NOT calibrated wall probability",
+        "grid_fit_cells": 9,
+        "nearby_occupied_cells": 9,
+        "scan_count": 3,
+        "observation_ids": [
+          "r3-obs-000324",
+          "r3-obs-000345",
+          "r3-obs-000409"
+        ],
+        "observations": [
+          {
+            "obs_id": "r3-obs-000324",
+            "t_sim": 65.9,
+            "frame_id": 324,
+            "frame_sha256": "1d1d3cfeb168a0f58f37d4908b2e7925d2b4def157bdcb59ce26c935e461958d",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.8343621927186213,
+                -0.3698588653172217,
+                1.3319623496162425
+              ],
+              "std_xy_m": 0.05371666433449921,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000345",
+            "t_sim": 70.1,
+            "frame_id": 345,
+            "frame_sha256": "a413d5d693ba35ef3f2f98d151fd74de8574d4953efc8e29f7467f4067e036e5",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.90256578481621,
+                -0.18970579526129985,
+                1.849335006756756
+              ],
+              "std_xy_m": 0.07178116096580908,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000409",
+            "t_sim": 82.9,
+            "frame_id": 409,
+            "frame_sha256": "abcddf0fcc973443173d115e5e827281c2eac5e1865d39317d44476ab888ac8b",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.8714478622046219,
+                0.49389559062869,
+                1.4257936098657922
+              ],
+              "std_xy_m": 0.07309800861783032,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          }
+        ],
+        "first_t_sim": 65.9,
+        "last_t_sim": 82.9,
+        "max_observer_std_xy_m": 0.07309800861783032,
+        "view_circular_variance": 0.0009582722097773382,
+        "association": "historical endpoint-hit cells within half-cell diagonal of summary line"
+      },
+      "confidence": "unvalidated_support",
+      "source": "own",
+      "age_s": 98.4
+    },
+    {
+      "obs_id": "r3-wall-252f0d88a527-0013",
+      "t_sim": 102.3,
+      "frame_sha256": "dc6647a5a5fcf73429548edfea51ccbc0f64f3f9801a5fa3240fc3f147528a7c",
+      "observer_pose": {
+        "xyyaw": [
+          0.40024286147161353,
+          1.372451883147942,
+          1.9949302910767175
+        ],
+        "std_xy_m": 0.10335494399154571,
+        "source": "own_rbpf_pose_ledger",
+        "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+      },
+      "entity": {
+        "kind": "wall_segment",
+        "id": "r3/wall/252f0d88a527/0013"
+      },
+      "claim": {
+        "state": "observed_wall_candidate",
+        "endpoints_m": [
+          [
+            -1.8494607561604195,
+            3.9403774637112305
+          ],
+          [
+            -1.1516521859875757,
+            3.979482431609462
+          ]
+        ]
+      },
+      "evidence": {
+        "detector": "egomap34_frozen_contacts+odom_grid_hough_tls",
+        "score": 0.05748742492632242,
+        "semantics": "TSDF support; NOT calibrated wall probability",
+        "grid_fit_cells": 8,
+        "nearby_occupied_cells": 8,
+        "scan_count": 2,
+        "observation_ids": [
+          "r3-obs-000475",
+          "r3-obs-000506"
+        ],
+        "observations": [
+          {
+            "obs_id": "r3-obs-000475",
+            "t_sim": 96.1,
+            "frame_id": 475,
+            "frame_sha256": "b30a44541e110adc0816196a390dc3cbacdd0310c1c435cbe84165ccec6916fc",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.6272717218367462,
+                1.1607795269104169,
+                2.4471289754262147
+              ],
+              "std_xy_m": 0.09596873733669815,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000506",
+            "t_sim": 102.3,
+            "frame_id": 506,
+            "frame_sha256": "dc6647a5a5fcf73429548edfea51ccbc0f64f3f9801a5fa3240fc3f147528a7c",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.40024286147161353,
+                1.372451883147942,
+                1.9949302910767175
+              ],
+              "std_xy_m": 0.10335494399154571,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          }
+        ],
+        "first_t_sim": 96.1,
+        "last_t_sim": 102.3,
+        "max_observer_std_xy_m": 0.10335494399154571,
+        "view_circular_variance": 1.0635421595101002e-05,
+        "association": "historical endpoint-hit cells within half-cell diagonal of summary line"
+      },
+      "confidence": "unvalidated_support",
+      "source": "own",
+      "age_s": 79.00000000000001
+    },
+    {
+      "obs_id": "r3-wall-252f0d88a527-0014",
+      "t_sim": 45.1,
+      "frame_sha256": "071c295019c3777a68f16216abc09e78e64c00dc9d766c9456859114be44cda0",
+      "observer_pose": {
+        "xyyaw": [
+          0.5613929067099205,
+          -0.03949637330175712,
+          -2.0041828834411084
+        ],
+        "std_xy_m": 0.19810130989957647,
+        "source": "own_rbpf_pose_ledger",
+        "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+      },
+      "entity": {
+        "kind": "wall_segment",
+        "id": "r3/wall/252f0d88a527/0014"
+      },
+      "claim": {
+        "state": "observed_wall_candidate",
+        "endpoints_m": [
+          [
+            -0.8487748172882645,
+            -0.8234038604471856
+          ],
+          [
+            -0.25004537713747166,
+            -0.8509850422056595
+          ]
+        ]
+      },
+      "evidence": {
+        "detector": "egomap34_frozen_contacts+odom_grid_hough_tls",
+        "score": 0.03403924925085148,
+        "semantics": "TSDF support; NOT calibrated wall probability",
+        "grid_fit_cells": 7,
+        "nearby_occupied_cells": 7,
+        "scan_count": 5,
+        "observation_ids": [
+          "r3-obs-000191",
+          "r3-obs-000196",
+          "r3-obs-000201",
+          "r3-obs-000211",
+          "r3-obs-000220"
+        ],
+        "observations": [
+          {
+            "obs_id": "r3-obs-000191",
+            "t_sim": 39.3,
+            "frame_id": 191,
+            "frame_sha256": "b7eb1285f9c807f43d03e55684730c05c7fc508baf041f97b4e90e64d5b79510",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.6778175535907431,
+                0.003894692082335628,
+                -2.8702254296173217
+              ],
+              "std_xy_m": 0.10622774371367959,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000196",
+            "t_sim": 40.3,
+            "frame_id": 196,
+            "frame_sha256": "8efc4d716fafe0f5ffcc744337997e1d1e9603fcb5329de680094c1cd4c71a25",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.7002619275729222,
+                0.04419410098381298,
+                -2.3365998127996184
+              ],
+              "std_xy_m": 0.153961040172378,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000201",
+            "t_sim": 41.3,
+            "frame_id": 201,
+            "frame_sha256": "97a41802a86626a22b0546e7fa82390198248e5e00f059fc8fe9d51027e0c2bb",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.6930460906064468,
+                0.0418105557699513,
+                -2.0027671068126236
+              ],
+              "std_xy_m": 0.18284212089392263,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000211",
+            "t_sim": 43.3,
+            "frame_id": 211,
+            "frame_sha256": "2742b284f1a6301b07770cde2b03b8def5667204516ed1e5c29658a2355e7d62",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.6315514177926699,
+                -0.0002140006106862687,
+                -2.5299085979216707
+              ],
+              "std_xy_m": 0.18967197563396415,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000220",
+            "t_sim": 45.1,
+            "frame_id": 220,
+            "frame_sha256": "071c295019c3777a68f16216abc09e78e64c00dc9d766c9456859114be44cda0",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.5613929067099205,
+                -0.03949637330175712,
+                -2.0041828834411084
+              ],
+              "std_xy_m": 0.19810130989957647,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          }
+        ],
+        "first_t_sim": 39.3,
+        "last_t_sim": 45.1,
+        "max_observer_std_xy_m": 0.19810130989957647,
+        "view_circular_variance": 0.0003597124992802244,
+        "association": "historical endpoint-hit cells within half-cell diagonal of summary line"
+      },
+      "confidence": "unvalidated_support",
+      "source": "own",
+      "age_s": 136.20000000000002
+    },
+    {
+      "obs_id": "r3-wall-252f0d88a527-0015",
+      "t_sim": 180.9,
+      "frame_sha256": "f19da9765aeecfa29129c044cb5fd5e35d75600cb42c384693678810dfb7f259",
+      "observer_pose": {
+        "xyyaw": [
+          0.9083042989679455,
+          3.3390644875084208,
+          2.9778837834722616
+        ],
+        "std_xy_m": 0.10058551445175629,
+        "source": "own_rbpf_pose_ledger",
+        "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+      },
+      "entity": {
+        "kind": "wall_segment",
+        "id": "r3/wall/252f0d88a527/0015"
+      },
+      "claim": {
+        "state": "observed_wall_candidate",
+        "endpoints_m": [
+          [
+            -1.9499999999999995,
+            2.5500000000000003
+          ],
+          [
+            -1.9499999999999995,
+            3.0500000000000003
+          ]
+        ]
+      },
+      "evidence": {
+        "detector": "egomap34_frozen_contacts+odom_grid_hough_tls",
+        "score": 0.09844974170190518,
+        "semantics": "TSDF support; NOT calibrated wall probability",
+        "grid_fit_cells": 6,
+        "nearby_occupied_cells": 6,
+        "scan_count": 2,
+        "observation_ids": [
+          "r3-obs-000475",
+          "r3-obs-000899"
+        ],
+        "observations": [
+          {
+            "obs_id": "r3-obs-000475",
+            "t_sim": 96.1,
+            "frame_id": 475,
+            "frame_sha256": "b30a44541e110adc0816196a390dc3cbacdd0310c1c435cbe84165ccec6916fc",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.6272717218367462,
+                1.1607795269104169,
+                2.4471289754262147
+              ],
+              "std_xy_m": 0.09596873733669815,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000899",
+            "t_sim": 180.9,
+            "frame_id": 899,
+            "frame_sha256": "f19da9765aeecfa29129c044cb5fd5e35d75600cb42c384693678810dfb7f259",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.9083042989679455,
+                3.3390644875084208,
+                2.9778837834722616
+              ],
+              "std_xy_m": 0.10058551445175629,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          }
+        ],
+        "first_t_sim": 96.1,
+        "last_t_sim": 180.9,
+        "max_observer_std_xy_m": 0.10058551445175629,
+        "view_circular_variance": 0.05280210950681583,
+        "association": "historical endpoint-hit cells within half-cell diagonal of summary line"
+      },
+      "confidence": "unvalidated_support",
+      "source": "own",
+      "age_s": 0.4000000000000057
+    },
+    {
+      "obs_id": "r3-wall-252f0d88a527-0016",
+      "t_sim": 61.5,
+      "frame_sha256": "ae16726e8047d8d6a0fb0e529b76b43965b98a980ce57c21575d55b610c96b64",
+      "observer_pose": {
+        "xyyaw": [
+          0.7424103911241101,
+          -0.4766053686666799,
+          0.2742922606540339
+        ],
+        "std_xy_m": 0.06313545005703998,
+        "source": "own_rbpf_pose_ledger",
+        "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+      },
+      "entity": {
+        "kind": "wall_segment",
+        "id": "r3/wall/252f0d88a527/0016"
+      },
+      "claim": {
+        "state": "observed_wall_candidate",
+        "endpoints_m": [
+          [
+            3.751514354376219,
+            1.0430594548663727
+          ],
+          [
+            4.1541644745346025,
+            1.130913500882525
+          ]
+        ]
+      },
+      "evidence": {
+        "detector": "egomap34_frozen_contacts+odom_grid_hough_tls",
+        "score": 0.0010363800295861048,
+        "semantics": "TSDF support; NOT calibrated wall probability",
+        "grid_fit_cells": 5,
+        "nearby_occupied_cells": 5,
+        "scan_count": 1,
+        "observation_ids": [
+          "r3-obs-000302"
+        ],
+        "observations": [
+          {
+            "obs_id": "r3-obs-000302",
+            "t_sim": 61.5,
+            "frame_id": 302,
+            "frame_sha256": "ae16726e8047d8d6a0fb0e529b76b43965b98a980ce57c21575d55b610c96b64",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.7424103911241101,
+                -0.4766053686666799,
+                0.2742922606540339
+              ],
+              "std_xy_m": 0.06313545005703998,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          }
+        ],
+        "first_t_sim": 61.5,
+        "last_t_sim": 61.5,
+        "max_observer_std_xy_m": 0.06313545005703998,
+        "view_circular_variance": 0.0,
+        "association": "historical endpoint-hit cells within half-cell diagonal of summary line"
+      },
+      "confidence": "unvalidated_support",
+      "source": "own",
+      "age_s": 119.80000000000001
+    },
+    {
+      "obs_id": "r3-wall-252f0d88a527-0017",
+      "t_sim": 175.3,
+      "frame_sha256": "d3ea68de38e1012bbda377481814e8f4f2d40656d271af16edcdca7227e22853",
+      "observer_pose": {
+        "xyyaw": [
+          1.2405107750149313,
+          3.345264894941321,
+          -2.829755414580712
+        ],
+        "std_xy_m": 0.10676995945916731,
+        "source": "own_rbpf_pose_ledger",
+        "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+      },
+      "entity": {
+        "kind": "wall_segment",
+        "id": "r3/wall/252f0d88a527/0017"
+      },
+      "claim": {
+        "state": "observed_wall_candidate",
+        "endpoints_m": [
+          [
+            -2.0499999999999994,
+            1.4500000000000002
+          ],
+          [
+            -2.0499999999999994,
+            1.85
+          ]
+        ]
+      },
+      "evidence": {
+        "detector": "egomap34_frozen_contacts+odom_grid_hough_tls",
+        "score": 0.06346933859401585,
+        "semantics": "TSDF support; NOT calibrated wall probability",
+        "grid_fit_cells": 5,
+        "nearby_occupied_cells": 5,
+        "scan_count": 1,
+        "observation_ids": [
+          "r3-obs-000871"
+        ],
+        "observations": [
+          {
+            "obs_id": "r3-obs-000871",
+            "t_sim": 175.3,
+            "frame_id": 871,
+            "frame_sha256": "d3ea68de38e1012bbda377481814e8f4f2d40656d271af16edcdca7227e22853",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                1.2405107750149313,
+                3.345264894941321,
+                -2.829755414580712
+              ],
+              "std_xy_m": 0.10676995945916731,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          }
+        ],
+        "first_t_sim": 175.3,
+        "last_t_sim": 175.3,
+        "max_observer_std_xy_m": 0.10676995945916731,
+        "view_circular_variance": 2.6087474114899754e-05,
+        "association": "historical endpoint-hit cells within half-cell diagonal of summary line"
+      },
+      "confidence": "unvalidated_support",
+      "source": "own",
+      "age_s": 6.0
+    },
+    {
+      "obs_id": "r3-wall-252f0d88a527-0018",
+      "t_sim": 51.5,
+      "frame_sha256": "a481fbebcf4bffd6a7f6afe967fed91c3ae7ec053e79274ab199a68ea110f412",
+      "observer_pose": {
+        "xyyaw": [
+          0.4236094036214555,
+          -0.19491538787517382,
+          -1.3359133451056582
+        ],
+        "std_xy_m": 0.046560507568732507,
+        "source": "own_rbpf_pose_ledger",
+        "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+      },
+      "entity": {
+        "kind": "wall_segment",
+        "id": "r3/wall/252f0d88a527/0018"
+      },
+      "claim": {
+        "state": "observed_wall_candidate",
+        "endpoints_m": [
+          [
+            0.8499999999999999,
+            -1.9500000000000002
+          ],
+          [
+            0.8499999999999999,
+            -1.5500000000000003
+          ]
+        ]
+      },
+      "evidence": {
+        "detector": "egomap34_frozen_contacts+odom_grid_hough_tls",
+        "score": 0.008287999078149373,
+        "semantics": "TSDF support; NOT calibrated wall probability",
+        "grid_fit_cells": 4,
+        "nearby_occupied_cells": 4,
+        "scan_count": 3,
+        "observation_ids": [
+          "r3-obs-000047",
+          "r3-obs-000052",
+          "r3-obs-000252"
+        ],
+        "observations": [
+          {
+            "obs_id": "r3-obs-000047",
+            "t_sim": 10.5,
+            "frame_id": 47,
+            "frame_sha256": "27ee486895cd6f9a70a46cf4da9495e8c95e1aa30d78275cc7bcc7574346692f",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.3328294674690094,
+                -0.10085205052792276,
+                -0.9135165976228063
+              ],
+              "std_xy_m": 0.10469230478293513,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000052",
+            "t_sim": 11.5,
+            "frame_id": 52,
+            "frame_sha256": "c23150b21749f7badbd20043cd72d8d7f30e85ae1e6c517b5075d83bc0ec27ae",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.3333093058702866,
+                -0.10651078214956655,
+                -1.223694552637629
+              ],
+              "std_xy_m": 0.10754953727182179,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000252",
+            "t_sim": 51.5,
+            "frame_id": 252,
+            "frame_sha256": "a481fbebcf4bffd6a7f6afe967fed91c3ae7ec053e79274ab199a68ea110f412",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.4236094036214555,
+                -0.19491538787517382,
+                -1.3359133451056582
+              ],
+              "std_xy_m": 0.046560507568732507,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          }
+        ],
+        "first_t_sim": 10.5,
+        "last_t_sim": 51.5,
+        "max_observer_std_xy_m": 0.10754953727182179,
+        "view_circular_variance": 0.00025588253338515443,
+        "association": "historical endpoint-hit cells within half-cell diagonal of summary line"
+      },
+      "confidence": "unvalidated_support",
+      "source": "own",
+      "age_s": 129.8
+    },
+    {
+      "obs_id": "r3-wall-252f0d88a527-0019",
+      "t_sim": 174.3,
+      "frame_sha256": "c9c88296e3ced13f09b6d0ccda50efbdb8910dd1a5cfd4ddd5252189daef7dd5",
+      "observer_pose": {
+        "xyyaw": [
+          1.2887582978522574,
+          3.3605543518095815,
+          -2.431686047659077
+        ],
+        "std_xy_m": 0.10405493886032409,
+        "source": "own_rbpf_pose_ledger",
+        "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+      },
+      "entity": {
+        "kind": "wall_segment",
+        "id": "r3/wall/252f0d88a527/0019"
+      },
+      "claim": {
+        "state": "observed_wall_candidate",
+        "endpoints_m": [
+          [
+            -2.3456361009310305,
+            1.7497256964002537
+          ],
+          [
+            -2.3706801334101093,
+            1.351299900604478
+          ]
+        ]
+      },
+      "evidence": {
+        "detector": "egomap34_frozen_contacts+odom_grid_hough_tls",
+        "score": 0.07794871431046699,
+        "semantics": "TSDF support; NOT calibrated wall probability",
+        "grid_fit_cells": 4,
+        "nearby_occupied_cells": 4,
+        "scan_count": 2,
+        "observation_ids": [
+          "r3-obs-000163",
+          "r3-obs-000866"
+        ],
+        "observations": [
+          {
+            "obs_id": "r3-obs-000163",
+            "t_sim": 33.7,
+            "frame_id": 163,
+            "frame_sha256": "ce3fffe256fc1cfa3203b5c4677f579258d98d45881881362a1c2ea34ca82bfc",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.9154571890022599,
+                0.03810375071126097,
+                2.966911183033522
+              ],
+              "std_xy_m": 0.10385468141312475,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000866",
+            "t_sim": 174.3,
+            "frame_id": 866,
+            "frame_sha256": "c9c88296e3ced13f09b6d0ccda50efbdb8910dd1a5cfd4ddd5252189daef7dd5",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                1.2887582978522574,
+                3.3605543518095815,
+                -2.431686047659077
+              ],
+              "std_xy_m": 0.10405493886032409,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          }
+        ],
+        "first_t_sim": 33.7,
+        "last_t_sim": 174.3,
+        "max_observer_std_xy_m": 0.10405493886032409,
+        "view_circular_variance": 0.05113600049326969,
+        "association": "historical endpoint-hit cells within half-cell diagonal of summary line"
+      },
+      "confidence": "unvalidated_support",
+      "source": "own",
+      "age_s": 7.0
+    },
+    {
+      "obs_id": "r3-wall-252f0d88a527-0020",
+      "t_sim": 165.3,
+      "frame_sha256": "4f670277f17eb46e5f6d9954697ca77f2db4701acf0c786ecb40d82455091c8e",
+      "observer_pose": {
+        "xyyaw": [
+          1.0560633504038224,
+          3.587575970110964,
+          -0.9101619038148887
+        ],
+        "std_xy_m": 0.22432797197945356,
+        "source": "own_rbpf_pose_ledger",
+        "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+      },
+      "entity": {
+        "kind": "wall_segment",
+        "id": "r3/wall/252f0d88a527/0020"
+      },
+      "claim": {
+        "state": "observed_wall_candidate",
+        "endpoints_m": [
+          [
+            1.2994913477804249,
+            2.0604836267303037
+          ],
+          [
+            1.3790866595524789,
+            2.4439627436453075
+          ]
+        ]
+      },
+      "evidence": {
+        "detector": "egomap34_frozen_contacts+odom_grid_hough_tls",
+        "score": 0.003865487476613893,
+        "semantics": "TSDF support; NOT calibrated wall probability",
+        "grid_fit_cells": 5,
+        "nearby_occupied_cells": 7,
+        "scan_count": 3,
+        "observation_ids": [
+          "r3-obs-000324",
+          "r3-obs-000393",
+          "r3-obs-000821"
+        ],
+        "observations": [
+          {
+            "obs_id": "r3-obs-000324",
+            "t_sim": 65.9,
+            "frame_id": 324,
+            "frame_sha256": "1d1d3cfeb168a0f58f37d4908b2e7925d2b4def157bdcb59ce26c935e461958d",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.8343621927186213,
+                -0.3698588653172217,
+                1.3319623496162425
+              ],
+              "std_xy_m": 0.05371666433449921,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000393",
+            "t_sim": 79.7,
+            "frame_id": 393,
+            "frame_sha256": "ccbab133ae927b62ba149f91cfd24597face378a80f0307df88ca29342a9430f",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.8141683751783417,
+                0.34181318564894647,
+                1.3048012546660361
+              ],
+              "std_xy_m": 0.0723835340588307,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000821",
+            "t_sim": 165.3,
+            "frame_id": 821,
+            "frame_sha256": "4f670277f17eb46e5f6d9954697ca77f2db4701acf0c786ecb40d82455091c8e",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                1.0560633504038224,
+                3.587575970110964,
+                -0.9101619038148887
+              ],
+              "std_xy_m": 0.22432797197945356,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          }
+        ],
+        "first_t_sim": 65.9,
+        "last_t_sim": 165.3,
+        "max_observer_std_xy_m": 0.22432797197945356,
+        "view_circular_variance": 0.20177197410408518,
+        "association": "historical endpoint-hit cells within half-cell diagonal of summary line"
+      },
+      "confidence": "unvalidated_support",
+      "source": "own",
+      "age_s": 16.0
+    },
+    {
+      "obs_id": "r3-wall-252f0d88a527-0021",
+      "t_sim": 149.9,
+      "frame_sha256": "3937a2b437212dd742fa183dfdc93166ea49533c56adf008bd2b014c506303ac",
+      "observer_pose": {
+        "xyyaw": [
+          0.7364399294131274,
+          3.4442394007155173,
+          2.1375142435696084
+        ],
+        "std_xy_m": 0.23989289196108662,
+        "source": "own_rbpf_pose_ledger",
+        "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+      },
+      "entity": {
+        "kind": "wall_segment",
+        "id": "r3/wall/252f0d88a527/0021"
+      },
+      "claim": {
+        "state": "observed_wall_candidate",
+        "endpoints_m": [
+          [
+            -0.0538541045316272,
+            6.242345621223013
+          ],
+          [
+            0.2658061238923155,
+            6.08139148361829
+          ]
+        ]
+      },
+      "evidence": {
+        "detector": "egomap34_frozen_contacts+odom_grid_hough_tls",
+        "score": 0.09871733704971997,
+        "semantics": "TSDF support; NOT calibrated wall probability",
+        "grid_fit_cells": 5,
+        "nearby_occupied_cells": 5,
+        "scan_count": 4,
+        "observation_ids": [
+          "r3-obs-000684",
+          "r3-obs-000695",
+          "r3-obs-000735",
+          "r3-obs-000744"
+        ],
+        "observations": [
+          {
+            "obs_id": "r3-obs-000684",
+            "t_sim": 137.9,
+            "frame_id": 684,
+            "frame_sha256": "0fc6206f610c38a912166ac8430edd2c8570623528ec565ca51395c4a0c88fd6",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.6650006460790179,
+                3.3238162776070252,
+                1.4658555050093272
+              ],
+              "std_xy_m": 0.20719528623563757,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000695",
+            "t_sim": 140.1,
+            "frame_id": 695,
+            "frame_sha256": "0eef4d8f329910816e0656b71cdb8b5eb45eae19cad95068e9cbbbd925f9cad4",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.7628657608834956,
+                3.4035219020850604,
+                1.745373392492688
+              ],
+              "std_xy_m": 0.2145795563895935,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000735",
+            "t_sim": 148.1,
+            "frame_id": 735,
+            "frame_sha256": "7c8c0f7082d688f352cddddcc74be2fb44e3e5f9b1c3047526dd45ea47fdddcc",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.7658675961754138,
+                3.4331880379676227,
+                1.993417516579056
+              ],
+              "std_xy_m": 0.22466699059607065,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000744",
+            "t_sim": 149.9,
+            "frame_id": 744,
+            "frame_sha256": "3937a2b437212dd742fa183dfdc93166ea49533c56adf008bd2b014c506303ac",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.7364399294131274,
+                3.4442394007155173,
+                2.1375142435696084
+              ],
+              "std_xy_m": 0.23989289196108662,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          }
+        ],
+        "first_t_sim": 137.9,
+        "last_t_sim": 149.9,
+        "max_observer_std_xy_m": 0.23989289196108662,
+        "view_circular_variance": 3.896761748309885e-05,
+        "association": "historical endpoint-hit cells within half-cell diagonal of summary line"
+      },
+      "confidence": "unvalidated_support",
+      "source": "own",
+      "age_s": 31.400000000000006
+    },
+    {
+      "obs_id": "r3-wall-252f0d88a527-0022",
+      "t_sim": 53.5,
+      "frame_sha256": "6c3676f7fde1e3d3ecbafa518c24cadac4bf831ac545493e9ef9e4d2bf18819b",
+      "observer_pose": {
+        "xyyaw": [
+          0.43859086888264215,
+          -0.2640559955482653,
+          -1.0416168653192028
+        ],
+        "std_xy_m": 0.04397186077435893,
+        "source": "own_rbpf_pose_ledger",
+        "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+      },
+      "entity": {
+        "kind": "wall_segment",
+        "id": "r3/wall/252f0d88a527/0022"
+      },
+      "claim": {
+        "state": "observed_wall_candidate",
+        "endpoints_m": [
+          [
+            0.45600993530970846,
+            -1.4688005092459506
+          ],
+          [
+            0.7571988811652453,
+            -1.3725198150950244
+          ]
+        ]
+      },
+      "evidence": {
+        "detector": "egomap34_frozen_contacts+odom_grid_hough_tls",
+        "score": 0.041692717340063,
+        "semantics": "TSDF support; NOT calibrated wall probability",
+        "grid_fit_cells": 3,
+        "nearby_occupied_cells": 4,
+        "scan_count": 5,
+        "observation_ids": [
+          "r3-obs-000052",
+          "r3-obs-000074",
+          "r3-obs-000085",
+          "r3-obs-000252",
+          "r3-obs-000262"
+        ],
+        "observations": [
+          {
+            "obs_id": "r3-obs-000052",
+            "t_sim": 11.5,
+            "frame_id": 52,
+            "frame_sha256": "c23150b21749f7badbd20043cd72d8d7f30e85ae1e6c517b5075d83bc0ec27ae",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.3333093058702866,
+                -0.10651078214956655,
+                -1.223694552637629
+              ],
+              "std_xy_m": 0.10754953727182179,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000074",
+            "t_sim": 15.9,
+            "frame_id": 74,
+            "frame_sha256": "f7a8ba247fc85046c48973053ff31a8717655f3b8f87acb89f2950738a7edd50",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.41102054658449333,
+                -0.18495099614406965,
+                -1.249547839978428
+              ],
+              "std_xy_m": 0.11471158202409783,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000085",
+            "t_sim": 18.1,
+            "frame_id": 85,
+            "frame_sha256": "d065abc24f0ac6f0dfa7c4ca4aee2b2971ead7d854987f8845b2e42adacaa417",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.4126804099729323,
+                -0.2511971465683945,
+                -1.4845651638484856
+              ],
+              "std_xy_m": 0.11705483991917247,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000252",
+            "t_sim": 51.5,
+            "frame_id": 252,
+            "frame_sha256": "a481fbebcf4bffd6a7f6afe967fed91c3ae7ec053e79274ab199a68ea110f412",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.4236094036214555,
+                -0.19491538787517382,
+                -1.3359133451056582
+              ],
+              "std_xy_m": 0.046560507568732507,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000262",
+            "t_sim": 53.5,
+            "frame_id": 262,
+            "frame_sha256": "6c3676f7fde1e3d3ecbafa518c24cadac4bf831ac545493e9ef9e4d2bf18819b",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.43859086888264215,
+                -0.2640559955482653,
+                -1.0416168653192028
+              ],
+              "std_xy_m": 0.04397186077435893,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          }
+        ],
+        "first_t_sim": 11.5,
+        "last_t_sim": 53.5,
+        "max_observer_std_xy_m": 0.11705483991917247,
+        "view_circular_variance": 0.0007438760601477246,
+        "association": "historical endpoint-hit cells within half-cell diagonal of summary line"
+      },
+      "confidence": "unvalidated_support",
+      "source": "own",
+      "age_s": 127.80000000000001
+    },
+    {
+      "obs_id": "r3-wall-252f0d88a527-0023",
+      "t_sim": 61.5,
+      "frame_sha256": "ae16726e8047d8d6a0fb0e529b76b43965b98a980ce57c21575d55b610c96b64",
+      "observer_pose": {
+        "xyyaw": [
+          0.7424103911241101,
+          -0.4766053686666799,
+          0.2742922606540339
+        ],
+        "std_xy_m": 0.06313545005703998,
+        "source": "own_rbpf_pose_ledger",
+        "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+      },
+      "entity": {
+        "kind": "wall_segment",
+        "id": "r3/wall/252f0d88a527/0023"
+      },
+      "claim": {
+        "state": "observed_wall_candidate",
+        "endpoints_m": [
+          [
+            1.7964628896578962,
+            -0.14247828695034226
+          ],
+          [
+            1.8463423501492193,
+            -0.4505921240115782
+          ]
+        ]
+      },
+      "evidence": {
+        "detector": "egomap34_frozen_contacts+odom_grid_hough_tls",
+        "score": 0.021611806175812404,
+        "semantics": "TSDF support; NOT calibrated wall probability",
+        "grid_fit_cells": 3,
+        "nearby_occupied_cells": 4,
+        "scan_count": 2,
+        "observation_ids": [
+          "r3-obs-000292",
+          "r3-obs-000302"
+        ],
+        "observations": [
+          {
+            "obs_id": "r3-obs-000292",
+            "t_sim": 59.5,
+            "frame_id": 292,
+            "frame_sha256": "0aaea7e74d5944c3eff1c1acf0d924a7c1eba8a065ec2c51802534aad7d657fd",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.6361231099798748,
+                -0.45919385724711875,
+                -0.14979636210241987
+              ],
+              "std_xy_m": 0.0570958024223587,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000302",
+            "t_sim": 61.5,
+            "frame_id": 302,
+            "frame_sha256": "ae16726e8047d8d6a0fb0e529b76b43965b98a980ce57c21575d55b610c96b64",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.7424103911241101,
+                -0.4766053686666799,
+                0.2742922606540339
+              ],
+              "std_xy_m": 0.06313545005703998,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          }
+        ],
+        "first_t_sim": 59.5,
+        "last_t_sim": 61.5,
+        "max_observer_std_xy_m": 0.06313545005703998,
+        "view_circular_variance": 0.0,
+        "association": "historical endpoint-hit cells within half-cell diagonal of summary line"
+      },
+      "confidence": "unvalidated_support",
+      "source": "own",
+      "age_s": 119.80000000000001
+    },
+    {
+      "obs_id": "r3-wall-252f0d88a527-0024",
+      "t_sim": 175.3,
+      "frame_sha256": "d3ea68de38e1012bbda377481814e8f4f2d40656d271af16edcdca7227e22853",
+      "observer_pose": {
+        "xyyaw": [
+          1.2405107750149313,
+          3.345264894941321,
+          -2.829755414580712
+        ],
+        "std_xy_m": 0.10676995945916731,
+        "source": "own_rbpf_pose_ledger",
+        "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+      },
+      "entity": {
+        "kind": "wall_segment",
+        "id": "r3/wall/252f0d88a527/0024"
+      },
+      "claim": {
+        "state": "observed_wall_candidate",
+        "endpoints_m": [
+          [
+            -2.1499999999999995,
+            3.25
+          ],
+          [
+            -2.1499999999999995,
+            3.5500000000000003
+          ]
+        ]
+      },
+      "evidence": {
+        "detector": "egomap34_frozen_contacts+odom_grid_hough_tls",
+        "score": 0.12301308661083404,
+        "semantics": "TSDF support; NOT calibrated wall probability",
+        "grid_fit_cells": 4,
+        "nearby_occupied_cells": 4,
+        "scan_count": 1,
+        "observation_ids": [
+          "r3-obs-000871"
+        ],
+        "observations": [
+          {
+            "obs_id": "r3-obs-000871",
+            "t_sim": 175.3,
+            "frame_id": 871,
+            "frame_sha256": "d3ea68de38e1012bbda377481814e8f4f2d40656d271af16edcdca7227e22853",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                1.2405107750149313,
+                3.345264894941321,
+                -2.829755414580712
+              ],
+              "std_xy_m": 0.10676995945916731,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          }
+        ],
+        "first_t_sim": 175.3,
+        "last_t_sim": 175.3,
+        "max_observer_std_xy_m": 0.10676995945916731,
+        "view_circular_variance": 0.04835232642990517,
+        "association": "historical endpoint-hit cells within half-cell diagonal of summary line"
+      },
+      "confidence": "unvalidated_support",
+      "source": "own",
+      "age_s": 6.0
+    },
+    {
+      "obs_id": "r3-wall-252f0d88a527-0025",
+      "t_sim": 180.9,
+      "frame_sha256": "f19da9765aeecfa29129c044cb5fd5e35d75600cb42c384693678810dfb7f259",
+      "observer_pose": {
+        "xyyaw": [
+          0.9083042989679455,
+          3.3390644875084208,
+          2.9778837834722616
+        ],
+        "std_xy_m": 0.10058551445175629,
+        "source": "own_rbpf_pose_ledger",
+        "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+      },
+      "entity": {
+        "kind": "wall_segment",
+        "id": "r3/wall/252f0d88a527/0025"
+      },
+      "claim": {
+        "state": "observed_wall_candidate",
+        "endpoints_m": [
+          [
+            -2.0499999999999994,
+            3.0500000000000003
+          ],
+          [
+            -2.0499999999999994,
+            3.35
+          ]
+        ]
+      },
+      "evidence": {
+        "detector": "egomap34_frozen_contacts+odom_grid_hough_tls",
+        "score": 0.10043165707725998,
+        "semantics": "TSDF support; NOT calibrated wall probability",
+        "grid_fit_cells": 4,
+        "nearby_occupied_cells": 4,
+        "scan_count": 3,
+        "observation_ids": [
+          "r3-obs-000475",
+          "r3-obs-000871",
+          "r3-obs-000899"
+        ],
+        "observations": [
+          {
+            "obs_id": "r3-obs-000475",
+            "t_sim": 96.1,
+            "frame_id": 475,
+            "frame_sha256": "b30a44541e110adc0816196a390dc3cbacdd0310c1c435cbe84165ccec6916fc",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.6272717218367462,
+                1.1607795269104169,
+                2.4471289754262147
+              ],
+              "std_xy_m": 0.09596873733669815,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000871",
+            "t_sim": 175.3,
+            "frame_id": 871,
+            "frame_sha256": "d3ea68de38e1012bbda377481814e8f4f2d40656d271af16edcdca7227e22853",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                1.2405107750149313,
+                3.345264894941321,
+                -2.829755414580712
+              ],
+              "std_xy_m": 0.10676995945916731,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000899",
+            "t_sim": 180.9,
+            "frame_id": 899,
+            "frame_sha256": "f19da9765aeecfa29129c044cb5fd5e35d75600cb42c384693678810dfb7f259",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.9083042989679455,
+                3.3390644875084208,
+                2.9778837834722616
+              ],
+              "std_xy_m": 0.10058551445175629,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          }
+        ],
+        "first_t_sim": 96.1,
+        "last_t_sim": 180.9,
+        "max_observer_std_xy_m": 0.10676995945916731,
+        "view_circular_variance": 0.05916527488215689,
+        "association": "historical endpoint-hit cells within half-cell diagonal of summary line"
+      },
+      "confidence": "unvalidated_support",
+      "source": "own",
+      "age_s": 0.4000000000000057
+    },
+    {
+      "obs_id": "r3-wall-252f0d88a527-0026",
+      "t_sim": 39.3,
+      "frame_sha256": "b7eb1285f9c807f43d03e55684730c05c7fc508baf041f97b4e90e64d5b79510",
+      "observer_pose": {
+        "xyyaw": [
+          0.6778175535907431,
+          0.003894692082335628,
+          -2.8702254296173217
+        ],
+        "std_xy_m": 0.10622774371367959,
+        "source": "own_rbpf_pose_ledger",
+        "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+      },
+      "entity": {
+        "kind": "wall_segment",
+        "id": "r3/wall/252f0d88a527/0026"
+      },
+      "claim": {
+        "state": "observed_wall_candidate",
+        "endpoints_m": [
+          [
+            -2.8400732530286916,
+            0.18755375667864568
+          ],
+          [
+            -2.5596660438994308,
+            0.11343250596660578
+          ]
+        ]
+      },
+      "evidence": {
+        "detector": "egomap34_frozen_contacts+odom_grid_hough_tls",
+        "score": 0.004067236610738344,
+        "semantics": "TSDF support; NOT calibrated wall probability",
+        "grid_fit_cells": 4,
+        "nearby_occupied_cells": 4,
+        "scan_count": 1,
+        "observation_ids": [
+          "r3-obs-000191"
+        ],
+        "observations": [
+          {
+            "obs_id": "r3-obs-000191",
+            "t_sim": 39.3,
+            "frame_id": 191,
+            "frame_sha256": "b7eb1285f9c807f43d03e55684730c05c7fc508baf041f97b4e90e64d5b79510",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.6778175535907431,
+                0.003894692082335628,
+                -2.8702254296173217
+              ],
+              "std_xy_m": 0.10622774371367959,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          }
+        ],
+        "first_t_sim": 39.3,
+        "last_t_sim": 39.3,
+        "max_observer_std_xy_m": 0.10622774371367959,
+        "view_circular_variance": 0.0,
+        "association": "historical endpoint-hit cells within half-cell diagonal of summary line"
+      },
+      "confidence": "unvalidated_support",
+      "source": "own",
+      "age_s": 142.0
+    },
+    {
+      "obs_id": "r3-wall-252f0d88a527-0027",
+      "t_sim": 30.3,
+      "frame_sha256": "add1416a22c16a1781456f8b06a5920f811fdbb60c956bf8e6be913f79e8bf8a",
+      "observer_pose": {
+        "xyyaw": [
+          0.816339793319055,
+          0.013481276105646076,
+          1.157034330152067
+        ],
+        "std_xy_m": 0.11566241885007346,
+        "source": "own_rbpf_pose_ledger",
+        "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+      },
+      "entity": {
+        "kind": "wall_segment",
+        "id": "r3/wall/252f0d88a527/0027"
+      },
+      "claim": {
+        "state": "observed_wall_candidate",
+        "endpoints_m": [
+          [
+            1.2476002624591556,
+            0.3515681955962757
+          ],
+          [
+            1.3691113384028386,
+            0.5375110022608057
+          ]
+        ]
+      },
+      "evidence": {
+        "detector": "egomap34_frozen_contacts+odom_grid_hough_tls",
+        "score": 0.07256209840730508,
+        "semantics": "TSDF support; NOT calibrated wall probability",
+        "grid_fit_cells": 4,
+        "nearby_occupied_cells": 4,
+        "scan_count": 1,
+        "observation_ids": [
+          "r3-obs-000146"
+        ],
+        "observations": [
+          {
+            "obs_id": "r3-obs-000146",
+            "t_sim": 30.3,
+            "frame_id": 146,
+            "frame_sha256": "add1416a22c16a1781456f8b06a5920f811fdbb60c956bf8e6be913f79e8bf8a",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.816339793319055,
+                0.013481276105646076,
+                1.157034330152067
+              ],
+              "std_xy_m": 0.11566241885007346,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          }
+        ],
+        "first_t_sim": 30.3,
+        "last_t_sim": 30.3,
+        "max_observer_std_xy_m": 0.11566241885007346,
+        "view_circular_variance": 0.030068482389507795,
+        "association": "historical endpoint-hit cells within half-cell diagonal of summary line"
+      },
+      "confidence": "unvalidated_support",
+      "source": "own",
+      "age_s": 151.0
+    },
+    {
+      "obs_id": "r3-wall-252f0d88a527-0028",
+      "t_sim": 21.1,
+      "frame_sha256": "7108fb06ea4e56d18c9c7b9c12844bbb984a6d4261bf0d3586386dab5794bdaa",
+      "observer_pose": {
+        "xyyaw": [
+          0.4380874020738415,
+          -0.2797640855023884,
+          0.1438735573994765
+        ],
+        "std_xy_m": 0.13140788968618586,
+        "source": "own_rbpf_pose_ledger",
+        "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+      },
+      "entity": {
+        "kind": "wall_segment",
+        "id": "r3/wall/252f0d88a527/0028"
+      },
+      "claim": {
+        "state": "observed_wall_candidate",
+        "endpoints_m": [
+          [
+            2.4446008391260663,
+            -0.8331101386787316
+          ],
+          [
+            2.655061170640035,
+            -0.7658325473586372
+          ]
+        ]
+      },
+      "evidence": {
+        "detector": "egomap34_frozen_contacts+odom_grid_hough_tls",
+        "score": 0.019062061316113526,
+        "semantics": "TSDF support; NOT calibrated wall probability",
+        "grid_fit_cells": 4,
+        "nearby_occupied_cells": 4,
+        "scan_count": 1,
+        "observation_ids": [
+          "r3-obs-000100"
+        ],
+        "observations": [
+          {
+            "obs_id": "r3-obs-000100",
+            "t_sim": 21.1,
+            "frame_id": 100,
+            "frame_sha256": "7108fb06ea4e56d18c9c7b9c12844bbb984a6d4261bf0d3586386dab5794bdaa",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.4380874020738415,
+                -0.2797640855023884,
+                0.1438735573994765
+              ],
+              "std_xy_m": 0.13140788968618586,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          }
+        ],
+        "first_t_sim": 21.1,
+        "last_t_sim": 21.1,
+        "max_observer_std_xy_m": 0.13140788968618586,
+        "view_circular_variance": 0.0,
+        "association": "historical endpoint-hit cells within half-cell diagonal of summary line"
+      },
+      "confidence": "unvalidated_support",
+      "source": "own",
+      "age_s": 160.20000000000002
+    },
+    {
+      "obs_id": "r3-wall-252f0d88a527-0029",
+      "t_sim": 173.1,
+      "frame_sha256": "cfa478c9c54215c52ef18711f25f86e39cca005da8300d7300163209f1612ad9",
+      "observer_pose": {
+        "xyyaw": [
+          1.3086485913546515,
+          3.3716538481529024,
+          -1.8585582028827146
+        ],
+        "std_xy_m": 0.10443988454524973,
+        "source": "own_rbpf_pose_ledger",
+        "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+      },
+      "entity": {
+        "kind": "wall_segment",
+        "id": "r3/wall/252f0d88a527/0029"
+      },
+      "claim": {
+        "state": "observed_wall_candidate",
+        "endpoints_m": [
+          [
+            1.2040336366550548,
+            2.952306575954252
+          ],
+          [
+            1.193771746657743,
+            2.747803549139646
+          ]
+        ]
+      },
+      "evidence": {
+        "detector": "egomap34_frozen_contacts+odom_grid_hough_tls",
+        "score": 0.02071752812580327,
+        "semantics": "TSDF support; NOT calibrated wall probability",
+        "grid_fit_cells": 3,
+        "nearby_occupied_cells": 4,
+        "scan_count": 6,
+        "observation_ids": [
+          "r3-obs-000324",
+          "r3-obs-000393",
+          "r3-obs-000409",
+          "r3-obs-000511",
+          "r3-obs-000855",
+          "r3-obs-000860"
+        ],
+        "observations": [
+          {
+            "obs_id": "r3-obs-000324",
+            "t_sim": 65.9,
+            "frame_id": 324,
+            "frame_sha256": "1d1d3cfeb168a0f58f37d4908b2e7925d2b4def157bdcb59ce26c935e461958d",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.8343621927186213,
+                -0.3698588653172217,
+                1.3319623496162425
+              ],
+              "std_xy_m": 0.05371666433449921,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000393",
+            "t_sim": 79.7,
+            "frame_id": 393,
+            "frame_sha256": "ccbab133ae927b62ba149f91cfd24597face378a80f0307df88ca29342a9430f",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.8141683751783417,
+                0.34181318564894647,
+                1.3048012546660361
+              ],
+              "std_xy_m": 0.0723835340588307,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000409",
+            "t_sim": 82.9,
+            "frame_id": 409,
+            "frame_sha256": "abcddf0fcc973443173d115e5e827281c2eac5e1865d39317d44476ab888ac8b",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.8714478622046219,
+                0.49389559062869,
+                1.4257936098657922
+              ],
+              "std_xy_m": 0.07309800861783032,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000511",
+            "t_sim": 103.3,
+            "frame_id": 511,
+            "frame_sha256": "1b03ff604341328c7fbba80eeadf90d253b29030b38b2315bfdb96f93348b718",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.4265365505260718,
+                1.3768651105710012,
+                1.548115978891209
+              ],
+              "std_xy_m": 0.1043779643936027,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000855",
+            "t_sim": 172.1,
+            "frame_id": 855,
+            "frame_sha256": "1f6b322628266c669ed689c77a5a1fe7707ab5b0c20cfb827682ed3e0ad9835a",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                1.272178356869934,
+                3.3571970069433537,
+                -1.2558484749415448
+              ],
+              "std_xy_m": 0.19011160118602166,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000860",
+            "t_sim": 173.1,
+            "frame_id": 860,
+            "frame_sha256": "cfa478c9c54215c52ef18711f25f86e39cca005da8300d7300163209f1612ad9",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                1.3086485913546515,
+                3.3716538481529024,
+                -1.8585582028827146
+              ],
+              "std_xy_m": 0.10443988454524973,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          }
+        ],
+        "first_t_sim": 65.9,
+        "last_t_sim": 173.1,
+        "max_observer_std_xy_m": 0.19011160118602166,
+        "view_circular_variance": 0.7743017826499563,
+        "association": "historical endpoint-hit cells within half-cell diagonal of summary line"
+      },
+      "confidence": "unvalidated_support",
+      "source": "own",
+      "age_s": 8.200000000000017
+    },
+    {
+      "obs_id": "r3-wall-252f0d88a527-0030",
+      "t_sim": 39.3,
+      "frame_sha256": "b7eb1285f9c807f43d03e55684730c05c7fc508baf041f97b4e90e64d5b79510",
+      "observer_pose": {
+        "xyyaw": [
+          0.6778175535907431,
+          0.003894692082335628,
+          -2.8702254296173217
+        ],
+        "std_xy_m": 0.10622774371367959,
+        "source": "own_rbpf_pose_ledger",
+        "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+      },
+      "entity": {
+        "kind": "wall_segment",
+        "id": "r3/wall/252f0d88a527/0030"
+      },
+      "claim": {
+        "state": "observed_wall_candidate",
+        "endpoints_m": [
+          [
+            -2.1499999999999995,
+            0.25
+          ],
+          [
+            -2.1499999999999995,
+            0.44999999999999996
+          ]
+        ]
+      },
+      "evidence": {
+        "detector": "egomap34_frozen_contacts+odom_grid_hough_tls",
+        "score": 0.026741336897660672,
+        "semantics": "TSDF support; NOT calibrated wall probability",
+        "grid_fit_cells": 3,
+        "nearby_occupied_cells": 3,
+        "scan_count": 2,
+        "observation_ids": [
+          "r3-obs-000163",
+          "r3-obs-000191"
+        ],
+        "observations": [
+          {
+            "obs_id": "r3-obs-000163",
+            "t_sim": 33.7,
+            "frame_id": 163,
+            "frame_sha256": "ce3fffe256fc1cfa3203b5c4677f579258d98d45881881362a1c2ea34ca82bfc",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.9154571890022599,
+                0.03810375071126097,
+                2.966911183033522
+              ],
+              "std_xy_m": 0.10385468141312475,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000191",
+            "t_sim": 39.3,
+            "frame_id": 191,
+            "frame_sha256": "b7eb1285f9c807f43d03e55684730c05c7fc508baf041f97b4e90e64d5b79510",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.6778175535907431,
+                0.003894692082335628,
+                -2.8702254296173217
+              ],
+              "std_xy_m": 0.10622774371367959,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          }
+        ],
+        "first_t_sim": 33.7,
+        "last_t_sim": 39.3,
+        "max_observer_std_xy_m": 0.10622774371367959,
+        "view_circular_variance": 9.114386460847464e-05,
+        "association": "historical endpoint-hit cells within half-cell diagonal of summary line"
+      },
+      "confidence": "unvalidated_support",
+      "source": "own",
+      "age_s": 142.0
+    },
+    {
+      "obs_id": "r3-wall-252f0d88a527-0031",
+      "t_sim": 180.9,
+      "frame_sha256": "f19da9765aeecfa29129c044cb5fd5e35d75600cb42c384693678810dfb7f259",
+      "observer_pose": {
+        "xyyaw": [
+          0.9083042989679455,
+          3.3390644875084208,
+          2.9778837834722616
+        ],
+        "std_xy_m": 0.10058551445175629,
+        "source": "own_rbpf_pose_ledger",
+        "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+      },
+      "entity": {
+        "kind": "wall_segment",
+        "id": "r3/wall/252f0d88a527/0031"
+      },
+      "claim": {
+        "state": "observed_wall_candidate",
+        "endpoints_m": [
+          [
+            -2.0499999999999994,
+            2.5500000000000003
+          ],
+          [
+            -2.0499999999999994,
+            2.75
+          ]
+        ]
+      },
+      "evidence": {
+        "detector": "egomap34_frozen_contacts+odom_grid_hough_tls",
+        "score": 0.11842850570753799,
+        "semantics": "TSDF support; NOT calibrated wall probability",
+        "grid_fit_cells": 3,
+        "nearby_occupied_cells": 3,
+        "scan_count": 2,
+        "observation_ids": [
+          "r3-obs-000871",
+          "r3-obs-000899"
+        ],
+        "observations": [
+          {
+            "obs_id": "r3-obs-000871",
+            "t_sim": 175.3,
+            "frame_id": 871,
+            "frame_sha256": "d3ea68de38e1012bbda377481814e8f4f2d40656d271af16edcdca7227e22853",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                1.2405107750149313,
+                3.345264894941321,
+                -2.829755414580712
+              ],
+              "std_xy_m": 0.10676995945916731,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000899",
+            "t_sim": 180.9,
+            "frame_id": 899,
+            "frame_sha256": "f19da9765aeecfa29129c044cb5fd5e35d75600cb42c384693678810dfb7f259",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.9083042989679455,
+                3.3390644875084208,
+                2.9778837834722616
+              ],
+              "std_xy_m": 0.10058551445175629,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          }
+        ],
+        "first_t_sim": 175.3,
+        "last_t_sim": 180.9,
+        "max_observer_std_xy_m": 0.10676995945916731,
+        "view_circular_variance": 0.059274611855826755,
+        "association": "historical endpoint-hit cells within half-cell diagonal of summary line"
+      },
+      "confidence": "unvalidated_support",
+      "source": "own",
+      "age_s": 0.4000000000000057
+    },
+    {
+      "obs_id": "r3-wall-252f0d88a527-0032",
+      "t_sim": 43.3,
+      "frame_sha256": "2742b284f1a6301b07770cde2b03b8def5667204516ed1e5c29658a2355e7d62",
+      "observer_pose": {
+        "xyyaw": [
+          0.6315514177926699,
+          -0.0002140006106862687,
+          -2.5299085979216707
+        ],
+        "std_xy_m": 0.18967197563396415,
+        "source": "own_rbpf_pose_ledger",
+        "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+      },
+      "entity": {
+        "kind": "wall_segment",
+        "id": "r3/wall/252f0d88a527/0032"
+      },
+      "claim": {
+        "state": "observed_wall_candidate",
+        "endpoints_m": [
+          [
+            -1.9499999999999995,
+            -0.6499999999999999
+          ],
+          [
+            -1.9499999999999995,
+            -0.4500000000000002
+          ]
+        ]
+      },
+      "evidence": {
+        "detector": "egomap34_frozen_contacts+odom_grid_hough_tls",
+        "score": 0.06589263749462554,
+        "semantics": "TSDF support; NOT calibrated wall probability",
+        "grid_fit_cells": 3,
+        "nearby_occupied_cells": 3,
+        "scan_count": 1,
+        "observation_ids": [
+          "r3-obs-000211"
+        ],
+        "observations": [
+          {
+            "obs_id": "r3-obs-000211",
+            "t_sim": 43.3,
+            "frame_id": 211,
+            "frame_sha256": "2742b284f1a6301b07770cde2b03b8def5667204516ed1e5c29658a2355e7d62",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.6315514177926699,
+                -0.0002140006106862687,
+                -2.5299085979216707
+              ],
+              "std_xy_m": 0.18967197563396415,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          }
+        ],
+        "first_t_sim": 43.3,
+        "last_t_sim": 43.3,
+        "max_observer_std_xy_m": 0.18967197563396415,
+        "view_circular_variance": 5.4046083016475364e-05,
+        "association": "historical endpoint-hit cells within half-cell diagonal of summary line"
+      },
+      "confidence": "unvalidated_support",
+      "source": "own",
+      "age_s": 138.0
+    },
+    {
+      "obs_id": "r3-wall-252f0d88a527-0033",
+      "t_sim": 152.5,
+      "frame_sha256": "4cdcad8882b8726ac86c04d29033a3f6704a3bc3a1dea1fe75b9b19285d8ebf0",
+      "observer_pose": {
+        "xyyaw": [
+          0.7609483241947383,
+          3.430046420381051,
+          1.3561526524149308
+        ],
+        "std_xy_m": 0.2551741637968355,
+        "source": "own_rbpf_pose_ledger",
+        "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+      },
+      "entity": {
+        "kind": "wall_segment",
+        "id": "r3/wall/252f0d88a527/0033"
+      },
+      "claim": {
+        "state": "observed_wall_candidate",
+        "endpoints_m": [
+          [
+            0.8499999999999999,
+            4.3500000000000005
+          ],
+          [
+            0.8499999999999999,
+            4.55
+          ]
+        ]
+      },
+      "evidence": {
+        "detector": "egomap34_frozen_contacts+odom_grid_hough_tls",
+        "score": 0.19853835627900382,
+        "semantics": "TSDF support; NOT calibrated wall probability",
+        "grid_fit_cells": 3,
+        "nearby_occupied_cells": 3,
+        "scan_count": 7,
+        "observation_ids": [
+          "r3-obs-000684",
+          "r3-obs-000700",
+          "r3-obs-000705",
+          "r3-obs-000710",
+          "r3-obs-000715",
+          "r3-obs-000730",
+          "r3-obs-000757"
+        ],
+        "observations": [
+          {
+            "obs_id": "r3-obs-000684",
+            "t_sim": 137.9,
+            "frame_id": 684,
+            "frame_sha256": "0fc6206f610c38a912166ac8430edd2c8570623528ec565ca51395c4a0c88fd6",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.6650006460790179,
+                3.3238162776070252,
+                1.4658555050093272
+              ],
+              "std_xy_m": 0.20719528623563757,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000700",
+            "t_sim": 141.1,
+            "frame_id": 700,
+            "frame_sha256": "11c0de6058681ae605c7e36d527e08fc7433286466e750826c45e347bd0af1f2",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.752952434055572,
+                3.429501785877979,
+                1.452491131235841
+              ],
+              "std_xy_m": 0.22027056380616827,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000705",
+            "t_sim": 142.1,
+            "frame_id": 705,
+            "frame_sha256": "1c60b7eca3468ac7ef8e4db6930a5f3626d87dd6e6076eef9aea72e7c597f4a2",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.7518748700635293,
+                3.4481856473977555,
+                1.1667312304167679
+              ],
+              "std_xy_m": 0.24028918831041804,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000710",
+            "t_sim": 143.1,
+            "frame_id": 710,
+            "frame_sha256": "a5467d8b34792556cacfbb77ce2238f6f6f45b041c7d59a7cd533486bfc9692e",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.712659783978231,
+                3.4428217912219528,
+                1.5292878607919453
+              ],
+              "std_xy_m": 0.2288368047536204,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000715",
+            "t_sim": 144.1,
+            "frame_id": 715,
+            "frame_sha256": "907f85364003c390a0dff1a0c73433894e0a18b899ef15bdc9100f083b1344ab",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.7468725601401613,
+                3.417849773747489,
+                1.249551545448604
+              ],
+              "std_xy_m": 0.23244459140797039,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000730",
+            "t_sim": 147.1,
+            "frame_id": 730,
+            "frame_sha256": "4b7e4f8f7cfbedb5125b9151f2f1b87f77a8d5446fb5b4cf7ad0ccc72466fcfe",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.7501822679612353,
+                3.417050543490649,
+                1.460480416647595
+              ],
+              "std_xy_m": 0.22929286343560887,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000757",
+            "t_sim": 152.5,
+            "frame_id": 757,
+            "frame_sha256": "4cdcad8882b8726ac86c04d29033a3f6704a3bc3a1dea1fe75b9b19285d8ebf0",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.7609483241947383,
+                3.430046420381051,
+                1.3561526524149308
+              ],
+              "std_xy_m": 0.2551741637968355,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          }
+        ],
+        "first_t_sim": 137.9,
+        "last_t_sim": 152.5,
+        "max_observer_std_xy_m": 0.2551741637968355,
+        "view_circular_variance": 0.001954048263905402,
+        "association": "historical endpoint-hit cells within half-cell diagonal of summary line"
+      },
+      "confidence": "unvalidated_support",
+      "source": "own",
+      "age_s": 28.80000000000001
+    },
+    {
+      "obs_id": "r3-wall-252f0d88a527-0034",
+      "t_sim": 102.3,
+      "frame_sha256": "dc6647a5a5fcf73429548edfea51ccbc0f64f3f9801a5fa3240fc3f147528a7c",
+      "observer_pose": {
+        "xyyaw": [
+          0.40024286147161353,
+          1.372451883147942,
+          1.9949302910767175
+        ],
+        "std_xy_m": 0.10335494399154571,
+        "source": "own_rbpf_pose_ledger",
+        "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+      },
+      "entity": {
+        "kind": "wall_segment",
+        "id": "r3/wall/252f0d88a527/0034"
+      },
+      "claim": {
+        "state": "observed_wall_candidate",
+        "endpoints_m": [
+          [
+            -0.9481588825304722,
+            3.8115874274934582
+          ],
+          [
+            -0.748617287851652,
+            3.8211514710314956
+          ]
+        ]
+      },
+      "evidence": {
+        "detector": "egomap34_frozen_contacts+odom_grid_hough_tls",
+        "score": 0.07732844723145553,
+        "semantics": "TSDF support; NOT calibrated wall probability",
+        "grid_fit_cells": 3,
+        "nearby_occupied_cells": 3,
+        "scan_count": 2,
+        "observation_ids": [
+          "r3-obs-000475",
+          "r3-obs-000506"
+        ],
+        "observations": [
+          {
+            "obs_id": "r3-obs-000475",
+            "t_sim": 96.1,
+            "frame_id": 475,
+            "frame_sha256": "b30a44541e110adc0816196a390dc3cbacdd0310c1c435cbe84165ccec6916fc",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.6272717218367462,
+                1.1607795269104169,
+                2.4471289754262147
+              ],
+              "std_xy_m": 0.09596873733669815,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000506",
+            "t_sim": 102.3,
+            "frame_id": 506,
+            "frame_sha256": "dc6647a5a5fcf73429548edfea51ccbc0f64f3f9801a5fa3240fc3f147528a7c",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.40024286147161353,
+                1.372451883147942,
+                1.9949302910767175
+              ],
+              "std_xy_m": 0.10335494399154571,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          }
+        ],
+        "first_t_sim": 96.1,
+        "last_t_sim": 102.3,
+        "max_observer_std_xy_m": 0.10335494399154571,
+        "view_circular_variance": 6.22784956444411e-05,
+        "association": "historical endpoint-hit cells within half-cell diagonal of summary line"
+      },
+      "confidence": "unvalidated_support",
+      "source": "own",
+      "age_s": 79.00000000000001
+    },
+    {
+      "obs_id": "r3-wall-252f0d88a527-0035",
+      "t_sim": 160.5,
+      "frame_sha256": "aff0d6f3c8edffc4e9920973a812eb7d9f19a67c08ea310f48e77968cf0327b5",
+      "observer_pose": {
+        "xyyaw": [
+          0.9232225929126098,
+          3.577056553503363,
+          0.4068858358489722
+        ],
+        "std_xy_m": 0.24562321847019733,
+        "source": "own_rbpf_pose_ledger",
+        "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+      },
+      "entity": {
+        "kind": "wall_segment",
+        "id": "r3/wall/252f0d88a527/0035"
+      },
+      "claim": {
+        "state": "observed_wall_candidate",
+        "endpoints_m": [
+          [
+            1.8502054647420292,
+            3.945713239686567
+          ],
+          [
+            2.049747059420849,
+            3.955277283224604
+          ]
+        ]
+      },
+      "evidence": {
+        "detector": "egomap34_frozen_contacts+odom_grid_hough_tls",
+        "score": 0.005406695294450105,
+        "semantics": "TSDF support; NOT calibrated wall probability",
+        "grid_fit_cells": 3,
+        "nearby_occupied_cells": 3,
+        "scan_count": 4,
+        "observation_ids": [
+          "r3-obs-000720",
+          "r3-obs-000725",
+          "r3-obs-000780",
+          "r3-obs-000797"
+        ],
+        "observations": [
+          {
+            "obs_id": "r3-obs-000720",
+            "t_sim": 145.1,
+            "frame_id": 720,
+            "frame_sha256": "d9d8690f565e8ea47f6f00228c034126b54aac0fb4a56aec47f52af724d1115a",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.7571766765164963,
+                3.4411003556324435,
+                0.7092962043389588
+              ],
+              "std_xy_m": 0.2281361073071804,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000725",
+            "t_sim": 146.1,
+            "frame_id": 725,
+            "frame_sha256": "cf41e727934e9ef563cb07846d2b1df311120c4dc5c548342366c5ea16d5d53b",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.7368110250737976,
+                3.4203922276705807,
+                0.9168254478571694
+              ],
+              "std_xy_m": 0.23141116438433293,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000780",
+            "t_sim": 157.1,
+            "frame_id": 780,
+            "frame_sha256": "f1e66dafd39b45dba0c35d500abe7052f1a39d0237ec5e7ad294c1c8c7118ba5",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.8199299568653879,
+                3.549722827337172,
+                0.7221319558116255
+              ],
+              "std_xy_m": 0.24172341242225273,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000797",
+            "t_sim": 160.5,
+            "frame_id": 797,
+            "frame_sha256": "aff0d6f3c8edffc4e9920973a812eb7d9f19a67c08ea310f48e77968cf0327b5",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.9232225929126098,
+                3.577056553503363,
+                0.4068858358489722
+              ],
+              "std_xy_m": 0.24562321847019733,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          }
+        ],
+        "first_t_sim": 145.1,
+        "last_t_sim": 160.5,
+        "max_observer_std_xy_m": 0.24562321847019733,
+        "view_circular_variance": 0.0005890834395855249,
+        "association": "historical endpoint-hit cells within half-cell diagonal of summary line"
+      },
+      "confidence": "unvalidated_support",
+      "source": "own",
+      "age_s": 20.80000000000001
+    },
+    {
+      "obs_id": "r3-wall-252f0d88a527-0036",
+      "t_sim": 163.1,
+      "frame_sha256": "0faed4238c846e3fc86832196d7f2108e0a65929570d36948139143797afcbf2",
+      "observer_pose": {
+        "xyyaw": [
+          1.0424784098593234,
+          3.615588125550204,
+          -0.10467985451834894
+        ],
+        "std_xy_m": 0.24360081886935953,
+        "source": "own_rbpf_pose_ledger",
+        "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+      },
+      "entity": {
+        "kind": "wall_segment",
+        "id": "r3/wall/252f0d88a527/0036"
+      },
+      "claim": {
+        "state": "observed_wall_candidate",
+        "endpoints_m": [
+          [
+            3.350941024391747,
+            4.333345860186202
+          ],
+          [
+            3.5503045176857286,
+            4.344610681552603
+          ]
+        ]
+      },
+      "evidence": {
+        "detector": "egomap34_frozen_contacts+odom_grid_hough_tls",
+        "score": 0.0008841724520042811,
+        "semantics": "TSDF support; NOT calibrated wall probability",
+        "grid_fit_cells": 3,
+        "nearby_occupied_cells": 3,
+        "scan_count": 1,
+        "observation_ids": [
+          "r3-obs-000810"
+        ],
+        "observations": [
+          {
+            "obs_id": "r3-obs-000810",
+            "t_sim": 163.1,
+            "frame_id": 810,
+            "frame_sha256": "0faed4238c846e3fc86832196d7f2108e0a65929570d36948139143797afcbf2",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                1.0424784098593234,
+                3.615588125550204,
+                -0.10467985451834894
+              ],
+              "std_xy_m": 0.24360081886935953,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          }
+        ],
+        "first_t_sim": 163.1,
+        "last_t_sim": 163.1,
+        "max_observer_std_xy_m": 0.24360081886935953,
+        "view_circular_variance": 0.0,
+        "association": "historical endpoint-hit cells within half-cell diagonal of summary line"
+      },
+      "confidence": "unvalidated_support",
+      "source": "own",
+      "age_s": 18.200000000000017
+    },
+    {
+      "obs_id": "r3-wall-252f0d88a527-0037",
+      "t_sim": 165.3,
+      "frame_sha256": "4f670277f17eb46e5f6d9954697ca77f2db4701acf0c786ecb40d82455091c8e",
+      "observer_pose": {
+        "xyyaw": [
+          1.0560633504038224,
+          3.587575970110964,
+          -0.9101619038148887
+        ],
+        "std_xy_m": 0.22432797197945356,
+        "source": "own_rbpf_pose_ledger",
+        "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+      },
+      "entity": {
+        "kind": "wall_segment",
+        "id": "r3/wall/252f0d88a527/0037"
+      },
+      "claim": {
+        "state": "observed_wall_candidate",
+        "endpoints_m": [
+          [
+            1.328766276182757,
+            2.7465625474716497
+          ],
+          [
+            1.3603167198897979,
+            2.5516701373331734
+          ]
+        ]
+      },
+      "evidence": {
+        "detector": "egomap34_frozen_contacts+odom_grid_hough_tls",
+        "score": 0.0015683160969827796,
+        "semantics": "TSDF support; NOT calibrated wall probability",
+        "grid_fit_cells": 3,
+        "nearby_occupied_cells": 3,
+        "scan_count": 1,
+        "observation_ids": [
+          "r3-obs-000821"
+        ],
+        "observations": [
+          {
+            "obs_id": "r3-obs-000821",
+            "t_sim": 165.3,
+            "frame_id": 821,
+            "frame_sha256": "4f670277f17eb46e5f6d9954697ca77f2db4701acf0c786ecb40d82455091c8e",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                1.0560633504038224,
+                3.587575970110964,
+                -0.9101619038148887
+              ],
+              "std_xy_m": 0.22432797197945356,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          }
+        ],
+        "first_t_sim": 165.3,
+        "last_t_sim": 165.3,
+        "max_observer_std_xy_m": 0.22432797197945356,
+        "view_circular_variance": 0.0,
+        "association": "historical endpoint-hit cells within half-cell diagonal of summary line"
+      },
+      "confidence": "unvalidated_support",
+      "source": "own",
+      "age_s": 16.0
+    },
+    {
+      "obs_id": "r3-wall-252f0d88a527-0038",
+      "t_sim": 151.5,
+      "frame_sha256": "3b0f53acc30e21750e42a7bb0e67fae78e27cb899f3c5938f1120cf6718746fc",
+      "observer_pose": {
+        "xyyaw": [
+          0.7546054493822208,
+          3.4629971153440753,
+          1.8245549024640262
+        ],
+        "std_xy_m": 0.24956400059797126,
+        "source": "own_rbpf_pose_ledger",
+        "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+      },
+      "entity": {
+        "kind": "wall_segment",
+        "id": "r3/wall/252f0d88a527/0038"
+      },
+      "claim": {
+        "state": "observed_wall_candidate",
+        "endpoints_m": [
+          [
+            0.9335996661401282,
+            4.547305606217353
+          ],
+          [
+            0.9655939058927833,
+            4.352561906571152
+          ]
+        ]
+      },
+      "evidence": {
+        "detector": "egomap34_frozen_contacts+odom_grid_hough_tls",
+        "score": 0.15481165412136724,
+        "semantics": "TSDF support; NOT calibrated wall probability",
+        "grid_fit_cells": 3,
+        "nearby_occupied_cells": 3,
+        "scan_count": 4,
+        "observation_ids": [
+          "r3-obs-000684",
+          "r3-obs-000700",
+          "r3-obs-000730",
+          "r3-obs-000752"
+        ],
+        "observations": [
+          {
+            "obs_id": "r3-obs-000684",
+            "t_sim": 137.9,
+            "frame_id": 684,
+            "frame_sha256": "0fc6206f610c38a912166ac8430edd2c8570623528ec565ca51395c4a0c88fd6",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.6650006460790179,
+                3.3238162776070252,
+                1.4658555050093272
+              ],
+              "std_xy_m": 0.20719528623563757,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000700",
+            "t_sim": 141.1,
+            "frame_id": 700,
+            "frame_sha256": "11c0de6058681ae605c7e36d527e08fc7433286466e750826c45e347bd0af1f2",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.752952434055572,
+                3.429501785877979,
+                1.452491131235841
+              ],
+              "std_xy_m": 0.22027056380616827,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000730",
+            "t_sim": 147.1,
+            "frame_id": 730,
+            "frame_sha256": "4b7e4f8f7cfbedb5125b9151f2f1b87f77a8d5446fb5b4cf7ad0ccc72466fcfe",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.7501822679612353,
+                3.417050543490649,
+                1.460480416647595
+              ],
+              "std_xy_m": 0.22929286343560887,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000752",
+            "t_sim": 151.5,
+            "frame_id": 752,
+            "frame_sha256": "3b0f53acc30e21750e42a7bb0e67fae78e27cb899f3c5938f1120cf6718746fc",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.7546054493822208,
+                3.4629971153440753,
+                1.8245549024640262
+              ],
+              "std_xy_m": 0.24956400059797126,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          }
+        ],
+        "first_t_sim": 137.9,
+        "last_t_sim": 151.5,
+        "max_observer_std_xy_m": 0.24956400059797126,
+        "view_circular_variance": 0.0022318105148181333,
+        "association": "historical endpoint-hit cells within half-cell diagonal of summary line"
+      },
+      "confidence": "unvalidated_support",
+      "source": "own",
+      "age_s": 29.80000000000001
+    },
+    {
+      "obs_id": "r3-wall-252f0d88a527-0039",
+      "t_sim": 53.5,
+      "frame_sha256": "6c3676f7fde1e3d3ecbafa518c24cadac4bf831ac545493e9ef9e4d2bf18819b",
+      "observer_pose": {
+        "xyyaw": [
+          0.43859086888264215,
+          -0.2640559955482653,
+          -1.0416168653192028
+        ],
+        "std_xy_m": 0.04397186077435893,
+        "source": "own_rbpf_pose_ledger",
+        "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+      },
+      "entity": {
+        "kind": "wall_segment",
+        "id": "r3/wall/252f0d88a527/0039"
+      },
+      "claim": {
+        "state": "observed_wall_candidate",
+        "endpoints_m": [
+          [
+            0.5301929477189318,
+            -1.645888828277587
+          ],
+          [
+            0.5699906036049587,
+            -1.4541492698200857
+          ]
+        ]
+      },
+      "evidence": {
+        "detector": "egomap34_frozen_contacts+odom_grid_hough_tls",
+        "score": 0.0994716598790616,
+        "semantics": "TSDF support; NOT calibrated wall probability",
+        "grid_fit_cells": 3,
+        "nearby_occupied_cells": 3,
+        "scan_count": 6,
+        "observation_ids": [
+          "r3-obs-000052",
+          "r3-obs-000074",
+          "r3-obs-000085",
+          "r3-obs-000201",
+          "r3-obs-000232",
+          "r3-obs-000262"
+        ],
+        "observations": [
+          {
+            "obs_id": "r3-obs-000052",
+            "t_sim": 11.5,
+            "frame_id": 52,
+            "frame_sha256": "c23150b21749f7badbd20043cd72d8d7f30e85ae1e6c517b5075d83bc0ec27ae",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.3333093058702866,
+                -0.10651078214956655,
+                -1.223694552637629
+              ],
+              "std_xy_m": 0.10754953727182179,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000074",
+            "t_sim": 15.9,
+            "frame_id": 74,
+            "frame_sha256": "f7a8ba247fc85046c48973053ff31a8717655f3b8f87acb89f2950738a7edd50",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.41102054658449333,
+                -0.18495099614406965,
+                -1.249547839978428
+              ],
+              "std_xy_m": 0.11471158202409783,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000085",
+            "t_sim": 18.1,
+            "frame_id": 85,
+            "frame_sha256": "d065abc24f0ac6f0dfa7c4ca4aee2b2971ead7d854987f8845b2e42adacaa417",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.4126804099729323,
+                -0.2511971465683945,
+                -1.4845651638484856
+              ],
+              "std_xy_m": 0.11705483991917247,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000201",
+            "t_sim": 41.3,
+            "frame_id": 201,
+            "frame_sha256": "97a41802a86626a22b0546e7fa82390198248e5e00f059fc8fe9d51027e0c2bb",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.6930460906064468,
+                0.0418105557699513,
+                -2.0027671068126236
+              ],
+              "std_xy_m": 0.18284212089392263,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000232",
+            "t_sim": 47.5,
+            "frame_id": 232,
+            "frame_sha256": "4f78f0344f003aa7bca633e6bbcce72c9c442717a95544cbac2004ea98f96792",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.5074554567914312,
+                -0.034011915310141715,
+                -1.815905895057667
+              ],
+              "std_xy_m": 0.08809757578920538,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000262",
+            "t_sim": 53.5,
+            "frame_id": 262,
+            "frame_sha256": "6c3676f7fde1e3d3ecbafa518c24cadac4bf831ac545493e9ef9e4d2bf18819b",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.43859086888264215,
+                -0.2640559955482653,
+                -1.0416168653192028
+              ],
+              "std_xy_m": 0.04397186077435893,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          }
+        ],
+        "first_t_sim": 11.5,
+        "last_t_sim": 53.5,
+        "max_observer_std_xy_m": 0.18284212089392263,
+        "view_circular_variance": 0.00260881730359371,
+        "association": "historical endpoint-hit cells within half-cell diagonal of summary line"
+      },
+      "confidence": "unvalidated_support",
+      "source": "own",
+      "age_s": 127.80000000000001
+    },
+    {
+      "obs_id": "r3-wall-252f0d88a527-0040",
+      "t_sim": 39.3,
+      "frame_sha256": "b7eb1285f9c807f43d03e55684730c05c7fc508baf041f97b4e90e64d5b79510",
+      "observer_pose": {
+        "xyyaw": [
+          0.6778175535907431,
+          0.003894692082335628,
+          -2.8702254296173217
+        ],
+        "std_xy_m": 0.10622774371367959,
+        "source": "own_rbpf_pose_ledger",
+        "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+      },
+      "entity": {
+        "kind": "wall_segment",
+        "id": "r3/wall/252f0d88a527/0040"
+      },
+      "claim": {
+        "state": "observed_wall_candidate",
+        "endpoints_m": [
+          [
+            -2.9331206191042973,
+            -0.08338489040871011
+          ],
+          [
+            -2.7738381247432065,
+            -0.0028517552261826395
+          ]
+        ]
+      },
+      "evidence": {
+        "detector": "egomap34_frozen_contacts+odom_grid_hough_tls",
+        "score": 0.0024873025207051637,
+        "semantics": "TSDF support; NOT calibrated wall probability",
+        "grid_fit_cells": 3,
+        "nearby_occupied_cells": 3,
+        "scan_count": 1,
+        "observation_ids": [
+          "r3-obs-000191"
+        ],
+        "observations": [
+          {
+            "obs_id": "r3-obs-000191",
+            "t_sim": 39.3,
+            "frame_id": 191,
+            "frame_sha256": "b7eb1285f9c807f43d03e55684730c05c7fc508baf041f97b4e90e64d5b79510",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.6778175535907431,
+                0.003894692082335628,
+                -2.8702254296173217
+              ],
+              "std_xy_m": 0.10622774371367959,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          }
+        ],
+        "first_t_sim": 39.3,
+        "last_t_sim": 39.3,
+        "max_observer_std_xy_m": 0.10622774371367959,
+        "view_circular_variance": 0.0,
+        "association": "historical endpoint-hit cells within half-cell diagonal of summary line"
+      },
+      "confidence": "unvalidated_support",
+      "source": "own",
+      "age_s": 142.0
+    },
+    {
+      "obs_id": "r3-wall-252f0d88a527-0041",
+      "t_sim": 163.1,
+      "frame_sha256": "0faed4238c846e3fc86832196d7f2108e0a65929570d36948139143797afcbf2",
+      "observer_pose": {
+        "xyyaw": [
+          1.0424784098593234,
+          3.615588125550204,
+          -0.10467985451834894
+        ],
+        "std_xy_m": 0.24360081886935953,
+        "source": "own_rbpf_pose_ledger",
+        "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+      },
+      "entity": {
+        "kind": "wall_segment",
+        "id": "r3/wall/252f0d88a527/0041"
+      },
+      "claim": {
+        "state": "observed_wall_candidate",
+        "endpoints_m": [
+          [
+            4.729894442532887,
+            3.589673615088281
+          ],
+          [
+            4.849782265033288,
+            3.650429649029865
+          ]
+        ]
+      },
+      "evidence": {
+        "detector": "egomap34_frozen_contacts+odom_grid_hough_tls",
+        "score": 0.08138318196851348,
+        "semantics": "TSDF support; NOT calibrated wall probability",
+        "grid_fit_cells": 3,
+        "nearby_occupied_cells": 3,
+        "scan_count": 2,
+        "observation_ids": [
+          "r3-obs-000797",
+          "r3-obs-000810"
+        ],
+        "observations": [
+          {
+            "obs_id": "r3-obs-000797",
+            "t_sim": 160.5,
+            "frame_id": 797,
+            "frame_sha256": "aff0d6f3c8edffc4e9920973a812eb7d9f19a67c08ea310f48e77968cf0327b5",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                0.9232225929126098,
+                3.577056553503363,
+                0.4068858358489722
+              ],
+              "std_xy_m": 0.24562321847019733,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          },
+          {
+            "obs_id": "r3-obs-000810",
+            "t_sim": 163.1,
+            "frame_id": 810,
+            "frame_sha256": "0faed4238c846e3fc86832196d7f2108e0a65929570d36948139143797afcbf2",
+            "source": "own",
+            "observer_pose": {
+              "xyyaw": [
+                1.0424784098593234,
+                3.615588125550204,
+                -0.10467985451834894
+              ],
+              "std_xy_m": 0.24360081886935953,
+              "source": "own_rbpf_pose_ledger",
+              "uncertainty_scope": "frontend marginal; not graph-smoothed covariance"
+            }
+          }
+        ],
+        "first_t_sim": 160.5,
+        "last_t_sim": 163.1,
+        "max_observer_std_xy_m": 0.24562321847019733,
+        "view_circular_variance": 1.3545863625600656e-06,
+        "association": "historical endpoint-hit cells within half-cell diagonal of summary line"
+      },
+      "confidence": "unvalidated_support",
+      "source": "own",
+      "age_s": 18.200000000000017
+    }
+  ]
+}

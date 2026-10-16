@@ -1,0 +1,744 @@
+[
+  {
+    "seed": 55001,
+    "source": "/Users/changmin/projects/ugrp/outputs/goal-route-preflight-v1/seed55001",
+    "hashes": {
+      "robots/r3/commands.jsonl": "ba32e432a21e5b2ae230a7a624230d941469e4473fe34b1fb8bb9f3805a654fc",
+      "own-controller.jsonl": "d30e8a7085d47bd60460c05376ff6cfdc35782e259900d570ebf4263bd12637a",
+      "eval_only/trajectory.jsonl": "c80698cf22564547abdca334280ed07561377088bd0a10b70ceb9e28add8d5d2",
+      "decisions.json": "a69883141993d5808344b8f2f9ce9867032b4569b5c407b47ba51e975aa39eed",
+      "utility-events.json": "70f8345f3065a562b7c257f825b4b4853897d75800a8e10d5b58934c9ea12de3",
+      "frontend-covariances.jsonl": "12401de2f3685e06b600cd60161ac7d31cb910a74ce0cc7a5c70cfe49246146b"
+    },
+    "frames": 1341,
+    "pulse_groups": [
+      {
+        "axis": "forward",
+        "u": 0.35,
+        "duration_s": 0.1,
+        "observed_interval_s": 0.2,
+        "n": 278,
+        "predicted_xy_sum_m": 3.5927090289405417,
+        "actual_xy_sum_m": 3.5737657922184463,
+        "predicted_body_mean": [
+          0.012917157771402074,
+          -0.00040206798082011234,
+          -0.0002937895356369216
+        ],
+        "actual_body_mean": [
+          0.01285052980026,
+          3.961870314860159e-06,
+          0.0003495044994724934
+        ],
+        "actual_body_std": [
+          0.0006280666856299943,
+          0.0003495258074515873,
+          0.004570459829180441
+        ],
+        "predicted_yaw_sum_deg": -4.679546327074879,
+        "actual_yaw_sum_deg": 5.5669869018885185
+      },
+      {
+        "axis": "turn",
+        "u": -0.35,
+        "duration_s": 0.1,
+        "observed_interval_s": 0.2,
+        "n": 368,
+        "predicted_xy_sum_m": 0.6733275949746202,
+        "actual_xy_sum_m": 0.24874805106381076,
+        "predicted_body_mean": [
+          -0.0002967923972441449,
+          -0.001805462939235208,
+          -0.10358137147758174
+        ],
+        "actual_body_mean": [
+          6.440885827829384e-05,
+          0.0002929533439502231,
+          -0.1032822737521857
+        ],
+        "actual_body_std": [
+          0.00048734562158227857,
+          0.00047977112305780167,
+          0.004283838107207904
+        ],
+        "predicted_yaw_sum_deg": -2183.9973552379406,
+        "actual_yaw_sum_deg": -2177.6909255015353
+      },
+      {
+        "axis": "turn",
+        "u": 0.35,
+        "duration_s": 0.1,
+        "observed_interval_s": 0.2,
+        "n": 571,
+        "predicted_xy_sum_m": 1.6105793584395989,
+        "actual_xy_sum_m": 0.3858523726048239,
+        "predicted_body_mean": [
+          0.00013277632403878954,
+          -0.0028175025064410253,
+          0.10354346792033206
+        ],
+        "actual_body_mean": [
+          6.966810968706291e-05,
+          -0.0002933497133172592,
+          0.10362045154517902
+        ],
+        "actual_body_std": [
+          0.0005215601714222234,
+          0.0004569750113013524,
+          0.004476060503730057
+        ],
+        "predicted_yaw_sum_deg": 3387.5167172584615,
+        "actual_yaw_sum_deg": 3390.0353050685876
+      }
+    ],
+    "rejected_proposals": [],
+    "unobserved_terminal_commands": 0,
+    "dr_path_m": 5.876615982354703,
+    "posterior_path_m": 24.95841974247883,
+    "actual_path_m": 4.226114211341205,
+    "dr_to_actual": 1.390548311871035,
+    "posterior_to_actual": 5.905760822909231,
+    "correction_norm_sum_m": 19.55792459306304,
+    "corrections": {
+      "gmapping_motion_gate": {
+        "frames": 1150,
+        "xy_sum_m": 0.35629252832362757,
+        "yaw_abs_sum_deg": 6.681377625419953
+      },
+      "high_residual": {
+        "frames": 29,
+        "xy_sum_m": 2.89231115689934,
+        "yaw_abs_sum_deg": 114.83315943210442
+      },
+      "low_overlap": {
+        "frames": 10,
+        "xy_sum_m": 0.9570057145762225,
+        "yaw_abs_sum_deg": 40.28518838965245
+      },
+      "no_scan": {
+        "frames": 3,
+        "xy_sum_m": 1.5293779595899903e-16,
+        "yaw_abs_sum_deg": 2.0355549961366507e-13
+      },
+      "insufficient_match_points": {
+        "frames": 6,
+        "xy_sum_m": 0.18825032072100792,
+        "yaw_abs_sum_deg": 57.90851057986487
+      },
+      "search_boundary": {
+        "frames": 2,
+        "xy_sum_m": 0.08866613369050366,
+        "yaw_abs_sum_deg": 4.430054233402272
+      },
+      "improved_proposal": {
+        "frames": 140,
+        "xy_sum_m": 15.075398738852336,
+        "yaw_abs_sum_deg": 729.9653864256326
+      }
+    },
+    "final_error_m": 0.7078852098751668,
+    "final_sigma_m": 0.17559714981626315,
+    "final_error_sigma": 4.03130239081822,
+    "over_3sigma_frames": 651,
+    "over_3sigma_fraction": 0.4854586129753915,
+    "command_replay_sha256": "30049597b56c561b78de9da8eb4d263ed636246aa00faf049bbab37513832036",
+    "hypothesis": "No startup deadband loss: all admitted pulses .10s; forward gain matches. Rotation XY cross coupling and posterior jumps remain."
+  },
+  {
+    "seed": 55002,
+    "source": "/Users/changmin/projects/ugrp/outputs/goal-route-preflight-v1/seed55002",
+    "hashes": {
+      "robots/r3/commands.jsonl": "3334f90b2b9bf0d0b814c62a06295194578d603df158653f3a061a2b4a2b6fa4",
+      "own-controller.jsonl": "946cd9ebb4ca84effbc338a7dc55540144542b4666747cd76ceb29466e5c044f",
+      "eval_only/trajectory.jsonl": "5ae3a5406a1c04ab68707c280a6f91defe97a17175968cefcc43cfaf4078e1e4",
+      "decisions.json": "b0e6a1d144446f5b5d6ca41ae264b1dfa16cfa7ff649386a29d3e074f21f61dd",
+      "utility-events.json": "318ff9242f7891d1cc29de4a5f697059273a5744dfa61e24bb62f7e4acbfa86c",
+      "frontend-covariances.jsonl": "7e2c569001505200b6830da87f320a93cbd9e8c086bb6534afa36add3e0ba4f1"
+    },
+    "frames": 1078,
+    "pulse_groups": [
+      {
+        "axis": "forward",
+        "u": 0.35,
+        "duration_s": 0.1,
+        "observed_interval_s": 0.2,
+        "n": 247,
+        "predicted_xy_sum_m": 3.1920832019723386,
+        "actual_xy_sum_m": 3.1701722980894336,
+        "predicted_body_mean": [
+          0.01291715777140201,
+          -0.0004020679808201121,
+          -0.00029378953563692623
+        ],
+        "actual_body_mean": [
+          0.0128304485223747,
+          8.885183337819212e-06,
+          -9.753789750670907e-05
+        ],
+        "actual_body_std": [
+          0.0006138131000238399,
+          0.0003301776435647608,
+          0.004226399157981808
+        ],
+        "predicted_yaw_sum_deg": -4.157726412904725,
+        "actual_yaw_sum_deg": -1.3803619378193641
+      },
+      {
+        "axis": "turn",
+        "u": -0.35,
+        "duration_s": 0.1,
+        "observed_interval_s": 0.2,
+        "n": 250,
+        "predicted_xy_sum_m": 0.4574236378903678,
+        "actual_xy_sum_m": 0.16498813893873057,
+        "predicted_body_mean": [
+          -0.0002967923972441438,
+          -0.0018054629392352014,
+          -0.10358137147758194
+        ],
+        "actual_body_mean": [
+          5.5035113677226545e-05,
+          0.00031928739651750646,
+          -0.10308210673677443
+        ],
+        "actual_body_std": [
+          0.0005358417197392051,
+          0.00040399239706243544,
+          0.004557301750571777
+        ],
+        "predicted_yaw_sum_deg": -1483.6938554605583,
+        "actual_yaw_sum_deg": -1476.5424148335612
+      },
+      {
+        "axis": "turn",
+        "u": 0.35,
+        "duration_s": 0.1,
+        "observed_interval_s": 0.2,
+        "n": 570,
+        "predicted_xy_sum_m": 1.6077587290903208,
+        "actual_xy_sum_m": 0.36468787420931315,
+        "predicted_body_mean": [
+          0.00013277632403879623,
+          -0.0028175025064410297,
+          0.10354346792033206
+        ],
+        "actual_body_mean": [
+          1.910848638372212e-05,
+          -0.000285566881580997,
+          0.10372715637724318
+        ],
+        "actual_body_std": [
+          0.0004936125059548795,
+          0.0004383869603984623,
+          0.004501131721063332
+        ],
+        "predicted_yaw_sum_deg": 3381.5841135504756,
+        "actual_yaw_sum_deg": 3387.5831203464336
+      }
+    ],
+    "rejected_proposals": [
+      {
+        "t": 218.9,
+        "kind": "mecanum",
+        "forward": 0.0,
+        "left": 0.35,
+        "turn": 0.0,
+        "duration_s": 0.06
+      }
+    ],
+    "unobserved_terminal_commands": 1,
+    "dr_path_m": 5.257265568952994,
+    "posterior_path_m": 19.797518667284386,
+    "actual_path_m": 3.7076396931836757,
+    "dr_to_actual": 1.4179548186999493,
+    "posterior_to_actual": 5.3396554966441885,
+    "correction_norm_sum_m": 14.959284897693587,
+    "corrections": {
+      "gmapping_motion_gate": {
+        "frames": 910,
+        "xy_sum_m": 0.08203981943903253,
+        "yaw_abs_sum_deg": 2.195162028962651
+      },
+      "high_residual": {
+        "frames": 18,
+        "xy_sum_m": 1.7732591031606917,
+        "yaw_abs_sum_deg": 76.24901097560978
+      },
+      "low_overlap": {
+        "frames": 12,
+        "xy_sum_m": 1.3609223384054527,
+        "yaw_abs_sum_deg": 47.097721673043864
+      },
+      "no_scan": {
+        "frames": 4,
+        "xy_sum_m": 9.675782335071797e-17,
+        "yaw_abs_sum_deg": 0.0
+      },
+      "search_boundary": {
+        "frames": 1,
+        "xy_sum_m": 0.2083728299933676,
+        "yaw_abs_sum_deg": 23.41731471303088
+      },
+      "improved_proposal": {
+        "frames": 129,
+        "xy_sum_m": 11.36491122433227,
+        "yaw_abs_sum_deg": 556.625642423385
+      },
+      "insufficient_match_points": {
+        "frames": 3,
+        "xy_sum_m": 0.16977958236276974,
+        "yaw_abs_sum_deg": 18.87864448917219
+      }
+    },
+    "final_error_m": 0.35368421861782773,
+    "final_sigma_m": 0.10319376438455626,
+    "final_error_sigma": 3.4273797523250282,
+    "over_3sigma_frames": 161,
+    "over_3sigma_fraction": 0.14935064935064934,
+    "command_replay_sha256": "993255613099821d5a11b646491f8e52544eefbbbbc1fd95ada0c2beba25f802",
+    "hypothesis": "No startup deadband loss: all admitted pulses .10s; forward gain matches. Rotation XY cross coupling and posterior jumps remain."
+  },
+  {
+    "seed": 55003,
+    "source": "/Users/changmin/projects/ugrp/outputs/goal-route-preflight-v1/seed55003",
+    "hashes": {
+      "robots/r3/commands.jsonl": "6bc57eb038b8d0c69edd2ea5a9e57e8bd360710c0cd2bfd08055891dcb18a855",
+      "own-controller.jsonl": "1e855ba7da95fa838cb4a4237dc1f361ad240f0f7796ee08961657615ed5cd74",
+      "eval_only/trajectory.jsonl": "8bebd03a8a2a65ae50a277e23ed1eb3d1a821c5cb4d510a14804c1c36ca0f2c3",
+      "decisions.json": "f0d6f22c3e0b74b24e115675c77454c05b667d3605cafc2597b46a98a387b531",
+      "utility-events.json": "6ee0f0355a3f100e31da208a094cf6aadc10571c1ecdb7d7245dbb3fbc5b007d",
+      "frontend-covariances.jsonl": "9948826c9b98da244de706c14cefe4ee15aa7a0b92921e5faa18de06f7346a58"
+    },
+    "frames": 2452,
+    "pulse_groups": [
+      {
+        "axis": "forward",
+        "u": 0.35,
+        "duration_s": 0.1,
+        "observed_interval_s": 0.2,
+        "n": 316,
+        "predicted_xy_sum_m": 4.083798752320887,
+        "actual_xy_sum_m": 4.016278061930057,
+        "predicted_body_mean": [
+          0.012917157771402028,
+          -0.00040206798082011207,
+          -0.0002937895356369261
+        ],
+        "actual_body_mean": [
+          0.012705091081768212,
+          -1.0190500678815172e-05,
+          0.0003365039490040926
+        ],
+        "actual_body_std": [
+          0.0006538030334857484,
+          0.0003440625911444267,
+          0.004468293842718819
+        ],
+        "predicted_yaw_sum_deg": -5.319196544444908,
+        "actual_yaw_sum_deg": 6.0925609173047155
+      },
+      {
+        "axis": "turn",
+        "u": -0.35,
+        "duration_s": 0.1,
+        "observed_interval_s": 0.2,
+        "n": 570,
+        "predicted_xy_sum_m": 1.0429258943900335,
+        "actual_xy_sum_m": 0.3644547440673751,
+        "predicted_body_mean": [
+          -0.00029679239724415043,
+          -0.0018054629392352138,
+          -0.10358137147758159
+        ],
+        "actual_body_mean": [
+          3.588503915420293e-05,
+          0.00029029394533154043,
+          -0.10314769857776941
+        ],
+        "actual_body_std": [
+          0.0005072229811033778,
+          0.0004172947765854286,
+          0.004462184764310711
+        ],
+        "predicted_yaw_sum_deg": -3382.821990450069,
+        "actual_yaw_sum_deg": -3368.6588431464384
+      },
+      {
+        "axis": "turn",
+        "u": 0.35,
+        "duration_s": 0.1,
+        "observed_interval_s": 0.2,
+        "n": 1531,
+        "predicted_xy_sum_m": 4.318383533749589,
+        "actual_xy_sum_m": 0.9912086821379043,
+        "predicted_body_mean": [
+          0.00013277632403877187,
+          -0.002817502506441112,
+          0.10354346792033202
+        ],
+        "actual_body_mean": [
+          2.018980436744446e-05,
+          -0.00029148820267248026,
+          0.1037420500888032
+        ],
+        "actual_body_std": [
+          0.0004957025262081891,
+          0.0004376330249196516,
+          0.004458310041357229
+        ],
+        "predicted_yaw_sum_deg": 9082.816276922444,
+        "actual_yaw_sum_deg": 9100.235872656625
+      }
+    ],
+    "rejected_proposals": [],
+    "unobserved_terminal_commands": 0,
+    "dr_path_m": 9.445108180460462,
+    "posterior_path_m": 50.88730709856931,
+    "actual_path_m": 5.392162952656394,
+    "dr_to_actual": 1.7516362660752725,
+    "posterior_to_actual": 9.437271748899985,
+    "correction_norm_sum_m": 42.51520198755763,
+    "corrections": {
+      "gmapping_motion_gate": {
+        "frames": 2013,
+        "xy_sum_m": 0.41977887803974195,
+        "yaw_abs_sum_deg": 3.497812624743296
+      },
+      "high_residual": {
+        "frames": 81,
+        "xy_sum_m": 6.07157165187041,
+        "yaw_abs_sum_deg": 355.302212991517
+      },
+      "insufficient_match_points": {
+        "frames": 4,
+        "xy_sum_m": 0.5294467542218223,
+        "yaw_abs_sum_deg": 16.934795829272094
+      },
+      "no_scan": {
+        "frames": 20,
+        "xy_sum_m": 4.661913668023357e-16,
+        "yaw_abs_sum_deg": 0.0
+      },
+      "search_boundary": {
+        "frames": 1,
+        "xy_sum_m": 0.11992530613178065,
+        "yaw_abs_sum_deg": 5.43756688672853
+      },
+      "low_overlap": {
+        "frames": 31,
+        "xy_sum_m": 2.4778132559980013,
+        "yaw_abs_sum_deg": 148.07516984721576
+      },
+      "improved_proposal": {
+        "frames": 301,
+        "xy_sum_m": 32.896666141295874,
+        "yaw_abs_sum_deg": 1304.4627566661425
+      }
+    },
+    "final_error_m": 0.7776594902298075,
+    "final_sigma_m": 0.09378587144398323,
+    "final_error_sigma": 8.291861857831014,
+    "over_3sigma_frames": 1842,
+    "over_3sigma_fraction": 0.7512234910277324,
+    "command_replay_sha256": "1115a5a6fe8618e3053ba4b680b3c245fb66ea2f26a589513b1f765fdc2529d3",
+    "hypothesis": "No startup deadband loss: all admitted pulses .10s; forward gain matches. Rotation XY cross coupling and posterior jumps remain."
+  },
+  {
+    "seed": 55004,
+    "source": "/Users/changmin/projects/ugrp/outputs/goal-route-preflight-v1/seed55004",
+    "hashes": {
+      "robots/r3/commands.jsonl": "7da693e1aea496b9b2402b97400df13add13d957ad85011da6c29792db7e56c1",
+      "own-controller.jsonl": "2e8d543bc52c11de75b990bc1d4a72fcbcec42ffe7a37241c84e02f3ed7d303e",
+      "eval_only/trajectory.jsonl": "1fe8b574e3308718700996b6eeee72a427a6dd45ec6a144faa5b6246b5f8121d",
+      "decisions.json": "bb901ef6759a002813e74dbb3c36419944a51487118d80e4dceaba8802b78acb",
+      "utility-events.json": "fde8531bfaa99802b02b1a683d3ef6a04f953903c5054c2d821ef6c6582feccd",
+      "frontend-covariances.jsonl": "944229b21bc70cb39b1959eab780196c903c7946ed3445e9aaebd3a4b68b80e0"
+    },
+    "frames": 479,
+    "pulse_groups": [
+      {
+        "axis": "forward",
+        "u": 0.35,
+        "duration_s": 0.1,
+        "observed_interval_s": 0.2,
+        "n": 151,
+        "predicted_xy_sum_m": 1.9514354797482882,
+        "actual_xy_sum_m": 1.9309440383866416,
+        "predicted_body_mean": [
+          0.012917157771402118,
+          -0.00040206798082011305,
+          -0.00029378953563691685
+        ],
+        "actual_body_mean": [
+          0.012782202439055354,
+          1.8583932932480534e-05,
+          3.184715898095464e-05
+        ],
+        "actual_body_std": [
+          0.0006292971911827607,
+          0.0003745137583359272,
+          0.003971675003974687
+        ],
+        "predicted_yaw_sum_deg": -2.541767969022646,
+        "actual_yaw_sum_deg": 0.27553087766271933
+      },
+      {
+        "axis": "turn",
+        "u": -0.35,
+        "duration_s": 0.1,
+        "observed_interval_s": 0.2,
+        "n": 158,
+        "predicted_xy_sum_m": 0.2890917391467144,
+        "actual_xy_sum_m": 0.10684957798826211,
+        "predicted_body_mean": [
+          -0.00029679239724413465,
+          -0.0018054629392352162,
+          -0.10358137147758262
+        ],
+        "actual_body_mean": [
+          7.329134901067748e-05,
+          0.0003047676673961146,
+          -0.10336500643752121
+        ],
+        "actual_body_std": [
+          0.000494038668924281,
+          0.0004624165056437134,
+          0.004999481485629615
+        ],
+        "predicted_yaw_sum_deg": -937.6945166510745,
+        "actual_yaw_sum_deg": -935.7358216775833
+      },
+      {
+        "axis": "turn",
+        "u": 0.35,
+        "duration_s": 0.1,
+        "observed_interval_s": 0.2,
+        "n": 167,
+        "predicted_xy_sum_m": 0.4710451013299722,
+        "actual_xy_sum_m": 0.1228908905763118,
+        "predicted_body_mean": [
+          0.0001327763240388031,
+          -0.002817502506441062,
+          0.10354346792033237
+        ],
+        "actual_body_mean": [
+          0.00016764503941201696,
+          -0.00032205916793854716,
+          0.10309401146719181
+        ],
+        "actual_body_std": [
+          0.0005730022530788751,
+          0.0004376452780330008,
+          0.004417721189335781
+        ],
+        "predicted_yaw_sum_deg": 990.7448192332082,
+        "actual_yaw_sum_deg": 986.4442422739486
+      }
+    ],
+    "rejected_proposals": [
+      {
+        "t": 99.1,
+        "kind": "mecanum",
+        "forward": 0.0,
+        "left": 0.35,
+        "turn": 0.0,
+        "duration_s": 0.06
+      }
+    ],
+    "unobserved_terminal_commands": 1,
+    "dr_path_m": 2.711572320224941,
+    "posterior_path_m": 8.699405583529575,
+    "actual_path_m": 2.1624512326096763,
+    "dr_to_actual": 1.2539345532211508,
+    "posterior_to_actual": 4.0229372354589525,
+    "correction_norm_sum_m": 6.1312055314089156,
+    "corrections": {
+      "gmapping_motion_gate": {
+        "frames": 404,
+        "xy_sum_m": 4.755675668898476e-14,
+        "yaw_abs_sum_deg": 3.0024436193015624e-12
+      },
+      "low_overlap": {
+        "frames": 7,
+        "xy_sum_m": 0.47538022714954214,
+        "yaw_abs_sum_deg": 70.59063489265422
+      },
+      "no_scan": {
+        "frames": 11,
+        "xy_sum_m": 1.0507513072821724e-16,
+        "yaw_abs_sum_deg": 1.526666247102488e-13
+      },
+      "insufficient_match_points": {
+        "frames": 5,
+        "xy_sum_m": 0.4179529912885697,
+        "yaw_abs_sum_deg": 25.165448759159347
+      },
+      "high_residual": {
+        "frames": 19,
+        "xy_sum_m": 1.4873923796082362,
+        "yaw_abs_sum_deg": 74.08419086447037
+      },
+      "improved_proposal": {
+        "frames": 32,
+        "xy_sum_m": 3.7504799333625205,
+        "yaw_abs_sum_deg": 134.8539369928958
+      }
+    },
+    "final_error_m": 0.30592419137747195,
+    "final_sigma_m": 0.1532300397301071,
+    "final_error_sigma": 1.9965027217660054,
+    "over_3sigma_frames": 310,
+    "over_3sigma_fraction": 0.6471816283924844,
+    "command_replay_sha256": "7ad1bf5d6f28c3342628b8508623e4a1546174a9cbc22def7f10e466fa7d6395",
+    "hypothesis": "No startup deadband loss: all admitted pulses .10s; forward gain matches. Rotation XY cross coupling and posterior jumps remain."
+  },
+  {
+    "seed": 55005,
+    "source": "/Users/changmin/projects/ugrp/outputs/goal-route-preflight-v1/seed55005",
+    "hashes": {
+      "robots/r3/commands.jsonl": "0a6110cc03eea83956448d69b06fc4ab53e52065c906b9a5cf8c0084483009e4",
+      "own-controller.jsonl": "cb2be10ee73a61942636abfe076d14125b33e411f01e74e307aeba9856f79830",
+      "eval_only/trajectory.jsonl": "b7a1ab10171e00a1463a3c42877108248fbc10210dd96de32dcb4e449351fed4",
+      "decisions.json": "8b4d057490b6a0d946b0967d68fb87b06223580654412031df1f30ed11ee7634",
+      "utility-events.json": "2956141a58d678671316bbe5eadeeb1951939de6b40d3f1cedc9660f6756efe0",
+      "frontend-covariances.jsonl": "0f2b09f82ef8e2bbfdcb8b4e679fa1fcaffde3a0e261185fa03bd5c77e88e51e"
+    },
+    "frames": 603,
+    "pulse_groups": [
+      {
+        "axis": "forward",
+        "u": 0.35,
+        "duration_s": 0.1,
+        "observed_interval_s": 0.2,
+        "n": 160,
+        "predicted_xy_sum_m": 2.067746203706798,
+        "actual_xy_sum_m": 2.0550126510613698,
+        "predicted_body_mean": [
+          0.012917157771402135,
+          -0.00040206798082011326,
+          -0.00029378953563691506
+        ],
+        "actual_body_mean": [
+          0.012839125568153456,
+          4.258876027766959e-05,
+          6.0522941750752625e-05
+        ],
+        "actual_body_std": [
+          0.0005689919412187089,
+          0.00034598210933425134,
+          0.004604616203568718
+        ],
+        "predicted_yaw_sum_deg": -2.6932640731365645,
+        "actual_yaw_sum_deg": 0.5548334601654795
+      },
+      {
+        "axis": "turn",
+        "u": -0.35,
+        "duration_s": 0.1,
+        "observed_interval_s": 0.2,
+        "n": 184,
+        "predicted_xy_sum_m": 0.3366637974873126,
+        "actual_xy_sum_m": 0.12430575601529699,
+        "predicted_body_mean": [
+          -0.00029679239724413606,
+          -0.0018054629392352149,
+          -0.10358137147758235
+        ],
+        "actual_body_mean": [
+          8.834860317254205e-05,
+          0.0003305411170785558,
+          -0.10316396296546224
+        ],
+        "actual_body_std": [
+          0.000471137232111557,
+          0.00047310191378895197,
+          0.0046041836952824475
+        ],
+        "predicted_yaw_sum_deg": -1091.9986776189724,
+        "actual_yaw_sum_deg": -1087.5981803407446
+      },
+      {
+        "axis": "turn",
+        "u": 0.35,
+        "duration_s": 0.1,
+        "observed_interval_s": 0.2,
+        "n": 255,
+        "predicted_xy_sum_m": 0.7192604840667235,
+        "actual_xy_sum_m": 0.17402804243538544,
+        "predicted_body_mean": [
+          0.00013277632403880084,
+          -0.002817502506441062,
+          0.10354346792033221
+        ],
+        "actual_body_mean": [
+          9.142025396080082e-05,
+          -0.0002980994857151102,
+          0.103539576758194
+        ],
+        "actual_body_std": [
+          0.0005128449319395392,
+          0.00046972295145329614,
+          0.004260419662265289
+        ],
+        "predicted_yaw_sum_deg": 1512.8139455357377,
+        "actual_yaw_sum_deg": 1512.7570940079138
+      }
+    ],
+    "rejected_proposals": [
+      {
+        "t": 123.9,
+        "kind": "mecanum",
+        "forward": 0.0,
+        "left": 0.35,
+        "turn": 0.0,
+        "duration_s": 0.06
+      }
+    ],
+    "unobserved_terminal_commands": 1,
+    "dr_path_m": 3.123670485260797,
+    "posterior_path_m": 18.776655614886135,
+    "actual_path_m": 2.356466997311763,
+    "dr_to_actual": 1.3255736188218434,
+    "posterior_to_actual": 7.968138588958122,
+    "correction_norm_sum_m": 15.880094996406058,
+    "corrections": {
+      "gmapping_motion_gate": {
+        "frames": 513,
+        "xy_sum_m": 7.642801287807316e-14,
+        "yaw_abs_sum_deg": 3.3841101810771848e-12
+      },
+      "high_residual": {
+        "frames": 16,
+        "xy_sum_m": 3.2993992195526984,
+        "yaw_abs_sum_deg": 97.08334981395616
+      },
+      "no_scan": {
+        "frames": 2,
+        "xy_sum_m": 0.0,
+        "yaw_abs_sum_deg": 0.0
+      },
+      "improved_proposal": {
+        "frames": 61,
+        "xy_sum_m": 10.304473699253553,
+        "yaw_abs_sum_deg": 375.9263544235902
+      },
+      "insufficient_match_points": {
+        "frames": 4,
+        "xy_sum_m": 0.8191461904726293,
+        "yaw_abs_sum_deg": 27.178774262397567
+      },
+      "low_overlap": {
+        "frames": 6,
+        "xy_sum_m": 1.4570758871271008,
+        "yaw_abs_sum_deg": 35.86220546864338
+      }
+    },
+    "final_error_m": 0.298494092779082,
+    "final_sigma_m": 0.09368255750494142,
+    "final_error_sigma": 3.1862291202216326,
+    "over_3sigma_frames": 205,
+    "over_3sigma_fraction": 0.33996683250414594,
+    "command_replay_sha256": "93045d6947840ebf094b26dc6a56c243560983aab921c4d521130d9466733069",
+    "hypothesis": "No startup deadband loss: all admitted pulses .10s; forward gain matches. Rotation XY cross coupling and posterior jumps remain."
+  }
+]

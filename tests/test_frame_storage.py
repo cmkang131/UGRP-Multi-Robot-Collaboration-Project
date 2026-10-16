@@ -8,10 +8,25 @@ def times(hz, seconds):
     return [i * step for i in range(int(round(seconds * hz)) + 1)]
 
 
-def test_default_keeps_every_frame_for_any_split():
-    assert DEFAULT_PROFILE == "all_v1"
-    for split in (None, "test", "dev"):
+def test_default_writes_no_frame_file_only_for_smoke():
+    assert DEFAULT_PROFILE == "none_v1"
+    for split in ("smoke",):
         policy = FrameStoragePolicy(split=split)
+        assert not any(policy.decide("r1", t)["saved"] for t in times(5, 10))
+        assert policy.record()["streams"]["r1"] == {"frames": 51, "saved": 0, "decision": 0, "periodic": 0}
+        assert policy.record()["store"] == "none"
+
+
+@pytest.mark.parametrize("split", [None, "dev", "diag", "test", "holdout", "final", "cohort"])
+def test_no_default_profile_outside_smoke_so_a_cohort_never_loses_frames_by_omission(split):
+    with pytest.raises(ValueError):
+        FrameStoragePolicy(split=split)
+    assert FrameStoragePolicy("all_v1", split=split).profile == "all_v1"
+
+
+def test_all_v1_is_an_explicit_opt_in_that_keeps_every_frame():
+    for split in (None, "test", "dev"):
+        policy = FrameStoragePolicy("all_v1", split=split)
         assert all(policy.decide("r1", t)["saved"] for t in times(5, 10))
         assert policy.record()["streams"]["r1"] == {"frames": 51, "saved": 51, "decision": 0, "periodic": 0}
 
@@ -51,4 +66,5 @@ def test_unknown_profile_refused_and_profiles_frozen():
     with pytest.raises(ValueError):
         FrameStoragePolicy("dev_1hz")
     assert PROFILES["all_v1"].period_s is None and not PROFILES["all_v1"].reduced
+    assert PROFILES["none_v1"].store == "none" and PROFILES["mp4_v1"].store == "mp4"
     assert PROFILES["dev_1hz_decisions_v1"].period_s == 1.0

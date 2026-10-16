@@ -1,0 +1,184 @@
+{
+  "source": "762a952f0786cb56e9ab88c8a2bf34ca2f346b87",
+  "physical_runs": 0,
+  "modes": {
+    "off": {
+      "frontend": {
+        "endpoint_error_m": 0.2610670624655977,
+        "path_rmse_m": 0.23126306427250545,
+        "yaw_end_deg": -6.323829159972602,
+        "yaw_rmse_deg": 6.99471274393554,
+        "yaw_abs_p50_deg": 5.740494116099526,
+        "yaw_abs_p95_deg": 11.916122939587499,
+        "full_map": {
+          "occupied_cells": 359,
+          "precision_015": 0.38997214484679665,
+          "precision_cell": 0.21727019498607242,
+          "wall_coverage": 0.3768996960486322,
+          "wall_error_rmse_m": 0.7599465402186876
+        },
+        "region": {
+          "precision": 0.5675675675675675,
+          "precision_correct": 42,
+          "precision_cells": 74,
+          "recall": 0.5210084033613446,
+          "recalled_samples": 62,
+          "visible_samples": 119,
+          "total_samples": 329
+        },
+        "occupied_cells": 359,
+        "mapped_frames": 47,
+        "n": 891,
+        "sigma_xy_m": 0.06893946593598191,
+        "error_sigma_ratio": 3.786902885323016,
+        "over_2sigma": 112,
+        "resamples": 15
+      },
+      "graph": {
+        "endpoint_error_m": 0.2610670624655977,
+        "path_rmse_m": 0.23126306427250545,
+        "yaw_end_deg": -6.323829159972602,
+        "yaw_rmse_deg": 6.99471274393554,
+        "yaw_abs_p50_deg": 5.740494116099526,
+        "yaw_abs_p95_deg": 11.916122939587499,
+        "full_map": {
+          "occupied_cells": 359,
+          "precision_015": 0.38997214484679665,
+          "precision_cell": 0.21727019498607242,
+          "wall_coverage": 0.3768996960486322,
+          "wall_error_rmse_m": 0.7599465402186876
+        },
+        "region": {
+          "precision": 0.5675675675675675,
+          "precision_correct": 42,
+          "precision_cells": 74,
+          "recall": 0.5210084033613446,
+          "recalled_samples": 62,
+          "visible_samples": 119,
+          "total_samples": 329
+        },
+        "occupied_cells": 359,
+        "mapped_frames": 47,
+        "n": 891
+      },
+      "loop_counts": {
+        "member_scan": 84,
+        "temporal_separation": 11,
+        "low_probability": 96,
+        "ambiguous_modes": 34,
+        "search_boundary": 10
+      },
+      "motion_reasons": {
+        "bootstrap": 1,
+        "gmapping_motion_gate": 844,
+        "low_overlap": 8,
+        "improved_proposal": 22,
+        "high_residual": 14,
+        "search_boundary": 2
+      }
+    },
+    "on": {
+      "frontend": {
+        "endpoint_error_m": 0.12645377650862966,
+        "path_rmse_m": 0.24376223932781932,
+        "yaw_end_deg": -1.94341682864803,
+        "yaw_rmse_deg": 5.2122117430530714,
+        "yaw_abs_p50_deg": 3.069281127380598,
+        "yaw_abs_p95_deg": 9.601467413580439,
+        "full_map": {
+          "occupied_cells": 399,
+          "precision_015": 0.3283208020050125,
+          "precision_cell": 0.10526315789473684,
+          "wall_coverage": 0.43465045592705165,
+          "wall_error_rmse_m": 0.658407681026073
+        },
+        "region": {
+          "precision": 0.5285714285714286,
+          "precision_correct": 37,
+          "precision_cells": 70,
+          "recall": 0.5126050420168067,
+          "recalled_samples": 61,
+          "visible_samples": 119,
+          "total_samples": 329
+        },
+        "occupied_cells": 399,
+        "mapped_frames": 50,
+        "n": 891,
+        "sigma_xy_m": 0.1704437982451426,
+        "error_sigma_ratio": 0.7419089330945099,
+        "over_2sigma": 56,
+        "resamples": 9
+      },
+      "graph": {
+        "endpoint_error_m": 0.12645377650862966,
+        "path_rmse_m": 0.24376223932781932,
+        "yaw_end_deg": -1.94341682864803,
+        "yaw_rmse_deg": 5.2122117430530714,
+        "yaw_abs_p50_deg": 3.069281127380598,
+        "yaw_abs_p95_deg": 9.601467413580439,
+        "full_map": {
+          "occupied_cells": 399,
+          "precision_015": 0.3283208020050125,
+          "precision_cell": 0.10526315789473684,
+          "wall_coverage": 0.43465045592705165,
+          "wall_error_rmse_m": 0.658407681026073
+        },
+        "region": {
+          "precision": 0.5285714285714286,
+          "precision_correct": 37,
+          "precision_cells": 70,
+          "recall": 0.5126050420168067,
+          "recalled_samples": 61,
+          "visible_samples": 119,
+          "total_samples": 329
+        },
+        "occupied_cells": 399,
+        "mapped_frames": 50,
+        "n": 891
+      },
+      "loop_counts": {
+        "member_scan": 90,
+        "temporal_separation": 13,
+        "low_probability": 120,
+        "ambiguous_modes": 23,
+        "search_boundary": 4
+      },
+      "motion_reasons": {
+        "bootstrap": 1,
+        "gmapping_motion_gate": 841,
+        "low_overlap": 11,
+        "improved_proposal": 15,
+        "high_residual": 22,
+        "search_boundary": 1
+      }
+    }
+  },
+  "qualification": "Same egomap31 recorded RGB/commands, no new trajectory. Potential visibility excludes object/self occlusion. Graph has no calibrated covariance.",
+  "recorded_coverage": {
+    "travelled_m": 8.053481752822126,
+    "footprint_union_m2": 2.3900000000000006,
+    "footprint_cells_005m": 956,
+    "frames": 901,
+    "mapped_frames": 47,
+    "occupied_cells": 359
+  },
+  "physical_gate": {
+    "yaw_rmse_decreases": true,
+    "endpoint_decreases": true,
+    "overconfidence_decreases": true,
+    "region_precision_non_decreasing": false,
+    "region_recall_non_decreasing": false,
+    "full_coverage_non_decreasing": true,
+    "wall_rmse_non_increasing": true
+  },
+  "eligible_for_new_seed": false,
+  "passed_count": 5,
+  "off_golden": {
+    "frames": 891,
+    "trace_bytes_equal": true,
+    "frontend_grid_equal": true,
+    "graph_grid_equal": true,
+    "sha256": "6c2e651eefb820b754cac055ca75b4e34f32c0626d85268ecb1eee81e0dee598",
+    "original_sha256": "6c2e651eefb820b754cac055ca75b4e34f32c0626d85268ecb1eee81e0dee598"
+  }
+}

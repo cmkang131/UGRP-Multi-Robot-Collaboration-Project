@@ -1,0 +1,189 @@
+{
+  "schema": "ugrp.s2.slip_detect.delivery.v1",
+  "snapshot": "/Users/changmin/projects/ugrp/outputs/tensorboard/1007-s2-slip-detect",
+  "runs": 3,
+  "scalars": 22,
+  "checks": [
+    {
+      "run": "tb-views__baseline__3d282763",
+      "tag": "offline/carry_rmse_m",
+      "source": 2.0235827759068257,
+      "event": 2.023582696914673,
+      "live": 2.023582696914673
+    },
+    {
+      "run": "tb-views__baseline__3d282763",
+      "tag": "offline/carry_updates",
+      "source": 27,
+      "event": 27.0,
+      "live": 27.0
+    },
+    {
+      "run": "tb-views__baseline__3d282763",
+      "tag": "offline/max_gap_s",
+      "source": 33.85000000000002,
+      "event": 33.849998474121094,
+      "live": 33.849998474121094
+    },
+    {
+      "run": "tb-views__baseline__3d282763",
+      "tag": "offline/stationary_max_m",
+      "source": 0.10566117090294402,
+      "event": 0.10566116869449615,
+      "live": 0.10566116869449615
+    },
+    {
+      "run": "tb-views__baseline__3d282763",
+      "tag": "result/model_calls",
+      "source": 0,
+      "event": 0.0,
+      "live": 0.0
+    },
+    {
+      "run": "tb-views__candidate__6af0b4bf",
+      "tag": "offline/carry_rmse_m",
+      "source": 1.7853027505912056,
+      "event": 1.785302758216858,
+      "live": 1.785302758216858
+    },
+    {
+      "run": "tb-views__candidate__6af0b4bf",
+      "tag": "offline/carry_updates",
+      "source": 23,
+      "event": 23.0,
+      "live": 23.0
+    },
+    {
+      "run": "tb-views__candidate__6af0b4bf",
+      "tag": "offline/max_gap_s",
+      "source": 43.5,
+      "event": 43.5,
+      "live": 43.5
+    },
+    {
+      "run": "tb-views__candidate__6af0b4bf",
+      "tag": "offline/stationary_max_m",
+      "source": 0.10566117090294402,
+      "event": 0.10566116869449615,
+      "live": 0.10566116869449615
+    },
+    {
+      "run": "tb-views__candidate__6af0b4bf",
+      "tag": "result/model_calls",
+      "source": 0,
+      "event": 0.0,
+      "live": 0.0
+    },
+    {
+      "run": "tb-views__motion__f3d2976c",
+      "tag": "offline/loaded_pulses",
+      "source": 277,
+      "event": 277.0,
+      "live": 277.0
+    },
+    {
+      "run": "tb-views__motion__f3d2976c",
+      "tag": "offline/nonblocked_pulses",
+      "source": 271,
+      "event": 271.0,
+      "live": 271.0
+    },
+    {
+      "run": "tb-views__motion__f3d2976c",
+      "tag": "offline/old_xy_rmse_m",
+      "source": 0.024131600300254265,
+      "event": 0.024131599813699722,
+      "live": 0.024131599813699722
+    },
+    {
+      "run": "tb-views__motion__f3d2976c",
+      "tag": "offline/new_xy_rmse_m",
+      "source": 0.010070938560806646,
+      "event": 0.010070938616991043,
+      "live": 0.010070938616991043
+    },
+    {
+      "run": "tb-views__motion__f3d2976c",
+      "tag": "offline/nonblocked_old_xy_rmse_m",
+      "source": 0.004977389927234261,
+      "event": 0.004977389704436064,
+      "live": 0.004977389704436064
+    },
+    {
+      "run": "tb-views__motion__f3d2976c",
+      "tag": "offline/nonblocked_new_xy_rmse_m",
+      "source": 0.004977389927234261,
+      "event": 0.004977389704436064,
+      "live": 0.004977389704436064
+    },
+    {
+      "run": "tb-views__motion__f3d2976c",
+      "tag": "offline/six_replacement_count",
+      "source": 5,
+      "event": 5.0,
+      "live": 5.0
+    },
+    {
+      "run": "tb-views__motion__f3d2976c",
+      "tag": "offline/six_error_pass_count",
+      "source": 5,
+      "event": 5.0,
+      "live": 5.0
+    },
+    {
+      "run": "tb-views__motion__f3d2976c",
+      "tag": "offline/six_error_median_m",
+      "source": 0.003398690370812634,
+      "event": 0.0033986903727054596,
+      "live": 0.0033986903727054596
+    },
+    {
+      "run": "tb-views__motion__f3d2976c",
+      "tag": "offline/admission_pass",
+      "source": 0,
+      "event": 0.0,
+      "live": 0.0
+    },
+    {
+      "run": "tb-views__motion__f3d2976c",
+      "tag": "offline/shadow_inhibited_attempts",
+      "source": 35,
+      "event": 35.0,
+      "live": 35.0
+    },
+    {
+      "run": "tb-views__motion__f3d2976c",
+      "tag": "result/model_calls",
+      "source": 0,
+      "event": 0.0,
+      "live": 0.0
+    }
+  ],
+  "hparams_verified": true,
+  "server": "PID COMMAND\n52016 /opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -m tensorboard.main --logdir /Users/changmin/projects/ugrp/outputs/tensorboard --host 127.0.0.1 --port 6006 --reload_interval 5 --samples_per_plugin scalars=10000,images=100,tensors=200",
+  "browser": "NUMERIC_ONLY per user numerical-only delivery scope",
+  "dashboard_url": "http://127.0.0.1:6006/?runFilter=%5E1007-s2-slip-detect%2F&smoothing=0&pinnedCards=%5B%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fcarry_rmse_m%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fcarry_updates%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fmax_gap_s%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fsix_error_pass_count%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fnonblocked_new_xy_rmse_m%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fadmission_pass%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22result%2Fmodel_calls%22%7D%5D#timeseries",
+  "manifests": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/tensorboard/1007-s2-slip-detect/tb-views__baseline__3d282763/manifest.json",
+      "sha256": "da22c764b22545fc95fef076d23e6ee196df304dbaf66595caf4986d7117413b"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/tensorboard/1007-s2-slip-detect/tb-views__candidate__6af0b4bf/manifest.json",
+      "sha256": "20b1582d588c3c537080b3d2e03154b8536e2ebda4c94e13dd7ec049d7f90642"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/tensorboard/1007-s2-slip-detect/tb-views__motion__f3d2976c/manifest.json",
+      "sha256": "d9e3ebaed85e34567036fe6221b598379a4e2155eb8d7bacc4306fa887fbb4c3"
+    }
+  ],
+  "existing_reference_video": {
+    "path": "/Users/changmin/projects/ugrp/outputs/s2-blocked-pulse-20261007/s1051-north-wall-4x.mp4",
+    "scope": "saved s1051 frames, not new physics"
+  },
+  "physics_runs": 0,
+  "model_calls": 0,
+  "agent_lock": null,
+  "session_stopped": true,
+  "replay_source_sha": "adab260bd2f9daa701621defe54e24e7746ad1f9"
+}

@@ -1,0 +1,60 @@
+{
+  "version": "s2v48-registration-v1",
+  "diagnostic": {
+    "seed": 1054,
+    "runs": 1,
+    "wall_cap_s": 900,
+    "sim_cap_s": 45,
+    "stop": "withhold first requested lateral, scan center and both sides, terminate before pick/carry",
+    "pans": [
+      1500,
+      2300,
+      700,
+      1500
+    ],
+    "settle_s": 2,
+    "observe_s": 0.75,
+    "mode": "dev_light",
+    "GT": "posthoc evaluation only"
+  },
+  "calibration": {
+    "1054": {
+      "path": "tests/fixtures/s2_ci/s1054-calibration.json",
+      "sha256": "cc6351def9d9c407cf388e93ed6dc033d74334113e3dc2a254b44bea33dd1508"
+    }
+  },
+  "perception": {
+    "source": "PR398 orange_columns_v1 unchanged HSV/morphology; components report only",
+    "positive": "orange appearance candidate, not peer identity/range; non-detection does not certify empty",
+    "detector_threshold_tuning_after_diagnostic": false
+  },
+  "followup": {
+    "option": "look_before_move=rgb_sweep_v1",
+    "default": "off",
+    "unknown_is_free": false,
+    "recent_free_space_s": 3.0,
+    "new_observation_settle_s": 2.0,
+    "max_scan_attempts_per_direction": 1,
+    "clearance_margin_m": 0.02,
+    "scope": "all lateral pulses including alignment; own RGB identical across communication conditions",
+    "full_runs": "same1054 then fresh seed preregistered before execution; no retuning after outcomes"
+  },
+  "admission": {
+    "diagnostic_is_exception_before_replay": true,
+    "full_after": "diagnostic detector report + offline replay accounting and green tests",
+    "unchanged_pose_limits": {
+      "nees_rate_max": 0.2,
+      "unflagged_25cm_max": 0
+    }
+  },
+  "source_reservation": {
+    "path": "/Users/changmin/projects/ugrp/outputs/s2-look-before-move-v48-20261008/reservation-scan.json",
+    "sha256": "e362b8b15d79828c1023ceb2876e4153cf7ccf4652849374ee987708e43011b1",
+    "reserved": [
+      "zone-s2-realism-v134/7.27.0 diagnostic",
+      "zone-s2-realism-v135/7.28.0 full"
+    ]
+  },
+  "host_error": "ENOSPC is HOST_ERROR",
+  "model_calls": 0
+}

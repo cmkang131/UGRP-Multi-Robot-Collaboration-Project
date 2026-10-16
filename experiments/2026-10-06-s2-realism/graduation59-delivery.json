@@ -1,0 +1,131 @@
+{
+  "snapshot": "/Users/changmin/projects/ugrp/outputs/tensorboard/1009-s2-grad-v59",
+  "baseline_reconverted": false,
+  "url": "http://127.0.0.1:6006/?runFilter=%5E%28%3F%3A1009-s2-grad-v59%2Fs.%2A-grad%7C1009-s2-active-v58-r2%2Fs.%2A-active%29&smoothing=0&pinnedCards=%5B%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fgraduation_sample_success%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fcommands%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fmax_actual_active_rotation_deg%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Factive_added_fraction%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fnees_rate%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22result%2Fwall_s%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22result%2Fmodel_calls%22%7D%5D#timeseries",
+  "verified": [
+    {
+      "run": "1009-s2-grad-v59/s1065-grad",
+      "tags": 18,
+      "values": 18
+    },
+    {
+      "run": "1009-s2-grad-v59/s1066-grad",
+      "tags": 20,
+      "values": 20
+    },
+    {
+      "run": "1009-s2-grad-v59/s1067-grad",
+      "tags": 20,
+      "values": 20
+    },
+    {
+      "run": "1009-s2-grad-v59/s1068-grad",
+      "tags": 20,
+      "values": 20
+    },
+    {
+      "run": "1009-s2-grad-v59/s1069-grad",
+      "tags": 20,
+      "values": 20
+    },
+    {
+      "run": "1009-s2-grad-v59/s1070-grad",
+      "tags": 20,
+      "values": 20
+    }
+  ],
+  "total_values": 118,
+  "ui": "verified native Chrome 강 profile; existing S2 tab reused; 7 pinned cards, six 0/1 outcomes and command table visible; configured seed column visible with preexisting extra columns retained",
+  "browser_extension_error": "Debugger unattached; native cua Chrome fallback succeeded",
+  "server": {
+    "tensorboard_pid": 52016,
+    "media_pid": 52014,
+    "logdir": "/Users/changmin/projects/ugrp/outputs/tensorboard",
+    "restarted": false
+  },
+  "media": [
+    {
+      "video": {
+        "id": "a508e702952cede7bb83",
+        "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-99d81d8c-s1066-v141-graduation/motion.mp4",
+        "size": 1208864,
+        "mtime_ns": 1791531023514939003
+      },
+      "status": 206,
+      "received": 1024,
+      "url": "http://127.0.0.1:6007/video/a508e702952cede7bb83"
+    },
+    {
+      "video": {
+        "id": "ea0357656045c516ecb4",
+        "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-99d81d8c-s1065-v141-graduation/motion.mp4",
+        "size": 2791064,
+        "mtime_ns": 1791531025175726857
+      },
+      "status": 206,
+      "received": 1024,
+      "url": "http://127.0.0.1:6007/video/ea0357656045c516ecb4"
+    }
+  ],
+  "videos": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-99d81d8c-s1066-v141-graduation/motion.mp4",
+      "sha256": "9fc07f1b98cddff416be0237111392ee5bc956be9b6606eedb0b9ebf33795962",
+      "source_frames": 5630,
+      "output_frames": 1408,
+      "speed": 4,
+      "input_frame_interval_s": 0.05,
+      "full_decode": true,
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 640,
+            "height": 480,
+            "r_frame_rate": "20/1",
+            "nb_frames": "1408"
+          }
+        ],
+        "format": {
+          "duration": "70.400000"
+        }
+      },
+      "ui": "correct run/path loaded and playing pause control verified in Chrome 강"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-99d81d8c-s1065-v141-graduation/motion.mp4",
+      "sha256": "3a30f3f7901f3e4291ee8d708ef2adcdb6287c7691d5958e182ac4a0823fc8ce",
+      "source_frames": 18001,
+      "output_frames": 4501,
+      "speed": 4,
+      "input_frame_interval_s": 0.05,
+      "full_decode": true,
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 640,
+            "height": 480,
+            "r_frame_rate": "20/1",
+            "nb_frames": "4501"
+          }
+        ],
+        "format": {
+          "duration": "225.050000"
+        }
+      },
+      "ui": "correct run/path loaded and playing pause control verified in Chrome 강"
+    }
+  ],
+  "validation": {
+    "module_tests": 9,
+    "status": "passed",
+    "seconds": 47.97,
+    "test_file": "tests/test_s2_rotation_envelope.py",
+    "source_before_physics_tests": 27,
+    "git_diff_check": "passed",
+    "claims": "local changed-module tests only; no all-CI pass claim"
+  }
+}

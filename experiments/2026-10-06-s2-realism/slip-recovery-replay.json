@@ -1,0 +1,231 @@
+{
+  "schema": "ugrp.s2.slip_recovery.replay.v1",
+  "criteria": {
+    "schema": "ugrp.s2.slip_recovery.criteria.v1",
+    "option": "slip_recovery_v1",
+    "default": "off",
+    "source_run": "/Users/changmin/projects/ugrp/outputs/s2-realism-45b0c173-s1051-P1-2-place-slip-matched",
+    "source_sha": "45b0c173d34f53c2016e2560cdc70c9a908a8325",
+    "student_sha256": "9a099856762bf090e4761d93df131cdb9931ee0bdc7070d3ca27d650ec76707d",
+    "parameters": {
+      "required_movement_radius_m": 0.5,
+      "movement_time_allowance_s": 10.0,
+      "backup_distance_m": 0.3,
+      "backup_speed_limit_m_s": 0.15,
+      "backup_time_allowance_s": 10.0,
+      "loaded_wheel_magnitude": 0.35,
+      "consecutive_count": "not a Nav2 default: report N reached when time allowance expires",
+      "max_recovery_attempts": 6
+    },
+    "scope": "S2 loaded carry only, original slip detector/predictor/pose prior unchanged",
+    "input": "own RGB-derived completed slip records, issued commands, estimated pose, static map, fixed pulse table; no GT",
+    "replay_gate": {
+      "off_outputs_exact": true,
+      "eligible_streaks_at_least": 1,
+      "eligible_streak_trigger_fraction": 1.0,
+      "blocked_next_translation_fraction": 0.0,
+      "inverse_backup_fraction": 1.0,
+      "unknown_or_normal_triggers": 0,
+      "backup_bounded": true,
+      "replan_after_backup_test": true,
+      "arm_commands_changed": 0
+    },
+    "replay_limit": "independent recorded prefixes ending at first changed command; later original images are not counterfactual recovery views; new physical progress/fix/RMSE require closed loop",
+    "physical": {
+      "if_replay_pass": true,
+      "full_runs": 1,
+      "seed": 1051,
+      "slot": "P1-2",
+      "stage": "place",
+      "baseline": "v128 all options same plus slip_recovery=slip_recovery_v1",
+      "freeze": "freeze_v1",
+      "dev_light": true,
+      "max_sim_s": 900,
+      "max_wall_s": 10800,
+      "raw_pattern": "/Users/changmin/projects/ugrp/outputs/s2-realism-<sha8>-s1051-P1-2-place-slip-recovery",
+      "error": "ENOSPC=HOST_ERROR, retain partial raw, no retry"
+    },
+    "dock_initialization": "deferred pending user confirmation; do not modify",
+    "references": [
+      {
+        "url": "https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_controller/plugins/simple_progress_checker.cpp",
+        "path": "/Users/changmin/projects/ugrp/outputs/s2-slip-recovery-20261007/simple_progress_checker.cpp",
+        "sha256": "e655e411727f42f709821a238cc3167d98aacc9080b91080b7044b1df0ccb5ec"
+      },
+      {
+        "url": "https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_behaviors/include/nav2_behaviors/plugins/drive_on_heading.hpp",
+        "path": "/Users/changmin/projects/ugrp/outputs/s2-slip-recovery-20261007/drive_on_heading.hpp",
+        "sha256": "d97b7a20232e30df679baa9dc92cd86d84a345fc6b55d7863c6489e101dc9fa3"
+      },
+      {
+        "url": "https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_behavior_tree/include/nav2_behavior_tree/plugins/action/back_up_action.hpp",
+        "path": "/Users/changmin/projects/ugrp/outputs/s2-slip-recovery-20261007/back_up_action.hpp",
+        "sha256": "002473481fcc765738b864af73c976def0f754617c0d81b0f05afe0b7fb67cd4"
+      },
+      {
+        "url": "https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_bt_navigator/behavior_trees/navigate_to_pose_w_replanning_and_recovery.xml",
+        "path": "/Users/changmin/projects/ugrp/outputs/s2-slip-recovery-20261007/navigate_to_pose_w_replanning_and_recovery.xml",
+        "sha256": "000f8e0020db54aee652837987ad4f2d82e633a588994bfcf7d26163c67fc7e6"
+      },
+      {
+        "url": "https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_bringup/params/nav2_params.yaml",
+        "path": "/Users/changmin/projects/ugrp/outputs/s2-slip-recovery-20261007/nav2_params.yaml",
+        "sha256": "0f37f0ca0104c8399fc55faafabb4aa1baf9c6b04d7b59b2132e57bb39c55c6a"
+      }
+    ]
+  },
+  "source_sha256": "9a099856762bf090e4761d93df131cdb9931ee0bdc7070d3ca27d650ec76707d",
+  "candidate_sha256": "214d6ccfca54ce5ff2eeef68427ae51e4903d0b7001634e44f04f882b181fcdc",
+  "registration_commit": "6306b26d",
+  "physics_runs": 0,
+  "gt_read": false,
+  "model_calls": 0,
+  "scope": "independent recorded prefixes ending at first changed command; later original images are not counterfactual recovery views; new physical progress/fix/RMSE require closed loop",
+  "episodes": [
+    {
+      "trigger": {
+        "t": 117.6,
+        "since": 107.35,
+        "n": 11,
+        "visual_delta": [
+          -0.019305404939437273,
+          0.01965123270731257,
+          0.20088050124481988
+        ],
+        "direction": [
+          0.0,
+          1.0
+        ]
+      },
+      "pose": {
+        "t": 117.6,
+        "x": 0.8290284689344884,
+        "y": -0.4223831566680587,
+        "yaw": -0.36906646781709496
+      },
+      "stop": [
+        {
+          "kind": "hold"
+        }
+      ],
+      "preview_inverse": [
+        {
+          "kind": "mecanum",
+          "forward": 0.0,
+          "left": -0.35,
+          "turn": 0.0,
+          "duration_s": 0.06
+        }
+      ],
+      "preview_only_no_new_rgb": true,
+      "direction_dot": -1.0,
+      "guard_records": [],
+      "bounded": true,
+      "blocked_next_translation": false,
+      "recorded_slips_remaining_after_cut": 459
+    },
+    {
+      "trigger": {
+        "t": 359.85,
+        "since": 349.6,
+        "n": 11,
+        "visual_delta": [
+          0.001147770548809597,
+          5.012097090054341e-05,
+          0.004780110116740972
+        ],
+        "direction": [
+          0.0,
+          1.0
+        ]
+      },
+      "pose": {
+        "t": 359.85,
+        "x": 1.0662267138561137,
+        "y": -0.5002378899887951,
+        "yaw": -0.030608296506165367
+      },
+      "stop": [
+        {
+          "kind": "hold"
+        }
+      ],
+      "preview_inverse": [
+        {
+          "kind": "mecanum",
+          "forward": 0.0,
+          "left": -0.35,
+          "turn": 0.0,
+          "duration_s": 0.06
+        }
+      ],
+      "preview_only_no_new_rgb": true,
+      "direction_dot": -0.9999999999999999,
+      "guard_records": [],
+      "bounded": true,
+      "blocked_next_translation": false,
+      "recorded_slips_remaining_after_cut": 205
+    },
+    {
+      "trigger": {
+        "t": 470.05,
+        "since": 459.8,
+        "n": 11,
+        "visual_delta": [
+          -0.0028752691920667776,
+          -0.004527455601932421,
+          0.026299883875870705
+        ],
+        "direction": [
+          0.0,
+          1.0
+        ]
+      },
+      "pose": {
+        "t": 470.05,
+        "x": 1.1178665209663943,
+        "y": -0.36727070569888826,
+        "yaw": 0.07632909253322495
+      },
+      "stop": [
+        {
+          "kind": "hold"
+        }
+      ],
+      "preview_inverse": [
+        {
+          "kind": "mecanum",
+          "forward": 0.0,
+          "left": -0.35,
+          "turn": 0.0,
+          "duration_s": 0.06
+        }
+      ],
+      "preview_only_no_new_rgb": true,
+      "direction_dot": -1.0,
+      "guard_records": [],
+      "bounded": true,
+      "blocked_next_translation": false,
+      "recorded_slips_remaining_after_cut": 90
+    }
+  ],
+  "gates": {
+    "eligible_streaks_at_least_one": true,
+    "all_stopped": true,
+    "all_inverse": true,
+    "no_blocked_next_translation": true,
+    "all_backup_bounded": true,
+    "default_off_and_normal_unknown_and_replan_tests": true
+  },
+  "admission_pass": true,
+  "tests": {
+    "files": [
+      "tests/test_s2_slip_recovery.py",
+      "tests/test_s2_slip_detect.py"
+    ],
+    "passed": 11,
+    "wall_s": 0.91
+  },
+  "closed_loop_metrics": null,
+  "source_unchanged": true
+}

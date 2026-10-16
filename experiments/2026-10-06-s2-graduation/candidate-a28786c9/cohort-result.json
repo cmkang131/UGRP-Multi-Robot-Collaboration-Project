@@ -1,0 +1,1168 @@
+{
+  "stop": "PRIOR_STAGE_NOT_QUALIFIED",
+  "results": [
+    {
+      "source": "/Users/changmin/projects/ugrp/outputs/s2-graduation-a28786c9-s915-P2-1-pick",
+      "source_sha": "a28786c9fe0554ea17c22eb454cc8b7e0e7730c6",
+      "task": {
+        "robot_id": "r3",
+        "pickup_slot": "P2-1",
+        "destination": "B",
+        "passage_id": "door_1",
+        "seed": 915
+      },
+      "stage": "pick",
+      "passed": true,
+      "failure_class": null,
+      "result": {
+        "execution_bundle_id": "zone-solo-cyan-v106",
+        "source_sha": "a28786c9fe0554ea17c22eb454cc8b7e0e7730c6",
+        "status": "STAGE_REACHED_UNQUALIFIED",
+        "cohort_role": "FUNCTIONAL_DEV",
+        "stage_probe": "pick",
+        "research_result": false,
+        "physical_success": null,
+        "loadavg_start": [
+          2.04345703125,
+          2.74462890625,
+          2.7021484375
+        ],
+        "model_calls": 0,
+        "commands_issued": 2245,
+        "in_run_drop_tilt_contact_detection": false,
+        "stage_reached": true,
+        "failure": null,
+        "controller_state": "carry",
+        "reset_sim_s": 1.3,
+        "check_sim_s": 95.9,
+        "evaluation": {
+          "status": "PROVISIONAL_GEOMETRIC_JUDGE",
+          "success": false,
+          "lifted": true,
+          "inside": false,
+          "floor": false,
+          "stable": true,
+          "settled_s": 2.0,
+          "qualification": "post-run DEV only; no study/physical hardware success claim"
+        },
+        "loadavg_end": [
+          3.5400390625,
+          3.1279296875,
+          2.8642578125
+        ]
+      },
+      "independent": {
+        "valid": true,
+        "success": false,
+        "lifted": true,
+        "inside": false,
+        "floor": false,
+        "stable": true,
+        "settled_s": 2.0,
+        "final_xyz_m": [
+          1.2789490758024689,
+          -2.150013342540936,
+          0.1416657259537602
+        ],
+        "rows": 1919,
+        "max_gap_s": 0.05000000000001137,
+        "max_tail_displacement_m": 2.6927373588958465e-06
+      },
+      "false_positive": false,
+      "false_negative": false,
+      "judge_disagreement": false,
+      "artifact_files_checked": 1875,
+      "artifact_mismatches": [],
+      "managed": {
+        "exit_code": 0,
+        "status": "process_completed",
+        "runtime_s": 146.78281416698883,
+        "source_changed_during_run": false,
+        "finalization_errors": []
+      },
+      "would_stop": {
+        "ARM_COLLISION_GUARD": 2
+      },
+      "state_events": [
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 1.3,
+          "state": "scan"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 10.4,
+          "state": "search_move"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 25.8,
+          "state": "search"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 25.9,
+          "state": "align"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 69.5,
+          "state": "hover"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 70.9,
+          "state": "blind_descent"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 72.1,
+          "state": "grasp"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 73.0,
+          "state": "lift"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 94.2,
+          "state": "carry"
+        }
+      ],
+      "hashes": {
+        "result.json": "95cbccc1eab3108f930a1b3102e1aa044475d2c5b011f38b15ce930012ee5081",
+        "bundle.json": "0441868349dfbf976d13fcdd13b81764f57fd28446f9fa68da3be642b12e8477",
+        "artifacts.sha256.json": "97910c6f352e2f0e78f8e2f13cc8ad96a5699d21ba642b2d5db79510f7c9aebc",
+        "student_record.json": "8fb6d3370a1ab979b2a65d01cfbd4dddb3f8b95442d99a81277d80583dbececa",
+        "eval_only/trajectory.jsonl": "06f08757d4a67d81275d94c9c3b5cd7ec8e05ada7547c78c17bcbf2724abd3e8"
+      },
+      "managed_manifest_sha256": "2d6c09f351ae6589416eb9121ec040ebc35aab41ce045f736624330106cc4969"
+    },
+    {
+      "source": "/Users/changmin/projects/ugrp/outputs/s2-graduation-a28786c9-s916-P1-1-pick",
+      "source_sha": "a28786c9fe0554ea17c22eb454cc8b7e0e7730c6",
+      "task": {
+        "robot_id": "r3",
+        "pickup_slot": "P1-1",
+        "destination": "B",
+        "passage_id": "door_1",
+        "seed": 916
+      },
+      "stage": "pick",
+      "passed": true,
+      "failure_class": null,
+      "result": {
+        "execution_bundle_id": "zone-solo-cyan-v106",
+        "source_sha": "a28786c9fe0554ea17c22eb454cc8b7e0e7730c6",
+        "status": "STAGE_REACHED_UNQUALIFIED",
+        "cohort_role": "FUNCTIONAL_DEV",
+        "stage_probe": "pick",
+        "research_result": false,
+        "physical_success": null,
+        "loadavg_start": [
+          2.83544921875,
+          3.0009765625,
+          2.826171875
+        ],
+        "model_calls": 0,
+        "commands_issued": 2128,
+        "in_run_drop_tilt_contact_detection": false,
+        "stage_reached": true,
+        "failure": null,
+        "controller_state": "carry",
+        "reset_sim_s": 1.3,
+        "check_sim_s": 84.2,
+        "evaluation": {
+          "status": "PROVISIONAL_GEOMETRIC_JUDGE",
+          "success": false,
+          "lifted": true,
+          "inside": false,
+          "floor": false,
+          "stable": true,
+          "settled_s": 2.0,
+          "qualification": "post-run DEV only; no study/physical hardware success claim"
+        },
+        "loadavg_end": [
+          2.30029296875,
+          2.68603515625,
+          2.7177734375
+        ]
+      },
+      "independent": {
+        "valid": true,
+        "success": false,
+        "lifted": true,
+        "inside": false,
+        "floor": false,
+        "stable": true,
+        "settled_s": 2.0,
+        "final_xyz_m": [
+          0.12895061881911135,
+          -2.149998259467755,
+          0.1416459074240731
+        ],
+        "rows": 1685,
+        "max_gap_s": 0.05000000000001137,
+        "max_tail_displacement_m": 2.6380646641578945e-06
+      },
+      "false_positive": false,
+      "false_negative": false,
+      "judge_disagreement": false,
+      "artifact_files_checked": 1641,
+      "artifact_mismatches": [],
+      "managed": {
+        "exit_code": 0,
+        "status": "process_completed",
+        "runtime_s": 115.85787549999077,
+        "source_changed_during_run": false,
+        "finalization_errors": []
+      },
+      "would_stop": {
+        "ARM_COLLISION_GUARD": 7,
+        "POSE_UNCERTAIN": 10
+      },
+      "state_events": [
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 1.3,
+          "state": "scan"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 10.4,
+          "state": "search_move"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 28.4,
+          "state": "search"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 28.5,
+          "state": "align"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 57.8,
+          "state": "hover"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 59.2,
+          "state": "blind_descent"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 60.4,
+          "state": "grasp"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 61.3,
+          "state": "lift"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 82.5,
+          "state": "carry"
+        }
+      ],
+      "hashes": {
+        "result.json": "2f7c25336df5eb0bf43250f6b0923772b78a010a2aa25ced750ef11c14e1601d",
+        "bundle.json": "2b4c43c821a90e55cc8ceca7c9efb75fe974ee883efcf0fe0d73f5931667704b",
+        "artifacts.sha256.json": "d5389fbda151b75c87c3c70ed093cbe88fec10cd2f2f468abaf3550bef1bb6be",
+        "student_record.json": "a49938d31d19b2829a6b325264c5b4389493448348f454f72c8a33f5755342d2",
+        "eval_only/trajectory.jsonl": "607991ab38817a2f3009700c8e56cef91caf6db75035ceac8b034064c42457f1"
+      },
+      "managed_manifest_sha256": "9a507d0da5fa380d7e8b5f24aa13e2bcbff5c513a3c6e4b9416b96658f575b9c"
+    },
+    {
+      "source": "/Users/changmin/projects/ugrp/outputs/s2-graduation-a28786c9-s917-P2-3-pick",
+      "source_sha": "a28786c9fe0554ea17c22eb454cc8b7e0e7730c6",
+      "task": {
+        "robot_id": "r3",
+        "pickup_slot": "P2-3",
+        "destination": "B",
+        "passage_id": "door_1",
+        "seed": 917
+      },
+      "stage": "pick",
+      "passed": true,
+      "failure_class": null,
+      "result": {
+        "execution_bundle_id": "zone-solo-cyan-v106",
+        "source_sha": "a28786c9fe0554ea17c22eb454cc8b7e0e7730c6",
+        "status": "STAGE_REACHED_UNQUALIFIED",
+        "cohort_role": "FUNCTIONAL_DEV",
+        "stage_probe": "pick",
+        "research_result": false,
+        "physical_success": null,
+        "loadavg_start": [
+          2.19580078125,
+          2.65771484375,
+          2.70751953125
+        ],
+        "model_calls": 0,
+        "commands_issued": 2247,
+        "in_run_drop_tilt_contact_detection": false,
+        "stage_reached": true,
+        "failure": null,
+        "controller_state": "carry",
+        "reset_sim_s": 1.3,
+        "check_sim_s": 96.10000000000001,
+        "evaluation": {
+          "status": "PROVISIONAL_GEOMETRIC_JUDGE",
+          "success": false,
+          "lifted": true,
+          "inside": false,
+          "floor": false,
+          "stable": true,
+          "settled_s": 2.0,
+          "qualification": "post-run DEV only; no study/physical hardware success claim"
+        },
+        "loadavg_end": [
+          2.29443359375,
+          2.625,
+          2.689453125
+        ]
+      },
+      "independent": {
+        "valid": true,
+        "success": false,
+        "lifted": true,
+        "inside": false,
+        "floor": false,
+        "stable": true,
+        "settled_s": 2.0,
+        "final_xyz_m": [
+          1.278947063071463,
+          0.45000787699056133,
+          0.14166430352847745
+        ],
+        "rows": 1923,
+        "max_gap_s": 0.05000000000001137,
+        "max_tail_displacement_m": 2.683463235368785e-06
+      },
+      "false_positive": false,
+      "false_negative": false,
+      "judge_disagreement": false,
+      "artifact_files_checked": 1879,
+      "artifact_mismatches": [],
+      "managed": {
+        "exit_code": 0,
+        "status": "process_completed",
+        "runtime_s": 144.12610754198977,
+        "source_changed_during_run": false,
+        "finalization_errors": []
+      },
+      "would_stop": {
+        "ARM_COLLISION_GUARD": 5
+      },
+      "state_events": [
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 1.3,
+          "state": "scan"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 10.4,
+          "state": "search_move"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 25.8,
+          "state": "search"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 25.9,
+          "state": "align"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 69.7,
+          "state": "hover"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 71.1,
+          "state": "blind_descent"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 72.3,
+          "state": "grasp"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 73.2,
+          "state": "lift"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 94.4,
+          "state": "carry"
+        }
+      ],
+      "hashes": {
+        "result.json": "86a112f201b291e5b893c67d42b71c9b99f0df1782b96348db02db7f883f4f45",
+        "bundle.json": "61f3bb9256667946f6e65e98960b593ce7b52ccecacddc3ed0ec9c1601989fc5",
+        "artifacts.sha256.json": "81f2fd7dbeb52cb2bb3fb79d4d25ebcf9f39114bdabe837d703ec3fdc0f66f23",
+        "student_record.json": "1e24bcad82f9d886c13e8672d470c52a4bff18ad22098ebd2f33ca31828f4819",
+        "eval_only/trajectory.jsonl": "ae51627f120eb851e4c4e862944b82a365d323f6475172ea5364a88965c519b4"
+      },
+      "managed_manifest_sha256": "c09eec3ae228356d6946eb6014f405ab88cacd0ea9e0a72367044d9d9cb4e6f9"
+    },
+    {
+      "source": "/Users/changmin/projects/ugrp/outputs/s2-graduation-a28786c9-s918-P1-3-pick",
+      "source_sha": "a28786c9fe0554ea17c22eb454cc8b7e0e7730c6",
+      "task": {
+        "robot_id": "r3",
+        "pickup_slot": "P1-3",
+        "destination": "B",
+        "passage_id": "door_1",
+        "seed": 918
+      },
+      "stage": "pick",
+      "passed": true,
+      "failure_class": null,
+      "result": {
+        "execution_bundle_id": "zone-solo-cyan-v106",
+        "source_sha": "a28786c9fe0554ea17c22eb454cc8b7e0e7730c6",
+        "status": "STAGE_REACHED_UNQUALIFIED",
+        "cohort_role": "FUNCTIONAL_DEV",
+        "stage_probe": "pick",
+        "research_result": false,
+        "physical_success": null,
+        "loadavg_start": [
+          2.3505859375,
+          2.630859375,
+          2.69091796875
+        ],
+        "model_calls": 0,
+        "commands_issued": 2017,
+        "in_run_drop_tilt_contact_detection": false,
+        "stage_reached": true,
+        "failure": null,
+        "controller_state": "carry",
+        "reset_sim_s": 1.3,
+        "check_sim_s": 73.10000000000001,
+        "evaluation": {
+          "status": "PROVISIONAL_GEOMETRIC_JUDGE",
+          "success": false,
+          "lifted": true,
+          "inside": false,
+          "floor": false,
+          "stable": true,
+          "settled_s": 2.0,
+          "qualification": "post-run DEV only; no study/physical hardware success claim"
+        },
+        "loadavg_end": [
+          2.21435546875,
+          2.48876953125,
+          2.6259765625
+        ]
+      },
+      "independent": {
+        "valid": true,
+        "success": false,
+        "lifted": true,
+        "inside": false,
+        "floor": false,
+        "stable": true,
+        "settled_s": 2.0,
+        "final_xyz_m": [
+          0.12894545790569553,
+          0.450007299194675,
+          0.14169060693299748
+        ],
+        "rows": 1463,
+        "max_gap_s": 0.05000000000001137,
+        "max_tail_displacement_m": 2.7494097778946147e-06
+      },
+      "false_positive": false,
+      "false_negative": false,
+      "judge_disagreement": false,
+      "artifact_files_checked": 1419,
+      "artifact_mismatches": [],
+      "managed": {
+        "exit_code": 0,
+        "status": "process_completed",
+        "runtime_s": 97.98509000000195,
+        "source_changed_during_run": false,
+        "finalization_errors": []
+      },
+      "would_stop": {
+        "ARM_COLLISION_GUARD": 7
+      },
+      "state_events": [
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 1.3,
+          "state": "scan"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 10.4,
+          "state": "search_move"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 17.7,
+          "state": "search"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 17.8,
+          "state": "align"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 46.7,
+          "state": "hover"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 48.1,
+          "state": "blind_descent"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 49.3,
+          "state": "grasp"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 50.2,
+          "state": "lift"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 71.4,
+          "state": "carry"
+        }
+      ],
+      "hashes": {
+        "result.json": "16fe5c9484bc8000ed36c38ab4a586f0f5bd4672cfa261691a5b4211c91f5865",
+        "bundle.json": "698d6732aca30e76b429db4fd23f109d26e8c8933a7d130536e0e4e64a1ec8f0",
+        "artifacts.sha256.json": "81b850182504aecf848d791c427ee4dfb7859eddf4a97d0e6fd265b2dfff6687",
+        "student_record.json": "038f44f346229b7e30cfa8341776e1c67f0ab6a182d9d44011511fd298e01150",
+        "eval_only/trajectory.jsonl": "2ddbf2538fc14fb300ca1aeacc41ab7a97fabea16c972123f3c0ea6a398383d4"
+      },
+      "managed_manifest_sha256": "6bff615e4927c7fe9cd86059d523c1ac8895b461987c388fdac8dceda56da5f4"
+    },
+    {
+      "source": "/Users/changmin/projects/ugrp/outputs/s2-graduation-a28786c9-s919-P2-2-pick",
+      "source_sha": "a28786c9fe0554ea17c22eb454cc8b7e0e7730c6",
+      "task": {
+        "robot_id": "r3",
+        "pickup_slot": "P2-2",
+        "destination": "B",
+        "passage_id": "door_1",
+        "seed": 919
+      },
+      "stage": "pick",
+      "passed": true,
+      "failure_class": null,
+      "result": {
+        "execution_bundle_id": "zone-solo-cyan-v106",
+        "source_sha": "a28786c9fe0554ea17c22eb454cc8b7e0e7730c6",
+        "status": "STAGE_REACHED_UNQUALIFIED",
+        "cohort_role": "FUNCTIONAL_DEV",
+        "stage_probe": "pick",
+        "research_result": false,
+        "physical_success": null,
+        "loadavg_start": [
+          2.21435546875,
+          2.48876953125,
+          2.6259765625
+        ],
+        "model_calls": 0,
+        "commands_issued": 2312,
+        "in_run_drop_tilt_contact_detection": false,
+        "stage_reached": true,
+        "failure": null,
+        "controller_state": "carry",
+        "reset_sim_s": 1.3,
+        "check_sim_s": 102.60000000000001,
+        "evaluation": {
+          "status": "PROVISIONAL_GEOMETRIC_JUDGE",
+          "success": false,
+          "lifted": true,
+          "inside": false,
+          "floor": false,
+          "stable": true,
+          "settled_s": 2.0,
+          "qualification": "post-run DEV only; no study/physical hardware success claim"
+        },
+        "loadavg_end": [
+          11.77392578125,
+          4.54052734375,
+          3.333984375
+        ]
+      },
+      "independent": {
+        "valid": true,
+        "success": false,
+        "lifted": true,
+        "inside": false,
+        "floor": false,
+        "stable": true,
+        "settled_s": 2.0,
+        "final_xyz_m": [
+          1.2789453812915452,
+          -0.8499858466486253,
+          0.141659140641388
+        ],
+        "rows": 2053,
+        "max_gap_s": 0.05000000000001137,
+        "max_tail_displacement_m": 2.68060164368035e-06
+      },
+      "false_positive": false,
+      "false_negative": false,
+      "judge_disagreement": false,
+      "artifact_files_checked": 2009,
+      "artifact_mismatches": [],
+      "managed": {
+        "exit_code": 0,
+        "status": "process_completed",
+        "runtime_s": 158.25187750000623,
+        "source_changed_during_run": false,
+        "finalization_errors": []
+      },
+      "would_stop": {
+        "ARM_COLLISION_GUARD": 4
+      },
+      "state_events": [
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 1.3,
+          "state": "scan"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 10.4,
+          "state": "search_move"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 32.7,
+          "state": "search"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 32.8,
+          "state": "align"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 76.2,
+          "state": "hover"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 77.6,
+          "state": "blind_descent"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 78.8,
+          "state": "grasp"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 79.7,
+          "state": "lift"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 100.9,
+          "state": "carry"
+        }
+      ],
+      "hashes": {
+        "result.json": "a1f37cfb436d059a9507e394b88e7cc6f64b7eb9895928b60d091d6a6f2787db",
+        "bundle.json": "f68ac52f778ea5de0df55a22975e7e1763bc85af8763e5eef5873142951901a2",
+        "artifacts.sha256.json": "240a7198e36685b7ba39605fc3406a3e7d96f121e4314e4691135b03f5b8acc3",
+        "student_record.json": "707b88f7edccad1206b367f2c86c2c9a52e5ee6c41b0ea444010266112a09115",
+        "eval_only/trajectory.jsonl": "e02009f635f89b1bacb7e48ba25f388afca7b42b9d965f7012c3941d71b38e00"
+      },
+      "managed_manifest_sha256": "6c696e097ee7821ad62221ca5a2abbbdb3115e37ac7fef150bbc8ebf6eddca46"
+    },
+    {
+      "source": "/Users/changmin/projects/ugrp/outputs/s2-graduation-a28786c9-s920-P1-2-pick",
+      "source_sha": "a28786c9fe0554ea17c22eb454cc8b7e0e7730c6",
+      "task": {
+        "robot_id": "r3",
+        "pickup_slot": "P1-2",
+        "destination": "B",
+        "passage_id": "door_1",
+        "seed": 920
+      },
+      "stage": "pick",
+      "passed": true,
+      "failure_class": null,
+      "result": {
+        "execution_bundle_id": "zone-solo-cyan-v106",
+        "source_sha": "a28786c9fe0554ea17c22eb454cc8b7e0e7730c6",
+        "status": "STAGE_REACHED_UNQUALIFIED",
+        "cohort_role": "FUNCTIONAL_DEV",
+        "stage_probe": "pick",
+        "research_result": false,
+        "physical_success": null,
+        "loadavg_start": [
+          11.2314453125,
+          4.5478515625,
+          3.34326171875
+        ],
+        "model_calls": 0,
+        "commands_issued": 2140,
+        "in_run_drop_tilt_contact_detection": false,
+        "stage_reached": true,
+        "failure": null,
+        "controller_state": "carry",
+        "reset_sim_s": 1.3,
+        "check_sim_s": 85.4,
+        "evaluation": {
+          "status": "PROVISIONAL_GEOMETRIC_JUDGE",
+          "success": false,
+          "lifted": true,
+          "inside": false,
+          "floor": false,
+          "stable": true,
+          "settled_s": 2.0,
+          "qualification": "post-run DEV only; no study/physical hardware success claim"
+        },
+        "loadavg_end": [
+          19.4716796875,
+          14.197265625,
+          7.6533203125
+        ]
+      },
+      "independent": {
+        "valid": true,
+        "success": false,
+        "lifted": true,
+        "inside": false,
+        "floor": false,
+        "stable": true,
+        "settled_s": 2.0,
+        "final_xyz_m": [
+          0.12895004188538728,
+          -0.8500037514884429,
+          0.1416883486013365
+        ],
+        "rows": 1709,
+        "max_gap_s": 0.05000000000001137,
+        "max_tail_displacement_m": 2.7468463325610116e-06
+      },
+      "false_positive": false,
+      "false_negative": false,
+      "judge_disagreement": false,
+      "artifact_files_checked": 1665,
+      "artifact_mismatches": [],
+      "managed": {
+        "exit_code": 0,
+        "status": "process_completed",
+        "runtime_s": 140.6659859999927,
+        "source_changed_during_run": false,
+        "finalization_errors": []
+      },
+      "would_stop": {
+        "ARM_COLLISION_GUARD": 3
+      },
+      "state_events": [
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 1.3,
+          "state": "scan"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 10.4,
+          "state": "search_move"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 30.3,
+          "state": "search"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 30.4,
+          "state": "align"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 59.0,
+          "state": "hover"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 60.4,
+          "state": "blind_descent"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 61.6,
+          "state": "grasp"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 62.5,
+          "state": "lift"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 83.7,
+          "state": "carry"
+        }
+      ],
+      "hashes": {
+        "result.json": "6bae6838b4f4294cdc792348c9428ddfdd7f7cdde4651601a23a859ef03f62da",
+        "bundle.json": "7f31dcd2444fb8d001b7a07246a220d30c888ad65577f16b2303d70bc1afdcd7",
+        "artifacts.sha256.json": "5b8b1d2904f3e4b022cf4c0a8e08a626ce323968ef6277c227b199e4583bbf64",
+        "student_record.json": "baf8a7d24413dc8a13a04b3ac70741f2e75384ccfa40b886de53a4746aa91c01",
+        "eval_only/trajectory.jsonl": "2e49524c48568b0a254c3a3f7eec7222fc94a8cb225bf81d0492d6d632696645"
+      },
+      "managed_manifest_sha256": "f55a7665dcc1f0610e0e8100c89d3fe43b1c7b03d59ce5a94925a87018d373dd"
+    },
+    {
+      "source": "/Users/changmin/projects/ugrp/outputs/s2-graduation-a28786c9-s921-P2-2-door",
+      "source_sha": "a28786c9fe0554ea17c22eb454cc8b7e0e7730c6",
+      "task": {
+        "robot_id": "r3",
+        "pickup_slot": "P2-2",
+        "destination": "B",
+        "passage_id": "door_1",
+        "seed": 921
+      },
+      "stage": "door",
+      "passed": false,
+      "failure_class": "PHYSICAL_STAGE_FAILED",
+      "result": {
+        "execution_bundle_id": "zone-solo-cyan-v106",
+        "source_sha": "a28786c9fe0554ea17c22eb454cc8b7e0e7730c6",
+        "status": "STAGE_REACHED_UNQUALIFIED",
+        "cohort_role": "FUNCTIONAL_DEV",
+        "stage_probe": "door",
+        "research_result": false,
+        "physical_success": null,
+        "loadavg_start": [
+          18.072265625,
+          13.99462890625,
+          7.6201171875
+        ],
+        "model_calls": 0,
+        "commands_issued": 6794,
+        "in_run_drop_tilt_contact_detection": false,
+        "stage_reached": true,
+        "failure": null,
+        "controller_state": "search",
+        "reset_sim_s": 1.3,
+        "check_sim_s": 226.2,
+        "evaluation": {
+          "status": "PROVISIONAL_GEOMETRIC_JUDGE",
+          "success": false,
+          "lifted": true,
+          "inside": false,
+          "floor": true,
+          "stable": true,
+          "settled_s": 2.0,
+          "qualification": "post-run DEV only; no study/physical hardware success claim"
+        },
+        "loadavg_end": [
+          5.7841796875,
+          8.7548828125,
+          6.873046875
+        ]
+      },
+      "independent": {
+        "valid": true,
+        "success": false,
+        "lifted": true,
+        "inside": false,
+        "floor": true,
+        "stable": true,
+        "settled_s": 2.0,
+        "final_xyz_m": [
+          2.907412771655467,
+          0.018634576852440844,
+          0.01589224457978398
+        ],
+        "rows": 4525,
+        "max_gap_s": 0.05000000000001137,
+        "max_tail_displacement_m": 2.4579377535694918e-12
+      },
+      "false_positive": false,
+      "false_negative": false,
+      "judge_disagreement": false,
+      "artifact_files_checked": 4481,
+      "artifact_mismatches": [],
+      "managed": {
+        "exit_code": 0,
+        "status": "process_completed",
+        "runtime_s": 272.450313207999,
+        "source_changed_during_run": false,
+        "finalization_errors": []
+      },
+      "would_stop": {
+        "ARM_COLLISION_GUARD": 4
+      },
+      "state_events": [
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 1.3,
+          "state": "scan"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 10.4,
+          "state": "search_move"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 32.4,
+          "state": "search"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 32.5,
+          "state": "align"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 76.2,
+          "state": "hover"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 77.6,
+          "state": "blind_descent"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 78.8,
+          "state": "grasp"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 79.7,
+          "state": "lift"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 100.9,
+          "state": "carry"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 113.3,
+          "state": "lower"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 126.9,
+          "state": "released"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 131.7,
+          "state": "scan"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 140.8,
+          "state": "relook_pickup"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 142.4,
+          "state": "search"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 147.3,
+          "state": "align"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 147.5,
+          "state": "hover"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 148.9,
+          "state": "blind_descent"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 150.1,
+          "state": "grasp"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 151.0,
+          "state": "lift"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 172.2,
+          "state": "carry"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 195.4,
+          "state": "lower"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 209.0,
+          "state": "released"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 213.8,
+          "state": "scan"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 222.9,
+          "state": "relook_pickup"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 224.5,
+          "state": "search"
+        }
+      ],
+      "hashes": {
+        "result.json": "84eee32f5689d5960b8ad4c264237be0d1f10203447d1322cd5658423e816fa2",
+        "bundle.json": "766bf0b555605ff2d2896def8e57674648ffaa22ffeeeae2106d0d8a2499ea61",
+        "artifacts.sha256.json": "3456c893a0a38911d2777aab198e130983207251d0a01ba07c3e689f233de90e",
+        "student_record.json": "32da9491f6e06f1cf8a6f42dc42bdbd62d7b285ac9c16d22b21b3a1c7b22b6ed",
+        "eval_only/trajectory.jsonl": "368f009f87fe02c1f1da0ee5c29511842fd3f7169a0aea1fccf20e43c13a66b1"
+      },
+      "managed_manifest_sha256": "b8642ba0e88826e529db668a4e1c03fd7ea2abce6cb41cc583bdcfa494b4c8cd"
+    }
+  ],
+  "not_run": [
+    [
+      922,
+      "P1-2",
+      "place"
+    ],
+    [
+      923,
+      "P1-1",
+      "place"
+    ],
+    [
+      924,
+      "P2-1",
+      "place"
+    ],
+    [
+      925,
+      "P1-2",
+      "place"
+    ],
+    [
+      926,
+      "P2-2",
+      "place"
+    ],
+    [
+      927,
+      "P1-3",
+      "place"
+    ],
+    [
+      928,
+      "P2-3",
+      "place"
+    ]
+  ]
+}

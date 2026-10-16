@@ -95,3 +95,5 @@ raw 로그·JUnit·mutation 원본은 primary `outputs/t13b-recovery-offline-202
 - [원본 v2 s5](../../configs/zone_study_scenarios_v2/s5_moved_dropped_item_v2.json)
 - [기존 hidden event 물리 구현](../../sim/zone_hidden_events.py)
 - [코디네이터 4×900 SIM초 체크](SIM_CHECKS.md)
+
+코드는 커밋 `888447674318bc311e1ef65f71c654692b2b76bb`에서 재현(퇴역 전 소스 복구 기준). 당시 실행 SHA·설정·결과는 본문 기록을 따르며, [퇴역 목록](../../docs/retired_modules.md)을 참고한다.

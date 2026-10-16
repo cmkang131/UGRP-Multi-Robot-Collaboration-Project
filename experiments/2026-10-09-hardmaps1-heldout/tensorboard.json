@@ -1,0 +1,97 @@
+{
+  "active_logdir": "/Users/changmin/projects/ugrp/outputs/tensorboard",
+  "snapshot": "/Users/changmin/projects/ugrp/outputs/tensorboard/hardmaps1-preparation-v1",
+  "run_filter": "hardmaps1",
+  "url": "http://127.0.0.1:6006/?pinnedCards=%5B%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fstatic_reachable_pairs%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fcolor_boundary_m%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fwall_tapes%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fwall_patches%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fcontroller_trials%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fcommands%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fmodel_calls%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fstationary_loaded%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fstationary_integration_steps%22%7D%5D&smoothing=0&runFilter=hardmaps1#timeseries",
+  "pinned_tags": [
+    "offline/static_reachable_pairs",
+    "offline/color_boundary_m",
+    "offline/wall_tapes",
+    "offline/wall_patches",
+    "offline/controller_trials",
+    "result/commands",
+    "result/model_calls",
+    "offline/stationary_loaded",
+    "offline/stationary_integration_steps"
+  ],
+  "hparams_visible_columns": [
+    "case",
+    "outcome",
+    "policy",
+    "result/commands",
+    "result/model_calls"
+  ],
+  "scope": "Static map preparation only; no student return or control.",
+  "video_registration": "none: no rollout or video recorded",
+  "hparams_limit": "Shared HParams experiment does not expose these new offline tags; configured available columns applied, new metrics verified in pinned Time Series and scalar API.",
+  "scalar_api_values": {
+    "hardmaps1-preparation-v1/hardmaps1-tb-source__H1__602f74d5": {
+      "result/commands": 0.0,
+      "result/model_calls": 0.0,
+      "offline/color_regions": 4.0,
+      "offline/color_boundary_m": 24.399999618530273,
+      "offline/wall_tapes": 262.0,
+      "offline/wall_patches": 662.0,
+      "offline/tapes_per_arena_m2": 8.83046817779541,
+      "offline/controller_trials": 0.0,
+      "offline/static_reachable_pairs": 48.0
+    },
+    "hardmaps1-preparation-v1/hardmaps1-tb-source__H2__5b63d571": {
+      "result/commands": 0.0,
+      "result/model_calls": 0.0,
+      "offline/color_regions": 4.0,
+      "offline/color_boundary_m": 24.399999618530273,
+      "offline/wall_tapes": 251.0,
+      "offline/wall_patches": 592.0,
+      "offline/tapes_per_arena_m2": 8.459723472595215,
+      "offline/controller_trials": 0.0,
+      "offline/static_reachable_pairs": 48.0
+    },
+    "hardmaps1-preparation-v1/hardmaps1-tb-source__base__f355f51d": {
+      "result/commands": 0.0,
+      "result/model_calls": 0.0,
+      "offline/color_regions": 4.0,
+      "offline/color_boundary_m": 24.399999618530273,
+      "offline/wall_tapes": 215.0,
+      "offline/wall_patches": 570.0,
+      "offline/tapes_per_arena_m2": 7.246376991271973,
+      "offline/controller_trials": 0.0
+    },
+    "hardmaps1-stationary-v1/hardmaps1-tb-stationary-source__base__6ffc2432": {
+      "result/commands": 0.0,
+      "result/model_calls": 0.0,
+      "offline/stationary_loaded": 1.0,
+      "offline/stationary_integration_steps": 0.0,
+      "offline/stationary_camera_views": 7.0,
+      "offline/stationary_robot_wall_contacts": 0.0
+    },
+    "hardmaps1-stationary-v1/hardmaps1-tb-stationary-source__H2__a365205f": {
+      "result/commands": 0.0,
+      "result/model_calls": 0.0,
+      "offline/stationary_loaded": 1.0,
+      "offline/stationary_integration_steps": 0.0,
+      "offline/stationary_camera_views": 7.0,
+      "offline/stationary_robot_wall_contacts": 0.0
+    },
+    "hardmaps1-stationary-v1/hardmaps1-tb-stationary-source__H1__e59b37ae": {
+      "result/commands": 0.0,
+      "result/model_calls": 0.0,
+      "offline/stationary_loaded": 1.0,
+      "offline/stationary_integration_steps": 0.0,
+      "offline/stationary_camera_views": 7.0,
+      "offline/stationary_robot_wall_contacts": 0.0
+    }
+  },
+  "ui_verified": [
+    "selected base/H1/H2",
+    "7 pinned cards",
+    "static_reachable_pairs H1=48/H2=48",
+    "color_boundary_m=24.4 for all three",
+    "configured available HParams columns applied"
+  ],
+  "existing_server_pid": 52016,
+  "server_owned_by_other_task": true,
+  "server_unchanged": true,
+  "video_count": 0,
+  "stationary_snapshot": "/Users/changmin/projects/ugrp/outputs/tensorboard/hardmaps1-stationary-v1"
+}

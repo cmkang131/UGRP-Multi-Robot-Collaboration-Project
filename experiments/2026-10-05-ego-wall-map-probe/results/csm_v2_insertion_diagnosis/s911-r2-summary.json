@@ -1,0 +1,47 @@
+{
+  "name": "s911-r2",
+  "scope": "post-hoc fixed v1 estimated poses/decisions; insertion ablation, not v2",
+  "wall_boundary_samples": 349,
+  "variants": {
+    "v1": {
+      "frames": 7,
+      "occupied_cells": 109,
+      "precision_015": 0.5229357798165137,
+      "precision_cell": 0.44954128440366975,
+      "wall_coverage": 0.08595988538681948,
+      "wall_error_rmse_m": 0.4032074664181065
+    },
+    "v1_plus_deferred": {
+      "frames": 150,
+      "occupied_cells": 269,
+      "precision_015": 0.3159851301115242,
+      "precision_cell": 0.21189591078066913,
+      "wall_coverage": 0.17478510028653296,
+      "wall_error_rmse_m": 0.543339011214136
+    },
+    "v1_all_diagnostic": {
+      "frames": 172,
+      "occupied_cells": 273,
+      "precision_015": 0.3076923076923077,
+      "precision_cell": 0.20512820512820512,
+      "wall_coverage": 0.17191977077363896,
+      "wall_error_rmse_m": 0.5775294891322581
+    },
+    "off_same_nonrejected": {
+      "frames": 150,
+      "occupied_cells": 268,
+      "precision_015": 0.30597014925373134,
+      "precision_cell": 0.2126865671641791,
+      "wall_coverage": 0.17478510028653296,
+      "wall_error_rmse_m": 0.7451975067400173
+    },
+    "off": {
+      "frames": 172,
+      "occupied_cells": 275,
+      "precision_015": 0.29818181818181816,
+      "precision_cell": 0.20727272727272728,
+      "wall_coverage": 0.17478510028653296,
+      "wall_error_rmse_m": 0.7827468065820292
+    }
+  }
+}

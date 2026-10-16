@@ -1,0 +1,44 @@
+{
+  "initial_tests": {
+    "passed": 27,
+    "failed": 0,
+    "wall_s": 27.72,
+    "files": [
+      "tests/test_s3_continue.py",
+      "tests/test_simulation_workflow_manager.py"
+    ]
+  },
+  "added_head_and_exhaustion_regressions": {
+    "passed": 10,
+    "failed": 0,
+    "wall_s": 25.99,
+    "file": "tests/test_s3_continue.py"
+  },
+  "test_fixture_corrections": [
+    "valid own-image fixture required; uniform image correctly refused",
+    "scripted provider remains diagnostic outside admission assertion",
+    "three robot initial command fixture includes r3"
+  ],
+  "physics_runs_before_commit": 0,
+  "final_pre_smoke": {
+    "passed": 10,
+    "failed": 0,
+    "wall_s": 26.41,
+    "file": "tests/test_s3_continue.py",
+    "includes": [
+      "large sigma motion",
+      "exhausted progress counter retained and continued",
+      "arrival veto logged and continued",
+      "execution error and pair GO stay hard"
+    ]
+  },
+  "post_run_record_checks": {
+    "passed": 2,
+    "deselected": 8,
+    "wall_s": 24.28,
+    "scope": "off identity and current bundle registration after report writes",
+    "full_smoke_raw_files_sha_verified": 1360,
+    "saved_mixed_axis_commands_rejected_as_expected": 2,
+    "extra_physics": 0
+  }
+}

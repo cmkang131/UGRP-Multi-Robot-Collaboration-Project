@@ -1,0 +1,1889 @@
+{
+  "verdict": "NOT_READY",
+  "rows": [
+    {
+      "run": "old-shape-forward",
+      "source": {
+        "path": "/Users/changmin/projects/ugrp/outputs/drive-friction-5f04f473-empty2/forward/result.json",
+        "sha256": "5b983f68b95cb5480fc4806a9d657d4903823be9c14468f01eb1fa86ef292300"
+      },
+      "profile": "masterpi_drive_friction_v1",
+      "case": "forward",
+      "loaded": false,
+      "status": "MEASURED_DEV",
+      "qualification": "staged DEV physics diagnostic, not student/hardware success",
+      "model_calls": 0,
+      "physical_success": null,
+      "loadavg_start": [
+        4.67138671875,
+        5.28076171875,
+        7.82421875
+      ],
+      "cargo_mass_kg": 0.03,
+      "robot_mass_kg": 1.1,
+      "cargo_initial_z_m": 0.015892244579810016,
+      "sim_s": 2.4999999999996803,
+      "wall_s": 1.8994679170136806,
+      "wall_per_sim": 0.7597871668055693,
+      "commands": 2,
+      "displacement_m": [
+        0.0904030144266681,
+        -2.7710642874767544e-06,
+        1.5660181242695137e-05
+      ],
+      "yaw_change_rad": 9.704259062173492e-05,
+      "steady_velocity": [
+        0.08077015158187888,
+        1.7410752231633784e-06,
+        -0.002339972471941432,
+        -1.4336961099442752e-05,
+        0.0010762388521310103,
+        3.467683975559154e-05
+      ],
+      "steady_wheel_rad_s": [
+        2.487385309818157,
+        2.487281588614827,
+        2.4821738701494747,
+        2.4821239685697267
+      ],
+      "wheel_contact_samples": 125,
+      "max_base_external_force": 0.0,
+      "cargo_min_z_m": 0.01589224457978397,
+      "stop_drift_m": 0.001558570158228662,
+      "warnings": {},
+      "drive_parameters": {
+        "profile": "masterpi_drive_friction_v1",
+        "parameters": {
+          "no_load_rpm": 150.0,
+          "torque_cap_nm": 0.1176798,
+          "sliding_mu": 1.0
+        },
+        "qualification": "STRUCTURAL_ONLY_UNCALIBRATED",
+        "installed_motor_and_floor_verified": false,
+        "actuator_model": "bounded affine torque-speed, zero-command electrical brake",
+        "roller_geometry": "unchanged v3 visual capsules, 9 passive hinges/wheel",
+        "roller_bearing": "ideal frictionless",
+        "wheel_mass": "legacy 50g, uniform-density split",
+        "sha256": "514d09a5c772bc40c378d161b1f2cc477fca3694f9995f1cdd31fd2d39081339"
+      },
+      "xml_sha256": "b485b89dfc3bef389c2ed4cc28657f553426258ba5a434fb8d136555647a9bdc",
+      "total_wall_s": 3.7688379169994732,
+      "loadavg_end": [
+        4.45703125,
+        5.22607421875,
+        7.7900390625
+      ]
+    },
+    {
+      "run": "old-shape-left",
+      "source": {
+        "path": "/Users/changmin/projects/ugrp/outputs/drive-friction-5f04f473-empty2/left/result.json",
+        "sha256": "8f7e1a6157264863cac898a56bc83237f838916382d81fb6475b4f9c863b945a"
+      },
+      "profile": "masterpi_drive_friction_v1",
+      "case": "left",
+      "loaded": false,
+      "status": "MEASURED_DEV",
+      "qualification": "staged DEV physics diagnostic, not student/hardware success",
+      "model_calls": 0,
+      "physical_success": null,
+      "loadavg_start": [
+        4.45703125,
+        5.22607421875,
+        7.7900390625
+      ],
+      "cargo_mass_kg": 0.03,
+      "robot_mass_kg": 1.1,
+      "cargo_initial_z_m": 0.015892244579810016,
+      "sim_s": 2.4999999999996803,
+      "wall_s": 1.9498357089905767,
+      "wall_per_sim": 0.7799342835963304,
+      "commands": 2,
+      "displacement_m": [
+        0.0005681392357277382,
+        -0.06491054522795758,
+        2.2470011727795947e-05
+      ],
+      "yaw_change_rad": 0.021403789478531724,
+      "steady_velocity": [
+        0.0017435983017004331,
+        -0.07025532687445703,
+        -0.002043447476555801,
+        0.003112360309777347,
+        -0.003683783238748234,
+        0.047012160871266515
+      ],
+      "steady_wheel_rad_s": [
+        -2.2628485529237867,
+        2.265368868034241,
+        2.2454138828143053,
+        -2.2316422411028385
+      ],
+      "wheel_contact_samples": 125,
+      "max_base_external_force": 0.0,
+      "cargo_min_z_m": 0.01589224457978397,
+      "stop_drift_m": 0.003357268932153779,
+      "warnings": {},
+      "drive_parameters": {
+        "profile": "masterpi_drive_friction_v1",
+        "parameters": {
+          "no_load_rpm": 150.0,
+          "torque_cap_nm": 0.1176798,
+          "sliding_mu": 1.0
+        },
+        "qualification": "STRUCTURAL_ONLY_UNCALIBRATED",
+        "installed_motor_and_floor_verified": false,
+        "actuator_model": "bounded affine torque-speed, zero-command electrical brake",
+        "roller_geometry": "unchanged v3 visual capsules, 9 passive hinges/wheel",
+        "roller_bearing": "ideal frictionless",
+        "wheel_mass": "legacy 50g, uniform-density split",
+        "sha256": "514d09a5c772bc40c378d161b1f2cc477fca3694f9995f1cdd31fd2d39081339"
+      },
+      "xml_sha256": "b485b89dfc3bef389c2ed4cc28657f553426258ba5a434fb8d136555647a9bdc",
+      "total_wall_s": 3.823876750000636,
+      "loadavg_end": [
+        4.45703125,
+        5.22607421875,
+        7.7900390625
+      ]
+    },
+    {
+      "run": "old-shape-no_contact",
+      "source": {
+        "path": "/Users/changmin/projects/ugrp/outputs/drive-friction-5f04f473-empty2/no_contact/result.json",
+        "sha256": "e193e3202e17b27e6597eb13e98cf1453d9e7329cc87a57d448ecfc3dea141ae"
+      },
+      "profile": "masterpi_drive_friction_v1",
+      "case": "no_contact",
+      "loaded": false,
+      "status": "MEASURED_DEV",
+      "qualification": "staged DEV physics diagnostic, not student/hardware success",
+      "model_calls": 0,
+      "physical_success": null,
+      "loadavg_start": [
+        4.2392578125,
+        5.15283203125,
+        7.7333984375
+      ],
+      "cargo_mass_kg": 0.03,
+      "robot_mass_kg": 1.1,
+      "cargo_initial_z_m": 0.015892244579810016,
+      "sim_s": 2.4999999999996803,
+      "wall_s": 0.65232783400279,
+      "wall_per_sim": 0.2609311336011494,
+      "commands": 2,
+      "displacement_m": [
+        0.002561102643239721,
+        3.60902108198502e-09,
+        -0.0008910820860604449
+      ],
+      "yaw_change_rad": -1.4397140554539366e-09,
+      "steady_velocity": [
+        0.0018196949153645675,
+        2.560728663779739e-09,
+        -0.0005048534013478629,
+        3.824089152154559e-14,
+        -0.038042121487333776,
+        3.4289856480236227e-15
+      ],
+      "steady_wheel_rad_s": [
+        3.141592654675147,
+        3.141592654675147,
+        3.141592654695741,
+        3.141592654695741
+      ],
+      "wheel_contact_samples": 0,
+      "max_base_external_force": 0.0,
+      "cargo_min_z_m": 0.01589224457980991,
+      "stop_drift_m": 9.676233631249052e-06,
+      "warnings": {},
+      "drive_parameters": {
+        "profile": "masterpi_drive_friction_v1",
+        "parameters": {
+          "no_load_rpm": 150.0,
+          "torque_cap_nm": 0.1176798,
+          "sliding_mu": 1.0
+        },
+        "qualification": "STRUCTURAL_ONLY_UNCALIBRATED",
+        "installed_motor_and_floor_verified": false,
+        "actuator_model": "bounded affine torque-speed, zero-command electrical brake",
+        "roller_geometry": "unchanged v3 visual capsules, 9 passive hinges/wheel",
+        "roller_bearing": "ideal frictionless",
+        "wheel_mass": "legacy 50g, uniform-density split",
+        "sha256": "514d09a5c772bc40c378d161b1f2cc477fca3694f9995f1cdd31fd2d39081339"
+      },
+      "xml_sha256": "b485b89dfc3bef389c2ed4cc28657f553426258ba5a434fb8d136555647a9bdc",
+      "total_wall_s": 2.512595957989106,
+      "loadavg_end": [
+        4.2392578125,
+        5.15283203125,
+        7.7333984375
+      ]
+    },
+    {
+      "run": "old-shape-push",
+      "source": {
+        "path": "/Users/changmin/projects/ugrp/outputs/drive-friction-5f04f473-empty2/push/result.json",
+        "sha256": "4bda8ed0a55be8a684d856c1270708a32a7d85f77b2d63be2cb61c8b834c8296"
+      },
+      "profile": "masterpi_drive_friction_v1",
+      "case": "push",
+      "loaded": false,
+      "status": "MEASURED_DEV",
+      "qualification": "staged DEV physics diagnostic, not student/hardware success",
+      "model_calls": 0,
+      "physical_success": null,
+      "loadavg_start": [
+        4.26025390625,
+        5.17236328125,
+        7.755859375
+      ],
+      "cargo_mass_kg": 0.03,
+      "robot_mass_kg": 1.1,
+      "cargo_initial_z_m": 0.015892244579810016,
+      "sim_s": 2.4999999999996803,
+      "wall_s": 1.9116916670027422,
+      "wall_per_sim": 0.7646766668011947,
+      "commands": 2,
+      "displacement_m": [
+        -6.159135504146818e-05,
+        -4.387075308509569e-05,
+        3.338367926819519e-07
+      ],
+      "yaw_change_rad": 0.004924079023074091,
+      "steady_velocity": [
+        -3.100124974186884e-05,
+        -2.99007346182918e-05,
+        5.932157566090145e-07,
+        2.7103202510725435e-05,
+        -2.9227575813340537e-06,
+        0.0030418860153277076
+      ],
+      "steady_wheel_rad_s": [
+        0.000912387628269139,
+        0.0005500962163010454,
+        -0.0006297329943731567,
+        -0.0013779248144583606
+      ],
+      "wheel_contact_samples": 125,
+      "max_base_external_force": 1.0,
+      "cargo_min_z_m": 0.01589224457978397,
+      "stop_drift_m": 0.0002660734310336175,
+      "warnings": {},
+      "drive_parameters": {
+        "profile": "masterpi_drive_friction_v1",
+        "parameters": {
+          "no_load_rpm": 150.0,
+          "torque_cap_nm": 0.1176798,
+          "sliding_mu": 1.0
+        },
+        "qualification": "STRUCTURAL_ONLY_UNCALIBRATED",
+        "installed_motor_and_floor_verified": false,
+        "actuator_model": "bounded affine torque-speed, zero-command electrical brake",
+        "roller_geometry": "unchanged v3 visual capsules, 9 passive hinges/wheel",
+        "roller_bearing": "ideal frictionless",
+        "wheel_mass": "legacy 50g, uniform-density split",
+        "sha256": "514d09a5c772bc40c378d161b1f2cc477fca3694f9995f1cdd31fd2d39081339"
+      },
+      "xml_sha256": "b485b89dfc3bef389c2ed4cc28657f553426258ba5a434fb8d136555647a9bdc",
+      "total_wall_s": 3.8144860839965986,
+      "loadavg_end": [
+        4.2392578125,
+        5.15283203125,
+        7.7333984375
+      ]
+    },
+    {
+      "run": "old-shape-rated_speed",
+      "source": {
+        "path": "/Users/changmin/projects/ugrp/outputs/drive-friction-5f04f473-empty2/rated_speed/result.json",
+        "sha256": "444205de4ca7eda227a9ac733daed9d3a06402b8622c371cc1b1c15c594e9b29"
+      },
+      "profile": "masterpi_drive_friction_v1",
+      "case": "rated_speed",
+      "loaded": false,
+      "status": "MEASURED_DEV",
+      "qualification": "staged DEV physics diagnostic, not student/hardware success",
+      "model_calls": 0,
+      "physical_success": null,
+      "loadavg_start": [
+        4.2392578125,
+        5.15283203125,
+        7.7333984375
+      ],
+      "cargo_mass_kg": 0.03,
+      "robot_mass_kg": 1.1,
+      "cargo_initial_z_m": 0.015892244579810016,
+      "sim_s": 2.4999999999996803,
+      "wall_s": 1.8635462079982972,
+      "wall_per_sim": 0.7454184831994142,
+      "commands": 2,
+      "displacement_m": [
+        0.6927562613617622,
+        9.568885248933956e-05,
+        4.490280541177838e-05
+      ],
+      "yaw_change_rad": 1.1037954754562404e-06,
+      "steady_velocity": [
+        0.4585610656369973,
+        0.00017275184208824163,
+        -0.0018549137743228796,
+        -0.0017716193503127273,
+        -0.001023340920945358,
+        -0.00027908982721880685
+      ],
+      "steady_wheel_rad_s": [
+        14.344280202156229,
+        14.343093669138973,
+        14.349359881293699,
+        14.351228755770416
+      ],
+      "wheel_contact_samples": 120,
+      "max_base_external_force": 0.0,
+      "cargo_min_z_m": 0.01589224457978397,
+      "stop_drift_m": 0.03612328524759792,
+      "warnings": {},
+      "drive_parameters": {
+        "profile": "masterpi_drive_friction_v1",
+        "parameters": {
+          "no_load_rpm": 150.0,
+          "torque_cap_nm": 0.1176798,
+          "sliding_mu": 1.0
+        },
+        "qualification": "STRUCTURAL_ONLY_UNCALIBRATED",
+        "installed_motor_and_floor_verified": false,
+        "actuator_model": "bounded affine torque-speed, zero-command electrical brake",
+        "roller_geometry": "unchanged v3 visual capsules, 9 passive hinges/wheel",
+        "roller_bearing": "ideal frictionless",
+        "wheel_mass": "legacy 50g, uniform-density split",
+        "sha256": "514d09a5c772bc40c378d161b1f2cc477fca3694f9995f1cdd31fd2d39081339"
+      },
+      "xml_sha256": "b485b89dfc3bef389c2ed4cc28657f553426258ba5a434fb8d136555647a9bdc",
+      "total_wall_s": 3.737553749990184,
+      "loadavg_end": [
+        4.0595703125,
+        5.10009765625,
+        7.69970703125
+      ]
+    },
+    {
+      "run": "old-shape-rest",
+      "source": {
+        "path": "/Users/changmin/projects/ugrp/outputs/drive-friction-5f04f473-empty2/rest/result.json",
+        "sha256": "d25609bdce9fdf03b24bd00181b37b2d31f7199e2ca3106133181a4cad4e25c3"
+      },
+      "profile": "masterpi_drive_friction_v1",
+      "case": "rest",
+      "loaded": false,
+      "status": "MEASURED_DEV",
+      "qualification": "staged DEV physics diagnostic, not student/hardware success",
+      "model_calls": 0,
+      "physical_success": null,
+      "loadavg_start": [
+        4.904296875,
+        5.33642578125,
+        7.85888671875
+      ],
+      "cargo_mass_kg": 0.03,
+      "robot_mass_kg": 1.1,
+      "cargo_initial_z_m": 0.015892244579810016,
+      "sim_s": 2.4999999999996803,
+      "wall_s": 1.9149818750011036,
+      "wall_per_sim": 0.7659927500005395,
+      "commands": 2,
+      "displacement_m": [
+        1.7667787011177438e-06,
+        7.258172506352523e-07,
+        -2.8226513314189017e-09
+      ],
+      "yaw_change_rad": -8.997486922046644e-06,
+      "steady_velocity": [
+        7.00372445319797e-07,
+        2.8437524613357474e-07,
+        -1.5728306740748345e-09,
+        3.164402108804765e-08,
+        4.830772096540185e-09,
+        -3.321634729342851e-06
+      ],
+      "steady_wheel_rad_s": [
+        -1.3996697987982236e-05,
+        -7.716445876660143e-06,
+        1.59694052774515e-05,
+        3.0758226673073465e-05
+      ],
+      "wheel_contact_samples": 125,
+      "max_base_external_force": 0.0,
+      "cargo_min_z_m": 0.01589224457978397,
+      "stop_drift_m": 7.605041060369741e-07,
+      "warnings": {},
+      "drive_parameters": {
+        "profile": "masterpi_drive_friction_v1",
+        "parameters": {
+          "no_load_rpm": 150.0,
+          "torque_cap_nm": 0.1176798,
+          "sliding_mu": 1.0
+        },
+        "qualification": "STRUCTURAL_ONLY_UNCALIBRATED",
+        "installed_motor_and_floor_verified": false,
+        "actuator_model": "bounded affine torque-speed, zero-command electrical brake",
+        "roller_geometry": "unchanged v3 visual capsules, 9 passive hinges/wheel",
+        "roller_bearing": "ideal frictionless",
+        "wheel_mass": "legacy 50g, uniform-density split",
+        "sha256": "514d09a5c772bc40c378d161b1f2cc477fca3694f9995f1cdd31fd2d39081339"
+      },
+      "xml_sha256": "b485b89dfc3bef389c2ed4cc28657f553426258ba5a434fb8d136555647a9bdc",
+      "total_wall_s": 3.979817749990616,
+      "loadavg_end": [
+        4.67138671875,
+        5.28076171875,
+        7.82421875
+      ]
+    },
+    {
+      "run": "old-shape-turn",
+      "source": {
+        "path": "/Users/changmin/projects/ugrp/outputs/drive-friction-5f04f473-empty2/turn/result.json",
+        "sha256": "c772be667b56ff22652cf3fe0962805ab6bfcf1efb0156770228053ac4035465"
+      },
+      "profile": "masterpi_drive_friction_v1",
+      "case": "turn",
+      "loaded": false,
+      "status": "MEASURED_DEV",
+      "qualification": "staged DEV physics diagnostic, not student/hardware success",
+      "model_calls": 0,
+      "physical_success": null,
+      "loadavg_start": [
+        4.45703125,
+        5.22607421875,
+        7.7900390625
+      ],
+      "cargo_mass_kg": 0.03,
+      "robot_mass_kg": 1.1,
+      "cargo_initial_z_m": 0.015892244579810016,
+      "sim_s": 2.4999999999996803,
+      "wall_s": 2.1269590419979068,
+      "wall_per_sim": 0.8507836167992715,
+      "commands": 2,
+      "displacement_m": [
+        0.00012892940425635047,
+        -2.5841539083804044e-05,
+        4.158707861839223e-06
+      ],
+      "yaw_change_rad": 0.029980971370672595,
+      "steady_velocity": [
+        -2.4349130150361934e-06,
+        1.8271519330461042e-05,
+        1.345455475025407e-05,
+        -0.00018301535105036377,
+        0.00020101112910331527,
+        0.022186146029077314
+      ],
+      "steady_wheel_rad_s": [
+        -0.00406092199612376,
+        0.0011138094972629143,
+        -0.00464139438507773,
+        0.005921597803035865
+      ],
+      "wheel_contact_samples": 125,
+      "max_base_external_force": 0.0,
+      "cargo_min_z_m": 0.01589224457978397,
+      "stop_drift_m": 6.772706277206394e-05,
+      "warnings": {},
+      "drive_parameters": {
+        "profile": "masterpi_drive_friction_v1",
+        "parameters": {
+          "no_load_rpm": 150.0,
+          "torque_cap_nm": 0.1176798,
+          "sliding_mu": 1.0
+        },
+        "qualification": "STRUCTURAL_ONLY_UNCALIBRATED",
+        "installed_motor_and_floor_verified": false,
+        "actuator_model": "bounded affine torque-speed, zero-command electrical brake",
+        "roller_geometry": "unchanged v3 visual capsules, 9 passive hinges/wheel",
+        "roller_bearing": "ideal frictionless",
+        "wheel_mass": "legacy 50g, uniform-density split",
+        "sha256": "514d09a5c772bc40c378d161b1f2cc477fca3694f9995f1cdd31fd2d39081339"
+      },
+      "xml_sha256": "b485b89dfc3bef389c2ed4cc28657f553426258ba5a434fb8d136555647a9bdc",
+      "total_wall_s": 4.096058625000296,
+      "loadavg_end": [
+        4.26025390625,
+        5.17236328125,
+        7.755859375
+      ]
+    },
+    {
+      "run": "new-empty-forward",
+      "source": {
+        "path": "/Users/changmin/projects/ugrp/outputs/drive-friction-f323a7b7-empty/forward/result.json",
+        "sha256": "e296336a822d29b1eef5335dbf68dcb2d3e664e4adfd0f619a2b84975490eba5"
+      },
+      "profile": "masterpi_drive_friction_v1",
+      "case": "forward",
+      "loaded": false,
+      "status": "MEASURED_DEV",
+      "qualification": "staged DEV physics diagnostic, not student/hardware success",
+      "model_calls": 0,
+      "physical_success": null,
+      "loadavg_start": [
+        3.4599609375,
+        4.49951171875,
+        7.0703125
+      ],
+      "cargo_mass_kg": 0.03,
+      "robot_mass_kg": 1.1,
+      "cargo_initial_z_m": 0.015892244579810016,
+      "sim_s": 2.4999999999996803,
+      "wall_s": 1.898642749991268,
+      "wall_per_sim": 0.7594570999966043,
+      "commands": 2,
+      "displacement_m": [
+        0.09041432370363633,
+        -4.833588475472439e-06,
+        1.5555065702967802e-05
+      ],
+      "yaw_change_rad": -2.8289702213902135e-05,
+      "steady_velocity": [
+        0.08084057985374668,
+        4.670563789098781e-05,
+        -0.0023638743368761842,
+        0.0004283373116151919,
+        0.0008051302297934295,
+        0.00036285251941676214
+      ],
+      "com_displacement_m": [
+        0.09041528672782784,
+        -5.247474839542576e-06,
+        1.531255632500339e-05
+      ],
+      "steady_contact_slip_mps": 0.000580816438782341,
+      "steady_wheel_rad_s": [
+        2.486699699368474,
+        2.4930024987345365,
+        2.4853453575830993,
+        2.4838134754983514
+      ],
+      "wheel_contact_samples": 125,
+      "max_base_external_force": 0.0,
+      "cargo_min_z_m": 0.01589224457978397,
+      "stop_drift_m": 0.0015862223721874874,
+      "warnings": {},
+      "drive_parameters": {
+        "profile": "masterpi_drive_friction_v1",
+        "parameters": {
+          "no_load_rpm": 150.0,
+          "torque_cap_nm": 0.1176798,
+          "sliding_mu": 1.0
+        },
+        "qualification": "STRUCTURAL_ONLY_UNCALIBRATED",
+        "installed_motor_and_floor_verified": false,
+        "actuator_model": "bounded affine torque-speed, zero-command electrical brake",
+        "roller_geometry": "v3 capsule dimensions, official ABAB handedness, 9 passive hinges/wheel",
+        "roller_bearing": "ideal frictionless",
+        "wheel_mass": "legacy 50g, uniform-density split",
+        "sha256": "4cde38699e7be6a04f84f415afa90677018b833c5d6d833ae56aa9c71616b29f"
+      },
+      "xml_sha256": "5f1a9b3cbd5bfa491d3dbfd52f2a8f586c47613f57a387dea4ab6628e8181597",
+      "total_wall_s": 3.7874497500015423,
+      "loadavg_end": [
+        3.5830078125,
+        4.5078125,
+        7.05810546875
+      ]
+    },
+    {
+      "run": "new-empty-left",
+      "source": {
+        "path": "/Users/changmin/projects/ugrp/outputs/drive-friction-f323a7b7-empty/left/result.json",
+        "sha256": "85b07d3d719dedcebd76d4051bf81cdf84d28be244280a34d9407baffbbd40fe"
+      },
+      "profile": "masterpi_drive_friction_v1",
+      "case": "left",
+      "loaded": false,
+      "status": "MEASURED_DEV",
+      "qualification": "staged DEV physics diagnostic, not student/hardware success",
+      "model_calls": 0,
+      "physical_success": null,
+      "loadavg_start": [
+        3.5830078125,
+        4.5078125,
+        7.05810546875
+      ],
+      "cargo_mass_kg": 0.03,
+      "robot_mass_kg": 1.1,
+      "cargo_initial_z_m": 0.015892244579810016,
+      "sim_s": 2.4999999999996803,
+      "wall_s": 1.9984950830112211,
+      "wall_per_sim": 0.7993980332045907,
+      "commands": 2,
+      "displacement_m": [
+        0.007638563779369445,
+        0.04378971515935026,
+        2.0764902227410342e-05
+      ],
+      "yaw_change_rad": -0.3577344932269208,
+      "steady_velocity": [
+        0.010239886418100284,
+        0.034066599175315314,
+        -0.0010607269576716843,
+        -3.488917759240365e-05,
+        -0.01843516879776096,
+        -0.2837655511295598
+      ],
+      "com_displacement_m": [
+        0.006680359501874733,
+        0.038409071236497616,
+        1.5989184720510696e-05
+      ],
+      "steady_contact_slip_mps": 0.003300617534297838,
+      "steady_wheel_rad_s": [
+        0.023265582565452792,
+        0.024179559507651414,
+        2.2344288948834845,
+        -2.1752893278707006
+      ],
+      "wheel_contact_samples": 125,
+      "max_base_external_force": 0.0,
+      "cargo_min_z_m": 0.01589224457978397,
+      "stop_drift_m": 0.0004567911003042447,
+      "warnings": {},
+      "drive_parameters": {
+        "profile": "masterpi_drive_friction_v1",
+        "parameters": {
+          "no_load_rpm": 150.0,
+          "torque_cap_nm": 0.1176798,
+          "sliding_mu": 1.0
+        },
+        "qualification": "STRUCTURAL_ONLY_UNCALIBRATED",
+        "installed_motor_and_floor_verified": false,
+        "actuator_model": "bounded affine torque-speed, zero-command electrical brake",
+        "roller_geometry": "v3 capsule dimensions, official ABAB handedness, 9 passive hinges/wheel",
+        "roller_bearing": "ideal frictionless",
+        "wheel_mass": "legacy 50g, uniform-density split",
+        "sha256": "4cde38699e7be6a04f84f415afa90677018b833c5d6d833ae56aa9c71616b29f"
+      },
+      "xml_sha256": "5f1a9b3cbd5bfa491d3dbfd52f2a8f586c47613f57a387dea4ab6628e8181597",
+      "total_wall_s": 3.8844395829946734,
+      "loadavg_end": [
+        3.4560546875,
+        4.4658203125,
+        7.0283203125
+      ]
+    },
+    {
+      "run": "new-empty-no_contact",
+      "source": {
+        "path": "/Users/changmin/projects/ugrp/outputs/drive-friction-f323a7b7-empty/no_contact/result.json",
+        "sha256": "c190930a1eec588b3001785509c85411f979dcc1a7d61cefee90ccc1a6651e4e"
+      },
+      "profile": "masterpi_drive_friction_v1",
+      "case": "no_contact",
+      "loaded": false,
+      "status": "MEASURED_DEV",
+      "qualification": "staged DEV physics diagnostic, not student/hardware success",
+      "model_calls": 0,
+      "physical_success": null,
+      "loadavg_start": [
+        3.31201171875,
+        4.40087890625,
+        6.97509765625
+      ],
+      "cargo_mass_kg": 0.03,
+      "robot_mass_kg": 1.1,
+      "cargo_initial_z_m": 0.015892244579810016,
+      "sim_s": 2.4999999999996803,
+      "wall_s": 0.6926948329928564,
+      "wall_per_sim": 0.277077933197178,
+      "commands": 2,
+      "displacement_m": [
+        0.0025611026691185756,
+        -1.1244029485268925e-08,
+        -0.0008910820242668989
+      ],
+      "yaw_change_rad": 5.395313551682114e-09,
+      "steady_velocity": [
+        0.0018196949274640458,
+        -7.976182511880803e-09,
+        -0.0005048533599867566,
+        2.2448947822569784e-13,
+        -0.03804212149497943,
+        -3.79488563387103e-14
+      ],
+      "com_displacement_m": [
+        -2.010022770448927e-08,
+        8.43769498715119e-14,
+        1.8971065621209426e-08
+      ],
+      "steady_contact_slip_mps": 0.0,
+      "steady_wheel_rad_s": [
+        3.1415926546751796,
+        3.1415926546751796,
+        3.1415926546957724,
+        3.1415926546957724
+      ],
+      "wheel_contact_samples": 0,
+      "max_base_external_force": 0.0,
+      "cargo_min_z_m": 0.01589224457980991,
+      "stop_drift_m": 9.676233697501634e-06,
+      "warnings": {},
+      "drive_parameters": {
+        "profile": "masterpi_drive_friction_v1",
+        "parameters": {
+          "no_load_rpm": 150.0,
+          "torque_cap_nm": 0.1176798,
+          "sliding_mu": 1.0
+        },
+        "qualification": "STRUCTURAL_ONLY_UNCALIBRATED",
+        "installed_motor_and_floor_verified": false,
+        "actuator_model": "bounded affine torque-speed, zero-command electrical brake",
+        "roller_geometry": "v3 capsule dimensions, official ABAB handedness, 9 passive hinges/wheel",
+        "roller_bearing": "ideal frictionless",
+        "wheel_mass": "legacy 50g, uniform-density split",
+        "sha256": "4cde38699e7be6a04f84f415afa90677018b833c5d6d833ae56aa9c71616b29f"
+      },
+      "xml_sha256": "5f1a9b3cbd5bfa491d3dbfd52f2a8f586c47613f57a387dea4ab6628e8181597",
+      "total_wall_s": 2.6117621660087025,
+      "loadavg_end": [
+        3.31201171875,
+        4.40087890625,
+        6.97509765625
+      ]
+    },
+    {
+      "run": "new-empty-push",
+      "source": {
+        "path": "/Users/changmin/projects/ugrp/outputs/drive-friction-f323a7b7-empty/push/result.json",
+        "sha256": "e2896e93cdc6f7adf781deec4cb19cb3a8732c948fe40f9f494790a48c6a28ac"
+      },
+      "profile": "masterpi_drive_friction_v1",
+      "case": "push",
+      "loaded": false,
+      "status": "MEASURED_DEV",
+      "qualification": "staged DEV physics diagnostic, not student/hardware success",
+      "model_calls": 0,
+      "physical_success": null,
+      "loadavg_start": [
+        3.33935546875,
+        4.4248046875,
+        6.99853515625
+      ],
+      "cargo_mass_kg": 0.03,
+      "robot_mass_kg": 1.1,
+      "cargo_initial_z_m": 0.015892244579810016,
+      "sim_s": 2.4999999999996803,
+      "wall_s": 1.9853385409951443,
+      "wall_per_sim": 0.7941354163981593,
+      "commands": 2,
+      "displacement_m": [
+        -8.35955160116697e-06,
+        2.2918646817027266e-06,
+        1.0354921756855484e-08
+      ],
+      "yaw_change_rad": 5.045980622406131e-05,
+      "steady_velocity": [
+        9.261967080968754e-07,
+        -7.647349047583741e-07,
+        -1.5026575658262943e-08,
+        1.1905957461747974e-06,
+        4.267727192726621e-07,
+        -3.5190231135539544e-06
+      ],
+      "com_displacement_m": [
+        -8.382519646854547e-06,
+        3.0670699076029706e-06,
+        8.776257832965317e-08
+      ],
+      "steady_contact_slip_mps": 1.049646050671707e-06,
+      "steady_wheel_rad_s": [
+        -2.148857476071803e-05,
+        -3.383706805438543e-05,
+        3.7018978205263404e-05,
+        3.8328994039615096e-05
+      ],
+      "wheel_contact_samples": 125,
+      "max_base_external_force": 1.0,
+      "cargo_min_z_m": 0.01589224457978397,
+      "stop_drift_m": 0.00027630068163805215,
+      "warnings": {},
+      "drive_parameters": {
+        "profile": "masterpi_drive_friction_v1",
+        "parameters": {
+          "no_load_rpm": 150.0,
+          "torque_cap_nm": 0.1176798,
+          "sliding_mu": 1.0
+        },
+        "qualification": "STRUCTURAL_ONLY_UNCALIBRATED",
+        "installed_motor_and_floor_verified": false,
+        "actuator_model": "bounded affine torque-speed, zero-command electrical brake",
+        "roller_geometry": "v3 capsule dimensions, official ABAB handedness, 9 passive hinges/wheel",
+        "roller_bearing": "ideal frictionless",
+        "wheel_mass": "legacy 50g, uniform-density split",
+        "sha256": "4cde38699e7be6a04f84f415afa90677018b833c5d6d833ae56aa9c71616b29f"
+      },
+      "xml_sha256": "5f1a9b3cbd5bfa491d3dbfd52f2a8f586c47613f57a387dea4ab6628e8181597",
+      "total_wall_s": 3.8573309579951456,
+      "loadavg_end": [
+        3.31201171875,
+        4.40087890625,
+        6.97509765625
+      ]
+    },
+    {
+      "run": "new-empty-rated_speed",
+      "source": {
+        "path": "/Users/changmin/projects/ugrp/outputs/drive-friction-f323a7b7-empty/rated_speed/result.json",
+        "sha256": "8d79900076aedccf883e5628309873a33fa95aa64139cc8771bb4a7e98108b67"
+      },
+      "profile": "masterpi_drive_friction_v1",
+      "case": "rated_speed",
+      "loaded": false,
+      "status": "MEASURED_DEV",
+      "qualification": "staged DEV physics diagnostic, not student/hardware success",
+      "model_calls": 0,
+      "physical_success": null,
+      "loadavg_start": [
+        3.31201171875,
+        4.40087890625,
+        6.97509765625
+      ],
+      "cargo_mass_kg": 0.03,
+      "robot_mass_kg": 1.1,
+      "cargo_initial_z_m": 0.015892244579810016,
+      "sim_s": 2.4999999999996803,
+      "wall_s": 1.9017175829940243,
+      "wall_per_sim": 0.760687033197707,
+      "commands": 2,
+      "displacement_m": [
+        0.6927185029305187,
+        -5.0894265972489805e-05,
+        4.499269713289372e-05
+      ],
+      "yaw_change_rad": 0.00012951220274629466,
+      "steady_velocity": [
+        0.4585633578024117,
+        -0.0001941148642702214,
+        -0.0019327468214588067,
+        -0.0012306679956731238,
+        -0.0006039469128842566,
+        -0.0004755875242442659
+      ],
+      "com_displacement_m": [
+        0.6927282930321903,
+        -4.89250266515473e-05,
+        4.1844940079222015e-05
+      ],
+      "steady_contact_slip_mps": 0.003950424023606026,
+      "steady_wheel_rad_s": [
+        14.352955816008691,
+        14.342402026460432,
+        14.346558924736721,
+        14.35413263065708
+      ],
+      "wheel_contact_samples": 120,
+      "max_base_external_force": 0.0,
+      "cargo_min_z_m": 0.01589224457978397,
+      "stop_drift_m": 0.036118248133731004,
+      "warnings": {},
+      "drive_parameters": {
+        "profile": "masterpi_drive_friction_v1",
+        "parameters": {
+          "no_load_rpm": 150.0,
+          "torque_cap_nm": 0.1176798,
+          "sliding_mu": 1.0
+        },
+        "qualification": "STRUCTURAL_ONLY_UNCALIBRATED",
+        "installed_motor_and_floor_verified": false,
+        "actuator_model": "bounded affine torque-speed, zero-command electrical brake",
+        "roller_geometry": "v3 capsule dimensions, official ABAB handedness, 9 passive hinges/wheel",
+        "roller_bearing": "ideal frictionless",
+        "wheel_mass": "legacy 50g, uniform-density split",
+        "sha256": "4cde38699e7be6a04f84f415afa90677018b833c5d6d833ae56aa9c71616b29f"
+      },
+      "xml_sha256": "5f1a9b3cbd5bfa491d3dbfd52f2a8f586c47613f57a387dea4ab6628e8181597",
+      "total_wall_s": 3.7914604999969015,
+      "loadavg_end": [
+        3.28662109375,
+        4.37744140625,
+        6.95166015625
+      ]
+    },
+    {
+      "run": "new-empty-rest",
+      "source": {
+        "path": "/Users/changmin/projects/ugrp/outputs/drive-friction-f323a7b7-empty/rest/result.json",
+        "sha256": "3ef8a869bc95888f5ea978b0312f875158155ce012cf249e7ca1880cc883363a"
+      },
+      "profile": "masterpi_drive_friction_v1",
+      "case": "rest",
+      "loaded": false,
+      "status": "MEASURED_DEV",
+      "qualification": "staged DEV physics diagnostic, not student/hardware success",
+      "model_calls": 0,
+      "physical_success": null,
+      "loadavg_start": [
+        3.4599609375,
+        4.49951171875,
+        7.0703125
+      ],
+      "cargo_mass_kg": 0.03,
+      "robot_mass_kg": 1.1,
+      "cargo_initial_z_m": 0.015892244579810016,
+      "sim_s": 2.4999999999996803,
+      "wall_s": 1.9404547920130426,
+      "wall_per_sim": 0.7761819168053163,
+      "commands": 2,
+      "displacement_m": [
+        4.448335054529906e-06,
+        -2.266871840461704e-06,
+        -7.811891387238257e-09
+      ],
+      "yaw_change_rad": -1.306675198471998e-05,
+      "steady_velocity": [
+        1.7720261774876406e-06,
+        -9.060896456425507e-07,
+        -3.5480181992201136e-09,
+        1.1519604706289405e-08,
+        2.5405645012521902e-08,
+        -5.2228720180197125e-06
+      ],
+      "com_displacement_m": [
+        4.430078036854468e-06,
+        -2.4682819865784467e-06,
+        6.813472798461451e-08
+      ],
+      "steady_contact_slip_mps": 1.3052047174899297e-06,
+      "steady_wheel_rad_s": [
+        -2.9722941380279584e-05,
+        -2.9913407743597712e-05,
+        6.44687024234005e-05,
+        6.450187424902082e-05
+      ],
+      "wheel_contact_samples": 125,
+      "max_base_external_force": 0.0,
+      "cargo_min_z_m": 0.01589224457978397,
+      "stop_drift_m": 1.8409180805081662e-06,
+      "warnings": {},
+      "drive_parameters": {
+        "profile": "masterpi_drive_friction_v1",
+        "parameters": {
+          "no_load_rpm": 150.0,
+          "torque_cap_nm": 0.1176798,
+          "sliding_mu": 1.0
+        },
+        "qualification": "STRUCTURAL_ONLY_UNCALIBRATED",
+        "installed_motor_and_floor_verified": false,
+        "actuator_model": "bounded affine torque-speed, zero-command electrical brake",
+        "roller_geometry": "v3 capsule dimensions, official ABAB handedness, 9 passive hinges/wheel",
+        "roller_bearing": "ideal frictionless",
+        "wheel_mass": "legacy 50g, uniform-density split",
+        "sha256": "4cde38699e7be6a04f84f415afa90677018b833c5d6d833ae56aa9c71616b29f"
+      },
+      "xml_sha256": "5f1a9b3cbd5bfa491d3dbfd52f2a8f586c47613f57a387dea4ab6628e8181597",
+      "total_wall_s": 3.8814960829913616,
+      "loadavg_end": [
+        3.4599609375,
+        4.49951171875,
+        7.0703125
+      ]
+    },
+    {
+      "run": "new-empty-turn",
+      "source": {
+        "path": "/Users/changmin/projects/ugrp/outputs/drive-friction-f323a7b7-empty/turn/result.json",
+        "sha256": "82cf24ee1fb55df57a630078d22113c00d355791ec073e4f87403422b5449894"
+      },
+      "profile": "masterpi_drive_friction_v1",
+      "case": "turn",
+      "loaded": false,
+      "status": "MEASURED_DEV",
+      "qualification": "staged DEV physics diagnostic, not student/hardware success",
+      "model_calls": 0,
+      "physical_success": null,
+      "loadavg_start": [
+        3.4560546875,
+        4.4658203125,
+        7.0283203125
+      ],
+      "cargo_mass_kg": 0.03,
+      "robot_mass_kg": 1.1,
+      "cargo_initial_z_m": 0.015892244579810016,
+      "sim_s": 2.4999999999996803,
+      "wall_s": 2.001708666997729,
+      "wall_per_sim": 0.800683466799194,
+      "commands": 2,
+      "displacement_m": [
+        0.007442548122573722,
+        -0.043939169976218384,
+        6.823616151837436e-06
+      ],
+      "yaw_change_rad": 0.3573115518475826,
+      "steady_velocity": [
+        0.009722842935253143,
+        -0.03475826909857864,
+        -0.0012446493612021754,
+        -0.004314811314632246,
+        -0.023882668784270734,
+        0.29306955507914983
+      ],
+      "com_displacement_m": [
+        0.0064774364254618355,
+        -0.038568127573265,
+        5.277239779374887e-06
+      ],
+      "steady_contact_slip_mps": 0.0035342876252676646,
+      "steady_wheel_rad_s": [
+        0.013984174025043518,
+        0.04790125051325719,
+        -2.2475991596208384,
+        2.2693278625522115
+      ],
+      "wheel_contact_samples": 125,
+      "max_base_external_force": 0.0,
+      "cargo_min_z_m": 0.01589224457978397,
+      "stop_drift_m": 0.00025840557117519776,
+      "warnings": {},
+      "drive_parameters": {
+        "profile": "masterpi_drive_friction_v1",
+        "parameters": {
+          "no_load_rpm": 150.0,
+          "torque_cap_nm": 0.1176798,
+          "sliding_mu": 1.0
+        },
+        "qualification": "STRUCTURAL_ONLY_UNCALIBRATED",
+        "installed_motor_and_floor_verified": false,
+        "actuator_model": "bounded affine torque-speed, zero-command electrical brake",
+        "roller_geometry": "v3 capsule dimensions, official ABAB handedness, 9 passive hinges/wheel",
+        "roller_bearing": "ideal frictionless",
+        "wheel_mass": "legacy 50g, uniform-density split",
+        "sha256": "4cde38699e7be6a04f84f415afa90677018b833c5d6d833ae56aa9c71616b29f"
+      },
+      "xml_sha256": "5f1a9b3cbd5bfa491d3dbfd52f2a8f586c47613f57a387dea4ab6628e8181597",
+      "total_wall_s": 3.8839432499953546,
+      "loadavg_end": [
+        3.33935546875,
+        4.4248046875,
+        6.99853515625
+      ]
+    },
+    {
+      "run": "baseline-forward",
+      "source": {
+        "path": "/Users/changmin/projects/ugrp/outputs/drive-friction-f323a7b7-legacy/forward/result.json",
+        "sha256": "f23e97517e4a132cf3ef050676d31a8a48247ccf1e531b0d622dee69a0bffb69"
+      },
+      "profile": "legacy_wrench",
+      "case": "forward",
+      "loaded": false,
+      "status": "MEASURED_DEV",
+      "qualification": "staged DEV physics diagnostic, not student/hardware success",
+      "model_calls": 0,
+      "physical_success": null,
+      "loadavg_start": [
+        3.33203125,
+        4.19189453125,
+        6.71923828125
+      ],
+      "cargo_mass_kg": 0.03,
+      "robot_mass_kg": 1.1,
+      "cargo_initial_z_m": 0.01589224457978568,
+      "sim_s": 2.4999999999996803,
+      "wall_s": 1.1910078749933746,
+      "wall_per_sim": 0.47640314999741074,
+      "commands": 2,
+      "displacement_m": [
+        0.2512461379977724,
+        -8.218368208190441e-08,
+        -7.926637124455738e-11
+      ],
+      "yaw_change_rad": 7.689286433402761e-08,
+      "steady_velocity": [
+        0.23474453492404687,
+        -7.242111941769661e-08,
+        3.828123877628499e-06,
+        1.6272592563378776e-07,
+        4.038910082811257e-06,
+        3.088307731245281e-09
+      ],
+      "com_displacement_m": [
+        0.2512461139727611,
+        -8.901491987955978e-08,
+        6.675364992714261e-08
+      ],
+      "steady_contact_slip_mps": 0.20247369681325975,
+      "steady_wheel_rad_s": [
+        1.0040241778886314,
+        1.0040215761456914,
+        0.9859628528070388,
+        0.9859604913079761
+      ],
+      "wheel_contact_samples": 125,
+      "max_base_external_force": 4.1661982688899215,
+      "cargo_min_z_m": 0.01589224457978377,
+      "stop_drift_m": 0.01736117251416674,
+      "warnings": {},
+      "drive_parameters": null,
+      "xml_sha256": "5f7de31b3d79c8423c97d1ddff6a1e7c19f0acb7336a895c455a4753711ce668",
+      "total_wall_s": 2.4131885829992825,
+      "loadavg_end": [
+        3.33203125,
+        4.19189453125,
+        6.71923828125
+      ]
+    },
+    {
+      "run": "baseline-left",
+      "source": {
+        "path": "/Users/changmin/projects/ugrp/outputs/drive-friction-f323a7b7-legacy/left/result.json",
+        "sha256": "524e2ba7e8d3fcd0ee57c9fc2769a58918b67a8901ef106565325dfbe528db1d"
+      },
+      "profile": "legacy_wrench",
+      "case": "left",
+      "loaded": false,
+      "status": "MEASURED_DEV",
+      "qualification": "staged DEV physics diagnostic, not student/hardware success",
+      "model_calls": 0,
+      "physical_success": null,
+      "loadavg_start": [
+        3.33203125,
+        4.19189453125,
+        6.71923828125
+      ],
+      "cargo_mass_kg": 0.03,
+      "robot_mass_kg": 1.1,
+      "cargo_initial_z_m": 0.01589224457978568,
+      "sim_s": 2.4999999999996803,
+      "wall_s": 1.2175422090076609,
+      "wall_per_sim": 0.4870168836031266,
+      "commands": 2,
+      "displacement_m": [
+        0.0035940695000693523,
+        0.18669233536122676,
+        8.71171884631039e-11
+      ],
+      "yaw_change_rad": -0.03573435980846876,
+      "steady_velocity": [
+        0.004298241438389124,
+        0.17449160910502062,
+        2.787585692018876e-06,
+        8.30118914656515e-06,
+        5.497478808771576e-07,
+        -0.017469723103456
+      ],
+      "com_displacement_m": [
+        0.0035842582019056657,
+        0.18614457278115337,
+        6.787038665800882e-08
+      ],
+      "steady_contact_slip_mps": 0.17727752405165886,
+      "steady_wheel_rad_s": [
+        -0.9524045741389239,
+        0.9515065417000259,
+        0.9553445142464088,
+        -0.9558841916718648
+      ],
+      "wheel_contact_samples": 125,
+      "max_base_external_force": 3.0946796050245213,
+      "cargo_min_z_m": 0.01589224457978377,
+      "stop_drift_m": 0.012820111756243757,
+      "warnings": {},
+      "drive_parameters": null,
+      "xml_sha256": "5f7de31b3d79c8423c97d1ddff6a1e7c19f0acb7336a895c455a4753711ce668",
+      "total_wall_s": 2.4253773329983233,
+      "loadavg_end": [
+        3.54541015625,
+        4.2216796875,
+        6.71484375
+      ]
+    },
+    {
+      "run": "baseline-no_contact",
+      "source": {
+        "path": "/Users/changmin/projects/ugrp/outputs/drive-friction-f323a7b7-legacy/no_contact/result.json",
+        "sha256": "9af63d2f48a80345c5ebff8ab263d32ed64338442c076290c4416ebf929bf906"
+      },
+      "profile": "legacy_wrench",
+      "case": "no_contact",
+      "loaded": false,
+      "status": "MEASURED_DEV",
+      "qualification": "staged DEV physics diagnostic, not student/hardware success",
+      "model_calls": 0,
+      "physical_success": null,
+      "loadavg_start": [
+        3.42138671875,
+        4.1845703125,
+        6.68701171875
+      ],
+      "cargo_mass_kg": 0.03,
+      "robot_mass_kg": 1.1,
+      "cargo_initial_z_m": 0.01589224457978568,
+      "sim_s": 2.4999999999996803,
+      "wall_s": 0.6115036249975674,
+      "wall_per_sim": 0.24460144999905825,
+      "commands": 2,
+      "displacement_m": [
+        0.26216143686584603,
+        -9.708241854866628e-08,
+        -0.0018930624142841738
+      ],
+      "yaw_change_rad": 2.656429263084261e-08,
+      "steady_velocity": [
+        0.2453164660846709,
+        -8.968127348069201e-08,
+        -0.001685214578791312,
+        4.888200368159514e-09,
+        -0.22302124717258937,
+        -1.1456666096610326e-09
+      ],
+      "com_displacement_m": [
+        0.2549451955050177,
+        -9.410719536973033e-08,
+        -2.6023613600156814e-07
+      ],
+      "steady_contact_slip_mps": 0.0,
+      "steady_wheel_rad_s": [
+        0.9611814349565228,
+        0.9611814349565228,
+        0.9611814349565228,
+        0.9611814349565228
+      ],
+      "wheel_contact_samples": 0,
+      "max_base_external_force": 4.36139038877563,
+      "cargo_min_z_m": 0.01589224457978567,
+      "stop_drift_m": 0.017216901953599463,
+      "warnings": {},
+      "drive_parameters": null,
+      "xml_sha256": "5f7de31b3d79c8423c97d1ddff6a1e7c19f0acb7336a895c455a4753711ce668",
+      "total_wall_s": 1.8092777499987278,
+      "loadavg_end": [
+        3.42138671875,
+        4.1845703125,
+        6.68701171875
+      ]
+    },
+    {
+      "run": "baseline-push",
+      "source": {
+        "path": "/Users/changmin/projects/ugrp/outputs/drive-friction-f323a7b7-legacy/push/result.json",
+        "sha256": "b3af6477bcc41ed7c7bdcfbb32d8271743646618f261e2f1528a18f8e503a1ff"
+      },
+      "profile": "legacy_wrench",
+      "case": "push",
+      "loaded": false,
+      "status": "MEASURED_DEV",
+      "qualification": "staged DEV physics diagnostic, not student/hardware success",
+      "model_calls": 0,
+      "physical_success": null,
+      "loadavg_start": [
+        3.54541015625,
+        4.2216796875,
+        6.71484375
+      ],
+      "cargo_mass_kg": 0.03,
+      "robot_mass_kg": 1.1,
+      "cargo_initial_z_m": 0.01589224457978568,
+      "sim_s": 2.4999999999996803,
+      "wall_s": 1.1683376250002766,
+      "wall_per_sim": 0.4673350500001704,
+      "commands": 2,
+      "displacement_m": [
+        9.701927661254217e-08,
+        0.08226905975445431,
+        8.771536968987803e-11
+      ],
+      "yaw_change_rad": -0.00041779385199993384,
+      "steady_velocity": [
+        -8.773047943260978e-09,
+        0.05495605503919556,
+        9.993298386509271e-11,
+        1.3083036577523525e-07,
+        7.185407931455151e-09,
+        -0.0002349183584711072
+      ],
+      "com_displacement_m": [
+        7.248706168638819e-08,
+        0.08226265427349078,
+        6.786559665628022e-08
+      ],
+      "steady_contact_slip_mps": 0.05495605486684489,
+      "steady_wheel_rad_s": [
+        -4.7394491917285023e-05,
+        -7.678554775323875e-05,
+        -2.7512015162409502e-05,
+        -4.688049243632017e-05
+      ],
+      "wheel_contact_samples": 125,
+      "max_base_external_force": 0.9892090192460365,
+      "cargo_min_z_m": 0.01589224457978377,
+      "stop_drift_m": 0.003165676647251827,
+      "warnings": {},
+      "drive_parameters": null,
+      "xml_sha256": "5f7de31b3d79c8423c97d1ddff6a1e7c19f0acb7336a895c455a4753711ce668",
+      "total_wall_s": 2.3648318750056205,
+      "loadavg_end": [
+        3.42138671875,
+        4.1845703125,
+        6.68701171875
+      ]
+    },
+    {
+      "run": "baseline-rest",
+      "source": {
+        "path": "/Users/changmin/projects/ugrp/outputs/drive-friction-f323a7b7-legacy/rest/result.json",
+        "sha256": "c8d41b9c082648c5c3a300cdae6c6bad6f7ab270507e991a7f782de4a2d4646f"
+      },
+      "profile": "legacy_wrench",
+      "case": "rest",
+      "loaded": false,
+      "status": "MEASURED_DEV",
+      "qualification": "staged DEV physics diagnostic, not student/hardware success",
+      "model_calls": 0,
+      "physical_success": null,
+      "loadavg_start": [
+        2.8388671875,
+        4.11083984375,
+        6.7060546875
+      ],
+      "cargo_mass_kg": 0.03,
+      "robot_mass_kg": 1.1,
+      "cargo_initial_z_m": 0.01589224457978568,
+      "sim_s": 2.4999999999996803,
+      "wall_s": 1.1476761249941774,
+      "wall_per_sim": 0.45907044999772967,
+      "commands": 2,
+      "displacement_m": [
+        1.9901960079948822e-08,
+        3.4861447062439765e-11,
+        8.771820769748473e-11
+      ],
+      "yaw_change_rad": 3.865980349855865e-09,
+      "steady_velocity": [
+        -3.4268532162382517e-12,
+        1.931729321362103e-12,
+        3.743289649126226e-13,
+        7.309424549857578e-11,
+        1.0607617193013581e-11,
+        5.937179762331243e-13
+      ],
+      "com_displacement_m": [
+        -3.2931040117034627e-09,
+        1.1746248418376126e-10,
+        6.78651204399916e-08
+      ],
+      "steady_contact_slip_mps": 4.4589699510449426e-11,
+      "steady_wheel_rad_s": [
+        7.80473730081418e-12,
+        7.776647234791034e-12,
+        -4.3145079295779685e-12,
+        -4.264281486246498e-12
+      ],
+      "wheel_contact_samples": 125,
+      "max_base_external_force": 2.0010041397970206e-05,
+      "cargo_min_z_m": 0.01589224457978377,
+      "stop_drift_m": 6.195044477408373e-13,
+      "warnings": {},
+      "drive_parameters": null,
+      "xml_sha256": "5f7de31b3d79c8423c97d1ddff6a1e7c19f0acb7336a895c455a4753711ce668",
+      "total_wall_s": 2.4144688750093337,
+      "loadavg_end": [
+        3.33203125,
+        4.19189453125,
+        6.71923828125
+      ]
+    },
+    {
+      "run": "baseline-turn",
+      "source": {
+        "path": "/Users/changmin/projects/ugrp/outputs/drive-friction-f323a7b7-legacy/turn/result.json",
+        "sha256": "5126386582648969334de921b22c8b8580db26f743086fe51e4bc1b54c060b1c"
+      },
+      "profile": "legacy_wrench",
+      "case": "turn",
+      "loaded": false,
+      "status": "MEASURED_DEV",
+      "qualification": "staged DEV physics diagnostic, not student/hardware success",
+      "model_calls": 0,
+      "physical_success": null,
+      "loadavg_start": [
+        3.54541015625,
+        4.2216796875,
+        6.71484375
+      ],
+      "cargo_mass_kg": 0.03,
+      "robot_mass_kg": 1.1,
+      "cargo_initial_z_m": 0.01589224457978568,
+      "sim_s": 2.4999999999996803,
+      "wall_s": 1.1980951249861391,
+      "wall_per_sim": 0.47923804999451697,
+      "commands": 2,
+      "displacement_m": [
+        0.0006801557998872276,
+        -0.002924965739147467,
+        8.22106896447572e-11
+      ],
+      "yaw_change_rad": 0.38829130409452006,
+      "steady_velocity": [
+        0.0007845748777152563,
+        -0.001442695075378577,
+        -4.0775223327503073e-10,
+        -0.00016044493852701753,
+        -3.953762148895199e-07,
+        0.2877528744245994
+      ],
+      "com_displacement_m": [
+        -0.0004611985095519522,
+        0.0028797245557441453,
+        6.78653118979522e-08
+      ],
+      "steady_contact_slip_mps": 0.021238070071318296,
+      "steady_wheel_rad_s": [
+        -0.944843710484306,
+        0.9455253553097962,
+        -0.9512753092258719,
+        0.9516695040879887
+      ],
+      "wheel_contact_samples": 125,
+      "max_base_external_force": 0.20793439534991887,
+      "cargo_min_z_m": 0.01589224457978377,
+      "stop_drift_m": 0.00016999426173691973,
+      "warnings": {},
+      "drive_parameters": null,
+      "xml_sha256": "5f7de31b3d79c8423c97d1ddff6a1e7c19f0acb7336a895c455a4753711ce668",
+      "total_wall_s": 2.4051905829983298,
+      "loadavg_end": [
+        3.54541015625,
+        4.2216796875,
+        6.71484375
+      ]
+    },
+    {
+      "run": "new-cyan-forward",
+      "source": {
+        "path": "/Users/changmin/projects/ugrp/outputs/drive-friction-f323a7b7-cyan/forward/result.json",
+        "sha256": "1fe0a827455c125034f63da852db53f1e80fd6330a7cf4633e81de1df7a8d98c"
+      },
+      "profile": "masterpi_drive_friction_v1",
+      "case": "forward",
+      "loaded": true,
+      "status": "MEASURED_DEV",
+      "qualification": "staged DEV physics diagnostic, not student/hardware success",
+      "model_calls": 0,
+      "physical_success": null,
+      "loadavg_start": [
+        8.1708984375,
+        5.17578125,
+        6.91259765625
+      ],
+      "cargo_mass_kg": 0.03,
+      "robot_mass_kg": 1.1,
+      "cargo_initial_z_m": 0.14288427619022637,
+      "sim_s": 2.4999999999996803,
+      "wall_s": 2.145824833001825,
+      "wall_per_sim": 0.8583299332008398,
+      "commands": 2,
+      "displacement_m": [
+        0.09037100398008002,
+        2.0374978298987045e-06,
+        1.6379545582045213e-05
+      ],
+      "yaw_change_rad": -5.940384663743419e-06,
+      "steady_velocity": [
+        0.06835881838616767,
+        4.77475272310174e-06,
+        0.0027848874531504414,
+        -7.709238656205676e-05,
+        -8.535628458727895e-05,
+        0.0001294186988127924
+      ],
+      "com_displacement_m": [
+        0.09037178187632078,
+        1.949939940737444e-06,
+        1.6126320804846217e-05
+      ],
+      "steady_contact_slip_mps": 0.0004569393327281401,
+      "steady_wheel_rad_s": [
+        2.1115273127010683,
+        2.1128670951137702,
+        2.106263217461047,
+        2.1071626037350315
+      ],
+      "wheel_contact_samples": 125,
+      "max_base_external_force": 0.0,
+      "cargo_min_z_m": 0.14226227420484208,
+      "stop_drift_m": 0.008225681565922193,
+      "warnings": {},
+      "drive_parameters": {
+        "profile": "masterpi_drive_friction_v1",
+        "parameters": {
+          "no_load_rpm": 150.0,
+          "torque_cap_nm": 0.1176798,
+          "sliding_mu": 1.0
+        },
+        "qualification": "STRUCTURAL_ONLY_UNCALIBRATED",
+        "installed_motor_and_floor_verified": false,
+        "actuator_model": "bounded affine torque-speed, zero-command electrical brake",
+        "roller_geometry": "v3 capsule dimensions, official ABAB handedness, 9 passive hinges/wheel",
+        "roller_bearing": "ideal frictionless",
+        "wheel_mass": "legacy 50g, uniform-density split",
+        "sha256": "4cde38699e7be6a04f84f415afa90677018b833c5d6d833ae56aa9c71616b29f"
+      },
+      "xml_sha256": "5f1a9b3cbd5bfa491d3dbfd52f2a8f586c47613f57a387dea4ab6628e8181597",
+      "total_wall_s": 4.205240417009918,
+      "loadavg_end": [
+        7.67626953125,
+        5.123046875,
+        6.8837890625
+      ]
+    },
+    {
+      "run": "new-cyan-left",
+      "source": {
+        "path": "/Users/changmin/projects/ugrp/outputs/drive-friction-f323a7b7-cyan/left/result.json",
+        "sha256": "47a2ff4293c0a2a46c0d296f7362cf32c19d4c9f0255877bec40c1c356cfa857"
+      },
+      "profile": "masterpi_drive_friction_v1",
+      "case": "left",
+      "loaded": true,
+      "status": "MEASURED_DEV",
+      "qualification": "staged DEV physics diagnostic, not student/hardware success",
+      "model_calls": 0,
+      "physical_success": null,
+      "loadavg_start": [
+        7.67626953125,
+        5.123046875,
+        6.8837890625
+      ],
+      "cargo_mass_kg": 0.03,
+      "robot_mass_kg": 1.1,
+      "cargo_initial_z_m": 0.14288427619022637,
+      "sim_s": 2.4999999999996803,
+      "wall_s": 2.304353582992917,
+      "wall_per_sim": 0.9217414331972846,
+      "commands": 2,
+      "displacement_m": [
+        0.007690330400487166,
+        0.04372711491644676,
+        2.085287691467458e-05
+      ],
+      "yaw_change_rad": -0.35769317076459645,
+      "steady_velocity": [
+        0.009086311422972216,
+        0.03055226683381531,
+        -0.00012088696335145524,
+        0.000440099392816074,
+        -0.003295033079247163,
+        -0.25270064550845966
+      ],
+      "com_displacement_m": [
+        0.00672857981965036,
+        0.03833348847415041,
+        1.644311757555139e-05
+      ],
+      "steady_contact_slip_mps": 0.003287069479563988,
+      "steady_wheel_rad_s": [
+        0.005911004020993422,
+        0.0223116598923018,
+        1.9944128354381254,
+        -1.9385941498015624
+      ],
+      "wheel_contact_samples": 125,
+      "max_base_external_force": 0.0,
+      "cargo_min_z_m": 0.1413155991226466,
+      "stop_drift_m": 0.0018428901975422263,
+      "warnings": {},
+      "drive_parameters": {
+        "profile": "masterpi_drive_friction_v1",
+        "parameters": {
+          "no_load_rpm": 150.0,
+          "torque_cap_nm": 0.1176798,
+          "sliding_mu": 1.0
+        },
+        "qualification": "STRUCTURAL_ONLY_UNCALIBRATED",
+        "installed_motor_and_floor_verified": false,
+        "actuator_model": "bounded affine torque-speed, zero-command electrical brake",
+        "roller_geometry": "v3 capsule dimensions, official ABAB handedness, 9 passive hinges/wheel",
+        "roller_bearing": "ideal frictionless",
+        "wheel_mass": "legacy 50g, uniform-density split",
+        "sha256": "4cde38699e7be6a04f84f415afa90677018b833c5d6d833ae56aa9c71616b29f"
+      },
+      "xml_sha256": "5f1a9b3cbd5bfa491d3dbfd52f2a8f586c47613f57a387dea4ab6628e8181597",
+      "total_wall_s": 4.456653792003635,
+      "loadavg_end": [
+        7.3017578125,
+        5.08740234375,
+        6.86083984375
+      ]
+    },
+    {
+      "run": "new-cyan-push",
+      "source": {
+        "path": "/Users/changmin/projects/ugrp/outputs/drive-friction-f323a7b7-cyan/push/result.json",
+        "sha256": "2e3368dec7a13f6ae1ea0c930bc331ae1626a0967a5b339f420b6edf1cccb519"
+      },
+      "profile": "masterpi_drive_friction_v1",
+      "case": "push",
+      "loaded": true,
+      "status": "MEASURED_DEV",
+      "qualification": "staged DEV physics diagnostic, not student/hardware success",
+      "model_calls": 0,
+      "physical_success": null,
+      "loadavg_start": [
+        6.876953125,
+        5.0361328125,
+        6.83203125
+      ],
+      "cargo_mass_kg": 0.03,
+      "robot_mass_kg": 1.1,
+      "cargo_initial_z_m": 0.14288427619022637,
+      "sim_s": 2.4999999999996803,
+      "wall_s": 2.2144909169874154,
+      "wall_per_sim": 0.8857963667950794,
+      "commands": 2,
+      "displacement_m": [
+        1.1437430318395059e-06,
+        -8.886083016079738e-07,
+        -3.1988240216385133e-09
+      ],
+      "yaw_change_rad": -2.8924003995608683e-06,
+      "steady_velocity": [
+        1.0048732727342864e-06,
+        -7.992852704728817e-07,
+        -1.2404377508041532e-08,
+        1.0697027778086356e-06,
+        1.914026297339397e-07,
+        -3.6193393655450955e-06
+      ],
+      "com_displacement_m": [
+        1.1450085928288445e-06,
+        -9.33821366677634e-07,
+        -5.092979898924099e-09
+      ],
+      "steady_contact_slip_mps": 1.3412731250634193e-06,
+      "steady_wheel_rad_s": [
+        -2.0928591792222594e-05,
+        -3.0475310383728155e-05,
+        3.956966682472738e-05,
+        4.137557001062909e-05
+      ],
+      "wheel_contact_samples": 125,
+      "max_base_external_force": 1.0,
+      "cargo_min_z_m": 0.14286490452617717,
+      "stop_drift_m": 0.00028420618807684897,
+      "warnings": {},
+      "drive_parameters": {
+        "profile": "masterpi_drive_friction_v1",
+        "parameters": {
+          "no_load_rpm": 150.0,
+          "torque_cap_nm": 0.1176798,
+          "sliding_mu": 1.0
+        },
+        "qualification": "STRUCTURAL_ONLY_UNCALIBRATED",
+        "installed_motor_and_floor_verified": false,
+        "actuator_model": "bounded affine torque-speed, zero-command electrical brake",
+        "roller_geometry": "v3 capsule dimensions, official ABAB handedness, 9 passive hinges/wheel",
+        "roller_bearing": "ideal frictionless",
+        "wheel_mass": "legacy 50g, uniform-density split",
+        "sha256": "4cde38699e7be6a04f84f415afa90677018b833c5d6d833ae56aa9c71616b29f"
+      },
+      "xml_sha256": "5f1a9b3cbd5bfa491d3dbfd52f2a8f586c47613f57a387dea4ab6628e8181597",
+      "total_wall_s": 4.163730334010324,
+      "loadavg_end": [
+        6.7265625,
+        5.03515625,
+        6.8212890625
+      ]
+    },
+    {
+      "run": "new-cyan-rest",
+      "source": {
+        "path": "/Users/changmin/projects/ugrp/outputs/drive-friction-f323a7b7-cyan/rest/result.json",
+        "sha256": "dacbf3e108981c94ae833a50345e78df8a953f03c9290fde3455e9d36bd1127c"
+      },
+      "profile": "masterpi_drive_friction_v1",
+      "case": "rest",
+      "loaded": true,
+      "status": "MEASURED_DEV",
+      "qualification": "staged DEV physics diagnostic, not student/hardware success",
+      "model_calls": 0,
+      "physical_success": null,
+      "loadavg_start": [
+        8.1708984375,
+        5.17578125,
+        6.91259765625
+      ],
+      "cargo_mass_kg": 0.03,
+      "robot_mass_kg": 1.1,
+      "cargo_initial_z_m": 0.14288427619022637,
+      "sim_s": 2.4999999999996803,
+      "wall_s": 2.145407541000168,
+      "wall_per_sim": 0.8581630164001769,
+      "commands": 2,
+      "displacement_m": [
+        2.661164324457843e-07,
+        -2.816840440900137e-07,
+        -7.037014443378453e-10
+      ],
+      "yaw_change_rad": -4.739324658347777e-07,
+      "steady_velocity": [
+        1.0645445674869247e-07,
+        -1.1267823320942335e-07,
+        -2.8178297086322225e-10,
+        6.356451844717056e-09,
+        3.6034125885520243e-09,
+        -1.89592305812689e-07
+      ],
+      "com_displacement_m": [
+        2.6671534714139966e-07,
+        -2.897036941451603e-07,
+        -2.5095849010003946e-09
+      ],
+      "steady_contact_slip_mps": 1.26494418525856e-07,
+      "steady_wheel_rad_s": [
+        -2.4790169572532958e-06,
+        -2.467951440866474e-06,
+        5.797265848247148e-06,
+        5.7763458102996566e-06
+      ],
+      "wheel_contact_samples": 125,
+      "max_base_external_force": 0.0,
+      "cargo_min_z_m": 0.14288427626595557,
+      "stop_drift_m": 1.511326444288816e-07,
+      "warnings": {},
+      "drive_parameters": {
+        "profile": "masterpi_drive_friction_v1",
+        "parameters": {
+          "no_load_rpm": 150.0,
+          "torque_cap_nm": 0.1176798,
+          "sliding_mu": 1.0
+        },
+        "qualification": "STRUCTURAL_ONLY_UNCALIBRATED",
+        "installed_motor_and_floor_verified": false,
+        "actuator_model": "bounded affine torque-speed, zero-command electrical brake",
+        "roller_geometry": "v3 capsule dimensions, official ABAB handedness, 9 passive hinges/wheel",
+        "roller_bearing": "ideal frictionless",
+        "wheel_mass": "legacy 50g, uniform-density split",
+        "sha256": "4cde38699e7be6a04f84f415afa90677018b833c5d6d833ae56aa9c71616b29f"
+      },
+      "xml_sha256": "5f1a9b3cbd5bfa491d3dbfd52f2a8f586c47613f57a387dea4ab6628e8181597",
+      "total_wall_s": 4.144797958986601,
+      "loadavg_end": [
+        8.1708984375,
+        5.17578125,
+        6.91259765625
+      ]
+    },
+    {
+      "run": "new-cyan-turn",
+      "source": {
+        "path": "/Users/changmin/projects/ugrp/outputs/drive-friction-f323a7b7-cyan/turn/result.json",
+        "sha256": "68c2f60469e8a5106836d020e8968b6514b67aa055b74f4e5c322d4338be388d"
+      },
+      "profile": "masterpi_drive_friction_v1",
+      "case": "turn",
+      "loaded": true,
+      "status": "MEASURED_DEV",
+      "qualification": "staged DEV physics diagnostic, not student/hardware success",
+      "model_calls": 0,
+      "physical_success": null,
+      "loadavg_start": [
+        7.3017578125,
+        5.08740234375,
+        6.86083984375
+      ],
+      "cargo_mass_kg": 0.03,
+      "robot_mass_kg": 1.1,
+      "cargo_initial_z_m": 0.14288427619022637,
+      "sim_s": 2.4999999999996803,
+      "wall_s": 2.226683792003314,
+      "wall_per_sim": 0.8906735168014395,
+      "commands": 2,
+      "displacement_m": [
+        0.007446134208385136,
+        -0.04383230114921721,
+        6.3139089551793315e-06
+      ],
+      "yaw_change_rad": 0.3568835083593765,
+      "steady_velocity": [
+        0.00751622846436774,
+        -0.02918900964315523,
+        0.00025279474038709406,
+        -0.0030286773348431133,
+        0.004471425107019997,
+        0.2393490472146627
+      ],
+      "com_displacement_m": [
+        0.006480484252797236,
+        -0.038453317003400045,
+        4.785813530291949e-06
+      ],
+      "steady_contact_slip_mps": 0.002926858386266369,
+      "steady_wheel_rad_s": [
+        0.003917862296462169,
+        -0.011552675535758634,
+        -1.8706662346673588,
+        1.8625845841509225
+      ],
+      "wheel_contact_samples": 125,
+      "max_base_external_force": 0.0,
+      "cargo_min_z_m": 0.1412300834158297,
+      "stop_drift_m": 0.004069860677641263,
+      "warnings": {},
+      "drive_parameters": {
+        "profile": "masterpi_drive_friction_v1",
+        "parameters": {
+          "no_load_rpm": 150.0,
+          "torque_cap_nm": 0.1176798,
+          "sliding_mu": 1.0
+        },
+        "qualification": "STRUCTURAL_ONLY_UNCALIBRATED",
+        "installed_motor_and_floor_verified": false,
+        "actuator_model": "bounded affine torque-speed, zero-command electrical brake",
+        "roller_geometry": "v3 capsule dimensions, official ABAB handedness, 9 passive hinges/wheel",
+        "roller_bearing": "ideal frictionless",
+        "wheel_mass": "legacy 50g, uniform-density split",
+        "sha256": "4cde38699e7be6a04f84f415afa90677018b833c5d6d833ae56aa9c71616b29f"
+      },
+      "xml_sha256": "5f1a9b3cbd5bfa491d3dbfd52f2a8f586c47613f57a387dea4ab6628e8181597",
+      "total_wall_s": 4.185680249996949,
+      "loadavg_end": [
+        6.876953125,
+        5.0361328125,
+        6.83203125
+      ]
+    },
+    {
+      "run": "host-error-forward",
+      "source": {
+        "path": "/Users/changmin/projects/ugrp/outputs/drive-friction-995ff901-forward/forward/result.json",
+        "sha256": "ff8d8e5e0dcb1e7cc7873058842245c325f581be387e25e9484a4e274b63887d"
+      },
+      "profile": "masterpi_drive_friction_v1",
+      "case": "forward",
+      "loaded": false,
+      "status": "HOST_ERROR",
+      "qualification": "staged DEV physics diagnostic, not student/hardware success",
+      "model_calls": 0,
+      "physical_success": null,
+      "loadavg_start": [
+        7.1064453125,
+        5.75732421875,
+        8.15478515625
+      ],
+      "cargo_mass_kg": 0.03,
+      "total_wall_s": 2.122944999995525,
+      "loadavg_end": [
+        7.1064453125,
+        5.75732421875,
+        8.15478515625
+      ]
+    }
+  ],
+  "remaining": [
+    "lateral/yaw coupling and front wheel stalling",
+    "roller contact envelope",
+    "installed motor/floor measurements",
+    "paired beam and v106 replay"
+  ],
+  "stopped_reason": "same unwanted lateral/yaw coupling repeated unloaded and cyan-loaded; no additional physics",
+  "model_calls": 0,
+  "raw_remote_backup": false
+}

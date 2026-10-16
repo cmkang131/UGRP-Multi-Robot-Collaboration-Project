@@ -1,0 +1,188 @@
+{
+  "seed": "31001",
+  "source_sha": "e001b029dc30e7a7d53b0958bfc58f1964e7e57e",
+  "option": "floor_appearance_ulrich_v1",
+  "conditions": {
+    "off": {
+      "points": {
+        "points": 53232,
+        "correct": 50173,
+        "precision": 0.9425345656747821,
+        "wall_rmse_m": 0.18587375686722402,
+        "visible_contacts": 81898,
+        "recalled_contacts": 47299,
+        "recall": 0.5775354709516716
+      },
+      "inserted_points": {
+        "points": 3054,
+        "correct": 2787,
+        "precision": 0.912573673870334,
+        "wall_rmse_m": 0.3002702690692475
+      },
+      "nonempty_frames": 891,
+      "inserted_nonempty_frames": 47,
+      "warm_points": {
+        "points": 40998,
+        "correct": 38784,
+        "precision": 0.9459973657251574,
+        "wall_rmse_m": 0.19553366770952876,
+        "visible_contacts": 64551,
+        "recalled_contacts": 36651,
+        "recall": 0.5677836129571966
+      },
+      "grid": {
+        "full": {
+          "occupied_cells": 357,
+          "precision_015": 0.39215686274509803,
+          "precision_cell": 0.2184873949579832,
+          "wall_coverage": 0.3768996960486322,
+          "wall_error_rmse_m": 0.7620791835238284
+        },
+        "correct_cells": 140,
+        "sample_count": 357,
+        "covered_samples": 124,
+        "region": {
+          "precision": 0.5753424657534246,
+          "correct": 42,
+          "n": 73,
+          "recall": 0.5210084033613446,
+          "recalled": 62,
+          "visible": 119,
+          "total": 329
+        },
+        "size": {
+          "occupied_cells": 357
+        }
+      },
+      "map_gate": {
+        "precision": false,
+        "recall": false,
+        "wall_rmse": false
+      }
+    },
+    "on": {
+      "points": {
+        "points": 24504,
+        "correct": 1933,
+        "precision": 0.0788850799869409,
+        "wall_rmse_m": 1.0332909915289465,
+        "visible_contacts": 81898,
+        "recalled_contacts": 1929,
+        "recall": 0.02355368873476764
+      },
+      "inserted_points": {
+        "points": 1316,
+        "correct": 323,
+        "precision": 0.2454407294832827,
+        "wall_rmse_m": 0.9129899603954553
+      },
+      "nonempty_frames": 395,
+      "inserted_nonempty_frames": 22,
+      "warm_points": {
+        "points": 24504,
+        "correct": 1933,
+        "precision": 0.0788850799869409,
+        "wall_rmse_m": 1.0332909915289465,
+        "visible_contacts": 64551,
+        "recalled_contacts": 1929,
+        "recall": 0.02988334805037877
+      },
+      "grid": {
+        "full": {
+          "occupied_cells": 75,
+          "precision_015": 0.22666666666666666,
+          "precision_cell": 0.12,
+          "wall_coverage": 0.04559270516717325,
+          "wall_error_rmse_m": 0.7832279611771451
+        },
+        "correct_cells": 17,
+        "sample_count": 75,
+        "covered_samples": 15,
+        "region": {
+          "precision": 0.06451612903225806,
+          "correct": 4,
+          "n": 62,
+          "recall": 0.025210084033613446,
+          "recalled": 3,
+          "visible": 119,
+          "total": 329
+        },
+        "size": {
+          "occupied_cells": 75
+        }
+      },
+      "map_gate": {
+        "precision": false,
+        "recall": false,
+        "wall_rmse": false
+      }
+    }
+  },
+  "detector_gate": false,
+  "detector_gate_components": {
+    "precision": false,
+    "recall": false
+  },
+  "queue_summary": {
+    "reasons": {
+      "untrained": 181,
+      "classified": 710
+    },
+    "first_classified_time": 39.5,
+    "promoted": 57,
+    "rejected_turn": 819
+  },
+  "historical_grid": {
+    "full": {
+      "occupied_cells": 359,
+      "precision_015": 0.38997214484679665,
+      "precision_cell": 0.21727019498607242,
+      "wall_coverage": 0.3768996960486322,
+      "wall_error_rmse_m": 0.7599465402186876
+    },
+    "correct_cells": 140,
+    "sample_count": 359,
+    "covered_samples": 124,
+    "region": {
+      "precision": 0.5675675675675675,
+      "correct": 42,
+      "n": 74,
+      "recall": 0.5210084033613446,
+      "recalled": 62,
+      "visible": 119,
+      "total": 329
+    },
+    "size": {
+      "occupied_cells": 359
+    }
+  },
+  "paired_covariance": "saved post-observation covariance for BOTH off/on, not original pre-scan covariance",
+  "frames": 891,
+  "original_insertions": 47,
+  "source_seal_sha256": "42e76e5a9386b464bf80902642f6c11df3885c5bea511325d6e0977c1ef70684",
+  "code_hashes": {
+    "harness/active_wall_vision.py": "debf83ea4229a3afa0d6844a755b7d811cd14e6e77ca2be475fd0fed5056f8fb",
+    "harness/self_wall_segment_points.py": "f6b73617f9ff1582df5005c2defbbe2bf8ee4e25ea32687f83469c2d270bf43f",
+    "harness/wall_floor_ulrich.py": "fe67bf483e678a538de873bc6933b906577c1df7de4b607511b806db43668c43",
+    "harness/wall_contact_detector.py": "f33bb66ff09562b575161bc62af4348f9235d3e7cab316fbe72b45f031bc9a9e",
+    "harness/wall_floor_boundary.py": "eaed7cacc997b799e830e6f4c3c96265d543c1e79811f637f73cf0ba56ebd5e8",
+    "harness/active_camera.py": "bbfdcf48d6c21e1fee2da8f400ca010df8f7b821fea8c51e949b63ffae4da3f1",
+    "harness/self_wall_segments.py": "d365e2afb03d3820d9ce969c82d18701683e781c47381b83dc7ce7e1959ee4c5",
+    "harness/wall_confidence.py": "f4a7f48fed7cf2c1a33881648305d7aa4ac412225d4b2b410d2b874df279cd1c",
+    "harness/self_pose_graph.py": "ef884c274d5b24858bd3b96423abc1b9d897d6ec6c32714a576635a830bf1ef5",
+    "experiments/2026-10-05-ego-wall-map-probe/code/height_free_wall.py": "021cfee672fa38bb1c4c8516890d1c686ad853757d096d668cd7fe847ce8097d",
+    "harness/self_wall_pr.py": "6b8488b259ac3a5367e4a45a0a2084894afc0e03f2413f0f8c95ecf1d1c09caf",
+    "harness/self_wall_validation.py": "6c4dd47688bd046729a244b1f123bd1803ae46fe60d13960cde5f4d5fd5d35c6",
+    "harness/self_odom_grid.py": "0c70b4f2d34c0a1d6952d81164893b0e9726dc81d9d349aab58e8bc824998798",
+    "experiments/2026-09-26-markerless-probe/markerless_probe.py": "7b6223fbc83e7d9d43cbc3da3c695c4f15335d2bdf217f4dce2cdc7f90a4a13d",
+    "experiments/2026-10-08-wall-contact-types/code/diagnose.py": "c5d23d666d5825e6585245a54d969ec60240f69dd7abf2159562130c76bf4582",
+    "experiments/2026-10-08-wall-pr-operating-point/code/run.py": "5ffe27fb64fa569c0bcf65d6af6d30d1cf8596f8018be3abb3f97184beb91225",
+    "experiments/2026-10-08-wall-pr-operating-point/code/selection.py": "a7a8bd60e42737d7c00da3f07cbf12ca4021ed57c290c007cd4959dd20be11cd",
+    "experiments/2026-10-07-active-wall-map/code/score.py": "14ef5174aa33cf369d053f323a13bd674008270de6e5fca0faa1d02970588541",
+    "experiments/2026-10-05-ego-wall-map-probe/code/odom_grid_replay.py": "4f96b68b7bf838dc8824f6e037e253eaff32dd5bef576989c2f3e5a38674fc9a",
+    "experiments/2026-10-08-ulrich-floor-contact/code/recall.py": "c8b7926bd40170e62f951fc636fde36ed28dee8bb112b5ca3b82205e6d65bea2",
+    "experiments/2026-10-08-ulrich-floor-contact/code/common.py": "d4db2ccf65f94c3e98befc63f4e81d817f102711d996be0ad76b09cadb26e935",
+    "experiments/2026-10-08-ulrich-floor-contact/code/compare.py": "32db85f3da0dab2a319c170cd86dd6a5572af0b86ddf072c43bf2e0f8b310e3a"
+  },
+  "physics": 0
+}

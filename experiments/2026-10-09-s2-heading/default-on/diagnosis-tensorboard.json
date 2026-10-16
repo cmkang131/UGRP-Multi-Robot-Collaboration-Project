@@ -1,0 +1,54 @@
+{
+  "snapshot": "/Users/changmin/projects/ugrp/outputs/tensorboard/1009-heading-diagnosis",
+  "source": "/Users/changmin/projects/ugrp/outputs/s2-heading-v145-diagnosis/analysis.json",
+  "source_sha256": "4566f2e6f3991e9bef4d7b2036efe7444f2b5fdb4928779950c598c1cb92abf9",
+  "expected": [
+    {
+      "run": "1009-heading-diagnosis/s1068-baseline",
+      "scalars": {
+        "offline/rgb_detections": 1,
+        "offline/slot_accepted": 1,
+        "offline/cyan_mask_pixels": 3953,
+        "offline/pose_xy_error_m": 0.1495230229094545,
+        "offline/pose_yaw_error_abs_deg": 0.6795972364988913,
+        "offline/bottom_row_px": 385
+      }
+    },
+    {
+      "run": "1009-heading-diagnosis/s1068-heading",
+      "scalars": {
+        "offline/rgb_detections": 1,
+        "offline/slot_accepted": 0,
+        "offline/cyan_mask_pixels": 4261,
+        "offline/pose_xy_error_m": 0.5589120865957429,
+        "offline/pose_yaw_error_abs_deg": 39.16601810791384,
+        "offline/bottom_row_px": 396
+      }
+    }
+  ],
+  "event_scalars_verified": 12,
+  "url": "http://127.0.0.1:6006/?runFilter=%5E1009-heading-diagnosis%2F&smoothing=0&pinnedCards=%5B%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Frgb_detections%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fslot_accepted%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fpose_xy_error_m%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fpose_yaw_error_abs_deg%22%7D%5D#timeseries",
+  "pinned_metrics": [
+    "offline/rgb_detections",
+    "offline/slot_accepted",
+    "offline/pose_xy_error_m",
+    "offline/pose_yaw_error_abs_deg"
+  ],
+  "hparams_visible_columns": [
+    "model_calls"
+  ],
+  "physics_runs": 0,
+  "scope": "posthoc single-frame diagnostic",
+  "live_api_scalars_verified": 12,
+  "display_verified": true,
+  "selected_runs": 2,
+  "pinned_cards": 4,
+  "hparams_reapplied": [
+    "result/model_calls"
+  ],
+  "screenshot": {
+    "path": "tensorboard-diagnosis.png",
+    "sha256": "9f961da22c3280a2e3341aad952d7590e6cd0627c58a6e6c9ec4da5730b709bf",
+    "bytes": 73712
+  }
+}

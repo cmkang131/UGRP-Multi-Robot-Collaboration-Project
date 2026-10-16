@@ -1,0 +1,416 @@
+{
+  "schema": "ugrp.s2.ground_vo.result.v1",
+  "complete": true,
+  "source_sha": "69e83487319aa6d59166fb52733356102d47f0a3",
+  "criteria_commit": "a4db20e6",
+  "options": {
+    "camera_profile": "masterpi-camera-user-observation-target-review-v3",
+    "drive_profile": "masterpi_drive_friction_v7",
+    "setdown_relook": "off",
+    "grasp_check": "pickup_site_v1",
+    "min_wheel_cmd": "real_v1",
+    "dead_reckoning": "v7_diag_v1",
+    "stagnation_watch": "window120_v1",
+    "alignment_pulse": "real_fine_v1",
+    "hover_check": "real_pregrasp_v1",
+    "idle_robot_contacts": "freeze_v1",
+    "site_check": "off",
+    "hold_check": "inhand_rgb_v1",
+    "dev_grasp_policy": "log_only_v1",
+    "eval_camera_trace": "pose_v1",
+    "pulse_motion_model": "v7_pulse_cal_v1",
+    "visual_update": "accepted_scan_v1",
+    "visual_stall": "lk_pulse_v1",
+    "carry_pose": "real_delivery_v1",
+    "camera_calibration": "v3_unloaded_sag_v1",
+    "measurement_model": "amcl_likelihood_field_v1",
+    "visibility_mask": "command_geometry_v1",
+    "amcl_update": "ros_motion_v1",
+    "dev_search": "repeat_views_v1",
+    "visibility_policy": "nav2_observed_v1",
+    "contact_filter": "floor_appearance_v1",
+    "odom_source": "ground_vo_v1",
+    "slip_detection": "slip_detect_v1",
+    "slip_recovery": "slip_recovery_v1",
+    "servo_stiffness": "off"
+  },
+  "legacy_replay_gates": {
+    "default_off_exact": true,
+    "recovery_clear": true,
+    "normal_loaded_rms": false,
+    "normal_unloaded_rms": false,
+    "carry_rmse": true,
+    "all_own_rgb_preserved": true
+  },
+  "legacy_replay_pass": false,
+  "metrics": [
+    {
+      "option": "baseline",
+      "carry_rmse_m": 2.0235827759068257,
+      "carry_updates": 27,
+      "max_gap_s": 33.85000000000002
+    },
+    {
+      "option": "candidate",
+      "carry_rmse_m": 1.6823652243054867,
+      "carry_updates": 21,
+      "max_gap_s": 51.249999999999986
+    }
+  ],
+  "motion": {
+    "loaded_pulses": 277,
+    "normal_pulses": 271,
+    "normal_old_rms_m": 0.004977389927234261,
+    "normal_new_rms_m": 0.007252729634508477,
+    "all_old_rms_m": 0.024131600300254265,
+    "all_new_rms_m": 0.01134234167178839,
+    "six_pass_035m": 5,
+    "six_measured": 5
+  },
+  "unloaded": {
+    "pulses": 161,
+    "measured": 19,
+    "old_rms_m": 0.0009456476241287538,
+    "new_rms_m": 0.0030905426643641426
+  },
+  "observations": {
+    "status_counts": {
+      "unknown_preserved": 301,
+      "normal_measured": 132,
+      "slip_replaced": 5
+    },
+    "interval_status_counts": {
+      "unknown_rigid_consensus": 225,
+      "unknown_texture": 698,
+      "unknown_frame": 511,
+      "measured": 700,
+      "unknown_spatial_support": 3
+    },
+    "measurement_count": 137,
+    "command_fallback_count": 301,
+    "wall_frames_dropped": 0,
+    "all_frame_hashes_equal": true,
+    "image_fraction_quantiles": {
+      "floor_image_fraction": [
+        0.0,
+        0.6486263020833334,
+        0.9311555989583333,
+        0.9637337239583333
+      ],
+      "cyan_image_fraction": [
+        0.002265625,
+        0.06012369791666667,
+        0.062054036458333336,
+        0.073291015625
+      ],
+      "usable_floor_image_fraction": [
+        0.0,
+        0.6486263020833334,
+        0.9311555989583333,
+        0.9637337239583333
+      ]
+    },
+    "pitch_radial_sigma_m_quantiles": [
+      1.4114716555235885e-05,
+      0.0005557002206936409,
+      0.002190806560846041,
+      0.0031470839950466126
+    ],
+    "pitch_relative_sigma_quantiles": [
+      0.0037487370675690873,
+      0.14448732436121883,
+      0.24963386952617406,
+      0.4086304393081988
+    ]
+  },
+  "recovery": {
+    "schema": "ugrp.s2.recovery_clear.replay.v1",
+    "criteria_commit": "a4db20e6",
+    "source_sha256": "aadc3cdaad6ae1aab72b76994193f258b4ce2a7511a5e8b11db6e0934c1d2413",
+    "old_action": null,
+    "new_action": {
+      "kind": "mecanum",
+      "forward": 0.0,
+      "left": 0.35,
+      "turn": 0.0,
+      "duration_s": 0.06
+    },
+    "old_cost": {
+      "before": 0.0018915166603727278,
+      "after": 0.0018915166603727278,
+      "body_error_m": [
+        -0.004703761392683203,
+        0.04258881525171985
+      ],
+      "yaw_rad": -0.07242579134393745
+    },
+    "new_cost": {
+      "before": 0.0018915166603727278,
+      "after": 0.0013940687577745406,
+      "body_error_m": [
+        -0.004703761392683203,
+        0.04258881525171985
+      ],
+      "yaw_rad": -0.07242579134393745
+    },
+    "recovery_end": {
+      "t": 127.9,
+      "event": "backup_end",
+      "progress_m": 0.1544305938609646,
+      "timeout": true,
+      "measured_success": false,
+      "pulses": 25
+    },
+    "clear_events": [
+      {
+        "t": 127.9,
+        "event": "clear_direction_blocks",
+        "count": 1,
+        "attempts": 1,
+        "fresh_slip_required": true
+      },
+      {
+        "t": 127.9,
+        "event": "replan",
+        "found": true,
+        "keepouts": [],
+        "path": [
+          [
+            1.6500000000000001,
+            0.05
+          ]
+        ]
+      }
+    ],
+    "saved_suppressed": 1197,
+    "remaining_vetoes": 0,
+    "gates": {
+      "old_deadlock_reproduced": true,
+      "new_progress_action": true,
+      "all_saved_vetoes_cleared": true,
+      "temporary_blocks_empty": true,
+      "retry_budget_preserved": true
+    },
+    "pass_": true,
+    "gt_inputs": false,
+    "physics_runs": 0,
+    "model_calls": 0,
+    "closed_loop_escape_proven": false
+  },
+  "ground_vo_calibration": {
+    "servo_stiffness": "off",
+    "scope": "legacy_replay_only",
+    "pitch_scale_bound_deg": 2.8
+  },
+  "required_plant_assessment": "NOT_EVALUABLE: stiffness ON S2 pose/load/motion calibration and S1051-condition RGB missing",
+  "admission_pass": false,
+  "new_physics_runs": 0,
+  "model_calls": 0,
+  "new_seed": null,
+  "new_bundle": null,
+  "full_dev": "NOT_RUN",
+  "lifted": null,
+  "inside": null,
+  "carry_visibility": null,
+  "distance_to_B_m": null,
+  "would_stop_points": null,
+  "wall_sim_ratio": null,
+  "previous_success_not_inherited": true,
+  "source_raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-c26e9afd-s1051-P1-2-place",
+  "outputs": "/Users/changmin/projects/ugrp/outputs/s2-ground-vo-20261007",
+  "sources": {
+    "/Users/changmin/projects/ugrp/outputs/s2-ground-vo-20261007/replay-baseline.json": "a56cfb0812c171af6e677cd1781cb3ec7f67fb027968ecc65813381e82c542c6",
+    "/Users/changmin/projects/ugrp/outputs/s2-ground-vo-20261007/replay-candidate-allposes.json": "d55fc50502dd203f5e5e08521d157ac195a78c808217307a1608529345067457",
+    "/Users/changmin/projects/ugrp/outputs/s2-load-height-20261007/drift-decomposition.json": "39113d78cd1fba021bbdee88f96b2170badca375884c6cc5bcbc6e856b732f46",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-c26e9afd-s1051-P1-2-place/eval_only/trajectory.jsonl": "86f135c2039c650990c77286a7023212934581968f9dc51ffe522fcf5bf2a3e2",
+    "/Users/changmin/projects/ugrp-wt/drive-friction/experiments/2026-10-06-s2-realism/ground-vo-criteria.json": "22c970d19df8d72a7ea6d81e3c9de95180d0b87d0a5d511b1581475b08872b5b"
+  },
+  "scope": "Legacy stiffness-OFF open-loop exploration only. Recovery replay is independent saved states, not closed-loop escape. GT evaluation only after frozen own-RGB replay.",
+  "scale_evaluation": {
+    "summary": [
+      {
+        "loaded": false,
+        "intervals": 106,
+        "scale_ratio_quantiles": [
+          0.01011230809463012,
+          0.7244651952696308,
+          2.462672535089721,
+          4.020820044547761
+        ],
+        "geometry_delta_difference_m_quantiles": [
+          0.0001529651245213501,
+          0.0020404507282907906,
+          0.005613518243175011,
+          0.013553384816897067
+        ]
+      },
+      {
+        "loaded": true,
+        "intervals": 594,
+        "scale_ratio_quantiles": [
+          0.01860550663834893,
+          1.0149195219073677,
+          2.7405104472659616,
+          18.375743907690985
+        ],
+        "geometry_delta_difference_m_quantiles": [
+          3.69202545899854e-05,
+          0.0017699838279913189,
+          0.006371693042728292,
+          0.022878458822458054
+        ]
+      }
+    ],
+    "source": "/Users/changmin/projects/ugrp/outputs/s2-ground-vo-20261007/scale-eval.json",
+    "definition": "fixed camera geometry / per-frame evaluation camera geometry, translation >=1mm; not direct true-motion scale"
+  },
+  "tensorboard": {
+    "snapshot": "/Users/changmin/projects/ugrp/outputs/tensorboard/1007-s2-ground-vo-v30",
+    "url": "http://127.0.0.1:6006/?runFilter=%5E1007-s2-ground-vo-v30%2F&smoothing=0&pinnedCards=%5B%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fcarry_rmse_m%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fnormal_loaded_rms_m%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fnormal_unloaded_rms_m%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fmax_gap_s%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22offline%2Fremaining_vetoes%22%7D%2C+%7B%22plugin%22%3A+%22scalars%22%2C+%22tag%22%3A+%22result%2Fmodel_calls%22%7D%5D#timeseries",
+    "pinned_tags": [
+      "offline/carry_rmse_m",
+      "offline/normal_loaded_rms_m",
+      "offline/normal_unloaded_rms_m",
+      "offline/max_gap_s",
+      "offline/remaining_vetoes",
+      "result/model_calls"
+    ],
+    "hparams_visible_columns": [
+      "policy",
+      "condition",
+      "source_sha",
+      "seed",
+      "offline/carry_rmse_m",
+      "offline/normal_loaded_rms_m"
+    ],
+    "scope": "s2v30 legacy stiffness OFF replay and saved-state recovery; new physical runs 0",
+    "verification": {
+      "scalars": 21,
+      "source_event_live_api_match": true,
+      "browser": "NUMERIC_ONLY"
+    }
+  },
+  "tests": {
+    "initial_files": [
+      "tests/test_s2_ground_vo.py",
+      "tests/test_s2_slip_recovery.py",
+      "tests/test_s2_slip_recovery_full.py"
+    ],
+    "initial_passed": 15,
+    "initial_wall_s": 23.57,
+    "posture_fix_passed": 6,
+    "posture_fix_wall_s": 0.75,
+    "final": {
+      "files": [
+        "tests/test_s2_ground_vo.py",
+        "tests/test_s2_slip_recovery.py"
+      ],
+      "passed": 13,
+      "wall_s": 1.02
+    }
+  },
+  "references_reused": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-blocked-pulse-20261007/sources/seegmiller-2011.pdf",
+      "sha256": "253ebe2b6351f4e4257f442010ff18f7f93f77ecc25376ca278395f77b812307",
+      "reused_existing_download": true
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-slip-recovery-20261007/navigate_to_pose_w_replanning_and_recovery.xml",
+      "sha256": "000f8e0020db54aee652837987ad4f2d82e633a588994bfcf7d26163c67fc7e6",
+      "reused_existing_download": true
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-flow-fusion-20261007/sources/robot_localization-ekf.cpp",
+      "sha256": "431331568e9cc042aca3fd06f7f70252ec9a70d32e09a47d9dccc1be678b5660",
+      "reused_existing_download": true
+    }
+  ],
+  "new_web_search_calls_on_resume": 0,
+  "artifacts": {
+    "motion-score.json": {
+      "sha256": "2f4481af9c6033ed9f005fb238d94365e5f78a71918ec2bf9ddaa4eed5ab6429",
+      "bytes": 197769
+    },
+    "pr405-readonly/experiments/2026-10-07-servo-stiffness/README.md": {
+      "sha256": "71906ec9d88d176724df8956893ee77a5330ee997b8ab35b2fc8b4b674634a76",
+      "bytes": 16177
+    },
+    "pr405-readonly/experiments/2026-10-07-servo-stiffness/REFERENCES.md": {
+      "sha256": "22001dd8c49084b641ee625bd72fddb9ba4e9552f79a30d8c5f02d2f5003fe30",
+      "bytes": 2277
+    },
+    "pr405-readonly/experiments/2026-10-07-servo-stiffness/results/static-summary.json": {
+      "sha256": "3eefd519cf1610d95d8f1947be4f799c38ac93690094da50b562f915c16704d7",
+      "bytes": 15689
+    },
+    "pr405-readonly/sim/servo_stiffness.py": {
+      "sha256": "66dc724652d07edbe35ef185b4fa7d5f42cfc6ec535cec9e73353ee22a52bbea",
+      "bytes": 1689
+    },
+    "progress-comment.md": {
+      "sha256": "6ac124a72696085c9427bd9b78104ed9266be16587888cdba4091cde51ed6daf",
+      "bytes": 795
+    },
+    "recovery-clear.json": {
+      "sha256": "2dd5555e8d1a803210a178e6c31b17387722bde92c607bff2ce6c198f568f15b",
+      "bytes": 1644
+    },
+    "replay-baseline.json": {
+      "sha256": "a56cfb0812c171af6e677cd1781cb3ec7f67fb027968ecc65813381e82c542c6",
+      "bytes": 1104960
+    },
+    "replay-candidate-allposes.json": {
+      "sha256": "d55fc50502dd203f5e5e08521d157ac195a78c808217307a1608529345067457",
+      "bytes": 3213163
+    },
+    "replay-candidate.json": {
+      "sha256": "aa6616d6d5972ebebcbe0427b0088293c35acdc727db6b03d6e73374b25d45df",
+      "bytes": 2778291
+    },
+    "result.json": {
+      "sha256": "01c54a848d050e3d69615040fb4de2e1ce645ae8513a3ac4a5c6f39e5127e1b7",
+      "bytes": 7187
+    },
+    "scale-eval.json": {
+      "sha256": "0fa0f8f2fa54538e104aa93f12b8dbea40636aa131c37fbe3699771cb5464a88",
+      "bytes": 330558
+    },
+    "seegmiller-2011.txt": {
+      "sha256": "5d594e73ec205c3ce73a1d210a79ef54b5427f037788e83e4c04f5afae040520",
+      "bytes": 27997
+    },
+    "sources-used.json": {
+      "sha256": "ab8d1a8cb1ee0c9edfb410e9016fdc2c269a2cbf09282bddbba6bd08c220ed08",
+      "bytes": 732
+    },
+    "tensorboard-verification.json": {
+      "sha256": "d5625e566a70e29dbfec092344057a3f7b835c4dd1ba3d73b8cfb320a0da69cc",
+      "bytes": 2815
+    },
+    "verify_tensorboard.py": {
+      "sha256": "ec3f7d96501f1aba6da4c12d9c796fcedccc0942ee05dbe2df49bc8ca2fcefcc",
+      "bytes": 2741
+    },
+    "views/recovery-clear/result.json": {
+      "sha256": "62e031770f071b83a9a3c5c30aa6504fce1baa3317c7f03468e33e66d71e00aa",
+      "bytes": 763
+    },
+    "views/s1051-command/result.json": {
+      "sha256": "a12ee5a9417486841cae37abc7831b7def32ef5f024b4e0d65d2dca0c2711b0e",
+      "bytes": 1024
+    },
+    "views/s1051-ground-vo/result.json": {
+      "sha256": "ca19a52b71c609139dbcd136922d992756d5722132cb154a2670f13577b22287",
+      "bytes": 1027
+    }
+  },
+  "lock_acquired": false,
+  "lock_status_at_completion": null,
+  "recovery_replay_source": {
+    "code_commit": "fb6294ad",
+    "source_sha256": "169e5f98795c42b07a28130ea71881d8b2bd1d8f69db3920a8ce9be9462a47f5",
+    "script_sha256": "c8b3084045ba87ffa35c99597a37c49b29d584cdf9e3445632388be04c51217c",
+    "initial_replay_phase": "pre-commit development check; exact bytes then committed unchanged"
+  }
+}

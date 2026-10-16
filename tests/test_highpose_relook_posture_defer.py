@@ -280,7 +280,7 @@ def test_unbuilt_controller_raises_on_the_align_path():
 def test_runtime_wiring_and_record():
     from harness import zone_pair_highpose_runtime as rt
     cls = rt.controller_class(type('B', (PairAlignRelook, Base), {}))
-    assert cls.__mro__[1] is defer.DeferRelook
+    assert cls.__mro__[1] is rt.LightFail and cls.__mro__[2] is defer.DeferRelook   # v105 DEV light in front
     rec = defer.record()
     assert rec['id'] == defer.ID and rec['shared_sources_modified'] is False and rec['bound_s'] == defer.MAX_LOOK_S
     src = (ROOT/'harness'/'zone_pair_highpose_runtime.py').read_text()

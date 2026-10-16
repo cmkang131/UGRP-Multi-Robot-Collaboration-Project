@@ -1,0 +1,89 @@
+{
+  "schema": "ugrp.s2.ground_vo.criteria.v1",
+  "phase": "s2v30",
+  "preexisting_source": "2710a477",
+  "recovery_raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-d4fee717-s1051-P1-2-place-slip-recovery",
+  "legacy_raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-c26e9afd-s1051-P1-2-place",
+  "carry_window": [
+    87.0,
+    241.05
+  ],
+  "recovery": {
+    "clear_after_backup_before_replan": true,
+    "fresh_slip_required": true,
+    "attempt_limit": 6,
+    "off_exact": true
+  },
+  "ground_vo": {
+    "option": "ground_vo_v1",
+    "default": "off",
+    "homography": "fixed calibrated inverse perspective plus robust SE2 plane motion",
+    "max_track_gap_s": 0.15,
+    "pitch_scale_bound_legacy_deg": 2.8,
+    "pitch_scale_bound_stiff_deg": 0.3,
+    "complete_coverage": 1.0,
+    "rgb_stall": "identical full RGB pair falls back to command; valid nonzero-texture flow retained",
+    "normal_pulse_rms_nonincrease_tolerance_m": 1e-10,
+    "carry_rmse_strictly_better": true,
+    "wall_frames_dropped": 0
+  },
+  "admission": {
+    "required_plant": "servo_stiffness=real_v1",
+    "required_calibration": [
+      "S2 21 stationary camera poses",
+      "loaded real_delivery camera",
+      "servo settle and safe loaded grasp/carry",
+      "v7 pulse means and covariance by load/pose"
+    ],
+    "legacy_off_replay_is_not_stiff_on_evidence": true,
+    "missing_condition": "NOT_EVALUABLE_NO_FULL_DEV",
+    "one_full_dev_only_after_all_pass": true,
+    "freeze": "freeze_v1",
+    "mode": "dev_light",
+    "ENOSPC": "HOST_ERROR"
+  },
+  "pr405": {
+    "commit": "7d109118516e0f80484f17eaa96f1c0c706e4ebe",
+    "files": [
+      {
+        "path": "experiments/2026-10-07-servo-stiffness/README.md",
+        "local": "/Users/changmin/projects/ugrp/outputs/s2-ground-vo-20261007/pr405-readonly/experiments/2026-10-07-servo-stiffness/README.md",
+        "sha256": "71906ec9d88d176724df8956893ee77a5330ee997b8ab35b2fc8b4b674634a76"
+      },
+      {
+        "path": "experiments/2026-10-07-servo-stiffness/REFERENCES.md",
+        "local": "/Users/changmin/projects/ugrp/outputs/s2-ground-vo-20261007/pr405-readonly/experiments/2026-10-07-servo-stiffness/REFERENCES.md",
+        "sha256": "22001dd8c49084b641ee625bd72fddb9ba4e9552f79a30d8c5f02d2f5003fe30"
+      },
+      {
+        "path": "experiments/2026-10-07-servo-stiffness/results/static-summary.json",
+        "local": "/Users/changmin/projects/ugrp/outputs/s2-ground-vo-20261007/pr405-readonly/experiments/2026-10-07-servo-stiffness/results/static-summary.json",
+        "sha256": "3eefd519cf1610d95d8f1947be4f799c38ac93690094da50b562f915c16704d7"
+      },
+      {
+        "path": "sim/servo_stiffness.py",
+        "local": "/Users/changmin/projects/ugrp/outputs/s2-ground-vo-20261007/pr405-readonly/sim/servo_stiffness.py",
+        "sha256": "66dc724652d07edbe35ef185b4fa7d5f42cfc6ec535cec9e73353ee22a52bbea"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Nav2 default recovery tree",
+      "url": "https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_bt_navigator/behavior_trees/navigate_to_pose_w_replanning_and_recovery.xml",
+      "local": "/Users/changmin/projects/ugrp/outputs/s2-slip-recovery-20261007/navigate_to_pose_w_replanning_and_recovery.xml"
+    },
+    {
+      "title": "Seegmiller and Wettergreen IROS 2011 sections II-C--F",
+      "url": "https://publications.ri.cmu.edu/storage/publications/pub_files/2011/9/Seegmiller_IROS-2011_Optical_Flow_Odometry.pdf"
+    },
+    {
+      "title": "OpenCV homography tutorial",
+      "url": "https://docs.opencv.org/4.13.0/d9/dab/tutorial_homography.html"
+    },
+    {
+      "title": "Moore and Stouch robot_localization IAS13",
+      "url": "https://docs.ros.org/en/kinetic/api/robot_localization/html/_downloads/robot_localization_ias13_revised.pdf"
+    }
+  ]
+}

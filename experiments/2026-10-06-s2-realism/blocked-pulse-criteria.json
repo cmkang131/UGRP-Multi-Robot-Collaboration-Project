@@ -1,0 +1,74 @@
+{
+  "schema": "ugrp.s2.blocked_pulse.criteria.v1",
+  "physics_runs_before_gate": 0,
+  "model_calls": 0,
+  "evaluation": {
+    "seed": 1051,
+    "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-c26e9afd-s1051-P1-2-place",
+    "carry_window_sim_s": [
+      87.0,
+      241.05
+    ],
+    "frames": 5202,
+    "baseline_rmse_m": 2.0235827759068257,
+    "baseline_max_gap_sim_s": 33.85,
+    "gt": "fixed calibration labels only on s1050; s1051 scoring only after predictions",
+    "hashes": {
+      "student_record.json": "a3c622edc12b1e141711bbbacf109afc015559454b077249d2bc79974cbf563c",
+      "eval_only/trajectory.jsonl": "86f135c2039c650990c77286a7023212934581968f9dc51ffe522fcf5bf2a3e2",
+      "bundle.json": "38c8696c13e063d1d60feceda794ebc5a92da604985462f0cd1d746023e5a43e",
+      "robots/r3/frames.jsonl": "00144a3d2f50b5c0d30296a4d65dc88e4b4f42caed48601fa3307852e5c59bbf"
+    }
+  },
+  "option": "visual_progress=ground_flow_noise_v1",
+  "default": "off",
+  "fit": "none; no new fitted constants; frozen floor appearance/calibration/pulse profiles",
+  "method": "Seegmiller 2011 plane optical-flow odometry: LK + calibrated ground homography + RANSAC rigid SE2. Adapt nominal pulse Q by innovation covariance scaling (Popescu 2026 equations 13-15); pulse-local M=1, no recursive scaling. Only extra zero-mean process covariance; no mean reset, velocity stop, or wall-observation rejection.",
+  "parameters": {
+    "max_corners": 240,
+    "quality": 0.01,
+    "min_distance_px": 5,
+    "lk_window_px": 21,
+    "lk_pyramid_levels": 3,
+    "fb_max_px": 1.0,
+    "min_tracks": 6,
+    "min_inliers": 6,
+    "min_cells": 2,
+    "cell_size_px": [
+      160,
+      120
+    ],
+    "ransac_samples": 3,
+    "ransac_iterations": 200,
+    "ransac_threshold_m": 0.005,
+    "min_inlier_fraction": 0.6,
+    "feature_pixel_sigma": 1.0,
+    "pose_translation_span_m": 0.03,
+    "ground_range_m": [
+      0.05,
+      2.0
+    ],
+    "before_max_age_s": 0.06,
+    "after_max_lateness_s": 0.06,
+    "minimum_expected_m": 0.05
+  },
+  "noise": "alpha=max(1,(innovation dot innovation - trace(R))/trace(Q)); Q_effective=Q*sqrt(alpha); extra=Q_effective-Q. SE2 units m,m,rad; paired-pulse residual only, no GT. Missing/unobservable flow leaves Q unchanged. Extra covariance injected at settled capture timestamp before its wall update on existing 160 ms delayed provider.",
+  "admission": {
+    "default_off_exact": true,
+    "loaded_endpoint_mean_xy_rmse_not_worse": true,
+    "loaded_endpoint_mean_yaw_rmse_not_worse": true,
+    "loaded_endpoint_gaussian_nll_strictly_better": true,
+    "six_blocked_xy_3sigma_coverage_min": 0.8333333333333334,
+    "nonblocked_inflation_fraction_max": 0.1,
+    "carry_rmse_strictly_less_than_baseline": true,
+    "carry_updates_min": 27,
+    "max_gap_s": 33.85,
+    "initial_stationary_max_m": 0.5,
+    "raw_rgb_hashes_exact": true,
+    "wall_filter_unchanged": true,
+    "matched_wall_observation_columns_retention": 1.0
+  },
+  "no_retuning": true,
+  "full_rule": "Only if every gate passes, reserve a new bundle and unused seed, commit preregistration, run one S2 DEV full. Otherwise stop without simulation.",
+  "limitations": "Observed DEV data, not independent confirmation. Covariance-only candidate cannot remove systematic mean bias. RANSAC floor assumption and camera compliance can invalidate VO; unknown never means stationary. Wall images reused for process uncertainty may correlate with AMCL; no independent measurement success claim. No common port/other controllers change."
+}

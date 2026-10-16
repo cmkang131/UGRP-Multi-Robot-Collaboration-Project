@@ -1,0 +1,32 @@
+{
+  "pytest": {
+    "passed": 29,
+    "failed": 0,
+    "files": [
+      "tests/test_rbpf_rejection.py",
+      "tests/test_rbpf_motion_gate.py",
+      "tests/test_self_map_prob.py"
+    ]
+  },
+  "legacy_byte_verification": {
+    "equal": {
+      "poses": true,
+      "grid": true,
+      "decisions": true,
+      "ledger": true
+    },
+    "prediction_sha256": "2a8d8e1a5a2efc6654a083f08f64abeac65fcd71e764eed727c96bfb655887fd"
+  },
+  "physical_runs": 0,
+  "model_calls": 0,
+  "lock_acquires": 0,
+  "gate": {
+    "within_2sigma": false,
+    "ratio_improves": true,
+    "no_rejected_resamples": true
+  },
+  "physical_admitted": false,
+  "figure_visually_checked": true,
+  "existing_user_files_preserved": 4,
+  "qualification": "Local related tests; full PR CI and physical success not claimed"
+}

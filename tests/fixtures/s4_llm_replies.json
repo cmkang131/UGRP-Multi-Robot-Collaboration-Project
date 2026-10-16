@@ -1,0 +1,13 @@
+{
+  "provenance": "Hand-written, prerecorded synthetic responses. Not real model output. Only request_id is rebound by the wire fixture.",
+  "usage": {"prompt_tokens": 3100, "completion_tokens": 70, "total_tokens": 3170},
+  "responses": {
+    "claim_r1": {"request_id": "req_fixture", "action": {"kind": "claim", "order_id": "order-5", "role": "end_neg", "destination_zone": "B"}, "decision_sources": ["order_sheet"], "messages": []},
+    "claim_r2": {"request_id": "req_fixture", "action": {"kind": "claim", "order_id": "order-5", "role": "end_pos", "destination_zone": "B"}, "decision_sources": ["order_sheet"], "messages": []},
+    "claim_r3": {"request_id": "req_fixture", "action": {"kind": "claim", "order_id": "order-1", "role": "west", "destination_zone": "A"}, "decision_sources": ["order_sheet"], "messages": []},
+    "peer_r3": {"request_id": "req_fixture", "action": {"kind": "claim", "order_id": "order-1", "role": "west", "destination_zone": "A"}, "decision_sources": ["order_sheet"], "messages": [{"recipients": ["r1"], "text": "I will carry cyan to A.", "reply_to": null}]},
+    "carry": {"request_id": "req_fixture", "action": {"kind": "carry_decision", "choice": "set_down"}, "decision_sources": ["own_commands"], "messages": []},
+    "post_look": {"request_id": "req_fixture", "action": {"kind": "post_look_decision", "choice": "regrasp"}, "decision_sources": ["own_commands"], "messages": []},
+    "continue": {"request_id": "req_fixture", "action": {"kind": "continue"}, "decision_sources": ["own_commands"], "messages": []}
+  }
+}

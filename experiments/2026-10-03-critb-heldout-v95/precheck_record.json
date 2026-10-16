@@ -1,0 +1,212 @@
+{
+  "schema": "ugrp.heldout_v95_precheck_record.v1",
+  "label": "HEADLESS_PRECHECK_NOT_COLLECTION_NOT_B_SCORING",
+  "output_dir": "/Users/changmin/projects/ugrp/outputs/heldout-v95-precheck-20261003T085307Z",
+  "status": "PRECHECK_PASS",
+  "source_sha": "12c1e58c3ee129d5a635fe5f300145566656489a",
+  "started_utc": "2026-10-03T08:54:47.875332+00:00",
+  "finished_utc": "2026-10-03T09:30:14.462105+00:00",
+  "files_sha256": {
+    "precheck.json": "868ffa29e1ee6e74366af0039796bbe87e43b99ebeb07928c26717a777a39dbe",
+    "SHA256SUMS.json": "fd8d7f1127ec976728fef18bf5936dc273511bef8e1996f481753df6a054a461",
+    "binding.json": "636fd14eb795b0a31397c4ff5cd735e00f04a141ec14631bfd658284326ef923"
+  },
+  "artifact_count": 39,
+  "host_start": {
+    "loadavg": [
+      39.3193359375,
+      92.4521484375,
+      58.01806640625
+    ],
+    "concurrent_holders": [
+      {
+        "name": "sim-claude-v95-precheck",
+        "owner": "claude",
+        "branch": "codex/critb-heldout-new-starts",
+        "purpose": "v95 held-out headless precheck 2 maps x 370 SIM s; no render; not timing",
+        "pid": 12472,
+        "acquired_unix": 1791017652.369077,
+        "expected_end_unix": 1791023052.369078,
+        "loadavg_at_acquire": [
+          57.619140625,
+          101.79833984375,
+          59.72265625
+        ],
+        "timing_sensitive": false,
+        "physics_identity": {
+          "owner": "claude",
+          "pid": 12472,
+          "acquired_unix": 1791017652.367754,
+          "v91_group": "20e6b9e1dff64ef093ffa1d8a90da0fa"
+        },
+        "pid_alive": true
+      }
+    ],
+    "physics_holder": {
+      "owner": "claude",
+      "branch": "codex/critb-heldout-new-starts",
+      "purpose": "v95 held-out headless precheck 2 maps x 370 SIM s; no render; not timing",
+      "pid": 12472,
+      "acquired_unix": 1791017652.367754,
+      "expected_end_unix": 1791023052.367755,
+      "loadavg_at_acquire": [
+        57.619140625,
+        101.79833984375,
+        59.72265625
+      ],
+      "timing_sensitive": false,
+      "v91_group": "20e6b9e1dff64ef093ffa1d8a90da0fa",
+      "pid_alive": true
+    }
+  },
+  "host_end": {
+    "loadavg": [
+      11.0224609375,
+      15.84326171875,
+      22.9306640625
+    ],
+    "concurrent_holders": [
+      {
+        "name": "sim-claude-v95-precheck",
+        "owner": "claude",
+        "branch": "codex/critb-heldout-new-starts",
+        "purpose": "v95 held-out headless precheck 2 maps x 370 SIM s; no render; not timing",
+        "pid": 12472,
+        "acquired_unix": 1791017652.369077,
+        "expected_end_unix": 1791023052.369078,
+        "loadavg_at_acquire": [
+          57.619140625,
+          101.79833984375,
+          59.72265625
+        ],
+        "timing_sensitive": false,
+        "physics_identity": {
+          "owner": "claude",
+          "pid": 12472,
+          "acquired_unix": 1791017652.367754,
+          "v91_group": "20e6b9e1dff64ef093ffa1d8a90da0fa"
+        },
+        "pid_alive": true
+      }
+    ],
+    "physics_holder": {
+      "owner": "claude",
+      "branch": "codex/critb-heldout-new-starts",
+      "purpose": "v95 held-out headless precheck 2 maps x 370 SIM s; no render; not timing",
+      "pid": 12472,
+      "acquired_unix": 1791017652.367754,
+      "expected_end_unix": 1791023052.367755,
+      "loadavg_at_acquire": [
+        57.619140625,
+        101.79833984375,
+        59.72265625
+      ],
+      "timing_sensitive": false,
+      "v91_group": "20e6b9e1dff64ef093ffa1d8a90da0fa",
+      "pid_alive": true
+    }
+  },
+  "sim_slot": {
+    "name": "sim-claude-v95-precheck",
+    "owner": "claude",
+    "released": true,
+    "nice": 15
+  },
+  "collection": false,
+  "rendering": false,
+  "criterion_B_pass": null,
+  "maps": {
+    "zone_wide_door_geometry_v3": {
+      "support_cells": 288,
+      "overlap_comparisons": 76,
+      "overlap_status": "DISJOINT",
+      "all_disjoint": true,
+      "robots": {
+        "r1": {
+          "xyz_extent_m": [
+            0.4333586943163903,
+            0.2616841826474894,
+            1.9839372992290494e-05
+          ],
+          "command_ticks": 5040,
+          "pose_samples": 7401,
+          "kinematic_sha256": "4f94796d960c3c1dca864c2e1915049413688e9bd93e384d32d650d2676ded48",
+          "yaw_unwrapped_range_rad": [
+            0.009421840538208659,
+            0.37856340937633765
+          ],
+          "min_wall_clearance_m": 0.6357884353507707,
+          "nearest_prior_min_xy_m": 0.942078374377265,
+          "nearest_prior_file": "outputs/final-pair-v88-cal-747d2b9f-20261001-r8/calibration-loaded/zone_wide_two_doors_final_v3/eval_only/r2/pose.jsonl",
+          "samples_within_0p05m_of_prior": 0
+        },
+        "r2": {
+          "xyz_extent_m": [
+            0.31406125686044833,
+            0.41110229007629906,
+            1.9839373210733813e-05
+          ],
+          "command_ticks": 5040,
+          "pose_samples": 7401,
+          "kinematic_sha256": "bdfd3a1c13978f4122935c45511adc4bb1d73d4ba97b67c6e057db3f2b874a5c",
+          "yaw_unwrapped_range_rad": [
+            -0.8901061926756894,
+            -0.5267121969164815
+          ],
+          "min_wall_clearance_m": 0.9540700613546907,
+          "nearest_prior_min_xy_m": 1.3390284110402482,
+          "nearest_prior_file": "outputs/final-pair-v88-cal-747d2b9f-20261001-r5/calibration-fine/zone_wide_two_doors_final_v3/eval_only/r2/pose.jsonl",
+          "samples_within_0p05m_of_prior": 0
+        }
+      }
+    },
+    "zone_wide_corridor_final_v3": {
+      "support_cells": 288,
+      "overlap_comparisons": 76,
+      "overlap_status": "DISJOINT",
+      "all_disjoint": true,
+      "robots": {
+        "r1": {
+          "xyz_extent_m": [
+            0.36763195686161776,
+            0.37365346303273794,
+            1.98393729917562e-05
+          ],
+          "command_ticks": 5040,
+          "pose_samples": 7401,
+          "kinematic_sha256": "c26d030ba12cf905e2409c79c3c342c02b260691b8a5bea8a3f791038678f877",
+          "yaw_unwrapped_range_rad": [
+            -0.6905777832009131,
+            -0.3214356416708538
+          ],
+          "min_wall_clearance_m": 0.7949983737018126,
+          "nearest_prior_min_xy_m": 0.39550517036250793,
+          "nearest_prior_file": "outputs/final-pair-v88-cal-747d2b9f-20261001-r8/calibration-loaded/zone_wide_two_doors_final_v3/eval_only/r2/pose.jsonl",
+          "samples_within_0p05m_of_prior": 0
+        },
+        "r2": {
+          "xyz_extent_m": [
+            0.4487963632130483,
+            0.21857011727256626,
+            1.9839372987905113e-05
+          ],
+          "command_ticks": 5040,
+          "pose_samples": 7401,
+          "kinematic_sha256": "3d4af2f80c56736407435b4fcacc31b4e0af38b3daf4d6ad87436e811c6b346c",
+          "yaw_unwrapped_range_rad": [
+            0.20989396986455822,
+            0.5732884938827404
+          ],
+          "min_wall_clearance_m": 0.7863115359845402,
+          "nearest_prior_min_xy_m": 1.503903081350369,
+          "nearest_prior_file": "outputs/final-pair-v88-cal-747d2b9f-20261001-r5/calibration-fine/zone_wide_two_doors_final_v3/eval_only/r2/pose.jsonl",
+          "samples_within_0p05m_of_prior": 0
+        }
+      }
+    }
+  },
+  "within_cohort": {
+    "pairs": 6,
+    "all_disjoint": true
+  }
+}

@@ -104,3 +104,5 @@ python scripts/audit_research_camera_e2e.py outputs/recovery-NEW
 `--communication none`은 자연어 메시지 전달만 끄며 구조적 역할 합의는 유지한다.
 Mac의 실행 환경은 기본 프로젝트의 `.venv-sim-worker-mac`이다. 실제 모델 호출이
 필요하고, 원본 입력이 같아도 모델 응답과 물리 결과의 재현은 보장하지 않는다.
+
+코드는 커밋 `888447674318bc311e1ef65f71c654692b2b76bb`에서 재현(퇴역 전 소스 복구 기준). 당시 실행 SHA·설정·결과는 본문 기록을 따르며, [퇴역 목록](../../docs/retired_modules.md)을 참고한다.

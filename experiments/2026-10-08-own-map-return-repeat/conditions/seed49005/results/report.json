@@ -1,0 +1,166 @@
+{
+  "seed": 49005,
+  "acquisition": {
+    "status": "PHYSICAL_FAILURE",
+    "source_sha": "b3cc09dce60e8b93ec2bea7f8e81afe4c3c94b61",
+    "model_calls": 0,
+    "freeze": false,
+    "qualification": "one MuJoCo DEV attempt, not real hardware or confirmation cohort",
+    "loadavg_start": [
+      4.94775390625,
+      4.6298828125,
+      3.9521484375
+    ],
+    "start_sim_s": 1.3,
+    "frames": 2667,
+    "total_sim_s": 534.5,
+    "failure": {
+      "type": "PhysicalStop",
+      "message": "WALL_CONTACT"
+    },
+    "enospc": false,
+    "wall_s": 2286.8546899160137,
+    "loadavg_end": [
+      6.2822265625,
+      5.314453125,
+      4.8798828125
+    ]
+  },
+  "started": true,
+  "arrived": false,
+  "false_declarations": 0,
+  "final_xy_m": 0.41158492534703683,
+  "final_sigma_xy_m": 0.0865450420654393,
+  "final_error_sigma_ratio": 4.7557308370804785,
+  "final_nees_xy": 31.96424707213491,
+  "over_3sigma": true,
+  "goal_observed": true,
+  "failure_class": "other",
+  "excluded": false,
+  "thresholds_unchanged": true,
+  "goal": {
+    "entity": {
+      "kind": "floor_zone",
+      "id": "B"
+    },
+    "center_m": [
+      -1.4129032258064524,
+      3.1379032258064514
+    ],
+    "source": "own",
+    "detector": "floor_color_v3",
+    "candidate_id": 31,
+    "obs_id": "r3-obs-000723",
+    "t_sim": 145.7,
+    "frame_sha256": "fcd66c9339d95b9ce00b5067eac4c514be51684d14ba6067076e62ab505caea8",
+    "observations": 3,
+    "first_t": 142.3,
+    "bounds_m": [
+      [
+        -1.85,
+        2.35
+      ],
+      [
+        -1.05,
+        3.95
+      ]
+    ],
+    "confidence": 0.8210306394879905,
+    "partial_extent": true
+  },
+  "target_assignment": {
+    "t": 361.3,
+    "frame_id": 1801,
+    "reason": "remembered_target_assigned",
+    "target": 31,
+    "first_detection_t": 142.3,
+    "first_confirmation_t": 145.7
+  },
+  "loss_t": 361.3,
+  "correct_convergence": true,
+  "false_convergence_frames": 362,
+  "post_loss_frames": 866,
+  "declarations": [],
+  "final_yaw_deg": 7.9876995771438315,
+  "final_sigma_definition": "sqrt_trace_cov_xy",
+  "post_loss_over_3sigma": 355,
+  "path_rmse_m": 0.220460315709173,
+  "error_samples": 2656,
+  "missing_gt_trace_samples": 0,
+  "final_error_t": 534.5,
+  "last_truth_t": 534.5,
+  "sim_s": 533.2,
+  "wall_s": 2286.8546899160137,
+  "arrival_after_loss_s": null,
+  "contacts": {
+    "wall": {
+      "frames": 1,
+      "episodes": 1
+    },
+    "robot": {
+      "frames": 0,
+      "episodes": 0
+    }
+  },
+  "contact_samples": 2667,
+  "contact_scope": "5Hz samples/contiguous sampled episodes, plus native failure reason; not exhaustive",
+  "command_frames": 2657,
+  "hold_frames": 209,
+  "return_statuses": {
+    "unknown_start_reset": 1,
+    "relocalize": 18,
+    "sensor_sweep": 185,
+    "public_static": 390,
+    "public_frontier": 185,
+    "no_path": 20,
+    "recover_spin": 18,
+    "recover_wait": 25,
+    "recover_backup": 25
+  },
+  "return_navigation": {
+    "sensor_sweep_started": 3,
+    "sensor_sweep_completed": 3,
+    "frontier_selected": 2,
+    "frontier_cycle_committed": 3,
+    "controller_no_progress": 2,
+    "navigation_action_aborted": 2,
+    "ABORTED_goal_blacklisted": 3,
+    "next_frontier_requested": 2,
+    "sensor_sweep_requested": 2,
+    "planner_failed": 13,
+    "recovery_context_clear": 7,
+    "context_clear_planner": 7,
+    "navigation_layer_reset": 9,
+    "recovery_success": 12,
+    "frontier_navigation_action": 1,
+    "recovery_clear": 2,
+    "recovery_spin": 2,
+    "recovery_wait": 1,
+    "recovery_backup": 1
+  },
+  "travelled_m": 15.979890077867761,
+  "map": {
+    "quality": {
+      "occupied_cells": 687,
+      "precision_015": 0.5240174672489083,
+      "precision_cell": 0.2692867540029112,
+      "wall_coverage": 0.8389057750759878,
+      "wall_error_rmse_m": 0.540007479501321
+    },
+    "occupied_cells": 687,
+    "inserted_scans": 199,
+    "visible_samples": 172,
+    "total_wall_samples": 329,
+    "covered_samples": 276,
+    "coverage": 0.8389057750759878
+  },
+  "insertion_gate_counts": {
+    "bootstrap/bootstrap": 1,
+    "deferred/gmapping_motion_gate": 1583,
+    "rejected/low_overlap": 24,
+    "rejected/high_residual": 55,
+    "rejected/search_boundary": 1,
+    "accepted/improved_proposal": 111,
+    "deferred/insufficient_match_points": 7
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "mujoco_source_sha": "13827e9ee56f097f57acf69ae52b078f9839682d",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/google-deepmind/mujoco/13827e9ee56f097f57acf69ae52b078f9839682d/test/engine/testdata/derivative/dcmotor.xml",
+      "path": "/Users/changmin/projects/ugrp/outputs/drive-friction-v4-references-20261006/test__engine__testdata__derivative__dcmotor.xml",
+      "bytes": 2302,
+      "sha256": "ff5630cd838f633a8a3a6c775cf67c0ff7375ce51f17175991eef8b04e4fcc6f"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/google-deepmind/mujoco/13827e9ee56f097f57acf69ae52b078f9839682d/test/engine/engine_forward_test.cc",
+      "path": "/Users/changmin/projects/ugrp/outputs/drive-friction-v4-references-20261006/test__engine__engine_forward_test.cc",
+      "bytes": 123658,
+      "sha256": "8b9b7d8cf8bd0ddd1a63d5260fd3fef081c64e84757ce0cd9edf0272642fe8f0"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/google-deepmind/mujoco/13827e9ee56f097f57acf69ae52b078f9839682d/src/engine/engine_forward.c",
+      "path": "/Users/changmin/projects/ugrp/outputs/drive-friction-v4-references-20261006/src__engine__engine_forward.c",
+      "bytes": 62918,
+      "sha256": "c81f57dfa0249b07bfd92ac14ac145e43581a1695be607c5ae80fab2417c6d52"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/google-deepmind/mujoco/13827e9ee56f097f57acf69ae52b078f9839682d/doc/dcmotor/dcmotor.tex",
+      "path": "/Users/changmin/projects/ugrp/outputs/drive-friction-v4-references-20261006/doc__dcmotor__dcmotor.tex",
+      "bytes": 64825,
+      "sha256": "ad3b4c938690bad561c4cd820572b62ee7006e355a230448a8fb188d3e051d5e"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/google-deepmind/mujoco/13827e9ee56f097f57acf69ae52b078f9839682d/doc/dcmotor/refs.bib",
+      "path": "/Users/changmin/projects/ugrp/outputs/drive-friction-v4-references-20261006/doc__dcmotor__refs.bib",
+      "bytes": 2655,
+      "sha256": "14aaeeeb26bf51befbc537de097687fc2827aece5d58a69a5730f5adea571d33"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/google-deepmind/mujoco/13827e9ee56f097f57acf69ae52b078f9839682d/src/engine/engine_util_misc.c",
+      "path": "/Users/changmin/projects/ugrp/outputs/drive-friction-v4-references-20261006/src__engine__engine_util_misc.c",
+      "bytes": 67439,
+      "sha256": "371f058d7e2c954daa28df6ae5396dc8be22d2fa5099e6f12046aef34f37035e"
+    }
+  ],
+  "motor": {
+    "source": "https://www.hiwonder.com/products/tt-motor-plastic",
+    "nominal_voltage_v": 6,
+    "no_load_rpm": 150,
+    "no_load_current_a": 0.1,
+    "stall_current_a": 1.2,
+    "listed_torque_kgf_cm": 1.2,
+    "listed_torque_is_stall_rating": "unconfirmed",
+    "installed_motor_identity": "unconfirmed"
+  },
+  "transition_speed": {
+    "value": 0.1,
+    "unit": "rad/s",
+    "source": "MuJoCo 3.12 derivative/dcmotor.xml",
+    "type": "reference example, not physical measurement"
+  },
+  "implementation_hook": {
+    "source": "https://github.com/google-deepmind/mujoco/issues/1366",
+    "type": "public proposal, not validated upstream MasterPi model"
+  }
+}

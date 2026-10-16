@@ -1,0 +1,47 @@
+{
+  "tests": [
+    "tests/test_s2_path_heading.py",
+    "tests/test_simulation_workflow_manager.py"
+  ],
+  "passed": 37,
+  "wall_s": 17.69,
+  "scope": "offline; no physics",
+  "previous_dependency_tests_passed": 13,
+  "previous_failed_heading_sign_tests": 2,
+  "fix": "enforce shortest wrapped heading sign before finite pulse choice",
+  "replay_output": "/Users/changmin/projects/ugrp/outputs/s2-heading-offline-20261009-v3",
+  "replay_sha256": "8e940a9248672385f254542d150698cc0387da69fdb8e78c5e72d30f88edb370",
+  "v1_error": "missing plan for legacy DEV direct fallback; preserved",
+  "v2_error": "duplicate dict key in replay report; preserved",
+  "workflow_plan": "passed; no execution",
+  "queue_receipt": "s2v59 + S3; egomap54 cancelled_by_supervisor; simspeed offline excluded (heading2)",
+  "posthoc_scoring": "all3 baseline +3 completed heading runs;114 TB metrics event/API matched; one4x video full decode/playback verified",
+  "previous_heading_tests": {
+    "passed": 18,
+    "wall_s": 22.21
+  },
+  "motion_scoring": "synthetic known forward/lateral/stationary segments and contact duration checked",
+  "test_runs": [
+    {
+      "file": "tests/test_s2_path_heading.py",
+      "passed": 19,
+      "wall_s": 15.94,
+      "phase": "before fixed DEV"
+    },
+    {
+      "file": "tests/test_simulation_workflow_manager.py",
+      "passed": 18,
+      "wall_s": 1.75,
+      "phase": "after DEV, catalog fixture correction only"
+    }
+  ],
+  "ci_before_fixture_fix": {
+    "run": 37902413405,
+    "source_sha": "b60acdca6e1c0c477d650b47717b84edb3f08a06",
+    "successful_checks": 31,
+    "failing_test": "test_every_catalog_workflow_has_a_read_only_explicit_plan",
+    "cause": "new v143 sample missing; test catalog entry added after all DEV",
+    "log": "/Users/changmin/projects/ugrp/outputs/s2-heading-b60acdca-cohort/ci-shard6-failure.log",
+    "log_sha256": "de75186e0c50f6e6ba5ccda60b4daecd8705df986abbb86cf806d2290395e13f"
+  }
+}

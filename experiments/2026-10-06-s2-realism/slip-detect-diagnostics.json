@@ -1,0 +1,142 @@
+{
+  "schema": "ugrp.s2.slip_detect.diagnostics.v1",
+  "gt_use": "none; candidate estimator audit only",
+  "source_sha": "adab260bd2f9daa701621defe54e24e7746ad1f9",
+  "status_counts": {
+    "normal_preserved": 1,
+    "slip_replaced": 5,
+    "unknown_preserved": 29
+  },
+  "late_measurements": [
+    {
+      "t": 197.55,
+      "accepted": true,
+      "informative": true,
+      "settled": true,
+      "visual_weight_update": true,
+      "absolute_fix": false,
+      "reason": "soft_weight_update",
+      "model": "ros_motion_v1",
+      "columns": 96,
+      "kl": 0.12336857951522853,
+      "odom": [
+        3.675793234873019,
+        1.5314628489578876,
+        1.0978656879790414
+      ],
+      "delta": [
+        0.2569072754107782,
+        -0.1436894525006529,
+        0.04619829980963308
+      ],
+      "converged_after": false
+    },
+    {
+      "t": 201.2,
+      "accepted": true,
+      "informative": false,
+      "settled": true,
+      "visual_weight_update": false,
+      "absolute_fix": false,
+      "reason": "constant_likelihood",
+      "model": "ros_motion_v1",
+      "columns": 96,
+      "kl": 1.0860101386058119e-17,
+      "odom": [
+        3.9269119143405877,
+        1.491236543046301,
+        1.1331646510844302
+      ],
+      "delta": [
+        0.25111867946756883,
+        -0.0402263059115866,
+        0.035298963105388825
+      ],
+      "converged_after": true
+    },
+    {
+      "t": 209.9,
+      "accepted": true,
+      "informative": false,
+      "settled": true,
+      "visual_weight_update": false,
+      "absolute_fix": false,
+      "reason": "constant_likelihood",
+      "model": "ros_motion_v1",
+      "columns": 10,
+      "kl": -1.1413055914939341e-16,
+      "odom": [
+        4.042205013982315,
+        1.7418308218310834,
+        1.133456352796004
+      ],
+      "delta": [
+        0.11529309964172718,
+        0.25059427878478235,
+        0.00029170171157377744
+      ],
+      "converged_after": true
+    }
+  ],
+  "last_informative_t": 197.55,
+  "carry_end_t": 241.05,
+  "gap_s": 43.5,
+  "unknown_pulse_113_7": {
+    "t": 113.7,
+    "key": "1:left:0.65:0.65",
+    "end": 114.45,
+    "status": "unknown_preserved",
+    "complete_visual": false,
+    "coverage": 0.0,
+    "tracked_fraction": 0.0,
+    "progress_ratio": null,
+    "slip_ratio": null,
+    "expected_delta": [
+      0.0008384274008474905,
+      0.16720000815625577,
+      -0.02653729002470778
+    ],
+    "visual_delta": null,
+    "applied_delta": [
+      0.0008384274008474905,
+      0.16720000815625577,
+      -0.02653729002470778
+    ],
+    "delta": [
+      0.0008384274008474905,
+      0.16720000815625577,
+      -0.02653729002470778
+    ],
+    "variance": [
+      2.0194436059117676e-06,
+      9.421889165666689e-06,
+      3.57533593911417e-05
+    ],
+    "covariance": null,
+    "pitch_radial_covariance": [
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "pitch_radial_sigma_m": 0.0,
+    "direction": [
+      0.0,
+      0.65
+    ],
+    "prediction_replaced": false,
+    "unchanged_profile_exact": true
+  },
+  "scope": "Diagnostic only, no retuning; changed motion trigger and particle distribution, no missing raw wall frame. Constant likelihood is not a useful correction."
+}

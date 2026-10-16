@@ -1,0 +1,127 @@
+{
+  "model_scene_sha256": "6d8df5b4da18280e25376a5765b305d797c3d3245da55bd1bdc58c01bd27b885",
+  "mujoco": "3.12.0",
+  "structural": [
+    {
+      "name": "arm_base",
+      "parent": "r3__robot",
+      "fixed_position_max": 0.0,
+      "fixed_quaternion_max": 0.0,
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "anchor": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "qpos_reference": 0.0
+    },
+    {
+      "name": "shoulder_link",
+      "parent": "r3__arm_base",
+      "fixed_position_max": 0.0,
+      "fixed_quaternion_max": 0.0,
+      "axis": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "anchor": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "qpos_reference": 0.0
+    },
+    {
+      "name": "elbow_link",
+      "parent": "r3__shoulder_link",
+      "fixed_position_max": 0.0,
+      "fixed_quaternion_max": 0.0,
+      "axis": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "anchor": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "qpos_reference": 0.0
+    },
+    {
+      "name": "wrist_link",
+      "parent": "r3__elbow_link",
+      "fixed_position_max": 0.0,
+      "fixed_quaternion_max": 0.0,
+      "axis": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "anchor": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "qpos_reference": 0.0
+    },
+    {
+      "name": "gripper",
+      "parent": "r3__wrist_link",
+      "fixed_position_max": 0.0,
+      "fixed_quaternion_max": 0.0
+    },
+    {
+      "name": "camera_mj",
+      "parent": "r3__gripper",
+      "fixed_position_max": 0.0,
+      "fixed_quaternion_max": 0.0
+    }
+  ],
+  "poses": 945,
+  "excluded_outside_joint_range": 0,
+  "max_by_link": {
+    "robot": {
+      "position_m": 0.0,
+      "rotation_matrix_max": 4.440892098500626e-16
+    },
+    "arm_base": {
+      "position_m": 6.206335383118183e-17,
+      "rotation_matrix_max": 6.661338147750939e-16
+    },
+    "shoulder_link": {
+      "position_m": 7.850462293418876e-17,
+      "rotation_matrix_max": 7.771561172376096e-16
+    },
+    "elbow_link": {
+      "position_m": 1.2719202621569003e-16,
+      "rotation_matrix_max": 9.992007221626409e-16
+    },
+    "wrist_link": {
+      "position_m": 1.8824747269678055e-16,
+      "rotation_matrix_max": 8.881784197001252e-16
+    },
+    "gripper": {
+      "position_m": 1.8824747269678055e-16,
+      "rotation_matrix_max": 8.881784197001252e-16
+    },
+    "camera_mj": {
+      "position_m": 2.387624894196368e-16,
+      "rotation_matrix_max": 1.27675647831893e-15
+    },
+    "camera_cv": {
+      "position_m": 2.387624894196368e-16,
+      "rotation_matrix_max": 1.27675647831893e-15
+    }
+  },
+  "pwm_target_max_rad": 0.0,
+  "yaw_formula_max_rad": 2.7755575615628914e-17,
+  "same_qpos_passed": true,
+  "camera_parent": "r3__gripper",
+  "mj_step_calls": 0
+}

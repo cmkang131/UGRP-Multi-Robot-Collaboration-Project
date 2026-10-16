@@ -1,0 +1,22 @@
+{
+  "schema": "ugrp.s2.tracking_recovery.preregistration.v1",
+  "stage": "s2v55",
+  "seed": 1060,
+  "source_execution_sha": "329eb4b604915c936630a06bede0caf41bf83483",
+  "option": "localization_recovery=augmented_mcl_v1",
+  "parameters": {"alpha_slow": 0.001, "alpha_fast": 0.1, "resample_interval": 1, "tracking_particles": 2000},
+  "recovery_xy_m": 0.25,
+  "convergence_std_xy_m": 0.05,
+  "gates": [
+    "baseline reproduces stored poses within 1e-9",
+    "default and explicit off preserve command/record bytes and particle trajectory hash",
+    "after last recorded positive-force wall contact, reconverge by recorded carry end: std_xy <= 0.05 and evaluated XY error <= 0.25m",
+    "carry-end evaluated XY error <= 0.25m",
+    "post-contact XY RMSE strictly improves versus off",
+    "whole-carry XY RMSE does not increase versus off"
+  ],
+  "no_threshold_changes_after_on_result": true,
+  "gt": "evaluation only after sealed own-RGB/command replay",
+  "physical_condition": "only if all offline gates pass; then preregister fresh seeds 1062-1064 before execution",
+  "seeds_1062_1064_registered_for_execution": false
+}

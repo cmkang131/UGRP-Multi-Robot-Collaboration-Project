@@ -1,0 +1,222 @@
+{
+  "research_result": false,
+  "max_concurrent": 8,
+  "cap_sim_s": 600,
+  "wall_cap_s": 3000,
+  "LP_NUM_THREADS": 4,
+  "runs": [
+    {
+      "name": "s4live9-no_comm-s601-v176",
+      "condition": "no_comm",
+      "seed": 601,
+      "argv": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s4_pair_live9",
+        "--expected-source-sha",
+        "<SOURCE_SHA>",
+        "--output",
+        "outputs/s4live9-no_comm-s601-v176/raw",
+        "--condition",
+        "no_comm",
+        "--seed",
+        "601",
+        "--inspect-before-look",
+        "--go-ack-retry",
+        "--terminal-censor",
+        "--relay-receipt",
+        "/home/ubuntu/ugrp-sim/s4live9-relay.json",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s4live9-peer_ko-s601-v176",
+      "condition": "peer_ko",
+      "seed": 601,
+      "argv": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s4_pair_live9",
+        "--expected-source-sha",
+        "<SOURCE_SHA>",
+        "--output",
+        "outputs/s4live9-peer_ko-s601-v176/raw",
+        "--condition",
+        "peer_ko",
+        "--seed",
+        "601",
+        "--inspect-before-look",
+        "--go-ack-retry",
+        "--terminal-censor",
+        "--relay-receipt",
+        "/home/ubuntu/ugrp-sim/s4live9-relay.json",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s4live9-leader_ko-s601-v176",
+      "condition": "leader_ko",
+      "seed": 601,
+      "argv": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s4_pair_live9",
+        "--expected-source-sha",
+        "<SOURCE_SHA>",
+        "--output",
+        "outputs/s4live9-leader_ko-s601-v176/raw",
+        "--condition",
+        "leader_ko",
+        "--seed",
+        "601",
+        "--inspect-before-look",
+        "--go-ack-retry",
+        "--terminal-censor",
+        "--relay-receipt",
+        "/home/ubuntu/ugrp-sim/s4live9-relay.json",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s4live9-structured-s601-v176",
+      "condition": "structured",
+      "seed": 601,
+      "argv": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s4_pair_live9",
+        "--expected-source-sha",
+        "<SOURCE_SHA>",
+        "--output",
+        "outputs/s4live9-structured-s601-v176/raw",
+        "--condition",
+        "structured",
+        "--seed",
+        "601",
+        "--inspect-before-look",
+        "--go-ack-retry",
+        "--terminal-censor",
+        "--relay-receipt",
+        "/home/ubuntu/ugrp-sim/s4live9-relay.json",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s4live9-no_comm-s602-v176",
+      "condition": "no_comm",
+      "seed": 602,
+      "argv": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s4_pair_live9",
+        "--expected-source-sha",
+        "<SOURCE_SHA>",
+        "--output",
+        "outputs/s4live9-no_comm-s602-v176/raw",
+        "--condition",
+        "no_comm",
+        "--seed",
+        "602",
+        "--inspect-before-look",
+        "--go-ack-retry",
+        "--terminal-censor",
+        "--relay-receipt",
+        "/home/ubuntu/ugrp-sim/s4live9-relay.json",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s4live9-peer_ko-s602-v176",
+      "condition": "peer_ko",
+      "seed": 602,
+      "argv": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s4_pair_live9",
+        "--expected-source-sha",
+        "<SOURCE_SHA>",
+        "--output",
+        "outputs/s4live9-peer_ko-s602-v176/raw",
+        "--condition",
+        "peer_ko",
+        "--seed",
+        "602",
+        "--inspect-before-look",
+        "--go-ack-retry",
+        "--terminal-censor",
+        "--relay-receipt",
+        "/home/ubuntu/ugrp-sim/s4live9-relay.json",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s4live9-leader_ko-s602-v176",
+      "condition": "leader_ko",
+      "seed": 602,
+      "argv": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s4_pair_live9",
+        "--expected-source-sha",
+        "<SOURCE_SHA>",
+        "--output",
+        "outputs/s4live9-leader_ko-s602-v176/raw",
+        "--condition",
+        "leader_ko",
+        "--seed",
+        "602",
+        "--inspect-before-look",
+        "--go-ack-retry",
+        "--terminal-censor",
+        "--relay-receipt",
+        "/home/ubuntu/ugrp-sim/s4live9-relay.json",
+        "--execute"
+      ]
+    },
+    {
+      "name": "s4live9-structured-s602-v176",
+      "condition": "structured",
+      "seed": 602,
+      "argv": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s4_pair_live9",
+        "--expected-source-sha",
+        "<SOURCE_SHA>",
+        "--output",
+        "outputs/s4live9-structured-s602-v176/raw",
+        "--condition",
+        "structured",
+        "--seed",
+        "602",
+        "--inspect-before-look",
+        "--go-ack-retry",
+        "--terminal-censor",
+        "--relay-receipt",
+        "/home/ubuntu/ugrp-sim/s4live9-relay.json",
+        "--execute"
+      ]
+    }
+  ],
+  "selection": "both fresh own RGB after supported floor release; bilateral regrasp with epoch>1; fresh two GO/ACK votes and actual two-robot commands; supported second carry>=20mm; full goal settled release judged separately; any horizon incomplete; ENOSPC/HOST failures included",
+  "toggles": [
+    "upstream inspect+canonical_pan",
+    "same_epoch_one_retry_per_robot",
+    "command_free_terminal_censor"
+  ],
+  "baseline": "s4live8 prior raw only; no matched causal ranking",
+  "references": [
+    {
+      "url": "https://www.cs.cmu.edu/~lew/PUBLICATION%20PDFs/VISUAL%20SERVOING/JRA%201987.pdf",
+      "use": "p407 move, settle, then new observation"
+    },
+    {
+      "url": "https://www.rfc-editor.org/rfc/rfc9110.html#section-9.2.2",
+      "use": "retry only unapplied action; new separately billed request, same epoch, once, no HTTP replay"
+    },
+    {
+      "url": "https://docs.python.org/3/library/asyncio-task.html#task-cancellation",
+      "use": "finally cleanup; our synchronous censor prevents event dispatch and fresh network sends"
+    }
+  ]
+}

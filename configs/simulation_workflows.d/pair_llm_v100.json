@@ -1,0 +1,22 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "zone-pair-llm-v100",
+      "version": "3.12.0",
+      "purpose": "DRAFT v100 pair carry with an LLM decision layer over the #363 v98 HIGH skill and own stop-decision hooks: rule / no_comm / peer_nl arms, 900 SIM s cap; stub model by default, --live smoke (<= 900 SIM s) through the study live driver and the audited local proxy (Refs #219)",
+      "entry": "scripts/run_pair_llm.py",
+      "runner": "scripts.run_pair_llm",
+      "docs": "experiments/2026-10-03-pair-llm-viability/README.md",
+      "requires": "Committed source; owned SIM slot; calibration (synthetic plumbing-only, admitted measured HIGH, or --admission dev-pilot with the exact #363 registered DEV hash; FUNCTIONAL_DEV, never promotable); own RGB/map/order sheet/commands/status/belief bands/window/delivered messages only; --live additionally needs --proxy-pid, --budget-db, --cohort-id and --cohort-token-cap and runs at most 900 SIM s",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--condition",
+        "--expected-source-sha"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}

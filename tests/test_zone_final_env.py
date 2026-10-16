@@ -137,6 +137,7 @@ def test_tag_hits_finds_keys_and_values_only(value, expected):
 EXPECTED_PASSAGES = {'zone_wide_door_geometry_v2': {'door_1': (.5, 1)},
                      'zone_wide_two_doors_final_v1': {'door_narrow': (.5, 1), 'door_wide': (1., 2)},
                      'zone_wide_corridor_final_v1': {'corridor_1': (.5, 1)}}
+EXPECTED_PASSAGES.update({new: EXPECTED_PASSAGES[old] for new, old in fe.V3_MAP_PARENTS.items()})
 
 
 @pytest.mark.parametrize('map_id', sorted(fe.FINAL_MAPS))

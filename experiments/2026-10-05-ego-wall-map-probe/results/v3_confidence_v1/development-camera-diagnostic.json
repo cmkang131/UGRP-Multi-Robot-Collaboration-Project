@@ -1,0 +1,47 @@
+{
+  "scope": "evaluation only after development predictions, no parameter fitting",
+  "cases": {
+    "s1042": {
+      "count": 736,
+      "tilt_deg_quantiles": {
+        "min": 0.004441703957636013,
+        "p10": 0.025391845909382087,
+        "median": 0.057485727436992776,
+        "p90": 0.12673960892430575,
+        "max": 0.276545538532368
+      },
+      "bundle": "zone-s2-realism-v117",
+      "source_sha": "ef820ab2d367b1a25e14b0cc4df6be4b3e58bb3d",
+      "v110_camera_binding_ancestor": true,
+      "eval_only_source": "/Users/changmin/projects/ugrp/outputs/s2-realism-ef820ab2-s1042-P1-2-pick/eval_only/supervisor.jsonl",
+      "sha256": "9c500ffb88d521f3b39db9d25df9383d609915e4072f727bcd66f1939cc31df5"
+    },
+    "s1043": {
+      "count": 416,
+      "tilt_deg_quantiles": {
+        "min": 0.0008914881033783252,
+        "p10": 0.024479378101499284,
+        "median": 0.05908049061060007,
+        "p90": 0.11977257637772903,
+        "max": 0.26441223750463366
+      },
+      "bundle": "zone-s2-realism-v119",
+      "source_sha": "f6cb04b360363edde2683fa50941d377d20f5758",
+      "v110_camera_binding_ancestor": true,
+      "eval_only_source": "/Users/changmin/projects/ugrp/outputs/s2-realism-f6cb04b3-s1043-P1-2-pick/eval_only/supervisor.jsonl",
+      "sha256": "85d7c88fac1978f2d7af552115d6246df38c4a383f302dfdb1852c1a39ff97d7"
+    }
+  },
+  "range_projection_diagnostic": {
+    "frame": 701,
+    "direct_pinhole_vs_column_max_m": 1.8207657603852567e-14,
+    "samples": 1332,
+    "range_error_median_m": 0.6861133389115275,
+    "range_error_p10_p90_m": [
+      0.5390245831620281,
+      0.9135625865487197
+    ],
+    "warning": "Same-bearing first-wall range diagnostic is not a pixel semantic label; actual camera GT not recorded.",
+    "scene_wall_centers_half_extents_match_static_map": true
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "schema": "ugrp.zone_scenario.v1",
+  "scenario_id": "pair1_p03_long_beam_v3",
+  "map_id": "zone_wide_door_geometry_v3",
+  "landmark_detail": "none",
+  "seeds": [
+    911
+  ],
+  "orders": [
+    {
+      "order_id": "cargoX",
+      "kind": "long_beam",
+      "count": 1,
+      "identity": "kind_fungible",
+      "required_robots": 2,
+      "destination_zone": "B",
+      "initial_location": {
+        "pickup_bay": "P2",
+        "slot": "P2-3"
+      }
+    }
+  ],
+  "eval": {
+    "hidden_events": [],
+    "design_notes_ko": "v3 P03 한 문이 있는 지도에서 긴 보 하나를 두 로봇이 B 구역으로 옮긴다. v88 스크립트 임무와 같은 주문이다. 숨은 사건 없음."
+  }
+}

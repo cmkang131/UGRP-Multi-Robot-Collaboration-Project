@@ -29,3 +29,9 @@ def own_scene(spec, profile, scene=None, *, scene_factory=None):
 def scene_static_map(map_id):
     from harness.zone_environment_registry import resolve_static_map
     return resolve_static_map(map_id)[0]
+
+
+def scenario_scene(scenario, seed):
+    """Explicit mixed v4 setup; does not change own_scene's frozen factories."""
+    from sim.zone_scenario_scene import ScenarioFinalV3Scene
+    return ScenarioFinalV3Scene.from_scenario(scenario, seed)

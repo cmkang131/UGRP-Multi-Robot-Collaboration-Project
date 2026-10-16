@@ -45,6 +45,13 @@ BEAM_GEOMETRY = {'center_m': [0., 0., .016], 'half_extents_m': [.3, .02, .016], 
                             'end_pos': {'xyz_m': [.27, 0., .024], 'yaw_rad': math.pi}}}
 
 
+
+@pytest.fixture(autouse=True)
+def _dev_light_off(monkeypatch):
+    """These tests cover the enforcing (non-light) behaviour; DEV light has its own tests (test_highpose_guard_log_only)."""
+    from harness import zone_pair_highpose_contract as _c
+    monkeypatch.setattr(_c, 'DEV_LIGHT', False)
+
 def plan(route, checkpoints=None):
     return {'route': [list(p) for p in route], 'passage': PASSAGE, 'checkpoint_segments': checkpoints or {}}
 
@@ -437,7 +444,8 @@ def test_mixin_placement_in_the_v98_class():
     from scripts import run_m2_pair as m2
     cls = rt.controller_class(type('B', (V3Controller, m2.M2DoorStudent), {}))
     mro = cls.__mro__
-    assert mro[1] is DeferRelook and mro[2] is rf.SigmaRefix and mro[3] is HighController
+    # v105 DEV light: LightFail (fail/_transit_abort log-only for soft reasons) sits in front and delegates to super()
+    assert mro[1] is rt.LightFail and mro[2] is DeferRelook and mro[3] is rf.SigmaRefix and mro[4] is HighController
     assert '_wait_lower' in vars(HighController) and '_wait_open' in vars(HighController)
 
 

@@ -1,0 +1,36 @@
+{
+  "preregistered_before_replay": true,
+  "recorded_at": "2026-10-09T19:31:14.233819+09:00",
+  "parameters": {
+    "initial": 400000,
+    "kld_min": 8000,
+    "kld_max": 400000,
+    "epsilon": 0.05,
+    "confidence": 0.99,
+    "alpha_slow": 0.001,
+    "alpha_fast": 0.1,
+    "max_extra_head_views": 2
+  },
+  "seeds": [
+    14201,
+    1065,
+    1066,
+    1067,
+    1068,
+    1069,
+    1070
+  ],
+  "seed_changed": false,
+  "source_hashes": {
+    "harness/zone_s3_dev_light.py": "976098c6cc30ce784034e479de5ad8bbcc52852c0355487e76947829445f2cf1",
+    "harness/zone_s3_global_diversity.py": "b7b29a5fb7958e0e28e8b1cdb2ebbf2eec96bdd41f85bbfd5635c97eb6afbf9a",
+    "harness/zone_s3_continue.py": "5c6062f58afb3cf603216df50168dcd9e1e4d05c4f91cf6fc74f0291588b11c6",
+    "harness/zone_s3_continue_contract.py": "accccb9113e35b738186546b715e5aa91a5aed8ab1b17e579d8a5196d25b54c2",
+    "scripts/run_s3_continue.py": "498cc598eee092a8218588c2d305075d00768fc645fcc9f52382e35ed03ae3d7"
+  },
+  "sources": [
+    "https://www.robots.ox.ac.uk/~cvrg/hilary2005/adaptive.pdf",
+    "https://github.com/ros-navigation/navigation2/blob/main/nav2_amcl/src/pf/pf.c",
+    "https://www.ijcai.org/Proceedings/97-2/Papers/080.pdf"
+  ]
+}

@@ -37,6 +37,75 @@
       "api_failure_trial_rule": "any_api_error_or_budget_cap_or_no_successful_model_reply",
       "note_ko": "모델 설정은 통합 번들의 PLANNED_MODEL(model·temperature·reasoning_effort)과 같아야 한다. max_tokens·timeout은 #222 파일럿 요청값. 프록시 소스는 읽기(해시)만 하고 수정·기동하지 않는다. 모든 조건에서 API 오류 1건 이상인 시행은 infra:API로 분류하고 실제 POST 간격은 최소 2 wall초로 고정한다. wall 간격은 SIM 비용에 넣지 않는다",
       "min_request_interval_s": 2.0
+    },
+    "dev_gemini_gemma_fallback_v1": {
+      "model": {
+        "model": "gemini-3.8-flash",
+        "temperature": 0.2,
+        "reasoning_effort": "none",
+        "max_tokens": 1400,
+        "timeout": 180.0
+      },
+      "proxy_url": "http://127.0.0.1:18391/v1/chat/completions",
+      "proxy_source": "scripts/s4_proxy_relay.py",
+      "min_free_disk_gib": 10,
+      "retry_policy": "once_in_place_only_if_host_error_before_first_model_request",
+      "api_failure_trial_rule": "any_api_error_or_budget_cap_or_no_successful_model_reply",
+      "note_ko": "DEV 전용 명시적 토글. Gemini 구독 → AI Studio Gemma 4 31B. 실제 ID·이미지 입력은 키체인 키로 models.list와 RGB 1회 검증 후 확정한다. 본 연구 번들의 admitted 목록에 추가하지 않는다. S4 DEV bundle의 driver_profile과 Mac relay --gemma-fallback이 일치해야 한다.",
+      "min_request_interval_s": 2.0,
+      "scope": "DEV_only",
+      "enabled_by_default": false,
+      "fallback": {
+        "provider": "google_aistudio_gemma",
+        "requested_family": "Gemma 4 31B",
+        "model_id": "gemma-4-31b-it",
+        "model_id_source": "models.list:2026-10-11",
+        "proxy_source": "scripts/gemma_fallback_proxy.py",
+        "keychain_service": "ugrp-gemma-aistudio",
+        "max_attempts_per_request": 1,
+        "image_probe_required": true,
+        "rpm": null,
+        "rpd": null
+      }
+    },
+    "study_gemma4_31b_v1": {
+      "model": {
+        "model": "gemma-4-31b-it",
+        "temperature": 0.2,
+        "reasoning_effort": "none",
+        "max_tokens": 800,
+        "timeout": 180.0
+      },
+      "proxy_url": "http://127.0.0.1:18391/v1/chat/completions",
+      "proxy_source": "scripts/s4_proxy_relay.py",
+      "min_free_disk_gib": 10,
+      "retry_policy": "once_in_place_only_if_host_error_before_first_model_request",
+      "api_failure_trial_rule": "any_api_error_or_budget_cap_or_no_successful_model_reply",
+      "note_ko": "단일 Gemma 모델; Gemini 대체 호출 없음. 영어 기본. 키는 Mac 키체인만. 실제 countTokens와 전체 실행 공용 TPM/RPM 버킷.",
+      "min_request_interval_s": 2.0,
+      "scope": "single_model_standard",
+      "prompt_lang": "en",
+      "fallback": null,
+      "model_pin": {
+        "model_id": "gemma-4-31b-it",
+        "models_list_version": "001",
+        "immutable_revision_available": false,
+        "drift_rule": "reject_models_list_version_change; record_each_response_modelVersion"
+      },
+      "free_limits": {
+        "tpm": 16000,
+        "rpm": 30,
+        "rpd": 14400,
+        "source": "user_AI_Studio_screen_2026-10-11",
+        "headroom": 0.1
+      },
+      "thinking": {
+        "thinkingLevel": "minimal",
+        "separate_thought_token_cap_supported": false,
+        "max_output_tokens_includes_thinking": true
+      },
+      "input_token_cap": 2500,
+      "quality_gate": "paired_RGB_protocol_probe_then_Azure_DEV_comparison; no_historical_pooling"
     }
   },
   "bundles": {

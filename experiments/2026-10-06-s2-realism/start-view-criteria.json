@@ -1,0 +1,51 @@
+{
+  "schema": "ugrp.s2.start_view.criteria.v1",
+  "date": "2026-10-07",
+  "scope": "s2v31 diagnostic and unchanged s2v29 replay verification; previously seen development data, not confirmation",
+  "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-18e5e42e-s1052-P1-2-place",
+  "window_sim_s": [
+    1.3,
+    12.0
+  ],
+  "source_head": "26d530522362bc0c08c6c1493d0b16f52e0d4b46",
+  "diagnosis_completed_before_registration": true,
+  "diagnosis": "8.25 LOOK_P20 actual pitch -11.29597 deg vs table -9.96761 deg; 96/96 true bottom visible; evaluation-only pitch ablation 0 to 92 columns",
+  "controller_candidate": "unchanged global_localization=augmented_active_v1, default off",
+  "conditional_gaze_action": "not triggered: floor boundaries already visible; no additional gaze policy, gate change or truth-derived calibration",
+  "replay_criteria_file": "dock-augmented-criteria.json",
+  "replay_criteria_sha256": "04b072f0a2bfaa946f465c80744462772fd2ce8cfe741abcfb8a173809b2fff9",
+  "replay_gates": {
+    "default_off_pose_bytes_equal": true,
+    "true_neighborhood_survives": "at least one particle within 0.25m and 15deg throughout stationary scan; evaluation only",
+    "position_error_final_m_at_most": 0.25,
+    "position_error_max_m_at_most": 0.5,
+    "position_rmse_below_baseline_m": 1.4228315035553356,
+    "no_false_resolved": true,
+    "repeated_identical_view_no_update": true
+  },
+  "stiffness_comparison": {
+    "option": "servo_stiffness=real_v1",
+    "source": "7d109118516e0f80484f17eaa96f1c0c706e4ebe",
+    "method": "existing PR405 measured SEARCH transforms projected at same s1052 pose, evaluation only",
+    "look_p20_on_measured": false,
+    "old_off_rgb_is_not_on_rgb": true
+  },
+  "physical_if_all_pass": {
+    "seed": 1052,
+    "runs": 1,
+    "mode": "S2 full DEV",
+    "idle_robot_contacts": "freeze_v1",
+    "servo_stiffness": "real_v1",
+    "requires": [
+      "new-plant camera calibration for all S2 poses including loaded real_delivery",
+      "servo settling and grasp/load stability",
+      "v7 finite-pulse mean and covariance by load and posture",
+      "RGB gate qualification"
+    ],
+    "start_dock_prior": false
+  },
+  "gt_use": "separate evaluation diagnostics/scoring only; never PF inputs",
+  "failure_policy": "No full DEV if replay fails or new-plant calibration missing",
+  "physics_budget_if_not_admitted": 0,
+  "model_calls": 0
+}

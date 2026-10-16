@@ -1,0 +1,33 @@
+{
+  "source_sha": "26105759",
+  "hashes": {
+    "experiments/2026-10-07-s2-projection-comparison/README.md": "0d46ac49d0d28e4e80c7f8349c177f2d42e0604303ebae0ef0d8c682d8e67ff7",
+    "experiments/2026-10-07-s2-projection-comparison/sources.json": "87d82faf757303682075dc85b03d6282f388b6e218dd7a2a1b1a2a10f7bcb0fe",
+    "experiments/2026-10-07-s2-projection-comparison/sources/audit_s1050_projection.py": "233040fcffca07fb0c48b93129fde6d615c8426fe149a18962b4459c856d41a0",
+    "experiments/2026-10-07-s2-projection-comparison/sources/s2_camera_v3_unloaded_sag_v1.json": "3e873ab133ebe3ac4e4f7dc028fa177dcb694e24d089082ff5777f7dddeb2c3f",
+    "experiments/2026-10-07-s2-projection-comparison/sources/vision_loc.py": "d320d8d63c0551d254fe654efadaa12abf6365fc78dd151ba7c254d5a326cc2e",
+    "experiments/2026-10-07-s2-projection-comparison/sources/vision_pose_source_final.py": "15be5965211f5c653a8b8264eac36bb44a20e1e8bd262f297d702ecbae524195",
+    "experiments/2026-10-07-s2-projection-comparison/sources/vision_pose_source_highpose.py": "a8d43c3d7c205baadc5d8448d4298e8128d29c224da6e9687ec5ab47b9b69108",
+    "experiments/2026-10-07-s2-projection-comparison/sources/zone_final_pair_camera.py": "0debca532478d2e08ca3fd5db0ed62f3b8776a95294464a73cef680ce6900770",
+    "experiments/2026-10-07-s2-projection-comparison/sources/zone_final_pair_contract.py": "c0c6a81cf40ba8221d644c39deafb5ec29d92410f4a897af3f51ed68380a7987",
+    "experiments/2026-10-07-s2-projection-comparison/sources/zone_solo_cyan_real_carry.py": "9cc77a5e1f98dafed9b7ad6c5a6cfc8f6ce263972b1ecf5258603c1c9bcc566a",
+    "experiments/2026-10-07-s2-projection-comparison/sources/zone_solo_cyan_real_carry_dev.py": "9cb7cdeb2984c3fc0595065ddce876c597e81e83ff0eb6f7fa9fcb6806a246ac",
+    "experiments/2026-10-07-s2-projection-comparison/code/s2_path.py": "5b3623efd91c8b77879e29106edbdaef9562b7f4f775408ce22543eb610ba04e",
+    "experiments/2026-10-07-s2-projection-comparison/code/compare.py": "4c1089c128124bc1eb3758ddd3bef4e062e8b02f406b8d94d5d87ec9f6da83c7",
+    "experiments/2026-10-07-wall-floor-boundary/annotation-sample.json": "e545f71d93b41388ddfd9c93c430a05317cd6ddafcc7f17a7f6d40b413dd674f",
+    "experiments/2026-10-07-camera-pose-projection/code/audit.py": "f2a492a3bd22ed227803fd9e98b9f3aff5965ea101a7f27a800b5d5e3af9b728",
+    "experiments/2026-10-07-camera-pose-projection/code/evaluate_fk.py": "c1634a26a624cbd6d9daa08bec44c759bda38d44fa7dbcc60e42f7d68a31e461",
+    "experiments/2026-10-05-ego-wall-map-probe/code/v3_confidence_replay.py": "df921757787f909e0a81ec96995eae60c77a72cf0fa0d9b622930e521a4f7c79"
+  },
+  "criteria": {
+    "median_m": 0.1,
+    "p90_m": 0.25,
+    "min_points": 50,
+    "valid_fraction": 0.95,
+    "baseline_nonincrease": true
+  },
+  "development_passed": 0,
+  "development_cases": 2,
+  "tuning": false,
+  "notes": "Fixed original S2 path. Development outputs at s2-projection-comparison-v1-complete. README prereg stays immutable; subsequent report in RESULTS.md."
+}

@@ -1,0 +1,842 @@
+{
+  "schema": "ugrp.s3fix6.v151-summary.v1",
+  "source_sha": "3ec2d781789522a3f155eb81dd03f5682731e530",
+  "bundle": "zone-s3-consistency-v151",
+  "seed": 14201,
+  "status": "DEV_NOT_DELIVERED",
+  "physical_attempts": 1,
+  "qualification": "DEV simulator only; not graduation, hardware success, or independent research cohort",
+  "raw": "/Users/changmin/projects/ugrp/outputs/s3-consistency-3ec2d781-s14201-v151",
+  "report": "/Users/changmin/projects/ugrp/outputs/s3fix6-20261010/v151-report/smoke-report.json",
+  "observation_option": "off",
+  "gt_use": "post-run evaluation only",
+  "actual_stop": {
+    "kind": "finite local job budget",
+    "controller_failures": {
+      "r1": "LOCAL_TIMEOUT",
+      "r2": "LOCAL_TIMEOUT"
+    },
+    "pair_job_limit_s": 900.0,
+    "terminal_sim_t": 922.55,
+    "final_sim_t": 925.55,
+    "host_error": false,
+    "physical_failure_stop": false
+  },
+  "first_location": {
+    "r1": {
+      "t_sim_s": 13.5,
+      "estimate_t": 13.34,
+      "elapsed_from_first_frame_s": 12.2,
+      "xy_error_m": 0.026296539986631152,
+      "yaw_error_deg": 2.010974964675302,
+      "sigma_xy_m": 1.8404065567893735,
+      "sigma_yaw_deg": 67.5609804924593,
+      "accurate": true,
+      "certificate": {
+        "option": "posterior_consensus_v1",
+        "estimate_t": 13.34,
+        "qualified": false,
+        "covariance_ok": false,
+        "all_particles_compact": false,
+        "connected_modes": 2,
+        "gt_inputs": false,
+        "qualification": "posterior certificate only; accuracy requires eval_only",
+        "released_t": 13.5
+      },
+      "connected_modes": 2
+    },
+    "r2": {
+      "t_sim_s": 13.5,
+      "estimate_t": 13.34,
+      "elapsed_from_first_frame_s": 12.2,
+      "xy_error_m": 0.03953718742000841,
+      "yaw_error_deg": 1.6124946417887247,
+      "sigma_xy_m": 0.20860964185748732,
+      "sigma_yaw_deg": 7.34648601849228,
+      "accurate": true,
+      "certificate": {
+        "option": "posterior_consensus_v1",
+        "estimate_t": 13.34,
+        "qualified": false,
+        "covariance_ok": false,
+        "all_particles_compact": false,
+        "connected_modes": 2,
+        "gt_inputs": false,
+        "qualification": "posterior certificate only; accuracy requires eval_only",
+        "released_t": 13.5
+      },
+      "connected_modes": 2
+    },
+    "r3": {
+      "t_sim_s": 13.5,
+      "estimate_t": 13.34,
+      "elapsed_from_first_frame_s": 12.2,
+      "xy_error_m": 0.003887017675199066,
+      "yaw_error_deg": 0.5756560943590964,
+      "sigma_xy_m": 0.0583070051532328,
+      "sigma_yaw_deg": 1.3684972446766488,
+      "accurate": true,
+      "certificate": {
+        "option": "posterior_consensus_v1",
+        "estimate_t": 13.34,
+        "qualified": false,
+        "covariance_ok": false,
+        "all_particles_compact": false,
+        "connected_modes": 2,
+        "gt_inputs": false,
+        "qualification": "posterior certificate only; accuracy requires eval_only",
+        "released_t": 13.5
+      },
+      "connected_modes": 2
+    }
+  },
+  "first_convergence": {
+    "r1": {
+      "released_t": 36.95,
+      "estimate_t": 36.79,
+      "std_xy_m": 0.013210548817776065,
+      "actual_xy_error_m": 0.02551429127219264,
+      "actual_yaw_error_deg": 1.9579163211249193,
+      "wrong_mode": false
+    },
+    "r2": {
+      "released_t": 112.3,
+      "estimate_t": 112.14,
+      "std_xy_m": 0.04913114341500979,
+      "actual_xy_error_m": 0.3200988510734814,
+      "actual_yaw_error_deg": 0.8414376754694449,
+      "wrong_mode": true
+    },
+    "r3": null
+  },
+  "last_location": {
+    "r1": {
+      "t_sim_s": 922.55,
+      "estimate_t": 922.39,
+      "elapsed_from_first_frame_s": 921.25,
+      "xy_error_m": 0.17473940996124526,
+      "yaw_error_deg": 0.3392356860279829,
+      "sigma_xy_m": 0.024701319656892887,
+      "sigma_yaw_deg": 1.494569358954517,
+      "accurate": true,
+      "certificate": {
+        "option": "posterior_consensus_v1",
+        "estimate_t": 922.39,
+        "qualified": false,
+        "covariance_ok": false,
+        "all_particles_compact": true,
+        "connected_modes": 1,
+        "gt_inputs": false,
+        "qualification": "posterior certificate only; accuracy requires eval_only",
+        "released_t": 922.55
+      },
+      "connected_modes": 1
+    },
+    "r2": {
+      "t_sim_s": 922.55,
+      "estimate_t": 922.39,
+      "elapsed_from_first_frame_s": 921.25,
+      "xy_error_m": 0.3277959956243759,
+      "yaw_error_deg": 0.8726922214438375,
+      "sigma_xy_m": 0.005485558540121379,
+      "sigma_yaw_deg": 0.44528684269541713,
+      "accurate": false,
+      "certificate": {
+        "option": "posterior_consensus_v1",
+        "estimate_t": 922.39,
+        "qualified": false,
+        "covariance_ok": false,
+        "all_particles_compact": true,
+        "connected_modes": 2,
+        "gt_inputs": false,
+        "qualification": "posterior certificate only; accuracy requires eval_only",
+        "released_t": 922.55
+      },
+      "connected_modes": 2
+    },
+    "r3": {
+      "t_sim_s": 922.55,
+      "estimate_t": 922.39,
+      "elapsed_from_first_frame_s": 921.25,
+      "xy_error_m": 0.0060678254823271155,
+      "yaw_error_deg": 0.2941846603167369,
+      "sigma_xy_m": 0.0583070051532328,
+      "sigma_yaw_deg": 1.3684972446766488,
+      "accurate": true,
+      "certificate": {
+        "option": "posterior_consensus_v1",
+        "estimate_t": 922.39,
+        "qualified": false,
+        "covariance_ok": false,
+        "all_particles_compact": false,
+        "connected_modes": 2,
+        "gt_inputs": false,
+        "qualification": "posterior certificate only; accuracy requires eval_only",
+        "released_t": 922.55
+      },
+      "connected_modes": 2
+    }
+  },
+  "stages": {
+    "r1": {
+      "first_pair_states": {
+        "wait_approach": 125.8,
+        "align_start": 542.3,
+        "align": 542.4,
+        "align_relook_stop": 543.3,
+        "align_relook": 543.5,
+        "align_relook_return": 544.9
+      },
+      "solo_state": null,
+      "jobs": [
+        {
+          "job_id": "r1-job-001",
+          "kind": "look_around",
+          "outcome": "LOOKED_POSE_UNCERTAIN",
+          "confirmation": "unconfirmed",
+          "started_at_sim_s": 13.55,
+          "ended_at_sim_s": 22.45,
+          "slot_id": null,
+          "level": "high",
+          "gate": "uncertain",
+          "failed_checks": [
+            "fix_in_sweep"
+          ]
+        },
+        {
+          "job_id": "r1-job-003",
+          "kind": "pair_carry",
+          "outcome": "LOCAL_TIMEOUT",
+          "confirmation": "failed",
+          "started_at_sim_s": 22.5,
+          "ended_at_sim_s": 922.55,
+          "slot_id": null
+        }
+      ],
+      "chassis_commands": 135,
+      "max_displacement_m": 1.3761654602154783,
+      "pick": false,
+      "carry": false,
+      "door_crossing": false,
+      "place": false,
+      "return_scope": "not implemented by S3 host; not claimed"
+    },
+    "r2": {
+      "first_pair_states": {
+        "approach": 222.6,
+        "wait_approach": 542.0,
+        "align_start": 542.3,
+        "align": 542.4,
+        "align_relook_stop": 543.3,
+        "align_relook": 543.5,
+        "align_relook_return": 544.9
+      },
+      "solo_state": null,
+      "jobs": [
+        {
+          "job_id": "r2-job-001",
+          "kind": "look_around",
+          "outcome": "LOOKED_POSE_UNCERTAIN",
+          "confirmation": "unconfirmed",
+          "started_at_sim_s": 13.55,
+          "ended_at_sim_s": 22.45,
+          "slot_id": null,
+          "level": "high",
+          "gate": "uncertain",
+          "failed_checks": [
+            "fix_in_sweep"
+          ]
+        },
+        {
+          "job_id": "r2-job-003",
+          "kind": "pair_carry",
+          "outcome": "LOCAL_TIMEOUT",
+          "confirmation": "failed",
+          "started_at_sim_s": 22.5,
+          "ended_at_sim_s": 922.55,
+          "slot_id": null
+        }
+      ],
+      "chassis_commands": 477,
+      "max_displacement_m": 2.802076262117193,
+      "pick": false,
+      "carry": false,
+      "door_crossing": false,
+      "place": false,
+      "return_scope": "not implemented by S3 host; not claimed"
+    },
+    "r3": {
+      "first_pair_states": {},
+      "solo_state": "search_move",
+      "jobs": [],
+      "chassis_commands": 0,
+      "max_displacement_m": 0.003658144367986007,
+      "pick": false,
+      "carry": false,
+      "door_crossing": false,
+      "place": false,
+      "return_scope": "not implemented by S3 host; not claimed"
+    }
+  },
+  "commands": {
+    "r1": 6905,
+    "r2": 12560,
+    "r3": 18768
+  },
+  "would_stop_counts": {
+    "ARM_COLLISION_GUARD": 23,
+    "POSE_CLUSTER_UNCERTAIN": 60,
+    "GLOBAL_START_UNRESOLVED": 3,
+    "POSE_UNCERTAIN": 5099,
+    "SWEEP_TRANSITION_BLOCKED": 547,
+    "SELF_UNCERTAIN": 4,
+    "PAIR_COLLISION_GUARD": 83,
+    "PAIR_REOBSERVE_TIMEOUT": 5607,
+    "APPROACH_ARRIVAL_UNCONFIRMED": 1,
+    "APPROACH_TIMEOUT": 2,
+    "APPROACH_LOST": 5,
+    "BARRIER_APPROACH_TIMEOUT": 2,
+    "APPROACH_SWEEP_TRANSITION_BLOCKED": 1074,
+    "REOBSERVATION_NO_FIX": 1,
+    "APPROACH_ARRIVAL_NOT_CONFIRMED_BY_VIEW": 1,
+    "ALIGN_RELOOK_LIMIT": 7170,
+    "UNMEASURED_V3_CAMERA_POSTURE": 2281
+  },
+  "would_stop_total": 21963,
+  "would_stop_scope": "hook occurrences; includes distinct local/pair/legacy hooks, not physical failures or disk writes",
+  "pose_validity": {
+    "r1": {
+      "option": "defer_unmeasured_v1",
+      "gt_inputs": false,
+      "count": 0,
+      "first": null,
+      "last": null
+    },
+    "r2": {
+      "option": "defer_unmeasured_v1",
+      "gt_inputs": false,
+      "count": 2281,
+      "first": {
+        "t": 315.3,
+        "code": "UNMEASURED_V3_CAMERA_POSTURE",
+        "reason": "UNMEASURED_V3_CAMERA_POSTURE: unloaded:1072,2400,1482,1630",
+        "action": "prediction_only",
+        "visual_update": false,
+        "commanded_servo": {
+          "1": 2000,
+          "3": 1072,
+          "4": 2400,
+          "5": 1482,
+          "6": 1630
+        }
+      },
+      "last": {
+        "t": 429.3,
+        "code": "UNMEASURED_V3_CAMERA_POSTURE",
+        "reason": "UNMEASURED_V3_CAMERA_POSTURE: unloaded:1072,2400,1482,1630",
+        "action": "prediction_only",
+        "visual_update": false,
+        "commanded_servo": {
+          "1": 2000,
+          "3": 1072,
+          "4": 2400,
+          "5": 1482,
+          "6": 1630
+        }
+      }
+    },
+    "r3": {
+      "option": "defer_unmeasured_v1",
+      "gt_inputs": false,
+      "count": 0,
+      "first": null,
+      "last": null
+    }
+  },
+  "invalid_pose_exclusions": {
+    "r1": 0,
+    "r2": 0,
+    "r3": 0
+  },
+  "nonfinite_record_fields": [],
+  "camera_contract": {
+    "r1": {
+      "rendered": 18426,
+      "own_frames": 18426,
+      "first": {
+        "t": 1.3,
+        "camera_binding": "v3_persistent_v1",
+        "local_position_m": [
+          0.052982009925558314,
+          0.0,
+          0.028152173913043477
+        ],
+        "local_quat_wxyz": [
+          0.4545194776720437,
+          0.5416752204197018,
+          -0.5416752204197018,
+          -0.4545194776720437
+        ]
+      },
+      "all_mounts_equal_s2": true,
+      "frame_times_match": true
+    },
+    "r2": {
+      "rendered": 18426,
+      "own_frames": 18426,
+      "first": {
+        "t": 1.3,
+        "camera_binding": "v3_persistent_v1",
+        "local_position_m": [
+          0.052982009925558314,
+          0.0,
+          0.028152173913043477
+        ],
+        "local_quat_wxyz": [
+          0.4545194776720437,
+          0.5416752204197018,
+          -0.5416752204197018,
+          -0.4545194776720437
+        ]
+      },
+      "all_mounts_equal_s2": true,
+      "frame_times_match": true
+    },
+    "r3": {
+      "rendered": 18426,
+      "own_frames": 18426,
+      "first": {
+        "t": 1.3,
+        "camera_binding": "v3_persistent_v1",
+        "local_position_m": [
+          0.052982009925558314,
+          0.0,
+          0.028152173913043477
+        ],
+        "local_quat_wxyz": [
+          0.4545194776720437,
+          0.5416752204197018,
+          -0.5416752204197018,
+          -0.4545194776720437
+        ]
+      },
+      "all_mounts_equal_s2": true,
+      "frame_times_match": true
+    }
+  },
+  "heading": {
+    "option": "pair_heading_pulse_v1",
+    "scope": "heading for solo/approach; coupled beam carry preserves legacy schedule",
+    "exceptions": {
+      "coupled_beam_carry": {
+        "robots": [
+          "r1",
+          "r2"
+        ],
+        "required_robots": 2,
+        "controller_state": "carry",
+        "partner_enum": "carry or matching consumed carry GO",
+        "motion": "unchanged registered pair schedule, including lateral",
+        "entry": "existing two-party GO and own commanded grasp",
+        "exit": "own commanded release",
+        "gt_inputs": false
+      }
+    },
+    "prediction": {
+      "r1": {
+        "exception": "coupled_beam_carry",
+        "pose_reset": false,
+        "gt_inputs": false,
+        "motion_loaded": {
+          "deadband": {
+            "c0": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "u0": [
+              0.005399036624742172,
+              0.007171165899391851,
+              0.0
+            ],
+            "u1": [
+              1e-06,
+              1e-06,
+              0.031909184676893604
+            ]
+          },
+          "drift_ratio_std": 0.0010101039283118686,
+          "gain": [
+            [
+              1.5699011823525189,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.1802079812547774,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.9073154343172743
+            ]
+          ],
+          "load_transition": {
+            "scale_std": [
+              0.015438183016723523,
+              0.028375634454031292,
+              0.0
+            ],
+            "unloaded_scale_std": 0.0
+          },
+          "noise_abs": [
+            0.002,
+            0.002,
+            0.01406
+          ],
+          "noise_rel": [
+            0.01557908035037392,
+            0.016615528370925847,
+            0.1116
+          ],
+          "rest_noise": false,
+          "scale_std": 0.0,
+          "scale_walk": 0.0,
+          "tau_axis_s": [
+            1.0172334542665913,
+            1.0318894263033787,
+            0.6555100032553108
+          ],
+          "tau_s": 1.0172334542665913,
+          "tau_stop_s": 0.10035335696344526,
+          "use_scale": false,
+          "yaw_bias_std_rad_s": 0.00023380193446118067
+        },
+        "source": "same static pair params used by door_schedule",
+        "transitions": []
+      },
+      "r2": {
+        "exception": "coupled_beam_carry",
+        "pose_reset": false,
+        "gt_inputs": false,
+        "motion_loaded": {
+          "deadband": {
+            "c0": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "u0": [
+              0.005399036624742172,
+              0.007171165899391851,
+              0.0
+            ],
+            "u1": [
+              1e-06,
+              1e-06,
+              0.031909184676893604
+            ]
+          },
+          "drift_ratio_std": 0.0010101039283118686,
+          "gain": [
+            [
+              1.5699011823525189,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.1802079812547774,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.9073154343172743
+            ]
+          ],
+          "load_transition": {
+            "scale_std": [
+              0.015438183016723523,
+              0.028375634454031292,
+              0.0
+            ],
+            "unloaded_scale_std": 0.0
+          },
+          "noise_abs": [
+            0.002,
+            0.002,
+            0.01406
+          ],
+          "noise_rel": [
+            0.01557908035037392,
+            0.016615528370925847,
+            0.1116
+          ],
+          "rest_noise": false,
+          "scale_std": 0.0,
+          "scale_walk": 0.0,
+          "tau_axis_s": [
+            1.0172334542665913,
+            1.0318894263033787,
+            0.6555100032553108
+          ],
+          "tau_s": 1.0172334542665913,
+          "tau_stop_s": 0.10035335696344526,
+          "use_scale": false,
+          "yaw_bias_std_rad_s": 0.00023380193446118067
+        },
+        "source": "same static pair params used by door_schedule",
+        "transitions": []
+      }
+    },
+    "decision_counts": {
+      "r1": 135,
+      "r2": 477
+    },
+    "alignment_counts": {
+      "r1": 0,
+      "r2": 0
+    }
+  },
+  "cargo": {
+    "scope": "post-run evaluation only",
+    "items": {
+      "cyan_1": {
+        "samples": 18486,
+        "held_samples": 0,
+        "first_held_t": null,
+        "max_com_z_m": 0.015892244579783686,
+        "final": {
+          "kind": "cyan",
+          "x": -0.19999999999937682,
+          "y": -2.4500000000007245,
+          "yaw": -2.246592121632149e-16,
+          "z": 0.015892244579783686,
+          "held": false,
+          "speed": 7.611211980843528e-11
+        }
+      },
+      "beam_1": {
+        "samples": 18486,
+        "held_samples": 0,
+        "first_held_t": null,
+        "max_com_z_m": 0.0165,
+        "final": {
+          "kind": "long_beam",
+          "x": 1.2748773516101657,
+          "y": 0.05005705503507814,
+          "yaw": -0.00011238287293347702,
+          "z": 0.0158922445797838,
+          "held": false,
+          "speed": 1.4168909743773438e-12
+        }
+      }
+    }
+  },
+  "door": {
+    "events": [
+      {
+        "sim_s": 13.55,
+        "signals": [
+          {
+            "robot_id": "r1",
+            "resource": "door_1",
+            "round": 0,
+            "state": "REQUEST"
+          },
+          {
+            "robot_id": "r2",
+            "resource": "door_1",
+            "round": 0,
+            "state": "REQUEST"
+          },
+          {
+            "robot_id": "r3",
+            "resource": "door_1",
+            "round": 0,
+            "state": "REQUEST"
+          }
+        ]
+      },
+      {
+        "sim_s": 13.55,
+        "signals": [
+          {
+            "robot_id": "r1",
+            "resource": "door_1",
+            "round": 1,
+            "state": "USING"
+          },
+          {
+            "robot_id": "r2",
+            "resource": "door_1",
+            "round": 1,
+            "state": "USING"
+          },
+          {
+            "robot_id": "r3",
+            "resource": "door_1",
+            "round": 1,
+            "state": "REQUEST"
+          }
+        ]
+      }
+    ],
+    "wait_episodes": {
+      "r1": 1,
+      "r2": 1,
+      "r3": 1
+    },
+    "wait_robot_s": {
+      "r1": 0.05000000000000071,
+      "r2": 0.05000000000000071,
+      "r3": 909.05
+    },
+    "deadlock_episodes": [
+      {
+        "start": 805.55,
+        "end": 925.55,
+        "duration_s": 120,
+        "owners": [
+          "r1",
+          "r2"
+        ]
+      }
+    ]
+  },
+  "collisions": [],
+  "outcomes": {
+    "robot_success_n": 0,
+    "orders_delivered_n": 0,
+    "orders_n": 2,
+    "first_point_accurate_n": 3,
+    "startup_certificate_n": 0,
+    "correct_certificate_ever_n": 1,
+    "first_false_certificate_n": 1,
+    "host_errors_n": 0,
+    "local_job_budget_robot_n": 2
+  },
+  "failure_taxonomy_note": "Legacy evaluator maps LOCAL_TIMEOUT to LOCALIZATION by substring; this summary separates job-budget termination from posterior accuracy.",
+  "timing": {
+    "wall_s": 3327.4309365000227,
+    "sim_s": 924.25,
+    "wall_per_sim": 3.6001416678388125,
+    "managed_runtime_s": 3370.964981833007,
+    "wall_scope": "runner includes post-run referee/record close; excludes final artifact hashing, managed overhead and later video/export",
+    "host_timers": {
+      "option": "buffered_jsonl_v1",
+      "timers": {
+        "jsonl_append": {
+          "calls": 241225,
+          "wall_s": 7.740434665756766
+        },
+        "eval_sample_including_io": {
+          "calls": 18486,
+          "wall_s": 6.4638425670564175
+        },
+        "render_rgb": {
+          "calls": 55278,
+          "wall_s": 557.3551681459066
+        },
+        "capture_including_render_io": {
+          "calls": 18426,
+          "wall_s": 641.1938919692766
+        },
+        "physics_advance": {
+          "calls": 18485,
+          "wall_s": 974.7216992037138
+        }
+      },
+      "nested_timers_not_additive": true,
+      "controller_feedback": false,
+      "cprofile": false
+    }
+  },
+  "managed": {
+    "exit_code": 1,
+    "status": "process_failed",
+    "source_changed_during_run": false,
+    "inputs_changed_during_run": false,
+    "finalization_errors": []
+  },
+  "verification": {
+    "raw": {
+      "raw": "/Users/changmin/projects/ugrp/outputs/s3-consistency-3ec2d781-s14201-v151",
+      "manifest_sha256": "6495d2bf57acf5b23d42d61e1c298a1485e0a921e5f640463f0f911141a96740",
+      "files_verified": 55311,
+      "bytes_verified": 1797422667,
+      "all_hashes_match": true
+    },
+    "video": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s3fix6-20261010/v151-report/views/v151/execution.mp4",
+      "sha256": "d17b6bb359f2ad1f92082e1a47d13d6dcc0dbc5e3a551c53145199c82695253f",
+      "frames": 4607,
+      "fps": 20.0,
+      "playback": 4,
+      "source_frames_per_robot": 18426,
+      "source": "three own RGB recordings; no new render",
+      "duration_s": 230.35
+    },
+    "tensorboard": {
+      "runs": 33,
+      "scalars": 391,
+      "readback": "/Users/changmin/projects/ugrp/outputs/s3fix6-20261010/v151-report/tensorboard-readback.json",
+      "browser": {
+        "schema": "ugrp.s3fix6.browser-verification.v1",
+        "browser": "Chrome profile 강",
+        "physical_selected_runs": [
+          "1009-s3-v149",
+          "1010-s3-v150-report",
+          "1010-s3-v151"
+        ],
+        "replay_selected_runs": 32,
+        "pins_physical": 8,
+        "pins_replay": 5,
+        "smoothing": 0,
+        "physical_display_values": {
+          "success": 0,
+          "wall_s": 3327.4309,
+          "sim_s": 924.25,
+          "commands": 38233
+        },
+        "replay_display_values": {
+          "C3_55001_over_3sigma": 0.0843,
+          "C3_55002_over_3sigma": 0.7247
+        },
+        "hparams_columns_applied": [
+          "case",
+          "policy",
+          "seed",
+          "source_sha"
+        ],
+        "hparams_scope": "Columns verified in both legacy HParams panels; shared panel lists all sessions. Target run metadata verified by EventAccumulator; target cohort and values displayed in Time Series.",
+        "video": {
+          "url": "http://127.0.0.1:6007/video/010241ac38b92b1c0aab",
+          "duration_s": 230.35,
+          "width": 1920,
+          "height": 480,
+          "played_from_s": 0,
+          "observed_playing_at_s": 2.172164,
+          "paused_at_s": 13.421625,
+          "error": null
+        },
+        "screenshot": {
+          "path": "/Users/changmin/projects/ugrp/outputs/s3fix6-20261010/v151-report/tensorboard-screen.jpg",
+          "sha256": "e2df8fc44bf000bd5a53240220bfa52edf7fb69c441f7ef841fe8406ae630394"
+        },
+        "servers_modified": false
+      }
+    }
+  },
+  "sources": {
+    "/Users/changmin/projects/ugrp/outputs/s3-consistency-3ec2d781-s14201-v151/result.json": "fc6df3690483ff597467a5378ae58982740a915d332742f20d735c89756f6f68",
+    "/Users/changmin/projects/ugrp/outputs/s3-consistency-3ec2d781-s14201-v151/student_record.json": "089910a9582bbdc5b97a4c63dc9455415a6341bb3dc1e166afc7e3e9470504cd",
+    "/Users/changmin/projects/ugrp/outputs/s3-consistency-3ec2d781-s14201-v151/bundle.json": "bfa13cba676c097966ba0701690ee58cacf82389d9ef1e582b6f92d98bd2a93c",
+    "/Users/changmin/projects/ugrp/outputs/s3fix6-20261010/v151-report/smoke-report.json": "d72593f590dad631f0065dcb982a712fd8c917fe75ecde68a3f8efb1cb70a68e",
+    "/Users/changmin/projects/ugrp/outputs/s3fix6-20261010/v151-report/tensorboard-readback.json": "6a54b5ae13e31562939c2d5c867ed1c63e5101a19e358d0eed7422c4fef2f6ae",
+    "/Users/changmin/projects/ugrp/outputs/s3fix6-20261010/v151-report/browser-verification.json": "10abe1788e1208d031fbc03a7531c64e807efed2bd7fff807940efc734931371"
+  }
+}

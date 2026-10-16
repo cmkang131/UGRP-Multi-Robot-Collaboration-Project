@@ -1,0 +1,266 @@
+{
+  "schema": "ugrp.s2.real_carry_full.posthoc.v1",
+  "seed": 1049,
+  "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-a8ab38b8-s1049-P1-2-place",
+  "source_sha": "a8ab38b81c87ff5645c2db1443fdfe619f03f0d6",
+  "execution_bundle_id": "zone-s2-realism-v124",
+  "simulation_runs": 1,
+  "additional_simulation_runs": 0,
+  "model_calls": 0,
+  "evaluation_only": true,
+  "options": {
+    "camera_profile": "masterpi-camera-user-observation-target-review-v3",
+    "drive_profile": "masterpi_drive_friction_v7",
+    "setdown_relook": "off",
+    "grasp_check": "pickup_site_v1",
+    "min_wheel_cmd": "real_v1",
+    "dead_reckoning": "v7_diag_v1",
+    "stagnation_watch": "window120_v1",
+    "alignment_pulse": "real_fine_v1",
+    "hover_check": "real_pregrasp_v1",
+    "idle_robot_contacts": "freeze_v1",
+    "site_check": "off",
+    "hold_check": "inhand_rgb_v1",
+    "dev_grasp_policy": "log_only_v1",
+    "eval_camera_trace": "pose_v1",
+    "pulse_motion_model": "v7_pulse_cal_v1",
+    "visual_update": "accepted_scan_v1",
+    "visual_stall": "lk_pulse_v1",
+    "carry_pose": "real_delivery_v1",
+    "camera_calibration": "v3_unloaded_sag_v1",
+    "measurement_model": "amcl_likelihood_field_v1",
+    "visibility_mask": "command_geometry_v1"
+  },
+  "result_status": "STAGE_FAILED",
+  "failure": "CYAN_NOT_UNIQUELY_VISIBLE",
+  "evaluation": {
+    "status": "PROVISIONAL_GEOMETRIC_JUDGE",
+    "success": false,
+    "lifted": false,
+    "inside": false,
+    "floor": true,
+    "stable": true,
+    "settled_s": 2.0,
+    "qualification": "post-run DEV only; no study/physical hardware success claim"
+  },
+  "posthoc_evaluation": {
+    "scope": "POSTHOC_EVAL_ONLY_NO_CONTROL_FEEDBACK",
+    "seed": 1049,
+    "cargo_remaining_to_B_region_m": 4.21107171632035,
+    "cargo_distance_to_B_center_m": 4.646302293221235,
+    "robot_remaining_to_B_region_m": 3.720932648470292,
+    "final_cargo_xy_m": [
+      0.12500000000082986,
+      -0.8499999999998654
+    ],
+    "final_robot_xy_m": [
+      0.579067351529708,
+      -1.8702169966400017
+    ],
+    "carry_window": null,
+    "visual_updates": 0,
+    "max_update_gap_sim_s": null,
+    "carry_xy_rmse_m": null,
+    "actual_visibility": null,
+    "status": "NO_CARRY_PHASE"
+  },
+  "wall_s": 164.91718887499883,
+  "sim_s": 77.1,
+  "wall_per_sim": 2.1390037467574428,
+  "commands": 1556,
+  "would_stop": {
+    "ARM_COLLISION_GUARD": 7,
+    "REOBSERVATION_NO_FIX": 1,
+    "POSE_UNCERTAIN": 29
+  },
+  "actual_nonphysical_terminal": "CYAN_NOT_UNIQUELY_VISIBLE in frozen v106 search exhaustion; dev_light gap",
+  "grasp_confirmations": "not reached; no prior cyan alignment observation, no invented blind target",
+  "first_wheel_t": 12.0,
+  "stationary_scan": {
+    "actual_max_displacement_m": 0.0010860301135317023,
+    "maximum_pose_error": {
+      "t": 11.8,
+      "t_est": 11.64,
+      "estimated_xy_m": [
+        -0.8702800527153478,
+        1.1569099189537724
+      ],
+      "actual_xy_m": [
+        -0.8973459187158203,
+        -0.8506588355818779
+      ],
+      "xy_error_m": 2.0077511960624452,
+      "yaw_error_deg": -27.252760077788437,
+      "std_xy_m": 0.2999066138792161,
+      "last_fix_t": null
+    }
+  },
+  "state_samples": [
+    {
+      "state": "scan",
+      "t": 1.3,
+      "t_est": 1.14,
+      "estimated_xy_m": [
+        -0.8182504814748448,
+        -0.9195630786501688
+      ],
+      "actual_xy_m": [
+        -0.898182200892586,
+        -0.849995292587315
+      ],
+      "xy_error_m": 0.1059658276368543,
+      "yaw_error_deg": -0.07883587299856669,
+      "std_xy_m": 1.2617614468043508,
+      "last_fix_t": null
+    },
+    {
+      "state": "search_move",
+      "t": 10.4,
+      "t_est": 10.24,
+      "estimated_xy_m": [
+        -0.8806872823964885,
+        0.5870682547379212
+      ],
+      "actual_xy_m": [
+        -0.8973291457625503,
+        -0.8506674223014457
+      ],
+      "xy_error_m": 1.4378319890196285,
+      "yaw_error_deg": -18.87347421280864,
+      "std_xy_m": 1.0010378477692632,
+      "last_fix_t": null
+    },
+    {
+      "state": "search",
+      "t": 57.4,
+      "t_est": 57.24,
+      "estimated_xy_m": [
+        -0.45147748874571014,
+        -0.8291360540305067
+      ],
+      "actual_xy_m": [
+        0.45822665059526624,
+        -1.9541031503410031
+      ],
+      "xy_error_m": 1.4467593403587813,
+      "yaw_error_deg": -35.48114958646252,
+      "std_xy_m": 0.02375893908568367,
+      "last_fix_t": 12.05
+    },
+    {
+      "state": "search_move",
+      "t": 62.4,
+      "t_est": 62.24,
+      "estimated_xy_m": [
+        -0.451325502356372,
+        -0.8290571699255789
+      ],
+      "actual_xy_m": [
+        0.4583612557232824,
+        -1.9527854206372524
+      ],
+      "xy_error_m": 1.4457853157619873,
+      "yaw_error_deg": -36.03365736857894,
+      "std_xy_m": 0.023708079779119238,
+      "last_fix_t": 12.05
+    },
+    {
+      "state": "search",
+      "t": 69.2,
+      "t_est": 69.04,
+      "estimated_xy_m": [
+        -0.28433806691108476,
+        -0.8244870406514921
+      ],
+      "actual_xy_m": [
+        0.5788414723392722,
+        -1.86974374333843
+      ],
+      "xy_error_m": 1.3555959912497633,
+      "yaw_error_deg": -38.07936105890758,
+      "std_xy_m": 0.020474484944358422,
+      "last_fix_t": 12.05
+    },
+    {
+      "state": "failed",
+      "t": 74.1,
+      "t_est": 73.94,
+      "estimated_xy_m": [
+        -0.28430458497668776,
+        -0.8243296262024347
+      ],
+      "actual_xy_m": [
+        0.579067351529708,
+        -1.8702169966400017
+      ],
+      "xy_error_m": 1.3562048121090016,
+      "yaw_error_deg": -38.16559101317914,
+      "std_xy_m": 0.020460883572606597,
+      "last_fix_t": 12.05
+    }
+  ],
+  "last_pose": {
+    "t": 74.1,
+    "t_est": 73.94,
+    "estimated_xy_m": [
+      -0.28430458497668776,
+      -0.8243296262024347
+    ],
+    "actual_xy_m": [
+      0.579067351529708,
+      -1.8702169966400017
+    ],
+    "xy_error_m": 1.3562048121090016,
+    "yaw_error_deg": -38.16559101317914,
+    "std_xy_m": 0.020460883572606597,
+    "last_fix_t": 12.05
+  },
+  "fix_times": [
+    11.65,
+    11.7,
+    11.75,
+    11.8,
+    11.85,
+    11.9,
+    11.95,
+    12.0,
+    12.05
+  ],
+  "cyan_rgb": {
+    "frames": 1457,
+    "search_frames": 198,
+    "search_max_pixels": 0,
+    "search_frames_ge90": 0,
+    "largest_areas": [
+      {
+        "t": 45.1,
+        "state": "search_move",
+        "pixels": 4358,
+        "path": "robots/r3/rgb/00876.jpg"
+      },
+      {
+        "t": 45.2,
+        "state": "search_move",
+        "pixels": 4291,
+        "path": "robots/r3/rgb/00878.jpg"
+      },
+      {
+        "t": 45.0,
+        "state": "search_move",
+        "pixels": 4079,
+        "path": "robots/r3/rgb/00874.jpg"
+      }
+    ]
+  },
+  "largest_observed_cause": "Unloaded initial scan converged to a wrong pose while the chassis was stationary; search drove to wrong physical locations. New carry behavior was never reached.",
+  "unproven_causal_detail": "Attribution between calibration residual and wall-feature ambiguity needs next-step offline analysis; no controller fix in this run.",
+  "source_hashes": {
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-a8ab38b8-s1049-P1-2-place/result.json": "36d3a11b075425925a994429a1fc2247d49a7bc147bdc636998d107cca350b49",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-a8ab38b8-s1049-P1-2-place/student_record.json": "d16bd55734a0793f7b1d47aab6f9fe4f995efd26b15b5f7b1d5c917baa7b995e",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-a8ab38b8-s1049-P1-2-place/bundle.json": "d6cc387caaf7fc77cfd896451c5bcaea160f207ad52c3a08d3844714cf32a10e",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-a8ab38b8-s1049-P1-2-place/robots/r3/frames.jsonl": "9f4c98472067bcbf7bc919e72eb62e88a067897691669fca9dca85efdec628c8",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-a8ab38b8-s1049-P1-2-place/eval_only/trajectory.jsonl": "3b879c1b0754046ebb21a43fff43303b07e94b5b3848408d94ba0ae67620ec74",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-a8ab38b8-s1049-P1-2-place/eval_only/camera-pose.jsonl": "056741f52efa55e25db97f7eb15c9be23e5985cbd7e1a2e27d81dd3df3ad8ac8",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-a8ab38b8-s1049-P1-2-place/eval_only/metrics.json": "d579a37eb365937231033666d9e3043a5de1336c30268e7f21bc0aa4379187f3"
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "physical": [
+    {
+      "status": "PHYSICAL_FAILURE",
+      "source_sha": "7d109118516e0f80484f17eaa96f1c0c706e4ebe",
+      "case": "forward",
+      "model_calls": 0,
+      "freeze": false,
+      "loadavg_start": [
+        2.04296875,
+        2.3671875,
+        2.720703125
+      ],
+      "qualification": "authored command tour; not autonomous exploration",
+      "start_sim_s": 1.3,
+      "frames": 360,
+      "total_sim_s": 37.2,
+      "failure": {
+        "type": "PhysicalStop",
+        "message": "WALL_CONTACT"
+      },
+      "enospc": false,
+      "wall_s": 49.61699508401216,
+      "loadavg_end": [
+        4.45361328125,
+        2.9345703125,
+        2.90673828125
+      ]
+    },
+    {
+      "status": "RECORDED",
+      "source_sha": "7d109118516e0f80484f17eaa96f1c0c706e4ebe",
+      "case": "reverse",
+      "model_calls": 0,
+      "freeze": false,
+      "loadavg_start": [
+        3.35791015625,
+        5.7470703125,
+        4.80419921875
+      ],
+      "qualification": "authored command tour; not autonomous exploration",
+      "start_sim_s": 1.3,
+      "frames": 1801,
+      "total_sim_s": 181.3,
+      "wall_s": 230.0901426670025,
+      "loadavg_end": [
+        3.06640625,
+        4.50830078125,
+        4.490234375
+      ]
+    }
+  ],
+  "managed": [
+    {
+      "path": "outputs/simulation-runs/20261007-192659-arena-wall-map-c9a0cbe8/manifest.json",
+      "sha256": "e9d3929778f670927e29127937a806a898b37b8c91480d708a6b8c90716f3971",
+      "status": "process_failed",
+      "exit_code": 1,
+      "source": "7d109118516e0f80484f17eaa96f1c0c706e4ebe"
+    },
+    {
+      "path": "outputs/simulation-runs/20261007-201907-arena-wall-map-c1e9dde4/manifest.json",
+      "sha256": "53a84ae02c713ced17c134d5ab69e65c156746098db05c72fa2a2e37b6c917fd",
+      "status": "process_completed",
+      "exit_code": 0,
+      "source": "7d109118516e0f80484f17eaa96f1c0c706e4ebe"
+    }
+  ],
+  "frozen_files": 29,
+  "raw_files": 2251,
+  "raw_bytes": 123673168,
+  "preserved_user_files": {
+    "analyze_wall_detection.py": "26c818f1cd4673c7f4a1b6ab535b4e70ac68167f1f56989f10c8c6bebe0c3dd0",
+    "create_wall_visualizations.py": "e2b77c1f678d1ba27658dffecf99bcf7bfd7c12c056d41869a7a38cc482f8efa",
+    "create_wall_visualizations_v2.py": "8e6fa7f6598336bc6f7c61ad956d1902be9925443d7656cea2801362195d83c8",
+    "parameter_probe.py": "43f91584406ba91a73032514b8409357fc9c7ac2c3cbc3e72d26bce5257e103b"
+  },
+  "model_calls": 0,
+  "freeze": false,
+  "fitting": false,
+  "extra_recording": false,
+  "export_implemented": false
+}

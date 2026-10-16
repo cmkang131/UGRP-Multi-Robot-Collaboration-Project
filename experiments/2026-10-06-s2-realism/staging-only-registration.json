@@ -1,0 +1,71 @@
+{
+  "version": "s2v51",
+  "seeds": [
+    1054,
+    1055
+  ],
+  "regression_seed": 1053,
+  "regression_condition": "both first full runs success/lifted/inside/stable true and peer contacts=0; NEES information only",
+  "same_seed_user_authorization": "s2v51 condition A repeat1054/1055; conditional1053",
+  "options_unchanged_from_v135": false,
+  "xy_goal_tolerance_m": 0.03,
+  "yaw_goal_tolerance_rad": 0.06,
+  "intermediate_waypoint_tolerance_m": 0.035,
+  "stateful": true,
+  "case_cap_s": 900,
+  "calibrations": {
+    "1054": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-bias-tempering-v45-20261008/fit/s1054-calibration.json",
+      "sha256": "cc6351def9d9c407cf388e93ed6dc033d74334113e3dc2a254b44bea33dd1508"
+    },
+    "1055": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-bias-tempering-v45-20261008/fit/s1051-calibration.json",
+      "sha256": "96c154325c6e266991b3fa67f26d4ee5ab41a969ea3b73d272f2c2c2dfd2d2c0"
+    },
+    "1053": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-bias-tempering-v45-20261008/fit/s1053-calibration.json",
+      "sha256": "a99209b396cf52974e499d59194c67b41256e93779394728fec6ed1c08e64a4e"
+    }
+  },
+  "criteria": {
+    "peer_contacts_max": 0,
+    "success": true,
+    "lifted": true,
+    "inside": true,
+    "stable": true,
+    "uncertified_navigation_lateral_max": 0
+  },
+  "pose_metrics": "information only, unchanged NEES95%5.991464547107979 and unflagged25cm references",
+  "post_outcome_threshold_changes": false,
+  "ENOSPC": "HOST_ERROR",
+  "gt_use": "posthoc evaluation only",
+  "bundle": "zone-s2-realism-v138",
+  "workflow": "7.31.0",
+  "reservation": {
+    "path": "/Users/changmin/projects/ugrp/outputs/s2-staging-only-v51-20261008/reservation.json",
+    "sha256": "a1ad18e50c4b30cf7d2142d86972316f942a8295dfcee48278bf9bf24679b90c"
+  },
+  "options_base": "v136, add final_approach=staging_v133_v1 only; v137 appearance monitor disabled",
+  "replay_criteria": {
+    "recorded_final_approach_proposals_byte_equal": true,
+    "navigation_unknown_still_vetoed": true,
+    "no_monitor_created_or_called": true,
+    "off_bytes_equal": true
+  },
+  "final_approach": {
+    "states": [
+      "align",
+      "real_pregrasp",
+      "hover",
+      "blind_descent",
+      "grasp",
+      "lift",
+      "relook_pickup",
+      "lower",
+      "released"
+    ],
+    "robot_appearance_monitor": "off",
+    "controller": "v133 existing proposals without new gates",
+    "navigation": "search_move/carry retain look-before-move and v136 goal heading"
+  }
+}

@@ -1,0 +1,311 @@
+{
+  "schema": "ugrp.ownmaps2a.delivery.v1",
+  "replay_source_sha": "b9a76350c2216eeffd0c1773ab155ee5865809b4",
+  "primary_evaluation_execution_sha": "c279f377f671869eb2cdf37e0ec4c0c5bc297ca7",
+  "analysis_tooling_sha": "9eca8f9548ffb8e26bfc62c6f6f322b2dae97a0d",
+  "physical_runs": 0,
+  "agent_lock_used": false,
+  "model_calls": 0,
+  "tuned": false,
+  "new_rendered_videos": 0,
+  "replay_conditions": 14,
+  "source_records": 7,
+  "source_maps": 6,
+  "unique_source_frames": 41163,
+  "verified_frame_instances": 82326,
+  "baseline_numeric_and_hash_identity": 7,
+  "all_sealed_hashes_verified": true,
+  "replay_session_stopped": true,
+  "local_tests": {
+    "command": ".venv-sim-worker-mac/bin/python -m pytest -q tests/test_ownmap_s2.py",
+    "passed": 14,
+    "seconds": 1.99,
+    "simulated_missing_mujoco": {
+      "passed": 13,
+      "skipped": 1
+    }
+  },
+  "prior_remote_ci": {
+    "conclusion": "failure",
+    "headSha": "b9a76350c2216eeffd0c1773ab155ee5865809b4",
+    "jobs": [
+      {
+        "conclusion": "success",
+        "name": "ci-preflight",
+        "status": "completed",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37890979958/job/113692128539"
+      },
+      {
+        "conclusion": "success",
+        "name": "reference-act-smoke",
+        "status": "completed",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37890979958/job/113692961253"
+      },
+      {
+        "conclusion": "success",
+        "name": "ubuntu-simulation-scenarios",
+        "status": "completed",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37890979958/job/113692961287"
+      },
+      {
+        "conclusion": "success",
+        "name": "ubuntu-simulation-runtime",
+        "status": "completed",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37890979958/job/113692961292"
+      },
+      {
+        "conclusion": "success",
+        "name": "individual-proxy-bootstrap",
+        "status": "completed",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37890979958/job/113692961329"
+      },
+      {
+        "conclusion": "success",
+        "name": "multi-object-scenes",
+        "status": "completed",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37890979958/job/113692961330"
+      },
+      {
+        "conclusion": "success",
+        "name": "offline-regression-shard (2/8)",
+        "status": "completed",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37890979958/job/113692961376"
+      },
+      {
+        "conclusion": "success",
+        "name": "offline-regression-checks",
+        "status": "completed",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37890979958/job/113692961378"
+      },
+      {
+        "conclusion": "success",
+        "name": "tensorboard-export",
+        "status": "completed",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37890979958/job/113692961403"
+      },
+      {
+        "conclusion": "success",
+        "name": "offline-regression-shard (1/8)",
+        "status": "completed",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37890979958/job/113692961426"
+      },
+      {
+        "conclusion": "failure",
+        "name": "offline-regression-shard (6/8)",
+        "status": "completed",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37890979958/job/113692961455"
+      },
+      {
+        "conclusion": "success",
+        "name": "offline-regression-shard (0/8)",
+        "status": "completed",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37890979958/job/113692961464"
+      },
+      {
+        "conclusion": "success",
+        "name": "offline-regression-shard (7/8)",
+        "status": "completed",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37890979958/job/113692961474"
+      },
+      {
+        "conclusion": "success",
+        "name": "offline-regression-shard (3/8)",
+        "status": "completed",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37890979958/job/113692961479"
+      },
+      {
+        "conclusion": "success",
+        "name": "offline-regression-shard (4/8)",
+        "status": "completed",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37890979958/job/113692961560"
+      },
+      {
+        "conclusion": "success",
+        "name": "zone-multiturn-properties (0)",
+        "status": "completed",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37890979958/job/113692961569"
+      },
+      {
+        "conclusion": "success",
+        "name": "offline-regression-shard (5/8)",
+        "status": "completed",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37890979958/job/113692961593"
+      },
+      {
+        "conclusion": "success",
+        "name": "zone-multiturn-properties (10)",
+        "status": "completed",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37890979958/job/113692961616"
+      },
+      {
+        "conclusion": "success",
+        "name": "zone-multiturn-properties (9)",
+        "status": "completed",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37890979958/job/113692961653"
+      },
+      {
+        "conclusion": "success",
+        "name": "zone-multiturn-properties (5)",
+        "status": "completed",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37890979958/job/113692961664"
+      },
+      {
+        "conclusion": "success",
+        "name": "zone-multiturn-properties (3)",
+        "status": "completed",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37890979958/job/113692961700"
+      },
+      {
+        "conclusion": "success",
+        "name": "zone-multiturn-properties (6)",
+        "status": "completed",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37890979958/job/113692961706"
+      },
+      {
+        "conclusion": "success",
+        "name": "zone-multiturn-properties (15)",
+        "status": "completed",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37890979958/job/113692961718"
+      },
+      {
+        "conclusion": "success",
+        "name": "zone-multiturn-properties (2)",
+        "status": "completed",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37890979958/job/113692961743"
+      },
+      {
+        "conclusion": "success",
+        "name": "zone-multiturn-properties (13)",
+        "status": "completed",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37890979958/job/113692961760"
+      },
+      {
+        "conclusion": "success",
+        "name": "zone-multiturn-properties (4)",
+        "status": "completed",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37890979958/job/113692961764"
+      },
+      {
+        "conclusion": "success",
+        "name": "zone-multiturn-properties (8)",
+        "status": "completed",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37890979958/job/113692961781"
+      },
+      {
+        "conclusion": "success",
+        "name": "zone-multiturn-properties (7)",
+        "status": "completed",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37890979958/job/113692961798"
+      },
+      {
+        "conclusion": "success",
+        "name": "zone-multiturn-properties (12)",
+        "status": "completed",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37890979958/job/113692961799"
+      },
+      {
+        "conclusion": "success",
+        "name": "zone-multiturn-properties (1)",
+        "status": "completed",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37890979958/job/113692961811"
+      },
+      {
+        "conclusion": "success",
+        "name": "zone-multiturn-properties (14)",
+        "status": "completed",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37890979958/job/113692961834"
+      },
+      {
+        "conclusion": "success",
+        "name": "zone-multiturn-properties (11)",
+        "status": "completed",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37890979958/job/113692961889"
+      },
+      {
+        "conclusion": "failure",
+        "name": "offline-regressions",
+        "status": "completed",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37890979958/job/113702220605"
+      }
+    ],
+    "status": "completed"
+  },
+  "final_ci_at_packaging": "final artifact commit not pushed yet; final status is reported in PR #414 and final response, not inferred from local tests",
+  "raw_roots": [
+    "/Users/changmin/projects/ugrp/outputs/ownmaps2a-20261009-r3",
+    "/Users/changmin/projects/ugrp/outputs/ownmaps2a-20261009-r3-evaluation",
+    "/Users/changmin/projects/ugrp/outputs/ownmaps2a-20261009-r1",
+    "/Users/changmin/projects/ugrp/outputs/ownmaps2a-20261009-r2"
+  ],
+  "raw_backup": "local only; not a full remote raw backup",
+  "invalid_mode_probe": {
+    "path": "/Users/changmin/projects/ugrp/outputs/ownmaps2a-20261009-r3-evaluation/mode-score-diagnostic.json",
+    "sha256": "7b63badfcaf27be786bc5211aea21af991a813f24ad9a142f15afa52b845db16",
+    "used_for_conclusions": false,
+    "reason": "report delivery timestamp vs estimate timestamp mismatch; v2 refuses unavailable exact matches"
+  },
+  "evaluation_output_hashes": {
+    "v139-s1060-mixed-wall-oracle.json": "838336d211ad3f4dfa219877128516c15a2e8f0def87f07c48d0349eee69902e",
+    "v139-s1059-diagnostic.json": "094418c281997acf26c0abe1fb0d0c4893081c33b97f40a265a32f7f75cae69f",
+    "v140-s1060-diagnostic.json": "8cc835b27c5e128cf164ee08becc14825028196fe4770dbe370e6083b9954355",
+    "result.json": "9eb62917cd08e7667eced3ae6b61accb3c56322acec5361f45404e6795e33dff",
+    "tensorboard-delivery.json": "7d1ae73400e22f59089776a73fffc52dd683b404490a7eab3290073747bbf775",
+    "v139-s1059-mixed-wall-oracle.json": "3bc3dff41ab4cba67bfed12db056a7dbd038383a099d16dcfdabd4ca19f480d9",
+    "v139-s1061-mixed-wall-oracle.json": "b91185c3aa0f1c1ac9eaa916025272e9f7ee2459d67c1d4d98a7d8cfe030ee64",
+    "comparison.png": "671962f9144aba98d615867ed18451dcfb6e689506165b2b4fe9824cedc1c9e6",
+    "shared-view-update.json": "913fbf167b5937cf094a35a2697648874e3c13d94e9c0ae4f1cdb1342f6fc5ac",
+    "v140-s1063-mixed-wall-oracle.json": "a02f7b472f1c8af37213753c39cb8afd55af5fbfd0419afc51e8798aa1962083",
+    "v140-s1063-diagnostic.json": "e67c6948217a35467bf92ed6f39369442ff4f8640547db45d892852cd2c02d04",
+    "mode-score-diagnostic.json": "7b63badfcaf27be786bc5211aea21af991a813f24ad9a142f15afa52b845db16",
+    "v140-s1064-mixed-wall-oracle.json": "4c44c18c8b4f08c5f8a00885e62b6c43fab24cebae34b7247de950bdeaa0a4ab",
+    "mode-score-diagnostic-v2.json": "3f420e45edcb921e483bf727c4a84925eb0666a53fe04c36bf74c939fd191cc9",
+    "v140-s1060-mixed-wall-oracle.json": "9251d17900acb7b9256c14f875186b3110582ae315f2ad6ed64b0c987aa9f8b5",
+    "v140-s1064-diagnostic.json": "1344493f163e479ee74a5d69d2a5e998b4c0c8471969c2f0054d574ea724fdd1",
+    "v139-s1060-diagnostic.json": "d440065eb0516a4acad6e89d17ec02c23cd0453890962076847d8d2803648de1",
+    "series.json": "dfd9c902ff313a48f5b2af071991b76018e02f78f1824349d340e02238292e7f",
+    "source-diagnostics.json": "0922238b18de70e5fa2773d072adf516e02d1932ea70de4b4509439cc249fe76",
+    "v139-s1061-diagnostic.json": "e390019d33031a93c5cf82151dfe7f34de75ca7708f3d7e253d77f7fd7909a5d",
+    "v140-s1062-diagnostic.json": "b25621383190531df785d278fb4a31f5e4a1e4e65557a12bf5498228d7e27e64",
+    "v140-s1062-mixed-wall-oracle.json": "9bbac2bc9c627568a99c068c4266681a9cbcce43a1497d83d5c9c9ba0738bf7a"
+  },
+  "raw_prediction_receipt_hashes": {
+    "v140-s1060/own_grid_v1/prediction.json": "b29011be5ee6fba5bd9ef5ce94cb7c4bab6cef2e231cafcc8f5f5c489d7ef945",
+    "v140-s1060/off/prediction.json": "d2ee25cf6bbc65008f0421ffccb7663fcec2f5e554f1892a4b2c2980364c0e5e",
+    "v139-s1060/own_grid_v1/prediction.json": "f7e77591c839592f62680121546e1f4f90388da5c976e78f660d43468ee8cfb6",
+    "v139-s1060/off/prediction.json": "7ee111f573fc8a4a487cd4fb19230b3accd92171b6f1eb2c41f2bcf4a47126da",
+    "v139-s1059/own_grid_v1/prediction.json": "5cbb1e60c187f116317b292b8bfa8321df1fbc140a567321a0b50f9a05ae6159",
+    "v139-s1059/off/prediction.json": "bf58877f33222846508d600bce9699100e28872ef23d23a1a6110677049dce88",
+    "v139-s1061/own_grid_v1/prediction.json": "143def4b00b085ee6556accd0098dec395c7b01e6ede273345e708b9b89100de",
+    "v139-s1061/off/prediction.json": "0898fa198600e9a0f2e6628bb8cd0025f210573cb578d1a81e71966466240c11",
+    "v140-s1062/own_grid_v1/prediction.json": "2ea9b7a0b37c3e7debf2a7062e9ea820feb1633503dfc8481a5cfd5a06214a96",
+    "v140-s1062/off/prediction.json": "509639b3d3766cf26131a89efe0f6ba801f983b2a7c3452c775685644bf24151",
+    "v140-s1064/own_grid_v1/prediction.json": "90ef7f2fb261268df34cdb8206a750ebd65abffacf8f5b6d400dcdf25df3d987",
+    "v140-s1064/off/prediction.json": "3d398dbf6cee232e78f220778f268772a88a61958997ecc6967c71a06623ccc4",
+    "v140-s1063/own_grid_v1/prediction.json": "5f1c8d9c6ee53cf04e041f1147db8b78735c0a0f1ba63c77ee009617ebbe5684",
+    "v140-s1063/off/prediction.json": "dbbaa6674051e98cb3cd598bf88d111dca7cb5a5994f5876d2d659781fa0cf74"
+  },
+  "artifact_hashes": {
+    "evaluate_source_diagnostics.py": "dd6bdcbdb70b4d5496cb33cbf1409b9d49c75aadba38326c5f354881b3286518",
+    "preregistration.md": "f61d146f38b1164d83d9de858c48e7660eee55e4c4d88a6d177a5234b11a8607",
+    "export_tensorboard.py": "6f9199909bfec6422d648d0506377cbad0a0ab53ea555844d318450c99fc61a5",
+    "result.json": "9eb62917cd08e7667eced3ae6b61accb3c56322acec5361f45404e6795e33dff",
+    "integration.md": "9a2d6e400b0d266bec6464f7ff1f4e4056ec59fe13b816d4c7154dc507a9b94b",
+    "tensorboard-delivery.json": "7d1ae73400e22f59089776a73fffc52dd683b404490a7eab3290073747bbf775",
+    "implementation-notes.md": "309bc6e7c2c172cbc9e6239997b699345012526447092f106ecbcfdb277c55e7",
+    "registration.json": "b0c24052b3bb78f7a8bc350507550a64350949bc005fc82d843ce50e6952ae08",
+    "comparison.png": "671962f9144aba98d615867ed18451dcfb6e689506165b2b4fe9824cedc1c9e6",
+    "diagnose_modes.py": "caeb71d785f55508534150ffeee0c3a571438ee8027bf037a1df7f366fa25e81",
+    "README.md": "0e4e50201906d84a3eb61f7e70f63216f84c1fd2545732c5a0bdec90b489e036",
+    "source-environment-audit.json": "20fcf4d5d10cea019f11a8285fd63eab5abbff91b616aff0b13556903bda1aa4",
+    "replay-manifest.json": "0a93f75276d8b71db1b06d6f8bc3357e8e2909750eb63e3f7a5090a5553ed29b",
+    "mode-score-diagnostic-v2.json": "3f420e45edcb921e483bf727c4a84925eb0666a53fe04c36bf74c939fd191cc9",
+    "graph-format-audit.json": "5809d8c5a78ef1d7ba2c5ac4747affa62cc5115a4b2d10d19f4d0efc41fa465d",
+    "source-diagnostics.json": "0922238b18de70e5fa2773d072adf516e02d1932ea70de4b4509439cc249fe76",
+    "registration-v2.json": "6f7f10e25e5ea7c7c112c7826b20f80d97aed109bc0566ac1b9407ff5d5f04d0"
+  },
+  "coordination_comments": [
+    "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/405#issuecomment-6075853551",
+    "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/406#issuecomment-6075853932"
+  ],
+  "draft_pr": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/414"
+}

@@ -1,0 +1,84 @@
+{
+  "records": {
+    "31001": {
+      "prediction_sha": "1266adda310850749f651657b3032460bbe88ef0",
+      "input_frames": 891,
+      "insertion_times": 47,
+      "nonempty_insertions_on": 47,
+      "original_reasons": {
+        "bootstrap": 1,
+        "gmapping_motion_gate": 844,
+        "low_overlap": 8,
+        "improved_proposal": 22,
+        "high_residual": 14,
+        "search_boundary": 2
+      },
+      "original_pose_and_camera_exact": true,
+      "original_grid_bytes_identical": true,
+      "paired_off_grid_identical_to_egomap37": true,
+      "point_recall_same_denominator": true,
+      "point_gate": false,
+      "map_gate": {
+        "precision": false,
+        "recall": false,
+        "wall_rmse": false
+      },
+      "single_frame_rgb_only": true,
+      "gt_inputs_hash_verified": true
+    },
+    "32002": {
+      "prediction_sha": "a656bccd2869a97559bf6df7f1e4914b67fe655f",
+      "input_frames": 891,
+      "insertion_times": 64,
+      "nonempty_insertions_on": 64,
+      "original_reasons": {
+        "bootstrap": 1,
+        "gmapping_motion_gate": 814,
+        "improved_proposal": 30,
+        "search_boundary": 2,
+        "high_residual": 19,
+        "insufficient_match_points": 5,
+        "low_overlap": 7
+      },
+      "original_pose_and_camera_exact": true,
+      "original_grid_bytes_identical": true,
+      "paired_off_grid_identical_to_egomap37": true,
+      "point_recall_same_denominator": true,
+      "point_gate": false,
+      "map_gate": {
+        "precision": false,
+        "recall": false,
+        "wall_rmse": false
+      },
+      "single_frame_rgb_only": true,
+      "gt_inputs_hash_verified": true
+    }
+  },
+  "tests": 15,
+  "preregistration": "b5459a2d",
+  "implementation": "1266adda",
+  "freeze_commit": "a656bccd2869a97559bf6df7f1e4914b67fe655f",
+  "held_on_evaluations": 1,
+  "physics": 0,
+  "render": 0,
+  "models": 0,
+  "lock_acquired": false,
+  "retuning": 0,
+  "original_untracked_unchanged": true,
+  "raw_path": "/Users/changmin/projects/ugrp/outputs/lorigo-window-contact-v1",
+  "manifest_sha256": "eba806bc31ee915c3cee031d2a2f3f19cdd1a366f38e01d5b874a46d08c8ccd6",
+  "figure_hashes": {
+    "31001-examples.jpg": {
+      "sha256": "ed3d8fae077d2296f6753618ea94686c0add1a00ee13968579434000750023f3",
+      "bytes": 144911
+    },
+    "32002-examples.jpg": {
+      "sha256": "8dce85735213e429e713813dfe77d171e5ea750c6d2bae7e729b53f9040d8fb9",
+      "bytes": 137919
+    },
+    "maps.png": {
+      "sha256": "b441f58a9a524d80c2521e544a75a2b0a3159d93877865429426fedccbd06ec9",
+      "bytes": 85945
+    }
+  }
+}

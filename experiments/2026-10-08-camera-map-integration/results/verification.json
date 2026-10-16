@@ -1,0 +1,61 @@
+{
+  "prediction_source_sha": "3bca130f44e4ef54bb8d022dbfa82785f6ff09e9",
+  "preregistration": "60decda7",
+  "tests": 18,
+  "test_command": "python -m pytest -q tests/test_self_camera_grid.py tests/test_self_wall_export.py tests/test_self_map_causal.py",
+  "tests_log_sha256": "2c9b323eb6d024de94ab91560fb8b8fa18a9c4655b4ed8bd43f385610a606853",
+  "physics": 0,
+  "model_calls": 0,
+  "locks_acquired": 0,
+  "unique_recordings": 1,
+  "dependent_pairs": 3,
+  "replay_trials": 6,
+  "off_grid_bytes_same": true,
+  "static_rows_plan_goal_same": [
+    true,
+    true,
+    true
+  ],
+  "estimator_files_unchanged": true,
+  "causal_cuts": [
+    {
+      "cut_t": 61.3,
+      "last_scan_t": 61.1,
+      "first_query_t": 61.5,
+      "scans": 287
+    },
+    {
+      "cut_t": 91.3,
+      "last_scan_t": 91.1,
+      "first_query_t": 91.5,
+      "scans": 437
+    },
+    {
+      "cut_t": 121.3,
+      "last_scan_t": 121.1,
+      "first_query_t": 121.5,
+      "scans": 587
+    }
+  ],
+  "parameters_retuned": false,
+  "visual_checked": [
+    "figures/maps.png",
+    "figures/missing.png"
+  ],
+  "presentation_issue": "first figure render missing transform import; corrected, no predictor/scorer or replay change",
+  "input_hashes": {
+    "/Users/changmin/projects/ugrp/outputs/wall-segment-dev-v1/new-seed/own-contacts.jsonl": "1302afe796e912e997d039ceb0352fe2b9bef4c7cae2f935360c1691c81b5c1c",
+    "/Users/changmin/projects/ugrp/outputs/wall-segment-dev-v1/new-seed/frontend-covariances.jsonl": "a1bf5ffdd20ff5d912e118b3ed327d1ea7f1c43c62590c95a46b4114121aecba",
+    "/Users/changmin/projects/ugrp/outputs/wall-segment-dev-v1/new-seed/decisions.json": "7b1bfd9fd356f0980d112e1504bd48f48713f4b1475555c43342423817a59f28",
+    "/Users/changmin/projects/ugrp/outputs/wall-segment-dev-v1/new-seed/frontend-ledger.json": "42a4f247117a3a9e3900387dfbe53a550397292a1eddedae2a22526040db07d6",
+    "/Users/changmin/projects/ugrp/outputs/wall-segment-dev-v1/new-seed/grid.json": "29b2319c3a2aa38fd645dfe0067a376a7a41d30a89c4a62a22403bdc15ce0685",
+    "/Users/changmin/projects/ugrp/outputs/wall-segment-dev-v1/new-seed/graph.json": "f0389f256c737c1382548da3deacb4c8594414319872be51a3aa180a219965e9"
+  },
+  "preserved_untracked": {
+    "analyze_wall_detection.py": "26c818f1cd4673c7f4a1b6ab535b4e70ac68167f1f56989f10c8c6bebe0c3dd0",
+    "create_wall_visualizations.py": "e2b77c1f678d1ba27658dffecf99bcf7bfd7c12c056d41869a7a38cc482f8efa",
+    "create_wall_visualizations_v2.py": "8e6fa7f6598336bc6f7c61ad956d1902be9925443d7656cea2801362195d83c8",
+    "parameter_probe.py": "43f91584406ba91a73032514b8409357fc9c7ac2c3cbc3e72d26bce5257e103b"
+  },
+  "raw_bytes": 24578321
+}
