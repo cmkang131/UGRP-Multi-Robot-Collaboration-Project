@@ -1,0 +1,1899 @@
+{
+ "scope": "one-step same-state counterfactual DECISIONS on recorded search17 inputs (4fdf7f84); not physical results. Persistent shadows use recorded observations and applied commands, so their motion after the first command divergence is not evaluable.",
+ "source_head": "2a4274ae + uncommitted search18 (this commit)",
+ "robot_ticks": 8408,
+ "baseline_mismatch_ticks": 0,
+ "N_runs": 15,
+ "success_runs": 11,
+ "failure_seeds": [
+  315709,
+  8311702,
+  8311709,
+  8311711
+ ],
+ "success_runs_with_worse_decisions": {
+  "search18_footprint": 9,
+  "search18_start_plan": 0,
+  "search18_free_space": 0,
+  "bundle": 9
+ },
+ "worse_decision_definition": "new no-path/blocked-goal calls, a baseline-moving tick that holds, a new outcome, or a pulse rejected by the footprint check",
+ "final_replay": [
+  {
+   "seed": 315709,
+   "stage": "repro3",
+   "original_success": false,
+   "baseline_mismatch_ticks": 0,
+   "variants": {
+    "search18_footprint": {
+     "ticks": 390,
+     "changed": 26,
+     "worse_decisions": 17,
+     "resolved_no_path": 2,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 16,
+     "footprint_rejects": 1
+    },
+    "search18_start_plan": {
+     "ticks": 390,
+     "changed": 9,
+     "worse_decisions": 0,
+     "resolved_no_path": 5,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 0,
+     "footprint_rejects": 0
+    },
+    "search18_free_space": {
+     "ticks": 390,
+     "changed": 4,
+     "worse_decisions": 0,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 0,
+     "footprint_rejects": 0
+    },
+    "bundle": {
+     "ticks": 390,
+     "changed": 26,
+     "worse_decisions": 17,
+     "resolved_no_path": 2,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 16,
+     "footprint_rejects": 1
+    }
+   },
+   "shadow_wait_ticks_0.1s": {
+    "baseline": {},
+    "search18_start_plan": {},
+    "search18_free_space": {},
+    "bundle": {}
+   },
+   "shadow_first_command_divergence_sim_s": {
+    "search18_start_plan": {
+     "r1": 4.3
+    },
+    "search18_free_space": {},
+    "bundle": {
+     "r1": 3.7
+    }
+   }
+  },
+  {
+   "seed": 315724,
+   "stage": "repro3",
+   "original_success": true,
+   "baseline_mismatch_ticks": 0,
+   "variants": {
+    "search18_footprint": {
+     "ticks": 862,
+     "changed": 168,
+     "worse_decisions": 144,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 3,
+     "new_no_path": 76,
+     "footprint_rejects": 67
+    },
+    "search18_start_plan": {
+     "ticks": 862,
+     "changed": 15,
+     "worse_decisions": 0,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 0,
+     "footprint_rejects": 0
+    },
+    "search18_free_space": {
+     "ticks": 862,
+     "changed": 22,
+     "worse_decisions": 0,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 0,
+     "footprint_rejects": 0
+    },
+    "bundle": {
+     "ticks": 862,
+     "changed": 194,
+     "worse_decisions": 181,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 3,
+     "new_no_path": 68,
+     "footprint_rejects": 112
+    }
+   },
+   "shadow_wait_ticks_0.1s": {
+    "baseline": {},
+    "search18_start_plan": {},
+    "search18_free_space": {},
+    "bundle": {}
+   },
+   "shadow_first_command_divergence_sim_s": {
+    "search18_start_plan": {
+     "r1": 15.7
+    },
+    "search18_free_space": {
+     "r1": 7.8
+    },
+    "bundle": {
+     "r1": 2.1
+    }
+   }
+  },
+  {
+   "seed": 315731,
+   "stage": "repro3",
+   "original_success": true,
+   "baseline_mismatch_ticks": 0,
+   "variants": {
+    "search18_footprint": {
+     "ticks": 714,
+     "changed": 233,
+     "worse_decisions": 207,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 87,
+     "footprint_rejects": 120
+    },
+    "search18_start_plan": {
+     "ticks": 714,
+     "changed": 22,
+     "worse_decisions": 0,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 0,
+     "footprint_rejects": 0
+    },
+    "search18_free_space": {
+     "ticks": 714,
+     "changed": 0,
+     "worse_decisions": 0,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 0,
+     "footprint_rejects": 0
+    },
+    "bundle": {
+     "ticks": 714,
+     "changed": 233,
+     "worse_decisions": 207,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 87,
+     "footprint_rejects": 120
+    }
+   },
+   "shadow_wait_ticks_0.1s": {
+    "baseline": {},
+    "search18_start_plan": {},
+    "search18_free_space": {},
+    "bundle": {}
+   },
+   "shadow_first_command_divergence_sim_s": {
+    "search18_start_plan": {
+     "r2": 7.0,
+     "r1": 13.2
+    },
+    "search18_free_space": {},
+    "bundle": {
+     "r2": 7.0,
+     "r1": 13.2
+    }
+   }
+  },
+  {
+   "seed": 8311700,
+   "stage": "novel12",
+   "original_success": true,
+   "baseline_mismatch_ticks": 0,
+   "variants": {
+    "search18_footprint": {
+     "ticks": 512,
+     "changed": 81,
+     "worse_decisions": 67,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 30,
+     "footprint_rejects": 37
+    },
+    "search18_start_plan": {
+     "ticks": 512,
+     "changed": 12,
+     "worse_decisions": 0,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 0,
+     "footprint_rejects": 0
+    },
+    "search18_free_space": {
+     "ticks": 512,
+     "changed": 0,
+     "worse_decisions": 0,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 0,
+     "footprint_rejects": 0
+    },
+    "bundle": {
+     "ticks": 512,
+     "changed": 81,
+     "worse_decisions": 67,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 30,
+     "footprint_rejects": 37
+    }
+   },
+   "shadow_wait_ticks_0.1s": {
+    "baseline": {},
+    "search18_start_plan": {},
+    "search18_free_space": {},
+    "bundle": {}
+   },
+   "shadow_first_command_divergence_sim_s": {
+    "search18_start_plan": {
+     "r1": 9.1
+    },
+    "search18_free_space": {},
+    "bundle": {
+     "r1": 7.7
+    }
+   }
+  },
+  {
+   "seed": 8311701,
+   "stage": "novel12",
+   "original_success": true,
+   "baseline_mismatch_ticks": 0,
+   "variants": {
+    "search18_footprint": {
+     "ticks": 566,
+     "changed": 126,
+     "worse_decisions": 104,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 18,
+     "footprint_rejects": 86
+    },
+    "search18_start_plan": {
+     "ticks": 566,
+     "changed": 18,
+     "worse_decisions": 0,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 0,
+     "footprint_rejects": 0
+    },
+    "search18_free_space": {
+     "ticks": 566,
+     "changed": 0,
+     "worse_decisions": 0,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 0,
+     "footprint_rejects": 0
+    },
+    "bundle": {
+     "ticks": 566,
+     "changed": 126,
+     "worse_decisions": 104,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 18,
+     "footprint_rejects": 86
+    }
+   },
+   "shadow_wait_ticks_0.1s": {
+    "baseline": {},
+    "search18_start_plan": {},
+    "search18_free_space": {},
+    "bundle": {}
+   },
+   "shadow_first_command_divergence_sim_s": {
+    "search18_start_plan": {
+     "r2": 11.4,
+     "r1": 13.4
+    },
+    "search18_free_space": {},
+    "bundle": {
+     "r2": 3.3,
+     "r1": 9.3
+    }
+   }
+  },
+  {
+   "seed": 8311702,
+   "stage": "novel12",
+   "original_success": false,
+   "baseline_mismatch_ticks": 0,
+   "variants": {
+    "search18_footprint": {
+     "ticks": 334,
+     "changed": 95,
+     "worse_decisions": 78,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 1,
+     "new_no_path": 22,
+     "footprint_rejects": 56
+    },
+    "search18_start_plan": {
+     "ticks": 334,
+     "changed": 15,
+     "worse_decisions": 0,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 0,
+     "footprint_rejects": 0
+    },
+    "search18_free_space": {
+     "ticks": 334,
+     "changed": 38,
+     "worse_decisions": 36,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 0,
+     "footprint_rejects": 0
+    },
+    "bundle": {
+     "ticks": 334,
+     "changed": 133,
+     "worse_decisions": 114,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 1,
+     "new_no_path": 22,
+     "footprint_rejects": 56
+    }
+   },
+   "shadow_wait_ticks_0.1s": {
+    "baseline": {
+     "r1": 91
+    },
+    "search18_start_plan": {
+     "r1": 91
+    },
+    "search18_free_space": {
+     "r1": 22
+    },
+    "bundle": {
+     "r1": 22
+    }
+   },
+   "shadow_first_command_divergence_sim_s": {
+    "search18_start_plan": {
+     "r1": 1.2,
+     "r2": 6.5
+    },
+    "search18_free_space": {
+     "r1": 8.8
+    },
+    "bundle": {
+     "r1": 1.5,
+     "r2": 2.4
+    }
+   }
+  },
+  {
+   "seed": 8311703,
+   "stage": "novel12",
+   "original_success": true,
+   "baseline_mismatch_ticks": 0,
+   "variants": {
+    "search18_footprint": {
+     "ticks": 456,
+     "changed": 7,
+     "worse_decisions": 0,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 0,
+     "footprint_rejects": 0
+    },
+    "search18_start_plan": {
+     "ticks": 456,
+     "changed": 7,
+     "worse_decisions": 0,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 0,
+     "footprint_rejects": 0
+    },
+    "search18_free_space": {
+     "ticks": 456,
+     "changed": 0,
+     "worse_decisions": 0,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 0,
+     "footprint_rejects": 0
+    },
+    "bundle": {
+     "ticks": 456,
+     "changed": 7,
+     "worse_decisions": 0,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 0,
+     "footprint_rejects": 0
+    }
+   },
+   "shadow_wait_ticks_0.1s": {
+    "baseline": {},
+    "search18_start_plan": {},
+    "search18_free_space": {},
+    "bundle": {}
+   },
+   "shadow_first_command_divergence_sim_s": {
+    "search18_start_plan": {},
+    "search18_free_space": {},
+    "bundle": {}
+   }
+  },
+  {
+   "seed": 8311704,
+   "stage": "novel12",
+   "original_success": true,
+   "baseline_mismatch_ticks": 0,
+   "variants": {
+    "search18_footprint": {
+     "ticks": 482,
+     "changed": 16,
+     "worse_decisions": 0,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 0,
+     "footprint_rejects": 0
+    },
+    "search18_start_plan": {
+     "ticks": 482,
+     "changed": 16,
+     "worse_decisions": 0,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 0,
+     "footprint_rejects": 0
+    },
+    "search18_free_space": {
+     "ticks": 482,
+     "changed": 0,
+     "worse_decisions": 0,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 0,
+     "footprint_rejects": 0
+    },
+    "bundle": {
+     "ticks": 482,
+     "changed": 16,
+     "worse_decisions": 0,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 0,
+     "footprint_rejects": 0
+    }
+   },
+   "shadow_wait_ticks_0.1s": {
+    "baseline": {},
+    "search18_start_plan": {},
+    "search18_free_space": {},
+    "bundle": {}
+   },
+   "shadow_first_command_divergence_sim_s": {
+    "search18_start_plan": {
+     "r1": 12.2
+    },
+    "search18_free_space": {},
+    "bundle": {
+     "r1": 12.2
+    }
+   }
+  },
+  {
+   "seed": 8311705,
+   "stage": "novel12",
+   "original_success": true,
+   "baseline_mismatch_ticks": 0,
+   "variants": {
+    "search18_footprint": {
+     "ticks": 630,
+     "changed": 169,
+     "worse_decisions": 134,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 53,
+     "footprint_rejects": 81
+    },
+    "search18_start_plan": {
+     "ticks": 630,
+     "changed": 16,
+     "worse_decisions": 0,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 0,
+     "footprint_rejects": 0
+    },
+    "search18_free_space": {
+     "ticks": 630,
+     "changed": 0,
+     "worse_decisions": 0,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 0,
+     "footprint_rejects": 0
+    },
+    "bundle": {
+     "ticks": 630,
+     "changed": 169,
+     "worse_decisions": 134,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 53,
+     "footprint_rejects": 81
+    }
+   },
+   "shadow_wait_ticks_0.1s": {
+    "baseline": {},
+    "search18_start_plan": {},
+    "search18_free_space": {},
+    "bundle": {}
+   },
+   "shadow_first_command_divergence_sim_s": {
+    "search18_start_plan": {
+     "r2": 10.3,
+     "r1": 12.9
+    },
+    "search18_free_space": {},
+    "bundle": {
+     "r2": 7.6,
+     "r1": 11.4
+    }
+   }
+  },
+  {
+   "seed": 8311706,
+   "stage": "novel12",
+   "original_success": true,
+   "baseline_mismatch_ticks": 0,
+   "variants": {
+    "search18_footprint": {
+     "ticks": 624,
+     "changed": 129,
+     "worse_decisions": 104,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 34,
+     "footprint_rejects": 70
+    },
+    "search18_start_plan": {
+     "ticks": 624,
+     "changed": 13,
+     "worse_decisions": 0,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 0,
+     "footprint_rejects": 0
+    },
+    "search18_free_space": {
+     "ticks": 624,
+     "changed": 0,
+     "worse_decisions": 0,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 0,
+     "footprint_rejects": 0
+    },
+    "bundle": {
+     "ticks": 624,
+     "changed": 129,
+     "worse_decisions": 104,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 34,
+     "footprint_rejects": 70
+    }
+   },
+   "shadow_wait_ticks_0.1s": {
+    "baseline": {},
+    "search18_start_plan": {},
+    "search18_free_space": {},
+    "bundle": {}
+   },
+   "shadow_first_command_divergence_sim_s": {
+    "search18_start_plan": {
+     "r1": 12.5
+    },
+    "search18_free_space": {},
+    "bundle": {
+     "r1": 4.6
+    }
+   }
+  },
+  {
+   "seed": 8311707,
+   "stage": "novel12",
+   "original_success": true,
+   "baseline_mismatch_ticks": 0,
+   "variants": {
+    "search18_footprint": {
+     "ticks": 610,
+     "changed": 140,
+     "worse_decisions": 124,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 41,
+     "footprint_rejects": 83
+    },
+    "search18_start_plan": {
+     "ticks": 610,
+     "changed": 20,
+     "worse_decisions": 0,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 0,
+     "footprint_rejects": 0
+    },
+    "search18_free_space": {
+     "ticks": 610,
+     "changed": 0,
+     "worse_decisions": 0,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 0,
+     "footprint_rejects": 0
+    },
+    "bundle": {
+     "ticks": 610,
+     "changed": 140,
+     "worse_decisions": 124,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 41,
+     "footprint_rejects": 83
+    }
+   },
+   "shadow_wait_ticks_0.1s": {
+    "baseline": {},
+    "search18_start_plan": {},
+    "search18_free_space": {},
+    "bundle": {}
+   },
+   "shadow_first_command_divergence_sim_s": {
+    "search18_start_plan": {
+     "r2": 9.3,
+     "r1": 12.8
+    },
+    "search18_free_space": {},
+    "bundle": {
+     "r1": 9.1,
+     "r2": 9.3
+    }
+   }
+  },
+  {
+   "seed": 8311708,
+   "stage": "novel12",
+   "original_success": true,
+   "baseline_mismatch_ticks": 0,
+   "variants": {
+    "search18_footprint": {
+     "ticks": 932,
+     "changed": 178,
+     "worse_decisions": 140,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 56,
+     "footprint_rejects": 84
+    },
+    "search18_start_plan": {
+     "ticks": 932,
+     "changed": 43,
+     "worse_decisions": 0,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 0,
+     "footprint_rejects": 0
+    },
+    "search18_free_space": {
+     "ticks": 932,
+     "changed": 0,
+     "worse_decisions": 0,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 0,
+     "footprint_rejects": 0
+    },
+    "bundle": {
+     "ticks": 932,
+     "changed": 178,
+     "worse_decisions": 140,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 56,
+     "footprint_rejects": 84
+    }
+   },
+   "shadow_wait_ticks_0.1s": {
+    "baseline": {},
+    "search18_start_plan": {},
+    "search18_free_space": {},
+    "bundle": {}
+   },
+   "shadow_first_command_divergence_sim_s": {
+    "search18_start_plan": {
+     "r1": 8.6,
+     "r2": 17.0
+    },
+    "search18_free_space": {},
+    "bundle": {
+     "r1": 10.8,
+     "r2": 13.9
+    }
+   }
+  },
+  {
+   "seed": 8311709,
+   "stage": "novel12",
+   "original_success": false,
+   "baseline_mismatch_ticks": 0,
+   "variants": {
+    "search18_footprint": {
+     "ticks": 128,
+     "changed": 0,
+     "worse_decisions": 0,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 0,
+     "footprint_rejects": 0
+    },
+    "search18_start_plan": {
+     "ticks": 128,
+     "changed": 0,
+     "worse_decisions": 0,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 0,
+     "footprint_rejects": 0
+    },
+    "search18_free_space": {
+     "ticks": 128,
+     "changed": 0,
+     "worse_decisions": 0,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 0,
+     "footprint_rejects": 0
+    },
+    "bundle": {
+     "ticks": 128,
+     "changed": 0,
+     "worse_decisions": 0,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 0,
+     "footprint_rejects": 0
+    }
+   },
+   "shadow_wait_ticks_0.1s": {
+    "baseline": {},
+    "search18_start_plan": {},
+    "search18_free_space": {},
+    "bundle": {}
+   },
+   "shadow_first_command_divergence_sim_s": {
+    "search18_start_plan": {},
+    "search18_free_space": {},
+    "bundle": {}
+   }
+  },
+  {
+   "seed": 8311710,
+   "stage": "novel12",
+   "original_success": true,
+   "baseline_mismatch_ticks": 0,
+   "variants": {
+    "search18_footprint": {
+     "ticks": 650,
+     "changed": 123,
+     "worse_decisions": 100,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 1,
+     "new_no_path": 29,
+     "footprint_rejects": 71
+    },
+    "search18_start_plan": {
+     "ticks": 650,
+     "changed": 25,
+     "worse_decisions": 0,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 0,
+     "footprint_rejects": 0
+    },
+    "search18_free_space": {
+     "ticks": 650,
+     "changed": 0,
+     "worse_decisions": 0,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 0,
+     "footprint_rejects": 0
+    },
+    "bundle": {
+     "ticks": 650,
+     "changed": 123,
+     "worse_decisions": 100,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 1,
+     "new_no_path": 29,
+     "footprint_rejects": 71
+    }
+   },
+   "shadow_wait_ticks_0.1s": {
+    "baseline": {},
+    "search18_start_plan": {},
+    "search18_free_space": {},
+    "bundle": {}
+   },
+   "shadow_first_command_divergence_sim_s": {
+    "search18_start_plan": {
+     "r1": 6.9,
+     "r2": 15.6
+    },
+    "search18_free_space": {},
+    "bundle": {
+     "r1": 7.4,
+     "r2": 12.0
+    }
+   }
+  },
+  {
+   "seed": 8311711,
+   "stage": "novel12",
+   "original_success": false,
+   "baseline_mismatch_ticks": 0,
+   "variants": {
+    "search18_footprint": {
+     "ticks": 518,
+     "changed": 105,
+     "worse_decisions": 77,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 47,
+     "footprint_rejects": 30
+    },
+    "search18_start_plan": {
+     "ticks": 518,
+     "changed": 17,
+     "worse_decisions": 0,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 0,
+     "footprint_rejects": 0
+    },
+    "search18_free_space": {
+     "ticks": 518,
+     "changed": 18,
+     "worse_decisions": 0,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 0,
+     "footprint_rejects": 0
+    },
+    "bundle": {
+     "ticks": 518,
+     "changed": 123,
+     "worse_decisions": 77,
+     "resolved_no_path": 0,
+     "relaxed_blocks": 0,
+     "new_blocks": 0,
+     "new_no_path": 47,
+     "footprint_rejects": 30
+    }
+   },
+   "shadow_wait_ticks_0.1s": {
+    "baseline": {
+     "r2": 120
+    },
+    "search18_start_plan": {
+     "r2": 120
+    },
+    "search18_free_space": {
+     "r2": 100
+    },
+    "bundle": {
+     "r2": 100
+    }
+   },
+   "shadow_first_command_divergence_sim_s": {
+    "search18_start_plan": {
+     "r1": 18.6
+    },
+    "search18_free_space": {
+     "r2": 21.6
+    },
+    "bundle": {
+     "r2": 9.7,
+     "r1": 14.3
+    }
+   }
+  }
+ ],
+ "footprint_margin_sweep_mm": {
+  "success_runs_with_worse_decisions": {
+   "search18_footprint": 9,
+   "search18_footprint@45": 9,
+   "search18_footprint@30": 9,
+   "search18_footprint@15": 8,
+   "search18_footprint@0": 0
+  },
+  "runs": [
+   {
+    "seed": 315709,
+    "stage": "repro3",
+    "original_success": false,
+    "baseline_mismatch_ticks": 0,
+    "variants": {
+     "search18_footprint": {
+      "ticks": 390,
+      "changed": 26,
+      "worse_decisions": 17,
+      "resolved_no_path": 2,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 16,
+      "footprint_rejects": 1
+     },
+     "search18_footprint@45": {
+      "ticks": 390,
+      "changed": 23,
+      "worse_decisions": 1,
+      "resolved_no_path": 2,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 1,
+      "footprint_rejects": 0
+     },
+     "search18_footprint@30": {
+      "ticks": 390,
+      "changed": 13,
+      "worse_decisions": 1,
+      "resolved_no_path": 4,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 1,
+      "footprint_rejects": 3
+     },
+     "search18_footprint@15": {
+      "ticks": 390,
+      "changed": 14,
+      "worse_decisions": 0,
+      "resolved_no_path": 5,
+      "relaxed_blocks": 2,
+      "new_blocks": 0,
+      "new_no_path": 0,
+      "footprint_rejects": 0
+     },
+     "search18_footprint@0": {
+      "ticks": 390,
+      "changed": 17,
+      "worse_decisions": 0,
+      "resolved_no_path": 5,
+      "relaxed_blocks": 2,
+      "new_blocks": 0,
+      "new_no_path": 0,
+      "footprint_rejects": 0
+     }
+    }
+   },
+   {
+    "seed": 315724,
+    "stage": "repro3",
+    "original_success": true,
+    "baseline_mismatch_ticks": 0,
+    "variants": {
+     "search18_footprint": {
+      "ticks": 862,
+      "changed": 168,
+      "worse_decisions": 144,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 3,
+      "new_no_path": 76,
+      "footprint_rejects": 67
+     },
+     "search18_footprint@45": {
+      "ticks": 862,
+      "changed": 126,
+      "worse_decisions": 98,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 48,
+      "footprint_rejects": 50
+     },
+     "search18_footprint@30": {
+      "ticks": 862,
+      "changed": 100,
+      "worse_decisions": 58,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 25,
+      "footprint_rejects": 33
+     },
+     "search18_footprint@15": {
+      "ticks": 862,
+      "changed": 66,
+      "worse_decisions": 42,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 11,
+      "footprint_rejects": 31
+     },
+     "search18_footprint@0": {
+      "ticks": 862,
+      "changed": 67,
+      "worse_decisions": 0,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 0,
+      "footprint_rejects": 0
+     }
+    }
+   },
+   {
+    "seed": 315731,
+    "stage": "repro3",
+    "original_success": true,
+    "baseline_mismatch_ticks": 0,
+    "variants": {
+     "search18_footprint": {
+      "ticks": 714,
+      "changed": 233,
+      "worse_decisions": 207,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 87,
+      "footprint_rejects": 120
+     },
+     "search18_footprint@45": {
+      "ticks": 714,
+      "changed": 210,
+      "worse_decisions": 166,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 65,
+      "footprint_rejects": 101
+     },
+     "search18_footprint@30": {
+      "ticks": 714,
+      "changed": 126,
+      "worse_decisions": 86,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 33,
+      "footprint_rejects": 53
+     },
+     "search18_footprint@15": {
+      "ticks": 714,
+      "changed": 75,
+      "worse_decisions": 46,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 0,
+      "footprint_rejects": 46
+     },
+     "search18_footprint@0": {
+      "ticks": 714,
+      "changed": 54,
+      "worse_decisions": 0,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 0,
+      "footprint_rejects": 0
+     }
+    }
+   },
+   {
+    "seed": 8311700,
+    "stage": "novel12",
+    "original_success": true,
+    "baseline_mismatch_ticks": 0,
+    "variants": {
+     "search18_footprint": {
+      "ticks": 512,
+      "changed": 81,
+      "worse_decisions": 67,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 30,
+      "footprint_rejects": 37
+     },
+     "search18_footprint@45": {
+      "ticks": 512,
+      "changed": 76,
+      "worse_decisions": 59,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 26,
+      "footprint_rejects": 33
+     },
+     "search18_footprint@30": {
+      "ticks": 512,
+      "changed": 34,
+      "worse_decisions": 24,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 21,
+      "footprint_rejects": 3
+     },
+     "search18_footprint@15": {
+      "ticks": 512,
+      "changed": 12,
+      "worse_decisions": 0,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 0,
+      "footprint_rejects": 0
+     },
+     "search18_footprint@0": {
+      "ticks": 512,
+      "changed": 13,
+      "worse_decisions": 0,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 0,
+      "footprint_rejects": 0
+     }
+    }
+   },
+   {
+    "seed": 8311701,
+    "stage": "novel12",
+    "original_success": true,
+    "baseline_mismatch_ticks": 0,
+    "variants": {
+     "search18_footprint": {
+      "ticks": 566,
+      "changed": 126,
+      "worse_decisions": 104,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 18,
+      "footprint_rejects": 86
+     },
+     "search18_footprint@45": {
+      "ticks": 566,
+      "changed": 83,
+      "worse_decisions": 67,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 10,
+      "footprint_rejects": 57
+     },
+     "search18_footprint@30": {
+      "ticks": 566,
+      "changed": 57,
+      "worse_decisions": 45,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 7,
+      "footprint_rejects": 38
+     },
+     "search18_footprint@15": {
+      "ticks": 566,
+      "changed": 44,
+      "worse_decisions": 22,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 0,
+      "footprint_rejects": 22
+     },
+     "search18_footprint@0": {
+      "ticks": 566,
+      "changed": 30,
+      "worse_decisions": 0,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 0,
+      "footprint_rejects": 0
+     }
+    }
+   },
+   {
+    "seed": 8311702,
+    "stage": "novel12",
+    "original_success": false,
+    "baseline_mismatch_ticks": 0,
+    "variants": {
+     "search18_footprint": {
+      "ticks": 334,
+      "changed": 95,
+      "worse_decisions": 78,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 1,
+      "new_no_path": 22,
+      "footprint_rejects": 56
+     },
+     "search18_footprint@45": {
+      "ticks": 334,
+      "changed": 94,
+      "worse_decisions": 73,
+      "resolved_no_path": 1,
+      "relaxed_blocks": 1,
+      "new_blocks": 0,
+      "new_no_path": 18,
+      "footprint_rejects": 55
+     },
+     "search18_footprint@30": {
+      "ticks": 334,
+      "changed": 59,
+      "worse_decisions": 49,
+      "resolved_no_path": 3,
+      "relaxed_blocks": 3,
+      "new_blocks": 0,
+      "new_no_path": 15,
+      "footprint_rejects": 34
+     },
+     "search18_footprint@15": {
+      "ticks": 334,
+      "changed": 45,
+      "worse_decisions": 27,
+      "resolved_no_path": 3,
+      "relaxed_blocks": 3,
+      "new_blocks": 0,
+      "new_no_path": 0,
+      "footprint_rejects": 27
+     },
+     "search18_footprint@0": {
+      "ticks": 334,
+      "changed": 30,
+      "worse_decisions": 0,
+      "resolved_no_path": 3,
+      "relaxed_blocks": 3,
+      "new_blocks": 0,
+      "new_no_path": 0,
+      "footprint_rejects": 0
+     }
+    }
+   },
+   {
+    "seed": 8311703,
+    "stage": "novel12",
+    "original_success": true,
+    "baseline_mismatch_ticks": 0,
+    "variants": {
+     "search18_footprint": {
+      "ticks": 456,
+      "changed": 7,
+      "worse_decisions": 0,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 0,
+      "footprint_rejects": 0
+     },
+     "search18_footprint@45": {
+      "ticks": 456,
+      "changed": 7,
+      "worse_decisions": 0,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 0,
+      "footprint_rejects": 0
+     },
+     "search18_footprint@30": {
+      "ticks": 456,
+      "changed": 7,
+      "worse_decisions": 0,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 0,
+      "footprint_rejects": 0
+     },
+     "search18_footprint@15": {
+      "ticks": 456,
+      "changed": 7,
+      "worse_decisions": 0,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 0,
+      "footprint_rejects": 0
+     },
+     "search18_footprint@0": {
+      "ticks": 456,
+      "changed": 7,
+      "worse_decisions": 0,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 0,
+      "footprint_rejects": 0
+     }
+    }
+   },
+   {
+    "seed": 8311704,
+    "stage": "novel12",
+    "original_success": true,
+    "baseline_mismatch_ticks": 0,
+    "variants": {
+     "search18_footprint": {
+      "ticks": 482,
+      "changed": 16,
+      "worse_decisions": 0,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 0,
+      "footprint_rejects": 0
+     },
+     "search18_footprint@45": {
+      "ticks": 482,
+      "changed": 16,
+      "worse_decisions": 0,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 0,
+      "footprint_rejects": 0
+     },
+     "search18_footprint@30": {
+      "ticks": 482,
+      "changed": 16,
+      "worse_decisions": 0,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 0,
+      "footprint_rejects": 0
+     },
+     "search18_footprint@15": {
+      "ticks": 482,
+      "changed": 16,
+      "worse_decisions": 0,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 0,
+      "footprint_rejects": 0
+     },
+     "search18_footprint@0": {
+      "ticks": 482,
+      "changed": 16,
+      "worse_decisions": 0,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 0,
+      "footprint_rejects": 0
+     }
+    }
+   },
+   {
+    "seed": 8311705,
+    "stage": "novel12",
+    "original_success": true,
+    "baseline_mismatch_ticks": 0,
+    "variants": {
+     "search18_footprint": {
+      "ticks": 630,
+      "changed": 169,
+      "worse_decisions": 134,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 53,
+      "footprint_rejects": 81
+     },
+     "search18_footprint@45": {
+      "ticks": 630,
+      "changed": 136,
+      "worse_decisions": 104,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 27,
+      "footprint_rejects": 77
+     },
+     "search18_footprint@30": {
+      "ticks": 630,
+      "changed": 79,
+      "worse_decisions": 62,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 20,
+      "footprint_rejects": 42
+     },
+     "search18_footprint@15": {
+      "ticks": 630,
+      "changed": 65,
+      "worse_decisions": 37,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 2,
+      "footprint_rejects": 35
+     },
+     "search18_footprint@0": {
+      "ticks": 630,
+      "changed": 53,
+      "worse_decisions": 0,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 0,
+      "footprint_rejects": 0
+     }
+    }
+   },
+   {
+    "seed": 8311706,
+    "stage": "novel12",
+    "original_success": true,
+    "baseline_mismatch_ticks": 0,
+    "variants": {
+     "search18_footprint": {
+      "ticks": 624,
+      "changed": 129,
+      "worse_decisions": 104,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 34,
+      "footprint_rejects": 70
+     },
+     "search18_footprint@45": {
+      "ticks": 624,
+      "changed": 105,
+      "worse_decisions": 89,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 22,
+      "footprint_rejects": 67
+     },
+     "search18_footprint@30": {
+      "ticks": 624,
+      "changed": 72,
+      "worse_decisions": 52,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 14,
+      "footprint_rejects": 38
+     },
+     "search18_footprint@15": {
+      "ticks": 624,
+      "changed": 48,
+      "worse_decisions": 32,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 0,
+      "footprint_rejects": 32
+     },
+     "search18_footprint@0": {
+      "ticks": 624,
+      "changed": 26,
+      "worse_decisions": 0,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 0,
+      "footprint_rejects": 0
+     }
+    }
+   },
+   {
+    "seed": 8311707,
+    "stage": "novel12",
+    "original_success": true,
+    "baseline_mismatch_ticks": 0,
+    "variants": {
+     "search18_footprint": {
+      "ticks": 610,
+      "changed": 140,
+      "worse_decisions": 124,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 41,
+      "footprint_rejects": 83
+     },
+     "search18_footprint@45": {
+      "ticks": 610,
+      "changed": 136,
+      "worse_decisions": 108,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 27,
+      "footprint_rejects": 81
+     },
+     "search18_footprint@30": {
+      "ticks": 610,
+      "changed": 89,
+      "worse_decisions": 70,
+      "resolved_no_path": 1,
+      "relaxed_blocks": 1,
+      "new_blocks": 0,
+      "new_no_path": 17,
+      "footprint_rejects": 53
+     },
+     "search18_footprint@15": {
+      "ticks": 610,
+      "changed": 60,
+      "worse_decisions": 47,
+      "resolved_no_path": 1,
+      "relaxed_blocks": 1,
+      "new_blocks": 0,
+      "new_no_path": 0,
+      "footprint_rejects": 47
+     },
+     "search18_footprint@0": {
+      "ticks": 610,
+      "changed": 40,
+      "worse_decisions": 0,
+      "resolved_no_path": 1,
+      "relaxed_blocks": 1,
+      "new_blocks": 0,
+      "new_no_path": 0,
+      "footprint_rejects": 0
+     }
+    }
+   },
+   {
+    "seed": 8311708,
+    "stage": "novel12",
+    "original_success": true,
+    "baseline_mismatch_ticks": 0,
+    "variants": {
+     "search18_footprint": {
+      "ticks": 932,
+      "changed": 178,
+      "worse_decisions": 140,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 56,
+      "footprint_rejects": 84
+     },
+     "search18_footprint@45": {
+      "ticks": 932,
+      "changed": 130,
+      "worse_decisions": 103,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 36,
+      "footprint_rejects": 67
+     },
+     "search18_footprint@30": {
+      "ticks": 932,
+      "changed": 84,
+      "worse_decisions": 50,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 25,
+      "footprint_rejects": 25
+     },
+     "search18_footprint@15": {
+      "ticks": 932,
+      "changed": 61,
+      "worse_decisions": 17,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 0,
+      "footprint_rejects": 17
+     },
+     "search18_footprint@0": {
+      "ticks": 932,
+      "changed": 51,
+      "worse_decisions": 0,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 0,
+      "footprint_rejects": 0
+     }
+    }
+   },
+   {
+    "seed": 8311709,
+    "stage": "novel12",
+    "original_success": false,
+    "baseline_mismatch_ticks": 0,
+    "variants": {
+     "search18_footprint": {
+      "ticks": 128,
+      "changed": 0,
+      "worse_decisions": 0,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 0,
+      "footprint_rejects": 0
+     },
+     "search18_footprint@45": {
+      "ticks": 128,
+      "changed": 0,
+      "worse_decisions": 0,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 0,
+      "footprint_rejects": 0
+     },
+     "search18_footprint@30": {
+      "ticks": 128,
+      "changed": 0,
+      "worse_decisions": 0,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 0,
+      "footprint_rejects": 0
+     },
+     "search18_footprint@15": {
+      "ticks": 128,
+      "changed": 4,
+      "worse_decisions": 0,
+      "resolved_no_path": 4,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 0,
+      "footprint_rejects": 0
+     },
+     "search18_footprint@0": {
+      "ticks": 128,
+      "changed": 4,
+      "worse_decisions": 0,
+      "resolved_no_path": 4,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 0,
+      "footprint_rejects": 0
+     }
+    }
+   },
+   {
+    "seed": 8311710,
+    "stage": "novel12",
+    "original_success": true,
+    "baseline_mismatch_ticks": 0,
+    "variants": {
+     "search18_footprint": {
+      "ticks": 650,
+      "changed": 123,
+      "worse_decisions": 100,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 1,
+      "new_no_path": 29,
+      "footprint_rejects": 71
+     },
+     "search18_footprint@45": {
+      "ticks": 650,
+      "changed": 98,
+      "worse_decisions": 82,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 1,
+      "new_blocks": 0,
+      "new_no_path": 14,
+      "footprint_rejects": 68
+     },
+     "search18_footprint@30": {
+      "ticks": 650,
+      "changed": 72,
+      "worse_decisions": 52,
+      "resolved_no_path": 1,
+      "relaxed_blocks": 1,
+      "new_blocks": 0,
+      "new_no_path": 11,
+      "footprint_rejects": 41
+     },
+     "search18_footprint@15": {
+      "ticks": 650,
+      "changed": 63,
+      "worse_decisions": 37,
+      "resolved_no_path": 1,
+      "relaxed_blocks": 1,
+      "new_blocks": 0,
+      "new_no_path": 0,
+      "footprint_rejects": 37
+     },
+     "search18_footprint@0": {
+      "ticks": 650,
+      "changed": 49,
+      "worse_decisions": 0,
+      "resolved_no_path": 1,
+      "relaxed_blocks": 1,
+      "new_blocks": 0,
+      "new_no_path": 0,
+      "footprint_rejects": 0
+     }
+    }
+   },
+   {
+    "seed": 8311711,
+    "stage": "novel12",
+    "original_success": false,
+    "baseline_mismatch_ticks": 0,
+    "variants": {
+     "search18_footprint": {
+      "ticks": 518,
+      "changed": 105,
+      "worse_decisions": 77,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 47,
+      "footprint_rejects": 30
+     },
+     "search18_footprint@45": {
+      "ticks": 518,
+      "changed": 91,
+      "worse_decisions": 69,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 38,
+      "footprint_rejects": 31
+     },
+     "search18_footprint@30": {
+      "ticks": 518,
+      "changed": 77,
+      "worse_decisions": 49,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 20,
+      "footprint_rejects": 29
+     },
+     "search18_footprint@15": {
+      "ticks": 518,
+      "changed": 50,
+      "worse_decisions": 33,
+      "resolved_no_path": 0,
+      "relaxed_blocks": 0,
+      "new_blocks": 0,
+      "new_no_path": 10,
+      "footprint_rejects": 23
+     },
+     "search18_footprint@0": {
+      "ticks": 518,
+      "changed": 43,
+      "worse_decisions": 0,
+      "resolved_no_path": 1,
+      "relaxed_blocks": 1,
+      "new_blocks": 0,
+      "new_no_path": 0,
+      "footprint_rejects": 0
+     }
+    }
+   }
+  ],
+  "note": "margins below 65 mm are analysis-only (ANALYSIS_OVERRIDE); no CLI/toggle exposes them"
+ },
+ "raw": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search18/{replay-final,replay-margin-sweep} (zstd)",
+ "raw_sha256": {
+  "replay-final/novel12-0.json.zst": "386017e735038b182a71161165c5ffa5217e85399780f643cbe1a9884625ce7f",
+  "replay-final/novel12-1.json.zst": "9855f559da0f4500aeef3be67f6d9f65705cc432350dda167fae52234c39e9c9",
+  "replay-final/novel12-10.json.zst": "407b921677c009a3a264c7fe018ab564cb94d4cf5e3e812d422b415141f8441f",
+  "replay-final/novel12-11.json.zst": "b8209c09ab1ecd9fac66420b461bc8b564307564e23d6154be8a6c07241eafba",
+  "replay-final/novel12-2.json.zst": "495c56620a23840d6487199756c6ef147b30210decbc083c8323226c968e30ed",
+  "replay-final/novel12-3.json.zst": "7fd6f0c7948597be7dfaae82639de249882a08d99ab6c37f8aec12200c0d819d",
+  "replay-final/novel12-4.json.zst": "b68d9bb2f9d68c034f2a4f5f0099197e1e3c0ab0075458fa0c0b43505a942fb5",
+  "replay-final/novel12-5.json.zst": "d924406256382806c6129f316b02abb952b0ee25f1be39ad14a8bd7219b692c3",
+  "replay-final/novel12-6.json.zst": "3b30399521bc000920e1e311793d16e66a5d63c51621bd0221171aaeebbf92ae",
+  "replay-final/novel12-7.json.zst": "a01d356be0d1b1f03d98fcd989bb833c3dcff5cf8b372509c21b32f64fdf8120",
+  "replay-final/novel12-8.json.zst": "f98d86efbd29d17a15580952d08ecf1d556c8b2a351b10719422002473f6204f",
+  "replay-final/novel12-9.json.zst": "c60f7e8216b49cc7a0b77d5440d2a6edeb0b6e7b08639bbe3551d69fa9b43c26",
+  "replay-final/repro3-0.json.zst": "65504ab958fac5bf46d866eb0889e3fd30262b86b08d8dedc040c0d521bbbf18",
+  "replay-final/repro3-1.json.zst": "66016d831b12520b448442669878473c4f9ed982b8d29ef2e1e7c03fee228a37",
+  "replay-final/repro3-2.json.zst": "080f4a5bb866cfc813e3d349c3afc39e1c66fc366f312f5a35a09ad12c1c8b57",
+  "replay-final/summary.json.zst": "e5ec59e55a08f50c53ef4798ea8a35f13e85a02b89afba5c2598a2abd6d8e1ae",
+  "replay-margin-sweep/summary.json.zst": "329987d2c734ca6fa2889ba46552608065be396a9ab816c3198e387a2d64f40c"
+ }
+}

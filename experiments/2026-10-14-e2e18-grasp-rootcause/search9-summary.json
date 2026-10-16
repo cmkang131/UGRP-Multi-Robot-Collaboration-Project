@@ -1,0 +1,134 @@
+{
+  "schema": "ugrp.grasp_act.search9.v1",
+  "parent_sha": "793865d20475098f96f6966edf8ea1ccba058f6d",
+  "raw_source_sha": "86367b4b78a14c772f6194f6b36d524a0f934afe",
+  "raw_root": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b",
+  "raw_results": {
+    "planned_N": 40,
+    "started_N": 40,
+    "completed_N": 40,
+    "physical_success_n": 34,
+    "handoff_n": 5,
+    "timeout_n": 1,
+    "interrupted": 0,
+    "HOST_ERROR": 0
+  },
+  "remaining_causes": {
+    "cargo_goal_keepout": [
+      3
+    ],
+    "static_wall_goal_keepout": [
+      17
+    ],
+    "lost_target_reacquisition": [
+      7
+    ]
+  },
+  "new_mode": "approach_recovery_v2",
+  "default": "off",
+  "tests": {
+    "files": [
+      "tests/test_grasp_act_recovery.py",
+      "tests/test_grasp_act_goal_set.py",
+      "tests/test_grasp_act_batch.py"
+    ],
+    "passed": 94,
+    "junit": "outputs/search9/tests.xml",
+    "junit_sha256": "cc08cbcb969555220db777bafd7e8fb5f6a9cacf3e1488cf9ea7d214755c59ff"
+  },
+  "comparison": {
+    "baseline_commands_verified": 23842,
+    "successful_command_N": 21326,
+    "successful_shadow_changed_commands": {
+      "baseline_to_search9": 547,
+      "search8_to_search9": 176
+    },
+    "successful_changed_indices": {
+      "baseline_to_search9": [
+        2,
+        9,
+        10,
+        20,
+        36
+      ],
+      "search8_to_search9": [
+        2,
+        9,
+        10,
+        36
+      ]
+    },
+    "invisible_measurements": 0,
+    "held_world_reads": 0,
+    "scope": "baseline exact recorded-command validation; fixed-recorded-input shadow counts; after first divergence off-policy, never physical success; no World, rendering, physics or remote connection"
+  },
+  "viewed_frames": 54,
+  "successful_images_locally_available": 0,
+  "new_physical_results": {
+    "started_N": 0,
+    "completed_N": 0,
+    "physical_success_n": 0,
+    "status": "UNRUN"
+  },
+  "queue": {
+    "diagnostic_runs": 18,
+    "diagnostic_unique_starts": 15,
+    "diagnostic_waves": [
+      15,
+      3
+    ],
+    "speed_runs": 16,
+    "fresh_gate_seeds": [
+      188000,
+      188039
+    ],
+    "gate_N": 40,
+    "required_success": 38,
+    "coordinator_approval": false,
+    "start_filter": {
+      "mode": "start_nominal_goal_feasible_v1",
+      "original_planned_N": 40,
+      "original_blocked_n": 1,
+      "original_blocked_rate": 0.025,
+      "original_blocked_starts": [
+        {
+          "seed": 188030,
+          "roles": [
+            "r1"
+          ]
+        }
+      ],
+      "original_episodes_sha256": "bec9835fcd2d785c12180bc185bed4f8f3360003c64b97a4e992200cf7536977",
+      "accepted_N": 40,
+      "rejected_proposals_n": 1,
+      "nominal_tested_proposals_N": 41,
+      "rejected_proposals_rate": 0.024390243902439025,
+      "all_proposals_N": 129,
+      "criterion": "same nominal_goal_blocked(static_map_only=True), folded planner clearance; walls/bounds only",
+      "scope": "map-to-teacher handoff distribution; excludes static-blocked nominal stances, not a wide-start gate; no physical outcomes used"
+    }
+  },
+  "old_queue": {
+    "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-grasp-search-793865d2.json",
+    "sha256_before": "3de76b9f6eeed2a4f549e3af544cd6813ff74aac1aff6dea4301599723f133a0",
+    "modified": false
+  },
+  "artifacts_sha256": {
+    "experiments/2026-10-14-e2e18-grasp-rootcause/search9-causes.json": "186a89a1575e159580cc44bf9da1038a3aa8b72b7f1933da7aeb6e8b507ce435",
+    "experiments/2026-10-14-e2e18-grasp-rootcause/search9-frame-review.json": "6bbc75990ec2699ad860c1a0b570a6bf6a53f48ebc69892a099f5b6e78b127cb",
+    "experiments/2026-10-14-e2e18-grasp-rootcause/search9-goal-checks.json": "fdf2f9acd7e4d11dbfdc1383ef9153208b8b7d9b0e0f545fbef73c4b572b1368",
+    "experiments/2026-10-14-e2e18-grasp-rootcause/search9-replay.json": "d313add41831254b8a81fa89612b484cf61775af52b2bf0794cd1f8c550d2fe2",
+    "experiments/2026-10-14-e2e18-grasp-rootcause/search9-seed-reservation.json": "808d94c465f4913bfb5518eadc39a6ec4e67590d7826449b9394e34b26c2257d",
+    "experiments/2026-10-14-e2e18-grasp-rootcause/teacher-search9-diagnostic-plan.json": "ac7c07105d065d9dc860329585b1388eb78ec77453017420bcca8579df3c2c26",
+    "experiments/2026-10-14-e2e18-grasp-rootcause/teacher-search9-gate-plan.json": "a528eb80a3e90b5869d2859c1bb50a0924cea432634f6c577175a5f9ed2ff38e"
+  },
+  "source_sha256": {
+    "sim/grasp_act_teacher_v3.py": "e61900fd9cef316ac76368bb405d310fc2660f12a9dbee5ad9442099be075da8",
+    "sim/grasp_act_goal_set.py": "80e1345d9aac42a3ea4a715ae0c7e70df788ae90c6fea76b580227f656f168b6",
+    "sim/grasp_act_recovery.py": "c93669c368e42584bdfff84ff4b7b918b2aaa42c07d949bd7d1fbaed4887b345",
+    "scripts/run_grasp_act_teacher.py": "ec1587847c0119c98c5aee49170401b3feefd20659a96944c03321448bff4688",
+    "scripts/run_grasp_act_batch.py": "e4cd2c5c81341fe93a86e8ef91167fa922ad1b6b19301eff4264e7a3a88b363e",
+    "scripts/replay_grasp_act_remaining.py": "12b8a69ed73e2c447d22c40f21851a24660d23c803d89e1b26c81aa059920cfe",
+    "scripts/analyze_grasp_act_remaining.py": "1ca06d17ab7efb493b73149e7b62b717ee45cf652b068cefe0de02b34ef0d65c"
+  }
+}

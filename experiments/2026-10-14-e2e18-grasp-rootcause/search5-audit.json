@@ -1,0 +1,305 @@
+{
+  "schema": "ugrp.grasp_search5.audit.v1",
+  "source_sha": "77ee0ab7770b2320c945370234ca4b79d6e6d812",
+  "scope": "Saved ledgers and pure planning/controller decisions only; no physics, rendering, model calls or remote submissions. New visual review: 0 frames. No new physical cause attribution.",
+  "prior_run_summary": {
+    "object_kind": "long_beam",
+    "n": 0,
+    "N": 1,
+    "planned_N": 7,
+    "started_N": 7,
+    "joint_held_n": 0,
+    "approach_handoff_n": 0,
+    "approach_handoff_rate": 0.0,
+    "approach_handoff_indices": [],
+    "clean_handoff_n": 0,
+    "clean_handoff_rate": 0.0,
+    "clean_handoff_indices": [],
+    "search_handoff_n": 0,
+    "search_handoff_rate": 0.0,
+    "search_handoff_indices": [],
+    "robots": {
+      "r1": {
+        "n": 0,
+        "N": 1
+      },
+      "r2": {
+        "n": 0,
+        "N": 1
+      }
+    },
+    "failure_reasons": {
+      "no_stable_joint_hold_3s": 2
+    },
+    "host_errors": 0,
+    "interrupted": 6
+  },
+  "raw_runs": [
+    {
+      "index": 0,
+      "status": "interrupted",
+      "exit": 130,
+      "sim_s": null,
+      "physical_success": false,
+      "phase_at_interrupt": {
+        "r1": "complete",
+        "r2": "complete"
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-77ee0ab7/diagnostic/episode-000/raw",
+      "sha256": {
+        "result.json": "8236c66c0fb6515c4dc03a703d6a078c06706d6c17a69437d1235de7c2be1228",
+        "plan.json": "92dabede583f6739ad3a466604af749ee70101942ff8d273f6881f1b4ed7b2cd",
+        "eval-only.jsonl.zst": "4dde6020e6ac530c96df1fcfcc39c586de07db10d1ecc3495fc7cf07bc2179d4",
+        "teacher-r1.jsonl.zst": "aa951bb2c02d38cccf933c0d345ca2253a491a2ecff689cbe3e5b936e6d87abc",
+        "teacher-r2.jsonl.zst": "e95b458637c0cfd5f51c750335c0543cfb584230fde57d321c8d3c6ca0ad342d"
+      }
+    },
+    {
+      "index": 1,
+      "status": "interrupted",
+      "exit": 130,
+      "sim_s": null,
+      "physical_success": false,
+      "phase_at_interrupt": {
+        "r1": "pick",
+        "r2": "pick"
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-77ee0ab7/diagnostic/episode-001/raw",
+      "sha256": {
+        "result.json": "e1bcc9a0a2a8cb9a2f3f42ba6247649466105d895be0fe470201cdf0c35de68b",
+        "plan.json": "3f9524a9542566a17b0a0f9bb882cb83393ff45a04411a55d84b78849b761c52",
+        "eval-only.jsonl.zst": "90506c7c29e4b30682f54a90f121c6d59dddd849e02829cbcd6a1e82b74769c5",
+        "teacher-r1.jsonl.zst": "0a78515288ecd0a6d7ff30a2acd6faa99c6a5620fe287f662111c34acf7f2836",
+        "teacher-r2.jsonl.zst": "80fa42fe8bff344669bb4b48e4f302d942757b13ddf77d15e3012a1742bb0441"
+      }
+    },
+    {
+      "index": 2,
+      "status": "interrupted",
+      "exit": 130,
+      "sim_s": null,
+      "physical_success": false,
+      "phase_at_interrupt": {
+        "r1": "approach",
+        "r2": "ready"
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-77ee0ab7/diagnostic/episode-002/raw",
+      "sha256": {
+        "result.json": "d3b2b707673934deddf9b0e073c770d3af2a90c8b479d34179a4785300a71838",
+        "plan.json": "e567eb6e31e50aaac2c0a47e145807d0f55eb5ba2a510c44e173789ec3aef869",
+        "eval-only.jsonl.zst": "a6d45129fde4178f163ba62be5c22bcc2341f1b74d793836873a338a9466b548",
+        "teacher-r1.jsonl.zst": "afe754d455a5441c8737188c6429ce47c6e285268d3d4d8ba3ad03ad516b3b63",
+        "teacher-r2.jsonl.zst": "7d1e41a0a5a01a036c84d8008d8e4917ed60f852b1629c9f19bfcb77879e4736"
+      }
+    },
+    {
+      "index": 3,
+      "status": "interrupted",
+      "exit": 130,
+      "sim_s": null,
+      "physical_success": false,
+      "phase_at_interrupt": {
+        "r1": "pick",
+        "r2": "pick"
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-77ee0ab7/diagnostic/episode-003/raw",
+      "sha256": {
+        "result.json": "99348e9e41a477b3aa6571171856c225b024f5f3e9cfbfd5ffdbba4430c18cce",
+        "plan.json": "dc11609c7cd2f157ea9fa6dcded9f61d06155adbac8e6ca27051315108c07679",
+        "eval-only.jsonl.zst": "540dcb3c9d86968bf7a3bd3bea667bcb980ccddf3f450802af99fa7577031d32",
+        "teacher-r1.jsonl.zst": "31518234882aac7e2a988b496e7f0b3eef9791d8076fd04a5cac4d1a7f0bd575",
+        "teacher-r2.jsonl.zst": "283293062cc05c86a2f8927d772a76b90d1edf6d554e6b6ef3155c5336572187"
+      }
+    },
+    {
+      "index": 4,
+      "status": "interrupted",
+      "exit": 130,
+      "sim_s": null,
+      "physical_success": false,
+      "phase_at_interrupt": {
+        "r1": "search",
+        "r2": "ready"
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-77ee0ab7/diagnostic/episode-004/raw",
+      "sha256": {
+        "result.json": "6f894492ccc2b13ceba6256362052c5b3ae95e9549e0804f7eda473a79e3478c",
+        "plan.json": "514c886d2bdc787ea61b7449522a8deb6b9457db070b98f2364423f62a96ae18",
+        "eval-only.jsonl.zst": "896102aca471c9c132909b65210a3237b066c3e27709a5b8b97c5c7d86c7f6b4",
+        "teacher-r1.jsonl.zst": "844887c4f53a03327733c3cff9c06855ab0fbfebb96ffb11bfcda1518cf9a51a",
+        "teacher-r2.jsonl.zst": "3b9a0a6c6367650f22daa6c642f83cf9d5e437feeb2877a4c280de5ad3b8ac2b"
+      }
+    },
+    {
+      "index": 5,
+      "status": "interrupted",
+      "exit": 130,
+      "sim_s": null,
+      "physical_success": false,
+      "phase_at_interrupt": {
+        "r1": "approach",
+        "r2": "ready"
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-77ee0ab7/diagnostic/episode-005/raw",
+      "sha256": {
+        "result.json": "ac05c51ee85008d3b8794492a83cff170e56e2ee02ebe20750b4bdc45577fba0",
+        "plan.json": "7d60d2fb0f46ed8d052c92004c164d7616fbce3461787952e459efc1bb22de60",
+        "eval-only.jsonl.zst": "369d3c311b8f89ff17975dc4f95a0e42af6fa6f4b23e96417a8f70913eb76dc9",
+        "teacher-r1.jsonl.zst": "9d2ada76c08b16c37159b0a2c65c77833e4e20b3a787dbd63a6d3170c0cfadfd",
+        "teacher-r2.jsonl.zst": "b36a329052fe4e6d93ace3a7a5355a4ec9c2e44b034422efc3d62e11756466b1"
+      }
+    },
+    {
+      "index": 6,
+      "status": "complete",
+      "exit": 0,
+      "sim_s": 27.100000000046794,
+      "physical_success": false,
+      "phase_at_interrupt": {
+        "r1": "complete",
+        "r2": "complete"
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-77ee0ab7/diagnostic/episode-006/raw",
+      "sha256": {
+        "result.json": "4d8d3309b7c2d5f8a7761849d23fa629aae7c00631fae5123231c3b1b9e0acac",
+        "plan.json": "08c1d572e1aa2c9cd4cdd56b0366dc5899526843564587482c4bacecb05a54f3",
+        "eval-only.jsonl.zst": "6e5f1cf17a85462030336a614c91b6f3fe89880283f95dcac01d4857394cd695",
+        "teacher-r1.jsonl.zst": "6d1464e8a80bf1a00a0da51bf4c98340cf7a69680cc8f9b74e1dedc00346d989",
+        "teacher-r2.jsonl.zst": "a7d9e3448b19aaabfc3e901396fed1275c6d73a84ede9da54756545797e24a1e"
+      }
+    }
+  ],
+  "ops_report": {
+    "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/search-diagnostic-77ee0ab7.json",
+    "sha256": "d2dd25bfb9556a1f783cf29709b803c5ad8373306070c130c887447bb5d63314"
+  },
+  "actual_ep6": {
+    "sample": "teacher_gate-79030:36:r1",
+    "t": 5.400000000000854,
+    "candidates_N": 39,
+    "reasons": {
+      "blocked_goal": 30,
+      "feasible": 9
+    },
+    "all_39_candidates_exactly_match_raw": true,
+    "selected": {
+      "choice": [
+        1.5707963267948966,
+        0.208
+      ],
+      "goal": [
+        0.8218983782046484,
+        0.429130981117107
+      ],
+      "heading": -0.20175452224443946,
+      "cost": 0.9104706554404198
+    },
+    "self_pose": [
+      0.018020283556997006,
+      0.01223328695178521,
+      0.04419885183665612
+    ],
+    "peer_r2": {
+      "pose": [
+        0.8636277783269884,
+        -0.36186769769208516,
+        1.3510010308337672
+      ],
+      "radius": 0.10488803314634332,
+      "top_z_bound_m": 0.15922103694673317
+    },
+    "radius_m": 0.13,
+    "nominal_wall_distances_m": [
+      1.4082544437533395,
+      0.002689185127116106
+    ],
+    "nominal_peer_margin_m": 0.6296305890324992,
+    "handoff_explanation": "selected is not None -> approach_plan_valid=true and blocked_since=None (77ee0ab7 sim/grasp_act_teacher_v3.py:317-326); all-blocked branch 328-329 never armed. feasible is route/IK feasibility, not physical grasp success."
+  },
+  "earlier_offline_fixture": {
+    "source_sha": "23a2a1137e3907073001ce079dd3294419fb5b1b",
+    "t": 5.800000000001343,
+    "self_pose": [
+      0.018020283556997006,
+      0.01223328695178521,
+      0.04419885183665612
+    ],
+    "peer_r2": {
+      "pose": [
+        0.8636277783269884,
+        -0.36186769769208516,
+        1.3510010308337672
+      ],
+      "radius": 0.10488803314634332,
+      "top_z_bound_m": 0.15922103694673317
+    },
+    "reasons": {
+      "blocked_goal": 30,
+      "feasible": 9
+    },
+    "selected": {
+      "choice": [
+        1.5707963267948966,
+        0.208
+      ],
+      "goal": [
+        0.8256803821038003,
+        0.41645742710435385
+      ],
+      "heading": -0.21569392490714057,
+      "cost": 0.9083656086498305
+    },
+    "self_pose_identical": true,
+    "peer_pose_identical": true,
+    "selected_goal_difference_m": 0.01322582794411648,
+    "note": "5.8s fixture vs 5.4s live ledger; same 30 blocked/9 feasible and +90deg/.208m choice, slight target observation difference, no offline/live all-blocked discrepancy."
+  },
+  "separate_regression": {
+    "prior_lines": [
+      "sim/grasp_act_teacher_v3.py:77-78",
+      "sim/grasp_act_teacher_v3.py:414-417",
+      "sim/grasp_act_teacher_v3.py:443-445"
+    ],
+    "fixture": "synthetic peer covering all stances after static obstruction clears, built from saved visible-only fixture",
+    "before_after": {
+      "before": {
+        "ready_geometry_before_step": true,
+        "phase": "pick",
+        "outcome": null,
+        "blocked_since": null
+      },
+      "after": {
+        "ready_geometry_before_step": false,
+        "phase": "approach",
+        "outcome": "approach_blocked_handoff",
+        "blocked_since": 5.800000000001343
+      }
+    }
+  },
+  "remaining": "Ep6 physical failure is not repaired by an all-blocked guard because it had a selected feasible route. Do not claim ep6 success/clean handoff until new GCP diagnostic. Normal six interrupted runs remain unresolved.",
+  "next_stages": {
+    "diagnostic_normal_required": "6/6 physical_success",
+    "diagnostic_hard_required": "success OR clean handoff, no independent failure",
+    "speed": "16 concurrent x 30 SIM seconds, same GCP n4-highcpu-64, median <=3.5",
+    "gate": "86000..86039, >=38/40 physical_success, separate clean/search/approach handoff n/N and rates; same failure reason+phase in >=2 episodes stops batch"
+  },
+  "references": [
+    "https://docs.python.org/3/library/concurrent.futures.html",
+    "https://moveit.github.io/moveit_task_constructor/tutorials/pick-and-place.html"
+  ],
+  "validation": {
+    "tests": 107,
+    "failures": 0,
+    "errors": 0,
+    "files": [
+      "tests/test_grasp_act_batch.py",
+      "tests/test_grasp_act_goal_set.py",
+      "tests/test_grasp_act_search.py"
+    ],
+    "junit_path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/search5-tests.xml",
+    "junit_sha256": "0cded4dc1ace62281ae5199d1ec75a5f711f551397f62de37fff54b0fea69b1f",
+    "physics_calls": 0,
+    "render_calls": 0,
+    "model_calls": 0
+  }
+}

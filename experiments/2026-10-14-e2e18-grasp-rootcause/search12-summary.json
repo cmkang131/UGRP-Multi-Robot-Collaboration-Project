@@ -1,0 +1,1848 @@
+{
+  "schema": "ugrp.grasp_act.search12_summary.v1",
+  "parent_sha": "845a189072d0e82f4638b72a02f6f1bb33e8acc6",
+  "behavioral_baseline_sha": "86367b4b78a14c772f6194f6b36d524a0f934afe",
+  "retrieved_diagnostic": {
+    "N_planned": 13,
+    "N_started": 13,
+    "completed": 13,
+    "interrupted": 0,
+    "HOST_ERROR": 0,
+    "physical_success_n": 0,
+    "normal_physical_success": "0/6",
+    "approach_handoff_N": 13,
+    "machine": "gcp1 n4-highcpu-64",
+    "verified_commands": 14088,
+    "rows": [
+      {
+        "episode": 0,
+        "sim_s": 25.400000000038677,
+        "status": "complete",
+        "physical_success": false,
+        "input_audit": {
+          "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+          "enabled": true,
+          "measurement_rows": 1517,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "gt_self_pose_comparison": false
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-000/raw",
+        "manifest_sha256": "6b678689d95bca0e10d277d02df51e578ca66011719a78b3b236e91a4b15e081",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-000/raw/plan.json",
+            "sha256": "92dabede583f6739ad3a466604af749ee70101942ff8d273f6881f1b4ed7b2cd",
+            "decoded_sha256": "92dabede583f6739ad3a466604af749ee70101942ff8d273f6881f1b4ed7b2cd"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-000/raw/result.json",
+            "sha256": "e4969a7ee43db164b7de3f7d8ffd9482c1997d59e4598bef4a8eb0807b48908b",
+            "decoded_sha256": "e4969a7ee43db164b7de3f7d8ffd9482c1997d59e4598bef4a8eb0807b48908b"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-000/raw/teacher-r1.jsonl.zst",
+            "sha256": "d5455424ddb3f25ba7f52131b19b6fd1752f77f85f689822c3613438ddce6819",
+            "decoded_sha256": "77126c3cecc0144601e639c887cabcdbceecea09e3d6d4a92fcb8209817354c3"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-000/raw/teacher-r2.jsonl.zst",
+            "sha256": "1024ed7ff51036375a3946633ac673c854c55e5270a8a0a94c5ce2c3dc4ea021",
+            "decoded_sha256": "3690fba1bc3046ef6d8c178e87c4405f73fb6bf17a7a85949ddb93f1819bd0a4"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-000/raw/eval-only.jsonl.zst",
+            "sha256": "69a38719e023907b484b63b68ef8a0f2b7e00165299e0ddf43b6d00f2633e152",
+            "decoded_sha256": "9d49ec50b8629a4b29b501689d66a63a22c09e755b51b81ce10a7cc60fccf5b9"
+          }
+        ],
+        "teachers": {
+          "r1": {
+            "end": "teal",
+            "phase": "approach",
+            "outcome": "approach_blocked_handoff",
+            "coordination_round": 1,
+            "planner_calls": 8,
+            "no_path_calls": 6,
+            "last_visible_local_distance_m": 0.8625564511486514,
+            "last_park_distance_m": null,
+            "last_visible_probes": 15,
+            "progress_events": [
+              {
+                "t": 24.200000000024538,
+                "approach_progress": "replan",
+                "phase": "approach",
+                "required_movement_m": 0.01,
+                "allowance_s": 3.0,
+                "planner_calls": 5,
+                "no_path_calls": 3,
+                "blocked_goal_calls": 0,
+                "reason": "no_issued_pose_progress",
+                "input": "issued-command pose only"
+              },
+              {
+                "t": 27.200000000038862,
+                "approach_progress": "handoff",
+                "phase": "approach",
+                "required_movement_m": 0.01,
+                "allowance_s": 3.0,
+                "planner_calls": 8,
+                "no_path_calls": 6,
+                "blocked_goal_calls": 0,
+                "reason": "no_issued_pose_progress",
+                "input": "issued-command pose only"
+              }
+            ],
+            "first_no_path": {
+              "t": 21.200000000010213,
+              "start_beam_xy": [
+                0.5009308546473289,
+                0.3932058912177693
+              ],
+              "goal_beam_xy": [
+                -0.47300000000000003,
+                -1.3877787807814457e-17
+              ],
+              "path_exists_by_ablation": {
+                "all": false,
+                "no_peer_bodies": false,
+                "no_reservations": true,
+                "no_opposite_end_disc": true,
+                "no_side_rectangle": false,
+                "no_parking_halfplane": false
+              },
+              "rejected_segments": [
+                {
+                  "from": [
+                    0.16928324773832024,
+                    -0.023879483925518908
+                  ],
+                  "to": [
+                    0.15000000000000213,
+                    0.0
+                  ],
+                  "discs": [
+                    6
+                  ],
+                  "rectangles": []
+                }
+              ]
+            },
+            "first_pulse_guard": null
+          },
+          "r2": {
+            "end": "blue",
+            "phase": "approach",
+            "outcome": "peer_approach_handoff",
+            "coordination_round": 1,
+            "planner_calls": 17,
+            "no_path_calls": 0,
+            "last_visible_local_distance_m": 0.6564170077659921,
+            "last_park_distance_m": 0.025049461175326478,
+            "last_visible_probes": 15,
+            "progress_events": [],
+            "first_no_path": null,
+            "first_pulse_guard": null
+          }
+        }
+      },
+      {
+        "episode": 1,
+        "sim_s": 117.59999999890435,
+        "status": "complete",
+        "physical_success": false,
+        "input_audit": {
+          "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+          "enabled": true,
+          "measurement_rows": 12258,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "gt_self_pose_comparison": false
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-001/raw",
+        "manifest_sha256": "b4d0702cbcf32c4d24b6eff443eb52cac7e44ad1642c6808f674629c493c12a6",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-001/raw/plan.json",
+            "sha256": "3f9524a9542566a17b0a0f9bb882cb83393ff45a04411a55d84b78849b761c52",
+            "decoded_sha256": "3f9524a9542566a17b0a0f9bb882cb83393ff45a04411a55d84b78849b761c52"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-001/raw/result.json",
+            "sha256": "cb4a625becbe96daa2d8e8aa50ec71d686505b88cc623c1601620d945aec9642",
+            "decoded_sha256": "cb4a625becbe96daa2d8e8aa50ec71d686505b88cc623c1601620d945aec9642"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-001/raw/teacher-r1.jsonl.zst",
+            "sha256": "1a67c9a1e9bb8072e303e19b468c1834eb128c4d820281faec69cd0d42c8b1c2",
+            "decoded_sha256": "35bc452818bda2b49f926acf8b615072d79caf7cc2f0a1f6972229134a2a4827"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-001/raw/teacher-r2.jsonl.zst",
+            "sha256": "a3975319e0043fa861c43dff6517f9d9eb79ce9e05ac4e7a73abd6a77d7a393c",
+            "decoded_sha256": "0482534cb6445604ded6311efb292331179fcfced60e4f0291f25a0a8acdb6f4"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-001/raw/eval-only.jsonl.zst",
+            "sha256": "3cb116ededbf64af3e5f3eb4d4b0f4b0c02e7cfea39772ebf3418bf0960cc962",
+            "decoded_sha256": "416b0b40e7a2d5ff690c934338e8e3c3082676c590c352fc12f008d838625bc6"
+          }
+        ],
+        "teachers": {
+          "r1": {
+            "end": "blue",
+            "phase": "approach",
+            "outcome": "peer_approach_handoff",
+            "coordination_round": 1,
+            "planner_calls": 92,
+            "no_path_calls": 0,
+            "last_visible_local_distance_m": 1.1001543963170222,
+            "last_park_distance_m": 0.02410585738986691,
+            "last_visible_probes": 15,
+            "progress_events": [],
+            "first_no_path": null,
+            "first_pulse_guard": null
+          },
+          "r2": {
+            "end": "teal",
+            "phase": "approach",
+            "outcome": "approach_blocked_handoff",
+            "coordination_round": 1,
+            "planner_calls": 24,
+            "no_path_calls": 9,
+            "last_visible_local_distance_m": 0.31557024574484116,
+            "last_park_distance_m": null,
+            "last_visible_probes": 15,
+            "progress_events": [
+              {
+                "t": 116.39999999897547,
+                "approach_progress": "replan",
+                "phase": "approach",
+                "required_movement_m": 0.01,
+                "allowance_s": 3.0,
+                "planner_calls": 21,
+                "no_path_calls": 6,
+                "blocked_goal_calls": 0,
+                "reason": "no_issued_pose_progress",
+                "input": "issued-command pose only"
+              },
+              {
+                "t": 119.39999999890453,
+                "approach_progress": "handoff",
+                "phase": "approach",
+                "required_movement_m": 0.01,
+                "allowance_s": 3.0,
+                "planner_calls": 24,
+                "no_path_calls": 9,
+                "blocked_goal_calls": 0,
+                "reason": "no_issued_pose_progress",
+                "input": "issued-command pose only"
+              }
+            ],
+            "first_no_path": {
+              "t": 104.09999999926633,
+              "start_beam_xy": [
+                0.11659689457918596,
+                0.4464619261626447
+              ],
+              "goal_beam_xy": [
+                -0.4730000000000001,
+                2.7755575615628914e-17
+              ],
+              "path_exists_by_ablation": {
+                "all": false,
+                "no_peer_bodies": false,
+                "no_reservations": true,
+                "no_opposite_end_disc": false,
+                "no_side_rectangle": true,
+                "no_parking_halfplane": false
+              },
+              "rejected_segments": [
+                {
+                  "from": [
+                    1.2000000000000028,
+                    -0.5499999999999972
+                  ],
+                  "to": [
+                    1.25,
+                    -0.5
+                  ],
+                  "discs": [],
+                  "rectangles": [
+                    0
+                  ]
+                }
+              ]
+            },
+            "first_pulse_guard": null
+          }
+        }
+      },
+      {
+        "episode": 2,
+        "sim_s": 118.09999999889253,
+        "status": "complete",
+        "physical_success": false,
+        "input_audit": {
+          "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+          "enabled": true,
+          "measurement_rows": 11103,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "gt_self_pose_comparison": false
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-002/raw",
+        "manifest_sha256": "20ad4697998cd9efb09db9a425f03fd8d37599377c04849f34beec5aa1b13781",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-002/raw/plan.json",
+            "sha256": "e567eb6e31e50aaac2c0a47e145807d0f55eb5ba2a510c44e173789ec3aef869",
+            "decoded_sha256": "e567eb6e31e50aaac2c0a47e145807d0f55eb5ba2a510c44e173789ec3aef869"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-002/raw/result.json",
+            "sha256": "74e4fe19d173337bc7178e08fe4da9a8f76662acaf16f2ba530c905079fd99fd",
+            "decoded_sha256": "74e4fe19d173337bc7178e08fe4da9a8f76662acaf16f2ba530c905079fd99fd"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-002/raw/teacher-r1.jsonl.zst",
+            "sha256": "f37f799331fbf9f6f8074b543fdb30ea0abaf6cd81ad0c3cd5a9ecba671fdd0c",
+            "decoded_sha256": "f2d97524a09a78ba4c060ad79b77058f50a778fe51dff3c9eff305801c8ffd2a"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-002/raw/teacher-r2.jsonl.zst",
+            "sha256": "40acced8a937adf9f4ab8e4c784f8e794aed51050d6dda3c034cc7bb74ed8700",
+            "decoded_sha256": "eccbc13b21e77e5d429616713f34a4de810afa120854fb56db78724fdb2fd230"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-002/raw/eval-only.jsonl.zst",
+            "sha256": "047ae11dffe603f5fdc26ad26fa704df77aac0c26368a2c38c71ced0a57f1979",
+            "decoded_sha256": "907ca301474a91aa61d13865b12de553c778216cd77b304ef4690878772828ea"
+          }
+        ],
+        "teachers": {
+          "r1": {
+            "end": "blue",
+            "phase": "approach",
+            "outcome": "approach_blocked_handoff",
+            "coordination_round": 1,
+            "planner_calls": 21,
+            "no_path_calls": 0,
+            "last_visible_local_distance_m": 1.368018739904249,
+            "last_park_distance_m": 0.025322935892074953,
+            "last_visible_probes": 15,
+            "progress_events": [],
+            "first_no_path": null,
+            "first_pulse_guard": null
+          },
+          "r2": {
+            "end": "teal",
+            "phase": "ready",
+            "outcome": "approach_blocked_handoff",
+            "coordination_round": 1,
+            "planner_calls": 0,
+            "no_path_calls": 0,
+            "last_visible_local_distance_m": 0.2014181367337178,
+            "last_park_distance_m": null,
+            "last_visible_probes": 15,
+            "progress_events": [],
+            "first_no_path": null,
+            "first_pulse_guard": null
+          }
+        }
+      },
+      {
+        "episode": 3,
+        "sim_s": 118.09999999889253,
+        "status": "complete",
+        "physical_success": false,
+        "input_audit": {
+          "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+          "enabled": true,
+          "measurement_rows": 5247,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "gt_self_pose_comparison": false
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-003/raw",
+        "manifest_sha256": "e54f7ab969816f4eaccf81a859261eea0c28e4cb95d88c7d60a620041abc7e07",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-003/raw/plan.json",
+            "sha256": "dc11609c7cd2f157ea9fa6dcded9f61d06155adbac8e6ca27051315108c07679",
+            "decoded_sha256": "dc11609c7cd2f157ea9fa6dcded9f61d06155adbac8e6ca27051315108c07679"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-003/raw/result.json",
+            "sha256": "27c4b8b77f3670de35860a8bebb18459eebfb11882ae0db95d0c0e80c1203970",
+            "decoded_sha256": "27c4b8b77f3670de35860a8bebb18459eebfb11882ae0db95d0c0e80c1203970"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-003/raw/teacher-r1.jsonl.zst",
+            "sha256": "0ed305a85a948277db879c884a29dc5195980ace7948ca9d48eda22c80160666",
+            "decoded_sha256": "c048261d21bba50d7f83f16dc79e51bf3bc2ff0f4171932894d71b962c8c931f"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-003/raw/teacher-r2.jsonl.zst",
+            "sha256": "fcfc5c46774c8a86c21d47252fdf4282b87c61b7934037b5820e3cbf2e56674d",
+            "decoded_sha256": "2f58a310c346d9dbd2e1d4c959ec84c118611452f3f7bd06aa58d1a9816a1d0d"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-003/raw/eval-only.jsonl.zst",
+            "sha256": "fa80ab8b12c046b832e61d93aadd6415e33ea96ed5949f6334858e3a340bbeed",
+            "decoded_sha256": "c98a446d2d4cf6d576b1190e2f24c588bbfe80c66c68d9fa7138f3ec70c5490f"
+          }
+        ],
+        "teachers": {
+          "r1": {
+            "end": "teal",
+            "phase": "ready",
+            "outcome": "approach_blocked_handoff",
+            "coordination_round": 1,
+            "planner_calls": 25,
+            "no_path_calls": 0,
+            "last_visible_local_distance_m": 0.20882968236356783,
+            "last_park_distance_m": null,
+            "last_visible_probes": 15,
+            "progress_events": [],
+            "first_no_path": null,
+            "first_pulse_guard": null
+          },
+          "r2": {
+            "end": "blue",
+            "phase": "approach",
+            "outcome": "approach_blocked_handoff",
+            "coordination_round": 1,
+            "planner_calls": 11,
+            "no_path_calls": 0,
+            "last_visible_local_distance_m": 0.6555433271204221,
+            "last_park_distance_m": 0.025436504167653945,
+            "last_visible_probes": 15,
+            "progress_events": [],
+            "first_no_path": null,
+            "first_pulse_guard": null
+          }
+        }
+      },
+      {
+        "episode": 4,
+        "sim_s": 25.600000000039632,
+        "status": "complete",
+        "physical_success": false,
+        "input_audit": {
+          "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+          "enabled": true,
+          "measurement_rows": 1019,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "gt_self_pose_comparison": false
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-004/raw",
+        "manifest_sha256": "9c83ef84923c3f696324cbb9db4398e7c1205790dbddda989abfcc3f838b3cb0",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-004/raw/plan.json",
+            "sha256": "514c886d2bdc787ea61b7449522a8deb6b9457db070b98f2364423f62a96ae18",
+            "decoded_sha256": "514c886d2bdc787ea61b7449522a8deb6b9457db070b98f2364423f62a96ae18"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-004/raw/result.json",
+            "sha256": "8fa8adb0e1d5ac75a8819221a3da58b27ab2488dc731b5ee5bcc409d8c2fd7ea",
+            "decoded_sha256": "8fa8adb0e1d5ac75a8819221a3da58b27ab2488dc731b5ee5bcc409d8c2fd7ea"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-004/raw/teacher-r1.jsonl.zst",
+            "sha256": "0a04313d55a2cf4f1ab61225d301617c90892117ed201ca0061f8bb9c19e8b16",
+            "decoded_sha256": "19bc3d01dcff93a4f818c3ae156e88a47c296bc6465481c9a53d758946585c1c"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-004/raw/teacher-r2.jsonl.zst",
+            "sha256": "216dd15cab0be0be3ea2c5bcad8a5162482611dec3b16e631c4aea461896b79f",
+            "decoded_sha256": "181a2ac9de0af8b7bba527a8b9d47750591e93b32a26c79bd005b685e10e02e2"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-004/raw/eval-only.jsonl.zst",
+            "sha256": "96f3c78cddc5c3916cdf852a76bd3146cc42704bec5b3dabbc4b5ad307191509",
+            "decoded_sha256": "b0bf8f65b57d292944a7e5c6352338395412f80e0e29dd9dcf91f1260234db27"
+          }
+        ],
+        "teachers": {
+          "r1": {
+            "end": "teal",
+            "phase": "approach",
+            "outcome": "approach_blocked_handoff",
+            "coordination_round": 1,
+            "planner_calls": 19,
+            "no_path_calls": 7,
+            "last_visible_local_distance_m": 0.3317008089938163,
+            "last_park_distance_m": null,
+            "last_visible_probes": 15,
+            "progress_events": [
+              {
+                "t": 24.400000000025493,
+                "approach_progress": "replan",
+                "phase": "approach",
+                "required_movement_m": 0.01,
+                "allowance_s": 3.0,
+                "planner_calls": 16,
+                "no_path_calls": 4,
+                "blocked_goal_calls": 0,
+                "reason": "no_issued_pose_progress",
+                "input": "issued-command pose only"
+              },
+              {
+                "t": 27.400000000039817,
+                "approach_progress": "handoff",
+                "phase": "approach",
+                "required_movement_m": 0.01,
+                "allowance_s": 3.0,
+                "planner_calls": 19,
+                "no_path_calls": 7,
+                "blocked_goal_calls": 0,
+                "reason": "no_issued_pose_progress",
+                "input": "issued-command pose only"
+              }
+            ],
+            "first_no_path": {
+              "t": 16.59999999998825,
+              "start_beam_xy": [
+                0.06813423072853836,
+                0.4136546139680709
+              ],
+              "goal_beam_xy": [
+                -0.4730000000000002,
+                -2.949029909160572e-17
+              ],
+              "path_exists_by_ablation": {
+                "all": false,
+                "no_peer_bodies": false,
+                "no_reservations": true,
+                "no_opposite_end_disc": false,
+                "no_side_rectangle": true,
+                "no_parking_halfplane": false
+              },
+              "rejected_segments": [
+                {
+                  "from": [
+                    0.9000000000000021,
+                    0.25
+                  ],
+                  "to": [
+                    0.9500000000000028,
+                    0.3000000000000007
+                  ],
+                  "discs": [],
+                  "rectangles": [
+                    0
+                  ]
+                }
+              ]
+            },
+            "first_pulse_guard": {
+              "t": 21.40000000001117,
+              "blocking_discs": [],
+              "blocking_rectangles": [
+                {
+                  "index": 0,
+                  "reservation": true
+                }
+              ]
+            }
+          },
+          "r2": {
+            "end": "blue",
+            "phase": "approach",
+            "outcome": "peer_approach_handoff",
+            "coordination_round": 1,
+            "planner_calls": 10,
+            "no_path_calls": 0,
+            "last_visible_local_distance_m": 0.6581839531392316,
+            "last_park_distance_m": 0.02328274807541594,
+            "last_visible_probes": 15,
+            "progress_events": [],
+            "first_no_path": null,
+            "first_pulse_guard": null
+          }
+        }
+      },
+      {
+        "episode": 5,
+        "sim_s": 34.90000000008404,
+        "status": "complete",
+        "physical_success": false,
+        "input_audit": {
+          "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+          "enabled": true,
+          "measurement_rows": 1325,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "gt_self_pose_comparison": false
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-005/raw",
+        "manifest_sha256": "87a6b3c1f45c0c7bf30f97865d464189d2423b2a1674e4d0b2f56558722fcceb",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-005/raw/plan.json",
+            "sha256": "7d60d2fb0f46ed8d052c92004c164d7616fbce3461787952e459efc1bb22de60",
+            "decoded_sha256": "7d60d2fb0f46ed8d052c92004c164d7616fbce3461787952e459efc1bb22de60"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-005/raw/result.json",
+            "sha256": "98506efe45e72eeede49346b9e164a032030da850008de5821bf86a118745bd6",
+            "decoded_sha256": "98506efe45e72eeede49346b9e164a032030da850008de5821bf86a118745bd6"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-005/raw/teacher-r1.jsonl.zst",
+            "sha256": "208c8fa0bfdb46bc2a54ed0a711540b866b3ca0375866224b31e1a617d4f57c9",
+            "decoded_sha256": "2c97e69561ce6090b35665f6617c68ca19e77c71ceb0540cb10ce898e34c944a"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-005/raw/teacher-r2.jsonl.zst",
+            "sha256": "b6839e9fd980398b4365ebbe0284ff1703efc77f20b60e971d9c8d61faf1074c",
+            "decoded_sha256": "8f480405086a808e1903a7b80a5d2ad19f5643a17c29e496032e6e0a4bdebd91"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-005/raw/eval-only.jsonl.zst",
+            "sha256": "03275de2b011c5381c4e73cbba3821dfe192bf52176c1fec9063610057dd4f04",
+            "decoded_sha256": "98f64bc4b4c79e8341f84f9f0d51d126503bfc94f2717419b1fd5a072f7edf96"
+          }
+        ],
+        "teachers": {
+          "r1": {
+            "end": "teal",
+            "phase": "approach",
+            "outcome": "approach_blocked_handoff",
+            "coordination_round": 1,
+            "planner_calls": 18,
+            "no_path_calls": 1,
+            "last_visible_local_distance_m": 0.32600061594363894,
+            "last_park_distance_m": null,
+            "last_visible_probes": 15,
+            "progress_events": [
+              {
+                "t": 33.7000000000699,
+                "approach_progress": "replan",
+                "phase": "approach",
+                "required_movement_m": 0.01,
+                "allowance_s": 3.0,
+                "planner_calls": 15,
+                "no_path_calls": 1,
+                "blocked_goal_calls": 0,
+                "reason": "no_issued_pose_progress",
+                "input": "issued-command pose only"
+              },
+              {
+                "t": 36.70000000008422,
+                "approach_progress": "handoff",
+                "phase": "approach",
+                "required_movement_m": 0.01,
+                "allowance_s": 3.0,
+                "planner_calls": 18,
+                "no_path_calls": 1,
+                "blocked_goal_calls": 0,
+                "reason": "no_issued_pose_progress",
+                "input": "issued-command pose only"
+              }
+            ],
+            "first_no_path": {
+              "t": 25.400000000030268,
+              "start_beam_xy": [
+                -0.025419525962560974,
+                0.5886138471415914
+              ],
+              "goal_beam_xy": [
+                -0.4729999999999999,
+                1.1102230246251565e-16
+              ],
+              "path_exists_by_ablation": {
+                "all": false,
+                "no_peer_bodies": false,
+                "no_reservations": true,
+                "no_opposite_end_disc": false,
+                "no_side_rectangle": true,
+                "no_parking_halfplane": false
+              },
+              "rejected_segments": [
+                {
+                  "from": [
+                    0.8000000000000007,
+                    0.15000000000000213
+                  ],
+                  "to": [
+                    0.8500000000000014,
+                    0.15000000000000213
+                  ],
+                  "discs": [],
+                  "rectangles": [
+                    1
+                  ]
+                }
+              ]
+            },
+            "first_pulse_guard": {
+              "t": 30.700000000055574,
+              "blocking_discs": [],
+              "blocking_rectangles": [
+                {
+                  "index": 0,
+                  "reservation": true
+                }
+              ]
+            }
+          },
+          "r2": {
+            "end": "blue",
+            "phase": "approach",
+            "outcome": "peer_approach_handoff",
+            "coordination_round": 1,
+            "planner_calls": 11,
+            "no_path_calls": 0,
+            "last_visible_local_distance_m": 0.6560617437138739,
+            "last_park_distance_m": 0.024874969142614826,
+            "last_visible_probes": 15,
+            "progress_events": [],
+            "first_no_path": null,
+            "first_pulse_guard": null
+          }
+        }
+      },
+      {
+        "episode": 6,
+        "sim_s": 18.10000000000382,
+        "status": "complete",
+        "physical_success": false,
+        "input_audit": {
+          "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+          "enabled": true,
+          "measurement_rows": 938,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "gt_self_pose_comparison": false
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-006/raw",
+        "manifest_sha256": "8c6ec87f3be29cbae98b7537982d2cf0a5f11a54d53a8972405db54ba6449c94",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-006/raw/plan.json",
+            "sha256": "08c1d572e1aa2c9cd4cdd56b0366dc5899526843564587482c4bacecb05a54f3",
+            "decoded_sha256": "08c1d572e1aa2c9cd4cdd56b0366dc5899526843564587482c4bacecb05a54f3"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-006/raw/result.json",
+            "sha256": "8da0c1ce4cc2e7afd079cbe2e41ae99dc07ca49852af019643566cf31b5674a1",
+            "decoded_sha256": "8da0c1ce4cc2e7afd079cbe2e41ae99dc07ca49852af019643566cf31b5674a1"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-006/raw/teacher-r1.jsonl.zst",
+            "sha256": "e3fe1933076c8b9c46afd0a5793e6926f810141197ba96836791c9a3a52b2d14",
+            "decoded_sha256": "a002f9c15d42a78c759577efdf55dcbea3f1b09d1780f48e6d65d0476a985ff7"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-006/raw/teacher-r2.jsonl.zst",
+            "sha256": "b8af4b347600f11528abe4d93df14238e5dadffde26a66c6d94e88bfe9667579",
+            "decoded_sha256": "3cf6f6d5471060790139af78f173b995d574d38a675271652cdc2af308750d6d"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-006/raw/eval-only.jsonl.zst",
+            "sha256": "d5b6f201097f4ead37987c22cfa6cc5ba7e47c6667688f38a2d55a362d868add",
+            "decoded_sha256": "a8fe58393ae3ccaa791193f40c43fdb8ad89a65a8d925e0311717af7220cc2e9"
+          }
+        ],
+        "teachers": {
+          "r1": {
+            "end": "teal",
+            "phase": "approach",
+            "outcome": "approach_blocked_handoff",
+            "coordination_round": 1,
+            "planner_calls": 6,
+            "no_path_calls": 6,
+            "last_visible_local_distance_m": 1.0881501292918374,
+            "last_park_distance_m": null,
+            "last_visible_probes": 15,
+            "progress_events": [
+              {
+                "t": 16.89999999998968,
+                "approach_progress": "replan",
+                "phase": "approach",
+                "required_movement_m": 0.01,
+                "allowance_s": 3.0,
+                "planner_calls": 3,
+                "no_path_calls": 3,
+                "blocked_goal_calls": 0,
+                "reason": "no_issued_pose_progress",
+                "input": "issued-command pose only"
+              },
+              {
+                "t": 19.900000000004006,
+                "approach_progress": "handoff",
+                "phase": "approach",
+                "required_movement_m": 0.01,
+                "allowance_s": 3.0,
+                "planner_calls": 6,
+                "no_path_calls": 6,
+                "blocked_goal_calls": 0,
+                "reason": "no_issued_pose_progress",
+                "input": "issued-command pose only"
+              }
+            ],
+            "first_no_path": {
+              "t": 13.89999999999028,
+              "start_beam_xy": [
+                0.3086254007914134,
+                -0.9215853912306471
+              ],
+              "goal_beam_xy": [
+                -0.47300000000000003,
+                -1.1102230246251565e-16
+              ],
+              "path_exists_by_ablation": {
+                "all": false,
+                "no_peer_bodies": false,
+                "no_reservations": true,
+                "no_opposite_end_disc": false,
+                "no_side_rectangle": true,
+                "no_parking_halfplane": false
+              },
+              "rejected_segments": [
+                {
+                  "from": [
+                    1.25,
+                    -0.14999999999999858
+                  ],
+                  "to": [
+                    1.25,
+                    -0.09999999999999787
+                  ],
+                  "discs": [],
+                  "rectangles": [
+                    1
+                  ]
+                },
+                {
+                  "from": [
+                    1.25,
+                    -0.09999999999999787
+                  ],
+                  "to": [
+                    1.25,
+                    -0.04999999999999716
+                  ],
+                  "discs": [],
+                  "rectangles": [
+                    1
+                  ]
+                },
+                {
+                  "from": [
+                    1.25,
+                    -0.04999999999999716
+                  ],
+                  "to": [
+                    1.25,
+                    0.0
+                  ],
+                  "discs": [],
+                  "rectangles": [
+                    1
+                  ]
+                },
+                {
+                  "from": [
+                    1.25,
+                    0.0
+                  ],
+                  "to": [
+                    1.25,
+                    0.05000000000000071
+                  ],
+                  "discs": [],
+                  "rectangles": [
+                    1
+                  ]
+                },
+                {
+                  "from": [
+                    1.25,
+                    0.05000000000000071
+                  ],
+                  "to": [
+                    1.25,
+                    0.10000000000000142
+                  ],
+                  "discs": [],
+                  "rectangles": [
+                    1
+                  ]
+                },
+                {
+                  "from": [
+                    1.25,
+                    0.10000000000000142
+                  ],
+                  "to": [
+                    1.25,
+                    0.15000000000000213
+                  ],
+                  "discs": [],
+                  "rectangles": [
+                    1
+                  ]
+                },
+                {
+                  "from": [
+                    1.25,
+                    0.15000000000000213
+                  ],
+                  "to": [
+                    1.25,
+                    0.20000000000000284
+                  ],
+                  "discs": [],
+                  "rectangles": [
+                    1
+                  ]
+                },
+                {
+                  "from": [
+                    1.25,
+                    0.20000000000000284
+                  ],
+                  "to": [
+                    1.25,
+                    0.25
+                  ],
+                  "discs": [],
+                  "rectangles": [
+                    1
+                  ]
+                },
+                {
+                  "from": [
+                    1.3000000000000007,
+                    0.3000000000000007
+                  ],
+                  "to": [
+                    1.25,
+                    0.3500000000000014
+                  ],
+                  "discs": [],
+                  "rectangles": [
+                    1
+                  ]
+                },
+                {
+                  "from": [
+                    1.1500000000000021,
+                    0.45000000000000284
+                  ],
+                  "to": [
+                    1.1000000000000014,
+                    0.5
+                  ],
+                  "discs": [
+                    0
+                  ],
+                  "rectangles": []
+                }
+              ]
+            },
+            "first_pulse_guard": null
+          },
+          "r2": {
+            "end": "blue",
+            "phase": "approach",
+            "outcome": "peer_approach_handoff",
+            "coordination_round": 1,
+            "planner_calls": 11,
+            "no_path_calls": 0,
+            "last_visible_local_distance_m": 0.6557967080919289,
+            "last_park_distance_m": 0.025187572094309094,
+            "last_visible_probes": 15,
+            "progress_events": [],
+            "first_no_path": null,
+            "first_pulse_guard": null
+          }
+        }
+      },
+      {
+        "episode": 7,
+        "sim_s": 20.10000000001337,
+        "status": "complete",
+        "physical_success": false,
+        "input_audit": {
+          "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+          "enabled": true,
+          "measurement_rows": 1014,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "gt_self_pose_comparison": false
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-007/raw",
+        "manifest_sha256": "43f818cdcf62c83736c2245530eb46b657b3aa87b49768c1ae4f9dd1bf689cb4",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-007/raw/plan.json",
+            "sha256": "9a3f9a79f0d15d7c4cc23aa2055028ca455c6683f0f8913a504ffbf826a2241a",
+            "decoded_sha256": "9a3f9a79f0d15d7c4cc23aa2055028ca455c6683f0f8913a504ffbf826a2241a"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-007/raw/result.json",
+            "sha256": "101fb2e97f8de44d2fb481a1494ea06454e92ad59bfd68986d1eef4eee15fb72",
+            "decoded_sha256": "101fb2e97f8de44d2fb481a1494ea06454e92ad59bfd68986d1eef4eee15fb72"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-007/raw/teacher-r1.jsonl.zst",
+            "sha256": "948081b7a7a87e0d9c0b245ca8f969af0d3612d49fd8c643dfcc08f07605f141",
+            "decoded_sha256": "5a798062cf1f79060dd095a8420bc18943759f9a40fd27bda77e8e4e0b4caf08"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-007/raw/teacher-r2.jsonl.zst",
+            "sha256": "7aba78230a3cc968190ffa87e80cb621fd7f32a33635a312c5d8e1542222e940",
+            "decoded_sha256": "624b08144e7789fbd18b5691af86209d5c66bc513ee3e16ea573dece4ca93707"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-007/raw/eval-only.jsonl.zst",
+            "sha256": "a88f4699a716d0cad77903d96d20cc3ed43ed1477bb49d5e53d6647cbb95eb37",
+            "decoded_sha256": "381766b46814bcb27063151d1b0e396f4ca57a646e4a28861003dd5d3413b70e"
+          }
+        ],
+        "teachers": {
+          "r1": {
+            "end": "blue",
+            "phase": "approach",
+            "outcome": "approach_blocked_handoff",
+            "coordination_round": 2,
+            "planner_calls": 13,
+            "no_path_calls": 6,
+            "last_visible_local_distance_m": 0.7401754992264268,
+            "last_park_distance_m": 0.023040494705938927,
+            "last_visible_probes": 15,
+            "progress_events": [
+              {
+                "t": 18.89999999999923,
+                "approach_progress": "replan",
+                "phase": "approach",
+                "required_movement_m": 0.01,
+                "allowance_s": 3.0,
+                "planner_calls": 10,
+                "no_path_calls": 3,
+                "blocked_goal_calls": 3,
+                "reason": "no_issued_pose_progress",
+                "input": "issued-command pose only"
+              },
+              {
+                "t": 21.900000000013556,
+                "approach_progress": "handoff",
+                "phase": "approach",
+                "required_movement_m": 0.01,
+                "allowance_s": 3.0,
+                "planner_calls": 13,
+                "no_path_calls": 6,
+                "blocked_goal_calls": 6,
+                "reason": "no_issued_pose_progress",
+                "input": "issued-command pose only"
+              }
+            ],
+            "first_no_path": {
+              "t": 15.899999999985619,
+              "start_beam_xy": [
+                0.578077857031589,
+                -0.6729626064939417
+              ],
+              "goal_beam_xy": [
+                0.473,
+                1.5265566588595902e-16
+              ],
+              "path_exists_by_ablation": {
+                "all": false,
+                "no_peer_bodies": false,
+                "no_reservations": false,
+                "no_opposite_end_disc": false,
+                "no_side_rectangle": false,
+                "no_parking_halfplane": false
+              },
+              "rejected_segments": [
+                {
+                  "from": [
+                    -0.09999999999999787,
+                    -1.0500000000000007
+                  ],
+                  "to": [
+                    -0.0795685797440843,
+                    -1.116800129510919
+                  ],
+                  "discs": [
+                    0
+                  ],
+                  "rectangles": []
+                }
+              ]
+            },
+            "first_pulse_guard": null
+          },
+          "r2": {
+            "end": "teal",
+            "phase": "ready",
+            "outcome": "peer_approach_handoff",
+            "coordination_round": 2,
+            "planner_calls": 0,
+            "no_path_calls": 0,
+            "last_visible_local_distance_m": 0.20281238183828432,
+            "last_park_distance_m": null,
+            "last_visible_probes": 15,
+            "progress_events": [],
+            "first_no_path": null,
+            "first_pulse_guard": null
+          }
+        }
+      },
+      {
+        "episode": 8,
+        "sim_s": 61.10000000020914,
+        "status": "complete",
+        "physical_success": false,
+        "input_audit": {
+          "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+          "enabled": true,
+          "measurement_rows": 5353,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "gt_self_pose_comparison": false
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-008/raw",
+        "manifest_sha256": "77b44a8148781c5ec6948a21b30da4a35394f8b933ca1c7c8a149cfeb6b91365",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-008/raw/plan.json",
+            "sha256": "3dca3836fd51429783db8c3cbcb9a09890691f3aae072aa1605eab653fea7abd",
+            "decoded_sha256": "3dca3836fd51429783db8c3cbcb9a09890691f3aae072aa1605eab653fea7abd"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-008/raw/result.json",
+            "sha256": "57d94ba35a1a80b0a2754baf91e8a5906171db6e402a888244cad50320d181c8",
+            "decoded_sha256": "57d94ba35a1a80b0a2754baf91e8a5906171db6e402a888244cad50320d181c8"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-008/raw/teacher-r1.jsonl.zst",
+            "sha256": "1bf428ebaf2a59eb82dc645590d3ca9658a717b8def8d7f69baf2dea25ba76b2",
+            "decoded_sha256": "68581239d3849c5d46d1bf22fd8a751562456de1c164ac60a497c32b4d78279b"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-008/raw/teacher-r2.jsonl.zst",
+            "sha256": "1494fbadddf7048bcfb2ed44ef4dbb077697432f1804c14abb1d6d4c542c06c5",
+            "decoded_sha256": "afc0d25f3c291ba5d03482513e0856ee1a6cfc61da490505742698a3c31040a9"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-008/raw/eval-only.jsonl.zst",
+            "sha256": "b6bd3e63da03415edcc65cc0f68a077cf538f968f322b18fdc583d080f8a64bf",
+            "decoded_sha256": "9e695b8baf2c2acbe8d15ee180f104672317cdef9781b86b85fd7dac3879eebc"
+          }
+        ],
+        "teachers": {
+          "r1": {
+            "end": "blue",
+            "phase": "approach",
+            "outcome": "peer_approach_handoff",
+            "coordination_round": 1,
+            "planner_calls": 52,
+            "no_path_calls": 0,
+            "last_visible_local_distance_m": 0.9689159125441918,
+            "last_park_distance_m": 0.02494732729268661,
+            "last_visible_probes": 15,
+            "progress_events": [],
+            "first_no_path": null,
+            "first_pulse_guard": null
+          },
+          "r2": {
+            "end": "teal",
+            "phase": "approach",
+            "outcome": "approach_blocked_handoff",
+            "coordination_round": 1,
+            "planner_calls": 6,
+            "no_path_calls": 6,
+            "last_visible_local_distance_m": 0.9660794818685147,
+            "last_park_distance_m": null,
+            "last_visible_probes": 15,
+            "progress_events": [
+              {
+                "t": 59.900000000195,
+                "approach_progress": "replan",
+                "phase": "approach",
+                "required_movement_m": 0.01,
+                "allowance_s": 3.0,
+                "planner_calls": 3,
+                "no_path_calls": 3,
+                "blocked_goal_calls": 0,
+                "reason": "no_issued_pose_progress",
+                "input": "issued-command pose only"
+              },
+              {
+                "t": 62.900000000209324,
+                "approach_progress": "handoff",
+                "phase": "approach",
+                "required_movement_m": 0.01,
+                "allowance_s": 3.0,
+                "planner_calls": 6,
+                "no_path_calls": 6,
+                "blocked_goal_calls": 0,
+                "reason": "no_issued_pose_progress",
+                "input": "issued-command pose only"
+              }
+            ],
+            "first_no_path": {
+              "t": 56.900000000180675,
+              "start_beam_xy": [
+                0.40210747964064597,
+                0.6940491958309545
+              ],
+              "goal_beam_xy": [
+                -0.4730000000000001,
+                -8.326672684688674e-17
+              ],
+              "path_exists_by_ablation": {
+                "all": false,
+                "no_peer_bodies": false,
+                "no_reservations": true,
+                "no_opposite_end_disc": false,
+                "no_side_rectangle": true,
+                "no_parking_halfplane": false
+              },
+              "rejected_segments": [
+                {
+                  "from": [
+                    0.6500000000000021,
+                    -0.3999999999999986
+                  ],
+                  "to": [
+                    0.7000000000000028,
+                    -0.4499999999999993
+                  ],
+                  "discs": [],
+                  "rectangles": [
+                    2
+                  ]
+                }
+              ]
+            },
+            "first_pulse_guard": null
+          }
+        }
+      },
+      {
+        "episode": 9,
+        "sim_s": 31.000000000065416,
+        "status": "complete",
+        "physical_success": false,
+        "input_audit": {
+          "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+          "enabled": true,
+          "measurement_rows": 1988,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "gt_self_pose_comparison": false
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-009/raw",
+        "manifest_sha256": "233880765c1fc7d77013b6ea21a47ebec59f1ab7f1e89fdeda504c4258219c90",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-009/raw/plan.json",
+            "sha256": "60671fb324ef6046044b87c959f8072f285cf15a68eba6551ef4c4d8498fea21",
+            "decoded_sha256": "60671fb324ef6046044b87c959f8072f285cf15a68eba6551ef4c4d8498fea21"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-009/raw/result.json",
+            "sha256": "168c683979ea4b0ec8ca70c92c0d996a8d3ed6e5463160c32e65fa27c04331e2",
+            "decoded_sha256": "168c683979ea4b0ec8ca70c92c0d996a8d3ed6e5463160c32e65fa27c04331e2"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-009/raw/teacher-r1.jsonl.zst",
+            "sha256": "f68037793024c8a54ff98ccd3750daf037c84a961cf37d066323ad877ab98b9a",
+            "decoded_sha256": "c9973d2bdbc5427a22de4e50750ed689e09a859ffd82def10109fbd1a978f44a"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-009/raw/teacher-r2.jsonl.zst",
+            "sha256": "8b825eecfd0cf212b717d53de559bd62106b71b428122df703351d2c663fa927",
+            "decoded_sha256": "8f85d4892015d9953f9674c54fd3ac8e20b87f14c1f3ea2c6fe30d33bcd9dd4f"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-009/raw/eval-only.jsonl.zst",
+            "sha256": "63045fddafdec9cbcb5e4e866b5a0dc90592ad6c0dc73fcf295d44a4577c11cb",
+            "decoded_sha256": "3836d0714ff69b745a31e0788b32e593dce5c20b32bdd3c7a198125e6792c7da"
+          }
+        ],
+        "teachers": {
+          "r1": {
+            "end": "teal",
+            "phase": "approach",
+            "outcome": "approach_blocked_handoff",
+            "coordination_round": 1,
+            "planner_calls": 30,
+            "no_path_calls": 7,
+            "last_visible_local_distance_m": 0.3795323149252763,
+            "last_park_distance_m": null,
+            "last_visible_probes": 15,
+            "progress_events": [
+              {
+                "t": 29.800000000051277,
+                "approach_progress": "replan",
+                "phase": "approach",
+                "required_movement_m": 0.01,
+                "allowance_s": 3.0,
+                "planner_calls": 27,
+                "no_path_calls": 4,
+                "blocked_goal_calls": 0,
+                "reason": "no_issued_pose_progress",
+                "input": "issued-command pose only"
+              },
+              {
+                "t": 32.8000000000656,
+                "approach_progress": "handoff",
+                "phase": "approach",
+                "required_movement_m": 0.01,
+                "allowance_s": 3.0,
+                "planner_calls": 30,
+                "no_path_calls": 7,
+                "blocked_goal_calls": 0,
+                "reason": "no_issued_pose_progress",
+                "input": "issued-command pose only"
+              }
+            ],
+            "first_no_path": {
+              "t": 16.299999999986817,
+              "start_beam_xy": [
+                0.7733976611845668,
+                0.44229079909744884
+              ],
+              "goal_beam_xy": [
+                -0.47300000000000003,
+                -6.938893903907228e-17
+              ],
+              "path_exists_by_ablation": {
+                "all": false,
+                "no_peer_bodies": false,
+                "no_reservations": false,
+                "no_opposite_end_disc": false,
+                "no_side_rectangle": false,
+                "no_parking_halfplane": false
+              },
+              "rejected_segments": [
+                {
+                  "from": [
+                    0.5,
+                    -1.1499999999999986
+                  ],
+                  "to": [
+                    0.5500000000000007,
+                    -1.1499999999999986
+                  ],
+                  "discs": [],
+                  "rectangles": [
+                    2
+                  ]
+                }
+              ]
+            },
+            "first_pulse_guard": {
+              "t": 26.800000000036952,
+              "blocking_discs": [],
+              "blocking_rectangles": [
+                {
+                  "index": 1,
+                  "reservation": true
+                }
+              ]
+            }
+          },
+          "r2": {
+            "end": "blue",
+            "phase": "approach",
+            "outcome": "peer_approach_handoff",
+            "coordination_round": 1,
+            "planner_calls": 12,
+            "no_path_calls": 0,
+            "last_visible_local_distance_m": 1.1081527261224189,
+            "last_park_distance_m": 0.024926827872923964,
+            "last_visible_probes": 15,
+            "progress_events": [],
+            "first_no_path": null,
+            "first_pulse_guard": null
+          }
+        }
+      },
+      {
+        "episode": 10,
+        "sim_s": 21.800000000021488,
+        "status": "complete",
+        "physical_success": false,
+        "input_audit": {
+          "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+          "enabled": true,
+          "measurement_rows": 1559,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "gt_self_pose_comparison": false
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-010/raw",
+        "manifest_sha256": "62dfe1733a51a492f80a2d0b58436353c4321d04a441cb69013dcac30dda6c62",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-010/raw/plan.json",
+            "sha256": "7032015e34a3f8c81766205bd54576cc6557d6564ca4fcb6186dfea2b346cd0e",
+            "decoded_sha256": "7032015e34a3f8c81766205bd54576cc6557d6564ca4fcb6186dfea2b346cd0e"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-010/raw/result.json",
+            "sha256": "03bf41b7b7f01dd14d8ed283f418f8c020ae21f1a620b8e64d5e4a8f53e5d8d2",
+            "decoded_sha256": "03bf41b7b7f01dd14d8ed283f418f8c020ae21f1a620b8e64d5e4a8f53e5d8d2"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-010/raw/teacher-r1.jsonl.zst",
+            "sha256": "a59bd04a420acc49ae87b3d805e15fecb086b005472f25295a57068939185f0a",
+            "decoded_sha256": "bc0f5da6fff520dc8330fa73b0d5980874ba57a723c1d2c001f38adf2f860ca9"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-010/raw/teacher-r2.jsonl.zst",
+            "sha256": "7cbd8ea13737e78a2153b644510ee486d1512dd8cd67787200fff320d473e819",
+            "decoded_sha256": "0e9dc6a1e1dda2bbcff00721b086c8584547c8ad6d081d7b37afa309172a8fcf"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-010/raw/eval-only.jsonl.zst",
+            "sha256": "a60b75df2a0a7542acd2bb1435409f1fa6bb3459445a90aeae55bbf99b2ad3b2",
+            "decoded_sha256": "d9785a081fca5f42bb0e50688418d0d987e72320cfe9ebf15a4173f8a8677277"
+          }
+        ],
+        "teachers": {
+          "r1": {
+            "end": "teal",
+            "phase": "approach",
+            "outcome": "approach_blocked_handoff",
+            "coordination_round": 1,
+            "planner_calls": 20,
+            "no_path_calls": 0,
+            "last_visible_local_distance_m": 1.0141612265366855,
+            "last_park_distance_m": null,
+            "last_visible_probes": 15,
+            "progress_events": [
+              {
+                "t": 20.60000000000735,
+                "approach_progress": "replan",
+                "phase": "approach",
+                "required_movement_m": 0.01,
+                "allowance_s": 3.0,
+                "planner_calls": 17,
+                "no_path_calls": 0,
+                "blocked_goal_calls": 0,
+                "reason": "no_issued_pose_progress",
+                "input": "issued-command pose only"
+              },
+              {
+                "t": 23.600000000021673,
+                "approach_progress": "handoff",
+                "phase": "approach",
+                "required_movement_m": 0.01,
+                "allowance_s": 3.0,
+                "planner_calls": 20,
+                "no_path_calls": 0,
+                "blocked_goal_calls": 0,
+                "reason": "no_issued_pose_progress",
+                "input": "issued-command pose only"
+              }
+            ],
+            "first_no_path": null,
+            "first_pulse_guard": {
+              "t": 17.599999999993024,
+              "blocking_discs": [
+                {
+                  "index": 8,
+                  "peer": false
+                }
+              ],
+              "blocking_rectangles": []
+            }
+          },
+          "r2": {
+            "end": "blue",
+            "phase": "approach",
+            "outcome": "peer_approach_handoff",
+            "coordination_round": 1,
+            "planner_calls": 0,
+            "no_path_calls": 0,
+            "last_visible_local_distance_m": 1.2892580557461895,
+            "last_park_distance_m": 0.006336241514823487,
+            "last_visible_probes": 15,
+            "progress_events": [],
+            "first_no_path": null,
+            "first_pulse_guard": null
+          }
+        }
+      },
+      {
+        "episode": 11,
+        "sim_s": 78.19999999983604,
+        "status": "complete",
+        "physical_success": false,
+        "input_audit": {
+          "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+          "enabled": true,
+          "measurement_rows": 9348,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "gt_self_pose_comparison": false
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-011/raw",
+        "manifest_sha256": "0340f6d72c47aeffb787bd4ca3fad662ee788d57d1c0ae21a3d51e8daa97e8b2",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-011/raw/plan.json",
+            "sha256": "a13baea07c69d4744bca482f267933391afaaf8f1321a5969d622a9a1a060ecc",
+            "decoded_sha256": "a13baea07c69d4744bca482f267933391afaaf8f1321a5969d622a9a1a060ecc"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-011/raw/result.json",
+            "sha256": "c2fe26131f96728f28b35449e3c7e9e3ecfec21c1f6d88281b3c2adf7c562a6e",
+            "decoded_sha256": "c2fe26131f96728f28b35449e3c7e9e3ecfec21c1f6d88281b3c2adf7c562a6e"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-011/raw/teacher-r1.jsonl.zst",
+            "sha256": "be2565d755153cff9c31bf4ba42f77c9e4268f6ec71fd8a10f5af544f60b0b07",
+            "decoded_sha256": "e56714e3d35db09a1ea30e544253a8d13427b1f59bfa3cf0c9a6ebfcfaf296ec"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-011/raw/teacher-r2.jsonl.zst",
+            "sha256": "e74bf02064263b7a91076e418d192ccfab375249d5480a15104d083d3f736c2a",
+            "decoded_sha256": "7c12180d868612159e0e5d39f21956993a4ff0b9b0fe85b028e49e2db13ffdb7"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-011/raw/eval-only.jsonl.zst",
+            "sha256": "3264f26327646cc6131417e229eec4a30edc648d3bb2d512b5aebfff1ca8d194",
+            "decoded_sha256": "9fd3d5422c4813d6c10f31e37e24b33fee9285871190862db481cc3df3c7bc80"
+          }
+        ],
+        "teachers": {
+          "r1": {
+            "end": "blue",
+            "phase": "approach",
+            "outcome": "peer_approach_handoff",
+            "coordination_round": 1,
+            "planner_calls": 70,
+            "no_path_calls": 0,
+            "last_visible_local_distance_m": 1.5260374875409144,
+            "last_park_distance_m": 0.023767113347508452,
+            "last_visible_probes": 15,
+            "progress_events": [],
+            "first_no_path": null,
+            "first_pulse_guard": null
+          },
+          "r2": {
+            "end": "teal",
+            "phase": "approach",
+            "outcome": "approach_blocked_handoff",
+            "coordination_round": 1,
+            "planner_calls": 6,
+            "no_path_calls": 6,
+            "last_visible_local_distance_m": 0.9566402554480038,
+            "last_park_distance_m": null,
+            "last_visible_probes": 15,
+            "progress_events": [
+              {
+                "t": 76.99999999990716,
+                "approach_progress": "replan",
+                "phase": "approach",
+                "required_movement_m": 0.01,
+                "allowance_s": 3.0,
+                "planner_calls": 3,
+                "no_path_calls": 3,
+                "blocked_goal_calls": 0,
+                "reason": "no_issued_pose_progress",
+                "input": "issued-command pose only"
+              },
+              {
+                "t": 79.99999999983622,
+                "approach_progress": "handoff",
+                "phase": "approach",
+                "required_movement_m": 0.01,
+                "allowance_s": 3.0,
+                "planner_calls": 6,
+                "no_path_calls": 6,
+                "blocked_goal_calls": 0,
+                "reason": "no_issued_pose_progress",
+                "input": "issued-command pose only"
+              }
+            ],
+            "first_no_path": {
+              "t": 73.9999999999781,
+              "start_beam_xy": [
+                0.5790997033782002,
+                0.4406644355899683
+              ],
+              "goal_beam_xy": [
+                -0.4730000000000001,
+                2.7755575615628914e-17
+              ],
+              "path_exists_by_ablation": {
+                "all": false,
+                "no_peer_bodies": false,
+                "no_reservations": true,
+                "no_opposite_end_disc": false,
+                "no_side_rectangle": true,
+                "no_parking_halfplane": false
+              },
+              "rejected_segments": [
+                {
+                  "from": [
+                    0.8000000000000007,
+                    -0.4499999999999993
+                  ],
+                  "to": [
+                    0.8500000000000014,
+                    -0.4499999999999993
+                  ],
+                  "discs": [],
+                  "rectangles": [
+                    2
+                  ]
+                }
+              ]
+            },
+            "first_pulse_guard": null
+          }
+        }
+      },
+      {
+        "episode": 12,
+        "sim_s": 33.10000000007545,
+        "status": "complete",
+        "physical_success": false,
+        "input_audit": {
+          "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+          "enabled": true,
+          "measurement_rows": 2587,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "gt_self_pose_comparison": false
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-012/raw",
+        "manifest_sha256": "d9f373b0933b31adb12dbf54e75e41129b0318dcbb2ee7b7b37c72567293f5e9",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-012/raw/plan.json",
+            "sha256": "a71292e6a277b19a1e0f5266ed1332a910723a1e5e4b5a3edca762ac4ed0eda9",
+            "decoded_sha256": "a71292e6a277b19a1e0f5266ed1332a910723a1e5e4b5a3edca762ac4ed0eda9"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-012/raw/result.json",
+            "sha256": "665127b126d80d9ac3286c0a083618bb21173df68ca088971e12599184898f10",
+            "decoded_sha256": "665127b126d80d9ac3286c0a083618bb21173df68ca088971e12599184898f10"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-012/raw/teacher-r1.jsonl.zst",
+            "sha256": "15f53b2fcbdaa8ec99f6ca4d5322f2ed430f9d4e47f27f200982f40691c380e0",
+            "decoded_sha256": "04c27c12d0b53419a7a4ae3b53605e97c41ca04a871291f34a729b2876af92c7"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-012/raw/teacher-r2.jsonl.zst",
+            "sha256": "1bca81e2b68d5825c19644018757aedf32d2a0a0fc148c1d594acfd5c18189ce",
+            "decoded_sha256": "b05a64b06167752359fe3ee3093d542f5760edbdf9a85dfe0fea8057a9ccb52d"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/diagnostic/episode-012/raw/eval-only.jsonl.zst",
+            "sha256": "2918f2b9137d66aac26258edae0b5e2674c4aa59627af85cf6eac875e6e56e1c",
+            "decoded_sha256": "c6679d59cd2354b16d047cbbc84b1f17b5126819ca579ed6ef38316a966772cf"
+          }
+        ],
+        "teachers": {
+          "r1": {
+            "end": "teal",
+            "phase": "approach",
+            "outcome": "approach_blocked_handoff",
+            "coordination_round": 1,
+            "planner_calls": 24,
+            "no_path_calls": 8,
+            "last_visible_local_distance_m": 1.0395412851156165,
+            "last_park_distance_m": null,
+            "last_visible_probes": 15,
+            "progress_events": [
+              {
+                "t": 31.900000000061304,
+                "approach_progress": "replan",
+                "phase": "approach",
+                "required_movement_m": 0.01,
+                "allowance_s": 3.0,
+                "planner_calls": 21,
+                "no_path_calls": 5,
+                "blocked_goal_calls": 0,
+                "reason": "no_issued_pose_progress",
+                "input": "issued-command pose only"
+              },
+              {
+                "t": 34.90000000007563,
+                "approach_progress": "handoff",
+                "phase": "approach",
+                "required_movement_m": 0.01,
+                "allowance_s": 3.0,
+                "planner_calls": 24,
+                "no_path_calls": 8,
+                "blocked_goal_calls": 0,
+                "reason": "no_issued_pose_progress",
+                "input": "issued-command pose only"
+              }
+            ],
+            "first_no_path": {
+              "t": 22.50000000001642,
+              "start_beam_xy": [
+                0.9993105693411224,
+                -0.014424327785470481
+              ],
+              "goal_beam_xy": [
+                -0.4730000000000001,
+                2.7755575615628914e-17
+              ],
+              "path_exists_by_ablation": {
+                "all": false,
+                "no_peer_bodies": false,
+                "no_reservations": true,
+                "no_opposite_end_disc": false,
+                "no_side_rectangle": true,
+                "no_parking_halfplane": false
+              },
+              "rejected_segments": [
+                {
+                  "from": [
+                    1.3500000000000014,
+                    -1.3000000000000007
+                  ],
+                  "to": [
+                    1.4000000000000021,
+                    -1.25
+                  ],
+                  "discs": [],
+                  "rectangles": [
+                    2
+                  ]
+                }
+              ]
+            },
+            "first_pulse_guard": {
+              "t": 28.000000000042682,
+              "blocking_discs": [
+                {
+                  "index": 5,
+                  "peer": false
+                }
+              ],
+              "blocking_rectangles": []
+            }
+          },
+          "r2": {
+            "end": "blue",
+            "phase": "approach",
+            "outcome": "peer_approach_handoff",
+            "coordination_round": 1,
+            "planner_calls": 14,
+            "no_path_calls": 0,
+            "last_visible_local_distance_m": 1.054049019130679,
+            "last_park_distance_m": 0.024543063389314862,
+            "last_visible_probes": 15,
+            "progress_events": [],
+            "first_no_path": null,
+            "first_pulse_guard": null
+          }
+        }
+      }
+    ]
+  },
+  "artifacts": {
+    "diagnosis.json": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/search12/diagnosis.json",
+      "sha256": "186837b98193179727f834ba5f8bcf7d190db43a6f8464504f1b353c3a49fc33"
+    },
+    "previous-queue.json": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/search12/previous-queue.json",
+      "sha256": "9d3de86f6489cd3e580f16d655cfdbba9dc59976a3060230ede85716d1ff06af"
+    },
+    "SHA256SUMS": {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-845a1890/SHA256SUMS",
+      "sha256": "c9b9b33eac8154e5e39a2138dcb0d7df0b7d59662278191085453d91d2ad000f"
+    },
+    "search-diagnostic-845a1890.json": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/search-diagnostic-845a1890.json",
+      "sha256": "a19b58146ecbef72ee99502de4f58d72c137dfc42700bb2608e21d08a81f0af9"
+    }
+  },
+  "normal_replay": {
+    "schema": "ugrp.grasp_act.search12_replay.v1",
+    "baseline_sha": "86367b4b78a14c772f6194f6b36d524a0f934afe",
+    "variants": [
+      "off",
+      "gt_only",
+      "priority_only",
+      "both_old",
+      "conditional_with_gt"
+    ],
+    "normal_N": 6,
+    "recorded_commands_verified": 4664,
+    "off_identical_commands": 4664,
+    "shadow_changed_commands": {
+      "off": 0,
+      "gt_only": 0,
+      "priority_only": 3396,
+      "both_old": 3396,
+      "conditional_with_gt": 0
+    },
+    "visible_handoff_changed_training_labels": 53,
+    "invisible_measurements": 0,
+    "held_world_reads": 0,
+    "scope": "same saved measurements and actual issued history; after first divergence counterfactual shadow outputs only; cannot generate new viewpoints or establish peer-block improvement; handoff labels do not remove episodes from gate"
+  },
+  "failure_replay": {
+    "baseline_indices": [
+      3,
+      7,
+      8,
+      14,
+      17,
+      32
+    ],
+    "verified_commands": 2516,
+    "conditional_trigger_indices": [
+      14,
+      32
+    ],
+    "scope": "after divergence shadow output only; no claim of repaired physical grasp"
+  },
+  "visual_review": {
+    "frame_images": 234,
+    "episodes": 13,
+    "times_per_episode": 6,
+    "views": [
+      "eval-overview",
+      "eval-own/r1",
+      "eval-own/r2"
+    ],
+    "all_original_sha256_verified": true,
+    "reviewed_directly": true
+  },
+  "tests": {
+    "files": [
+      "tests/test_grasp_act_priority.py",
+      "tests/test_grasp_act_batch.py",
+      "tests/test_grasp_act_progress.py"
+    ],
+    "passed": 45
+  },
+  "new_candidate": {
+    "default": "off",
+    "mode": "observed_blocked_priority_v2",
+    "physical_runs": 0,
+    "render_runs": 0,
+    "remote_host_connections": 0,
+    "model_calls": 0,
+    "status": "NOT_STARTED"
+  },
+  "pending": [
+    "A normal6 physical preservation with visible_handoff_v1",
+    "B normal6 physical preservation and remaining6 + hard1 outcomes",
+    "fresh coordinator authorization for speed16 and gate40"
+  ],
+  "gate_promotion_authorized_if_all_conditions_pass": false
+}

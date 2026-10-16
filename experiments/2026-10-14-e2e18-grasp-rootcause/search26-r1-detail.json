@@ -1,0 +1,1673 @@
+{
+  "source_sha": "f92b07aa869dc3b960d22adb69c01f2b9b8c9eeb",
+  "raw_root": "/home/ugrp/ugrp-sim/runs/search26-r1-short6-f92b07aa",
+  "scope": "GCP raw recount, not a new replay or physical trial",
+  "rows": [
+    {
+      "episode": "episode-000",
+      "seed": 8311709,
+      "scene": "off",
+      "status": "complete",
+      "success": true,
+      "end_reason": "teacher_terminal",
+      "error_type": null,
+      "sim_s": 39.30000000010505,
+      "wall_s": 200.1557811550001,
+      "cap_end": false,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1436,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "first30_speed": {
+        "sim_s": 30.00000000006064,
+        "wall_s": 138.58168093299992,
+        "scope": "first 30 SIM seconds including initialization; recording only",
+        "wall_per_sim": 4.619389364423993
+      },
+      "teachers": {
+        "r1": {
+          "outcome": "success",
+          "pulse_checks": 27,
+          "admitted_checks": 19,
+          "axis_check_reasons": {
+            "2:safety_reject": 8,
+            "1:admitted": 9,
+            "0:admitted": 9,
+            "2:admitted": 1
+          },
+          "final_reject_reasons": {},
+          "blocker_rows": {
+            "tile_1": 8
+          },
+          "observed_priority_checks": 2560,
+          "actual_alignment_pulse_ticks": 9,
+          "last_alignment_checks": [
+            {
+              "t": 31.500000000059394,
+              "event": "alignment_pulse_check",
+              "axis": 2,
+              "reason": "safety_reject",
+              "category": "alignment",
+              "blocked_object": "tile_1",
+              "min_gap_m": 7.251311687075934e-05,
+              "gap_scope": "body gap versus nearest-sample displacement bound",
+              "errors": [
+                -0.003911287830258877,
+                -0.007922625305419201,
+                0.07009904037725878
+              ],
+              "settler": {
+                "settled": false,
+                "reason": null,
+                "error": 0.07009904037725878,
+                "delta": 0.040891089885330405,
+                "tolerance": 0.024534653931198244,
+                "acceptance_band": null,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              },
+              "checks": [
+                {
+                  "check": "body_pose_segment",
+                  "mode": "off",
+                  "from": [
+                    1.354836502789956,
+                    -0.20944751436199668,
+                    1.905246160067465
+                  ],
+                  "to": [
+                    1.354836502789956,
+                    -0.20944751436199668,
+                    1.9621953496046505
+                  ],
+                  "reason": "body_sweep_reject",
+                  "category": "body_sweep",
+                  "blockers": [
+                    {
+                      "id": "tile_1",
+                      "fresh": false,
+                      "sigma_m": 0.06213094104896785,
+                      "margin_m": 0.0004973415285237043,
+                      "k": 3.0348542587702925,
+                      "delta": 0.01,
+                      "covariance_m2": [
+                        [
+                          0.00276943647887374,
+                          -0.0008278788129223246
+                        ],
+                        [
+                          -0.0008278788129223249,
+                          0.003231932948874732
+                        ]
+                      ],
+                      "seen_t": 12.999999999992378,
+                      "gap_m": 7.251311687075934e-05,
+                      "slack_m": -0.00042482841165294495,
+                      "sample_pose": [
+                        1.354836502789956,
+                        -0.20944751436199668,
+                        1.9621953496046505
+                      ],
+                      "category": "interpolation_envelope",
+                      "gap_scope": "body gap versus nearest-sample displacement bound"
+                    }
+                  ],
+                  "min_gap_m": 7.251311687075934e-05,
+                  "gap_scope": "sampled body sweep",
+                  "blocked_object": "tile_1"
+                }
+              ],
+              "merit_before": 0.00012720491883932546,
+              "merit_after": [
+                7.979534999236166e-05,
+                8.659720794058928e-05
+              ]
+            },
+            {
+              "t": 31.500000000059394,
+              "event": "alignment_pulse_check",
+              "axis": 1,
+              "reason": "admitted",
+              "category": "alignment",
+              "blocked_object": "none:alignment_merit",
+              "min_gap_m": null,
+              "gap_scope": "no geometric blocker; alignment merit",
+              "errors": [
+                -0.003911287830258877,
+                -0.007922625305419201,
+                0.07009904037725878
+              ],
+              "settler": {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": -0.007922625305419201,
+                "delta": 0.004897629269987113,
+                "tolerance": 0.012,
+                "acceptance_band": 0.012,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              },
+              "checks": [],
+              "merit_before": 0.00012720491883932546,
+              "merit_after": [
+                6.503833048995774e-05,
+                7.358752812363593e-05
+              ]
+            },
+            {
+              "t": 31.500000000059394,
+              "event": "alignment_pulse_check",
+              "axis": 0,
+              "reason": "admitted",
+              "category": "alignment",
+              "blocked_object": "none:alignment_merit",
+              "min_gap_m": null,
+              "gap_scope": "no geometric blocker; alignment merit",
+              "errors": [
+                -0.003911287830258877,
+                -0.007922625305419201,
+                0.07009904037725878
+              ],
+              "settler": {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": -0.003911287830258877,
+                "delta": 0.005370461219394735,
+                "tolerance": 0.003222276731636841,
+                "acceptance_band": 0.003222276731636841,
+                "consecutive_reversals": 1,
+                "total_reversals": 1,
+                "pulses": 7
+              },
+              "checks": [],
+              "merit_before": 0.00012720491883932546,
+              "merit_after": [
+                0.00012237737745075876,
+                0.00011403593332775494
+              ]
+            },
+            {
+              "t": 31.60000000005987,
+              "event": "alignment_pulse_check",
+              "axis": 2,
+              "reason": "admitted",
+              "category": "alignment",
+              "blocked_object": "none:alignment_merit",
+              "min_gap_m": null,
+              "gap_scope": "no geometric blocker; alignment merit",
+              "errors": [
+                -0.004437790686437843,
+                -0.004288205796768074,
+                0.06321835072489757
+              ],
+              "settler": {
+                "settled": false,
+                "reason": null,
+                "error": 0.06321835072489757,
+                "delta": 0.040891089885330405,
+                "tolerance": 0.024534653931198244,
+                "acceptance_band": null,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              },
+              "checks": [],
+              "merit_before": 7.804829381583133e-05,
+              "merit_after": [
+                3.8475718952044925e-05,
+                4.3067760898050465e-05
+              ]
+            },
+            {
+              "t": 31.60000000005987,
+              "event": "alignment_pulse_check",
+              "axis": 1,
+              "reason": "admitted",
+              "category": "alignment",
+              "blocked_object": "none:alignment_merit",
+              "min_gap_m": null,
+              "gap_scope": "no geometric blocker; alignment merit",
+              "errors": [
+                -0.004437790686437843,
+                -0.004288205796768074,
+                0.06321835072489757
+              ],
+              "settler": {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": -0.004288205796768074,
+                "delta": 0.004897629269987113,
+                "tolerance": 0.012,
+                "acceptance_band": 0.012,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 1
+              },
+              "checks": [],
+              "merit_before": 7.804829381583133e-05,
+              "merit_after": [
+                6.783299407587435e-05,
+                6.003098183010618e-05
+              ]
+            },
+            {
+              "t": 31.60000000005987,
+              "event": "alignment_pulse_check",
+              "axis": 0,
+              "reason": "admitted",
+              "category": "alignment",
+              "blocked_object": "none:alignment_merit",
+              "min_gap_m": null,
+              "gap_scope": "no geometric blocker; alignment merit",
+              "errors": [
+                -0.004437790686437843,
+                -0.004288205796768074,
+                0.06321835072489757
+              ],
+              "settler": {
+                "settled": false,
+                "reason": null,
+                "error": -0.004437790686437843,
+                "delta": 0.005370461219394735,
+                "tolerance": 0.003222276731636841,
+                "acceptance_band": null,
+                "consecutive_reversals": 0,
+                "total_reversals": 1,
+                "pulses": 7
+              },
+              "checks": [],
+              "merit_before": 7.804829381583133e-05,
+              "merit_after": [
+                6.569479077921483e-05,
+                5.9224181962242136e-05
+              ]
+            }
+          ],
+          "events": [
+            {
+              "t": 5.100000000000487,
+              "from": "search",
+              "to": "approach"
+            },
+            {
+              "t": 30.800000000056052,
+              "from": "approach",
+              "to": "align"
+            },
+            {
+              "t": 32.00000000006178,
+              "from": "align",
+              "to": "ready"
+            },
+            {
+              "t": 32.20000000006274,
+              "from": "ready",
+              "to": "pick"
+            },
+            {
+              "t": 37.90000000008995,
+              "from": "pick",
+              "to": "complete"
+            }
+          ]
+        },
+        "r2": {
+          "outcome": "success",
+          "pulse_checks": 0,
+          "admitted_checks": 0,
+          "axis_check_reasons": {},
+          "final_reject_reasons": {},
+          "blocker_rows": {},
+          "observed_priority_checks": 0,
+          "actual_alignment_pulse_ticks": 0,
+          "last_alignment_checks": [],
+          "events": [
+            {
+              "t": 2.799999999999808,
+              "from": "search",
+              "to": "approach"
+            },
+            {
+              "t": 2.799999999999808,
+              "from": "approach",
+              "to": "align"
+            },
+            {
+              "t": 3.1999999999995863,
+              "from": "align",
+              "to": "ready"
+            },
+            {
+              "t": 33.60000000006942,
+              "from": "ready",
+              "to": "pick"
+            },
+            {
+              "t": 39.30000000009664,
+              "from": "pick",
+              "to": "complete"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "episode": "episode-001",
+      "seed": 315709,
+      "scene": "cargo_v6",
+      "status": "complete",
+      "success": false,
+      "end_reason": "planning_wall_safety_cap",
+      "error_type": "PlanningSafetyCap",
+      "sim_s": 37.100000000094546,
+      "wall_s": 156.3713125690001,
+      "cap_end": true,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1541,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "first30_speed": {
+        "sim_s": 30.00000000006064,
+        "wall_s": 109.29565368000021,
+        "scope": "first 30 SIM seconds including initialization; recording only",
+        "wall_per_sim": 3.643188455992643
+      },
+      "teachers": {
+        "r1": {
+          "outcome": null,
+          "pulse_checks": 0,
+          "admitted_checks": 0,
+          "axis_check_reasons": {},
+          "final_reject_reasons": {
+            "body_sweep_reject": 6
+          },
+          "blocker_rows": {
+            "band_blue": 6
+          },
+          "observed_priority_checks": 1557,
+          "actual_alignment_pulse_ticks": 0,
+          "last_alignment_checks": [],
+          "events": [
+            {
+              "t": 17.39999999999207,
+              "from": "approach",
+              "to": "search"
+            },
+            {
+              "t": 17.599999999993024,
+              "from": "search",
+              "to": "approach"
+            },
+            {
+              "t": 17.6999999999935,
+              "from": "approach",
+              "to": "search"
+            },
+            {
+              "t": 37.90000000008995,
+              "from": "search",
+              "to": "approach"
+            },
+            {
+              "t": 37.90000000008995,
+              "approach_progress": "replan",
+              "phase": "approach",
+              "required_movement_m": 0.01,
+              "allowance_s": 3.0,
+              "planner_calls": 13,
+              "no_path_calls": 1,
+              "blocked_goal_calls": 2,
+              "reason": "no_goal_error_progress",
+              "input": "current visible goal and issued-command pose"
+            }
+          ]
+        },
+        "r2": {
+          "outcome": null,
+          "pulse_checks": 0,
+          "admitted_checks": 0,
+          "axis_check_reasons": {},
+          "final_reject_reasons": {},
+          "blocker_rows": {},
+          "observed_priority_checks": 0,
+          "actual_alignment_pulse_ticks": 0,
+          "last_alignment_checks": [],
+          "events": [
+            {
+              "t": 2.4999999999999742,
+              "from": "approach",
+              "to": "search"
+            },
+            {
+              "t": 2.8999999999997526,
+              "from": "search",
+              "to": "approach"
+            },
+            {
+              "t": 2.8999999999997526,
+              "from": "approach",
+              "to": "align"
+            },
+            {
+              "t": 3.299999999999531,
+              "from": "align",
+              "to": "ready"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "episode": "episode-002",
+      "seed": 315709,
+      "scene": "off",
+      "status": "complete",
+      "success": false,
+      "end_reason": "teacher_terminal",
+      "error_type": null,
+      "sim_s": 42.50000000012033,
+      "wall_s": 194.77373943100065,
+      "cap_end": false,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1726,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "first30_speed": {
+        "sim_s": 30.00000000006064,
+        "wall_s": 106.1864886680005,
+        "scope": "first 30 SIM seconds including initialization; recording only",
+        "wall_per_sim": 3.5395496222595284
+      },
+      "teachers": {
+        "r1": {
+          "outcome": "approach_blocked_handoff",
+          "pulse_checks": 0,
+          "admitted_checks": 0,
+          "axis_check_reasons": {},
+          "final_reject_reasons": {
+            "body_sweep_reject": 71
+          },
+          "blocker_rows": {
+            "band_blue": 71
+          },
+          "observed_priority_checks": 1076,
+          "actual_alignment_pulse_ticks": 0,
+          "last_alignment_checks": [],
+          "events": [
+            {
+              "t": 17.199999999991114,
+              "from": "approach",
+              "to": "search"
+            },
+            {
+              "t": 17.29999999999159,
+              "from": "search",
+              "to": "approach"
+            },
+            {
+              "t": 17.39999999999207,
+              "from": "approach",
+              "to": "search"
+            },
+            {
+              "t": 37.30000000008709,
+              "from": "search",
+              "to": "approach"
+            },
+            {
+              "t": 44.30000000012051,
+              "approach": "all_goals_blocked_handoff",
+              "blocked_s": 3.0000000000143245
+            }
+          ]
+        },
+        "r2": {
+          "outcome": "peer_approach_handoff",
+          "pulse_checks": 0,
+          "admitted_checks": 0,
+          "axis_check_reasons": {},
+          "final_reject_reasons": {},
+          "blocker_rows": {},
+          "observed_priority_checks": 0,
+          "actual_alignment_pulse_ticks": 0,
+          "last_alignment_checks": [],
+          "events": [
+            {
+              "t": 2.4999999999999742,
+              "from": "approach",
+              "to": "search"
+            },
+            {
+              "t": 2.8999999999997526,
+              "from": "search",
+              "to": "approach"
+            },
+            {
+              "t": 2.8999999999997526,
+              "from": "approach",
+              "to": "align"
+            },
+            {
+              "t": 3.299999999999531,
+              "from": "align",
+              "to": "ready"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "episode": "episode-003",
+      "seed": 8311709,
+      "scene": "cargo_v6",
+      "status": "complete",
+      "success": true,
+      "end_reason": "teacher_terminal",
+      "error_type": null,
+      "sim_s": 36.20000000009025,
+      "wall_s": 163.9715514339996,
+      "cap_end": false,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1326,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "first30_speed": {
+        "sim_s": 30.00000000006064,
+        "wall_s": 132.28748321700004,
+        "scope": "first 30 SIM seconds including initialization; recording only",
+        "wall_per_sim": 4.409582773891088
+      },
+      "teachers": {
+        "r1": {
+          "outcome": "success",
+          "pulse_checks": 57,
+          "admitted_checks": 55,
+          "axis_check_reasons": {
+            "2:admitted": 17,
+            "1:admitted": 19,
+            "0:admitted": 19,
+            "2:no_merit_progress": 2
+          },
+          "final_reject_reasons": {},
+          "blocker_rows": {},
+          "observed_priority_checks": 2529,
+          "actual_alignment_pulse_ticks": 19,
+          "last_alignment_checks": [
+            {
+              "t": 28.400000000044592,
+              "event": "alignment_pulse_check",
+              "axis": 2,
+              "reason": "no_merit_progress",
+              "category": "alignment",
+              "blocked_object": "none:alignment_merit",
+              "min_gap_m": null,
+              "gap_scope": "no geometric blocker; alignment merit",
+              "errors": [
+                0.003847230289390727,
+                -0.004482665556206654,
+                0.0005161883917406129
+              ],
+              "settler": {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": 0.0005161883917406129,
+                "delta": 0.040891089885330405,
+                "tolerance": 0.024534653931198244,
+                "acceptance_band": 0.024534653931198244,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 2
+              },
+              "checks": [],
+              "merit_before": 3.489813589296464e-05,
+              "merit_after": [
+                6.674230757122479e-05,
+                5.119679809457776e-05
+              ]
+            },
+            {
+              "t": 28.400000000044592,
+              "event": "alignment_pulse_check",
+              "axis": 1,
+              "reason": "admitted",
+              "category": "alignment",
+              "blocked_object": "none:alignment_merit",
+              "min_gap_m": null,
+              "gap_scope": "no geometric blocker; alignment merit",
+              "errors": [
+                0.003847230289390727,
+                -0.004482665556206654,
+                0.0005161883917406129
+              ],
+              "settler": {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": -0.004482665556206654,
+                "delta": 0.004897629269987113,
+                "tolerance": 0.012,
+                "acceptance_band": 0.012,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 3
+              },
+              "checks": [],
+              "merit_before": 3.489813589296464e-05,
+              "merit_after": [
+                2.190318040290391e-05,
+                1.497604028791753e-05
+              ]
+            },
+            {
+              "t": 28.400000000044592,
+              "event": "alignment_pulse_check",
+              "axis": 0,
+              "reason": "admitted",
+              "category": "alignment",
+              "blocked_object": "none:alignment_merit",
+              "min_gap_m": null,
+              "gap_scope": "no geometric blocker; alignment merit",
+              "errors": [
+                0.003847230289390727,
+                -0.004482665556206654,
+                0.0005161883917406129
+              ],
+              "settler": {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": 0.003847230289390727,
+                "delta": 0.005370461219394735,
+                "tolerance": 0.003222276731636841,
+                "acceptance_band": 0.003222276731636841,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 12
+              },
+              "checks": [],
+              "merit_before": 3.489813589296464e-05,
+              "merit_after": [
+                3.098624878847988e-05,
+                2.241718745948023e-05
+              ]
+            },
+            {
+              "t": 28.50000000004507,
+              "event": "alignment_pulse_check",
+              "axis": 2,
+              "reason": "no_merit_progress",
+              "category": "alignment",
+              "blocked_object": "none:alignment_merit",
+              "min_gap_m": null,
+              "gap_scope": "no geometric blocker; alignment merit",
+              "errors": [
+                0.0013659469453337495,
+                -0.003985260970311769,
+                1.611713307969609e-05
+              ],
+              "settler": {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": 1.611713307969609e-05,
+                "delta": 0.040891089885330405,
+                "tolerance": 0.024534653931198244,
+                "acceptance_band": 0.024534653931198244,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 2
+              },
+              "checks": [],
+              "merit_before": 1.774811865657669e-05,
+              "merit_after": [
+                5.016186339266843e-05,
+                3.445575003392928e-05
+              ]
+            },
+            {
+              "t": 28.50000000004507,
+              "event": "alignment_pulse_check",
+              "axis": 1,
+              "reason": "admitted",
+              "category": "alignment",
+              "blocked_object": "none:alignment_merit",
+              "min_gap_m": null,
+              "gap_scope": "no geometric blocker; alignment merit",
+              "errors": [
+                0.0013659469453337495,
+                -0.003985260970311769,
+                1.611713307969609e-05
+              ],
+              "settler": {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": -0.003985260970311769,
+                "delta": 0.004897629269987113,
+                "tolerance": 0.012,
+                "acceptance_band": 0.012,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 3
+              },
+              "checks": [],
+              "merit_before": 1.774811865657669e-05,
+              "merit_after": [
+                1.1863186964253044e-05,
+                2.6982295693388016e-06
+              ]
+            },
+            {
+              "t": 28.50000000004507,
+              "event": "alignment_pulse_check",
+              "axis": 0,
+              "reason": "admitted",
+              "category": "alignment",
+              "blocked_object": "none:alignment_merit",
+              "min_gap_m": null,
+              "gap_scope": "no geometric blocker; alignment merit",
+              "errors": [
+                0.0013659469453337495,
+                -0.003985260970311769,
+                1.611713307969609e-05
+              ],
+              "settler": {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": 0.0013659469453337495,
+                "delta": 0.005370461219394735,
+                "tolerance": 0.003222276731636841,
+                "acceptance_band": 0.003222276731636841,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 13
+              },
+              "checks": [],
+              "merit_before": 1.774811865657669e-05,
+              "merit_after": [
+                4.930430749158882e-05,
+                3.191844217026847e-05
+              ]
+            }
+          ],
+          "events": [
+            {
+              "t": 5.100000000000487,
+              "from": "search",
+              "to": "approach"
+            },
+            {
+              "t": 26.700000000036475,
+              "from": "approach",
+              "to": "align"
+            },
+            {
+              "t": 28.90000000004698,
+              "from": "align",
+              "to": "ready"
+            },
+            {
+              "t": 29.100000000047935,
+              "from": "ready",
+              "to": "pick"
+            },
+            {
+              "t": 34.80000000007515,
+              "from": "pick",
+              "to": "complete"
+            }
+          ]
+        },
+        "r2": {
+          "outcome": "success",
+          "pulse_checks": 0,
+          "admitted_checks": 0,
+          "axis_check_reasons": {},
+          "final_reject_reasons": {},
+          "blocker_rows": {},
+          "observed_priority_checks": 0,
+          "actual_alignment_pulse_ticks": 0,
+          "last_alignment_checks": [],
+          "events": [
+            {
+              "t": 2.799999999999808,
+              "from": "search",
+              "to": "approach"
+            },
+            {
+              "t": 2.799999999999808,
+              "from": "approach",
+              "to": "align"
+            },
+            {
+              "t": 3.1999999999995863,
+              "from": "align",
+              "to": "ready"
+            },
+            {
+              "t": 30.50000000005462,
+              "from": "ready",
+              "to": "pick"
+            },
+            {
+              "t": 36.200000000081836,
+              "from": "pick",
+              "to": "complete"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "episode": "episode-004",
+      "seed": 8312300,
+      "scene": "off",
+      "status": "complete",
+      "success": true,
+      "end_reason": "teacher_terminal",
+      "error_type": null,
+      "sim_s": 22.50000000002483,
+      "wall_s": 61.47710246399947,
+      "cap_end": false,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 645,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "first30_speed": null,
+      "teachers": {
+        "r1": {
+          "outcome": "success",
+          "pulse_checks": 45,
+          "admitted_checks": 45,
+          "axis_check_reasons": {
+            "2:admitted": 15,
+            "1:admitted": 15,
+            "0:admitted": 15
+          },
+          "final_reject_reasons": {},
+          "blocker_rows": {},
+          "observed_priority_checks": 0,
+          "actual_alignment_pulse_ticks": 15,
+          "last_alignment_checks": [
+            {
+              "t": 15.699999999986085,
+              "event": "alignment_pulse_check",
+              "axis": 2,
+              "reason": "admitted",
+              "category": "alignment",
+              "blocked_object": "none:alignment_merit",
+              "min_gap_m": null,
+              "gap_scope": "no geometric blocker; alignment merit",
+              "errors": [
+                -0.008040070636298366,
+                -0.010072141293103229,
+                0.15187563982372954
+              ],
+              "settler": {
+                "settled": false,
+                "reason": null,
+                "error": 0.15187563982372954,
+                "delta": 0.040891089885330405,
+                "tolerance": 0.024534653931198244,
+                "acceptance_band": null,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 6
+              },
+              "checks": [],
+              "merit_before": 0.0003967528657835747,
+              "merit_after": [
+                0.0001873582891549596,
+                0.0002237562909945705
+              ]
+            },
+            {
+              "t": 15.699999999986085,
+              "event": "alignment_pulse_check",
+              "axis": 1,
+              "reason": "admitted",
+              "category": "alignment",
+              "blocked_object": "none:alignment_merit",
+              "min_gap_m": null,
+              "gap_scope": "no geometric blocker; alignment merit",
+              "errors": [
+                -0.008040070636298366,
+                -0.010072141293103229,
+                0.15187563982372954
+              ],
+              "settler": {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": -0.010072141293103229,
+                "delta": 0.004897629269987113,
+                "tolerance": 0.012,
+                "acceptance_band": 0.012,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 5
+              },
+              "checks": [],
+              "merit_before": 0.0003967528657835747,
+              "merit_after": [
+                0.0003027195108628492,
+                0.0003206668431123993
+              ]
+            },
+            {
+              "t": 15.699999999986085,
+              "event": "alignment_pulse_check",
+              "axis": 0,
+              "reason": "admitted",
+              "category": "alignment",
+              "blocked_object": "none:alignment_merit",
+              "min_gap_m": null,
+              "gap_scope": "no geometric blocker; alignment merit",
+              "errors": [
+                -0.008040070636298366,
+                -0.010072141293103229,
+                0.15187563982372954
+              ],
+              "settler": {
+                "settled": false,
+                "reason": null,
+                "error": -0.008040070636298366,
+                "delta": 0.005370461219394735,
+                "tolerance": 0.003222276731636841,
+                "acceptance_band": null,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 2
+              },
+              "checks": [],
+              "merit_before": 0.0003967528657835747,
+              "merit_after": [
+                0.0003329074849156739,
+                0.0003392369443857297
+              ]
+            },
+            {
+              "t": 15.799999999985852,
+              "event": "alignment_pulse_check",
+              "axis": 2,
+              "reason": "admitted",
+              "category": "alignment",
+              "blocked_object": "none:alignment_merit",
+              "min_gap_m": null,
+              "gap_scope": "no geometric blocker; alignment merit",
+              "errors": [
+                -0.007961630440903922,
+                -0.006750789503567925,
+                0.09213133270283214
+              ],
+              "settler": {
+                "settled": false,
+                "reason": null,
+                "error": 0.09213133270283214,
+                "delta": 0.040891089885330405,
+                "tolerance": 0.024534653931198244,
+                "acceptance_band": null,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 7
+              },
+              "checks": [],
+              "merit_before": 0.00019384254285501035,
+              "merit_after": [
+                0.00011678699814703616,
+                0.00013018117436301076
+              ]
+            },
+            {
+              "t": 15.799999999985852,
+              "event": "alignment_pulse_check",
+              "axis": 1,
+              "reason": "admitted",
+              "category": "alignment",
+              "blocked_object": "none:alignment_merit",
+              "min_gap_m": null,
+              "gap_scope": "no geometric blocker; alignment merit",
+              "errors": [
+                -0.007961630440903922,
+                -0.006750789503567925,
+                0.09213133270283214
+              ],
+              "settler": {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": -0.006750789503567925,
+                "delta": 0.004897629269987113,
+                "tolerance": 0.012,
+                "acceptance_band": 0.012,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 5
+              },
+              "checks": [],
+              "merit_before": 0.00019384254285501035,
+              "merit_after": [
+                0.00014842646440135088,
+                0.0001517035867848529
+              ]
+            },
+            {
+              "t": 15.799999999985852,
+              "event": "alignment_pulse_check",
+              "axis": 0,
+              "reason": "admitted",
+              "category": "alignment",
+              "blocked_object": "none:alignment_merit",
+              "min_gap_m": null,
+              "gap_scope": "no geometric blocker; alignment merit",
+              "errors": [
+                -0.007961630440903922,
+                -0.006750789503567925,
+                0.09213133270283214
+              ],
+              "settler": {
+                "settled": false,
+                "reason": null,
+                "error": -0.007961630440903922,
+                "delta": 0.005370461219394735,
+                "tolerance": 0.003222276731636841,
+                "acceptance_band": null,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 2
+              },
+              "checks": [],
+              "merit_before": 0.00019384254285501035,
+              "merit_after": [
+                0.00013111840548137824,
+                0.0001371691415119792
+              ]
+            }
+          ],
+          "events": [
+            {
+              "t": 14.399999999989115,
+              "from": "approach",
+              "to": "align"
+            },
+            {
+              "t": 16.19999999998634,
+              "from": "align",
+              "to": "ready"
+            },
+            {
+              "t": 16.399999999987294,
+              "from": "ready",
+              "to": "pick"
+            },
+            {
+              "t": 22.10000000001451,
+              "from": "pick",
+              "to": "complete"
+            }
+          ]
+        },
+        "r2": {
+          "outcome": "success",
+          "pulse_checks": 0,
+          "admitted_checks": 0,
+          "axis_check_reasons": {},
+          "final_reject_reasons": {},
+          "blocker_rows": {},
+          "observed_priority_checks": 0,
+          "actual_alignment_pulse_ticks": 0,
+          "last_alignment_checks": [],
+          "events": [
+            {
+              "t": 2.8999999999997526,
+              "from": "search",
+              "to": "approach"
+            },
+            {
+              "t": 2.8999999999997526,
+              "from": "approach",
+              "to": "align"
+            },
+            {
+              "t": 3.299999999999531,
+              "from": "align",
+              "to": "ready"
+            },
+            {
+              "t": 16.799999999989204,
+              "from": "ready",
+              "to": "pick"
+            },
+            {
+              "t": 22.50000000001642,
+              "from": "pick",
+              "to": "complete"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "episode": "episode-005",
+      "seed": 8312301,
+      "scene": "off",
+      "status": "complete",
+      "success": true,
+      "end_reason": "teacher_terminal",
+      "error_type": null,
+      "sim_s": 25.800000000040587,
+      "wall_s": 66.53692049700021,
+      "cap_end": false,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 842,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "first30_speed": null,
+      "teachers": {
+        "r1": {
+          "outcome": "success",
+          "pulse_checks": 36,
+          "admitted_checks": 36,
+          "axis_check_reasons": {
+            "2:admitted": 12,
+            "1:admitted": 12,
+            "0:admitted": 12
+          },
+          "final_reject_reasons": {},
+          "blocker_rows": {},
+          "observed_priority_checks": 0,
+          "actual_alignment_pulse_ticks": 12,
+          "last_alignment_checks": [
+            {
+              "t": 19.200000000000664,
+              "event": "alignment_pulse_check",
+              "axis": 2,
+              "reason": "admitted",
+              "category": "alignment",
+              "blocked_object": "none:alignment_merit",
+              "min_gap_m": null,
+              "gap_scope": "no geometric blocker; alignment merit",
+              "errors": [
+                -0.006689730998479261,
+                -0.014927394674182245,
+                0.1827790234569775
+              ],
+              "settler": {
+                "settled": false,
+                "reason": null,
+                "error": 0.1827790234569775,
+                "delta": 0.040891089885330405,
+                "tolerance": 0.024534653931198244,
+                "acceptance_band": null,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 5
+              },
+              "checks": [],
+              "merit_before": 0.0006016613267496822,
+              "merit_after": [
+                0.00029838263822227394,
+                0.00035110004113053477
+              ]
+            },
+            {
+              "t": 19.200000000000664,
+              "event": "alignment_pulse_check",
+              "axis": 1,
+              "reason": "admitted",
+              "category": "alignment",
+              "blocked_object": "none:alignment_merit",
+              "min_gap_m": null,
+              "gap_scope": "no geometric blocker; alignment merit",
+              "errors": [
+                -0.006689730998479261,
+                -0.014927394674182245,
+                0.1827790234569775
+              ],
+              "settler": {
+                "settled": false,
+                "reason": null,
+                "error": -0.014927394674182245,
+                "delta": 0.004897629269987113,
+                "tolerance": 0.012,
+                "acceptance_band": null,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 5
+              },
+              "checks": [],
+              "merit_before": 0.0006016613267496822,
+              "merit_after": [
+                0.00039512029447102504,
+                0.00043454099293057774
+              ]
+            },
+            {
+              "t": 19.200000000000664,
+              "event": "alignment_pulse_check",
+              "axis": 0,
+              "reason": "admitted",
+              "category": "alignment",
+              "blocked_object": "none:alignment_merit",
+              "min_gap_m": null,
+              "gap_scope": "no geometric blocker; alignment merit",
+              "errors": [
+                -0.006689730998479261,
+                -0.014927394674182245,
+                0.1827790234569775
+              ],
+              "settler": {
+                "settled": false,
+                "reason": null,
+                "error": -0.006689730998479261,
+                "delta": 0.005370461219394735,
+                "tolerance": 0.003222276731636841,
+                "acceptance_band": null,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              },
+              "checks": [],
+              "merit_before": 0.0006016613267496822,
+              "merit_after": [
+                0.0005571180336231911,
+                0.0005586492986676735
+              ]
+            },
+            {
+              "t": 19.30000000000114,
+              "event": "alignment_pulse_check",
+              "axis": 2,
+              "reason": "admitted",
+              "category": "alignment",
+              "blocked_object": "none:alignment_merit",
+              "min_gap_m": null,
+              "gap_scope": "no geometric blocker; alignment merit",
+              "errors": [
+                -0.007975500480670167,
+                -0.014034749964406755,
+                0.07895870709964889
+              ],
+              "settler": {
+                "settled": false,
+                "reason": null,
+                "error": 0.07895870709964889,
+                "delta": 0.040891089885330405,
+                "tolerance": 0.024534653931198244,
+                "acceptance_band": null,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 6
+              },
+              "checks": [],
+              "merit_before": 0.00032292758874906695,
+              "merit_after": [
+                0.00026542700311390935,
+                0.00027507424928434424
+              ]
+            },
+            {
+              "t": 19.30000000000114,
+              "event": "alignment_pulse_check",
+              "axis": 1,
+              "reason": "admitted",
+              "category": "alignment",
+              "blocked_object": "none:alignment_merit",
+              "min_gap_m": null,
+              "gap_scope": "no geometric blocker; alignment merit",
+              "errors": [
+                -0.007975500480670167,
+                -0.014034749964406755,
+                0.07895870709964889
+              ],
+              "settler": {
+                "settled": false,
+                "reason": null,
+                "error": -0.014034749964406755,
+                "delta": 0.004897629269987113,
+                "tolerance": 0.012,
+                "acceptance_band": null,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 5
+              },
+              "checks": [],
+              "merit_before": 0.00032292758874906695,
+              "merit_after": [
+                0.0001403499139106748,
+                0.0001751969338265066
+              ]
+            },
+            {
+              "t": 19.30000000000114,
+              "event": "alignment_pulse_check",
+              "axis": 0,
+              "reason": "admitted",
+              "category": "alignment",
+              "blocked_object": "none:alignment_merit",
+              "min_gap_m": null,
+              "gap_scope": "no geometric blocker; alignment merit",
+              "errors": [
+                -0.007975500480670167,
+                -0.014034749964406755,
+                0.07895870709964889
+              ],
+              "settler": {
+                "settled": false,
+                "reason": null,
+                "error": -0.007975500480670167,
+                "delta": 0.005370461219394735,
+                "tolerance": 0.003222276731636841,
+                "acceptance_band": null,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              },
+              "checks": [],
+              "merit_before": 0.00032292758874906695,
+              "merit_after": [
+                0.00026000518960702865,
+                0.00026610521038468405
+              ]
+            }
+          ],
+          "events": [
+            {
+              "t": 6.900000000002687,
+              "from": "search",
+              "to": "approach"
+            },
+            {
+              "t": 18.19999999999589,
+              "from": "approach",
+              "to": "align"
+            },
+            {
+              "t": 19.70000000000305,
+              "from": "align",
+              "to": "ready"
+            },
+            {
+              "t": 19.900000000004006,
+              "from": "ready",
+              "to": "pick"
+            },
+            {
+              "t": 25.600000000031223,
+              "from": "pick",
+              "to": "complete"
+            }
+          ]
+        },
+        "r2": {
+          "outcome": "success",
+          "pulse_checks": 24,
+          "admitted_checks": 24,
+          "axis_check_reasons": {
+            "2:admitted": 8,
+            "1:admitted": 8,
+            "0:admitted": 8
+          },
+          "final_reject_reasons": {},
+          "blocker_rows": {},
+          "observed_priority_checks": 0,
+          "actual_alignment_pulse_ticks": 8,
+          "last_alignment_checks": [
+            {
+              "t": 7.700000000003665,
+              "event": "alignment_pulse_check",
+              "axis": 2,
+              "reason": "admitted",
+              "category": "alignment",
+              "blocked_object": "none:alignment_merit",
+              "min_gap_m": null,
+              "gap_scope": "no geometric blocker; alignment merit",
+              "errors": [
+                0.005830473102119853,
+                -0.007883868004552704,
+                0.09976462246988538
+              ],
+              "settler": {
+                "settled": false,
+                "reason": null,
+                "error": 0.09976462246988538,
+                "delta": 0.040891089885330405,
+                "tolerance": 0.024534653931198244,
+                "acceptance_band": null,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              },
+              "checks": [],
+              "merit_before": 0.00019567959027334052,
+              "merit_after": [
+                0.00010532664481004518,
+                0.00012103224104914983
+              ]
+            },
+            {
+              "t": 7.700000000003665,
+              "event": "alignment_pulse_check",
+              "axis": 1,
+              "reason": "admitted",
+              "category": "alignment",
+              "blocked_object": "none:alignment_merit",
+              "min_gap_m": null,
+              "gap_scope": "no geometric blocker; alignment merit",
+              "errors": [
+                0.005830473102119853,
+                -0.007883868004552704,
+                0.09976462246988538
+              ],
+              "settler": {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": -0.007883868004552704,
+                "delta": 0.004897629269987113,
+                "tolerance": 0.012,
+                "acceptance_band": 0.012,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 1
+              },
+              "checks": [],
+              "merit_before": 0.00019567959027334052,
+              "merit_after": [
+                0.00013406700833909477,
+                0.00014244183733995016
+              ]
+            },
+            {
+              "t": 7.700000000003665,
+              "event": "alignment_pulse_check",
+              "axis": 0,
+              "reason": "admitted",
+              "category": "alignment",
+              "blocked_object": "none:alignment_merit",
+              "min_gap_m": null,
+              "gap_scope": "no geometric blocker; alignment merit",
+              "errors": [
+                0.005830473102119853,
+                -0.007883868004552704,
+                0.09976462246988538
+              ],
+              "settler": {
+                "settled": false,
+                "reason": null,
+                "error": 0.005830473102119853,
+                "delta": 0.005370461219394735,
+                "tolerance": 0.003222276731636841,
+                "acceptance_band": null,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 5
+              },
+              "checks": [],
+              "merit_before": 0.00019567959027334052,
+              "merit_after": [
+                0.00016341874138792322,
+                0.0001618967846110458
+              ]
+            },
+            {
+              "t": 7.800000000003787,
+              "event": "alignment_pulse_check",
+              "axis": 2,
+              "reason": "admitted",
+              "category": "alignment",
+              "blocked_object": "none:alignment_merit",
+              "min_gap_m": null,
+              "gap_scope": "no geometric blocker; alignment merit",
+              "errors": [
+                0.004902707918958009,
+                -0.005722910231935459,
+                0.0630440427250305
+              ],
+              "settler": {
+                "settled": false,
+                "reason": null,
+                "error": 0.0630440427250305,
+                "delta": 0.040891089885330405,
+                "tolerance": 0.024534653931198244,
+                "acceptance_band": null,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 1
+              },
+              "checks": [],
+              "merit_before": 9.653375969255988e-05,
+              "merit_after": [
+                5.7159718815218996e-05,
+                6.169577965658492e-05
+              ]
+            },
+            {
+              "t": 7.800000000003787,
+              "event": "alignment_pulse_check",
+              "axis": 1,
+              "reason": "admitted",
+              "category": "alignment",
+              "blocked_object": "none:alignment_merit",
+              "min_gap_m": null,
+              "gap_scope": "no geometric blocker; alignment merit",
+              "errors": [
+                0.004902707918958009,
+                -0.005722910231935459,
+                0.0630440427250305
+              ],
+              "settler": {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": -0.005722910231935459,
+                "delta": 0.004897629269987113,
+                "tolerance": 0.012,
+                "acceptance_band": 0.012,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 1
+              },
+              "checks": [],
+              "merit_before": 9.653375969255988e-05,
+              "merit_after": [
+                6.581044099574754e-05,
+                6.446314683592243e-05
+              ]
+            },
+            {
+              "t": 7.800000000003787,
+              "event": "alignment_pulse_check",
+              "axis": 0,
+              "reason": "admitted",
+              "category": "alignment",
+              "blocked_object": "none:alignment_merit",
+              "min_gap_m": null,
+              "gap_scope": "no geometric blocker; alignment merit",
+              "errors": [
+                0.004902707918958009,
+                -0.005722910231935459,
+                0.0630440427250305
+              ],
+              "settler": {
+                "settled": false,
+                "reason": null,
+                "error": 0.004902707918958009,
+                "delta": 0.005370461219394735,
+                "tolerance": 0.003222276731636841,
+                "acceptance_band": null,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 5
+              },
+              "checks": [],
+              "merit_before": 9.653375969255988e-05,
+              "merit_after": [
+                7.753461509787584e-05,
+                7.271600790401577e-05
+              ]
+            }
+          ],
+          "events": [
+            {
+              "t": 7.1000000000029315,
+              "from": "approach",
+              "to": "align"
+            },
+            {
+              "t": 8.300000000003331,
+              "from": "align",
+              "to": "ready"
+            },
+            {
+              "t": 20.10000000000496,
+              "from": "ready",
+              "to": "pick"
+            },
+            {
+              "t": 25.800000000032178,
+              "from": "pick",
+              "to": "complete"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "success_montages": [
+    {
+      "path": "episode-000-montage.jpg",
+      "sha256": "c1ea40df0b4905d69b306ed40825f9a6d10aface727b4b1788f4638691d0e4b0"
+    },
+    {
+      "path": "episode-003-montage.jpg",
+      "sha256": "529fb73afbb3ff67d0a7ef01b705a239333db8ecf251d7d4a575979b3dc1a3f8"
+    },
+    {
+      "path": "episode-004-montage.jpg",
+      "sha256": "0485d7f51a5caa42702ff96e9f2fb1502406cd1717536effab954434bfe299e9"
+    },
+    {
+      "path": "episode-005-montage.jpg",
+      "sha256": "19549108d8b197fe7462a87682fc182cc61729d54f9744919d07d3f20f0f7f53"
+    }
+  ]
+}

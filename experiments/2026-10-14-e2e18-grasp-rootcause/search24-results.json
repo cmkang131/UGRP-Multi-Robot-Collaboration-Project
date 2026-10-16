@@ -1,0 +1,97 @@
+{
+  "schema": "ugrp.grasp_act.search24.summary.v1",
+  "source_sha": "ec8752a1e72d9a1bd1c01c0a292467e75039e75b",
+  "base_sha": "35861e92374c5fe936d5f54884a38bd7fe62f5fb",
+  "host": "gcp1",
+  "machine_type": "n4-highcpu-64",
+  "vm_max_duration_s": 86400,
+  "own_max_concurrency": 6,
+  "host_total_cap": 40,
+  "rounds": [
+    {
+      "record": "experiments/2026-10-14-e2e18-grasp-rootcause/search24-reference-results.json",
+      "sha256": "b7d90f161d59af0092e8969481237f67e243ecc6d0af9c169f7eee3f85d4f6c7",
+      "source_sha": "35861e92374c5fe936d5f54884a38bd7fe62f5fb",
+      "run": "search24-r3-reference-35861e92-fixed",
+      "raw_host": "gcp1",
+      "raw_location": "/home/ugrp/ugrp-sim/runs/search24-r3-reference-35861e92-fixed",
+      "raw_manifest_sha256": "d6af8301ba985ab415cd02880c70dbeb742e114775942ddd3f0749c56254ef27",
+      "success_n": 2,
+      "N": 6,
+      "completed": 6,
+      "host_error_N": 0,
+      "cap_end_N": 0,
+      "rejections": {
+        "current_geometry": 5856,
+        "IK": 10730,
+        "endpoint_feasible": 172,
+        "feasible": 19,
+        "gripper_angle": 21460,
+        "connector_connector_band_not_visible": 493,
+        "memory_margin": 860
+      },
+      "median_wall_per_sim": 4.0355782273712135
+    },
+    {
+      "record": "experiments/2026-10-14-e2e18-grasp-rootcause/search24-r1-results.json",
+      "sha256": "9c48a5c1efaa7d437924ea0ead041d6937152e6fcdcc460b20354727e7670094",
+      "source_sha": "bacfb71fbe157e50afaa573c02867f90ffd8b158",
+      "run": "search24-r1-short6-bacfb71f",
+      "raw_host": "gcp1",
+      "raw_location": "/home/ugrp/ugrp-sim/runs/search24-r1-short6-bacfb71f",
+      "raw_manifest_sha256": "6c653287f86773f2e988864cf26f5216c10f1d8c08f0ceca4bb5bf962569a8db",
+      "success_n": 2,
+      "N": 6,
+      "completed": 6,
+      "host_error_N": 0,
+      "cap_end_N": 0,
+      "rejections": {
+        "current_geometry": 28262,
+        "endpoint_feasible": 835,
+        "feasible": 20,
+        "connector_connector_band_not_visible": 1383,
+        "memory_margin": 6149,
+        "planning_budget": 24
+      },
+      "median_wall_per_sim": 5.203683882142567
+    },
+    {
+      "record": "experiments/2026-10-14-e2e18-grasp-rootcause/search24-r2-results.json",
+      "sha256": "63f11c53730624b5e26e4ef3033a1b5e816d5d0ae7525e416b0234f654ed8d44",
+      "source_sha": "ec8752a1e72d9a1bd1c01c0a292467e75039e75b",
+      "run": "search24-r2-short6-ec8752a1",
+      "raw_host": "gcp1",
+      "raw_location": "/home/ugrp/ugrp-sim/runs/search24-r2-short6-ec8752a1",
+      "raw_manifest_sha256": "f3390a7027621bc37836856b4bfde0034d16a555264b4a3f1438ebd1e9f2893c",
+      "success_n": 2,
+      "N": 6,
+      "completed": 6,
+      "host_error_N": 0,
+      "cap_end_N": 0,
+      "rejections": {
+        "current_geometry": 26273,
+        "endpoint_feasible": 983,
+        "feasible": 28,
+        "memory_margin": 14079,
+        "connector_connector_band_not_visible": 1383,
+        "planning_budget": 24
+      },
+      "median_wall_per_sim": 4.764277176823689
+    }
+  ],
+  "input_invisible_total": 0,
+  "input_held_total": 0,
+  "record_training": false,
+  "model_calls": 0,
+  "model_tokens": 0,
+  "mac_physics_runs": 0,
+  "queue32_created": false,
+  "queue32_submitted": false,
+  "threshold_n": 4,
+  "threshold_N": 6,
+  "status": "NOT_READY_2_OF_6",
+  "remaining": [
+    "Known seeds8311709 and315709 base/cargo_v6 still approach handoff; current geometry, memory clearance and connector visibility remain."
+  ],
+  "pool_results": false
+}

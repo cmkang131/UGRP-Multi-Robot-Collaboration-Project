@@ -1,0 +1,336 @@
+{
+  "schema": "ugrp.approach_fix.offline.v1",
+  "scope": "13 saved visible-input/issued-command traces, exact same-host baseline vs fixed decisions; no physics/rendering/model calls. Counterfactual decisions after divergence are not physical results.",
+  "baseline_sha": "23a2a1137e3907073001ce079dd3294419fb5b1b",
+  "source_files": {
+    "sim/grasp_act_teacher_v3.py": "5491fa8c619c49a34e196631d15078f314217561244f91b68d0b7ef9f1f7745f",
+    "sim/grasp_act_goal_set.py": "fba42c67cf9a198e358558ed6e4eea1036904065735baa0115bb7a0532db2112"
+  },
+  "rows": [
+    {
+      "source": "23a2a113",
+      "episode": "episode-000",
+      "seed": 71000,
+      "robots": {
+        "r1": {
+          "samples": 275,
+          "command_mismatches": 0,
+          "first_mismatch": null,
+          "first_approach_equal": true,
+          "fallback_selections": 0,
+          "outcome": null,
+          "input_decoded_sha256": "4db3c9d4323dbca37ed4182281793d39cb776dd2eecffa79cad95a40057ec6c2"
+        },
+        "r2": {
+          "samples": 275,
+          "command_mismatches": 0,
+          "first_mismatch": null,
+          "first_approach_equal": true,
+          "fallback_selections": 0,
+          "outcome": null,
+          "input_decoded_sha256": "4702ffb4da1189754230fb3f640b955f193e9ca779949829972f2c4c3df84ba9"
+        }
+      }
+    },
+    {
+      "source": "23a2a113",
+      "episode": "episode-001",
+      "seed": 73011,
+      "robots": {
+        "r1": {
+          "samples": 353,
+          "command_mismatches": 0,
+          "first_mismatch": null,
+          "first_approach_equal": true,
+          "fallback_selections": 0,
+          "outcome": null,
+          "input_decoded_sha256": "79e20c3009b16d71736e8e3969f5d93290be96b41ee2e87dce28e0caf109db89"
+        },
+        "r2": {
+          "samples": 353,
+          "command_mismatches": 0,
+          "first_mismatch": null,
+          "first_approach_equal": true,
+          "fallback_selections": 0,
+          "outcome": null,
+          "input_decoded_sha256": "9e7e206a790cf9b73d6874cf392005243be312c9043779cbcea942d21e278ae0"
+        }
+      }
+    },
+    {
+      "source": "23a2a113",
+      "episode": "episode-002",
+      "seed": 73009,
+      "robots": {
+        "r1": {
+          "samples": 517,
+          "command_mismatches": 0,
+          "first_mismatch": null,
+          "first_approach_equal": true,
+          "fallback_selections": 0,
+          "outcome": null,
+          "input_decoded_sha256": "0e5cac37100adaa3113a7e5b6e55fe842e88a9d1a3c4525a0da0ea013f34f763"
+        },
+        "r2": {
+          "samples": 517,
+          "command_mismatches": 0,
+          "first_mismatch": null,
+          "first_approach_equal": true,
+          "fallback_selections": 0,
+          "outcome": null,
+          "input_decoded_sha256": "0f32c86cc408281552ce75c912a5739a8fc5ff35a9a5d81891f5d73838204ac2"
+        }
+      }
+    },
+    {
+      "source": "23a2a113",
+      "episode": "episode-003",
+      "seed": 78111,
+      "robots": {
+        "r1": {
+          "samples": 306,
+          "command_mismatches": 0,
+          "first_mismatch": null,
+          "first_approach_equal": true,
+          "fallback_selections": 0,
+          "outcome": null,
+          "input_decoded_sha256": "39a647e0de9cd7b68109d868be28ed74db5fe11fb44d78d7437853d7aa70afdf"
+        },
+        "r2": {
+          "samples": 306,
+          "command_mismatches": 0,
+          "first_mismatch": null,
+          "first_approach_equal": true,
+          "fallback_selections": 0,
+          "outcome": null,
+          "input_decoded_sha256": "06ea051e95f401e4ca97f5aae917439982890cc622813eeea686a77fe55e8e30"
+        }
+      }
+    },
+    {
+      "source": "23a2a113",
+      "episode": "episode-004",
+      "seed": 78113,
+      "robots": {
+        "r1": {
+          "samples": 440,
+          "command_mismatches": 0,
+          "first_mismatch": null,
+          "first_approach_equal": true,
+          "fallback_selections": 0,
+          "outcome": null,
+          "input_decoded_sha256": "a776a0499488fb0e95179abb4e5cc389002cd64fcfef8f5dd1748a4dbd352289"
+        },
+        "r2": {
+          "samples": 440,
+          "command_mismatches": 0,
+          "first_mismatch": null,
+          "first_approach_equal": true,
+          "fallback_selections": 0,
+          "outcome": null,
+          "input_decoded_sha256": "421c15cfa95e8c41f71858b83e54752c7cc5479a9c563283458d508b0b75a0f6"
+        }
+      }
+    },
+    {
+      "source": "23a2a113",
+      "episode": "episode-005",
+      "seed": 79217,
+      "robots": {
+        "r1": {
+          "samples": 441,
+          "command_mismatches": 0,
+          "first_mismatch": null,
+          "first_approach_equal": true,
+          "fallback_selections": 0,
+          "outcome": null,
+          "input_decoded_sha256": "45214670054a528fc3e5bf00507721c652cfb497f1cbc11fce766d919770345c"
+        },
+        "r2": {
+          "samples": 441,
+          "command_mismatches": 0,
+          "first_mismatch": null,
+          "first_approach_equal": true,
+          "fallback_selections": 0,
+          "outcome": null,
+          "input_decoded_sha256": "8bd8e8d54a61a9ebd6d565cb87cc20e82e96f0ac9dc5100b13d70e735a85dd5f"
+        }
+      }
+    },
+    {
+      "source": "a3f3be78",
+      "episode": "episode-000",
+      "seed": 71000,
+      "robots": {
+        "r1": {
+          "samples": 260,
+          "command_mismatches": 0,
+          "first_mismatch": null,
+          "first_approach_equal": true,
+          "fallback_selections": 0,
+          "outcome": null,
+          "input_decoded_sha256": "fc15e9ad0b5a539449326f0456223024d3eb29cbf0b858e76447c120d6d4de67"
+        },
+        "r2": {
+          "samples": 260,
+          "command_mismatches": 0,
+          "first_mismatch": null,
+          "first_approach_equal": true,
+          "fallback_selections": 0,
+          "outcome": null,
+          "input_decoded_sha256": "27df24542958499026ffb4f572903dc0bb4ff459d4026e6a6de4b99a02841278"
+        }
+      }
+    },
+    {
+      "source": "a3f3be78",
+      "episode": "episode-001",
+      "seed": 73011,
+      "robots": {
+        "r1": {
+          "samples": 145,
+          "command_mismatches": 0,
+          "first_mismatch": null,
+          "first_approach_equal": true,
+          "fallback_selections": 0,
+          "outcome": null,
+          "input_decoded_sha256": "4e5eca46f777a9f1cd1f4c0276711f5835d17b987dc538e169a427bd59dfdf0b"
+        },
+        "r2": {
+          "samples": 145,
+          "command_mismatches": 0,
+          "first_mismatch": null,
+          "first_approach_equal": true,
+          "fallback_selections": 0,
+          "outcome": null,
+          "input_decoded_sha256": "e0384a8ca78378e8ab22447e2d05c38e3885e55b2ebb4cf570a2271a28b36e80"
+        }
+      }
+    },
+    {
+      "source": "a3f3be78",
+      "episode": "episode-002",
+      "seed": 73009,
+      "robots": {
+        "r1": {
+          "samples": 177,
+          "command_mismatches": 0,
+          "first_mismatch": null,
+          "first_approach_equal": true,
+          "fallback_selections": 0,
+          "outcome": null,
+          "input_decoded_sha256": "bcccbb7d299f8985a378ff997d3eb109d558693fb9a2255c988725f059fbbd75"
+        },
+        "r2": {
+          "samples": 177,
+          "command_mismatches": 0,
+          "first_mismatch": null,
+          "first_approach_equal": true,
+          "fallback_selections": 0,
+          "outcome": null,
+          "input_decoded_sha256": "afd8493d98b3a49fde24d7e7da5fddd2d72df5af5255e0b5f42a6e1676c26191"
+        }
+      }
+    },
+    {
+      "source": "a3f3be78",
+      "episode": "episode-003",
+      "seed": 78111,
+      "robots": {
+        "r1": {
+          "samples": 271,
+          "command_mismatches": 0,
+          "first_mismatch": null,
+          "first_approach_equal": true,
+          "fallback_selections": 0,
+          "outcome": null,
+          "input_decoded_sha256": "0d56ff35b3afd7a3c77f5c0d2de199fac23de182db60da39a6f0a669d7ba11ff"
+        },
+        "r2": {
+          "samples": 271,
+          "command_mismatches": 0,
+          "first_mismatch": null,
+          "first_approach_equal": true,
+          "fallback_selections": 0,
+          "outcome": null,
+          "input_decoded_sha256": "3c0f865488e04fdbc70c1d24c9be4f5f96e45ee65fa5d394e8efdefaf99a8f18"
+        }
+      }
+    },
+    {
+      "source": "a3f3be78",
+      "episode": "episode-004",
+      "seed": 78113,
+      "robots": {
+        "r1": {
+          "samples": 282,
+          "command_mismatches": 0,
+          "first_mismatch": null,
+          "first_approach_equal": true,
+          "fallback_selections": 0,
+          "outcome": null,
+          "input_decoded_sha256": "4ff42c4068fedb4ae2da13bd85b4e10ceaaabe8da703f984c9029e2b1155b6a7"
+        },
+        "r2": {
+          "samples": 282,
+          "command_mismatches": 0,
+          "first_mismatch": null,
+          "first_approach_equal": true,
+          "fallback_selections": 0,
+          "outcome": null,
+          "input_decoded_sha256": "4b08cd5f8922865b6cef8b01e0f495ab6249ba89be5321700b76c5aa1daed750"
+        }
+      }
+    },
+    {
+      "source": "a3f3be78",
+      "episode": "episode-005",
+      "seed": 79217,
+      "robots": {
+        "r1": {
+          "samples": 293,
+          "command_mismatches": 0,
+          "first_mismatch": null,
+          "first_approach_equal": true,
+          "fallback_selections": 0,
+          "outcome": null,
+          "input_decoded_sha256": "0a1dae1ca0376fa62b25ba2b6d135e4725ead507babae49588f6069a0c5ac0b4"
+        },
+        "r2": {
+          "samples": 293,
+          "command_mismatches": 0,
+          "first_mismatch": null,
+          "first_approach_equal": true,
+          "fallback_selections": 0,
+          "outcome": null,
+          "input_decoded_sha256": "53fc6fe6ed0ed32b90b61fba06f819107fd9527f49c78ed2c5324ec813067ebb"
+        }
+      }
+    },
+    {
+      "source": "a3f3be78",
+      "episode": "episode-006",
+      "seed": 79030,
+      "robots": {
+        "r1": {
+          "samples": 270,
+          "command_mismatches": 228,
+          "first_mismatch": 36,
+          "first_approach_equal": true,
+          "fallback_selections": 12,
+          "outcome": null,
+          "input_decoded_sha256": "17b2a77fc27150ec0bf80fc7120794c3bfda1a03728d7005ec98a322ac9414af"
+        },
+        "r2": {
+          "samples": 270,
+          "command_mismatches": 0,
+          "first_mismatch": null,
+          "first_approach_equal": true,
+          "fallback_selections": 0,
+          "outcome": null,
+          "input_decoded_sha256": "93890a8862e40dd7cf218b0cd820283de630e4df4aaf141abff2103ed35085a5"
+        }
+      }
+    }
+  ]
+}

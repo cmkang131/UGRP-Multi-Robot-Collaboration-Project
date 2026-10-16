@@ -91,17 +91,11 @@ class UncertainCommandOdometry(CommandOdometry):
             super().advance(end)
             dt = self.t-begin
             dx, dy = np.asarray(self.pose)[:2]-before[:2]
-            F = np.eye(3)
-            F[:2, 2] = [-dy, dx]
-            c, s = math.cos(before[2]), math.sin(before[2])
-            R = np.array([[c, -s, 0.], [s, c, 0.], [0., 0., 1.]])
+            from harness.command_covariance import propagate
             profile = self.profiles.get('motion_loaded', self.profiles['motion']) if self.loaded else self.profiles['motion']
-            velocity = np.abs(self._predictor.vel)
-            std = np.asarray(profile.get('noise_rel', [0., 0., 0.]))*velocity + profile.get('noise_abs', [0., 0., 0.])
-            variance = (std*dt)**2 + (profile.get('scale_std', 0.)*velocity)**2*dt
-            if self.loaded:
-                variance[:2] += self.options.loaded_unexplained_xy_m_sqrt_s**2*dt
-            self.covariance = F@self.covariance@F.T + R@np.diag(variance)@R.T
+            self.covariance = propagate(self.covariance, before[2], (dx, dy),
+                self._predictor.vel, dt, profile,
+                loaded_floor=self.options.loaded_unexplained_xy_m_sqrt_s if self.loaded else 0.)
         super().advance(t)
         return self.pose
 

@@ -1,0 +1,635 @@
+{
+  "source_sha": "4c18f074c0e4d910cc4ef708ba901148fe91762a",
+  "cases": [
+    {
+      "episode": "episode-000",
+      "outcome": "approach_blocked_handoff",
+      "sim_s": 12.299999999989629,
+      "candidate_rejection_counts": {
+        "blocked_goal": 442,
+        "ik_unreachable": 994,
+        "gripper_angle": 1984,
+        "feasible": 5,
+        "no_path": 258
+      },
+      "planning_budget_exhausted_ticks": 31,
+      "max_planning_elapsed_s": 3.002907727001002,
+      "reobserve_targets": [
+        "can_1"
+      ],
+      "last_visible_issued_world_diagnostic": {
+        "episode": "episode-000",
+        "rid": "r1",
+        "t": 14.099999999989814,
+        "planning_budget_exhausted": false,
+        "choice": [
+          0.17453292519943295,
+          0.208
+        ],
+        "margins": [
+          {
+            "id": "r3",
+            "fresh": false,
+            "sigma_m": 0.05624408469899585,
+            "margin_m": 0.1756925999793846,
+            "k": 3.0348542587702925,
+            "delta": 0.01,
+            "covariance_m2": [
+              [
+                0.003017842166574368,
+                -0.0005613342439973825
+              ],
+              [
+                -0.0005613342439973825,
+                0.000998604673520842
+              ]
+            ],
+            "seen_t": 2.4999999999999742
+          },
+          {
+            "id": "tile_1",
+            "fresh": true,
+            "sigma_m": 0.003684941535676493,
+            "margin_m": 0.005,
+            "k": 3.0348542587702925,
+            "delta": 0.01,
+            "covariance_m2": [
+              [
+                1.357879412135383e-05,
+                0.0
+              ],
+              [
+                0.0,
+                1.357879412135383e-05
+              ]
+            ],
+            "seen_t": 14.099999999989814
+          },
+          {
+            "id": "can_1",
+            "fresh": true,
+            "sigma_m": 0.002398125112651046,
+            "margin_m": 0.005,
+            "k": 3.0348542587702925,
+            "delta": 0.01,
+            "covariance_m2": [
+              [
+                5.751004055927593e-06,
+                0.0
+              ],
+              [
+                0.0,
+                5.751004055927593e-06
+              ]
+            ],
+            "seen_t": 14.099999999989814
+          },
+          {
+            "id": "band_blue",
+            "fresh": true,
+            "sigma_m": 0.003744615542095369,
+            "margin_m": 0.005,
+            "k": 3.0348542587702925,
+            "delta": 0.01,
+            "covariance_m2": [
+              [
+                1.4022145558102196e-05,
+                0.0
+              ],
+              [
+                0.0,
+                1.4022145558102196e-05
+              ]
+            ],
+            "seen_t": 14.099999999989814
+          },
+          {
+            "id": "band_blue",
+            "fresh": true,
+            "sigma_m": 0.003744615542095369,
+            "margin_m": 0.005,
+            "k": 3.0348542587702925,
+            "delta": 0.01,
+            "covariance_m2": [
+              [
+                1.4022145558102196e-05,
+                0.0
+              ],
+              [
+                0.0,
+                1.4022145558102196e-05
+              ]
+            ],
+            "seen_t": 14.099999999989814
+          },
+          {
+            "id": "band_blue",
+            "fresh": true,
+            "sigma_m": 0.003744615542095369,
+            "margin_m": 0.005,
+            "k": 3.0348542587702925,
+            "delta": 0.01,
+            "covariance_m2": [
+              [
+                1.4022145558102196e-05,
+                0.0
+              ],
+              [
+                0.0,
+                1.4022145558102196e-05
+              ]
+            ],
+            "seen_t": 14.099999999989814
+          },
+          {
+            "id": "band_blue",
+            "fresh": true,
+            "sigma_m": 0.003744615542095369,
+            "margin_m": 0.005,
+            "k": 3.0348542587702925,
+            "delta": 0.01,
+            "covariance_m2": [
+              [
+                1.4022145558102196e-05,
+                0.0
+              ],
+              [
+                0.0,
+                1.4022145558102196e-05
+              ]
+            ],
+            "seen_t": 14.099999999989814
+          },
+          {
+            "id": "band_blue",
+            "fresh": true,
+            "sigma_m": 0.003744615542095369,
+            "margin_m": 0.005,
+            "k": 3.0348542587702925,
+            "delta": 0.01,
+            "covariance_m2": [
+              [
+                1.4022145558102196e-05,
+                0.0
+              ],
+              [
+                0.0,
+                1.4022145558102196e-05
+              ]
+            ],
+            "seen_t": 14.099999999989814
+          }
+        ],
+        "start_heading_to_target_blockers": [],
+        "family_goal_blockers": []
+      },
+      "scope": "candidate counts and timings are original; last margins reconstructed from original own-visible measurements and actual issued commands, no new trajectory/physics"
+    },
+    {
+      "episode": "episode-001",
+      "outcome": "approach_blocked_handoff",
+      "sim_s": 14.699999999987586,
+      "candidate_rejection_counts": {
+        "blocked_goal": 430,
+        "ik_unreachable": 965,
+        "gripper_angle": 1926,
+        "feasible": 5,
+        "no_path": 277
+      },
+      "planning_budget_exhausted_ticks": 31,
+      "max_planning_elapsed_s": 3.0036017919992446,
+      "reobserve_targets": [
+        "yellow_1"
+      ],
+      "last_visible_issued_world_diagnostic": {
+        "episode": "episode-001",
+        "rid": "r1",
+        "t": 16.49999999998777,
+        "planning_budget_exhausted": false,
+        "choice": [
+          0.17453292519943295,
+          0.208
+        ],
+        "margins": [
+          {
+            "id": "r3",
+            "fresh": false,
+            "sigma_m": 0.03707540140963886,
+            "margin_m": 0.1175184398636606,
+            "k": 3.0348542587702925,
+            "delta": 0.01,
+            "covariance_m2": [
+              [
+                0.0012461893552695275,
+                -0.0003543806081824068
+              ],
+              [
+                -0.0003543806081824068,
+                0.00039647406384441864
+              ]
+            ],
+            "seen_t": 11.099999999996806
+          },
+          {
+            "id": "r2",
+            "fresh": false,
+            "sigma_m": 0.02303136971152418,
+            "margin_m": 0.07489685045433228,
+            "k": 3.0348542587702925,
+            "delta": 0.01,
+            "covariance_m2": [
+              [
+                0.0005050311454930528,
+                -8.230035018444974e-05
+              ],
+              [
+                -8.230035018444974e-05,
+                0.0002639115517162086
+              ]
+            ],
+            "seen_t": 11.099999999996806
+          },
+          {
+            "id": "red_2",
+            "fresh": true,
+            "sigma_m": 0.0036045934670193066,
+            "margin_m": 0.005,
+            "k": 3.0348542587702925,
+            "delta": 0.01,
+            "covariance_m2": [
+              [
+                1.2993094062478264e-05,
+                0.0
+              ],
+              [
+                0.0,
+                1.2993094062478264e-05
+              ]
+            ],
+            "seen_t": 16.49999999998777
+          },
+          {
+            "id": "yellow_1",
+            "fresh": true,
+            "sigma_m": 0.002339802417368654,
+            "margin_m": 0.005,
+            "k": 3.0348542587702925,
+            "delta": 0.01,
+            "covariance_m2": [
+              [
+                5.4746753523241974e-06,
+                0.0
+              ],
+              [
+                0.0,
+                5.4746753523241974e-06
+              ]
+            ],
+            "seen_t": 16.49999999998777
+          },
+          {
+            "id": "band_blue",
+            "fresh": true,
+            "sigma_m": 0.003675740970064255,
+            "margin_m": 0.005,
+            "k": 3.0348542587702925,
+            "delta": 0.01,
+            "covariance_m2": [
+              [
+                1.351107167900891e-05,
+                0.0
+              ],
+              [
+                0.0,
+                1.351107167900891e-05
+              ]
+            ],
+            "seen_t": 16.49999999998777
+          },
+          {
+            "id": "band_blue",
+            "fresh": true,
+            "sigma_m": 0.003675740970064255,
+            "margin_m": 0.005,
+            "k": 3.0348542587702925,
+            "delta": 0.01,
+            "covariance_m2": [
+              [
+                1.351107167900891e-05,
+                0.0
+              ],
+              [
+                0.0,
+                1.351107167900891e-05
+              ]
+            ],
+            "seen_t": 16.49999999998777
+          },
+          {
+            "id": "band_blue",
+            "fresh": true,
+            "sigma_m": 0.003675740970064255,
+            "margin_m": 0.005,
+            "k": 3.0348542587702925,
+            "delta": 0.01,
+            "covariance_m2": [
+              [
+                1.351107167900891e-05,
+                0.0
+              ],
+              [
+                0.0,
+                1.351107167900891e-05
+              ]
+            ],
+            "seen_t": 16.49999999998777
+          },
+          {
+            "id": "band_blue",
+            "fresh": true,
+            "sigma_m": 0.003675740970064255,
+            "margin_m": 0.005,
+            "k": 3.0348542587702925,
+            "delta": 0.01,
+            "covariance_m2": [
+              [
+                1.351107167900891e-05,
+                0.0
+              ],
+              [
+                0.0,
+                1.351107167900891e-05
+              ]
+            ],
+            "seen_t": 16.49999999998777
+          },
+          {
+            "id": "band_blue",
+            "fresh": true,
+            "sigma_m": 0.003675740970064255,
+            "margin_m": 0.005,
+            "k": 3.0348542587702925,
+            "delta": 0.01,
+            "covariance_m2": [
+              [
+                1.351107167900891e-05,
+                0.0
+              ],
+              [
+                0.0,
+                1.351107167900891e-05
+              ]
+            ],
+            "seen_t": 16.49999999998777
+          }
+        ],
+        "start_heading_to_target_blockers": [],
+        "family_goal_blockers": []
+      },
+      "scope": "candidate counts and timings are original; last margins reconstructed from original own-visible measurements and actual issued commands, no new trajectory/physics"
+    },
+    {
+      "episode": "episode-002",
+      "outcome": "approach_blocked_handoff",
+      "sim_s": 29.500000000058254,
+      "candidate_rejection_counts": {
+        "blocked_goal": 1050,
+        "ik_unreachable": 2508,
+        "connector_connector_band_not_visible": 221,
+        "gripper_angle": 5000,
+        "feasible": 17,
+        "no_path": 559
+      },
+      "planning_budget_exhausted_ticks": 0,
+      "max_planning_elapsed_s": 15.475806329999614,
+      "reobserve_targets": [
+        "r2",
+        "yellow_1"
+      ],
+      "last_visible_issued_world_diagnostic": {
+        "episode": "episode-002",
+        "rid": "r1",
+        "t": 31.30000000005844,
+        "planning_budget_exhausted": false,
+        "choice": [
+          -0.2617993877991494,
+          0.208
+        ],
+        "margins": [
+          {
+            "id": "r2",
+            "fresh": false,
+            "sigma_m": 0.08255291375621081,
+            "margin_m": 0.25553606188693306,
+            "k": 3.0348542587702925,
+            "delta": 0.01,
+            "covariance_m2": [
+              [
+                0.006448140655410909,
+                0.0013001977525323107
+              ],
+              [
+                0.0013001977525323102,
+                0.0022067053935690573
+              ]
+            ],
+            "seen_t": 13.59999999999098
+          },
+          {
+            "id": "red_1",
+            "fresh": false,
+            "sigma_m": 0.00980703361062715,
+            "margin_m": 0.0347629177191152,
+            "k": 3.0348542587702925,
+            "delta": 0.01,
+            "covariance_m2": [
+              [
+                5.8899895431170136e-05,
+                1.9275832053099174e-05
+              ],
+              [
+                1.9275832053099178e-05,
+                8.621070040501941e-05
+              ]
+            ],
+            "seen_t": 30.300000000053664
+          },
+          {
+            "id": "yellow_1",
+            "fresh": false,
+            "sigma_m": 0.002604552830786356,
+            "margin_m": 0.012904438250704194,
+            "k": 3.0348542587702925,
+            "delta": 0.01,
+            "covariance_m2": [
+              [
+                6.290479012027138e-06,
+                4.925746171670085e-07
+              ],
+              [
+                4.925746171670086e-07,
+                6.291761815158412e-06
+              ]
+            ],
+            "seen_t": 31.200000000057962
+          },
+          {
+            "id": "red_2",
+            "fresh": true,
+            "sigma_m": 0.003682599692184952,
+            "margin_m": 0.005,
+            "k": 3.0348542587702925,
+            "delta": 0.01,
+            "covariance_m2": [
+              [
+                1.3561540492880705e-05,
+                0.0
+              ],
+              [
+                0.0,
+                1.3561540492880705e-05
+              ]
+            ],
+            "seen_t": 31.30000000005844
+          },
+          {
+            "id": "cyan_2",
+            "fresh": false,
+            "sigma_m": 0.009056759586118122,
+            "margin_m": 0.03248594540058925,
+            "k": 3.0348542587702925,
+            "delta": 0.01,
+            "covariance_m2": [
+              [
+                5.814111592750643e-05,
+                2.1139209305483548e-05
+              ],
+              [
+                2.1139209305483548e-05,
+                6.331486578945898e-05
+              ]
+            ],
+            "seen_t": 30.300000000053664
+          },
+          {
+            "id": "cyan_1",
+            "fresh": false,
+            "sigma_m": 0.15280213032035428,
+            "margin_m": 0.4687321959519004,
+            "k": 3.0348542587702925,
+            "delta": 0.01,
+            "covariance_m2": [
+              [
+                0.014905789777674299,
+                0.010518175450177575
+              ],
+              [
+                0.010518175450177575,
+                0.010244626344418044
+              ]
+            ],
+            "seen_t": 16.59999999998825
+          },
+          {
+            "id": "band_blue",
+            "fresh": false,
+            "sigma_m": 0.006124561154857401,
+            "margin_m": 0.023587150503918086,
+            "k": 3.0348542587702925,
+            "delta": 0.01,
+            "covariance_m2": [
+              [
+                2.516119322681983e-05,
+                1.4272941778358964e-05
+              ],
+              [
+                1.4272941778358964e-05,
+                2.1013695663895525e-05
+              ]
+            ],
+            "seen_t": 28.50000000004507
+          },
+          {
+            "id": "band_blue",
+            "fresh": false,
+            "sigma_m": 0.006124561154857401,
+            "margin_m": 0.023587150503918086,
+            "k": 3.0348542587702925,
+            "delta": 0.01,
+            "covariance_m2": [
+              [
+                2.516119322681983e-05,
+                1.4272941778358964e-05
+              ],
+              [
+                1.4272941778358964e-05,
+                2.1013695663895525e-05
+              ]
+            ],
+            "seen_t": 28.50000000004507
+          },
+          {
+            "id": "band_blue",
+            "fresh": false,
+            "sigma_m": 0.006124561154857401,
+            "margin_m": 0.023587150503918086,
+            "k": 3.0348542587702925,
+            "delta": 0.01,
+            "covariance_m2": [
+              [
+                2.516119322681983e-05,
+                1.4272941778358964e-05
+              ],
+              [
+                1.4272941778358964e-05,
+                2.1013695663895525e-05
+              ]
+            ],
+            "seen_t": 28.50000000004507
+          },
+          {
+            "id": "band_blue",
+            "fresh": false,
+            "sigma_m": 0.006124561154857401,
+            "margin_m": 0.023587150503918086,
+            "k": 3.0348542587702925,
+            "delta": 0.01,
+            "covariance_m2": [
+              [
+                2.516119322681983e-05,
+                1.4272941778358964e-05
+              ],
+              [
+                1.4272941778358964e-05,
+                2.1013695663895525e-05
+              ]
+            ],
+            "seen_t": 28.50000000004507
+          },
+          {
+            "id": "band_blue",
+            "fresh": false,
+            "sigma_m": 0.006124561154857401,
+            "margin_m": 0.023587150503918086,
+            "k": 3.0348542587702925,
+            "delta": 0.01,
+            "covariance_m2": [
+              [
+                2.516119322681983e-05,
+                1.4272941778358964e-05
+              ],
+              [
+                1.4272941778358964e-05,
+                2.1013695663895525e-05
+              ]
+            ],
+            "seen_t": 28.50000000004507
+          }
+        ],
+        "start_heading_to_target_blockers": [],
+        "family_goal_blockers": []
+      },
+      "scope": "candidate counts and timings are original; last margins reconstructed from original own-visible measurements and actual issued commands, no new trajectory/physics"
+    }
+  ]
+}

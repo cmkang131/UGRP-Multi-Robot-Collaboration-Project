@@ -1,0 +1,1158 @@
+{
+  "schema": "ugrp.search26.rejection_table.v1",
+  "source_sha": "f92b07aa869dc3b960d22adb69c01f2b9b8c9eeb",
+  "analysis_source_sha": "f92b07aa869dc3b960d22adb69c01f2b9b8c9eeb",
+  "raw_root": "/home/ugrp/ugrp-sim/runs/search26-r1-short6-f92b07aa",
+  "reproduce": ".venv-sim/bin/python -m scripts.recount_grasp_act_search25 /home/ugrp/ugrp-sim/runs/search26-r1-short6-f92b07aa --out /home/ugrp/ugrp-sim/outputs/search26-r1-report",
+  "categories": {
+    "current_geometry": 21944,
+    "endpoint_feasible": 431,
+    "feasible": 11
+  },
+  "reason_counts": {
+    "blocked_goal": 11843,
+    "endpoint_feasible": 431,
+    "feasible": 11,
+    "unsafe_body_sweep": 10088,
+    "blocked_retreat": 13
+  },
+  "episodes": [
+    {
+      "episode": "episode-000",
+      "raw": "/home/ugrp/ugrp-sim/runs/search26-r1-short6-f92b07aa/diagnostic/episode-000/raw",
+      "raw_result_decoded_sha256": "6df2c62807dd633816c3290727d21d936581b72a21c426c3c64cc77c27241eb8",
+      "candidate_populations": {
+        "endpoint": {
+          "N_rows": 455,
+          "unknown_stage_budget_N": 0,
+          "terminal_reason_counts": {
+            "blocked_goal": 286,
+            "endpoint_feasible": 164,
+            "feasible": 5
+          },
+          "ordered_funnel": [
+            {
+              "gate": "ik_unreachable",
+              "entered": 455,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 455
+            },
+            {
+              "gate": "gripper_angle",
+              "entered": 455,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 455
+            },
+            {
+              "gate": "outside_bounds",
+              "entered": 455,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 455
+            },
+            {
+              "gate": "blocked_goal",
+              "entered": 455,
+              "rejected": 286,
+              "terminal_pass": 0,
+              "continued": 169
+            },
+            {
+              "gate": "blocked_retreat",
+              "entered": 169,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 169
+            },
+            {
+              "gate": "no_path",
+              "entered": 169,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 169
+            },
+            {
+              "gate": "unsafe_body_sweep",
+              "entered": 169,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 169
+            },
+            {
+              "gate": "band_not_visible",
+              "entered": 169,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 169
+            },
+            {
+              "gate": "arm",
+              "entered": 169,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 169
+            },
+            {
+              "gate": "endpoint_feasible",
+              "entered": 169,
+              "rejected": 0,
+              "terminal_pass": 164,
+              "continued": 5
+            },
+            {
+              "gate": "connector",
+              "entered": 5,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 5
+            },
+            {
+              "gate": "feasible",
+              "entered": 5,
+              "rejected": 0,
+              "terminal_pass": 5,
+              "continued": 0
+            }
+          ]
+        },
+        "full_or_retained": {
+          "N_rows": 7462,
+          "unknown_stage_budget_N": 0,
+          "terminal_reason_counts": {
+            "blocked_goal": 4797,
+            "unsafe_body_sweep": 2665
+          },
+          "ordered_funnel": [
+            {
+              "gate": "ik_unreachable",
+              "entered": 7462,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 7462
+            },
+            {
+              "gate": "gripper_angle",
+              "entered": 7462,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 7462
+            },
+            {
+              "gate": "outside_bounds",
+              "entered": 7462,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 7462
+            },
+            {
+              "gate": "blocked_goal",
+              "entered": 7462,
+              "rejected": 4797,
+              "terminal_pass": 0,
+              "continued": 2665
+            },
+            {
+              "gate": "blocked_retreat",
+              "entered": 2665,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 2665
+            },
+            {
+              "gate": "no_path",
+              "entered": 2665,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 2665
+            },
+            {
+              "gate": "unsafe_body_sweep",
+              "entered": 2665,
+              "rejected": 2665,
+              "terminal_pass": 0,
+              "continued": 0
+            },
+            {
+              "gate": "band_not_visible",
+              "entered": 0,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 0
+            },
+            {
+              "gate": "arm",
+              "entered": 0,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 0
+            },
+            {
+              "gate": "endpoint_feasible",
+              "entered": 0,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 0
+            },
+            {
+              "gate": "connector",
+              "entered": 0,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 0
+            },
+            {
+              "gate": "feasible",
+              "entered": 0,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 0
+            }
+          ]
+        }
+      },
+      "frame_funnel": [
+        {
+          "gate": "robot_input_frames",
+          "cumulative_pass": 788,
+          "rejected_here": null
+        },
+        {
+          "gate": "label_written",
+          "cumulative_pass": 788,
+          "rejected_here": 0
+        },
+        {
+          "gate": "approach_align_ready",
+          "cumulative_pass": 593,
+          "rejected_here": 195
+        },
+        {
+          "gate": "assigned_band_visible",
+          "cumulative_pass": 579,
+          "rejected_here": 14
+        },
+        {
+          "gate": "assigned_band_measurement_admitted",
+          "cumulative_pass": 579,
+          "rejected_here": 0
+        }
+      ],
+      "event_funnel": [
+        {
+          "gate": "candidate_events",
+          "cumulative_pass": 87,
+          "rejected_here": null
+        },
+        {
+          "gate": "nonempty",
+          "cumulative_pass": 87,
+          "rejected_here": 0
+        },
+        {
+          "gate": "any_endpoint_pass",
+          "cumulative_pass": 5,
+          "rejected_here": 82
+        },
+        {
+          "gate": "any_full_pass",
+          "cumulative_pass": 5,
+          "rejected_here": 0
+        }
+      ],
+      "incomplete_input_frames": 0,
+      "review_jpeg_N": 80,
+      "status": "complete",
+      "cap_end": false,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1436,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      }
+    },
+    {
+      "episode": "episode-001",
+      "raw": "/home/ugrp/ugrp-sim/runs/search26-r1-short6-f92b07aa/diagnostic/episode-001/raw",
+      "raw_result_decoded_sha256": "240f04118c18ecda8e5a393cf8d56e715fe3671a8de747b3a7207c858ca76630",
+      "candidate_populations": {
+        "endpoint": {
+          "N_rows": 91,
+          "unknown_stage_budget_N": 0,
+          "terminal_reason_counts": {
+            "endpoint_feasible": 51,
+            "blocked_retreat": 13,
+            "blocked_goal": 26,
+            "feasible": 1
+          },
+          "ordered_funnel": [
+            {
+              "gate": "ik_unreachable",
+              "entered": 91,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 91
+            },
+            {
+              "gate": "gripper_angle",
+              "entered": 91,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 91
+            },
+            {
+              "gate": "outside_bounds",
+              "entered": 91,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 91
+            },
+            {
+              "gate": "blocked_goal",
+              "entered": 91,
+              "rejected": 26,
+              "terminal_pass": 0,
+              "continued": 65
+            },
+            {
+              "gate": "blocked_retreat",
+              "entered": 65,
+              "rejected": 13,
+              "terminal_pass": 0,
+              "continued": 52
+            },
+            {
+              "gate": "no_path",
+              "entered": 52,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 52
+            },
+            {
+              "gate": "unsafe_body_sweep",
+              "entered": 52,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 52
+            },
+            {
+              "gate": "band_not_visible",
+              "entered": 52,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 52
+            },
+            {
+              "gate": "arm",
+              "entered": 52,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 52
+            },
+            {
+              "gate": "endpoint_feasible",
+              "entered": 52,
+              "rejected": 0,
+              "terminal_pass": 51,
+              "continued": 1
+            },
+            {
+              "gate": "connector",
+              "entered": 1,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 1
+            },
+            {
+              "gate": "feasible",
+              "entered": 1,
+              "rejected": 0,
+              "terminal_pass": 1,
+              "continued": 0
+            }
+          ]
+        }
+      },
+      "frame_funnel": [
+        {
+          "gate": "robot_input_frames",
+          "cumulative_pass": 744,
+          "rejected_here": null
+        },
+        {
+          "gate": "label_written",
+          "cumulative_pass": 742,
+          "rejected_here": 2
+        },
+        {
+          "gate": "approach_align_ready",
+          "cumulative_pass": 504,
+          "rejected_here": 238
+        },
+        {
+          "gate": "assigned_band_visible",
+          "cumulative_pass": 490,
+          "rejected_here": 14
+        },
+        {
+          "gate": "assigned_band_measurement_admitted",
+          "cumulative_pass": 490,
+          "rejected_here": 0
+        }
+      ],
+      "event_funnel": [
+        {
+          "gate": "candidate_events",
+          "cumulative_pass": 1,
+          "rejected_here": null
+        },
+        {
+          "gate": "nonempty",
+          "cumulative_pass": 1,
+          "rejected_here": 0
+        },
+        {
+          "gate": "any_endpoint_pass",
+          "cumulative_pass": 1,
+          "rejected_here": 0
+        },
+        {
+          "gate": "any_full_pass",
+          "cumulative_pass": 1,
+          "rejected_here": 0
+        }
+      ],
+      "incomplete_input_frames": 2,
+      "review_jpeg_N": 76,
+      "status": "complete",
+      "cap_end": true,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1541,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      }
+    },
+    {
+      "episode": "episode-002",
+      "raw": "/home/ugrp/ugrp-sim/runs/search26-r1-short6-f92b07aa/diagnostic/episode-002/raw",
+      "raw_result_decoded_sha256": "d94387006c27627e7625292bea7c6205fec71356a487e005bb93cbc03facbb1e",
+      "candidate_populations": {
+        "endpoint": {
+          "N_rows": 91,
+          "unknown_stage_budget_N": 0,
+          "terminal_reason_counts": {
+            "endpoint_feasible": 51,
+            "blocked_goal": 39,
+            "feasible": 1
+          },
+          "ordered_funnel": [
+            {
+              "gate": "ik_unreachable",
+              "entered": 91,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 91
+            },
+            {
+              "gate": "gripper_angle",
+              "entered": 91,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 91
+            },
+            {
+              "gate": "outside_bounds",
+              "entered": 91,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 91
+            },
+            {
+              "gate": "blocked_goal",
+              "entered": 91,
+              "rejected": 39,
+              "terminal_pass": 0,
+              "continued": 52
+            },
+            {
+              "gate": "blocked_retreat",
+              "entered": 52,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 52
+            },
+            {
+              "gate": "no_path",
+              "entered": 52,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 52
+            },
+            {
+              "gate": "unsafe_body_sweep",
+              "entered": 52,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 52
+            },
+            {
+              "gate": "band_not_visible",
+              "entered": 52,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 52
+            },
+            {
+              "gate": "arm",
+              "entered": 52,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 52
+            },
+            {
+              "gate": "endpoint_feasible",
+              "entered": 52,
+              "rejected": 0,
+              "terminal_pass": 51,
+              "continued": 1
+            },
+            {
+              "gate": "connector",
+              "entered": 1,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 1
+            },
+            {
+              "gate": "feasible",
+              "entered": 1,
+              "rejected": 0,
+              "terminal_pass": 1,
+              "continued": 0
+            }
+          ]
+        },
+        "full_or_retained": {
+          "N_rows": 10192,
+          "unknown_stage_budget_N": 0,
+          "terminal_reason_counts": {
+            "unsafe_body_sweep": 5824,
+            "blocked_goal": 4368
+          },
+          "ordered_funnel": [
+            {
+              "gate": "ik_unreachable",
+              "entered": 10192,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 10192
+            },
+            {
+              "gate": "gripper_angle",
+              "entered": 10192,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 10192
+            },
+            {
+              "gate": "outside_bounds",
+              "entered": 10192,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 10192
+            },
+            {
+              "gate": "blocked_goal",
+              "entered": 10192,
+              "rejected": 4368,
+              "terminal_pass": 0,
+              "continued": 5824
+            },
+            {
+              "gate": "blocked_retreat",
+              "entered": 5824,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 5824
+            },
+            {
+              "gate": "no_path",
+              "entered": 5824,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 5824
+            },
+            {
+              "gate": "unsafe_body_sweep",
+              "entered": 5824,
+              "rejected": 5824,
+              "terminal_pass": 0,
+              "continued": 0
+            },
+            {
+              "gate": "band_not_visible",
+              "entered": 0,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 0
+            },
+            {
+              "gate": "arm",
+              "entered": 0,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 0
+            },
+            {
+              "gate": "endpoint_feasible",
+              "entered": 0,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 0
+            },
+            {
+              "gate": "connector",
+              "entered": 0,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 0
+            },
+            {
+              "gate": "feasible",
+              "entered": 0,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 0
+            }
+          ]
+        }
+      },
+      "frame_funnel": [
+        {
+          "gate": "robot_input_frames",
+          "cumulative_pass": 852,
+          "rejected_here": null
+        },
+        {
+          "gate": "label_written",
+          "cumulative_pass": 852,
+          "rejected_here": 0
+        },
+        {
+          "gate": "approach_align_ready",
+          "cumulative_pass": 618,
+          "rejected_here": 234
+        },
+        {
+          "gate": "assigned_band_visible",
+          "cumulative_pass": 604,
+          "rejected_here": 14
+        },
+        {
+          "gate": "assigned_band_measurement_admitted",
+          "cumulative_pass": 604,
+          "rejected_here": 0
+        }
+      ],
+      "event_funnel": [
+        {
+          "gate": "candidate_events",
+          "cumulative_pass": 113,
+          "rejected_here": null
+        },
+        {
+          "gate": "nonempty",
+          "cumulative_pass": 113,
+          "rejected_here": 0
+        },
+        {
+          "gate": "any_endpoint_pass",
+          "cumulative_pass": 1,
+          "rejected_here": 112
+        },
+        {
+          "gate": "any_full_pass",
+          "cumulative_pass": 1,
+          "rejected_here": 0
+        }
+      ],
+      "incomplete_input_frames": 0,
+      "review_jpeg_N": 86,
+      "status": "complete",
+      "cap_end": false,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1726,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      }
+    },
+    {
+      "episode": "episode-003",
+      "raw": "/home/ugrp/ugrp-sim/runs/search26-r1-short6-f92b07aa/diagnostic/episode-003/raw",
+      "raw_result_decoded_sha256": "f53e683f5ee12834db288c6bf1da6f2d35ec42e42d803da80570fee8952fdbc2",
+      "candidate_populations": {
+        "endpoint": {
+          "N_rows": 364,
+          "unknown_stage_budget_N": 0,
+          "terminal_reason_counts": {
+            "blocked_goal": 195,
+            "endpoint_feasible": 165,
+            "feasible": 4
+          },
+          "ordered_funnel": [
+            {
+              "gate": "ik_unreachable",
+              "entered": 364,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 364
+            },
+            {
+              "gate": "gripper_angle",
+              "entered": 364,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 364
+            },
+            {
+              "gate": "outside_bounds",
+              "entered": 364,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 364
+            },
+            {
+              "gate": "blocked_goal",
+              "entered": 364,
+              "rejected": 195,
+              "terminal_pass": 0,
+              "continued": 169
+            },
+            {
+              "gate": "blocked_retreat",
+              "entered": 169,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 169
+            },
+            {
+              "gate": "no_path",
+              "entered": 169,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 169
+            },
+            {
+              "gate": "unsafe_body_sweep",
+              "entered": 169,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 169
+            },
+            {
+              "gate": "band_not_visible",
+              "entered": 169,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 169
+            },
+            {
+              "gate": "arm",
+              "entered": 169,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 169
+            },
+            {
+              "gate": "endpoint_feasible",
+              "entered": 169,
+              "rejected": 0,
+              "terminal_pass": 165,
+              "continued": 4
+            },
+            {
+              "gate": "connector",
+              "entered": 4,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 4
+            },
+            {
+              "gate": "feasible",
+              "entered": 4,
+              "rejected": 0,
+              "terminal_pass": 4,
+              "continued": 0
+            }
+          ]
+        },
+        "full_or_retained": {
+          "N_rows": 3731,
+          "unknown_stage_budget_N": 0,
+          "terminal_reason_counts": {
+            "blocked_goal": 2132,
+            "unsafe_body_sweep": 1599
+          },
+          "ordered_funnel": [
+            {
+              "gate": "ik_unreachable",
+              "entered": 3731,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 3731
+            },
+            {
+              "gate": "gripper_angle",
+              "entered": 3731,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 3731
+            },
+            {
+              "gate": "outside_bounds",
+              "entered": 3731,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 3731
+            },
+            {
+              "gate": "blocked_goal",
+              "entered": 3731,
+              "rejected": 2132,
+              "terminal_pass": 0,
+              "continued": 1599
+            },
+            {
+              "gate": "blocked_retreat",
+              "entered": 1599,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 1599
+            },
+            {
+              "gate": "no_path",
+              "entered": 1599,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 1599
+            },
+            {
+              "gate": "unsafe_body_sweep",
+              "entered": 1599,
+              "rejected": 1599,
+              "terminal_pass": 0,
+              "continued": 0
+            },
+            {
+              "gate": "band_not_visible",
+              "entered": 0,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 0
+            },
+            {
+              "gate": "arm",
+              "entered": 0,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 0
+            },
+            {
+              "gate": "endpoint_feasible",
+              "entered": 0,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 0
+            },
+            {
+              "gate": "connector",
+              "entered": 0,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 0
+            },
+            {
+              "gate": "feasible",
+              "entered": 0,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 0
+            }
+          ]
+        }
+      },
+      "frame_funnel": [
+        {
+          "gate": "robot_input_frames",
+          "cumulative_pass": 726,
+          "rejected_here": null
+        },
+        {
+          "gate": "label_written",
+          "cumulative_pass": 726,
+          "rejected_here": 0
+        },
+        {
+          "gate": "approach_align_ready",
+          "cumulative_pass": 531,
+          "rejected_here": 195
+        },
+        {
+          "gate": "assigned_band_visible",
+          "cumulative_pass": 517,
+          "rejected_here": 14
+        },
+        {
+          "gate": "assigned_band_measurement_admitted",
+          "cumulative_pass": 517,
+          "rejected_here": 0
+        }
+      ],
+      "event_funnel": [
+        {
+          "gate": "candidate_events",
+          "cumulative_pass": 45,
+          "rejected_here": null
+        },
+        {
+          "gate": "nonempty",
+          "cumulative_pass": 45,
+          "rejected_here": 0
+        },
+        {
+          "gate": "any_endpoint_pass",
+          "cumulative_pass": 4,
+          "rejected_here": 41
+        },
+        {
+          "gate": "any_full_pass",
+          "cumulative_pass": 4,
+          "rejected_here": 0
+        }
+      ],
+      "incomplete_input_frames": 0,
+      "review_jpeg_N": 74,
+      "status": "complete",
+      "cap_end": false,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1326,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      }
+    },
+    {
+      "episode": "episode-004",
+      "raw": "/home/ugrp/ugrp-sim/runs/search26-r1-short6-f92b07aa/diagnostic/episode-004/raw",
+      "raw_result_decoded_sha256": "9bc692e5baa7b34d15db5ff64d5b30d570fcd78a6cf8f766c5b8eee705fd97f1",
+      "candidate_populations": {},
+      "frame_funnel": [
+        {
+          "gate": "robot_input_frames",
+          "cumulative_pass": 452,
+          "rejected_here": null
+        },
+        {
+          "gate": "label_written",
+          "cumulative_pass": 452,
+          "rejected_here": 0
+        },
+        {
+          "gate": "approach_align_ready",
+          "cumulative_pass": 292,
+          "rejected_here": 160
+        },
+        {
+          "gate": "assigned_band_visible",
+          "cumulative_pass": 285,
+          "rejected_here": 7
+        },
+        {
+          "gate": "assigned_band_measurement_admitted",
+          "cumulative_pass": 285,
+          "rejected_here": 0
+        }
+      ],
+      "event_funnel": [
+        {
+          "gate": "candidate_events",
+          "cumulative_pass": 0,
+          "rejected_here": null
+        },
+        {
+          "gate": "nonempty",
+          "cumulative_pass": 0,
+          "rejected_here": 0
+        },
+        {
+          "gate": "any_endpoint_pass",
+          "cumulative_pass": 0,
+          "rejected_here": 0
+        },
+        {
+          "gate": "any_full_pass",
+          "cumulative_pass": 0,
+          "rejected_here": 0
+        }
+      ],
+      "incomplete_input_frames": 0,
+      "review_jpeg_N": 46,
+      "status": "complete",
+      "cap_end": false,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 645,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      }
+    },
+    {
+      "episode": "episode-005",
+      "raw": "/home/ugrp/ugrp-sim/runs/search26-r1-short6-f92b07aa/diagnostic/episode-005/raw",
+      "raw_result_decoded_sha256": "94a3c170b777495b5d011cc832312e18a1254279a64043ef9a645b0e427045b0",
+      "candidate_populations": {},
+      "frame_funnel": [
+        {
+          "gate": "robot_input_frames",
+          "cumulative_pass": 518,
+          "rejected_here": null
+        },
+        {
+          "gate": "label_written",
+          "cumulative_pass": 518,
+          "rejected_here": 0
+        },
+        {
+          "gate": "approach_align_ready",
+          "cumulative_pass": 320,
+          "rejected_here": 198
+        },
+        {
+          "gate": "assigned_band_visible",
+          "cumulative_pass": 313,
+          "rejected_here": 7
+        },
+        {
+          "gate": "assigned_band_measurement_admitted",
+          "cumulative_pass": 313,
+          "rejected_here": 0
+        }
+      ],
+      "event_funnel": [
+        {
+          "gate": "candidate_events",
+          "cumulative_pass": 0,
+          "rejected_here": null
+        },
+        {
+          "gate": "nonempty",
+          "cumulative_pass": 0,
+          "rejected_here": 0
+        },
+        {
+          "gate": "any_endpoint_pass",
+          "cumulative_pass": 0,
+          "rejected_here": 0
+        },
+        {
+          "gate": "any_full_pass",
+          "cumulative_pass": 0,
+          "rejected_here": 0
+        }
+      ],
+      "incomplete_input_frames": 0,
+      "review_jpeg_N": 52,
+      "status": "complete",
+      "cap_end": false,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 842,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      }
+    }
+  ],
+  "scope": "raw rows; endpoint/full kept separate; budget unknown stage excluded from proven passes; frame/event populations are separate",
+  "alignment_candidate_funnel": [
+    {
+      "gate": "axis_pulse_checks",
+      "cumulative_pass": 189,
+      "rejected_here": null
+    },
+    {
+      "gate": "body_and_arm_safety",
+      "cumulative_pass": 181,
+      "rejected_here": 8
+    },
+    {
+      "gate": "nonzero_and_merit_or_IK_recovery",
+      "cumulative_pass": 179,
+      "rejected_here": 2
+    },
+    {
+      "gate": "selected_one_per_tick",
+      "cumulative_pass": 63,
+      "rejected_here": 116
+    },
+    {
+      "gate": "issued_after_final_safety",
+      "cumulative_pass": 63,
+      "rejected_here": 0
+    }
+  ],
+  "run_funnel": [
+    {
+      "gate": "scheduled",
+      "cumulative_pass": 6,
+      "rejected_here": null
+    },
+    {
+      "gate": "terminal",
+      "cumulative_pass": 6,
+      "rejected_here": 0
+    },
+    {
+      "gate": "not_HOST_ERROR",
+      "cumulative_pass": 6,
+      "rejected_here": 0
+    },
+    {
+      "gate": "not_cap_end",
+      "cumulative_pass": 5,
+      "rejected_here": 1
+    },
+    {
+      "gate": "success",
+      "cumulative_pass": 4,
+      "rejected_here": 1
+    }
+  ],
+  "cap_end_events": [
+    {
+      "raw_result": "/home/ugrp/ugrp-sim/runs/search26-r1-short6-f92b07aa/diagnostic/episode-001/raw/result.json",
+      "decoded_sha256": "240f04118c18ecda8e5a393cf8d56e715fe3671a8de747b3a7207c858ca76630",
+      "reason": "planning_wall_safety_cap",
+      "category": "cap_end",
+      "blocked_object": "none:planning_wall_safety_cap",
+      "min_gap_m": null,
+      "gap_scope": "host safety termination; no geometric blocker; interrupted candidate stage not inferred"
+    }
+  ],
+  "cap_end_unknown_candidate_stage_N": 1,
+  "search26_augmentation_reproduce": "PYTHONPATH=. .venv-sim/bin/python /home/ugrp/ugrp-sim/outputs/search26-funnel.py /home/ugrp/ugrp-sim/runs/search26-r1-short6-f92b07aa --report /home/ugrp/ugrp-sim/outputs/search26-r1-report"
+}

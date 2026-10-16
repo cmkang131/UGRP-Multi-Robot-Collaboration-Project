@@ -1,0 +1,111 @@
+{
+  "schema": "ugrp.grasp_act.search25.results.v1",
+  "status": "NOT_READY_3_OF_6",
+  "last_physical_source_sha": "1effa9b266b44ac716b9808b95eb6aa938e42702",
+  "started_from": "14a6056f",
+  "round_limit": 3,
+  "rounds": [
+    {
+      "source_sha": "26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+      "run": "search25-r1-short6-26f84d0f",
+      "raw": "/home/ugrp/ugrp-sim/runs/search25-r1-short6-26f84d0f",
+      "n": 0,
+      "N": 6,
+      "completed": 0,
+      "actual_host_error_N": 1,
+      "stopped_incomplete_N": 5,
+      "raw_manifest_sha256": "09d476478f545ec6d7904256a7cbd80b52463ea6bd7654a273c83e3667670014",
+      "rejections": {
+        "current_geometry": 104,
+        "endpoint_feasible": 76,
+        "feasible": 2
+      }
+    },
+    {
+      "source_sha": "987af398ce71cd871f6d31b6599fc2e54280070c",
+      "run": "search25-r2-short6-987af398",
+      "raw": "/home/ugrp/ugrp-sim/runs/search25-r2-short6-987af398",
+      "n": 2,
+      "N": 6,
+      "completed": 4,
+      "actual_host_error_N": 0,
+      "stopped_incomplete_N": 2,
+      "raw_manifest_sha256": "77d96c687ab2ecb66cf34b0d263644681a9ef1e09bcb304c5edca78fb1597cac",
+      "rejections": {
+        "current_geometry": 11804,
+        "endpoint_feasible": 559,
+        "feasible": 13
+      }
+    },
+    {
+      "source_sha": "1effa9b266b44ac716b9808b95eb6aa938e42702",
+      "run": "search25-r3-short6-1effa9b2",
+      "raw": "/home/ugrp/ugrp-sim/runs/search25-r3-short6-1effa9b2",
+      "n": 3,
+      "N": 6,
+      "completed": 6,
+      "actual_host_error_N": 0,
+      "stopped_incomplete_N": 0,
+      "raw_manifest_sha256": "73cb5fa06917c1c212debd916b37461743baa5d3567cc02cf1d21d332456dfb3",
+      "rejections": {
+        "current_geometry": 15622,
+        "endpoint_feasible": 1308,
+        "feasible": 29,
+        "connector_connector_band_not_visible": 4584,
+        "planning_budget": 3730
+      }
+    }
+  ],
+  "last_round": {
+    "n": 3,
+    "N": 6,
+    "completed": 6,
+    "actual_host_error_N": 0,
+    "stopped_incomplete_N": 0,
+    "cap_end_N": 0,
+    "rejections": {
+      "current_geometry": 15622,
+      "endpoint_feasible": 1308,
+      "feasible": 29,
+      "connector_connector_band_not_visible": 4584,
+      "planning_budget": 3730
+    },
+    "wall_per_sim_median_whole_runs": 4.551722687674388,
+    "first30_available_N": 2,
+    "first30_median_available_only": 4.266992231924708,
+    "complete_six_run_first30_measured": false
+  },
+  "rejection_table": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/experiments/2026-10-14-e2e18-grasp-rootcause/search25-r3-rejection-table.json",
+  "queue_created": false,
+  "queue_submitted": false,
+  "queue_blocker": "3/6 < requested 4/6; three physical rounds exhausted",
+  "postrun_change": "rectangular visibility rejection label and signed gap only; last physical source remains 1effa9b2; no additional physics",
+  "core_motion_files_unchanged_from_last_physical_sha": {
+    "sim/grasp_act_teacher_v3.py": "9f41323f3e7679e60c4168dcea52464a53bb917de6d428ed7985c85e4ef119a4",
+    "sim/grasp_act_port.py": "bffdae12c1e868cd2cbb68b4547086184a8505ecd4d40172513bccbc1c3c1d37",
+    "sim/grasp_act_search23.py": "93f2876cfec3b0bf0d5a1973fe8d75e4be131632d05f316ec7f78b4271df491e",
+    "sim/grasp_act_search20.py": "3412a28f14e276e89e4d752553c0ed4d80f050fd4a7ba6588a3dabff97ac378c"
+  },
+  "tests": {
+    "pre_R3_nonphysics_passed": 29,
+    "postrun_diagnostic_file_passed": 7,
+    "Mac_physics": 0,
+    "Mac_render": 0
+  },
+  "input_audit": {
+    "enabled_N": 6,
+    "invisible_measurements": 0,
+    "held_world_reads": 0
+  },
+  "raw_storage": "GCP persistent disk only; no off-host full backup",
+  "failed_artifact_items_verified": {
+    "r1": 72,
+    "r2": 52,
+    "r3": 39
+  },
+  "cleanup": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/stop-search25-final-1effa9b2.json",
+  "model_calls": 0,
+  "training_recording": false,
+  "ACT_training": false,
+  "pooled": false
+}

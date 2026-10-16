@@ -49,6 +49,27 @@ def inside_rect(point, rect, *, grow=0.):
     return abs(dx) <= rect[2]+grow and abs(dy) <= rect[3]+grow
 
 
+def segment_hits_rect(a, b, rect):
+    """True when segment a-b crosses an oriented rectangle (Liang-Barsky clip)."""
+    (x0, y0), (x1, y1) = _local(a, rect), _local(b, rect)
+    t0, t1 = 0., 1.
+    for p, q in ((-(x1-x0), x0+rect[2]), (x1-x0, rect[2]-x0), (-(y1-y0), y0+rect[3]), (y1-y0, rect[3]-y0)):
+        if abs(p) < 1e-12:
+            if q < 0:
+                return False
+            continue
+        r = q/p
+        if p < 0:
+            if r > t1:
+                return False
+            t0 = max(t0, r)
+        else:
+            if r < t0:
+                return False
+            t1 = min(t1, r)
+    return t0 <= t1
+
+
 def rect_corners(rect, *, margin=0.):
     cx, cy, hx, hy, yaw = rect
     c, s = math.cos(yaw), math.sin(yaw)

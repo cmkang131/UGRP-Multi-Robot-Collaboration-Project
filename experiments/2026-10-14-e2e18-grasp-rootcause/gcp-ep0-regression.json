@@ -1,0 +1,164 @@
+{
+  "scope": "saved-ledger control regression; no new simulation; physical fix unverified",
+  "source_sha": "fdfca319f3663af157089cdd30ddd7505c3d3e33",
+  "host": {
+    "provider": "gcp",
+    "project_id": "ugrp-act-train-1014",
+    "instance": "ugrp-sim-gcp1",
+    "machine_type": "n4-highcpu-64",
+    "zone": "asia-northeast3-a",
+    "cpu_count": 64,
+    "schema": "ugrp.grasp_act.host.v1"
+  },
+  "seed": 71000,
+  "raw": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-ep0-regression-gcp-fdfca319/diagnostic/episode-000/raw",
+  "sources": {
+    "eval-only.jsonl.zst": "3e5db41f6acc68196f4522b730070a56344cffc6d95b53335493ee5882f119ed",
+    "teacher-r1.jsonl.zst": "1abea24ebab8c2d065d985aa8ff78502e3255407d553c39d39c76702ca9b58f9",
+    "teacher-r2.jsonl.zst": "5cedc69428c1bbd82b3b449aa8e3530f68f1050ff474974724e8cd64e7782186",
+    "plan.json": "92dabede583f6739ad3a466604af749ee70101942ff8d273f6881f1b4ed7b2cd",
+    "result.json": "ca38de5979019c1cf4b3930941f9d37e0208312b86f530c6459723b8f97470b3",
+    "camera-runtime.json": "0e3e26679926b58acf4471e2686aaab7ef5b1c5ec8e452e18d998db145558c6d"
+  },
+  "physical": {
+    "n": 0,
+    "N": 1,
+    "status": "complete",
+    "sim_s": 60.00000000020389,
+    "wall_per_sim": 2.6882107113075304
+  },
+  "stopped_r1": {
+    "last_nonzero_wheel_sample": 110,
+    "continuous_zero_start_sim_s": 11.100000000000001,
+    "zero_command_samples": 489,
+    "phase": "approach",
+    "partner": "r2 ready at opposite blue end",
+    "planner_calls": 503,
+    "blocked_goal_calls": 0,
+    "no_path_calls": 0
+  },
+  "root_cause": {
+    "introduced_by": "907bbf92",
+    "function": "sim.grasp_act_visible_route.py:waypoint",
+    "saved_sample": 120,
+    "unreached_nearest_corner_distance_m": 0.0176297,
+    "goal_distance_m": 0.21074048,
+    "safe_first_point": true,
+    "safe_later_point_n": 0,
+    "explanation": "closest+1 skipped the only directly reachable rounded start cell; 5 mm skip could repeat the stall near that same corner. Segment collision checks correctly reject shortcuts through the beam margin.",
+    "other_candidates": "blocked_goal_calls=0; no_path_calls=0; r1 never reached ready_geometry; permitted retreat was not rejected"
+  },
+  "change": "Include the nearest unvisited grid corner, reduce its proximity skip to 1 mm, limit wheel pulse duty by remaining waypoint distance; collision checks and physics unchanged.",
+  "regression": {
+    "old_source": "fdfca319",
+    "old_test": "fails as expected",
+    "fixed_test": "passes",
+    "related_tests": "28/28 (visible_only, teacher, contract)"
+  },
+  "frames_viewed": {
+    "sim_s": [
+      0,
+      10,
+      20,
+      30,
+      40,
+      59
+    ],
+    "views": [
+      "r1 own",
+      "r2 own",
+      "overview"
+    ],
+    "count": 18,
+    "sources": [
+      {
+        "path": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-ep0-regression-gcp-fdfca319/diagnostic/episode-000/raw/eval-own/r1/000000.jpg",
+        "sha256": "2f90c44fe00496b7f3ff4b415a6915550ec72a7d6f68f8b2813d2459ce71f19a"
+      },
+      {
+        "path": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-ep0-regression-gcp-fdfca319/diagnostic/episode-000/raw/eval-own/r2/000000.jpg",
+        "sha256": "50f1c83ce8432fadc7d90bdaabdec76ecccad163a6655816e7d98bf4c304beb3"
+      },
+      {
+        "path": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-ep0-regression-gcp-fdfca319/diagnostic/episode-000/raw/eval-overview/000000.jpg",
+        "sha256": "10b7a5711b9af9d9073ed22d177112e572670bfed3977dacdfe15d56eab72c7f"
+      },
+      {
+        "path": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-ep0-regression-gcp-fdfca319/diagnostic/episode-000/raw/eval-own/r1/000100.jpg",
+        "sha256": "8518f468fcd68b4530d7d466e1248c7bc00d3bc8806709694b572ef5f6a74ea2"
+      },
+      {
+        "path": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-ep0-regression-gcp-fdfca319/diagnostic/episode-000/raw/eval-own/r2/000100.jpg",
+        "sha256": "9e23b30cdc8d275dfbceab51a98b4e801e1a0767e71f74d6310f2934379baa86"
+      },
+      {
+        "path": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-ep0-regression-gcp-fdfca319/diagnostic/episode-000/raw/eval-overview/000100.jpg",
+        "sha256": "874ee1ee1121ac2b660ca877f51f35452aa07ffd1f10e23d6f26119af1fcb609"
+      },
+      {
+        "path": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-ep0-regression-gcp-fdfca319/diagnostic/episode-000/raw/eval-own/r1/000200.jpg",
+        "sha256": "383291bfb6899a8dce48799e2f7a272743484e3d8f8fdf5e74c5b0f4cdbc1d70"
+      },
+      {
+        "path": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-ep0-regression-gcp-fdfca319/diagnostic/episode-000/raw/eval-own/r2/000200.jpg",
+        "sha256": "ebde86a3f3b4ca694e5ed3b6c31de603b8b70daf603b9d7930fbb06ed0fa96a9"
+      },
+      {
+        "path": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-ep0-regression-gcp-fdfca319/diagnostic/episode-000/raw/eval-overview/000200.jpg",
+        "sha256": "ed0a53bef464f740076df95095fc99193dd76d6390c07f787ec1b17856ed53f2"
+      },
+      {
+        "path": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-ep0-regression-gcp-fdfca319/diagnostic/episode-000/raw/eval-own/r1/000300.jpg",
+        "sha256": "eee727be8ba8d840e7ae71a4937bc1a0af4d1a3713cbd884e3fb1ed222a7308d"
+      },
+      {
+        "path": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-ep0-regression-gcp-fdfca319/diagnostic/episode-000/raw/eval-own/r2/000300.jpg",
+        "sha256": "b4c44b447a208e219e1266357d92220dee36d8d1e39365d5e2d9d7bdaabc83bf"
+      },
+      {
+        "path": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-ep0-regression-gcp-fdfca319/diagnostic/episode-000/raw/eval-overview/000300.jpg",
+        "sha256": "baed1f5b82e6e0c4000c9a9ea4b1c7d11528e13eeb5de028c783ef6a79c20571"
+      },
+      {
+        "path": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-ep0-regression-gcp-fdfca319/diagnostic/episode-000/raw/eval-own/r1/000400.jpg",
+        "sha256": "a04650f1b5ea023e689e7ec089e27c20937579eadc5e98a497f5625bfaf63d5e"
+      },
+      {
+        "path": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-ep0-regression-gcp-fdfca319/diagnostic/episode-000/raw/eval-own/r2/000400.jpg",
+        "sha256": "681f2ed1604235c6eedd94fc8f9d454dad42cd5297c98d9e1777525114806709"
+      },
+      {
+        "path": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-ep0-regression-gcp-fdfca319/diagnostic/episode-000/raw/eval-overview/000400.jpg",
+        "sha256": "8827bf4205b01c8209a3968ef824311e7103941bd8f1619ccefe8d95cbc82e95"
+      },
+      {
+        "path": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-ep0-regression-gcp-fdfca319/diagnostic/episode-000/raw/eval-own/r1/000590.jpg",
+        "sha256": "6cb7f05fa44a76cf997e433c6860ad31d3fac8decbb42d14264b7d8dc1042f41"
+      },
+      {
+        "path": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-ep0-regression-gcp-fdfca319/diagnostic/episode-000/raw/eval-own/r2/000590.jpg",
+        "sha256": "76baf40865cb0280993e8a32a18e6cd14d102282ddf8ba252fe62040c43b4b0a"
+      },
+      {
+        "path": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-ep0-regression-gcp-fdfca319/diagnostic/episode-000/raw/eval-overview/000590.jpg",
+        "sha256": "426f8da12713bd30c957a4a95869be6d1965560aaa9fa9ee5c499450b7537045"
+      }
+    ],
+    "montage": {
+      "path": "gcp-ep0-review.jpg",
+      "sha256": "4f8e01cb164e485795e9484ca3cbe2303a62b8f93119414851e5c8ef529db495"
+    }
+  },
+  "other_gcp_replays_operator_result": {
+    "scope": "operator report only; not independently video-reviewed here",
+    "completed_n": 0,
+    "completed_N": 1,
+    "interrupted": 1,
+    "seeds": {
+      "73009": "interrupted",
+      "73011": "complete failure"
+    },
+    "source_report": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/replay-fdfca319.json"
+  },
+  "next": "operator only: fixed source diagnostic seeds 71000,73009,73011; if all pass, 16 speed probe then frozen fresh seeds 76000..76039; max combined concurrent 40; no training/data before 38/40"
+}

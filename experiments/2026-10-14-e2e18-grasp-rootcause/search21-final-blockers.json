@@ -1,0 +1,2057 @@
+{
+  "scope": "recorded visible measurements and issued commands; pinned hazards reconstructed from teacher events; no truth inputs",
+  "episodes": [
+    {
+      "episode": "episode-000",
+      "seed": 8311709,
+      "cargo_scene": "off",
+      "t": 28.300000000044115,
+      "sim_s": 26.50000000004393,
+      "visible_world": {
+        "t": 28.300000000044115,
+        "robots": {
+          "r1": {
+            "pose": [
+              1.177668371166496,
+              -0.3412338042261005,
+              1.1481978434735818
+            ]
+          }
+        },
+        "objects": {
+          "beam_1": {
+            "xy": [
+              1.132659061735136,
+              0.2625450808292485
+            ],
+            "radius": 0.3010913482671116,
+            "top_z_bound_m": 0.3169835928447248
+          },
+          "tile_1": {
+            "xy": [
+              1.2488308793554614,
+              -0.1851028962821974
+            ],
+            "radius": 0.03655133376499413,
+            "top_z_bound_m": 0.04244357834482117
+          }
+        },
+        "walls": [],
+        "beam": {
+          "pose": [
+            1.1326590617370687,
+            0.26254508082527045,
+            -1.1185680351386527
+          ],
+          "ends": {
+            "teal": [
+              1.0146769156718505,
+              0.505403502976625,
+              0.023892244543154733
+            ],
+            "blue": [
+              1.2506412078022868,
+              0.01968665867391592,
+              0.023892244543154733
+            ]
+          },
+          "source": "visible band + known rigid shape",
+          "seen_t": 28.300000000044115
+        },
+        "visibility": {
+          "r1": {
+            "visible_probes": 15,
+            "objects": [
+              "beam_1"
+            ],
+            "peers": [],
+            "observations": {
+              "band_blue": {
+                "id": "band_blue",
+                "kind": "band",
+                "xyz": [
+                  1.2506412078022868,
+                  0.019686658673915898,
+                  0.03249224454315473
+                ],
+                "yaw": -1.1185680351386527,
+                "visible_n": 15,
+                "probe_N": 15,
+                "seen_t": 28.300000000044115
+              },
+              "beam_1": {
+                "id": "beam_1",
+                "kind": "cargo",
+                "xyz": [
+                  1.132659061735136,
+                  0.2625450808292485,
+                  -0.00010775542021617017
+                ],
+                "yaw": -1.1185680351386527,
+                "radius": 0.3010913482671116,
+                "top_z_bound_m": 0.3169835928447248,
+                "visible_n": 13,
+                "probe_N": 21,
+                "seen_t": 28.300000000044115
+              }
+            }
+          }
+        },
+        "scope": "visible_only; remembered objects expire at student memory horizon"
+      },
+      "pinned_ids": [
+        "tile_1"
+      ],
+      "candidates": [
+        {
+          "offset_deg": 0.0,
+          "distance_m": 0.208,
+          "goal": [
+            1.3415311573636401,
+            -0.1674042739463868
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.0,
+            "pad_projected_half_m": 0.006968775419249016,
+            "required_gap_m": 0.04,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 19.210317628475945,
+            "pitch_deg": -54.99000000000001,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "tile_1",
+              "gap_mm": -30.385908966346236,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": 0.0,
+          "distance_m": 0.203,
+          "goal": [
+            1.3393463028068768,
+            -0.16290689575839878
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.0,
+            "pad_projected_half_m": 0.006453552407504464,
+            "required_gap_m": 0.04,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 17.883729041295137,
+            "pitch_deg": -61.92,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "tile_1",
+              "gap_mm": -30.38590896634628,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": 0.0,
+          "distance_m": 0.198,
+          "goal": [
+            1.3371614482501135,
+            -0.15840951757041072
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.0,
+            "pad_projected_half_m": 0.006108249947524621,
+            "required_gap_m": 0.04,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 16.983326286338254,
+            "pitch_deg": -65.97,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "tile_1",
+              "gap_mm": -30.38590896634628,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": 0.0,
+          "distance_m": 0.196,
+          "goal": [
+            1.3362875064274082,
+            -0.1566105662952155
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.0,
+            "pad_projected_half_m": 0.006100223383272544,
+            "required_gap_m": 0.04,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 16.962291366226435,
+            "pitch_deg": -66.06,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "tile_1",
+              "gap_mm": -30.385908966346236,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": -10.0,
+          "distance_m": 0.208,
+          "goal": [
+            1.307662335293674,
+            -0.18034481639841105
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.0035265396141692996,
+            "pad_projected_half_m": 0.006968775419249016,
+            "required_gap_m": 0.0406170644754298,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 19.210317628475945,
+            "pitch_deg": -54.99000000000001,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "tile_1",
+              "gap_mm": -41.551333764994126,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": 10.0,
+          "distance_m": 0.208,
+          "goal": [
+            1.372638334308718,
+            -0.14877906817927464
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.0035265396141692996,
+            "pad_projected_half_m": 0.006968775419249016,
+            "required_gap_m": 0.0406170644754298,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 19.210317628475945,
+            "pitch_deg": -54.99000000000001,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "tile_1",
+              "gap_mm": 0.07902941199702113,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": -10.0,
+          "distance_m": 0.203,
+          "goal": [
+            1.3062916351135927,
+            -0.1755363674784032
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.0035265396141692996,
+            "pad_projected_half_m": 0.006453552407504464,
+            "required_gap_m": 0.0406170644754298,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 17.883729041295137,
+            "pitch_deg": -61.92,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "tile_1",
+              "gap_mm": -41.551333764994126,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": 10.0,
+          "distance_m": 0.203,
+          "goal": [
+            1.3697057110753903,
+            -0.14472941128376526
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.0035265396141692996,
+            "pad_projected_half_m": 0.006453552407504464,
+            "required_gap_m": 0.0406170644754298,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 17.883729041295137,
+            "pitch_deg": -61.92,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "tile_1",
+              "gap_mm": 0.07902941199693786,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": -10.0,
+          "distance_m": 0.198,
+          "goal": [
+            1.3049209349335111,
+            -0.17072791855839534
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.0035265396141692996,
+            "pad_projected_half_m": 0.006108249947524621,
+            "required_gap_m": 0.0406170644754298,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 16.983326286338254,
+            "pitch_deg": -65.97,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "tile_1",
+              "gap_mm": -41.551333764994126,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": 10.0,
+          "distance_m": 0.198,
+          "goal": [
+            1.3667730878420628,
+            -0.1406797543882559
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.0035265396141692996,
+            "pad_projected_half_m": 0.006108249947524621,
+            "required_gap_m": 0.0406170644754298,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 16.983326286338254,
+            "pitch_deg": -65.97,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "tile_1",
+              "gap_mm": 0.079029411997035,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": -10.0,
+          "distance_m": 0.194,
+          "goal": [
+            1.303824374789446,
+            -0.16688115942238907
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.0035265396141692996,
+            "pad_projected_half_m": 0.006108249947524621,
+            "required_gap_m": 0.0406170644754298,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 16.983326286338254,
+            "pitch_deg": -65.97,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "tile_1",
+              "gap_mm": -41.551333764994126,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": 10.0,
+          "distance_m": 0.194,
+          "goal": [
+            1.3644269892554006,
+            -0.13744002887184836
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.0035265396141692996,
+            "pad_projected_half_m": 0.006108249947524621,
+            "required_gap_m": 0.0406170644754298,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 16.983326286338254,
+            "pitch_deg": -65.97,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "tile_1",
+              "gap_mm": 0.07902941199704888,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": -14.999999999999998,
+          "distance_m": 0.208,
+          "goal": [
+            1.290011460905582,
+            -0.18455335496342812
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.005358983848622454,
+            "pad_projected_half_m": 0.006968775419249016,
+            "required_gap_m": 0.04141104721640332,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 19.210317628475945,
+            "pitch_deg": -54.99000000000001,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "tile_1",
+              "gap_mm": -41.551333764994126,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": 14.999999999999998,
+          "distance_m": 0.208,
+          "goal": [
+            1.3868568539618356,
+            -0.13750525505365666
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.005358983848622454,
+            "pad_projected_half_m": 0.006968775419249016,
+            "required_gap_m": 0.04141104721640332,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 19.210317628475945,
+            "pitch_deg": -54.99000000000001,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "tile_1",
+              "gap_mm": 13.979966947050775,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": -14.999999999999998,
+          "distance_m": 0.203,
+          "goal": [
+            1.2890650605905989,
+            -0.179643739250992
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.005358983848622454,
+            "pad_projected_half_m": 0.006453552407504464,
+            "required_gap_m": 0.04141104721640332,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 17.883729041295137,
+            "pitch_deg": -61.92,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "tile_1",
+              "gap_mm": -41.551333764994126,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": 14.999999999999998,
+          "distance_m": 0.203,
+          "goal": [
+            1.3835824393906926,
+            -0.13372660328135924
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.005358983848622454,
+            "pad_projected_half_m": 0.006453552407504464,
+            "required_gap_m": 0.04141104721640332,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 17.883729041295137,
+            "pitch_deg": -61.92,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "tile_1",
+              "gap_mm": 13.979966947050775,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": -14.999999999999998,
+          "distance_m": 0.198,
+          "goal": [
+            1.2881186602756158,
+            -0.17473412353855583
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.005358983848622454,
+            "pad_projected_half_m": 0.006108249947524621,
+            "required_gap_m": 0.04141104721640332,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 16.983326286338254,
+            "pitch_deg": -65.97,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "tile_1",
+              "gap_mm": -41.551333764994126,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": 14.999999999999998,
+          "distance_m": 0.198,
+          "goal": [
+            1.3803080248195496,
+            -0.12994795150906183
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.005358983848622454,
+            "pad_projected_half_m": 0.006108249947524621,
+            "required_gap_m": 0.04141104721640332,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 16.983326286338254,
+            "pitch_deg": -65.97,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "tile_1",
+              "gap_mm": 13.979966947050801,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": -14.999999999999998,
+          "distance_m": 0.196,
+          "goal": [
+            1.2877401001496227,
+            -0.17277027725358138
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.005358983848622454,
+            "pad_projected_half_m": 0.006100223383272544,
+            "required_gap_m": 0.04141104721640332,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 16.962291366226435,
+            "pitch_deg": -66.06,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "tile_1",
+              "gap_mm": -41.551333764994126,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": 14.999999999999998,
+          "distance_m": 0.196,
+          "goal": [
+            1.3789982589910923,
+            -0.12843649080014286
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.005358983848622454,
+            "pad_projected_half_m": 0.006100223383272544,
+            "required_gap_m": 0.04141104721640332,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 16.962291366226435,
+            "pitch_deg": -66.06,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "tile_1",
+              "gap_mm": 13.97996694705072,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "episode": "episode-002",
+      "seed": 8311709,
+      "cargo_scene": "cargo_v6",
+      "t": 27.500000000040295,
+      "sim_s": 25.70000000004011,
+      "visible_world": {
+        "t": 27.500000000040295,
+        "robots": {
+          "r1": {
+            "pose": [
+              1.1521110608926322,
+              -0.3558323583898129,
+              1.0837747316940678
+            ]
+          }
+        },
+        "objects": {
+          "beam_1": {
+            "xy": [
+              1.15062294428298,
+              0.23809747056196828
+            ],
+            "radius": 0.30109134826711226,
+            "top_z_bound_m": 0.3169835928447248
+          },
+          "red_2": {
+            "xy": [
+              1.2517728363412512,
+              -0.21799239432543327
+            ],
+            "radius": 0.030740852297878797,
+            "top_z_bound_m": 0.04663309687766248
+          }
+        },
+        "walls": [],
+        "beam": {
+          "pose": [
+            1.1506229442847702,
+            0.23809747055792285,
+            -1.154183371347867
+          ],
+          "ends": {
+            "teal": [
+              1.0413632735610274,
+              0.48500296736457416,
+              0.023892244543144165
+            ],
+            "blue": [
+              1.259882615008513,
+              -0.008808026248728479,
+              0.023892244543144165
+            ]
+          },
+          "source": "visible band + known rigid shape",
+          "seen_t": 27.500000000040295
+        },
+        "visibility": {
+          "r1": {
+            "visible_probes": 15,
+            "objects": [
+              "beam_1"
+            ],
+            "peers": [],
+            "observations": {
+              "band_blue": {
+                "id": "band_blue",
+                "kind": "band",
+                "xyz": [
+                  1.259882615008513,
+                  -0.008808026248728472,
+                  0.032492244543144165
+                ],
+                "yaw": -1.154183371347867,
+                "visible_n": 15,
+                "probe_N": 15,
+                "seen_t": 27.500000000040295
+              },
+              "beam_1": {
+                "id": "beam_1",
+                "kind": "cargo",
+                "xyz": [
+                  1.15062294428298,
+                  0.23809747056196828,
+                  -0.00010775542021617029
+                ],
+                "yaw": -1.154183371347867,
+                "radius": 0.30109134826711226,
+                "top_z_bound_m": 0.3169835928447248,
+                "visible_n": 13,
+                "probe_N": 21,
+                "seen_t": 27.500000000040295
+              }
+            }
+          }
+        },
+        "scope": "visible_only; remembered objects expire at student memory horizon"
+      },
+      "pinned_ids": [
+        "red_2"
+      ],
+      "candidates": [
+        {
+          "offset_deg": 0.0,
+          "distance_m": 0.208,
+          "goal": [
+            1.3440530280105074,
+            -0.1990167052701488
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.0,
+            "pad_projected_half_m": 0.006968775419249016,
+            "required_gap_m": 0.04,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 19.210317628475945,
+            "pitch_deg": -54.99000000000001,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "red_2",
+              "gap_mm": -23.625059307333565,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": 0.0,
+          "distance_m": 0.203,
+          "goal": [
+            1.3420297007748825,
+            -0.19444438125521082
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.0,
+            "pad_projected_half_m": 0.006453552407504464,
+            "required_gap_m": 0.04,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 17.883729041295137,
+            "pitch_deg": -61.92,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "red_2",
+              "gap_mm": -23.625059307333636,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": 0.0,
+          "distance_m": 0.198,
+          "goal": [
+            1.3400063735392576,
+            -0.18987205724027284
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.0,
+            "pad_projected_half_m": 0.006108249947524621,
+            "required_gap_m": 0.04,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 16.983326286338254,
+            "pitch_deg": -65.97,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "red_2",
+              "gap_mm": -23.62505930733369,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": 0.0,
+          "distance_m": 0.196,
+          "goal": [
+            1.3391970426450077,
+            -0.18804312763429765
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.0,
+            "pad_projected_half_m": 0.006100223383272544,
+            "required_gap_m": 0.04,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 16.962291366226435,
+            "pitch_deg": -66.06,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "red_2",
+              "gap_mm": -23.625059307333593,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": -10.0,
+          "distance_m": 0.208,
+          "goal": [
+            1.309744899818613,
+            -0.210743046870503
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.0035265396141692996,
+            "pad_projected_half_m": 0.006968775419249016,
+            "required_gap_m": 0.0406170644754298,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 19.210317628475945,
+            "pitch_deg": -54.99000000000001,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "red_2",
+              "gap_mm": -35.740852297878796,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": 10.0,
+          "distance_m": 0.208,
+          "goal": [
+            1.3758036807956204,
+            -0.1815109692079645
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.0035265396141692996,
+            "pad_projected_half_m": 0.006968775419249016,
+            "required_gap_m": 0.0406170644754298,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 19.210317628475945,
+            "pitch_deg": -54.99000000000001,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "red_2",
+              "gap_mm": 7.623847394613136,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": -10.0,
+          "distance_m": 0.203,
+          "goal": [
+            1.3085462872029856,
+            -0.20588883964401805
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.0035265396141692996,
+            "pad_projected_half_m": 0.006453552407504464,
+            "required_gap_m": 0.0406170644754298,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 17.883729041295137,
+            "pitch_deg": -61.92,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "red_2",
+              "gap_mm": -35.740852297878796,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": 10.0,
+          "distance_m": 0.203,
+          "goal": [
+            1.3730171167141996,
+            -0.1773594561560598
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.0035265396141692996,
+            "pad_projected_half_m": 0.006453552407504464,
+            "required_gap_m": 0.0406170644754298,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 17.883729041295137,
+            "pitch_deg": -61.92,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "red_2",
+              "gap_mm": 7.623847394613123,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": -10.0,
+          "distance_m": 0.198,
+          "goal": [
+            1.307347674587358,
+            -0.20103463241753308
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.0035265396141692996,
+            "pad_projected_half_m": 0.006108249947524621,
+            "required_gap_m": 0.0406170644754298,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 16.983326286338254,
+            "pitch_deg": -65.97,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "red_2",
+              "gap_mm": -35.740852297878796,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": 10.0,
+          "distance_m": 0.198,
+          "goal": [
+            1.3702305526327787,
+            -0.1732079431041551
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.0035265396141692996,
+            "pad_projected_half_m": 0.006108249947524621,
+            "required_gap_m": 0.0406170644754298,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 16.983326286338254,
+            "pitch_deg": -65.97,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "red_2",
+              "gap_mm": 7.623847394613109,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": -10.0,
+          "distance_m": 0.194,
+          "goal": [
+            1.3063887844948563,
+            -0.1971512666363451
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.0035265396141692996,
+            "pad_projected_half_m": 0.006108249947524621,
+            "required_gap_m": 0.0406170644754298,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 16.983326286338254,
+            "pitch_deg": -65.97,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "red_2",
+              "gap_mm": -35.740852297878796,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": 10.0,
+          "distance_m": 0.194,
+          "goal": [
+            1.368001301367642,
+            -0.16988673266263132
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.0035265396141692996,
+            "pad_projected_half_m": 0.006108249947524621,
+            "required_gap_m": 0.0406170644754298,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 16.983326286338254,
+            "pitch_deg": -65.97,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "red_2",
+              "gap_mm": 7.623847394613067,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": -14.999999999999998,
+          "distance_m": 0.208,
+          "goal": [
+            1.2919553620620208,
+            -0.21432040761890708
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.005358983848622454,
+            "pad_projected_half_m": 0.006968775419249016,
+            "required_gap_m": 0.04141104721640332,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 19.210317628475945,
+            "pitch_deg": -54.99000000000001,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "red_2",
+              "gap_mm": -35.740852297878796,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": 14.999999999999998,
+          "distance_m": 0.208,
+          "goal": [
+            1.3904146194110925,
+            -0.17075059578078508
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.005358983848622454,
+            "pad_projected_half_m": 0.006968775419249016,
+            "required_gap_m": 0.04141104721640332,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 19.210317628475945,
+            "pitch_deg": -54.99000000000001,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "red_2",
+              "gap_mm": 21.898442175447425,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": -14.999999999999998,
+          "distance_m": 0.203,
+          "goal": [
+            1.2911843825655422,
+            -0.20938020614366243
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.005358983848622454,
+            "pad_projected_half_m": 0.006453552407504464,
+            "required_gap_m": 0.04141104721640332,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 17.883729041295137,
+            "pitch_deg": -61.92,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "red_2",
+              "gap_mm": -35.740852297878796,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": 14.999999999999998,
+          "distance_m": 0.203,
+          "goal": [
+            1.3872768308437227,
+            -0.16685774555164914
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.005358983848622454,
+            "pad_projected_half_m": 0.006453552407504464,
+            "required_gap_m": 0.04141104721640332,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 17.883729041295137,
+            "pitch_deg": -61.92,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "red_2",
+              "gap_mm": 21.898442175447343,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": -14.999999999999998,
+          "distance_m": 0.198,
+          "goal": [
+            1.2904134030690635,
+            -0.20444000466841775
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.005358983848622454,
+            "pad_projected_half_m": 0.006108249947524621,
+            "required_gap_m": 0.04141104721640332,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 16.983326286338254,
+            "pitch_deg": -65.97,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "red_2",
+              "gap_mm": -35.740852297878796,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": 14.999999999999998,
+          "distance_m": 0.198,
+          "goal": [
+            1.384139042276353,
+            -0.16296489532251315
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.005358983848622454,
+            "pad_projected_half_m": 0.006108249947524621,
+            "required_gap_m": 0.04141104721640332,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 16.983326286338254,
+            "pitch_deg": -65.97,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "red_2",
+              "gap_mm": 21.898442175447425,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": -14.999999999999998,
+          "distance_m": 0.196,
+          "goal": [
+            1.2901050112704722,
+            -0.20246392407831987
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.005358983848622454,
+            "pad_projected_half_m": 0.006100223383272544,
+            "required_gap_m": 0.04141104721640332,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 16.962291366226435,
+            "pitch_deg": -66.06,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "red_2",
+              "gap_mm": -35.740852297878796,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": 14.999999999999998,
+          "distance_m": 0.196,
+          "goal": [
+            1.382883926849405,
+            -0.16140775523085876
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.005358983848622454,
+            "pad_projected_half_m": 0.006100223383272544,
+            "required_gap_m": 0.04141104721640332,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 16.962291366226435,
+            "pitch_deg": -66.06,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "red_2",
+              "gap_mm": 21.898442175447343,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "episode": "episode-003",
+      "seed": 315709,
+      "cargo_scene": "cargo_v6",
+      "t": 29.30000000004889,
+      "sim_s": 27.500000000048704,
+      "visible_world": {
+        "t": 29.30000000004889,
+        "robots": {
+          "r1": {
+            "pose": [
+              0.9244239048388503,
+              -0.45804206074780873,
+              0.5092410172425609
+            ]
+          }
+        },
+        "objects": {
+          "beam_1": {
+            "xy": [
+              0.9039589325269344,
+              -0.13681315399432253
+            ],
+            "radius": 0.3010913482671108,
+            "top_z_bound_m": 0.3169835928447248
+          },
+          "yellow_1": {
+            "xy": [
+              1.3981999345729315,
+              -0.37466061482768226
+            ],
+            "radius": 0.030740852297878797,
+            "top_z_bound_m": 0.04663309687762074
+          }
+        },
+        "walls": [],
+        "beam": {
+          "pose": [
+            0.9039589325235793,
+            -0.1368131539914439,
+            -0.7090713313928082
+          ],
+          "ends": {
+            "teal": [
+              0.6990378731824811,
+              0.03899173626625663,
+              0.0238922446163987
+            ],
+            "blue": [
+              1.1088799918646775,
+              -0.3126180442491444,
+              0.0238922446163987
+            ]
+          },
+          "source": "visible band + known rigid shape",
+          "seen_t": 29.30000000004889
+        },
+        "visibility": {
+          "r1": {
+            "visible_probes": 15,
+            "objects": [
+              "beam_1"
+            ],
+            "peers": [],
+            "observations": {
+              "beam_1": {
+                "id": "beam_1",
+                "kind": "cargo",
+                "xyz": [
+                  0.9039589325269344,
+                  -0.13681315399432253,
+                  -0.00010775542021617027
+                ],
+                "yaw": -0.7090713313928082,
+                "radius": 0.3010913482671108,
+                "top_z_bound_m": 0.3169835928447248,
+                "visible_n": 8,
+                "probe_N": 21,
+                "seen_t": 29.30000000004889
+              },
+              "band_blue": {
+                "id": "band_blue",
+                "kind": "band",
+                "xyz": [
+                  1.1088799918646775,
+                  -0.3126180442491444,
+                  0.0324922446163987
+                ],
+                "yaw": -0.7090713313928082,
+                "visible_n": 15,
+                "probe_N": 15,
+                "seen_t": 29.30000000004889
+              }
+            }
+          }
+        },
+        "scope": "visible_only; remembered objects expire at student memory horizon"
+      },
+      "pinned_ids": [
+        "yellow_1"
+      ],
+      "candidates": [
+        {
+          "offset_deg": 0.0,
+          "distance_m": 0.208,
+          "goal": [
+            1.2667451042459679,
+            -0.4480529226698915
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.0,
+            "pad_projected_half_m": 0.006968775419249016,
+            "required_gap_m": 0.04,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 19.210317628475945,
+            "pitch_deg": -54.99000000000001,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "yellow_1",
+              "gap_mm": 25.605560628010004,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": 0.0,
+          "distance_m": 0.203,
+          "goal": [
+            1.2629502698137254,
+            -0.44479727655400814
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.0,
+            "pad_projected_half_m": 0.006453552407504464,
+            "required_gap_m": 0.04,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 17.883729041295137,
+            "pitch_deg": -61.92,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "yellow_1",
+              "gap_mm": 25.60556062800995,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": 0.0,
+          "distance_m": 0.198,
+          "goal": [
+            1.2591554353814827,
+            -0.4415416304381248
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.0,
+            "pad_projected_half_m": 0.006108249947524621,
+            "required_gap_m": 0.04,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 16.983326286338254,
+            "pitch_deg": -65.97,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "yellow_1",
+              "gap_mm": 25.60556062801006,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": 0.0,
+          "distance_m": 0.196,
+          "goal": [
+            1.2576375016085857,
+            -0.44023937199177143
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.0,
+            "pad_projected_half_m": 0.006100223383272544,
+            "required_gap_m": 0.04,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 16.962291366226435,
+            "pitch_deg": -66.06,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "yellow_1",
+              "gap_mm": 25.605560628010004,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": -10.0,
+          "distance_m": 0.208,
+          "goal": [
+            1.2408287586376108,
+            -0.47340835162835815
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.0035265396141692996,
+            "pad_projected_half_m": 0.006968775419249016,
+            "required_gap_m": 0.0406170644754298,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 19.210317628475945,
+            "pitch_deg": -54.99000000000001,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "yellow_1",
+              "gap_mm": 68.60434887392854,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": 10.0,
+          "distance_m": 0.208,
+          "goal": [
+            1.2878647982982208,
+            -0.4185823734639657
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.0035265396141692996,
+            "pad_projected_half_m": 0.006968775419249016,
+            "required_gap_m": 0.0406170644754298,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 19.210317628475945,
+            "pitch_deg": -54.99000000000001,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "yellow_1",
+              "gap_mm": -21.686447625226783,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": -10.0,
+          "distance_m": 0.203,
+          "goal": [
+            1.2376569132824922,
+            -0.46954320000866545
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.0035265396141692996,
+            "pad_projected_half_m": 0.006453552407504464,
+            "required_gap_m": 0.0406170644754298,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 17.883729041295137,
+            "pitch_deg": -61.92,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "yellow_1",
+              "gap_mm": 68.60434887392853,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": 10.0,
+          "distance_m": 0.203,
+          "goal": [
+            1.2835622789127992,
+            -0.41603515401168634
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.0035265396141692996,
+            "pad_projected_half_m": 0.006453552407504464,
+            "required_gap_m": 0.0406170644754298,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 17.883729041295137,
+            "pitch_deg": -61.92,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "yellow_1",
+              "gap_mm": -21.686447625226855,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": -10.0,
+          "distance_m": 0.198,
+          "goal": [
+            1.2344850679273738,
+            -0.46567804838897287
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.0035265396141692996,
+            "pad_projected_half_m": 0.006108249947524621,
+            "required_gap_m": 0.0406170644754298,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 16.983326286338254,
+            "pitch_deg": -65.97,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "yellow_1",
+              "gap_mm": 68.60434887392839,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": 10.0,
+          "distance_m": 0.198,
+          "goal": [
+            1.2792597595273774,
+            -0.41348793455940697
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.0035265396141692996,
+            "pad_projected_half_m": 0.006108249947524621,
+            "required_gap_m": 0.0406170644754298,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 16.983326286338254,
+            "pitch_deg": -65.97,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "yellow_1",
+              "gap_mm": -21.686447625226812,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": -10.0,
+          "distance_m": 0.194,
+          "goal": [
+            1.2319475916432787,
+            -0.4625859270932188
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.0035265396141692996,
+            "pad_projected_half_m": 0.006108249947524621,
+            "required_gap_m": 0.0406170644754298,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 16.983326286338254,
+            "pitch_deg": -65.97,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "yellow_1",
+              "gap_mm": 68.60434887392857,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": 10.0,
+          "distance_m": 0.194,
+          "goal": [
+            1.27581774401904,
+            -0.4114501589975835
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.0035265396141692996,
+            "pad_projected_half_m": 0.006108249947524621,
+            "required_gap_m": 0.0406170644754298,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 16.983326286338254,
+            "pitch_deg": -65.97,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "yellow_1",
+              "gap_mm": -21.686447625226744,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": -14.999999999999998,
+          "distance_m": 0.208,
+          "goal": [
+            1.2263128550773583,
+            -0.48429658873759174
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.005358983848622454,
+            "pad_projected_half_m": 0.006968775419249016,
+            "required_gap_m": 0.04141104721640332,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 19.210317628475945,
+            "pitch_deg": -54.99000000000001,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "yellow_1",
+              "gap_mm": 88.07929169982064,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": 14.999999999999998,
+          "distance_m": 0.208,
+          "goal": [
+            1.2964191068902258,
+            -0.40257959345453626
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.005358983848622454,
+            "pad_projected_half_m": 0.006968775419249016,
+            "required_gap_m": 0.04141104721640332,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 19.210317628475945,
+            "pitch_deg": -54.99000000000001,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "yellow_1",
+              "gap_mm": -35.740852297878796,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": -14.999999999999998,
+          "distance_m": 0.203,
+          "goal": [
+            1.223489949711669,
+            -0.48016970064892717
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.005358983848622454,
+            "pad_projected_half_m": 0.006453552407504464,
+            "required_gap_m": 0.04141104721640332,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 17.883729041295137,
+            "pitch_deg": -61.92,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "yellow_1",
+              "gap_mm": 88.07929169982064,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": 14.999999999999998,
+          "distance_m": 0.203,
+          "goal": [
+            1.2919109550867272,
+            -0.400417056214022
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.005358983848622454,
+            "pad_projected_half_m": 0.006453552407504464,
+            "required_gap_m": 0.04141104721640332,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 17.883729041295137,
+            "pitch_deg": -61.92,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "yellow_1",
+              "gap_mm": -35.740852297878796,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": -14.999999999999998,
+          "distance_m": 0.198,
+          "goal": [
+            1.2206670443459795,
+            -0.4760428125602626
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.005358983848622454,
+            "pad_projected_half_m": 0.006108249947524621,
+            "required_gap_m": 0.04141104721640332,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 16.983326286338254,
+            "pitch_deg": -65.97,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "yellow_1",
+              "gap_mm": 88.07929169982062,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": 14.999999999999998,
+          "distance_m": 0.198,
+          "goal": [
+            1.2874028032832283,
+            -0.39825451897350783
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.005358983848622454,
+            "pad_projected_half_m": 0.006108249947524621,
+            "required_gap_m": 0.04141104721640332,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 16.983326286338254,
+            "pitch_deg": -65.97,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "yellow_1",
+              "gap_mm": -35.740852297878796,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": -14.999999999999998,
+          "distance_m": 0.196,
+          "goal": [
+            1.2195378821997036,
+            -0.4743920573247967
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.005358983848622454,
+            "pad_projected_half_m": 0.006100223383272544,
+            "required_gap_m": 0.04141104721640332,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 16.962291366226435,
+            "pitch_deg": -66.06,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "yellow_1",
+              "gap_mm": 88.0792916998207,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        },
+        {
+          "offset_deg": 14.999999999999998,
+          "distance_m": 0.196,
+          "goal": [
+            1.2855995425618287,
+            -0.3973895040773021
+          ],
+          "jaw_geometry": {
+            "allowed": true,
+            "opposed_contact_shift_m": 0.005358983848622454,
+            "pad_projected_half_m": 0.006100223383272544,
+            "required_gap_m": 0.04141104721640332,
+            "open_gap_m": 0.061000000000000006,
+            "closed_gap_m": 0.029000000000000005,
+            "geometric_max_abs_offset_deg": 16.962291366226435,
+            "pitch_deg": -66.06,
+            "scope": "geometric necessary condition, friction unverified"
+          },
+          "reason": "blocked_goal",
+          "fresh_target": true,
+          "blockers": [
+            {
+              "name": "yellow_1",
+              "gap_mm": -35.740852297878796,
+              "required_mm": 140.0,
+              "seen_t": null
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

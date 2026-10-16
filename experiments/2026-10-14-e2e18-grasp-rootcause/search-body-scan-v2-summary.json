@@ -1,0 +1,520 @@
+{
+  "source_sha": "fe93047cc43a04126bf64a3209429141bb5c0caa",
+  "candidate_toggle": "search_body_scan_v2",
+  "scope": "saved eval/commands + command FK/static wall geometry only; no physics, rendering or provider calls",
+  "raw_root": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-fe93047c",
+  "physical_success_n": 0,
+  "completed_N": 2,
+  "planned_N": 6,
+  "interrupted_N": 4,
+  "host_error_N": 0,
+  "frame_review": {
+    "viewed": 0,
+    "reason": "ssh gcp1 failed at gcloud describe; user authorized ledger-only analysis"
+  },
+  "runs": [
+    {
+      "index": 0,
+      "seed": 71000,
+      "status": "interrupted",
+      "physical_verdict": null,
+      "input_audit": {
+        "scope": "delivered visual measurements only; evaluator reads excluded",
+        "enabled": true,
+        "measurement_rows": 896,
+        "invisible_measurements": 0,
+        "gt_self_pose_comparison": false
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-fe93047c/diagnostic/episode-000/raw",
+      "sha256": {
+        "result.json": "22e0c7e59c058991accd21f449437494af4cfc245c7a8479516db3e24f498615",
+        "plan.json": "92dabede583f6739ad3a466604af749ee70101942ff8d273f6881f1b4ed7b2cd",
+        "teacher-r1.jsonl.zst": "4e044c54e67fd20e2332396e1fe80f0f6d799ae3135f400c4f7dca3987137dd0",
+        "teacher-r2.jsonl.zst": "dca3ce96a757dfbca7b29a10e3f64c425e83361501625eeec654b30eaac34789",
+        "eval-only.jsonl.zst": "c7f80c18f7a17a7c95093393ba189b97109002380c1c06dff60533db06203aa2"
+      }
+    },
+    {
+      "index": 1,
+      "seed": 73011,
+      "status": "interrupted",
+      "physical_verdict": null,
+      "input_audit": {
+        "scope": "delivered visual measurements only; evaluator reads excluded",
+        "enabled": true,
+        "measurement_rows": 1181,
+        "invisible_measurements": 0,
+        "gt_self_pose_comparison": false
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-fe93047c/diagnostic/episode-001/raw",
+      "sha256": {
+        "result.json": "a7c8faf3e4885924da390551ab4fb4fd63aa738e72bf279b7a7bf1ad5dd591f8",
+        "plan.json": "3f9524a9542566a17b0a0f9bb882cb83393ff45a04411a55d84b78849b761c52",
+        "teacher-r1.jsonl.zst": "1aa72f11d8c5aeef97e4b27bfc7749f2d3292394b547f5088382840764845666",
+        "teacher-r2.jsonl.zst": "a906910d8975f98522b75601ad6723136476bf4417ef9a209e149edbfe9e1b5e",
+        "eval-only.jsonl.zst": "31c34b68d337fbe7955d6b2abcee8a1eb854d5484af98eb125e3bcf57afcf9c2"
+      }
+    },
+    {
+      "index": 2,
+      "seed": 73009,
+      "status": "interrupted",
+      "physical_verdict": null,
+      "input_audit": {
+        "scope": "delivered visual measurements only; evaluator reads excluded",
+        "enabled": true,
+        "measurement_rows": 1168,
+        "invisible_measurements": 0,
+        "gt_self_pose_comparison": false
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-fe93047c/diagnostic/episode-002/raw",
+      "sha256": {
+        "result.json": "31ff9f900cd7e09681f81ed6df830bcd35eaa8beb853aa6226f112bdc32efb74",
+        "plan.json": "e567eb6e31e50aaac2c0a47e145807d0f55eb5ba2a510c44e173789ec3aef869",
+        "teacher-r1.jsonl.zst": "2e98d7d3f9cd8687c59a8163231442ee35f24d1d5ba27af1e711e64d7b0e654c",
+        "teacher-r2.jsonl.zst": "c3af8dbb20586fde6c748cd2ecae9b33a0bbfdecee0fd7d97e46366265a77f47",
+        "eval-only.jsonl.zst": "2fa53cf2b425a9994a6a803c4de55d35912d3ff471ee6b481be201a41771733e"
+      }
+    },
+    {
+      "index": 3,
+      "seed": 78111,
+      "status": "complete",
+      "physical_verdict": false,
+      "input_audit": {
+        "scope": "delivered visual measurements only; evaluator reads excluded",
+        "enabled": true,
+        "measurement_rows": 810,
+        "invisible_measurements": 0,
+        "gt_self_pose_comparison": false
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-fe93047c/diagnostic/episode-003/raw",
+      "sha256": {
+        "result.json": "47975b1d5adda51f964e7dc1323ef4a5d9b07453cdcdf17f615f2a285daf8eb8",
+        "plan.json": "dc11609c7cd2f157ea9fa6dcded9f61d06155adbac8e6ca27051315108c07679",
+        "teacher-r1.jsonl.zst": "8e517952f418afa510c5730c586bbb2b0abe5dc4677aadc85901ca555a6c00bc",
+        "teacher-r2.jsonl.zst": "0f4eb05b71d6d809c054cb7053cd5f6a6a9b5092063270032d040bfa08724584",
+        "eval-only.jsonl.zst": "24336eff35940b1dd3b5fb9697f63d7a3632fc883329d984c413f549dcc9294b"
+      },
+      "robots": {
+        "r1": {
+          "assigned_end": "teal",
+          "start_end_distance_m": 1.4533313527714544,
+          "eval_rows": 257,
+          "in_frame_rows": 27,
+          "visible_ge5_rows": 26,
+          "partial_1_to_4_rows": 1,
+          "first_visible_sim_s": 23.1,
+          "first_visible_phase": "approach",
+          "previous_command_was_turning": true,
+          "search_turn_ticks": 106,
+          "search_turn_widths_s": [
+            0.04642857142857143
+          ],
+          "search_turn_nominal_deg": 401.45916334661314,
+          "search_turn_measured_deg": 290.50059288281307,
+          "measured_over_nominal": 0.7236118126216482,
+          "teacher_summary": {
+            "visibility_counts": {
+              "visible": 26,
+              "N": 250
+            },
+            "phase": "approach",
+            "outcome": "episode_timeout",
+            "planner_calls": 6
+          }
+        },
+        "r2": {
+          "assigned_end": "blue",
+          "start_end_distance_m": 0.20285465888635548,
+          "eval_rows": 257,
+          "in_frame_rows": 0,
+          "visible_ge5_rows": 0,
+          "partial_1_to_4_rows": 0,
+          "first_visible_sim_s": null,
+          "first_visible_phase": null,
+          "previous_command_was_turning": null,
+          "search_turn_ticks": 119,
+          "search_turn_widths_s": [
+            0.04642857142857143
+          ],
+          "search_turn_nominal_deg": 450.69472111553733,
+          "search_turn_measured_deg": 324.61671022605964,
+          "measured_over_nominal": 0.7202585142834254,
+          "teacher_summary": {
+            "visibility_counts": {
+              "visible": 0,
+              "N": 250
+            },
+            "phase": "search",
+            "outcome": "search_timeout_handoff",
+            "planner_calls": 0
+          }
+        }
+      }
+    },
+    {
+      "index": 4,
+      "seed": 78113,
+      "status": "interrupted",
+      "physical_verdict": null,
+      "input_audit": {
+        "scope": "delivered visual measurements only; evaluator reads excluded",
+        "enabled": true,
+        "measurement_rows": 807,
+        "invisible_measurements": 0,
+        "gt_self_pose_comparison": false
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-fe93047c/diagnostic/episode-004/raw",
+      "sha256": {
+        "result.json": "c6eb8f4515f6f3977d3c5fe9868bfc023be3f2fca3093b29d1db55b45e8364a3",
+        "plan.json": "514c886d2bdc787ea61b7449522a8deb6b9457db070b98f2364423f62a96ae18",
+        "teacher-r1.jsonl.zst": "3734e347c862f72db3368568d97feebd7de98c95c2bc38f918476fd3b69feb5a",
+        "teacher-r2.jsonl.zst": "f24636f6375780760018f830458a2cbc8816a54d5bbc426602d845403a0f9e01",
+        "eval-only.jsonl.zst": "cdeb87d0a021df58ff8308b1b616714e9f0aa9acdcd0fb3024793a720a8c93f4"
+      }
+    },
+    {
+      "index": 5,
+      "seed": 79217,
+      "status": "complete",
+      "physical_verdict": false,
+      "input_audit": {
+        "scope": "delivered visual measurements only; evaluator reads excluded",
+        "enabled": true,
+        "measurement_rows": 837,
+        "invisible_measurements": 0,
+        "gt_self_pose_comparison": false
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-fe93047c/diagnostic/episode-005/raw",
+      "sha256": {
+        "result.json": "7fced80e39d22d5fc2413c56b9b35f163164061adaa0331c9e445599cbcc4815",
+        "plan.json": "7d60d2fb0f46ed8d052c92004c164d7616fbce3461787952e459efc1bb22de60",
+        "teacher-r1.jsonl.zst": "c2e34827f7709753388680a4cc6ae4ebd2c4fc2cf4188be9af4b9b054f037291",
+        "teacher-r2.jsonl.zst": "504a11b838214905046b6862795f8e93c41bad490fed053b69d618a870247ad6",
+        "eval-only.jsonl.zst": "81583e87dbd0f108fc6ee3030f2cc28f1c380348aeff3861c02ec076885676de"
+      },
+      "robots": {
+        "r1": {
+          "assigned_end": "teal",
+          "start_end_distance_m": 0.9300785048824985,
+          "eval_rows": 257,
+          "in_frame_rows": 50,
+          "visible_ge5_rows": 49,
+          "partial_1_to_4_rows": 1,
+          "first_visible_sim_s": 20.8,
+          "first_visible_phase": "approach",
+          "previous_command_was_turning": true,
+          "search_turn_ticks": 96,
+          "search_turn_widths_s": [
+            0.04642857142857143
+          ],
+          "search_turn_nominal_deg": 363.58565737051754,
+          "search_turn_measured_deg": 263.6763707437289,
+          "measured_over_nominal": 0.72521114460526,
+          "teacher_summary": {
+            "visibility_counts": {
+              "visible": 49,
+              "N": 250
+            },
+            "phase": "approach",
+            "outcome": "episode_timeout",
+            "planner_calls": 8
+          }
+        },
+        "r2": {
+          "assigned_end": "blue",
+          "start_end_distance_m": 0.20280557952975187,
+          "eval_rows": 257,
+          "in_frame_rows": 0,
+          "visible_ge5_rows": 0,
+          "partial_1_to_4_rows": 0,
+          "first_visible_sim_s": null,
+          "first_visible_phase": null,
+          "previous_command_was_turning": null,
+          "search_turn_ticks": 119,
+          "search_turn_widths_s": [
+            0.04642857142857143
+          ],
+          "search_turn_nominal_deg": 450.69472111553733,
+          "search_turn_measured_deg": 324.4003056329463,
+          "measured_over_nominal": 0.7197783564671152,
+          "teacher_summary": {
+            "visibility_counts": {
+              "visible": 0,
+              "N": 250
+            },
+            "phase": "search",
+            "outcome": "search_timeout_handoff",
+            "planner_calls": 0
+          }
+        }
+      }
+    }
+  ],
+  "kinematic_preflight": {
+    "scope": "15 inset band probes; command FK; unchanged pinhole and fisheye K/D; conservative 5mm near plane; static walls; no dynamic/self occlusion or physical servo response proof",
+    "found_n": 36,
+    "N": 36,
+    "rows": [
+      {
+        "seed": 71000,
+        "rid": "r1",
+        "gain": 0.69,
+        "found_sim_s": 0.6,
+        "invisible_measurements": 0
+      },
+      {
+        "seed": 71000,
+        "rid": "r1",
+        "gain": 0.73,
+        "found_sim_s": 0.6,
+        "invisible_measurements": 0
+      },
+      {
+        "seed": 71000,
+        "rid": "r1",
+        "gain": 0.78,
+        "found_sim_s": 0.6,
+        "invisible_measurements": 0
+      },
+      {
+        "seed": 71000,
+        "rid": "r2",
+        "gain": 0.69,
+        "found_sim_s": 0.9,
+        "invisible_measurements": 0
+      },
+      {
+        "seed": 71000,
+        "rid": "r2",
+        "gain": 0.73,
+        "found_sim_s": 0.9,
+        "invisible_measurements": 0
+      },
+      {
+        "seed": 71000,
+        "rid": "r2",
+        "gain": 0.78,
+        "found_sim_s": 0.9,
+        "invisible_measurements": 0
+      },
+      {
+        "seed": 73011,
+        "rid": "r1",
+        "gain": 0.69,
+        "found_sim_s": 0.6,
+        "invisible_measurements": 0
+      },
+      {
+        "seed": 73011,
+        "rid": "r1",
+        "gain": 0.73,
+        "found_sim_s": 0.6,
+        "invisible_measurements": 0
+      },
+      {
+        "seed": 73011,
+        "rid": "r1",
+        "gain": 0.78,
+        "found_sim_s": 0.6,
+        "invisible_measurements": 0
+      },
+      {
+        "seed": 73011,
+        "rid": "r2",
+        "gain": 0.69,
+        "found_sim_s": 2.9,
+        "invisible_measurements": 0
+      },
+      {
+        "seed": 73011,
+        "rid": "r2",
+        "gain": 0.73,
+        "found_sim_s": 2.9,
+        "invisible_measurements": 0
+      },
+      {
+        "seed": 73011,
+        "rid": "r2",
+        "gain": 0.78,
+        "found_sim_s": 2.9,
+        "invisible_measurements": 0
+      },
+      {
+        "seed": 73009,
+        "rid": "r1",
+        "gain": 0.69,
+        "found_sim_s": 8.5,
+        "invisible_measurements": 0
+      },
+      {
+        "seed": 73009,
+        "rid": "r1",
+        "gain": 0.73,
+        "found_sim_s": 8.5,
+        "invisible_measurements": 0
+      },
+      {
+        "seed": 73009,
+        "rid": "r1",
+        "gain": 0.78,
+        "found_sim_s": 8.5,
+        "invisible_measurements": 0
+      },
+      {
+        "seed": 73009,
+        "rid": "r2",
+        "gain": 0.69,
+        "found_sim_s": 1.6,
+        "invisible_measurements": 0
+      },
+      {
+        "seed": 73009,
+        "rid": "r2",
+        "gain": 0.73,
+        "found_sim_s": 1.6,
+        "invisible_measurements": 0
+      },
+      {
+        "seed": 73009,
+        "rid": "r2",
+        "gain": 0.78,
+        "found_sim_s": 1.6,
+        "invisible_measurements": 0
+      },
+      {
+        "seed": 78111,
+        "rid": "r1",
+        "gain": 0.69,
+        "found_sim_s": 5.9,
+        "invisible_measurements": 0
+      },
+      {
+        "seed": 78111,
+        "rid": "r1",
+        "gain": 0.73,
+        "found_sim_s": 5.9,
+        "invisible_measurements": 0
+      },
+      {
+        "seed": 78111,
+        "rid": "r1",
+        "gain": 0.78,
+        "found_sim_s": 5.9,
+        "invisible_measurements": 0
+      },
+      {
+        "seed": 78111,
+        "rid": "r2",
+        "gain": 0.69,
+        "found_sim_s": 0.9,
+        "invisible_measurements": 0
+      },
+      {
+        "seed": 78111,
+        "rid": "r2",
+        "gain": 0.73,
+        "found_sim_s": 0.9,
+        "invisible_measurements": 0
+      },
+      {
+        "seed": 78111,
+        "rid": "r2",
+        "gain": 0.78,
+        "found_sim_s": 0.9,
+        "invisible_measurements": 0
+      },
+      {
+        "seed": 78113,
+        "rid": "r1",
+        "gain": 0.69,
+        "found_sim_s": 9.0,
+        "invisible_measurements": 0
+      },
+      {
+        "seed": 78113,
+        "rid": "r1",
+        "gain": 0.73,
+        "found_sim_s": 9.0,
+        "invisible_measurements": 0
+      },
+      {
+        "seed": 78113,
+        "rid": "r1",
+        "gain": 0.78,
+        "found_sim_s": 9.0,
+        "invisible_measurements": 0
+      },
+      {
+        "seed": 78113,
+        "rid": "r2",
+        "gain": 0.69,
+        "found_sim_s": 0.9,
+        "invisible_measurements": 0
+      },
+      {
+        "seed": 78113,
+        "rid": "r2",
+        "gain": 0.73,
+        "found_sim_s": 0.9,
+        "invisible_measurements": 0
+      },
+      {
+        "seed": 78113,
+        "rid": "r2",
+        "gain": 0.78,
+        "found_sim_s": 0.9,
+        "invisible_measurements": 0
+      },
+      {
+        "seed": 79217,
+        "rid": "r1",
+        "gain": 0.69,
+        "found_sim_s": 21.0,
+        "invisible_measurements": 0
+      },
+      {
+        "seed": 79217,
+        "rid": "r1",
+        "gain": 0.73,
+        "found_sim_s": 20.4,
+        "invisible_measurements": 0
+      },
+      {
+        "seed": 79217,
+        "rid": "r1",
+        "gain": 0.78,
+        "found_sim_s": 19.8,
+        "invisible_measurements": 0
+      },
+      {
+        "seed": 79217,
+        "rid": "r2",
+        "gain": 0.69,
+        "found_sim_s": 0.9,
+        "invisible_measurements": 0
+      },
+      {
+        "seed": 79217,
+        "rid": "r2",
+        "gain": 0.73,
+        "found_sim_s": 0.9,
+        "invisible_measurements": 0
+      },
+      {
+        "seed": 79217,
+        "rid": "r2",
+        "gain": 0.78,
+        "found_sim_s": 0.9,
+        "invisible_measurements": 0
+      }
+    ],
+    "test_files": [
+      "tests/test_grasp_act_search.py",
+      "tests/test_grasp_act_visible_only.py",
+      "tests/test_grasp_act_admission.py"
+    ],
+    "pytest": "82 passed (3 files); final source checked before commit"
+  }
+}

@@ -1,0 +1,472 @@
+{
+  "world": {
+    "t": 5.400000000000854,
+    "robots": {
+      "r1": {
+        "pose": [
+          0.018020283556997006,
+          0.01223328695178521,
+          0.04419885183665612
+        ]
+      },
+      "r2": {
+        "pose": [
+          0.8636277783269884,
+          -0.36186769769208516,
+          1.3510010308337672
+        ],
+        "radius": 0.10488803314634332,
+        "top_z_bound_m": 0.15922103694673317
+      }
+    },
+    "objects": {
+      "beam_1": {
+        "xy": [
+          0.9715744955178246,
+          0.12292670305479247
+        ],
+        "radius": 0.3010913482671123,
+        "top_z_bound_m": 0.3169835928447248
+      }
+    },
+    "walls": [
+      [
+        2.339911288890696,
+        -0.15553246294464038,
+        3.25,
+        0.025,
+        1.0143638709117366
+      ],
+      [
+        1.1006267943357095,
+        0.6447324566636052,
+        0.025,
+        1.475,
+        1.0143638709117366
+      ]
+    ],
+    "beam": {
+      "pose": [
+        0.9715744955169381,
+        0.122926703050458,
+        -1.772550849039336
+      ],
+      "ends": {
+        "teal": [
+          1.025679410156216,
+          0.38745015798758914,
+          0.02389224461642493
+        ],
+        "blue": [
+          0.9174695808776601,
+          -0.14159675188667314,
+          0.02389224461642493
+        ]
+      },
+      "source": "visible band + known rigid shape",
+      "seen_t": 5.400000000000854
+    },
+    "visibility": {
+      "r1": {
+        "visible_probes": 15,
+        "objects": [
+          "beam_1"
+        ],
+        "peers": []
+      }
+    },
+    "scope": "visible_only; remembered objects expire at student memory horizon"
+  },
+  "pwm": {
+    "1": 2000,
+    "3": 740,
+    "4": 2320,
+    "5": 1320,
+    "6": 2292
+  },
+  "selected": {
+    "choice": [
+      1.5707963267948966,
+      0.208
+    ],
+    "goal": [
+      0.8218983782046484,
+      0.429130981117107
+    ],
+    "heading": -0.20175452224443946,
+    "cost": 0.9104706554404198
+  },
+  "candidates": [
+    {
+      "offset_deg": 0.0,
+      "distance_m": 0.203,
+      "goal": [
+        1.0663582904220437,
+        0.5863326074403211
+      ],
+      "reason": "blocked_goal"
+    },
+    {
+      "offset_deg": 0.0,
+      "distance_m": 0.198,
+      "goal": [
+        1.0653563475583534,
+        0.5814340249414853
+      ],
+      "reason": "blocked_goal"
+    },
+    {
+      "offset_deg": 0.0,
+      "distance_m": 0.208,
+      "goal": [
+        1.067360233285734,
+        0.5912311899391568
+      ],
+      "reason": "blocked_goal"
+    },
+    {
+      "offset_deg": -14.999999999999998,
+      "distance_m": 0.203,
+      "goal": [
+        1.116446756844506,
+        0.5690273833633719
+      ],
+      "reason": "blocked_goal"
+    },
+    {
+      "offset_deg": -14.999999999999998,
+      "distance_m": 0.198,
+      "goal": [
+        1.114211107911297,
+        0.5645550379107663
+      ],
+      "reason": "blocked_goal"
+    },
+    {
+      "offset_deg": -14.999999999999998,
+      "distance_m": 0.208,
+      "goal": [
+        1.1186824057777152,
+        0.5734997288159773
+      ],
+      "reason": "blocked_goal"
+    },
+    {
+      "offset_deg": 14.999999999999998,
+      "distance_m": 0.203,
+      "goal": [
+        1.0134976255344932,
+        0.5900843212558543
+      ],
+      "reason": "blocked_goal"
+    },
+    {
+      "offset_deg": 14.999999999999998,
+      "distance_m": 0.198,
+      "goal": [
+        1.0137976694906934,
+        0.5850933320127936
+      ],
+      "reason": "blocked_goal"
+    },
+    {
+      "offset_deg": 14.999999999999998,
+      "distance_m": 0.208,
+      "goal": [
+        1.0131975815782932,
+        0.595075310498915
+      ],
+      "reason": "blocked_goal"
+    },
+    {
+      "offset_deg": -29.999999999999996,
+      "distance_m": 0.203,
+      "goal": [
+        1.1603495785902942,
+        0.5393479714476158
+      ],
+      "reason": "blocked_goal"
+    },
+    {
+      "offset_deg": -29.999999999999996,
+      "distance_m": 0.198,
+      "goal": [
+        1.15703257936778,
+        0.5356066459929354
+      ],
+      "reason": "blocked_goal"
+    },
+    {
+      "offset_deg": -29.999999999999996,
+      "distance_m": 0.208,
+      "goal": [
+        1.1636665778128084,
+        0.5430892969022962
+      ],
+      "reason": "blocked_goal"
+    },
+    {
+      "offset_deg": 29.999999999999996,
+      "distance_m": 0.203,
+      "goal": [
+        0.9614671291375623,
+        0.5800268517134433
+      ],
+      "reason": "blocked_goal"
+    },
+    {
+      "offset_deg": 29.999999999999996,
+      "distance_m": 0.198,
+      "goal": [
+        0.9630487124138838,
+        0.5752835833950725
+      ],
+      "reason": "blocked_goal"
+    },
+    {
+      "offset_deg": 29.999999999999996,
+      "distance_m": 0.208,
+      "goal": [
+        0.9598855458612408,
+        0.5847701200318141
+      ],
+      "reason": "blocked_goal"
+    },
+    {
+      "offset_deg": -45.0,
+      "distance_m": 0.203,
+      "goal": [
+        1.195074850910276,
+        0.4993169745675644
+      ],
+      "reason": "blocked_goal"
+    },
+    {
+      "offset_deg": -45.0,
+      "distance_m": 0.198,
+      "goal": [
+        1.1909025494138705,
+        0.49656163425771277
+      ],
+      "reason": "blocked_goal"
+    },
+    {
+      "offset_deg": -45.0,
+      "distance_m": 0.208,
+      "goal": [
+        1.1992471524066812,
+        0.502072314877416
+      ],
+      "reason": "blocked_goal"
+    },
+    {
+      "offset_deg": 45.0,
+      "distance_m": 0.203,
+      "goal": [
+        0.9138125935762409,
+        0.556845598741649
+      ],
+      "reason": "blocked_goal"
+    },
+    {
+      "offset_deg": 45.0,
+      "distance_m": 0.198,
+      "goal": [
+        0.9165679338860925,
+        0.5526732972452435
+      ],
+      "reason": "blocked_goal"
+    },
+    {
+      "offset_deg": 45.0,
+      "distance_m": 0.208,
+      "goal": [
+        0.9110572532663893,
+        0.5610179002380543
+      ],
+      "reason": "blocked_goal"
+    },
+    {
+      "offset_deg": -59.99999999999999,
+      "distance_m": 0.203,
+      "goal": [
+        1.2182561038820703,
+        0.451662439006243
+      ],
+      "reason": "blocked_goal"
+    },
+    {
+      "offset_deg": -59.99999999999999,
+      "distance_m": 0.198,
+      "goal": [
+        1.2135128355636995,
+        0.45008085572992146
+      ],
+      "reason": "blocked_goal"
+    },
+    {
+      "offset_deg": -59.99999999999999,
+      "distance_m": 0.208,
+      "goal": [
+        1.222999372200441,
+        0.4532440222825645
+      ],
+      "reason": "blocked_goal"
+    },
+    {
+      "offset_deg": 59.99999999999999,
+      "distance_m": 0.203,
+      "goal": [
+        0.8737815966961895,
+        0.5221203264216672
+      ],
+      "reason": "feasible",
+      "cost": 1.011539735752393
+    },
+    {
+      "offset_deg": 59.99999999999999,
+      "distance_m": 0.198,
+      "goal": [
+        0.87752292215087,
+        0.518803327199153
+      ],
+      "reason": "feasible",
+      "cost": 1.01306733890627
+    },
+    {
+      "offset_deg": 59.99999999999999,
+      "distance_m": 0.208,
+      "goal": [
+        0.8700402712415091,
+        0.5254373256441814
+      ],
+      "reason": "feasible",
+      "cost": 1.0100349213460877
+    },
+    {
+      "offset_deg": -75.0,
+      "distance_m": 0.203,
+      "goal": [
+        1.2283135734244812,
+        0.39963194260931206
+      ],
+      "reason": "blocked_goal"
+    },
+    {
+      "offset_deg": -75.0,
+      "distance_m": 0.198,
+      "goal": [
+        1.2233225841814206,
+        0.399331898653112
+      ],
+      "reason": "blocked_goal"
+    },
+    {
+      "offset_deg": -75.0,
+      "distance_m": 0.208,
+      "goal": [
+        1.233304562667542,
+        0.39993198656551215
+      ],
+      "reason": "blocked_goal"
+    },
+    {
+      "offset_deg": 75.0,
+      "distance_m": 0.203,
+      "goal": [
+        0.8441021847804334,
+        0.4782175046758791
+      ],
+      "reason": "feasible",
+      "cost": 0.9586025227848923
+    },
+    {
+      "offset_deg": 75.0,
+      "distance_m": 0.198,
+      "goal": [
+        0.8485745302330389,
+        0.47598185574267
+      ],
+      "reason": "feasible",
+      "cost": 0.9614084871510994
+    },
+    {
+      "offset_deg": 75.0,
+      "distance_m": 0.208,
+      "goal": [
+        0.839629839327828,
+        0.4804531536090882
+      ],
+      "reason": "feasible",
+      "cost": 0.9558146692988826
+    },
+    {
+      "offset_deg": -90.0,
+      "distance_m": 0.203,
+      "goal": [
+        1.224561859608948,
+        0.34677127772176164
+      ],
+      "reason": "blocked_goal"
+    },
+    {
+      "offset_deg": -90.0,
+      "distance_m": 0.198,
+      "goal": [
+        1.2196632771101124,
+        0.34777322058545196
+      ],
+      "reason": "blocked_goal"
+    },
+    {
+      "offset_deg": -90.0,
+      "distance_m": 0.208,
+      "goal": [
+        1.2294604421077837,
+        0.34576933485807126
+      ],
+      "reason": "blocked_goal"
+    },
+    {
+      "offset_deg": 90.0,
+      "distance_m": 0.203,
+      "goal": [
+        0.8267969607034842,
+        0.4281290382534167
+      ],
+      "reason": "feasible",
+      "cost": 0.9143633975243474
+    },
+    {
+      "offset_deg": 90.0,
+      "distance_m": 0.198,
+      "goal": [
+        0.8316955432023199,
+        0.4271270953897263
+      ],
+      "reason": "feasible",
+      "cost": 0.9182669204046047
+    },
+    {
+      "offset_deg": 90.0,
+      "distance_m": 0.208,
+      "goal": [
+        0.8218983782046484,
+        0.429130981117107
+      ],
+      "reason": "feasible",
+      "cost": 0.9104706554404198
+    }
+  ],
+  "source_sample": "teacher_gate-79030:36:r1",
+  "source_sha": "77ee0ab7770b2320c945370234ca4b79d6e6d812",
+  "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-77ee0ab7/diagnostic/episode-006/raw",
+  "rid": "r1",
+  "end": "teal",
+  "provenance": "VisibleWorld from visible_measurements and applied commands only; no evaluator pose supplied",
+  "source_sha256": {
+    "eval-only.jsonl.zst": "6e5f1cf17a85462030336a614c91b6f3fe89880283f95dcac01d4857394cd695",
+    "teacher-r1.jsonl.zst": "6d1464e8a80bf1a00a0da51bf4c98340cf7a69680cc8f9b74e1dedc00346d989",
+    "result.json": "4d8d3309b7c2d5f8a7761849d23fa629aae7c00631fae5123231c3b1b9e0acac"
+  }
+}

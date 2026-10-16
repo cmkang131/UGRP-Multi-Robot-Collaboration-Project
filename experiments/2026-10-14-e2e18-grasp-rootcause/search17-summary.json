@@ -1,0 +1,43 @@
+{
+  "schema": "ugrp.search17.offline.v1",
+  "base_sha": "752b0cbbe25fb97d908c661e6fd00b5d6a3e44f3",
+  "physical_runs": 0,
+  "remote_connections": 0,
+  "model_calls": 0,
+  "training_recordings": 0,
+  "gate40_authorized": false,
+  "qualified": false,
+  "offline_replay": {
+    "N": 40,
+    "robot_ticks": 23744,
+    "baseline_mismatch_ticks": 0,
+    "geometry_branch_successes": "0/37",
+    "full_profile_geometry_branch_successes": "1/37",
+    "full_profile_command_change_successes": "36/37"
+  },
+  "tests": {
+    "files": [
+      "tests/test_grasp_act_search17.py",
+      "tests/test_grasp_act_search15.py",
+      "tests/test_grasp_act_visible_only.py"
+    ],
+    "result": ".........................................................                [100%]\n57 passed in 8.13s"
+  },
+  "new_seed_remote_inventory_verified": false,
+  "calibration_user_confirmed": false,
+  "raw_locations": [
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/beam-gate-752b0cbb/raw/grasp-search-gate40-gcp-752b0cbb/cohort-016/episode-016/raw/eval-only.jsonl.zst",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/beam-gate-752b0cbb/raw/grasp-search-gate40-gcp-752b0cbb/cohort-016/episode-016/raw/teacher-r1.jsonl.zst",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/beam-gate-752b0cbb/raw/grasp-search-gate40-gcp-752b0cbb/cohort-016/episode-016/raw/teacher-r2.jsonl.zst",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/beam-gate-752b0cbb/raw/grasp-search-gate40-gcp-752b0cbb/cohort-016/episode-016/raw/plan.json"
+  ],
+  "artifacts": {
+    "experiments/2026-10-14-e2e18-grasp-rootcause/teacher-search17-repro3-plan.json": "4945472d311e9ea102d35932940795ec96cd99fe90c54876586835e505906712",
+    "experiments/2026-10-14-e2e18-grasp-rootcause/search17-replay-summary.json": "b15dd1d15ebbe77cc8f6f0af611c37ee6855a9db94598b1b545a86a894227121",
+    "experiments/2026-10-14-e2e18-grasp-rootcause/search17-odometry.json": "a01f763de450180196b0062c5c7527620f8cfc5a17268a77c723d913bd6c072d",
+    "experiments/2026-10-14-e2e18-grasp-rootcause/teacher-search17-novel12-plan.json": "b75714971ead2a09bfd7bb887b222de46b02b20f14023972e78b8febe896e315",
+    "experiments/2026-10-14-e2e18-grasp-rootcause/search17-seed-audit.json": "7bef51f89adebb86c6d83055a814b222a97a159c3555ce7e7a1ec4d6cf4e817f",
+    "experiments/2026-10-14-e2e18-grasp-rootcause/search17.md": "b5109b67493e6e7b5f2c73e24b9417180a0827d8a947f83752ab2fa599834c6e",
+    "experiments/2026-10-14-e2e18-grasp-rootcause/search17-tests.txt": "99a7ef6b4add1be83a0c73b34abf9797e918ad1f234327f0257fa101b42b4267"
+  }
+}

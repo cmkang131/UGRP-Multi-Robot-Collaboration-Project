@@ -1,0 +1,120 @@
+{
+  "raw": "/home/ugrp/ugrp-sim/runs/search26-comparison32-f92b07aa/diagnostic/episode-001/raw",
+  "grid_N": 4331,
+  "frame_mismatches": 0,
+  "max_pixel_error": 2.2737367544323206e-13,
+  "render_N": 6,
+  "samples": [
+    {
+      "sample": 0,
+      "rid": "r1",
+      "predicted_in_frame": 0,
+      "near_clipped_in_frame": 0,
+      "actual_frame": {
+        "in_frame": false,
+        "visible": false,
+        "visible_probes": 0,
+        "in_frame_probes": 0,
+        "probe_N": 15,
+        "occluders": []
+      }
+    },
+    {
+      "sample": 0,
+      "rid": "r2",
+      "predicted_in_frame": 0,
+      "near_clipped_in_frame": 0,
+      "actual_frame": {
+        "in_frame": false,
+        "visible": false,
+        "visible_probes": 0,
+        "in_frame_probes": 0,
+        "probe_N": 15,
+        "occluders": []
+      }
+    },
+    {
+      "sample": 213,
+      "rid": "r1",
+      "predicted_in_frame": 0,
+      "near_clipped_in_frame": 0,
+      "actual_frame": {
+        "in_frame": false,
+        "visible": false,
+        "visible_probes": 0,
+        "in_frame_probes": 0,
+        "probe_N": 15,
+        "occluders": []
+      }
+    },
+    {
+      "sample": 213,
+      "rid": "r2",
+      "predicted_in_frame": 15,
+      "near_clipped_in_frame": 15,
+      "actual_frame": {
+        "in_frame": true,
+        "visible": true,
+        "visible_probes": 15,
+        "in_frame_probes": 15,
+        "probe_N": 15,
+        "occluders": []
+      }
+    },
+    {
+      "sample": 425,
+      "rid": "r1",
+      "predicted_in_frame": 14,
+      "near_clipped_in_frame": 14,
+      "actual_frame": {
+        "in_frame": true,
+        "visible": true,
+        "visible_probes": 14,
+        "in_frame_probes": 14,
+        "probe_N": 15,
+        "occluders": []
+      }
+    },
+    {
+      "sample": 425,
+      "rid": "r2",
+      "predicted_in_frame": 15,
+      "near_clipped_in_frame": 15,
+      "actual_frame": {
+        "in_frame": true,
+        "visible": true,
+        "visible_probes": 15,
+        "in_frame_probes": 15,
+        "probe_N": 15,
+        "occluders": []
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "/home/ugrp/ugrp-sim/outputs/search27-baseline/view-parity/000000-r1.jpg",
+      "sha256": "984419e4153a6ea9988696c83376507608575726320b2d2af1ed46aa73e181d4"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/outputs/search27-baseline/view-parity/000000-r2.jpg",
+      "sha256": "6458a3fa4eae846d21cb49215cb9c3060ec8843ea3bf21304da70bbcc213a352"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/outputs/search27-baseline/view-parity/000213-r1.jpg",
+      "sha256": "ce0026bbc77744d0cc796ff23f74c1260ed741af21be6e919435c264b29ddade"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/outputs/search27-baseline/view-parity/000213-r2.jpg",
+      "sha256": "85689ed4e2cf00ff709e46a47fb69e0769f0c8d9afe40302fbd6c5a2abb9241b"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/outputs/search27-baseline/view-parity/000425-r1.jpg",
+      "sha256": "1b895b44cdfe5728cbdb11ed3e38e0830798a73c1439971464286f21c37a545a"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/outputs/search27-baseline/view-parity/000425-r2.jpg",
+      "sha256": "d5e06480c56f9f754f01f60b4c8b0007f86d4bdd232f55fa521f2d82a55efb3e"
+    }
+  ],
+  "scope": "same K-pinhole AND fisheye frame as renderer pipeline; saved-state render, no physics; future occlusion not proven"
+}

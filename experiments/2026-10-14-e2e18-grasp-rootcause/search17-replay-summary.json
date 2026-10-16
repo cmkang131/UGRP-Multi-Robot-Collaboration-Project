@@ -1,0 +1,836 @@
+{
+  "scope": "offline forced-input replay; no physical claim",
+  "source_base": "752b0cbbe25fb97d908c661e6fd00b5d6a3e44f3",
+  "episodes": 40,
+  "baseline_mismatch_ticks": 0,
+  "robot_ticks": 23744,
+  "profiles": {
+    "geometry": {
+      "successes_N": 37,
+      "successes_with_command_divergence": 0,
+      "successes_with_geometry_branch": 0,
+      "geometry_branch_episodes": [],
+      "failure_first_divergence": {
+        "25": {
+          "r1": {
+            "tick": 37,
+            "sim_s": 3.7,
+            "phase": "approach",
+            "old": {
+              "t": 5.500000000000976,
+              "wheels": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "duration_s": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "pwm": {
+                "1": 2000,
+                "3": 760,
+                "4": 2380,
+                "5": 1320,
+                "6": 1500
+              }
+            },
+            "new": {
+              "t": 5.500000000000976,
+              "wheels": [
+                -0.35,
+                -0.35,
+                -0.35,
+                -0.35
+              ],
+              "duration_s": [
+                0.04285714285714287,
+                0.04285714285714287,
+                0.04285714285714287,
+                0.04285714285714287
+              ],
+              "pwm": {
+                "1": 2000,
+                "3": 820,
+                "4": 2320,
+                "5": 1320,
+                "6": 1440
+              }
+            },
+            "events": [
+              {
+                "t": 5.500000000000976,
+                "event": "expanded_candidates",
+                "tested": 48,
+                "feasible": 0
+              },
+              {
+                "t": 5.500000000000976,
+                "event": "blocked_retreat_reobserve",
+                "targets": [
+                  "can_1"
+                ]
+              }
+            ]
+          }
+        },
+        "40": {
+          "r1": {
+            "tick": 173,
+            "sim_s": 17.3,
+            "phase": "approach",
+            "old": {
+              "t": 19.100000000000186,
+              "wheels": [
+                0.35,
+                0.35,
+                -0.35,
+                0.35
+              ],
+              "duration_s": [
+                0.0019920704797803035,
+                0.025650056000472623,
+                0.0300642297138131,
+                0.05770635619406603
+              ],
+              "pwm": {
+                "1": 2000,
+                "3": 500,
+                "4": 2500,
+                "5": 1320,
+                "6": 1970
+              }
+            },
+            "new": {
+              "t": 19.100000000000186,
+              "wheels": [
+                -0.35,
+                -0.35,
+                -0.35,
+                -0.35
+              ],
+              "duration_s": [
+                0.004582474800980421,
+                0.015349007890534963,
+                0.015349007890534963,
+                0.004582474800980421
+              ],
+              "pwm": {
+                "1": 2000,
+                "3": 500,
+                "4": 2500,
+                "5": 1320,
+                "6": 1970
+              }
+            },
+            "events": [
+              {
+                "t": 19.100000000000186,
+                "event": "start_in_margin_escape"
+              },
+              {
+                "t": 19.100000000000186,
+                "event": "escape_pulse",
+                "goal": [
+                  0.61,
+                  -1.8900000000000001
+                ]
+              }
+            ]
+          }
+        },
+        "47": {
+          "r2": {
+            "tick": 194,
+            "sim_s": 19.4,
+            "phase": "approach",
+            "old": {
+              "t": 21.200000000010213,
+              "wheels": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "duration_s": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "pwm": {
+                "1": 2000,
+                "3": 500,
+                "4": 2500,
+                "5": 1320,
+                "6": 1042
+              }
+            },
+            "new": {
+              "t": 21.200000000010213,
+              "wheels": [
+                -0.35,
+                0.35,
+                0.35,
+                -0.35
+              ],
+              "duration_s": [
+                0.024566000889009742,
+                0.025193821755319618,
+                0.025193821755319618,
+                0.024566000889009742
+              ],
+              "pwm": {
+                "1": 2000,
+                "3": 500,
+                "4": 2500,
+                "5": 1320,
+                "6": 1042
+              }
+            },
+            "events": [
+              {
+                "t": 21.200000000010213,
+                "event": "start_in_margin_escape"
+              },
+              {
+                "t": 21.200000000010213,
+                "event": "escape_pulse",
+                "goal": [
+                  2.1,
+                  0.12
+                ]
+              }
+            ]
+          }
+        }
+      }
+    },
+    "full": {
+      "successes_N": 37,
+      "successes_with_command_divergence": 36,
+      "successes_with_geometry_branch": 1,
+      "geometry_branch_episodes": [
+        30
+      ],
+      "failure_first_divergence": {
+        "25": {
+          "r1": {
+            "tick": 37,
+            "sim_s": 3.7,
+            "phase": "approach",
+            "old": {
+              "t": 5.500000000000976,
+              "wheels": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "duration_s": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "pwm": {
+                "1": 2000,
+                "3": 760,
+                "4": 2380,
+                "5": 1320,
+                "6": 1500
+              }
+            },
+            "new": {
+              "t": 5.500000000000976,
+              "wheels": [
+                -0.35,
+                -0.35,
+                -0.35,
+                -0.35
+              ],
+              "duration_s": [
+                0.04285714285714287,
+                0.04285714285714287,
+                0.04285714285714287,
+                0.04285714285714287
+              ],
+              "pwm": {
+                "1": 2000,
+                "3": 820,
+                "4": 2320,
+                "5": 1320,
+                "6": 1440
+              }
+            },
+            "events": [
+              {
+                "t": 5.500000000000976,
+                "event": "expanded_candidates",
+                "tested": 48,
+                "feasible": 0
+              },
+              {
+                "t": 5.500000000000976,
+                "event": "blocked_retreat_reobserve",
+                "targets": [
+                  "can_1"
+                ]
+              }
+            ]
+          }
+        },
+        "40": {
+          "r1": {
+            "tick": 8,
+            "sim_s": 0.8,
+            "phase": "approach",
+            "old": {
+              "t": 2.599999999999919,
+              "wheels": [
+                0.35,
+                -0.35,
+                0.35,
+                0.35
+              ],
+              "duration_s": [
+                0.06542720051120186,
+                0.03847457191373267,
+                0.01723971380055305,
+                0.009712914796916145
+              ],
+              "pwm": {
+                "1": 2000,
+                "3": 800,
+                "4": 2320,
+                "5": 1320,
+                "6": 1103
+              }
+            },
+            "new": {
+              "t": 2.599999999999919,
+              "wheels": [
+                0.35,
+                -0.35,
+                0.35,
+                0.35
+              ],
+              "duration_s": [
+                0.06513660997898339,
+                0.038953314425995804,
+                0.01676097128828992,
+                0.009422324264697668
+              ],
+              "pwm": {
+                "1": 2000,
+                "3": 800,
+                "4": 2320,
+                "5": 1320,
+                "6": 1103
+              }
+            },
+            "events": []
+          }
+        },
+        "47": {
+          "r2": {
+            "tick": 30,
+            "sim_s": 3.0,
+            "phase": "approach",
+            "old": {
+              "t": 4.800000000000121,
+              "wheels": [
+                0.35,
+                0.35,
+                0.35,
+                0.35
+              ],
+              "duration_s": [
+                0.09853650099198162,
+                0.0998685546809497,
+                0.09840505567293131,
+                0.1
+              ],
+              "pwm": {
+                "1": 2000,
+                "3": 760,
+                "4": 2380,
+                "5": 1320,
+                "6": 1500
+              }
+            },
+            "new": {
+              "t": 4.800000000000121,
+              "wheels": [
+                0.35,
+                0.35,
+                0.35,
+                0.35
+              ],
+              "duration_s": [
+                0.09853623007389643,
+                0.09990560115393832,
+                0.09844183122783474,
+                0.1
+              ],
+              "pwm": {
+                "1": 2000,
+                "3": 760,
+                "4": 2380,
+                "5": 1320,
+                "6": 1500
+              }
+            },
+            "events": []
+          },
+          "r1": {
+            "tick": 131,
+            "sim_s": 13.1,
+            "phase": "approach",
+            "old": {
+              "t": 14.89999999998795,
+              "wheels": [
+                -0.35,
+                0.35,
+                0.35,
+                0.35
+              ],
+              "duration_s": [
+                0.014928229486031827,
+                0.1,
+                0.06748596919448165,
+                0.017585801319486533
+              ],
+              "pwm": {
+                "1": 2000,
+                "3": 880,
+                "4": 2380,
+                "5": 1320,
+                "6": 1560
+              }
+            },
+            "new": {
+              "t": 14.89999999998795,
+              "wheels": [
+                0.35,
+                0.35,
+                0.35,
+                0.35
+              ],
+              "duration_s": [
+                0.018400186034954674,
+                0.09999999999999999,
+                0.06944915629903874,
+                0.04895102973591593
+              ],
+              "pwm": {
+                "1": 2000,
+                "3": 880,
+                "4": 2380,
+                "5": 1320,
+                "6": 1560
+              }
+            },
+            "events": []
+          }
+        }
+      }
+    }
+  },
+  "artifacts": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search17/final40/episode-016.json",
+      "sha256": "baf175845c113c62e2654e8a5a17f930d57dafcdaa1fae0d7ea104cfe230da55"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search17/final40/episode-017.json",
+      "sha256": "cb89b048f83683b8f6ef2f7fdcb27536dd559817b1770a198f50017a0848f6bd"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search17/final40/episode-018.json",
+      "sha256": "235459f55b015816c043f94c6086f9c9de05f3036ea3b69ece165784c297bffe"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search17/final40/episode-019.json",
+      "sha256": "d2218debad43580d3b1691ca3a4c126a4b55cc37cfb5a385c27a4bd1591e9d34"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search17/final40/episode-020.json",
+      "sha256": "4f402898e7a20604ad1066fad02cf02bca3c3620b5d82c1353697ba876024866"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search17/final40/episode-021.json",
+      "sha256": "1b9f615aba52d968d7a353d4a3b950607e2aa67327e425fc298e51eab78db530"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search17/final40/episode-022.json",
+      "sha256": "852c41aeecb0053946b8dae5414029a755a925f83257960845a95b47f60a1c9f"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search17/final40/episode-023.json",
+      "sha256": "0bd5a62f3024408c52ae5cd656872f40edba202f2178c1db18ae8adf03ae26f6"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search17/final40/episode-024.json",
+      "sha256": "1b8bc896899618b0e0154e7af106b0002f565dc9ed181b681aaa19a2700cc7a6"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search17/final40/episode-025.json",
+      "sha256": "7f2cd4652e289740935b8a0f60ccfc3c6f54222311c1e56b91ecf49d87ec1151"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search17/final40/episode-026.json",
+      "sha256": "ad1bb8dec1611327775e4d285cfcb1ec430279089648ebf6a4b54164274dc19e"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search17/final40/episode-027.json",
+      "sha256": "10c7ea2a09ea425e1c360a8533d97d928a24077d6f38edfd0e7a37c2419575d0"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search17/final40/episode-028.json",
+      "sha256": "d75901b3a378b3d002a23afd7f9f0b83a0455d06375a046e13f9238cc96ed9c1"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search17/final40/episode-029.json",
+      "sha256": "1814d700d3355800391b8abbc4dc83e839810931df94b227741f2b02747ec06d"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search17/final40/episode-030.json",
+      "sha256": "dcc9118a7cc819ecc67749e58e4ea9514c34658603af2214c130a93b206c86a7"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search17/final40/episode-031.json",
+      "sha256": "3f273165072b12a65b5c23ebabbb2cc196cd5cb1252b7ee6f245e22c2c0853e2"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search17/final40/episode-032.json",
+      "sha256": "c6f418240abc8ed92edf6d9e90678c051cee39b45c5c352d143900eba5f62364"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search17/final40/episode-033.json",
+      "sha256": "c2bf390a25f29b183be1d114037357beaf215f4ba6e85d589a226a43a69984cb"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search17/final40/episode-034.json",
+      "sha256": "bb263e3f8c329a844b7d4e1cd2939e074d1800cb089e2968f654a5180875e601"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search17/final40/episode-035.json",
+      "sha256": "01469331a20723904eb7a0c3c64f4e445d9f7a57e431e6e30f6cafb63cf69156"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search17/final40/episode-036.json",
+      "sha256": "40180caa2831efb454a4ca8f78dc91bb4963b68c39140523776793b6f680a5ac"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search17/final40/episode-037.json",
+      "sha256": "7c94b9d1dd84e463ffe50ef2789fa398b2e97d4448570b9fc504c918923cec27"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search17/final40/episode-038.json",
+      "sha256": "d49d013bd11163c1e962e436c0ef2392c11902b74575d6ab6ba401c55252afaa"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search17/final40/episode-039.json",
+      "sha256": "ed0e446118cb65bf39387876baba932281d3e7d2cc680bcb63182ef683ea29c1"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search17/final40/episode-040.json",
+      "sha256": "0a8dbd1d50173d67e7e10d26bff42e78caadb263123157bfdf563f656a74f93b"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search17/final40/episode-041.json",
+      "sha256": "82493d9232ce51736d3599fdafc2e2e69f46b6c1ba06aa3b3473c2a4a77ecacc"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search17/final40/episode-042.json",
+      "sha256": "7c7fd240fb139b4a99ebda8616dc76d15872483018dcc2eb582df6e1116916e1"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search17/final40/episode-043.json",
+      "sha256": "0cf067cb61a659252bb0ca33f5dfd366850679bacc9301e89bea686c7e8991e4"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search17/final40/episode-044.json",
+      "sha256": "f3774e9ffc2aff2d304b8bf3c8047ee375c89057a4e4a79d1a6daecce3a174f0"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search17/final40/episode-045.json",
+      "sha256": "137c0ead72f63a653604168bb69d3e643a12cf56afc58d15c756c88e25094750"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search17/final40/episode-046.json",
+      "sha256": "db70e06fbf95c3ff5781f55a8bb85586954dfb47b9056cc4c02615be02a690ee"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search17/final40/episode-047.json",
+      "sha256": "02d6eba691dbfabc2047fdf6c98d3bed6f4b058b9b2f786d5006fa9148655771"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search17/final40/episode-048.json",
+      "sha256": "fe833f5aef94dabb37f1f9eb791ff8c36503bed0f0090cc40d6396bc2c325657"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search17/final40/episode-049.json",
+      "sha256": "aedcf57703d2d9ed82821938ef915c28476168bf2fe99002fd8ac28ab4c051da"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search17/final40/episode-050.json",
+      "sha256": "b0714d87f9613b27ca815ec5a82b1b9459843d71921ef65ea19aa8bdca3970d0"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search17/final40/episode-051.json",
+      "sha256": "de72df6dadb64ef52f1866fa151e026cf4f5e287d3378953017534edfe4cef27"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search17/final40/episode-052.json",
+      "sha256": "e4bb4cc68ad41291a2d8a5ca2d13c5ed09668ecd37f0e5dc33f4033b4c27eeda"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search17/final40/episode-053.json",
+      "sha256": "5a5ca5594d8aaba8ad673a72af8a8d8c93818de54c9b271c3949179ddf279bce"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search17/final40/episode-054.json",
+      "sha256": "1e3d96fda88d2a9b3abc316714ea51188c23aa28472ee6d36ecffe724c49d2af"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search17/final40/episode-055.json",
+      "sha256": "6599852ec79ae7c3bd8e66960a15b912d2ef62edf308b258c01bdd1a892ef21a"
+    }
+  ],
+  "input_sources": {
+    "summary": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/beam-gate-752b0cbb/summary.json",
+    "record": "search17-odometry.json sources (160 stored-file hashes)"
+  },
+  "one_step_probes": {
+    "25": [
+      {
+        "rid": "r1",
+        "sim_s": 3.7,
+        "original": {
+          "t": 5.500000000000976,
+          "wheels": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "duration_s": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "pwm": {
+            "1": 2000,
+            "3": 760,
+            "4": 2380,
+            "5": 1320,
+            "6": 1500
+          }
+        },
+        "new": {
+          "t": 5.500000000000976,
+          "wheels": [
+            -0.35,
+            -0.35,
+            -0.35,
+            -0.35
+          ],
+          "duration_s": [
+            0.04285714285714287,
+            0.04285714285714287,
+            0.04285714285714287,
+            0.04285714285714287
+          ],
+          "pwm": {
+            "1": 2000,
+            "3": 820,
+            "4": 2320,
+            "5": 1320,
+            "6": 1440
+          }
+        },
+        "events": [
+          {
+            "t": 5.500000000000976,
+            "event": "expanded_candidates",
+            "tested": 48,
+            "feasible": 0
+          },
+          {
+            "t": 5.500000000000976,
+            "event": "blocked_retreat_reobserve",
+            "targets": [
+              "can_1"
+            ]
+          }
+        ],
+        "reobserve": [
+          {
+            "t": 5.500000000000976,
+            "event": "reobserve_start",
+            "kind": "obstacle",
+            "encounter": 1,
+            "targets": {
+              "can_1": {
+                "id": "can_1",
+                "kind": "cargo",
+                "xyz": [
+                  1.396514874488235,
+                  -0.34302588050910743,
+                  -0.00014215299770149216
+                ],
+                "yaw": 0.7716406009463347,
+                "radius": 0.031400636936215164,
+                "top_z_bound_m": 0.056258483938513675,
+                "visible_n": 7,
+                "probe_N": 7,
+                "seen_t": 5.500000000000976
+              }
+            },
+            "input": "own visible history and issued-command pose only"
+          },
+          {
+            "t": 5.500000000000976,
+            "event": "reobserve_attempt",
+            "kind": "obstacle",
+            "attempt": 3,
+            "stage": "retreat",
+            "bearing_rad": -0.24086146579226467
+          }
+        ]
+      }
+    ],
+    "40": [
+      {
+        "rid": "r1",
+        "sim_s": 17.4,
+        "original": {
+          "t": 19.200000000000664,
+          "wheels": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "duration_s": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "pwm": {
+            "1": 2000,
+            "3": 500,
+            "4": 2500,
+            "5": 1320,
+            "6": 1964
+          }
+        },
+        "new": {
+          "t": 19.200000000000664,
+          "wheels": [
+            -0.35,
+            -0.35,
+            -0.35,
+            -0.35
+          ],
+          "duration_s": [
+            0.020369096313123603,
+            0.01342518030113926,
+            0.01342518030113926,
+            0.020369096313123603
+          ],
+          "pwm": {
+            "1": 2000,
+            "3": 500,
+            "4": 2500,
+            "5": 1320,
+            "6": 1964
+          }
+        },
+        "events": [
+          {
+            "t": 19.200000000000664,
+            "event": "start_in_margin_escape"
+          },
+          {
+            "t": 19.200000000000664,
+            "event": "escape_pulse",
+            "goal": [
+              0.61,
+              -1.8900000000000001
+            ]
+          }
+        ],
+        "reobserve": []
+      }
+    ],
+    "47": [
+      {
+        "rid": "r2",
+        "sim_s": 19.3,
+        "original": {
+          "t": 21.100000000009736,
+          "wheels": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "duration_s": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "pwm": {
+            "1": 2000,
+            "3": 500,
+            "4": 2500,
+            "5": 1320,
+            "6": 1047
+          }
+        },
+        "new": {
+          "t": 21.100000000009736,
+          "wheels": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "duration_s": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "pwm": {
+            "1": 2000,
+            "3": 500,
+            "4": 2500,
+            "5": 1320,
+            "6": 1047
+          }
+        },
+        "events": [],
+        "reobserve": []
+      }
+    ]
+  },
+  "replayed_code_sha256": {
+    "sim/grasp_act_teacher_v3.py": "c842b085e934bf22afaad468def95caf61541ab3c79a05bb59fc51799c507b34",
+    "sim/grasp_act_search17.py": "68956b81fa266e941d0bc458f7bd4297c86f56582373ef3174b00d08701cad14",
+    "sim/grasp_act_search15_modes.py": "77864e03eca3112c8d2fb96aea17b4e2a590dd886ffc1a544a210f7c23c72f70",
+    "sim/grasp_act_reobserve.py": "04f964546a2da9e412ead147fd262a03da2163b8e8134b776783938e8625ba9d",
+    "sim/grasp_act_pregrasp.py": "140bef4698b5345f4d6b89a8827cbc90be853887c2931df325cf593a6b41410f",
+    "harness/grasp_act_visible_world.py": "31a6f8e261df6ebb4be8204ab3ddf58d777b7b4d22d7f906c2b732209419f6ac",
+    "scripts/replay_grasp_act_search17.py": "a2de3e60d57605a693cb6a3b3024f3a817f250f1be45ffce5231ed33fd6293e2"
+  }
+}

@@ -1,0 +1,748 @@
+{
+  "schema": "ugrp.grasp_act.plan.v1",
+  "episodes": [
+    {
+      "episode_id": "development-8312200",
+      "batch": "grasp-act-development-8312200",
+      "seed": 8312200,
+      "split": "development",
+      "scenario_id": "s1_normal_mixed_v6",
+      "scenario_source_sha256": "60658759233af5b76d1556e376d4f058d759291200574aea150777165e764db1",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        0.9358401012172004,
+        -0.3112468420450685,
+        0.2810686243795315
+      ],
+      "spawns": {
+        "r1": [
+          1.4444991190070016,
+          0.2543083446433406,
+          0.032355118817659255,
+          -1.7573401285247734
+        ],
+        "r2": [
+          1.3902793774682167,
+          -0.18004492056351237,
+          0.032355118817659255,
+          -2.8605240292102616
+        ],
+        "r3": [
+          4.622905789787485,
+          -2.5126812966511434,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "other_end",
+      "initial_pan": {
+        "r1": 2062,
+        "r2": 1345
+      },
+      "initial_scene_context": "cargo_v6: same spawns/beam/pan; tile/can replaced with authored boxes",
+      "visible_start": true,
+      "proposal_attempts": 2,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 0,
+      "cargo_scene": "cargo_v6",
+      "comparison_parent_scenario": "s1_normal_mixed_v4"
+    },
+    {
+      "episode_id": "development-8312201",
+      "batch": "grasp-act-development-8312200",
+      "seed": 8312201,
+      "split": "development",
+      "scenario_id": "s3_late_rendezvous_v6",
+      "scenario_source_sha256": "94d65065ed819bee3ccb68050bef5d5cc560b416b5db8acf5ba8b3a7ec8154ef",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        0.11902209533949798,
+        -1.3975260555432258,
+        1.0237144702808234
+      ],
+      "spawns": {
+        "r1": [
+          0.34992735422320465,
+          -2.11403742991776,
+          0.032355118817659255,
+          2.7049277668640355
+        ],
+        "r2": [
+          1.1074181690256821,
+          -0.4328877517242353,
+          0.032355118817659255,
+          -2.36835843281628
+        ],
+        "r3": [
+          4.290521954544085,
+          -0.5805445440468069,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "approaching",
+      "initial_pan": {
+        "r1": 801,
+        "r2": 866
+      },
+      "initial_scene_context": "cargo_v6: same spawns/beam/pan; tile/can replaced with authored boxes",
+      "visible_start": true,
+      "proposal_attempts": 1,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 0,
+      "cargo_scene": "cargo_v6",
+      "comparison_parent_scenario": "s3_late_rendezvous_v4"
+    },
+    {
+      "episode_id": "development-8312202",
+      "batch": "grasp-act-development-8312200",
+      "seed": 8312202,
+      "split": "development",
+      "scenario_id": "s6_novel_relation_v6",
+      "scenario_source_sha256": "51080fd635fbc57dab266f885187d8db8ba8f466215926a1257c260732ea3aaf",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "beam_pose": [
+        0.3753442850594168,
+        -0.06516551017877292,
+        1.3648732484911599
+      ],
+      "spawns": {
+        "r1": [
+          -0.6467479842663961,
+          0.056090138608679604,
+          0.032355118817659255,
+          -0.4011213467765262
+        ],
+        "r2": [
+          0.6936424872375075,
+          -0.7341815767437299,
+          0.032355118817659255,
+          2.01487324849116
+        ],
+        "r3": [
+          3.1327018763360086,
+          -2.140211803178753,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "near_own",
+      "initial_pan": {
+        "r1": 1317,
+        "r2": 2482
+      },
+      "initial_scene_context": "cargo_v6: same spawns/beam/pan; tile/can replaced with authored boxes",
+      "visible_start": true,
+      "proposal_attempts": 2,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 0,
+      "cargo_scene": "cargo_v6",
+      "comparison_parent_scenario": "s6_novel_relation_v4"
+    },
+    {
+      "episode_id": "development-8312203",
+      "batch": "grasp-act-development-8312200",
+      "seed": 8312203,
+      "split": "development",
+      "scenario_id": "s1_normal_mixed_v6",
+      "scenario_source_sha256": "60658759233af5b76d1556e376d4f058d759291200574aea150777165e764db1",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        -0.11451961699558816,
+        -0.8484130972437087,
+        1.6815357418254424
+      ],
+      "spawns": {
+        "r1": [
+          0.1088479084104643,
+          -1.6715434591331462,
+          0.032355118817659255,
+          0.9011802661778019
+        ],
+        "r2": [
+          -0.062246865430769266,
+          -1.3185158088332534,
+          0.032355118817659255,
+          1.6815357418254422
+        ],
+        "r3": [
+          1.5774284504743328,
+          -2.046316851362032,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "other_end",
+      "initial_pan": {
+        "r1": 1643,
+        "r2": 1439
+      },
+      "initial_scene_context": "cargo_v6: same spawns/beam/pan; tile/can replaced with authored boxes",
+      "visible_start": true,
+      "proposal_attempts": 10,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 0,
+      "cargo_scene": "cargo_v6",
+      "comparison_parent_scenario": "s1_normal_mixed_v4"
+    },
+    {
+      "episode_id": "development-8312204",
+      "batch": "grasp-act-development-8312200",
+      "seed": 8312204,
+      "split": "development",
+      "scenario_id": "s3_late_rendezvous_v6",
+      "scenario_source_sha256": "94d65065ed819bee3ccb68050bef5d5cc560b416b5db8acf5ba8b3a7ec8154ef",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        0.0160212972913773,
+        -0.8806318922696348,
+        2.267492746427974
+      ],
+      "spawns": {
+        "r1": [
+          0.00703558972654042,
+          -0.2521681318803747,
+          0.032355118817659255,
+          -0.6285374865604407
+        ],
+        "r2": [
+          0.9712472655578319,
+          -1.4219541940856675,
+          0.032355118817659255,
+          2.626021786379965
+        ],
+        "r3": [
+          3.3420278865467403,
+          -2.5461543193125236,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "approaching",
+      "initial_pan": {
+        "r1": 976,
+        "r2": 699
+      },
+      "initial_scene_context": "cargo_v6: same spawns/beam/pan; tile/can replaced with authored boxes",
+      "visible_start": true,
+      "proposal_attempts": 7,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 0,
+      "cargo_scene": "cargo_v6",
+      "comparison_parent_scenario": "s3_late_rendezvous_v4"
+    },
+    {
+      "episode_id": "development-8312205",
+      "batch": "grasp-act-development-8312200",
+      "seed": 8312205,
+      "split": "development",
+      "scenario_id": "s6_novel_relation_v6",
+      "scenario_source_sha256": "51080fd635fbc57dab266f885187d8db8ba8f466215926a1257c260732ea3aaf",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "beam_pose": [
+        0.024822934742697367,
+        -1.2030217712397293,
+        2.824922396132496
+      ],
+      "spawns": {
+        "r1": [
+          -0.7384232334926055,
+          -2.7835647952468596,
+          0.032355118817659255,
+          0.35515343360171925
+        ],
+        "r2": [
+          -0.8399529522549353,
+          -1.502450014128343,
+          0.032355118817659255,
+          0.33332974254270353
+        ],
+        "r3": [
+          0.8803036322533455,
+          -2.1140567558161747,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "near_own",
+      "initial_pan": {
+        "r1": 1675,
+        "r2": 1634
+      },
+      "initial_scene_context": "cargo_v6: same spawns/beam/pan; tile/can replaced with authored boxes",
+      "visible_start": true,
+      "proposal_attempts": 4,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 1,
+      "cargo_scene": "cargo_v6",
+      "comparison_parent_scenario": "s6_novel_relation_v4"
+    },
+    {
+      "episode_id": "development-8312206",
+      "batch": "grasp-act-development-8312200",
+      "seed": 8312206,
+      "split": "development",
+      "scenario_id": "s1_normal_mixed_v6",
+      "scenario_source_sha256": "60658759233af5b76d1556e376d4f058d759291200574aea150777165e764db1",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        1.1862387282222528,
+        0.4760711070730115,
+        3.5059918291378875
+      ],
+      "spawns": {
+        "r1": [
+          0.9496643304749963,
+          -0.4770737323801941,
+          0.032355118817659255,
+          1.9195972517983375
+        ],
+        "r2": [
+          0.7442968275397039,
+          0.30749958984339165,
+          0.032355118817659255,
+          0.3643991755480943
+        ],
+        "r3": [
+          0.1761655794541639,
+          0.8306940981395061,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "other_end",
+      "initial_pan": {
+        "r1": 757,
+        "r2": 2160
+      },
+      "initial_scene_context": "cargo_v6: same spawns/beam/pan; tile/can replaced with authored boxes",
+      "visible_start": true,
+      "proposal_attempts": 8,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 0,
+      "cargo_scene": "cargo_v6",
+      "comparison_parent_scenario": "s1_normal_mixed_v4"
+    },
+    {
+      "episode_id": "development-8312207",
+      "batch": "grasp-act-development-8312200",
+      "seed": 8312207,
+      "split": "development",
+      "scenario_id": "s3_late_rendezvous_v6",
+      "scenario_source_sha256": "94d65065ed819bee3ccb68050bef5d5cc560b416b5db8acf5ba8b3a7ec8154ef",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        -0.165793782910858,
+        -0.32208614423350745,
+        4.103565501696701
+      ],
+      "spawns": {
+        "r1": [
+          -0.11237540705336257,
+          -1.9215208726656632,
+          0.032355118817659255,
+          1.8965771322618552
+        ],
+        "r2": [
+          -0.2640239144873903,
+          0.530170562632044,
+          0.032355118817659255,
+          -1.4560438319342839
+        ],
+        "r3": [
+          2.9761469755391383,
+          1.140261408059232,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "approaching",
+      "initial_pan": {
+        "r1": 1309,
+        "r2": 982
+      },
+      "initial_scene_context": "cargo_v6: same spawns/beam/pan; tile/can replaced with authored boxes",
+      "visible_start": true,
+      "proposal_attempts": 1,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 0,
+      "cargo_scene": "cargo_v6",
+      "comparison_parent_scenario": "s3_late_rendezvous_v4"
+    },
+    {
+      "episode_id": "development-8312208",
+      "batch": "grasp-act-development-8312200",
+      "seed": 8312208,
+      "split": "development",
+      "scenario_id": "s6_novel_relation_v6",
+      "scenario_source_sha256": "51080fd635fbc57dab266f885187d8db8ba8f466215926a1257c260732ea3aaf",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "beam_pose": [
+        0.6767968813337224,
+        -1.8251445759136637,
+        4.434119954394446
+      ],
+      "spawns": {
+        "r1": [
+          0.25476964319399364,
+          -2.210433689036414,
+          0.032355118817659255,
+          0.6183177864134098
+        ],
+        "r2": [
+          0.4095076696531149,
+          -1.139534262638386,
+          0.032355118817659255,
+          -1.1990653527851411
+        ],
+        "r3": [
+          2.4062527066591177,
+          -2.369274144990266,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "near_own",
+      "initial_pan": {
+        "r1": 2462,
+        "r2": 2452
+      },
+      "initial_scene_context": "cargo_v6: same spawns/beam/pan; tile/can replaced with authored boxes",
+      "visible_start": true,
+      "proposal_attempts": 3,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 0,
+      "cargo_scene": "cargo_v6",
+      "comparison_parent_scenario": "s6_novel_relation_v4"
+    },
+    {
+      "episode_id": "development-8312209",
+      "batch": "grasp-act-development-8312200",
+      "seed": 8312209,
+      "split": "development",
+      "scenario_id": "s1_normal_mixed_v6",
+      "scenario_source_sha256": "60658759233af5b76d1556e376d4f058d759291200574aea150777165e764db1",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        1.6157854945621435,
+        0.2994746392800418,
+        4.855433592500833
+      ],
+      "spawns": {
+        "r1": [
+          1.9609345156462086,
+          0.7779608942039975,
+          0.032355118817659255,
+          -2.76795621772306
+        ],
+        "r2": [
+          1.5483558978831087,
+          0.7676436787216763,
+          0.032355118817659255,
+          -1.4277517146787535
+        ],
+        "r3": [
+          4.620975995558188,
+          -0.33880195484228004,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "other_end",
+      "initial_pan": {
+        "r1": 899,
+        "r2": 1427
+      },
+      "initial_scene_context": "cargo_v6: same spawns/beam/pan; tile/can replaced with authored boxes",
+      "visible_start": true,
+      "proposal_attempts": 2,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 0,
+      "cargo_scene": "cargo_v6",
+      "comparison_parent_scenario": "s1_normal_mixed_v4"
+    },
+    {
+      "episode_id": "development-8312210",
+      "batch": "grasp-act-development-8312200",
+      "seed": 8312210,
+      "split": "development",
+      "scenario_id": "s3_late_rendezvous_v6",
+      "scenario_source_sha256": "94d65065ed819bee3ccb68050bef5d5cc560b416b5db8acf5ba8b3a7ec8154ef",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        -0.02654360166014058,
+        -2.6117971012782184,
+        5.6252080990619575
+      ],
+      "spawns": {
+        "r1": [
+          0.9095744447810653,
+          -2.752163844303874,
+          0.032355118817659255,
+          3.288616810653611
+        ],
+        "r2": [
+          -0.2635108642627198,
+          -1.5013756884674097,
+          0.032355118817659255,
+          -1.360547105415455
+        ],
+        "r3": [
+          3.699693975375015,
+          0.16035146259446043,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "approaching",
+      "initial_pan": {
+        "r1": 969,
+        "r2": 2297
+      },
+      "initial_scene_context": "cargo_v6: same spawns/beam/pan; tile/can replaced with authored boxes",
+      "visible_start": true,
+      "proposal_attempts": 3,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 0,
+      "cargo_scene": "cargo_v6",
+      "comparison_parent_scenario": "s3_late_rendezvous_v4"
+    },
+    {
+      "episode_id": "development-8312211",
+      "batch": "grasp-act-development-8312200",
+      "seed": 8312211,
+      "split": "development",
+      "scenario_id": "s6_novel_relation_v6",
+      "scenario_source_sha256": "51080fd635fbc57dab266f885187d8db8ba8f466215926a1257c260732ea3aaf",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "beam_pose": [
+        0.04061846954265286,
+        -0.36184280956645365,
+        5.929544960398743
+      ],
+      "spawns": {
+        "r1": [
+          -0.7514252452724259,
+          -0.11372579914807104,
+          0.032355118817659255,
+          -0.27793756781596013
+        ],
+        "r2": [
+          0.9692836939265477,
+          -0.07827299719315417,
+          0.032355118817659255,
+          -2.845233000370636
+        ],
+        "r3": [
+          3.5281365786099035,
+          -1.9812111791493545,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "near_own",
+      "initial_pan": {
+        "r1": 1130,
+        "r2": 1829
+      },
+      "initial_scene_context": "cargo_v6: same spawns/beam/pan; tile/can replaced with authored boxes",
+      "visible_start": true,
+      "proposal_attempts": 2,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 0,
+      "cargo_scene": "cargo_v6",
+      "comparison_parent_scenario": "s6_novel_relation_v4"
+    }
+  ],
+  "rejected_proposals": {
+    "beam_other_cargo": 12,
+    "robot_wall": 15,
+    "robot_other_cargo": 2,
+    "robot_overlap": 2,
+    "start_nominal_goal_blocked": 1,
+    "start_wall_blocks_end": 1
+  },
+  "distribution": {
+    "beam_yaw_deg": [
+      0,
+      360
+    ],
+    "robot_center_distance_m": [
+      0.5,
+      2.0
+    ],
+    "robot_axis_bearing_deg": [
+      0,
+      360
+    ],
+    "robot_heading_error_deg": [
+      -60,
+      60
+    ],
+    "initial_pan_pwm": [
+      500,
+      2500
+    ],
+    "ends": "50:50 by index",
+    "fixed": [
+      "floor_light_v1",
+      "camera review v3",
+      "native v7",
+      "cargo_noslip_v1",
+      "weld off"
+    ],
+    "start_visibility": "static wall must not block the line from each spawn to its assigned end (episode generation only)",
+    "limits": "static rejection alters accepted strata; accepted plan is the source of actual coverage. Intermediate placed objects and moving work peers are a later collection stage.",
+    "start_nominal_goal_feasible": "both assigned nominal goals must clear static walls/bounds; exclusions and original-plan fraction in nominal_goal_filter"
+  },
+  "criteria": {
+    "teacher_target_rate": 0.95,
+    "minimum_episodes": 40,
+    "single_end": "bilateral >=0.5N each and end rise >=12mm for >=1s",
+    "pair": "both bilateral + whole beam lower surface >=12mm above floor for >=1s",
+    "first_attempt": "no teacher regrasp in this gate",
+    "phase_cap_s": 60,
+    "episode_cap_s": 60,
+    "target_pair_sim_s": 40
+  },
+  "stage_order": [
+    "long_beam",
+    "solo boxes/can/tile grasp and release",
+    "heavy_crate",
+    "tri_frame"
+  ],
+  "student_evaluation": false,
+  "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+  "nominal_goal_filter": {
+    "mode": "start_nominal_goal_feasible_v1",
+    "original_planned_N": 12,
+    "original_blocked_n": 1,
+    "original_blocked_rate": 0.08333333333333333,
+    "original_blocked_starts": [
+      {
+        "seed": 8312205,
+        "roles": [
+          "r2"
+        ]
+      }
+    ],
+    "original_episodes_sha256": "11abc7a748f7e49d55b661de6a2798dc4605a048c3eba27960f7a80fd6868949",
+    "accepted_N": 12,
+    "rejected_proposals_n": 1,
+    "nominal_tested_proposals_N": 13,
+    "rejected_proposals_rate": 0.07692307692307693,
+    "all_proposals_N": 45,
+    "criterion": "same nominal_goal_blocked(static_map_only=True), folded planner clearance; walls/bounds only",
+    "scope": "map-to-teacher handoff distribution; excludes static-blocked nominal stances, not a wide-start gate; no physical outcomes used"
+  },
+  "purpose": "search20 unexecuted local-novel diagnostic seeds N=12; remote reservation unverified",
+  "recording": false
+}

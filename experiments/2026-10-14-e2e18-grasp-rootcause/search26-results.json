@@ -1,0 +1,336 @@
+{
+  "schema": "ugrp.search26.summary.v1",
+  "source_sha": "f92b07aa869dc3b960d22adb69c01f2b9b8c9eeb",
+  "baseline_source_sha": "1effa9b266b44ac716b9808b95eb6aa938e42702",
+  "rounds_used": 1,
+  "rounds_authorized_max": 3,
+  "n": 4,
+  "N": 6,
+  "HOST_ERROR_N": 0,
+  "cap_end_N": 1,
+  "decision": "SHORT6_THRESHOLD_MET; PREPARED_REVIEW_ONLY_32; RESIDUAL_FAILURES_REMAIN",
+  "raw": "/home/ugrp/ugrp-sim/runs/search26-r1-short6-f92b07aa",
+  "raw_manifest_sha256": "fb914351b2acd9468a3a4411ea79ea92c233af1567f98fcf583fdb7a73329857",
+  "remote_full_manifest_verified": true,
+  "retrieved_artifacts_verified_N": 30,
+  "montages_directly_reviewed": 6,
+  "failed_own_frames_retrieved": 24,
+  "invisible_measurements": 0,
+  "held_world_reads": 0,
+  "audits_enabled_N": 6,
+  "first30_recorded_N": 4,
+  "first30_median_wall_per_sim": 4.026385614941866,
+  "whole_run_median_wall_per_sim": 4.372230522691247,
+  "first30_limitations": "two successful episodes finish before 30 SIM seconds; not complete six-way first30 evidence; planned16 unmeasured",
+  "rejections": {
+    "current_geometry": 21944,
+    "endpoint_feasible": 431,
+    "feasible": 11
+  },
+  "connector_predicted_visibility_rejections": 0,
+  "unit_tests_passed": 23,
+  "validation_detail": "22 pre-run tests plus one additional negative connector-cache regression; new search26 test file 7/7 after retrieval",
+  "shared_settle_pulse_sha256": "a7167d2bae2b10dc93c02f84e0c5563b48241f6d996825e8b88eadd1bff7fc09",
+  "shared_module_origin": "097e53da:sim/settle_pulse.py (unchanged bytes)",
+  "rejection_table": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/experiments/2026-10-14-e2e18-grasp-rootcause/search26-r1-rejection-table.json",
+  "queue": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-grasp-search26-f92b07aa-diag.json",
+  "queue_source_sha": "f92b07aa869dc3b960d22adb69c01f2b9b8c9eeb",
+  "queue_N": 32,
+  "queue_max_parallel": 16,
+  "queue_submitted": false,
+  "source_and_test_scope": "Mac nonphysics only; GCP simulation only; no model, training RGB, ACT training, physical hardware, merge",
+  "rows": [
+    {
+      "episode": "episode-000",
+      "seed": 8311709,
+      "scene": "off",
+      "status": "complete",
+      "success": true,
+      "sim_s": 39.30000000010505,
+      "wall_s": 200.1557811550001,
+      "cap_end": false,
+      "end_reason": "teacher_terminal",
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1436,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "first30_speed": {
+        "sim_s": 30.00000000006064,
+        "wall_s": 138.58168093299992,
+        "scope": "first 30 SIM seconds including initialization; recording only",
+        "wall_per_sim": 4.619389364423993
+      },
+      "rejections": {
+        "current_geometry": 7748,
+        "endpoint_feasible": 164,
+        "feasible": 5
+      },
+      "reasons": {
+        "blocked_goal": 5083,
+        "endpoint_feasible": 164,
+        "feasible": 5,
+        "unsafe_body_sweep": 2665
+      },
+      "blockers": {
+        "tile_1": 7752,
+        "none:endpoint_feasible": 164,
+        "none:feasible": 1
+      },
+      "grid_status": {
+        "found": 100
+      },
+      "planning_compute": {
+        "ticks": 788,
+        "exhausted": 0
+      },
+      "missing_rejection_evidence": 0,
+      "decoded_result_sha256": "6df2c62807dd633816c3290727d21d936581b72a21c426c3c64cc77c27241eb8"
+    },
+    {
+      "episode": "episode-001",
+      "seed": 315709,
+      "scene": "cargo_v6",
+      "status": "complete",
+      "success": false,
+      "sim_s": 37.100000000094546,
+      "wall_s": 156.3713125690001,
+      "cap_end": true,
+      "end_reason": "planning_wall_safety_cap",
+      "outcomes": {
+        "r1": null,
+        "r2": null
+      },
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1541,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "first30_speed": {
+        "sim_s": 30.00000000006064,
+        "wall_s": 109.29565368000021,
+        "scope": "first 30 SIM seconds including initialization; recording only",
+        "wall_per_sim": 3.643188455992643
+      },
+      "rejections": {
+        "endpoint_feasible": 51,
+        "current_geometry": 39,
+        "feasible": 1
+      },
+      "reasons": {
+        "endpoint_feasible": 51,
+        "blocked_retreat": 13,
+        "blocked_goal": 26,
+        "feasible": 1
+      },
+      "blockers": {
+        "none:endpoint_feasible": 51,
+        "yellow_1": 40
+      },
+      "grid_status": {
+        "found": 13,
+        "no_path": 1
+      },
+      "planning_compute": {
+        "ticks": 742,
+        "exhausted": 0
+      },
+      "missing_rejection_evidence": 0,
+      "decoded_result_sha256": "240f04118c18ecda8e5a393cf8d56e715fe3671a8de747b3a7207c858ca76630"
+    },
+    {
+      "episode": "episode-002",
+      "seed": 315709,
+      "scene": "off",
+      "status": "complete",
+      "success": false,
+      "sim_s": 42.50000000012033,
+      "wall_s": 194.77373943100065,
+      "cap_end": false,
+      "end_reason": "teacher_terminal",
+      "outcomes": {
+        "r1": "approach_blocked_handoff",
+        "r2": "peer_approach_handoff"
+      },
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1726,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "first30_speed": {
+        "sim_s": 30.00000000006064,
+        "wall_s": 106.1864886680005,
+        "scope": "first 30 SIM seconds including initialization; recording only",
+        "wall_per_sim": 3.5395496222595284
+      },
+      "rejections": {
+        "endpoint_feasible": 51,
+        "current_geometry": 10231,
+        "feasible": 1
+      },
+      "reasons": {
+        "endpoint_feasible": 51,
+        "blocked_goal": 4407,
+        "feasible": 1,
+        "unsafe_body_sweep": 5824
+      },
+      "blockers": {
+        "none:endpoint_feasible": 51,
+        "can_1": 4408,
+        "band_blue": 5824
+      },
+      "grid_status": {
+        "found": 9,
+        "no_path": 41
+      },
+      "planning_compute": {
+        "ticks": 852,
+        "exhausted": 0
+      },
+      "missing_rejection_evidence": 0,
+      "decoded_result_sha256": "d94387006c27627e7625292bea7c6205fec71356a487e005bb93cbc03facbb1e"
+    },
+    {
+      "episode": "episode-003",
+      "seed": 8311709,
+      "scene": "cargo_v6",
+      "status": "complete",
+      "success": true,
+      "sim_s": 36.20000000009025,
+      "wall_s": 163.9715514339996,
+      "cap_end": false,
+      "end_reason": "teacher_terminal",
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1326,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "first30_speed": {
+        "sim_s": 30.00000000006064,
+        "wall_s": 132.28748321700004,
+        "scope": "first 30 SIM seconds including initialization; recording only",
+        "wall_per_sim": 4.409582773891088
+      },
+      "rejections": {
+        "current_geometry": 3926,
+        "endpoint_feasible": 165,
+        "feasible": 4
+      },
+      "reasons": {
+        "blocked_goal": 2327,
+        "endpoint_feasible": 165,
+        "feasible": 4,
+        "unsafe_body_sweep": 1599
+      },
+      "blockers": {
+        "red_2": 3930,
+        "none:endpoint_feasible": 165
+      },
+      "grid_status": {
+        "found": 59
+      },
+      "planning_compute": {
+        "ticks": 726,
+        "exhausted": 0
+      },
+      "missing_rejection_evidence": 0,
+      "decoded_result_sha256": "f53e683f5ee12834db288c6bf1da6f2d35ec42e42d803da80570fee8952fdbc2"
+    },
+    {
+      "episode": "episode-004",
+      "seed": 8312300,
+      "scene": "off",
+      "status": "complete",
+      "success": true,
+      "sim_s": 22.50000000002483,
+      "wall_s": 61.47710246399947,
+      "cap_end": false,
+      "end_reason": "teacher_terminal",
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 645,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "first30_speed": null,
+      "rejections": {},
+      "reasons": {},
+      "blockers": {},
+      "grid_status": {},
+      "planning_compute": {
+        "ticks": 452,
+        "exhausted": 0
+      },
+      "missing_rejection_evidence": 0,
+      "decoded_result_sha256": "9bc692e5baa7b34d15db5ff64d5b30d570fcd78a6cf8f766c5b8eee705fd97f1"
+    },
+    {
+      "episode": "episode-005",
+      "seed": 8312301,
+      "scene": "off",
+      "status": "complete",
+      "success": true,
+      "sim_s": 25.800000000040587,
+      "wall_s": 66.53692049700021,
+      "cap_end": false,
+      "end_reason": "teacher_terminal",
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 842,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "first30_speed": null,
+      "rejections": {},
+      "reasons": {},
+      "blockers": {},
+      "grid_status": {},
+      "planning_compute": {
+        "ticks": 518,
+        "exhausted": 0
+      },
+      "missing_rejection_evidence": 0,
+      "decoded_result_sha256": "94a3c170b777495b5d011cc832312e18a1254279a64043ef9a645b0e427045b0"
+    }
+  ],
+  "remaining": [
+    "315709 cargo_v6 planning_wall_safety_cap at 37.1 SIM seconds; cap_end is not HOST_ERROR",
+    "315709 base approach_blocked_handoff at 42.5 SIM seconds; actual body pulse blocked by band_blue",
+    "no 32-run execution, teacher gate40, recording, ACT training or default promotion"
+  ],
+  "cleanup": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/experiments/2026-10-14-e2e18-grasp-rootcause/search26-cleanup.json",
+  "detail_reproduce": "PYTHONPATH=. .venv-sim/bin/python /home/ugrp/ugrp-sim/outputs/search26-review.py /home/ugrp/ugrp-sim/runs/search26-r1-short6-f92b07aa /home/ugrp/ugrp-sim/outputs/search26-r1-report/detail.json",
+  "review_script_sha256": "8aca235adc4d9bd754423c5e4fb0def60bf5b7135f69f4fc0ff2a4ff9742543b"
+}

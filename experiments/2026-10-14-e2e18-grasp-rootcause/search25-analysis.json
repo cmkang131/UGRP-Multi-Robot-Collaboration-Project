@@ -1,0 +1,860 @@
+{
+  "schema": "ugrp.search25.analysis.v1",
+  "source_sha": "ec8752a1e72d9a1bd1c01c0a292467e75039e75b",
+  "raw_root": "/home/ugrp/ugrp-sim/runs/search24-r2-short6-ec8752a1",
+  "reproduce": ".venv-sim/bin/python -m scripts.analyze_grasp_act_search25 /home/ugrp/ugrp-sim/runs/search24-r2-short6-ec8752a1 --out /home/ugrp/ugrp-sim/outputs/search25-analysis-v2",
+  "categories": {
+    "current_geometry": 26273,
+    "endpoint_feasible": 983,
+    "feasible": 28,
+    "memory_margin": 14079,
+    "connector_connector_band_not_visible": 1383,
+    "planning_budget": 24
+  },
+  "obstacle_occurrences": {
+    "current_geometry|tile_1": 9893,
+    "memory_margin|can_1": 5109,
+    "memory_margin|tile_1": 2730,
+    "current_geometry|red_2": 9646,
+    "memory_margin|yellow_1": 3276,
+    "memory_margin|red_2": 2691,
+    "current_geometry|yellow_1": 2392,
+    "memory_margin|r2": 273,
+    "connector_connector_band_not_visible|camera_view_cone": 16776,
+    "current_geometry|can_1": 4342
+  },
+  "physical_decomposition_occurrences": {
+    "overlap": 22477,
+    "fresh_inflation": 1352,
+    "remembered_inflation": 16523
+  },
+  "episodes": [
+    {
+      "episode": "episode-000",
+      "seed": 8311709,
+      "cargo_scene": "off",
+      "success": false,
+      "raw": "/home/ugrp/ugrp-sim/runs/search24-r2-short6-ec8752a1/diagnostic/episode-000/raw",
+      "categories": {
+        "current_geometry": 9893,
+        "endpoint_feasible": 86,
+        "feasible": 5,
+        "memory_margin": 3848
+      },
+      "obstacle_occurrences": {
+        "current_geometry|tile_1": 9893,
+        "memory_margin|can_1": 1118,
+        "memory_margin|tile_1": 2730
+      },
+      "physical_decomposition_occurrences": {
+        "overlap": 7904,
+        "fresh_inflation": 611,
+        "remembered_inflation": 5226
+      },
+      "unique_rid_tick_candidate_obstacle": 7280,
+      "memory": {
+        "can_1": {
+          "N_obstacle_occurrences": 1118,
+          "max_age_s": 6.699999999986161,
+          "min_gap_m": 0.16508718412327716,
+          "max_required_margin_m": 0.16664741108138892
+        },
+        "tile_1": {
+          "N_obstacle_occurrences": 9620,
+          "max_age_s": 3.2000000000152795,
+          "min_gap_m": -0.041551333764994126,
+          "max_required_margin_m": 0.03683182065450692
+        }
+      },
+      "geometry_samples": [
+        {
+          "rid": "r1",
+          "t": 1.8000000000001848,
+          "N": 91,
+          "zero_free": 39,
+          "zero_static_free": 39,
+          "current_free": 26,
+          "arm_and_retreat_zero_free": 39,
+          "best_gap_m": 0.035329108784717955,
+          "zero_blockers": {
+            "tile_1": 52
+          },
+          "target_to_cargo_surface_m": 0.18243668280530792,
+          "target_to_wall_m": 1.1219767630140156,
+          "target_to_peers_m": {
+            "r2": 0.7429152120954894,
+            "r3": 1.9082825211495784
+          }
+        },
+        {
+          "rid": "r2",
+          "t": 1.8000000000001848,
+          "N": 91,
+          "zero_free": 91,
+          "zero_static_free": 91,
+          "current_free": 91,
+          "arm_and_retreat_zero_free": 91,
+          "best_gap_m": 0.0967,
+          "zero_blockers": {},
+          "target_to_cargo_surface_m": 0.7028932580881758,
+          "target_to_wall_m": 1.2626652757600005,
+          "target_to_peers_m": {
+            "r1": 1.10352532819118,
+            "r3": 1.4418976026137538
+          }
+        },
+        {
+          "rid": "r1",
+          "t": 5.7000000000012205,
+          "N": 91,
+          "zero_free": 39,
+          "zero_static_free": 39,
+          "current_free": 13,
+          "arm_and_retreat_zero_free": null,
+          "best_gap_m": 0.035329108783875546,
+          "zero_blockers": {
+            "tile_1": 52
+          },
+          "target_to_cargo_surface_m": 0.18243668280245573,
+          "target_to_wall_m": 1.1219767630131838,
+          "target_to_peers_m": {
+            "r2": 0.7427860349190514,
+            "r3": 1.9082849148795575
+          }
+        },
+        {
+          "rid": "r2",
+          "t": 5.7000000000012205,
+          "N": 91,
+          "zero_free": 91,
+          "zero_static_free": 91,
+          "current_free": 91,
+          "arm_and_retreat_zero_free": null,
+          "best_gap_m": 0.0966999999968537,
+          "zero_blockers": {},
+          "target_to_cargo_surface_m": 0.702893258084953,
+          "target_to_wall_m": 1.2626652757589611,
+          "target_to_peers_m": {
+            "r1": 1.1323234008742515,
+            "r3": 1.4419018557288232
+          }
+        },
+        {
+          "rid": "r1",
+          "t": 26.400000000035043,
+          "N": 91,
+          "zero_free": 39,
+          "zero_static_free": 39,
+          "current_free": 0,
+          "arm_and_retreat_zero_free": null,
+          "best_gap_m": 0.03532910878387571,
+          "zero_blockers": {
+            "tile_1": 52
+          },
+          "target_to_cargo_surface_m": 0.1824366828024567,
+          "target_to_wall_m": 1.1219767630131843,
+          "target_to_peers_m": {
+            "r2": 0.7427599679007747,
+            "r3": 1.9082422650630495
+          }
+        },
+        {
+          "rid": "r2",
+          "t": 26.400000000035043,
+          "N": 91,
+          "zero_free": 91,
+          "zero_static_free": 91,
+          "current_free": 91,
+          "arm_and_retreat_zero_free": null,
+          "best_gap_m": 0.09669999999685479,
+          "zero_blockers": {},
+          "target_to_cargo_surface_m": 0.7028932580849542,
+          "target_to_wall_m": 1.2626652757589616,
+          "target_to_peers_m": {
+            "r1": 0.6757501590678083,
+            "r3": 1.4418703316754464
+          }
+        }
+      ],
+      "decoded_sha256": {
+        "result.json": "386ec1ee544b7644f725c303e9263d095361410524d21f83599562968e691c97",
+        "eval-only.jsonl": "fd30fd9c1de78bbfdc7fd1d976698ce1c39439e07c3bc66db9c951f15c5dfa09",
+        "plan.json": "053c3985ad07caa120e605e199fed726bec2d33e35f46ecdceb634a026251cd8"
+      }
+    },
+    {
+      "episode": "episode-001",
+      "seed": 8311709,
+      "cargo_scene": "cargo_v6",
+      "success": false,
+      "raw": "/home/ugrp/ugrp-sim/runs/search24-r2-short6-ec8752a1/diagnostic/episode-001/raw",
+      "categories": {
+        "current_geometry": 9646,
+        "endpoint_feasible": 99,
+        "feasible": 5,
+        "memory_margin": 3809
+      },
+      "obstacle_occurrences": {
+        "current_geometry|red_2": 9646,
+        "memory_margin|yellow_1": 1118,
+        "memory_margin|red_2": 2691
+      },
+      "physical_decomposition_occurrences": {
+        "overlap": 8515,
+        "fresh_inflation": 598,
+        "remembered_inflation": 4342
+      },
+      "unique_rid_tick_candidate_obstacle": 7085,
+      "memory": {
+        "yellow_1": {
+          "N_obstacle_occurrences": 1118,
+          "max_age_s": 6.499999999985916,
+          "min_gap_m": 0.1678736311414215,
+          "max_required_margin_m": 0.16918188917885266
+        },
+        "red_2": {
+          "N_obstacle_occurrences": 9347,
+          "max_age_s": 3.300000000015757,
+          "min_gap_m": -0.035740852297878795,
+          "max_required_margin_m": 0.042276714039843385
+        }
+      },
+      "geometry_samples": [
+        {
+          "rid": "r1",
+          "t": 1.8000000000001848,
+          "N": 91,
+          "zero_free": 39,
+          "zero_static_free": 39,
+          "current_free": 39,
+          "arm_and_retreat_zero_free": 39,
+          "best_gap_m": 0.04513581204198491,
+          "zero_blockers": {
+            "red_2": 52
+          },
+          "target_to_cargo_surface_m": 0.1922433860619918,
+          "target_to_wall_m": 1.1219767630140156,
+          "target_to_peers_m": {
+            "r2": 0.7429141979681777,
+            "r3": 1.9082835161605605
+          }
+        },
+        {
+          "rid": "r2",
+          "t": 1.8000000000001848,
+          "N": 91,
+          "zero_free": 91,
+          "zero_static_free": 91,
+          "current_free": 91,
+          "arm_and_retreat_zero_free": 91,
+          "best_gap_m": 0.0967,
+          "zero_blockers": {},
+          "target_to_cargo_surface_m": 0.7126999613448196,
+          "target_to_wall_m": 1.2626652757600005,
+          "target_to_peers_m": {
+            "r1": 1.1035329630405437,
+            "r3": 1.441898548685166
+          }
+        },
+        {
+          "rid": "r1",
+          "t": 5.7000000000012205,
+          "N": 91,
+          "zero_free": 39,
+          "zero_static_free": 39,
+          "current_free": 26,
+          "arm_and_retreat_zero_free": null,
+          "best_gap_m": 0.04513581204175218,
+          "zero_blockers": {
+            "red_2": 52
+          },
+          "target_to_cargo_surface_m": 0.19224338605963318,
+          "target_to_wall_m": 1.1219767630131838,
+          "target_to_peers_m": {
+            "r2": 0.7428094703307512,
+            "r3": 1.9082858525437678
+          }
+        },
+        {
+          "rid": "r2",
+          "t": 5.7000000000012205,
+          "N": 91,
+          "zero_free": 91,
+          "zero_static_free": 91,
+          "current_free": 91,
+          "arm_and_retreat_zero_free": null,
+          "best_gap_m": 0.0966999999968537,
+          "zero_blockers": {},
+          "target_to_cargo_surface_m": 0.7126999613419279,
+          "target_to_wall_m": 1.2626652757589611,
+          "target_to_peers_m": {
+            "r1": 1.1324074939866229,
+            "r3": 1.441902757130972
+          }
+        },
+        {
+          "rid": "r1",
+          "t": 25.900000000032655,
+          "N": 91,
+          "zero_free": 39,
+          "zero_static_free": 39,
+          "current_free": 0,
+          "arm_and_retreat_zero_free": null,
+          "best_gap_m": 0.045135812042121026,
+          "zero_blockers": {
+            "red_2": 52
+          },
+          "target_to_cargo_surface_m": 0.19224338606006416,
+          "target_to_wall_m": 1.1219767630131843,
+          "target_to_peers_m": {
+            "r2": 0.7427619570237161,
+            "r3": 1.9082433281192273
+          }
+        },
+        {
+          "rid": "r2",
+          "t": 25.900000000032655,
+          "N": 91,
+          "zero_free": 91,
+          "zero_static_free": 91,
+          "current_free": 91,
+          "arm_and_retreat_zero_free": null,
+          "best_gap_m": 0.09669999999685545,
+          "zero_blockers": {},
+          "target_to_cargo_surface_m": 0.7126999613422967,
+          "target_to_wall_m": 1.2626652757589616,
+          "target_to_peers_m": {
+            "r1": 0.6725376106532809,
+            "r3": 1.441872962772813
+          }
+        }
+      ],
+      "decoded_sha256": {
+        "result.json": "4048ce7edcb69713e97c3cb806513befe76416cf32359c1a5185d7a451f0a74b",
+        "eval-only.jsonl": "702971838422872be4d02d85123c8d3e32cff377b3ae97aae1093b9353c80894",
+        "plan.json": "098c3b3d8325efc30f9bb870db06a046606cc03dcf6a5f6a7dd1fed58c7c1c7a"
+      }
+    },
+    {
+      "episode": "episode-002",
+      "seed": 315709,
+      "cargo_scene": "cargo_v6",
+      "success": false,
+      "raw": "/home/ugrp/ugrp-sim/runs/search24-r2-short6-ec8752a1/diagnostic/episode-002/raw",
+      "categories": {
+        "current_geometry": 2392,
+        "endpoint_feasible": 442,
+        "feasible": 10,
+        "memory_margin": 2431,
+        "connector_connector_band_not_visible": 3
+      },
+      "obstacle_occurrences": {
+        "current_geometry|yellow_1": 2392,
+        "memory_margin|r2": 273,
+        "connector_connector_band_not_visible|camera_view_cone": 36,
+        "memory_margin|yellow_1": 2158
+      },
+      "physical_decomposition_occurrences": {
+        "fresh_inflation": 130,
+        "overlap": 2249,
+        "remembered_inflation": 2444
+      },
+      "unique_rid_tick_candidate_obstacle": 2733,
+      "memory": {
+        "r2": {
+          "N_obstacle_occurrences": 273,
+          "max_age_s": 1.900000000002322,
+          "min_gap_m": 0.21706770915247006,
+          "max_required_margin_m": 0.30283725413140067
+        },
+        "yellow_1": {
+          "N_obstacle_occurrences": 3796,
+          "max_age_s": 3.700000000013402,
+          "min_gap_m": -0.035740852297878795,
+          "max_required_margin_m": 0.08779742184239506
+        }
+      },
+      "geometry_samples": [
+        {
+          "rid": "r1",
+          "t": 1.8000000000001848,
+          "N": 91,
+          "zero_free": 65,
+          "zero_static_free": 65,
+          "current_free": 52,
+          "arm_and_retreat_zero_free": 65,
+          "best_gap_m": 0.09153447727566658,
+          "zero_blockers": {
+            "yellow_1": 26
+          },
+          "target_to_cargo_surface_m": 0.26832098730908915,
+          "target_to_wall_m": 1.2470238126204312,
+          "target_to_peers_m": {
+            "r2": 0.7427830308849787,
+            "r3": 2.583110931222318
+          }
+        },
+        {
+          "rid": "r2",
+          "t": 1.8000000000001848,
+          "N": 91,
+          "zero_free": 91,
+          "zero_static_free": 91,
+          "current_free": 91,
+          "arm_and_retreat_zero_free": 91,
+          "best_gap_m": 0.09670000000000002,
+          "zero_blockers": {},
+          "target_to_cargo_surface_m": 0.7870262188765027,
+          "target_to_wall_m": 1.1531970878484452,
+          "target_to_peers_m": {
+            "r1": 0.6678394767495197,
+            "r3": 2.6995337434653917
+          }
+        },
+        {
+          "rid": "r1",
+          "t": 6.100000000001709,
+          "N": 91,
+          "zero_free": 65,
+          "zero_static_free": 65,
+          "current_free": 52,
+          "arm_and_retreat_zero_free": null,
+          "best_gap_m": 0.09153447727650901,
+          "zero_blockers": {
+            "yellow_1": 26
+          },
+          "target_to_cargo_surface_m": 0.26832098731198434,
+          "target_to_wall_m": 1.2470238126198656,
+          "target_to_peers_m": {
+            "r2": 0.7427545379159548,
+            "r3": 2.5831239675747537
+          }
+        },
+        {
+          "rid": "r2",
+          "t": 6.100000000001709,
+          "N": 91,
+          "zero_free": 91,
+          "zero_static_free": 91,
+          "current_free": 91,
+          "arm_and_retreat_zero_free": null,
+          "best_gap_m": 0.09670000000325533,
+          "zero_blockers": {},
+          "target_to_cargo_surface_m": 0.7870262188797119,
+          "target_to_wall_m": 1.1531970878478797,
+          "target_to_peers_m": {
+            "r1": 0.6989345710359137,
+            "r3": 2.699546660621766
+          }
+        },
+        {
+          "rid": "r1",
+          "t": 19.600000000002574,
+          "N": 91,
+          "zero_free": 65,
+          "zero_static_free": 65,
+          "current_free": 52,
+          "arm_and_retreat_zero_free": null,
+          "best_gap_m": 0.09153447727650915,
+          "zero_blockers": {
+            "yellow_1": 26
+          },
+          "target_to_cargo_surface_m": 0.26832098731198484,
+          "target_to_wall_m": 1.2470238126198654,
+          "target_to_peers_m": {
+            "r2": 0.7428284561725337,
+            "r3": 2.5832023472577386
+          }
+        },
+        {
+          "rid": "r2",
+          "t": 19.600000000002574,
+          "N": 91,
+          "zero_free": 91,
+          "zero_static_free": 91,
+          "current_free": 91,
+          "arm_and_retreat_zero_free": null,
+          "best_gap_m": 0.09670000000325597,
+          "zero_blockers": {},
+          "target_to_cargo_surface_m": 0.7870262188797125,
+          "target_to_wall_m": 1.1531970878478797,
+          "target_to_peers_m": {
+            "r1": 0.5276552218593122,
+            "r3": 2.6996358587753315
+          }
+        },
+        {
+          "rid": "r1",
+          "t": 22.10000000001451,
+          "N": 91,
+          "zero_free": 65,
+          "zero_static_free": 65,
+          "current_free": 52,
+          "arm_and_retreat_zero_free": null,
+          "best_gap_m": 0.0915344772765091,
+          "zero_blockers": {
+            "yellow_1": 26
+          },
+          "target_to_cargo_surface_m": 0.2683209873119846,
+          "target_to_wall_m": 1.2470238126198656,
+          "target_to_peers_m": {
+            "r2": 0.7428068861171033,
+            "r3": 2.583215824374795
+          }
+        },
+        {
+          "rid": "r2",
+          "t": 22.10000000001451,
+          "N": 91,
+          "zero_free": 91,
+          "zero_static_free": 91,
+          "current_free": 91,
+          "arm_and_retreat_zero_free": null,
+          "best_gap_m": 0.09670000000325575,
+          "zero_blockers": {},
+          "target_to_cargo_surface_m": 0.7870262188797122,
+          "target_to_wall_m": 1.1531970878478797,
+          "target_to_peers_m": {
+            "r1": 0.5276076022724494,
+            "r3": 2.699650091722729
+          }
+        }
+      ],
+      "decoded_sha256": {
+        "result.json": "9e4c93884dea0cba0a7aeb7c79ea70ae5a571e4ca47e7255cb9e8b47126ffce7",
+        "eval-only.jsonl": "78cd9bfe22b79580b2ea2c9f92ea2198d4ea9bc00d621a533beb9f5c92e5d2ff",
+        "plan.json": "33340f7c6b6386eeb7da2cea81df518b77bd51608daaa518bf8460392e87b731"
+      }
+    },
+    {
+      "episode": "episode-003",
+      "seed": 315709,
+      "cargo_scene": "off",
+      "success": false,
+      "raw": "/home/ugrp/ugrp-sim/runs/search24-r2-short6-ec8752a1/diagnostic/episode-003/raw",
+      "categories": {
+        "current_geometry": 4342,
+        "endpoint_feasible": 356,
+        "feasible": 8,
+        "memory_margin": 3991,
+        "connector_connector_band_not_visible": 1380,
+        "planning_budget": 24
+      },
+      "obstacle_occurrences": {
+        "current_geometry|can_1": 4342,
+        "memory_margin|can_1": 3991,
+        "connector_connector_band_not_visible|camera_view_cone": 16740
+      },
+      "physical_decomposition_occurrences": {
+        "fresh_inflation": 13,
+        "overlap": 3809,
+        "remembered_inflation": 4511
+      },
+      "unique_rid_tick_candidate_obstacle": 5187,
+      "memory": {
+        "can_1": {
+          "N_obstacle_occurrences": 8086,
+          "max_age_s": 5.600000000026739,
+          "min_gap_m": -0.03640063693621516,
+          "max_required_margin_m": 0.07486347380490214
+        }
+      },
+      "geometry_samples": [
+        {
+          "rid": "r1",
+          "t": 1.8000000000001848,
+          "N": 91,
+          "zero_free": 65,
+          "zero_static_free": 65,
+          "current_free": 52,
+          "arm_and_retreat_zero_free": 65,
+          "best_gap_m": 0.09091322908739115,
+          "zero_blockers": {
+            "can_1": 26
+          },
+          "target_to_cargo_surface_m": 0.2676997391208137,
+          "target_to_wall_m": 1.2470238126204312,
+          "target_to_peers_m": {
+            "r2": 0.7427592061626997,
+            "r3": 2.58311182439838
+          }
+        },
+        {
+          "rid": "r2",
+          "t": 1.8000000000001848,
+          "N": 91,
+          "zero_free": 91,
+          "zero_static_free": 91,
+          "current_free": 91,
+          "arm_and_retreat_zero_free": 91,
+          "best_gap_m": 0.09670000000000002,
+          "zero_blockers": {},
+          "target_to_cargo_surface_m": 0.7864049706882273,
+          "target_to_wall_m": 1.1531970878484452,
+          "target_to_peers_m": {
+            "r1": 0.6678385148225318,
+            "r3": 2.699534876212723
+          }
+        },
+        {
+          "rid": "r1",
+          "t": 8.100000000003797,
+          "N": 91,
+          "zero_free": 65,
+          "zero_static_free": 65,
+          "current_free": 52,
+          "arm_and_retreat_zero_free": null,
+          "best_gap_m": 0.09091322908823378,
+          "zero_blockers": {
+            "can_1": 26
+          },
+          "target_to_cargo_surface_m": 0.2676997391237096,
+          "target_to_wall_m": 1.2470238126198654,
+          "target_to_peers_m": {
+            "r2": 0.7421763557312329,
+            "r3": 2.583126036400273
+          }
+        },
+        {
+          "rid": "r2",
+          "t": 8.100000000003797,
+          "N": 91,
+          "zero_free": 91,
+          "zero_static_free": 91,
+          "current_free": 91,
+          "arm_and_retreat_zero_free": null,
+          "best_gap_m": 0.09670000000325611,
+          "zero_blockers": {},
+          "target_to_cargo_surface_m": 0.7864049706914373,
+          "target_to_wall_m": 1.1531970878478794,
+          "target_to_peers_m": {
+            "r1": 0.5318102295488767,
+            "r3": 2.6995487552544315
+          }
+        },
+        {
+          "rid": "r1",
+          "t": 23.900000000023105,
+          "N": 91,
+          "zero_free": 65,
+          "zero_static_free": 65,
+          "current_free": 13,
+          "arm_and_retreat_zero_free": null,
+          "best_gap_m": 0.09091322908823384,
+          "zero_blockers": {
+            "can_1": 26
+          },
+          "target_to_cargo_surface_m": 0.26769973912370976,
+          "target_to_wall_m": 1.2470238126198654,
+          "target_to_peers_m": {
+            "r2": 0.7421738871951774,
+            "r3": 2.5832061864117826
+          }
+        },
+        {
+          "rid": "r2",
+          "t": 23.900000000023105,
+          "N": 91,
+          "zero_free": 91,
+          "zero_static_free": 91,
+          "current_free": 91,
+          "arm_and_retreat_zero_free": null,
+          "best_gap_m": 0.09670000000325639,
+          "zero_blockers": {},
+          "target_to_cargo_surface_m": 0.7864049706914376,
+          "target_to_wall_m": 1.1531970878478794,
+          "target_to_peers_m": {
+            "r1": 0.5379070659357098,
+            "r3": 2.699640078111401
+          }
+        }
+      ],
+      "decoded_sha256": {
+        "result.json": "26c161a3d94aba484b38427fb0adb53745e2938d4fa8fdfe0fd5bea9f5299bde",
+        "eval-only.jsonl": "ca67f84253686cd74954759a950d14ffa41e74acf992c5ffd396bfb34b77ca73",
+        "plan.json": "7552b8f04cc219527212cfbe2fbcc65110039e31199905b988d894e6045960d1"
+      }
+    },
+    {
+      "episode": "episode-004",
+      "seed": 8312300,
+      "cargo_scene": "off",
+      "success": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/search24-r2-short6-ec8752a1/diagnostic/episode-004/raw",
+      "categories": {},
+      "obstacle_occurrences": {},
+      "physical_decomposition_occurrences": {},
+      "unique_rid_tick_candidate_obstacle": 0,
+      "memory": {},
+      "geometry_samples": [
+        {
+          "rid": "r1",
+          "t": 1.8000000000001848,
+          "N": 91,
+          "zero_free": 91,
+          "zero_static_free": 91,
+          "current_free": 91,
+          "arm_and_retreat_zero_free": 91,
+          "best_gap_m": 0.09670000000000016,
+          "zero_blockers": {},
+          "target_to_cargo_surface_m": 0.7123836212142944,
+          "target_to_wall_m": 0.49152951261710476,
+          "target_to_peers_m": {
+            "r2": 0.7428668500345051,
+            "r3": 3.506258448034919
+          }
+        },
+        {
+          "rid": "r2",
+          "t": 1.8000000000001848,
+          "N": 91,
+          "zero_free": 91,
+          "zero_static_free": 91,
+          "current_free": 91,
+          "arm_and_retreat_zero_free": 91,
+          "best_gap_m": 0.09670000000000008,
+          "zero_blockers": {},
+          "target_to_cargo_surface_m": 0.5996028264077788,
+          "target_to_wall_m": 1.02737645404651,
+          "target_to_peers_m": {
+            "r1": 0.6175134684310931,
+            "r3": 2.9902639725557316
+          }
+        },
+        {
+          "rid": "r1",
+          "t": 26.600000000035998,
+          "N": 161,
+          "zero_free": 161,
+          "zero_static_free": 161,
+          "current_free": 0,
+          "arm_and_retreat_zero_free": null,
+          "best_gap_m": 0.11459469067609464,
+          "zero_blockers": {},
+          "target_to_cargo_surface_m": 0.7107014897230449,
+          "target_to_wall_m": 0.4957428698753227,
+          "target_to_peers_m": {
+            "r2": 0.7377560376348576,
+            "r3": 3.502170570307138
+          }
+        },
+        {
+          "rid": "r2",
+          "t": 26.600000000035998,
+          "N": 161,
+          "zero_free": 161,
+          "zero_static_free": 161,
+          "current_free": 161,
+          "arm_and_retreat_zero_free": null,
+          "best_gap_m": 0.11484020917511005,
+          "zero_blockers": {},
+          "target_to_cargo_surface_m": 0.604106289744643,
+          "target_to_wall_m": 1.0319424750683817,
+          "target_to_peers_m": {
+            "r1": 0.7320462026772961,
+            "r3": 2.985269173362107
+          }
+        }
+      ],
+      "decoded_sha256": {
+        "result.json": "e697901d17e15b7518b3a92e7f4fc4c5bb030623e51cd437374e6b61932a6f48",
+        "eval-only.jsonl": "3cadfe1b12ef1d7bfb7a06ad94f52c15e4438c1dae61fd563e83b853861c9299",
+        "plan.json": "a0806e7ee587470106beddac579403a1060f9ae34959b7c6e96855b4bd74a6e2"
+      }
+    },
+    {
+      "episode": "episode-005",
+      "seed": 8312301,
+      "cargo_scene": "off",
+      "success": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/search24-r2-short6-ec8752a1/diagnostic/episode-005/raw",
+      "categories": {},
+      "obstacle_occurrences": {},
+      "physical_decomposition_occurrences": {},
+      "unique_rid_tick_candidate_obstacle": 0,
+      "memory": {},
+      "geometry_samples": [
+        {
+          "rid": "r1",
+          "t": 1.8000000000001848,
+          "N": 91,
+          "zero_free": 91,
+          "zero_static_free": 91,
+          "current_free": 91,
+          "arm_and_retreat_zero_free": 91,
+          "best_gap_m": 0.09670000000000008,
+          "zero_blockers": {},
+          "target_to_cargo_surface_m": 1.3217148300319714,
+          "target_to_wall_m": 1.0005270013298413,
+          "target_to_peers_m": {
+            "r2": 1.335377830420582,
+            "r3": 1.1926106681680175
+          }
+        },
+        {
+          "rid": "r2",
+          "t": 1.8000000000001848,
+          "N": 91,
+          "zero_free": 91,
+          "zero_static_free": 91,
+          "current_free": 91,
+          "arm_and_retreat_zero_free": 91,
+          "best_gap_m": 0.0967,
+          "zero_blockers": {},
+          "target_to_cargo_surface_m": 1.2289737459937553,
+          "target_to_wall_m": 1.152718282361119,
+          "target_to_peers_m": {
+            "r1": 1.1928352398127238,
+            "r3": 0.7702414657995115
+          }
+        },
+        {
+          "rid": "r1",
+          "t": 29.800000000051277,
+          "N": 163,
+          "zero_free": 163,
+          "zero_static_free": 163,
+          "current_free": 163,
+          "arm_and_retreat_zero_free": null,
+          "best_gap_m": 0.11453178013296632,
+          "zero_blockers": {},
+          "target_to_cargo_surface_m": 1.320153435172197,
+          "target_to_wall_m": 1.00148019799849,
+          "target_to_peers_m": {
+            "r2": 0.7400178518258368,
+            "r3": 1.1923640819840717
+          }
+        },
+        {
+          "rid": "r2",
+          "t": 29.800000000051277,
+          "N": 163,
+          "zero_free": 163,
+          "zero_static_free": 163,
+          "current_free": 163,
+          "arm_and_retreat_zero_free": null,
+          "best_gap_m": 0.11499949343421258,
+          "zero_blockers": {},
+          "target_to_cargo_surface_m": 1.2288405804099478,
+          "target_to_wall_m": 1.1534214952034973,
+          "target_to_peers_m": {
+            "r1": 0.7339885195502998,
+            "r3": 0.7707686539404963
+          }
+        }
+      ],
+      "decoded_sha256": {
+        "result.json": "29dcda155f3b3ed3894f3514bcfe6559931d7de24bf29b6caa58c720821c6153",
+        "eval-only.jsonl": "b7413b497f6e2bc2e3a9f6ce750eafd8702a6ba314f4619d06e0f27f418def03",
+        "plan.json": "d634dbcabb731560d8e805d73bd0768607808b7a9315f945f761efcc064fe5df"
+      }
+    }
+  ],
+  "limits": [
+    "endpoint body geometry only; no path, retreat or arm completeness claim",
+    "finite IRM only, no continuous-space impossibility proof",
+    "current margins reconstructed from visible+issued history without teacher free-space caches",
+    "zero uses authored landing circles; peers retain explicitly labelled planner .17m circles",
+    "truth is evaluation-only; all candidates stay on gcp1"
+  ]
+}

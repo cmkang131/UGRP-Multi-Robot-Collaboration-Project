@@ -1,0 +1,192 @@
+{
+  "schema": "ugrp.grasp_act.nominal_handoff_summary.v1",
+  "classification": "dev",
+  "research_result": false,
+  "baseline_sha": "a45645200e13f2bad9fbe882e8c9c15a439457c3",
+  "candidate_source": "commit containing this record; pushed SHA is pinned in the queue",
+  "status": "offline_passed_gcp_diagnostic_pending",
+  "toggles": {
+    "nominal_blocked_handoff": "nominal_blocked_handoff_v1",
+    "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+    "default": "off",
+    "approach_goal_set_v1": "retained; alternative path disabled by nominal handoff toggle"
+  },
+  "baseline_gcp_diagnostic": {
+    "n": 6,
+    "N": 7,
+    "completed": 7,
+    "HOST_ERROR": 0,
+    "interrupted": 0,
+    "rows": [
+      {
+        "index": 0,
+        "status": "complete",
+        "physical_success": true,
+        "approach_handoff": false,
+        "search_handoff": false,
+        "outcomes": {
+          "r1": "success",
+          "r2": "success"
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a4564520/diagnostic/episode-000/raw/result.json",
+        "sha256": "94d208d518bd1bc2e5a1d8fbb90ddbc181ce7bee10babd27883f45087376b73a"
+      },
+      {
+        "index": 1,
+        "status": "complete",
+        "physical_success": true,
+        "approach_handoff": false,
+        "search_handoff": false,
+        "outcomes": {
+          "r1": "success",
+          "r2": "success"
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a4564520/diagnostic/episode-001/raw/result.json",
+        "sha256": "c3650d2b153966d38e3af4caabec62cd5b52a77a162b90de91ca893c2b387851"
+      },
+      {
+        "index": 2,
+        "status": "complete",
+        "physical_success": true,
+        "approach_handoff": false,
+        "search_handoff": false,
+        "outcomes": {
+          "r1": "success",
+          "r2": "success"
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a4564520/diagnostic/episode-002/raw/result.json",
+        "sha256": "19ba5c675d79b00c33fd0b5d63616de88e2a91fc54f9b3761ead8939cf7c27f9"
+      },
+      {
+        "index": 3,
+        "status": "complete",
+        "physical_success": true,
+        "approach_handoff": false,
+        "search_handoff": false,
+        "outcomes": {
+          "r1": "success",
+          "r2": "success"
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a4564520/diagnostic/episode-003/raw/result.json",
+        "sha256": "084f16f3a76cdbd67471128d5ee2892cba4e024674f0def2900f12976f2205f3"
+      },
+      {
+        "index": 4,
+        "status": "complete",
+        "physical_success": true,
+        "approach_handoff": false,
+        "search_handoff": false,
+        "outcomes": {
+          "r1": "success",
+          "r2": "success"
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a4564520/diagnostic/episode-004/raw/result.json",
+        "sha256": "474288c38f571334068d235003fa53e859023cbd561e45fd1bf27cb0c98718bb"
+      },
+      {
+        "index": 5,
+        "status": "complete",
+        "physical_success": true,
+        "approach_handoff": false,
+        "search_handoff": false,
+        "outcomes": {
+          "r1": "success",
+          "r2": "success"
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a4564520/diagnostic/episode-005/raw/result.json",
+        "sha256": "b6cd869dab0476546fe7f579c9485fc57e73e776d5312fad69fc0cea37b7dc52"
+      },
+      {
+        "index": 6,
+        "status": "complete",
+        "physical_success": false,
+        "approach_handoff": false,
+        "search_handoff": false,
+        "outcomes": {
+          "r1": "no_stable_joint_hold_3s",
+          "r2": "no_stable_joint_hold_3s"
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a4564520/diagnostic/episode-006/raw/result.json",
+        "sha256": "1041de0e382ecbf71f8d2d47fc49435ac44a13f418f1e57280377d75699a115c"
+      }
+    ]
+  },
+  "offline": {
+    "tests": 134,
+    "failures": 0,
+    "junit": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/nominal-handoff-tests.xml",
+    "junit_sha256": "ea795cd63129bc98e4cec23901c4a8ebe94955b63b92126db4d7b5f408fc952f",
+    "normal_identical_n": 6,
+    "normal_N": 6,
+    "commands_compared": 4664,
+    "hard_clean_approach_handoff_n": 1,
+    "hard_N": 1,
+    "hard_handoff_sim_s": 3.6000000000006693,
+    "raw_verified_file_hashes": 35,
+    "replay": "nominal-handoff-replay.json",
+    "video_frames_newly_viewed": 0
+  },
+  "gate_plan": {
+    "path": "teacher-nominal-gate-plan.json",
+    "sha256": "730a79860c8de913fc8f7d4111258243a787de4cf281cae3667004ad6fc35456",
+    "seed_range_inclusive": [
+      86000,
+      86039
+    ],
+    "filter": {
+      "mode": "start_nominal_goal_feasible_v1",
+      "original_planned_N": 40,
+      "original_blocked_n": 1,
+      "original_blocked_rate": 0.025,
+      "original_blocked_starts": [
+        {
+          "seed": 86004,
+          "roles": [
+            "r2"
+          ]
+        }
+      ],
+      "original_episodes_sha256": "23650fac797e139b532e45b62606a7a7039b3796f9dae93f1d72789653215788",
+      "accepted_N": 40,
+      "rejected_proposals_n": 1,
+      "nominal_tested_proposals_N": 41,
+      "rejected_proposals_rate": 0.024390243902439025,
+      "all_proposals_N": 105,
+      "criterion": "same nominal_goal_blocked(static_map_only=True), folded planner clearance; walls/bounds only",
+      "scope": "map-to-teacher handoff distribution; excludes static-blocked nominal stances, not a wide-start gate; no physical outcomes used"
+    }
+  },
+  "new_remote_runs": 0,
+  "new_physical_success_n": null,
+  "new_physical_N": 0,
+  "training_episodes": 0,
+  "next": {
+    "stages": [
+      "diagnostic7",
+      "speed16",
+      "gate40"
+    ],
+    "normal_physical_success_required": 6,
+    "hard_required": "clean approach_blocked_handoff",
+    "gate_success_required_n": 38,
+    "gate_N": 40,
+    "handoff_counts_as_success": false,
+    "handoffs_in_denominator": true,
+    "failure_stop_scope": "repeated_cause_v1"
+  },
+  "sources_sha256": {
+    "harness/grasp_act_admission.py": "366f494bd90ac019ea6fadde117f28e7634341cdce87da434e1b24a70ed1468c",
+    "scripts/make_grasp_act_plan.py": "eca4908def9771e1d9d842db58cdeaf9aeea59417d66a2d246a7cb91755a5255",
+    "scripts/run_grasp_act_batch.py": "c047332cbe0238adaf9fc8134b7227fd2fdb1ddf946e0e40fbf53355e66494fc",
+    "scripts/run_grasp_act_teacher.py": "4f4959e07922209c1384791c3586b2e709175acba2bf2e022e136e3006962510",
+    "scripts/replay_grasp_act_nominal_handoff.py": "62f618335394d7d7a5a0cdec5257f2a41c81c74efd7e4ccbefe48ef265805f8f",
+    "sim/grasp_act_goal_set.py": "ee5a2b5434ab21c5a531bc67fc4b444b6e496a32052c32ac8f9bbe61cb810b22",
+    "sim/grasp_act_teacher_v3.py": "d9c8674887bf306afd834c46ebeff3f3149cbd05f1a70cd380e878370eaad82c"
+  },
+  "records_sha256": {
+    "nominal-handoff-replay.json": "65796781d1413cbee90bf582fde69f13793a0d87e5f52c0f3637a6bb90e39612",
+    "nominal-handoff-seeds.json": "55407b29f12f91a6d3f2bfbdd74fa5cc2afb370cd53f277a72e6223a9af64acc",
+    "nominal-handoff.md": "c77e587e2b990fe4079f01e848a871c558add381fd6436ee7450820f73626a37"
+  },
+  "scope": "offline replay/test only; no Mac physics/rendering, model calls, new remote submission or monitoring"
+}

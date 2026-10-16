@@ -1,0 +1,803 @@
+{
+  "schema": "ugrp.grasp_act.search11.v1",
+  "source_commit": "containing commit; exact pushed SHA also in vm3 queue",
+  "parent_sha": "129f1685351adfc3ab9300a8ec541f88e1f481b0",
+  "behavioral_baseline_sha": "86367b4b78a14c772f6194f6b36d524a0f934afe",
+  "source_files_sha256": {
+    "harness/grasp_act_admission.py": "faf6febcd12d6d5085fd77745a56adb364ecabeb813b8d543fc52ef2693e1ccd",
+    "harness/grasp_act_start_sync.py": "49ca0eacd58c4b64f8a939a8029483076c35903f1c19e1f626c5f8713a78457e",
+    "harness/grasp_act_handoff.py": "cdf782f23084bd90eadc85af1805812dc865999277a1c7aaadb0fc93dd285df5",
+    "scripts/run_grasp_act_batch.py": "215fae6c9b2b5e184697a69d2f825fe687af024e2ff708d03b3fd89bce63c989",
+    "scripts/run_grasp_act_teacher.py": "39e2d8cd6bb55594a74416a09e5ba8ce475aed26df7f84635d59be368f9f7f15",
+    "scripts/analyze_grasp_act_priority.py": "b24e6eace82566b6088385bbb77280038ed1fe0bd8de883d5cdace1c372e14dd",
+    "scripts/replay_grasp_act_priority.py": "6569cbac377f67797d1a47e0b8a57756fbaccded92e4419f44e9358a957d95ef",
+    "sim/grasp_act_teacher_v3.py": "ad5ac2848355037dc74df19010326613c73095e9cca22b1ce7010ebc69f732d5",
+    "sim/grasp_act_priority.py": "2bb2452212a70b48173106f70f451f258d9cad83c0029b879c3e02e33ff47742",
+    "tests/test_grasp_act_priority.py": "1e7eb8bd59020955c8a80d1790aca581a5fe888f7a360997d24b155ae4be3a89",
+    "tests/test_grasp_act_batch.py": "46b3cf656a0eeffb43b1f7b6615eb1db4aee413335828ce82c12a6a3deb6b77d",
+    "tests/test_grasp_act_progress.py": "49c8c530a747e5463e84c1fb6df215b47fb842acb28f5149626248c4cadeb4a9"
+  },
+  "search10_partial_sha256": "9c4f71c79760d05629d81b42778c105eb0f807f5e84ba0abf8abc4f32051eb73",
+  "previous_gate": {
+    "planned_N": 40,
+    "started_N": 40,
+    "completed_N": 40,
+    "physical_success_n": 34,
+    "approach_handoff_n": 5,
+    "timeout_n": 1,
+    "HOST_ERROR": 0,
+    "interrupted": 0,
+    "rows": [
+      {
+        "index": 0,
+        "status": "complete",
+        "physical_success": true,
+        "outcomes": {
+          "r1": "success",
+          "r2": "success"
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-000/raw",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-000/raw/result.json",
+            "sha256": "1926567c1ca53cae39f3e460b88d6d1842e4ef27792786ab99961a3e82bf4617",
+            "decoded_sha256": "1926567c1ca53cae39f3e460b88d6d1842e4ef27792786ab99961a3e82bf4617"
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "status": "complete",
+        "physical_success": true,
+        "outcomes": {
+          "r1": "success",
+          "r2": "success"
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-001/raw",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-001/raw/result.json",
+            "sha256": "8065739b48d77ec22c5688b55db9ba722661bce4c075e943d16acd4896f24abf",
+            "decoded_sha256": "8065739b48d77ec22c5688b55db9ba722661bce4c075e943d16acd4896f24abf"
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "status": "complete",
+        "physical_success": true,
+        "outcomes": {
+          "r1": "success",
+          "r2": "success"
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-002/raw",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-002/raw/result.json",
+            "sha256": "6424e14f6c881db52b171197b4bbef540cd4b54ea55b3db2cf2a9482d184df09",
+            "decoded_sha256": "6424e14f6c881db52b171197b4bbef540cd4b54ea55b3db2cf2a9482d184df09"
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "status": "complete",
+        "physical_success": false,
+        "outcomes": {
+          "r1": "approach_blocked_handoff",
+          "r2": "peer_approach_handoff"
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-003/raw",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-003/raw/result.json",
+            "sha256": "314ea3617a374d57ad59d1eb9c7d86c03ad620acf5e38839ec443e9f34862ae9",
+            "decoded_sha256": "314ea3617a374d57ad59d1eb9c7d86c03ad620acf5e38839ec443e9f34862ae9"
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "status": "complete",
+        "physical_success": true,
+        "outcomes": {
+          "r1": "success",
+          "r2": "success"
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-004/raw",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-004/raw/result.json",
+            "sha256": "365e687a567ed34c038472a6da53ad8a6bda6a20c459b163739915b7629e14b2",
+            "decoded_sha256": "365e687a567ed34c038472a6da53ad8a6bda6a20c459b163739915b7629e14b2"
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "status": "complete",
+        "physical_success": true,
+        "outcomes": {
+          "r1": "success",
+          "r2": "success"
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-005/raw",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-005/raw/result.json",
+            "sha256": "67a3137f3e37c79d77cab2bc17eb46ecb5f41a19427da58766224dc7ae3e5ee5",
+            "decoded_sha256": "67a3137f3e37c79d77cab2bc17eb46ecb5f41a19427da58766224dc7ae3e5ee5"
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "status": "complete",
+        "physical_success": true,
+        "outcomes": {
+          "r1": "success",
+          "r2": "success"
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-006/raw",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-006/raw/result.json",
+            "sha256": "faebf51a9a0289a8bcf61741d56ce74cb4d9b3cd297b6f72d4f334e26986edce",
+            "decoded_sha256": "faebf51a9a0289a8bcf61741d56ce74cb4d9b3cd297b6f72d4f334e26986edce"
+          }
+        ]
+      },
+      {
+        "index": 7,
+        "status": "complete",
+        "physical_success": false,
+        "outcomes": {
+          "r1": "episode_timeout",
+          "r2": "episode_timeout"
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-007/raw",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-007/raw/result.json",
+            "sha256": "f530cf8597fffdeb0b3ce3c36627501e167ab0ce81066e166a7c3d8bfaa6fa7f",
+            "decoded_sha256": "f530cf8597fffdeb0b3ce3c36627501e167ab0ce81066e166a7c3d8bfaa6fa7f"
+          }
+        ]
+      },
+      {
+        "index": 8,
+        "status": "complete",
+        "physical_success": false,
+        "outcomes": {
+          "r1": "peer_approach_handoff",
+          "r2": "approach_blocked_handoff"
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-008/raw",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-008/raw/result.json",
+            "sha256": "869aab60969f48263fb2b061adb2c1d98705f3013065fed5c3dd9225aac15a79",
+            "decoded_sha256": "869aab60969f48263fb2b061adb2c1d98705f3013065fed5c3dd9225aac15a79"
+          }
+        ]
+      },
+      {
+        "index": 9,
+        "status": "complete",
+        "physical_success": true,
+        "outcomes": {
+          "r1": "success",
+          "r2": "success"
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-009/raw",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-009/raw/result.json",
+            "sha256": "a2781ee5457f5ccb66f5100c0214ea7e0fe99a03ec8c520c7e4817a5b3e51c8c",
+            "decoded_sha256": "a2781ee5457f5ccb66f5100c0214ea7e0fe99a03ec8c520c7e4817a5b3e51c8c"
+          }
+        ]
+      },
+      {
+        "index": 10,
+        "status": "complete",
+        "physical_success": true,
+        "outcomes": {
+          "r1": "success",
+          "r2": "success"
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-010/raw",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-010/raw/result.json",
+            "sha256": "d0a39f02a3fa4b96489b2f6e42bca2b4a1a25aa3ce99705cce6e9cc69c361be4",
+            "decoded_sha256": "d0a39f02a3fa4b96489b2f6e42bca2b4a1a25aa3ce99705cce6e9cc69c361be4"
+          }
+        ]
+      },
+      {
+        "index": 11,
+        "status": "complete",
+        "physical_success": true,
+        "outcomes": {
+          "r1": "success",
+          "r2": "success"
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-011/raw",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-011/raw/result.json",
+            "sha256": "9e701fe10742c63dcd247055ebccf9c24e2274e4a757f75808459ef04c054dda",
+            "decoded_sha256": "9e701fe10742c63dcd247055ebccf9c24e2274e4a757f75808459ef04c054dda"
+          }
+        ]
+      },
+      {
+        "index": 12,
+        "status": "complete",
+        "physical_success": true,
+        "outcomes": {
+          "r1": "success",
+          "r2": "success"
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-012/raw",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-012/raw/result.json",
+            "sha256": "3adad7f83963a8b5dad8d2d6c45f9bacdf90a83aa535657f07515741f528a6db",
+            "decoded_sha256": "3adad7f83963a8b5dad8d2d6c45f9bacdf90a83aa535657f07515741f528a6db"
+          }
+        ]
+      },
+      {
+        "index": 13,
+        "status": "complete",
+        "physical_success": true,
+        "outcomes": {
+          "r1": "success",
+          "r2": "success"
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-013/raw",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-013/raw/result.json",
+            "sha256": "f88db087907d2e9be02d5f142ff0c7ca7640e01418bc4c75cc07a3d67c88c781",
+            "decoded_sha256": "f88db087907d2e9be02d5f142ff0c7ca7640e01418bc4c75cc07a3d67c88c781"
+          }
+        ]
+      },
+      {
+        "index": 14,
+        "status": "complete",
+        "physical_success": false,
+        "outcomes": {
+          "r1": "peer_approach_handoff",
+          "r2": "approach_blocked_handoff"
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-014/raw",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-014/raw/result.json",
+            "sha256": "049ed4b6acdd208d2ed5e55afeddea5dd5a1d4e73d747d0d577e478d7f8a1331",
+            "decoded_sha256": "049ed4b6acdd208d2ed5e55afeddea5dd5a1d4e73d747d0d577e478d7f8a1331"
+          }
+        ]
+      },
+      {
+        "index": 15,
+        "status": "complete",
+        "physical_success": true,
+        "outcomes": {
+          "r1": "success",
+          "r2": "success"
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-015/raw",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-015/raw/result.json",
+            "sha256": "5dd23ea2055867549c1989ce8c4eadfe76ce408e3d3f4c7c76b55aba90e01d6d",
+            "decoded_sha256": "5dd23ea2055867549c1989ce8c4eadfe76ce408e3d3f4c7c76b55aba90e01d6d"
+          }
+        ]
+      },
+      {
+        "index": 16,
+        "status": "complete",
+        "physical_success": true,
+        "outcomes": {
+          "r1": "success",
+          "r2": "success"
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-016/episode-016/raw",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-016/episode-016/raw/result.json",
+            "sha256": "8c9ba3e71aa817ffe5c081193e300cdfc1ceeff16d70c8e4ab80687f9411ca35",
+            "decoded_sha256": "8c9ba3e71aa817ffe5c081193e300cdfc1ceeff16d70c8e4ab80687f9411ca35"
+          }
+        ]
+      },
+      {
+        "index": 17,
+        "status": "complete",
+        "physical_success": false,
+        "outcomes": {
+          "r1": "peer_approach_handoff",
+          "r2": "approach_blocked_handoff"
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-016/episode-017/raw",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-016/episode-017/raw/result.json",
+            "sha256": "ec37cc45cc9c8c3d7dfdd7e2b1a3f1c35abd87e3fcd4c7cb5ace1044ee2d9c65",
+            "decoded_sha256": "ec37cc45cc9c8c3d7dfdd7e2b1a3f1c35abd87e3fcd4c7cb5ace1044ee2d9c65"
+          }
+        ]
+      },
+      {
+        "index": 18,
+        "status": "complete",
+        "physical_success": true,
+        "outcomes": {
+          "r1": "success",
+          "r2": "success"
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-016/episode-018/raw",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-016/episode-018/raw/result.json",
+            "sha256": "f69864301ebeb50851b9625f6daad5d7a1a28635c317b1987e2875ac47072c2e",
+            "decoded_sha256": "f69864301ebeb50851b9625f6daad5d7a1a28635c317b1987e2875ac47072c2e"
+          }
+        ]
+      },
+      {
+        "index": 19,
+        "status": "complete",
+        "physical_success": true,
+        "outcomes": {
+          "r1": "success",
+          "r2": "success"
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-016/episode-019/raw",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-016/episode-019/raw/result.json",
+            "sha256": "0227c6b78a912b5a56439d885859cb2f6906d13b4e8df438b15cac8cade4e0c0",
+            "decoded_sha256": "0227c6b78a912b5a56439d885859cb2f6906d13b4e8df438b15cac8cade4e0c0"
+          }
+        ]
+      },
+      {
+        "index": 20,
+        "status": "complete",
+        "physical_success": true,
+        "outcomes": {
+          "r1": "success",
+          "r2": "success"
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-016/episode-020/raw",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-016/episode-020/raw/result.json",
+            "sha256": "deb539138d8d5e259b608c08fd49e1f37e217db9205c2dc3e3e6dfe1037347e8",
+            "decoded_sha256": "deb539138d8d5e259b608c08fd49e1f37e217db9205c2dc3e3e6dfe1037347e8"
+          }
+        ]
+      },
+      {
+        "index": 21,
+        "status": "complete",
+        "physical_success": true,
+        "outcomes": {
+          "r1": "success",
+          "r2": "success"
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-016/episode-021/raw",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-016/episode-021/raw/result.json",
+            "sha256": "a506dd708ac24265638826743adc8a9a6bb5aecb74ebf814b02d9abd3123affc",
+            "decoded_sha256": "a506dd708ac24265638826743adc8a9a6bb5aecb74ebf814b02d9abd3123affc"
+          }
+        ]
+      },
+      {
+        "index": 22,
+        "status": "complete",
+        "physical_success": true,
+        "outcomes": {
+          "r1": "success",
+          "r2": "success"
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-016/episode-022/raw",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-016/episode-022/raw/result.json",
+            "sha256": "9a638c16d16c4501baeb36ae0572d65a7f1868a4a77bc13f5fdc1797e4e7e7ce",
+            "decoded_sha256": "9a638c16d16c4501baeb36ae0572d65a7f1868a4a77bc13f5fdc1797e4e7e7ce"
+          }
+        ]
+      },
+      {
+        "index": 23,
+        "status": "complete",
+        "physical_success": true,
+        "outcomes": {
+          "r1": "success",
+          "r2": "success"
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-016/episode-023/raw",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-016/episode-023/raw/result.json",
+            "sha256": "415767439971539f2bcdc3f61cb8dcf3ab01f121cd45859816f6f61a593ee5e7",
+            "decoded_sha256": "415767439971539f2bcdc3f61cb8dcf3ab01f121cd45859816f6f61a593ee5e7"
+          }
+        ]
+      },
+      {
+        "index": 24,
+        "status": "complete",
+        "physical_success": true,
+        "outcomes": {
+          "r1": "success",
+          "r2": "success"
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-016/episode-024/raw",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-016/episode-024/raw/result.json",
+            "sha256": "00f42bd9ab9b7e7a9aa0a17e23158a363bfaabc941053d299f5d45cfed91332c",
+            "decoded_sha256": "00f42bd9ab9b7e7a9aa0a17e23158a363bfaabc941053d299f5d45cfed91332c"
+          }
+        ]
+      },
+      {
+        "index": 25,
+        "status": "complete",
+        "physical_success": true,
+        "outcomes": {
+          "r1": "success",
+          "r2": "success"
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-016/episode-025/raw",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-016/episode-025/raw/result.json",
+            "sha256": "365d680d7b5e69f1e815656cfcdac0d1e7a8053409de3a1f48c6126d26273c0a",
+            "decoded_sha256": "365d680d7b5e69f1e815656cfcdac0d1e7a8053409de3a1f48c6126d26273c0a"
+          }
+        ]
+      },
+      {
+        "index": 26,
+        "status": "complete",
+        "physical_success": true,
+        "outcomes": {
+          "r1": "success",
+          "r2": "success"
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-016/episode-026/raw",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-016/episode-026/raw/result.json",
+            "sha256": "27f68fe6f436a78ec9743c46c8ced8c3b8cb8ae6d3300d47728ef60f282745fc",
+            "decoded_sha256": "27f68fe6f436a78ec9743c46c8ced8c3b8cb8ae6d3300d47728ef60f282745fc"
+          }
+        ]
+      },
+      {
+        "index": 27,
+        "status": "complete",
+        "physical_success": true,
+        "outcomes": {
+          "r1": "success",
+          "r2": "success"
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-016/episode-027/raw",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-016/episode-027/raw/result.json",
+            "sha256": "40712b2ac59e868ad587fcceb3575b2f34cfadef8c4c2aaf8c524ae9cf3ca21d",
+            "decoded_sha256": "40712b2ac59e868ad587fcceb3575b2f34cfadef8c4c2aaf8c524ae9cf3ca21d"
+          }
+        ]
+      },
+      {
+        "index": 28,
+        "status": "complete",
+        "physical_success": true,
+        "outcomes": {
+          "r1": "success",
+          "r2": "success"
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-016/episode-028/raw",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-016/episode-028/raw/result.json",
+            "sha256": "59fff56d1963804a3aabbe77838a68f5a32fe1c18d7b3b4d1eee5363fe8fe5aa",
+            "decoded_sha256": "59fff56d1963804a3aabbe77838a68f5a32fe1c18d7b3b4d1eee5363fe8fe5aa"
+          }
+        ]
+      },
+      {
+        "index": 29,
+        "status": "complete",
+        "physical_success": true,
+        "outcomes": {
+          "r1": "success",
+          "r2": "success"
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-016/episode-029/raw",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-016/episode-029/raw/result.json",
+            "sha256": "24e626e77121ece7a886f231e567fb09d2b3b66a02c7597bced72deaf200e27f",
+            "decoded_sha256": "24e626e77121ece7a886f231e567fb09d2b3b66a02c7597bced72deaf200e27f"
+          }
+        ]
+      },
+      {
+        "index": 30,
+        "status": "complete",
+        "physical_success": true,
+        "outcomes": {
+          "r1": "success",
+          "r2": "success"
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-016/episode-030/raw",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-016/episode-030/raw/result.json",
+            "sha256": "5b00be1d001a5e569b57740d77c94ee09cddf906721fc5e8171e14b4712edc9e",
+            "decoded_sha256": "5b00be1d001a5e569b57740d77c94ee09cddf906721fc5e8171e14b4712edc9e"
+          }
+        ]
+      },
+      {
+        "index": 31,
+        "status": "complete",
+        "physical_success": true,
+        "outcomes": {
+          "r1": "success",
+          "r2": "success"
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-016/episode-031/raw",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-016/episode-031/raw/result.json",
+            "sha256": "5b5eea58fd12f17bf92ffa901e0fa6509bb7a76cd802a34f36b331b340bf9ef0",
+            "decoded_sha256": "5b5eea58fd12f17bf92ffa901e0fa6509bb7a76cd802a34f36b331b340bf9ef0"
+          }
+        ]
+      },
+      {
+        "index": 32,
+        "status": "complete",
+        "physical_success": false,
+        "outcomes": {
+          "r1": "peer_approach_handoff",
+          "r2": "approach_blocked_handoff"
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-032/episode-032/raw",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-032/episode-032/raw/result.json",
+            "sha256": "0b3c4fda4bcff1375740d966c8315a718d9a98e0c6120a5f677e6c563b878637",
+            "decoded_sha256": "0b3c4fda4bcff1375740d966c8315a718d9a98e0c6120a5f677e6c563b878637"
+          }
+        ]
+      },
+      {
+        "index": 33,
+        "status": "complete",
+        "physical_success": true,
+        "outcomes": {
+          "r1": "success",
+          "r2": "success"
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-032/episode-033/raw",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-032/episode-033/raw/result.json",
+            "sha256": "0763c25bd7018abf65c43a963b4da6e3287e24c63cd8ffdba463b3bb8bc70b9c",
+            "decoded_sha256": "0763c25bd7018abf65c43a963b4da6e3287e24c63cd8ffdba463b3bb8bc70b9c"
+          }
+        ]
+      },
+      {
+        "index": 34,
+        "status": "complete",
+        "physical_success": true,
+        "outcomes": {
+          "r1": "success",
+          "r2": "success"
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-032/episode-034/raw",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-032/episode-034/raw/result.json",
+            "sha256": "bd369f960e074db6f5cc77161170eb19d251075bb690a1a43a7786d14173d45c",
+            "decoded_sha256": "bd369f960e074db6f5cc77161170eb19d251075bb690a1a43a7786d14173d45c"
+          }
+        ]
+      },
+      {
+        "index": 35,
+        "status": "complete",
+        "physical_success": true,
+        "outcomes": {
+          "r1": "success",
+          "r2": "success"
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-032/episode-035/raw",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-032/episode-035/raw/result.json",
+            "sha256": "bc2ccddac085b2ad4815bf7cc36f48057d19988a50701d3ac6ad848dc4ba964f",
+            "decoded_sha256": "bc2ccddac085b2ad4815bf7cc36f48057d19988a50701d3ac6ad848dc4ba964f"
+          }
+        ]
+      },
+      {
+        "index": 36,
+        "status": "complete",
+        "physical_success": true,
+        "outcomes": {
+          "r1": "success",
+          "r2": "success"
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-032/episode-036/raw",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-032/episode-036/raw/result.json",
+            "sha256": "94f7d456b224c740b6ddfae7d7e3c7a5d61e94ddd8fbedd9ef1a490c3d1b92e4",
+            "decoded_sha256": "94f7d456b224c740b6ddfae7d7e3c7a5d61e94ddd8fbedd9ef1a490c3d1b92e4"
+          }
+        ]
+      },
+      {
+        "index": 37,
+        "status": "complete",
+        "physical_success": true,
+        "outcomes": {
+          "r1": "success",
+          "r2": "success"
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-032/episode-037/raw",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-032/episode-037/raw/result.json",
+            "sha256": "197fdae36fa442963d596a628d6482f2d723462b47d9f7cfdfd14f758782ff1b",
+            "decoded_sha256": "197fdae36fa442963d596a628d6482f2d723462b47d9f7cfdfd14f758782ff1b"
+          }
+        ]
+      },
+      {
+        "index": 38,
+        "status": "complete",
+        "physical_success": true,
+        "outcomes": {
+          "r1": "success",
+          "r2": "success"
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-032/episode-038/raw",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-032/episode-038/raw/result.json",
+            "sha256": "a9fe5ec71d62b43a5f450ab5356004e20b1e00c973792036feced9db08f25721",
+            "decoded_sha256": "a9fe5ec71d62b43a5f450ab5356004e20b1e00c973792036feced9db08f25721"
+          }
+        ]
+      },
+      {
+        "index": 39,
+        "status": "complete",
+        "physical_success": true,
+        "outcomes": {
+          "r1": "success",
+          "r2": "success"
+        },
+        "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-032/episode-039/raw",
+        "proof": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-032/episode-039/raw/result.json",
+            "sha256": "4fd7772c9b4fc3cb1f50d168dac1e684a8bd5894a0b445bb959dd589ad4a7d12",
+            "decoded_sha256": "4fd7772c9b4fc3cb1f50d168dac1e684a8bd5894a0b445bb959dd589ad4a7d12"
+          }
+        ]
+      }
+    ]
+  },
+  "new_runs": {
+    "diagnostic13": "NOT_STARTED",
+    "speed16": "NOT_STARTED",
+    "gate40": "NOT_STARTED",
+    "physical_success_n": null,
+    "physical_run_N": 0,
+    "HOST_ERROR": 0
+  },
+  "tests": {
+    "passed": 33,
+    "files": [
+      "tests/test_grasp_act_priority.py",
+      "tests/test_grasp_act_batch.py",
+      "tests/test_grasp_act_progress.py"
+    ],
+    "scope": "offline only"
+  },
+  "normal_replay": {
+    "schema": "ugrp.grasp_act.search11_replay.v1",
+    "baseline_sha": "86367b4b78a14c772f6194f6b36d524a0f934afe",
+    "normal_N": 6,
+    "recorded_commands_verified": 4664,
+    "off_identical_commands": 4664,
+    "shadow_changed_commands": {
+      "baseline_to_off": 0,
+      "baseline_to_priority": 3396
+    },
+    "visible_handoff_changed_training_labels": 53,
+    "invisible_measurements": 0,
+    "held_world_reads": 0,
+    "scope": "same saved measurements and actual issued history; after first divergence counterfactual shadow outputs only; cannot generate new viewpoints or establish peer-block improvement; handoff labels do not remove episodes from gate"
+  },
+  "geometry": {
+    "n": 3,
+    "N": 3,
+    "scope": "three saved visible snapshots from 793865d2 reproductions; ideal frozen geometry and sequential stationary-peer clearance only; no claim of new views, observed runtime clearance, or physical grasp"
+  },
+  "original_gate_additional_rejections": {
+    "n": 0,
+    "N": 40,
+    "rate": 0
+  },
+  "new_gate_start_filter": {
+    "mode": "start_nominal_goal_feasible_v1",
+    "original_planned_N": 40,
+    "original_blocked_n": 1,
+    "original_blocked_rate": 0.025,
+    "original_blocked_starts": [
+      {
+        "seed": 191037,
+        "roles": [
+          "r1"
+        ]
+      }
+    ],
+    "original_episodes_sha256": "21e1db3cf6a11253d5494ff9e03600752074d2521b87a170f884d650e3ef2d7c",
+    "accepted_N": 40,
+    "rejected_proposals_n": 1,
+    "nominal_tested_proposals_N": 41,
+    "rejected_proposals_rate": 0.024390243902439025,
+    "all_proposals_N": 97,
+    "criterion": "same nominal_goal_blocked(static_map_only=True), folded planner clearance; walls/bounds only",
+    "scope": "map-to-teacher handoff distribution; excludes static-blocked nominal stances, not a wide-start gate; no physical outcomes used"
+  },
+  "new_gate_seed_reservation": {
+    "range": [
+      191000,
+      191039
+    ],
+    "local_conflicts": [],
+    "local_files_checked": 86,
+    "remote_checked": false
+  },
+  "directly_viewed_frames": 108,
+  "unverified": [
+    "new physical grasps including normal6/6 and all6 failed starts",
+    "cargo/wall/search failure resolution",
+    "runtime clearance",
+    "120SIM sufficiency",
+    "speed16",
+    "gate40"
+  ],
+  "gate_promotion_authorized_if_all_conditions_pass": false,
+  "verdict": "OFFLINE_CHECKS_PASS_PHYSICAL_UNVERIFIED",
+  "original_gate_static_wall_admission_recheck": {
+    "accepted": 40,
+    "N": 40,
+    "blocked": [],
+    "scope": "setup-only static map labels; no controller input, cargo/physical clearance not proven"
+  }
+}

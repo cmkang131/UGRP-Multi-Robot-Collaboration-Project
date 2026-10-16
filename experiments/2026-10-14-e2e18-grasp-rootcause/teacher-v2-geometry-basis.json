@@ -1,0 +1,30 @@
+{
+  "scope": "read-only model forward query on saved evaluation qpos; no physics step, no teacher rollout or success claim",
+  "baseline": "078cbb45",
+  "raw": "azure3:/home/ugrp/ugrp-sim/runs/grasp-teacher-final10-6a77d2da/cohort-017/episode-017/raw",
+  "method": "active collision geom local aabb corners transformed into world and robot base; max xy radius among geoms with world min_z below threshold",
+  "measured_at_final_folded_pose": {
+    "at_12mm_radius_m": 0.11059772910314511,
+    "at_32mm_radius_m": 0.1181690957204706,
+    "at_100mm_radius_m": 0.1181690957204706,
+    "all_heights_radius_m": 0.15493448982530575,
+    "furthest_geom": "left_finger at z=0.1828..0.1957m"
+  },
+  "drawing_bound_radius_m": 0.1229522264946837,
+  "candidate_low_robot_radius_m": 0.13,
+  "low_cargo_top_height_max_m": 0.1,
+  "low_cargo_padding_m": 0.005,
+  "old_and_high_wall_radius_m": 0.17,
+  "physical_profile_changed": false,
+  "candidate_requires": "arm commanded fold sequence complete; actual physical regression still required",
+  "goal_forward_query": {
+    "episode_17_external_nonground_contacts": 0,
+    "episode_20_south_wall_overlap_m": 0.05813890419848784
+  },
+  "old_failure_33": {
+    "grip_x_m": 0.21114696038361666,
+    "grip_y_m": 0.0001696830990068482,
+    "ground_ik": "unreachable",
+    "movement_30_to_59_9_sim_s_m": 0.0003290979145037363
+  }
+}

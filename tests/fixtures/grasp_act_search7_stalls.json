@@ -1,0 +1,234 @@
+{
+  "schema": "ugrp.grasp_act.search7_stalls.v1",
+  "source_sha": "f932b02c5074a7727aab57af1907b69332699c33",
+  "input": "recorded delivered visible measurements + issued commands; no evaluation truth",
+  "cases": [
+    {
+      "episode": 12,
+      "rid": "r1",
+      "end": "teal",
+      "world": {
+        "t": 21.80000000001308,
+        "robots": {
+          "r1": {
+            "pose": [
+              1.546099052422825,
+              -0.26856395326209054,
+              1.7200356119466662
+            ]
+          }
+        },
+        "objects": {
+          "beam_1": {
+            "xy": [
+              1.1927462813589886,
+              -0.18993467094965
+            ],
+            "radius": 0.30109134826711215,
+            "top_z_bound_m": 0.3169835928447248
+          }
+        },
+        "walls": [],
+        "beam": {
+          "pose": [
+            1.1936744185649786,
+            -0.21037149307067501,
+            3.3822125224115114
+          ],
+          "ends": {
+            "teal": [
+              1.4558958383916107,
+              -0.14602922870187027,
+              0.023892244616421598
+            ],
+            "blue": [
+              0.9314529987383464,
+              -0.2747137574394798,
+              0.023892244616421598
+            ]
+          },
+          "source": "visible band + known rigid shape",
+          "seen_t": 21.80000000001308
+        },
+        "visibility": {
+          "r1": {
+            "visible_probes": 10,
+            "objects": [],
+            "peers": []
+          }
+        },
+        "scope": "visible_only; remembered objects expire at student memory horizon"
+      },
+      "pwm": {
+        "1": 2000,
+        "3": 500,
+        "4": 2500,
+        "5": 1320,
+        "6": 1938
+      },
+      "path": [
+        [
+          1.5500000000000007,
+          -0.25
+        ],
+        [
+          1.6000000000000014,
+          -0.1999999999999993
+        ],
+        [
+          1.6500000000000021,
+          -0.14999999999999858
+        ],
+        [
+          1.653047498483486,
+          -0.097653378083843
+        ]
+      ],
+      "t": 21.80000000001308,
+      "source": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/search7/ep12-analysis.json",
+      "raw_proof": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-f932b02c/cohort-000/episode-012/raw/plan.json",
+          "sha256": "72421ac6e02266e54ad81796dd9edb2fe157cb8820f4e010c7e92a5823769980",
+          "decoded_sha256": "72421ac6e02266e54ad81796dd9edb2fe157cb8820f4e010c7e92a5823769980"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-f932b02c/cohort-000/episode-012/raw/result.json",
+          "sha256": "326903647bc0f49dfa5e077fcc479058d8ea6b4fbda0f82e9a08ae4a42cdab94",
+          "decoded_sha256": "326903647bc0f49dfa5e077fcc479058d8ea6b4fbda0f82e9a08ae4a42cdab94"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-f932b02c/cohort-000/episode-012/raw/teacher-r1.jsonl.zst",
+          "sha256": "9b1ca854c97c452e8d1c908980a06d97fbb723dc1dd81ee6d611ecb09e91fd56",
+          "decoded_sha256": "d892663eff459405057a627e47cd11d593ad96606314bdc07b3394efc1095e44"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-f932b02c/cohort-000/episode-012/raw/teacher-r2.jsonl.zst",
+          "sha256": "2d0f13f77bb67c08563f5a2a21d342cf60c6581516dfcc9191a701fe92223949",
+          "decoded_sha256": "760c92fd626f9f5d1f483ac2cb46f628bf37b26d05334cee4dc3fc2dc52391cb"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-f932b02c/cohort-000/episode-012/raw/eval-only.jsonl.zst",
+          "sha256": "1b281eba4f544ef234136118a527d26d43c668d32961de2f417cb2f28ec9d301",
+          "decoded_sha256": "9763525bc425f20a0ab2867eb4e117df0206ec504383ea82c31b364881a1ed3e"
+        }
+      ]
+    },
+    {
+      "episode": 15,
+      "rid": "r1",
+      "end": "blue",
+      "world": {
+        "t": 21.80000000001308,
+        "robots": {
+          "r1": {
+            "pose": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "r2": {
+            "pose": [
+              1.4197608607365544,
+              -0.8433493701002321,
+              3.4257939887068565
+            ],
+            "radius": 0.10488802623048217,
+            "top_z_bound_m": 0.15921930659416608
+          }
+        },
+        "objects": {
+          "beam_1": {
+            "xy": [
+              0.9665085424252193,
+              -0.9757070854557489
+            ],
+            "radius": 0.30109134826711126,
+            "top_z_bound_m": 0.3169835928447248
+          },
+          "green_1": {
+            "xy": [
+              0.49755148649937564,
+              -0.9867498230569614
+            ],
+            "radius": 0.030740852297878797,
+            "top_z_bound_m": 0.04663309687761939
+          }
+        },
+        "walls": [],
+        "beam": {
+          "pose": [
+            0.966508542420975,
+            -0.9757070854569893,
+            3.4258108321696525
+          ],
+          "ends": {
+            "teal": [
+              1.2256764594708542,
+              -0.8999971734769394,
+              0.02389224454316066
+            ],
+            "blue": [
+              0.7073406253710957,
+              -1.051416997437039,
+              0.02389224454316066
+            ]
+          },
+          "source": "visible band + known rigid shape",
+          "seen_t": 21.80000000001308
+        },
+        "visibility": {
+          "r1": {
+            "visible_probes": 15,
+            "objects": [
+              "beam_1",
+              "green_1"
+            ],
+            "peers": [
+              "r2"
+            ]
+          }
+        },
+        "scope": "visible_only; remembered objects expire at student memory horizon"
+      },
+      "pwm": {
+        "1": 2000,
+        "3": 760,
+        "4": 2380,
+        "5": 1320,
+        "6": 1000
+      },
+      "path": [],
+      "t": 21.80000000001308,
+      "source": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/search7/ep15-analysis.json",
+      "raw_proof": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-f932b02c/cohort-000/episode-015/raw/plan.json",
+          "sha256": "09cc6971245b61fe1d7eee4741c42b8fd2991face318a082bbece1fa400d0f5c",
+          "decoded_sha256": "09cc6971245b61fe1d7eee4741c42b8fd2991face318a082bbece1fa400d0f5c"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-f932b02c/cohort-000/episode-015/raw/result.json",
+          "sha256": "cac5ff8595ba098e9c10b30f02134e4c69d7d95049812bb415c852e858d97c16",
+          "decoded_sha256": "cac5ff8595ba098e9c10b30f02134e4c69d7d95049812bb415c852e858d97c16"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-f932b02c/cohort-000/episode-015/raw/teacher-r1.jsonl.zst",
+          "sha256": "34d4745e4f33dc623a7c415b7f01152b9400a5f823f4a90ae2dbe29e950b6a7d",
+          "decoded_sha256": "b63515a7945d54ce45f9974ce02725f0481d4eed993720896866e99a5440701a"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-f932b02c/cohort-000/episode-015/raw/teacher-r2.jsonl.zst",
+          "sha256": "8fe445dcd8a9e9d97e0c821f6f4fffa50fc96fcdc1d804e479a997fb89fb518a",
+          "decoded_sha256": "213020c8fa7554d3e0340446bd18d8d06ad76cb27842a0d10bc47d00d762cdaa"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-f932b02c/cohort-000/episode-015/raw/eval-only.jsonl.zst",
+          "sha256": "7a83f1697b9042bd4e2c62592a6f343b2332961bb4d4d069fa8ce000f7ff2277",
+          "decoded_sha256": "906bb3559458f6d9865f73e0da4fba4a09d3e57a602f3c4686babc3af2f2be3a"
+        }
+      ]
+    }
+  ]
+}

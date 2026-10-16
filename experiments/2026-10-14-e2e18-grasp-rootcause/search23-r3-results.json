@@ -1,0 +1,658 @@
+{
+  "source_sha": "0205485e4ef95b836bc87630a4ab94bde9b1db4b",
+  "run": "grasp-search23-r3-short6-gcp-0205485e",
+  "status": "HOST_INTERRUPTED_NOT_READY",
+  "n": 0,
+  "N": 6,
+  "n_scope": "confirmed completed successes only; all six outcomes remain unknown",
+  "unknown_outcomes_N": 6,
+  "completed": 0,
+  "host_errors": 0,
+  "host_interrupted_N": 6,
+  "interrupted": 6,
+  "started_N": 6,
+  "all_audits_enabled": true,
+  "audits_missing_N": 6,
+  "input_invisible_total": null,
+  "input_held_total": null,
+  "snapshot_invisible_total": 0,
+  "snapshot_held_total": 0,
+  "remote_full_manifest_verified": false,
+  "surviving_remote_file_hashes_verified": true,
+  "rows": [
+    {
+      "episode": "episode-000",
+      "seed": 8311709,
+      "cargo_scene": "off",
+      "status": "HOST_INTERRUPTED",
+      "success": null,
+      "observed_stable_hold_s": 0.0,
+      "observed_through_sim_s": 4.000000000001158,
+      "wall_s_at_snapshot": 16.962558195002202,
+      "candidate_ledger_scope": "periodic unfinished snapshot; final tail unavailable",
+      "candidate_trials_by_category": {
+        "current_geometry": 16,
+        "IK": 29,
+        "endpoint_feasible": 3,
+        "feasible": 1,
+        "gripper_angle": 58
+      },
+      "candidate_trials_by_reason": {
+        "blocked_goal": 16,
+        "ik_unreachable": 29,
+        "endpoint_feasible": 3,
+        "feasible": 1,
+        "gripper_angle": 58
+      },
+      "no_path_obstacle_trials": {},
+      "grid_status": {
+        "found": 1
+      },
+      "planning_budget_holds_in_snapshot": 0,
+      "input_audit_at_snapshot": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 155,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "final_input_audit_verified": false,
+      "truncated_eval_lines": 0
+    },
+    {
+      "episode": "episode-001",
+      "seed": 8311709,
+      "cargo_scene": "cargo_v6",
+      "status": "HOST_INTERRUPTED",
+      "success": null,
+      "observed_stable_hold_s": 0.0,
+      "observed_through_sim_s": 4.000000000001158,
+      "wall_s_at_snapshot": 17.264790958000958,
+      "candidate_ledger_scope": "periodic unfinished snapshot; final tail unavailable",
+      "candidate_trials_by_category": {
+        "current_geometry": 12,
+        "IK": 29,
+        "endpoint_feasible": 7,
+        "gripper_angle": 58,
+        "feasible": 1
+      },
+      "candidate_trials_by_reason": {
+        "blocked_goal": 12,
+        "ik_unreachable": 29,
+        "endpoint_feasible": 7,
+        "gripper_angle": 58,
+        "feasible": 1
+      },
+      "no_path_obstacle_trials": {},
+      "grid_status": {
+        "found": 1
+      },
+      "planning_budget_holds_in_snapshot": 0,
+      "input_audit_at_snapshot": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 156,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "final_input_audit_verified": false,
+      "truncated_eval_lines": 0
+    },
+    {
+      "episode": "episode-002",
+      "seed": 315709,
+      "cargo_scene": "cargo_v6",
+      "status": "HOST_INTERRUPTED",
+      "success": null,
+      "observed_stable_hold_s": 0.0,
+      "observed_through_sim_s": 2.999999999999936,
+      "wall_s_at_snapshot": 12.116914980000729,
+      "candidate_ledger_scope": "periodic unfinished snapshot; final tail unavailable",
+      "candidate_trials_by_category": {},
+      "candidate_trials_by_reason": {},
+      "no_path_obstacle_trials": {},
+      "grid_status": {},
+      "planning_budget_holds_in_snapshot": 0,
+      "input_audit_at_snapshot": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 55,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "final_input_audit_verified": false,
+      "truncated_eval_lines": 0
+    },
+    {
+      "episode": "episode-003",
+      "seed": 315709,
+      "cargo_scene": "off",
+      "status": "HOST_INTERRUPTED",
+      "success": null,
+      "observed_stable_hold_s": 0.0,
+      "observed_through_sim_s": 2.999999999999936,
+      "wall_s_at_snapshot": 11.86259451099977,
+      "candidate_ledger_scope": "periodic unfinished snapshot; final tail unavailable",
+      "candidate_trials_by_category": {},
+      "candidate_trials_by_reason": {},
+      "no_path_obstacle_trials": {},
+      "grid_status": {},
+      "planning_budget_holds_in_snapshot": 0,
+      "input_audit_at_snapshot": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 55,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "final_input_audit_verified": false,
+      "truncated_eval_lines": 0
+    },
+    {
+      "episode": "episode-004",
+      "seed": 8312300,
+      "cargo_scene": "off",
+      "status": "HOST_INTERRUPTED",
+      "success": null,
+      "observed_stable_hold_s": 0.0,
+      "observed_through_sim_s": 5.00000000000238,
+      "wall_s_at_snapshot": 16.824146057999315,
+      "candidate_ledger_scope": "periodic unfinished snapshot; final tail unavailable",
+      "candidate_trials_by_category": {},
+      "candidate_trials_by_reason": {},
+      "no_path_obstacle_trials": {},
+      "grid_status": {},
+      "planning_budget_holds_in_snapshot": 0,
+      "input_audit_at_snapshot": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 266,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "final_input_audit_verified": false,
+      "truncated_eval_lines": 0
+    },
+    {
+      "episode": "episode-005",
+      "seed": 8312301,
+      "cargo_scene": "off",
+      "status": "HOST_INTERRUPTED",
+      "success": null,
+      "observed_stable_hold_s": 0.0,
+      "observed_through_sim_s": 5.00000000000238,
+      "wall_s_at_snapshot": 16.09579057299925,
+      "candidate_ledger_scope": "periodic unfinished snapshot; final tail unavailable",
+      "candidate_trials_by_category": {},
+      "candidate_trials_by_reason": {},
+      "no_path_obstacle_trials": {},
+      "grid_status": {},
+      "planning_budget_holds_in_snapshot": 0,
+      "input_audit_at_snapshot": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 293,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "final_input_audit_verified": false,
+      "truncated_eval_lines": 0
+    }
+  ],
+  "candidate_trials_by_category": {
+    "current_geometry": 28,
+    "IK": 58,
+    "endpoint_feasible": 10,
+    "feasible": 2,
+    "gripper_angle": 116
+  },
+  "originals": [
+    {
+      "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-000/raw/result.json",
+      "sha256": "0e24673f18fb1ad5f81f8c857717f601be227a06c290c63191627a72ff2d1515"
+    },
+    {
+      "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-000/raw/plan.json",
+      "sha256": "053c3985ad07caa120e605e199fed726bec2d33e35f46ecdceb634a026251cd8"
+    },
+    {
+      "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-000/raw/diagnostic-snapshot.json",
+      "sha256": "0a4b9aaba8ea490175b78a3dac2cb952a158a60080bb1f1508201a59ad7604d9"
+    },
+    {
+      "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-000/raw/eval-only.jsonl",
+      "sha256": "3f3251c270b64ee06fdd76cd99f95312778430919205d116f56fc32328219198"
+    },
+    {
+      "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-000/raw/teacher-r1.jsonl",
+      "sha256": "ca0fa9f319b83255a5678d19aed69d2e20f889750f39715df5d05daa9f26c8c0"
+    },
+    {
+      "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-000/raw/teacher-r2.jsonl",
+      "sha256": "1cb97e95a92595d6323e1ac008e2b5e79c8740df3e426abdf2f67fcaf47f3f50"
+    },
+    {
+      "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-001/raw/result.json",
+      "sha256": "706fa08845faa507460c64c9dd207124ba0aa6842baef162807dee8016c0387d"
+    },
+    {
+      "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-001/raw/plan.json",
+      "sha256": "098c3b3d8325efc30f9bb870db06a046606cc03dcf6a5f6a7dd1fed58c7c1c7a"
+    },
+    {
+      "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-001/raw/diagnostic-snapshot.json",
+      "sha256": "38c9974cd56bb483006b59d13b28fe5169918590831491757e64dcfab961a59a"
+    },
+    {
+      "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-001/raw/eval-only.jsonl",
+      "sha256": "f3a5883e6ebbb915b29638111688b42688348c05b09213f4bbf49da453abb885"
+    },
+    {
+      "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-001/raw/teacher-r1.jsonl",
+      "sha256": "d940c201d4bb4f9aef1d1af9f39aa2f5f37535b895403cb978f95baac1e39af4"
+    },
+    {
+      "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-001/raw/teacher-r2.jsonl",
+      "sha256": "368acaf7ec71875ae6e86a5c1432fc92e248b400d5fc22abaef81b46b6bf303e"
+    },
+    {
+      "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-002/raw/result.json",
+      "sha256": "935f979e2c84506ce443238ac80a1956bdd2f727ce956ba03d17caec110bbe85"
+    },
+    {
+      "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-002/raw/plan.json",
+      "sha256": "33340f7c6b6386eeb7da2cea81df518b77bd51608daaa518bf8460392e87b731"
+    },
+    {
+      "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-002/raw/diagnostic-snapshot.json",
+      "sha256": "f0f47d9e5c0a5b1a2afb7d806316b110851c96bfb8faf82853c2078ca13294e2"
+    },
+    {
+      "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-002/raw/eval-only.jsonl",
+      "sha256": "0d4108e46113a6256ca4380f3e20d02079a3d2f93cfac0e433ca3b87998f82fd"
+    },
+    {
+      "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-002/raw/teacher-r1.jsonl",
+      "sha256": "c47019ac50e9438e1041e457ac0d32fb5400224eeae3fc93349bf153e9b4c074"
+    },
+    {
+      "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-002/raw/teacher-r2.jsonl",
+      "sha256": "26f1eeaa36e390dbd22b98a66bdb1fe4cf81414a7d3ea6dae8e8e5e34126a2e3"
+    },
+    {
+      "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-003/raw/result.json",
+      "sha256": "5293121b158ec2ad8c9fb75ceb8de134180be867fa0b09fef882d09646af2750"
+    },
+    {
+      "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-003/raw/plan.json",
+      "sha256": "7552b8f04cc219527212cfbe2fbcc65110039e31199905b988d894e6045960d1"
+    },
+    {
+      "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-003/raw/diagnostic-snapshot.json",
+      "sha256": "7a198993d7ec0e6afc27ee1da711644ad0dbcd938d25c2f793bbca276685665d"
+    },
+    {
+      "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-003/raw/eval-only.jsonl",
+      "sha256": "3dd35e95d7c6ee6908108419958cfbef698029b8ad14694f5c2455f37e3068fb"
+    },
+    {
+      "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-003/raw/teacher-r1.jsonl",
+      "sha256": "16bbb706ef9c60fc00ae1aa6600b95150e26ebbbe211e7bfc3d182d107eac073"
+    },
+    {
+      "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-003/raw/teacher-r2.jsonl",
+      "sha256": "09dc1dbd7a2b84197578a212399d501b9920076a2a53a8fa529002b141ee3bd8"
+    },
+    {
+      "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-004/raw/result.json",
+      "sha256": "25d9fc662dc6420e01dc774953ced846970ed92fecb72cecb1dbbb8916663460"
+    },
+    {
+      "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-004/raw/plan.json",
+      "sha256": "a0806e7ee587470106beddac579403a1060f9ae34959b7c6e96855b4bd74a6e2"
+    },
+    {
+      "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-004/raw/diagnostic-snapshot.json",
+      "sha256": "914ab751b308fce877af73e768f4255c97ec7e9eda2eb35d4ff4bc65e1c53e55"
+    },
+    {
+      "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-004/raw/eval-only.jsonl",
+      "sha256": "8995dc1fa12a6244381fd768225a845632d8eed0b51e21cf13c8f21f8f1575e4"
+    },
+    {
+      "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-004/raw/teacher-r1.jsonl",
+      "sha256": "d108c90305b05ad24501cac86978307c791214d9e840b12b9829472ebc3d97f1"
+    },
+    {
+      "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-004/raw/teacher-r2.jsonl",
+      "sha256": "41abb3f320151c7f5db6c28ce6a4de1c73de5ca2fd8cefd59d5eea354baef1a8"
+    },
+    {
+      "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-005/raw/result.json",
+      "sha256": "23e1e9d64ce9b323f9e46f70260ab38e4c76a009a9d4b148fd80a24c978860aa"
+    },
+    {
+      "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-005/raw/plan.json",
+      "sha256": "d634dbcabb731560d8e805d73bd0768607808b7a9315f945f761efcc064fe5df"
+    },
+    {
+      "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-005/raw/diagnostic-snapshot.json",
+      "sha256": "e4304cf77fdf3e6c3298b98b9e48d648222529b4ba8943d81362222947ddb7b7"
+    },
+    {
+      "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-005/raw/eval-only.jsonl",
+      "sha256": "5d9d5ad5273ac0242976fbfae06212667bc867355a1d3df70f8f3c4095172641"
+    },
+    {
+      "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-005/raw/teacher-r1.jsonl",
+      "sha256": "4242c9c344e4c82968a86b788f6d54ec69e9db300625b75302cd1788e2c1a856"
+    },
+    {
+      "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-005/raw/teacher-r2.jsonl",
+      "sha256": "d846532782d34939dbf858a60aedc37374ec9126cd8976be5fe721d694c16581"
+    }
+  ],
+  "integrity": {
+    "scope": "post-shutdown survivor snapshot; no final runtime manifest",
+    "remote_full_manifest_verified": false,
+    "surviving_remote_file_hashes_verified": true,
+    "verified_local_files": 152,
+    "unfetched_files": 0,
+    "frames": [
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-000/raw/eval-own/r1/000000.jpg",
+        "sha256": "8d48a4c74d366e89a5496f8e9ada4902946e7afdbe5f9a63ae3ff920b596e89d"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-000/raw/eval-own/r1/000010.jpg",
+        "sha256": "fd6060583c0a1e3f6fd809b4f1a695b010a46e0b197b2d3fa3e933a48cacbbaf"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-000/raw/eval-own/r1/000020.jpg",
+        "sha256": "39db9386e817f74ee6c8120e65ea5c7a2a4a4102acd25cf50cb0d6e0a80e7ceb"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-000/raw/eval-own/r1/000030.jpg",
+        "sha256": "f077b0b1245832c17550deeaa772768aaf59e09ccd97a7c25e24f32478debc87"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-000/raw/eval-own/r1/000040.jpg",
+        "sha256": "bddbd0b8b0d34716dec55eada94b44fd42b57983d97f2db36513561050bbc283"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-000/raw/eval-own/r2/000000.jpg",
+        "sha256": "5afde6bb1d34bc61800d0419b14c00ee739a128fc89e32a7adf57d233029c435"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-000/raw/eval-own/r2/000010.jpg",
+        "sha256": "305808b3cd26d4f2fa68f061828d704927ac43b1631bad50ba0739ab0b502cfc"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-000/raw/eval-own/r2/000020.jpg",
+        "sha256": "87c712fdd338cd92de2bd0acca7885a98bc0b34be3c8c7a3fb6b1c6412eef808"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-000/raw/eval-own/r2/000030.jpg",
+        "sha256": "dccd447a9c24660bb9bec108ed4da3dc2189c470766094bff2e6919a72b417f2"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-000/raw/eval-own/r2/000040.jpg",
+        "sha256": "b577281ba965be72c570b929fa2510128b685bd1a1ab6d940633670c7089a04f"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-001/raw/eval-own/r1/000000.jpg",
+        "sha256": "7e38e2278d73ad5ba953a5d29b9b729efd80c0b83708400eff460d3909d5f411"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-001/raw/eval-own/r1/000010.jpg",
+        "sha256": "05b31f4f565d24ed5c99e41780e8153092428e621b3540e8916af9b0a3a015d3"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-001/raw/eval-own/r1/000020.jpg",
+        "sha256": "077c5cd1d4c195eea1dd6d7991ac2f5929120af9c73b30251d9f84a929c1610c"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-001/raw/eval-own/r1/000030.jpg",
+        "sha256": "45bc7afb28c3d09cc1dec1bff08fa4389d934d5b1763daac96d3eb660e5d859b"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-001/raw/eval-own/r1/000040.jpg",
+        "sha256": "5cca39ba321303bf0948304c8fb083f3aec54e4b7e4b202244c2545d7af334fc"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-001/raw/eval-own/r2/000000.jpg",
+        "sha256": "76d10a5b8b7d0bebff7e9db8d35d11401dd81402d72182aa4aa85d098aaab75b"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-001/raw/eval-own/r2/000010.jpg",
+        "sha256": "a2f3ef9cadac1830eba9c379ea765470c96b29d0c7f3c54ea38d904b61d909fa"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-001/raw/eval-own/r2/000020.jpg",
+        "sha256": "6c4a12b78a8a3c9bebb1f4de8679fa2ec096923d845f7d8b75030e74ff228a64"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-001/raw/eval-own/r2/000030.jpg",
+        "sha256": "0ecb06154fa3794c08ff9f1781518f5001b90b4c416a589dca57da812d3ab1c9"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-001/raw/eval-own/r2/000040.jpg",
+        "sha256": "38eadcbeb5b11ce398fcd1e723a2682aaae1ac779b049e0105d71518704840b2"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-002/raw/eval-own/r1/000000.jpg",
+        "sha256": "d43a40126574d6fbfac8759130d4e633e86f2a337565a972257088e2709598c1"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-002/raw/eval-own/r1/000010.jpg",
+        "sha256": "412226064dd1761c21088bbf8572d0218bb8bcf73c0041564adcd6fe272985fb"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-002/raw/eval-own/r1/000020.jpg",
+        "sha256": "940aac5843cfdd78c347a4bfc6635422b2684a8c4deff74ffc62c61a12a35dee"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-002/raw/eval-own/r1/000030.jpg",
+        "sha256": "9f43f4a82af6c3ed8dc506bc6d99f30e9153fb01ccd3500e8a917b78cbbb65d2"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-002/raw/eval-own/r2/000000.jpg",
+        "sha256": "2f7e9503999abfb2715e5d8c4c15ee656cacbc7f262cda06a71e9650d8c5f07e"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-002/raw/eval-own/r2/000010.jpg",
+        "sha256": "edcc472152abe4e655f471ee18890faceb3f78abce403c3a6e384700779ba2dd"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-002/raw/eval-own/r2/000020.jpg",
+        "sha256": "04c3ad1cebb5e119695ac6a21fd1a367ddd9435a5554cb954c204c4912f26aa4"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-002/raw/eval-own/r2/000030.jpg",
+        "sha256": "bfa4e9e38fa68aa7f00d8849e1dac36f6ed8d5a40dedc206d3f1be0ccc09a8d9"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-003/raw/eval-own/r1/000000.jpg",
+        "sha256": "d0de940faf0dbe86cc719964cfd136f6a7335c72ffb493c27aa95cb1e21b8e8d"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-003/raw/eval-own/r1/000010.jpg",
+        "sha256": "571122962ec160adfb32a2217b7745c46e6b6bec9a874288cdba823c4dbba901"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-003/raw/eval-own/r1/000020.jpg",
+        "sha256": "940aac5843cfdd78c347a4bfc6635422b2684a8c4deff74ffc62c61a12a35dee"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-003/raw/eval-own/r1/000030.jpg",
+        "sha256": "61300288cbb65bde8ac8406018a9185a1c6781935614999947d8e80223d82b52"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-003/raw/eval-own/r2/000000.jpg",
+        "sha256": "dd8fc9d290f87027d30a4068cea4365cac0701d2f3bd6ce5fb9cddaaa685eaf4"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-003/raw/eval-own/r2/000010.jpg",
+        "sha256": "3ec81c594fdca66ef57b8fe39ac98113cc0083283322494d203286b46c215fa2"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-003/raw/eval-own/r2/000020.jpg",
+        "sha256": "40143ba41b399ab2e1f1f9c5c46e8f80bb53383632081105c89ae7188e61cc02"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-003/raw/eval-own/r2/000030.jpg",
+        "sha256": "53922af95ce7a8bde904a67719bf55ad1623318d1ebd93a91554b03047f9e818"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-004/raw/eval-own/r1/000000.jpg",
+        "sha256": "e6806eb4cda3db8e74a3d3919fc643a154250973005f51a39a42bbae5e2291b6"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-004/raw/eval-own/r1/000010.jpg",
+        "sha256": "a3ba727655901b0a289cf8d8ec6cacac5588ad26a6f01e840ec54df16f030c86"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-004/raw/eval-own/r1/000020.jpg",
+        "sha256": "8e4575daf535841009d67ad32efee355050aa210ae9a088b7338c63469b6f35e"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-004/raw/eval-own/r1/000030.jpg",
+        "sha256": "f195b21da5120b94296cfcd9fe7161562310aab75f5bdc357f4a4a48cb59915b"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-004/raw/eval-own/r1/000040.jpg",
+        "sha256": "cc0712bb080ed03cef279d610090032353617078a1bcc0e1c562f375a79a3f5b"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-004/raw/eval-own/r1/000050.jpg",
+        "sha256": "7a41830f69f5d256b4bf1423117fefd7c5c16feed7a7343136a84b817abaac3a"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-004/raw/eval-own/r2/000000.jpg",
+        "sha256": "5ea0340dc38628fbb009d4f83d8fd786fa1da353868951fbf55b7335198f9497"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-004/raw/eval-own/r2/000010.jpg",
+        "sha256": "6b1b8b6cf34b029567e986baddc4d712b0215dad632bf50155b793b0b130ad2e"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-004/raw/eval-own/r2/000020.jpg",
+        "sha256": "efb3d869a753e8951ba6dbdab88eba01f74d1510f2a93e15293d626fad17adf0"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-004/raw/eval-own/r2/000030.jpg",
+        "sha256": "4c9043200bb98293d1058b14f615815b95d80106529192b25b0facc35b36b1de"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-004/raw/eval-own/r2/000040.jpg",
+        "sha256": "506e5b0de83c23bb9c90ab881a830a45fa2d1e1ceb1eb5c302830963884bc304"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-004/raw/eval-own/r2/000050.jpg",
+        "sha256": "5fa91f51aa728cf4e6f75627860b14abdcf66402dab23cc44b1ffd5bb9895274"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-005/raw/eval-own/r1/000000.jpg",
+        "sha256": "481da15f7feb4b4fda3acdb0a3dd8962136e69ab1debcdefd8f70eff7de85bce"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-005/raw/eval-own/r1/000010.jpg",
+        "sha256": "7da7acef9a6d79ef31418c436d57187ab65939f9be27a815ad919d8a84e0b881"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-005/raw/eval-own/r1/000020.jpg",
+        "sha256": "2c2cd380a8f9f7371e1122402a791396d57fbbea742dec3e2d5ad6e7a1a07378"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-005/raw/eval-own/r1/000030.jpg",
+        "sha256": "2c2563196d9e8310a6f7937d80a810bede71419c591ca5990c307a7774c333ea"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-005/raw/eval-own/r1/000040.jpg",
+        "sha256": "96b11c3c356d3667147b13e71981ecfe161e51c269ae5c431eb018d5146c53e6"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-005/raw/eval-own/r1/000050.jpg",
+        "sha256": "ef6624833e54e026f45ca5aeb0832f46ecebfbf1ae38c5a7e2eb47743c505db0"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-005/raw/eval-own/r2/000000.jpg",
+        "sha256": "f7e76d228777d6381c94d0d9445dd41ecfa27efd6c02ce3e122837464d384005"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-005/raw/eval-own/r2/000010.jpg",
+        "sha256": "50e1f831a9728572d1eb0118513f424241391ddc4f9471f1e4c7f9613f4953ff"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-005/raw/eval-own/r2/000020.jpg",
+        "sha256": "5a2776e084429d07e6a45e0e687dbfcc0fe030aba4377f8cf5f985b7102d198f"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-005/raw/eval-own/r2/000030.jpg",
+        "sha256": "0080efc6ae2a56e3ab0cee7513cc46cd0ea6f494db075c922901d265c2938f89"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-005/raw/eval-own/r2/000040.jpg",
+        "sha256": "b900cbf3e1342a6155aaf19e6fad7260ce5f88e43dbeabd23d485416a6a671c2"
+      },
+      {
+        "path": "outputs/gcp1-runs/grasp-search23-r3-short6-gcp-0205485e/diagnostic/episode-005/raw/eval-own/r2/000050.jpg",
+        "sha256": "e38c80f6a6b15ba1a54a48e24736df8f3c340695b215ab8b5d45eedf255fdd01"
+      }
+    ],
+    "survivor_manifest_sha256": "24754be2609ea4f3fa3f08e16974fa9593408912ee4877343795f51902ad77ab"
+  },
+  "raw": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-search23-r3-short6-gcp-0205485e",
+  "remaining": [
+    "No final EXIT or runtime SHA256SUMS; all six outcomes unknown",
+    "Full first30 speed and final 0/0 audit not verified",
+    "No fourth submission permitted in this task"
+  ],
+  "tests": {
+    "passed": 76,
+    "scope": "related pure unit tests; no Mac simulator/render",
+    "log_sha256": "8d48d6be8d3c34d629b2bc7f3c46ba4b3d8462bce4239410c42891cb5ad5c48d"
+  },
+  "host_events": [
+    {
+      "operation": {
+        "id": "operation-1792058654526-65dde2b850b70-840490fb-45a0565f",
+        "last": true,
+        "producer": "compute.googleapis.com"
+      },
+      "protoPayload": {
+        "methodName": "v1.compute.instances.setScheduling",
+        "resourceName": "projects/ugrp-act-train-1014/zones/asia-northeast3-a/instances/ugrp-sim-gcp1",
+        "status": {}
+      },
+      "timestamp": "2026-10-15T10:04:15.111343Z"
+    },
+    {
+      "operation": {
+        "first": true,
+        "id": "operation-1792058654526-65dde2b850b70-840490fb-45a0565f",
+        "producer": "compute.googleapis.com"
+      },
+      "protoPayload": {
+        "methodName": "v1.compute.instances.setScheduling",
+        "resourceName": "projects/ugrp-act-train-1014/zones/asia-northeast3-a/instances/ugrp-sim-gcp1",
+        "status": {}
+      },
+      "timestamp": "2026-10-15T10:04:14.583422Z"
+    }
+  ],
+  "cleanup": {
+    "run": "grasp-search23-r3-short6-gcp-0205485e",
+    "owned_workers": [],
+    "lease_removed": true,
+    "six_slots_released": true,
+    "no_new_execution": true,
+    "reason": "VM shutdown interrupted six runs; quiescent surviving files retrieved and hashed; outcomes unknown"
+  }
+}

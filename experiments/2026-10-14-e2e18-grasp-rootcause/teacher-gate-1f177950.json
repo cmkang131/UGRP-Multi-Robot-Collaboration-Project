@@ -1,0 +1,1202 @@
+{
+  "object_kind": "long_beam",
+  "n": 11,
+  "N": 11,
+  "planned_N": 40,
+  "started_N": 16,
+  "joint_held_n": 11,
+  "robots": {
+    "r1": {
+      "n": 11,
+      "N": 11
+    },
+    "r2": {
+      "n": 11,
+      "N": 11
+    }
+  },
+  "failure_reasons": {},
+  "host_errors": 0,
+  "interrupted": 5,
+  "source_path": "/home/ugrp/ugrp-sim/runs/grasp-teacher-gate-1f177950/teacher-gate.json",
+  "sha256": "67ca6548468e2765e1aa9344810d048d259e314f4b5764fa9bdb06bc370c22f4",
+  "rows": [
+    {
+      "index": 0,
+      "status": "complete",
+      "exit": 0,
+      "physical_success": true,
+      "sim_s": 20.400000000014803,
+      "wall_per_sim": 2.7740167695078104,
+      "teachers": {
+        "r1": {
+          "phase": "done",
+          "outcome": "success",
+          "events": [
+            {
+              "t": 14.999999999987716,
+              "from": "approach",
+              "to": "align"
+            },
+            {
+              "t": 15.399999999986784,
+              "from": "align",
+              "to": "ready"
+            },
+            {
+              "t": 15.499999999986551,
+              "from": "ready",
+              "to": "pick"
+            },
+            {
+              "t": 21.200000000010213,
+              "from": "pick",
+              "to": "verify"
+            },
+            {
+              "t": 22.200000000014988,
+              "from": "verify",
+              "to": "done"
+            }
+          ],
+          "staging_distance_m": 0.203,
+          "phase_sim_s": {
+            "approach": 13.199999999987531,
+            "align": 0.39999999999906777,
+            "ready": 0.09999999999976694,
+            "pick": 5.700000000023662,
+            "verify": 1.0000000000047748
+          },
+          "planner_calls": 13,
+          "no_path_calls": 0,
+          "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+        },
+        "r2": {
+          "phase": "done",
+          "outcome": "success",
+          "events": [
+            {
+              "t": 1.8000000000001848,
+              "from": "approach",
+              "to": "align"
+            },
+            {
+              "t": 2.100000000000196,
+              "from": "align",
+              "to": "ready"
+            },
+            {
+              "t": 15.499999999986551,
+              "from": "ready",
+              "to": "pick"
+            },
+            {
+              "t": 21.200000000010213,
+              "from": "pick",
+              "to": "verify"
+            },
+            {
+              "t": 22.200000000014988,
+              "from": "verify",
+              "to": "done"
+            }
+          ],
+          "staging_distance_m": 0.203,
+          "phase_sim_s": {
+            "approach": 0.0,
+            "align": 0.30000000000001115,
+            "ready": 13.399999999986356,
+            "pick": 5.700000000023662,
+            "verify": 1.0000000000047748
+          },
+          "planner_calls": 0,
+          "no_path_calls": 0,
+          "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+        }
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/grasp-teacher-gate-1f177950/cohort-000/episode-000/raw",
+      "result_sha256": "c7a2ea933d4b8c3529ddde873e7894d23a867beba7e6d1505d914ca146862a5d"
+    },
+    {
+      "index": 1,
+      "status": "interrupted",
+      "exit": 130,
+      "physical_success": false,
+      "sim_s": null,
+      "wall_per_sim": null,
+      "teachers": null,
+      "raw": "/home/ugrp/ugrp-sim/runs/grasp-teacher-gate-1f177950/cohort-000/episode-001/raw",
+      "result_sha256": "76766b666c9bf59b3231784f4d3aba6a7f85a8276667281e7db880cf1b9064e1"
+    },
+    {
+      "index": 2,
+      "status": "complete",
+      "exit": 130,
+      "physical_success": false,
+      "sim_s": 60.00000000020389,
+      "wall_per_sim": 2.391202833758567,
+      "teachers": {
+        "r1": {
+          "phase": "ready",
+          "outcome": "episode_timeout",
+          "events": [
+            {
+              "t": 12.89999999999261,
+              "from": "approach",
+              "to": "align"
+            },
+            {
+              "t": 13.299999999991678,
+              "from": "align",
+              "to": "ready"
+            }
+          ],
+          "staging_distance_m": 0.203,
+          "phase_sim_s": {
+            "approach": 11.099999999992425,
+            "align": 0.39999999999906777
+          },
+          "planner_calls": 11,
+          "no_path_calls": 0,
+          "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+        },
+        "r2": {
+          "phase": "approach",
+          "outcome": "episode_timeout",
+          "events": [],
+          "staging_distance_m": 0.203,
+          "phase_sim_s": {},
+          "planner_calls": 60,
+          "no_path_calls": 0,
+          "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+        }
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/grasp-teacher-gate-1f177950/cohort-000/episode-002/raw",
+      "result_sha256": "9371467ae734691ce03cdcc34a066800bcf5adb6f91e86d9d44f3578438d0a15"
+    },
+    {
+      "index": 3,
+      "status": "interrupted",
+      "exit": 130,
+      "physical_success": false,
+      "sim_s": null,
+      "wall_per_sim": null,
+      "teachers": null,
+      "raw": "/home/ugrp/ugrp-sim/runs/grasp-teacher-gate-1f177950/cohort-000/episode-003/raw",
+      "result_sha256": "306fdc07c1c976530c195d6b7368f95644289e20c3e085360deea7846c3ea971"
+    },
+    {
+      "index": 4,
+      "status": "complete",
+      "exit": 0,
+      "physical_success": true,
+      "sim_s": 22.90000000002674,
+      "wall_per_sim": 2.6589550550187524,
+      "teachers": {
+        "r1": {
+          "phase": "done",
+          "outcome": "success",
+          "events": [
+            {
+              "t": 10.899999999997272,
+              "from": "approach",
+              "to": "align"
+            },
+            {
+              "t": 11.29999999999634,
+              "from": "align",
+              "to": "ready"
+            },
+            {
+              "t": 17.999999999994934,
+              "from": "ready",
+              "to": "pick"
+            },
+            {
+              "t": 23.70000000002215,
+              "from": "pick",
+              "to": "verify"
+            },
+            {
+              "t": 24.700000000026925,
+              "from": "verify",
+              "to": "done"
+            }
+          ],
+          "staging_distance_m": 0.203,
+          "phase_sim_s": {
+            "approach": 9.099999999997086,
+            "align": 0.39999999999906777,
+            "ready": 6.699999999998594,
+            "pick": 5.700000000027217,
+            "verify": 1.0000000000047748
+          },
+          "planner_calls": 9,
+          "no_path_calls": 2,
+          "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+        },
+        "r2": {
+          "phase": "done",
+          "outcome": "success",
+          "events": [
+            {
+              "t": 17.599999999993024,
+              "from": "approach",
+              "to": "align"
+            },
+            {
+              "t": 17.899999999994456,
+              "from": "align",
+              "to": "ready"
+            },
+            {
+              "t": 17.999999999994934,
+              "from": "ready",
+              "to": "pick"
+            },
+            {
+              "t": 23.70000000002215,
+              "from": "pick",
+              "to": "verify"
+            },
+            {
+              "t": 24.700000000026925,
+              "from": "verify",
+              "to": "done"
+            }
+          ],
+          "staging_distance_m": 0.203,
+          "phase_sim_s": {
+            "approach": 15.799999999992838,
+            "align": 0.30000000000143245,
+            "ready": 0.10000000000047748,
+            "pick": 5.700000000027217,
+            "verify": 1.0000000000047748
+          },
+          "planner_calls": 15,
+          "no_path_calls": 0,
+          "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+        }
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/grasp-teacher-gate-1f177950/cohort-000/episode-004/raw",
+      "result_sha256": "658139606811785173a4ba6a2d257e0fa3cadf5611900342b5e8a128ac79e0e1"
+    },
+    {
+      "index": 5,
+      "status": "complete",
+      "exit": 0,
+      "physical_success": true,
+      "sim_s": 20.600000000015758,
+      "wall_per_sim": 2.6217305490757097,
+      "teachers": {
+        "r1": {
+          "phase": "done",
+          "outcome": "success",
+          "events": [
+            {
+              "t": 10.29999999999867,
+              "from": "approach",
+              "to": "align"
+            },
+            {
+              "t": 10.699999999997738,
+              "from": "align",
+              "to": "ready"
+            },
+            {
+              "t": 15.699999999986085,
+              "from": "ready",
+              "to": "pick"
+            },
+            {
+              "t": 21.40000000001117,
+              "from": "pick",
+              "to": "verify"
+            },
+            {
+              "t": 22.400000000015943,
+              "from": "verify",
+              "to": "done"
+            }
+          ],
+          "staging_distance_m": 0.203,
+          "phase_sim_s": {
+            "approach": 8.499999999998485,
+            "align": 0.39999999999906777,
+            "ready": 4.999999999988347,
+            "pick": 5.700000000025083,
+            "verify": 1.0000000000047748
+          },
+          "planner_calls": 9,
+          "no_path_calls": 0,
+          "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+        },
+        "r2": {
+          "phase": "done",
+          "outcome": "success",
+          "events": [
+            {
+              "t": 15.19999999998725,
+              "from": "approach",
+              "to": "align"
+            },
+            {
+              "t": 15.599999999986318,
+              "from": "align",
+              "to": "ready"
+            },
+            {
+              "t": 15.699999999986085,
+              "from": "ready",
+              "to": "pick"
+            },
+            {
+              "t": 21.40000000001117,
+              "from": "pick",
+              "to": "verify"
+            },
+            {
+              "t": 22.400000000015943,
+              "from": "verify",
+              "to": "done"
+            }
+          ],
+          "staging_distance_m": 0.203,
+          "phase_sim_s": {
+            "approach": 13.399999999987065,
+            "align": 0.39999999999906777,
+            "ready": 0.09999999999976694,
+            "pick": 5.700000000025083,
+            "verify": 1.0000000000047748
+          },
+          "planner_calls": 13,
+          "no_path_calls": 0,
+          "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+        }
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/grasp-teacher-gate-1f177950/cohort-000/episode-005/raw",
+      "result_sha256": "3f53ec7f04eed11016135a0be95ebc269fe103f652ade671a973eac241a2ba49"
+    },
+    {
+      "index": 6,
+      "status": "interrupted",
+      "exit": 130,
+      "physical_success": false,
+      "sim_s": null,
+      "wall_per_sim": null,
+      "teachers": null,
+      "raw": "/home/ugrp/ugrp-sim/runs/grasp-teacher-gate-1f177950/cohort-000/episode-006/raw",
+      "result_sha256": "6e55b64888d8533719405a206033f37e9ce4fbd4bab25d315529bdbd7dd0518b"
+    },
+    {
+      "index": 7,
+      "status": "interrupted",
+      "exit": 130,
+      "physical_success": false,
+      "sim_s": null,
+      "wall_per_sim": null,
+      "teachers": null,
+      "raw": "/home/ugrp/ugrp-sim/runs/grasp-teacher-gate-1f177950/cohort-000/episode-007/raw",
+      "result_sha256": "db49fdc65df1cd13f574bc5dc9b4efd599d206d6b8c3bc58bf2ad53eda059f1e"
+    },
+    {
+      "index": 8,
+      "status": "complete",
+      "exit": 0,
+      "physical_success": true,
+      "sim_s": 25.600000000039632,
+      "wall_per_sim": 2.573350029214789,
+      "teachers": {
+        "r1": {
+          "phase": "done",
+          "outcome": "success",
+          "events": [
+            {
+              "t": 19.70000000000305,
+              "from": "approach",
+              "to": "align"
+            },
+            {
+              "t": 20.000000000004484,
+              "from": "align",
+              "to": "ready"
+            },
+            {
+              "t": 20.700000000007826,
+              "from": "ready",
+              "to": "pick"
+            },
+            {
+              "t": 26.400000000035043,
+              "from": "pick",
+              "to": "verify"
+            },
+            {
+              "t": 27.400000000039817,
+              "from": "verify",
+              "to": "done"
+            }
+          ],
+          "staging_distance_m": 0.203,
+          "phase_sim_s": {
+            "approach": 17.900000000002866,
+            "align": 0.30000000000143245,
+            "ready": 0.7000000000033424,
+            "pick": 5.700000000027217,
+            "verify": 1.0000000000047748
+          },
+          "planner_calls": 17,
+          "no_path_calls": 3,
+          "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+        },
+        "r2": {
+          "phase": "done",
+          "outcome": "success",
+          "events": [
+            {
+              "t": 20.10000000000496,
+              "from": "approach",
+              "to": "align"
+            },
+            {
+              "t": 20.60000000000735,
+              "from": "align",
+              "to": "ready"
+            },
+            {
+              "t": 20.700000000007826,
+              "from": "ready",
+              "to": "pick"
+            },
+            {
+              "t": 26.400000000035043,
+              "from": "pick",
+              "to": "verify"
+            },
+            {
+              "t": 27.400000000039817,
+              "from": "verify",
+              "to": "done"
+            }
+          ],
+          "staging_distance_m": 0.203,
+          "phase_sim_s": {
+            "approach": 18.300000000004776,
+            "align": 0.5000000000023874,
+            "ready": 0.10000000000047748,
+            "pick": 5.700000000027217,
+            "verify": 1.0000000000047748
+          },
+          "planner_calls": 18,
+          "no_path_calls": 0,
+          "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+        }
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/grasp-teacher-gate-1f177950/cohort-000/episode-008/raw",
+      "result_sha256": "17b4a5b66657cd42211af617d248378551fa90aa91f6e5fdf4866f2fa69d668d"
+    },
+    {
+      "index": 9,
+      "status": "complete",
+      "exit": 0,
+      "physical_success": true,
+      "sim_s": 18.400000000005253,
+      "wall_per_sim": 2.7418252405426955,
+      "teachers": {
+        "r1": {
+          "phase": "done",
+          "outcome": "success",
+          "events": [
+            {
+              "t": 12.89999999999261,
+              "from": "approach",
+              "to": "align"
+            },
+            {
+              "t": 13.399999999991445,
+              "from": "align",
+              "to": "ready"
+            },
+            {
+              "t": 13.499999999991212,
+              "from": "ready",
+              "to": "pick"
+            },
+            {
+              "t": 19.200000000000664,
+              "from": "pick",
+              "to": "verify"
+            },
+            {
+              "t": 20.20000000000544,
+              "from": "verify",
+              "to": "done"
+            }
+          ],
+          "staging_distance_m": 0.203,
+          "phase_sim_s": {
+            "approach": 11.099999999992425,
+            "align": 0.4999999999988347,
+            "ready": 0.09999999999976694,
+            "pick": 5.700000000009451,
+            "verify": 1.0000000000047748
+          },
+          "planner_calls": 11,
+          "no_path_calls": 0,
+          "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+        },
+        "r2": {
+          "phase": "done",
+          "outcome": "success",
+          "events": [
+            {
+              "t": 1.8000000000001848,
+              "from": "approach",
+              "to": "align"
+            },
+            {
+              "t": 2.100000000000196,
+              "from": "align",
+              "to": "ready"
+            },
+            {
+              "t": 13.499999999991212,
+              "from": "ready",
+              "to": "pick"
+            },
+            {
+              "t": 19.200000000000664,
+              "from": "pick",
+              "to": "verify"
+            },
+            {
+              "t": 20.20000000000544,
+              "from": "verify",
+              "to": "done"
+            }
+          ],
+          "staging_distance_m": 0.203,
+          "phase_sim_s": {
+            "approach": 0.0,
+            "align": 0.30000000000001115,
+            "ready": 11.399999999991017,
+            "pick": 5.700000000009451,
+            "verify": 1.0000000000047748
+          },
+          "planner_calls": 0,
+          "no_path_calls": 0,
+          "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+        }
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/grasp-teacher-gate-1f177950/cohort-000/episode-009/raw",
+      "result_sha256": "965a07d8c50b602394669b9d96b37a0eb31e5c32221e22a8dc70454aad4dae43"
+    },
+    {
+      "index": 10,
+      "status": "complete",
+      "exit": 0,
+      "physical_success": true,
+      "sim_s": 24.800000000035812,
+      "wall_per_sim": 2.533884611609233,
+      "teachers": {
+        "r1": {
+          "phase": "done",
+          "outcome": "success",
+          "events": [
+            {
+              "t": 19.500000000002096,
+              "from": "approach",
+              "to": "align"
+            },
+            {
+              "t": 19.80000000000353,
+              "from": "align",
+              "to": "ready"
+            },
+            {
+              "t": 19.900000000004006,
+              "from": "ready",
+              "to": "pick"
+            },
+            {
+              "t": 25.600000000031223,
+              "from": "pick",
+              "to": "verify"
+            },
+            {
+              "t": 26.600000000035998,
+              "from": "verify",
+              "to": "done"
+            }
+          ],
+          "staging_distance_m": 0.203,
+          "phase_sim_s": {
+            "approach": 17.70000000000191,
+            "align": 0.30000000000143245,
+            "ready": 0.10000000000047748,
+            "pick": 5.700000000027217,
+            "verify": 1.0000000000047748
+          },
+          "planner_calls": 17,
+          "no_path_calls": 3,
+          "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+        },
+        "r2": {
+          "phase": "done",
+          "outcome": "success",
+          "events": [
+            {
+              "t": 16.399999999987294,
+              "from": "approach",
+              "to": "align"
+            },
+            {
+              "t": 16.699999999988727,
+              "from": "align",
+              "to": "ready"
+            },
+            {
+              "t": 19.900000000004006,
+              "from": "ready",
+              "to": "pick"
+            },
+            {
+              "t": 25.600000000031223,
+              "from": "pick",
+              "to": "verify"
+            },
+            {
+              "t": 26.600000000035998,
+              "from": "verify",
+              "to": "done"
+            }
+          ],
+          "staging_distance_m": 0.203,
+          "phase_sim_s": {
+            "approach": 14.599999999987109,
+            "align": 0.30000000000143245,
+            "ready": 3.2000000000152795,
+            "pick": 5.700000000027217,
+            "verify": 1.0000000000047748
+          },
+          "planner_calls": 14,
+          "no_path_calls": 0,
+          "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+        }
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/grasp-teacher-gate-1f177950/cohort-000/episode-010/raw",
+      "result_sha256": "988845175f2f5788304b26120e453e537a0d21a40b256f6d6ff33e23f2756f68"
+    },
+    {
+      "index": 11,
+      "status": "complete",
+      "exit": 0,
+      "physical_success": true,
+      "sim_s": 27.20000000004727,
+      "wall_per_sim": 2.5510503687822714,
+      "teachers": {
+        "r1": {
+          "phase": "done",
+          "outcome": "success",
+          "events": [
+            {
+              "t": 18.99999999999971,
+              "from": "approach",
+              "to": "align"
+            },
+            {
+              "t": 19.30000000000114,
+              "from": "align",
+              "to": "ready"
+            },
+            {
+              "t": 22.300000000015466,
+              "from": "ready",
+              "to": "pick"
+            },
+            {
+              "t": 28.000000000042682,
+              "from": "pick",
+              "to": "verify"
+            },
+            {
+              "t": 29.000000000047457,
+              "from": "verify",
+              "to": "done"
+            }
+          ],
+          "staging_distance_m": 0.203,
+          "phase_sim_s": {
+            "approach": 17.199999999999523,
+            "align": 0.30000000000143245,
+            "ready": 3.0000000000143245,
+            "pick": 5.700000000027217,
+            "verify": 1.0000000000047748
+          },
+          "planner_calls": 17,
+          "no_path_calls": 1,
+          "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+        },
+        "r2": {
+          "phase": "done",
+          "outcome": "success",
+          "events": [
+            {
+              "t": 21.900000000013556,
+              "from": "approach",
+              "to": "align"
+            },
+            {
+              "t": 22.200000000014988,
+              "from": "align",
+              "to": "ready"
+            },
+            {
+              "t": 22.300000000015466,
+              "from": "ready",
+              "to": "pick"
+            },
+            {
+              "t": 28.000000000042682,
+              "from": "pick",
+              "to": "verify"
+            },
+            {
+              "t": 29.000000000047457,
+              "from": "verify",
+              "to": "done"
+            }
+          ],
+          "staging_distance_m": 0.203,
+          "phase_sim_s": {
+            "approach": 20.10000000001337,
+            "align": 0.30000000000143245,
+            "ready": 0.10000000000047748,
+            "pick": 5.700000000027217,
+            "verify": 1.0000000000047748
+          },
+          "planner_calls": 20,
+          "no_path_calls": 3,
+          "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+        }
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/grasp-teacher-gate-1f177950/cohort-000/episode-011/raw",
+      "result_sha256": "f017513e9360b198de1a547a109cbb43bd207123949ed7f2725e4409c6052871"
+    },
+    {
+      "index": 12,
+      "status": "complete",
+      "exit": 0,
+      "physical_success": true,
+      "sim_s": 17.400000000000478,
+      "wall_per_sim": 2.7658032351149284,
+      "teachers": {
+        "r1": {
+          "phase": "done",
+          "outcome": "success",
+          "events": [
+            {
+              "t": 11.999999999994708,
+              "from": "approach",
+              "to": "align"
+            },
+            {
+              "t": 12.399999999993776,
+              "from": "align",
+              "to": "ready"
+            },
+            {
+              "t": 12.499999999993543,
+              "from": "ready",
+              "to": "pick"
+            },
+            {
+              "t": 18.19999999999589,
+              "from": "pick",
+              "to": "verify"
+            },
+            {
+              "t": 19.200000000000664,
+              "from": "verify",
+              "to": "done"
+            }
+          ],
+          "staging_distance_m": 0.203,
+          "phase_sim_s": {
+            "approach": 10.199999999994523,
+            "align": 0.39999999999906777,
+            "ready": 0.09999999999976694,
+            "pick": 5.700000000002346,
+            "verify": 1.0000000000047748
+          },
+          "planner_calls": 10,
+          "no_path_calls": 0,
+          "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+        },
+        "r2": {
+          "phase": "done",
+          "outcome": "success",
+          "events": [
+            {
+              "t": 1.8000000000001848,
+              "from": "approach",
+              "to": "align"
+            },
+            {
+              "t": 2.100000000000196,
+              "from": "align",
+              "to": "ready"
+            },
+            {
+              "t": 12.499999999993543,
+              "from": "ready",
+              "to": "pick"
+            },
+            {
+              "t": 18.19999999999589,
+              "from": "pick",
+              "to": "verify"
+            },
+            {
+              "t": 19.200000000000664,
+              "from": "verify",
+              "to": "done"
+            }
+          ],
+          "staging_distance_m": 0.203,
+          "phase_sim_s": {
+            "approach": 0.0,
+            "align": 0.30000000000001115,
+            "ready": 10.399999999993348,
+            "pick": 5.700000000002346,
+            "verify": 1.0000000000047748
+          },
+          "planner_calls": 0,
+          "no_path_calls": 0,
+          "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+        }
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/grasp-teacher-gate-1f177950/cohort-000/episode-012/raw",
+      "result_sha256": "cb7c01f4fc395a0f4e6c300f6c6fa69691934aaa9d937372f49806e62565b2f4"
+    },
+    {
+      "index": 13,
+      "status": "complete",
+      "exit": 0,
+      "physical_success": true,
+      "sim_s": 20.300000000014325,
+      "wall_per_sim": 2.7238642098010746,
+      "teachers": {
+        "r1": {
+          "phase": "done",
+          "outcome": "success",
+          "events": [
+            {
+              "t": 14.599999999988649,
+              "from": "approach",
+              "to": "align"
+            },
+            {
+              "t": 15.299999999987017,
+              "from": "align",
+              "to": "ready"
+            },
+            {
+              "t": 15.399999999986784,
+              "from": "ready",
+              "to": "pick"
+            },
+            {
+              "t": 21.100000000009736,
+              "from": "pick",
+              "to": "verify"
+            },
+            {
+              "t": 22.10000000001451,
+              "from": "verify",
+              "to": "done"
+            }
+          ],
+          "staging_distance_m": 0.203,
+          "phase_sim_s": {
+            "approach": 12.799999999988463,
+            "align": 0.6999999999983686,
+            "ready": 0.09999999999976694,
+            "pick": 5.700000000022952,
+            "verify": 1.0000000000047748
+          },
+          "planner_calls": 12,
+          "no_path_calls": 0,
+          "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+        },
+        "r2": {
+          "phase": "done",
+          "outcome": "success",
+          "events": [
+            {
+              "t": 6.300000000001954,
+              "from": "approach",
+              "to": "align"
+            },
+            {
+              "t": 7.700000000003665,
+              "from": "align",
+              "to": "ready"
+            },
+            {
+              "t": 15.399999999986784,
+              "from": "ready",
+              "to": "pick"
+            },
+            {
+              "t": 21.100000000009736,
+              "from": "pick",
+              "to": "verify"
+            },
+            {
+              "t": 22.10000000001451,
+              "from": "verify",
+              "to": "done"
+            }
+          ],
+          "staging_distance_m": 0.203,
+          "phase_sim_s": {
+            "approach": 4.500000000001769,
+            "align": 1.400000000001711,
+            "ready": 7.6999999999831195,
+            "pick": 5.700000000022952,
+            "verify": 1.0000000000047748
+          },
+          "planner_calls": 5,
+          "no_path_calls": 0,
+          "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+        }
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/grasp-teacher-gate-1f177950/cohort-000/episode-013/raw",
+      "result_sha256": "c197d29f2c74a5735d90f009be94d6a3762e0e3e3a57741c9cbae94429b4ce59"
+    },
+    {
+      "index": 14,
+      "status": "complete",
+      "exit": 0,
+      "physical_success": true,
+      "sim_s": 20.200000000013848,
+      "wall_per_sim": 2.563019375641775,
+      "teachers": {
+        "r1": {
+          "phase": "done",
+          "outcome": "success",
+          "events": [
+            {
+              "t": 13.699999999990746,
+              "from": "approach",
+              "to": "align"
+            },
+            {
+              "t": 14.099999999989814,
+              "from": "align",
+              "to": "ready"
+            },
+            {
+              "t": 15.299999999987017,
+              "from": "ready",
+              "to": "pick"
+            },
+            {
+              "t": 21.00000000000926,
+              "from": "pick",
+              "to": "verify"
+            },
+            {
+              "t": 22.000000000014033,
+              "from": "verify",
+              "to": "done"
+            }
+          ],
+          "staging_distance_m": 0.203,
+          "phase_sim_s": {
+            "approach": 11.89999999999056,
+            "align": 0.39999999999906777,
+            "ready": 1.1999999999972033,
+            "pick": 5.700000000022241,
+            "verify": 1.0000000000047748
+          },
+          "planner_calls": 12,
+          "no_path_calls": 0,
+          "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+        },
+        "r2": {
+          "phase": "done",
+          "outcome": "success",
+          "events": [
+            {
+              "t": 14.799999999988183,
+              "from": "approach",
+              "to": "align"
+            },
+            {
+              "t": 15.19999999998725,
+              "from": "align",
+              "to": "ready"
+            },
+            {
+              "t": 15.299999999987017,
+              "from": "ready",
+              "to": "pick"
+            },
+            {
+              "t": 21.00000000000926,
+              "from": "pick",
+              "to": "verify"
+            },
+            {
+              "t": 22.000000000014033,
+              "from": "verify",
+              "to": "done"
+            }
+          ],
+          "staging_distance_m": 0.203,
+          "phase_sim_s": {
+            "approach": 12.999999999987997,
+            "align": 0.39999999999906777,
+            "ready": 0.09999999999976694,
+            "pick": 5.700000000022241,
+            "verify": 1.0000000000047748
+          },
+          "planner_calls": 13,
+          "no_path_calls": 0,
+          "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+        }
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/grasp-teacher-gate-1f177950/cohort-000/episode-014/raw",
+      "result_sha256": "4de04ad054b38e76d44edef78b228dd863ae8ff21776c34b85c9cad97da1e350"
+    },
+    {
+      "index": 15,
+      "status": "complete",
+      "exit": 0,
+      "physical_success": true,
+      "sim_s": 19.900000000012415,
+      "wall_per_sim": 2.7746458149228097,
+      "teachers": {
+        "r1": {
+          "phase": "done",
+          "outcome": "success",
+          "events": [
+            {
+              "t": 14.499999999988882,
+              "from": "approach",
+              "to": "align"
+            },
+            {
+              "t": 14.89999999998795,
+              "from": "align",
+              "to": "ready"
+            },
+            {
+              "t": 14.999999999987716,
+              "from": "ready",
+              "to": "pick"
+            },
+            {
+              "t": 20.700000000007826,
+              "from": "pick",
+              "to": "verify"
+            },
+            {
+              "t": 21.7000000000126,
+              "from": "verify",
+              "to": "done"
+            }
+          ],
+          "staging_distance_m": 0.203,
+          "phase_sim_s": {
+            "approach": 12.699999999988696,
+            "align": 0.39999999999906777,
+            "ready": 0.09999999999976694,
+            "pick": 5.700000000020109,
+            "verify": 1.0000000000047748
+          },
+          "planner_calls": 12,
+          "no_path_calls": 0,
+          "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+        },
+        "r2": {
+          "phase": "done",
+          "outcome": "success",
+          "events": [
+            {
+              "t": 1.8000000000001848,
+              "from": "approach",
+              "to": "align"
+            },
+            {
+              "t": 2.100000000000196,
+              "from": "align",
+              "to": "ready"
+            },
+            {
+              "t": 14.999999999987716,
+              "from": "ready",
+              "to": "pick"
+            },
+            {
+              "t": 20.700000000007826,
+              "from": "pick",
+              "to": "verify"
+            },
+            {
+              "t": 21.7000000000126,
+              "from": "verify",
+              "to": "done"
+            }
+          ],
+          "staging_distance_m": 0.203,
+          "phase_sim_s": {
+            "approach": 0.0,
+            "align": 0.30000000000001115,
+            "ready": 12.899999999987521,
+            "pick": 5.700000000020109,
+            "verify": 1.0000000000047748
+          },
+          "planner_calls": 0,
+          "no_path_calls": 0,
+          "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+        }
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/grasp-teacher-gate-1f177950/cohort-000/episode-015/raw",
+      "result_sha256": "2be431bfc78b84a7b44b281b374f882bae6c93dbba0e728fa1970c3917d09d9f"
+    }
+  ],
+  "scope": "Incomplete gate; 11/11 finalized, 5 interrupted including one physical timeout whose finalizer was interrupted. Not qualified.",
+  "visual_review": [
+    {
+      "case": "episode-001",
+      "times_sim_s": [
+        0,
+        6,
+        12,
+        18,
+        24,
+        35
+      ],
+      "path": "outputs/grasp-rootcause/gate-1f-review/episode-001/review.jpg",
+      "sha256": "09799edbd39bf58462b9a60781ed015255b5d5b83c24f1a17e145de3f83ff31b",
+      "relation": "Robots reached different ends and stayed there; no same-end assignment conflict."
+    },
+    {
+      "case": "episode-007",
+      "times_sim_s": [
+        0,
+        6,
+        12,
+        18,
+        24,
+        35
+      ],
+      "path": "outputs/grasp-rootcause/gate-1f-review/episode-007/review.jpg",
+      "sha256": "c8b6f358ddd31a3f633f58b04c5354c97edf0887a36826c7489b498c0ff4d816",
+      "relation": "Robots reached different ends and stayed there; no same-end assignment conflict."
+    }
+  ]
+}

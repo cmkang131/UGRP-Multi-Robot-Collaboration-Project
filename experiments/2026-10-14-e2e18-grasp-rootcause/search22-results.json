@@ -1,0 +1,2423 @@
+{
+  "schema": "ugrp.grasp_act.search22.result_summary.v1",
+  "status": "NOT_READY_MAX_THREE_ROUNDS",
+  "source_sha": "4c18f074c0e4d910cc4ef708ba901148fe91762a",
+  "n": 3,
+  "N": 6,
+  "rounds": [
+    {
+      "source_sha": "c099eb7afc658ce1fe8a0310dcf787e4773c3b1c",
+      "run": "grasp-search22-r1-short6-gcp-c099eb7a",
+      "n": 2,
+      "N": 6,
+      "completed": 2,
+      "started_N": 6,
+      "host_errors": 1,
+      "interrupted": 3,
+      "all_audits_enabled": true,
+      "input_invisible_total": 0,
+      "input_held_total": 0,
+      "rows": [
+        {
+          "episode": "episode-000",
+          "seed": 8311709,
+          "cargo_scene": "off",
+          "status": "interrupted",
+          "success": false,
+          "eval_joint_hold_3s": false,
+          "max_joint_hold_s": 0.0,
+          "sim_s": null,
+          "wall_s": 82.97234268800094,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 850,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "outcomes": {},
+          "candidate_trials_by_reason": {},
+          "events": {},
+          "result_decoded_sha256": "4399ec49bd9e9ea6805c9de0af50bafd6a2551effeb24548c2cca993f1ca5211"
+        },
+        {
+          "episode": "episode-001",
+          "seed": 8311709,
+          "cargo_scene": "cargo_v6",
+          "status": "interrupted",
+          "success": false,
+          "eval_joint_hold_3s": false,
+          "max_joint_hold_s": 0.0,
+          "sim_s": null,
+          "wall_s": 82.96843747499952,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 944,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "outcomes": {},
+          "candidate_trials_by_reason": {},
+          "events": {},
+          "result_decoded_sha256": "991087cbc3c738cdb9989ce6ec735ed4726df5e20d4b30a60f8db742f73bf3fe"
+        },
+        {
+          "episode": "episode-002",
+          "seed": 315709,
+          "cargo_scene": "cargo_v6",
+          "status": "HOST_ERROR",
+          "success": false,
+          "eval_joint_hold_3s": false,
+          "max_joint_hold_s": 0.0,
+          "sim_s": null,
+          "wall_s": null,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 0,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "outcomes": {},
+          "candidate_trials_by_reason": {},
+          "events": {},
+          "result_decoded_sha256": "18162f0831d8dfa02b9c85f5cb5e0225662cf13148162dde7ff796488c48b23f"
+        },
+        {
+          "episode": "episode-003",
+          "seed": 315709,
+          "cargo_scene": "off",
+          "status": "interrupted",
+          "success": false,
+          "eval_joint_hold_3s": false,
+          "max_joint_hold_s": 0.0,
+          "sim_s": null,
+          "wall_s": 82.97018054399814,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 1363,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "outcomes": {},
+          "candidate_trials_by_reason": {},
+          "events": {},
+          "result_decoded_sha256": "4cb21ee8b34de297728f7a6a3fd2414303af73d7f04cad4e997725a69d3ba427"
+        },
+        {
+          "episode": "episode-004",
+          "seed": 8312300,
+          "cargo_scene": "off",
+          "status": "complete",
+          "success": true,
+          "eval_joint_hold_3s": true,
+          "max_joint_hold_s": 3.0000000000143245,
+          "sim_s": 24.800000000035812,
+          "wall_s": 67.79846336100309,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 713,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "outcomes": {
+            "r1": "success",
+            "r2": "success"
+          },
+          "candidate_trials_by_reason": {},
+          "events": {},
+          "result_decoded_sha256": "654ceb3b8c9d42031ee1de1440731799d59bb02600e39aa0d985284998ea7639"
+        },
+        {
+          "episode": "episode-005",
+          "seed": 8312301,
+          "cargo_scene": "off",
+          "status": "complete",
+          "success": true,
+          "eval_joint_hold_3s": true,
+          "max_joint_hold_s": 3.0000000000143245,
+          "sim_s": 28.00000000005109,
+          "wall_s": 73.87876228200184,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 930,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "outcomes": {
+            "r1": "success",
+            "r2": "success"
+          },
+          "candidate_trials_by_reason": {},
+          "events": {},
+          "result_decoded_sha256": "a3ec3477ff646650c132fabb645e2155008c28dade8d02fc99378d92d94c96fc"
+        }
+      ],
+      "candidate_trials_by_reason": {},
+      "originals": [
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-000/raw/result.json",
+          "decoded_sha256": "4399ec49bd9e9ea6805c9de0af50bafd6a2551effeb24548c2cca993f1ca5211",
+          "bytes": 2895
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-000/raw/plan.json",
+          "decoded_sha256": "053c3985ad07caa120e605e199fed726bec2d33e35f46ecdceb634a026251cd8",
+          "bytes": 1370
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-000/raw/eval-only.jsonl",
+          "decoded_sha256": "1ba43672f98e4b3c5374f4720092177f754d1c13e36b978ba915fdd1aa87f4fc",
+          "bytes": 1186750
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-000/raw/teacher-r1.jsonl",
+          "decoded_sha256": "406fa7b0681921c25ae0ee7d453fd959710ca5f17af03ca81d92cd9191230a0b",
+          "bytes": 167678
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-000/raw/teacher-r2.jsonl",
+          "decoded_sha256": "153c3f6a4aa8d1dfba79da2582b29e9199260a4a0014922a4d58d899300d253d",
+          "bytes": 155891
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-001/raw/result.json",
+          "decoded_sha256": "991087cbc3c738cdb9989ce6ec735ed4726df5e20d4b30a60f8db742f73bf3fe",
+          "bytes": 2895
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-001/raw/plan.json",
+          "decoded_sha256": "098c3b3d8325efc30f9bb870db06a046606cc03dcf6a5f6a7dd1fed58c7c1c7a",
+          "bytes": 1436
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-001/raw/eval-only.jsonl",
+          "decoded_sha256": "d22ce157bf1f0e841dbd4f2fee78ff40cc6fb1dd8a8ff0343926931da6869a02",
+          "bytes": 1332581
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-001/raw/teacher-r1.jsonl",
+          "decoded_sha256": "56b9dec503e52c9656ef276c10213ff3751027d8017dee6a9bbca8b4bf72b8d2",
+          "bytes": 185017
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-001/raw/teacher-r2.jsonl",
+          "decoded_sha256": "0aa2ba3cc3743725b85f75ee1d10b229223816c370cd4709d2d1d96b90f226c5",
+          "bytes": 173097
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-002/raw/result.json",
+          "decoded_sha256": "18162f0831d8dfa02b9c85f5cb5e0225662cf13148162dde7ff796488c48b23f",
+          "bytes": 2349
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-002/raw/plan.json",
+          "decoded_sha256": "33340f7c6b6386eeb7da2cea81df518b77bd51608daaa518bf8460392e87b731",
+          "bytes": 1435
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-002/raw/eval-only.jsonl",
+          "decoded_sha256": "e3908e95940c1b0b45af2972504e30e9413be61d0eb9f793843dbf0e600a224e",
+          "bytes": 1361743
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-002/raw/teacher-r1.jsonl",
+          "decoded_sha256": "47ba7799e82b2ca8368f7295a4503d38e527985ce3e0187b074249cbfef60b96",
+          "bytes": 177303
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-002/raw/teacher-r2.jsonl",
+          "decoded_sha256": "348a45a65ec3ff17391474bb3ed82c5eb7aae30f2115f82a0986f4d7908b4580",
+          "bytes": 169935
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-003/raw/result.json",
+          "decoded_sha256": "4cb21ee8b34de297728f7a6a3fd2414303af73d7f04cad4e997725a69d3ba427",
+          "bytes": 2896
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-003/raw/plan.json",
+          "decoded_sha256": "7552b8f04cc219527212cfbe2fbcc65110039e31199905b988d894e6045960d1",
+          "bytes": 1369
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-003/raw/eval-only.jsonl",
+          "decoded_sha256": "9eac4dc6dd25297566fb1b6259dbdf7485f7c69fe52e55ccac2051b910da9dfd",
+          "bytes": 1866710
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-003/raw/teacher-r1.jsonl",
+          "decoded_sha256": "4d37a21b60d33931758811bcc51c769608fcd7928f51900e48b08308cccda9ed",
+          "bytes": 268752
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-003/raw/teacher-r2.jsonl",
+          "decoded_sha256": "c488db8ee183322d4ab4ee6c3fdf8ebe962ac8f451a4158d44438cd7316b9a5d",
+          "bytes": 248581
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-004/raw/result.json",
+          "decoded_sha256": "654ceb3b8c9d42031ee1de1440731799d59bb02600e39aa0d985284998ea7639",
+          "bytes": 10466
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-004/raw/plan.json",
+          "decoded_sha256": "a0806e7ee587470106beddac579403a1060f9ae34959b7c6e96855b4bd74a6e2",
+          "bytes": 1346
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-004/raw/eval-only.jsonl",
+          "decoded_sha256": "3cadfe1b12ef1d7bfb7a06ad94f52c15e4438c1dae61fd563e83b853861c9299",
+          "bytes": 1837582
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-004/raw/teacher-r1.jsonl",
+          "decoded_sha256": "f5991e0873d0120ff77058bdb6e35f8d08532993c5bf4c327aa4edc1abd2efbe",
+          "bytes": 284331
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-004/raw/teacher-r2.jsonl",
+          "decoded_sha256": "007ae71f7f5e62b8cd49c5c470e735e67cf771ba21515a8445f5e017ba193b4b",
+          "bytes": 268191
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-005/raw/result.json",
+          "decoded_sha256": "a3ec3477ff646650c132fabb645e2155008c28dade8d02fc99378d92d94c96fc",
+          "bytes": 11787
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-005/raw/plan.json",
+          "decoded_sha256": "d634dbcabb731560d8e805d73bd0768607808b7a9315f945f761efcc064fe5df",
+          "bytes": 1350
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-005/raw/eval-only.jsonl",
+          "decoded_sha256": "b7413b497f6e2bc2e3a9f6ce750eafd8702a6ba314f4619d06e0f27f418def03",
+          "bytes": 1950256
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-005/raw/teacher-r1.jsonl",
+          "decoded_sha256": "b889525bb4fffd9a4414b088c50d2b07424000d031af03033ab3516ee6758b4a",
+          "bytes": 317576
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-005/raw/teacher-r2.jsonl",
+          "decoded_sha256": "5b7584ea8a3f44833b9a476a3b403fe266f6a9b5603061c4f5b23c68c91a005e",
+          "bytes": 309309
+        }
+      ],
+      "memory_margins": [],
+      "round": 1,
+      "remote_full_manifest_verified": true,
+      "manifest_sha256": "f7d10769200b44d80a8676a2f8c6ee965a3163067aa8dd1b255b45eb17c0a86b",
+      "local_verified_files": 192,
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-search22-r1-short6-gcp-c099eb7a",
+      "local_lite": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a",
+      "speed_record": {
+        "median_wall_per_sim": null,
+        "warning": false,
+        "blocked": true,
+        "planned_N": 6,
+        "complete_N": 2,
+        "reason": "incomplete_HOST_ERROR_or_missing_speed",
+        "warn_above": 3.5,
+        "block_above": 6.0,
+        "qualified": false,
+        "automatic_promotion": false
+      },
+      "remote_manifest_verification": "outputs/search22/r1-remote-manifest.txt",
+      "preflight": {
+        "run": "grasp-search22-r1-short6-gcp-c099eb7a",
+        "sha": "c099eb7afc658ce1fe8a0310dcf787e4773c3b1c",
+        "owner": "search22",
+        "slots": 6,
+        "status": "reserved",
+        "at_unix": 1792053647.7000031,
+        "other_slots": 5,
+        "other_jobs": {
+          "reloc10-r2-selfmap-93571-44f7f7e1": 1,
+          "reloc10-r2-carry-93261-e55d7a8d": 1,
+          "r20pre-01-e897b0c2": 1,
+          "r20pre-00-e897b0c2": 1,
+          "r20pre-02-e897b0c2": 1
+        },
+        "processes": [
+          {
+            "pid": 415834,
+            "run": "reloc10-r2-selfmap-93571-44f7f7e1",
+            "slots": 1,
+            "args": [
+              ".venv-sim/bin/python",
+              "-m",
+              "scripts.run_self_map_diagnostic",
+              "--output",
+              "/home/ugrp/ugrp-sim/runs/reloc10-r2-selfmap-93571-44f7f7e1/raw",
+              "--expected-source-sha",
+              "44f7f7e1de8236df37fdbce6c3e28a283c5f6169",
+              "--seed",
+              "93571",
+              "--cap-s",
+              "60",
+              "--execution-host",
+              "gcp1",
+              "--project",
+              "ugrp-act-train-1014",
+              "--self-map-executor",
+              "frontier_drive_v1",
+              "--bootstrap",
+              "command_prior_v1",
+              "--initial-sweep",
+              "required_360_v1",
+              "--recovery-profile",
+              "selfmap4_recovery_v1",
+              "--revision-gate",
+              "selfmap4_revision_gate_v2",
+              "--multiframe-registration",
+              "selfmap4_multiframe_registration_v1",
+              "--render-profile",
+              "floor_light_v1",
+              "--correction-safety",
+              "selfmap6_correction_safety_v1",
+              "--active-relocalization",
+              "reloc8_active_vision_v1",
+              "--reloc10-settle-v1",
+              "--reloc10-registration-v1",
+              "--execute"
+            ]
+          },
+          {
+            "pid": 416906,
+            "run": "reloc10-r2-carry-93261-e55d7a8d",
+            "slots": 1,
+            "args": [
+              ".venv-sim/bin/python",
+              "-m",
+              "scripts.run_solo_grasp_act_teacher",
+              "--execution-host",
+              "gcp1",
+              "--teacher-profile",
+              "solo_visible_only_v1",
+              "--held-object-hidden-v1",
+              "--setdown-lookaround-v1",
+              "--teacher-stability",
+              "align_relook_v1",
+              "--reach-mode",
+              "pad_window_v2",
+              "--rgb-lift-mode",
+              "solo_lift_lookback_v1",
+              "--solo-lift-lookback-margin-v1",
+              "--solo-truth-free-lookaround-v1",
+              "--solo-carry-to-zone-v1",
+              "--plan",
+              "experiments/2026-10-15-reloc10/diagnostic-plan.json",
+              "--episode",
+              "1",
+              "--cap-s",
+              "60",
+              "--out",
+              "/home/ugrp/ugrp-sim/runs/reloc10-r2-carry-93261-e55d7a8d/raw"
+            ]
+          }
+        ],
+        "with_new_slots": 11
+      },
+      "directly_viewed_frames": [
+        {
+          "episode": "000",
+          "rid": "r1",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-000/raw/eval-own/r1/000000.jpg",
+          "sha256": "8d48a4c74d366e89a5496f8e9ada4902946e7afdbe5f9a63ae3ff920b596e89d"
+        },
+        {
+          "episode": "000",
+          "rid": "r1",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-000/raw/eval-own/r1/000080.jpg",
+          "sha256": "269f76bc077f0b1db299ad08f9394255a0c34b1542faff09dba009651991a1dd"
+        },
+        {
+          "episode": "000",
+          "rid": "r1",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-000/raw/eval-own/r1/000140.jpg",
+          "sha256": "d539443db1da3ba1ea627a2a457c8794af676797e2f9c24d4a0784673c172040"
+        },
+        {
+          "episode": "000",
+          "rid": "r2",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-000/raw/eval-own/r2/000000.jpg",
+          "sha256": "5afde6bb1d34bc61800d0419b14c00ee739a128fc89e32a7adf57d233029c435"
+        },
+        {
+          "episode": "000",
+          "rid": "r2",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-000/raw/eval-own/r2/000080.jpg",
+          "sha256": "6cc256ae8fc82c5cf95585c940dca6e4f4189b8075bca0d8cfb8528c9bafbd35"
+        },
+        {
+          "episode": "000",
+          "rid": "r2",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-000/raw/eval-own/r2/000140.jpg",
+          "sha256": "66bbf090263c0150aa8b6bcea83986c5fc93410d95297245b68eed1b23e8f322"
+        },
+        {
+          "episode": "001",
+          "rid": "r1",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-001/raw/eval-own/r1/000000.jpg",
+          "sha256": "7e38e2278d73ad5ba953a5d29b9b729efd80c0b83708400eff460d3909d5f411"
+        },
+        {
+          "episode": "001",
+          "rid": "r1",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-001/raw/eval-own/r1/000100.jpg",
+          "sha256": "8560fe100144ce7ba8f3d20eff82fe0f98baffa2f1c9901edfa6d24b7a5ecb81"
+        },
+        {
+          "episode": "001",
+          "rid": "r1",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-001/raw/eval-own/r1/000160.jpg",
+          "sha256": "64a20f040e25d6be24acea458e50ad1f0573e4d0c114f4561e8a21e155ecdc97"
+        },
+        {
+          "episode": "001",
+          "rid": "r2",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-001/raw/eval-own/r2/000000.jpg",
+          "sha256": "76d10a5b8b7d0bebff7e9db8d35d11401dd81402d72182aa4aa85d098aaab75b"
+        },
+        {
+          "episode": "001",
+          "rid": "r2",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-001/raw/eval-own/r2/000100.jpg",
+          "sha256": "a3a7453b8fc39ab96b61032cbe205b25225bb08fb3ca8dfd372c232c2c1127bf"
+        },
+        {
+          "episode": "001",
+          "rid": "r2",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-001/raw/eval-own/r2/000160.jpg",
+          "sha256": "e9ce6445494980011b23d738b3c7ea414c8136702edcff74518c5cbee3817a08"
+        },
+        {
+          "episode": "002",
+          "rid": "r1",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-002/raw/eval-own/r1/000000.jpg",
+          "sha256": "d43a40126574d6fbfac8759130d4e633e86f2a337565a972257088e2709598c1"
+        },
+        {
+          "episode": "002",
+          "rid": "r1",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-002/raw/eval-own/r1/000090.jpg",
+          "sha256": "c2a40a3824b9d0b669aad2b7c926155784be5bcf2263a3eb94412aea35ffe7ef"
+        },
+        {
+          "episode": "002",
+          "rid": "r1",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-002/raw/eval-own/r1/000150.jpg",
+          "sha256": "ea671f21884035a3dad0e715d44306a3fd68d79b1935dffa8840b13c19cde6b4"
+        },
+        {
+          "episode": "002",
+          "rid": "r2",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-002/raw/eval-own/r2/000000.jpg",
+          "sha256": "2f7e9503999abfb2715e5d8c4c15ee656cacbc7f262cda06a71e9650d8c5f07e"
+        },
+        {
+          "episode": "002",
+          "rid": "r2",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-002/raw/eval-own/r2/000090.jpg",
+          "sha256": "007bff229a02c3be9f6dd38c1372764e03a181a39ced49d161646b7fd27d1116"
+        },
+        {
+          "episode": "002",
+          "rid": "r2",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-002/raw/eval-own/r2/000150.jpg",
+          "sha256": "75db39e04b9cce8487de3acf05b0484948adfd39c4505b8e35fe02e6ded2956b"
+        },
+        {
+          "episode": "003",
+          "rid": "r1",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-003/raw/eval-own/r1/000000.jpg",
+          "sha256": "d0de940faf0dbe86cc719964cfd136f6a7335c72ffb493c27aa95cb1e21b8e8d"
+        },
+        {
+          "episode": "003",
+          "rid": "r1",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-003/raw/eval-own/r1/000140.jpg",
+          "sha256": "a9c35ecfe0c822e158fe51e65a27cd38ddb6729285ac4bba364c2caef5576a37"
+        },
+        {
+          "episode": "003",
+          "rid": "r1",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-003/raw/eval-own/r1/000230.jpg",
+          "sha256": "b26cb5423b22e83bb791b501e268915b56c6ffd45dbd61a4a4e05c9f96944334"
+        },
+        {
+          "episode": "003",
+          "rid": "r2",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-003/raw/eval-own/r2/000000.jpg",
+          "sha256": "dd8fc9d290f87027d30a4068cea4365cac0701d2f3bd6ce5fb9cddaaa685eaf4"
+        },
+        {
+          "episode": "003",
+          "rid": "r2",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-003/raw/eval-own/r2/000140.jpg",
+          "sha256": "f9722569d2860c21c5132c58f20f6b54ef715293a1be6ec549d8651d9c4ca8cf"
+        },
+        {
+          "episode": "003",
+          "rid": "r2",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r1-short6-gcp-c099eb7a/diagnostic/episode-003/raw/eval-own/r2/000230.jpg",
+          "sha256": "943b2c8088fc08d953650924e33d7cbd73ab0d391bd9ca884ff744fc479afdeb"
+        }
+      ],
+      "directly_viewed_frames_N": 24,
+      "offline_original_measurement_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 5997,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "top_review_frame_files": 0
+    },
+    {
+      "source_sha": "645acabdfa33477844f7308c0b1b3708e2e68740",
+      "run": "grasp-search22-r2-short6-gcp-645acabd",
+      "n": 3,
+      "N": 6,
+      "completed": 6,
+      "started_N": 6,
+      "host_errors": 0,
+      "interrupted": 0,
+      "all_audits_enabled": true,
+      "input_invisible_total": 0,
+      "input_held_total": 0,
+      "rows": [
+        {
+          "episode": "episode-000",
+          "seed": 8311709,
+          "cargo_scene": "off",
+          "status": "complete",
+          "success": false,
+          "eval_joint_hold_3s": false,
+          "max_joint_hold_s": 0.0,
+          "sim_s": 15.699999999992361,
+          "wall_s": 152.58534946600048,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 781,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "outcomes": {
+            "r1": "approach_blocked_handoff",
+            "r2": "peer_approach_handoff"
+          },
+          "candidate_trials_by_reason": {
+            "IK": 1108,
+            "current_geometry": 605,
+            "feasible": 1,
+            "memory_margin": 310,
+            "gripper_angle": 2030
+          },
+          "events": {
+            "candidate_counts": 4054,
+            "targeted_gaze": 26,
+            "targeted_reobserve_replan": 2
+          },
+          "result_decoded_sha256": "5c0da8ad0f8c6957ba3ccb257b9dde013e49c2753af4ede30bd3675ff3f61527"
+        },
+        {
+          "episode": "episode-001",
+          "seed": 8311709,
+          "cargo_scene": "cargo_v6",
+          "status": "complete",
+          "success": false,
+          "eval_joint_hold_3s": false,
+          "max_joint_hold_s": 0.0,
+          "sim_s": 15.599999999991883,
+          "wall_s": 140.70069216299817,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 742,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "outcomes": {
+            "r1": "approach_blocked_handoff",
+            "r2": "peer_approach_handoff"
+          },
+          "candidate_trials_by_reason": {
+            "IK": 1836,
+            "current_geometry": 773,
+            "feasible": 1,
+            "memory_margin": 506,
+            "gripper_angle": 3654
+          },
+          "events": {
+            "candidate_counts": 6770,
+            "targeted_gaze": 26,
+            "targeted_reobserve_replan": 2
+          },
+          "result_decoded_sha256": "6211aaa5cb69b4a3542782a404f085d741157a0fb1f19691848d4c1c87bfc8c9"
+        },
+        {
+          "episode": "episode-002",
+          "seed": 315709,
+          "cargo_scene": "cargo_v6",
+          "status": "complete",
+          "success": false,
+          "eval_joint_hold_3s": false,
+          "max_joint_hold_s": 0.0,
+          "sim_s": 30.600000000063506,
+          "wall_s": 131.5965379779991,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 1869,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "outcomes": {
+            "r1": "approach_blocked_handoff",
+            "r2": "peer_approach_handoff"
+          },
+          "candidate_trials_by_reason": {
+            "IK": 2535,
+            "memory_margin": 1053,
+            "current_geometry": 700,
+            "gripper_angle": 5046,
+            "feasible": 3,
+            "connector_connector_band_not_visible": 4
+          },
+          "events": {
+            "candidate_counts": 9341,
+            "targeted_gaze": 26,
+            "targeted_reobserve_replan": 2
+          },
+          "result_decoded_sha256": "9751d4ec60f92ece0b5fd2d3371f3457b823e4d8ac5ce0c582d4fcbb704ee91d"
+        },
+        {
+          "episode": "episode-003",
+          "seed": 315709,
+          "cargo_scene": "off",
+          "status": "complete",
+          "success": true,
+          "eval_joint_hold_3s": true,
+          "max_joint_hold_s": 3.0000000000143245,
+          "sim_s": 33.50000000007736,
+          "wall_s": 111.33470863600087,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 1481,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "outcomes": {
+            "r1": "success",
+            "r2": "success"
+          },
+          "candidate_trials_by_reason": {
+            "IK": 29,
+            "memory_margin": 12,
+            "current_geometry": 8,
+            "gripper_angle": 58
+          },
+          "events": {
+            "candidate_counts": 107
+          },
+          "result_decoded_sha256": "ab1ab487710ec20498140b5920c6c3f217e8cc58637ba6c93f029f9f02934c8c"
+        },
+        {
+          "episode": "episode-004",
+          "seed": 8312300,
+          "cargo_scene": "off",
+          "status": "complete",
+          "success": true,
+          "eval_joint_hold_3s": true,
+          "max_joint_hold_s": 3.0000000000143245,
+          "sim_s": 24.800000000035812,
+          "wall_s": 67.4643819280027,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 713,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "outcomes": {
+            "r1": "success",
+            "r2": "success"
+          },
+          "candidate_trials_by_reason": {},
+          "events": {},
+          "result_decoded_sha256": "4dba758ed96e5b37946a5f8bace2e458bbfdc82c49f564e949f0e62672518d2b"
+        },
+        {
+          "episode": "episode-005",
+          "seed": 8312301,
+          "cargo_scene": "off",
+          "status": "complete",
+          "success": true,
+          "eval_joint_hold_3s": true,
+          "max_joint_hold_s": 3.0000000000143245,
+          "sim_s": 28.00000000005109,
+          "wall_s": 74.18673589399987,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 930,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "outcomes": {
+            "r1": "success",
+            "r2": "success"
+          },
+          "candidate_trials_by_reason": {},
+          "events": {},
+          "result_decoded_sha256": "5afe849db2ddaaa82a8de88cbab78c67ac856e236f86fdd565b1fb8f9b33fc54"
+        }
+      ],
+      "candidate_trials_by_reason": {
+        "IK": 5508,
+        "current_geometry": 2086,
+        "feasible": 5,
+        "memory_margin": 1881,
+        "gripper_angle": 10788,
+        "connector_connector_band_not_visible": 4
+      },
+      "originals": [
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r2-short6-gcp-645acabd/diagnostic/episode-000/raw/result.json",
+          "decoded_sha256": "5c0da8ad0f8c6957ba3ccb257b9dde013e49c2753af4ede30bd3675ff3f61527",
+          "bytes": 19159999
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r2-short6-gcp-645acabd/diagnostic/episode-000/raw/plan.json",
+          "decoded_sha256": "053c3985ad07caa120e605e199fed726bec2d33e35f46ecdceb634a026251cd8",
+          "bytes": 1370
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r2-short6-gcp-645acabd/diagnostic/episode-000/raw/eval-only.jsonl",
+          "decoded_sha256": "6a85a8639cf177d4c7e227bcacf47933618cb59c1b2e9ca50fb706cdd628b28b",
+          "bytes": 1248325
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r2-short6-gcp-645acabd/diagnostic/episode-000/raw/teacher-r1.jsonl",
+          "decoded_sha256": "59ce65fb0e0cc959af2fe38e92c40570c6d8c0723aba45bfb7ec0af06afdc4a1",
+          "bytes": 178220
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r2-short6-gcp-645acabd/diagnostic/episode-000/raw/teacher-r2.jsonl",
+          "decoded_sha256": "7fd0f040f6838738fa1c12f0ced0a38268fec030bd15fa822ab6c59a5ea79b99",
+          "bytes": 169882
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r2-short6-gcp-645acabd/diagnostic/episode-001/raw/result.json",
+          "decoded_sha256": "6211aaa5cb69b4a3542782a404f085d741157a0fb1f19691848d4c1c87bfc8c9",
+          "bytes": 29700766
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r2-short6-gcp-645acabd/diagnostic/episode-001/raw/plan.json",
+          "decoded_sha256": "098c3b3d8325efc30f9bb870db06a046606cc03dcf6a5f6a7dd1fed58c7c1c7a",
+          "bytes": 1436
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r2-short6-gcp-645acabd/diagnostic/episode-001/raw/eval-only.jsonl",
+          "decoded_sha256": "678efdc3b6d2fea6266da5f27e3abed7df250620b845ec0d5cc373d32ecd933d",
+          "bytes": 1248619
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r2-short6-gcp-645acabd/diagnostic/episode-001/raw/teacher-r1.jsonl",
+          "decoded_sha256": "0a7e3469d792b4e2144a6352611da6ac8ba0093e33169bff31af5da5918135d6",
+          "bytes": 176960
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r2-short6-gcp-645acabd/diagnostic/episode-001/raw/teacher-r2.jsonl",
+          "decoded_sha256": "0addea8e0438afe47dd85c7a5490358dddcd8728285932250cba4c4726323fa2",
+          "bytes": 168801
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r2-short6-gcp-645acabd/diagnostic/episode-002/raw/result.json",
+          "decoded_sha256": "9751d4ec60f92ece0b5fd2d3371f3457b823e4d8ac5ce0c582d4fcbb704ee91d",
+          "bytes": 50216857
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r2-short6-gcp-645acabd/diagnostic/episode-002/raw/plan.json",
+          "decoded_sha256": "33340f7c6b6386eeb7da2cea81df518b77bd51608daaa518bf8460392e87b731",
+          "bytes": 1435
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r2-short6-gcp-645acabd/diagnostic/episode-002/raw/eval-only.jsonl",
+          "decoded_sha256": "f6bdfef32da373cb0afdad7b19f888a10f66eb11a15c04f4335e77270a929844",
+          "bytes": 2524786
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r2-short6-gcp-645acabd/diagnostic/episode-002/raw/teacher-r1.jsonl",
+          "decoded_sha256": "609cd7dd0542e196ad5661ae0bd32c6db92c7392a6a6d75eadc299856beaa87b",
+          "bytes": 355325
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r2-short6-gcp-645acabd/diagnostic/episode-002/raw/teacher-r2.jsonl",
+          "decoded_sha256": "a753e539a65e440486d1ffc7a8942aed033accb8af8dd7c051d28d640bb877a3",
+          "bytes": 330538
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r2-short6-gcp-645acabd/diagnostic/episode-003/raw/result.json",
+          "decoded_sha256": "ab1ab487710ec20498140b5920c6c3f217e8cc58637ba6c93f029f9f02934c8c",
+          "bytes": 748049
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r2-short6-gcp-645acabd/diagnostic/episode-003/raw/plan.json",
+          "decoded_sha256": "7552b8f04cc219527212cfbe2fbcc65110039e31199905b988d894e6045960d1",
+          "bytes": 1369
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r2-short6-gcp-645acabd/diagnostic/episode-003/raw/eval-only.jsonl",
+          "decoded_sha256": "7bc856f5e86ada1225cac648e5d78a5cfd1a985486fe84a28c4826607ae521e4",
+          "bytes": 2602884
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r2-short6-gcp-645acabd/diagnostic/episode-003/raw/teacher-r1.jsonl",
+          "decoded_sha256": "51007136be4324b28e93fcf64d02995db0396c5cddb9a92059d07657f3261c49",
+          "bytes": 382824
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r2-short6-gcp-645acabd/diagnostic/episode-003/raw/teacher-r2.jsonl",
+          "decoded_sha256": "b036f2f0e2c4e9eb75039dbcd1797dc943297e83be212c6933fc7c5d813214bb",
+          "bytes": 361890
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r2-short6-gcp-645acabd/diagnostic/episode-004/raw/result.json",
+          "decoded_sha256": "4dba758ed96e5b37946a5f8bace2e458bbfdc82c49f564e949f0e62672518d2b",
+          "bytes": 10471
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r2-short6-gcp-645acabd/diagnostic/episode-004/raw/plan.json",
+          "decoded_sha256": "a0806e7ee587470106beddac579403a1060f9ae34959b7c6e96855b4bd74a6e2",
+          "bytes": 1346
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r2-short6-gcp-645acabd/diagnostic/episode-004/raw/eval-only.jsonl",
+          "decoded_sha256": "3cadfe1b12ef1d7bfb7a06ad94f52c15e4438c1dae61fd563e83b853861c9299",
+          "bytes": 1837582
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r2-short6-gcp-645acabd/diagnostic/episode-004/raw/teacher-r1.jsonl",
+          "decoded_sha256": "c84c5527a68d3647fc99dd68e0e7cdb204ef7ca3fc2210bba67c6e0dab0e228f",
+          "bytes": 284320
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r2-short6-gcp-645acabd/diagnostic/episode-004/raw/teacher-r2.jsonl",
+          "decoded_sha256": "afc93537ece44e9e5fa65edb77168976054557784757224497862e78718c0040",
+          "bytes": 268184
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r2-short6-gcp-645acabd/diagnostic/episode-005/raw/result.json",
+          "decoded_sha256": "5afe849db2ddaaa82a8de88cbab78c67ac856e236f86fdd565b1fb8f9b33fc54",
+          "bytes": 11789
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r2-short6-gcp-645acabd/diagnostic/episode-005/raw/plan.json",
+          "decoded_sha256": "d634dbcabb731560d8e805d73bd0768607808b7a9315f945f761efcc064fe5df",
+          "bytes": 1350
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r2-short6-gcp-645acabd/diagnostic/episode-005/raw/eval-only.jsonl",
+          "decoded_sha256": "b7413b497f6e2bc2e3a9f6ce750eafd8702a6ba314f4619d06e0f27f418def03",
+          "bytes": 1950256
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r2-short6-gcp-645acabd/diagnostic/episode-005/raw/teacher-r1.jsonl",
+          "decoded_sha256": "ff9bb9804ab224a7a636596e5c0cee3ef08187976578d89f2876b0154a55c094",
+          "bytes": 317589
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r2-short6-gcp-645acabd/diagnostic/episode-005/raw/teacher-r2.jsonl",
+          "decoded_sha256": "4de30fc22b404b252d76ed1cc8acdc86f4d0e608db9d5c509e6bf54aa14f2c4e",
+          "bytes": 309308
+        }
+      ],
+      "memory_margins": [
+        {
+          "episode": "episode-000",
+          "rid": "r1",
+          "id": "r3",
+          "candidate_checks": 916,
+          "sigma_min_m": 0.02103080915493735,
+          "sigma_max_m": 0.05439241561782793,
+          "margin_min_m": 0.06882544072924687,
+          "margin_max_m": 0.17007305418256885
+        },
+        {
+          "episode": "episode-000",
+          "rid": "r1",
+          "id": "can_1",
+          "candidate_checks": 910,
+          "sigma_min_m": 0.004011700215254648,
+          "sigma_max_m": 0.007309123836846145,
+          "margin_min_m": 0.017174925483175268,
+          "margin_max_m": 0.027182125604131985
+        },
+        {
+          "episode": "episode-000",
+          "rid": "r1",
+          "id": "tile_1",
+          "candidate_checks": 40,
+          "sigma_min_m": 0.0059533270403101905,
+          "sigma_max_m": 0.006380757458591846,
+          "margin_min_m": 0.023067479922137722,
+          "margin_max_m": 0.02436466894738777
+        },
+        {
+          "episode": "episode-000",
+          "rid": "r1",
+          "id": "red_1",
+          "candidate_checks": 870,
+          "sigma_min_m": 0.012484246579704998,
+          "sigma_max_m": 0.021271889602485272,
+          "margin_min_m": 0.04288786889995617,
+          "margin_max_m": 0.06955708475219394
+        },
+        {
+          "episode": "episode-001",
+          "rid": "r1",
+          "id": "r3",
+          "candidate_checks": 1280,
+          "sigma_min_m": 0.0210308220021423,
+          "sigma_max_m": 0.05379790057643242,
+          "margin_min_m": 0.06882547971864153,
+          "margin_max_m": 0.1682687876772867
+        },
+        {
+          "episode": "episode-001",
+          "rid": "r1",
+          "id": "yellow_1",
+          "candidate_checks": 1274,
+          "sigma_min_m": 0.004021691999607612,
+          "sigma_max_m": 0.007314287417339899,
+          "margin_min_m": 0.017205249092471574,
+          "margin_max_m": 0.027197796318383958
+        },
+        {
+          "episode": "episode-001",
+          "rid": "r1",
+          "id": "red_2",
+          "candidate_checks": 1234,
+          "sigma_min_m": 0.0058421732198725195,
+          "sigma_max_m": 0.00856895559913764,
+          "margin_min_m": 0.02273014427680387,
+          "margin_max_m": 0.031005531393256413
+        },
+        {
+          "episode": "episode-002",
+          "rid": "r1",
+          "id": "r2",
+          "candidate_checks": 1760,
+          "sigma_min_m": 0.004027547038953055,
+          "sigma_max_m": 0.08329809207430552,
+          "margin_min_m": 0.01722301828356436,
+          "margin_max_m": 0.25779756947914606
+        },
+        {
+          "episode": "episode-002",
+          "rid": "r1",
+          "id": "red_2",
+          "candidate_checks": 1753,
+          "sigma_min_m": 0.00841993269670812,
+          "sigma_max_m": 0.0359861798458556,
+          "margin_min_m": 0.03055326860316387,
+          "margin_max_m": 0.11421281116206854
+        },
+        {
+          "episode": "episode-002",
+          "rid": "r1",
+          "id": "cyan_1",
+          "candidate_checks": 899,
+          "sigma_min_m": 0.01543211543340379,
+          "sigma_max_m": 0.15337454274584497,
+          "margin_min_m": 0.051834221244900246,
+          "margin_max_m": 0.4704693842391739
+        },
+        {
+          "episode": "episode-002",
+          "rid": "r1",
+          "id": "red_1",
+          "candidate_checks": 898,
+          "sigma_min_m": 0.12661422379152554,
+          "sigma_max_m": 0.13903218321139957,
+          "margin_min_m": 0.38925571629460615,
+          "margin_max_m": 0.4269424133252475
+        },
+        {
+          "episode": "episode-002",
+          "rid": "r1",
+          "id": "cyan_2",
+          "candidate_checks": 898,
+          "sigma_min_m": 0.13987574924614013,
+          "sigma_max_m": 0.15027174750013902,
+          "margin_min_m": 0.4295025132983339,
+          "margin_max_m": 0.461052852873651
+        },
+        {
+          "episode": "episode-002",
+          "rid": "r1",
+          "id": "yellow_1",
+          "candidate_checks": 893,
+          "sigma_min_m": 0.020264763429550997,
+          "sigma_max_m": 0.02915457060595638,
+          "margin_min_m": 0.06650060359714532,
+          "margin_max_m": 0.0934798727661059
+        },
+        {
+          "episode": "episode-003",
+          "rid": "r1",
+          "id": "r2",
+          "candidate_checks": 20,
+          "sigma_min_m": 0.06567326335135021,
+          "sigma_max_m": 0.06567326335135021,
+          "margin_min_m": 0.20430878296918817,
+          "margin_max_m": 0.20430878296918817
+        },
+        {
+          "episode": "episode-003",
+          "rid": "r1",
+          "id": "tile_1",
+          "candidate_checks": 20,
+          "sigma_min_m": 0.06143839281118342,
+          "sigma_max_m": 0.06143839281118342,
+          "margin_min_m": 0.19145656807502212,
+          "margin_max_m": 0.19145656807502212
+        },
+        {
+          "episode": "episode-003",
+          "rid": "r1",
+          "id": "cyan_1",
+          "candidate_checks": 20,
+          "sigma_min_m": 0.02463510305049849,
+          "sigma_max_m": 0.02463510305049849,
+          "margin_min_m": 0.07976394740805037,
+          "margin_max_m": 0.07976394740805037
+        }
+      ],
+      "round": 2,
+      "remote_full_manifest_verified": true,
+      "manifest_sha256": "c8ca226a6112fcdf3ce4ae5a40366b8b3648856535718629fa9da2e6502612fd",
+      "local_verified_files": 193,
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-search22-r2-short6-gcp-645acabd",
+      "local_lite": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r2-short6-gcp-645acabd",
+      "speed_record": {
+        "median_wall_per_sim": 3.811982297584421,
+        "warning": true,
+        "blocked": false,
+        "planned_N": 6,
+        "complete_N": 6,
+        "reason": null,
+        "warn_above": 3.5,
+        "block_above": 6.0,
+        "qualified": false,
+        "automatic_promotion": false
+      },
+      "remote_manifest_verification": "outputs/search22/r2-remote-manifest.txt",
+      "preflight": {
+        "run": "grasp-search22-r2-short6-gcp-645acabd",
+        "sha": "645acabdfa33477844f7308c0b1b3708e2e68740",
+        "owner": "search22",
+        "slots": 6,
+        "status": "reserved",
+        "at_unix": 1792054104.61447,
+        "other_slots": 2,
+        "other_jobs": {
+          "r20pre-01-e897b0c2": 1,
+          "r20pre-02-e897b0c2": 1
+        },
+        "processes": [],
+        "with_new_slots": 8
+      },
+      "directly_viewed_frames": [
+        {
+          "episode": "000",
+          "rid": "r1",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r2-short6-gcp-645acabd/diagnostic/episode-000/raw/eval-own/r1/000000.jpg",
+          "sha256": "8d48a4c74d366e89a5496f8e9ada4902946e7afdbe5f9a63ae3ff920b596e89d"
+        },
+        {
+          "episode": "000",
+          "rid": "r1",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r2-short6-gcp-645acabd/diagnostic/episode-000/raw/eval-own/r1/000090.jpg",
+          "sha256": "30813e304b719f5e37a75f276764785fad08e356fa13b7b677be2152861f48d6"
+        },
+        {
+          "episode": "000",
+          "rid": "r1",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r2-short6-gcp-645acabd/diagnostic/episode-000/raw/eval-own/r1/000150.jpg",
+          "sha256": "b4df86eb18b6114a0583ba830329d2b16f41a6beea6b03575f90e2df6e3d0b49"
+        },
+        {
+          "episode": "000",
+          "rid": "r2",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r2-short6-gcp-645acabd/diagnostic/episode-000/raw/eval-own/r2/000000.jpg",
+          "sha256": "5afde6bb1d34bc61800d0419b14c00ee739a128fc89e32a7adf57d233029c435"
+        },
+        {
+          "episode": "000",
+          "rid": "r2",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r2-short6-gcp-645acabd/diagnostic/episode-000/raw/eval-own/r2/000090.jpg",
+          "sha256": "37fc1102172caeca8eb108c602c1d4f12fa10a6c0999a55e2b242b8a73335830"
+        },
+        {
+          "episode": "000",
+          "rid": "r2",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r2-short6-gcp-645acabd/diagnostic/episode-000/raw/eval-own/r2/000150.jpg",
+          "sha256": "3f934abe722f8961f7d292e97e9acd4eb6537c01d44503909829405588db9e14"
+        },
+        {
+          "episode": "001",
+          "rid": "r1",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r2-short6-gcp-645acabd/diagnostic/episode-001/raw/eval-own/r1/000000.jpg",
+          "sha256": "7e38e2278d73ad5ba953a5d29b9b729efd80c0b83708400eff460d3909d5f411"
+        },
+        {
+          "episode": "001",
+          "rid": "r1",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r2-short6-gcp-645acabd/diagnostic/episode-001/raw/eval-own/r1/000090.jpg",
+          "sha256": "3ba6b30e2fb8585191119e69ffe2e15fc93d1f931a126aa12cde200a134ba3d0"
+        },
+        {
+          "episode": "001",
+          "rid": "r1",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r2-short6-gcp-645acabd/diagnostic/episode-001/raw/eval-own/r1/000150.jpg",
+          "sha256": "c0e6e6d35851b592c67839804bf44c877c4858c644a4588dadc0f015125e1f9a"
+        },
+        {
+          "episode": "001",
+          "rid": "r2",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r2-short6-gcp-645acabd/diagnostic/episode-001/raw/eval-own/r2/000000.jpg",
+          "sha256": "76d10a5b8b7d0bebff7e9db8d35d11401dd81402d72182aa4aa85d098aaab75b"
+        },
+        {
+          "episode": "001",
+          "rid": "r2",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r2-short6-gcp-645acabd/diagnostic/episode-001/raw/eval-own/r2/000090.jpg",
+          "sha256": "c96e9560ab6c8f964fbfdc34b050bde047fbc981ebf25e6b3aa74e7c256aea51"
+        },
+        {
+          "episode": "001",
+          "rid": "r2",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r2-short6-gcp-645acabd/diagnostic/episode-001/raw/eval-own/r2/000150.jpg",
+          "sha256": "fcd3abcc79b7f795558f72f2c78af2e7e703b6e907dbd3c7531a0487ab8675d2"
+        },
+        {
+          "episode": "002",
+          "rid": "r1",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r2-short6-gcp-645acabd/diagnostic/episode-002/raw/eval-own/r1/000000.jpg",
+          "sha256": "d43a40126574d6fbfac8759130d4e633e86f2a337565a972257088e2709598c1"
+        },
+        {
+          "episode": "002",
+          "rid": "r1",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r2-short6-gcp-645acabd/diagnostic/episode-002/raw/eval-own/r1/000180.jpg",
+          "sha256": "f90487bc28619356ef4a7aa17e6cb4d1b7da6068adfa120498ea08bb38b9c04e"
+        },
+        {
+          "episode": "002",
+          "rid": "r1",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r2-short6-gcp-645acabd/diagnostic/episode-002/raw/eval-own/r1/000300.jpg",
+          "sha256": "c4f64392803f83142cebf45450fffc452f73ed4b5b7abc61af81746ac16f0981"
+        },
+        {
+          "episode": "002",
+          "rid": "r2",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r2-short6-gcp-645acabd/diagnostic/episode-002/raw/eval-own/r2/000000.jpg",
+          "sha256": "2f7e9503999abfb2715e5d8c4c15ee656cacbc7f262cda06a71e9650d8c5f07e"
+        },
+        {
+          "episode": "002",
+          "rid": "r2",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r2-short6-gcp-645acabd/diagnostic/episode-002/raw/eval-own/r2/000180.jpg",
+          "sha256": "c900dcc9759dabc615b6f791d7595838b8dce933fd972b9b17f956072c059d4d"
+        },
+        {
+          "episode": "002",
+          "rid": "r2",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r2-short6-gcp-645acabd/diagnostic/episode-002/raw/eval-own/r2/000300.jpg",
+          "sha256": "18e201a749340d7d860b7e458746ffe043ed19f0d56d15b69ab742807a47c0a7"
+        }
+      ],
+      "directly_viewed_frames_N": 18,
+      "offline_original_measurement_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 6516,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "top_review_frame_files": 0
+    },
+    {
+      "source_sha": "4c18f074c0e4d910cc4ef708ba901148fe91762a",
+      "run": "grasp-search22-r3-short6-gcp-4c18f074",
+      "n": 3,
+      "N": 6,
+      "completed": 6,
+      "started_N": 6,
+      "host_errors": 0,
+      "interrupted": 0,
+      "all_audits_enabled": true,
+      "input_invisible_total": 0,
+      "input_held_total": 0,
+      "rows": [
+        {
+          "episode": "episode-000",
+          "seed": 8311709,
+          "cargo_scene": "off",
+          "status": "complete",
+          "success": false,
+          "eval_joint_hold_3s": false,
+          "max_joint_hold_s": 0.0,
+          "sim_s": 12.299999999989629,
+          "wall_s": 155.94582187500055,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 709,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "outcomes": {
+            "r1": "approach_blocked_handoff",
+            "r2": "peer_approach_handoff"
+          },
+          "candidate_trials_by_reason": {
+            "IK": 1035,
+            "current_geometry": 589,
+            "feasible": 2,
+            "memory_margin": 23,
+            "gripper_angle": 1856,
+            "no_path": 273
+          },
+          "events": {
+            "candidate_counts": 3778,
+            "targeted_gaze": 4,
+            "targeted_reobserve_replan": 2
+          },
+          "result_decoded_sha256": "6418410541ecb8d247503a5dde809e78b486423037e028dbda2d6ce7a98fd349"
+        },
+        {
+          "episode": "episode-001",
+          "seed": 8311709,
+          "cargo_scene": "cargo_v6",
+          "status": "complete",
+          "success": false,
+          "eval_joint_hold_3s": false,
+          "max_joint_hold_s": 0.0,
+          "sim_s": 14.699999999987586,
+          "wall_s": 164.74160245199892,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 784,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "outcomes": {
+            "r1": "approach_blocked_handoff",
+            "r2": "peer_approach_handoff"
+          },
+          "candidate_trials_by_reason": {
+            "IK": 1011,
+            "current_geometry": 500,
+            "feasible": 2,
+            "memory_margin": 32,
+            "gripper_angle": 1881,
+            "no_path": 246
+          },
+          "events": {
+            "candidate_counts": 3672,
+            "targeted_gaze": 4,
+            "targeted_reobserve_replan": 2
+          },
+          "result_decoded_sha256": "b82d5286b22ed5a1ef67364d2e113fb868ff850b3ae2c9c4bd4fd4a239e5c2db"
+        },
+        {
+          "episode": "episode-002",
+          "seed": 315709,
+          "cargo_scene": "cargo_v6",
+          "status": "complete",
+          "success": false,
+          "eval_joint_hold_3s": false,
+          "max_joint_hold_s": 0.0,
+          "sim_s": 29.500000000058254,
+          "wall_s": 163.8220776950002,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 1868,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "outcomes": {
+            "r1": "approach_blocked_handoff",
+            "r2": "peer_approach_handoff"
+          },
+          "candidate_trials_by_reason": {
+            "IK": 2448,
+            "memory_margin": 857,
+            "current_geometry": 676,
+            "gripper_angle": 4872,
+            "feasible": 3,
+            "connector_connector_band_not_visible": 164
+          },
+          "events": {
+            "candidate_counts": 9020,
+            "targeted_gaze": 15,
+            "targeted_reobserve_replan": 2
+          },
+          "result_decoded_sha256": "907637beec170e53008a81f656664482a8fa2f2abb91f7dc07dd989d645fafbd"
+        },
+        {
+          "episode": "episode-003",
+          "seed": 315709,
+          "cargo_scene": "off",
+          "status": "complete",
+          "success": true,
+          "eval_joint_hold_3s": true,
+          "max_joint_hold_s": 3.0000000000143245,
+          "sim_s": 33.50000000007736,
+          "wall_s": 135.93655690000014,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 1481,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "outcomes": {
+            "r1": "success",
+            "r2": "success"
+          },
+          "candidate_trials_by_reason": {
+            "IK": 29,
+            "memory_margin": 12,
+            "current_geometry": 8,
+            "gripper_angle": 58
+          },
+          "events": {
+            "candidate_counts": 107
+          },
+          "result_decoded_sha256": "1edc7e85f1045d320c6c3fca7c1315284f73dd41524dcf7a81dbbade52818332"
+        },
+        {
+          "episode": "episode-004",
+          "seed": 8312300,
+          "cargo_scene": "off",
+          "status": "complete",
+          "success": true,
+          "eval_joint_hold_3s": true,
+          "max_joint_hold_s": 3.0000000000143245,
+          "sim_s": 24.800000000035812,
+          "wall_s": 81.03524369499792,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 713,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "outcomes": {
+            "r1": "success",
+            "r2": "success"
+          },
+          "candidate_trials_by_reason": {},
+          "events": {},
+          "result_decoded_sha256": "2469b0ec2f7c6789c81afba52b63fbf3b6a089f2bce3262b7818fb44cf2aabe2"
+        },
+        {
+          "episode": "episode-005",
+          "seed": 8312301,
+          "cargo_scene": "off",
+          "status": "complete",
+          "success": true,
+          "eval_joint_hold_3s": true,
+          "max_joint_hold_s": 3.0000000000143245,
+          "sim_s": 28.00000000005109,
+          "wall_s": 94.42616262199954,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 930,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "outcomes": {
+            "r1": "success",
+            "r2": "success"
+          },
+          "candidate_trials_by_reason": {},
+          "events": {},
+          "result_decoded_sha256": "d3a0606347e81e7a057debec5b6f32d628b00d97e2b51399453bbc177740d0e9"
+        }
+      ],
+      "candidate_trials_by_reason": {
+        "IK": 4523,
+        "current_geometry": 1773,
+        "feasible": 7,
+        "memory_margin": 924,
+        "gripper_angle": 8667,
+        "no_path": 519,
+        "connector_connector_band_not_visible": 164
+      },
+      "originals": [
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r3-short6-gcp-4c18f074/diagnostic/episode-000/raw/result.json",
+          "decoded_sha256": "6418410541ecb8d247503a5dde809e78b486423037e028dbda2d6ce7a98fd349",
+          "bytes": 16153133
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r3-short6-gcp-4c18f074/diagnostic/episode-000/raw/plan.json",
+          "decoded_sha256": "053c3985ad07caa120e605e199fed726bec2d33e35f46ecdceb634a026251cd8",
+          "bytes": 1370
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r3-short6-gcp-4c18f074/diagnostic/episode-000/raw/eval-only.jsonl",
+          "decoded_sha256": "f3fe4422384e9f6123b044cd1302f2c4b1fc14148fd38d5724b4246beae25733",
+          "bytes": 1005391
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r3-short6-gcp-4c18f074/diagnostic/episode-000/raw/teacher-r1.jsonl",
+          "decoded_sha256": "2eb3105a3e8c62722226d13cf295db53378e2da33f0de06b072e3c2bc954ecba",
+          "bytes": 141091
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r3-short6-gcp-4c18f074/diagnostic/episode-000/raw/teacher-r2.jsonl",
+          "decoded_sha256": "77d27c7725fb993b46d7d0f25f5f12cc6079f45b22bbec4632cf4af63a0969fc",
+          "bytes": 133243
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r3-short6-gcp-4c18f074/diagnostic/episode-001/raw/result.json",
+          "decoded_sha256": "b82d5286b22ed5a1ef67364d2e113fb868ff850b3ae2c9c4bd4fd4a239e5c2db",
+          "bytes": 16514918
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r3-short6-gcp-4c18f074/diagnostic/episode-001/raw/plan.json",
+          "decoded_sha256": "098c3b3d8325efc30f9bb870db06a046606cc03dcf6a5f6a7dd1fed58c7c1c7a",
+          "bytes": 1436
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r3-short6-gcp-4c18f074/diagnostic/episode-001/raw/eval-only.jsonl",
+          "decoded_sha256": "08b0ecb904287e24a793d4073409033baacd848613dca88b23666b8cf844ffa5",
+          "bytes": 1198539
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r3-short6-gcp-4c18f074/diagnostic/episode-001/raw/teacher-r1.jsonl",
+          "decoded_sha256": "24807d037e0e9d622a3321be02473d6df2debef2b8932e5104e0529e35455854",
+          "bytes": 168143
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r3-short6-gcp-4c18f074/diagnostic/episode-001/raw/teacher-r2.jsonl",
+          "decoded_sha256": "81c864e121bcd3faa069912a87b98c7544a2f9ef79494a6a376183d0df375d38",
+          "bytes": 159081
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r3-short6-gcp-4c18f074/diagnostic/episode-002/raw/result.json",
+          "decoded_sha256": "907637beec170e53008a81f656664482a8fa2f2abb91f7dc07dd989d645fafbd",
+          "bytes": 48164812
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r3-short6-gcp-4c18f074/diagnostic/episode-002/raw/plan.json",
+          "decoded_sha256": "33340f7c6b6386eeb7da2cea81df518b77bd51608daaa518bf8460392e87b731",
+          "bytes": 1435
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r3-short6-gcp-4c18f074/diagnostic/episode-002/raw/eval-only.jsonl",
+          "decoded_sha256": "2a9b71cd1d4d5296fc8723a77caa372376d3c5f370b77a49abc564e184a50927",
+          "bytes": 2452205
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r3-short6-gcp-4c18f074/diagnostic/episode-002/raw/teacher-r1.jsonl",
+          "decoded_sha256": "9da801fc978f7de5c863fd8b8e181b34e844e969150cf807f3cc518839eb2c19",
+          "bytes": 341840
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r3-short6-gcp-4c18f074/diagnostic/episode-002/raw/teacher-r2.jsonl",
+          "decoded_sha256": "bf9dbb7026df34c71fbdea8bd152088cca61963c16ae722a8e37f7616d8979b9",
+          "bytes": 318662
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r3-short6-gcp-4c18f074/diagnostic/episode-003/raw/result.json",
+          "decoded_sha256": "1edc7e85f1045d320c6c3fca7c1315284f73dd41524dcf7a81dbbade52818332",
+          "bytes": 748057
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r3-short6-gcp-4c18f074/diagnostic/episode-003/raw/plan.json",
+          "decoded_sha256": "7552b8f04cc219527212cfbe2fbcc65110039e31199905b988d894e6045960d1",
+          "bytes": 1369
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r3-short6-gcp-4c18f074/diagnostic/episode-003/raw/eval-only.jsonl",
+          "decoded_sha256": "7bc856f5e86ada1225cac648e5d78a5cfd1a985486fe84a28c4826607ae521e4",
+          "bytes": 2602884
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r3-short6-gcp-4c18f074/diagnostic/episode-003/raw/teacher-r1.jsonl",
+          "decoded_sha256": "7ab3ecfca3252426322da4888808702a553304006f22d747abd0cce782f28541",
+          "bytes": 382813
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r3-short6-gcp-4c18f074/diagnostic/episode-003/raw/teacher-r2.jsonl",
+          "decoded_sha256": "d0d719d50891938ca839cb6a5d65ef71464ddc32e2b3b3fcd7cd1d1447728ace",
+          "bytes": 361849
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r3-short6-gcp-4c18f074/diagnostic/episode-004/raw/result.json",
+          "decoded_sha256": "2469b0ec2f7c6789c81afba52b63fbf3b6a089f2bce3262b7818fb44cf2aabe2",
+          "bytes": 10473
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r3-short6-gcp-4c18f074/diagnostic/episode-004/raw/plan.json",
+          "decoded_sha256": "a0806e7ee587470106beddac579403a1060f9ae34959b7c6e96855b4bd74a6e2",
+          "bytes": 1346
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r3-short6-gcp-4c18f074/diagnostic/episode-004/raw/eval-only.jsonl",
+          "decoded_sha256": "3cadfe1b12ef1d7bfb7a06ad94f52c15e4438c1dae61fd563e83b853861c9299",
+          "bytes": 1837582
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r3-short6-gcp-4c18f074/diagnostic/episode-004/raw/teacher-r1.jsonl",
+          "decoded_sha256": "4c6e6671fe6bf9a238fb713d94f8fe39f6e6f400430a3e242c19d16bf69b5d47",
+          "bytes": 284286
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r3-short6-gcp-4c18f074/diagnostic/episode-004/raw/teacher-r2.jsonl",
+          "decoded_sha256": "267a8f09fa4804793898d998967e4daae9ce0ca5c4ea3b760da40b0aa69b4cd0",
+          "bytes": 268163
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r3-short6-gcp-4c18f074/diagnostic/episode-005/raw/result.json",
+          "decoded_sha256": "d3a0606347e81e7a057debec5b6f32d628b00d97e2b51399453bbc177740d0e9",
+          "bytes": 11790
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r3-short6-gcp-4c18f074/diagnostic/episode-005/raw/plan.json",
+          "decoded_sha256": "d634dbcabb731560d8e805d73bd0768607808b7a9315f945f761efcc064fe5df",
+          "bytes": 1350
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r3-short6-gcp-4c18f074/diagnostic/episode-005/raw/eval-only.jsonl",
+          "decoded_sha256": "b7413b497f6e2bc2e3a9f6ce750eafd8702a6ba314f4619d06e0f27f418def03",
+          "bytes": 1950256
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r3-short6-gcp-4c18f074/diagnostic/episode-005/raw/teacher-r1.jsonl",
+          "decoded_sha256": "6416acbd2a9f2b9f5f1d23044c122a7cd9a378ba3403916a827b44690c9283e9",
+          "bytes": 317539
+        },
+        {
+          "path": "outputs/gcp1-runs/grasp-search22-r3-short6-gcp-4c18f074/diagnostic/episode-005/raw/teacher-r2.jsonl",
+          "decoded_sha256": "26c08921709e2fe8f88acdc27ee34f1592b1d1a44bc0534ee8470ed7a43d93e7",
+          "bytes": 309271
+        }
+      ],
+      "memory_margins": [
+        {
+          "episode": "episode-000",
+          "rid": "r1",
+          "id": "r3",
+          "candidate_checks": 887,
+          "sigma_min_m": 0.02103080915493735,
+          "sigma_max_m": 0.05624408469899585,
+          "margin_min_m": 0.06882544072924687,
+          "margin_max_m": 0.1756925999793846
+        },
+        {
+          "episode": "episode-000",
+          "rid": "r1",
+          "id": "can_1",
+          "candidate_checks": 64,
+          "sigma_min_m": 0.006211296206891581,
+          "sigma_max_m": 0.006333582822032327,
+          "margin_min_m": 0.023850378745968678,
+          "margin_max_m": 0.024221500800719175
+        },
+        {
+          "episode": "episode-001",
+          "rid": "r1",
+          "id": "r3",
+          "candidate_checks": 780,
+          "sigma_min_m": 0.01029001627460355,
+          "sigma_max_m": 0.04909531841767946,
+          "margin_min_m": 0.036228699713796206,
+          "margin_max_m": 0.1539971361855781
+        },
+        {
+          "episode": "episode-001",
+          "rid": "r1",
+          "id": "yellow_1",
+          "candidate_checks": 85,
+          "sigma_min_m": 0.005690269318875096,
+          "sigma_max_m": 0.0063498511636862695,
+          "margin_min_m": 0.022269138075938017,
+          "margin_max_m": 0.024270872846670774
+        },
+        {
+          "episode": "episode-001",
+          "rid": "r1",
+          "id": "r2",
+          "candidate_checks": 734,
+          "sigma_min_m": 0.005585134940677359,
+          "sigma_max_m": 0.02303136971152418,
+          "margin_min_m": 0.02195007056052145,
+          "margin_max_m": 0.07489685045433228
+        },
+        {
+          "episode": "episode-002",
+          "rid": "r1",
+          "id": "r2",
+          "candidate_checks": 1700,
+          "sigma_min_m": 0.004337081080432451,
+          "sigma_max_m": 0.08228282052542664,
+          "margin_min_m": 0.018162408987582486,
+          "margin_max_m": 0.25471636829522265
+        },
+        {
+          "episode": "episode-002",
+          "rid": "r1",
+          "id": "red_2",
+          "candidate_checks": 1694,
+          "sigma_min_m": 0.007906314117021208,
+          "sigma_max_m": 0.03764030353541489,
+          "margin_min_m": 0.0289945110692175,
+          "margin_max_m": 0.11923283548586039
+        },
+        {
+          "episode": "episode-002",
+          "rid": "r1",
+          "id": "red_1",
+          "candidate_checks": 838,
+          "sigma_min_m": 0.09223245194105813,
+          "sigma_max_m": 0.12453999946468204,
+          "margin_min_m": 0.2849120495701466,
+          "margin_max_m": 0.3829607477626402
+        },
+        {
+          "episode": "episode-002",
+          "rid": "r1",
+          "id": "cyan_2",
+          "candidate_checks": 838,
+          "sigma_min_m": 0.11655239887024828,
+          "sigma_max_m": 0.13998643829339305,
+          "margin_min_m": 0.35871954408126683,
+          "margin_max_m": 0.42983843842478864
+        },
+        {
+          "episode": "episode-002",
+          "rid": "r1",
+          "id": "cyan_1",
+          "candidate_checks": 838,
+          "sigma_min_m": 0.1313886677242641,
+          "sigma_max_m": 0.1523704491708408,
+          "margin_min_m": 0.40374545779713783,
+          "margin_max_m": 0.4674221065768686
+        },
+        {
+          "episode": "episode-002",
+          "rid": "r1",
+          "id": "yellow_1",
+          "candidate_checks": 833,
+          "sigma_min_m": 0.01937884955817098,
+          "sigma_max_m": 0.027720390327771117,
+          "margin_min_m": 0.06381198411168401,
+          "margin_max_m": 0.089127344641011
+        },
+        {
+          "episode": "episode-003",
+          "rid": "r1",
+          "id": "r2",
+          "candidate_checks": 20,
+          "sigma_min_m": 0.06567326335135021,
+          "sigma_max_m": 0.06567326335135021,
+          "margin_min_m": 0.20430878296918817,
+          "margin_max_m": 0.20430878296918817
+        },
+        {
+          "episode": "episode-003",
+          "rid": "r1",
+          "id": "tile_1",
+          "candidate_checks": 20,
+          "sigma_min_m": 0.06143839281118342,
+          "sigma_max_m": 0.06143839281118342,
+          "margin_min_m": 0.19145656807502212,
+          "margin_max_m": 0.19145656807502212
+        },
+        {
+          "episode": "episode-003",
+          "rid": "r1",
+          "id": "cyan_1",
+          "candidate_checks": 20,
+          "sigma_min_m": 0.02463510305049849,
+          "sigma_max_m": 0.02463510305049849,
+          "margin_min_m": 0.07976394740805037,
+          "margin_max_m": 0.07976394740805037
+        }
+      ],
+      "round": 3,
+      "remote_full_manifest_verified": true,
+      "manifest_sha256": "858a6d4ae9d50c2bf1e60c6cff7188e3b07c9d581e978b09a2a4ee9e5658a815",
+      "local_verified_files": 194,
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-search22-r3-short6-gcp-4c18f074",
+      "local_lite": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r3-short6-gcp-4c18f074",
+      "speed_record": {
+        "median_wall_per_sim": 4.805549218979213,
+        "warning": true,
+        "blocked": false,
+        "planned_N": 6,
+        "complete_N": 6,
+        "reason": null,
+        "warn_above": 3.5,
+        "block_above": 6.0,
+        "qualified": false,
+        "automatic_promotion": false
+      },
+      "remote_manifest_verification": "outputs/search22/r3-remote-manifest.txt",
+      "preflight": {
+        "run": "grasp-search22-r3-short6-gcp-4c18f074",
+        "sha": "4c18f074c0e4d910cc4ef708ba901148fe91762a",
+        "owner": "search22",
+        "slots": 6,
+        "status": "reserved",
+        "at_unix": 1792054536.5530913,
+        "other_slots": 26,
+        "other_jobs": {
+          "reloc10-r3-rotation-96712d69": 1,
+          "reloc10-r3-selfmap-93571-f7c052f0": 1,
+          "reloc10-r3-carry-93261-96712d69": 1,
+          "crate18-r1-full-77990-e3a61c40": 1,
+          "crate18-r1-no_clearance-77990-e3a61c40": 1,
+          "crate18-r1-full-79314-e3a61c40": 1,
+          "crate18-r1-no_clearance-79314-e3a61c40": 1,
+          "crate18-r1-full-79317-e3a61c40": 1,
+          "crate18-r1-no_clearance-79317-e3a61c40": 1,
+          "r20bg-03-e897b0c2": 1,
+          "act12-record-86835-1fce1155": 1,
+          "act12-record-86837-1fce1155": 1,
+          "r20bg-04-e897b0c2": 1,
+          "r20bg-13-e897b0c2": 1,
+          "act12-record-86839-1fce1155": 1,
+          "act12-record-86834-1fce1155": 1,
+          "r20bg-02-e897b0c2": 1,
+          "act12-record-86838-1fce1155": 1,
+          "r20bg-05-e897b0c2": 1,
+          "r20ag-13-e897b0c2": 1,
+          "r20ag-05-e897b0c2": 1,
+          "act12-record-86840-1fce1155": 1,
+          "r20ag-04-e897b0c2": 1,
+          "act12-record-86836-1fce1155": 1,
+          "r20ag-02-e897b0c2": 1,
+          "r20ag-03-e897b0c2": 1
+        },
+        "processes": [
+          {
+            "pid": 445251,
+            "run": "reloc10-r3-rotation-96712d69",
+            "slots": 1,
+            "args": [
+              ".venv-sim/bin/python",
+              "-m",
+              "scripts.run_reloc10_rotation_check",
+              "--plan",
+              "experiments/2026-10-15-reloc10/diagnostic-plan.json",
+              "--expected-source-sha",
+              "96712d69f4bac4e5a8b52c958706abfcef717cb0",
+              "--execution-host",
+              "gcp1",
+              "--out",
+              "/home/ugrp/ugrp-sim/runs/reloc10-r3-rotation-96712d69/raw",
+              "--execute"
+            ]
+          },
+          {
+            "pid": 452651,
+            "run": "reloc10-r3-selfmap-93571-f7c052f0",
+            "slots": 1,
+            "args": [
+              ".venv-sim/bin/python",
+              "-m",
+              "scripts.run_self_map_diagnostic",
+              "--output",
+              "/home/ugrp/ugrp-sim/runs/reloc10-r3-selfmap-93571-f7c052f0/raw",
+              "--expected-source-sha",
+              "f7c052f07638196b0858483f79370ce402dda3a6",
+              "--seed",
+              "93571",
+              "--cap-s",
+              "60",
+              "--execution-host",
+              "gcp1",
+              "--project",
+              "ugrp-act-train-1014",
+              "--self-map-executor",
+              "frontier_drive_v1",
+              "--bootstrap",
+              "command_prior_v1",
+              "--initial-sweep",
+              "required_360_v1",
+              "--recovery-profile",
+              "selfmap4_recovery_v1",
+              "--revision-gate",
+              "selfmap4_revision_gate_v2",
+              "--multiframe-registration",
+              "selfmap4_multiframe_registration_v1",
+              "--render-profile",
+              "floor_light_v1",
+              "--correction-safety",
+              "selfmap6_correction_safety_v1",
+              "--active-relocalization",
+              "reloc8_active_vision_v1",
+              "--reloc10-settle-v1",
+              "--reloc10-registration-v1",
+              "--execute"
+            ]
+          },
+          {
+            "pid": 456494,
+            "run": "reloc10-r3-carry-93261-96712d69",
+            "slots": 1,
+            "args": [
+              ".venv-sim/bin/python",
+              "-m",
+              "scripts.run_solo_grasp_act_teacher",
+              "--execution-host",
+              "gcp1",
+              "--teacher-profile",
+              "solo_visible_only_v1",
+              "--held-object-hidden-v1",
+              "--setdown-lookaround-v1",
+              "--teacher-stability",
+              "align_relook_v1",
+              "--reach-mode",
+              "pad_window_v2",
+              "--rgb-lift-mode",
+              "solo_lift_lookback_v1",
+              "--solo-lift-lookback-margin-v1",
+              "--solo-truth-free-lookaround-v1",
+              "--solo-carry-to-zone-v1",
+              "--plan",
+              "experiments/2026-10-15-reloc10/diagnostic-plan.json",
+              "--episode",
+              "1",
+              "--cap-s",
+              "60",
+              "--out",
+              "/home/ugrp/ugrp-sim/runs/reloc10-r3-carry-93261-96712d69/raw"
+            ]
+          },
+          {
+            "pid": 456671,
+            "run": "crate18-r1-full-77990-e3a61c40",
+            "slots": 1,
+            "args": [
+              ".venv-sim/bin/python",
+              "-m",
+              "scripts.run_crate_teacher",
+              "--plan",
+              "experiments/2026-10-15-crate18/reproduction-plan.json",
+              "--episode",
+              "0",
+              "--grasp-cap-s",
+              "60",
+              "--cap-s",
+              "27.5",
+              "--observe-mode",
+              "backoff_v3",
+              "--zone-slots",
+              "zone",
+              "--reach-mode",
+              "pad_window_v2",
+              "--own-pose-source",
+              "commands",
+              "--held-object",
+              "hidden_v1",
+              "--setdown-lookaround",
+              "setdown_lookaround_own_v2",
+              "--crate-scene",
+              "crate_mass_025_v1",
+              "--crate-lift-pose",
+              "crate_antipodal_grasp_v1",
+              "--rgb-lift",
+              "crate_rgb_lift_v3",
+              "--teacher-stability",
+              "align_relook_v1",
+              "--teacher-search",
+              "search_reacquire_v1",
+              "--approach-goal-set",
+              "approach_goal_set_v1",
+              "--crate-approach-recovery",
+              "crate_approach_recovery_v1",
+              "--crate-profile",
+              "crate17_v1",
+              "--crate18",
+              "crate18_v1",
+              "--recording-mode",
+              "success_measurement",
+              "--execution-host",
+              "gcp1",
+              "--pr",
+              "500",
+              "--out",
+              "/home/ugrp/ugrp-sim/runs/crate18-r1-full-77990-e3a61c40/raw"
+            ]
+          },
+          {
+            "pid": 457758,
+            "run": "crate18-r1-no_clearance-77990-e3a61c40",
+            "slots": 1,
+            "args": [
+              ".venv-sim/bin/python",
+              "-m",
+              "scripts.run_crate_teacher",
+              "--plan",
+              "experiments/2026-10-15-crate18/reproduction-plan.json",
+              "--episode",
+              "0",
+              "--grasp-cap-s",
+              "60",
+              "--cap-s",
+              "27.5",
+              "--observe-mode",
+              "backoff_v3",
+              "--zone-slots",
+              "zone",
+              "--reach-mode",
+              "pad_window_v2",
+              "--own-pose-source",
+              "commands",
+              "--held-object",
+              "hidden_v1",
+              "--setdown-lookaround",
+              "setdown_lookaround_own_v2",
+              "--crate-scene",
+              "crate_mass_025_v1",
+              "--crate-lift-pose",
+              "crate_antipodal_grasp_v1",
+              "--rgb-lift",
+              "crate_rgb_lift_v3",
+              "--teacher-stability",
+              "align_relook_v1",
+              "--teacher-search",
+              "search_reacquire_v1",
+              "--approach-goal-set",
+              "approach_goal_set_v1",
+              "--crate-approach-recovery",
+              "crate_approach_recovery_v1",
+              "--crate-profile",
+              "crate17_no_clearance_v1",
+              "--crate18",
+              "crate18_v1",
+              "--recording-mode",
+              "success_measurement",
+              "--execution-host",
+              "gcp1",
+              "--pr",
+              "500",
+              "--out",
+              "/home/ugrp/ugrp-sim/runs/crate18-r1-no_clearance-77990-e3a61c40/raw"
+            ]
+          },
+          {
+            "pid": 458758,
+            "run": "crate18-r1-full-79314-e3a61c40",
+            "slots": 1,
+            "args": [
+              ".venv-sim/bin/python",
+              "-m",
+              "scripts.run_crate_teacher",
+              "--plan",
+              "experiments/2026-10-15-crate18/reproduction-plan.json",
+              "--episode",
+              "1",
+              "--grasp-cap-s",
+              "60",
+              "--cap-s",
+              "27.5",
+              "--observe-mode",
+              "backoff_v3",
+              "--zone-slots",
+              "zone",
+              "--reach-mode",
+              "pad_window_v2",
+              "--own-pose-source",
+              "commands",
+              "--held-object",
+              "hidden_v1",
+              "--setdown-lookaround",
+              "setdown_lookaround_own_v2",
+              "--crate-scene",
+              "crate_mass_025_v1",
+              "--crate-lift-pose",
+              "crate_antipodal_grasp_v1",
+              "--rgb-lift",
+              "crate_rgb_lift_v3",
+              "--teacher-stability",
+              "align_relook_v1",
+              "--teacher-search",
+              "search_reacquire_v1",
+              "--approach-goal-set",
+              "approach_goal_set_v1",
+              "--crate-approach-recovery",
+              "crate_approach_recovery_v1",
+              "--crate-profile",
+              "crate17_v1",
+              "--crate18",
+              "crate18_v1",
+              "--recording-mode",
+              "success_measurement",
+              "--execution-host",
+              "gcp1",
+              "--pr",
+              "500",
+              "--out",
+              "/home/ugrp/ugrp-sim/runs/crate18-r1-full-79314-e3a61c40/raw"
+            ]
+          },
+          {
+            "pid": 459979,
+            "run": "crate18-r1-no_clearance-79314-e3a61c40",
+            "slots": 1,
+            "args": [
+              ".venv-sim/bin/python",
+              "-m",
+              "scripts.run_crate_teacher",
+              "--plan",
+              "experiments/2026-10-15-crate18/reproduction-plan.json",
+              "--episode",
+              "1",
+              "--grasp-cap-s",
+              "60",
+              "--cap-s",
+              "27.5",
+              "--observe-mode",
+              "backoff_v3",
+              "--zone-slots",
+              "zone",
+              "--reach-mode",
+              "pad_window_v2",
+              "--own-pose-source",
+              "commands",
+              "--held-object",
+              "hidden_v1",
+              "--setdown-lookaround",
+              "setdown_lookaround_own_v2",
+              "--crate-scene",
+              "crate_mass_025_v1",
+              "--crate-lift-pose",
+              "crate_antipodal_grasp_v1",
+              "--rgb-lift",
+              "crate_rgb_lift_v3",
+              "--teacher-stability",
+              "align_relook_v1",
+              "--teacher-search",
+              "search_reacquire_v1",
+              "--approach-goal-set",
+              "approach_goal_set_v1",
+              "--crate-approach-recovery",
+              "crate_approach_recovery_v1",
+              "--crate-profile",
+              "crate17_no_clearance_v1",
+              "--crate18",
+              "crate18_v1",
+              "--recording-mode",
+              "success_measurement",
+              "--execution-host",
+              "gcp1",
+              "--pr",
+              "500",
+              "--out",
+              "/home/ugrp/ugrp-sim/runs/crate18-r1-no_clearance-79314-e3a61c40/raw"
+            ]
+          },
+          {
+            "pid": 462062,
+            "run": "crate18-r1-full-79317-e3a61c40",
+            "slots": 1,
+            "args": [
+              ".venv-sim/bin/python",
+              "-m",
+              "scripts.run_crate_teacher",
+              "--plan",
+              "experiments/2026-10-15-crate18/reproduction-plan.json",
+              "--episode",
+              "2",
+              "--grasp-cap-s",
+              "60",
+              "--cap-s",
+              "27.5",
+              "--observe-mode",
+              "backoff_v3",
+              "--zone-slots",
+              "zone",
+              "--reach-mode",
+              "pad_window_v2",
+              "--own-pose-source",
+              "commands",
+              "--held-object",
+              "hidden_v1",
+              "--setdown-lookaround",
+              "setdown_lookaround_own_v2",
+              "--crate-scene",
+              "crate_mass_025_v1",
+              "--crate-lift-pose",
+              "crate_antipodal_grasp_v1",
+              "--rgb-lift",
+              "crate_rgb_lift_v3",
+              "--teacher-stability",
+              "align_relook_v1",
+              "--teacher-search",
+              "search_reacquire_v1",
+              "--approach-goal-set",
+              "approach_goal_set_v1",
+              "--crate-approach-recovery",
+              "crate_approach_recovery_v1",
+              "--crate-profile",
+              "crate17_v1",
+              "--crate18",
+              "crate18_v1",
+              "--recording-mode",
+              "success_measurement",
+              "--execution-host",
+              "gcp1",
+              "--pr",
+              "500",
+              "--out",
+              "/home/ugrp/ugrp-sim/runs/crate18-r1-full-79317-e3a61c40/raw"
+            ]
+          },
+          {
+            "pid": 463897,
+            "run": "crate18-r1-no_clearance-79317-e3a61c40",
+            "slots": 1,
+            "args": [
+              ".venv-sim/bin/python",
+              "-m",
+              "scripts.run_crate_teacher",
+              "--plan",
+              "experiments/2026-10-15-crate18/reproduction-plan.json",
+              "--episode",
+              "2",
+              "--grasp-cap-s",
+              "60",
+              "--cap-s",
+              "27.5",
+              "--observe-mode",
+              "backoff_v3",
+              "--zone-slots",
+              "zone",
+              "--reach-mode",
+              "pad_window_v2",
+              "--own-pose-source",
+              "commands",
+              "--held-object",
+              "hidden_v1",
+              "--setdown-lookaround",
+              "setdown_lookaround_own_v2",
+              "--crate-scene",
+              "crate_mass_025_v1",
+              "--crate-lift-pose",
+              "crate_antipodal_grasp_v1",
+              "--rgb-lift",
+              "crate_rgb_lift_v3",
+              "--teacher-stability",
+              "align_relook_v1",
+              "--teacher-search",
+              "search_reacquire_v1",
+              "--approach-goal-set",
+              "approach_goal_set_v1",
+              "--crate-approach-recovery",
+              "crate_approach_recovery_v1",
+              "--crate-profile",
+              "crate17_no_clearance_v1",
+              "--crate18",
+              "crate18_v1",
+              "--recording-mode",
+              "success_measurement",
+              "--execution-host",
+              "gcp1",
+              "--pr",
+              "500",
+              "--out",
+              "/home/ugrp/ugrp-sim/runs/crate18-r1-no_clearance-79317-e3a61c40/raw"
+            ]
+          }
+        ],
+        "with_new_slots": 32
+      },
+      "directly_viewed_frames": [
+        {
+          "episode": "000",
+          "rid": "r1",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r3-short6-gcp-4c18f074/diagnostic/episode-000/raw/eval-own/r1/000000.jpg",
+          "sha256": "8d48a4c74d366e89a5496f8e9ada4902946e7afdbe5f9a63ae3ff920b596e89d"
+        },
+        {
+          "episode": "000",
+          "rid": "r1",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r3-short6-gcp-4c18f074/diagnostic/episode-000/raw/eval-own/r1/000070.jpg",
+          "sha256": "36bee5fb1dbb2d1906b25b397fc93d17790a44e44f8cd96868b42ed5cc504a4c"
+        },
+        {
+          "episode": "000",
+          "rid": "r1",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r3-short6-gcp-4c18f074/diagnostic/episode-000/raw/eval-own/r1/000120.jpg",
+          "sha256": "d84f386512cf5e16801c98fd93795616d852af65842ad49612e42355bff9d69b"
+        },
+        {
+          "episode": "000",
+          "rid": "r2",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r3-short6-gcp-4c18f074/diagnostic/episode-000/raw/eval-own/r2/000000.jpg",
+          "sha256": "5afde6bb1d34bc61800d0419b14c00ee739a128fc89e32a7adf57d233029c435"
+        },
+        {
+          "episode": "000",
+          "rid": "r2",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r3-short6-gcp-4c18f074/diagnostic/episode-000/raw/eval-own/r2/000070.jpg",
+          "sha256": "9c2b9a895334e1ee288fa0817e434d35c21375e2cbb8932085724f5ca5cb98e8"
+        },
+        {
+          "episode": "000",
+          "rid": "r2",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r3-short6-gcp-4c18f074/diagnostic/episode-000/raw/eval-own/r2/000120.jpg",
+          "sha256": "f8b4b7cf0f4d27fdead1984b8203dee007484868f53a5834cb9ec3cdb8fd5907"
+        },
+        {
+          "episode": "001",
+          "rid": "r1",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r3-short6-gcp-4c18f074/diagnostic/episode-001/raw/eval-own/r1/000000.jpg",
+          "sha256": "7e38e2278d73ad5ba953a5d29b9b729efd80c0b83708400eff460d3909d5f411"
+        },
+        {
+          "episode": "001",
+          "rid": "r1",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r3-short6-gcp-4c18f074/diagnostic/episode-001/raw/eval-own/r1/000080.jpg",
+          "sha256": "44c47dc5011fb8c11f1ef29628f29660c9ca147b52e0aedf6de6deda48fef9ef"
+        },
+        {
+          "episode": "001",
+          "rid": "r1",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r3-short6-gcp-4c18f074/diagnostic/episode-001/raw/eval-own/r1/000140.jpg",
+          "sha256": "08c576fb8b165a27e27981b17a51473cad59768078504f58d1a5dbd8c985f8dc"
+        },
+        {
+          "episode": "001",
+          "rid": "r2",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r3-short6-gcp-4c18f074/diagnostic/episode-001/raw/eval-own/r2/000000.jpg",
+          "sha256": "76d10a5b8b7d0bebff7e9db8d35d11401dd81402d72182aa4aa85d098aaab75b"
+        },
+        {
+          "episode": "001",
+          "rid": "r2",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r3-short6-gcp-4c18f074/diagnostic/episode-001/raw/eval-own/r2/000080.jpg",
+          "sha256": "61429b7eb78077afe1c37816aba42eda7496c98221a94729741660334a6eba17"
+        },
+        {
+          "episode": "001",
+          "rid": "r2",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r3-short6-gcp-4c18f074/diagnostic/episode-001/raw/eval-own/r2/000140.jpg",
+          "sha256": "3377166a956e987fd3b2c899df8c0ba79f26de5a12d384139b0f037b5c201484"
+        },
+        {
+          "episode": "002",
+          "rid": "r1",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r3-short6-gcp-4c18f074/diagnostic/episode-002/raw/eval-own/r1/000000.jpg",
+          "sha256": "d43a40126574d6fbfac8759130d4e633e86f2a337565a972257088e2709598c1"
+        },
+        {
+          "episode": "002",
+          "rid": "r1",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r3-short6-gcp-4c18f074/diagnostic/episode-002/raw/eval-own/r1/000170.jpg",
+          "sha256": "049c244719fb5443e280f4ede119c215b8e92e4053dd5607821a11e46823e2a1"
+        },
+        {
+          "episode": "002",
+          "rid": "r1",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r3-short6-gcp-4c18f074/diagnostic/episode-002/raw/eval-own/r1/000290.jpg",
+          "sha256": "b113bec651a116f415a39dc59dc8e494d44a35f026296e314ee229d870a16128"
+        },
+        {
+          "episode": "002",
+          "rid": "r2",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r3-short6-gcp-4c18f074/diagnostic/episode-002/raw/eval-own/r2/000000.jpg",
+          "sha256": "2f7e9503999abfb2715e5d8c4c15ee656cacbc7f262cda06a71e9650d8c5f07e"
+        },
+        {
+          "episode": "002",
+          "rid": "r2",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r3-short6-gcp-4c18f074/diagnostic/episode-002/raw/eval-own/r2/000170.jpg",
+          "sha256": "bd7854eff46041366c0078b2897fe50eebf36f6482598011d0e29b8721f007e1"
+        },
+        {
+          "episode": "002",
+          "rid": "r2",
+          "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/gcp1-runs/grasp-search22-r3-short6-gcp-4c18f074/diagnostic/episode-002/raw/eval-own/r2/000290.jpg",
+          "sha256": "39506d3a2394714131b775a1cb3a9fd98244d609de3e4b1bc95a1710b7a6c7be"
+        }
+      ],
+      "directly_viewed_frames_N": 18,
+      "offline_original_measurement_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 6485,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "top_review_frame_files": 0
+    }
+  ],
+  "default_mode": "off",
+  "research_result": false,
+  "student_success": false,
+  "invisible_measurements": 0,
+  "held_world_reads": 0,
+  "all_input_audits_enabled": true,
+  "model_calls": 0,
+  "model_tokens": 0,
+  "scope": "three separate six-plan GCP teacher DEV diagnostics; no pooling, gate40, ACT data, training, promotion or hardware validation",
+  "remaining": [
+    "no 6/6 passed source SHA",
+    "both 8311709 scenes exhaust 3s planning budget repeatedly",
+    "active reobservation still selects can_1/yellow_1 or peer hints instead of resolving the constrained connector",
+    "315709 cargo_v6 ends with no_path/connector visibility failures",
+    "Gaussian covariance coverage uncalibrated; no path-wide probabilistic guarantee",
+    "first-30 wall endpoint not persisted for the 33.5 SIMs base case; speed-record uses complete-run ratios",
+    "r1 incomplete final diagnostics after json inf error; ep002 replay mismatch0; ep000 replay mismatch68 so not actual trajectory evidence"
+  ],
+  "source_world_audit": "outputs/search22/grasp-search22-r3-short6-gcp-4c18f074-world-audit.json",
+  "queue_status": "BLOCKED_FAILED_SHORT6",
+  "planned_comparison_N": 32,
+  "planned_max_parallel": 16
+}
