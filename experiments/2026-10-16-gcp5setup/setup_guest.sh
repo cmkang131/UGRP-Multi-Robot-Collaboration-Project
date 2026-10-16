@@ -1,5 +1,5 @@
 #!/bin/bash
-# Fresh public image only. No gcp2 disk, raw data, keys, or agent config copied.
+# Fresh public image/packages. Training dataset is transferred separately by explicit allowlist; no keys/agent config.
 set -euo pipefail
 sudo env DEBIAN_FRONTEND=noninteractive apt-get update
 sudo env DEBIAN_FRONTEND=noninteractive apt-get install -y python3.12-venv libosmesa6 libgl1 libglfw3 ffmpeg fonts-noto-cjk rsync zstd
@@ -15,3 +15,7 @@ git --git-dir=/home/ugrp/ugrp-sim/git-shared.git config gc.pruneExpire never
 nvidia-smi --query-gpu=name,driver_version,memory.total --format=csv,noheader
 /home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/pip freeze > /home/ugrp/ugrp-sim/setup/warp-freeze.txt
 /home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/pip freeze > /home/ugrp/ugrp-sim/setup/cpu-freeze.txt
+
+python3.12 -m venv /home/ugrp/ugrp-rl1b-act-env
+/home/ugrp/ugrp-rl1b-act-env/bin/pip install --no-deps --extra-index-url https://download.pytorch.org/whl/cu128 -r /home/ugrp/ugrp-sim/setup/act-freeze-reference.txt
+/home/ugrp/ugrp-rl1b-act-env/bin/pip freeze > /home/ugrp/ugrp-sim/setup/act-freeze.txt

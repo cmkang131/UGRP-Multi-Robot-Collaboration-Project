@@ -49,7 +49,7 @@ sha=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
 lease=dict(task='gcp5setup',pid=os.getpid(),owner_host=socket.gethostname(),source_sha=sha,
            started_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),expected_end_utc=(datetime.datetime.now(datetime.timezone.utc)+datetime.timedelta(hours=1)).isoformat())
 subprocess.run(['ssh','gcp5','mkdir -p /home/ugrp/ugrp-sim/{setup,leases} && cat > /home/ugrp/ugrp-sim/leases/gcp5setup.json'],input=json.dumps(lease)+'\n',text=True,check=True)
-files=[ROOT/n for n in ('setup_guest.sh','smoke.py','audit_guest.py')]
+files=[ROOT/n for n in ('setup_guest.sh','smoke.py','audit_guest.py')] + [EVIDENCE/'act-freeze-reference.txt']
 subprocess.run(['scp',*map(str,files),'gcp5:/home/ugrp/ugrp-sim/setup/'],check=True)
 source={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in files}
 (EVIDENCE/'probe-source.json').write_text(json.dumps(dict(source_sha=sha,files_sha256=source),indent=2)+'\n')
