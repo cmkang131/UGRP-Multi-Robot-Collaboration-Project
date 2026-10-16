@@ -115,6 +115,22 @@ def test_raw_recount_preserves_all_HOST_ERROR_runs_without_fabricating_completed
     assert value['analysis_source_sha']=='analysis'
 
 
+def test_resource_admission_counts_orphan_runs_and_excludes_own_descendants_and_wrappers():
+    from harness.beamact_resources import other_run_pids
+    text='''PID PPID COMMAND
+10 1 /env/bin/python -m scripts.sim_cli workflow run beamact2-student
+11 10 /env/bin/python -m scripts.run_beamact2_student --plan example
+12 11 /env/bin/python -m scripts.beamact2_worker --model example
+20 1 /env/bin/python /src/experiments/reloc/run_round.py --worker case.json
+21 1 /env/bin/python -m scripts.run_beampair1 --plan case.json
+22 1 timeout 8h /env/bin/python -m scripts.run_beampair1 --plan case.json
+23 1 bash -c /env/bin/python -m scripts.run_beampair1 --plan case.json
+24 1 /usr/bin/python3 /usr/bin/networkd-dispatcher
+30 1 /env/bin/python -m scripts.run_grasp_act_student --plan case.json
+'''
+    assert other_run_pids(text,[10])==[20,21,30]
+
+
 def test_raw_replay_detects_one_PWM_or_issued_history_tampering():
     import numpy as np
     from harness import grasp_act_contract as c

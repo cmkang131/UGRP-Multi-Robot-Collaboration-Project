@@ -11,6 +11,7 @@ import time
 from harness.grasp_act_data import read_json, sha256, write_json
 from scripts.beamact1_runtime import require_gcp2
 from scripts.grasp_act_training_guard import ROOT, source_sha
+from harness.beamact_resources import other_run_pids
 
 BASE=Path('/home/ugrp/ugrp-sim')
 PY=BASE/'ugrp/.venv-sim/bin/python'
@@ -50,16 +51,18 @@ def main():
     def admission():
         others={q.name:read_json(q) for q in (BASE/'leases').glob('*.json') if q!=lease}
         reserved=sum(int(v.get('concurrency',0)) for v in others.values())
+        live=other_run_pids(subprocess.check_output(['ps','-eo','pid,ppid,args'],text=True),
+            [item['p'].pid for item in active])
         available=next(int(l.split()[1])*1024 for l in Path('/proc/meminfo').read_text().splitlines() if l.startswith('MemAvailable:'))
         free=shutil.disk_usage(BASE).free
-        record=dict(other_leases=others,other_reserved=reserved,own_requested=16,
+        record=dict(other_leases=others,other_reserved=reserved,other_live_run_pids=live,own_requested=16,
             loadavg=os.getloadavg(),available_memory_bytes=available,free_bytes=free,
             per_run_reserved_bytes=256*1024**2,post_submission_floor_bytes=8*1024**3,
             checked_at=datetime.now(timezone.utc).isoformat())
         write_json(a.output/'admission.json',record)
         if free<8*1024**3+20*256*1024**2 or available<6*1024**3:
             raise RuntimeError('storage/memory admission failed')
-        return reserved+16<=40
+        return max(reserved,len(live))+16<=40
     try:
         while not admission():time.sleep(10)
         claim(16)
