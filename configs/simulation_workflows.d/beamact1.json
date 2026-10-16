@@ -1,0 +1,59 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "beamact1-data",
+      "purpose": "GCP2 \ube54 \uc9dd ACT \ub370\uc774\ud130 \ubd84\ud560\u00b7TRAIN \uc815\uaddc\ud654; \ubb3c\ub9ac/\ub80c\ub354 \uc5c6\uc74c",
+      "entry": "scripts/prepare_beamact1.py",
+      "runner": "scripts.prepare_beamact1",
+      "required_inputs": [
+        "--archive",
+        "--raw-root"
+      ],
+      "side_effect": "local_diagnostic",
+      "version": "1.0.1",
+      "docs": "experiments/2026-10-16-beamact1/README.md",
+      "requires": "GCP2 only; CPU data/evaluation; ugrp-act-l4-gcp2 shared training with memory admission and lease; no Mac compute; heldout20 excluded",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "adapter": "managed_legacy_cli"
+    },
+    {
+      "id": "beamact1-train",
+      "purpose": "beamact1 opt-in L4 ACT \ud559\uc2b5; smoke readback \ud6c4 main",
+      "entry": "scripts/train_grasp_act.py",
+      "runner": "scripts.train_grasp_act",
+      "required_inputs": [
+        "--dataset",
+        "--stage",
+        "--steps",
+        "--execution-host-profile",
+        "--history-causal-split-v1"
+      ],
+      "side_effect": "training",
+      "version": "1.0.1",
+      "docs": "experiments/2026-10-16-beamact1/README.md",
+      "requires": "GCP2 only; CPU data/evaluation; ugrp-act-l4-gcp2 shared training with memory admission and lease; no Mac compute; heldout20 excluded",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "adapter": "managed_legacy_cli"
+    },
+    {
+      "id": "beamact1-offline",
+      "purpose": "GCP2 validation \ud589\ub3d9 MAE\uc640 persistence \ube44\uad50; \ub2e8\uacc4/\uc7ac\ucd94\ub860 \ubd84\ub9ac",
+      "entry": "scripts/evaluate_beamact1.py",
+      "runner": "scripts.evaluate_beamact1",
+      "required_inputs": [
+        "--dataset",
+        "--stages"
+      ],
+      "side_effect": "local_diagnostic",
+      "version": "1.0.1",
+      "docs": "experiments/2026-10-16-beamact1/README.md",
+      "requires": "GCP2 only; CPU data/evaluation; ugrp-act-l4-gcp2 shared training with memory admission and lease; no Mac compute; heldout20 excluded",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}

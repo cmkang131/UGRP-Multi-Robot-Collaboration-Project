@@ -21,8 +21,8 @@ def main():
     p.add_argument('--evaluation-summary',type=Path,required=True)
     p.add_argument('--output',type=Path,required=True)
     a=p.parse_args();require_gcp2(training=False);packaging_source=source_sha()
-    MODEL_ID='beamact3-'+a.arm+'-pair-shared-step20000-20261016'
-    TAG='models-20261016-beamact3-'+a.arm+'-v1'
+    MODEL_ID='beamact3-'+a.arm.lower()+'-pair-shared-step20000-20261016'
+    TAG='models-20261016-beamact3-'+a.arm.lower()+'-v1'
     training=read_json(a.training_summary)
     offline=read_json(a.offline_summary)
     evaluation=read_json(a.evaluation_summary)

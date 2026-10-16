@@ -1,0 +1,37 @@
+{
+  "ci_run": 38848141632,
+  "head": "abfe174056fbde358f9046c5927804d022ef04b7",
+  "failures": [
+    {
+      "test": "test_every_catalog_workflow_has_a_read_only_explicit_plan",
+      "cause": "missing3 beamact3 dry-run samples",
+      "inherited": false
+    },
+    {
+      "test": "v91 frozen file hash",
+      "cause": "beamact1 parent changed frozen configs/simulation_workflows.json",
+      "inherited": true
+    },
+    {
+      "test": "v92 preserved source hash",
+      "cause": "same frozen catalog hash mismatch",
+      "inherited": true
+    }
+  ],
+  "repair": {
+    "catalog_restored_from": "26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+    "catalog_sha256": "fc5bdf913a9f672bb3adb9597e1925b88a163a7ce1a1b30fb4fed9cf7ad0c813",
+    "modern_entries": "3 byte-semantically identical rows moved to configs/simulation_workflows.d/beamact1.json",
+    "frozen_expected_hashes_changed": false,
+    "workflow_samples_added": 3
+  },
+  "verification": {
+    "passed": 3,
+    "wall_s": 6.78,
+    "physics": 0,
+    "render": 0
+  },
+  "active_training_source_unchanged": "4747c4144a972e348a9ae4c7bbcc769ad116106d",
+  "evaluation_source_unchanged": "5ad43e1e096822d7a4ed2e7ce720c2900e7f5ff6",
+  "release_ids": "lowercase a/b per existing model_artifacts._ID validator; arm metadata stays A/B"
+}
