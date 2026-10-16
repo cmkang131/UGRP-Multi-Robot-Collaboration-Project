@@ -14,12 +14,11 @@ from PIL import Image
 
 from harness import grasp_act_contract as c
 from harness.grasp_act_data import read_json,read_rows,write_json,sha256
-from analyze_actdiag import existing,metrics,pulse_distribution
+from analyze_actdiag import existing,metrics,pulse_distribution,nearest
 
 
 def main():
     from scripts.beamact1_runtime import require_gcp2
-    from sklearn.neighbors import NearestNeighbors
     require_gcp2(training=False)
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--output',type=Path,required=True)
     a=p.parse_args();a.output.mkdir(exist_ok=False,parents=True)
@@ -63,7 +62,7 @@ def main():
             vi=np.flatnonzero(val['phase']==phase);ti=np.flatnonzero(train['phase']==phase)
             if not len(ti):ti=np.arange(len(train['y']));missing+=len(vi)
             if mode=='visual_1nn':
-                ix=NearestNeighbors(n_neighbors=1,n_jobs=4).fit(train['feature'][ti]).kneighbors(val['feature'][vi],return_distance=False)[:,0]
+                ix=nearest(train['feature'][ti],val['feature'][vi])
                 pred[vi]=train['y'][ti[ix]]
             else:pred[vi]=getattr(np,mode)(train['y'][ti],axis=0)
         baselines[mode+'_phase_oracle']=dict(metrics=metrics(pred,val['y']),missing_phase_rows=missing,

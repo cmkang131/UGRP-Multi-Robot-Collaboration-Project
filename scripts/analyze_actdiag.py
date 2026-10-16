@@ -64,6 +64,16 @@ def quantiles(x):
                     np.quantile(x, [0,.1,.25,.5,.75,.9,.99,1]).tolist())) if len(x) else {}
 
 
+def nearest(train,query):
+    """Exact L2 retrieval, 128-query memory budget; no learned parameters."""
+    t2=np.square(train).sum(1);result=[]
+    for start in range(0,len(query),128):
+        q=query[start:start+128]
+        distance=np.square(q).sum(1,keepdims=True)+t2[None,:]-2*q@train.T
+        result.extend(distance.argmin(1))
+    return np.asarray(result,dtype=np.int64)
+
+
 def decoded(x):
     # Exact contract projection, including completion-induced stop.
     return np.asarray([c.encode_action(dict(t=0., **{k:r[k] for k in
@@ -198,7 +208,6 @@ def infer(a):
 
 def report(a):
     from scripts.evaluate_beamact1 import persistence,refresh_grid
-    from sklearn.neighbors import NearestNeighbors
     stages={r['sample_id']:r['phase'] for r in read_json(existing(a.stages))}
     splits={}
     for split in ('train','validation'):
@@ -247,8 +256,7 @@ def report(a):
             tf=train['feature'][ti];vf=val['feature'][vi]
             tf=tf/np.maximum(np.linalg.norm(tf,axis=1,keepdims=True),np.finfo(np.float32).tiny)
             vf=vf/np.maximum(np.linalg.norm(vf,axis=1,keepdims=True),np.finfo(np.float32).tiny)
-            nn=NearestNeighbors(n_neighbors=1,algorithm='brute',metric='euclidean',n_jobs=4).fit(tf)
-            ix=nn.kneighbors(vf,return_distance=False)[:,0];p[vi]=train['target'][ti[ix]];neighbors[vi]=ti[ix]
+            ix=nearest(tf,vf);p[vi]=train['target'][ti[ix]];neighbors[vi]=ti[ix]
         basis['visual_1nn_'+grouping]=dict(all=metrics(p,val['target']),refresh=metrics(p[val['refresh']],val['target'][val['refresh']]),
             oracle_phase=grouping=='phase_role',per_phase={ph:metrics(p[val['phase']==ph],val['target'][val['phase']==ph]) for ph in sorted(set(val['phase']))},
             train_validation_seed_overlap=len(set(train['seed'])&set(val['seed'])))
