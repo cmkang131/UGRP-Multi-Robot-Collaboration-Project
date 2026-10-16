@@ -1,0 +1,207 @@
+{
+  "unit": "diagnostic_configuration",
+  "stages": [
+    {
+      "stage": "started_configurations",
+      "cumulative_pass_n": 14,
+      "rejected_n": 0
+    },
+    {
+      "stage": "fixed_requested_work_complete",
+      "cumulative_pass_n": 9,
+      "rejected_n": 5
+    }
+  ],
+  "jobs": [
+    {
+      "variant": "before",
+      "nworld": 1,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/raw/before/n1",
+      "status": "PROFILE_COMPLETE",
+      "source_sha": "2eef73185679c1612ce43ff1312fdf6aa652be34"
+    },
+    {
+      "variant": "before",
+      "nworld": 4,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/raw/before/n4",
+      "status": "PROFILE_COMPLETE",
+      "source_sha": "2eef73185679c1612ce43ff1312fdf6aa652be34"
+    },
+    {
+      "variant": "before",
+      "nworld": 16,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/raw/before/n16",
+      "status": "PROFILE_COMPLETE",
+      "source_sha": "2eef73185679c1612ce43ff1312fdf6aa652be34"
+    },
+    {
+      "variant": "before",
+      "nworld": 64,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/raw/before/n64",
+      "status": "PROFILE_COMPLETE",
+      "source_sha": "2eef73185679c1612ce43ff1312fdf6aa652be34"
+    },
+    {
+      "variant": "after-r1",
+      "nworld": 1,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/raw/after-r1/n1",
+      "status": "HOST_ERROR",
+      "source_sha": "5333afaad339446a63697409ad1f86482a4e320b"
+    },
+    {
+      "variant": "after-r2",
+      "nworld": 1,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/raw/after-r2/n1",
+      "status": "PROFILE_COMPLETE",
+      "source_sha": "55e6a64c5e87901aab911529b5064e661dac33f9"
+    },
+    {
+      "variant": "after-r2",
+      "nworld": 4,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/raw/after-r2/n4",
+      "status": "PROFILE_COMPLETE",
+      "source_sha": "55e6a64c5e87901aab911529b5064e661dac33f9"
+    },
+    {
+      "variant": "after-r2",
+      "nworld": 16,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/raw/after-r2/n16",
+      "status": "PROFILE_COMPLETE",
+      "source_sha": "55e6a64c5e87901aab911529b5064e661dac33f9"
+    },
+    {
+      "variant": "after-r2",
+      "nworld": 64,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/raw/after-r2/n64",
+      "status": "PROFILE_COMPLETE",
+      "source_sha": "55e6a64c5e87901aab911529b5064e661dac33f9"
+    },
+    {
+      "variant": "first30",
+      "nworld": 16,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/raw/first30/n16",
+      "status": "HOST_ERROR",
+      "source_sha": "01bfbae4369d6c4c183c72745d122338e858094b"
+    },
+    {
+      "variant": "pool-smoke",
+      "nworld": 1,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/raw/pool-smoke/n1",
+      "status": "PROFILE_COMPLETE",
+      "source_sha": "5894d2d8d7e62caf7ce570a66fc35f6de2ab54d6"
+    },
+    {
+      "variant": "first30-pool",
+      "nworld": 16,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/raw/first30-pool/n16",
+      "status": "HOST_ERROR",
+      "source_sha": "5894d2d8d7e62caf7ce570a66fc35f6de2ab54d6"
+    },
+    {
+      "variant": "first30-pool-r2",
+      "nworld": 16,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/raw/first30-pool-r2/n16",
+      "status": "HOST_ERROR",
+      "source_sha": "14aec45a14294703827625107014841b3f32feb4"
+    },
+    {
+      "variant": "first30-pool-r3",
+      "nworld": 16,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/raw/first30-pool-r3/n16",
+      "status": "HOST_ERROR",
+      "source_sha": "41584d3a114b820fd7b3939e558bc7e969f990a6"
+    }
+  ],
+  "errors": [
+    {
+      "variant": "after-r1",
+      "nworld": 1,
+      "status": "HOST_ERROR",
+      "errors": [
+        {
+          "category": "HOST_ERROR",
+          "reason": "ValueError('staged evaluator export changed same-state fields')",
+          "blocked_object": "batch_adapter",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured",
+          "traceback": "Traceback (most recent call last):\n  File \"/home/ugrp/ugrp-sim/src/5333afaad-warp10/scripts/run_warp5_batch.py\", line 137, in run\n    transport.initialize(cc,float32_solver_default_v1=q.get('float32_solver_default_v1',False),\n  File \"/home/ugrp/ugrp-sim/src/5333afaad-warp10/scripts/warp5_batch.py\", line 54, in initialize\n    initialize(self,contexts,**kwargs)\n  File \"/home/ugrp/ugrp-sim/src/5333afaad-warp10/scripts/warp7_native_models.py\", line 76, in initialize\n    return namespace['initialize'](transport,contexts,**kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<warp7-native-model-batch>\", line 143, in initialize\n  File \"/home/ugrp/ugrp-sim/src/5333afaad-warp10/scripts/warp5_batch.py\", line 220, in sync_render\n    if not all(row['exact'] for row in self.warp10_export_audit):raise ValueError('staged evaluator export changed same-state fields')\n                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: staged evaluator export changed same-state fields\n"
+        }
+      ]
+    },
+    {
+      "variant": "first30",
+      "nworld": 16,
+      "status": "HOST_ERROR",
+      "errors": [
+        {
+          "category": "HOST_ERROR",
+          "reason": "KeyboardInterrupt()",
+          "blocked_object": "batch_adapter",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured",
+          "traceback": "Traceback (most recent call last):\n  File \"/home/ugrp/ugrp-sim/src/01bfbae43-warp10-motion/scripts/run_warp5_batch.py\", line 164, in run\n    if active[indices].any():transport.step(cc,active[indices])\n                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/01bfbae43-warp10-motion/scripts/warp5_batch.py\", line 278, in step\n    for _ in range(self.graph_repeats):wp.capture_launch(self.graph)\n                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/ugrp/.venv-warp/lib/python3.12/site-packages/warp/_src/context.py\", line 12241, in capture_launch\n    if not runtime.core.wp_cuda_graph_launch(graph.graph_exec, stream.cuda_stream):\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nKeyboardInterrupt\n"
+        }
+      ]
+    },
+    {
+      "variant": "first30-pool",
+      "nworld": 16,
+      "status": "HOST_ERROR",
+      "errors": [
+        {
+          "category": "HOST_ERROR",
+          "reason": "RuntimeError('controller worker 7: IndexError(\\'Invalid index 1072693248. Valid indices from 0 to 1385\\')\\nTraceback (most recent call last):\\n  File \"/home/ugrp/ugrp-sim/src/5894d2d8d-warp10-pool/scripts/warp10_control.py\", line 98, in worker\\n    event=next(lane)\\n          ^^^^^^^^^^\\n  File \"/home/ugrp/ugrp-sim/src/5894d2d8d-warp10-pool/scripts/warp5_episode.py\", line 28, in __next__\\n    def __next__(self):return self.invoke(\\'__next__\\')\\n                              ^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/home/ugrp/ugrp-sim/src/5894d2d8d-warp10-pool/scripts/warp5_episode.py\", line 22, in invoke\\n    return getattr(self.generator,method)()\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"<warp5-scheduling-adapter>\", line 562, in run\\nIndexError: Invalid index 1072693248. Valid indices from 0 to 1385\\n')",
+          "blocked_object": "batch_adapter",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured",
+          "traceback": "Traceback (most recent call last):\n  File \"/home/ugrp/ugrp-sim/src/5894d2d8d-warp10-pool/scripts/run_warp5_batch.py\", line 172, in run\n    response=pool.receive(int(i),contexts[i])\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/5894d2d8d-warp10-pool/scripts/warp10_control.py\", line 137, in receive\n    if result['kind']=='error':raise RuntimeError('controller worker '+str(i)+': '+result['reason']+'\\n'+result['traceback'])\n                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: controller worker 7: IndexError('Invalid index 1072693248. Valid indices from 0 to 1385')\nTraceback (most recent call last):\n  File \"/home/ugrp/ugrp-sim/src/5894d2d8d-warp10-pool/scripts/warp10_control.py\", line 98, in worker\n    event=next(lane)\n          ^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/5894d2d8d-warp10-pool/scripts/warp5_episode.py\", line 28, in __next__\n    def __next__(self):return self.invoke('__next__')\n                              ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/5894d2d8d-warp10-pool/scripts/warp5_episode.py\", line 22, in invoke\n    return getattr(self.generator,method)()\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<warp5-scheduling-adapter>\", line 562, in run\nIndexError: Invalid index 1072693248. Valid indices from 0 to 1385\n\n"
+        }
+      ]
+    },
+    {
+      "variant": "first30-pool-r2",
+      "nworld": 16,
+      "status": "HOST_ERROR",
+      "errors": [
+        {
+          "category": "HOST_ERROR",
+          "reason": "RuntimeError('controller worker 1: IndexError(\\'Invalid index 1072693248. Valid indices from 0 to 1385\\')\\nTraceback (most recent call last):\\n  File \"/home/ugrp/ugrp-sim/src/14aec45a1-warp10-pool/scripts/warp10_control.py\", line 105, in worker\\n    event=next(lane)\\n          ^^^^^^^^^^\\n  File \"/home/ugrp/ugrp-sim/src/14aec45a1-warp10-pool/scripts/warp5_episode.py\", line 28, in __next__\\n    def __next__(self):return self.invoke(\\'__next__\\')\\n                              ^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/home/ugrp/ugrp-sim/src/14aec45a1-warp10-pool/scripts/warp5_episode.py\", line 22, in invoke\\n    return getattr(self.generator,method)()\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"<warp5-scheduling-adapter>\", line 562, in run\\nIndexError: Invalid index 1072693248. Valid indices from 0 to 1385\\n')",
+          "blocked_object": "batch_adapter",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured",
+          "traceback": "Traceback (most recent call last):\n  File \"/home/ugrp/ugrp-sim/src/14aec45a1-warp10-pool/scripts/run_warp5_batch.py\", line 172, in run\n    response=pool.receive(int(i),contexts[i])\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/14aec45a1-warp10-pool/scripts/warp10_control.py\", line 144, in receive\n    if result['kind']=='error':raise RuntimeError('controller worker '+str(i)+': '+result['reason']+'\\n'+result['traceback'])\n                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: controller worker 1: IndexError('Invalid index 1072693248. Valid indices from 0 to 1385')\nTraceback (most recent call last):\n  File \"/home/ugrp/ugrp-sim/src/14aec45a1-warp10-pool/scripts/warp10_control.py\", line 105, in worker\n    event=next(lane)\n          ^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/14aec45a1-warp10-pool/scripts/warp5_episode.py\", line 28, in __next__\n    def __next__(self):return self.invoke('__next__')\n                              ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/14aec45a1-warp10-pool/scripts/warp5_episode.py\", line 22, in invoke\n    return getattr(self.generator,method)()\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<warp5-scheduling-adapter>\", line 562, in run\nIndexError: Invalid index 1072693248. Valid indices from 0 to 1385\n\n"
+        }
+      ]
+    },
+    {
+      "variant": "first30-pool-r3",
+      "nworld": 16,
+      "status": "HOST_ERROR",
+      "errors": [
+        {
+          "category": "HOST_ERROR",
+          "reason": "ValueError('invalid evaluator contact geom index before controller dispatch')",
+          "blocked_object": "batch_adapter",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured",
+          "traceback": "Traceback (most recent call last):\n  File \"/home/ugrp/ugrp-sim/src/41584d3a1-warp10-pool/scripts/run_warp5_batch.py\", line 193, in run\n    if active[indices].any():transport.step(cc,active[indices])\n                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/41584d3a1-warp10-pool/scripts/warp5_batch.py\", line 320, in step\n    self.sync_render(contexts)\n  File \"/home/ugrp/ugrp-sim/src/41584d3a1-warp10-pool/scripts/warp5_batch.py\", line 229, in sync_render\n    validate_evaluation_contacts(c['world'].data,c['world'].model)\n  File \"/home/ugrp/ugrp-sim/src/41584d3a1-warp10-pool/scripts/warp10_host.py\", line 190, in validate_evaluation_contacts\n    raise ValueError('invalid evaluator contact geom index before controller dispatch')\nValueError: invalid evaluator contact geom index before controller dispatch\n"
+        }
+      ]
+    }
+  ],
+  "task_funnel": {
+    "independent_trials": 0,
+    "LLM_calls": 0,
+    "place": 0,
+    "complete": 0
+  },
+  "raw": "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/raw",
+  "reproduction": [
+    "python",
+    "/home/ugrp/ugrp-sim/src/41584d3a1-warp10-analysis/experiments/2026-10-16-warp10/analyze.py",
+    "--root",
+    "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/raw",
+    "--output",
+    "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/final-record"
+  ]
+}

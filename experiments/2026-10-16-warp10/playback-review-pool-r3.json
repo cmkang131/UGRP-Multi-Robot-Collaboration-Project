@@ -1,0 +1,29 @@
+{
+  "source_sha": "41584d3a114b820fd7b3939e558bc7e969f990a6",
+  "local": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/warp10-pool-r3",
+  "raw": "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/raw/first30-pool-r3/n16",
+  "method": "gcp2 ffmpeg4x/ffprobe; all whole2Hz and tail10Hz strips directly viewed as files, no GUI",
+  "output_hash_mismatches": [],
+  "absolute_SIM_range": [
+    2,
+    13.1
+  ],
+  "last_completed_batch_SIM": 11.4,
+  "failed_export_batch_SIM": 11.5,
+  "timeline": {
+    "1": [
+      "SIM2–6 red box grows and approaches lower edge",
+      "SIM6–8.2 short vertical shifts near lower edge",
+      "SIM8.3–10.5 repeats larger vertical shifts at changing scale",
+      "SIM10.6 red sliver;10.7–13.1 floor only; no visibly verified lift/place"
+    ],
+    "0": [
+      "SIM3.2–6.2 long yellow/green cargo travels toward right edge",
+      "SIM6.3–7.7 largely floor only",
+      "SIM7.8–13.1 wall and tiny distant objects, no visibly verified lift/place"
+    ]
+  },
+  "dense_vs_sparse": "10Hz resolves rapid edge crossing around10.6–10.7 and vertical shifts; 2Hz only gives broad progression",
+  "same_condition_success": "No completed same-condition success; world0 is another aborted prefix.",
+  "cause_limit": "Video does not prove memory cause; saved staging-vs-CPU arrays localize corrupted export separately."
+}

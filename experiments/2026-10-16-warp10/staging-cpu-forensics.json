@@ -1,0 +1,257 @@
+{
+  "raw": "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/raw/first30-pool-r3/n16/groups/4bbf1e7747f8ae014afbb97763e6875f6b7999cd3b5baa65489d4bacdffbf96c/invalid-evaluator-115-0.npz",
+  "sha256": "2ae76dbda92154efd7306b149f94440c78812e64572034593d31a319cab1c819",
+  "ngeom": 1386,
+  "bound_basis": "same red scene native model valid indices0..1385, not a fitted tolerance",
+  "world": 0,
+  "nacon": 68,
+  "allocated_contact_slots": 192,
+  "world_contacts": 20,
+  "active_gpu_invalid_geom_values": 0,
+  "cpu_invalid_geom_values": 2,
+  "different_contact_rows": [
+    {
+      "row": 0,
+      "gpu": [
+        1382,
+        462
+      ],
+      "cpu": [
+        0,
+        180
+      ]
+    },
+    {
+      "row": 1,
+      "gpu": [
+        1382,
+        456
+      ],
+      "cpu": [
+        0,
+        180
+      ]
+    },
+    {
+      "row": 2,
+      "gpu": [
+        1382,
+        462
+      ],
+      "cpu": [
+        0,
+        180
+      ]
+    },
+    {
+      "row": 3,
+      "gpu": [
+        1382,
+        456
+      ],
+      "cpu": [
+        0,
+        180
+      ]
+    },
+    {
+      "row": 4,
+      "gpu": [
+        1382,
+        462
+      ],
+      "cpu": [
+        43,
+        44
+      ]
+    },
+    {
+      "row": 5,
+      "gpu": [
+        1382,
+        456
+      ],
+      "cpu": [
+        40,
+        41
+      ]
+    },
+    {
+      "row": 6,
+      "gpu": [
+        1382,
+        462
+      ],
+      "cpu": [
+        1,
+        1
+      ]
+    },
+    {
+      "row": 7,
+      "gpu": [
+        1382,
+        456
+      ],
+      "cpu": [
+        33,
+        34
+      ]
+    },
+    {
+      "row": 8,
+      "gpu": [
+        0,
+        1382
+      ],
+      "cpu": [
+        7,
+        32
+      ]
+    },
+    {
+      "row": 9,
+      "gpu": [
+        0,
+        1382
+      ],
+      "cpu": [
+        1,
+        1
+      ]
+    },
+    {
+      "row": 10,
+      "gpu": [
+        0,
+        1382
+      ],
+      "cpu": [
+        23,
+        24
+      ]
+    },
+    {
+      "row": 11,
+      "gpu": [
+        0,
+        1382
+      ],
+      "cpu": [
+        139,
+        141
+      ]
+    },
+    {
+      "row": 12,
+      "gpu": [
+        0,
+        243
+      ],
+      "cpu": [
+        128,
+        129
+      ]
+    },
+    {
+      "row": 13,
+      "gpu": [
+        0,
+        365
+      ],
+      "cpu": [
+        24,
+        0
+      ]
+    },
+    {
+      "row": 14,
+      "gpu": [
+        0,
+        305
+      ],
+      "cpu": [
+        5,
+        5
+      ]
+    },
+    {
+      "row": 15,
+      "gpu": [
+        0,
+        366
+      ],
+      "cpu": [
+        44,
+        50
+      ]
+    },
+    {
+      "row": 16,
+      "gpu": [
+        0,
+        242
+      ],
+      "cpu": [
+        34,
+        35
+      ]
+    },
+    {
+      "row": 17,
+      "gpu": [
+        0,
+        304
+      ],
+      "cpu": [
+        3,
+        4
+      ]
+    },
+    {
+      "row": 18,
+      "gpu": [
+        0,
+        180
+      ],
+      "cpu": [
+        44,
+        0
+      ]
+    },
+    {
+      "row": 19,
+      "gpu": [
+        0,
+        179
+      ],
+      "cpu": [
+        1058587828,
+        1968373760
+      ]
+    }
+  ],
+  "nefc": [
+    170,
+    127,
+    134,
+    127,
+    134,
+    170
+  ],
+  "scope": "CPU export is corrupted while staged GPU geom IDs are in range; first bad write/binding mechanism remains unresolved. No physics correctness or root-cause proof.",
+  "integration_steps": 0,
+  "model_calls": 0,
+  "reproduction": [
+    "python",
+    "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/dump_forensics.py",
+    "--dump",
+    "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/raw/first30-pool-r3/n16/groups/4bbf1e7747f8ae014afbb97763e6875f6b7999cd3b5baa65489d4bacdffbf96c/invalid-evaluator-115-0.npz",
+    "--output",
+    "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/staging-cpu-forensics.json",
+    "--ngeom",
+    "1386",
+    "--world",
+    "0"
+  ]
+}

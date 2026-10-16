@@ -1,0 +1,217 @@
+{
+  "status": "NOT_READY",
+  "utc": "2026-10-16T11:38:12.365663+00:00",
+  "PR": 550,
+  "draft": true,
+  "machine": "gcp4 g2-standard-16, 1L4/64GB",
+  "previous_machine_results_pooled": false,
+  "decision_origin": "coordinator interpretation/design, user unconfirmed; requested round authorizes resize and measurements",
+  "fixed_work": {
+    "SIM_s": 0.3,
+    "source_before": "2eef73185679c1612ce43ff1312fdf6aa652be34",
+    "source_after": "55e6a64c5e87901aab911529b5064e661dac33f9",
+    "physics_settings_changed": false,
+    "rows": [
+      {
+        "variant": "before",
+        "nworld": 1,
+        "status": "PROFILE_COMPLETE",
+        "sim_s": 0.30000000000000004,
+        "wall_s": 7.466283143999988,
+        "batch_wall_per_sim": 24.887610479999957,
+        "per_execution_wall_per_sim": 24.887610479999957,
+        "summary_sha256": "ee2380b09039f29bb880d00bc84523c5fa7171f1b8a065872021202ab08dc964",
+        "raw": "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/raw/before/n1"
+      },
+      {
+        "variant": "before",
+        "nworld": 4,
+        "status": "PROFILE_COMPLETE",
+        "sim_s": 0.30000000000000004,
+        "wall_s": 10.569980500000042,
+        "batch_wall_per_sim": 35.23326833333347,
+        "per_execution_wall_per_sim": 8.808317083333367,
+        "summary_sha256": "d54ef0b36656b82b75a3500310193b60e26f55f118a51ed48fe43dd4d652ed3b",
+        "raw": "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/raw/before/n4"
+      },
+      {
+        "variant": "before",
+        "nworld": 16,
+        "status": "PROFILE_COMPLETE",
+        "sim_s": 0.30000000000000004,
+        "wall_s": 24.819298300000014,
+        "batch_wall_per_sim": 82.73099433333337,
+        "per_execution_wall_per_sim": 5.170687145833336,
+        "summary_sha256": "839ae059801df097d8de91cb0c4f6341ccd268453dc63c53d8133154d6c08028",
+        "raw": "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/raw/before/n16"
+      },
+      {
+        "variant": "before",
+        "nworld": 64,
+        "status": "PROFILE_COMPLETE",
+        "sim_s": 0.30000000000000004,
+        "wall_s": 86.21154114900014,
+        "batch_wall_per_sim": 287.37180383000043,
+        "per_execution_wall_per_sim": 4.490184434843757,
+        "summary_sha256": "2fd68be7ed1a057674054b95f02bf07910321fe8aad7a8f1faeeb851beecc737",
+        "raw": "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/raw/before/n64"
+      },
+      {
+        "variant": "after-r1",
+        "nworld": 1,
+        "status": "HOST_ERROR",
+        "summary_sha256": "3718a352ba2222464d632b332f6d80a36798b53c96e717422751a195d58c098d",
+        "raw": "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/raw/after-r1/n1"
+      },
+      {
+        "variant": "after-r2",
+        "nworld": 1,
+        "status": "PROFILE_COMPLETE",
+        "sim_s": 0.30000000000000004,
+        "wall_s": 7.0458916900001896,
+        "batch_wall_per_sim": 23.486305633333963,
+        "per_execution_wall_per_sim": 23.486305633333963,
+        "summary_sha256": "34f652ed1526f4eaffd15510487623b5143881f0334dd128daf9c039afd1a863",
+        "raw": "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/raw/after-r2/n1"
+      },
+      {
+        "variant": "after-r2",
+        "nworld": 4,
+        "status": "PROFILE_COMPLETE",
+        "sim_s": 0.30000000000000004,
+        "wall_s": 9.554492043999744,
+        "batch_wall_per_sim": 31.848306813332474,
+        "per_execution_wall_per_sim": 7.962076703333119,
+        "summary_sha256": "177a85cc827ae7994a920c1a91089d9cdc55b03b75851c024fd3bcd903911fee",
+        "raw": "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/raw/after-r2/n4"
+      },
+      {
+        "variant": "after-r2",
+        "nworld": 16,
+        "status": "PROFILE_COMPLETE",
+        "sim_s": 0.30000000000000004,
+        "wall_s": 18.845812787999876,
+        "batch_wall_per_sim": 62.819375959999576,
+        "per_execution_wall_per_sim": 3.9262109974999735,
+        "summary_sha256": "bd112986f1a644718c4422e5676a695cebaf2cd6de6625a25fa0468a2163538c",
+        "raw": "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/raw/after-r2/n16"
+      },
+      {
+        "variant": "after-r2",
+        "nworld": 64,
+        "status": "PROFILE_COMPLETE",
+        "sim_s": 0.30000000000000004,
+        "wall_s": 49.46420544900002,
+        "batch_wall_per_sim": 164.88068483000004,
+        "per_execution_wall_per_sim": 2.5762607004687506,
+        "summary_sha256": "27b8c1fe784091bba37ba4f614c3ee00ae92c0355375a4a941713fdebf5f70e0",
+        "raw": "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/raw/after-r2/n64"
+      },
+      {
+        "variant": "first30",
+        "nworld": 16,
+        "status": "HOST_ERROR",
+        "sim_s": 10.100000000000001,
+        "wall_s": 1183.6611758159997,
+        "batch_wall_per_sim": 117.1941758233663,
+        "per_execution_wall_per_sim": 7.324635988960393,
+        "summary_sha256": "ea58ef79f6db198405219074be2e12d4de21e8f885074f4cff5472fa461fbb18",
+        "raw": "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/raw/first30/n16"
+      },
+      {
+        "variant": "pool-smoke",
+        "nworld": 1,
+        "status": "PROFILE_COMPLETE",
+        "sim_s": 0.30000000000000004,
+        "wall_s": 7.307016612000552,
+        "batch_wall_per_sim": 24.356722040001838,
+        "per_execution_wall_per_sim": 24.356722040001838,
+        "summary_sha256": "4a74febc8bdd107809c46bf23abbb3c9dccb42134982b455fb520da0aaf133f6",
+        "raw": "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/raw/pool-smoke/n1"
+      },
+      {
+        "variant": "first30-pool",
+        "nworld": 16,
+        "status": "HOST_ERROR",
+        "sim_s": 11.5,
+        "wall_s": 1054.134889811,
+        "batch_wall_per_sim": 91.66390346182608,
+        "per_execution_wall_per_sim": 5.72899396636413,
+        "summary_sha256": "d04289a2639a5c77777fbd214618f09ef3261f3cae1d95013a57cb6a41207f27",
+        "raw": "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/raw/first30-pool/n16"
+      },
+      {
+        "variant": "first30-pool-r2",
+        "nworld": 16,
+        "status": "HOST_ERROR",
+        "sim_s": 11.600000000000001,
+        "wall_s": 1043.052014119001,
+        "batch_wall_per_sim": 89.9182770792242,
+        "per_execution_wall_per_sim": 5.619892317451512,
+        "summary_sha256": "c90bcda336dda2c51524390b95d72b0007beee495ee69b6da752fd4a586d9129",
+        "raw": "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/raw/first30-pool-r2/n16"
+      },
+      {
+        "variant": "first30-pool-r3",
+        "nworld": 16,
+        "status": "HOST_ERROR",
+        "sim_s": 11.4,
+        "wall_s": 1024.2488988269997,
+        "batch_wall_per_sim": 89.84639463394734,
+        "per_execution_wall_per_sim": 5.615399664621709,
+        "summary_sha256": "624f4f56dd8a92e9c781299d13e20271f31da21223d6ad3514eceb6b439ba3df",
+        "raw": "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/raw/first30-pool-r3/n16"
+      }
+    ]
+  },
+  "same_contact_fault": {
+    "attempts": 3,
+    "new_batches_stopped": true,
+    "last_source_sha": "41584d3a114b820fd7b3939e558bc7e969f990a6",
+    "last_completed_SIM": 11.4,
+    "failed_export_SIM": 11.5,
+    "staged_active_GPU_invalid_geom_values": 0,
+    "CPU_invalid_geom_values": 2,
+    "different_contact_rows": 20,
+    "first_bad_write": "unresolved; original exporter/adapter/native binding not separated",
+    "evidence": "staging-cpu-forensics.json"
+  },
+  "qualification": {
+    "first30": "incomplete, no formal speed verdict",
+    "transport": "unqualified",
+    "place": "unqualified",
+    "complete": "unqualified",
+    "LLM_calls": 0,
+    "ACT_student_runs": 0,
+    "n4_control_offload": "not implemented; local16-core spawn tested first, further rollout blocked by export integrity"
+  },
+  "validation": {
+    "non_physics_tests": "26 passed",
+    "CI": "no checks reported on head at41584d3a1",
+    "same_GPU_initial_RGB_and_export": "byte parity only; not later contact correctness or physical determinism",
+    "independent_GPU_final_state_bit_exact": false
+  },
+  "retrieval": {
+    "receipts": 6,
+    "verified_files": 19084,
+    "hash_mismatches": 0,
+    "raw_hosts": [
+      "gcp4 preserved disk",
+      "gcp2 verified copies"
+    ],
+    "Mac": "summaries, montages, selected failure frames only"
+  },
+  "cloud": {
+    "gcp4_status": "TERMINATED",
+    "other_L4_and_gcp3_changed": false,
+    "budget_stop_and_idle20": "preserved",
+    "gcp2_stop_attempts": 0
+  },
+  "records": {
+    "timing": "final-record/timing-table.md",
+    "config_funnel": "final-record/rejection-table.json",
+    "world_frame_event_funnel": "gate-funnel.json",
+    "validation": "validation.json",
+    "final_cloud": "gcp4-final.json"
+  }
+}

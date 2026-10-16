@@ -1,8 +1,8 @@
 # 현재 상태와 실행 경로
 
-## 2026-10-16 warp10 — 호스트 처리량 개선·CPU 분리 첫30 검증 중
+## 2026-10-16 warp10 — 호스트 고정 작업 개선·접촉 export 3회 중단 NOT_READY
 
-gcp4를 정지 상태에서 g2-standard-16으로 바꾸고 같은 머신 전후 N1/4/16/64×0.3SIM을 완료했다. N16 wall24.819→18.846, N64 86.212→49.464초. 기본off pinned readback·틱당 카메라 완료대기·명령 배열 후보이며 NoSlip/dt/solver는 유지했다. 동일 GPU 상태의 RGB/평가 출력은 정확 일치했으나 별도 실행의 최종 qpos/qvel/warmstart는 비트 불일치이며 원인은 미분리다. 혼합N16 직렬 첫30은10.1SIM에서 감독 중단하고 CPU spawn 후보를 검증 중이다. 학생·완주·live CoreWeave E2E는 미완료, 모델0. [기록·관문표·검토 영상](../experiments/2026-10-16-warp10/README.md).
+gcp4 g2-standard-16 같은 머신 N1/4/16/64×0.3SIM 전후 완료. N16 wall24.819→18.846초(−24.1%), N64 86.212→49.464초(−42.6%), 실행당3.926/2.576. NoSlip/dt/solver는 유지했고 모두 기본off 후보이다. 혼합N16 CPU 분리는 접촉 export 동일 결함3회(약11.5SIM)로 중단했다. 저장 GPU staging geom은 유효하지만 CPU 출력20행이 달라졌고 첫 덮어쓰기 지점은 미확정이다. 첫30·운반/place/완주·LLM/ACT는 미완료, 모델0. 비물리26 passed·CI 결과 없음, 원본19,084파일 SHA 불일치0. 임대/프로세스0 확인 뒤 gcp4 TERMINATED. [최종 요약·관문표·원인 분리](../experiments/2026-10-16-warp10/README.md).
 
 ## 2026-10-16 warp9 — gcp4 단독 계측·처리량3회 중단 NOT_READY
 

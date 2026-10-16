@@ -1,0 +1,151 @@
+{
+  "status": "NOT_READY_SAME_FAULT_THREE_ATTEMPTS_STOPPED",
+  "unit": "world_attempt, never independent success trial",
+  "world_exposure_funnel": [
+    {
+      "stage": "requested_worlds",
+      "cumulative_pass_n": 64,
+      "rejected_n": 0
+    },
+    {
+      "stage": "native_setup",
+      "cumulative_pass_n": 64,
+      "rejected_n": 0
+    },
+    {
+      "stage": "control_trace_started",
+      "cumulative_pass_n": 64,
+      "rejected_n": 0
+    },
+    {
+      "stage": "all_trace_own_rgb_hashes_present",
+      "cumulative_pass_n": 64,
+      "rejected_n": 0
+    },
+    {
+      "stage": "all_trace_commands_present",
+      "cumulative_pass_n": 64,
+      "rejected_n": 0
+    },
+    {
+      "stage": "approach_or_align_phase_seen",
+      "cumulative_pass_n": 64,
+      "rejected_n": 0
+    },
+    {
+      "stage": "close_phase_seen",
+      "cumulative_pass_n": 18,
+      "rejected_n": 46
+    },
+    {
+      "stage": "lift_phase_seen",
+      "cumulative_pass_n": 0,
+      "rejected_n": 18
+    },
+    {
+      "stage": "carry_phase_seen",
+      "cumulative_pass_n": 0,
+      "rejected_n": 0
+    },
+    {
+      "stage": "destination_place_phase_seen",
+      "cumulative_pass_n": 0,
+      "rejected_n": 0
+    },
+    {
+      "stage": "physical_place_reported",
+      "cumulative_pass_n": 0,
+      "rejected_n": 0
+    },
+    {
+      "stage": "physical_complete_reported",
+      "cumulative_pass_n": 0,
+      "rejected_n": 0
+    }
+  ],
+  "frame_funnel": [
+    {
+      "stage": "trace_ticks",
+      "cumulative_pass_n": 7200,
+      "rejected_n": 0
+    },
+    {
+      "stage": "own_rgb_hash_present",
+      "cumulative_pass_n": 7200,
+      "rejected_n": 0
+    }
+  ],
+  "event_funnel": [
+    {
+      "stage": "trace_ticks",
+      "cumulative_pass_n": 7200,
+      "rejected_n": 0
+    },
+    {
+      "stage": "issued_command_present",
+      "cumulative_pass_n": 7200,
+      "rejected_n": 0
+    }
+  ],
+  "rejection_distribution": [
+    {
+      "category": "CPU_contact_export_corruption",
+      "n": 3,
+      "blocked_object": "red-scene CPU contact table, not a physical obstacle",
+      "minimum_gap_m": null,
+      "gap_scope": "native_export_not_clearance"
+    }
+  ],
+  "raw": [
+    "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/raw/first30/n16",
+    "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/raw/first30-pool/n16",
+    "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/raw/first30-pool-r2/n16",
+    "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/raw/first30-pool-r3/n16"
+  ],
+  "reproduction": [
+    [
+      "python",
+      "/home/ugrp/ugrp-sim/src/90e2f0d4c-warp10-analysis/experiments/2026-10-16-warp10/motion_summary.py",
+      "--raw",
+      "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/raw/first30/n16",
+      "--output",
+      "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/serial-prefix-summary-v3"
+    ],
+    [
+      "python",
+      "/home/ugrp/ugrp-sim/src/4c7b4f381-warp10-analysis/experiments/2026-10-16-warp10/motion_summary.py",
+      "--raw",
+      "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/raw/first30-pool/n16",
+      "--output",
+      "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/pool-r1-prefix-summary"
+    ],
+    [
+      "python",
+      "/home/ugrp/ugrp-sim/src/4c7b4f381-warp10-analysis/experiments/2026-10-16-warp10/motion_summary.py",
+      "--raw",
+      "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/raw/first30-pool-r2/n16",
+      "--output",
+      "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/pool-r2-prefix-summary"
+    ],
+    [
+      "python",
+      "/home/ugrp/ugrp-sim/src/41584d3a1-warp10-analysis/experiments/2026-10-16-warp10/motion_summary.py",
+      "--raw",
+      "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/raw/first30-pool-r3/n16",
+      "--output",
+      "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/pool-r3-prefix-summary"
+    ]
+  ],
+  "source_sha256": {
+    "serial-prefix-summary.json": "a4bb08438eb284eb02f788abaaca00387b25680c0a1c24cc9196fcb777afc003",
+    "pool-r1-prefix-summary.json": "97823d3abe032d6b961b91aed3fb07ab8f69b492cc62b0c13041dceaf5e05686",
+    "pool-r2-prefix-summary.json": "51ec85141dfdf6d451bcf55ea4e20cf7573535425b65ee8ebcfbfe99a9413385",
+    "pool-r3-prefix-summary.json": "c525324e0ede311e0dd93971a1f3604c8cd932892417f99d8d6e2f135e0edd94"
+  },
+  "cap_end": 0,
+  "first30_complete": 0,
+  "independent_complete_task_trials": 0,
+  "LLM_calls": 0,
+  "ACT_student_runs": 0,
+  "interpretation": "6 unique registered seeds plus replicas; prefixes from four attempts. InputAudit zeros apply only to executed phases; contact-based scores are unqualified due export corruption."
+}

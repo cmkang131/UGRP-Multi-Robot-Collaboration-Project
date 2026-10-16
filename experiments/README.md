@@ -1,4 +1,4 @@
-- [2026-10-16 warp10 호스트 readback·렌더·제어](2026-10-16-warp10/README.md): gcp4 g2-standard-16 전후 N1/4/16/64 완료, N16 24.819→18.846·N64 86.212→49.464wall초. 기본off·물리설정불변, 직렬 첫30은10.1SIM 감독중단·CPU 분리 검증 중, LLM/ACT E2E 미연결.
+- [2026-10-16 warp10 호스트 readback·렌더·제어](2026-10-16-warp10/README.md): g2-standard-16 N16/N64 고정 작업 wall −24.1%/−42.6%. CPU 접촉 export 오류3회로 신규 배치 중단·NOT_READY, 첫30/LLM/ACT 미완료. 원본19,084 SHA 불일치0, gcp4 TERMINATED.
 - [2026-10-16 warp9 MJWarp 단독 분리 계측](2026-10-16-warp9/README.md): gcp4 N1/N4/N16 완료·N64 host OOM, N16 0.3SIM초 24.986→29.099wall초로 개선없음·3회 중단. NoSlip 버퍼/graph 후보 기본off·NOT_READY, n4제어/운반/E2E 미완료.
 - [2026-10-16 reloc17 위치 추정 원인 분리](2026-10-16-reloc17/README.md): 관문표·4조건분해8회·표준문헌 조사 뒤 서보 대기 취소 수정(기본off). gcp2 후보2라운드8회, 93584 xy개선/93583악화·초기13.09cm오등록·place0/2로 NOT_READY. 원본16/16검증, PR #536.
 - [2026-10-16 reloc16 확정 v5 장면 위치 추정](2026-10-16-reloc16/README.md): gcp2 CPU 3라운드·물리14/HOST_ERROR4, 주황시드·평면혼동 수정·Manhattan yaw 후보; 경계82/72.5<88/73.5·주행 미개선·각라운드place0/2, NOT_READY. 150 비물리시험·전체원본hash/재생검토.
