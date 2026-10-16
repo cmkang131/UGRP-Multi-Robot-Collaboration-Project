@@ -1,9 +1,11 @@
 """Non-physics checks of evidence boundaries and independent analytic examples."""
 import importlib.util
 import json
+import os
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 
 import cv2
 import numpy as np
@@ -19,6 +21,7 @@ def module(name):
 
 prepare=module('mast3rcmp_prepare')
 evaluate=module('mast3rcmp_evaluate')
+transfer=module('mast3rcmp_transfer')
 
 
 class EvidenceTests(unittest.TestCase):
@@ -66,6 +69,27 @@ class EvidenceTests(unittest.TestCase):
             scale=evaluate.freeze_scale(d/'pointmap.npz',d/'ref',d/'scale')
             self.assertAlmostEqual(scale['scale'],.2)
             self.assertEqual(scale['truth_reads'],0)
+
+    def test_real_tar_pipe_transfers_only_own_rgb(self):
+        # Replace only the SSH transport with a local shell. Real tar processes,
+        # pipes, binary images and destination SHA verification still execute.
+        with tempfile.TemporaryDirectory() as td:
+            d=Path(td).resolve();src=d/'source';src.mkdir();dest=d/'destination'
+            files=[]
+            for i in range(2):
+                p=src/f'r1-{i:04d}.png'
+                cv2.imwrite(str(p),np.full((6,8,3),i,np.uint8))
+                files.append(dict(path=str(p),sha256=prepare.sha256(p)))
+            # A listed truth file deliberately does not exist; it must not be read.
+            files.append(dict(path=str(src/'eval-only.json'),sha256='0'*64))
+            m=d/'manifest';m.write_text(json.dumps(dict(recording_root=str(src),frames=2,files=files)))
+            bin_dir=d/'bin';bin_dir.mkdir();ssh=bin_dir/'ssh'
+            ssh.write_text('#!/bin/sh\nshift\nexec /bin/sh -c "$1"\n');ssh.chmod(0o755)
+            with patch.dict(os.environ,PATH=str(bin_dir)+os.pathsep+os.environ['PATH']):
+                receipt=transfer.transfer(m,prepare.sha256(m),'source','destination',str(dest))
+            self.assertEqual(receipt['verification'],dict(files=2,mismatches=[]))
+            self.assertEqual(len(list(dest.rglob('*.png'))),2)
+            self.assertEqual(list(dest.rglob('*.json')),[])
 
 
 if __name__=='__main__':unittest.main()
