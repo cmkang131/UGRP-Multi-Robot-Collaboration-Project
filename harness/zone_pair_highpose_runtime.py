@@ -11,6 +11,7 @@ from harness import zone_pair_highpose_frame_gate as frame_gate
 from harness import zone_pair_highpose_grip as grip
 from harness import zone_pair_highpose_guardlog as guardlog
 from harness import zone_pair_highpose_lookaround as lookaround
+from harness import zone_pair_highpose_relook as relook
 from harness import zone_pair_highpose_start_relief as start_relief
 from harness.zone_final_pair_binding import bind
 from harness.zone_final_pair_runtime import Runtime as PreviousRuntime
@@ -412,6 +413,8 @@ class Execution(previous.Execution):
 class Team(previous.Team):
     def __init__(self, executors, calibration, static_task):
         super().__init__(executors, calibration, static_task)
+        # v98 look recovery: the admitted partner waits for a bounded re-look of the other robot (relook module).
+        self.rendezvous_timeout_s = relook.RENDEZVOUS_TIMEOUT_S
         def make_execution(own, status, arguments, plan, params, factory, *, policy):
             return Execution(own, status, arguments, plan, params, calibration=calibration)
         self.start = MethodType(bind(previous.pair.PairTeam.start,
@@ -436,9 +439,9 @@ class OwnExecutor(ZoneOwnExecutor):
     _ack = frame_gate.gated(ZoneOwnExecutor._ack)
     pair_readiness = frame_gate.gated(ZoneOwnExecutor.pair_readiness)
     # v98 look-around: the guard gets the tick's covariance (guard half: lookaround.LookAroundGuard, installed in
-    # adopt_v98_frame_gate) and a held look-around tick carries one hold, not [hold, hold].
-    _sweep_steps = lookaround.sweep_steps(ZoneOwnExecutor._sweep_steps)
-    _tick_sweep = lookaround.tick_sweep(ZoneOwnExecutor._tick_sweep)
+    # adopt_v98_frame_gate) and a held look-around tick carries one hold, not [hold, hold]. The look_around job
+    # (opening look and re-looks) pans over relook.DOCK_LOOK_PANS; other sweeps keep WIDE_LOOK_PANS.
+    _tick_sweep, _sweep_steps = relook.dock_sweep(ZoneOwnExecutor._tick_sweep, ZoneOwnExecutor._sweep_steps)
 
 
 def adopt_v98_frame_gate(runtime):
@@ -452,7 +455,12 @@ def adopt_v98_frame_gate(runtime):
     gates = own_image_gates()
     return {'path': gates['path'], 'sha256': gates['sha256'], 'values': dict(gates['values']),
             'frame_gate': frame_gate.record(), 'look_around': lookaround.record(),
-            'guard_veto_log': guardlog.record(), 'start_relief': start_relief.record()}
+            'guard_veto_log': guardlog.record(), 'start_relief': start_relief.record(), 'dock_look': relook.record()}
+
+
+def adopt_look_recovery(runtime):
+    """v98 bounded look recovery on ``runtime.team.start``; every v98 runtime calls this after its team exists."""
+    return relook.install(runtime, relook.LookRecovery(tuple(runtime.actors)))
 
 
 class Runtime(PreviousRuntime):
@@ -470,9 +478,15 @@ class Runtime(PreviousRuntime):
         for actor in self.actors.values():
             actor.job_sim_limit_s = CASE_CAP_S
         self.own_image_gates = adopt_v98_frame_gate(self)
+        self.look_recovery = adopt_look_recovery(self)
+
+    def step(self, now):
+        self.look_recovery.pre_step(self, now)
+        return self.look_recovery.filter(self, now, super().step(now))
 
     def record(self):
         value = super().record()
+        value['look_recovery'] = self.look_recovery.record()
         value['executor_job_sim_limit_s'] = self.job_sim_limit_s
         value['own_image_gates'] = copy.deepcopy(self.own_image_gates)
         value['blind_final_approach'] = blind.record()

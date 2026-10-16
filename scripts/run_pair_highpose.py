@@ -76,8 +76,12 @@ def stage_progress(runtime, probe):
             reached[rid] = reached.get(rid) or bool(hits)
             if ep.controller.failure is not None:
                 failures[rid] = ep.controller.failure
+    recovery = getattr(runtime, 'look_recovery', None)
+    if recovery is not None:
+        # v98 look recovery exhausted: this robot stops submitting, so the probe cannot reach its stage.
+        failures.update(recovery.failures())
     for rid, own in (getattr(runtime, 'actors', None) or {}).items():
-        # The opening look_around job always ends before the pair job is
+        # The opening look_around job (and v98 re-looks, also look_around) always ends before the pair job is
         # submitted; only an ended pair/carry job stops a probe.
         ended = [dict(j) for j in own.jobs_done if j.get('kind') != 'look_around']
         if ended:

@@ -323,6 +323,8 @@ class StagedRuntime(rt.Runtime):
             actor.job_sim_limit_s = CASE_CAP_S
         # Same v98 frame gate as rt.Runtime (this class bypasses rt.Runtime.__init__).
         self.own_image_gates = rt.adopt_v98_frame_gate(self)
+        # Same v98 look recovery; it needs a finished look_around, so HIGH entries (no opening look) never re-look.
+        self.look_recovery = rt.adopt_look_recovery(self)
         self.stage, self.staging = stage, staging
         # HIGH entries skip the opening look_around (it would move the arm holding the beam); the align entry
         # keeps the normal one (coordinator 2026-10-04).

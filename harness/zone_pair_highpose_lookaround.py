@@ -87,6 +87,13 @@ def hint_of(report):
 class LookAroundGuard(PairArmGuard):
     """``PairArmGuard`` (k = 1) whose arm clearance uses the obstacle-normal position sigma for the tick's own pose."""
     hint = None                                   # set by LookAroundMixin around one _sweep_steps call
+    # Set by the v98 look recovery (zone_pair_highpose_relook) for the lifetime of one re-look job: the plan never
+    # proposes a base back-off, so a re-look is pans only. False (the default) is the unchanged plan.
+    pans_only = False
+
+    def plan(self, current, look_pose, pans, pose, *, loaded, allow_backoff=False):
+        return super().plan(current, look_pose, pans, pose, loaded=loaded,
+                            allow_backoff=bool(allow_backoff) and not self.pans_only)
 
     def _cov_for(self, pose):
         h = self.hint
