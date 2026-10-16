@@ -106,3 +106,10 @@ SHA256 `69bdd4f62546e3e38ea024cf94b6bc12b86cef39b8a187ee155b7f11794a1c69`.
 ## 2026-10-14 정답 파지 교사 첫 진단
 
 [4d0161ae 영상](../experiments/2026-10-14-e2e18-grasp-rootcause/teacher-pilot-4d0161ae.mp4): seed71000, 자기 RGB r1/r2를 좌/우로 배치, 30초·300프레임. 첫 진단1회이므로 성공률 코호트 대표로 일반화하지 않는다. 공동0/1·로봇0/2, 30초 상한. 0/6/12/17.9/23.9/29.9초 직접 확인. r1 고정 사전 접근점이 차체 여유 경계 밖이어서 정지하고 r2는 파랑 끝으로 정렬했다. [원본·보관623/623 해시·영상sha256](../experiments/2026-10-14-e2e18-grasp-rootcause/teacher-pilot-4d0161ae.json).
+## 2026-10-15 ACT15 DAgger1 근거리 학생 (실패 비교)
+
+저장된 **자기 RGB** 영상이며 정답 도식/top 카메라가 아니다.
+
+|버전·소스|대표 case|결과|영상·해시|범위와 한계|
+|---|---|---|---|---|
+|ACT15 DAgger1; 학습1535c8a3, 실행686cccb6|91420, ACT14 p0 실패와 같은 seed; 최다 거부 단계인 정렬 실패 선택|90 SIM초 cap_end, 안정 들기/완료0; 전체 같은20 0/20·새20 0/20|[자기 RGB4배속](../experiments/2026-10-15-act-train/videos/act15-91420-4x.mp4),22.5초/900프레임/169401bytes;SHA256 `e9a95fd808c256f12d37ffa5b753a29bf8e441201340100f4b5ca3d2bb3a34fd`|접근 후 목표가 화면 밖으로 빠지는 사례. 단일 원인·일반화·E2E·실물·기본 채택 아님. [원본·milestone 복제·해시](../experiments/2026-10-15-act-train/act15-video.json), [전체 결과](../experiments/2026-10-15-act-train/act15.md).|

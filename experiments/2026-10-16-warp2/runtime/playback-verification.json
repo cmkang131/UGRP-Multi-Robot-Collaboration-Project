@@ -1,0 +1,406 @@
+{
+  "replays": [
+    {
+      "name": "r1-stop",
+      "local": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/warp2-r1-stop",
+      "manifest": {
+        "raw": "/home/ugrp/ugrp-sim/runs/warp2/r1-70553d2f/n1",
+        "frames": 34,
+        "absolute_sim_range": [
+          1.3,
+          4.6
+        ],
+        "recording_scope": "saved qpos/qvel reconstructed on C312 with exact recorded camera runtime; no mj_step; original own 10Hz tail preferred when present; reconstructed RGB is evaluation only, not original GPU RGB",
+        "original_own_tail_frames_used": 58,
+        "review": {
+          "whole_2hz": [
+            "/home/ugrp/ugrp-sim/runs/warp2/playback/r1-stop/whole2hz-00.jpg"
+          ],
+          "tail_10hz": [
+            "/home/ugrp/ugrp-sim/runs/warp2/playback/r1-stop/tail10hz-00.jpg",
+            "/home/ugrp/ugrp-sim/runs/warp2/playback/r1-stop/tail10hz-01.jpg",
+            "/home/ugrp/ugrp-sim/runs/warp2/playback/r1-stop/tail10hz-02.jpg"
+          ]
+        },
+        "video": "/home/ugrp/ugrp-sim/runs/warp2/playback/r1-stop/playback-3x.mp4",
+        "video_bytes": 28378,
+        "ffprobe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "h264",
+              "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+              "profile": "High",
+              "codec_type": "video",
+              "codec_tag_string": "avc1",
+              "codec_tag": "0x31637661",
+              "width": 960,
+              "height": 264,
+              "coded_width": 960,
+              "coded_height": 264,
+              "closed_captions": 0,
+              "film_grain": 0,
+              "has_b_frames": 2,
+              "sample_aspect_ratio": "1:1",
+              "display_aspect_ratio": "40:11",
+              "pix_fmt": "yuv420p",
+              "level": 30,
+              "color_range": "tv",
+              "color_space": "bt470bg",
+              "chroma_location": "center",
+              "field_order": "progressive",
+              "refs": 1,
+              "is_avc": "true",
+              "nal_length_size": "4",
+              "id": "0x1",
+              "r_frame_rate": "30/1",
+              "avg_frame_rate": "30/1",
+              "time_base": "1/15360",
+              "start_pts": 0,
+              "start_time": "0.000000",
+              "duration_ts": 17408,
+              "duration": "1.133333",
+              "bit_rate": "191463",
+              "bits_per_raw_sample": "8",
+              "nb_frames": "34",
+              "extradata_size": 49,
+              "disposition": {
+                "default": 1,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0
+              },
+              "tags": {
+                "language": "und",
+                "handler_name": "VideoHandler",
+                "vendor_id": "[0][0][0][0]",
+                "encoder": "Lavc60.31.102 libx264"
+              }
+            }
+          ],
+          "format": {
+            "filename": "/home/ugrp/ugrp-sim/runs/warp2/playback/r1-stop/playback-3x.mp4",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+            "format_long_name": "QuickTime / MOV",
+            "start_time": "0.000000",
+            "duration": "1.133333",
+            "size": "28378",
+            "bit_rate": "200315",
+            "probe_score": 100,
+            "tags": {
+              "major_brand": "isom",
+              "minor_version": "512",
+              "compatible_brands": "isomiso2avc1mp41",
+              "encoder": "Lavf60.16.100"
+            }
+          }
+        },
+        "hashes": {
+          "playback-3x.mp4": "56000a47dd34e6fe6e114bde2007c2e7952d667c66c088a686178cc0c661040f",
+          "tail10hz-00.jpg": "11d26700dd0a13b72305be7cea8bf007822f5b3c7af87a2a5c75f8ed0c92e2b0",
+          "tail10hz-02.jpg": "e221007e1a2ec3cb1a14e5023b3e4fab16898594786a3589d743d50fd288d5a2",
+          "tail10hz-01.jpg": "fa7b48a0c7353d08afbf09c21394ba8dce812acd0d256eab74107221512c81a9",
+          "whole2hz-00.jpg": "3cf2748f94ad582ae2c3673db0606432bdd2fa59eeb5ca041f513d78076dcb55"
+        }
+      },
+      "hash_verified_N": 5,
+      "mismatches": []
+    },
+    {
+      "name": "r2-success",
+      "local": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/warp2-r2-success",
+      "manifest": {
+        "raw": "/home/ugrp/ugrp-sim/runs/warp2/r2-54563a38/n1",
+        "frames": 282,
+        "absolute_sim_range": [
+          1.3,
+          29.4
+        ],
+        "recording_scope": "saved qpos/qvel reconstructed on C312 with exact recorded camera runtime; no mj_step; original own 10Hz tail preferred when present; reconstructed RGB is evaluation only, not original GPU RGB",
+        "original_own_tail_frames_used": 0,
+        "review": {
+          "whole_2hz": [
+            "/home/ugrp/ugrp-sim/runs/warp2/playback/r2-success/whole2hz-00.jpg",
+            "/home/ugrp/ugrp-sim/runs/warp2/playback/r2-success/whole2hz-01.jpg",
+            "/home/ugrp/ugrp-sim/runs/warp2/playback/r2-success/whole2hz-02.jpg",
+            "/home/ugrp/ugrp-sim/runs/warp2/playback/r2-success/whole2hz-03.jpg",
+            "/home/ugrp/ugrp-sim/runs/warp2/playback/r2-success/whole2hz-04.jpg"
+          ],
+          "tail_10hz": [
+            "/home/ugrp/ugrp-sim/runs/warp2/playback/r2-success/tail10hz-00.jpg",
+            "/home/ugrp/ugrp-sim/runs/warp2/playback/r2-success/tail10hz-01.jpg",
+            "/home/ugrp/ugrp-sim/runs/warp2/playback/r2-success/tail10hz-02.jpg",
+            "/home/ugrp/ugrp-sim/runs/warp2/playback/r2-success/tail10hz-03.jpg",
+            "/home/ugrp/ugrp-sim/runs/warp2/playback/r2-success/tail10hz-04.jpg",
+            "/home/ugrp/ugrp-sim/runs/warp2/playback/r2-success/tail10hz-05.jpg",
+            "/home/ugrp/ugrp-sim/runs/warp2/playback/r2-success/tail10hz-06.jpg",
+            "/home/ugrp/ugrp-sim/runs/warp2/playback/r2-success/tail10hz-07.jpg",
+            "/home/ugrp/ugrp-sim/runs/warp2/playback/r2-success/tail10hz-08.jpg"
+          ]
+        },
+        "video": "/home/ugrp/ugrp-sim/runs/warp2/playback/r2-success/playback-3x.mp4",
+        "video_bytes": 204443,
+        "ffprobe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "h264",
+              "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+              "profile": "High",
+              "codec_type": "video",
+              "codec_tag_string": "avc1",
+              "codec_tag": "0x31637661",
+              "width": 960,
+              "height": 264,
+              "coded_width": 960,
+              "coded_height": 264,
+              "closed_captions": 0,
+              "film_grain": 0,
+              "has_b_frames": 2,
+              "sample_aspect_ratio": "1:1",
+              "display_aspect_ratio": "40:11",
+              "pix_fmt": "yuv420p",
+              "level": 30,
+              "color_range": "tv",
+              "color_space": "bt470bg",
+              "chroma_location": "center",
+              "field_order": "progressive",
+              "refs": 1,
+              "is_avc": "true",
+              "nal_length_size": "4",
+              "id": "0x1",
+              "r_frame_rate": "30/1",
+              "avg_frame_rate": "30/1",
+              "time_base": "1/15360",
+              "start_pts": 0,
+              "start_time": "0.000000",
+              "duration_ts": 144384,
+              "duration": "9.400000",
+              "bit_rate": "170479",
+              "bits_per_raw_sample": "8",
+              "nb_frames": "282",
+              "extradata_size": 49,
+              "disposition": {
+                "default": 1,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0
+              },
+              "tags": {
+                "language": "und",
+                "handler_name": "VideoHandler",
+                "vendor_id": "[0][0][0][0]",
+                "encoder": "Lavc60.31.102 libx264"
+              }
+            }
+          ],
+          "format": {
+            "filename": "/home/ugrp/ugrp-sim/runs/warp2/playback/r2-success/playback-3x.mp4",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+            "format_long_name": "QuickTime / MOV",
+            "start_time": "0.000000",
+            "duration": "9.400000",
+            "size": "204443",
+            "bit_rate": "173994",
+            "probe_score": 100,
+            "tags": {
+              "major_brand": "isom",
+              "minor_version": "512",
+              "compatible_brands": "isomiso2avc1mp41",
+              "encoder": "Lavf60.16.100"
+            }
+          }
+        },
+        "hashes": {
+          "playback-3x.mp4": "8d59a6acb3be8ddd3158f7197395d2f28898b678d2bf5822e7a642b4f2d22a4e",
+          "whole2hz-04.jpg": "7bdfb6189fa9b7e2d6771b751db391f2b99e7bcf44e7315863d667d1147dbafa",
+          "tail10hz-04.jpg": "cdb373dedf5217cff300a385d26b65d7e4dc2e318976408c1c614e0a0a3d9ac4",
+          "whole2hz-01.jpg": "760aad8d3594511f6c1b46e20984211ff1774945df5e265f069f43fcf2aa1527",
+          "tail10hz-06.jpg": "8e2ba1606e931a53c3ed2819a18d1e40d806af08fdbe81d3b952bc00475efd83",
+          "tail10hz-00.jpg": "b778d5c17196a9e1c301724e58189e178d703d7560c23187db4b82b24627485e",
+          "tail10hz-02.jpg": "246a143e304178ccd5210e28ec3ac893e2d28b7e7bc4a5d6674c18e802b52787",
+          "tail10hz-07.jpg": "84b5906a71c14efcf36bf012c344ea874dd9192971a642679c04d208bf9f0d15",
+          "tail10hz-08.jpg": "3f98b63785b94a1bc6ea0729689c055eb0dda34e96b19c06ae747135040bd814",
+          "tail10hz-03.jpg": "dde51cb449e1dda93daafd8f00cc6f5bd193ac89f1bc56d450905e2739d11f01",
+          "whole2hz-03.jpg": "f3f6d5b794c60f360ee32daef31c8acd4108d68fc9b04683fd0e4b3af0012b18",
+          "tail10hz-01.jpg": "266ebdec14b0acbc7264196b61df8a1e15e2c5c4f53fa131a3c8658b876ed4c5",
+          "whole2hz-00.jpg": "5fa59565abf2d12d07dd2b9e06b185c0bb0d7fea114b68fb5d2f09c07ea13094",
+          "tail10hz-05.jpg": "b862763a949a458d711fa68d653cc1b70931d9cffa8d41ff6e3ba440f09d1c4c",
+          "whole2hz-02.jpg": "7b87e5652200b9ea4d88c968e8f6716f72e0e0e2383e0c5c20817f61d119186e"
+        }
+      },
+      "hash_verified_N": 15,
+      "mismatches": []
+    },
+    {
+      "name": "r3-stop",
+      "local": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/warp2-r3-stop",
+      "manifest": {
+        "raw": "/home/ugrp/ugrp-sim/runs/warp2/r3-521f2585/prefix-n64",
+        "frames": 7,
+        "absolute_sim_range": [
+          1.3,
+          1.9
+        ],
+        "recording_scope": "saved qpos/qvel reconstructed on C312 with exact recorded camera runtime; no mj_step; original own 10Hz tail preferred when present; reconstructed RGB is evaluation only, not original GPU RGB",
+        "original_own_tail_frames_used": 4,
+        "review": {
+          "whole_2hz": [
+            "/home/ugrp/ugrp-sim/runs/warp2/playback/r3-stop/whole2hz-00.jpg"
+          ],
+          "tail_10hz": [
+            "/home/ugrp/ugrp-sim/runs/warp2/playback/r3-stop/tail10hz-00.jpg"
+          ]
+        },
+        "video": "/home/ugrp/ugrp-sim/runs/warp2/playback/r3-stop/playback-3x.mp4",
+        "video_bytes": 13816,
+        "ffprobe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "h264",
+              "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+              "profile": "High",
+              "codec_type": "video",
+              "codec_tag_string": "avc1",
+              "codec_tag": "0x31637661",
+              "width": 960,
+              "height": 264,
+              "coded_width": 960,
+              "coded_height": 264,
+              "closed_captions": 0,
+              "film_grain": 0,
+              "has_b_frames": 2,
+              "sample_aspect_ratio": "1:1",
+              "display_aspect_ratio": "40:11",
+              "pix_fmt": "yuv420p",
+              "level": 30,
+              "color_range": "tv",
+              "color_space": "bt470bg",
+              "chroma_location": "center",
+              "field_order": "progressive",
+              "refs": 1,
+              "is_avc": "true",
+              "nal_length_size": "4",
+              "id": "0x1",
+              "r_frame_rate": "30/1",
+              "avg_frame_rate": "30/1",
+              "time_base": "1/15360",
+              "start_pts": 0,
+              "start_time": "0.000000",
+              "duration_ts": 3584,
+              "duration": "0.233333",
+              "bit_rate": "440708",
+              "bits_per_raw_sample": "8",
+              "nb_frames": "7",
+              "extradata_size": 49,
+              "disposition": {
+                "default": 1,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0
+              },
+              "tags": {
+                "language": "und",
+                "handler_name": "VideoHandler",
+                "vendor_id": "[0][0][0][0]",
+                "encoder": "Lavc60.31.102 libx264"
+              }
+            }
+          ],
+          "format": {
+            "filename": "/home/ugrp/ugrp-sim/runs/warp2/playback/r3-stop/playback-3x.mp4",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+            "format_long_name": "QuickTime / MOV",
+            "start_time": "0.000000",
+            "duration": "0.233333",
+            "size": "13816",
+            "bit_rate": "473692",
+            "probe_score": 100,
+            "tags": {
+              "major_brand": "isom",
+              "minor_version": "512",
+              "compatible_brands": "isomiso2avc1mp41",
+              "encoder": "Lavf60.16.100"
+            }
+          }
+        },
+        "hashes": {
+          "playback-3x.mp4": "b9ddcb2fe10fec5b02553b40a812ad58760cd6f5ab7342021b355462fd09063d",
+          "tail10hz-00.jpg": "46de0ac2e0a0dba869913b063815e572ff150fa3e726c7cb281f0d34d88b2e9c",
+          "whole2hz-00.jpg": "fdd423506769d84910c8b1f2c0999f21715f3239881b481df0b029f434751708"
+        }
+      },
+      "hash_verified_N": 3,
+      "mismatches": []
+    }
+  ],
+  "original_gpu_success_montage": {
+    "source": "/home/ugrp/ugrp-sim/runs/warp2/r2-54563a38/n1/world-000/raw/eval-own",
+    "scope": "12 selected frames from original one-Hz own-camera recordings; no reconstructed RGB",
+    "sha256": "acdd138ffe46ffa95a47f6cd61cb7fcb8cc1d2b15054138bf0f602039952b9ab",
+    "selected": [
+      "000000.jpg",
+      "000020.jpg",
+      "000050.jpg",
+      "000070.jpg",
+      "000100.jpg",
+      "000120.jpg",
+      "000150.jpg",
+      "000170.jpg",
+      "000200.jpg",
+      "000220.jpg",
+      "000250.jpg",
+      "000270.jpg"
+    ]
+  },
+  "verified_files": 24
+}

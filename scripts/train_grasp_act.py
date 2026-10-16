@@ -1,155 +1,271 @@
-"""Train one multitask upstream ACT; bounded, resumable and no truth inputs."""
+"""Finite GCP L4 pilot. JSON logs, fixed final step, resumable local checkpoints."""
 from __future__ import annotations
-import argparse,hashlib,importlib.metadata,json,os,platform,random,subprocess,time
+
+import argparse
+import importlib.metadata
+import json
+import math
 from pathlib import Path
-import numpy as np
-import torch
-from torch.utils.data import Dataset,DataLoader,WeightedRandomSampler
-from harness.grasp_act import make_policy,GraspAct,IMAGE_KEYS,CONTEXT_KEY,tensor,metadata,verify_upstream,PROFILES
-from harness.grasp_act_augment import draw as draw_augment,augmented_tensor,RANGES as AUGMENT_RANGES
-from harness.grasp_act_seed_splits import check_dataset_splits
-from harness.grasp_act_contract import context
-from harness.grasp_act_data import validate_splits,sha
-from harness.reference_act import UPSTREAM_SHA
+import signal
+import statistics
+import time
 
+import sys
 
-def write(path,value):
-    path.write_text(json.dumps(value,ensure_ascii=False,indent=2,allow_nan=False)+'\n')
+if str(Path(__file__).resolve().parents[1]) not in sys.path:
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-
-class Examples(Dataset):
-    def __init__(self,entries,profile,*,augment=False,seed=0):
-        self.rows=[];self.profile=profile;self.augment=augment;self.seed=seed;self.calls=0
-        for root,meta,seq in entries:
-            for obs,labels,windows in seq.values():
-                self.rows.extend((Path(root),o,w) for o,w in zip(obs,windows))
-        self.groups=[(o['object_kind'],o['skill'],o['role'],bool(w['action'][0][-1])) for _,o,w in self.rows]
-    def __len__(self):return len(self.rows)
-    def __getitem__(self,i):
-        root,obs,win=self.rows[i]
-        if self.augment:
-            # One draw per sample, identical for all history frames (one camera).
-            self.calls+=1;params=draw_augment(np.random.default_rng((self.seed,i,self.calls)))
-            images={k:augmented_tensor((root/ref['path']).read_bytes(),PROFILES[self.profile],params) for k,ref in zip(IMAGE_KEYS,obs['rgb'])}
-        else:
-            images={k:tensor((root/ref['path']).read_bytes(),self.profile) for k,ref in zip(IMAGE_KEYS,obs['rgb'])}
-        return {**images,
-                CONTEXT_KEY:torch.tensor(context(obs),dtype=torch.float32),
-                'action':torch.tensor(win['action'],dtype=torch.float32),
-                'action_is_pad':torch.tensor(win['action_is_pad'],dtype=torch.bool)}
-
-
-@torch.no_grad()
-def evaluate(policy,loader,device):
-    policy.eval();positive=negative=missed=false=0;err=0.;n=0
-    for b in loader:
-        target=b['action'][:,0];pred=policy.predict_action_chunk({k:v.to(device) for k,v in b.items() if k not in ('action','action_is_pad')}).cpu()[:,0]
-        done=target[:,-1]>.5;ready=pred[:,-1]>=.65
-        positive+=int(done.sum());negative+=int((~done).sum());missed+=int((done&~ready).sum());false+=int((~done&ready).sum())
-        err+=float((pred[:,:-1]-target[:,:-1]).abs().sum());n+=len(target)
-    mae=err/max(1,n*9)
-    return {'samples':n,'done_N':positive,'missed_done_n':missed,'not_done_N':negative,'false_done_n':false,
-        'action_mae':mae,'selection_score':missed/max(1,positive)+4*false/max(1,negative)+mae,
-        'scope':'zero-latent first-action offline fitness, not closed-loop success'}
-
-
-def deployed_done_loss(policy,batch):
-    """Use zero latent as at deployment, retain gradients (predict API is no_grad)."""
-    was_training=policy.training;policy.eval()
-    try:
-        b={k:v for k,v in batch.items() if k not in ('action','action_is_pad')}
-        b['observation.images']=[b[k] for k in IMAGE_KEYS]
-        pred=policy.model(b)[0][:,0,-1]
-        target=batch['action'][:,0,-1]
-        return ((pred-target).abs()*torch.where(target>.5,2.,1.)).mean()
-    finally:policy.train(was_training)
-
-
-def train(dataset,out,*,steps=10000,seed=20261014,profile='standard',device='cuda',batch_size=8,
-          max_wall_s=8.5*3600,resume=None,pretrained=True,augment=True,allow_no_heldout=False):
-    verify_upstream()  # exact ACT/config bytes also verifies offline wheels without VCS direct_url
-    if device=='cuda' and not torch.cuda.is_available():raise ValueError('CUDA required by selected training job')
-    random.seed(seed);np.random.seed(seed);torch.manual_seed(seed);torch.set_num_threads(2)
-    data=json.loads(Path(dataset).read_text());base=Path(dataset).parent
-    # Final holdouts are not opened during model selection.
-    entries={k:[base/x for x in data[k]] for k in ('train','development')}
-    # Registered seed ranges + held-out map check over ALL declared splits,
-    # metadata only (holdout samples are not opened).
-    if allow_no_heldout:split_check={'skipped':'explicit --allow-no-heldout (pipeline smoke only; not a reportable model)'}
-    else:split_check=check_dataset_splits(data,base)
-    checked=validate_splits(entries)
-    trainset=Examples(checked['train'],profile,augment=augment,seed=seed);devset=Examples(checked['development'],profile)
-    if not len(trainset) or not len(devset):raise ValueError('nonempty episode splits required')
-    from collections import Counter
-    counts=Counter(trainset.groups);weights=torch.tensor([1/counts[g] for g in trainset.groups],dtype=torch.double)
-    generator=torch.Generator().manual_seed(seed)
-    policy=make_policy(profile,pretrained=pretrained and resume is None).to(device)
-    backbone=list(policy.model.backbone.parameters());backbone_ids={id(p) for p in backbone}
-    optimizer=torch.optim.AdamW([{'params':backbone,'lr':1e-5},
-        {'params':[p for p in policy.parameters() if id(p) not in backbone_ids],'lr':1e-4}],weight_decay=1e-4)
-    out=Path(out);out.mkdir(parents=True,exist_ok=False)
-    dataset_sha=sha(dataset);step0=0;best=float('inf');best_state=None
-    if resume:
-        ck=torch.load(resume,map_location='cpu',weights_only=True)
-        if ck['dataset_sha256']!=dataset_sha or ck['adapter']!=metadata(profile):raise ValueError('resume provenance mismatch')
-        policy.load_state_dict(ck['model']);optimizer.load_state_dict(ck['optimizer']);step0=ck['step'];best=ck['best'];best_state=ck['best_model']
-        torch.set_rng_state(ck['torch_rng']);generator.set_state(ck['sampler_rng'])
-        if device=='cuda' and ck['cuda_rng']:torch.cuda.set_rng_state_all(ck['cuda_rng'])
-    sampler=WeightedRandomSampler(weights,(steps-step0)*batch_size,replacement=True,generator=generator)
-    loader=DataLoader(trainset,batch_size=batch_size,sampler=sampler,num_workers=0)
-    devloader=DataLoader(devset,batch_size=batch_size,shuffle=False,num_workers=0)
-    report={'complete':False,'source_sha':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
-        'dataset_sha256':dataset_sha,'dataset_path':str(Path(dataset).resolve()),'upstream_sha':UPSTREAM_SHA,
-        'adapter':metadata(profile),'seed':seed,'target_steps':steps,'resumed_from':str(resume) if resume else None,
-        'train_episodes':data['train'],'development_episodes':data['development'],'train_samples':len(trainset),'dev_samples':len(devset),
-        'selection':'dev missed done + 4*false done + action MAE; no final holdout',
-        'augmentation':{'enabled':augment,'ranges':AUGMENT_RANGES,'scope':'train split only; development/inference unaugmented; camera geometry unchanged'},
-        'split_check':split_check,
-        'environment':{'platform':platform.platform(),'device':device,**{k:importlib.metadata.version(k) for k in ('torch','torchvision','lerobot')}},'progress':[]}
-    started=time.monotonic();write(out/'report.json',report)
-    step=step0
-    for step,b in enumerate(loader,step0+1):
-        b={k:v.to(device) for k,v in b.items()};policy.train();optimizer.zero_grad()
-        loss,details=policy(b);done_loss=deployed_done_loss(policy,b);total=loss+2*done_loss
-        if not torch.isfinite(total):raise RuntimeError('nonfinite training loss')
-        total.backward();torch.nn.utils.clip_grad_norm_(policy.parameters(),1.);optimizer.step()
-        stopping=time.monotonic()-started>=max_wall_s
-        if step==step0+1 or step%250==0 or step==steps or stopping:
-            metrics=evaluate(policy,devloader,device);event={'step':step,'loss':float(total.detach()),'done_loss':float(done_loss.detach()),'development':metrics,'elapsed_s':time.monotonic()-started}
-            if metrics['selection_score']<best:
-                best=metrics['selection_score'];best_state={k:v.detach().cpu().clone() for k,v in policy.state_dict().items()};report['selected_step']=step
-            report['progress'].append(event);write(out/'report.json',report);print(json.dumps(event),flush=True)
-            ck={'model':policy.state_dict(),'optimizer':optimizer.state_dict(),'step':step,'best':best,'best_model':best_state,
-                'dataset_sha256':dataset_sha,'adapter':metadata(profile),'torch_rng':torch.get_rng_state(),'sampler_rng':generator.get_state(),
-                'cuda_rng':torch.cuda.get_rng_state_all() if device=='cuda' else []}
-            tmp=out/'resume.tmp';torch.save(ck,tmp);tmp.replace(out/'resume.pt')
-            if stopping:break
-    if best_state is None:raise ValueError('no trained checkpoint')
-    policy.load_state_dict(best_state);actor=GraspAct(policy,profile);actor.save(out/'act')
-    loaded=GraspAct.load(out/'act',device=device)
-    probes=[]
-    for root,obs,_ in [trainset.rows[0],trainset.rows[-1],devset.rows[0],devset.rows[-1]]:
-        jpegs=[(root/x['path']).read_bytes() for x in obs['rgb']]
-        expected=actor.predict_chunk(obs,jpegs);actual=loaded.predict_chunk(obs,jpegs)
-        # Discrete commands must agree; tiny done-score floating differences are separately bounded.
-        for x,y in zip(expected,actual):
-            if any(x[k]!=y[k] for k in ('drive','duration_s','pwm','done')) or abs(x['done_score']-y['done_score'])>1e-5:
-                raise ValueError('deployed checkpoint readback mismatch')
-        probes.append(obs['sample_id'])
-    report.update(complete=step==steps,steps_finished=step,readback_samples=probes,model_sha256=sha(out/'act/model.safetensors'),
-        wall_s=time.monotonic()-started,independent_student_success='not evaluated')
-    write(out/'report.json',report)
-    return report
+from harness.grasp_act_data import GraspDataset, assert_tensor_keys, sha256, write_json, write_summary
+from scripts.grasp_act_training_guard import authorize_main, require_gcp, source_sha
+from harness.grasp_act_loss import DONE_MODES, completion_priors, policy_loss
+from harness.grasp_act_input import drop_command_history, validate_history_dropout
 
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--dataset',type=Path,required=True);p.add_argument('--out',type=Path,required=True)
-    p.add_argument('--steps',type=int,default=10000);p.add_argument('--seed',type=int,default=20261014);p.add_argument('--batch-size',type=int,default=8)
-    p.add_argument('--profile',choices=('smoke','standard'),default='standard');p.add_argument('--device',choices=('cpu','mps','cuda'),default='cuda')
-    p.add_argument('--max-wall-s',type=float,default=30600);p.add_argument('--resume',type=Path);p.add_argument('--no-pretrained',action='store_true')
-    p.add_argument('--augment',choices=('on','off'),default='on',help='training image augmentation (default on for new data)')
-    p.add_argument('--allow-no-heldout',action='store_true',help='pipeline smoke only; skips registered split/held-out map check');a=p.parse_args()
-    if not 1<=a.steps<=100000 or not 0<a.max_wall_s<=30600:raise ValueError('finite training budget required')
-    train(a.dataset,a.out,steps=a.steps,seed=a.seed,profile=a.profile,device=a.device,batch_size=a.batch_size,max_wall_s=a.max_wall_s,resume=a.resume,pretrained=not a.no_pretrained,
-          augment=a.augment=='on',allow_no_heldout=a.allow_no_heldout)
-if __name__=='__main__':main()
+    p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument('--dataset', type=Path, required=True)
+    p.add_argument('--output', type=Path, required=True)
+    p.add_argument('--stage', choices=('smoke', 'main'), required=True)
+    p.add_argument('--steps', type=int, required=True)
+    p.add_argument('--max-wall-s', type=int, default=1800)
+    p.add_argument('--seed', type=int, default=20261015)
+    p.add_argument('--resume', type=Path)
+    p.add_argument('--approval', type=Path)
+    p.add_argument('--smoke-summary', type=Path)
+    p.add_argument('--blank-images', action='store_true')
+    p.add_argument('--run-class', choices=('dev', 'milestone'), default='milestone')
+    p.add_argument('--profile-timing', action='store_true',
+                   help='opt-in CUDA synchronization and pipeline timing; default off')
+    p.add_argument('--checkpoint-every', type=int, default=0,
+                   help='opt-in save interval; 0 keeps smoke100/main500; final always saved; no deletion')
+    p.add_argument('--done-loss', choices=DONE_MODES, default='legacy_l1')
+    p.add_argument('--done-loss-weight', type=float, default=1.)
+    p.add_argument('--command-history-dropout', type=float, default=0.,
+                   help='training only: replace whole normalized issued history with train mean; default off')
+    a = p.parse_args()
+    if a.checkpoint_every < 0:
+        p.error('checkpoint interval must be nonnegative')
+    checkpoint_every = a.checkpoint_every or (100 if a.stage == 'smoke' else 500)
+    validate_history_dropout(a.command_history_dropout)
+    if not math.isfinite(a.done_loss_weight) or a.done_loss_weight <= 0:
+        p.error('completion loss weight must be finite and positive')
+    if not 1 <= a.max_wall_s <= 7 * 3600 or not 1 <= a.steps <= 100000:
+        p.error('finite steps and <=7h process budget required')
+    if a.stage == 'smoke' and (a.steps > 500 or a.max_wall_s > 1800 or a.resume):
+        p.error('smoke: <=500 steps, <=1800s, fresh initialization')
+    host, source = require_gcp(training=True), source_sha()
+    dataset_hash = sha256(a.dataset / 'manifest.json')
+    if a.stage == 'main':
+        smoke_hash = sha256(a.smoke_summary) if a.smoke_summary else None
+        smoke = json.loads(a.smoke_summary.read_text()) if a.smoke_summary else {}
+        if (smoke.get('status') != 'complete' or smoke.get('stage') != 'smoke'
+                or smoke.get('dataset_manifest_sha256') != dataset_hash
+                or smoke.get('source_sha') != source or not smoke.get('readback_verified')
+                or smoke.get('blank_images') != a.blank_images
+                or smoke.get('done_loss', 'legacy_l1') != a.done_loss
+                or smoke.get('done_loss_weight', 1.) != a.done_loss_weight
+                or smoke.get('command_history_dropout', 0.) != a.command_history_dropout):
+            raise ValueError('completed matching smoke with checkpoint readback required')
+        authorize_main(a.approval, source=source, dataset_hash=dataset_hash,
+                       smoke_hash=smoke_hash, steps=a.steps, blank=a.blank_images,
+                       command_history_dropout=a.command_history_dropout)
+    a.output.mkdir(parents=True, exist_ok=False)
+    report = {'status': 'running', 'complete': False, 'stage': a.stage,
+        'class': a.run_class, 'research_result': False if a.run_class == 'dev' else None,
+        'source_sha': source, 'dataset_manifest_sha256': dataset_hash, 'host': host,
+        'steps_requested': a.steps, 'steps_completed': 0, 'seed': a.seed,
+        'blank_images': a.blank_images, 'done_loss': a.done_loss, 'done_loss_weight': a.done_loss_weight,
+        'command_history_dropout': a.command_history_dropout,
+        'checkpoint_every': checkpoint_every,
+        'batch_size': 8, 'readback_verified': False,
+        'gate_promotion_authorized_if_all_conditions_pass': False,
+        'selection': 'fixed final step; validation never selects checkpoint'}
+    write_summary(a.output / 'summary.json', report)
+    write_json(a.output / 'RUN_META.json', {'class': a.run_class, 'sha': source,
+        'pr': 504, 'branch': 'claude/act-train', 'batch': a.output.name})
+    started, last_checkpoint = time.monotonic(), None
+    stop = {'requested': False}
+    def request_stop(signum, frame):
+        stop['requested'] = True
+    signal.signal(signal.SIGINT, request_stop)
+    signal.signal(signal.SIGTERM, request_stop)
+    try:
+        setup_started = time.monotonic()
+        import torch
+        from harness.act_training import checkpoint_encoder
+        from harness.grasp_act_policy import GraspActor, make_policy, save_actor
+        if not torch.cuda.is_available() or 'L4' not in torch.cuda.get_device_name(0):
+            raise RuntimeError('CUDA NVIDIA L4 required')
+        torch.manual_seed(a.seed)
+        torch.cuda.manual_seed_all(a.seed)
+        torch.set_num_threads(4)
+        torch.backends.cudnn.benchmark = False
+        data_started = time.monotonic()
+        data = GraspDataset(a.dataset, 'train', blank=a.blank_images)
+        data_load_s = time.monotonic() - data_started
+        priors = completion_priors(data) if a.done_loss != 'legacy_l1' else None
+        report['done_class_counts'] = priors
+        policy = make_policy(pretrained=not bool(a.resume), device='cuda')
+        optimizer = torch.optim.AdamW(policy.get_optim_params(), lr=1e-5, weight_decay=1e-4)
+        generator = torch.Generator().manual_seed(a.seed)
+        step = 0
+        if a.resume:
+            resume = json.loads((a.resume / 'resume.json').read_text())
+            for k, v in {'source_sha': source, 'dataset_manifest_sha256': dataset_hash,
+                         'blank_images': a.blank_images, 'seed': a.seed,
+                         'command_history_dropout': a.command_history_dropout,
+                         'done_loss': a.done_loss, 'done_loss_weight': a.done_loss_weight}.items():
+                if resume.get(k, {'done_loss': 'legacy_l1', 'done_loss_weight': 1.,
+                                  'command_history_dropout': 0.}.get(k)) != v:
+                    raise ValueError('resume provenance mismatch: ' + k)
+            if sha256(a.resume / 'optimizer.pt') != resume['optimizer_sha256']:
+                raise ValueError('resume optimizer hash mismatch')
+            actor = GraspActor.load(a.resume / 'actor', device='cuda')
+            if actor.done_mode != a.done_loss:
+                raise ValueError('resume completion output mismatch')
+            policy.load_state_dict(actor.policy.state_dict(), strict=True)
+            del actor
+            state = torch.load(a.resume / 'optimizer.pt', map_location='cpu', weights_only=True)
+            optimizer.load_state_dict(state['optimizer'])
+            torch.set_rng_state(state['rng'])
+            torch.cuda.set_rng_state_all(state['cuda_rng'])
+            generator.set_state(state['sampler_rng'])
+            step = resume['step']
+        if step >= a.steps:
+            raise ValueError('resume already reached requested steps')
+        # Replacement sampler is regenerated per step: exact saved RNG, no
+        # prefetched sampler positions to lose when resuming a finite session.
+        report['environment'] = {k: importlib.metadata.version(k) for k in ('torch', 'torchvision', 'lerobot', 'numpy')}
+        report['training_rows'] = len(data)
+        report['gpu'] = torch.cuda.get_device_name(0)
+        report['cuda'] = torch.version.cuda
+        report['python'] = sys.version
+        report['backbone_initialization'] = 'ResNet18_Weights.IMAGENET1K_V1; fine-tuned; no freeze/cache'
+        report['activation_checkpointing'] = 'harness.act_training.checkpoint_encoder'
+        initial_step = step
+        if a.profile_timing:
+            torch.cuda.synchronize()
+            report['timing'] = {'dataset_load_s': data_load_s,
+                'setup_s': time.monotonic() - setup_started, 'checkpoints': [],
+                'step_s': [], 'batch_load_s': [],
+                'method': 'CUDA synchronized step including batch load, H2D, forward, backward, optimizer; excludes checkpoint/log'}
+
+        def checkpoint():
+            nonlocal last_checkpoint
+            if last_checkpoint is not None and last_checkpoint.name == f'step-{step:06d}':
+                return
+            checkpoint_started = time.monotonic()
+            folder = a.output / f'step-{step:06d}'
+            folder.mkdir()
+            provenance = {'source_sha': source, 'dataset_manifest_sha256': dataset_hash,
+                          'blank_images': a.blank_images, 'seed': a.seed, 'step': step,
+                          'command_history_dropout': a.command_history_dropout,
+                          'done_loss': a.done_loss, 'done_loss_weight': a.done_loss_weight,
+                          'done_class_counts': priors}
+            if a.run_class == 'dev':
+                provenance.update(run_class='dev', research_result=False)
+            save_actor(policy, folder / 'actor', data.stats, provenance, blank=a.blank_images, done_mode=a.done_loss)
+            torch.save({'optimizer': optimizer.state_dict(), 'rng': torch.get_rng_state(),
+                        'cuda_rng': torch.cuda.get_rng_state_all(), 'sampler_rng': generator.get_state()},
+                       folder / 'optimizer.pt')
+            write_json(folder / 'resume.json', {**provenance, 'optimizer_sha256': sha256(folder / 'optimizer.pt')})
+            last_checkpoint = folder
+            report['last_checkpoint'] = str(folder)
+            if a.profile_timing:
+                report['timing']['checkpoints'].append({'step': step,
+                    'save_s': time.monotonic() - checkpoint_started,
+                    'bytes': sum(f.stat().st_size for f in folder.rglob('*') if f.is_file())})
+
+        with (a.output / 'progress.jsonl').open('x') as log:
+            while step < a.steps:
+                if stop['requested'] or time.monotonic() - started > a.max_wall_s:
+                    break
+                if (a.output / 'SUPERVISOR_STOP.json').exists():
+                    stop['requested'] = True
+                    break
+                if a.profile_timing:
+                    torch.cuda.synchronize()
+                    step_started = time.monotonic()
+                indices = torch.randint(len(data), (8,), generator=generator).tolist()
+                batch = torch.utils.data.default_collate([data[i] for i in indices])
+                assert_tensor_keys(batch, training=True)
+                if a.profile_timing:
+                    batch_load_s = time.monotonic() - step_started
+                batch = {k: v.to('cuda') for k, v in batch.items()}
+                batch = drop_command_history(batch, a.command_history_dropout)
+                policy.train()
+                optimizer.zero_grad(set_to_none=True)
+                # Existing upstream-compatible activation checkpoint helper.
+                with checkpoint_encoder(policy, enabled=True):
+                    loss, metrics = policy_loss(policy, batch, mode=a.done_loss,
+                        stats=data.stats, priors=priors, weight=a.done_loss_weight)
+                    if not torch.isfinite(loss):
+                        raise ValueError('nonfinite training loss')
+                    loss.backward()
+                norm = torch.nn.utils.clip_grad_norm_(policy.parameters(), 1., error_if_nonfinite=True)
+                optimizer.step()
+                step += 1
+                if a.profile_timing:
+                    torch.cuda.synchronize()
+                    report['timing']['step_s'].append(time.monotonic() - step_started)
+                    report['timing']['batch_load_s'].append(batch_load_s)
+                if step == initial_step + 1 or step % 10 == 0:
+                    elapsed = time.monotonic() - started
+                    row = {'step': step, 'loss': loss.item(), **metrics, 'gradient_norm': float(norm),
+                           'wall_s': elapsed, 'steps_per_s': (step - initial_step) / elapsed,
+                           'peak_gpu_bytes': torch.cuda.max_memory_allocated()}
+                    log.write(json.dumps(row, allow_nan=False) + '\n')
+                    log.flush()
+                    report.update(steps_completed=step, latest=row)
+                    write_summary(a.output / 'summary.json', report)
+                if step % checkpoint_every == 0:
+                    checkpoint()
+            checkpoint()
+        report['peak_training_gpu_bytes'] = torch.cuda.max_memory_allocated()
+        report['peak_training_gpu_reserved_bytes'] = torch.cuda.max_memory_reserved()
+        # Verify saved weights load and reproduce a held TRAINING input chunk.
+        readback_started = time.monotonic()
+        restored = GraspActor.load(last_checkpoint / 'actor', device='cuda')
+        if a.profile_timing:
+            torch.cuda.synchronize()
+            report['timing']['checkpoint_load_s'] = time.monotonic() - readback_started
+        probe = data[0]
+        inputs = {k: torch.from_numpy(v.copy()).unsqueeze(0).to('cuda')
+                  for k, v in probe.items() if k.startswith('observation.')}
+        assert_tensor_keys(inputs)
+        if a.profile_timing:
+            report['input_audit'] = {'keys': sorted(inputs),
+                'shapes': {k: list(v.shape) for k, v in inputs.items()},
+                'whitelist_verified': True, 'teacher_input_fields': 0,
+                'scope': 'saved training input; own RGB history and contract context only; not closed-loop validation'}
+        policy.eval()
+        with torch.inference_mode():
+            expected = policy.predict_action_chunk(inputs)
+            if a.profile_timing:
+                torch.cuda.synchronize()
+                inference_started = time.monotonic()
+            actual = restored.policy.predict_action_chunk(inputs)
+            if a.profile_timing:
+                torch.cuda.synchronize()
+                report['timing']['inference_s'] = time.monotonic() - inference_started
+        if not torch.equal(expected, actual):
+            raise ValueError('saved model prediction readback mismatch')
+        report.update(status='complete' if step == a.steps else 'interrupted' if stop['requested'] else 'WALL_CAP',
+                      complete=step == a.steps, steps_completed=step, readback_verified=True)
+    except BaseException as exc:
+        report.update(status='HOST_ERROR', complete=False, error_type=type(exc).__name__)
+        raise
+    finally:
+        if a.profile_timing and report.get('timing', {}).get('step_s'):
+            values = sorted(report['timing']['step_s'])
+            report['timing'].update(step_mean_s=statistics.mean(values),
+                step_median_s=statistics.median(values),
+                step_p95_s=values[math.ceil(.95 * len(values)) - 1])
+        report['wall_s'] = time.monotonic() - started
+        report['artifacts'] = {str(f.relative_to(a.output)): sha256(f) for f in a.output.rglob('*')
+                               if f.is_file() and f.name != 'summary.json'}
+        write_summary(a.output / 'summary.json', report)
+
+
+if __name__ == '__main__':
+    main()
