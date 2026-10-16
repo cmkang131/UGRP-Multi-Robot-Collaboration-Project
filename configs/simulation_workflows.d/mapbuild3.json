@@ -1,0 +1,19 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "mapbuild3-clean-start",
+      "purpose": "기본 off gcp5 MJWarp 자기 지도 재측정: 시작 관통 거부·동일 시작 FOLDED/HIGH·실제 발행 명령·별도 평가",
+      "entry": "scripts/mapbuild3_capture.py",
+      "docs": "experiments/2026-10-16-mapbuild3/README.md",
+      "requires": "Linux ugrp-act-l4-gcp5 only; own lease; spawn_overlap_check_v1; exact source hashes; saved clean fixture; absolute existing rejection_table; no wall behavior cap",
+      "version": "0.1.0",
+      "runner": "scripts.mapbuild3_capture",
+      "output_flag": "--output",
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli",
+      "required_inputs": ["--queue", "--renderer-source", "--renderer-receipt", "--fixture"],
+      "output_kind": "directory"
+    }
+  ]
+}

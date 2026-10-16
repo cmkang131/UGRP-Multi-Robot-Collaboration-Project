@@ -1,0 +1,40 @@
+{
+  "workflow_id": "mapbuild3-clean-start",
+  "workflow_version": "0.1.0",
+  "catalog_sha256": "b8356e513505e4f3d8809486ba1610fc1d3471e7c434cecac3da61de60a0c648",
+  "runner": "scripts.mapbuild3_capture",
+  "adapter": "managed_legacy_cli",
+  "side_effect": "local_simulation",
+  "argv": [
+    "--mapbuild3-v1",
+    "--queue",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild3/queue-r1c.json",
+    "--renderer-source",
+    "/home/ugrp/ugrp-sim/src/drivecheck-renderer-5974a181",
+    "--renderer-receipt",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild3/renderer-receipt.json",
+    "--fixture",
+    "/home/ugrp/ugrp-sim/runs/mapbuild3/prepare-r1b"
+  ],
+  "command": [
+    "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+    "-m",
+    "scripts.mapbuild3_capture",
+    "--mapbuild3-v1",
+    "--queue",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild3/queue-r1c.json",
+    "--renderer-source",
+    "/home/ugrp/ugrp-sim/src/drivecheck-renderer-5974a181",
+    "--renderer-receipt",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild3/renderer-receipt.json",
+    "--fixture",
+    "/home/ugrp/ugrp-sim/runs/mapbuild3/prepare-r1b",
+    "--output",
+    "<record>/artifacts"
+  ],
+  "output": "<record>/artifacts",
+  "output_flag": "--output",
+  "inputs": [],
+  "readiness": "required_inputs_present; legacy_parser_and_runtime_not_executed",
+  "execution_started": false
+}
