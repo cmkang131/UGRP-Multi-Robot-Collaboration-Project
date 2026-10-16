@@ -34,7 +34,7 @@ def run(a):
     import sim,harness,scripts
     for package,name in ((sim,'sim'),(harness,'harness'),(scripts,'scripts')):
         package.__path__.extend([str(a.teacher_source/name),str(a.renderer/name)])
-    sim.__path__.insert(0,str(a.teacher_source/'sim'));scripts.__path__.insert(0,str(a.teacher_source/'scripts'))
+    scripts.__path__.insert(0,str(a.teacher_source/'scripts'))
     os.chdir(a.renderer)
     import numpy as np
     import cv2
