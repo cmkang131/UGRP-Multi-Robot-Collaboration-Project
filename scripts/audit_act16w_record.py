@@ -9,6 +9,7 @@ import hashlib
 import json
 from pathlib import Path
 import subprocess
+import sys
 
 
 def digest(path):
@@ -22,6 +23,9 @@ def read(path, lines=False):
 
 def audit(root):
     from PIL import Image
+    contract_root=Path('/home/ugrp/ugrp-sim/src/warp1-teacher-snapshot-6f057f7e')
+    sys.path.insert(0,str(contract_root))
+    from harness import grasp_act_contract as contract
     root=Path(root)
     wrapper=read(root/'capture/summary.json')
     controller=read(root/'controller/summary.json')
@@ -39,10 +43,12 @@ def audit(root):
         camera=read(folder/'student-camera.json')
         if (camera['width'],camera['height'],camera['hz'],camera['period_s'])!=(640,480,10,.1):
             raise ValueError('native student camera changed')
-        if controller['camera']['resolution']!=[640,480] or controller['camera']['K']!=camera['K'] or controller['camera']['D']!=camera['fisheye_D']:
+        if controller['camera']['resolution']!=[640,480] or controller['camera']['K']!=camera['K'] or controller['camera']['D']!=camera['fisheye_D'] or controller['camera']['mount_pos']!=camera['position_m'] or controller['camera']['mount_quat']!=camera['quat_wxyz']:
             raise ValueError('recorded and qualified camera differ')
+        if camera['sources']['harness/grasp_act_contract.py']!=digest(Path(contract.__file__)):raise ValueError('recorded student input contract drift')
         previous=observations[0]['issued'];unique=set();pwm_transitions=0
         for j,(obs,label,frame,command) in enumerate(zip(observations,labels,frames,commands)):
+            contract.validate_observation(obs)
             if not (obs['t']==frame['t']==command['t']==label['clean_teacher_command']['t']
                     and obs['sample_id']==label['sample_id'] and obs['issued']==previous
                     and obs['issued'][-1]==frame['previous'] and obs['skill']==frame['skill']
