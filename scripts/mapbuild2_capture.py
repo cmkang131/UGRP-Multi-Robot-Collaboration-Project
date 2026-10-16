@@ -8,6 +8,7 @@ from __future__ import annotations
 import argparse
 from collections import deque
 import hashlib
+from fractions import Fraction
 import json
 import math
 import os
@@ -35,7 +36,7 @@ def stimulus(t):
     # it is not a success threshold. Stop tails are part of those profiles.
     for start, axis, value, duration in ((1., 'forward', .35, .10),
             (2., 'left', .35, .06), (3., 'turn', .35, .10)):
-        if start <= t < start+duration-1e-8:
+        if round(start*100) <= round(t*100) < round((start+duration)*100):
             pattern = {'forward':[1,1,1,1], 'left':[-1,1,1,-1], 'turn':[-1,1,-1,1]}[axis]
             return [value*x for x in pattern]
     return [0.]*4
@@ -120,7 +121,7 @@ def run(a):
     mx,my=raw_fisheye_remap(640,480)
     wheel=[m.actuator('r1__wheel_'+n+'_drive').id for n in ('fl','fr','rl','rr')]
     dt=float(m.opt.timestep);substeps=round(.01/dt)
-    if not math.isclose(substeps*dt,.01,abs_tol=1e-10):raise ValueError('EXACT_10MS_COMMAND_GRID_REQUIRED')
+    if Fraction(str(dt))*substeps!=Fraction(1,100):raise ValueError('EXACT_10MS_COMMAND_GRID_REQUIRED')
     # Ten milliseconds preserves the 60ms side pulse; graph replay batches only
     # fixed-timestep physics, with no clock-dependent action selection.
     mjw.step(wm,wd);wp.synchronize()
@@ -186,7 +187,8 @@ def run(a):
     finally:
         dump(a.output/'own.json',dict(schema='ugrp.mapbuild1.own.v1',backend='mjwarp_render',
             physics_backend='mjwarp',scope='issued_wheel_physics',frames=own))
-        dump(a.output/'eval-only.json',dict(frames=labels,map=str(MAPS[0]),map_sha256=sha(MAPS[0])))
+        dump(a.output/'eval-only.json',dict(frames=labels,map=str(MAPS[0]),map_sha256=sha(MAPS[0]),
+            first_origin=None if origins is None else origins.tolist()))
         dump(a.output/'range.json',ranges);dump(a.output/'commands.json',commands)
         np.savez_compressed(a.output/'eval-state.npz',qpos=np.asarray(states))
         dump(a.output/'summary.json',dict(status='HOST_ERROR' if error else 'cap_end',source_sha=q['source_sha'],

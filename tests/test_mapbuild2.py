@@ -26,3 +26,13 @@ def test_standard_orb_diagnostic_reports_real_pair_counts_and_unknowns():
     assert rows[0]['features_a']<=500
     frames[0]['servo']={**SEARCH,1:1500}
     assert pipeline(images,frames,masked=True)[0]['reason']=='unqualified_camera'
+
+
+def test_evaluation_raster_retains_thin_walls_and_rotated_start():
+    from scripts.mapbuild2_map_eval import raster,intersects
+    static=dict(bounds_m=[-1,1,-1,1],obstacles=[dict(id='wall',kind='wall',center_m=[0,0],half_extents_m=[.025,1])],
+        regions={},passages=[])
+    truth=raster(static,[0,0,np.pi/4])
+    assert any(label=='occupied' for _,_,label in truth['cells'])
+    assert len(truth['wall'])>0
+    assert intersects([[0,0],[.2,0]],0,.1,static['obstacles'][0]).tolist()==[True,False]
