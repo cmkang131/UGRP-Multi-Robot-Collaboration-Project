@@ -1,0 +1,822 @@
+{
+  "schema": "ugrp.mapbuild6.requirements.v1",
+  "frozen_before_recording": true,
+  "source_teacher": {
+    "cohort": "solo_truth_free_gate_v1 79800-79839; historical CPU teacher only",
+    "host": "gcp1 archived Mac copies; VM never accessed",
+    "source_sha": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+    "native87420_87459": "not locally retrieved; fallback existing teacher ledgers authorized by user",
+    "scope": "separate requirement evidence, not pooled performance, not native/student success"
+  },
+  "handoff": {
+    "n": 40,
+    "nominal_relative_xy_m": [
+      -0.7406386176759693,
+      0.10522862179352094
+    ],
+    "position_error_m": 0.2007512557246549,
+    "yaw_error_rad": 0.3739074138060199,
+    "nominal_target_range_m": 0.8483145702460003,
+    "target_range_p5_p50_p95_m": [
+      0.6475633145213454,
+      0.8483145702460003,
+      1.0801825034610726
+    ],
+    "position_quantiles_m": {
+      "5": 0.13690794312467064,
+      "50": 0.41159323499547806,
+      "95": 0.8152064826828641,
+      "100": 0.9193349344687011
+    },
+    "facing_quantiles_deg": {
+      "5": 1.8993921893216328,
+      "50": 13.572353085704405,
+      "95": 21.42331673973655,
+      "100": 24.104012905143325
+    },
+    "definition": "XY <= min(P50(range)-P5(range),P95(range)-P50(range)); abs(yaw error)+atan2(XY error,P50(range)-XY error) <= P95(abs(facing error))",
+    "limitation": "empirical teacher radial/facing envelope; joint support/student acceptance unverified; start-cloud residual P95 is diagnostic only",
+    "release_injected_pose_p95_m": 0.11547187886063774,
+    "release_injected_yaw_p95_rad": 0.06923989684612426
+  },
+  "arrival": {
+    "slot_center_error_m": 0.06,
+    "nearest_slot_identity_error_m": 0.19999999999999996,
+    "cargo_inside_zone_center_error_m": 0.27999999999999997,
+    "box_half_m": 0.02,
+    "yaw_error_rad": null,
+    "yaw_status": "square box/zone has no separate yaw requirement; evaluate rotated footprint geometrically"
+  },
+  "passage": {
+    "definition": "abs(lateral SE2 error) + a*abs(sin(yaw error))+b*abs(cos(yaw error)) <= width/2",
+    "robot_half_length_m": 0.12,
+    "robot_half_width_m": 0.105,
+    "footprint_source": "harness/zone_team_footprint.py: measured folded collision envelope x[-.100,.120],y[-.105,.105]; fixed original millimetre-rounded envelope",
+    "footprint_status": "chassis baseline only; actual commanded arm/held footprint must also fit, evaluation-only geometry; unknown cannot pass",
+    "passages": [
+      {
+        "id": "door_1",
+        "kind": "door",
+        "center_m": [
+          2.2,
+          0.05
+        ],
+        "half_extents_m": [
+          0.025,
+          0.25
+        ],
+        "width_m": 0.5,
+        "lanes": 1,
+        "axis": "x",
+        "connects": [
+          "pickup side (west)",
+          "zone side (east)"
+        ]
+      }
+    ]
+  },
+  "static": {
+    "path": "/home/ugrp/ugrp-sim/src/mapbuild6-60db80c1a/maps/zones/zone_wide_door_geometry_v3.json",
+    "sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17"
+  },
+  "teacher_rows": [
+    {
+      "seed": 79800,
+      "relative_xy": [
+        -0.7803039191751412,
+        0.3186629812640529
+      ],
+      "facing_error_rad": -0.34119933033587485,
+      "handoff_pose_error": [
+        -0.05279903951340125,
+        -0.0905787800995041,
+        -0.050727672797767125
+      ],
+      "plan": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79800-6f057f7e/plan.json",
+      "plan_sha256": "cd3fa585d21097e51fa7bb7474440cd537a9cfaf7f907e13cca52724e2e1cdeb",
+      "result": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79800-6f057f7e/result.json.zst",
+      "result_sha256": "46d5391f96dacbe5e45bba003839b5f1d30795353c2e4176fa43452a8c475e76",
+      "kind": "cyan"
+    },
+    {
+      "seed": 79801,
+      "relative_xy": [
+        -0.5357343449391296,
+        0.41667424846792267
+      ],
+      "facing_error_rad": 0.1638189360154239,
+      "handoff_pose_error": [
+        -0.1317658732195697,
+        0.08165077224444237,
+        0.01266128946218397
+      ],
+      "plan": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79801-6f057f7e/plan.json",
+      "plan_sha256": "aed02585f63ad893204b9708fb451ad0b2bb0304cc8d2b821a4a8dffee434268",
+      "result": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79801-6f057f7e/result.json.zst",
+      "result_sha256": "847b77a939a57a916335836e984c23c27e1891f9d48bff4e05f77ae473998a87",
+      "kind": "red"
+    },
+    {
+      "seed": 79802,
+      "relative_xy": [
+        -0.633216433871494,
+        0.5235703949355458
+      ],
+      "facing_error_rad": 0.03762570250261976,
+      "handoff_pose_error": [
+        -0.07534170076584164,
+        0.04167730089984623,
+        -0.017599108679260848
+      ],
+      "plan": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79802-6f057f7e/plan.json",
+      "plan_sha256": "d491925b4b046693f7bf27c20c6f7dd904df6664657d0a572cce7780acfe9d24",
+      "result": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79802-6f057f7e/result.json.zst",
+      "result_sha256": "4480815843dc3d5a24eb1e83cabda7b0c36c2624053f1bb5cba2c2512da945a4",
+      "kind": "green"
+    },
+    {
+      "seed": 79803,
+      "relative_xy": [
+        -0.810152823306287,
+        -0.6875169271395064
+      ],
+      "facing_error_rad": -0.3485551508852106,
+      "handoff_pose_error": [
+        0.01017883504755248,
+        0.06918091748687454,
+        0.05888710688303087
+      ],
+      "plan": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79803-6f057f7e/plan.json",
+      "plan_sha256": "9bf2a2d78c1f32b00bea9b3a9e58772db4bfff20b92862735b30ac909dd7060d",
+      "result": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79803-6f057f7e/result.json.zst",
+      "result_sha256": "c49290a8f0b8da5378376ec7dcaf3c50eb383e6a8d25ca2a81ddf46170671de9",
+      "kind": "yellow"
+    },
+    {
+      "seed": 79804,
+      "relative_xy": [
+        -0.6314201586521295,
+        -0.1433030669143628
+      ],
+      "facing_error_rad": -0.27084780446757717,
+      "handoff_pose_error": [
+        -0.0014702298814775925,
+        -0.037576376345654444,
+        0.028864911202885465
+      ],
+      "plan": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79804-6f057f7e/plan.json",
+      "plan_sha256": "ff58e55889194246795ede01c5a43b480aed950832990ad9f3db7952de36ccb8",
+      "result": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79804-6f057f7e/result.json.zst",
+      "result_sha256": "35269857bbb934823f7c7d514ae5a4f5457b4d87af967eade51a4438e0e1db3f",
+      "kind": "cyan"
+    },
+    {
+      "seed": 79805,
+      "relative_xy": [
+        -0.7461383070040032,
+        0.5968984729509048
+      ],
+      "facing_error_rad": -0.18956348999128636,
+      "handoff_pose_error": [
+        0.04867015840776004,
+        -0.0564615656014442,
+        0.042862528001523056
+      ],
+      "plan": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79805-6f057f7e/plan.json",
+      "plan_sha256": "b566d51b4582d27bad4a6d894eb6b88d0104d818a557c4a99f9373588745a64d",
+      "result": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79805-6f057f7e/result.json.zst",
+      "result_sha256": "a56a60b185d0d0b2affcc0366626e4c38722061a736b9226c236ccfb3c5b1ff0",
+      "kind": "red"
+    },
+    {
+      "seed": 79806,
+      "relative_xy": [
+        -1.0948745621600922,
+        0.09536282256955508
+      ],
+      "facing_error_rad": -0.04298995401124777,
+      "handoff_pose_error": [
+        -0.03115718061487906,
+        0.014572789968404127,
+        -0.04418529862645822
+      ],
+      "plan": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79806-6f057f7e/plan.json",
+      "plan_sha256": "10d4db442f0129c5f3e62c4ce9c7658dcb3b16e3b3dfd4004c58692f765c0572",
+      "result": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79806-6f057f7e/result.json.zst",
+      "result_sha256": "5cdab52d65dd8fa4450423164122579d28da71917b90b859f8b92bf464a2784d",
+      "kind": "green"
+    },
+    {
+      "seed": 79807,
+      "relative_xy": [
+        -0.9069563430556165,
+        -0.2643805049476058
+      ],
+      "facing_error_rad": 0.3389445026468034,
+      "handoff_pose_error": [
+        0.07201996807072512,
+        -0.0019186275294290783,
+        0.058464104705223216
+      ],
+      "plan": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79807-6f057f7e/plan.json",
+      "plan_sha256": "f78094843efbf104336b11cd78310e8478ae0444f76428053538220ad3d720df",
+      "result": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79807-6f057f7e/result.json.zst",
+      "result_sha256": "5cbfcec7bb318236ba3f67edb9ef16f5ffc04e3878b47bccf37fd6f0bcf7c6cd",
+      "kind": "yellow"
+    },
+    {
+      "seed": 79808,
+      "relative_xy": [
+        -0.5880229324701403,
+        -0.8013502078532595
+      ],
+      "facing_error_rad": -0.2549803178624954,
+      "handoff_pose_error": [
+        0.06979494178920345,
+        0.014411760896285725,
+        0.011427860600049605
+      ],
+      "plan": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79808-6f057f7e/plan.json",
+      "plan_sha256": "322774142f3f56ffd7ecc3ee36715ace4bde6d0fa53f7913e185bf86919ee607",
+      "result": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79808-6f057f7e/result.json.zst",
+      "result_sha256": "c5256fcf8e5acdc3422da7ebb6149ea7e5acc051b96d910373f9e6f58209c19e",
+      "kind": "cyan"
+    },
+    {
+      "seed": 79809,
+      "relative_xy": [
+        -0.9349901150335999,
+        0.48170470286766265
+      ],
+      "facing_error_rad": 0.27940049584168486,
+      "handoff_pose_error": [
+        -0.007844275584640466,
+        0.008982491672656032,
+        0.002487122574916563
+      ],
+      "plan": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79809-6f057f7e/plan.json",
+      "plan_sha256": "eea47879a360e65bf20e467f36d25181dcd6fabc194e83b6718ab4c972db5884",
+      "result": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79809-6f057f7e/result.json.zst",
+      "result_sha256": "c09246c69cabd7665202eec0b437d802fa1f625bc12ecd9eb4a69cffc721b998",
+      "kind": "red"
+    },
+    {
+      "seed": 79810,
+      "relative_xy": [
+        -0.5838901625467079,
+        0.32302470421762464
+      ],
+      "facing_error_rad": 0.2565217119821365,
+      "handoff_pose_error": [
+        0.009163469610514443,
+        0.09580751785039107,
+        0.016210991521082126
+      ],
+      "plan": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79810-6f057f7e/plan.json",
+      "plan_sha256": "fc805cee564b7a595551ddc19fc4cf2bfd9975edac746bda506a91022db7e579",
+      "result": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79810-6f057f7e/result.json.zst",
+      "result_sha256": "a3da7e492cabfa28139b6510bc1b5510787f04a5efde65707db9a9edda014b5e",
+      "kind": "green"
+    },
+    {
+      "seed": 79811,
+      "relative_xy": [
+        -0.5087284006443957,
+        -0.6747460258010503
+      ],
+      "facing_error_rad": -0.17814484694707056,
+      "handoff_pose_error": [
+        0.04599691114238516,
+        0.03995831475093312,
+        -0.035611391751065244
+      ],
+      "plan": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79811-6f057f7e/plan.json",
+      "plan_sha256": "4a920e719c20f2444e0a48754b9305dd09592e9f4eb57476d0951aaebd3b4a02",
+      "result": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79811-6f057f7e/result.json.zst",
+      "result_sha256": "03ac455dbfa99078ae8edd91b3afa56427a6aadff36839435d50c84fba4c9dc5",
+      "kind": "yellow"
+    },
+    {
+      "seed": 79812,
+      "relative_xy": [
+        -1.0290417780519197,
+        -0.3254571044586633
+      ],
+      "facing_error_rad": -0.2348400987188691,
+      "handoff_pose_error": [
+        0.042617896346247484,
+        -0.02972965416027264,
+        -0.060764923080656084
+      ],
+      "plan": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79812-6f057f7e/plan.json",
+      "plan_sha256": "846217be08c890c8c288b49d6f876917fe16d678945e49942fc5225b33fe0f63",
+      "result": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79812-6f057f7e/result.json.zst",
+      "result_sha256": "41bd681f9e7b140abdfd30166627e7f7b08d6e8b4193580b6c917cba18f30b4e",
+      "kind": "cyan"
+    },
+    {
+      "seed": 79813,
+      "relative_xy": [
+        -0.46658655345000777,
+        0.39211835186602784
+      ],
+      "facing_error_rad": -0.25644922946238413,
+      "handoff_pose_error": [
+        0.021378478887968063,
+        -0.0367116477215373,
+        0.08422132688620702
+      ],
+      "plan": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79813-6f057f7e/plan.json",
+      "plan_sha256": "16a808cb2b0725d0cb1bde5fb52a95f6ba819555a3d968e35c5a2a7cffa0a9b5",
+      "result": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79813-6f057f7e/result.json.zst",
+      "result_sha256": "0da0f6eeda74f82ce1194368104d215cb8b8b4e42136318325950c3ffbd4334a",
+      "kind": "red"
+    },
+    {
+      "seed": 79814,
+      "relative_xy": [
+        -0.6206396784826422,
+        -0.3767380058747539
+      ],
+      "facing_error_rad": 0.06280227801902272,
+      "handoff_pose_error": [
+        0.06322626812817095,
+        -0.08204385779230104,
+        -0.02863018759712495
+      ],
+      "plan": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79814-6f057f7e/plan.json",
+      "plan_sha256": "58ea08e371ebc49c8a68d2039096055debceffebb7ac9185e3383a4b05f0bcac",
+      "result": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79814-6f057f7e/result.json.zst",
+      "result_sha256": "49dde9b64826668aa348a8a87749c4464e7e657999453aef225cb2d70cbcd56c",
+      "kind": "green"
+    },
+    {
+      "seed": 79815,
+      "relative_xy": [
+        -0.8337429877571185,
+        -0.5928025647012904
+      ],
+      "facing_error_rad": 0.26059172003398334,
+      "handoff_pose_error": [
+        0.02787958080272955,
+        -0.1101891258080479,
+        -0.005325720739312345
+      ],
+      "plan": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79815-6f057f7e/plan.json",
+      "plan_sha256": "39f6bc4b8006691bcdfc790dcf9628fad9cee81588e9fa9cc382ef524065f506",
+      "result": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79815-6f057f7e/result.json.zst",
+      "result_sha256": "8bf857f740c24f397d53e72f84ff92b547b8d7b69f021add9efd4d624015f70f",
+      "kind": "yellow"
+    },
+    {
+      "seed": 79816,
+      "relative_xy": [
+        -0.6902279522452406,
+        0.305069794489953
+      ],
+      "facing_error_rad": -0.24669021055920154,
+      "handoff_pose_error": [
+        0.0902715633866244,
+        0.07175401669487169,
+        0.03478727518873074
+      ],
+      "plan": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79816-6f057f7e/plan.json",
+      "plan_sha256": "d9b5e0f2dc209024d0232c503c7a798382d6ea2cac37c77454f342c4cd5f0f78",
+      "result": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79816-6f057f7e/result.json.zst",
+      "result_sha256": "3d9ee3348a6b618bbefe1497326a08ad29ecdb450f946308a8aba58b7d6a7985",
+      "kind": "cyan"
+    },
+    {
+      "seed": 79817,
+      "relative_xy": [
+        -0.7803961773218775,
+        0.37593910679948017
+      ],
+      "facing_error_rad": -0.03448956956064314,
+      "handoff_pose_error": [
+        -0.038434087470166745,
+        0.00900884616807726,
+        -0.01190596353896636
+      ],
+      "plan": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79817-6f057f7e/plan.json",
+      "plan_sha256": "0a971e3727d10e833a1876f7f8fa9ce0428e6d54dc7d3ed61b37457c6cc3c036",
+      "result": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79817-6f057f7e/result.json.zst",
+      "result_sha256": "9aadaf80d34825e2265b772f6a71dbc03fd3b698e7c0cf8561774deea4b47009",
+      "kind": "red"
+    },
+    {
+      "seed": 79818,
+      "relative_xy": [
+        -0.8018189039305222,
+        -0.22808302356412924
+      ],
+      "facing_error_rad": 0.22459840848401796,
+      "handoff_pose_error": [
+        0.01756355306651119,
+        -0.048316902147205056,
+        0.00213225714578795
+      ],
+      "plan": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79818-6f057f7e/plan.json",
+      "plan_sha256": "2d87cdbeffa24c76861d15b088031f90b5b035b0793c310d29605935f8bb7e04",
+      "result": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79818-6f057f7e/result.json.zst",
+      "result_sha256": "edd39e84055812028b4ce60e4c6db1e230eb9ddd0d5a67bf3c15f94460884966",
+      "kind": "green"
+    },
+    {
+      "seed": 79819,
+      "relative_xy": [
+        -0.48119115229878656,
+        -0.5458577168645076
+      ],
+      "facing_error_rad": -0.25230256036843957,
+      "handoff_pose_error": [
+        0.031166911313029906,
+        -0.03860377657518624,
+        -0.024386754724943314
+      ],
+      "plan": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79819-6f057f7e/plan.json",
+      "plan_sha256": "52059b9b05dd52094b5c90cd18eb5bc0db3122156c99196c8a0840fcbd039f26",
+      "result": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79819-6f057f7e/result.json.zst",
+      "result_sha256": "eebce722799d53e605973597899207ec29462df6ebfb0b88c0ba9b0aaae008a5",
+      "kind": "yellow"
+    },
+    {
+      "seed": 79820,
+      "relative_xy": [
+        -0.8234790153270948,
+        0.21700745901150276
+      ],
+      "facing_error_rad": -0.20815849008703455,
+      "handoff_pose_error": [
+        0.08231083715921857,
+        0.04575255023632671,
+        0.07693325568816889
+      ],
+      "plan": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79820-6f057f7e/plan.json",
+      "plan_sha256": "88f5a0ad606c81359bda3334e9885457aec817f6ce1de8ee23b49efb2afc9cac",
+      "result": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79820-6f057f7e/result.json.zst",
+      "result_sha256": "c53083c6613fdb7198001dd9cc98fe9dc146b74e186fcc48a12d013a36f55969",
+      "kind": "cyan"
+    },
+    {
+      "seed": 79821,
+      "relative_xy": [
+        -0.5389962306022473,
+        -0.42840528304504
+      ],
+      "facing_error_rad": 0.08314785039452188,
+      "handoff_pose_error": [
+        0.018142412997728324,
+        0.024003297210878332,
+        0.06883498322285878
+      ],
+      "plan": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79821-6f057f7e/plan.json",
+      "plan_sha256": "a60acde5e447638f72bd63fb964ce9f363c061e2dfbe69e583f1f716d8112c47",
+      "result": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79821-6f057f7e/result.json.zst",
+      "result_sha256": "045f41c4309e27b8eac0c0bac1625dee3f7fbdff3aad34cef2bbeb0ddc442c5b",
+      "kind": "red"
+    },
+    {
+      "seed": 79822,
+      "relative_xy": [
+        -0.6552681929658501,
+        0.06424833589095436
+      ],
+      "facing_error_rad": 0.0077111281542996965,
+      "handoff_pose_error": [
+        0.007056418625322621,
+        -0.11823850818317944,
+        -0.006404793391477967
+      ],
+      "plan": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79822-6f057f7e/plan.json",
+      "plan_sha256": "7aac80cc57da9a77bf3679070de8bbf8e76e8e929e0414d375f8ba5330373c79",
+      "result": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79822-6f057f7e/result.json.zst",
+      "result_sha256": "744de1b192878b618547c24383e4664083ccced555d343e48a37ed93f061a667",
+      "kind": "green"
+    },
+    {
+      "seed": 79823,
+      "relative_xy": [
+        -0.9955821795177373,
+        0.3996764363394987
+      ],
+      "facing_error_rad": -0.29500584463022,
+      "handoff_pose_error": [
+        0.04147328562594471,
+        -0.0974612944473622,
+        0.048354031668121064
+      ],
+      "plan": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79823-6f057f7e/plan.json",
+      "plan_sha256": "b2910d5ad1b53e0ce44faa9e724006549b87931843c9a6307d79ac013070e7ac",
+      "result": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79823-6f057f7e/result.json.zst",
+      "result_sha256": "f612e34e7d7bdc4c5f855fea867feb55007a1463a0df1b7413e7253a4267c771",
+      "kind": "yellow"
+    },
+    {
+      "seed": 79824,
+      "relative_xy": [
+        -0.6547431974080437,
+        0.586698700222251
+      ],
+      "facing_error_rad": -0.19034950032050643,
+      "handoff_pose_error": [
+        -0.029053016888730406,
+        0.04507604274699323,
+        0.017548162171321352
+      ],
+      "plan": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79824-6f057f7e/plan.json",
+      "plan_sha256": "03d2895ddc9b5fed03cf38320799f01b3f2122469b3d0b723ad95b34ab699e7a",
+      "result": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79824-6f057f7e/result.json.zst",
+      "result_sha256": "275e79fd87cf17c02c96f2c758883c8c9825eedb4c9a9866b71a3eb4854169b9",
+      "kind": "cyan"
+    },
+    {
+      "seed": 79825,
+      "relative_xy": [
+        -0.9387017729916556,
+        -0.42585868951650685
+      ],
+      "facing_error_rad": -0.4206943881379546,
+      "handoff_pose_error": [
+        0.06124590009070834,
+        -0.032189415208922614,
+        0.024587416162291764
+      ],
+      "plan": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79825-6f057f7e/plan.json",
+      "plan_sha256": "355b8e952690408532d818bdbf577c33e99998b622a60f266c7702713745b2dc",
+      "result": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79825-6f057f7e/result.json.zst",
+      "result_sha256": "86c6566f18d8d853990bdb7effd9842fdc56b8365b1eae40c45420f3ccf67331",
+      "kind": "red"
+    },
+    {
+      "seed": 79826,
+      "relative_xy": [
+        -1.0467981554943588,
+        0.11509442101748679
+      ],
+      "facing_error_rad": 0.14870092902410997,
+      "handoff_pose_error": [
+        0.07221836441052375,
+        -0.0361332169177854,
+        0.053464519675941194
+      ],
+      "plan": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79826-6f057f7e/plan.json",
+      "plan_sha256": "4e8d7dcc48de7966a6d9e01d22c14a44861221a8f3f1376dbc7c5ea34e0100dd",
+      "result": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79826-6f057f7e/result.json.zst",
+      "result_sha256": "ea5311990366265aa701f614e6a2d31a6c53b7b7280ae9a0321fe36b6ae15d84",
+      "kind": "green"
+    },
+    {
+      "seed": 79827,
+      "relative_xy": [
+        -0.7903710036376126,
+        -0.5339733402021699
+      ],
+      "facing_error_rad": -0.004751639936888319,
+      "handoff_pose_error": [
+        -0.0058120835087307155,
+        0.08440699355044143,
+        -0.015421024896345904
+      ],
+      "plan": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79827-6f057f7e/plan.json",
+      "plan_sha256": "71d9d23114085d2906bd51123ab67213c53a8cc53502a640befe0add01cc4614",
+      "result": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79827-6f057f7e/result.json.zst",
+      "result_sha256": "f51921b23702da1d6b1635ecabe7b91e3fee610f12b9f553cc976893293e6e00",
+      "kind": "yellow"
+    },
+    {
+      "seed": 79828,
+      "relative_xy": [
+        -0.8780616562934739,
+        0.5202651082768004
+      ],
+      "facing_error_rad": -0.3596009807763627,
+      "handoff_pose_error": [
+        -0.057761102140771375,
+        0.00853535499778587,
+        0.05063416071032442
+      ],
+      "plan": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79828-6f057f7e/plan.json",
+      "plan_sha256": "0e3fdd38b897ae951c3bebafe372bf48bc98d03dd3e0cf898fc85ae2ed2f71a7",
+      "result": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79828-6f057f7e/result.json.zst",
+      "result_sha256": "5e6360c7968f592157795f09e024c4d92d0c3508bd09590c839b945f38e44532",
+      "kind": "cyan"
+    },
+    {
+      "seed": 79829,
+      "relative_xy": [
+        -0.9221464115854827,
+        -0.27117473041283624
+      ],
+      "facing_error_rad": 0.3876627258440234,
+      "handoff_pose_error": [
+        0.09340792618066991,
+        0.049366216643721914,
+        -0.008061537383570606
+      ],
+      "plan": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79829-6f057f7e/plan.json",
+      "plan_sha256": "44297cfd8d62e333d610569eae3598ef87bc81b3f0dd702add0adba65c1f3164",
+      "result": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79829-6f057f7e/result.json.zst",
+      "result_sha256": "2672765b2768ff26f808dbab101f9a3c4738fa8aaaec3aa7adf312647ee50a38",
+      "kind": "red"
+    },
+    {
+      "seed": 79830,
+      "relative_xy": [
+        -0.8303193628878742,
+        0.13361917542059065
+      ],
+      "facing_error_rad": -0.3027640336123567,
+      "handoff_pose_error": [
+        -0.029622841921042416,
+        0.09600274704633921,
+        0.018038376121317527
+      ],
+      "plan": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79830-6f057f7e/plan.json",
+      "plan_sha256": "10ffeea11c251fe22a02215ba009bd27f46489da3c0bfba604ddb6c14c61df38",
+      "result": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79830-6f057f7e/result.json.zst",
+      "result_sha256": "27f6ddcf537bb55c2922a9598a889ee6787a27881ebac2a201c7f6626b775736",
+      "kind": "green"
+    },
+    {
+      "seed": 79831,
+      "relative_xy": [
+        -0.7932078627928602,
+        -0.6994965891107874
+      ],
+      "facing_error_rad": -0.1887470643012902,
+      "handoff_pose_error": [
+        -0.05234963118991819,
+        0.013255930386454477,
+        0.03566334792799943
+      ],
+      "plan": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79831-6f057f7e/plan.json",
+      "plan_sha256": "15abca5ea0ca54ec61b16b5d254eaf98c1a12a1c1f7428ba912a9b08f58f5d03",
+      "result": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79831-6f057f7e/result.json.zst",
+      "result_sha256": "47509ed7b0b1a07c0d733ff60952fab8e3c86912e112deab71548274cb17edbd",
+      "kind": "yellow"
+    },
+    {
+      "seed": 79832,
+      "relative_xy": [
+        -0.5971246270069847,
+        0.3691866696713997
+      ],
+      "facing_error_rad": 0.23892439845863894,
+      "handoff_pose_error": [
+        0.060598103368219136,
+        0.05056695255077438,
+        -0.0461564716541558
+      ],
+      "plan": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79832-6f057f7e/plan.json",
+      "plan_sha256": "a39c67acfd9a6e90401946529e6beaacf279fd44cde78e0b512d3d1561daa8c3",
+      "result": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79832-6f057f7e/result.json.zst",
+      "result_sha256": "355cd8d06f3ff8fdffc74e3dbd3952e8a375f7568d252f2c7bf397fd231cec6c",
+      "kind": "cyan"
+    },
+    {
+      "seed": 79833,
+      "relative_xy": [
+        -0.6261754166514607,
+        0.35926320129204203
+      ],
+      "facing_error_rad": 0.09350516362914102,
+      "handoff_pose_error": [
+        0.061867821389360755,
+        0.037522211952094785,
+        0.017774819396269775
+      ],
+      "plan": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79833-6f057f7e/plan.json",
+      "plan_sha256": "a5aa336fa87b6402f550b1d246142a3f9abd0870790e58f99a05b88cbf19fb55",
+      "result": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79833-6f057f7e/result.json.zst",
+      "result_sha256": "b69bf8071ae0f0be43700224d318b30cdf4c6a22907ae2db346a48257f48090c",
+      "kind": "red"
+    },
+    {
+      "seed": 79834,
+      "relative_xy": [
+        -0.7351389283479354,
+        0.25626648164980015
+      ],
+      "facing_error_rad": 0.37318345001454606,
+      "handoff_pose_error": [
+        0.042482570491178435,
+        0.03858125704525911,
+        0.0046360086735564325
+      ],
+      "plan": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79834-6f057f7e/plan.json",
+      "plan_sha256": "7206b253cc88b4496e675201357023e618196105de72e581b76fa150872cd299",
+      "result": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79834-6f057f7e/result.json.zst",
+      "result_sha256": "c77f8459bc5551789fd8c52f1d2cdea1f48b519a3625ebc75970f36e85d2b467",
+      "kind": "green"
+    },
+    {
+      "seed": 79835,
+      "relative_xy": [
+        -0.43804294192207377,
+        0.47693026015023743
+      ],
+      "facing_error_rad": -0.1272856403706234,
+      "handoff_pose_error": [
+        0.10825114812383584,
+        0.02027392638803586,
+        0.012944047576261181
+      ],
+      "plan": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79835-6f057f7e/plan.json",
+      "plan_sha256": "3186b86c2bdd2b528fc676967f5c143d2eeaa8226669deff87cefa6880f5e62e",
+      "result": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79835-6f057f7e/result.json.zst",
+      "result_sha256": "78fc33ffed67c43894d8d5afb3564d660000ed20e3627549218dca702a48a605",
+      "kind": "yellow"
+    },
+    {
+      "seed": 79836,
+      "relative_xy": [
+        -1.0568379901567522,
+        0.2952112430859062
+      ],
+      "facing_error_rad": 0.14602254779383889,
+      "handoff_pose_error": [
+        0.014791545313110908,
+        -0.05164065381958935,
+        -0.016437527297591695
+      ],
+      "plan": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79836-6f057f7e/plan.json",
+      "plan_sha256": "17ec4952ab59a3beb0fc35acfd9a175aba62a9defdd562b18abe72865211aa14",
+      "result": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79836-6f057f7e/result.json.zst",
+      "result_sha256": "47fa861175e46204e506ed747ee4d9ffb384222ceba6d4d5efe7b811e3c0c28e",
+      "kind": "cyan"
+    },
+    {
+      "seed": 79837,
+      "relative_xy": [
+        -0.5665637595460786,
+        -0.3812189403177033
+      ],
+      "facing_error_rad": 0.15624828407306857,
+      "handoff_pose_error": [
+        0.006393023836960087,
+        0.03392642834838132,
+        0.006487830160385331
+      ],
+      "plan": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79837-6f057f7e/plan.json",
+      "plan_sha256": "3ab23891ce1ccb675b6ca8124c0ec2f0343a4877e829672856e851d63a4547a3",
+      "result": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79837-6f057f7e/result.json.zst",
+      "result_sha256": "a877cf1614704863575edb4a042d1c398f75c7eea91077aeec2ea3a16baffa19",
+      "kind": "red"
+    },
+    {
+      "seed": 79838,
+      "relative_xy": [
+        -0.6850851879062273,
+        -0.2769401846012981
+      ],
+      "facing_error_rad": -0.2680547759554002,
+      "handoff_pose_error": [
+        0.00023399199753975898,
+        -0.014573141465301413,
+        -0.024559934200916053
+      ],
+      "plan": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79838-6f057f7e/plan.json",
+      "plan_sha256": "c3d9ce813d327fe4cc2cf0267681eb4f23043161fbc4f4a4669ddb43e74d78d3",
+      "result": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79838-6f057f7e/result.json.zst",
+      "result_sha256": "121ed24398ae00e74583287f0f394d103c69a86778d1368b0883323c96e9c1c5",
+      "kind": "green"
+    },
+    {
+      "seed": 79839,
+      "relative_xy": [
+        -0.5103197688682732,
+        -0.7061344937723877
+      ],
+      "facing_error_rad": 0.36515402744785375,
+      "handoff_pose_error": [
+        -0.016745160550208495,
+        -0.021817212143265964,
+        0.03826616312710588
+      ],
+      "plan": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79839-6f057f7e/plan.json",
+      "plan_sha256": "b297934f6ad4382149a66c5a85dbf239bbe5037e1f134a91ce8393cd3e092f64",
+      "result": "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79839-6f057f7e/result.json.zst",
+      "result_sha256": "5a4a23f84c04ddb27f45a6ffffc286f6294d249cfa97b801f90beaf33a87e385",
+      "kind": "yellow"
+    }
+  ],
+  "decision": [
+    "both meet every applicable task requirement and complete route: LK default, RBPF off",
+    "LK fails and RBPF meets every requirement and completes route: RBPF",
+    "both fail: reason distribution then proposal only; no tuning this round",
+    "missing required route/event/loaded evidence: NOT_READY, no default adoption"
+  ],
+  "scoring": {
+    "reference": "chassis centre SE(2)",
+    "alignment": "one initial SE2 only; scale=1",
+    "metrics": [
+      "handoff/arrival/door XY+yaw",
+      "path-normalized drift percent",
+      "return/lookaround before-after",
+      "maximum"
+    ],
+    "camera_center": "reference column only"
+  },
+  "round_limit": 3
+}

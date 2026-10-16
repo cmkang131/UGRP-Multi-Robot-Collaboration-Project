@@ -68,7 +68,9 @@ def build(a):
     from sim.final_pair_highpose_nearclip import wrap as near_wrap
     from scripts.warp_act_core import runtime_sleep_policy
     scene=ScenarioFinalV3Scene.from_scenario('s1_normal_mixed_v7',601)
-    scene=near_wrap(for_name(a.scene).install(scene,a.scene))
+    # Existing pinned gatesv5_release_extension contains the longer v7 divider
+    # (zone_wall_divider_1_250_14750_2000). Do not synthesize/reassign materials.
+    scene=near_wrap(for_name(a.scene).install(scene,a.scene,extension=a.texture_extension))
     hardware,_=load_fitted_hardware()
     xml=scene.robot_transform(scene.transform(build_multi_robot_xml(hardware)),hardware=hardware,calibrated_keys=hardware)
     xml=camera.transform_xml(xml,profile_id=camera.PROFILE_ID)
@@ -178,6 +180,7 @@ def run(a):
     dump(a.output/'recording-plan.json',dict(queue=queue,source_commands=str(a.commands),source_commands_sha256=sha(a.commands),
         source_plan=str(a.pickup),source_plan_sha256=sha(a.pickup),scenario='s1_normal_mixed_v7',
         changed_setup='archived successful solo teacher diagnostic spawns; v7 original cargo/geometry unchanged',
+        texture_extension='gatesv5_release_extension' if a.texture_extension else 'off',
         absolute_route_prior='declared diagnostic start only; estimator remains zero-gauge; no runtime GT',
         route_stage='existing zone_teacher plan_path/proportional_drive; no LLM/student success claim',
         controls='own RGB LK / issued-command fallback; static map; archived pickup PWM/wheel prefix',
@@ -293,5 +296,6 @@ if __name__=='__main__':
     p.add_argument('--enabled',action='store_true')
     for name in ('renderer','queue','pickup','commands','output'):p.add_argument('--'+name,type=Path,required=True)
     p.add_argument('--scene',default='walls_floor_contrast_v5_indigo110_s80')
+    p.add_argument('--texture-extension',action='store_true')
     p.add_argument('--sim-budget',type=float,required=True)
     run(p.parse_args())
