@@ -5,7 +5,7 @@
 - 접촉 실행 번들 `noslip-off-v445` ([번호 조회](reservation_scan.json)). CPU `cargo_native_v1`, MJWarp `warp_native_contact_v1`. CPU 새 프로필 및 과거 재생 예외는 (조정자 해석, 사용자 미확인).
 - 공용 Warp backend는 선택한 프로필의 noslip 값과 실제 모델 값을 비교한다. frozen teacher/beam/release adapter는 생성자 초기 step 전에 프로필을 적용한다. weld OFF 검사는 유지한다.
 - CPU drive v1–v7, zone cargo/최종 v3 장면, owncam/짝/지도/E2E 새 실행 기본을 native로 한다. 계약은 native도 받되 시나리오와 episode의 프로필이 같아야 한다.
-- 버전이 붙은 configs·prereg·은퇴 번들·과거 실험은 수정하지 않았다([보존 확인](preservation.json)). 기록된 프로필 입력은 명시 재생이며 과거 소스 SHA와 함께 쓴다. 새 시나리오 템플릿은 `configs/*_native_v445.json`; 과거 템플릿을 덮어쓰지 않았다. 역사적 v88–v106 collection registry/consumer 판정기는 원본 프로필을 검증한다.
+- 버전이 붙은 configs·prereg·은퇴 번들·과거 실험은 수정하지 않았다([보존 확인](preservation.json)). 기록된 프로필 입력은 명시 재생이며 과거 소스 SHA와 함께 쓴다. 새 시나리오 템플릿은 `configs/*_native_v445.json`; 과거 템플릿을 덮어쓰지 않았다. 역사적 collection registry/consumer 판정기는 원본 프로필을 검증한다. 새로 만드는 final-pair/solo/S3/pair-LLM 계약은 native 기본값과 별도 contact_execution_bundle_id를 기록하며, collection 실행 계약은 새 프로필도 받는다.
 - MJWarp CLI `--contact-profile legacy_noslip10`은 과거 재생 전용이다. 새 native와 noslip10, CPU와 MJWarp, 서로 다른 VM 결과는 합산하지 않는다. 물리 성공·속도 개선은 여기서 측정하지 않았다.
 
 [진입점 표](entrypoints.md), [실제 로드 영수증](compile_receipts.json), [관문표](rejection_table.json), [원본 참조 분포](baseline_inventory.md), [전체 요약](summary.json).

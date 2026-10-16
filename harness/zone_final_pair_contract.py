@@ -183,7 +183,9 @@ def cases(check, map_id=None):
             for mid in ([map_id] if map_id else reg['maps'])]
 
 
-def bundle(map_id, check):
+def bundle(map_id, check, *, contact_profile='cargo_native_v1'):
+    from sim.execution_contact_profile import cargo_name
+    contact_profile = cargo_name(contact_profile)
     from harness.python_source_closure import source_closure
     static, row, contract = resolve(map_id)
     if check not in CHECKS:
@@ -204,7 +206,7 @@ def bundle(map_id, check):
     return {'schema': 'ugrp.final_pair_bundle.v88', 'execution_bundle_id': BUNDLE_ID,
             'status': 'DRAFT_UNSEALED', 'check': check, 'map_id': map_id,
             'map_sha256': base.digest(static), 'robot_model': 'masterpi_v3',
-            'render_profile': 'floor_light_v1', 'contact_profile': 'cargo_noslip_v1',
+            'render_profile': 'floor_light_v1', 'contact_profile': contact_profile, 'contact_execution_bundle_id': 'noslip-off-v445' if contact_profile != 'cargo_noslip_v1' else None,
             'weld': 'off', 'sensors': {'ultrasonic_front': 'off'},
             'controller_family': 'b-v6h1', 'controller_variant': 'b-v6h1-v3-measured',
             'controller_inputs': ['own_rgb', 'static_map', 'own_command_history', 'delivered_messages'],

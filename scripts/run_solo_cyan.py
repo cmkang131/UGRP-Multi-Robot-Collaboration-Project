@@ -30,6 +30,8 @@ def parser():
     p.add_argument('--speedups', choices=('none', 'v98-exact-v6'), default='v98-exact-v6')
     p.add_argument('--lock-owner', choices=('codex', 'claude', 'kiro'), default='claude')
     p.add_argument('--sim-slot')
+    from sim.execution_contact_profile import add_argument
+    add_argument(p)
     return p
 
 
@@ -122,7 +124,7 @@ def main(argv=None):
     args = parser().parse_args(argv)
     task = {k: getattr(args, k) for k in ('seed', 'robot_id', 'pickup_slot', 'destination', 'passage_id')}
     bundle = contract.bundle(args.expected_source_sha, **task,
-                             stage_probe=args.stage_probe, speedups=args.speedups)
+                             stage_probe=args.stage_probe, speedups=args.speedups, contact_profile=args.contact_profile)
     if not args.execute:
         print(json.dumps({'execution_started': False, 'execution_bundle_id': contract.BUNDLE_ID,
             'source_sha': args.expected_source_sha, 'bundle_sha256': contract.hp.base.digest(bundle),

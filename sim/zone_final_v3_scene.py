@@ -66,7 +66,7 @@ def build_world(scene, profile='cargo_native_v1', *, initial_sim_cap_s=5., **kwa
     from sim.masterpi_model_v3 import v3_hardware
     from sim.masterpi_robot_models import V3_DRAWING_HARDWARE_KEYS
     if profile not in ('cargo_native_v1', 'warp_native_contact_v1', 'cargo_noslip_v1'):
-        raise ValueError('final v3 check requires cargo_noslip_v1')
+        raise ValueError('final v3 check requires a supported native or recorded legacy contact profile')
     world = MultiMasterPiProductionV2.__new__(MultiMasterPiProductionV2)
     cap_world_steps(world, initial_sim_cap_s)
 

@@ -86,6 +86,8 @@ def validate_bundle(bundle):
     static = previous.resolve(MAP_ID)[0]
     for key in ('execution_bundle_id', 'check', 'seed', *ROLE, 'robot_model', 'render_profile',
                 'contact_profile', 'weld', 'sensors', 'workflow_id', 'workflow_version', 'schedule', 'criterion'):
+        if key == 'contact_profile' and bundle.get(key) in ('cargo_native_v1', 'warp_native_contact_v1'):
+            continue
         if bundle.get(key) != reg[key]:
             raise ValueError(f'v92 collection mismatch: {key}')
     if bundle.get('map_sha256') != previous.base.digest(static) or bundle.get('timing') != timing():

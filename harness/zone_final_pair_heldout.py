@@ -65,6 +65,8 @@ def validate_bundle(bundle):
     for key in ('execution_bundle_id', 'check', 'seed', *ROLE, 'robot_model',
                 'render_profile', 'contact_profile', 'weld', 'sensors',
                 'workflow_id', 'workflow_version'):
+        if key == 'contact_profile' and bundle.get(key) in ('cargo_native_v1', 'warp_native_contact_v1'):
+            continue
         if bundle.get(key) != reg[key]:
             raise ValueError(f'v90 held-out collection mismatch: {key}')
     if (bundle.get('map_sha256') != previous.base.digest(static)

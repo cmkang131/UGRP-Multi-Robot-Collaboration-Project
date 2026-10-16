@@ -51,3 +51,5 @@ cone 1=elliptic, integrator 3=implicitfast, solver 2=Newton. 직접 CLI 실행·
 
 기존 prereg/버전 JSON 입력 재생 경로는 기록된 프로필 유지. 접촉 안정성·교사 성공·E2E 성공은 미검증.
 재현: `PYTHONPATH=. python -m scripts.check_noslip_defaults` (기존 공유 sim 환경 Python). 원본: `compile_receipts.json` (XML·소스 SHA-256).
+
+생성 계약 `zone_final_pair_contract`, `zone_solo_cyan_contract_v106`, `zone_s3_contract`, `zone_s3_door_contract`, `pair_llm_contract`의 새 기본은 `cargo_native_v1`; 별도 `contact_execution_bundle_id=noslip-off-v445`를 기록한다. 계약 전체 생성/직접 실행은 로컬 미확인(CI 검증). 기록된 collection registry JSON은 보존한다.

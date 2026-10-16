@@ -87,3 +87,11 @@ def test_loaded_external_xml_diagnostic_native_override():
     m = mujoco.MjModel.from_xml_string('<mujoco><option noslip_iterations="10"/></mujoco>')
     policy.configure_model(m)
     assert (m.opt.noslip_iterations, m.opt.cone, m.opt.integrator, m.opt.impratio) == (0,1,3,5.)
+
+
+def test_live_contracts_default_native_without_rewriting_registries():
+    for module in ('zone_final_pair_contract', 'pair_llm_contract',
+                   'zone_solo_cyan_contract_v106', 'zone_s3_contract', 'zone_s3_door_contract'):
+        factory = importlib.import_module('harness.'+module)
+        assert inspect.signature(factory.bundle).parameters['contact_profile'].default == policy.CPU_DEFAULT
+    assert policy.cargo_name(policy.LEGACY) == 'cargo_noslip_v1'

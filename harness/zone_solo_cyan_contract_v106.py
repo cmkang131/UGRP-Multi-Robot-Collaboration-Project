@@ -39,7 +39,9 @@ def validate(*, robot_id, pickup_slot, destination, passage_id, seed, admission=
 
 
 def bundle(source_sha, *, robot_id='r3', pickup_slot='P1-2', destination='B', passage_id='door_1', seed=911,
-           stage_probe='place', speedups='v98-exact-v6'):
+           stage_probe='place', speedups='v98-exact-v6', contact_profile='cargo_native_v1'):
+    from sim.execution_contact_profile import cargo_name
+    contact_profile = cargo_name(contact_profile)
     if stage_probe not in ('pick', 'door', 'place') or speedups not in ('none', 'v98-exact-v6'):
         raise ValueError('unregistered solo stage/speedups')
     args = dict(robot_id=robot_id, pickup_slot=pickup_slot, destination=destination, passage_id=passage_id, seed=seed)
@@ -54,7 +56,7 @@ def bundle(source_sha, *, robot_id='r3', pickup_slot='P1-2', destination='B', pa
     return {'schema': 'ugrp.solo_cyan_bundle.v106', 'execution_bundle_id': BUNDLE_ID,
         'workflow_version': WORKFLOW_VERSION, 'source_sha': source_sha, 'check': 'solo-cyan-dev',
         'map_id': MAP_ID, 'map_sha256': hp.base.digest(static), 'robot_model': 'masterpi_v3',
-        'contact_profile': 'cargo_noslip_v1', 'weld': 'off', 'render_nearclip': render_record(),
+        'contact_profile': contact_profile, 'contact_execution_bundle_id': 'noslip-off-v445' if contact_profile != 'cargo_noslip_v1' else None, 'weld': 'off', 'render_nearclip': render_record(),
         'host_clock': clock_record(), 'profile': PROFILE, 'motion_proxy': MOTION_PROXY,
         'parent_stack': hp.BUNDLE_ID, 'calibration_sha256': CALIBRATION_SHA,
         'case_cap_s': CAP_S, 'tick_s': hp.TICK_S, 'task': args,
