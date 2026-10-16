@@ -2,7 +2,7 @@
 from types import SimpleNamespace
 import numpy as np
 import pytest
-from scripts.warp10_host import Readback,device_reads,blend_staged,command_tapes
+from scripts.warp10_host import Readback,device_reads,blend_staged,command_tapes,EvaluationExport
 from scripts.warp5_render import blend_native
 from scripts.warp_act_core import control_tape
 from scripts.warp9_first30 import summarize
@@ -71,6 +71,24 @@ def native_export(result,model,d,world_id=0):
 def test_evaluator_manifest_is_deduplicated_and_separate_from_actor_fields():
     paths,_=device_reads(native_export)
     assert paths==[('contact','force'),('qpos',)]
+
+
+def test_evaluation_reads_each_array_once_for_all_worlds_and_refreshes_next_tick():
+    transfers=[]
+    def copy(dst,src):transfers.append(src);dst.value[:]=src.value
+    wp=SimpleNamespace(empty=lambda shape,**kw:Array(shape),copy=copy,Event=object,
+        record_event=lambda e:None,synchronize_event=lambda e:None)
+    d=SimpleNamespace(qpos=Array((4,3)),contact=SimpleNamespace(force=Array((4,2))))
+    owner=SimpleNamespace(wp=wp,wd=d,mjw=SimpleNamespace(get_data_into=native_export))
+    e=EvaluationExport(owner)
+    for tick in range(2):
+        d.qpos.value[:]=tick+5;e.stage()
+        for world in range(4):
+            result={};e.export(result,None,d,world)
+            assert np.all(result['one']==tick+5)
+            np.testing.assert_array_equal(result['one'],result['two'])
+    assert len(transfers)==4  # two arrays x two ticks, independent of world count
+    assert e.audit()['actor_reads']==0
 
 
 def test_per_execution_gate_does_not_drop_batch_measurement():

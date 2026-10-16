@@ -172,8 +172,12 @@ class Renderer:
             for component,dtype,get in (('rgb',wp.vec3,mjw.get_rgb),('seg',wp.vec2i,mjw.get_segmentation)):
                 if not (rgb if component=='rgb' else seg):continue
                 key=(id(self),tag,rid,component)
-                if key not in self.staged_outputs:self.staged_outputs[key]=wp.empty((self.n,h,w),dtype=dtype)
-                output=self.staged_outputs[key];get(self.rc,k,output)
+                output_key=(rid,component)
+                # Extraction -> pinned copy -> next extraction are ordered on
+                # the same stream. Only host snapshots need distinct layers;
+                # one device output per camera/component is sufficient.
+                if output_key not in self.staged_outputs:self.staged_outputs[output_key]=wp.empty((self.n,h,w),dtype=dtype)
+                output=self.staged_outputs[output_key];get(self.rc,k,output)
                 staging.enqueue(key,output);keys[rid][component]=key
         return keys
 

@@ -1,0 +1,21 @@
+{
+  "status": "NOT_READY_STATIC_INTEGRATION",
+  "dependency_source": "/Users/changmin/projects/ugrp-wt/e2e18-planner",
+  "dependency_sha": "27436b8af96f75e9e050d1a2ac483aa9ac9aefc2",
+  "dependency_clean": true,
+  "checks": {
+    "provider_selection": "google/gemma-4-31b-it / coreweave/fp4",
+    "legacy_rate_registration_fix": "warp9_coreweave_rate_v1 present",
+    "public_batch_kinds": [
+      "carry",
+      "selfmap"
+    ],
+    "live_factory": "scripts/warp5_e2e.py make_e2e rejects non-rule_v1 before model request",
+    "near_ACT_connected": false,
+    "e2e_period_support": "0.05 scheduling prototype only; command revocation/terminal worlds still unverified"
+  },
+  "model_calls": 0,
+  "LLM_first30": null,
+  "reason": "Live E2E and near ACT integration absent; hand-coded near fallback prohibited. This preflight is not endpoint or model accuracy evidence.",
+  "next": "Complete host fixed-work comparison and first30 motion diagnostic; preserve LLM/ACT gate boundary."
+}
