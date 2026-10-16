@@ -56,7 +56,16 @@ def main():
             if summary is None:
                 continue
             if summary['status'] == 'running':
-                raise ValueError('live training summary: ' + str(summary_path))
+                # A hard resource stop may leave an immutable stale summary.
+                # Distinguish that from an orphan that is still training.
+                launch = read(training / f'{stage}-{arm}-launch.json') or {}
+                command = Path(f'/proc/{launch.get("pid", -1)}/cmdline')
+                argv = command.read_bytes().decode().strip('\0').split('\0') if command.exists() else []
+                if '--output' in argv and argv[argv.index('--output') + 1] == str(folder):
+                    raise ValueError('owned training process still live: ' + str(summary_path))
+                summary = dict(summary, status='HOST_ERROR_abrupt_end', raw_summary_status='running',
+                               complete=False, readback_verified=False,
+                               actual_step_count_exact=False)
             stages[stage] = summary
             hashes.append(receipt(summary_path))
             log = folder / 'progress.jsonl'
@@ -66,7 +75,12 @@ def main():
                 hashes.append(receipt(log))
         if stages:
             latest = stages.get('main', stages.get('smoke'))
-            arms[arm] = dict(steps=latest['steps_completed'],
+            # Main resumes smoke. A failed main can still report0 before its
+            # first log; retain the already verified smoke steps as a bound.
+            known_steps = max(value['steps_completed'] for value in stages.values())
+            exact = (latest['status'] in ('complete', 'RESOURCE_CAP', 'SUPERVISOR_STOP')
+                     and latest['readback_verified'] is True)
+            arms[arm] = dict(steps=known_steps, actual_step_count_exact=exact,
                              status=latest['status'], complete=latest['complete'],
                              readback_verified=latest['readback_verified'],
                              last_checkpoint=latest.get('last_checkpoint'), stages=stages)
@@ -87,7 +101,8 @@ def main():
         (args.out / name).write_text(json.dumps(value, indent=2, ensure_ascii=False) + '\n')
 
     steps = sum(a['steps'] for a in arms.values())
-    write('learning-curves.json', dict(status='recorded' if steps else 'not_run',
+    steps_exact = all(a['actual_step_count_exact'] for a in arms.values())
+    write('learning-curves.json', dict(status='recorded' if any(curves.values()) else 'not_run' if steps_exact and not steps else 'no_logged_updates',
           optimizer_steps_by_arm={k: v['steps'] for k, v in arms.items()},
           points=curves, raw_log_receipts=[h for h in hashes if h['path'].endswith('progress.jsonl')],
           scope='actual logged optimization only; no synthetic probe or unrun points'))
@@ -139,7 +154,8 @@ def main():
           provisional_teacher_n=progress['provisional_success_n'],
           native_audited_teacher_n=progress['confirmed_native_success_n'],
           recording_gate_passed=progress['independent_recording_gate_passed'],
-          training_arms=arms, total_actual_optimizer_steps=steps,
+          training_arms=arms, total_actual_optimizer_steps=steps if steps_exact else None,
+          verified_optimizer_steps_lower_bound=steps, actual_step_count_exact=steps_exact,
           separate_diagnostic_records='diagnostic-receipts.json',
           student_final_evaluation='see separately verified evaluation receipt; not inferred from training',
           budget=dict(task_first_gpu_utc=first.isoformat(), hard_end_utc=hard.isoformat(),
@@ -151,7 +167,8 @@ def main():
           foreign_leases=[p.name for p in sorted((B / 'leases').glob('*.json'))],
           vm_stop_attempted=False, original_data_preserved=True))
     write('delivery-sha256.json', {p.name: receipt(p) for p in sorted(args.out.iterdir()) if p.is_file()})
-    print(json.dumps(dict(out=str(args.out), actual_optimizer_steps=steps,
+    print(json.dumps(dict(out=str(args.out), actual_optimizer_steps=steps if steps_exact else None,
+                          verified_optimizer_steps_lower_bound=steps,
                           counts=progress['counts'], original_data_preserved=True)))
 
 
