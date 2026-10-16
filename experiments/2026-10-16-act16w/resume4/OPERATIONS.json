@@ -49,7 +49,7 @@
     "B": "0/5",
     "pooled": false
   },
-  "progress": "A/B0/8 each independently recounted and reviewed; C main9600/10000 at17:54Z. Matched teacher87429 full45SIM and terminal10Hz reviewed; actual initial640JPEG+qpos/qvel/camera exactly identical to A/B. Final40 unopened.",
+  "progress": "C10000 +exact checkpoint readback COMPLETE, native VAL8 started17:56Z,14\u201319SIM at18:00Z. No C outcome yet. A/B0/8 each kept; final40 unopened.",
   "next": [
     "Observe existing orchestrator73402 at /home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1; execution source c27a9d537 unchanged. Never resubmit existing A/B/validation jobs. Summary errors require original diagnosis, no automatic retry.",
     "At WAIT_REVIEW_A_B, run independent student raw recount for each validation root with analysis8e5f18480/scripts/audit_act16w_native_student.py. Native A87429 full review exists; B87429 is first30-only and requires full terminal review. Inspect two failures plus one actual student success if available; if none exists explicitly state it, retain clearly labeled teacher reference. Render on L4 using c27 playback; ffprobe only; retrieve only montage/strips/metadata, verify transfer hashes.",
@@ -102,7 +102,7 @@
     ],
     "root": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1"
   },
-  "analysis_source": "/home/ugrp/ugrp-sim/src/9438a2933be55d44db3779dda981d64b0c4ab2a5",
+  "analysis_source": "/home/ugrp/ugrp-sim/src/7381482975ae5fac440c7f3dcb22403133df972b",
   "completed_native_provenance_annotations": "/home/ugrp/ugrp-sim/runs/act16w-native-provenance-annotations.json",
   "gap_analysis_source": "/home/ugrp/ugrp-sim/src/82702ea74d641d68377eeb331142298ca4ff49b1",
   "monitor_C": {
@@ -119,7 +119,7 @@
     "actual_DAgger_data": false,
     "interpretation": "noninitial ceiling is nonzero, so initial-only defect is not established; actual C TRAIN label counts/rejections must be measured. Do not relax held-object boundary or change execution based on this validation diagnostic."
   },
-  "dagger_actual_coverage_helper": "/home/ugrp/ugrp-sim/src/9438a2933be55d44db3779dda981d64b0c4ab2a5/scripts/audit_act16w_dagger_coverage.py",
+  "dagger_actual_coverage_helper": "/home/ugrp/ugrp-sim/src/7381482975ae5fac440c7f3dcb22403133df972b/scripts/audit_act16w_dagger_coverage.py",
   "validation_gap_batch": {
     "root": "/home/ugrp/ugrp-sim/runs/act16w-native-val-gap-audit-r1",
     "complete": true,
@@ -132,5 +132,12 @@
   "split_annotations": [
     "native-dataset-split-annotation.json",
     "native-validation-split-annotation.json"
-  ]
+  ],
+  "first30_helper": "/home/ugrp/ugrp-sim/src/7381482975ae5fac440c7f3dcb22403133df972b/scripts/act16w_own_first30.py",
+  "C_first30_waiter": {
+    "pid": 89180,
+    "exec_session": 33508,
+    "out": "/home/ugrp/ugrp-sim/runs/act16w-native-C-87429-first30",
+    "scope": "read-only until existing group04 reaches30SIM; then compose first30 images, or report early complete"
+  }
 }

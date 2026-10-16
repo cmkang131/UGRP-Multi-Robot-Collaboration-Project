@@ -92,7 +92,7 @@
     "status": "main_running",
     "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-training-r1"
   },
-  "native_learning_status": "A/B10000+readback COMPLETE; raw native VAL8 each0/8; all8 geometric alignment rejected each. Actual playback reviewed. C TRAIN curriculum starts now with A/off per preregistered tie.",
+  "native_learning_status": "C10000 readback complete; native VAL8 running. A/B0/8 each, DAgger/D1/final40 not started.",
   "native_training_curves": {
     "path": "native-ab-learning-curves.png",
     "receipt": "native-ab-learning-curves.json",
@@ -274,5 +274,16 @@
     "selected_history": "A/off",
     "selection_reason": "n0/8 tie, alignment8/8 tie, predeclared A/off on tie",
     "h4_next": "C fresh10000 sameD0, TRAIN start curriculum only"
+  },
+  "native_C_training": {
+    "steps": 10000,
+    "complete": true,
+    "readback_verified": true,
+    "history": "off",
+    "curriculum": true,
+    "same_D0_as_A": true,
+    "validation": "RUNNING8,20\u201326SIM at18:02Z, no result yet",
+    "curve": "native-abc-learning-curves.png",
+    "model": "native-model-C-pending.json"
   }
 }
