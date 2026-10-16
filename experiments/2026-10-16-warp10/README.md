@@ -36,3 +36,10 @@ R2 N64도 wall49.4642초(86.2115초 대비42.6% 감소), 실행당2.5763으로 �
 혼합6초기 상태+반복10의 직렬 첫30 진단은10.1SIM초에서 의도적으로 멈췄다. 부분 관측 중앙값약7.84, wall1183.66초이며 첫30 관문은 **미완료**다. 원본 HOST_ERROR/KeyboardInterrupt/GeneratorExit는 그대로 남기고 감독 중단 근거를 별도 보존한다. 이 값으로 첫30 PASS/FAIL을 만들지 않는다.
 
 새 기본off `warp10_control_pool_v1`은 g2-standard-16의 기존16코어를 먼저 쓰는 조정자 설계(사용자 미확인)다. 각 CPU 프로세스가 같은 교사 코드를 실행하고 부모만 GPU 물리·렌더·평가 export를 소유한다. 기존 export가 쓴 CPU 평가 mirror·자기 명령 상태·기존 JPEG만 복사하고 새로운 행동 측정은 넣지 않는다. 입력 Audit는 원래 교사 그대로이며 학생/E2E가 아니다. CPU 작업자의 native reset 뒤 물리/렌더를 차단하고, 초기 모델/qpos/clock·첫 snapshot·첫 issued command를 대조한다. worker당OpenCV1스레드는 할당한 CPU1개에 맞춘 자원 설정이다. n4의 추가 호스트 분리는 이 로컬 분리로도 부족할 때의 미완료 경로다.
+
+
+## CPU mirror 오류와 재검증
+
+로컬 spawn 첫 시도(`5894d2d8d`)는11.5SIM초에서 worker7의 평가 접촉 geom 인덱스가1072693248로 깨져 HOST_ERROR였다. [원본 오류·분포](pool-failure.json). 초기 검증만 했던 mirror를 매 틱 바이트 검사로 강화했다. 수신기 MjData 객체는 유지하고 `mj_resetData` 뒤 native contact/constraint/island 영역을 다시 할당하여 기존 arena 포인터 재사용을 피한다. GPU 상태·물리·NoSlip 설정에는 적용되지 않는다. 단순히 잘못된 contact를 버리거나 허용 오차를 늘리지 않는다. 이는 **원인 확정이 아닌 격리 수정**이다: 동적 할당의 작은 비물리24회 검사에서는 [이전본](native-mirror-before.json)과 [수정본](native-mirror-check.json)이 모두 통과했다. 실제 운전으로 확인해야 한다.
+
+`14aec45a14294703827625107014841b3f32feb4`로 같은 혼합N16 첫30을 재실행 중이다. 매 틱 mirror를 검사하며, 완료 전에는 첫30·임무 관문을 통과로 기록하지 않는다. Mac 비물리25 passed. 실패 원본4,090파일을 gcp2에 전달해 SHA 불일치0을 확인했고, 자기 영상2Hz 전체와 마지막10초10Hz 띠를 직접 읽었다([타임라인·검토 범위](playback-review-pool-r1.json)). worker7의 빨간 상자는 절대SIM10.6에 화면 밖으로 나가며 이후13.2까지 바닥뿐이다. 메모리 오류를 이 영상의 물리적 결과로 추정하지 않는다. 같은 조건의 완주 성공 영상은 없다.

@@ -1,0 +1,29 @@
+{
+  "source_sha": "5894d2d8d7e62caf7ce570a66fc35f6de2ab54d6",
+  "raw": "/home/ugrp/ugrp-sim/runs/warp10-gcp4-analysis/raw/first30-pool/n16",
+  "local": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/warp10-pool-r1",
+  "method": "gcp2 ffmpeg4x/ffprobe; all2Hz and tail10Hz sequential strips directly viewed as files; no GUI",
+  "output_hash_mismatches": [],
+  "absolute_SIM_range": [
+    2,
+    13.2
+  ],
+  "batch_elapsed_end_SIM": 11.5,
+  "worlds": {
+    "7": [
+      "SIM2–6: red box enlarges and moves to lower frame",
+      "SIM6–8.2: near bottom, short vertical shifts",
+      "SIM8.3–10.4: box rises then falls at changing scale",
+      "SIM10.5: only a red sliver remains; SIM10.6–13.2 floor only; no grasp/place visible"
+    ],
+    "0": [
+      "SIM2–3: floor/wall, cargo enters right edge at3.2",
+      "SIM3.2–6.2: yellow/green long cargo shifts right",
+      "SIM6.3–7.7: cargo outside image, floor only",
+      "SIM7.8–13.2: wall/tiny objects return, little change after8.2; no lift/place visible"
+    ]
+  },
+  "dense_vs_sparse": "10Hz places red object disappearance at10.6 and resolves short shifts; 2Hz alone misses transition timing",
+  "cause_limit": "Videos show motion prefix only; invalid geom index is a CPU runtime error, its memory cause is not proven by these images.",
+  "same_condition_success": "No completed successful mission exists in this cohort; world0 is another HOST_ERROR prefix, never labeled success."
+}

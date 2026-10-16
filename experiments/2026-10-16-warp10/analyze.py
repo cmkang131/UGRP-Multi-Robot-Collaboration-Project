@@ -9,7 +9,7 @@ def digest(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 
 def summarize(root):
     result=[]
-    for variant in ('before','after-r1','after-r2','after-r3','after-uninstrumented','first30'):
+    for variant in ('before','after-r1','after-r2','after-r3','after-uninstrumented','first30','pool-smoke','first30-pool','first30-pool-r2'):
         for n in (1,4,16,64):
             p=root/variant/f'n{n}'
             if not p.exists():continue
@@ -41,6 +41,9 @@ def compare(root,rows):
     values=[]
     for row in rows:
         if row['variant']=='before' or not row.get('wall_s'):continue
+        # Motion/IPC cohorts have different initial cases and durations.
+        # Compare only the fixed replica work, never their task trajectories.
+        if row['variant'] in ('first30','first30-pool','first30-pool-r2'):continue
         n=row['nworld'];p=root/row['variant']/f'n{n}';base=root/'before'/f'n{n}'
         if not (base/'summary.json').exists():continue
         old=next(r for r in rows if r['variant']=='before' and r['nworld']==n)
