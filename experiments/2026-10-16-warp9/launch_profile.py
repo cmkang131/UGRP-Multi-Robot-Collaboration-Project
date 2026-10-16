@@ -36,7 +36,7 @@ def main():
     parser.add_argument('--host',choices=('gcp3','gcp4'),default='gcp3')
     parser.add_argument('--output',type=Path,required=True)
     args=parser.parse_args()
-    if platform.node()!='ugrp-act-l4-'+args.host:raise ValueError('requested registered L4 only')
+    if platform.node().split('.')[0]!='ugrp-act-l4-'+args.host:raise ValueError('requested registered L4 only')
     sha=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
     if subprocess.check_output(['git','status','--porcelain','--untracked-files=no'],cwd=ROOT):raise ValueError('clean committed source required')
     args.output.mkdir(parents=True,exist_ok=False)
