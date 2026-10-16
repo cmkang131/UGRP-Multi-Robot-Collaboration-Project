@@ -1,4 +1,5 @@
 """Finite task-owned scheduler; resume paused groups without changing SIM state."""
+import argparse
 import datetime
 import json
 import os
@@ -23,12 +24,17 @@ def owns(group,pid):
 
 
 def main():
-    active={0,2,3};pending=[4,1,5,6];events=[]
+    parser=argparse.ArgumentParser()
+    parser.add_argument('--all-unfinished-groups',action='store_true',help='opt-in after task-owned resource/lease audit; never changes teacher SIM state')
+    args=parser.parse_args()
+    active={0,2,3};pending=[4,1,5,6]
+    events=read(ROOT/'gate-schedule-state.json').get('events',[])
     pids={g:read(ROOT/f'teacher-r1-group{g}-receipt.json')['pid'] for g in range(7)}
+    maximum=len(pids) if args.all_unfinished_groups else 3
     while datetime.datetime.now(datetime.timezone.utc)<END:
         complete={g for g in range(7) if read(ROOT/f'teacher-r1-group{g}/summary.json').get('status') not in (None,'running')}
         active-=complete
-        while len(active)<3 and pending:
+        while len(active)<maximum and pending:
             group=pending.pop(0)
             if group in complete:continue
             pid=pids[group]
@@ -36,11 +42,12 @@ def main():
             os.kill(pid,signal.SIGCONT);active.add(group)
             events.append(dict(utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),group=group,pid=pid,signal='SIGCONT'))
         state=dict(task='warp3',scheduler_pid=os.getpid(),active_groups=sorted(active),pending_groups=pending,
-            completed_groups=sorted(complete),events=events)
+            completed_groups=sorted(complete),events=events,all_unfinished_groups=args.all_unfinished_groups)
         (ROOT/'gate-schedule-state.json').write_text(json.dumps(state,indent=2)+'\n')
         lease=read(LEASE)
         if lease.get('task')!='warp3':raise RuntimeError('own lease lost')
-        lease.update(scheduler_pid=os.getpid(),active_pids=[pids[g] for g in sorted(active)],paused_pids=[pids[g] for g in pending])
+        lease.update(pid=os.getpid(),scheduler_pid=os.getpid(),active_pids=[pids[g] for g in sorted(active)],paused_pids=[pids[g] for g in pending],
+            scheduling_note='all remaining exact model groups active after resource audit' if args.all_unfinished_groups else 'maximum3 exact model groups active')
         LEASE.write_text(json.dumps(lease,indent=2)+'\n')
         if len(complete)==7:return
         time.sleep(20)
