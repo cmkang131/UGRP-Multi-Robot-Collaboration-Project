@@ -13,7 +13,7 @@ def resources():
 def main():
     p=argparse.ArgumentParser();p.add_argument('--sizes',nargs='+',type=int,choices=(1,4,16,64),default=[1,4,16,64])
     p.add_argument('--output',type=Path,required=True);p.add_argument('--uninstrumented',action='store_true')
-    p.add_argument('--first30',action='store_true');p.add_argument('--motion-first30',action='store_true');a=p.parse_args()
+    p.add_argument('--first30',action='store_true');p.add_argument('--motion-first30',action='store_true');p.add_argument('--control-pool',action='store_true');a=p.parse_args()
     if a.motion_first30:
         if a.sizes!=[16]:raise ValueError('registered motion cohort is N16; specify --sizes 16')
         a.first30=True;a.uninstrumented=True
@@ -42,6 +42,7 @@ def main():
                 warp9_profile_v1=not a.uninstrumented,profile_sim_s=.3,
                 warp9_state_snapshot_v1=True,warp10_render_stage_v1=True,warp10_eval_export_v1=True,
                 warp10_command_batch_v1=True,warp10_same_state_audit_v1=True,warp10_speed_per_execution_v1=True,
+                warp10_control_pool_v1=a.control_pool,
                 warp10_fixed_work_v1=not a.first30,warp10_first30_only_v1=a.first30,
                 independent_initial_cases=1,duplicate_isolation_worlds=n-1,
                 interpretation='fixed initial replica diagnostic, not independent task success')

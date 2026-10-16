@@ -481,6 +481,7 @@ TEST_PATTERNS = (
     "tests/test_pick_match*.py",
     "tests/test_warp9_*.py",  # Offline phase accounting and frozen CoreWeave registration regression.
     "tests/test_warp10_host.py",  # Pinned staging/command recurrence fidelity, no physics.
+    "tests/test_warp10_control.py",  # CPU lane mirror/issued-state ownership, no native models.
     "tests/test_replay_pick_match.py",
     "tests/test_masterpi_model_v3.py",
     "tests/test_masterpi_drive_friction.py",

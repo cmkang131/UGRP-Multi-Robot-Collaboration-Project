@@ -213,7 +213,11 @@ class Batch(WarpTransport):
                 if self.done[i]:continue
                 # Native get_data_into copies GPU contacts/forces. Do not call
                 # mj_forward/mj_step to invent CPU contacts for GPU evaluation.
+                if getattr(self,'warp10_control_pool_v1',False):self.eval_staging.writes.clear()
                 export(c['world'].data,c['world'].model,self.wd,world_id=i)
+                if getattr(self,'warp10_control_pool_v1',False):
+                    if not hasattr(self,'exported_fields'):self.exported_fields={}
+                    self.exported_fields[i]=tuple(sorted(self.eval_staging.writes))
         if getattr(self,'warp10_same_state_audit_v1',False) and hasattr(self,'eval_staging') and not hasattr(self,'warp10_export_audit'):
             self.warp10_export_audit=self.eval_staging.compare(contexts)
             (self.out/'warp10-export-audit.json').write_text(json.dumps(self.warp10_export_audit,indent=2)+'\n')

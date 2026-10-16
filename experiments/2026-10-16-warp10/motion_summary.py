@@ -7,6 +7,8 @@ def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 def main():
     p=argparse.ArgumentParser();p.add_argument('--raw',type=Path,required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args()
     a.output.mkdir(parents=True,exist_ok=False);q=read(a.raw/'queue.json');parent=read(a.raw/'summary.json') if (a.raw/'summary.json').exists() else {'status':'RUNNING'}
+    note=a.raw.parent.parent/(a.raw.parent.name+'-supervisor-stop.json')
+    supervisor=read(note) if note.exists() else None
     worlds=[];source={};raw_status=collections.Counter();reasons=collections.Counter();phase_ticks=collections.Counter()
     for i,run in enumerate(q['runs']):
         raw=a.raw/f'world-{i:03d}'/'raw';trace=raw/'teacher-commands.jsonl'
@@ -17,7 +19,8 @@ def main():
         error=result.get('error_type');interpretation=result['status']
         if error=='GeneratorExit':
             interpretation='planned_diagnostic_close' if parent['status'] in ('FIRST30_COMPLETE','SPEED_GATE_FAIL','PROFILE_COMPLETE') else 'parent_abort_then_generator_close'
-        if error and interpretation!='planned_diagnostic_close':reasons[('HOST_ERROR',error,result.get('error') or 'exception text empty; error_type retained')]+=1
+        if supervisor and error in ('GeneratorExit','KeyboardInterrupt'):interpretation='supervisor_cpu_diagnosis_incomplete'
+        if error and interpretation not in ('planned_diagnostic_close','supervisor_cpu_diagnosis_incomplete'):reasons[('HOST_ERROR',error,result.get('error') or 'exception text empty; error_type retained')]+=1
         audit=result.get('input_audit')
         frames=sum(bool(r.get('map_pose',{}).get('own_frame',{}).get('sha256')) for r in rows)
         commands=sum(all(k in r.get('command',{}) for k in ('wheels','pwm','t')) for r in rows)
@@ -51,7 +54,7 @@ def main():
             minimum_gap_m=None,gap_scope='exposure_not_physical_gap'))
         selected=passed
     clean=[w for w in worlds if w['input_audit'] is not None and w['input_audit'].get('invisible_measurements')==0 and w['input_audit'].get('held_world_reads')==0]
-    value=dict(status=parent['status'],source_sha=q['source_sha'],raw=str(a.raw),
+    value=dict(status=parent['status'],source_sha=q['source_sha'],raw=str(a.raw),supervisor_note=supervisor,
         scope='teacher diagnostic prefix only; no LLM, ACT student, full-task, held-travel or physics-equivalence qualification',
         worlds=worlds,world_exposure_funnel=stages,raw_status_counts=dict(raw_status),phase_tick_distribution=dict(phase_ticks),
         frame_funnel=[dict(stage='trace_ticks',cumulative_pass_n=sum(w['trace_N'] for w in worlds),rejected_n=0),

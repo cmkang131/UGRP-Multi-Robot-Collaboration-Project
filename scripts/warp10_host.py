@@ -119,6 +119,8 @@ class EvaluationExport:
         self.export,self.ast_audit=exporter(owner.mjw.get_data_into,self.read)
         self.writes=set();self.reference_values={}
         self.reference_export=destination_recorder(owner.mjw.get_data_into,self.writes.add,self.reference_read)
+        if getattr(owner,'warp10_control_pool_v1',False):
+            self.export=destination_recorder(owner.mjw.get_data_into,self.writes.add,self.read)
 
     def reference_read(self,array):
         # Independent ordinary NumPy readback, once per immutable audit state;

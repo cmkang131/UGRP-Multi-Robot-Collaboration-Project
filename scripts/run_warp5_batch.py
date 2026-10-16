@@ -59,6 +59,7 @@ def run(a):
         os.environ[key]=str(value)
     base=Path('/home/ugrp/ugrp-sim');leases=[json.loads(p.read_text()) for p in (base/'leases').glob('*.json')]
     task=q.get('task','warp5')
+    if q.get('warp10_control_pool_v1') and not q.get('warp10_eval_export_v1'):raise ValueError('CPU pool requires exact evaluator staging manifest')
     if task not in ('warp5','warp7','warp9','warp10') or not any(l.get('task')==task for l in leases):raise ValueError('matching task lease required before execution')
     foreign=[l for l in leases if l.get('task')!=task]
     if exclusive and foreign:raise ValueError('exclusive host has foreign leases')
@@ -91,11 +92,11 @@ def run(a):
     hooks=Batch(host,sha,'mjwarp_batch_v1',a.output)
     hooks.warp5_native_visual_v1=q.get('warp5_native_visual_v1',False)
     hooks.warp5_native_visual_v2=q.get('warp5_native_visual_v2',False)
-    lanes=[];bridges=[];contexts=[];groups=[];active=np.ones(len(q['runs']),bool)
+    lanes=[];bridges=[];contexts=[];groups=[];active=np.ones(len(q['runs']),bool);pool=None
     started=time.perf_counter()
     try:
         for i,t in enumerate(q['runs']):
-            out=a.output/f'world-{i:03d}'/'raw';out.parent.mkdir()
+            out=a.output/f'world-{i:03d}'/('native-owner-setup' if q.get('warp10_control_pool_v1') else 'raw');out.parent.mkdir()
             if t['kind']=='carry':lane,bridge=make_carry(ROOT,t['plan'],out,host,t['kwargs'])
             elif t['kind']=='selfmap':lane,bridge=make_selfmap(ROOT,t['bundle'],out,host)
             else:raise ValueError('registered carry/selfmap lane required')
@@ -108,6 +109,9 @@ def run(a):
             qpos_sha256=hashlib.sha256(c['world'].data.qpos.tobytes()).hexdigest(),origin=c['origin']) for i,(t,c) in enumerate(zip(q['runs'],contexts))]))
         if a.setup_only:
             report.update(status='SETUP_ONLY',physics_steps=0);return
+        if q.get('warp10_control_pool_v1'):
+            from scripts.warp10_control import Controllers
+            pool=Controllers(q['runs'],contexts,ROOT,a.output,host)
         from scripts.warp_act_core import model_key
         if q.get('warp7_native_model_batch_v1',False):
             from scripts.warp7_native_models import group_key
@@ -125,7 +129,7 @@ def run(a):
             transport.batch_sleep_v1=transport.native_model_batch_v1
             transport.warp9_full_period_graph_v1=q.get('warp9_full_period_graph_v1',False)
             transport.warp9_physics_event_trace_v1=q.get('warp9_physics_event_trace_v1',False)
-            for toggle in ('warp10_render_stage_v1','warp10_eval_export_v1','warp10_command_batch_v1','warp10_same_state_audit_v1'):
+            for toggle in ('warp10_render_stage_v1','warp10_eval_export_v1','warp10_command_batch_v1','warp10_same_state_audit_v1','warp10_control_pool_v1'):
                 setattr(transport,toggle,q.get(toggle,False))
             if q.get('warp9_profile_v1'):
                 import warp as wp
@@ -140,12 +144,20 @@ def run(a):
             model_batch=h.model_batch_audit,native_model_adapter=getattr(h,'native_model_adapter',None),
             graph_audit=getattr(h,'warp9_graph_audit',None),
             scratch_audit=getattr(h,'warp9_scratch_audit',None)) for ii,cc,h in groups])
+        ownership={int(world):(h,int(local)) for ii,cc,h in groups for local,world in enumerate(ii)}
+        if pool:
+            gpu_pids={int(p) for p in subprocess.check_output(['nvidia-smi','--query-compute-apps=pid','--format=csv,noheader,nounits'],text=True).split()}
+            if gpu_pids&{p.pid for p in pool.processes}:raise ValueError('CPU controller worker owns a GPU context')
         loop=time.perf_counter()
         interval_start=loop;previous_elapsed=0.;speed_samples=[]
         for ii,cc,h in groups:
             if getattr(h,'warp9_profile',None):h.warp9_profile.rows.clear()
         targets=np.array([c['origin'] for c in contexts],float)
         while active.any():
+            due=[int(i) for i in np.flatnonzero(active) if round(float(contexts[i]['world'].data.time),9)>=round(float(targets[i]),9)]
+            if pool:
+                for i in due:
+                    h,local=ownership[i];pool.send(i,contexts[i],h,local)
             for i in np.flatnonzero(active):
                 # A .2 s capture lane must not resume after only one .1 s GPU
                 # step. Targets are absolute SIM times, rounded like export.
@@ -153,7 +165,21 @@ def run(a):
                 try:
                     from scripts.warp9_profile import phase
                     with phase(groups[0][2],'controller_python'):
-                        event=next(lanes[i])
+                        if pool:
+                            response=pool.receive(int(i),contexts[i])
+                            if response['kind']=='done':raise StopIteration(response['result'])
+                            event=response['event']
+                            if pool.epochs[i]==1:
+                                # Existing lane, same received GPU state, one
+                                # reference command only; no reference physics.
+                                # Its cost is included in the first interval.
+                                from scripts.warp10_control import port_state,apply_ports
+                                reference=next(lanes[i]);same=reference==event and port_state(contexts[i])==response['ports']
+                                pool.audit[i]['initial_command_exact']=same
+                                if not same:raise ValueError('spawned controller changed initial issued command')
+                            from scripts.warp10_control import apply_ports
+                            apply_ports(contexts[i],response['ports'])
+                        else:event=next(lanes[i])
                     if event['kind']!='step':raise ValueError('missing step barrier')
                     targets[i]=event['target']
                 except StopIteration as done:
@@ -214,6 +240,11 @@ def run(a):
         report.update(status='HOST_ERROR',errors=[dict(category='HOST_ERROR',reason=repr(exc),blocked_object='batch_adapter',minimum_gap_m=None,gap_status='not_measured',traceback=traceback.format_exc())])
         raise
     finally:
+        if pool:
+            pool.close()
+            write(a.output/'control-pool-audit.json',dict(mode='local spawn CPU lanes; same gcp4; no n4 offload',
+                workers=pool.audit,new_actor_fields=0,worker_physics_and_render='blocked after native setup',
+                observation_contract='unchanged visible-only teacher InputAudit; evaluator mirror is not an added actor input'))
         for lane in lanes:
             try:lane.close()
             except BaseException as exc:report['errors'].append(dict(category='HOST_ERROR',reason=repr(exc),blocked_object='finalizer',minimum_gap_m=None))
