@@ -1,0 +1,1055 @@
+{
+  "analysis_host": "ugrp-sim-gcp2.asia-northeast3-a.c.ugrp-sim-b-1014.internal",
+  "reproduce": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python /home/ugrp/ugrp-sim/runs/reloc21-prior/replay_routes.py",
+  "script_sha256": "ce597379dd76f00ab372dcc9b6806487b2e91146fe306b6df19d94f30360b891",
+  "scope": "saved permitted-input replay; same homotopy is not byte-identical live path; gap is enclosure geometry not measured physical passage",
+  "full_plan_cumulative": {
+    "slot_candidates": 20,
+    "complete_plan_clear": 20
+  },
+  "full_plan_minimum_gap_m": {
+    "N": 20,
+    "min": 4.4707310315495255e-05,
+    "p50": 0.00039271706737871535,
+    "p95": 0.0017527021012155534,
+    "max": 0.0017527021012155534
+  },
+  "runs": [
+    {
+      "run": "reloc20-r3-carry-candidate-93266-cb8b37c2",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc20-r3-carry-candidate-93266-cb8b37c2/raw",
+      "source_sha": "cb8b37c2994f5c77bcfaea469341bf987c7d3779",
+      "source_commands_sha256": "a532f8800048378b42e55f58c247d292bb20d311e65baf35f1dda31208b7d832",
+      "observed_live_funnel": {
+        "slot_candidates": 1,
+        "slot_envelope_clear": 1,
+        "candidates": 279,
+        "endpoints_clear": 279,
+        "accepted": 279
+      },
+      "observed_live_rejections": [
+        {
+          "category": "loaded_footprint",
+          "reason": "direct_route_overlap_replan",
+          "blocked_object": "own_rgb_cyan_track_1",
+          "minimum_gap_m": -0.34981494473333685,
+          "N": 21
+        },
+        {
+          "category": "loaded_footprint",
+          "reason": "direct_route_overlap_replan",
+          "blocked_object": "wall_divider_2",
+          "minimum_gap_m": -0.2800139551640164,
+          "N": 53
+        },
+        {
+          "category": "loaded_footprint",
+          "reason": "direct_route_overlap_replan",
+          "blocked_object": "wall_divider_1",
+          "minimum_gap_m": -0.2800138613026251,
+          "N": 205
+        }
+      ],
+      "replay_cumulative": {
+        "states": 13,
+        "path_found": 13
+      },
+      "minimum_clearance_m": {
+        "N": 13,
+        "min": 0.0014693109888310966,
+        "p50": 0.004496582649108316,
+        "p95": 0.009598806343077117,
+        "max": 0.009767699810337338
+      },
+      "short_target_distance_m": {
+        "N": 13,
+        "min": 0.14142135623730964,
+        "p50": 0.14142135623730964,
+        "p95": 0.1581138830084191,
+        "max": 0.1581138830084191
+      },
+      "same_route_triples": [
+        {
+          "start": 174.4999999976016,
+          "end": 184.49999999736514,
+          "same_route_class": true,
+          "progress_m": 0.15339038604377642,
+          "below_existing_arrival_tolerance": false
+        },
+        {
+          "start": 179.49999999748337,
+          "end": 189.4999999972469,
+          "same_route_class": true,
+          "progress_m": -0.03848429178360302,
+          "below_existing_arrival_tolerance": true
+        },
+        {
+          "start": 184.49999999736514,
+          "end": 194.49999999712867,
+          "same_route_class": true,
+          "progress_m": -0.3168824222057198,
+          "below_existing_arrival_tolerance": true
+        },
+        {
+          "start": 189.4999999972469,
+          "end": 199.49999999701043,
+          "same_route_class": true,
+          "progress_m": -0.45685060710976355,
+          "below_existing_arrival_tolerance": true
+        },
+        {
+          "start": 194.49999999712867,
+          "end": 204.4999999968922,
+          "same_route_class": true,
+          "progress_m": -0.3040483109930143,
+          "below_existing_arrival_tolerance": true
+        },
+        {
+          "start": 199.49999999701043,
+          "end": 209.49999999677397,
+          "same_route_class": true,
+          "progress_m": -0.3792318932590275,
+          "below_existing_arrival_tolerance": true
+        },
+        {
+          "start": 204.4999999968922,
+          "end": 214.49999999665573,
+          "same_route_class": true,
+          "progress_m": -0.04797185274785143,
+          "below_existing_arrival_tolerance": true
+        },
+        {
+          "start": 209.49999999677397,
+          "end": 219.4999999965375,
+          "same_route_class": true,
+          "progress_m": 0.31655416135116266,
+          "below_existing_arrival_tolerance": false
+        },
+        {
+          "start": 214.49999999665573,
+          "end": 224.49999999641926,
+          "same_route_class": true,
+          "progress_m": 0.41956084275584793,
+          "below_existing_arrival_tolerance": false
+        },
+        {
+          "start": 219.4999999965375,
+          "end": 229.49999999630103,
+          "same_route_class": true,
+          "progress_m": 0.3766449386095685,
+          "below_existing_arrival_tolerance": false
+        },
+        {
+          "start": 224.49999999641926,
+          "end": 234.4999999961828,
+          "same_route_class": true,
+          "progress_m": 0.16715622262003116,
+          "below_existing_arrival_tolerance": false
+        }
+      ],
+      "records": [
+        {
+          "t": 174.4999999976016,
+          "estimate": [
+            1.6968743296273698,
+            -1.5611283575785166,
+            -1.4345691270658467
+          ],
+          "path_found": true,
+          "homotopy": [
+            [
+              "wall_divider_1",
+              -1
+            ],
+            [
+              "wall_divider_2",
+              -1
+            ]
+          ],
+          "remaining_route_m": 4.849282205065627,
+          "remaining_direct_m": 3.1376054936492217,
+          "target": [
+            1.7468743296273699,
+            -1.7111283575785166
+          ],
+          "target_distance_m": 0.1581138830084189,
+          "minimum_gap_m": 0.006114357578516661,
+          "blocked_object": "wall_divider_1",
+          "category": "offline_route_replay",
+          "reason": "strict_route_found"
+        },
+        {
+          "t": 179.49999999748337,
+          "estimate": [
+            1.7579482269101314,
+            -1.7265373542851785,
+            -1.1663847562283551
+          ],
+          "path_found": true,
+          "homotopy": [
+            [
+              "wall_divider_1",
+              -1
+            ],
+            [
+              "wall_divider_2",
+              -1
+            ]
+          ],
+          "remaining_route_m": 4.695891819021851,
+          "remaining_direct_m": 3.1975359452708347,
+          "target": [
+            1.8579482269101315,
+            -1.8265373542851786
+          ],
+          "target_distance_m": 0.14142135623730964,
+          "minimum_gap_m": 0.004496582649108316,
+          "blocked_object": "wall_divider_1",
+          "category": "offline_route_replay",
+          "reason": "strict_route_found"
+        },
+        {
+          "t": 184.49999999736514,
+          "estimate": [
+            1.7579482269101314,
+            -1.7265373542851785,
+            -0.9842266228152212
+          ],
+          "path_found": true,
+          "homotopy": [
+            [
+              "wall_divider_1",
+              -1
+            ],
+            [
+              "wall_divider_2",
+              -1
+            ]
+          ],
+          "remaining_route_m": 4.695891819021851,
+          "remaining_direct_m": 3.1975359452708347,
+          "target": [
+            1.8579482269101315,
+            -1.8265373542851786
+          ],
+          "target_distance_m": 0.14142135623730964,
+          "minimum_gap_m": 0.004496582649108316,
+          "blocked_object": "wall_divider_1",
+          "category": "offline_route_replay",
+          "reason": "strict_route_found"
+        },
+        {
+          "t": 189.4999999972469,
+          "estimate": [
+            1.7254301656662736,
+            -1.6899733998230564,
+            -0.8494647409948928
+          ],
+          "path_found": true,
+          "homotopy": [
+            [
+              "wall_divider_1",
+              -1
+            ],
+            [
+              "wall_divider_2",
+              -1
+            ]
+          ],
+          "remaining_route_m": 4.734376110805454,
+          "remaining_direct_m": 3.197927076725694,
+          "target": [
+            1.8254301656662737,
+            -1.7899733998230565
+          ],
+          "target_distance_m": 0.14142135623730964,
+          "minimum_gap_m": 0.0030496934031544413,
+          "blocked_object": "wall_divider_1",
+          "category": "offline_route_replay",
+          "reason": "strict_route_found"
+        },
+        {
+          "t": 194.49999999712867,
+          "estimate": [
+            1.560502598187145,
+            -1.4993624081482404,
+            -0.9059627692613166
+          ],
+          "path_found": true,
+          "homotopy": [
+            [
+              "wall_divider_1",
+              -1
+            ],
+            [
+              "wall_divider_2",
+              -1
+            ]
+          ],
+          "remaining_route_m": 5.012774241227571,
+          "remaining_direct_m": 3.20835556489976,
+          "target": [
+            1.610502598187145,
+            -1.6493624081482405
+          ],
+          "target_distance_m": 0.1581138830084191,
+          "minimum_gap_m": 0.0024081087373355884,
+          "blocked_object": "wall_divider_1",
+          "category": "offline_route_replay",
+          "reason": "strict_route_found"
+        },
+        {
+          "t": 199.49999999701043,
+          "estimate": [
+            1.494896828921443,
+            -1.349427988200387,
+            -1.15833292561202
+          ],
+          "path_found": true,
+          "homotopy": [
+            [
+              "wall_divider_1",
+              -1
+            ],
+            [
+              "wall_divider_2",
+              -1
+            ]
+          ],
+          "remaining_route_m": 5.191226717915217,
+          "remaining_direct_m": 3.1766341044180693,
+          "target": [
+            1.5948968289214431,
+            -1.449427988200387
+          ],
+          "target_distance_m": 0.14142135623730964,
+          "minimum_gap_m": 0.0014693109888310966,
+          "blocked_object": "wall_divider_1",
+          "category": "offline_route_replay",
+          "reason": "strict_route_found"
+        },
+        {
+          "t": 204.4999999968922,
+          "estimate": [
+            1.439844051704102,
+            -1.2236112145997202,
+            -0.8594362476242825
+          ],
+          "path_found": true,
+          "homotopy": [
+            [
+              "wall_divider_1",
+              -1
+            ],
+            [
+              "wall_divider_2",
+              -1
+            ]
+          ],
+          "remaining_route_m": 5.316822552220585,
+          "remaining_direct_m": 3.156323722271849,
+          "target": [
+            1.539844051704102,
+            -1.3236112145997203
+          ],
+          "target_distance_m": 0.14142135623730964,
+          "minimum_gap_m": 0.0029606744578246306,
+          "blocked_object": "wall_divider_1",
+          "category": "offline_route_replay",
+          "reason": "strict_route_found"
+        },
+        {
+          "t": 209.49999999677397,
+          "estimate": [
+            1.276471546792468,
+            -1.0402193924640648,
+            -0.8430659188793537
+          ],
+          "path_found": true,
+          "homotopy": [
+            [
+              "wall_divider_1",
+              -1
+            ],
+            [
+              "wall_divider_2",
+              -1
+            ]
+          ],
+          "remaining_route_m": 5.570458611174245,
+          "remaining_direct_m": 3.2113783632077446,
+          "target": [
+            1.3764715467924682,
+            -1.140219392464065
+          ],
+          "target_distance_m": 0.14142135623730964,
+          "minimum_gap_m": 0.0029156418378189723,
+          "blocked_object": "wall_divider_1",
+          "category": "offline_route_replay",
+          "reason": "strict_route_found"
+        },
+        {
+          "t": 214.49999999665573,
+          "estimate": [
+            1.4265134060662357,
+            -1.1975322446249144,
+            -0.8142775398800368
+          ],
+          "path_found": true,
+          "homotopy": [
+            [
+              "wall_divider_1",
+              -1
+            ],
+            [
+              "wall_divider_2",
+              -1
+            ]
+          ],
+          "remaining_route_m": 5.364794404968436,
+          "remaining_direct_m": 3.15450185946006,
+          "target": [
+            1.5265134060662358,
+            -1.2975322446249145
+          ],
+          "target_distance_m": 0.14142135623730964,
+          "minimum_gap_m": 0.009767699810337338,
+          "blocked_object": "wall_divider_1",
+          "category": "offline_route_replay",
+          "reason": "strict_route_found"
+        },
+        {
+          "t": 219.4999999965375,
+          "estimate": [
+            1.508869161537395,
+            -1.2854557036271608,
+            -1.0930934476944891
+          ],
+          "path_found": true,
+          "homotopy": [
+            [
+              "wall_divider_1",
+              -1
+            ],
+            [
+              "wall_divider_2",
+              -1
+            ]
+          ],
+          "remaining_route_m": 5.253904449823082,
+          "remaining_direct_m": 3.1301167970018966,
+          "target": [
+            1.558869161537395,
+            -1.4354557036271607
+          ],
+          "target_distance_m": 0.1581138830084189,
+          "minimum_gap_m": 0.005739416516514685,
+          "blocked_object": "wall_divider_1",
+          "category": "offline_route_replay",
+          "reason": "strict_route_found"
+        },
+        {
+          "t": 224.49999999641926,
+          "estimate": [
+            1.593083334180438,
+            -1.5154778032559766,
+            -1.221103025763257
+          ],
+          "path_found": true,
+          "homotopy": [
+            [
+              "wall_divider_1",
+              -1
+            ],
+            [
+              "wall_divider_2",
+              -1
+            ]
+          ],
+          "remaining_route_m": 4.9452335622125885,
+          "remaining_direct_m": 3.1917709213641188,
+          "target": [
+            1.643083334180438,
+            -1.6654778032559765
+          ],
+          "target_distance_m": 0.1581138830084189,
+          "minimum_gap_m": 0.009468808132320525,
+          "blocked_object": "wall_divider_1",
+          "category": "offline_route_replay",
+          "reason": "strict_route_found"
+        },
+        {
+          "t": 229.49999999630103,
+          "estimate": [
+            1.6589065043838798,
+            -1.5674981464137454,
+            -1.2010322827585023
+          ],
+          "path_found": true,
+          "homotopy": [
+            [
+              "wall_divider_1",
+              -1
+            ],
+            [
+              "wall_divider_2",
+              -1
+            ]
+          ],
+          "remaining_route_m": 4.877259511213514,
+          "remaining_direct_m": 3.1712980486476186,
+          "target": [
+            1.7089065043838798,
+            -1.7174981464137455
+          ],
+          "target_distance_m": 0.1581138830084191,
+          "minimum_gap_m": 0.00948621069823697,
+          "blocked_object": "wall_divider_1",
+          "category": "offline_route_replay",
+          "reason": "strict_route_found"
+        },
+        {
+          "t": 234.4999999961828,
+          "estimate": [
+            1.6998201558885826,
+            -1.6486977866543038,
+            -0.8749165701314747
+          ],
+          "path_found": true,
+          "homotopy": [
+            [
+              "wall_divider_1",
+              -1
+            ],
+            [
+              "wall_divider_2",
+              -1
+            ]
+          ],
+          "remaining_route_m": 4.778077339592557,
+          "remaining_direct_m": 3.1907445476901426,
+          "target": [
+            1.7998201558885827,
+            -1.7486977866543039
+          ],
+          "target_distance_m": 0.14142135623730964,
+          "minimum_gap_m": 0.0023624397919868824,
+          "blocked_object": "wall_divider_1",
+          "category": "offline_route_replay",
+          "reason": "strict_route_found"
+        }
+      ]
+    },
+    {
+      "run": "reloc20-r3-carry-candidate-93315-cb8b37c2",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc20-r3-carry-candidate-93315-cb8b37c2/raw",
+      "source_sha": "cb8b37c2994f5c77bcfaea469341bf987c7d3779",
+      "source_commands_sha256": "57323f56f01162b574938598cab68bd9b524af7cdfbf7452fc579a1a7f8a3ac8",
+      "observed_live_funnel": {
+        "slot_candidates": 1,
+        "slot_envelope_clear": 1,
+        "candidates": 256,
+        "endpoints_clear": 256,
+        "accepted": 256
+      },
+      "observed_live_rejections": [
+        {
+          "category": "loaded_footprint",
+          "reason": "direct_route_overlap_replan",
+          "blocked_object": "wall_divider_1",
+          "minimum_gap_m": -0.2800139857063979,
+          "N": 256
+        }
+      ],
+      "replay_cumulative": {
+        "states": 13,
+        "path_found": 13
+      },
+      "minimum_clearance_m": {
+        "N": 13,
+        "min": 0.0003801933837200358,
+        "p50": 0.0012345009696691474,
+        "p95": 0.00452220880610701,
+        "max": 0.005120807670982631
+      },
+      "short_target_distance_m": {
+        "N": 13,
+        "min": 0.14142135623730964,
+        "p50": 0.15000000000000013,
+        "p95": 0.1581138830084191,
+        "max": 0.1581138830084191
+      },
+      "same_route_triples": [
+        {
+          "start": 147.8999999982306,
+          "end": 157.89999999799414,
+          "same_route_class": true,
+          "progress_m": 0.4835052340571351,
+          "below_existing_arrival_tolerance": false
+        },
+        {
+          "start": 152.89999999811238,
+          "end": 162.8999999978759,
+          "same_route_class": true,
+          "progress_m": -0.13617145239048378,
+          "below_existing_arrival_tolerance": true
+        },
+        {
+          "start": 157.89999999799414,
+          "end": 167.89999999775767,
+          "same_route_class": true,
+          "progress_m": -0.16960872557805162,
+          "below_existing_arrival_tolerance": true
+        },
+        {
+          "start": 162.8999999978759,
+          "end": 172.89999999763944,
+          "same_route_class": true,
+          "progress_m": 0.13118823050338158,
+          "below_existing_arrival_tolerance": false
+        },
+        {
+          "start": 167.89999999775767,
+          "end": 177.8999999975212,
+          "same_route_class": true,
+          "progress_m": -0.23341765256951552,
+          "below_existing_arrival_tolerance": true
+        },
+        {
+          "start": 172.89999999763944,
+          "end": 182.89999999740297,
+          "same_route_class": true,
+          "progress_m": -0.07049797727858387,
+          "below_existing_arrival_tolerance": true
+        },
+        {
+          "start": 177.8999999975212,
+          "end": 187.89999999728474,
+          "same_route_class": true,
+          "progress_m": 0.06307632909013705,
+          "below_existing_arrival_tolerance": false
+        },
+        {
+          "start": 182.89999999740297,
+          "end": 192.8999999971665,
+          "same_route_class": true,
+          "progress_m": -0.2326127984947397,
+          "below_existing_arrival_tolerance": true
+        },
+        {
+          "start": 187.89999999728474,
+          "end": 197.89999999704827,
+          "same_route_class": true,
+          "progress_m": 0.09383701294143387,
+          "below_existing_arrival_tolerance": false
+        },
+        {
+          "start": 192.8999999971665,
+          "end": 202.89999999693003,
+          "same_route_class": true,
+          "progress_m": 0.05038347128181675,
+          "below_existing_arrival_tolerance": false
+        },
+        {
+          "start": 197.89999999704827,
+          "end": 207.8999999968118,
+          "same_route_class": true,
+          "progress_m": -0.3485744558866126,
+          "below_existing_arrival_tolerance": true
+        }
+      ],
+      "records": [
+        {
+          "t": 147.8999999982306,
+          "estimate": [
+            1.7456133170121697,
+            -1.1419152427366095,
+            -1.5079654115883043
+          ],
+          "path_found": true,
+          "homotopy": [
+            [
+              "wall_divider_1",
+              -1
+            ],
+            [
+              "wall_divider_2",
+              -1
+            ]
+          ],
+          "remaining_route_m": 3.37194108395305,
+          "remaining_direct_m": 0.8535324475561403,
+          "target": [
+            1.7456133170121697,
+            -1.2919152427366094
+          ],
+          "target_distance_m": 0.1499999999999999,
+          "minimum_gap_m": 0.0007943624222985198,
+          "blocked_object": "wall_divider_1",
+          "category": "offline_route_replay",
+          "reason": "strict_route_found"
+        },
+        {
+          "t": 152.89999999811238,
+          "estimate": [
+            1.754373704203149,
+            -1.458470365919141,
+            -1.542621283566175
+          ],
+          "path_found": true,
+          "homotopy": [
+            [
+              "wall_divider_1",
+              -1
+            ],
+            [
+              "wall_divider_2",
+              -1
+            ]
+          ],
+          "remaining_route_m": 3.0182292843167775,
+          "remaining_direct_m": 1.0004819232082125,
+          "target": [
+            1.754373704203149,
+            -1.6084703659191408
+          ],
+          "target_distance_m": 0.1499999999999999,
+          "minimum_gap_m": 0.0013575195163680002,
+          "blocked_object": "wall_divider_1",
+          "category": "offline_route_replay",
+          "reason": "strict_route_found"
+        },
+        {
+          "t": 157.89999999799414,
+          "estimate": [
+            1.757963119953332,
+            -1.632364489140626,
+            -1.2896578428163932
+          ],
+          "path_found": true,
+          "homotopy": [
+            [
+              "wall_divider_1",
+              -1
+            ],
+            [
+              "wall_divider_2",
+              -1
+            ]
+          ],
+          "remaining_route_m": 2.888435849895915,
+          "remaining_direct_m": 1.1126129243286704,
+          "target": [
+            1.8079631199533321,
+            -1.782364489140626
+          ],
+          "target_distance_m": 0.1581138830084191,
+          "minimum_gap_m": 0.0011183490829198232,
+          "blocked_object": "wall_divider_1",
+          "category": "offline_route_replay",
+          "reason": "strict_route_found"
+        },
+        {
+          "t": 162.8999999978759,
+          "estimate": [
+            1.6821858068765954,
+            -1.3699661795422902,
+            -1.2896578428163932
+          ],
+          "path_found": true,
+          "homotopy": [
+            [
+              "wall_divider_1",
+              -1
+            ],
+            [
+              "wall_divider_2",
+              -1
+            ]
+          ],
+          "remaining_route_m": 3.1544007367072613,
+          "remaining_direct_m": 1.010115854271553,
+          "target": [
+            1.6821858068765954,
+            -1.51996617954229
+          ],
+          "target_distance_m": 0.1499999999999999,
+          "minimum_gap_m": 0.004123142896189931,
+          "blocked_object": "wall_divider_1",
+          "category": "offline_route_replay",
+          "reason": "strict_route_found"
+        },
+        {
+          "t": 167.89999999775767,
+          "estimate": [
+            1.6796996875936283,
+            -1.472683392287118,
+            -1.541980330214829
+          ],
+          "path_found": true,
+          "homotopy": [
+            [
+              "wall_divider_1",
+              -1
+            ],
+            [
+              "wall_divider_2",
+              -1
+            ]
+          ],
+          "remaining_route_m": 3.0580445754739665,
+          "remaining_direct_m": 1.0688589296857145,
+          "target": [
+            1.6796996875936283,
+            -1.6226833922871182
+          ],
+          "target_distance_m": 0.15000000000000013,
+          "minimum_gap_m": 0.005120807670982631,
+          "blocked_object": "wall_divider_1",
+          "category": "offline_route_replay",
+          "reason": "strict_route_found"
+        },
+        {
+          "t": 172.89999999763944,
+          "estimate": [
+            1.6669997113216048,
+            -1.5067796550545007,
+            -1.2876793404421585
+          ],
+          "path_found": true,
+          "homotopy": [
+            [
+              "wall_divider_1",
+              -1
+            ],
+            [
+              "wall_divider_2",
+              -1
+            ]
+          ],
+          "remaining_route_m": 3.0232125062038797,
+          "remaining_direct_m": 1.099282117966256,
+          "target": [
+            1.6669997113216048,
+            -1.6567796550545006
+          ],
+          "target_distance_m": 0.1499999999999999,
+          "minimum_gap_m": 0.00107665323830098,
+          "blocked_object": "wall_divider_1",
+          "category": "offline_route_replay",
+          "reason": "strict_route_found"
+        },
+        {
+          "t": 177.8999999975212,
+          "estimate": [
+            1.5981124911114306,
+            -1.2699985523437838,
+            -1.3465645264077355
+          ],
+          "path_found": true,
+          "homotopy": [
+            [
+              "wall_divider_1",
+              -1
+            ],
+            [
+              "wall_divider_2",
+              -1
+            ]
+          ],
+          "remaining_route_m": 3.291462228043482,
+          "remaining_direct_m": 1.038456973363481,
+          "target": [
+            1.5981124911114306,
+            -1.4199985523437837
+          ],
+          "target_distance_m": 0.1499999999999999,
+          "minimum_gap_m": 0.0010867464054192784,
+          "blocked_object": "wall_divider_1",
+          "category": "offline_route_replay",
+          "reason": "strict_route_found"
+        },
+        {
+          "t": 182.89999999740297,
+          "estimate": [
+            1.6042799437200916,
+            -1.471133935433165,
+            -1.5254630117136776
+          ],
+          "path_found": true,
+          "homotopy": [
+            [
+              "wall_divider_1",
+              -1
+            ],
+            [
+              "wall_divider_2",
+              -1
+            ]
+          ],
+          "remaining_route_m": 3.0937104834824636,
+          "remaining_direct_m": 1.1300520916864558,
+          "target": [
+            1.6542799437200917,
+            -1.621133935433165
+          ],
+          "target_distance_m": 0.1581138830084191,
+          "minimum_gap_m": 0.0030507045515370205,
+          "blocked_object": "wall_divider_1",
+          "category": "offline_route_replay",
+          "reason": "strict_route_found"
+        },
+        {
+          "t": 187.89999999728474,
+          "estimate": [
+            1.5738399789570576,
+            -1.3668068889809928,
+            -1.2876731801471275
+          ],
+          "path_found": true,
+          "homotopy": [
+            [
+              "wall_divider_1",
+              -1
+            ],
+            [
+              "wall_divider_2",
+              -1
+            ]
+          ],
+          "remaining_route_m": 3.228385898953345,
+          "remaining_direct_m": 1.1027938983360766,
+          "target": [
+            1.6238399789570577,
+            -1.5168068889809927
+          ],
+          "target_distance_m": 0.1581138830084189,
+          "minimum_gap_m": 0.003929499475870258,
+          "blocked_object": "wall_divider_1",
+          "category": "offline_route_replay",
+          "reason": "strict_route_found"
+        },
+        {
+          "t": 192.8999999971665,
+          "estimate": [
+            1.550601699121299,
+            -1.2839919729028835,
+            -1.2771329916197127
+          ],
+          "path_found": true,
+          "homotopy": [
+            [
+              "wall_divider_1",
+              -1
+            ],
+            [
+              "wall_divider_2",
+              -1
+            ]
+          ],
+          "remaining_route_m": 3.3263232819772033,
+          "remaining_direct_m": 1.0875727941783333,
+          "target": [
+            1.600601699121299,
+            -1.4339919729028834
+          ],
+          "target_distance_m": 0.1581138830084189,
+          "minimum_gap_m": 0.0012345009696691474,
+          "blocked_object": "wall_divider_1",
+          "category": "offline_route_replay",
+          "reason": "strict_route_found"
+        },
+        {
+          "t": 197.89999999704827,
+          "estimate": [
+            1.5778039847770546,
+            -1.4381261442413438,
+            -1.5261354512025307
+          ],
+          "path_found": true,
+          "homotopy": [
+            [
+              "wall_divider_1",
+              -1
+            ],
+            [
+              "wall_divider_2",
+              -1
+            ]
+          ],
+          "remaining_route_m": 3.134548886011911,
+          "remaining_direct_m": 1.1347119881355252,
+          "target": [
+            1.6278039847770547,
+            -1.5881261442413437
+          ],
+          "target_distance_m": 0.1581138830084189,
+          "minimum_gap_m": 0.0010704741387812036,
+          "blocked_object": "wall_divider_1",
+          "category": "offline_route_replay",
+          "reason": "strict_route_found"
+        },
+        {
+          "t": 202.89999999693003,
+          "estimate": [
+            1.547372557245438,
+            -1.3337965180160967,
+            -1.2877570574330366
+          ],
+          "path_found": true,
+          "homotopy": [
+            [
+              "wall_divider_1",
+              -1
+            ],
+            [
+              "wall_divider_2",
+              -1
+            ]
+          ],
+          "remaining_route_m": 3.2759398106953865,
+          "remaining_direct_m": 1.111389868603603,
+          "target": [
+            1.597372557245438,
+            -1.4837965180160966
+          ],
+          "target_distance_m": 0.1581138830084189,
+          "minimum_gap_m": 0.0037711784382948536,
+          "blocked_object": "wall_divider_1",
+          "category": "offline_route_replay",
+          "reason": "strict_route_found"
+        },
+        {
+          "t": 207.8999999968118,
+          "estimate": [
+            1.4937611319910495,
+            -1.149468403729665,
+            -1.0783738171610544
+          ],
+          "path_found": true,
+          "homotopy": [
+            [
+              "wall_divider_1",
+              -1
+            ],
+            [
+              "wall_divider_2",
+              -1
+            ]
+          ],
+          "remaining_route_m": 3.4831233418985237,
+          "remaining_direct_m": 1.0954660390180495,
+          "target": [
+            1.5937611319910496,
+            -1.249468403729665
+          ],
+          "target_distance_m": 0.14142135623730964,
+          "minimum_gap_m": 0.0003801933837200358,
+          "blocked_object": "wall_divider_1",
+          "category": "offline_route_replay",
+          "reason": "strict_route_found"
+        }
+      ]
+    }
+  ]
+}

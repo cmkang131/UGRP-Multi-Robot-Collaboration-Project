@@ -22,7 +22,7 @@ def worker(taskfile):
 
 
 def launch(n):
-    assert platform.node().startswith('ugrp-sim-gcp2') and n in (1,2,3)
+    assert platform.node().startswith('ugrp-sim-gcp2') and n == 1, 'CPU R2/R3 retired by coordinator user-decision handoff; localization continues in warp5/MJWarp'
     sha=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
     assert not subprocess.check_output(['git','status','--porcelain','--untracked-files=no'])
     rejection=R/'reloc21-prior/rejection-table.json' if n==1 else R/f'reloc21-round{n-1}/rejection-table.json'
@@ -53,7 +53,7 @@ def launch(n):
             folder=R/name;folder.mkdir(exist_ok=False);cmd=prior['command'].copy();cmd[0]=PY
             if kind=='carry':
                 plan=json.loads(Path(cmd[cmd.index('--plan')+1]).read_text());ep=plan['episodes'][0]
-                ep.update(batch=f'reloc21-r{n}',reloc21_route_progress_v1=condition!='baseline',
+                ep.update(batch=f'reloc21-r{n}',pr=547,reloc21_route_progress_v1=condition!='baseline',
                           reloc21_complete_plan_v1=condition=='complete',destination_visual_acquire_v1=True)
                 p=folder/'input-plan.json';p.write_text(json.dumps(plan,indent=2)+'\n')
                 cmd[cmd.index('--plan')+1]=str(p);cmd[cmd.index('--out')+1]=str(folder/'raw')
@@ -63,7 +63,7 @@ def launch(n):
             t=dict(name=name,kind=kind,condition=condition,seed=seed,command=cmd,environment=env,
                    source_sha=sha,raw=str(folder/'raw'),rejection_table=str(rejection))
             p=folder/'task.json';t['task_file']=str(p);p.write_text(json.dumps(t,indent=2)+'\n');tasks.append(t)
-            (folder/'RUN_META.json').write_text(json.dumps(dict(task='reloc21',branch='claude/reloc21',sha=sha,batch=f'round{n}',**{'class':'dev'})))
+            (folder/'RUN_META.json').write_text(json.dumps(dict(task='reloc21',pr=547,branch='claude/reloc21',sha=sha,batch=f'round{n}',**{'class':'dev'})))
     assert len(tasks)==8
     l.update(pid=os.getpid(),concurrency=8,source_sha=sha,stage=f'round{n}',pids=[]);lease.write_text(json.dumps(l,indent=2)+'\n')
     queue=dict(round=n,source_sha=sha,rejection_table=str(rejection),admission=dict(leases=leases,

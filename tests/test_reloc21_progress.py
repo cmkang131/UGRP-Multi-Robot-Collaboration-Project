@@ -79,3 +79,21 @@ def test_incomplete_dependencies_fail_closed():
     c=carry();c.reloc20_route=None
     with pytest.raises(ValueError):install(c,dict(reloc21_route_progress_v1=True))
     with pytest.raises(ValueError):install(c,dict(reloc21_complete_plan_v1=True))
+
+
+def test_all_no_route_candidates_exhaust_after_three_not_1765_searches():
+    c=carry();nav=RouteProgress(c);assert nav.select(0,c.grip_xy)
+    # Same permitted-input counterexample as R1: the estimated start has
+    # entered the strict wall enclosure. Never relax that enclosure to escape.
+    c.static['obstacles']=[dict(id='wall',center_m=[-2,0],half_extents_m=[.1,.1])]
+    c.reloc20_route=LoadedRoute(c.static)
+    nav.path=None;nav.next_plan_t=1.
+    assert nav.step(.5)==((0.,0.,0.),False,None)
+    for now in (1.,2.):
+        assert nav.step(now)==((0.,0.,0.),False,None)
+        assert nav.last['t']==now and nav.last['remaining_path_m'] is None
+        before=nav.plans;nav.step(now+.1);assert nav.plans==before
+    assert nav.step(3.)==((0.,0.,0.),False,'reloc21_candidates_exhausted')
+    assert len(nav.excluded)==5
+    assert all(v==3 for v in nav.failures.values())
+    assert sum(e['event']=='candidate_rejected' for e in nav.events)==5

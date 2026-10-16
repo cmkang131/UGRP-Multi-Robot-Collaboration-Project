@@ -28,8 +28,7 @@ def intervals(times,mask,details):
 def main(n,media=False):
  assert platform.node().startswith('ugrp-sim-gcp2')
  b=R/f'reloc21-round{n}';assert (b/'DONE').exists()
- summary_path=Path(__file__).with_name('summarize.py')
- if not summary_path.exists():summary_path=Path(__file__).with_name('reloc21-summarize.py')
+ summary_path=Path(__file__).with_name('reloc21-summarize.py' if Path(__file__).name=='reloc21-analyze.py' else 'summarize.py')
  summary=mod('reloc21_summary',summary_path);summary.main(n)
  q=obj(b/'queue.json');d=obj(b/'summary.json');verify=mod('verify',ROOT/'experiments/2026-10-16-reloc17/baseline_analyzer.py').verify
  review=mod('review',ROOT/'experiments/2026-10-16-reloc18/review.py');integrity=[];tables=[]
@@ -48,6 +47,25 @@ def main(n,media=False):
    r['raw_terminal_reason']=result.get('termination_reason')
   if t['kind']=='carry' and r.get('errors'):
    c=rows(raw/'teacher-commands.jsonl');ev=rows(raw/'eval-only.jsonl');by={round(e['t'],5):e for e in ev};pairs=[(x,by[round(x['t'],5)]) for x in c if round(x['t'],5) in by];times=np.array([x['t'] for x,e in pairs]);phase=[x.get('phase_before',x['phase']) for x,e in pairs]
+   bins=collections.Counter();traversal=[]
+   for (x,e),(nx,ne) in zip(pairs,pairs[1:]):
+    if x.get('phase_before',x['phase'])!='carry_to_zone':continue
+    w=x['command']['wheels'];dur=x['command']['duration_s'];impulse=np.array(w)*np.array(dur)
+    longitudinal=float(sum(impulse));angular=float(-impulse[0]+impulse[1]-impulse[2]+impulse[3])
+    motion=x.get('reloc20_motion',{});stall=motion.get('stall') or {};foot=motion.get('footprint') or {}
+    category=('rgb_suppressed' if stall.get('suppressed') else 'geometry_hold' if foot.get('reason')=='issued_motion_enclosure_overlap' else 'translation' if abs(longitudinal)>1e-10 else 'turn' if abs(angular)>1e-10 else 'no_route_hold' if foot.get('reason') in ('start_enclosure_overlap','no_enclosure_route','node_budget_exhausted') else 'idle')
+    bins[category]+=nx['t']-x['t'];traversal.append((x,e))
+   r['travel_command_time_bins_sim_s']=dict(bins)
+   if traversal:
+    lastx,laste=traversal[-1];firstx,firste=traversal[0];goal=result['teacher']['carry'].get('stand_off_xy')
+    nav=lastx.get('reloc21_progress') or {};age=lastx['t']-nav['t'] if 't' in nav else None
+    fresh=age is not None and age<=.1+1e-8 # existing one control period, not a new acceptance gate
+    r['travel_coverage']=dict(first_t=firstx['t'],last_t=lastx['t'],
+        evaluator_max_displacement_m=max(math.dist(firste['base_xyz'][:2],e['base_xyz'][:2]) for x,e in traversal),
+        estimated_remaining_direct_m=math.dist(lastx['map_pose']['pose_estimate'][:2],goal) if goal else None,
+        estimated_remaining_route_m=nav.get('remaining_path_m') if fresh else None,
+        route_record_age_sim_s=age,route_record_fresh=fresh,
+        scope='displacement is evaluation only; remaining route is controller estimate')
    static=obj(raw/'carry-static-map.json');plan=obj(raw/'plan.json');beam=declarations[plan['scenario_id']]['obstacles'];details=[]
    for x,e in pairs:
     a=e['base_yaw_rad'];rot=np.array([[math.cos(a),-math.sin(a)],[math.sin(a),math.cos(a)]])
@@ -131,5 +149,5 @@ if __name__=='__main__':
  p=argparse.ArgumentParser();p.add_argument('--round',type=int,required=True);p.add_argument('--media',action='store_true');p.add_argument('--controller-source',type=Path);a=p.parse_args()
  if a.controller_source:
   ROOT=a.controller_source.resolve()
-  assert subprocess.check_output(['git','-C',str(ROOT),'rev-parse','HEAD'],text=True).strip()==obj(R/f'reloc20-round{a.round}/queue.json')['source_sha']
+  assert subprocess.check_output(['git','-C',str(ROOT),'rev-parse','HEAD'],text=True).strip()==obj(R/f'reloc21-round{a.round}/queue.json')['source_sha']
  main(a.round,a.media)

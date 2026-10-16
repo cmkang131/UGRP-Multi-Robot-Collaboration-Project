@@ -1,0 +1,164 @@
+{
+  "scope": "two completed CPU failures; remaining runs still active; before post-R1 non-physics fix",
+  "runs": [
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc21-r1-carry-progress-93266-6acde414/raw",
+      "result_decoded_sha256": "d314ff43e9dff68751d7fba950650490f19f9f7c0897bb954f9cad156ad09c1f",
+      "source_sha": "6acde414adc6fee74d024e508a9853e4c1cafcf8",
+      "cumulative": {
+        "candidates": 1771,
+        "endpoints_clear": 6,
+        "accepted": 6,
+        "rejected_start": 1765
+      },
+      "rejections": [
+        {
+          "category": "loaded_footprint",
+          "reason": "start_enclosure_overlap",
+          "blocked_object": "wall_divider_1",
+          "minimum_gap_m": -0.031820265046638874,
+          "N": 1765
+        },
+        {
+          "category": "loaded_footprint",
+          "reason": "issued_motion_enclosure_overlap",
+          "blocked_object": "wall_divider_1",
+          "minimum_gap_m": -0.03470861922081387,
+          "N": 98
+        },
+        {
+          "category": "loaded_footprint",
+          "reason": "direct_route_overlap_replan",
+          "blocked_object": "wall_divider_1",
+          "minimum_gap_m": -0.2800112234405294,
+          "N": 5
+        },
+        {
+          "category": "loaded_footprint",
+          "reason": "direct_route_overlap_replan",
+          "blocked_object": "own_rgb_cyan_track_1",
+          "minimum_gap_m": -0.34981494473333685,
+          "N": 1
+        }
+      ],
+      "nav_excluded_slots": [
+        [
+          4.6,
+          -0.09999999999999992
+        ]
+      ],
+      "last_nav_event": {
+        "t": 233.89999999619698,
+        "event": "candidate_rejected",
+        "reason": "no_complete_route",
+        "unchanged_choices": 44,
+        "slot": [
+          4.6,
+          -0.09999999999999992
+        ],
+        "category": "route_progress",
+        "blocked_object": "wall_divider_1",
+        "minimum_gap_m": -0.031820253286619055,
+        "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb"
+      },
+      "last_route_record": {
+        "t": 180.59999999745736,
+        "cursor": 1,
+        "target": [
+          2.451315863751641,
+          -2.3351768090539182
+        ],
+        "remaining_path_m": 3.0894910296983324,
+        "category": "route_progress",
+        "reason": "persistent_strict_route",
+        "blocked_object": "wall_divider_1",
+        "minimum_gap_m": 0.009328188366002032,
+        "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb"
+      },
+      "end_t": 234.4999999961828
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc21-r1-carry-complete-93266-6acde414/raw",
+      "result_decoded_sha256": "0d75a9c15fc2d2b1fe7040cab51120693880a472b05dee5f13befb0807f2e403",
+      "source_sha": "6acde414adc6fee74d024e508a9853e4c1cafcf8",
+      "cumulative": {
+        "candidates": 1795,
+        "endpoints_clear": 30,
+        "accepted": 30,
+        "rejected_start": 1765
+      },
+      "rejections": [
+        {
+          "category": "loaded_footprint",
+          "reason": "start_enclosure_overlap",
+          "blocked_object": "wall_divider_1",
+          "minimum_gap_m": -0.031820265046638874,
+          "N": 1765
+        },
+        {
+          "category": "loaded_footprint",
+          "reason": "issued_motion_enclosure_overlap",
+          "blocked_object": "wall_divider_1",
+          "minimum_gap_m": -0.03470861922081387,
+          "N": 98
+        },
+        {
+          "category": "loaded_footprint",
+          "reason": "direct_route_overlap_replan",
+          "blocked_object": "wall_divider_1",
+          "minimum_gap_m": -0.2800112234405294,
+          "N": 25
+        },
+        {
+          "category": "loaded_footprint",
+          "reason": "direct_route_overlap_replan",
+          "blocked_object": "own_rgb_cyan_track_1",
+          "minimum_gap_m": -0.483047500459395,
+          "N": 4
+        },
+        {
+          "category": "loaded_footprint",
+          "reason": "direct_route_overlap_replan",
+          "blocked_object": "wall_divider_2",
+          "minimum_gap_m": -0.2800117477669085,
+          "N": 1
+        }
+      ],
+      "nav_excluded_slots": [
+        [
+          4.6,
+          -0.09999999999999992
+        ]
+      ],
+      "last_nav_event": {
+        "t": 233.89999999619698,
+        "event": "candidate_rejected",
+        "reason": "no_complete_route",
+        "unchanged_choices": 44,
+        "slot": [
+          4.6,
+          -0.09999999999999992
+        ],
+        "category": "route_progress",
+        "blocked_object": "wall_divider_1",
+        "minimum_gap_m": -0.031820253286619055,
+        "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb"
+      },
+      "last_route_record": {
+        "t": 180.59999999745736,
+        "cursor": 1,
+        "target": [
+          2.451315863751641,
+          -2.3351768090539182
+        ],
+        "remaining_path_m": 3.0894910296983324,
+        "category": "route_progress",
+        "reason": "persistent_strict_route",
+        "blocked_object": "wall_divider_1",
+        "minimum_gap_m": 0.009328188366002032,
+        "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb"
+      },
+      "end_t": 234.4999999961828
+    }
+  ]
+}

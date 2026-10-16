@@ -1,0 +1,32 @@
+{
+  "checked_at": "2026-10-16T03:18:55.854790+00:00",
+  "leases": {
+    "reloc21.json": {
+      "task": "reloc21",
+      "pid": 3604,
+      "started_at": "2026-10-16T02:42:06.707707+00:00",
+      "expected_end": "2026-10-17T02:00:00+09:00",
+      "concurrency": 0,
+      "stage": "round1-done",
+      "owner": "Mac Codex reloc21",
+      "source_sha": "6acde414adc6fee74d024e508a9853e4c1cafcf8",
+      "pids": []
+    },
+    "warp4.json": {
+      "task": "warp4",
+      "pid": 10121,
+      "pids": [
+        10153,
+        10154
+      ],
+      "started_at": "2026-10-16T03:09:41.769610+00:00",
+      "expected_end": "finite initialization; 8h process cap",
+      "concurrency": 2,
+      "stage": "per-world exact model references"
+    }
+  },
+  "other_lease_files": [
+    "warp4.json"
+  ],
+  "ugrp_processes": []
+}

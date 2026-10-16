@@ -1,0 +1,1437 @@
+{
+  "analysis_host": "ugrp-sim-gcp2.asia-northeast3-a.c.ugrp-sim-b-1014.internal",
+  "reproduce": "python /home/ugrp/ugrp-sim/analysis-tools/reloc21-diagnose-cpu-r1.py",
+  "script_sha256": "30049118b96406536d57c242e807bda9aaaf6f3b4545f277d6c10375aa73d7fa",
+  "scope": "CPU diagnostic only. Wrong accepted headings are evaluator findings, not independent causal fractions; same seed repeated trajectories not pooled.",
+  "duplicates": [
+    {
+      "seed": 93266,
+      "progress_complete_same_actuator_trajectory": true,
+      "sha256": "6c047e0ddf583b431742a6d8ad3df6249c0169b5116243282521b40a42804d07"
+    },
+    {
+      "seed": 93315,
+      "progress_complete_same_actuator_trajectory": true,
+      "sha256": "124b92774f623bf65c653a57921bf19ab146997b0e266342b35bfc829806f959"
+    }
+  ],
+  "runs": [
+    {
+      "run": "reloc21-r1-carry-baseline-93266-6acde414",
+      "condition": "baseline",
+      "seed": 93266,
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc21-r1-carry-baseline-93266-6acde414/raw",
+      "command_rows": 2333,
+      "control_decoded_sha256": "973e6227a2daf9e2c5d57f1e544fafb72ed85d2736feeeb372fbf95ec322f524",
+      "route_plan_funnel": {
+        "slot_candidates": 1,
+        "slot_envelope_clear": 1,
+        "candidates": 279,
+        "endpoints_clear": 279,
+        "accepted": 279
+      },
+      "route_rejections": [
+        {
+          "category": "loaded_footprint",
+          "reason": "direct_route_overlap_replan",
+          "blocked_object": "own_rgb_cyan_track_1",
+          "minimum_gap_m": -0.34981494473333685,
+          "N": 21
+        },
+        {
+          "category": "loaded_footprint",
+          "reason": "direct_route_overlap_replan",
+          "blocked_object": "wall_divider_2",
+          "minimum_gap_m": -0.2800139551640164,
+          "N": 53
+        },
+        {
+          "category": "loaded_footprint",
+          "reason": "direct_route_overlap_replan",
+          "blocked_object": "wall_divider_1",
+          "minimum_gap_m": -0.2800138613026251,
+          "N": 205
+        }
+      ],
+      "heading": {
+        "accepted": 133,
+        "eval_error_over5": 0,
+        "first_bad": null,
+        "bad_examples": []
+      },
+      "final_pose_estimate": [
+        1.6998201558885826,
+        -1.6486977866543038,
+        -0.8749165701314747
+      ],
+      "goal": [
+        4.147999478033982,
+        0.3975839083315229
+      ],
+      "final_remaining_estimate_m": 3.1907445476901426,
+      "final_plan_selection": null,
+      "events": [],
+      "destination": {
+        "toggle": "destination_visual_acquire_v1",
+        "destination_search_replan_v1": true,
+        "destination_direction_preserve_v1": true,
+        "destination_camera_pan_v1": true,
+        "desired_pan": null,
+        "mode": "inactive",
+        "started_t": null,
+        "acquired_t": null,
+        "confirmed_t": null,
+        "acquisition_sim_s": null,
+        "views": 0,
+        "last": {},
+        "events": [],
+        "relocalizations": 0,
+        "failure": null,
+        "truth_inputs": 0,
+        "held_world_reads": 0
+      },
+      "result_decoded_sha256": "bd9d3024125a6c316cb17697c9a325787aae07fe49e7fa4834fdb94f6a1d01e0"
+    },
+    {
+      "run": "reloc21-r1-carry-progress-93266-6acde414",
+      "condition": "progress",
+      "seed": 93266,
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc21-r1-carry-progress-93266-6acde414/raw",
+      "command_rows": 2333,
+      "control_decoded_sha256": "6c047e0ddf583b431742a6d8ad3df6249c0169b5116243282521b40a42804d07",
+      "route_plan_funnel": {
+        "candidates": 1771,
+        "endpoints_clear": 6,
+        "accepted": 6,
+        "rejected_start": 1765
+      },
+      "route_rejections": [
+        {
+          "category": "loaded_footprint",
+          "reason": "direct_route_overlap_replan",
+          "blocked_object": "own_rgb_cyan_track_1",
+          "minimum_gap_m": -0.34981494473333685,
+          "N": 1
+        },
+        {
+          "category": "loaded_footprint",
+          "reason": "direct_route_overlap_replan",
+          "blocked_object": "wall_divider_1",
+          "minimum_gap_m": -0.2800112234405294,
+          "N": 5
+        },
+        {
+          "category": "loaded_footprint",
+          "reason": "issued_motion_enclosure_overlap",
+          "blocked_object": "wall_divider_1",
+          "minimum_gap_m": -0.03470861922081387,
+          "N": 98
+        },
+        {
+          "category": "loaded_footprint",
+          "reason": "start_enclosure_overlap",
+          "blocked_object": "wall_divider_1",
+          "minimum_gap_m": -0.031820265046638874,
+          "N": 1765
+        }
+      ],
+      "heading": {
+        "accepted": 184,
+        "eval_error_over5": 145,
+        "first_bad": {
+          "t": 181.09999999744554,
+          "observed_yaw_rad": 0.8025275537340661,
+          "eval_yaw_rad": -0.7681301749124261,
+          "error_deg": 89.9920589110481,
+          "innovation": {
+            "accepted": true,
+            "reason": "within_chi2_gate",
+            "nis": 0.44887899893363176,
+            "dof": 1,
+            "alpha": 0.01,
+            "chi2_threshold": 6.6348966010212145,
+            "kalman_gain": [
+              0.17415371279238545,
+              0.2292950340009638,
+              0.9997746780151836
+            ],
+            "innovation_rad": 0.3781452350246042,
+            "posterior_pose": [
+              2.302450236019589,
+              -2.3551215198016813,
+              0.8024423492991613
+            ],
+            "posterior_covariance": [
+              [
+                0.31257447475090044,
+                0.14157623163500935,
+                1.2500410735807933e-05
+              ],
+              [
+                0.14157623163500904,
+                0.19438742361902603,
+                1.6458346243298786e-05
+              ],
+              [
+                1.2500410735807933e-05,
+                1.6458346243298786e-05,
+                7.176185863662136e-05
+              ]
+            ],
+            "category": "heading_innovation",
+            "blocked_object": "own_rgb_wall_axis",
+            "minimum_gap_m": null,
+            "gap_scope": "not_applicable_localization_gate"
+          },
+          "scope": "evaluation only; never sent to controller"
+        },
+        "bad_examples": [
+          {
+            "t": 181.09999999744554,
+            "observed_yaw_rad": 0.8025275537340661,
+            "eval_yaw_rad": -0.7681301749124261,
+            "error_deg": 89.9920589110481,
+            "innovation": {
+              "accepted": true,
+              "reason": "within_chi2_gate",
+              "nis": 0.44887899893363176,
+              "dof": 1,
+              "alpha": 0.01,
+              "chi2_threshold": 6.6348966010212145,
+              "kalman_gain": [
+                0.17415371279238545,
+                0.2292950340009638,
+                0.9997746780151836
+              ],
+              "innovation_rad": 0.3781452350246042,
+              "posterior_pose": [
+                2.302450236019589,
+                -2.3551215198016813,
+                0.8024423492991613
+              ],
+              "posterior_covariance": [
+                [
+                  0.31257447475090044,
+                  0.14157623163500935,
+                  1.2500410735807933e-05
+                ],
+                [
+                  0.14157623163500904,
+                  0.19438742361902603,
+                  1.6458346243298786e-05
+                ],
+                [
+                  1.2500410735807933e-05,
+                  1.6458346243298786e-05,
+                  7.176185863662136e-05
+                ]
+              ],
+              "category": "heading_innovation",
+              "blocked_object": "own_rgb_wall_axis",
+              "minimum_gap_m": null,
+              "gap_scope": "not_applicable_localization_gate"
+            },
+            "scope": "evaluation only; never sent to controller"
+          },
+          {
+            "t": 181.2999999974408,
+            "observed_yaw_rad": 0.7988859124533731,
+            "eval_yaw_rad": -0.7677997264508775,
+            "error_deg": 89.76447493297044,
+            "innovation": {
+              "accepted": true,
+              "reason": "within_chi2_gate",
+              "nis": 0.012694839151164304,
+              "dof": 1,
+              "alpha": 0.01,
+              "chi2_threshold": 6.6348966010212145,
+              "kalman_gain": [
+                0.012585465939164323,
+                0.016481282483534174,
+                0.9344465448804159
+              ],
+              "innovation_rad": -0.0035564368457881024,
+              "posterior_pose": [
+                2.301882107699388,
+                -2.3557216552839777,
+                0.7991190491765292
+              ],
+              "posterior_covariance": [
+                [
+                  0.3126741794910592,
+                  0.14151439242577263,
+                  8.219925569494694e-07
+                ],
+                [
+                  0.14151439242577232,
+                  0.19448278107380712,
+                  1.076439410025237e-06
+                ],
+                [
+                  8.219925569494694e-07,
+                  1.0764394100252367e-06,
+                  6.103136017941125e-05
+                ]
+              ],
+              "category": "heading_innovation",
+              "blocked_object": "own_rgb_wall_axis",
+              "minimum_gap_m": null,
+              "gap_scope": "not_applicable_localization_gate"
+            },
+            "scope": "evaluation only; never sent to controller"
+          },
+          {
+            "t": 181.89999999742662,
+            "observed_yaw_rad": 0.8008814623382343,
+            "eval_yaw_rad": -0.7685982149745113,
+            "error_deg": 89.92456154157468,
+            "innovation": {
+              "accepted": true,
+              "reason": "within_chi2_gate",
+              "nis": 0.022677280740247063,
+              "dof": 1,
+              "alpha": 0.01,
+              "chi2_threshold": 6.6348966010212145,
+              "kalman_gain": [
+                0.006001273321797089,
+                0.007858960594350697,
+                0.4917422805024656
+              ],
+              "innovation_rad": 0.001762413161705112,
+              "posterior_pose": [
+                2.3018926844224774,
+                -2.355707804548389,
+                0.7999857022438537
+              ],
+              "posterior_covariance": [
+                [
+                  0.3126742982425405,
+                  0.1415144669416207,
+                  4.177840624390845e-07
+                ],
+                [
+                  0.1415144669416204,
+                  0.1944829007439531,
+                  5.471086397166983e-07
+                ],
+                [
+                  4.1778406243908456e-07,
+                  5.471086397166982e-07,
+                  3.423308298177294e-05
+                ]
+              ],
+              "category": "heading_innovation",
+              "blocked_object": "own_rgb_wall_axis",
+              "minimum_gap_m": null,
+              "gap_scope": "not_applicable_localization_gate"
+            },
+            "scope": "evaluation only; never sent to controller"
+          },
+          {
+            "t": 185.09999999735095,
+            "observed_yaw_rad": 0.7975898636481737,
+            "eval_yaw_rad": -0.7687736752222991,
+            "error_deg": 89.74601996045396,
+            "innovation": {
+              "accepted": true,
+              "reason": "within_chi2_gate",
+              "nis": 0.0436031059522131,
+              "dof": 1,
+              "alpha": 0.01,
+              "chi2_threshold": 6.6348966010212145,
+              "kalman_gain": [
+                0.0031736145676166173,
+                0.004156003316490777,
+                0.5161893464091191
+              ],
+              "innovation_rad": -0.0023958385956799333,
+              "posterior_pose": [
+                2.3018850809542086,
+                -2.3557177616615386,
+                0.798748995885048
+              ],
+              "posterior_covariance": [
+                [
+                  0.31267495581868476,
+                  0.14151489705534004,
+                  2.021283803085069e-07
+                ],
+                [
+                  0.14151489705533973,
+                  0.19448358257786627,
+                  2.646969885665536e-07
+                ],
+                [
+                  2.0212838030850692e-07,
+                  2.6469698856655356e-07,
+                  3.2876240734090995e-05
+                ]
+              ],
+              "category": "heading_innovation",
+              "blocked_object": "own_rgb_wall_axis",
+              "minimum_gap_m": null,
+              "gap_scope": "not_applicable_localization_gate"
+            },
+            "scope": "evaluation only; never sent to controller"
+          }
+        ]
+      },
+      "final_pose_estimate": [
+        2.3018824234713398,
+        -2.355721241765178,
+        0.7980737298130656
+      ],
+      "goal": [
+        4.247999478033981,
+        -0.10241609166847702
+      ],
+      "final_remaining_estimate_m": 2.977373958627281,
+      "final_plan_selection": [
+        {
+          "slot": [
+            4.6,
+            -0.09999999999999992
+          ],
+          "goal": [
+            4.247999478033981,
+            -0.10241609166847702
+          ],
+          "accepted": false,
+          "category": "complete_plan",
+          "blocked_object": "unchanged_route_candidate",
+          "minimum_gap_m": null,
+          "reason": "unchanged_choice_removed_after_three",
+          "gap_scope": "not_applicable_progress_filter"
+        },
+        {
+          "slot": [
+            4.5,
+            0.4
+          ],
+          "goal": [
+            4.147999478033982,
+            0.3975839083315229
+          ],
+          "accepted": false,
+          "category": "loaded_footprint",
+          "blocked_object": "wall_divider_1",
+          "minimum_gap_m": -0.031820253286619055,
+          "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+          "reason": "start_enclosure_overlap"
+        },
+        {
+          "slot": [
+            4.6,
+            0.4
+          ],
+          "goal": [
+            4.247999478033981,
+            0.3975839083315229
+          ],
+          "accepted": false,
+          "category": "loaded_footprint",
+          "blocked_object": "wall_divider_1",
+          "minimum_gap_m": -0.031820253286619055,
+          "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+          "reason": "start_enclosure_overlap"
+        },
+        {
+          "slot": [
+            4.699999999999999,
+            0.4
+          ],
+          "goal": [
+            4.347999478033981,
+            0.3975839083315229
+          ],
+          "accepted": false,
+          "category": "loaded_footprint",
+          "blocked_object": "wall_divider_1",
+          "minimum_gap_m": -0.031820253286619055,
+          "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+          "reason": "start_enclosure_overlap"
+        },
+        {
+          "slot": [
+            4.6,
+            0.8999999999999999
+          ],
+          "goal": [
+            4.247999478033981,
+            0.8975839083315228
+          ],
+          "accepted": false,
+          "category": "loaded_footprint",
+          "blocked_object": "wall_divider_1",
+          "minimum_gap_m": -0.031820253286619055,
+          "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+          "reason": "start_enclosure_overlap"
+        }
+      ],
+      "events": [
+        {
+          "category": "progress_event",
+          "reason": "route_selected",
+          "N": 6,
+          "blocked_object": "route_or_own_rgb",
+          "minimum_gap_m": null,
+          "gap_scope": "see_original_events_for_physical_context"
+        },
+        {
+          "category": "progress_event",
+          "reason": "candidate_no_progress",
+          "N": 8,
+          "blocked_object": "route_or_own_rgb",
+          "minimum_gap_m": null,
+          "gap_scope": "see_original_events_for_physical_context"
+        },
+        {
+          "category": "progress_event",
+          "reason": "candidate_rejected",
+          "N": 42,
+          "blocked_object": "route_or_own_rgb",
+          "minimum_gap_m": null,
+          "gap_scope": "see_original_events_for_physical_context"
+        }
+      ],
+      "destination": {
+        "toggle": "destination_visual_acquire_v1",
+        "destination_search_replan_v1": true,
+        "destination_direction_preserve_v1": true,
+        "destination_camera_pan_v1": true,
+        "desired_pan": null,
+        "mode": "inactive",
+        "started_t": null,
+        "acquired_t": null,
+        "confirmed_t": null,
+        "acquisition_sim_s": null,
+        "views": 0,
+        "last": {},
+        "events": [],
+        "relocalizations": 0,
+        "failure": null,
+        "truth_inputs": 0,
+        "held_world_reads": 0
+      },
+      "result_decoded_sha256": "d314ff43e9dff68751d7fba950650490f19f9f7c0897bb954f9cad156ad09c1f"
+    },
+    {
+      "run": "reloc21-r1-carry-complete-93266-6acde414",
+      "condition": "complete",
+      "seed": 93266,
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc21-r1-carry-complete-93266-6acde414/raw",
+      "command_rows": 2333,
+      "control_decoded_sha256": "6c047e0ddf583b431742a6d8ad3df6249c0169b5116243282521b40a42804d07",
+      "route_plan_funnel": {
+        "candidates": 1795,
+        "endpoints_clear": 30,
+        "accepted": 30,
+        "rejected_start": 1765
+      },
+      "route_rejections": [
+        {
+          "category": "loaded_footprint",
+          "reason": "direct_route_overlap_replan",
+          "blocked_object": "own_rgb_cyan_track_1",
+          "minimum_gap_m": -0.483047500459395,
+          "N": 4
+        },
+        {
+          "category": "loaded_footprint",
+          "reason": "direct_route_overlap_replan",
+          "blocked_object": "wall_divider_2",
+          "minimum_gap_m": -0.2800117477669085,
+          "N": 1
+        },
+        {
+          "category": "loaded_footprint",
+          "reason": "direct_route_overlap_replan",
+          "blocked_object": "wall_divider_1",
+          "minimum_gap_m": -0.2800112234405294,
+          "N": 25
+        },
+        {
+          "category": "loaded_footprint",
+          "reason": "issued_motion_enclosure_overlap",
+          "blocked_object": "wall_divider_1",
+          "minimum_gap_m": -0.03470861922081387,
+          "N": 98
+        },
+        {
+          "category": "loaded_footprint",
+          "reason": "start_enclosure_overlap",
+          "blocked_object": "wall_divider_1",
+          "minimum_gap_m": -0.031820265046638874,
+          "N": 1765
+        }
+      ],
+      "heading": {
+        "accepted": 184,
+        "eval_error_over5": 145,
+        "first_bad": {
+          "t": 181.09999999744554,
+          "observed_yaw_rad": 0.8025275537340661,
+          "eval_yaw_rad": -0.7681301749124261,
+          "error_deg": 89.9920589110481,
+          "innovation": {
+            "accepted": true,
+            "reason": "within_chi2_gate",
+            "nis": 0.44887899893363176,
+            "dof": 1,
+            "alpha": 0.01,
+            "chi2_threshold": 6.6348966010212145,
+            "kalman_gain": [
+              0.17415371279238545,
+              0.2292950340009638,
+              0.9997746780151836
+            ],
+            "innovation_rad": 0.3781452350246042,
+            "posterior_pose": [
+              2.302450236019589,
+              -2.3551215198016813,
+              0.8024423492991613
+            ],
+            "posterior_covariance": [
+              [
+                0.31257447475090044,
+                0.14157623163500935,
+                1.2500410735807933e-05
+              ],
+              [
+                0.14157623163500904,
+                0.19438742361902603,
+                1.6458346243298786e-05
+              ],
+              [
+                1.2500410735807933e-05,
+                1.6458346243298786e-05,
+                7.176185863662136e-05
+              ]
+            ],
+            "category": "heading_innovation",
+            "blocked_object": "own_rgb_wall_axis",
+            "minimum_gap_m": null,
+            "gap_scope": "not_applicable_localization_gate"
+          },
+          "scope": "evaluation only; never sent to controller"
+        },
+        "bad_examples": [
+          {
+            "t": 181.09999999744554,
+            "observed_yaw_rad": 0.8025275537340661,
+            "eval_yaw_rad": -0.7681301749124261,
+            "error_deg": 89.9920589110481,
+            "innovation": {
+              "accepted": true,
+              "reason": "within_chi2_gate",
+              "nis": 0.44887899893363176,
+              "dof": 1,
+              "alpha": 0.01,
+              "chi2_threshold": 6.6348966010212145,
+              "kalman_gain": [
+                0.17415371279238545,
+                0.2292950340009638,
+                0.9997746780151836
+              ],
+              "innovation_rad": 0.3781452350246042,
+              "posterior_pose": [
+                2.302450236019589,
+                -2.3551215198016813,
+                0.8024423492991613
+              ],
+              "posterior_covariance": [
+                [
+                  0.31257447475090044,
+                  0.14157623163500935,
+                  1.2500410735807933e-05
+                ],
+                [
+                  0.14157623163500904,
+                  0.19438742361902603,
+                  1.6458346243298786e-05
+                ],
+                [
+                  1.2500410735807933e-05,
+                  1.6458346243298786e-05,
+                  7.176185863662136e-05
+                ]
+              ],
+              "category": "heading_innovation",
+              "blocked_object": "own_rgb_wall_axis",
+              "minimum_gap_m": null,
+              "gap_scope": "not_applicable_localization_gate"
+            },
+            "scope": "evaluation only; never sent to controller"
+          },
+          {
+            "t": 181.2999999974408,
+            "observed_yaw_rad": 0.7988859124533731,
+            "eval_yaw_rad": -0.7677997264508775,
+            "error_deg": 89.76447493297044,
+            "innovation": {
+              "accepted": true,
+              "reason": "within_chi2_gate",
+              "nis": 0.012694839151164304,
+              "dof": 1,
+              "alpha": 0.01,
+              "chi2_threshold": 6.6348966010212145,
+              "kalman_gain": [
+                0.012585465939164323,
+                0.016481282483534174,
+                0.9344465448804159
+              ],
+              "innovation_rad": -0.0035564368457881024,
+              "posterior_pose": [
+                2.301882107699388,
+                -2.3557216552839777,
+                0.7991190491765292
+              ],
+              "posterior_covariance": [
+                [
+                  0.3126741794910592,
+                  0.14151439242577263,
+                  8.219925569494694e-07
+                ],
+                [
+                  0.14151439242577232,
+                  0.19448278107380712,
+                  1.076439410025237e-06
+                ],
+                [
+                  8.219925569494694e-07,
+                  1.0764394100252367e-06,
+                  6.103136017941125e-05
+                ]
+              ],
+              "category": "heading_innovation",
+              "blocked_object": "own_rgb_wall_axis",
+              "minimum_gap_m": null,
+              "gap_scope": "not_applicable_localization_gate"
+            },
+            "scope": "evaluation only; never sent to controller"
+          },
+          {
+            "t": 181.89999999742662,
+            "observed_yaw_rad": 0.8008814623382343,
+            "eval_yaw_rad": -0.7685982149745113,
+            "error_deg": 89.92456154157468,
+            "innovation": {
+              "accepted": true,
+              "reason": "within_chi2_gate",
+              "nis": 0.022677280740247063,
+              "dof": 1,
+              "alpha": 0.01,
+              "chi2_threshold": 6.6348966010212145,
+              "kalman_gain": [
+                0.006001273321797089,
+                0.007858960594350697,
+                0.4917422805024656
+              ],
+              "innovation_rad": 0.001762413161705112,
+              "posterior_pose": [
+                2.3018926844224774,
+                -2.355707804548389,
+                0.7999857022438537
+              ],
+              "posterior_covariance": [
+                [
+                  0.3126742982425405,
+                  0.1415144669416207,
+                  4.177840624390845e-07
+                ],
+                [
+                  0.1415144669416204,
+                  0.1944829007439531,
+                  5.471086397166983e-07
+                ],
+                [
+                  4.1778406243908456e-07,
+                  5.471086397166982e-07,
+                  3.423308298177294e-05
+                ]
+              ],
+              "category": "heading_innovation",
+              "blocked_object": "own_rgb_wall_axis",
+              "minimum_gap_m": null,
+              "gap_scope": "not_applicable_localization_gate"
+            },
+            "scope": "evaluation only; never sent to controller"
+          },
+          {
+            "t": 185.09999999735095,
+            "observed_yaw_rad": 0.7975898636481737,
+            "eval_yaw_rad": -0.7687736752222991,
+            "error_deg": 89.74601996045396,
+            "innovation": {
+              "accepted": true,
+              "reason": "within_chi2_gate",
+              "nis": 0.0436031059522131,
+              "dof": 1,
+              "alpha": 0.01,
+              "chi2_threshold": 6.6348966010212145,
+              "kalman_gain": [
+                0.0031736145676166173,
+                0.004156003316490777,
+                0.5161893464091191
+              ],
+              "innovation_rad": -0.0023958385956799333,
+              "posterior_pose": [
+                2.3018850809542086,
+                -2.3557177616615386,
+                0.798748995885048
+              ],
+              "posterior_covariance": [
+                [
+                  0.31267495581868476,
+                  0.14151489705534004,
+                  2.021283803085069e-07
+                ],
+                [
+                  0.14151489705533973,
+                  0.19448358257786627,
+                  2.646969885665536e-07
+                ],
+                [
+                  2.0212838030850692e-07,
+                  2.6469698856655356e-07,
+                  3.2876240734090995e-05
+                ]
+              ],
+              "category": "heading_innovation",
+              "blocked_object": "own_rgb_wall_axis",
+              "minimum_gap_m": null,
+              "gap_scope": "not_applicable_localization_gate"
+            },
+            "scope": "evaluation only; never sent to controller"
+          }
+        ]
+      },
+      "final_pose_estimate": [
+        2.3018824234713398,
+        -2.355721241765178,
+        0.7980737298130656
+      ],
+      "goal": [
+        4.247999478033981,
+        -0.10241609166847702
+      ],
+      "final_remaining_estimate_m": 2.977373958627281,
+      "final_plan_selection": [
+        {
+          "slot": [
+            4.6,
+            0.4
+          ],
+          "goal": [
+            4.247999478033981,
+            0.3975839083315229
+          ],
+          "accepted": false,
+          "category": "loaded_footprint",
+          "blocked_object": "wall_divider_1",
+          "minimum_gap_m": -0.031820253286619055,
+          "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+          "reason": "start_enclosure_overlap"
+        },
+        {
+          "slot": [
+            4.5,
+            0.4
+          ],
+          "goal": [
+            4.147999478033982,
+            0.3975839083315229
+          ],
+          "accepted": false,
+          "category": "loaded_footprint",
+          "blocked_object": "wall_divider_1",
+          "minimum_gap_m": -0.031820253286619055,
+          "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+          "reason": "start_enclosure_overlap"
+        },
+        {
+          "slot": [
+            4.699999999999999,
+            0.4
+          ],
+          "goal": [
+            4.347999478033981,
+            0.3975839083315229
+          ],
+          "accepted": false,
+          "category": "loaded_footprint",
+          "blocked_object": "wall_divider_1",
+          "minimum_gap_m": -0.031820253286619055,
+          "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+          "reason": "start_enclosure_overlap"
+        },
+        {
+          "slot": [
+            4.6,
+            -0.09999999999999992
+          ],
+          "goal": [
+            4.247999478033981,
+            -0.10241609166847702
+          ],
+          "accepted": false,
+          "category": "complete_plan",
+          "blocked_object": "unchanged_route_candidate",
+          "minimum_gap_m": null,
+          "reason": "unchanged_choice_removed_after_three",
+          "gap_scope": "not_applicable_progress_filter"
+        },
+        {
+          "slot": [
+            4.6,
+            0.8999999999999999
+          ],
+          "goal": [
+            4.247999478033981,
+            0.8975839083315228
+          ],
+          "accepted": false,
+          "category": "loaded_footprint",
+          "blocked_object": "wall_divider_1",
+          "minimum_gap_m": -0.031820253286619055,
+          "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb",
+          "reason": "start_enclosure_overlap"
+        }
+      ],
+      "events": [
+        {
+          "category": "progress_event",
+          "reason": "route_selected",
+          "N": 6,
+          "blocked_object": "route_or_own_rgb",
+          "minimum_gap_m": null,
+          "gap_scope": "see_original_events_for_physical_context"
+        },
+        {
+          "category": "progress_event",
+          "reason": "candidate_no_progress",
+          "N": 8,
+          "blocked_object": "route_or_own_rgb",
+          "minimum_gap_m": null,
+          "gap_scope": "see_original_events_for_physical_context"
+        },
+        {
+          "category": "progress_event",
+          "reason": "candidate_rejected",
+          "N": 42,
+          "blocked_object": "route_or_own_rgb",
+          "minimum_gap_m": null,
+          "gap_scope": "see_original_events_for_physical_context"
+        }
+      ],
+      "destination": {
+        "toggle": "destination_visual_acquire_v1",
+        "destination_search_replan_v1": true,
+        "destination_direction_preserve_v1": true,
+        "destination_camera_pan_v1": true,
+        "desired_pan": null,
+        "mode": "inactive",
+        "started_t": null,
+        "acquired_t": null,
+        "confirmed_t": null,
+        "acquisition_sim_s": null,
+        "views": 0,
+        "last": {},
+        "events": [],
+        "relocalizations": 0,
+        "failure": null,
+        "truth_inputs": 0,
+        "held_world_reads": 0
+      },
+      "result_decoded_sha256": "0d75a9c15fc2d2b1fe7040cab51120693880a472b05dee5f13befb0807f2e403"
+    },
+    {
+      "run": "reloc21-r1-carry-baseline-93315-6acde414",
+      "condition": "baseline",
+      "seed": 93315,
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc21-r1-carry-baseline-93315-6acde414/raw",
+      "command_rows": 2067,
+      "control_decoded_sha256": "62480e1d7a24c9e1948f1aa7758b9400a8edd8cdd5d29b9ee312a854c2800902",
+      "route_plan_funnel": {
+        "slot_candidates": 1,
+        "slot_envelope_clear": 1,
+        "candidates": 256,
+        "endpoints_clear": 256,
+        "accepted": 256
+      },
+      "route_rejections": [
+        {
+          "category": "loaded_footprint",
+          "reason": "direct_route_overlap_replan",
+          "blocked_object": "wall_divider_1",
+          "minimum_gap_m": -0.2800139857063979,
+          "N": 256
+        }
+      ],
+      "heading": {
+        "accepted": 4,
+        "eval_error_over5": 0,
+        "first_bad": null,
+        "bad_examples": []
+      },
+      "final_pose_estimate": [
+        1.4937611319910495,
+        -1.149468403729665,
+        -1.0783738171610544
+      ],
+      "goal": [
+        2.5468745337995466,
+        -0.8478096468979931
+      ],
+      "final_remaining_estimate_m": 1.0954660390180495,
+      "final_plan_selection": null,
+      "events": [],
+      "destination": {
+        "toggle": "destination_visual_acquire_v1",
+        "destination_search_replan_v1": true,
+        "destination_direction_preserve_v1": true,
+        "destination_camera_pan_v1": true,
+        "desired_pan": null,
+        "mode": "inactive",
+        "started_t": null,
+        "acquired_t": null,
+        "confirmed_t": null,
+        "acquisition_sim_s": null,
+        "views": 0,
+        "last": {},
+        "events": [],
+        "relocalizations": 0,
+        "failure": null,
+        "truth_inputs": 0,
+        "held_world_reads": 0
+      },
+      "result_decoded_sha256": "cd8262da8a1d5714903c98ce37e69f3b640aa0969fa482858002f4d684aa3ed6"
+    },
+    {
+      "run": "reloc21-r1-carry-progress-93315-6acde414",
+      "condition": "progress",
+      "seed": 93315,
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc21-r1-carry-progress-93315-6acde414/raw",
+      "command_rows": 3000,
+      "control_decoded_sha256": "124b92774f623bf65c653a57921bf19ab146997b0e266342b35bfc829806f959",
+      "route_plan_funnel": {
+        "candidates": 11,
+        "endpoints_clear": 9,
+        "accepted": 9,
+        "rejected_goal": 2
+      },
+      "route_rejections": [
+        {
+          "category": "loaded_footprint",
+          "reason": "direct_route_overlap_replan",
+          "blocked_object": "wall_divider_1",
+          "minimum_gap_m": -0.28000593260468803,
+          "N": 7
+        },
+        {
+          "category": "loaded_footprint",
+          "reason": "goal_enclosure_overlap",
+          "blocked_object": "wall_divider_1",
+          "minimum_gap_m": -0.2743435499117832,
+          "N": 2
+        }
+      ],
+      "heading": {
+        "accepted": 5,
+        "eval_error_over5": 0,
+        "first_bad": null,
+        "bad_examples": []
+      },
+      "final_pose_estimate": [
+        3.023937235565091,
+        -1.041009031999857,
+        -1.611489121794344
+      ],
+      "goal": [
+        2.6468745337995467,
+        -1.347809646897993
+      ],
+      "final_remaining_estimate_m": 0.4861099653006572,
+      "final_plan_selection": [
+        {
+          "slot": [
+            3.0,
+            -1.3499999999999999
+          ],
+          "goal": [
+            2.6468745337995467,
+            -1.347809646897993
+          ],
+          "accepted": true,
+          "category": "complete_plan",
+          "blocked_object": "wall_divider_1",
+          "minimum_gap_m": 0.007687698310655365,
+          "reason": "complete_plan_clear",
+          "path_length_m": 1.0337843765347583,
+          "estimated_command_s": 36.419257831132704,
+          "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb"
+        }
+      ],
+      "events": [
+        {
+          "category": "progress_event",
+          "reason": "route_selected",
+          "N": 7,
+          "blocked_object": "route_or_own_rgb",
+          "minimum_gap_m": null,
+          "gap_scope": "see_original_events_for_physical_context"
+        },
+        {
+          "category": "progress_event",
+          "reason": "candidate_no_progress",
+          "N": 6,
+          "blocked_object": "route_or_own_rgb",
+          "minimum_gap_m": null,
+          "gap_scope": "see_original_events_for_physical_context"
+        }
+      ],
+      "destination": {
+        "toggle": "destination_visual_acquire_v1",
+        "destination_search_replan_v1": true,
+        "destination_direction_preserve_v1": true,
+        "destination_camera_pan_v1": true,
+        "desired_pan": 1491,
+        "mode": "expand",
+        "started_t": 170.39999999769856,
+        "acquired_t": null,
+        "confirmed_t": null,
+        "acquisition_sim_s": null,
+        "views": 1253,
+        "last": {
+          "t": 301.19999999460555,
+          "scene_floor_mask": {
+            "option": "scene_floor_landmark_mask_v1",
+            "wall_class_pixels": 0,
+            "excluded_visible_pixels": 0,
+            "floor_lk_changed": false,
+            "doors_clear_changed": false,
+            "truth_inputs": 0
+          },
+          "reason": "destination_colour_absent",
+          "pixels": 0,
+          "place_gate": false
+        },
+        "events": [
+          {
+            "t": 170.39999999769856,
+            "event": "destination_acquire_start",
+            "ellipse_candidates": 30,
+            "covariance": [
+              [
+                0.6310646618560379,
+                -0.12154005683424261,
+                -0.5051492851938548
+              ],
+              [
+                -0.12154005683424221,
+                0.5710634835983991,
+                0.30358512756001005
+              ],
+              [
+                -0.5051492851938548,
+                0.30358512756001005,
+                0.7695319890862422
+              ]
+            ],
+            "expected_bearing_rad": 0.9758483222391974
+          },
+          {
+            "t": 173.5999999976229,
+            "event": "rejection",
+            "category": "route",
+            "reason": "ellipse_waypoint_no_path",
+            "blocked_object": "wall_divider_1",
+            "minimum_gap_m": -0.275014,
+            "gap_scope": "101 samples of requested straight corridor; not a proof that no detour exists",
+            "diagnostic_checks": 808
+          },
+          {
+            "t": 173.5999999976229,
+            "event": "rejection",
+            "category": "route",
+            "reason": "ellipse_waypoint_no_path",
+            "blocked_object": "wall_divider_1",
+            "minimum_gap_m": -0.22326308355473087,
+            "gap_scope": "101 samples of requested straight corridor; not a proof that no detour exists",
+            "diagnostic_checks": 808
+          },
+          {
+            "t": 173.5999999976229,
+            "event": "ellipse_search_waypoint",
+            "xy": [
+              3.016653634618741,
+              -0.8996811297382888
+            ]
+          },
+          {
+            "t": 237.69999999610712,
+            "event": "ellipse_search_waypoint",
+            "xy": [
+              3.119075001152227,
+              -1.742005214445246
+            ]
+          }
+        ],
+        "relocalizations": 0,
+        "failure": null,
+        "truth_inputs": 0,
+        "held_world_reads": 0
+      },
+      "result_decoded_sha256": "f6e35ce61f371c7d43d11e7b85fdb2e159918e38d8b62414356b2d14fb59233b"
+    },
+    {
+      "run": "reloc21-r1-carry-complete-93315-6acde414",
+      "condition": "complete",
+      "seed": 93315,
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc21-r1-carry-complete-93315-6acde414/raw",
+      "command_rows": 3000,
+      "control_decoded_sha256": "124b92774f623bf65c653a57921bf19ab146997b0e266342b35bfc829806f959",
+      "route_plan_funnel": {
+        "candidates": 39,
+        "endpoints_clear": 37,
+        "accepted": 37,
+        "rejected_goal": 2
+      },
+      "route_rejections": [
+        {
+          "category": "loaded_footprint",
+          "reason": "direct_route_overlap_replan",
+          "blocked_object": "wall_divider_1",
+          "minimum_gap_m": -0.28001152422425685,
+          "N": 35
+        },
+        {
+          "category": "loaded_footprint",
+          "reason": "goal_enclosure_overlap",
+          "blocked_object": "wall_divider_1",
+          "minimum_gap_m": -0.2743435499117832,
+          "N": 2
+        }
+      ],
+      "heading": {
+        "accepted": 5,
+        "eval_error_over5": 0,
+        "first_bad": null,
+        "bad_examples": []
+      },
+      "final_pose_estimate": [
+        3.023937235565091,
+        -1.041009031999857,
+        -1.611489121794344
+      ],
+      "goal": [
+        2.6468745337995467,
+        -1.347809646897993
+      ],
+      "final_remaining_estimate_m": 0.4861099653006572,
+      "final_plan_selection": [
+        {
+          "slot": [
+            3.0,
+            -0.85
+          ],
+          "goal": [
+            2.6468745337995467,
+            -0.8478096468979931
+          ],
+          "accepted": true,
+          "category": "complete_plan",
+          "blocked_object": "wall_divider_1",
+          "minimum_gap_m": 0.007687698310655365,
+          "reason": "complete_plan_clear",
+          "path_length_m": 1.5307635060378177,
+          "estimated_command_s": 43.6981830109286,
+          "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb"
+        },
+        {
+          "slot": [
+            2.9,
+            -0.85
+          ],
+          "goal": [
+            2.5468745337995466,
+            -0.8478096468979931
+          ],
+          "accepted": true,
+          "category": "complete_plan",
+          "blocked_object": "wall_divider_1",
+          "minimum_gap_m": 0.007687698310655365,
+          "reason": "complete_plan_clear",
+          "path_length_m": 1.5259417542768372,
+          "estimated_command_s": 45.1693705085833,
+          "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb"
+        },
+        {
+          "slot": [
+            3.1,
+            -0.85
+          ],
+          "goal": [
+            2.746874533799547,
+            -0.8478096468979931
+          ],
+          "accepted": true,
+          "category": "complete_plan",
+          "blocked_object": "wall_divider_1",
+          "minimum_gap_m": 0.007687698310655365,
+          "reason": "complete_plan_clear",
+          "path_length_m": 1.5431677023890875,
+          "estimated_command_s": 42.3418066056254,
+          "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb"
+        },
+        {
+          "slot": [
+            3.0,
+            -1.3499999999999999
+          ],
+          "goal": [
+            2.6468745337995467,
+            -1.347809646897993
+          ],
+          "accepted": true,
+          "category": "complete_plan",
+          "blocked_object": "wall_divider_1",
+          "minimum_gap_m": 0.007687698310655365,
+          "reason": "complete_plan_clear",
+          "path_length_m": 1.0337843765347583,
+          "estimated_command_s": 36.419257831132704,
+          "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb"
+        },
+        {
+          "slot": [
+            3.0,
+            -0.35000000000000003
+          ],
+          "goal": [
+            2.6468745337995467,
+            -0.34780964689799315
+          ],
+          "accepted": true,
+          "category": "complete_plan",
+          "blocked_object": "wall_divider_1",
+          "minimum_gap_m": 0.007687698310655365,
+          "reason": "complete_plan_clear",
+          "path_length_m": 2.02941121985062,
+          "estimated_command_s": 50.409668920355244,
+          "gap_scope": "rotation_invariant_body_cargo_enclosure_to_authored_map_or_own_rgb"
+        }
+      ],
+      "events": [
+        {
+          "category": "progress_event",
+          "reason": "route_selected",
+          "N": 7,
+          "blocked_object": "route_or_own_rgb",
+          "minimum_gap_m": null,
+          "gap_scope": "see_original_events_for_physical_context"
+        },
+        {
+          "category": "progress_event",
+          "reason": "candidate_no_progress",
+          "N": 6,
+          "blocked_object": "route_or_own_rgb",
+          "minimum_gap_m": null,
+          "gap_scope": "see_original_events_for_physical_context"
+        }
+      ],
+      "destination": {
+        "toggle": "destination_visual_acquire_v1",
+        "destination_search_replan_v1": true,
+        "destination_direction_preserve_v1": true,
+        "destination_camera_pan_v1": true,
+        "desired_pan": 1491,
+        "mode": "expand",
+        "started_t": 170.39999999769856,
+        "acquired_t": null,
+        "confirmed_t": null,
+        "acquisition_sim_s": null,
+        "views": 1253,
+        "last": {
+          "t": 301.19999999460555,
+          "scene_floor_mask": {
+            "option": "scene_floor_landmark_mask_v1",
+            "wall_class_pixels": 0,
+            "excluded_visible_pixels": 0,
+            "floor_lk_changed": false,
+            "doors_clear_changed": false,
+            "truth_inputs": 0
+          },
+          "reason": "destination_colour_absent",
+          "pixels": 0,
+          "place_gate": false
+        },
+        "events": [
+          {
+            "t": 170.39999999769856,
+            "event": "destination_acquire_start",
+            "ellipse_candidates": 30,
+            "covariance": [
+              [
+                0.6310646618560379,
+                -0.12154005683424261,
+                -0.5051492851938548
+              ],
+              [
+                -0.12154005683424221,
+                0.5710634835983991,
+                0.30358512756001005
+              ],
+              [
+                -0.5051492851938548,
+                0.30358512756001005,
+                0.7695319890862422
+              ]
+            ],
+            "expected_bearing_rad": 0.9758483222391974
+          },
+          {
+            "t": 173.5999999976229,
+            "event": "rejection",
+            "category": "route",
+            "reason": "ellipse_waypoint_no_path",
+            "blocked_object": "wall_divider_1",
+            "minimum_gap_m": -0.275014,
+            "gap_scope": "101 samples of requested straight corridor; not a proof that no detour exists",
+            "diagnostic_checks": 808
+          },
+          {
+            "t": 173.5999999976229,
+            "event": "rejection",
+            "category": "route",
+            "reason": "ellipse_waypoint_no_path",
+            "blocked_object": "wall_divider_1",
+            "minimum_gap_m": -0.22326308355473087,
+            "gap_scope": "101 samples of requested straight corridor; not a proof that no detour exists",
+            "diagnostic_checks": 808
+          },
+          {
+            "t": 173.5999999976229,
+            "event": "ellipse_search_waypoint",
+            "xy": [
+              3.016653634618741,
+              -0.8996811297382888
+            ]
+          },
+          {
+            "t": 237.69999999610712,
+            "event": "ellipse_search_waypoint",
+            "xy": [
+              3.119075001152227,
+              -1.742005214445246
+            ]
+          }
+        ],
+        "relocalizations": 0,
+        "failure": null,
+        "truth_inputs": 0,
+        "held_world_reads": 0
+      },
+      "result_decoded_sha256": "3472d339a6f0b7b8e4b52ff42571bb21c84e8945bf8e93a472d8addb057786ec"
+    }
+  ]
+}

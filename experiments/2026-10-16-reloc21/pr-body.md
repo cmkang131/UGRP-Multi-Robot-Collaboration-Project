@@ -1,11 +1,10 @@
-reloc20은 운반 제어9회가 시작됐지만 place0/9였고, R3 네 실행은 운반 단계180 SIM초에서 목적지 획득 전에 끝났습니다. 공용 알림의 "제어 시작0/9"를 원본16시도 관문표로 정정하고, 재위치추정 소진6회를 호스트 오류와 구분합니다.
+reloc20의 실제 운반 제어 시작9/10·place0/9를 원본16시도 표로 확인해 공용 알림의 “제어 시작0/9”를 정정했습니다. 위치재추정 소진을 HOST_ERROR와 구분했고 기존 동작은 유지됩니다.
 
-기본 off 경로 후보는 strict 하중 footprint 검사를 유지하며 유효 경로·목표를 보존하고, 무진행 동일 선택3회 제거와5개 slot의 경로·place 전진·후퇴 전체 검사를 추가합니다. 기존 목적지 RGB 획득을 계속 켜고 성공 기준·물리·카메라·SIM 상한은 R1에서 유지합니다.
+기본 off 경로 유지·완전 place 계획 후보를 gcp2 CPU R1에서 검증했지만 **place0/6·완주0/6**, cap_end6·위치추정 소진2·HOST_ERROR0으로 채택하지 않습니다. 기준선→후보 xy/yaw p95는93266 .387m/18.30°→.556m/89.90°,93315 .139m/16.79°→1.532m/107.04°로 악화됐습니다. 후보의 자기추정도착2/4·목적지색획득0이며 progress/complete는 시드별 같은 명령 궤적입니다. SIM 상한300/phase180·물리·카메라·성공 기준은 유지했습니다.
 
-- Base: `claude/reloc20` (`2f4f469ef`), 선행 DRAFT #543. 미채택 DEV 후보이며 병합 준비가 아닙니다.
-- 비물리 검증: 관련3파일40 passed. Mac 물리·렌더·GUI0.
-- gcp2 R1: 고정 source `6acde414adc6fee74d024e508a9853e4c1cafcf8`, baseline2/progress2/complete2/짧은2 실행 중. 최대3라운드·자체8동시·공용40, beamact3 예정16개 용량 예약.
-- place·완주·오차 p95·감사·종료 분포·전체 raw 해시·실패 프레임은 완료 후 갱신합니다. 실행 중 결과를 성공/회수 완료로 세지 않습니다.
-- 모델 가격 인상 경보를 확인했으며 신규 LLM 호출/배치0. gcp1 접근0, Google Drive 미사용.
+- 93266의 시작 enclosure 겹침1765회·29.7% hold와 반복 제거 결함을 확인했습니다. 후보별1 SIM초·3회 한도 및 전후보 소진 실패 반환으로 수정했습니다. 수정 후41개 비물리 회귀 통과, 새 물리 검증0입니다.
+- 물리 source `6acde414adc6fee74d024e508a9853e4c1cafcf8`. 원본18,907파일 SHA·입력 감사8/8의0/0·fetch-lite145파일 SHA 일치. 기본 off 명령5514개·영상4616장·종료시각이 reloc20과 같습니다.
+- 실패2개 전체2Hz·종료10Hz 직접검토, 실패12장·대표4배속 영상 보존. 성공영상 대조는 미충족, Mac 물리·렌더·GUI·모델 호출0.
+- 추가 조정자 사용자결정 인계에 따라 CPU R2/R3를 제출하지 않고 warp5 MJWarp 후속에 인계합니다. CPU/MJWarp 합산 금지. 다른 warp4·llmhost-stage lease를 보존해 VM을 정지하지 않습니다.
 
-기록: `experiments/2026-10-16-reloc21/README.md`, `prior-gate-table.md`, 압축 rejection_table과 영상 검토·공식 자료/상수 근거.
+Base `claude/reloc20` / DRAFT #543. 기록 `experiments/2026-10-16-reloc21/README.md`, `root-cause.md`, `round1/` 원장. DRAFT/NOT_READY이며 CI·병합·MJWarp 인수·학생/실물 성공 완료가 아닙니다.

@@ -1,0 +1,145 @@
+{
+  "reproduce": "python /home/ugrp/ugrp-sim/analysis-tools/reloc21-compare-off.py",
+  "script_sha256": "167fedac2f983a91d311449622c657f107da155fa47ff15ae9e3cfe84adb502b",
+  "runs": [
+    {
+      "before": "reloc20-r3-carry-candidate-93266-cb8b37c2",
+      "after": "reloc21-r1-carry-baseline-93266-6acde414",
+      "raw_before": "/home/ugrp/ugrp-sim/runs/reloc20-r3-carry-candidate-93266-cb8b37c2/raw",
+      "raw_after": "/home/ugrp/ugrp-sim/runs/reloc21-r1-carry-baseline-93266-6acde414/raw",
+      "status_before": "complete",
+      "status_after": "complete",
+      "sim_before": 233.19999999618278,
+      "sim_after": 233.19999999618278,
+      "commands": [
+        {
+          "file": "teacher-commands.jsonl",
+          "before_decoded_sha256": "a532f8800048378b42e55f58c247d292bb20d311e65baf35f1dda31208b7d832",
+          "after_decoded_sha256": "a532f8800048378b42e55f58c247d292bb20d311e65baf35f1dda31208b7d832",
+          "before_rows": 2333,
+          "after_rows": 2333,
+          "equal": true
+        }
+      ],
+      "images": {
+        "compared": 1868,
+        "equal": 1868,
+        "before_frames": 467,
+        "after_frames": 467,
+        "all_equal": true
+      }
+    },
+    {
+      "before": "reloc20-r3-carry-candidate-93315-cb8b37c2",
+      "after": "reloc21-r1-carry-baseline-93315-6acde414",
+      "raw_before": "/home/ugrp/ugrp-sim/runs/reloc20-r3-carry-candidate-93315-cb8b37c2/raw",
+      "raw_after": "/home/ugrp/ugrp-sim/runs/reloc21-r1-carry-baseline-93315-6acde414/raw",
+      "status_before": "complete",
+      "status_after": "complete",
+      "sim_before": 206.5999999968118,
+      "sim_after": 206.5999999968118,
+      "commands": [
+        {
+          "file": "teacher-commands.jsonl",
+          "before_decoded_sha256": "57323f56f01162b574938598cab68bd9b524af7cdfbf7452fc579a1a7f8a3ac8",
+          "after_decoded_sha256": "57323f56f01162b574938598cab68bd9b524af7cdfbf7452fc579a1a7f8a3ac8",
+          "before_rows": 2067,
+          "after_rows": 2067,
+          "equal": true
+        }
+      ],
+      "images": {
+        "compared": 1652,
+        "equal": 1652,
+        "before_frames": 413,
+        "after_frames": 413,
+        "all_equal": true
+      }
+    },
+    {
+      "before": "reloc20-r3-selfmap-short_regression-93584-cb8b37c2",
+      "after": "reloc21-r1-selfmap-short_regression-93584-6acde414",
+      "raw_before": "/home/ugrp/ugrp-sim/runs/reloc20-r3-selfmap-short_regression-93584-cb8b37c2/raw",
+      "raw_after": "/home/ugrp/ugrp-sim/runs/reloc21-r1-selfmap-short_regression-93584-6acde414/raw",
+      "status_before": "HOST_ERROR",
+      "status_after": "CONTROLLER_FAILURE",
+      "sim_before": 115.4,
+      "sim_after": 115.4,
+      "commands": [
+        {
+          "file": "robots/r1/commands.jsonl",
+          "before_decoded_sha256": "59ef962b8289ac4164dd6eb6aa75514b8235ca1e2a8e6b6ecfdda043c7970f23",
+          "after_decoded_sha256": "59ef962b8289ac4164dd6eb6aa75514b8235ca1e2a8e6b6ecfdda043c7970f23",
+          "before_rows": 1,
+          "after_rows": 1,
+          "equal": true
+        },
+        {
+          "file": "robots/r2/commands.jsonl",
+          "before_decoded_sha256": "59ef962b8289ac4164dd6eb6aa75514b8235ca1e2a8e6b6ecfdda043c7970f23",
+          "after_decoded_sha256": "59ef962b8289ac4164dd6eb6aa75514b8235ca1e2a8e6b6ecfdda043c7970f23",
+          "before_rows": 1,
+          "after_rows": 1,
+          "equal": true
+        },
+        {
+          "file": "robots/r3/commands.jsonl",
+          "before_decoded_sha256": "658d121b090528a9f0f5fe5653634e0d871b3e0e88814d094ec561ba33451d16",
+          "after_decoded_sha256": "658d121b090528a9f0f5fe5653634e0d871b3e0e88814d094ec561ba33451d16",
+          "before_rows": 585,
+          "after_rows": 585,
+          "equal": true
+        }
+      ],
+      "images": {
+        "compared": 578,
+        "equal": 578,
+        "all_equal": true,
+        "scope": "both raw manifests independently verified by round analyzer"
+      }
+    },
+    {
+      "before": "reloc20-r3-selfmap-short_regression-93583-cb8b37c2",
+      "after": "reloc21-r1-selfmap-short_regression-93583-6acde414",
+      "raw_before": "/home/ugrp/ugrp-sim/runs/reloc20-r3-selfmap-short_regression-93583-cb8b37c2/raw",
+      "raw_after": "/home/ugrp/ugrp-sim/runs/reloc21-r1-selfmap-short_regression-93583-6acde414/raw",
+      "status_before": "HOST_ERROR",
+      "status_after": "CONTROLLER_FAILURE",
+      "sim_before": 103.4,
+      "sim_after": 103.4,
+      "commands": [
+        {
+          "file": "robots/r1/commands.jsonl",
+          "before_decoded_sha256": "59ef962b8289ac4164dd6eb6aa75514b8235ca1e2a8e6b6ecfdda043c7970f23",
+          "after_decoded_sha256": "59ef962b8289ac4164dd6eb6aa75514b8235ca1e2a8e6b6ecfdda043c7970f23",
+          "before_rows": 1,
+          "after_rows": 1,
+          "equal": true
+        },
+        {
+          "file": "robots/r2/commands.jsonl",
+          "before_decoded_sha256": "59ef962b8289ac4164dd6eb6aa75514b8235ca1e2a8e6b6ecfdda043c7970f23",
+          "after_decoded_sha256": "59ef962b8289ac4164dd6eb6aa75514b8235ca1e2a8e6b6ecfdda043c7970f23",
+          "before_rows": 1,
+          "after_rows": 1,
+          "equal": true
+        },
+        {
+          "file": "robots/r3/commands.jsonl",
+          "before_decoded_sha256": "e76e25d64c3682fd4ab55765b27dec31977d84e375ae61d8789e13dd6cbfeb35",
+          "after_decoded_sha256": "e76e25d64c3682fd4ab55765b27dec31977d84e375ae61d8789e13dd6cbfeb35",
+          "before_rows": 525,
+          "after_rows": 525,
+          "equal": true
+        }
+      ],
+      "images": {
+        "compared": 518,
+        "equal": 518,
+        "all_equal": true,
+        "scope": "both raw manifests independently verified by round analyzer"
+      }
+    }
+  ],
+  "scope": "frozen gcp2 runtime only; off-default control trace/frame equality is distinct from candidate success"
+}
