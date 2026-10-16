@@ -1,0 +1,18 @@
+gcp3setup.json
+    PID COMMAND         COMMAND
+   5370 systemd         /usr/lib/systemd/systemd --user
+   5371 (sd-pam)        (sd-pam)
+   5423 sshd            sshd: ugrp@notty
+   5424 bash            bash -c ls -A ~/ugrp-sim/leases; ps -u ugrp -o pid,comm,args; nvidia-smi --query-compute-apps=pid,process_name,used_gpu_memory --format=csv,noheader; sha256sum ~/ugrp-sim/setup/*; du -sb ~/ugrp-sim/setup
+   5426 ps              ps -u ugrp -o pid,comm,args
+56f61132779a5dafdebd1eae33ded5285c8ce2687bab862359dc3ec59f9122be  /home/ugrp/ugrp-sim/setup/audit_guest.py
+85a5664d7b4e7f82f0cd62a3b3925a1868233025879146ce3cd5f438976d478a  /home/ugrp/ugrp-sim/setup/cpu-freeze.txt
+a27794db4fd93ac1a8ed048c3693354beb4d9427b92c3e459a50eb6a06174b32  /home/ugrp/ugrp-sim/setup/guest-audit.json
+9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa  /home/ugrp/ugrp-sim/setup/install.EXIT
+4f336aba9dc9183b27292cb115a1ee7242bcf2a502df0ce7cee0f404cce1f9b0  /home/ugrp/ugrp-sim/setup/install.log
+cbc65601e9024e17325efb07d497a00d3ab3d30fc9ad139b6f47229f11f13370  /home/ugrp/ugrp-sim/setup/setup_guest.sh
+a852c5a6012aebe83b79969dc3b35f1c25cced933d9af82adb82ded22d3bcb5a  /home/ugrp/ugrp-sim/setup/smoke-result.json
+27eae2a6cc4c15aa0e6b111013276d8854c7b61554922958472e88a60b620b90  /home/ugrp/ugrp-sim/setup/smoke.log
+02f3d204fd195500a268e2f02b14e8f579f0bc649b5b856bfd384ae66193140f  /home/ugrp/ugrp-sim/setup/smoke.py
+d7f5a61637967b535ea82c94b87c0800f5ccf648f1a982f012b6c698490c0828  /home/ugrp/ugrp-sim/setup/warp-freeze.txt
+118869	/home/ugrp/ugrp-sim/setup

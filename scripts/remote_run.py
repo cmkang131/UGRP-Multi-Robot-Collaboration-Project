@@ -90,8 +90,7 @@ def wait_gcp(host, name, root, lease, sha, started_unix):
     Returns (verified, exit_state). Raw stays on the VM's persistent disk (no ARM archive).
     """
     from scripts.azure_shutdown import write_json
-    # 2026-10-15: simulation VM cap is 24h, including the gcp2 successor.
-    deadline = time.monotonic() + 23.5 * 3600
+    deadline = time.monotonic() + wait_budget_s(host)
     state = ''
     while time.monotonic() < deadline:
         state = ssh(host, f'touch {lease}; test ! -f {root}/EXIT || cat {root}/EXIT', capture_output=True, text=True).stdout.strip()
@@ -123,6 +122,14 @@ def wait_gcp(host, name, root, lease, sha, started_unix):
         'archive': 'none; raw stays on the GCP persistent disk (no ARM archive for GCP yet)'})
     print('Exit:', state, 'verified:', verified, 'fetch-lite:', fetched, flush=True)
     return verified, state
+
+
+def wait_budget_s(host):
+    """Keep the existing 30 minute cleanup reserve inside the target's VM cap."""
+    duration = GCP_HOSTS[host]['max_run_duration']
+    if not duration.endswith('h'):
+        raise ValueError('GCP runtime cap must be specified in hours')
+    return float(duration[:-1]) * 3600 - 1800
 
 
 def ship(host, worktree, sha):
@@ -254,9 +261,23 @@ def main():
     started_unix = time.time()
     root = f'$HOME/ugrp-sim/runs/{name}'
     lease = f'$HOME/ugrp-sim/leases/{name}'
+    if host in GCP_HOSTS:
+        lease += '.json'
     if host in AZURE_HOSTS:
         ssh(host, 'python3 /usr/local/lib/ugrp-storage/scripts/azure_shutdown.py admit')
-    ssh(host, f'mkdir -p ~/ugrp-sim/leases && test ! -e {root} && touch {lease}')
+    if host in GCP_HOSTS:
+        # Same per-VM ceiling as gcp2 (2026-10-15 user rule). GPU batch worlds
+        # are not separate CPU runs; the GPU owner also audits memory/leases.
+        lease_data = json.dumps({'task': name, 'pid': os.getpid(), 'owner_host': os.uname().nodename,
+                                 'started_unix': started_unix,
+                                 'expected_end_unix': started_unix + wait_budget_s(host),
+                                 'source_sha': sha})
+        admission = (f'test ! -e {root} && test ! -e {lease} && '
+                     'test "$(find "$HOME/ugrp-sim/leases" -mindepth 1 -maxdepth 1 -type f | wc -l)" -lt 40 && '
+                     f'printf %s {shlex.quote(lease_data)} > {lease}')
+        ssh(host, 'mkdir -p ~/ugrp-sim/leases && flock ~/ugrp-sim/admission.lock bash -c ' + shlex.quote(admission))
+    else:
+        ssh(host, f'mkdir -p ~/ugrp-sim/leases && test ! -e {root} && touch {lease}')
     archived = False
     try:
         for budget_host, budget_ssh, path, estimate in (

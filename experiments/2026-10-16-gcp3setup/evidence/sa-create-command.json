@@ -1,0 +1,20 @@
+{
+  "command": [
+    "gcloud",
+    "iam",
+    "service-accounts",
+    "create",
+    "budget-stopper",
+    "--display-name=Budget VM stopper",
+    "--account",
+    "changmin5781@gmail.com",
+    "--project",
+    "ugrp-sim-c-1016",
+    "--quiet",
+    "--format=json"
+  ],
+  "started_utc": "2026-10-16T03:32:57.730388+00:00",
+  "elapsed_s": 2.9278299808502197,
+  "returncode": 0,
+  "stderr": "Created service account [budget-stopper].\n"
+}

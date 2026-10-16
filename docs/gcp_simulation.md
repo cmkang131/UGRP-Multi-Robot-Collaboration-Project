@@ -19,6 +19,17 @@
 
 가장 작은 시험용 `e2-micro`(10 GB, 서비스 계정/권한 없음, 시험 자체의 10분 STOP 상한)에 `costAmount=budgetAmount=1000` 수동 발행: RUNNING → **9.019초 STOPPING → 55.517초 TERMINATED**. 함수 로그에 시험 VM의 `stop_all`이 있다. 이후 시험 VM과 부팅 디스크를 삭제했고 둘 다 목록 0임을 확인한 뒤 본 VM을 생성했다. 이 시험은 Pub/Sub 이후 동작의 실증이며 실제 청구 집계 지연을 검증하지 않는다. 예산 집계는 지연되고 VM 외 디스크/네트워크 비용은 계속될 수 있다. 원본 설정·코드·상태 시계열은 [시험 근거](../experiments/2026-10-15-gcp2setup/evidence/)에 있다.
 
+## gcp3 — 세 번째 프로젝트 L4 (2026-10-16)
+
+사용자 원문: "프로젝트 그럼 하나 더 만들어". 같은 계정 `changmin5781@gmail.com`에 `ugrp-sim-c-1016`(443356522325)을 추가했다. 결제 계정은 gcp2와 같은 `01C770-8A2F1F-63BA5F`이며 프로젝트 추가를 새 크레딧 지급으로 해석하지 않는다. 기본값은 계속 gcp2다. 할당량 요청에는 `--billing-project=ugrp-sim-c-1016`도 붙인다.
+
+- `gcp3` = `ugrp-act-l4-gcp3`, 서울 `asia-northeast3-a`, gcp2 L4와 같은 `g2-standard-8`·L4 1개·140 GB `pd-balanced`·STANDARD. 고정 공개 이미지 `deeplearning-platform-release/common-cu129-ubuntu-2404-nvidia-580-v20261001`에서 재설치한다. 사용 중인 gcp2 디스크의 이미지·원본·키를 복사하지 않는다.
+- `--max-run-duration=8h --instance-termination-action=STOP --maintenance-policy=TERMINATE --no-service-account --no-scopes`. 전용 개인키는 Mac `~/.ssh/ugrp_gcp3`에만 있고 VM에는 공개키만 둔다. 시작 스크립트는 `scripts/gcp_idle_guard_startup.sh`; 유휴20분 가드는 ugrp의 Python/MuJoCo/ffmpeg 작업도 확인한다. 임대는 수동 정지를 막되 오래 남은 임대만으로 자동 유휴 종료를 막지는 않는다. gcp2 VM의 기존 메타데이터/장치는 변경하지 않는다.
+- 프로젝트만 필터한 크레딧 포함 순비용1,000 KRW 월 예산·50/100% 이메일 알림 → `budget-stop` → Gen2 함수 `stop_on_budget`, `TARGET_PROJECT=ugrp-sim-c-1016`. 함수 소스·requirements는 gcp2 보존본과 바이트 동일하며 실행 서비스 계정은 `budget-stopper@ugrp-sim-c-1016.iam.gserviceaccount.com`(`roles/compute.instanceAdmin.v1`)이다. 기본 결제 IAM 이메일 알림은 켜 둔다. 실증·시간·해시는 [gcp3setup 기록](../experiments/2026-10-16-gcp3setup/README.md)에 남긴다. 예산 집계 지연·VM 밖 비용의 한계는 gcp2와 같다.
+- 환경은 CPU 재생 `.venv-sim`과 고정 MJWarp `.venv-warp`를 분리한다. MJWarp3.16.0/소스57b4692f·Warp1.15.0·NumPy2.5.2와 주요 영상 패키지는 gcp2 설치본을 대조한다. 인프라 확인은 작은 모형의 2세계·1스텝뿐이며 교사/학생/영상/E2E 관문 통과를 승계하지 않는다.
+- 사용: `python3 scripts/gcpctl.py start gcp3`, `bash scripts/oracle_run.sh --host gcp3 WORKTREE RUN -- COMMAND`, `python3 scripts/gcpctl.py stop gcp3`. 공용 Git 직접참조·해시/fetch-lite·`outputs/gcp3-runs`/`outputs/gcp3-lifecycle`을 사용한다. 대기 한도는 L4 8h에서 기존 정리 여유30분을 뺀7.5h다.
+- 실행기는 `leases/<RUN>.json`에 작업·Mac PID/호스트·시작·예상 종료·소스SHA를 기록한다. VM당40개 임대 상한을 파일 잠금 아래 확인한다. GPU 세계 수는 CPU 프로세스 수가 아니며, GPU 배치 제출 전 기존 임대/PID/GPU 메모리를 확인한다. 완료 검증 뒤 자기 임대만 지우고, 다른 임대 또는 ugrp Python/MuJoCo/ffmpeg가 있으면 정지를 거부한다. 원본은 gcp3 영속 디스크에 남기고 gcp1/gcp2 결과와 합산하지 않는다.
+
 ## gcp1 과거 구성 (보존 기록)
 
 - `gcp1` = 인스턴스 `ugrp-sim-gcp1`, 서울 `asia-northeast3-a`, **n4-highcpu-64**(Intel Xeon 8581C Emerald Rapids, 64 vCPU, 128 GiB), 150 GB hyperdisk-balanced. 이미지 `ugrp-sim-bench-c1f02ac0`(Ubuntu 24.04, `.venv-sim`, 소스 c1f02ac0 포함)에서 만들었다.

@@ -1,4 +1,5 @@
 from unittest.mock import patch
+import subprocess
 
 import pytest
 
@@ -23,6 +24,46 @@ def test_every_gcloud_call_names_the_project():
     with patch.object(gcpctl.subprocess, 'run') as run:
         gcpctl.gcloud('compute', 'instances', 'stop', 'x')
     assert run.call_args.args[0][-2:] == ['--project', 'ugrp-sim-b-1014']
+
+
+def test_gcp3_l4_uses_its_project_gpu_image_and_eight_hour_cap():
+    command = gcpctl.create_command('gcp3', 'ssh-ed25519 AAAA test')
+    for flag, value in (('--project', 'ugrp-sim-c-1016'), ('--machine-type', 'g2-standard-8'),
+                        ('--image-project', 'deeplearning-platform-release'),
+                        ('--accelerator', 'type=nvidia-l4,count=1'), ('--boot-disk-size', '140GB')):
+        assert command[command.index(flag) + 1] == value
+    for flag in ('--max-run-duration=8h', '--instance-termination-action=STOP',
+                 '--maintenance-policy=TERMINATE', '--no-service-account', '--no-scopes'):
+        assert flag in command
+    assert remote_run.wait_budget_s('gcp3') == 7.5 * 3600
+    assert remote_run.wait_budget_s('gcp2') == 23.5 * 3600
+    assert remote_run.DEFAULT_HOST == gcpctl.DEFAULT_HOST == 'gcp2'
+    with patch.object(gcpctl.subprocess, 'run') as run:
+        gcpctl.gcloud('compute', 'instances', 'describe', 'x', host='gcp3')
+    assert run.call_args.args[0][-4:] == ['--account', 'changmin5781@gmail.com', '--project', 'ugrp-sim-c-1016']
+
+
+def test_gcp3_stop_is_blocked_by_an_unwrapped_python_or_ffmpeg_job():
+    with patch.object(gcpctl.subprocess, 'run') as run:
+        run.return_value.returncode = 1
+        assert gcpctl.guest_busy('gcp3')
+    probe = run.call_args.args[0][-1]
+    assert "pgrep -u ugrp -x 'python[0-9.]*|mujoco|ffmpeg'" in probe
+    assert 'test -d ~/ugrp-sim/leases' in probe
+    assert gcpctl.GCP_HOSTS['gcp3']['identity_file'] == '~/.ssh/ugrp_gcp3'
+
+
+@pytest.mark.parametrize('busy', [False, True])
+def test_idle_backstop_still_stops_after_twenty_minutes_without_processes(tmp_path, busy):
+    guard = gcpctl.STARTUP.read_text().split("<<'G'\n", 1)[1].split('\nG\n', 1)[0]
+    state = tmp_path / 'idle-since'
+    state.write_text('0')
+    guard = guard.replace('/run/ugrp-idle-since', str(state))
+    # Shell functions isolate every host/process/shutdown operation; no real shutdown.
+    stubs = "date() { echo 1300; }; logger() { :; }; shutdown() { echo STOP_REQUESTED; }; "
+    stubs += f"pgrep() {{ return {0 if busy else 1}; }}; "
+    result = subprocess.run(['bash', '-c', stubs + guard], capture_output=True, text=True, check=True)
+    assert ('STOP_REQUESTED' in result.stdout) is not busy
 
 
 def test_stop_defers_while_leases_or_simulations_exist():

@@ -1,0 +1,161 @@
+{
+  "schema": "ugrp.gcp3setup.v1",
+  "ready": true,
+  "readiness_scope": "GCP infrastructure only",
+  "project": "ugrp-sim-c-1016",
+  "account": "changmin5781@gmail.com",
+  "default_host": "gcp2",
+  "host": "gcp3",
+  "instance": "ugrp-act-l4-gcp3",
+  "machine": "g2-standard-8",
+  "gpu": "NVIDIA L4 x1",
+  "disk_gb": 140,
+  "vm_status": "TERMINATED",
+  "max_run_s": 28800,
+  "termination_action": "STOP",
+  "idle_s": 1200,
+  "source_sha": "bac15229442a9ec39ea0c01aae31a6ad95490e16",
+  "final_guard_source_sha": "9752ff2ba",
+  "startup_sha256": "1a35cae0b6d73a2f0f4a570d71e503ab94134447f6900417174bb1c96b46cbce",
+  "results_pooled": false,
+  "budget": {
+    "net_krw": 1000,
+    "credits": "INCLUDE_ALL_CREDITS",
+    "filter_projects": [
+      "projects/443356522325"
+    ],
+    "default_billing_iam_email_enabled": true,
+    "email_delivery_tested": false,
+    "manual_publish_stopping_s": 5.423547499929555,
+    "manual_publish_terminated_s": 54.6652560000075,
+    "test_vm_and_disk_deleted": true
+  },
+  "runs": [
+    {
+      "name": "budget_stop_test",
+      "status": "PASS",
+      "host": "gcp3-project",
+      "raw": "/Users/changmin/projects/ugrp-wt/gcp3setup/experiments/2026-10-16-gcp3setup/evidence/test-observations.json"
+    },
+    {
+      "name": "mjwarp_import_batch_step",
+      "status": "PASS",
+      "nworld": 2,
+      "steps": 1,
+      "sim_s_per_world": 0.002,
+      "raw": "gcp3:/home/ugrp/ugrp-sim/setup/smoke-result.json"
+    },
+    {
+      "name": "final_idle_guard_boot",
+      "status": "PASS",
+      "raw": "gcp3:/home/ugrp/ugrp-sim/setup/guest-audit-final.json"
+    }
+  ],
+  "host_error": 0,
+  "cap_end": 0,
+  "failed_setup_attempts": [
+    {
+      "category": "api_disabled",
+      "count": 1,
+      "reason": "budget list before enabling Budget API",
+      "blocking_object": "not_applicable_infrastructure",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not_applicable_no_geometry"
+    },
+    {
+      "category": "invalid_billing_publisher_principal",
+      "count": 1,
+      "reason": "corrected to the existing gcp2 topic principal",
+      "blocking_object": "not_applicable_infrastructure",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not_applicable_no_geometry"
+    },
+    {
+      "category": "new_iam_principal_not_yet_visible",
+      "count": 1,
+      "reason": "same service account binding succeeded on retry",
+      "blocking_object": "not_applicable_infrastructure",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not_applicable_no_geometry"
+    }
+  ],
+  "verification": {
+    "nonphysics_tests": "11 passed",
+    "gcp2_function_and_topic_unchanged": true,
+    "guest": {
+      "no_service_account_or_scopes": true,
+      "runtime_8h_stop": true,
+      "startup_script_exact": true,
+      "guest_idle_guard_exact": true,
+      "project_ssh_keys_blocked": true,
+      "fixed_public_image": true,
+      "mjwarp_three_source_hashes_match_gcp2": true,
+      "credential_paths_absent": true,
+      "timer_active": true,
+      "smoke_pass": true
+    },
+    "final_guard": {
+      "guard_exact": true,
+      "timer_active": true,
+      "credentials_absent": true,
+      "audit_sha256": "fa2a8859daac68a586d4e43067e1524a69d50d627f4bed13378a7c898ca17d2b  /home/ugrp/ugrp-sim/setup/guest-audit-final.json\n"
+    },
+    "retrieved_hashes_verified": true,
+    "other_work_before_stop": false,
+    "own_leases_remaining": 0,
+    "mac_physics": 0,
+    "mac_render": 0,
+    "llm_calls": 0,
+    "training": 0
+  },
+  "cost": {
+    "l4_windows": [
+      {
+        "label": "install_and_smoke",
+        "start": "2026-10-15T20:39:04.268-07:00",
+        "stop": "2026-10-15T20:45:04.776-07:00",
+        "elapsed_s": 360.508
+      },
+      {
+        "label": "idle_guard_final_boot",
+        "start": "2026-10-15T20:45:44.435-07:00",
+        "stop": "2026-10-15T20:47:15.074-07:00",
+        "elapsed_s": 90.639
+      }
+    ],
+    "l4_elapsed_s": 451.147,
+    "planning_rate_usd_h": 1.096,
+    "planning_estimate_usd": 0.1373491977777778,
+    "rate_status": "historical planning assumption from simalt5/work-log.md; current Seoul price not verified",
+    "actual_billed": null,
+    "actual_billed_status": "billing aggregation/invoice not retrieved; not a zero-cost claim",
+    "excluded": [
+      "e2-micro test",
+      "persistent disk 140GB",
+      "build/function/artifact storage",
+      "network",
+      "tax",
+      "credits",
+      "currency conversion"
+    ]
+  },
+  "next_batch_ready": false,
+  "remaining": [
+    "Mac storage admission fails: projected free below 20GiB; no cleanup or bypass performed",
+    "Research runner gcp2-specific host pins/scene-camera/teacher-student gates need separate work",
+    "Existing Gemma endpoint price alert blocks new LLM batches",
+    "PR CI/review/merge are separate from infrastructure readiness"
+  ],
+  "mac_storage": {
+    "returncode": 1,
+    "stdout": "{\"schema\": \"ugrp.storage-budget.v1\", \"ok\": false, \"checks\": [{\"host\": \"mac\", \"free_bytes\": 16553525248, \"expected_bytes\": 16777216, \"projected_free_bytes\": 16536748032, \"floor_bytes\": 21474836480, \"ok\": false}]}\n",
+    "stderr": "UGRP STORAGE ALERT: disk floor would be breached; submission refused\n"
+  },
+  "rejection_table": "/Users/changmin/projects/ugrp-wt/gcp3setup/experiments/2026-10-16-gcp3setup/evidence/funnel.json",
+  "manifest": {
+    "path": "evidence/SHA256.json",
+    "sha256": "d747728877209b64dd98a2d2315f7e15773000d56f1f93bc7e949aae3bcd180f"
+  },
+  "originals": "gcp3:/home/ugrp/ugrp-sim/setup/; raw install/smoke logs and freeze retained on persistent disk",
+  "github_status": "branch/PR publication reported separately; no merge claimed"
+}

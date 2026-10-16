@@ -1,0 +1,21 @@
+{
+  "command": [
+    "gcloud",
+    "pubsub",
+    "topics",
+    "add-iam-policy-binding",
+    "budget-stop",
+    "--member=serviceAccount:billing-budget-notifications@system.gserviceaccount.com",
+    "--role=roles/pubsub.publisher",
+    "--account",
+    "changmin5781@gmail.com",
+    "--project",
+    "ugrp-sim-c-1016",
+    "--quiet",
+    "--format=json"
+  ],
+  "started_utc": "2026-10-16T03:32:12.561849+00:00",
+  "elapsed_s": 1.900735855102539,
+  "returncode": 1,
+  "stderr": "ERROR: Policy modification failed. For a binding with condition, run \"gcloud alpha iam policies lint-condition\" to identify issues in condition.\nERROR: (gcloud.pubsub.topics.add-iam-policy-binding) INVALID_ARGUMENT: Service account billing-budget-notifications@system.gserviceaccount.com does not exist.\n"
+}
