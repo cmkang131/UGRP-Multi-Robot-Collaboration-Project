@@ -1,0 +1,61 @@
+{
+  "status": "RESUMED_PREPARING_WARM",
+  "started_utc": "2026-10-16T05:45:57.126020+00:00",
+  "previous_attempt": "../summary.json",
+  "record_api_source": "0362037280c6cbc4677f70366db43b9892b23690",
+  "qualified_controller_source": "f0db6b1abb842ea65b71c433738210254f300a7c",
+  "teacher_library_source": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+  "source_relationship": "6f057f7e frozen solo teacher; f0db qualified MJWarp transport/scene/NumPy adapter; 0362037 recording/RPC API wraps unchanged f0db controller",
+  "upstream_gate": {
+    "n": 40,
+    "N": 40,
+    "independent_confirmation": false,
+    "reason": "8317100-8317139 overlap warp1 debugging",
+    "sha256": "7e9c80c0f26e4fb95d43afc6ba146195b9ca5061fa5da717944579babc464b1e"
+  },
+  "seeds": {
+    "D0_train": [
+      86820,
+      86864
+    ],
+    "D0_validation": [
+      86865,
+      86869
+    ],
+    "dagger": [
+      87020,
+      87039
+    ],
+    "final_evaluation": [
+      91620,
+      91659
+    ],
+    "upstream_excluded": [
+      8317100,
+      8317139
+    ]
+  },
+  "scene": "walls_floor_contrast_v5_indigo110_s80 + v1 floor + no_mip_v1",
+  "gpu_budget_s": 28800,
+  "warm_sim_s": 3,
+  "warm_scope": "recording API/throughput diagnostic, not data admission or teacher success",
+  "resource_findings": {
+    "Mac_free_GiB": 27,
+    "L4_free_GiB": 12,
+    "L4_hard_stop_utc": "2026-10-16T05:59:25.154+00:00",
+    "foreign_leases": [
+      "beamact3-B",
+      "warp3",
+      "warp7"
+    ]
+  },
+  "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2",
+  "teacher_gate_independent": {
+    "n": 0,
+    "N": 0
+  },
+  "recorded_admitted_episodes": 0,
+  "optimizer_steps": 0,
+  "evaluation_N": 0,
+  "rejection_table": "experiments/2026-10-16-act16w/resume2/rejection_table.json"
+}

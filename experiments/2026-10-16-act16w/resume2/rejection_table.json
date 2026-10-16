@@ -1,0 +1,27 @@
+{
+  "status": "PRE_WARM",
+  "funnel": [
+    {
+      "gate": "upstream_gate_finished",
+      "passed": 40,
+      "rejected": 0
+    },
+    {
+      "gate": "upstream_independent_confirmation",
+      "passed": 0,
+      "rejected": 40
+    }
+  ],
+  "rejections": [
+    {
+      "category": "seed_overlap",
+      "count": 40,
+      "reason": "warp1 debugging seeds overlap; must not claim independent gate",
+      "blocking_object": "not_applicable_seed_provenance",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not_applicable_non_geometric"
+    }
+  ],
+  "raw": "/home/ugrp/ugrp-sim/runs/warp3",
+  "reproduce": "warp3/recount_gate.py; recording-stage fresh seeds86820-86869 pending"
+}
