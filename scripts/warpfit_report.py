@@ -42,8 +42,12 @@ def main():
                 drive_scene=r.get('drive_scene'),
                 translation_mm_p50=med([v['translation_mm'] for v in valid]),
                 translation_mm_min=min(v['translation_mm'] for v in valid),translation_mm_max=max(v['translation_mm'] for v in valid),
+                actual_forward_mm_p50=med([v['delta_xyyaw'][0]*1000 for v in valid]),
+                actual_left_mm_p50=med([v['delta_xyyaw'][1]*1000 for v in valid]),
                 yaw_deg_p50=med([v['yaw_deg'] for v in valid]),
                 v122_translation_mm=None if prediction is None else float(np.linalg.norm(prediction[:2])*1000),
+                v122_forward_mm=None if prediction is None else float(prediction[0]*1000),
+                v122_left_mm=None if prediction is None else float(prediction[1]*1000),
                 v122_yaw_deg=None if prediction is None else float(np.degrees(prediction[2])),
                 actual_over_v122_p50=None if not ratios else med(ratios),
                 prediction_sample_time_s=valid[0].get('prediction_sample_time_s'),
@@ -57,9 +61,10 @@ def main():
             reference=[v for v in valid if v['case']==reference_case and v['phase']=='pulse_plus_stop']
             if reference:
                 entry['drive_reference_case']=reference_case+' +1s stop'
-                entry['drive_actual_mm']=med([v['translation_mm'] for v in reference])
+                axis=1 if reference_case.startswith('left') else 0
+                entry['drive_actual_mm']=med([v['delta_xyyaw'][axis]*1000 for v in reference])
                 pred=reference[0]['v122_delta']
-                entry['drive_predicted_mm']=None if pred is None else float(np.linalg.norm(pred[:2])*1000)
+                entry['drive_predicted_mm']=None if pred is None else float(pred[axis]*1000)
     box30=[]
     for n in (16,64):
         for profile in sorted({r['profile'] for r in selected}):
@@ -102,7 +107,7 @@ def main():
     fields=sorted(set().union(*(r.keys() for r in pulses))) if pulses else ['status']
     with (a.output/'drive-table.csv').open('w') as f:
         writer=csv.DictWriter(f,fieldnames=fields);writer.writeheader();writer.writerows(pulses)
-    table=['|N|입력|프로필|GPU ms/배치step|wall/SIM|wall/(N×SIM)|유지 세계|미끄럼 P95 mm|주행 실제/예측 mm|tilt 최대 °|',
+    table=['|N|입력|프로필|GPU ms/배치step|wall/SIM|wall/(N×SIM)|유지 세계|미끄럼 P95 mm|주행 해당축 실제/예측 mm|tilt 최대 °|',
            '|---:|---|---|---:|---:|---:|---:|---:|---:|---:|']
     def num(x):return '미완료' if x is None else f'{x:.5f}'
     for r in sorted(compact,key=lambda r:(r['nworld'],r['kind'],r['case'],r['profile'])):
