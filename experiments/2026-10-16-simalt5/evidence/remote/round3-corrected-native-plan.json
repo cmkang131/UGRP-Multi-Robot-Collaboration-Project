@@ -1,0 +1,65 @@
+{
+  "round": 3,
+  "instrumentation_repair": true,
+  "additional_Warp_candidates": 0,
+  "source_sha": "09d585b77234b9dfdb2f007e8f6975d6ddb918ff",
+  "rejection_table": "/home/ugrp/ugrp-sim/runs/simalt5/rejection-native-port-repair.json",
+  "jobs": [
+    [
+      "c312-native-corrected",
+      [
+        "/home/ugrp/ugrp-sim/runs/simalt3/c-env/bin/python",
+        "-u",
+        "/home/ugrp/ugrp-sim/src/09d585b7/scripts/simalt_step_probe.py",
+        "--enabled",
+        "--fixture",
+        "/home/ugrp/ugrp-sim/runs/simalt3/fixture",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/simalt5/c312-native-corrected",
+        "--engine",
+        "cpu",
+        "--case",
+        "grip",
+        "--sha",
+        "09d585b77234b9dfdb2f007e8f6975d6ddb918ff",
+        "--capacity-reference",
+        "/home/ugrp/ugrp-sim/runs/simalt4/rev5/dense-capacity.json",
+        "--dense-capacity-v1",
+        "--backend-mode",
+        "legacy-plane-v1",
+        "--record-own-rgb",
+        "/home/ugrp/ugrp-sim/runs/simalt3/runtime/source"
+      ]
+    ],
+    [
+      "c316-native-corrected",
+      [
+        "/home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python",
+        "-u",
+        "/home/ugrp/ugrp-sim/src/09d585b7/scripts/simalt_step_probe.py",
+        "--enabled",
+        "--fixture",
+        "/home/ugrp/ugrp-sim/runs/simalt3/fixture",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/simalt5/c316-native-corrected",
+        "--engine",
+        "cpu",
+        "--case",
+        "grip",
+        "--sha",
+        "09d585b77234b9dfdb2f007e8f6975d6ddb918ff",
+        "--capacity-reference",
+        "/home/ugrp/ugrp-sim/runs/simalt4/rev5/dense-capacity.json",
+        "--dense-capacity-v1",
+        "--backend-mode",
+        "legacy-plane-v1",
+        "--record-own-rgb",
+        "/home/ugrp/ugrp-sim/runs/simalt3/runtime/source",
+        "--compiled-reference-v1",
+        "/home/ugrp/ugrp-sim/runs/simalt5/compiled-312.json",
+        "--compiled-geometry-312-v1",
+        "/home/ugrp/ugrp-sim/runs/simalt5/compiled-geometry312.npz"
+      ]
+    ]
+  ]
+}

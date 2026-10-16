@@ -1,0 +1,72 @@
+{
+  "host": {
+    "project_id": "ugrp-sim-b-1014",
+    "instance": "ugrp-act-l4-gcp2",
+    "machine_type": "g2-standard-8",
+    "zone": "asia-northeast3-a"
+  },
+  "mujoco": "3.16.0",
+  "physics_steps": 0,
+  "compiled312": false,
+  "arrays": 481,
+  "options": {
+    "ccd_iterations": 35,
+    "ccd_tolerance": 1e-06,
+    "cone": 1,
+    "density": 0.0,
+    "disableactuator": 0,
+    "disableflags": 0,
+    "enableflags": 0,
+    "gravity": [
+      0.0,
+      0.0,
+      -9.81
+    ],
+    "impratio": 1.0,
+    "integrator": 3,
+    "iterations": 80,
+    "jacobian": 2,
+    "ls_iterations": 50,
+    "ls_tolerance": 0.01,
+    "magnetic": [
+      0.0,
+      -0.5,
+      0.0
+    ],
+    "noslip_iterations": 10,
+    "noslip_tolerance": 1e-06,
+    "o_friction": [
+      1.0,
+      1.0,
+      0.005,
+      0.0001,
+      0.0001
+    ],
+    "o_margin": 0.0,
+    "o_solimp": [
+      0.9,
+      0.95,
+      0.001,
+      0.5,
+      2.0
+    ],
+    "o_solref": [
+      0.02,
+      1.0
+    ],
+    "sdf_initpoints": 40,
+    "sdf_iterations": 10,
+    "sleep_tolerance": 0.001,
+    "solver": 2,
+    "timestep": 0.00025,
+    "tolerance": 1e-08,
+    "viscosity": 0.0,
+    "wind": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "npz_sha256": "325a9cacbef7563bcf8baa43bafb2d40e66bd6a3d3052da74fdc42d0dbcead28",
+  "xml_sha256": "ad46cd87ef4188daa9a4dbebd79c470fac6f1b3fcb5e5a1fe0d9dfa3c2261849"
+}

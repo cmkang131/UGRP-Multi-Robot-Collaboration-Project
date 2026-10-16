@@ -33,6 +33,22 @@ TEST_PATTERNS = (
     "tests/test_e2e_approach_efficiency.py",
     "tests/test_e2e_architecture_stack.py",
     "tests/test_e2e_body_upstream.py",
+    "tests/test_grasp_act_data.py",
+    "tests/test_grasp_act_policy.py",
+    "tests/test_grasp_act_pilot.py",
+    "tests/test_grasp_act_act4.py",
+    "tests/test_grasp_act_memory.py",
+    "tests/test_grasp_act_act6.py",
+    "tests/test_grasp_act_act7.py",
+    "tests/test_grasp_act_act8.py",
+    "tests/test_grasp_act_act9.py",
+    "tests/test_e2e18_beam_axis.py",
+    "tests/test_e2e18_cadence.py",
+    "tests/test_e2e18_route_coverage.py",
+    "tests/test_e2e18_route_guard.py",
+    "tests/test_e2e_carrier_axes.py",
+    "tests/test_e2e_record_scalars.py",
+    "tests/test_e2e_route_extent.py",
     "tests/test_e2e_b_partial.py",
     "tests/test_e2e_boundary_views.py",
     "tests/test_e2e_boundary_repair.py",
@@ -44,6 +60,7 @@ TEST_PATTERNS = (
     "tests/test_e2e_us_stall.py",
     "tests/test_e2e14_combo.py",
     "tests/test_e2e_exact_speedups2.py",
+    "tests/test_e2e_speed3.py",
     "tests/test_e2e_speed4.py",
     "tests/test_e2e_overview_replay.py",
     "tests/test_e2e_runtime_registration.py",
@@ -163,6 +180,9 @@ TEST_PATTERNS = (
     "tests/test_zone_identity_jobs.py",  # T13a: own-RGB identity/count and target-job seam (fake only)
     "tests/test_zone_study_scenarios.py", "tests/test_zone_study_protocol.py",
     "tests/test_zone_final_env.py", "tests/test_zone_study_scenarios_v3.py", "tests/test_zone_study_scenarios_v4.py",
+    "tests/test_zone_study_scenarios_v5.py",
+    "tests/test_zone_study_scenarios_v6.py",
+    "tests/test_zone_study_scenarios_v7.py",
     "tests/test_zone_environment_registry.py",
     "tests/test_zone_scenario_scene.py",
     "tests/test_zone_final_environment_runnable.py",
@@ -327,6 +347,7 @@ TEST_PATTERNS = (
     "tests/test_v6h_recorder_contract.py",  # pinned recorder consumer contract; JSON only
     "tests/test_v6h_classifier_properties.py",  # 10,000 seeded evidence chains; no physics
     "tests/test_render_pair_probe_video.py",  # stage-probe report video renderer (reads saved cases only)
+    "tests/test_natural_scene_texture.py",  # pinned PNG, pure XML; no renderer
     "tests/test_render_profile.py",  # opt-in shadow/reflection render profiles (default path unchanged)
     "tests/test_carry_relocalization_b1.py",  # 2026-09-29: offline B1 relocalization measurement (pure arithmetic/thresholds)
     "tests/test_stall_detector_d1.py",  # offline D1 draft reference: NumPy frames only, no controller/simulator

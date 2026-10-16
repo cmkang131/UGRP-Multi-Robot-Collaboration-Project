@@ -1,0 +1,116 @@
+{
+  "schema": "ugrp.scene_texture_summary.v1",
+  "profile": "floor_light_textured_v1",
+  "base_sha": "328b4e1d2a4abe245620a58b35ea96ddc1450ef1",
+  "source_identity": "git commit containing this record; exact committed SHA also in generated local queue",
+  "raw_evidence": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/selfmap-380277b8-ops/93521-stall-montage.jpg",
+      "sha256": "51caa397a85bb86582eb142a6e0b010db079c92d00bf038d5eff1c4cbd2186ff",
+      "bytes": 49677
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/selfmap-380277b8-ops/93521-stall-evidence-live.json",
+      "sha256": "acaae4a140056097bbb3edcabe4e23c1297ce26c3004851a5b8fa8c2b6636566",
+      "bytes": 18118
+    }
+  ],
+  "offline_inputs": [
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/floor-texture/scripts/generate_scene_textures.py",
+      "sha256": "1d667bc3836b4347c8f6a64d4495bb8262db9ec09e602f8e7484f5b62ebff844",
+      "bytes": 4645
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/floor-texture/scripts/audit_scene_textures.py",
+      "sha256": "3d30a691b8c9b2b9376abee50a4d70cc8bf4639e070b4b528762a279932f76e5",
+      "bytes": 12829
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/floor-texture/sim/natural_scene_texture.py",
+      "sha256": "5d5340cf06d84867987849c0ca973b54e70d7f62923594605effafeeb0305ab3",
+      "bytes": 6045
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/floor-texture/sim/render_profile.py",
+      "sha256": "65c8b4b3cf4349b2c399392ccc8a5f6baac971932980353dc455424786977919",
+      "bytes": 11988
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/floor-texture/sim/final_pair_highpose_nearclip.py",
+      "sha256": "a199ea0eb1d9114fabf028b3b0b48e34722834b5ac3d6ab5ef305071b45e21e1",
+      "bytes": 6011
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/floor-texture/sim/assets/floor_light_textured_v1/manifest.json",
+      "sha256": "4a11dd0d7984af56a731b63e521891a6abdef6f65c300ca7ab737e2755382069",
+      "bytes": 49981
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/floor-texture/experiments/2026-10-15-scene-floor-texture/offline-audit.json",
+      "sha256": "517b0f7d73489bd9e5b46b43538dc5ce473eedb8bdd56c5822c900a09b40eb0d",
+      "bytes": 43218
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/floor-texture/experiments/2026-10-15-scene-floor-texture/image-metrics.json",
+      "sha256": "81a3de7a716e5b5e240480063f9f13cb754a917e73c314e4e1e0514b511fb792",
+      "bytes": 54652
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/floor-texture/experiments/2026-10-15-scene-floor-texture/color-ranges.md",
+      "sha256": "a3cad97152906c08c33418cccdfce3be9dda1d6ed39a88d57648c36bf11b5cc7",
+      "bytes": 13667
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/floor-texture/experiments/2026-10-15-scene-floor-texture/color-source-inventory.md",
+      "sha256": "82a32b4114363f3bbd49e0972f0b442e0cc5df9dd12431a5385e2e047ee970da",
+      "bytes": 18246
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/floor-texture/experiments/2026-10-15-scene-floor-texture/color_external_sources.json",
+      "sha256": "c9f3a2fe185ea312b22158d89c77f8276414c5e0256195110215380ad812dab1",
+      "bytes": 2327
+    }
+  ],
+  "tests": {
+    "passed": 38,
+    "failed": 0,
+    "errors": 0,
+    "deselected": 9,
+    "receipt": {
+      "path": "/Users/changmin/projects/ugrp-wt/floor-texture/outputs/floortex-offline-pytest.xml",
+      "sha256": "c337930de3700e2accc225eb935321a18f390b434e923eca8d044f7b48795601",
+      "bytes": 5250
+    },
+    "command": "PYTHONPATH=. /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_natural_scene_texture.py tests/test_natural_floor_slam.py tests/test_highpose_nearclip.py tests/test_render_profile.py -k 'not default_scene_has and not compiled and not changes_exactly and not changes_only_lights and not changes_only_the_floor and not verify and not scene_manifest and not output_pixels' --junitxml=outputs/floortex-offline-pytest.xml"
+  },
+  "reproduction": {
+    "png_hashes_matched": 151,
+    "png_N": 151,
+    "path": "/tmp/ugrp-floortex-reproduce-v1",
+    "scope": "PNG bytes; manifest metadata field renamed afterward without PNG changes"
+  },
+  "development_failures": [
+    {
+      "stage": "external_detector_snapshot",
+      "reason": "initial ref did not contain beam probe; corrected to actual PR505 source before audit"
+    },
+    {
+      "stage": "offline_audit",
+      "reason": "OpenCV5 batchDistance K=0 Python binding rejected; corrected to full K and checked checker/blank controls"
+    }
+  ],
+  "render_runs": 0,
+  "simulation_runs": 0,
+  "remote_connections": 0,
+  "model_calls": 0,
+  "camera_verified": false,
+  "ready_for_execution": false,
+  "remaining": [
+    "consumer PR selection/audit integration",
+    "GCP compile + 48 static frames gate",
+    "GCP same-code selfmap first30 comparison; longer stall reproduction not covered"
+  ]
+}

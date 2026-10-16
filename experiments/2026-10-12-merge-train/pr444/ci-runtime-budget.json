@@ -1,0 +1,21 @@
+{
+  "scope": "Only ubuntu-simulation-runtime job timeout increased from 15 to 25 minutes; all steps/assertions retained",
+  "source_head": "7e7b9f2c3365403821c436cb4092ddda2bb2cdec",
+  "run_id": 38239973442,
+  "job_id": 114780476215,
+  "reported_conclusion": "cancelled",
+  "annotations": [
+    "The job has exceeded the maximum execution time of 15m0s"
+  ],
+  "step_conclusions": {
+    "success": 24,
+    "skipped": 1,
+    "failure": 0,
+    "cancelled": 0
+  },
+  "log_path": "outputs/merge-train-20261012/pr444-runtime-cancelled.log",
+  "log_sha256": "1a9c44f484a4bf73d6a29d25934e5b518faeca21c5e3b2c145288592352ad2c5",
+  "reference": "https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#jobsjob_idtimeout-minutes",
+  "physical_execution": false,
+  "local_test": "tests.test_ci_fast_path; 10 tests passed before commit"
+}
