@@ -1,0 +1,477 @@
+{
+  "schema": "ugrp.mapbuild1.summary.v1",
+  "status": "NOT_READY",
+  "scope": "kinematic MJWarp RGB feasibility; physics0",
+  "host_analysis": "ugrp-sim-gcp2.asia-northeast3-a.c.ugrp-sim-b-1014.internal",
+  "host_render": "ugrp-act-l4-gcp2",
+  "project": "ugrp-sim-b-1014",
+  "shared_load": true,
+  "scene": "walls_floor_contrast_v5_indigo110_s80",
+  "floor": "floor_light_textured_v1",
+  "quality": "no_mip_v1",
+  "renderer_source_sha": "3c598b816b823ef93d064b2f30ffd07cf5493816",
+  "capture_source_sha": "24c515f43d1aa919caa06387e4fdfec0fa3dce28",
+  "baseline_source_sha": "01c46bf2ab9d570ef478093bc36f1bcb23be85a1",
+  "candidate_source_sha": "fe77e1a791eda8fb3209a58aa9643a7ed71819fa",
+  "map": "/home/ugrp/ugrp-sim/src/3c598b816/maps/zones_final_v3/zone_hardmaps1_h1_final_v3.json",
+  "map_sha256": "4a8dadad960108c9c912c50e0fe3fccd9c8b4678e1b166e797d533ef05cb1690",
+  "map_coverage": "1 authored map; one fixture origin; not full-map coverage",
+  "recorded": {
+    "conditions_n": 6,
+    "conditions_N": 6,
+    "frames_n": 246,
+    "frames_N": 246,
+    "pairs": 240,
+    "sim_s_per_sequence": 4,
+    "hz": 10
+  },
+  "camera_qualified": {
+    "conditions_n": 3,
+    "conditions_N": 6,
+    "frames_n": 123,
+    "frames_N": 246,
+    "pairs_n": 120,
+    "pairs_N": 240
+  },
+  "results": {
+    "replay-r3": [
+      {
+        "sequence": "drive-forward",
+        "method": "slam",
+        "tracked_n": 1,
+        "pairs": 40,
+        "xy_p95_m": 0.19,
+        "yaw_p95_deg": 0.0,
+        "scale_p50": 0.0,
+        "longest_tracked_pairs": 1
+      },
+      {
+        "sequence": "drive-forward",
+        "method": "lk",
+        "tracked_n": 21,
+        "pairs": 40,
+        "xy_p95_m": 0.06092280140473061,
+        "yaw_p95_deg": 4.640263877125073,
+        "scale_p50": 1.284984135410452,
+        "longest_tracked_pairs": 9
+      },
+      {
+        "sequence": "drive-lateral",
+        "method": "slam",
+        "tracked_n": 1,
+        "pairs": 40,
+        "xy_p95_m": 0.19,
+        "yaw_p95_deg": 0.0,
+        "scale_p50": 0.0,
+        "longest_tracked_pairs": 1
+      },
+      {
+        "sequence": "drive-lateral",
+        "method": "lk",
+        "tracked_n": 40,
+        "pairs": 40,
+        "xy_p95_m": 0.11305145976120362,
+        "yaw_p95_deg": 12.46181454695469,
+        "scale_p50": 0.41987859817221584,
+        "longest_tracked_pairs": 40
+      },
+      {
+        "sequence": "drive-turn",
+        "method": "slam",
+        "tracked_n": 1,
+        "pairs": 40,
+        "xy_p95_m": 0.0,
+        "yaw_p95_deg": 14.249999999999998,
+        "scale_p50": null,
+        "longest_tracked_pairs": 1
+      },
+      {
+        "sequence": "drive-turn",
+        "method": "lk",
+        "tracked_n": 39,
+        "pairs": 40,
+        "xy_p95_m": 0.021506442800585935,
+        "yaw_p95_deg": 2.3039825794480233,
+        "scale_p50": null,
+        "longest_tracked_pairs": 30
+      },
+      {
+        "sequence": "high-forward",
+        "method": "slam",
+        "tracked_n": 0,
+        "pairs": 40,
+        "xy_p95_m": 0.19,
+        "yaw_p95_deg": 0.0,
+        "scale_p50": 0.0,
+        "longest_tracked_pairs": 0
+      },
+      {
+        "sequence": "high-forward",
+        "method": "lk",
+        "tracked_n": 0,
+        "pairs": 40,
+        "xy_p95_m": 0.19,
+        "yaw_p95_deg": 0.0,
+        "scale_p50": 0.0,
+        "longest_tracked_pairs": 0
+      },
+      {
+        "sequence": "high-lateral",
+        "method": "slam",
+        "tracked_n": 0,
+        "pairs": 40,
+        "xy_p95_m": 0.19,
+        "yaw_p95_deg": 0.0,
+        "scale_p50": 0.0,
+        "longest_tracked_pairs": 0
+      },
+      {
+        "sequence": "high-lateral",
+        "method": "lk",
+        "tracked_n": 0,
+        "pairs": 40,
+        "xy_p95_m": 0.19,
+        "yaw_p95_deg": 0.0,
+        "scale_p50": 0.0,
+        "longest_tracked_pairs": 0
+      },
+      {
+        "sequence": "high-turn",
+        "method": "slam",
+        "tracked_n": 0,
+        "pairs": 40,
+        "xy_p95_m": 0.0,
+        "yaw_p95_deg": 14.249999999999998,
+        "scale_p50": null,
+        "longest_tracked_pairs": 0
+      },
+      {
+        "sequence": "high-turn",
+        "method": "lk",
+        "tracked_n": 0,
+        "pairs": 40,
+        "xy_p95_m": 0.0,
+        "yaw_p95_deg": 14.249999999999998,
+        "scale_p50": null,
+        "longest_tracked_pairs": 0
+      }
+    ],
+    "candidate-fast7": [
+      {
+        "sequence": "drive-forward",
+        "method": "slam",
+        "tracked_n": 1,
+        "pairs": 40,
+        "xy_p95_m": 0.19,
+        "yaw_p95_deg": 0.0,
+        "scale_p50": 0.0,
+        "longest_tracked_pairs": 1
+      },
+      {
+        "sequence": "drive-forward",
+        "method": "lk",
+        "tracked_n": 21,
+        "pairs": 40,
+        "xy_p95_m": 0.06092280140473061,
+        "yaw_p95_deg": 4.640263877125073,
+        "scale_p50": 1.284984135410452,
+        "longest_tracked_pairs": 9
+      },
+      {
+        "sequence": "drive-lateral",
+        "method": "slam",
+        "tracked_n": 3,
+        "pairs": 40,
+        "xy_p95_m": 0.1911748662439925,
+        "yaw_p95_deg": 1.2305315460704895,
+        "scale_p50": 0.0,
+        "longest_tracked_pairs": 2
+      },
+      {
+        "sequence": "drive-lateral",
+        "method": "lk",
+        "tracked_n": 40,
+        "pairs": 40,
+        "xy_p95_m": 0.11305145976120362,
+        "yaw_p95_deg": 12.46181454695469,
+        "scale_p50": 0.41987859817221584,
+        "longest_tracked_pairs": 40
+      },
+      {
+        "sequence": "drive-turn",
+        "method": "slam",
+        "tracked_n": 19,
+        "pairs": 40,
+        "xy_p95_m": 0.017875535197646748,
+        "yaw_p95_deg": 8.999999999999998,
+        "scale_p50": null,
+        "longest_tracked_pairs": 10
+      },
+      {
+        "sequence": "drive-turn",
+        "method": "lk",
+        "tracked_n": 39,
+        "pairs": 40,
+        "xy_p95_m": 0.021506442800585935,
+        "yaw_p95_deg": 2.3039825794480233,
+        "scale_p50": null,
+        "longest_tracked_pairs": 30
+      },
+      {
+        "sequence": "high-forward",
+        "method": "slam",
+        "tracked_n": 0,
+        "pairs": 40,
+        "xy_p95_m": 0.19,
+        "yaw_p95_deg": 0.0,
+        "scale_p50": 0.0,
+        "longest_tracked_pairs": 0
+      },
+      {
+        "sequence": "high-forward",
+        "method": "lk",
+        "tracked_n": 0,
+        "pairs": 40,
+        "xy_p95_m": 0.19,
+        "yaw_p95_deg": 0.0,
+        "scale_p50": 0.0,
+        "longest_tracked_pairs": 0
+      },
+      {
+        "sequence": "high-lateral",
+        "method": "slam",
+        "tracked_n": 0,
+        "pairs": 40,
+        "xy_p95_m": 0.19,
+        "yaw_p95_deg": 0.0,
+        "scale_p50": 0.0,
+        "longest_tracked_pairs": 0
+      },
+      {
+        "sequence": "high-lateral",
+        "method": "lk",
+        "tracked_n": 0,
+        "pairs": 40,
+        "xy_p95_m": 0.19,
+        "yaw_p95_deg": 0.0,
+        "scale_p50": 0.0,
+        "longest_tracked_pairs": 0
+      },
+      {
+        "sequence": "high-turn",
+        "method": "slam",
+        "tracked_n": 0,
+        "pairs": 40,
+        "xy_p95_m": 0.0,
+        "yaw_p95_deg": 14.249999999999998,
+        "scale_p50": null,
+        "longest_tracked_pairs": 0
+      },
+      {
+        "sequence": "high-turn",
+        "method": "lk",
+        "tracked_n": 0,
+        "pairs": 40,
+        "xy_p95_m": 0.0,
+        "yaw_p95_deg": 14.249999999999998,
+        "scale_p50": null,
+        "longest_tracked_pairs": 0
+      }
+    ],
+    "candidate-orange-columns-fast7": [
+      {
+        "sequence": "drive-forward",
+        "method": "slam",
+        "tracked_n": 1,
+        "pairs": 40,
+        "xy_p95_m": 0.19,
+        "yaw_p95_deg": 0.0,
+        "scale_p50": 0.0,
+        "longest_tracked_pairs": 1
+      },
+      {
+        "sequence": "drive-forward",
+        "method": "lk",
+        "tracked_n": 40,
+        "pairs": 40,
+        "xy_p95_m": 0.013329634832515085,
+        "yaw_p95_deg": 1.4204437100530891,
+        "scale_p50": 1.008642486983864,
+        "longest_tracked_pairs": 40
+      },
+      {
+        "sequence": "drive-lateral",
+        "method": "slam",
+        "tracked_n": 1,
+        "pairs": 40,
+        "xy_p95_m": 0.19,
+        "yaw_p95_deg": 0.0,
+        "scale_p50": 0.0,
+        "longest_tracked_pairs": 1
+      },
+      {
+        "sequence": "drive-lateral",
+        "method": "lk",
+        "tracked_n": 40,
+        "pairs": 40,
+        "xy_p95_m": 0.0067623685821580955,
+        "yaw_p95_deg": 0.6532187750324061,
+        "scale_p50": 1.0032071544580048,
+        "longest_tracked_pairs": 40
+      },
+      {
+        "sequence": "drive-turn",
+        "method": "slam",
+        "tracked_n": 1,
+        "pairs": 40,
+        "xy_p95_m": 0.0,
+        "yaw_p95_deg": 14.249999999999998,
+        "scale_p50": null,
+        "longest_tracked_pairs": 1
+      },
+      {
+        "sequence": "drive-turn",
+        "method": "lk",
+        "tracked_n": 40,
+        "pairs": 40,
+        "xy_p95_m": 0.005985382165199199,
+        "yaw_p95_deg": 1.1646809541830672,
+        "scale_p50": null,
+        "longest_tracked_pairs": 40
+      },
+      {
+        "sequence": "high-forward",
+        "method": "slam",
+        "tracked_n": 0,
+        "pairs": 40,
+        "xy_p95_m": 0.19,
+        "yaw_p95_deg": 0.0,
+        "scale_p50": 0.0,
+        "longest_tracked_pairs": 0
+      },
+      {
+        "sequence": "high-forward",
+        "method": "lk",
+        "tracked_n": 0,
+        "pairs": 40,
+        "xy_p95_m": 0.19,
+        "yaw_p95_deg": 0.0,
+        "scale_p50": 0.0,
+        "longest_tracked_pairs": 0
+      },
+      {
+        "sequence": "high-lateral",
+        "method": "slam",
+        "tracked_n": 0,
+        "pairs": 40,
+        "xy_p95_m": 0.19,
+        "yaw_p95_deg": 0.0,
+        "scale_p50": 0.0,
+        "longest_tracked_pairs": 0
+      },
+      {
+        "sequence": "high-lateral",
+        "method": "lk",
+        "tracked_n": 0,
+        "pairs": 40,
+        "xy_p95_m": 0.19,
+        "yaw_p95_deg": 0.0,
+        "scale_p50": 0.0,
+        "longest_tracked_pairs": 0
+      },
+      {
+        "sequence": "high-turn",
+        "method": "slam",
+        "tracked_n": 0,
+        "pairs": 40,
+        "xy_p95_m": 0.0,
+        "yaw_p95_deg": 14.249999999999998,
+        "scale_p50": null,
+        "longest_tracked_pairs": 0
+      },
+      {
+        "sequence": "high-turn",
+        "method": "lk",
+        "tracked_n": 0,
+        "pairs": 40,
+        "xy_p95_m": 0.0,
+        "yaw_p95_deg": 14.249999999999998,
+        "scale_p50": null,
+        "longest_tracked_pairs": 0
+      }
+    ]
+  },
+  "attempts": [
+    {
+      "name": "capture-init",
+      "exit": 1,
+      "status": "HOST_ERROR",
+      "reason": "relative texture asset path; fixed renderer cwd",
+      "log": "/home/ugrp/ugrp-sim/runs/mapbuild1/capture.log"
+    },
+    {
+      "name": "capture-r2",
+      "exit": 0,
+      "status": "cap_end",
+      "conditions": 6,
+      "frames": 246,
+      "log": "/home/ugrp/ugrp-sim/runs/mapbuild1/capture-r2/capture.log"
+    },
+    {
+      "name": "replay-r1",
+      "exit": 1,
+      "status": "ANALYSIS_ERROR",
+      "reason": "loaded camera qualification exception; now explicit unknown",
+      "log": "/home/ugrp/ugrp-sim/runs/mapbuild1/replay-r1.log"
+    },
+    {
+      "name": "replay-r2",
+      "exit": 1,
+      "status": "HOST_ERROR",
+      "reason": "analysis launched before source checkout completed; rerun after SHA verification",
+      "log": "/home/ugrp/ugrp-sim/runs/mapbuild1/replay-r2.log"
+    },
+    {
+      "name": "replay-r3",
+      "exit": 0,
+      "status": "COMPLETE"
+    },
+    {
+      "name": "candidate-fast7",
+      "exit": 0,
+      "status": "COMPLETE"
+    },
+    {
+      "name": "candidate-orange-columns-fast7",
+      "exit": 0,
+      "status": "COMPLETE"
+    },
+    {
+      "name": "playback",
+      "exit": 0,
+      "status": "COMPLETE"
+    }
+  ],
+  "verified_files": 270,
+  "hash_mismatches": [],
+  "raw": "/home/ugrp/ugrp-sim/runs/mapbuild1",
+  "physical_driving_runs": 0,
+  "occupancy_maps_from_exploration": 0,
+  "transport_runs": 0,
+  "model_calls": 0,
+  "stages": {
+    "survey": "COMPLETE_REFERENCES_ONLY",
+    "feasibility": "PARTIAL_NOT_ADMITTED",
+    "mapping": "NOT_STARTED",
+    "map_transport": "NOT_STARTED"
+  },
+  "remaining": [
+    "HIGH command camera model unqualified; no truth bypass",
+    "ORB map correspondence loss persists",
+    "actual MJWarp issued-command driving and command/ultrasonic scale not measured",
+    "frozen warp5 renderer full semantic gate not admitted; no control qualification inferred",
+    "exploration occupancy geometry/coverage and same-seed warp7 transport not measured",
+    "ORB-SLAM3 and learned L4 models surveyed but not executed"
+  ],
+  "inference": "RGB column masking substantially improves LK on these cases; no independent holdout or sole-cause claim"
+}

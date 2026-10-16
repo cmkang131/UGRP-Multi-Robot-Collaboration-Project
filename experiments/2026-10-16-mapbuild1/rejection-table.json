@@ -1,0 +1,125 @@
+{
+  "schema": "ugrp.mapbuild1.funnel.v1",
+  "scope": "pair-level; distinct candidates, no pooled counts",
+  "tables": {
+    "replay-r3": {
+      "stages": [
+        {
+          "stage": "pairs",
+          "cumulative_pass_n": 240,
+          "rejected_n": 0
+        },
+        {
+          "stage": "orb_feature_support",
+          "cumulative_pass_n": 120,
+          "rejected_n": 120
+        },
+        {
+          "stage": "orb_rigid_tracking",
+          "cumulative_pass_n": 3,
+          "rejected_n": 117
+        }
+      ],
+      "reasons": {
+        "insufficient_matches": 117,
+        "unqualified_camera:loaded_or_unknown_load_not_qualified": 120
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild1/capture-r2/frames",
+      "reproduction": [
+        "/home/ugrp/ugrp-sim/src/01c46bf2ab9d570ef478093bc36f1bcb23be85a1/scripts/mapbuild1_replay.py",
+        "--input",
+        "/home/ugrp/ugrp-sim/runs/mapbuild1/capture-r2/frames",
+        "--evaluation-labels",
+        "/home/ugrp/ugrp-sim/runs/mapbuild1/capture-r2/frames/eval-only.json",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/mapbuild1/replay-r3",
+        "--mapbuild1-v1"
+      ],
+      "rejection_fields": "trajectory.json: category/reason/blocked_object/minimum_gap_m/gap_status"
+    },
+    "candidate-fast7": {
+      "stages": [
+        {
+          "stage": "pairs",
+          "cumulative_pass_n": 240,
+          "rejected_n": 0
+        },
+        {
+          "stage": "orb_feature_support",
+          "cumulative_pass_n": 120,
+          "rejected_n": 120
+        },
+        {
+          "stage": "orb_rigid_tracking",
+          "cumulative_pass_n": 23,
+          "rejected_n": 97
+        }
+      ],
+      "reasons": {
+        "insufficient_matches": 95,
+        "no_rigid_consensus": 2,
+        "unqualified_camera:loaded_or_unknown_load_not_qualified": 120
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild1/capture-r2/frames",
+      "reproduction": [
+        "/home/ugrp/ugrp-sim/src/fe77e1a791eda8fb3209a58aa9643a7ed71819fa/scripts/mapbuild1_replay.py",
+        "--input",
+        "/home/ugrp/ugrp-sim/runs/mapbuild1/capture-r2/frames",
+        "--evaluation-labels",
+        "/home/ugrp/ugrp-sim/runs/mapbuild1/capture-r2/frames/eval-only.json",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/mapbuild1/candidate-fast7",
+        "--candidate",
+        "fast7",
+        "--mapbuild1-v1"
+      ],
+      "rejection_fields": "trajectory.json: category/reason/blocked_object/minimum_gap_m/gap_status"
+    },
+    "candidate-orange-columns-fast7": {
+      "stages": [
+        {
+          "stage": "pairs",
+          "cumulative_pass_n": 240,
+          "rejected_n": 0
+        },
+        {
+          "stage": "orb_feature_support",
+          "cumulative_pass_n": 120,
+          "rejected_n": 120
+        },
+        {
+          "stage": "orb_rigid_tracking",
+          "cumulative_pass_n": 3,
+          "rejected_n": 117
+        }
+      ],
+      "reasons": {
+        "insufficient_matches": 117,
+        "unqualified_camera:loaded_or_unknown_load_not_qualified": 120
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild1/capture-r2/frames",
+      "reproduction": [
+        "/home/ugrp/ugrp-sim/src/fe77e1a791eda8fb3209a58aa9643a7ed71819fa/scripts/mapbuild1_replay.py",
+        "--input",
+        "/home/ugrp/ugrp-sim/runs/mapbuild1/capture-r2/frames",
+        "--evaluation-labels",
+        "/home/ugrp/ugrp-sim/runs/mapbuild1/capture-r2/frames/eval-only.json",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/mapbuild1/candidate-orange-columns-fast7",
+        "--candidate",
+        "orange-columns-fast7",
+        "--mapbuild1-v1"
+      ],
+      "rejection_fields": "trajectory.json: category/reason/blocked_object/minimum_gap_m/gap_status"
+    }
+  },
+  "raw": "/home/ugrp/ugrp-sim/runs/mapbuild1",
+  "reproduction": [
+    "python3",
+    "/home/ugrp/ugrp-sim/analysis-tools/mapbuild1-summarize.py",
+    "--raw",
+    "/home/ugrp/ugrp-sim/runs/mapbuild1",
+    "--output",
+    "/home/ugrp/ugrp-sim/runs/mapbuild1/delivery-r1"
+  ]
+}

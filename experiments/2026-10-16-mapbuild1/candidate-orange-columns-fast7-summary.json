@@ -1,0 +1,529 @@
+{
+  "scope": "kinematic_render_only",
+  "status": "MEASURED_NOT_ADMITTED",
+  "results": [
+    {
+      "sequence": "drive-forward",
+      "method": "slam",
+      "tracked_n": 1,
+      "pairs": 40,
+      "longest_tracked_pairs": 1,
+      "status_counts": {
+        "bootstrap": 1,
+        "command_only": 39,
+        "visual_update": 1
+      },
+      "ate_xy_m": {
+        "n": 41,
+        "p50": 0.1,
+        "p95": 0.19,
+        "max": 0.2
+      },
+      "ate_yaw_deg": {
+        "n": 41,
+        "p50": 0.0,
+        "p95": 0.0,
+        "max": 0.0
+      },
+      "rpe_xy_m": {
+        "n": 40,
+        "p50": 0.010000000000000009,
+        "p95": 0.010000000000000023,
+        "max": 0.010000000000000037
+      },
+      "visual_rpe_xy_m": {
+        "n": 1,
+        "p50": 0.009999999999999898,
+        "p95": 0.009999999999999898,
+        "max": 0.009999999999999898
+      },
+      "translation_scale_ratio": {
+        "n": 40,
+        "p50": 0.0,
+        "p95": 0.0,
+        "max": 1.1150912609939183e-14
+      },
+      "loop_xy_m": 1.1150912609939193e-16,
+      "termination": "cap_end"
+    },
+    {
+      "sequence": "drive-forward",
+      "method": "lk",
+      "tracked_n": 40,
+      "pairs": 40,
+      "longest_tracked_pairs": 40,
+      "status_counts": {
+        "bootstrap": 1,
+        "measured": 40
+      },
+      "ate_xy_m": {
+        "n": 41,
+        "p50": 0.007083198086104186,
+        "p95": 0.013329634832515085,
+        "max": 0.014024713468291141
+      },
+      "ate_yaw_deg": {
+        "n": 41,
+        "p50": 0.7202559209486668,
+        "p95": 1.4204437100530891,
+        "max": 1.5405910104715899
+      },
+      "rpe_xy_m": {
+        "n": 40,
+        "p50": 0.0007967442830650623,
+        "p95": 0.0020860988500366506,
+        "max": 0.006622277932941412
+      },
+      "visual_rpe_xy_m": {
+        "n": 40,
+        "p50": 0.0007967442830650623,
+        "p95": 0.0020860988500366506,
+        "max": 0.006622277932941412
+      },
+      "translation_scale_ratio": {
+        "n": 40,
+        "p50": 1.008642486983864,
+        "p95": 1.0530007819241105,
+        "max": 1.0831462965810956
+      },
+      "loop_xy_m": 0.0054599908147441685,
+      "termination": "cap_end"
+    },
+    {
+      "sequence": "drive-lateral",
+      "method": "slam",
+      "tracked_n": 1,
+      "pairs": 40,
+      "longest_tracked_pairs": 1,
+      "status_counts": {
+        "bootstrap": 1,
+        "command_only": 39,
+        "visual_update": 1
+      },
+      "ate_xy_m": {
+        "n": 41,
+        "p50": 0.1,
+        "p95": 0.19,
+        "max": 0.2
+      },
+      "ate_yaw_deg": {
+        "n": 41,
+        "p50": 0.0,
+        "p95": 0.0,
+        "max": 0.0
+      },
+      "rpe_xy_m": {
+        "n": 40,
+        "p50": 0.010000000000000009,
+        "p95": 0.010000000000000023,
+        "max": 0.010000000000000037
+      },
+      "visual_rpe_xy_m": {
+        "n": 1,
+        "p50": 0.01000000000000002,
+        "p95": 0.01000000000000002,
+        "max": 0.01000000000000002
+      },
+      "translation_scale_ratio": {
+        "n": 40,
+        "p50": 0.0,
+        "p95": 0.0,
+        "max": 1.1150912609939183e-14
+      },
+      "loop_xy_m": 1.1150912609939193e-16,
+      "termination": "cap_end"
+    },
+    {
+      "sequence": "drive-lateral",
+      "method": "lk",
+      "tracked_n": 40,
+      "pairs": 40,
+      "longest_tracked_pairs": 40,
+      "status_counts": {
+        "bootstrap": 1,
+        "measured": 40
+      },
+      "ate_xy_m": {
+        "n": 41,
+        "p50": 0.0020096871795323205,
+        "p95": 0.0067623685821580955,
+        "max": 0.007320058443117411
+      },
+      "ate_yaw_deg": {
+        "n": 41,
+        "p50": 0.35126548808775593,
+        "p95": 0.6532187750324061,
+        "max": 0.6644095527771022
+      },
+      "rpe_xy_m": {
+        "n": 40,
+        "p50": 0.0003545806943469938,
+        "p95": 0.0010427821198309344,
+        "max": 0.0015513039982827065
+      },
+      "visual_rpe_xy_m": {
+        "n": 40,
+        "p50": 0.0003545806943469938,
+        "p95": 0.0010427821198309344,
+        "max": 0.0015513039982827065
+      },
+      "translation_scale_ratio": {
+        "n": 40,
+        "p50": 1.0032071544580048,
+        "p95": 1.0728454581685083,
+        "max": 1.1544763910318838
+      },
+      "loop_xy_m": 0.007320058443117411,
+      "termination": "cap_end"
+    },
+    {
+      "sequence": "drive-turn",
+      "method": "slam",
+      "tracked_n": 1,
+      "pairs": 40,
+      "longest_tracked_pairs": 1,
+      "status_counts": {
+        "bootstrap": 1,
+        "command_only": 39,
+        "visual_update": 1
+      },
+      "ate_xy_m": {
+        "n": 41,
+        "p50": 0.0,
+        "p95": 0.0,
+        "max": 1.1150912609939193e-16
+      },
+      "ate_yaw_deg": {
+        "n": 41,
+        "p50": 7.499999999999999,
+        "p95": 14.249999999999998,
+        "max": 14.999999999999998
+      },
+      "rpe_xy_m": {
+        "n": 40,
+        "p50": 0.0,
+        "p95": 0.0,
+        "max": 1.1150912609939193e-16
+      },
+      "visual_rpe_xy_m": {
+        "n": 1,
+        "p50": 1.1150912609939193e-16,
+        "p95": 1.1150912609939193e-16,
+        "max": 1.1150912609939193e-16
+      },
+      "translation_scale_ratio": {
+        "n": 0,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "loop_xy_m": 1.1150912609939193e-16,
+      "termination": "cap_end"
+    },
+    {
+      "sequence": "drive-turn",
+      "method": "lk",
+      "tracked_n": 40,
+      "pairs": 40,
+      "longest_tracked_pairs": 40,
+      "status_counts": {
+        "bootstrap": 1,
+        "measured": 40
+      },
+      "ate_xy_m": {
+        "n": 41,
+        "p50": 0.0034808592185359135,
+        "p95": 0.005985382165199199,
+        "max": 0.006723134585667485
+      },
+      "ate_yaw_deg": {
+        "n": 41,
+        "p50": 0.31831468656675876,
+        "p95": 1.1646809541830672,
+        "max": 1.2570477834458802
+      },
+      "rpe_xy_m": {
+        "n": 40,
+        "p50": 0.0009143277721629337,
+        "p95": 0.0017978793971981449,
+        "max": 0.002203808117437136
+      },
+      "visual_rpe_xy_m": {
+        "n": 40,
+        "p50": 0.0009143277721629337,
+        "p95": 0.0017978793971981449,
+        "max": 0.002203808117437136
+      },
+      "translation_scale_ratio": {
+        "n": 0,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "loop_xy_m": 0.00041995534605052744,
+      "termination": "cap_end"
+    },
+    {
+      "sequence": "high-forward",
+      "method": "slam",
+      "tracked_n": 0,
+      "pairs": 40,
+      "longest_tracked_pairs": 0,
+      "status_counts": {
+        "command_only": 41
+      },
+      "ate_xy_m": {
+        "n": 41,
+        "p50": 0.1,
+        "p95": 0.19,
+        "max": 0.2
+      },
+      "ate_yaw_deg": {
+        "n": 41,
+        "p50": 0.0,
+        "p95": 0.0,
+        "max": 0.0
+      },
+      "rpe_xy_m": {
+        "n": 40,
+        "p50": 0.010000000000000009,
+        "p95": 0.010000000000000023,
+        "max": 0.010000000000000037
+      },
+      "visual_rpe_xy_m": {
+        "n": 0,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "translation_scale_ratio": {
+        "n": 40,
+        "p50": 0.0,
+        "p95": 0.0,
+        "max": 0.0
+      },
+      "loop_xy_m": 0.0,
+      "termination": "cap_end"
+    },
+    {
+      "sequence": "high-forward",
+      "method": "lk",
+      "tracked_n": 0,
+      "pairs": 40,
+      "longest_tracked_pairs": 0,
+      "status_counts": {
+        "unknown_camera:loaded_or_unknown_load_not_qualified": 41
+      },
+      "ate_xy_m": {
+        "n": 41,
+        "p50": 0.1,
+        "p95": 0.19,
+        "max": 0.2
+      },
+      "ate_yaw_deg": {
+        "n": 41,
+        "p50": 0.0,
+        "p95": 0.0,
+        "max": 0.0
+      },
+      "rpe_xy_m": {
+        "n": 40,
+        "p50": 0.010000000000000009,
+        "p95": 0.010000000000000023,
+        "max": 0.010000000000000037
+      },
+      "visual_rpe_xy_m": {
+        "n": 0,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "translation_scale_ratio": {
+        "n": 40,
+        "p50": 0.0,
+        "p95": 0.0,
+        "max": 0.0
+      },
+      "loop_xy_m": 0.0,
+      "termination": "cap_end"
+    },
+    {
+      "sequence": "high-lateral",
+      "method": "slam",
+      "tracked_n": 0,
+      "pairs": 40,
+      "longest_tracked_pairs": 0,
+      "status_counts": {
+        "command_only": 41
+      },
+      "ate_xy_m": {
+        "n": 41,
+        "p50": 0.1,
+        "p95": 0.19,
+        "max": 0.2
+      },
+      "ate_yaw_deg": {
+        "n": 41,
+        "p50": 0.0,
+        "p95": 0.0,
+        "max": 0.0
+      },
+      "rpe_xy_m": {
+        "n": 40,
+        "p50": 0.010000000000000009,
+        "p95": 0.010000000000000023,
+        "max": 0.010000000000000037
+      },
+      "visual_rpe_xy_m": {
+        "n": 0,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "translation_scale_ratio": {
+        "n": 40,
+        "p50": 0.0,
+        "p95": 0.0,
+        "max": 0.0
+      },
+      "loop_xy_m": 0.0,
+      "termination": "cap_end"
+    },
+    {
+      "sequence": "high-lateral",
+      "method": "lk",
+      "tracked_n": 0,
+      "pairs": 40,
+      "longest_tracked_pairs": 0,
+      "status_counts": {
+        "unknown_camera:loaded_or_unknown_load_not_qualified": 41
+      },
+      "ate_xy_m": {
+        "n": 41,
+        "p50": 0.1,
+        "p95": 0.19,
+        "max": 0.2
+      },
+      "ate_yaw_deg": {
+        "n": 41,
+        "p50": 0.0,
+        "p95": 0.0,
+        "max": 0.0
+      },
+      "rpe_xy_m": {
+        "n": 40,
+        "p50": 0.010000000000000009,
+        "p95": 0.010000000000000023,
+        "max": 0.010000000000000037
+      },
+      "visual_rpe_xy_m": {
+        "n": 0,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "translation_scale_ratio": {
+        "n": 40,
+        "p50": 0.0,
+        "p95": 0.0,
+        "max": 0.0
+      },
+      "loop_xy_m": 0.0,
+      "termination": "cap_end"
+    },
+    {
+      "sequence": "high-turn",
+      "method": "slam",
+      "tracked_n": 0,
+      "pairs": 40,
+      "longest_tracked_pairs": 0,
+      "status_counts": {
+        "command_only": 41
+      },
+      "ate_xy_m": {
+        "n": 41,
+        "p50": 0.0,
+        "p95": 0.0,
+        "max": 0.0
+      },
+      "ate_yaw_deg": {
+        "n": 41,
+        "p50": 7.499999999999999,
+        "p95": 14.249999999999998,
+        "max": 14.999999999999998
+      },
+      "rpe_xy_m": {
+        "n": 40,
+        "p50": 0.0,
+        "p95": 0.0,
+        "max": 0.0
+      },
+      "visual_rpe_xy_m": {
+        "n": 0,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "translation_scale_ratio": {
+        "n": 0,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "loop_xy_m": 0.0,
+      "termination": "cap_end"
+    },
+    {
+      "sequence": "high-turn",
+      "method": "lk",
+      "tracked_n": 0,
+      "pairs": 40,
+      "longest_tracked_pairs": 0,
+      "status_counts": {
+        "unknown_camera:loaded_or_unknown_load_not_qualified": 41
+      },
+      "ate_xy_m": {
+        "n": 41,
+        "p50": 0.0,
+        "p95": 0.0,
+        "max": 0.0
+      },
+      "ate_yaw_deg": {
+        "n": 41,
+        "p50": 7.499999999999999,
+        "p95": 14.249999999999998,
+        "max": 14.999999999999998
+      },
+      "rpe_xy_m": {
+        "n": 40,
+        "p50": 0.0,
+        "p95": 0.0,
+        "max": 0.0
+      },
+      "visual_rpe_xy_m": {
+        "n": 0,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "translation_scale_ratio": {
+        "n": 0,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "loop_xy_m": 0.0,
+      "termination": "cap_end"
+    }
+  ],
+  "candidate": "orange-columns-fast7",
+  "runtime_inputs": [
+    "own_rgb",
+    "fixed_camera_calibration",
+    "fixture_pwm_specification",
+    "zero_wheel_prior"
+  ],
+  "command_scale_measured": false,
+  "physical_driving_measured": false,
+  "input_sha256": "56a21b79ebee1ac8b019505afc48868c45f3b49ea8a416cd6b0e7364491bafa1"
+}

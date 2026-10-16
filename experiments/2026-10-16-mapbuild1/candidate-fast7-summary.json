@@ -1,0 +1,532 @@
+{
+  "scope": "kinematic_render_only",
+  "status": "MEASURED_NOT_ADMITTED",
+  "results": [
+    {
+      "sequence": "drive-forward",
+      "method": "slam",
+      "tracked_n": 1,
+      "pairs": 40,
+      "longest_tracked_pairs": 1,
+      "status_counts": {
+        "bootstrap": 1,
+        "command_only": 39,
+        "visual_update": 1
+      },
+      "ate_xy_m": {
+        "n": 41,
+        "p50": 0.1,
+        "p95": 0.19,
+        "max": 0.2
+      },
+      "ate_yaw_deg": {
+        "n": 41,
+        "p50": 0.0,
+        "p95": 0.0,
+        "max": 0.0
+      },
+      "rpe_xy_m": {
+        "n": 40,
+        "p50": 0.010000000000000009,
+        "p95": 0.010000000000000037,
+        "max": 0.01000000000000012
+      },
+      "visual_rpe_xy_m": {
+        "n": 1,
+        "p50": 0.01000000000000012,
+        "p95": 0.01000000000000012,
+        "max": 0.01000000000000012
+      },
+      "translation_scale_ratio": {
+        "n": 40,
+        "p50": 0.0,
+        "p95": 0.0,
+        "max": 1.1103585416259196e-14
+      },
+      "loop_xy_m": 1.1103585416259206e-16,
+      "termination": "cap_end"
+    },
+    {
+      "sequence": "drive-forward",
+      "method": "lk",
+      "tracked_n": 21,
+      "pairs": 40,
+      "longest_tracked_pairs": 9,
+      "status_counts": {
+        "bootstrap": 1,
+        "measured": 21,
+        "unknown_texture": 2,
+        "unknown_rigid_consensus": 17
+      },
+      "ate_xy_m": {
+        "n": 41,
+        "p50": 0.040889480626268,
+        "p95": 0.06092280140473061,
+        "max": 0.06871315199638875
+      },
+      "ate_yaw_deg": {
+        "n": 41,
+        "p50": 4.294611744822621,
+        "p95": 4.640263877125073,
+        "max": 4.733297058555706
+      },
+      "rpe_xy_m": {
+        "n": 40,
+        "p50": 0.00844821431853542,
+        "p95": 0.01000000000000001,
+        "max": 0.010000000000000037
+      },
+      "visual_rpe_xy_m": {
+        "n": 21,
+        "p50": 0.005203206992052792,
+        "p95": 0.008374671295302685,
+        "max": 0.008521757341768155
+      },
+      "translation_scale_ratio": {
+        "n": 40,
+        "p50": 1.284984135410452,
+        "p95": 1.5188444703670487,
+        "max": 1.545339223879869
+      },
+      "loop_xy_m": 0.014877096548859511,
+      "termination": "cap_end"
+    },
+    {
+      "sequence": "drive-lateral",
+      "method": "slam",
+      "tracked_n": 3,
+      "pairs": 40,
+      "longest_tracked_pairs": 2,
+      "status_counts": {
+        "bootstrap": 1,
+        "visual_update": 3,
+        "command_only": 37
+      },
+      "ate_xy_m": {
+        "n": 41,
+        "p50": 0.10118651740531562,
+        "p95": 0.1911748662439925,
+        "max": 0.20117421513853995
+      },
+      "ate_yaw_deg": {
+        "n": 41,
+        "p50": 1.2305315460704895,
+        "p95": 1.2305315460704895,
+        "max": 1.2305315460704895
+      },
+      "rpe_xy_m": {
+        "n": 40,
+        "p50": 0.010000000000000009,
+        "p95": 0.010069194882760018,
+        "max": 0.011383897655199779
+      },
+      "visual_rpe_xy_m": {
+        "n": 3,
+        "p50": 0.011383897655199737,
+        "p95": 0.011383897655199775,
+        "max": 0.011383897655199779
+      },
+      "translation_scale_ratio": {
+        "n": 40,
+        "p50": 0.0,
+        "p95": 0.012607311990420736,
+        "max": 0.252146239808019
+      },
+      "loop_xy_m": 5.0306980803327406e-17,
+      "termination": "cap_end"
+    },
+    {
+      "sequence": "drive-lateral",
+      "method": "lk",
+      "tracked_n": 40,
+      "pairs": 40,
+      "longest_tracked_pairs": 40,
+      "status_counts": {
+        "bootstrap": 1,
+        "measured": 40
+      },
+      "ate_xy_m": {
+        "n": 41,
+        "p50": 0.057674001228961755,
+        "p95": 0.11305145976120362,
+        "max": 0.1211928177841621
+      },
+      "ate_yaw_deg": {
+        "n": 41,
+        "p50": 6.5915436204393,
+        "p95": 12.46181454695469,
+        "max": 13.215868900606077
+      },
+      "rpe_xy_m": {
+        "n": 40,
+        "p50": 0.006198186529624613,
+        "p95": 0.008841451237658778,
+        "max": 0.009698125979283649
+      },
+      "visual_rpe_xy_m": {
+        "n": 40,
+        "p50": 0.006198186529624613,
+        "p95": 0.008841451237658778,
+        "max": 0.009698125979283649
+      },
+      "translation_scale_ratio": {
+        "n": 40,
+        "p50": 0.41987859817221584,
+        "p95": 0.6556549232721844,
+        "max": 0.710777366660381
+      },
+      "loop_xy_m": 0.002688407591054709,
+      "termination": "cap_end"
+    },
+    {
+      "sequence": "drive-turn",
+      "method": "slam",
+      "tracked_n": 19,
+      "pairs": 40,
+      "longest_tracked_pairs": 10,
+      "status_counts": {
+        "bootstrap": 1,
+        "command_only": 21,
+        "visual_update": 19
+      },
+      "ate_xy_m": {
+        "n": 41,
+        "p50": 0.002448352345127596,
+        "p95": 0.017875535197646748,
+        "max": 0.017875535197646748
+      },
+      "ate_yaw_deg": {
+        "n": 41,
+        "p50": 0.6366395950537702,
+        "p95": 8.999999999999998,
+        "max": 10.499999999999998
+      },
+      "rpe_xy_m": {
+        "n": 40,
+        "p50": 0.0,
+        "p95": 0.01231314905327041,
+        "max": 0.016294751873463496
+      },
+      "visual_rpe_xy_m": {
+        "n": 19,
+        "p50": 0.0019004622610818704,
+        "p95": 0.013424308349482054,
+        "max": 0.016294751873463496
+      },
+      "translation_scale_ratio": {
+        "n": 0,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "loop_xy_m": 0.0016221493803799784,
+      "termination": "cap_end"
+    },
+    {
+      "sequence": "drive-turn",
+      "method": "lk",
+      "tracked_n": 39,
+      "pairs": 40,
+      "longest_tracked_pairs": 30,
+      "status_counts": {
+        "bootstrap": 1,
+        "measured": 39,
+        "unknown_rigid_consensus": 1
+      },
+      "ate_xy_m": {
+        "n": 41,
+        "p50": 0.017927240283849913,
+        "p95": 0.021506442800585935,
+        "max": 0.021956857951931124
+      },
+      "ate_yaw_deg": {
+        "n": 41,
+        "p50": 2.0620875872709057,
+        "p95": 2.3039825794480233,
+        "max": 2.887670452721776
+      },
+      "rpe_xy_m": {
+        "n": 40,
+        "p50": 0.0006682415806780646,
+        "p95": 0.006080855168463654,
+        "max": 0.008525075915840442
+      },
+      "visual_rpe_xy_m": {
+        "n": 39,
+        "p50": 0.0006941023273662081,
+        "p95": 0.00613680874418386,
+        "max": 0.008525075915840442
+      },
+      "translation_scale_ratio": {
+        "n": 0,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "loop_xy_m": 0.0088181286458775,
+      "termination": "cap_end"
+    },
+    {
+      "sequence": "high-forward",
+      "method": "slam",
+      "tracked_n": 0,
+      "pairs": 40,
+      "longest_tracked_pairs": 0,
+      "status_counts": {
+        "command_only": 41
+      },
+      "ate_xy_m": {
+        "n": 41,
+        "p50": 0.1,
+        "p95": 0.19,
+        "max": 0.2
+      },
+      "ate_yaw_deg": {
+        "n": 41,
+        "p50": 0.0,
+        "p95": 0.0,
+        "max": 0.0
+      },
+      "rpe_xy_m": {
+        "n": 40,
+        "p50": 0.010000000000000009,
+        "p95": 0.010000000000000023,
+        "max": 0.010000000000000037
+      },
+      "visual_rpe_xy_m": {
+        "n": 0,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "translation_scale_ratio": {
+        "n": 40,
+        "p50": 0.0,
+        "p95": 0.0,
+        "max": 0.0
+      },
+      "loop_xy_m": 0.0,
+      "termination": "cap_end"
+    },
+    {
+      "sequence": "high-forward",
+      "method": "lk",
+      "tracked_n": 0,
+      "pairs": 40,
+      "longest_tracked_pairs": 0,
+      "status_counts": {
+        "unknown_camera:loaded_or_unknown_load_not_qualified": 41
+      },
+      "ate_xy_m": {
+        "n": 41,
+        "p50": 0.1,
+        "p95": 0.19,
+        "max": 0.2
+      },
+      "ate_yaw_deg": {
+        "n": 41,
+        "p50": 0.0,
+        "p95": 0.0,
+        "max": 0.0
+      },
+      "rpe_xy_m": {
+        "n": 40,
+        "p50": 0.010000000000000009,
+        "p95": 0.010000000000000023,
+        "max": 0.010000000000000037
+      },
+      "visual_rpe_xy_m": {
+        "n": 0,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "translation_scale_ratio": {
+        "n": 40,
+        "p50": 0.0,
+        "p95": 0.0,
+        "max": 0.0
+      },
+      "loop_xy_m": 0.0,
+      "termination": "cap_end"
+    },
+    {
+      "sequence": "high-lateral",
+      "method": "slam",
+      "tracked_n": 0,
+      "pairs": 40,
+      "longest_tracked_pairs": 0,
+      "status_counts": {
+        "command_only": 41
+      },
+      "ate_xy_m": {
+        "n": 41,
+        "p50": 0.1,
+        "p95": 0.19,
+        "max": 0.2
+      },
+      "ate_yaw_deg": {
+        "n": 41,
+        "p50": 0.0,
+        "p95": 0.0,
+        "max": 0.0
+      },
+      "rpe_xy_m": {
+        "n": 40,
+        "p50": 0.010000000000000009,
+        "p95": 0.010000000000000023,
+        "max": 0.010000000000000037
+      },
+      "visual_rpe_xy_m": {
+        "n": 0,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "translation_scale_ratio": {
+        "n": 40,
+        "p50": 0.0,
+        "p95": 0.0,
+        "max": 0.0
+      },
+      "loop_xy_m": 0.0,
+      "termination": "cap_end"
+    },
+    {
+      "sequence": "high-lateral",
+      "method": "lk",
+      "tracked_n": 0,
+      "pairs": 40,
+      "longest_tracked_pairs": 0,
+      "status_counts": {
+        "unknown_camera:loaded_or_unknown_load_not_qualified": 41
+      },
+      "ate_xy_m": {
+        "n": 41,
+        "p50": 0.1,
+        "p95": 0.19,
+        "max": 0.2
+      },
+      "ate_yaw_deg": {
+        "n": 41,
+        "p50": 0.0,
+        "p95": 0.0,
+        "max": 0.0
+      },
+      "rpe_xy_m": {
+        "n": 40,
+        "p50": 0.010000000000000009,
+        "p95": 0.010000000000000023,
+        "max": 0.010000000000000037
+      },
+      "visual_rpe_xy_m": {
+        "n": 0,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "translation_scale_ratio": {
+        "n": 40,
+        "p50": 0.0,
+        "p95": 0.0,
+        "max": 0.0
+      },
+      "loop_xy_m": 0.0,
+      "termination": "cap_end"
+    },
+    {
+      "sequence": "high-turn",
+      "method": "slam",
+      "tracked_n": 0,
+      "pairs": 40,
+      "longest_tracked_pairs": 0,
+      "status_counts": {
+        "command_only": 41
+      },
+      "ate_xy_m": {
+        "n": 41,
+        "p50": 0.0,
+        "p95": 0.0,
+        "max": 0.0
+      },
+      "ate_yaw_deg": {
+        "n": 41,
+        "p50": 7.499999999999999,
+        "p95": 14.249999999999998,
+        "max": 14.999999999999998
+      },
+      "rpe_xy_m": {
+        "n": 40,
+        "p50": 0.0,
+        "p95": 0.0,
+        "max": 0.0
+      },
+      "visual_rpe_xy_m": {
+        "n": 0,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "translation_scale_ratio": {
+        "n": 0,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "loop_xy_m": 0.0,
+      "termination": "cap_end"
+    },
+    {
+      "sequence": "high-turn",
+      "method": "lk",
+      "tracked_n": 0,
+      "pairs": 40,
+      "longest_tracked_pairs": 0,
+      "status_counts": {
+        "unknown_camera:loaded_or_unknown_load_not_qualified": 41
+      },
+      "ate_xy_m": {
+        "n": 41,
+        "p50": 0.0,
+        "p95": 0.0,
+        "max": 0.0
+      },
+      "ate_yaw_deg": {
+        "n": 41,
+        "p50": 7.499999999999999,
+        "p95": 14.249999999999998,
+        "max": 14.999999999999998
+      },
+      "rpe_xy_m": {
+        "n": 40,
+        "p50": 0.0,
+        "p95": 0.0,
+        "max": 0.0
+      },
+      "visual_rpe_xy_m": {
+        "n": 0,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "translation_scale_ratio": {
+        "n": 0,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "loop_xy_m": 0.0,
+      "termination": "cap_end"
+    }
+  ],
+  "candidate": "fast7",
+  "runtime_inputs": [
+    "own_rgb",
+    "fixed_camera_calibration",
+    "fixture_pwm_specification",
+    "zero_wheel_prior"
+  ],
+  "command_scale_measured": false,
+  "physical_driving_measured": false,
+  "input_sha256": "56a21b79ebee1ac8b019505afc48868c45f3b49ea8a416cd6b0e7364491bafa1"
+}
