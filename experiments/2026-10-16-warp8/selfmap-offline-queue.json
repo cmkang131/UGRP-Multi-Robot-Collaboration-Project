@@ -1,0 +1,29 @@
+{
+  "schema": "ugrp.warp8e.selfmap_offline.v1",
+  "status": "OPEN_GRIPPER_COMPONENT_DIAGNOSTIC",
+  "host": "gcp3",
+  "account": "changmin5781@gmail.com",
+  "project": "ugrp-sim-c-1016",
+  "source_run": "/home/ugrp/ugrp-sim/runs/warp8/releaseA-s1-native-r1",
+  "world_n": 14,
+  "release_reloc_selfmap_v1": "lk",
+  "rejection_table": "/home/ugrp/ugrp-sim/ops-reviews/warp8/release-topology-rejection_table.json",
+  "current_stack_check": {
+    "script": "scripts/check_current_stack.py",
+    "status": "pending_owner_stackaudit_not_yet_present",
+    "required_before_release_gate": true
+  },
+  "vm_wall_cap": null,
+  "supervisor_wall_deadline": null,
+  "physics_steps": 0,
+  "new_release_gate_authorized_by_offline_result": false,
+  "owner_requirements_pending": [
+    "loaded camera FK qualification",
+    "static map global acquisition API"
+  ],
+  "no_pooling": true,
+  "camera_threshold_tuning": false,
+  "legacy_Hough_execution": false,
+  "guards": ["idle20", "budget-stop", "isolated_L4", "MPS_off"],
+  "raw_source_preserved": true
+}
