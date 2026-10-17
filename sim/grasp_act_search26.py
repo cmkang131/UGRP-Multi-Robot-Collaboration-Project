@@ -46,6 +46,15 @@ new candidate selects them.
   blocked while the remembered cargo is stale), handing off at ~25-30 s.  The
   extra refreshes are the next bounded attempts; default off and no new
   distance/angle/time threshold.
+- ``search26_reobserve_refresh_open``: the same conditional refresher chain as
+  ``search26_reobserve_refresh`` but with no fixed extra-encounter count: as
+  long as the last obstacle encounter ended in ``fresh_measurements_replan``
+  (i.e. it produced a fresh measurement) the next re-blocked plan may refresh
+  again.  Bounded only by the existing 60 SIM cap and the existing approach
+  deadline.  Basis: gcp6 r5b case 27 used all four bounded refreshes between
+  SIM 15.8-17.4 s, each fresh window allowing only ~0.1 m of movement before
+  the stale-margin blocked the plan again, and handed off at 20.4 s; the
+  bounded count, not the refresh mechanism, ended the attempt.
 - ``search26_wide_stance``: a NEW teacher candidate (never pooled with the
   other modes' results) whose certified stance map samples jaw-allowed angles
   on a 1-degree grid inside the existing calibrated radial envelope, instead of
@@ -59,6 +68,7 @@ new stance candidate uses only the existing calibrated envelope, the existing
 jaw predicate, and the existing margins.
 """
 MODES = {'search26_circles': 'search26_downfirst_circles_v1',
+         'search26_reobserve_refresh_open': 'search26_reobserve_refresh_open_v1',
          'search26_reobserve_refresh': 'search26_reobserve_refresh_v1',
          'search26_circles_farfirst': 'search26_circles_farfirst_v1',
          'search26_static_peer': 'search26_static_peer_stance_v1',

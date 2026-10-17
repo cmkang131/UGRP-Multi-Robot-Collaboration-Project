@@ -270,3 +270,28 @@ def test_reobserve_refresh_mode_is_bounded_and_conditional():
     from scripts.run_grasp_act_teacher import run
     import inspect
     assert 'search26_reobserve_refresh' in inspect.signature(run).parameters
+
+
+def test_open_refresh_mode_keeps_refreshing_after_fresh_ends():
+    """r5c: the open refresh chain is not capped by the encounter count while
+    the last obstacle encounter ended fresh (r5b stopped at four)."""
+    from sim.grasp_act_search26 import MODES as M26
+    from sim.grasp_act_search15_modes import ALL_MODES
+    assert M26['search26_reobserve_refresh_open'] == 'search26_reobserve_refresh_open_v1'
+    assert 'search26_reobserve_refresh_open' in ALL_MODES
+    from scripts.run_grasp_act_teacher import run
+    import inspect
+    assert 'search26_reobserve_refresh_open' in inspect.signature(run).parameters
+    w = world()
+    m = {'kind': 'cargo', 'id': 'red_1', 'xyz': [.4, .3, .02], 'yaw': 0.,
+         'radius': .03, 'top_z_bound_m': .05, 'seen_t': 0.}
+    t = teacher(search26_reobserve=SEARCH26['search26_reobserve'],
+                search26_reobserve_refresh_open=SEARCH26['search26_reobserve_refresh_open'])
+    for i in range(8):
+        assert t.reobserver.begin('obstacle', {'red_1': deepcopy(m)}, w, t, 10. + i), i
+        t.reobserver.finish(t, 10.2 + i, 'fresh_measurements_replan')
+    assert t.reobserver.begin('obstacle', {'red_1': deepcopy(m)}, w, t, 20.)
+    t.reobserver.finish(t, 20.2, 'fresh_measurements_replan')
+    # a non-fresh end closes the chain again
+    t.reobserver.last_end['obstacle'] = 'bounded_reobserve_exhausted_replan'
+    assert not t.reobserver.begin('obstacle', {'red_1': deepcopy(m)}, w, t, 21.)

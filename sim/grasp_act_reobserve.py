@@ -77,9 +77,11 @@ class ActiveReobserve:
     def begin(self, kind, targets, world, teacher, now, *, retreat_first=False):
         limit = self.MAX_ENCOUNTERS
         if (kind == 'obstacle'
-                and teacher.search15_modes.get('search26_reobserve_refresh','off') != 'off'
                 and self.last_end.get('obstacle') == 'fresh_measurements_replan'):
-            limit = self.MAX_ENCOUNTERS + 2   # bounded extra refreshes, default off
+            if teacher.search15_modes.get('search26_reobserve_refresh_open','off') != 'off':
+                limit = 99   # open refresh chain; default off, bounded by the SIM cap
+            elif teacher.search15_modes.get('search26_reobserve_refresh','off') != 'off':
+                limit = self.MAX_ENCOUNTERS + 2   # bounded extra refreshes, default off
         if self.active or self.used[kind] >= limit or not targets:
             return False
         self.used[kind] += 1
