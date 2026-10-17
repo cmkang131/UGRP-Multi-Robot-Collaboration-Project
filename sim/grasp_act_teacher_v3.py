@@ -87,6 +87,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         self.nominal_handoff_log=[]
         self.approach_choice=(0.,STATION_M);self.goal_set_log=[]
         self.approach_blocked_since=None;self.approach_plan_valid=False
+        self.frozen_plan=None   # opt-in committed plan + frozen feasible constraints
         self.sc=None;self.search_log=[];self.ever_seen=False
         self.last_visible_pwm=None
         self.last_visible_issued_yaw=None
@@ -492,9 +493,12 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         unusable=self.path and math.dist(pose[:2],goal)>.08 and waypoint(pose[:2],self.path,discs,rects,radius) is None
         entering=not self.approach_plan_valid and self.approach_blocked_since is None
         # Opt-in: drive the committed plan to its existing 1 s replan boundary.
+        # The plan and the constraints that made it feasible are frozen at
+        # selection time, so stale-memory margins cannot replace it on the very
+        # next tick (gcp6 r5c/r6 case 27 drove ~0.1 s per refresh cycle).
         commit=(self.search15_modes.get('search26_commit_plan','off')!='off'
-                and self.approach_plan_valid and bool(self.path) and not unusable
-                and blocked and now<self.next_plan)
+                and self.approach_plan_valid and self.frozen_plan is not None
+                and blocked and now<self.frozen_plan['until'])
         if not commit and (entering or changed or now>=self.next_plan or (self.approach_plan_valid and (blocked or unusable))):
             from sim.grasp_act_recovery import AXIAL_CHOICES
             choices=AXIAL_CHOICES if self.approach_recovery in ('approach_recovery_v2','progress_view_recovery_v3') else None
@@ -552,6 +556,9 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
                 self.approach_choice=selected['choice'];self.staging_distance=self.approach_choice[1]
                 self.path=selected['path'];self.path_goal=tuple(selected['goal'])
                 self.approach_blocked_since=None
+                if self.search15_modes.get('search26_commit_plan','off')!='off':
+                    self.frozen_plan={'path':tuple(map(tuple,self.path)),'goal':tuple(selected['goal']),
+                                      'radius':radius,'discs':discs,'rects':rects,'until':now+1.}
                 row['selected']={k:v for k,v in selected.items() if k!='path'}
             self.goal_set_log.append(row)
         from sim.grasp_act_search21 import schedule
@@ -565,6 +572,13 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         nav=self._navigation(world);free=nav.free;waypoint=nav.waypoint;segment_free=nav.segment_free
         plan_path=nav.plan_path
         pose=world['robots'][self.rid]['pose']
+        fp=self.frozen_plan
+        if (self.search15_modes.get('search26_commit_plan','off')!='off' and fp is not None
+                and now<fp['until'] and self.path):
+            frozen_target=waypoint(pose[:2],fp['path'],fp['discs'],fp['rects'],fp['radius'])
+            if frozen_target is not None:
+                self.last_frozen_drive_t=now
+                return self._continuous(now,**drive(pose,fp['goal'],frozen_target,world['beam']['ends'][self.end]))
         if self.approach_recovery!='off' and self.priority is None:
             recovered=self._peer_route(world,goal,now)
             if recovered is not None:return recovered
