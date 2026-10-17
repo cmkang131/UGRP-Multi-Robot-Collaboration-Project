@@ -92,6 +92,16 @@ class EgocentricDetector:
         mp = modules()[0]
         image = mp.undistort(cv2.cvtColor(rgb, cv2.COLOR_RGB2BGR))
         clear = clear & ~robot_occluded_columns(image)[None, :]
+        # A downward ray alone does not certify a floor pixel: it may hit a
+        # colored wall first. Only columns with an observed wall/floor foot
+        # permit floor classification BELOW that foot. Missing stays unknown.
+        if scan is None:
+            clear = np.zeros_like(clear)
+        else:
+            columns = np.asarray([r['column'] for r in scan['columns']])
+            nearest = np.argmin(abs(np.arange(640)[:,None]-columns), axis=1)
+            foot = np.asarray([r['row'] if r['status']=='hit' else np.inf for r in scan['columns']])
+            clear = clear & (np.arange(480)[:,None] > foot[nearest][None,:])
         features = lm.floor_features(image, cm, np.linalg.inv(K), self.palette, clear)
         if scan is not None:
             obs = SimpleNamespace(b_lo=np.full(96, np.nan), b_kind=np.zeros(96, int), columns=cm.columns)
@@ -99,6 +109,19 @@ class EgocentricDetector:
                 if row['status'] == 'hit': obs.b_lo[j] = row['row']; obs.b_kind[j] = 1
             features += lm.door_features(image, cm, obs, K, clear)
         points, reasons = corners(features)
+        # A partial floor boundary is an ORIENTED LINE, never a fixed midpoint.
+        # Keep its unobserved extent explicit. Do not double-count an edge used
+        # by a corner in the same frame; line mode is used only without corners.
+        if not points:
+            for i, f in enumerate(features):
+                if f['kind'] != 'floor_line': continue
+                normal = np.asarray(f['normal']); phi = math.atan2(normal[1],normal[0])
+                rho = float(np.mean(f['endpoints'],axis=0) @ normal)
+                bucket = int(round(f['hue']/(2*lm.PARAMS['hue_tolerance']))) % math.ceil(180/(2*lm.PARAMS['hue_tolerance']))
+                points.append(dict(id=f'line-{i}',kind='zone_boundary',signature=f'floor_hue_{bucket}',
+                    representation='oriented_line',measurement_state=[rho,phi],
+                    covariance_m2=np.diag([lm.PARAMS['sigma_line_m']**2,lm.PARAMS['sigma_line_angle_rad']**2]).tolist(),
+                    hue=f['hue'],pixels=f['pixels'],observed_endpoints_m=f['endpoints']))
         return points, dict(features=features, rejected_corner_reasons=reasons, points=len(points),
                             category='rgb_landmark_detector', reason='observed_points' if points else 'no_supported_point_landmark',
                             blocked_object='not_observed', minimum_gap_m=None, gap_status='not_measured')

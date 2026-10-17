@@ -24,8 +24,20 @@ def relative(point, delta):
     return rotation(-delta[2]) @ (np.asarray(point)-delta[:2])
 
 
-def observation_model(x, index):
+def wrap(a):
+    return math.atan2(math.sin(a), math.cos(a))
+
+
+def observation_model(x, index, representation='point'):
     """Cartesian observation of old-frame point from uncertain current frame."""
+    if representation == 'oriented_line':
+        rho, phi = x[2*index:2*index+2]; dx, dy, theta = x[-3:]
+        c, s = math.cos(phi), math.sin(phi)
+        z = np.array([rho-c*dx-s*dy, wrap(phi-theta)])
+        h = np.zeros((2, len(x)))
+        h[:, 2*index:2*index+2] = [[1., s*dx-c*dy], [0., 1.]]
+        h[:, -3:] = [[-c, -s, 0.], [0., 0., -1.]]
+        return z, h
     z = relative(x[2*index:2*index+2], x[-3:])
     r = rotation(-x[-1]); h = np.zeros((2, len(x)))
     h[:, 2*index:2*index+2] = r
@@ -71,12 +83,21 @@ class LandmarkMemory:
     def snapshot(self, t):
         result = []
         for i, meta in enumerate(self.items):
-            xy = self.x[2*i:2*i+2]; p = self.p[2*i:2*i+2, 2*i:2*i+2]
-            sigma = math.sqrt(max(0., float(np.linalg.eigvalsh(p).max())))
+            state = self.x[2*i:2*i+2]; p = self.p[2*i:2*i+2, 2*i:2*i+2]
+            if meta['representation'] == 'oriented_line':
+                rho, phi = state; c, s = math.cos(phi), math.sin(phi)
+                xy = rho*np.array([c,s]); j = np.array([[c,-rho*s],[s,rho*c]])
+                cartesian_p = j @ p @ j.T
+            else:
+                xy = state; cartesian_p = p
+            sigma = math.sqrt(max(0., float(np.linalg.eigvalsh(cartesian_p).max())))
             age = t-meta['last_seen_s']; tau = self.options.fade_tau_s
             result.append({**meta, 'relative_xy_m': xy.tolist(), 'range_m': float(np.linalg.norm(xy)),
-                           'bearing_rad': math.atan2(xy[1], xy[0]), 'covariance_m2': p.tolist(),
+                           'bearing_rad': math.atan2(xy[1], xy[0]), 'covariance_m2': cartesian_p.tolist(),
+                           'measurement_covariance': p.tolist(),
                            'radius95_m': math.sqrt(CHI2_95)*sigma, 'age_s': age,
+                           'measurement_state': state.tolist(),
+                           'extent_unknown': meta['representation'] == 'oriented_line',
                            'freshness': math.exp(-age/tau) if tau is not None else None})
         return result
 
@@ -94,7 +115,8 @@ class LandmarkMemory:
         p = np.zeros((n+3, n+3)); p[:n, :n] = self.p; p[n:, n:] = q
         events = []; pending = []; used = set()
         for obs in observations:
-            z = np.asarray(obs['relative_xy_m'], float)
+            representation = obs.get('representation', 'point')
+            z = np.asarray(obs.get('measurement_state', obs.get('relative_xy_m')), float)
             if z.shape != (2,) or not np.isfinite(z).all():
                 raise ValueError('INVALID_RELATIVE_OBSERVATION')
             r = covariance(obs['covariance_m2'], 2, positive=True)
@@ -102,10 +124,11 @@ class LandmarkMemory:
             # in-gate same-kind candidates are ambiguous; never pick by truth.
             matches = []
             for i, item in enumerate(self.items):
-                if item['kind'] != obs['kind'] or item['signature'] != obs['signature']:
+                if item['kind'] != obs['kind'] or item['signature'] != obs['signature'] or item['representation'] != representation:
                     continue
-                predicted, h = observation_model(x, i)
+                predicted, h = observation_model(x, i, representation)
                 s = h @ p @ h.T+r; innovation = z-predicted
+                if representation == 'oriented_line': innovation[1] = wrap(innovation[1])
                 d2 = float(innovation @ np.linalg.solve(s, innovation))
                 if d2 <= CHI2_99:
                     matches.append((i, d2, predicted, h, s, innovation))
@@ -128,12 +151,13 @@ class LandmarkMemory:
             item = self.items[i]
             events.append(self.event('reobserved', observation=obs['id'], memory_id=item['id'],
                                      gap_s=t-item['last_seen_s'], mahalanobis2=d2,
-                                     predicted_xy_m=before, updated_xy_m=observation_model(x, i)[0].tolist()))
+                                     representation=representation,
+                                     predicted_state=before, updated_state=observation_model(x, i, representation)[0].tolist()))
             item['last_seen_s'] = t; item['observations'] += 1
         # eq.15/16: inverse composition AFTER correction of local displacement.
         y = []; jac = np.zeros((n, n+3))
         for i in range(len(self.items)):
-            z, h = observation_model(x, i); y.extend(z); jac[2*i:2*i+2] = h
+            z, h = observation_model(x, i, self.items[i]['representation']); y.extend(z); jac[2*i:2*i+2] = h
         self.x = np.asarray(y); self.p = jac @ p @ jac.T
         self.p = (self.p+self.p.T)/2
         prior = self.snapshot(t)
@@ -154,9 +178,10 @@ class LandmarkMemory:
             size = len(self.x); expanded = np.zeros((size+2, size+2))
             expanded[:size, :size] = self.p
             expanded[size:, size:] = obs['covariance_m2']
-            self.p = expanded; self.x = np.r_[self.x, obs['relative_xy_m']]
+            self.p = expanded; self.x = np.r_[self.x, obs.get('measurement_state', obs.get('relative_xy_m'))]
             self.sequence += 1
             self.items.append(dict(id=f'm{self.sequence}', kind=obs['kind'], signature=obs['signature'],
+                                   representation=obs.get('representation', 'point'),
                                    first_seen_s=t, last_seen_s=t, observations=1))
             events.append(self.event('created', observation=obs['id'], memory_id=f'm{self.sequence}'))
         self.t = t
@@ -184,7 +209,8 @@ def language_context(memories, *, goal_signature=None):
         a = math.degrees(m['bearing_rad'])
         direction = ('왼쪽' if a > 0 else '오른쪽')+(' 앞' if abs(a) <= 90 else ' 뒤')
         lines.append(f"{m['signature']}({m['kind']}): {direction} 약 {m['range_m']:.1f} m, "
-                     f"{m['age_s']:.0f}초 전에 봄, 불확실 95% 반경 {m['radius95_m']:.1f} m")
+                     f"{m['age_s']:.0f}초 전에 봄, 불확실 95% 반경 {m['radius95_m']:.1f} m"+
+                     (' (부분 경계, 끝/중심 위치 미관측)' if m['extent_unknown'] else ''))
     goals = [m for m in memories if m['signature'] == goal_signature]
     candidates = ([dict(action='look_toward_memory', memory_id=m['id'], bearing_rad=m['bearing_rad'],
                         range_m=m['range_m'], arrival_verified=False) for m in goals]

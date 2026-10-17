@@ -96,7 +96,7 @@ def predict(a):
 
 def score(a):
     from harness.egomem_vision import lm
-    from harness.egocentric_landmark_memory import relative
+    from harness.egocentric_landmark_memory import relative, observation_model, wrap
     seal = read(a.output/'prediction-seal.json')
     if digest(a.output/'predictions.json') != seal['prediction_sha256']: raise ValueError('PREDICTIONS_CHANGED')
     if digest(a.output/'allowed.json') != seal['allowed_sha256']: raise ValueError('ALLOWED_INPUT_CHANGED')
@@ -110,9 +110,19 @@ def score(a):
         xy = np.asarray(zone['center_m']); size = np.asarray(zone['half_extents_m'])
         for j, sign in enumerate(([-1,-1],[-1,1],[1,-1],[1,1])):
             labels.append(dict(id=f'{name}-corner{j}', kind='zone_corner', signature=f'floor_hue_{bucket}', xy=(xy+size*sign).tolist()))
+        for j, normal in enumerate(([1,0],[-1,0],[0,1],[0,-1])):
+            normal=np.asarray(normal); edge=xy-normal*size
+            labels.append(dict(id=f'{name}-edge{j}',kind='zone_boundary',signature=f'floor_hue_{bucket}',
+                state_world=[float(normal@edge), math.atan2(normal[1],normal[0])]))
     for i, door in enumerate(static.get('passages', [])):
         if door.get('kind') == 'door': labels.append(dict(id=f'door{i}', kind='door', signature='observed_door', xy=door['center_m']))
     associations = {}; errors = []; updates = []; path = 0.; previous = None; seen = {}; assignment_errors = []
+    def expected(label,pose):
+        return (observation_model(np.r_[label['state_world'],pose],0,'oriented_line')[0]
+                if label['kind']=='zone_boundary' else relative(label['xy'],pose))
+    def difference(label,target,state):
+        if label['kind']=='zone_boundary':return abs(float(target[0]-state[0]))
+        return float(np.linalg.norm(target-state))
     for row, f, g in zip(pred, allowed, truth):
         if not row['t'] == f['t'] == g['t']: raise ValueError('EVAL_TIME_JOIN_REQUIRED')
         pose = np.asarray(g['pose'])
@@ -124,19 +134,27 @@ def score(a):
                 o = observations[e['observation']]
                 candidates = [p for p in labels if p['kind'] == o['kind'] and p['signature'] == o['signature']]
                 if candidates:
-                    nearest = min(candidates, key=lambda p: np.linalg.norm(relative(p['xy'],pose)-o['relative_xy_m']))
+                    def cost(p):
+                        target=expected(p,pose)
+                        if p['kind']=='zone_boundary':
+                            state=o['measurement_state']
+                            return ((target[0]-state[0])/lm.PARAMS['sigma_line_m'])**2+(wrap(target[1]-state[1])/lm.PARAMS['sigma_line_angle_rad'])**2
+                        return np.linalg.norm(target-o['relative_xy_m'])
+                    nearest = min(candidates, key=cost)
                     associations[e['memory_id']] = nearest
-                    assignment_errors.append(float(np.linalg.norm(relative(nearest['xy'],pose)-o['relative_xy_m'])))
+                    assignment_errors.append(difference(nearest,expected(nearest,pose),o.get('measurement_state',o.get('relative_xy_m'))))
             if e['reason'] in ('created', 'reobserved'):
                 if e['reason'] == 'reobserved' and e['memory_id'] in associations:
-                    target = relative(associations[e['memory_id']]['xy'], pose)
+                    label=associations[e['memory_id']];target = expected(label, pose)
                     updates.append(dict(t=row['t'], gap_s=e['gap_s'], memory_id=e['memory_id'], target=associations[e['memory_id']]['id'],
-                        before_m=float(np.linalg.norm(target-e['predicted_xy_m'])), after_m=float(np.linalg.norm(target-e['updated_xy_m']))))
+                        kind=label['kind'],before_m=difference(label,target,e.get('predicted_state',e.get('predicted_xy_m'))),
+                        after_m=difference(label,target,e.get('updated_state',e.get('updated_xy_m')))))
                 seen[e['memory_id']] = path
         for m in row['memories']:
             if m['id'] not in associations: continue
-            target = relative(associations[m['id']]['xy'], pose)
-            xy = np.asarray(m['relative_xy_m']); error = float(np.linalg.norm(xy-target))
+            label=associations[m['id']]; state=expected(label,pose)
+            target=state[0]*np.array([math.cos(state[1]),math.sin(state[1])]) if label['kind']=='zone_boundary' else state
+            xy = np.asarray(m['relative_xy_m']); error = difference(label,state,m.get('measurement_state',m['relative_xy_m']))
             # Hypothetical yaw-only look toward stored bearing. This is NOT
             # actual navigation/reacquisition; actual return is the next stage.
             da = math.atan2(target[1],target[0])-m['bearing_rad']; da = math.atan2(math.sin(da),math.cos(da))
@@ -147,6 +165,8 @@ def score(a):
         return dict(n=len(values), median=float(np.median(values)), p95=float(np.percentile(values,95)), maximum=float(max(values))) if values else dict(n=0,median=None,p95=None,maximum=None)
     summary = dict(status='OFFLINE_ONLY', frames=len(pred), actual_path_m=path, memories_created=seal['events'].get('created',0),
         last_memory_count=len(pred[-1]['memories']), evaluated_memories=len(associations), memory_error_m=stats([r['error_m'] for r in errors]),
+        point_xy_error_m=stats([r['error_m'] for r in errors if r['kind']!='zone_boundary']),
+        line_normal_distance_error_m=stats([r['error_m'] for r in errors if r['kind']=='zone_boundary']),
         initial_label_distance_m=stats(assignment_errors), reobservations=len(updates),
         reobservations_error_reduced=sum(u['after_m']<u['before_m'] for u in updates),
         before_m=stats([u['before_m'] for u in updates]), after_m=stats([u['after_m'] for u in updates]),

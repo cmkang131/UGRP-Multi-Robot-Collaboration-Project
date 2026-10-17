@@ -54,3 +54,16 @@ def test_llm_prefix_stable_and_unknown_goal_search_only():
     assert a['fixed_prefix'] == b['fixed_prefix']
     assert a['candidates'][0]['action'] == 'look_left'
     assert b['candidates'][0]['arrival_verified'] is False
+
+
+def test_line_inverse_and_jacobian_no_fake_midpoint():
+    x = np.array([2., .4, .1, .2, .3])
+    z,h = observation_model(x,0,'oriented_line')
+    assert np.allclose(z,[2-np.cos(.4)*.1-np.sin(.4)*.2,.1])
+    num = np.column_stack([(observation_model(x+np.eye(5)[j]*1e-6,0,'oriented_line')[0]-observation_model(x-np.eye(5)[j]*1e-6,0,'oriented_line')[0])/2e-6 for j in range(5)])
+    assert np.allclose(h,num,atol=1e-8)
+    o=dict(id='line',kind='zone_boundary',signature='blue',representation='oriented_line',measurement_state=[2.,.4],covariance_m2=np.diag([.01,.01]).tolist())
+    m=LandmarkMemory(option=OPTION);m.step(0.,[0,0,0],np.zeros((3,3)),[o])
+    result=m.step(1.,[.1,.2,.3],np.zeros((3,3)))
+    assert np.allclose(m.x,z)
+    assert result['memories'][0]['extent_unknown']
