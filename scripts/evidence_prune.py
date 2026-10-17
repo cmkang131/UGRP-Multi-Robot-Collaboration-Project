@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+from collections import Counter, defaultdict
 import json
 import os
 from pathlib import Path
@@ -16,8 +17,8 @@ if __package__ in (None, ''):
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from scripts.storage_common import (TRACE_LIMIT, atomic_text, files, hash_tsv, idle_reason,
                                     inventory, lock_run, run_dirs, safe_path, sha256, snapshot,
-                                    latest_evidence)
-from scripts.worktree_guard import Refused, refuse_if_in_use
+                                    HOUSEKEEPING, has_symlink)
+from scripts.worktree_guard import Refused, refuse_if_in_use, capture_usage
 
 REPO = 'kcm0127-dotcom/ugrp'
 MEDIA = {'.jpg', '.jpeg', '.png', '.webp', '.npz', '.npy', '.mp4', '.mov', '.avi', '.mkv'}
@@ -76,14 +77,53 @@ def heavy(relative: Path, size: int, meta: dict, original_sizes: dict) -> bool:
     return plain.suffix.lower() in {'.json', '.jsonl'} and uncompressed > TRACE_LIMIT
 
 
-def plan(root: Path, number: int | None, *, idle_hours=0) -> dict:
+def owned_files(root: Path):
+    """A nested RUN_META owns its subtree; never inventory/prune it as its parent."""
+    if has_symlink(root):
+        return
+    for directory, dirs, names in os.walk(root, followlinks=False):
+        base = Path(directory)
+        if base != root and 'RUN_META.json' in names:
+            dirs[:] = []
+            continue
+        dirs[:] = sorted(d for d in dirs if not (base / d).is_symlink())
+        for name in sorted(names):
+            path = base / name
+            if safe_path(path, root) and path.is_file():
+                yield path
+
+
+def evidence_age(root: Path, paths=None):
+    paths = owned_files(root) if paths is None else paths
+    latest = max((p.stat().st_mtime for p in paths if p.name not in HOUSEKEEPING),
+                 default=root.stat().st_mtime)
+    return time.time() - latest
+
+
+def completion(root, meta, age, allow_legacy_completed, inspection=None):
+    reason = idle_reason(root, require_exit=False)
+    if reason:
+        return reason, None
+    if (root / 'EXIT').is_file():
+        return None, 'EXIT'
+    if not allow_legacy_completed:
+        return 'EXIT absent (unfinished)', None
+    # 24 h is the user-approved 2026-10-16 legacy cleanup boundary, not a
+    # simulation success/completion claim. Never fabricate an EXIT file.
+    if age < 86400:
+        return 'EXIT absent; evidence modified within 24 hours', None
+    if inspection is None:
+        refuse_if_in_use(root, 0, None)
+    else:
+        refuse_if_in_use(root, 0, None, inspection=inspection)
+    return None, ('retrospective:true; idle >=24h; no process use' if
+                  meta.get('retrospective') is True else 'EXIT absent; idle >=24h; no process use')
+
+
+def plan(root: Path, number: int | None, *, idle_hours=0, allow_legacy_completed=False,
+         inspection=None) -> dict:
     meta = json.loads((root / 'RUN_META.json').read_text())
-    reason = idle_reason(root)
-    age = time.time() - latest_evidence(root)
-    if age < idle_hours * 3600:
-        reason = 'evidence modified within idle window'
-    if number is None and age < 7 * 86400:
-        reason = 'PR-less DEV younger than 7 days'
+    reason = None
     if meta.get('pr') != number or meta.get('class') != 'dev':
         reason = 'PR mismatch or protected class'
     # Parent study/milestone classification wins over a nested dev marker.
@@ -91,26 +131,49 @@ def plan(root: Path, number: int | None, *, idle_hours=0) -> dict:
         marker = parent / 'RUN_META.json'
         if marker.is_file():
             owner = json.loads(marker.read_text())
-            if owner.get('class') != 'dev' or owner.get('pr') != number:
-                reason = 'protected parent run or another PR'
-    paths = list(files(root))
-    if any(p.name == 'RUN_META.json' and p.parent != root for p in paths):
-        reason = 'nested runs: prune separately'
+            if owner.get('class') != 'dev':
+                reason = 'protected parent class'
     keep_paths(meta)
     if reason:
         return {'run': str(root), 'skipped': reason, 'bytes': 0, 'candidates': []}
+    paths = list(owned_files(root))
+    age = evidence_age(root, paths)
+    reason, completed = completion(root, meta, age, allow_legacy_completed, inspection)
+    if age < idle_hours * 3600:
+        reason = 'evidence modified within idle window'
+    if number is None and age < 7 * 86400:
+        reason = 'PR-less DEV younger than 7 days'
+    if reason:
+        return {'run': str(root), 'skipped': reason, 'bytes': 0, 'candidates': []}
+    ancestor_keeps = [(parent, json.loads((parent / 'RUN_META.json').read_text()))
+                      for parent in root.parents if (parent / 'RUN_META.json').is_file()]
     original_sizes = {}
+    unknown_original_sizes = []
     manifest = root / 'COMPRESSED.jsonl'
     if manifest.exists():
         for line in manifest.read_text().splitlines():
             item = json.loads(line)
-            original_sizes[item['compressed_path']] = item['bytes']
+            compressed = item.get('compressed_path', item.get('compressed'))
+            if not isinstance(compressed, str):
+                raise ValueError(f'invalid compression manifest: {manifest}')
+            size = item.get('bytes')
+            if not isinstance(size, int) or isinstance(size, bool) or size < 0:
+                # Old manifests sometimes contain hashes but no original size.
+                # Preserve these traces rather than guess or abort the batch.
+                size = 0
+                unknown_original_sizes.append(compressed)
+            original_sizes[compressed] = size
     rows = []
     # Retain a representative MP4 per run even for legacy metadata without keep.
     mp4s = sorted(p.relative_to(root) for p in paths if p.suffix.lower() == '.mp4')
     representative = mp4s[0] if mp4s else None
     for path in paths:
         relative = path.relative_to(root)
+        if any(any(part.lower().startswith('representative') for part in path.relative_to(parent).parts)
+               or any(path.relative_to(parent) == kept or kept in path.relative_to(parent).parents
+                      or (path.suffix == '.zst' and path.relative_to(parent).with_suffix('') == kept)
+                      for kept in keep_paths(owner)) for parent, owner in ancestor_keeps):
+            continue
         if representative is not None and (relative == representative or
                 (not representative.name.lower().startswith('representative') and
                  relative.parent == representative.parent and
@@ -123,10 +186,12 @@ def plan(root: Path, number: int | None, *, idle_hours=0) -> dict:
                 raise ValueError(f'file changed during planning: {path}')
             rows.append({'path': relative.as_posix(), 'bytes': before[2],
                          'sha256': digest, 'snapshot': before})
-    return {'run': str(root), 'bytes': sum(r['bytes'] for r in rows), 'candidates': rows}
+    return {'run': str(root), 'bytes': sum(r['bytes'] for r in rows), 'candidates': rows,
+            'completion_basis': completed, 'unknown_original_sizes': unknown_original_sizes}
 
 
-def execute(root: Path, number: int | None, records: Path, *, catalog=None, idle_hours=0):
+def execute(root: Path, number: int | None, records: Path, *, catalog=None, idle_hours=0,
+            allow_legacy_completed=False):
     # Process/file checks reuse the worktree retirement guard; no time-based retention.
     with lock_run(root):
         refuse_if_in_use(root, 0, None)
@@ -143,10 +208,11 @@ def execute(root: Path, number: int | None, records: Path, *, catalog=None, idle
             info = {key: live[key] for key in ('number', 'state', 'headRefName')}
         else:
             info = pr_info(number)  # fresh status immediately before mutation
-        planned = plan(root, number, idle_hours=idle_hours)
+        planned = plan(root, number, idle_hours=idle_hours,
+                       allow_legacy_completed=allow_legacy_completed)
         if 'skipped' in planned:
             raise ValueError(planned['skipped'])
-        all_rows = inventory(root)
+        all_rows = inventory(root, paths=owned_files(root))
         full = root / 'ALL-hashes.tsv'
         listing = hash_tsv(all_rows)
         atomic_text(full, full.read_text() + listing.split('\n', 1)[1] if full.exists() else listing)
@@ -160,17 +226,24 @@ def execute(root: Path, number: int | None, records: Path, *, catalog=None, idle
         record = {'schema': 'ugrp.evidence-prune.v1', 'pr': info, 'run': str(root),
                   'bytes': planned['bytes'], 'files': planned['candidates'], 'status': 'planned',
                   'all_hashes': str(root / 'ALL-hashes.tsv'), 'completed': []}
+        record['completion_basis'] = planned['completion_basis']
+        record['unknown_original_sizes'] = planned['unknown_original_sizes']
         progress = receipt.with_suffix('.progress.jsonl')
         record['progress_journal'] = str(progress)
+        trash = Path.home() / '.Trash' / f'ugrp-pr-{number}-{tag}'
+        record['trash'] = str(trash) if sys.platform == 'darwin' else None
         atomic_text(receipt, json.dumps(record, indent=2) + '\n')
         for row in all_rows:
             if (not safe_path(root / row['path'], root)
                     or snapshot(root / row['path']) != tuple(row['snapshot'])):
                 raise ValueError('run changed after inventory')
-        trash = Path.home() / '.Trash' / f'ugrp-pr-{number}-{tag}'
         # Recheck age once before mutation; own inventory writes are excluded.
-        if time.time() - latest_evidence(root) < max(idle_hours * 3600, 7 * 86400 if number is None else 0):
+        minimum_age = max(idle_hours * 3600, 7 * 86400 if number is None else 0,
+                          86400 if planned['completion_basis'] != 'EXIT' else 0)
+        if evidence_age(root) < minimum_age:
             raise ValueError('run changed before pruning')
+        refuse_if_in_use(root, 0, None)
+        moved_inodes = set()
         for row in planned['candidates']:
             if catalog is not None:
                 from scripts.storage_automation import validate_catalog, catalog_pr
@@ -178,14 +251,24 @@ def execute(root: Path, number: int | None, records: Path, *, catalog=None, idle
                 if number is not None:
                     catalog_pr(catalog, number)
             path = root / row['path']
-            if not safe_path(path, root) or snapshot(path) != tuple(row['snapshot']) or idle_reason(root):
+            if (not safe_path(path, root)
+                    or idle_reason(root, require_exit=planned['completion_basis'] == 'EXIT')):
                 raise ValueError(f'run/file changed before pruning: {path}')
+            current, expected = snapshot(path), tuple(row['snapshot'])
+            if current != expected:
+                # Moving/unlinking one hard link can update the shared inode's
+                # ctime. Accept only our already-moved inode, unchanged size /
+                # mtime / identity, and a fresh matching content hash.
+                if (current[:2] not in moved_inodes or current[:4] != expected[:4]
+                        or sha256(path) != row['sha256'] or snapshot(path) != current):
+                    raise ValueError(f'run/file changed before pruning: {path}')
             if sys.platform == 'darwin':
                 destination = trash / row['path']
                 destination.parent.mkdir(parents=True, exist_ok=True)
                 shutil.move(str(path), str(destination))
             else:
                 path.unlink()
+            moved_inodes.add(expected[:2])
             record['completed'].append(row['path'])
             # Append durable progress; don't rewrite the entire candidate list per frame.
             with progress.open('a') as stream:
@@ -203,6 +286,10 @@ def main(argv=None):
     group = p.add_mutually_exclusive_group(required=True)
     group.add_argument('--pr', type=int)
     group.add_argument('--prless-dev-7d', action='store_true')
+    group.add_argument('--all-closed-dev', action='store_true', help='one discovery scan for all closed PRs')
+    p.add_argument('--include-prless-dev-7d', action='store_true')
+    p.add_argument('--allow-legacy-completed', action='store_true',
+                   help='EXIT-less evidence: >=24h unchanged and no process use; record basis')
     p.add_argument('roots', nargs='+', type=Path)
     p.add_argument('--execute', action='store_true')
     p.add_argument('--idle-hours', type=float, default=0)
@@ -211,10 +298,15 @@ def main(argv=None):
     try:
         if a.idle_hours < 0 or not __import__('math').isfinite(a.idle_hours):
             raise ValueError('idle-hours must be finite and nonnegative')
-        info = pr_info(a.pr) if a.pr is not None else {'number': None, 'state': 'PRLESS_DEV_7D'}
+        if a.include_prless_dev_7d and not a.all_closed_dev:
+            raise ValueError('--include-prless-dev-7d requires --all-closed-dev')
+        info = pr_info(a.pr) if a.pr is not None else {'number': None,
+                'state': 'ALL_CLOSED_DEV' if a.all_closed_dev else 'PRLESS_DEV_7D'}
         catalog = None
         if a.pr is None:
+            from scripts import storage_automation
             from scripts.storage_automation import fetch_catalog
+            storage_automation._catalog_refresher = fetch_catalog
             catalog = fetch_catalog()
         records = a.records or Path(__file__).resolve().parents[1] / 'outputs' / 'cleanup-records'
         found = set()
@@ -224,13 +316,42 @@ def main(argv=None):
                 raise ValueError(f'missing search root: {root}')
             found.update(run_dirs(root))
         rows = []
-        for root in sorted(found):
-            row = plan(root, a.pr, idle_hours=a.idle_hours)
-            if a.execute and 'skipped' not in row and row['candidates']:
-                row = execute(root, a.pr, records, catalog=catalog, idle_hours=a.idle_hours)
+        inspection = capture_usage() if a.allow_legacy_completed else None
+        summary = defaultdict(lambda: {'bytes': 0, 'files': 0, 'runs': 0, 'skipped': Counter()})
+        for index, root in enumerate(sorted(found), 1):
+            meta = json.loads((root / 'RUN_META.json').read_text())
+            number = meta.get('pr') if a.all_closed_dev else a.pr
+            try:
+                if catalog is not None:
+                    from scripts.storage_automation import catalog_pr, orphan_branch_open, validate_catalog
+                    validate_catalog(catalog)
+                    if number is None:
+                        if a.all_closed_dev and not a.include_prless_dev_7d:
+                            raise ValueError('PR-less DEV not requested')
+                        if orphan_branch_open(meta, catalog):
+                            raise ValueError('PR-less branch has an open PR')
+                    else:
+                        catalog_pr(catalog, number)
+                row = plan(root, number, idle_hours=a.idle_hours,
+                           allow_legacy_completed=a.allow_legacy_completed, inspection=inspection)
+                if a.execute and 'skipped' not in row and row['candidates']:
+                    row = execute(root, number, records, catalog=catalog, idle_hours=a.idle_hours,
+                                  allow_legacy_completed=a.allow_legacy_completed)
+            except (OSError, ValueError, Refused, subprocess.SubprocessError) as exc:
+                row = {'run': str(root), 'skipped': str(exc), 'bytes': 0, 'candidates': []}
+            row['pr'] = number
+            bucket = summary[str(number)]
+            bucket['runs'] += 1
+            bucket['bytes'] += row['bytes']
+            bucket['files'] += len(row['candidates'])
+            if 'skipped' in row:
+                bucket['skipped'][row['skipped']] += 1
             rows.append(row)
+            if index % 100 == 0:
+                print(f'planned {index}/{len(found)} runs', file=sys.stderr, flush=True)
         print(json.dumps({'schema': 'ugrp.evidence-prune.v1', 'pr': info,
                           'dry_run': not a.execute, 'metadata_runs': len(found), 'runs': rows,
+                          'by_pr': dict(summary),
                           'candidate_bytes': sum(r['bytes'] for r in rows),
                           'unclassified_policy': 'missing RUN_META is preserved'}))
         return 0

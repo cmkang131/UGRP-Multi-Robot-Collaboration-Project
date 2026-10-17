@@ -30,7 +30,7 @@
 ```
 
 - `keep`은 실행 폴더 기준 파일 또는 디렉터리 목록이다. 대표 영상의 입력·구성·재생에 필요한 데이터를 빠짐없이 넣는다. `representative*` 파일·디렉터리도 항상 보존한다. 실제 등급은 결과 수집 전에 정하며 첫 성공은 milestone로 승격한 새 기록을 남긴다. 불리한 study 실패를 dev로 낮추지 않는다.
-- 열린 PR·진행 중 작업·테스트가 쓰는 자료는 보존한다. 사용 중인 자료에 `.IN_USE` 또는 `.TEST_IN_USE`를 두고, RUN_META의 `in_use=true`와 `keep`도 사용할 수 있다. 실제 실행은 `.evidence.lock`을 잡는다. 완료 표시는 `EXIT`다(0뿐 아니라 실패·HOST_ERROR도 포함). EXIT 없는 실행을 압축·아카이브·prune하지 않는다.
+- 열린 PR·진행 중 작업·테스트가 쓰는 자료는 보존한다. 사용 중인 자료에 `.IN_USE` 또는 `.TEST_IN_USE`를 두고, RUN_META의 `in_use=true`와 `keep`도 사용할 수 있다. 실제 실행은 `.evidence.lock`을 잡는다. 완료 표시는 `EXIT`다(0뿐 아니라 실패·HOST_ERROR도 포함). EXIT 없는 실행은 기본적으로 압축·아카이브·prune하지 않는다. 2026-10-16 사용자 승인 예외인 prune의 `--allow-legacy-completed`는 소급 자료를 포함해 **24시간 이상 증거 변경 없음 + 실제 cwd/열린 파일/명령줄 사용 없음**을 확인하고 정리용 완료로 취급한다. EXIT를 생성하거나 실험 완료·성공으로 소급 판정하지 않으며, 영수증에 `completion_basis`를 남긴다. active/in_use·보호 등급·최근 변경 가드는 유지한다.
 - 부모가 study/milestone면 자식 dev도 정리하지 않는다. 중첩 RUN_META가 있는 부모는 통째로 prune하지 않고 자식별로 검토한다. 다른 열린 PR·테스트의 입력으로 재사용하면 해당 자료에 사용 표시를 먼저 남긴다.
 
 ## 3. 배치 제출 전 예산
@@ -92,6 +92,20 @@ python3 scripts/evidence_prune.py --pr <번호> <경로들> --execute \
 - execute는 배타 잠금·실제 cwd/열린 파일/실행 명령 검사를 재사용한다. 전체 파일 목록 `ALL-hashes.tsv`, 후보 `PRUNED-hashes.tsv`, `outputs/cleanup-records/`의 계획 영수증을 먼저 저장한다. 그 뒤 파일 불변·완료 상태를 다시 확인하고 처리한 파일을 영수증에 남긴다. 이전 목록·영수증은 보존한다.
 - Mac은 `~/.Trash/ugrp-pr-<번호>-<시각>/`으로 이동한다. 사용자가 휴지통을 비운다. 서버는 해시·기록을 저장한 뒤 후보 파일만 삭제한다. milestone/study·대표 증거·가벼운 파일은 삭제 대상이 아니다. 2026-10-11 사용자 승인 범위의 PR 없는 7일 지난 DEV도 해시·기록 뒤 같은 방식으로 정리한다. raw 등급 변경·그 밖의 삭제는 별도 결정이 필요하다.
 
+모든 종료 PR과 오래된 PR 없는 dev를 한 번의 메타데이터 탐색으로 묶으려면 다음을 쓴다.
+동일 인자로 dry-run 표(`by_pr`: 바이트·파일 수·건너뛴 사유 분포)를 검토한 뒤 `--execute`를 붙인다.
+
+```sh
+caffeinate -i python3 scripts/evidence_prune.py --all-closed-dev \
+  --include-prless-dev-7d --allow-legacy-completed --idle-hours 24 \
+  <기본체크아웃>/outputs --records <기본체크아웃>/outputs/cleanup-records
+```
+
+`retired-worktrees`, `gcp1-runs`, `oracle-runs`, `azure-runs`도 같은 탐색에 포함한다.
+각 중첩 RUN_META는 자기 하위 파일만 소유하며 자식 RUN_META 경계에서 탐색을 끊는다.
+부모의 다른 dev PR은 자식의 PR 판정을 막지 않고, 부모 study/milestone·keep·사용 표시는 계속 보호한다.
+dry-run은 공통 프로세스 스냅샷을 재사용하며 execute는 각 실행을 바꾸기 직전 실제 사용을 다시 검사한다.
+
 ## 6. 공용 실행 경로의 RUN_META 옵션
 
 `ugrp_session.py`의 저장 옵션은 **기본 OFF**다. 기존 명령·기본 10 GiB 실행 검사·세션 수명 관리는 그대로다. 새 배치는 세 호스트 예산을 통과한 뒤 다음 토글을 사용한다(옵션은 세션 이름 앞).
@@ -111,6 +125,7 @@ python3 scripts/ugrp_session.py run \
 
 - `disk_report.py`: 프로젝트·worktree·환경·outputs 크기를 읽기 전용으로 측정한다. 파일명으로 추정한 기존 retention 표시를 실제 삭제 허가로 쓰지 않는다. 저장 예산 제출 검사는 새 도구가 맡는다.
 - `agent_worktree.py new`: sparse checkout, 에이전트당 등록 8개. 은퇴는 `retire`만 쓴다. 무시 raw를 옮기고 전체 파일 수·바이트·SHA-256 대조 후 제거한다. 사용 중/60분 안 변경 worktree는 거부한다. 미병합 HEAD는 원격 보관 SHA가 같은 경우만 은퇴한다. 직접 `git worktree remove`, force, reset, clean을 쓰지 않는다.
+  Mac에서 Git 제거가 부분 실패해 등록만 사라졌다면 `retire <경로> --recover-receipt <원래 RETIRED.json> --archive-ref <보관 브랜치>`로 먼저 dry-run한다. 원본 이동 검증 영수증·원격 HEAD 일치·등록 부재·열린 PR 부재·실제 미사용을 다시 검사한다. `--execute`는 남은 checkout 전부를 휴지통으로 옮기고 전체 파일 해시를 재검증하며 직접 삭제하지 않는다.
 - `harness/frame_storage.py`·`FrameSink`: 기존 캡처 프로필과 쓰기 상한은 실행 번들의 일부다. 이번 저장 변경이 입력 프레임 빈도·물리·제어기를 바꾸지 않는다. study는 원본 전부를 남기는 프로필과 사전 등록 크기를 사용한다. 개발 캡처·모델 요청 텍스트·원본 이미지 해시를 구별한다.
 - `write_cap_guard.py`: 설정된 증가분 상한을 넘으면 자기 프로세스 그룹만 정리한다. 쓰기 상한 초과는 설정 중단이며 ENOSPC와 구분한다. `pack_frames.py`의 옛 날짜 검사·손실 영상 전환을 PR 기반 prune의 대체로 쓰지 않는다.
 - 실행 중 ENOSPC/EDQUOT는 **HOST_ERROR**다. 실패 시도의 요약·원장·해시·원본 위치도 기록하며 실행 중·미회수 자료를 완료로 표시하지 않는다. 본 연구의 분모·재실행 규칙은 사전 등록에 둔다. 과거 판정은 소급 변경하지 않는다.
