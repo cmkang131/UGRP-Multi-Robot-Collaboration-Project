@@ -217,7 +217,6 @@ def run(a):
         from scripts import probe_scene_tex2 as st
         core = load_module('visgoal_warp_act_core', vendor_root() / 'warp_act_core.py')
         control_tape, runtime_sleep_policy = core.control_tape, core.runtime_sleep_policy
-        from harness.servo_camera_fk import CARRY_OPTION
         from harness.active_camera import SEARCH
         from harness.rbpf_rejection import motion_variance
         from harness.mapbuild_command_prior import CommandPrior, OPTION as PRIOR
