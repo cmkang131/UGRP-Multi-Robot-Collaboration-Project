@@ -127,7 +127,8 @@ def main():
                     batch = transform_batch({k:v.to('cuda') for k,v in batch.items()}, actor.mode)
                     inputs = {k:v for k,v in batch.items() if k.startswith('observation.')}
                     actor.policy.eval()
-                    # CVAE posterior loss is separate from prior-z=0 deployment error.
+                    # LeRobot ACT eval mode uses prior z=0 even with ACTION in
+                    # the batch. This loss is not the stochastic TRAIN objective.
                     torch.manual_seed(20261017+offset)
                     with torch.inference_mode():
                         prediction = actor.policy.predict_action_chunk(inputs).cpu().numpy()
@@ -161,7 +162,7 @@ def main():
                             projected_h0_encoded=decoded.tolist(), teacher_h0_encoded=truth[0].tolist(),
                             valid_horizons=int(valid.sum()),wheel_transition=transition))+'\n')
             result['splits'][split] = dict(rows=len(data), transition_rows=transitions,
-                posterior_loss_sample_weighted={k:v/len(data) for k,v in loss_sums.items()},
+                prior_z0_eval_loss_sample_weighted={k:v/len(data) for k,v in loss_sums.items()},
                 stages={stage:dict(rows=len(values['rows']),teacher_moving=sum(values['teacher_moving']),
                     student_projected_moving=sum(values['student_projected_moving']),
                     errors={k:quantiles(v) for k,v in values.items() if ':' in k}) for stage,values in groups.items()})

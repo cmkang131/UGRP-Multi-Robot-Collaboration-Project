@@ -22,3 +22,12 @@ def test_phase_buckets_keep_release_separate():
     assert m.phase_group(dict(skill='grasp', teacher_phase='approach')) == 'approach'
     assert m.phase_group(dict(skill='grasp', teacher_phase='close')) == 'grasp'
     assert m.phase_group(dict(skill='release', teacher_phase='align')) == 'release'
+
+
+def test_cadence_candidates_only_change_existing_executor_options():
+    spec = importlib.util.spec_from_file_location('act17_evaluate', Path(__file__).resolve().parents[1]/'scripts/act17_evaluate.py')
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    assert module.executor_options('off') == {'n_action_steps':8,'temporal_ensemble_coeff':None}
+    assert module.executor_options('replan1') == {'n_action_steps':1,'temporal_ensemble_coeff':None}
+    assert module.executor_options('ensemble1') == {'n_action_steps':1,'temporal_ensemble_coeff':.01}
