@@ -1,0 +1,176 @@
+{
+  "schema": "ugrp.beamact4.rejection_table.v1",
+  "scope": "prior beamdiag evidence plus unexecuted candidate plan",
+  "source": "/Users/changmin/projects/ugrp-wt/beamact3c/experiments/2026-10-16-beamact4/prior-rejection-table.json",
+  "source_sha256": "7bf962fe2393e7ebe70b6153f70d8a8ce46eb431ea0dfc8b0e74c326246788a7",
+  "original_source_root": "/home/ugrp/ugrp-sim/ops-reviews/beamdiag/v1",
+  "original_reproduce": "env OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 /home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python /home/ugrp/ugrp-sim/analysis-tools/beamdiag/analyze.py && /home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python /home/ugrp/ugrp-sim/analysis-tools/beamdiag/summarize.py",
+  "prior_funnel": [
+    {
+      "arm": "A",
+      "stage": "approach",
+      "eligible_runs": 20,
+      "cumulative_pass_runs": 16,
+      "rejected_runs": 4,
+      "frames_pass": 5111,
+      "frames_rejected": 6889
+    },
+    {
+      "arm": "A",
+      "stage": "alignment",
+      "eligible_runs": 16,
+      "cumulative_pass_runs": 0,
+      "rejected_runs": 16,
+      "frames_pass": 0,
+      "frames_rejected": 7347
+    },
+    {
+      "arm": "A",
+      "stage": "READY",
+      "eligible_runs": 0,
+      "cumulative_pass_runs": 0,
+      "rejected_runs": 0,
+      "frames_pass": 0,
+      "frames_rejected": 0
+    },
+    {
+      "arm": "A",
+      "stage": "grasp",
+      "eligible_runs": 0,
+      "cumulative_pass_runs": 0,
+      "rejected_runs": 0,
+      "frames_pass": 0,
+      "frames_rejected": 0
+    },
+    {
+      "arm": "A",
+      "stage": "lift_3s",
+      "eligible_runs": 0,
+      "cumulative_pass_runs": 0,
+      "rejected_runs": 0,
+      "frames_pass": 0,
+      "frames_rejected": 0
+    },
+    {
+      "arm": "B",
+      "stage": "approach",
+      "eligible_runs": 20,
+      "cumulative_pass_runs": 13,
+      "rejected_runs": 7,
+      "frames_pass": 6528,
+      "frames_rejected": 5118
+    },
+    {
+      "arm": "B",
+      "stage": "alignment",
+      "eligible_runs": 13,
+      "cumulative_pass_runs": 1,
+      "rejected_runs": 12,
+      "frames_pass": 86,
+      "frames_rejected": 6447
+    },
+    {
+      "arm": "B",
+      "stage": "READY",
+      "eligible_runs": 1,
+      "cumulative_pass_runs": 1,
+      "rejected_runs": 0,
+      "frames_pass": 419,
+      "frames_rejected": 0
+    },
+    {
+      "arm": "B",
+      "stage": "grasp",
+      "eligible_runs": 1,
+      "cumulative_pass_runs": 0,
+      "rejected_runs": 1,
+      "frames_pass": 0,
+      "frames_rejected": 419
+    },
+    {
+      "arm": "B",
+      "stage": "lift_3s",
+      "eligible_runs": 0,
+      "cumulative_pass_runs": 0,
+      "rejected_runs": 0,
+      "frames_pass": 0,
+      "frames_rejected": 0
+    }
+  ],
+  "prior_category_distribution": {
+    "A": {
+      "body_occlusion_majority": 4,
+      "alignment_not_completed": 4,
+      "assigned_station_not_reached": 4,
+      "approach_not_acquired": 4,
+      "opposite_end_station_first": 3,
+      "same_end_close_competition": 1
+    },
+    "B": {
+      "body_occlusion_majority": 3,
+      "same_end_close_competition": 3,
+      "opposite_end_station_first": 5,
+      "approach_not_acquired": 7,
+      "alignment_not_completed": 1,
+      "assigned_station_not_reached": 1
+    }
+  },
+  "reason_category": "candidate_not_executed",
+  "blocked_object": "UNKNOWN:no_new_physical_observation",
+  "min_gap_m": null,
+  "gap_scope": "prior target-finger gaps are not obstacle clearance; new candidate not executed",
+  "candidate_actual_counts": {
+    "runs": 0,
+    "frames": 0,
+    "events": 0
+  },
+  "candidate_funnel": [
+    {
+      "gate": "teacher_assignment_source_host",
+      "cumulative_pass": null,
+      "rejected": null,
+      "status": "NOT_MEASURED"
+    },
+    {
+      "gate": "teacher_gate_95pct_min40_input_audit",
+      "cumulative_pass": null,
+      "rejected": null,
+      "status": "NOT_MEASURED"
+    },
+    {
+      "gate": "demonstration_role_handoff_history_support",
+      "cumulative_pass": null,
+      "rejected": null,
+      "status": "NOT_MEASURED"
+    },
+    {
+      "gate": "stage_checkpoint_reload_offline_confusion",
+      "cumulative_pass": null,
+      "rejected": null,
+      "status": "NOT_MEASURED"
+    },
+    {
+      "gate": "handoff_approach",
+      "cumulative_pass": null,
+      "rejected": null,
+      "status": "NOT_MEASURED"
+    },
+    {
+      "gate": "alignment_learned_READY_GO_ACK",
+      "cumulative_pass": null,
+      "rejected": null,
+      "status": "NOT_MEASURED"
+    },
+    {
+      "gate": "assigned_grasp_lift_completion_recovery",
+      "cumulative_pass": null,
+      "rejected": null,
+      "status": "NOT_MEASURED"
+    }
+  ],
+  "reproduce": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_beamact2.py tests/test_beamact4.py tests/test_beamact4_policy.py",
+  "related_specifications": [
+    "handoff-spec.md",
+    "teacher-spec.md"
+  ]
+}

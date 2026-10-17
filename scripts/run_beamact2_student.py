@@ -14,9 +14,10 @@ import numpy as np
 
 from harness import grasp_act_contract as c
 from harness.grasp_act_data import sha256, write_json
-from harness.grasp_act_policy import ChunkExecutor
+from harness.beamact4_execution import PairChunkExecutor
 from harness.grasp_act_rollout import OwnHistory, InputAudit, LiftScore, SoloSequence
-from harness.beamact_pair_student import MODE, StudentBarrier, Funnel
+from harness.beamact_pair_student import (MODE, STAGE_MODE, RECOVERY_MODE,
+    StudentBarrier, RearmingStartSync, Funnel)
 from harness.beamact_pair_score import assigned_forces
 from harness.beampair_teacher import DEPENDENCY_SHA, validate_plan
 from harness.failure_rgb_tail import FailureRGBTail
@@ -28,16 +29,22 @@ from scripts.run_grasp_act_student import response
 from scripts.run_beampair1 import dependency_modules, setup_admission
 
 
-def run(plan, output, dependency, model, actor_python, *, mode='off', cap_s=60.):
+def run(plan, output, dependency, model, actor_python, *, mode='off', cap_s=60.,
+        stage_mode='off', done_recovery='off'):
     host = require_gcp2(training=False)
     if mode != MODE:
         raise ValueError('explicit student opt-in required')
+    if stage_mode not in ('off', STAGE_MODE) or done_recovery not in ('off', RECOVERY_MODE):
+        raise ValueError('unknown pair student candidate')
     validate_plan(plan)
     if plan['seed'] not in range(8329000, 8329020):
         raise ValueError('exact reserved20 plan required')
     source = source_sha()
     model_meta = json.loads((model/'adapter.json').read_text())
     candidate_arm = model_meta.get('beamact3_v1', 'off')
+    candidate4 = stage_mode != 'off' or done_recovery != 'off'
+    if (model_meta.get('beamact4_stage_v1', 'off') != stage_mode):
+        raise ValueError('stage toggle/checkpoint mismatch; no legacy READY fallback')
     output.mkdir(parents=True, exist_ok=False)
     started = time.monotonic()
     report = dict(status='running', complete=False, seed=plan['seed'], mode=mode,
@@ -49,9 +56,10 @@ def run(plan, output, dependency, model, actor_python, *, mode='off', cap_s=60.)
         loadavg_at_start=os.getloadavg())
     if candidate_arm != 'off':
         report.update(beamact3_v1=candidate_arm,compact_history=model_meta['compact_history'])
-    write_json(output/'RUN_META.json', dict(**{'class':'milestone'}, pr=545 if candidate_arm!='off' else 540,
-        branch='codex/beamact3' if candidate_arm!='off' else 'codex/beamact1', sha=source,
-        batch='beamact3-'+candidate_arm+'-heldout20' if candidate_arm!='off' else 'beamact2-heldout20',
+    report.update(beamact4_stage_v1=stage_mode, beamact4_done_recovery_v1=done_recovery)
+    write_json(output/'RUN_META.json', dict(**{'class':'milestone'}, pr=None if candidate4 else 545 if candidate_arm!='off' else 540,
+        branch='codex/beamact4' if candidate4 else 'codex/beamact3' if candidate_arm!='off' else 'codex/beamact1', sha=source,
+        batch='beamact4-development-only' if candidate4 else 'beamact3-'+candidate_arm+'-heldout20' if candidate_arm!='off' else 'beamact2-heldout20',
         keep=['commands.jsonl', 'student-inputs.jsonl', 'eval-only.jsonl', 'review']))
     write_json(output/'plan.json', plan)
     write_json(output/'result.json', report)
@@ -69,14 +77,15 @@ def run(plan, output, dependency, model, actor_python, *, mode='off', cap_s=60.)
     streams = []
     tail = FailureRGBTail()
     audits = {r:InputAudit() for r in plan['roles']}
-    barriers = {r:StudentBarrier() for r in plan['roles']}
+    barriers = {r:StudentBarrier(stage_mode=stage_mode) for r in plan['roles']}
     funnel, score, unrestricted_score = Funnel(), LiftScore(), LiftScore()
     done_times = {}
     target_gap = None
     latencies = []
     report['input_audit'] = {r:a.record for r,a in audits.items()}
     try:
-        worker = subprocess.Popen([str(actor_python), '-m', 'scripts.beamact2_worker', '--model', str(model)],
+        worker = subprocess.Popen([str(actor_python), '-m', 'scripts.beamact2_worker', '--model', str(model),
+            '--stage-mode', stage_mode],
             cwd=ROOT, stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True, bufsize=1)
         if response(worker) != {'ready':True}:
             raise RuntimeError('ACT worker startup mismatch')
@@ -88,11 +97,12 @@ def run(plan, output, dependency, model, actor_python, *, mode='off', cap_s=60.)
             worker.stdin.write(json.dumps(request, allow_nan=False)+'\n');worker.stdin.flush()
             result = response(worker)
             latencies.append(time.monotonic()-at)
-            if set(result) != {'chunk'}:
+            if set(result) != ({'chunk', 'stage_logits'} if stage_mode != 'off' else {'chunk'}):
                 raise ValueError('ACT response allowlist mismatch')
             predictions.write(json.dumps(dict(t=observation['t'], robot=observation['robot_id'], **result),allow_nan=False)+'\n')
-            return result['chunk']
-        executors = {r:ChunkExecutor(predict) for r in plan['roles']}
+            return result if stage_mode != 'off' else result['chunk']
+        executors = {r:PairChunkExecutor(predict, stage_mode=stage_mode,
+            done_recovery=done_recovery) for r in plan['roles']}
         with dependency_modules(dependency):
             from sim.zone_scenario_scene import ScenarioFinalV3Scene
             from sim.final_pair_highpose_nearclip import wrap
@@ -151,7 +161,8 @@ def run(plan, output, dependency, model, actor_python, *, mode='off', cap_s=60.)
             # Same RNG and 0..1.5s start-delay construction as beampair7 runner.
             rng=np.random.default_rng(plan['seed'])
             delays={r:(0. if k==0 else float(rng.uniform(0,1.5))) for k,r in enumerate(ports)}
-            sync=GraspStartSync(ports,delays)
+            sync=(RearmingStartSync(ports,delays,GraspStartSync)
+                  if stage_mode != 'off' else GraspStartSync(ports,delays))
             inst=next(x for x in scene.cargo if x.item_id=='beam_1')
             target_geoms=[world.model.geom(inst.geom(p.name)).id for p in inst.spec().parts if p.collision]
             finger_geoms=[world.model.geom(rid+'__'+side+'_finger').id
@@ -164,30 +175,55 @@ def run(plan, output, dependency, model, actor_python, *, mode='off', cap_s=60.)
             streams.extend([inputs,commands,evaluations])
             review=output/'review';review.mkdir()
             review_rows=[]
+            def issue_proposal(rid, proposal, done, waiting, now, permits):
+                barrier=barriers[rid]
+                value,done=barrier.issue(now,previous[rid],proposal,done,permits[rid])
+                if stage_mode != 'off' and (barrier.blocked or
+                        (barrier.ready and not permits[rid])):
+                    executors[rid].discard_pending()
+                if done:done_times.setdefault(rid,now)
+                elif done_recovery != 'off':done_times.pop(rid,None)
+                apply(ports[rid],value,now,previous[rid])
+                histories[rid].issue(value);previous[rid]=value
+                row=dict(t=now,robot=rid,command=value,done=done,
+                    ready=barrier.ready,permit=permits[rid],waiting=waiting)
+                if stage_mode != 'off':
+                    row.update(learned_stage=executors[rid].stage,
+                        waiting=barrier.ready and not permits[rid],proposal_rejected=barrier.blocked)
+                commands.write(json.dumps(row,allow_nan=False)+'\n')
             tick=0
             while float(world.data.time)-origin<cap_s-1e-8:
                 if (output/'SUPERVISOR_STOP.json').exists():raise KeyboardInterrupt('supervisor stop')
                 now=float(world.data.time)
                 tail.capture(world,ports,now)  # recording only, 10Hz, last10 SIMs
-                permits=sync.tick({r:b.ready for r,b in barriers.items()},now)
+                permits=(sync.tick({r:b.ready for r,b in barriers.items()},now)
+                         if stage_mode == 'off' else None)
+                proposals={}
                 for rid,port in ports.items():
                     barrier=barriers[rid]
-                    waiting=barrier.pending is not None and not permits[rid]
+                    waiting=(barrier.pending is not None and not permits[rid]) if stage_mode == 'off' else False
                     jpeg=base64.b64decode(port.capture()['image'])
                     obs,jpegs,path=histories[rid].observe(now,jpeg,skill='wait' if waiting else 'grasp',
                         object_kind='long_beam',role=plan['roles'][rid])
                     (output/path).write_bytes(jpeg)
                     inputs.write(json.dumps(obs,allow_nan=False)+'\n')
                     proposal=None;done=False
-                    if barrier.pending is None:
+                    if stage_mode != 'off' or barrier.pending is None:
                         proposal,done=executors[rid].step(obs,jpegs)
-                        barrier.propose(proposal,done,previous[rid])
-                    value,done=barrier.issue(now,previous[rid],proposal,done,permits[rid])
-                    if done:done_times.setdefault(rid,now)
-                    apply(port,value,now,previous[rid])
-                    histories[rid].issue(value);previous[rid]=value
-                    commands.write(json.dumps(dict(t=now,robot=rid,command=value,done=done,
-                        ready=barrier.ready,permit=permits[rid],waiting=waiting),allow_nan=False)+'\n')
+                        barrier.propose(proposal,done,previous[rid],stage=executors[rid].stage)
+                        if stage_mode != 'off' and barrier.blocked:
+                            # The model's next chunk must use the actually issued
+                            # WAIT, not continue a rejected future command chunk.
+                            executors[rid].discard_pending()
+                    if stage_mode == 'off':
+                        # Preserve the baseline per-robot capture/issue order.
+                        issue_proposal(rid,proposal,done,waiting,now,permits)
+                    else:
+                        proposals[rid]=(proposal,done,waiting)
+                if stage_mode != 'off':
+                    permits=sync.tick({r:b.ready for r,b in barriers.items()},now)
+                    for rid,(proposal,done,waiting) in proposals.items():
+                        issue_proposal(rid,proposal,done,waiting,now,permits)
                 # Private evaluation truth is created AFTER commands, and never
                 # passed into histories, executor, barrier, worker or sync.
                 truth=snapshot(world,inst,plan['roles'],scene)
@@ -266,7 +302,9 @@ def run(plan, output, dependency, model, actor_python, *, mode='off', cap_s=60.)
                 protocol_delays_s=delays,capture_cache=capture_stats)
             write_json(output/'start-protocol.json',dict(events=sync.events,
                 own_events={r:b.events for r,b in barriers.items()},delays_s=delays,
-                source='unchanged pinned GraspStartSync READY/GO/ACK; close proposal only'))
+                **(dict(beamact4_stage_v1=stage_mode,beamact4_done_recovery_v1=done_recovery) if candidate4 else {}),
+                source='unchanged pinned GraspStartSync READY/GO/ACK; '+
+                    ('learned stage, rearmed on withdrawal' if stage_mode != 'off' else 'close proposal only')))
             write_json(review/'manifest.json',review_rows)
     except BaseException as exc:
         report.update(status='interrupted' if isinstance(exc,KeyboardInterrupt) else 'HOST_ERROR',
@@ -302,9 +340,12 @@ def main():
     p.add_argument('--actor-python',type=Path,required=True)
     p.add_argument('--output',type=Path,required=True)
     p.add_argument('--mode',default='off',choices=('off',MODE))
+    p.add_argument('--stage-mode',default='off',choices=('off',STAGE_MODE))
+    p.add_argument('--done-recovery',default='off',choices=('off',RECOVERY_MODE))
     a=p.parse_args()
     plan=json.loads(a.plan.read_text())['episodes'][a.episode]
-    run(plan,a.output,a.dependency_root,a.model,a.actor_python,mode=a.mode)
+    run(plan,a.output,a.dependency_root,a.model,a.actor_python,mode=a.mode,
+        stage_mode=a.stage_mode,done_recovery=a.done_recovery)
 
 
 if __name__=='__main__':main()
