@@ -152,28 +152,33 @@ def main() -> int:
             in_zone = [name for name, r in regions.items()
                        if abs(bx - r['center_m'][0]) <= r['half_extents_m'][0]
                        and abs(by - r['center_m'][1]) <= r['half_extents_m'][1]]
+            # Starts are authored inside the pickup room, so occupying the
+            # pickup region is not a failure; only destination zones are.
+            in_destination = [name for name in in_zone if name.startswith('zone')]
             rows.append(dict(
                 episode=idx, group='N' if idx < 8 else 'F',
                 spawn_eval_only=plan['spawns']['r1'],
                 base_xyyaw_eval_only=[round(bx, 4), round(by, 4), round(yaw, 4)],
                 admission=admission,
                 in_region=in_zone,
+                in_destination_zone=in_destination,
                 min_cargo=min_cargo,
                 beam_door_path_min_clearance_m=beam_clear,
                 beam_blocks_straight_door_path=beam_blocked,
                 wall_min_clearance_m=round(divider_clear - cp_robot_radius(), 4),
-                pass_=bool(admission.get('accepted')) and not in_zone,
+                pass_=bool(admission.get('accepted')) and not in_destination,
             ))
         park_rows = []
         for rid, pose in parks.items():
             x0, y0 = pose[0], pose[1]
+            zone_regions = {k: v for k, v in regions.items() if k.startswith('zone')}
             zone_clear = min(aabb_distance(x0, y0, r['center_m'][0], r['center_m'][1],
                                            r['half_extents_m'][0], r['half_extents_m'][1])
-                             for r in regions.values())
+                             for r in zone_regions.values())
             wall_clear = min(aabb_distance(x0, y0, o['center_m'][0], o['center_m'][1],
                                            o['half_extents_m'][0], o['half_extents_m'][1])
                              for o in obstacles if o.get('kind') == 'wall')
-            in_zone = [name for name, r in regions.items()
+            in_zone = [name for name, r in zone_regions.items()
                        if abs(x0 - r['center_m'][0]) <= r['half_extents_m'][0]
                        and abs(y0 - r['center_m'][1]) <= r['half_extents_m'][1]]
             park_rows.append(dict(robot=rid, pose=pose[:2],
