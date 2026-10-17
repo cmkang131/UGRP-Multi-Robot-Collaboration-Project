@@ -116,7 +116,15 @@ def main():
                         plans=[plan],previous=[current[0]['issued'][-1]], active=[True],
                         read_actor=lambda i:(owner.observation,None))
                     owner.observation = current[0]
-                    oracle = VisibleOracle(owner,0)
+                    if args.v7_root:
+                        # Use the identical hash-checked v7 dictionary route as
+                        # the recorded owner. The frozen teacher's string
+                        # registry only knows v4 filenames. This constructs
+                        # body-name metadata, never a new physical rollout.
+                        from act17_v7 import installed
+                        with installed():oracle = VisibleOracle(owner,0)
+                    else:
+                        oracle = VisibleOracle(owner,0)
                     eyes = SimpleNamespace(region_visible=lambda i,gids:vis.region_visible(data,'r1',gids))
                     with np.load(folder/'states.npz') as archive:
                         ticks,qpos = archive['ticks'].copy(),archive['qpos'].copy()
