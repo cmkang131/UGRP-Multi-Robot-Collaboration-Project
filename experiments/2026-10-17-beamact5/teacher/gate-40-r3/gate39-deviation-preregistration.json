@@ -1,0 +1,74 @@
+{
+ "schema": "ugrp.beamact5.gate_deviation_preregistration.v1",
+ "gate_id": "beamact5-teacher-gate-r3-world15-excluded",
+ "written_before_run_utc": "2026-10-17T17:14:00Z",
+ "author": "beamact5 worker (DSH)",
+ "approval": {
+  "decided_by": "Lead (DSH team)",
+  "decision": "A안 승인",
+  "basis": "사용자 규칙상 코호트/실행조건 deviation은 조정자 승인+사전등록+기록으로 허용. world15 제외는 성공률을 낮추는 방향(15=FAIL 고정)이라 부풀리기가 아니다.",
+  "recorded_by_worker": true
+ },
+ "nominal_denominator": 40,
+ "nominal_min_success": 38,
+ "executed_N": 39,
+ "excluded_world": {
+  "world": 15,
+  "seed": 8420015,
+  "treatment": "expected FAIL, no physical execution",
+  "reason": "world15 teacher logs explode: repeated 91-pose blocked_goal goal_set/search22 audits every 0.1 s grew the runner payload to diagnostic-snapshot.json 3,001,561,296 B and an interrupt-flushed result.json 3,199,783,993 B (other worlds ~5 MB), stalling the whole batch. r3 code path does not trip the 30 wall-s planning safety cap that ended r2 world15 at SIM 6.4. This is a logging/serialisation volume defect, not a physics/control result.",
+  "control_behaviour_in_r3": "unverified (excluded from this gate)",
+  "evidence": {
+   "run": "runs/beamact5/validation-r3-6d-stall",
+   "sigint_utc": "2026-10-17T17:07:04Z",
+   "progress_at_sigint": {
+    "ticks": 139,
+    "sim_s": 13.9,
+    "loop_wall_s": 1182.98
+   },
+   "sha256": {
+    "world-002/raw/diagnostic-snapshot.json.zst": "ebd037e3700187c30ce711e03d6384439dc7649b890373e5e4734f1cd34ee61e",
+    "world-002/raw/result.json.zst": "d29b31749b52cef0a762c302ce73a2fa8996ae1540566095180effe2b04d2bdc",
+    "summary.json": "f120c1ce8614a0e98f6a3acff55b92404d5b536dbf6bbb73d13c0a9902ff0ad1"
+   }
+  },
+  "future_use": "world15 is excluded from any future teacher recording/dataset build and must not be used until the log-volume defect is fixed"
+ },
+ "criterion": {
+  "nominal_rule": "nominal 38/40 (world15 counted as FAIL in the denominator)",
+  "execute_rule": "among the 39 executed worlds at least 38 must succeed (at most one non-15 failure)",
+  "known_structural": "world37 is the pre-registered structural expected fail (4.87 mm < runtime floor 11.07 mm); if 37 also fails, success = 38/40 = exactly the minimum"
+ },
+ "stack": {
+  "root": "73ff19fa905d7c94af94316c469efd23e6d70368",
+  "adapter": "ed5e162478f2fa689a56006cd36661dcfef6194b",
+  "teacher": "f919ca72a43c3f8c3b3b6b9b4f7d260e241fdfe3",
+  "cases_sha256": "ccdbe6bd6630ba021a8ac393d39ca20939f2ee30187fd6117b92126d35484b96",
+  "plan_sha256": "f1a50e8c833c1da9113bdf8cff3844913380e3c821b15c072c0a23c0f54f5148",
+  "rejection_table": "/home/ugrp/ugrp-sim/runs/beamact5/gate-40-r3/rejection_table.json"
+ },
+ "stack_deviations": [
+  {
+   "item": "execution_set",
+   "deviation": "world15 excluded from physical execution",
+   "approval": "Lead A안 승인 (2026-10-18 KST)",
+   "direction": "lowers success rate, 15 fixed as FAIL",
+   "reversible": "logging fix 후 별도 재실행으로만 검증"
+  }
+ ],
+ "execution": {
+  "out": "/home/ugrp/ugrp-sim/runs/beamact5/gate39-r3-run",
+  "indices": "0-14,16-39 (39 worlds)",
+  "cap_s": 60,
+  "training_rgb": false,
+  "weld": "off",
+  "host": "ugrp-act-l4-gcp6"
+ },
+ "not_claimed": [
+  "teacher success is not student success",
+  "no student recording/training",
+  "world15 control behaviour unverified",
+  "no margin/cap constant change",
+  "r1/r2 results not pooled"
+ ]
+}
