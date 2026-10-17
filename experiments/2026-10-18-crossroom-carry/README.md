@@ -209,8 +209,13 @@ with Stage A** or with any visgoal/egonav/ACT run.
   `--stage B_loaded --sim-cap 180 --nworld 16`, output
   `/home/ugrp/ugrp-sim/runs/crossroom-stageB`.
 
-Status: **frozen, run pending** (the Stage A gate runs first; Stage B is a
-separate condition).
+Status: **frozen, gate pending**. Stage B is a separate condition and is not
+pooled with Stage A. It uses the **same search/gap/door policy as Stage A with
+no fixes**: the Stage A failure modes (skill-claimed gap crossing without a GT
+crossing, jamb overlap on the single GT crossing, declaration just outside
+zone B, near-field blue end-band false paint hints) are expected to carry over
+unchanged, so Stage B is the loaded **baseline** measurement, not a fix. See
+`prereg-stageB.json` `stage_a_carryover`.
 
 ## Stage A results (16 starts, 180 Sim s, nworld=16)
 
