@@ -3,10 +3,12 @@ from pathlib import Path
 import sys
 
 import numpy as np
+import pytest
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'scripts'))
 from act18_policy import extend_targets
 from act18_diagnose import confusion
+from act18_evaluate import allowed_seeds
 
 
 def test_extended_chunk_never_fabricates_a_future_across_completion_or_gap():
@@ -28,3 +30,14 @@ def test_raw_wrong_sign_and_projection_stop_are_separate_counts():
     assert counts['projected_stop_while_teacher_moves']==1
     assert counts['raw_opposite_sign_while_teacher_moves']==2
     assert counts['projected_opposite_sign_while_teacher_moves']==1
+
+
+def test_val_and_final_cannot_run_on_an_unverified_fit_claim():
+    protocol=dict(train4_seeds=[1,2,3,4],validation8_seeds=list(range(20,28)),final_seeds=list(range(100,140)))
+    assert allowed_seeds(protocol,'train',{},'model')=={1,2,3,4}
+    with pytest.raises(ValueError,match='TRAIN4'):
+        allowed_seeds(protocol,'validation',{},'model')
+    with pytest.raises(ValueError,match='receipt'):
+        allowed_seeds(protocol,'validation',dict(TRAIN_n=4,TRAIN_N=4,checkpoint_sha256='model',TRAIN_raw_recount_verified=True),'model')
+    with pytest.raises(ValueError,match='frozen selection'):
+        allowed_seeds(protocol,'final',{},'model')
