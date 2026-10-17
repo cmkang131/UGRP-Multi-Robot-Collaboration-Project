@@ -1,0 +1,90 @@
+{
+  "schema": "ugrp.act17.cadence_queue.v1",
+  "flow": "act_eval",
+  "status": "BLOCKED_CURRENT_STACK",
+  "execution_authorized": false,
+  "source_sha": "18900c0de85e48f81e45e5a2cc4357f10512787f",
+  "rejection_table": "/Users/changmin/projects/ugrp-wt/act16w/experiments/2026-10-17-act17/results/rejection_table.json",
+  "baseline_stack_evidence": "/Users/changmin/projects/ugrp-wt/act16w/experiments/2026-10-17-act17/results/baseline-stack-evidence.json",
+  "stack_values": {
+    "physics_backend": "mjwarp_batch_v1",
+    "contact_profile": "warp_native_contact_v1",
+    "noslip_iterations": 0,
+    "scene_profile": "walls_floor_contrast_v5_indigo110_s80",
+    "end_color_scene": "off",
+    "cargo_version": "v4",
+    "scenario_version": "v4",
+    "heavy_crate": true,
+    "held_object_hidden_v1": true,
+    "held_world_reads": 0,
+    "nearfield_executor": "ACT",
+    "weld": false,
+    "top_camera_control": false,
+    "heading_mode": "not_applicable_ACT_nearfield",
+    "ultrasonic_front": "off",
+    "wall_cap": null,
+    "speed_gate": "record_only",
+    "speed_metric": "wall_s/(sim_s*nworld)",
+    "gcp_host": "ugrp-act-l4-gcp2",
+    "gcp_project": "ugrp-sim-b-1014",
+    "gcp_account": "changmin5781@gmail.com",
+    "gcp_guards": {
+      "idle_minutes": 20,
+      "budget_stop": true,
+      "credentials_on_vm": false
+    },
+    "no_pooling": true,
+    "rejection_ledger": [
+      "reason_category",
+      "blocked_object",
+      "minimum_gap_m"
+    ],
+    "cap_end_label": "cap_end"
+  },
+  "stack_deviations": [],
+  "planned_worlds": 8,
+  "max_total_worlds": 40,
+  "maximum_rounds": 3,
+  "round": 1,
+  "wall_cap": null,
+  "training_steps": 0,
+  "physics_steps_executed": 0,
+  "checkpoint": "/home/ugrp/ugrp-sim/runs/act16w-native-training-r1/A/main/step-010000/actor",
+  "validation_seeds": [
+    87424,
+    87429,
+    87434,
+    87439,
+    87444,
+    87449,
+    87454,
+    87459
+  ],
+  "runs": [
+    {
+      "id": "R1_off",
+      "act17_cadence_v1": "off",
+      "n_action_steps": 8,
+      "temporal_ensemble_coeff": null
+    },
+    {
+      "id": "R1_replan1",
+      "act17_cadence_v1": "replan1",
+      "n_action_steps": 1,
+      "temporal_ensemble_coeff": null
+    },
+    {
+      "id": "R1_ensemble1",
+      "act17_cadence_v1": "ensemble1",
+      "n_action_steps": 1,
+      "temporal_ensemble_coeff": 0.01
+    }
+  ],
+  "promotion": {
+    "final40_submitted": false,
+    "condition": "VAL8 pass criterion must be explicit before submission; no original FINAL40 reuse as new confirmation",
+    "scope": "new candidates, not historical replay"
+  },
+  "reason": "Saved native teacher/data/checkpoints are v4 scenarios with excluded cargo and end_color_scene off. No approved comparison deviation is invented. Plan/source must match current stack before new physical rollouts.",
+  "provenance_scope": "stack_values preserve known baseline source differences; gcp guards are current live verified requirements; full runtime evidence remains a separate gate"
+}
