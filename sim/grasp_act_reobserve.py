@@ -152,6 +152,14 @@ class ActiveReobserve:
             if now-t0>=self.RETREAT_S-1e-8 or math.dist(pose[:2],p0)>=.06:
                 a['retreat_first']=False;a['view_start']=now;a['retreat_start']=None
                 attempt=0;view_age=0.
+                # Every target already fresh: the normal view phase would end
+                # the reobserve instead of selecting from an empty unseen set.
+                if seen == set(a['targets']):
+                    self.events.append({'t': now, 'event': 'reobserve_measurements',
+                                        'kind': a['kind'], 'before': a['targets'],
+                                        'after': {k: fresh[k] for k in sorted(seen)}})
+                    self.finish(teacher, now, 'fresh_measurements_replan')
+                    return None
         targets = [v for k, v in sorted(a['targets'].items()) if k not in seen or a['retreat_first']]
         target = targets[min(int(view_age/self.VIEW_S), len(targets)-1)]
         x, y = local(pose, target['xyz'])

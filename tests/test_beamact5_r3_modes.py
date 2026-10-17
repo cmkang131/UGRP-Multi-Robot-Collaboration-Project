@@ -164,3 +164,30 @@ def test_teacher_runner_accepts_the_round3_profile_values():
     params = inspect.signature(run).parameters
     for key in ('search26_peer_memory', 'search26_reobserve', 'search26_wide_stance'):
         assert params[key].default == 'off'
+
+
+def test_reobserve_transition_ends_when_every_target_is_already_fresh():
+    """Retreat can finish by distance before RETREAT_S; the view phase must not
+    index an empty unseen-target list (gcp6 r3 run IndexError)."""
+    w = world()
+    t = teacher(search26_reobserve=SEARCH26['search26_reobserve'])
+    m = {'kind': 'robot', 'xyz': [.6, .5, .03], 'top_z_bound_m': .32, 'seen_t': 0.}
+    assert t.reobserver.begin('peer', {'r2': deepcopy(m)}, w, t, 10.,
+                              retreat_first=True)
+    # First retreat tick: the peer becomes freshly seen but the 0.3 s clear
+    # dwell has not elapsed, so the view phase is still entered.
+    w['t'] = 10.1
+    w['robots']['r2'] = {'pose': [.6, .5, 0.]}
+    w['visibility']['r1']['peers'] = ['r2']
+    w['visibility']['r1']['observations'] = {'r2': {**deepcopy(m), 'seen_t': 10.1}}
+    t.reobserver.step(w, t, 10.1)
+    # The peer-clear dwell was already running before this encounter.
+    t.peer_clear_since = 9.5
+    # Second tick moved > 6 cm: retreat converts to views while every target
+    # is fresh. It must finish cleanly instead of raising IndexError.
+    w['robots']['r1']['pose'] = [-.8, -.37, 0.]
+    w['t'] = 10.2
+    w['visibility']['r1']['observations'] = {'r2': {**deepcopy(m), 'seen_t': 10.2}}
+    t.reobserver.step(w, t, 10.2)
+    assert t.reobserver.active is None
+    assert t.reobserver.events[-1]['reason'] == 'fresh_measurements_replan'
