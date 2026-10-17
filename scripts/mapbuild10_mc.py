@@ -140,13 +140,16 @@ def predict_job(job):
         e=amcl.step(f['t'],f['frame_id'],f['own_delta'],f['scan'],servo=f['servo'])
         p=compose(amcl.current['candidate_pose'],between(amcl.sensor_odom,amcl.odom)).tolist() if amcl.current else None
         rows.append(dict(t=f['t'],frame_id=f['frame_id'],candidate=p,ready=e['converged'],attempted=e['attempted'],
-            reason=e['reason'],xy95=e.get('xy_p95_m'),yaw95=e.get('yaw_p95_rad'),ess=e.get('ess')))
+            reason=e['reason'],reason_category=e['category'],blocked_object=e['blocked_object'],
+            blocked_object_status='observed_wall_identity_not_measured',minimum_gap_m=e['minimum_gap_m'],gap_status=e['gap_status'],
+            xy95=e.get('xy_p95_m'),yaw95=e.get('yaw_p95_rad'),ess=e.get('ess')))
     folder=work/'predictions';file=folder/f'{name}-{mode}-{trial:03d}.json'
     dump(file,dict(stream=name,trial=trial,mode=mode,particle_seed=2026101700+trial,rows=rows,
         own_map_frames=len(amcl.local_map),runtime_qualified=False,ready_for_handoff=False,adopted_pose=None))
     if trial==0 and mode=='coarse':dump(folder/f'{name}-own-map.json',amcl.local_map)
     return dict(stream=name,trial=trial,mode=mode,file=file.name,sha256=sha(file),
         frames=len(rows),updates=sum(r['attempted'] for r in rows),ready_updates=sum(r['ready'] for r in rows),
+        visible_frames=sum(bool(f['scan']['segments']) for f in s['frames']),
         own_map_frames=len(amcl.local_map),reasons=dict(Counter(r['reason'] for r in rows)))
 
 
@@ -226,10 +229,15 @@ def score(a):
     dump(a.work/'evaluation.json',dict(host=a.host,scope='conditional synthetic coarse priors; no actual operator prior, no physical success',
         trials=a.trials,results=results,aggregates=aggregates,physics_steps=0,new_physical_runs=0,
         prediction_seal_sha256=sha(a.work/'prediction-seal.json'),requirements_sha256=sha(a.requirements),reproduction=sys.argv))
-    table=dict(source=str(a.work),reproduction=sys.argv,cohorts=[],distribution=[])
+    table=dict(source=str(a.work),reproduction=sys.argv,cohorts=[],frame_cohorts=[],distribution=[])
+    index=read(a.work/'predictions/index.json')
     for mode in ('coarse','global'):
         rs=[r for r in results if r['mode']==mode];con=sum(r['ready_updates']>0 for r in rs);correct=sum(r['ready_updates']>0 and not r['wrong_ready_updates'] for r in rs);passed=sum(r['offline_pass'] for r in rs)
         table['cohorts'].append(dict(mode=mode,stages=[dict(stage='case_replays',cumulative_pass_n=len(rs),rejected_n=0),dict(stage='convergence',cumulative_pass_n=con,rejected_n=len(rs)-con),dict(stage='no_wrong_convergence',cumulative_pass_n=correct,rejected_n=con-correct),dict(stage='existing_OFF_improvement_and_requirement_gate',cumulative_pass_n=passed,rejected_n=correct-passed)]))
+        ii=[r for r in index if r['mode']==mode];n=sum(r['frames'] for r in ii);v=sum(r['visible_frames'] for r in ii);u=sum(r['updates'] for r in ii);c=sum(r['ready_updates'] for r in ii)
+        table['frame_cohorts'].append(dict(mode=mode,scope='20 repeated priors/seeds, not independent recorded frames',stages=[
+            dict(stage='replayed_frames',cumulative_pass_n=n,rejected_n=0),dict(stage='visible_wall',cumulative_pass_n=v,rejected_n=n-v),
+            dict(stage='sensor_update',cumulative_pass_n=u,rejected_n=v-u),dict(stage='converged_event',cumulative_pass_n=c,rejected_n=u-c)]))
         for reason,count in [('unresolved',len(rs)-con),('wrong_convergence',con-correct),('OFF_improvement_or_requirement_failure',correct-passed)]:
             table['distribution'].append(dict(mode=mode,reason_category=reason,reason=reason,n=count,blocked_object='static_wall_likelihood_and_motion_uncertainty',minimum_gap_m=None,gap_status='not_measured'))
     dump(a.work/'rejection_table.json',table)
