@@ -85,9 +85,17 @@ def main():
     p.add_argument('--fit-selection',type=Path)
     # Default OFF: record decoded done probabilities per tick for diagnosis only.
     p.add_argument('--record-done-prob',type=Path)
+    # act18-doneh (Lead-approved B4): own-command-history done module. The external
+    # issued_done format and scoring contract are unchanged; the module only decides
+    # whether the current tick is emitted as done.
+    p.add_argument('--done-head',type=Path)
+    p.add_argument('--done-head-threshold',type=float,default=.65)
+    p.add_argument('--done-head-log',type=Path)
     a,args=p.parse_known_args()
     if not a.act18_reference_v1 or a.failure_camera_window_s!=10.:
         raise ValueError('explicit reference toggle and user10SIMs camera window required')
+    if a.done_head is not None and a.done_head_threshold!=.65:
+        raise ValueError('frozen done-head threshold .65 required')
     done_log_path=done_prob_log_path() if a.record_done_prob is None else a.record_done_prob
     if done_log_path is not None:
         if os.environ.get(DONE_PROB_ENV) not in (None,str(done_log_path)):
@@ -120,6 +128,12 @@ def main():
     chunk=8 if a.baseline_act17 else meta['chunk']
     contract.CHUNK=chunk
     done_log=dict(handle=(open(done_log_path,'x') if done_log_path is not None else None),world=None)
+    done_head=None;done_head_log=dict(handle=None);executor_counter=[0]
+    if a.done_head is not None:
+        from act18_done_head import DoneHead,done_fires,apply_done_override
+        done_head=DoneHead.load(a.done_head,device='cpu')
+        if a.done_head_log is not None:
+            done_head_log['handle']=open(a.done_head_log,'x')
     sequences=[];buffers=defaultdict(lambda:deque(maxlen=round(10./contract.PERIOD_S)+1))
     inference=dict(attempts=0,completed=0,wall_s=0.,first30=dict(attempts=0,completed=0,wall_s=0.))
     class TrackedActor(actor_class):
@@ -141,13 +155,35 @@ def main():
             finally:
                 elapsed=time.perf_counter()-started;inference['wall_s']+=elapsed
                 if first30:inference['first30']['wall_s']+=elapsed
-    class Sequence(originals[4]):
-        def __init__(self,*args,**kwargs):
-            super().__init__(*args,**kwargs);sequences.append(self)
     class Executor(originals[3]):
         def __init__(self,predict):
             # Public ACT temporal ensemble; no additional motion guard/fallback.
             super().__init__(predict,n_action_steps=1,temporal_ensemble_coeff=.01)
+    class DoneHeadExecutor(Executor):
+        def __init__(self,predict):
+            super().__init__(predict)
+            self.world=executor_counter[0];executor_counter[0]+=1
+            self.last_t=None
+        def step(self,observation,jpegs,*,interrupt=False):
+            if self.last_t is not None and observation['t']<=self.last_t:
+                done_head.reset()
+            self.last_t=observation['t']
+            value,done=super().step(observation,jpegs,interrupt=interrupt)
+            if interrupt or done:
+                return value,done
+            probability=done_head.update(value,observation['skill'])
+            fired=done_fires(probability,a.done_head_threshold)
+            if fired:
+                value=apply_done_override(value,True)
+            if done_head_log['handle'] is not None:
+                done_head_log['handle'].write(json.dumps(dict(world=self.world,t=observation['t'],
+                    skill=observation['skill'],done_prob=round(probability,6),fired=fired,
+                    threshold=a.done_head_threshold))+'\n');done_head_log['handle'].flush()
+            return value,done or fired
+    class Sequence(originals[4]):
+        def __init__(self,*args,**kwargs):
+            super().__init__(*args,**kwargs);sequences.append(self)
+
     def guard(provenance,seeds,**_):
         if not seeds or len(set(seeds))!=len(seeds) or not set(seeds)<=allowed:
             raise ValueError('exact registered stage seeds required')
@@ -188,11 +224,13 @@ def main():
     act16w_runtime.evaluation_seed_guard=guard
     act16w_input.Act16wActor=TrackedActor
     act16w_eval_rpc.EvaluationClient=Client
-    pm.ChunkExecutor=Executor;rm.SoloSequence=Sequence
+    pm.ChunkExecutor=DoneHeadExecutor if done_head is not None else Executor;rm.SoloSequence=Sequence
     target=ROOT/'scripts/evaluate_act16w.py';sys.argv=[str(target),*args]
     try:
         runpy.run_path(str(target),run_name='__main__')
     finally:
+        if done_head_log['handle'] is not None:
+            done_head_log['handle'].close();done_head_log['handle']=None
         if done_log['handle'] is not None:
             done_log['handle'].close();done_log['handle']=None
         (act16w_runtime.evaluation_seed_guard,act16w_input.Act16wActor,
@@ -222,9 +260,18 @@ def main():
                         row.update(grasp_done_requested='grasp' in seq.done_times,release_done_requested='release' in seq.done_times,
                             issued_done_times=seq.done_times,candidate=meta['provenance']['candidate'])
                 path.write_text(json.dumps(report,indent=2)+'\n')
+            done_head_receipt=None
+            if a.done_head is not None:
+                done_meta=read(a.done_head/'metadata.json')
+                done_head_receipt=dict(path=str(a.done_head),model_sha256=sha256(a.done_head/'done-head.pt'),
+                    threshold=a.done_head_threshold,persistence=done_meta.get('persistence'),
+                    feature_spec=done_meta.get('feature_spec'),history=done_meta.get('history'),
+                    validation_auc=done_meta.get('validation_auc'),
+                    scope='own-command-history done module combined with unchanged ACT action policy; not an ACT-learned done head')
             (out/'act18-evaluator.json').write_text(json.dumps(dict(source_sha=source,stage=a.stage,
                 allowed_seeds=sorted(allowed),checkpoint_sha256=digest,native_gate_sha256=sha256(gate_path),
-                failure_recording_only=True,recorded_bytes=sum(r['bytes'] for r in ring)),indent=2)+'\n')
+                failure_recording_only=True,recorded_bytes=sum(r['bytes'] for r in ring),
+                done_head=done_head_receipt),indent=2)+'\n')
 
 
 if __name__=='__main__':
