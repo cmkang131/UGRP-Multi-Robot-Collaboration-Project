@@ -1,0 +1,1212 @@
+{
+ "schema": "ugrp.visgoal.mission_split.v1",
+ "run": "/home/ugrp/ugrp-sim/runs/visgoal-gate-r4",
+ "zone_B": [
+  4.3,
+  4.9,
+  -2.8,
+  -1.4
+ ],
+ "split": {
+  "west": {
+   "episodes": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ],
+   "funnel": [
+    {
+     "stage": "starts",
+     "input_n": 8,
+     "cumulative_pass_n": 8,
+     "rejected_n": 0
+    },
+    {
+     "stage": "crossed_gap",
+     "input_n": 8,
+     "cumulative_pass_n": 7,
+     "rejected_n": 1
+    },
+    {
+     "stage": "colour_seen_after_cross",
+     "input_n": 7,
+     "cumulative_pass_n": 1,
+     "rejected_n": 6
+    },
+    {
+     "stage": "found_metric_or_arrived",
+     "input_n": 1,
+     "cumulative_pass_n": 1,
+     "rejected_n": 0
+    },
+    {
+     "stage": "arrived_declared",
+     "input_n": 1,
+     "cumulative_pass_n": 0,
+     "rejected_n": 1
+    },
+    {
+     "stage": "arrived_gt",
+     "input_n": 0,
+     "cumulative_pass_n": 0,
+     "rejected_n": 0
+    }
+   ],
+   "n": 8
+  },
+  "east": {
+   "episodes": [
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+   ],
+   "funnel": [
+    {
+     "stage": "starts",
+     "input_n": 8,
+     "cumulative_pass_n": 8,
+     "rejected_n": 0
+    },
+    {
+     "stage": "colour_seen",
+     "input_n": 8,
+     "cumulative_pass_n": 8,
+     "rejected_n": 0
+    },
+    {
+     "stage": "found_metric_or_arrived",
+     "input_n": 8,
+     "cumulative_pass_n": 8,
+     "rejected_n": 0
+    },
+    {
+     "stage": "arrived_declared",
+     "input_n": 8,
+     "cumulative_pass_n": 8,
+     "rejected_n": 0
+    },
+    {
+     "stage": "arrived_gt",
+     "input_n": 8,
+     "cumulative_pass_n": 1,
+     "rejected_n": 7
+    }
+   ],
+   "n": 8
+  }
+ },
+ "scope": "read-only; the authored setup index defines the side (e00-e07 west of the divider, e08-e15 east). Truth is read only in eval-only pose cells (zone distance/inside) and in the arrival verdict; cargo transport is not part of this run.",
+ "episodes": [
+  {
+   "episode": 0,
+   "side": "west",
+   "status": "cap_end",
+   "sim_s": 120.0,
+   "crossed": false,
+   "cross_t": null,
+   "colour_after_cross": false,
+   "colour_any": false,
+   "found": false,
+   "found_t_first": null,
+   "declared": false,
+   "declared_t": null,
+   "gt": null,
+   "entered_zone_any": false,
+   "start_visibility_pixels": 0,
+   "final_pose_eval_only": [
+    0.6411788463592529,
+    -1.3009124994277954
+   ],
+   "final_zone_range_m": 3.66,
+   "post_cross_ticks": 0,
+   "post_cross_min_zone_range_m": null,
+   "post_cross_inside_ticks": 0,
+   "post_cross_band_ticks": {
+    "<= 1.0": 0,
+    "<= 1.5": 0,
+    "<= 2.0": 0,
+    "<= 2.5": 0,
+    "<= 3.0": 0
+   },
+   "post_cross_bbox_eval_only": null,
+   "stage_runs": [
+    {
+     "stage": "orient",
+     "t0": 0.0,
+     "t1": 27.4,
+     "dur": 27.4
+    },
+    {
+     "stage": "seek_wall",
+     "t0": 27.4,
+     "t1": 39.9,
+     "dur": 12.5
+    },
+    {
+     "stage": "approach_wall",
+     "t0": 39.9,
+     "t1": 120.0,
+     "dur": 80.1
+    }
+   ],
+   "final_stage": "approach_wall"
+  },
+  {
+   "episode": 1,
+   "side": "west",
+   "status": "cap_end",
+   "sim_s": 120.0,
+   "crossed": true,
+   "cross_t": 63.9,
+   "colour_after_cross": true,
+   "colour_any": true,
+   "found": true,
+   "found_t_first": 96.2,
+   "declared": false,
+   "declared_t": null,
+   "gt": null,
+   "entered_zone_any": false,
+   "start_visibility_pixels": 0,
+   "final_pose_eval_only": [
+    0.8089637756347656,
+    0.7332463264465332
+   ],
+   "final_zone_range_m": 4.091,
+   "post_cross_ticks": 562,
+   "post_cross_min_zone_range_m": 3.759,
+   "post_cross_inside_ticks": 0,
+   "post_cross_band_ticks": {
+    "<= 1.0": 0,
+    "<= 1.5": 0,
+    "<= 2.0": 0,
+    "<= 2.5": 0,
+    "<= 3.0": 0
+   },
+   "post_cross_bbox_eval_only": {
+    "x": [
+     0.8,
+     1.16
+    ],
+    "y": [
+     0.44,
+     0.94
+    ]
+   },
+   "stage_runs": [
+    {
+     "stage": "orient",
+     "t0": 0.0,
+     "t1": 27.4,
+     "dur": 27.4
+    },
+    {
+     "stage": "approach_wall",
+     "t0": 27.4,
+     "t1": 46.5,
+     "dur": 19.1
+    },
+    {
+     "stage": "follow_north",
+     "t0": 46.5,
+     "t1": 63.9,
+     "dur": 17.4
+    },
+    {
+     "stage": "gap_cross",
+     "t0": 63.9,
+     "t1": 64.2,
+     "dur": 0.3
+    },
+    {
+     "stage": "gap_forward",
+     "t0": 64.2,
+     "t1": 72.6,
+     "dur": 8.4
+    },
+    {
+     "stage": "east_search",
+     "t0": 72.6,
+     "t1": 79.5,
+     "dur": 6.9
+    },
+    {
+     "stage": "leg_forward",
+     "t0": 79.5,
+     "t1": 96.2,
+     "dur": 16.7
+    },
+    {
+     "stage": "approach",
+     "t0": 96.2,
+     "t1": 100.4,
+     "dur": 4.2
+    },
+    {
+     "stage": "leg_forward",
+     "t0": 100.4,
+     "t1": 120.0,
+     "dur": 19.6
+    }
+   ],
+   "final_stage": "leg_forward"
+  },
+  {
+   "episode": 2,
+   "side": "west",
+   "status": "cap_end",
+   "sim_s": 120.0,
+   "crossed": true,
+   "cross_t": 55.1,
+   "colour_after_cross": false,
+   "colour_any": false,
+   "found": false,
+   "found_t_first": null,
+   "declared": false,
+   "declared_t": null,
+   "gt": null,
+   "entered_zone_any": false,
+   "start_visibility_pixels": 0,
+   "final_pose_eval_only": [
+    1.6647478342056274,
+    -0.3656841218471527
+   ],
+   "final_zone_range_m": 2.831,
+   "post_cross_ticks": 650,
+   "post_cross_min_zone_range_m": 2.831,
+   "post_cross_inside_ticks": 0,
+   "post_cross_band_ticks": {
+    "<= 1.0": 0,
+    "<= 1.5": 0,
+    "<= 2.0": 0,
+    "<= 2.5": 0,
+    "<= 3.0": 548
+   },
+   "post_cross_bbox_eval_only": {
+    "x": [
+     1.41,
+     1.69
+    ],
+    "y": [
+     -0.47,
+     -0.1
+    ]
+   },
+   "stage_runs": [
+    {
+     "stage": "orient",
+     "t0": 0.0,
+     "t1": 27.4,
+     "dur": 27.4
+    },
+    {
+     "stage": "seek_wall",
+     "t0": 27.4,
+     "t1": 39.2,
+     "dur": 11.8
+    },
+    {
+     "stage": "approach_wall",
+     "t0": 39.2,
+     "t1": 46.3,
+     "dur": 7.1
+    },
+    {
+     "stage": "follow_north",
+     "t0": 46.3,
+     "t1": 55.1,
+     "dur": 8.8
+    },
+    {
+     "stage": "gap_cross",
+     "t0": 55.1,
+     "t1": 55.4,
+     "dur": 0.3
+    },
+    {
+     "stage": "gap_forward",
+     "t0": 55.4,
+     "t1": 62.3,
+     "dur": 6.9
+    },
+    {
+     "stage": "east_search",
+     "t0": 62.3,
+     "t1": 69.2,
+     "dur": 6.9
+    },
+    {
+     "stage": "leg_forward",
+     "t0": 69.2,
+     "t1": 120.0,
+     "dur": 50.8
+    }
+   ],
+   "final_stage": "leg_forward"
+  },
+  {
+   "episode": 3,
+   "side": "west",
+   "status": "cap_end",
+   "sim_s": 120.0,
+   "crossed": true,
+   "cross_t": 48.6,
+   "colour_after_cross": false,
+   "colour_any": false,
+   "found": false,
+   "found_t_first": null,
+   "declared": false,
+   "declared_t": null,
+   "gt": null,
+   "entered_zone_any": false,
+   "start_visibility_pixels": 0,
+   "final_pose_eval_only": [
+    -0.4941256642341614,
+    0.8023068904876709
+   ],
+   "final_zone_range_m": 5.276,
+   "post_cross_ticks": 715,
+   "post_cross_min_zone_range_m": 4.906,
+   "post_cross_inside_ticks": 0,
+   "post_cross_band_ticks": {
+    "<= 1.0": 0,
+    "<= 1.5": 0,
+    "<= 2.0": 0,
+    "<= 2.5": 0,
+    "<= 3.0": 0
+   },
+   "post_cross_bbox_eval_only": {
+    "x": [
+     -0.69,
+     -0.12
+    ],
+    "y": [
+     0.6,
+     1.03
+    ]
+   },
+   "stage_runs": [
+    {
+     "stage": "orient",
+     "t0": 0.0,
+     "t1": 27.4,
+     "dur": 27.4
+    },
+    {
+     "stage": "approach_wall",
+     "t0": 27.4,
+     "t1": 27.7,
+     "dur": 0.3
+    },
+    {
+     "stage": "follow_north",
+     "t0": 27.7,
+     "t1": 34.6,
+     "dur": 6.9
+    },
+    {
+     "stage": "follow_south",
+     "t0": 34.6,
+     "t1": 48.6,
+     "dur": 14.0
+    },
+    {
+     "stage": "gap_cross",
+     "t0": 48.6,
+     "t1": 48.9,
+     "dur": 0.3
+    },
+    {
+     "stage": "gap_forward",
+     "t0": 48.9,
+     "t1": 55.8,
+     "dur": 6.9
+    },
+    {
+     "stage": "east_search",
+     "t0": 55.8,
+     "t1": 62.7,
+     "dur": 6.9
+    },
+    {
+     "stage": "leg_forward",
+     "t0": 62.7,
+     "t1": 120.0,
+     "dur": 57.3
+    }
+   ],
+   "final_stage": "leg_forward"
+  },
+  {
+   "episode": 4,
+   "side": "west",
+   "status": "cap_end",
+   "sim_s": 120.0,
+   "crossed": true,
+   "cross_t": 44.9,
+   "colour_after_cross": false,
+   "colour_any": false,
+   "found": false,
+   "found_t_first": null,
+   "declared": false,
+   "declared_t": null,
+   "gt": null,
+   "entered_zone_any": false,
+   "start_visibility_pixels": 0,
+   "final_pose_eval_only": [
+    1.6374986171722412,
+    -1.656997799873352
+   ],
+   "final_zone_range_m": 2.663,
+   "post_cross_ticks": 752,
+   "post_cross_min_zone_range_m": 2.619,
+   "post_cross_inside_ticks": 0,
+   "post_cross_band_ticks": {
+    "<= 1.0": 0,
+    "<= 1.5": 0,
+    "<= 2.0": 0,
+    "<= 2.5": 0,
+    "<= 3.0": 752
+   },
+   "post_cross_bbox_eval_only": {
+    "x": [
+     1.41,
+     1.68
+    ],
+    "y": [
+     -2.05,
+     -1.63
+    ]
+   },
+   "stage_runs": [
+    {
+     "stage": "orient",
+     "t0": 0.0,
+     "t1": 27.4,
+     "dur": 27.4
+    },
+    {
+     "stage": "approach_wall",
+     "t0": 27.4,
+     "t1": 37.8,
+     "dur": 10.4
+    },
+    {
+     "stage": "follow_north",
+     "t0": 37.8,
+     "t1": 44.9,
+     "dur": 7.1
+    },
+    {
+     "stage": "gap_cross",
+     "t0": 44.9,
+     "t1": 45.2,
+     "dur": 0.3
+    },
+    {
+     "stage": "gap_forward",
+     "t0": 45.2,
+     "t1": 52.3,
+     "dur": 7.1
+    },
+    {
+     "stage": "east_search",
+     "t0": 52.3,
+     "t1": 59.2,
+     "dur": 6.9
+    },
+    {
+     "stage": "leg_forward",
+     "t0": 59.2,
+     "t1": 120.0,
+     "dur": 60.8
+    }
+   ],
+   "final_stage": "leg_forward"
+  },
+  {
+   "episode": 5,
+   "side": "west",
+   "status": "cap_end",
+   "sim_s": 120.0,
+   "crossed": true,
+   "cross_t": 47.3,
+   "colour_after_cross": false,
+   "colour_any": false,
+   "found": false,
+   "found_t_first": null,
+   "declared": false,
+   "declared_t": null,
+   "gt": null,
+   "entered_zone_any": false,
+   "start_visibility_pixels": 0,
+   "final_pose_eval_only": [
+    1.2894419431686401,
+    -0.35441482067108154
+   ],
+   "final_zone_range_m": 3.187,
+   "post_cross_ticks": 728,
+   "post_cross_min_zone_range_m": 2.792,
+   "post_cross_inside_ticks": 0,
+   "post_cross_band_ticks": {
+    "<= 1.0": 0,
+    "<= 1.5": 0,
+    "<= 2.0": 0,
+    "<= 2.5": 0,
+    "<= 3.0": 592
+   },
+   "post_cross_bbox_eval_only": {
+    "x": [
+     1.29,
+     1.7
+    ],
+    "y": [
+     -0.56,
+     -0.08
+    ]
+   },
+   "stage_runs": [
+    {
+     "stage": "orient",
+     "t0": 0.0,
+     "t1": 27.4,
+     "dur": 27.4
+    },
+    {
+     "stage": "approach_wall",
+     "t0": 27.4,
+     "t1": 40.2,
+     "dur": 12.8
+    },
+    {
+     "stage": "follow_north",
+     "t0": 40.2,
+     "t1": 47.3,
+     "dur": 7.1
+    },
+    {
+     "stage": "gap_cross",
+     "t0": 47.3,
+     "t1": 47.6,
+     "dur": 0.3
+    },
+    {
+     "stage": "gap_forward",
+     "t0": 47.6,
+     "t1": 54.7,
+     "dur": 7.1
+    },
+    {
+     "stage": "east_search",
+     "t0": 54.7,
+     "t1": 61.6,
+     "dur": 6.9
+    },
+    {
+     "stage": "leg_forward",
+     "t0": 61.6,
+     "t1": 120.0,
+     "dur": 58.4
+    }
+   ],
+   "final_stage": "leg_forward"
+  },
+  {
+   "episode": 6,
+   "side": "west",
+   "status": "cap_end",
+   "sim_s": 120.0,
+   "crossed": true,
+   "cross_t": 43.4,
+   "colour_after_cross": false,
+   "colour_any": false,
+   "found": false,
+   "found_t_first": null,
+   "declared": false,
+   "declared_t": null,
+   "gt": null,
+   "entered_zone_any": false,
+   "start_visibility_pixels": 0,
+   "final_pose_eval_only": [
+    0.5988258123397827,
+    0.39765554666519165
+   ],
+   "final_zone_range_m": 4.115,
+   "post_cross_ticks": 767,
+   "post_cross_min_zone_range_m": 4.101,
+   "post_cross_inside_ticks": 0,
+   "post_cross_band_ticks": {
+    "<= 1.0": 0,
+    "<= 1.5": 0,
+    "<= 2.0": 0,
+    "<= 2.5": 0,
+    "<= 3.0": 0
+   },
+   "post_cross_bbox_eval_only": {
+    "x": [
+     0.18,
+     0.61
+    ],
+    "y": [
+     0.25,
+     0.95
+    ]
+   },
+   "stage_runs": [
+    {
+     "stage": "orient",
+     "t0": 0.0,
+     "t1": 27.4,
+     "dur": 27.4
+    },
+    {
+     "stage": "approach_wall",
+     "t0": 27.4,
+     "t1": 27.8,
+     "dur": 0.4
+    },
+    {
+     "stage": "follow_north",
+     "t0": 27.8,
+     "t1": 43.4,
+     "dur": 15.6
+    },
+    {
+     "stage": "gap_cross",
+     "t0": 43.4,
+     "t1": 43.7,
+     "dur": 0.3
+    },
+    {
+     "stage": "gap_forward",
+     "t0": 43.7,
+     "t1": 52.1,
+     "dur": 8.4
+    },
+    {
+     "stage": "east_search",
+     "t0": 52.1,
+     "t1": 59.0,
+     "dur": 6.9
+    },
+    {
+     "stage": "leg_forward",
+     "t0": 59.0,
+     "t1": 120.0,
+     "dur": 61.0
+    }
+   ],
+   "final_stage": "leg_forward"
+  },
+  {
+   "episode": 7,
+   "side": "west",
+   "status": "cap_end",
+   "sim_s": 120.0,
+   "crossed": true,
+   "cross_t": 34.5,
+   "colour_after_cross": false,
+   "colour_any": false,
+   "found": false,
+   "found_t_first": null,
+   "declared": false,
+   "declared_t": null,
+   "gt": null,
+   "entered_zone_any": false,
+   "start_visibility_pixels": 0,
+   "final_pose_eval_only": [
+    -0.5012356042861938,
+    0.1448693424463272
+   ],
+   "final_zone_range_m": 5.044,
+   "post_cross_ticks": 856,
+   "post_cross_min_zone_range_m": 4.604,
+   "post_cross_inside_ticks": 0,
+   "post_cross_band_ticks": {
+    "<= 1.0": 0,
+    "<= 1.5": 0,
+    "<= 2.0": 0,
+    "<= 2.5": 0,
+    "<= 3.0": 0
+   },
+   "post_cross_bbox_eval_only": {
+    "x": [
+     -0.73,
+     -0.07
+    ],
+    "y": [
+     -0.54,
+     0.14
+    ]
+   },
+   "stage_runs": [
+    {
+     "stage": "orient",
+     "t0": 0.0,
+     "t1": 27.4,
+     "dur": 27.4
+    },
+    {
+     "stage": "follow_north",
+     "t0": 27.4,
+     "t1": 34.5,
+     "dur": 7.1
+    },
+    {
+     "stage": "gap_cross",
+     "t0": 34.5,
+     "t1": 34.8,
+     "dur": 0.3
+    },
+    {
+     "stage": "gap_forward",
+     "t0": 34.8,
+     "t1": 41.7,
+     "dur": 6.9
+    },
+    {
+     "stage": "east_search",
+     "t0": 41.7,
+     "t1": 48.6,
+     "dur": 6.9
+    },
+    {
+     "stage": "leg_forward",
+     "t0": 48.6,
+     "t1": 120.0,
+     "dur": 71.4
+    }
+   ],
+   "final_stage": "leg_forward"
+  },
+  {
+   "episode": 8,
+   "side": "east",
+   "status": "ARRIVED_DECLARED",
+   "sim_s": 32.5,
+   "crossed": false,
+   "cross_t": null,
+   "colour_after_cross": true,
+   "colour_any": true,
+   "found": true,
+   "found_t_first": 18.9,
+   "declared": true,
+   "declared_t": 31.6,
+   "gt": false,
+   "entered_zone_any": false,
+   "start_visibility_pixels": 0,
+   "final_pose_eval_only": [
+    4.247163772583008,
+    -1.5674246549606323
+   ],
+   "final_zone_range_m": 0.053,
+   "post_cross_ticks": 0,
+   "post_cross_min_zone_range_m": null,
+   "post_cross_inside_ticks": 0,
+   "post_cross_band_ticks": {
+    "<= 1.0": 0,
+    "<= 1.5": 0,
+    "<= 2.0": 0,
+    "<= 2.5": 0,
+    "<= 3.0": 0
+   },
+   "post_cross_bbox_eval_only": null,
+   "stage_runs": [
+    {
+     "stage": "orient",
+     "t0": 0.0,
+     "t1": 13.9,
+     "dur": 13.9
+    },
+    {
+     "stage": "target",
+     "t0": 13.9,
+     "t1": 18.9,
+     "dur": 5.0
+    },
+    {
+     "stage": "approach",
+     "t0": 18.9,
+     "t1": 32.6,
+     "dur": 13.7
+    }
+   ],
+   "final_stage": "approach"
+  },
+  {
+   "episode": 9,
+   "side": "east",
+   "status": "ARRIVED_DECLARED",
+   "sim_s": 26.9,
+   "crossed": false,
+   "cross_t": null,
+   "colour_after_cross": true,
+   "colour_any": true,
+   "found": true,
+   "found_t_first": 13.3,
+   "declared": true,
+   "declared_t": 26.0,
+   "gt": false,
+   "entered_zone_any": false,
+   "start_visibility_pixels": 0,
+   "final_pose_eval_only": [
+    4.275731086730957,
+    -1.5549558401107788
+   ],
+   "final_zone_range_m": 0.024,
+   "post_cross_ticks": 0,
+   "post_cross_min_zone_range_m": null,
+   "post_cross_inside_ticks": 0,
+   "post_cross_band_ticks": {
+    "<= 1.0": 0,
+    "<= 1.5": 0,
+    "<= 2.0": 0,
+    "<= 2.5": 0,
+    "<= 3.0": 0
+   },
+   "post_cross_bbox_eval_only": null,
+   "stage_runs": [
+    {
+     "stage": "orient",
+     "t0": 0.0,
+     "t1": 7.9,
+     "dur": 7.9
+    },
+    {
+     "stage": "target",
+     "t0": 7.9,
+     "t1": 13.3,
+     "dur": 5.4
+    },
+    {
+     "stage": "approach",
+     "t0": 13.3,
+     "t1": 27.0,
+     "dur": 13.7
+    }
+   ],
+   "final_stage": "approach"
+  },
+  {
+   "episode": 10,
+   "side": "east",
+   "status": "ARRIVED_DECLARED",
+   "sim_s": 20.1,
+   "crossed": false,
+   "cross_t": null,
+   "colour_after_cross": true,
+   "colour_any": true,
+   "found": true,
+   "found_t_first": 6.6,
+   "declared": true,
+   "declared_t": 19.2,
+   "gt": false,
+   "entered_zone_any": false,
+   "start_visibility_pixels": 0,
+   "final_pose_eval_only": [
+    4.252837657928467,
+    -1.5980563163757324
+   ],
+   "final_zone_range_m": 0.047,
+   "post_cross_ticks": 0,
+   "post_cross_min_zone_range_m": null,
+   "post_cross_inside_ticks": 0,
+   "post_cross_band_ticks": {
+    "<= 1.0": 0,
+    "<= 1.5": 0,
+    "<= 2.0": 0,
+    "<= 2.5": 0,
+    "<= 3.0": 0
+   },
+   "post_cross_bbox_eval_only": null,
+   "stage_runs": [
+    {
+     "stage": "orient",
+     "t0": 0.0,
+     "t1": 1.4,
+     "dur": 1.4
+    },
+    {
+     "stage": "target",
+     "t0": 1.4,
+     "t1": 6.6,
+     "dur": 5.2
+    },
+    {
+     "stage": "approach",
+     "t0": 6.6,
+     "t1": 20.2,
+     "dur": 13.6
+    }
+   ],
+   "final_stage": "approach"
+  },
+  {
+   "episode": 11,
+   "side": "east",
+   "status": "ARRIVED_DECLARED",
+   "sim_s": 35.7,
+   "crossed": false,
+   "cross_t": null,
+   "colour_after_cross": true,
+   "colour_any": true,
+   "found": true,
+   "found_t_first": 21.6,
+   "declared": true,
+   "declared_t": 34.8,
+   "gt": false,
+   "entered_zone_any": false,
+   "start_visibility_pixels": 0,
+   "final_pose_eval_only": [
+    4.276134967803955,
+    -1.4882605075836182
+   ],
+   "final_zone_range_m": 0.024,
+   "post_cross_ticks": 0,
+   "post_cross_min_zone_range_m": null,
+   "post_cross_inside_ticks": 0,
+   "post_cross_band_ticks": {
+    "<= 1.0": 0,
+    "<= 1.5": 0,
+    "<= 2.0": 0,
+    "<= 2.5": 0,
+    "<= 3.0": 0
+   },
+   "post_cross_bbox_eval_only": null,
+   "stage_runs": [
+    {
+     "stage": "orient",
+     "t0": 0.0,
+     "t1": 20.3,
+     "dur": 20.3
+    },
+    {
+     "stage": "target",
+     "t0": 20.3,
+     "t1": 21.6,
+     "dur": 1.3
+    },
+    {
+     "stage": "approach",
+     "t0": 21.6,
+     "t1": 35.8,
+     "dur": 14.2
+    }
+   ],
+   "final_stage": "approach"
+  },
+  {
+   "episode": 12,
+   "side": "east",
+   "status": "ARRIVED_DECLARED",
+   "sim_s": 28.8,
+   "crossed": false,
+   "cross_t": null,
+   "colour_after_cross": true,
+   "colour_any": true,
+   "found": true,
+   "found_t_first": 14.9,
+   "declared": true,
+   "declared_t": 27.9,
+   "gt": false,
+   "entered_zone_any": false,
+   "start_visibility_pixels": 0,
+   "final_pose_eval_only": [
+    4.278371810913086,
+    -1.5055358409881592
+   ],
+   "final_zone_range_m": 0.022,
+   "post_cross_ticks": 0,
+   "post_cross_min_zone_range_m": null,
+   "post_cross_inside_ticks": 0,
+   "post_cross_band_ticks": {
+    "<= 1.0": 0,
+    "<= 1.5": 0,
+    "<= 2.0": 0,
+    "<= 2.5": 0,
+    "<= 3.0": 0
+   },
+   "post_cross_bbox_eval_only": null,
+   "stage_runs": [
+    {
+     "stage": "orient",
+     "t0": 0.0,
+     "t1": 13.8,
+     "dur": 13.8
+    },
+    {
+     "stage": "target",
+     "t0": 13.8,
+     "t1": 14.9,
+     "dur": 1.1
+    },
+    {
+     "stage": "approach",
+     "t0": 14.9,
+     "t1": 28.9,
+     "dur": 14.0
+    }
+   ],
+   "final_stage": "approach"
+  },
+  {
+   "episode": 13,
+   "side": "east",
+   "status": "ARRIVED_DECLARED",
+   "sim_s": 11.7,
+   "crossed": false,
+   "cross_t": null,
+   "colour_after_cross": true,
+   "colour_any": true,
+   "found": true,
+   "found_t_first": 0.0,
+   "declared": true,
+   "declared_t": 10.8,
+   "gt": true,
+   "entered_zone_any": true,
+   "start_visibility_pixels": 28856,
+   "final_pose_eval_only": [
+    4.423460483551025,
+    -1.5129456520080566
+   ],
+   "final_zone_range_m": 0.0,
+   "post_cross_ticks": 0,
+   "post_cross_min_zone_range_m": null,
+   "post_cross_inside_ticks": 0,
+   "post_cross_band_ticks": {
+    "<= 1.0": 0,
+    "<= 1.5": 0,
+    "<= 2.0": 0,
+    "<= 2.5": 0,
+    "<= 3.0": 0
+   },
+   "post_cross_bbox_eval_only": null,
+   "stage_runs": [
+    {
+     "stage": "approach",
+     "t0": 0.0,
+     "t1": 11.8,
+     "dur": 11.8
+    }
+   ],
+   "final_stage": "approach"
+  },
+  {
+   "episode": 14,
+   "side": "east",
+   "status": "ARRIVED_DECLARED",
+   "sim_s": 21.5,
+   "crossed": false,
+   "cross_t": null,
+   "colour_after_cross": true,
+   "colour_any": true,
+   "found": true,
+   "found_t_first": 8.5,
+   "declared": true,
+   "declared_t": 20.6,
+   "gt": false,
+   "entered_zone_any": false,
+   "start_visibility_pixels": 0,
+   "final_pose_eval_only": [
+    4.291599273681641,
+    -1.9148521423339844
+   ],
+   "final_zone_range_m": 0.008,
+   "post_cross_ticks": 0,
+   "post_cross_min_zone_range_m": null,
+   "post_cross_inside_ticks": 0,
+   "post_cross_band_ticks": {
+    "<= 1.0": 0,
+    "<= 1.5": 0,
+    "<= 2.0": 0,
+    "<= 2.5": 0,
+    "<= 3.0": 0
+   },
+   "post_cross_bbox_eval_only": null,
+   "stage_runs": [
+    {
+     "stage": "orient",
+     "t0": 0.0,
+     "t1": 7.7,
+     "dur": 7.7
+    },
+    {
+     "stage": "target",
+     "t0": 7.7,
+     "t1": 8.5,
+     "dur": 0.8
+    },
+    {
+     "stage": "approach",
+     "t0": 8.5,
+     "t1": 21.6,
+     "dur": 13.1
+    }
+   ],
+   "final_stage": "approach"
+  },
+  {
+   "episode": 15,
+   "side": "east",
+   "status": "ARRIVED_DECLARED",
+   "sim_s": 14.9,
+   "crossed": false,
+   "cross_t": null,
+   "colour_after_cross": true,
+   "colour_any": true,
+   "found": true,
+   "found_t_first": 1.8,
+   "declared": true,
+   "declared_t": 14.0,
+   "gt": false,
+   "entered_zone_any": false,
+   "start_visibility_pixels": 0,
+   "final_pose_eval_only": [
+    4.289592266082764,
+    -1.9410326480865479
+   ],
+   "final_zone_range_m": 0.01,
+   "post_cross_ticks": 0,
+   "post_cross_min_zone_range_m": null,
+   "post_cross_inside_ticks": 0,
+   "post_cross_band_ticks": {
+    "<= 1.0": 0,
+    "<= 1.5": 0,
+    "<= 2.0": 0,
+    "<= 2.5": 0,
+    "<= 3.0": 0
+   },
+   "post_cross_bbox_eval_only": null,
+   "stage_runs": [
+    {
+     "stage": "orient",
+     "t0": 0.0,
+     "t1": 0.9,
+     "dur": 0.9
+    },
+    {
+     "stage": "target",
+     "t0": 0.9,
+     "t1": 1.8,
+     "dur": 0.9
+    },
+    {
+     "stage": "approach",
+     "t0": 1.8,
+     "t1": 15.0,
+     "dur": 13.2
+    }
+   ],
+   "final_stage": "approach"
+  }
+ ]
+}

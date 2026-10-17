@@ -309,13 +309,43 @@ failure; no blocked object was observed, so the ledger records
 The recount cross-checks reported 0 mismatches and all aggregate checks
 true (summary n/found/declared/GT and source_sha); control fields stay zero
 (`static_map_control`, `truth_control`, `top_camera_frames`,
-`held_world_reads`). This batch run is a separate execution condition from
+`held_world_reads`), but these are runner-written constants (see the
+verification-scope note in the candidate B section), not an independent
+input audit. This batch run is a separate execution condition from
 the invalid sequential r2 (and from the aborted r3 workers); none of their
 results are pooled here.
 
 **Gate r4 verdict: FAIL** against the pre-registered arrival criterion
 (GT-inside 1/16, seven false arrivals). Candidate B is a separate condition
 and its results will not be pooled with this table.
+
+### West/east mission split (gate r4)
+
+The mission-relevant question is whether a robot starting **west of the
+divider wall** crosses the gap and then finds zone B on the far side. The
+authored setup index defines the split: e00-e07 start west (paint not visible
+at tick 0), e08-e15 start east of the divider (already on the destination
+side; only e13 sees the paint at tick 0). Split funnel from the same raw
+trace/eval-only cells (`analysis-mission.json`, reproduced by
+`scripts/visgoal_mission_split.py`; truth is read only in the eval-only
+distance/verdict cells):
+
+| side | starts | crossed gap | colour after crossing | found | declared | GT-inside |
+|---|---:|---:|---:|---:|---:|---:|
+| west (e00-e07) | 8 | 7 | 1 | 1 | 0 | 0/8 |
+| east (e08-e15) | 8 | not needed | 8 | 8 | 8 | 1/8 |
+
+Post-crossing west (the 7 episodes that crossed): `leg_forward` absorbed
+50.8-71.4 s of the remaining 56-86 s of the cap; the trajectory's closest
+approach to the zone-B rectangle was 2.62-4.91 m (e04 2.62, e05 2.79,
+e02 2.83 m; the other four 3.76-4.91 m) and no post-cross tick was within
+2.5 m. Only e01 saw colour after crossing (found at 96.2 s) and it hit the
+cap before declaring. So in gate r4 the wall crossing worked in 7/8 west
+starts, but the post-cross search found the destination in 0/8: under the
+mission framing the failure point is the search range after the door, not
+the crossing. This record measures destination search/arrival only; carrying
+cargo to the far side (grasp, transport, release) is not part of these runs
+and is not verified here.
 
 ### False-arrival stop condition and the 0.10 m tolerance (raw analysis, no rerun)
 
@@ -452,6 +482,24 @@ arrived_gt 1.
 | false_arrival_outside_zone | 7 | 08,09,10,11,12,14,15 | not_observed | null (not_measured) |
 | arrived_gt_inside (success) | 1 | 13 | - | - |
 
+West/east mission split (candidate B): the authored split is e00-e07 west
+(behind the divider; they must cross the gap before any destination search)
+and e08-e15 east (already on the destination side).
+
+| side | starts | crossed gap | colour after crossing | found | declared | GT-inside |
+|---|---:|---:|---:|---:|---:|---:|
+| west (e00-e07) | 8 | 6 | 0 | 0 | 0 | 0/8 |
+| east (e08-e15) | 8 | not needed | 8 | 8 | 8 | 1/8 |
+
+West details (`analysis-mission.json`): e00,01,03,04,06,07 crossed at
+34.5-58.2 s; e02/e05 never crossed (`approach_wall` for 92.6 s each, final
+zone range 4.15/4.48 m). After crossing, `leg_forward` absorbed 47.7-71.4 s
+of the remaining cap; the trajectory's closest approach to the zone-B
+rectangle was 2.58-4.83 m (e04 2.58, e00 2.63, e01 2.80 m; the other three
+4.08-4.83 m), no post-cross tick came within 2.5 m, and colour was never
+seen after crossing (0/6). So candidate B also fails at the post-cross
+search range, and the crossing itself degraded from 7/8 (gate r4) to 6/8.
+
 The seven false arrivals are the same stop geometry as gate r4: the skill
 declares at a base->remembered-point range of 0.0959-0.0993 m (its unchanged
 0.10 m tolerance) while the remembered point is only 0.0385-0.0610 m inside
@@ -523,14 +571,20 @@ not a trajectory comparison.
 
 **Candidate B verdict: FAIL** against the pre-registered arrival criterion
 (GT-inside 1/16 with seven false arrivals) — the same failure mode as gate
-r4, with one fewer find (e01). The single GT-inside episode is also the only
-start where the paint was visible at tick 0 (`start_visibility_pixels`
-28,856; the base was inside for 29 frames, first at 9.1 s, declared at
-10.9 s trace time, episode `sim_s` 11.8), and among the 15 initially
-invisible starts the GT-inside count is 0/15 (`initially_invisible_n` 15,
-`initially_invisible_gt_n` 0). The outcome is therefore also consistent with
-"only the easy, paint-visible-at-start case succeeds". B is not pooled with
-gate r4 or with C.
+r4, with one fewer find (e01). Under the mission framing the west side
+(behind the wall) crossed in 6/8 but saw the paint after crossing in 0/6, so
+it never reached found/declared/GT (0/8); the east side (already on the
+destination side) found and declared 8/8 but 7 stops were just outside the
+zone. The single GT-inside episode is also the only start where the paint
+was visible at tick 0 (`start_visibility_pixels` 28,856; the base was inside
+for 29 frames, first at 9.1 s, declared at 10.9 s trace time, episode
+`sim_s` 11.8), and among the 15 initially invisible starts the GT-inside
+count is 0/15 (`initially_invisible_n` 15, `initially_invisible_gt_n` 0).
+The outcome is therefore also consistent with "only the easy,
+paint-visible-at-start case succeeds". This record measures destination
+search/arrival only: no cargo is grasped, carried or released, so the
+mission-level "carry the load to the other side" is not verified by this
+candidate or by this thread. B is not pooled with gate r4 or with C.
 
 ### Candidate C (default off): expanding lawnmower and arrival aim inset
 
@@ -584,15 +638,20 @@ tolerance untouched.
   r2/r3 poses to keep the other two robots out of the route).
 * `scripts/visgoal_probe.py` — MJWarp runner: 10 Hz render -> raw fisheye ->
   paint/wall/obstacle detection -> memory -> control -> command tape.
+* `scripts/visgoal_mission_split.py` — read-only west/east mission split:
+  crossing -> colour-after-crossing -> found -> declared -> GT funnel, plus
+  post-crossing stage times and eval-only distance bands to zone B.
 * `vendor/` — byte copies; no egomem-owned file is edited.
 * `gate-r4/` — gate r4 summary, strict-funnel recount, per-episode analysis
   table, the read-only arrival/FOV analysis (`analysis2.json`, reproduced by
-  `scripts/visgoal_arrival_analysis.py`) and 9-frame montages (self camera
-  only), plus the compressed full SHA256SUMS list (`SHA256SUMS.json.zst`,
-  original sha/bytes in `SHA256SUMS.manifest.json`).
+  `scripts/visgoal_arrival_analysis.py`), the west/east mission split
+  (`analysis-mission.json`) and 9-frame montages (self camera only), plus the
+  compressed full SHA256SUMS list (`SHA256SUMS.json.zst`, original sha/bytes
+  in `SHA256SUMS.manifest.json`).
 * `gate-mirror/` — paired candidate B summary, strict recount, analysis,
   arrival/FOV analysis (`analysis2.json`), cap-end analysis
-  (`capend_analysis.json`), the 16 9-frame self-camera montages and the
+  (`capend_analysis.json`), west/east mission split
+  (`analysis-mission.json`), the 16 9-frame self-camera montages and the
   compressed SHA256SUMS list. Candidate B is a separate condition and is not
   pooled with gate r4.
 * `queue-gate-mirror.json` / `queue-gate-lawnmower.json` — paired candidate B
@@ -653,6 +712,14 @@ python3 scripts/visgoal_probe.py --enabled --sim-cap 120 --nworld 16 \
 # Read-only candidate C analysis (schedule strokes, long run, arrival aim).
 python3 scripts/visgoal_c_analysis.py /home/ugrp/ugrp-sim/runs/visgoal-gate-r4-lawnmower \
   --output /home/ugrp/ugrp-sim/runs/visgoal-gate-r4-lawnmower/analysis-c.json
+
+# Read-only west/east mission split for any completed run (same raw, no rerun):
+#   crossing -> colour after crossing -> found -> declared -> GT-inside, plus
+#   post-crossing stage times and eval-only distance bands to zone B.
+for run in visgoal-gate-r4 visgoal-gate-r4-mirror visgoal-gate-r4-lawnmower; do
+  python3 scripts/visgoal_mission_split.py /home/ugrp/ugrp-sim/runs/$run \
+    --output /home/ugrp/ugrp-sim/runs/$run/analysis-mission.json
+done
 ```
 
 `--enabled` is mandatory; the module's default constructor option is `off`.
@@ -666,3 +733,12 @@ worker's own lease file, and checks every pinned input hash.
 `invisible_measurements=0`, `top_camera_control=false`, weld off,
 `noslip_iterations=0`, `warp_native_contact_v1`, `mjwarp_batch_v1`, scene
 `walls_floor_contrast_v5_indigo110_s80`.  No LLM/API call is made in this study.
+
+Mission scope: these runs measure the own-RGB visual destination search and
+the arrival verdict only. No cargo is grasped, carried, released or reported
+as transported, and no held-object world coordinate is read by any control
+path (`held_world_reads` is a runner-written zero, not an independent audit).
+The mission-level task "carry the load to the far side of the wall" (grasp,
+transport, release, task allocation) is **not verified** by this thread; the
+west/east split only tests whether the robot crosses the divider gap and then
+finds the destination zone.
