@@ -16,7 +16,59 @@ from act16w_runtime import LEROBOT_ACT_SHA256, sha256
 from act17_data import Dataset, library
 from act17_policy import observation_batch
 
-CANDIDATES = {'R8': 8, 'R100': 100}
+# TUNE is a default-off short fine-tune probe: same chunk8 R8 recipe, initialized
+# from the completed R8 100k checkpoint and optionally upweighting the
+# align..close demonstration segments. It is never a packaged comparison model
+# (adapter training_complete stays False because its step != protocol steps).
+CANDIDATES = {'R8': 8, 'R100': 100, 'act18-tune': 8}
+TUNE_CANDIDATE = 'act18-tune'
+# Segment table frozen before the probe run (Lead 2026-10-18 instruction):
+# the post-close phases are where the student halts, pre-close phases are the
+# immediately preceding approach/alignment tail. Phase labels are the recorded
+# teacher labels from samples.json, not a new sensor or truth input.
+POST_CLOSE_PHASES = ('lift', 'lift_settle', 'lookback_pose', 'lookback',
+                     'lookback_settle', 'verify_lift', 'hold')
+PRE_CLOSE_PHASES = ('hover', 'descent', 'close')
+
+
+def _segment_weight(value, label):
+    if value is None:
+        return None
+    if not isinstance(value, (int, float)) or isinstance(value, bool) or not 1 <= value <= 20:
+        raise ValueError(label+' must be a number within [1, 20]')
+    return float(value)
+
+
+def align_close_row_weights(metadata, post_close_weight=None, pre_close_weight=None):
+    """Per-row sampling weight: 1.0 baseline, post-close/pre-close upweights."""
+    post = _segment_weight(post_close_weight, 'post-close weight')
+    pre = _segment_weight(pre_close_weight, 'pre-close weight')
+    weights = np.ones(len(metadata), dtype=np.float64)
+    if post is None and pre is None:
+        return weights
+    for index, row in enumerate(metadata):
+        phase = row.get('teacher_phase')
+        if post is not None and row['stage'] == 'grasp' and phase in POST_CLOSE_PHASES:
+            weights[index] = post
+        elif pre is not None and row['stage'] == 'grasp' and phase in PRE_CLOSE_PHASES:
+            weights[index] = pre
+    return weights
+
+
+def weighted_sampler_mass(episode_indices, row_weights):
+    """Probability mass per row for episode-uniform, weight-within-episode sampling."""
+    row_weights = np.asarray(row_weights, dtype=np.float64)
+    if row_weights.shape != (sum(len(indices) for indices in episode_indices),):
+        raise ValueError('row weights must cover every episode row exactly once')
+    if not np.all(np.isfinite(row_weights)) or np.any(row_weights <= 0):
+        raise ValueError('positive finite row weights required')
+    mass = np.zeros(len(row_weights), dtype=np.float64)
+    for indices in episode_indices:
+        weights = row_weights[indices]
+        mass[indices] = (weights / weights.sum()) / len(episode_indices)
+    if abs(mass.sum() - 1.0) > 1e-9:
+        raise ValueError('sampler mass must sum to one')
+    return mass
 
 
 def extend_targets(actions, metadata, chunk):
@@ -58,6 +110,52 @@ class ReferenceDataset(Dataset):
                 raise ValueError('reconstructed future targets differ from original chunk8')
             shard['action'], shard['action_is_pad'] = actions, pad
             offset += n
+
+
+class WeightedReferenceDataset(ReferenceDataset):
+    """TUNE-only episode-balanced sampling with post-close/pre-close upweighting."""
+
+    def __init__(self, root, split, *, chunk=8, post_close_weight=None, pre_close_weight=None):
+        super().__init__(root, split, chunk=chunk)
+        if self.split != 'train' or (post_close_weight is None and pre_close_weight is None):
+            raise ValueError('weighted TRAIN sampling with explicit upweights required')
+        self.row_weights = align_close_row_weights(self.metadata, post_close_weight, pre_close_weight)
+        weighted_sampler_mass(self.episode_indices, self.row_weights)
+
+    def sample(self, generator, batch_size, sampling):
+        import torch
+        if sampling != 'weighted_post_close_v1':
+            raise ValueError('declared weighted sampler required')
+        if self.split != 'train':
+            raise ValueError('only TRAIN sampling is permitted')
+        selected = torch.randint(len(self.episode_indices), (batch_size,), generator=generator).tolist()
+        picks = []
+        for episode in selected:
+            indices = self.episode_indices[episode]
+            weights = torch.from_numpy(self.row_weights[indices].copy())
+            picks.append(int(indices[int(torch.multinomial(weights, 1, generator=generator))]))
+        return picks
+
+    def completion_priors(self, sampling):
+        """Class fractions under the exact weighted sampling measure, not VAL."""
+        from harness import grasp_act_contract as c
+        if sampling != 'weighted_post_close_v1' or self.split != 'train':
+            raise ValueError('declared weighted TRAIN sampler required')
+        mass = weighted_sampler_mass(self.episode_indices, self.row_weights)
+        totals = {skill: dict(mass=0., positive_mass=0., positive_n=0, rows_N=0) for skill in c.SKILLS}
+        for index, (shard, row) in enumerate(self.index):
+            skill = self.metadata[index]['skill']
+            value = totals[skill]
+            positive = float(self.shards[shard]['action'][row, 0, -1])
+            if positive not in (0., 1.):
+                raise ValueError('binary TRAIN completion required')
+            value['mass'] += float(mass[index])
+            value['positive_mass'] += float(mass[index]) * positive
+            value['positive_n'] += int(positive)
+            value['rows_N'] += 1
+        return {skill: {**value, 'positive_fraction': value['positive_mass'] / value['mass'],
+                        'source': 'unique TRAIN h0 labels under declared weighted sampler; not VAL'}
+                for skill, value in totals.items() if value['rows_N'] and 0 < value['positive_mass'] < value['mass']}
 
 
 def make_policy(chunk, *, device='cpu', pretrained=False):
