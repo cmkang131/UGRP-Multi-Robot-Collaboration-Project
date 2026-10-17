@@ -55,6 +55,15 @@ new candidate selects them.
   SIM 15.8-17.4 s, each fresh window allowing only ~0.1 m of movement before
   the stale-margin blocked the plan again, and handed off at 20.4 s; the
   bounded count, not the refresh mechanism, ended the attempt.
+- ``search26_commit_plan``: keep driving a feasible committed approach plan
+  until its existing 1 s replan boundary instead of re-planning on every
+  blocked tick caused by stale-memory margins.  Basis: gcp6 r5c case 27 spent
+  SIM 15-60 s cycling reobserve->feasible selection->blocked on the very next
+  tick (92/92 stances blocked whenever the remembered red_1 cargo is stale),
+  so the robot never drove; the refresh produced fresh evidence but every
+  refresh window lasted one control tick.  The commit window reuses the
+  already existing ``next_plan = now + 1 s`` cadence: no new time constant.
+  Default off; path/target/geometry failures still replan immediately.
 - ``search26_wide_stance``: a NEW teacher candidate (never pooled with the
   other modes' results) whose certified stance map samples jaw-allowed angles
   on a 1-degree grid inside the existing calibrated radial envelope, instead of
@@ -68,6 +77,7 @@ new stance candidate uses only the existing calibrated envelope, the existing
 jaw predicate, and the existing margins.
 """
 MODES = {'search26_circles': 'search26_downfirst_circles_v1',
+         'search26_commit_plan': 'search26_commit_plan_v1',
          'search26_reobserve_refresh_open': 'search26_reobserve_refresh_open_v1',
          'search26_reobserve_refresh': 'search26_reobserve_refresh_v1',
          'search26_circles_farfirst': 'search26_circles_farfirst_v1',

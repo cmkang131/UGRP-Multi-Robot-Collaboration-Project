@@ -491,7 +491,11 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         blocked=not free(goal,discs,rects,radius)
         unusable=self.path and math.dist(pose[:2],goal)>.08 and waypoint(pose[:2],self.path,discs,rects,radius) is None
         entering=not self.approach_plan_valid and self.approach_blocked_since is None
-        if entering or changed or now>=self.next_plan or (self.approach_plan_valid and (blocked or unusable)):
+        # Opt-in: drive the committed plan to its existing 1 s replan boundary.
+        commit=(self.search15_modes.get('search26_commit_plan','off')!='off'
+                and self.approach_plan_valid and bool(self.path) and not unusable
+                and blocked and now<self.next_plan)
+        if not commit and (entering or changed or now>=self.next_plan or (self.approach_plan_valid and (blocked or unusable))):
             from sim.grasp_act_recovery import AXIAL_CHOICES
             choices=AXIAL_CHOICES if self.approach_recovery in ('approach_recovery_v2','progress_view_recovery_v3') else None
             selected,checked=select_goal(world,self.rid,self.end,self.bounds,self.folded_ready,self.approach_choice,choices=choices,navigation=nav)

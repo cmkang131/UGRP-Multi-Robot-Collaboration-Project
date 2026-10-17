@@ -295,3 +295,20 @@ def test_open_refresh_mode_keeps_refreshing_after_fresh_ends():
     # a non-fresh end closes the chain again
     t.reobserver.last_end['obstacle'] = 'bounded_reobserve_exhausted_replan'
     assert not t.reobserver.begin('obstacle', {'red_1': deepcopy(m)}, w, t, 21.)
+
+
+def test_commit_plan_mode_is_registered_and_plumbed():
+    """r6: committed approach plan is driven to the existing 1 s replan
+    boundary when only stale-memory margins block it."""
+    from sim.grasp_act_search26 import MODES as M26
+    from sim.grasp_act_search15_modes import ALL_MODES
+    assert M26['search26_commit_plan'] == 'search26_commit_plan_v1'
+    assert 'search26_commit_plan' in ALL_MODES
+    from scripts.run_grasp_act_teacher import run
+    import inspect
+    assert 'search26_commit_plan' in inspect.signature(run).parameters
+    import argparse
+    from sim.grasp_act_search15_modes import add_arguments
+    parser = argparse.ArgumentParser()
+    add_arguments(parser)
+    assert parser.parse_args([]).search26_commit_plan == 'off'
