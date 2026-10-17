@@ -62,6 +62,15 @@ TRAIN4 원본으로 정지 시점·자세를 재계수했다(`results/faildiag-r
 - 해석: 현재 스텝 완료시점은 단일 RGB+4틱 명령 이력으로 식별 불가(hold 마지막 행이 직전 행들과 관측상 거의 동일). horizon 라벨 조작만으로는 done을 실행 신호로 만들 수 없다. (b) 터미널 예측 실행은 B1 로그 오프라인 분석에서 t=9.2/20.1/21.5/41.7s 발화로 교사 close/hold와 3.5–19s 어긋나 신뢰 불가. (c) done 전용 history/시퀀스 입력 설계는 `DONE_HISTORY_DESIGN.md`.
 - 다음 후보(승인 카드): offline done classifier(시퀀스/명령이력 입력, 물리 없이 AUC·발화 오차 먼저) — 평가 계약 변경 없음. 행동 형식 표준화는 `ACTION_FORMAT_DESIGN.md`, co-training은 `PHASE_C_PLAN.md`(B2 미통과로 보류).
 
+### B4 hybrid done 모듈 결과 (act18-doneh, 10/18)
+
+사전등록 `B4_PREREG.json`. **투명성: ACT가 done을 학습한 것이 아니라**, B2 체크포인트(행동 가중치 불변)에 **자기 발행 명령 이력 기반 GRU done 모듈**(오프라인 학습 AUC 0.9967, history16, 문턱 .65·persistence 1)을 결합한 hybrid다. 외부 issued_done 형식·성공 정의는 변경하지 않았다.
+
+- 결과: **TRAIN4 0/4**(wall 399.8s, 독립 recount 일치)이지만 **4/4 모두 issued_done=True·cap_end=False** — 이전 후보들이 done을 못 내 90초 cap_end로 끝난 것과 달리 종료 신호가 작동했다.
+- 발화: grasp done 31.3–31.7s(교사 26.5–31.3s, +0.3~+4.9s 늦음), release done 34.8–35.3s(교사 35.2–40.1s, −0.4~−4.8s 이름). 발화 p 분포 median 0.001·p90 0.457·max 0.991(발화 시 버스트).
+- 실패 원인: **물리 lift 0/4, reason=lift_not_stable** — done 모듈은 명령 패턴 기반이라 물리 lift 없이도 발화했고(발화≠성공), 외부 성공 판정은 물리 Score+issued_done 둘 다 요구해 0/4. 즉 **done 축은 해소됐고 남은 원인은 전적으로 행동/물리 축**이다.
+- 원본: `runs/act18/doneh-r1/`(head sha 82b797b9…, gate summary 39ea94e0…/raw-recount 4385b8a3…, head logs 39cf463d…/88fd8cf6…, done logs 9b48c548…/5425cec7…), Mac `results/doneh-r1/`. 다음: 교사 명령 vs 모델 예측 분포·디코드 클램프 offline 분해(행동축).
+
 ### 조건 이탈·미검증 범위
 - **R100 gcp5 미이동(deviation):** bf16 프로브(2,000 step, 1.10배)는 수용했지만, R8이 gcp2에서 fp32로 학습 중이라 정밀도가 섞이고(합산 금지), `act18_train.py`가 옵티마이저/RNG 재개를 지원하지 않아 42,400/100,000(≈13,484s)을 폐기해야 하며, gcp5 예산 1,000KRW 정지 위험이 있어 gcp2 matched fp32 pair를 끝까지 유지했다. 근거는 `bf16-probe-decision.json`.
 - 이 학습은 **fp32**다. bf16 기본 전환 커밋(c7900c0ac)은 이 학습 시작 뒤다. 100k bf16 학습은 아직 없다(runtime 증거는 2,000 step 프로브뿐). bf16 결과와 합산하지 않는다.

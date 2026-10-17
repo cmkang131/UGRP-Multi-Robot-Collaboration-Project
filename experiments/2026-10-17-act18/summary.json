@@ -1087,6 +1087,127 @@
         "fires_at_01": false
       },
       "conclusion": "stable optimisation (grad 53, done_bce 0.023) still cannot raise current-step done probability above ~2e-3: single-frame current-step done is not learnable from the recorded label; history/sequence input or label redefinition is required."
+    },
+    {
+      "name": "doneh-r1 (act18-doneh hybrid)",
+      "kind": "B2 ACT action policy (unchanged) + own-command-history GRU done module (hybrid, not an ACT-learned done head)",
+      "status": "NOT_READY",
+      "complete": true,
+      "prereg": "experiments/2026-10-17-act18/B4_PREREG.json",
+      "transparency": "ACT가 done을 학습한 것이 아니라 자기 발행 명령 이력 기반 done 모듈을 결합한 조건. 외부 issued_done 형식·성공 정의는 변경하지 않음.",
+      "head_training": {
+        "offline_auc": 0.9967019656699889,
+        "model_sha256": "82b797b9bd3273d769068fe1628ec2a64dac0c5f1ab503685bc5f933fb1bb8f0",
+        "metadata_sha256": "fa963bb8468f8fa1540fe3064811093536a49411630d43d17038f0475bc6d701",
+        "features": "own issued command history only (skill one-hot + 14 causal command features)",
+        "architecture": "GRU history16 hidden64 + linear, threshold .65 persistence 1",
+        "vm_path": "/home/ugrp/ugrp-sim/runs/act18/doneh-r1/head"
+      },
+      "action_policy": {
+        "checkpoint": "b2-r1/act18-std/step-20000",
+        "model_sha256": "75a56028f517a63b444119127c19ca36daf363615876d9da36301cfa9faa6a95"
+      },
+      "gate": {
+        "stage": "train4",
+        "n": 0,
+        "N": 4,
+        "wall_s": 399.8,
+        "status": "NOT_READY",
+        "raw": {
+          "vm_dir": "/home/ugrp/ugrp-sim/runs/act18/doneh-r1",
+          "summary_sha256": "39ea94e041784d2bfcef45789c78dad00c9b19898b75a711c7e738c86c707aca",
+          "stage_recount_sha256": "4385b8a33d872935790616056ae7960d515c01a09d45ed17eb9518fd36d4f4b3",
+          "independent_recount": "/home/ugrp/ugrp-sim/runs/act18/recount-r1/act18-doneh-TRAIN4.json",
+          "head_logs": {
+            "group000": "39cf463d3882cdf8fc81389642f0bbdd3202cece914e3d2915c2c561bbb5546d",
+            "group001": "88fd8cf61acd36cc6c13a220e7498d7b9737b8e33282119389a2648a81e0980b"
+          },
+          "done_logs": {
+            "group000": "9b48c548d48d49759713f1bfe35f0a4fda0ac6c7c516f0bb5f2d2dd9d90b525f",
+            "group001": "5425cec7ecddda6c415573d4b3e0cb15334a60bd8a799986df1320f2db8ba2de"
+          }
+        },
+        "rows": [
+          {
+            "seed": 88600,
+            "kind": "cyan",
+            "cap_end": false,
+            "issued_done": true,
+            "physical_lift": false,
+            "reason": "lift_not_stable"
+          },
+          {
+            "seed": 88601,
+            "kind": "red",
+            "cap_end": false,
+            "issued_done": true,
+            "physical_lift": false,
+            "reason": "lift_not_stable"
+          },
+          {
+            "seed": 88602,
+            "kind": "green",
+            "cap_end": false,
+            "issued_done": true,
+            "physical_lift": false,
+            "reason": "lift_not_stable"
+          },
+          {
+            "seed": 88603,
+            "kind": "yellow",
+            "cap_end": false,
+            "issued_done": true,
+            "physical_lift": false,
+            "reason": "lift_not_stable"
+          }
+        ]
+      },
+      "done_firing": {
+        "module_rows": 1743,
+        "fired_ticks": 122,
+        "p_median": 0.001,
+        "p_p90": 0.4565,
+        "p_max": 0.9906,
+        "grasp_done_ticks_s": [
+          31.3,
+          31.3,
+          31.4,
+          31.6
+        ],
+        "release_done_ticks_s": [
+          34.8,
+          34.9,
+          35.3
+        ],
+        "teacher_grasp_done_s": [
+          27.7,
+          28.8,
+          26.5,
+          31.3
+        ],
+        "teacher_release_done_s": [
+          36.5,
+          37.6,
+          35.2,
+          40.1
+        ],
+        "grasp_error_s": "+0.3..+4.9 late",
+        "release_error_s": "-0.4..-4.8 early",
+        "note": "done 모듈은 명령 패턴 기반이라 물리 lift 없이도 발화했다. 모듈 발화는 성공이 아니며, 외부 성공 판정은 여전히 물리 Score+issued_done 둘 다 요구해 0/4."
+      },
+      "conclusion": "done 신호는 확보(4/4 issued_done, cap_end 0/4)했고 에피소드가 짧아졌다(400s). 남은 실패 원인은 전적으로 **행동/물리 축**(lift 0/4, lift_not_stable)이다 — 다음은 교사 vs 모델 명령 분포·클램프 offline 분해(행동축 분석).",
+      "pooling": {
+        "no_pooling_with": [
+          "R8",
+          "R100",
+          "act18-tune",
+          "act18-doneb1",
+          "act18-std",
+          "act18-b3"
+        ],
+        "packaged": false,
+        "released": false
+      }
     }
   ],
   "release": {
@@ -1187,7 +1308,8 @@
     "done 신호: 현재 학습으로 습득 불가(최대 확률 6e-4). 개선안(B1/B2)은 미실행·승인 대기",
     "B1 done horizon 계약: 현재스텝 h=0 확률 ~1e-4, 미래 h≈99만 0.999 — 실행 계약과 학습 라벨 불일치(후보 실험 필요)",
     "B2 표준 정렬(20k)도 TRAIN4 0/4: chunk20·base smooth·best-val는 병리를 바꾸지 못함. 잔여 축=행동 형식(펄스/PWM+디코드 클램프)·done 학습·데이터 규모.",
-    "B3a/B3b 현재스텝(h=0) done 라벨: 안정 최적화에서도 done 확률 ~1e-3, 문턱 미발화 — 단일 프레임으로 현재 완료시점 식별 불가. done-history/시퀀스 입력 또는 라벨 재정의(사용자 승인) 필요."
+    "B3a/B3b 현재스텝(h=0) done 라벨: 안정 최적화에서도 done 확률 ~1e-3, 문턱 미발화 — 단일 프레임으로 현재 완료시점 식별 불가. done-history/시퀀스 입력 또는 라벨 재정의(사용자 승인) 필요.",
+    "B4 done 모듈은 명령패턴 기반 발화로 물리 lift 없이도 done을 냈다(발화≠성공). 행동/물리 lift 0/4가 남은 원인이며 행동축 offline 분해가 다음 단계."
   ],
   "cleanup": {
     "schema": "ugrp.act18.cleanup.v1",
