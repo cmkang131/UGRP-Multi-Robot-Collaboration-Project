@@ -79,6 +79,16 @@ B2 체크포인트(act18-std step-20000)를 TRAIN 발췌 1,200행에 CPU로 돌�
 - 실제 실행(B4 actor-actions): wheel 0.31(교사 0.35), pulse 0.028s(교사 0.043–0.10s)로 **더 약하게** 실행되고 all-zero 35.4%. 잔여 lift 실패(0–2/4)는 closed-loop 상태 분포/조기 정지·데이터 규모 축으로 좁혀진다.
 - 다음 카드 후보: (1) closed-loop 상태 분포 진단(자기 관측에서 정지가 시작되는 조건), (2) co-training(Phase C, 100k) — 단 B2 TRAIN4 미통과 상태라 Lead/사용자 승인 필요. 평가계약 후보 메모는 사용자 결정 대기.
 
+### closed-loop 상태분포 진단 (10/18, GPU 없음)
+
+B4 실행(raw `doneh-r1/DONEH-TRAIN4`)의 **발행 명령 이력**과 교사(TRAIN200) 명령을 skill/elapsed 구간에서 비교(`results/closedloop-r1/`, 계약 변경 없음).
+- grasp 0–10s: 모델·교사 모두 base 이동 0.71–1.0로 유사.
+- grasp **10–15s에서 분기**: 교사는 base 이동 0.91→0.26·gripper closed 0.05→0.63→0.98로 접근을 끝내고 hold/lift로 전환. 모델은 base 이동 **0.73–0.75를 20–30s까지 유지**하고 gripper closed는 **0.24–0.25**에 머묾. wheel 크기도 0.35→0.25→0.16으로 약화(디코드 클램프 0.31 하한과 혼재).
+- release 0–2s: 교사는 즉시 물러나기(이동 1.0, 5–10s 0.53). 모델은 이동 0.05·wheel 0.08로 **사실상 정지** — release 동작이 누락.
+- halt onset(grasp 마지막 이동): 모델 29.5/32.7/43.7s, 1세계 9.6s(교사 31.7s). 
+- 주의: 같은 B2 체크포인트의 별도 실행(B2 run3)이 t≈2.2s에서 이미 분기했다 — closed-loop GPU 비결정성. 따라서 B2 raw와 B4 raw의 직접 비교가 아니라 **B4 단일 실행 내 교사 대비**로 해석한다. 실패 시작점은 open-loop 예측이 아니라 **grasp hold 전환과 release 물러나기 단계**다.
+- 평가계약(물리 성공 정의) 후보는 `EVAL_CONTRACT_CANDIDATES.md`(사용자 결정용, 실행 금지).
+
 ### 조건 이탈·미검증 범위
 - **R100 gcp5 미이동(deviation):** bf16 프로브(2,000 step, 1.10배)는 수용했지만, R8이 gcp2에서 fp32로 학습 중이라 정밀도가 섞이고(합산 금지), `act18_train.py`가 옵티마이저/RNG 재개를 지원하지 않아 42,400/100,000(≈13,484s)을 폐기해야 하며, gcp5 예산 1,000KRW 정지 위험이 있어 gcp2 matched fp32 pair를 끝까지 유지했다. 근거는 `bf16-probe-decision.json`.
 - 이 학습은 **fp32**다. bf16 기본 전환 커밋(c7900c0ac)은 이 학습 시작 뒤다. 100k bf16 학습은 아직 없다(runtime 증거는 2,000 step 프로브뿐). bf16 결과와 합산하지 않는다.
