@@ -55,6 +55,12 @@ def _wrap(a):
     return math.atan2(math.sin(a), math.cos(a))
 
 
+def signed_turn_wheels(direction, calibrated):
+    """Apply the r2 positive-yaw pulse in the requested signed direction."""
+    sign = 1. if float(direction) > 0 else -1.
+    return [sign * float(w) for w in calibrated]
+
+
 def _point_covariance(xy):
     """PR406 .2 m / 3 deg -> Cartesian 2x2, same propagation as egomem_vision."""
     xy = np.asarray(xy, float)
@@ -242,6 +248,7 @@ class VisualGoalSearch:
         self.gap_ticks = 0
         self.gap_turn = 'right'
         self.missing = 0
+        self.seek_t = 0.
         self.leg = 0
         self.found = False
         self.arrived = False
@@ -355,6 +362,7 @@ class VisualGoalSearch:
         # Stage-table dispatch: one tick at a time, no recursion.
         handler = {
             'orient': self._orient,
+            'seek_wall': self._seek_wall,
             'approach_wall': self._approach_wall,
             'follow_north': self._follow,
             'follow_south': self._follow,
@@ -391,9 +399,43 @@ class VisualGoalSearch:
                                 after='full_spin')
                 return self._approach_wall(t, paint, walls, obstacles, target_mem,
                                            patch_ok, patch_xy)
-            self._enter_east_search(t, reason='no_wall_or_colour_after_full_spin')
-            return self._east_search(t, paint, walls, obstacles, target_mem, patch_ok, patch_xy)
+            # The wall foot is not projectable beyond the fitted floor range
+            # (at >2 m it sits at/above the horizon).  Drive the initial
+            # heading (Nav2 DriveOnHeading-style relative travel) until the
+            # foot enters range; do not turn away yet.
+            self.seek_t = 0.
+            self._set_stage(t, 'seek_wall', reason='no_near_wall_after_full_spin')
+            return self._seek_wall(t, paint, walls, obstacles, target_mem,
+                                   patch_ok, patch_xy)
         return self._result(0., 0., 0., exact_turn=+1)
+
+    def _seek_wall(self, t, paint, walls, obstacles, target_mem=None, patch_ok=False, patch_xy=None):
+        if paint.get('pixels', 0) >= MIN_COLOUR_PIXELS:
+            self._set_stage(t, 'target', reason='destination_colour_while_seeking_wall')
+            return self._target(t, paint, walls, obstacles, target_mem, patch_ok, patch_xy)
+        front = self._nearest(walls, -28, 28, 3.2)
+        if front is not None and front['range_m'] <= 1.6:
+            self._set_stage(t, 'approach_wall', wall_range_m=front['range_m'],
+                            after='wall_seek')
+            return self._approach_wall(t, paint, walls, obstacles, target_mem,
+                                       patch_ok, patch_xy)
+        ob = self._nearest_obstacle(obstacles, 30, .50)
+        if ob is not None:
+            self.event(t, 'obstacle_avoid', category='navigation',
+                       blocked_object=ob['kind'], minimum_gap_m=ob['range_m'],
+                       gap_status='floor_projection')
+            self._enter_east_search(t, reason='wall_seek_obstacle')
+            return self._east_search(t, paint, walls, obstacles, target_mem,
+                                     patch_ok, patch_xy)
+        self.seek_t += .1
+        if self.seek_t > 20.:
+            self.seek_t = 0.
+            self.event(t, 'wall_seek_budget_exhausted', category='search',
+                       blocked_object='not_observed', budget_sim_s=20.)
+            self._enter_east_search(t, reason='wall_seek_budget_exhausted')
+            return self._east_search(t, paint, walls, obstacles, target_mem,
+                                     patch_ok, patch_xy)
+        return self._result(.55, 0., 0.)
 
     def _approach_wall(self, t, paint, walls, obstacles, target_mem=None, patch_ok=False, patch_xy=None):
         if paint.get('pixels', 0) >= MIN_COLOUR_PIXELS:

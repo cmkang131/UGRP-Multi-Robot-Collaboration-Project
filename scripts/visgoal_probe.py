@@ -234,7 +234,8 @@ def run(a):
         from harness.mapbuild_command_prior import CommandPrior, OPTION as PRIOR
         from harness.egocentric_landmark_memory import LandmarkMemory, MemoryOptions, OPTION as MEMORY
         from sim.visual_goal_search import (VisualGoalSearch, OPTION as SKILL,
-                                            detect_paint, wall_points, component_clear)
+                                            detect_paint, wall_points, component_clear,
+                                            signed_turn_wheels)
         from sim.destination_visual_acquire import floor_patch
         from sim.solo_carry_obstacles import detections as obstacle_detections
         from harness.scene_colour_boundary import surface_masks
@@ -478,7 +479,12 @@ def run(a):
                     if declared_t is not None and t - declared_t >= 1.0:
                         break
                     if action['exact_turn']:
-                        wheels = list(command_calibration['wheels'])
+                        # The r2 calibration stores the positive-yaw pulse.
+                        # Negating the wheel PWM signs gives the right turn;
+                        # using the same signs for both made the bearing loop
+                        # diverge (e13 preflight r2 stayed in approach).
+                        wheels = signed_turn_wheels(
+                            action['exact_turn'], command_calibration['wheels'])
                         duration = list(command_calibration['duration_s'])
                     else:
                         wheels, duration = duty([action['forward'], action['left'],

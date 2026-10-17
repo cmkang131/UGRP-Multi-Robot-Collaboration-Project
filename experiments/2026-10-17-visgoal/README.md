@@ -49,8 +49,11 @@ there is no occupancy grid (`static_map_use=none`).
 1. `orient`: if blue paint is already visible, go to `target`; otherwise scan
    one full revolution with one calibrated left pulse per 0.1 s tick.  If paint
    appears during the scan, interrupt and target it.
-2. After the scan: approach a front wall <=3.0 m, then follow it with the wall
-   on a fixed side.  A missing side wall for 3 ticks opens `gap_cross`
+2. After the scan: if a front wall foot is already within 3.0 m, approach it.
+   Otherwise `seek_wall` drives the initial heading for at most 20 SIM s until
+   the wall foot enters the <=1.6 m fitted range (the foot is not projectable
+   at longer range because it is at the image horizon).  Then follow the wall
+   with it on a fixed side.  A missing side wall for 3 ticks opens `gap_cross`
    (forward, 90 deg toward the opening, forward), which is how the divider door
    is crossed.  No door coordinate is used.
 3. `east_search`: bounded lawnmower legs (20 ticks, +8 every 4 legs) with left

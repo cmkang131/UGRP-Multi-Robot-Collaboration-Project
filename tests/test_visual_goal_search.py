@@ -4,7 +4,8 @@ import cv2
 import pytest
 
 from sim.visual_goal_search import (TURN_STEP_RAD, VisualGoalSearch, Options, OPTION,
-                                    paint_components, component_clear, _point_covariance)
+                                    paint_components, component_clear, signed_turn_wheels,
+                                    _point_covariance)
 
 
 def _hsv_image(hue, s=200, v=150, rect=(200, 150, 120, 80)):
@@ -22,6 +23,10 @@ def test_toggle_default_off_and_unknown():
     assert out['status'] == 'off' and out['stop'] and not out['found']
     with pytest.raises(ValueError):
         VisualGoalSearch(option='on')
+    # The stored r2 pulse is positive yaw; the sign must follow the action.
+    pulse = [-.35, .35, -.35, .35]
+    assert signed_turn_wheels(+1, pulse) == pulse
+    assert signed_turn_wheels(-1, pulse) == [.35, -.35, .35, -.35]
 
 
 def test_destination_colour_component_and_wall_hue_rejection():
@@ -97,3 +102,13 @@ def test_state_machine_look_wall_follow_gap_and_arrival():
     a = s.control(1.2, paint=p, walls=(), obstacles=(), memories=mem, patch_ok=True,
                   patch_xy=(0.7, 0.0))
     assert s.arrived and a['stop']
+    # Empty scan (no wall foot projectable at long range): drive the initial
+    # heading until the wall enters the 1.6 m fitted range.
+    s = VisualGoalSearch(option=OPTION)
+    for i in range(rounds):
+        s.control(i * 0.1, paint={}, walls=(), obstacles=())
+    a = s.control(rounds * 0.1, paint={}, walls=(), obstacles=())
+    assert s.stage == 'seek_wall' and a['forward'] > 0
+    wall = [dict(relative_xy_m=[1.5, 0.0], range_m=1.5, bearing_rad=0.0)]
+    a = s.control((rounds + 1) * 0.1, paint={}, walls=wall, obstacles=())
+    assert s.stage == 'approach_wall' and a['forward'] > 0
