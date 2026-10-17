@@ -122,3 +122,12 @@ Mac에 회수한 요약의 SHA를 기록한다. 알고리즘/예측은 후처리
 모든 조건의 OFF 개선 관문이 실패했으므로 새 물리는0이다. 공개 시작 상자에서
 실제 spawn을 균일 샘플링하는 장면 경로는 이 라운드에서 구현/실행하지 않았다.
 현재 API는 runtime_qualified=false/adopted_pose=null을 유지한다.
+
+
+## 공개 시작 상자 장경로 진단(조정자 별도 승인)
+
+MC20의 OFF 미개선 관문은 유지한다. 원문 승인과 원인 표는 coordinator-mc-directive.md와 bias-review.md. long-route-config.json은물리 시작전에공개상자를정의하고실제시작은setup RNG에서균일샘플; 정확한값은setup-eval-only만저장한다. mapper는공개상자만받고입자RNG는별개다. 자기RGB/발행명령융합→StaticAMCL static likelihood→별도own-map 기록. DiagnosticCorrection은생산자격을부여하지않으며승인된장경로진단에서만수렴한제안의상대좌표를공유v145 heading/펄스/코스트정책에제공한다. 분포가풀리면LOCALIZATION_UNRESOLVED로멈춘다. 실제성공/접촉/평가자세는들어가지않는다.
+
+실행원본 /home/ugrp/ugrp-sim/runs/mapbuild10-long-round1, 큐/명령/SHA/최신스택확인은 /home/ugrp/ugrp-sim/ops-reviews/mapbuild10/long-round1-v2. 원본f3a91cb85는실행전commit/push했고서버사본은git-shared.git에직접reference clone했다. 소스와큐는실행중수정하지않는다. 초기5f18d4938의52프레임은예전속도차단코드발견으로감독중단·제외, 교체본의속도는current_stack 최신record_only다. 1라운드중2녹화(1제외+1교체)이며추가실행은없다.
+
+후처리는 scripts/mapbuild10_long_score.py --source <frozen-source> --input <unloaded-v2> --output <new-score-dir> --requirements <frozen requirements>. 자기입력/온라인제안봉인과RGB해시를먼저확인한뒤GT를연다. OFF에는초기SE2정렬한번만주며척도피팅하지않고AMCL은절대오차를채점한다. .5m구간표는보고용이고계산/행동관문이아니다. 실제3m와설계반전turn π에서기존방향요구오차를뺀회전량, 끝/최대오차·전체경로요구표를분리해낸다. 오프라인비교통과를ACT/LLM/임무물리성공으로보고하지않는다.

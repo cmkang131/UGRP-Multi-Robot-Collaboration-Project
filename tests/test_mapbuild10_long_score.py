@@ -19,7 +19,9 @@ def test_off_gets_only_start_gauge_amcl_keeps_absolute_prior_error(tmp_path, mon
         dict(frame_id=1,t=1,stage='diagnostic_route',motion_delta=[4.3,0,math.pi],map_event=dict(absolute_proposal=[4.1,0,math.pi],attempted=True,converged=True))])
     put('eval-only.json',dict(frames=[dict(frame_id=0,t=0,pose=[0,0,0]),dict(frame_id=1,t=1,pose=[4,0,math.pi])]))
     put('summary.json',dict(status='ROUTE_COMMAND_COMPLETE'))
-    for n in ['map-correction.json','scans.json','commands.json','static-map.json','public-start-zone.json','events.json']:put(n,{})
+    for n in ['map-correction.json','commands.json','public-start-zone.json','events.json']:put(n,{})
+    put('scans.json',[dict(t=0,segments=[]),dict(t=1,segments=[])])
+    put('static-map.json',dict(bounds_m=[-1,6,-1,1],obstacles=[dict(id='wall_north',center_m=[2.5,.95],half_extents_m=[3.5,.05])]))
     root=Path(__file__).resolve().parents[1]
     scoring.main(SimpleNamespace(source=root,input=b,output=out,requirements=root/'experiments/2026-10-17-mapbuild8/requirements.json'))
     s=json.loads((out/'summary.json').read_text())
