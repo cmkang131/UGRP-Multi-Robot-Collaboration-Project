@@ -1,0 +1,36 @@
+{
+  "attempts": [
+    {
+      "stage": "video_review_r1",
+      "input_frames": 401,
+      "ffprobe_output_frames": 403,
+      "status": "REJECTED",
+      "reason_category": "ffmpeg_timebase_rounding_duplicate_frames",
+      "blocking_object": "not_applicable_video_encoding",
+      "minimum_gap": "not_applicable_video_encoding",
+      "raw": "gcp4:/home/ugrp/ugrp-sim/mast3rcmp/recording-r2-review",
+      "fix_source": "c45849242",
+      "pending": "source VM next active window; input framerate30 without setpts/-r"
+    },
+    {
+      "stage": "video_review_r2",
+      "input_frames": 401,
+      "ffprobe_output_frames": 401,
+      "duration_seconds": 13.366667,
+      "status": "PASS",
+      "raw": "gcp4:/home/ugrp/ugrp-sim/mast3rcmp/recording-r2-review-r2",
+      "mac_review": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/mast3rcmp2-recording-r2/exact401",
+      "reason_category": "no_rejection",
+      "blocking_object": "not_applicable_video_encoding",
+      "minimum_gap": "not_applicable_video_encoding"
+    }
+  ],
+  "reason_distribution_before_fix": {
+    "ffmpeg_timebase_rounding_duplicate_frames": 1
+  },
+  "slam_execution_failures": 0,
+  "local_shell_corrections": [
+    "gcloud zone corrected us-central1-a\u2192asia-northeast3-a before any mutation",
+    "test interpreter corrected to existing primary Mac venv; no new environment"
+  ]
+}

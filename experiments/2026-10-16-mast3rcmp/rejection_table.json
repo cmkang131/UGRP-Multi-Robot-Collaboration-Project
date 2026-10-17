@@ -1,0 +1,78 @@
+{
+  "scope": "offline_comparison_only",
+  "updated_stage": "practice_complete_waiting_main_recording",
+  "funnel": [
+    {
+      "gate": "sender_manifest_sha256",
+      "input": 1,
+      "cumulative_pass": 1,
+      "rejected": 0
+    },
+    {
+      "gate": "own_rgb_allowlist",
+      "input": 89,
+      "cumulative_pass": 82,
+      "rejected": 7,
+      "reason_category": "non_RGB_or_metadata_excluded",
+      "blocking_object": "own/commands/eval/summary/calibration-source files",
+      "minimum_gap": "not_applicable_offline"
+    },
+    {
+      "gate": "frame_sha256",
+      "input": 82,
+      "cumulative_pass": 82,
+      "rejected": 0
+    },
+    {
+      "gate": "decode_and_fisheye_rectification",
+      "input": 82,
+      "cumulative_pass": 82,
+      "rejected": 0
+    },
+    {
+      "gate": "SLAM_processed",
+      "input": 82,
+      "cumulative_pass": 82,
+      "rejected": 0,
+      "pending": 0
+    },
+    {
+      "gate": "main_recording_received",
+      "input": 0,
+      "cumulative_pass": 0,
+      "rejected": 0,
+      "pending": "mapbuild5 recording notification"
+    }
+  ],
+  "failure_distribution": [
+    {
+      "reason_category": "missing_host_cpp_compiler",
+      "count": 1,
+      "blocking_object": "c++/cc1plus",
+      "minimum_gap": "not_applicable_installation",
+      "resolved_in_round": 2
+    }
+  ],
+  "raw": "gcp4:/home/ugrp/ugrp-sim/mast3rcmp",
+  "reproduce": "install.sh; scripts/mast3rcmp_prepare.py; reproduce.json (to follow)",
+  "practice_sequences": [
+    {
+      "sequence": "drive-off",
+      "input": 41,
+      "initialized": 1,
+      "tracked": 40,
+      "rejected": 0,
+      "unprocessed": 0,
+      "raw": "/home/ugrp/ugrp-sim/mast3rcmp/runs/practice-drive-off-r1"
+    },
+    {
+      "sequence": "high-off",
+      "input": 41,
+      "initialized": 1,
+      "tracked": 40,
+      "rejected": 0,
+      "unprocessed": 0,
+      "raw": "/home/ugrp/ugrp-sim/mast3rcmp/runs/practice-high-off-r1"
+    }
+  ]
+}

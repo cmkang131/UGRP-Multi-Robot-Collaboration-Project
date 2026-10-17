@@ -1,0 +1,14 @@
+Fri Oct 16 14:45:56 UTC 2026
+    PID    PPID     ELAPSED COMMAND
+   4753       1       00:00 /usr/lib/systemd/systemd --user
+   4754    4753       00:00 (sd-pam)
+   4815    4748       00:00 sshd: ugrp@notty
+   4816    4815       00:00 bash -c date -u; ps -u ugrp -o pid,ppid,etime,args; nvidia-smi --query-compute-apps=pid,used_memory --format=csv,noheader; ls -la /home/ugrp/ugrp-sim/leases; cat /proc/loadavg; systemctl is-active ugrp-idle-guard.timer
+   4818    4816       00:00 ps -u ugrp -o pid,ppid,etime,args
+total 8
+drwxrwxr-x 2 ugrp ugrp 4096 Oct 16 14:43 .
+drwxrwxr-x 9 ugrp ugrp 4096 Oct 16 13:47 ..
+-rw-rw-r-- 1 ugrp ugrp    0 Oct 16 08:56 .warp10-claim.lock
+-rw-rw-r-- 1 ugrp ugrp    0 Oct 16 08:37 .warp9-claim.lock
+0.16 0.36 0.19 1/315 4822
+active

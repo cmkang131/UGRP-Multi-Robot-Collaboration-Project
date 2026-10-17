@@ -1,0 +1,100 @@
+{
+  "status": "OFFLINE_COMPARISON_COMPLETE",
+  "source_recording": "gcp5:/home/ugrp/ugrp-sim/runs/mapbuild5/recording-r2",
+  "source_manifest_sha256": "de9addf5a7c268db99b0b8c7198e435a5adf90713bda7a718b4e6a7aec34e7d5",
+  "raw": "/home/ugrp/ugrp-sim/mast3rcmp/runs/recording-r2",
+  "reproduction": "reproduce.json",
+  "stages": [
+    {
+      "stage": "source_own_frames",
+      "cumulative_pass_n": 401,
+      "rejected_n": 0,
+      "reason_category": "no_rejection",
+      "blocking_object": "not_observed_offline_rgb",
+      "minimum_gap": "not_measured_offline_rgb"
+    },
+    {
+      "stage": "allowlisted_sha256_verified",
+      "cumulative_pass_n": 401,
+      "rejected_n": 0,
+      "reason_category": "no_rejection",
+      "blocking_object": "not_observed_offline_rgb",
+      "minimum_gap": "not_measured_offline_rgb"
+    },
+    {
+      "stage": "fisheye_to_pinhole_decoded",
+      "cumulative_pass_n": 401,
+      "rejected_n": 0,
+      "reason_category": "no_rejection",
+      "blocking_object": "not_observed_offline_rgb",
+      "minimum_gap": "not_measured_offline_rgb"
+    },
+    {
+      "stage": "processed_all_frames",
+      "cumulative_pass_n": 401,
+      "rejected_n": 0,
+      "reason_category": "no_rejection",
+      "blocking_object": "not_observed_offline_rgb",
+      "minimum_gap": "not_measured_offline_rgb"
+    },
+    {
+      "stage": "finite_estimation_saved",
+      "cumulative_pass_n": 401,
+      "rejected_n": 0,
+      "reason_category": "no_rejection",
+      "blocking_object": "not_observed_offline_rgb",
+      "minimum_gap": "not_measured_offline_rgb"
+    },
+    {
+      "stage": "allowed_scale_sealed",
+      "cumulative_pass_n": 401,
+      "rejected_n": 0,
+      "reason_category": "no_rejection",
+      "blocking_object": "not_observed_offline_rgb",
+      "minimum_gap": "not_measured_offline_rgb"
+    },
+    {
+      "stage": "exact_camera_truth_and_baseline_association",
+      "cumulative_pass_n": 401,
+      "rejected_n": 0,
+      "reason_category": "no_rejection",
+      "blocking_object": "not_observed_offline_rgb",
+      "minimum_gap": "not_measured_offline_rgb"
+    }
+  ],
+  "tracking": {
+    "denominator_all_frames": 401,
+    "initialized": 1,
+    "tracked": 400,
+    "failed": 0,
+    "unprocessed": 0
+  },
+  "floor_scale_funnel": [
+    {
+      "stage": "RGB_selected_floor_pixels",
+      "cumulative_pass_n": 30720,
+      "rejected_n": 0
+    },
+    {
+      "stage": "positive_finite_signed_plane_distance",
+      "cumulative_pass_n": 30720,
+      "rejected_n": 0
+    }
+  ],
+  "rejection_distribution": {
+    "no_rejection": 401
+  },
+  "evaluation_pending": false,
+  "termination": "normal_recording_exhaustion; source physical collection cap_end at 40 SIM seconds; no wall cap",
+  "scored_denominator": 401,
+  "raw_evaluation": "gcp4:/home/ugrp/ugrp-sim/mast3rcmp/recording-r2-comparison.json",
+  "media_gate": {
+    "attempted": 2,
+    "rejected": 1,
+    "accepted": 1,
+    "reasons": {
+      "ffmpeg_timebase_rounding_duplicate_frames": 1
+    },
+    "final_video_frames": 401
+  }
+}
