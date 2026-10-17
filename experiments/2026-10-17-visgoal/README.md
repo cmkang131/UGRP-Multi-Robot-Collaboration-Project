@@ -313,6 +313,88 @@ true (summary n/found/declared/GT and source_sha); control fields stay zero
 the invalid sequential r2 (and from the aborted r3 workers); none of their
 results are pooled here.
 
+**Gate r4 verdict: FAIL** against the pre-registered arrival criterion
+(GT-inside 1/16, seven false arrivals). Candidate B is a separate condition
+and its results will not be pooled with this table.
+
+### False-arrival stop condition and the 0.10 m tolerance (raw analysis, no rerun)
+
+All seven false arrivals stopped through
+`arrival_inside_paint_hypothesis`: the EKF point memory `m1`
+(`destination-paint-B`) was within 0.0952-0.0983 m of the robot frame
+origin, and that remembered point was itself only 0.0228-0.0602 m inside
+zone B.  The base centre was therefore 0.0121-0.0534 m outside.  At the
+same tick the *currently visible* paint median was 0.53-0.56 m ahead
+(nearest visible paint 0.406-0.414 m; lower-centre pixels 35,451-40,962),
+so `on_paint` was satisfied by paint in front of the robot although the base
+centre had not reached the paint.
+
+| ep | declared t | base (x,y) m | base margin to zone B (m) | memory range (m) | remembered point world (x,y) | remembered-point margin (m) | nearest visible paint (m) |
+|---:|---:|---|---:|---:|---|---:|---:|
+| 08 | 31.6 | 4.2466,-1.5682 | -0.0534 | 0.0972 | 4.3228,-1.6284 | +0.0228 | 0.4082 |
+| 09 | 26.0 | 4.2745,-1.5541 | -0.0255 | 0.0973 | 4.3509,-1.6143 | +0.0509 | 0.4119 |
+| 10 | 19.2 | 4.2506,-1.5966 | -0.0494 | 0.0966 | 4.3278,-1.6547 | +0.0278 | 0.4064 |
+| 11 | 34.8 | 4.2771,-1.4870 | -0.0229 | 0.0983 | 4.3411,-1.5617 | +0.0411 | 0.4094 |
+| 12 | 27.9 | 4.2770,-1.5040 | -0.0230 | 0.0953 | 4.3414,-1.5743 | +0.0414 | 0.4078 |
+| 14 | 20.6 | 4.2872,-1.9119 | -0.0128 | 0.0976 | 4.3602,-1.9768 | +0.0602 | 0.4139 |
+| 15 | 14.0 | 4.2879,-1.9398 | -0.0121 | 0.0952 | 4.3584,-2.0038 | +0.0584 | 0.4092 |
+
+Margin is signed distance to the zone-B rectangle (positive inside); the
+world point is the trace `relative_xy_m` transported by the eval-only pose,
+and truth is read only for this table.  The stop radius is the distance from
+the robot frame origin (base) to the remembered point, so when that radius
+(0.10 m) exceeds the point's inset (0.023-0.060 m here) the base can stop
+outside while the skill declares arrival.  `radius95_m` of the memory was
+0.044-0.045 m in these rows, so the stop radius is not a sensor-noise value
+either.
+
+**Where 0.10 m came from.**  There is no external spec, field percentile or
+literature value in the repository for this constant.  The only recorded
+basis is the comment in `sim/visual_goal_search.py` `_approach`: preflight
+r3 e13 put the median of *visible* paint at x=4.48 against zone edge 4.30
+(0.18 m inset), and an earlier rule that stopped 0.25-0.55 m short declared
+a place while the base was still outside; the comment therefore says "drive
+to the point itself".  That observation justified reducing the standoff, not
+the 0.10 m radius, and the inset in gate r4 (0.023-0.060 m) is 3-4x smaller
+than the r3 value.  Per the study rule (do not tune an acceptance constant
+without evidence) the tolerance is left unchanged; the declared arrival and
+the strict GT-inside verdict are reported side by side, and success stays at
+1/16.  A base-over-paint or near-edge crossing criterion would need its own
+default-off toggle and evidence before it can replace this verdict.
+
+### Cap-end no-colour: search coverage and FOV/colour check
+
+All seven episodes rotated 23.7-31.3 rad and visited all 12 yaw bins
+(30 deg each, full 360 deg).  `paint_ticks` counts trace ticks with any
+paint component; none was a zone-sized saturated patch on the in-FOV frames.
+
+| ep | rotation cmd (rad) | yaw bins | reached x>1.2 | max x | min GT range (m) | ticks GT in 2D FOV, <=3.5 m (share) | in-FOV paint check |
+|---:|---:|---:|---|---:|---:|---|---|
+| 00 | 31.269 | 12/12 | no | 0.669 | 3.634 | 0 (0%) | stayed `approach_wall` 80.1 s |
+| 02 | 23.716 | 12/12 | yes | 1.693 | 2.831 | 167 (13.9%) | trace paint 0 (`destination_colour_absent`); sampled offline S>=110: max component 7 px, 88 px total |
+| 03 | 27.447 | 12/12 | no | -0.125 | 4.906 | 0 (0%) | gap crossed, per-leg forward did not progress east |
+| 04 | 24.131 | 12/12 | yes | 1.681 | 2.619 | 213 (17.7%) | trace paint 0; max component 6 px, 82 px total |
+| 05 | 23.856 | 12/12 | yes | 1.704 | 2.792 | 119 (9.9%) | trace paint 0; sampled 2-35 px, max component 1-8 px |
+| 06 | 27.478 | 12/12 | no | 0.614 | 4.101 | 0 (0%) | gap crossed, ended west of x=0.7 |
+| 07 | 26.171 | 12/12 | no | -0.074 | 4.604 | 0 (0%) | gap crossed, ended west of x=0.2 |
+
+The 2D FOV test uses half-HFOV 27.3 deg and range <=3.5 m at every 10 Hz
+tick.  For e02/e04/e05, where the zone geometry entered that wedge, the
+sampled frames were checked online in the trace and offline in HSV: the
+online detector saw 0 paint pixels, and the offline band (H 99-125, V>=30)
+with paint saturation S>=110 had at most 88 px in total (largest component
+7-8 px).  The large band counts present on some frames (50k-170k px) are the
+blue floor tint, whose median saturation is 66-77, below the S>=110 paint
+threshold; they are not zone paint.  The zone was therefore not visible from
+those viewpoints/ranges (wall occlusion); colour detection was not the
+limiting step.  The other four episodes never brought the zone within
+3.5 m in the wedge at all.  The dominant cause in this gate is east
+traversal/occlusion: four of seven never reached x>1.2, and the three that
+did plateaued at x=1.68-1.70 (2.6-2.8 m from the zone) with the final
+`leg_forward` ending in `search_leg_turn` (`leg_wall`).  Per the instruction,
+additional runs wait; the largest cause is fixed before new candidates are
+submitted.
+
 ## Files
 
 * `setups.json` — 16 fixed starts (setup only; includes parked
@@ -321,9 +403,10 @@ results are pooled here.
   paint/wall/obstacle detection -> memory -> control -> command tape.
 * `vendor/` — byte copies; no egomem-owned file is edited.
 * `gate-r4/` — gate r4 summary, strict-funnel recount, per-episode analysis
-  table and 9-frame montages (self camera only), plus the compressed full
-  SHA256SUMS list (`SHA256SUMS.json.zst`, original sha/bytes in
-  `SHA256SUMS.manifest.json`).
+  table, the read-only arrival/FOV analysis (`analysis2.json`, reproduced by
+  `scripts/visgoal_arrival_analysis.py`) and 9-frame montages (self camera
+  only), plus the compressed full SHA256SUMS list (`SHA256SUMS.json.zst`,
+  original sha/bytes in `SHA256SUMS.manifest.json`).
 * Raw outputs stay on gcp3 under `/home/ugrp/ugrp-sim/runs/visgoal-*`; only
   summaries, funnels, montages and failure frames are copied to the Mac.
 
@@ -349,6 +432,10 @@ python3 scripts/visgoal_probe.py --enabled --sim-cap 120 --nworld 16 \
   --legacy /home/ugrp/ugrp-sim/src/warp8f-selfmap-0ace43f25 \
   --setups /home/ugrp/ugrp-sim/src/<clone>/experiments/2026-10-17-visgoal/setups.json \
   --output /home/ugrp/ugrp-sim/runs/visgoal-gate-r4
+
+# Read-only arrival/FOV analysis of the gate r4 raw (no physics rerun).
+python3 scripts/visgoal_arrival_analysis.py /home/ugrp/ugrp-sim/runs/visgoal-gate-r4 \
+  --output /home/ugrp/ugrp-sim/runs/visgoal-gate-r4/analysis2.json
 
 # Candidate B (same 16 starts, mirror pulse on; not pooled with gate r4).
 python3 scripts/visgoal_probe.py --enabled --sim-cap 120 --nworld 16 \
