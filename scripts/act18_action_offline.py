@@ -125,12 +125,13 @@ def main():
     parser.add_argument('--dataset', type=Path, required=True)
     parser.add_argument('--checkpoint', type=Path, required=True)
     parser.add_argument('--out', type=Path, required=True)
+    parser.add_argument('--source-root', type=Path, default=Path(__file__).resolve().parents[1])
     parser.add_argument('--rows', type=int, default=2000)
     parser.add_argument('--seed', type=int, default=20261017)
     args = parser.parse_args()
     if not args.enabled:
         parser.error('action-axis offline analysis default OFF')
-    source = frozen_source(Path(__file__).resolve().parents[1])
+    source = frozen_source(args.source_root)
     meta = read(args.checkpoint/'adapter.json')
     chunk = meta['chunk']
     smooth = (meta.get('provenance', {}).get('probe', {}) or {}).get('base_smooth_window')
