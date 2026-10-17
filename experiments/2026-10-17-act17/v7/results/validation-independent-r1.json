@@ -1,0 +1,1409 @@
+{
+  "complete": true,
+  "status": "NOT_READY",
+  "utc": "2026-10-17T08:16:33.133684+00:00",
+  "source_sha": "75d54e08d4bcc5f1e22657b1a02bcd06e304f0e9",
+  "evaluation_source_sha": "de6170d93433fe340806a0881a45f23b19e6af4e",
+  "counts": {
+    "M": {
+      "task_success": 0,
+      "any_same_kind_success": 0,
+      "cap_end": 5,
+      "sequence_complete": 3,
+      "grasp_done_requested": 4,
+      "lift_success": 0,
+      "release_success": 0,
+      "N": 8,
+      "by_kind": {
+        "cyan": {
+          "N": 2,
+          "assigned_success": 0,
+          "any_same_kind_success": 0
+        },
+        "red": {
+          "N": 2,
+          "assigned_success": 0,
+          "any_same_kind_success": 0
+        },
+        "green": {
+          "N": 2,
+          "assigned_success": 0,
+          "any_same_kind_success": 0
+        },
+        "yellow": {
+          "N": 2,
+          "assigned_success": 0,
+          "any_same_kind_success": 0
+        }
+      }
+    },
+    "F": {
+      "task_success": 0,
+      "any_same_kind_success": 0,
+      "cap_end": 3,
+      "sequence_complete": 5,
+      "grasp_done_requested": 5,
+      "lift_success": 0,
+      "release_success": 0,
+      "N": 8,
+      "by_kind": {
+        "cyan": {
+          "N": 2,
+          "assigned_success": 0,
+          "any_same_kind_success": 0
+        },
+        "red": {
+          "N": 2,
+          "assigned_success": 0,
+          "any_same_kind_success": 0
+        },
+        "green": {
+          "N": 2,
+          "assigned_success": 0,
+          "any_same_kind_success": 0
+        },
+        "yellow": {
+          "N": 2,
+          "assigned_success": 0,
+          "any_same_kind_success": 0
+        }
+      }
+    },
+    "S": {
+      "task_success": 0,
+      "any_same_kind_success": 0,
+      "cap_end": 7,
+      "sequence_complete": 1,
+      "grasp_done_requested": 1,
+      "lift_success": 0,
+      "release_success": 0,
+      "N": 8,
+      "by_kind": {
+        "cyan": {
+          "N": 2,
+          "assigned_success": 0,
+          "any_same_kind_success": 0
+        },
+        "red": {
+          "N": 2,
+          "assigned_success": 0,
+          "any_same_kind_success": 0
+        },
+        "green": {
+          "N": 2,
+          "assigned_success": 0,
+          "any_same_kind_success": 0
+        },
+        "yellow": {
+          "N": 2,
+          "assigned_success": 0,
+          "any_same_kind_success": 0
+        }
+      }
+    }
+  },
+  "initial_multiple_same_kind": {
+    "pixel_visible_count": {
+      "repeated_worlds": 0,
+      "world_N": 24,
+      "unique_starts": 0,
+      "unique_N": 8
+    },
+    "any_probe_visible_count": {
+      "repeated_worlds": 0,
+      "world_N": 24,
+      "unique_starts": 0,
+      "unique_N": 8
+    },
+    "qualified_visible_count": {
+      "repeated_worlds": 0,
+      "world_N": 24,
+      "unique_starts": 0,
+      "unique_N": 8
+    }
+  },
+  "groups": [
+    {
+      "group": "MFS-2",
+      "worlds": 3,
+      "actual_ACT_inference": {
+        "attempts": 339,
+        "completed": 339,
+        "wall_s": 15.029553718972238,
+        "first_observation_t": 1.7000000000001514,
+        "first30": {
+          "attempts": 114,
+          "completed": 114,
+          "wall_s": 5.525282827004048
+        }
+      },
+      "native_contact": {
+        "profile": "warp_native_contact_v1",
+        "profile_source_sha256": "a5c8d370755034b9f9615f66a94b87883327b7d7ecc4e13082eac2c2d4751c6a",
+        "cpu_noslip": [
+          0,
+          0,
+          0
+        ],
+        "gpu_noslip": 0,
+        "cpu_impratio": 5.0,
+        "cpu_iterations": 80,
+        "cpu_ls_iterations": 50,
+        "common_backend_source": "f0db6b1abb842ea65b71c433738210254f300a7c",
+        "common_backend_edited": false,
+        "solver_numerics": {
+          "profile": "source_tolerance",
+          "source_tolerance": 1e-08,
+          "upstream_tolerance": 9.999999974752427e-07,
+          "effective_tolerance": 9.99999993922529e-09,
+          "basis": "pinned io.py433 clamps float64 C tolerance to minimum1e-6 to avoid float32 needless iterations; task Score unchanged",
+          "compact_ctol": [
+            2.7749999844672857e-06
+          ],
+          "compact_cls_tol": [
+            0.02775000035762787
+          ],
+          "nvmax_pad": 80,
+          "compact_basis": "pinned io.py1791-1797: max(source tolerance,1e-6)*nv/nvmax_pad; separate compact cohort"
+        }
+      },
+      "source_summary": {
+        "path": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-2/evaluation/summary.json",
+        "sha256": "96fa72c526b453beabc3801821bb30e97c6c779daa31c5c967d7dfe3d3bb306d"
+      },
+      "source_native": {
+        "path": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-2/evaluation/owner/native-contact.json",
+        "sha256": "ffb51c50403409d4ebc5394688d28d24c5ea027da1ecc2b231f4bf30f4bc9249"
+      }
+    },
+    {
+      "group": "MFS-0",
+      "worlds": 3,
+      "actual_ACT_inference": {
+        "attempts": 339,
+        "completed": 339,
+        "wall_s": 14.977233787009027,
+        "first_observation_t": 1.7000000000001514,
+        "first30": {
+          "attempts": 114,
+          "completed": 114,
+          "wall_s": 5.726003768993905
+        }
+      },
+      "native_contact": {
+        "profile": "warp_native_contact_v1",
+        "profile_source_sha256": "a5c8d370755034b9f9615f66a94b87883327b7d7ecc4e13082eac2c2d4751c6a",
+        "cpu_noslip": [
+          0,
+          0,
+          0
+        ],
+        "gpu_noslip": 0,
+        "cpu_impratio": 5.0,
+        "cpu_iterations": 80,
+        "cpu_ls_iterations": 50,
+        "common_backend_source": "f0db6b1abb842ea65b71c433738210254f300a7c",
+        "common_backend_edited": false,
+        "solver_numerics": {
+          "profile": "source_tolerance",
+          "source_tolerance": 1e-08,
+          "upstream_tolerance": 9.999999974752427e-07,
+          "effective_tolerance": 9.99999993922529e-09,
+          "basis": "pinned io.py433 clamps float64 C tolerance to minimum1e-6 to avoid float32 needless iterations; task Score unchanged",
+          "compact_ctol": [
+            3.0749999950785423e-06
+          ],
+          "compact_cls_tol": [
+            0.030750000849366188
+          ],
+          "nvmax_pad": 80,
+          "compact_basis": "pinned io.py1791-1797: max(source tolerance,1e-6)*nv/nvmax_pad; separate compact cohort"
+        }
+      },
+      "source_summary": {
+        "path": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-0/evaluation/summary.json",
+        "sha256": "7155ffb076fafee44bf7eb83d21a365d9753b2c2af07914674f480b9e5704a7c"
+      },
+      "source_native": {
+        "path": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-0/evaluation/owner/native-contact.json",
+        "sha256": "652e3a1ebfdf2d7b67fcfe77f052189ddc72f8f37d3a7690f31811260065cb4b"
+      }
+    },
+    {
+      "group": "MFS-1",
+      "worlds": 9,
+      "actual_ACT_inference": {
+        "attempts": 528,
+        "completed": 528,
+        "wall_s": 22.069102420999116,
+        "first_observation_t": 1.7000000000001514,
+        "first30": {
+          "attempts": 228,
+          "completed": 228,
+          "wall_s": 12.06027833099688
+        }
+      },
+      "native_contact": {
+        "profile": "warp_native_contact_v1",
+        "profile_source_sha256": "a5c8d370755034b9f9615f66a94b87883327b7d7ecc4e13082eac2c2d4751c6a",
+        "cpu_noslip": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "gpu_noslip": 0,
+        "cpu_impratio": 5.0,
+        "cpu_iterations": 80,
+        "cpu_ls_iterations": 50,
+        "common_backend_source": "f0db6b1abb842ea65b71c433738210254f300a7c",
+        "common_backend_edited": false,
+        "solver_numerics": {
+          "profile": "source_tolerance",
+          "source_tolerance": 1e-08,
+          "upstream_tolerance": 9.999999974752427e-07,
+          "effective_tolerance": 9.99999993922529e-09,
+          "basis": "pinned io.py433 clamps float64 C tolerance to minimum1e-6 to avoid float32 needless iterations; task Score unchanged",
+          "compact_ctol": [
+            2.8500001008069376e-06
+          ],
+          "compact_cls_tol": [
+            0.02850000001490116
+          ],
+          "nvmax_pad": 80,
+          "compact_basis": "pinned io.py1791-1797: max(source tolerance,1e-6)*nv/nvmax_pad; separate compact cohort"
+        }
+      },
+      "source_summary": {
+        "path": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-1/evaluation/summary.json",
+        "sha256": "fcb84a0210513567768b2bc7134e6bf80bf97b2c2f3340cc96ba7b4eaa19d5b9"
+      },
+      "source_native": {
+        "path": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-1/evaluation/owner/native-contact.json",
+        "sha256": "e4db34bc7c5aa832cb6bcefa8bb87e4bf71ec56e459ab5af80a714d53655b94b"
+      }
+    },
+    {
+      "group": "MFS-3",
+      "worlds": 9,
+      "actual_ACT_inference": {
+        "attempts": 625,
+        "completed": 625,
+        "wall_s": 25.2066807850224,
+        "first_observation_t": 1.7000000000001514,
+        "first30": {
+          "attempts": 250,
+          "completed": 250,
+          "wall_s": 12.25057641299827
+        }
+      },
+      "native_contact": {
+        "profile": "warp_native_contact_v1",
+        "profile_source_sha256": "a5c8d370755034b9f9615f66a94b87883327b7d7ecc4e13082eac2c2d4751c6a",
+        "cpu_noslip": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "gpu_noslip": 0,
+        "cpu_impratio": 5.0,
+        "cpu_iterations": 80,
+        "cpu_ls_iterations": 50,
+        "common_backend_source": "f0db6b1abb842ea65b71c433738210254f300a7c",
+        "common_backend_edited": false,
+        "solver_numerics": {
+          "profile": "source_tolerance",
+          "source_tolerance": 1e-08,
+          "upstream_tolerance": 9.999999974752427e-07,
+          "effective_tolerance": 9.99999993922529e-09,
+          "basis": "pinned io.py433 clamps float64 C tolerance to minimum1e-6 to avoid float32 needless iterations; task Score unchanged",
+          "compact_ctol": [
+            2.8500001008069376e-06
+          ],
+          "compact_cls_tol": [
+            0.02850000001490116
+          ],
+          "nvmax_pad": 80,
+          "compact_basis": "pinned io.py1791-1797: max(source tolerance,1e-6)*nv/nvmax_pad; separate compact cohort"
+        }
+      },
+      "source_summary": {
+        "path": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-3/evaluation/summary.json",
+        "sha256": "a31cd0135dcdc5cab1feaf36eb342e18ddca3bcd7a35e6191d34c8338b72805c"
+      },
+      "source_native": {
+        "path": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-3/evaluation/owner/native-contact.json",
+        "sha256": "e4db34bc7c5aa832cb6bcefa8bb87e4bf71ec56e459ab5af80a714d53655b94b"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "candidate": "M",
+      "seed": 88621,
+      "kind": "red",
+      "assigned_item_id": "red_1",
+      "task_success": false,
+      "any_same_kind_success": false,
+      "cap_end": true,
+      "sequence_complete": false,
+      "grasp_done_requested": false,
+      "lift_success": false,
+      "release_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-2/evaluation"
+    },
+    {
+      "candidate": "F",
+      "seed": 88621,
+      "kind": "red",
+      "assigned_item_id": "red_1",
+      "task_success": false,
+      "any_same_kind_success": false,
+      "cap_end": true,
+      "sequence_complete": false,
+      "grasp_done_requested": false,
+      "lift_success": false,
+      "release_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-2/evaluation"
+    },
+    {
+      "candidate": "S",
+      "seed": 88621,
+      "kind": "red",
+      "assigned_item_id": "red_1",
+      "task_success": false,
+      "any_same_kind_success": false,
+      "cap_end": true,
+      "sequence_complete": false,
+      "grasp_done_requested": false,
+      "lift_success": false,
+      "release_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-2/evaluation"
+    },
+    {
+      "candidate": "M",
+      "seed": 88623,
+      "kind": "yellow",
+      "assigned_item_id": "yellow_1",
+      "task_success": false,
+      "any_same_kind_success": false,
+      "cap_end": true,
+      "sequence_complete": false,
+      "grasp_done_requested": false,
+      "lift_success": false,
+      "release_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-0/evaluation"
+    },
+    {
+      "candidate": "F",
+      "seed": 88623,
+      "kind": "yellow",
+      "assigned_item_id": "yellow_1",
+      "task_success": false,
+      "any_same_kind_success": false,
+      "cap_end": true,
+      "sequence_complete": false,
+      "grasp_done_requested": false,
+      "lift_success": false,
+      "release_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-0/evaluation"
+    },
+    {
+      "candidate": "S",
+      "seed": 88623,
+      "kind": "yellow",
+      "assigned_item_id": "yellow_1",
+      "task_success": false,
+      "any_same_kind_success": false,
+      "cap_end": true,
+      "sequence_complete": false,
+      "grasp_done_requested": false,
+      "lift_success": false,
+      "release_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-0/evaluation"
+    },
+    {
+      "candidate": "M",
+      "seed": 88622,
+      "kind": "green",
+      "assigned_item_id": "green_1",
+      "task_success": false,
+      "any_same_kind_success": false,
+      "cap_end": false,
+      "sequence_complete": true,
+      "grasp_done_requested": true,
+      "lift_success": false,
+      "release_success": false,
+      "failure_reason": "lift_not_stable",
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-1/evaluation"
+    },
+    {
+      "candidate": "M",
+      "seed": 88644,
+      "kind": "cyan",
+      "assigned_item_id": "cyan_1",
+      "task_success": false,
+      "any_same_kind_success": false,
+      "cap_end": true,
+      "sequence_complete": false,
+      "grasp_done_requested": false,
+      "lift_success": false,
+      "release_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-1/evaluation"
+    },
+    {
+      "candidate": "M",
+      "seed": 88647,
+      "kind": "yellow",
+      "assigned_item_id": "yellow_2",
+      "task_success": false,
+      "any_same_kind_success": false,
+      "cap_end": false,
+      "sequence_complete": true,
+      "grasp_done_requested": true,
+      "lift_success": false,
+      "release_success": false,
+      "failure_reason": "lift_not_stable",
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-1/evaluation"
+    },
+    {
+      "candidate": "F",
+      "seed": 88622,
+      "kind": "green",
+      "assigned_item_id": "green_1",
+      "task_success": false,
+      "any_same_kind_success": false,
+      "cap_end": true,
+      "sequence_complete": false,
+      "grasp_done_requested": false,
+      "lift_success": false,
+      "release_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-1/evaluation"
+    },
+    {
+      "candidate": "F",
+      "seed": 88644,
+      "kind": "cyan",
+      "assigned_item_id": "cyan_1",
+      "task_success": false,
+      "any_same_kind_success": false,
+      "cap_end": false,
+      "sequence_complete": true,
+      "grasp_done_requested": true,
+      "lift_success": false,
+      "release_success": false,
+      "failure_reason": "lift_not_stable",
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-1/evaluation"
+    },
+    {
+      "candidate": "F",
+      "seed": 88647,
+      "kind": "yellow",
+      "assigned_item_id": "yellow_2",
+      "task_success": false,
+      "any_same_kind_success": false,
+      "cap_end": false,
+      "sequence_complete": true,
+      "grasp_done_requested": true,
+      "lift_success": false,
+      "release_success": false,
+      "failure_reason": "lift_not_stable",
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-1/evaluation"
+    },
+    {
+      "candidate": "S",
+      "seed": 88622,
+      "kind": "green",
+      "assigned_item_id": "green_1",
+      "task_success": false,
+      "any_same_kind_success": false,
+      "cap_end": false,
+      "sequence_complete": true,
+      "grasp_done_requested": true,
+      "lift_success": false,
+      "release_success": false,
+      "failure_reason": "lift_not_stable",
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-1/evaluation"
+    },
+    {
+      "candidate": "S",
+      "seed": 88644,
+      "kind": "cyan",
+      "assigned_item_id": "cyan_1",
+      "task_success": false,
+      "any_same_kind_success": false,
+      "cap_end": true,
+      "sequence_complete": false,
+      "grasp_done_requested": false,
+      "lift_success": false,
+      "release_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-1/evaluation"
+    },
+    {
+      "candidate": "S",
+      "seed": 88647,
+      "kind": "yellow",
+      "assigned_item_id": "yellow_2",
+      "task_success": false,
+      "any_same_kind_success": false,
+      "cap_end": true,
+      "sequence_complete": false,
+      "grasp_done_requested": false,
+      "lift_success": false,
+      "release_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-1/evaluation"
+    },
+    {
+      "candidate": "M",
+      "seed": 88620,
+      "kind": "cyan",
+      "assigned_item_id": "cyan_1",
+      "task_success": false,
+      "any_same_kind_success": false,
+      "cap_end": false,
+      "sequence_complete": true,
+      "grasp_done_requested": true,
+      "lift_success": false,
+      "release_success": false,
+      "failure_reason": "lift_not_stable",
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-3/evaluation"
+    },
+    {
+      "candidate": "M",
+      "seed": 88645,
+      "kind": "red",
+      "assigned_item_id": "red_2",
+      "task_success": false,
+      "any_same_kind_success": false,
+      "cap_end": true,
+      "sequence_complete": false,
+      "grasp_done_requested": true,
+      "lift_success": false,
+      "release_success": false,
+      "failure_reason": "lift_not_stable",
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-3/evaluation"
+    },
+    {
+      "candidate": "M",
+      "seed": 88646,
+      "kind": "green",
+      "assigned_item_id": "green_1",
+      "task_success": false,
+      "any_same_kind_success": false,
+      "cap_end": true,
+      "sequence_complete": false,
+      "grasp_done_requested": false,
+      "lift_success": false,
+      "release_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-3/evaluation"
+    },
+    {
+      "candidate": "F",
+      "seed": 88620,
+      "kind": "cyan",
+      "assigned_item_id": "cyan_1",
+      "task_success": false,
+      "any_same_kind_success": false,
+      "cap_end": false,
+      "sequence_complete": true,
+      "grasp_done_requested": true,
+      "lift_success": false,
+      "release_success": false,
+      "failure_reason": "lift_not_stable",
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-3/evaluation"
+    },
+    {
+      "candidate": "F",
+      "seed": 88645,
+      "kind": "red",
+      "assigned_item_id": "red_2",
+      "task_success": false,
+      "any_same_kind_success": false,
+      "cap_end": false,
+      "sequence_complete": true,
+      "grasp_done_requested": true,
+      "lift_success": false,
+      "release_success": false,
+      "failure_reason": "lift_not_stable",
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-3/evaluation"
+    },
+    {
+      "candidate": "F",
+      "seed": 88646,
+      "kind": "green",
+      "assigned_item_id": "green_1",
+      "task_success": false,
+      "any_same_kind_success": false,
+      "cap_end": false,
+      "sequence_complete": true,
+      "grasp_done_requested": true,
+      "lift_success": false,
+      "release_success": false,
+      "failure_reason": "lift_not_stable",
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-3/evaluation"
+    },
+    {
+      "candidate": "S",
+      "seed": 88620,
+      "kind": "cyan",
+      "assigned_item_id": "cyan_1",
+      "task_success": false,
+      "any_same_kind_success": false,
+      "cap_end": true,
+      "sequence_complete": false,
+      "grasp_done_requested": false,
+      "lift_success": false,
+      "release_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-3/evaluation"
+    },
+    {
+      "candidate": "S",
+      "seed": 88645,
+      "kind": "red",
+      "assigned_item_id": "red_2",
+      "task_success": false,
+      "any_same_kind_success": false,
+      "cap_end": true,
+      "sequence_complete": false,
+      "grasp_done_requested": false,
+      "lift_success": false,
+      "release_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-3/evaluation"
+    },
+    {
+      "candidate": "S",
+      "seed": 88646,
+      "kind": "green",
+      "assigned_item_id": "green_1",
+      "task_success": false,
+      "any_same_kind_success": false,
+      "cap_end": true,
+      "sequence_complete": false,
+      "grasp_done_requested": false,
+      "lift_success": false,
+      "release_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-3/evaluation"
+    }
+  ],
+  "visibility": [
+    {
+      "candidate": "M",
+      "seed": 88621,
+      "world": 0,
+      "items": [
+        {
+          "item_id": "red_1",
+          "seen_probes": 7,
+          "total_probes": 7,
+          "visible_pixels": 851,
+          "visible_bbox_xyxy": [
+            257,
+            152,
+            289,
+            180
+          ],
+          "any_probe_visible": true,
+          "qualified_visible": true
+        }
+      ],
+      "pixel_visible_count": 1,
+      "any_probe_visible_count": 1,
+      "qualified_visible_count": 1,
+      "own_start_RGB_sha256": "067cec72b7280675a3f0e507069459ba5b82188091590b0f8da9a52b6d293965"
+    },
+    {
+      "candidate": "F",
+      "seed": 88621,
+      "world": 1,
+      "items": [
+        {
+          "item_id": "red_1",
+          "seen_probes": 7,
+          "total_probes": 7,
+          "visible_pixels": 851,
+          "visible_bbox_xyxy": [
+            257,
+            152,
+            289,
+            180
+          ],
+          "any_probe_visible": true,
+          "qualified_visible": true
+        }
+      ],
+      "pixel_visible_count": 1,
+      "any_probe_visible_count": 1,
+      "qualified_visible_count": 1,
+      "own_start_RGB_sha256": "067cec72b7280675a3f0e507069459ba5b82188091590b0f8da9a52b6d293965"
+    },
+    {
+      "candidate": "S",
+      "seed": 88621,
+      "world": 2,
+      "items": [
+        {
+          "item_id": "red_1",
+          "seen_probes": 7,
+          "total_probes": 7,
+          "visible_pixels": 851,
+          "visible_bbox_xyxy": [
+            257,
+            152,
+            289,
+            180
+          ],
+          "any_probe_visible": true,
+          "qualified_visible": true
+        }
+      ],
+      "pixel_visible_count": 1,
+      "any_probe_visible_count": 1,
+      "qualified_visible_count": 1,
+      "own_start_RGB_sha256": "067cec72b7280675a3f0e507069459ba5b82188091590b0f8da9a52b6d293965"
+    },
+    {
+      "candidate": "M",
+      "seed": 88623,
+      "world": 0,
+      "items": [
+        {
+          "item_id": "yellow_1",
+          "seen_probes": 7,
+          "total_probes": 7,
+          "visible_pixels": 979,
+          "visible_bbox_xyxy": [
+            50,
+            168,
+            87,
+            200
+          ],
+          "any_probe_visible": true,
+          "qualified_visible": true
+        }
+      ],
+      "pixel_visible_count": 1,
+      "any_probe_visible_count": 1,
+      "qualified_visible_count": 1,
+      "own_start_RGB_sha256": "e9238228f67e93a77d66a57abd51df6be9ae1ed8f55695460a9df8841bf93463"
+    },
+    {
+      "candidate": "F",
+      "seed": 88623,
+      "world": 1,
+      "items": [
+        {
+          "item_id": "yellow_1",
+          "seen_probes": 7,
+          "total_probes": 7,
+          "visible_pixels": 979,
+          "visible_bbox_xyxy": [
+            50,
+            168,
+            87,
+            200
+          ],
+          "any_probe_visible": true,
+          "qualified_visible": true
+        }
+      ],
+      "pixel_visible_count": 1,
+      "any_probe_visible_count": 1,
+      "qualified_visible_count": 1,
+      "own_start_RGB_sha256": "e9238228f67e93a77d66a57abd51df6be9ae1ed8f55695460a9df8841bf93463"
+    },
+    {
+      "candidate": "S",
+      "seed": 88623,
+      "world": 2,
+      "items": [
+        {
+          "item_id": "yellow_1",
+          "seen_probes": 7,
+          "total_probes": 7,
+          "visible_pixels": 979,
+          "visible_bbox_xyxy": [
+            50,
+            168,
+            87,
+            200
+          ],
+          "any_probe_visible": true,
+          "qualified_visible": true
+        }
+      ],
+      "pixel_visible_count": 1,
+      "any_probe_visible_count": 1,
+      "qualified_visible_count": 1,
+      "own_start_RGB_sha256": "e9238228f67e93a77d66a57abd51df6be9ae1ed8f55695460a9df8841bf93463"
+    },
+    {
+      "candidate": "M",
+      "seed": 88622,
+      "world": 0,
+      "items": [
+        {
+          "item_id": "green_1",
+          "seen_probes": 7,
+          "total_probes": 7,
+          "visible_pixels": 861,
+          "visible_bbox_xyxy": [
+            544,
+            171,
+            579,
+            199
+          ],
+          "any_probe_visible": true,
+          "qualified_visible": true
+        }
+      ],
+      "pixel_visible_count": 1,
+      "any_probe_visible_count": 1,
+      "qualified_visible_count": 1,
+      "own_start_RGB_sha256": "7da922c0968c8fae9cc07dfdf35b7f0b1009ad973a0d2e1d2491b175e5465da4"
+    },
+    {
+      "candidate": "M",
+      "seed": 88644,
+      "world": 1,
+      "items": [
+        {
+          "item_id": "cyan_1",
+          "seen_probes": 7,
+          "total_probes": 7,
+          "visible_pixels": 1958,
+          "visible_bbox_xyxy": [
+            556,
+            260,
+            601,
+            315
+          ],
+          "any_probe_visible": true,
+          "qualified_visible": true
+        },
+        {
+          "item_id": "cyan_2",
+          "seen_probes": 0,
+          "total_probes": 7,
+          "visible_pixels": 0,
+          "visible_bbox_xyxy": null,
+          "any_probe_visible": false,
+          "qualified_visible": false
+        }
+      ],
+      "pixel_visible_count": 1,
+      "any_probe_visible_count": 1,
+      "qualified_visible_count": 1,
+      "own_start_RGB_sha256": "3fb2a3d3dd9871930d19f5b66686b17f3dc6e29e3360373526945cf4466d67c6"
+    },
+    {
+      "candidate": "M",
+      "seed": 88647,
+      "world": 2,
+      "items": [
+        {
+          "item_id": "yellow_1",
+          "seen_probes": 0,
+          "total_probes": 7,
+          "visible_pixels": 0,
+          "visible_bbox_xyxy": null,
+          "any_probe_visible": false,
+          "qualified_visible": false
+        },
+        {
+          "item_id": "yellow_2",
+          "seen_probes": 7,
+          "total_probes": 7,
+          "visible_pixels": 1907,
+          "visible_bbox_xyxy": [
+            176,
+            213,
+            228,
+            256
+          ],
+          "any_probe_visible": true,
+          "qualified_visible": true
+        }
+      ],
+      "pixel_visible_count": 1,
+      "any_probe_visible_count": 1,
+      "qualified_visible_count": 1,
+      "own_start_RGB_sha256": "e64cf65440b3301c65cf644e2933b27613ca90a2a7c112b934a0f1b00eb31c31"
+    },
+    {
+      "candidate": "F",
+      "seed": 88622,
+      "world": 3,
+      "items": [
+        {
+          "item_id": "green_1",
+          "seen_probes": 7,
+          "total_probes": 7,
+          "visible_pixels": 861,
+          "visible_bbox_xyxy": [
+            544,
+            171,
+            579,
+            199
+          ],
+          "any_probe_visible": true,
+          "qualified_visible": true
+        }
+      ],
+      "pixel_visible_count": 1,
+      "any_probe_visible_count": 1,
+      "qualified_visible_count": 1,
+      "own_start_RGB_sha256": "7da922c0968c8fae9cc07dfdf35b7f0b1009ad973a0d2e1d2491b175e5465da4"
+    },
+    {
+      "candidate": "F",
+      "seed": 88644,
+      "world": 4,
+      "items": [
+        {
+          "item_id": "cyan_1",
+          "seen_probes": 7,
+          "total_probes": 7,
+          "visible_pixels": 1958,
+          "visible_bbox_xyxy": [
+            556,
+            260,
+            601,
+            315
+          ],
+          "any_probe_visible": true,
+          "qualified_visible": true
+        },
+        {
+          "item_id": "cyan_2",
+          "seen_probes": 0,
+          "total_probes": 7,
+          "visible_pixels": 0,
+          "visible_bbox_xyxy": null,
+          "any_probe_visible": false,
+          "qualified_visible": false
+        }
+      ],
+      "pixel_visible_count": 1,
+      "any_probe_visible_count": 1,
+      "qualified_visible_count": 1,
+      "own_start_RGB_sha256": "3fb2a3d3dd9871930d19f5b66686b17f3dc6e29e3360373526945cf4466d67c6"
+    },
+    {
+      "candidate": "F",
+      "seed": 88647,
+      "world": 5,
+      "items": [
+        {
+          "item_id": "yellow_1",
+          "seen_probes": 0,
+          "total_probes": 7,
+          "visible_pixels": 0,
+          "visible_bbox_xyxy": null,
+          "any_probe_visible": false,
+          "qualified_visible": false
+        },
+        {
+          "item_id": "yellow_2",
+          "seen_probes": 7,
+          "total_probes": 7,
+          "visible_pixels": 1907,
+          "visible_bbox_xyxy": [
+            176,
+            213,
+            228,
+            256
+          ],
+          "any_probe_visible": true,
+          "qualified_visible": true
+        }
+      ],
+      "pixel_visible_count": 1,
+      "any_probe_visible_count": 1,
+      "qualified_visible_count": 1,
+      "own_start_RGB_sha256": "e64cf65440b3301c65cf644e2933b27613ca90a2a7c112b934a0f1b00eb31c31"
+    },
+    {
+      "candidate": "S",
+      "seed": 88622,
+      "world": 6,
+      "items": [
+        {
+          "item_id": "green_1",
+          "seen_probes": 7,
+          "total_probes": 7,
+          "visible_pixels": 861,
+          "visible_bbox_xyxy": [
+            544,
+            171,
+            579,
+            199
+          ],
+          "any_probe_visible": true,
+          "qualified_visible": true
+        }
+      ],
+      "pixel_visible_count": 1,
+      "any_probe_visible_count": 1,
+      "qualified_visible_count": 1,
+      "own_start_RGB_sha256": "7da922c0968c8fae9cc07dfdf35b7f0b1009ad973a0d2e1d2491b175e5465da4"
+    },
+    {
+      "candidate": "S",
+      "seed": 88644,
+      "world": 7,
+      "items": [
+        {
+          "item_id": "cyan_1",
+          "seen_probes": 7,
+          "total_probes": 7,
+          "visible_pixels": 1958,
+          "visible_bbox_xyxy": [
+            556,
+            260,
+            601,
+            315
+          ],
+          "any_probe_visible": true,
+          "qualified_visible": true
+        },
+        {
+          "item_id": "cyan_2",
+          "seen_probes": 0,
+          "total_probes": 7,
+          "visible_pixels": 0,
+          "visible_bbox_xyxy": null,
+          "any_probe_visible": false,
+          "qualified_visible": false
+        }
+      ],
+      "pixel_visible_count": 1,
+      "any_probe_visible_count": 1,
+      "qualified_visible_count": 1,
+      "own_start_RGB_sha256": "3fb2a3d3dd9871930d19f5b66686b17f3dc6e29e3360373526945cf4466d67c6"
+    },
+    {
+      "candidate": "S",
+      "seed": 88647,
+      "world": 8,
+      "items": [
+        {
+          "item_id": "yellow_1",
+          "seen_probes": 0,
+          "total_probes": 7,
+          "visible_pixels": 0,
+          "visible_bbox_xyxy": null,
+          "any_probe_visible": false,
+          "qualified_visible": false
+        },
+        {
+          "item_id": "yellow_2",
+          "seen_probes": 7,
+          "total_probes": 7,
+          "visible_pixels": 1907,
+          "visible_bbox_xyxy": [
+            176,
+            213,
+            228,
+            256
+          ],
+          "any_probe_visible": true,
+          "qualified_visible": true
+        }
+      ],
+      "pixel_visible_count": 1,
+      "any_probe_visible_count": 1,
+      "qualified_visible_count": 1,
+      "own_start_RGB_sha256": "e64cf65440b3301c65cf644e2933b27613ca90a2a7c112b934a0f1b00eb31c31"
+    },
+    {
+      "candidate": "M",
+      "seed": 88620,
+      "world": 0,
+      "items": [
+        {
+          "item_id": "cyan_1",
+          "seen_probes": 7,
+          "total_probes": 7,
+          "visible_pixels": 1716,
+          "visible_bbox_xyxy": [
+            74,
+            220,
+            118,
+            262
+          ],
+          "any_probe_visible": true,
+          "qualified_visible": true
+        }
+      ],
+      "pixel_visible_count": 1,
+      "any_probe_visible_count": 1,
+      "qualified_visible_count": 1,
+      "own_start_RGB_sha256": "ffc13cde98c580bd3792783f03b7c057fed13c3822bfc53307ed92acbd8b642e"
+    },
+    {
+      "candidate": "M",
+      "seed": 88645,
+      "world": 1,
+      "items": [
+        {
+          "item_id": "red_1",
+          "seen_probes": 0,
+          "total_probes": 7,
+          "visible_pixels": 0,
+          "visible_bbox_xyxy": null,
+          "any_probe_visible": false,
+          "qualified_visible": false
+        },
+        {
+          "item_id": "red_2",
+          "seen_probes": 7,
+          "total_probes": 7,
+          "visible_pixels": 2981,
+          "visible_bbox_xyxy": [
+            339,
+            256,
+            403,
+            314
+          ],
+          "any_probe_visible": true,
+          "qualified_visible": true
+        }
+      ],
+      "pixel_visible_count": 1,
+      "any_probe_visible_count": 1,
+      "qualified_visible_count": 1,
+      "own_start_RGB_sha256": "cf7d76337b98c3055f69b06e061369becc707fdfb4164cd78e28447ff9d848b9"
+    },
+    {
+      "candidate": "M",
+      "seed": 88646,
+      "world": 2,
+      "items": [
+        {
+          "item_id": "green_1",
+          "seen_probes": 7,
+          "total_probes": 7,
+          "visible_pixels": 1677,
+          "visible_bbox_xyxy": [
+            559,
+            241,
+            602,
+            286
+          ],
+          "any_probe_visible": true,
+          "qualified_visible": true
+        }
+      ],
+      "pixel_visible_count": 1,
+      "any_probe_visible_count": 1,
+      "qualified_visible_count": 1,
+      "own_start_RGB_sha256": "700ed6ba4524dc86c03db3dfd249e069d4e35cbd4ac8ccb04e2de35e7d016d93"
+    },
+    {
+      "candidate": "F",
+      "seed": 88620,
+      "world": 3,
+      "items": [
+        {
+          "item_id": "cyan_1",
+          "seen_probes": 7,
+          "total_probes": 7,
+          "visible_pixels": 1716,
+          "visible_bbox_xyxy": [
+            74,
+            220,
+            118,
+            262
+          ],
+          "any_probe_visible": true,
+          "qualified_visible": true
+        }
+      ],
+      "pixel_visible_count": 1,
+      "any_probe_visible_count": 1,
+      "qualified_visible_count": 1,
+      "own_start_RGB_sha256": "ffc13cde98c580bd3792783f03b7c057fed13c3822bfc53307ed92acbd8b642e"
+    },
+    {
+      "candidate": "F",
+      "seed": 88645,
+      "world": 4,
+      "items": [
+        {
+          "item_id": "red_1",
+          "seen_probes": 0,
+          "total_probes": 7,
+          "visible_pixels": 0,
+          "visible_bbox_xyxy": null,
+          "any_probe_visible": false,
+          "qualified_visible": false
+        },
+        {
+          "item_id": "red_2",
+          "seen_probes": 7,
+          "total_probes": 7,
+          "visible_pixels": 2981,
+          "visible_bbox_xyxy": [
+            339,
+            256,
+            403,
+            314
+          ],
+          "any_probe_visible": true,
+          "qualified_visible": true
+        }
+      ],
+      "pixel_visible_count": 1,
+      "any_probe_visible_count": 1,
+      "qualified_visible_count": 1,
+      "own_start_RGB_sha256": "cf7d76337b98c3055f69b06e061369becc707fdfb4164cd78e28447ff9d848b9"
+    },
+    {
+      "candidate": "F",
+      "seed": 88646,
+      "world": 5,
+      "items": [
+        {
+          "item_id": "green_1",
+          "seen_probes": 7,
+          "total_probes": 7,
+          "visible_pixels": 1677,
+          "visible_bbox_xyxy": [
+            559,
+            241,
+            602,
+            286
+          ],
+          "any_probe_visible": true,
+          "qualified_visible": true
+        }
+      ],
+      "pixel_visible_count": 1,
+      "any_probe_visible_count": 1,
+      "qualified_visible_count": 1,
+      "own_start_RGB_sha256": "700ed6ba4524dc86c03db3dfd249e069d4e35cbd4ac8ccb04e2de35e7d016d93"
+    },
+    {
+      "candidate": "S",
+      "seed": 88620,
+      "world": 6,
+      "items": [
+        {
+          "item_id": "cyan_1",
+          "seen_probes": 7,
+          "total_probes": 7,
+          "visible_pixels": 1716,
+          "visible_bbox_xyxy": [
+            74,
+            220,
+            118,
+            262
+          ],
+          "any_probe_visible": true,
+          "qualified_visible": true
+        }
+      ],
+      "pixel_visible_count": 1,
+      "any_probe_visible_count": 1,
+      "qualified_visible_count": 1,
+      "own_start_RGB_sha256": "ffc13cde98c580bd3792783f03b7c057fed13c3822bfc53307ed92acbd8b642e"
+    },
+    {
+      "candidate": "S",
+      "seed": 88645,
+      "world": 7,
+      "items": [
+        {
+          "item_id": "red_1",
+          "seen_probes": 0,
+          "total_probes": 7,
+          "visible_pixels": 0,
+          "visible_bbox_xyxy": null,
+          "any_probe_visible": false,
+          "qualified_visible": false
+        },
+        {
+          "item_id": "red_2",
+          "seen_probes": 7,
+          "total_probes": 7,
+          "visible_pixels": 2981,
+          "visible_bbox_xyxy": [
+            339,
+            256,
+            403,
+            314
+          ],
+          "any_probe_visible": true,
+          "qualified_visible": true
+        }
+      ],
+      "pixel_visible_count": 1,
+      "any_probe_visible_count": 1,
+      "qualified_visible_count": 1,
+      "own_start_RGB_sha256": "cf7d76337b98c3055f69b06e061369becc707fdfb4164cd78e28447ff9d848b9"
+    },
+    {
+      "candidate": "S",
+      "seed": 88646,
+      "world": 8,
+      "items": [
+        {
+          "item_id": "green_1",
+          "seen_probes": 7,
+          "total_probes": 7,
+          "visible_pixels": 1677,
+          "visible_bbox_xyxy": [
+            559,
+            241,
+            602,
+            286
+          ],
+          "any_probe_visible": true,
+          "qualified_visible": true
+        }
+      ],
+      "pixel_visible_count": 1,
+      "any_probe_visible_count": 1,
+      "qualified_visible_count": 1,
+      "own_start_RGB_sha256": "700ed6ba4524dc86c03db3dfd249e069d4e35cbd4ac8ccb04e2de35e7d016d93"
+    }
+  ],
+  "physics_steps": 0,
+  "training_updates": 0,
+  "teacher_actions": 0,
+  "GT_student_inputs": 0,
+  "scope": "independent saved-result recount/native and own-input metadata; no new rollout or success inference",
+  "raw_summary": {
+    "path": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/summary.json",
+    "sha256": "b535d8f10a39f13ee49febb70efeec98c9ca1be8a66d3397cd4fad268ac5fc7b"
+  },
+  "rejection_table": {
+    "path": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/rejection_table-final.json",
+    "sha256": "bfe873ad3268ffcb487c99f027455f2d18712e67869563c191924b00d3841bb6"
+  }
+}

@@ -1,0 +1,119 @@
+{
+  "schema": "ugrp.act17.v7.r1.summary.v1",
+  "status": "NOT_READY",
+  "complete": true,
+  "research_rounds_executed": 1,
+  "max_rounds": 3,
+  "teacher": {
+    "gate_n": 40,
+    "gate_N": 40,
+    "recorded_n": 240,
+    "recorded_N": 240,
+    "scope": "teacher not student success"
+  },
+  "dataset": {
+    "TRAIN_episodes": 200,
+    "TRAIN_rows": 72572,
+    "VAL_episodes": 40,
+    "VAL_rows": 14528
+  },
+  "models": {
+    "M": {
+      "updates": 10000,
+      "validation_n": 0,
+      "validation_N": 8,
+      "stable_lift_n": 0,
+      "stable_release_n": 0,
+      "cap_end": 5
+    },
+    "F": {
+      "updates": 10000,
+      "validation_n": 0,
+      "validation_N": 8,
+      "stable_lift_n": 0,
+      "stable_release_n": 0,
+      "cap_end": 3
+    },
+    "S": {
+      "updates": 10000,
+      "validation_n": 0,
+      "validation_N": 8,
+      "stable_lift_n": 0,
+      "stable_release_n": 0,
+      "cap_end": 7
+    }
+  },
+  "final40_submitted": false,
+  "selection": "NO_VAL8_PASS",
+  "open_loop": {
+    "VAL_alignment_frames": 889,
+    "wheel_p90_full_scale": {
+      "M": 0.35,
+      "F": 0.35,
+      "S": 0.35
+    },
+    "servo_p90_PWM_counts": {
+      "M": 54,
+      "F": 54.6,
+      "S": 51
+    }
+  },
+  "closed_loop": {
+    "failed_runs": 24,
+    "pre_exit_teacher_available": 8,
+    "pre_exit_teacher_unavailable": 16,
+    "saved_observations": 15124,
+    "valid_oracle_labels": 1268,
+    "potential_hold_excluded": 13856,
+    "invisible_measurements": 0,
+    "held_world_reads": 0
+  },
+  "distribution": {
+    "models_public_verified": 3,
+    "full_inventories_verified_files": 69,
+    "scope": "anonymous full hashes and bundled CPU loading; not physical task success"
+  },
+  "retrieval": {
+    "files": 64,
+    "full_SHA_verified": true,
+    "raw_states_tensors_weights_on_Mac": false
+  },
+  "VM": {
+    "name": "ugrp-act-l4-gcp2",
+    "project": "ugrp-sim-b-1014",
+    "status": "TERMINATED",
+    "leases_released": true,
+    "foreign_compute_found": false
+  },
+  "records": [
+    {
+      "path": "experiments/2026-10-17-act17/v7/results/validation-independent-r1.json",
+      "sha256": "fa214161a670417e98e16d1abfc941cf68fc966f33330cd1a88b3de5a883d001"
+    },
+    {
+      "path": "experiments/2026-10-17-act17/v7/results/validation-rejection-table-r1.json",
+      "sha256": "bfe873ad3268ffcb487c99f027455f2d18712e67869563c191924b00d3841bb6"
+    },
+    {
+      "path": "experiments/2026-10-17-act17/v7/results/open-loop-complete-r1.json",
+      "sha256": "bca26180353c7b24d07553bf69a5c68b4c6e48ae4658688800f848576b4adf3e"
+    },
+    {
+      "path": "experiments/2026-10-17-act17/v7/results/pre-exit24-summary-r1.json",
+      "sha256": "263cac17e721c3f04a59bddbd11a3a573612882a8487eec49330d9224c6c8221"
+    },
+    {
+      "path": "experiments/2026-10-17-act17/v7/results/selection-r1.json",
+      "sha256": "2a9921a772d82150abddbcd8489ae9dfb2209c92f8c6e6b355b0a260acf01006"
+    },
+    {
+      "path": "experiments/2026-10-17-act17/v7/results/delivery-verified-r1.json",
+      "sha256": "0d132002a45cd22af570851cc94ae2e965d32009ae7fd7b08477dea1bec5107b"
+    },
+    {
+      "path": "experiments/2026-10-17-act17/v7/results/vm-stopped-r1.json",
+      "sha256": "d868b65dbe08718eaf99b01996f8f9b3fbd1e323618c243df610d0e47056dc7b"
+    }
+  ],
+  "scope": "all requested R1 comparisons retrieved and observed, scientific negative result; code CI/review/merge separate"
+}

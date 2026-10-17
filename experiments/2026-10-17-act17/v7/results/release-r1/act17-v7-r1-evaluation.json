@@ -1,0 +1,150 @@
+{
+  "status": "NOT_READY",
+  "cohort": "act17-v7-native",
+  "evaluation_source_sha": "de6170d93433fe340806a0881a45f23b19e6af4e",
+  "counts": {
+    "M": {
+      "task_success": 0,
+      "any_same_kind_success": 0,
+      "cap_end": 5,
+      "sequence_complete": 3,
+      "grasp_done_requested": 4,
+      "lift_success": 0,
+      "release_success": 0,
+      "N": 8,
+      "by_kind": {
+        "cyan": {
+          "N": 2,
+          "assigned_success": 0,
+          "any_same_kind_success": 0
+        },
+        "red": {
+          "N": 2,
+          "assigned_success": 0,
+          "any_same_kind_success": 0
+        },
+        "green": {
+          "N": 2,
+          "assigned_success": 0,
+          "any_same_kind_success": 0
+        },
+        "yellow": {
+          "N": 2,
+          "assigned_success": 0,
+          "any_same_kind_success": 0
+        }
+      }
+    },
+    "F": {
+      "task_success": 0,
+      "any_same_kind_success": 0,
+      "cap_end": 3,
+      "sequence_complete": 5,
+      "grasp_done_requested": 5,
+      "lift_success": 0,
+      "release_success": 0,
+      "N": 8,
+      "by_kind": {
+        "cyan": {
+          "N": 2,
+          "assigned_success": 0,
+          "any_same_kind_success": 0
+        },
+        "red": {
+          "N": 2,
+          "assigned_success": 0,
+          "any_same_kind_success": 0
+        },
+        "green": {
+          "N": 2,
+          "assigned_success": 0,
+          "any_same_kind_success": 0
+        },
+        "yellow": {
+          "N": 2,
+          "assigned_success": 0,
+          "any_same_kind_success": 0
+        }
+      }
+    },
+    "S": {
+      "task_success": 0,
+      "any_same_kind_success": 0,
+      "cap_end": 7,
+      "sequence_complete": 1,
+      "grasp_done_requested": 1,
+      "lift_success": 0,
+      "release_success": 0,
+      "N": 8,
+      "by_kind": {
+        "cyan": {
+          "N": 2,
+          "assigned_success": 0,
+          "any_same_kind_success": 0
+        },
+        "red": {
+          "N": 2,
+          "assigned_success": 0,
+          "any_same_kind_success": 0
+        },
+        "green": {
+          "N": 2,
+          "assigned_success": 0,
+          "any_same_kind_success": 0
+        },
+        "yellow": {
+          "N": 2,
+          "assigned_success": 0,
+          "any_same_kind_success": 0
+        }
+      }
+    }
+  },
+  "initial_multiple_same_kind": {
+    "pixel_visible_count": {
+      "repeated_worlds": 0,
+      "world_N": 24,
+      "unique_starts": 0,
+      "unique_N": 8
+    },
+    "any_probe_visible_count": {
+      "repeated_worlds": 0,
+      "world_N": 24,
+      "unique_starts": 0,
+      "unique_N": 8
+    },
+    "qualified_visible_count": {
+      "repeated_worlds": 0,
+      "world_N": 24,
+      "unique_starts": 0,
+      "unique_N": 8
+    }
+  },
+  "raw_proof_sha256": "fa214161a670417e98e16d1abfc941cf68fc966f33330cd1a88b3de5a883d001",
+  "selection": {
+    "approved": false,
+    "frozen_before_final": false,
+    "candidate": null,
+    "validation_report": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/summary.json",
+    "validation_report_sha256": "b535d8f10a39f13ee49febb70efeec98c9ca1be8a66d3397cd4fad268ac5fc7b",
+    "counts": {
+      "F": 0,
+      "M": 0,
+      "S": 0
+    },
+    "completed_candidates": [
+      "F",
+      "M",
+      "S"
+    ],
+    "tie_priority": [
+      "F",
+      "M",
+      "S"
+    ],
+    "rule": "all8 task cases pass; then fixed F,M,S; no final results used",
+    "protocol_sha256": "9bcf20f4ee91a95ae84ce548b8dc0c99c44de4b0351e1f156749ec93a1d89adc",
+    "status": "NO_VAL8_PASS"
+  },
+  "scope": "all24 native VAL runs fully observed; no FINAL40; does not change successful archive/loading verification"
+}

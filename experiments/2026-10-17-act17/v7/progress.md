@@ -1,6 +1,6 @@
 # v7 진행 기록
 
-2026-10-17: v4 예외 없이 v7 별도 관문·240기록·변환을 완료했다. M/F/S 각10000 update·저장 재로딩을 완료했다. 동일 VAL8×3 실제 native 평가와 VAL14528행 개루프 측정 중이다.
+2026-10-17: v4 예외 없이 v7 별도 관문·240기록·변환을 완료했다. M/F/S 각10000 update·저장 재로딩을 완료했다. 동일 VAL8×3 실제 native 평가와 개루프/폐루프 감사를 완료했다. 학생 성공은 M/F/S 모두0/8로 NOT_READY다.
 
 | 단계 | 완료/요청 | 확인 범위 |
 |---|---:|---|
@@ -10,7 +10,7 @@
 | 나머지 기록 | 236/236 성공 | 원본Score·실제XML·native0·held/invisible0 재검사, controller manifest48424파일 검증; pilot포함240/240 |
 | 데이터 변환 | TRAIN200·VAL40 시작 | TRAIN72572행/VAL14528행, 정렬4412/889행, TRAIN만으로 정규화, 실패 시연 제외0 |
 | 연구 학습 | M/F/S 3/3 완료 | source e1b7de0f7, 각10000 update·같은 seed·실제전처리일치·체크포인트 재로딩 검증 |
-| 학생 VAL8 / FINAL40 | VAL24 실행 중 / FINAL 미제출 | source de6170d93, 네 XML 그룹 총24세계·각 후보 같은8시드; 최종 완료 전 성공률 미집계 |
+| 학생 VAL8 / FINAL40 | VAL24 완료·M/F/S0/8 / FINAL 미제출 | source de6170d93, 안정 들기/놓기0, cap_end5/3/7; NO_VAL8_PASS |
 
 첫 준비 시도는 Scene.build가 빌드 전의 메타데이터 주석을 덮어써서 중단했다. 실제 XML은 v7이었다.
 원본을 고쳐 쓰지 않고 converter가 실제 최종 XML·정적 시나리오 해시를 확인하도록 수정했다.
@@ -63,3 +63,5 @@ gate/pilot/bulk와 준비 시도에 RUN_META 보존 분류를 소급 추가했�
 
 따라서 원본 v4뿐 아니라 이 v7에서도 교사 상태의 예측 오차가 남는다. 폐루프 누적만으로 설명할 수 없으며 학습 적합도·표현·데이터의 구간별 학습 문제를 포함한다. 정규화/초기 입력/한 틱 이력 대조 통과를 모든 버그 부재로 확대하지 않는다. 최종 폐루프 분류는 VAL이 모두 닫힌 뒤의 동일 상태 교사 감사·영상과 함께 기록한다.
 [첫30 실제 입력/시각](results/validation-first30-review-r1.json)과 [whitelist 실검사](results/validation-first30-whitelist-check-r1.json)는6139관측·금지 필드0을 확인한다. 원 JPEG 기록 시각 차로 잰 owner별 첫30 SIM초 지표 중앙값은4.33453 wall/(SIM×planned native world), 원 배치 지연 중앙값은20.8834 wall/SIM이다. 컴파일/초기 reset은 제외했고 폐쇄 후 hardlink 압축 전에 시각을 보존했다. open-loop GPU 측정과 동시 실행한 기록용 수치라 별도 속도 벤치마크나 중단 기준으로 쓰지 않는다.
+
+최종 [R1 결과](RESULTS.md): M/F/S 모두 NOT_READY, FINAL40 미제출. 원본·동일 종류 채점0/8, 모든 종류0/2, 초기 복수 동색0/8. 실패24개 b 표·대표 실패2+성공교사1의 전체2Hz/말미10Hz 검토를 완료했다. 유효 counterfactual8/24, 미확인16/24를 구분했고 추가 물리·학습은 내지 않았다. 분석 reader/scene metadata 재시도는 원본 실패 기록과 함께 보존했다. 64파일 전체SHA 회수 및 타lease/연산0 확인 뒤 L4 TERMINATED를 확인했다.

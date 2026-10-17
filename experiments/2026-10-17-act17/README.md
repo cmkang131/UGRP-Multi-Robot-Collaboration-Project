@@ -80,3 +80,5 @@ FINAL을 재평가하면 기존91620–91659와 별도 새 seed를 등록해야 
 S의 네 단계 균등 선택은 검증된 성공 처방이 아니라 별도 가설이며, ACT/Mobile ALOHA의
 시연 수를 우리 과제의 보장 성공률로 이전하지 않는다. 새 VAL 개루프·폐루프 결과를 본 뒤에만
 후속 cadence 또는 더 긴 학습 라운드를 결정한다.
+
+최종 v7 R1은 [RESULTS.md](v7/RESULTS.md)에 있다. 새 데이터240시연의 M/F/S VAL8은 모두0/8이었고, [개루프 표](v7/results/error-table-r1.md)·[폐루프24표](v7/pre-exit-comparison.md)·funnel·재생·모델 공개 배포 검증을 보존했다. 이 결과를 성공으로 확대하거나 FINAL40을 제출하지 않았다.
