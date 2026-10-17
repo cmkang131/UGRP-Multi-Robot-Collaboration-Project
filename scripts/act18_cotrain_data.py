@@ -64,9 +64,19 @@ def native_episodes(root, split, chunk=20, smooth=5):
         if not np.array_equal(targets[:, :common, BASE_ACTION_DIMS:],
                               action[:, :common, BASE_ACTION_DIMS:]):
             raise ValueError('native co-training targets changed non-base columns')
-        frames = read(folder/'frames.json')
+        # The native shard stores one CHW image per recorded frame in images.npy;
+        # image_index holds four history frame ids whose last entry is "now".
+        for name, digest in episode['files'].items():
+            if sha256(folder/name) != digest:
+                raise ValueError('native shard file hash mismatch: '+name)
+        images_path = folder/'images.npy'
+        with np.load(folder/'tensors.npz', allow_pickle=False) as archive:
+            image_count = int(archive['image_index'].max())+1
+        image_shape = np.load(images_path, mmap_mode='r', allow_pickle=False).shape
+        if image_shape[0] != image_count:
+            raise ValueError('native image count mismatch')
         episodes.append(dict(seed=episode['seed'], split=split, state=state, action=targets,
-                             action_is_pad=pad, image_index=image_index, frames=frames,
+                             action_is_pad=pad, image_index=image_index, images_path=str(images_path),
                              metadata=metadata, rows=len(state)))
     if not episodes:
         raise ValueError('native split has no episodes')
@@ -88,6 +98,8 @@ class CoTrainingDataset:
         self.v7_root = Path(v7_root)
         self.native_root = Path(native_root)
         self.native = native_episodes(native_root, 'train', chunk=chunk, smooth=base_smooth_window)
+        self.native_images = [np.load(episode['images_path'], mmap_mode='r', allow_pickle=False)
+                              for episode in self.native]
         self.native_manifest_sha256 = original_sha256(self.native_root/'manifest.json')
         self.manifest = self.v7.manifest
         # combined statistics over TRAIN rows: state mean/std and action mean/std
@@ -138,8 +150,10 @@ class CoTrainingDataset:
             start = int(self.native_cumsum[episode_index-1]) if episode_index else 0
             row = local-start
             episode = self.native[episode_index]
-            frame = episode['frames'][int(episode['image_index'][row][-1])]
-            image = normalized_image(raw_image(frame['path'], frame['sha256'], False))
+            frame = np.asarray(self.native_images[episode_index][int(episode['image_index'][row][-1])])
+            from PIL import Image
+            frame = Image.fromarray(frame.transpose(1, 2, 0)).resize((640, 480), Image.BILINEAR)
+            image = normalized_image(np.asarray(frame).transpose(2, 0, 1).copy())
             origin = ORIGIN_NATIVE
             state = episode['state'][row]
             action = episode['action'][row]
