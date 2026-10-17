@@ -18,6 +18,7 @@ from act16w_runtime import require_gcp2,frozen_source,sha256,ACT_SHA
 from act17_data import read
 from act17_v7 import ROOT,B,Q,T
 from act17_selection import validate_final_selection
+from act17_world_assignment import expand_cases
 
 
 def write(path,value):
@@ -30,6 +31,7 @@ def main():
         p.add_argument('--'+key,type=Path,required=True)
     p.add_argument('--split',choices=['validation','final'],default='validation')
     p.add_argument('--selection',type=Path)
+    p.add_argument('--batch-candidate-worlds',action='store_true',help='default-off policy-isolated worlds in one exact-model native batch')
     a=p.parse_args()
     if not a.enabled:p.error('ACT17 matched queue is default OFF')
     host=require_gcp2(training=True);source=frozen_source(ROOT);protocol=read(a.protocol);gate=read(a.native_gate)
@@ -61,6 +63,7 @@ def main():
         stack_values=read(a.stack_values),models=models,split=a.split,requested_seeds=sorted(wanted),
         rejection_table=str(a.out/'rejection_table.json'),wall_cap=None,planned_worlds=24,teacher_fallback=False)
     queue.update(selected_candidates=candidates,selection=dict(path=str(a.selection),sha256=sha256(a.selection)) if a.selection else None)
+    queue['batch_candidate_worlds']=a.batch_candidate_worlds
     write(a.out/'queue.json',queue)
     physics=B/'runs/simalt3/warp-env/bin/python';python=B.parent/'ugrp-rl1b-act-env/bin/python'
     subprocess.run([str(physics),str(a.checker),str(a.out/'queue.json'),'--stack',str(a.stack),
@@ -72,8 +75,10 @@ def main():
     groups=[(i,g) for i,g in groups if g]
     if len([x for _,g in groups for x in g])!=len(wanted) or {plans[x]['seed'] for _,g in groups for x in g}!=wanted:
         raise ValueError('exact unique registered evaluation split required')
-    if any(len(g)>24 for _,g in groups):groups=[(i*1000+j,g[j:j+24]) for i,g in groups for j in range(0,len(g),24)]
-    pending=[(candidate,i,g) for i,g in groups for candidate in candidates]
+    group_limit=24//len(candidates) if a.batch_candidate_worlds else 24
+    if any(len(g)>group_limit for _,g in groups):
+        groups=[(i*1000+j,g[j:j+group_limit]) for i,g in groups for j in range(0,len(g),group_limit)]
+    pending=[(tuple(candidates),i,g) for i,g in groups] if a.batch_candidate_worlds else [((candidate,),i,g) for i,g in groups for candidate in candidates]
     running=[];finished=[];stop={'requested':False};started=time.monotonic()
     lease=B/'leases'/('act17-'+a.split+'.json');start=datetime.now(timezone.utc).isoformat()
     with lease.open('x') as f:json.dump(dict(task='act17',pid=os.getpid(),start=start,expected_end=purpose,concurrency=0),f)
@@ -86,46 +91,51 @@ def main():
             for job in list(running):
                 rc=job['process'].poll()
                 if rc is not None:
-                    job['log'].close();finished.append(dict(candidate=job['candidate'],indices=job['indices'],returncode=rc,out=str(job['out'])));running.remove(job)
+                    job['log'].close();finished.append(dict(candidates=list(job['candidates']),indices=job['indices'],returncode=rc,out=str(job['out'])));running.remove(job)
                     if rc:raise RuntimeError('evaluation child HOST_ERROR; retain all unfinished starts')
                     subprocess.run([str(physics),str(ROOT/'scripts/act17_compact_records.py'),'--root',str(job['out']),
                         '--out',str(job['out'].parent/'storage-receipt.json')],check=True)
             foreign=sum(int(read(f).get('concurrency',0)) for f in lease.parent.glob('*.json') if f!=lease)
-            capacity=min(24,40-foreign)-sum(len(j['indices']) for j in running)
-            for candidate,i,g in list(pending):
-                if len(running)>=3 or len(g)>capacity:continue
-                folder=a.out/(candidate+'-'+str(i));folder.mkdir();out=folder/'evaluation'
-                write(folder/'plans.json',dict(episodes=[plans[x] for x in g]));first=inventory[g[0]]
+            capacity=min(24,40-foreign)-sum(j['nworld'] for j in running)
+            for names,i,g in list(pending):
+                worlds=len(g)*len(names)
+                if len(running)>=3 or worlds>capacity:continue
+                folder=a.out/(''.join(names)+'-'+str(i));folder.mkdir();out=folder/'evaluation'
+                expanded,assignment=expand_cases([plans[x] for x in g],names)
+                write(folder/'plans.json',dict(episodes=expanded));first=inventory[g[0]]
                 command=[str(python),'-u',str(ROOT/'scripts/act17_evaluate_v7.py'),'--act17-v7','--enabled','--full-evaluation',
                     '--physics-python',str(physics),'--qualified-source',str(Q),'--teacher-source',str(T),
                     '--qualification',str(B/'runs/warp3/teacher-gate-qualification-r1.json'),
                     '--references',str(a.references/'per-world-references.json'),'--compiled-reference',first['actuator'],
                     '--compiled-geometry',first['geometry'],'--plans',str(folder/'plans.json'),'--actor-source',str(B/'src'/ACT_SHA),
-                    '--checkpoint',models[candidate]['path'],'--out',str(out),'--protocol',str(a.protocol),'--split',a.split]
+                    '--checkpoint',models[names[0]]['path'],'--out',str(out),'--protocol',str(a.protocol),'--split',a.split]
                 if a.selection:command+=['--selection',str(a.selection)]
+                if a.batch_candidate_worlds:
+                    write(folder/'model-assignments.json',dict(checkpoints=models,world_candidates=assignment))
+                    command+=['--model-assignments',str(folder/'model-assignments.json')]
                 log=(folder/'evaluation.log').open('x');proc=subprocess.Popen(command,cwd=Q,stdout=log,stderr=subprocess.STDOUT,start_new_session=True,
                     env={**os.environ,'UGRP_ACT16W_NATIVE_GATE':str(a.native_gate),'MUJOCO_GL':'osmesa',
                     'LP_NUM_THREADS':'1','OMP_NUM_THREADS':'1','OPENBLAS_NUM_THREADS':'1','PYTHONDONTWRITEBYTECODE':'1'})
                 write(folder/'launch.json',dict(argv=command,pid=proc.pid,source_sha=source))
-                running.append(dict(candidate=candidate,indices=g,out=out,process=proc,log=log));pending.remove((candidate,i,g));capacity-=len(g)
-            active=[dict(candidate=j['candidate'],pid=j['process'].pid,indices=j['indices']) for j in running]
+                running.append(dict(candidates=names,indices=g,nworld=worlds,out=out,process=proc,log=log));pending.remove((names,i,g));capacity-=worlds
+            active=[dict(candidates=list(j['candidates']),pid=j['process'].pid,indices=j['indices'],nworld=j['nworld']) for j in running]
             report.update(active=active,finished=finished,pending=pending,wall_s=time.monotonic()-started)
             write(a.out/'summary.json',report);write(lease,dict(task='act17',pid=os.getpid(),start=start,expected_end=purpose,
-                concurrency=sum(len(j['indices']) for j in running),children=active));time.sleep(2)
+                concurrency=sum(j['nworld'] for j in running),children=active));time.sleep(2)
         rows=[]
         for job in finished:
             value=read(Path(job['out'])/'summary.json')
             if not value.get('complete') or value.get('status') not in ['complete','cap_end']:raise ValueError('evaluation not fully observed')
-            rows.extend(dict(candidate=job['candidate'],raw=job['out'],**row) for row in value['student_scores'])
+            if any(row['candidate'] not in job['candidates'] for row in value['student_scores']):raise ValueError('score candidate assignment differs')
+            rows.extend({**row,'raw':job['out']} for row in value['student_scores'])
         report.update(status='complete',complete=len(rows)==requested,rows=rows,candidates={c:dict(n=sum(r['task_success'] for r in rows if r['candidate']==c),
             N=sum(r['candidate']==c for r in rows)) for c in candidates})
         funnel=[]
         for c in candidates:
-            children=[read(Path(job['out'])/'rejection_table.json')['funnel'] for job in finished if job['candidate']==c]
-            # Preserve the child's chronological grasp-done -> lift -> release
-            # funnel, rather than putting whole-sequence completion first.
-            for index,gate in enumerate(children[0]):
-                funnel.append(dict(candidate=c,gate=gate['gate'],passed=sum(v[index]['passed'] for v in children),rejected=sum(v[index]['rejected'] for v in children)))
+            eligible=[r for r in rows if r['candidate']==c];previous=len(wanted)
+            for gate,key in [('requested',None),('grasp_done','grasp_done_requested'),('stable_lift','lift_success'),('stable_release','release_success'),('task_success','task_success')]:
+                if key:eligible=[r for r in eligible if r[key]]
+                funnel.append(dict(candidate=c,gate=gate,passed=len(eligible),rejected=previous-len(eligible)));previous=len(eligible)
         report['raw_outcomes']={c:{key:sum(bool(r[key]) for r in rows if r['candidate']==c)
             for key in ['issued_sequence_complete','lift_success','release_success','task_success','cap_end']} for c in candidates}
         write(a.out/'rejection_table-final.json',dict(funnel=funnel,rejections=[dict(candidate=r['candidate'],seed=r['seed'],

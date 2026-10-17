@@ -23,7 +23,7 @@ def main():
     if not a.enabled or platform.system()!='Darwin':p.error('explicit Mac memory relay only')
     ipaddress.ip_address(a.host)
     if a.receipt.exists():raise FileExistsError('inspect existing receipt; never retry overwrite')
-    ssh=['ssh','-o','BatchMode=yes','-i',str(a.key),'ugrp@'+a.host]
+    ssh=['ssh','-o','BatchMode=yes','-o','ForwardAgent=no','-i',str(a.key),'ugrp@'+a.host]
     entry=json.loads(subprocess.check_output([*ssh,'cat '+shlex.quote(a.entry)]))
     if (entry.get('schema')!='ugrp.act17.stream_package.v1' or entry['release']['tag']!=TAG or
             entry['candidate'] not in ['M','F','S'] or not entry['id'].startswith('act17-v7-native-r1-') or
