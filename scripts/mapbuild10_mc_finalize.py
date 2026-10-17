@@ -48,7 +48,7 @@ def main(a):
             endpoint_requirement_pass_cases=sum(r['final_handoff_pass'] for r in rs),
             note='endpoint scores include unresolved proposals; no physical/runtime admission'))
     dump(b/'compact-summary.json',compact)
-    if a.host=='gcp5':
+    if a.host=='gcp5' and not a.skip_likelihood_diagnostic:
         own_data=read(b/'own-streams.json');s=next(s for s in own_data['streams'] if s['id']=='r3')
         gt=read(Path(s['evaluation_source']))['frames'];field=StaticField(s['static']);diagnostics=[];end_bias=[]
         for trial in range(20):
@@ -76,11 +76,11 @@ def main(a):
         if hashlib.sha256(subprocess.check_output(['zstd','-qdc',str(dest)])).hexdigest()!=before:raise ValueError('COMPRESSION_CHANGED')
         compressed.append(dict(original=str(p),sha256=before,compressed=str(dest),compressed_sha256=hashlib.sha256(dest.read_bytes()).hexdigest()))
         p.unlink()
-    receipt=dict(source_sha='9fa2aad39',verified_at=datetime.datetime.now(datetime.timezone.utc).isoformat(),
+    receipt=dict(source_sha=(a.source/'SOURCE_SHA').read_text().strip() if (a.source/'SOURCE_SHA').exists() else '9fa2aad39',verified_at=datetime.datetime.now(datetime.timezone.utc).isoformat(),
         input_files=len(seal['input_sha256']),prediction_files=len(seal['prediction_sha256']),source_files=len(own['sources']),truth_source_files=len(g['truth_sources']),
         rgb_sha_checked=own['rgb_sha_checked'],mismatch=bad,prior_generation_link_verified=True,
-        synthetic_prior_n=len(fractions),relative_position_min_max=[fractions.min(0).tolist(),fractions.max(0).tolist()],
-        centered_xy_n=int(np.sum(np.all(np.isclose(fractions[:,:2],.5),axis=1))),compressed=compressed,
+        synthetic_prior_n=len(fractions),relative_position_min_max=[fractions.min(0).tolist(),fractions.max(0).tolist()] if len(fractions) else None,
+        centered_xy_n=int(np.sum(np.all(np.isclose(fractions[:,:2],.5),axis=1))) if len(fractions) else None,compressed=compressed,
         retrieval_sha256={p.name:sha(p) for p in b.iterdir() if p.is_file() and p.suffix=='.json' and p.stat().st_size<=65536})
     dump(b/'final-integrity.json',receipt)
     print(json.dumps(compact),flush=True)
@@ -89,5 +89,6 @@ def main(a):
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--host',choices=['gcp5','gcp3'],required=True)
+    p.add_argument('--skip-likelihood-diagnostic',action='store_true',help='no legacy-field counterfactual on new profiles or public-only streams')
     for name in ('work','source'):p.add_argument('--'+name,type=Path,required=True)
     main(p.parse_args())

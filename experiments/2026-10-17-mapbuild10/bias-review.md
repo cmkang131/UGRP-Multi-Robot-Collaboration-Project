@@ -32,3 +32,11 @@
 - 계수: `operations/r3-likelihood-summary.json`, `operations/camera-summary.json`, `wall-observations.md`.
 
 동일 R3 coarse trial0의 동결 예측 재현 차이는0. 44갱신 모두501입자(원문 `count>limit` 종료 때문에 최소500에서1개 더), 갱신 간격 중앙.8/p90 1.0/최대1.5 SIM초. 측정 전 ESS 최소365.06/중앙439.61. 이동 모델이 넣는 1회 전진 잡음 SD는 중앙24.84/p90 26.18/최대27.28 mm이며, 회전 SD 최대3.606°. 최대 전진 SD 갱신 t21.5에는 실제 입력 delta translation1.267 mm/yaw.228956 rad, rot1=0이었다. 따라서 이 자료에서 큰 rot1 역회전 분해가 주원인이라는 가설은 지지되지 않는다. 회전 자체의 alpha4 항이 전진 확산을 넣는 표준 differential 모델의 성질은 확인된다. 이것이62 mm 편향 전부를 설명하는 인과 검증은 아니다. 근거 operations/bias-r3.json, scripts/mapbuild10_bias.py; 물리/렌더0.
+
+## 공개 시작 상자 실제 녹화의 추가 반례
+
+교체 녹화 f3a91cb85는38.0 SIM·381프레임에서 LOCALIZATION_UNRESOLVED. 실제 총 이동.192886m(둘러보기 포함), 주행.021467m라3m 자료가 아니다. 끝 AMCL XY83.856mm/yaw5.503° vs 같은 프레임 OFF36.333mm/8.399°. 일곱 수렴 갱신의 실제 요구표 이탈0이지만, 마지막 분포 XY95=.170945m, yaw95=.142698rad의 결합값.389902rad가 기존.373907rad를 넘었다. 문턱은 완화하지 않는다. 적재프레임0.
+
+원본벽점27253중6726은 authored navigation bounds 밖이었다. 최근접 실제 정적 벽 P95의 프레임 중앙값은23.922mm(갱신만24.354mm)인데, 기존 거리장 P95는127/321벽프레임·15/38갱신에서 상한2m였다. 지도 bounds는 외벽 중심을 통과하고 외벽 반두께는25mm다. 기존 StaticField가 navigation bounds를 거리장 캔버스 끝으로 사용해 가까운 외벽 밖 관측에도2m를 반환하는 어댑터 결함을 확인했다. 모든 큰 잔차가 이 문제 때문이라는 주장은 아니다(최근접 잔차 자체 최대409mm).
+
+후속 **기본off 명시 profile=nav2_rgb_field_v1**는 (a) 모든 authored wall rectangle의 꼭짓점과 기존 max_occ_dist=2m 지지영역으로 거리장 extent를 만들되 원래 free-pose 목록을 byte-identical로 유지하고, (b) Nav2 노드의 min(actual sensor range, ceiling)대로 기존 virtual_scan4m를 z_rand 분모에 전달한다. σ.2,입자500–2000,α,재표본,수렴/요구표는 바꾸지 않는다. 두 어댑터 수정의 결합 후보이며 단독 기여의 인과 추정은 아니다. 새 정합기/GT 필터/추가 실제지도/시작점 보정은 없다. 기존100m/기존extent 결과와 합산하지 않고 R1–R3·별도418뷰 및 이 실제 공개상자 녹화를 오프라인으로 다시 비교한다. 추가 물리는0이다.

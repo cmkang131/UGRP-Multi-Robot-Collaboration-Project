@@ -54,7 +54,14 @@ def prepare_own(a):
     from harness.e2e_rgb_vo import between,compose
     a.work.mkdir(parents=True,exist_ok=False);streams=[];sources={};rgb_n=0;max_recompose=0.
     def load(p):sources[str(p)]=sha(p);return read(p)
-    if a.host=='gcp5':
+    if a.public_recording is not None:
+        if a.host!='gcp5':raise ValueError('PUBLIC_RECORDING_ORIGINAL_GCP5_ONLY')
+        inp=a.public_recording;own=load(inp/'own.json')['frames'];scans=load(inp/'scans.json');online=load(inp/'online-trajectory.json');pose=np.zeros(3);pred=[]
+        for r in online:
+            pose=compose(pose,r['motion_delta']);pred.append(dict(t=r['t'],off_pose=pose.tolist()))
+        inputs=[('public-r1',inp,load(inp/'static-map.json'),own,pred,scans,None,None)]
+        public_prior=load(inp/'public-start-zone.json')
+    elif a.host=='gcp5':
         inputs=[]
         for r in (1,2,3):
             inp=BASE/f'runs/mapbuild8/recording-r{r}';pred=BASE/f'runs/mapbuild9/r{r}-likelihood_product_v1-slots'
@@ -80,8 +87,9 @@ def prepare_own(a):
                 own_delta=delta.tolist(),off_pose=pose.tolist()))
             last=pose
         streams.append(dict(id=name,static=static,frames=frames,evaluation_source=str(inp/'eval-only.json'),world=world,rid=rid))
+        if a.public_recording is not None:streams[-1]['public_prior']=public_prior
     value=dict(host=a.host,streams=streams,source_sha256=sources,rgb_sha_checked=rgb_n,
-        source='sealed mapbuild9 own OFF trajectory + original own scan/servo; no evaluation state opened',
+        source='recorded own-fusion increments + original own scan/servo; no evaluation state opened' if a.public_recording else 'sealed mapbuild9 own OFF trajectory + original own scan/servo; no evaluation state opened',
         motion_recomposition_max_abs=max_recompose,truth_inputs=0,physics_steps=0,reproduction=sys.argv)
     dump(a.work/'own-streams.json',value)
     dump(a.work/'own-seal.json',dict(own_streams_sha256=sha(a.work/'own-streams.json'),sources=sources,rgb_sha_checked=rgb_n,truth_inputs=0))
@@ -102,6 +110,9 @@ def prepare_priors(a):
     import numpy as np
     own=read(a.work/'own-streams.json');rng=np.random.default_rng(a.prior_seed);priors={};offsets=[]
     for s in own['streams']:
+        if 'public_prior' in s:
+            priors[s['id']]=[s['public_prior'] for _ in range(a.trials)]
+            continue  # actual authored box; never read GT to place it
         initial=truth_for(s)[0];entries=[]
         for trial in range(a.trials):
             p=make_prior(initial,s['static'],rng,f"synthetic-{s['id']}-{trial:03d}")
@@ -111,29 +122,31 @@ def prepare_priors(a):
                 relative_x=(initial[0]-p['bounds_m'][0])/.5,relative_y=(initial[1]-p['bounds_m'][2])/.5,
                 relative_yaw=float(np.arctan2(np.sin(initial[2]-p['heading_center_rad']),np.cos(initial[2]-p['heading_center_rad'])))/(math.pi/6)))
         priors[s['id']]=entries
-    dump(a.work/'priors.json',dict(streams=priors,trials=a.trials,
-        scope='evaluation-derived conditional uncertainty boxes; not original operator regions; no exact pose or within-box offsets'))
+    public_streams=[s['id'] for s in own['streams'] if 'public_prior' in s]
+    dump(a.work/'priors.json',dict(streams=priors,trials=a.trials,public_streams=public_streams,
+        scope='actual public boxes for public_streams; other streams use evaluation-derived conditional boxes; no exact pose or within-box offsets'))
     dump(a.work/'prior-generation-eval-only.json',dict(prior_seed=a.prior_seed,trials=a.trials,relative_positions=offsets,
         truth_sources={s['evaluation_source']:sha(Path(s['evaluation_source'])) for s in own['streams']},
         priors_sha256=sha(a.work/'priors.json'),reproduction=sys.argv,
+        public_streams_no_truth_pose_reads=public_streams,
         boundary='This process uses truth ONLY to generate coarse boxes. Predictor never opens this file/evaluation sources.'))
-    print(json.dumps(dict(priors=len(offsets),trials=a.trials,scope='SYNTHETIC_CONDITIONAL_PRIORS')),flush=True)
+    print(json.dumps(dict(priors=sum(map(len,priors.values())),synthetic_priors=len(offsets),public_streams=public_streams,trials=a.trials)),flush=True)
 
 
 _data=None
-def worker_init(work,calibration,requirements):
+def worker_init(work,calibration,requirements,profile='nav2_defaults_v1'):
     global _data
     own=read(Path(work)/'own-streams.json')
-    _data=({s['id']:s for s in own['streams']},read(Path(work)/'priors.json'),read(Path(calibration)),read(Path(requirements)),Path(work))
+    _data=({s['id']:s for s in own['streams']},read(Path(work)/'priors.json'),read(Path(calibration)),read(Path(requirements)),Path(work),profile)
 
 
 def predict_job(job):
     import numpy as np
     from harness.mapbuild_amcl import StaticAMCL,OPTION
     from harness.e2e_rgb_vo import between,compose
-    streams,priors,cal,req,work=_data
+    streams,priors,cal,req,work,profile=_data
     name,trial,mode=job;s=streams[name]
-    kwargs=dict(profile='nav2_defaults_v1',option=OPTION,seed=2026101700+trial)
+    kwargs=dict(profile=profile,option=OPTION,seed=2026101700+trial)
     if mode=='coarse':kwargs.update(initial_prior_option='start_zone_prior_v1',initial_prior=priors['streams'][name][trial])
     amcl=StaticAMCL(s['static'],cal,req,**kwargs);rows=[]
     for f in s['frames']:
@@ -144,7 +157,7 @@ def predict_job(job):
             blocked_object_status='observed_wall_identity_not_measured',minimum_gap_m=e['minimum_gap_m'],gap_status=e['gap_status'],
             xy95=e.get('xy_p95_m'),yaw95=e.get('yaw_p95_rad'),ess=e.get('ess')))
     folder=work/'predictions';file=folder/f'{name}-{mode}-{trial:03d}.json'
-    dump(file,dict(stream=name,trial=trial,mode=mode,particle_seed=2026101700+trial,rows=rows,
+    dump(file,dict(stream=name,trial=trial,mode=mode,profile=profile,particle_seed=2026101700+trial,rows=rows,
         own_map_frames=len(amcl.local_map),runtime_qualified=False,ready_for_handoff=False,adopted_pose=None))
     if trial==0 and mode=='coarse':dump(folder/f'{name}-own-map.json',amcl.local_map)
     return dict(stream=name,trial=trial,mode=mode,file=file.name,sha256=sha(file),
@@ -160,7 +173,7 @@ def predict(a):
     if not read(a.stack_check).get('ok'):raise ValueError('HISTORICAL_STACK_CHECK_REQUIRED')
     (a.work/'predictions').mkdir(exist_ok=False)
     jobs=[(s['id'],t,mode) for mode in ('coarse','global') for s in own['streams'] for t in range(a.trials)]
-    with ProcessPoolExecutor(max_workers=a.workers,initializer=worker_init,initargs=(a.work,a.calibration,a.requirements)) as pool:
+    with ProcessPoolExecutor(max_workers=a.workers,initializer=worker_init,initargs=(a.work,a.calibration,a.requirements,a.amcl_profile)) as pool:
         result=list(pool.map(predict_job,jobs))
     dump(a.work/'predictions/index.json',result)
     files={p.name:sha(p) for p in sorted((a.work/'predictions').glob('*.json'))}
@@ -226,7 +239,8 @@ def score(a):
                 final_xy_m=percentiles('final_xy_m'),final_yaw_deg=percentiles('final_yaw_deg'),xy_rmse_m=percentiles('xy_rmse_m'),
                 convergence_sim_s=percentiles('first_converged_sim_s'),convergence_own_path_m=percentiles('first_converged_own_path_m'),
                 off_final_xy_m=rs[0]['off_final_xy_m'],off_final_yaw_deg=rs[0]['off_final_yaw_deg'],off_xy_rmse_m=rs[0]['off_xy_rmse_m']))
-    dump(a.work/'evaluation.json',dict(host=a.host,scope='conditional synthetic coarse priors; no actual operator prior, no physical success',
+    scope=('actual recorded public coarse box; particle-seed repeats of one recording, not independent physical trials' if any('public_prior' in s for s in streams.values()) else 'conditional synthetic coarse priors; no actual operator prior, no physical success')
+    dump(a.work/'evaluation.json',dict(host=a.host,scope=scope,amcl_profile=a.amcl_profile,
         trials=a.trials,results=results,aggregates=aggregates,physics_steps=0,new_physical_runs=0,
         prediction_seal_sha256=sha(a.work/'prediction-seal.json'),requirements_sha256=sha(a.requirements),reproduction=sys.argv))
     table=dict(source=str(a.work),reproduction=sys.argv,cohorts=[],frame_cohorts=[],distribution=[])
@@ -243,7 +257,7 @@ def score(a):
     dump(a.work/'rejection_table.json',table)
     dump(a.work/'summary.json',dict(host=a.host,trials=a.trials,streams=len(streams),cases=len(results),aggregates=aggregates,
         status='OFFLINE_PASS' if all(r['offline_pass'] for r in results if r['mode']=='coarse') else 'NOT_READY',
-        scope='synthetic conditional prior only; no physical success; direct exact truth to estimator=0; evaluation truth used for coarse box placement',
+        scope=scope,amcl_profile=a.amcl_profile,
         new_physical_runs=0,rejection_table=str(a.work/'rejection_table.json')))
     print(json.dumps(aggregates),flush=True)
 
@@ -254,6 +268,8 @@ if __name__=='__main__':
     p.add_argument('--host',choices=['gcp5','gcp3'],required=True);p.add_argument('--work',type=Path,required=True)
     p.add_argument('--trials',type=int,default=20);p.add_argument('--prior-seed',type=int,default=46820261017)
     p.add_argument('--workers',type=int,default=4)
+    p.add_argument('--amcl-profile',choices=['nav2_defaults_v1','nav2_rgb_field_v1'],default='nav2_defaults_v1')
+    p.add_argument('--public-recording',type=Path,help='separate actual public-box recording; GT is never used to place this prior')
     for name in ('calibration','requirements','queue','stack-check'):p.add_argument('--'+name,type=Path)
     a=p.parse_args()
     if a.trials<20:raise ValueError('COORDINATOR_MINIMUM_20_MC_TRIALS')

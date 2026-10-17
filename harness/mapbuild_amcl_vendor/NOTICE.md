@@ -55,3 +55,13 @@ Python motion normalizes final heading to S1; the C++ body leaves an unbounded
 heading. Native motion parity is checked modulo 2pi, not raw yaw bytes. This
 coordinate choice can change histogram bins at the yaw seam, so full native
 ROS filter equivalence is not claimed.
+
+mapbuild10 explicit nav2_rgb_field_v1 adapter (default off): the translated
+likelihood accepts range_max; historical calls still use100. Nav2 AmclNode
+725–730 sets LaserData.range_max=min(message sensor limit, configured ceiling).
+UGRP virtual_scan already rejects ranges>=4m, so this adapter supplies4m.
+The new StaticField extent covers every authored wall rectangle plus the
+unchanged2m maximum-distance support; pose free-space remains byte-identical.
+This fixes navigation-bounds/occupancy-extent confusion without changing the
+Nav2 cubic-sum, sigma, KLD or motion algorithms. Both adapter differences and
+their evaluation limits are recorded in experiments/2026-10-17-mapbuild10.

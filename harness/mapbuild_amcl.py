@@ -19,7 +19,7 @@ class StaticField:
     Resolution .01m and max distance 2m are unchanged existing AMCL ports.
     Free cell list is the ENTIRE authored bounds minus authored wall interiors.
     """
-    def __init__(self, static_map):
+    def __init__(self, static_map, *, full_wall_extent=False):
         self.res = .01
         x0, x1, y0, y1 = static_map['bounds_m']
         self.origin = np.array([x0, y0], float)
@@ -41,6 +41,32 @@ class StaticField:
         self.free = np.column_stack((x[inside], y[inside]))
         if not len(self.free):
             raise ValueError('STATIC_FREE_SPACE_REQUIRED')
+        if full_wall_extent:
+            # Authored bounds are NAVIGATION limits passing through the outer
+            # wall centres, not a complete occupancy-grid extent. Build the
+            # same truncated Euclidean field over ALL authored wall rectangles
+            # plus the existing Nav2 max_occ_dist=2m support. This is a map
+            # adapter correction, not a new likelihood/matcher or GT fit.
+            # Keep the original free list byte-identical: padded cells never
+            # become allowed poses and paired RNG proposals remain identical.
+            vertices=[]
+            for o in static_map['obstacles']:
+                if 'wall' not in o['id']:continue
+                hx,hy=o['half_extents_m'];c,s=math.cos(o.get('yaw_rad',0)),math.sin(o.get('yaw_rad',0))
+                R=np.array([[c,-s],[s,c]])
+                vertices.extend(np.array([[-hx,-hy],[hx,-hy],[hx,hy],[-hx,hy]])@R.T+o['center_m'])
+            vertices=np.asarray(vertices)
+            lower=self.origin-np.ceil(np.maximum(0,self.origin-vertices.min(0)+2.)/self.res)*self.res
+            upper=np.array([x1,y1])+np.ceil(np.maximum(0,vertices.max(0)+2.-[x1,y1])/self.res)*self.res
+            nx,ny=np.rint((upper-lower)/self.res).astype(int)+1
+            iy,ix=np.indices((ny,nx));x,y=lower[0]+ix*self.res,lower[1]+iy*self.res
+            occupied=np.zeros((ny,nx),bool)
+            for o in static_map['obstacles']:
+                if 'wall' not in o['id']:continue
+                cx,cy=o['center_m'];hx,hy=o['half_extents_m'];c,s=math.cos(o.get('yaw_rad',0)),math.sin(o.get('yaw_rad',0))
+                dx,dy=x-cx,y-cy
+                occupied|=(abs(c*dx+s*dy)<=hx+1e-12)&(abs(-s*dx+c*dy)<=hy+1e-12)
+            self.origin=lower;self.dist=np.minimum(2.,distance_transform_edt(~occupied)*self.res)
 
     def distances(self, points):
         ij = np.floor((np.asarray(points)-self.origin)/self.res+.5).astype(int)
@@ -57,13 +83,14 @@ class StaticAMCL:
             raise ValueError('UNKNOWN_AMCL_OPTION')
         if calibration.get('truth_inputs') != 0:
             raise ValueError('OWN_CALIBRATION_REQUIRED')
-        if profile not in ('calibrated_kld_v1','fixed_population_v1','nav2_sigma_fixed_v1','likelihood_product_v1','nav2_defaults_v1'):
+        nav2_profiles=('nav2_defaults_v1','nav2_rgb_field_v1')
+        if profile not in ('calibrated_kld_v1','fixed_population_v1','nav2_sigma_fixed_v1','likelihood_product_v1',*nav2_profiles):
             raise ValueError('UNKNOWN_AMCL_PROFILE')
         if initial_prior_option not in ('off', 'start_zone_prior_v1'):
             raise ValueError('UNKNOWN_INITIAL_PRIOR_OPTION')
         if initial_prior_option == 'off' and initial_prior is not None:
             raise ValueError('EXPLICIT_START_ZONE_TOGGLE_REQUIRED')
-        if initial_prior_option != 'off' and (initial_prior is None or profile != 'nav2_defaults_v1'):
+        if initial_prior_option != 'off' and (initial_prior is None or profile not in nav2_profiles):
             raise ValueError('COARSE_START_ZONE_AND_NAV2_DEFAULTS_REQUIRED')
         self.initial_prior_option = initial_prior_option
         self.start_zone_id = initial_prior.get('zone_id') if isinstance(initial_prior, dict) else None
@@ -77,11 +104,11 @@ class StaticAMCL:
         # historical settings unchanged; no GT fitting or beam cap
         # invented here. Upstream cubic sum can use 96 beams on 96 slots.
         # https://docs.nav2.org/rolling/configuration_and_development/configuration_guide/others/configuring_amcl/
-        if profile == 'nav2_defaults_v1':
+        if profile in nav2_profiles:
             self.minimum_particles, self.maximum_particles = 500, 2000
-        self.alpha_slow, self.alpha_fast = ((0., 0.) if profile == 'nav2_defaults_v1' else (.001, .1))
+        self.alpha_slow, self.alpha_fast = ((0., 0.) if profile in nav2_profiles else (.001, .1))
         self.option = option; self.method = method
-        self.field = StaticField(static_map); self.rng = np.random.default_rng(seed)
+        self.field = StaticField(static_map,full_wall_extent=profile=='nav2_rgb_field_v1'); self.rng = np.random.default_rng(seed)
         self.alphas = np.asarray(calibration['alphas'], float)
         if self.alphas.shape != (4,) or not np.isfinite(self.alphas).all() or (self.alphas<0).any():
             raise ValueError('INVALID_MOTION_ALPHAS')
@@ -89,7 +116,10 @@ class StaticAMCL:
         # sigma directly (not fitted to these replays). It is NOT a confidence
         # bound or proof of sensor Gaussianity. The prior diagnostic used GT
         # only to measure scan error, not to fit motion or initialize poses.
-        self.sigma_hit = .2 if profile in ('nav2_sigma_fixed_v1', 'nav2_defaults_v1') else .0202
+        self.sigma_hit = .2 if profile in ('nav2_sigma_fixed_v1', *nav2_profiles) else .0202
+        # Existing virtual_scan rejects source ranges >=4m. Nav2's node uses
+        # this sensor limit in z_rand/range_max, not the configured ceiling100.
+        self.range_max=4. if profile=='nav2_rgb_field_v1' else 100.
         self.requirements = requirements
         if initial_prior_option != 'off':
             from harness.mapbuild_start_zone import sample
@@ -180,7 +210,8 @@ class StaticAMCL:
             # already observed. No interpolation between separated detections.
             points = np.unique(segments.reshape(-1, 2), axis=0)
         sensor=nav2.likelihood_product if self.profile=='likelihood_product_v1' else nav2.likelihood
-        values = sensor(self.field, self.particles, points, self.sigma_hit)
+        values = sensor(self.field, self.particles, points, self.sigma_hit,
+            **({'range_max':self.range_max} if self.profile=='nav2_rgb_field_v1' else {}))
         total = float(self.weights@values); avg = total/len(self.weights)
         self.weights *= values; self.weights /= total
         # Published augmented-MCL defaults in existing UGRP port, .001/.1.

@@ -35,11 +35,13 @@ def motion(particles, delta, alphas, rng):
     particles[:, 2] = wrap(particles[:, 2]+r1+r2)
 
 
-def likelihood(field, poses, points, sigma_hit, max_beams=60):
+def likelihood(field, poses, points, sigma_hit, max_beams=60, range_max=100.):
     """likelihood_field_model.cpp sensorFunction: p=1; p+=pz^3.
 
     points are ALREADY projected endpoints in chassis axes; no extra laser
-    transform. max_beams=60, z_hit=z_rand=.5, range_max=100 are Nav2 defaults.
+    transform. max_beams=60, z_hit=z_rand=.5. Historical callers retain100m;
+    Nav2 AmclNode lines725-730 actually uses min(sensor.range_max,100m).
+    The explicit RGB adapter supplies its existing4m sensor guard, not a fit.
     Missing RGB returns do not appear in points and cannot become max-range.
     """
     points = np.asarray(points, float).reshape(-1, 2)
@@ -56,7 +58,7 @@ def likelihood(field, poses, points, sigma_hit, max_beams=60):
         x = p[:, 0, None]+c*points[None, :, 0]-s*points[None, :, 1]
         y = p[:, 1, None]+s*points[None, :, 0]+c*points[None, :, 1]
         z = field.distances(np.stack((x, y), axis=-1))
-        pz = .5*np.exp(-z*z/(2*sigma_hit*sigma_hit))+.5/100.
+        pz = .5*np.exp(-z*z/(2*sigma_hit*sigma_hit))+.5/range_max
         result[begin:begin+len(p)] = 1.+np.sum(pz*pz*pz, axis=1)
     return result
 
