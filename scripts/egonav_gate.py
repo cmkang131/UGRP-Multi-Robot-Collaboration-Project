@@ -59,17 +59,23 @@ def module(name, path):
 
 
 def contact_pairs(wd, n):
-    """Return active geom pairs, independent of renderer/controller code."""
+    """Return active CONSTRAINT geom pairs, independent of renderer code."""
     import numpy as np
-    pairs = []
     try:
-        geom = wd.contact.geom.numpy()
-        count = wd.ncon.numpy()
+        count = int(wd.nacon.numpy()[0])
+        world = wd.contact.worldid.numpy()[:count]
+        geom = wd.contact.geom.numpy()[:count]
+        kind = wd.contact.type.numpy()[:count]
     except AttributeError:
-        return pairs
-    for world in range(n):
-        for k in range(int(count[world])):
-            pairs.append((world, int(geom[world, k, 0]), int(geom[world, k, 1])))
+        return []
+    pairs = []
+    for k in range(count):
+        if int(world[k]) < 0 or int(world[k]) >= n or not (int(kind[k]) & 1):
+            continue
+        a, b = int(geom[k, 0]), int(geom[k, 1])
+        if a < 0 or b < 0:
+            continue
+        pairs.append((int(world[k]), a, b))
     return pairs
 
 
