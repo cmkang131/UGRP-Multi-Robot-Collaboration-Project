@@ -1,5 +1,5 @@
 {
-  "status": "RUNNING",
+  "status": "DEV_REACQUISITION_PASS",
   "source_sha": "48411d133bae2cf872ddf7ffed5554fb91048259",
   "analysis_source_sha": "5f16b824d",
   "offline": {
@@ -19,15 +19,32 @@
   "recordings": {
     "maximum": 2,
     "started": 2,
-    "completed": 1,
+    "completed": 2,
     "remaining": 0,
-    "recording1_status": "cap_end / NOT_READY",
-    "recording2_status": "RUNNING"
+    "recording1_status": "cap_end / NOT_READY (foot-aim registration failure, audit complete)",
+    "recording2_status": "RGB_SIGNATURE_REACQUIRED_EVAL_PENDING -> DEV_REACQUISITION_PASS"
+  },
+  "rotation_audit": {
+    "script": "scripts/egomem2_rotation_audit.py",
+    "script_sha256": "7036e04d8cff1b752c051f23ec0e657de8b2afae234bbe0727259d24023c0727",
+    "verdict": "transport sign and magnitude exact (675/687 and 128/130 ticks <1e-6 deg); recording1 runaway caused by infinite-line foot aim: rho sign flips (+-180 deg, 4 times, all |rho|<=0.014m) and foot bearing out of FOV on all 15 witnessed frames; both gate openings aborted 0.4-0.5s later by rho->0 crossings during forward approach",
+    "outputs": {
+      "recording1_json": "operations/rotation-audit-recording1.json",
+      "recording1_csv": "operations/rotation-audit-recording1.csv",
+      "recording2_json": "operations/rotation-audit-recording2.json",
+      "recording2_csv": "operations/rotation-audit-recording2.csv"
+    },
+    "inputs_content_sha256": {
+      "recording1_online_trajectory": "348195a54378ca70b574d88dc98c0b602bd6127971c638f5e9c27802c325cddc",
+      "recording1_eval_only": "89dfdcce13dd618673828ae9e392331d16a24ca0d9e42806ba435d19a9287285",
+      "recording2_online_trajectory": "f267605f1a73421013e2a40b38647a19ed5f901f9c5f4216122c5616d3f522fb",
+      "recording2_eval_only": "80648c83d6ebf2f8802e7585b45ee91273ffb168e62bb9b0d61e2cd3f3c497ab"
+    }
   },
   "gcp_host": "ugrp-act-l4-gcp5",
   "raw": "/home/ugrp/ugrp-sim/runs/egomem2-round1",
   "physical_success": false,
   "student_success": false,
   "llm_success": false,
-  "measurement_state": "recording2 active at85924812a; no additional recording allowed"
+  "measurement_state": "both recordings complete; reacquisition gate passed on recording2 with observed_segment_aim; no additional recording allowed (budget 2/2)"
 }
