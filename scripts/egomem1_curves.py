@@ -12,9 +12,17 @@ def dump(p,v):
 
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--input',type=Path,required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--input',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--stage',choices=['curves','fade'],default='curves');a=p.parse_args()
     if not platform.node().startswith('ugrp-act-l4-gcp5'):raise ValueError('GCP5_ORIGINAL_ONLY')
     a.output.mkdir(exist_ok=False,parents=True)
+    if a.stage=='fade':
+        predictions=json.loads((a.input/'predictions.json').read_text())
+        gaps=[e['gap_s'] for r in predictions for e in r['events'] if e['reason']=='reobserved']
+        dump(a.output/'fade-scale.json',dict(fade_tau_s=float(np.percentile(gaps,95)) if gaps else None,
+             basis='P95 own-input reobserved event gaps; exploratory association timing, display-only decay',
+             source_sha256=hashlib.sha256((a.input/'predictions.json').read_bytes()).hexdigest(),
+             n=len(gaps),truth_files_opened=0,acceptance_cutoff=False))
+        return
     errors=json.loads((a.input/'frame-errors.json').read_text());updates=json.loads((a.input/'reobservations.json').read_text())
     def stats(v):return dict(n=len(v),median=float(np.median(v)),p95=float(np.percentile(v,95)),max=float(max(v))) if v else dict(n=0,median=None,p95=None,max=None)
     ids=sorted(set(r['memory_id'] for r in errors),key=lambda k:int(k[1:]));rows=[]
@@ -35,10 +43,13 @@ def main():
                 data=[r['error_m'] for r in subset if lo<=r[key] and (r[key]<=hi if i==len(edges)-2 else r[key]<hi)]
                 bins.append(dict(kind=kind,axis=key,low=float(lo),high=float(hi),error_m=stats(data)))
     dump(a.output/'distance-age-quintiles.json',bins)
-    gaps=[u['gap_s'] for u in updates]
+    # Revisit timing comes from sealed OWN-INPUT predictions, not scored errors.
+    predictions=json.loads((a.input/'predictions.json').read_text())
+    gaps=[e['gap_s'] for r in predictions for e in r['events'] if e['reason']=='reobserved']
     dump(a.output/'fade-scale.json',dict(fade_tau_s=float(np.percentile(gaps,95)) if gaps else None,
          basis='P95 observed same-memory revisit gaps, own RGB/Mahalanobis associations; exploratory, may include incorrect association; display-only e^-age/tau, no physical acceptance cutoff',
-         gap_distribution=stats(gaps),source_sha256=hashlib.sha256((a.input/'reobservations.json').read_bytes()).hexdigest(),
+         gap_distribution=stats(gaps),source_sha256=hashlib.sha256((a.input/'predictions.json').read_bytes()).hexdigest(),
+         derivation='own-input reobserved event gap_s only; GT error values do not enter this statistic',
          runtime_recording1_applied=False))
     import matplotlib
     matplotlib.use('Agg')

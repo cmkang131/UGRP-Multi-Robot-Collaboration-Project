@@ -126,7 +126,7 @@ class LandmarkMemory:
             r = covariance(obs['covariance_m2'], 2, positive=True)
             # The same frame cannot vote for one landmark twice. Multiple
             # in-gate same-kind candidates are ambiguous; never pick by truth.
-            matches = []
+            matches = []; checked = 0; nearest_d2 = None
             for i, item in enumerate(self.items):
                 if item['kind'] != obs['kind'] or item['signature'] != obs['signature'] or item['representation'] != representation:
                     continue
@@ -134,12 +134,16 @@ class LandmarkMemory:
                 s = h @ p @ h.T+r; innovation = z-predicted
                 if representation == 'oriented_line': innovation[1] = wrap(innovation[1])
                 d2 = float(innovation @ np.linalg.solve(s, innovation))
+                checked += 1; nearest_d2 = d2 if nearest_d2 is None else min(nearest_d2,d2)
                 if d2 <= CHI2_99:
                     matches.append((i, d2, predicted, h, s, innovation))
             if len(matches) > 1:
                 events.append(self.event('association_ambiguous', observation=obs['id'], candidates=len(matches)))
                 continue
             if not matches:
+                if checked:
+                    events.append(self.event('association_gate_rejected',observation=obs['id'],
+                                             candidates_checked=checked,nearest_mahalanobis2=nearest_d2))
                 pending.append(obs)
                 continue
             i, d2, predicted, h, s, innovation = matches[0]
@@ -214,7 +218,8 @@ def language_context(memories, *, goal_signature=None, scan=None, footprint_radi
         direction = ('왼쪽' if a > 0 else '오른쪽')+(' 앞' if abs(a) <= 90 else ' 뒤')
         lines.append(f"{m['signature']}({m['kind']}): {direction} 약 {m['range_m']:.1f} m, "
                      f"{m['age_s']:.0f}초 전에 봄, 불확실 95% 반경 {m['radius95_m']:.1f} m"+
-                     (' (부분 경계, 끝/중심 위치 미관측)' if m['extent_unknown'] else ''))
+                     (' (부분 경계, 끝/중심 위치 미관측)' if m['extent_unknown'] else '')+
+                     (f", 기억 선명도 {100*m['freshness']:.0f}%" if m['freshness'] is not None else ''))
     goals = [m for m in memories if m['signature'] == goal_signature]
     candidates = ([dict(action='look_toward_memory', memory_id=m['id'], bearing_rad=m['bearing_rad'],
                         range_m=m['range_m'], arrival_verified=False) for m in goals]

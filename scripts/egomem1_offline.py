@@ -77,16 +77,25 @@ def extract(a):
 
 
 def predict(a):
-    from harness.egocentric_landmark_memory import LandmarkMemory, OPTION, language_context
+    from harness.egocentric_landmark_memory import LandmarkMemory, MemoryOptions, OPTION, language_context
     seal = read(a.output/'extraction-seal.json')
     if digest(a.output/'allowed.json') != seal['allowed_sha256']: raise ValueError('ALLOWED_INPUT_CHANGED')
-    mem = LandmarkMemory(option=OPTION); rows = []; events = Counter()
+    fade=read(a.fade_scale)['fade_tau_s'] if a.fade_scale else None
+    mem = LandmarkMemory(option=OPTION,options=MemoryOptions(fade_tau_s=fade)); rows = []; events = Counter(); observations_n=0
     for row in read(a.output/'allowed.json'):
+        observations_n+=len(row['observations'])
         result = mem.step(row['t'], row['motion_delta'], row['motion_covariance'], row['observations'])
         events.update(e['reason'] for e in result['events'])
         rows.append(dict(t=row['t'], frame_id=row['frame_id'], **result))
     dump(a.output/'predictions.json', rows)
     dump(a.output/'llm-input-example.json', language_context(rows[-1]['memories']))
+    left=observations_n; funnel=[]
+    for gate,rejected in [('unambiguous',events['association_ambiguous']),('one_vote_per_memory_frame',events['duplicate_frame_observation'])]:
+        passed=left-rejected;funnel.append(dict(stage=gate,input_n=left,cumulative_pass_n=passed,rejected_n=rejected));left=passed
+    dump(a.output/'memory-funnel.json',dict(unit='observations',input_n=observations_n,funnel=funnel,
+         represented=dict(updated=events['reobserved'],initialized=events['created']),
+         reasons=dict(events),raw=str(a.input),reproduction=sys.argv,
+         blocked_object='not_observed',minimum_gap_m=None,gap_status='not_measured'))
     sources = {str(Path(p).resolve()): digest(p) for p in ('harness/egocentric_landmark_memory.py', 'harness/egomem_vision.py', __file__)}
     dump(a.output/'prediction-seal.json', dict(prediction_sha256=digest(a.output/'predictions.json'),
          allowed_sha256=seal['allowed_sha256'], extraction_seal_sha256=digest(a.output/'extraction-seal.json'), sources=sources,
@@ -190,7 +199,7 @@ def score(a):
 
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('stage',choices=['extract','predict','score']);p.add_argument('--input',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
+    p=argparse.ArgumentParser();p.add_argument('stage',choices=['extract','predict','score']);p.add_argument('--input',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--fade-scale',type=Path)
     a=p.parse_args()
     if not platform.node().startswith('ugrp-act-l4-gcp5'): raise ValueError('GCP5_ORIGINAL_CPU_ONLY')
     if not Path('/home/ugrp/ugrp-sim/leases/egomem1.json').is_file(): raise ValueError('OWN_LEASE_REQUIRED')
