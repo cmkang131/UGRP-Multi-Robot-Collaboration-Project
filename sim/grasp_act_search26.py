@@ -38,6 +38,14 @@ new candidate selects them.
   (r4-a ablation) instead lost the close-start benefit (world 10 regressed to
   cap_end).  This candidate keeps the far pitch at circle 1 and moves the
   low-pitch close fallback to circle 2.  Separate opt-in; never pooled.
+- ``search26_reobserve_refresh``: allow a bounded extra obstacle reobserve
+  (at most two beyond the existing two encounters) only when the previous
+  obstacle encounter ended in ``fresh_measurements_replan`` and the same stale
+  cargo re-blocks.  Basis: gcp6 case 27 in r1/r2/r3/r4b consumed both obstacle
+  encounters by SIM 15.2 s and still re-blocked at ~21-27 s (92/92 stances
+  blocked while the remembered cargo is stale), handing off at ~25-30 s.  The
+  extra refreshes are the next bounded attempts; default off and no new
+  distance/angle/time threshold.
 - ``search26_wide_stance``: a NEW teacher candidate (never pooled with the
   other modes' results) whose certified stance map samples jaw-allowed angles
   on a 1-degree grid inside the existing calibrated radial envelope, instead of
@@ -51,6 +59,7 @@ new stance candidate uses only the existing calibrated envelope, the existing
 jaw predicate, and the existing margins.
 """
 MODES = {'search26_circles': 'search26_downfirst_circles_v1',
+         'search26_reobserve_refresh': 'search26_reobserve_refresh_v1',
          'search26_circles_farfirst': 'search26_circles_farfirst_v1',
          'search26_static_peer': 'search26_static_peer_stance_v1',
          'search26_peer_memory': 'search26_peer_memory_v1',

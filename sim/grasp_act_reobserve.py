@@ -48,6 +48,7 @@ class ActiveReobserve:
         self.used = {'peer': 0, 'obstacle': 0}
         self.events = []
         self.pinned = {}
+        self.last_end = {}
 
     def observe(self, world, rid):
         for key, m in observations(world, rid).items():
@@ -74,7 +75,12 @@ class ActiveReobserve:
         return w
 
     def begin(self, kind, targets, world, teacher, now, *, retreat_first=False):
-        if self.active or self.used[kind] >= self.MAX_ENCOUNTERS or not targets:
+        limit = self.MAX_ENCOUNTERS
+        if (kind == 'obstacle'
+                and teacher.search15_modes.get('search26_reobserve_refresh','off') != 'off'
+                and self.last_end.get('obstacle') == 'fresh_measurements_replan'):
+            limit = self.MAX_ENCOUNTERS + 2   # bounded extra refreshes, default off
+        if self.active or self.used[kind] >= limit or not targets:
             return False
         self.used[kind] += 1
         if kind == 'obstacle':
@@ -97,6 +103,7 @@ class ActiveReobserve:
 
     def finish(self, teacher, now, reason):
         a = self.active
+        self.last_end[a['kind']] = reason
         self.events.append({'t': now, 'event': 'reobserve_end', 'kind': a['kind'],
                             'reason': reason, 'elapsed_s': now-a['start']})
         self.active = None

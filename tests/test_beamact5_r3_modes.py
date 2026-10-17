@@ -234,3 +234,39 @@ def test_farfirst_circles_mode_is_registered_and_orders_pitches():
     import inspect
     from scripts.run_grasp_act_teacher import run
     assert 'search26_circles_farfirst' in inspect.signature(run).parameters
+
+
+def test_reobserve_refresh_mode_is_bounded_and_conditional():
+    """r5b fallback: extra obstacle refreshes only after a fresh-ended
+    encounter; two extras maximum; default off keeps the original two."""
+    from sim.grasp_act_search26 import MODES as M26
+    from sim.grasp_act_search15_modes import ALL_MODES
+    assert M26['search26_reobserve_refresh'] == 'search26_reobserve_refresh_v1'
+    assert 'search26_reobserve_refresh' in ALL_MODES
+    w = world()
+    m = {'kind': 'cargo', 'id': 'red_1', 'xyz': [.4, .3, .02], 'yaw': 0.,
+         'radius': .03, 'top_z_bound_m': .05, 'seen_t': 0.}
+    # default off: exactly two encounters
+    t = teacher(search26_reobserve=SEARCH26['search26_reobserve'])
+    for i in range(2):
+        assert t.reobserver.begin('obstacle', {'red_1': deepcopy(m)}, w, t, 10. + i)
+        t.reobserver.finish(t, 10.2 + i, 'fresh_measurements_replan')
+    assert not t.reobserver.begin('obstacle', {'red_1': deepcopy(m)}, w, t, 13.)
+    # mode on: two extra encounters, then closed
+    t = teacher(search26_reobserve=SEARCH26['search26_reobserve'],
+                search26_reobserve_refresh=SEARCH26['search26_reobserve_refresh'])
+    for i in range(4):
+        assert t.reobserver.begin('obstacle', {'red_1': deepcopy(m)}, w, t, 10. + i)
+        t.reobserver.finish(t, 10.2 + i, 'fresh_measurements_replan')
+    assert not t.reobserver.begin('obstacle', {'red_1': deepcopy(m)}, w, t, 15.)
+    # an encounter that did not end fresh does not unlock extras
+    t = teacher(search26_reobserve=SEARCH26['search26_reobserve'],
+                search26_reobserve_refresh=SEARCH26['search26_reobserve_refresh'])
+    for i in range(2):
+        assert t.reobserver.begin('obstacle', {'red_1': deepcopy(m)}, w, t, 10. + i)
+        t.reobserver.finish(t, 10.2 + i, 'bounded_reobserve_exhausted_replan' if i == 0 else 'fresh_measurements_replan')
+    t.reobserver.last_end['obstacle'] = 'bounded_reobserve_exhausted_replan'
+    assert not t.reobserver.begin('obstacle', {'red_1': deepcopy(m)}, w, t, 13.)
+    from scripts.run_grasp_act_teacher import run
+    import inspect
+    assert 'search26_reobserve_refresh' in inspect.signature(run).parameters
