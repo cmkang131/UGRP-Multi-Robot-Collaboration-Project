@@ -55,3 +55,11 @@ gate/pilot/bulk와 준비 시도에 RUN_META 보존 분류를 소급 추가했�
 재생 원본 대조에서 기존 overview 재구성이 native compiled geometry 참조를 적용하지 않았음을 확인했다. 저장 자기 RGB는 원 바이트라 영향이 없으며 제어·채점도 변경되지 않았다. 새 재생은 명시한 geometry inventory/SHA를 적용하고 별도 산출물로 남긴다. 이전 overview 형상의 정밀 일치 주장은 하지 않는다.
 
 [모델 공개 배포 검증](results/release-r1/public-verification.json): M/F/S 세 모델의 공개 ZIP을 새 checkout b8028ebea에서 익명 재다운로드하고 전체 ZIP·내부 파일 SHA/크기와 bundle의 CPU 실제 로딩을 확인했다. 기존 고정 ACT 환경 재사용이며 새 가상환경·물리 성공·raw 전체 백업 검증은 아니다. 가중치·ZIP은 Mac에 쓰지 않았다.
+
+[새 v7 개루프 표](results/error-table-r1.md)·[전체 요약](results/open-loop-complete-r1.json)은 세 후보가 각각 VAL14528행을 완료했음을 확인한다(학습 추가0·물리0). 정렬889프레임에서 actuator projection 후 wheel p90은 M/F/S 모두0.35 full-scale, servo p90은54/54.6/51 PWM counts다. 같은 상태의 마지막 명령 수치 참조는 wheel p90이0.175, servo p90이0이다. 이 persistence 참조는 실행 가능한 대체 정책이 아니며 rollout에 넣지 않았다.
+
+실제 optimizer TRAIN 마지막100개 로그 평균은 M0.42457/F0.48398/S0.28335, VAL prior-z0 손실은0.23473/0.22269/0.28947이다. TRAIN은 posterior/KL 포함, VAL은 prior-z0/KL0이므로 단순 train/val gap으로 해석하지 않는다. S의 낮은 TRAIN 로그는 다른 sampler의 목적이라 직접 우열이 아니다.
+[기존 완료 출력/바퀴 혼동 원장](results/error-table-summary-r1.json)은 정렬에서 teacher 이동 component2856개 중 student 정지307/525/357개, 반대 부호167/202/150개(M/F/S)를 확인했다. 정렬 구간 완료 출력 오탐은 세 후보 모두0이라 이 구간 wheel 오류를 완료 신호 탓으로 돌리지 않는다. grasp expert 프레임의 완료 오탐414/394/185개는 별도 현상이며, 실제 폐루프 실패 원인이라고 단정하지 않는다. threshold나 제어 가드를 추가·수정하지 않았다.
+
+따라서 원본 v4뿐 아니라 이 v7에서도 교사 상태의 예측 오차가 남는다. 폐루프 누적만으로 설명할 수 없으며 학습 적합도·표현·데이터의 구간별 학습 문제를 포함한다. 정규화/초기 입력/한 틱 이력 대조 통과를 모든 버그 부재로 확대하지 않는다. 최종 폐루프 분류는 VAL이 모두 닫힌 뒤의 동일 상태 교사 감사·영상과 함께 기록한다.
+[첫30 실제 입력/시각](results/validation-first30-review-r1.json)과 [whitelist 실검사](results/validation-first30-whitelist-check-r1.json)는6139관측·금지 필드0을 확인한다. 원 JPEG 기록 시각 차로 잰 owner별 첫30 SIM초 지표 중앙값은4.33453 wall/(SIM×planned native world), 원 배치 지연 중앙값은20.8834 wall/SIM이다. 컴파일/초기 reset은 제외했고 폐쇄 후 hardlink 압축 전에 시각을 보존했다. open-loop GPU 측정과 동시 실행한 기록용 수치라 별도 속도 벤치마크나 중단 기준으로 쓰지 않는다.

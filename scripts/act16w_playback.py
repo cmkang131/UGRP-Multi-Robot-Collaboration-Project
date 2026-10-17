@@ -24,6 +24,13 @@ from PIL import Image, ImageDraw, ImageFont
 import mujoco
 
 
+def read_json(path):
+    path=Path(path)
+    if not path.exists():path=Path(str(path)+'.zst')
+    raw=subprocess.check_output(['zstd','-dc',str(path)]) if path.suffix=='.zst' else path.read_bytes()
+    return json.loads(raw)
+
+
 def main():
     p=argparse.ArgumentParser();p.add_argument('--run',type=Path,required=True);p.add_argument('--world',type=int,required=True)
     p.add_argument('--compiled-references',type=Path,help='exact native geometry inventory for reconstructed evaluation overview')
@@ -40,7 +47,7 @@ def main():
     if a.compiled_references:
         if not a.qualified_source:raise ValueError('compiled references require their frozen qualified source')
         qualified_sha=frozen_source(a.qualified_source)
-        references=json.loads(a.compiled_references.read_text())
+        references=read_json(a.compiled_references)
         reference=references[sha256(world/'scene.xml')]
         sys.path.insert(0,str(a.qualified_source/'scripts'))
         from simalt_compiled_compat import apply_geometry
@@ -48,17 +55,17 @@ def main():
         geometry=dict(inventory=str(a.compiled_references),inventory_sha256=sha256(a.compiled_references),
             geometry_file=reference['geometry'],geometry_sha256=sha256(reference['geometry']),qualified_source_sha=qualified_sha,
             scope='compiled geometry applied only to saved-state evaluation overview; recorded own RGB unchanged')
-    summary=json.loads((a.run/('RUN_META.json' if actor_owner else 'summary.json')).read_text());camera=summary['camera'];cid=m.camera('r1__robot_cam').id
+    summary=read_json(a.run/('RUN_META.json' if actor_owner else 'summary.json'));camera=summary['camera'];cid=m.camera('r1__robot_cam').id
     m.cam_pos[cid]=camera['mount_pos'];m.cam_quat[cid]=camera['mount_quat']
     # Review camera only: fit actual r1/target geometry across the whole replay.
     # The source overview clipped starts outside its fixed rectangle. Actor RGB
     # remains the original recorded bytes and its camera is never reframed.
-    plan=json.loads((world/'plan.json').read_text())
+    plan=read_json(world/'plan.json')
     if actor_owner:
         # Exact solo scene body naming; fail if the recorded model differs.
         target='cargo_'+plan['item_id'];m.body(target)
     else:
-        scene=json.loads((world/'scene.json').read_text())
+        scene=read_json(world/'scene.json')
         target=scene['box_replicas'][plan['item_id']]['body_name']
     roots=[m.body_rootid[m.body(name).id] for name in ('r1__robot',target)]
     gids=np.flatnonzero(np.isin(m.body_rootid[m.geom_bodyid],roots)&np.isin(m.geom_group,[0,1,2,3]))
