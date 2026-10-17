@@ -115,6 +115,8 @@ def main():
     # B3 (Lead-approved): keep completion targets only at the chunk row matching
     # the observation itself, to test the executed h=0 vs far-horizon mismatch.
     p.add_argument('--done-current-step-only', action='store_true')
+    # Pilot-only optimizer lr override (default 1e-5, the standard ACT value).
+    p.add_argument('--lr', type=float)
     for name in ('dataset','protocol','out','queue'):
         p.add_argument('--'+name, type=Path, required=True)
     a = p.parse_args()
@@ -136,6 +138,11 @@ def main():
                                          a.done_positive_batch_fraction,
                                          a.base_smooth_window, a.val_select,
                                          a.done_current_step_only) or protocol['steps']
+    if a.lr is not None:
+        if a.candidate not in PILOT_CANDIDATES:
+            raise ValueError('--lr override requires a pilot candidate')
+        if not 1e-7 <= a.lr <= 1e-4:
+            raise ValueError('--lr override must be within [1e-7, 1e-4]')
     done_positive_fraction = a.done_positive_batch_fraction
     weighted = a.post_close_weight is not None or a.pre_close_weight is not None
     sampling = 'weighted_post_close_v1' if weighted else 'uniform_episode_v1'
@@ -171,7 +178,8 @@ def main():
         state=load_file(str(Path(a.init_checkpoint)/'model.safetensors'))
         policy.load_state_dict(state,strict=True)
         del state
-    optimizer=torch.optim.AdamW(policy.get_optim_params(),lr=1e-5,weight_decay=1e-4)
+    train_lr=a.lr if a.lr is not None else 1e-5
+    optimizer=torch.optim.AdamW(policy.get_optim_params(),lr=train_lr,weight_decay=1e-4)
     priors=data.completion_priors(sampling)
     val_batches=None
     if a.val_select:
@@ -199,7 +207,7 @@ def main():
     a.out.mkdir(parents=True,exist_ok=False)
     config=dict(source_sha=source,cohort='act18-v7-reference',candidate=a.candidate,
         host=host,contact_profile='warp_native_contact_v1',chunk=data.chunk,seed=protocol['seed'],
-        steps_requested=total_steps,batch_size=8,lr=1e-5,kl_weight=10.,
+        steps_requested=total_steps,batch_size=8,lr=train_lr,kl_weight=10.,
         normalization_sha256=data.manifest['normalization']['sha256'],
         dataset_manifest_sha256=queue['dataset_manifest_sha256'],protocol_sha256=sha256(a.protocol),
         lerobot_act_sha256=LEROBOT_ACT_SHA256,act_library_source_sha=ACT_SHA,
@@ -230,7 +238,7 @@ def main():
             done_positive_batch_fraction=done_positive_fraction,
             base_smooth_window=a.base_smooth_window,
             val_select=a.val_select,
-            done_current_step_only=a.done_current_step_only,
+            done_current_step_only=a.done_current_step_only,lr_override=a.lr,
             note='short default-off pilot probe; never packaged or pooled with R8/R100')
         config.update(probe=probe)
     report=dict(**config,status='running',complete=False,steps_completed=0,
