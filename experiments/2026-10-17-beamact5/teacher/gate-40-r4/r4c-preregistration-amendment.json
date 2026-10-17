@@ -47,9 +47,9 @@
   },
   "change": "new default-off conditional circle order (far pitch, close pitch, mid pitch) keeps the far pitch at circle 1 (fixes the r3 regressions) and moves the close low-pitch fallback to circle 2 (recovers the world-10 close-start benefit), plus the case27 reobserve boundary fix.",
   "stack": {
-   "root": "2125f149a5098d5316cc1e737440c5a46d0f8d04",
-   "adapter": "69a62bcadd0ea5017fffe74342227ce58d948624",
-   "teacher": "f7015667a4bc3e340d0970eb6c2e03e6b8f22ad8",
+   "root": "4698c38e6101cd43dec3c9dffc83233d6ac640d7",
+   "adapter": "ee0250aaf3e5db8a011825d487afdbdea6fd27fb",
+   "teacher": "67f177892388ae71db44811361891f80820ed182",
    "cases_r4c_sha256": "9e9bfb91e978a2c979e342957627400e4e12ab823114b4e953f02f9ba5f58ae9",
    "plan_sha256": "f1a50e8c833c1da9113bdf8cff3844913380e3c821b15c072c0a23c0f54f5148"
   },
@@ -72,7 +72,15 @@
    "20": "PASS",
    "27": "PASS if the reobserve boundary fix stops the peer handoff"
   },
-  "decision_rule": "if 6/10/20/27 all PASS in either r4b or r4c, run the 39-world gate with that condition (prefer r4c). 10 failing again means the close fallback must move to circle 1 (equivalent to down-first) and the gate cannot reach 38 without another regression fix."
+  "decision_rule": "if 6/10/20/27 all PASS in either r4b or r4c, run the 39-world gate with that condition (prefer r4c). 10 failing again means the close fallback must move to circle 1 (equivalent to down-first) and the gate cannot reach 38 without another regression fix.",
+  "prelaunch_attempt": {
+   "attempt": "validation-r4c-4 (2026-10-17T20:42Z)",
+   "result": "HOST_ERROR before any world started (started_N=0)",
+   "cause": "the r4c teacher commit f7015667 added the far-first circles mode to sim/ and tests/ but did not stage scripts/run_grasp_act_teacher.py, so the adapter's run(**profiles) died with TypeError: run() got an unexpected keyword argument 'search26_circles_farfirst'",
+   "evidence": "summary kept at runs/beamact5/validation-r4c-4-wiring-error; not a physics run, not pooled",
+   "fix": "teacher 67f177892 (runner signature/search15/report/main wiring; verified in the committed blob), adapter ee0250aa (pin), root 4698c38e (pin)",
+   "repeat_guard": "tests/test_beamact5_r3_modes.py::test_farfirst_circles_mode_is_registered_and_orders_pitches checks the runner signature"
+  }
  },
  "gate_arithmetic": {
   "baseline_r1": "34/40",
