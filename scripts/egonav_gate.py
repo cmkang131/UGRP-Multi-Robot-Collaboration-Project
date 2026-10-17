@@ -74,7 +74,7 @@ def contact_pairs(wd, n):
 
 
 def run(args):
-    if platform.node() != 'ugrp-act-l4-gcp4':
+    if not platform.node().startswith('ugrp-act-l4-gcp4'):
         raise ValueError('EXPLICIT_GCP4_ONLY')
     lease = Path('/home/ugrp/ugrp-sim/leases/egonav.json')
     if not lease.is_file():
