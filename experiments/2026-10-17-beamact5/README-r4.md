@@ -67,7 +67,8 @@
 |---|---|---|---|
 |r5b|r4c + obstacle refresh 최대 +2|6 PASS 59.1 / 10 PASS 49.0 / 20 PASS 42.1 / **27 FAIL 20.4** / 37 FAIL 29.7|refresh 4회 모두 fresh-ended(2.8·15.8·16.6·17.4 s)였으나 각 fresh 창이 ~0.1 m 이동 후 stale margin에 재차단, +2 한도 소진 후 3 s blocked handoff|
 |r5c|r5b의 +2 한도를 제거(open refresh chain)|6 PASS 50.2 / 10 PASS 49.0 / 20 PASS 55.7 / **27 FAIL cap_end 60.0** / 37 FAIL 29.5|refresh 18회(15–59 s) 전부 fresh-ended, 그러나 선택이 매 tick feasible↔92/92 blocked로 진동하며 주행이 ~0.1 s/cycle에 그침. 로봇 root 위치가 18 s 이후 (0.239,-0.72) 고정 → 60 s cap|
-|r6|r5c + `search26_commit_plan` (기존 1 s replan 경계까지 committed path 주행)|(실행 중)|가설: 1 s 창 동안 실제 주행이 가능해 0.3–1 m를 burst로 이동|
+|r6|r5c + `search26_commit_plan` (기존 1 s replan 경계까지 committed path 주행)|6 PASS 54.7 / 10 PASS 49.5 / 20 PASS 36.3 / **27 FAIL cap_end 60.0** / 37 FAIL 29.6|commit 가드가 현재 world의 waypoint/unusable 검사(낡은 margin)에 막혀 실제 주행 없음 — r5c와 동일 궤적(18회 refresh, approach 20.9+search 38.8 s)|
+|r7|commit_plan 수정: 선택 시 plan·constraints를 **동결**하고 1 s 경계까지 동결 plan으로 주행(progress/peer/escape 블록보다 우선)|(실행 중)|가설: 1 s 창 실제 주행으로 0.36 m를 2–3 사이클에 이동|
 
 - 공통: r4c의 6/10/20 PASS는 r5b·r5c에서도 유지(회귀 없음). 37은 r5b 29.7 / r5c 29.5 teacher_terminal(구조 라벨은 r1/r2 근거, r4/r5 재측정 아님).
 - 사전등록: [r5b](teacher/gate-40-r5/r5b-preregistration.json)·[r5c](teacher/gate-40-r5/r5c-preregistration.json)·[r6](teacher/gate-40-r6/r6-preregistration.json). r5c gate prereg는 5-world 미통과로 **발동하지 않음**.
