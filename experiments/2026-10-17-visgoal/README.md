@@ -60,9 +60,14 @@ there is no occupancy grid (`static_map_use=none`).
    turns, interrupted by paint or obstacles.
 4. `target` / `approach`: bearing-align with exact pulses, drive by coarse
    range, then use the <=1.2 m `floor_patch` metric fit.  Observation is a
-   `destination_zone` point in `LandmarkMemory`; arrival uses on-paint pixels in
-   the lower image centre plus the remembered range.  If the paint is lost for
-   >2 s, search resumes from memory.
+   `destination_zone` point in `LandmarkMemory`.  The target is the **freshest**
+   snapshot (not the smallest range: a failed association after a large spin
+   created a stale 0.33 m ghost).  Arrival requires a fresh (<=1 s) target and
+   drives to the remembered point itself (range <=0.10 m), because the visible
+   patch median can be only ~0.18 m inside the near edge; stopping 0.25-0.55 m
+   short left the base outside the authored zone.  If the paint is lost for
+   >2 s within 1.2 m, a bounded in-place Spin reacquires it before search
+   resumes from memory.
 
 The memory observation format is `ugrp.memory_item.v1` as produced unchanged by
 the egomem2 `snapshot()` (`relative_xy_m`, `range_m`, `bearing_rad`, `age_s`,
@@ -91,6 +96,28 @@ component.  Evidence and frame hashes are in
 (`e00-west-no-zone.jpg`, `e13-east-zone-visible.jpg`).  This is an appearance
 constant only; no zone coordinate or visibility label is used.
 
+## Preflight r3/r4 (stage probe, not the gate)
+
+Two starts: setup 0 (west, destination not visible at tick 0) and setup 13
+(east, 28856 paint px at tick 0).  r3 is the signed-turn + wall-seek build; r4
+adds fresh-memory target choice and the drive-to-patch-point arrival.
+
+| run | episode | start vis px | found | declared | GT inside | sim s | final eval-only x,y | status |
+|---|---|---|---:|---:|---:|---:|---|---|
+| r3 | e00/setup0 | 0 | 0 | 0 | - | 60.0 | 0.732,-1.799 | cap_end |
+| r3 | e01/setup13 | 28856 | 1 | 1 | **0** | 4.1 | 3.902,-1.436 | ARRIVED_DECLARED (false place) |
+| r4 | e00/setup0 | 0 | 0 | 0 | - | 60.0 | - | cap_end |
+| r4 | e01/setup13 | 28856 | 1 | 1 | **1** | 11.7 | 4.420,-1.514 | ARRIVED_DECLARED |
+
+r3 e01 stopped after 0.30 m because the on-paint test used a 0.55 m remembered
+range; the base was still 0.40 m west of zone B.  r4 drives to the remembered
+point and crosses both zone bounds.  `cap_end` is a separate label, not a
+failure reason.  Raw: `/home/ugrp/ugrp-sim/runs/visgoal-preflight-r4` (summary
+sha256 `91bb0a31...`, funnel `0aafb183...`; copies in `preflight-r4/`).  The
+r1/r2/r3 runs are excluded from current success claims because they contain the
+known S-gate false positive (r1), the old unsigned-turn/import failures
+(r2), or the false place claim fixed in r4 (r3).
+
 ## Files
 
 * `setups.json` — 16 fixed starts (setup only; includes parked
@@ -105,13 +132,23 @@ constant only; no zone coordinate or visibility label is used.
 
 ```bash
 python3 scripts/check_current_stack.py experiments/2026-10-17-visgoal/queue-preflight.json \
-  --flow self_map --output experiments/2026-10-17-visgoal/stack-preflight-v4.json
+  --flow self_map --output experiments/2026-10-17-visgoal/stack-preflight-v10.json
 python3 scripts/visgoal_probe.py --enabled --preflight --episodes 0,13 --sim-cap 60 \
   --queue experiments/2026-10-17-visgoal/queue-preflight.json \
   --renderer /home/ugrp/ugrp-sim/src/16a946ff3 \
   --legacy /home/ugrp/ugrp-sim/src/warp8f-selfmap-0ace43f25 \
   --setups /home/ugrp/ugrp-sim/src/<clone>/experiments/2026-10-17-visgoal/setups.json \
-  --output /home/ugrp/ugrp-sim/runs/visgoal-preflight-r2
+  --output /home/ugrp/ugrp-sim/runs/visgoal-preflight-r4
+
+# Gate: all 16 starts, 120 SIM s each, prior funnel = r4.
+python3 scripts/check_current_stack.py experiments/2026-10-17-visgoal/queue-gate.json \
+  --flow self_map --output experiments/2026-10-17-visgoal/stack-gate-v10.json
+python3 scripts/visgoal_probe.py --enabled --sim-cap 120 \
+  --queue experiments/2026-10-17-visgoal/queue-gate.json \
+  --renderer /home/ugrp/ugrp-sim/src/16a946ff3 \
+  --legacy /home/ugrp/ugrp-sim/src/warp8f-selfmap-0ace43f25 \
+  --setups /home/ugrp/ugrp-sim/src/<clone>/experiments/2026-10-17-visgoal/setups.json \
+  --output /home/ugrp/ugrp-sim/runs/visgoal-gate-r1
 ```
 
 `--enabled` is mandatory; the module's default constructor option is `off`.
