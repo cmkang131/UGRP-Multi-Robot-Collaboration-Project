@@ -123,8 +123,9 @@ world02의 4.431 m는 받아들인 목표의 오차가 아니라 **첫 거짓 �
 * gate-08 재계수는 VM 원본 JSON·SHA256SUMS로 확인했다(앱 재실행 아님).
 * world02 원인은 디버그·프레임 6장·preflight 분포로 확인했고, 후보 A의
   수정 효과는 gate-09 원본으로만 판정한다(아직 미확인).
-* 로컬 `raw/`(프레임·replay 디버그, 5.2 MiB)는 실험 미디어 5 MiB 제한
-  때문에 커밋하지 않고 VM 원본 경로와 해시로 연결한다.
+* 로컬 `raw/gate-n16-07/`(5.2 MiB, source `558b94a7`, status `cap_end`,
+  도착 14/16·충돌 0)와 프레임·replay 디버그는 실험 미디어 5 MiB 제한
+  때문에 커밋하지 않고 위치만 남긴다(VM 원본 보존).
 
 ## 시각화 실행: egonav_memory_trace_v1 (2026-10-17 사용자 요청)
 
@@ -378,8 +379,8 @@ world0 도착·world1 실패, 후보 이벤트 7행, 수용 0)에서 만들었�
 4.0 m 그대로**이며 이 실행은 제어에 쓰지 않았다(`control_use=false`).
 
 원본: VM `/home/ugrp/ugrp-sim/runs/egonav/far-diag-range-01`(gcp4, 디스크
-보존), Mac 로컬 `experiments/2026-10-17-egonav/raw/far-diag-range-01/`(비커밋
-실험 raw, `SHA256SUMS.json` 대조 **21/21 일치**, 프레임 12장 포함).
+보존), Mac `experiments/2026-10-17-egonav/raw/far-diag-range-01/`(저장소 커밋,
+`SHA256SUMS.json` 대조 **21/21 일치**, 프레임 12장 포함).
 `detect_probe.json` sha256 `ed9e5fa7db92f66c4b2f97b655eba5fe37698cf30d2c6998cf3b77cc18841b81`,
 `SHA256SUMS.json` sha256 `8a7ef7f347b5bef019b83386485a6ee47cfcba31d85474aba535ca06a7bbbc1d`.
 재계수: `scripts/egonav_far_diag_recount.py --frames` → `recount_far_diag_range_01.json`
@@ -457,6 +458,10 @@ step 이전 렌더로 물리 정착 뒤와 원거리 기하가 조금 다르므�
   교체한 c4256a3fb 기준의 off/on 재측정은 하지 않았다(4단계는
   c4256a3fb). far 후보는 승격하지 않으므로 3단계 수치는 비교 근거로만
   남긴다.
+* 선행 작업자가 새 hue 기준(c4256a3fb) 재측정용으로 준비한
+  `queue-far-probe-off-04.json`·`queue-far-probe-on-04.json`·
+  `queue-far-visual-02.json`과 그 `stack_check_*` 파일들은 **미실행
+  보류**다(실행 안 함, 결과 표에 쓰지 않음). 저장소에는 파일만 보존한다.
 * 원본: VM `/home/ugrp/ugrp-sim/runs/egonav/far-probe-off-03`,
   `far-probe-on-03`, `far-visual-01`, `far-diag-range-01`. Mac
   `outputs/egonav-far/`의 같은 이름(4단계는 `raw/far-diag-range-01/`).

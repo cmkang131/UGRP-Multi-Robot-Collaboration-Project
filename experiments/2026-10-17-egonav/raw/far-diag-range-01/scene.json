@@ -1,0 +1,163 @@
+{
+  "scene_xml_sha256": "5e5fe1ff7be4e558cdcbc91fa30873b7d795c3c0677c537a55c4619bd793d9fa",
+  "robot_xml_sha256": {
+    "r1__robot": "e47c51fc1dc9f321cf2d7c5710457783eff4212d3446cd8316a223d0bf249160",
+    "r2__robot": "f4388fe9a66e31e174bf43623cd220ff10d0dbb414ade9ce93e165de629d08d2",
+    "r3__robot": "a9d13c3caec9da28bc7d50b012f956046db566fd48c0b75d7ff0078ce709cd05"
+  },
+  "static_map_sha256": "2302d273bcd30a9cc9d3166c753f2d40fcf3f03654369d23cd00324b4ca4688d",
+  "box_prototype_signature": "6806dd458235f884035d05b8e46d79f11a74932a1ae966c5878b3f431fa3c03c",
+  "box_replicas": {
+    "cyan_1": {
+      "body_name": "cargo_cyan_1",
+      "kind": "cyan"
+    },
+    "cyan_2": {
+      "body_name": "cargo_cyan_2",
+      "kind": "cyan"
+    },
+    "red_1": {
+      "body_name": "cargo_red_1",
+      "kind": "red"
+    },
+    "yellow_1": {
+      "body_name": "cargo_yellow_1",
+      "kind": "yellow"
+    },
+    "red_2": {
+      "body_name": "cargo_red_2",
+      "kind": "red"
+    },
+    "green_1": {
+      "body_name": "cargo_green_1",
+      "kind": "green"
+    }
+  },
+  "weld": "off",
+  "appearance_change": "box paint colour only (kinds); shape, mass, friction unchanged",
+  "cargo_contact_profile": {
+    "name": "cargo_noslip_v1",
+    "version": 1,
+    "base": "local_contact_fine",
+    "option": {
+      "noslip_iterations": "10"
+    },
+    "scope": "global solver option (all contacts)",
+    "evidence": "experiments/2026-09-25-zone-cargo-catalogue (section: slip removal)",
+    "sha256": "2e003d85011354676866f0d73b32604c9b5105e919ba3d979687714d62e90ff4"
+  },
+  "contact_solver_profile": "cargo_noslip_v1",
+  "replica_finger_contact_pairs": 36,
+  "cargo": {
+    "items": [
+      {
+        "item_id": "beam_1",
+        "kind": "long_beam",
+        "body": "cargo_beam_1",
+        "mass_kg": 0.3
+      }
+    ],
+    "finger_contact_pairs": 6,
+    "weld": "off",
+    "catalogue_sha256": "b8327acff0b5ba8ebd07a7eb0244557890115714578637189f6d40bf37307ea5"
+  },
+  "geometry_map_id": "zone_wide_door_geometry_v3",
+  "wall_profile": {
+    "id": "walls_v3",
+    "version": 3,
+    "height_m": 0.4,
+    "rule": "smallest 0.05 m step >= max(kinematic max wrist-camera z + 0.05 m, highest robot geom z + 0.03 m)",
+    "kinematic_max_camera_z_m": 0.321,
+    "max_work_posture_camera_z_m": 0.239,
+    "robot_top_max_z_m": 0.367,
+    "evidence": "experiments/2026-09-26-zone-env-v3/camera_height.json",
+    "sha256": "27300b0067d2d46d68498b8fddeaf7c19f8c489ed9bdaa3f5d47f5aacb6e833d"
+  },
+  "scenario_setup": {
+    "scenario_id": "s1_normal_mixed_v7",
+    "config_sha256": "0db3ef7f496c62f2eafd8f3f55512dd9c7a78216e4ef648d3333b8f21c6b40fa",
+    "map_file_sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17"
+  },
+  "render_profile": {
+    "schema": "ugrp.scene_contrast.v5",
+    "name": "walls_floor_contrast_v5_indigo110_s80",
+    "wall": {
+      "rgb": [
+        90,
+        75,
+        110
+      ],
+      "hsv": [
+        133,
+        81,
+        110
+      ],
+      "pattern": "v1_common_mode"
+    },
+    "floor_manifest_sha256": "4a7005e2bb1d8ce966ee5877e3a0f60a79eda247a978887c9fe0e8ef246d9a08",
+    "wall_pattern": "v1_common_mode",
+    "required_camera_quality": "no_mip_v1",
+    "changes_physics": false,
+    "default": "off",
+    "texture_manifest_sha256": "cf447537efe9fd66a01e18aa9f414dcabd8273f662d8dc4c96773bd2c9c96757",
+    "sha256": "b95ad4e77326ccce3a428d77efbddb9a25ac03fc606d74ed952732a82bd94fc4",
+    "scene_xml_sha256_before_profile": "cda4414670b8c05e78c5a464c513fafed4ea6538b3a795b8cd05b729e319e788",
+    "scene_xml_sha256_after_profile": "121e9bce38d22b86ff45e55f4b41d53e1cde94f79440b3ed158ec006690b5aaa"
+  },
+  "render_nearclip": {
+    "schema": "ugrp.highpose_render_nearclip.v1",
+    "id": "floor_light_nearclip_v1",
+    "sha256": "1b1edce2f4cf2b97c9e7dd5c0ca4b613812342a766f97e5684b5e2761cab8089",
+    "base_profile": "walls_floor_contrast_v5_indigo110_s80",
+    "xml_ops": [
+      {
+        "op": "visual_map_znear",
+        "value": "0.0004"
+      }
+    ],
+    "near_max_m": 0.005,
+    "previous": {
+      "znear_rel": 0.002,
+      "near_m_at_extent_11_112": 0.02222
+    },
+    "changes_images": true,
+    "changes_physics": false,
+    "reason": "near plane 22.2 mm clipped the beam 13 mm under the HIGH camera (floor seen through cargo)",
+    "pooling": "new render condition: never pooled with earlier runs",
+    "check": "outputs/v105-nearclip-check-20261005",
+    "scene_xml_sha256_before_nearclip": "121e9bce38d22b86ff45e55f4b41d53e1cde94f79440b3ed158ec006690b5aaa",
+    "scene_xml_sha256_after_nearclip": "bc433c64e70d4e433de8cda7ba9b21538bdcc46a6e5b5e42f06b0ddb5f960cef"
+  },
+  "robot_model": "masterpi_v3",
+  "scene_version": "zones/zone_wide_door_geometry_v3",
+  "grasp_act_scene": {
+    "version": "grasp_act_scene_v1",
+    "colors": "grasp_act_teal_blue_v1",
+    "parent_xml_sha256": "a92a8242430397606c929350a298d99b14b84800a83624c461070d15ebc912d3",
+    "scene_xml_sha256": "2392085430cb7e984af85fae400913795325c3027e8cfa38a0c35bb87a46c6a0"
+  },
+  "warp3_scene": {
+    "schema": "ugrp.scene_contrast.v5",
+    "name": "walls_floor_contrast_v5_indigo110_s80",
+    "wall": {
+      "rgb": [
+        90,
+        75,
+        110
+      ],
+      "hsv": [
+        133,
+        81,
+        110
+      ],
+      "pattern": "v1_common_mode"
+    },
+    "floor_manifest_sha256": "4a7005e2bb1d8ce966ee5877e3a0f60a79eda247a978887c9fe0e8ef246d9a08",
+    "wall_pattern": "v1_common_mode",
+    "required_camera_quality": "no_mip_v1",
+    "changes_physics": false,
+    "default": "off",
+    "texture_manifest_sha256": "cf447537efe9fd66a01e18aa9f414dcabd8273f662d8dc4c96773bd2c9c96757",
+    "sha256": "b95ad4e77326ccce3a428d77efbddb9a25ac03fc606d74ed952732a82bd94fc4"
+  }
+}
