@@ -112,7 +112,23 @@ sampled ±15° family best gap 4.87 mm < runtime floor margin 11.07 mm. `search2
 - 확인된 수정: **case 6 PASS(59.2 s)·10 PASS(45.8 s)·20 PASS(44.4 s)**.
 - **회귀: r1에서 통과했던 12개가 전부 cap_end.** phase 비교에서 회귀 world들은 한 로봇의 초기 search가 r1보다 2–3배 길다(case2 r2 47.8 vs 20.4 s, case4 r2 48.9 vs 21.4, case14 r2 47.4 vs 19.9, case24 r2 44.5 vs 17.1, case29 r1 48.8 vs 21.3, case39 r1 45.7 vs 18.3). 상대 로봇은 ready에서 대기 후 60 SIM cap.
 - **원인 우선 후보:** `search26_circles`(down-first search order)가 r1 실패 10/20만 보고 도입됐는데, 전 40 starts에 켜지면서 up-first가 맞는 world들의 획득을 느리게 만들었다. peer_memory/reobserve는 search 시간 증가를 설명하지 못한다. **정확한 per-mode attribution은 ablation 미실행으로 미확정.**
-- 판정: r3 후보 **gate FAIL**. r4 방향(후속): down-first circles를 제거하거나 조건부(up-first 3원 fallback)로 되돌리고 6/10/20만 유지한 조합으로 재검증. r1/r2 결과와 pooling 없음.
+- 판정: r3 후보 **gate FAIL**.
+
+### 7.2 r4 산술 (다음 후보 계획, 실행 전 기록)
+
+r3 결과(r1 34 + r3 수정 3개 - r3 회귀 12)로 25다. **r4가 38/40을 넘으려면 37(구조적)과 15(제외·expected FAIL) 외에 실패가 없어야 하고, 따라서 27도 함께 고쳐야 한다.**
+
+|시나리오|성공/40|판정|
+|---|---|---|
+|r1 baseline (기록)|34/40|FAIL|
+|r3 (이번 게이트, 실행 39 + 15 expected FAIL)|**25/40**|**FAIL**|
+|r4a: down-first circles revert(+조건부 fallback)로 12 회귀 복구, 6·10·20 유지|37/40 (실패 27·37, 15 제외)|FAIL|
+|**r4b: r4a + 27 수정**|**38/40 (실패 37, 15 제외)**|**PASS=최소 기준**|
+|r4b에서 회귀 1개 남으면|37/40|FAIL|
+|r4b + 37도 pass(별도 wide_stance family 단독 비교 시)|38+/40|(r3와 pooling 금지)|
+
+- r4 계획: (1) `search26_circles` down-first 전면 적용 제거/조건부화 — r1에서 up-first로 통과하던 12 world의 search 시간을 r1 수준으로 복구, (2) **case 27**: teacher_terminal 22.2 s `peer_approach_handoff` 원인 수정(red_1 stale margin > stance gap 악순환; r3 reobserve/peer_memory로 해소되지 않음 — 6·10·20만 해결됨), (3) 6-world에서 **6·10·20·27** 먼저 확인 후 full gate. r1/r2/r3와 pooling 없음.
+- 6·10·20은 r3에서 PASS 확인(59.2/45.8/44.4 s)이므로 r4에서 그 3개가 유지되는지가 첫 관문이다.
 
 
 ## 8. 원본·미확인
