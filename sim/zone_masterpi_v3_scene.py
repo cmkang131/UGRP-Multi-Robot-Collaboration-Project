@@ -79,7 +79,7 @@ class MasterPiV3ZoneScene(GeometryCargoZoneScene):
         return xml
 
 
-def build_world(scene, profile, **kwargs):
+def build_world(scene, profile='cargo_native_v1', **kwargs):
     """Bind the existing per-instance hook to the actual template's hardware.
 
 MultiMasterPiProductionV2 assigns physical_params/calibration_parameters before

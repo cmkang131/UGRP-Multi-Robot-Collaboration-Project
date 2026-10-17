@@ -73,11 +73,11 @@ def test_mixed_episode_rejects_colour_only_unless_asked_and_needs_a_box():
     assert {v['carriers'] for k, v in table.items() if k.startswith('long_beam')} == {2}
 
 
-def test_scene_matches_the_mixed_episode_and_uses_the_noslip_profile():
+def test_scene_matches_the_mixed_episode_and_uses_the_native_profile():
     from harness.zone_mixed_episode import scene_for
     cfg = mixed_episode('zone_wide_two_doors', 12, goal=MIXED)
     scene = scene_for(cfg)
-    assert scene.scene['cargo_contact_profile'] == 'cargo_noslip_v1'
+    assert scene.scene['cargo_contact_profile'] == 'cargo_native_v1'
     assert scene.scene['contact_profile'] == 'local_contact_fine'
     assert [c.item_id for c in scene.cargo] == [c['item_id'] for c in cfg['cargo_items']]
 

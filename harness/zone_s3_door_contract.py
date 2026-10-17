@@ -8,8 +8,10 @@ WORKFLOW_VERSION = '3.15.0'
 README = 'experiments/2026-10-06-s3-door-yield/README.md'
 
 
-def bundle(source_sha, *, seed=601, speedups='v98-exact-v6'):
-    value = parent.bundle(source_sha, seed=seed, speedups=speedups)
+def bundle(source_sha, *, seed=601, speedups='v98-exact-v6', contact_profile='cargo_native_v1'):
+    from sim.execution_contact_profile import cargo_name
+    contact_profile = cargo_name(contact_profile)
+    value = parent.bundle(source_sha, seed=seed, speedups=speedups, contact_profile=contact_profile)
     value.update(schema='ugrp.s3_door_yield_bundle.v108', execution_bundle_id=BUNDLE_ID,
                  workflow_version=WORKFLOW_VERSION, check='s3-door-yield-dev',
                  door_yield=PROFILE, door_protocol=specification())
@@ -22,6 +24,6 @@ def bundle(source_sha, *, seed=601, speedups='v98-exact-v6'):
 
 
 def verify(value):
-    expected = bundle(value['source_sha'], seed=value['seed'], speedups=value['speedups'])
+    expected = bundle(value['source_sha'], seed=value['seed'], speedups=value['speedups'], contact_profile=value['contact_profile'])
     if parent.hp.base.digest(value) != parent.hp.base.digest(expected):
         raise ValueError('S3 door bundle/source/config mismatch')

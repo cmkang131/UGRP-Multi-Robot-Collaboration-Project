@@ -29,9 +29,10 @@ def host_spec(scenario, episode, map_bundle):
         return legacy.host_spec(scenario, episode, map_bundle)
     from harness.zone_pair_executor import make_plan
     setup = scenario['eval']['setup']
-    if (setup['contact_profile'] != 'cargo_noslip_v1' or episode['contact_profile'] != 'cargo_noslip_v1'
+    if (setup['contact_profile'] not in ('cargo_native_v1', 'warp_native_contact_v1', 'cargo_noslip_v1') or episode['contact_profile'] not in ('cargo_native_v1', 'warp_native_contact_v1', 'cargo_noslip_v1')
+            or setup['contact_profile'] != episode['contact_profile']
             or setup['weld'] != 'off'):
-        raise legacy.zi.ContractViolation('study requires cargo_noslip_v1 and weld OFF in scenario and episode')
+        raise legacy.zi.ContractViolation('study requires matching supported contact profiles and weld OFF in scenario and episode')
     mixed.order_bindings(scenario['orders'], setup['placements'])
     sheet = OrderSheetSource(scenario, map_bundle).sheet()
     contract = mixed.mixed_contract(scenario, episode, sheet)

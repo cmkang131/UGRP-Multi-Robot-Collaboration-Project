@@ -1,0 +1,47 @@
+{
+  "schema": "ugrp.nsoff_summary.v1",
+  "execution_bundle_id": "noslip-off-v445",
+  "status": "compile_verified_ci_pending",
+  "baseline_sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+  "mac_physics_steps": 0,
+  "mac_forward_calls": 0,
+  "renders": 0,
+  "training": 0,
+  "vm_used": false,
+  "compile_model_paths": 15,
+  "local_tests": {
+    "round1": {
+      "passed": 221,
+      "failed": 3
+    },
+    "round2": {
+      "passed": 19,
+      "failed": 1
+    },
+    "round3": {
+      "passed": 1,
+      "failed": 0
+    }
+  },
+  "rejection_table": "/Users/changmin/projects/ugrp-wt/nsoff/experiments/2026-10-16-noslip-off/rejection_table.json",
+  "unverified": [
+    "GPU put_model/step/render",
+    "frozen external teacher full initialization",
+    "physical success and E2E"
+  ],
+  "raw": [
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/nsoff/experiments/2026-10-16-noslip-off/compile_receipts.json",
+      "sha256": "2ac4b0d5cd839ebc5f0646e4be52aef53a27ea398c85674b2559785dc7919b96"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/nsoff/experiments/2026-10-16-noslip-off/rejection_table.json",
+      "sha256": "2cdb84cb70961c47f48a66346fa778a58a688b487fd658bbd9ad5aa8b4ca8acc"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/nsoff/experiments/2026-10-16-noslip-off/preservation.json",
+      "sha256": "2be51c67962d85c97ae8667e203a22db73fc9fe0459b381b598aaa91acd41bfa"
+    }
+  ],
+  "compile_source_commit": "ac5af0817e6a70ea0d3d1de4405bd7d3c4b1a116"
+}

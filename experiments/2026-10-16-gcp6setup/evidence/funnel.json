@@ -1,0 +1,159 @@
+{
+  "scope": "one infrastructure candidate; not a C2 research gate",
+  "stages": [
+    {
+      "gate": "authorized_project_and_quota",
+      "input": 1,
+      "passed_cumulative": 1,
+      "rejected": 0
+    },
+    {
+      "gate": "scoped_net_budget_and_active_function",
+      "input": 1,
+      "passed_cumulative": 1,
+      "rejected": 0
+    },
+    {
+      "gate": "manual_stop_observed",
+      "input": 1,
+      "passed_cumulative": 1,
+      "rejected": 0
+    },
+    {
+      "gate": "test_vm_and_disk_deleted",
+      "input": 1,
+      "passed_cumulative": 1,
+      "rejected": 0
+    },
+    {
+      "gate": "uncapped_guarded_l4_created",
+      "input": 1,
+      "passed_cumulative": 1,
+      "rejected": 0
+    },
+    {
+      "gate": "fresh_versioned_environments",
+      "input": 1,
+      "passed_cumulative": 1,
+      "rejected": 0
+    },
+    {
+      "gate": "cuda_two_world_one_step",
+      "input": 1,
+      "passed_cumulative": 1,
+      "rejected": 0
+    },
+    {
+      "gate": "beamact3_data_sha_verified",
+      "input": 1,
+      "passed_cumulative": 1,
+      "rejected": 0
+    },
+    {
+      "gate": "real_data_act_50_step_readback",
+      "input": 1,
+      "passed_cumulative": 1,
+      "rejected": 0
+    },
+    {
+      "gate": "credential_idle_lease_audit",
+      "input": 1,
+      "passed_cumulative": 1,
+      "rejected": 0
+    },
+    {
+      "gate": "own_lease_removed_no_other_jobs",
+      "input": 1,
+      "passed_cumulative": 1,
+      "rejected": 0
+    },
+    {
+      "gate": "l4_terminated",
+      "input": 1,
+      "passed_cumulative": 1,
+      "rejected": 0
+    }
+  ],
+  "files": [
+    {
+      "gate": "source_hashed",
+      "input": 1483,
+      "passed_cumulative": 1483,
+      "rejected": 0
+    },
+    {
+      "gate": "streamed",
+      "input": 1483,
+      "passed_cumulative": 1483,
+      "rejected": 0
+    },
+    {
+      "gate": "destination_sha_equal",
+      "input": 1483,
+      "passed_cumulative": 1483,
+      "rejected": 0
+    }
+  ],
+  "failed_setup_attempts": {
+    "total": 3,
+    "reason_distribution": {
+      "new_service_account_iam_propagation": 1,
+      "dependency_excerpt_incomplete": 1,
+      "torchcodec_local_build_variant": 1
+    },
+    "rejections": [
+      {
+        "category": "new_service_account_iam_propagation",
+        "blocked_object": "budget-stopper@ugrp-sim-f-1016.iam.gserviceaccount.com",
+        "minimum_gap_m": null,
+        "measurement_status": "not_applicable_infrastructure",
+        "evidence": "stopper-compute-retry-command.json",
+        "recovery": "same-project IAM retry succeeded; original failure preserved"
+      },
+      {
+        "category": "dependency_excerpt_incomplete",
+        "blocked_object": "harness.catalog and package initialization dependencies",
+        "minimum_gap_m": null,
+        "measurement_status": "not_applicable_infrastructure",
+        "evidence": "act-smoke-import-failure-command.json",
+        "recovery": "expand committed harness package dependency excerpts; no trainer or model change"
+      },
+      {
+        "category": "torchcodec_local_build_variant",
+        "blocked_object": "torchcodec 0.10.0+cu128 versus gcp2 0.10.0",
+        "minimum_gap_m": null,
+        "measurement_status": "not_applicable_infrastructure",
+        "evidence": "act-freeze-initial.txt",
+        "recovery": "reinstall exact PyPI build without the optional CUDA index; retain completed training probe"
+      }
+    ]
+  },
+  "operation_attempts": [
+    {
+      "gate": "service_account_iam",
+      "input": 2,
+      "passed_cumulative": 1,
+      "rejected": 1
+    },
+    {
+      "gate": "training_package_dependency_import",
+      "input": 2,
+      "passed_cumulative": 1,
+      "rejected": 1
+    },
+    {
+      "gate": "exact_torchcodec_build",
+      "input": 2,
+      "passed_cumulative": 1,
+      "rejected": 1
+    }
+  ],
+  "raw_paths": [
+    "gcp6:/home/ugrp/ugrp-sim/setup/",
+    "/Users/changmin/projects/ugrp-wt/gcp6setup/experiments/2026-10-16-gcp6setup/evidence"
+  ],
+  "reproduce": [
+    "python3 experiments/2026-10-16-gcp6setup/finalize.py",
+    "ssh gcp6 /home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python /home/ugrp/ugrp-sim/setup/smoke.py NEW_RESULT.json"
+  ]
+}

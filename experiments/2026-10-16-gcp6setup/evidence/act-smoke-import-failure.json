@@ -1,0 +1,7 @@
+{
+  "status": "HOST_ERROR",
+  "stage": "dependency import before data/model/optimizer",
+  "optimizer_steps": 0,
+  "traceback": "Traceback (most recent call last):\n  File \"/home/ugrp/ugrp-sim/setup/beamact_smoke.py\", line 29, in <module>\n    runpy.run_path(str(SOURCE/'experiments/2026-10-16-beamact3/train_shared.py'), run_name='dependency_probe')\n  File \"<frozen runpy>\", line 286, in run_path\n  File \"<frozen runpy>\", line 98, in _run_module_code\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/home/ugrp/ugrp-sim/setup/beamact3-runtime/experiments/2026-10-16-beamact3/train_shared.py\", line 11, in <module>\n    from harness.grasp_act_data import read_json,sha256,write_json\n  File \"/home/ugrp/ugrp-sim/setup/beamact3-runtime/harness/__init__.py\", line 3, in <module>\n    from .catalog import default_registry\nModuleNotFoundError: No module named 'harness.catalog'\n",
+  "raw_log_sha256": "d58c8bc8d7c545e3ac48b6185c5403f1f9052aef52686b63cb96b21d9e835873"
+}

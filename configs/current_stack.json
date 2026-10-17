@@ -1,0 +1,2743 @@
+{
+  "schema": "ugrp.current_stack.v1",
+  "as_of": "2026-10-17",
+  "base_sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+  "user_request": "이런 것들, 최신으로 업데이트 좀 제대로 해봐. 왜 자꾸 까먹는 거야",
+  "flows": [
+    "teacher_gate",
+    "record",
+    "train",
+    "act_eval",
+    "beam_pair",
+    "release",
+    "self_map",
+    "e2e_llm",
+    "replay"
+  ],
+  "evidence_file": "experiments/2026-10-17-stackaudit/evidence.json",
+  "policy": {
+    "missing": "fail_closed",
+    "replay": "nonempty replay_of preserves recorded original stack; report replay_exception, never current compliance",
+    "deviation_fields": [
+      "id",
+      "reason",
+      "approval.authority",
+      "approval.evidence"
+    ],
+    "approval_authorities": [
+      "user",
+      "coordinator"
+    ],
+    "runtime_scope": "declared/applied manifest fields only, not proof of physics/observations",
+    "training": "check dataset_provenance, not an imaginary training physics engine",
+    "current_stack_fields": "current는 결정상 요구값; code_status/notes는 실제 구현 확인 범위. 출처 없는 런타임 적용값은 확인 안 됨이며 누락 통과 금지.",
+    "source_quotes": "decision_text는 사용자 원문 발췌 또는 AGENTS/작업 지시의 결정 문구. 아래 reference가 근거이며 조정자 설계는 notes에서 구분."
+  },
+  "gcp_projects": {
+    "ugrp-sim-b-1014": "changmin5781@gmail.com",
+    "ugrp-sim-c-1016": "changmin5781@gmail.com",
+    "ugrp-sim-d-1016": "changmin5781@gmail.com",
+    "ugrp-sim-e-1016": "changmin5781@gmail.com",
+    "ugrp-sim-f-1016": "kcm5781kcm5781@gmail.com"
+  },
+  "rules": [
+    {
+      "id": "physics_backend",
+      "current": "mjwarp_batch_v1",
+      "decision_date": "2026-10-16",
+      "source": {
+        "references": [
+          {
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "AGENTS.md",
+            "lines": [
+              45
+            ],
+            "note": "speed/rbpf/localization 최신 우선 근거는 사용자 2026-10-17 작업 지시"
+          },
+          {
+            "evidence": "physics",
+            "sha": "7c8acef516103ce5906b77d6481e46b298961b0c",
+            "path": "scripts/run_warp_flow_teacher.py",
+            "lines": [
+              1,
+              61
+            ]
+          }
+        ],
+        "decision_text": "모두 MJWarp로 바꿔서 하게"
+      },
+      "supersedes": [
+        "C MuJoCo primary"
+      ],
+      "flows": [
+        "teacher_gate",
+        "record",
+        "train",
+        "act_eval",
+        "beam_pair",
+        "release",
+        "self_map",
+        "e2e_llm",
+        "replay"
+      ],
+      "verification": {
+        "paths": [
+          "stack_values.physics_backend",
+          "physics_backend",
+          "runtime.physics_backend",
+          "dataset_provenance.physics_backend"
+        ],
+        "method": "all present values must agree; missing is 확인 안 됨; source config alone is not runtime evidence",
+        "source_artifact": "source_confirmed_runtime_separate",
+        "applied_runtime": "확인 안 됨: 입력 manifest/summary별 점검 필요"
+      },
+      "aliases": {
+        "mjwarp": "mjwarp_batch_v1"
+      },
+      "notes": "train은 물리를 실행하지 않음: 학습 데이터의 백엔드 출처를 확인. CPU 확인은 승인된 비교 이탈로 명시. replay는 원래 기록 유지."
+    },
+    {
+      "id": "contact_profile",
+      "current": "warp_native_contact_v1",
+      "decision_date": "2026-10-16",
+      "source": {
+        "references": [
+          {
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "AGENTS.md",
+            "lines": [
+              47
+            ],
+            "note": "speed/rbpf/localization 최신 우선 근거는 사용자 2026-10-17 작업 지시"
+          },
+          {
+            "evidence": "native",
+            "sha": "4f4f7a1aa64849511d03156bf49272a71c954777",
+            "path": "sim/warp_native_contact.py",
+            "lines": [
+              12,
+              13,
+              14,
+              16,
+              17,
+              20,
+              21,
+              24,
+              25,
+              30,
+              31,
+              33,
+              39,
+              60,
+              61
+            ]
+          },
+          {
+            "evidence": "nsoff",
+            "sha": "757632c42ee93b873cd573999bdb074f7469b54c",
+            "path": "sim/execution_contact_profile.py",
+            "lines": [
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              21,
+              23,
+              28,
+              30,
+              33,
+              38,
+              40,
+              58,
+              59,
+              60,
+              66,
+              71,
+              84
+            ]
+          }
+        ],
+        "decision_text": "걍 그면 되잖아. 아니 왜 이상한 것만 가져와"
+      },
+      "supersedes": [
+        "cargo_noslip_v1",
+        "baseline_noslip10"
+      ],
+      "flows": [
+        "teacher_gate",
+        "record",
+        "train",
+        "act_eval",
+        "beam_pair",
+        "release",
+        "self_map",
+        "e2e_llm",
+        "replay"
+      ],
+      "verification": {
+        "paths": [
+          "stack_values.contact_profile",
+          "contact_profile.profile",
+          "contact_profile",
+          "runtime_contact.profile",
+          "dataset_provenance.contact_profile",
+          "profile"
+        ],
+        "method": "all present values must agree; missing is 확인 안 됨; source config alone is not runtime evidence",
+        "source_artifact": "source_confirmed_runtime_separate",
+        "applied_runtime": "확인 안 됨: 입력 manifest/summary별 점검 필요"
+      },
+      "notes": "PR #562 owner bytes; PR #568 진행 중. CPU cargo_native_v1은 명시적 CPU 비교 이탈로 기록. object인 contact_profile은 하위 profile을 읽음."
+    },
+    {
+      "id": "noslip_iterations",
+      "current": 0,
+      "decision_date": "2026-10-16",
+      "source": {
+        "references": [
+          {
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "AGENTS.md",
+            "lines": [
+              47
+            ],
+            "note": "speed/rbpf/localization 최신 우선 근거는 사용자 2026-10-17 작업 지시"
+          },
+          {
+            "evidence": "native",
+            "sha": "4f4f7a1aa64849511d03156bf49272a71c954777",
+            "path": "sim/warp_native_contact.py",
+            "lines": [
+              12,
+              13,
+              14,
+              16,
+              17,
+              20,
+              21,
+              24,
+              25,
+              30,
+              31,
+              33,
+              39,
+              60,
+              61
+            ]
+          },
+          {
+            "evidence": "nsoff",
+            "sha": "757632c42ee93b873cd573999bdb074f7469b54c",
+            "path": "sim/execution_contact_profile.py",
+            "lines": [
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              21,
+              23,
+              28,
+              30,
+              33,
+              38,
+              40,
+              58,
+              59,
+              60,
+              66,
+              71,
+              84
+            ]
+          }
+        ],
+        "decision_text": "noslip은 다 끈 상태로 되게 해"
+      },
+      "supersedes": [
+        10
+      ],
+      "flows": [
+        "teacher_gate",
+        "record",
+        "train",
+        "act_eval",
+        "beam_pair",
+        "release",
+        "self_map",
+        "e2e_llm",
+        "replay"
+      ],
+      "verification": {
+        "paths": [
+          "stack_values.noslip_iterations",
+          "noslip_iterations",
+          "contact_profile.options.noslip_iterations",
+          "contact_profile.noslip_iterations",
+          "model_options.noslip_iterations"
+        ],
+        "method": "all present values must agree; missing is 확인 안 됨; source config alone is not runtime evidence",
+        "source_artifact": "source_confirmed_runtime_separate",
+        "applied_runtime": "확인 안 됨: 입력 manifest/summary별 점검 필요"
+      },
+      "value_type": "int"
+    },
+    {
+      "id": "scene_profile",
+      "current": "walls_floor_contrast_v5_indigo110_s80",
+      "decision_date": "2026-10-15",
+      "source": {
+        "references": [
+          {
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "AGENTS.md",
+            "lines": [
+              27
+            ],
+            "note": "speed/rbpf/localization 최신 우선 근거는 사용자 2026-10-17 작업 지시"
+          },
+          {
+            "evidence": "scene",
+            "sha": "7c8acef516103ce5906b77d6481e46b298961b0c",
+            "path": "sim/scene_contrast_v5.py",
+            "lines": [
+              6,
+              19,
+              32,
+              68,
+              72,
+              76
+            ]
+          },
+          {
+            "evidence": "scene_act",
+            "sha": "37a8c833656a58ba25472e2106276f225e95ad26",
+            "path": "scripts/warp_act_scene.py",
+            "lines": [
+              2,
+              16,
+              21,
+              33,
+              36
+            ]
+          },
+          {
+            "evidence": "map_scene",
+            "sha": "c7477b1f64910f498b52e1697488c28b2c4569e1",
+            "path": "scripts/mapbuild6_capture.py",
+            "lines": [
+              78,
+              81,
+              88,
+              90,
+              156,
+              189,
+              197,
+              198,
+              199,
+              294
+            ]
+          }
+        ],
+        "decision_text": "벽에도 넣고, 벽 / 바닥 색 다르게 해. 쉽게 구분할 수 있도록. 그렇게 시뮬 바꾼 뒤에 그 상황에 효율적일 수 있는 알고리즘으로 다시 설계 ㄱ(첨부터 다시는 말고, 이거에 맞는 방식으로 하면 좋을듯)"
+      },
+      "supersedes": [
+        "floor_light_v1",
+        "floor_light_textured_v1",
+        "walls_floor_contrast_v3"
+      ],
+      "flows": [
+        "teacher_gate",
+        "record",
+        "train",
+        "act_eval",
+        "beam_pair",
+        "release",
+        "self_map",
+        "e2e_llm",
+        "replay"
+      ],
+      "verification": {
+        "paths": [
+          "stack_values.scene_profile",
+          "scene_profile",
+          "scene",
+          "scene_profile.name",
+          "render_profile.name",
+          "scene_manifest.render_profile.name",
+          "dataset_provenance.scene_profile"
+        ],
+        "method": "all present values must agree; missing is 확인 안 됨; source config alone is not runtime evidence",
+        "source_artifact": "source_confirmed_runtime_separate",
+        "applied_runtime": "확인 안 됨: 입력 manifest/summary별 점검 필요"
+      },
+      "notes": "자연 바닥+벽 질감+벽/바닥 색 분리. main에 아직 모듈 없음; 열린 PR #527/#556/#557 소스로 확인. XML 질감 서명만으로 정확한 버전을 확정하지 않음."
+    },
+    {
+      "id": "end_color_scene",
+      "current": "grasp_act_teal_blue_v1",
+      "decision_date": "2026-10-14",
+      "source": {
+        "references": [
+          {
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "AGENTS.md",
+            "lines": [
+              89
+            ],
+            "note": "speed/rbpf/localization 최신 우선 근거는 사용자 2026-10-17 작업 지시"
+          },
+          {
+            "evidence": "end_colors",
+            "sha": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+            "path": "sim/grasp_act_scene.py",
+            "lines": [
+              10,
+              11,
+              18,
+              21,
+              32,
+              33
+            ]
+          }
+        ],
+        "decision_text": "혹시라도 빔 끝 문제가 힘들면 끝 색 서로 다르게 해도 돼"
+      },
+      "supersedes": [
+        "black both ends"
+      ],
+      "flows": [
+        "beam_pair",
+        "release",
+        "act_eval",
+        "e2e_llm"
+      ],
+      "verification": {
+        "paths": [
+          "stack_values.end_color_scene",
+          "end_color_scene",
+          "grasp_act_scene.colors",
+          "dataset_provenance.end_color_scene"
+        ],
+        "method": "all present values must agree; missing is 확인 안 됨; source config alone is not runtime evidence",
+        "source_artifact": "source_confirmed_runtime_separate",
+        "applied_runtime": "확인 안 됨: 입력 manifest/summary별 점검 필요"
+      },
+      "notes": "sim/grasp_act_scene.py COLOR_PROFILE 확인. 청록/파랑 끝 색; 과거 양끝 검정과 합산 금지."
+    },
+    {
+      "id": "cargo_version",
+      "current": "v6",
+      "decision_date": "2026-10-14",
+      "source": {
+        "references": [
+          {
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "AGENTS.md",
+            "lines": [
+              90
+            ],
+            "note": "speed/rbpf/localization 최신 우선 근거는 사용자 2026-10-17 작업 지시"
+          },
+          {
+            "evidence": "scenario",
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "sim/zone_scenario_scene.py",
+            "lines": [
+              81,
+              82
+            ]
+          }
+        ],
+        "decision_text": "걍 타일같은 건 빼는 게 어떄? 보라 캔도 연구 목적과 상관없는 거 같아"
+      },
+      "supersedes": [
+        "tile",
+        "can"
+      ],
+      "flows": [
+        "teacher_gate",
+        "record",
+        "train",
+        "act_eval",
+        "beam_pair",
+        "release",
+        "self_map",
+        "e2e_llm",
+        "replay"
+      ],
+      "verification": {
+        "paths": [
+          "stack_values.cargo_version",
+          "cargo_version",
+          "dataset_provenance.cargo_version"
+        ],
+        "method": "all present values must agree; missing is 확인 안 됨; source config alone is not runtime evidence",
+        "source_artifact": "source_confirmed_runtime_separate",
+        "applied_runtime": "확인 안 됨: 입력 manifest/summary별 점검 필요"
+      },
+      "notes": "tile/can→작은 상자. 버전과 실제 cargo 목록을 함께 기록."
+    },
+    {
+      "id": "scenario_version",
+      "current": "v7",
+      "decision_date": "2026-10-15",
+      "source": {
+        "references": [
+          {
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "AGENTS.md",
+            "lines": [
+              91
+            ],
+            "note": "speed/rbpf/localization 최신 우선 근거는 사용자 2026-10-17 작업 지시"
+          },
+          {
+            "evidence": "scenario",
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "sim/zone_scenario_scene.py",
+            "lines": [
+              81,
+              82
+            ]
+          },
+          {
+            "evidence": "map_scene",
+            "sha": "c7477b1f64910f498b52e1697488c28b2c4569e1",
+            "path": "scripts/mapbuild6_capture.py",
+            "lines": [
+              78,
+              81,
+              88,
+              90,
+              156,
+              189,
+              197,
+              198,
+              199,
+              294
+            ]
+          }
+        ],
+        "decision_text": "무거운 상자나, 긴 빔이나 둘 다 2명이서 들어야 한다는 건 똑같아서 버려도 돼"
+      },
+      "supersedes": [
+        "v6"
+      ],
+      "flows": [
+        "teacher_gate",
+        "record",
+        "train",
+        "act_eval",
+        "beam_pair",
+        "release",
+        "self_map",
+        "e2e_llm",
+        "replay"
+      ],
+      "verification": {
+        "paths": [
+          "stack_values.scenario_version",
+          "scenario_version",
+          "dataset_provenance.scenario_version",
+          "scenario_id",
+          "scene_manifest.scenario_id",
+          "plan.scenario_id"
+        ],
+        "method": "all present values must agree; missing is 확인 안 됨; source config alone is not runtime evidence",
+        "source_artifact": "source_confirmed_runtime_separate",
+        "applied_runtime": "확인 안 됨: 입력 manifest/summary별 점검 필요"
+      },
+      "value_type": "scenario_version"
+    },
+    {
+      "id": "heavy_crate",
+      "current": false,
+      "decision_date": "2026-10-15",
+      "source": {
+        "references": [
+          {
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "AGENTS.md",
+            "lines": [
+              91
+            ],
+            "note": "speed/rbpf/localization 최신 우선 근거는 사용자 2026-10-17 작업 지시"
+          },
+          {
+            "evidence": "map_scene",
+            "sha": "c7477b1f64910f498b52e1697488c28b2c4569e1",
+            "path": "scripts/mapbuild6_capture.py",
+            "lines": [
+              78,
+              81,
+              88,
+              90,
+              156,
+              189,
+              197,
+              198,
+              199,
+              294
+            ]
+          }
+        ],
+        "decision_text": "무거운 상자 버릴까 걍"
+      },
+      "supersedes": [
+        true
+      ],
+      "flows": [
+        "teacher_gate",
+        "record",
+        "train",
+        "act_eval",
+        "beam_pair",
+        "release",
+        "self_map",
+        "e2e_llm",
+        "replay"
+      ],
+      "verification": {
+        "paths": [
+          "stack_values.heavy_crate",
+          "heavy_crate",
+          "cargo.heavy_crate",
+          "dataset_provenance.heavy_crate"
+        ],
+        "method": "all present values must agree; missing is 확인 안 됨; source config alone is not runtime evidence",
+        "derived_kind_paths": [
+          "cargo.*.kind",
+          "orders.*.kind",
+          "scene_manifest.cargo.*.kind",
+          "plan.kind",
+          "object_kind"
+        ],
+        "source_artifact": "source_confirmed_runtime_separate",
+        "applied_runtime": "확인 안 됨: 입력 manifest/summary별 점검 필요"
+      },
+      "notes": "화물 목록에 heavy_crate가 있으면 false 선언과 충돌로 실패. tri_frame도 연구 제외이나 별도 새 규칙은 만들지 않음."
+    },
+    {
+      "id": "localization_path",
+      "current": "egocentric_landmark_memory_v1",
+      "decision_date": "2026-10-17",
+      "source": {
+        "references": [
+          {
+            "sha": "4bb02030b8890b143e2f52f8fe9250af296f412e",
+            "path": "AGENTS.md",
+            "lines": [
+              26
+            ],
+            "note": "정적 지도 미사용·자기 중심 기억 (2026-10-17 사용자)"
+          }
+        ],
+        "decision_text": "정적 지도는 안 쓸 거야. 차라리, 자기 위치를 항상 0,0으로 하고 -> 지도가 움직이게 해주라. 진짜 사람이 생각하듯이."
+      },
+      "supersedes": [
+        "zone_solo_cyan_landmarks Hough + global consensus",
+        "own_map_amcl_vendor/landmarks.py",
+        "texture_self_map_lk"
+      ],
+      "flows": [
+        "release",
+        "self_map",
+        "e2e_llm"
+      ],
+      "verification": {
+        "paths": [
+          "stack_values.localization_path",
+          "localization.path",
+          "localization_path",
+          "localization.module",
+          "lookaround.localizer.mode",
+          "localizer.mode",
+          "profile.lookaround"
+        ],
+        "method": "all present values must agree; missing is 확인 안 됨; source config alone is not runtime evidence",
+        "source_artifact": "source_confirmed_runtime_separate",
+        "applied_runtime": "확인 안 됨: 입력 manifest/summary별 점검 필요"
+      },
+      "modules": [
+        "harness/e2e_rgb_vo.py:ground_pair",
+        "harness/mapbuild_rbpf.py",
+        "scripts/mapbuild6_replay.py"
+      ],
+      "notes": "texture_self_map_lk는 이 기준표의 정규화 ID. 완성된 통합 모듈/관문 통과 확인 안 됨. LK+자기 명령, 벽 색 경계 가상 스캔은 후보; RBPF 채택 판정 대기. 출처 선언만으로 통합 성공을 뜻하지 않음."
+    },
+    {
+      "id": "rbpf",
+      "current": "off",
+      "decision_date": "2026-10-17",
+      "source": {
+        "references": [
+          {
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "AGENTS.md",
+            "lines": [
+              27
+            ],
+            "note": "speed/rbpf/localization 최신 우선 근거는 사용자 2026-10-17 작업 지시"
+          },
+          {
+            "evidence": "localization_pending",
+            "sha": "c7477b1f64910f498b52e1697488c28b2c4569e1",
+            "path": "experiments/2026-10-17-mapbuild6/README.md",
+            "lines": [
+              3,
+              5,
+              9,
+              11
+            ]
+          }
+        ],
+        "decision_text": "RBPF는 mapbuild6 판정 대기"
+      },
+      "supersedes": [
+        "unconditionally on"
+      ],
+      "flows": [
+        "release",
+        "self_map",
+        "e2e_llm"
+      ],
+      "verification": {
+        "paths": [
+          "stack_values.rbpf",
+          "localization.rbpf",
+          "rbpf"
+        ],
+        "method": "all present values must agree; missing is 확인 안 됨; source config alone is not runtime evidence; 2026-10-17 user map-correction decision: correction method (RBPF vs prior-bounded matching/pose graph) is decided by mapbuild8, so both values allowed; see selfmap_map_correction",
+        "source_artifact": "source_confirmed_runtime_separate",
+        "applied_runtime": "확인 안 됨: 입력 manifest/summary별 점검 필요"
+      },
+      "notes": "조정자 판정 절차: 둘 다 통과하면 LK; LK 실패/RBPF만 통과 때 채택. 비교 실행은 승인된 stack_deviations 필요.",
+      "operator": "one_of",
+      "allowed": [
+        "off",
+        "on"
+      ]
+    },
+    {
+      "id": "localization_engine",
+      "current": "OpenCV",
+      "decision_date": "2026-10-03",
+      "source": {
+        "references": [
+          {
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "AGENTS.md",
+            "lines": [
+              23,
+              24
+            ],
+            "note": "speed/rbpf/localization 최신 우선 근거는 사용자 2026-10-17 작업 지시"
+          },
+          {
+            "evidence": "lk",
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "harness/e2e_rgb_vo.py",
+            "lines": [
+              144,
+              169,
+              172
+            ]
+          }
+        ],
+        "decision_text": "최종 위치 추정 OpenCV(MASt3R 비교 전용)"
+      },
+      "supersedes": [
+        "MASt3R primary"
+      ],
+      "flows": [
+        "release",
+        "self_map",
+        "e2e_llm"
+      ],
+      "verification": {
+        "paths": [
+          "stack_values.localization_engine",
+          "localization.engine",
+          "localization_engine"
+        ],
+        "method": "all present values must agree; missing is 확인 안 됨; source config alone is not runtime evidence",
+        "source_artifact": "source_confirmed_runtime_separate",
+        "applied_runtime": "확인 안 됨: 입력 manifest/summary별 점검 필요"
+      },
+      "notes": "사용자 현재 지시 및 조정자 메모 색인34행 확인. MASt3R는 비교 전용."
+    },
+    {
+      "id": "setdown_lookaround_v1",
+      "current": true,
+      "decision_date": "2026-10-14",
+      "source": {
+        "references": [
+          {
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "AGENTS.md",
+            "lines": [
+              87
+            ],
+            "note": "speed/rbpf/localization 최신 우선 근거는 사용자 2026-10-17 작업 지시"
+          },
+          {
+            "evidence": "act_episode",
+            "sha": "37a8c833656a58ba25472e2106276f225e95ad26",
+            "path": "scripts/warp_act_episode.py",
+            "lines": [
+              25,
+              28,
+              34,
+              41,
+              48,
+              49,
+              58,
+              67,
+              71,
+              74,
+              77,
+              96,
+              160,
+              215,
+              216,
+              341,
+              364,
+              396,
+              405,
+              427,
+              437,
+              445
+            ]
+          },
+          {
+            "evidence": "solo_look",
+            "sha": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+            "path": "sim/grasp_act_solo_lookaround.py",
+            "lines": [
+              20,
+              32,
+              37,
+              43,
+              47,
+              63,
+              99,
+              105,
+              124,
+              125,
+              126
+            ]
+          }
+        ],
+        "decision_text": "둘러보기 위해서 아래에 뒀으면, 진짜 좀 둘러봐야 할듯"
+      },
+      "supersedes": [
+        false
+      ],
+      "flows": [
+        "teacher_gate",
+        "record",
+        "beam_pair",
+        "release",
+        "e2e_llm"
+      ],
+      "verification": {
+        "paths": [
+          "stack_values.setdown_lookaround_v1",
+          "setdown_lookaround_v1",
+          "teacher.setdown_lookaround_v1"
+        ],
+        "method": "all present values must agree; missing is 확인 안 됨; source config alone is not runtime evidence",
+        "source_artifact": "source_confirmed_runtime_separate",
+        "applied_runtime": "확인 안 됨: 입력 manifest/summary별 점검 필요"
+      },
+      "notes": "토글 true만으로 실제 RGB 둘러보기·위치 재획득 성공을 증명하지 못함. 이벤트·rgb hash·전후 평가 별도."
+    },
+    {
+      "id": "held_object_hidden_v1",
+      "current": true,
+      "decision_date": "2026-10-14",
+      "source": {
+        "references": [
+          {
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "AGENTS.md",
+            "lines": [],
+            "note": "AGENTS.md 직접 문구 줄 확인 안 됨; 사용자 2026-10-17 작업 지시 및 아래 고정 소스가 근거"
+          },
+          {
+            "evidence": "act_episode",
+            "sha": "37a8c833656a58ba25472e2106276f225e95ad26",
+            "path": "scripts/warp_act_episode.py",
+            "lines": [
+              25,
+              28,
+              34,
+              41,
+              48,
+              49,
+              58,
+              67,
+              71,
+              74,
+              77,
+              96,
+              160,
+              215,
+              216,
+              341,
+              364,
+              396,
+              405,
+              427,
+              437,
+              445
+            ]
+          },
+          {
+            "evidence": "warp_release",
+            "sha": "7c8acef516103ce5906b77d6481e46b298961b0c",
+            "path": "scripts/run_warp_flow_teacher.py",
+            "lines": [
+              40,
+              43,
+              44,
+              79
+            ]
+          }
+        ],
+        "decision_text": "빔을 들고 옮길 때에도 빔의 위치를 아나? … 그럴 때에는 모르게 하는 게 어때"
+      },
+      "supersedes": [
+        false
+      ],
+      "flows": [
+        "teacher_gate",
+        "record",
+        "act_eval",
+        "beam_pair",
+        "release",
+        "self_map",
+        "e2e_llm"
+      ],
+      "verification": {
+        "paths": [
+          "stack_values.held_object_hidden_v1",
+          "held_object_hidden_v1",
+          "teacher.held_object_hidden_v1"
+        ],
+        "method": "all present values must agree; missing is 확인 안 됨; source config alone is not runtime evidence",
+        "source_artifact": "source_confirmed_runtime_separate",
+        "applied_runtime": "확인 안 됨: 입력 manifest/summary별 점검 필요"
+      }
+    },
+    {
+      "id": "held_world_reads",
+      "current": 0,
+      "decision_date": "2026-10-14",
+      "source": {
+        "references": [
+          {
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "AGENTS.md",
+            "lines": [
+              86,
+              115
+            ],
+            "note": "speed/rbpf/localization 최신 우선 근거는 사용자 2026-10-17 작업 지시"
+          },
+          {
+            "evidence": "act_episode",
+            "sha": "37a8c833656a58ba25472e2106276f225e95ad26",
+            "path": "scripts/warp_act_episode.py",
+            "lines": [
+              25,
+              28,
+              34,
+              41,
+              48,
+              49,
+              58,
+              67,
+              71,
+              74,
+              77,
+              96,
+              160,
+              215,
+              216,
+              341,
+              364,
+              396,
+              405,
+              427,
+              437,
+              445
+            ]
+          },
+          {
+            "evidence": "warp_queue",
+            "sha": "7c8acef516103ce5906b77d6481e46b298961b0c",
+            "path": "experiments/2026-10-16-warp8/native-gate-queue.json",
+            "lines": [
+              4,
+              6,
+              7,
+              45,
+              46,
+              49,
+              50
+            ]
+          }
+        ],
+        "decision_text": "그럴 때에는 모르게 하는 게 어때"
+      },
+      "supersedes": [
+        "held cargo world pose reads"
+      ],
+      "flows": [
+        "teacher_gate",
+        "record",
+        "act_eval",
+        "beam_pair",
+        "release",
+        "self_map",
+        "e2e_llm"
+      ],
+      "verification": {
+        "paths": [
+          "stack_values.held_world_reads",
+          "input_audit.held_world_reads",
+          "held_world_reads"
+        ],
+        "method": "all present values must agree; missing is 확인 안 됨; source config alone is not runtime evidence",
+        "source_artifact": "source_confirmed_runtime_separate",
+        "applied_runtime": "확인 안 됨: 입력 manifest/summary별 점검 필요"
+      },
+      "value_type": "int",
+      "notes": "held_world_reads_required는 요구값이므로 실제값의 증거로 읽지 않음."
+    },
+    {
+      "id": "teacher_visibility",
+      "current": "visible_only",
+      "decision_date": "2026-10-14",
+      "source": {
+        "references": [
+          {
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "AGENTS.md",
+            "lines": [
+              86
+            ],
+            "note": "speed/rbpf/localization 최신 우선 근거는 사용자 2026-10-17 작업 지시"
+          },
+          {
+            "evidence": "act_episode",
+            "sha": "37a8c833656a58ba25472e2106276f225e95ad26",
+            "path": "scripts/warp_act_episode.py",
+            "lines": [
+              25,
+              28,
+              34,
+              41,
+              48,
+              49,
+              58,
+              67,
+              71,
+              74,
+              77,
+              96,
+              160,
+              215,
+              216,
+              341,
+              364,
+              396,
+              405,
+              427,
+              437,
+              445
+            ]
+          }
+        ],
+        "decision_text": "그 교사도.. 눈으로 보고 있는 것에 대한 위치만 알게 하는 게 어때"
+      },
+      "supersedes": [
+        "omniscient"
+      ],
+      "flows": [
+        "teacher_gate",
+        "record",
+        "beam_pair",
+        "release"
+      ],
+      "verification": {
+        "paths": [
+          "stack_values.teacher_visibility",
+          "teacher_visibility",
+          "teacher.visibility_profile",
+          "teacher_profile"
+        ],
+        "method": "all present values must agree; missing is 확인 안 됨; source config alone is not runtime evidence",
+        "source_artifact": "source_confirmed_runtime_separate",
+        "applied_runtime": "확인 안 됨: 입력 manifest/summary별 점검 필요"
+      },
+      "aliases": {
+        "solo_visible_only_v1": "visible_only",
+        "visible_only_v1": "visible_only"
+      }
+    },
+    {
+      "id": "invisible_measurements",
+      "current": 0,
+      "decision_date": "2026-10-14",
+      "source": {
+        "references": [
+          {
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "AGENTS.md",
+            "lines": [
+              24,
+              25,
+              86,
+              97
+            ],
+            "note": "speed/rbpf/localization 최신 우선 근거는 사용자 2026-10-17 작업 지시"
+          },
+          {
+            "evidence": "act_episode",
+            "sha": "37a8c833656a58ba25472e2106276f225e95ad26",
+            "path": "scripts/warp_act_episode.py",
+            "lines": [
+              25,
+              28,
+              34,
+              41,
+              48,
+              49,
+              58,
+              67,
+              71,
+              74,
+              77,
+              96,
+              160,
+              215,
+              216,
+              341,
+              364,
+              396,
+              405,
+              427,
+              437,
+              445
+            ]
+          }
+        ],
+        "decision_text": "눈으로 보고 있는 것에 대한 위치만 알게"
+      },
+      "supersedes": [
+        "unseen truth reads"
+      ],
+      "flows": [
+        "teacher_gate",
+        "record",
+        "beam_pair",
+        "release"
+      ],
+      "verification": {
+        "paths": [
+          "stack_values.invisible_measurements",
+          "input_audit.invisible_measurements",
+          "invisible_measurements"
+        ],
+        "method": "all present values must agree; missing is 확인 안 됨; source config alone is not runtime evidence",
+        "source_artifact": "source_confirmed_runtime_separate",
+        "applied_runtime": "확인 안 됨: 입력 manifest/summary별 점검 필요"
+      },
+      "value_type": "int"
+    },
+    {
+      "id": "nearfield_executor",
+      "current": "ACT",
+      "decision_date": "2026-10-14",
+      "source": {
+        "references": [
+          {
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "AGENTS.md",
+            "lines": [
+              82,
+              85,
+              87
+            ],
+            "note": "speed/rbpf/localization 최신 우선 근거는 사용자 2026-10-17 작업 지시"
+          },
+          {
+            "evidence": "input",
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "harness/grasp_act_contract.py",
+            "lines": [
+              1,
+              4,
+              28,
+              45,
+              58,
+              61,
+              71,
+              72,
+              73,
+              75,
+              77,
+              78,
+              80,
+              86,
+              87,
+              91,
+              101,
+              106,
+              110,
+              124,
+              126,
+              127,
+              129,
+              130,
+              131,
+              132,
+              133,
+              136,
+              137,
+              157,
+              168,
+              172,
+              177
+            ]
+          },
+          {
+            "evidence": "act_eval",
+            "sha": "37a8c833656a58ba25472e2106276f225e95ad26",
+            "path": "scripts/evaluate_act16w.py",
+            "lines": [
+              11,
+              34,
+              35,
+              36,
+              48,
+              54,
+              90,
+              91
+            ]
+          }
+        ],
+        "decision_text": "ACT로 가자"
+      },
+      "supersedes": [
+        "hand-coded grasp"
+      ],
+      "flows": [
+        "act_eval",
+        "e2e_llm"
+      ],
+      "verification": {
+        "paths": [
+          "stack_values.nearfield_executor",
+          "nearfield_executor",
+          "execution.nearfield_executor"
+        ],
+        "method": "all present values must agree; missing is 확인 안 됨; source config alone is not runtime evidence",
+        "source_artifact": "source_confirmed_runtime_separate",
+        "applied_runtime": "확인 안 됨: 입력 manifest/summary별 점검 필요"
+      },
+      "notes": "교사는 시연 생성 예외. 손짠 파지 fallback 금지; ACT 코드와 ACT 학습 모델을 구분."
+    },
+    {
+      "id": "weld",
+      "current": false,
+      "decision_date": "확인 안 됨",
+      "source": {
+        "references": [
+          {
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "AGENTS.md",
+            "lines": [
+              29
+            ],
+            "note": "speed/rbpf/localization 최신 우선 근거는 사용자 2026-10-17 작업 지시"
+          },
+          {
+            "evidence": "act_episode",
+            "sha": "37a8c833656a58ba25472e2106276f225e95ad26",
+            "path": "scripts/warp_act_episode.py",
+            "lines": [
+              25,
+              28,
+              34,
+              41,
+              48,
+              49,
+              58,
+              67,
+              71,
+              74,
+              77,
+              96,
+              160,
+              215,
+              216,
+              341,
+              364,
+              396,
+              405,
+              427,
+              437,
+              445
+            ]
+          },
+          {
+            "evidence": "warp_queue",
+            "sha": "7c8acef516103ce5906b77d6481e46b298961b0c",
+            "path": "experiments/2026-10-16-warp8/native-gate-queue.json",
+            "lines": [
+              4,
+              6,
+              7,
+              45,
+              46,
+              49,
+              50
+            ]
+          }
+        ],
+        "decision_text": "파지·공동 파지의 weld 등 인위적 고정은 기본 OFF"
+      },
+      "supersedes": [
+        true
+      ],
+      "flows": [
+        "teacher_gate",
+        "record",
+        "train",
+        "act_eval",
+        "beam_pair",
+        "release",
+        "self_map",
+        "e2e_llm",
+        "replay"
+      ],
+      "verification": {
+        "paths": [
+          "stack_values.weld",
+          "weld",
+          "weld_active",
+          "assisted_weld",
+          "dataset_provenance.weld"
+        ],
+        "method": "all present values must agree; missing is 확인 안 됨; source config alone is not runtime evidence",
+        "source_artifact": "source_confirmed_runtime_separate",
+        "applied_runtime": "확인 안 됨: 입력 manifest/summary별 점검 필요"
+      },
+      "aliases": {
+        "off": false,
+        "on": true
+      }
+    },
+    {
+      "id": "top_camera_control",
+      "current": false,
+      "decision_date": "2026-10-03",
+      "source": {
+        "references": [
+          {
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "AGENTS.md",
+            "lines": [
+              23
+            ],
+            "note": "speed/rbpf/localization 최신 우선 근거는 사용자 2026-10-17 작업 지시"
+          },
+          {
+            "evidence": "input",
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "harness/grasp_act_contract.py",
+            "lines": [
+              1,
+              4,
+              28,
+              45,
+              58,
+              61,
+              71,
+              72,
+              73,
+              75,
+              77,
+              78,
+              80,
+              86,
+              87,
+              91,
+              101,
+              106,
+              110,
+              124,
+              126,
+              127,
+              129,
+              130,
+              131,
+              132,
+              133,
+              136,
+              137,
+              157,
+              168,
+              172,
+              177
+            ]
+          }
+        ],
+        "decision_text": "공용(위) 카메라는 쓰지 않는다. 지도 만들기나 위치 추정에 쓰지 않는다."
+      },
+      "supersedes": [
+        true
+      ],
+      "flows": [
+        "teacher_gate",
+        "record",
+        "act_eval",
+        "beam_pair",
+        "release",
+        "self_map",
+        "e2e_llm"
+      ],
+      "verification": {
+        "paths": [
+          "stack_values.top_camera_control",
+          "top_camera_control",
+          "input_audit.top_camera_control"
+        ],
+        "method": "all present values must agree; missing is 확인 안 됨; source config alone is not runtime evidence",
+        "source_artifact": "source_confirmed_runtime_separate",
+        "applied_runtime": "확인 안 됨: 입력 manifest/summary별 점검 필요"
+      },
+      "notes": "review_top/render_top/evaluation camera 사용과 제어 입력 금지를 혼동하지 않음."
+    },
+    {
+      "id": "planner_model",
+      "current": "google/gemma-4-31b-it",
+      "decision_date": "2026-10-14",
+      "source": {
+        "references": [
+          {
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "AGENTS.md",
+            "lines": [
+              78
+            ],
+            "note": "speed/rbpf/localization 최신 우선 근거는 사용자 2026-10-17 작업 지시"
+          },
+          {
+            "evidence": "llm",
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "configs/model_endpoints.json",
+            "lines": [
+              8,
+              9,
+              10,
+              11,
+              18,
+              19,
+              39,
+              42,
+              49,
+              52
+            ]
+          }
+        ],
+        "decision_text": "Gemma 4 31B @DeepInfra"
+      },
+      "supersedes": [
+        "Ling-3.0-Flash-VL"
+      ],
+      "flows": [
+        "e2e_llm"
+      ],
+      "verification": {
+        "paths": [
+          "stack_values.planner_model",
+          "llm_upstream.model",
+          "planner.model",
+          "model"
+        ],
+        "method": "all present values must agree; missing is 확인 안 됨; source config alone is not runtime evidence",
+        "source_artifact": "source_confirmed_runtime_separate",
+        "applied_runtime": "확인 안 됨: 입력 manifest/summary별 점검 필요"
+      }
+    },
+    {
+      "id": "planner_provider",
+      "current": "CoreWeave",
+      "decision_date": "2026-10-16",
+      "source": {
+        "references": [
+          {
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "AGENTS.md",
+            "lines": [
+              50,
+              79
+            ],
+            "note": "speed/rbpf/localization 최신 우선 근거는 사용자 2026-10-17 작업 지시"
+          },
+          {
+            "evidence": "llm",
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "configs/model_endpoints.json",
+            "lines": [
+              8,
+              9,
+              10,
+              11,
+              18,
+              19,
+              39,
+              42,
+              49,
+              52
+            ]
+          }
+        ],
+        "decision_text": "대안 찾아줘 → CoreWeave fp4 추천 → ㄱㄱ"
+      },
+      "supersedes": [
+        "DeepInfra"
+      ],
+      "flows": [
+        "e2e_llm"
+      ],
+      "verification": {
+        "paths": [
+          "stack_values.planner_provider",
+          "llm_upstream.provider.order.*",
+          "planner.provider",
+          "provider.order.*"
+        ],
+        "method": "all present values must agree; missing is 확인 안 됨; source config alone is not runtime evidence",
+        "source_artifact": "source_confirmed_runtime_separate",
+        "applied_runtime": "확인 안 됨: 입력 manifest/summary별 점검 필요"
+      }
+    },
+    {
+      "id": "planner_quantization",
+      "current": "fp4",
+      "decision_date": "2026-10-16",
+      "source": {
+        "references": [
+          {
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "AGENTS.md",
+            "lines": [
+              50,
+              79
+            ],
+            "note": "speed/rbpf/localization 최신 우선 근거는 사용자 2026-10-17 작업 지시"
+          },
+          {
+            "evidence": "llm",
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "configs/model_endpoints.json",
+            "lines": [
+              8,
+              9,
+              10,
+              11,
+              18,
+              19,
+              39,
+              42,
+              49,
+              52
+            ]
+          }
+        ],
+        "decision_text": "CoreWeave fp4 → ㄱㄱ"
+      },
+      "supersedes": [
+        "unspecified",
+        "fp8"
+      ],
+      "flows": [
+        "e2e_llm"
+      ],
+      "verification": {
+        "paths": [
+          "stack_values.planner_quantization",
+          "llm_upstream.provider.quantizations.*",
+          "planner.quantization",
+          "quantization"
+        ],
+        "method": "all present values must agree; missing is 확인 안 됨; source config alone is not runtime evidence",
+        "source_artifact": "source_confirmed_runtime_separate",
+        "applied_runtime": "확인 안 됨: 입력 manifest/summary별 점검 필요"
+      }
+    },
+    {
+      "id": "planner_fallbacks",
+      "current": false,
+      "decision_date": "2026-10-16",
+      "source": {
+        "references": [
+          {
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "AGENTS.md",
+            "lines": [
+              78
+            ],
+            "note": "speed/rbpf/localization 최신 우선 근거는 사용자 2026-10-17 작업 지시"
+          },
+          {
+            "evidence": "llm",
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "configs/model_endpoints.json",
+            "lines": [
+              8,
+              9,
+              10,
+              11,
+              18,
+              19,
+              39,
+              42,
+              49,
+              52
+            ]
+          }
+        ],
+        "decision_text": "공급자만 변경, 모델·fp4 유지"
+      },
+      "supersedes": [
+        true
+      ],
+      "flows": [
+        "e2e_llm"
+      ],
+      "verification": {
+        "paths": [
+          "stack_values.planner_fallbacks",
+          "llm_upstream.provider.allow_fallbacks",
+          "planner.allow_fallbacks",
+          "provider.allow_fallbacks"
+        ],
+        "method": "all present values must agree; missing is 확인 안 됨; source config alone is not runtime evidence",
+        "source_artifact": "source_confirmed_runtime_separate",
+        "applied_runtime": "확인 안 됨: 입력 manifest/summary별 점검 필요"
+      },
+      "notes": "fallback false는 docs/decision_model_control.md 공급자 갱신 및 relay identity와 함께 확인."
+    },
+    {
+      "id": "planner_own_rgb_count",
+      "current": 1,
+      "decision_date": "2026-10-14",
+      "source": {
+        "references": [
+          {
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "AGENTS.md",
+            "lines": [
+              78
+            ],
+            "note": "speed/rbpf/localization 최신 우선 근거는 사용자 2026-10-17 작업 지시"
+          },
+          {
+            "evidence": "input",
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "harness/grasp_act_contract.py",
+            "lines": [
+              1,
+              4,
+              28,
+              45,
+              58,
+              61,
+              71,
+              72,
+              73,
+              75,
+              77,
+              78,
+              80,
+              86,
+              87,
+              91,
+              101,
+              106,
+              110,
+              124,
+              126,
+              127,
+              129,
+              130,
+              131,
+              132,
+              133,
+              136,
+              137,
+              157,
+              168,
+              172,
+              177
+            ]
+          }
+        ],
+        "decision_text": "판단 호출은 자기 RGB 1장을 함께 받는다"
+      },
+      "supersedes": [
+        0
+      ],
+      "flows": [
+        "e2e_llm"
+      ],
+      "verification": {
+        "paths": [
+          "stack_values.planner_own_rgb_count",
+          "planner.own_rgb_count",
+          "llm_request.own_rgb_count"
+        ],
+        "method": "all present values must agree; missing is 확인 안 됨; source config alone is not runtime evidence",
+        "source_artifact": "source_confirmed_runtime_separate",
+        "applied_runtime": "확인 안 됨: 입력 manifest/summary별 점검 필요"
+      },
+      "value_type": "int"
+    },
+    {
+      "id": "planner_cache_order",
+      "current": [
+        "system",
+        "static",
+        "dynamic",
+        "image"
+      ],
+      "decision_date": "2026-10-13",
+      "source": {
+        "references": [
+          {
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "AGENTS.md",
+            "lines": [
+              101
+            ],
+            "note": "speed/rbpf/localization 최신 우선 근거는 사용자 2026-10-17 작업 지시"
+          }
+        ],
+        "decision_text": "앞으로 캐시 규칙 넣어줘"
+      },
+      "supersedes": [
+        "dynamic before static"
+      ],
+      "flows": [
+        "e2e_llm"
+      ],
+      "verification": {
+        "paths": [
+          "stack_values.planner_cache_order",
+          "planner.cache_order",
+          "cache_order"
+        ],
+        "method": "all present values must agree; missing is 확인 안 됨; source config alone is not runtime evidence",
+        "source_artifact": "확인 안 됨",
+        "applied_runtime": "확인 안 됨: 입력 manifest/summary별 점검 필요"
+      },
+      "notes": "AGENTS.md:100-104의 순서. 구체 실행 모듈·요청 순서 확인 안 됨; cached_tokens만으로 순서 통과시키지 않음."
+    },
+    {
+      "id": "heading_mode",
+      "current": "on",
+      "decision_date": "2026-10-09",
+      "source": {
+        "references": [
+          {
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "AGENTS.md",
+            "lines": [],
+            "note": "AGENTS.md 직접 문구 줄 확인 안 됨; 사용자 2026-10-17 작업 지시 및 아래 고정 소스가 근거"
+          },
+          {
+            "evidence": "heading",
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "harness/path_heading_policy.py",
+            "lines": [
+              1,
+              3,
+              4,
+              6,
+              14,
+              15,
+              16,
+              17,
+              20,
+              27,
+              30,
+              32,
+              35,
+              36,
+              37,
+              39,
+              40,
+              41
+            ]
+          }
+        ],
+        "decision_text": "정면 주행 기본"
+      },
+      "supersedes": [
+        "crab default"
+      ],
+      "flows": [
+        "act_eval",
+        "beam_pair",
+        "release",
+        "self_map",
+        "e2e_llm"
+      ],
+      "verification": {
+        "paths": [
+          "stack_values.heading_mode",
+          "heading_mode",
+          "execution_options.heading_mode"
+        ],
+        "method": "all present values must agree; missing is 확인 안 됨; source config alone is not runtime evidence",
+        "source_artifact": "source_confirmed_runtime_separate",
+        "applied_runtime": "확인 안 됨: 입력 manifest/summary별 점검 필요"
+      }
+    },
+    {
+      "id": "ultrasonic_front",
+      "current": "off",
+      "decision_date": "2026-09-29",
+      "source": {
+        "references": [
+          {
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "AGENTS.md",
+            "lines": [
+              23
+            ],
+            "note": "speed/rbpf/localization 최신 우선 근거는 사용자 2026-10-17 작업 지시"
+          },
+          {
+            "evidence": "sensors",
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "scripts/run_zone_study_sensors.py",
+            "lines": [
+              1,
+              3,
+              6,
+              7,
+              10,
+              11,
+              14,
+              25,
+              43,
+              52,
+              57,
+              70,
+              134,
+              163
+            ]
+          }
+        ],
+        "decision_text": "자기 초음파는 번들에서 명시적으로 켠 실행에서만 사용"
+      },
+      "supersedes": [
+        "on by default"
+      ],
+      "flows": [
+        "teacher_gate",
+        "record",
+        "act_eval",
+        "beam_pair",
+        "release",
+        "self_map",
+        "e2e_llm"
+      ],
+      "verification": {
+        "paths": [
+          "stack_values.ultrasonic_front",
+          "sensors.ultrasonic_front",
+          "ultrasonic_front"
+        ],
+        "method": "all present values must agree; missing is 확인 안 됨; source config alone is not runtime evidence",
+        "source_artifact": "source_confirmed_runtime_separate",
+        "applied_runtime": "확인 안 됨: 입력 manifest/summary별 점검 필요"
+      }
+    },
+    {
+      "id": "wall_cap",
+      "current": null,
+      "decision_date": "2026-10-16",
+      "source": {
+        "references": [
+          {
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "AGENTS.md",
+            "lines": [
+              51
+            ],
+            "note": "speed/rbpf/localization 최신 우선 근거는 사용자 2026-10-17 작업 지시"
+          },
+          {
+            "evidence": "warp_queue",
+            "sha": "7c8acef516103ce5906b77d6481e46b298961b0c",
+            "path": "experiments/2026-10-16-warp8/native-gate-queue.json",
+            "lines": [
+              4,
+              6,
+              7,
+              45,
+              46,
+              49,
+              50
+            ]
+          },
+          {
+            "evidence": "act_gate",
+            "sha": "37a8c833656a58ba25472e2106276f225e95ad26",
+            "path": "experiments/2026-10-16-act16w/resume4/native-gate-summary.json",
+            "lines": [
+              4,
+              6,
+              7,
+              12,
+              13
+            ]
+          }
+        ],
+        "decision_text": "아니; 상한 좀 없애라고"
+      },
+      "supersedes": [
+        "8 hours",
+        "supervisor wall deadline"
+      ],
+      "flows": [
+        "teacher_gate",
+        "record",
+        "train",
+        "act_eval",
+        "beam_pair",
+        "release",
+        "self_map",
+        "e2e_llm",
+        "replay"
+      ],
+      "verification": {
+        "paths": [
+          "stack_values.wall_cap",
+          "wall_cap",
+          "VM_wall_cap",
+          "supervisor_wall_deadline",
+          "host.max_run_duration_s"
+        ],
+        "method": "all present values must agree; missing is 확인 안 됨; source config alone is not runtime evidence",
+        "source_artifact": "source_confirmed_runtime_separate",
+        "applied_runtime": "확인 안 됨: 입력 manifest/summary별 점검 필요"
+      },
+      "notes": "SIM 임무/탐색 예산·유휴20·budget-stop과 구분. null을 실제 필드로 기록해야 하며 누락은 unknown."
+    },
+    {
+      "id": "speed_gate",
+      "current": "record_only",
+      "decision_date": "2026-10-17",
+      "source": {
+        "references": [
+          {
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "AGENTS.md",
+            "lines": [
+              56
+            ],
+            "note": "speed/rbpf/localization 최신 우선 근거는 사용자 2026-10-17 작업 지시"
+          }
+        ],
+        "decision_text": "속도 게이트 기록 전용"
+      },
+      "supersedes": [
+        "block by per-world latency"
+      ],
+      "flows": [
+        "teacher_gate",
+        "record",
+        "act_eval",
+        "beam_pair",
+        "release",
+        "self_map",
+        "e2e_llm"
+      ],
+      "verification": {
+        "paths": [
+          "stack_values.speed_gate",
+          "speed_gate.mode",
+          "speed_gate_mode"
+        ],
+        "method": "all present values must agree; missing is 확인 안 됨; source config alone is not runtime evidence",
+        "source_artifact": "확인 안 됨",
+        "applied_runtime": "확인 안 됨: 입력 manifest/summary별 점검 필요"
+      },
+      "notes": "2026-10-17 작업 지시의 조정자 결정. 이전 AGENTS의 >6 차단과 충돌 시 이 결정 우선; 물리 실패/HOST_ERROR는 별개."
+    },
+    {
+      "id": "speed_metric",
+      "current": "wall_s/(sim_s*nworld)",
+      "decision_date": "2026-10-17",
+      "source": {
+        "references": [
+          {
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "AGENTS.md",
+            "lines": [
+              56
+            ],
+            "note": "speed/rbpf/localization 최신 우선 근거는 사용자 2026-10-17 작업 지시"
+          },
+          {
+            "evidence": "warp_release",
+            "sha": "7c8acef516103ce5906b77d6481e46b298961b0c",
+            "path": "scripts/run_warp_flow_teacher.py",
+            "lines": [
+              40,
+              43,
+              44,
+              79
+            ]
+          }
+        ],
+        "decision_text": "MJWarp 묶음은 동시 세계 수로 나눈 wall/SIM으로 보고"
+      },
+      "supersedes": [
+        "batch wall/SIM alone",
+        "median world latency alone"
+      ],
+      "flows": [
+        "teacher_gate",
+        "record",
+        "act_eval",
+        "beam_pair",
+        "release",
+        "self_map",
+        "e2e_llm"
+      ],
+      "verification": {
+        "paths": [
+          "stack_values.speed_metric",
+          "speed_gate.metric",
+          "speed_metric"
+        ],
+        "method": "all present values must agree; missing is 확인 안 됨; source config alone is not runtime evidence",
+        "source_artifact": "source_confirmed_runtime_separate",
+        "applied_runtime": "확인 안 됨: 입력 manifest/summary별 점검 필요"
+      },
+      "notes": "조정자 결정, 사용자 미확인. raw wall_s·sim_s·nworld와 배치 지연도 함께 보존; 숫자만 보고 환산 성공 추정 금지."
+    },
+    {
+      "id": "gcp_host",
+      "current": [
+        "ugrp-act-l4-gcp2",
+        "ugrp-act-l4-gcp3",
+        "ugrp-act-l4-gcp4",
+        "ugrp-act-l4-gcp5",
+        "ugrp-act-l4-gcp6"
+      ],
+      "decision_date": "2026-10-16",
+      "source": {
+        "references": [
+          {
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "AGENTS.md",
+            "lines": [
+              37,
+              58,
+              86
+            ],
+            "note": "speed/rbpf/localization 최신 우선 근거는 사용자 2026-10-17 작업 지시"
+          },
+          {
+            "evidence": "warp_queue",
+            "sha": "7c8acef516103ce5906b77d6481e46b298961b0c",
+            "path": "experiments/2026-10-16-warp8/native-gate-queue.json",
+            "lines": [
+              4,
+              6,
+              7,
+              45,
+              46,
+              49,
+              50
+            ]
+          },
+          {
+            "evidence": "act_gate",
+            "sha": "37a8c833656a58ba25472e2106276f225e95ad26",
+            "path": "experiments/2026-10-16-act16w/resume4/native-gate-summary.json",
+            "lines": [
+              4,
+              6,
+              7,
+              12,
+              13
+            ]
+          }
+        ],
+        "decision_text": "GCP를 메인으로, Azure는 보조로 하자 그럼. 그렇게 써둬"
+      },
+      "supersedes": [
+        "gcp1 active",
+        "unallocated host"
+      ],
+      "flows": [
+        "teacher_gate",
+        "record",
+        "train",
+        "act_eval",
+        "beam_pair",
+        "release",
+        "self_map",
+        "e2e_llm",
+        "replay"
+      ],
+      "verification": {
+        "paths": [
+          "stack_values.gcp_host",
+          "host.instance",
+          "execution_host.instance",
+          "gcp_host"
+        ],
+        "method": "all present values must agree; missing is 확인 안 됨; source config alone is not runtime evidence",
+        "project_paths": [
+          "host.project_id",
+          "host.project",
+          "execution_host.project_id",
+          "project",
+          "project_id",
+          "stack_values.gcp_project"
+        ],
+        "account_paths": [
+          "host.account",
+          "execution_host.account",
+          "account",
+          "stack_values.gcp_account"
+        ],
+        "source_artifact": "source_confirmed_runtime_separate",
+        "applied_runtime": "확인 안 됨: 입력 manifest/summary별 점검 필요"
+      },
+      "operator": "one_of",
+      "allowed": [
+        "ugrp-act-l4-gcp2",
+        "ugrp-act-l4-gcp3",
+        "ugrp-act-l4-gcp4",
+        "ugrp-act-l4-gcp5",
+        "ugrp-act-l4-gcp6"
+      ],
+      "notes": "허용 호스트여도 ownership/임대 확인 별도. CPU 비교는 원본 L4 CPU에서; gcp2 CPU 분석 전용 시작 금지.",
+      "project_for_instance": {
+        "ugrp-act-l4-gcp2": "ugrp-sim-b-1014",
+        "ugrp-act-l4-gcp3": "ugrp-sim-c-1016",
+        "ugrp-act-l4-gcp4": "ugrp-sim-d-1016",
+        "ugrp-act-l4-gcp5": "ugrp-sim-e-1016",
+        "ugrp-act-l4-gcp6": "ugrp-sim-f-1016"
+      }
+    },
+    {
+      "id": "gcp_guards",
+      "current": {
+        "idle_minutes": 20,
+        "budget_stop": true,
+        "credentials_on_vm": false
+      },
+      "decision_date": "2026-10-16",
+      "source": {
+        "references": [
+          {
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "AGENTS.md",
+            "lines": [
+              49
+            ],
+            "note": "speed/rbpf/localization 최신 우선 근거는 사용자 2026-10-17 작업 지시"
+          }
+        ],
+        "decision_text": "낭비 하지 마"
+      },
+      "supersedes": [
+        "wall cap as substitute",
+        "idle leases only"
+      ],
+      "flows": [
+        "teacher_gate",
+        "record",
+        "train",
+        "act_eval",
+        "beam_pair",
+        "release",
+        "self_map",
+        "e2e_llm",
+        "replay"
+      ],
+      "verification": {
+        "paths": [
+          "stack_values.gcp_guards",
+          "gcp_guards"
+        ],
+        "method": "all present values must agree; missing is 확인 안 됨; source config alone is not runtime evidence",
+        "source_artifact": "확인 안 됨",
+        "applied_runtime": "확인 안 됨: 입력 manifest/summary별 점검 필요"
+      },
+      "notes": "실제 장치/상태 증거 확인 안 됨. VM wall cap 없음; 순비용1000KRW budget-stop; 새 실행 전 장치 검증·ownership·lease·실제 부하 확인. 모든 gcloud에 account/project, gcp1 시작/생성/복사 금지."
+    },
+    {
+      "id": "no_pooling",
+      "current": true,
+      "decision_date": "2026-10-16",
+      "source": {
+        "references": [
+          {
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "AGENTS.md",
+            "lines": [
+              55
+            ],
+            "note": "speed/rbpf/localization 최신 우선 근거는 사용자 2026-10-17 작업 지시"
+          },
+          {
+            "evidence": "warp_queue",
+            "sha": "7c8acef516103ce5906b77d6481e46b298961b0c",
+            "path": "experiments/2026-10-16-warp8/native-gate-queue.json",
+            "lines": [
+              4,
+              6,
+              7,
+              45,
+              46,
+              49,
+              50
+            ]
+          }
+        ],
+        "decision_text": "모두 MJWarp로 바꿔서 하게"
+      },
+      "supersedes": [
+        false
+      ],
+      "flows": [
+        "teacher_gate",
+        "record",
+        "train",
+        "act_eval",
+        "beam_pair",
+        "release",
+        "self_map",
+        "e2e_llm",
+        "replay"
+      ],
+      "verification": {
+        "paths": [
+          "stack_values.no_pooling",
+          "no_pooling"
+        ],
+        "method": "all present values must agree; missing is 확인 안 됨; source config alone is not runtime evidence",
+        "source_artifact": "source_confirmed_runtime_separate",
+        "applied_runtime": "확인 안 됨: 입력 manifest/summary별 점검 필요"
+      },
+      "notes": "backend/scene/contact/provider/host/머신 종류가 다르면 합산 금지."
+    },
+    {
+      "id": "planning_cap_basis",
+      "current": "compute_or_sim",
+      "decision_date": "2026-10-15",
+      "source": {
+        "references": [
+          {
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "AGENTS.md",
+            "lines": [
+              13
+            ],
+            "note": "speed/rbpf/localization 최신 우선 근거는 사용자 2026-10-17 작업 지시"
+          }
+        ],
+        "decision_text": "ㅇㅇ 그렇게 해"
+      },
+      "supersedes": [
+        "wall seconds"
+      ],
+      "flows": [
+        "beam_pair",
+        "release",
+        "self_map",
+        "e2e_llm"
+      ],
+      "verification": {
+        "paths": [
+          "stack_values.planning_cap_basis",
+          "planning.cap_basis",
+          "planning_cap_basis"
+        ],
+        "method": "all present values must agree; missing is 확인 안 됨; source config alone is not runtime evidence",
+        "source_artifact": "확인 안 됨",
+        "applied_runtime": "확인 안 됨: 입력 manifest/summary별 점검 필요"
+      },
+      "notes": "노드·검사 수 또는 SIM. 호스트 watchdog과 행동 선택 상한 분리. 새 후보는 켬."
+    },
+    {
+      "id": "rejection_ledger",
+      "current": [
+        "reason_category",
+        "blocked_object",
+        "minimum_gap_m"
+      ],
+      "decision_date": "2026-10-15",
+      "source": {
+        "references": [
+          {
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "AGENTS.md",
+            "lines": [
+              14,
+              119
+            ],
+            "note": "speed/rbpf/localization 최신 우선 근거는 사용자 2026-10-17 작업 지시"
+          }
+        ],
+        "decision_text": "ㅇㅇ 그렇게 해"
+      },
+      "supersedes": [
+        "empty reason"
+      ],
+      "flows": [
+        "teacher_gate",
+        "record",
+        "act_eval",
+        "beam_pair",
+        "release",
+        "self_map",
+        "e2e_llm"
+      ],
+      "verification": {
+        "paths": [
+          "stack_values.rejection_ledger",
+          "rejection_ledger.required_fields"
+        ],
+        "method": "all present values must agree; missing is 확인 안 됨; source config alone is not runtime evidence",
+        "source_artifact": "확인 안 됨",
+        "applied_runtime": "확인 안 됨: 입력 manifest/summary별 점검 필요"
+      },
+      "notes": "미관측/미측정은 별도 상태. 이 값은 기록 계약 확인이며 실제 원장 행 검사는 별도."
+    },
+    {
+      "id": "cap_end_label",
+      "current": "cap_end",
+      "decision_date": "2026-10-15",
+      "source": {
+        "references": [
+          {
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "AGENTS.md",
+            "lines": [
+              15,
+              121
+            ],
+            "note": "speed/rbpf/localization 최신 우선 근거는 사용자 2026-10-17 작업 지시"
+          }
+        ],
+        "decision_text": "ㅇㅇ 그렇게 해"
+      },
+      "supersedes": [
+        "failure merged with cap termination"
+      ],
+      "flows": [
+        "teacher_gate",
+        "record",
+        "act_eval",
+        "beam_pair",
+        "release",
+        "self_map",
+        "e2e_llm"
+      ],
+      "verification": {
+        "paths": [
+          "stack_values.cap_end_label",
+          "cap_end_label"
+        ],
+        "method": "all present values must agree; missing is 확인 안 됨; source config alone is not runtime evidence",
+        "source_artifact": "확인 안 됨",
+        "applied_runtime": "확인 안 됨: 입력 manifest/summary별 점검 필요"
+      }
+    },
+    {
+      "id": "gcp_project",
+      "current": [
+        "ugrp-sim-b-1014",
+        "ugrp-sim-c-1016",
+        "ugrp-sim-d-1016",
+        "ugrp-sim-e-1016",
+        "ugrp-sim-f-1016"
+      ],
+      "operator": "one_of",
+      "allowed": [
+        "ugrp-sim-b-1014",
+        "ugrp-sim-c-1016",
+        "ugrp-sim-d-1016",
+        "ugrp-sim-e-1016",
+        "ugrp-sim-f-1016"
+      ],
+      "decision_date": "2026-10-16",
+      "source": {
+        "references": [
+          {
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "AGENTS.md",
+            "lines": [
+              37,
+              58,
+              86
+            ],
+            "note": "speed/rbpf/localization 최신 우선 근거는 사용자 2026-10-17 작업 지시"
+          },
+          {
+            "evidence": "warp_queue",
+            "sha": "7c8acef516103ce5906b77d6481e46b298961b0c",
+            "path": "experiments/2026-10-16-warp8/native-gate-queue.json",
+            "lines": [
+              4,
+              6,
+              7,
+              45,
+              46,
+              49,
+              50
+            ]
+          },
+          {
+            "evidence": "act_gate",
+            "sha": "37a8c833656a58ba25472e2106276f225e95ad26",
+            "path": "experiments/2026-10-16-act16w/resume4/native-gate-summary.json",
+            "lines": [
+              4,
+              6,
+              7,
+              12,
+              13
+            ]
+          }
+        ],
+        "decision_text": "GCP를 메인으로, Azure는 보조로 하자 그럼. 그렇게 써둬"
+      },
+      "supersedes": [
+        "gcp1 execution",
+        "implicit gcloud account/project"
+      ],
+      "flows": [
+        "teacher_gate",
+        "record",
+        "train",
+        "act_eval",
+        "beam_pair",
+        "release",
+        "self_map",
+        "e2e_llm",
+        "replay"
+      ],
+      "verification": {
+        "paths": [
+          "stack_values.gcp_project",
+          "host.project_id",
+          "host.project",
+          "execution_host.project_id",
+          "project",
+          "project_id"
+        ],
+        "method": "compare project/account and cross-check instance assignment; missing blocks",
+        "source_artifact": "configuration_confirmed_runtime_separate",
+        "applied_runtime": "확인 안 됨: 입력 manifest/summary별 점검 필요"
+      },
+      "notes": "호스트-프로젝트-계정을 함께 검사. ownership/임대 확인을 대체하지 않음. 모든 gcloud에 --account/--project 명시. gcp1 금지."
+    },
+    {
+      "id": "gcp_account",
+      "current": [
+        "changmin5781@gmail.com",
+        "kcm5781kcm5781@gmail.com"
+      ],
+      "operator": "one_of",
+      "allowed": [
+        "changmin5781@gmail.com",
+        "kcm5781kcm5781@gmail.com"
+      ],
+      "decision_date": "2026-10-16",
+      "source": {
+        "references": [
+          {
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "AGENTS.md",
+            "lines": [
+              37,
+              58,
+              86
+            ],
+            "note": "speed/rbpf/localization 최신 우선 근거는 사용자 2026-10-17 작업 지시"
+          },
+          {
+            "evidence": "warp_queue",
+            "sha": "7c8acef516103ce5906b77d6481e46b298961b0c",
+            "path": "experiments/2026-10-16-warp8/native-gate-queue.json",
+            "lines": [
+              4,
+              6,
+              7,
+              45,
+              46,
+              49,
+              50
+            ]
+          },
+          {
+            "evidence": "act_gate",
+            "sha": "37a8c833656a58ba25472e2106276f225e95ad26",
+            "path": "experiments/2026-10-16-act16w/resume4/native-gate-summary.json",
+            "lines": [
+              4,
+              6,
+              7,
+              12,
+              13
+            ]
+          }
+        ],
+        "decision_text": "GCP를 메인으로, Azure는 보조로 하자 그럼. 그렇게 써둬"
+      },
+      "supersedes": [
+        "gcp1 execution",
+        "implicit gcloud account/project"
+      ],
+      "flows": [
+        "teacher_gate",
+        "record",
+        "train",
+        "act_eval",
+        "beam_pair",
+        "release",
+        "self_map",
+        "e2e_llm",
+        "replay"
+      ],
+      "verification": {
+        "paths": [
+          "stack_values.gcp_account",
+          "host.account",
+          "execution_host.account",
+          "account"
+        ],
+        "method": "compare project/account and cross-check instance assignment; missing blocks",
+        "source_artifact": "configuration_confirmed_runtime_separate",
+        "applied_runtime": "확인 안 됨: 입력 manifest/summary별 점검 필요"
+      },
+      "notes": "호스트-프로젝트-계정을 함께 검사. ownership/임대 확인을 대체하지 않음. 모든 gcloud에 --account/--project 명시. gcp1 금지."
+    },
+    {
+      "id": "dialogue_language",
+      "current": "peer_en",
+      "decision_date": "2026-10-11",
+      "source": {
+        "references": [
+          {
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "harness/s4_compact_prompt.py",
+            "lines": [
+              14,
+              31,
+              38
+            ],
+            "note": "peer_ko/peer_nl→peer_en 대응표; 사용자 원문은 2026-10-11 대화(메모리 research-goal-korean-dialogue)"
+          }
+        ],
+        "decision_text": "한국어 평가를 하는 것도 아니니까, 모두 영어로"
+      },
+      "supersedes": [
+        "peer_ko",
+        "leader_ko"
+      ],
+      "flows": [
+        "e2e_llm"
+      ],
+      "verification": {
+        "paths": [
+          "stack_values.dialogue_language",
+          "condition",
+          "comm_condition"
+        ],
+        "method": "natural-language peer condition must be peer_en (leader_en for leader arm); no_comm/structured are other arms, not deviations; peer_ko/leader_ko only as replay with stack_deviations",
+        "source_artifact": "source_confirmed_runtime_separate",
+        "applied_runtime": "확인 안 됨: 입력 manifest/summary별 점검 필요"
+      },
+      "operator": "one_of",
+      "allowed": [
+        "peer_en",
+        "leader_en",
+        "no_comm",
+        "structured"
+      ]
+    },
+    {
+      "id": "selfmap_map_correction",
+      "current": "off",
+      "decision_date": "2026-10-17",
+      "source": {
+        "references": [
+          {
+            "sha": "4bb02030b8890b143e2f52f8fe9250af296f412e",
+            "path": "AGENTS.md",
+            "lines": [
+              26
+            ],
+            "note": "정적 지도 미사용·자기 중심 기억 (2026-10-17 사용자)"
+          }
+        ],
+        "decision_text": "정적 지도는 안 쓸 거야. 차라리, 자기 위치를 항상 0,0으로 하고 -> 지도가 움직이게 해주라. 진짜 사람이 생각하듯이."
+      },
+      "supersedes": [
+        "odometry-only self-map (LK + command prediction, no map-based correction)",
+        "on"
+      ],
+      "flows": [
+        "release",
+        "self_map",
+        "e2e_llm"
+      ],
+      "verification": {
+        "paths": [
+          "stack_values.selfmap_map_correction",
+          "localization.map_correction",
+          "selfmap_map_correction_v1"
+        ],
+        "method": "self-map runs must estimate motion (own commands + own-camera VO), build an own map, and correct pose against own map and static map from own perception; toggle selfmap_map_correction_v1 on; GT only in error columns, no spawn anchor",
+        "source_artifact": "source_confirmed_runtime_separate",
+        "applied_runtime": "확인 안 됨: 구현 전(mapbuild8)"
+      }
+    },
+    {
+      "id": "localization_initial_prior",
+      "current": "none",
+      "decision_date": "2026-10-17",
+      "source": {
+        "references": [
+          {
+            "sha": "4bb02030b8890b143e2f52f8fe9250af296f412e",
+            "path": "AGENTS.md",
+            "lines": [
+              26
+            ],
+            "note": "정적 지도 미사용·자기 중심 기억 (2026-10-17 사용자)"
+          }
+        ],
+        "decision_text": "정적 지도는 안 쓸 거야. 차라리, 자기 위치를 항상 0,0으로 하고 -> 지도가 움직이게 해주라. 진짜 사람이 생각하듯이."
+      },
+      "supersedes": [
+        "global free-space initialization only (no start prior)",
+        "start_zone_coarse"
+      ],
+      "flows": [
+        "release",
+        "self_map",
+        "e2e_llm"
+      ],
+      "operator": "one_of",
+      "allowed": [
+        "none"
+      ],
+      "verification": {
+        "paths": [
+          "stack_values.localization_initial_prior",
+          "localization.initial_prior"
+        ],
+        "method": "initial pose prior must be the coarse start zone box + rough heading only; exact spawn pose or live GT is a violation",
+        "source_artifact": "source_confirmed_runtime_separate",
+        "applied_runtime": "확인 안 됨: 구현 전(mapbuild10)"
+      }
+    },
+    {
+      "id": "static_map_use",
+      "current": "none",
+      "decision_date": "2026-10-17",
+      "source": {
+        "references": [
+          {
+            "sha": "4bb02030b8890b143e2f52f8fe9250af296f412e",
+            "path": "AGENTS.md",
+            "lines": [
+              26
+            ],
+            "note": "정적 지도 미사용·자기 중심 기억 (2026-10-17 사용자)"
+          }
+        ],
+        "decision_text": "정적 지도는 안 쓸 거야. 차라리, 자기 위치를 항상 0,0으로 하고 -> 지도가 움직이게 해주라. 진짜 사람이 생각하듯이."
+      },
+      "supersedes": [
+        "static map for localization/driving (지도 경로 예외)",
+        "static map in planner LLM prompt (2025-09-25)"
+      ],
+      "flows": [
+        "release",
+        "self_map",
+        "e2e_llm",
+        "beam_pair"
+      ],
+      "verification": {
+        "paths": [
+          "stack_values.static_map_use",
+          "localization.static_map",
+          "planner.static_map",
+          "prompt.static_map"
+        ],
+        "method": "no prebuilt static map (walls/zones/doors/coordinates) in localization, driving or LLM prompt; egocentric memory only; destinations found visually",
+        "source_artifact": "source_confirmed_runtime_separate",
+        "applied_runtime": "확인 안 됨: 구현 전"
+      }
+    },
+    {
+      "id": "goal_discovery",
+      "current": "visual_search",
+      "decision_date": "2026-10-17",
+      "source": {
+        "references": [
+          {
+            "sha": "4bb02030b8890b143e2f52f8fe9250af296f412e",
+            "path": "AGENTS.md",
+            "lines": [
+              26
+            ],
+            "note": "정적 지도 미사용·자기 중심 기억 (2026-10-17 사용자)"
+          }
+        ],
+        "decision_text": "목적지: 보고 찾기 (Recommended)"
+      },
+      "supersedes": [
+        "goal coordinates from static map"
+      ],
+      "flows": [
+        "release",
+        "e2e_llm"
+      ],
+      "verification": {
+        "paths": [
+          "stack_values.goal_discovery",
+          "planner.goal_discovery"
+        ],
+        "method": "zone/goal found by own camera (floor marking/colour) and remembered egocentrically; lookaround/explore when not visible",
+        "source_artifact": "source_confirmed_runtime_separate",
+        "applied_runtime": "확인 안 됨: 구현 전"
+      }
+    }
+  ]
+}

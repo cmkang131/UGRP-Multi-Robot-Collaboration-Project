@@ -1,0 +1,11 @@
+{
+  "command": [
+    "ssh",
+    "gcp5",
+    "cd /home/ugrp/ugrp-sim/setup && OMP_NUM_THREADS=4 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=4 /home/ugrp/ugrp-rl1b-act-env/bin/python training_smoke.py /home/ugrp/ugrp-sim/setup/beamact3-reference /home/ugrp/ugrp-sim/setup/training-smoke-v1 > training.log 2>&1"
+  ],
+  "returncode": 0,
+  "seconds": 101.03993511199951,
+  "stdout": "",
+  "stderr": ""
+}

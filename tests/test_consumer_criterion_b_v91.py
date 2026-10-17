@@ -120,8 +120,13 @@ def assert_ineligible(report):
 
 def test_frozen_files_registrations_and_handoff_prefix_are_byte_identical():
     receipt = get(new.RECORD / 'preservation.json')
+    # nsoff changes live defaults; the acquired legacy source remains immutable in Git.
+    live_default_builders = {'harness/zone_final_pair_contract.py',
+                             'harness/zone_final_pair_heldout.py', 'harness/zone_final_pair_fast.py'}
     for name, sha in receipt['unchanged_sha256'].items():
-        assert old.sha((new.ROOT / name).read_bytes()) == sha, name
+        data = (subprocess.check_output(['git', 'show', new.SOURCE+':'+name], cwd=new.ROOT)
+                if name in live_default_builders else (new.ROOT / name).read_bytes())
+        assert old.sha(data) == sha, name
     prefix = receipt['handoff_prefix']
     assert old.sha((new.ROOT / 'PHYSICS_HANDOFF.md').read_bytes()[:prefix['bytes']]) == prefix['sha256']
     assert new.verify_commitment([])['created_at'] == '2026-10-02T18:04:39Z'

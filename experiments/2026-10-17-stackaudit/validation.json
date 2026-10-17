@@ -1,0 +1,72 @@
+{
+  "schema": "ugrp.stackaudit.validation.v1",
+  "round_limit": 3,
+  "rounds": [
+    {
+      "round": 1,
+      "work": "fixed source audit + first implementation",
+      "tests": "3 passed"
+    },
+    {
+      "round": 2,
+      "work": "host/project/account and XML/strict types",
+      "tests": "3 passed"
+    },
+    {
+      "round": 3,
+      "work": "final strict nested JSON type counterexample",
+      "initial": "1 fixture failed/2 passed: fixture shared mutable current object; fixed with deepcopy",
+      "final": "3 passed in 0.07s; no further candidate rounds"
+    }
+  ],
+  "test_command": "python3 -m pytest -q tests/test_current_stack.py",
+  "source_integrity": {
+    "files": 32,
+    "sha256": "all matched git objects",
+    "quoted_lines": "all matched at frozen SHA",
+    "input_snapshots": "2 matched source SHA and bytes"
+  },
+  "compile": "2 files PASS (stdlib compile; no imports/execution)",
+  "whitespace": "git diff --check PASS",
+  "samples": [
+    {
+      "command": [
+        "python3",
+        "scripts/check_current_stack.py",
+        "experiments/2026-10-17-stackaudit/inputs/warp8-native-queue.json",
+        "--output",
+        "experiments/2026-10-17-stackaudit/warp8-queue-check.json"
+      ],
+      "exit_code": 1,
+      "result": "warp8-queue-check.json",
+      "counts": null,
+      "error": "$.runs[0]: explicit consistent flow required (['teacher_gate', 'record', 'train', 'act_eval', 'beam_pair', 'release', 'self_map', 'e2e_llm', 'replay'])",
+      "note": "Expected blocked: evidence completeness only, not a failed physics gate"
+    },
+    {
+      "command": [
+        "python3",
+        "scripts/check_current_stack.py",
+        "experiments/2026-10-17-stackaudit/inputs/act16w-native-gate-summary.json",
+        "--flow",
+        "teacher_gate",
+        "--output",
+        "experiments/2026-10-17-stackaudit/act16w-gate-check.json"
+      ],
+      "exit_code": 1,
+      "result": "act16w-gate-check.json",
+      "counts": {
+        "unknown": 22,
+        "current": 3
+      },
+      "error": null,
+      "note": "Expected blocked: evidence completeness only, not a failed physics gate"
+    }
+  ],
+  "limitations": [
+    "full CI pending draft PR",
+    "no physical/runtime/student outcome verification",
+    "approval text requires coordinator source check",
+    "existing submitters not modified; mandatory preflight rule added"
+  ]
+}

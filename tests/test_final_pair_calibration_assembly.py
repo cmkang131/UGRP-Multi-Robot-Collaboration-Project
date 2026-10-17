@@ -73,7 +73,7 @@ def synthetic_collection(tmp_path, profile):
     root = tmp_path/('calibration-'+profile)
     folder = root/MAP_ID
     data, fields = synthetic_data(profile, loaded=profile == 'loaded')
-    bundle = {**contract.bundle(MAP_ID, 'calibration-'+profile),
+    bundle = {**contract.bundle(MAP_ID, 'calibration-'+profile, contact_profile='cargo_noslip_v1'),
               'source_sha': 'a'*40, 'case': contract.cases('calibration-'+profile)[0]}
     result = {'status': 'COLLECTED_UNQUALIFIED', 'protocol_complete': True, 'check_sim_s': 370.,
         'check': bundle['check'], 'case': bundle['case'], 'collection_data_status': 'UNQUALIFIED',

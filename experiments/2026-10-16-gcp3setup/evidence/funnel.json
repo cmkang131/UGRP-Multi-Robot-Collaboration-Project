@@ -1,0 +1,113 @@
+{
+  "scope": "one infrastructure candidate; not a teacher/mission success gate",
+  "stages": [
+    {
+      "gate": "authorized_project",
+      "input": 1,
+      "passed_cumulative": 1,
+      "rejected": 0
+    },
+    {
+      "gate": "scoped_budget_and_active_function",
+      "input": 1,
+      "passed_cumulative": 1,
+      "rejected": 0
+    },
+    {
+      "gate": "manual_stop_observed",
+      "input": 1,
+      "passed_cumulative": 1,
+      "rejected": 0
+    },
+    {
+      "gate": "test_vm_and_disk_deleted",
+      "input": 1,
+      "passed_cumulative": 1,
+      "rejected": 0
+    },
+    {
+      "gate": "guarded_l4_created",
+      "input": 1,
+      "passed_cumulative": 1,
+      "rejected": 0
+    },
+    {
+      "gate": "cuda_two_world_one_step",
+      "input": 1,
+      "passed_cumulative": 1,
+      "rejected": 0
+    },
+    {
+      "gate": "final_idle_guard_boot_and_credential_audit",
+      "input": 1,
+      "passed_cumulative": 1,
+      "rejected": 0
+    },
+    {
+      "gate": "own_lease_removed_no_other_processes",
+      "input": 1,
+      "passed_cumulative": 1,
+      "rejected": 0
+    },
+    {
+      "gate": "l4_terminated",
+      "input": 1,
+      "passed_cumulative": 1,
+      "rejected": 0
+    }
+  ],
+  "worlds": [
+    {
+      "gate": "requested",
+      "input": 2,
+      "passed_cumulative": 2,
+      "rejected": 0
+    },
+    {
+      "gate": "stepped",
+      "input": 2,
+      "passed_cumulative": 2,
+      "rejected": 0
+    },
+    {
+      "gate": "finite_and_time_advanced",
+      "input": 2,
+      "passed_cumulative": 2,
+      "rejected": 0
+    }
+  ],
+  "failed_setup_attempts": [
+    {
+      "category": "api_disabled",
+      "count": 1,
+      "reason": "budget list before enabling Budget API",
+      "blocking_object": "not_applicable_infrastructure",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not_applicable_no_geometry"
+    },
+    {
+      "category": "invalid_billing_publisher_principal",
+      "count": 1,
+      "reason": "corrected to the existing gcp2 topic principal",
+      "blocking_object": "not_applicable_infrastructure",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not_applicable_no_geometry"
+    },
+    {
+      "category": "new_iam_principal_not_yet_visible",
+      "count": 1,
+      "reason": "same service account binding succeeded on retry",
+      "blocking_object": "not_applicable_infrastructure",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not_applicable_no_geometry"
+    }
+  ],
+  "raw_paths": [
+    "gcp3:/home/ugrp/ugrp-sim/setup/",
+    "/Users/changmin/projects/ugrp-wt/gcp3setup/experiments/2026-10-16-gcp3setup/evidence"
+  ],
+  "reproduce": [
+    "python3 experiments/2026-10-16-gcp3setup/finalize.py",
+    "gcp3:/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python /home/ugrp/ugrp-sim/setup/smoke.py NEW_RESULT.json"
+  ]
+}

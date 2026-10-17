@@ -1,0 +1,1979 @@
+{
+  "host": {
+    "project": "ugrp-sim-b-1014",
+    "instance": "ugrp-sim-gcp2",
+    "machine_type": "n4-highcpu-64",
+    "zone": "asia-northeast3-a"
+  },
+  "status": "PLANNED_NOT_EXECUTED",
+  "training": false,
+  "rejection_table": "/home/ugrp/ugrp-sim/act16a/final-analysis-v2/rejection_table.json",
+  "known_previous_plans": 120,
+  "new_unique_setups": 40,
+  "development_seeds": [
+    91620,
+    91621,
+    91622,
+    91623,
+    91624,
+    91625,
+    91626,
+    91627,
+    91628,
+    91629,
+    91630,
+    91631,
+    91632,
+    91633,
+    91634,
+    91635,
+    91636,
+    91637,
+    91638,
+    91639
+  ],
+  "confirmation_seeds": [
+    91640,
+    91641,
+    91642,
+    91643,
+    91644,
+    91645,
+    91646,
+    91647,
+    91648,
+    91649,
+    91650,
+    91651,
+    91652,
+    91653,
+    91654,
+    91655,
+    91656,
+    91657,
+    91658,
+    91659
+  ],
+  "episodes": [
+    {
+      "seed": 91620,
+      "skill": "grasp",
+      "object_kind": "cyan",
+      "kind": "cyan",
+      "role": "west",
+      "robot_id": "r1",
+      "scenario_id": "s1_normal_mixed_v4",
+      "setup_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "item_id": "cyan_1",
+      "target_setup_xy": [
+        -0.2,
+        -2.45
+      ],
+      "cargo_pose_m": [
+        -0.2,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.7171522991942301,
+          -1.945939704184076,
+          0.032355118817659255,
+          -0.6748199206770553
+        ],
+        "r2": [
+          4.879359725808628,
+          -1.4921706111796942,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          2.525684323695166,
+          0.0044083615137013865,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.017708292104557675,
+        -0.03773384650613354,
+        -0.010070573742849084
+      ],
+      "proposal_attempts": 1,
+      "start_bearing_deg_setup_only": -5.601171708660687,
+      "setup_fingerprint": "b26b8bc210c28b1ef5812b552703aa82a7013d3e0f18098f2051fb1c3a1c1eb5"
+    },
+    {
+      "seed": 91621,
+      "skill": "grasp",
+      "object_kind": "red",
+      "kind": "red",
+      "role": "west",
+      "robot_id": "r1",
+      "scenario_id": "s1_normal_mixed_v4",
+      "setup_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "item_id": "red_1",
+      "target_setup_xy": [
+        1.0,
+        -2.45
+      ],
+      "cargo_pose_m": [
+        1.0,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          0.2972984335936423,
+          -1.6236960117625763,
+          0.032355118817659255,
+          -0.690636556929467
+        ],
+        "r2": [
+          0.8649864163742429,
+          -1.2090223796984394,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          0.4416680023203867,
+          0.26265989328913264,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.00013557952137980837,
+        0.0006005436983383642,
+        0.01660089628157584
+      ],
+      "proposal_attempts": 5,
+      "start_bearing_deg_setup_only": -10.051091683778049,
+      "setup_fingerprint": "cbdb64955213130790fd6e6b2c1097fc53c0f1d038acaed67dfdbca1d67b75ba"
+    },
+    {
+      "seed": 91622,
+      "skill": "grasp",
+      "object_kind": "green",
+      "kind": "green",
+      "role": "west",
+      "robot_id": "r1",
+      "scenario_id": "s2_unmapped_blockage_v4",
+      "setup_source_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
+      "item_id": "green_1",
+      "target_setup_xy": [
+        0.4,
+        -0.85
+      ],
+      "cargo_pose_m": [
+        0.4,
+        -0.85,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.5145594762469664,
+          -0.25172496232638386,
+          0.032355118817659255,
+          -0.9117170286366649
+        ],
+        "r2": [
+          1.8757779805776447,
+          -2.744146525476372,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          3.439342803575889,
+          -1.2397376921905146,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.0022634747833911555,
+        0.001374985305754682,
+        -0.07078836499452944
+      ],
+      "proposal_attempts": 2,
+      "start_bearing_deg_setup_only": 19.046132433415888,
+      "setup_fingerprint": "b29c120ab203ef9e5c7b54bf55e82868965cb8891b6c45a5d295129b115fb3ad"
+    },
+    {
+      "seed": 91623,
+      "skill": "grasp",
+      "object_kind": "yellow",
+      "kind": "yellow",
+      "role": "west",
+      "robot_id": "r1",
+      "scenario_id": "s8_mixed_tiers_v4",
+      "setup_source_sha256": "cd3127fdffa8a6d99ae0d9721afa6024d69b4f30551a1ba7600fa90cffc1e99f",
+      "item_id": "yellow_2",
+      "target_setup_xy": [
+        0.4,
+        0.75
+      ],
+      "cargo_pose_m": [
+        0.4,
+        0.75,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.2428765119735693,
+          1.1131905192122609,
+          0.032355118817659255,
+          -0.7076107284292412
+        ],
+        "r2": [
+          3.759112797702104,
+          0.005815052659014164,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          2.7010598177296763,
+          -0.4391589036664296,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.03220548892996366,
+        -0.0799055128150147,
+        -0.08627482678477326
+      ],
+      "proposal_attempts": 2,
+      "start_bearing_deg_setup_only": 11.079004994874817,
+      "setup_fingerprint": "bfe41f34a36c8be87a3a2112e66580a5819699fabf86aea70578a69daf19061e"
+    },
+    {
+      "seed": 91624,
+      "skill": "grasp",
+      "object_kind": "cyan",
+      "kind": "cyan",
+      "role": "west",
+      "robot_id": "r1",
+      "scenario_id": "s2_unmapped_blockage_v4",
+      "setup_source_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
+      "item_id": "cyan_1",
+      "target_setup_xy": [
+        -0.2,
+        0.75
+      ],
+      "cargo_pose_m": [
+        -0.2,
+        0.75,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.837526662842832,
+          -0.04661584866819202,
+          0.032355118817659255,
+          1.1199026264509229
+        ],
+        "r2": [
+          3.0404283489848303,
+          -1.9649069474074996,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          0.2913709223534289,
+          -2.530717215436587,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.014556607986476566,
+        -0.036459292434835165,
+        0.014453481075314868
+      ],
+      "proposal_attempts": 2,
+      "start_bearing_deg_setup_only": -12.835762362912911,
+      "setup_fingerprint": "eed27f706060acdcef394dca59fa761b24b70843883d4a77ddced9b5f2d84f3e"
+    },
+    {
+      "seed": 91625,
+      "skill": "grasp",
+      "object_kind": "red",
+      "kind": "red",
+      "role": "west",
+      "robot_id": "r1",
+      "scenario_id": "s3_late_rendezvous_v4",
+      "setup_source_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "item_id": "red_1",
+      "target_setup_xy": [
+        1.0,
+        -2.45
+      ],
+      "cargo_pose_m": [
+        1.0,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          0.3935262559813555,
+          -2.8883975308631507,
+          0.032355118817659255,
+          0.6241118025099164
+        ],
+        "r2": [
+          3.7236665018068087,
+          -0.7591021575225643,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          -0.5900667175688716,
+          0.7829197662515814,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.06502569233199548,
+        -0.10202319895306139,
+        -0.02275648081756367
+      ],
+      "proposal_attempts": 1,
+      "start_bearing_deg_setup_only": 0.10280802578209434,
+      "setup_fingerprint": "cc4e9b25275171afe15c9964f30aa84975d13f87bdf5bbec11a84b9ae81bf058"
+    },
+    {
+      "seed": 91626,
+      "skill": "grasp",
+      "object_kind": "green",
+      "kind": "green",
+      "role": "west",
+      "robot_id": "r1",
+      "scenario_id": "s2_unmapped_blockage_v4",
+      "setup_source_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
+      "item_id": "green_1",
+      "target_setup_xy": [
+        0.4,
+        -0.85
+      ],
+      "cargo_pose_m": [
+        0.4,
+        -0.85,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.3499874131503582,
+          -1.012976357287651,
+          0.032355118817659255,
+          0.40007114408723327
+        ],
+        "r2": [
+          1.2801576378933248,
+          -2.587813971957453,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          5.085846899609175,
+          0.034789853661262526,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.007932251952499357,
+        0.07640129598605344,
+        0.004418269801810076
+      ],
+      "proposal_attempts": 1,
+      "start_bearing_deg_setup_only": -10.662311164886747,
+      "setup_fingerprint": "048b7f795688a8fea67dd7f2f20d4439a6c61c39fbe6564c5343e7b3ba854c2e"
+    },
+    {
+      "seed": 91627,
+      "skill": "grasp",
+      "object_kind": "yellow",
+      "kind": "yellow",
+      "role": "west",
+      "robot_id": "r1",
+      "scenario_id": "s8_mixed_tiers_v4",
+      "setup_source_sha256": "cd3127fdffa8a6d99ae0d9721afa6024d69b4f30551a1ba7600fa90cffc1e99f",
+      "item_id": "yellow_1",
+      "target_setup_xy": [
+        -0.2,
+        0.75
+      ],
+      "cargo_pose_m": [
+        -0.2,
+        0.75,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.7349503353727402,
+          0.1143181269639908,
+          0.032355118817659255,
+          0.910184786177171
+        ],
+        "r2": [
+          0.7385998535407707,
+          -2.4606971435865916,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          5.125919586443754,
+          -1.1222087393127567,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -8.381115098654126e-05,
+        -0.07746097477612403,
+        -0.019845761580269586
+      ],
+      "proposal_attempts": 2,
+      "start_bearing_deg_setup_only": -2.2316264564385646,
+      "setup_fingerprint": "c0691b27b884087b945ed3fccb26a69cb04542e2f87bd754c79576b468c635d5"
+    },
+    {
+      "seed": 91628,
+      "skill": "grasp",
+      "object_kind": "cyan",
+      "kind": "cyan",
+      "role": "west",
+      "robot_id": "r1",
+      "scenario_id": "s3_late_rendezvous_v4",
+      "setup_source_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "item_id": "cyan_1",
+      "target_setup_xy": [
+        0.4,
+        -2.45
+      ],
+      "cargo_pose_m": [
+        0.4,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.35534017893708214,
+          -1.6688864752827528,
+          0.032355118817659255,
+          -0.7145198375616453
+        ],
+        "r2": [
+          -0.7604704513544089,
+          -0.027263308586948032,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          4.083303800984517,
+          -1.7166274458730202,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.04688766758578051,
+        0.0009464480806938447,
+        0.0329029318244593
+      ],
+      "proposal_attempts": 3,
+      "start_bearing_deg_setup_only": -5.022050695906402,
+      "setup_fingerprint": "24529274b318114d992dc359489f193ac27eb1f365acea7115913cd947d65733"
+    },
+    {
+      "seed": 91629,
+      "skill": "grasp",
+      "object_kind": "red",
+      "kind": "red",
+      "role": "west",
+      "robot_id": "r1",
+      "scenario_id": "s5_moved_dropped_item_v4",
+      "setup_source_sha256": "984cc24c527cf2633940095375eb8a8440c6a10c20ff45a658ee6e60e0110b5e",
+      "item_id": "red_1",
+      "target_setup_xy": [
+        1.0,
+        -2.45
+      ],
+      "cargo_pose_m": [
+        1.0,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          0.03116222987430528,
+          -1.9590290696383534,
+          0.032355118817659255,
+          -0.6927536867633199
+        ],
+        "r2": [
+          1.216678171259732,
+          0.42624980503913834,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          -0.3902081724450939,
+          -2.6602630147086175,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.11601452683919533,
+        0.06886973312417545,
+        -0.039971496870957766
+      ],
+      "proposal_attempts": 1,
+      "start_bearing_deg_setup_only": 12.81766718682696,
+      "setup_fingerprint": "fe3e3342362d38a12992947329d5673699a16baa2da2bb3039fbf04c8faa7e77"
+    },
+    {
+      "seed": 91630,
+      "skill": "grasp",
+      "object_kind": "green",
+      "kind": "green",
+      "role": "west",
+      "robot_id": "r1",
+      "scenario_id": "s1_normal_mixed_v4",
+      "setup_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "item_id": "green_1",
+      "target_setup_xy": [
+        -0.2,
+        0.75
+      ],
+      "cargo_pose_m": [
+        -0.2,
+        0.75,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.6660643030498525,
+          0.19530426580334237,
+          0.032355118817659255,
+          1.0935299068498994
+        ],
+        "r2": [
+          -0.6500258325050347,
+          -1.2449230227265236,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          2.530663263553315,
+          -2.4144380267031456,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.019987949713156622,
+        0.007670195502850798,
+        -0.028319490413011055
+      ],
+      "proposal_attempts": 1,
+      "start_bearing_deg_setup_only": -12.692167328221124,
+      "setup_fingerprint": "c7d3d65b6a39105a09a64549c953c34a1eb12be734325331c6c40467c9939b81"
+    },
+    {
+      "seed": 91631,
+      "skill": "grasp",
+      "object_kind": "yellow",
+      "kind": "yellow",
+      "role": "west",
+      "robot_id": "r1",
+      "scenario_id": "s8_mixed_tiers_v4",
+      "setup_source_sha256": "cd3127fdffa8a6d99ae0d9721afa6024d69b4f30551a1ba7600fa90cffc1e99f",
+      "item_id": "yellow_1",
+      "target_setup_xy": [
+        -0.2,
+        0.75
+      ],
+      "cargo_pose_m": [
+        -0.2,
+        0.75,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.684862075328524,
+          0.13004084860742415,
+          0.032355118817659255,
+          1.299420523464842
+        ],
+        "r2": [
+          4.237811280466964,
+          0.34294883288642763,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          0.6155133725121962,
+          -0.7244423280949759,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.10550119685652426,
+        -0.058475680858713824,
+        -0.017762315979571158
+      ],
+      "proposal_attempts": 1,
+      "start_bearing_deg_setup_only": -22.47981707476303,
+      "setup_fingerprint": "f6e05ef18f81a297d637cb1a1e96c1e994665b61367b23e7aefef3664d7ddf57"
+    },
+    {
+      "seed": 91632,
+      "skill": "grasp",
+      "object_kind": "cyan",
+      "kind": "cyan",
+      "role": "west",
+      "robot_id": "r1",
+      "scenario_id": "s2_unmapped_blockage_v4",
+      "setup_source_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
+      "item_id": "cyan_2",
+      "target_setup_xy": [
+        0.4,
+        0.75
+      ],
+      "cargo_pose_m": [
+        0.4,
+        0.75,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.5254478446128511,
+          1.116457744803518,
+          0.032355118817659255,
+          -0.6941241827303333
+        ],
+        "r2": [
+          2.4021612362501052,
+          0.2453111883002519,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          3.73343257169886,
+          -1.2008603142721797,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.05795431089741854,
+        0.011108686602636638,
+        0.06829830345736447
+      ],
+      "proposal_attempts": 1,
+      "start_bearing_deg_setup_only": 18.167869463425692,
+      "setup_fingerprint": "f53d588aaa92646d38c6c84aea9ea9383ab5d34564ae1d21af8d68f7f644ea75"
+    },
+    {
+      "seed": 91633,
+      "skill": "grasp",
+      "object_kind": "red",
+      "kind": "red",
+      "role": "west",
+      "robot_id": "r1",
+      "scenario_id": "s5_moved_dropped_item_v4",
+      "setup_source_sha256": "984cc24c527cf2633940095375eb8a8440c6a10c20ff45a658ee6e60e0110b5e",
+      "item_id": "red_2",
+      "target_setup_xy": [
+        1.6,
+        -2.45
+      ],
+      "cargo_pose_m": [
+        1.6,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          1.0316212248058712,
+          -2.8171337089112685,
+          0.032355118817659255,
+          0.8832850484798462
+        ],
+        "r2": [
+          4.909246324511754,
+          -0.10287168171123184,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          0.720031351049182,
+          0.23255598140978506,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.08134136628212231,
+        0.12277569811524065,
+        0.02394647599258308
+      ],
+      "proposal_attempts": 1,
+      "start_bearing_deg_setup_only": -17.748817833652016,
+      "setup_fingerprint": "60e966dc3ae17a444822abd5f41b571d3f520e20fb99bdbbf6a17d4b4e083297"
+    },
+    {
+      "seed": 91634,
+      "skill": "grasp",
+      "object_kind": "green",
+      "kind": "green",
+      "role": "west",
+      "robot_id": "r1",
+      "scenario_id": "s2_unmapped_blockage_v4",
+      "setup_source_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
+      "item_id": "green_1",
+      "target_setup_xy": [
+        0.4,
+        -0.85
+      ],
+      "cargo_pose_m": [
+        0.4,
+        -0.85,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.4294303390536287,
+          -0.40295784377273586,
+          0.032355118817659255,
+          -0.15036987165149368
+        ],
+        "r2": [
+          1.7891606036563306,
+          -2.8914735220278516,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          3.623733157603064,
+          -0.515216421322259,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.045804375996605445,
+        0.031803817834333115,
+        0.02200800711870552
+      ],
+      "proposal_attempts": 1,
+      "start_bearing_deg_setup_only": -19.707995224734436,
+      "setup_fingerprint": "18e963cbce37e050acb9df21e7d547078dc1cf9b2e9bcf81f131cf24badf0eaa"
+    },
+    {
+      "seed": 91635,
+      "skill": "grasp",
+      "object_kind": "yellow",
+      "kind": "yellow",
+      "role": "west",
+      "robot_id": "r1",
+      "scenario_id": "s8_mixed_tiers_v4",
+      "setup_source_sha256": "cd3127fdffa8a6d99ae0d9721afa6024d69b4f30551a1ba7600fa90cffc1e99f",
+      "item_id": "yellow_2",
+      "target_setup_xy": [
+        0.4,
+        0.75
+      ],
+      "cargo_pose_m": [
+        0.4,
+        0.75,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.016553827430567325,
+          1.2375415298757095,
+          0.032355118817659255,
+          -0.7474098638283664
+        ],
+        "r2": [
+          1.4961289153772204,
+          -1.7154625956378857,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          0.2878836338820303,
+          -1.5529167365878132,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.06425366958459874,
+        -0.0881337175044985,
+        -0.03641915003258702
+      ],
+      "proposal_attempts": 5,
+      "start_bearing_deg_setup_only": -6.666104675416269,
+      "setup_fingerprint": "fb68490f31dca9074b6140d320ecc0b4f2787a8a68d219b0276345afe18f64aa"
+    },
+    {
+      "seed": 91636,
+      "skill": "grasp",
+      "object_kind": "cyan",
+      "kind": "cyan",
+      "role": "west",
+      "robot_id": "r1",
+      "scenario_id": "s5_moved_dropped_item_v4",
+      "setup_source_sha256": "984cc24c527cf2633940095375eb8a8440c6a10c20ff45a658ee6e60e0110b5e",
+      "item_id": "cyan_1",
+      "target_setup_xy": [
+        0.4,
+        -2.45
+      ],
+      "cargo_pose_m": [
+        0.4,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.2567172311022645,
+          -2.1742769552820698,
+          0.032355118817659255,
+          -0.5659007336756612
+        ],
+        "r2": [
+          4.358064433217249,
+          0.02480048395852652,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          4.144377185504803,
+          -2.6213476657144668,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.05103860074655101,
+        0.09247921468710342,
+        -0.014732008533102699
+      ],
+      "proposal_attempts": 2,
+      "start_bearing_deg_setup_only": 9.648600592219074,
+      "setup_fingerprint": "1346fe77925620e61b1bcf2a8545b546d8735332de0f983b95647e73e655f427"
+    },
+    {
+      "seed": 91637,
+      "skill": "grasp",
+      "object_kind": "red",
+      "kind": "red",
+      "role": "west",
+      "robot_id": "r1",
+      "scenario_id": "s1_normal_mixed_v4",
+      "setup_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "item_id": "red_1",
+      "target_setup_xy": [
+        1.0,
+        -2.45
+      ],
+      "cargo_pose_m": [
+        1.0,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          0.24438443764465867,
+          -1.727413715932038,
+          0.032355118817659255,
+          -1.1002849990525025
+        ],
+        "r2": [
+          -0.07325535960796059,
+          0.3884691596357017,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          3.599920934344682,
+          1.2253538530067964,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.06746126247242384,
+        -0.06139304758450345,
+        -0.0109145353622475
+      ],
+      "proposal_attempts": 1,
+      "start_bearing_deg_setup_only": 19.321703643182758,
+      "setup_fingerprint": "6e0c729e8ab5b3fe57fba58d8c71704a6e984d08101a3ac487d115f717a1ebb0"
+    },
+    {
+      "seed": 91638,
+      "skill": "grasp",
+      "object_kind": "green",
+      "kind": "green",
+      "role": "west",
+      "robot_id": "r1",
+      "scenario_id": "s1_normal_mixed_v4",
+      "setup_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "item_id": "green_1",
+      "target_setup_xy": [
+        -0.2,
+        0.75
+      ],
+      "cargo_pose_m": [
+        -0.2,
+        0.75,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.7596531538825502,
+          0.1972764496416214,
+          0.032355118817659255,
+          0.35149721581921234
+        ],
+        "r2": [
+          4.702714733462457,
+          0.04296263758056895,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          2.65972932499412,
+          -2.7940713151879804,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.06728701471773092,
+        0.043749886557620354,
+        0.03597939073242796
+      ],
+      "proposal_attempts": 1,
+      "start_bearing_deg_setup_only": 24.503770859572032,
+      "setup_fingerprint": "36bbdc248117ce034b341fdf17bfa84504a4b79c9eeb867c05224855f26db478"
+    },
+    {
+      "seed": 91639,
+      "skill": "grasp",
+      "object_kind": "yellow",
+      "kind": "yellow",
+      "role": "west",
+      "robot_id": "r1",
+      "scenario_id": "s8_mixed_tiers_v4",
+      "setup_source_sha256": "cd3127fdffa8a6d99ae0d9721afa6024d69b4f30551a1ba7600fa90cffc1e99f",
+      "item_id": "yellow_1",
+      "target_setup_xy": [
+        -0.2,
+        0.75
+      ],
+      "cargo_pose_m": [
+        -0.2,
+        0.75,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.5722291178205257,
+          1.2246424304033814,
+          0.032355118817659255,
+          -0.9028888065637013
+        ],
+        "r2": [
+          0.919788730933857,
+          -1.860767455208716,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          3.999972363967983,
+          -0.22025362290642025,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.051989709342654324,
+        0.0528406747570474,
+        -0.00823659459093092
+      ],
+      "proposal_attempts": 3,
+      "start_bearing_deg_setup_only": -0.16365406238487357,
+      "setup_fingerprint": "18e742d4909f0c41c3cc579650ffff33599fce4f5cf2978522a0f70fb0da109f"
+    },
+    {
+      "seed": 91640,
+      "skill": "grasp",
+      "object_kind": "cyan",
+      "kind": "cyan",
+      "role": "west",
+      "robot_id": "r1",
+      "scenario_id": "s5_moved_dropped_item_v4",
+      "setup_source_sha256": "984cc24c527cf2633940095375eb8a8440c6a10c20ff45a658ee6e60e0110b5e",
+      "item_id": "cyan_1",
+      "target_setup_xy": [
+        0.4,
+        -2.45
+      ],
+      "cargo_pose_m": [
+        0.4,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.26784113445210656,
+          -2.101726831012298,
+          0.032355118817659255,
+          -0.3575806714250844
+        ],
+        "r2": [
+          3.579835921720161,
+          -2.541958732919423,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          1.346933677619162,
+          -1.5552730519098368,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.005767213199597767,
+        -0.007942445710416397,
+        0.05063203239072742
+      ],
+      "proposal_attempts": 1,
+      "start_bearing_deg_setup_only": -7.053774125585795,
+      "setup_fingerprint": "78f1ae82b2507e2372482f277094642dcedca440addf6b0e8ec1f06a4f7b5165"
+    },
+    {
+      "seed": 91641,
+      "skill": "grasp",
+      "object_kind": "red",
+      "kind": "red",
+      "role": "west",
+      "robot_id": "r1",
+      "scenario_id": "s3_late_rendezvous_v4",
+      "setup_source_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "item_id": "red_1",
+      "target_setup_xy": [
+        1.0,
+        -2.45
+      ],
+      "cargo_pose_m": [
+        1.0,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          0.25930512445471365,
+          -1.7868037493297997,
+          0.032355118817659255,
+          -0.85569648233947
+        ],
+        "r2": [
+          -0.8025734868059617,
+          0.10811993701698386,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          4.7112977015264885,
+          -2.005666063918718,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.05042259100477523,
+        0.014199614179704601,
+        0.053104325637429506
+      ],
+      "proposal_attempts": 1,
+      "start_bearing_deg_setup_only": 7.187473579997529,
+      "setup_fingerprint": "ed4344fd0c37162e31bae026c24a2c47ebb215cd3529f3e0a4a7dc2728bc474b"
+    },
+    {
+      "seed": 91642,
+      "skill": "grasp",
+      "object_kind": "green",
+      "kind": "green",
+      "role": "west",
+      "robot_id": "r1",
+      "scenario_id": "s2_unmapped_blockage_v4",
+      "setup_source_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
+      "item_id": "green_1",
+      "target_setup_xy": [
+        0.4,
+        -0.85
+      ],
+      "cargo_pose_m": [
+        0.4,
+        -0.85,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.6043896844509512,
+          -0.5555310649962912,
+          0.032355118817659255,
+          -0.5345133543452568
+        ],
+        "r2": [
+          0.7731209241726797,
+          -2.223082004985485,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          3.88205593029006,
+          0.2938544960904088,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.014360132605696452,
+        0.08743968270931779,
+        0.05172375695781921
+      ],
+      "proposal_attempts": 1,
+      "start_bearing_deg_setup_only": 14.28517405405111,
+      "setup_fingerprint": "4e1054a76767bf06f347d698f2b69f11424497b8f9a089cc655b56fabbe47385"
+    },
+    {
+      "seed": 91643,
+      "skill": "grasp",
+      "object_kind": "yellow",
+      "kind": "yellow",
+      "role": "west",
+      "robot_id": "r1",
+      "scenario_id": "s8_mixed_tiers_v4",
+      "setup_source_sha256": "cd3127fdffa8a6d99ae0d9721afa6024d69b4f30551a1ba7600fa90cffc1e99f",
+      "item_id": "yellow_2",
+      "target_setup_xy": [
+        0.4,
+        0.75
+      ],
+      "cargo_pose_m": [
+        0.4,
+        0.75,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.38383338309773707,
+          0.14869950797698672,
+          0.032355118817659255,
+          0.40936825323743914
+        ],
+        "r2": [
+          2.8659350961351997,
+          1.0458835242661269,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          3.9140746012773433,
+          -2.48562146766705,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.008642155991826904,
+        -0.04808623417302077,
+        0.02418372932065645
+      ],
+      "proposal_attempts": 3,
+      "start_bearing_deg_setup_only": 14.037748126271776,
+      "setup_fingerprint": "a3f1d244e07eae897ce2da293aea3ce894495a9386e8038edd1debce203dd0e2"
+    },
+    {
+      "seed": 91644,
+      "skill": "grasp",
+      "object_kind": "cyan",
+      "kind": "cyan",
+      "role": "west",
+      "robot_id": "r1",
+      "scenario_id": "s6_novel_relation_v4",
+      "setup_source_sha256": "fb2596bbbe76d360bd7c481e750bfea0683e95770d60617af26fbc114a820986",
+      "item_id": "cyan_1",
+      "target_setup_xy": [
+        0.4,
+        -2.45
+      ],
+      "cargo_pose_m": [
+        0.4,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.3159113307633753,
+          -2.510855859190815,
+          0.032355118817659255,
+          -0.16138236352624113
+        ],
+        "r2": [
+          1.5352580734742252,
+          1.1751838876266532,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          4.764059388297621,
+          -2.024147690814235,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.008713036193767834,
+        -0.046815791789711785,
+        0.035802443705650534
+      ],
+      "proposal_attempts": 1,
+      "start_bearing_deg_setup_only": 14.105261081773508,
+      "setup_fingerprint": "748338380a4dc4280bc31e09a3f52ab157a3ab035657cbea00ca26136fe6e9e3"
+    },
+    {
+      "seed": 91645,
+      "skill": "grasp",
+      "object_kind": "red",
+      "kind": "red",
+      "role": "west",
+      "robot_id": "r1",
+      "scenario_id": "s5_moved_dropped_item_v4",
+      "setup_source_sha256": "984cc24c527cf2633940095375eb8a8440c6a10c20ff45a658ee6e60e0110b5e",
+      "item_id": "red_2",
+      "target_setup_xy": [
+        1.6,
+        -2.45
+      ],
+      "cargo_pose_m": [
+        1.6,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          0.9442708769596776,
+          -1.7470420949779415,
+          0.032355118817659255,
+          -0.38396672176959773
+        ],
+        "r2": [
+          0.0034830659611919668,
+          -0.8186843503509622,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          0.5521075334102628,
+          -0.14645525611129173,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.047823870615634125,
+        -0.003800011410317836,
+        -0.007717337069657123
+      ],
+      "proposal_attempts": 2,
+      "start_bearing_deg_setup_only": -24.991161698503362,
+      "setup_fingerprint": "09c5ed20c20f04021e81ac8a6a36c256d33902a45447a61217f3178672963a86"
+    },
+    {
+      "seed": 91646,
+      "skill": "grasp",
+      "object_kind": "green",
+      "kind": "green",
+      "role": "west",
+      "robot_id": "r1",
+      "scenario_id": "s2_unmapped_blockage_v4",
+      "setup_source_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
+      "item_id": "green_1",
+      "target_setup_xy": [
+        0.4,
+        -0.85
+      ],
+      "cargo_pose_m": [
+        0.4,
+        -0.85,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.38196144585762704,
+          -1.047500537244751,
+          0.032355118817659255,
+          0.5770770230803504
+        ],
+        "r2": [
+          2.709630569818225,
+          -0.9218295679364656,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          2.8958399247539774,
+          -1.8598230886501146,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.006548239375185775,
+        -0.020926292933052888,
+        0.017283193138017013
+      ],
+      "proposal_attempts": 2,
+      "start_bearing_deg_setup_only": -18.889293212872076,
+      "setup_fingerprint": "670d59a0ba311bc1aacb38f872eeb1d397ca5240e30852b544a1b21d717bdbe8"
+    },
+    {
+      "seed": 91647,
+      "skill": "grasp",
+      "object_kind": "yellow",
+      "kind": "yellow",
+      "role": "west",
+      "robot_id": "r1",
+      "scenario_id": "s8_mixed_tiers_v4",
+      "setup_source_sha256": "cd3127fdffa8a6d99ae0d9721afa6024d69b4f30551a1ba7600fa90cffc1e99f",
+      "item_id": "yellow_2",
+      "target_setup_xy": [
+        0.4,
+        0.75
+      ],
+      "cargo_pose_m": [
+        0.4,
+        0.75,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.47142386341761533,
+          1.0053411284230662,
+          0.032355118817659255,
+          -0.25208258968988073
+        ],
+        "r2": [
+          5.007508607667475,
+          -1.80210951225313,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          3.5391917569913853,
+          -2.7333716968988875,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.017010356797522132,
+        -0.016860117405758462,
+        0.023515339138453637
+      ],
+      "proposal_attempts": 6,
+      "start_bearing_deg_setup_only": -1.8881598912485424,
+      "setup_fingerprint": "ce2d8bd04c3cad8f8f3e0ef71fcf7b34d04433e11457d6ac88b8ed08542d3bb3"
+    },
+    {
+      "seed": 91648,
+      "skill": "grasp",
+      "object_kind": "cyan",
+      "kind": "cyan",
+      "role": "west",
+      "robot_id": "r1",
+      "scenario_id": "s7_trio_rendezvous_v4",
+      "setup_source_sha256": "eee44f749141dd9a44d8146c8ec22ab79662cc77f1c58467f1243cbb17e6f50c",
+      "item_id": "cyan_1",
+      "target_setup_xy": [
+        0.125,
+        0.45
+      ],
+      "cargo_pose_m": [
+        0.125,
+        0.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.667014856882779,
+          0.02612728977899853,
+          0.032355118817659255,
+          0.23143173495121278
+        ],
+        "r2": [
+          1.537733796584444,
+          -1.6709524030171903,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          3.666606611930248,
+          -0.6288375667239259,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.008428412841804152,
+        -0.03482788970599592,
+        -0.005687286526701157
+      ],
+      "proposal_attempts": 1,
+      "start_bearing_deg_setup_only": 14.894860847044747,
+      "setup_fingerprint": "12caaff9bbf85a7f61de76d4d2f764c7f84d9a30d2c7a9a9543b23bb3ca3d756"
+    },
+    {
+      "seed": 91649,
+      "skill": "grasp",
+      "object_kind": "red",
+      "kind": "red",
+      "role": "west",
+      "robot_id": "r1",
+      "scenario_id": "s3_late_rendezvous_v4",
+      "setup_source_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "item_id": "red_1",
+      "target_setup_xy": [
+        1.0,
+        -2.45
+      ],
+      "cargo_pose_m": [
+        1.0,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.055911296551520495,
+          -2.2926550917113975,
+          0.032355118817659255,
+          -0.41656452331745863
+        ],
+        "r2": [
+          4.849085374377459,
+          -1.0827557246272823,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          2.6728104703414055,
+          -1.1136752402591061,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.03654297716985213,
+        0.028065152538879062,
+        -0.037879471799824795
+      ],
+      "proposal_attempts": 3,
+      "start_bearing_deg_setup_only": 15.391916859553639,
+      "setup_fingerprint": "0a6e19771b730bf523e24886522f41205b131fc4e1266eaaa30e0f38fc80ac43"
+    },
+    {
+      "seed": 91650,
+      "skill": "grasp",
+      "object_kind": "green",
+      "kind": "green",
+      "role": "west",
+      "robot_id": "r1",
+      "scenario_id": "s2_unmapped_blockage_v4",
+      "setup_source_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
+      "item_id": "green_1",
+      "target_setup_xy": [
+        0.4,
+        -0.85
+      ],
+      "cargo_pose_m": [
+        0.4,
+        -0.85,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.4665935160424671,
+          -0.4127224271660475,
+          0.032355118817659255,
+          -0.3080224702838799
+        ],
+        "r2": [
+          2.6355987319801013,
+          0.6476147898510853,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          -0.5713070186734963,
+          -2.2544144418385814,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.013878500156925417,
+        0.06901489950137278,
+        -0.0015828658082945196
+      ],
+      "proposal_attempts": 1,
+      "start_bearing_deg_setup_only": -9.126833258478257,
+      "setup_fingerprint": "af4f27ff52ac55a59b5f5e7471ebcde3e051168fb2cac4295b026d824879ad21"
+    },
+    {
+      "seed": 91651,
+      "skill": "grasp",
+      "object_kind": "yellow",
+      "kind": "yellow",
+      "role": "west",
+      "robot_id": "r1",
+      "scenario_id": "s8_mixed_tiers_v4",
+      "setup_source_sha256": "cd3127fdffa8a6d99ae0d9721afa6024d69b4f30551a1ba7600fa90cffc1e99f",
+      "item_id": "yellow_2",
+      "target_setup_xy": [
+        0.4,
+        0.75
+      ],
+      "cargo_pose_m": [
+        0.4,
+        0.75,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.2791626663918443,
+          0.36367519164096873,
+          0.032355118817659255,
+          0.5215422948617982
+        ],
+        "r2": [
+          1.5416655674965671,
+          -0.4040721483925065,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          -0.638272298298986,
+          -0.6223425431142795,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.027405833269038317,
+        0.002634153325363528,
+        0.08346916078273146
+      ],
+      "proposal_attempts": 5,
+      "start_bearing_deg_setup_only": -0.24986446992320124,
+      "setup_fingerprint": "7c49b0071135761c746dc6b61cb904d53e665e348ae9f2219430a2f1de7e4ffc"
+    },
+    {
+      "seed": 91652,
+      "skill": "grasp",
+      "object_kind": "cyan",
+      "kind": "cyan",
+      "role": "west",
+      "robot_id": "r1",
+      "scenario_id": "s1_normal_mixed_v4",
+      "setup_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "item_id": "cyan_1",
+      "target_setup_xy": [
+        -0.2,
+        -2.45
+      ],
+      "cargo_pose_m": [
+        -0.2,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.7125220710697542,
+          -2.0590898742674657,
+          0.032355118817659255,
+          -0.2977095820216961
+        ],
+        "r2": [
+          1.5843751124446461,
+          -1.7134182543166794,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          1.6035329082450636,
+          0.08498549257901145,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.029360167039444635,
+        -0.09370742834893982,
+        0.03485893665304606
+      ],
+      "proposal_attempts": 1,
+      "start_bearing_deg_setup_only": -20.275937805161956,
+      "setup_fingerprint": "27614e50a4a06830951f5c7df9739de578d07e99d342c8414a2eaa5608e2a1bc"
+    },
+    {
+      "seed": 91653,
+      "skill": "grasp",
+      "object_kind": "red",
+      "kind": "red",
+      "role": "west",
+      "robot_id": "r1",
+      "scenario_id": "s3_late_rendezvous_v4",
+      "setup_source_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "item_id": "red_1",
+      "target_setup_xy": [
+        1.0,
+        -2.45
+      ],
+      "cargo_pose_m": [
+        1.0,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          0.04107181903303447,
+          -2.696179214410759,
+          0.032355118817659255,
+          -0.07646774154180108
+        ],
+        "r2": [
+          1.1618770934852471,
+          -0.3522387969597873,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          3.3790787623867895,
+          0.21664937371559523,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.03693596905698978,
+        0.0602483757076427,
+        -0.0532159569580755
+      ],
+      "proposal_attempts": 2,
+      "start_bearing_deg_setup_only": 18.77950218758469,
+      "setup_fingerprint": "febff4672699c4b1ac60299b59ac0379f1a6883619f372ab10ae15b8564d2611"
+    },
+    {
+      "seed": 91654,
+      "skill": "grasp",
+      "object_kind": "green",
+      "kind": "green",
+      "role": "west",
+      "robot_id": "r1",
+      "scenario_id": "s2_unmapped_blockage_v4",
+      "setup_source_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
+      "item_id": "green_1",
+      "target_setup_xy": [
+        0.4,
+        -0.85
+      ],
+      "cargo_pose_m": [
+        0.4,
+        -0.85,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.24598074656319713,
+          -0.5224121954871731,
+          0.032355118817659255,
+          -0.6085311543209788
+        ],
+        "r2": [
+          2.6019563261907646,
+          0.9680199040437145,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          4.138793171558204,
+          1.0885814081672671,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.05171339326684352,
+        0.07609726427498482,
+        0.009721535366111875
+      ],
+      "proposal_attempts": 2,
+      "start_bearing_deg_setup_only": 7.975926926754435,
+      "setup_fingerprint": "f307a8cd64b088f29310f7ec1d5ada9441d67b9c46e096191376128bca7d349d"
+    },
+    {
+      "seed": 91655,
+      "skill": "grasp",
+      "object_kind": "yellow",
+      "kind": "yellow",
+      "role": "west",
+      "robot_id": "r1",
+      "scenario_id": "s8_mixed_tiers_v4",
+      "setup_source_sha256": "cd3127fdffa8a6d99ae0d9721afa6024d69b4f30551a1ba7600fa90cffc1e99f",
+      "item_id": "yellow_1",
+      "target_setup_xy": [
+        -0.2,
+        0.75
+      ],
+      "cargo_pose_m": [
+        -0.2,
+        0.75,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.6260674223229743,
+          1.1985173042769994,
+          0.032355118817659255,
+          -1.15092013706504
+        ],
+        "r2": [
+          0.9374257034669291,
+          -0.6709883551020845,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          3.989588735592346,
+          -2.7739726538785128,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.05564309285099372,
+        -0.06737339518686207,
+        -0.014362734587847245
+      ],
+      "proposal_attempts": 5,
+      "start_bearing_deg_setup_only": 19.47245303003702,
+      "setup_fingerprint": "f9eacfb1c91e34032ef1c404d44a86a5058bd5d30320d433d67019c3a636a27c"
+    },
+    {
+      "seed": 91656,
+      "skill": "grasp",
+      "object_kind": "cyan",
+      "kind": "cyan",
+      "role": "west",
+      "robot_id": "r1",
+      "scenario_id": "s1_normal_mixed_v4",
+      "setup_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "item_id": "cyan_2",
+      "target_setup_xy": [
+        0.4,
+        -2.45
+      ],
+      "cargo_pose_m": [
+        0.4,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.40850992337574665,
+          -1.7813574025880161,
+          0.032355118817659255,
+          -0.4452517167613261
+        ],
+        "r2": [
+          -0.7674272755452798,
+          -0.5200873490524653,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          4.277340764766558,
+          -0.9575264285669145,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.07570965088932909,
+        -0.08985314793791886,
+        -0.008067346154738482
+      ],
+      "proposal_attempts": 1,
+      "start_bearing_deg_setup_only": -14.07990988854893,
+      "setup_fingerprint": "67d72f321e82535f5875b4ee0f92006d16a39d532c6d7a52c520c0a8cd381e32"
+    },
+    {
+      "seed": 91657,
+      "skill": "grasp",
+      "object_kind": "red",
+      "kind": "red",
+      "role": "west",
+      "robot_id": "r1",
+      "scenario_id": "s3_late_rendezvous_v4",
+      "setup_source_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "item_id": "red_1",
+      "target_setup_xy": [
+        1.0,
+        -2.45
+      ],
+      "cargo_pose_m": [
+        1.0,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          0.10566184823974889,
+          -1.951491510970487,
+          0.032355118817659255,
+          -0.32675312244017946
+        ],
+        "r2": [
+          3.185668144092974,
+          1.1814900304494986,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          0.8156725563434044,
+          0.25348193309976974,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.0517451472182178,
+        -0.06657279817731873,
+        -0.025243429612429272
+      ],
+      "proposal_attempts": 1,
+      "start_bearing_deg_setup_only": -10.413935845759646,
+      "setup_fingerprint": "ca7e1d34c4b6eeb7e3f28c7c73d22cc27682264b8e1aecfa02e87628911c1ebd"
+    },
+    {
+      "seed": 91658,
+      "skill": "grasp",
+      "object_kind": "green",
+      "kind": "green",
+      "role": "west",
+      "robot_id": "r1",
+      "scenario_id": "s2_unmapped_blockage_v4",
+      "setup_source_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
+      "item_id": "green_1",
+      "target_setup_xy": [
+        0.4,
+        -0.85
+      ],
+      "cargo_pose_m": [
+        0.4,
+        -0.85,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.5786120068789967,
+          -1.2804448483594955,
+          0.032355118817659255,
+          0.8051342943505155
+        ],
+        "r2": [
+          3.9427958351229306,
+          -2.084473219695534,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          3.7960168420519644,
+          0.7458405353140365,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.016528180400805333,
+        -0.041059210899761694,
+        0.054007181836175915
+      ],
+      "proposal_attempts": 1,
+      "start_bearing_deg_setup_only": -22.388387653332117,
+      "setup_fingerprint": "a3c2d8db48806f4fdde167fed686bd324d28216fe6cfef91c702076e44dd62f8"
+    },
+    {
+      "seed": 91659,
+      "skill": "grasp",
+      "object_kind": "yellow",
+      "kind": "yellow",
+      "role": "west",
+      "robot_id": "r1",
+      "scenario_id": "s8_mixed_tiers_v4",
+      "setup_source_sha256": "cd3127fdffa8a6d99ae0d9721afa6024d69b4f30551a1ba7600fa90cffc1e99f",
+      "item_id": "yellow_2",
+      "target_setup_xy": [
+        0.4,
+        0.75
+      ],
+      "cargo_pose_m": [
+        0.4,
+        0.75,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.5626148343724094,
+          0.90331350264992,
+          0.032355118817659255,
+          -0.3809495113521476
+        ],
+        "r2": [
+          3.6208862510176965,
+          -1.9817538055839656,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          0.23794652757883683,
+          -0.6306499544508326,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.09834620071862998,
+        0.13556379298846896,
+        -0.02841466776998219
+      ],
+      "proposal_attempts": 1,
+      "start_bearing_deg_setup_only": 12.777434329669042,
+      "setup_fingerprint": "ea36a7ec3bfbb8b2e2d714c0552509f436f79b31f94128b9596440a4642d0e32"
+    }
+  ]
+}

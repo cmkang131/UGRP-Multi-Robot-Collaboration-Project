@@ -86,15 +86,15 @@ def test_two_door_plan_bundle_and_schedule_preserved(tmp_path, capsys, check):
     from tests.test_review_352 import BASE_BYTES, baseline_writer
     assert legacy_run.main(args(tmp_path, MAP_ID, check)) == 0
     current_plan = json.loads(capsys.readouterr().out)
-    current_bundle = c.bundle(MAP_ID, check)
+    current_bundle = c.bundle(MAP_ID, check, contact_profile='cargo_noslip_v1')
     old_plan = baseline_writer(tmp_path, check, 'plan')
     old_bundle = baseline_writer(tmp_path, check, 'bundle')
     # Current receipts identify today's source; historical writer checks use
     # the actual historical source and retain every source-dependent field.
     assert {k:v for k,v in current_plan.items() if k != 'bundles_sha256'} == {
         k:v for k,v in old_plan.items() if k != 'bundles_sha256'}
-    assert {k:v for k,v in current_bundle.items() if k != 'source_sha256'} == {
-        k:v for k,v in old_bundle.items() if k != 'source_sha256'}
+    assert {k:v for k,v in current_bundle.items() if k not in ('source_sha256', 'contact_execution_bundle_id')} == {
+        k:v for k,v in old_bundle.items() if k not in ('source_sha256', 'contact_execution_bundle_id')}
     assert all(c.base.sha(c.ROOT/p) == digest for p,digest in current_bundle['source_sha256'].items())
     plan_bytes = (json.dumps(old_plan, ensure_ascii=False, indent=2, allow_nan=False)+'\n').encode()
     bundle_bytes = (json.dumps(old_bundle, ensure_ascii=False,
@@ -289,6 +289,6 @@ def test_dedicated_backend_admits_heldout_and_cleans_failed_construction(tmp_pat
     bundle = case_bundle(map_id)
     with pytest.raises(RuntimeError, match='before native world construction'):
         backend.PhysicsBackend(bundle, tmp_path/'unused', seed=911)
-    assert seen == [(c.resolve(map_id)[0], 'cargo_noslip_v1', 911)]
+    assert seen == [(c.resolve(map_id)[0], 'cargo_native_v1', 911)]
     assert closed == [bundle]
     assert backend.PhysicsBackend.collection_guard is backend.V88Backend.collection_guard

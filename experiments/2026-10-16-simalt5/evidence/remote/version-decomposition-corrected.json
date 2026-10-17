@@ -1,0 +1,232 @@
+{
+  "decomposition": {
+    "total_vector_m": [
+      0.0034804152827198898,
+      0.010969232453430067,
+      2.6108115836628865e-05
+    ],
+    "total_norm_m": 0.01150817243489539,
+    "Warp_damping_counterfactual_vector_m": [
+      -0.0032732412219047546,
+      0.0028536319732666016,
+      2.952665090560913e-05
+    ],
+    "Warp_damping_counterfactual_norm_m": 0.004342602100223303,
+    "matched_damping_residual_vector_m": [
+      0.006753656504624644,
+      0.008115600480163465,
+      -3.4185350689802663e-06
+    ],
+    "matched_damping_residual_norm_m": 0.010558165514068732,
+    "damping_projection_fraction": 0.15033962785566088,
+    "residual_projection_fraction": 0.8496603721443392,
+    "C312_damping_only_norm_m": 0.011305278956633075,
+    "C316_raw_norm_m": 0.06503051569495553,
+    "C316_restored_damping_norm_m": 0.07033972146160451,
+    "interpretation": "C316 raw also changes Plane\u2013Mesh; do not call its entire error damping or Warp. Reciprocal damping ablation isolates the intervention on each engine.",
+    "final_round": {
+      "geometry_intervention_vector_m": [
+        0.003009118139743805,
+        -0.003389596939086914,
+        -2.9712915420532227e-05
+      ],
+      "geometry_intervention_norm_m": 0.004532663617283106,
+      "native_port_selfcontrol_vector_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "native_port_selfcontrol_norm_m": 0.0,
+      "compiled_matched_C_version_vector_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "compiled_matched_C_version_norm_m": 0.0,
+      "same_version_Warp_vector_m": [
+        0.0037445383648808395,
+        0.01150519741925038,
+        2.629438035155196e-05
+      ],
+      "same_version_Warp_norm_m": 0.01209924901043152,
+      "final_Warp_residual_vector_m": [
+        0.0037445383648808395,
+        0.01150519741925038,
+        2.629438035155196e-05
+      ],
+      "final_Warp_residual_norm_m": 0.01209924901043152,
+      "telescoping_original_error_components": {
+        "damping_m": [
+          -0.0032732412219047546,
+          0.0028536319732666016,
+          2.952665090560913e-05
+        ],
+        "geometry_m": [
+          0.003009118139743805,
+          -0.003389596939086914,
+          -2.9712915420532227e-05
+        ],
+        "C_port_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "native_version_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "Warp_backend_m": [
+          0.0037445383648808395,
+          0.01150519741925038,
+          2.629438035155196e-05
+        ]
+      },
+      "original_error_projection_fractions": {
+        "damping": 0.15033962785566088,
+        "geometry": -0.20167221735719112,
+        "C_port": 0.0,
+        "native_version": 0.0,
+        "Warp_backend": 1.0513325895015304
+      },
+      "note": "Ordered vector interventions include interactions and the measured C port effect; norms cannot be added or interpreted as independent causal percentages. Same-version Warp residual includes collision implementation, float32 and solver arithmetic; it is not a float32-only estimate."
+    }
+  },
+  "crossings": {
+    "C316": {
+      "first_over_5mm_step": 7824,
+      "first_over_5mm_SIM_s": 1.956,
+      "peak_m": 0.06715274068459823,
+      "endpoint_m": 0.06503051569495553
+    },
+    "Warp316": {
+      "first_over_5mm_step": 48834,
+      "first_over_5mm_SIM_s": 12.2085,
+      "peak_m": 0.01255516945574626,
+      "endpoint_m": 0.01150817243489539
+    },
+    "Warp312": {
+      "first_over_5mm_step": 53856,
+      "first_over_5mm_SIM_s": 13.464,
+      "peak_m": 0.011855447506173929,
+      "endpoint_m": 0.010558165514068732
+    },
+    "C312_damping316": {
+      "first_over_5mm_step": 48844,
+      "first_over_5mm_SIM_s": 12.211,
+      "peak_m": 0.012342346052861396,
+      "endpoint_m": 0.011305278956633075
+    },
+    "C316_damping312": {
+      "first_over_5mm_step": 7936,
+      "first_over_5mm_SIM_s": 1.984,
+      "peak_m": 0.07341894047100911,
+      "endpoint_m": 0.07033972146160451
+    },
+    "C316_geometry312": {
+      "first_over_5mm_step": null,
+      "first_over_5mm_SIM_s": null,
+      "peak_m": 0.0,
+      "endpoint_m": 0.0
+    },
+    "Warp_geometry312": {
+      "first_over_5mm_step": 53825,
+      "first_over_5mm_SIM_s": 13.45625,
+      "peak_m": 0.013057939873840844,
+      "endpoint_m": 0.012099249010431521
+    },
+    "C312_port": {
+      "first_over_5mm_step": null,
+      "first_over_5mm_SIM_s": null,
+      "peak_m": 0.0,
+      "endpoint_m": 0.0
+    }
+  },
+  "endpoints": {
+    "C312": [
+      0.08987454748345061,
+      -2.455161641968811,
+      0.031974299460724345
+    ],
+    "C316": [
+      0.06261492633083607,
+      -2.514202856993243,
+      0.03210061100633155
+    ],
+    "Warp316": [
+      0.0933549627661705,
+      -2.444192409515381,
+      0.032000407576560974
+    ],
+    "Warp312": [
+      0.09662820398807526,
+      -2.4470460414886475,
+      0.031970880925655365
+    ],
+    "C312_damping316": [
+      0.09379759275562972,
+      -2.444558889845654,
+      0.03200067169255219
+    ],
+    "C316_damping312": [
+      0.06719255293357097,
+      -2.5217439028180384,
+      0.03205226574041604
+    ],
+    "C316_geometry312": [
+      0.08987454748345061,
+      -2.455161641968811,
+      0.031974299460724345
+    ],
+    "Warp_geometry312": [
+      0.09361908584833145,
+      -2.4436564445495605,
+      0.0320005938410759
+    ],
+    "C312_port": [
+      0.08987454748345061,
+      -2.455161641968811,
+      0.031974299460724345
+    ]
+  },
+  "raw": {
+    "C312": {
+      "path": "/home/ugrp/ugrp-sim/runs/simalt4/c312-grip/steps.npz",
+      "sha256": "1b551ba629f00ddfb49815b3ebdf83ac6c872f50cc6539fe78c99ff57c079e26"
+    },
+    "C316": {
+      "path": "/home/ugrp/ugrp-sim/runs/simalt4/c316-grip/steps.npz",
+      "sha256": "29cabc89f85d3c136ee9433a742befdd545a39e3e99ccf971aabb8410f44a38f"
+    },
+    "Warp316": {
+      "path": "/home/ugrp/ugrp-sim/runs/simalt4/legacy-r3-grip/steps.npz",
+      "sha256": "dfa59d32a942e9c1b7a30ef4452dddf40f05c229b01c6378bebd87541e93e165"
+    },
+    "Warp312": {
+      "path": "/home/ugrp/ugrp-sim/runs/simalt5/warp-compiled312-grip/steps.npz",
+      "sha256": "385c8be0d4bb5dee2ca7b8cbd98a2fa89d75fe77a0168d66d9321e43e72c3220"
+    },
+    "C312_damping316": {
+      "path": "/home/ugrp/ugrp-sim/runs/simalt5/c312-damping316-grip/steps.npz",
+      "sha256": "aedcff571bd3d0e33b69768c80e611b596c3369508be53cb3672c0e293e927aa"
+    },
+    "C316_damping312": {
+      "path": "/home/ugrp/ugrp-sim/runs/simalt5/c316-damping312-grip/steps.npz",
+      "sha256": "751571fdc1b41a8cb00fd0b1bdf99f3e4b2eaf36cfa0210e74106bfdaa22fd60"
+    },
+    "C316_geometry312": {
+      "path": "/home/ugrp/ugrp-sim/runs/simalt5/c316-native-corrected/steps.npz",
+      "sha256": "1b551ba629f00ddfb49815b3ebdf83ac6c872f50cc6539fe78c99ff57c079e26"
+    },
+    "Warp_geometry312": {
+      "path": "/home/ugrp/ugrp-sim/runs/simalt5/warp-geometry312-grip/steps.npz",
+      "sha256": "d5972320a917c4e10c103be7ecbb1068f0aba6c30550048b889f201c55cea444"
+    },
+    "C312_port": {
+      "path": "/home/ugrp/ugrp-sim/runs/simalt5/c312-native-corrected/steps.npz",
+      "sha256": "1b551ba629f00ddfb49815b3ebdf83ac6c872f50cc6539fe78c99ff57c079e26"
+    }
+  },
+  "note": "Exact first difference is descriptive, includes float32 rounding, and is not an acceptance threshold.",
+  "source_sha256": "15370c392b8da9a4b76e95a9029f773c2d591e183af0176edb6f5c35cde32dd9"
+}

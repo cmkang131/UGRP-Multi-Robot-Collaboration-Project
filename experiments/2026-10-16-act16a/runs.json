@@ -1,0 +1,3799 @@
+[
+  {
+    "seed": 91420,
+    "status": "complete",
+    "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91420-b4db8ba2/raw",
+    "first_failed_gate": "alignment",
+    "funnel": {
+      "counts": {
+        "evaluation_frames": 900,
+        "approach": 69
+      },
+      "first_pass_sim_t": {
+        "approach": 9.500000000000535
+      },
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "cumulative_run_pass": {
+        "approach": 1,
+        "alignment": 0,
+        "grasp": 0,
+        "lift_confirmation": 0
+      }
+    },
+    "done_times": {},
+    "termination": "cap_end",
+    "cap_end": true,
+    "physical_success": false,
+    "stable_lift": false,
+    "input_audit": {
+      "forbidden_input_fields": 0,
+      "teacher_input_fields": 0,
+      "requests": 113,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "top": 0,
+      "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+    },
+    "shadow_input_audit": {
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "blocked_hidden": 826,
+      "blocked_held": 0,
+      "measurements_by_phase": {
+        "start": 1,
+        "fold": 6,
+        "approach": 67
+      },
+      "scope": "decision input boundary only; evaluation excluded"
+    },
+    "teacher_actions_executed": 0,
+    "valid_expert_rows": 315,
+    "invalid_expert_rows": 585,
+    "wall_s": 360.31450311599997,
+    "sim_s": 89.999999999569,
+    "policy_calls": 113,
+    "rejection": {
+      "category": "alignment_not_passed",
+      "blocking_object": "cargo_cyan_1_geom",
+      "minimum_gap_m": -0.0008986833134217176,
+      "minimum_gap_pair": "external contact pair",
+      "target_object": "cyan_1",
+      "target_finger_min_gap_m": 0.10929491978859227,
+      "scope": "evaluation-only observed gap/contact, not a proven collision cause",
+      "seed": 91420,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91420-b4db8ba2/raw",
+      "reproduce_argv": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+        "-m",
+        "scripts.analyze_grasp_act_act16a",
+        "student",
+        "--plan",
+        "/home/ugrp/ugrp-sim/src/b4db8ba2/experiments/2026-10-15-act-train/act14-plans/91420.json",
+        "--model",
+        "/home/ugrp/ugrp-sim/act16a/assets/act15/actor",
+        "--scene-source",
+        "/home/ugrp/ugrp-sim/src/6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+        "--actor-python",
+        "/home/ugrp/ugrp-act-cpu-env/bin/python",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91420-b4db8ba2/raw"
+      ]
+    },
+    "outcome_matches_original_summary": true,
+    "original_manifest_hash": {
+      "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91420-686cccb6/SHA256SUMS",
+      "sha256": "fb681cd34dddbd342077aed8d0aeb1f3975442263a5f0191c117821dff837604"
+    }
+  },
+  {
+    "seed": 91421,
+    "status": "complete",
+    "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91421-b4db8ba2/raw",
+    "first_failed_gate": "approach",
+    "funnel": {
+      "counts": {
+        "evaluation_frames": 900
+      },
+      "first_pass_sim_t": {},
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "cumulative_run_pass": {
+        "approach": 0,
+        "alignment": 0,
+        "grasp": 0,
+        "lift_confirmation": 0
+      }
+    },
+    "done_times": {},
+    "termination": "cap_end",
+    "cap_end": true,
+    "physical_success": false,
+    "stable_lift": false,
+    "input_audit": {
+      "forbidden_input_fields": 0,
+      "teacher_input_fields": 0,
+      "requests": 113,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "top": 0,
+      "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+    },
+    "shadow_input_audit": {
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "blocked_hidden": 871,
+      "blocked_held": 0,
+      "measurements_by_phase": {
+        "start": 1,
+        "fold": 6,
+        "approach": 22
+      },
+      "scope": "decision input boundary only; evaluation excluded"
+    },
+    "teacher_actions_executed": 0,
+    "valid_expert_rows": 270,
+    "invalid_expert_rows": 630,
+    "wall_s": 376.81935197200005,
+    "sim_s": 89.999999999569,
+    "policy_calls": 113,
+    "rejection": {
+      "category": "approach_not_passed",
+      "blocking_object": "cargo_red_1_geom",
+      "minimum_gap_m": -0.0012605018258859922,
+      "minimum_gap_pair": "external contact pair",
+      "target_object": "red_2",
+      "target_finger_min_gap_m": 0.5552622530768966,
+      "scope": "evaluation-only observed gap/contact, not a proven collision cause",
+      "seed": 91421,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91421-b4db8ba2/raw",
+      "reproduce_argv": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+        "-m",
+        "scripts.analyze_grasp_act_act16a",
+        "student",
+        "--plan",
+        "/home/ugrp/ugrp-sim/src/b4db8ba2/experiments/2026-10-15-act-train/act14-plans/91421.json",
+        "--model",
+        "/home/ugrp/ugrp-sim/act16a/assets/act15/actor",
+        "--scene-source",
+        "/home/ugrp/ugrp-sim/src/6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+        "--actor-python",
+        "/home/ugrp/ugrp-act-cpu-env/bin/python",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91421-b4db8ba2/raw"
+      ]
+    },
+    "outcome_matches_original_summary": true,
+    "original_manifest_hash": {
+      "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91421-686cccb6/SHA256SUMS",
+      "sha256": "b586cd6c0cf984077f5cd3bc993606aeda491fa990a0f6d381e0b5b0e42a221d"
+    }
+  },
+  {
+    "seed": 91422,
+    "status": "complete",
+    "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91422-b4db8ba2/raw",
+    "first_failed_gate": "alignment",
+    "funnel": {
+      "counts": {
+        "evaluation_frames": 455,
+        "approach": 377
+      },
+      "first_pass_sim_t": {
+        "approach": 9.100000000001467
+      },
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "cumulative_run_pass": {
+        "approach": 1,
+        "alignment": 0,
+        "grasp": 0,
+        "lift_confirmation": 0
+      }
+    },
+    "done_times": {
+      "grasp": 43.60000000011717
+    },
+    "termination": "student_done",
+    "cap_end": false,
+    "physical_success": false,
+    "stable_lift": false,
+    "input_audit": {
+      "forbidden_input_fields": 0,
+      "teacher_input_fields": 0,
+      "requests": 53,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "top": 0,
+      "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+    },
+    "shadow_input_audit": {
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "blocked_hidden": 220,
+      "blocked_held": 0,
+      "measurements_by_phase": {
+        "start": 1,
+        "fold": 6,
+        "approach": 72,
+        "align": 116,
+        "relook": 40
+      },
+      "scope": "decision input boundary only; evaluation excluded"
+    },
+    "teacher_actions_executed": 0,
+    "valid_expert_rows": 455,
+    "invalid_expert_rows": 0,
+    "wall_s": 186.588444492,
+    "sim_s": 45.40000000013195,
+    "policy_calls": 53,
+    "rejection": {
+      "category": "alignment_not_passed",
+      "blocking_object": "cargo_green_1_geom",
+      "minimum_gap_m": -0.001097019992371453,
+      "minimum_gap_pair": "external contact pair",
+      "target_object": "green_1",
+      "target_finger_min_gap_m": -0.001097019992371443,
+      "scope": "evaluation-only observed gap/contact, not a proven collision cause",
+      "seed": 91422,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91422-b4db8ba2/raw",
+      "reproduce_argv": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+        "-m",
+        "scripts.analyze_grasp_act_act16a",
+        "student",
+        "--plan",
+        "/home/ugrp/ugrp-sim/src/b4db8ba2/experiments/2026-10-15-act-train/act14-plans/91422.json",
+        "--model",
+        "/home/ugrp/ugrp-sim/act16a/assets/act15/actor",
+        "--scene-source",
+        "/home/ugrp/ugrp-sim/src/6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+        "--actor-python",
+        "/home/ugrp/ugrp-act-cpu-env/bin/python",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91422-b4db8ba2/raw"
+      ]
+    },
+    "outcome_matches_original_summary": true,
+    "original_manifest_hash": {
+      "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91422-686cccb6/SHA256SUMS",
+      "sha256": "f01fe0bfeeb63dd16950acb07b1c3b9fb00b5dc30fb81e1b311fe44bc78ca4dd"
+    }
+  },
+  {
+    "seed": 91423,
+    "status": "complete",
+    "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91423-b4db8ba2/raw",
+    "first_failed_gate": "approach",
+    "funnel": {
+      "counts": {
+        "evaluation_frames": 599
+      },
+      "first_pass_sim_t": {},
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "cumulative_run_pass": {
+        "approach": 0,
+        "alignment": 0,
+        "grasp": 0,
+        "lift_confirmation": 0
+      }
+    },
+    "done_times": {
+      "grasp": 58.00000000018593
+    },
+    "termination": "student_done",
+    "cap_end": false,
+    "physical_success": false,
+    "stable_lift": false,
+    "input_audit": {
+      "forbidden_input_fields": 0,
+      "teacher_input_fields": 0,
+      "requests": 71,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "top": 0,
+      "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+    },
+    "shadow_input_audit": {
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "blocked_hidden": 207,
+      "blocked_held": 0,
+      "measurements_by_phase": {
+        "start": 1,
+        "fold": 6,
+        "approach": 385
+      },
+      "scope": "decision input boundary only; evaluation excluded"
+    },
+    "teacher_actions_executed": 0,
+    "valid_expert_rows": 599,
+    "invalid_expert_rows": 0,
+    "wall_s": 255.85510225099995,
+    "sim_s": 59.80000000020071,
+    "policy_calls": 71,
+    "rejection": {
+      "category": "approach_not_passed",
+      "blocking_object": "cargo_yellow_1_geom",
+      "minimum_gap_m": -0.0009088938019694568,
+      "minimum_gap_pair": "external contact pair",
+      "target_object": "yellow_2",
+      "target_finger_min_gap_m": 0.37438656615487176,
+      "scope": "evaluation-only observed gap/contact, not a proven collision cause",
+      "seed": 91423,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91423-b4db8ba2/raw",
+      "reproduce_argv": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+        "-m",
+        "scripts.analyze_grasp_act_act16a",
+        "student",
+        "--plan",
+        "/home/ugrp/ugrp-sim/src/b4db8ba2/experiments/2026-10-15-act-train/act14-plans/91423.json",
+        "--model",
+        "/home/ugrp/ugrp-sim/act16a/assets/act15/actor",
+        "--scene-source",
+        "/home/ugrp/ugrp-sim/src/6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+        "--actor-python",
+        "/home/ugrp/ugrp-act-cpu-env/bin/python",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91423-b4db8ba2/raw"
+      ]
+    },
+    "outcome_matches_original_summary": true,
+    "original_manifest_hash": {
+      "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91423-686cccb6/SHA256SUMS",
+      "sha256": "a6ac5746652e37e42c99c8449f8786f77b1eec68224f5cd15e26800c71957db9"
+    }
+  },
+  {
+    "seed": 91424,
+    "status": "complete",
+    "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91424-b4db8ba2/raw",
+    "first_failed_gate": "lift_confirmation",
+    "funnel": {
+      "counts": {
+        "evaluation_frames": 900,
+        "approach": 801,
+        "alignment": 615,
+        "grasp": 615
+      },
+      "first_pass_sim_t": {
+        "approach": 11.199999999996573,
+        "alignment": 16.699999999988727,
+        "grasp": 16.699999999988727
+      },
+      "lift_success": false,
+      "max_stable_lift_s": 2.500000000011937,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "cumulative_run_pass": {
+        "approach": 1,
+        "alignment": 1,
+        "grasp": 1,
+        "lift_confirmation": 0
+      }
+    },
+    "done_times": {
+      "grasp": 90.89999999957847
+    },
+    "termination": "cap_end",
+    "cap_end": true,
+    "physical_success": false,
+    "stable_lift": false,
+    "input_audit": {
+      "forbidden_input_fields": 0,
+      "teacher_input_fields": 0,
+      "requests": 113,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "top": 0,
+      "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+    },
+    "shadow_input_audit": {
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "blocked_hidden": 776,
+      "blocked_held": 0,
+      "measurements_by_phase": {
+        "start": 1,
+        "fold": 6,
+        "approach": 93,
+        "align": 24
+      },
+      "scope": "decision input boundary only; evaluation excluded"
+    },
+    "teacher_actions_executed": 0,
+    "valid_expert_rows": 365,
+    "invalid_expert_rows": 535,
+    "wall_s": 375.09938485600003,
+    "sim_s": 89.999999999569,
+    "policy_calls": 113,
+    "rejection": {
+      "category": "lift_confirmation_not_passed",
+      "blocking_object": "cargo_cyan_2_geom",
+      "minimum_gap_m": -0.0024902297683211533,
+      "minimum_gap_pair": "external contact pair",
+      "target_object": "cyan_2",
+      "target_finger_min_gap_m": -0.0024902297683213072,
+      "scope": "evaluation-only observed gap/contact, not a proven collision cause",
+      "seed": 91424,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91424-b4db8ba2/raw",
+      "reproduce_argv": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+        "-m",
+        "scripts.analyze_grasp_act_act16a",
+        "student",
+        "--plan",
+        "/home/ugrp/ugrp-sim/src/b4db8ba2/experiments/2026-10-15-act-train/act14-plans/91424.json",
+        "--model",
+        "/home/ugrp/ugrp-sim/act16a/assets/act15/actor",
+        "--scene-source",
+        "/home/ugrp/ugrp-sim/src/6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+        "--actor-python",
+        "/home/ugrp/ugrp-act-cpu-env/bin/python",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91424-b4db8ba2/raw"
+      ]
+    },
+    "outcome_matches_original_summary": true,
+    "original_manifest_hash": {
+      "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91424-686cccb6/SHA256SUMS",
+      "sha256": "32885cc810407c76869fdf81ac806fd71d423526202d5b6e60e1dd26b03a9579"
+    }
+  },
+  {
+    "seed": 91425,
+    "status": "complete",
+    "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91425-b4db8ba2/raw",
+    "first_failed_gate": "approach",
+    "funnel": {
+      "counts": {
+        "evaluation_frames": 662
+      },
+      "first_pass_sim_t": {},
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "cumulative_run_pass": {
+        "approach": 0,
+        "alignment": 0,
+        "grasp": 0,
+        "lift_confirmation": 0
+      }
+    },
+    "done_times": {
+      "grasp": 64.30000000020748
+    },
+    "termination": "student_done",
+    "cap_end": false,
+    "physical_success": false,
+    "stable_lift": false,
+    "input_audit": {
+      "forbidden_input_fields": 0,
+      "teacher_input_fields": 0,
+      "requests": 79,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "top": 0,
+      "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+    },
+    "shadow_input_audit": {
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "blocked_hidden": 615,
+      "blocked_held": 0,
+      "measurements_by_phase": {
+        "start": 1,
+        "fold": 6,
+        "approach": 40
+      },
+      "scope": "decision input boundary only; evaluation excluded"
+    },
+    "teacher_actions_executed": 0,
+    "valid_expert_rows": 288,
+    "invalid_expert_rows": 374,
+    "wall_s": 252.07670168900006,
+    "sim_s": 66.10000000013416,
+    "policy_calls": 79,
+    "rejection": {
+      "category": "approach_not_passed",
+      "blocking_object": "none_observed",
+      "minimum_gap_m": 0.33747365218309383,
+      "minimum_gap_pair": "target to nearest finger; no external contact",
+      "target_object": "red_1",
+      "target_finger_min_gap_m": 0.33747365218309383,
+      "scope": "evaluation-only observed gap/contact, not a proven collision cause",
+      "seed": 91425,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91425-b4db8ba2/raw",
+      "reproduce_argv": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+        "-m",
+        "scripts.analyze_grasp_act_act16a",
+        "student",
+        "--plan",
+        "/home/ugrp/ugrp-sim/src/b4db8ba2/experiments/2026-10-15-act-train/act14-plans/91425.json",
+        "--model",
+        "/home/ugrp/ugrp-sim/act16a/assets/act15/actor",
+        "--scene-source",
+        "/home/ugrp/ugrp-sim/src/6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+        "--actor-python",
+        "/home/ugrp/ugrp-act-cpu-env/bin/python",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91425-b4db8ba2/raw"
+      ]
+    },
+    "outcome_matches_original_summary": true,
+    "original_manifest_hash": {
+      "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91425-686cccb6/SHA256SUMS",
+      "sha256": "29a815f12d5d33f9ddf02c7c4bb8bcd8e21dc9620e7881c254b4a04da4d0e119"
+    }
+  },
+  {
+    "seed": 91426,
+    "status": "complete",
+    "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91426-b4db8ba2/raw",
+    "first_failed_gate": "alignment",
+    "funnel": {
+      "counts": {
+        "evaluation_frames": 239,
+        "approach": 158
+      },
+      "first_pass_sim_t": {
+        "approach": 9.400000000000768
+      },
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "cumulative_run_pass": {
+        "approach": 1,
+        "alignment": 0,
+        "grasp": 0,
+        "lift_confirmation": 0
+      }
+    },
+    "done_times": {
+      "grasp": 22.000000000014033
+    },
+    "termination": "student_done",
+    "cap_end": false,
+    "physical_success": false,
+    "stable_lift": false,
+    "input_audit": {
+      "forbidden_input_fields": 0,
+      "teacher_input_fields": 0,
+      "requests": 26,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "top": 0,
+      "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+    },
+    "shadow_input_audit": {
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "blocked_hidden": 140,
+      "blocked_held": 0,
+      "measurements_by_phase": {
+        "start": 1,
+        "fold": 6,
+        "approach": 71,
+        "align": 21
+      },
+      "scope": "decision input boundary only; evaluation excluded"
+    },
+    "teacher_actions_executed": 0,
+    "valid_expert_rows": 239,
+    "invalid_expert_rows": 0,
+    "wall_s": 95.09411365200003,
+    "sim_s": 23.800000000028817,
+    "policy_calls": 26,
+    "rejection": {
+      "category": "alignment_not_passed",
+      "blocking_object": "cargo_green_1_geom",
+      "minimum_gap_m": -0.0002836595875096874,
+      "minimum_gap_pair": "external contact pair",
+      "target_object": "green_1",
+      "target_finger_min_gap_m": -0.00028365958750970144,
+      "scope": "evaluation-only observed gap/contact, not a proven collision cause",
+      "seed": 91426,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91426-b4db8ba2/raw",
+      "reproduce_argv": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+        "-m",
+        "scripts.analyze_grasp_act_act16a",
+        "student",
+        "--plan",
+        "/home/ugrp/ugrp-sim/src/b4db8ba2/experiments/2026-10-15-act-train/act14-plans/91426.json",
+        "--model",
+        "/home/ugrp/ugrp-sim/act16a/assets/act15/actor",
+        "--scene-source",
+        "/home/ugrp/ugrp-sim/src/6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+        "--actor-python",
+        "/home/ugrp/ugrp-act-cpu-env/bin/python",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91426-b4db8ba2/raw"
+      ]
+    },
+    "outcome_matches_original_summary": true,
+    "original_manifest_hash": {
+      "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91426-686cccb6/SHA256SUMS",
+      "sha256": "8d38f73cc0d14b3edf76876837fcee1da303ce76645e56a24f6b947637f444d5"
+    }
+  },
+  {
+    "seed": 91427,
+    "status": "complete",
+    "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91427-b4db8ba2/raw",
+    "first_failed_gate": "approach",
+    "funnel": {
+      "counts": {
+        "evaluation_frames": 551
+      },
+      "first_pass_sim_t": {},
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "cumulative_run_pass": {
+        "approach": 0,
+        "alignment": 0,
+        "grasp": 0,
+        "lift_confirmation": 0
+      }
+    },
+    "done_times": {
+      "grasp": 53.20000000016301
+    },
+    "termination": "student_done",
+    "cap_end": false,
+    "physical_success": false,
+    "stable_lift": false,
+    "input_audit": {
+      "forbidden_input_fields": 0,
+      "teacher_input_fields": 0,
+      "requests": 65,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "top": 0,
+      "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+    },
+    "shadow_input_audit": {
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "blocked_hidden": 538,
+      "blocked_held": 0,
+      "measurements_by_phase": {
+        "start": 1,
+        "fold": 6,
+        "approach": 6
+      },
+      "scope": "decision input boundary only; evaluation excluded"
+    },
+    "teacher_actions_executed": 0,
+    "valid_expert_rows": 254,
+    "invalid_expert_rows": 297,
+    "wall_s": 308.58479067099995,
+    "sim_s": 55.00000000017779,
+    "policy_calls": 65,
+    "rejection": {
+      "category": "approach_not_passed",
+      "blocking_object": "none_observed",
+      "minimum_gap_m": 0.6718675033524738,
+      "minimum_gap_pair": "target to nearest finger; no external contact",
+      "target_object": "yellow_2",
+      "target_finger_min_gap_m": 0.6718675033524738,
+      "scope": "evaluation-only observed gap/contact, not a proven collision cause",
+      "seed": 91427,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91427-b4db8ba2/raw",
+      "reproduce_argv": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+        "-m",
+        "scripts.analyze_grasp_act_act16a",
+        "student",
+        "--plan",
+        "/home/ugrp/ugrp-sim/src/b4db8ba2/experiments/2026-10-15-act-train/act14-plans/91427.json",
+        "--model",
+        "/home/ugrp/ugrp-sim/act16a/assets/act15/actor",
+        "--scene-source",
+        "/home/ugrp/ugrp-sim/src/6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+        "--actor-python",
+        "/home/ugrp/ugrp-act-cpu-env/bin/python",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91427-b4db8ba2/raw",
+        "--overview"
+      ]
+    },
+    "outcome_matches_original_summary": true,
+    "original_manifest_hash": {
+      "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91427-686cccb6/SHA256SUMS",
+      "sha256": "35c07f66e4031c11d9583f56c8efad233db863d33468841f8a9cb2f16715541d"
+    }
+  },
+  {
+    "seed": 91428,
+    "status": "complete",
+    "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91428-b4db8ba2/raw",
+    "first_failed_gate": "approach",
+    "funnel": {
+      "counts": {
+        "evaluation_frames": 271
+      },
+      "first_pass_sim_t": {},
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "cumulative_run_pass": {
+        "approach": 0,
+        "alignment": 0,
+        "grasp": 0,
+        "lift_confirmation": 0
+      }
+    },
+    "done_times": {
+      "grasp": 25.200000000029313
+    },
+    "termination": "student_done",
+    "cap_end": false,
+    "physical_success": false,
+    "stable_lift": false,
+    "input_audit": {
+      "forbidden_input_fields": 0,
+      "teacher_input_fields": 0,
+      "requests": 30,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "top": 0,
+      "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+    },
+    "shadow_input_audit": {
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "blocked_hidden": 260,
+      "blocked_held": 0,
+      "measurements_by_phase": {
+        "start": 1,
+        "fold": 6,
+        "approach": 4
+      },
+      "scope": "decision input boundary only; evaluation excluded"
+    },
+    "teacher_actions_executed": 0,
+    "valid_expert_rows": 252,
+    "invalid_expert_rows": 19,
+    "wall_s": 104.80667255699996,
+    "sim_s": 27.000000000044096,
+    "policy_calls": 30,
+    "rejection": {
+      "category": "approach_not_passed",
+      "blocking_object": "none_observed",
+      "minimum_gap_m": 0.6634720869243986,
+      "minimum_gap_pair": "target to nearest finger; no external contact",
+      "target_object": "cyan_2",
+      "target_finger_min_gap_m": 0.6634720869243986,
+      "scope": "evaluation-only observed gap/contact, not a proven collision cause",
+      "seed": 91428,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91428-b4db8ba2/raw",
+      "reproduce_argv": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+        "-m",
+        "scripts.analyze_grasp_act_act16a",
+        "student",
+        "--plan",
+        "/home/ugrp/ugrp-sim/src/b4db8ba2/experiments/2026-10-15-act-train/act14-plans/91428.json",
+        "--model",
+        "/home/ugrp/ugrp-sim/act16a/assets/act15/actor",
+        "--scene-source",
+        "/home/ugrp/ugrp-sim/src/6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+        "--actor-python",
+        "/home/ugrp/ugrp-act-cpu-env/bin/python",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91428-b4db8ba2/raw"
+      ]
+    },
+    "outcome_matches_original_summary": true,
+    "original_manifest_hash": {
+      "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91428-686cccb6/SHA256SUMS",
+      "sha256": "b1910992571d114228835c01bad0e5996e5c0246bfe5d1ba0a2cd69585c4a043"
+    }
+  },
+  {
+    "seed": 91429,
+    "status": "complete",
+    "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91429-b4db8ba2/raw",
+    "first_failed_gate": "alignment",
+    "funnel": {
+      "counts": {
+        "evaluation_frames": 900,
+        "approach": 825
+      },
+      "first_pass_sim_t": {
+        "approach": 8.800000000002166
+      },
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "cumulative_run_pass": {
+        "approach": 1,
+        "alignment": 0,
+        "grasp": 0,
+        "lift_confirmation": 0
+      }
+    },
+    "done_times": {},
+    "termination": "cap_end",
+    "cap_end": true,
+    "physical_success": false,
+    "stable_lift": false,
+    "input_audit": {
+      "forbidden_input_fields": 0,
+      "teacher_input_fields": 0,
+      "requests": 113,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "top": 0,
+      "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+    },
+    "shadow_input_audit": {
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "blocked_hidden": 817,
+      "blocked_held": 0,
+      "measurements_by_phase": {
+        "start": 1,
+        "fold": 6,
+        "approach": 69,
+        "align": 7
+      },
+      "scope": "decision input boundary only; evaluation excluded"
+    },
+    "teacher_actions_executed": 0,
+    "valid_expert_rows": 324,
+    "invalid_expert_rows": 576,
+    "wall_s": 429.18096707100005,
+    "sim_s": 89.999999999569,
+    "policy_calls": 113,
+    "rejection": {
+      "category": "alignment_not_passed",
+      "blocking_object": "cargo_red_1_geom",
+      "minimum_gap_m": -0.0008722090355497885,
+      "minimum_gap_pair": "external contact pair",
+      "target_object": "red_1",
+      "target_finger_min_gap_m": 0.018181663657514505,
+      "scope": "evaluation-only observed gap/contact, not a proven collision cause",
+      "seed": 91429,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91429-b4db8ba2/raw",
+      "reproduce_argv": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+        "-m",
+        "scripts.analyze_grasp_act_act16a",
+        "student",
+        "--plan",
+        "/home/ugrp/ugrp-sim/src/b4db8ba2/experiments/2026-10-15-act-train/act14-plans/91429.json",
+        "--model",
+        "/home/ugrp/ugrp-sim/act16a/assets/act15/actor",
+        "--scene-source",
+        "/home/ugrp/ugrp-sim/src/6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+        "--actor-python",
+        "/home/ugrp/ugrp-act-cpu-env/bin/python",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91429-b4db8ba2/raw"
+      ]
+    },
+    "outcome_matches_original_summary": true,
+    "original_manifest_hash": {
+      "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91429-686cccb6/SHA256SUMS",
+      "sha256": "7117813ff71bfdfb91a31c5e12eeff04d88cbaf4bb606eb81acd2b793ea33e73"
+    }
+  },
+  {
+    "seed": 91430,
+    "status": "complete",
+    "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91430-b4db8ba2/raw",
+    "first_failed_gate": "alignment",
+    "funnel": {
+      "counts": {
+        "evaluation_frames": 900,
+        "approach": 836
+      },
+      "first_pass_sim_t": {
+        "approach": 7.700000000003665
+      },
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "cumulative_run_pass": {
+        "approach": 1,
+        "alignment": 0,
+        "grasp": 0,
+        "lift_confirmation": 0
+      }
+    },
+    "done_times": {},
+    "termination": "cap_end",
+    "cap_end": true,
+    "physical_success": false,
+    "stable_lift": false,
+    "input_audit": {
+      "forbidden_input_fields": 0,
+      "teacher_input_fields": 0,
+      "requests": 113,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "top": 0,
+      "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+    },
+    "shadow_input_audit": {
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "blocked_hidden": 675,
+      "blocked_held": 0,
+      "measurements_by_phase": {
+        "start": 1,
+        "fold": 6,
+        "approach": 58,
+        "align": 103,
+        "relook": 57
+      },
+      "scope": "decision input boundary only; evaluation excluded"
+    },
+    "teacher_actions_executed": 0,
+    "valid_expert_rows": 259,
+    "invalid_expert_rows": 641,
+    "wall_s": 348.13322232100006,
+    "sim_s": 89.999999999569,
+    "policy_calls": 113,
+    "rejection": {
+      "category": "alignment_not_passed",
+      "blocking_object": "none_observed",
+      "minimum_gap_m": 0.007758369396470187,
+      "minimum_gap_pair": "target to nearest finger; no external contact",
+      "target_object": "green_1",
+      "target_finger_min_gap_m": 0.007758369396470187,
+      "scope": "evaluation-only observed gap/contact, not a proven collision cause",
+      "seed": 91430,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91430-b4db8ba2/raw",
+      "reproduce_argv": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+        "-m",
+        "scripts.analyze_grasp_act_act16a",
+        "student",
+        "--plan",
+        "/home/ugrp/ugrp-sim/src/b4db8ba2/experiments/2026-10-15-act-train/act14-plans/91430.json",
+        "--model",
+        "/home/ugrp/ugrp-sim/act16a/assets/act15/actor",
+        "--scene-source",
+        "/home/ugrp/ugrp-sim/src/6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+        "--actor-python",
+        "/home/ugrp/ugrp-act-cpu-env/bin/python",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91430-b4db8ba2/raw"
+      ]
+    },
+    "outcome_matches_original_summary": true,
+    "original_manifest_hash": {
+      "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91430-686cccb6/SHA256SUMS",
+      "sha256": "7dbd61d51cc9b7d41c7a4ad3f0b5919e06ae4541bbfcd0754559ae71c16ff9c2"
+    }
+  },
+  {
+    "seed": 91431,
+    "status": "complete",
+    "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91431-b4db8ba2/raw",
+    "first_failed_gate": "alignment",
+    "funnel": {
+      "counts": {
+        "evaluation_frames": 607,
+        "approach": 402
+      },
+      "first_pass_sim_t": {
+        "approach": 21.80000000001308
+      },
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "cumulative_run_pass": {
+        "approach": 1,
+        "alignment": 0,
+        "grasp": 0,
+        "lift_confirmation": 0
+      }
+    },
+    "done_times": {
+      "grasp": 58.80000000018975
+    },
+    "termination": "student_done",
+    "cap_end": false,
+    "physical_success": false,
+    "stable_lift": false,
+    "input_audit": {
+      "forbidden_input_fields": 0,
+      "teacher_input_fields": 0,
+      "requests": 72,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "top": 0,
+      "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+    },
+    "shadow_input_audit": {
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "blocked_hidden": 491,
+      "blocked_held": 0,
+      "measurements_by_phase": {
+        "start": 1,
+        "fold": 6,
+        "approach": 109
+      },
+      "scope": "decision input boundary only; evaluation excluded"
+    },
+    "teacher_actions_executed": 0,
+    "valid_expert_rows": 357,
+    "invalid_expert_rows": 250,
+    "wall_s": 256.17150645999993,
+    "sim_s": 60.60000000020453,
+    "policy_calls": 72,
+    "rejection": {
+      "category": "alignment_not_passed",
+      "blocking_object": "none_observed",
+      "minimum_gap_m": 0.03577665445191507,
+      "minimum_gap_pair": "target to nearest finger; no external contact",
+      "target_object": "yellow_2",
+      "target_finger_min_gap_m": 0.03577665445191507,
+      "scope": "evaluation-only observed gap/contact, not a proven collision cause",
+      "seed": 91431,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91431-b4db8ba2/raw",
+      "reproduce_argv": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+        "-m",
+        "scripts.analyze_grasp_act_act16a",
+        "student",
+        "--plan",
+        "/home/ugrp/ugrp-sim/src/b4db8ba2/experiments/2026-10-15-act-train/act14-plans/91431.json",
+        "--model",
+        "/home/ugrp/ugrp-sim/act16a/assets/act15/actor",
+        "--scene-source",
+        "/home/ugrp/ugrp-sim/src/6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+        "--actor-python",
+        "/home/ugrp/ugrp-act-cpu-env/bin/python",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91431-b4db8ba2/raw"
+      ]
+    },
+    "outcome_matches_original_summary": true,
+    "original_manifest_hash": {
+      "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91431-686cccb6/SHA256SUMS",
+      "sha256": "64697e09376d0711bca1f3592024d50672c1fd10011d90eee98a53c9d353c7a2"
+    }
+  },
+  {
+    "seed": 91432,
+    "status": "complete",
+    "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91432-b4db8ba2/raw",
+    "first_failed_gate": "lift_confirmation",
+    "funnel": {
+      "counts": {
+        "evaluation_frames": 230,
+        "approach": 175,
+        "alignment": 4,
+        "grasp": 4
+      },
+      "first_pass_sim_t": {
+        "approach": 6.800000000002565,
+        "alignment": 15.399999999986784,
+        "grasp": 15.399999999986784
+      },
+      "lift_success": false,
+      "max_stable_lift_s": 0.2999999999993008,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "cumulative_run_pass": {
+        "approach": 1,
+        "alignment": 1,
+        "grasp": 1,
+        "lift_confirmation": 0
+      }
+    },
+    "done_times": {
+      "grasp": 21.100000000009736
+    },
+    "termination": "student_done",
+    "cap_end": false,
+    "physical_success": false,
+    "stable_lift": false,
+    "input_audit": {
+      "forbidden_input_fields": 0,
+      "teacher_input_fields": 0,
+      "requests": 25,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "top": 0,
+      "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+    },
+    "shadow_input_audit": {
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "blocked_hidden": 132,
+      "blocked_held": 0,
+      "measurements_by_phase": {
+        "start": 1,
+        "fold": 6,
+        "approach": 49,
+        "align": 42
+      },
+      "scope": "decision input boundary only; evaluation excluded"
+    },
+    "teacher_actions_executed": 0,
+    "valid_expert_rows": 230,
+    "invalid_expert_rows": 0,
+    "wall_s": 96.22709730300005,
+    "sim_s": 22.90000000002452,
+    "policy_calls": 25,
+    "rejection": {
+      "category": "lift_confirmation_not_passed",
+      "blocking_object": "cargo_cyan_2_geom",
+      "minimum_gap_m": -0.0010234720887992818,
+      "minimum_gap_pair": "external contact pair",
+      "target_object": "cyan_2",
+      "target_finger_min_gap_m": -0.0010234720887992046,
+      "scope": "evaluation-only observed gap/contact, not a proven collision cause",
+      "seed": 91432,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91432-b4db8ba2/raw",
+      "reproduce_argv": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+        "-m",
+        "scripts.analyze_grasp_act_act16a",
+        "student",
+        "--plan",
+        "/home/ugrp/ugrp-sim/src/b4db8ba2/experiments/2026-10-15-act-train/act14-plans/91432.json",
+        "--model",
+        "/home/ugrp/ugrp-sim/act16a/assets/act15/actor",
+        "--scene-source",
+        "/home/ugrp/ugrp-sim/src/6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+        "--actor-python",
+        "/home/ugrp/ugrp-act-cpu-env/bin/python",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91432-b4db8ba2/raw"
+      ]
+    },
+    "outcome_matches_original_summary": true,
+    "original_manifest_hash": {
+      "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91432-686cccb6/SHA256SUMS",
+      "sha256": "7d73c2eb6bb16247fad58dbb23c3a0aa9224a3284ef111cd43afb15216ba4854"
+    }
+  },
+  {
+    "seed": 91433,
+    "status": "complete",
+    "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91433-b4db8ba2/raw",
+    "first_failed_gate": "alignment",
+    "funnel": {
+      "counts": {
+        "evaluation_frames": 575,
+        "approach": 495
+      },
+      "first_pass_sim_t": {
+        "approach": 9.300000000001
+      },
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "cumulative_run_pass": {
+        "approach": 1,
+        "alignment": 0,
+        "grasp": 0,
+        "lift_confirmation": 0
+      }
+    },
+    "done_times": {
+      "grasp": 55.60000000017447
+    },
+    "termination": "student_done",
+    "cap_end": false,
+    "physical_success": false,
+    "stable_lift": false,
+    "input_audit": {
+      "forbidden_input_fields": 0,
+      "teacher_input_fields": 0,
+      "requests": 68,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "top": 0,
+      "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+    },
+    "shadow_input_audit": {
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "blocked_hidden": 478,
+      "blocked_held": 0,
+      "measurements_by_phase": {
+        "start": 1,
+        "fold": 6,
+        "approach": 74,
+        "align": 16
+      },
+      "scope": "decision input boundary only; evaluation excluded"
+    },
+    "teacher_actions_executed": 0,
+    "valid_expert_rows": 341,
+    "invalid_expert_rows": 234,
+    "wall_s": 218.58952442700001,
+    "sim_s": 57.40000000018925,
+    "policy_calls": 68,
+    "rejection": {
+      "category": "alignment_not_passed",
+      "blocking_object": "none_observed",
+      "minimum_gap_m": 0.015087816087170042,
+      "minimum_gap_pair": "target to nearest finger; no external contact",
+      "target_object": "red_1",
+      "target_finger_min_gap_m": 0.015087816087170042,
+      "scope": "evaluation-only observed gap/contact, not a proven collision cause",
+      "seed": 91433,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91433-b4db8ba2/raw",
+      "reproduce_argv": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+        "-m",
+        "scripts.analyze_grasp_act_act16a",
+        "student",
+        "--plan",
+        "/home/ugrp/ugrp-sim/src/b4db8ba2/experiments/2026-10-15-act-train/act14-plans/91433.json",
+        "--model",
+        "/home/ugrp/ugrp-sim/act16a/assets/act15/actor",
+        "--scene-source",
+        "/home/ugrp/ugrp-sim/src/6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+        "--actor-python",
+        "/home/ugrp/ugrp-act-cpu-env/bin/python",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91433-b4db8ba2/raw"
+      ]
+    },
+    "outcome_matches_original_summary": true,
+    "original_manifest_hash": {
+      "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91433-686cccb6/SHA256SUMS",
+      "sha256": "f4926456cf0d5159d5947962104e28a0c7cc847c20a404dfaf7f4cff2ae699a1"
+    }
+  },
+  {
+    "seed": 91434,
+    "status": "complete",
+    "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91434-b4db8ba2/raw",
+    "first_failed_gate": "alignment",
+    "funnel": {
+      "counts": {
+        "evaluation_frames": 900,
+        "approach": 239
+      },
+      "first_pass_sim_t": {
+        "approach": 8.900000000001933
+      },
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "cumulative_run_pass": {
+        "approach": 1,
+        "alignment": 0,
+        "grasp": 0,
+        "lift_confirmation": 0
+      }
+    },
+    "done_times": {},
+    "termination": "cap_end",
+    "cap_end": true,
+    "physical_success": false,
+    "stable_lift": false,
+    "input_audit": {
+      "forbidden_input_fields": 0,
+      "teacher_input_fields": 0,
+      "requests": 113,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "top": 0,
+      "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+    },
+    "shadow_input_audit": {
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "blocked_hidden": 751,
+      "blocked_held": 0,
+      "measurements_by_phase": {
+        "start": 1,
+        "fold": 6,
+        "approach": 70,
+        "align": 37,
+        "relook": 35
+      },
+      "scope": "decision input boundary only; evaluation excluded"
+    },
+    "teacher_actions_executed": 0,
+    "valid_expert_rows": 399,
+    "invalid_expert_rows": 501,
+    "wall_s": 356.885822521,
+    "sim_s": 89.999999999569,
+    "policy_calls": 113,
+    "rejection": {
+      "category": "alignment_not_passed",
+      "blocking_object": "none_observed",
+      "minimum_gap_m": 1.3122225484080332e-05,
+      "minimum_gap_pair": "target to nearest finger; no external contact",
+      "target_object": "green_1",
+      "target_finger_min_gap_m": 1.3122225484080332e-05,
+      "scope": "evaluation-only observed gap/contact, not a proven collision cause",
+      "seed": 91434,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91434-b4db8ba2/raw",
+      "reproduce_argv": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+        "-m",
+        "scripts.analyze_grasp_act_act16a",
+        "student",
+        "--plan",
+        "/home/ugrp/ugrp-sim/src/b4db8ba2/experiments/2026-10-15-act-train/act14-plans/91434.json",
+        "--model",
+        "/home/ugrp/ugrp-sim/act16a/assets/act15/actor",
+        "--scene-source",
+        "/home/ugrp/ugrp-sim/src/6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+        "--actor-python",
+        "/home/ugrp/ugrp-act-cpu-env/bin/python",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91434-b4db8ba2/raw"
+      ]
+    },
+    "outcome_matches_original_summary": true,
+    "original_manifest_hash": {
+      "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91434-686cccb6/SHA256SUMS",
+      "sha256": "8cd2f5cf07f97beb15c9924b08605652d03840466c447a6e75a6f899b177cab2"
+    }
+  },
+  {
+    "seed": 91435,
+    "status": "complete",
+    "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91435-b4db8ba2/raw",
+    "first_failed_gate": "alignment",
+    "funnel": {
+      "counts": {
+        "evaluation_frames": 900,
+        "approach": 126
+      },
+      "first_pass_sim_t": {
+        "approach": 9.0000000000017
+      },
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "cumulative_run_pass": {
+        "approach": 1,
+        "alignment": 0,
+        "grasp": 0,
+        "lift_confirmation": 0
+      }
+    },
+    "done_times": {},
+    "termination": "cap_end",
+    "cap_end": true,
+    "physical_success": false,
+    "stable_lift": false,
+    "input_audit": {
+      "forbidden_input_fields": 0,
+      "teacher_input_fields": 0,
+      "requests": 113,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "top": 0,
+      "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+    },
+    "shadow_input_audit": {
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "blocked_hidden": 823,
+      "blocked_held": 0,
+      "measurements_by_phase": {
+        "start": 1,
+        "fold": 6,
+        "approach": 70
+      },
+      "scope": "decision input boundary only; evaluation excluded"
+    },
+    "teacher_actions_executed": 0,
+    "valid_expert_rows": 328,
+    "invalid_expert_rows": 572,
+    "wall_s": 379.440142284,
+    "sim_s": 89.999999999569,
+    "policy_calls": 113,
+    "rejection": {
+      "category": "alignment_not_passed",
+      "blocking_object": "cargo_yellow_2_geom",
+      "minimum_gap_m": -0.001293422366884539,
+      "minimum_gap_pair": "external contact pair",
+      "target_object": "yellow_2",
+      "target_finger_min_gap_m": -0.001293422366884495,
+      "scope": "evaluation-only observed gap/contact, not a proven collision cause",
+      "seed": 91435,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91435-b4db8ba2/raw",
+      "reproduce_argv": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+        "-m",
+        "scripts.analyze_grasp_act_act16a",
+        "student",
+        "--plan",
+        "/home/ugrp/ugrp-sim/src/b4db8ba2/experiments/2026-10-15-act-train/act14-plans/91435.json",
+        "--model",
+        "/home/ugrp/ugrp-sim/act16a/assets/act15/actor",
+        "--scene-source",
+        "/home/ugrp/ugrp-sim/src/6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+        "--actor-python",
+        "/home/ugrp/ugrp-act-cpu-env/bin/python",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91435-b4db8ba2/raw"
+      ]
+    },
+    "outcome_matches_original_summary": true,
+    "original_manifest_hash": {
+      "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91435-686cccb6/SHA256SUMS",
+      "sha256": "aef69ec49468268988bc18b95771b1d2b4afe49d08776b11e796abb42f61d959"
+    }
+  },
+  {
+    "seed": 91436,
+    "status": "complete",
+    "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91436-b4db8ba2/raw",
+    "first_failed_gate": "approach",
+    "funnel": {
+      "counts": {
+        "evaluation_frames": 639
+      },
+      "first_pass_sim_t": {},
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "cumulative_run_pass": {
+        "approach": 0,
+        "alignment": 0,
+        "grasp": 0,
+        "lift_confirmation": 0
+      }
+    },
+    "done_times": {
+      "grasp": 62.00000000020503
+    },
+    "termination": "student_done",
+    "cap_end": false,
+    "physical_success": false,
+    "stable_lift": false,
+    "input_audit": {
+      "forbidden_input_fields": 0,
+      "teacher_input_fields": 0,
+      "requests": 76,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "top": 0,
+      "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+    },
+    "shadow_input_audit": {
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "blocked_hidden": 612,
+      "blocked_held": 0,
+      "measurements_by_phase": {
+        "start": 1,
+        "fold": 6,
+        "approach": 20
+      },
+      "scope": "decision input boundary only; evaluation excluded"
+    },
+    "teacher_actions_executed": 0,
+    "valid_expert_rows": 268,
+    "invalid_expert_rows": 371,
+    "wall_s": 253.97613789499997,
+    "sim_s": 63.80000000018854,
+    "policy_calls": 76,
+    "rejection": {
+      "category": "approach_not_passed",
+      "blocking_object": "none_observed",
+      "minimum_gap_m": 0.6419069183239526,
+      "minimum_gap_pair": "target to nearest finger; no external contact",
+      "target_object": "cyan_1",
+      "target_finger_min_gap_m": 0.6419069183239526,
+      "scope": "evaluation-only observed gap/contact, not a proven collision cause",
+      "seed": 91436,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91436-b4db8ba2/raw",
+      "reproduce_argv": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+        "-m",
+        "scripts.analyze_grasp_act_act16a",
+        "student",
+        "--plan",
+        "/home/ugrp/ugrp-sim/src/b4db8ba2/experiments/2026-10-15-act-train/act14-plans/91436.json",
+        "--model",
+        "/home/ugrp/ugrp-sim/act16a/assets/act15/actor",
+        "--scene-source",
+        "/home/ugrp/ugrp-sim/src/6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+        "--actor-python",
+        "/home/ugrp/ugrp-act-cpu-env/bin/python",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91436-b4db8ba2/raw"
+      ]
+    },
+    "outcome_matches_original_summary": true,
+    "original_manifest_hash": {
+      "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91436-686cccb6/SHA256SUMS",
+      "sha256": "fdc8be8768abd89581dc1bb13349446f976248c344611c23fd2d643e99cea9fc"
+    }
+  },
+  {
+    "seed": 91437,
+    "status": "complete",
+    "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91437-b4db8ba2/raw",
+    "first_failed_gate": "alignment",
+    "funnel": {
+      "counts": {
+        "evaluation_frames": 503,
+        "approach": 398
+      },
+      "first_pass_sim_t": {
+        "approach": 11.799999999995174
+      },
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "cumulative_run_pass": {
+        "approach": 1,
+        "alignment": 0,
+        "grasp": 0,
+        "lift_confirmation": 0
+      }
+    },
+    "done_times": {
+      "grasp": 48.40000000014009
+    },
+    "termination": "student_done",
+    "cap_end": false,
+    "physical_success": false,
+    "stable_lift": false,
+    "input_audit": {
+      "forbidden_input_fields": 0,
+      "teacher_input_fields": 0,
+      "requests": 59,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "top": 0,
+      "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+    },
+    "shadow_input_audit": {
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "blocked_hidden": 391,
+      "blocked_held": 0,
+      "measurements_by_phase": {
+        "start": 1,
+        "fold": 6,
+        "approach": 99,
+        "align": 6
+      },
+      "scope": "decision input boundary only; evaluation excluded"
+    },
+    "teacher_actions_executed": 0,
+    "valid_expert_rows": 353,
+    "invalid_expert_rows": 150,
+    "wall_s": 195.05566373400006,
+    "sim_s": 50.20000000015487,
+    "policy_calls": 59,
+    "rejection": {
+      "category": "alignment_not_passed",
+      "blocking_object": "none_observed",
+      "minimum_gap_m": 0.01722283532646069,
+      "minimum_gap_pair": "target to nearest finger; no external contact",
+      "target_object": "red_1",
+      "target_finger_min_gap_m": 0.01722283532646069,
+      "scope": "evaluation-only observed gap/contact, not a proven collision cause",
+      "seed": 91437,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91437-b4db8ba2/raw",
+      "reproduce_argv": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+        "-m",
+        "scripts.analyze_grasp_act_act16a",
+        "student",
+        "--plan",
+        "/home/ugrp/ugrp-sim/src/b4db8ba2/experiments/2026-10-15-act-train/act14-plans/91437.json",
+        "--model",
+        "/home/ugrp/ugrp-sim/act16a/assets/act15/actor",
+        "--scene-source",
+        "/home/ugrp/ugrp-sim/src/6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+        "--actor-python",
+        "/home/ugrp/ugrp-act-cpu-env/bin/python",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91437-b4db8ba2/raw"
+      ]
+    },
+    "outcome_matches_original_summary": true,
+    "original_manifest_hash": {
+      "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91437-686cccb6/SHA256SUMS",
+      "sha256": "7de914ac0fdd5626734eb1955477732a48591ff3b20deaf540b83e961338e956"
+    }
+  },
+  {
+    "seed": 91438,
+    "status": "complete",
+    "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91438-b4db8ba2/raw",
+    "first_failed_gate": "approach",
+    "funnel": {
+      "counts": {
+        "evaluation_frames": 900
+      },
+      "first_pass_sim_t": {},
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "cumulative_run_pass": {
+        "approach": 0,
+        "alignment": 0,
+        "grasp": 0,
+        "lift_confirmation": 0
+      }
+    },
+    "done_times": {},
+    "termination": "cap_end",
+    "cap_end": true,
+    "physical_success": false,
+    "stable_lift": false,
+    "input_audit": {
+      "forbidden_input_fields": 0,
+      "teacher_input_fields": 0,
+      "requests": 113,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "top": 0,
+      "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+    },
+    "shadow_input_audit": {
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "blocked_hidden": 843,
+      "blocked_held": 0,
+      "measurements_by_phase": {
+        "start": 1,
+        "fold": 6,
+        "approach": 50
+      },
+      "scope": "decision input boundary only; evaluation excluded"
+    },
+    "teacher_actions_executed": 0,
+    "valid_expert_rows": 298,
+    "invalid_expert_rows": 602,
+    "wall_s": 368.07177675900004,
+    "sim_s": 89.999999999569,
+    "policy_calls": 113,
+    "rejection": {
+      "category": "approach_not_passed",
+      "blocking_object": "none_observed",
+      "minimum_gap_m": 0.22955243855985452,
+      "minimum_gap_pair": "target to nearest finger; no external contact",
+      "target_object": "green_1",
+      "target_finger_min_gap_m": 0.22955243855985452,
+      "scope": "evaluation-only observed gap/contact, not a proven collision cause",
+      "seed": 91438,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91438-b4db8ba2/raw",
+      "reproduce_argv": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+        "-m",
+        "scripts.analyze_grasp_act_act16a",
+        "student",
+        "--plan",
+        "/home/ugrp/ugrp-sim/src/b4db8ba2/experiments/2026-10-15-act-train/act14-plans/91438.json",
+        "--model",
+        "/home/ugrp/ugrp-sim/act16a/assets/act15/actor",
+        "--scene-source",
+        "/home/ugrp/ugrp-sim/src/6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+        "--actor-python",
+        "/home/ugrp/ugrp-act-cpu-env/bin/python",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91438-b4db8ba2/raw"
+      ]
+    },
+    "outcome_matches_original_summary": true,
+    "original_manifest_hash": {
+      "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91438-686cccb6/SHA256SUMS",
+      "sha256": "1fe21aa2e46f8069426014918c00b929219730e6915432a80e5fe36cc86ea38d"
+    }
+  },
+  {
+    "seed": 91439,
+    "status": "complete",
+    "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91439-b4db8ba2/raw",
+    "first_failed_gate": "alignment",
+    "funnel": {
+      "counts": {
+        "evaluation_frames": 240,
+        "approach": 162
+      },
+      "first_pass_sim_t": {
+        "approach": 9.100000000001467
+      },
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "cumulative_run_pass": {
+        "approach": 1,
+        "alignment": 0,
+        "grasp": 0,
+        "lift_confirmation": 0
+      }
+    },
+    "done_times": {
+      "grasp": 22.10000000001451
+    },
+    "termination": "student_done",
+    "cap_end": false,
+    "physical_success": false,
+    "stable_lift": false,
+    "input_audit": {
+      "forbidden_input_fields": 0,
+      "teacher_input_fields": 0,
+      "requests": 27,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "top": 0,
+      "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+    },
+    "shadow_input_audit": {
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "blocked_hidden": 134,
+      "blocked_held": 0,
+      "measurements_by_phase": {
+        "start": 1,
+        "fold": 6,
+        "approach": 71,
+        "align": 28
+      },
+      "scope": "decision input boundary only; evaluation excluded"
+    },
+    "teacher_actions_executed": 0,
+    "valid_expert_rows": 240,
+    "invalid_expert_rows": 0,
+    "wall_s": 131.51737741499994,
+    "sim_s": 23.900000000029294,
+    "policy_calls": 27,
+    "rejection": {
+      "category": "alignment_not_passed",
+      "blocking_object": "cargo_yellow_1_geom",
+      "minimum_gap_m": -0.0014541644403412463,
+      "minimum_gap_pair": "external contact pair",
+      "target_object": "yellow_1",
+      "target_finger_min_gap_m": -0.001454164440341249,
+      "scope": "evaluation-only observed gap/contact, not a proven collision cause",
+      "seed": 91439,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91439-b4db8ba2/raw",
+      "reproduce_argv": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+        "-m",
+        "scripts.analyze_grasp_act_act16a",
+        "student",
+        "--plan",
+        "/home/ugrp/ugrp-sim/src/b4db8ba2/experiments/2026-10-15-act-train/act14-plans/91439.json",
+        "--model",
+        "/home/ugrp/ugrp-sim/act16a/assets/act15/actor",
+        "--scene-source",
+        "/home/ugrp/ugrp-sim/src/6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+        "--actor-python",
+        "/home/ugrp/ugrp-act-cpu-env/bin/python",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91439-b4db8ba2/raw",
+        "--overview"
+      ]
+    },
+    "outcome_matches_original_summary": true,
+    "original_manifest_hash": {
+      "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91439-686cccb6/SHA256SUMS",
+      "sha256": "1d67f42be16e92a3b80efc22ade48c950f2ad69dd17fce55ebd8a6ab655589a3"
+    }
+  },
+  {
+    "seed": 91500,
+    "status": "complete",
+    "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91500-b4db8ba2/raw",
+    "first_failed_gate": "alignment",
+    "funnel": {
+      "counts": {
+        "evaluation_frames": 900,
+        "approach": 60
+      },
+      "first_pass_sim_t": {
+        "approach": 8.100000000003797
+      },
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "cumulative_run_pass": {
+        "approach": 1,
+        "alignment": 0,
+        "grasp": 0,
+        "lift_confirmation": 0
+      }
+    },
+    "done_times": {},
+    "termination": "cap_end",
+    "cap_end": true,
+    "physical_success": false,
+    "stable_lift": false,
+    "input_audit": {
+      "forbidden_input_fields": 0,
+      "teacher_input_fields": 0,
+      "requests": 113,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "top": 0,
+      "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+    },
+    "shadow_input_audit": {
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "blocked_hidden": 834,
+      "blocked_held": 0,
+      "measurements_by_phase": {
+        "start": 1,
+        "fold": 6,
+        "approach": 59
+      },
+      "scope": "decision input boundary only; evaluation excluded"
+    },
+    "teacher_actions_executed": 0,
+    "valid_expert_rows": 307,
+    "invalid_expert_rows": 593,
+    "wall_s": 371.4937819479999,
+    "sim_s": 89.999999999569,
+    "policy_calls": 113,
+    "rejection": {
+      "category": "alignment_not_passed",
+      "blocking_object": "cargo_cyan_1_geom",
+      "minimum_gap_m": -0.0008657787504193766,
+      "minimum_gap_pair": "external contact pair",
+      "target_object": "cyan_1",
+      "target_finger_min_gap_m": 0.09929196591711348,
+      "scope": "evaluation-only observed gap/contact, not a proven collision cause",
+      "seed": 91500,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91500-b4db8ba2/raw",
+      "reproduce_argv": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+        "-m",
+        "scripts.analyze_grasp_act_act16a",
+        "student",
+        "--plan",
+        "/home/ugrp/ugrp-sim/act16a/plans/91500.json",
+        "--model",
+        "/home/ugrp/ugrp-sim/act16a/assets/act15/actor",
+        "--scene-source",
+        "/home/ugrp/ugrp-sim/src/6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+        "--actor-python",
+        "/home/ugrp/ugrp-act-cpu-env/bin/python",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91500-b4db8ba2/raw"
+      ]
+    },
+    "outcome_matches_original_summary": true,
+    "original_manifest_hash": {
+      "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91500-686cccb6/SHA256SUMS",
+      "sha256": "762ea85990aaa12b399500946755e75404acf01146617c28fe77550f3ee6aa6a"
+    }
+  },
+  {
+    "seed": 91501,
+    "status": "complete",
+    "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91501-b4db8ba2/raw",
+    "first_failed_gate": "approach",
+    "funnel": {
+      "counts": {
+        "evaluation_frames": 615
+      },
+      "first_pass_sim_t": {},
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "cumulative_run_pass": {
+        "approach": 0,
+        "alignment": 0,
+        "grasp": 0,
+        "lift_confirmation": 0
+      }
+    },
+    "done_times": {
+      "grasp": 59.60000000019357
+    },
+    "termination": "student_done",
+    "cap_end": false,
+    "physical_success": false,
+    "stable_lift": false,
+    "input_audit": {
+      "forbidden_input_fields": 0,
+      "teacher_input_fields": 0,
+      "requests": 73,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "top": 0,
+      "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+    },
+    "shadow_input_audit": {
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "blocked_hidden": 562,
+      "blocked_held": 0,
+      "measurements_by_phase": {
+        "start": 1,
+        "fold": 6,
+        "approach": 46
+      },
+      "scope": "decision input boundary only; evaluation excluded"
+    },
+    "teacher_actions_executed": 0,
+    "valid_expert_rows": 294,
+    "invalid_expert_rows": 321,
+    "wall_s": 236.29566507799996,
+    "sim_s": 61.40000000020835,
+    "policy_calls": 73,
+    "rejection": {
+      "category": "approach_not_passed",
+      "blocking_object": "none_observed",
+      "minimum_gap_m": 0.3674654785292904,
+      "minimum_gap_pair": "target to nearest finger; no external contact",
+      "target_object": "red_1",
+      "target_finger_min_gap_m": 0.3674654785292904,
+      "scope": "evaluation-only observed gap/contact, not a proven collision cause",
+      "seed": 91501,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91501-b4db8ba2/raw",
+      "reproduce_argv": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+        "-m",
+        "scripts.analyze_grasp_act_act16a",
+        "student",
+        "--plan",
+        "/home/ugrp/ugrp-sim/act16a/plans/91501.json",
+        "--model",
+        "/home/ugrp/ugrp-sim/act16a/assets/act15/actor",
+        "--scene-source",
+        "/home/ugrp/ugrp-sim/src/6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+        "--actor-python",
+        "/home/ugrp/ugrp-act-cpu-env/bin/python",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91501-b4db8ba2/raw"
+      ]
+    },
+    "outcome_matches_original_summary": true,
+    "original_manifest_hash": {
+      "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91501-686cccb6/SHA256SUMS",
+      "sha256": "fcae62f21028b34211c4b2996251bf423d18c888cebc4b7ac14a24e52504f6d9"
+    }
+  },
+  {
+    "seed": 91502,
+    "status": "complete",
+    "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91502-b4db8ba2/raw",
+    "first_failed_gate": "alignment",
+    "funnel": {
+      "counts": {
+        "evaluation_frames": 583,
+        "approach": 498
+      },
+      "first_pass_sim_t": {
+        "approach": 9.799999999999836
+      },
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "cumulative_run_pass": {
+        "approach": 1,
+        "alignment": 0,
+        "grasp": 0,
+        "lift_confirmation": 0
+      }
+    },
+    "done_times": {
+      "grasp": 56.40000000017829
+    },
+    "termination": "student_done",
+    "cap_end": false,
+    "physical_success": false,
+    "stable_lift": false,
+    "input_audit": {
+      "forbidden_input_fields": 0,
+      "teacher_input_fields": 0,
+      "requests": 69,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "top": 0,
+      "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+    },
+    "shadow_input_audit": {
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "blocked_hidden": 492,
+      "blocked_held": 0,
+      "measurements_by_phase": {
+        "start": 1,
+        "fold": 6,
+        "approach": 58,
+        "align": 26
+      },
+      "scope": "decision input boundary only; evaluation excluded"
+    },
+    "teacher_actions_executed": 0,
+    "valid_expert_rows": 358,
+    "invalid_expert_rows": 225,
+    "wall_s": 236.37977273399997,
+    "sim_s": 58.20000000019307,
+    "policy_calls": 69,
+    "rejection": {
+      "category": "alignment_not_passed",
+      "blocking_object": "none_observed",
+      "minimum_gap_m": 0.037211581876983604,
+      "minimum_gap_pair": "target to nearest finger; no external contact",
+      "target_object": "green_1",
+      "target_finger_min_gap_m": 0.037211581876983604,
+      "scope": "evaluation-only observed gap/contact, not a proven collision cause",
+      "seed": 91502,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91502-b4db8ba2/raw",
+      "reproduce_argv": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+        "-m",
+        "scripts.analyze_grasp_act_act16a",
+        "student",
+        "--plan",
+        "/home/ugrp/ugrp-sim/act16a/plans/91502.json",
+        "--model",
+        "/home/ugrp/ugrp-sim/act16a/assets/act15/actor",
+        "--scene-source",
+        "/home/ugrp/ugrp-sim/src/6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+        "--actor-python",
+        "/home/ugrp/ugrp-act-cpu-env/bin/python",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91502-b4db8ba2/raw"
+      ]
+    },
+    "outcome_matches_original_summary": true,
+    "original_manifest_hash": {
+      "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91502-686cccb6/SHA256SUMS",
+      "sha256": "e193345cd35d26a2e8b75f8f8156af72cb7bcb6cabfc7daf6fa0c1d31236a9b6"
+    }
+  },
+  {
+    "seed": 91503,
+    "status": "complete",
+    "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91503-b4db8ba2/raw",
+    "first_failed_gate": "alignment",
+    "funnel": {
+      "counts": {
+        "evaluation_frames": 772,
+        "approach": 152
+      },
+      "first_pass_sim_t": {
+        "approach": 7.900000000003909
+      },
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "cumulative_run_pass": {
+        "approach": 1,
+        "alignment": 0,
+        "grasp": 0,
+        "lift_confirmation": 0
+      }
+    },
+    "done_times": {
+      "grasp": 75.29999999994736
+    },
+    "termination": "student_done",
+    "cap_end": false,
+    "physical_success": false,
+    "stable_lift": false,
+    "input_audit": {
+      "forbidden_input_fields": 0,
+      "teacher_input_fields": 0,
+      "requests": 93,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "top": 0,
+      "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+    },
+    "shadow_input_audit": {
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "blocked_hidden": 673,
+      "blocked_held": 0,
+      "measurements_by_phase": {
+        "start": 1,
+        "fold": 6,
+        "approach": 60,
+        "align": 32
+      },
+      "scope": "decision input boundary only; evaluation excluded"
+    },
+    "teacher_actions_executed": 0,
+    "valid_expert_rows": 340,
+    "invalid_expert_rows": 432,
+    "wall_s": 328.717809625,
+    "sim_s": 77.09999999987404,
+    "policy_calls": 93,
+    "rejection": {
+      "category": "alignment_not_passed",
+      "blocking_object": "cargo_yellow_1_geom",
+      "minimum_gap_m": -0.0013514686143483807,
+      "minimum_gap_pair": "external contact pair",
+      "target_object": "yellow_1",
+      "target_finger_min_gap_m": -3.124431347779523e-05,
+      "scope": "evaluation-only observed gap/contact, not a proven collision cause",
+      "seed": 91503,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91503-b4db8ba2/raw",
+      "reproduce_argv": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+        "-m",
+        "scripts.analyze_grasp_act_act16a",
+        "student",
+        "--plan",
+        "/home/ugrp/ugrp-sim/act16a/plans/91503.json",
+        "--model",
+        "/home/ugrp/ugrp-sim/act16a/assets/act15/actor",
+        "--scene-source",
+        "/home/ugrp/ugrp-sim/src/6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+        "--actor-python",
+        "/home/ugrp/ugrp-act-cpu-env/bin/python",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91503-b4db8ba2/raw"
+      ]
+    },
+    "outcome_matches_original_summary": true,
+    "original_manifest_hash": {
+      "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91503-686cccb6/SHA256SUMS",
+      "sha256": "549028b6269e6ddb94badc815db9207348fc0546a41143502108241a6874fb99"
+    }
+  },
+  {
+    "seed": 91504,
+    "status": "complete",
+    "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91504-b4db8ba2-retry1/raw",
+    "first_failed_gate": "alignment",
+    "funnel": {
+      "counts": {
+        "evaluation_frames": 900,
+        "approach": 4
+      },
+      "first_pass_sim_t": {
+        "approach": 24.10000000002406
+      },
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "cumulative_run_pass": {
+        "approach": 1,
+        "alignment": 0,
+        "grasp": 0,
+        "lift_confirmation": 0
+      }
+    },
+    "done_times": {},
+    "termination": "cap_end",
+    "cap_end": true,
+    "physical_success": false,
+    "stable_lift": false,
+    "input_audit": {
+      "forbidden_input_fields": 0,
+      "teacher_input_fields": 0,
+      "requests": 113,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "top": 0,
+      "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+    },
+    "shadow_input_audit": {
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "blocked_hidden": 827,
+      "blocked_held": 0,
+      "measurements_by_phase": {
+        "start": 1,
+        "fold": 6,
+        "approach": 66
+      },
+      "scope": "decision input boundary only; evaluation excluded"
+    },
+    "teacher_actions_executed": 0,
+    "valid_expert_rows": 314,
+    "invalid_expert_rows": 586,
+    "wall_s": 325.456066959,
+    "sim_s": 89.999999999569,
+    "policy_calls": 113,
+    "rejection": {
+      "category": "alignment_not_passed",
+      "blocking_object": "none_observed",
+      "minimum_gap_m": 0.20938840361207228,
+      "minimum_gap_pair": "target to nearest finger; no external contact",
+      "target_object": "cyan_2",
+      "target_finger_min_gap_m": 0.20938840361207228,
+      "scope": "evaluation-only observed gap/contact, not a proven collision cause",
+      "seed": 91504,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91504-b4db8ba2-retry1/raw",
+      "reproduce_argv": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+        "-m",
+        "scripts.analyze_grasp_act_act16a",
+        "student",
+        "--plan",
+        "/home/ugrp/ugrp-sim/act16a/plans/91504.json",
+        "--model",
+        "/home/ugrp/ugrp-sim/act16a/assets/act15/actor",
+        "--scene-source",
+        "/home/ugrp/ugrp-sim/src/6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+        "--actor-python",
+        "/home/ugrp/ugrp-act-cpu-env/bin/python",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91504-b4db8ba2-retry1/raw"
+      ]
+    },
+    "outcome_matches_original_summary": true,
+    "original_manifest_hash": {
+      "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91504-686cccb6/SHA256SUMS",
+      "sha256": "9b214d476e8d17be260d38a287c23842edfaf8750efe60db77bb50a84fc68fd7"
+    }
+  },
+  {
+    "seed": 91505,
+    "status": "complete",
+    "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91505-b4db8ba2/raw",
+    "first_failed_gate": "approach",
+    "funnel": {
+      "counts": {
+        "evaluation_frames": 351
+      },
+      "first_pass_sim_t": {},
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "cumulative_run_pass": {
+        "approach": 0,
+        "alignment": 0,
+        "grasp": 0,
+        "lift_confirmation": 0
+      }
+    },
+    "done_times": {
+      "grasp": 33.20000000006751
+    },
+    "termination": "student_done",
+    "cap_end": false,
+    "physical_success": false,
+    "stable_lift": false,
+    "input_audit": {
+      "forbidden_input_fields": 0,
+      "teacher_input_fields": 0,
+      "requests": 40,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "top": 0,
+      "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+    },
+    "shadow_input_audit": {
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "blocked_hidden": 90,
+      "blocked_held": 0,
+      "measurements_by_phase": {
+        "start": 1,
+        "fold": 6,
+        "approach": 254
+      },
+      "scope": "decision input boundary only; evaluation excluded"
+    },
+    "teacher_actions_executed": 0,
+    "valid_expert_rows": 351,
+    "invalid_expert_rows": 0,
+    "wall_s": 140.14905772100008,
+    "sim_s": 35.000000000082295,
+    "policy_calls": 40,
+    "rejection": {
+      "category": "approach_not_passed",
+      "blocking_object": "none_observed",
+      "minimum_gap_m": 0.7900004538602282,
+      "minimum_gap_pair": "target to nearest finger; no external contact",
+      "target_object": "red_1",
+      "target_finger_min_gap_m": 0.7900004538602282,
+      "scope": "evaluation-only observed gap/contact, not a proven collision cause",
+      "seed": 91505,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91505-b4db8ba2/raw",
+      "reproduce_argv": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+        "-m",
+        "scripts.analyze_grasp_act_act16a",
+        "student",
+        "--plan",
+        "/home/ugrp/ugrp-sim/act16a/plans/91505.json",
+        "--model",
+        "/home/ugrp/ugrp-sim/act16a/assets/act15/actor",
+        "--scene-source",
+        "/home/ugrp/ugrp-sim/src/6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+        "--actor-python",
+        "/home/ugrp/ugrp-act-cpu-env/bin/python",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91505-b4db8ba2/raw"
+      ]
+    },
+    "outcome_matches_original_summary": true,
+    "original_manifest_hash": {
+      "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91505-686cccb6/SHA256SUMS",
+      "sha256": "4db43cbaf648504d8e64fb43f1a7d4f6186e4c0233197cc0858eb41ce1f520e5"
+    }
+  },
+  {
+    "seed": 91506,
+    "status": "complete",
+    "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91506-b4db8ba2/raw",
+    "first_failed_gate": "approach",
+    "funnel": {
+      "counts": {
+        "evaluation_frames": 591
+      },
+      "first_pass_sim_t": {},
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "cumulative_run_pass": {
+        "approach": 0,
+        "alignment": 0,
+        "grasp": 0,
+        "lift_confirmation": 0
+      }
+    },
+    "done_times": {
+      "grasp": 57.20000000018211
+    },
+    "termination": "student_done",
+    "cap_end": false,
+    "physical_success": false,
+    "stable_lift": false,
+    "input_audit": {
+      "forbidden_input_fields": 0,
+      "teacher_input_fields": 0,
+      "requests": 70,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "top": 0,
+      "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+    },
+    "shadow_input_audit": {
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "blocked_hidden": 538,
+      "blocked_held": 0,
+      "measurements_by_phase": {
+        "start": 1,
+        "fold": 6,
+        "approach": 46
+      },
+      "scope": "decision input boundary only; evaluation excluded"
+    },
+    "teacher_actions_executed": 0,
+    "valid_expert_rows": 294,
+    "invalid_expert_rows": 297,
+    "wall_s": 233.10024919599994,
+    "sim_s": 59.00000000019689,
+    "policy_calls": 70,
+    "rejection": {
+      "category": "approach_not_passed",
+      "blocking_object": "none_observed",
+      "minimum_gap_m": 0.23320291852569258,
+      "minimum_gap_pair": "target to nearest finger; no external contact",
+      "target_object": "green_1",
+      "target_finger_min_gap_m": 0.23320291852569258,
+      "scope": "evaluation-only observed gap/contact, not a proven collision cause",
+      "seed": 91506,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91506-b4db8ba2/raw",
+      "reproduce_argv": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+        "-m",
+        "scripts.analyze_grasp_act_act16a",
+        "student",
+        "--plan",
+        "/home/ugrp/ugrp-sim/act16a/plans/91506.json",
+        "--model",
+        "/home/ugrp/ugrp-sim/act16a/assets/act15/actor",
+        "--scene-source",
+        "/home/ugrp/ugrp-sim/src/6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+        "--actor-python",
+        "/home/ugrp/ugrp-act-cpu-env/bin/python",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91506-b4db8ba2/raw"
+      ]
+    },
+    "outcome_matches_original_summary": true,
+    "original_manifest_hash": {
+      "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91506-686cccb6/SHA256SUMS",
+      "sha256": "205321e812271e4eb5f6fd3fe2bb294bba1fcbc57005380ba2193c8b1e4b0f23"
+    }
+  },
+  {
+    "seed": 91507,
+    "status": "complete",
+    "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91507-b4db8ba2-retry1/raw",
+    "first_failed_gate": "alignment",
+    "funnel": {
+      "counts": {
+        "evaluation_frames": 900,
+        "approach": 264
+      },
+      "first_pass_sim_t": {
+        "approach": 18.19999999999589
+      },
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "cumulative_run_pass": {
+        "approach": 1,
+        "alignment": 0,
+        "grasp": 0,
+        "lift_confirmation": 0
+      }
+    },
+    "done_times": {},
+    "termination": "cap_end",
+    "cap_end": true,
+    "physical_success": false,
+    "stable_lift": false,
+    "input_audit": {
+      "forbidden_input_fields": 0,
+      "teacher_input_fields": 0,
+      "requests": 113,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "top": 0,
+      "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+    },
+    "shadow_input_audit": {
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "blocked_hidden": 761,
+      "blocked_held": 0,
+      "measurements_by_phase": {
+        "start": 1,
+        "fold": 6,
+        "approach": 101,
+        "align": 24,
+        "relook": 7
+      },
+      "scope": "decision input boundary only; evaluation excluded"
+    },
+    "teacher_actions_executed": 0,
+    "valid_expert_rows": 482,
+    "invalid_expert_rows": 418,
+    "wall_s": 359.29731928,
+    "sim_s": 89.999999999569,
+    "policy_calls": 113,
+    "rejection": {
+      "category": "alignment_not_passed",
+      "blocking_object": "cargo_yellow_2_geom",
+      "minimum_gap_m": -7.799523622786678e-05,
+      "minimum_gap_pair": "external contact pair",
+      "target_object": "yellow_2",
+      "target_finger_min_gap_m": -7.799523622775879e-05,
+      "scope": "evaluation-only observed gap/contact, not a proven collision cause",
+      "seed": 91507,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91507-b4db8ba2-retry1/raw",
+      "reproduce_argv": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+        "-m",
+        "scripts.analyze_grasp_act_act16a",
+        "student",
+        "--plan",
+        "/home/ugrp/ugrp-sim/act16a/plans/91507.json",
+        "--model",
+        "/home/ugrp/ugrp-sim/act16a/assets/act15/actor",
+        "--scene-source",
+        "/home/ugrp/ugrp-sim/src/6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+        "--actor-python",
+        "/home/ugrp/ugrp-act-cpu-env/bin/python",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91507-b4db8ba2-retry1/raw"
+      ]
+    },
+    "outcome_matches_original_summary": true,
+    "original_manifest_hash": {
+      "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91507-686cccb6/SHA256SUMS",
+      "sha256": "0bd7df2b906d9eea0d4866c0ed45f23a09e1e45fd89b8713983781cdf0bff227"
+    }
+  },
+  {
+    "seed": 91508,
+    "status": "complete",
+    "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91508-b4db8ba2-retry1/raw",
+    "first_failed_gate": "alignment",
+    "funnel": {
+      "counts": {
+        "evaluation_frames": 671,
+        "approach": 7
+      },
+      "first_pass_sim_t": {
+        "approach": 8.200000000003564
+      },
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "cumulative_run_pass": {
+        "approach": 1,
+        "alignment": 0,
+        "grasp": 0,
+        "lift_confirmation": 0
+      }
+    },
+    "done_times": {
+      "grasp": 65.2000000001862
+    },
+    "termination": "student_done",
+    "cap_end": false,
+    "physical_success": false,
+    "stable_lift": false,
+    "input_audit": {
+      "forbidden_input_fields": 0,
+      "teacher_input_fields": 0,
+      "requests": 80,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "top": 0,
+      "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+    },
+    "shadow_input_audit": {
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "blocked_hidden": 611,
+      "blocked_held": 0,
+      "measurements_by_phase": {
+        "start": 1,
+        "fold": 6,
+        "approach": 53
+      },
+      "scope": "decision input boundary only; evaluation excluded"
+    },
+    "teacher_actions_executed": 0,
+    "valid_expert_rows": 301,
+    "invalid_expert_rows": 370,
+    "wall_s": 245.494034596,
+    "sim_s": 67.00000000011288,
+    "policy_calls": 80,
+    "rejection": {
+      "category": "alignment_not_passed",
+      "blocking_object": "none_observed",
+      "minimum_gap_m": 0.13494822785075306,
+      "minimum_gap_pair": "target to nearest finger; no external contact",
+      "target_object": "cyan_1",
+      "target_finger_min_gap_m": 0.13494822785075306,
+      "scope": "evaluation-only observed gap/contact, not a proven collision cause",
+      "seed": 91508,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91508-b4db8ba2-retry1/raw",
+      "reproduce_argv": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+        "-m",
+        "scripts.analyze_grasp_act_act16a",
+        "student",
+        "--plan",
+        "/home/ugrp/ugrp-sim/act16a/plans/91508.json",
+        "--model",
+        "/home/ugrp/ugrp-sim/act16a/assets/act15/actor",
+        "--scene-source",
+        "/home/ugrp/ugrp-sim/src/6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+        "--actor-python",
+        "/home/ugrp/ugrp-act-cpu-env/bin/python",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91508-b4db8ba2-retry1/raw"
+      ]
+    },
+    "outcome_matches_original_summary": true,
+    "original_manifest_hash": {
+      "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91508-686cccb6/SHA256SUMS",
+      "sha256": "92ccfb6d6c4c6d968308cdc94824c10fe1c4e61a098c06819c7f73f94e59ac2e"
+    }
+  },
+  {
+    "seed": 91509,
+    "status": "complete",
+    "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91509-b4db8ba2-retry1/raw",
+    "first_failed_gate": "approach",
+    "funnel": {
+      "counts": {
+        "evaluation_frames": 900
+      },
+      "first_pass_sim_t": {},
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "cumulative_run_pass": {
+        "approach": 0,
+        "alignment": 0,
+        "grasp": 0,
+        "lift_confirmation": 0
+      }
+    },
+    "done_times": {},
+    "termination": "cap_end",
+    "cap_end": true,
+    "physical_success": false,
+    "stable_lift": false,
+    "input_audit": {
+      "forbidden_input_fields": 0,
+      "teacher_input_fields": 0,
+      "requests": 113,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "top": 0,
+      "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+    },
+    "shadow_input_audit": {
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "blocked_hidden": 768,
+      "blocked_held": 0,
+      "measurements_by_phase": {
+        "start": 1,
+        "fold": 6,
+        "approach": 125
+      },
+      "scope": "decision input boundary only; evaluation excluded"
+    },
+    "teacher_actions_executed": 0,
+    "valid_expert_rows": 458,
+    "invalid_expert_rows": 442,
+    "wall_s": 311.794481895,
+    "sim_s": 89.999999999569,
+    "policy_calls": 113,
+    "rejection": {
+      "category": "approach_not_passed",
+      "blocking_object": "none_observed",
+      "minimum_gap_m": 0.4987928184530964,
+      "minimum_gap_pair": "target to nearest finger; no external contact",
+      "target_object": "red_2",
+      "target_finger_min_gap_m": 0.4987928184530964,
+      "scope": "evaluation-only observed gap/contact, not a proven collision cause",
+      "seed": 91509,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91509-b4db8ba2-retry1/raw",
+      "reproduce_argv": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+        "-m",
+        "scripts.analyze_grasp_act_act16a",
+        "student",
+        "--plan",
+        "/home/ugrp/ugrp-sim/act16a/plans/91509.json",
+        "--model",
+        "/home/ugrp/ugrp-sim/act16a/assets/act15/actor",
+        "--scene-source",
+        "/home/ugrp/ugrp-sim/src/6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+        "--actor-python",
+        "/home/ugrp/ugrp-act-cpu-env/bin/python",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91509-b4db8ba2-retry1/raw"
+      ]
+    },
+    "outcome_matches_original_summary": true,
+    "original_manifest_hash": {
+      "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91509-686cccb6/SHA256SUMS",
+      "sha256": "73b6699cb37e4dbb74c9575cf9c34d3ded8f3adaa4ca9a0c564ced8b15d15fae"
+    }
+  },
+  {
+    "seed": 91510,
+    "status": "complete",
+    "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91510-b4db8ba2-retry1/raw",
+    "first_failed_gate": "alignment",
+    "funnel": {
+      "counts": {
+        "evaluation_frames": 900,
+        "approach": 808
+      },
+      "first_pass_sim_t": {
+        "approach": 10.499999999998204
+      },
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "cumulative_run_pass": {
+        "approach": 1,
+        "alignment": 0,
+        "grasp": 0,
+        "lift_confirmation": 0
+      }
+    },
+    "done_times": {},
+    "termination": "cap_end",
+    "cap_end": true,
+    "physical_success": false,
+    "stable_lift": false,
+    "input_audit": {
+      "forbidden_input_fields": 0,
+      "teacher_input_fields": 0,
+      "requests": 113,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "top": 0,
+      "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+    },
+    "shadow_input_audit": {
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "blocked_hidden": 783,
+      "blocked_held": 0,
+      "measurements_by_phase": {
+        "start": 1,
+        "fold": 6,
+        "approach": 86,
+        "align": 24
+      },
+      "scope": "decision input boundary only; evaluation excluded"
+    },
+    "teacher_actions_executed": 0,
+    "valid_expert_rows": 358,
+    "invalid_expert_rows": 542,
+    "wall_s": 319.9640793,
+    "sim_s": 89.999999999569,
+    "policy_calls": 113,
+    "rejection": {
+      "category": "alignment_not_passed",
+      "blocking_object": "cargo_green_1_geom",
+      "minimum_gap_m": -0.0015001538802186464,
+      "minimum_gap_pair": "external contact pair",
+      "target_object": "green_1",
+      "target_finger_min_gap_m": -0.0015001538802186288,
+      "scope": "evaluation-only observed gap/contact, not a proven collision cause",
+      "seed": 91510,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91510-b4db8ba2-retry1/raw",
+      "reproduce_argv": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+        "-m",
+        "scripts.analyze_grasp_act_act16a",
+        "student",
+        "--plan",
+        "/home/ugrp/ugrp-sim/act16a/plans/91510.json",
+        "--model",
+        "/home/ugrp/ugrp-sim/act16a/assets/act15/actor",
+        "--scene-source",
+        "/home/ugrp/ugrp-sim/src/6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+        "--actor-python",
+        "/home/ugrp/ugrp-act-cpu-env/bin/python",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91510-b4db8ba2-retry1/raw"
+      ]
+    },
+    "outcome_matches_original_summary": true,
+    "original_manifest_hash": {
+      "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91510-686cccb6/SHA256SUMS",
+      "sha256": "f8aa3f46485ca69f8ed4cf605f4d5880b43f9f2490bc0fd0f2f02ba0e11b3f66"
+    }
+  },
+  {
+    "seed": 91511,
+    "status": "complete",
+    "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91511-b4db8ba2/raw",
+    "first_failed_gate": "alignment",
+    "funnel": {
+      "counts": {
+        "evaluation_frames": 200,
+        "approach": 124
+      },
+      "first_pass_sim_t": {
+        "approach": 8.900000000001933
+      },
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "cumulative_run_pass": {
+        "approach": 1,
+        "alignment": 0,
+        "grasp": 0,
+        "lift_confirmation": 0
+      }
+    },
+    "done_times": {
+      "grasp": 18.09999999999541
+    },
+    "termination": "student_done",
+    "cap_end": false,
+    "physical_success": false,
+    "stable_lift": false,
+    "input_audit": {
+      "forbidden_input_fields": 0,
+      "teacher_input_fields": 0,
+      "requests": 22,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "top": 0,
+      "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+    },
+    "shadow_input_audit": {
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "blocked_hidden": 127,
+      "blocked_held": 0,
+      "measurements_by_phase": {
+        "start": 1,
+        "fold": 6,
+        "approach": 66
+      },
+      "scope": "decision input boundary only; evaluation excluded"
+    },
+    "teacher_actions_executed": 0,
+    "valid_expert_rows": 200,
+    "invalid_expert_rows": 0,
+    "wall_s": 93.04020822999996,
+    "sim_s": 19.900000000010195,
+    "policy_calls": 22,
+    "rejection": {
+      "category": "alignment_not_passed",
+      "blocking_object": "none_observed",
+      "minimum_gap_m": 0.01107970572053976,
+      "minimum_gap_pair": "target to nearest finger; no external contact",
+      "target_object": "yellow_1",
+      "target_finger_min_gap_m": 0.01107970572053976,
+      "scope": "evaluation-only observed gap/contact, not a proven collision cause",
+      "seed": 91511,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91511-b4db8ba2/raw",
+      "reproduce_argv": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+        "-m",
+        "scripts.analyze_grasp_act_act16a",
+        "student",
+        "--plan",
+        "/home/ugrp/ugrp-sim/act16a/plans/91511.json",
+        "--model",
+        "/home/ugrp/ugrp-sim/act16a/assets/act15/actor",
+        "--scene-source",
+        "/home/ugrp/ugrp-sim/src/6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+        "--actor-python",
+        "/home/ugrp/ugrp-act-cpu-env/bin/python",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91511-b4db8ba2/raw"
+      ]
+    },
+    "outcome_matches_original_summary": true,
+    "original_manifest_hash": {
+      "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91511-686cccb6/SHA256SUMS",
+      "sha256": "04072415daae2d1ef2f80cd92127caa38dfb90a9fc5a67ecabbbd134a8ecd27d"
+    }
+  },
+  {
+    "seed": 91512,
+    "status": "complete",
+    "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91512-b4db8ba2-retry1/raw",
+    "first_failed_gate": "approach",
+    "funnel": {
+      "counts": {
+        "evaluation_frames": 711
+      },
+      "first_pass_sim_t": {},
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "cumulative_run_pass": {
+        "approach": 0,
+        "alignment": 0,
+        "grasp": 0,
+        "lift_confirmation": 0
+      }
+    },
+    "done_times": {
+      "grasp": 69.2000000000916
+    },
+    "termination": "student_done",
+    "cap_end": false,
+    "physical_success": false,
+    "stable_lift": false,
+    "input_audit": {
+      "forbidden_input_fields": 0,
+      "teacher_input_fields": 0,
+      "requests": 85,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "top": 0,
+      "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+    },
+    "shadow_input_audit": {
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "blocked_hidden": 683,
+      "blocked_held": 0,
+      "measurements_by_phase": {
+        "start": 1,
+        "fold": 6,
+        "approach": 21
+      },
+      "scope": "decision input boundary only; evaluation excluded"
+    },
+    "teacher_actions_executed": 0,
+    "valid_expert_rows": 269,
+    "invalid_expert_rows": 442,
+    "wall_s": 250.632224864,
+    "sim_s": 71.00000000001829,
+    "policy_calls": 85,
+    "rejection": {
+      "category": "approach_not_passed",
+      "blocking_object": "none_observed",
+      "minimum_gap_m": 0.7518268884227666,
+      "minimum_gap_pair": "target to nearest finger; no external contact",
+      "target_object": "cyan_1",
+      "target_finger_min_gap_m": 0.7518268884227666,
+      "scope": "evaluation-only observed gap/contact, not a proven collision cause",
+      "seed": 91512,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91512-b4db8ba2-retry1/raw",
+      "reproduce_argv": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+        "-m",
+        "scripts.analyze_grasp_act_act16a",
+        "student",
+        "--plan",
+        "/home/ugrp/ugrp-sim/act16a/plans/91512.json",
+        "--model",
+        "/home/ugrp/ugrp-sim/act16a/assets/act15/actor",
+        "--scene-source",
+        "/home/ugrp/ugrp-sim/src/6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+        "--actor-python",
+        "/home/ugrp/ugrp-act-cpu-env/bin/python",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91512-b4db8ba2-retry1/raw"
+      ]
+    },
+    "outcome_matches_original_summary": true,
+    "original_manifest_hash": {
+      "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91512-686cccb6/SHA256SUMS",
+      "sha256": "a56518cc6c975c98f08ab43856398bdffdb1af7fc58b2014d3eca4e4f7ee4b79"
+    }
+  },
+  {
+    "seed": 91513,
+    "status": "complete",
+    "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91513-b4db8ba2/raw",
+    "first_failed_gate": "grasp",
+    "funnel": {
+      "counts": {
+        "evaluation_frames": 213,
+        "approach": 109,
+        "alignment": 24
+      },
+      "first_pass_sim_t": {
+        "approach": 8.500000000002865,
+        "alignment": 15.499999999986551
+      },
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "cumulative_run_pass": {
+        "approach": 1,
+        "alignment": 1,
+        "grasp": 0,
+        "lift_confirmation": 0
+      }
+    },
+    "done_times": {
+      "grasp": 19.40000000000162
+    },
+    "termination": "student_done",
+    "cap_end": false,
+    "physical_success": false,
+    "stable_lift": false,
+    "input_audit": {
+      "forbidden_input_fields": 0,
+      "teacher_input_fields": 0,
+      "requests": 23,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "top": 0,
+      "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+    },
+    "shadow_input_audit": {
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "blocked_hidden": 113,
+      "blocked_held": 0,
+      "measurements_by_phase": {
+        "start": 1,
+        "fold": 6,
+        "approach": 66,
+        "align": 27
+      },
+      "scope": "decision input boundary only; evaluation excluded"
+    },
+    "teacher_actions_executed": 0,
+    "valid_expert_rows": 213,
+    "invalid_expert_rows": 0,
+    "wall_s": 89.89719544500008,
+    "sim_s": 21.200000000016402,
+    "policy_calls": 23,
+    "rejection": {
+      "category": "grasp_not_passed",
+      "blocking_object": "cargo_red_1_geom",
+      "minimum_gap_m": -0.0013758317103191244,
+      "minimum_gap_pair": "external contact pair",
+      "target_object": "red_1",
+      "target_finger_min_gap_m": -0.0013758317103190804,
+      "scope": "evaluation-only observed gap/contact, not a proven collision cause",
+      "seed": 91513,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91513-b4db8ba2/raw",
+      "reproduce_argv": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+        "-m",
+        "scripts.analyze_grasp_act_act16a",
+        "student",
+        "--plan",
+        "/home/ugrp/ugrp-sim/act16a/plans/91513.json",
+        "--model",
+        "/home/ugrp/ugrp-sim/act16a/assets/act15/actor",
+        "--scene-source",
+        "/home/ugrp/ugrp-sim/src/6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+        "--actor-python",
+        "/home/ugrp/ugrp-act-cpu-env/bin/python",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91513-b4db8ba2/raw"
+      ]
+    },
+    "outcome_matches_original_summary": true,
+    "original_manifest_hash": {
+      "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91513-686cccb6/SHA256SUMS",
+      "sha256": "3ae971fffb76e572b93ac6bc6a58b8c960cdd5d89bd93a7236820a1568552ff6"
+    }
+  },
+  {
+    "seed": 91514,
+    "status": "complete",
+    "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91514-b4db8ba2/raw",
+    "first_failed_gate": "approach",
+    "funnel": {
+      "counts": {
+        "evaluation_frames": 303
+      },
+      "first_pass_sim_t": {},
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "cumulative_run_pass": {
+        "approach": 0,
+        "alignment": 0,
+        "grasp": 0,
+        "lift_confirmation": 0
+      }
+    },
+    "done_times": {
+      "grasp": 28.400000000044592
+    },
+    "termination": "student_done",
+    "cap_end": false,
+    "physical_success": false,
+    "stable_lift": false,
+    "input_audit": {
+      "forbidden_input_fields": 0,
+      "teacher_input_fields": 0,
+      "requests": 34,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "top": 0,
+      "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+    },
+    "shadow_input_audit": {
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "blocked_hidden": 252,
+      "blocked_held": 0,
+      "measurements_by_phase": {
+        "start": 1,
+        "fold": 6,
+        "approach": 44
+      },
+      "scope": "decision input boundary only; evaluation excluded"
+    },
+    "teacher_actions_executed": 0,
+    "valid_expert_rows": 293,
+    "invalid_expert_rows": 10,
+    "wall_s": 120.15533390099995,
+    "sim_s": 30.200000000059376,
+    "policy_calls": 34,
+    "rejection": {
+      "category": "approach_not_passed",
+      "blocking_object": "none_observed",
+      "minimum_gap_m": 0.23539010431940194,
+      "minimum_gap_pair": "target to nearest finger; no external contact",
+      "target_object": "green_1",
+      "target_finger_min_gap_m": 0.23539010431940194,
+      "scope": "evaluation-only observed gap/contact, not a proven collision cause",
+      "seed": 91514,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91514-b4db8ba2/raw",
+      "reproduce_argv": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+        "-m",
+        "scripts.analyze_grasp_act_act16a",
+        "student",
+        "--plan",
+        "/home/ugrp/ugrp-sim/act16a/plans/91514.json",
+        "--model",
+        "/home/ugrp/ugrp-sim/act16a/assets/act15/actor",
+        "--scene-source",
+        "/home/ugrp/ugrp-sim/src/6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+        "--actor-python",
+        "/home/ugrp/ugrp-act-cpu-env/bin/python",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91514-b4db8ba2/raw"
+      ]
+    },
+    "outcome_matches_original_summary": true,
+    "original_manifest_hash": {
+      "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91514-686cccb6/SHA256SUMS",
+      "sha256": "6c8f4da595289833d4d179bc921e3c9a5d6e1874fb7c32a733372c1c1cd66e55"
+    }
+  },
+  {
+    "seed": 91515,
+    "status": "complete",
+    "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91515-b4db8ba2-retry1/raw",
+    "first_failed_gate": "alignment",
+    "funnel": {
+      "counts": {
+        "evaluation_frames": 615,
+        "approach": 227
+      },
+      "first_pass_sim_t": {
+        "approach": 10.899999999997272
+      },
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "cumulative_run_pass": {
+        "approach": 1,
+        "alignment": 0,
+        "grasp": 0,
+        "lift_confirmation": 0
+      }
+    },
+    "done_times": {
+      "grasp": 59.60000000019357
+    },
+    "termination": "student_done",
+    "cap_end": false,
+    "physical_success": false,
+    "stable_lift": false,
+    "input_audit": {
+      "forbidden_input_fields": 0,
+      "teacher_input_fields": 0,
+      "requests": 73,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "top": 0,
+      "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+    },
+    "shadow_input_audit": {
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "blocked_hidden": 492,
+      "blocked_held": 0,
+      "measurements_by_phase": {
+        "start": 1,
+        "fold": 6,
+        "approach": 90,
+        "align": 26
+      },
+      "scope": "decision input boundary only; evaluation excluded"
+    },
+    "teacher_actions_executed": 0,
+    "valid_expert_rows": 364,
+    "invalid_expert_rows": 251,
+    "wall_s": 250.40006076100002,
+    "sim_s": 61.40000000020835,
+    "policy_calls": 73,
+    "rejection": {
+      "category": "alignment_not_passed",
+      "blocking_object": "cargo_yellow_2_geom",
+      "minimum_gap_m": -0.0002831348062935457,
+      "minimum_gap_pair": "external contact pair",
+      "target_object": "yellow_2",
+      "target_finger_min_gap_m": -0.0002831348062934876,
+      "scope": "evaluation-only observed gap/contact, not a proven collision cause",
+      "seed": 91515,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91515-b4db8ba2-retry1/raw",
+      "reproduce_argv": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+        "-m",
+        "scripts.analyze_grasp_act_act16a",
+        "student",
+        "--plan",
+        "/home/ugrp/ugrp-sim/act16a/plans/91515.json",
+        "--model",
+        "/home/ugrp/ugrp-sim/act16a/assets/act15/actor",
+        "--scene-source",
+        "/home/ugrp/ugrp-sim/src/6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+        "--actor-python",
+        "/home/ugrp/ugrp-act-cpu-env/bin/python",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91515-b4db8ba2-retry1/raw"
+      ]
+    },
+    "outcome_matches_original_summary": true,
+    "original_manifest_hash": {
+      "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91515-686cccb6/SHA256SUMS",
+      "sha256": "426d3c3ac329187105391428b349f8a643a43efe534e350877389a1cd6d3986b"
+    }
+  },
+  {
+    "seed": 91516,
+    "status": "complete",
+    "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91516-b4db8ba2-retry1/raw",
+    "first_failed_gate": "approach",
+    "funnel": {
+      "counts": {
+        "evaluation_frames": 871
+      },
+      "first_pass_sim_t": {},
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "cumulative_run_pass": {
+        "approach": 0,
+        "alignment": 0,
+        "grasp": 0,
+        "lift_confirmation": 0
+      }
+    },
+    "done_times": {
+      "grasp": 85.19999999971326
+    },
+    "termination": "student_done",
+    "cap_end": false,
+    "physical_success": false,
+    "stable_lift": false,
+    "input_audit": {
+      "forbidden_input_fields": 0,
+      "teacher_input_fields": 0,
+      "requests": 105,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "top": 0,
+      "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+    },
+    "shadow_input_audit": {
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "blocked_hidden": 861,
+      "blocked_held": 0,
+      "measurements_by_phase": {
+        "start": 1,
+        "fold": 6,
+        "approach": 3
+      },
+      "scope": "decision input boundary only; evaluation excluded"
+    },
+    "teacher_actions_executed": 0,
+    "valid_expert_rows": 251,
+    "invalid_expert_rows": 620,
+    "wall_s": 299.70787293499995,
+    "sim_s": 86.99999999963994,
+    "policy_calls": 105,
+    "rejection": {
+      "category": "approach_not_passed",
+      "blocking_object": "none_observed",
+      "minimum_gap_m": 0.8383440197700283,
+      "minimum_gap_pair": "target to nearest finger; no external contact",
+      "target_object": "cyan_1",
+      "target_finger_min_gap_m": 0.8383440197700283,
+      "scope": "evaluation-only observed gap/contact, not a proven collision cause",
+      "seed": 91516,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91516-b4db8ba2-retry1/raw",
+      "reproduce_argv": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+        "-m",
+        "scripts.analyze_grasp_act_act16a",
+        "student",
+        "--plan",
+        "/home/ugrp/ugrp-sim/act16a/plans/91516.json",
+        "--model",
+        "/home/ugrp/ugrp-sim/act16a/assets/act15/actor",
+        "--scene-source",
+        "/home/ugrp/ugrp-sim/src/6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+        "--actor-python",
+        "/home/ugrp/ugrp-act-cpu-env/bin/python",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91516-b4db8ba2-retry1/raw"
+      ]
+    },
+    "outcome_matches_original_summary": true,
+    "original_manifest_hash": {
+      "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91516-686cccb6/SHA256SUMS",
+      "sha256": "d9eea11b5e3550a85b6b5d20e205e52b1823beb4bc6fb11ca329d9f401957c68"
+    }
+  },
+  {
+    "seed": 91517,
+    "status": "complete",
+    "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91517-b4db8ba2-retry1/raw",
+    "first_failed_gate": "alignment",
+    "funnel": {
+      "counts": {
+        "evaluation_frames": 900,
+        "approach": 731
+      },
+      "first_pass_sim_t": {
+        "approach": 7.700000000003665
+      },
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "cumulative_run_pass": {
+        "approach": 1,
+        "alignment": 0,
+        "grasp": 0,
+        "lift_confirmation": 0
+      }
+    },
+    "done_times": {},
+    "termination": "cap_end",
+    "cap_end": true,
+    "physical_success": false,
+    "stable_lift": false,
+    "input_audit": {
+      "forbidden_input_fields": 0,
+      "teacher_input_fields": 0,
+      "requests": 113,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "top": 0,
+      "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+    },
+    "shadow_input_audit": {
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "blocked_hidden": 836,
+      "blocked_held": 0,
+      "measurements_by_phase": {
+        "start": 1,
+        "fold": 6,
+        "approach": 57
+      },
+      "scope": "decision input boundary only; evaluation excluded"
+    },
+    "teacher_actions_executed": 0,
+    "valid_expert_rows": 307,
+    "invalid_expert_rows": 593,
+    "wall_s": 386.99074584000005,
+    "sim_s": 89.999999999569,
+    "policy_calls": 113,
+    "rejection": {
+      "category": "alignment_not_passed",
+      "blocking_object": "cargo_red_2_geom",
+      "minimum_gap_m": -0.0007515541758814717,
+      "minimum_gap_pair": "external contact pair",
+      "target_object": "red_2",
+      "target_finger_min_gap_m": 0.12240240332519113,
+      "scope": "evaluation-only observed gap/contact, not a proven collision cause",
+      "seed": 91517,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91517-b4db8ba2-retry1/raw",
+      "reproduce_argv": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+        "-m",
+        "scripts.analyze_grasp_act_act16a",
+        "student",
+        "--plan",
+        "/home/ugrp/ugrp-sim/act16a/plans/91517.json",
+        "--model",
+        "/home/ugrp/ugrp-sim/act16a/assets/act15/actor",
+        "--scene-source",
+        "/home/ugrp/ugrp-sim/src/6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+        "--actor-python",
+        "/home/ugrp/ugrp-act-cpu-env/bin/python",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91517-b4db8ba2-retry1/raw"
+      ]
+    },
+    "outcome_matches_original_summary": true,
+    "original_manifest_hash": {
+      "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91517-686cccb6/SHA256SUMS",
+      "sha256": "0250080d3956587dc30a4d015c0cadafab78fa07d7172c1833737f33db21ee27"
+    }
+  },
+  {
+    "seed": 91518,
+    "status": "complete",
+    "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91518-b4db8ba2-retry1/raw",
+    "first_failed_gate": "approach",
+    "funnel": {
+      "counts": {
+        "evaluation_frames": 239
+      },
+      "first_pass_sim_t": {},
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "cumulative_run_pass": {
+        "approach": 0,
+        "alignment": 0,
+        "grasp": 0,
+        "lift_confirmation": 0
+      }
+    },
+    "done_times": {
+      "grasp": 22.000000000014033
+    },
+    "termination": "student_done",
+    "cap_end": false,
+    "physical_success": false,
+    "stable_lift": false,
+    "input_audit": {
+      "forbidden_input_fields": 0,
+      "teacher_input_fields": 0,
+      "requests": 26,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "top": 0,
+      "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+    },
+    "shadow_input_audit": {
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "blocked_hidden": 177,
+      "blocked_held": 0,
+      "measurements_by_phase": {
+        "start": 1,
+        "fold": 6,
+        "approach": 55
+      },
+      "scope": "decision input boundary only; evaluation excluded"
+    },
+    "teacher_actions_executed": 0,
+    "valid_expert_rows": 239,
+    "invalid_expert_rows": 0,
+    "wall_s": 106.84700660899999,
+    "sim_s": 23.800000000028817,
+    "policy_calls": 26,
+    "rejection": {
+      "category": "approach_not_passed",
+      "blocking_object": "none_observed",
+      "minimum_gap_m": 0.29798693198188103,
+      "minimum_gap_pair": "target to nearest finger; no external contact",
+      "target_object": "green_1",
+      "target_finger_min_gap_m": 0.29798693198188103,
+      "scope": "evaluation-only observed gap/contact, not a proven collision cause",
+      "seed": 91518,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91518-b4db8ba2-retry1/raw",
+      "reproduce_argv": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+        "-m",
+        "scripts.analyze_grasp_act_act16a",
+        "student",
+        "--plan",
+        "/home/ugrp/ugrp-sim/act16a/plans/91518.json",
+        "--model",
+        "/home/ugrp/ugrp-sim/act16a/assets/act15/actor",
+        "--scene-source",
+        "/home/ugrp/ugrp-sim/src/6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+        "--actor-python",
+        "/home/ugrp/ugrp-act-cpu-env/bin/python",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91518-b4db8ba2-retry1/raw"
+      ]
+    },
+    "outcome_matches_original_summary": true,
+    "original_manifest_hash": {
+      "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91518-686cccb6/SHA256SUMS",
+      "sha256": "be3036552258c9af694696f5d4dc45a238c2680ec14ca5a1dac5f543ac0e89ce"
+    }
+  },
+  {
+    "seed": 91519,
+    "status": "complete",
+    "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91519-b4db8ba2-retry1/raw",
+    "first_failed_gate": "alignment",
+    "funnel": {
+      "counts": {
+        "evaluation_frames": 900,
+        "approach": 585
+      },
+      "first_pass_sim_t": {
+        "approach": 22.50000000001642
+      },
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "cumulative_run_pass": {
+        "approach": 1,
+        "alignment": 0,
+        "grasp": 0,
+        "lift_confirmation": 0
+      }
+    },
+    "done_times": {},
+    "termination": "cap_end",
+    "cap_end": true,
+    "physical_success": false,
+    "stable_lift": false,
+    "input_audit": {
+      "forbidden_input_fields": 0,
+      "teacher_input_fields": 0,
+      "requests": 113,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "top": 0,
+      "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+    },
+    "shadow_input_audit": {
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "blocked_hidden": 803,
+      "blocked_held": 0,
+      "measurements_by_phase": {
+        "approach": 97
+      },
+      "scope": "decision input boundary only; evaluation excluded"
+    },
+    "teacher_actions_executed": 0,
+    "valid_expert_rows": 349,
+    "invalid_expert_rows": 551,
+    "wall_s": 382.23212361,
+    "sim_s": 89.999999999569,
+    "policy_calls": 113,
+    "rejection": {
+      "category": "alignment_not_passed",
+      "blocking_object": "cargo_yellow_2_geom",
+      "minimum_gap_m": -0.0007620707325104518,
+      "minimum_gap_pair": "external contact pair",
+      "target_object": "yellow_2",
+      "target_finger_min_gap_m": 0.02795240266401989,
+      "scope": "evaluation-only observed gap/contact, not a proven collision cause",
+      "seed": 91519,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91519-b4db8ba2-retry1/raw",
+      "reproduce_argv": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+        "-m",
+        "scripts.analyze_grasp_act_act16a",
+        "student",
+        "--plan",
+        "/home/ugrp/ugrp-sim/act16a/plans/91519.json",
+        "--model",
+        "/home/ugrp/ugrp-sim/act16a/assets/act15/actor",
+        "--scene-source",
+        "/home/ugrp/ugrp-sim/src/6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+        "--actor-python",
+        "/home/ugrp/ugrp-act-cpu-env/bin/python",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91519-b4db8ba2-retry1/raw"
+      ]
+    },
+    "outcome_matches_original_summary": true,
+    "original_manifest_hash": {
+      "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91519-686cccb6/SHA256SUMS",
+      "sha256": "db9cc57398d9a26002eef3b1b73e74961a7eb1726b3d9a0fbc060a2730724845"
+    }
+  }
+]

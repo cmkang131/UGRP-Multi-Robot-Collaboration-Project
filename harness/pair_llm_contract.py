@@ -66,7 +66,7 @@ def read_registry(*, root=ROOT) -> dict:
             or value.get('workflow_id') != WORKFLOW_ID or value.get('workflow_version') != WORKFLOW_VERSION
             or value.get('status') != 'DRAFT_UNSEALED' or value.get('research_result') is not False
             or value.get('weld') != 'off' or value.get('render_profile') != 'floor_light_v1'
-            or value.get('contact_profile') != 'cargo_noslip_v1'
+            or value.get('contact_profile') not in ('cargo_native_v1', 'warp_native_contact_v1', 'cargo_noslip_v1')
             or value.get('sensors') != {'ultrasonic_front': 'off'}
             or tuple(value.get('conditions', ())) != CONDITIONS
             or {k: v['arm'] for k, v in value['conditions'].items()} != ARMS
@@ -106,7 +106,7 @@ def driver_profile(*, root=ROOT) -> dict:
     return {**profile, 'profile_id': reg['driver_profile'], 'sha256': base.digest(profile)}
 
 
-def physics_bundle(*, root=ROOT, admission_mode=high_skill.MEASURED_SIM) -> dict:
+def physics_bundle(*, root=ROOT, admission_mode=high_skill.MEASURED_SIM, contact_profile='cargo_native_v1') -> dict:
     """The #363 v98 physics/skill bundle shared by all three arms, capped at 900 SIM seconds."""
     reg = read_registry(root=root)
     row = copy.deepcopy(_high_bundle(reg['map_id'], admission_mode))
@@ -181,8 +181,10 @@ def admission_record(mode, synthetic=False):
 
 
 def bundle(condition, *, kind='stub', calibration=None, synthetic_calibration=False, source_sha=None,
-           root=ROOT, admission_mode=high_skill.MEASURED_SIM) -> dict:
+           root=ROOT, admission_mode=high_skill.MEASURED_SIM, contact_profile='cargo_native_v1') -> dict:
     """The run bundle of one arm. ``calibration`` is ``{'path', 'sha256'}`` or None (plan only)."""
+    from sim.execution_contact_profile import cargo_name
+    contact_profile = cargo_name(contact_profile)
     from harness.pair_llm_dispatch import PAIR_ACTION_KINDS, PAIR_POLICY
     from harness.pair_llm_prompts_ko import (PROMPT_VERSION, STUDY_SPEC, fixed_prompt_reference_tokens,
                                              prompt_template_sha256)
@@ -246,7 +248,7 @@ def bundle(condition, *, kind='stub', calibration=None, synthetic_calibration=Fa
         'caps': {'per_case_s': CAP_S, 'reset_per_case_s': RESET_CAP_S,
                  'smoke_max_per_case_s': SMOKE_MAX_S, 'same_in_all_arms': True},
         'timing': physics['timing'],
-        'render_profile': 'floor_light_v1', 'contact_profile': 'cargo_noslip_v1', 'weld': 'off',
+        'render_profile': 'floor_light_v1', 'contact_profile': contact_profile, 'contact_execution_bundle_id': 'noslip-off-v445' if contact_profile != 'cargo_noslip_v1' else None, 'weld': 'off',
         'sensors': {'ultrasonic_front': 'off'}, 'shared_top_camera': False,
         'controller_inputs': ['own_rgb', 'static_map', 'order_sheet', 'own_command_history', 'own_status', 'own_belief', 'decision_window',
                               'delivered_messages'],

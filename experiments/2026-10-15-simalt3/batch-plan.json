@@ -1,0 +1,29 @@
+{
+  "purpose": "compatibility/throughput diagnostic only; N1 equivalence failed, never production or teacher admission",
+  "source_sha": "737f5a0e",
+  "N": [
+    16,
+    64,
+    128,
+    256
+  ],
+  "optional_N": 256,
+  "mode": [
+    "physics-only",
+    "physics+own RGB640x480 10Hz readback fisheye"
+  ],
+  "case": "forward",
+  "SIM_s_per_world": 4,
+  "work_basis": "existing frozen forward diagnostic: 1s at35 percent plus3s stop; exact same command tape across N",
+  "rejection_table": "/Users/changmin/projects/ugrp-wt/simalt-pilot/experiments/2026-10-15-simalt3/rejection_table.json",
+  "admission_for_production": false,
+  "adoption": "NOT_ADOPTED regardless throughput because equivalence failed",
+  "stop": [
+    "NaN",
+    "overflow",
+    "noslip ignored",
+    "budget-stop",
+    "3h VM resource cap"
+  ],
+  "cap_end": false
+}

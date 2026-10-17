@@ -1,0 +1,19 @@
+{
+  "scope": "ACT package comparison before repair; no controller/physics rejection",
+  "checked_packages": 115,
+  "passed_packages": 114,
+  "rejected_packages": 1,
+  "reasons": [
+    {
+      "reason_category": "version_mismatch",
+      "package": "torchcodec",
+      "expected": "0.10.0",
+      "observed": "0.10.0+cu128",
+      "count": 1,
+      "blocking_object": "not_applicable_infrastructure",
+      "minimum_gap": "not_measured_infrastructure"
+    }
+  ],
+  "source": "live pip freeze compared with gcp2 L4 freeze before pin_act_codec.sh",
+  "repair": "pin_act_codec.sh"
+}

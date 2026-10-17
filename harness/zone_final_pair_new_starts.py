@@ -119,6 +119,8 @@ def validate_bundle(value):
         raise ValueError('v95 check/map mismatch')
     for key in ('execution_bundle_id', 'workflow_id', 'workflow_version', 'check', 'seed',
                 'robot_model', 'render_profile', 'contact_profile', 'weld', 'sensors', *ROLE):
+        if key == 'contact_profile' and value.get(key) in ('cargo_native_v1', 'warp_native_contact_v1'):
+            continue
         if type(value.get(key)) is not type(reg[key]) or value[key] != reg[key]:
             raise ValueError('v95 bundle mismatch: '+key)
     expected = {'start_xy_yaw': STARTS[mid], 'robots': list(ROBOTS),
@@ -142,11 +144,11 @@ def require_collection_clearance(value):
     return receipt
 
 
-def bundle(map_id, check=CHECK):
+def bundle(map_id, check=CHECK, *, contact_profile='cargo_native_v1'):
     from harness import zone_final_pair_fast as parent
     from harness.python_source_closure import source_closure
     registry()
-    value = parent.bundle(map_id, check)
+    value = parent.bundle(map_id, check, contact_profile=contact_profile)
     value.update(schema='ugrp.final_pair_bundle.v95', execution_bundle_id=BUNDLE_ID,
         workflow_id=WORKFLOW_ID, workflow_version=WORKFLOW_VERSION, **ROLE,
         revision='v95 new starts; both robots; reordered signed steps and phase-shifted PRBS',

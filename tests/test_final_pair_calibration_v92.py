@@ -84,7 +84,7 @@ def synthetic_collection(tmp_path, profile):
     owner = acquisition if profile == 'loaded' else contract
     cap = 720. if profile == 'loaded' else 370.
     count, nframes = round(cap/.05)+1, round(cap/.2)+1
-    bundle = {**owner.bundle(MAP_ID, 'calibration-'+profile),
+    bundle = {**owner.bundle(MAP_ID, 'calibration-'+profile, contact_profile='cargo_noslip_v1'),
               'source_sha': {'unloaded':'a','fine':'b','loaded':'c'}[profile]*40,
               'case': owner.cases('calibration-'+profile, MAP_ID)[0]}
     role = acquisition.record(bundle)

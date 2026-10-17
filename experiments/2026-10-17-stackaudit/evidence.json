@@ -1,0 +1,1539 @@
+{
+  "schema": "ugrp.stackaudit.evidence.v1",
+  "source_shas": {
+    "main": "c8dc1e6545124ed69a996618bd11df684d233969",
+    "warp8": "7c8acef516103ce5906b77d6481e46b298961b0c",
+    "act16w": "37a8c833656a58ba25472e2106276f225e95ad26",
+    "mapbuild6": "c7477b1f64910f498b52e1697488c28b2c4569e1",
+    "nsoff": "757632c42ee93b873cd573999bdb074f7469b54c",
+    "native": "4f4f7a1aa64849511d03156bf49272a71c954777",
+    "beam_cpu": "fa1b0c01c89420b7b5dbbc7449ee1aefc73d312e"
+  },
+  "scope": "local git objects and previously retrieved summaries only; no SSH/VM/physics/render/model calls",
+  "evidence": {
+    "physics": {
+      "sha": "7c8acef516103ce5906b77d6481e46b298961b0c",
+      "path": "scripts/run_warp_flow_teacher.py",
+      "sha256": "23c31cd627ce9eb2f6cf6800c7634ac65109d94dfb44644e66b66565438cc3af",
+      "matches": [
+        {
+          "line": 1,
+          "text": "\"\"\"Beam pair / release teacher; MJWarp default, approved Linux GCP hosts only."
+        },
+        {
+          "line": 61,
+          "text": "    p.add_argument('--physics-backend',choices=['mjwarp_batch_v1','c_pilot_v1'],default='mjwarp_batch_v1')"
+        }
+      ]
+    },
+    "native": {
+      "sha": "4f4f7a1aa64849511d03156bf49272a71c954777",
+      "path": "sim/warp_native_contact.py",
+      "sha256": "a5c8d370755034b9f9615f66a94b87883327b7d7ecc4e13082eac2c2d4751c6a",
+      "matches": [
+        {
+          "line": 12,
+          "text": "PROFILES = {"
+        },
+        {
+          "line": 13,
+          "text": "    'baseline_noslip10': {},"
+        },
+        {
+          "line": 14,
+          "text": "    # Aloha uses impratio=5. Keep the existing material and contact model to"
+        },
+        {
+          "line": 16,
+          "text": "    'warp_native_contact_v1': {'noslip_iterations': '0', 'cone': 'elliptic',"
+        },
+        {
+          "line": 17,
+          "text": "                               'integrator': 'implicitfast', 'impratio': '5'},"
+        },
+        {
+          "line": 20,
+          "text": "    'warp_native_contact_v2': {'noslip_iterations': '0', 'cone': 'elliptic',"
+        },
+        {
+          "line": 21,
+          "text": "                               'integrator': 'implicitfast', 'impratio': '5'},"
+        },
+        {
+          "line": 24,
+          "text": "    'warp_native_fast_v1': {'noslip_iterations': '0', 'cone': 'elliptic',"
+        },
+        {
+          "line": 25,
+          "text": "                          'integrator': 'implicitfast', 'impratio': '5',"
+        },
+        {
+          "line": 30,
+          "text": "def apply(xml, profile='baseline_noslip10'):"
+        },
+        {
+          "line": 31,
+          "text": "    if profile not in PROFILES:"
+        },
+        {
+          "line": 33,
+          "text": "    if profile == 'baseline_noslip10':"
+        },
+        {
+          "line": 39,
+          "text": "    option.attrib.update(PROFILES[profile])"
+        },
+        {
+          "line": 60,
+          "text": "    value = dict(profile=profile, options=deepcopy(PROFILES[profile]),"
+        },
+        {
+          "line": 61,
+          "text": "                 playground_commit=PLAYGROUND, default_off=profile != 'baseline_noslip10')"
+        }
+      ]
+    },
+    "scene": {
+      "sha": "7c8acef516103ce5906b77d6481e46b298961b0c",
+      "path": "sim/scene_contrast_v5.py",
+      "sha256": "db8e183da5fcb65ede8f8e3f2fbe4dff9e7b328d33eb469d9704d28e99d1b6a5",
+      "matches": [
+        {
+          "line": 6,
+          "text": "from sim import render_profile as base"
+        },
+        {
+          "line": 19,
+          "text": "    'walls_floor_contrast_v5_indigo110_s80': {'rgb':[90,75,110],'hsv':[133,81,110],'pattern':'v1_common_mode'},"
+        },
+        {
+          "line": 32,
+          "text": "            'floor_manifest_sha256':v1.MANIFEST_SHA256,'wall_pattern':PROFILES[name].get('pattern','none'),"
+        },
+        {
+          "line": 68,
+          "text": "    if getattr(scene,'_render_profile_name',None) is not None: raise ValueError('scene already dressed')"
+        },
+        {
+          "line": 72,
+          "text": "        scene.manifest['render_profile']={**profile_record(name),"
+        },
+        {
+          "line": 76,
+          "text": "    scene.transform=transform; scene._render_profile_name=name"
+        }
+      ]
+    },
+    "scene_act": {
+      "sha": "37a8c833656a58ba25472e2106276f225e95ad26",
+      "path": "scripts/warp_act_scene.py",
+      "sha256": "3d9407cfbd25e9c783296303793aafa657283a8852e9884996e4c2334adcbd59",
+      "matches": [
+        {
+          "line": 2,
+          "text": "SCENE = 'walls_floor_contrast_v5_indigo110_s80'"
+        },
+        {
+          "line": 16,
+          "text": "    scene = install(ScenarioFinalV3Scene.from_scenario(plan['scenario_id'], plan['seed']), SCENE, extension=True)"
+        },
+        {
+          "line": 21,
+          "text": "        scene.manifest['render_nearclip'] = {**nearclip.record(), 'base_profile': SCENE,"
+        },
+        {
+          "line": 33,
+          "text": "        scene.manifest['grasp_act_scene'] = dict(version='grasp_act_scene_v1', colors=plan['end_color_scene'],"
+        },
+        {
+          "line": 36,
+          "text": "        scene.manifest['warp3_scene'] = profile_record(SCENE)"
+        }
+      ]
+    },
+    "localization": {
+      "sha": "c7477b1f64910f498b52e1697488c28b2c4569e1",
+      "path": "scripts/mapbuild6_replay.py",
+      "sha256": "26d27e44074370372cc33d18f08f6a51a15c32f508421a57fa10077648e754dd",
+      "matches": [
+        {
+          "line": 1,
+          "text": "\"\"\"Same saved own inputs, frozen LK/RBPF. No evaluation file is opened here.\"\"\""
+        },
+        {
+          "line": 27,
+          "text": "    from harness.mapbuild_rbpf import virtual_scan,MapbuildRBPF,OPTION"
+        },
+        {
+          "line": 28,
+          "text": "    from harness.e2e_rgb_vo import ground_pair,compose"
+        },
+        {
+          "line": 29,
+          "text": "    from harness.scene_colour_boundary import ColourBoundaryState,RELOC16_OPTION"
+        },
+        {
+          "line": 38,
+          "text": "    state=ColourBoundaryState('walls_floor_contrast_v5_indigo110_s80',json.loads(calibration.read_text()),option=RELOC16_OPTION)"
+        },
+        {
+          "line": 46,
+          "text": "        if rbpf is None:rbpf=MapbuildRBPF(servo,option=OPTION)"
+        },
+        {
+          "line": 65,
+          "text": "        # existing LK qualification, shared by both methods on this recording."
+        },
+        {
+          "line": 70,
+          "text": "            lk=flow,motion_source='measured_LK' if flow['status']=='measured' else 'historical_nominal_command_prediction',"
+        },
+        {
+          "line": 91,
+          "text": "        constants='mapbuild5 unchanged; moving servo updates use exact same adjacent PWM equality as LK; no GT calibration',"
+        }
+      ]
+    },
+    "lk": {
+      "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+      "path": "harness/e2e_rgb_vo.py",
+      "sha256": "62d34bf4a45a59f92456bd0ffa2113ccaea394dd160f56a4db250cf777f781bf",
+      "matches": [
+        {
+          "line": 144,
+          "text": "def ground_pair(before, after, servo, *, vo_floor_mask='off', static_walls=None,"
+        },
+        {
+          "line": 169,
+          "text": "    nxt, ok, _ = cv2.calcOpticalFlowPyrLK(ga, gb, pts, None, **cfg)"
+        },
+        {
+          "line": 172,
+          "text": "    back, ok2, _ = cv2.calcOpticalFlowPyrLK(gb, ga, nxt, None, **cfg)"
+        }
+      ]
+    },
+    "localization_pending": {
+      "sha": "c7477b1f64910f498b52e1697488c28b2c4569e1",
+      "path": "experiments/2026-10-17-mapbuild6/README.md",
+      "sha256": "e204dc8eeeab14c4a563dbb710f443230772a82906d211d14a22edc1669d21bd",
+      "matches": [
+        {
+          "line": 3,
+          "text": "ownership-ack. 같은 `codex/mapbuild1`, PR #556, gcp5 단독이다. 현재 **진행 중 / NOT_READY**이며 녹화·추정·운반·LLM E2E 성공은 아직 없다. 이전 mapbuild5c 40 SIM초/1.13m 자극은 성능 분모에 넣지 않는다."
+        },
+        {
+          "line": 5,
+          "text": "판정은 녹화 전에 고정한다. 차체 중심 SE(2), 시작 자세 한 번 정렬, 척도1을 쓴다. 모든 필수 지점에서 요구 정확도를 양쪽 모두 만족하면 LK가 기본이고 RBPF는 off다. LK만 실패하고 RBPF만 통과하면 RBPF다. 둘 다 실패하면 원인 분포와 다음 묶음 제안만 남기며 이번 라운드에서는 상수를 맞추지 않는다. 필수 지점·실제 파지/운반·내려놓기/둘러보기가 빠지면 미측정이며 채택하지 않는다. 3라운드가 상한이고 호스트 wall 상한은 없다."
+        },
+        {
+          "line": 9,
+          "text": "실제 녹화 후보는 `s1_normal_mixed_v7`의 cyan_2→A 경로다. 실제 성공 원장의 자기 발행 휠/PWM 파지 prefix를 새 native 물리에서 재생한 뒤 기존 `scripts.zone_teacher.plan_path/proportional_drive`로 지도 주행을 잇는다. 제어는 자기 JPEG의 LK와 자기 명령 예측, 정적 지도만 쓴다. 시작은 원장에 고정된 진단 조건이며 온라인 위치 정답을 읽는 초기화가 아니다. 추정기는 시작0 gauge다. 과거 교사의 성공을 native 재생 성공으로 승계하지 않으며, 실제 파지 실패가 확인되면 감독 중단한다. 목적 구역에서는 원장의 lower/open/backoff/자기 RGB 둘러보기를 발행하고 같은 통로로 돌아오도록 한다. 실제 도착/파지/구역/문 통과는 별도 평가에서 확인한다."
+        },
+        {
+          "line": 11,
+          "text": "`warp_native_contact_v1` owner bytes를 유지한다. noslip0, 벽/바닥 질감·색 분리 `walls_floor_contrast_v5_indigo110_s80`, MJWarp 물리/렌더, 자기RGB10Hz이며 TOP은 렌더조차 하지 않는다. 기존 원장의 파지 휠/PWM을 타 장면/호스트로 옮기는 새 재생 후보이고, 기본값이나 기존 제어기 수정은 아니다. 일반 휠 duty의 명령 예측은 기존 6f057f7e 명목 휠 기하식이며 native 실측 보정이 아니다. 이 경계와 arm/servo 변화에 따른 LK 미측정도 원인표에 남긴다."
+        }
+      ]
+    },
+    "old_release": {
+      "sha": "8e81b7d96c0c73171635348c90631462adfe1eb0",
+      "path": "sim/lookaround_localization.py",
+      "sha256": "48c772164eaa64085f97e72da535836989741b9d0e08c2ab461abe0dcd61b556",
+      "matches": [
+        {
+          "line": 20,
+          "text": "  .endpoints), floor zone lines and doors (harness/zone_solo_cyan_landmarks)."
+        },
+        {
+          "line": 39,
+          "text": "MODES = ('setdown_lookaround_v1', 'setdown_lookaround_v2', 'setdown_global_v1')"
+        },
+        {
+          "line": 45,
+          "text": "LOOK_ARMS = {'setdown_lookaround_v1': LOOK_ARM, 'setdown_lookaround_v2': LOOK_ARM_V2, 'setdown_global_v1': LOOK_ARM_V2}"
+        },
+        {
+          "line": 200,
+          "text": "        if localization_support not in SUPPORT_MODES or (localization_support != 'off' and mode != 'setdown_global_v1'):"
+        },
+        {
+          "line": 209,
+          "text": "        from harness.zone_solo_cyan_landmarks import MapFeatures"
+        },
+        {
+          "line": 213,
+          "text": "        self.global_matcher = None"
+        },
+        {
+          "line": 214,
+          "text": "        if mode == 'setdown_global_v1':"
+        },
+        {
+          "line": 216,
+          "text": "            self.global_matcher = GlobalLandmarkMatcher(static, localization_support=localization_support)"
+        },
+        {
+          "line": 236,
+          "text": "        if not self.map_pose_known or self.global_matcher is not None:"
+        },
+        {
+          "line": 283,
+          "text": "        from harness.zone_solo_cyan_landmarks import floor_features, door_features, ground"
+        },
+        {
+          "line": 286,
+          "text": "        if self.global_matcher is not None:"
+        },
+        {
+          "line": 313,
+          "text": "        if not self.map_pose_known or self.global_matcher is not None:"
+        },
+        {
+          "line": 316,
+          "text": "                       update_skipped='global_consensus_pending' if self.global_matcher is not None else 'map_pose_unknown')"
+        },
+        {
+          "line": 381,
+          "text": "        if getattr(self, 'global_matcher', None) is not None:"
+        },
+        {
+          "line": 386,
+          "text": "            self.decision = self.global_matcher.fit(views, self.command_own.x)"
+        },
+        {
+          "line": 435,
+          "text": "        from harness.zone_solo_cyan_landmarks import landmark_likelihood"
+        }
+      ]
+    },
+    "old_hough": {
+      "sha": "8e81b7d96c0c73171635348c90631462adfe1eb0",
+      "path": "harness/zone_solo_cyan_landmarks.py",
+      "sha256": "41bad45345b1b58b9688ef077088a5cb36b91024e0750b1b35a6d63133fe5286",
+      "matches": [
+        {
+          "line": 89,
+          "text": "        lines = cv2.HoughLinesP(edge, 1, np.pi/180, PARAMS['hough_votes'],"
+        }
+      ]
+    },
+    "solo_look": {
+      "sha": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+      "path": "sim/grasp_act_solo_lookaround.py",
+      "sha256": "808e8f5ad63aec3532d49f10ebdcb13f1ea6d2374173fe0837e2c2b6a1a3fd15",
+      "matches": [
+        {
+          "line": 20,
+          "text": "                 localizer_factory=None, runner_factory=None, truth_free_v1=False):"
+        },
+        {
+          "line": 32,
+          "text": "        self.truth_free_v1 = bool(truth_free_v1)"
+        },
+        {
+          "line": 37,
+          "text": "        return self.scan_armed if self.truth_free_v1 else self.loc is not None"
+        },
+        {
+          "line": 43,
+          "text": "        frame. truth_free_v1 rejects an estimate and uses a fixed own-RGB scan."
+        },
+        {
+          "line": 47,
+          "text": "        if self.truth_free_v1:"
+        },
+        {
+          "line": 63,
+          "text": "        if self.truth_free_v1:"
+        },
+        {
+          "line": 99,
+          "text": "            if self.truth_free_v1:"
+        },
+        {
+          "line": 105,
+          "text": "                    'pan_pulse': servo[6], 'rgb_sha256': hashlib.sha256(frame.tobytes()).hexdigest()})"
+        },
+        {
+          "line": 124,
+          "text": "        if self.truth_free_v1:"
+        },
+        {
+          "line": 125,
+          "text": "            return {'armed': self.armed, 'events': self.events, 'truth_free_v1': True,"
+        },
+        {
+          "line": 126,
+          "text": "                    'self_pose_source': 'none', 'localization_verified': False,"
+        }
+      ]
+    },
+    "act_episode": {
+      "sha": "37a8c833656a58ba25472e2106276f225e95ad26",
+      "path": "scripts/warp_act_episode.py",
+      "sha256": "8b8bc7b1da7e6e1c3ce5c48ac54aba5d4334a9ece783ebf1d0b3a288638772a6",
+      "matches": [
+        {
+          "line": 25,
+          "text": "def episode(plan, out, *, hooks, world_index, execution_host, profile='off', hidden=False, look=False, cap_s=90.,"
+        },
+        {
+          "line": 28,
+          "text": "        training_rgb=False, solo_truth_free_lookaround_v1=False,"
+        },
+        {
+          "line": 34,
+          "text": "    if not 0 < cap_s <= 180 or profile != 'solo_visible_only_v1' or not hidden or not look:"
+        },
+        {
+          "line": 41,
+          "text": "    validate_recording(plan, training_rgb=training_rgb, truth_free_v1=solo_truth_free_lookaround_v1,"
+        },
+        {
+          "line": 48,
+          "text": "    from sim.grasp_act_solo_teacher import SoloTeacher, InputAudit, VisibilityStats, primitives"
+        },
+        {
+          "line": 49,
+          "text": "    from sim.grasp_act_solo_lookaround import SoloLookaround"
+        },
+        {
+          "line": 58,
+          "text": "    from sim.active_lookaround import wrap"
+        },
+        {
+          "line": 67,
+          "text": "    write(out/'RUN_META.json', {'class': 'dev', 'branch': 'claude/warp-act', 'physics_backend': hooks.backend,"
+        },
+        {
+          "line": 71,
+          "text": "              'student_execution': False, 'physics_backend': hooks.backend,"
+        },
+        {
+          "line": 74,
+          "text": "              'object_kind': plan['kind'], 'weld': 'off', 'training_rgb': bool(training_rgb),"
+        },
+        {
+          "line": 77,
+          "text": "              'solo_truth_free_lookaround_v1': bool(solo_truth_free_lookaround_v1),"
+        },
+        {
+          "line": 96,
+          "text": "    audit, visibility_stats, score = InputAudit(), VisibilityStats(), Score()"
+        },
+        {
+          "line": 160,
+          "text": "        relook = SoloLookaround(static, ops=ops, truth_free_v1=solo_truth_free_lookaround_v1)"
+        },
+        {
+          "line": 215,
+          "text": "                              held_object_hidden_v1=hidden, setdown_lookaround_v1=look,"
+        },
+        {
+          "line": 216,
+          "text": "                              lookaround=relook, route=route, ops=ops,"
+        },
+        {
+          "line": 341,
+          "text": "                if solo_truth_free_lookaround_v1:"
+        },
+        {
+          "line": 364,
+          "text": "                ev.write(json.dumps({'kind': 'lookaround_view', **row})+'\\n')"
+        },
+        {
+          "line": 396,
+          "text": "                'placement_offset': float(np.linalg.norm(pos[:2]-initial_xy)), 'weld_active': False,"
+        },
+        {
+          "line": 405,
+          "text": "                     'lookaround_estimate_xy': list(map(float, relook.loc.own.x[:2])) if relook.loc is not None else None})+'\\n')"
+        },
+        {
+          "line": 427,
+          "text": "            lookaround={'localizer': relook.record(), 'evaluation': look_eval},"
+        },
+        {
+          "line": 437,
+          "text": "                'no_pretend_setdown': not bool(phases & {'hold', 'lookback_return', 'lower', 'open', 'backoff', 'lookaround', 'complete'}),"
+        },
+        {
+          "line": 445,
+          "text": "            probe['passed'] = probe['rgb_probe_passed'] and probe['no_pretend_setdown'] and probe['cargo_remains_at_pickup']"
+        }
+      ]
+    },
+    "act_gate": {
+      "sha": "37a8c833656a58ba25472e2106276f225e95ad26",
+      "path": "experiments/2026-10-16-act16w/resume4/native-gate-summary.json",
+      "sha256": "08ee20d37203f9543b4f8f8e8d77d7559b1193b8df8fb6a328c411b249fee9f9",
+      "matches": [
+        {
+          "line": 4,
+          "text": "  \"source_sha\": \"e40ff44ce97219d075b1a58eabd48007b6f8b2ac\","
+        },
+        {
+          "line": 6,
+          "text": "    \"project_id\": \"ugrp-sim-b-1014\","
+        },
+        {
+          "line": 7,
+          "text": "    \"instance\": \"ugrp-act-l4-gcp2\","
+        },
+        {
+          "line": 12,
+          "text": "  \"wall_cap\": null,"
+        },
+        {
+          "line": 13,
+          "text": "  \"contact_profile\": \"warp_native_contact_v1\","
+        }
+      ]
+    },
+    "act_eval": {
+      "sha": "37a8c833656a58ba25472e2106276f225e95ad26",
+      "path": "scripts/evaluate_act16w.py",
+      "sha256": "ef6299199364d2adf261dcf31d93fe067a4ff6f2cee750fcdff52e25cb75cc7e",
+      "matches": [
+        {
+          "line": 11,
+          "text": "from act16w_eval_rpc import EvaluationClient as Client"
+        },
+        {
+          "line": 34,
+          "text": "    native=bool(os.environ.get('UGRP_ACT16W_NATIVE_GATE'))"
+        },
+        {
+          "line": 35,
+          "text": "    if native != (meta['provenance'].get('contact_profile')=='warp_native_contact_v1'):"
+        },
+        {
+          "line": 36,
+          "text": "        raise ValueError('native physics/model provenance mismatch; noslip10 and native models stay separate')"
+        },
+        {
+          "line": 48,
+          "text": "    client = Client(python=a.physics_python, qualified_source=a.qualified_source, teacher_source=a.teacher_source,"
+        },
+        {
+          "line": 54,
+          "text": "    report['contact_profile']='warp_native_contact_v1' if native else 'baseline_noslip10'"
+        },
+        {
+          "line": 90,
+          "text": "                      actor_schema=client.read_actor(0)[0]['schema'], actual_inference=True,teacher_constructed=False,privileged_policy_inputs=0,"
+        },
+        {
+          "line": 91,
+          "text": "                      native_camera='640x480/10Hz; four own lags each resized320x240 then2x2 montage640x480')"
+        }
+      ]
+    },
+    "act_train": {
+      "sha": "37a8c833656a58ba25472e2106276f225e95ad26",
+      "path": "scripts/train_act16w.py",
+      "sha256": "794def163f9330831ad54be5520965eeb720403cd61d91d05a5f971c7cba0365",
+      "matches": [
+        {
+          "line": 19,
+          "text": "from act16w_runtime import ACT_SHA, LEROBOT_ACT_SHA256, frozen_source, require_gcp2, sha256, training_admission"
+        },
+        {
+          "line": 33,
+          "text": "    for name in ('act-source', 'dataset', 'output', 'admission'):"
+        },
+        {
+          "line": 52,
+          "text": "    admission = training_admission(a.admission, source=source, dataset=a.dataset, act_source=library)"
+        },
+        {
+          "line": 69,
+          "text": "    if admission.get('contact_profile'):"
+        },
+        {
+          "line": 70,
+          "text": "        configuration['contact_profile']=admission['contact_profile']"
+        },
+        {
+          "line": 81,
+          "text": "        'admission_sha256': sha256(a.admission), 'teacher_gate': {"
+        },
+        {
+          "line": 82,
+          "text": "            k: admission[k] for k in ('teacher_success_n', 'teacher_attempts_N')},"
+        },
+        {
+          "line": 105,
+          "text": "                raise ValueError('resume provenance mismatch')"
+        }
+      ]
+    },
+    "warp_queue": {
+      "sha": "7c8acef516103ce5906b77d6481e46b298961b0c",
+      "path": "experiments/2026-10-16-warp8/native-gate-queue.json",
+      "sha256": "4750b4437c34f3ef2ba3e7b845a6c511f0c833f9cff94876d541dc164ee1a645",
+      "matches": [
+        {
+          "line": 4,
+          "text": "  \"profile\": \"warp_native_contact_v1\","
+        },
+        {
+          "line": 6,
+          "text": "  \"project\": \"ugrp-sim-c-1016\","
+        },
+        {
+          "line": 7,
+          "text": "  \"source_sha\": \"3170d909089865c45e2cbc6089beb6a2d05e576f\","
+        },
+        {
+          "line": 45,
+          "text": "  \"no_pooling\": true,"
+        },
+        {
+          "line": 46,
+          "text": "  \"VM_wall_cap\": null,"
+        },
+        {
+          "line": 49,
+          "text": "  \"weld\": \"off\","
+        },
+        {
+          "line": 50,
+          "text": "  \"held_world_reads_required\": 0"
+        }
+      ]
+    },
+    "warp_recount": {
+      "sha": "7c8acef516103ce5906b77d6481e46b298961b0c",
+      "path": "experiments/2026-10-16-warp8/beam40-native-r1-summary.json",
+      "sha256": "32949dbeac174b03469ce905ad53bffa7609d7540f0d1abb0ae490dd12bd7d20",
+      "matches": [
+        {
+          "line": 18,
+          "text": "      \"contact_profile\": {"
+        },
+        {
+          "line": 19,
+          "text": "        \"profile\": \"warp_native_contact_v1\","
+        },
+        {
+          "line": 21,
+          "text": "          \"noslip_iterations\": \"0\","
+        },
+        {
+          "line": 29,
+          "text": "        \"module_sha256\": \"a5c8d370755034b9f9615f66a94b87883327b7d7ecc4e13082eac2c2d4751c6a\","
+        }
+      ]
+    },
+    "warp_release": {
+      "sha": "7c8acef516103ce5906b77d6481e46b298961b0c",
+      "path": "scripts/run_warp_flow_teacher.py",
+      "sha256": "23c31cd627ce9eb2f6cf6800c7634ac65109d94dfb44644e66b66565438cc3af",
+      "matches": [
+        {
+          "line": 40,
+          "text": "        if case['plan'].get('scene_profile')!='walls_floor_contrast_v5_indigo110_s80':"
+        },
+        {
+          "line": 43,
+          "text": "            required=dict(held_object='hidden_v1',pose_anchor='command_relative_v1',"
+        },
+        {
+          "line": 44,
+          "text": "                lookaround='setdown_global_v1',placement='global_localized_release_v1',"
+        },
+        {
+          "line": 79,
+          "text": "    p.add_argument('--batch-per-world-speed-v1',action='store_true',help='warp8 admission recording: batch wall / (batch SIM * world count); task throughput separate; default OFF')"
+        }
+      ]
+    },
+    "warp_frozen": {
+      "sha": "7c8acef516103ce5906b77d6481e46b298961b0c",
+      "path": "scripts/warp_flow_episode.py",
+      "sha256": "2c565ed3a8f869c9215aaaffa8034a174183104d04445cc1daa43e1d8534793c",
+      "matches": [
+        {
+          "line": 17,
+          "text": "ADAPTER_SHA = '835ccef26aa84b08cc8f7e256fd0f43aa1583ef9'"
+        },
+        {
+          "line": 18,
+          "text": "TEACHER_SHA = '26f84d0f0ada1c33473c83cca2d3415ce51bd247'"
+        },
+        {
+          "line": 19,
+          "text": "RELEASE_SHA = '8e81b7d96c0c73171635348c90631462adfe1eb0'"
+        },
+        {
+          "line": 180,
+          "text": "    def install_scene_quality(self):"
+        },
+        {
+          "line": 192,
+          "text": "                record = dict(scene_profile='walls_floor_contrast_v5_indigo110_s80',"
+        },
+        {
+          "line": 302,
+          "text": "    bridge.certification_source=Path(teacher_source) if teacher_source else Path(adapter_source).parent/TEACHER_SHA"
+        },
+        {
+          "line": 305,
+          "text": "        bridge.install_scene_quality()"
+        }
+      ]
+    },
+    "map_scene": {
+      "sha": "c7477b1f64910f498b52e1697488c28b2c4569e1",
+      "path": "scripts/mapbuild6_capture.py",
+      "sha256": "2a009f32f97dd791ce37f6c329ca47a7ef15d0ea4012f7cfc6ca22b1144d533d",
+      "matches": [
+        {
+          "line": 78,
+          "text": "    scene=ScenarioFinalV3Scene.from_scenario('s1_normal_mixed_v7',601)"
+        },
+        {
+          "line": 81,
+          "text": "    scene=near_wrap(for_name(a.scene).install(scene,a.scene,extension=a.texture_extension))"
+        },
+        {
+          "line": 88,
+          "text": "        raise ValueError('NATIVE_OWNER_BYTES_REQUIRED')"
+        },
+        {
+          "line": 90,
+          "text": "    xml=mod.apply(xml,'warp_native_contact_v1');m=mujoco.MjModel.from_xml_string(xml)"
+        },
+        {
+          "line": 156,
+          "text": "    if m.opt.noslip_iterations!=0 or wm.opt.noslip_iterations!=0:raise ValueError('NOSLIP_MUST_BE_ZERO')"
+        },
+        {
+          "line": 189,
+          "text": "        source_plan=str(a.pickup),source_plan_sha256=sha(a.pickup),scenario='s1_normal_mixed_v7',"
+        },
+        {
+          "line": 197,
+          "text": "    dump(a.output/'scene.json',dict(scene=scene.manifest,xml_sha256=hashlib.sha256(xml.encode()).hexdigest()))"
+        },
+        {
+          "line": 198,
+          "text": "    dump(a.output/'contact-profile.json',dict(profile='warp_native_contact_v1',noslip_iterations=int(m.opt.noslip_iterations),"
+        },
+        {
+          "line": 199,
+          "text": "        gpu_noslip_iterations=int(wm.opt.noslip_iterations),effective_tolerance=float(wm.opt.tolerance.numpy().item())))"
+        },
+        {
+          "line": 294,
+          "text": "            scene=a.scene,physics_backend='mjwarp',contact_profile=dict(profile='warp_native_contact_v1',noslip_iterations=0),"
+        }
+      ]
+    },
+    "cpu_eval": {
+      "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+      "path": "scripts/run_grasp_act_student.py",
+      "sha256": "b14a83a94fa64fb1996bf1de7fd3ce3e1e1061cbfd78df6ca12fde44ee7434be",
+      "matches": [
+        {
+          "line": 77,
+          "text": "        'student_execution': True, 'teacher_assisted': False, 'weld': 'off',"
+        },
+        {
+          "line": 95,
+          "text": "        import mujoco"
+        },
+        {
+          "line": 102,
+          "text": "        from sim.masterpi_drive_friction_v7 import build_world, PROFILE"
+        },
+        {
+          "line": 106,
+          "text": "        scene = wrap(install(ScenarioFinalV3Scene.from_scenario(plan['scenario_id'], plan['seed']), 'floor_light_v1'))"
+        },
+        {
+          "line": 118,
+          "text": "        world = build_world(scene, drive_profile=PROFILE, seed=plan['seed'], width=640, height=480,"
+        },
+        {
+          "line": 135,
+          "text": "                port.apply({'kind': 'look', 'pan_pulse': previous['pwm'][str(s)]} if s == 6 else"
+        },
+        {
+          "line": 223,
+          "text": "                        port.apply({'kind': 'look', 'pan_pulse': pwm} if s == 6 else"
+        },
+        {
+          "line": 236,
+          "text": "                        mujoco.mj_contactForce(world.model, world.data, i, force)"
+        },
+        {
+          "line": 239,
+          "text": "                              'weld': bool(world.data.eq_active.any())}"
+        },
+        {
+          "line": 249,
+          "text": "                    gaps = [float(mujoco.mj_geomDistance(world.model, world.data, finger, g,"
+        },
+        {
+          "line": 267,
+          "text": "                mujoco.mj_objectVelocity(world.model, world.data, mujoco.mjtObj.mjOBJ_BODY, body, velocity, 0)"
+        },
+        {
+          "line": 270,
+          "text": "                          **{k: evaluation[k] for k in ('clearance', 'tilt', 'forces', 'weld')})"
+        }
+      ]
+    },
+    "cpu_physics": {
+      "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+      "path": "sim/masterpi_drive_friction_v7.py",
+      "sha256": "6adcfd8e2fae919df777cf7532ef2e757e3b734dfe980fb38a6b4ccb65c2c2fa",
+      "matches": [
+        {
+          "line": 231,
+          "text": "            mujoco.mj_step(self.model,self.data)"
+        },
+        {
+          "line": 255,
+          "text": "        xml = apply(scene.transform(xml), 'cargo_noslip_v1')"
+        }
+      ]
+    },
+    "llm": {
+      "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+      "path": "configs/model_endpoints.json",
+      "sha256": "db37e22b7b907c6de25300463101a7e2a903af4f723ed00f5b1c5716f53eecc1",
+      "matches": [
+        {
+          "line": 8,
+          "text": "      \"model\": \"google/gemma-4-31b-it\","
+        },
+        {
+          "line": 9,
+          "text": "      \"provider\": \"CoreWeave\","
+        },
+        {
+          "line": 10,
+          "text": "      \"tag\": \"coreweave/fp4\","
+        },
+        {
+          "line": 11,
+          "text": "      \"quantization\": \"fp4\","
+        },
+        {
+          "line": 18,
+          "text": "      \"source\": \"https://openrouter.ai/api/v1/models/google/gemma-4-31b-it/endpoints\","
+        },
+        {
+          "line": 19,
+          "text": "      \"why\": \"User 2026-10-16 after DeepInfra +50% alert: \\\"대안 찾아줘\\\" → recommendation \\\"CoreWeave fp4\\\" → \\\"ㄱㄱ\\\". PR #552 llmalt: CoreWeave fp4 40/40, 429=0, median 2.60 s, >8 s=0, $0.000461/call (-24%), act agreement 36/40 (not task accuracy); DeepInfra fp4 40/40, median 5.18 s, >8 s=5. Model and fp4 unchanged; provider cohorts must remain separate.\""
+        },
+        {
+          "line": 39,
+          "text": "      \"model\": \"google/gemma-4-31b-it\","
+        },
+        {
+          "line": 42,
+          "text": "      \"quantization\": \"fp4\","
+        },
+        {
+          "line": 49,
+          "text": "      \"source\": \"https://openrouter.ai/api/v1/models/google/gemma-4-31b-it/endpoints\","
+        },
+        {
+          "line": 52,
+          "text": "      \"reason\": \"+50% price increase 2026-10-15, user switch 2026-10-16: \\\"대안 찾아줘\\\" → CoreWeave fp4 recommendation → \\\"ㄱㄱ\\\"\""
+        }
+      ]
+    },
+    "cache": {
+      "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+      "path": "harness/rgb_communication_planner.py",
+      "sha256": "2d5ba715678f6fee9094a7c3c298914f01c3d0ef9bcf9766993b57347e25e589",
+      "matches": [
+        {
+          "line": 27,
+          "text": "RGB, the shared top RGB, static task/map, issued (not measured) commands, and"
+        },
+        {
+          "line": 39,
+          "text": "Only select static allowed skills and your own role; peers must independently"
+        }
+      ]
+    },
+    "e2e": {
+      "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+      "path": "scripts/run_zone_study_integration.py",
+      "sha256": "85508cc58e1cba0f1fc11e3b7ef656c0c7648202ff1086c274c3dbaa64a99edd",
+      "matches": [
+        {
+          "line": 6,
+          "text": "    fixture actor reply -> SIM-costed release -> executor job API -> physics"
+        },
+        {
+          "line": 9,
+          "text": "The physics owner advances in ``QUANTUM_S`` chunks; every scheduler event lands"
+        },
+        {
+          "line": 13,
+          "text": "OFF, contact profile ``cargo_noslip_v1`` (user approval 2026-09-26)."
+        },
+        {
+          "line": 57,
+          "text": "from harness import zone_study_referee as zr  # noqa: E402  (eval only: physics owner side, never the study layer)"
+        },
+        {
+          "line": 61,
+          "text": "from sim import zone_hidden_events as zhe  # noqa: E402  (eval only: experimenter-injected physics)"
+        },
+        {
+          "line": 190,
+          "text": "        # Hidden events act on physics only (sim.zone_hidden_events): never a robot"
+        },
+        {
+          "line": 192,
+          "text": "        self.hidden_physics = (zhe.HiddenEventPhysics(self.world, self.hidden, objects=self.objects,"
+        },
+        {
+          "line": 198,
+          "text": "        return self.hidden_physics.log if self.hidden_physics is not None else []"
+        },
+        {
+          "line": 201,
+          "text": "        \"\"\"Fire the due hidden events (before physics advances past ``now``).\"\"\""
+        },
+        {
+          "line": 202,
+          "text": "        if self.hidden_physics is not None:"
+        },
+        {
+          "line": 203,
+          "text": "            self.hidden_physics.tick(now)"
+        },
+        {
+          "line": 237,
+          "text": "        self._physics_until(start)"
+        },
+        {
+          "line": 269,
+          "text": "            # Visit the host's physics ticks: independent pair heartbeat/arm"
+        },
+        {
+          "line": 271,
+          "text": "            self._physics_until(min(now + float(self.world.model.opt.timestep), t_end))"
+        },
+        {
+          "line": 323,
+          "text": "    if (setup['contact_profile'] != 'cargo_noslip_v1' or episode['contact_profile'] != 'cargo_noslip_v1'"
+        },
+        {
+          "line": 325,
+          "text": "        raise zi.ContractViolation('study requires cargo_noslip_v1 and weld OFF in scenario and episode')"
+        },
+        {
+          "line": 475,
+          "text": "    Per chunk: due hidden events act on physics only -> physics + own executor"
+        },
+        {
+          "line": 477,
+          "text": "    raises on a fatal ledger/budget state before another physics step) ->"
+        },
+        {
+          "line": 543,
+          "text": "        if any(host.contact_record[k] != expected[k] for k in ('profile', 'base_profile', 'noslip_iterations', 'timestep_s')):"
+        },
+        {
+          "line": 612,
+          "text": "                                'weld_max_eq_active': ev['max_eq_active'], 'contact_profile': host.contact_record}"
+        },
+        {
+          "line": 636,
+          "text": "                'applied_contact_profile': copy.deepcopy(host.contact_record) if host else None,"
+        }
+      ]
+    },
+    "scenario": {
+      "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+      "path": "sim/zone_scenario_scene.py",
+      "sha256": "5e0e2cb1fb4d9328f361e6cb075b71bd9b8fcc806c26ff571c926b53499737d4",
+      "matches": [
+        {
+          "line": 81,
+          "text": "                    registry.ROOT / 'configs' / ('zone_study_scenarios_v7' if source.endswith('_v7')"
+        },
+        {
+          "line": 82,
+          "text": "                                                  else 'zone_study_scenarios_v6' if source.endswith('_v6')"
+        }
+      ]
+    },
+    "input": {
+      "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+      "path": "harness/grasp_act_contract.py",
+      "sha256": "6bc58d6f9707abd5d854c6dbbb63357ed14dab6c37bcf055ddd8d1d66d171056",
+      "matches": [
+        {
+          "line": 1,
+          "text": "\"\"\"Serializable student capability: own images, issued commands and task only."
+        },
+        {
+          "line": 4,
+          "text": "The skill/end token is an instruction, not an estimated/privileged pose."
+        },
+        {
+          "line": 28,
+          "text": "FIELDS = {'schema', 'robot_id', 'sample_id', 't', 'skill', 'object_kind', 'role', 'rgb', 'issued', 'skill_elapsed_s', 'pwm_elapsed_s', 'destination_zone'}"
+        },
+        {
+          "line": 45,
+          "text": "        raise ValueError('issued-command whitelist mismatch')"
+        },
+        {
+          "line": 58,
+          "text": "        raise ValueError('exact own issued PWM channels required')"
+        },
+        {
+          "line": 61,
+          "text": "            raise ValueError('invalid issued PWM')"
+        },
+        {
+          "line": 71,
+          "text": "    if row['skill'] not in SKILLS or row['object_kind'] not in KIND_ROLES or row['role'] not in KIND_ROLES[row['object_kind']]:"
+        },
+        {
+          "line": 72,
+          "text": "        raise ValueError('task instruction must be a skill and named end')"
+        },
+        {
+          "line": 73,
+          "text": "    if row['destination_zone'] not in DESTINATIONS or (row['skill']=='release' and row['destination_zone']=='none'):"
+        },
+        {
+          "line": 75,
+          "text": "    if len(row['rgb']) != RGB_HISTORY or len(row['issued']) != HISTORY:"
+        },
+        {
+          "line": 77,
+          "text": "    for key in ('skill_elapsed_s', 'pwm_elapsed_s'):"
+        },
+        {
+          "line": 78,
+          "text": "        if finite(row[key]) < 0.: raise ValueError('nonnegative issued-command clock required')"
+        },
+        {
+          "line": 80,
+          "text": "    for ref in row['rgb']:"
+        },
+        {
+          "line": 86,
+          "text": "        if ref['path'].startswith('/') or '..' in parts or not parts[0] == 'rgb':"
+        },
+        {
+          "line": 87,
+          "text": "            raise ValueError('RGB path must stay in episode rgb/')"
+        },
+        {
+          "line": 91,
+          "text": "    commands = [command(x) for x in row['issued']]"
+        },
+        {
+          "line": 101,
+          "text": "    for x in row['issued']:"
+        },
+        {
+          "line": 106,
+          "text": "    values.extend(float(row['skill'] == s) for s in SKILLS)"
+        },
+        {
+          "line": 110,
+          "text": "    values.extend(min(120., row[k])/120. for k in ('skill_elapsed_s', 'pwm_elapsed_s'))"
+        },
+        {
+          "line": 124,
+          "text": "    \"\"\"Only instruction changes and issued PWM changes update these clocks.\"\"\""
+        },
+        {
+          "line": 126,
+          "text": "        self.skill = None; self.started = None; self.changed = None; self.pwm = None"
+        },
+        {
+          "line": 127,
+          "text": "    def observe(self, instruction, now, issued_pwm):"
+        },
+        {
+          "line": 129,
+          "text": "        if instruction != self.skill or self.started is None:"
+        },
+        {
+          "line": 130,
+          "text": "            self.skill = instruction; self.started = now"
+        },
+        {
+          "line": 131,
+          "text": "        if self.pwm != issued_pwm or self.changed is None:"
+        },
+        {
+          "line": 132,
+          "text": "            self.pwm = dict(issued_pwm); self.changed = now"
+        },
+        {
+          "line": 133,
+          "text": "        return {'skill_elapsed_s': now-self.started, 'pwm_elapsed_s': now-self.changed}"
+        },
+        {
+          "line": 136,
+          "text": "def encode_action(issued, *, done=False):"
+        },
+        {
+          "line": 137,
+          "text": "    x = command(issued)"
+        },
+        {
+          "line": 157,
+          "text": "    \"\"\"Do not cross episode/actor/skill boundaries or turn timeout into done.\"\"\""
+        },
+        {
+          "line": 168,
+          "text": "        if (label['sample_id'] != obs['sample_id'] or label['skill'] != obs['skill']"
+        },
+        {
+          "line": 172,
+          "text": "            raise ValueError('only successful skill completion is a done target')"
+        },
+        {
+          "line": 177,
+          "text": "            valid = not ended and j < len(labels) and abs(observations[j]['t']-obs['t']-k*PERIOD_S)<1e-5 and (observations[j]['skill'], observations[j]['object_kind'], observations[j]['role'], observations[j]['destination_zone']) == (obs['skill'], obs['object_kind'], obs['role'], obs['destination_zone'])"
+        }
+      ]
+    },
+    "sensors": {
+      "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+      "path": "scripts/run_zone_study_sensors.py",
+      "sha256": "b91fac65632c56a2b88b902513a54c313849ef3effdaae17358e89832f2432ef",
+      "matches": [
+        {
+          "line": 1,
+          "text": "\"\"\"Zone study runner with the opt-in own front-ultrasonic input (adapter, 2026-09-29)."
+        },
+        {
+          "line": 3,
+          "text": "Entry point for a prereg that carries ``\"sensors\": {\"ultrasonic_front\": \"on_v1\"}``."
+        },
+        {
+          "line": 6,
+          "text": "* sensors absent or ``off`` -> ``runner.main`` runs UNPATCHED. The pinned runner,"
+        },
+        {
+          "line": 7,
+          "text": "  executor and host sources are not edited by this adapter, so a sensors-off run"
+        },
+        {
+          "line": 10,
+          "text": "* ``on_v1`` -> for the duration of the run the adapter (1) swaps in a host"
+        },
+        {
+          "line": 11,
+          "text": "  subclass that reads each robot's own front ultrasonic after every physics"
+        },
+        {
+          "line": 14,
+          "text": "  bundle hash differs from every sensors-off baseline, and (3) writes"
+        },
+        {
+          "line": 25,
+          "text": "See ``docs/ultrasonic_range_sensor.md`` section 12."
+        },
+        {
+          "line": 43,
+          "text": "from harness import ultrasonic_input as hi  # noqa: E402"
+        },
+        {
+          "line": 52,
+          "text": "    \"\"\"Normalized sensors of a prereg (``{}`` = off); unknown keys or profiles are refused.\"\"\""
+        },
+        {
+          "line": 57,
+          "text": "    \"\"\"The study host plus the opt-in own ultrasonic: read-only, own readings only.\"\"\""
+        },
+        {
+          "line": 70,
+          "text": "        si = importlib.import_module('sim.ultrasonic_input')"
+        },
+        {
+          "line": 134,
+          "text": "                 'note': 'own front ultrasonic recorded only; no controller reads it; not comparable to sensors-off runs'},"
+        },
+        {
+          "line": 163,
+          "text": "        return runner.main(argv)                       # sensors off: the unpatched runner, unchanged"
+        }
+      ]
+    },
+    "agents": {
+      "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+      "path": "AGENTS.md",
+      "sha256": "433ca70cc0912d0ed035a155d3bb88518482e0f64f80515f1e9fcc0f7aeec7ed",
+      "matches": [
+        {
+          "line": 13,
+          "text": "- 계획·탐색 상한은 실제 시계(wall초) 대신 노드·검사 수 또는 SIM시간으로 둔다. 기본 off 토글로 넣되 새 후보는 켠다. 동시16–24 부하에서 결과가 바뀌고 search 재생68틱·마지막10틱 계획 소진이 어긋난 근거를 유지한다. 호스트 자원 watchdog과 행동 선택 상한은 구분한다."
+        },
+        {
+          "line": 14,
+          "text": "- 거부·막힘·실패 원장은 사유 범주, 막은 물체 이름, 최소 틈을 항상 기록한다. 빈 사유는 허용하지 않으며 미관측·미측정은 그 상태를 명시한다."
+        },
+        {
+          "line": 15,
+          "text": "- 시간 상한 종료는 `cap_end`로 별도 표시한다."
+        },
+        {
+          "line": 23,
+          "text": "- 기본 제어 관측은 해당 로봇의 자기 RGB와 자기 발행 명령 이력이다. 공용 top 카메라는 평가·검토 영상 전용이며 제어·지도 만들기·위치 추정에 쓰지 않는다(2026-10-03 사용자 결정, [#366](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/366); 사용자 원문: \"공용(위) 카메라는 쓰지 않는다. 지도 만들기나 위치 추정에 쓰지 않는다.\"). 평가·채점 전용의 별도 근거는 2026-09-25 사용자 결정([결정 기록 2708행](docs/decision_log.md#2026-09-25--주-연구-조건-변경-무통신동적-통신ai-지휘): \"공용 TOP 카메라를 로봇 LLM 입력에서 뺀다. TOP 영상은 평가·채점용으로만 남긴다.\"; 사용자 원문: \"정적 지도도 계속 llm이 볼 수 있게 … 실제 지도를 보면서 일하듯이 대신 실시간 상황은 못 보고\")이다. 자기 초음파 거리(차체 전면)는 2026-09-28 사용자 결정(#221)으로 **허용된 관측**이지만, 2026-09-29부터 실행 구성의 `sensors.ultrasonic_front=on_v1`로 켤 수 있으나(어댑터 `scripts/run_zone_study_sensors.py`, 기본 off) 어떤 제어기도 아직 판독을 사용하지 않는다. 번들에서 명시적으로 켠 실행에서만 쓰고, 네 통신 조건에 동일하게 적용하며, 켠 실행은 이전 baseline과 구분해 비교한다. 판독은 시각·거리·상태만 전달하고 무엇에 맞았는지 알리지 않는다([센서 모델](docs/ultrasonic_range_sensor.md)). 고정 작업·명령 형식 설명은 관측 정보가 아니다. 실시간 물체/로봇 정답 좌표, 측정 관절, 접촉·성공 판정, 시뮬레이터 상태를 제어·단계 전환·성공 통보에 전달하거나 행동 보정에 사용하지 않는다. 평가는 별도 출력에 기록하고 실제 모델 요청·응답 텍스트와 제거한 이미지의 sha256 목록을 보존한다. 이미지 원본의 보존 범위는 아래 \"디스크 사용\"의 **보존** 규칙을 따른다."
+        },
+        {
+          "line": 24,
+          "text": "- **조정자 해석(사용자 미확인):** 교사의 행동 결정도 보이는 것만 쓰는 원칙(아래 \"근거리 실행\" 항목)에 따라 top 카메라를 쓰지 않는다. 이 교사 확장은 #366 사용자 원문의 범위와 구분한다."
+        },
+        {
+          "line": 27,
+          "text": "- **현실적 질감 (2026-10-15 사용자 결정):** 사용자 원문은 \"특징점 부족하면, 맵에 머 질감같은 거 넣어도 됨. 너무 매끈해서 그런 거면. 현실은 그렇게 미끄럽지 않으니까\"이다. 특징점이 부족하고 너무 매끈해서 그런 경우 맵에 질감을 넣어도 된다는 조건부 허용이다. 벽까지 적용 범위를 넓히고, 기본 off인 별도 장면 버전(토글)으로 기록하여 이전 결과와 합산하지 않으며, 색 인식 범위 침범과 인공 마커(AprilTag 등)를 금지한다는 적용 규칙은 (조정자 해석, 사용자 미확인)이다. 이 마커 금지는 새 자연 질감 프로필의 범위이며 기존 `sim/wall_texture.py`의 별도 `tape_v1` 비교 조건을 폐기하지 않는다. 질감은 시각 재질만 바꾸고 마찰·물리는 바꾸지 않는다는 구현 범위도 (조정자 해석, 사용자 미확인)이다. 이어서 2026-10-15 사용자(바닥에만 특징점이 있고 벽은 대비를 낮춰 ORB 0/150이라는 보고를 보고): \"벽에도 넣고, 벽 / 바닥 색 다르게 해. 쉽게 구분할 수 있도록. 그렇게 시뮬 바꾼 뒤에 그 상황에 효율적일 수 있는 알고리즘으로 다시 설계 ㄱ(첨부터 다시는 말고, 이거에 맞는 방식으로 하면 좋을듯)\". 벽 질감과 벽·바닥 색 분리는 사용자 결정이다. 새 기본 off 장면 버전으로 넣고 이전 질감 결과와 합산하지 않으며, 위치 추정은 기존 구조를 유지한 채 새 장면에 맞게 고친다는 적용은 조정자 해석(사용자 미확인)이다."
+        },
+        {
+          "line": 37,
+          "text": "- **GCP 메인, Azure 보조 (2026-10-14 사용자: \"GCP를 메인으로, Azure는 보조로 하자 그럼. 그렇게 써둬\", \"GCP에서 비싼 거나 좋은 거 써서 시뮬레이션 더 빠르게 해주면 좋겠어\", \"크레딧 넘으면 무조건 멈추고 알려줘\", 학습 GPU는 Modal 검토 뒤 \"GCP 가자 그냥\"):**"
+        },
+        {
+          "line": 42,
+          "text": "  - **다섯 번째 프로젝트 (2026-10-16 사용자: \"프로젝트 하나 더 만들어서 L4 하나 더 써\", \"쳐낼 거 쳐내고, 빠르게 할 건 더 빠르게 할 수 없나\"):** `changmin5781@gmail.com` / `ugrp-sim-e-1016`의 `ugrp-act-l4-gcp5`(별칭 `gcp5`)를 beamact3 C2용으로 준비하며 gcp4와 같은 예산 정지 선검증·유휴20분·실행 시간 상한 없음·전용 키·임대 규칙을 적용하고 다른 프로젝트와 결과를 합산하지 않는다."
+        },
+        {
+          "line": 44,
+          "text": "  - **시뮬 환경 먼저, 그다음 병렬 (2026-10-15 사용자):** \"일단, 시뮬 환경 먼저 세팅하고 / 그 환경에 맞춰서 다 병렬처리로 진행하면 좋을듯\". MJWarp(GPU 물리)는 \"이거 먼저 해보고 더 효율적이면 이걸로 세팅 ㄱㄱ\"이다. 채택 기준(기존 MuJoCo와 물리 동등성 통과 + SIM초당 비용 2배 이상 개선)은 조정자 제안(사용자 미확인)이다."
+        },
+        {
+          "line": 45,
+          "text": "  - **MJWarp 단계적 이동 (2026-10-16 사용자):** \"강화학습 할 거면 어차피 거쳐야 하는데, 그냥 지금부터 MJWarp에 맞춰서 코드 하면 안돼?\", 12 mm 차이 설명 뒤 \"그럼 뭐 걍 하자\". simalt3–5에서 파지 접촉은 30/30으로 회복했고 무부하 끝점 차이는 0.2 mm 이하였다. 같은 모델의 C↔Warp 몸체 끝점 차이 12.1 mm(43 SIM초 파지 동작, 접촉 시작 뒤 벌어짐)는 C3.12↔3.16 원래 차이 65 mm보다 작아, 위 동등성 기준(5 mm)은 지나치게 엄격했다(PR #524). 아래 적용 방식은 조정자 설계(사용자 미확인)다. ACT 교사 시연 기록·ACT 학습·평가와 이후 강화학습은 MJWarp 배치 백엔드(기본 off 토글)로 하고, C와의 동등성 대신 MJWarp 자체 관문(교사 성공률 등)으로 판정한다. LLM이 들어간 E2E와 빔 짝 관문은 묶음 실행기가 생길 때까지 C MuJoCo CPU에 둔다. **확장 (2026-10-16 사용자, 빔 짝·내려놓기가 CPU에서 돈 이유 설명을 들은 뒤: \"MJWarp에서 하도록 바꿔줘\"):** 빔 짝 교사와 내려놓기(release) 흐름도 MJWarp 배치로 옮긴다. 장면을 같은 관절 구성의 단일 모델 + 세계별 배치로 묶는 방식, MJWarp 자체 관문(빔 짝 40, release A40/B40)으로 다시 재고 CPU 관문 결과(beampair7 40/40, release25 A40/B40)와 합산하지 않는 것, LLM E2E는 별도 결정 전까지 CPU에 두는 것은 조정자 설계(사용자 미확인)다. **전체 이동 (2026-10-16 사용자: \"모두 MJWarp로 바꿔서 하게\"):** 위치 추정(자기 지도·운반 주행)과 LLM이 들어간 E2E까지 모든 시뮬레이션 흐름을 MJWarp 배치로 옮긴다. 앞 문장의 \"LLM E2E는 CPU\" 부분은 이 결정으로 대체한다. 각 흐름은 MJWarp에서 자체 관문을 다시 재고 CPU 결과와 합산하지 않으며, 자기 카메라 영상 처리(특징점·색 검출 등)는 MJWarp 렌더로 다시 확인한다는 적용은 조정자 설계(사용자 미확인)다. CPU 경로는 재생·비교용으로 보존한다. 장면·모델 파일은 공유하고, MJWarp에서 학습한 ACT는 CPU E2E에서도 확인한다. 백엔드가 다른 결과는 합산하지 않는다."
+        },
+        {
+          "line": 46,
+          "text": "  - **MJWarp 유지·MJWarp 방식으로 맞추기 (2026-10-16 사용자):** 조정자가 실행당 wall/SIM MJWarp 4.9–5.6(warp10 N16·warp8 N40) 대 CPU 2.8–3.3과 주행 변위 의문(mapbuild2 실제 0.402 mm 대 예측 12.9 mm)을 보고하며 지도·위치 추정·E2E는 CPU 유지를 권했으나 사용자는 \"그래도 모두 MJWarp로 계속 옮겨\", \"MJWarp이 있다기보단, 너가 아직 MJWarp에 제대로 맞추지 못한 편이 맞는 거 아닐까\", \"나중에 강화학습을 할려면, MJWarp을 어차피 맞춰야 해서 나는 MJWarp로 하고 싶어\"라고 했다. 물리를 처음부터 다시 만드는 것에 대해서는 \"그 물리 자체를 처음부터 다시 만드는 건 좀 비효율적일려나\"라고 물었다. 아래 적용은 조정자 설계(사용자 미확인)다. 느림·물리 차이를 MJWarp 한계로 보고하기 전에 우리 포팅이 MJWarp 권장 방식을 따르는지 먼저 확인한다(근거: C 모방용 noslip 10회 강제가 물리 GPU 시간의 약 85%, 혼자 옮기기 장면 nv228–246·ngeom 약 1,390, [MJWarp 문서](https://mujoco.readthedocs.io/en/latest/mjwarp/)는 noslip 미지원·60 DoF 초과 시 성능 저하·접촉 용량 최소화·그래프 캡처를 적는다). 물리를 처음부터 다시 만들지 않고, 같은 외관·카메라·치수를 유지한 MJWarp용 모델 변형(작업에 관여하지 않는 물체 정적화, 충돌 원시 도형·충돌 쌍 필터, noslip 대신 MJWarp 마찰 설정)을 기본 off 토글로 만들어 기존과 짝지어 잰다(MuJoCo Menagerie의 `mjx_*.xml` 방식). 정적화한 물체와 접촉한 실행은 무효로 표시한다. 채택하면 관문은 그 변형으로 다시 재고 합산하지 않는다. CPU로 되돌리자는 제안은 MJWarp에서 고칠 수 없는 결함이 확인될 때만 다시 한다."
+        },
+        {
+          "line": 47,
+          "text": "  - **noslip 끄기·CPU 흉내 설정 금지 (2026-10-16 사용자: noslip10 설명을 들은 뒤 \"걍 그면 되잖아. 아니 왜 이상한 것만 가져와\"):** 사용자 결정은 noslip을 끄는 것이다. 원래 CPU MuJoCo를 흉내 내려고 MJWarp로 가져온 `noslip_iterations=10`은 끈다. 조정자 측정 인용(작업자 warpfit 보고, 조정자 미재계수): MJWarp 물리 시간의 약 85%였고, 끈 `warp_native_contact_v1`(noslip 0·elliptic·implicitfast·impratio 5, PR #562 `sim/warp_native_contact.py` sha256 a5c8d370…)에서 GPU 물리 step이 14–28배 줄었으며 상자 30/30·빔 16/16·64/64 짧은 유지와 전진 변위(16.65→16.56mm)는 유지됐다. 아래는 조정자 적용(사용자 미확인)이다. 모든 새 MJWarp 물리 실행은 이 프로필을 쓰고 각 흐름의 자체 관문을 다시 잰다. noslip10 결과와 합산하지 않으며 원본은 재생·비교용으로 보존한다. 앞으로 CPU 결과와 같게 보이려는 설정(호환 플래그·반복 횟수 등)을 MJWarp로 그대로 가져오지 않는다. 먼저 MJWarp 공식 문서·공개 예제(MuJoCo Playground·Menagerie)의 권장 방식을 찾아 쓰고, CPU 동등성은 근거가 아니라 참고 비교로만 둔다."
+        },
+        {
+          "line": 50,
+          "text": "  - 장치의 한계: 비용 집계가 몇 시간 늦어 \"넘는 순간\"보다 늦게 멈춘다. 디스크·네트워크 같은 VM 밖 비용은 멈추지 못한다. 작업 후 정지 상태를 확인한다. 시뮬레이션 VM gcp1(`ugrp-sim-gcp1`)의 상한은 24시간이다(2026-10-15 사용자 결정. 조정자 질문 \"gcp1 8시간 자동 정지 상한을 어떻게 할까요?\"에 \"24시간으로 늘림\" 선택. 근거: 8시간마다 진행 중 실행이 끊겼다). 2026-10-16 사용자 결정(\"8시간 상한 — 이건 좀 없애라\")에 따라 L4 등 학습·MJWarp VM은 실행 시간 상한 없음, 유휴 20분 종료와 budget-stop은 유지한다. 상한으로 끊긴 실행은 HOST_ERROR로 따로 기록하고 집계에서 빼며 같은 시드로 다시 낸다."
+        },
+        {
+          "line": 56,
+          "text": "  - 속도 게이트: 사용자 원문은 2026-10-15 \"3.5초 이거 좀 더 유연하게 하라니까\"(이전 2026-10-13: \"16개 동시 실행으로 하고, 기준 좀만 여유롭게\")다. 다음 수치와 적용 방식은 조정자 결정(사용자 미확인)이다. GCP도 아래 \"Azure 속도 게이트\"와 같이 별도 속도 단계 없이 계획 동시 수의 본 실행(관문·진단) 첫 30 SIM초에서 wall/SIM 중앙값을 기록·보고한다. 속도 측정은 기록 전용이며 중앙값 >3.5는 경고만 한다. 속도로 실행을 막는 경우는 중앙값 >6.0(평소 2.8–3.3의 약 2배) 또는 측정 실행 미완료/HOST_ERROR뿐이다. 실행 중 경고 파일은 6.0×1.5를 연속 10분 초과할 때 남긴다. 기존 F16als_v6 측정 근거는 해당 머신의 기록으로 보존한다."
+        },
+        {
+          "line": 57,
+          "text": "  - 머신 종류·속도 게이트·디스크 예산·원본 보관 경로는 [GCP 실행](docs/gcp_simulation.md)에 기록한다."
+        },
+        {
+          "line": 58,
+          "text": "- 2026-10-11 사용자 승인으로 시뮬레이션 실행 서버는 Azure `ugrp-sim-azure`로 이관했다(2026-10-14부터 보조 호스트, 위 \"GCP 메인\" 항목). Oracle x86은 실행 종료·원본 보존 확인 후 정지하며 ARM 보관 서버는 유지한다. 스타트업 크레딧 사용에는 예산/합산 비용·만료·유휴 20분·8시간 상한·매일 종료의 할당 해제 장치를 먼저 구성한다. 작업 후 VM은 `deallocated`로 확인한다. Azure에서는 구독 `88b7ee7f-f2f3-4a0d-a0ce-cf7306943676`만 실행 자원에 사용하고 모든 Azure CLI 자원 명령에 `--subscription`을 명시한다. [Azure 실행](docs/azure_simulation.md)을 따른다. Lightning과 옛 Azure/Colab 상시 배포·자동 복구는 퇴역 상태이며 과거 설정은 `docs/cloud_simulation.md`에 보존한다. 새 Colab 경로는 명시적으로 선택한 유한 배치만 사용한다."
+        },
+        {
+          "line": 78,
+          "text": "- **판단 모델 (2026-10-13 사용자 결정: \"공개 모델중에 찾아야 하는 거 아닌가 그래도\"; 2026-10-14 사용자 선택 \"Gemma 4 31B @DeepInfra\"):** 판단 LLM은 공개 가중치 모델 중에서 고른다(버전 고정·재현성). 새 계획기 번들의 기본은 Gemma 4 31B(`google/gemma-4-31b-it`, OpenRouter 공급자 CoreWeave의 fp4 엔드포인트 `coreweave/fp4` 고정, fallback 끔)이다. 실제 실행의 판단 호출은 자기 RGB 1장을 함께 받는다(r80 Gemma 모델 요청 196/196회에 이미지 1장, 약 14 KB). 이미지를 못 받는 모델·엔드포인트는 쓰지 않는다. 2026-10-13에는 Ling-3.0-Flash-VL을 골랐으나(Artificial Analysis Intelligence Index v4.3.2: Ling-3.0-Flash-VL 25, Gemma 4 31B 15. Ling 점수는 reasoning을 켠 측정), 실제 부하에서 상류 공유 한도 429에 막혀 바꿨다. 조정자 측정(2026-10-14, 저장된 실제 판단 요청 40개를 분당 약 40회로 전송, 성공/40·응답 중앙값·호출당 비용): Ling-VL@Novita 27/40·1.5초·$0.00009, Ling-VL@DeepInfra 2/40, Gemma 4 31B@DeepInfra 40/40·3.4초·$0.0004(8초 넘음 2/40), Mistral Small 3.2@DeepInfra 40/40·2.1초, Gemma 4 26B-A4B@Darkbloom 40/40·3.7초(양자화 미표시), @CoreWeave 16/40. 분당 약 40회는 동시 16실행 예상 부하(r80 기준 실행당 첫 30 SIM초 4회, wall/SIM 3.5에서 분당 36.6회)에 맞춘 값이고, 실제 16실행 동시 운전에서의 429 비율은 아직 측정하지 않았다. 성공은 형식(JSON의 act 필드)만 본 것이며 우리 과제 정확도는 미측정이다. 이 측정은 계획기 코드의 고정 설정이 아니다(측정 때는 공급자만 고정했고 fp8 엔드포인트가 이미지를 못 받아 fp4로 갔다). 계획기 번들에서는 태그 또는 양자화 fp4를 명시해 고정한다. 다른 판단 모델 결과와 합산하지 않으며, 양자화를 확인하지 않은 이전 Gemma 결과와도 합산하지 않는다. 기본 모델을 바꾸기 전에는 실제 동시 실행 부하(동시 실행 수 × 실행당 호출/SIM초)로 짧은 연속 호출 점검을 해서 429 비율을 확인한다. 공급자가 사라지거나 한도에 막히면 대안 측정치를 들고 사용자에게 묻는다. 모델을 바꾼 첫 실행은 첫 30 SIM초 점검에 형식 오류 수·응답 시간·429 수·캐시 비율·이미지 전달 여부를 넣는다."
+        },
+        {
+          "line": 82,
+          "text": "- **근거리 실행은 정답 교사 → ACT 학생 (2026-10-14 사용자: \"근본적으로 좀 해결하자\", \"llm이 판단할 때에는 위치를 모르게, 코드는 위치를 알게 해서 교사 그걸 만들고 ACT를 만들어\", \"가장 좋은 구성으로 가주고\", \"ACT로 가자\", \"Kaggle ㄱㄱ 하자\"(학습 GPU는 10/14 후속 결정으로 GCP)):** 이 항목이 근거리 구간에서는 위 \"역할\" 항목보다 우선한다. 결정과 근거는 [실행 구조 결정 기록](docs/act_execution_decisions.md)을 따르고, 바꿀 때는 사용자 원문과 함께 그 문서를 고친다."
+        },
+        {
+          "line": 85,
+          "text": "  - ACT 학생(학습 모델 하나, \"act 코드\"와 다름): 화물 근처의 접근·정렬·집기·놓기를 한다. 입력은 자기 RGB 이력, 자기 명령 이력, 스킬·물건 종류·자리 번호표뿐이다(자유 문장 없음)."
+        },
+        {
+          "line": 86,
+          "text": "  - 정답 교사 코드: 시연만 만든다. 행동 결정에는 지금 자기 카메라에 보이는 대상의 위치만 쓰고, 성공 판정·평가에는 전체 정답을 쓴다(결정 기록 4절). 교사 성공 ≥95%(최소 40회)를 확인한 뒤에만 데이터를 만든다. 성공률 측정 때는 학습용 카메라 기록을 끄고(검토 영상·명령 궤적·원장만), 교사 성공률을 확인한 뒤에 실제 학생 카메라 해상도·주기·화각 그대로 기록한다(\"일단 성공을 하고, 그 다음에 기록을 해서 학습에 써야지\"). 교사는 학생이 따라 할 수 있게 움직인다: 접근·정렬 동안 카메라로 맡은 끝을 화면 안에 둔다(사용자: \"코드에서도, ACT가 학습 가능하게 보고 간다거나 해야하는 거 아닌가\"). 화면 밖 마지막 구간을 짧고 일정하게 하고 가시 비율을 관문 전에 재는 것은 조정자 제안이며 사용자가 기록을 승인했다. 교사는 지금 자기 카메라에 보이는 대상의 위치만 안다(사용자: \"그 교사도.. 눈으로 보고 있는 것에 대한 위치만 알게 하는 게 어때\"). 화물을 잡고 있는 동안은 예외다: 화면에 보여도 그 화물의 세계 좌표(지도 위 정답 위치)를 교사·지도 코드·판단 LLM 입력에 넣지 않는다(사용자: \"혹시, 빔을 들고 옮길 때에도 빔의 위치를 아나? 그러면 뭐 맵핵같은 거 아닌가? 그럴 때에는 모르게 하는 게 어때\"). 구간의 정의(자기 집게가 잡은 동안, 들기 확인 뒤~놓기 완료, 들기 확인은 접촉·측정 관절·정답 높이가 아니라 자기 명령 이력과 자기 RGB로 판단, 공동 운반은 어느 로봇이든 잡은 동안, 잡기 실패·낙하도 같은 근거(자기 명령 이력·자기 RGB)로 감지하고 다시 보이는 것만 아는 교사로 복귀, 적용 대상 세 곳과 빔 외 화물로의 확대 포함), 허용 범위, 토글 `held_object_hidden_v1`(프로필 설정 스위치)과 입력 감사 `held_world_reads=0`(실행 뒤 입력 기록 점검)은 조정자 해석·설계이며 사용자 확인 전이다(결정 기록 4절). 정답은 성공 판정·평가에만 쓰고, 교사 관문은 이 교사로 다시 잰다. 안 보이는 대상의 추정 방식 등 세부는 조정자 제안이다(결정 기록 4절). 학습 GPU는 GCP다(2026-10-14 사용자 결정, 위 \"GCP 메인\" 항목). Kaggle은 사용자 확인 뒤에만 쓰는 대체 경로다."
+        },
+        {
+          "line": 87,
+          "text": "  - 내려놓은 뒤 진짜 둘러보기 (2026-10-14 사용자, 해제 관문 영상을 본 뒤: \"둘러보기 위해서 아래에 뒀으면, 진짜 좀 둘러봐야 할듯\"): 사용자 결정은 이 인용 범위다. 주변을 둘러보려고 화물을 내려놓았으면 실제로 둘러본다. 조정자 관측(독립 재검증 아님): 해제 관문(내려놓기 성공 40/40을 잰 관문, 원본 `outputs/e2e18-admin/gcp-reports/release-gate-4a69e6bc.json`, 영상 `release-gate-39-4a69e6bc.mp4`와 `release-gate-39-frames/`) 39번 영상에서 로봇은 빔을 내려놓고 물러난 뒤 자기 끝 색 띠만 보고 바로 다시 잡거나 끝냈고 주변 지형지물은 거의 보지 않았다. 운반 중 내려놓기 진단(G2/G6)에서는 고정 카메라 팬(카메라를 좌우로 돌리는 서보 값) 3개(500/1000/2500, 단위는 원본 확인 전)가 6/6 모두 정보가 없었고, 문에서 가까운 로봇은 구역 표시를 9개 중 0–1개만 봤다. G2/G6 원본 경로는 이 문서에서 미확인이다. 아래는 모두 조정자 해석·설계이며 사용자 확인 전이다. 목적은 자기 위치를 다시 잡는 것이고, 자기 끝 색 띠만 보고 바로 다시 잡거나 끝내지 않는다. 둘러보기는 지도 코드의 주행 단계 기술(스킬)이다. ACT 학생의 파지 경로를 대신하지 않으며 근거리 파지 경로에 가드를 덧붙이는 것도 아니고, 화물 세계 좌표도 읽지 않는다. 정적 지도와 자기 추정 위치로 그 자리에서 보일 지형지물(벽 모서리, 문, 구역 표시)의 방향을 계산해 그쪽으로 카메라나 몸을 돌린다. 둘러볼 방향을 정하는 데는 정답을 쓰지 않는다. 두 로봇이 나눠 보는 것은 그 통신 조건의 채널로만 하고(통신 없음에서는 각자 전부 둘러본다) 구조화된 옆길은 쓰지 않는다. 본 지형지물 수와 둘러보기 전후 위치 오차를 기록한다(정답은 오차 계산에만, 평가 전용). 토글(프로필 설정 스위치) `setdown_lookaround_v1`로 넣는다. 이 규칙은 토글을 켠 실행의 요구이고, 기본 off와 이후 기본 전환은 사용자 확인 전이다. 켠 실행은 이전 프로필 결과(해제 관문 40/40)와 합산하지 않는다. 상세는 결정 기록 4절."
+        },
+        {
+          "line": 89,
+          "text": "  - 끝 색: 끝 색(청록/파랑) 장면은 사용자 허용(\"혹시라도 빔 끝 문제가 힘들면 끝 색 서로 다르게 해도 돼\")에 따른 별도 장면 버전(토글)이다. ACT 데이터와 평가는 이 버전을 쓰고 이전 결과와 합산하지 않는다. 무거운 상자(heavy_crate)의 손잡이(lug) 두 개도 같은 방식으로 서쪽 청록·동쪽 파랑으로 다르게 칠한다(2026-10-14 사용자 결정. 조정자 질문: \"무거운 상자는 손잡이 두 개가 모두 검정이라, 카메라만으로는 어느 쪽이 서쪽이고 어느 쪽이 동쪽인지 구분할 수 없습니다. 빔 끝처럼 손잡이 색을 서쪽 청록·동쪽 파랑으로 다르게 해도 될까요?\" 사용자 선택: \"색 다르게\"). 구현은 PR #500의 토글 `crate_lug_colors_v1`이며 별도 장면 버전이라 이전 결과와 합산하지 않는다."
+        },
+        {
+          "line": 90,
+          "text": "  - 화물 v6 (2026-10-14 사용자: \"걍 타일같은 건 빼는 게 어떄? 보라 캔도 연구 목적과 상관없는 거 같아\", \"빠진 자리는 어떻게 할까요?\" → \"같은 상자로 대체 (Recommended)\"): tile·can을 장면에서 미사용/최소 개수 색의 기존 작은 상자로 대체해 화물 수·작업량을 유지한다. v6 결과는 이전과 합산하지 않고 코드·이전 결과는 재생용 보존한다. 1대 교사(`sim/grasp_act_solo_teacher.py`)의 v6 운반 종류는 BOX_KINDS(cyan/red/green/yellow)뿐이다."
+        },
+        {
+          "line": 91,
+          "text": "  - 무거운 상자 제외 (2026-10-15 사용자: \"무거운 상자나, 긴 빔이나 둘 다 2명이서 들어야 한다는 건 똑같아서 버려도 돼\"): heavy_crate는 연구에서 뺀다. 두 로봇 공동 운반은 long_beam으로 다룬다. v6 s2·s7·s8의 crate 주문을 long_beam으로 바꾸는 것(시나리오 v7, PR #519)(새 시나리오 버전, v6과 합산 금지)과 crate 코드·토글·이전 결과의 재생용 보존은 조정자 설계(사용자 미확인)다. 위 \"끝 색\" 항목의 손잡이 색 토글은 재생용으로만 남는다. 상세는 결정 기록의 \"무거운 상자 제외\"."
+        },
+        {
+          "line": 97,
+          "text": "- **지표 보고:** 전체 n/N과 함께 실제 실패 원인에 해당하는 핵심 부분집합(예: GO가 필요한 장면 9/30)을 따로 보고한다. 쉬운 사례로 전체 비율이 좋아 보이는 것을 개선으로 보고하지 않는다."
+        },
+        {
+          "line": 99,
+          "text": "- **비용:** 응답에 비용 칸이 없다고 무료로 보고하지 않는다. 공식 가격을 확인하고 토큰 수로 환산하며 확인 못 한 청구액은 미확인으로 적는다. 비용 추정은 실제 원장의 prompt_tokens·completion_tokens 중앙값과 캐시 읽기 단가로 한다(조정자 관찰: r4 Gemma 계획기 3,556회는 입력 중앙 4,917·출력 61토큰이었다)."
+        },
+        {
+          "line": 100,
+          "text": "- **캐시 (2026-10-13 사용자 요청: \"앞으로 캐시 규칙 넣어줘\"):** 모델 요청은 공급자의 앞부분 일치 캐시가 맞도록 만든다."
+        },
+        {
+          "line": 102,
+          "text": "  - 공급자를 고정하고 fallback을 끈다(캐시는 공급자마다 따로다). 명시 표시가 필요한 공급자는 고정 부분 끝에 캐시 표시를 단다."
+        },
+        {
+          "line": 103,
+          "text": "  - 원장에 요청마다 `prompt_tokens_details.cached_tokens`를 남기고, 첫 30 SIM초 점검과 비용 보고에 캐시 비율(cached_tokens 합 ÷ prompt_tokens 합)을 함께 적는다. 조정자 관찰: r4 Gemma 계획기는 3,505/3,556회가 캐시에 맞았지만 비율은 26%였다. 원인 추정(순서 변경 실험 전): 거의 고정인 공용 규칙이 바뀌는 칸 뒤에 있었고, 실제 실행에서는 현재 시각이 입력의 네 번째 칸이었다."
+        },
+        {
+          "line": 118,
+          "text": "    - 계획·탐색 시간 한도는 실제 시계(wall 초) 대신 계산량(탐색 노드·검사 수)이나 SIM 시간으로 둔다. 동시 16–24 실행 부하에서는 같은 장면도 결과가 달라지고 재생이 어긋났다(조정자 관찰: search 재생 68틱 불일치, 실패 장면의 마지막 10틱 계획 시간 소진). 기존 동작은 기본 off 토글 규칙대로 남긴다."
+        },
+        {
+          "line": 119,
+          "text": "    - 거부·막힘·실패 원장에는 사유 범주와 막은 물체 이름·최소 틈을 항상 적는다. 고치기 전에 거부 사유 분포 표를 만들고 가장 큰 원인부터 고친다(조정자 사례: search21·22가 거부의 6%인 기억 여유만 고쳤고, 실제 원인은 고정 16경로 연결이었다)."
+        },
+        {
+          "line": 121,
+          "text": "    - 시간 상한으로 끝난 실행은 상한 종료(cap_end)로 따로 표시하고 결함 실패와 섞지 않는다."
+        },
+        {
+          "line": 124,
+          "text": "    - 동시 실행 수: GCP 64코어 VM에서 대기열의 기본 동시 실행 수를 8에서 16–24로 올린다. 속도 게이트(기록 전용, >6.0만 차단)는 그대로 적용하고 첫 배치의 wall/SIM 중앙값을 기록한다."
+        },
+        {
+          "line": 127,
+          "text": "- **작업자 충돌 방지 (2026-10-16 사용자: \"에이전트끼리 충돌 안 나게도 해줘\"):** 아래는 조정자 설계(사용자 미확인)다. 조정자는 작업자마다 VM 하나와 파일 소유 범위를 `outputs/e2e18-admin/agent-ownership.md`에 적어 전달한다(gcp2 CPU만 임대 규칙으로 공유). 공용 MJWarp 백엔드(`scripts/warp_act_*.py`)는 기본 off 토글로만 고치고 큰 변경은 별도 모듈에 둔다. 진단 작업자는 공용 코드를 고치지 않고 수정안만 기록한다. 등록부(`scripts/run_ci_tests.py`, `configs/simulation_workflows.json`)는 항목 추가만 하며 병합 충돌은 합집합으로 푼다. 토글 이름·번들 ID는 추가 전에 열린 브랜치 전체에서 중복을 확인한다. 조정자는 15분마다 같은 코드 파일을 서로 다르게 고친 활성 브랜치 쌍, 작업자 종료, 90분 넘게 보고 없는 작업, VM 상태 변화, 디스크 여유를 확인한다."
+        },
+        {
+          "line": 163,
+          "text": "- **Azure 속도 게이트(2026-10-12 사용자 요청):** 사용자 원문은 2026-10-15 \"3.5초 이거 좀 더 유연하게 하라니까\"(이전 2026-10-13: \"16개 동시 실행으로 하고, 기준 좀만 여유롭게\")다. 다음 수치와 적용 방식은 조정자 결정(사용자 미확인)이다."
+        }
+      ]
+    },
+    "nsoff": {
+      "sha": "757632c42ee93b873cd573999bdb074f7469b54c",
+      "path": "sim/execution_contact_profile.py",
+      "sha256": "ee42a0e4b2259605d9318dc6c793aa6fd25197d6a9465d08d6cc344f61409e54",
+      "matches": [
+        {
+          "line": 11,
+          "text": "CPU_DEFAULT = 'cargo_native_v1'"
+        },
+        {
+          "line": 12,
+          "text": "WARP_DEFAULT = 'warp_native_contact_v1'"
+        },
+        {
+          "line": 13,
+          "text": "LEGACY = 'legacy_noslip10'"
+        },
+        {
+          "line": 14,
+          "text": "LEGACY_NAMES = (LEGACY, 'cargo_noslip_v1', 'baseline_noslip10')"
+        },
+        {
+          "line": 15,
+          "text": "CONTACT_PROFILES = (CPU_DEFAULT, WARP_DEFAULT, *LEGACY_NAMES)"
+        },
+        {
+          "line": 16,
+          "text": "NATIVE_OPTIONS = {**PROFILES[WARP_DEFAULT], 'solver': 'Newton',"
+        },
+        {
+          "line": 21,
+          "text": "    if profile in LEGACY_NAMES:"
+        },
+        {
+          "line": 23,
+          "text": "    if profile in (CPU_DEFAULT, WARP_DEFAULT):"
+        },
+        {
+          "line": 28,
+          "text": "def apply_xml(xml, profile=WARP_DEFAULT):"
+        },
+        {
+          "line": 30,
+          "text": "    if profile in LEGACY_NAMES:"
+        },
+        {
+          "line": 33,
+          "text": "    root = ET.fromstring(native_xml(xml, WARP_DEFAULT))"
+        },
+        {
+          "line": 38,
+          "text": "def configure_model(model, profile=WARP_DEFAULT):"
+        },
+        {
+          "line": 40,
+          "text": "    if profile not in LEGACY_NAMES:"
+        },
+        {
+          "line": 58,
+          "text": "    expected = 10 if profile in LEGACY_NAMES else 0"
+        },
+        {
+          "line": 59,
+          "text": "    if int(model.opt.noslip_iterations) != expected:"
+        },
+        {
+          "line": 60,
+          "text": "        raise ValueError(f'{profile}: expected noslip_iterations={expected}, got {model.opt.noslip_iterations}')"
+        },
+        {
+          "line": 66,
+          "text": "    return {'profile': profile, 'noslip_iterations': expected, 'execution_bundle_id': BUNDLE_ID}"
+        },
+        {
+          "line": 71,
+          "text": "                        default=WARP_DEFAULT if warp else CPU_DEFAULT,"
+        },
+        {
+          "line": 84,
+          "text": "        if profile in LEGACY_NAMES:"
+        }
+      ]
+    },
+    "cpu_contact": {
+      "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+      "path": "sim/zone_cargo_contact.py",
+      "sha256": "2ce68eafc285ff86261559f612a71c5178d2cf87ee7777cb71c0b9a9a3c28541",
+      "matches": [
+        {
+          "line": 8,
+          "text": "``cargo_noslip_v1`` (2026-09-25 user request \"remove the slip\"):"
+        },
+        {
+          "line": 14,
+          "text": "the normal solref did nothing; ``noslip_iterations`` removes the residual slip"
+        },
+        {
+          "line": 30,
+          "text": "    'cargo_noslip_v1': {"
+        },
+        {
+          "line": 33,
+          "text": "        'option': {'noslip_iterations': '10'},"
+        }
+      ]
+    },
+    "heading": {
+      "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+      "path": "harness/path_heading_policy.py",
+      "sha256": "9300636813b583ba05a41e1c51dab048ef02e8aae89f4d1146544087c0619db4",
+      "matches": [
+        {
+          "line": 1,
+          "text": "\"\"\"One default for new users of the shared calibrated driving layer."
+        },
+        {
+          "line": 3,
+          "text": "Versioned S2 bundles through v143 are historical command replays. Missing"
+        },
+        {
+          "line": 4,
+          "text": "options in those bundles mean off; new callers default to path heading."
+        },
+        {
+          "line": 6,
+          "text": "import json"
+        },
+        {
+          "line": 14,
+          "text": "    options = bundle.get('options', {})"
+        },
+        {
+          "line": 15,
+          "text": "    mode = options.get('heading_mode')"
+        },
+        {
+          "line": 16,
+          "text": "    if mode is None:"
+        },
+        {
+          "line": 17,
+          "text": "        old = re.fullmatch(r'zone-s2-realism-v(\\d+)', bundle.get('execution_bundle_id', ''))"
+        },
+        {
+          "line": 20,
+          "text": "        raise ValueError('unknown heading_mode')"
+        },
+        {
+          "line": 27,
+          "text": "    No controller receives this file; old records without explicit options are"
+        },
+        {
+          "line": 30,
+          "text": "    if path.name != 'result.json' or not isinstance(value, dict):"
+        },
+        {
+          "line": 32,
+          "text": "    source = path.parent/'bundle.json'"
+        },
+        {
+          "line": 35,
+          "text": "    bundle = json.loads(source.read_text())"
+        },
+        {
+          "line": 36,
+          "text": "    options = bundle.get('options', bundle.get('controller_config', {}).get('options', {}))"
+        },
+        {
+          "line": 37,
+          "text": "    if 'heading_mode' not in options:"
+        },
+        {
+          "line": 39,
+          "text": "    mode = mode_for_bundle(dict(options=options))"
+        },
+        {
+          "line": 40,
+          "text": "    return {**value, 'heading_mode': mode,"
+        },
+        {
+          "line": 41,
+          "text": "            'heading_visual_lock': options.get('heading_visual_lock', 'off')}"
+        }
+      ]
+    },
+    "end_colors": {
+      "sha": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+      "path": "sim/grasp_act_scene.py",
+      "sha256": "c558fbb29ef49a07ef38ae0dedfcb50499dff3494e207ba50306abebfad7048a",
+      "matches": [
+        {
+          "line": 10,
+          "text": "COLORS={'teal':(.02,.95,.60,1.),'blue':(.02,.02,.95,1.)}"
+        },
+        {
+          "line": 11,
+          "text": "COLOR_PROFILE='grasp_act_teal_blue_v1'"
+        },
+        {
+          "line": 18,
+          "text": "    for suffix,end in (('band_neg','teal'),('band_pos','blue')):"
+        },
+        {
+          "line": 21,
+          "text": "        found[0].set('rgba',' '.join(map(str,COLORS[end])))"
+        },
+        {
+          "line": 32,
+          "text": "        after=colors(before,plan['end_color_scene'])"
+        },
+        {
+          "line": 33,
+          "text": "        scene.manifest['grasp_act_scene']={'version':'grasp_act_scene_v1','colors':plan['end_color_scene'],"
+        }
+      ]
+    }
+  }
+}

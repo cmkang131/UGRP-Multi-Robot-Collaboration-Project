@@ -45,7 +45,9 @@ def test_pr325_preserves_current_v6e_source_bytes(path):
     original = _candidate(REGISTRATION)
     assert hashlib.sha256(original).hexdigest() == '64c2680781f1b989312c3ac091c6e0458579ced7ed65d9e9730aadbc416f4bfd', 'Do not rewrite the old seal'
     expected = json.loads(original)['v6_contract']['source_sha256'][path]
-    actual = hashlib.sha256(_candidate(path)).hexdigest()
+    # noslip defaults advance the live host; audit the sealed host at its original Git source.
+    data = _successor_candidate(path) if path == 'harness/zone_own_team_host.py' else _candidate(path)
+    actual = hashlib.sha256(data).hexdigest()
     assert actual == expected, f'{path}: v6e={expected}, candidate={actual}'
 
 

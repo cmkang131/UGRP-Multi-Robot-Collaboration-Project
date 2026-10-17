@@ -1,0 +1,60 @@
+{
+  "buildConfig": {
+    "automaticUpdatePolicy": {},
+    "build": "projects/443356522325/locations/us-central1/builds/944eaf6f-03bf-475c-9d1e-0c53229f56cf",
+    "dockerRegistry": "ARTIFACT_REGISTRY",
+    "dockerRepository": "projects/ugrp-sim-c-1016/locations/us-central1/repositories/gcf-artifacts",
+    "entryPoint": "stop_on_budget",
+    "runtime": "python312",
+    "serviceAccount": "projects/ugrp-sim-c-1016/serviceAccounts/443356522325-compute@developer.gserviceaccount.com",
+    "source": {
+      "storageSource": {
+        "bucket": "gcf-v2-sources-443356522325-us-central1",
+        "generation": "1792121633691277",
+        "object": "budget-stop/function-source.zip"
+      }
+    },
+    "sourceProvenance": {
+      "resolvedStorageSource": {
+        "bucket": "gcf-v2-sources-443356522325-us-central1",
+        "generation": "1792121633691277",
+        "object": "budget-stop/function-source.zip"
+      }
+    }
+  },
+  "createTime": "2026-10-16T03:33:55.467348749Z",
+  "environment": "GEN_2",
+  "eventTrigger": {
+    "eventType": "google.cloud.pubsub.topic.v1.messagePublished",
+    "pubsubTopic": "projects/ugrp-sim-c-1016/topics/budget-stop",
+    "retryPolicy": "RETRY_POLICY_DO_NOT_RETRY",
+    "serviceAccountEmail": "budget-stopper@ugrp-sim-c-1016.iam.gserviceaccount.com",
+    "trigger": "projects/ugrp-sim-c-1016/locations/us-central1/triggers/budget-stop-965507",
+    "triggerRegion": "us-central1"
+  },
+  "labels": {
+    "deployment-tool": "cli-gcloud"
+  },
+  "name": "projects/ugrp-sim-c-1016/locations/us-central1/functions/budget-stop",
+  "satisfiesPzi": true,
+  "serviceConfig": {
+    "allTrafficOnLatestRevision": true,
+    "availableCpu": "0.3333",
+    "availableMemory": "512Mi",
+    "environmentVariables": {
+      "LOG_EXECUTION_ID": "true",
+      "TARGET_PROJECT": "ugrp-sim-c-1016"
+    },
+    "ingressSettings": "ALLOW_ALL",
+    "maxInstanceCount": 1,
+    "maxInstanceRequestConcurrency": 1,
+    "revision": "budget-stop-00001-wus",
+    "service": "projects/ugrp-sim-c-1016/locations/us-central1/services/budget-stop",
+    "serviceAccountEmail": "budget-stopper@ugrp-sim-c-1016.iam.gserviceaccount.com",
+    "timeoutSeconds": 60,
+    "uri": "https://budget-stop-lf4jwfhfza-uc.a.run.app"
+  },
+  "state": "ACTIVE",
+  "updateTime": "2026-10-16T03:37:30.485655442Z",
+  "url": "https://us-central1-ugrp-sim-c-1016.cloudfunctions.net/budget-stop"
+}

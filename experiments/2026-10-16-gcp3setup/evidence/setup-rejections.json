@@ -1,0 +1,29 @@
+{
+  "scope": "infrastructure attempts; no controller/geometry changes",
+  "rejections": [
+    {
+      "category": "api_disabled",
+      "count": 1,
+      "reason": "budget list before enabling Budget API",
+      "blocking_object": "not_applicable_infrastructure",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not_applicable_no_geometry"
+    },
+    {
+      "category": "invalid_billing_publisher_principal",
+      "count": 1,
+      "reason": "corrected to the existing gcp2 topic principal",
+      "blocking_object": "not_applicable_infrastructure",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not_applicable_no_geometry"
+    },
+    {
+      "category": "new_iam_principal_not_yet_visible",
+      "count": 1,
+      "reason": "same service account binding succeeded on retry",
+      "blocking_object": "not_applicable_infrastructure",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not_applicable_no_geometry"
+    }
+  ]
+}

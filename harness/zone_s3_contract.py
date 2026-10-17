@@ -37,7 +37,9 @@ def inputs():
     return scenario, map_bundle, sheet
 
 
-def bundle(source_sha, *, seed=601, speedups='v98-exact-v6'):
+def bundle(source_sha, *, seed=601, speedups='v98-exact-v6', contact_profile='cargo_native_v1'):
+    from sim.execution_contact_profile import cargo_name
+    contact_profile = cargo_name(contact_profile)
     if not re.fullmatch('[0-9a-f]{40}', source_sha):
         raise ValueError('S3 requires a full source SHA')
     if type(seed) is not int or seed not in SEEDS or speedups not in ('none', 'v98-exact-v6'):
@@ -48,7 +50,7 @@ def bundle(source_sha, *, seed=601, speedups='v98-exact-v6'):
     require_v3_consumers({'skill_module': 'harness.zone_s3_host'}, build_pair_provider)
     # Parent bundles are reused as source/calibration/timing provenance, not as
     # admission of new seeds or mixed placements, and never as success evidence.
-    parent = solo.bundle(source_sha)
+    parent = solo.bundle(source_sha, contact_profile=contact_profile)
     paths = set(parent['source_sha256']) | set(source_closure(ROOT, [
         'harness/zone_s3_contract.py', 'scripts/run_s3_host.py', 'sim/zone_s3_host.py']))
     paths.update((SCENARIO_PATH, WORKFLOW, LAUNCH))
@@ -60,7 +62,7 @@ def bundle(source_sha, *, seed=601, speedups='v98-exact-v6'):
         'scenario_id': scenario['scenario_id'], 'scenario_sha256': hp.base.digest(scenario),
         'map_id': solo.MAP_ID, 'map_sha256': hp.base.digest(static),
         'map_bundle_sha256': hp.base.digest(map_bundle), 'order_sheet_sha256': hp.base.digest(sheet),
-        'robot_model': 'masterpi_v3', 'contact_profile': 'cargo_noslip_v1', 'weld': 'off',
+        'robot_model': 'masterpi_v3', 'contact_profile': contact_profile, 'contact_execution_bundle_id': 'noslip-off-v445' if contact_profile != 'cargo_noslip_v1' else None, 'weld': 'off',
         'seed': seed, 'provider_seeds': {'r1': seed, 'r2': seed+1, 'r3': seed+2},
         'pair_role_assignment': dict(ROLES), 'solo_robot': 'r3', 'model_calls': 0,
         'parent_bundles': [solo.BUNDLE_ID, hp.BUNDLE_ID],
@@ -79,6 +81,6 @@ def bundle(source_sha, *, seed=601, speedups='v98-exact-v6'):
 
 
 def verify(value):
-    expected = bundle(value['source_sha'], seed=value['seed'], speedups=value['speedups'])
+    expected = bundle(value['source_sha'], seed=value['seed'], speedups=value['speedups'], contact_profile=value['contact_profile'])
     if hp.base.digest(value) != hp.base.digest(expected):
         raise ValueError('S3 bundle/source/config mismatch')
