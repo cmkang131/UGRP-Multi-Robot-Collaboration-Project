@@ -14,6 +14,9 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--run',type=Path,required=True);p.add_argument('--out',type=Path,required=True)
     a=p.parse_args();host=require_gcp2(training=True);source=frozen_source(Path(__file__).resolve().parents[1])
+    stage=read(a.run/'summary.json')
+    if stage.get('cohort')!='act17-v7-native' or not isinstance(stage.get('training_rgb'),bool):
+        raise ValueError('actual v7 stage capture setting required')
     rows=[]
     for controller in sorted(a.run.glob('group-*/controller')):
         for world in sorted(controller.glob('world-*')):
@@ -36,7 +39,8 @@ def main():
                 command_prefix_sha256=__import__('hashlib').sha256(json.dumps(prefix,sort_keys=True,separators=(',',':')).encode()).hexdigest(),
                 raw=dict(path=str(actual),sha256=sha256(actual)),source_sha=source))
     report=dict(source_sha=source,host=host,scope='actual first30SIM command/visibility prefixes, no inferred task success',
-        rows=rows,N=len(rows),physics_steps=0,rendered_frames=0,training_rgb=False,
+        rows=rows,N=len(rows),physics_steps=0,rendered_frames=0,training_rgb=stage['training_rgb'],
+        runtime_summary=dict(path=str(a.run/'summary.json'),sha256=sha256(a.run/'summary.json')),
         timing_note='do not infer exact first30 latency from later progress snapshots; observed_SIM is recorded separately',reproduce=sys.argv)
     with a.out.open('x') as f:json.dump(report,f,indent=2)
     print(json.dumps(dict(N=len(rows),phase_counts=dict(sum((Counter(r['phase_counts']) for r in rows),Counter())))))
