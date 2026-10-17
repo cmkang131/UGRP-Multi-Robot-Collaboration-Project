@@ -1,0 +1,9 @@
+ERROR: (gcloud.beta.quotas.preferences.update) HttpError accessing <https://cloudquotas.googleapis.com/v1beta/projects/ugrp-sim-b-1014/locations/global/quotaPreferences/gpus-all-regions?alt=json&allowMissing=False&validateOnly=False>: response: <{'vary': 'Origin, X-Origin, Referer', 'content-type': 'application/json; charset=UTF-8', 'content-encoding': 'gzip', 'date': 'Thu, 15 Oct 2026 22:16:56 GMT', 'server': 'ESF', 'x-xss-protection': '0', 'x-frame-options': 'SAMEORIGIN', 'x-content-type-options': 'nosniff', 'alt-svc': 'h3=":443"; ma=2592000,h3-29=":443"; ma=2592000', 'transfer-encoding': 'chunked', 'status': 429}>, content <{
+  "error": {
+    "code": 429,
+    "message": "com.google.api.cloudlimits.shared.quotacontrol.ResourceExhaustedException: Quota exceeded for quota metric 'Quota Increase Requests' and limit 'Quota Increase Requests per day' of service 'cloudquotas.googleapis.com' for consumer 'project_number:32555940559'. Code: RESOURCE_EXHAUSTED",
+    "status": "RESOURCE_EXHAUSTED"
+  }
+}
+>
+This may be due to network connectivity issues. Please check your network settings, and the status of the service you are trying to reach.

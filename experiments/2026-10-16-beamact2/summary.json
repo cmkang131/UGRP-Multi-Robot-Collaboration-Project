@@ -1,0 +1,275 @@
+{
+  "schema": "ugrp.beamact2.delivery.v1",
+  "complete": true,
+  "verdict": "NOT_READY",
+  "student_n": 0,
+  "student_N": 20,
+  "training_steps": 10000,
+  "checkpoint_selection": "fixed final10000; no heldout/validation checkpoint selection",
+  "training_source_sha": "ee1e2275bc5cb4a15278220214ebf1861d131fe7",
+  "evaluation_source_sha": "24222c51e86c938799e7619290734db8e530a3f4",
+  "model_sha256": "f7b2e195833555fa7b66e413200c40caad584677245b4346a98d5bd91336a2ac",
+  "gpu_supervisor_wall_s": 8250.397309841,
+  "gpu_load": "shared-load",
+  "gpu_speed_acceptance_claim": false,
+  "metrics": {
+    "all_h0": {
+      "all": {
+        "persistence": {
+          "N": 6908,
+          "wheel_mae": 0.02312898263335228,
+          "pulse_mae_ms": 2.961031913757324,
+          "pwm_mae": 8.301765441894531
+        },
+        "ACT": {
+          "N": 6908,
+          "wheel_mae": 0.054588687672373126,
+          "pulse_mae_ms": 7.317890816999277,
+          "pwm_mae": 23.131498832382842
+        },
+        "wheel_improvement_percent": -136.01854235324456
+      },
+      "align": {
+        "persistence": {
+          "N": 1142,
+          "wheel_mae": 0.04535901919007301,
+          "pulse_mae_ms": 2.0957558155059814,
+          "pwm_mae": 4.049737453460693
+        },
+        "ACT": {
+          "N": 1142,
+          "wheel_mae": 0.07494162334924725,
+          "pulse_mae_ms": 4.8962729845058695,
+          "pwm_mae": 10.895971071477101
+        },
+        "wheel_improvement_percent": -65.21879151577532
+      },
+      "approach": {
+        "persistence": {
+          "N": 2968,
+          "wheel_mae": 0.034728772938251495,
+          "pulse_mae_ms": 5.752521991729736,
+          "pwm_mae": 2.4551210403442383
+        },
+        "ACT": {
+          "N": 2968,
+          "wheel_mae": 0.06971061102207383,
+          "pulse_mae_ms": 11.373458548373492,
+          "pwm_mae": 15.515295064050362
+        },
+        "wheel_improvement_percent": -100.72869014410846
+      },
+      "complete": {
+        "persistence": {
+          "N": 38,
+          "wheel_mae": 0.0,
+          "pulse_mae_ms": 0.0,
+          "pwm_mae": 0.0
+        },
+        "ACT": {
+          "N": 38,
+          "wheel_mae": 0.0,
+          "pulse_mae_ms": 0.0,
+          "pwm_mae": 32.35789399024001
+        },
+        "wheel_improvement_percent": null
+      },
+      "pick": {
+        "persistence": {
+          "N": 2166,
+          "wheel_mae": 0.0,
+          "pulse_mae_ms": 0.0,
+          "pwm_mae": 15.189105987548828
+        },
+        "ACT": {
+          "N": 2166,
+          "wheel_mae": 0.0,
+          "pulse_mae_ms": 0.0,
+          "pwm_mae": 32.7310247786546
+        },
+        "wheel_improvement_percent": null
+      },
+      "ready": {
+        "persistence": {
+          "N": 38,
+          "wheel_mae": 0.0,
+          "pulse_mae_ms": 0.0,
+          "pwm_mae": 0.0
+        },
+        "ACT": {
+          "N": 38,
+          "wheel_mae": 0.0020394736842105263,
+          "pulse_mae_ms": 0.17889229350761227,
+          "pwm_mae": 13.973682792327908
+        },
+        "wheel_improvement_percent": null
+      },
+      "search": {
+        "persistence": {
+          "N": 556,
+          "wheel_mae": 0.008812949992716312,
+          "pulse_mae_ms": 1.7769261598587036,
+          "pwm_mae": 22.54928207397461
+        },
+        "ACT": {
+          "N": 556,
+          "wheel_mae": 0.15204447313380948,
+          "pulse_mae_ms": 20.138890533812035,
+          "pwm_mae": 51.51762523753401
+        },
+        "wheel_improvement_percent": -1625.2392588119815
+      }
+    },
+    "refresh_h0": {
+      "all": {
+        "persistence": {
+          "N": 913,
+          "wheel_mae": 0.02280941791832447,
+          "pulse_mae_ms": 3.383162498474121,
+          "pwm_mae": 8.909309387207031
+        },
+        "ACT": {
+          "N": 913,
+          "wheel_mae": 0.0535484394870991,
+          "pulse_mae_ms": 7.134625467759985,
+          "pwm_mae": 23.62694314886048
+        },
+        "wheel_improvement_percent": -134.7646032829261
+      },
+      "align": {
+        "persistence": {
+          "N": 145,
+          "wheel_mae": 0.03681034594774246,
+          "pulse_mae_ms": 1.6785657405853271,
+          "pwm_mae": 4.547585964202881
+        },
+        "ACT": {
+          "N": 145,
+          "wheel_mae": 0.07292266725448032,
+          "pulse_mae_ms": 4.626917249639853,
+          "pwm_mae": 11.40551627523298
+        },
+        "wheel_improvement_percent": -98.10372702827746
+      },
+      "approach": {
+        "persistence": {
+          "N": 385,
+          "wheel_mae": 0.03295454382896423,
+          "pulse_mae_ms": 5.551906585693359,
+          "pwm_mae": 2.9148051738739014
+        },
+        "ACT": {
+          "N": 385,
+          "wheel_mae": 0.07162397491070262,
+          "pulse_mae_ms": 11.498172435042308,
+          "pwm_mae": 15.401556960321091
+        },
+        "wheel_improvement_percent": -117.34172769143676
+      },
+      "pick": {
+        "persistence": {
+          "N": 304,
+          "wheel_mae": 0.0,
+          "pulse_mae_ms": 0.0,
+          "pwm_mae": 15.409868240356445
+        },
+        "ACT": {
+          "N": 304,
+          "wheel_mae": 0.0,
+          "pulse_mae_ms": 0.0,
+          "pwm_mae": 33.718420675422664
+        },
+        "wheel_improvement_percent": null
+      },
+      "ready": {
+        "persistence": {
+          "N": 6,
+          "wheel_mae": 0.0,
+          "pulse_mae_ms": 0.0,
+          "pwm_mae": 0.0
+        },
+        "ACT": {
+          "N": 6,
+          "wheel_mae": 0.0,
+          "pulse_mae_ms": 0.0,
+          "pwm_mae": 13.69999893369774
+        },
+        "wheel_improvement_percent": null
+      },
+      "search": {
+        "persistence": {
+          "N": 73,
+          "wheel_mae": 0.03835616260766983,
+          "pulse_mae_ms": 9.697962760925293,
+          "pwm_mae": 22.849315643310547
+        },
+        "ACT": {
+          "N": 73,
+          "wheel_mae": 0.1471329884822099,
+          "pulse_mae_ms": 19.400187169531506,
+          "pwm_mae": 50.07397159378823
+        },
+        "wheel_improvement_percent": -283.5967377320188
+      }
+    }
+  },
+  "reason_distribution": {
+    "cap_end": 16,
+    "alignment": 4
+  },
+  "failure_stage_distribution": {
+    "alignment": 7,
+    "approach": 12,
+    "grasp": 1
+  },
+  "funnel": {
+    "approach": {
+      "cumulative_runs": 8,
+      "frame_pass": 3282,
+      "frame_reject": 7560
+    },
+    "alignment": {
+      "cumulative_runs": 1,
+      "frame_pass": 56,
+      "frame_reject": 3226
+    },
+    "READY": {
+      "cumulative_runs": 1,
+      "frame_pass": 478,
+      "frame_reject": 0
+    },
+    "grasp": {
+      "cumulative_runs": 0,
+      "frame_pass": 0,
+      "frame_reject": 478
+    },
+    "lift_3s": {
+      "cumulative_runs": 0,
+      "frame_pass": 0,
+      "frame_reject": 0
+    }
+  },
+  "independent_assigned_hold_n": 0,
+  "unrestricted_any_beam_hold_n": 3,
+  "raw_root": "/home/ugrp/ugrp-sim/ops-reviews/beamact2/heldout20-v1",
+  "rejection_table": "/home/ugrp/ugrp-sim/ops-reviews/beamact2/heldout20-v1/rejection_table.json",
+  "original_raw_files": 32612,
+  "original_raw_bytes": 538611844,
+  "verified_rgb_references": 86736,
+  "release_complete": true,
+  "release_verification": "release-verification.json",
+  "physical_scope": "GCP2 CPU C MuJoCo finite local beam pair students, original cold start0.5..2m; no disturbances; not LLM E2E/transport/setdown/real robot",
+  "input_audit": {
+    "invisible_measurements": 0,
+    "held_world_reads": 0,
+    "teacher_actions": 0,
+    "truth_corrections": 0,
+    "top_input": 0,
+    "weld": "off"
+  },
+  "nonphysics_tests": {
+    "passed": 40,
+    "command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_beamact2.py tests/test_simulation_workflow_manager.py tests/test_model_artifacts.py",
+    "scope": "no physics/render/train/ML/GUI on Mac"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "beamact3-train", "version": "0.1.0",
+      "purpose": "Default-off categorical wheel ACT A/B and compact own command history",
+      "entry": "scripts/train_grasp_act.py", "runner": "scripts.train_grasp_act",
+      "docs": "experiments/2026-10-16-beamact3/README.md",
+      "requires": "GCP2 shared L4 only; pinned beampair8 split; A/B separate; no LLM; finite window and lease",
+      "output_flag": "--output", "output_kind": "directory",
+      "required_inputs": ["--dataset", "--stage", "--steps", "--execution-host-profile", "--beamact3-v1"],
+      "side_effect": "training", "adapter": "managed_legacy_cli"
+    },
+    {
+      "id": "beamact3-offline", "version": "0.1.0",
+      "purpose": "ACT A/B TRAIN and validation MAE, persistence strata and slot-only sensitivity",
+      "entry": "scripts/evaluate_beamact3.py", "runner": "scripts.evaluate_beamact3",
+      "docs": "experiments/2026-10-16-beamact3/README.md",
+      "requires": "GCP2 L4 only; no physics or LLM; fixed final checkpoint; no heldout20 checkpoint selection",
+      "output_flag": "--output", "output_kind": "directory",
+      "required_inputs": ["--dataset", "--stages", "--model", "--beamact3-v1"],
+      "side_effect": "local_diagnostic", "adapter": "managed_legacy_cli"
+    },
+    {
+      "id": "beamact3-student", "version": "0.1.0",
+      "purpose": "Same beamact2 closed-loop runner with categorical ACT adapter",
+      "entry": "scripts/run_beamact2_student.py", "runner": "scripts.run_beamact2_student",
+      "docs": "experiments/2026-10-16-beamact3/README.md",
+      "requires": "GCP2 CPU C MuJoCo; exact reserved20; <=16 own /40 total; no teacher or LLM; weld off",
+      "output_flag": "--output", "output_kind": "directory",
+      "required_inputs": ["--plan", "--episode", "--dependency-root", "--model", "--actor-python", "--mode"],
+      "side_effect": "local_simulation", "adapter": "managed_legacy_cli"
+    }
+  ]
+}

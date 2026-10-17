@@ -1,0 +1,44 @@
+{
+  "complete": true,
+  "arm": "B",
+  "public_redownload": true,
+  "metadata_sha256": "c86aef4def17869397c3afc39ec37ac424b0e5b95a387c85e6c7de84955d090c",
+  "archive": {
+    "sha256": "91404780e24b909e8f9e005590c91173bf846627d3a3d101cdaf5638c13a5c76",
+    "bytes": 191892409
+  },
+  "release": {
+    "tag": "models-20261016-beamact3-b-v1",
+    "asset": "beamact3-b-pair-shared-step20000-20261016.zip",
+    "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/download/models-20261016-beamact3-b-v1/beamact3-b-pair-shared-step20000-20261016.zip"
+  },
+  "fetch": {
+    "id": "beamact3-b-pair-shared-step20000-20261016",
+    "path": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/redownload-attempt1",
+    "verified_files": 10,
+    "verified_bytes": 207446818,
+    "installed": true
+  },
+  "all_files_verified": {
+    "id": "beamact3-b-pair-shared-step20000-20261016",
+    "path": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/redownload-attempt1",
+    "verified_files": 10,
+    "verified_bytes": 207446818
+  },
+  "model_load": {
+    "ready": true
+  },
+  "load_exit": 0,
+  "load_command": [
+    "/home/ugrp/ugrp-act-cpu-env/bin/python",
+    "-m",
+    "scripts.beamact2_worker",
+    "--model",
+    "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/redownload-attempt1/actor"
+  ],
+  "fresh_clone": "/home/ugrp/ugrp-sim/src/beamact3-B-release-fresh-5ad43e1e-attempt1",
+  "source_sha": "5ad43e1e096822d7a4ed2e7ce720c2900e7f5ff6",
+  "credentials_on_vm": false,
+  "new_physical_runs": 0,
+  "scope": "selected weights and inference assets; not raw data/video backup or additional physical success"
+}

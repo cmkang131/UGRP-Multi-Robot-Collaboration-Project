@@ -1,0 +1,945 @@
+{
+  "schema": "ugrp.beamact3.summary.v1",
+  "status": "completed_comparison_students_not_ready",
+  "complete": true,
+  "default_off": true,
+  "verdict": "A NOT_READY0/20; B NOT_READY0/20; no promotion",
+  "observed_at": "2026-10-16T10:24:12.884918+00:00",
+  "training_source_sha": "4747c4144a972e348a9ae4c7bbcc769ad116106d",
+  "evaluation_source_sha": "5ad43e1e096822d7a4ed2e7ce720c2900e7f5ff6",
+  "postprocess_source_sha": "67dd59df03ce5b84a695494bc83a0a0bc3c179f7",
+  "validation_role_audit_source_sha": "6f4fe4b3c1701cff7071f31e5bcdfc34b94938e9",
+  "data": "data-identity.json",
+  "dataset_archive_sha256": "739a9faeaf35cd0cf3d8c73b05bdab76ccb8866b1b55dc81d1bb9e9e05fae251",
+  "split_manifest_sha256": "a0f5d8a1c6c9b6c4988122ae40bf412c4c705f3c34740d8d7a91c93fef58d6cd",
+  "train": {
+    "seeds": 166,
+    "rows": 60023
+  },
+  "validation": {
+    "seeds": 19,
+    "rows": 6908
+  },
+  "heldout": {
+    "N": 20,
+    "seeds": [
+      8329000,
+      8329001,
+      8329002,
+      8329003,
+      8329004,
+      8329005,
+      8329006,
+      8329007,
+      8329008,
+      8329009,
+      8329010,
+      8329011,
+      8329012,
+      8329013,
+      8329014,
+      8329015,
+      8329016,
+      8329017,
+      8329018,
+      8329019
+    ],
+    "known_comparison_set": true,
+    "plan_sha256": "5b04be7e5fa2102545666b0464ae0e162ec7a175de8df304b8e6b56ca53828f7"
+  },
+  "pr": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/545",
+  "raw_root": "/home/ugrp/ugrp-sim/ops-reviews/beamact3",
+  "results_pooled": false,
+  "mac_physics_render_training_gui": 0,
+  "llm_calls": 0,
+  "teacher_actions": 0,
+  "truth_corrections": 0,
+  "weld": "off",
+  "references": {
+    "offline": "offline-comparison.md",
+    "role": "role-comparison.md",
+    "input_audit": "input-audit-summary.json"
+  },
+  "A": {
+    "training": {
+      "steps": 20000,
+      "saved_reload_verified": true,
+      "trainer_main_wall_s": 10120.580819447998,
+      "trainer_smoke_wall_s": 309.4779546359987,
+      "gpu": "shared L4; no speed claim",
+      "checkpoint_integrity": {
+        "model_sha256": "e5c48771f03660b20cff525515cddb6cf82566c2797b2d89a8b57a9c17e27650",
+        "actor_files_verified": 3,
+        "optimizer_sha256_verified": true
+      },
+      "summary": "A-main-summary.json"
+    },
+    "offline": {
+      "train": {
+        "all_h0": {
+          "all": {
+            "N": 60023,
+            "ACT_wheel_mae": 0.018939411410860012,
+            "persistence_wheel_mae": 0.02288268506526947
+          },
+          "stable": {
+            "N": 54314,
+            "ACT_wheel_mae": 0.00860437027004902,
+            "persistence_wheel_mae": 0.0
+          },
+          "transition": {
+            "N": 5709,
+            "ACT_wheel_mae": 0.11726441132713399,
+            "persistence_wheel_mae": 0.24058283865451813
+          }
+        },
+        "refresh_h0": {
+          "all": {
+            "N": 7952,
+            "ACT_wheel_mae": 0.01835387796362472,
+            "persistence_wheel_mae": 0.025583187118172646
+          },
+          "stable": {
+            "N": 7159,
+            "ACT_wheel_mae": 0.0077612144961085395,
+            "persistence_wheel_mae": 0.0
+          },
+          "transition": {
+            "N": 793,
+            "ACT_wheel_mae": 0.11398171877566549,
+            "persistence_wheel_mae": 0.2565416097640991
+          }
+        }
+      },
+      "validation": {
+        "all_h0": {
+          "all": {
+            "N": 6908,
+            "ACT_wheel_mae": 0.022875656137224743,
+            "persistence_wheel_mae": 0.02312898263335228
+          },
+          "stable": {
+            "N": 6220,
+            "ACT_wheel_mae": 0.01142283438770203,
+            "persistence_wheel_mae": 0.0
+          },
+          "transition": {
+            "N": 688,
+            "ACT_wheel_mae": 0.12641715509366555,
+            "persistence_wheel_mae": 0.23223109543323517
+          }
+        },
+        "refresh_h0": {
+          "all": {
+            "N": 913,
+            "ACT_wheel_mae": 0.020700990413245933,
+            "persistence_wheel_mae": 0.02280941791832447
+          },
+          "stable": {
+            "N": 831,
+            "ACT_wheel_mae": 0.008528885607056755,
+            "persistence_wheel_mae": 0.0
+          },
+          "transition": {
+            "N": 82,
+            "ACT_wheel_mae": 0.14405488180279724,
+            "persistence_wheel_mae": 0.2539634108543396
+          }
+        }
+      }
+    },
+    "student": {
+      "n": 0,
+      "N": 20,
+      "completed": 20,
+      "verdict": "NOT_READY",
+      "funnel": {
+        "approach": {
+          "cumulative_runs": 16,
+          "frame_pass": 5111,
+          "frame_reject": 6889
+        },
+        "alignment": {
+          "cumulative_runs": 0,
+          "frame_pass": 0,
+          "frame_reject": 7347
+        },
+        "READY": {
+          "cumulative_runs": 0,
+          "frame_pass": 0,
+          "frame_reject": 0
+        },
+        "grasp": {
+          "cumulative_runs": 0,
+          "frame_pass": 0,
+          "frame_reject": 0
+        },
+        "lift_3s": {
+          "cumulative_runs": 0,
+          "frame_pass": 0,
+          "frame_reject": 0
+        }
+      },
+      "reasons": {
+        "cap_end": 20
+      },
+      "failure_stages": {
+        "alignment": 16,
+        "approach": 4
+      },
+      "HOST_ERROR": 0,
+      "summary": "A-student-summary.json",
+      "rejection_table": "A-rejection-table.json",
+      "runs": [
+        {
+          "seed": 8329000,
+          "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/heldout20-v1/seed-8329000",
+          "result_sha256": "962a975039dd835df6babb3e4b89b41dfe5cc36e6a7a69b97c84a2150f65edcd",
+          "status": "complete",
+          "complete": true,
+          "cap_end": true,
+          "physical_success": false,
+          "category": "cap_end"
+        },
+        {
+          "seed": 8329001,
+          "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/heldout20-v1/seed-8329001",
+          "result_sha256": "40adbaf79cf582cb570f11c262a04c60133c3916da289701e1d22c8337b5cada",
+          "status": "complete",
+          "complete": true,
+          "cap_end": true,
+          "physical_success": false,
+          "category": "cap_end"
+        },
+        {
+          "seed": 8329002,
+          "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/heldout20-v1/seed-8329002",
+          "result_sha256": "47f4d957c7708c15565225633c1c35a1fcdb8d5f0cc82605fadcde0a488c7675",
+          "status": "complete",
+          "complete": true,
+          "cap_end": true,
+          "physical_success": false,
+          "category": "cap_end"
+        },
+        {
+          "seed": 8329003,
+          "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/heldout20-v1/seed-8329003",
+          "result_sha256": "4224b605800444a2551883019e3566e4315ba8f079f8ddef96742dbca1825bb1",
+          "status": "complete",
+          "complete": true,
+          "cap_end": true,
+          "physical_success": false,
+          "category": "cap_end"
+        },
+        {
+          "seed": 8329004,
+          "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/heldout20-v1/seed-8329004",
+          "result_sha256": "277f145ba22649dd928fb432f488b69cafce1184aa428d90133d6449fb55af17",
+          "status": "complete",
+          "complete": true,
+          "cap_end": true,
+          "physical_success": false,
+          "category": "cap_end"
+        },
+        {
+          "seed": 8329005,
+          "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/heldout20-v1/seed-8329005",
+          "result_sha256": "a2d8108db6d5a01b54c9b681275f3e5ca7f61e72868a2c8d7f83926ae23da4f9",
+          "status": "complete",
+          "complete": true,
+          "cap_end": true,
+          "physical_success": false,
+          "category": "cap_end"
+        },
+        {
+          "seed": 8329006,
+          "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/heldout20-v1/seed-8329006",
+          "result_sha256": "45a29be42f34cae0a5088ae8dbcc808fbc33ca0eafba08e9339262f78e93f191",
+          "status": "complete",
+          "complete": true,
+          "cap_end": true,
+          "physical_success": false,
+          "category": "cap_end"
+        },
+        {
+          "seed": 8329007,
+          "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/heldout20-v1/seed-8329007",
+          "result_sha256": "6de165941cec01c973ce64edf15da355c9674519f3c1866998a728e192c4ad0b",
+          "status": "complete",
+          "complete": true,
+          "cap_end": true,
+          "physical_success": false,
+          "category": "cap_end"
+        },
+        {
+          "seed": 8329008,
+          "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/heldout20-v1/seed-8329008",
+          "result_sha256": "4f6884952b2406f804fb1f946ba4e473c163eb67821992e6cbdf0ade715adb2b",
+          "status": "complete",
+          "complete": true,
+          "cap_end": true,
+          "physical_success": false,
+          "category": "cap_end"
+        },
+        {
+          "seed": 8329009,
+          "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/heldout20-v1/seed-8329009",
+          "result_sha256": "98fa09b163129b45d8cdf09fd3733f4fb90783139b08e587a8df4a228e6a299e",
+          "status": "complete",
+          "complete": true,
+          "cap_end": true,
+          "physical_success": false,
+          "category": "cap_end"
+        },
+        {
+          "seed": 8329010,
+          "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/heldout20-v1/seed-8329010",
+          "result_sha256": "ccdbe528262ab713eaba40c1356d8604d9e07b7035716d061b46bda167fe656b",
+          "status": "complete",
+          "complete": true,
+          "cap_end": true,
+          "physical_success": false,
+          "category": "cap_end"
+        },
+        {
+          "seed": 8329011,
+          "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/heldout20-v1/seed-8329011",
+          "result_sha256": "553a53690627022536556bc9eab7edbe5397d4cf675c273aefdc1a97a20bcd92",
+          "status": "complete",
+          "complete": true,
+          "cap_end": true,
+          "physical_success": false,
+          "category": "cap_end"
+        },
+        {
+          "seed": 8329012,
+          "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/heldout20-v1/seed-8329012",
+          "result_sha256": "fc60ae6323562e0d80cea8a1e235902c1fda9e3a7bcf6c09600658bdaba41892",
+          "status": "complete",
+          "complete": true,
+          "cap_end": true,
+          "physical_success": false,
+          "category": "cap_end"
+        },
+        {
+          "seed": 8329013,
+          "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/heldout20-v1/seed-8329013",
+          "result_sha256": "cd054345d5e08051851218cd2752b3cba11a8b09515200ca23c6da5de494f59a",
+          "status": "complete",
+          "complete": true,
+          "cap_end": true,
+          "physical_success": false,
+          "category": "cap_end"
+        },
+        {
+          "seed": 8329014,
+          "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/heldout20-v1/seed-8329014",
+          "result_sha256": "50b1d0cb9de156f53dd80d98cb6c1dd0f792b7e72a8ddcd506996a290f83b2b6",
+          "status": "complete",
+          "complete": true,
+          "cap_end": true,
+          "physical_success": false,
+          "category": "cap_end"
+        },
+        {
+          "seed": 8329015,
+          "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/heldout20-v1/seed-8329015",
+          "result_sha256": "ab5e59935cab104631b498209ca51a9d7764d1ae0dd321f458b34a3ddfe635b2",
+          "status": "complete",
+          "complete": true,
+          "cap_end": true,
+          "physical_success": false,
+          "category": "cap_end"
+        },
+        {
+          "seed": 8329016,
+          "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/heldout20-v1/seed-8329016",
+          "result_sha256": "5a505778bd5b70808d87def89a3e6e55b3a56ea045ac3a0e310b96ad44e5d4a8",
+          "status": "complete",
+          "complete": true,
+          "cap_end": true,
+          "physical_success": false,
+          "category": "cap_end"
+        },
+        {
+          "seed": 8329017,
+          "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/heldout20-v1/seed-8329017",
+          "result_sha256": "ccfcc5857dd89000e3eb5e566338301ccb5799bb3f5228851880896e0a3e4cc6",
+          "status": "complete",
+          "complete": true,
+          "cap_end": true,
+          "physical_success": false,
+          "category": "cap_end"
+        },
+        {
+          "seed": 8329018,
+          "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/heldout20-v1/seed-8329018",
+          "result_sha256": "8683e27cfbff75feee586330da335419975030a54f1e79187d231555cf81abe2",
+          "status": "complete",
+          "complete": true,
+          "cap_end": true,
+          "physical_success": false,
+          "category": "cap_end"
+        },
+        {
+          "seed": 8329019,
+          "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/heldout20-v1/seed-8329019",
+          "result_sha256": "71f95a8264afc5b98c57af859f898dce32d21efa5266bd9beebf4773e4eb940b",
+          "status": "complete",
+          "complete": true,
+          "cap_end": true,
+          "physical_success": false,
+          "category": "cap_end"
+        }
+      ]
+    },
+    "role_coldstart": {
+      "N": 40,
+      "metrics": {
+        "first_translation_reversed": 1,
+        "chunk_translation_reversed": 1,
+        "first_turn_sign_flipped": 0,
+        "chunk_turn_sign_flipped": 0,
+        "first_wheel_classes_changed": 3,
+        "chunk_wheel_classes_changed": 6,
+        "original_first_stationary": 18,
+        "swapped_first_stationary": 18
+      },
+      "summary": "A-role-probe-coldstart.json"
+    },
+    "role_validation": {
+      "initial": {
+        "N": 38,
+        "wheel_class_changed": 0,
+        "raw_float_translation_reversed": 0,
+        "translation_reversed": 0,
+        "nonzero_heading_changed": 0,
+        "translation_starts_or_stops": 0,
+        "turn_sign_flipped": 0
+      },
+      "first_approach": {
+        "N": 29,
+        "wheel_class_changed": 1,
+        "raw_float_translation_reversed": 1,
+        "translation_reversed": 0,
+        "nonzero_heading_changed": 0,
+        "translation_starts_or_stops": 1,
+        "turn_sign_flipped": 0
+      }
+    },
+    "input_audit": {
+      "forbidden_input_fields": 0,
+      "teacher_input_fields": 0,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "top": 0,
+      "runs": 20,
+      "requests": 24000,
+      "command_rows": 24000,
+      "protocol_replay_passed": true,
+      "command_mismatches": 0,
+      "issued_history_mismatches": 0,
+      "protocol_event_mismatches": 0
+    },
+    "raw_integrity": {
+      "verified": true,
+      "total_files": 35620,
+      "total_bytes": 577091941,
+      "rgb_refs": 96000
+    },
+    "playback": {
+      "full2Hz_viewed": 12,
+      "tail10Hz_viewed": 10,
+      "failure_frames_saved": 12,
+      "failure_frames_viewed": 6,
+      "review": "A-playback-review.md",
+      "local": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beamact3-A",
+      "teacher_reference": "separate beampair8 teacher8328003; not student numerator"
+    },
+    "release": {
+      "verified": true,
+      "public_redownload": true,
+      "files_verified": 10,
+      "model_load": {
+        "ready": true
+      },
+      "archive": {
+        "sha256": "88939f1d08a6edc1a7981b131c7edabe19b13003695e8f54a92f763decea89bd",
+        "bytes": 191893393
+      },
+      "release": {
+        "tag": "models-20261016-beamact3-a-v1",
+        "asset": "beamact3-a-pair-shared-step20000-20261016.zip",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/download/models-20261016-beamact3-a-v1/beamact3-a-pair-shared-step20000-20261016.zip"
+      },
+      "receipt": "A-release-verification.json"
+    },
+    "compression": {
+      "cpu": "A-cpu-compression-manifest.json",
+      "gpu": "A-gpu-compression-manifest.json",
+      "raw_reverified": true
+    }
+  },
+  "B": {
+    "training": {
+      "steps": 20000,
+      "saved_reload_verified": true,
+      "trainer_main_wall_s": 12782.313865740001,
+      "trainer_smoke_wall_s": 126.75528744300027,
+      "gpu": "shared L4; no speed claim",
+      "checkpoint_integrity": {
+        "actor_files_verified": 3,
+        "optimizer_sha256_verified": true,
+        "optimizer_sha256": "d73b83725b47268ea3faff94f48a80ccb412f359b6674a771cfa8ad6327feff4",
+        "model_sha256": "908a594c6865ae38373910bfa9ba3764e8194c985c74e4fea56627e5a66e0389"
+      },
+      "summary": "B-main-summary.json"
+    },
+    "offline": {
+      "train": {
+        "all_h0": {
+          "all": {
+            "N": 60023,
+            "ACT_wheel_mae": 0.022319990478864984,
+            "persistence_wheel_mae": 0.02288268506526947
+          },
+          "stable": {
+            "N": 54314,
+            "ACT_wheel_mae": 0.013836906901652906,
+            "persistence_wheel_mae": 0.0
+          },
+          "transition": {
+            "N": 5709,
+            "ACT_wheel_mae": 0.10302592871895908,
+            "persistence_wheel_mae": 0.24058283865451813
+          }
+        },
+        "refresh_h0": {
+          "all": {
+            "N": 7952,
+            "ACT_wheel_mae": 0.021610920198802504,
+            "persistence_wheel_mae": 0.025583187118172646
+          },
+          "stable": {
+            "N": 7159,
+            "ACT_wheel_mae": 0.01313906046728643,
+            "persistence_wheel_mae": 0.0
+          },
+          "transition": {
+            "N": 793,
+            "ACT_wheel_mae": 0.09809269046100118,
+            "persistence_wheel_mae": 0.2565416097640991
+          }
+        }
+      },
+      "validation": {
+        "all_h0": {
+          "all": {
+            "N": 6908,
+            "ACT_wheel_mae": 0.030804868518164868,
+            "persistence_wheel_mae": 0.02312898263335228
+          },
+          "stable": {
+            "N": 6220,
+            "ACT_wheel_mae": 0.021875004603524345,
+            "persistence_wheel_mae": 0.0
+          },
+          "transition": {
+            "N": 688,
+            "ACT_wheel_mae": 0.11153706844413004,
+            "persistence_wheel_mae": 0.23223109543323517
+          }
+        },
+        "refresh_h0": {
+          "all": {
+            "N": 913,
+            "ACT_wheel_mae": 0.03009310411819418,
+            "persistence_wheel_mae": 0.02280941791832447
+          },
+          "stable": {
+            "N": 831,
+            "ACT_wheel_mae": 0.01979543173613674,
+            "persistence_wheel_mae": 0.0
+          },
+          "transition": {
+            "N": 82,
+            "ACT_wheel_mae": 0.13445122301441037,
+            "persistence_wheel_mae": 0.2539634108543396
+          }
+        }
+      }
+    },
+    "student": {
+      "n": 0,
+      "N": 20,
+      "completed": 20,
+      "verdict": "NOT_READY",
+      "funnel": {
+        "approach": {
+          "cumulative_runs": 13,
+          "frame_pass": 6528,
+          "frame_reject": 5118
+        },
+        "alignment": {
+          "cumulative_runs": 1,
+          "frame_pass": 86,
+          "frame_reject": 6447
+        },
+        "READY": {
+          "cumulative_runs": 1,
+          "frame_pass": 419,
+          "frame_reject": 0
+        },
+        "grasp": {
+          "cumulative_runs": 0,
+          "frame_pass": 0,
+          "frame_reject": 419
+        },
+        "lift_3s": {
+          "cumulative_runs": 0,
+          "frame_pass": 0,
+          "frame_reject": 0
+        }
+      },
+      "reasons": {
+        "cap_end": 19,
+        "alignment": 1
+      },
+      "failure_stages": {
+        "grasp": 1,
+        "alignment": 12,
+        "approach": 7
+      },
+      "HOST_ERROR": 0,
+      "summary": "B-student-summary.json",
+      "rejection_table": "B-rejection-table.json",
+      "runs": [
+        {
+          "seed": 8329000,
+          "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/heldout20-v1/seed-8329000",
+          "result_sha256": "fee9a166c4a47c3469defdd7cac3180725665a5af2215b709f9ecfc479f0747e",
+          "status": "complete",
+          "complete": true,
+          "cap_end": true,
+          "physical_success": false,
+          "category": "cap_end"
+        },
+        {
+          "seed": 8329001,
+          "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/heldout20-v1/seed-8329001",
+          "result_sha256": "332e44af1aa23a2e4b52e5a5e319610ef43bee32ae57667d2f2126f2a1f9e257",
+          "status": "complete",
+          "complete": true,
+          "cap_end": true,
+          "physical_success": false,
+          "category": "cap_end"
+        },
+        {
+          "seed": 8329002,
+          "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/heldout20-v1/seed-8329002",
+          "result_sha256": "eaffa46bc65f2c38590079c465a33e71061e52bf17019500d9d715ecf841a1ca",
+          "status": "complete",
+          "complete": true,
+          "cap_end": true,
+          "physical_success": false,
+          "category": "cap_end"
+        },
+        {
+          "seed": 8329003,
+          "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/heldout20-v1/seed-8329003",
+          "result_sha256": "ca9adcbe61c3dc89559f1fa9fe0d6b2388c51a884ce9a89037c49c54bb2b7db5",
+          "status": "complete",
+          "complete": true,
+          "cap_end": true,
+          "physical_success": false,
+          "category": "cap_end"
+        },
+        {
+          "seed": 8329004,
+          "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/heldout20-v1/seed-8329004",
+          "result_sha256": "1d413c9b578f49d573314c966fa45609bf64e44ca940fcfd76c2de2cd9c337e3",
+          "status": "complete",
+          "complete": true,
+          "cap_end": true,
+          "physical_success": false,
+          "category": "cap_end"
+        },
+        {
+          "seed": 8329005,
+          "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/heldout20-v1/seed-8329005",
+          "result_sha256": "fe98595c052dbd47cc4f091faac4edd6492f3315690634db84db9a354683df72",
+          "status": "complete",
+          "complete": true,
+          "cap_end": true,
+          "physical_success": false,
+          "category": "cap_end"
+        },
+        {
+          "seed": 8329006,
+          "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/heldout20-v1/seed-8329006",
+          "result_sha256": "50b99ef433d0d949881e33684273133a3948569ef912664f2e99d422ad33be91",
+          "status": "complete",
+          "complete": true,
+          "cap_end": true,
+          "physical_success": false,
+          "category": "cap_end"
+        },
+        {
+          "seed": 8329007,
+          "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/heldout20-v1/seed-8329007",
+          "result_sha256": "cebcbafd247e0f61109cb36ca5c8f310fd46ffd4fad1cd3b855116fa05bf4893",
+          "status": "complete",
+          "complete": true,
+          "cap_end": true,
+          "physical_success": false,
+          "category": "cap_end"
+        },
+        {
+          "seed": 8329008,
+          "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/heldout20-v1/seed-8329008",
+          "result_sha256": "19bb8e93007d23f306e3cc3f425754013b3e79e6d9fa03b0158e9c4da997cba8",
+          "status": "complete",
+          "complete": true,
+          "cap_end": true,
+          "physical_success": false,
+          "category": "cap_end"
+        },
+        {
+          "seed": 8329009,
+          "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/heldout20-v1/seed-8329009",
+          "result_sha256": "d47eb340c5b6bbfeb7f614178b2be419b9f3f2dc694b1e4cdc00ed0495619a0a",
+          "status": "complete",
+          "complete": true,
+          "cap_end": true,
+          "physical_success": false,
+          "category": "cap_end"
+        },
+        {
+          "seed": 8329010,
+          "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/heldout20-v1/seed-8329010",
+          "result_sha256": "438c9f1101c800ef8240af20d696cf3c52008bbf489c4ad44767426d26f71c67",
+          "status": "complete",
+          "complete": true,
+          "cap_end": true,
+          "physical_success": false,
+          "category": "cap_end"
+        },
+        {
+          "seed": 8329011,
+          "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/heldout20-v1/seed-8329011",
+          "result_sha256": "b9895f39c0ae7b4ed822a0e6900d11e6774737cd73963433fceb2b9c01a06787",
+          "status": "complete",
+          "complete": true,
+          "cap_end": true,
+          "physical_success": false,
+          "category": "cap_end"
+        },
+        {
+          "seed": 8329012,
+          "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/heldout20-v1/seed-8329012",
+          "result_sha256": "aedc9811be48af97b61ecc0c98dcbe5be2ac2423a20dfca2f8f35321c042810b",
+          "status": "complete",
+          "complete": true,
+          "cap_end": true,
+          "physical_success": false,
+          "category": "cap_end"
+        },
+        {
+          "seed": 8329013,
+          "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/heldout20-v1/seed-8329013",
+          "result_sha256": "6483f1f7bbbac342376752dfa3ab0b02b0476a0baefe39d554d76cdd5137e23a",
+          "status": "complete",
+          "complete": true,
+          "cap_end": true,
+          "physical_success": false,
+          "category": "cap_end"
+        },
+        {
+          "seed": 8329014,
+          "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/heldout20-v1/seed-8329014",
+          "result_sha256": "0eb2622c13ea7e7315c0f99379f206bf4ac6841fbaf92949f347cc1017bec208",
+          "status": "complete",
+          "complete": true,
+          "cap_end": true,
+          "physical_success": false,
+          "category": "cap_end"
+        },
+        {
+          "seed": 8329015,
+          "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/heldout20-v1/seed-8329015",
+          "result_sha256": "726e59b728302ca1101a234be2b160e656897b1d7b53fea23efa07bb7cd4e59f",
+          "status": "complete",
+          "complete": true,
+          "cap_end": true,
+          "physical_success": false,
+          "category": "cap_end"
+        },
+        {
+          "seed": 8329016,
+          "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/heldout20-v1/seed-8329016",
+          "result_sha256": "ed44379b20c8ba74425f42d63094b25ee66992020ea0e4b4c5964cf7ee9d4009",
+          "status": "complete",
+          "complete": true,
+          "cap_end": true,
+          "physical_success": false,
+          "category": "cap_end"
+        },
+        {
+          "seed": 8329017,
+          "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/heldout20-v1/seed-8329017",
+          "result_sha256": "7f9dfdcc243fe1d6b9bdd4b9ed3f98ddf137b3892e56bc82ca9f3db44c89ea7a",
+          "status": "complete",
+          "complete": true,
+          "cap_end": true,
+          "physical_success": false,
+          "category": "cap_end"
+        },
+        {
+          "seed": 8329018,
+          "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/heldout20-v1/seed-8329018",
+          "result_sha256": "fc4a1cc35f57f034231ac73a7b0a63fc2c982bc714d99fb493790e06ac44389f",
+          "status": "complete",
+          "complete": true,
+          "cap_end": true,
+          "physical_success": false,
+          "category": "cap_end"
+        },
+        {
+          "seed": 8329019,
+          "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/heldout20-v1/seed-8329019",
+          "result_sha256": "73b093180fcaaddc0ce98b661c4f587265a085b8da694218f42badceb2b860b4",
+          "status": "complete",
+          "complete": true,
+          "cap_end": false,
+          "physical_success": false,
+          "category": "alignment"
+        }
+      ]
+    },
+    "role_coldstart": {
+      "N": 40,
+      "metrics": {
+        "first_translation_reversed": 0,
+        "chunk_translation_reversed": 0,
+        "first_turn_sign_flipped": 0,
+        "chunk_turn_sign_flipped": 0,
+        "first_wheel_classes_changed": 2,
+        "chunk_wheel_classes_changed": 4,
+        "original_first_stationary": 19,
+        "swapped_first_stationary": 20
+      },
+      "summary": "B-role-probe-coldstart.json"
+    },
+    "role_validation": {
+      "initial": {
+        "N": 38,
+        "wheel_class_changed": 0,
+        "raw_float_translation_reversed": 0,
+        "translation_reversed": 0,
+        "nonzero_heading_changed": 0,
+        "translation_starts_or_stops": 0,
+        "turn_sign_flipped": 0
+      },
+      "first_approach": {
+        "N": 29,
+        "wheel_class_changed": 0,
+        "raw_float_translation_reversed": 0,
+        "translation_reversed": 0,
+        "nonzero_heading_changed": 0,
+        "translation_starts_or_stops": 0,
+        "turn_sign_flipped": 0
+      }
+    },
+    "input_audit": {
+      "forbidden_input_fields": 0,
+      "teacher_input_fields": 0,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "top": 0,
+      "runs": 20,
+      "requests": 23292,
+      "command_rows": 23292,
+      "protocol_replay_passed": true,
+      "command_mismatches": 0,
+      "issued_history_mismatches": 0,
+      "protocol_event_mismatches": 0
+    },
+    "raw_integrity": {
+      "verified": true,
+      "total_files": 34701,
+      "total_bytes": 579137417,
+      "rgb_refs": 93168
+    },
+    "playback": {
+      "full2Hz_viewed": 12,
+      "tail10Hz_viewed": 10,
+      "failure_frames_saved": 12,
+      "failure_frames_viewed": 6,
+      "review": "B-playback-review.md",
+      "local": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beamact3-B",
+      "teacher_reference": "separate beampair8 teacher8328003; not student numerator"
+    },
+    "release": {
+      "verified": true,
+      "public_redownload": true,
+      "files_verified": 10,
+      "model_load": {
+        "ready": true
+      },
+      "archive": {
+        "sha256": "91404780e24b909e8f9e005590c91173bf846627d3a3d101cdaf5638c13a5c76",
+        "bytes": 191892409
+      },
+      "release": {
+        "tag": "models-20261016-beamact3-b-v1",
+        "asset": "beamact3-b-pair-shared-step20000-20261016.zip",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/download/models-20261016-beamact3-b-v1/beamact3-b-pair-shared-step20000-20261016.zip"
+      },
+      "receipt": "B-release-verification.json"
+    },
+    "compression": {
+      "cpu": "B-cpu-compression-manifest.json",
+      "gpu": "B-gpu-compression-manifest.json",
+      "raw_reverified": true
+    }
+  },
+  "baseline": {
+    "beamact2_n": 0,
+    "beamact2_N": 20,
+    "wheel_mae": 0.054589,
+    "persistence_mae": 0.023129,
+    "pooled_with_new_runs": false
+  },
+  "B_training_cap_resume": {
+    "attempt1_step": 1498,
+    "termination": "cap_end/WALL_CAP",
+    "readback_verified": true,
+    "exact_optimizer_sampler_torch_cuda_rng_resumed": true,
+    "attempt2_final_step": 20000,
+    "record": "B-window1-summary.json"
+  },
+  "operations": {
+    "project": "ugrp-sim-b-1014",
+    "account": "changmin5781@gmail.com",
+    "gcp1_operations": 0,
+    "other_tasks_stopped": 0,
+    "VM_limit_or_budget_guard_disabled": false,
+    "GPU_restarts": 1,
+    "restart_reason": "unchanged8h expiry between finite attempts; fresh budget evidence before start",
+    "network_relay_recovery": "relay-recovery.json",
+    "controller_status": "training_offline_student_complete",
+    "ci": "latest result commit335fc8e3561c2f425223f98181eb6c72edbe3f41 run38886156200 queued; do not claim latest CI passed",
+    "remaining": "latest GitHub CI runner assignment only; students both NOT_READY, no default promotion",
+    "own_relay_and_caffeinate_finished": true,
+    "cpu_final_status": "TERMINATED",
+    "cpu_stopped_only_after_no_other_lease_or_process": true,
+    "gpu_final_status": "RUNNING",
+    "gpu_stop_performed": false,
+    "gpu_other_leases_preserved": [
+      "act16w-record-parallel.json",
+      "act16w-train-pipeline.json",
+      "act16w-record.json"
+    ],
+    "cleanup": "cleanup-observation.json"
+  }
+}

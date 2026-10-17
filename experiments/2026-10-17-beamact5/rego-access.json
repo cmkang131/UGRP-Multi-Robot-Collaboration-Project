@@ -1,0 +1,47 @@
+{
+  "schema": "ugrp.beamact5.rego-access.v1",
+  "checked_at_utc": "2026-10-17T12:27:29.757234+00:00",
+  "host": {
+    "instance": "ugrp-act-l4-gcp2",
+    "project": "ugrp-sim-b-1014",
+    "account": "changmin5781@gmail.com",
+    "zone": "asia-northeast3-a",
+    "status": "RUNNING"
+  },
+  "cpu_source_host": {
+    "instance": "ugrp-sim-gcp2",
+    "project": "ugrp-sim-b-1014",
+    "status": "TERMINATED",
+    "disk": "projects/ugrp-sim-b-1014/zones/asia-northeast3-a/disks/ugrp-sim-gcp2"
+  },
+  "mode": "read-only sudo file discovery; no GPU, no training, no simulator, one SSH shell at a time",
+  "findings": {
+    "seed_dirs_8329_found": 0,
+    "start_protocol_json_outside_warp2": 0,
+    "ops_reviews_beamact3_A_contents": [
+      "admission-attempt1.json",
+      "compression.json",
+      "main-attempt1 (training steps)",
+      "offline-attempt1 (npz)",
+      "smoke-attempt1",
+      "supervisor logs"
+    ],
+    "summary_recorded_raw_root": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/{A,B}/heldout20-v1/seed-8329000..8329019",
+    "summary_recorded_raw_root_present": false
+  },
+  "commands": [
+    "sudo -n find /home /mnt -type d -name \"seed-8329*\"  -> 0",
+    "sudo -n find /home /mnt -type f -name \"start-protocol.json\" -> only /home/ugrp/ugrp-sim/runs/warp2/*",
+    "sudo -n find /home/ugrp -maxdepth 7 -name \"*8329000*\" -> 0",
+    "gcloud compute instances list -> ugrp-sim-gcp2 TERMINATED; ugrp-act-l4-gcp2 RUNNING"
+  ],
+  "conclusion": "The stored A/B heldout raw directories are not on the running L4. Their source host is the separate CPU VM disk ugrp-sim-gcp2, which is TERMINATED; starting it is forbidden, so later re-GO timing/outcome cannot be recomputed.",
+  "untouched": [
+    "act18 lease files",
+    "act18 training processes",
+    "no VM start/stop",
+    "no writes on VM",
+    "no GPU"
+  ],
+  "summary_created": false
+}

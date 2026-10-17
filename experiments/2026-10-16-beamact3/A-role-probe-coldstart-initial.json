@@ -1,0 +1,35 @@
+{
+  "complete": true,
+  "arm": "A",
+  "host": {
+    "project": "ugrp-sim-b-1014",
+    "instance": "ugrp-sim-gcp2",
+    "machine_type": "n4-highcpu-64",
+    "zone": "asia-northeast3-a"
+  },
+  "source_sha": "6fdcbf010ce2e62a40cb344726c17c3c67c88f46",
+  "model_sha256": "e5c48771f03660b20cff525515cddb6cf82566c2797b2d89a8b57a9c17e27650",
+  "N": 40,
+  "metrics": {
+    "first_translation_reversed": 1,
+    "chunk_translation_reversed": 1,
+    "first_turn_sign_flipped": 0,
+    "chunk_turn_sign_flipped": 0,
+    "first_wheel_classes_changed": 3,
+    "chunk_wheel_classes_changed": 6,
+    "original_first_stationary": 18,
+    "swapped_first_stationary": 18
+  },
+  "input_change": "role token only; own RGB/issued history/task clocks identical",
+  "no_truth_or_labels": true,
+  "new_physical_runs": 0,
+  "checkpoint_selection": "fixed final20000; probe never selects model",
+  "motion_units": "wheel * pulse_seconds /0.1 body-axis command dose, never measured pose/speed",
+  "scope": "saved baseline same20 cold-start counterfactual; not proof of correct end selection in closed loop",
+  "original_full_summary": {
+    "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/role-probe-coldstart.json",
+    "bytes": 62649,
+    "sha256": "f21e20ecc60a8683d61607273fbdde5e713ab9f632b206adc7b6cb9253a0533d"
+  },
+  "superseded": "Raw decoded body-axis signs include normalization residue; exact discrete wheel alphabet rerun is the final analysis. Class-change counts retained."
+}

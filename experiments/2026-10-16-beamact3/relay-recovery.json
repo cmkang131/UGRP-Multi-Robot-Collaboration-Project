@@ -1,0 +1,34 @@
+{
+  "schema": "ugrp.beamact3.relay-recovery.v1",
+  "network_error_utc": "2026-10-16T09:05:12.796707Z",
+  "remote_training_interrupted": false,
+  "remote_supervisor_pid": 1544,
+  "remote_last_observed_step": 18830,
+  "remote_vm_start_utc": "2026-10-16T06:01:09.361Z",
+  "budget_stop": false,
+  "latest_budget_evidence": {
+    "timestamp": "2026-10-16T08:51:07.638521Z",
+    "costAmount": 0,
+    "budgetAmount": 1000,
+    "currency": "KRW"
+  },
+  "recovery_pid": 39556,
+  "original_controller_started": "2026-10-16T02:26:59.098195Z",
+  "original_finite_deadline_preserved": true,
+  "verification": {
+    "syntax_ast": true,
+    "existing_A_model_3files_rehash": true,
+    "existing_A_complete20_source_model_match": true,
+    "A_student_n": 0,
+    "A_student_N": 20,
+    "new_A_physical_runs": 0,
+    "new_B_training_launches": 0
+  },
+  "changes": [
+    "read-only describe/logging bounded3 retries; mutations not retried",
+    "reuse exact verified CPU model and complete20 raw summary",
+    "reattach live CPU lease; refuse incomplete orphan batch",
+    "do not duplicate previously launched offline job"
+  ],
+  "scope": "Mac relay only; training/actor/evaluation source and weights unchanged"
+}

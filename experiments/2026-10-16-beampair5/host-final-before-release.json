@@ -1,0 +1,25 @@
+{
+  "task": "beampair5",
+  "timestamp": "2026-10-15T16:49:17.517857+00:00",
+  "pid": 37663,
+  "other_leases": {
+    "scenetex3": "scenetex3 PR527 active camera audit; do not stop VM; raw /home/ugrp/ugrp-sim/runs/scenetex3-r1\n",
+    "simalt5.json": "{\"task\": \"simalt5\", \"pid\": 36053, \"role\": \"L4 diagnostic reservation; CPU VM must remain shared\", \"started_utc\": \"2026-10-15T16:44:58.067037+00:00\", \"expected_end\": \"L4 start + 3 hours maximum\"}"
+  },
+  "processes": [
+    {
+      "pid": 1181,
+      "command": "/usr/bin/python3 /usr/bin/networkd-dispatcher --run-startup-triggers "
+    },
+    {
+      "pid": 1254,
+      "command": "/usr/bin/python3 /usr/share/unattended-upgrades/unattended-upgrade-shutdown --wait-for-signal "
+    },
+    {
+      "pid": 37663,
+      "command": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python /home/ugrp/ugrp-sim/ops-reviews/beampair5/finalize-evidence.py "
+    }
+  ],
+  "stop_VM": false,
+  "reason": "other leases exist; leave VM running; only release own lease after retrieval verification"
+}

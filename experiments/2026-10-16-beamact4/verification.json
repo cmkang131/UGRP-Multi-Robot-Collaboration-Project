@@ -1,0 +1,79 @@
+{
+  "schema": "ugrp.beamact4.verification.v1",
+  "base_sha": "14f9c135de2a008ef1224d503c7cdbda6ae98f68",
+  "branch": "codex/beamact4",
+  "scope": "local synthetic non-physics unit tests and code/spec review only",
+  "command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_beamact2.py tests/test_beamact4.py tests/test_beamact4_policy.py --junitxml=experiments/2026-10-16-beamact4/local-tests.xml",
+  "pytest": {
+    "passed": 15,
+    "skipped": 1,
+    "failed": 0,
+    "output": "15 passed, 1 skipped in 0.93s",
+    "junit_path": "local-tests.xml",
+    "junit_sha256": "28e98bdf49f596b23bd5d37e2472fb6fc3b95a10b6bbc2330151885746160940",
+    "skipped_scope": "Linux CI synthetic torch head/loss gradient; deliberately not run on Mac"
+  },
+  "prior_test_iteration": {
+    "failed": 1,
+    "reason": "mock model advanced r2 to execute before its delayed permit; float addition meant 0.6+0.3 exceeded the 0.9 tick",
+    "resolution": "fixture keeps r2 READY through the delayed release tick; actual pinned protocol delay and comparisons unchanged"
+  },
+  "ast_parsed_files": [
+    "harness/beamact_pair_student.py",
+    "harness/beamact4_execution.py",
+    "harness/beamact4_policy.py",
+    "harness/beamact_replay.py",
+    "scripts/beamact2_worker.py",
+    "scripts/run_beamact2_student.py",
+    "scripts/run_ci_tests.py",
+    "tests/test_beamact4.py",
+    "tests/test_beamact4_policy.py"
+  ],
+  "source_files_sha256": {
+    "harness/beamact_pair_student.py": "ce10b37c78571069d5d98cc7dca829f97cf7e4f6c85558dd0256d0f042471ec5",
+    "harness/beamact4_execution.py": "4d5bee473e6bcd7fcb95991d2907678a9576e632fe5dac26b6e839bdc93748ce",
+    "harness/beamact4_policy.py": "2b57ecde1fb8602af634e6fc028ab137f50e71eff72c96b08cd71a027fcc4778",
+    "harness/beamact_replay.py": "20756168819d0b112112517777aefa1dafbaebe3e0d9633ea0f52e58431732b1",
+    "scripts/beamact2_worker.py": "61c42542cb3813d5f311327ddf29d4e34ae510cd98f44c8533842cd48a6f016f",
+    "scripts/run_beamact2_student.py": "c44b67a66a4f03c099e49f40d5caea69c944cd3da8908b9fdc43008631476db7",
+    "scripts/run_ci_tests.py": "29374f182bdef17d40122d4bb510f03d8e0bef341ee0d654d40ad426996ce224",
+    "tests/test_beamact4.py": "5293ba7dd1a64dbd0a610940ec27b7e46e49d57746b0af38026d5c15df21d8ca",
+    "tests/test_beamact4_policy.py": "fdd905aa7ca3e007fcdf7d9f3cbc302dce0461e217d3bffa9585e24e3683ef9b"
+  },
+  "new_experiment_runs": [],
+  "new_recorded_demonstrations": 0,
+  "training_steps": 0,
+  "new_model_inference": 0,
+  "new_physics": 0,
+  "new_rendering": 0,
+  "gcp_commands": 0,
+  "vm_starts": 0,
+  "vm_stops": 0,
+  "leases_created": 0,
+  "GUI": 0,
+  "own_started_processes_remaining": 0,
+  "verified": [
+    "legacy command/protocol replay",
+    "early PWM decrease does not declare learned READY",
+    "learned READY independent of PWM decrease",
+    "withdrawal reuses fresh pinned GO/ACK with original delays",
+    "done candidate re-infers on next tick",
+    "70 synthetic pair command rows replay",
+    "PWM/stage-log tampering rejected",
+    "hidden observation and extra prediction fields rejected"
+  ],
+  "unverified": [
+    "real stage head loss/gradient",
+    "real checkpoint serialization/loading",
+    "RGB readiness accuracy",
+    "relative pose error budgets",
+    "teacher gate",
+    "new dataset/role support",
+    "closed-loop recovery and physical success",
+    "remote CI results"
+  ],
+  "ownership_record": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/agent-ownership.md",
+  "ownership_sha256": "83206e28ef5d95a7c061086665728d9f183795727a90756528c7ff32264a0792",
+  "protected_paths_modified": [],
+  "verdict": "CODE_SPEC_READY; EXECUTION_NOT_READY"
+}

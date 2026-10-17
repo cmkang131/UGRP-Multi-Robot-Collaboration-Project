@@ -18,6 +18,7 @@ import numpy as np
 from PIL import Image
 
 from harness import grasp_act_contract as c
+from harness.json_encoding import dumps
 
 DATA_SCHEMA = 'ugrp.grasp_act.dataset.v1'
 DONE_LABELS = ('teacher_v1', 'last_local_row_v1')
@@ -41,7 +42,7 @@ def sha256(path):
 def write_json(path, value):
     path = Path(path)
     temporary = path.with_suffix(path.suffix + '.tmp')
-    temporary.write_text(json.dumps(value, indent=2, allow_nan=False) + '\n')
+    temporary.write_text(dumps(value, indent=2, allow_nan=False) + '\n')
     temporary.replace(path)
 
 

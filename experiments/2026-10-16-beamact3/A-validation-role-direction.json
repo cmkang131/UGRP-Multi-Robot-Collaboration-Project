@@ -1,0 +1,45 @@
+{
+  "complete": true,
+  "arm": "A",
+  "host": {
+    "project": "ugrp-sim-b-1014",
+    "instance": "ugrp-sim-gcp2",
+    "machine_type": "n4-highcpu-64",
+    "zone": "asia-northeast3-a"
+  },
+  "source_sha": "6f4fe4b3c1701cff7071f31e5bcdfc34b94938e9",
+  "audit_script_sha256": "f5bf2be5f8cb3948f7d59877e478b4239cd32e8670160157d7c0b53adbd6734c",
+  "input": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/release-inputs/offline-summary.json.zst",
+  "input_sha256": "a0021fd1bb5e8cd14326a2a2b52470e50cd8409a814c98aff9511e7fd52a5f1e",
+  "original_analysis_source_sha": "5ad43e1e096822d7a4ed2e7ce720c2900e7f5ff6",
+  "model_sha256": "e5c48771f03660b20cff525515cddb6cf82566c2797b2d89a8b57a9c17e27650",
+  "method": "integer unpulsed body mix quanta, exact observed wheel alphabet0.35 divided by4; no fitted deadband",
+  "metrics": {
+    "initial": {
+      "N": 38,
+      "wheel_class_changed": 0,
+      "raw_float_translation_reversed": 0,
+      "translation_reversed": 0,
+      "nonzero_heading_changed": 0,
+      "translation_starts_or_stops": 0,
+      "turn_sign_flipped": 0
+    },
+    "first_approach": {
+      "N": 29,
+      "wheel_class_changed": 1,
+      "raw_float_translation_reversed": 1,
+      "translation_reversed": 0,
+      "nonzero_heading_changed": 0,
+      "translation_starts_or_stops": 1,
+      "turn_sign_flipped": 0
+    }
+  },
+  "new_inferences": 0,
+  "new_physical_runs": 0,
+  "scope": "saved validation initial/first-approach role-only h0 probes; separate from pulse-weighted cold-start40; not correct-end success",
+  "original_full_summary": {
+    "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/validation-role-direction.json",
+    "bytes": 34808,
+    "sha256": "831e1b5384f6bd08095b0384e5291e30c9bf9c3bf667e800f8b4adba9bc66a33"
+  }
+}
