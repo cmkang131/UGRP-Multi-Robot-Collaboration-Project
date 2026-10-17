@@ -77,4 +77,15 @@ def test_policy_turns_to_heading_and_refuses_blocked_forward_with_reason():
     searching = EgocentricGoto(option=OPTION, footprint_radius_m=.12)
     action = searching.step(0., None, [])
     assert action['kind'] == 'search' and action['target_range_m'] is None
+    for i in range(60):
+        action = searching.step(.1*(i+1), None, [])
+    assert action['kind'] == 'search' and not searching.done
+    # A one-off orange patch rejected by the EKF gate (e.g. a peer arm) must
+    # not replace the repeatedly observed target memory.
+    rejected = EgocentricGoto(option=OPTION, footprint_radius_m=.12)
+    rejected.step(0., None, [observation([2., 0.])])
+    action = rejected.step(.1, None, [observation([3.5, 0.])])
+    assert action['target_source'] == 'memory'
+    assert action['target_range_m'] == pytest.approx(2., abs=.2)
+    assert any(e['reason'] == 'target_observation_rejected' for e in rejected.events)
 

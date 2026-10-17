@@ -423,13 +423,14 @@ def run(args):
                     state['anchor_t'] = t
                     state['seen'] = True
                 if state['seen'] and state['anchor_world'] is not None and controllers[w].memories:
-                    goal = [mem for mem in controllers[w].memories
-                            if mem['kind'] == 'zone_marking'
-                            and mem['signature'] == 'floor_orange_zone_marking']
-                    if goal:
-                        predicted = pose_apply(pose, min(goal, key=lambda mem: mem['range_m'])['relative_xy_m'])
-                        error = float(np.linalg.norm(predicted-state['anchor_world']))
-                        state['memory_errors'].append(dict(t=t, error_m=error, visible=visible))
+                    goal = controllers[w].goal_memory()
+                    if goal is not None:
+                        predicted = pose_apply(pose, goal['relative_xy_m'])
+                        memory_error = float(np.linalg.norm(predicted-state['anchor_world']))
+                        state['memory_errors'].append(dict(
+                            t=t, error_m=memory_error, visible=visible,
+                            memory_id=goal.get('id'),
+                            observations=goal.get('observations')))
                 if len(state['visible_flags']) >= 2 and not visible and state['visible_flags'][-2]:
                     state['target_losses'] += 1
                 state['last_visible_t'] = t if visible else state['last_visible_t']
@@ -616,9 +617,9 @@ def run(args):
             minimum_gap_m=(reason_rows[0]['minimum_gap_m'] if reason_rows else None),
             gap_status=('measured_eval_only' if reason_rows else 'not_measured'),
             raw=str(args.output), reproduction=sys.argv))
+        dump(args.output/'EXIT', dict(status=status, error=error))
         dump(args.output/'SHA256SUMS.json', {str(p.relative_to(args.output)): sha(p)
                                              for p in args.output.rglob('*') if p.is_file()})
-        dump(args.output/'EXIT', dict(status=status, error=error))
         print(json.dumps({k: summary[k] for k in ('status', 'arrived_inside_zone_n', 'world_n',
                                                    'collision_n', 'target_lost_mid_route_n')}), flush=True)
 

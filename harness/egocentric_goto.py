@@ -42,6 +42,11 @@ ARRIVAL_RADIUS_M = HEADING_PARAMS['final_alignment_m']
 HEADING_TOLERANCE_RAD = HEADING_PARAMS['heading_tolerance_rad']
 SIGMA_RANGE_M = .2       # PR406 own-map range sigma, inherited not refitted.
 SIGMA_BEARING_RAD = math.radians(3.)  # PR406 own-map bearing sigma.
+# The frozen command model overestimates on-spot yaw under the measured wheel
+# contact (gate-07 world06: 1.49 rad actual over 45 pulses vs 6.41 rad modeled,
+# 4.29x).  Search must still sweep a full circle without a gyro input, so use a
+# conservative 5x pulse count; arrival verification keeps the modeled limit.
+SEARCH_SWEEP_MARGIN = 5
 
 
 def wrap(angle):
@@ -137,7 +142,9 @@ class EgocentricGoto:
         full_turn = abs(command_delta({'wheels': duty([0., 0., 1.])[0],
                                        'duration_s': duty([0., 0., 1.])[1]})[2])
         self.turn_threshold_rad = max(float(heading_tolerance_rad), .5*full_turn)
-        self.search_limit = int(math.ceil(2*math.pi/max(1e-9, full_turn)))
+        self.verify_limit = int(math.ceil(2*math.pi/max(1e-9, full_turn)))
+        self.search_limit = int(math.ceil(
+            SEARCH_SWEEP_MARGIN*2*math.pi/max(1e-9, full_turn)))
         self.stage = 'off' if not self.enabled else 'search'
         self.done = False
         self.events = []
@@ -148,6 +155,7 @@ class EgocentricGoto:
         self.last_visible_t = None
         self.last_visible_range_m = None
         self.verify_steps = 0
+        self.rejected_previous = False
         self.blocked_previous = False
         self.aim = None
         self.target_source = None
@@ -189,8 +197,16 @@ class EgocentricGoto:
                       and np.asarray(m.get('relative_xy_m', []), float).shape == (2,)]
         if not candidates:
             return None
-        return min(candidates, key=lambda m: (float(m.get('range_m', 1e9)),
-                                              float(m.get('age_s', 1e9)), m.get('id', '')))
+        # One-off orange false positives (e.g. a peer robot arm) can create a
+        # nearer landmark.  The repeatedly associated target is the one with
+        # the most observations; range is not a truth cue.
+        return min(candidates, key=lambda m: (-int(m.get('observations', 0)),
+                                              float(m.get('first_seen_s', 1e9)),
+                                              m.get('id', '')))
+
+    def goal_memory(self):
+        """Primary target memory used by the policy (evaluation may read this)."""
+        return self._target(self.memories)
 
     def _observed_target(self, observations, target):
         candidates = []
@@ -260,7 +276,7 @@ class EgocentricGoto:
                             minimum_gap_m=None, gap_status='not_measured', t=t,
                             range_m=distance, source=self.target_source)
             self.stage = 'verify'
-            if self.verify_steps > self.search_limit:
+            if self.verify_steps > self.verify_limit:
                 self.done = True
                 self._event('arrival_unverified', blocked_object='not_observed',
                             minimum_gap_m=None, gap_status='not_measured', t=t,
@@ -337,9 +353,28 @@ class EgocentricGoto:
             self.stage = 'off'
             self.done = True
             return self._stop(t, 'option_off')
+        prior_target = self.goal_memory()
         result = self.update_memory(t, command, observations)
-        target = self._target(self.memories)
-        observation = self._observed_target(observations, target)
+        target = self.goal_memory()
+        control_observations = observations
+        rejected = False
+        if (prior_target is not None and target is not None
+                and target.get('id') == prior_target.get('id')):
+            # Once a target memory exists, a colour patch that the vendored
+            # EKF association gate rejects (e.g. an orange peer arm projected
+            # onto the floor) must not become the drive target.  The accepted
+            # re-observation set is generated from this frame's own RGB only.
+            accepted = {e.get('observation') for e in result.get('events', ())
+                        if e.get('reason') == 'reobserved'
+                        and e.get('memory_id') == target.get('id')}
+            control_observations = [o for o in observations if o.get('id') in accepted]
+            rejected = len(control_observations) != len(observations)
+        if rejected and not self.rejected_previous:
+            self._event('target_observation_rejected',
+                        blocked_object='non_floor_or_inconsistent_orange',
+                        minimum_gap_m=None, gap_status='not_measured', t=t)
+        self.rejected_previous = rejected
+        observation = self._observed_target(control_observations, target)
         self.last_observation_relative_xy_m = (None if observation is None
                                                else list(observation[2]))
         visible = observation is not None
