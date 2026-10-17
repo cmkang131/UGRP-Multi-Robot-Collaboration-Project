@@ -1,0 +1,79 @@
+{
+ "schema": "ugrp.beamact5.r6_preregistration.v1",
+ "written_before_run_utc": "2026-10-17T23:22:00Z",
+ "author": "beamact5 worker (DSH)",
+ "approved_by": "Lead (자율 진행: 38/40까지 r4/r5 반복; 동일 방식으로 r6까지 연속 실행)",
+ "r5c_result": {
+  "run": "/home/ugrp/ugrp-sim/runs/beamact5/validation-r5c-5",
+  "wall_s": 2217.49,
+  "success_n": 3,
+  "worlds": {
+   "6": "PASS 50.2",
+   "10": "PASS 49.0",
+   "20": "PASS 55.7",
+   "27": "FAIL cap_end 60.0",
+   "37": "FAIL 29.5"
+  },
+  "case27_mechanism": "open refresh chain refreshed red_1 18 times (15-59 s, all fresh_measurements_replan) but the robot stopped translating after SIM ~18 s: selection alternated every tick between feasible (fresh tick) and 92/92 blocked (stale tick), so each committed plan was replaced on the very next tick and the robot drove ~0.1 s per cycle until the 60 s cap. Robot root position was frozen at (0.239,-0.72) from ~18 s."
+ },
+ "r6_change": {
+  "mode": "search26_commit_plan (default off)",
+  "rule": "when a feasible committed path exists and only stale-memory margins block the goal, keep driving it until the already-existing next_plan = now + 1 s replan boundary; path/target/geometry failures still replan immediately. No new time constant.",
+  "basis": "r5c case27 needs ~0.3-1 m of travel but received ~0.1 s of driving per 1-4 s cycle; the 1 s cadence is the existing commitment window."
+ },
+ "stack": {
+  "root": "d7725751b13894c483095c336026c2b1a12e257e",
+  "adapter": "105bccaa0619103c9e2ac13f3338a4a70298f1d3",
+  "teacher": "725d129586ff43ae76345c68287c188f051b3491",
+  "cases_r6_sha256": "5794e6fe32219886aa72904001887ccd2774618cdfc5cb1fd1416037462407e9",
+  "plan_sha256": "f1a50e8c833c1da9113bdf8cff3844913380e3c821b15c072c0a23c0f54f5148",
+  "rejection_table": "/home/ugrp/ugrp-sim/runs/beamact5/gate-40-r6/rejection_table.json"
+ },
+ "profile": {
+  "search23_rects": "search23_batched_rects_v1",
+  "search26_circles": "off",
+  "search26_circles_farfirst": "search26_circles_farfirst_v1",
+  "search26_static_peer": "search26_static_peer_stance_v1",
+  "search26_peer_memory": "search26_peer_memory_v1",
+  "search26_reobserve": "search26_reobserve_views_v1",
+  "search26_reobserve_refresh_open": "search26_reobserve_refresh_open_v1",
+  "search26_commit_plan": "search26_commit_plan_v1"
+ },
+ "runs": {
+  "r6_5world": {
+   "indices": [
+    6,
+    10,
+    20,
+    27,
+    37
+   ],
+   "out": "/home/ugrp/ugrp-sim/runs/beamact5/validation-r6-5",
+   "cap_s": 60
+  },
+  "gate_out": "/home/ugrp/ugrp-sim/runs/beamact5/gate39-r6-run"
+ },
+ "expectations": {
+  "6": "PASS",
+  "10": "PASS",
+  "20": "PASS",
+  "27": "PASS if 1 s commit windows let the robot cross the ~0.3-1 m to the stance in bursts",
+  "37": "expected FAIL (r1/r2 structural label)"
+ },
+ "gate_arithmetic": {
+  "target": "38/40 = 6,10,20,27 PASS with no regressions (15 expected FAIL, 37 expected FAIL)",
+  "if_27_fails": "37/40 FAIL",
+  "if_one_regression": "37/40 FAIL"
+ },
+ "risk": "commit window may drive briefly on stale evidence (bounded by 1 s and existing collision guards); 6/10/20 checked for regressions in the 5-world run.",
+ "not_claimed": [
+  "teacher success is not student success",
+  "no student recording/training",
+  "world15 excluded/unverified",
+  "37 structural label from r1/r2 not remeasured",
+  "no margin/cap constant change"
+ ],
+ "superseded": {
+  "r5c_gate_preregistration": "not launched (r5c 5-world did not pass 27); no gate result claimed"
+ }
+}
