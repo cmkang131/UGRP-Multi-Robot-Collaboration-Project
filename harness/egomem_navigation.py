@@ -10,11 +10,12 @@ from harness.egocentric_landmark_memory import wrap, language_context
 
 
 class MemoryReturn:
-    def __init__(self, *, sweep_steps, footprint_diameter_m, horizontal_half_fov_rad, strict_return=False):
+    def __init__(self, *, sweep_steps, footprint_diameter_m, horizontal_half_fov_rad, strict_return=False, translated_return=False):
         self.sweep_steps=sweep_steps;self.diameter=footprint_diameter_m;self.half_fov=horizontal_half_fov_rad
         self.stage='look';self.steps=0;self.turn=0.;self.away_path=0.;self.goal=None;self.goal_range=None
         self.departed=False;self.done=False;self.events=[]
         self.strict_return=strict_return;self.goal_hue=None;self.visual_exit=False
+        self.translated_return=translated_return;self.return_path=0.;self.return_moving=False
 
     def step(self,t,increment,memories,observations,*,colour_pixels=None):
         self.steps+=1
@@ -60,12 +61,18 @@ class MemoryReturn:
             if self.away_path<self.goal_range or (self.strict_return and not self.visual_exit):return [.35,0.,0.]
             self.departed=True;self.stage='return';self.steps=0;event('departure_command_distance_reached',own_path_m=self.away_path)
         if self.stage=='return':
+            if self.return_moving:self.return_path+=float(np.linalg.norm(increment[:2]))
+            self.return_moving=False
             matching=[o for o in observations if o['kind']=='zone_boundary' and o['signature']==target['signature']]
-            if matching and (not self.strict_return or (self.visual_exit and colour_pixels and abs(angle)<=self.half_fov)):
+            # Existing robot envelope diameter is the geometric evidence of a
+            # translated return, rather than just turning back to see the color.
+            translated=(not self.translated_return or self.return_path>=self.diameter)
+            if matching and translated and (not self.strict_return or (self.visual_exit and colour_pixels and abs(angle)<=self.half_fov)):
                 event('rgb_signature_reacquired',memory_id=self.goal,signature=target['signature'],
-                      evaluation_required=True,arrival_verified=False)
+                      evaluation_required=True,arrival_verified=False,own_return_path_m=self.return_path)
                 self.done=True;return [0.,0.,0.]
             if abs(angle)>self.half_fov:return [0.,0.,.35]
+            self.return_moving=True
             return [.35,0.,0.]
         return [0.,0.,0.]
 

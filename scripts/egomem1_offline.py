@@ -90,13 +90,16 @@ def predict(a):
     dump(a.output/'predictions.json', rows)
     dump(a.output/'llm-input-example.json', language_context(rows[-1]['memories']))
     left=observations_n; funnel=[]
-    for gate,rejected in [('unambiguous',events['association_ambiguous']),('one_vote_per_memory_frame',events['duplicate_frame_observation']),('free_memory_slot',events['rovio_no_free_slot'])]:
+    for gate,rejected in [('unambiguous',events['association_ambiguous']),('one_vote_per_memory_frame',events['duplicate_frame_observation']),('one_birth_per_rgb_landmark',events['same_frame_birth_suppressed']),('free_memory_slot',events['rovio_no_free_slot'])]:
         passed=left-rejected;funnel.append(dict(stage=gate,input_n=left,cumulative_pass_n=passed,rejected_n=rejected));left=passed
     dump(a.output/'memory-funnel.json',dict(unit='observations',input_n=observations_n,funnel=funnel,
          represented=dict(updated=events['reobserved'],initialized=events['created']),
          reasons=dict(events),raw=str(a.input),reproduction=sys.argv,
          blocked_object='not_observed',minimum_gap_m=None,gap_status='not_measured'))
-    sources = {str(Path(p).resolve()): digest(p) for p in ('harness/egocentric_landmark_memory.py', 'harness/egomem_vision.py', 'harness/rovio_feature_statistics.py', 'harness/vendor/rovio/FeatureStatistics.hpp', 'harness/vendor/rovio/rovio.info', 'harness/vendor/rovio/statistics_c_api.cpp', __file__)}
+    sources = {str(Path(p).resolve()): digest(p) for p in ('harness/egocentric_landmark_memory.py', 'harness/egomem_vision.py', 'harness/rovio_feature_statistics.py', 'harness/egomem_object_association.py', 'harness/vendor/rovio/FeatureStatistics.hpp', 'harness/vendor/rovio/rovio.info', 'harness/vendor/rovio/statistics_c_api.cpp', __file__)}
+    if a.implementation=='rovio_object_gnn_v1':
+        import stonesoup.dataassociator.neighbour as native
+        sources[str(Path(native.__file__).resolve())]=digest(native.__file__)
     dump(a.output/'prediction-seal.json', dict(prediction_sha256=digest(a.output/'predictions.json'),
          allowed_sha256=seal['allowed_sha256'], extraction_seal_sha256=digest(a.output/'extraction-seal.json'), sources=sources,
          implementation=a.implementation,
@@ -202,9 +205,10 @@ def score(a):
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('stage',choices=['extract','predict','score']);p.add_argument('--input',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--fade-scale',type=Path);p.add_argument('--implementation',choices=['legacy_v1','rovio_local_v1'],default='legacy_v1');p.add_argument('--rovio-library',type=Path)
+    p.add_argument('--lease-name',choices=['egomem1','egomem2'],default='egomem1')
     a=p.parse_args()
     if not platform.node().startswith('ugrp-act-l4-gcp5'): raise ValueError('GCP5_ORIGINAL_CPU_ONLY')
-    if not Path('/home/ugrp/ugrp-sim/leases/egomem1.json').is_file(): raise ValueError('OWN_LEASE_REQUIRED')
+    if not (Path('/home/ugrp/ugrp-sim/leases')/(a.lease_name+'.json')).is_file(): raise ValueError('OWN_LEASE_REQUIRED')
     globals()[a.stage](a)
 
 

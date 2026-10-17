@@ -37,7 +37,7 @@ def command_delta(command,dt):
 
 def run(a):
     if not a.enabled or not platform.node().startswith('ugrp-act-l4-gcp5'):raise ValueError('EXPLICIT_GCP5_ONLY')
-    if not Path('/home/ugrp/ugrp-sim/leases/egomem1.json').is_file():raise ValueError('OWN_LEASE_REQUIRED')
+    if not (Path('/home/ugrp/ugrp-sim/leases')/(a.lease_name+'.json')).is_file():raise ValueError('OWN_LEASE_REQUIRED')
     q=json.loads(a.queue.read_text())
     import subprocess
     if subprocess.check_output(['git','-C',str(ROOT),'rev-parse','HEAD'],text=True).strip()!=q['source_sha']:raise ValueError('PINNED_SOURCE_REQUIRED')
@@ -45,6 +45,7 @@ def run(a):
     for name,expected in q.get('input_sha256',{}).items():
         if sha(name)!=expected:raise ValueError('PINNED_INPUT_CHANGED:'+name)
     a.output.mkdir(parents=True,exist_ok=False);(a.output/'own-rgb').mkdir()
+    dump(a.output/'queue.json',q)
     # Explicit frozen scene/renderer dependencies; never edit their source.
     sys.path[:0]=[str(ROOT),str(ROOT/'scripts'),str(a.renderer),str(a.renderer/'scripts'),str(a.legacy)]
     import sim,harness,scripts
@@ -151,7 +152,7 @@ def run(a):
     sweep=json.loads(a.sweep.read_text())
     diameter=2*max(float(np.linalg.norm(vertices[:,:2],axis=1).max()) for _,vertices in body_envelopes(SEARCH,'camera_v3'))
     from harness.e2e_rgb_vo import K
-    controller=MemoryReturn(sweep_steps=sweep['step_budget'],footprint_diameter_m=diameter,horizontal_half_fov_rad=math.atan(320/K[0,0]),strict_return=a.strict_reacquisition)
+    controller=MemoryReturn(sweep_steps=sweep['step_budget'],footprint_diameter_m=diameter,horizontal_half_fov_rad=math.atan(320/K[0,0]),strict_return=a.strict_reacquisition,translated_return=a.translated_return)
     own=[];trace=[];labels=[];commands=[];old=None;previous=None;last_servo=None;next_sensor=0.;ring=deque(maxlen=101)
     status='cap_end';error=None;start=time.monotonic();first30=None;would_stop=[]
     body=m.body('r1__robot').id;adr=int(m.jnt_qposadr[int(m.body_jntadr[body])])
@@ -212,6 +213,7 @@ def run(a):
         dump(a.output/'summary.json',dict(status=status,error=error,source_sha=q['source_sha'],frames=len(own),sim_s=(len(own)-1)/10,wall_s=time.monotonic()-start,
             physical_success=False,actual_return_reacquisition_rate=None,student_success=False,llm_success=False,model_calls=0,
             memory_implementation=a.implementation,noslip_iterations=int(m.opt.noslip_iterations),gpu_noslip_iterations=int(wm.opt.noslip_iterations),cpu_physics_steps=0,
+            strict_reacquisition=a.strict_reacquisition,translated_return=a.translated_return,own_return_path_m=controller.return_path,
             static_map_control=0,spawn_control=0,truth_control=0,top_camera_frames=0,held_world_reads=0,initial_prior='none',
             terminal_ring=dict(hz=10,indices=list(ring),bytes=sum((a.output/'own-rgb'/f'{rid}-{i:05d}.jpg').stat().st_size for rid in ('r1','r2') for i in ring)),
             first30_wall_sim=first30,work_cap=dict(phase_steps=sweep['step_budget'],total_steps=4*sweep['step_budget'],wall_cap=None),
@@ -230,7 +232,9 @@ if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--enabled',action='store_true')
     p.add_argument('--implementation',choices=['legacy_v1','rovio_local_v1'],default='legacy_v1')
     p.add_argument('--rovio-library',type=Path)
+    p.add_argument('--lease-name',choices=['egomem1','egomem2'],default='egomem1')
     p.add_argument('--preflight',action='store_true')
     p.add_argument('--strict-reacquisition',action='store_true',help='default off; outward normal departure + actual color disappearance before memory-facing reacquisition')
+    p.add_argument('--translated-return',action='store_true',help='default off; require one robot envelope diameter of own-motion translation during return before accepting RGB reacquisition')
     for key in ('queue','renderer','legacy','setup','colour','own-motion','sweep','output'):p.add_argument('--'+key,type=Path,required=True)
     run(p.parse_args())

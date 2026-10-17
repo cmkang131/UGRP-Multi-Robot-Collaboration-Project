@@ -82,9 +82,11 @@ class LandmarkMemory:
         if self.options.fade_tau_s is not None and self.options.fade_tau_s <= 0:
             raise ValueError('INVALID_FADE_TIME')
         from harness.rovio_feature_statistics import RovioLibrary, PROFILE
-        if self.options.implementation not in ('legacy_v1', PROFILE):
+        from harness.egomem_object_association import PROFILE as OBJECT_PROFILE
+        if self.options.implementation not in ('legacy_v1', PROFILE, OBJECT_PROFILE):
             raise ValueError('UNKNOWN_MEMORY_IMPLEMENTATION')
-        self.rovio = self.options.implementation == PROFILE
+        self.persistent = self.options.implementation == OBJECT_PROFILE
+        self.rovio = self.options.implementation in (PROFILE, OBJECT_PROFILE)
         self.statistics = {}
         self.library = None
         if self.enabled and self.rovio:
@@ -144,11 +146,31 @@ class LandmarkMemory:
         if self.rovio and observations and not observation_tick:
             raise ValueError('OBSERVATIONS_REQUIRE_OBSERVATION_TICK')
         events = []; pending = []; used = set()
+        # Validate the entire input before forming any association hypotheses.
         for obs in observations:
             allowed = {'id','kind','signature','relative_xy_m','measurement_state','covariance_m2',
                        'representation','hue','pixels','observed_endpoints_m'}
             if set(obs)-allowed:
                 raise ValueError('UNEXPECTED_OBSERVATION_FIELDS')
+            z = np.asarray(obs.get('measurement_state', obs.get('relative_xy_m')), float)
+            if z.shape != (2,) or not np.isfinite(z).all():
+                raise ValueError('INVALID_RELATIVE_OBSERVATION')
+            covariance(obs['covariance_m2'], 2, positive=True)
+        assigned = {}; compatible = np.zeros((len(self.items),len(observations)),bool)
+        if self.persistent and self.items and observations:
+            from harness.egomem_object_association import assign
+            costs = np.full(compatible.shape, np.inf)
+            for i, item in enumerate(self.items):
+                for j, obs in enumerate(observations):
+                    if (item['kind'],item['signature'],item['representation']) != (obs['kind'],obs['signature'],obs.get('representation','point')):
+                        continue
+                    residual=np.asarray(obs.get('measurement_state',obs.get('relative_xy_m')))-x[2*i:2*i+2]
+                    if item['representation']=='oriented_line':residual[1]=wrap(residual[1])
+                    s=p[2*i:2*i+2,2*i:2*i+2]+np.asarray(obs['covariance_m2'])
+                    costs[i,j]=float(residual @ np.linalg.solve(s,residual))
+            compatible=costs<=CHI2_99
+            assigned=assign(costs,x.reshape(-1,2),[p[2*i:2*i+2,2*i:2*i+2] for i in range(len(self.items))],t,CHI2_99)
+        for obs_index, obs in enumerate(observations):
             representation = obs.get('representation', 'point')
             z = np.asarray(obs.get('measurement_state', obs.get('relative_xy_m')), float)
             if z.shape != (2,) or not np.isfinite(z).all():
@@ -157,6 +179,9 @@ class LandmarkMemory:
             # The same frame cannot vote for one landmark twice. Multiple
             # in-gate same-kind candidates are ambiguous; never pick by truth.
             matches = []; checked = 0; nearest_d2 = None
+            if self.persistent and obs_index not in assigned and compatible[:,obs_index].any():
+                events.append(self.event('duplicate_frame_observation',observation=obs['id'],detail='compatible_existing_landmark_assigned_elsewhere'))
+                continue
             for i, item in enumerate(self.items):
                 if item['kind'] != obs['kind'] or item['signature'] != obs['signature'] or item['representation'] != representation:
                     continue
@@ -169,7 +194,7 @@ class LandmarkMemory:
                 if representation == 'oriented_line': innovation[1] = wrap(innovation[1])
                 d2 = float(innovation @ np.linalg.solve(s, innovation))
                 checked += 1; nearest_d2 = d2 if nearest_d2 is None else min(nearest_d2,d2)
-                if d2 <= CHI2_99:
+                if (self.persistent and assigned.get(obs_index)==i) or (not self.persistent and d2 <= CHI2_99):
                     matches.append((i, d2, predicted, h, s, innovation))
             if len(matches) > 1:
                 events.append(self.event('association_ambiguous', observation=obs['id'], candidates=len(matches)))
@@ -210,8 +235,14 @@ class LandmarkMemory:
                 # tracked+free reserve using factors 1.1, 1.1^2, ... .
                 keep = []
                 for i, item in enumerate(self.items):
-                    if self.statistics[item['id']].good():
+                    if self.statistics[item['id']].good() or self.persistent:
                         keep.append(i)
+                        if self.persistent and not self.statistics[item['id']].good():
+                            # MRPT range-bearing landmark state persists outside
+                            # FOV. UNKNOWN visibility is no evidence of object
+                            # disappearance. Keep native ROVIO statistics as
+                            # diagnostics, without using VIO feature deletion.
+                            events.append(self.event('rovio_quality_low_retained',memory_id=item['id']))
                     else:
                         events.append(self.event('rovio_quality_removed', memory_id=item['id'],
                                                  statistics=self.statistics[item['id']].values()))
@@ -220,7 +251,7 @@ class LandmarkMemory:
                 tracked = {e['memory_id'] for e in events if e['reason']=='reobserved'}
                 required_free = int(self.options.max_landmarks*params['minTrackedAndFreeFeatures']-len(tracked))
                 factor = params['removalFactor']
-                while self.options.max_landmarks-len(self.items) < required_free:
+                while not self.persistent and self.options.max_landmarks-len(self.items) < required_free:
                     keep = []
                     for i, item in enumerate(self.items):
                         if item['id'] not in tracked and not self.statistics[item['id']].good(factor):
@@ -245,9 +276,23 @@ class LandmarkMemory:
                 if i not in keep:
                     events.append(self.event('uncertainty_exceeds_sensor_range', memory_id=item['id']))
             self._retain(keep)
+        new_ids = set()
         for obs in pending:
+            if self.persistent:
+                # Multiple segments in one RGB image can describe one landmark.
+                # Suppress a second in-gate birth, without counting it as an
+                # independent Kalman update. Same existing gate/no truth label.
+                duplicate = None
+                for i,item in enumerate(self.items):
+                    if item['id'] not in new_ids or (item['kind'],item['signature'],item['representation']) != (obs['kind'],obs['signature'],obs.get('representation','point')):continue
+                    residual=np.asarray(obs.get('measurement_state',obs.get('relative_xy_m')))-self.x[2*i:2*i+2]
+                    if item['representation']=='oriented_line':residual[1]=wrap(residual[1])
+                    s=self.p[2*i:2*i+2,2*i:2*i+2]+np.asarray(obs['covariance_m2'])
+                    if float(residual @ np.linalg.solve(s,residual))<=CHI2_99:duplicate=item['id'];break
+                if duplicate:
+                    events.append(self.event('same_frame_birth_suppressed',observation=obs['id'],memory_id=duplicate));continue
             if len(self.items) >= self.options.max_landmarks:
-                if self.rovio:
+                if self.rovio and not self.persistent:
                     events.append(self.event('rovio_no_free_slot', observation=obs['id']))
                     continue
                 # Bounded list eviction is a resource policy, never a failure
@@ -260,6 +305,7 @@ class LandmarkMemory:
             expanded[size:, size:] = obs['covariance_m2']
             self.p = expanded; self.x = np.r_[self.x, obs.get('measurement_state', obs.get('relative_xy_m'))]
             self.sequence += 1
+            new_ids.add(f'm{self.sequence}')
             self.items.append(dict(id=f'm{self.sequence}', kind=obs['kind'], signature=obs['signature'],
                                    representation=obs.get('representation', 'point'),
                                    appearance_hue=obs.get('hue'),
