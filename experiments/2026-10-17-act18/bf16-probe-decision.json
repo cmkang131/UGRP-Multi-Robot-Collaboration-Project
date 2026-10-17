@@ -1,0 +1,64 @@
+{
+  "schema": "ugrp.act18.bf16_probe_decision.v1",
+  "date_utc": "2026-10-17",
+  "probe_raw": {
+    "host": "gcp5 L4 (ugrp-act-l4-gcp5, project ugrp-sim-e-1016)",
+    "remote_dir": "/home/ugrp/ugrp-sim/runs/act18/bf16-probe-r1",
+    "remote_sha256": {
+      "bf16-probe.json": "b4801ee9f2fa903fa7c87f44453ed286152ad54606d889895c43b7bbc72ed820",
+      "progress-fp32.jsonl": "11f8e04ebe07cc1e7ab45d5346c7eb0f9965bd39c4a6388033a9327e41fe8982",
+      "progress-bf16_autocast_v1.jsonl": "8dda6137f0cc38951b670f07a248d699ee5916f23d44f530c5cfca682ceccdff"
+    },
+    "repo_copy": [
+      "experiments/2026-10-17-act18/bf16-probe.json",
+      "experiments/2026-10-17-act18/bf16-probe-progress-fp32.jsonl",
+      "experiments/2026-10-17-act18/bf16-probe-progress-bf16.jsonl"
+    ],
+    "source_sha": "0b8a2ef6d + probe script sha256 94824b44a9be01b6ac801acc1b21a64eb55b1ca1dace60b6ed8ec32080547ff4 (report source_sha field is null because ROOT is a copied tree, not a git checkout)",
+    "dataset_manifest_sha256": "44c1c46073aa08ea028324ffe924b67d862a2f01b56f4db11afad17000a9b198",
+    "protocol_sha256": "1db4e22345fdf29cdd80d07bbf61f23aa6101a6859e125f974f550577be1fb4e"
+  },
+  "setup": {
+    "recipe": "R100 chunk100, batch8, seed20261017, AdamW lr1e-5 wd1e-4, balanced_bce_v1",
+    "arms": "fp32 then bf16_autocast_v1, 2000 steps each, sequential, same GPU",
+    "bf16_scope": "torch.autocast('cuda', dtype=torch.bfloat16) around forward/loss only; fp32 weights, optimizer, grad clip",
+    "lerobot_reference": "pinned LeRobot: configs/policies.py:63-65 use_amp default False (opt-in, automatic gradient scaling); scripts/lerobot_train.py:195 accelerator.autocast(); scripts/lerobot_eval.py:789 eval autocast only when use_amp"
+  },
+  "measured": {
+    "fp32": {"step_median_s": 0.167457, "step_p10_s": 0.164412, "step_p90_s": 0.188609,
+             "wall_s": 405.5, "peak_gpu_bytes": 2230238208,
+             "loss_last200_mean": 1.654007, "loss_last200_min": 1.315495,
+             "val8_loss": 0.735826, "val_rows": 2834, "nan_inf_steps": 0},
+    "bf16_autocast_v1": {"step_median_s": 0.152285, "step_p10_s": 0.150373, "step_p90_s": 0.155106,
+             "wall_s": 369.5, "peak_gpu_bytes": 2186094080,
+             "loss_last200_mean": 1.595584, "loss_last200_min": 1.290503,
+             "val8_loss": 0.644829, "val_rows": 2834, "nan_inf_steps": 0},
+    "speedup_step_median": 1.0997,
+    "memory_delta_bytes": -44144128,
+    "loss_curve_points": {
+      "fp32": {"1": 106.2107, "100": 4.8005, "500": 3.0208, "1000": 2.0371, "2000": 1.5735},
+      "bf16_autocast_v1": {"1": 109.3860, "100": 4.5538, "500": 2.9975, "1000": 2.2806, "2000": 1.4965}
+    },
+    "val_loss_caveat": "single seed, 2000 steps, VAL8 rows only; directional check, not a quality result"
+  },
+  "acceptability": {
+    "verdict": "acceptable",
+    "criteria": "no NaN/inf in either arm (0/2000 each), loss curves track, bf16 VAL8 loss not worse, step time faster",
+    "limits": "10.0% step-time gain is modest; probe is not a research result and is not pooled with research results"
+  },
+  "r100_move_decision": {
+    "decision": "do NOT move R100 mid-experiment; gcp2 matched pair continues to 100k in fp32",
+    "reasons": [
+      "matched design: R8 is already training fp32 on gcp2 and the protocol requires chunk size to be the only candidate difference; a bf16 R100 vs fp32 R8 confounds precision, and AGENTS forbids pooling bf16 with fp32 results",
+      "no resume support: act18_train.py saves only step-10k/50k/100k checkpoints (no optimizer/scheduler/RNG state), so moving at 42,400/100,000 restarts from 0 and discards 13,484 s of completed training; a fresh bf16 100k run (~100k x 0.152 s = 4.2 h) would beat gcp2's remaining 57,600 x 0.318 s (~5.1 h) by only ~0.9 h while producing a second, redundant R100",
+      "gcp5 budget: gcp5 net-cost stop budget is 1,000 KRW (only gcp2 was raised to 2,000 KRW); a 4.2 h L4 run risks a mid-training budget stop, and there is no resume"
+    ],
+    "bf16_adoption": "per the AGENTS 10/17 rule, bf16_autocast_v1 is the precision for the next new training rounds; the in-flight matched R8/R100 pair stays fp32",
+    "gcp5_action": "probe lease removed by the probe process; VM stopped after verifying GPU 0%, no act18 processes, no leases"
+  },
+  "not_verified": [
+    "no 100k-step bf16 training has been run; probe covered 2,000 steps",
+    "probe VAL8 loss uses one seed and untrained-policy baselines are absent; not a model quality comparison",
+    "gcp5 net-cost/budget headroom was not measured"
+  ]
+}

@@ -11,3 +11,9 @@
 Mac에서는 소스 편집·짧은 비물리 시험·요약/기존 프레임 띠 파일 열람만 한다. 실행과 실패 분석은 gcp2 L4 영속 디스크, 모든 gcloud는 계정/프로젝트 명시, gcp1·CPU VM 시작0이다. 모델 키·정답 학생 입력·정적 지도·weld·noslip은0이다. 예산2,000KRW 정지와 유휴20분을 유지한다. 새 이미지/텐서 복제0, 예상 신규 디스크는 소스 사본≤2GB+2후보×3체크포인트×0.21GB+평가/대표 영상≤2GB이며 기존 여유26.76GiB에서 바닥8GiB를 남긴다. 중간/최종 모델과 실패 원본을 보존하고, 결과에 쓰는 모델은 Release 업로드·익명 재다운로드·전체 SHA·로딩까지 검증한다.
 
 훈련 진입점은 `scripts/act18_queue.py --enabled`, 개별 훈련은 `scripts/act18_train.py --enabled`다. 모든 새 대기열은 현재 main에서 가져온 `check_current_stack.py`와 `configs/current_stack.json`으로 점검하고 절대 `rejection_table` 경로를 연결한다. 실행 소스는 커밋 후 고정한다. 임대 `leases/act18*.json`과 자기 프로세스를 정리하고, 타 작업이 없을 때만 L4 정지·TERMINATED를 확인한다.
+
+## bf16 짝 비교 (10/17, gcp5 단독)
+
+AGENTS 10/17 bf16 규칙에 따라 gcp5 L4 한 대에서 R100 조리법(chunk100·batch8·seed20261017)을 2,000단계씩 fp32→bf16 순차로 돌렸다. bf16은 forward/loss만 `torch.autocast('cuda', dtype=torch.bfloat16)`이고 가중치·옵티마이저·grad clip은 fp32다. 단계 중앙값 0.1675→0.1523초(1.10배), 최고 GPU 메모리 2,230→2,186MB, last200 손실 평균 1.654→1.596, VAL8 손실 0.7358→0.6448(2,834행), NaN/inf 0/2000·0/2000이었다. 단일 시드·2,000단계 방향 점검이며 품질 결과가 아니다.
+
+판정: 수용. 다만 R100을 gcp5로 옮기지 않는다. R8이 gcp2에서 fp32로 이미 학습 중이라 bf16 R100과 짝지으면 chunk 차이 외에 정밀도가 섞이고(AGENTS: bf16·fp32 결과 합산 금지), act18_train.py는 옵티마이저/RNG 재개를 지원하지 않아 42,400/100,000에서 옮기면 13,484초를 버리고 0부터 다시 해야 하며, 그래도 gcp2 잔여(약 5.1시간)보다 0.9시간 이르는 데 그친다. bf16은 다음 새 학습부터 쓴다. 원본·해시·근거는 `bf16-probe.json`, `bf16-probe-decision.json`, `bf16-probe-progress-*.jsonl`에 있다.

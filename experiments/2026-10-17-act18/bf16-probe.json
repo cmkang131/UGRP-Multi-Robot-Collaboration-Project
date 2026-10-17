@@ -1,0 +1,68 @@
+{
+  "schema": "ugrp.act18.bf16_probe.v1",
+  "probe": true,
+  "research_result": false,
+  "host": {
+    "project_id": "ugrp-sim-e-1016",
+    "instance": "ugrp-act-l4-gcp5",
+    "machine_type": "g2-standard-8",
+    "zone": "asia-northeast3-a"
+  },
+  "source_sha": null,
+  "candidate": "R100",
+  "dataset_manifest_sha256": "44c1c46073aa08ea028324ffe924b67d862a2f01b56f4db11afad17000a9b198",
+  "protocol_sha256": "1db4e22345fdf29cdd80d07bbf61f23aa6101a6859e125f974f550577be1fb4e",
+  "lerobot_act_sha256": "8d622935319af7d03f1efd95d51e726af2921010f7e4f5ec3742f62280493111",
+  "torch": "2.11.0+cu128",
+  "cuda": "12.8",
+  "val_seeds": [
+    88620,
+    88621,
+    88622,
+    88623,
+    88644,
+    88645,
+    88646,
+    88647
+  ],
+  "val_rows": 2834,
+  "arms": [
+    {
+      "arm": "fp32",
+      "steps": 2000,
+      "nan_inf_steps": 0,
+      "step_median_s": 0.16745659599996543,
+      "step_p10_s": 0.16441163980000512,
+      "step_p90_s": 0.18860875250001072,
+      "wall_s": 405.513990381,
+      "peak_gpu_bytes": 2230238208,
+      "loss_last200_mean": 1.6540072637796401,
+      "loss_last200_min": 1.3154950141906738,
+      "val_loss": 0.7358255645466591,
+      "val_rows": 2834,
+      "gpu": "NVIDIA L4"
+    },
+    {
+      "arm": "bf16_autocast_v1",
+      "steps": 2000,
+      "nan_inf_steps": 0,
+      "step_median_s": 0.1522847210001146,
+      "step_p10_s": 0.15037340010003392,
+      "step_p90_s": 0.15510566409989224,
+      "wall_s": 369.5291924899999,
+      "peak_gpu_bytes": 2186094080,
+      "loss_last200_mean": 1.5955844116210938,
+      "loss_last200_min": 1.2905033826828003,
+      "val_loss": 0.644829149093103,
+      "val_rows": 2834,
+      "gpu": "NVIDIA L4"
+    }
+  ],
+  "status": "complete",
+  "complete": true,
+  "started_utc": "2026-10-17T13:06:46.614440+00:00",
+  "wall_cap": null,
+  "default_off": true,
+  "pooled_with_research": false,
+  "note": "probe artifact only; not used for candidate selection or research results"
+}
