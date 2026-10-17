@@ -267,8 +267,8 @@ def run(args):
             lookup[k, pwm-500] = (float(np.clip(value, *m.jnt_range[jid]))
                                   if m.jnt_limited[jid] else value)
     wheel_ids = [m.actuator('r1__wheel_'+name+'_drive').id for name in ('fl', 'fr', 'rl', 'rr')]
-    applied = np.array([[SEARCH[s] for s in servos]], float)
-    relay = np.zeros((1, 4), int)
+    applied = np.tile(np.array([[SEARCH[s] for s in servos]], float), (nworld, 1))
+    relay = np.zeros((nworld, 4), int)
     drive = DriveParameters()
     ctrl = np.zeros(m.nu)
     for i in range(m.nu):
@@ -318,6 +318,7 @@ def run(args):
                       ring=deque(maxlen=100), seen=False, anchor_world=None,
                       anchor_t=None, memory_errors=[], visible_flags=[],
                       target_losses=0, collisions=0, collision_events=[],
+                      collision_active=set(),
                       final=None, done=False, status='cap_end', last_visible_t=None)
                  for w, spec in enumerate(worlds)]
     target = setup['evaluation_only']
@@ -441,7 +442,7 @@ def run(args):
                     previous[w] = command
                 tape_rows.append(dict(ctrl=ctrl, wheels=wheels,
                                       deadlines=[t+v if v else -1 for v in duration],
-                                      applied=applied[0], target=[SEARCH[s] for s in servos],
+                                      applied=applied[w], target=[SEARCH[s] for s in servos],
                                       servo_active=[False]*5, now=t, servo_time=t))
             values, cmd_state = control_tape(
                 tape_rows, relay, dt=float(m.opt.timestep),
@@ -452,18 +453,26 @@ def run(args):
             wp.copy(tape, wp.array(values, dtype=float))
             step_index.zero_()
             wp.capture_launch(cap.graph)
-            # Contact audit is evaluation-only.
-            pairs = contact_pairs(wd, nworld)
-            for w, g1, g2 in pairs:
+            # Contact audit is evaluation-only. Count rising edges per world
+            # and blocking body, not every persistent contact point.
+            current_contacts = [set() for _ in range(nworld)]
+            for w, g1, g2 in contact_pairs(wd, nworld):
                 b1 = m.geom_bodyid[g1]; b2 = m.geom_bodyid[g2]
                 n1, n2 = m.body(b1).name, m.body(b2).name
                 r1 = n1.startswith('r1__') or n2.startswith('r1__')
-                other = n2 if n1.startswith('r1__') else n1
-                if r1 and not (n1.startswith('r1__') and n2.startswith('r1__')):
-                    gname = m.geom(g2 if n1.startswith('r1__') else g1).name.lower()
-                    if not any(word in gname for word in ('floor', 'ground')):
-                        per_world[w]['collisions'] += 1
-                        per_world[w]['collision_events'].append(dict(t=t, a=n1, b=n2, geom=gname))
+                if not r1 or (n1.startswith('r1__') and n2.startswith('r1__')):
+                    continue
+                other_geom = m.geom(g2 if n1.startswith('r1__') else g1).name.lower()
+                other_body = n2 if n1.startswith('r1__') else n1
+                if any(word in other_geom for word in ('floor', 'ground')):
+                    continue
+                current_contacts[w].add(other_body)
+            for w in range(nworld):
+                new_contacts = current_contacts[w]-per_world[w]['collision_active']
+                for other in sorted(new_contacts):
+                    per_world[w]['collisions'] += 1
+                    per_world[w]['collision_events'].append(dict(t=t, other_body=other))
+                per_world[w]['collision_active'] = current_contacts[w]
             # Ring buffer of the last 10 SIM seconds, recording only.
             for w in range(nworld):
                 state = per_world[w]
