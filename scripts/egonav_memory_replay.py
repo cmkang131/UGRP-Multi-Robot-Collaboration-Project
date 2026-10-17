@@ -158,18 +158,21 @@ def draw_left(panel: np.ndarray, row: dict, scale: float) -> None:
 def draw_right(canvas: np.ndarray, frame: np.ndarray | None, row: dict,
                events: list[str]) -> None:
     x0 = PANEL_W + 10
+    right_w = WIDTH - x0 - 10
+    right_h = int(round(right_w * 480 / 640))
     cv2.putText(canvas, 'own RGB (robot camera)', (x0, 22),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, (230, 230, 230), 1, cv2.LINE_AA)
     if frame is not None:
-        view = cv2.resize(frame, (440, 330), interpolation=cv2.INTER_AREA)
-        canvas[40:370, x0:x0 + 440] = view
+        view = cv2.resize(frame, (right_w, right_h), interpolation=cv2.INTER_AREA)
+        canvas[40:40 + right_h, x0:x0 + right_w] = view
+    below = 40 + right_h + 24
     cv2.putText(canvas, 'visible now: ' + ('yes' if row.get('visible') else 'no'),
-                (x0, 392), cv2.FONT_HERSHEY_SIMPLEX, 0.45,
+                (x0, below), cv2.FONT_HERSHEY_SIMPLEX, 0.45,
                 (120, 255, 140) if row.get('visible') else (150, 150, 150), 1, cv2.LINE_AA)
-    cv2.putText(canvas, 'events:', (x0, 416),
+    cv2.putText(canvas, 'events:', (x0, below + 24),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.42, (220, 220, 220), 1, cv2.LINE_AA)
     for index, text in enumerate(events[-4:]):
-        cv2.putText(canvas, text, (x0 + 8, 438 + 20 * index),
+        cv2.putText(canvas, text, (x0 + 8, below + 46 + 20 * index),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.36, (190, 190, 160), 1, cv2.LINE_AA)
 
 
@@ -222,8 +225,16 @@ def build(run: Path, world: int, out: Path, fps: int, width: int) -> dict:
     finally:
         shutil.rmtree(tempo, ignore_errors=True)
 
+    spawn = None
+    setup_path = run/'setup.json'
+    if setup_path.is_file():
+        try:
+            spawn = (json.loads(setup_path.read_text()).get('worlds') or [{}])[0].get('r1')
+        except (OSError, ValueError, IndexError):
+            spawn = None
     meta = dict(
-        source_run=str(run), world=world, kind='egonav_memory_replay_v1',
+        source_run=str(run), world=world, spawn=spawn,
+        kind='egonav_memory_replay_v1',
         note='visualization only; not a success criterion and not pooled with gate results',
         toggle='egonav_memory_trace_v1', fps=fps, width=width, height=HEIGHT,
         frames=len(rows), sim_seconds=round((len(rows) - 1) / 10.0, 3),
