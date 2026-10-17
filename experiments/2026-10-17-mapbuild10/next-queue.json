@@ -1,17 +1,21 @@
 {
   "schema": "ugrp.mapbuild10.queue.v1",
-  "status": "WAITING_FOR_COARSE_START_ZONE",
+  "status": "NOT_READY_OFF_IMPROVEMENT_GATE_FAILED",
   "ready": false,
-  "source_sha": "0df021e73",
+  "source_sha": "9fa2aad39",
   "rejection_table": "/Users/changmin/projects/ugrp-wt/mapbuild1/experiments/2026-10-17-mapbuild10/rejection_table.json",
   "initial_prior_option": "start_zone_prior_v1",
   "profile": "nav2_defaults_v1",
-  "required_input": "operator/authored coarse region and rough heading per recording/stream; no spawn rounding",
+  "required_input": null,
   "new_physical_runs": 0,
   "physics_submission_allowed": false,
   "wall_cap": null,
   "planning_cap_basis": "compute_or_sim",
   "scope": "R1\u2013R3/418 saved inputs only; not current runtime certification",
   "core_candidate_sha": "0df021e73",
-  "sparse_adapter_sha": "eae94efe1"
+  "sparse_adapter_sha": "eae94efe1",
+  "postprocess_sha": "44a29092a",
+  "reason": "R1 unresolved; R2/R3 coarse-prior XY/RMSE worse than same-motion OFF; gcp3 sparse-view OFF improvement 0",
+  "initial_prior_scope": "coordinator-authorized synthetic conditional coarse boxes from evaluator; predictor receives ranges only",
+  "trials_per_stream": 20
 }

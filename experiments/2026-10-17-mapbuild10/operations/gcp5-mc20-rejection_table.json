@@ -1,0 +1,186 @@
+{
+  "source": "/home/ugrp/ugrp-sim/runs/mapbuild10-mc20",
+  "reproduction": [
+    "scripts/mapbuild10_mc.py",
+    "--stage",
+    "score",
+    "--host",
+    "gcp5",
+    "--work",
+    "/home/ugrp/ugrp-sim/runs/mapbuild10-mc20",
+    "--trials",
+    "20",
+    "--workers",
+    "4",
+    "--calibration",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/own-noise-command-r1-r2.json",
+    "--requirements",
+    "experiments/2026-10-17-mapbuild8/requirements.json",
+    "--queue",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild10/mc20-queue.json",
+    "--stack-check",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild10/mc20-stack.json"
+  ],
+  "cohorts": [
+    {
+      "mode": "coarse",
+      "stages": [
+        {
+          "stage": "case_replays",
+          "cumulative_pass_n": 60,
+          "rejected_n": 0
+        },
+        {
+          "stage": "convergence",
+          "cumulative_pass_n": 39,
+          "rejected_n": 21
+        },
+        {
+          "stage": "no_wrong_convergence",
+          "cumulative_pass_n": 39,
+          "rejected_n": 0
+        },
+        {
+          "stage": "existing_OFF_improvement_and_requirement_gate",
+          "cumulative_pass_n": 0,
+          "rejected_n": 39
+        }
+      ]
+    },
+    {
+      "mode": "global",
+      "stages": [
+        {
+          "stage": "case_replays",
+          "cumulative_pass_n": 60,
+          "rejected_n": 0
+        },
+        {
+          "stage": "convergence",
+          "cumulative_pass_n": 24,
+          "rejected_n": 36
+        },
+        {
+          "stage": "no_wrong_convergence",
+          "cumulative_pass_n": 6,
+          "rejected_n": 18
+        },
+        {
+          "stage": "existing_OFF_improvement_and_requirement_gate",
+          "cumulative_pass_n": 0,
+          "rejected_n": 6
+        }
+      ]
+    }
+  ],
+  "frame_cohorts": [
+    {
+      "mode": "coarse",
+      "scope": "20 repeated priors/seeds, not independent recorded frames",
+      "stages": [
+        {
+          "stage": "replayed_frames",
+          "cumulative_pass_n": 20880,
+          "rejected_n": 0
+        },
+        {
+          "stage": "visible_wall",
+          "cumulative_pass_n": 16100,
+          "rejected_n": 4780
+        },
+        {
+          "stage": "sensor_update",
+          "cumulative_pass_n": 2120,
+          "rejected_n": 13980
+        },
+        {
+          "stage": "converged_event",
+          "cumulative_pass_n": 314,
+          "rejected_n": 1806
+        }
+      ]
+    },
+    {
+      "mode": "global",
+      "scope": "20 repeated priors/seeds, not independent recorded frames",
+      "stages": [
+        {
+          "stage": "replayed_frames",
+          "cumulative_pass_n": 20880,
+          "rejected_n": 0
+        },
+        {
+          "stage": "visible_wall",
+          "cumulative_pass_n": 16100,
+          "rejected_n": 4780
+        },
+        {
+          "stage": "sensor_update",
+          "cumulative_pass_n": 2120,
+          "rejected_n": 13980
+        },
+        {
+          "stage": "converged_event",
+          "cumulative_pass_n": 143,
+          "rejected_n": 1977
+        }
+      ]
+    }
+  ],
+  "distribution": [
+    {
+      "mode": "coarse",
+      "reason_category": "unresolved",
+      "reason": "unresolved",
+      "n": 21,
+      "blocked_object": "static_wall_likelihood_and_motion_uncertainty",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "mode": "coarse",
+      "reason_category": "wrong_convergence",
+      "reason": "wrong_convergence",
+      "n": 0,
+      "blocked_object": "static_wall_likelihood_and_motion_uncertainty",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "mode": "coarse",
+      "reason_category": "OFF_improvement_or_requirement_failure",
+      "reason": "OFF_improvement_or_requirement_failure",
+      "n": 39,
+      "blocked_object": "static_wall_likelihood_and_motion_uncertainty",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "mode": "global",
+      "reason_category": "unresolved",
+      "reason": "unresolved",
+      "n": 36,
+      "blocked_object": "static_wall_likelihood_and_motion_uncertainty",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "mode": "global",
+      "reason_category": "wrong_convergence",
+      "reason": "wrong_convergence",
+      "n": 18,
+      "blocked_object": "static_wall_likelihood_and_motion_uncertainty",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "mode": "global",
+      "reason_category": "OFF_improvement_or_requirement_failure",
+      "reason": "OFF_improvement_or_requirement_failure",
+      "n": 6,
+      "blocked_object": "static_wall_likelihood_and_motion_uncertainty",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    }
+  ]
+}

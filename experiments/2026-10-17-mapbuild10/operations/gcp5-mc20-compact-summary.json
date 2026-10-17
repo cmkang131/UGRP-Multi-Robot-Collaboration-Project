@@ -1,0 +1,26 @@
+{
+  "host": "gcp5",
+  "trials": 20,
+  "cases": 120,
+  "scope": "conditional synthetic coarse priors; no actual operator prior, no physical success",
+  "modes": [
+    {
+      "mode": "coarse",
+      "cases": 60,
+      "converged_cases": 39,
+      "wrong_converged_cases": 0,
+      "offline_pass_cases": 0,
+      "endpoint_requirement_pass_cases": 60,
+      "note": "endpoint scores include unresolved proposals; no physical/runtime admission"
+    },
+    {
+      "mode": "global",
+      "cases": 60,
+      "converged_cases": 24,
+      "wrong_converged_cases": 18,
+      "offline_pass_cases": 0,
+      "endpoint_requirement_pass_cases": 6,
+      "note": "endpoint scores include unresolved proposals; no physical/runtime admission"
+    }
+  ]
+}

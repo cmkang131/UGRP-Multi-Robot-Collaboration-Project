@@ -1,79 +1,344 @@
 {
-  "schema": "ugrp.mapbuild10.funnel.v1",
-  "status": "START_ZONE_INPUT_REQUIRED",
-  "source_raw": [
-    "gcp5:/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r1",
-    "gcp5:/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r2",
-    "gcp5:/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3",
-    "gcp3:/home/ugrp/ugrp-sim/runs/warp8/selfmap-open-r1"
-  ],
-  "units": "candidate streams; independent gcp5/gcp3 cohorts are NOT a pooled accuracy rate",
+  "schema": "ugrp.mapbuild10.funnel.v2",
+  "status": "NOT_READY_OFF_IMPROVEMENT_GATE_FAILED",
   "cohorts": [
     {
       "host": "gcp5",
-      "stages": [
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild10-mc20",
+      "source_table": "/Users/changmin/projects/ugrp-wt/mapbuild1/experiments/2026-10-17-mapbuild10/operations/gcp5-mc20-rejection_table.json",
+      "case_funnels": [
         {
-          "stage": "recording_streams",
-          "cumulative_pass_n": 3,
-          "rejected_n": 0
+          "mode": "coarse",
+          "stages": [
+            {
+              "stage": "case_replays",
+              "cumulative_pass_n": 60,
+              "rejected_n": 0
+            },
+            {
+              "stage": "convergence",
+              "cumulative_pass_n": 39,
+              "rejected_n": 21
+            },
+            {
+              "stage": "no_wrong_convergence",
+              "cumulative_pass_n": 39,
+              "rejected_n": 0
+            },
+            {
+              "stage": "existing_OFF_improvement_and_requirement_gate",
+              "cumulative_pass_n": 0,
+              "rejected_n": 39
+            }
+          ]
         },
         {
-          "stage": "external_coarse_start_prior_available",
-          "cumulative_pass_n": 0,
-          "rejected_n": 3
+          "mode": "global",
+          "stages": [
+            {
+              "stage": "case_replays",
+              "cumulative_pass_n": 60,
+              "rejected_n": 0
+            },
+            {
+              "stage": "convergence",
+              "cumulative_pass_n": 24,
+              "rejected_n": 36
+            },
+            {
+              "stage": "no_wrong_convergence",
+              "cumulative_pass_n": 6,
+              "rejected_n": 18
+            },
+            {
+              "stage": "existing_OFF_improvement_and_requirement_gate",
+              "cumulative_pass_n": 0,
+              "rejected_n": 6
+            }
+          ]
         }
       ],
-      "new_filter_replays_executed": 0,
-      "metric_gate": "NOT_MEASURED"
+      "frame_funnels": [
+        {
+          "mode": "coarse",
+          "scope": "20 repeated priors/seeds, not independent recorded frames",
+          "stages": [
+            {
+              "stage": "replayed_frames",
+              "cumulative_pass_n": 20880,
+              "rejected_n": 0
+            },
+            {
+              "stage": "visible_wall",
+              "cumulative_pass_n": 16100,
+              "rejected_n": 4780
+            },
+            {
+              "stage": "sensor_update",
+              "cumulative_pass_n": 2120,
+              "rejected_n": 13980
+            },
+            {
+              "stage": "converged_event",
+              "cumulative_pass_n": 314,
+              "rejected_n": 1806
+            }
+          ]
+        },
+        {
+          "mode": "global",
+          "scope": "20 repeated priors/seeds, not independent recorded frames",
+          "stages": [
+            {
+              "stage": "replayed_frames",
+              "cumulative_pass_n": 20880,
+              "rejected_n": 0
+            },
+            {
+              "stage": "visible_wall",
+              "cumulative_pass_n": 16100,
+              "rejected_n": 4780
+            },
+            {
+              "stage": "sensor_update",
+              "cumulative_pass_n": 2120,
+              "rejected_n": 13980
+            },
+            {
+              "stage": "converged_event",
+              "cumulative_pass_n": 143,
+              "rejected_n": 1977
+            }
+          ]
+        }
+      ],
+      "distribution": [
+        {
+          "mode": "coarse",
+          "reason_category": "unresolved",
+          "reason": "unresolved",
+          "n": 21,
+          "blocked_object": "static_wall_likelihood_and_motion_uncertainty",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "mode": "coarse",
+          "reason_category": "wrong_convergence",
+          "reason": "wrong_convergence",
+          "n": 0,
+          "blocked_object": "static_wall_likelihood_and_motion_uncertainty",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "mode": "coarse",
+          "reason_category": "OFF_improvement_or_requirement_failure",
+          "reason": "OFF_improvement_or_requirement_failure",
+          "n": 39,
+          "blocked_object": "static_wall_likelihood_and_motion_uncertainty",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "mode": "global",
+          "reason_category": "unresolved",
+          "reason": "unresolved",
+          "n": 36,
+          "blocked_object": "static_wall_likelihood_and_motion_uncertainty",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "mode": "global",
+          "reason_category": "wrong_convergence",
+          "reason": "wrong_convergence",
+          "n": 18,
+          "blocked_object": "static_wall_likelihood_and_motion_uncertainty",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "mode": "global",
+          "reason_category": "OFF_improvement_or_requirement_failure",
+          "reason": "OFF_improvement_or_requirement_failure",
+          "n": 6,
+          "blocked_object": "static_wall_likelihood_and_motion_uncertainty",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        }
+      ]
     },
     {
       "host": "gcp3",
-      "stages": [
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild10-mc20",
+      "source_table": "/Users/changmin/projects/ugrp-wt/mapbuild1/experiments/2026-10-17-mapbuild10/operations/gcp3-mc20-rejection_table.json",
+      "case_funnels": [
         {
-          "stage": "sparse_robot_streams",
-          "cumulative_pass_n": 28,
-          "rejected_n": 0
+          "mode": "coarse",
+          "stages": [
+            {
+              "stage": "case_replays",
+              "cumulative_pass_n": 560,
+              "rejected_n": 0
+            },
+            {
+              "stage": "convergence",
+              "cumulative_pass_n": 3,
+              "rejected_n": 557
+            },
+            {
+              "stage": "no_wrong_convergence",
+              "cumulative_pass_n": 3,
+              "rejected_n": 0
+            },
+            {
+              "stage": "existing_OFF_improvement_and_requirement_gate",
+              "cumulative_pass_n": 0,
+              "rejected_n": 3
+            }
+          ]
         },
         {
-          "stage": "external_or_authored_coarse_start_prior_available",
-          "cumulative_pass_n": 0,
-          "rejected_n": 28
+          "mode": "global",
+          "stages": [
+            {
+              "stage": "case_replays",
+              "cumulative_pass_n": 560,
+              "rejected_n": 0
+            },
+            {
+              "stage": "convergence",
+              "cumulative_pass_n": 0,
+              "rejected_n": 560
+            },
+            {
+              "stage": "no_wrong_convergence",
+              "cumulative_pass_n": 0,
+              "rejected_n": 0
+            },
+            {
+              "stage": "existing_OFF_improvement_and_requirement_gate",
+              "cumulative_pass_n": 0,
+              "rejected_n": 0
+            }
+          ]
         }
       ],
-      "new_filter_replays_executed": 0,
-      "metric_gate": "NOT_MEASURED"
+      "frame_funnels": [
+        {
+          "mode": "coarse",
+          "scope": "20 repeated priors/seeds, not independent recorded frames",
+          "stages": [
+            {
+              "stage": "replayed_frames",
+              "cumulative_pass_n": 8360,
+              "rejected_n": 0
+            },
+            {
+              "stage": "visible_wall",
+              "cumulative_pass_n": 3800,
+              "rejected_n": 4560
+            },
+            {
+              "stage": "sensor_update",
+              "cumulative_pass_n": 3520,
+              "rejected_n": 280
+            },
+            {
+              "stage": "converged_event",
+              "cumulative_pass_n": 4,
+              "rejected_n": 3516
+            }
+          ]
+        },
+        {
+          "mode": "global",
+          "scope": "20 repeated priors/seeds, not independent recorded frames",
+          "stages": [
+            {
+              "stage": "replayed_frames",
+              "cumulative_pass_n": 8360,
+              "rejected_n": 0
+            },
+            {
+              "stage": "visible_wall",
+              "cumulative_pass_n": 3800,
+              "rejected_n": 4560
+            },
+            {
+              "stage": "sensor_update",
+              "cumulative_pass_n": 3520,
+              "rejected_n": 280
+            },
+            {
+              "stage": "converged_event",
+              "cumulative_pass_n": 0,
+              "rejected_n": 3520
+            }
+          ]
+        }
+      ],
+      "distribution": [
+        {
+          "mode": "coarse",
+          "reason_category": "unresolved",
+          "reason": "unresolved",
+          "n": 557,
+          "blocked_object": "static_wall_likelihood_and_motion_uncertainty",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "mode": "coarse",
+          "reason_category": "wrong_convergence",
+          "reason": "wrong_convergence",
+          "n": 0,
+          "blocked_object": "static_wall_likelihood_and_motion_uncertainty",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "mode": "coarse",
+          "reason_category": "OFF_improvement_or_requirement_failure",
+          "reason": "OFF_improvement_or_requirement_failure",
+          "n": 3,
+          "blocked_object": "static_wall_likelihood_and_motion_uncertainty",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "mode": "global",
+          "reason_category": "unresolved",
+          "reason": "unresolved",
+          "n": 560,
+          "blocked_object": "static_wall_likelihood_and_motion_uncertainty",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "mode": "global",
+          "reason_category": "wrong_convergence",
+          "reason": "wrong_convergence",
+          "n": 0,
+          "blocked_object": "static_wall_likelihood_and_motion_uncertainty",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "mode": "global",
+          "reason_category": "OFF_improvement_or_requirement_failure",
+          "reason": "OFF_improvement_or_requirement_failure",
+          "n": 0,
+          "blocked_object": "static_wall_likelihood_and_motion_uncertainty",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        }
+      ]
     }
   ],
-  "distribution": [
-    {
-      "host": "gcp5",
-      "reason_category": "input_missing",
-      "reason": "operator coarse start zone bounds and rough heading absent; static map has no start_zones",
-      "n": 3,
-      "blocked_object": "not_observed",
-      "minimum_gap_m": null,
-      "gap_status": "not_measured"
-    },
-    {
-      "host": "gcp3",
-      "reason_category": "input_missing",
-      "reason": "14 authored maps and 28 streams contain no start zone or initial region ID",
-      "n": 28,
-      "blocked_object": "not_observed",
-      "minimum_gap_m": null,
-      "gap_status": "not_measured"
-    }
-  ],
-  "measurement_tables": [
-    "operations/measurement-summary.json",
-    "operations/camera-summary.json",
-    "operations/gcp3-rejection_table.json"
-  ],
-  "prior_rejection_table": "prior-rejection_table.json",
-  "reproduction": [
-    "scripts/mapbuild10_measurement_audit.py; recorded exact argv in per-frame tables",
-    "scripts/mapbuild10_support_audit.py; argv in operations/support-models.json",
-    "scripts/mapbuild10_sparse_measurement.py; argv in operations/gcp3-measurement-summary.json"
-  ],
-  "physical_submission_allowed": false
+  "scope": "20 conditional synthetic priors and 20 global particle seeds per stream; hosts never pooled; prior placement evaluator-only; no physics",
+  "prior_rejection_table": "/Users/changmin/projects/ugrp-wt/mapbuild1/experiments/2026-10-17-mapbuild10/prior-rejection_table.json",
+  "reproduction": "scripts/mapbuild10_mc.py --stage prepare-own/prepare-priors/predict/score --trials 20 --workers 4; exact argv in VM seals/evaluation",
+  "new_physical_runs": 0
 }

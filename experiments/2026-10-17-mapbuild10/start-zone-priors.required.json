@@ -1,5 +1,5 @@
 {
-  "status": "NEEDS_OPERATOR_OR_AUTHORED_REGION",
+  "status": "SUPERSEDED_BY_COORDINATOR_SYNTHETIC_MC_DEFINITION",
   "exact_spawn_rounding_allowed": false,
   "source_truth_used": false,
   "gcp5_recordings": {
@@ -19,5 +19,6 @@
     "prior.source_kind=operator_coarse or authored_static_zone",
     "prior.source_evidence"
   ],
-  "scope": "This is a missing-input record, not an executable prior. Do not fill from evaluation state or exact spawn."
+  "scope": "Historical missing-operator-prior inventory. Not a blocker after coordinator MC definition. New physical public start-box sampler remains unimplemented/unverified because offline gate failed.",
+  "superseded_by": "coordinator-mc-directive.md"
 }

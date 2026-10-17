@@ -39,6 +39,11 @@
       "stage": "gcp3_inventory",
       "error": "own-inputs.json stored as .zst",
       "resolution": "read losslessly with recorded zstd reader"
+    },
+    {
+      "stage": "MC postprocess integrity",
+      "error": "sealed requirements path was relative to frozen source; verifier initially used wrong cwd on both VMs, then dependent scp files absent",
+      "resolution": "44a29092a resolves relative input paths against --source; all sealed hashes verified, predictions unchanged, filter reruns0"
     }
   ],
   "prediction_or_physics_failures": 0,

@@ -79,3 +79,46 @@ scripts/mapbuild10_sparse.py --stage predict/score는 mapbuild9_sparse의 기존
 사용해야 한다. mj_forward만 하고 적분·렌더하지 않는다. 진단 입력/예측의
 해시 검증은 추정기 예측을 바꾸지 않는다. 대형 표는 zstd -qdc로 해제하며
 operations/audit-integrity.json 및 gcp3-integrity.json의 전체 SHA를 확인한다.
+
+## 실행 완료한 조건부 MC20
+
+조정자 운영 정의는 coordinator-mc-directive.md에 보존했다. 실제 운영자가 준
+구역 파일을 기다리는 대신, 기존 영상은 평가 전용 하네스가 GT를 상자 안 무작위
+위치로 두는 합성 사전을 생성했다. 필터에는 상자/대략 방향 범위만 제공한다.
+이 절은 위 직접 RGB --initial-prior 어댑터와 구분한 실제 실행 경로다.
+
+고정 source9fa2aad39에서 아래4단계를 순서대로 실행했다(host=gcp5 또는 gcp3).
+
+```sh
+/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python scripts/mapbuild10_mc.py \
+  --stage prepare-own --host gcp5 --work /home/ugrp/ugrp-sim/runs/mapbuild10-mc20 \
+  --trials 20 --workers 4
+```
+
+다음 prepare-priors → predict → score도 같은 work/host/trials/workers에
+--calibration /home/ugrp/ugrp-sim/ops-reviews/mapbuild9/own-noise-command-r1-r2.json,
+--requirements experiments/2026-10-17-mapbuild8/requirements.json,
+--queue /home/ugrp/ugrp-sim/ops-reviews/mapbuild10/mc20-queue.json,
+--stack-check /home/ugrp/ugrp-sim/ops-reviews/mapbuild10/mc20-stack.json을 전달했다.
+사전 생성 RNG46820261017은 평가 단계에만 있고 입자 RNG2026101700+trial과 다르다.
+기존 출력 폴더는 덮어쓰지 않는다. 재현할 때 새 work 경로를 사용한다.
+
+prepare-own은 원래 자기 OFF 궤적/scan/servo에서만 입력을 만들고 RGB 해시를
+검증한다. prepare-priors는 GT를 읽는 별도 평가 프로세스다. 그 결과 범위만 든
+priors.json을 predict가 읽고, 정확한 상대 위치를 가진 prior-generation-eval-only는
+읽지 않는다. 전체 예측을 봉인한 뒤 score가 GT로 채점한다. 평가용 범위를 GT에서
+만들었다는 사실을 숨기지 않으며 실제 공개 시작 구역에서 새로 출발한 결과가 아니다.
+
+coarse/global 각각20회다. R1–R3 각40=120조건, gcp3 28스트림 각40=1120조건이며
+호스트를 합산한 정확도/성공률은 보고하지 않는다. 기존 OFF는 시작 SE2만 GT 정렬,
+척도1인 상대 drift이고 새 AMCL은 전역 절대 오차다.
+
+봉인 후 scripts/mapbuild10_mc_finalize.py(44a29092a)를 --host/--work와
+--source /home/ugrp/ugrp-sim/src/mapbuild10-9fa2aad39로 실행했다. 상대 입력 경로는
+그 동결 소스 기준으로 해석한다. 압축본을 읽을 때는 zstd -qdc 후 원래 SHA를
+검증한다. final-integrity.json이 모든 input/prediction/GT/사전 생성 연결과
+Mac에 회수한 요약의 SHA를 기록한다. 알고리즘/예측은 후처리에서 바꾸지 않는다.
+
+모든 조건의 OFF 개선 관문이 실패했으므로 새 물리는0이다. 공개 시작 상자에서
+실제 spawn을 균일 샘플링하는 장면 경로는 이 라운드에서 구현/실행하지 않았다.
+현재 API는 runtime_qualified=false/adopted_pose=null을 유지한다.

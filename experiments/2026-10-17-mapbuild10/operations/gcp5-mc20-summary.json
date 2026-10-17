@@ -1,0 +1,240 @@
+{
+  "host": "gcp5",
+  "trials": 20,
+  "streams": 3,
+  "cases": 120,
+  "aggregates": [
+    {
+      "stream": "r1",
+      "mode": "coarse",
+      "trials": 20,
+      "converged_trials": 0,
+      "wrong_converged_trials": 0,
+      "wrong_ready_updates": 0,
+      "offline_pass_trials": 0,
+      "final_handoff_pass_trials": 20,
+      "final_xy_m": {
+        "n": 20,
+        "median": 0.0563867445888073,
+        "p90": 0.11033208431911583
+      },
+      "final_yaw_deg": {
+        "n": 20,
+        "median": 1.491286056936781,
+        "p90": 3.235746121790107
+      },
+      "xy_rmse_m": {
+        "n": 20,
+        "median": 0.10417979271107469,
+        "p90": 0.20832315023330922
+      },
+      "convergence_sim_s": {
+        "n": 0,
+        "median": null,
+        "p90": null
+      },
+      "convergence_own_path_m": {
+        "n": 0,
+        "median": null,
+        "p90": null
+      },
+      "off_final_xy_m": 0.02513458135994727,
+      "off_final_yaw_deg": 2.6015865309588495,
+      "off_xy_rmse_m": 0.022932261590879605
+    },
+    {
+      "stream": "r1",
+      "mode": "global",
+      "trials": 20,
+      "converged_trials": 0,
+      "wrong_converged_trials": 0,
+      "wrong_ready_updates": 0,
+      "offline_pass_trials": 0,
+      "final_handoff_pass_trials": 0,
+      "final_xy_m": {
+        "n": 20,
+        "median": 2.8894303642368317,
+        "p90": 3.1879363014831714
+      },
+      "final_yaw_deg": {
+        "n": 20,
+        "median": 125.51320206841348,
+        "p90": 173.74749322628153
+      },
+      "xy_rmse_m": {
+        "n": 20,
+        "median": 2.9393622632799117,
+        "p90": 3.233473540665034
+      },
+      "convergence_sim_s": {
+        "n": 0,
+        "median": null,
+        "p90": null
+      },
+      "convergence_own_path_m": {
+        "n": 0,
+        "median": null,
+        "p90": null
+      },
+      "off_final_xy_m": 0.02513458135994727,
+      "off_final_yaw_deg": 2.6015865309588495,
+      "off_xy_rmse_m": 0.022932261590879605
+    },
+    {
+      "stream": "r2",
+      "mode": "coarse",
+      "trials": 20,
+      "converged_trials": 19,
+      "wrong_converged_trials": 0,
+      "wrong_ready_updates": 0,
+      "offline_pass_trials": 0,
+      "final_handoff_pass_trials": 20,
+      "final_xy_m": {
+        "n": 20,
+        "median": 0.05474227676363126,
+        "p90": 0.06812307316557975
+      },
+      "final_yaw_deg": {
+        "n": 20,
+        "median": 0.41143389622197624,
+        "p90": 0.9520071154685913
+      },
+      "xy_rmse_m": {
+        "n": 20,
+        "median": 0.09399649627446681,
+        "p90": 0.1242169471208835
+      },
+      "convergence_sim_s": {
+        "n": 19,
+        "median": 32.3,
+        "p90": 34.1
+      },
+      "convergence_own_path_m": {
+        "n": 19,
+        "median": 0.4691982450616032,
+        "p90": 0.47030748538084954
+      },
+      "off_final_xy_m": 0.015748898877834618,
+      "off_final_yaw_deg": 2.9434428543689237,
+      "off_xy_rmse_m": 0.012509007448109288
+    },
+    {
+      "stream": "r2",
+      "mode": "global",
+      "trials": 20,
+      "converged_trials": 13,
+      "wrong_converged_trials": 11,
+      "wrong_ready_updates": 50,
+      "offline_pass_trials": 0,
+      "final_handoff_pass_trials": 2,
+      "final_xy_m": {
+        "n": 20,
+        "median": 3.1555852897136463,
+        "p90": 5.6490660579653715
+      },
+      "final_yaw_deg": {
+        "n": 20,
+        "median": 1.3181168859548549,
+        "p90": 179.70941795260026
+      },
+      "xy_rmse_m": {
+        "n": 20,
+        "median": 2.921466143035939,
+        "p90": 4.562902299418881
+      },
+      "convergence_sim_s": {
+        "n": 13,
+        "median": 33.3,
+        "p90": 36.5
+      },
+      "convergence_own_path_m": {
+        "n": 13,
+        "median": 0.46979807361635306,
+        "p90": 0.47110488869161965
+      },
+      "off_final_xy_m": 0.015748898877834618,
+      "off_final_yaw_deg": 2.9434428543689237,
+      "off_xy_rmse_m": 0.012509007448109288
+    },
+    {
+      "stream": "r3",
+      "mode": "coarse",
+      "trials": 20,
+      "converged_trials": 20,
+      "wrong_converged_trials": 0,
+      "wrong_ready_updates": 0,
+      "offline_pass_trials": 0,
+      "final_handoff_pass_trials": 20,
+      "final_xy_m": {
+        "n": 20,
+        "median": 0.06196449799765437,
+        "p90": 0.07365385054107128
+      },
+      "final_yaw_deg": {
+        "n": 20,
+        "median": 1.3654304459860662,
+        "p90": 1.9509087259056186
+      },
+      "xy_rmse_m": {
+        "n": 20,
+        "median": 0.08677264735822751,
+        "p90": 0.13183852389135228
+      },
+      "convergence_sim_s": {
+        "n": 20,
+        "median": 31.5,
+        "p90": 32.5
+      },
+      "convergence_own_path_m": {
+        "n": 20,
+        "median": 0.4428334484513894,
+        "p90": 0.46697829522768114
+      },
+      "off_final_xy_m": 0.043216172651981244,
+      "off_final_yaw_deg": 3.311160348954784,
+      "off_xy_rmse_m": 0.029769172281536256
+    },
+    {
+      "stream": "r3",
+      "mode": "global",
+      "trials": 20,
+      "converged_trials": 11,
+      "wrong_converged_trials": 7,
+      "wrong_ready_updates": 45,
+      "offline_pass_trials": 0,
+      "final_handoff_pass_trials": 4,
+      "final_xy_m": {
+        "n": 20,
+        "median": 3.0412975318565714,
+        "p90": 5.687943308871068
+      },
+      "final_yaw_deg": {
+        "n": 20,
+        "median": 88.3927188216189,
+        "p90": 179.05121276170533
+      },
+      "xy_rmse_m": {
+        "n": 20,
+        "median": 3.0043461593264524,
+        "p90": 4.654027533303801
+      },
+      "convergence_sim_s": {
+        "n": 11,
+        "median": 31.5,
+        "p90": 34.4
+      },
+      "convergence_own_path_m": {
+        "n": 11,
+        "median": 0.4428334484513894,
+        "p90": 0.48502354152564686
+      },
+      "off_final_xy_m": 0.043216172651981244,
+      "off_final_yaw_deg": 3.311160348954784,
+      "off_xy_rmse_m": 0.029769172281536256
+    }
+  ],
+  "status": "NOT_READY",
+  "scope": "synthetic conditional prior only; no physical success; direct exact truth to estimator=0; evaluation truth used for coarse box placement",
+  "new_physical_runs": 0,
+  "rejection_table": "/home/ugrp/ugrp-sim/runs/mapbuild10-mc20/rejection_table.json"
+}
