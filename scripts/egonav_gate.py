@@ -145,7 +145,8 @@ def run(args):
     from harness.active_wall_vision import observe as wall_observe
     from harness.floor_goal_self_mask import body_envelopes
     from harness.egocentric_goto import (
-        OPTION as GOTO_OPTION, EgocentricGoto, command_delta, duty, point_covariance)
+        OPTION as GOTO_OPTION, WALL_OPTION, EgocentricGoto, command_delta, duty,
+        point_covariance)
     from harness.floor_goal_v3 import FloorGoalV3Options
     from harness.active_camera import goal_detector
     cv2.setNumThreads(1)
@@ -186,7 +187,8 @@ def run(args):
     worlds = setup['worlds']
     nworld = len(worlds) if not args.worlds else min(args.worlds, len(worlds))
     worlds = worlds[:nworld]
-    if not args.preflight and not args.probe_rotation and not args.memory_trace and nworld != 16:
+    if (not args.preflight and not args.probe_rotation and not args.memory_trace
+            and not args.wall_memory and nworld != 16):
         raise ValueError('GATE_N16_REQUIRED')
     z1 = st.default_free_z(m, 'r1__robot')
     z2 = st.default_free_z(m, 'r2__robot')
@@ -321,10 +323,11 @@ def run(args):
     # Full gate.
     footprint = max(float(np.linalg.norm(np.asarray(v)[:, :2], axis=1).max())
                     for _, v in body_envelopes(SEARCH, 'camera_v3'))
-    controllers = [EgocentricGoto(option=GOTO_OPTION, footprint_radius_m=footprint)
+    controllers = [EgocentricGoto(option=GOTO_OPTION, footprint_radius_m=footprint,
+                                  wall_memory=(WALL_OPTION if args.wall_memory else 'off'))
                    for _ in range(nworld)]
     per_world = [dict(world=w, spawn=list(spec['r1']), events=[], trace=[],
-                      memory_trace=[], frames=[],
+                      memory_trace=[], frames=[], wall_counts=[],
                       ring=deque(maxlen=100), seen=False, anchor_world=None,
                       anchor_t=None, memory_errors=[], visible_flags=[],
                       target_losses=0, collisions=0, collision_events=[],
@@ -471,6 +474,8 @@ def run(args):
                 scans.append(scan)
                 actions.append(action)
                 state['events'] = list(controllers[w].events)
+                if args.wall_memory:
+                    state['wall_counts'].append(len(controllers[w].wall_memories))
                 # Evaluation-only labels and memory-anchor error.
                 body = m.body('r1__robot').id
                 adr = int(m.jnt_qposadr[int(m.body_jntadr[body])])
@@ -506,29 +511,43 @@ def run(args):
                     # Recording-only toggle egonav_memory_trace_v1 (default
                     # off).  The pose below is an evaluation-only label; none
                     # of these fields is ever passed to a controller.
-                    state['memory_trace'].append(dict(
+                    def memory_items(items):
+                        return [dict(id=item.get('id'), kind=item.get('kind'),
+                                     signature=item.get('signature'),
+                                     relative_xy_m=item.get('relative_xy_m'),
+                                     range_m=item.get('range_m'),
+                                     bearing_rad=item.get('bearing_rad'),
+                                     uncertainty_m2=item.get('covariance_m2'),
+                                     radius95_m=item.get('radius95_m'),
+                                     first_seen_s=item.get('first_seen_s'),
+                                     last_seen_s=item.get('last_seen_s'),
+                                     age_s=item.get('age_s'),
+                                     observations=item.get('observations'))
+                                for item in items]
+                    row = dict(
                         t=t, tick=tick, pose_eval_only=pose,
                         action_kind=action['kind'], visible=visible,
                         observation_relative_xy_m=(None if not obs
                                                    else obs[0]['relative_xy_m']),
                         memory_count=len(controllers[w].memories),
-                        memories=[dict(id=item.get('id'), kind=item.get('kind'),
-                                       signature=item.get('signature'),
-                                       relative_xy_m=item.get('relative_xy_m'),
-                                       range_m=item.get('range_m'),
-                                       bearing_rad=item.get('bearing_rad'),
-                                       uncertainty_m2=item.get('covariance_m2'),
-                                       radius95_m=item.get('radius95_m'),
-                                       first_seen_s=item.get('first_seen_s'),
-                                       last_seen_s=item.get('last_seen_s'),
-                                       age_s=item.get('age_s'),
-                                       observations=item.get('observations'))
-                                  for item in controllers[w].memories],
+                        memories=memory_items(controllers[w].memories),
                         events=[dict(t=e['t'], reason=e['reason'],
                                      blocked_object=e.get('blocked_object'),
                                      minimum_gap_m=e.get('minimum_gap_m'),
                                      gap_status=e.get('gap_status'))
-                                for e in controllers[w].events if e['t'] == t]))
+                                for e in controllers[w].events if e['t'] == t])
+                    if args.wall_memory:
+                        # egonav_wall_memory_v1 (default off, recording-only):
+                        # remembered wall segments plus the wall scan observed
+                        # this tick, drawn by the offline replay only.
+                        row.update(
+                            wall_memory_count=len(controllers[w].wall_memories),
+                            wall_memories=memory_items(controllers[w].wall_memories),
+                            scan_segments=(scan or {}).get('segments', []),
+                            wall_memory_errors=[
+                                e for e in controllers[w].wall_memory_errors
+                                if e['t'] == t])
+                    state['memory_trace'].append(row)
             # Issue one 0.1 s command per world through the same finite pulse
             # decoder.  Controller still receives only RGB/servo/own history.
             tape_rows = []
@@ -638,7 +657,7 @@ def run(args):
             else:
                 state['status'] = 'cap_end'
         for w, state in enumerate(per_world):
-            dump(args.output/f'world{w:02d}.json', dict(
+            world_record = dict(
                 world=w, spawn=state['spawn'], status=state['status'],
                 seen=state['seen'], anchor_world=state['anchor_world'],
                 anchor_t=state['anchor_t'], target_losses=state['target_losses'],
@@ -647,7 +666,13 @@ def run(args):
                 events=state['events'], trace=[{k: v for k, v in row.items() if k != 'memories'}
                                                for row in state['trace']],
                 memory_errors=state['memory_errors'],
-                context=controllers[w].context()))
+                context=controllers[w].context())
+            if args.wall_memory:
+                # Recording-only measurement of the separate wall store.
+                world_record['wall_memory'] = dict(
+                    controllers[w].wall_memory_summary(),
+                    count_series=state['wall_counts'])
+            dump(args.output/f'world{w:02d}.json', world_record)
         counts = Counter(s['status'] for s in per_world)
         funnel = []
         left = nworld
@@ -726,6 +751,42 @@ def run(args):
                        for w in range(nworld)],
                 trace_rows=[len(s['memory_trace']) for s in per_world],
                 frame_rows=[len(s['frames']) for s in per_world])
+        if args.wall_memory:
+            # egonav_wall_memory_v1 (default off): storage and re-observation
+            # accuracy only.  The control path and its inputs are unchanged.
+            wall_rows = [controllers[w].wall_memory_summary()
+                         for w in range(nworld)]
+            errors = [e for row in wall_rows for e in row['reobservations']]
+            prior = [e['prior_error_m'] for e in errors]
+            residual = [e['residual_m'] for e in errors
+                        if e['residual_m'] is not None]
+
+            def error_stats(values):
+                if not values:
+                    return dict(n=0)
+                array = np.asarray(values, float)
+                return dict(n=len(array), median=float(np.median(array)),
+                            p90=float(np.percentile(array, 90)),
+                            max=float(array.max()))
+
+            wall_event_counts = Counter()
+            for row in wall_rows:
+                wall_event_counts.update(row['events'])
+            summary['input_audit']['wall_memory_control'] = 0
+            summary['wall_memory'] = dict(
+                toggle='egonav_wall_memory_v1', enabled=True, control_use=False,
+                worlds=nworld, kind='wall_segment',
+                store='harness.egonav_vendor.egocentric_landmark_memory.LandmarkMemory'
+                      ' (legacy_v1 defaults: 32 slots, 6 m retention, chi2 99)',
+                transport='own command delta + motion_variance + module relative()',
+                count_max=max((row['count'] for row in wall_rows), default=0),
+                count_final=[row['count'] for row in wall_rows],
+                observation_sum=sum(row['observation_sum'] for row in wall_rows),
+                reobservation_n=len(errors),
+                reobservation_prior_error_m=error_stats(prior),
+                reobservation_residual_m=error_stats(residual),
+                events=dict(wall_event_counts),
+                control_inputs_unchanged=True)
         dump(args.output/'summary.json', summary)
         dump(args.output/'rejection_table.json', dict(
             unit='world', funnel=funnel, reasons=dict(reasons), reason_rows=reason_rows,
@@ -750,6 +811,8 @@ def main():
     parser.add_argument('--probe-rotation', type=int, default=0)
     parser.add_argument('--worlds', type=int, default=0)
     parser.add_argument('--memory-trace', action='store_true')
+    parser.add_argument('--wall-memory', action='store_true',
+                        help='default-off egonav_wall_memory_v1 (recording-only)')
     args = parser.parse_args()
     run(args)
 

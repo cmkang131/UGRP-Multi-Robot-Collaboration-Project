@@ -1,0 +1,84 @@
+{
+  "schema": "ugrp.egonav.gate_setup.v1",
+  "flow": "self_map",
+  "scenario_id": "s1_normal_mixed_v7",
+  "seed": 20261017,
+  "end_color_scene": "grasp_act_teal_blue_v1",
+  "scene_plan": {
+    "spawns": {
+      "r1": [
+        3.55,
+        0.4,
+        0.0,
+        0.0
+      ],
+      "r2": [
+        -0.8,
+        -2.8,
+        0.0,
+        0.0
+      ],
+      "r3": [
+        -0.8,
+        1.15,
+        0.0,
+        0.0
+      ]
+    }
+  },
+  "base_spawns": {
+    "r1": [
+      3.55,
+      0.4,
+      0.0,
+      0.0
+    ],
+    "r2": [
+      -0.8,
+      -2.8,
+      0.0,
+      0.0
+    ],
+    "r3": [
+      -0.8,
+      1.15,
+      0.0,
+      0.0
+    ]
+  },
+  "worlds": [
+    {
+      "world": 2,
+      "r1": [
+        2.75,
+        0.4,
+        0.0,
+        1.570796
+      ]
+    }
+  ],
+  "step_budget": 400,
+  "detector": {
+    "hue_low": 0,
+    "hue_high": 30,
+    "saturation_min": 70,
+    "value_min": 40,
+    "min_pixels": 64,
+    "roi_top": 0.0,
+    "minimum_observed_area_m2": 0.005,
+    "minimum_solidity": 0.3
+  },
+  "evaluation_only": {
+    "target_zone": "A",
+    "center_m": [
+      4.6,
+      0.4
+    ],
+    "half_m": [
+      0.3,
+      0.7
+    ],
+    "success_rule": "robot chassis xy inside authored zone A rectangle; no controller input",
+    "anchor": "first accepted own-RGB floor patch, world-fixed only for evaluation"
+  }
+}
