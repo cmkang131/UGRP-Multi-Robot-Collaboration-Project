@@ -83,6 +83,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         self.search20_cache=OrderedDict();self.search20_budget=None;self.search20_log=[];self.search20_compute={}
         self.peer_wait_since=None;self.peer_wait_ids=set();self.peer_clear_since=None
         self.peer_route=[];self.peer_route_next=0.;self.recovery_log=[]
+        self.still_peer={}
         self.nominal_handoff_log=[]
         self.approach_choice=(0.,STATION_M);self.goal_set_log=[]
         self.approach_blocked_since=None;self.approach_plan_valid=False
@@ -271,6 +272,10 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
     SEARCH_V2_CIRCLE_PITCHES=tuple(reversed(SEARCH_V2_PITCHES))
     SEARCH_V2_TURN_RAD=math.radians(390.)  # >=360 at measured gains .69..78
     SEARCH_V2_SETTLE_S=.3
+    # Same no-motion displacement and window as the peer_motion tracking a few
+    # lines below in _peer_route (1 cm over 6 SIM s); no new tolerance.
+    STILL_PEER_WINDOW_S=6.
+    STILL_PEER_MOVE_M=.01
 
     def _reacquire_view(self,now,age,truth=None):
         from sim.grasp_act_gaze import slew
@@ -310,7 +315,10 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         """
         from harness.grasp_act_visible_world import command_delta
         if self.outcome is not None:return dict(self.sink.pwm),self._hold(now)
-        pitches=self.SEARCH_V2_PITCHES if reacquire else self.SEARCH_V2_CIRCLE_PITCHES
+        from sim.grasp_act_search26 import enabled as search26
+        pitches=(self.SEARCH_V2_PITCHES
+                 if reacquire or search26(self,'search26_circles')
+                 else self.SEARCH_V2_CIRCLE_PITCHES)
         sweep=[(pan,w,e) for pan in (1500,1000,2000) for w,e in self.SEARCH_V2_PITCHES]
         if self.sc is None:
             self.sc={'stage':'sweep','k':0,'view':0,'turned':0.,'settled_t':None}
@@ -444,6 +452,10 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         # Once selected, retain the end-relative stance through alignment/READY.
         # Until then the exact original planner, cadence and readiness law run.
         if self.approach_choice!=(0.,STATION_M):return True
+        # A stopped peer inside the nominal stance cannot clear by waiting.
+        # Route through the unchanged goal set, whose own collision test still
+        # includes that peer; this only enables alternative stance selection.
+        if self._static_peer_blocks(world):return True
         from sim.grasp_act_goal_set import nominal_goal_blocked
         if self.search15_modes['search18_footprint']!='off' or self.search19_body_active:
             scene=deepcopy(dict(world));scene['robots']={self.rid:world['robots'][self.rid]}
@@ -611,6 +623,29 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         end=world['beam']['ends'][self.end]
         return self._continuous(now,**drive(pose,goal,target,end))
 
+    def _track_still_peers(self,world,now):
+        """Visible-only stopped-peer witness; no world pose or truth input."""
+        if self.search15_modes.get('search26_static_peer','off')=='off':
+            return
+        fresh=set(world['visibility'][self.rid]['peers'])
+        for rid in list(self.still_peer):
+            if rid not in fresh:del self.still_peer[rid]
+        for rid in fresh:
+            xy=tuple(world['robots'][rid]['pose'][:2]);row=self.still_peer.get(rid)
+            if row is None or math.dist(xy,row[1])>self.STILL_PEER_MOVE_M:
+                self.still_peer[rid]=(now,xy)
+
+    def _static_peer_blocks(self,world):
+        """True when a stopped visible peer occupies the nominal wait region."""
+        if self.search15_modes.get('search26_static_peer','off')=='off':return False
+        if not self.still_peer:return False
+        radius,_,_=self._constraints(world)
+        goal=self._geometry(world)[3];wait_r=.17+(.17-radius)+radius
+        now=world['t'] if 't' in world else (self.last_tick or 0.)
+        return any(now-since>=self.STILL_PEER_WINDOW_S
+                   and math.dist(goal,xy)<wait_r
+                   for since,xy in self.still_peer.values())
+
     def _peer_route(self,world,goal,now):
         from sim.grasp_act_recovery import peer_goal_blocked,safe_prefix
         from sim.grasp_act_visible_route import constraints,free,segment_free,waypoint,drive
@@ -618,6 +653,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         from harness.grasp_act_visible_world import command_delta
         pose=world['robots'][self.rid]['pose']
         radius,discs,rects=self._constraints(world)
+        self._track_still_peers(world,now)
         blocked=peer_goal_blocked(goal,discs,rects,radius)
         if self.search19_body_active and nav.free(goal,discs,rects,radius):blocked=False
         if self.approach_recovery=='progress_view_recovery_v3' and self.peer_wait_since is None:
@@ -628,6 +664,25 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
                 # Preserve A until a full goal-progress window has elapsed.
                 return None
         if blocked:
+            # A stopped, still-visible peer inside the existing wait radius is
+            # static stance geometry, not a peer that can clear by waiting.
+            # Leave the collision geometry intact and hand the stance choice to
+            # the unchanged goal set instead of repeating the 12 s encounter.
+            wait_r=.17+(.17-radius)+radius
+            near=[r for r,v in world['robots'].items()
+                  if r!=self.rid and math.dist(goal,v['pose'][:2])<wait_r]
+            static={r for r in near if r in self.still_peer
+                    and now-self.still_peer[r][0]>=self.STILL_PEER_WINDOW_S}
+            if (near and set(near)<=static
+                    and self.search15_modes.get('search26_static_peer','off')!='off'):
+                self.recovery_log.append({'t':now,'recovery':'static_peer_stance_replan',
+                    'blocked_object':','.join(sorted(near)),
+                    'min_gap_m':min(math.dist(goal,world['robots'][r]['pose'][:2])-wait_r
+                                    for r in near),
+                    'gap_scope':'visible goal-region wait radius; not physical clearance'})
+                self.peer_wait_since=None;self.peer_wait_ids.clear();self.peer_clear_since=None
+                self.peer_route=[];self.path=[];self.path_goal=None;self.next_plan=now
+                return None
             if self.peer_wait_since is None:
                 self.peer_wait_since=now
                 self.recovery_log.append({'t':now,'recovery':'peer_prefix_wait','goal':goal})

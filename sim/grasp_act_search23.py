@@ -16,7 +16,8 @@ from sim.grasp_act_search21 import FRESH_MARGIN_M
 from sim.grasp_act_search18 import HALF_X, HALF_Y
 from sim.grasp_act_search20 import PlanningBudgetExceeded
 
-MODES = {'search23': 'search23_v1'}
+MODES = {'search23': 'search23_v1',
+         'search23_rects': 'search23_batched_rects_v1'}
 GRID_M = .025
 HEURISTIC_WEIGHT = 2.0
 COST_MULTIPLIER = 1.0  # Smac 2D's documented speed-oriented setting
@@ -78,6 +79,69 @@ def rectangle_gaps(xy, yaw, rect):
     return np.where(overlap,0,np.minimum(dist1,dist2))
 
 
+def rectangle_gaps_many(xy, yaw, rects, *, pair_budget=65536):
+    """One vectorized pass of ``rectangle_gaps`` over every rect.
+
+    The wall layer expands observed occupied cells into one rectangle per
+    occupied horizontal run (25 mm tall rows), so the default per-rect Python
+    loop turns a single-pose goal check into hundreds of small NumPy calls.
+    This routine computes the identical per-(pose,rect) values but hoists the
+    rect constants and broadcasts. ``pair_budget`` bounds the transient
+    (poses x rects x 4 corners x 2 coords) float64 work arrays to about 4 MiB;
+    it changes no result value. Basis: wide-start r1 gate worlds 15/37, where
+    467/410 checks consumed the 30 wall-second host safety cap at ~64 ms per
+    check with the wall layer active.
+    """
+    xy = np.asarray(xy, dtype=float).reshape(-1, 2)
+    yaw = np.broadcast_to(np.asarray(yaw, dtype=float), (len(xy),))
+    if not len(rects):
+        return np.zeros((len(xy), 0))
+    arr = np.asarray(rects, dtype=float)
+    center, half, angle = arr[:, :2], arr[:, 2:4], arr[:, 4]
+    # Keep the scalar math.cos/math.sin values used by rectangle_gaps so the
+    # batched path is bit-identical, not merely within rounding tolerance.
+    c = np.array([math.cos(a) for a in angle]); s = np.array([math.sin(a) for a in angle])
+    offsets = np.array([[-HALF_X,-HALF_Y],[-HALF_X,HALF_Y],
+                        [HALF_X,HALF_Y],[HALF_X,-HALF_Y]])
+    # Rect corners use the rect's own half extents, not the body footprint.
+    signs = np.array([[-1,-1],[-1,1],[1,1],[1,-1]])
+    other = np.stack((center[:,0,None]+c[:,None]*half[:,0,None]*signs[:,0][None,:]
+                      -s[:,None]*half[:,1,None]*signs[:,1][None,:],
+                      center[:,1,None]+s[:,None]*half[:,0,None]*signs[:,0][None,:]
+                      +c[:,None]*half[:,1,None]*signs[:,1][None,:]),
+                     axis=2)  # (R,4,2)
+    out = np.empty((len(xy), len(rects)), dtype=float)
+    step = max(1, int(pair_budget) // max(1, len(rects)))
+    r_axes = (np.stack((c,s),axis=1), np.stack((-s,c),axis=1))
+    q_rect = [(other*axis[:,None,:]).sum(axis=2) for axis in r_axes]  # (R,4) each
+    for i0 in range(0, len(xy), step):
+        xyc, yc = xy[i0:i0+step], yaw[i0:i0+step]
+        co, si = np.cos(yc), np.sin(yc)
+        body = xyc[:,None,:] + np.stack((co[:,None]*offsets[:,0]-si[:,None]*offsets[:,1],
+                                         si[:,None]*offsets[:,0]+co[:,None]*offsets[:,1]), axis=2)
+        q = body[:,None,:,:] - center[None,:,None,:]
+        local = np.stack((q[:,:,:,0]*c[None,:,None]+q[:,:,:,1]*s[None,:,None],
+                          -q[:,:,:,0]*s[None,:,None]+q[:,:,:,1]*c[None,:,None]), axis=3)
+        dist1 = np.linalg.norm(np.maximum(np.abs(local)-half[None,:,None,:],0),axis=3).min(axis=2)
+        q = other[None,:,:,:] - xyc[:,None,None,:]
+        local = np.stack((q[:,:,:,0]*co[:,None,None]+q[:,:,:,1]*si[:,None,None],
+                          -q[:,:,:,0]*si[:,None,None]+q[:,:,:,1]*co[:,None,None]), axis=3)
+        dist2 = np.linalg.norm(np.maximum(np.abs(local)-(HALF_X,HALF_Y),0),axis=3).min(axis=2)
+        overlap = np.ones((len(xyc),len(rects)),dtype=bool)
+        # Body axes: body projection depends on the pose only; rect corners
+        # project into the same pose axis (P,R,4).
+        for axis in (np.stack((co,si),axis=1), np.stack((-si,co),axis=1)):
+            p = (body*axis[:,None,:]).sum(axis=2)  # (P,4)
+            q = (other[None,:,:,:]*axis[:,None,None,:]).sum(axis=3)  # (P,R,4)
+            overlap &= (p.max(axis=1)[:,None]>=q.min(axis=2)) & (q.max(axis=2)>=p.min(axis=1)[:,None])
+        # Rect axes: rect projection depends on the rect only (precomputed).
+        for axis,q in zip(r_axes,q_rect):
+            p = (body[:,None,:,:]*axis[None,:,None,:]).sum(axis=3)  # (P,R,4)
+            overlap &= (p.max(axis=2)>=q.min(axis=1)[None,:]) & (q.max(axis=1)[None,:]>=p.min(axis=2))
+        out[i0:i0+step] = np.where(overlap,0,np.minimum(dist1,dist2))
+    return out
+
+
 class BodyNavigation(Previous):
     def __init__(self,t,world,*,admission=False):
         super().__init__(t,world,admission=admission)
@@ -107,6 +171,8 @@ class BodyNavigation(Previous):
             *[{'id':self._wall_name(r,i),'fresh':self.world_observations.get(self._wall_name(r,i),{}).get('seen_t',-math.inf)>=world['t']-1e-8,
                 'margin_m':m} for i,(r,m) in enumerate(zip(self.rects,self.rect_margins))],
             {'id':'bounds','fresh':True,'margin_m':FRESH_MARGIN_M}]
+        self.rect_batch = (getattr(t, 'search15_modes', {}).get('search23_rects', 'off')
+                           != 'off')
         from sim.grasp_act_search25 import configure
         configure(self)
 
@@ -127,7 +193,10 @@ class BodyNavigation(Previous):
             u=np.maximum(np.abs(c*dx+s*dy)-HALF_X,0.)
             v=np.maximum(np.abs(-s*dx+c*dy)-HALF_Y,0.)
             gaps.append(np.hypot(u,v)-r)
-        gaps += [rectangle_gaps(xy,yaw,r) for r in self.rects]
+        if self.rect_batch and self.rects:
+            gaps.extend(rectangle_gaps_many(xy,yaw,self.rects).T)
+        else:
+            gaps += [rectangle_gaps(xy,yaw,r) for r in self.rects]
         x0,x1,y0,y1=self.bounds
         ex=np.abs(c)*HALF_X+np.abs(s)*HALF_Y
         ey=np.abs(s)*HALF_X+np.abs(c)*HALF_Y

@@ -12,7 +12,8 @@ from sim.grasp_act_search22 import MODES as SEARCH22_MODES
 from sim.grasp_act_search23 import MODES as SEARCH23_MODES
 from sim.grasp_act_search24 import MODES as SEARCH24_MODES
 from sim.grasp_act_search25 import MODES as SEARCH25_MODES
-ALL_MODES = {**SEARCH25_MODES, **SEARCH24_MODES, **SEARCH23_MODES, **SEARCH22_MODES, **MODES, **SEARCH17_MODES, **SEARCH18_MODES, **SEARCH19_MODES, **SEARCH20_MODES, **SEARCH21_MODES}
+from sim.grasp_act_search26 import MODES as SEARCH26_MODES
+ALL_MODES = {**SEARCH26_MODES, **SEARCH25_MODES, **SEARCH24_MODES, **SEARCH23_MODES, **SEARCH22_MODES, **MODES, **SEARCH17_MODES, **SEARCH18_MODES, **SEARCH19_MODES, **SEARCH20_MODES, **SEARCH21_MODES}
 
 
 def validate(values, *, recovery, profile='visible_only', pose_source='issued', coordination='off'):
