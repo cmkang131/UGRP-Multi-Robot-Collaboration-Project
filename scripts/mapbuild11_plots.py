@@ -34,7 +34,11 @@ def main(a):
     names=['off','nav2_defaults_v1','nav2_rgb_field_v1'];route=[r for r in rows if r['stage']=='diagnostic_route']
     # Frame and whole-recording units stay separate. These are EVALUATION
     # gates, not controller acceptance: unready poses never become admissions.
-    funnel=dict(raw=str(a.input),reproduction=['scripts/mapbuild11_plots.py','--input',str(a.input),'--score',str(a.score)],models={})
+    physical=read(a.input/'summary.json')
+    funnel=dict(raw=str(a.input),reproduction=['scripts/mapbuild11_plots.py','--input',str(a.input),'--score',str(a.score)],
+        live_navigation_profile='nav2_defaults_v1',
+        live_diagnostic_proposals_used=physical.get('map_correction_diagnostic_proposals_used'),
+        comparison_scope='same recording, offline filters; no physical nav2_rgb_field_v1 admission',models={})
     for name in names:
         remaining=list(route);stages=[]
         tests=[('finite_candidate',lambda r:r['models'][name]['xy_m'] is not None),
@@ -55,7 +59,7 @@ def main(a):
             after=before*int(passed);cases.append(dict(stage=gate,input_n=before,cumulative_pass_n=after,rejected_n=before-after));before=after
         funnel['models'][name]=dict(route_frames=len(route),frame_stages=stages,recording_stages=cases,
             distribution_ready_route_frames=sum(r['models'][name]['ready'] for r in route),quality=quality,whole_recording=whole,
-            runtime_adopted_poses=0,production_qualified=False,
+            production_adopted_poses=0,production_qualified=False,
             reason_category='evaluation_requirement_or_posterior',blocked_object='own_observed_wall',
             blocked_object_status='wall_identity_not_measured',minimum_gap_m=None,gap_status='not_measured')
     (a.score/'model-funnel.json').write_text(json.dumps(funnel,indent=2)+'\n')
