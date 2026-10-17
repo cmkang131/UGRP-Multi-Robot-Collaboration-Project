@@ -488,6 +488,10 @@ raise SystemExit(3 if a.fail else 0)
         samples['mapbuild2-issued-diagnostic'] = ['--execute', '--queue', str(source), '--renderer-source', str(model)]
         samples['mapbuild3-clean-start'] = ['--mapbuild3-v1', '--queue', str(source), '--renderer-source', str(model),
             '--renderer-receipt', str(source), '--fixture', str(model)]
+        samples['mapbuild5-rbpf-recording'] = ['--mapbuild5-recording-v1', '--queue', str(source),
+            '--renderer-source', str(model), '--renderer-receipt', str(source), '--fixture', str(model)]
+        samples['mapbuild6-task-route'] = ['--enabled', '--renderer', str(model), '--queue', str(source),
+            '--pickup', str(source), '--commands', str(source), '--sim-budget', '1']
         retired_invalid = {'e2e-rpp-lookahead-v196'}
         with mock.patch.dict(os.environ, {"UGRP_SIM_TOKEN": "secret"}), \
              mock.patch.object(subprocess, "Popen", side_effect=AssertionError("planning launched a child")):
@@ -512,6 +516,9 @@ raise SystemExit(3 if a.fail else 0)
         self.assertEqual(plans["zone-color-eval"]["command"][-2:], ["--output", "<record>/artifacts"])
         self.assertEqual(plans["zone-cargo-perception-eval"]["command"][-2:], ["--output", "<record>/artifacts"])
         self.assertEqual(plans["zone-rgb-outcome-eval"]["command"][-2:], ["--out", "<record>/artifacts"])
+        for name in ('mapbuild5-rbpf-recording', 'mapbuild6-task-route'):
+            self.assertEqual(plans[name]['command'][-2:], ['--output', '<record>/artifacts'])
+            self.assertIn(str(model.resolve()), {item['path'] for item in plans[name]['inputs']})
         self.assertTrue(all(not plan["execution_started"] for plan in plans.values()))
 
     def test_act_workflows_require_explicit_suite_and_training_shape(self):

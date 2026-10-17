@@ -43,5 +43,36 @@
   },
   "full_ci": "Replacement run pending; final receipt saved under ignored primary outputs/e2e18-admin/mapbuild10-ci-<head>.json and PR #556 body to avoid a commit-triggered CI loop.",
   "physical_runs_added": 0,
-  "vm_restart_count": 0
+  "vm_restart_count": 0,
+  "second_ci": {
+    "run_id": 39002478388,
+    "head": "c4637b3321c02dec13756eb0f0f93ec1d3d144d0",
+    "failed_job_id": 117308377524,
+    "failed_test": "tests/test_simulation_workflow_manager.py::WorkflowManagerTests::test_every_catalog_workflow_has_a_read_only_explicit_plan",
+    "error": "KeyError: 'mapbuild5-rbpf-recording'",
+    "shard_result": {
+      "failed": 1,
+      "passed": 1551,
+      "skipped": 28
+    },
+    "remaining_jobs": [],
+    "status": "completed",
+    "conclusion": "failure",
+    "job_count": 33,
+    "success_jobs": 31,
+    "failed_jobs": [
+      "offline-regression-shard (7/8)",
+      "offline-regressions"
+    ],
+    "prior_cache_regression_shard6": "success"
+  },
+  "catalog_fix": "Add explicit non-executing argument samples for the two earlier branch catalog entries mapbuild5-rbpf-recording and mapbuild6-task-route; retain the patched Popen guard and assert managed output and renderer input preservation. No execution/catalog implementation or physical source changed.",
+  "catalog_validation": {
+    "command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_simulation_workflow_manager.py",
+    "passed": 21,
+    "seconds": 4.05,
+    "physics_steps": 0,
+    "mujoco_render_calls": 0,
+    "child_execution_in_catalog_test": "Popen patched to raise; execution_started false for every planned workflow"
+  }
 }
