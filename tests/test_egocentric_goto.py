@@ -3,7 +3,8 @@ import numpy as np
 import pytest
 
 from harness.egocentric_goto import (
-    OPTION, SCHEMA, EgocentricGoto, command_delta, duty, point_covariance)
+    DECLARED_TARGET_HUE, OPTION, SCHEMA, EgocentricGoto, command_delta, duty,
+    point_covariance)
 
 
 def observation(xy, area=.6):
@@ -135,8 +136,11 @@ def test_far_candidate_default_off_is_inert():
                        far_candidate='yes')
 
 
-def test_far_candidate_fails_closed_without_a_confirmed_hue_reference():
-    c = EgocentricGoto(option=OPTION, footprint_radius_m=.12, far_candidate=True)
+def test_far_candidate_fails_closed_without_a_declared_hue_class():
+    # Fail-closed only when the task/detector profile declares no target hue
+    # class; an observed confirmation is never required and never used.
+    c = EgocentricGoto(option=OPTION, footprint_radius_m=.12, far_candidate=True,
+                       declared_target_hue=None)
     for i in range(8):
         action = c.step(.1*i, forward_command() if i else None,
                         [far_observation([-1., -.2], .02+.01*i, 12)])
@@ -148,11 +152,17 @@ def test_far_candidate_fails_closed_without_a_confirmed_hue_reference():
     assert rejected[-1]['blocked_object'] == 'orange_object_below_zone_marking_area'
     assert rejected[-1]['minimum_gap_m'] is None
     assert rejected[-1]['gap_status'] == 'not_measured'
+    with pytest.raises(ValueError, match='INVALID_DECLARED_TARGET_HUE'):
+        EgocentricGoto(option=OPTION, footprint_radius_m=.12, far_candidate=True,
+                       declared_target_hue=200.)
+    with pytest.raises(ValueError, match='INVALID_DECLARED_TARGET_HUE_TOLERANCE'):
+        EgocentricGoto(option=OPTION, footprint_radius_m=.12, far_candidate=True,
+                       declared_target_hue_tolerance=-1.)
 
 
 def test_far_candidate_is_only_a_search_turn_hint():
+    # The declared task-map hue class is available before any confirmation.
     c = EgocentricGoto(option=OPTION, footprint_radius_m=.12, far_candidate=True)
-    c.confirmed_hue = 12.
     for i in range(4):
         action = c.step(.1*i, forward_command() if i else None,
                         [far_observation([-1., -.2], .02, 12)])
@@ -162,30 +172,43 @@ def test_far_candidate_is_only_a_search_turn_hint():
     assert 'far_candidate_accepted' in far_reasons(c)
     turn = [e for e in c.events if e['reason'] == 'far_candidate_turn'][-1]
     assert turn['turn_sign'] == -1 and turn['hue'] == 12
-    assert turn['confirmed_hue'] == 12
+    assert turn['declared_hue'] == pytest.approx(DECLARED_TARGET_HUE)
+    assert turn['confirmed_hue'] is None
     assert turn['blocked_object'] == 'orange_object_below_zone_marking_area'
     assert turn['minimum_gap_m'] is None and turn['gap_status'] == 'not_measured'
     assert not c.memories and not c.done and c.seen_target is False
 
 
-def test_far_candidate_rejection_reasons_are_distinct():
-    mismatch = EgocentricGoto(option=OPTION, footprint_radius_m=.12, far_candidate=True)
-    mismatch.confirmed_hue = 12.
+def test_far_candidate_uses_the_declared_hue_class_not_observations():
+    # The old defect: no accepted marking yet -> hue_reference_unavailable.
+    # Now a red-cargo patch (hue 1) is rejected against the declared orange
+    # class even if some earlier observation had set confirmed_hue to 1.
+    c = EgocentricGoto(option=OPTION, footprint_radius_m=.12, far_candidate=True)
+    c.confirmed_hue = 1.
     for i in range(6):
-        mismatch.step(.1*i, forward_command() if i else None,
-                      [far_observation([-1., -.2], .02+.002*i, 1)])
-    rejected = [e for e in mismatch.events if e['reason'] == 'far_candidate_rejected']
+        c.step(.1*i, forward_command() if i else None,
+               [far_observation([-1., -.2], .02+.002*i, 1)])
+    rejected = [e for e in c.events if e['reason'] == 'far_candidate_rejected']
     assert rejected[-1]['reason_category'] == 'hue_mismatch'
     assert rejected[-1]['hue'] == 1 and rejected[-1]['frames'] >= 2
+    assert rejected[-1]['declared_hue'] == pytest.approx(DECLARED_TARGET_HUE)
+    # Hue 13 is the measured p90 of the true marking, inside the class.
+    edge = EgocentricGoto(option=OPTION, footprint_radius_m=.12, far_candidate=True)
+    for i in range(6):
+        edge.step(.1*(i+1), forward_command() if i else None,
+                  [far_observation([-1., -.2], .02+.002*i, 13)])
+    rejected = [e for e in edge.events if e['reason'] == 'far_candidate_rejected']
+    assert rejected[-1]['reason_category'] != 'hue_mismatch'
+
+
+def test_far_candidate_rejection_reasons_are_distinct():
     static = EgocentricGoto(option=OPTION, footprint_radius_m=.12, far_candidate=True)
-    static.confirmed_hue = 12.
     for i in range(6):
         static.step(.1*i, None, [far_observation([-1., -.2], .02+.002*i, 12)])
     rejected = [e for e in static.events if e['reason'] == 'far_candidate_rejected']
     assert rejected[-1]['reason_category'] == 'no_forward_approach'
     assert rejected[-1]['forward_approach'] is False
     cropped = EgocentricGoto(option=OPTION, footprint_radius_m=.12, far_candidate=True)
-    cropped.confirmed_hue = 12.
     for i in range(6):
         cropped.step(.1*i, forward_command() if i else None,
                      [far_observation([-1., -.2], .02, 12)])

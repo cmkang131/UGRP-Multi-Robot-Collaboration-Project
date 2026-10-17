@@ -70,22 +70,30 @@ TURN_RAD_PER_PULSE_P10 = 0.10271914804372737
 # (3.0 m) and 0.378-0.442 m^2 (3.94 m), all far above the 0.10 m^2 birth gate;
 # at 4.90 m the marking was outside the floor-projection max_range_m=4.0 and
 # the only sub-gate patch was red cargo at 1.32 m (0.00917-0.00957 m^2, hue 1).
-# The true marking's measured median hue was exactly 12 on 100/100 ticks.  The
-# per-world static area max/min ratio over 100 ticks was <=1.169, so the 1.25
-# growth threshold sits above the measured static noise.  True patches were
-# present on 100/100 ticks; 5 frames (0.5 s) is a minimal persistence window
-# well below that.  Hue tolerance 3 covers the observed constant medians with
-# quantization headroom.  The candidate's hue is compared against the hue of
-# an already accepted (>=0.10 m^2) marking measured from own RGB; with no such
-# reference yet it is rejected as hue_reference_unavailable (fail-closed), so
-# the 1.32 m red cargo (hue 1) can never steer a fresh 4.9 m start.
+# The per-world static area max/min ratio over 100 ticks was <=1.169, so the
+# 1.25 growth threshold sits above the measured static noise.  True patches
+# were present on 100/100 ticks; 5 frames (0.5 s) is a minimal persistence
+# window well below that.
+#
+# Hue reference: the task map's declared zone-A marking colour, not a live
+# observation.  maps/zones/zone_wide_door_geometry_v3.json regions.zone_A.rgba
+# is ".95 .45 .10 .30"; RGB (0.95, 0.45, 0.10) converts to OpenCV hue 12.3529
+# (uint8 12).  This is a fixed task label, so a candidate can be judged before
+# the first 0.10 m^2 confirmation (the earlier observed-confirmation reference
+# made the toggle inert on fresh far starts: world3 logged only
+# hue_reference_unavailable).  Tolerance 1.35 = |12.3529 - 11|: the true
+# marking's per-tick uint8 hue medians were exactly 12 with p10 12 / p90 13 on
+# 100/100 ticks at 2.0/3.0/3.94 m, so integer hues 11-13 are inside the class;
+# hue 14 and the red cargo class (kind red ".80 .12 .10" -> hue 1) are outside.
+# Raw: outputs/egonav-far/far-measure-02 (VM far-measure-02).
+#
 # A candidate never creates memory, never sets seen_target/done and never
 # drives forward: it can only select the sign of the in-place search turn, so
 # confirmation/arrival stay owned by the 0.10 m^2 gate.
-# Raw: outputs/egonav-far/far-measure-02 (VM far-measure-02).
 FAR_CANDIDATE_OPTION = 'egonav_far_candidate_v1'
 FAR_CANDIDATE_MIN_FRAMES = 5
-FAR_CANDIDATE_HUE_TOLERANCE = 3.
+DECLARED_TARGET_HUE = 12.352941176470589
+DECLARED_TARGET_HUE_TOLERANCE = 1.35
 FAR_CANDIDATE_AREA_GROWTH_RATIO = 1.25
 FAR_CANDIDATE_MAX_AGE_S = 1.
 
@@ -190,11 +198,27 @@ class EgocentricGoto:
                  target_signature=TARGET_SIGNATURE, footprint_radius_m,
                  arrival_radius_m=ARRIVAL_RADIUS_M,
                  heading_tolerance_rad=HEADING_TOLERANCE_RAD,
-                 far_candidate=False):
+                 far_candidate=False,
+                 declared_target_hue=DECLARED_TARGET_HUE,
+                 declared_target_hue_tolerance=DECLARED_TARGET_HUE_TOLERANCE):
         if option not in ('off', OPTION):
             raise ValueError('UNKNOWN_EGOCENTRIC_GOTO_OPTION')
         if not isinstance(far_candidate, (bool, np.bool_)):
             raise ValueError('INVALID_FAR_CANDIDATE_FLAG')
+        if declared_target_hue is not None:
+            try:
+                declared_target_hue = float(declared_target_hue)
+            except (TypeError, ValueError):
+                raise ValueError('INVALID_DECLARED_TARGET_HUE')
+            if not math.isfinite(declared_target_hue) or not 0 <= declared_target_hue < 180:
+                raise ValueError('INVALID_DECLARED_TARGET_HUE')
+        try:
+            declared_target_hue_tolerance = float(declared_target_hue_tolerance)
+        except (TypeError, ValueError):
+            raise ValueError('INVALID_DECLARED_TARGET_HUE_TOLERANCE')
+        if (not math.isfinite(declared_target_hue_tolerance)
+                or declared_target_hue_tolerance < 0):
+            raise ValueError('INVALID_DECLARED_TARGET_HUE_TOLERANCE')
         if not math.isfinite(footprint_radius_m) or footprint_radius_m <= 0:
             raise ValueError('OWN_FOOTPRINT_REQUIRED')
         if not math.isfinite(arrival_radius_m) or arrival_radius_m < 0:
@@ -206,6 +230,8 @@ class EgocentricGoto:
         self.target_signature = target_signature
         self.far_candidate = bool(far_candidate)
         self.far_candidate_state = None
+        self.declared_target_hue = declared_target_hue
+        self.declared_target_hue_tolerance = declared_target_hue_tolerance
         self.confirmed_hue = None
         self.footprint_radius_m = float(footprint_radius_m)
         self.arrival_radius_m = float(arrival_radius_m)
@@ -268,6 +294,8 @@ class EgocentricGoto:
                     observed_area_m2=state.get('last_area'),
                     first_area_m2=state.get('first_area'),
                     frames=state.get('frames'), hue=state.get('hue'),
+                    declared_hue=self.declared_target_hue,
+                    declared_tolerance=self.declared_target_hue_tolerance,
                     confirmed_hue=self.confirmed_hue,
                     forward_approach=bool(state.get('forward_approach')), **extra)
 
@@ -319,9 +347,11 @@ class EgocentricGoto:
         state['forward_approach'] = bool(state['forward_approach'] or forward)
         if hue is None:
             reason = 'hue_not_measured'
-        elif self.confirmed_hue is None:
+        elif self.declared_target_hue is None:
+            # Fail-closed only when the task/detector profile declares no
+            # target hue class; an accepted-observation reference is not used.
             reason = 'hue_reference_unavailable'
-        elif hue_distance(hue, self.confirmed_hue) > FAR_CANDIDATE_HUE_TOLERANCE:
+        elif hue_distance(hue, self.declared_target_hue) > self.declared_target_hue_tolerance:
             reason = 'hue_mismatch'
         elif state['frames'] < FAR_CANDIDATE_MIN_FRAMES:
             reason = 'persistence'
@@ -556,7 +586,8 @@ class EgocentricGoto:
             if math.isfinite(value):
                 accepted_hues.append(value)
         if accepted_hues:
-            # Own-RGB reference for the far candidate; no authored hue enters.
+            # Diagnostic only: recorded in the ledger.  The far candidate judges
+            # against DECLARED_TARGET_HUE, never against live observations.
             self.confirmed_hue = float(np.median(accepted_hues))
         accepted_ids = {id(o) for o in observations}
         rejected_markings = [o for o in target_markings if id(o) not in accepted_ids]
