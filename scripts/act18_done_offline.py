@@ -167,19 +167,27 @@ def auc(score, label):
     return float((ranks[label].sum() - npos*(npos+1)/2) / (npos*nneg))
 
 
-def firing_report(data, probabilities, thresholds=(.5, .9, .99), persistence=3):
+def firing_report(data, probabilities):
     done_ts = [float(t) for t, label in zip(data['t'], data['done']) if label == 1]
     out = []
-    for threshold in thresholds:
-        fire = None; streak = 0
-        for i, value in enumerate(probabilities):
-            streak = streak+1 if value >= threshold else 0
-            if streak >= persistence:
-                fire = float(data['t'][i-persistence+1]); break
-        out.append(dict(threshold=threshold, fired=fire is not None, fire_t=fire,
-                        offsets_s=None if fire is None else [round(fire-t, 2) for t in done_ts],
-                        false_fire_before_first_done=None if fire is None or not done_ts else bool(fire < done_ts[0])))
-    return dict(done_ts=done_ts, firings=out)
+    for threshold in (.5, .9):
+        for persistence in (1, 3):
+            fire = None; streak = 0
+            for i, value in enumerate(probabilities):
+                streak = streak+1 if value >= threshold else 0
+                if streak >= persistence:
+                    fire = float(data['t'][i-persistence+1]); break
+            out.append(dict(threshold=threshold, persistence=persistence,
+                            fired=fire is not None, fire_t=fire,
+                            offsets_s=None if fire is None else [round(fire-t, 2) for t in done_ts],
+                            false_fire_before_first_done=None if fire is None or not done_ts
+                            else bool(fire < done_ts[0])))
+    probabilities = np.asarray(probabilities, np.float64)
+    argmax = int(probabilities.argmax())
+    return dict(done_ts=done_ts, max_probability=float(probabilities.max()),
+                argmax_t=float(data['t'][argmax]),
+                argmax_offsets_s=[round(float(data['t'][argmax])-t, 2) for t in done_ts],
+                firings=out)
 
 
 def main():
@@ -235,6 +243,15 @@ def main():
                     if f['threshold'] == .9 and f['false_fire_before_first_done'])
         result['fire_summary_threshold_0.9'] = dict(episodes_fired=fires, early_fires=early,
                                                    episodes=len(episodes_out))
+        entries = [f for e in episodes_out for f in e['firings'] if f['threshold'] == .9 and f['persistence'] == 1]
+        errors = [min(abs(o) for o in f['offsets_s']) for f in entries if f.get('offsets_s')]
+        errors.sort()
+        result['fire_summary_threshold_0.9_persistence_1'] = dict(
+            episodes_fired=len(entries), episodes=len(episodes_out),
+            early_fires=sum(1 for f in entries if f['false_fire_before_first_done']),
+            timing_error_median_s=float(np.median(errors)) if errors else None,
+            timing_error_p90_s=float(np.percentile(errors, 90)) if errors else None,
+            timing_error_max_s=float(max(errors)) if errors else None)
         report['models'][name] = result
         print(name, 'auc', round(result['auc'], 4) if result['auc'] else None,
               'pos_p', round(result['mean_positive_probability'], 4), flush=True)
