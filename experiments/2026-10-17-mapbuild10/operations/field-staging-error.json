@@ -1,0 +1,14 @@
+{
+  "source_sha": "7f2f1baae58bd591ab6ba7daf60dd6961f99f857",
+  "host": "gcp5",
+  "status": "STAGING_ERROR",
+  "prediction_cases": 0,
+  "reason": "zstd default rejects symbolic-link input; original regular compressed source verified rc0, staging symlink rc1",
+  "fix": "read-only hard links to sealed input in same filesystem, new -v2 work and ops paths; original and failed directory preserved",
+  "blocked_object": "not_observed",
+  "minimum_gap_m": null,
+  "gap_status": "not_measured",
+  "physics_steps": 0,
+  "render_calls": 0,
+  "reproduction": "experiments/2026-10-17-mapbuild10/field-run.py"
+}
