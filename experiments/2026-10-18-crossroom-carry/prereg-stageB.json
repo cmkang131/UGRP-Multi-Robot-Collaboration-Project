@@ -1,0 +1,108 @@
+{
+ "schema": "ugrp.crossroom_carry.prereg.v1",
+ "experiment_id": "2026-10-18-crossroom-carry",
+ "stage": "B_loaded",
+ "flow": "self_map",
+ "title": "Cross-room carry Stage B: loaded single red box, west pickup room -> divider door -> zone B arrival",
+ "frozen_at": "PENDING_FREEZE_COMMIT",
+ "policy_source_sha": "c390105c2663a5b780e4ad8d69da72a5ffe1bce8",
+ "policy_source_commit_note": "visgoal candidate C build (PR #582 draft), vendored byte copy; Stage B uses the same expanded-search + r4-arrival-declaration policy as Stage A.",
+ "checkout_branch": "claude/crossroom-carry",
+ "independent_from": ["Stage A (unloaded)", "visgoal gate r4/B/C", "egonav gate-09", "ACT15/16a/18"],
+ "scene": {
+  "map_id": "zone_wide_door_geometry_v3",
+  "arena_variant": "zone_wide_door",
+  "scene_profile": "walls_floor_contrast_v5_indigo110_s80",
+  "scenario": "crossroom_carry_scene_v1 (single red box; default-off reduced scene, no long_beam, end-color profile off)",
+  "scenario_file": "experiments/2026-10-18-crossroom-carry/crossroom_carry_scene_v1.json",
+  "scene_toggle": "crossroom_carry_scene_v1=on (default off in code; this queue turns it on)",
+  "renderer_source": "/home/ugrp/ugrp-sim/src/16a946ff3",
+  "legacy_source": "/home/ugrp/ugrp-sim/src/warp8f-selfmap-0ace43f25",
+  "host": "ugrp-act-l4-gcp3",
+  "host_note": "same L4 host as Stage A and visgoal; different scene/cap/stage so results are not pooled."
+ },
+ "destination": {
+  "zone": "B", "appearance": "blue floor paint",
+  "rectangle_eval_only": [4.30, 4.90, -2.80, -1.40],
+  "door": {"center_m": [2.20, 0.05], "width_m": 0.50,
+           "opening_y_eval_only": [-0.20, 0.30]}
+ },
+ "cargo": {
+  "kind": "red", "mass_kg": 0.030, "dims_m": [0.034, 0.040, 0.032],
+  "count": 1, "weld": false,
+  "start_state": "held in the closed gripper from t=0 (setup only)",
+  "setup": {
+   "gripper_pwm_closed": 1500,
+   "settle_sim_s": 1.0,
+   "settle_steps": 4000,
+   "place_method": "the box free joint is placed at the r1 grip site with the arm in the calibrated SEARCH joints and the gripper commanded closed; the CPU solver settles the grasp for 1 Sim s before the batch starts; no teacher and no weld after t=0",
+   "setup_validation": "experiments/2026-10-18-crossroom-carry/setup-validation-B.json (16/16 starts: box stays at the gripper site through the 1 Sim s settle)"
+  },
+  "own_monitor": {
+   "module": "experiments/2026-10-18-crossroom-carry/scripts/carry_state_own.py",
+   "inputs": "own raw fisheye RGB lower-centre ROI + own issued gripper pulse history",
+   "states": ["held", "uncertain", "lost"],
+   "thresholds": "frozen by the Stage B preflight and recorded in the queue/stack.json; not tuned from gate episodes"
+  }
+ },
+ "starts": "experiments/2026-10-18-crossroom-carry/setups.json#16",
+ "n_starts": 16,
+ "cap_sim_s": 180,
+ "nworld": 16,
+ "funnel_stages": {
+  "B": ["requested_n16", "input_audit_zero", "start_valid",
+        "cargo_held_own_at_start", "door_crossed", "cargo_held_own_at_cross",
+        "post_cross_colour_seen", "post_cross_found", "arrived_declared",
+        "cargo_held_own_at_arrival", "gt_cargo_in_zone"]
+ },
+ "metrics": [
+  "door_crossed", "door_cross_tick_s", "door_lateral_offset_m", "door_min_jamb_gap_m",
+  "cargo_held_own_at_start", "cargo_held_own_at_cross", "cargo_held_own_at_arrival",
+  "post_cross_colour_seen", "post_cross_found_t_s", "arrived_declared",
+  "gt_inside", "gt_zone_margin_at_declared_m", "gt_post_cross_zone_distance_m",
+  "gt_cargo_in_zone_at_declared", "gt_cargo_zone_margin_at_declared_m",
+  "gt_cargo_in_zone_final", "gt_cargo_zone_margin_final_m",
+  "collision_events", "cap_end", "time_to_cross_s", "time_to_declare_s"
+ ],
+ "mission_success_definition": "arrived_declared=true AND gt_cargo_in_zone_at_declared=true AND cargo_held_own_at_arrival='held'. This is loaded arrival only, not full-mission delivery: release/gt_delivered are out of scope (B+ after ACT release gate).",
+ "gt_delivered": "not_measured (B+ only)",
+ "cap_end_label": "cap_end",
+ "cap_end_note": "cap_end is a separate termination label, never a rejection reason; the 180 Sim s cap is not pooled with the visgoal 120 Sim s runs or with Stage A.",
+ "rejection_fields": ["reason_category", "blocked_object", "minimum_gap_m", "gap_status",
+                      "sim_s", "door_lateral_offset_m", "final_pose_eval_only",
+                      "final_box_xyz_eval_only", "evidence", "raw_path"],
+ "rejection_reason_categories": ["input_audit_fail", "start_invalid_overlap",
+                                 "cargo_lost_own", "door_not_crossed",
+                                 "destination_not_found", "false_arrival_outside_zone",
+                                 "cargo_not_in_zone", "arrival_unverified", "cap_end"],
+ "eval_only": "separate cells only; the controller never receives gt_*, cargo world pose, spawn pose, static map, top camera or zone/door coordinates",
+ "input_audit": {
+  "implementation": "controller_boundary_v1: every skill.control/memory_observation/memory.step argument dict is scanned at the boundary; forbidden-key attempts are counted and fail the episode as input_audit_fail. held_world_reads counts actual boundary attempts, not a runner constant.",
+  "targets": {"held_world_reads": 0, "static_map_control": 0, "spawn_control": 0,
+              "truth_control": 0, "top_camera_frames": 0, "invisible_measurements": 0}
+ },
+ "constraints": {
+  "static_map_use": "none", "localization_initial_prior": "none",
+  "goal_discovery": "visual_search", "held_object_hidden_v1": true,
+  "weld": false, "ultrasonic_front": "off", "top_camera_control": false,
+  "no_llm_calls": true, "physics_backend": "mjwarp_batch_v1",
+  "contact_profile": "warp_native_contact_v1", "noslip_iterations": 0,
+  "memory_implementation": "legacy_v1"
+ },
+ "toggles": {
+  "crossroom_carry_v1": "on", "crossroom_door_gap_v1": "on",
+  "crossroom_carry_state_v1": "on", "crossroom_route_memory_v1": "on",
+  "crossroom_safe_lookaround_v1": "on", "visgoal_expanding_search_v1": "on",
+  "visgoal_arrival_aim_inset_v1": "off", "crossroom_carry_scene_v1": "on",
+  "visgoal_mirror_pulse_v1": "off"
+ },
+ "prior_funnel": {"B": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/recount.json"},
+ "rejection_table": {"B": "/home/ugrp/ugrp-sim/runs/crossroom-stageB/rejection_table.json"},
+ "no_pooling": ["crossroom-stageA", "visgoal-gate-r4", "visgoal-gate-r4-mirror",
+                "visgoal-gate-r4-lawnmower", "egonav-gate-n16-09", "act15",
+                "act16a", "act18"],
+ "mission_scope": "Stage B measures loaded arrival only (box carried from t=0, no grasp). Release and gt_delivered are B+ after an ACT release component gate; full mission (grasp+carry+release) is not verified by this stage.",
+ "expected_wall": "16 worlds x 180 Sim s at the gcp3 batch rate is about 2.5-3.1 h, plus the 1 Sim s CPU settle per world at scene setup.",
+ "stack_check": "experiments/2026-10-18-crossroom-carry/stack-stageB.json (scripts/check_current_stack.py --flow self_map)",
+ "dsh": "Produced with DeepSeek Harness. https://github.com/deepseek-ai/deepseek-harness"
+}

@@ -42,6 +42,13 @@ FILES = [
      'walls_floor_contrast_v5_indigo110_s80-calibration.json'),
 ]
 
+STAGE_B_FILES = [
+    'experiments/2026-10-18-crossroom-carry/prereg-stageB.json',
+    'experiments/2026-10-18-crossroom-carry/crossroom_carry_scene_v1.json',
+    'experiments/2026-10-18-crossroom-carry/scripts/carry_state_own.py',
+    'experiments/2026-10-18-crossroom-carry/scripts/stageB_settle_check.py',
+]
+
 STACK_VALUES = {
     "physics_backend": "mjwarp_batch_v1",
     "contact_profile": "warp_native_contact_v1",
@@ -95,23 +102,43 @@ def sha(path: Path) -> str:
 
 def main() -> int:
     ap = argparse.ArgumentParser()
+    ap.add_argument('--stage', choices=('A_unloaded', 'B_loaded'),
+                    default='A_unloaded')
     ap.add_argument('--policy-source-sha',
                     default='c390105c2663a5b780e4ad8d69da72a5ffe1bce8')
     ap.add_argument('--prior-funnel',
                     default=f'{MAIN}/visgoal-gate-r4-lawnmower/recount.json')
-    ap.add_argument('--output', default=str(
-        ROOT / 'experiments/2026-10-18-crossroom-carry/queue-stageA.json'))
+    ap.add_argument('--output', default=None)
     a = ap.parse_args()
-    missing = [f for f in FILES if not (ROOT / f).is_file()]
+    files = FILES + (STAGE_B_FILES if a.stage == 'B_loaded' else [])
+    missing = [f for f in files if not (ROOT / f).is_file()]
     if missing:
         raise SystemExit('MISSING_INPUTS ' + repr(missing))
+    stage_b = a.stage == 'B_loaded'
+    toggles = dict(TOGGLES)
+    stage_fields = {}
+    if stage_b:
+        toggles['crossroom_carry_scene_v1'] = 'on'
+        stage_fields = {
+            'loaded_scene': ('experiments/2026-10-18-crossroom-carry/'
+                             'crossroom_carry_scene_v1.json'),
+            'gripper_pwm_closed': 1500,
+            'loaded_start_note': ('single red box placed in the closed gripper by the '
+                                  'runner setup, 1 Sim s CPU settle, weld off'),
+            'cargo_own_thresholds_file': ('experiments/2026-10-18-crossroom-carry/'
+                                          'setup-validation-B.json'),
+        }
+    out_path = (ROOT / 'experiments/2026-10-18-crossroom-carry/'
+                / ('queue-stageB.json' if stage_b else 'queue-stageA.json'))
     queue = {
         "schema": "ugrp.crossroom_run_queue.v1",
-        "stage": "A_unloaded",
+        "stage": a.stage,
         "flow": "self_map",
         "branch": "claude/crossroom-carry",
         "task": "crossroom",
-        "goal": "west pickup room -> divider door (0.50 m) -> zone B arrival, unloaded solo",
+        "goal": ("west pickup room, loaded with the red box -> divider door (0.50 m) -> "
+                 "zone B arrival (loaded, single box reduced scene)" if stage_b else
+                 "west pickup room -> divider door (0.50 m) -> zone B arrival, unloaded solo"),
         "source_sha": a.policy_source_sha,
         "source_note": ("policy pin: visgoal candidate C build (PR #582 draft), "
                         "vendored byte copy in experiments/2026-10-18-crossroom-carry/vendor"),
@@ -128,27 +155,29 @@ def main() -> int:
             "required_fields": ["reason_category", "blocked_object",
                                 "minimum_gap_m"]},
         "stack_values": STACK_VALUES,
-        "input_sha256": {f: sha(ROOT / f) for f in FILES},
+        "input_sha256": {f: sha(ROOT / f) for f in files},
         "rendered_host": "ugrp-act-l4-gcp3",
         "renderer_source": "/home/ugrp/ugrp-sim/src/16a946ff3",
         "legacy_source": "/home/ugrp/ugrp-sim/src/warp8f-selfmap-0ace43f25",
         "no_llm_calls": True,
         "top_camera_control": False,
         "own_rgb_count": 1,
-        "run_name": "crossroom-stageA",
+        "run_name": "crossroom-stageB" if stage_b else "crossroom-stageA",
         "preflight": False,
         "sim_cap_s": 180.0,
-        "output": f"{MAIN}/crossroom-stageA",
-        "rejection_table": a.prior_funnel,
+        "output": f"{MAIN}/crossroom-stageB" if stage_b else f"{MAIN}/crossroom-stageA",
+        "rejection_table": (f"{MAIN}/crossroom-stageA/recount.json"
+                            if stage_b else a.prior_funnel),
         "prior_funnel_note": ("prior funnel is the visgoal candidate C recount "
                               "(separate condition; used only as the prior "
                               "search-budget record, not pooled)"),
         "episode_count": 16,
-        "candidate": "stage_a_unloaded",
+        "candidate": ("stage_b_loaded_single_red_box" if stage_b
+                      else "stage_a_unloaded"),
         "no_pooling_conditions": ["visgoal-gate-r4", "visgoal-gate-r4-mirror",
                        "visgoal-gate-r4-lawnmower", "egonav-gate-n16-09",
                        "act15", "act16a", "act18"],
-        "toggles": TOGGLES,
+        "toggles": toggles,
         "worlds_per_batch": 16,
         "cap_end_label": "cap_end",
         "input_audit": "controller_boundary_v1 (actual boundary scan; counts "
@@ -156,11 +185,14 @@ def main() -> int:
         "generated_utc": datetime.datetime.now(datetime.timezone.utc).strftime(
             '%Y-%m-%dT%H:%M:%SZ'),
     }
-    Path(a.output).write_text(json.dumps(queue, indent=1) + '\n')
-    print(json.dumps(dict(output=a.output,
+    queue.update(stage_fields)
+    default_out = str(out_path)
+    output = a.output if a.output else default_out
+    Path(output).write_text(json.dumps(queue, indent=1) + '\n')
+    print(json.dumps(dict(output=output, stage=queue['stage'],
                           input_sha256_n=len(queue['input_sha256']),
                           source_sha=queue['source_sha'],
-                          prior_funnel=a.prior_funnel), indent=1))
+                          prior_funnel=queue['rejection_table']), indent=1))
     return 0
 
 

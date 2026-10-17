@@ -153,3 +153,62 @@ def test_recount_door_crossing_and_funnel_logic():
     assert [s['cumulative_pass_n'] for s in funnel] == [3, 2, 2, 2, 1, 1, 1, 1]
     for prev, cur in zip(funnel, funnel[1:]):
         assert cur['input_n'] == prev['cumulative_pass_n']
+
+
+def test_stage_b_queue_prereg_and_scene_are_consistent():
+    queue = load_json(EXP / 'queue-stageB.json')
+    prereg = load_json(EXP / 'prereg-stageB.json')
+    scene = load_json(EXP / 'crossroom_carry_scene_v1.json')
+    assert queue['stage'] == 'B_loaded'
+    assert prereg['stage'] == 'B_loaded'
+    assert queue['sim_cap_s'] == 180.0
+    assert queue['worlds_per_batch'] == 16
+    assert queue['toggles']['crossroom_carry_scene_v1'] == 'on'
+    assert queue['toggles']['visgoal_expanding_search_v1'] == 'on'
+    assert queue['toggles']['visgoal_arrival_aim_inset_v1'] == 'off'
+    assert queue['gripper_pwm_closed'] == 1500
+    assert queue['loaded_scene'] == (
+        'experiments/2026-10-18-crossroom-carry/crossroom_carry_scene_v1.json')
+    assert scene['scenario_id'] == 'crossroom_carry_scene_v1'
+    assert len(scene['eval']['setup']['placements']) == 1
+    assert scene['eval']['setup']['placements'][0]['kind'] == 'red'
+    assert scene['map_id'] == 'zone_wide_door_geometry_v3'
+    assert queue['input_sha256'], 'stage B queue must pin its inputs'
+    for name, digest in queue['input_sha256'].items():
+        path = ROOT / name
+        assert path.is_file(), name
+        assert hashlib.sha256(path.read_bytes()).hexdigest() == digest, name
+    assert 'crossroom-stageA' in prereg['no_pooling']
+    assert prereg['funnel_stages']['B'][-1] == 'gt_cargo_in_zone'
+
+
+def test_carry_state_own_detects_red_box_and_requires_closed_gripper():
+    module = load_module(
+        'carry_state_own',
+        EXP / 'scripts/carry_state_own.py')
+    import numpy as np
+    # a red rectangle in the near-field ROI
+    frame = np.zeros((480, 640, 3), dtype=np.uint8)
+    frame[300:420, 250:390] = (0, 0, 255)   # BGR red
+    det = module.red_component(frame)
+    assert det['largest'] >= 90
+    mon = module.CarryStateOwn()
+    held = mon.update(0.0, frame, 1500)
+    assert held['state'] == 'held'
+    open_cmd = mon.update(0.1, frame, 2000)
+    assert open_cmd['state'] != 'held'
+    empty = np.zeros((480, 640, 3), dtype=np.uint8)
+    mon2 = module.CarryStateOwn()
+    mon2.update(0.0, frame, 1500)
+    for i in range(1, 30):
+        state = mon2.update(i * 0.1, empty, 1500)
+    assert state['state'] == 'lost'
+
+
+def test_stage_b_settle_validation_passed():
+    val = load_json(EXP / 'setup-validation-B.json')
+    assert val['n'] == 16
+    assert val['pass_n'] == 16
+    assert all(r['settle_ok'] for r in val['episodes'])
+    assert val['gripper_pwm_closed'] == 1500
+    assert val['cargo_own_thresholds']['held_min_pixels'] > 0

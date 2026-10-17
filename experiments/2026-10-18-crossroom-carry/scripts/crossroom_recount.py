@@ -116,22 +116,51 @@ def recount_episode(ep_dir: Path):
                  if cross_t is not None and f['t'] > cross_t]
     post_zone = [round(zone_range(f['pose'][0], f['pose'][1]), 3)
                  for f in post_pose]
+    # --- Stage B (loaded) own/GT cargo cells, recomputed from the raw trace ---
+    box_ticks = [f for f in labels if f.get('box_pose_eval_only') is not None]
+    cargo_own_ticks = [r for r in trace if (r.get('cargo_own') is not None)]
+    cargo_at_start = (cargo_own_ticks[0]['cargo_own']['state']
+                      if cargo_own_ticks else None)
+    cargo_at_cross = None
+    if cross_t is not None:
+        after = [r for r in cargo_own_ticks if r['t'] >= cross_t]
+        cargo_at_cross = after[0]['cargo_own']['state'] if after else None
+    box_at_declared = None
+    if arrived:
+        df = frames.get(arrived[0]['frame_id'])
+        if df is not None:
+            box_at_declared = df.get('box_pose_eval_only')
+    cargo_at_arrival = (arrived[0].get('cargo_own') or {}).get('state') if arrived else None
+    box_final = box_ticks[-1]['box_pose_eval_only'] if box_ticks else None
+    cargo_in_zone_declared = (zone_margin(box_at_declared[0], box_at_declared[1]) >= 0.
+                              if box_at_declared else None)
+    cargo_margin_declared = (round(zone_margin(box_at_declared[0], box_at_declared[1]), 4)
+                             if box_at_declared else None)
+    cargo_in_zone_final = (zone_margin(box_final[0], box_final[1]) >= 0.
+                           if box_final else None)
     audit = ep.get('input_audit') or {}
     counters = audit.get('counters') or {}
     audit_zero = bool(audit.get('passed')) and not any(counters.values())
     status = ep.get('status')
     cap_end = status == 'cap_end'
+    carry_loaded = bool(ep.get('carry_loaded'))
     reason = None
     if not audit_zero:
         reason = 'input_audit_fail'
     elif not admission.get('accepted', True):
         reason = 'start_invalid_overlap'
+    elif carry_loaded and cargo_at_start != 'held':
+        reason = 'cargo_lost_own'
     elif not door['crossed']:
         reason = 'cap_end' if cap_end else 'door_not_crossed'
+    elif carry_loaded and cargo_at_cross != 'held':
+        reason = 'cargo_lost_own'
     elif not post_colour and not post_found:
         reason = 'cap_end' if cap_end else 'destination_not_found'
     elif arrived and inside is not True:
         reason = 'false_arrival_outside_zone'
+    elif carry_loaded and arrived and cargo_in_zone_declared is not True:
+        reason = 'cargo_not_in_zone'
     elif not arrived:
         reason = 'arrival_unverified'
     return dict(
@@ -170,6 +199,15 @@ def recount_episode(ep_dir: Path):
         collision_events=(ep.get('collision_events')
                           if ep.get('collision_events') is not None
                           else 'not_measured'),
+        carry_loaded=bool(ep.get('carry_loaded')),
+        cargo_held_at_start=cargo_at_start,
+        cargo_held_at_cross=cargo_at_cross,
+        cargo_held_at_arrival=cargo_at_arrival,
+        box_at_declared_eval_only=box_at_declared,
+        box_final_pose_eval_only=box_final,
+        cargo_in_zone_at_declared_gt=cargo_in_zone_declared,
+        cargo_zone_margin_at_declared_gt=cargo_margin_declared,
+        cargo_in_zone_final_gt=cargo_in_zone_final,
         evidence=dict(trace=str(ep_dir / 'trace.jsonl'),
                       eval_only=str(ep_dir / 'eval-only.json'),
                       frames=str(ep_dir / 'frames')),
@@ -180,17 +218,31 @@ def recount_episode(ep_dir: Path):
     )
 
 
-def funnel(rows):
+def funnel(rows, carry_loaded=False):
     stages = [
         ('requested_n16', lambda r: True),
         ('input_audit_zero', lambda r: r['input_audit_zero']),
         ('start_valid', lambda r: r['start_valid']),
-        ('door_crossed', lambda r: r['door_crossed']),
+    ]
+    if carry_loaded:
+        stages.append(('cargo_held_own_at_start',
+                       lambda r: r['cargo_held_at_start'] == 'held'))
+    stages.append(('door_crossed', lambda r: r['door_crossed']))
+    if carry_loaded:
+        stages.append(('cargo_held_own_at_cross',
+                       lambda r: r['cargo_held_at_cross'] == 'held'))
+    stages += [
         ('post_cross_colour_seen', lambda r: r['post_cross_colour_seen']),
         ('post_cross_found', lambda r: r['post_cross_found']),
         ('arrived_declared', lambda r: r['arrived_declared']),
-        ('gt_inside', lambda r: r['gt_inside'] is True),
     ]
+    if carry_loaded:
+        stages.append(('cargo_held_own_at_arrival',
+                       lambda r: r['cargo_held_at_arrival'] == 'held'))
+        stages.append(('gt_cargo_in_zone',
+                       lambda r: r['cargo_in_zone_at_declared_gt'] is True))
+    else:
+        stages.append(('gt_inside', lambda r: r['gt_inside'] is True))
     out, remaining = [], list(rows)
     for name, cond in stages:
         passed = [r for r in remaining if cond(r)]
@@ -211,6 +263,7 @@ def main() -> int:
     dirs = [d for d in sorted((run / 'episodes').glob('e[0-9]*'))
             if (d / 'episode.json').is_file()]
     rows = [recount_episode(d) for d in dirs]
+    carry_stage = bool(rows) and rows[0]['carry_loaded']
     n = len(rows)
     ep_summary = {e['episode']: e for e in summary.get('episodes', [])}
     mismatches = []
@@ -247,9 +300,20 @@ def main() -> int:
         summary_status=summary.get('status'),
         source_sha=summary.get('source_sha'),
         n=n,
-        funnel=funnel(rows),
+        funnel=funnel(rows, carry_stage),
         reasons=reasons,
         cap_end_n=sum(1 for r in rows if r['cap_end']),
+        carry_stage=('B_loaded' if carry_stage else 'A_unloaded'),
+        cargo_held_at_start_n=sum(1 for r in rows
+                                  if r['cargo_held_at_start'] == 'held'),
+        cargo_held_at_cross_n=sum(1 for r in rows
+                                  if r['cargo_held_at_cross'] == 'held'),
+        cargo_held_at_arrival_n=sum(1 for r in rows
+                                    if r['cargo_held_at_arrival'] == 'held'),
+        cargo_in_zone_at_declared_n=sum(
+            1 for r in rows if r['cargo_in_zone_at_declared_gt'] is True),
+        cargo_in_zone_final_n=sum(
+            1 for r in rows if r['cargo_in_zone_final_gt'] is True),
         door_crossed_n=sum(1 for r in rows if r['door_crossed']),
         post_cross_colour_n=sum(1 for r in rows if r['post_cross_colour_seen']),
         post_cross_found_n=sum(1 for r in rows if r['post_cross_found']),

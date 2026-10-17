@@ -175,7 +175,44 @@ python3 experiments/2026-10-18-crossroom-carry/scripts/crossroom_recount.py \
 calls. The map/door/zone/spawn values are setup and eval-only; they are never
 handed to the controller.
 
+## Stage B (loaded) — pre-registration
+
+Stage B is a separate condition from Stage A: the same map, door and zone B,
+but the solo robot starts **already holding one red box** (0.030 kg,
+34x40x32 mm) and the scene is the default-off reduced scene
+`crossroom_carry_scene_v1` (single red box, no long_beam, end-color profile
+off). The cap is 180 Sim s, `nworld=16`, host gcp3; **results are never pooled
+with Stage A** or with any visgoal/egonav/ACT run.
+
+* `prereg-stageB.json` — frozen pre-registration (loaded funnel, metrics,
+  input audit, no-pooling, prior funnel = Stage A recount).
+* `crossroom_carry_scene_v1.json` — reduced single-box scenario (default off;
+  only the Stage B queue turns it on).
+* `scripts/carry_state_own.py` — own-RGB + own-command cargo monitor
+  (`held`/`uncertain`/`lost`); no world pose, no contact flag, no truth.
+* `scripts/stageB_settle_check.py` — setup-only loaded-start validator: the
+  box free joint is placed at the r1 grip site with the calibrated SEARCH
+  joints and the gripper commanded closed (1500 pulse), then the CPU solver
+  settles 1 Sim s. 16/16 starts keep the box at the gripper site
+  (`setup-validation-B.json`). No weld and no teacher after t=0.
+* Loaded funnel: requested_n16 -> input_audit_zero -> start_valid ->
+  cargo_held_own_at_start -> door_crossed -> cargo_held_own_at_cross ->
+  post_cross_colour_seen -> post_cross_found -> arrived_declared ->
+  cargo_held_own_at_arrival -> gt_cargo_in_zone. `cap_end` is a separate
+  label; `gt_delivered` is B+ only (`not_measured` here).
+* Mission success definition for this stage: `arrived_declared` AND
+  `gt_cargo_in_zone_at_declared` AND `cargo_held_own_at_arrival == held`.
+  This is **loaded arrival**, not full-mission delivery: grasp is a setup-only
+  initial state and release is out of scope (B+ after an ACT release gate).
+* Run commands: `queue-stageB.json`, `stack-stageB.json`,
+  `--stage B_loaded --sim-cap 180 --nworld 16`, output
+  `/home/ugrp/ugrp-sim/runs/crossroom-stageB`.
+
+Status: **frozen, run pending** (the Stage A gate runs first; Stage B is a
+separate condition).
+
 ## Results
+
 
 Pending. This section will carry the raw VM path, Mac evidence path, sha256
 list, the recounted n/16 funnel, per-episode rejection table (reason
