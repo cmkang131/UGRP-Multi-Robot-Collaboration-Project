@@ -33,13 +33,19 @@
 - `search26_wide_stance` (teacher, **이 후보에서는 켜지 않음**): 5°→1° 각도 격자의 새 certified family. world 37의 ±15° best 4.87 mm < runtime floor 11.07 mm, jaw bound 17.88°가 근거. 5° family와 pooling 금지.
 - runner 배선: `scripts/run_grasp_act_teacher.py:run()` 인자·report·search15 dict에 세 키 추가 + signature 회귀 테스트.
 
-## 3. 실행 실패/설정 오류 3건 (집계 제외, 원본 보존)
+## 3. 실행 실패/중단 4건 (집계 제외, 원본 보존)
 
 1. `validation-r3-6-wiring-error` — adapter가 `run(**profiles(candidate))`로 부르는데 teacher runner에 r3 키 배선이 없어 `TypeError` (started_N=0, HOST_ERROR=1).
 2. `validation-r3-6b-cwd-error` — 실행 명령이 `WARP_SOURCE_ROOT`로 cd하지 않아 canonical scene의 상대 texture 경로가 안 잡힘(`ValueError: zone_wall_divider_1_...png`). started_N=0, HOST_ERROR=1.
 3. `validation-r3-6c-reobserve-indexerror` — **world 6개가 시작된 뒤** SIM 약 6 s에서 `grasp_act_reobserve.py:156 IndexError: list index out of range`로 전체가 죽었다. retreat-first reobserve가 0.6 s 경계가 아닌 6 cm 이동으로 view 단계로 전환될 때, 모든 target이 이미 fresh(peer clear dwell 진행 중)면 필터 결과가 비어 `targets[-1]`을 인덱스하는 결함. 전환 시 `fresh_measurements_replan`으로 종료하도록 고쳤고, 수정 전 코드에서 같은 IndexError로 실패하는 회귀 테스트를 넣었다. started_N=6, completed_N=0, HOST_ERROR=1, world 결과 없음.
+4. `validation-r3-6d-stall` — **world15가 batch를 막아 중단.** 16:44Z 시작, 139 ticks/13.9 SIM s에서 3분+ 정지(진행 정지, CPU 100%), world-002 raw가 diagnostic-snapshot.json **3,001,561,296 B** + 인터럽트 flush result.json **3,199,783,993 B**로 성장(다른 world 약 5 MB), batch 14.2 wall/SIM(r2 같은 subset 5.87, 차단 기준 6.0). 17:07:04Z Mac에서 `kill -INT 5226`; KeyboardInterrupt handler가 result.json을 쓰고 `compress_logs`가 17:10Z까지 끝났다. 원본 `runs/beamact5/validation-r3-6d-stall`, stall-record.json·SHA는 [gate-40-r3/validation-r3-preregistration.json] 및 이 문서 4.3절. **물리 결과 없음·집계 제외·r3에서 world15 제어 거동 미검증.**
 
-1·2는 world 시작 전, 3은 world 시작 후 코드 결함으로 끝났고 모두 summary/로그를 VM 디스크에 보존했다. 상세는 preregistration의 `prelaunch_attempts`.
+1·2는 world 시작 전, 3·4는 world 시작 후 코드/로그 결함으로 끝났고 모두 summary/로그를 VM 디스크에 보존했다. 상세는 preregistration의 `prelaunch_attempts`.
+
+### 3.1 known defect: world15 로그 폭발 (후속 과제)
+
+world15는 교사가 0.1 s마다 91-pose `blocked_goal` goal_set/search22 감사 결과를 다시 계산·기록해 payload가 world당 수 GB로 커진다. runner가 그 payload를 여러 번 직렬화하면서 batch 전체가 stall한다(r2에서는 SIM 6.4 s의 30 wall-s planning safety cap이 먼저 걸렸지만, r3 경로에서는 cap이 발동하지 않았다). 이번 gate에서는 로깅 수정을 하지 않았고(승인 조건), **world15는 향후 교사 녹화/데이터셋에서도 제외**하며, 로그 volume 수정(중복 제거·증분 기록) 전에는 사용하지 않는다. 수정은 별도 후속 과제다.
+
 
 ## 4. world 15 원인표 (r2 raw + cProfile)
 
@@ -63,6 +69,19 @@
 - 가설(certified-family fallback) 판정: **부분 지지**. 상위 계획 경로가 certified family/sampled goal 계열(`body_fallback`·`select_sampled_goal`·`plan_active`)인 것은 확인했지만, 이 프로파일은 6.9 SIM s에서 끝나 그 비중을 60 s 실행으로 전용할 수 없고, 30 s를 넘긴 단일 tick의 실시간 스택은 프로파일에 남지 않았다(도구 한계). r2 raw의 반복 91-pose blocked loop와 body planning 0 rows가 직접 증거다.
 - 결론: world 15는 **cap/margin 상수를 올릴 대상이 아니고**, 반복되는 91-pose goal-set/memory audit 경로를 batch/cache하는 후속 수정 대상이다. 이번 r3 후보에는 그 수정을 넣지 않았고(원인표만 확정), gate 산술은 15를 expected fail로 둔다.
 
+### 4.3 r3에서 추가 확인된 비용 (validation-r3-6d-stall, 16:44–17:10Z)
+
+|관측|값|
+|---|---|
+|배치 진행|139 ticks / **13.9 SIM s**에서 정지(3분+ 진행 없음, 프로세스 CPU 100%)|
+|bottleneck|world-002(world15) raw 총 **316 MB zst** (raw JSON 3.2 GB + snapshot 3.0 GB), 다른 world raw 약 5 MB|
+|batch 속도|**14.2 wall/SIM** (r2 같은 6-world subset 5.87; AGENTS 차단 기준 6.0 초과)|
+|safety cap|r3 경로에서 **30 wall-s planning safety cap 미발동** — r2 world15는 SIM 6.4에서 cap으로 끝났으나 r3에서는 로그·직렬화 비용으로 batch가 계속 느려짐|
+|SHA|diagnostic-snapshot.json.zst `ebd037e3…`, result.json.zst `d29b3174…`, summary.json `f120c1ce…` (stall-record.json에 전체 기록)|
+
+해석: 세계별 교사 로그가 과도하게 커지는 것이 1차 원인이고, runner가 그 payload를 반복 직렬화하는 것이 2차 원인이다. cProfile의 `write_json` 75.6%는 이 경로의 사후/중간 직렬화 비용과 일치한다. 코드 수정 없이 gate를 돌리기 위해 world15만 물리 실행에서 제외했다(7절).
+
+
 ## 5. world 37 (구조적, 수정 제외)
 
 sampled ±15° family best gap 4.87 mm < runtime floor margin 11.07 mm. `search26_wide_stance`는 이 구조를 겨냥한 별도 family지만 이 후보에서 켜지 않는다(단독 비교 실행 필요, r3와 pooling 금지).
@@ -72,11 +91,14 @@ sampled ±15° family best gap 4.87 mm < runtime floor margin 11.07 mm. `search2
 - `tests/test_beamact5_r3_modes.py` 10 tests: 등록·기본 off, validate fail-closed, peer memory 유지/만료, 기본 reset, retreat 경계→view attempt, 기본 경계 종료 불변, wide family 상위집합/각도, teacher runner 인자 배선, reobserve 전환 시 빈 target 가드(수정 전 IndexError 재현).
 - 기존 회귀: `tests/test_grasp_act_search15/21/22/23/24/25.py`, `tests/test_beamact5_r2_modes.py` 포함 **71 passed** (Mac, 물리/렌더 없음).
 
-## 7. 결과 (6-world, gcp6) — 진행 중
+## 7. 결과 — 6-world 중단(stall), full gate는 world15 제외 39-world로 실행
 
-실행 `validation-r3-6d` (out `/home/ugrp/ugrp-sim/runs/beamact5/validation-r3-6d`, log `…/validation-r3-6d.log`). 결과·원본 해시·funnel은 완료 후 이 절과 PR 본문에 채운다.
+- **6-world(`validation-r3-6d`)**: world15 stall로 중단(3절 4항). 원본 보존·집계 제외. 다른 world(6/10/20/27/37)의 r3 거동은 이 실행으로 판정할 수 없다.
+- **gate deviation (조정자 A안 승인, 2026-10-18 KST)**: full gate를 **world15 물리 실행만 제외한 39-world**로 실행한다. world15는 **사전등록 expected FAIL**로 분모에 남긴다(nominal 38/40). 실행된 39 world 중 **최소 38 성공**(비-15 실패 최대 1)이면 pass. world37은 이미 알려진 구조적 expected fail(4.87 mm < floor 11.07 mm)이라, 37도 실패하면 38/40 = 정확히 최소 기준이다. 코드·cap·margin 변경 없음. 사전등록: [gate-40-r3/gate39-deviation-preregistration.json].
+- 실행: `runs/beamact5/gate39-r3-run`(39 worlds, indices 0–14·16–39, cap 60 SIM s, training RGB off, weld off, gcp6 isolated), 로그 `…/gate39-r3-run.log`. 결과·wall·first30·원본 SHA·funnel은 완료 후 이 절과 PR #588 본문에 채운다.
+
 
 ## 8. 원본·미확인
 
-- gcp6 영속 디스크: `runs/beamact5/validation-r3-6d/`, `gate-40-r3/rejection_table.json`, `wide-start-8420000d-r3/`.
-- 미확인: 청구 비용, C 대비 물리/렌더 동등성, 실기 전이. 교사 성공은 학생 성공이 아니다.
+- gcp6 영속 디스크: `runs/beamact5/validation-r3-6d-stall/`(stall 원본·SHA), `runs/beamact5/gate39-r3-run/`(39-world gate), `gate-40-r3/rejection_table.json`, `wide-start-8420000d-r3/`.
+- 미확인: 청구 비용, C 대비 물리/렌더 동등성, 실기 전이. 교사 성공은 학생 성공이 아니다. world15는 이 gate에서 r3 제어 거동 미검증(제외)이고 향후 녹화/데이터셋에서도 로그 수정 전 사용하지 않는다.

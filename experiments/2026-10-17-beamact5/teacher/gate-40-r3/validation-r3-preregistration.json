@@ -80,5 +80,26 @@
    "repeat_guard": "tests/test_beamact5_r3_modes.py::test_reobserve_transition_ends_when_every_target_is_already_fresh"
   }
  ],
- "attempt_plan": "validation-r3-6d: same command with the fixed tree SHAs and out dir runs/beamact5/validation-r3-6d"
+ "attempt_plan": "validation-r3-6d: same command with the fixed tree SHAs and out dir runs/beamact5/validation-r3-6d",
+ "stall_6d": {
+  "run": "runs/beamact5/validation-r3-6d-stall",
+  "sigint_utc": "2026-10-17T17:07:04Z",
+  "progress_at_sigint": {
+   "ticks": 139,
+   "sim_s": 13.9,
+   "loop_wall_s": 1182.98,
+   "per_world_wall_SIM": 14.18
+  },
+  "world15_raw_bytes": {
+   "diagnostic-snapshot.json": 3001561296,
+   "result.json": 3199783993
+  },
+  "sha256": {
+   "world-002/raw/diagnostic-snapshot.json.zst": "ebd037e3700187c30ce711e03d6384439dc7649b890373e5e4734f1cd34ee61e",
+   "world-002/raw/result.json.zst": "d29b31749b52cef0a762c302ce73a2fa8996ae1540566095180effe2b04d2bdc",
+   "summary.json": "f120c1ce8614a0e98f6a3acff55b92404d5b536dbf6bbb73d13c0a9902ff0ad1"
+  },
+  "outcome": "stalled by world15 logging/serialisation volume; no world result; not pooled; r3 world15 control behaviour unverified",
+  "superseded_by": "gate-40-r3/gate39-deviation-preregistration.json (world15 excluded from physical gate execution)"
+ }
 }
