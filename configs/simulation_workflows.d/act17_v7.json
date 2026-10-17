@@ -32,11 +32,11 @@
     {
       "id": "act17-v7-val-queue",
       "version": "1.0.0",
-      "purpose": "Same-seed native VAL8 for all completed M/F/S models",
+      "purpose": "Same-seed native M/F/S VAL8 or separately frozen selected FINAL40",
       "entry": "scripts/act17_val_batch.py",
       "runner": "scripts.act17_val_batch",
       "docs": "experiments/2026-10-17-act17/v7/README.md",
-      "requires": "gcp2 L4; explicit --enabled; new camera-off v7 gate; completed M/F/S; no FINAL admission through this entry",
+      "requires": "gcp2 L4; explicit --enabled; new camera-off v7 gate; completed M/F/S; --split final also requires frozen real VAL8 evidence via --selection",
       "output_flag": "--out",
       "output_kind": "directory",
       "required_inputs": ["--models-root", "--references", "--protocol", "--native-gate", "--stack", "--checker", "--stack-values", "--prior-rejections"],

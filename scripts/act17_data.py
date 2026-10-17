@@ -186,7 +186,8 @@ def convert(protocol,gate,records,output):
         if (not plan['scenario_id'].endswith('_v7') or fields.get('scene_profile')!='walls_floor_contrast_v5_indigo110_s80'
                 or fields.get('end_color_scene')!='grasp_act_teal_blue_v1' or xml.find('option').get('noslip_iterations')!='0'
                 or sha256(ROOT/'configs/zone_study_scenarios_v7'/(plan['scenario_id']+'.json'))!=plan['scenario_source_sha256']
-                or any(any(token in b.get('name','') for token in ['cargo_can','cargo_tile','cargo_crate','cargo_frame']) for b in xml.findall('.//body'))):
+                or any(any(token in b.get('name','') for token in ['_can','_tile','_crate','_frame'])
+                    for b in xml.findall('.//body') if b.get('name','').startswith('cargo_'))):
             raise ValueError('actual v7 scene/contact XML required')
         observations=read(raw/'student-r1.jsonl',lines=True);labels=read(raw/'teacher-r1.jsonl',lines=True)
         groups=paired_segments(observations,labels,done_label='last_local_row_v1',include_initial_approach_v1=True)

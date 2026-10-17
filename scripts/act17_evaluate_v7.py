@@ -11,6 +11,7 @@ from pathlib import Path
 import runpy
 import subprocess
 import sys
+import time
 
 sys.path.insert(0,str(Path(__file__).resolve().parent))
 from act16w_runtime import require_gcp2,frozen_source,sha256
@@ -35,6 +36,21 @@ def main():
     original_guard=act16w_runtime.evaluation_seed_guard
     original_actor=act16w_input.Act16wActor
     original_client=act16w_eval_rpc.EvaluationClient
+    inference=dict(attempts=0,completed=0,wall_s=0.,first_observation_t=None,
+        first30=dict(attempts=0,completed=0,wall_s=0.))
+    class TrackedActor(Actor):
+        def predict(self,observation,jpegs):
+            started=time.perf_counter();inference['attempts']+=1
+            if inference['first_observation_t'] is None:inference['first_observation_t']=observation['t']
+            first30=observation['t']-inference['first_observation_t']<=30+1e-8
+            if first30:inference['first30']['attempts']+=1
+            try:
+                result=super().predict(observation,jpegs);inference['completed']+=1
+                if first30:inference['first30']['completed']+=1
+                return result
+            finally:
+                elapsed=time.perf_counter()-started;inference['wall_s']+=elapsed
+                if first30:inference['first30']['wall_s']+=elapsed
     def guard(provenance,seeds,*,split,protocol,model_sha256,selection=None):
         if (provenance.get('cohort')!='act17-v7-native' or not provenance.get('training_complete')
                 or provenance.get('step')!=protocol['training']['steps_round1']
@@ -52,6 +68,8 @@ def main():
                     or s.get('validation_n')!=8 or s.get('validation_N')!=8
                     or sorted(s.get('completed_candidates',[]))!=['F','M','S']):
                 raise ValueError('matched M/F/S complete and selected VAL8 pass required before fresh final40')
+            from act17_selection import validate_final_selection
+            validate_final_selection(s,protocol,model_sha256)
     class Client(original_client):
         def reset(self,plans,indices=None):
             if self.training or self.audit_state or self.proc is not None or len(plans)!=self.nworld or indices not in (None,list(range(self.nworld))):
@@ -67,7 +85,7 @@ def main():
             if self.on_reset is not None:self.on_reset(tuple(range(self.nworld)))
             return result
     act16w_runtime.evaluation_seed_guard=guard
-    act16w_input.Act16wActor=Actor
+    act16w_input.Act16wActor=TrackedActor
     act16w_eval_rpc.EvaluationClient=Client
     target=ROOT/'scripts/evaluate_act16w.py';sys.argv=[str(target),*args]
     try:
@@ -85,6 +103,7 @@ def main():
                 value['legacy_native_camera_template']=value.pop('native_camera',None)
                 value.update(cohort='act17-v7-native',native_camera='own640x480/10Hz; '+meta['image_mode'],
                     effective_model_image_hw=meta['model_image_hw'],effective_source_image_hw=meta['image_hw'],
+                    actual_ACT_inference=inference,LLM_calls=0,
                     scope='ACT17 v7 own-only native evaluation; private truth scored after all actions')
                 summary.write_text(json.dumps(value,indent=2)+'\n')
             (output/'act17-v7-evaluator.json').write_text(json.dumps(dict(source_sha=source,

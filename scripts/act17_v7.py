@@ -111,6 +111,8 @@ def plans(split,protocol,out,selection=None):
             raise ValueError('matched M/F/S completion and frozen VAL8 pass required before final setup')
         if hashlib.sha256((Path(s['checkpoint_path'])/'model.safetensors').read_bytes()).hexdigest()!=s.get('checkpoint_sha256'):
             raise ValueError('frozen final checkpoint hash mismatch')
+        from act17_selection import validate_final_selection
+        validate_final_selection(s,protocol,s['checkpoint_sha256'])
     sys.path.insert(0,str(T))
     from scripts import make_solo_teacher_plan as original
     def candidates(kind):

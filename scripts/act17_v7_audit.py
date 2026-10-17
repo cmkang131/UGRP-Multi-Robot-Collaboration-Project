@@ -33,7 +33,7 @@ def main():
             if options.get('noslip_iterations')!='0' or options.get('cone')!='elliptic' or options.get('integrator')!='implicitfast' or options.get('impratio')!='5':
                 raise ValueError('actual native contact options differ')
             cargo=[b.get('name') for b in model.findall('.//body') if b.get('name','').startswith('cargo_')]
-            if any(any(token in name for token in ['cargo_can','cargo_tile','cargo_crate','cargo_frame']) for name in cargo):
+            if any(any(token in name for token in ['_can','_tile','_crate','_frame']) for name in cargo):
                 raise ValueError('retired cargo remains in actual v7 scene')
             fields={e.get('name'):e.get('data') for e in model.findall('custom/text')}
             if fields.get('scene_profile')!=SCENE or fields.get('end_color_scene')!=PROFILE:
