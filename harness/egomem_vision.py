@@ -13,6 +13,20 @@ import numpy as np
 from harness.own_map_amcl_vendor import landmarks as lm
 
 
+def colour_component_pixels(rgb, target_hue):
+    """Appearance visibility, not zone identity. Same frozen HSV/300px gate.
+
+    Unlike a boundary detector miss, a large colored interior still counts as
+    visible. Evaluator/human review separately rejects a same-color impostor.
+    """
+    hsv=cv2.cvtColor(rgb,cv2.COLOR_RGB2HSV);h,s,v=np.moveaxis(hsv.astype(float),-1,0)
+    dh=abs(h-target_hue);dh=np.minimum(dh,180-dh)
+    mask=((dh<=lm.PARAMS['hue_tolerance'])&(s>=lm.PARAMS['saturation_min'])&
+          (s<=lm.PARAMS['saturation_max'])&(v>=lm.PARAMS['value_min'])).astype(np.uint8)
+    n,labels,stats,_=cv2.connectedComponentsWithStats(mask,8)
+    return int(sum(stats[j,cv2.CC_STAT_AREA] for j in range(1,n) if stats[j,cv2.CC_STAT_AREA]>=lm.PARAMS['min_component_px']))
+
+
 def point_covariance(xy):
     # Existing PR406 range/bearing observation sigmas (.2m,3deg), propagated
     # through Cartesian Jacobian. These are inherited assumptions, not a

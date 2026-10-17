@@ -162,6 +162,7 @@ class LandmarkMemory:
                                      representation=representation,
                                      predicted_state=before, updated_state=observation_model(x, i, representation)[0].tolist()))
             item['last_seen_s'] = t; item['observations'] += 1
+            if 'hue' in obs:item['appearance_hue']=obs['hue']
         # eq.15/16: inverse composition AFTER correction of local displacement.
         y = []; jac = np.zeros((n, n+3))
         for i in range(len(self.items)):
@@ -190,6 +191,7 @@ class LandmarkMemory:
             self.sequence += 1
             self.items.append(dict(id=f'm{self.sequence}', kind=obs['kind'], signature=obs['signature'],
                                    representation=obs.get('representation', 'point'),
+                                   appearance_hue=obs.get('hue'),
                                    first_seen_s=t, last_seen_s=t, observations=1))
             events.append(self.event('created', observation=obs['id'], memory_id=f'm{self.sequence}'))
         self.t = t

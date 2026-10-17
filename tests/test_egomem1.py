@@ -91,3 +91,20 @@ def test_observation_schema_blocks_world_fields_and_search_uses_only_hits():
     context=language_context([],scan=dict(columns=[dict(status='unknown',range_m=None),dict(status='hit',range_m=2.,bearing_rad=.2)]),footprint_radius_m=.2)
     assert len(context['candidates'])==1
     assert context['candidates'][0]['minimum_gap_m']==1.8
+
+
+def test_strict_return_goes_outside_colored_halfplane_and_needs_color_exit():
+    from harness.egomem_navigation import MemoryReturn
+    c=MemoryReturn(sweep_steps=100,footprint_diameter_m=.4,horizontal_half_fov_rad=.5,strict_return=True)
+    m=dict(id='m',kind='zone_boundary',signature='blue',age_s=0.,range_m=.6,bearing_rad=np.pi,measurement_state=[-.6,0.],appearance_hue=107.)
+    action=c.step(0.,[0,0,2*np.pi],[m],[],colour_pixels=1000)
+    assert c.goal_range==.8 and action[2]>0  # depart outward -normal, not into colored side
+    m['measurement_state'][1]=np.pi;m['bearing_rad']=np.pi
+    c.step(1.,[0,0,0],[m],[],colour_pixels=1000)
+    c.step(2.,[1.,0,0],[m],[],colour_pixels=1000)
+    assert c.stage=='depart' and not c.done  # missing boundary is insufficient
+    c.step(3.,[0,0,0],[m],[],colour_pixels=0)
+    assert c.stage=='return'
+    m['bearing_rad']=0.
+    c.step(4.,[0,0,0],[m],[dict(kind='zone_boundary',signature='blue')],colour_pixels=1000)
+    assert c.done

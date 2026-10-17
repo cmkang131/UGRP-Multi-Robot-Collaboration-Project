@@ -10,12 +10,13 @@ from harness.egocentric_landmark_memory import wrap, language_context
 
 
 class MemoryReturn:
-    def __init__(self, *, sweep_steps, footprint_diameter_m, horizontal_half_fov_rad):
+    def __init__(self, *, sweep_steps, footprint_diameter_m, horizontal_half_fov_rad, strict_return=False):
         self.sweep_steps=sweep_steps;self.diameter=footprint_diameter_m;self.half_fov=horizontal_half_fov_rad
         self.stage='look';self.steps=0;self.turn=0.;self.away_path=0.;self.goal=None;self.goal_range=None
         self.departed=False;self.done=False;self.events=[]
+        self.strict_return=strict_return;self.goal_hue=None;self.visual_exit=False
 
-    def step(self,t,increment,memories,observations):
+    def step(self,t,increment,memories,observations,*,colour_pixels=None):
         self.steps+=1
         def event(reason,**extra):
             self.events.append(dict(t=t,stage=self.stage,category='memory_return',reason=reason,
@@ -30,6 +31,13 @@ class MemoryReturn:
                     event('cap_end_no_visual_zone');self.done=True;return [0.,0.,0.]
                 chosen=min(choices,key=lambda m:m['age_s'])
                 self.goal=chosen['id'];self.goal_range=max(self.diameter,chosen['range_m'])
+                self.goal_hue=chosen.get('appearance_hue')
+                if self.strict_return:
+                    rho=chosen['measurement_state'][0]
+                    # Oriented normal points INTO the observed colored side.
+                    # If inside, cross its measured boundary plus one robot
+                    # envelope radius. No map boundary/zone center is supplied.
+                    self.goal_range=max(self.diameter,max(0.,-rho)+self.diameter/2)
                 event('visual_zone_remembered',memory_id=self.goal,signature=chosen['signature'],
                       departure_distance_m=self.goal_range,scan_own_yaw_rad=self.turn)
                 self.stage='depart_turn';self.steps=0
@@ -41,18 +49,19 @@ class MemoryReturn:
             event('cap_end_phase_compute_budget');self.done=True;return [0.,0.,0.]
         angle=target['bearing_rad']
         if self.stage=='depart_turn':
-            error=wrap(angle+math.pi)
+            error=wrap((target['measurement_state'][1] if self.strict_return else angle)+math.pi)
             # Only the positive folded rotation has an exact own-RGB command
             # calibration. Do not invent a mirrored negative response model.
             if abs(error)>self.half_fov:return [0.,0.,.35]
             self.stage='depart';self.steps=0;event('departure_heading_observed_history')
         if self.stage=='depart':
             self.away_path+=float(np.linalg.norm(increment[:2]))
-            if self.away_path<self.goal_range:return [.35,0.,0.]
+            if self.strict_return and colour_pixels==0:self.visual_exit=True
+            if self.away_path<self.goal_range or (self.strict_return and not self.visual_exit):return [.35,0.,0.]
             self.departed=True;self.stage='return';self.steps=0;event('departure_command_distance_reached',own_path_m=self.away_path)
         if self.stage=='return':
             matching=[o for o in observations if o['kind']=='zone_boundary' and o['signature']==target['signature']]
-            if matching:
+            if matching and (not self.strict_return or (self.visual_exit and colour_pixels and abs(angle)<=self.half_fov)):
                 event('rgb_signature_reacquired',memory_id=self.goal,signature=target['signature'],
                       evaluation_required=True,arrival_verified=False)
                 self.done=True;return [0.,0.,0.]

@@ -1,0 +1,41 @@
+{
+  "unit": "recording",
+  "raw": "/home/ugrp/ugrp-sim/runs/egomem1-round1/recording1",
+  "source_sha": "cae3bd30b3c2e2c4fe76952d7a013cd26e064cbe",
+  "funnel": [
+    {
+      "stage": "recorded",
+      "input_n": 1,
+      "cumulative_pass_n": 1,
+      "rejected_n": 0
+    },
+    {
+      "stage": "verified_actual_colour_disappearance",
+      "input_n": 1,
+      "cumulative_pass_n": 0,
+      "rejected_n": 1
+    }
+  ],
+  "reasons": [
+    {
+      "category": "visual_return_evaluation",
+      "reason": "boundary_detector_miss_was_mistaken_for_region_leaving_view; outward departure pointed deeper into colored region",
+      "blocked_object": "observed_pickup_floor_paint",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    }
+  ],
+  "review": {
+    "full_2hz_s": [
+      0,
+      38
+    ],
+    "terminal_10hz_s": [
+      28,
+      38
+    ],
+    "video": "outputs/e2e18-admin/playback/egomem1-recording1/own-r1-r2-4x.mp4",
+    "observation": "blue pickup interior remains visible at25.4-38; final is another edge of same region, not verified memory return"
+  },
+  "reproduction": "scripts/egomem1_evaluate.py --input recording1 --output NEW_STRICT_EVAL"
+}

@@ -73,7 +73,7 @@ def run(a):
     from harness.rbpf_rejection import motion_variance
     from harness.scene_colour_boundary import ColourBoundaryState,RELOC16_OPTION
     from harness.active_camera import SEARCH
-    from harness.egomem_vision import EgocentricDetector
+    from harness.egomem_vision import EgocentricDetector,colour_component_pixels
     from harness.egocentric_landmark_memory import LandmarkMemory,OPTION
     from harness.egomem_navigation import MemoryReturn
     from harness.floor_goal_self_mask import body_envelopes
@@ -151,7 +151,7 @@ def run(a):
     sweep=json.loads(a.sweep.read_text())
     diameter=2*max(float(np.linalg.norm(vertices[:,:2],axis=1).max()) for _,vertices in body_envelopes(SEARCH,'camera_v3'))
     from harness.e2e_rgb_vo import K
-    controller=MemoryReturn(sweep_steps=sweep['step_budget'],footprint_diameter_m=diameter,horizontal_half_fov_rad=math.atan(320/K[0,0]))
+    controller=MemoryReturn(sweep_steps=sweep['step_budget'],footprint_diameter_m=diameter,horizontal_half_fov_rad=math.atan(320/K[0,0]),strict_return=a.strict_reacquisition)
     own=[];trace=[];labels=[];commands=[];old=None;previous=None;last_servo=None;next_sensor=0.;ring=deque(maxlen=101)
     status='cap_end';error=None;start=time.monotonic();first30=None;would_stop=[]
     body=m.body('r1__robot').id;adr=int(m.jnt_qposadr[int(m.body_jntadr[body])])
@@ -178,12 +178,13 @@ def run(a):
                 if not any(x in flow['status'] for x in ('camera_unsettled','servo_change','bootstrap')):
                     obs,diagnostic=detector.observe(rgb['r1'],servo,scan)
             result=memory.step(t,increment,c,obs)
-            before=controller.stage;action=controller.step(t,increment,result['memories'],obs)
+            colour_pixels=colour_component_pixels(rgb['r1'],controller.goal_hue) if controller.goal_hue is not None else None
+            before=controller.stage;action=controller.step(t,increment,result['memories'],obs,colour_pixels=colour_pixels)
             if any(m['radius95_m']>m['range_m'] for m in result['memories']) and not any(e['stage']==before for e in would_stop):
                 would_stop.append(dict(t=t,stage=before,category='uncertainty',reason='95pct_radius_exceeds_target_range',blocked_object='not_observed',minimum_gap_m=None,gap_status='not_measured',record_only=True))
             file=a.output/'own-rgb'/f'r1-{tick:05d}.jpg'
             own.append(dict(frame_id=tick,t=t,rgb=str(file.relative_to(a.output)),sha256=sha(file),servo=servo,command_delta=delta.tolist(),command_covariance=cov.tolist()))
-            trace.append(dict(t=t,frame_id=tick,stage=before,lk=flow,motion_delta=increment.tolist(),motion_covariance=c.tolist(),observations=obs,detector=diagnostic,memory=result,action=action,command_motion_source=prior['source']))
+            trace.append(dict(t=t,frame_id=tick,stage=before,lk=flow,motion_delta=increment.tolist(),motion_covariance=c.tolist(),observations=obs,detector=diagnostic,memory=result,action=action,command_motion_source=prior['source'],colour_component_pixels=colour_pixels))
             # EVALUATION ONLY. Its values never enter step()/memory.step().
             w,x,y,z=qp[adr+3:adr+7];yaw=math.atan2(2*(w*z+x*y),1-2*(y*y+z*z))
             labels.append(dict(t=t,frame_id=tick,pose=[float(qp[adr]),float(qp[adr+1]),yaw]));ring.append(tick)
@@ -228,5 +229,6 @@ def run(a):
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--enabled',action='store_true')
     p.add_argument('--preflight',action='store_true')
+    p.add_argument('--strict-reacquisition',action='store_true',help='default off; outward normal departure + actual color disappearance before memory-facing reacquisition')
     for key in ('queue','renderer','legacy','setup','colour','own-motion','sweep','output'):p.add_argument('--'+key,type=Path,required=True)
     run(p.parse_args())

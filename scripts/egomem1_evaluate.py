@@ -12,7 +12,9 @@ from pathlib import Path
 import platform
 import subprocess
 import numpy as np
+import cv2
 from harness.egocentric_landmark_memory import observation_model, wrap, CHI2_99
+from harness.egomem_vision import colour_component_pixels
 from harness.own_map_amcl_vendor import landmarks as lm
 
 
@@ -79,11 +81,26 @@ def main():
                 final_labels.append(assign(obs,poses[reacquired['t']]))
     same_zone=bool(initial and initial['qualified'] and any(v and v['qualified'] and v['zone']==initial['zone'] for v in final_labels))
     departed=bool(net_departure is not None and net_departure>=summary['geometric_departure_distance_floor_m'])
-    passed=bool(reacquired and same_zone and departed and misses)
+    weak_pass=bool(reacquired and same_zone and departed and misses)
+    # Boundary-detector misses do NOT prove a colored region left the image.
+    # Recount color components in every stored own frame after goal selection.
+    colour_rows=[];target_hue=creation['observation']['hue'] if creation else None
+    for row,frame in zip(trace,own):
+        if target_hue is None or not chosen or row['t']<=chosen['t']:continue
+        pixels=colour_component_pixels(cv2.cvtColor(cv2.imread(str(b/frame['rgb'])),cv2.COLOR_BGR2RGB),target_hue)
+        colour_rows.append(dict(t=row['t'],stage=row['stage'],pixels=pixels))
+    absent=[r for r in colour_rows if r['stage'] in ('depart_turn','depart') and r['pixels']==0]
+    final_colour=colour_rows[-1]['pixels'] if colour_rows else 0
+    from harness.e2e_rgb_vo import K
+    final_memory=next((m for m in trace[-1]['memory']['memories'] if m['id']==goal),None) if trace else None
+    heading_ok=bool(final_memory and abs(final_memory['bearing_rad'])<=math.atan(320/K[0,0]))
+    passed=bool(weak_pass and absent and final_colour and heading_ok)
     result=dict(status='DEV_VISUAL_RETURN_PASS' if passed else 'NOT_READY',recording_status=summary['status'],
         recordings=1,appearance_reacquired=bool(reacquired),actual_same_zone_reacquired=same_zone,
         departure_verified=departed,actual_departure_m=net_departure,required_departure_m=summary['geometric_departure_distance_floor_m'],
         sensor_samples_without_goal_during_departure=misses,actual_return_reacquisition_rate=float(passed),
+        weak_same_colour_boundary_pass=weak_pass,rgb_colour_absent_frames=len(absent),memory_heading_verified=heading_ok,
+        final_colour_component_pixels=final_colour,
         physical_diagnostic_pass=passed,physical_delivery_success=False,student_success=False,llm_success=False,
         initial_assignment=initial,final_assignments=final_labels,creation=creation,events=events,actual_path_m=path,
         frames=len(trace),stage_frames=dict(frame_counts),motion_sources=dict(motion),memory_event_reasons=dict(memory_events),
@@ -91,9 +108,9 @@ def main():
         assignment_gate='Inherited line covariance + chi-square(2)99%; evaluator only, not proof of detector semantics',
         control_input_audit=dict(static_map=0,global_pose=0,spawn=0,top_rgb=0,truth=0,scope='separate API fields and saved command/memory trace; model calls0'),
         rejection_table=str((a.output/'rejection_table.json').resolve()))
-    dump(a.output/'summary.json',result);dump(a.output/'travel.json',travel)
+    dump(a.output/'summary.json',result);dump(a.output/'travel.json',travel);dump(a.output/'colour-visibility.json',colour_rows)
     gates=[];left=1
-    for name,ok in [('rgb_sha',bool(own)),('visual_memory',bool(chosen)),('gt_label_qualified',bool(initial and initial['qualified'])),('departure_verified',departed),('goal_absent_sample',bool(misses)),('same_zone_reacquired',same_zone)]:
+    for name,ok in [('rgb_sha',bool(own)),('visual_memory',bool(chosen)),('gt_label_qualified',bool(initial and initial['qualified'])),('departure_verified',departed),('colour_left_camera',bool(absent)),('memory_heading',heading_ok),('same_zone_reacquired',same_zone)]:
         passed=left*bool(ok);gates.append(dict(stage=name,input_n=left,cumulative_pass_n=passed,rejected_n=left-passed));left=passed
     dump(a.output/'rejection_table.json',dict(unit='recording',funnel=gates,raw=str(b),reproduction=__import__('sys').argv,
          reasons=dict(reason='see first rejected funnel gate',blocked_object='not_observed',minimum_gap_m=None,gap_status='not_measured')))
