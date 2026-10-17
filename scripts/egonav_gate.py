@@ -13,6 +13,8 @@ import importlib.util
 import json
 import math
 import os
+
+import numpy as np
 from pathlib import Path
 import platform
 import sys
@@ -114,7 +116,6 @@ def run(args):
     scripts.__path__.append(str(args.renderer/'scripts'))
     os.chdir(args.renderer)
 
-    import numpy as np
     import cv2
     import mujoco
     import mujoco_warp as mjw
@@ -401,8 +402,8 @@ def run(args):
                 body = m.body('r1__robot').id
                 adr = int(m.jnt_qposadr[int(m.body_jntadr[body])])
                 row = qp[w]
-                q = row[adr+3:adr+7]
-                wq, xq, yq, zq = q
+                quad = row[adr+3:adr+7]
+                wq, xq, yq, zq = quad
                 yaw = math.atan2(2*(wq*zq+xq*yq), 1-2*(yq*yq+zq*zq))
                 pose = [float(row[adr]), float(row[adr+1]), yaw]
                 visible = bool(obs)
