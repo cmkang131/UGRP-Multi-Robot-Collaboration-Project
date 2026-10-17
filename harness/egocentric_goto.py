@@ -52,15 +52,17 @@ SIGMA_BEARING_RAD = math.radians(3.)  # PR406 own-map bearing sigma.
 # Observations without a measured area are ignored (fail-closed).
 ZONE_MARKING_MIN_OBSERVED_AREA_M2 = .10
 # Finite-pulse turn calibration.  ``command_delta()`` below is a frozen
-# wheel-contact model; it overestimated gate-07 world06 on-spot yaw by 4.29x
-# (6.41 rad modeled vs 1.49 rad authored over 45 pulses, 0.0331 rad/pulse).
-# The pulse-response probe (``scripts/egonav_gate.py --probe-rotation``)
-# measures the authored yaw per turn pulse under warp_native_contact_v1; the
-# median and lower-decile values are recorded with their raw path in
-# ``experiments/2026-10-17-egonav/probe-rotation.json``.  ``None`` means the
-# probe has not been applied yet (frozen model fallback).
-TURN_RAD_PER_PULSE_MEDIAN = None
-TURN_RAD_PER_PULSE_P10 = None
+# wheel-contact model.  A pure-turn pulse probe (240 pulses, no wall contact,
+# ``scripts/egonav_gate.py --probe-rotation``) measured 0.1060358 rad/pulse
+# median and 0.1027191 rad/pulse p10 on gcp4 under warp_native_contact_v1;
+# the frozen model predicts 0.1423730, so it overestimates 1.34x.  A repeat
+# probe on worlds 0-6 reproduced 0.10599-0.10615 rad/pulse at every spawn
+# (including gate-07 world06's).  The gate-07 "4.29x" figure compared an
+# authored spawn yaw to a final qpos yaw, not per-pulse deltas, so it is not
+# used.  Raw: experiments/2026-10-17-egonav/probe-rotation.json and
+# probe-rotation-w0-6.json (VM runs probe-rotation-01/-w0-6).
+TURN_RAD_PER_PULSE_MEDIAN = 0.10603575778058376
+TURN_RAD_PER_PULSE_P10 = 0.10271914804372737
 
 
 def wrap(angle):
