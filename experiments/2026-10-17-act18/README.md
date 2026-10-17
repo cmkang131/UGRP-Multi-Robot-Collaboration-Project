@@ -36,6 +36,17 @@ TRAIN4 원본으로 정지 시점·자세를 재계수했다(`results/faildiag-r
 
 기억 입력 후보(프레임 이력·마지막 목표 상대위치)는 코드 없이 설계만 `MEMORY_INPUT_DESIGN.md`에 남겼다. 다음 라운드 승인 전이며 어떤 결과도 주장하지 않는다.
 
+### B1 done-only 프로브 (act18-doneb1, 10/18)
+
+사전등록 `B1_PREREG.json`(커밋 `a142046ac`). R100 step-100000에서 5,000 step bf16 fine-tune, 변경은 done 감독만(배치 50%에서 양성 1+uniform 7, 행동손실·balanced BCE 공식 불변), chunk100·batch8·lr1e-5 유지. 학습 wall 661.6s, 양성 배치 2,559/5,000, done_bce_loss 0.025. **TRAIN4 0/4**(wall 734.4s, 독립 recount 일치, 4세계 cap_end·물리 lift 0/4).
+
+핵심 발견(원본 `results/b1-r1/`, VM `runs/act18/b1-r1/`): done 감독은 **일부 학습됐다** — 청크 미래 스텝(h≈99) 확률은 평균 0.454–0.574, 최대 **0.999**(전체 step-prediction 중 9,356개 ≥ .65). 그러나 실행이 읽는 **현재 스텝 h=0 확률은 평균 1e-4–2e-4, 최대 0.0034**이고 temporal ensemble 후 실행 결정도 max 0.21이라 문턱 .65·.5·.3·.2는 0틱, .1에서만 t≈50–84s에 발화(lift/grip 정렬 없음). tune/R8의 전체 max가 0.0008이었던 것과 달리 done 신호 자체는 학습됐으나 **미래 horizon에 치우친 라벨/실행 불일치**가 지배적이다. 즉 문턱·pos_weight 상향만으로는 해결 불가(h=0이 ~1e-4). B1 실패 원인표: (1) horizon 계약 불일치(주원인), (2) 물리 lift 0/4로 행동 축도 여전히 미달(R100과 동일). 후속 B3a(현재스텝 라벨만, `B3_PREREG.json`)와 (b) 터미널 예측 실행의 오프라인 분석으로 분리 검증한다.
+
+### B2/B3 사전등록 (10/18)
+
+- B2(`B2_PREREG.json`, 커밋 `8bafca6c7`): `act18-std`, 20k bf16 from scratch, **chunk20(2.0s @10Hz=ALOHA 100@50Hz 시간수평)**, base 명령 5샘플 이동평균(act-plus-plus `preprocess_base_action`), **best-val 선택**(VAL8 시드 제외 32검증에피소드·고정 256행), ACT 표준 aug 없음·현재프레임 1장 유지, done 양성배치 유지. TRAIN4 4/4 판정.
+- B3(`B3_PREREG.json`): `act18-b3`, B2 체크포인트에서 5k bf16, **현재 스텝(h=0) 완료표적만 남김**(미래 horizon 제거). TRAIN4 4/4 판정. 평가 계약 변경은 하지 않으며 (b) 터미널 예측 실행은 오프라인 분석·메모만.
+
 ### 조건 이탈·미검증 범위
 - **R100 gcp5 미이동(deviation):** bf16 프로브(2,000 step, 1.10배)는 수용했지만, R8이 gcp2에서 fp32로 학습 중이라 정밀도가 섞이고(합산 금지), `act18_train.py`가 옵티마이저/RNG 재개를 지원하지 않아 42,400/100,000(≈13,484s)을 폐기해야 하며, gcp5 예산 1,000KRW 정지 위험이 있어 gcp2 matched fp32 pair를 끝까지 유지했다. 근거는 `bf16-probe-decision.json`.
 - 이 학습은 **fp32**다. bf16 기본 전환 커밋(c7900c0ac)은 이 학습 시작 뒤다. 100k bf16 학습은 아직 없다(runtime 증거는 2,000 step 프로브뿐). bf16 결과와 합산하지 않는다.

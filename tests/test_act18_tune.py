@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'scripts'))
 from act16w_runtime import sha256
 from act17_compact_records import original_sha256
-from act18_policy import (align_close_row_weights, done_positive_indices,
+from act18_policy import (align_close_row_weights, done_positive_indices, extend_targets,
                           registered_pilot_checkpoint, weighted_sampler_mass)
 from act18_train import init_checkpoint_receipt, validate_probe_options
 
@@ -170,3 +170,30 @@ def test_standard_aligned_options_are_pilot_only_and_bounded():
         validate_probe_options('act18-std', None, 20000, None, None, None, 0, False)
     with pytest.raises(ValueError, match='requires --steps'):
         validate_probe_options('act18-std', None, None, None, None, None, None, False)
+
+
+def test_current_step_only_done_horizon_keeps_only_h0_labels():
+    import numpy as np
+    actions = np.zeros((6, 14), dtype=np.float32)
+    actions[3, -1] = 1.0  # done row
+    metadata = [dict(sample_id='ep:0:r1', t=0.1 * i, skill='grasp') for i in range(6)]
+    all_done, pad = extend_targets(actions, metadata, 4)
+    current, _ = extend_targets(actions, metadata, 4, done_horizon='current_only')
+    # far-horizon targets are cleared, h=0 keeps the done tick
+    assert all_done[3, 1:, -1].sum() == 0
+    assert all_done[2, 1, -1] == 1.0
+    assert current[2, 1:, -1].sum() == 0
+    assert current[3, 0, -1] == 1.0
+    assert current[2, 0, -1] == 0.0
+
+
+def test_done_horizon_option_is_pilot_only():
+    assert validate_probe_options('act18-b3', Path('ckpt'), 5000, None, None, 0.5, 5, False, True) == 5000
+    with pytest.raises(ValueError, match='pilot candidate'):
+        validate_probe_options('R100', None, None, None, None, None, None, False, True)
+    provenance = dict(candidate='act18-b3', cohort='act18-v7-reference', training_complete=True,
+                      step=5000, protocol_sha256='a' * 64,
+                      probe=dict(kind='done_horizon_current_only_v1', steps_override=5000,
+                                 packaging_eligible=False,
+                                 init_checkpoint=dict(model_sha256='b' * 64)))
+    assert registered_pilot_checkpoint(provenance, 'a' * 64) is True

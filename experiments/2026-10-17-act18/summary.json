@@ -671,6 +671,104 @@
         "B2 standard-aligned 20k from scratch chunk100 with fixed done supervision (~65 min GPU)"
       ],
       "phase_C_memo": "co-training via act-plus-plus dataset_dir list + sample_weights (Mobile ALOHA 2401.02117)"
+    },
+    {
+      "name": "b1-r1 (act18-doneb1)",
+      "kind": "done-only supervised 5k bf16 fine-tune of R100 (Lead-approved B1)",
+      "status": "NOT_READY",
+      "complete": true,
+      "prereg": "experiments/2026-10-17-act18/B1_PREREG.json",
+      "source_commit": "a142046ac580c0d510d6ea6636be26585dd3dbcb",
+      "training": {
+        "steps": 5000,
+        "wall_s": 661.6,
+        "precision": "bf16_autocast_v1",
+        "init_checkpoint": "training-r1/R100/step-100000",
+        "done_positive_batch_fraction": 0.5,
+        "done_positive_batches": 2559,
+        "batches_seen": 5000,
+        "checkpoint_sha256": "f03a03ea3774a221e8fbfbce1ba8c03edb65f83e13a263c600926f5546782d89",
+        "latest": {
+          "loss": 0.16601169109344482,
+          "done_bce_loss": 0.025426743552088737,
+          "movement_l1_loss": 0.07113176584243774
+        }
+      },
+      "gate": {
+        "stage": "train4",
+        "n": 0,
+        "N": 4,
+        "wall_s": 734.4,
+        "status": "NOT_READY",
+        "raw": {
+          "vm_dir": "/home/ugrp/ugrp-sim/runs/act18/b1-r1",
+          "summary_sha256": "bb75c15013beaf421d3675c61e29ca267c1081136ba519239e8a8c7c1cc59f00",
+          "stage_recount_sha256": "d047dc424d5950eb5a8a9f8aabee2e81c6cdbb0f1dc37bf19869a3cb0ba7ebac",
+          "done_logs": {
+            "group000": "7995acf59b0e4a8a3916d4137c0fc605cd1691d0cb86f350db2f9c9c8acfbae7",
+            "group001": "f6a25be75c8d9049c8aad73fa7804a9c7d244a3a3773231e40354c5f019a69a9"
+          },
+          "analysis": {
+            "group000": "cf5d463ad3e2d2366da02d42053fb12e674142f407f843a44bf7db7e0bd8e4c7",
+            "group001": "b1440ac60edc8dcf04f3f193ea307617f09fa6417930065c616ffdc90c884603"
+          }
+        },
+        "rows": [
+          {
+            "seed": 88600,
+            "kind": "cyan",
+            "cap_end": true,
+            "physical_lift": false
+          },
+          {
+            "seed": 88601,
+            "kind": "red",
+            "cap_end": true,
+            "physical_lift": false
+          },
+          {
+            "seed": 88602,
+            "kind": "green",
+            "cap_end": true,
+            "physical_lift": false
+          },
+          {
+            "seed": 88603,
+            "kind": "yellow",
+            "cap_end": true,
+            "physical_lift": false
+          }
+        ]
+      },
+      "done_probe": {
+        "all_chunk_step_max": 0.999229,
+        "steps_ge_065": 9356,
+        "horizon": {
+          "mean_at_h0": 0.0001,
+          "mean_at_h99": [
+            0.574,
+            0.454
+          ],
+          "ensemble_exec_max": 0.21
+        },
+        "executed_threshold_fire": {
+          "threshold_065": null,
+          "threshold_05": null,
+          "threshold_03": null,
+          "threshold_02": null,
+          "threshold_01": "t≈50-84s only"
+        },
+        "conclusion": "done supervision is learned only at far chunk horizons (h≈99); the executed current-step (h=0) probability stays ~1e-4 and never reaches .65. Threshold-only fixes cannot work; horizon contract / label or termination contract needs a precondition change."
+      },
+      "pooling": {
+        "no_pooling_with": [
+          "R8",
+          "R100",
+          "act18-tune"
+        ],
+        "packaged": false,
+        "released": false
+      }
     }
   ],
   "release": {
@@ -768,7 +866,8 @@
     "다른 호스트·정밀도·조건과 합산: 금지",
     "raw 학습자료(시연)의 원격 백업: 별도(Release에는 포함하지 않음)",
     "act18-tune 모델 패키징·Release: 하지 않음(프로브, packaging_eligible=false)",
-    "done 신호: 현재 학습으로 습득 불가(최대 확률 6e-4). 개선안(B1/B2)은 미실행·승인 대기"
+    "done 신호: 현재 학습으로 습득 불가(최대 확률 6e-4). 개선안(B1/B2)은 미실행·승인 대기",
+    "B1 done horizon 계약: 현재스텝 h=0 확률 ~1e-4, 미래 h≈99만 0.999 — 실행 계약과 학습 라벨 불일치(후보 실험 필요)"
   ],
   "cleanup": {
     "schema": "ugrp.act18.cleanup.v1",

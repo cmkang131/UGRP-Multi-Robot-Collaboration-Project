@@ -1,0 +1,44 @@
+{
+  "schema": "ugrp.act18.b3_prereg.v1",
+  "experiment": "2026-10-17-act18",
+  "phase": "B3",
+  "candidate": "act18-b3",
+  "pre_registered_utc": "2026-10-18T05:48:00Z",
+  "approval": "Lead 2026-10-18 자율 진행 지시: done horizon 계약 수정 후보 (a) 현재 스텝 h=0 라벨만 학습 / (b) 실행 시 청크 내 터미널 예측 사용 / (c) done 전용 history. 작은 probe 5k bf16, TRAIN4 4/4만 먼저. 평가 계약(공식 채점 정의) 변경은 사용자 결정 전 금지.",
+  "purpose": "B1에서 done 확률이 미래 horizon(h≈99)에만 0.999, 실행이 읽는 현재 스텝(h=0)은 ~1e-4였다. B3a는 미래 horizon done 라벨을 제거하고 h=0 라벨만 남긴 5k fine-tune으로 (a) 가설을 격리 검증한다.",
+  "base_checkpoint": {
+    "rule_frozen_before_b2_result": "b2-r1/act18-std/step-20000-best 가 있으면 그 경로, 없으면 b2-r1/act18-std/step-20000",
+    "reason": "행동·chunk20·base 이동평균·done 양성배치를 B2와 동일하게 유지하고 done horizon 라벨만 바꿔 격리한다."
+  },
+  "training": {
+    "steps": 5000,
+    "precision": "bf16_autocast_v1",
+    "batch_size": 8,
+    "lr": 1e-05,
+    "chunk": 20,
+    "sampling": "uniform_episode_v1",
+    "seed": 20261017,
+    "done_positive_batch_fraction": 0.5,
+    "done_current_step_only": true,
+    "done_label_change": "extend_targets(..., done_horizon='current_only'): 청크 h>0의 완료표적을 0으로. h=0 라벨·padding·행동표적은 그대로.",
+    "base_smooth_window": 5,
+    "val_select": false,
+    "changes_vs_B2": ["완료표적을 현재 스텝(h=0)에만 남김"],
+    "unchanged": ["chunk20", "batch8", "lr1e-5", "bf16", "base 5샘플 이동평균", "done 양성 50% 배치", "행동손실"]
+  },
+  "execution_contract": "기존 그대로: 현재 스텝 h=0 확률 + temporal ensemble(.01) → decode_action 문턱 .65. 계약 변경 없음(변경 실험은 (b) 오프라인 분석·메모로만).",
+  "evaluation": {
+    "stage": "train4",
+    "instrumentation": "--record-done-prob 유지",
+    "gate": "TRAIN4 4/4만 판정. 통과 시에만 VAL8. FINAL40 없음.",
+    "report": ["TRAIN4 n/N·funnel·원본/SHA", "done h=0 확률·문턱 발화·lift 정렬", "실패 시 원인표(horizon/행동/계약)"]
+  },
+  "b_offline_analysis": "실행 계약 후보 (b) '청크 내 터미널 예측'은 B1 done 로그로 오프라인 발화 시각/lift 정렬만 계산한다(물리 재실행 없음). 공식 채점 정의 변경은 사용자 결정 전 금지.",
+  "c_design_note": "done 전용 history/시퀀스 입력 후보는 design note로만 정리(실행 없음).",
+  "pooling": {
+    "no_pooling_with": ["R8", "R100", "act18-tune", "act18-doneb1", "act18-std"],
+    "packaging": "금지(packaging_eligible=false, step=5000 != 100000)",
+    "release": "금지"
+  },
+  "stop_after": "TRAIN4 결과·원본/SHA 기록 후 gcp2 정리(임대 해제·프로세스0·GPU0·TERMINATED) 또는 B2 통과 시 Phase C 준비."
+}

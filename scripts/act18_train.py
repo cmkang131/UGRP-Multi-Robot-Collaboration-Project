@@ -14,7 +14,8 @@ from act17_data import library, read
 from act17_compact_records import original_sha256
 from act17_policy import observation_batch
 from act18_policy import (CANDIDATES, TUNE_CANDIDATE, PILOT_CANDIDATES, PILOT_KINDS, ReferenceDataset,
-                          WeightedReferenceDataset, done_positive_indices, make_policy, save_actor, Actor)
+                          WeightedReferenceDataset, done_positive_indices, extend_targets,
+                          make_policy, save_actor, Actor)
 from act18_diagnose import write
 
 B = Path('/home/ugrp/ugrp-sim')
@@ -22,7 +23,8 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def validate_probe_options(candidate, init_checkpoint, steps, post_close_weight, pre_close_weight,
-                           done_positive_batch_fraction=None, base_smooth_window=None, val_select=False):
+                           done_positive_batch_fraction=None, base_smooth_window=None, val_select=False,
+                           done_current_step_only=False):
     """Default-off pilot options; never silently mixes with the R8/R100 reference pair."""
     supplied = [value is not None for value in
                 (init_checkpoint, steps, post_close_weight, pre_close_weight, done_positive_batch_fraction,
@@ -51,6 +53,8 @@ def validate_probe_options(candidate, init_checkpoint, steps, post_close_weight,
             raise ValueError('--base-smooth-window must be an integer within [1, 21]')
     if val_select and candidate not in PILOT_CANDIDATES:
         raise ValueError('--val-select requires a pilot candidate')
+    if done_current_step_only and candidate not in PILOT_CANDIDATES:
+        raise ValueError('--done-current-step-only requires a pilot candidate')
     return steps
 
 
@@ -64,12 +68,16 @@ def init_checkpoint_receipt(path, protocol, protocol_path, dataset, chunk):
         raise ValueError('init checkpoint file hash mismatch')
     adapter = read(path/'adapter.json')
     provenance = adapter.get('provenance', {})
+    step = provenance.get('step')
+    probe = provenance.get('probe') or {}
+    reference = step == protocol['steps']
+    pilot = (probe.get('kind') in PILOT_KINDS and step == probe.get('steps_override')
+             and 1 <= step <= 20000 and probe.get('packaging_eligible') is False)
     if (adapter.get('schema') != 'ugrp.act18.adapter.v1' or adapter.get('chunk') != chunk
-            or not provenance.get('training_complete')
-            or provenance.get('step') != protocol['steps']
+            or not provenance.get('training_complete') or not (reference or pilot)
             or provenance.get('protocol_sha256') != sha256(protocol_path)
             or provenance.get('dataset_manifest_sha256') != original_sha256(dataset/'manifest.json')):
-        raise ValueError('init checkpoint must be a completed matched 100k ACT18 model')
+        raise ValueError('init checkpoint must be a completed matched reference or registered pilot ACT18 model')
     return dict(path=str(path), step=provenance['step'], candidate=provenance.get('candidate'),
                 chunk=adapter['chunk'], model_sha256=hashes['model.safetensors'],
                 adapter_sha256=hashes['adapter.json'])
@@ -104,6 +112,9 @@ def main():
     p.add_argument('--val-select', action='store_true')
     p.add_argument('--val-rows', type=int, default=256)
     p.add_argument('--validate-every', type=int, default=1000)
+    # B3 (Lead-approved): keep completion targets only at the chunk row matching
+    # the observation itself, to test the executed h=0 vs far-horizon mismatch.
+    p.add_argument('--done-current-step-only', action='store_true')
     for name in ('dataset','protocol','out','queue'):
         p.add_argument('--'+name, type=Path, required=True)
     a = p.parse_args()
@@ -123,7 +134,8 @@ def main():
     total_steps = validate_probe_options(a.candidate, a.init_checkpoint, a.steps,
                                          a.post_close_weight, a.pre_close_weight,
                                          a.done_positive_batch_fraction,
-                                         a.base_smooth_window, a.val_select) or protocol['steps']
+                                         a.base_smooth_window, a.val_select,
+                                         a.done_current_step_only) or protocol['steps']
     done_positive_fraction = a.done_positive_batch_fraction
     weighted = a.post_close_weight is not None or a.pre_close_weight is not None
     sampling = 'weighted_post_close_v1' if weighted else 'uniform_episode_v1'
@@ -133,7 +145,8 @@ def main():
                                         pre_close_weight=a.pre_close_weight)
     else:
         data = ReferenceDataset(a.dataset, 'train', chunk=CANDIDATES[a.candidate],
-                                base_smooth_window=a.base_smooth_window)
+                                base_smooth_window=a.base_smooth_window,
+                                done_horizon='current_only' if a.done_current_step_only else 'all')
     positive_indices = done_positive_indices(data) if done_positive_fraction is not None else None
     if (set(data.manifest['eligible_train_seeds'])!=set(protocol['train_seeds'])
             or original_sha256(a.dataset/'manifest.json')!=queue['dataset_manifest_sha256']):
@@ -197,7 +210,9 @@ def main():
                                   if a.precision=='bf16_autocast_v1' else 'fp32 end-to-end'),
         static_map_use='none',wall_cap=None,optimizer_recipe='LeRobot AdamW defaults; no implicit resume')
     if a.candidate in PILOT_CANDIDATES:
-        if done_positive_fraction is not None:
+        if a.done_current_step_only:
+            probe_kind='done_horizon_current_only_v1'
+        elif done_positive_fraction is not None:
             probe_kind='done_positive_balanced_finetune_v1'
         elif a.init_checkpoint is not None:
             probe_kind='init_aligned_finetune_v1'
@@ -213,6 +228,7 @@ def main():
             done_positive_batch_fraction=done_positive_fraction,
             base_smooth_window=a.base_smooth_window,
             val_select=a.val_select,
+            done_current_step_only=a.done_current_step_only,
             note='short default-off pilot probe; never packaged or pooled with R8/R100')
         config.update(probe=probe)
     report=dict(**config,status='running',complete=False,steps_completed=0,

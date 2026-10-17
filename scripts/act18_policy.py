@@ -20,14 +20,15 @@ from act17_policy import observation_batch
 # from the completed R8 100k checkpoint and optionally upweighting the
 # align..close demonstration segments. It is never a packaged comparison model
 # (adapter training_complete stays False because its step != protocol steps).
-CANDIDATES = {'R8': 8, 'R100': 100, 'act18-tune': 8, 'act18-doneb1': 100, 'act18-std': 20}
+CANDIDATES = {'R8': 8, 'R100': 100, 'act18-tune': 8, 'act18-doneb1': 100,
+              'act18-std': 20, 'act18-b3': 20}
 TUNE_CANDIDATE = 'act18-tune'
 # Registered short pilot checkpoints (never 100k reference models, never packaged):
 # 'act18-tune' = post-close weighted 2k probe on R8; 'act18-doneb1' = done-only
 # 5k probe on R100 (pre-registered 2026-10-18 for Lead-approved B1).
-PILOT_CANDIDATES = ('act18-tune', 'act18-doneb1', 'act18-std')
+PILOT_CANDIDATES = ('act18-tune', 'act18-doneb1', 'act18-std', 'act18-b3')
 PILOT_KINDS = ('init_aligned_finetune_v1', 'done_positive_balanced_finetune_v1',
-               'standard_aligned_scratch_v1')
+               'standard_aligned_scratch_v1', 'done_horizon_current_only_v1')
 # Segment table frozen before the probe run (Lead 2026-10-18 instruction):
 # the post-close phases are where the student halts, pre-close phases are the
 # immediately preceding approach/alignment tail. Phase labels are the recorded
@@ -77,8 +78,16 @@ def weighted_sampler_mass(episode_indices, row_weights):
     return mass
 
 
-def extend_targets(actions, metadata, chunk):
-    """Reconstruct future labels from original h0, within the same skill only."""
+def extend_targets(actions, metadata, chunk, done_horizon='all'):
+    """Reconstruct future labels from original h0, within the same skill only.
+
+    done_horizon='current_only' keeps the completion target only at the chunk
+    row that corresponds to the observation itself (h=0). B1 showed the learned
+    done mass sits at far horizons (h≈99) while execution reads h=0, so this
+    candidate isolates the horizon-contract hypothesis.
+    """
+    if done_horizon not in ('all', 'current_only'):
+        raise ValueError('done_horizon must be all or current_only')
     actions = np.asarray(actions)
     out = np.zeros((len(actions), chunk, actions.shape[-1]), dtype=np.float32)
     pad = np.ones((len(actions), chunk), dtype=bool)
@@ -95,6 +104,8 @@ def extend_targets(actions, metadata, chunk):
             out[i, h], pad[i, h] = actions[j], False
             if actions[j, -1] == 1:
                 break
+    if done_horizon == 'current_only':
+        out[:, 1:, -1] = 0.
     return out, pad
 
 
@@ -105,7 +116,7 @@ class ReferenceDataset(Dataset):
     # optional window keeps that standard alignment toggle default OFF.
     BASE_ACTION_DIMS = 8
 
-    def __init__(self, root, split, *, chunk=8, base_smooth_window=None):
+    def __init__(self, root, split, *, chunk=8, base_smooth_window=None, done_horizon='all'):
         super().__init__(root, split, image_mode='current_full_v1')
         if chunk not in CANDIDATES.values():
             raise ValueError('registered ACT chunk required')
@@ -125,7 +136,8 @@ class ReferenceDataset(Dataset):
                 target_source = smoothed.astype(np.float32)
             else:
                 target_source = raw
-            actions, pad = extend_targets(target_source, self.metadata[offset:offset+n], chunk)
+            actions, pad = extend_targets(target_source, self.metadata[offset:offset+n], chunk,
+                                          done_horizon=done_horizon)
             # This is a new view over existing successful v7 recordings. Verify
             # byte-exact parity with all original horizons that still exist.
             common = min(chunk, shard['action'].shape[1])
@@ -155,7 +167,8 @@ def registered_pilot_checkpoint(provenance, protocol_sha256):
         return False
     candidate = provenance.get('candidate')
     kind = probe.get('kind')
-    init_kinds = ('init_aligned_finetune_v1', 'done_positive_balanced_finetune_v1')
+    init_kinds = ('init_aligned_finetune_v1', 'done_positive_balanced_finetune_v1',
+                  'done_horizon_current_only_v1')
     if kind in init_kinds and not isinstance(receipt, dict):
         return False
     if kind == 'standard_aligned_scratch_v1' and candidate != 'act18-std':
