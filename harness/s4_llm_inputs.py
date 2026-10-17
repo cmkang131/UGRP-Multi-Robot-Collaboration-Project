@@ -10,6 +10,7 @@ import json
 from harness import pair_llm_billing as billing
 from harness import pair_llm_prompts_ko as pp
 from harness import zone_study_prompts_ko as pk
+from harness import planner_egocentric_memory as egocentric_memory
 from harness.pair_llm_stop_adapter import belief_violations, window_violations
 from harness.zone_study_contract import ContractViolation, digest
 
@@ -129,4 +130,4 @@ def build_request(inputs, *, window=None):
     request['tokens'] = pk.request_tokens(system, user, request['images'])
     request['billed_tokens'] = billing.billed_tokens(request['tokens'],
                                                     system_billed=fixed_prompt_tokens(total, per_actor, inputs.base.seed or 0))
-    return request
+    return egocentric_memory.apply_request_if_enabled(request)  # planner_egocentric_memory_v1 (default off)

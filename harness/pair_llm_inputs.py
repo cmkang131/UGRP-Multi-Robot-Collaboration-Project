@@ -32,6 +32,7 @@ from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 
 from harness import pair_llm_billing as billing
+from harness import planner_egocentric_memory as egocentric_memory
 from harness import pair_llm_decisions as decisions
 from harness import pair_llm_status as status
 from harness.pair_llm_stop_adapter import unknown_belief, belief_violations, window_violations
@@ -420,7 +421,7 @@ def build_request(inputs: PairInputs, *, window=None) -> dict:
     request['request_sha256'] = pk.request_digest_from_refs(system, user, manifest)
     request['tokens'] = pk.request_tokens(system, user, images)
     request['billed_tokens'] = billed_tokens(request['tokens'])
-    return request
+    return egocentric_memory.apply_request_if_enabled(request)  # planner_egocentric_memory_v1 (default off)
 
 
 def wire_images(body: bytes) -> list:

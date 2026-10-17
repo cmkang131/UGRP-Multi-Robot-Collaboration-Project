@@ -13,6 +13,7 @@ import math
 
 from harness.zone_study_contract import ContractViolation, Vocabulary, channel_section, digest
 from harness import zone_study_prompts_ko as pk
+from harness import planner_egocentric_memory as egocentric_memory
 from harness.e2e_exact_speedups import OFF, ObservedIndex, cached_invalid_sha, lazy_scan_enabled
 
 OPTION = 'on_v1'
@@ -373,4 +374,4 @@ def build_request(inputs, *, window=None):
         'images': [image], 'image_refs': refs, 'tokens': tokens,
         'billed_tokens': billing.billed_tokens(tokens, system_billed=pk.count_tokens(system)),
         'request_sha256': pk.request_digest_from_refs(system,user,refs)}
-    return request
+    return egocentric_memory.apply_request_if_enabled(request)  # planner_egocentric_memory_v1 (default off)

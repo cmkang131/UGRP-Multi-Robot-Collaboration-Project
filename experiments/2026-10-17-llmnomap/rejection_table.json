@@ -1,0 +1,171 @@
+{
+  "schema": "ugrp.llmnomap_rejection_table.v1",
+  "stage": "final",
+  "generated_utc": "2026-10-17T10:42:45Z",
+  "scope": "Mac-only paired planner prompt replay; no VM/sim/physics",
+  "funnel": [
+    {
+      "stage": "source_rows",
+      "n": 136,
+      "excluded": 0,
+      "reason_category": null,
+      "note": "task-planner-ling-vl-main-20261013/off-calls.jsonl.zst 전체 행"
+    },
+    {
+      "stage": "selected_rows",
+      "n": 40,
+      "excluded": 96,
+      "reason_category": "budget_cap",
+      "note": "앞 40행만 사용; 나머지 96행은 호출 예산 보존을 위해 제외"
+    },
+    {
+      "stage": "has_audit_request",
+      "n": 40,
+      "excluded": 0,
+      "reason_category": null
+    },
+    {
+      "stage": "has_static_map",
+      "n": 40,
+      "excluded": 0,
+      "reason_category": null,
+      "note": "40/40 요청에 static_map 블록 존재"
+    },
+    {
+      "stage": "projection_ok",
+      "n": 40,
+      "excluded": 0,
+      "reason_category": "projection_leak"
+    },
+    {
+      "stage": "input_audit_leaks",
+      "n": 0,
+      "excluded": 0,
+      "reason_category": "projection_leak",
+      "note": "구조/값/제거좌표 감사 합계 0"
+    },
+    {
+      "stage": "llm_calls_attempted",
+      "n": 80,
+      "excluded": 0,
+      "reason_category": null,
+      "note": "원 40 + 변형 40, 재시도 없음"
+    },
+    {
+      "stage": "http_200",
+      "n": 80,
+      "excluded": 0,
+      "reason_category": "api_error"
+    },
+    {
+      "stage": "http_429",
+      "n": 0,
+      "excluded": 0,
+      "reason_category": "http_429"
+    },
+    {
+      "stage": "format_success_act",
+      "n": 80,
+      "excluded": 0,
+      "reason_category": "format_invalid",
+      "note": "act 필드가 비어 있지 않은 JSON 객체"
+    }
+  ],
+  "reason_distribution": {
+    "budget_cap": 96,
+    "projection_leak": 0,
+    "api_error": 0,
+    "http_429": 0,
+    "format_invalid": 0,
+    "none": 80
+  },
+  "failures": [],
+  "fields": {
+    "reason_category": "required",
+    "blocking_object": "required on physical failure; null here because no physical run",
+    "minimum_gap_m": "required on physical near-miss; null here because no physical run"
+  },
+  "coverage": {
+    "replay_rows": "40/40",
+    "pairs_both_200": "40/40",
+    "pairs_both_format_ok": "40/40",
+    "format_success": "80/80 attempted, 80/80 HTTP 200",
+    "input_audit_rows": "40/40 leaks 0",
+    "memory_nonempty": "32/40",
+    "memory_empty": "8/40",
+    "own_rgb_image": "80/80 calls, same stored frame both arms",
+    "task_accuracy": "0/0 NOT MEASURED"
+  },
+  "exclusions": [
+    {
+      "n": 96,
+      "reason_category": "budget_cap",
+      "detail": "원장 136행 중 앞 40행만 사용; LLM 호출 상한 200/계획 80 보존"
+    },
+    {
+      "n": 0,
+      "reason_category": "projection_leak",
+      "detail": "투영/감사 실패 없음"
+    },
+    {
+      "n": 0,
+      "reason_category": "api_error",
+      "detail": "HTTP/네트워크 오류 없음"
+    },
+    {
+      "n": 0,
+      "reason_category": "http_429",
+      "detail": "429 없음"
+    },
+    {
+      "n": 0,
+      "reason_category": "format_invalid",
+      "detail": "act 형식 실패 없음"
+    }
+  ],
+  "budget_ledger": {
+    "final_batch_calls": 80,
+    "superseded_batch_calls": 80,
+    "total_calls_attempted": 160,
+    "cap": 200,
+    "remaining": 40,
+    "note": "이전 80콜은 ugrp.memory_item.v1 필드 통일 전 배치이며 archive/pre_unified_batch에 보관; 최종 수치로 인용하지 않는다.",
+    "superseded_archive": {
+      "calls": {
+        "path": "experiments/2026-10-17-llmnomap/archive/pre_unified_batch/calls.jsonl",
+        "sha256": "e44caa779dbf081bcc9569a4e4c115b056cd95b883f7c035694c238844b84d15"
+      },
+      "summary": {
+        "path": "experiments/2026-10-17-llmnomap/archive/pre_unified_batch/summary.json",
+        "sha256": "fb72600814f25c9f8fb267c2261fcfd9738643bc59af846ecf582b78b27601a0"
+      }
+    },
+    "reported_cost_final_batch_usd": 0.03333732,
+    "reported_cost_superseded_batch_usd": 0.03338296,
+    "reported_cost_total_usd": 0.06672027999999999
+  },
+  "raw": {
+    "calls": {
+      "path": "experiments/2026-10-17-llmnomap/calls.jsonl",
+      "sha256": "fd149e24c073a6b9c74f220cc8b12d61cc209b69d2555e9f062c2871c2cbb9c7"
+    },
+    "summary": {
+      "path": "experiments/2026-10-17-llmnomap/summary.json",
+      "sha256": "5b3ce4909ec9f91eab196c2822112293f341fc429389deebe3848643648d5a22"
+    },
+    "input_audit": {
+      "path": "experiments/2026-10-17-llmnomap/input_audit.json",
+      "sha256": "0e8882229170cc6bc100bde71e4f6955aca8d3c9023a97c475458315c08887bb"
+    },
+    "replay_inputs": {
+      "path": "experiments/2026-10-17-llmnomap/replay_inputs.jsonl",
+      "sha256": "b306f13a26361dc109ea4c4ce078f45c8e1669c86180182abca212315829d021"
+    },
+    "own_rgb": {
+      "path": "experiments/2026-10-17-llmnomap/raw/own_rgb_r80-r1-00000.jpg",
+      "sha256": "15673f61873991c84cfe449747efa858b4986e36d8f48c5874f483574ec0cfc3"
+    }
+  },
+  "task_accuracy_measured": false,
+  "note": "LLM 형식/시간/429/캐시/비용만 측정한다. 과제 정확도는 측정하지 않는다."
+}
