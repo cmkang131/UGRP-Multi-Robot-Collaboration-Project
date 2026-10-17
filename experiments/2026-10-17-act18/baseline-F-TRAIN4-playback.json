@@ -1,0 +1,36 @@
+{
+  "schema": "ugrp.act18.playback_review.v1",
+  "scope": "baseline act17-v7 F 10k on TRAIN4, last 10 SIM seconds at 1 Hz sampled from the 10 Hz failure ring",
+  "source": "/home/ugrp/ugrp-sim/runs/act18/baseline-F-TRAIN4-r1/group-{000,001}/evaluation/failure-camera-window",
+  "montage": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/act18-baseline-F-TRAIN4/failure-montage-1hz.png",
+  "montage_sha256": "3f80a170aca295965c12db0f09ff4b1420573490d25d6147dbdc8072e6e017c9",
+  "rows": [
+    {
+      "seed": 88600,
+      "kind": "cyan",
+      "outcome": "cap_end",
+      "observation": "10 frames: camera stays on blue wall/floor; cyan target only at the bottom edge; no approach progression."
+    },
+    {
+      "seed": 88601,
+      "kind": "red",
+      "outcome": "lift_not_stable",
+      "observation": "red object appears near center around frame 7 then leaves the lower view; no stable lift; camera mostly floor."
+    },
+    {
+      "seed": 88602,
+      "kind": "green",
+      "outcome": "cap_end",
+      "observation": "camera fixed on blue wall/floor with green object at bottom edge; no approach progression."
+    },
+    {
+      "seed": 88603,
+      "kind": "yellow",
+      "outcome": "lift_not_stable",
+      "observation": "blue wall with target at bottom edge; little motion; no stable lift."
+    }
+  ],
+  "interpretation": "The last window shows stalled/oscillating near-field behavior rather than a late lift-only error. This is consistent with expert-state stop/opposite-sign wheel confusion, but a 10 s window cannot attribute the first divergence; no causal claim beyond the observed frames.",
+  "viewing": "Entire 10-frame x 4-row montage read as a file; no Mac player/GUI. Original 10 Hz JPEGs remain on gcp2.",
+  "deterministic_reproduction": "ffmpeg -framerate 10 -i world/%03d.jpg select every 10th frame, scale160x120, tile10x1, vstack4"
+}
