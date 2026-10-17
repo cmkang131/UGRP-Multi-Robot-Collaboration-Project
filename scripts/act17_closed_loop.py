@@ -46,13 +46,16 @@ def main():
     from act16w_oracle import VisibleOracle
     args.out.mkdir(parents=True, exist_ok=False)
     exp = B/'runs/act16w-native-experiment-r1'
-    references = read(B/'runs/act16w-native-record-references-r1/references.json')
     rows, raw = [], {}
     totals = Counter()
     from gzip import open as gzopen
     with gzopen(args.out/'frames.jsonl.gz', 'xt') as stream:
         for arm,root in [(a,exp/f'validation-{a}/validation') for a in ('A','B','C','D1')]+[('FINAL_A',exp/'final40')]:
             for group in sorted(root.glob('group-*')):
+                launch = read(group/'launch.json')['args']
+                references_path = Path(launch[launch.index('--references')+1])
+                references = read(references_path)
+                raw[str(references_path)] = sha256(references_path)
                 evaluation = group/'evaluation'
                 plans = read(group/'plans.json')['episodes']
                 actions = read(evaluation/'actor-actions.jsonl', lines=True)
