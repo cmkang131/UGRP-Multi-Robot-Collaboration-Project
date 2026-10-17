@@ -89,7 +89,7 @@ def teacher_rows(dataset):
             start = skill_start.setdefault(skill, sample['t'])
             elapsed = sample['t']-start
             wheels = np.abs(action[index, 0, :4].astype(np.float64))
-            duration = action[index, 0, 4:8].astype(np.float64)
+            duration = action[index, 0, 4:8].astype(np.float64)*.15  # encoded dt/0.15 -> s
             pwm5 = 1500.0+1000.0*float(action[index, 0, 11])
             rows.append((skill, elapsed, dict(moving=bool(wheels.max() > MOVING_WHEEL),
                                               wheel_max=float(wheels.max()), wheel_mean=float(wheels.mean()),
