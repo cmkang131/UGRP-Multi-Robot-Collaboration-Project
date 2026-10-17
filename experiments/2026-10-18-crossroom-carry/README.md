@@ -2,9 +2,10 @@
 
 [![](https://img.shields.io/badge/powered_by-dsh-4D6BFE?style=flat-square&logo=deepseek&logoColor=white)](https://github.com/deepseek-ai/deepseek-harness)
 
-Status: **frozen, run pending** (2026-10-18). This record is the pre-registration
-and the execution/analysis pipeline for Stage A only. Stage B (loaded arrival)
-and B+ (release/GT delivered) are separate future gates and are not run here.
+Status: **Stage A executed; Stage B pre-registered** (2026-10-18). This record
+holds the pre-registration, execution and analysis pipeline for Stage A
+(unloaded) and the Stage B (loaded arrival) pre-registration. B+ (release/GT
+delivered) remains out of scope.
 
 ## Mission framing and scope
 
@@ -211,14 +212,98 @@ with Stage A** or with any visgoal/egonav/ACT run.
 Status: **frozen, run pending** (the Stage A gate runs first; Stage B is a
 separate condition).
 
-## Results
+## Stage A results (16 starts, 180 Sim s, nworld=16)
 
+Raw VM `/home/ugrp/ugrp-sim/runs/crossroom-stageA`; copied summary, strict
+recount, 16 9-frame self-camera montages and SHA256SUMS under `stageA/`.
+Executed from freeze commit `bc84e35cf` (branch `claude/crossroom-carry`) with
+queue `queue-stageA.json`; `EXIT` DONE, no HOST_ERROR. Batch wall 8772.13 s
+for 180 SIM s x 16 worlds = **3.046 wall/(sim_s*nworld)** (record-only speed
+gate); the first-30-SIM check could not use a `progress.json` t=30 record
+because no episode ended that early, so the frame-mtime estimate is
+1401.6/(30*16) = 2.92 (labelled as an estimate).
 
-Pending. This section will carry the raw VM path, Mac evidence path, sha256
-list, the recounted n/16 funnel, per-episode rejection table (reason
-category, blocked object, minimum gap; `not_observed`/`not_measured` kept
-explicit) and failure-frame montages. Stage A is not pooled with Stage B or
-with the visgoal/egonav/ACT runs.
+Recounted funnel (raw trace/eval-only; 0 mismatches):
+`requested_n16 16 -> input_audit_zero 16 -> start_valid 16 -> **GT door_crossed
+1** -> post_cross_colour_seen 1 -> post_cross_found 1 -> arrived_declared 1 ->
+gt_inside 0`. `cap_end` 13/16 (separate label, not a failure reason); two
+episodes ended `STOPPED_NO_ARRIVAL`; one false arrival (declared outside zone).
+
+| ep | grp | status | skill gap_cross claim | GT door crossed | t_cross s | lateral m | jamb gap m | post-cross colour | post-cross found | declared | GT-inside | GT margin m | final (x,y) | final stage |
+|---:|---|---|---|---|---:|---:|---:|---|---|---|---:|---:|---|---|
+| 0 | N | cap_end | yes | no | - | - | - | no | no | no | - | - | 1.32,0.32 | leg_forward |
+| 1 | N | cap_end | no | no | - | - | - | no | no | no | - | - | 0.81,-1.26 | approach_wall |
+| 2 | N | ARRIVED_DECLARED | no | yes | 55.2 | -0.1634 | -0.1084 | yes | yes | yes | no | -0.0281 | 4.27,-1.57 | approach |
+| 3 | N | cap_end | yes | no | - | - | - | no | no | no | - | - | 0.72,-1.29 | leg_forward |
+| 4 | N | cap_end | yes | no | - | - | - | no | no | no | - | - | 0.62,-2.17 | leg_forward |
+| 5 | N | cap_end | no | no | - | - | - | no | no | no | - | - | 1.2,0.14 | approach |
+| 6 | N | STOPPED_NO_ARRIVAL | yes | no | - | - | - | no | no | no | - | - | 1.26,0.52 | approach |
+| 7 | N | STOPPED_NO_ARRIVAL | no | no | - | - | - | no | no | no | - | - | 0.77,1.09 | leg_forward |
+| 8 | F | cap_end | yes | no | - | - | - | no | no | no | - | - | 0.88,-0.31 | leg_forward |
+| 9 | F | cap_end | no | no | - | - | - | no | no | no | - | - | 0.48,0.15 | approach_wall |
+| 10 | F | cap_end | yes | no | - | - | - | no | no | no | - | - | -0.37,0.32 | leg_forward |
+| 11 | F | cap_end | no | no | - | - | - | no | no | no | - | - | 0.48,0.49 | leg_forward |
+| 12 | F | cap_end | yes | no | - | - | - | no | no | no | - | - | 1.32,0.28 | leg_forward |
+| 13 | F | cap_end | no | no | - | - | - | no | no | no | - | - | -0.1,-0.59 | approach_wall |
+| 14 | F | cap_end | yes | no | - | - | - | no | no | no | - | - | -0.05,0.97 | leg_forward |
+| 15 | F | cap_end | yes | no | - | - | - | no | no | no | - | - | -0.18,1.04 | leg_forward |
+
+Key facts:
+
+* **The skill's own "gap crossed" claim and the GT door crossing disagree.**
+  Nine episodes (e00,03,04,06,08,10,12,14,15) reached a `gap_cross`/
+  `gap_forward` stage, but only **one** episode actually moved the base from
+  west of the divider to east of it through the door opening (e02/N03). The
+  other eight "crossed" in the pickup room: the divider wall foot was lost for
+  3 ticks (or was never acquired) and the skill continued an `east_search` in
+  the wrong room. This is the dominant failure mode of Stage A and it also
+  explains the earlier visgoal mission split: the "crossed" column there was
+  the skill's stage claim, not a GT crossing.
+* **The single GT crossing was not a clean door passage.** e02 crossed at
+  t=55.2 s with base lateral offset -0.1634 m and minimum jamb clearance
+  **-0.1084 m** (the 0.39 m robot body overlaps the jamb envelope by ~10.8 cm
+  at the crossing ticks); it then found the paint and declared arrival at
+  78.0 s with the base 0.0281 m outside zone B - the same stop-margin
+  geometry as visgoal gate r4/B (see the 0.10 m tolerance note there). The
+  door-passage budget for an unloaded robot is +/-0.055 m, so any clean
+  passage needs a lateral-offset control that this policy does not have.
+* **No post-crossing destination search success.** Only e02 saw zone-B colour
+  after crossing; every other episode never physically reached the east room.
+  Four episodes claim `found`, but three of them (e05/e06/e07, the near-wall
+  N-group starts facing the long_beam) had no GT crossing: the blue end-band
+  of the green long_beam at [1.275, 0.45] is the likely false paint hint
+  (visible in their montages); e04 found no zone colour either.
+* Montages (all 16, 9 self-camera frames each, ticks 0..1800 or last) show the
+  robots circling cargo cubes in the pickup room, or facing the long_beam
+  (e05/e06/e09/e14) - there is no blocked-object claim beyond that; the
+  ledger keeps `not_observed`/`not_measured` for gaps.
+* Input audit (actual controller-boundary counters) passed 16/16; start
+  admission 16/16; no truth/world/static-map/top-camera key reached a
+  controller call. `collision_events` is `not_measured` (the raw does not
+  carry contact events); the -0.1084 m jamb clearance of e02 is the only
+  direct evidence of a jamb interaction.
+* **Stage A verdict: FAIL under the mission framing** (GT door crossing 1/16,
+  GT-inside 0/16). The failure is upstream of destination search: the
+  gap/door crossing trigger and the door alignment. Next-fix direction from
+  this table: (1) make the gap trigger require the divider wall faces on both
+  sides / a clear door opening, so a lost wall foot cannot start an
+  east_search in the pickup room; (2) add door-center lateral alignment
+  (measured -0.163 m vs the +/-0.055 m budget) before crossing; (3) reject
+  near-field blue end-bands (beam) as destination paint; (4) only then the
+  post-cross search range fix carries over from the visgoal table.
+* Scope: this stage measures the unloaded destination search on the far side.
+  No cargo is grasped, carried or released; Stage B is a separate condition
+  and no result is pooled with Stage A.
+
+### Stage A rejection ledger (per-episode)
+
+Reason categories: `cap_end` 13 (separate label), `door_not_crossed` 2
+(`STOPPED_NO_ARRIVAL`), `false_arrival_outside_zone` 1 (e02: GT margin
+-0.0281 m). `blocked_object` is `not_observed` and `minimum_gap_m` is `null`
+with `gap_status: not_measured` for all rows except that e02 records the
+measured jamb clearance above. Full per-episode ledger with evidence paths in
+`stageA/recount.json` (rejection_table block).
+
 
 Produced with [DeepSeek Harness](https://github.com/deepseek-ai/DeepSeek-Harness)
 (dsh). Badge above; PR attribution follows the repository `dsh-badge` format.

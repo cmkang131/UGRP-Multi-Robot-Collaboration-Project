@@ -88,6 +88,17 @@ def door_crossing(labels):
                 lateral_offset_m=None, min_jamb_gap_m=None, crossing_ticks=0)
 
 
+def _stage_sequence(trace):
+    seq = []
+    for r in trace:
+        st = r.get('stage')
+        if not seq or seq[-1][0] != st:
+            seq.append([st, r['t']])
+    if seq:
+        seq.append(['end', trace[-1]['t']])
+    return seq
+
+
 def recount_episode(ep_dir: Path):
     ep = load_json(ep_dir / 'episode.json')
     trace = load_jsonl(ep_dir / 'trace.jsonl')
@@ -170,6 +181,9 @@ def recount_episode(ep_dir: Path):
         input_audit=dict(calls=audit.get('calls'), counters=counters,
                          violations=(audit.get('violations') or [])[:3]),
         door_crossed=door['crossed'], door_cross_tick=door['tick'],
+        skill_claimed_gap=any(r.get('stage') in ('gap_cross', 'gap_forward')
+                              for r in trace),
+        stage_runs=_stage_sequence(trace),
         door_cross_t_s=door['tick'],
         door_lateral_offset_m=door['lateral_offset_m'],
         door_min_jamb_gap_m=door['min_jamb_gap_m'],
@@ -195,6 +209,7 @@ def recount_episode(ep_dir: Path):
         camera_frames=ep.get('camera_frames'),
         final_pose_eval_only=ep.get('final_pose_eval_only'),
         final_stage=trace[-1].get('stage') if trace else None,
+        stage_sequence=_stage_sequence(trace),
         memory_landmarks=ep.get('memory_landmarks'),
         collision_events=(ep.get('collision_events')
                           if ep.get('collision_events') is not None
@@ -293,6 +308,18 @@ def main() -> int:
         if abs(float(p.get('t') or 0) - 30.0) < 1e-6 and p.get('wall_s'):
             first30 = float(p['wall_s'])
             break
+    if first30 is None:
+        import os
+        f0 = run / 'episodes' / 'e00' / 'frames' / '00000.jpg'
+        f300 = run / 'episodes' / 'e00' / 'frames' / '00300.jpg'
+        if f0.is_file() and f300.is_file():
+            dt = os.stat(f300).st_mtime - os.stat(f0).st_mtime
+            first30 = dt
+            first30_source = 'frame mtime delta (estimate; progress t=30 overwritten)'
+        else:
+            first30_source = None
+    else:
+        first30_source = 'progress.json t=30'
     out = dict(
         schema='ugrp.crossroom_carry.recount.v1',
         stage='A_unloaded',
@@ -327,6 +354,11 @@ def main() -> int:
         wall_per_cap_nworld=(round(batch_wall / (cap * nw), 4)
                              if batch_wall else None),
         first30_wall_s=round(first30, 2) if first30 else None,
+        first30_source=first30_source,
+        skill_claimed_gap_n=sum(1 for r in rows if r['skill_claimed_gap']),
+        skill_claimed_gap_episodes=[r['episode'] for r in rows
+                                    if r['skill_claimed_gap']],
+        gt_door_crossed_episodes=[r['episode'] for r in rows if r['door_crossed']],
         first30_metric=(round(first30 / (30.0 * nw), 4) if first30 else None),
         mismatches=mismatches,
         episodes=rows,
