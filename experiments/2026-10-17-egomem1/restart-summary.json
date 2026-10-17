@@ -1,0 +1,129 @@
+{
+  "status": "NOT_READY",
+  "measurement_source_sha": "ff0a6067aec849c6ad9ef28d8421566be4793ca6",
+  "comparison_source_sha": "ac560f052",
+  "implementation": "rovio_local_v1",
+  "upstream": "ethz-asl/rovio@34735c0bfd786d44f6d21d31c0776290f1f91185",
+  "native_source_reused": "FeatureStatistics.hpp, BSD-3-Clause; constants and removal policy unchanged",
+  "offline": {
+    "raw": "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2",
+    "frames": 2026,
+    "source_cohort_reported_path_m": 6.461,
+    "dense_eval_all_frame_path_m": 6.688057601835536,
+    "path_metric_discrepancy": "6.461m cohort name/report vs6.688m sum of all10Hz evaluator XY steps; not used to calibrate controller; exact original reporting convention not reverified",
+    "matched_error_by_kind": {
+      "zone_boundary": {
+        "baseline_m": {
+          "n": 790,
+          "median": 0.18432044604439368,
+          "p95": 2.4203860133072395
+        },
+        "candidate_m": {
+          "n": 790,
+          "median": 0.1843204460461474,
+          "p95": 2.4205132912415386
+        },
+        "candidate_lower_n": 331
+      },
+      "zone_corner": {
+        "baseline_m": {
+          "n": 436,
+          "median": 0.4235472209218924,
+          "p95": 0.7228868680035192
+        },
+        "candidate_m": {
+          "n": 436,
+          "median": 0.42711364058975765,
+          "p95": 0.7229861073574231
+        },
+        "candidate_lower_n": 147
+      }
+    },
+    "association_ambiguous": {
+      "legacy": 126,
+      "rovio": 101
+    },
+    "candidate_reobservations": 220,
+    "candidate_error_reduced": 161,
+    "actual_reacquisition_rate": null,
+    "actual_reacquisition_trials": 0,
+    "rejection_table": "/Users/changmin/projects/ugrp-wt/mapbuild1/experiments/2026-10-17-egomem1/operations/restart-delivery/offline-rovio-r1/memory-funnel.json",
+    "pairing_funnel": {
+      "unit": "baseline_label_timestamp_keys",
+      "funnel": [
+        {
+          "stage": "baseline_label_timestamp",
+          "input_n": 14912,
+          "cumulative_pass_n": 14912,
+          "rejected_n": 0
+        },
+        {
+          "stage": "present_in_candidate",
+          "input_n": 14912,
+          "cumulative_pass_n": 6424,
+          "rejected_n": 8488
+        },
+        {
+          "stage": "unique_in_both",
+          "input_n": 6424,
+          "cumulative_pass_n": 1226,
+          "rejected_n": 5198
+        }
+      ],
+      "reason_categories": {
+        "candidate_memory_absent": 8488,
+        "duplicate_label_memory": 5198
+      },
+      "blocked_object": "not_observed",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured",
+      "raw": [
+        "/home/ugrp/ugrp-sim/ops-reviews/egomem1/baseline-legacy-r1",
+        "/home/ugrp/ugrp-sim/ops-reviews/egomem1/offline-rovio-r1"
+      ],
+      "reproduction": [
+        "/home/ugrp/ugrp-sim/ops-reviews/egomem1/compare-ac560f052.py",
+        "--baseline",
+        "/home/ugrp/ugrp-sim/ops-reviews/egomem1/baseline-legacy-r1",
+        "--candidate",
+        "/home/ugrp/ugrp-sim/ops-reviews/egomem1/offline-rovio-r1",
+        "--output",
+        "/home/ugrp/ugrp-sim/ops-reviews/egomem1/rovio-paired-comparison.json"
+      ]
+    }
+  },
+  "recordings": [
+    {
+      "index": 1,
+      "source_sha": "cae3bd30b3c2e2c4fe76952d7a013cd26e064cbe",
+      "status": "NOT_READY",
+      "reason": "blue region never left view during departure/return; detector misses were not actual loss"
+    },
+    {
+      "index": 2,
+      "source_sha": "112d48753ab9ec4b8579a1fc431e8a6756aaa468",
+      "status": "HOST_ERROR",
+      "reason": "restart supervisor SIGINT to verified owned PID6862; required survey first",
+      "frames": 269,
+      "sim_s": 26.8
+    }
+  ],
+  "recording_budget": {
+    "maximum": 2,
+    "used": 2,
+    "remaining": 0,
+    "new_candidate_recordings": 0
+  },
+  "physical_success": false,
+  "student_success": false,
+  "llm_success": false,
+  "limitations": [
+    "matched errors did not improve; lower overall errors are affected by memory deletion",
+    "detector labels remain nearest same-appearance evaluator geometry and may be wrong",
+    "doors/zone boundaries/corners only; moving cargo/partner tracking and actual LLM integration remain unverified",
+    "new candidate physical reacquisition not run: inherited two-recording budget exhausted"
+  ],
+  "tests_passed": 43,
+  "gcp_host": "ugrp-act-l4-gcp5",
+  "gcp_project": "ugrp-sim-e-1016"
+}

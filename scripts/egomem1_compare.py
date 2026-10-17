@@ -5,6 +5,7 @@ import hashlib
 import json
 from pathlib import Path
 import platform
+import subprocess
 import sys
 
 import numpy as np
@@ -12,7 +13,8 @@ import numpy as np
 
 def compare(baseline, candidate):
     def read(path):
-        return json.loads(path.read_text())
+        return json.loads(path.read_text() if path.exists() else
+                          subprocess.check_output(['zstd', '-dc', str(path)+'.zst']))
 
     def index(rows):
         result = defaultdict(list)

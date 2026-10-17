@@ -1,5 +1,19 @@
 # egomem1 — 자기 중심 지형지물 기억
 
+**재시작 최종 판정: NOT_READY.** ROVIO 실사용 공개 구현을 조사한 뒤
+원본 C++ 특징 관리 코드를 직접 연결했다. 실행 소스 `ff0a6067a`.
+비물리 검사43개 통과. 같은2026프레임의 동일 시각·평가 지형지물 대응
+1,226개를 비교하면 선790개 P95 **2.42039→2.42051m**, 모서리436개
+P95 **.722887→.722986m**로 정확도 개선을 확인하지 못했다.
+전체 선 P95 3.00→2.30m는 기억 삭제로 평가 표본이 바뀐 수치다.
+[전체 결과·실패 포함 요약](restart-summary.json),
+[오차·경과시간·이동거리 곡선](operations/restart-delivery/offline-rovio-r1-curves/zone_boundary-curves.png),
+[공통 표본 관문표](operations/restart-delivery/rovio-paired-comparison.json).
+새 후보 물리 재획득률은 미측정. 이전 녹화1은 색 이탈 실패, 녹화2는
+재시작 중단(HOST_ERROR)이며 최대2녹화를 모두 사용했다.
+
+## 재시작 이전 기록
+
 사용자 2026-10-17 결정: 정적 지도·시작 구역 사전·전역 좌표 없이,
 자기 자신은 항상(0,0)·정면이다. 목적지는 자기 RGB로 보고 찾는다.
 이 README는 구현·오프라인 평가·실제 MJWarp 복귀를 각각 구분한다.
@@ -27,7 +41,7 @@ ROVIO 전체 VIO를 실행하거나 제품 수준 성능을 승계한 것이 아
 | 방식·저장소 | 확인한 실제 사용처 | 라이선스 | 확인한 규칙·선택 |
 |---|---|---|---|
 | [ROVIO](https://github.com/ethz-asl/rovio/tree/34735c0bfd786d44f6d21d31c0776290f1f91185) | ETH ASL 실제 MAV 실험·[ROVIOLI](https://github.com/ethz-asl/maplab/wiki/ROVIOLI-Introduction) 추정 전단; 상용 제품 채택은 미확인 | BSD-3-Clause | 선택: `ImuPrediction.hpp` 상대 특징 예측, `ImgUpdate.hpp` 갱신·삭제 순서, `FeatureStatistics.hpp` 원본 직접 호출 |
-| [Nav2 costmap_2d](https://docs.nav2.org/configuration/packages/configuring-costmaps.html) | Nav2 공식 문서의 이동 로봇 내비게이션; 공식 프로젝트는 상용 사용을 명시 | package.xml: BSD-3-Clause·Apache-2.0 | rolling_window는 로봇 중심 창을 옮기지만 격자·odom 고정축을 유지. 짧은 상대 물체 목록·정면 회전 조건과 달라 미채택 |
+| [Nav2 costmap_2d](https://docs.nav2.org/jazzy/configuration_and_development/configuration_guide/core_servers/costmap_2d/) | Nav2 공식 문서의 이동 로봇 내비게이션; 공식 프로젝트는 상용 사용을 명시 | package.xml: BSD-3-Clause·Apache-2.0 | rolling_window는 로봇 중심 창을 옮기지만 격자·odom 고정축을 유지. 짧은 상대 물체 목록·정면 회전 조건과 달라 미채택 |
 | [OpenVINS](https://github.com/rpng/open_vins/tree/69488123ed9362dd44b6f28e7f4680abbff1442b) | 공개 VIO 연구 플랫폼·EuRoC/실제 센서 구성; 상용 제품 사용 미확인 | GPL-3.0 | `FeatureDatabase::cleanup_measurements`는 marginal clone보다 오래된 측정을 제거. IMU·전역 clone 상태창이 필요해 미채택 |
 | [hector_object_tracker](https://index.ros.org/p/hector_object_tracker/) | Team Hector 공개 ROS 물체 추적 패키지 | 확인한 최신 package.xml은 TODO, 확인 불가 | 존재·패키지 용도만 확인; 갱신/잊기 코드와 제품 사용은 확인하지 않아 미채택 |
 
@@ -158,3 +172,37 @@ CPU VM, 모델 키 전송, Drive는 사용하지 않는다.
 알고리즘 수식을 독립 Python으로 구현했다. 기존 검출기·카메라 FK는 저장소
 코드를 재사용한다. `harness/servo_camera_fk.py`는 mapbuild1/95769da0e의
 바이트를 그대로 가져왔으며 기본 off 및 과거 동작을 유지한다.
+
+## 재현과 회수
+
+원본은 gcp5에 보존한다. 6.461m는 원래 코호트 보고/지시문의 값이며,
+이번 별도 평가기의 전체10Hz XY 증분 합은 두 후보 모두6.688m다.
+기존 거리 보고의 샘플링 규약은 재검증하지 못했으므로 서로 바꿔 쓰지 않는다.
+이 값이나 정답 라벨은 제어/상수 보정에 쓰지 않았다.
+
+같은 allowed 입력과 extraction-seal을 새 출력 폴더에 복사한 뒤
+`scripts.egomem1_offline predict --implementation rovio_local_v1 --rovio-library LIB`
+→`score`→`scripts.egomem1_curves` 순서로 실행한다. 원본 라이브러리는
+`python -m scripts.build_egomem_rovio_statistics --output NEW.so`로 빌드한다.
+정확한 입력·인수·설치 패키지 버전은
+[실행 원장](operations/restart-delivery/rovio-offline-commands.json),
+원본/코드/라이브러리 해시는 prediction-seal·native-build에 있다.
+기존 `.venv-warp`에 누락된 matplotlib3.11.2와 의존성을 설치해 도표를 생성했다.
+첫 baseline score는 도표 import 전에 JSON을 저장한 뒤 실패했다. 그 결과를
+덮어쓰지 않고 curves 단계에서 재개했으며 예측·평가 JSON은 보존했다.
+새 baseline/candidate의64KiB 초과 JSON만 zstd 압축·해제 SHA 확인 후
+압축본으로 보존했다. 재비교 스크립트는 `.json.zst`도 읽는다.
+
+회수23파일과 녹화2 영상/띠4파일의 전체 SHA·크기가 일치했다.
+녹화1 원본776파일·녹화2 원본552파일 재해시도 모두 일치한다.
+Mac에는 요약·곡선·프레임 띠·36,197byte 대표 영상만 가져왔다.
+실제 카메라/물리 렌더와 분석은 gcp5에서만 수행했다.
+
+직접 본 범위: 녹화1 전체0–38초2Hz·28–38초10Hz, 녹화2 전체
+0–26.8초2Hz·16.8–26.8초10Hz. r2는 정지, r1은0–25초 한 바퀴
+둘러보고 파란 표시를 다시 본다. 녹화1은25–38초 파란 바닥이 계속
+화면에 남고 내부 바닥 무늬/물체가 화면 안쪽으로 커지며 이동한다.
+녹화2는25.7초에 기억한 뒤 depart_turn 도중26.8초 감독 중단이다.
+희소 프레임의 검출 없음3회와 달리10Hz 띠에는 파란 표면이 연속해서
+남는다. 성공 녹화는 없으므로 성공 예시1개 검토는 수행할 자료가 없다.
+TOP/overview 원본은 없으며 자기 r1·r2만 나란히 검토했다.
