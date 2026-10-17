@@ -61,6 +61,17 @@
 |20|**PASS**|teacher_terminal|55.2|변동 없음|
 |27|**FAIL**|teacher_terminal|28.4|reobserve 전환은 **수정 확인**(14.9 s에 view attempt 0 → 15.2 fresh_measurements_replan)했으나 red_1 staleness 재발로 handoff. 25.4→28.4 s로 지연만 증가|
 
+### 5.5 r5b·r5c·r6 — case27 집중 (각 별도 조건, pooling 없음)
+
+|조건|변경|5-world 결과|27 기전/결과|
+|---|---|---|---|
+|r5b|r4c + obstacle refresh 최대 +2|6 PASS 59.1 / 10 PASS 49.0 / 20 PASS 42.1 / **27 FAIL 20.4** / 37 FAIL 29.7|refresh 4회 모두 fresh-ended(2.8·15.8·16.6·17.4 s)였으나 각 fresh 창이 ~0.1 m 이동 후 stale margin에 재차단, +2 한도 소진 후 3 s blocked handoff|
+|r5c|r5b의 +2 한도를 제거(open refresh chain)|6 PASS 50.2 / 10 PASS 49.0 / 20 PASS 55.7 / **27 FAIL cap_end 60.0** / 37 FAIL 29.5|refresh 18회(15–59 s) 전부 fresh-ended, 그러나 선택이 매 tick feasible↔92/92 blocked로 진동하며 주행이 ~0.1 s/cycle에 그침. 로봇 root 위치가 18 s 이후 (0.239,-0.72) 고정 → 60 s cap|
+|r6|r5c + `search26_commit_plan` (기존 1 s replan 경계까지 committed path 주행)|(실행 중)|가설: 1 s 창 동안 실제 주행이 가능해 0.3–1 m를 burst로 이동|
+
+- 공통: r4c의 6/10/20 PASS는 r5b·r5c에서도 유지(회귀 없음). 37은 r5b 29.7 / r5c 29.5 teacher_terminal(구조 라벨은 r1/r2 근거, r4/r5 재측정 아님).
+- 사전등록: [r5b](teacher/gate-40-r5/r5b-preregistration.json)·[r5c](teacher/gate-40-r5/r5c-preregistration.json)·[r6](teacher/gate-40-r6/r6-preregistration.json). r5c gate prereg는 5-world 미통과로 **발동하지 않음**.
+
 ### 5.4 r5a (r4c + wide_stance) — **중단·무효**
 
 `validation-r5a-5-stopped` — case27 FAIL 24.2 s(wide_stance로도 stale red_1 차단 미해소, jaw bound ~19.7°로 lateral 이득 작음), per-world wall/SIM ~13으로 r4c(~5.8)의 2.2배 → gate 후보로 부적합, SIGINT 후 원본 보존(집계 제외).
