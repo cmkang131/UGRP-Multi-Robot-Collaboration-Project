@@ -6,8 +6,6 @@ contacts and evaluation labels are harness-only.  The frozen scene/model is
 built once and replicated to a single MJWarp batch; MJWarp native contact with
 noslip_iterations=0 is checked at runtime.
 """
-from __future__ import annotations
-
 import argparse
 from collections import Counter, deque
 import hashlib
@@ -331,12 +329,13 @@ def run(args):
     step_index = wp.zeros(1, dtype=int)
 
     @wp.kernel
-    def issue(tape, index, out):
+    def issue(tape: wp.array3d(dtype=float), index: wp.array(dtype=int),
+              out: wp.array2d(dtype=float)):
         i, j = wp.tid()
         out[i, j] = tape[index[0], i, j]
 
     @wp.kernel
-    def advance(index):
+    def advance(index: wp.array(dtype=int)):
         index[0] = index[0] + 1
 
     with wp.ScopedCapture() as cap:
