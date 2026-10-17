@@ -169,7 +169,7 @@ def run_rgb_communication_async(
     limits: AsyncRuntimeLimits | None = None, trace_path: str | Path | None = None,
     artifact_dir: str | Path | None = None, control: RuntimeControl | None = None,
     provenance: Mapping[str, Any] | None = None, wall_clock=time.monotonic,
-    clock_snapshot=None,
+    clock_snapshot=None, communication_utc_clock=None,
 ) -> dict[str, Any]:
     """Bounded async scheduler, common to none/structured/natural conditions.
 
@@ -196,7 +196,7 @@ it must not step/render/read an evaluator, and is never given to a planner.
     common_task = copy.deepcopy(dict(common_task))
     started, ids = wall_clock(), base._IdFactory()
     trace = base.TraceRecorder(run_id=run_id, condition=condition, wall_clock=wall_clock,
-                               wall_started_s=started, path=trace_path, ids=ids)
+                               wall_started_s=started, path=trace_path, ids=ids, utc_clock=communication_utc_clock)
     actors = {rid: base._ActorState(rid) for rid in robot_ids}
     epochs, retired = {rid: 0 for rid in robot_ids}, set()
     retirement_reasons = {}

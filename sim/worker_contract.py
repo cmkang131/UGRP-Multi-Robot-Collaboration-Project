@@ -1,6 +1,6 @@
 """Versioned compatibility contract for remote production SIM workers."""
 
-REMOTE_WORKER_CONTRACT = "masterpi-v2-coela-traffic-budget-v9"
+REMOTE_WORKER_CONTRACT = "masterpi-v2-coela-traffic-budget-utc-v10"
 
 
 def worker_contract_compatible(value: object) -> bool:
