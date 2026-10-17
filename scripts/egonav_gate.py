@@ -186,7 +186,7 @@ def run(args):
     worlds = setup['worlds']
     nworld = len(worlds) if not args.worlds else min(args.worlds, len(worlds))
     worlds = worlds[:nworld]
-    if not args.preflight and nworld != 16:
+    if not args.preflight and not args.probe_rotation and nworld != 16:
         raise ValueError('GATE_N16_REQUIRED')
     z1 = st.default_free_z(m, 'r1__robot')
     z2 = st.default_free_z(m, 'r2__robot')
@@ -354,6 +354,67 @@ def run(args):
             wp.launch(issue, dim=(nworld, m.nu), inputs=[tape, step_index, wd.ctrl])
             mjw.step(wm, wd)
             wp.launch(advance, dim=1, inputs=[step_index])
+    if args.probe_rotation:
+        # Evaluation-only pulse-response probe: author a pure on-spot turn for
+        # N pulses and read the authored qpos yaw to calibrate the controller's
+        # finite-pulse rotation model.  These readings never enter control.
+        probes = [[] for _ in range(nworld)]
+        prior_yaw = [None]*nworld
+        probe_wheels, probe_duration = duty([0., 0., 1.])
+        for k in range(args.probe_rotation):
+            t = k/10
+            qp = wd.qpos.numpy()
+            yaws = []
+            for w in range(nworld):
+                body_id = m.body('r1__robot').id
+                adr = int(m.jnt_qposadr[int(m.body_jntadr[body_id])])
+                wq, xq, yq, zq = qp[w][adr+3:adr+7]
+                yaws.append(math.atan2(2*(wq*zq+xq*yq), 1-2*(yq*yq+zq*zq)))
+            for w in range(nworld):
+                if prior_yaw[w] is not None:
+                    probes[w].append(wrap(yaws[w]-prior_yaw[w]))
+            prior_yaw = yaws
+            probe_rows = [dict(ctrl=ctrl, wheels=probe_wheels,
+                               deadlines=[t+v if v else -1 for v in probe_duration],
+                               applied=applied[w], target=[SEARCH[s] for s in servos],
+                               servo_active=[False]*5, now=t, servo_time=t)
+                          for w in range(nworld)]
+            values, cmd_state = control_tape(
+                probe_rows, relay, dt=float(m.opt.timestep),
+                steps=steps, lookup=lookup, wheel_ids=wheel_ids,
+                servo_ids=servo_ids, start_fraction=drive.start_fraction,
+                kinetic_fraction=drive.kinetic_fraction, torque_cap_nm=drive.torque_cap_nm)
+            applied = cmd_state['applied']; relay = cmd_state['relay']
+            wp.copy(tape, wp.array(values, dtype=float))
+            step_index.zero_()
+            wp.capture_launch(cap.graph)
+        model_turn = abs(command_delta({'wheels': duty([0., 0., 1.])[0],
+                                        'duration_s': duty([0., 0., 1.])[1]})[2])
+
+        def stats(samples):
+            if not samples:
+                return dict(n=0)
+            a = np.asarray(samples, float)
+            return dict(n=len(a), median=float(np.median(a)), mean=float(a.mean()),
+                        p10=float(np.percentile(a, 10)), p90=float(np.percentile(a, 90)),
+                        min=float(a.min()), max=float(a.max()))
+
+        dump(args.output/'probe-rotation.json', dict(
+            evaluation_only=True, probe='pure_turn_pulse_response',
+            source_sha=q['source_sha'], host=platform.node(), nworld=nworld,
+            pulses=int(args.probe_rotation), model_full_turn_rad=float(model_turn),
+            world_stats=[stats(p) for p in probes], world_samples=probes,
+            drive=[0., 0., 1.], wheels=probe_wheels, duration_s=probe_duration,
+            noslip_iterations=int(m.opt.noslip_iterations),
+            warp_noslip_iterations=int(wm.opt.noslip_iterations)))
+        dump(args.output/'EXIT', dict(status='PROBE_ROTATION_DONE', error=None))
+        dump(args.output/'SHA256SUMS.json', {str(p.relative_to(args.output)): sha(p)
+                                             for p in args.output.rglob('*') if p.is_file()})
+        print(json.dumps(dict(status='PROBE_ROTATION_DONE',
+                              model_full_turn_rad=float(model_turn),
+                              median=[s.get('median') for s in
+                                      [stats(p) for p in probes]])), flush=True)
+        return
     first30 = None
     status = 'cap_end'
     error = None
@@ -385,6 +446,7 @@ def run(args):
                                     signature='floor_orange_zone_marking',
                                     relative_xy_m=xy.tolist(),
                                     covariance_m2=point_covariance(xy).tolist(),
+                                    observed_area_m2=patch.get('observed_area_m2'),
                                     hue=target.get('hue'), pixels=patch['pixels'])]
                     scan = wall_observe(rgb, SEARCH)
                     if tick == 0:
@@ -631,6 +693,7 @@ def main():
     parser.add_argument('--renderer', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--preflight', action='store_true')
+    parser.add_argument('--probe-rotation', type=int, default=0)
     parser.add_argument('--worlds', type=int, default=0)
     args = parser.parse_args()
     run(args)

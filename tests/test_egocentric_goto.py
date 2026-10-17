@@ -6,9 +6,12 @@ from harness.egocentric_goto import (
     OPTION, SCHEMA, EgocentricGoto, command_delta, duty, point_covariance)
 
 
-def observation(xy):
-    return dict(id='detected-floor-target', kind='zone_marking', signature='floor_orange_zone_marking',
+def observation(xy, area=.6):
+    item = dict(id='detected-floor-target', kind='zone_marking', signature='floor_orange_zone_marking',
                 relative_xy_m=list(xy), covariance_m2=point_covariance(xy).tolist())
+    if area is not None:
+        item['observed_area_m2'] = area
+    return item
 
 
 def forward_command():
@@ -77,7 +80,7 @@ def test_policy_turns_to_heading_and_refuses_blocked_forward_with_reason():
     searching = EgocentricGoto(option=OPTION, footprint_radius_m=.12)
     action = searching.step(0., None, [])
     assert action['kind'] == 'search' and action['target_range_m'] is None
-    for i in range(60):
+    for i in range(30):
         action = searching.step(.1*(i+1), None, [])
     assert action['kind'] == 'search' and not searching.done
     # A one-off orange patch rejected by the EKF gate (e.g. a peer arm) must
@@ -88,4 +91,22 @@ def test_policy_turns_to_heading_and_refuses_blocked_forward_with_reason():
     assert action['target_source'] == 'memory'
     assert action['target_range_m'] == pytest.approx(2., abs=.2)
     assert any(e['reason'] == 'target_observation_rejected' for e in rejected.events)
+
+
+def test_small_orange_object_cannot_birth_or_steer_the_target_memory():
+    # gate-08 world02: a small orange patch (peer wheels, 0.005-0.024 m^2)
+    # became the first landmark and pulled the robot away from the 0.44-0.86
+    # m^2 floor marking.  Birth gate is fail-closed.
+    c = EgocentricGoto(option=OPTION, footprint_radius_m=.12)
+    action = c.step(0., None, [observation([.15, -.99], area=.008)])
+    assert action['kind'] == 'search' and not c.memories
+    event = [e for e in c.events if e['reason'] == 'small_marking_rejected'][-1]
+    assert event['blocked_object'] == 'orange_object_below_zone_marking_area'
+    assert event['minimum_gap_m'] is None and event['gap_status'] == 'not_measured'
+    assert event['observed_area_m2_min'] == pytest.approx(.008)
+    no_area = EgocentricGoto(option=OPTION, footprint_radius_m=.12)
+    action = no_area.step(0., None, [observation([2., 0.], area=None)])
+    assert action['kind'] == 'search' and not no_area.memories
+    action = c.step(.1, None, [observation([2., 0.], area=.6)])
+    assert action['kind'] == 'forward' and len(c.memories) == 1
 

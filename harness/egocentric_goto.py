@@ -42,11 +42,25 @@ ARRIVAL_RADIUS_M = HEADING_PARAMS['final_alignment_m']
 HEADING_TOLERANCE_RAD = HEADING_PARAMS['heading_tolerance_rad']
 SIGMA_RANGE_M = .2       # PR406 own-map range sigma, inherited not refitted.
 SIGMA_BEARING_RAD = math.radians(3.)  # PR406 own-map bearing sigma.
-# The frozen command model overestimates on-spot yaw under the measured wheel
-# contact (gate-07 world06: 1.49 rad actual over 45 pulses vs 6.41 rad modeled,
-# 4.29x).  Search must still sweep a full circle without a gyro input, so use a
-# conservative 5x pulse count; arrival verification keeps the modeled limit.
-SEARCH_SWEEP_MARGIN = 5
+# Floor zone markings are broad painted regions.  The gate-08 preflight
+# (10/16 worlds, authored range 0.99-3.71 m) measured own-RGB
+# ``observed_area_m2`` 0.4427-0.8619 m^2 for the true marking; the world02
+# replay's false orange detections (peer robot wheels, cargo boxes; 180 ticks)
+# measured 0.0053-0.0240 m^2.  The geometric log-midpoint
+# sqrt(0.4427*0.0240)=0.103 sits 4.4x below the smallest true marking and
+# 4.2x above the largest false positive, so the birth gate adopts 0.10 m^2.
+# Observations without a measured area are ignored (fail-closed).
+ZONE_MARKING_MIN_OBSERVED_AREA_M2 = .10
+# Finite-pulse turn calibration.  ``command_delta()`` below is a frozen
+# wheel-contact model; it overestimated gate-07 world06 on-spot yaw by 4.29x
+# (6.41 rad modeled vs 1.49 rad authored over 45 pulses, 0.0331 rad/pulse).
+# The pulse-response probe (``scripts/egonav_gate.py --probe-rotation``)
+# measures the authored yaw per turn pulse under warp_native_contact_v1; the
+# median and lower-decile values are recorded with their raw path in
+# ``experiments/2026-10-17-egonav/probe-rotation.json``.  ``None`` means the
+# probe has not been applied yet (frozen model fallback).
+TURN_RAD_PER_PULSE_MEDIAN = None
+TURN_RAD_PER_PULSE_P10 = None
 
 
 def wrap(angle):
@@ -139,12 +153,20 @@ class EgocentricGoto:
         self.arrival_radius_m = float(arrival_radius_m)
         # Derived from the actual calibrated pulse, never a fitted threshold:
         # a 180-degree flip after a small pulse would otherwise chatter.
-        full_turn = abs(command_delta({'wheels': duty([0., 0., 1.])[0],
-                                       'duration_s': duty([0., 0., 1.])[1]})[2])
+        model_turn = abs(command_delta({'wheels': duty([0., 0., 1.])[0],
+                                        'duration_s': duty([0., 0., 1.])[1]})[2])
+        full_turn = (model_turn if TURN_RAD_PER_PULSE_P10 is None
+                     else float(TURN_RAD_PER_PULSE_P10))
+        # Own-command yaw transport uses the same frozen model, so rescale it
+        # by the measured median/model ratio once the probe is applied.
+        self.yaw_transport_scale = (
+            1. if TURN_RAD_PER_PULSE_MEDIAN is None
+            else float(TURN_RAD_PER_PULSE_MEDIAN)/max(1e-9, model_turn))
         self.turn_threshold_rad = max(float(heading_tolerance_rad), .5*full_turn)
+        # One measured (lower-decile) full circle, not a multiplier on the
+        # uncalibrated model; the probe's p10 already covers the slow tail.
         self.verify_limit = int(math.ceil(2*math.pi/max(1e-9, full_turn)))
-        self.search_limit = int(math.ceil(
-            SEARCH_SWEEP_MARGIN*2*math.pi/max(1e-9, full_turn)))
+        self.search_limit = int(math.ceil(2*math.pi/max(1e-9, full_turn)))
         self.stage = 'off' if not self.enabled else 'search'
         self.done = False
         self.events = []
@@ -156,6 +178,7 @@ class EgocentricGoto:
         self.last_visible_range_m = None
         self.verify_steps = 0
         self.rejected_previous = False
+        self.small_marking_previous = False
         self.blocked_previous = False
         self.aim = None
         self.target_source = None
@@ -340,12 +363,39 @@ class EgocentricGoto:
             return []
         delta = (np.zeros(3) if command is None
                  else np.asarray(command_delta(command), float))
+        delta[2] *= self.yaw_transport_scale
         covariance = np.diag(np.asarray(motion_variance(delta), float))
-        result = self.memory.step(t, delta, covariance, observations,
-                                  observation_tick=bool(observations))
+        # The area field is a controller-side birth gate; the vendored EKF
+        # schema is fixed and rejects unknown observation fields.
+        memory_observations = []
+        for obs in observations:
+            item = dict(obs)
+            item.pop('observed_area_m2', None)
+            memory_observations.append(item)
+        result = self.memory.step(t, delta, covariance, memory_observations,
+                                  observation_tick=bool(memory_observations))
         self.memories = result['memories']
         self.last_command = command
         return result
+
+    def _zone_marking_observations(self, observations):
+        """Only measured, target-sized floor markings may steer the policy."""
+        accepted = []
+        for obs in observations:
+            if (obs.get('kind') != self.target_kind
+                    or obs.get('signature') != self.target_signature):
+                continue
+            area = obs.get('observed_area_m2')
+            if area is None:
+                continue
+            try:
+                area = float(area)
+            except (TypeError, ValueError):
+                continue
+            if not math.isfinite(area) or area < ZONE_MARKING_MIN_OBSERVED_AREA_M2:
+                continue
+            accepted.append(obs)
+        return accepted
 
     def step(self, t, command=None, observations=(), *, scan=None, obstacles=()):
         """One 10 Hz decision.  ``command`` is the previously issued command."""
@@ -353,6 +403,21 @@ class EgocentricGoto:
             self.stage = 'off'
             self.done = True
             return self._stop(t, 'option_off')
+        target_markings = [o for o in observations
+                           if o.get('kind') == self.target_kind
+                           and o.get('signature') == self.target_signature]
+        observations = self._zone_marking_observations(observations)
+        accepted_ids = {id(o) for o in observations}
+        rejected_markings = [o for o in target_markings if id(o) not in accepted_ids]
+        small_rejected = bool(rejected_markings)
+        if small_rejected and not self.small_marking_previous:
+            self._event('small_marking_rejected',
+                        blocked_object='orange_object_below_zone_marking_area',
+                        minimum_gap_m=None, gap_status='not_measured', t=t,
+                        observed_area_m2_min=min(
+                            float(o.get('observed_area_m2') or 0.)
+                            for o in rejected_markings))
+        self.small_marking_previous = small_rejected
         prior_target = self.goal_memory()
         result = self.update_memory(t, command, observations)
         target = self.goal_memory()
