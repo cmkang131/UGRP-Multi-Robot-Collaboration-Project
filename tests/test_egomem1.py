@@ -82,3 +82,12 @@ def test_navigation_reacquisition_requires_departure_and_new_rgb():
     c.step(2.,[0,0,0],[m],[dict(kind='zone_boundary',signature='blue')])
     assert c.done and c.events[-1]['reason']=='rgb_signature_reacquired'
     assert c.events[-1]['arrival_verified'] is False
+
+
+def test_observation_schema_blocks_world_fields_and_search_uses_only_hits():
+    m=LandmarkMemory(option=OPTION)
+    with pytest.raises(ValueError,match='UNEXPECTED_OBSERVATION'):
+        m.step(0.,[0,0,0],np.zeros((3,3)),[{**obs([1,0]),'world_pose':[4,5,6]}])
+    context=language_context([],scan=dict(columns=[dict(status='unknown',range_m=None),dict(status='hit',range_m=2.,bearing_rad=.2)]),footprint_radius_m=.2)
+    assert len(context['candidates'])==1
+    assert context['candidates'][0]['minimum_gap_m']==1.8

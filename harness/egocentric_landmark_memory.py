@@ -115,6 +115,10 @@ class LandmarkMemory:
         p = np.zeros((n+3, n+3)); p[:n, :n] = self.p; p[n:, n:] = q
         events = []; pending = []; used = set()
         for obs in observations:
+            allowed = {'id','kind','signature','relative_xy_m','measurement_state','covariance_m2',
+                       'representation','hue','pixels','observed_endpoints_m'}
+            if set(obs)-allowed:
+                raise ValueError('UNEXPECTED_OBSERVATION_FIELDS')
             representation = obs.get('representation', 'point')
             z = np.asarray(obs.get('measurement_state', obs.get('relative_xy_m')), float)
             if z.shape != (2,) or not np.isfinite(z).all():
@@ -200,7 +204,7 @@ class LandmarkMemory:
                     minimum_gap_m=None, gap_status='not_measured', **extra)
 
 
-def language_context(memories, *, goal_signature=None):
+def language_context(memories, *, goal_signature=None, scan=None, footprint_radius_m=None):
     """Stable instructions first; all time-varying memory/choices at the end."""
     fixed = ('자기 자신은 항상 (0,0)·정면이다. 아래는 자기 RGB와 자기 발행 명령으로 갱신한 '
              '불확실한 상대 기억이다. 목적지는 자기 카메라로 확인한다. 기억만으로 도착을 선언하지 않는다.')
@@ -215,4 +219,12 @@ def language_context(memories, *, goal_signature=None):
     candidates = ([dict(action='look_toward_memory', memory_id=m['id'], bearing_rad=m['bearing_rad'],
                         range_m=m['range_m'], arrival_verified=False) for m in goals]
                   if goals else [dict(action='look_left'), dict(action='look_right'), dict(action='turn_and_observe')])
+    if not goals and scan is not None and footprint_radius_m is not None:
+        # Relative, currently observed directions only. Missing returns are
+        # unknown, never free. Three choices is an LLM context work budget.
+        observed=[r for r in scan['columns'] if r['status']=='hit' and r['range_m'] is not None]
+        candidates=[dict(action='inspect_observed_direction',bearing_rad=r['bearing_rad'],
+                         minimum_gap_m=r['range_m']-footprint_radius_m,blocked_object='observed_wall_boundary',
+                         reason='current_own_rgb_measured_range',arrival_verified=False)
+                    for r in sorted(observed,key=lambda r:-r['range_m'])[:3]] or candidates
     return dict(fixed_prefix=fixed, dynamic_suffix='\n'.join(lines) or '관측한 지형지물 기억 없음', candidates=candidates)
