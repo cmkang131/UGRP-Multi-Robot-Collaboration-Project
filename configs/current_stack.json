@@ -2660,6 +2660,45 @@
         "source_artifact": "source_confirmed_runtime_separate",
         "applied_runtime": "확인 안 됨: 구현 전(mapbuild8)"
       }
+    },
+    {
+      "id": "localization_initial_prior",
+      "current": "start_zone_coarse",
+      "decision_date": "2026-10-17",
+      "source": {
+        "references": [
+          {
+            "sha": "d56492584a16cd4ea321157662d849f14f58a1ba",
+            "path": "AGENTS.md",
+            "lines": [
+              26
+            ],
+            "note": "지도 경로 예외 다음 줄 '시작 구역 사전 정보'"
+          }
+        ],
+        "decision_text": "대략 구역만 허용 (정확한 좌표가 아닌, 사람이 로봇을 놓을 때 아는 수준)"
+      },
+      "supersedes": [
+        "global free-space initialization only (no start prior)"
+      ],
+      "flows": [
+        "release",
+        "self_map",
+        "e2e_llm"
+      ],
+      "operator": "one_of",
+      "allowed": [
+        "start_zone_coarse"
+      ],
+      "verification": {
+        "paths": [
+          "stack_values.localization_initial_prior",
+          "localization.initial_prior"
+        ],
+        "method": "initial pose prior must be the coarse start zone box + rough heading only; exact spawn pose or live GT is a violation",
+        "source_artifact": "source_confirmed_runtime_separate",
+        "applied_runtime": "확인 안 됨: 구현 전(mapbuild10)"
+      }
     }
   ]
 }
