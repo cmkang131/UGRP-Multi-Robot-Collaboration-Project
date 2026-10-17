@@ -176,3 +176,81 @@ world02의 4.431 m는 받아들인 목표의 오차가 아니라 **첫 거짓 �
 * 주의: 이 영상은 시각화이며 성공 판정 근거가 아니다. gate-09/PR #583 결과와
   합산하지 않는다. 왼쪽 패널의 기억은 컨트롤러가 받아들인 목표 표시 1개이고,
   거부된 작은 패치는 기억으로 만들지 않으므로 이벤트 텍스트로만 보인다.
+
+## 벽/지형 기억 탐침 (wallmem, 2026-10-17, world02 1개·nworld=1)
+
+사용자 질문 "egonav에서 다른 점들은 기억 안 하나?"에 대한 이번 라운드: 지금까지
+기억하는 것은 컨트롤러가 받아들인 바닥 목표 표시(`kind=zone_marking`) 1종뿐이었다.
+`egonav_wall_memory_v1`(기본 off)을 추가해 자기 RGB 스캔의 벽 구간을
+`kind='wall_segment'` 랜드마크로 저장한다. 이번 라운드는 **저장·재관측 측정만**
+하고 계획·회피 입력에는 쓰지 않는다(`control_use=false`,
+`wall_control_inputs=0`). 게이트 결과와 합산하지 않는다.
+
+* 브랜치 `claude/egonav-mem`, source `a354533a8`. PR #583이 아직 열려 있어
+  (미병합) `origin/main`에 없었으므로 `origin/claude/egonav`(75cbd9ade)에서
+  분기했다.
+* queue `queue-wallmem-world02.json`(켬)/`queue-wallmem-off-world02.json`(끔),
+  setup `gate-setup-wallmem-world02.json`(gate world02 스폰
+  [2.75, 0.4, 0, 1.570796], step_budget 400 = 40 SIM s 상한). stack check는
+  둘 다 ok true·30행(`stack_check_wallmem*.json`). prior funnel은 gate-09
+  `rejection_table.gate09.json`. 실행 funnel은 world 1개 전 관문 통과·거부 0.
+* 구현: 목표 기억과 같은 vendored `LandmarkMemory`(legacy_v1 기본값 32슬롯·6 m·
+  chi2 99)를 **별도 인스턴스**로 하나 더 둔다(벽 슬롯이 목표 기억을 밀어내지
+  못하게). 자기 명령 델타 + `motion_variance` 이송과 시각 재관측 갱신은 목표
+  기억과 같은 모듈 경로(`relative()`/`step()`)를 쓴다. 새 상수는 넣지 않았다.
+  끈 상태에서는 저장소를 만들지 않고 트레이스 필드도 추가하지 않는다.
+* 재관측 오차는 평가 전용으로 매 틱 기록했다: 이송된 사전 위치 대 현재 자기
+  관측의 거리(`prior_error_m`), 갱신 뒤 기억 대 관측(`residual_m`).
+
+### 실행 (gcp4, 같은 world02, sim 15.7 s)
+
+| run | 상태 | wall s | 도착/충돌 | memory trace sha256 |
+|---|---|---:|---|---|
+| `wallmem-00-off` (끔) | ALL_WORLDS_DONE | 186.6 | 1/1, 0 | `7a3b46cf…ee51b5b` |
+| `wallmem-00-off-repeat` (같은 명령 반복) | ALL_WORLDS_DONE | 186.7 | 1/1, 0 | `7eb09021…cb1544c5` |
+| `wallmem-01` (켬) | ALL_WORLDS_DONE | 185.8 | 1/1, 0 | `26ebb68e…8d04317` |
+
+### 끈 경로 동일성 (해시 비교)
+
+* 사전 변경 원본(source eda35c6, mapbuild-02) trace sha256은
+  `e346e915…2bd5c3`이고, 새 source로 다시 낸 끔 실행은 `7a3b46cf…`로 **해시가
+  같지 않다.** 같은 명령을 한 번 더 돌린 반복 실행도 `7eb09021…`로 서로
+  다르다. 즉 이 VM에서 trace 파일 해시는 실행 간 물리 잡음 때문에 안정적이지
+  않다(같은 명령 반복에서도 pose가 row 1부터 갈라짐).
+* 대신 **제어 행동 열은 네 실행 모두 158/158 동일**하다: 사전 변경 원본 대
+  끔(158/158), 끔 대 반복(158/158), 끔 대 켬(158/158). pose 차이는 같은 명령
+  반복에서 median 1.5e-4 m·max 5.1e-3 m, 사전 원본 대비 median 2.3e-4 m·max
+  8.2e-3 m로 같은 크기다. 끈 트레이스 행 키도 사전 원본과 같다.
+* 따라서 끈 경로는 코드 수준에서 동일하고(저장소 미생성·필드 미추가, 단위
+  시험 `tests/test_egocentric_goto.py`가 끔/켬 action dict 동일을 확인),
+  파일 해시 불일치는 코드 변경이 아니라 실행 간 잡음으로 기록한다. 해시가
+  같다고 주장하지 않는다.
+
+### 벽 기억 결과 (wallmem-01)
+
+* 개수 추이: t=0에 1 → t=4.4에 12 → 끝까지 12(32슬롯 중 12). 관측 합계 156.
+* 재관측 144회: `prior_error_m` median 0.108·p90 0.187·max 0.799 m,
+  `residual_m` median 0.093·p90 0.180·max 0.331 m. 이벤트: created 12,
+  reobserved 144, association_gate_rejected 11, association_ambiguous 2.
+* 연속 관측된 벽(m12, 114회)만 보면 median prior 0.094·residual 0.092 m로
+  안정적이다. 짧게 보인 구간은 화면에서 보이는 벽 길이가 바뀌며 중점이
+  움직여 오차가 크다(m9 median 0.70 m). 이 값은 "이송 오차"가 아니라 중점
+  변동을 포함한 재관측 차이다.
+* 자기 RGB 스캔 구간은 155/158틱에서 기록됐다(평균 1.0·최대 2개/틱).
+* 입력 감사: `held_world_reads=0`, top camera/static map/truth control 0,
+  `wall_memory_control=0`. 정답은 영상 pose 라벨·도착 평가에만 썼다.
+
+### 영상
+
+* `/Users/changmin/projects/ugrp/outputs/egonav-wallmem/egonav-wallmem-replay-world00-15.7s.mp4`
+  sha256 `78bd4be1f8dd937dff4db650e60e16bc1b7167f34752538a638a1ed1971d80a1`,
+  947,731 B, 158프레임, 10 fps(1× SIM), 15.7 s. 왼쪽 자기 중심 기억 패널에서
+  목표 표시는 주황, 벽 기억 12개는 초록(불확실성 원 포함), 이번 틱 스캔
+  구간은 회색 선, 오른쪽은 자기 RGB다. 빌더 sha256 `c98809aa…7bfb0f`.
+* 요약: `experiments/2026-10-17-egonav/wallmem-summary.json`.
+* VM 원본: `/home/ugrp/ugrp-sim/runs/egonav/wallmem-00-off`,
+  `wallmem-00-off-repeat`, `wallmem-01`(디스크 보존). gcp4는 리스 해제 후
+  TERMINATED 확인.
+* 주의: 영상은 시각화이며 성공 판정 근거가 아니다. 벽 기억은 이번 라운드에서
+  제어에 쓰지 않았고, world 1개·n=1 탐침이므로 gate-09/PR #583과 합산하지
+  않는다.

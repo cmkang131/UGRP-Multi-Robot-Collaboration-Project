@@ -1,0 +1,148 @@
+{
+  "schema": "ugrp.egonav.wallmem.summary.v1",
+  "date": "2026-10-17",
+  "task": "egonav wall/terrain memory storage probe and replay (single world, nworld=1)",
+  "branch": "claude/egonav-mem",
+  "source_sha": "a354533a8a84c1492f62f018a38a4ae242d05123",
+  "base_branch": "claude/egonav",
+  "base_branch_sha": "75cbd9ade2d6a5e849835320ad5c08166134ab79",
+  "branch_note": "PR #583 was still open (unmerged) when this branch was cut, so claude/egonav-mem was branched from origin/claude/egonav 75cbd9ade; origin/main did not contain #583.",
+  "toggle": "egonav_wall_memory_v1",
+  "control_use": false,
+  "control_inputs_unchanged": true,
+  "no_pooling": true,
+  "not_pooled_with": ["gate-09", "PR #583"],
+  "queue": {
+    "on": "experiments/2026-10-17-egonav/queue-wallmem-world02.json",
+    "off": "experiments/2026-10-17-egonav/queue-wallmem-off-world02.json",
+    "setup": "experiments/2026-10-17-egonav/gate-setup-wallmem-world02.json"
+  },
+  "stack_check": {
+    "on": {"path": "experiments/2026-10-17-egonav/stack_check_wallmem.json", "ok": true, "rows": 30, "schema": "ugrp.current_stack.check.v1"},
+    "off": {"path": "experiments/2026-10-17-egonav/stack_check_wallmem_off.json", "ok": true, "rows": 30, "schema": "ugrp.current_stack.check.v1"}
+  },
+  "rejection_table": {
+    "prior_funnel": "/home/ugrp/ugrp-sim/egonav/experiments/2026-10-17-egonav/rejection_table.gate09.json",
+    "run_funnel_local": "/Users/changmin/projects/ugrp/outputs/egonav-wallmem/rejection_table-wallmem-01.json",
+    "run_funnel_sha256": "506e2066dd74b7d27d487b8f3fa8f0edaa9e1d97fc61526b214769a78be3632b",
+    "funnel": "requested_n16 1 -> input_audit 1 -> target_observed 1 -> arrived_inside 1, rejected 0"
+  },
+  "world": {
+    "index": 2,
+    "spawn_r1": [2.75, 0.4, 0.0, 1.570796],
+    "step_budget": 400,
+    "sim_s": 15.7
+  },
+  "runs": [
+    {
+      "id": "wallmem-00-off",
+      "role": "off-path baseline with the new source",
+      "source_sha": "a354533a8a84c1492f62f018a38a4ae242d05123",
+      "status": "ALL_WORLDS_DONE",
+      "sim_s": 15.7,
+      "wall_s": 186.6,
+      "arrived_inside_zone_n": 1,
+      "collision_n": 0,
+      "memory_trace_sha256": "7a3b46cfd6f422616287568e024dbfdb482e2dce64aebb58a202d4e82ee51b5b",
+      "world00_sha256": "70a9027589599cf489864986da3e918e871060e7c3aa03928b38db3ffa5bedcf",
+      "summary_sha256": "d034ee0f352e0e3eec77cbe3032e632eab13365d5ce98a38dcab4f4897d62709",
+      "vm_raw": "/home/ugrp/ugrp-sim/runs/egonav/wallmem-00-off"
+    },
+    {
+      "id": "wallmem-00-off-repeat",
+      "role": "same-command repeat to measure run-to-run noise",
+      "source_sha": "a354533a8a84c1492f62f018a38a4ae242d05123",
+      "status": "ALL_WORLDS_DONE",
+      "sim_s": 15.7,
+      "wall_s": 186.7,
+      "arrived_inside_zone_n": 1,
+      "collision_n": 0,
+      "memory_trace_sha256": "7eb090214df901fc670b1482e7f2129ff82174ff93138842d36cdd57cb1544c5",
+      "world00_sha256": "b0c25f0f72187feeed985379f449261aa3bb9be7f14eab57de9d3c588da6ce35",
+      "summary_sha256": "a31062956e8b3880651085ba098be7127a22a9822a33b3694b0488061203df82",
+      "vm_raw": "/home/ugrp/ugrp-sim/runs/egonav/wallmem-00-off-repeat"
+    },
+    {
+      "id": "wallmem-01",
+      "role": "wall memory on (egonav_wall_memory_v1), recording/measurement only",
+      "source_sha": "a354533a8a84c1492f62f018a38a4ae242d05123",
+      "status": "ALL_WORLDS_DONE",
+      "sim_s": 15.7,
+      "wall_s": 185.8,
+      "arrived_inside_zone_n": 1,
+      "collision_n": 0,
+      "memory_trace_sha256": "26ebb68e6d196ba9890b517714f6f01753079a5454eb9c40675af54b98d04317",
+      "world00_sha256": "b6829c04b626fc6ca213ef98207d51677b539634bedcbddf50329c23043bb595",
+      "summary_sha256": "5305ed3033c44c23228e66cc8f4a356dcd4834368a432eff266f2149df517b9d",
+      "vm_raw": "/home/ugrp/ugrp-sim/runs/egonav/wallmem-01"
+    }
+  ],
+  "off_identity": {
+    "pre_change_source_sha": "eda35c687c77db3a548cc838702df725700d07a9",
+    "pre_change_memory_trace_sha256": "e346e915227b1951bcf7bd8c7bc370dbd047ed9ce1ea4d2d274e0f125f2bd5c3",
+    "trace_hash_equal": false,
+    "repeat_hash_equal": false,
+    "hash_note": "The memory-trace file hash is not stable across runs on this VM: the same command run twice differs (7a3b46cf vs 7eb09021) because the physics pose wobbles at ~1e-4 m (median; max 5.1e-3 m) from row 1 on. The pre-change run differs by the same order (median 2.3e-4, max 8.2e-3).",
+    "action_sequence_identical": {
+      "pre_change_vs_off_new": "158/158",
+      "off_new_vs_repeat": "158/158",
+      "off_new_vs_wall_on": "158/158"
+    },
+    "trace_row_keys_identical_off_new_vs_pre_change": true,
+    "pose_delta_m": {
+      "pre_change_vs_off_new": {"n": 474, "median": 2.29e-4, "p90": 1.60e-3, "max": 8.23e-3},
+      "off_new_vs_repeat": {"n": 474, "median": 1.52e-4, "p90": 1.13e-3, "max": 5.10e-3},
+      "off_new_vs_wall_on": {"n": 474, "median": 2.52e-4, "p90": 3.43e-3, "max": 2.92e-2}
+    },
+    "conclusion": "with egonav_wall_memory_v1 off the control action sequence is identical to the pre-change run and to a same-command repeat (158/158); the file-level trace hash differs only within the measured run-to-run physics noise, not by a code-path change (off constructs no wall store and adds no trace fields)"
+  },
+  "wall_memory": {
+    "kind": "wall_segment",
+    "signature": "own_rgb_wall_segment",
+    "store": "vendored LandmarkMemory, separate instance, MemoryOptions(implementation='legacy_v1') defaults (32 slots, 6 m, chi2 99)",
+    "transport": "own command delta + motion_variance + module relative()",
+    "count_series": {"t0": 1, "first_12_at_t": 4.4, "final": 12, "slots": 32},
+    "observation_sum": 156,
+    "reobservation_n": 144,
+    "prior_error_m": {"n": 144, "median": 0.1078, "p90": 0.1868, "max": 0.799},
+    "residual_m": {"n": 144, "median": 0.0925, "p90": 0.1795, "max": 0.3312},
+    "events": {"created": 12, "reobserved": 144, "association_gate_rejected": 11, "association_ambiguous": 2},
+    "persistent_segment": {"memory_id": "m12", "observations": 114, "reobservation_n": 113, "prior_error_median_m": 0.0935, "residual_median_m": 0.0916},
+    "scan_segments": {"rows_with_segments": 155, "rows": 158, "mean_per_row": 1.0, "max_per_row": 2},
+    "error_note": "prior_error_m is the transported memory versus the current own-RGB midpoint observation; segment midpoints move when the visible wall extent changes, so short-lived segments show larger errors (m9 median 0.70 m) than the continuously observed m12 (0.09 m)."
+  },
+  "input_audit": {
+    "held_world_reads": 0,
+    "top_camera_control": false,
+    "static_map_control": 0,
+    "truth_control": 0,
+    "wall_memory_control": 0,
+    "invisible_measurements": 0,
+    "own_rgb_frames": 158,
+    "own_command_rows": 158,
+    "truth_use": "replay pose label and arrival evaluation only"
+  },
+  "video": {
+    "builder": "scripts/egonav_memory_replay.py",
+    "builder_sha256": "c98809aab1ee9bcdcfb62f394c464f8c744e7dcaabfd8378d64219f9db7bfb0f",
+    "frames": 158,
+    "fps": 10,
+    "sim_seconds": 15.7,
+    "layout": "left ego-centric memory (goal amber, wall_segment green, scan segments grey), right own RGB",
+    "path": "/Users/changmin/projects/ugrp/outputs/egonav-wallmem/egonav-wallmem-replay-world00-15.7s.mp4",
+    "sha256": "78bd4be1f8dd937dff4db650e60e16bc1b7167f34752538a638a1ed1971d80a1",
+    "bytes": 947731
+  },
+  "mac_artifacts": "/Users/changmin/projects/ugrp/outputs/egonav-wallmem/",
+  "vm": {
+    "host": "ugrp-act-l4-gcp4",
+    "project": "ugrp-sim-d-1016",
+    "account": "changmin5781@gmail.com",
+    "renderer": "/home/ugrp/ugrp-sim/src/41584d3a1-warp10-pool",
+    "python": "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+    "checkout": "/home/ugrp/ugrp-sim/egonav",
+    "lease": "/home/ugrp/ugrp-sim/leases/egonav.json",
+    "lease_released": true,
+    "vm_stopped": true
+  }
+}
