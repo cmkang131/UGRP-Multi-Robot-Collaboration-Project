@@ -1,0 +1,215 @@
+{
+  "schema": "ugrp.beamact5.validation_record.v1",
+  "candidate": "beamact5_r2",
+  "gate_id": "beamact5-teacher-gate-r2",
+  "scope": "6-world known-failure validation subset of the frozen 40-start plan after the r2 fix bundle. This is NOT the 40-run gate: planned_N=6, gate_eligible=false, training RGB off. The full r2 gate was not run because at best it could reach 36/40 (below the pre-registered min 38) until the remaining causes are fixed.",
+  "host": "ugrp-act-l4-gcp6",
+  "run_date": "2026-10-17",
+  "source": {
+    "root": "c997c3a884d770bae232fa9a78d053fc063008ce",
+    "adapter": "036d04abcada6a3f067ffb281879bba1424f39ab",
+    "teacher": "85b992140ac56856e944f519e0e316fbe8d7fde0"
+  },
+  "profile": {
+    "search23_rects": "search23_batched_rects_v1",
+    "search26_circles": "search26_downfirst_circles_v1",
+    "search26_static_peer": "search26_static_peer_stance_v1"
+  },
+  "plan": {
+    "cases_path": "/home/ugrp/ugrp-sim/runs/beamact5/wide-start-8420000d-r2/wide-cases.json",
+    "cases_sha256": "24903b6950a5f41ae0e256543589a05e61461bb35c2707c82348de9b0f392a43",
+    "plan_path": "/home/ugrp/ugrp-sim/runs/beamact5/wide-start-8420000d-r2/wide-gate-plan.json",
+    "plan_sha256": "f1a50e8c833c1da9113bdf8cff3844913380e3c821b15c072c0a23c0f54f5148",
+    "plan_identity": "byte-identical to the r1 plan; cases differ only in the candidate field"
+  },
+  "world_indices": [6, 10, 15, 20, 27, 37],
+  "seeds": [8420006, 8420010, 8420015, 8420020, 8420027, 8420037],
+  "summary": {
+    "status": "complete",
+    "planned_N": 6,
+    "started_N": 6,
+    "completed_N": 6,
+    "success_n": 2,
+    "cap_end": 1,
+    "HOST_ERROR": 0,
+    "gate_eligible": false,
+    "training_rgb": false,
+    "weld": "off",
+    "gcp6_isolated_v1": true,
+    "cpu_results_pooled": false,
+    "wall_s": 2010.825050705,
+    "timing": {
+      "render_s": 19.741187862997776,
+      "readback_remap_jpeg_kinematics_s": 18.734032424998077,
+      "command_decode_upload_s": 0.7043706540025596,
+      "physics_s": 693.3887103600116
+    },
+    "first30_speed": {
+      "batch_per_world_wall_over_sim": 5.866,
+      "task_wall_over_sim": 7.125,
+      "batch_wall_s": 32.93,
+      "batch_sim_s": 35.20,
+      "speed_gate_fail": false,
+      "note": "record-only; block threshold >6.0, warning >3.5. Per-world first30 wall/SIM including initialization was about 36.1-37.1; that number includes initialization and is not the batch metric."
+    }
+  },
+  "outcomes": [
+    {
+      "world": 6,
+      "episode_index": 0,
+      "seed": 8420006,
+      "result": "FAIL",
+      "end_reason": "cap_end",
+      "sim_s": 60.0,
+      "teacher_terminal": false,
+      "handoff": true,
+      "evidence": {
+        "goal_set_rows": 2,
+        "rows": [
+          {"t": 56.1, "candidates": 209, "selected": null},
+          {"t": 59.5, "candidates": 1, "selected_offset_deg": 0.0, "selected_distance_m": 0.203, "reason": "feasible"}
+        ],
+        "r1_phase": "approach",
+        "r1_outcome": "episode_timeout",
+        "r2_phase": "ready"
+      },
+      "mechanism": "The static-peer goal-set path engaged only at 56.1 SIM s and produced the first feasible stance at 59.5 SIM s, leaving 0.5 SIM s before the 60 s cap. Earlier peer_wait/reobserve time (through the encounter deadline at 47.9 s) was spent before the goal set was entered.",
+      "round3_candidate": "engage the static-peer goal set at the first peer_wait/encounter deadline instead of after the late fresh peer observation; re-validate worlds 6 and all 34 previously passing worlds for regressions"
+    },
+    {
+      "world": 10,
+      "episode_index": 1,
+      "seed": 8420010,
+      "result": "PASS",
+      "end_reason": "teacher_terminal",
+      "sim_s": 45.6,
+      "teacher_terminal": true,
+      "joint_held": true,
+      "fix": "search26_downfirst_circles_v1",
+      "note": "r1 failed with cap_end at 60 s; r2 confirms the down-first circle fix."
+    },
+    {
+      "world": 15,
+      "episode_index": 2,
+      "seed": 8420015,
+      "result": "FAIL",
+      "end_reason": "planning_wall_safety_cap",
+      "sim_s": 6.4,
+      "teacher_terminal": false,
+      "evidence": {
+        "goal_set_rows": 46,
+        "candidate_rejections": {"blocked_goal": 3949, "ik_unreachable": 60, "gripper_angle": 128, "endpoint_feasible": 12, "feasible": 3},
+        "best_cyan_1_gap_m": 0.01494,
+        "best_cyan_1_stance": {"offset_deg": 15.0, "distance_m": 0.1992},
+        "observed_margin_m": 0.01875,
+        "margin_basis": "FRESH_MARGIN_M 0.005 + K*sigma, K=3.034854, sigma=hypot(0.002, 2r/622.1654818748) at the observation distance"
+      },
+      "mechanism": "The direct end reason is still the host planning safety cap (a planning tick exceeded 30 wall s), not a final stance decision; the batched-rect fix removed the earlier 30 s exhaustion path but a remaining expensive planning path still exceeds the cap at 6.4 SIM s. The stance ledger shows a feasible-ish cyan_1 clearance: 14.94 mm, while the observed fresh margin was 18.75 mm. At the measurement floor the margin is 11.07 mm, so a close fresh observation (within about 0.81 m) could clear this stance. The safe fix is to find/batch the remaining expensive planning path first, not to change the cap or the margin constant.",
+      "round3_candidate": "identify the remaining 30 wall-s planning tick (sampled/full-pose or wall-layer path) and batch it like search23_batched_rects_v1; then re-check the cyan_1 stance with a close fresh observation"
+    },
+    {
+      "world": 20,
+      "episode_index": 3,
+      "seed": 8420020,
+      "result": "PASS",
+      "end_reason": "teacher_terminal",
+      "sim_s": 44.4,
+      "teacher_terminal": true,
+      "joint_held": true,
+      "fix": "search26_downfirst_circles_v1",
+      "note": "r1 failed with peer_search_handoff+search_timeout_handoff; r2 confirms the down-first circle fix."
+    },
+    {
+      "world": 27,
+      "episode_index": 4,
+      "seed": 8420027,
+      "result": "FAIL",
+      "end_reason": "teacher_terminal",
+      "sim_s": 21.8,
+      "teacher_terminal": false,
+      "handoff": true,
+      "r1_phase": "approach",
+      "r1_outcome": "approach_blocked_handoff",
+      "evidence": {
+        "goal_set_rows": 147,
+        "candidate_rejections": {"blocked_goal": 12162, "ik_unreachable": 60, "gripper_angle": 128, "endpoint_feasible": 111, "feasible": 19},
+        "blocked_object": "red_1",
+        "stale_margin_m": [0.04626, 0.0521],
+        "stance_gap_m": 0.0467,
+        "fresh_floor_margin_m": 0.01107,
+        "reobserves": [
+          {"t": 2.8, "kind": "obstacle", "target": "red_1", "retreat_first": true, "end_t": 3.4, "end_reason": "retreat_bounded_replan", "elapsed_s": 0.6, "note": "retreat-first path ends at the 0.6 s boundary and never reaches the camera/body view attempts; the target stays unseen"},
+          {"t": 14.9, "kind": "obstacle", "target": "red_1", "retreat_first": false, "end_t": 14.9, "end_reason": "wall_layer_hit_miss_replan", "elapsed_s": 0.0, "note": "wall-layer activation in the adapter's _plan_approach aborts the just-started obstacle reobserve on the same tick"}
+        ],
+        "feasibility_oscillation": {
+          "selected_feasible_ticks": [15.1, 17.6, 18.1, 20.6, 20.9],
+          "all_blocked_ticks": [15.0, 16.0, 17.0, 19.0, 20.0, 21.0, 22.0, 23.0],
+          "counts": "92/92 blocked_goal at the all-blocked ticks"
+        }
+      },
+      "mechanism": "The nominal stance is clear by 46.7 mm, but the red_1 memory margin (46.3-52.1 mm) exceeds it whenever red_1 is not freshly measured. The goal set alternates between a feasible stance (fresh measurement) and all-blocked (memory inflation) and never progresses. The stale-cargo reobserve that would refresh it is aborted at elapsed 0.0 by wall-layer activation, and the earlier retreat-first reobserve never reaches its view attempts because it finishes at the retreat boundary. The fresh-measurement floor margin (11.07 mm) is far below the 46.7 mm gap, so this world is rescuable by perception/ordering fixes, not by changing the margin constant.",
+      "round3_candidate": "do not abort a just-started obstacle reobserve when the wall layer activates (or only abort wall-target reobserves); let retreat_first proceed to the camera/body views after the retreat; keep red_1 to >=5 visible probes through the approach motion"
+    },
+    {
+      "world": 37,
+      "episode_index": 5,
+      "seed": 8420037,
+      "result": "FAIL",
+      "end_reason": "teacher_terminal",
+      "sim_s": 57.5,
+      "teacher_terminal": false,
+      "handoff": false,
+      "r1_phase": "approach",
+      "r1_outcome": "approach_blocked_handoff",
+      "evidence": {
+        "goal_set_rows": 63,
+        "candidate_rejections": {"blocked_goal": 5786, "ik_unreachable": 180, "gripper_angle": 384},
+        "best_cyan_1_gap_m": 0.00487,
+        "best_cyan_1_stance": {"offset_deg": -15.0, "distance_m": 0.2092},
+        "fresh_floor_margin_m": 0.01107,
+        "admission": {"free_goal_N": 12, "blocked_object": "cyan_1", "min_gap_m": 0.0}
+      },
+      "mechanism": "Under the nominal sampled +/-15-degree stance set the best cyan_1 clearance is 4.87 mm, below even the measurement-floor margin of 11.07 mm (5 mm + 3.03*sigma with sigma>=2 mm). This stance set is therefore structurally blocked by the runtime margin, not by a fixable reobserve: the admission filter accepted this assigned end with 12 certified poses at only >=5 mm clearance. The 91-pose certified family may contain poses with larger clearance, but the runtime goal set did not evaluate/settle on them.",
+      "round3_candidate": "do not try to fix this with a controller tweak; either evaluate the full certified family under the runtime margin (sampled-stance coverage) or escalate the admission/runtime-margin mismatch for a start-set decision. This world is the expected remaining failure if only 6, 15 and 27 are fixed."
+    }
+  ],
+  "structural_finding": {
+    "admission": "warp_flow_admission.certify (setup only) accepts an assigned end if free_goal_N>0 certified poses have body clearance >= FRESH_MARGIN_M (5 mm); it records min_gap_m, not the full clearance distribution.",
+    "runtime": "the teacher rejects a pose when gap < FRESH_MARGIN_M + K*sigma, where sigma includes the 2 px/2 mm observation floor and propagated command covariance; the floor margin is 0.01107 m.",
+    "mismatch": "3 of the 40 immutable starts (worlds 15, 27, 37) were admitted with at least one certified pose at min_gap_m 0.0, below the runtime floor margin. Worlds 15 and 27 have rescuable stances (14.94 mm and 46.7 mm clearances, respectively); world 37's sampled best is 4.87 mm and is not rescuable without a closer look that changes the estimate or a different certified pose.",
+    "decision_needed": "whether to keep the immutable 40 starts (accept world 37 as the expected remaining failure and require the other 39 to pass 38+) or re-admit starts with a margin-aware criterion / evaluate the full certified family. Re-admission would change the pre-registered start set and must not be pooled with the r1/r2 starts."
+  },
+  "gate_arithmetic": {
+    "r1_success": "34/40 (failures 6, 10, 15, 20, 27, 37)",
+    "r2_fixed": [10, 20],
+    "r2_expected_if_gate_run": "36/40 (not run)",
+    "needed_for_min_38": "fix any two of {6, 15, 27, 37}; 6, 15 and 27 are the plausible fixes, 37 is structurally blocked under the current sampled set",
+    "best_case": "39/40 with only world 37 failing; any regression in a previously passing world would drop below 38"
+  },
+  "raw": {
+    "path": "/home/ugrp/ugrp-sim/runs/beamact5/validation-r2-6",
+    "size": "603M",
+    "persistent_disk": true,
+    "mac_retrieved": "summary and hashes only; heavy raw remains on the VM disk",
+    "files": {
+      "summary.json": "e2417ecde2e6a0daaec3eee63124f8a3566ed9140406c1d6f16d1f9887f300da",
+      "first30-speed.json": "a24b6014300645bf279cfbdaca8bb86bd3627e7b10f60a9bf025b8a4f8d79172",
+      "progress.json": "e61b4dc30d8e6e2f7735219956ee8154f8ceaecad57ebe57807bb6aa522b6e90",
+      "artifact-sha256.json": "6eed73f8c13cbf2bac0c074a9140a08caa76e4380b28e601dfaa8c2143592217",
+      "world-000/raw/result.json.zst": "962127148d17c2619c513f8c4b6df85052d7e9f430cc43c44fdd5e5c1a92fe42",
+      "world-001/raw/result.json": "69ff00285a706d05c07de9204478e71d8874db45261037f7cb62d98237f20fae",
+      "world-002/raw/result.json.zst": "15b7273da31df7ebf9d489a5e248ba998138221c957f23971709091494d45dd9",
+      "world-003/raw/result.json": "1e886f4ee06d41df2dc0e31663b27cc2d6320990ffa767e931837d8e745cd1c7",
+      "world-004/raw/result.json.zst": "a5543592fc6a933dbf5aebe5a35fa52547ccfd238c7413d4a7f14c6b086d5ae7",
+      "world-005/raw/result.json.zst": "74d25e387282e656a0d4da6797658eea7de706df02fcbc36d4b4a3aeb950807b"
+    },
+    "vm_state": "lease beamact5-teacher-gate-r2.json released; no run process; GPU 0%; instance stopped TERMINATED after the run; disk preserved"
+  },
+  "not_claimed": [
+    "This is not a 40-run gate result and is not pooled with r1.",
+    "Teacher success is not student success; no student camera recording and no ACT training were done (user instruction 2026-10-17 21:03).",
+    "No margin, cap, or clearance constant was changed.",
+    "Witness and C-profile replay checks are out of scope here.",
+    "The full r2 gate was not run; the 36/40 arithmetic is based on the r2 fixes plus the r1 pass/fail set and the 6-world validation."
+  ]
+}

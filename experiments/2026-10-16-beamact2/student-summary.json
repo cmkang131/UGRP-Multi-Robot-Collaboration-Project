@@ -1,0 +1,1450 @@
+{
+  "schema": "ugrp.beamact2.summary.v1",
+  "host": {
+    "project": "ugrp-sim-b-1014",
+    "instance": "ugrp-sim-gcp2",
+    "machine_type": "n4-highcpu-64",
+    "zone": "asia-northeast3-a"
+  },
+  "n": 0,
+  "N": 20,
+  "attempted": 20,
+  "independent_joint_hold_n": 0,
+  "unrestricted_joint_hold_n": 3,
+  "complete": true,
+  "completed": 20,
+  "not_started": 0,
+  "analysis_source_sha": "24222c51e86c938799e7619290734db8e530a3f4",
+  "verdict": "NOT_READY",
+  "source_sha": "24222c51e86c938799e7619290734db8e530a3f4",
+  "model_sha256": "f7b2e195833555fa7b66e413200c40caad584677245b4346a98d5bd91336a2ac",
+  "runs": [
+    {
+      "seed": 8329000,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact2/heldout20-v1/seed-8329000",
+      "result_sha256": "6a7cde4e10127921c1f962aa730c95bc6c3acf53a4bb5f04ce936f0f5aba0a5e",
+      "status": "complete",
+      "complete": true,
+      "cap_end": true,
+      "physical_success": false,
+      "category": "cap_end",
+      "done_times": {},
+      "input_audit": {
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "requests": 1200,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "top": 0,
+        "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+      },
+      "protocol_replay": {
+        "passed": true,
+        "command_rows": 1200,
+        "inference_chunks": 150,
+        "command_mismatches": 0,
+        "issued_history_mismatches": 0,
+        "protocol_event_mismatches": 0,
+        "scope": "serialized own inputs/chunks to issued commands only; no physics/model inference replay"
+      },
+      "funnel": {
+        "first_pass_sim_t": {
+          "approach": 5.500000000000976
+        },
+        "cumulative_run_pass": {
+          "approach": 1,
+          "alignment": 0,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "frames_pass": {
+          "approach": 563,
+          "alignment": 0,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "frames_rejected": {
+          "approach": 37,
+          "alignment": 563,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "failure_stage": "alignment"
+      },
+      "raw_eval_sha256": "a878f593b24417824104624d2e84e2d26534be27b1757a8bef84a7d84b8f01a2",
+      "commands_sha256": "7eb2194ce24579f48d20c18ef1773bf3d970674f29c3dc63663d5b0f1ef6f6e2",
+      "command_rows": 1200,
+      "max_stable_hold_s": 0.0,
+      "max_unrestricted_stable_hold_s": 0.0,
+      "final_target_finger_min_gap_m": -0.0009318672025963605,
+      "raw_independent_stage_frames": {
+        "approach": 563,
+        "alignment": 0,
+        "READY": 595,
+        "grasp": 0,
+        "lift_3s": 0
+      }
+    },
+    {
+      "seed": 8329001,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact2/heldout20-v1/seed-8329001",
+      "result_sha256": "8a3afb48da0fd2402023211e76ba6882040d48e8f74591f75854d7787f8f9000",
+      "status": "complete",
+      "complete": true,
+      "cap_end": true,
+      "physical_success": false,
+      "category": "cap_end",
+      "done_times": {},
+      "input_audit": {
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "requests": 1200,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "top": 0,
+        "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+      },
+      "protocol_replay": {
+        "passed": true,
+        "command_rows": 1200,
+        "inference_chunks": 150,
+        "command_mismatches": 0,
+        "issued_history_mismatches": 0,
+        "protocol_event_mismatches": 0,
+        "scope": "serialized own inputs/chunks to issued commands only; no physics/model inference replay"
+      },
+      "funnel": {
+        "first_pass_sim_t": {},
+        "cumulative_run_pass": {
+          "approach": 0,
+          "alignment": 0,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "frames_pass": {
+          "approach": 0,
+          "alignment": 0,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "frames_rejected": {
+          "approach": 600,
+          "alignment": 0,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "failure_stage": "approach"
+      },
+      "raw_eval_sha256": "1a5fe26031cbba8ca00ecf3264fd5e76732415dfb1915ce6f5493f18a2915761",
+      "commands_sha256": "9f8ee210eb96939bf12806afdd00a3fe6b2e5c9197ab016aaa7ebabd4ab16458",
+      "command_rows": 1200,
+      "max_stable_hold_s": 0.0,
+      "max_unrestricted_stable_hold_s": 0.0,
+      "final_target_finger_min_gap_m": 0.11209781869923507,
+      "raw_independent_stage_frames": {
+        "approach": 0,
+        "alignment": 0,
+        "READY": 592,
+        "grasp": 0,
+        "lift_3s": 0
+      }
+    },
+    {
+      "seed": 8329002,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact2/heldout20-v1/seed-8329002",
+      "result_sha256": "d9172e3a5bf7f2478d159ef017c0b0ee9d487607b931d7f8bf7d0d0532a363ad",
+      "status": "complete",
+      "complete": true,
+      "cap_end": true,
+      "physical_success": false,
+      "category": "cap_end",
+      "done_times": {},
+      "input_audit": {
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "requests": 1200,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "top": 0,
+        "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+      },
+      "protocol_replay": {
+        "passed": true,
+        "command_rows": 1200,
+        "inference_chunks": 150,
+        "command_mismatches": 0,
+        "issued_history_mismatches": 0,
+        "protocol_event_mismatches": 0,
+        "scope": "serialized own inputs/chunks to issued commands only; no physics/model inference replay"
+      },
+      "funnel": {
+        "first_pass_sim_t": {},
+        "cumulative_run_pass": {
+          "approach": 0,
+          "alignment": 0,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "frames_pass": {
+          "approach": 0,
+          "alignment": 0,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "frames_rejected": {
+          "approach": 600,
+          "alignment": 0,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "failure_stage": "approach"
+      },
+      "raw_eval_sha256": "5cc1a64333192a9b6c87d0b6dcb6245509dca31eace0089efc6afe64a59ae426",
+      "commands_sha256": "cccf1e947bbec5f60bf2065c60fbf7409017039dbbf55dde4b8bda2b18d59c5a",
+      "command_rows": 1200,
+      "max_stable_hold_s": 0.0,
+      "max_unrestricted_stable_hold_s": 0.0,
+      "final_target_finger_min_gap_m": 0.1070431263466628,
+      "raw_independent_stage_frames": {
+        "approach": 0,
+        "alignment": 0,
+        "READY": 596,
+        "grasp": 0,
+        "lift_3s": 0
+      }
+    },
+    {
+      "seed": 8329003,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact2/heldout20-v1/seed-8329003",
+      "result_sha256": "56abd1754714dbb35386f4a6dda0b71248f7ae5f55990414cb64628ae0e4015b",
+      "status": "complete",
+      "complete": true,
+      "cap_end": true,
+      "physical_success": false,
+      "category": "cap_end",
+      "done_times": {
+        "r1": 20.400000000006393
+      },
+      "input_audit": {
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "requests": 1200,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "top": 0,
+        "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+      },
+      "protocol_replay": {
+        "passed": true,
+        "command_rows": 1200,
+        "inference_chunks": 99,
+        "command_mismatches": 0,
+        "issued_history_mismatches": 0,
+        "protocol_event_mismatches": 0,
+        "scope": "serialized own inputs/chunks to issued commands only; no physics/model inference replay"
+      },
+      "funnel": {
+        "first_pass_sim_t": {
+          "approach": 4.2999999999995095,
+          "alignment": 13.999999999990047,
+          "READY": 13.999999999990047
+        },
+        "cumulative_run_pass": {
+          "approach": 1,
+          "alignment": 1,
+          "READY": 1,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "frames_pass": {
+          "approach": 575,
+          "alignment": 56,
+          "READY": 478,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "frames_rejected": {
+          "approach": 25,
+          "alignment": 519,
+          "READY": 0,
+          "grasp": 478,
+          "lift_3s": 0
+        },
+        "failure_stage": "grasp"
+      },
+      "raw_eval_sha256": "2e232a1aab4b358e272f704029fb55e5cd28c957137b7034ac6266571d4f8f03",
+      "commands_sha256": "cfc9f36afb33a34465fd5ea2f2b6381a03825779d520030d040687c798333bd8",
+      "command_rows": 1200,
+      "max_stable_hold_s": 0.0,
+      "max_unrestricted_stable_hold_s": 0.0,
+      "final_target_finger_min_gap_m": -0.0010214775266236319,
+      "raw_independent_stage_frames": {
+        "approach": 575,
+        "alignment": 56,
+        "READY": 594,
+        "grasp": 0,
+        "lift_3s": 0
+      }
+    },
+    {
+      "seed": 8329004,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact2/heldout20-v1/seed-8329004",
+      "result_sha256": "cb35447364a0c9b0c63eb118a5ea2c70c6fe2be8e94497353bfa4379a9d9402f",
+      "status": "complete",
+      "complete": true,
+      "cap_end": true,
+      "physical_success": false,
+      "category": "cap_end",
+      "done_times": {
+        "r1": 33.20000000006751
+      },
+      "input_audit": {
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "requests": 1200,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "top": 0,
+        "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+      },
+      "protocol_replay": {
+        "passed": true,
+        "command_rows": 1200,
+        "inference_chunks": 114,
+        "command_mismatches": 0,
+        "issued_history_mismatches": 0,
+        "protocol_event_mismatches": 0,
+        "scope": "serialized own inputs/chunks to issued commands only; no physics/model inference replay"
+      },
+      "funnel": {
+        "first_pass_sim_t": {
+          "approach": 6.300000000001954
+        },
+        "cumulative_run_pass": {
+          "approach": 1,
+          "alignment": 0,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "frames_pass": {
+          "approach": 555,
+          "alignment": 0,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "frames_rejected": {
+          "approach": 45,
+          "alignment": 555,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "failure_stage": "alignment"
+      },
+      "raw_eval_sha256": "99eb127c0916bb1c6ee4769bf7fbcf84a75aacbe77f5ebc2c46866c6e350a4a7",
+      "commands_sha256": "f9b041ef1f500ce073faf3fa391622a03c14d91820cc851a6360c94326787f72",
+      "command_rows": 1200,
+      "max_stable_hold_s": 0.0,
+      "max_unrestricted_stable_hold_s": 0.0,
+      "final_target_finger_min_gap_m": -0.0009241041905863234,
+      "raw_independent_stage_frames": {
+        "approach": 555,
+        "alignment": 0,
+        "READY": 598,
+        "grasp": 0,
+        "lift_3s": 0
+      }
+    },
+    {
+      "seed": 8329005,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact2/heldout20-v1/seed-8329005",
+      "result_sha256": "73e6258df0761f1a5bac777cfd798bbb9eb062130ba1545ef008c3621981ecd2",
+      "status": "complete",
+      "complete": true,
+      "cap_end": true,
+      "physical_success": false,
+      "category": "cap_end",
+      "done_times": {},
+      "input_audit": {
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "requests": 1200,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "top": 0,
+        "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+      },
+      "protocol_replay": {
+        "passed": true,
+        "command_rows": 1200,
+        "inference_chunks": 151,
+        "command_mismatches": 0,
+        "issued_history_mismatches": 0,
+        "protocol_event_mismatches": 0,
+        "scope": "serialized own inputs/chunks to issued commands only; no physics/model inference replay"
+      },
+      "funnel": {
+        "first_pass_sim_t": {},
+        "cumulative_run_pass": {
+          "approach": 0,
+          "alignment": 0,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "frames_pass": {
+          "approach": 0,
+          "alignment": 0,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "frames_rejected": {
+          "approach": 600,
+          "alignment": 0,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "failure_stage": "approach"
+      },
+      "raw_eval_sha256": "d479756979f71919536bb93e58ccc0cb244e39e4e71d311d88485057ec8f81e4",
+      "commands_sha256": "6f961e2fba646599a0ee0a5e1fc29603275b7cebea1ec9bd6e84959816d480fd",
+      "command_rows": 1200,
+      "max_stable_hold_s": 0.0,
+      "max_unrestricted_stable_hold_s": 0.0,
+      "final_target_finger_min_gap_m": 0.11063440895026361,
+      "raw_independent_stage_frames": {
+        "approach": 0,
+        "alignment": 0,
+        "READY": 597,
+        "grasp": 0,
+        "lift_3s": 0
+      }
+    },
+    {
+      "seed": 8329006,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact2/heldout20-v1/seed-8329006",
+      "result_sha256": "ebaecd21e9873772821d9969d5700f0a8732fd1e8cd4cb80a695859c39fc5792",
+      "status": "complete",
+      "complete": true,
+      "cap_end": true,
+      "physical_success": false,
+      "category": "cap_end",
+      "done_times": {},
+      "input_audit": {
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "requests": 1200,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "top": 0,
+        "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+      },
+      "protocol_replay": {
+        "passed": true,
+        "command_rows": 1200,
+        "inference_chunks": 150,
+        "command_mismatches": 0,
+        "issued_history_mismatches": 0,
+        "protocol_event_mismatches": 0,
+        "scope": "serialized own inputs/chunks to issued commands only; no physics/model inference replay"
+      },
+      "funnel": {
+        "first_pass_sim_t": {},
+        "cumulative_run_pass": {
+          "approach": 0,
+          "alignment": 0,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "frames_pass": {
+          "approach": 0,
+          "alignment": 0,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "frames_rejected": {
+          "approach": 600,
+          "alignment": 0,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "failure_stage": "approach"
+      },
+      "raw_eval_sha256": "f225d26872d19406114d105dc652cd8f9eaeee2589f848ea49369971b076a8ce",
+      "commands_sha256": "08f4c4709f69bc87f7cb176ef6532eddee4f4d2326e88b23481754d4a3d6a466",
+      "command_rows": 1200,
+      "max_stable_hold_s": 0.0,
+      "max_unrestricted_stable_hold_s": 0.0,
+      "final_target_finger_min_gap_m": 0.005375359496668705,
+      "raw_independent_stage_frames": {
+        "approach": 0,
+        "alignment": 0,
+        "READY": 596,
+        "grasp": 0,
+        "lift_3s": 0
+      }
+    },
+    {
+      "seed": 8329007,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact2/heldout20-v1/seed-8329007",
+      "result_sha256": "9b64e425f55c0063b45da0c6ce849e622eea0a89450b22736a1e00c1df28a5ab",
+      "status": "complete",
+      "complete": true,
+      "cap_end": true,
+      "physical_success": false,
+      "category": "cap_end",
+      "done_times": {},
+      "input_audit": {
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "requests": 1200,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "top": 0,
+        "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+      },
+      "protocol_replay": {
+        "passed": true,
+        "command_rows": 1200,
+        "inference_chunks": 151,
+        "command_mismatches": 0,
+        "issued_history_mismatches": 0,
+        "protocol_event_mismatches": 0,
+        "scope": "serialized own inputs/chunks to issued commands only; no physics/model inference replay"
+      },
+      "funnel": {
+        "first_pass_sim_t": {},
+        "cumulative_run_pass": {
+          "approach": 0,
+          "alignment": 0,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "frames_pass": {
+          "approach": 0,
+          "alignment": 0,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "frames_rejected": {
+          "approach": 600,
+          "alignment": 0,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "failure_stage": "approach"
+      },
+      "raw_eval_sha256": "38082032c03f8e1f876a257e646c7e4e8ca20fdf30960c925fdb7d2fa4a31e0a",
+      "commands_sha256": "dc20f3125fce52fe25b4127bc09a96edd4cc93d044d7cd6f0defb7c05a341754",
+      "command_rows": 1200,
+      "max_stable_hold_s": 0.0,
+      "max_unrestricted_stable_hold_s": 0.0,
+      "final_target_finger_min_gap_m": 0.08852086372041434,
+      "raw_independent_stage_frames": {
+        "approach": 0,
+        "alignment": 0,
+        "READY": 596,
+        "grasp": 0,
+        "lift_3s": 0
+      }
+    },
+    {
+      "seed": 8329008,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact2/heldout20-v1/seed-8329008",
+      "result_sha256": "10dada1362dac1a5f53b8eaf32fe34983314b89ecc72a5d705dcb77d23ce523c",
+      "status": "complete",
+      "complete": true,
+      "cap_end": true,
+      "physical_success": false,
+      "category": "cap_end",
+      "done_times": {},
+      "input_audit": {
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "requests": 1200,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "top": 0,
+        "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+      },
+      "protocol_replay": {
+        "passed": true,
+        "command_rows": 1200,
+        "inference_chunks": 150,
+        "command_mismatches": 0,
+        "issued_history_mismatches": 0,
+        "protocol_event_mismatches": 0,
+        "scope": "serialized own inputs/chunks to issued commands only; no physics/model inference replay"
+      },
+      "funnel": {
+        "first_pass_sim_t": {},
+        "cumulative_run_pass": {
+          "approach": 0,
+          "alignment": 0,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "frames_pass": {
+          "approach": 0,
+          "alignment": 0,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "frames_rejected": {
+          "approach": 600,
+          "alignment": 0,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "failure_stage": "approach"
+      },
+      "raw_eval_sha256": "739841eda7a3f3e2dc0900f8c247d543af31664ad23948982f5a1dcfcba4f734",
+      "commands_sha256": "7d914f45d6f110e6a7ee9a227435097a8e0e2871baee4c5efa444a8825f85205",
+      "command_rows": 1200,
+      "max_stable_hold_s": 0.0,
+      "max_unrestricted_stable_hold_s": 0.0,
+      "final_target_finger_min_gap_m": 0.10459620755563209,
+      "raw_independent_stage_frames": {
+        "approach": 0,
+        "alignment": 0,
+        "READY": 594,
+        "grasp": 0,
+        "lift_3s": 0
+      }
+    },
+    {
+      "seed": 8329009,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact2/heldout20-v1/seed-8329009",
+      "result_sha256": "1713ee9d3b1b6fb91be1671ba5c8b29352dbb18f397ce48330cc0da6d67d1da0",
+      "status": "complete",
+      "complete": true,
+      "cap_end": true,
+      "physical_success": false,
+      "category": "cap_end",
+      "done_times": {},
+      "input_audit": {
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "requests": 1200,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "top": 0,
+        "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+      },
+      "protocol_replay": {
+        "passed": true,
+        "command_rows": 1200,
+        "inference_chunks": 151,
+        "command_mismatches": 0,
+        "issued_history_mismatches": 0,
+        "protocol_event_mismatches": 0,
+        "scope": "serialized own inputs/chunks to issued commands only; no physics/model inference replay"
+      },
+      "funnel": {
+        "first_pass_sim_t": {
+          "approach": 2.999999999999697
+        },
+        "cumulative_run_pass": {
+          "approach": 1,
+          "alignment": 0,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "frames_pass": {
+          "approach": 588,
+          "alignment": 0,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "frames_rejected": {
+          "approach": 12,
+          "alignment": 588,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "failure_stage": "alignment"
+      },
+      "raw_eval_sha256": "6b2a53e5afeb504797958eb746b61b71962cd0f553259808decdb94a87f284d1",
+      "commands_sha256": "5b08e64605baad48853c80f54c3816cd3cfa62dae150cfccd9cced756c5a43d3",
+      "command_rows": 1200,
+      "max_stable_hold_s": 0.0,
+      "max_unrestricted_stable_hold_s": 0.0,
+      "final_target_finger_min_gap_m": -0.0009030901800010197,
+      "raw_independent_stage_frames": {
+        "approach": 588,
+        "alignment": 0,
+        "READY": 596,
+        "grasp": 0,
+        "lift_3s": 0
+      }
+    },
+    {
+      "seed": 8329010,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact2/heldout20-v1/seed-8329010",
+      "result_sha256": "81ed169513713895ec702c5dd2579c318145b5715ef9a6a3a4b40bba0bd66252",
+      "status": "complete",
+      "complete": true,
+      "cap_end": false,
+      "physical_success": false,
+      "category": "alignment",
+      "done_times": {
+        "r2": 15.099999999987483,
+        "r1": 17.599999999993024
+      },
+      "input_audit": {
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "requests": 380,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "top": 0,
+        "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+      },
+      "protocol_replay": {
+        "passed": true,
+        "command_rows": 380,
+        "inference_chunks": 38,
+        "command_mismatches": 0,
+        "issued_history_mismatches": 0,
+        "protocol_event_mismatches": 0,
+        "scope": "serialized own inputs/chunks to issued commands only; no physics/model inference replay"
+      },
+      "funnel": {
+        "first_pass_sim_t": {
+          "approach": 8.00000000000403
+        },
+        "cumulative_run_pass": {
+          "approach": 1,
+          "alignment": 0,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "frames_pass": {
+          "approach": 128,
+          "alignment": 0,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "frames_rejected": {
+          "approach": 62,
+          "alignment": 128,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "failure_stage": "alignment"
+      },
+      "raw_eval_sha256": "550f50134bde129e738dd6416d41515070c03b0c143a3c6b43436e38b31cf2e4",
+      "commands_sha256": "7823d8051d59e88b3b26b29eb76f1f592621eb1ab535124f6ac9802b182bd109",
+      "command_rows": 380,
+      "max_stable_hold_s": 0.0,
+      "max_unrestricted_stable_hold_s": 4.300000000020532,
+      "final_target_finger_min_gap_m": -0.0011202672592167296,
+      "raw_independent_stage_frames": {
+        "approach": 128,
+        "alignment": 0,
+        "READY": 187,
+        "grasp": 0,
+        "lift_3s": 0
+      }
+    },
+    {
+      "seed": 8329011,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact2/heldout20-v1/seed-8329011",
+      "result_sha256": "009f4e6204ab6bb41ae028167713bbadad1cf19fcd77d96f4dc6278c75cc9f55",
+      "status": "complete",
+      "complete": true,
+      "cap_end": false,
+      "physical_success": false,
+      "category": "alignment",
+      "done_times": {
+        "r1": 11.399999999996107,
+        "r2": 18.399999999996844
+      },
+      "input_audit": {
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "requests": 396,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "top": 0,
+        "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+      },
+      "protocol_replay": {
+        "passed": true,
+        "command_rows": 396,
+        "inference_chunks": 34,
+        "command_mismatches": 0,
+        "issued_history_mismatches": 0,
+        "protocol_event_mismatches": 0,
+        "scope": "serialized own inputs/chunks to issued commands only; no physics/model inference replay"
+      },
+      "funnel": {
+        "first_pass_sim_t": {
+          "approach": 8.7000000000024
+        },
+        "cumulative_run_pass": {
+          "approach": 1,
+          "alignment": 0,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "frames_pass": {
+          "approach": 129,
+          "alignment": 0,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "frames_rejected": {
+          "approach": 69,
+          "alignment": 129,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "failure_stage": "alignment"
+      },
+      "raw_eval_sha256": "9087047dd38166fc497f1b3316b2b5073ef4a84df6f9ab4cb1075f36f8eec74a",
+      "commands_sha256": "7ee4f04b4f1f7776ad3e7b0a9ad634d906f4952605771c1848ad02579f3022d0",
+      "command_rows": 396,
+      "max_stable_hold_s": 0.0,
+      "max_unrestricted_stable_hold_s": 4.500000000021487,
+      "final_target_finger_min_gap_m": -0.000988833476722492,
+      "raw_independent_stage_frames": {
+        "approach": 129,
+        "alignment": 0,
+        "READY": 194,
+        "grasp": 0,
+        "lift_3s": 0
+      }
+    },
+    {
+      "seed": 8329012,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact2/heldout20-v1/seed-8329012",
+      "result_sha256": "999be678fbd88a2b389d92aa9d1b85aafccaf566775dbde0d57c86fb19ecd4fe",
+      "status": "complete",
+      "complete": true,
+      "cap_end": true,
+      "physical_success": false,
+      "category": "cap_end",
+      "done_times": {},
+      "input_audit": {
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "requests": 1200,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "top": 0,
+        "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+      },
+      "protocol_replay": {
+        "passed": true,
+        "command_rows": 1200,
+        "inference_chunks": 151,
+        "command_mismatches": 0,
+        "issued_history_mismatches": 0,
+        "protocol_event_mismatches": 0,
+        "scope": "serialized own inputs/chunks to issued commands only; no physics/model inference replay"
+      },
+      "funnel": {
+        "first_pass_sim_t": {},
+        "cumulative_run_pass": {
+          "approach": 0,
+          "alignment": 0,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "frames_pass": {
+          "approach": 0,
+          "alignment": 0,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "frames_rejected": {
+          "approach": 600,
+          "alignment": 0,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "failure_stage": "approach"
+      },
+      "raw_eval_sha256": "2785744144f9dd4761729f3fce35560ea0cf5516ca5587a411ca48387243dff3",
+      "commands_sha256": "0f1cfd6526b31f6d76838bf16be0878ab04c818c3651ff0bbfce2977b0896b8b",
+      "command_rows": 1200,
+      "max_stable_hold_s": 0.0,
+      "max_unrestricted_stable_hold_s": 0.0,
+      "final_target_finger_min_gap_m": -0.0008535967567090619,
+      "raw_independent_stage_frames": {
+        "approach": 0,
+        "alignment": 0,
+        "READY": 597,
+        "grasp": 0,
+        "lift_3s": 0
+      }
+    },
+    {
+      "seed": 8329013,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact2/heldout20-v1/seed-8329013",
+      "result_sha256": "0cdcabe7636ddd64235c82628ae06e332f2a760b73f4b2aee7a58a9e90806dc4",
+      "status": "complete",
+      "complete": true,
+      "cap_end": false,
+      "physical_success": false,
+      "category": "alignment",
+      "done_times": {
+        "r1": 42.30000000011096,
+        "r2": 44.90000000012338
+      },
+      "input_audit": {
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "requests": 926,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "top": 0,
+        "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+      },
+      "protocol_replay": {
+        "passed": true,
+        "command_rows": 926,
+        "inference_chunks": 105,
+        "command_mismatches": 0,
+        "issued_history_mismatches": 0,
+        "protocol_event_mismatches": 0,
+        "scope": "serialized own inputs/chunks to issued commands only; no physics/model inference replay"
+      },
+      "funnel": {
+        "first_pass_sim_t": {
+          "approach": 6.900000000002687
+        },
+        "cumulative_run_pass": {
+          "approach": 1,
+          "alignment": 0,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "frames_pass": {
+          "approach": 412,
+          "alignment": 0,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "frames_rejected": {
+          "approach": 51,
+          "alignment": 412,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "failure_stage": "alignment"
+      },
+      "raw_eval_sha256": "72b8c6709e9e3fc1329505402c7a0a471cdb3708a156ecc669f482c1926259f8",
+      "commands_sha256": "d15e66fd38fb5d95333fa5ad5fb510473fb35905c7c9e9b75e4fa4e0746d5e37",
+      "command_rows": 926,
+      "max_stable_hold_s": 0.0,
+      "max_unrestricted_stable_hold_s": 3.8000000000181444,
+      "final_target_finger_min_gap_m": -0.0011225627717681291,
+      "raw_independent_stage_frames": {
+        "approach": 412,
+        "alignment": 0,
+        "READY": 460,
+        "grasp": 0,
+        "lift_3s": 0
+      }
+    },
+    {
+      "seed": 8329014,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact2/heldout20-v1/seed-8329014",
+      "result_sha256": "f44c644a6556a7e9aba9a09399decfdec4e96752e0af78e3a2de01aad95c3707",
+      "status": "complete",
+      "complete": true,
+      "cap_end": true,
+      "physical_success": false,
+      "category": "cap_end",
+      "done_times": {
+        "r2": 32.90000000006608
+      },
+      "input_audit": {
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "requests": 1200,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "top": 0,
+        "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+      },
+      "protocol_replay": {
+        "passed": true,
+        "command_rows": 1200,
+        "inference_chunks": 114,
+        "command_mismatches": 0,
+        "issued_history_mismatches": 0,
+        "protocol_event_mismatches": 0,
+        "scope": "serialized own inputs/chunks to issued commands only; no physics/model inference replay"
+      },
+      "funnel": {
+        "first_pass_sim_t": {},
+        "cumulative_run_pass": {
+          "approach": 0,
+          "alignment": 0,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "frames_pass": {
+          "approach": 0,
+          "alignment": 0,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "frames_rejected": {
+          "approach": 600,
+          "alignment": 0,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "failure_stage": "approach"
+      },
+      "raw_eval_sha256": "e9326b026e16bb01238f0fa70490fd0137157dd4623addba85846378f1677f76",
+      "commands_sha256": "f86617a3334b082e21bf7a0524c38a846561f996adcf2b6942af0a190c4b528c",
+      "command_rows": 1200,
+      "max_stable_hold_s": 0.0,
+      "max_unrestricted_stable_hold_s": 0.0,
+      "final_target_finger_min_gap_m": -0.0010890699223739017,
+      "raw_independent_stage_frames": {
+        "approach": 0,
+        "alignment": 0,
+        "READY": 596,
+        "grasp": 0,
+        "lift_3s": 0
+      }
+    },
+    {
+      "seed": 8329015,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact2/heldout20-v1/seed-8329015",
+      "result_sha256": "380a1ccccc7c73641ea233ce34262bd327a71b0ac3e44e49f2406cfa94bd843e",
+      "status": "complete",
+      "complete": true,
+      "cap_end": true,
+      "physical_success": false,
+      "category": "cap_end",
+      "done_times": {},
+      "input_audit": {
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "requests": 1200,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "top": 0,
+        "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+      },
+      "protocol_replay": {
+        "passed": true,
+        "command_rows": 1200,
+        "inference_chunks": 151,
+        "command_mismatches": 0,
+        "issued_history_mismatches": 0,
+        "protocol_event_mismatches": 0,
+        "scope": "serialized own inputs/chunks to issued commands only; no physics/model inference replay"
+      },
+      "funnel": {
+        "first_pass_sim_t": {},
+        "cumulative_run_pass": {
+          "approach": 0,
+          "alignment": 0,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "frames_pass": {
+          "approach": 0,
+          "alignment": 0,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "frames_rejected": {
+          "approach": 600,
+          "alignment": 0,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "failure_stage": "approach"
+      },
+      "raw_eval_sha256": "e013fd30c3830805460cff0c0c4a6216bac51f93d8c248a162c57e10ed83eb6a",
+      "commands_sha256": "2fb7734effe1050758b90ea299497296a57371d67eb1976ec323bf1ce14cd1fb",
+      "command_rows": 1200,
+      "max_stable_hold_s": 0.0,
+      "max_unrestricted_stable_hold_s": 0.0,
+      "final_target_finger_min_gap_m": -0.001242497566371066,
+      "raw_independent_stage_frames": {
+        "approach": 0,
+        "alignment": 0,
+        "READY": 596,
+        "grasp": 0,
+        "lift_3s": 0
+      }
+    },
+    {
+      "seed": 8329016,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact2/heldout20-v1/seed-8329016",
+      "result_sha256": "93078759fcf195793b3b7b3325fe6ffc0c09f2c2f1ffab4bc58d8a142d88217f",
+      "status": "complete",
+      "complete": true,
+      "cap_end": true,
+      "physical_success": false,
+      "category": "cap_end",
+      "done_times": {},
+      "input_audit": {
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "requests": 1200,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "top": 0,
+        "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+      },
+      "protocol_replay": {
+        "passed": true,
+        "command_rows": 1200,
+        "inference_chunks": 149,
+        "command_mismatches": 0,
+        "issued_history_mismatches": 0,
+        "protocol_event_mismatches": 0,
+        "scope": "serialized own inputs/chunks to issued commands only; no physics/model inference replay"
+      },
+      "funnel": {
+        "first_pass_sim_t": {},
+        "cumulative_run_pass": {
+          "approach": 0,
+          "alignment": 0,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "frames_pass": {
+          "approach": 0,
+          "alignment": 0,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "frames_rejected": {
+          "approach": 600,
+          "alignment": 0,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "failure_stage": "approach"
+      },
+      "raw_eval_sha256": "903bc6da19f8ce71877a3b6458d5dd0bc89bd5ef78c290fcf4cfe219b26c59cb",
+      "commands_sha256": "fe588e0eb065c9e6c32d1b2eee91a6c5d6124d1a99921416b8a09702d18bc91e",
+      "command_rows": 1200,
+      "max_stable_hold_s": 0.0,
+      "max_unrestricted_stable_hold_s": 0.0,
+      "final_target_finger_min_gap_m": 0.12114728693355532,
+      "raw_independent_stage_frames": {
+        "approach": 0,
+        "alignment": 0,
+        "READY": 594,
+        "grasp": 0,
+        "lift_3s": 0
+      }
+    },
+    {
+      "seed": 8329017,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact2/heldout20-v1/seed-8329017",
+      "result_sha256": "8713216d3c26ec99e7b98a81ce02061f71aa6735885586bfe41b6a3e3a19f38d",
+      "status": "complete",
+      "complete": true,
+      "cap_end": true,
+      "physical_success": false,
+      "category": "cap_end",
+      "done_times": {},
+      "input_audit": {
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "requests": 1200,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "top": 0,
+        "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+      },
+      "protocol_replay": {
+        "passed": true,
+        "command_rows": 1200,
+        "inference_chunks": 150,
+        "command_mismatches": 0,
+        "issued_history_mismatches": 0,
+        "protocol_event_mismatches": 0,
+        "scope": "serialized own inputs/chunks to issued commands only; no physics/model inference replay"
+      },
+      "funnel": {
+        "first_pass_sim_t": {},
+        "cumulative_run_pass": {
+          "approach": 0,
+          "alignment": 0,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "frames_pass": {
+          "approach": 0,
+          "alignment": 0,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "frames_rejected": {
+          "approach": 600,
+          "alignment": 0,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "failure_stage": "approach"
+      },
+      "raw_eval_sha256": "043806fc5292c7d53faafaa11d20230384b745707506c6d43240bd80f1142bb1",
+      "commands_sha256": "db5d575bb7a78fd42b82c577023d9bb953aff5b53455085292e4d12339f5d295",
+      "command_rows": 1200,
+      "max_stable_hold_s": 0.0,
+      "max_unrestricted_stable_hold_s": 0.0,
+      "final_target_finger_min_gap_m": 0.10144067792053622,
+      "raw_independent_stage_frames": {
+        "approach": 0,
+        "alignment": 0,
+        "READY": 596,
+        "grasp": 0,
+        "lift_3s": 0
+      }
+    },
+    {
+      "seed": 8329018,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact2/heldout20-v1/seed-8329018",
+      "result_sha256": "0e56fdb1f178b830e2794810563c74380d3c4a7b8351709a54477e29b5ed8fb4",
+      "status": "complete",
+      "complete": true,
+      "cap_end": true,
+      "physical_success": false,
+      "category": "cap_end",
+      "done_times": {
+        "r2": 8.800000000002166
+      },
+      "input_audit": {
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "requests": 1200,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "top": 0,
+        "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+      },
+      "protocol_replay": {
+        "passed": true,
+        "command_rows": 1200,
+        "inference_chunks": 83,
+        "command_mismatches": 0,
+        "issued_history_mismatches": 0,
+        "protocol_event_mismatches": 0,
+        "scope": "serialized own inputs/chunks to issued commands only; no physics/model inference replay"
+      },
+      "funnel": {
+        "first_pass_sim_t": {},
+        "cumulative_run_pass": {
+          "approach": 0,
+          "alignment": 0,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "frames_pass": {
+          "approach": 0,
+          "alignment": 0,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "frames_rejected": {
+          "approach": 600,
+          "alignment": 0,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "failure_stage": "approach"
+      },
+      "raw_eval_sha256": "c87f595f880edfb0bd9bbceab0f3dcca62e2ebc3b3bbe777baceb7f988487c7c",
+      "commands_sha256": "5fbbac823d56d3f2a012c8accaf6068ec51533395b598a83c64e3e76bc52ada5",
+      "command_rows": 1200,
+      "max_stable_hold_s": 0.0,
+      "max_unrestricted_stable_hold_s": 0.0,
+      "final_target_finger_min_gap_m": -0.0009354337295545038,
+      "raw_independent_stage_frames": {
+        "approach": 0,
+        "alignment": 0,
+        "READY": 594,
+        "grasp": 0,
+        "lift_3s": 0
+      }
+    },
+    {
+      "seed": 8329019,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact2/heldout20-v1/seed-8329019",
+      "result_sha256": "75981857b0a46f2e8fd1c203936edb7a9c72d0bb452e96d4c2afb705d87cd304",
+      "status": "complete",
+      "complete": true,
+      "cap_end": false,
+      "physical_success": false,
+      "category": "alignment",
+      "done_times": {
+        "r1": 28.000000000042682,
+        "r2": 37.700000000089
+      },
+      "input_audit": {
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "requests": 782,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "top": 0,
+        "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+      },
+      "protocol_replay": {
+        "passed": true,
+        "command_rows": 782,
+        "inference_chunks": 78,
+        "command_mismatches": 0,
+        "issued_history_mismatches": 0,
+        "protocol_event_mismatches": 0,
+        "scope": "serialized own inputs/chunks to issued commands only; no physics/model inference replay"
+      },
+      "funnel": {
+        "first_pass_sim_t": {
+          "approach": 7.700000000003665
+        },
+        "cumulative_run_pass": {
+          "approach": 1,
+          "alignment": 0,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "frames_pass": {
+          "approach": 332,
+          "alignment": 0,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "frames_rejected": {
+          "approach": 59,
+          "alignment": 332,
+          "READY": 0,
+          "grasp": 0,
+          "lift_3s": 0
+        },
+        "failure_stage": "alignment"
+      },
+      "raw_eval_sha256": "73e8c9ec3575a2f931424d387cc6b055c2cc3b318528427b31afa937f387e8ac",
+      "commands_sha256": "f506fed60a401da3cae659a7a3c0915848a90dbc2a48da88131de3812eff7fd7",
+      "command_rows": 782,
+      "max_stable_hold_s": 0.0,
+      "max_unrestricted_stable_hold_s": 0.0,
+      "final_target_finger_min_gap_m": 0.027860362232892517,
+      "raw_independent_stage_frames": {
+        "approach": 332,
+        "alignment": 0,
+        "READY": 385,
+        "grasp": 0,
+        "lift_3s": 0
+      }
+    }
+  ],
+  "reason_distribution": {
+    "cap_end": 16,
+    "alignment": 4
+  },
+  "criteria": {
+    "lift": {
+      "clearance_m": 0.012,
+      "tilt_deg": 10.0,
+      "finger_each_n": 0.5,
+      "hold_s": 3.0,
+      "weld": "off"
+    },
+    "contact_assignment": "nearest authored colored end; ties ambiguous",
+    "both_student_done": true,
+    "cap_end": false
+  },
+  "failure_stage_distribution": {
+    "alignment": 7,
+    "approach": 12,
+    "grasp": 1
+  },
+  "funnel": {
+    "approach": {
+      "cumulative_runs": 8,
+      "frame_pass": 3282,
+      "frame_reject": 7560
+    },
+    "alignment": {
+      "cumulative_runs": 1,
+      "frame_pass": 56,
+      "frame_reject": 3226
+    },
+    "READY": {
+      "cumulative_runs": 1,
+      "frame_pass": 478,
+      "frame_reject": 0
+    },
+    "grasp": {
+      "cumulative_runs": 0,
+      "frame_pass": 0,
+      "frame_reject": 478
+    },
+    "lift_3s": {
+      "cumulative_runs": 0,
+      "frame_pass": 0,
+      "frame_reject": 0
+    }
+  },
+  "verification": "raw eval/commands/all own-input rows recounted; no teacher results merged"
+}

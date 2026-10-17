@@ -1,0 +1,19 @@
+{
+  "scope": "operations only; none started a physics episode",
+  "errors": [
+    {
+      "action": "import incremental bundle into gcp2 shared object store",
+      "reason_category": "missing_bundle_prerequisite",
+      "detail": "a9f87f3f had not been transferred to gcp2",
+      "resolution": "rebuilt incremental bundle relative to the present 1ead2bb9; fetch succeeded",
+      "simulation_started": false
+    },
+    {
+      "action": "setup-only repeated validity audit",
+      "reason_category": "wrong_python_environment",
+      "detail": "system python3 lacks numpy",
+      "resolution": "reran with existing /home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python; 40/40 exact results matched",
+      "simulation_started": false
+    }
+  ]
+}

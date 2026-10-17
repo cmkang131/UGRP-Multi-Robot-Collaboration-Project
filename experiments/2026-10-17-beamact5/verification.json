@@ -1,0 +1,98 @@
+{
+  "schema": "ugrp.beamact5.verification.v1",
+  "branch": "claude/beamact5",
+  "scope": "local synthetic non-physics unit tests, offline ledger recount and code review only",
+  "command": "python3 -m pytest -q tests/test_beamact5.py tests/test_beamact2.py tests/test_beamact4.py tests/test_beamact4_policy.py --junitxml=experiments/2026-10-17-beamact5/local-tests.xml",
+  "pytest": {
+    "passed": 18,
+    "skipped": 1,
+    "failed": 0,
+    "output": "18 passed, 1 skipped in 0.94s",
+    "junit_path": "local-tests.xml",
+    "junit_sha256": "b2c3c26b179536437f6bdeb577b7af1816781c2b3645d856ef8f2f1c81fe1063",
+    "skipped_scope": "Linux CI synthetic torch head/loss gradient; deliberately not run on Mac"
+  },
+  "py_compile": [
+    "harness/beamact5_ready.py",
+    "harness/beamact_pair_student.py",
+    "harness/beamact_replay.py",
+    "scripts/run_beamact2_student.py",
+    "tests/test_beamact5.py"
+  ],
+  "source_files_sha256": {
+    "harness/beamact5_ready.py": "c931fc8a93c67f39178b0cb04cf4b3ebde6f02c4269b1ef0b0ffb13dc59f1b11",
+    "harness/beamact_pair_student.py": "9650e08573adf61e622a2e832a7ca12f476d4e5988f9bbc299bb125a766ee1c6",
+    "harness/beamact_replay.py": "8a1c821fd93a21f57aeef8a4c2d71fd5b5fcbb1665d560aaef4fcee7a7d8ec77",
+    "scripts/run_beamact2_student.py": "7ced0b83d778aef614f106200a32bb0edfbce5656a8a86179aeab763c59bffaf",
+    "tests/test_beamact5.py": "61ec5ffe7c701d66b4d476fc9536ab8a4cca0d2cd0685ada8f2004d119f50240"
+  },
+  "artifacts_sha256": {
+    "ready-recount.json": "206742e79ebcde4bdf218bae567b8402173beef8ffc30c219edb058bea3520a8",
+    "rejection_table.json": "d1b2fb9f7931438fb5bce799c4a41f49443797e157640c670dc71258f8ff1c5d",
+    "rejection_table.md": "8b6b41b46b5268ad259443dace3a2d7d79e0381389806ade84e8e68858024f4d",
+    "stack-check.json": "4cdabccd014152a9ede0ec929ce90cec05fabd571ee3367db147b4031ccc8ac1",
+    "stack-check-input.json": "2aba961d6df1af639af2cd2f4844354b3083b6f72c55b0549173c23ffbc5eab5"
+  },
+  "toggles": {
+    "new": [
+      "beamact5_ready_witness_v1"
+    ],
+    "default": "off",
+    "existing_reused": [
+      "beamact4_stage_v1",
+      "beamact4_done_recovery_v1"
+    ]
+  },
+  "toggle_collision": {
+    "tool": "dupcheck.sh per-ref origin/main + origin/codex + origin/claude",
+    "refs_N": 259,
+    "matches": [],
+    "complete": true
+  },
+  "new_experiment_runs": [],
+  "new_recorded_demonstrations": 0,
+  "training_steps": 0,
+  "new_model_inference": 0,
+  "new_physics": 0,
+  "new_rendering": 0,
+  "gcp_commands": 4,
+  "vm_starts": 1,
+  "vm_stops": 0,
+  "leases_created": 0,
+  "GUI": 0,
+  "own_started_processes_remaining": 0,
+  "verified": [
+    "own-RGB READY witness requires two fresh aligned frames",
+    "duplicate frame does not add a second streak count",
+    "frame gap resets the witness streak",
+    "wrong camera profile, misalignment and invisible assigned band fail closed",
+    "pending READY command is frozen before GO/ACK",
+    "pre-GO READY withdrawal rearms the unchanged pinned protocol",
+    "done recovery retracts done on later ticks while peer is incomplete",
+    "legacy staged pair replay and tamper checks still pass",
+    "offline recount: original GO before joint alignment 40/40; admitted at original GO 0/40; both-ever-aligned upper bound 4/40"
+  ],
+  "unverified": [
+    "real RGB READY precision/recall",
+    "physical band visibility through the student camera under motion",
+    "exact later re-GO/ACK timing and post-GO execution",
+    "teacher gate and wide-start distribution",
+    "student camera recording",
+    "remote CI results"
+  ],
+  "protected_untracked": [
+    "COORDINATOR_NOTE.md",
+    "experiments/2026-10-16-beamact3/C1-*.py",
+    "experiments/2026-10-16-beamdiag/",
+    "scripts/C1-evaluate_beamact3c.py"
+  ],
+  "protected_paths_modified": [],
+  "verdict": "READY_CODE_READY; OFFLINE_RECOUNT_RECORDED; TEACHER_SOURCE_STAGED_ON_ASSIGNED_GCP6; NO_TEACHER_ROLLOUT_YET",
+  "gcp6": {
+    "instance": "ugrp-act-l4-gcp6",
+    "project": "ugrp-sim-f-1016",
+    "zone": "asia-northeast3-a",
+    "state_at_update": "RUNNING",
+    "purpose": "assigned teacher wide-start gate; no teacher rollout started yet"
+  }
+}

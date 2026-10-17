@@ -1,0 +1,38 @@
+{
+  "controller_pid": 81366,
+  "caffeinate_pid": 83367,
+  "mode": "-i -w controller_pid",
+  "scope": "prevent idle system sleep only while this finite relay lives; no display wake or GUI; not a persistent service",
+  "resumes": [
+    {
+      "controller_pid": 45207,
+      "at": "2026-10-16T05:41:05.973601+00:00",
+      "scope": "finite process-bound idle sleep prevention, no display assertion",
+      "ssh_fix": "gcp2 ProxyCommand now primary checkout gcpctl.py/config; same project2/account/key; old config backed up"
+    }
+  ],
+  "finite_wake_guards": [
+    {
+      "pid": 39546,
+      "start": "2026-10-16T09:14:24.709865+00:00",
+      "duration_s": 10800,
+      "command": [
+        "caffeinate",
+        "-i",
+        "-t",
+        "10800"
+      ],
+      "scope": "idle-sleep only; finite recovery/postprocessing window; no display wake"
+    }
+  ],
+  "recovery_controller_pid": 39556,
+  "recovery_observed_at": "2026-10-16T09:18:24.785716+00:00",
+  "recovery_scope": "same finite18h original deadline; existing A complete batch reverified/reused, existing B trainer attached; no duplicate simulation/training, no VM restart",
+  "cleanup": {
+    "pid": 39546,
+    "observed_command": "caffeinate -i -t 10800",
+    "at": "2026-10-16T10:26:51.680674+00:00",
+    "termination_sent": true,
+    "controller_pid39556_exists": ""
+  }
+}

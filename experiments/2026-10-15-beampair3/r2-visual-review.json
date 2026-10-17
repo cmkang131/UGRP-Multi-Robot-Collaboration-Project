@@ -1,0 +1,69 @@
+{
+  "raw": "/home/ugrp/ugrp-sim/runs/beampair3-r2-9f6caa6a/probe/diagnostic/episode-000/raw",
+  "seed": 8318611,
+  "roles": {
+    "r1": "blue",
+    "r2": "teal"
+  },
+  "duration_sim_s": 59.90000000020341,
+  "max_body_xyz_error_m": 0.0,
+  "video": "/home/ugrp/ugrp-sim/ops-reviews/beampair3/r2-8318611/playback-3x.mp4",
+  "video_sha256": "6db03c427c4f4d776fb2c6b9006f84e464b76839fb38ff4e2178642432587d96",
+  "video_bytes": 404311,
+  "sources": {
+    "/home/ugrp/ugrp-sim/runs/beampair3-r2-9f6caa6a/probe/diagnostic/episode-000/raw/scene.xml": "802875435c00cc30b1f503de9c9cca22229631829bac891fbe78c7322ff8c251",
+    "/home/ugrp/ugrp-sim/runs/beampair3-r2-9f6caa6a/probe/diagnostic/episode-000/raw/camera-runtime.json": "0e3e26679926b58acf4471e2686aaab7ef5b1c5ec8e452e18d998db145558c6d",
+    "/home/ugrp/ugrp-sim/runs/beampair3-r2-9f6caa6a/probe/diagnostic/episode-000/raw/plan.json": "792d260443cacfcbaec9d922eddb0a9fdf6f1d3bd4ede6bb40d34d8fcc0c0108",
+    "/home/ugrp/ugrp-sim/runs/beampair3-r2-9f6caa6a/probe/diagnostic/episode-000/raw/eval-only.jsonl.zst": "33c4157ec0ab24d75dad318c5404f99a5e280baaf1a5afc4bea7bfba285862dc",
+    "/home/ugrp/ugrp-sim/runs/beampair3-r2-9f6caa6a/probe/diagnostic/episode-000/raw/teacher-r1.jsonl.zst": "8b1855b00a292c4afd9cb9fd39a3b8617fce5d2482423432742c9fd0bf098add",
+    "/home/ugrp/ugrp-sim/runs/beampair3-r2-9f6caa6a/probe/diagnostic/episode-000/raw/teacher-r2.jsonl.zst": "6218151ada659a5023c7af3b09b4babe5c61565bfe7f0b4b966eee719f0d76da"
+  },
+  "scope": "Evaluation saved-state rendering, no physics/controller rerun; original own JPEGs are 1Hz; qpos is 10Hz. No inferred motion frames.",
+  "direct_visual_review_completed": true,
+  "full2hz_frames": 121,
+  "tail10hz_frames": 101,
+  "reviewed_sheets": [
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beampair3/r2-8318611/full-01.jpg",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beampair3/r2-8318611/full-02.jpg",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beampair3/r2-8318611/full-03.jpg",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beampair3/r2-8318611/full-04.jpg",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beampair3/r2-8318611/full-05.jpg",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beampair3/r2-8318611/full-06.jpg",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beampair3/r2-8318611/tail-01.jpg",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beampair3/r2-8318611/tail-02.jpg",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beampair3/r2-8318611/tail-03.jpg",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beampair3/r2-8318611/tail-04.jpg",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beampair3/r2-8318611/tail-05.jpg"
+  ],
+  "timeline": [
+    {
+      "sim_s": [
+        0,
+        19
+      ],
+      "observation": "same executed prefix as old HOST_ERROR; roles r1 blue/r2 teal; overlapping teal-side approach"
+    },
+    {
+      "sim_s": [
+        19,
+        26
+      ],
+      "observation": "r2 yields sideways; r1 passes around beam to blue"
+    },
+    {
+      "sim_s": [
+        26,
+        37
+      ],
+      "observation": "r2 barely changes pose despite repeated small commands; r1 aligns blue"
+    },
+    {
+      "sim_s": [
+        37,
+        59.9
+      ],
+      "observation": "r1 READY at blue; r2 remains away from teal; final10s10Hz confirms near-static r2, no joint pick"
+    }
+  ],
+  "sparse_difference": "Dense playback separates initial same-teal proximity from later r1 blue arrival and r2 yield stagnation; not duplicate assignment."
+}

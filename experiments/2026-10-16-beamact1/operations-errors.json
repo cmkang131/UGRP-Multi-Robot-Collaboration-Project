@@ -1,0 +1,20 @@
+[
+  {
+    "stage": "verification_attempt1",
+    "error": "system Python lacked NumPy package metadata",
+    "effect": "no verification receipt; no data mutation",
+    "fix": "use existing simulation venv"
+  },
+  {
+    "stage": "verification_attempt2",
+    "error": "expected succeeded, actual manager status process_completed",
+    "effect": "no verification receipt; no data mutation",
+    "fix": "validate actual documented status process_completed and exit0"
+  },
+  {
+    "stage": "workflow_registration_test",
+    "error": "read-only plan fixture missing new catalog entries",
+    "effect": "local1 failure",
+    "fix": "add explicit fixture arguments; rerun26pass1skip"
+  }
+]

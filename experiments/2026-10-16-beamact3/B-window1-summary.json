@@ -1,0 +1,110 @@
+{
+  "status": "WALL_CAP",
+  "complete": false,
+  "stage": "main",
+  "class": "milestone",
+  "research_result": null,
+  "source_sha": "4747c4144a972e348a9ae4c7bbcc769ad116106d",
+  "dataset_manifest_sha256": "a0f5d8a1c6c9b6c4988122ae40bf412c4c705f3c34740d8d7a91c93fef58d6cd",
+  "host": {
+    "project": "ugrp-sim-b-1014",
+    "instance": "ugrp-act-l4-gcp2",
+    "machine_type": "g2-standard-8",
+    "zone": "asia-northeast3-a"
+  },
+  "steps_requested": 20000,
+  "steps_completed": 1498,
+  "seed": 20261015,
+  "blank_images": false,
+  "done_loss": "balanced_bce_v1",
+  "done_loss_weight": 1.0,
+  "command_history_dropout": 0.0,
+  "history_causal_split_v1": "wheel_pulse_train_mean",
+  "beamact3_v1": "B",
+  "checkpoint_every": 5000,
+  "batch_size": 8,
+  "readback_verified": true,
+  "gate_promotion_authorized_if_all_conditions_pass": false,
+  "selection": "fixed final step; validation never selects checkpoint",
+  "done_class_counts": {
+    "grasp": {
+      "positive_n": 332,
+      "rows_N": 60023,
+      "positive_fraction": 0.005531213035003249
+    }
+  },
+  "environment": {
+    "torch": "2.11.0+cu128",
+    "torchvision": "0.26.0+cu128",
+    "lerobot": "0.6.2",
+    "numpy": "2.2.6"
+  },
+  "training_rows": 60023,
+  "gpu": "NVIDIA L4",
+  "cuda": "12.8",
+  "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "backbone_initialization": "ResNet18_Weights.IMAGENET1K_V1; fine-tuned; no freeze/cache",
+  "activation_checkpointing": "harness.act_training.checkpoint_encoder",
+  "timing": {
+    "dataset_load_s": 55.72052959600114,
+    "setup_s": 69.06679740500113,
+    "checkpoints": [
+      {
+        "step": 1498,
+        "save_s": 2.99592687599943,
+        "bytes": 622055528
+      }
+    ],
+    "method": "CUDA synchronized step including batch load, H2D, forward, backward, optimizer; excludes checkpoint/log",
+    "checkpoint_load_s": 1.268503231000068,
+    "inference_s": 0.013252662000013515,
+    "step_mean_s": 0.296320313043415,
+    "step_median_s": 0.20887277550173167,
+    "step_p95_s": 0.6057184339988453
+  },
+  "latest": {
+    "step": 1490,
+    "loss": 2.281278371810913,
+    "legacy_l1_loss": 0.7360086441040039,
+    "movement_l1_loss": 0.21205496788024902,
+    "done_bce_loss": 0.001916625420562923,
+    "kld_loss": 0.13945624232292175,
+    "wheel_ce_loss": 0.6727443337440491,
+    "wheel_l1_removed": 0.10404732823371887,
+    "gradient_norm": 76.1166763305664,
+    "wall_s": 423.52849526999853,
+    "steps_per_s": 2.8097283023220845,
+    "peak_gpu_bytes": 1548142592
+  },
+  "last_checkpoint": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/main-attempt1/step-001498",
+  "peak_training_gpu_bytes": 1548142592,
+  "peak_training_gpu_reserved_bytes": 2164260864,
+  "input_audit": {
+    "keys": [
+      "observation.images.own_history",
+      "observation.state"
+    ],
+    "shapes": {
+      "observation.images.own_history": [
+        1,
+        3,
+        480,
+        640
+      ],
+      "observation.state": [
+        1,
+        252
+      ]
+    },
+    "whitelist_verified": true,
+    "teacher_input_fields": 0,
+    "scope": "saved training input; own RGB history and contract context only; not closed-loop validation"
+  },
+  "wall_s": 429.5278927420004,
+  "termination_category": "cap_end",
+  "original_full_summary": {
+    "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/main-attempt1/summary.json",
+    "bytes": 68444,
+    "sha256": "ec30396c0d6e22f86703dfcb61944f2a2a0fcd0813d2308c9369f0461bb2685e"
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "id": "beamact2-pair-shared-step10000-20261016",
+  "status": "available",
+  "description": "Fixed final shared-weight beam pair ACT comparison model; default off",
+  "source_sha": "24222c51e86c938799e7619290734db8e530a3f4",
+  "training_source_sha": "ee1e2275bc5cb4a15278220214ebf1861d131fe7",
+  "evaluation_source_sha": "24222c51e86c938799e7619290734db8e530a3f4",
+  "release": {
+    "tag": "models-20261016-beamact2-v1",
+    "asset": "beamact2-pair-shared-step10000-20261016.zip",
+    "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/download/models-20261016-beamact2-v1/beamact2-pair-shared-step10000-20261016.zip"
+  },
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 590,
+      "sha256": "d543f61f80d9fb7a9aabad1ff4f06bade989f89b19725657bfca19d4732ee394"
+    },
+    {
+      "path": "actor/SHA256.json",
+      "bytes": 265,
+      "sha256": "37075b8657f7da8e31dae040b0ed6bb1ecf37ed7948c0680a13562cde7f8018f"
+    },
+    {
+      "path": "actor/adapter.json",
+      "bytes": 18581,
+      "sha256": "eac4b29e2fa039f464c36adf6f1f0012f8dce4256bd1fff694c38989d8d8feb2"
+    },
+    {
+      "path": "actor/config.json",
+      "bytes": 1278,
+      "sha256": "b63bc05fb84e5c0f53329336a7a147f18ca73f297ed25279b42b968e279f571f"
+    },
+    {
+      "path": "actor/model.safetensors",
+      "bytes": 207363320,
+      "sha256": "f7b2e195833555fa7b66e413200c40caad584677245b4346a98d5bd91336a2ac"
+    },
+    {
+      "path": "offline-summary.json",
+      "bytes": 6722,
+      "sha256": "8ecb8adac90941e04f0776350988ab0acc686301cc5c454fbca6b087b5364326"
+    },
+    {
+      "path": "provenance.json",
+      "bytes": 1043,
+      "sha256": "285ce01d579f8471ebcdeae3e4c6d3bd7d521c72187dd8307abe5b762433b520"
+    },
+    {
+      "path": "requirements-reference-act.txt",
+      "bytes": 330,
+      "sha256": "fa1d4f36fe5cc2eb43c784a41e5b9e754b6a9ca2f53145242e4803a7f904793d"
+    },
+    {
+      "path": "student-summary.json",
+      "bytes": 6693,
+      "sha256": "adfe841d60b90b25d8583268fb2c68f0fd534d09df2605133f91205d88861e31"
+    },
+    {
+      "path": "training-summary.json",
+      "bytes": 4827,
+      "sha256": "825c0530c047fff44e3f6aef9174bfb2784f25f582e1ce617b42092eec48c662"
+    }
+  ],
+  "limitations": [
+    "reserved20 student 0/20; NOT_READY",
+    "shared-load GPU time; no speed acceptance claim",
+    "not default controller or E2E/transport/release/real robot proof"
+  ],
+  "archive": {
+    "sha256": "1dc60f6bad63009c8aecfaa60688b9982dcc65e027932d571e7cd71418f2c56d",
+    "bytes": 191867389
+  }
+}

@@ -1,0 +1,60 @@
+"""Prepare unapproved beampair5 gate40 only after six exact-source successes."""
+import argparse
+import hashlib
+import json
+from pathlib import Path
+import subprocess
+
+from scripts.queue_beampair2 import build as previous, ROOT
+
+
+def build(source, evidence, table):
+    wanted=[8318626,8318620,8318600,8318604,8318611,8318631]
+    frozen=json.loads(subprocess.check_output(['git','show',source+':experiments/2026-10-15-beampair1/gate-plan.json'],cwd=ROOT))
+    bursts=[next(e['burst_ticks'] for e in frozen['episodes'] if e['seed']==s) for s in wanted]
+    q=previous(source,evidence,table,expected_bursts=bursts)
+    report=json.loads(evidence.read_text())
+    if [r['seed'] for r in report['runs']] != wanted:
+        raise ValueError('exact failed-seed-first short6 required')
+    if any(r['adapter_sha']!=source for r in report['runs']):
+        raise ValueError('all regressions must use the full source SHA')
+    for r in q['runs']:
+        old=r['name'];r['name']=old.replace('beampair2-','beampair5-',1)
+        r['command']=[v.replace(old,r['name']).replace('peer_rendezvous_v1','peer_rendezvous_v2') for v in r['command']]
+        idx=r['command'].index('--per-run-mb')+1;r['command'][idx]='256'
+        r['command'] += ['--approach-repair','beampair_approach_v2','--failure-tail','--wall-layer','beampair_wall_clear_v1']
+        r['command'][1]='/Users/changmin/projects/ugrp-wt/gcp-sim-host/scripts/remote_run.py'
+        r['command'][r['command'].index('--host')+1]='gcp2'
+    q['runs'].sort(key=lambda r:(0 if r['seed']==8318620 else 1 if r['seed']==8318626 else 2,r['episode']))
+    for p in ('harness/beampair_approach.py','harness/beampair_host.py','harness/failure_rgb_tail.py','scripts/review_beampair3.py',
+              'scripts/analyze_beampair4.py','harness/beampair_wall_layer.py','harness/beampair_visible_rays.py'):
+        q['source_hashes'][p]=hashlib.sha256(subprocess.check_output(['git','show',source+':'+p],cwd=ROOT)).hexdigest()
+    q.update(schema='ugrp.beampair5.gate40_queue.v1',owner='beampair5',
+        queue_builder_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+        status='HOLD_SCENE',ready=False,approved=False,submitted=False,
+        host='gcp2',project_id='ugrp-sim-b-1014',account='changmin5781@gmail.com',
+        scene_approved=False,scene_profile='beampair3: cargo_v7 / grasp_act_teal_blue_v1 / floor_light_v1',
+        scene_approval_owner='coordinator',
+        first_two_seeds=[8318620,8318626],max_parallel=16,approach_repair='beampair_approach_v2',wall_layer='beampair_wall_clear_v1',
+        peer_rendezvous='peer_rendezvous_v2',failure_tail_recording=True,
+        held_object_hidden_v1=True,training_rgb=False,
+        cohort_scope='Fresh all40 beampair5; no beampair1/2/3/4 or short6 outcomes pooled',
+        required_before_start=[
+            'HOLD_SCENE: coordinator must choose and approve the scene profile before activation; no wall texture v2/v3.',
+            'Coordinator verifies clean pin, source/dependency SHA and every source hash.',
+            'Absolute rejection_table/evidence files must exist and match SHA256; ready/approved/submitted stay false here.',
+            '8318620 then8318626; remeasure40 from zero. Gate measured N=0.',
+            'This queue<=16, global host<=40. Recheck credit stop, memory, disk, idle and8h VM cap.',
+            'At planned16 load inspect first30 timing/commands/own RGB/protocol before filling.',
+            'Stop same-defect owned siblings immediately; preserve failures, HOST_ERROR, interruptions and cap_end.',
+            'Training RGB off; held hidden on; weld off; recording-only10Hz failure tail on.'])
+    return q
+
+
+if __name__=='__main__':
+    p=argparse.ArgumentParser(description=__doc__)
+    p.add_argument('--source',required=True);p.add_argument('--evidence',type=Path,required=True)
+    p.add_argument('--rejection-table',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
+    a=p.parse_args();q=build(a.source,a.evidence.resolve(),a.rejection_table.resolve())
+    with a.output.open('x') as f:f.write(json.dumps(q,ensure_ascii=False,indent=2)+'\n')
+    print(json.dumps({k:q[k] for k in ('source_sha','first_two_seeds','ready','approved','submitted','rejection_table')}))

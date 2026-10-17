@@ -1,0 +1,90 @@
+{
+  "observed_at": "2026-10-16T07:42:00.134909+00:00",
+  "run_id": 38863890406,
+  "head_sha": "850cb6118eff46cd20a868bda1e3f92459b113c1",
+  "status": "queued",
+  "conclusion": null,
+  "run_attempt": 1,
+  "jobs": [
+    {
+      "name": "ci-preflight",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "runner_id": 0
+    },
+    {
+      "name": "offline-regressions",
+      "status": "queued",
+      "conclusion": null,
+      "runner_id": 0
+    },
+    {
+      "name": "zone-multiturn-properties",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "runner_id": null
+    },
+    {
+      "name": "offline-regression-shard (${{ matrix.shard }}/8)",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "runner_id": null
+    },
+    {
+      "name": "tensorboard-export",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "runner_id": null
+    },
+    {
+      "name": "offline-regression-checks",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "runner_id": null
+    },
+    {
+      "name": "multi-object-scenes",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "runner_id": null
+    },
+    {
+      "name": "ubuntu-simulation-scenarios",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "runner_id": null
+    },
+    {
+      "name": "ubuntu-simulation-runtime",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "runner_id": null
+    },
+    {
+      "name": "reference-act-smoke",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "runner_id": null
+    },
+    {
+      "name": "individual-proxy-bootstrap",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "runner_id": null
+    }
+  ],
+  "normal_cancel_requested_at": "2026-10-16T07:35:35Z",
+  "rerun_submitted": true,
+  "force_cancel_submitted": true,
+  "note": "one same-SHA retry after normal cancel and documented force-cancel for leftover always() summary; no further retry loop",
+  "documentation": "https://docs.github.com/en/rest/actions/workflow-runs#force-cancel-a-workflow-run",
+  "other_runs_cancelled": false,
+  "force_cancel_scope": "same run only; all jobs unassigned queued or already cancelled/skipped; always() summary job continued after normal cancel",
+  "after_retry": {
+    "status": "queued",
+    "conclusion": null,
+    "run_attempt": 1,
+    "updated_at": "2026-10-16T07:43:08Z"
+  },
+  "retry_observed_at": "2026-10-16T07:43:09.342282+00:00"
+}

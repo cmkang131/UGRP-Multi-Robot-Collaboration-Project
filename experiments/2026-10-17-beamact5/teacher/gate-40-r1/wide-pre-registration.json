@@ -1,0 +1,224 @@
+{
+  "schema": "ugrp.beamact5.wide_start_prereg.v1",
+  "mode": "beampair6_wide_start_v1",
+  "seed": 8420000,
+  "script_sha256": "438a93f6dac8d8d4e60818572348c838b13ed1338bfb76b755e963860979feab",
+  "scene_profile": "walls_floor_contrast_v5_indigo110_s80",
+  "gate_N": 40,
+  "min_success": 38,
+  "denominator": 40,
+  "distance_layers": [
+    {
+      "id": "D00",
+      "lo_m": 0.1414823425721142,
+      "hi_m": 0.20286237,
+      "distances_m": [
+        0.154,
+        0.16,
+        0.18,
+        0.202
+      ],
+      "planned_runs": 4,
+      "planned_robot_starts": 8,
+      "anchors": [
+        "TRAIN_min=0.14148234",
+        "TRAIN_p25=0.15683129"
+      ]
+    },
+    {
+      "id": "D01",
+      "lo_m": 0.20286237,
+      "hi_m": 0.30707896,
+      "distances_m": [
+        0.205,
+        0.24,
+        0.275,
+        0.305
+      ],
+      "planned_runs": 4,
+      "planned_robot_starts": 8,
+      "anchors": [
+        "beampair_A/B_min=0.20286237"
+      ]
+    },
+    {
+      "id": "D02",
+      "lo_m": 0.30707896,
+      "hi_m": 0.52954564,
+      "distances_m": [
+        0.31,
+        0.38,
+        0.45,
+        0.525
+      ],
+      "planned_runs": 4,
+      "planned_robot_starts": 8,
+      "anchors": [
+        "TRAIN_p50=0.30707896"
+      ]
+    },
+    {
+      "id": "D03",
+      "lo_m": 0.52954564,
+      "hi_m": 0.73874975,
+      "distances_m": [
+        0.535,
+        0.61,
+        0.68,
+        0.735
+      ],
+      "planned_runs": 4,
+      "planned_robot_starts": 8,
+      "anchors": [
+        "TRAIN_p75=0.52954564"
+      ]
+    },
+    {
+      "id": "D04",
+      "lo_m": 0.73874975,
+      "hi_m": 0.78167263,
+      "distances_m": [
+        0.742,
+        0.755,
+        0.77,
+        0.781
+      ],
+      "planned_runs": 4,
+      "planned_robot_starts": 8,
+      "anchors": [
+        "TRAIN_p95=0.73874975"
+      ]
+    },
+    {
+      "id": "D05",
+      "lo_m": 0.78167263,
+      "hi_m": 0.82449543,
+      "distances_m": [
+        0.785,
+        0.8,
+        0.812,
+        0.824
+      ],
+      "planned_runs": 4,
+      "planned_robot_starts": 8,
+      "anchors": [
+        "TRAIN_p99=0.78167263"
+      ]
+    },
+    {
+      "id": "D06",
+      "lo_m": 0.82449543,
+      "hi_m": 1.08319992,
+      "distances_m": [
+        0.835,
+        0.95,
+        1.02,
+        1.08
+      ],
+      "planned_runs": 4,
+      "planned_robot_starts": 8,
+      "anchors": [
+        "beampair_A/B_p25=0.82449543"
+      ]
+    },
+    {
+      "id": "D07",
+      "lo_m": 1.08319992,
+      "hi_m": 1.34392813,
+      "distances_m": [
+        1.09,
+        1.18,
+        1.27,
+        1.34
+      ],
+      "planned_runs": 4,
+      "planned_robot_starts": 8,
+      "anchors": [
+        "beampair_A/B_p50=1.08319992"
+      ]
+    },
+    {
+      "id": "D08",
+      "lo_m": 1.34392813,
+      "hi_m": 1.57055534,
+      "distances_m": [
+        1.35,
+        1.43,
+        1.49,
+        1.57
+      ],
+      "planned_runs": 4,
+      "planned_robot_starts": 8,
+      "anchors": [
+        "beampair_A/B_p75=1.34392813"
+      ]
+    },
+    {
+      "id": "D09",
+      "lo_m": 1.57055534,
+      "hi_m": 1.6878017,
+      "distances_m": [
+        1.58,
+        1.63,
+        1.67,
+        1.6878
+      ],
+      "planned_runs": 4,
+      "planned_robot_starts": 8,
+      "anchors": [
+        "beampair_A/B_p95=1.57055534",
+        "beampair_A/B_p99=1.67991834",
+        "beampair_A/B_max=1.68780170"
+      ]
+    }
+  ],
+  "layer_denominator": 4,
+  "robot_starts_per_layer": 8,
+  "roles": "r1 alternates teal/blue by global run index; r2 is the opposite end",
+  "yaw_bins_deg": [
+    0,
+    45,
+    90,
+    135,
+    180,
+    225,
+    270,
+    315
+  ],
+  "bearing_bins_deg": [
+    0
+  ],
+  "bearing_stratum": "radial outward from the assigned end for every run; position-bearing denominator 40",
+  "feasible_lower_bound_note": "D00 boundary is 0.14148234, but the existing authored beam envelope (0.3 m half length, 0.27 m grasp offset, 0.1221 m chassis enclosure) requires at least 0.1528 m at the outward radial bearing; the four registered D00 distances therefore start at 0.154 m. No new tolerance or hidden-object geometry is used.",
+  "yaw_definition": "own heading relative to the assigned-end outward direction; all eight 45-degree bins appear five times per robot across 40 runs",
+  "bearing_definition": "spawn position is radially outward from the assigned end; the authored 0.1528 m envelope lower bound is published instead of pretending a 0.1415 m radial start is feasible",
+  "allocation": "run i: r1 layer i%10 value i//10, r2 layer (i+5)%10 value (i//10+1)%4; radial-outward bearing always; heading offsets cycle eight 45-degree bins",
+  "sources": {
+    "train_assigned_distance_m": {
+      "min": 0.1414823425721142,
+      "p25": 0.15683129,
+      "p50": 0.30707896,
+      "p75": 0.52954564,
+      "p95": 0.73874975,
+      "p99": 0.78167263,
+      "max": 0.84855317
+    },
+    "beamdiag_AB_initial_distance_m": {
+      "min": 0.20286237,
+      "p25": 0.82449543,
+      "p50": 1.08319992,
+      "p75": 1.34392813,
+      "p90": 1.48639221,
+      "p95": 1.57055534,
+      "p99": 1.67991834,
+      "max": 1.6878017
+    },
+    "train_approach_yaw_p99_rad": 2.9367,
+    "train_align_distance_p99_m": 0.26759,
+    "train_align_yaw_p99_rad": 0.81203
+  },
+  "success_rule": "physical_success from the frozen evaluator only; 38/40 required",
+  "truth_rule": "setup geometry only; teacher actions use own camera visible targets; no truth in control",
+  "gate_recording": "training RGB OFF; only existing diagnostic review/tail capture remains",
+  "setup_validity": "frozen warp_flow_admission.certify replicated in setup only: static obstacles + cargo placements + setup_only objects, offset=abs(beam grasp x), criterion free_goal_N>0 per assigned end; mode=placement_graspable_filter_v1"
+}
