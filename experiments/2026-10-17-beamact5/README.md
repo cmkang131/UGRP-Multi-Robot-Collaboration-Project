@@ -145,3 +145,52 @@
 - 비교 기준(합산 금지): 좁은 시작 CPU beampair7 40/40, 이전 warp 교사 gate 기록. 이번 넓은 시작 gate는 새 조건이다.
 - 시연 시작 분포 원칙: ALOHA/ACT(Zhao et al. 2023), DART(Laskey et al. 2017), DAgger(Ross et al. 2011), MimicGen(Mandlekar et al. 2023), Options(Sutton et al. 1999) — 0절 표 참조.
 - 내부 진단: `experiments/2026-10-16-beamdiag/`(시작 위치 분포), `experiments/2026-10-17-beamact5/analysis/ready_recount.py`(READY 오프라인 재계수).
+
+## 6. r2 수정 묶음과 6-world 검증 (2026-10-17, gcp6) — 2/6, 40-run gate는 아직 아님
+
+### 6.1 수정 묶음
+
+- r1 실패 6개(6, 10, 15, 20, 27, 37)의 원인별로 default-off 모드 3개를 새 번들 `beamact5_r2`에 묶었다: `search23_rects=search23_batched_rects_v1`, `search26_circles=search26_downfirst_circles_v1`, `search26_static_peer=search26_static_peer_stance_v1`.
+- 새 gate id `beamact5-teacher-gate-r2`, 같은 40 고정 시작·같은 plan(`f1a50e8c…`)·cases(`24903b69…`, candidate 필드만 다름)·min 38·cap 60 SIM s. 사전 등록·stack check는 [gate-40-r2/](teacher/gate-40-r2/), stack check `ok:true`.
+- 상수(마진·cap·간격)는 바꾸지 않았다. 새 모드는 모두 default off이며 r2 켠 실행만 비교한다.
+
+### 6.2 검증 범위
+
+- 40-run gate를 돌리지 않고, r1에서 실패한 6 world만 같은 plan의 index로 다시 쟀다. `planned_N=6`, `gate_eligible=false`, 학습 RGB off, weld off, gcp6 isolated.
+- 결과: 6 started / 6 completed / **성공 2** / cap_end 1(60 s) / HOST_ERROR 0 / wall 2010.8 s. first30 batch wall/SIM **5.866**(기록 전용, speed_gate_fail false). 원본 603 MB는 gcp6 영속 디스크에 보존.
+
+### 6.3 결과
+
+| world | seed | 결과 | end_reason | SIM s | 핵심 증거 |
+|---|---|---|---|---|---|
+| 6 | 8420006 | FAIL | cap_end | 60.0 | goal_set 행 2개: 56.1 s(209 후보, 선택 없음), 59.5 s(0°/0.203 m feasible 선택). 60 s 상한 0.5 s 전 |
+| 10 | 8420010 | PASS | teacher_terminal | 45.6 | down-first circles 수정 확인, joint_held true |
+| 15 | 8420015 | FAIL | planning_wall_safety_cap | 6.4 | goal_set 46행, cyan_1 최선 stance gap **14.94 mm**(+15°/0.1992 m), 관측 margin 18.75 mm. 직접 원인은 계획 tick 30 wall s 초과 |
+| 20 | 8420020 | PASS | teacher_terminal | 44.4 | down-first circles 수정 확인, joint_held true |
+| 27 | 8420027 | FAIL | teacher_terminal | 21.8 | goal_set 147행, red_1 stale margin 46.3–52.1 mm > stance gap 46.7 mm. 15.1/17.6/18.1/20.6/20.9 s feasible ↔ 15.0/16.0/17.0/19.0/20.0/21.0+ s 92/92 blocked_goal 진동 |
+| 37 | 8420037 | FAIL | teacher_terminal | 57.5 | cyan_1 최선 sampled stance gap **4.87 mm**(-15°/0.2092 m) < 측정 바닥 margin 11.07 mm. admission은 free_goal_N 12·min_gap 0.0으로 통과 |
+
+### 6.4 원인 → 수정 → 재검증
+
+- **10·20 (수정 확인):** r1의 up-first 원형 탐색이 0.16–0.18 m 근접 시작을 세 번째 원에서야 잡던 문제. down-first circles로 45.6/44.4 s 성공. r2 검증에서 재현됨.
+- **6 (남음):** static-peer goal set이 56.1 s에야 진입해 59.5 s에 첫 feasible stance를 골랐고 60 s 상한에 걸렸다. peer_wait/encounter deadline(47.9 s) 전에 goal set을 여는 것이 후보.
+- **15 (남음):** batched rects가 r1의 30 s 소진 경로 하나를 없앴지만, 다른 계획 경로가 아직 30 wall s를 넘겨 6.4 s에 safety cap으로 끝났다. stance 자체는 14.94 mm로, 측정 바닥 margin 11.07 mm보다 크다(관측 거리 약 0.81 m 이내에서 새로 보면 통과 가능). cap이나 margin 상수를 올리는 대신 남은 비싼 경로를 찾아 batch하는 것이 먼저다.
+- **27 (남음):** red_1이 신선할 때는 stance gap 46.7 mm가 floor margin 11.07 mm보다 커 feasible하지만, 조금이라도 stale해지면 margin 46.3–52.1 mm로 올라 전부 막힌다. reobserve 2회가 모두 실패했다: 2.8 s의 retreat-first는 0.6 s 경계에서 `retreat_bounded_replan`으로 끝나 camera/body view 단계에 도달하지 못했고, 14.9 s의 stale reobserve는 같은 tick에 wall layer가 활성화되며 `wall_layer_hit_miss_replan`(elapsed 0.0)로 중단됐다. wall layer 활성화가 방금 시작한 obstacle reobserve를 죽이는 순서 문제와 retreat-first 경계 문제를 함께 고치는 것이 후보.
+- **37 (남음, 구조적):** sampled ±15° stance의 최선 gap 4.87 mm는 측정 바닥 margin 11.07 mm보다 작다. admission은 5 mm 기준 free_goal_N 12로 통과시켰지만 runtime은 5 mm + 3.03σ를 요구한다. 이 world는 controller tweak으로 풀 대상이 아니라 admission/runtime margin 불일치 또는 전체 91-pose certified family 평가/시작 집합 재승인 결정 대상이다.
+
+### 6.5 gate 산술과 판정
+
+- r1 34/40, r2에서 10·20을 고쳤으므로 40-run gate를 돌리면 최대 36/40. min 38을 넘으려면 {6, 15, 27, 37} 중 **둘 이상**을 추가로 고쳐야 한다. 6·15·27은 수정 후보가 있고, 37은 현 sampled set에서 구조적으로 막혀 있다. 최선 39/40(37만 실패)이며, 기존 통과 world의 회귀가 하나라도 있으면 38 미만이 된다.
+- 따라서 이번 라운드에서는 40-run gate를 돌리지 않았다(known-bad run을 계속하지 않는다). 학생 카메라 기록·ACT 학습도 하지 않았다(사용자 지시 범위).
+- 다음 라운드 후보: (a) 6 static-peer 조기 진입, (b) 15 남은 30 wall-s 계획 경로 batch, (c) 27 wall-layer abort/retreat-first view 수정 후 6-world 재검증, (d) 37은 별도 결정. 수정은 새 번들/새 gate id로 하고 r1/r2와 합산하지 않는다.
+
+### 6.6 원본·해시·VM
+
+- 원본 `/home/ugrp/ugrp-sim/runs/beamact5/validation-r2-6`(6 world, 603 MB). summary sha `e2417ecd…`, first30 sha `a24b6014…`, progress sha `e61b4dc3…`, artifact-sha256 sha `6eed73f8…`; world별 result sha는 [validation-r2-6.json](teacher/gate-40-r2/validation-r2-6.json)과 [rejection_table.json](teacher/gate-40-r2/rejection_table.json)의 `r2_validation`에 적었다.
+- gcp6는 임대 `beamact5-teacher-gate-r2.json` 해제·실행 프로세스 0·GPU 0% 확인 후 정지했고 `TERMINATED`를 확인했다. 원본은 영속 디스크에 보존한다.
+
+### 6.7 미확인·한계
+
+- 6-world 검증은 40-run gate가 아니다. 34개 통과 world의 회귀 여부, 층별 분포, 전체 gate 성공률은 측정하지 않았다.
+- world 15의 14.94 mm는 관측된 best stance gap이며, 실제로 그 stance에 도달해 성공한다는 뜻이 아니다. world 27의 fresh margin은 floor 값(11.07 mm)이고 실제 fresh 관측 분포는 재측정하지 않았다.
+- world 37의 91-pose certified family 전체를 runtime margin으로 평가하지 않았다(admission의 free_goal_N 12는 ≥5 mm 기준).
