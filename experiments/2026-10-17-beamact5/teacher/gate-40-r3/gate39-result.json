@@ -20,7 +20,8 @@
   "artifact_sha256_sha256": "d837f875d4508a7b01f853b197b8cfe2dd0b9b97f631889152e73bdd63013b96",
   "progress_sha256": "a0ea331cf09c9a67f53240b9853d8d15259d6fa73ccf5a60ead1d4167a5bd148",
   "recount_json_sha256": "aa773a42126efedff4c587480eafff8e44c4e3cbc932b02fc796f674c28ad9b0",
-  "world_dir_mapping": "run dir i corresponds to case_indices[i] where case_indices = 0-14,16-39"
+  "world_dir_mapping": "run dir i corresponds to case_indices[i] where case_indices = 0-14,16-39",
+  "recount_json_note": "branch copy only: raw-fetch/gate39-recount.json; no Mac /tmp copy"
  },
  "summary": {
   "status": "complete",
@@ -184,13 +185,18 @@
    "20": "PASS 44.4"
   },
   "still_fail": {
-   "27": "FAIL teacher_terminal 22.2 (peer handoff, unchanged)",
-   "37": "FAIL structural (expected)"
+   "27": "FAIL teacher_terminal 22.2 s (peer_approach_handoff, unchanged)",
+   "37": "FAIL teacher_terminal 57.3 s in r3 raw; the structural 4.87 mm < floor 11.07 mm label comes from r1/r2 evidence and was not remeasured in r3"
   },
   "excluded": {
    "15": "expected FAIL, not executed"
   },
-  "dominant_hypothesis": "In the regressed worlds one robot's initial search phase is 2-3x longer than in r1 (case2 r2 search 47.8 vs 20.4 s; case4 r2 48.9 vs 21.4; case14 r2 47.4 vs 19.9; case24 r2 44.5 vs 17.1; case29 r1 48.8 vs 21.3; case39 r1 45.7 vs 18.3) while the partner waits in ready then hits the 60 s SIM cap. The r2 mode search26_circles (down-first search order) was introduced from only worlds 10/20; across all 40 starts it slows acquisition for worlds where up-first was correct. peer_memory/reobserve do not explain a longer search phase. Ablation per mode is required before attributing exactly; no code change was made in this gate."
+  "hypothesis_unconfirmed": {
+   "observation": "In the 12 regressed worlds one robot's initial search phase is 2.47-3.19x longer than in r1 (case2 r2 search 47.8 vs 20.4 s; case4 r2 48.9 vs 21.4; case14 r2 47.4 vs 19.9; case24 r2 44.5 vs 17.1; case29 r1 48.8 vs 21.3; case39 r1 45.7 vs 18.3) while the partner waits in ready and hits the 60 s SIM cap.",
+   "counter_evidence": "14 of the 39 executed worlds had an initial max search >=2x r1; 3 of them succeeded (case 30, 32, 38; case 32 succeeded with a 41.0 s search). The candidate cause is therefore a hypothesis, not a verdict.",
+   "causal_status": "UNCONFIRMED - per-mode ablation (search-order revert vs keep) was not run",
+   "not_claimed": "search26_circles is not proven to be the regression cause; peer_memory/reobserve contributions unmeasured"
+  }
  },
  "not_claimed": [
   "teacher success is not student success",

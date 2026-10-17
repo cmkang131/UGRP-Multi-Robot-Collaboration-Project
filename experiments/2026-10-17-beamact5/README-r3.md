@@ -106,12 +106,12 @@ sampled ±15° family best gap 4.87 mm < runtime floor margin 11.07 mm. `search2
 |cap_end|**12**|
 |wall|3,209.94 s (loop 2,946.24 s, 606 ticks, SIM 60.6)|
 |first30 speed|per-world **1.231 wall/SIM**, speed_gate_fail false (block 6.0)|
-|원본|`runs/beamact5/gate39-r3-run`(874 MB), summary sha `02a1260f…`, first30 `12e219d4…`, rejection_table `9072dfc4…`, artifact-sha256 `d837f875…`, progress `a0ea331c…`; 결과 기록 [gate39-result.json], 원시 재계수 [raw-fetch/gate39-recount.json](raw-fetch/gate39-recount.json). run dir i ↔ case index는 0–14,16–39 순서.|
+|원본|`runs/beamact5/gate39-r3-run`(874 MB), summary sha `02a1260f…`, first30 `12e219d4…`, rejection_table `9072dfc4…`, artifact-sha256 `d837f875…`, progress `a0ea331c…`; 결과 기록 [gate39-result.json], 원시 재계수 [raw-fetch/gate39-recount.json](raw-fetch/gate39-recount.json)(branch 보존 사본 sha `aa773a42…`; Mac /tmp 사본은 없음). run dir i ↔ case index는 0–14,16–39 순서.|
 
-- 실패 14: **cap_end 12** (case 2·4·8·12·14·18·22·24·28·29·34·39) + case **27**(teacher_terminal 22.2 s, peer handoff 그대로) + case **37**(구조적 expected fail).
+- 실패 14: **cap_end 12** (case 2·4·8·12·14·18·22·24·28·29·34·39, 모두 sim 60.0) + case **27**(teacher_terminal 22.2 s, peer handoff 그대로) + case **37**(r3 raw: `teacher_terminal` **57.3 s**; r3 raw에 4.87 mm/11.07 mm 측정값은 없다. "구조적 4.87 mm < floor 11.07 mm"는 **r1/r2 근거 라벨이며 r3 재측정이 아니다**).
 - 확인된 수정: **case 6 PASS(59.2 s)·10 PASS(45.8 s)·20 PASS(44.4 s)**.
 - **회귀: r1에서 통과했던 12개가 전부 cap_end.** phase 비교에서 회귀 world들은 한 로봇의 초기 search가 r1보다 2–3배 길다(case2 r2 47.8 vs 20.4 s, case4 r2 48.9 vs 21.4, case14 r2 47.4 vs 19.9, case24 r2 44.5 vs 17.1, case29 r1 48.8 vs 21.3, case39 r1 45.7 vs 18.3). 상대 로봇은 ready에서 대기 후 60 SIM cap.
-- **원인 우선 후보:** `search26_circles`(down-first search order)가 r1 실패 10/20만 보고 도입됐는데, 전 40 starts에 켜지면서 up-first가 맞는 world들의 획득을 느리게 만들었다. peer_memory/reobserve는 search 시간 증가를 설명하지 못한다. **정확한 per-mode attribution은 ablation 미실행으로 미확정.**
+- **원인 후보(가설, 미확정):** 회귀 12개에서 한 로봇의 초기 search가 r1 대비 **2.47–3.19배** 길어진 것은 확인됐다. 다만 실행 39개 중 **14개 world가 초기 max search ≥2배**였고 그중 **3개(case 30·32·38)는 성공**했다(case32는 41.0 s search로 성공). 따라서 "`search26_circles`(down-first) 전면 적용이 회귀 원인"은 **가설이며 단정하지 않는다.** per-mode ablation(검색만 revert vs 유지)은 미실행으로 **인과 미확정**이다. peer_memory/reobserve의 기여도 미측정.
 - 판정: r3 후보 **gate FAIL**.
 
 ### 7.2 r4 산술 (다음 후보 계획, 실행 전 기록)
