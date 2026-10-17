@@ -149,10 +149,11 @@ def profiles(candidate):
     # family may contain poses with larger clearance that stay feasible.
     if candidate=='beamact5_r5a':
         values.update(search26_wide_stance='search26_wide_stance_v1')
-    # r5-b fallback: r5a plus the bounded extra obstacle-refresh rule.
+    # r5-b fallback: r4c plus the bounded extra obstacle-refresh rule (keeps the
+    # cheaper sampled family; wide_stance roughly doubles the planning cost and
+    # is only in r5a).
     if candidate=='beamact5_r5b':
-        values.update(search26_wide_stance='search26_wide_stance_v1',
-                      search26_reobserve_refresh='search26_reobserve_refresh_v1')
+        values.update(search26_reobserve_refresh='search26_reobserve_refresh_v1')
     return values
 
 
