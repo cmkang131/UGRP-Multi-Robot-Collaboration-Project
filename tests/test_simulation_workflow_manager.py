@@ -485,6 +485,11 @@ raise SystemExit(3 if a.fail else 0)
         samples['warp-act-teacher'] = ['--teacher-source', str(model), '--plan', str(source),
             '--physics-backend', 'mjwarp_batch_v1', '--vm-hourly-usd', '1.096',
             '--compiled-reference-v1', str(source), '--compiled-geometry-312-v1', str(source)]
+        samples['egomem1-memory-return'] = ['--enabled', '--preflight',
+            '--queue', str(source), '--renderer', str(model), '--legacy', str(model),
+            '--setup', str(source), '--colour', str(source), '--own-motion', str(source),
+            '--sweep', str(source), '--implementation', 'rovio_local_v1',
+            '--rovio-library', str(model/'statistics.so')]
         retired_invalid = {'e2e-rpp-lookahead-v196'}
         with mock.patch.dict(os.environ, {"UGRP_SIM_TOKEN": "secret"}), \
              mock.patch.object(subprocess, "Popen", side_effect=AssertionError("planning launched a child")):
