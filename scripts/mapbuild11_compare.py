@@ -42,7 +42,7 @@ def case(job):
         return original(poses,weights,*args,**kwargs)
     nav2.resample=observed
     rows=[];mismatch=[]
-    prior_run=work if profile=='nav2_defaults_v1' else BASE/'runs/mapbuild10-rgb-field-legacy-v3'
+    prior_run=work if profile=='nav2_defaults_v1' else BASE/'runs/mapbuild10-rgb-field-legacy-v2'
     historical=read(prior_run/f'predictions/r3-coarse-{trial:03d}.json')['rows']
     try:
         from harness.e2e_rgb_vo import compose,between
