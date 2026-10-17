@@ -1,0 +1,13 @@
+# act18: 근거리 ACT TRAIN 적합도부터 검증
+
+상태: 조사·기존 F/S TRAIN 개루프 완료. 새 후보는 아직 검증 전이다. 학생 성공을 얻었다는 결과가 아니다.
+
+`SURVEY.md`는 공개 구현 비교, `DIAGNOSIS.md`와 `rejection_table.json`은 변경 전 실패 분포다. `diagnosis-summary.json`은 gcp2 원본에서 만든 축약 요약이며 전체 히스토그램·프레임 예측은 VM에 있다. 회수 SHA-256은 각각 `b36b39aa2b952c4c7e3e0048e272b9d75295f44256ffa7da9d5893190f7ea217`, `370de0a0c3ec6a2f31b3f25d4921413dbc00fbe1b8ec91faa98d12a02ad55307`이다. 첫 진단 시도는 물리 전용 환경에 torch가 없어 실행 전 실패했고, 기존 ACT 환경으로 재시도했다(새 환경·새 물리0).
+
+새 비교는 `protocol.json`에 고정한다. R8과 R100은 같은 v7 TRAIN200 시연, batch8, seed20261017, AdamW1e-5, 100k updates를 사용한다. 차이는 예측 chunk8/100이다. 기존 완료 BCE는 동일하게 유지하는 과제 어댑터이며 원 논문의 추가 상태·카메라를 가져오지 않는다. 원본 LeRobot을 직접 호출하고 별도 ACT 재구현은 하지 않는다. 체크포인트10k/50k는 TRAIN 진단에만 쓰고 최종100k를 비교한다. 추론은 두 후보 모두 공개 ACT temporal ensemble0.01·매틱 재예측이다. 이는 기존 act17의 실행8틱과 다른 조건임을 명시한다.
+
+모델 완성 뒤 첫 TRAIN4(원 프로토콜 첫4개, 네 종류 각1개)의 개루프·폐루프를 먼저 확인한다. 4개는 종류별1개의 유한 적합도 점검이라는 설계 선택이며 모집단 성공률이 아니다. 이 네 시작의4/4가 확인된 후보만 같은 VAL8로 가고, VAL8의8/8이 원본으로 재계수된 후보만 FINAL40에 진입한다. TRAIN/VAL/FINAL을 합산하지 않는다. 현재 새 시연 녹화는 필요하지 않다: 기존 h0부터 긴 chunk를 재구성하고 기존8개 미래 표적과 전수 일치를 검사한다.
+
+Mac에서는 소스 편집·짧은 비물리 시험·요약/기존 프레임 띠 파일 열람만 한다. 실행과 실패 분석은 gcp2 L4 영속 디스크, 모든 gcloud는 계정/프로젝트 명시, gcp1·CPU VM 시작0이다. 모델 키·정답 학생 입력·정적 지도·weld·noslip은0이다. 예산2,000KRW 정지와 유휴20분을 유지한다. 새 이미지/텐서 복제0, 예상 신규 디스크는 소스 사본≤2GB+2후보×3체크포인트×0.21GB+평가/대표 영상≤2GB이며 기존 여유26.76GiB에서 바닥8GiB를 남긴다. 중간/최종 모델과 실패 원본을 보존하고, 결과에 쓰는 모델은 Release 업로드·익명 재다운로드·전체 SHA·로딩까지 검증한다.
+
+훈련 진입점은 `scripts/act18_queue.py --enabled`, 개별 훈련은 `scripts/act18_train.py --enabled`다. 모든 새 대기열은 현재 main에서 가져온 `check_current_stack.py`와 `configs/current_stack.json`으로 점검하고 절대 `rejection_table` 경로를 연결한다. 실행 소스는 커밋 후 고정한다. 임대 `leases/act18*.json`과 자기 프로세스를 정리하고, 타 작업이 없을 때만 L4 정지·TERMINATED를 확인한다.

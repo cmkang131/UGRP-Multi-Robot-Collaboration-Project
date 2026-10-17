@@ -1,0 +1,18 @@
+{
+  "workflows": [
+    {
+      "id": "act18-reference-train",
+      "version": "1.0.0",
+      "purpose": "Matched reference ACT100k chunk8/100 on existing audited v7 teacher recordings",
+      "entry": "scripts/act18_queue.py",
+      "runner": "scripts.act18_queue",
+      "docs": "experiments/2026-10-17-act18/README.md",
+      "requires": "gcp2 L4; explicit --enabled; stack pass; prior raw rejection table; owned lease; no new recording",
+      "output_flag": "--out",
+      "output_kind": "directory",
+      "required_inputs": ["--dataset", "--protocol", "--prior-rejections", "--stack-values"],
+      "side_effect": "training",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}
