@@ -212,10 +212,12 @@ def main():
     if a.candidate in PILOT_CANDIDATES:
         if a.done_current_step_only:
             probe_kind='done_horizon_current_only_v1'
-        elif done_positive_fraction is not None:
-            probe_kind='done_positive_balanced_finetune_v1'
         elif a.init_checkpoint is not None:
             probe_kind='init_aligned_finetune_v1'
+        elif a.base_smooth_window is not None or a.val_select:
+            probe_kind='standard_aligned_scratch_v1'
+        elif done_positive_fraction is not None:
+            probe_kind='done_positive_balanced_finetune_v1'
         else:
             probe_kind='standard_aligned_scratch_v1'
         probe=dict(kind=probe_kind,init_checkpoint=init_receipt,

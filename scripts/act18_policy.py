@@ -141,11 +141,15 @@ class ReferenceDataset(Dataset):
             # This is a new view over existing successful v7 recordings. Verify
             # byte-exact parity with all original horizons that still exist.
             common = min(chunk, shard['action'].shape[1])
+            # done_horizon='current_only' intentionally clears the completion
+            # column for h>0, so parity covers only the untouched columns.
+            kept = shard['action'].shape[-1] - 1 if done_horizon == 'current_only' else shard['action'].shape[-1]
             if base_smooth_window is None:
-                if (not np.array_equal(actions[:, :common], shard['action'][:, :common])
+                if (not np.array_equal(actions[:, :common, :kept], shard['action'][:, :common, :kept])
                         or not np.array_equal(pad[:, :common], shard['action_is_pad'][:, :common])):
                     raise ValueError('reconstructed future targets differ from original chunk8')
-            elif not np.array_equal(actions[:, :common, self.BASE_ACTION_DIMS:], shard['action'][:, :common, self.BASE_ACTION_DIMS:]):
+            elif not np.array_equal(actions[:, :common, self.BASE_ACTION_DIMS:kept],
+                                    shard['action'][:, :common, self.BASE_ACTION_DIMS:kept]):
                 raise ValueError('smoothed base action changed non-base targets')
             shard['action'], shard['action_is_pad'] = actions, pad
             offset += n
@@ -170,7 +174,10 @@ def registered_pilot_checkpoint(provenance, protocol_sha256):
     init_kinds = ('init_aligned_finetune_v1', 'done_positive_balanced_finetune_v1',
                   'done_horizon_current_only_v1')
     if kind in init_kinds and not isinstance(receipt, dict):
-        return False
+        # B2 was trained from scratch with the done fix and predates the
+        # standard-scratch kind label; its standard flags still register it.
+        if not (candidate == 'act18-std' and (probe.get('val_select') or probe.get('base_smooth_window'))):
+            return False
     if kind == 'standard_aligned_scratch_v1' and candidate != 'act18-std':
         return False
     return bool(candidate in PILOT_CANDIDATES

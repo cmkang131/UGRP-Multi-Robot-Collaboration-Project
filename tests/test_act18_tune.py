@@ -159,6 +159,14 @@ def test_act18_std_scratch_probe_registers_without_init_checkpoint():
                                  packaging_eligible=False, base_smooth_window=5))
     assert registered_pilot_checkpoint(provenance, 'a' * 64) is True
     provenance['probe']['kind'] = 'init_aligned_finetune_v1'
+    # B2-shaped standard scratch checkpoint (trained before the kind split):
+    # done fix + standard flags, no init receipt.
+    provenance['probe']['kind'] = 'done_positive_balanced_finetune_v1'
+    provenance['probe']['val_select'] = True
+    assert registered_pilot_checkpoint(provenance, 'a' * 64) is True
+    # An init-kind probe without an init receipt (other candidates) is rejected.
+    provenance['candidate'] = 'act18-doneb1'
+    provenance['probe']['kind'] = 'init_aligned_finetune_v1'
     assert registered_pilot_checkpoint(provenance, 'a' * 64) is False
 
 
