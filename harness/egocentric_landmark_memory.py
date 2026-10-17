@@ -1,0 +1,192 @@
+"""Opt-in, bounded robocentric point memory; no world pose or map input.
+
+Castellanos et al. RAS 2007, sec.4 eqs.11--16: augment independent
+increment, update in the old frame, THEN compose with its inverse. Keep
+the full covariance, including shared motion error between landmarks.
+Only the world-anchor/submap-joining part is omitted: this is local memory.
+"""
+from dataclasses import dataclass
+import math
+import numpy as np
+
+OPTION = 'egocentric_landmark_memory_v1'
+# chi-square(2), .99: same .99 probability as existing RGB VO gate, 2D point.
+CHI2_99 = 9.210340371976184
+CHI2_95 = 5.991464547107979
+
+
+def rotation(a):
+    c, s = math.cos(a), math.sin(a)
+    return np.array([[c, -s], [s, c]])
+
+
+def relative(point, delta):
+    return rotation(-delta[2]) @ (np.asarray(point)-delta[:2])
+
+
+def observation_model(x, index):
+    """Cartesian observation of old-frame point from uncertain current frame."""
+    z = relative(x[2*index:2*index+2], x[-3:])
+    r = rotation(-x[-1]); h = np.zeros((2, len(x)))
+    h[:, 2*index:2*index+2] = r
+    h[:, -3:-1] = -r
+    h[:, -1] = [z[1], -z[0]]
+    return z, h
+
+
+def covariance(value, n, *, positive=False):
+    p = np.asarray(value, float)
+    if p.shape != (n, n) or not np.isfinite(p).all() or not np.allclose(p, p.T):
+        raise ValueError('INVALID_COVARIANCE')
+    e = np.linalg.eigvalsh(p)
+    if e.min() < -np.finfo(float).eps*n*max(1., float(np.linalg.norm(p))) or (positive and e.min() <= 0):
+        raise ValueError('INVALID_COVARIANCE')
+    return p
+
+
+@dataclass(frozen=True)
+class MemoryOptions:
+    # Resource budget, not a physical acceptance threshold. Candidate explicitly
+    # selects 32 slots: at most 64 point variables + 3 increment variables.
+    max_landmarks: int = 32
+    # Existing RGB landmark detector's measurable range, not GT-fitted tolerance.
+    sensor_range_m: float = 6.
+    # Optional empirically measured revisit-gap P95; no invented time cutoff.
+    fade_tau_s: float | None = None
+
+
+class LandmarkMemory:
+    def __init__(self, *, option='off', options=None):
+        if option not in ('off', OPTION):
+            raise ValueError('UNKNOWN_EGOCENTRIC_MEMORY')
+        self.enabled = option == OPTION
+        self.options = options or MemoryOptions()
+        if self.options.max_landmarks < 1 or self.options.sensor_range_m <= 0:
+            raise ValueError('INVALID_MEMORY_BUDGET')
+        if self.options.fade_tau_s is not None and self.options.fade_tau_s <= 0:
+            raise ValueError('INVALID_FADE_TIME')
+        self.x = np.empty(0); self.p = np.empty((0, 0))
+        self.items = []; self.sequence = 0; self.t = None
+
+    def snapshot(self, t):
+        result = []
+        for i, meta in enumerate(self.items):
+            xy = self.x[2*i:2*i+2]; p = self.p[2*i:2*i+2, 2*i:2*i+2]
+            sigma = math.sqrt(max(0., float(np.linalg.eigvalsh(p).max())))
+            age = t-meta['last_seen_s']; tau = self.options.fade_tau_s
+            result.append({**meta, 'relative_xy_m': xy.tolist(), 'range_m': float(np.linalg.norm(xy)),
+                           'bearing_rad': math.atan2(xy[1], xy[0]), 'covariance_m2': p.tolist(),
+                           'radius95_m': math.sqrt(CHI2_95)*sigma, 'age_s': age,
+                           'freshness': math.exp(-age/tau) if tau is not None else None})
+        return result
+
+    def step(self, t, delta, motion_covariance, observations=()):
+        if not self.enabled:
+            return dict(status='off', memories=[], events=[], self_pose=[0., 0., 0.])
+        if not math.isfinite(t) or (self.t is not None and t <= self.t):
+            raise ValueError('NONCAUSAL_MEMORY_TIME')
+        delta = np.asarray(delta, float)
+        if delta.shape != (3,) or not np.isfinite(delta).all():
+            raise ValueError('INVALID_OWN_INCREMENT')
+        q = covariance(motion_covariance, 3)
+        # eq.12: no global/world reference in this state.
+        n = len(self.x); x = np.r_[self.x, delta]
+        p = np.zeros((n+3, n+3)); p[:n, :n] = self.p; p[n:, n:] = q
+        events = []; pending = []; used = set()
+        for obs in observations:
+            z = np.asarray(obs['relative_xy_m'], float)
+            if z.shape != (2,) or not np.isfinite(z).all():
+                raise ValueError('INVALID_RELATIVE_OBSERVATION')
+            r = covariance(obs['covariance_m2'], 2, positive=True)
+            # The same frame cannot vote for one landmark twice. Multiple
+            # in-gate same-kind candidates are ambiguous; never pick by truth.
+            matches = []
+            for i, item in enumerate(self.items):
+                if item['kind'] != obs['kind'] or item['signature'] != obs['signature']:
+                    continue
+                predicted, h = observation_model(x, i)
+                s = h @ p @ h.T+r; innovation = z-predicted
+                d2 = float(innovation @ np.linalg.solve(s, innovation))
+                if d2 <= CHI2_99:
+                    matches.append((i, d2, predicted, h, s, innovation))
+            if len(matches) > 1:
+                events.append(self.event('association_ambiguous', observation=obs['id'], candidates=len(matches)))
+                continue
+            if not matches:
+                pending.append(obs)
+                continue
+            i, d2, predicted, h, s, innovation = matches[0]
+            if i in used:
+                events.append(self.event('duplicate_frame_observation', observation=obs['id']))
+                continue
+            used.add(i)
+            before = predicted.tolist()
+            k = np.linalg.solve(s, h @ p).T
+            x = x+k @ innovation
+            a = np.eye(len(x))-k @ h
+            p = a @ p @ a.T+k @ r @ k.T  # Joseph form, standard EKF eq.6.
+            item = self.items[i]
+            events.append(self.event('reobserved', observation=obs['id'], memory_id=item['id'],
+                                     gap_s=t-item['last_seen_s'], mahalanobis2=d2,
+                                     predicted_xy_m=before, updated_xy_m=observation_model(x, i)[0].tolist()))
+            item['last_seen_s'] = t; item['observations'] += 1
+        # eq.15/16: inverse composition AFTER correction of local displacement.
+        y = []; jac = np.zeros((n, n+3))
+        for i in range(len(self.items)):
+            z, h = observation_model(x, i); y.extend(z); jac[2*i:2*i+2] = h
+        self.x = np.asarray(y); self.p = jac @ p @ jac.T
+        self.p = (self.p+self.p.T)/2
+        prior = self.snapshot(t)
+        # An uncertainty disc wider than the whole measurable range cannot
+        # specify a usable local target. No age-based deletion without evidence.
+        keep = [i for i, item in enumerate(prior) if item['radius95_m'] <= self.options.sensor_range_m]
+        for i, item in enumerate(prior):
+            if i not in keep:
+                events.append(self.event('uncertainty_exceeds_sensor_range', memory_id=item['id']))
+        self._retain(keep)
+        for obs in pending:
+            if len(self.items) >= self.options.max_landmarks:
+                # Bounded list eviction is a resource policy, never a failure
+                # inference about the observed object.
+                i = min(range(len(self.items)), key=lambda i: self.items[i]['last_seen_s'])
+                events.append(self.event('memory_slot_evicted', memory_id=self.items[i]['id']))
+                self._retain([j for j in range(len(self.items)) if j != i])
+            size = len(self.x); expanded = np.zeros((size+2, size+2))
+            expanded[:size, :size] = self.p
+            expanded[size:, size:] = obs['covariance_m2']
+            self.p = expanded; self.x = np.r_[self.x, obs['relative_xy_m']]
+            self.sequence += 1
+            self.items.append(dict(id=f'm{self.sequence}', kind=obs['kind'], signature=obs['signature'],
+                                   first_seen_s=t, last_seen_s=t, observations=1))
+            events.append(self.event('created', observation=obs['id'], memory_id=f'm{self.sequence}'))
+        self.t = t
+        return dict(status='updated', self_pose=[0., 0., 0.], memories=self.snapshot(t), events=events,
+                    work=dict(landmarks=len(self.items), max_landmarks=self.options.max_landmarks,
+                              wall_cap=None, cap_end=False))
+
+    def _retain(self, keep):
+        indices = [j for i in keep for j in (2*i, 2*i+1)]
+        self.items = [self.items[i] for i in keep]
+        self.x = self.x[indices]; self.p = self.p[np.ix_(indices, indices)]
+
+    @staticmethod
+    def event(reason, **extra):
+        return dict(category='egocentric_memory', reason=reason, blocked_object='not_observed',
+                    minimum_gap_m=None, gap_status='not_measured', **extra)
+
+
+def language_context(memories, *, goal_signature=None):
+    """Stable instructions first; all time-varying memory/choices at the end."""
+    fixed = ('자기 자신은 항상 (0,0)·정면이다. 아래는 자기 RGB와 자기 발행 명령으로 갱신한 '
+             '불확실한 상대 기억이다. 목적지는 자기 카메라로 확인한다. 기억만으로 도착을 선언하지 않는다.')
+    lines = []
+    for m in memories:
+        a = math.degrees(m['bearing_rad'])
+        direction = ('왼쪽' if a > 0 else '오른쪽')+(' 앞' if abs(a) <= 90 else ' 뒤')
+        lines.append(f"{m['signature']}({m['kind']}): {direction} 약 {m['range_m']:.1f} m, "
+                     f"{m['age_s']:.0f}초 전에 봄, 불확실 95% 반경 {m['radius95_m']:.1f} m")
+    goals = [m for m in memories if m['signature'] == goal_signature]
+    candidates = ([dict(action='look_toward_memory', memory_id=m['id'], bearing_rad=m['bearing_rad'],
+                        range_m=m['range_m'], arrival_verified=False) for m in goals]
+                  if goals else [dict(action='look_left'), dict(action='look_right'), dict(action='turn_and_observe')])
+    return dict(fixed_prefix=fixed, dynamic_suffix='\n'.join(lines) or '관측한 지형지물 기억 없음', candidates=candidates)
