@@ -270,6 +270,9 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
     SEARCH_V2_LIMIT_S=58.
     SEARCH_V2_PITCHES=((500,2500),(700,2440),(820,2320))
     SEARCH_V2_CIRCLE_PITCHES=tuple(reversed(SEARCH_V2_PITCHES))
+    # r4 arm: far pitch (dominant 0.45 m+ band) first, close pitch second so
+    # the r1 close-start fallback is one circle earlier; mid pitch third.
+    SEARCH_V2_FARFIRST_PITCHES=(SEARCH_V2_PITCHES[2],SEARCH_V2_PITCHES[0],SEARCH_V2_PITCHES[1])
     SEARCH_V2_TURN_RAD=math.radians(390.)  # >=360 at measured gains .69..78
     SEARCH_V2_SETTLE_S=.3
     # Same no-motion displacement and window as the peer_motion tracking a few
@@ -316,9 +319,12 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         from harness.grasp_act_visible_world import command_delta
         if self.outcome is not None:return dict(self.sink.pwm),self._hold(now)
         from sim.grasp_act_search26 import enabled as search26
-        pitches=(self.SEARCH_V2_PITCHES
-                 if reacquire or search26(self,'search26_circles')
-                 else self.SEARCH_V2_CIRCLE_PITCHES)
+        if search26(self,'search26_circles_farfirst'):
+            pitches=self.SEARCH_V2_FARFIRST_PITCHES
+        elif reacquire or search26(self,'search26_circles'):
+            pitches=self.SEARCH_V2_PITCHES
+        else:
+            pitches=self.SEARCH_V2_CIRCLE_PITCHES
         sweep=[(pan,w,e) for pan in (1500,1000,2000) for w,e in self.SEARCH_V2_PITCHES]
         if self.sc is None:
             self.sc={'stage':'sweep','k':0,'view':0,'turned':0.,'settled_t':None}

@@ -213,3 +213,24 @@ def test_retreat_first_converts_to_views_on_quantized_ticks():
     assert [a for a, stage in stages if stage == 'view'] == [0]
     assert all(e.get('reason') != 'retreat_bounded_replan'
                for e in t.reobserver.events)
+
+
+def test_farfirst_circles_mode_is_registered_and_orders_pitches():
+    """r4 arm: far pitch first, close pitch second (r1 fallback one circle
+    earlier), mid pitch third; the default r1 order and the down-first r2
+    order are untouched."""
+    from sim.grasp_act_search26 import MODES as M26
+    from sim.grasp_act_teacher_v3 import VisibleOnlyGraspTeacher as T
+    assert M26['search26_circles_farfirst'] == 'search26_circles_farfirst_v1'
+    up, down, mid = T.SEARCH_V2_PITCHES[2], T.SEARCH_V2_PITCHES[0], T.SEARCH_V2_PITCHES[1]
+    assert T.SEARCH_V2_FARFIRST_PITCHES == (up, down, mid)
+    assert T.SEARCH_V2_CIRCLE_PITCHES == (up, mid, down)   # r1 default unchanged
+    assert T.SEARCH_V2_PITCHES == (down, mid, up)          # r2 down-first unchanged
+    import argparse
+    from sim.grasp_act_search15_modes import add_arguments
+    parser = argparse.ArgumentParser()
+    add_arguments(parser)
+    assert parser.parse_args([]).search26_circles_farfirst == 'off'
+    import inspect
+    from scripts.run_grasp_act_teacher import run
+    assert 'search26_circles_farfirst' in inspect.signature(run).parameters

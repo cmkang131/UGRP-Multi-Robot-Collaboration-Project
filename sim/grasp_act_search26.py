@@ -29,6 +29,15 @@ new candidate selects them.
   of finishing there. Basis: wide-start r2 validation world 27, where the
   retreat-first reobserve ended at ``retreat_bounded_replan`` at exactly the
   boundary and never ran a view attempt.
+- ``search26_circles_farfirst``: conditional circle order for the r4 arm:
+  far pitch first (the dominant layer band), close pitch second, mid pitch
+  third, i.e. ``(SEARCH_V2_PITCHES[2], SEARCH_V2_PITCHES[0],
+  SEARCH_V2_PITCHES[1])``.  The r2 down-first order delayed the far pitch by
+  two circles and the r3 gate showed 2.47-3.19x longer initial searches in 12
+  previously passing worlds (hypothesis, not proven); the pure r1 revert
+  (r4-a ablation) instead lost the close-start benefit (world 10 regressed to
+  cap_end).  This candidate keeps the far pitch at circle 1 and moves the
+  low-pitch close fallback to circle 2.  Separate opt-in; never pooled.
 - ``search26_wide_stance``: a NEW teacher candidate (never pooled with the
   other modes' results) whose certified stance map samples jaw-allowed angles
   on a 1-degree grid inside the existing calibrated radial envelope, instead of
@@ -42,6 +51,7 @@ new stance candidate uses only the existing calibrated envelope, the existing
 jaw predicate, and the existing margins.
 """
 MODES = {'search26_circles': 'search26_downfirst_circles_v1',
+         'search26_circles_farfirst': 'search26_circles_farfirst_v1',
          'search26_static_peer': 'search26_static_peer_stance_v1',
          'search26_peer_memory': 'search26_peer_memory_v1',
          'search26_reobserve': 'search26_reobserve_views_v1',
