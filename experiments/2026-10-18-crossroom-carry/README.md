@@ -229,8 +229,9 @@ Executed from freeze commit `bc84e35cf` (branch `claude/crossroom-carry`) with
 queue `queue-stageA.json`; `EXIT` DONE, no HOST_ERROR. Batch wall 8772.13 s
 for 180 SIM s x 16 worlds = **3.046 wall/(sim_s*nworld)** (record-only speed
 gate); the first-30-SIM check could not use a `progress.json` t=30 record
-because no episode ended that early, so the frame-mtime estimate is
-1401.6/(30*16) = 2.92 (labelled as an estimate).
+because no episode ended that early, so the only available first-30-SIM
+number is a **frame-mtime estimate** 1401.6/(30*16) = 2.92 (not a
+progress-record measurement; labelled as such).
 
 Recounted funnel (raw trace/eval-only; 0 mismatches):
 `requested_n16 16 -> input_audit_zero 16 -> start_valid 16 -> **GT door_crossed
@@ -261,27 +262,33 @@ Key facts:
 
 * **The skill's own "gap crossed" claim and the GT door crossing disagree.**
   Nine episodes (e00,03,04,06,08,10,12,14,15) reached a `gap_cross`/
-  `gap_forward` stage, but only **one** episode actually moved the base from
-  west of the divider to east of it through the door opening (e02/N03). The
-  other eight "crossed" in the pickup room: the divider wall foot was lost for
-  3 ticks (or was never acquired) and the skill continued an `east_search` in
-  the wrong room. This is the dominant failure mode of Stage A and it also
+  `gap_forward` stage, and **all nine had no GT door crossing**: their
+  eval-only base x stayed below 2.175 while the skill ran `east_search` in the
+  pickup room (eight after an `approach_wall` phase, e15 via
+  orient->follow_north->gap_cross). The only GT crossing is e02/N03, and it
+  did not claim `gap_cross` at all. So the false-gap trigger is 9/9 of the
+  gap claims. This is the dominant failure mode of Stage A and it also
   explains the earlier visgoal mission split: the "crossed" column there was
-  the skill's stage claim, not a GT crossing.
+  the skill's stage claim, not a GT crossing. (Independent verifier recount,
+  2026-10-18: headline matched; the three text corrections are folded in
+  below.)
 * **The single GT crossing was not a clean door passage.** e02 crossed at
   t=55.2 s with base lateral offset -0.1634 m and minimum jamb clearance
   **-0.1084 m** (the 0.39 m robot body overlaps the jamb envelope by ~10.8 cm
-  at the crossing ticks); it then found the paint and declared arrival at
-  78.0 s with the base 0.0281 m outside zone B - the same stop-margin
-  geometry as visgoal gate r4/B (see the 0.10 m tolerance note there). The
+  at the crossing ticks); it then found the paint (the metric paint bbox on
+  the zone-B floor appears at t=64.9 s) and declared arrival at
+  **t=77.1 s** (episode `sim_s` 78.0) with the base **0.0281 m outside zone
+  B** at the declared tick - the same stop-margin geometry as visgoal gate
+  r4/B (see the 0.10 m tolerance note there). The
   door-passage budget for an unloaded robot is +/-0.055 m, so any clean
   passage needs a lateral-offset control that this policy does not have.
 * **No post-crossing destination search success.** Only e02 saw zone-B colour
   after crossing; every other episode never physically reached the east room.
-  Four episodes claim `found`, but three of them (e05/e06/e07, the near-wall
-  N-group starts facing the long_beam) had no GT crossing: the blue end-band
-  of the green long_beam at [1.275, 0.45] is the likely false paint hint
-  (visible in their montages); e04 found no zone colour either.
+  Four episodes claim `found`, but three of them are confirmed false paint
+  hints: e05 at t=30.6 s, e06 at t=88.8 s and e07 at t=4.3 s all fit their
+  metric paint bbox exactly on the **blue end band of the green long_beam**
+  at [1.275, 0.45] (independent verifier check), and none of the three had a
+  GT crossing. e02's bbox is the only one on the zone-B blue floor.
 * Montages (all 16, 9 self-camera frames each, ticks 0..1800 or last) show the
   robots circling cargo cubes in the pickup room, or facing the long_beam
   (e05/e06/e09/e14) - there is no blocked-object claim beyond that; the

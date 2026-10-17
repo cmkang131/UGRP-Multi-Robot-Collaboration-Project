@@ -116,8 +116,8 @@ def recount_episode(ep_dir: Path):
                  if e.get('observation') == OBS]
     post_colour = [t for t in colour_ticks
                    if cross_t is not None and t > cross_t]
-    post_found = [t for t in set(found_ticks + mem_ticks)
-                  if cross_t is not None and t > cross_t]
+    post_found = sorted(t for t in set(found_ticks + mem_ticks)
+                        if cross_t is not None and t > cross_t)
     arrived = [r for r in trace if (r.get('action') or {}).get('arrived')]
     declared_t = arrived[0]['t'] if arrived else None
     declared_frame = frames.get(arrived[0]['frame_id']) if arrived else None

@@ -11,7 +11,7 @@ Stage A(무적재, 180 Sim초, nworld=16, 16 서쪽 시작) 결과:
 |---|---:|---|
 | GT door_crossed | 1/16 | eval-only base crossing, 문 개구부 y 통과 조건 |
 | 스킬 gap_cross 주장 | 9/16 | trace stage `gap_cross`/`gap_forward` |
-| 허위 gap 주장 | 8 | GT 통과 없이 gap 단계 진입 |
+| 허위 gap 주장 | **9/9** | gap 단계에 진입한 9개 전부 GT 문 통과 없음(e02는 gap 주장 없이 GT 통과) |
 | 통과 시 lateral offset | -0.1634 m | e02, 문 중심 대비 base y 오차 |
 | 통과 시 min jamb gap | **-0.1084 m** | e02, 문틀과 로봇 외곽 겹침(무적재 통과 예산 ±0.055 m) |
 | 계획된 도착 | 1/16 (GT-inside 0) | e02, GT margin -0.0281 m |
@@ -117,7 +117,7 @@ queue에서만 켠다. Stage A 원본 결과와 합산 금지, 자체 관문으�
 | 호스트 | gcp3 (Stage A와 같은 호스트, 별도 조건) |
 | 정책 | vendored Stage A 정책 + 위 4개 수정 토글 on (기본 off) |
 | funnel | Stage A와 동일 + `gap_claim_vs_gt` 표(주장 n vs GT n), `collision_events` |
-| 성공 기준 | 없음(측정). Stage A 대비: (a) 허위 gap 주장 감소, (b) 통과 시 |
+| 성공 기준 | 없음(측정). Stage A 대비: (a) 9/9 허위 gap 주장 감소, (b) 통과 시 |
 |              | lateral offset/jamb gap 개선, (c) found 오탐 감소, (d) 접촉 기록 |
 | 합산 금지 | Stage A, Stage B, visgoal r4/B/C, egonav, ACT |
 | 입력 감사 | controller_boundary_v1 (기존) + 접촉 배열은 eval-only |
