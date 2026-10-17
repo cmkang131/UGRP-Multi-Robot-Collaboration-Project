@@ -1,0 +1,42 @@
+{
+  "source_sha": "f67a35df32b1322b742c2efb9e49dd92d2e8abf2",
+  "finalizer_sha256": "a7663ba9702c4985ebcfbd71e2c7c598dc4f26df2b884fdd88bd205941314671",
+  "seal_inputs": 14,
+  "seal_outputs": 3,
+  "evaluator_columns_recomputed": 12132,
+  "maximum_eval_column_difference": 1.4210854715202004e-14,
+  "historical_static_baseline_max_pose_difference": 0.0,
+  "historical_static_presence_mismatches": 0,
+  "streams": [
+    {
+      "id": "long",
+      "frames": 2026,
+      "visible_insertions": 1960,
+      "quality": {
+        "static": {
+          "stable_cells": 343,
+          "stable_wall_residual_p50_p95_max_m": [
+            0.06,
+            0.21,
+            0.3
+          ],
+          "stable_static_overlap_ratio": 0.43731778425655976
+        },
+        "static_own": {
+          "stable_cells": 285,
+          "stable_wall_residual_p50_p95_max_m": [
+            0.1,
+            0.21,
+            0.31
+          ],
+          "stable_static_overlap_ratio": 0.28421052631578947
+        }
+      },
+      "first_own_field_sim_s": 4.6,
+      "first_different_pose_sim_s": 6.4
+    }
+  ],
+  "exact_truth_inputs_prediction": 0,
+  "physics_steps": 0,
+  "render_calls": 0
+}

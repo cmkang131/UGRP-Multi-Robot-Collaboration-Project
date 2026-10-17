@@ -1,0 +1,22 @@
+{
+  "task": "mapbuild12-next",
+  "ready": false,
+  "submit": false,
+  "source_sha": "f67a35df32b1322b742c2efb9e49dd92d2e8abf2",
+  "flow": "self_map",
+  "rejection_table": "/Users/changmin/projects/ugrp-wt/mapbuild1/experiments/2026-10-17-mapbuild12/rejection_table.json",
+  "wall_cap": null,
+  "physics_trials_requested": 0,
+  "reason": [
+    "own-grid field augmentation worsens static-only long-route error",
+    "no qualified distribution convergence",
+    "release418 has no stable own cells or own-field updates",
+    "no carry/student/LLM/real-world validation"
+  ],
+  "localization": {
+    "initial_prior": "start_zone_coarse",
+    "map_correction": "on"
+  },
+  "selfmap_own_grid_v1": "off",
+  "replay_of": "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2"
+}

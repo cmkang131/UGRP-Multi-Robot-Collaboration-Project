@@ -1,0 +1,113 @@
+{
+  "streams": [
+    {
+      "id": "long",
+      "frames": {
+        "off": [
+          {
+            "stage": "finite_candidate",
+            "input_n": 1642,
+            "cumulative_pass_n": 1642,
+            "rejected_n": 0
+          },
+          {
+            "stage": "actual_xy_budget",
+            "input_n": 1642,
+            "cumulative_pass_n": 203,
+            "rejected_n": 1439
+          },
+          {
+            "stage": "actual_coupled_budget",
+            "input_n": 203,
+            "cumulative_pass_n": 140,
+            "rejected_n": 63
+          },
+          {
+            "stage": "qualified_distribution",
+            "input_n": 140,
+            "cumulative_pass_n": 0,
+            "rejected_n": 140
+          }
+        ],
+        "static": [
+          {
+            "stage": "finite_candidate",
+            "input_n": 1642,
+            "cumulative_pass_n": 1642,
+            "rejected_n": 0
+          },
+          {
+            "stage": "actual_xy_budget",
+            "input_n": 1642,
+            "cumulative_pass_n": 1642,
+            "rejected_n": 0
+          },
+          {
+            "stage": "actual_coupled_budget",
+            "input_n": 1642,
+            "cumulative_pass_n": 1625,
+            "rejected_n": 17
+          },
+          {
+            "stage": "qualified_distribution",
+            "input_n": 1625,
+            "cumulative_pass_n": 0,
+            "rejected_n": 1625
+          }
+        ],
+        "static_own": [
+          {
+            "stage": "finite_candidate",
+            "input_n": 1642,
+            "cumulative_pass_n": 1642,
+            "rejected_n": 0
+          },
+          {
+            "stage": "actual_xy_budget",
+            "input_n": 1642,
+            "cumulative_pass_n": 1266,
+            "rejected_n": 376
+          },
+          {
+            "stage": "actual_coupled_budget",
+            "input_n": 1266,
+            "cumulative_pass_n": 1106,
+            "rejected_n": 160
+          },
+          {
+            "stage": "qualified_distribution",
+            "input_n": 1106,
+            "cumulative_pass_n": 0,
+            "rejected_n": 1106
+          }
+        ]
+      }
+    }
+  ],
+  "category": "offline_localization_budget",
+  "blocked_object": "own_observed_wall_identity_not_measured",
+  "minimum_gap_m": null,
+  "gap_status": "not_measured",
+  "raw": "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2",
+  "reproduction": [
+    "/home/ugrp/ugrp-sim/src/mapbuild12-f67a35df3/scripts/mapbuild12_own_grid.py",
+    "--host",
+    "gcp5",
+    "--kind",
+    "long",
+    "--input",
+    "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2",
+    "--output",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild12/gcp5-long",
+    "--calibration",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/own-noise-command-r1-r2.json",
+    "--requirements",
+    "/home/ugrp/ugrp-sim/src/mapbuild12-f67a35df3/experiments/2026-10-17-mapbuild8/requirements.json",
+    "--queue",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild12/gcp5-queue.json",
+    "--stack-check",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild12/gcp5-stack.json",
+    "--stage",
+    "score"
+  ]
+}

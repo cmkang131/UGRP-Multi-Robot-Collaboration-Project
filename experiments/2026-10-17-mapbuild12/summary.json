@@ -1,0 +1,124 @@
+{
+  "status": "OFFLINE_ONLY_NOT_READY",
+  "source_sha": "f67a35df32b1322b742c2efb9e49dd92d2e8abf2",
+  "scope": "same original recording; no new physics",
+  "new_physics": 0,
+  "new_render": 0,
+  "new_training": 0,
+  "model_calls": 0,
+  "adopted": false,
+  "long_route": {
+    "off": {
+      "frames": 1642,
+      "end_xy_mm": 3323.175969529329,
+      "max_xy_mm": 3327.912645419836,
+      "rmse_xy_mm": 1532.3051785876178,
+      "end_yaw_deg": 52.54647960663114,
+      "max_yaw_deg": 101.88560840503766,
+      "end_coupled_deg": 179.2225581901679,
+      "requirement_frames": 140,
+      "coupled_fail_frames": 1502,
+      "converged_updates": 0,
+      "wrong_converged_updates": 0
+    },
+    "static": {
+      "frames": 1642,
+      "end_xy_mm": 35.12904393708447,
+      "max_xy_mm": 88.87269364783538,
+      "rmse_xy_mm": 53.31156916100288,
+      "end_yaw_deg": 18.594941018687983,
+      "max_yaw_deg": 21.620221051286762,
+      "end_coupled_deg": 21.06854051424354,
+      "requirement_frames": 1625,
+      "coupled_fail_frames": 17,
+      "converged_updates": 0,
+      "wrong_converged_updates": 0
+    },
+    "static_own": {
+      "frames": 1642,
+      "end_xy_mm": 54.36520470337106,
+      "max_xy_mm": 306.7208739240283,
+      "rmse_xy_mm": 144.65787899793224,
+      "end_yaw_deg": 18.331526296769614,
+      "max_yaw_deg": 25.79965920913542,
+      "end_coupled_deg": 22.248705716421256,
+      "requirement_frames": 1106,
+      "coupled_fail_frames": 536,
+      "converged_updates": 0,
+      "wrong_converged_updates": 0
+    }
+  },
+  "long_map_quality": {
+    "off": {
+      "observed_cells": 12026,
+      "occupied_cells": 2230,
+      "free_cells": 9796,
+      "stable_cells": 339,
+      "occupied_static_overlap_ratio": 0.14394618834080716,
+      "occupied_outside_static_ratio": 0.8560538116591928,
+      "free_on_static_wall_ratio": 0.012147815434871376,
+      "evaluation": "outside_static is a discrepancy proxy; unmodeled real obstacles are NOT verified false occupancy"
+    },
+    "static": {
+      "observed_cells": 8596,
+      "occupied_cells": 1891,
+      "free_cells": 6705,
+      "stable_cells": 343,
+      "occupied_static_overlap_ratio": 0.2659968270756214,
+      "occupied_outside_static_ratio": 0.7340031729243787,
+      "free_on_static_wall_ratio": 0.005518269947800149,
+      "evaluation": "outside_static is a discrepancy proxy; unmodeled real obstacles are NOT verified false occupancy"
+    },
+    "static_own": {
+      "observed_cells": 8819,
+      "occupied_cells": 1843,
+      "free_cells": 6976,
+      "stable_cells": 285,
+      "occupied_static_overlap_ratio": 0.17091698317959847,
+      "occupied_outside_static_ratio": 0.8290830168204015,
+      "free_on_static_wall_ratio": 0.021788990825688075,
+      "evaluation": "outside_static is a discrepancy proxy; unmodeled real obstacles are NOT verified false occupancy"
+    }
+  },
+  "release418": {
+    "off": {
+      "finite_frames": 418,
+      "requirement_frames": 418,
+      "converged_updates": 0,
+      "wrong_converged_updates": 0,
+      "median_end_xy_mm": 1.4864383908104992,
+      "maximum_xy_mm": 4.07145968982945
+    },
+    "static": {
+      "finite_frames": 389,
+      "requirement_frames": 220,
+      "converged_updates": 0,
+      "wrong_converged_updates": 0,
+      "median_end_xy_mm": 161.69338239770784,
+      "maximum_xy_mm": 319.7689427501975
+    },
+    "static_own": {
+      "finite_frames": 389,
+      "requirement_frames": 220,
+      "converged_updates": 0,
+      "wrong_converged_updates": 0,
+      "median_end_xy_mm": 161.69338239770784,
+      "maximum_xy_mm": 319.7689427501975
+    }
+  },
+  "release418_own_field_updates": 0,
+  "raw_locations": [
+    "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2",
+    "/home/ugrp/ugrp-sim/runs/warp8/selfmap-open-r1"
+  ],
+  "rejection_table": "/Users/changmin/projects/ugrp-wt/mapbuild1/experiments/2026-10-17-mapbuild12/rejection_table.json",
+  "truth_inputs_prediction": 0,
+  "current_compliant": false,
+  "stack_admission": "historical_replay",
+  "remaining": [
+    "unqualified single estimated map feeds correlated past error back into localization",
+    "new object vs misregistered known wall not distinguished",
+    "carry/ACT/LLM/physical acceptance not verified",
+    "gcp3 stop deferred by other task lock file"
+  ]
+}

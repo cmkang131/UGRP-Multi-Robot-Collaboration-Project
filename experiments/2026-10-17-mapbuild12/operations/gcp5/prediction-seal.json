@@ -1,0 +1,49 @@
+{
+  "inputs": {
+    "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2/own.json": "d06643faa3920f9df3aa099348cdf3e8720f1528645a320b4224e28f6ea87a0f",
+    "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2/online-trajectory.json": "aacc5202447ee3a9cad7732fb43ffecaabafca0bdf7f90b705eb0b720d0a7df9",
+    "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2/scans.json": "7a597856e0ecb9c743d11fea418e8501c2724f1202e78e8d80294a3f62906903",
+    "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2/static-map.json": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17",
+    "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2/public-start-zone.json": "9db95ff5a4c7953f2da8cf43e7de06a9722b4078fcdf3229d69552fc2f195dfe",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/own-noise-command-r1-r2.json": "53aed9536e8bd543d8b093febf3fb3a75cd7a44cdd6b7bc7b3c1837c0d1c6242",
+    "/home/ugrp/ugrp-sim/src/mapbuild12-f67a35df3/experiments/2026-10-17-mapbuild8/requirements.json": "d9f3c1f3a00273be3aa901613d01386fa493b1ed5edb561e40a58d367360875c",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild12/gcp5-queue.json": "bfd0a786fbb59f2c2137f4d274a2c929714a3f653f513a5496cc5709fa95d1dd",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild12/gcp5-stack.json": "1dc806d379c6577a31430899583b89771939142018e8fddcbe7f95f5db611512",
+    "/home/ugrp/ugrp-sim/src/mapbuild12-f67a35df3/scripts/mapbuild12_own_grid.py": "8e98640b614720364a6bc99e829647979302d68616dcfdc7beadcd3e905f1c2b",
+    "harness/mapbuild_own_grid.py": "11b8a153c3c5aea73fdd9a00a0df5fee2b8d0f8fa9952d107635a50fafc73021",
+    "harness/mapbuild_amcl.py": "6354e571f2aa6f94da1ff32354fc0ea8199200df388e6498099b852776893ef9",
+    "harness/mapbuild_amcl_vendor/algorithms.py": "39dff9e3633ac21eb0761e1992e7732f30c9dad62b9bfe44cbb93d3fc4f2e929",
+    "harness/self_odom_grid.py": "e1e5dcb16052896878230a05da77ae65e2f55a29fd9991f5a04f105a1b1498b3"
+  },
+  "outputs": {
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild12/gcp5-long/index.json": "741422d95de2c8df43a19ff0a6bd1a8560c49c3dbcf7083f2c4fe58eadc5cd71",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild12/gcp5-long/long-maps.json": "34a75a621b978fcbc6996475f8bdfcaed27ad88649a572a7a1259cf1e06e0616",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild12/gcp5-long/long-predictions.json": "c8733bc7a6e3515161c344d179bacae9ac562ae6fa8a225e084cb71c430ef134"
+  },
+  "truth_inputs": 0,
+  "top_inputs": 0,
+  "physics_steps": 0,
+  "render_calls": 0,
+  "own_reference": "previous frames only; saturated distinct-frame cells; single union field",
+  "reproduction": [
+    "/home/ugrp/ugrp-sim/src/mapbuild12-f67a35df3/scripts/mapbuild12_own_grid.py",
+    "--host",
+    "gcp5",
+    "--kind",
+    "long",
+    "--input",
+    "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2",
+    "--output",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild12/gcp5-long",
+    "--calibration",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/own-noise-command-r1-r2.json",
+    "--requirements",
+    "/home/ugrp/ugrp-sim/src/mapbuild12-f67a35df3/experiments/2026-10-17-mapbuild8/requirements.json",
+    "--queue",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild12/gcp5-queue.json",
+    "--stack-check",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild12/gcp5-stack.json",
+    "--stage",
+    "predict"
+  ]
+}

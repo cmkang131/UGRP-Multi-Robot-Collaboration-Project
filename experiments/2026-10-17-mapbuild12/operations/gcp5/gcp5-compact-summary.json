@@ -1,0 +1,80 @@
+{
+  "host": "gcp5",
+  "streams": 1,
+  "frames": 2026,
+  "models": {
+    "off": {
+      "finite_frames": 2026,
+      "requirement_frames": 524,
+      "converged_updates": 0,
+      "wrong_converged_updates": 0,
+      "median_end_xy_mm": 3323.175969529329,
+      "maximum_xy_mm": 3327.912645419836
+    },
+    "static": {
+      "finite_frames": 2022,
+      "requirement_frames": 1922,
+      "converged_updates": 0,
+      "wrong_converged_updates": 0,
+      "median_end_xy_mm": 35.12904393708447,
+      "maximum_xy_mm": 266.5840614238757
+    },
+    "static_own": {
+      "finite_frames": 2022,
+      "requirement_frames": 1374,
+      "converged_updates": 0,
+      "wrong_converged_updates": 0,
+      "median_end_xy_mm": 54.36520470337106,
+      "maximum_xy_mm": 306.7208739240283
+    }
+  },
+  "own_field_updates": 150,
+  "diagnostics": [
+    {
+      "id": "long",
+      "frames": 2026,
+      "visible_insertions": 1960,
+      "quality": {
+        "static": {
+          "stable_cells": 343,
+          "stable_wall_residual_p50_p95_max_m": [
+            0.06,
+            0.21,
+            0.3
+          ],
+          "stable_static_overlap_ratio": 0.43731778425655976
+        },
+        "static_own": {
+          "stable_cells": 285,
+          "stable_wall_residual_p50_p95_max_m": [
+            0.1,
+            0.21,
+            0.31
+          ],
+          "stable_static_overlap_ratio": 0.28421052631578947
+        }
+      },
+      "first_own_field_sim_s": 4.6,
+      "first_different_pose_sim_s": 6.4
+    }
+  ],
+  "recorded_would_stop_count": 1539,
+  "first_recorded_would_stop": {
+    "t": 5.8,
+    "event": "prescan",
+    "status": "accepted",
+    "reason": "dev_light_would_stop_unresolved",
+    "category": "static_amcl",
+    "blocked_object": "own_observed_wall",
+    "minimum_gap_m": null,
+    "gap_status": "not_measured",
+    "static_from_own": [
+      -0.53151615645628,
+      -1.875896974565427,
+      1.5284259639964943
+    ],
+    "production_qualified": false,
+    "runtime_qualified": false,
+    "would_stop": true
+  }
+}
