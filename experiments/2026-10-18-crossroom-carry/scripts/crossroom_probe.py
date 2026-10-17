@@ -124,8 +124,8 @@ def make_model(renderer, legacy, plan):
         if sha(vendor / 'warp_native_contact.py') != \
                 'a5c8d370755034b9f9615f66a94b87883327b7d7ecc4e13082eac2c2d4751c6a':
             raise ValueError('NATIVE_OWNER_BYTES_REQUIRED')
-        plan = {**plan, 'scenario_id': 's1_normal_mixed_v7',
-                'end_color_scene': 'grasp_act_teal_blue_v1'}
+        plan = {**plan, 'end_color_scene': 'grasp_act_teal_blue_v1'}
+        plan.setdefault('scenario_id', 's1_normal_mixed_v7')
         scene = scene_factory.make_scene(plan)
         hardware, _ = load_fitted_hardware()
         xml = cargo_contact(scene.transform(build_multi_robot_xml(hardware)), 'cargo_noslip_v1')
@@ -272,15 +272,34 @@ def run(a):
     # unchanged.
     arrival_aim_on = bool(
         q.get('toggles', {}).get('visgoal_arrival_aim_inset_v1') == 'on')
-    # Cross-room flow: only the unloaded Stage A is implemented here.  The
-    # queue's ``stage`` pins the flow and is copied into stack.json and every
-    # episode record; the runner refuses anything else.
+    # Cross-room flow: Stage A (unloaded) and Stage B (loaded, single red box)
+    # are separate conditions; each has its own queue and is never pooled.
     stage = str(q.get('stage', a.stage or 'A_unloaded'))
-    if stage != 'A_unloaded':
-        raise ValueError('CROSSROOM_STAGE_A_ONLY')
+    if stage not in ('A_unloaded', 'B_loaded'):
+        raise ValueError('CROSSROOM_STAGE_UNKNOWN')
+    carry_loaded = stage == 'B_loaded'
     target_zone = str(q.get('destination_zone', 'B'))
     if target_zone != 'B':
         raise ValueError('CROSSROOM_ZONE_B_ONLY')
+    loaded_scene = None
+    if carry_loaded:
+        if q.get('toggles', {}).get('crossroom_carry_scene_v1') != 'on':
+            raise ValueError('CROSSROOM_CARRY_SCENE_TOGGLE_REQUIRED')
+        loaded_scene = json.loads((ROOT / q['loaded_scene']).read_text())
+        if loaded_scene.get('scenario_id') != 'crossroom_carry_scene_v1':
+            raise ValueError('CROSSROOM_LOADED_SCENE_ID')
+    # Stage B carries the box from t=0: the gripper command is closed while the
+    # control tape runs. Stage A keeps the calibrated open gripper pose.
+    gripper_pwm = int(q.get('gripper_pwm_closed', 1500)) if carry_loaded else 2000
+    zone_x0, zone_x1, zone_y0, zone_y1 = 4.30, 4.90, -2.80, -1.40
+
+    def scene_plan(plan):
+        scenario = loaded_scene if carry_loaded else 's1_normal_mixed_v7'
+        return {**plan, 'scenario_id': scenario,
+                'end_color_scene': 'grasp_act_teal_blue_v1'}
+
+    def zone_margin(x, y):
+        return min(x - zone_x0, zone_x1 - x, y - zone_y0, zone_y1 - y)
     # The queue declares ``physics_backend: mjwarp_batch_v1``.  The earlier
     # runner executed one world at a time (nworld=1), which measured 9.78
     # wall/SIM and even four separate processes only reached ~7.8; the GPU
@@ -306,6 +325,11 @@ def run(a):
     (a.output / 'own-rgb').mkdir()
     dump(a.output / 'queue.json', q)
     register_vendor()
+    carry_mod = None
+    if carry_loaded:
+        carry_mod = load_module(
+            'crossroom_carry_state',
+            ROOT / 'experiments/2026-10-18-crossroom-carry/scripts/carry_state_own.py')
     setups = json.loads(a.setups.read_text())['episodes']
     if a.episodes:
         keep = {int(x) for x in a.episodes.split(',')}
@@ -347,11 +371,60 @@ def run(a):
         cv2.setNumThreads(1)
         if a.implementation != 'legacy_v1':
             raise ValueError('VISGOAL_LEGACY_MEMORY_ONLY')
-        plan0 = {**setups[0], 'scenario_id': 's1_normal_mixed_v7',
-                 'end_color_scene': 'grasp_act_teal_blue_v1'}
+        plan0 = scene_plan(setups[0])
         m, hardware, xml, scene = make_model(a.renderer, a.legacy, plan0)
         if int(m.opt.noslip_iterations) != 0:
             raise ValueError('NOSLIP0_REQUIRED')
+        box_qadr = None
+        box_body_name = None
+        if carry_loaded:
+            placements = loaded_scene['eval']['setup']['placements']
+            if len(placements) != 1 or placements[0]['kind'] != 'red':
+                raise ValueError('CROSSROOM_SINGLE_RED_BOX_REQUIRED')
+            box_body_name = 'cargo_' + placements[0]['item_id']
+            box_qadr = int(m.jnt_qposadr[m.joint(box_body_name + '_free').id])
+        if carry_loaded and a.nworld <= 1:
+            raise ValueError('CARRY_BATCH_ONLY')
+
+        def place_loaded_start(d, plan):
+            """Setup-only: put the single red box in the closed gripper and settle 1 SIM s.
+
+            No teacher, no weld: the arm is posed with the calibrated SEARCH
+            joints, the gripper servo is commanded closed, the box free joint is
+            placed at the gripper site, and the CPU solver settles the grasp for
+            1 Sim s before the batch starts.  t=0 afterwards is a normal
+            physics rollout with the gripper closed on the tape.
+            """
+            import numpy as np
+            st.set_arm(m, d, 'r1', {**SEARCH, 1: gripper_pwm}, hardware)
+            mujoco.mj_forward(m, d)
+            gs = d.site_xpos[m.site('r1__grip_site').id].copy()
+            adr_r = int(m.jnt_qposadr[int(m.body_jntadr[m.body('r1__robot').id])])
+            w, x, y, z = d.qpos[adr_r + 3:adr_r + 7]
+            yaw = math.atan2(2 * (w * z + x * y), 1 - 2 * (y * y + z * z))
+            st._free_pose(m, d, box_body_name,
+                          (float(gs[0]), float(gs[1]), float(gs[2])), yaw)
+            mujoco.mj_forward(m, d)
+            ctrl = np.zeros(m.nu)
+            for i in range(m.nu):
+                if '__servo_' in m.actuator(i).name:
+                    ctrl[i] = d.qpos[int(m.jnt_qposadr[int(m.actuator_trnid[i, 0])])]
+            closed = MasterPiDynamicsV2.pulse_to_joint_targets(
+                SimpleNamespace(physical_params=hardware), {1: gripper_pwm})['gripper']
+            for i in range(m.nu):
+                if m.actuator(i).name in ('r1__servo_gripper_left',
+                                          'r1__servo_gripper_right'):
+                    ctrl[i] = closed
+            d.ctrl[:] = ctrl
+            start_box = d.qpos[box_qadr:box_qadr + 3].copy()
+            for _ in range(int(round(HZ))):
+                mujoco.mj_step(m, d)
+            disp = float(np.linalg.norm(d.qpos[box_qadr:box_qadr + 3] - start_box))
+            d.ctrl[:] = 0.
+            return dict(box_displacement_m=round(disp, 5),
+                        box_pose_eval_only=[float(v) for v in d.qpos[box_qadr:box_qadr + 3]],
+                        gripper_closed_joint_target=float(closed),
+                        settle_steps=int(round(HZ)))
         en = mujoco.mjtSleepPolicy
         m.tree_sleep_policy[:] = runtime_sleep_policy(
             m.tree_sleep_policy.copy(), auto=int(en.mjSLEEP_AUTO),
@@ -373,6 +446,13 @@ def run(a):
                                                                if arrival_aim_on else 0.),
                                        'crossroom_stage': stage,
                                        'destination_zone': target_zone,
+                                       'carry_loaded': carry_loaded,
+                                       'gripper_pwm_closed': (gripper_pwm
+                                                              if carry_loaded else None),
+                                       'loaded_scene': (q.get('loaded_scene')
+                                                        if carry_loaded else None),
+                                       'cargo_own_thresholds': (carry_mod.thresholds()
+                                                                if carry_loaded else None),
                                        'sim_cap_s': float(a.sim_cap),
                                        'toggles': q.get('toggles', {}),
                                        'input_audit': 'controller_boundary_v1'})
@@ -397,12 +477,12 @@ def run(a):
             batch_start = time.monotonic()
             worlds, rejected = [], []
             for episode_index, plan in enumerate(plans):
-                plan = {**plan, 'scenario_id': 's1_normal_mixed_v7',
-                        'end_color_scene': 'grasp_act_teal_blue_v1'}
+                plan = scene_plan(plan)
                 out = a.output / 'episodes' / f'e{episode_index:02d}'
                 out.mkdir(parents=True)
                 (out / 'frames').mkdir()
                 d = reset_episode(m, hardware, plan, st, SEARCH, mujoco)
+                loaded = place_loaded_start(d, plan) if carry_loaded else None
                 admission = overlap_check(m, d, mujoco, check, OVERLAP)
                 dump(out / 'admission.json', admission)
                 if not admission['accepted']:
@@ -413,7 +493,12 @@ def run(a):
                     continue
                 # Setup-only initial state; no pose ever enters the skill.
                 dump(out / 'setup-eval-only.json',
-                     dict(evaluation_only=True, spawns=plan['spawns']))
+                     dict(evaluation_only=True, spawns=plan['spawns'],
+                          carry_stage=stage,
+                          loaded_start_setup_only=loaded,
+                          gripper_pwm_closed=(gripper_pwm if carry_loaded else None),
+                          cargo_own_thresholds=(carry_mod.thresholds()
+                                                if carry_loaded else None)))
                 ctrl = np.zeros(m.nu)
                 for i in range(m.nu):
                     if '__servo_' in m.actuator(i).name:
@@ -516,8 +601,15 @@ def run(a):
                     previous=None, last_servo=None, rotation_cmd=0.,
                     rotation_gt=0., last_yaw=None, arrived_gt=False,
                     arrive_pose=None, inside_at_declared=None,
-                    obstacle_cache=[], applied=np.array(
-                        [[SEARCH[s] for s in servos]], float),
+                    obstacle_cache=[],
+                    cargo=(carry_mod.CarryStateOwn() if carry_loaded else None),
+                    cargo_at_start=None, cargo_at_cross=None,
+                    cargo_at_arrival=None, cargo_state_counts={},
+                    box_at_declared=None, box_final=None, cargo_own=None,
+                    crossed=False, last_base_x=None,
+                    applied=np.array(
+                        [[gripper_pwm if sid == 1 else SEARCH[sid]
+                          for sid in servos]], float),
                     relay=np.zeros((1, 4), int), active=True,
                     last_qp=None, mem=None))
             TICKS = int(round(a.sim_cap * HZ)) + 1
@@ -540,7 +632,7 @@ def run(a):
                         rows.append(dict(
                             ctrl=s['ctrl'], wheels=[0., 0., 0., 0.],
                             deadlines=[-1.] * 4, applied=s['applied'][0],
-                            target=[SEARCH[x] for x in servos],
+                            target=[gripper_pwm if x == 1 else SEARCH[x] for x in servos],
                             servo_active=[False] * 5, now=t, servo_time=t))
                         continue
                     qp = qp_all[w]
@@ -555,6 +647,13 @@ def run(a):
                         cv2.imwrite(str(file), cv2.cvtColor(im, cv2.COLOR_RGB2BGR),
                                     [cv2.IMWRITE_JPEG_QUALITY, 90])
                         bgr = cv2.imread(str(file))
+                        if carry_loaded:
+                            s['cargo_own'] = s['cargo'].update(t, bgr, gripper_pwm)
+                            if tick == 0:
+                                s['cargo_at_start'] = s['cargo_own']['state']
+                            st_count = s['cargo_state_counts']
+                            st_count[s['cargo_own']['state']] = st_count.get(
+                                s['cargo_own']['state'], 0) + 1
                         servo = {sid: int(v) for sid, v in
                                  zip(servos, np.rint(s['applied'][0]))}
                         delta_nom = np.asarray(command_delta(s['previous'])) \
@@ -629,6 +728,21 @@ def run(a):
                         if action['stop'] and not s['declared']:
                             s['status'] = 'STOPPED_NO_ARRIVAL'
                         # EVALUATION ONLY: pose/yaw/visibility never enter control.
+                        box_pose = None
+                        if carry_loaded:
+                            bq = np.asarray(qp_all[w][box_qadr:box_qadr + 7], float)
+                            bw, bx_, by_, bz_ = bq[3:7]
+                            byaw = math.atan2(2 * (bw * bz_ + bx_ * by_),
+                                              1 - 2 * (by_ * by_ + bz_ * bz_))
+                            box_pose = [float(bq[0]), float(bq[1]),
+                                        float(bq[2]), float(byaw)]
+                            s['box_final'] = box_pose
+                            bx_new = float(qp[adr])
+                            if (not s['crossed'] and s['last_base_x'] is not None
+                                    and s['last_base_x'] < 2.175 and bx_new > 2.225):
+                                s['crossed'] = True
+                                s['cargo_at_cross'] = s['cargo_own']['state']
+                            s['last_base_x'] = bx_new
                         ww, xx, yy, zz = qp[adr + 3:adr + 7]
                         yaw = math.atan2(2 * (ww * zz + xx * yy),
                                          1 - 2 * (yy * yy + zz * zz))
@@ -646,6 +760,9 @@ def run(a):
                                                 float(qp[adr + 1]), float(yaw)]
                         if just_declared:
                             s['inside_at_declared'] = bool(inside)
+                            if carry_loaded:
+                                s['cargo_at_arrival'] = s['cargo_own']['state']
+                                s['box_at_declared'] = box_pose
                         s['colour_seen'] = s['skill'].colour_seen
                         if tick == 0:
                             s['start_paint_reason'] = paint.get('reason')
@@ -657,6 +774,7 @@ def run(a):
                             t=t, frame_id=tick,
                             pose=[float(qp[adr]), float(qp[adr + 1]), float(yaw)],
                             inside_zone_B=inside,
+                            box_pose_eval_only=box_pose,
                             start_paint_pixels=s['start_visibility']))
                         s['ring'].append(tick)
                         paint_log = {k: v for k, v in paint.items()
@@ -664,6 +782,7 @@ def run(a):
                                      and not isinstance(v, np.ndarray)}
                         s['trace'].append(dict(
                             t=t, frame_id=tick, stage=action['stage'],
+                            cargo_own=s.get('cargo_own'),
                             paint=paint_log, walls=len(walls),
                             obstacles=s['obstacle_cache'],
                             patch=None if patch is None else np.asarray(patch).tolist(),
@@ -683,7 +802,7 @@ def run(a):
                             rows.append(dict(
                                 ctrl=s['ctrl'], wheels=[0., 0., 0., 0.],
                                 deadlines=[-1.] * 4, applied=s['applied'][0],
-                                target=[SEARCH[x] for x in servos],
+                                target=[gripper_pwm if x == 1 else SEARCH[x] for x in servos],
                                 servo_active=[False] * 5, now=t, servo_time=t))
                             continue
                         if action['exact_turn']:
@@ -696,14 +815,14 @@ def run(a):
                             if action['stop']:
                                 wheels, duration = [0., 0., 0., 0.], [0., 0., 0., 0.]
                         cmd = dict(t=t, wheels=wheels, duration_s=duration,
-                                   pwm={sid: SEARCH[sid] for sid in servos})
+                                   pwm={sid: (gripper_pwm if sid == 1 else SEARCH[sid]) for sid in servos})
                         s['commands'].append(cmd)
                         s['previous'] = cmd
                         rows.append(dict(
                             ctrl=s['ctrl'], wheels=wheels,
                             deadlines=[t + v if v else -1 for v in duration],
                             applied=s['applied'][0],
-                            target=[SEARCH[x] for x in servos],
+                            target=[gripper_pwm if x == 1 else SEARCH[x] for x in servos],
                             servo_active=[False] * 5, now=t, servo_time=t))
                         if tick % 100 == 0:
                             dump(out / 'progress.json',
@@ -719,7 +838,7 @@ def run(a):
                         rows.append(dict(
                             ctrl=s['ctrl'], wheels=[0., 0., 0., 0.],
                             deadlines=[-1.] * 4, applied=s['applied'][0],
-                            target=[SEARCH[x] for x in servos],
+                            target=[gripper_pwm if x == 1 else SEARCH[x] for x in servos],
                             servo_active=[False] * 5, now=t, servo_time=t))
                 if not any(s['active'] for s in states):
                     break
@@ -771,6 +890,29 @@ def run(a):
                     worlds_per_batch=G, crossroom_stage=stage,
                     destination_zone=target_zone,
                     input_audit=s['audit'].summary(),
+                    carry_loaded=carry_loaded,
+                    cargo_held_at_start=s.get('cargo_at_start'),
+                    cargo_held_at_cross=s.get('cargo_at_cross'),
+                    cargo_held_at_arrival=s.get('cargo_at_arrival'),
+                    cargo_state_counts=s.get('cargo_state_counts'),
+                    cargo_own_thresholds=(carry_mod.thresholds()
+                                          if carry_loaded else None),
+                    cargo_own_summary=(s['cargo'].summary()
+                                       if s.get('cargo') is not None else None),
+                    box_final_pose_eval_only=s.get('box_final'),
+                    box_at_declared_eval_only=s.get('box_at_declared'),
+                    cargo_in_zone_at_declared_gt=(bool(
+                        zone_margin(s['box_at_declared'][0], s['box_at_declared'][1]) >= 0.)
+                        if s.get('box_at_declared') else None),
+                    cargo_zone_margin_at_declared_gt=(round(zone_margin(
+                        s['box_at_declared'][0], s['box_at_declared'][1]), 4)
+                        if s.get('box_at_declared') else None),
+                    cargo_in_zone_final_gt=(bool(
+                        zone_margin(s['box_final'][0], s['box_final'][1]) >= 0.)
+                        if s.get('box_final') else None),
+                    cargo_zone_margin_final_gt=(round(zone_margin(
+                        s['box_final'][0], s['box_final'][1]), 4)
+                        if s.get('box_final') else None),
                     rejection_table=str(a.output / 'rejection_table.json'))
                 dump(out / 'episode.json', ep)
                 with (out / 'trace.jsonl').open('w') as fh:
@@ -794,8 +936,7 @@ def run(a):
         if a.nworld > 1:
             summaries = run_batch(setups)
         for episode_index, plan in enumerate(setups if a.nworld <= 1 else []):
-            plan = {**plan, 'scenario_id': 's1_normal_mixed_v7',
-                    'end_color_scene': 'grasp_act_teal_blue_v1'}
+            plan = scene_plan(plan)
             out = a.output / 'episodes' / f'e{episode_index:02d}'
             out.mkdir(parents=True)
             (out / 'frames').mkdir()
