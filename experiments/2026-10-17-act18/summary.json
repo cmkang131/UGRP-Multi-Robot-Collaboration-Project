@@ -899,6 +899,194 @@
         "packaged": false,
         "released": false
       }
+    },
+    {
+      "name": "b3a-r1 (act18-b3)",
+      "kind": "current-step-only done horizon 5k bf16 fine-tune from B2 checkpoint",
+      "status": "NOT_READY",
+      "complete": true,
+      "prereg": "experiments/2026-10-17-act18/B3_PREREG.json",
+      "training": {
+        "steps": 5000,
+        "wall_s": 635.0,
+        "precision": "bf16_autocast_v1",
+        "chunk": 20,
+        "init_checkpoint": "b2-r1/act18-std/step-20000",
+        "lr": 1e-05,
+        "done_positive_batch_fraction": 0.5,
+        "done_positive_batches": 2559,
+        "batches_seen": 5000,
+        "done_horizon": "current_only",
+        "checkpoint_sha256": "b86f97b65ce537aeeb10a613b76213c23006d33dc47bcab47dd5036bc0752110",
+        "summary_sha256": "5f9bfcea14c860d62b2ce4a9ded993cf71b9b17590b169dd90be6b065b8ef456",
+        "latest": {
+          "loss": 1.072548508644104,
+          "done_bce_loss": 0.9486606121063232,
+          "movement_l1_loss": 0.10301923751831055,
+          "gradient_norm": 752.8187866210938
+        }
+      },
+      "gate": {
+        "stage": "train4",
+        "n": 0,
+        "N": 4,
+        "wall_s": 872.5,
+        "status": "NOT_READY",
+        "raw": {
+          "vm_dir": "/home/ugrp/ugrp-sim/runs/act18/b3-r1",
+          "summary_sha256": "370b81b166ab1c860a4f58b0cda7f9717b3f22421d98c08a476011fa4dcae7c7",
+          "stage_recount_sha256": "83a27c839e6a84f5f8b69b7a0c761ae601216c2d924303e41e081a13031bb61e",
+          "independent_recount": "/home/ugrp/ugrp-sim/runs/act18/recount-r1/act18-b3-TRAIN4.json",
+          "done_logs": {
+            "group000": "394ecf08ee62369cb961cf679ffe5aae5fa90f3ce98343df0c6bee8e47f00972",
+            "group001": "d1ea3df090d9652dad9b05e4956969da30f3b1fa03843b3dfecc161c4d43cec7"
+          },
+          "analysis": {
+            "group000": "72b34ba0c45826642053e77dd53df05b5f3f03b99f1f86a8e1a202b346f64754",
+            "group001": "15bc23c5a59cdd5c7e9a7633348fae933a599df05ae43714f92b657c866ec0ab"
+          }
+        },
+        "rows": [
+          {
+            "seed": 88600,
+            "kind": "cyan",
+            "cap_end": true,
+            "physical_lift": false
+          },
+          {
+            "seed": 88601,
+            "kind": "red",
+            "cap_end": true,
+            "physical_lift": false
+          },
+          {
+            "seed": 88602,
+            "kind": "green",
+            "cap_end": true,
+            "physical_lift": true
+          },
+          {
+            "seed": 88603,
+            "kind": "yellow",
+            "cap_end": true,
+            "physical_lift": false
+          }
+        ]
+      },
+      "done_probe": {
+        "max_raw": 0.0009,
+        "max_ensemble": 0.0006,
+        "fires_at_065": false,
+        "fires_at_01": false,
+        "instability": "done_bce 0.949 and pre-clip grad norm 752 at final step (B2 movement L1 worsened 0.090->0.103)"
+      },
+      "behavior": {
+        "base_last_move_s": [
+          91.6,
+          11.4,
+          9.6,
+          19.3
+        ],
+        "path_m": [
+          0.0,
+          0.015,
+          0.125,
+          0.0
+        ],
+        "finger_force_max": [
+          0.0,
+          3.105,
+          5.298,
+          0.0
+        ],
+        "physical_lift": [
+          false,
+          false,
+          true,
+          false
+        ]
+      },
+      "conclusion": "h=0-only done labels made optimisation unstable and still did not learn done (max <1e-3); early-stop pattern unchanged."
+    },
+    {
+      "name": "b3b-r2 (act18-b3 stability retry)",
+      "kind": "current-step-only done horizon 5k bf16 fine-tune from B2 checkpoint, lr 2e-6",
+      "status": "NOT_READY",
+      "complete": true,
+      "approval": "Lead 자율 트랙: 막히면 3회 이내 재시도 허용 — 1차 재시도(B3a의 불안정 격리).",
+      "training": {
+        "steps": 5000,
+        "wall_s": 635.4,
+        "precision": "bf16_autocast_v1",
+        "chunk": 20,
+        "init_checkpoint": "b2-r1/act18-std/step-20000",
+        "lr": 2e-06,
+        "done_positive_batch_fraction": 0.5,
+        "done_positive_batches": 2559,
+        "batches_seen": 5000,
+        "checkpoint_sha256": "0057a23aca62a168b260eb94d7dd1617b57466124e59791d77d43a21657219bb",
+        "summary_sha256": "09853a94c92d78300bb9489dd37d196e9732aa640990af6f7426851b7a02169e",
+        "latest": {
+          "loss": 0.20543336868286133,
+          "done_bce_loss": 0.022759197279810905,
+          "movement_l1_loss": 0.09891295433044434,
+          "gradient_norm": 53.35765838623047
+        }
+      },
+      "gate": {
+        "stage": "train4",
+        "n": 0,
+        "N": 4,
+        "wall_s": 826.5,
+        "status": "NOT_READY",
+        "raw": {
+          "vm_dir": "/home/ugrp/ugrp-sim/runs/act18/b3-r1",
+          "summary_sha256": "9931dd17f8b1b4e66560d78a87947ce13590d20b20601c6bcfc705909896d1b8",
+          "stage_recount_sha256": "42fd14bc45931a474c53f79b00af80425915d99413176c75e01eb084f58e82ee",
+          "independent_recount": "/home/ugrp/ugrp-sim/runs/act18/recount-r1/act18-b3b-TRAIN4.json",
+          "done_logs": {
+            "group000": "d4eff62cc82b72fe9ac6fc8457a844ed3a892e849dac6b9c048e53c431fcc3af",
+            "group001": "7929fe1e4872dfce2e43c437ab8eebe08d6531bcb0804c1b9afb350858528875"
+          },
+          "analysis": {
+            "group000": "7feebe95be809354fd8bd46f801f3dc83a7f5b83087663467304bfc2992db1c3",
+            "group001": "668a486948a1519d23e99327dae5ce34f75e133c28518db595d4c36cd99e51cb"
+          }
+        },
+        "rows": [
+          {
+            "seed": 88600,
+            "kind": "cyan",
+            "cap_end": true,
+            "physical_lift": false
+          },
+          {
+            "seed": 88601,
+            "kind": "red",
+            "cap_end": true,
+            "physical_lift": true
+          },
+          {
+            "seed": 88602,
+            "kind": "green",
+            "cap_end": true,
+            "physical_lift": true
+          },
+          {
+            "seed": 88603,
+            "kind": "yellow",
+            "cap_end": true,
+            "physical_lift": false
+          }
+        ]
+      },
+      "done_probe": {
+        "max_raw": 0.0018,
+        "max_ensemble": 0.0007,
+        "fires_at_065": false,
+        "fires_at_01": false
+      },
+      "conclusion": "stable optimisation (grad 53, done_bce 0.023) still cannot raise current-step done probability above ~2e-3: single-frame current-step done is not learnable from the recorded label; history/sequence input or label redefinition is required."
     }
   ],
   "release": {
@@ -998,7 +1186,8 @@
     "act18-tune 모델 패키징·Release: 하지 않음(프로브, packaging_eligible=false)",
     "done 신호: 현재 학습으로 습득 불가(최대 확률 6e-4). 개선안(B1/B2)은 미실행·승인 대기",
     "B1 done horizon 계약: 현재스텝 h=0 확률 ~1e-4, 미래 h≈99만 0.999 — 실행 계약과 학습 라벨 불일치(후보 실험 필요)",
-    "B2 표준 정렬(20k)도 TRAIN4 0/4: chunk20·base smooth·best-val는 병리를 바꾸지 못함. 잔여 축=행동 형식(펄스/PWM+디코드 클램프)·done 학습·데이터 규모."
+    "B2 표준 정렬(20k)도 TRAIN4 0/4: chunk20·base smooth·best-val는 병리를 바꾸지 못함. 잔여 축=행동 형식(펄스/PWM+디코드 클램프)·done 학습·데이터 규모.",
+    "B3a/B3b 현재스텝(h=0) done 라벨: 안정 최적화에서도 done 확률 ~1e-3, 문턱 미발화 — 단일 프레임으로 현재 완료시점 식별 불가. done-history/시퀀스 입력 또는 라벨 재정의(사용자 승인) 필요."
   ],
   "cleanup": {
     "schema": "ugrp.act18.cleanup.v1",
@@ -1092,5 +1281,14 @@
       "note": "doneprobe-r1 원본·분석 JSON·stage 원본을 디스크에 보존"
     },
     "relaunch": "Phase B 승인 시 재기동"
+  },
+  "done_track": {
+    "design_notes": [
+      "experiments/2026-10-17-act18/DONE_HISTORY_DESIGN.md",
+      "experiments/2026-10-17-act18/ACTION_FORMAT_DESIGN.md",
+      "experiments/2026-10-17-act18/PHASE_C_PLAN.md"
+    ],
+    "terminal_exec_offline": "B1 로그 기반 청크 내 터미널 예측(.65)은 t=9.2/20.1/21.5/41.7s 발화로 교사 close(12.9–17.7s)·hold(23.6–31.3s) 대비 3.5–19s 어긋남 — 신뢰 불가, 평가계약 변경 없이 메모만.",
+    "next_candidate": "offline done classifier (후보 1, GPU 없는 offline 검증부터) — Lead 보고·승인 카드"
   }
 }

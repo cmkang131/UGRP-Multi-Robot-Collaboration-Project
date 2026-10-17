@@ -53,6 +53,15 @@ TRAIN4 원본으로 정지 시점·자세를 재계수했다(`results/faildiag-r
 - B2(`B2_PREREG.json`, 커밋 `8bafca6c7`): `act18-std`, 20k bf16 from scratch, **chunk20(2.0s @10Hz=ALOHA 100@50Hz 시간수평)**, base 명령 5샘플 이동평균(act-plus-plus `preprocess_base_action`), **best-val 선택**(VAL8 시드 제외 32검증에피소드·고정 256행), ACT 표준 aug 없음·현재프레임 1장 유지, done 양성배치 유지. TRAIN4 4/4 판정.
 - B3(`B3_PREREG.json`): `act18-b3`, B2 체크포인트에서 5k bf16, **현재 스텝(h=0) 완료표적만 남김**(미래 horizon 제거). TRAIN4 4/4 판정. 평가 계약 변경은 하지 않으며 (b) 터미널 예측 실행은 오프라인 분석·메모만.
 
+### B3 done horizon 프로브 결과 (act18-b3, 10/18)
+
+사전등록 `B3_PREREG.json`. B2 체크포인트에서 5,000 step bf16, **완료표적을 현재 스텝(h=0)에만** 남긴 5k fine-tune. TRAIN4 **0/4**(B3a wall 872.5s, B3b 재시도 826.5s, 둘 다 독립 recount 일치).
+
+- B3a: done_bce 0.949·pre-clip grad norm 752로 최적화 불안정, done 확률 max 0.0009로 문턱 미발화, 88600/88603은 행동까지 붕괴(이동 0).
+- B3b(lr 2e-6 재시도): 안정화(done_bce 0.023, grad 53)했지만 done 확률 max raw 0.0018/ensemble 0.0007 — **여전히 문턱 미발화**, 물리 lift 2/4.
+- 해석: 현재 스텝 완료시점은 단일 RGB+4틱 명령 이력으로 식별 불가(hold 마지막 행이 직전 행들과 관측상 거의 동일). horizon 라벨 조작만으로는 done을 실행 신호로 만들 수 없다. (b) 터미널 예측 실행은 B1 로그 오프라인 분석에서 t=9.2/20.1/21.5/41.7s 발화로 교사 close/hold와 3.5–19s 어긋나 신뢰 불가. (c) done 전용 history/시퀀스 입력 설계는 `DONE_HISTORY_DESIGN.md`.
+- 다음 후보(승인 카드): offline done classifier(시퀀스/명령이력 입력, 물리 없이 AUC·발화 오차 먼저) — 평가 계약 변경 없음. 행동 형식 표준화는 `ACTION_FORMAT_DESIGN.md`, co-training은 `PHASE_C_PLAN.md`(B2 미통과로 보류).
+
 ### 조건 이탈·미검증 범위
 - **R100 gcp5 미이동(deviation):** bf16 프로브(2,000 step, 1.10배)는 수용했지만, R8이 gcp2에서 fp32로 학습 중이라 정밀도가 섞이고(합산 금지), `act18_train.py`가 옵티마이저/RNG 재개를 지원하지 않아 42,400/100,000(≈13,484s)을 폐기해야 하며, gcp5 예산 1,000KRW 정지 위험이 있어 gcp2 matched fp32 pair를 끝까지 유지했다. 근거는 `bf16-probe-decision.json`.
 - 이 학습은 **fp32**다. bf16 기본 전환 커밋(c7900c0ac)은 이 학습 시작 뒤다. 100k bf16 학습은 아직 없다(runtime 증거는 2,000 step 프로브뿐). bf16 결과와 합산하지 않는다.
