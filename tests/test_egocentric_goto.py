@@ -3,7 +3,8 @@ import numpy as np
 import pytest
 
 from harness.egocentric_goto import (
-    DECLARED_TARGET_HUE, OPTION, SCHEMA, EgocentricGoto, command_delta, duty,
+    DECLARED_TARGET_HUE, OPTION, SCHEMA, WALL_KIND, WALL_OPTION, EgocentricGoto,
+    command_delta, duty,
     point_covariance)
 
 
@@ -217,3 +218,68 @@ def test_far_candidate_rejection_reasons_are_distinct():
     assert rejected[-1]['first_area_m2'] == pytest.approx(.02)
     assert not cropped.memories and not cropped.done
 
+
+
+def wall_scan(*segments):
+    return dict(segments=[list(segment) for segment in segments])
+
+
+def test_wall_memory_default_off_does_not_change_control_or_construct_a_store():
+    scan = wall_scan(([1.0, .8], [1.2, 1.1]))
+    off = EgocentricGoto(option=OPTION, footprint_radius_m=.12)
+    on = EgocentricGoto(option=OPTION, footprint_radius_m=.12,
+                        wall_memory=WALL_OPTION)
+    assert off.wall_enabled is False and off.wall_store is None
+    assert on.wall_enabled is True and on.wall_store is not None
+    # Separate store: wall slots can never evict the goal memory.
+    assert on.memory is not on.wall_store
+    commands = [None, forward_command(), forward_command(), None]
+    for index, command in enumerate(commands):
+        t = .1*index
+        baseline = off.step(t, command, [observation([2., 0.])], scan=scan)
+        candidate = on.step(t, command, [observation([2., 0.])], scan=scan)
+        assert baseline == candidate
+    assert [m['kind'] for m in off.memories] == ['zone_marking']
+    assert off.wall_memories == []
+    assert [m['kind'] for m in on.memories] == ['zone_marking']
+    walls = [m for m in on.wall_memories if m['kind'] == WALL_KIND]
+    assert len(walls) == 1
+    goal = on.goal_memory()
+    assert goal is not None and goal['kind'] == 'zone_marking'
+    # The control-facing context stays target-only this round.
+    assert [item['kind'] for item in on.context()['items']] == ['zone_marking']
+    with pytest.raises(ValueError, match='UNKNOWN_EGONAV_WALL_MEMORY_OPTION'):
+        EgocentricGoto(option=OPTION, wall_memory='on', footprint_radius_m=.12)
+
+
+def test_wall_memory_uses_the_goal_memory_transport_and_records_reobservation_error():
+    scan = wall_scan(([1.0, .5], [1.0, .9]))
+    c = EgocentricGoto(option=OPTION, footprint_radius_m=.12,
+                       wall_memory=WALL_OPTION)
+    c.step(0., None, [observation([2., 0.])], scan=scan)
+    wall = c.wall_memories[0]
+    assert wall['kind'] == WALL_KIND and wall['observations'] == 1
+    assert np.allclose(wall['relative_xy_m'], [1.0, .7], atol=1e-9)
+    goal_before = np.asarray(c.memories[0]['relative_xy_m'], float)
+    wall_before = np.asarray(wall['relative_xy_m'], float)
+    command = forward_command()
+    increment = np.asarray(command_delta(command), float)
+    # No observations this tick: pure own-command transport, the same path
+    # for the goal memory and the wall memory.
+    c.update_memory(.1, command, [])
+    goal_after = np.asarray(c.memories[0]['relative_xy_m'], float)
+    wall_after = np.asarray(c.wall_memories[0]['relative_xy_m'], float)
+    assert abs((goal_after[0]-goal_before[0]) + increment[0]) < 1e-9
+    assert abs((wall_after[0]-wall_before[0]) - (goal_after[0]-goal_before[0])) < 1e-9
+    # Re-observation is compared against the transported prior and the
+    # corrected memory, using only this frame's own scan.
+    c.step(.2, None, [observation([2., 0.])], scan=scan)
+    assert c.wall_memory_errors
+    error = c.wall_memory_errors[-1]
+    assert error['t'] == pytest.approx(.2)
+    assert error['prior_error_m'] < .05 and error['residual_m'] < .05
+    assert c.wall_memories[0]['observations'] == 2
+    summary = c.wall_memory_summary()
+    assert summary['toggle'] == WALL_OPTION and summary['control_use'] is False
+    assert summary['count'] == 1 and summary['events'].get('created') == 1
+    assert summary['events'].get('reobserved') == 1

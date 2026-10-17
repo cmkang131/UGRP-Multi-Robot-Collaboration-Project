@@ -17,6 +17,18 @@ Public method references (pinned in the experiment README):
   small calibrated pulse set, not a reimplementation of either planner.
 * ROVIO/ETH ASL robocentric EKF and MRPT range-bearing SLAM landmark
   persistence (through the vendored egomem2 module).
+
+Optional default-off ``egonav_wall_memory_v1`` stores own-RGB wall segments
+(``harness.active_wall_vision`` output, already self-relative) as separate
+``kind='wall_segment'`` landmarks in a second vendored ``LandmarkMemory``
+instance.  It uses the same own-command delta, the same ``motion_variance``
+covariance and the same module ``relative()`` transport as the target memory,
+and it reuses the module defaults (chi-square association gate, 32-slot
+budget, 6 m sensor-range retention, no custom fade).  The wall store is
+recording-only this round: the control path (goal selection, clearance scan
+use, actions) never reads it, and it has its own budget so it cannot evict
+the goal memory.  With the toggle off nothing is constructed and no code
+path changes.
 """
 from __future__ import annotations
 
@@ -30,6 +42,10 @@ import numpy as np
 OPTION = 'egocentric_goto_v1'
 TARGET_KIND = 'zone_marking'
 TARGET_SIGNATURE = 'floor_orange_zone_marking'
+WALL_OPTION = 'egonav_wall_memory_v1'
+WALL_KIND = 'wall_segment'
+WALL_SIGNATURE = 'own_rgb_wall_segment'
+WALL_OBSERVATION_PREFIX = 'wall-segment-'
 SCHEMA = 'ugrp.memory_item.v1'
 VENDOR = Path(__file__).with_name('egonav_vendor')
 
@@ -194,7 +210,8 @@ class EgocentricGoto:
     constructing or consulting any memory.  New candidates pass OPTION.
     """
 
-    def __init__(self, *, option='off', target_kind=TARGET_KIND,
+    def __init__(self, *, option='off', wall_memory='off',
+                 target_kind=TARGET_KIND,
                  target_signature=TARGET_SIGNATURE, footprint_radius_m,
                  arrival_radius_m=ARRIVAL_RADIUS_M,
                  heading_tolerance_rad=HEADING_TOLERANCE_RAD,
@@ -203,6 +220,8 @@ class EgocentricGoto:
                  declared_target_hue_tolerance=DECLARED_TARGET_HUE_TOLERANCE):
         if option not in ('off', OPTION):
             raise ValueError('UNKNOWN_EGOCENTRIC_GOTO_OPTION')
+        if wall_memory not in ('off', WALL_OPTION):
+            raise ValueError('UNKNOWN_EGONAV_WALL_MEMORY_OPTION')
         if not isinstance(far_candidate, (bool, np.bool_)):
             raise ValueError('INVALID_FAR_CANDIDATE_FLAG')
         if declared_target_hue is not None:
@@ -273,12 +292,29 @@ class EgocentricGoto:
         self.memory = None
         self.memories = []
         self.last_command = None
+        # Default-off egonav_wall_memory_v1: a separate store with the same
+        # vendored module/options and the same own-command transport.  It is
+        # recording-only this round and shares no state with the goal memory.
+        self.wall_enabled = bool(self.enabled and wall_memory == WALL_OPTION)
+        self.wall_store = None
+        self.wall_memories = []
+        self.wall_memory_ids = set()
+        self.wall_memory_events = {}
+        self.wall_memory_errors = []
         if self.enabled:
             self.memory = self.memory_module.LandmarkMemory(
                 option=self.memory_module.OPTION,
                 options=self.memory_module.MemoryOptions(implementation='legacy_v1'))
+            if self.wall_enabled:
+                self.wall_store = self.memory_module.LandmarkMemory(
+                    option=self.memory_module.OPTION,
+                    options=self.memory_module.MemoryOptions(implementation='legacy_v1'))
             self._event('controller_enabled', blocked_object='not_observed',
                         minimum_gap_m=None, gap_status='not_measured', t=0.)
+            if self.wall_enabled:
+                self._event('wall_memory_enabled', blocked_object='not_observed',
+                            minimum_gap_m=None, gap_status='not_measured', t=0.,
+                            toggle=WALL_OPTION, control_use=False)
 
     def _event(self, reason, *, blocked_object, minimum_gap_m, gap_status, t, **extra):
         self.events.append(dict(category='egocentric_goto', reason=reason,
@@ -535,6 +571,14 @@ class EgocentricGoto:
                  else np.asarray(command_delta(command), float))
         delta[2] *= self.yaw_transport_scale
         covariance = np.diag(np.asarray(motion_variance(delta), float))
+        # Default-off wall memory: split the streams so the goal store sees
+        # exactly the same observations it would see with the toggle off.
+        wall_observations = []
+        if self.wall_enabled:
+            wall_observations = [o for o in observations
+                                 if o.get('kind') == WALL_KIND]
+            observations = [o for o in observations
+                            if o.get('kind') != WALL_KIND]
         # The area field is a controller-side birth gate; the vendored EKF
         # schema is fixed and rejects unknown observation fields.
         memory_observations = []
@@ -545,8 +589,118 @@ class EgocentricGoto:
         result = self.memory.step(t, delta, covariance, memory_observations,
                                   observation_tick=bool(memory_observations))
         self.memories = result['memories']
+        if self.wall_enabled:
+            prior = {m.get('id'): np.asarray(m.get('relative_xy_m'), float)
+                     for m in self.wall_memories}
+            wall_observations = [{k: v for k, v in o.items()
+                                  if k != 'observed_area_m2'}
+                                 for o in wall_observations]
+            wall_result = self.wall_store.step(
+                t, delta, covariance, wall_observations,
+                observation_tick=bool(wall_observations))
+            self.wall_memories = wall_result['memories']
+            events = list(result['events'])+list(wall_result['events'])
+            self._record_wall_events(t, wall_result['events'])
+            self._record_wall_reobservation_errors(
+                t, delta, prior, wall_observations, wall_result)
+            result = dict(result, memories=result['memories'],
+                          events=events,
+                          wall_memories=wall_result['memories'],
+                          wall_events=wall_result['events'])
         self.last_command = command
         return result
+
+    def _wall_segment_observations(self, scan):
+        """Own-RGB scan segments -> wall_segment observations (self frame).
+
+        Midpoint point-observations, transformed with the same PR406
+        range/bearing covariance helper as the floor target.  Segment
+        endpoints are not persisted by the vendored EKF schema; the replay
+        records the current scan separately (recording-only).
+        """
+        observations = []
+        for index, segment in enumerate((scan or {}).get('segments', []) or []):
+            try:
+                a, b = np.asarray(segment, float)
+            except (TypeError, ValueError):
+                continue
+            if a.shape != (2,) or b.shape != (2,) or not np.isfinite(np.r_[a, b]).all():
+                continue
+            midpoint = (a+b)/2
+            # A zero-range point makes point_covariance rank-deficient.
+            if not float(np.linalg.norm(midpoint)) > 0.:
+                continue
+            observations.append(dict(
+                id=WALL_OBSERVATION_PREFIX+str(index), kind=WALL_KIND,
+                signature=WALL_SIGNATURE, relative_xy_m=midpoint.tolist(),
+                covariance_m2=point_covariance(midpoint).tolist()))
+        return observations
+
+    def _record_wall_events(self, t, events):
+        """Count wall-store events; ids created here are wall memory ids."""
+        for event in events:
+            memory_id = event.get('memory_id')
+            observation_id = str(event.get('observation', ''))
+            wall = (observation_id.startswith(WALL_OBSERVATION_PREFIX)
+                    or memory_id in self.wall_memory_ids)
+            if not wall:
+                continue
+            reason = str(event.get('reason'))
+            self.wall_memory_events[reason] = (
+                self.wall_memory_events.get(reason, 0)+1)
+            if reason == 'created' and memory_id is not None:
+                self.wall_memory_ids.add(memory_id)
+
+    def _record_wall_reobservation_errors(self, t, delta, prior,
+                                          observations, result):
+        """Own observation vs memory: transported prior error and residual.
+
+        The prior is the previous self-relative memory position moved by the
+        same own-command delta with the vendored ``relative()`` transport;
+        the residual compares the corrected memory with this frame's own
+        observation.  Evaluation only; never read by the control path.
+        """
+        if not observations:
+            return
+        observed = {o.get('id'): np.asarray(o.get('relative_xy_m'), float)
+                    for o in observations}
+        updated = {m.get('id'): m for m in result['memories']}
+        for event in result['events']:
+            if event.get('reason') != 'reobserved':
+                continue
+            memory_id = event.get('memory_id')
+            if memory_id not in self.wall_memory_ids:
+                continue
+            xy = observed.get(event.get('observation'))
+            previous = prior.get(memory_id)
+            memory = updated.get(memory_id)
+            if xy is None or previous is None or memory is None:
+                continue
+            predicted = np.asarray(
+                self.memory_module.relative(previous, delta), float)
+            corrected = np.asarray(memory.get('relative_xy_m'), float)
+            self.wall_memory_errors.append(dict(
+                t=float(t), memory_id=memory_id,
+                observation_id=event.get('observation'),
+                range_m=float(np.linalg.norm(xy)),
+                prior_error_m=float(np.linalg.norm(predicted-xy)),
+                residual_m=float(np.linalg.norm(corrected-xy)),
+                observations=memory.get('observations'),
+                mahalanobis2=event.get('mahalanobis2')))
+
+    def wall_memory_summary(self):
+        """Recording-only wall-memory counts for the gate record."""
+        counts = [int(m.get('observations', 0)) for m in self.wall_memories]
+        return dict(
+            toggle=WALL_OPTION, enabled=bool(self.wall_enabled),
+            control_use=False, kind=WALL_KIND, signature=WALL_SIGNATURE,
+            store='harness.egonav_vendor.egocentric_landmark_memory.LandmarkMemory',
+            transport='own_command delta + motion_variance + module relative()',
+            options='legacy_v1 defaults (32 slots, 6 m range, chi2 99 gate)',
+            count=len(self.wall_memories), observation_sum=sum(counts),
+            ids=[m.get('id') for m in self.wall_memories],
+            events=dict(self.wall_memory_events),
+            reobservations=list(self.wall_memory_errors))
 
     def _zone_marking_observations(self, observations):
         """Only measured, target-sized floor markings may steer the policy."""
@@ -589,6 +743,10 @@ class EgocentricGoto:
             # Diagnostic only: recorded in the ledger.  The far candidate judges
             # against DECLARED_TARGET_HUE, never against live observations.
             self.confirmed_hue = float(np.median(accepted_hues))
+        # Recording-only this round: wall segments go to a separate store and
+        # never into the goal/clearance/action path.
+        wall_observations = (self._wall_segment_observations(scan)
+                             if self.wall_enabled else [])
         accepted_ids = {id(o) for o in observations}
         rejected_markings = [o for o in target_markings if id(o) not in accepted_ids]
         small_rejected = bool(rejected_markings)
@@ -601,7 +759,7 @@ class EgocentricGoto:
                             for o in rejected_markings))
         self.small_marking_previous = small_rejected
         prior_target = self.goal_memory()
-        result = self.update_memory(t, command, observations)
+        result = self.update_memory(t, command, observations+wall_observations)
         target = self.goal_memory()
         control_observations = observations
         rejected = False
