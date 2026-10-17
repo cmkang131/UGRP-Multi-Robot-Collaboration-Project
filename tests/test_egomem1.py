@@ -67,3 +67,18 @@ def test_line_inverse_and_jacobian_no_fake_midpoint():
     result=m.step(1.,[.1,.2,.3],np.zeros((3,3)))
     assert np.allclose(m.x,z)
     assert result['memories'][0]['extent_unknown']
+
+
+def test_navigation_reacquisition_requires_departure_and_new_rgb():
+    from harness.egomem_navigation import MemoryReturn
+    c=MemoryReturn(sweep_steps=100,footprint_diameter_m=.4,horizontal_half_fov_rad=.5)
+    m=dict(id='m1',kind='zone_boundary',signature='blue',age_s=0.,range_m=1.,bearing_rad=np.pi)
+    c.step(0.,[0,0,2*np.pi],[m],[])
+    assert c.stage=='depart'
+    assert not c.done
+    c.step(1.,[1.,0,0],[m],[])
+    assert c.departed and not c.done
+    m['bearing_rad']=0.
+    c.step(2.,[0,0,0],[m],[dict(kind='zone_boundary',signature='blue')])
+    assert c.done and c.events[-1]['reason']=='rgb_signature_reacquired'
+    assert c.events[-1]['arrival_verified'] is False
