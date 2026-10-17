@@ -29,7 +29,9 @@ def run(a):
     for name,h in json.loads((ROOT/'SOURCE_FILES.json').read_text()).items():
         if sha(ROOT/name)!=h:raise ValueError('SOURCE_BYTES_CHANGED:'+name)
     if not Path(q['rejection_table']).is_file():raise ValueError('PRIOR_FUNNEL_REQUIRED')
-    task='mapbuild8' if a.map_correction else 'mapbuild7'
+    long_config=json.loads(a.long_config.read_text()) if a.long_config else None
+    if long_config and (not a.map_correction or sha(a.long_config)!=q['long_config_sha256']):raise ValueError('PINNED_LONG_DIAGNOSTIC_REQUIRED')
+    task='mapbuild10' if long_config else 'mapbuild8' if a.map_correction else 'mapbuild7'
     if not Path('/home/ugrp/ugrp-sim/leases/'+task+'.json').is_file():raise ValueError('OWN_LEASE_REQUIRED')
     own_motion=None;own_motion_config=None
     if a.own_motion_model:
@@ -91,12 +93,15 @@ def run(a):
     from sim.grasp_act_solo_lookaround import SoloLookaround
     from scripts.mapbuild7_teacher import VisibleTeacher
     from warp_act_scene import make_scene
-    cv2.setNumThreads(1);plan=json.loads(a.pickup.read_text());plan={**plan,'scenario_id':'s1_normal_mixed_v7','end_color_scene':'off'}
+    cv2.setNumThreads(1);plan=json.loads(a.pickup.read_text());plan={**plan,'scenario_id':'s1_normal_mixed_v7','end_color_scene':'grasp_act_teal_blue_v1' if long_config else 'off'}
     if plan['kind']!='cyan' or plan['item_id']!='cyan_2':raise ValueError('REGISTERED_CYAN2_ONLY')
     import sim.grasp_act_solo_teacher
     expected=q['teacher_class_sha256'];module=Path(sys.modules['sim.grasp_act_solo_teacher'].__file__)
     if sha(module)!=expected:raise ValueError('FROZEN_TEACHER_CLASS_REQUIRED')
     scene=make_scene(plan);hardware,_=load_fitted_hardware()
+    if long_config:
+        expected_items={'cyan_1','cyan_2','red_1','red_2','yellow_1','green_1','beam_1'}
+        if set(scene.inventory)!=expected_items:raise ValueError('V7_CARGO_INVENTORY_REQUIRED')
     xml=cargo_contact(scene.transform(build_multi_robot_xml(hardware)),'cargo_noslip_v1')
     xml=scene.robot_transform(xml,hardware=hardware,calibrated_keys=hardware)
     xml=transform_xml(xml,DriveParameters(),'mesh','off')
@@ -104,6 +109,12 @@ def run(a):
     if sha(owner)!='a5c8d370755034b9f9615f66a94b87883327b7d7ecc4e13082eac2c2d4751c6a':raise ValueError('OWNER_BYTES_CHANGED')
     spec=importlib.util.spec_from_file_location('native_owner',owner);native=importlib.util.module_from_spec(spec);spec.loader.exec_module(native)
     xml=native.apply(xml,'warp_native_contact_v1');m=mujoco.MjModel.from_xml_string(xml)
+    if long_config:
+        from sim.grasp_act_scene import COLORS
+        if m.opt.noslip_iterations!=0:raise ValueError('NOSLIP0_REQUIRED')
+        # Assert the applied existing end-colour profile, not only plan metadata.
+        for band,color in (('band_neg','teal'),('band_pos','blue')):
+            if not np.allclose(m.geom_rgba[m.geom('cargo_beam_1__'+band).id],COLORS[color]):raise ValueError('END_COLOURS_REQUIRED')
     en=mujoco.mjtSleepPolicy;m.tree_sleep_policy[:]=runtime_sleep_policy(m.tree_sleep_policy.copy(),auto=int(en.mjSLEEP_AUTO),auto_never=int(en.mjSLEEP_AUTO_NEVER),auto_allowed=int(en.mjSLEEP_AUTO_ALLOWED),never=int(en.mjSLEEP_NEVER),allowed=int(en.mjSLEEP_ALLOWED))
     for rid in ('r1','r2','r3'):
         cid=m.camera(rid+'__robot_cam').id;m.cam_pos[cid]=camera.POSITION_M;m.cam_quat[cid]=camera.QUAT_WXYZ
@@ -113,11 +124,21 @@ def run(a):
     # Setup-only spawns never become a localization anchor.
     for rid,spawn in plan['spawns'].items():
         st._free_pose(m,d,rid+'__robot',spawn[:3],spawn[3]);st.set_arm(m,d,rid,FOLDED,hardware)
+    if long_config:
+        # Public box is authored before sampling. No rejection-resampling,
+        # snapped/rounded spawn, or controller access to the sampled pose.
+        prior=long_config['prior'];b=prior['bounds_m'];rng=np.random.default_rng(a.setup_seed)
+        setup_xy=[float(rng.uniform(b[0],b[1])),float(rng.uniform(b[2],b[3]))]
+        setup_yaw=float(rng.uniform(prior['heading_center_rad']-prior['heading_half_width_rad'],prior['heading_center_rad']+prior['heading_half_width_rad']))
+        st._free_pose(m,d,'r1__robot',[*setup_xy,plan['spawns']['r1'][2]],setup_yaw)
     mujoco.mj_forward(m,d);admission=check(m,d,**named_sets(m),option=OVERLAP)
     if not admission['accepted']:raise ValueError('START_PENETRATING')
     a.output.mkdir(parents=True,exist_ok=False);(a.output/'own-rgb').mkdir()
     static=scene.config['static_map'];dump(a.output/'static-map.json',static);(a.output/'scene.xml').write_text(xml);dump(a.output/'admission.json',admission)
     dump(a.output/'scene.json',scene.manifest)
+    if long_config:
+        dump(a.output/'public-start-zone.json',prior)
+        dump(a.output/'setup-eval-only.json',dict(evaluation_only=True,seed=a.setup_seed,sampled_xy_m=setup_xy,sampled_yaw_rad=setup_yaw,conditioned_on_collision=False))
     teacher=VisibleTeacher(m,plan,FOLDED,a.output,scene)
     if a.preflight:
         dump(a.output/'preflight.json',dict(accepted=True,cpu_physics_steps=0,mjwarp_physics_steps=0,teacher_class_sha256=sha(module),native_noslip=int(m.opt.noslip_iterations),scene_xml_sha256=hashlib.sha256(xml.encode()).hexdigest()))
@@ -155,18 +176,27 @@ def run(a):
     camera_stream=CommandCamera(camera_pose=CARRY_OPTION);colour=a.vision/'experiments/2026-10-16-reloc16/colour-calibration.json'
     if sha(colour)!='a37cf96551abbfb8b38df3efc1cd61f3f357ac9eb3a1dcd0b4d9947242e4e24f':raise ValueError('COLOUR_CHANGED')
     state=ColourBoundaryState('walls_floor_contrast_v5_indigo110_s80',json.loads(colour.read_text()),option=RELOC16_OPTION)
-    registration=StaticRegistration(static,option=STATIC);rbpf=MapbuildRBPF(FOLDED,option=RBPF)
+    registration=StaticRegistration(static,option=STATIC) if not long_config else None
+    rbpf=MapbuildRBPF(FOLDED,option=RBPF) if not long_config else None
     correction=None
     if a.map_correction:
         from harness.selfmap_map_correction import SelfMapCorrection,OPTION as CORRECTION
         correction=SelfMapCorrection(static,option=CORRECTION)
+        if long_config:
+            from harness.mapbuild10_diagnostic import DiagnosticCorrection
+            if sha(a.amcl_calibration)!=q['amcl_calibration_sha256'] or sha(a.requirements)!=q['requirements_sha256']:raise ValueError('AMCL_INPUT_HASH_REQUIRED')
+            correction=DiagnosticCorrection(static,json.loads(a.amcl_calibration.read_text()),json.loads(a.requirements.read_text()),prior,enabled=True)
+            from harness.self_pulse_rotation import selected_model
+            from harness.zone_solo_cyan_path_heading import select_waypoint
+            from harness.zone_solo_cyan_pulse_cal import action_of
+            pulse_profiles=selected_model('s2_pulse_v122_rotL_v1')['profiles'];pulse=None;pulse_start=0.;pulse_ready_at=0.;route_index=0
     contact_recorder=None
     if a.record_native_contact:
         from scripts.mapbuild7_contact_eval import NativeContactRecorder
         if len(teacher.gids)!=1:raise ValueError('ONE_BOX_COLLISION_GEOM_REQUIRED')
         contact_recorder=NativeContactRecorder(m,wd,teacher.gids[0],[m.geom('r1__'+x+'_finger').id for x in ('left','right')])
     own=[];recorded_scans=[];labels=[];saved=[];saved_vel=[];issued=[];trace=[];events=[];teacher_rows=[];wall_ledger=[];camera_ledger=[];ring=deque(maxlen=101)
-    pose=np.zeros(3);raw_pose=np.zeros(3);anchor=None;old=None;previous=None;last_servo=None;stage='prescan';sweep_pose=None;sweep_angle=0.;sweep_ticks=0;sweep_budget=None;route=None;goal=None;start_return=None;status='cap_end';error=None;source_sha=q['source_sha'];start=time.monotonic();next_scan=0.
+    pose=np.zeros(3);raw_pose=np.zeros(3);anchor=None;old=None;previous=None;last_servo=None;stage='prescan';sweep_pose=None;sweep_angle=0.;sweep_ticks=0;sweep_budget=None;route=None;goal=None;start_return=None;status='cap_end';error=None;source_sha=q['source_sha'];start=time.monotonic();next_scan=0.;speed_first30=None
     d_eval=mujoco.MjData(m)
     body=m.body('r1__robot').id;adr=int(m.jnt_qposadr[int(m.body_jntadr[body])])
     region=static['regions']['zone_A'];from harness.visual_arm_v3 import MOUNT_X_M
@@ -201,10 +231,11 @@ def run(a):
             increment=np.asarray(flow['delta']) if flow['status']=='measured' else delta;C=np.asarray(flow['covariance']) if flow['status']=='measured' else cov
             raw_pose=compose(raw_pose,increment);map_event=None
             if correction:
-                corrected,map_event=correction.step(t,tick,delta,cov,flow,scan);pose=np.asarray(corrected)
+                corrected,map_event=correction.step(t,tick,delta,cov,flow,scan,**({'servo':servo} if long_config else {}));pose=np.asarray(corrected)
                 increment=np.asarray(map_event['motion_delta']);C=np.asarray(map_event['motion_covariance'])
             else:pose=raw_pose.copy()
-            estimate,wall_event=rbpf.step(t,tick,increment,C,scan,servo=servo)
+            if rbpf:estimate,wall_event=rbpf.step(t,tick,increment,C,scan,servo=servo)
+            else:estimate,wall_event=None,dict(reason='rbpf_disabled_current_stack',inserted=False)
             if scan['segments'] and t>=next_scan:
                 wall_ledger.extend([transform(s,pose).tolist() for s in scan['segments']]);camera_ledger.extend([transform([scan['camera']],pose)[0].tolist() for _ in scan['segments']]);next_scan=t+1.
             file=a.output/'own-rgb'/f'r1-{tick:05d}.jpg'
@@ -214,6 +245,10 @@ def run(a):
             # gets a perception mirror; mapper, FK and route never see it.
             labels.append(dict(frame_id=tick,t=t,pose=np.r_[qp[adr:adr+2],quaternion_heading(qp[adr+3:adr+7])].tolist(),finger_forces=contact_recorder.record() if contact_recorder else None));saved.append(qp);saved_vel.append(wd.qvel.numpy()[0].copy());ring.append(tick)
             old=rgb['r1'];last_servo=servo
+            if long_config and tick==300:
+                speed_first30=(time.monotonic()-start)/30.
+                dump(a.output/'speed-first30.json',dict(metric='wall_s/(sim_s*nworld)',value=speed_first30,nworld=1,includes_recording=True,warning=speed_first30>3.5,blocking=speed_first30>6.,basis='AGENTS existing 30 SIM sample, 3.5 warning / 6.0 blocking'))
+                if speed_first30>6.:status='SPEED_GATE_BLOCKED';break
             if tick==round(a.sim_budget*10):break
             if stage in ('prescan','rescan'):
                 cmd,done=prescan.step(t,servo,lambda:rgb['r1'])
@@ -243,6 +278,8 @@ def run(a):
                     else:
                         if stage=='rescan' and anchor is None:status='MAP_REGISTRATION_REQUIRED';break
                         stage='pickup';events.append(dict(t=t,event='map_to_teacher_handoff',student=False,navigation_before_handoff=False))
+                        if long_config and long_config['kind']=='unloaded':
+                            stage='diagnostic_route';goal=tuple(long_config['goals'][0]['xy_m']);route=None;cmd=teacher.pause(t)
             elif stage=='sweep_pose':
                 from harness.e2e_rgb_vo import PARAMS
                 cmd=dict(t=t,wheels=[0.]*4,duration_s=[0.]*4,pwm=sweep_pose)
@@ -275,16 +312,40 @@ def run(a):
             else:
                 if anchor is None:raise RuntimeError('NO_REGISTERED_STATIC_FRAME')
                 absolute=compose(anchor,pose)
+                if long_config and not correction.navigation_ready:
+                    events.append(dict(t=t,event='amcl_distribution_lost',category='static_amcl',reason='handoff_budget_or_ess_not_met',blocked_object='own_observed_wall',minimum_gap_m=None,gap_status='not_measured'));status='LOCALIZATION_UNRESOLVED';break
                 if route is None or tick%10==0:route=plan_path(tuple(absolute[:2]),goal,tuple(static['bounds_m']),[],rects=rects)
                 if not route:
                     events.append(dict(t=t,event='no_static_route',category='map_planner',reason='40000_node_search_no_route',blocked_object='static_walls',minimum_gap_m=None,gap_status='not_measured'));status='NO_ROUTE';break
                 target=next((p for p in route if math.dist(p,absolute[:2])>=.06),goal)
                 action=proportional_drive(absolute,goal,target,0.);wheels,durations=duty([3*action['forward'],3*action['left'],.65*action['turn']])
                 cmd=teacher.pause(t);cmd={**cmd,'wheels':wheels,'duration_s':durations}
-                if math.dist(absolute[:2],goal)<=.025 and abs(math.atan2(math.sin(absolute[2]),math.cos(absolute[2])))<=.04:
-                    if stage=='return':events.append(dict(t=t,event='estimated_return_arrival'));status='ROUTE_COMMAND_COMPLETE';break
-                    events.append(dict(t=t,event='estimated_zone_arrival'));events.append(dict(t=t,event='post_setdown_lookaround_start'))
-                    teacher.release(t+.1);stage='release';cmd=teacher.pause(t)
+                arrival=math.dist(absolute[:2],goal)<=.025 and abs(math.atan2(math.sin(absolute[2]),math.cos(absolute[2])))<=.04
+                if long_config:
+                    goal_yaw=long_config['goals'][route_index]['yaw_rad'] if stage=='diagnostic_route' else 0.
+                    # Shared v145 .03m/.06rad arrival and measured pulse+coast
+                    # scheduling, no new continuous drive law or GT feedback.
+                    arrival=math.dist(absolute[:2],goal)<=.03 and abs(math.atan2(math.sin(absolute[2]-goal_yaw),math.cos(absolute[2]-goal_yaw)))<=.06
+                    cmd={**cmd,'wheels':[0.]*4,'duration_s':[0.]*4}
+                    if t>=pulse_ready_at-1e-8:
+                        pulse,detail=select_waypoint(pulse_profiles,stage=='carry',absolute,target,goal,goal_yaw=goal_yaw,min_command_contract=True)
+                        if pulse is not None:
+                            pulse_start=t;pulse_ready_at=t+pulse['times'][-1]
+                            events.append(dict(t=t,event='shared_heading_pulse',action=action_of(pulse),basis='existing_v145_profile_and_coast',transfer=pulse.get('transfer')))
+                    if pulse is not None and t<pulse_start+pulse['duration_s']-1e-8:
+                        arow=action_of(pulse);f,l,r=(arow[k] for k in ('forward','left','turn'))
+                        cmd={**cmd,'wheels':[f-l-r,f+l+r,f+l-r,f-l+r], 'duration_s':[min(.1,pulse_start+pulse['duration_s']-t)]*4}
+                if arrival:
+                    if stage=='diagnostic_route':
+                        events.append(dict(t=t,event='estimated_diagnostic_waypoint',index=route_index))
+                        route_index+=1
+                        if route_index==len(long_config['goals']):status='ROUTE_COMMAND_COMPLETE';break
+                        goal=tuple(long_config['goals'][route_index]['xy_m']);route=None;pulse=None;pulse_ready_at=t
+                        cmd={**cmd,'wheels':[0.]*4,'duration_s':[0.]*4}
+                    elif stage=='return':events.append(dict(t=t,event='estimated_return_arrival'));status='ROUTE_COMMAND_COMPLETE';break
+                    else:
+                        events.append(dict(t=t,event='estimated_zone_arrival'));events.append(dict(t=t,event='post_setdown_lookaround_start'))
+                        teacher.release(t+.1);stage='release';cmd=teacher.pause(t)
             issued.append(cmd);previous=cmd
             values,state_cmd=control_tape([dict(ctrl=ctrl[0],wheels=cmd['wheels'],deadlines=[t+v if v else -1. for v in cmd['duration_s']],applied=applied[0],target=[cmd['pwm'][str(s)] for s in servos],servo_active=np.ones(5,bool),now=t,servo_time=t)],relay,dt=float(m.opt.timestep),steps=round(.1/m.opt.timestep),lookup=lookup,wheel_ids=wheel_ids,servo_ids=servo_ids,start_fraction=drive.start_fraction,kinetic_fraction=drive.kinetic_fraction,torque_cap_nm=drive.torque_cap_nm)
             applied=state_cmd['applied'];relay=state_cmd['relay'];wp.copy(tape,wp.array(values,dtype=float));step_index.zero_();wp.capture_launch(cap.graph)
@@ -322,6 +383,16 @@ def run(a):
                 rejection_table=str(a.output/'rejection_table.json'),top_camera_control=False,held_object_hidden_v1=True,
                 planning_cap_basis='compute_or_sim',cap_end_label='cap_end')
             dump(a.output/'summary.json',summary)
+        if long_config:
+            summary=json.loads((a.output/'summary.json').read_text())
+            summary.update(cohort='mapbuild10-public-box-native-v7-long-diagnostic',
+                production_qualified=False,diagnostic_navigation_approval=q['approval'],
+                amcl_profile='nav2_defaults_v1',start_zone_prior_v1='on',rbpf='off',heading_mode='path_tangent_v1',
+                map_correction_diagnostic_proposals_used=sum(bool(e.get('diagnostic_navigation_pose_used')) for e in correction.ledger),
+                current_stack_preflight=str(q.get('stack_check')),nworld=1,
+                speed_first_30_sim_ratio=speed_first30,
+                start_zone_path='public-start-zone.json',uniform_setup_path='setup-eval-only.json')
+            dump(a.output/'summary.json',summary)
         dump(a.output/'SHA256SUMS.json',{str(p.relative_to(a.output)):sha(p) for p in a.output.rglob('*') if p.is_file()})
 
 if __name__=='__main__':
@@ -334,4 +405,7 @@ if __name__=='__main__':
     p.add_argument('--sweep-model',type=Path,help='default off frozen own-VO sweep response; never evaluation data')
     p.add_argument('--sweep-camera-folded',action='store_true',help='default off; existing FOLDED command pose, settle before body sweep')
     p.add_argument('--own-motion-model',type=Path,help='default off own_command_motion_v1 exact repeat-command predictive distribution')
+    p.add_argument('--long-config',type=Path,help='default off coordinator-approved mapbuild10 diagnostic, public uniform start box')
+    p.add_argument('--setup-seed',type=int,default=2026101710,help='setup/evaluation only; never passed to AMCL')
+    p.add_argument('--amcl-calibration',type=Path);p.add_argument('--requirements',type=Path)
     run(p.parse_args())

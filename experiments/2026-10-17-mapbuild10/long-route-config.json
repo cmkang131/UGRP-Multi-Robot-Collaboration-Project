@@ -1,0 +1,40 @@
+{
+  "schema": "ugrp.mapbuild10.long_route.v1",
+  "kind": "unloaded",
+  "prior": {
+    "schema": "ugrp.coarse_start_zone.v1",
+    "zone_id": "public_west_lane_r1",
+    "map_id": "zone_wide_door_geometry_v3",
+    "bounds_m": [
+      -0.8,
+      -0.3,
+      -2.1,
+      -1.6
+    ],
+    "heading_center_rad": 1.5707963267948966,
+    "heading_half_width_rad": 0.5235987755982988,
+    "source_kind": "operator_coarse",
+    "source_evidence": "coordinator ops-alert 2026-10-17 public box; west lane authored from static map bounds and walls before uniform setup sampling"
+  },
+  "goals": [
+    {
+      "xy_m": [
+        -0.55,
+        0.95
+      ],
+      "yaw_rad": -1.5707963267948966
+    },
+    {
+      "xy_m": [
+        -0.55,
+        -1.9
+      ],
+      "yaw_rad": 1.5707963267948966
+    }
+  ],
+  "minimum_evaluated_travel_m": 3.0,
+  "basis": "Two west-lane legs, nominal 2.8+2.85m, 180deg turn; exact actual travel is evaluation-only; not a control gate.",
+  "scope": "one approved physical diagnostic round; native-v7 separate from historical MC20; no student or LLM result",
+  "sim_budget_s": 1800.0,
+  "cap_basis": "existing scenario v7 eval budget, compute/SIM only; cap_end separate"
+}
