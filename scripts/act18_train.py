@@ -29,11 +29,16 @@ def validate_probe_options(candidate, init_checkpoint, steps, post_close_weight,
     supplied = [value is not None for value in
                 (init_checkpoint, steps, post_close_weight, pre_close_weight, done_positive_batch_fraction,
                  base_smooth_window)] + ([True] if val_select else [])
+    pilot_only = [value is not None for value in
+                  (init_checkpoint, steps, post_close_weight, pre_close_weight, done_positive_batch_fraction)]
     if candidate in PILOT_CANDIDATES:
         if steps is None:
             raise ValueError(candidate+' requires --steps')
         if candidate in (TUNE_CANDIDATE, 'act18-doneb1') and init_checkpoint is None:
             raise ValueError(candidate+' requires --init-checkpoint')
+    elif candidate == 'act18-co':
+        if any(pilot_only):
+            raise ValueError('co-training does not combine with pilot options')
     elif any(supplied):
         raise ValueError('pilot options require a registered pilot candidate '+str(PILOT_CANDIDATES))
     if steps is not None and not 1 <= steps <= 20000:
