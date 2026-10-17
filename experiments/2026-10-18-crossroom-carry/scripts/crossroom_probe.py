@@ -294,8 +294,12 @@ def run(a):
     zone_x0, zone_x1, zone_y0, zone_y1 = 4.30, 4.90, -2.80, -1.40
 
     def scene_plan(plan):
-        scenario = loaded_scene if carry_loaded else 's1_normal_mixed_v7'
-        return {**plan, 'scenario_id': scenario,
+        if carry_loaded:
+            # Reduced single-box scene has no long_beam, so the beam end-colour
+            # profile (which requires exactly one beam band) must stay off.
+            return {**plan, 'scenario_id': loaded_scene,
+                    'end_color_scene': 'off'}
+        return {**plan, 'scenario_id': 's1_normal_mixed_v7',
                 'end_color_scene': 'grasp_act_teal_blue_v1'}
 
     def zone_margin(x, y):

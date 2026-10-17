@@ -44,7 +44,7 @@ def main() -> int:
     setups = json.loads(a.setups.read_text())
     scenario = json.loads(a.scene.read_text())
     plan0 = {**setups['episodes'][0], 'scenario_id': scenario,
-             'end_color_scene': 'grasp_act_teal_blue_v1'}
+             'end_color_scene': 'off'}
     with cp.prefixed_paths(a.renderer, a.legacy):
         import mujoco
         import numpy as np
@@ -60,7 +60,7 @@ def main() -> int:
         rows = []
         for idx, plan in enumerate(setups['episodes']):
             plan = {**plan, 'scenario_id': scenario,
-                    'end_color_scene': 'grasp_act_teal_blue_v1'}
+                    'end_color_scene': 'off'}
             d = cp.reset_episode(m, hardware, plan, st, SEARCH, mujoco)
             st.set_arm(m, d, 'r1', {**SEARCH, 1: a.gripper_pwm}, hardware)
             mujoco.mj_forward(m, d)
