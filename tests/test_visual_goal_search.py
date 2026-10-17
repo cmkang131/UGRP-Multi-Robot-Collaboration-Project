@@ -183,18 +183,19 @@ def test_expanding_search_is_default_off_and_schedule_does_not_close():
     off._next_leg(0.3, 'leg_complete')
     off._next_leg(0.4, 'leg_complete')
     assert off.leg == 0 and off.leg_len == 28  # 4-leg square grows only after 4 legs
-    # Candidate C: first stroke is the gate-r4 2.6-4.4 m bound at the measured
-    # 0.0128 m/tick (344 ticks), then the recorded lawnmower schedule, with a
-    # right turn at every stroke so the parallel lines step off the start.
+    # Candidate C: the first 20-tick stub stays, then the existing left turn
+    # restores the gap-exit heading and the second stroke is the gate-r4
+    # 2.6-4.4 m bound at the measured 0.0128 m/tick (344 ticks), followed by
+    # the recorded lawnmower lines.  Left turns stay as in the old square.
     s = VisualGoalSearch(option=OPTION, options=Options(
         expanding_search=True, arrival_aim_inset_m=ARRIVAL_AIM_INSET_M))
     s._enter_east_search(0.0, reason='test')
     assert s.leg_schedule == EXPANDING_LEG_TICKS
-    assert s.leg_len == EXPANDING_LEG_TICKS[0] == 344
-    assert s.turn_left == 69 and s._turn_sign == -1
+    assert s.leg_len == EXPANDING_LEG_TICKS[0] == 20
+    assert s.turn_left == 69 and s._turn_sign == -1  # unchanged entry turn
     for want in EXPANDING_LEG_TICKS[1:]:
         s._next_leg(0.1, 'leg_complete')
-        assert s.leg_len == want and s._turn_sign == -1
+        assert s.leg_len == want and s._turn_sign == +1
     # Exhausted schedule grows the last stroke instead of closing a square.
     last = s.leg_len
     s._next_leg(0.2, 'leg_complete')

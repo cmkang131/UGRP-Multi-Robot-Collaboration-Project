@@ -424,20 +424,22 @@ in place.  Leg lengths and turns are the gate-r4 measured values:
 
 | quantity | gate-r4 measurement | use in C |
 |---|---|---|
-| forward-only displacement | median 0.0128 m/tick over 42 forward runs (range 0.0095-0.0134), eval-only poses at run ends | 344-tick first stroke = 4.4 m at the median (3.27 m at the slowest run) |
-| one 90 deg exact turn | 69 ticks = 6.9 s at 10 Hz (exact_turn_rad 0.022921) | every stroke change; right turns step the parallel lines toward the zone side |
-| gap exit -> nearest zone point | 2.65, 2.91, 2.94 m (e02/e04/e05); 4.37-5.52 m (e03/e06/e07) | first stroke 4.4 m covers the coordinator's 2.6-4.4 m bound |
+| forward-only displacement | median 0.0128 m/tick over 42 forward runs (range 0.0095-0.0134), eval-only poses at run ends | 344-tick long stroke = 4.4 m at the median (3.27 m at the slowest run) |
+| one 90 deg exact turn | 69 ticks = 6.9 s at 10 Hz (exact_turn_rad 0.022921) | every stroke change; the existing left turns are kept |
+| gap exit -> nearest zone point | 2.65, 2.91, 2.94 m (e02/e04/e05); 4.37-5.52 m (e03/e06/e07) | 344-tick stroke covers the coordinator's 2.6-4.4 m bound |
+| zone bearing at leg start | +39..+119 deg LEFT of the post-entry heading; the 90 deg left turn at the end of the first stub restores the gap-exit heading, which is within -51..+29 deg of the zone and within 3 deg for e02/e04/e05 | the long stroke is the SECOND leg, after that left turn; the first leg stays a 20-tick stub |
 | lateral line spacing | zone B is 1.4 m wide in y | 60-tick (0.77 m) lateral offset, so two lines span 0.77 m and three would span 1.54 m |
-| leg_forward time available | leg_forward ran 51-71 s of the 120 s cap (pre-search stages 49-69 s) | entry 6.9 s + first stroke 34.4 s = 41.3 s fits before the cap in the traversing starts |
+| leg_forward time available | leg_forward ran 51-71 s of the 120 s cap (pre-search stages 49-69 s) | entry 6.9 s + stub 2 s + turn 6.9 s + long stroke 34.4 s = 50.2 s; the long stroke ends at 99-119 s in those starts |
 
-The schedule is `(344, 60, 300, 60, 200)` forward ticks with a right turn
-between strokes (entry turn 69 + 4 x 69 = 345 turn ticks; total planned 1309
-ticks, so the last strokes can end in `cap_end`, which is labeled separately).
-The first stroke alone covers the measured 2.6-4.4 m; the later strokes are
-the lawnmower return on a parallel line.  A closed expanding square cannot
-cover 4.4 m in the cap (a 3-unit square costs 12*U + 6*69 ticks), which is why
-the schedule is strokes, not a square.  If the schedule exhausts, the last
-stroke grows by 60 ticks instead of closing a fixed square.
+The schedule is `(20, 344, 60, 300, 60)` forward ticks with the original left
+turn between strokes (entry turn 69 + 4 x 69 = 345 turn ticks, but the later
+strokes can end in `cap_end`, which is labeled separately).  The first 20-tick
+stub is unchanged; the long stroke is the second leg, after the left turn
+that restores the gap-exit heading.  The later 60/300/60 strokes are the
+lawnmower lines on a parallel offset.  A closed expanding square cannot cover
+4.4 m in the cap (a 3-unit square costs 12*U + 6*69 ticks), which is why the
+schedule is strokes, not a square.  If the schedule exhausts, the last stroke
+grows by 60 ticks instead of closing a fixed square.
 
 Arrival: the 0.10 m point tolerance is unchanged, but the aim moves inward.
 Gate-r4 false arrivals declared at base->remembered-point 0.0952-0.0983 m
@@ -451,9 +453,10 @@ point, where a base->memory bearing would flip backwards.  `declared` and
 strict GT-inside verdicts stay side by side; no pooling with gate-r4 or B.
 
 Unit coverage: `tests/test_visual_goal_search.py` checks the default-off
-square is unchanged, the C schedule and right turns, the growing fallback,
-and the 0.098 m false-arrival geometry (default declares; C keeps driving;
-0.06 m past the point declares) with the tolerance untouched.
+square is unchanged, the C schedule (20-tick stub, 344-tick long stroke,
+left turns), the growing fallback, and the 0.098 m false-arrival geometry
+(default declares; C keeps driving; 0.06 m past the point declares) with the
+tolerance untouched.
 
 ## Files
 

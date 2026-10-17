@@ -47,15 +47,21 @@ EXPANDING_OPTION = 'visgoal_expanding_search_v1'
 # of leg_forward ticks turning, made 6-9 leg turns, and netted only
 # 0.03-0.54 m over 51-71 s.  A closed square cannot cover 4.4 m within the
 # 1200-tick cap either (a 3-unit expanding square costs 12*U + 6*69 ticks).
-# The schedule below is a lawnmower, not a square: the first stroke is the
-# measured upper bound 4.4 m / 0.0128 = 344 ticks, then a 0.77 m (60 tick)
-# lateral step and a 300-tick return stroke on a parallel line.  All turns are
-# right turns so each parallel line steps toward the zone side (the zone is
-# south of the corridor; e02/e04/e05 relative bearing after the entry turn was
-# -33..+3 deg).  Forward budget 344+60+300+60+200 = 964 and entry+4 turns = 345,
-# so the last strokes may end in cap_end; that is labeled separately and the
-# first stroke alone covers the measured 2.6-4.4 m.  B and C are not pooled.
-EXPANDING_LEG_TICKS = (344, 60, 300, 60, 200)
+# The schedule below keeps the first 20-tick stub and the original left
+# turns, then makes the SECOND stroke the long one: the entry turn is a right
+# 90 deg, so the 90 deg left turn at the end of the stub restores the
+# gap-exit heading.  Gate-r4 leg-start relative bearings put the zone
+# +39..+119 deg LEFT of that post-entry heading, i.e. the restored
+# gap-exit heading is within -51..+29 deg of the zone and within 3 deg for
+# the three starts that reached the corridor (e02/e04/e05).  The stroke is
+# the measured upper bound 4.4 m / 0.0128 = 344 ticks; the later 60-tick
+# (0.77 m) lateral step and 300-tick return stroke are the lawnmower lines.
+# Turn/length order (ticks): 20, then left 69, then 344, left 69, 60, left 69,
+# 300, left 69, 60.  Entry 69 + 20 + 69 + 344 = 502 ticks (50 s), and
+# leg_forward started at 49-69 s in gate-r4, so the long stroke ends at
+# 99-119 s and the later lines may end in cap_end; the long stroke alone
+# covers the measured 2.6-4.4 m.  B and C are not pooled.
+EXPANDING_LEG_TICKS = (20, 344, 60, 300, 60)
 # Arrival aim: gate-r4 false arrivals declared at a base->remembered-point
 # range of 0.0952-0.0983 m (the 0.10 m point tolerance), with memory radius95
 # 0.0442-0.0451 m, while the remembered point sat only 0.0228-0.0602 m inside
@@ -726,15 +732,16 @@ class VisualGoalSearch:
         if self.leg_schedule:
             # Candidate C lawnmower: the next stroke length is the measured
             # schedule (a stroke that hit a wall early is cut short, which is
-            # expected); all turns are right turns so each parallel line steps
-            # toward the zone side.  If the schedule is exhausted, grow the
-            # last stroke instead of closing a fixed square in place.
+            # expected); turns stay left as in the original rotating square,
+            # but the lengths no longer close in place.  If the schedule is
+            # exhausted, grow the last stroke instead of repeating a fixed
+            # square.
             if self.leg >= len(self.leg_schedule):
                 self.leg = len(self.leg_schedule) - 1
                 self.leg_len = min(400, self.leg_len + 60)
             else:
                 self.leg_len = int(self.leg_schedule[self.leg])
-            sign = -1
+            sign = +1
         else:
             if self.leg >= 4:
                 self.leg = 0
