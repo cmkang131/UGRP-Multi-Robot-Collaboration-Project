@@ -155,6 +155,26 @@ def main() -> int:
                 if not (e['status'] == 'ARRIVED_DECLARED'
                         and e['arrival_verdict_gt_inside_zone_B'] is True)]
 
+    # Strict sequential funnel: each gate keeps only the episodes that passed
+    # every earlier gate, so input_n and rejected_n are monotone.  The runner's
+    # own table treated ``found`` and ``colour_seen`` as a fixed chain, which
+    # can show a negative rejected_n when an episode sees the colour without
+    # forming the metric (visgoal-batch-g16-short: colour 5 > found 4).
+    funnel = []
+    remaining = list(episodes)
+    for stage, cond in [
+            ('starts', lambda e: True),
+            ('colour_seen', lambda e: e['colour_seen']),
+            ('found_metric_or_arrived', lambda e: e['found']),
+            ('arrived_declared', lambda e: e['arrived_declared']),
+            ('arrived_gt',
+             lambda e: e['arrival_verdict_gt_inside_zone_B'] is True)]:
+        passed = [e for e in remaining if cond(e)]
+        funnel.append(dict(stage=stage, input_n=len(remaining),
+                           cumulative_pass_n=len(passed),
+                           rejected_n=len(remaining) - len(passed)))
+        remaining = passed
+
     out = dict(
         schema='ugrp.visgoal.recount.v1',
         run=str(run),
@@ -171,6 +191,7 @@ def main() -> int:
         initially_invisible_found_n=invisible_found_n,
         initially_invisible_gt_n=invisible_gt_n,
         status_counts=status_counts,
+        funnel=funnel,
         partial_episode_dirs=partial,
         failures=failures,
         aggregate_checks=aggregate_checks,
@@ -182,8 +203,9 @@ def main() -> int:
     Path(a.output).write_text(json.dumps(out, indent=1, ensure_ascii=False) + '\n')
     print(json.dumps({k: out[k] for k in ('n', 'found_n', 'arrived_declared_n',
                                           'arrived_gt_n', 'cap_end_n',
-                                          'initially_invisible_n', 'mismatches',
-                                          'aggregate_checks')}, indent=1))
+                                          'funnel', 'initially_invisible_n',
+                                          'mismatches', 'aggregate_checks')},
+                     indent=1))
     return 0
 
 
