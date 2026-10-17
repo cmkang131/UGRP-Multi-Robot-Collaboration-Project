@@ -19,25 +19,43 @@ from act17_open_loop import action_errors,quantiles
 from act17_v7 import ROOT,B
 
 
+def audit_candidate(candidate,meta,training,manifest,dataset_sha,model_sha):
+    p=meta.get('provenance',{})
+    if (p.get('candidate')!=candidate or p.get('cohort')!='act17-v7-native'
+            or p.get('contact_profile')!='warp_native_contact_v1'
+            or not p.get('training_complete') or not training.get('complete')
+            or not training.get('readback_verified') or p.get('step')!=manifest['protocol']['training']['steps_round1']
+            or training.get('steps_completed')!=p.get('step')
+            or p.get('dataset_manifest_sha256')!=dataset_sha or training.get('checkpoint_sha256')!=model_sha
+            or p.get('normalization_sha256')!=manifest['normalization']['sha256']):
+        raise ValueError('completed exact-dataset checkpoint and actual readback required for offline audit')
+
+
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     for key in ['models-root','dataset','out']:p.add_argument('--'+key,type=Path,required=True)
+    p.add_argument('--candidates',nargs='+',choices=['M','F','S'],default=['M','F','S'],help='completed subset only; default all three')
     a=p.parse_args();host=require_gcp2(training=True);source=frozen_source(ROOT);library()
+    if len(a.candidates)!=len(set(a.candidates)):raise ValueError('unique audit candidate list required')
     a.out.mkdir(parents=True,exist_ok=False)
     import torch
     from harness import grasp_act_contract as c
     from harness.grasp_act_loss import policy_loss
     torch.set_num_threads(2)
     report=dict(source_sha=source,host=host,complete=False,status='running',cohort='act17-v7-native',arms={},physics_steps=0,training_updates=0,
-        dataset_manifest_sha256=original_sha256(a.dataset/'manifest.json'),scope='VAL expert states, not closed-loop student success',reproduce=sys.argv)
+        dataset_manifest_sha256=original_sha256(a.dataset/'manifest.json'),requested_candidates=a.candidates,
+        scope='specified completed-model subset on VAL expert states; not whole M/F/S training completion or closed-loop student success',reproduce=sys.argv)
     lease=B/'leases/act17-open-loop-v7.json'
     with lease.open('x') as f:json.dump(dict(task='act17',pid=os.getpid(),start=datetime.now(timezone.utc).isoformat(),expected_end='finite3xallVALframes',concurrency=0),f)
     started=time.monotonic()
     try:
-        for candidate in ['M','F','S']:
-            root=a.models_root/candidate/'actor';meta=read(root/'adapter.json');actor=Actor.load(root,device='cuda')
+        for candidate in a.candidates:
+            root=a.models_root/candidate/'actor';meta=read(root/'adapter.json');training=read(a.models_root/candidate/'summary.json')
+            manifest=read(a.dataset/'manifest.json')
+            audit_candidate(candidate,meta,training,manifest,report['dataset_manifest_sha256'],sha256(root/'model.safetensors'))
+            actor=Actor.load(root,device='cuda')
             data=Dataset(a.dataset,'validation',image_mode=meta['image_mode'])
-            training=read(a.models_root/candidate/'summary.json');priors=training['TRAIN_completion_priors']
+            priors=training['TRAIN_completion_priors']
             if meta['provenance']['normalization_sha256']!=data.manifest['normalization']['sha256']:
                 raise ValueError('deployment and VAL normalizers differ')
             groups=defaultdict(lambda:defaultdict(list));losses=defaultdict(float)

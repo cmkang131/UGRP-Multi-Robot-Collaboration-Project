@@ -1,0 +1,83 @@
+{
+  "flow": "train",
+  "cohort": "act17-v7-native",
+  "source_sha": "e1b7de0f789305e12a3612e7cbf392b8e4ac21ee",
+  "host": {
+    "project_id": "ugrp-sim-b-1014",
+    "instance": "ugrp-act-l4-gcp2",
+    "machine_type": "g2-standard-8",
+    "zone": "asia-northeast3-a"
+  },
+  "stack_values": {
+    "physics_backend": "mjwarp_batch_v1",
+    "contact_profile": "warp_native_contact_v1",
+    "noslip_iterations": 0,
+    "scene_profile": "walls_floor_contrast_v5_indigo110_s80",
+    "end_color_scene": "grasp_act_teal_blue_v1",
+    "cargo_version": "v6",
+    "scenario_version": "v7",
+    "heavy_crate": false,
+    "held_object_hidden_v1": true,
+    "held_world_reads": 0,
+    "nearfield_executor": "ACT",
+    "weld": false,
+    "top_camera_control": false,
+    "heading_mode": "on",
+    "ultrasonic_front": "off",
+    "wall_cap": null,
+    "speed_gate": "record_only",
+    "speed_metric": "wall_s/(sim_s*nworld)",
+    "gcp_host": "ugrp-act-l4-gcp2",
+    "gcp_project": "ugrp-sim-b-1014",
+    "gcp_account": "changmin5781@gmail.com",
+    "gcp_guards": {
+      "idle_minutes": 20,
+      "budget_stop": true,
+      "credentials_on_vm": false
+    },
+    "no_pooling": true,
+    "rejection_ledger": [
+      "reason_category",
+      "blocked_object",
+      "minimum_gap_m"
+    ],
+    "cap_end_label": "cap_end",
+    "teacher_visibility": "visible_only",
+    "invisible_measurements": 0,
+    "setdown_lookaround_v1": true,
+    "planning_cap_basis": "compute_or_sim"
+  },
+  "rejection_table": "/home/ugrp/ugrp-sim/runs/act17-v7/dataset-r1/rejection_table.json",
+  "rejection_table_sha256": "1aea6762ff24fffeb5bd888d78dc6eedf6c3ffbe4b42ecc1072b60bb60413132",
+  "dataset_manifest_sha256": "44c1c46073aa08ea028324ffe924b67d862a2f01b56f4db11afad17000a9b198",
+  "protocol_sha256": "9bcf20f4ee91a95ae84ce548b8dc0c99c44de4b0351e1f156749ec93a1d89adc",
+  "candidates": [
+    {
+      "id": "M",
+      "image_mode": "history_montage_v1",
+      "sampling": "uniform_episode_v1"
+    },
+    {
+      "id": "F",
+      "image_mode": "current_full_v1",
+      "sampling": "uniform_episode_v1"
+    },
+    {
+      "id": "S",
+      "image_mode": "current_full_v1",
+      "sampling": "uniform_stage_v1"
+    }
+  ],
+  "training": {
+    "seed": 20261017,
+    "steps_round1": 10000,
+    "batch_size": 8,
+    "chunk": 8,
+    "lr": 1e-05,
+    "kl_weight": 10,
+    "done_loss": "balanced_bce_v1",
+    "longer_training": "off by default; only a separately registered later round after round1 error table"
+  },
+  "max_parallel": 2,
+  "wall_cap": null
+}

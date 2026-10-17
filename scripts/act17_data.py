@@ -148,7 +148,7 @@ def convert(protocol,gate,records,output):
         report=read(root/'gate-recount.json')
         if report.get('cohort')!='act17-v7-native' or not report.get('complete') or report.get('input_audit_violations')!=0:
             raise ValueError('completed v7 recording results required')
-        recording_receipts.append(dict(path=str(root/'gate-recount.json'),sha256=sha256(root/'gate-recount.json'),
+        recording_receipts.append(dict(path=str(root/'gate-recount.json'),sha256=original_sha256(root/'gate-recount.json'),
             n=report['n'],N=report['N'],source_sha=report['source_sha']))
         for group in root.glob('group-*'):
             capture_root=group/'capture'

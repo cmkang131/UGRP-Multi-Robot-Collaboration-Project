@@ -1,0 +1,70 @@
+{
+  "funnel": [
+    {
+      "gate": "requested_recordings",
+      "passed": 240,
+      "rejected": 0
+    },
+    {
+      "gate": "successful_audited_recordings",
+      "passed": 240,
+      "rejected": 0
+    }
+  ],
+  "frame_funnel": [
+    {
+      "gate": "raw_observation_rows",
+      "passed": 106060,
+      "rejected": 0
+    },
+    {
+      "gate": "successful_audited_observations",
+      "passed": 106060,
+      "rejected": 0
+    },
+    {
+      "gate": "paired_local_skill_rows",
+      "passed": 87100,
+      "rejected": 18960
+    }
+  ],
+  "target_funnel": [
+    {
+      "gate": "future_slots",
+      "passed": 696800,
+      "rejected": 0
+    },
+    {
+      "gate": "valid_nonpadding_future_targets",
+      "passed": 683360,
+      "rejected": 13440
+    }
+  ],
+  "rejection_reason_definitions": {
+    "successful_audited_observations": "unsuccessful episode excluded, raw preserved",
+    "paired_local_skill_rows": "outside paired supported local skill/boundary rows",
+    "valid_nonpadding_future_targets": "padding after local skill boundary is excluded from loss"
+  },
+  "funnel_units": {
+    "funnel": "recordings",
+    "frame_funnel": "observation_rows",
+    "target_funnel": "future_action_vectors"
+  },
+  "rejections": [],
+  "raw": [
+    "/home/ugrp/ugrp-sim/runs/act17-v7/record-pilot-r1",
+    "/home/ugrp/ugrp-sim/runs/act17-v7/record-bulk-r1"
+  ],
+  "reproduce": [
+    "/home/ugrp/ugrp-sim/src/2ac6e70270703acbf9ef736217977048a9cd84fa/scripts/act17_data.py",
+    "--protocol",
+    "/home/ugrp/ugrp-sim/src/2ac6e70270703acbf9ef736217977048a9cd84fa/experiments/2026-10-17-act17/v7/protocol.json",
+    "--gate",
+    "/home/ugrp/ugrp-sim/runs/act17-v7/gate-independent-r1.json",
+    "--records",
+    "/home/ugrp/ugrp-sim/runs/act17-v7/record-pilot-r1",
+    "/home/ugrp/ugrp-sim/runs/act17-v7/record-bulk-r1",
+    "--out",
+    "/home/ugrp/ugrp-sim/runs/act17-v7/dataset-r1"
+  ]
+}

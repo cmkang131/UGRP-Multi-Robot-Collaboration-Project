@@ -1,6 +1,6 @@
 """Finite matched ACT17 M/F/S VAL8, or separately frozen fresh FINAL40.
 
-At most three actor processes and 24 physical worlds. Reference groups retain
+At most four owner/actor pairs and 24 physical worlds. Reference groups retain
 exact compiled models. FINAL requires the actual completed VAL evidence.
 """
 import argparse
@@ -31,6 +31,10 @@ def main():
         p.add_argument('--'+key,type=Path,required=True)
     p.add_argument('--split',choices=['validation','final'],default='validation')
     p.add_argument('--selection',type=Path)
+    # This protocol has four exact compiled-model fingerprints. The g2-standard-8
+    # host has eight vCPUs; per group, actor/owner alternate at the RPC boundary.
+    # World capacity below still enforces own24/global40 independently.
+    p.add_argument('--max-owners',type=int,choices=[1,2,3,4],default=4)
     p.add_argument('--batch-candidate-worlds',action='store_true',help='default-off policy-isolated worlds in one exact-model native batch')
     a=p.parse_args()
     if not a.enabled:p.error('ACT17 matched queue is default OFF')
@@ -64,6 +68,7 @@ def main():
         rejection_table=str(a.out/'rejection_table.json'),wall_cap=None,planned_worlds=24,teacher_fallback=False)
     queue.update(selected_candidates=candidates,selection=dict(path=str(a.selection),sha256=sha256(a.selection)) if a.selection else None)
     queue['batch_candidate_worlds']=a.batch_candidate_worlds
+    queue['max_owner_processes']=a.max_owners
     write(a.out/'queue.json',queue)
     physics=B/'runs/simalt3/warp-env/bin/python';python=B.parent/'ugrp-rl1b-act-env/bin/python'
     subprocess.run([str(physics),str(a.checker),str(a.out/'queue.json'),'--stack',str(a.stack),
@@ -99,7 +104,7 @@ def main():
             capacity=min(24,40-foreign)-sum(j['nworld'] for j in running)
             for names,i,g in list(pending):
                 worlds=len(g)*len(names)
-                if len(running)>=3 or worlds>capacity:continue
+                if len(running)>=a.max_owners or worlds>capacity:continue
                 folder=a.out/(''.join(names)+'-'+str(i));folder.mkdir();out=folder/'evaluation'
                 expanded,assignment=expand_cases([plans[x] for x in g],names)
                 write(folder/'plans.json',dict(episodes=expanded));first=inventory[g[0]]

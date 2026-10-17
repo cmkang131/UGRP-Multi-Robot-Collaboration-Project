@@ -1,173 +1,161 @@
 {
-  "source_sha": "376fa86c08cb8de5e2d442600baad1340534eec2",
+  "schema": "ugrp.act17.v7.all_stages.v2",
   "cohort": "act17-v7-native",
-  "status": "BLOCKED_DISK",
-  "stages": [
-    {
-      "stage": "camera_off_teacher_gate",
+  "status": "OFFLINE_AND_VAL_PENDING",
+  "student_success_measured": false,
+  "sources": {
+    "gate": "be39af6fc05ae79ee7550ed98c411dce35e68d7a",
+    "pilot": "5160938e5abfa0cdb05176aadb196e237684d67a",
+    "bulk": "376fa86c08cb8de5e2d442600baad1340534eec2",
+    "converter": "2ac6e70270703acbf9ef736217977048a9cd84fa",
+    "training": "e1b7de0f789305e12a3612e7cbf392b8e4ac21ee"
+  },
+  "funnels": {
+    "camera_off_gate": {
       "unit": "runs",
       "requested": 40,
       "completed": 40,
       "passed": 40,
-      "rejected": 0,
-      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/gate-r1"
+      "rejected": 0
     },
-    {
-      "stage": "recording",
+    "recordings": {
       "unit": "runs",
       "requested": 240,
-      "compiled": 240,
-      "admitted": 4,
-      "completed": 4,
-      "passed": 4,
+      "completed": 240,
+      "passed": 240,
       "rejected": 0,
-      "unsubmitted": 236,
-      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/record-pilot-r1"
+      "pilot": 4,
+      "bulk": 236
     },
-    {
-      "stage": "preparation",
-      "unit": "model_paths",
-      "requested": 3,
-      "completed": 3,
-      "passed": 3,
-      "rejected": 0,
-      "preparation_gradients": 3,
-      "research_updates": 0,
-      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/preflight-r2"
+    "frames": {
+      "unit": "observation_rows",
+      "rows": [
+        {
+          "gate": "raw_observation_rows",
+          "passed": 106060,
+          "rejected": 0
+        },
+        {
+          "gate": "successful_audited_observations",
+          "passed": 106060,
+          "rejected": 0
+        },
+        {
+          "gate": "paired_local_skill_rows",
+          "passed": 87100,
+          "rejected": 18960
+        }
+      ]
     },
-    {
-      "stage": "research_training",
+    "targets": {
+      "unit": "future_action_vectors",
+      "rows": [
+        {
+          "gate": "future_slots",
+          "passed": 696800,
+          "rejected": 0
+        },
+        {
+          "gate": "valid_nonpadding_future_targets",
+          "passed": 683360,
+          "rejected": 13440
+        }
+      ]
+    },
+    "models": {
       "unit": "models",
       "requested": 3,
-      "admitted": 0,
-      "completed": 0,
-      "unsubmitted": 3
+      "admitted": 3,
+      "started": 3,
+      "complete": 3,
+      "failed": 0,
+      "pending": 0,
+      "readback_verified": 3
     },
-    {
-      "stage": "student_VAL8",
-      "unit": "runs",
+    "VAL8": {
+      "unit": "candidate_runs",
       "requested": 24,
-      "completed": 0,
+      "admitted": 0,
+      "complete": 0,
+      "unsubmitted": 24,
+      "passed": null
+    },
+    "FINAL40": {
+      "unit": "runs",
+      "requested": 40,
+      "admitted": 0,
+      "complete": 0,
       "passed": null,
-      "unsubmitted": 24
+      "gate": "all M/F/S VAL8 complete and selected model8/8; fixed F>M>S tie priority"
     }
-  ],
+  },
+  "dataset": {
+    "status": "PASS",
+    "cohort": "act17-v7-native",
+    "conversion_source_sha": "2ac6e70270703acbf9ef736217977048a9cd84fa",
+    "starts": {
+      "train": 200,
+      "validation": 40
+    },
+    "rows": {
+      "train": 72572,
+      "validation": 14528
+    },
+    "stage_counts": {
+      "train:approach": 18221,
+      "train:alignment": 4412,
+      "train:grasp": 32409,
+      "train:release": 17530,
+      "validation:approach": 3659,
+      "validation:alignment": 889,
+      "validation:grasp": 6476,
+      "validation:release": 3504
+    },
+    "frame_counts": {
+      "raw_observation_rows": 106060,
+      "successful_audited_observation_rows": 106060,
+      "paired_rows": 87100,
+      "future_slots": 696800,
+      "valid_future_targets": 683360
+    },
+    "teacher_rejected_episodes": 0,
+    "normalization": {
+      "path": "normalization.json",
+      "sha256": "d08f8672434791ad68cf99fb36a87d76e6d089c908da7b2a27effbf729ba6ee6"
+    },
+    "student_GT_inputs": false
+  },
   "rejections": [
     {
-      "stage": "preparation_first_attempt",
-      "category": "HOST_ERROR_METADATA_READER",
-      "reason": "Scene.build replaced early adapter manifest; actual final XML remained v7 and is now checked directly",
-      "blocked_object": "not_applicable_metadata",
+      "reason_category": "outside_paired_local_skill_boundary",
+      "count": 18960,
+      "blocked_object": "not_applicable_dataset_scope",
       "minimum_gap_m": null,
-      "minimum_gap_status": "not_applicable_non_geometric",
-      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/preflight-r1.log"
+      "minimum_gap_status": "non_geometric",
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/dataset-r1/rejection_table.json"
     },
     {
-      "stage": "remaining_recording",
-      "category": "BLOCKED_DISK",
-      "reason": "projected free bytes below AGENTS8GiB; original evidence retained",
-      "blocked_object": "persistent_disk_capacity",
+      "reason_category": "padding_after_local_skill_boundary",
+      "count": 13440,
+      "blocked_object": "not_applicable_padding",
       "minimum_gap_m": null,
-      "minimum_gap_status": "not_applicable_non_geometric",
-      "count": 236,
-      "budget": {
-        "source_sha": "376fa86c08cb8de5e2d442600baad1340534eec2",
-        "host": {
-          "project_id": "ugrp-sim-b-1014",
-          "instance": "ugrp-act-l4-gcp2",
-          "machine_type": "g2-standard-8",
-          "zone": "asia-northeast3-a"
-        },
-        "status": "BLOCKED_DISK",
-        "complete": true,
-        "basis": "completed pilot P100 allocated bytes/SIM x unchanged90SIM cap; all236 pending starts; exact old-architecture weight bytes; JPEG hardlinks preserve all bytes/paths",
-        "rows": [
-          {
-            "seed": 88601,
-            "bytes": 7301120.0,
-            "SIM_s": 43.800000000000004,
-            "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/record-pilot-r1/group-001/controller/world-000",
-            "bytes_per_SIM": 166692.23744292237
-          },
-          {
-            "seed": 88602,
-            "bytes": 7698432.0,
-            "SIM_s": 41.400000000000006,
-            "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/record-pilot-r1/group-001/controller/world-001",
-            "bytes_per_SIM": 185952.4637681159
-          },
-          {
-            "seed": 88600,
-            "bytes": 6731776.0,
-            "SIM_s": 42.7,
-            "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/record-pilot-r1/group-000/controller/world-000",
-            "bytes_per_SIM": 157652.8337236534
-          },
-          {
-            "seed": 88603,
-            "bytes": 9881600.0,
-            "SIM_s": 46.300000000000004,
-            "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/record-pilot-r1/group-000/controller/world-001",
-            "bytes_per_SIM": 213425.48596112308
-          }
-        ],
-        "remaining_recordings": 236,
-        "free_bytes": 11382595584,
-        "floor_bytes": 8589934592,
-        "recording_reservation_bytes": 4533157322,
-        "dataset_reservation_bytes": 59930453,
-        "model_reservation_bytes": 829453280,
-        "old_model_weight_bytes": 207363320,
-        "archive_disk_reservation_bytes": 0,
-        "archive_basis": "deterministic double-pass ZIP stream; model staging hardlinks",
-        "total_reservation_bytes": 5422541055,
-        "projected_free_bytes": 5960054529,
-        "shortfall_bytes": 2629880063,
-        "minimum_additional_GiB": 3,
-        "future_live_raw_buffer_not_included": true,
-        "pilot_receipt": {
-          "path": "/home/ugrp/ugrp-sim/runs/act17-v7/record-pilot-r1/gate-recount.json",
-          "sha256": "2481d7348597a4f0fd789c90000437fd679d76e0ac43807483a756f49d83e7f2"
-        },
-        "preflight_receipt": {
-          "path": "/home/ugrp/ugrp-sim/runs/act17-v7/preflight-r2/summary.json",
-          "sha256": "9e9146d1e6225b20d093c406dfcfda61cdb830ea586cd45ee1fb95bb1ed29af3"
-        },
-        "reproduce": [
-          "/home/ugrp/ugrp-sim/src/376fa86c08cb8de5e2d442600baad1340534eec2/scripts/act17_record_budget.py",
-          "--pilot",
-          "/home/ugrp/ugrp-sim/runs/act17-v7/record-pilot-r1",
-          "--preflight",
-          "/home/ugrp/ugrp-sim/runs/act17-v7/preflight-r2",
-          "--protocol",
-          "/home/ugrp/ugrp-sim/src/376fa86c08cb8de5e2d442600baad1340534eec2/experiments/2026-10-17-act17/v7/protocol.json",
-          "--out",
-          "/home/ugrp/ugrp-sim/runs/act17-v7/record-budget-r1.json"
-        ]
-      }
+      "minimum_gap_status": "non_geometric",
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/dataset-r1/rejection_table.json"
     }
   ],
-  "limits": {
-    "contact_profile": "warp_native_contact_v1",
-    "noslip": 0,
-    "no_v4_pooling": true,
-    "student_GT_inputs": false,
-    "teacher_invisible_measurements": 0,
-    "held_world_reads": 0
+  "historical_events": {
+    "raw": "funnel-pre-resize.json",
+    "disk_block": "resolved by coordinator180->200GiB",
+    "preflight_metadata_error": "resolved actual XML validation; preparation3/3",
+    "runtime_loader_probe": "wrong old-schema loader rejected; matching old loader CPU readback passed, no v7 deployment claim",
+    "postrecord_wait_wrapper": "initial wait wrapper interrupted before any child stage; replaced approximate reserve with exact existing budget. Original HOST_ERROR KeyboardInterrupt retained in results/postrecord-r1-superseded.json; replacement completed."
   },
-  "reproduce": {
-    "gate_audit": "scripts/act17_v7_audit.py --run /home/ugrp/ugrp-sim/runs/act17-v7/gate-r1 --out NEW.json",
-    "pilot_audit": "scripts/act17_v7_audit.py --run /home/ugrp/ugrp-sim/runs/act17-v7/record-pilot-r1 --out NEW.json",
-    "budget": [
-      "/home/ugrp/ugrp-sim/src/376fa86c08cb8de5e2d442600baad1340534eec2/scripts/act17_record_budget.py",
-      "--pilot",
-      "/home/ugrp/ugrp-sim/runs/act17-v7/record-pilot-r1",
-      "--preflight",
-      "/home/ugrp/ugrp-sim/runs/act17-v7/preflight-r2",
-      "--protocol",
-      "/home/ugrp/ugrp-sim/src/376fa86c08cb8de5e2d442600baad1340534eec2/experiments/2026-10-17-act17/v7/protocol.json",
-      "--out",
-      "/home/ugrp/ugrp-sim/runs/act17-v7/record-budget-r1.json"
-    ]
-  }
+  "raw_root": "/home/ugrp/ugrp-sim/runs/act17-v7",
+  "reproduction": {
+    "gate": "scripts/act17_v7_audit.py --run RAW/gate-r1 --out NEW.json",
+    "bulk": "scripts/act17_v7_audit.py --run RAW/record-bulk-r1 --out NEW.json",
+    "conversion": "results/retrieved-r1/dataset-r1/rejection_table.json",
+    "training": "results/retrieved-r1/training-r1/queue.json"
+  },
+  "scope": "distinct units/cohorts kept in separate funnels; native teacher outcomes are not student task success; running models remain incomplete"
 }

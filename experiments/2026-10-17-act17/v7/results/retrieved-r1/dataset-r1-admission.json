@@ -1,0 +1,36 @@
+{
+  "status": "PASS",
+  "cohort": "act17-v7-native",
+  "conversion_source_sha": "2ac6e70270703acbf9ef736217977048a9cd84fa",
+  "starts": {
+    "train": 200,
+    "validation": 40
+  },
+  "rows": {
+    "train": 72572,
+    "validation": 14528
+  },
+  "stage_counts": {
+    "train:approach": 18221,
+    "train:alignment": 4412,
+    "train:grasp": 32409,
+    "train:release": 17530,
+    "validation:approach": 3659,
+    "validation:alignment": 889,
+    "validation:grasp": 6476,
+    "validation:release": 3504
+  },
+  "frame_counts": {
+    "raw_observation_rows": 106060,
+    "successful_audited_observation_rows": 106060,
+    "paired_rows": 87100,
+    "future_slots": 696800,
+    "valid_future_targets": 683360
+  },
+  "teacher_rejected_episodes": 0,
+  "normalization": {
+    "path": "normalization.json",
+    "sha256": "d08f8672434791ad68cf99fb36a87d76e6d089c908da7b2a27effbf729ba6ee6"
+  },
+  "student_GT_inputs": false
+}

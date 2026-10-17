@@ -8,6 +8,7 @@ import sys
 sys.path.insert(0,str(Path(__file__).resolve().parent))
 from act16w_runtime import require_gcp2,frozen_source,sha256
 from act17_open_loop import read
+from act17_compact_records import original_sha256
 
 
 def main():
@@ -40,7 +41,7 @@ def main():
                 raw=dict(path=str(actual),sha256=sha256(actual)),source_sha=source))
     report=dict(source_sha=source,host=host,scope='actual first30SIM command/visibility prefixes, no inferred task success',
         rows=rows,N=len(rows),physics_steps=0,rendered_frames=0,training_rgb=stage['training_rgb'],
-        runtime_summary=dict(path=str(a.run/'summary.json'),sha256=sha256(a.run/'summary.json')),
+        runtime_summary=dict(path=str(a.run/'summary.json'),sha256=original_sha256(a.run/'summary.json'),hash_scope='original decompressed bytes'),
         timing_note='do not infer exact first30 latency from later progress snapshots; observed_SIM is recorded separately',reproduce=sys.argv)
     with a.out.open('x') as f:json.dump(report,f,indent=2)
     print(json.dumps(dict(N=len(rows),phase_counts=dict(sum((Counter(r['phase_counts']) for r in rows),Counter())))))

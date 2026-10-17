@@ -23,6 +23,21 @@ loader는 설치 파일을 고치지 않고 번들 파일을 명시적으로 로
 첫 시도는 v3 adapter에 기본 v1/v2 loader를 써서 거부됐고, 같은 모델의 맞는 loader로 재검사했다.
 새 v7 모델의 공개 다운로드·전체 해시·실제 번들 loader 검증은 완료 후 별도 수행한다.
 
+배치 동시 실행은 네 compiled-model fingerprint를 각각 owner/actor 한 쌍으로 둔다(최대4쌍).
+두 프로세스는 RPC 경계에서 번갈아 일하며 g2-standard-8의8 vCPU를 재사용한다.
+실제 세계 수는 별도로 own24/global40 이하이고 후보별 상태·명령·채점의 분리는 그대로다.
+
+완료된 모델 일부만 먼저 확인할 때는 개루프 도구의 `--candidates`를 쓸 수 있다. 기본은 M/F/S 전체다.
+10000 update 완료·저장 재로딩·데이터/정규화/가중치 해시를 요구하며, 일부 모델 감사 완료를
+전체 학습 완료나 폐루프 성공으로 표시하지 않는다.
+
+후속 행동 표현 검토의 근거도 기록한다. [Mobile ALOHA §4](https://arxiv.org/html/2401.02117)는
+팔 관절14개에 차체 선속도·각속도2개를 붙인다. [ROS2 Kilted mecanum controller](https://control.ros.org/kilted/doc/ros2_controllers/mecanum_drive_controller/doc/userdoc.html)는
+차체 x/y 선속도·z 각속도를 네 바퀴 명령으로 바꾸는 인터페이스다. 이는 우리 과제 성공의 증거가 아니다.
+[저장 교사 명령 검사](results/teacher-action-symmetry-r1.json)에서 TRAIN 접근 구간4147/18221행의
+네 바퀴 null 성분이0이 아니고13927행의 pulse가 서로 달랐다. 단순3성분+공통pulse로 모두 되돌리면
+바퀴 최대오차0.175가 생기므로 이 표현을 그대로 적용하지 않았다. R1의 학습·제어 경로 변경은 없다.
+
 | 항목 | 기존 v4 | v7 고정 값·근거 |
 |---|---|---|
 | 종류·시연 시작 | 4종류×TRAIN8 + VAL2 =40기록 | 4종류×TRAIN50 + VAL10 =240기록. ACT/ALOHA 통상50시연/과제와 대비해 조건별 표본을 확보하는 설계 선택이며50/색의 필요성·성공을 입증한 값은 아님 |

@@ -1,0 +1,503 @@
+{
+  "scope": "old v4 native expert states; issued wheel fraction, not physical motion or new success",
+  "rows": [
+    {
+      "model": "A",
+      "split": "train",
+      "stage": "approach",
+      "rows": 2905,
+      "student": {
+        "n": 11620,
+        "median": 0.015560918225253767,
+        "p90": 0.04474463403068285
+      },
+      "last_command_persistence": {
+        "n": 11620,
+        "median": 0.0,
+        "p90": 0.0
+      },
+      "issued_rotation_direction": {
+        "rows": 2905,
+        "student_turn_teacher_stopped": 405,
+        "teacher_turns": 2381,
+        "same_direction": 2029,
+        "opposite": 352
+      }
+    },
+    {
+      "model": "A",
+      "split": "train",
+      "stage": "alignment",
+      "rows": 740,
+      "student": {
+        "n": 2960,
+        "median": 0.03215510477060471,
+        "p90": 0.3499999940395355
+      },
+      "last_command_persistence": {
+        "n": 2960,
+        "median": 0.0,
+        "p90": 0.3499999940395355
+      },
+      "issued_rotation_direction": {
+        "rows": 740,
+        "student_turn_teacher_stopped": 568,
+        "teacher_turns": 5,
+        "same_direction": 4,
+        "student_stopped": 1
+      }
+    },
+    {
+      "model": "A",
+      "split": "train",
+      "stage": "wheel_transition",
+      "rows": 471,
+      "student": {
+        "n": 1884,
+        "median": 0.02757190867261372,
+        "p90": 0.3499999940395355
+      },
+      "last_command_persistence": {
+        "n": 1884,
+        "median": 0.3499999940395355,
+        "p90": 0.699999988079071
+      },
+      "issued_rotation_direction": null
+    },
+    {
+      "model": "A",
+      "split": "validation",
+      "stage": "approach",
+      "rows": 789,
+      "student": {
+        "n": 3156,
+        "median": 0.018709216790679162,
+        "p90": 0.049315951529159435
+      },
+      "last_command_persistence": {
+        "n": 3156,
+        "median": 0.0,
+        "p90": 0.0
+      },
+      "issued_rotation_direction": {
+        "rows": 789,
+        "teacher_turns": 606,
+        "same_direction": 452,
+        "student_turn_teacher_stopped": 151,
+        "opposite": 153,
+        "student_stopped": 1
+      }
+    },
+    {
+      "model": "A",
+      "split": "validation",
+      "stage": "alignment",
+      "rows": 193,
+      "student": {
+        "n": 772,
+        "median": 0.035125382327896026,
+        "p90": 0.6330871198511976
+      },
+      "last_command_persistence": {
+        "n": 772,
+        "median": 0.0,
+        "p90": 0.3499999940395355
+      },
+      "issued_rotation_direction": {
+        "rows": 193,
+        "student_turn_teacher_stopped": 157
+      }
+    },
+    {
+      "model": "A",
+      "split": "validation",
+      "stage": "wheel_transition",
+      "rows": 121,
+      "student": {
+        "n": 484,
+        "median": 0.031414720019914716,
+        "p90": 0.3499999940395355
+      },
+      "last_command_persistence": {
+        "n": 484,
+        "median": 0.3499999940395355,
+        "p90": 0.699999988079071
+      },
+      "issued_rotation_direction": null
+    },
+    {
+      "model": "B",
+      "split": "train",
+      "stage": "approach",
+      "rows": 2905,
+      "student": {
+        "n": 11620,
+        "median": 0.0200960660831023,
+        "p90": 0.0500000059604645
+      },
+      "last_command_persistence": {
+        "n": 11620,
+        "median": 0.0,
+        "p90": 0.0
+      },
+      "issued_rotation_direction": {
+        "rows": 2905,
+        "student_turn_teacher_stopped": 405,
+        "teacher_turns": 2381,
+        "same_direction": 2094,
+        "opposite": 286,
+        "student_stopped": 1
+      }
+    },
+    {
+      "model": "B",
+      "split": "train",
+      "stage": "alignment",
+      "rows": 740,
+      "student": {
+        "n": 2960,
+        "median": 0.03363812271285793,
+        "p90": 0.3499999940395355
+      },
+      "last_command_persistence": {
+        "n": 2960,
+        "median": 0.0,
+        "p90": 0.3499999940395355
+      },
+      "issued_rotation_direction": {
+        "rows": 740,
+        "student_turn_teacher_stopped": 568,
+        "teacher_turns": 5,
+        "same_direction": 5
+      }
+    },
+    {
+      "model": "B",
+      "split": "train",
+      "stage": "wheel_transition",
+      "rows": 471,
+      "student": {
+        "n": 1884,
+        "median": 0.019056966824396032,
+        "p90": 0.3499999940395355
+      },
+      "last_command_persistence": {
+        "n": 1884,
+        "median": 0.3499999940395355,
+        "p90": 0.699999988079071
+      },
+      "issued_rotation_direction": null
+    },
+    {
+      "model": "B",
+      "split": "validation",
+      "stage": "approach",
+      "rows": 789,
+      "student": {
+        "n": 3156,
+        "median": 0.02629858558315512,
+        "p90": 0.31
+      },
+      "last_command_persistence": {
+        "n": 3156,
+        "median": 0.0,
+        "p90": 0.0
+      },
+      "issued_rotation_direction": {
+        "rows": 789,
+        "teacher_turns": 606,
+        "same_direction": 466,
+        "student_turn_teacher_stopped": 161,
+        "opposite": 140
+      }
+    },
+    {
+      "model": "B",
+      "split": "validation",
+      "stage": "alignment",
+      "rows": 193,
+      "student": {
+        "n": 772,
+        "median": 0.039999994039535525,
+        "p90": 0.3499999940395355
+      },
+      "last_command_persistence": {
+        "n": 772,
+        "median": 0.0,
+        "p90": 0.3499999940395355
+      },
+      "issued_rotation_direction": {
+        "rows": 193,
+        "student_turn_teacher_stopped": 157
+      }
+    },
+    {
+      "model": "B",
+      "split": "validation",
+      "stage": "wheel_transition",
+      "rows": 121,
+      "student": {
+        "n": 484,
+        "median": 0.023842394112313064,
+        "p90": 0.3499999940395355
+      },
+      "last_command_persistence": {
+        "n": 484,
+        "median": 0.3499999940395355,
+        "p90": 0.699999988079071
+      },
+      "issued_rotation_direction": null
+    },
+    {
+      "model": "C",
+      "split": "train",
+      "stage": "approach",
+      "rows": 2905,
+      "student": {
+        "n": 11620,
+        "median": 0.015373122237298975,
+        "p90": 0.046235935575531344
+      },
+      "last_command_persistence": {
+        "n": 11620,
+        "median": 0.0,
+        "p90": 0.0
+      },
+      "issued_rotation_direction": {
+        "rows": 2905,
+        "student_turn_teacher_stopped": 398,
+        "teacher_turns": 2381,
+        "same_direction": 2097,
+        "opposite": 283,
+        "student_stopped": 1
+      }
+    },
+    {
+      "model": "C",
+      "split": "train",
+      "stage": "alignment",
+      "rows": 740,
+      "student": {
+        "n": 2960,
+        "median": 0.021144753225418117,
+        "p90": 0.3499999940395355
+      },
+      "last_command_persistence": {
+        "n": 2960,
+        "median": 0.0,
+        "p90": 0.3499999940395355
+      },
+      "issued_rotation_direction": {
+        "rows": 740,
+        "student_turn_teacher_stopped": 545,
+        "teacher_turns": 5,
+        "same_direction": 4,
+        "student_stopped": 1
+      }
+    },
+    {
+      "model": "C",
+      "split": "train",
+      "stage": "wheel_transition",
+      "rows": 471,
+      "student": {
+        "n": 1884,
+        "median": 0.01592968051440702,
+        "p90": 0.3499999940395355
+      },
+      "last_command_persistence": {
+        "n": 1884,
+        "median": 0.3499999940395355,
+        "p90": 0.699999988079071
+      },
+      "issued_rotation_direction": null
+    },
+    {
+      "model": "C",
+      "split": "validation",
+      "stage": "approach",
+      "rows": 789,
+      "student": {
+        "n": 3156,
+        "median": 0.021688366088461447,
+        "p90": 0.3499999940395355
+      },
+      "last_command_persistence": {
+        "n": 3156,
+        "median": 0.0,
+        "p90": 0.0
+      },
+      "issued_rotation_direction": {
+        "rows": 789,
+        "teacher_turns": 606,
+        "same_direction": 478,
+        "student_turn_teacher_stopped": 165,
+        "opposite": 127,
+        "student_stopped": 1
+      }
+    },
+    {
+      "model": "C",
+      "split": "validation",
+      "stage": "alignment",
+      "rows": 193,
+      "student": {
+        "n": 772,
+        "median": 0.03165934065318843,
+        "p90": 0.3499999940395355
+      },
+      "last_command_persistence": {
+        "n": 772,
+        "median": 0.0,
+        "p90": 0.3499999940395355
+      },
+      "issued_rotation_direction": {
+        "rows": 193,
+        "student_turn_teacher_stopped": 142
+      }
+    },
+    {
+      "model": "C",
+      "split": "validation",
+      "stage": "wheel_transition",
+      "rows": 121,
+      "student": {
+        "n": 484,
+        "median": 0.021837703369842365,
+        "p90": 0.3499999940395355
+      },
+      "last_command_persistence": {
+        "n": 484,
+        "median": 0.3499999940395355,
+        "p90": 0.699999988079071
+      },
+      "issued_rotation_direction": null
+    },
+    {
+      "model": "D1",
+      "split": "train",
+      "stage": "approach",
+      "rows": 2905,
+      "student": {
+        "n": 11620,
+        "median": 0.025862579905368,
+        "p90": 0.0500000059604645
+      },
+      "last_command_persistence": {
+        "n": 11620,
+        "median": 0.0,
+        "p90": 0.0
+      },
+      "issued_rotation_direction": {
+        "rows": 2905,
+        "student_turn_teacher_stopped": 403,
+        "teacher_turns": 2381,
+        "same_direction": 2179,
+        "opposite": 202
+      }
+    },
+    {
+      "model": "D1",
+      "split": "train",
+      "stage": "alignment",
+      "rows": 740,
+      "student": {
+        "n": 2960,
+        "median": 0.03830419850542263,
+        "p90": 0.3499999940395355
+      },
+      "last_command_persistence": {
+        "n": 2960,
+        "median": 0.0,
+        "p90": 0.3499999940395355
+      },
+      "issued_rotation_direction": {
+        "rows": 740,
+        "student_turn_teacher_stopped": 572,
+        "teacher_turns": 5,
+        "same_direction": 4,
+        "opposite": 1
+      }
+    },
+    {
+      "model": "D1",
+      "split": "train",
+      "stage": "wheel_transition",
+      "rows": 471,
+      "student": {
+        "n": 1884,
+        "median": 0.02235411257198386,
+        "p90": 0.3499999940395355
+      },
+      "last_command_persistence": {
+        "n": 1884,
+        "median": 0.3499999940395355,
+        "p90": 0.699999988079071
+      },
+      "issued_rotation_direction": null
+    },
+    {
+      "model": "D1",
+      "split": "validation",
+      "stage": "approach",
+      "rows": 789,
+      "student": {
+        "n": 3156,
+        "median": 0.030497575109884628,
+        "p90": 0.0500000059604645
+      },
+      "last_command_persistence": {
+        "n": 3156,
+        "median": 0.0,
+        "p90": 0.0
+      },
+      "issued_rotation_direction": {
+        "rows": 789,
+        "teacher_turns": 606,
+        "same_direction": 509,
+        "student_turn_teacher_stopped": 147,
+        "opposite": 97
+      }
+    },
+    {
+      "model": "D1",
+      "split": "validation",
+      "stage": "alignment",
+      "rows": 193,
+      "student": {
+        "n": 772,
+        "median": 0.03748740112878951,
+        "p90": 0.3499999940395355
+      },
+      "last_command_persistence": {
+        "n": 772,
+        "median": 0.0,
+        "p90": 0.3499999940395355
+      },
+      "issued_rotation_direction": {
+        "rows": 193,
+        "student_turn_teacher_stopped": 151
+      }
+    },
+    {
+      "model": "D1",
+      "split": "validation",
+      "stage": "wheel_transition",
+      "rows": 121,
+      "student": {
+        "n": 484,
+        "median": 0.02712574309094415,
+        "p90": 0.3499999940395355
+      },
+      "last_command_persistence": {
+        "n": 484,
+        "median": 0.3499999940395355,
+        "p90": 0.699999988079071
+      },
+      "issued_rotation_direction": null
+    }
+  ],
+  "physics_steps": 0,
+  "training_updates": 0,
+  "new_inference_calls": 0
+}
