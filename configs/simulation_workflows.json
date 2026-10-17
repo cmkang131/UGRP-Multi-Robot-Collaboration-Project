@@ -666,10 +666,7 @@
       "description": "DRAFT memory_v3; coordinator registration required, no cohort launched",
       "runner": "scripts.run_m1_owncam_memory_v3",
       "adapter": "managed_legacy_cli",
-      "required_inputs": [
-        "--prereg",
-        "--condition"
-      ],
+      "required_inputs": ["--prereg", "--condition"],
       "output_kind": "directory"
     },
     {
@@ -769,72 +766,6 @@
       "required_inputs": [
         "--seeds",
         "--policy"
-      ],
-      "output_kind": "directory"
-    },
-    {
-      "id": "egomem1-memory-return",
-      "purpose": "GCP5 자기 중심 지형지물 기억·왕복 재획득 DEV 진단",
-      "entry": "scripts/egomem1_record.py",
-      "docs": "experiments/2026-10-17-egomem1/README.md",
-      "requires": "GCP5 only; explicit --enabled; pinned queue/own lease; static_map=none/prior=none; max2 recordings in one round; no models",
-      "version": "0.1.0",
-      "runner": "scripts.egomem1_record",
-      "output_flag": "--output",
-      "side_effect": "local_simulation",
-      "adapter": "managed_legacy_cli",
-      "required_inputs": [
-        "--queue",
-        "--renderer",
-        "--legacy",
-        "--setup",
-        "--colour",
-        "--own-motion",
-        "--sweep"
-      ],
-      "output_kind": "directory"
-    },
-    {
-      "id": "egomem2-object-memory-return",
-      "purpose": "GCP5 관측 밖 기억 보존·일대일 연관·실제 이동 재획득 DEV",
-      "entry": "scripts/egomem1_record.py",
-      "docs": "experiments/2026-10-17-egomem2/README.md",
-      "requires": "GCP5 only; explicit --enabled; pinned queue/own lease; static_map=none/prior=none; max2 recordings in one round; no models",
-      "version": "0.2.0",
-      "runner": "scripts.egomem1_record",
-      "output_flag": "--output",
-      "side_effect": "local_simulation",
-      "adapter": "managed_legacy_cli",
-      "required_inputs": [
-        "--queue",
-        "--renderer",
-        "--legacy",
-        "--setup",
-        "--colour",
-        "--own-motion",
-        "--sweep"
-      ],
-      "output_kind": "directory"
-    },
-    {
-      "id": "egomem2-observed-segment-return",
-      "purpose": "GCP5 자기 RGB 관측 부분선 탐색 목표점·물리 재획득 최종1녹화",
-      "entry": "scripts/egomem1_record.py",
-      "docs": "experiments/2026-10-17-egomem2/README.md",
-      "requires": "GCP5 only; explicit --enabled; pinned queue/own lease; static_map=none/prior=none; max2 recordings in one round; no models",
-      "version": "0.3.0",
-      "runner": "scripts.egomem1_record",
-      "output_flag": "--output",
-      "side_effect": "local_simulation",
-      "adapter": "managed_legacy_cli",
-      "required_inputs": [
-        "--queue",
-        "--renderer",
-        "--legacy",
-        "--setup",
-        "--colour",
-        "--own-motion",
-        "--sweep"
       ],
       "output_kind": "directory"
     }

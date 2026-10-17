@@ -130,6 +130,12 @@
     "other_static_inputs_match": true,
     "evidence": "experiments/2026-10-17-egomem2/operations/static-fingerprint.json",
     "local_tests": "6 passed (static-view fingerprint + servo FK)",
-    "note": "behavioral equivalence for existing servo_fk_v1/off only; new carry branch not physically validated"
+    "note": "behavioral equivalence for existing servo_fk_v1/off only; new carry branch not physically validated",
+    "workflow_catalog_revert": {
+      "reason": "adding egomem1/egomem2 workflows to configs/simulation_workflows.json broke the v92 frozen-schedule hash test and missed a plan sample",
+      "action": "reverted configs/simulation_workflows.json and tests/test_simulation_workflow_manager.py to origin/main; recording used scripts/egomem1_record.py and queue/CLI directly",
+      "local_tests": "8 passed (workflow plan, v92 preservation, static fingerprint, servo FK)",
+      "note": "no change to frozen v92 schedule bytes"
+    }
   }
 }

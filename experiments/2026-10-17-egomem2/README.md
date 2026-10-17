@@ -30,6 +30,15 @@ egomem1이 `harness/servo_camera_fk.py`에 기본 off `servo_fk_carry_v1` 분기
 수정 뒤 `tests/test_e2e18.py::test_cached_static_views_and_fast_distance`와
 `tests/test_servo_camera_fk.py` 6개가 로컬에서 통과했다.
 
+두 번째 CI 실패는 작업 중 추가했던 `configs/simulation_workflows.json`의
+egomem1/egomem2 workflow 등록 3개가 원인이었다. 하나는 카탈로그의 모든
+workflow에 read-only plan 샘플이 필요하다는 시험이었고, 다른 하나는
+2026-10-03 v92 schedule preservation이 이 파일의 동결 SHA를 그대로 요구하는
+시험이었다. 녹화는 처음부터 `scripts/egomem1_record.py`와 queue/CLI로 직접
+실행해 workflow 등록이 필요 없었으므로, 전역 카탈로그와 시험 변경을
+`origin/main` 바이트로 되돌렸다. 되돌린 뒤 관련 시험 8개가 로컬에서 통과했다.
+이 작업은 기존 기록의 동결 hash를 바꾸지 않는다.
+
 ## 최종 요약
 
 | 항목 | 결과 | 판정 |
@@ -227,12 +236,14 @@ Apache-2.0·공개 Nav2 코드이며 제품별 채택은 미확인이다. 직접
 바꿨다. Nav2 라이브러리 전체를 실행했다는 주장은 아니다. 기존 물체 연관은
 계속 원본 Stone Soup, 품질 통계는 원본 ROVIO다. 거리·각도·시간 상수는
 바꾸지 않는다. 실제 복귀 순변위 관문도 그대로다. 후속 비물리23개 통과
-(gcp5 CPU,2.40초), CLI 새 토글 노출 확인. 관리 workflow는 별도0.3.0이다.
+(gcp5 CPU,2.40초), CLI 새 토글 노출 확인. 전역 `configs/simulation_workflows.json`에는
+등록하지 않았다(동결 v92 보존 hash 유지). CLI·queue로 직접 실행했고,
+등록안은 이 README의 기록으로만 남긴다.
 
 추가 탐색 힌트 뒤 같은2026프레임의 상태/공분산47132행·기억 이벤트 순서가
 모두 수치상 완전히 같았다([동등성](operations/hint-filter-equivalence.json)).
 따라서 오프라인 정확도 NOT_READY 판정은 그대로다. 녹화2는85924812a,
-별도workflow0.3.0·토글on, 원래 거리/각도/계산 관문 유지. 두 녹화의 장면 XML
+토글on, 원래 거리/각도/계산 관문 유지. 두 녹화의 장면 XML
 SHA는664b5880…로 완전히 같고, 대기열+실제 XML 기준표 점검을 통과했다.
 두 후보의 물리 결과는 합산하지 않는다. 녹화2 원본은 버전 대표 milestone으로
 기록해 실패여도 보존한다. 원본은 gcp5 영속 디스크이며 원격 백업 완료를 뜻하지 않는다.
