@@ -14,8 +14,8 @@ import copy
 from pathlib import Path
 import sys
 
-ADAPTER_SHA = '835ccef26aa84b08cc8f7e256fd0f43aa1583ef9'
-TEACHER_SHA = '26f84d0f0ada1c33473c83cca2d3415ce51bd247'
+ADAPTER_SHA = '036d04abcada6a3f067ffb281879bba1424f39ab'
+TEACHER_SHA = '85b992140ac56856e944f519e0e316fbe8d7fde0'
 RELEASE_SHA = '8e81b7d96c0c73171635348c90631462adfe1eb0'
 
 
@@ -295,7 +295,7 @@ class Bridge:
             yield dict(kind='step', target=target)
 
 
-def make_lane(adapter_source, teacher_source, plan, out, hooks, index, cap_s, *, flow='beampair', profile=None, canonical=None):
+def make_lane(adapter_source, teacher_source, plan, out, hooks, index, cap_s, *, flow='beampair', profile=None, canonical=None, candidate='baseline'):
     bridge = Bridge(hooks, index)
     bridge.output = Path(out)
     bridge.plan = plan
@@ -328,7 +328,7 @@ def make_lane(adapter_source, teacher_source, plan, out, hooks, index, cap_s, *,
         function, audit = compile_function(path.read_text(), 'run', namespace)
         bridge.transforms.append(audit)
         return function(plan, Path(out)/'raw', Path(teacher_source), mode=adapter.MODE,
-            candidate='baseline', cap_s=cap_s, rendezvous='peer_rendezvous_v2',
+            candidate=candidate, cap_s=cap_s, rendezvous='peer_rendezvous_v2',
             approach_repair='beampair_approach_v2', failure_tail=True,
             wall_layer='beampair_wall_clear_v1',peer_yield='beampair_peer_yield_v1')
     return Lane(factory, adapter_source), bridge
