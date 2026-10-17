@@ -1,0 +1,27 @@
+{
+  "prediction_sha256": "75b467059286724a2b0b77a675dba5f5c16e8b636a3b667a05c046afac8a11de",
+  "allowed_sha256": "00e839bd38c76b00de59bda2d5270874c92df3817173d32f8650d70a5a4e5e0b",
+  "extraction_seal_sha256": "09c5190ebd39f276665fc56ffba5d0611af3becc36f8ba3f5c956c8c79fc66d6",
+  "sources": {
+    "/home/ugrp/ugrp-sim/src/b85da1f0ce25aba7de5d160bd7da269999767502/harness/egocentric_landmark_memory.py": "42e5d25623b402b99228ac9d9590f647b83290ae8ab6363e2904641966b47355",
+    "/home/ugrp/ugrp-sim/src/b85da1f0ce25aba7de5d160bd7da269999767502/harness/egomem_vision.py": "59bbf795e65b1e2f99732df1dbd47d15c1358554ab6a8630a0a7372bcf3e7a0f",
+    "/home/ugrp/ugrp-sim/src/b85da1f0ce25aba7de5d160bd7da269999767502/scripts/egomem1_offline.py": "01713738d3e6532838a22ce3b47dd5f9ae6cb5e9d7ac5b84a1916e975110b764"
+  },
+  "truth_inputs": 0,
+  "static_map_inputs": 0,
+  "global_pose_state": false,
+  "full_cross_covariance": true,
+  "events": {
+    "created": 11,
+    "reobserved": 10,
+    "association_ambiguous": 5
+  },
+  "reproduction": [
+    "scripts/egomem1_offline.py",
+    "predict",
+    "--input",
+    "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2",
+    "--output",
+    "/home/ugrp/ugrp-sim/ops-reviews/egomem1/offline-v1"
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "unit": "recording",
+  "funnel": [
+    {
+      "stage": "rgb_recorded",
+      "input_n": 1,
+      "cumulative_pass_n": 1,
+      "rejected_n": 0
+    },
+    {
+      "stage": "visual_zone_remembered",
+      "input_n": 1,
+      "cumulative_pass_n": 1,
+      "rejected_n": 0
+    },
+    {
+      "stage": "departed",
+      "input_n": 1,
+      "cumulative_pass_n": 1,
+      "rejected_n": 0
+    },
+    {
+      "stage": "rgb_signature_reacquired",
+      "input_n": 1,
+      "cumulative_pass_n": 1,
+      "rejected_n": 0
+    }
+  ],
+  "reasons": {
+    "visual_zone_remembered": 1,
+    "departure_heading_observed_history": 1,
+    "departure_command_distance_reached": 1,
+    "rgb_signature_reacquired": 1,
+    "95pct_radius_exceeds_target_range": 3
+  },
+  "raw": "/home/ugrp/ugrp-sim/runs/egomem1-round1/recording1",
+  "reproduction": [
+    "/home/ugrp/ugrp-sim/src/cae3bd30b3c2e2c4fe76952d7a013cd26e064cbe/scripts/egomem1_record.py",
+    "--enabled",
+    "--queue",
+    "/home/ugrp/ugrp-sim/ops-reviews/egomem1/record-queue-v2.json",
+    "--renderer",
+    "/home/ugrp/ugrp-sim/src/drivecheck-renderer-5974a181",
+    "--legacy",
+    "/home/ugrp/ugrp-sim/src/mapbuild11-cfdcd8845",
+    "--setup",
+    "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79800-6f057f7e/plan.json",
+    "--colour",
+    "/home/ugrp/ugrp-sim/src/mapbuild5b-complete-vision597/experiments/2026-10-16-reloc16/colour-calibration.json",
+    "--own-motion",
+    "/home/ugrp/ugrp-sim/src/mapbuild11-cfdcd8845/experiments/2026-10-17-mapbuild8/calibration/own-command-calibration-r2.json",
+    "--sweep",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild8/own-sweep-model-r1.json",
+    "--output",
+    "/home/ugrp/ugrp-sim/runs/egomem1-round1/recording1"
+  ],
+  "blocked_object": "not_observed",
+  "minimum_gap_m": null,
+  "gap_status": "not_measured"
+}
