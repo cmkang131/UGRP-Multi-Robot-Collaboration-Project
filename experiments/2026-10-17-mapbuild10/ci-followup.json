@@ -1,0 +1,47 @@
+{
+  "schema": "ugrp.mapbuild10.ci_followup.v1",
+  "research_status": "NOT_READY",
+  "scientific_source_unchanged": "7f2f1baae",
+  "initial_ci": {
+    "run_id": 39000364555,
+    "head": "18a78adb6c22b98a6af7bde0cca4d9ecd3719c93",
+    "failed_job_id": 117302089623,
+    "failed_test": "tests/test_e2e18.py::test_cached_static_views_and_fast_distance",
+    "error": "ValueError: STATIC_VIEW_INPUT_CHANGED",
+    "shard_result": {
+      "failed": 1,
+      "passed": 1440,
+      "skipped": 28,
+      "xfailed": 13,
+      "subtests_passed": 11
+    },
+    "remaining_jobs": "unfinished when correction prepared; inspect workflow for final status"
+  },
+  "cause": "Earlier explicit servo_fk_carry_v1 extension changed camera FK source fingerprint; static-view cache still pinned the baseline file hash. Existing off/servo_fk_v1 outputs and all cached views/counts are unchanged.",
+  "fix": "Refresh only harness/servo_camera_fk.py fingerprint in configs/e2e18_static_views_v1.json; do not weaken cache integrity check.",
+  "parity": {
+    "baseline_commit": "efc484ad5ff59a3af3ccf58ebef5bf954c91e5af",
+    "baseline_fk_sha256": "0083e07af1a78b1da35cefb7f85011f65e1e2c61b5c21c03f337ceaff741a3b3",
+    "current_fk_sha256": "8a0156044a83430d1fe5979ae9bdb2f097f6b4b656015510c194d3fb5e80b32a",
+    "rng_seed": 2026101711,
+    "commands": 1007,
+    "mode_checks": 2014,
+    "bitwise_equal": true,
+    "cached_views": 85,
+    "views_and_counts_unchanged": true,
+    "cache_source_hashes_match": true,
+    "physics_steps": 0,
+    "mujoco_render_calls": 0
+  },
+  "parity_command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-17-mapbuild10/ci-fk-parity.py",
+  "local_validation": {
+    "command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_e2e18.py::test_cached_static_views_and_fast_distance tests/test_servo_camera_fk.py tests/test_mapbuild7.py tests/test_mapbuild9.py tests/test_mapbuild10.py tests/test_mapbuild10_mc.py tests/test_mapbuild10_diagnostic.py tests/test_mapbuild10_long_score.py tests/test_mapbuild10_field.py",
+    "passed": 45,
+    "seconds": 3.29,
+    "physics_steps": 0,
+    "mujoco_render_calls": 0
+  },
+  "full_ci": "Replacement run pending; final receipt saved under ignored primary outputs/e2e18-admin/mapbuild10-ci-<head>.json and PR #556 body to avoid a commit-triggered CI loop.",
+  "physical_runs_added": 0,
+  "vm_restart_count": 0
+}
