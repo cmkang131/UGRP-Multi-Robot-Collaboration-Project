@@ -146,6 +146,7 @@ def main():
                         command=label.get('teacher_command')
                         value=dict(arm=current_arm,seed=plan['seed'],tick=tick,elapsed_SIM_s=tick*.1,skill=obs['skill'],
                             in_frame_probes=int(inside.sum()),probe_N=len(points),
+                            evaluation_body_yaw_deg=math.degrees(math.atan2(data.xmat[bid,3],data.xmat[bid,0])),
                             student_yaw_command_deg=command_yaw_deg(selected),student_command=selected,
                             teacher_command=command,teacher_label_valid=bool(label.get('label_valid')),
                             teacher_yaw_command_deg=command_yaw_deg(command) if command else None,
@@ -164,6 +165,12 @@ def main():
                     # User requested the preceding one SIM second (10 recorded
                     # 0.1s intervals); no detection/acceptance constant is tuned.
                     window=timeline[max(0,exit_tick-10):exit_tick] if exit_tick is not None else []
+                    # Evaluator-only saved native pose, never an oracle or policy
+                    # observation. Include the exit boundary to cover10 actual
+                    # 0.1s intervals; the command window itself remains10 rows.
+                    actual_window=window+[timeline[exit_tick]] if window else []
+                    actual_yaw=np.unwrap(np.radians([v['evaluation_body_yaw_deg'] for v in actual_window]))
+                    actual_delta=math.degrees(float(actual_yaw[-1]-actual_yaw[0])) if len(actual_yaw)>1 else None
                     valid=[v for v in window if v['teacher_label_valid']]
                     yaw=[v['student_yaw_command_deg'] for v in window]
                     nonzero=[math.copysign(1,x) for x in yaw if x!=0]
@@ -178,6 +185,8 @@ def main():
                         geometric_exit_SIM_s=exit_tick*.1 if exit_tick is not None else None,
                         exit_skill=timeline[exit_tick]['skill'] if exit_tick is not None else None,
                         pre_exit_one_second=window,valid_teacher_comparisons=len(valid),comparison=dict(comparison),
+                        pre_exit_actual_yaw_delta_deg=actual_delta,
+                        actual_yaw_scope='saved native robot body heading, evaluator only; separate from issued-command odometry',
                         yaw_sign_switches=switches,reason_category=category,blocked_object='not_attributed_by_geometric_FOV_audit',
                         minimum_gap_m=None,minimum_gap_status='not_measured_FOV_not_blockage',
                         oracle_audit=oracle.audit.record(),oracle_labels=sum(v['teacher_label_valid'] for v in timeline),
