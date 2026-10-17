@@ -1,0 +1,20 @@
+{
+  "schema": "ugrp.egonav.rejection_table.v1",
+  "unit": "stage",
+  "stage": "preflight_admission",
+  "funnel": [
+    {
+      "stage": "requested_worlds",
+      "input_n": 16,
+      "cumulative_pass_n": 16,
+      "rejected_n": 0
+    }
+  ],
+  "reasons": {},
+  "reason_rows": [],
+  "blocked_object": "not_observed",
+  "minimum_gap_m": null,
+  "gap_status": "not_measured",
+  "raw": "no simulation executed yet; this table admits only the one-world preflight",
+  "reproduction": "scripts/egonav_gate.py --preflight"
+}
