@@ -14,8 +14,8 @@ import copy
 from pathlib import Path
 import sys
 
-ADAPTER_SHA = '65a9b5dd7d8fa5a938ec5fac36a88a22b1e92b91'
-TEACHER_SHA = '088b5548df677c27b2621f337202db5426b8d6aa'
+ADAPTER_SHA = '70ee51c4a9d6de1c022ebd4930700e31de9463f9'
+TEACHER_SHA = '850fbd2becfcb66cf15664e039916ddd53e6c75f'
 RELEASE_SHA = '8e81b7d96c0c73171635348c90631462adfe1eb0'
 
 
