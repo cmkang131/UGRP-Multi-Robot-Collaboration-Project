@@ -47,3 +47,101 @@
 - toggle 이름 충돌 검사: `beamact5_ready_witness_v1`, origin/main+origin/codex+origin/claude 259 refs, matches 0.
 - 보호 미추적 파일(`COORDINATOR_NOTE.md`, `experiments/2026-10-16-beamact3/C1-*.py`, `experiments/2026-10-16-beamdiag/`, `scripts/C1-evaluate_beamact3c.py`) 수정 0. gcp 명령/VM 시작/임대/학습/추론/렌더 0.
 - 남은 후속: 교사 시작 분포 확장 → gcp6 교사 gate 40회(훈련 카메라 OFF) → 통과 시에만 학생 카메라 ~166 seed 기록. 이번 기록은 그 권한을 주장하지 않는다.
+
+## 5. 넓은 시작 교사 gate 40회 (gcp6, 2026-10-17) — FAIL 34/40
+
+이 절은 위 4절의 남은 후속을 실행한 기록이다. **ACT 학습과 학생 카메라 기록은 하지 않았다.** 사전 등록 최소 38/40에 미달해 학생 카메라 ~166 seed 기록으로 넘어가지 않았다. gate 통과를 주장하지 않는다.
+
+### 5.1 사전 등록과 스택
+
+- 사전 등록 [wide-pre-registration.json](teacher/gate-40-r1/wide-pre-registration.json) sha256 `ad849ac2…`; cases [wide-cases.json] sha256 `093901ef…` (132,881 B, seeds 8420000–8420039). 층별 거리·yaw 배분은 등록 파일에 있다.
+- 40 runs, 10 거리 층(D00–D09), 층마다 **8 robot starts(8 runs에 걸쳐 r1 4회 + r2 4회)**, 8 yaw bin이 로봇마다 5회, bearing은 배정 끝에서 바깥 방향 1종. gate 최소 38/40, cap 60 SIM s, 훈련 카메라 OFF, 성공은 동결 evaluator의 `physical_success`만.
+- 라벨 주의: prereg/distribution의 층별 `planned_runs=4`/`actual_runs=4`는 **r1으로 등장한 run만** 센 값이다(`wide_start.py` 399–402). 실제 층별 노출은 8 runs/8 starts이며 아래 표의 분모 8이 그것이다.
+- 스택: source `3170d909…`, adapter `835ccef2…`, teacher dependency `26f84d0f…`, `mjwarp_batch_v1` + `warp_native_contact_v1`(noslip 0), scene `walls_floor_contrast_v5_indigo110_s80`, gcp6 isolated, placement filter, canonical XML 재컴파일. 값은 [teacher-gate-stack-manifest.json](teacher/teacher-gate-stack-manifest.json), 사전 등록 점검은 [teacher-gate-stack-check.json](teacher/teacher-gate-stack-check.json)(`ok:true`). 40-world init preflight passed([summary](teacher/gate-40-r1/remote-hashes.json) sha `13e72836…`), native reference proof sha `f53f54aa…`.
+- 카메라: 640×480, K00 619.5194540517232, remap sha `eb9b67fb…`. renderer는 `MJWarp batch RGB; known partial-alpha difference from C remains`이며 C와의 픽셀 동등성을 주장하지 않는다.
+
+### 5.2 실행
+
+- [summary.json.zst](teacher/gate-40-r1/summary.json.zst) 요약: `status=complete`, planned/started/completed **40/40/40**, `HOST_ERROR=0`, `beamact5_gate_eligible=true`, wall **3086.0 s**. 시간당 1.096 USD로 계산한 추정 **$0.94**(청구액 미확인).
+- 첫 30 SIM초: per-world wall/SIM **1.635**(기록 전용; 경고 3.5/차단 6.0 미만). loop 1961.9 s 중 physics 451.9 s(23%), render 90.2 s, readback/remap/JPEG/kinematics 60.0 s. [first30-speed.json](teacher/gate-40-r1/first30-speed.json) sha `c0c7c49a…`.
+
+### 5.3 결과: 34/40 FAIL
+
+- `teacher_terminal` 36(성공 34 + handoff 실패 2), `cap_end` **4**: SIM 60 s 상한 2 + planning host wall safety cap 2(계획 tick당 30 wall s, `planning_wall_safety_cap`). driver summary의 `cap_end=2`는 60 s 상한만 센 값이고, 분석은 safety cap을 별도로 표시한다. `HOST_ERROR=0`.
+- 층별 성공(로봇 시작 수, 분모 8):
+
+|layer|성공|실패한 world(로봇)|
+|---|---|---|
+|D00 0.154–0.202 m|5/8|10(r1 timeout), 15(r2 safety cap), 20(r1 search timeout)|
+|D01 0.205–0.305|7/8|6(r2 timeout)|
+|D02 0.31–0.525|6/8|27(r2 peer approach), 37(r2 safety cap)|
+|D03 0.535–0.735|8/8|–|
+|D04 0.742–0.781|8/8|–|
+|D05 0.785–0.824|5/8|10(r2 timeout), 15(r1 safety cap), 20(r2 peer search)|
+|D06 0.835–1.08|7/8|6(r1 timeout)|
+|D07 1.09–1.34|6/8|27(r1 approach blocked), 37(r1 safety cap)|
+|D08 1.35–1.57|8/8|–|
+|D09 1.58–1.6878|8/8|–|
+
+- 로봇 시작 **68/80**, run **34/40**. 실패는 배정식이 묶는 세 조합(D00–D05 3 runs, D01–D06 1 run, D02–D07 2 runs)에만 있고 D03–D04–D08–D09 조합은 전부 통과했다. 원인 진단은 이 단계 범위 밖이며 아래 원장의 기록 범주만 보고한다.
+
+### 5.4 실패 원장 (6 runs)
+
+|world|seed|r1|r2|종료|기록 사유|blocked_object|min_gap_m|scope|
+|---|---|---|---|---|---|---|---|---|
+|6|8420006|teal D06 0.835 m yaw0|blue D01 0.24 m yaw7|cap 60 s, 둘 다 episode_timeout|cap_end|none:cap_end|null|행정 상한, 간격 판단 없음|
+|10|8420010|teal D00 0.16 yaw1|blue D05 0.812 yaw0|cap 60 s, 둘 다 episode_timeout|cap_end|none:cap_end|null|행정 상한|
+|15|8420015|blue D05 0.8 yaw5|teal D00 0.18 yaw4|safety cap 4.1 s, outcome null|cap_end(행정)|none:planning_wall_safety_cap|null|행정 상한|
+|15 보조|〃|accepted path, path found, t=5.5|–|–|path_or_frontier_block|cyan_1|**-0.02024**|accepted_path|
+|20|8420020|teal D00 0.18 yaw2|blue D05 0.824 yaw1|teacher_terminal 58.0 s|peer_search_handoff+search_timeout_handoff|not_observed|null|path/frontier/clearance 행 없음|
+|27|8420027|blue D07 1.27 yaw6|teal D02 0.525 yaw5|teacher_terminal 22.4 s|approach_blocked_handoff+peer_approach_handoff|**red_1**|**0.01903**|accepted_path, t=19.5|
+|37|8420037|blue D07 1.34 yaw7|teal D02 0.31 yaw6|safety cap 25.4 s, outcome null|cap_end(행정)|none:planning_wall_safety_cap|null|행정 상한|
+
+- `not_observed`와 `null`은 0이 아니라 **측정/기록되지 않음**이다. world 20·27의 상대 로봇 쪽은 path/frontier/clearance 행이 없다.
+- world 15의 t=5.5는 절대 world clock이고 표의 report `sim_s`(4.1 s)는 data.time 원점 기준이라 직접 비교하지 않는다([analyze_gate40.py](teacher/analyze_gate40.py)).
+- 60 s 상한 2 runs는 늦은 프레임에서 끝 밴드가 보이지만(5.6절) 원장에 간격 행이 없어 원인을 배정하지 않는다. safety cap 2 runs도 물리 실패가 아니라 호스트 wall 시계 상한이다.
+
+### 5.5 READY witness 점검 (toggle default off 유지)
+
+- GO(ledger `ready→pick`)가 있는 로봇 **70/80**; 없는 10은 모두 실패 6 runs 소속. tail window 이전 GO 0.
+- witness 승인 후 GO **2/70**: world 14 blue(witness 36.1 ≤ GO 38.3), world 28 teal(31.3 ≤ 33.4).
+- GO 시점 결정: `BEAM_NOT_VISIBLE_OR_UNBOUNDED` 55/70, `FIT_UNCERTAIN` 15/70, 정렬 0/70. end band 검출은 **70/70 null**. grip x 오차(관측 x − station_radius 0.2032) 중앙 **-0.0667 m**(최소 -0.0817, 최대 -0.0235). 정렬 프레임 8/2478, 꼬리-원장 결합 실패 16(프레임 간격 >0.05 s 또는 GO 없음).
+- 판정: **이 replay로 witness를 평가할 수 없다(out of domain).** witness `_evaluate`의 x 기준은 `station_grasp_convention('masterpi_v3')['station_radius_m']=0.2032 m`인데, 이 교사 run의 ready 자세 grip x는 0.1215–0.1797 m로 기준보다 2.4–8.2 cm 안쪽이다. 또한 GO 프레임의 색 밴드 검출이 전부 null인데 MJWarp render의 partial-alpha/C 대비 차이가 알려져 있어 C-profile 색 assay 결과를 전이할 수 없다. 따라서 2/70은 witness의 성능 수치가 아니며, **on-domain 검증(C-profile 학생 기록 또는 station 반경에 선 교사 replay)은 아직 없다.** toggle은 default off로 두고 코드/기본값을 바꾸지 않았다.
+
+### 5.6 관측한 실패 프레임 (원인 주장 아님)
+
+12장을 처음/중간/끝에서 골라 직접 봤다([frames/](teacher/gate-40-r1/frames/)).
+
+- world 27: r1 t=2 장면, t=10 빔 접근, t=21에는 빨간 상자만 크게 보임. r2 t=21에는 teal 밴드가 화면을 채움. 기록은 r1 `red_1` accepted path 1.9 cm, r2 peer approach handoff.
+- world 20: r1 t=2 빨간 상자 중앙, t=30 빈 바닥, t=57 빨간 상자 오른쪽. r2 t=30·t=57 파란 밴드가 중앙에 보임. 기록은 r1 search timeout, r2 peer search handoff.
+- world 6: r1 t=40·t=59에 다른 로봇과 초록 빔/teal 밴드가 왼쪽 위, 오른쪽에 가까운 로봇 팔. r2 t=40·t=59 파란 밴드가 중앙에 크게 보임. 60 s 상한.
+- world 10: r1 t=59 초록 빔 면이 가까이 보임. r2 t=40 파란 밴드 중앙, t=59 바닥/벽. 60 s 상한.
+- world 15: r1 t=3 청록 상자가 앞에, 다른 로봇이 빔 옆. r2 t=3 teal 밴드가 가까이. 4.1 s safety cap.
+- world 37: r1 t=24 빔과 다른 로봇이 멀리. r2 t=24 벽/바닥 모서리. 25.4 s safety cap.
+- 전체 review-2hz/tail-10hz·상태 npz는 VM 원본에 있고 sha256은 [remote-hashes.json](teacher/gate-40-r1/remote-hashes.json)의 경로·해시로 연결했다. 위 관측만으로 실패 원인을 단정하지 않는다.
+
+### 5.7 원본·해시
+
+- Mac 회수 파일과 해시는 [remote-hashes.json](teacher/gate-40-r1/remote-hashes.json)에 있다. analysis JSON은 zstd 압축본 sha `e3726380…`, 해제 sha `0f24c879…`(원본과 일치 확인). summary는 zstd sha `423f55bb…`, 해제 sha `5771ce3a…`.
+- run 원본 `/home/ugrp/ugrp-sim/runs/beamact5/gate-run-40-r1/`(world-000..039, adapter/raw/tail/review), cases·사전 등록 `/home/ugrp/ugrp-sim/runs/beamact5/wide-start-8420000d/`. 전체 해시 목록 `artifact-sha256.json` sha `b537dc7e…`, 27,430 files(4.05 MB, Mac 미회수).
+- rejection ledger 원본 [rejection_table.json](teacher/gate-40-r1/rejection_table.json) sha `7a628eaa…`; funnel requested 40→setup 40→completed 40→success 34. driver 표는 `teacher_failure` 4로 뭉치고 safety cap을 분리하지 않지만, 이 기록의 5.4절 분석 표가 사유·물체·최소 간격과 cap_end를 분리한다.
+- gcp6는 이 기록 후 임대 해제·정지했고 원본은 영속 디스크에 보존한다.
+
+### 5.8 미확인·한계
+
+- 교사 성공은 학생 성공이 아니다. 훈련 RGB 기록·ACT 학습·학생 평가는 하지 않았다(사용자 지시 범위).
+- 6 실패 중 4 runs(world 6·10·20·37의 상대 로봇 포함)는 clearance 행이 없어 `blocked_object=not_observed`, `min_gap_m=null`이다. world 15·27만 accepted path 간격이 있다.
+- safety cap 2 runs는 호스트 wall-clock 행정 상한이며 SIM 시간 상한과 구분해 `cap_end`로 표시했다.
+- witness 점검은 out-of-domain replay다(5.5절). C-profile 학생 기록에서의 on-domain 재검증 전까지 witness의 작동/불작동을 주장하지 않는다.
+- 층별 `planned_runs/actual_runs=4` 라벨은 r1-only다. 실제 노출은 8 runs/8 starts다.
+- MJWarp와 C 결과를 합산하지 않는다. C 대비 물리·렌더 동등성, 청구 비용, 실기 전이는 미확인이다.
+- 이번 gate FAIL에 대한 원인 진단·수정 후보·재실행은 하지 않았다. 다음 단계는 6 실패 run의 search23/frontier 로그 분포를 먼저 재계수해 가장 큰 원인을 정하고, 그 뒤 후보를 정하는 것이다.
+
+### 5.9 참고 자료
+
+- 사전 등록의 거리 분포 근거: TRAIN 배정 거리 p25/p50/p75/p95/p99와 beamdiag A/B 실측 min–max를 `wide-pre-registration.json`의 `sources`에 기록했다.
+- 동결 소스: teacher tree `3170d909…`, adapter `835ccef2…`, dependency `26f84d0f…`; MJWarp contact profile `warp_native_contact_v1`(`sim/warp_native_contact.py` sha `a5c8d370…`, PR #562)과 noslip 0 규칙(AGENTS.md).
+- MJWarp 공식 문서(접촉 용량·그래프 캡처): https://mujoco.readthedocs.io/en/latest/mjwarp/
+- 비교 기준(합산 금지): 좁은 시작 CPU beampair7 40/40, 이전 warp 교사 gate 기록. 이번 넓은 시작 gate는 새 조건이다.
+- 시연 시작 분포 원칙: ALOHA/ACT(Zhao et al. 2023), DART(Laskey et al. 2017), DAgger(Ross et al. 2011), MimicGen(Mandlekar et al. 2023), Options(Sutton et al. 1999) — 0절 표 참조.
+- 내부 진단: `experiments/2026-10-16-beamdiag/`(시작 위치 분포), `experiments/2026-10-17-beamact5/analysis/ready_recount.py`(READY 오프라인 재계수).
