@@ -13,8 +13,8 @@
  },
  "decision_basis": "case-27 r4b timeline: the two obstacle encounters are consumed by SIM 15.2 s while subsequent blocked stretches at ~21 s and ~27 s need another refresh; the extra bounded refreshes are the next attempts.",
  "stack": {
-  "root": "f540cc34de9e83853b45093f32091babad7dcfe9",
-  "adapter": "358411441938e6e82f981b2ae1aa729ccd9c7193",
+  "root": "1e0dc0c13e894372c81a343fa2046514e76cf59b",
+  "adapter": "65a9b5dd7d8fa5a938ec5fac36a88a22b1e92b91",
   "teacher": "088b5548df677c27b2621f337202db5426b8d6aa",
   "cases_r5b_sha256": "57bb258cb7cd8241addc6e516876c2037847d111c7f3aa01836426cc4523bb49",
   "plan_sha256": "f1a50e8c833c1da9113bdf8cff3844913380e3c821b15c072c0a23c0f54f5148",
@@ -61,5 +61,14 @@
   "wide_stance not used (separate family)",
   "world15 excluded/unverified",
   "no new distance/angle/time threshold (refresh count is bounded to 2 extras and default off)"
+ ],
+ "prelaunch_attempts": [
+  {
+   "attempt": "validation-r5b-5 (2026-10-17T21:45Z)",
+   "result": "invalid candidate profile, stopped",
+   "cause": "the r5b candidate was not included in the r4c base-profile branch, so the run used baseline plus only the refresh mode (no farfirst circles/static-peer/peer-memory/reobserve). Case-27 failed at 23.4 s with a retreat_bounded_replan at 3.4 s, i.e. the r4c fixes were absent.",
+   "evidence": "summary/partials kept at runs/beamact5/validation-r5b-5-wrongprofile-stopped; not pooled",
+   "fix": "adapter 65a9b5dd7 (r5b added to the r4c base-profile condition), root 1e0dc0c13 pin; rerun as attempt 2"
+  }
  ]
 }
