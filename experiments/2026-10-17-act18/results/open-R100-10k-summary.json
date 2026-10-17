@@ -1,0 +1,311 @@
+{
+  "source_sha": "ab89b3c549791be19c93110b917a7fe1370ec15e",
+  "host": {
+    "project_id": "ugrp-sim-b-1014",
+    "instance": "ugrp-act-l4-gcp2",
+    "machine_type": "g2-standard-8",
+    "zone": "asia-northeast3-a"
+  },
+  "stage": "train",
+  "seeds": [
+    88600,
+    88601,
+    88602,
+    88603
+  ],
+  "complete": true,
+  "checkpoint_sha256": "90574e120686a59460f453a2b36a1a50ac644a5e7120f97e1433fb2fc83e95a7",
+  "step": 10000,
+  "candidate": "R100",
+  "rows": 1430,
+  "physics_steps": 0,
+  "training_updates": 0,
+  "reproduce": [
+    "scripts/act18_open_loop.py",
+    "--enabled",
+    "--stage",
+    "train",
+    "--dataset",
+    "/home/ugrp/ugrp-sim/runs/act17-v7/dataset-r1",
+    "--checkpoint",
+    "/home/ugrp/ugrp-sim/runs/act18/training-r1/R100/step-10000",
+    "--protocol",
+    "/home/ugrp/ugrp-sim/src/ab89b3c54/experiments/2026-10-17-act18/protocol.json",
+    "--out",
+    "/home/ugrp/ugrp-sim/runs/act18/diagnosis-r2/open-R100-10k"
+  ],
+  "stages": {
+    "all": {
+      "rows": 1430,
+      "errors": {
+        "raw:wheel_full_scale": {
+          "n": 5720,
+          "median": 0.018498448597644917,
+          "p90": 0.31246686371042426
+        },
+        "raw:pulse_ms": {
+          "n": 5720,
+          "median": 2.989408016019774,
+          "p90": 32.4711217626306
+        },
+        "raw:servo_PWM_counts": {
+          "n": 7150,
+          "median": 23.803018347284933,
+          "p90": 103.1875297345505
+        },
+        "raw:gripper_PWM_counts": {
+          "n": 1430,
+          "median": 19.883256982563296,
+          "p90": 130.5208956476045
+        },
+        "projected:wheel_full_scale": {
+          "n": 5720,
+          "median": 0.0,
+          "p90": 0.3499999940395355
+        },
+        "projected:pulse_ms": {
+          "n": 5720,
+          "median": 0.0,
+          "p90": 42.85714477300644
+        },
+        "projected:servo_PWM_counts": {
+          "n": 7150,
+          "median": 23.00000000000002,
+          "p90": 96.10001821517976
+        },
+        "projected:gripper_PWM_counts": {
+          "n": 1430,
+          "median": 20.0,
+          "p90": 130.19999914169887
+        }
+      },
+      "wheel_confusion": {
+        "N": 5720,
+        "teacher_moving": 2482,
+        "teacher_stopped": 3238,
+        "projected_stop_while_teacher_moves": 843,
+        "raw_opposite_sign_while_teacher_moves": 167,
+        "projected_opposite_sign_while_teacher_moves": 129,
+        "projected_moves_while_teacher_stops": 190
+      }
+    },
+    "approach": {
+      "rows": 326,
+      "errors": {
+        "raw:wheel_full_scale": {
+          "n": 1304,
+          "median": 0.03509158497929191,
+          "p90": 0.3783778057380559
+        },
+        "raw:pulse_ms": {
+          "n": 1304,
+          "median": 11.69176627713502,
+          "p90": 44.583204592720946
+        },
+        "raw:servo_PWM_counts": {
+          "n": 1630,
+          "median": 26.314339019230832,
+          "p90": 61.207037592673316
+        },
+        "raw:gripper_PWM_counts": {
+          "n": 326,
+          "median": 20.432449732063205,
+          "p90": 28.682096123044012
+        },
+        "projected:wheel_full_scale": {
+          "n": 1304,
+          "median": 0.03509158497929191,
+          "p90": 0.37730799366616846
+        },
+        "projected:pulse_ms": {
+          "n": 1304,
+          "median": 11.410730242957182,
+          "p90": 45.555076003074646
+        },
+        "projected:servo_PWM_counts": {
+          "n": 1630,
+          "median": 26.000007152557348,
+          "p90": 61.000012159347534
+        },
+        "projected:gripper_PWM_counts": {
+          "n": 326,
+          "median": 20.500000000000018,
+          "p90": 29.000000000000025
+        }
+      },
+      "wheel_confusion": {
+        "N": 1304,
+        "teacher_moving": 1186,
+        "teacher_stopped": 118,
+        "projected_stop_while_teacher_moves": 34,
+        "raw_opposite_sign_while_teacher_moves": 81,
+        "projected_opposite_sign_while_teacher_moves": 78,
+        "projected_moves_while_teacher_stops": 118
+      }
+    },
+    "alignment": {
+      "rows": 103,
+      "errors": {
+        "raw:wheel_full_scale": {
+          "n": 412,
+          "median": 0.06702308863405843,
+          "p90": 0.5197505282875998
+        },
+        "raw:pulse_ms": {
+          "n": 412,
+          "median": 5.768762973727111,
+          "p90": 14.94125405150725
+        },
+        "raw:servo_PWM_counts": {
+          "n": 515,
+          "median": 26.404202446530633,
+          "p90": 64.4575661364517
+        },
+        "raw:gripper_PWM_counts": {
+          "n": 103,
+          "median": 9.106795577556115,
+          "p90": 32.210539744496856
+        },
+        "projected:wheel_full_scale": {
+          "n": 412,
+          "median": 0.039999994039535525,
+          "p90": 0.6599999940395356
+        },
+        "projected:pulse_ms": {
+          "n": 412,
+          "median": 3.7566323044146035,
+          "p90": 40.00000208616257
+        },
+        "projected:servo_PWM_counts": {
+          "n": 515,
+          "median": 24.000007152557373,
+          "p90": 62.000003337860115
+        },
+        "projected:gripper_PWM_counts": {
+          "n": 103,
+          "median": 9.000000000000007,
+          "p90": 32.00000000000003
+        }
+      },
+      "wheel_confusion": {
+        "N": 412,
+        "teacher_moving": 336,
+        "teacher_stopped": 76,
+        "projected_stop_while_teacher_moves": 61,
+        "raw_opposite_sign_while_teacher_moves": 86,
+        "projected_opposite_sign_while_teacher_moves": 51,
+        "projected_moves_while_teacher_stops": 0
+      }
+    },
+    "grasp": {
+      "rows": 650,
+      "errors": {
+        "raw:wheel_full_scale": {
+          "n": 2600,
+          "median": 0.010102964272912629,
+          "p90": 0.3110665929184203
+        },
+        "raw:pulse_ms": {
+          "n": 2600,
+          "median": 1.4210694706434088,
+          "p90": 31.133413386830405
+        },
+        "raw:servo_PWM_counts": {
+          "n": 3250,
+          "median": 20.388034276286493,
+          "p90": 134.98794550038906
+        },
+        "raw:gripper_PWM_counts": {
+          "n": 650,
+          "median": 17.772054058296625,
+          "p90": 304.888538836887
+        },
+        "projected:wheel_full_scale": {
+          "n": 2600,
+          "median": 0.0,
+          "p90": 0.3499999940395355
+        },
+        "projected:pulse_ms": {
+          "n": 2600,
+          "median": 0.0,
+          "p90": 42.85714477300644
+        },
+        "projected:servo_PWM_counts": {
+          "n": 3250,
+          "median": 20.0,
+          "p90": 127.10000061988822
+        },
+        "projected:gripper_PWM_counts": {
+          "n": 650,
+          "median": 18.0,
+          "p90": 305.0
+        }
+      },
+      "wheel_confusion": {
+        "N": 2600,
+        "teacher_moving": 320,
+        "teacher_stopped": 2280,
+        "projected_stop_while_teacher_moves": 320,
+        "raw_opposite_sign_while_teacher_moves": 0,
+        "projected_opposite_sign_while_teacher_moves": 0,
+        "projected_moves_while_teacher_stops": 0
+      }
+    },
+    "release": {
+      "rows": 351,
+      "errors": {
+        "raw:wheel_full_scale": {
+          "n": 1404,
+          "median": 0.02763123969374057,
+          "p90": 0.27906641248689074
+        },
+        "raw:pulse_ms": {
+          "n": 1404,
+          "median": 3.634743843495046,
+          "p90": 34.14287490935238
+        },
+        "raw:servo_PWM_counts": {
+          "n": 1755,
+          "median": 28.017969822276445,
+          "p90": 146.28760393494107
+        },
+        "raw:gripper_PWM_counts": {
+          "n": 351,
+          "median": 31.63587136872398,
+          "p90": 255.85436825539375
+        },
+        "projected:wheel_full_scale": {
+          "n": 1404,
+          "median": 0.0036122329258193586,
+          "p90": 0.3499999940395355
+        },
+        "projected:pulse_ms": {
+          "n": 1404,
+          "median": 1.0498193801855626,
+          "p90": 42.85714477300644
+        },
+        "projected:servo_PWM_counts": {
+          "n": 1755,
+          "median": 25.00000000000002,
+          "p90": 143.59999580383317
+        },
+        "projected:gripper_PWM_counts": {
+          "n": 351,
+          "median": 31.99999999999997,
+          "p90": 256.0
+        }
+      },
+      "wheel_confusion": {
+        "N": 1404,
+        "teacher_moving": 640,
+        "teacher_stopped": 764,
+        "projected_stop_while_teacher_moves": 428,
+        "raw_opposite_sign_while_teacher_moves": 0,
+        "projected_opposite_sign_while_teacher_moves": 0,
+        "projected_moves_while_teacher_stops": 72
+      }
+    }
+  },
+  "status": "complete",
+  "wall_s": 30.33792526400066
+}

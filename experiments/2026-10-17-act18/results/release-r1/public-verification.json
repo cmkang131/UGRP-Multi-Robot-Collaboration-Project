@@ -1,0 +1,95 @@
+{
+  "status": "complete",
+  "complete": true,
+  "source_sha": "e91d418097d3104c457211dc8c44b8b7d2534d80",
+  "host": {
+    "project_id": "ugrp-sim-b-1014",
+    "instance": "ugrp-act-l4-gcp2",
+    "machine_type": "g2-standard-8",
+    "zone": "asia-northeast3-a"
+  },
+  "models": [
+    {
+      "id": "act18-v7-r8-step100000-20261017",
+      "archive": {
+        "bytes": 191989583,
+        "sha256": "6ac5a49ecb871120cbbd0ac240d499f8a4eddddcffb3af84b48a322b9308a2c7"
+      },
+      "release": {
+        "tag": "models-20261017-act18-v7-r1",
+        "asset": "act18-v7-r8-step100000-20261017.zip",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/download/models-20261017-act18-v7-r1/act18-v7-r8-step100000-20261017.zip"
+      },
+      "download": {
+        "id": "act18-v7-r8-step100000-20261017",
+        "path": "/home/ugrp/ugrp-sim/runs/act18/release-verification-r1/models/act18-v7-r8-step100000-20261017",
+        "verified_files": 24,
+        "verified_bytes": 207592611,
+        "installed": true
+      },
+      "full_inventory": {
+        "id": "act18-v7-r8-step100000-20261017",
+        "path": "/home/ugrp/ugrp-sim/runs/act18/release-verification-r1/models/act18-v7-r8-step100000-20261017",
+        "verified_files": 24,
+        "verified_bytes": 207592611
+      },
+      "loading": {
+        "ready": true,
+        "device": "cpu",
+        "chunk": 8,
+        "bundled_inference_library": true,
+        "bundled_act_runtime": true,
+        "scope": "model loading only; no physical success claim"
+      },
+      "loading_exit_code": 0,
+      "loader_sha256": "6ae1549a3bc4d0e5ced29e71b5f37470f700af49ed474d705344cf9881e760f1"
+    },
+    {
+      "id": "act18-v7-r100-step100000-20261017",
+      "archive": {
+        "bytes": 192343472,
+        "sha256": "79be292ed14a8612e7d214bef56df1d19719d80da634a0f1d935323d4bda6719"
+      },
+      "release": {
+        "tag": "models-20261017-act18-v7-r1",
+        "asset": "act18-v7-r100-step100000-20261017.zip",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/download/models-20261017-act18-v7-r1/act18-v7-r100-step100000-20261017.zip"
+      },
+      "download": {
+        "id": "act18-v7-r100-step100000-20261017",
+        "path": "/home/ugrp/ugrp-sim/runs/act18/release-verification-r1/models/act18-v7-r100-step100000-20261017",
+        "verified_files": 24,
+        "verified_bytes": 207969467,
+        "installed": true
+      },
+      "full_inventory": {
+        "id": "act18-v7-r100-step100000-20261017",
+        "path": "/home/ugrp/ugrp-sim/runs/act18/release-verification-r1/models/act18-v7-r100-step100000-20261017",
+        "verified_files": 24,
+        "verified_bytes": 207969467
+      },
+      "loading": {
+        "ready": true,
+        "device": "cpu",
+        "chunk": 100,
+        "bundled_inference_library": true,
+        "bundled_act_runtime": true,
+        "scope": "model loading only; no physical success claim"
+      },
+      "loading_exit_code": 0,
+      "loader_sha256": "6ae1549a3bc4d0e5ced29e71b5f37470f700af49ed474d705344cf9881e760f1"
+    }
+  ],
+  "registry_sha256": "b5e7b094b6c8e11a9f2ae73a1ceed8302d0627c296ea3697d1b04ab71f270253",
+  "fresh_checkout": "/home/ugrp/ugrp-sim/src/e91d41809",
+  "disk_budget": {
+    "free_bytes": 18933456896,
+    "new_payload_bytes": 415562078,
+    "transient_archive_bytes": 192343472,
+    "floor_bytes": 8589934592,
+    "projected_free_bytes": 18325551346,
+    "basis": "actual registered file/ZIP lengths; filesystem metadata overhead separate"
+  },
+  "scope": "fresh checkout, anonymous public download/full archive+file hashes, bundled CPU loading in existing pinned ACT environment; no task-success or raw-data-backup claim",
+  "utc": "2026-10-17T18:38:41.927402+00:00"
+}

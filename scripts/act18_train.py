@@ -1,0 +1,223 @@
+"""Default-off, fixed 100k reference ACT comparison on existing v7 data."""
+import argparse
+from datetime import datetime, timezone
+import json
+import os
+from pathlib import Path
+import signal
+import sys
+import time
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from act16w_runtime import require_gcp2, frozen_source, sha256, LEROBOT_ACT_SHA256, ACT_SHA
+from act17_data import library, read
+from act17_compact_records import original_sha256
+from act17_policy import observation_batch
+from act18_policy import (CANDIDATES, TUNE_CANDIDATE, ReferenceDataset,
+                          WeightedReferenceDataset, make_policy, save_actor, Actor)
+from act18_diagnose import write
+
+B = Path('/home/ugrp/ugrp-sim')
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def validate_probe_options(candidate, init_checkpoint, steps, post_close_weight, pre_close_weight):
+    """TUNE-only default-off probe options; never silently mixes with R8/R100."""
+    supplied = [value is not None for value in (init_checkpoint, steps, post_close_weight, pre_close_weight)]
+    if candidate == TUNE_CANDIDATE:
+        if init_checkpoint is None or steps is None:
+            raise ValueError('act18-tune requires --init-checkpoint and --steps')
+    elif any(supplied):
+        raise ValueError('tune options require --candidate '+TUNE_CANDIDATE)
+    if steps is not None and not 1 <= steps <= 20000:
+        raise ValueError('probe --steps must be within [1, 20000]')
+    for value, label in ((post_close_weight, '--post-close-weight'), (pre_close_weight, '--pre-close-weight')):
+        if value is not None and not 1 <= value <= 20:
+            raise ValueError(label+' must be within [1, 20]')
+    return steps
+
+
+def init_checkpoint_receipt(path, protocol, protocol_path, dataset, chunk):
+    """Exact completed 100k checkpoint receipt before a short TUNE probe."""
+    path = Path(path)
+    hashes = read(path/'SHA256.json')
+    if set(hashes) != {'model.safetensors', 'config.json', 'adapter.json'}:
+        raise ValueError('init checkpoint inventory must be exactly three registered files')
+    if any(sha256(path/name) != digest for name, digest in hashes.items()):
+        raise ValueError('init checkpoint file hash mismatch')
+    adapter = read(path/'adapter.json')
+    provenance = adapter.get('provenance', {})
+    if (adapter.get('schema') != 'ugrp.act18.adapter.v1' or adapter.get('chunk') != chunk
+            or not provenance.get('training_complete')
+            or provenance.get('step') != protocol['steps']
+            or provenance.get('protocol_sha256') != sha256(protocol_path)
+            or provenance.get('dataset_manifest_sha256') != original_sha256(dataset/'manifest.json')):
+        raise ValueError('init checkpoint must be a completed matched 100k ACT18 model')
+    return dict(path=str(path), step=provenance['step'], candidate=provenance.get('candidate'),
+                chunk=adapter['chunk'], model_sha256=hashes['model.safetensors'],
+                adapter_sha256=hashes['adapter.json'])
+
+
+def main():
+    p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument('--enabled', action='store_true')
+    p.add_argument('--candidate', choices=tuple(CANDIDATES), required=True)
+    # AGENTS 2026-10-17 user decision: new ACT training runs bf16 by default after
+    # the gcp5 paired probe (2000 steps/arm, 1.10x, 0 NaN). fp32 stays selectable
+    # only for replay/matched-fp32 comparison; bf16 and fp32 results never pool.
+    p.add_argument('--precision', choices=('bf16_autocast_v1','fp32'), default='bf16_autocast_v1')
+    # TUNE probe options (default OFF): initialize from a completed checkpoint,
+    # run a short bf16 schedule, and optionally upweight align..close rows.
+    p.add_argument('--init-checkpoint', type=Path)
+    p.add_argument('--steps', type=int)
+    # Frozen segment table: post-close (where the student halts) and the
+    # preceding hover/descent/close tail. Both default OFF.
+    p.add_argument('--post-close-weight', type=float)
+    p.add_argument('--pre-close-weight', type=float)
+    for name in ('dataset','protocol','out','queue'):
+        p.add_argument('--'+name, type=Path, required=True)
+    a = p.parse_args()
+    if not a.enabled:
+        p.error('reference ACT candidate is default OFF')
+    host = require_gcp2(training=True)
+    source = frozen_source(ROOT)
+    library()
+    protocol, queue = read(a.protocol), read(a.queue)
+    if (protocol.get('schema')!='ugrp.act18.protocol.v1' or queue.get('source_sha')!=source
+            or protocol['steps']!=100000 or protocol['batch_size']!=8
+            or a.candidate not in queue['candidates']):
+        raise ValueError('fixed registered matched queue required')
+    # Strict: a queue without the precision receipt must not silently run bf16.
+    if queue.get('training_precision')!=a.precision:
+        raise ValueError('queue training_precision receipt and --precision must match')
+    total_steps = validate_probe_options(a.candidate, a.init_checkpoint, a.steps,
+                                         a.post_close_weight, a.pre_close_weight) or protocol['steps']
+    weighted = a.post_close_weight is not None or a.pre_close_weight is not None
+    sampling = 'weighted_post_close_v1' if weighted else 'uniform_episode_v1'
+    if weighted:
+        data = WeightedReferenceDataset(a.dataset, 'train', chunk=CANDIDATES[a.candidate],
+                                        post_close_weight=a.post_close_weight,
+                                        pre_close_weight=a.pre_close_weight)
+    else:
+        data = ReferenceDataset(a.dataset, 'train', chunk=CANDIDATES[a.candidate])
+    if (set(data.manifest['eligible_train_seeds'])!=set(protocol['train_seeds'])
+            or original_sha256(a.dataset/'manifest.json')!=queue['dataset_manifest_sha256']):
+        raise ValueError('same complete v7 TRAIN dataset required')
+    import torch
+    from harness.grasp_act_loss import policy_loss
+    from lerobot.policies.act import modeling_act
+    if sha256(Path(modeling_act.__file__))!=LEROBOT_ACT_SHA256:
+        raise ValueError('pinned valid-token normalized upstream required')
+    if not torch.cuda.is_available() or 'L4' not in torch.cuda.get_device_name(0):
+        raise ValueError('L4 required')
+    torch.set_num_threads(2)
+    torch.manual_seed(protocol['seed'])
+    torch.cuda.manual_seed_all(protocol['seed'])
+    torch.backends.cudnn.benchmark=False
+    generator=torch.Generator().manual_seed(protocol['seed'])
+    policy=make_policy(data.chunk,device='cuda',pretrained=True)
+    init_receipt=None
+    if a.init_checkpoint is not None:
+        init_receipt=init_checkpoint_receipt(a.init_checkpoint,protocol,a.protocol,a.dataset,data.chunk)
+        from safetensors.torch import load_file
+        state=load_file(str(Path(a.init_checkpoint)/'model.safetensors'))
+        policy.load_state_dict(state,strict=True)
+        del state
+    optimizer=torch.optim.AdamW(policy.get_optim_params(),lr=1e-5,weight_decay=1e-4)
+    priors=data.completion_priors(sampling)
+    first=next(ep for ep in data.manifest['episodes'] if ep['split']=='train')
+    obs=next(o for o in read(Path(first['source_capture'])/'student-r1.jsonl',lines=True)
+             if o['sample_id']==data.metadata[0]['sample_id'])
+    jpgs=[(Path(first['source_capture'])/r['path']).read_bytes() for r in obs['rgb']]
+    own=observation_batch(obs,jpgs,data.stats,'current_full_v1')
+    if any(not __import__('numpy').array_equal(v,data[0][k]) for k,v in own.items()):
+        raise ValueError('real training/deployment transforms differ')
+    a.out.mkdir(parents=True,exist_ok=False)
+    config=dict(source_sha=source,cohort='act18-v7-reference',candidate=a.candidate,
+        host=host,contact_profile='warp_native_contact_v1',chunk=data.chunk,seed=protocol['seed'],
+        steps_requested=total_steps,batch_size=8,lr=1e-5,kl_weight=10.,
+        normalization_sha256=data.manifest['normalization']['sha256'],
+        dataset_manifest_sha256=queue['dataset_manifest_sha256'],protocol_sha256=sha256(a.protocol),
+        lerobot_act_sha256=LEROBOT_ACT_SHA256,act_library_source_sha=ACT_SHA,
+        done_loss='balanced_bce_v1',image_mode='current_full_v1',sampling=sampling,
+        train_inference_transform_identical=True,gradient_checkpointing=False,
+        training_precision=a.precision,
+        training_precision_scope=('fp32 weights/optimizer/grad clip; forward+loss bf16 autocast'
+                                  if a.precision=='bf16_autocast_v1' else 'fp32 end-to-end'),
+        static_map_use='none',wall_cap=None,optimizer_recipe='LeRobot AdamW defaults; no implicit resume')
+    if init_receipt is not None:
+        config.update(probe=dict(kind='init_aligned_finetune_v1',init_checkpoint=init_receipt,
+            steps_override=a.steps if a.steps is not None else None,
+            post_close_weight=a.post_close_weight,pre_close_weight=a.pre_close_weight,sampling=sampling,
+            post_close_phases=['grasp:'+phase for phase in ('lift','lift_settle','lookback_pose','lookback','lookback_settle','verify_lift','hold')],
+            pre_close_phases=['grasp:'+phase for phase in ('hover','descent','close')],
+            other_rows_weight=1.0,
+            packaging_eligible=False,
+            note='short default-off diagnostic probe; never packaged or pooled with R8/R100'))
+    report=dict(**config,status='running',complete=False,steps_completed=0,
+        started_utc=datetime.now(timezone.utc).isoformat(),TRAIN_rows=len(data),
+        TRAIN_starts=len(data.episode_indices),readback_verified=False,checkpoints=[])
+    lease=B/'leases'/('act18-train-'+a.candidate+'.json')
+    with lease.open('x') as f:
+        json.dump(dict(task='act18',candidate=a.candidate,pid=os.getpid(),start=report['started_utc'],
+            expected_end='finite100000updates; no wall deadline',concurrency=0),f)
+    stop={'requested':False}
+    for sig in (signal.SIGINT,signal.SIGTERM):
+        signal.signal(sig,lambda *_:stop.update(requested=True))
+    save_steps=(10000,50000,100000) if a.steps is None else (total_steps,)
+    started=time.monotonic()
+    try:
+        with (a.out/'progress.jsonl').open('x') as stream:
+            for step in range(1,total_steps+1):
+                if stop['requested']:
+                    raise InterruptedError('explicit supervisor stop')
+                ids=data.sample(generator,8,sampling)
+                batch={k:v.to('cuda') for k,v in torch.utils.data.default_collate([data[i] for i in ids]).items()}
+                policy.train()
+                optimizer.zero_grad(set_to_none=True)
+                # Probe-verified scope: only forward/loss autocast; weights,
+                # optimizer state and grad clip stay fp32.
+                with torch.autocast('cuda',dtype=torch.bfloat16,enabled=a.precision=='bf16_autocast_v1'):
+                    loss,metrics=policy_loss(policy,batch,mode='balanced_bce_v1',stats=data.stats,priors=priors)
+                if not torch.isfinite(loss):
+                    raise ValueError('nonfinite loss')
+                loss.backward()
+                # Same existing LeRobot training gradient clip1.0; no new motion/acceptance threshold.
+                norm=torch.nn.utils.clip_grad_norm_(policy.parameters(),1.,error_if_nonfinite=True)
+                optimizer.step()
+                if step==1 or step%100==0:
+                    row=dict(step=step,loss=float(loss),**metrics,gradient_norm=float(norm),wall_s=time.monotonic()-started)
+                    stream.write(json.dumps(row)+'\n');stream.flush()
+                    report.update(steps_completed=step,latest=row)
+                    write(a.out/'summary.json',report)
+                # Standard100k endpoint; intermediate10k/50k allow exact prior-z0
+                # TRAIN diagnosis, never selection on FINAL or hidden VAL outcomes.
+                # A TUNE probe only saves its final short-step checkpoint.
+                if step in save_steps:
+                    folder=a.out/('step-'+str(step))
+                    completed = step == total_steps if a.init_checkpoint is not None else step == protocol['steps']
+                    save_actor(policy,folder,data.stats,dict(**config,step=step,training_complete=completed))
+                    restored=Actor.load(folder,device='cuda')
+                    inputs={k:torch.from_numpy(v.copy()).unsqueeze(0).to('cuda') for k,v in own.items()}
+                    policy.eval()
+                    with torch.inference_mode():
+                        if not torch.equal(policy.predict_action_chunk(inputs),restored.policy.predict_action_chunk(inputs)):
+                            raise ValueError('saved prediction readback changed')
+                    del restored
+                    report['checkpoints'].append(dict(step=step,path=str(folder),sha256=sha256(folder/'model.safetensors'),readback_verified=True))
+                    write(a.out/'summary.json',report)
+        report.update(status='complete',complete=True,readback_verified=True,
+            checkpoint=report['checkpoints'][-1]['path'],checkpoint_sha256=report['checkpoints'][-1]['sha256'],
+            peak_gpu_bytes=torch.cuda.max_memory_allocated())
+    except BaseException as error:
+        report.update(status='SUPERVISOR_STOP' if isinstance(error,InterruptedError) else 'HOST_ERROR',error=repr(error),complete=False)
+        raise
+    finally:
+        report['wall_s']=time.monotonic()-started
+        write(a.out/'summary.json',report)
+        if lease.exists() and read(lease).get('pid')==os.getpid():
+            lease.unlink()
+
+
+if __name__=='__main__':
+    main()

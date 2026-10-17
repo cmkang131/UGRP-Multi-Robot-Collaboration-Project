@@ -1,0 +1,69 @@
+{
+  "schema": "ugrp.act18.cleanup.v1",
+  "utc": "2026-10-17T19:20:47Z",
+  "vm": {
+    "instance": "ugrp-act-l4-gcp2",
+    "project_id": "ugrp-sim-b-1014",
+    "account": "changmin5781@gmail.com",
+    "zone": "asia-northeast3-a",
+    "status": "TERMINATED",
+    "stopped_utc": "2026-10-17T19:20:47Z",
+    "confirmed_by": "gcloud compute instances describe --format=value(status)"
+  },
+  "before_stop": {
+    "act18_processes": "none",
+    "gpu_utilization_percent": 0,
+    "gpu_memory_MiB": 0,
+    "leases_before": [
+      "leases/act18.json (stale pid 11757, removed)"
+    ],
+    "leases_after": "no act18 lease",
+    "runs_act18_bytes": 2300000000,
+    "disk_free_bytes_approx": 16106127360,
+    "note": "disk and raw evidence preserved; VM stopped only"
+  },
+  "vm_scratch_removed": [
+    "/tmp/act18_faildiag.py",
+    "/tmp/act18_montage.py",
+    "/tmp/act18_failure_montage.py"
+  ],
+  "local": {
+    "worktree": "/Users/changmin/projects/ugrp-wt/act16w",
+    "removed_untracked_with_hashes": [
+      {
+        "path": "COORDINATOR_NOTE.md",
+        "bytes": 8744,
+        "sha256": "2018f5765e37eb6125e3a6874e9a261df45276b7b58575c237af23471d832f24",
+        "reason": "stale coordinator scratch note"
+      },
+      {
+        "path": "experiments/2026-10-16-act16w/resume2/capacity-refresh.jsonl",
+        "bytes": 295293,
+        "sha256": "8be40f623578cd851d10ba4f4c088178b10644b1da3f293be233e16d05b88b11",
+        "reason": "act16w thread residual progress capture; hash recorded then removed for clean worktree"
+      },
+      {
+        "path": "experiments/2026-10-16-act16w/resume2/progress.jsonl",
+        "bytes": 32367,
+        "sha256": "92ccb6448cf8961b45f2c4e125dc08e08eb372a6f44e53096bc5f0a49331e71e",
+        "reason": "same"
+      },
+      {
+        "path": "experiments/2026-10-16-act16w/resume2/record-progress-latest.json",
+        "bytes": 36150,
+        "sha256": "b04c6bc59c37d3fab2e7f4645c0305925751af9d6f6897fe71c80c4619f0703e",
+        "reason": "same"
+      },
+      {
+        "path": "experiments/2026-10-16-act16w/resume2/record-progress.jsonl",
+        "bytes": 5562499,
+        "sha256": "62a0039e8073fdd99d9f53ae5ed2cd3bdae24e28c97c93ee4c49ab278927a3e3",
+        "reason": "same"
+      }
+    ],
+    "scratch_removed": [
+      "/private/tmp/act18-dsh"
+    ],
+    "note": "Mac weights not written; no VM credentials copied"
+  }
+}

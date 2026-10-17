@@ -1,0 +1,758 @@
+{
+  "schema": "ugrp.act18.summary.v1",
+  "experiment": "2026-10-17-act18",
+  "title": "v7 near-field ACT TRAIN fit: matched LeRobot ACT 100k chunk8/chunk100",
+  "status": "NOT_READY",
+  "verdict": "R8·R100은 TRAIN4 0/4로 학습 적합도 관문을 통과하지 못했고 VAL8·FINAL40은 제출하지 않았다. post-close 가중 2,000-step bf16 fine-tune 프로브(act18-tune)는 물리 lift를 4/4로 올렸지만 grasp_done/done 신호가 여전히 0/4여서 TRAIN4 0/4였다. 어떤 모델도 기본 제어기로 채택하지 않고, R8/R100 100k 두 모델만 NOT_READY 라벨의 재현·비교용으로 Release에 보존했으며 공개 재다운로드·전체 SHA·CPU 로딩만 검증했다. 실제 물리 임무 성공은 0/4다.",
+  "source": {
+    "training_source_sha": "52e486316c25be122dc1e872b10ef8cd1e8b98e8",
+    "post_training_source_sha": "ab89b3c549791be19c93110b917a7fe1370ec15e",
+    "release_verification_checkout_sha": "e91d418097d3104c457211dc8c44b8b7d2534d80",
+    "protocol_sha256": "1db4e22345fdf29cdd80d07bbf61f23aa6101a6859e125f974f550577be1fb4e",
+    "dataset_manifest_sha256": "44c1c46073aa08ea028324ffe924b67d862a2f01b56f4db11afad17000a9b198",
+    "act_library_source_sha": "3f99d58c5ada0862e669ef4065c0ba957f1b4547",
+    "lerobot_act_sha256": "8d622935319af7d03f1efd95d51e726af2921010f7e4f5ec3742f62280493111"
+  },
+  "host": {
+    "project_id": "ugrp-sim-b-1014",
+    "instance": "ugrp-act-l4-gcp2",
+    "machine_type": "g2-standard-8",
+    "zone": "asia-northeast3-a",
+    "account": "changmin5781@gmail.com"
+  },
+  "conditions": {
+    "physics_backend": "mjwarp_batch_v1",
+    "contact_profile": "warp_native_contact_v1",
+    "noslip_iterations": 0,
+    "weld": false,
+    "scene_profile": "walls_floor_contrast_v5_indigo110_s80",
+    "end_color_scene": "grasp_act_teal_blue_v1",
+    "cargo_version": "v6",
+    "scenario_version": "v7",
+    "nearfield_executor": "ACT",
+    "student_inputs": "자기 RGB + 자기 발행 명령 이력 + 고정 스킬/종류 토큰",
+    "current_full_v1": true,
+    "static_map_use": "none",
+    "top_camera_control": false,
+    "precision": "fp32",
+    "no_new_recording": true,
+    "no_pooling_with_act17": true,
+    "no_pooling_with_bf16_probe": true,
+    "wall_cap": null
+  },
+  "runs": [
+    {
+      "name": "training-r1",
+      "kind": "matched 100k training",
+      "status": "complete",
+      "complete": true,
+      "host_instance": "ugrp-act-l4-gcp2",
+      "started_utc": "2026-10-17T09:25:41.361420+00:00",
+      "wall_s": 30823.2,
+      "raw": {
+        "vm_dir": "/home/ugrp/ugrp-sim/runs/act18/training-r1",
+        "summary_sha256": "92a055a02c09f6cbc65bef994b292316da51c6ce0ffec71a7c882bccececff88",
+        "R8_summary_sha256": "043e556cd45059af40de8ab2df75742eb1a81800032409adbac056ba14b2ba28",
+        "R100_summary_sha256": "27bd38f983d8b95cfd74cdfc7e81896465ed3315e20fe98c41240e00c32bb2fc"
+      },
+      "candidates": {
+        "R8": {
+          "chunk": 8,
+          "steps_completed": 100000,
+          "wall_s": 30812.2,
+          "readback_verified": true,
+          "checkpoint_sha256": "e1ec659216e289e1e5e9bb48ac597763ad8d1a088c3c85eb3205336307bb8d5a",
+          "checkpoint_sha256_by_step": {
+            "step10000": "1ce3cdc76f0aac540ce8c40515bd94b17180b1576e387e48c105cde21ecb78a9",
+            "step50000": "9dc25d5238f9fee16af4d6373170175e984061a08a1deca24d50b6ffaf32f50b",
+            "step100000": "e1ec659216e289e1e5e9bb48ac597763ad8d1a088c3c85eb3205336307bb8d5a"
+          },
+          "peak_gpu_bytes": 2015069184
+        },
+        "R100": {
+          "chunk": 100,
+          "steps_completed": 100000,
+          "wall_s": 30779.2,
+          "readback_verified": true,
+          "checkpoint_sha256": "44b11c3c147fb633fffa9e9cb6a0a48c5801f0b8fd2bdd9e33ea14a16804a544",
+          "checkpoint_sha256_by_step": {
+            "step10000": "90574e120686a59460f453a2b36a1a50ac644a5e7120f97e1433fb2fc83e95a7",
+            "step50000": "e9d3d448244dd38f82cf62878d334acdfe055fb101fbbfcd1364650ac42cd804",
+            "step100000": "44b11c3c147fb633fffa9e9cb6a0a48c5801f0b8fd2bdd9e33ea14a16804a544"
+          },
+          "peak_gpu_bytes": 2234192896
+        }
+      }
+    },
+    {
+      "name": "R8-TRAIN-open",
+      "kind": "open-loop TRAIN fit diagnostic (no policy execution)",
+      "status": "complete",
+      "complete": true,
+      "rows": 1430,
+      "wall_s": 15.76,
+      "raw": {
+        "vm_dir": "/home/ugrp/ugrp-sim/runs/act18/finish-r3/R8-TRAIN-open",
+        "summary_sha256": "4534f50211728f8b8e747aa8f68a978a375b52f5e49a6b84311d0abde7f40517"
+      },
+      "key": {
+        "wheel_raw_median": 0.0014603734326967543,
+        "wheel_raw_p90": 0.007535878512068723,
+        "servo_PWM_raw_p90": 16.286428474092464,
+        "teacher_moving": 2482,
+        "projected_stop_while_teacher_moves": 123,
+        "raw_opposite_sign_while_teacher_moves": 44
+      }
+    },
+    {
+      "name": "R100-TRAIN-open",
+      "kind": "open-loop TRAIN fit diagnostic (no policy execution)",
+      "status": "complete",
+      "complete": true,
+      "rows": 1430,
+      "wall_s": 14.72,
+      "raw": {
+        "vm_dir": "/home/ugrp/ugrp-sim/runs/act18/finish-r3/R100-TRAIN-open",
+        "summary_sha256": "7083e7ababdc9bc8148936b624ea7108cacb966830c548fc3ca6ee3f4cfea357"
+      },
+      "key": {
+        "wheel_raw_median": 0.0022513620781590103,
+        "wheel_raw_p90": 0.020174357421399003,
+        "servo_PWM_raw_p90": 29.560609789270142,
+        "teacher_moving": 2482,
+        "projected_stop_while_teacher_moves": 124,
+        "raw_opposite_sign_while_teacher_moves": 49
+      }
+    },
+    {
+      "name": "R8-train (TRAIN4 gate)",
+      "kind": "deterministic4-world native evaluation",
+      "status": "NOT_READY",
+      "complete": true,
+      "n": 0,
+      "N": 4,
+      "wall_s": 840.5,
+      "raw": {
+        "vm_dir": "/home/ugrp/ugrp-sim/runs/act18/finish-r3/R8-train",
+        "summary_sha256": "f25299593965bf6f8a163b54d7d94fa98281daa510fcaf3e2d2392038df2896f",
+        "stage_recount": {
+          "path": "/home/ugrp/ugrp-sim/runs/act18/finish-r3/R8-train/raw-recount.json",
+          "sha256": "a03d021b464214f7476076e00b3ade0eec1b0e0c5bbb4de41c22f83e44e6e95c"
+        },
+        "independent_recount": {
+          "path": "/home/ugrp/ugrp-sim/runs/act18/recount-r1/R8-train.json",
+          "sha256": "ed026f48e7d044a90a45a0f6168c43bcefde9a15a4ede03d1eff99dae6de0058"
+        }
+      },
+      "funnel": [
+        {
+          "gate": "requested",
+          "passed": 4,
+          "rejected": 0
+        },
+        {
+          "gate": "grasp_done",
+          "passed": 0,
+          "rejected": 4
+        },
+        {
+          "gate": "stable_lift",
+          "passed": 0,
+          "rejected": 0
+        },
+        {
+          "gate": "stable_release",
+          "passed": 0,
+          "rejected": 0
+        },
+        {
+          "gate": "task_success",
+          "passed": 0,
+          "rejected": 0
+        }
+      ],
+      "rows": [
+        {
+          "seed": 88600,
+          "kind": "cyan",
+          "cap_end": true,
+          "physical_lift": false,
+          "stable_release": false
+        },
+        {
+          "seed": 88601,
+          "kind": "red",
+          "cap_end": true,
+          "physical_lift": true,
+          "stable_release": false
+        },
+        {
+          "seed": 88602,
+          "kind": "green",
+          "cap_end": true,
+          "physical_lift": false,
+          "stable_release": false
+        },
+        {
+          "seed": 88603,
+          "kind": "yellow",
+          "cap_end": true,
+          "physical_lift": true,
+          "stable_release": false
+        }
+      ],
+      "montage": {
+        "path": "outputs/e2e18-admin/playback/act18-R8-TRAIN4/failure-montage-1hz.png",
+        "sha256": "a4466db727d50ef2f36a2fb4972c45d1a88093b574291d714f9c56fa80b05d9b",
+        "vm_path": "/home/ugrp/ugrp-sim/runs/act18/montages/R8-TRAIN4-1hz.png",
+        "window": "last10 SIM seconds, 10Hz ring sampled at 1Hz, 4 rows x 10 columns",
+        "mac_copy_tracked": false,
+        "note": "outputs/ is git-excluded; VM copy kept at vm_path with same sha256"
+      }
+    },
+    {
+      "name": "R100-train (TRAIN4 gate)",
+      "kind": "deterministic4-world native evaluation",
+      "status": "NOT_READY",
+      "complete": true,
+      "n": 0,
+      "N": 4,
+      "wall_s": 750.5,
+      "raw": {
+        "vm_dir": "/home/ugrp/ugrp-sim/runs/act18/finish-r3/R100-train",
+        "summary_sha256": "aca288d10c9c629f0fd37bee2ec8f4ec7a57fd29987b10c39c4cfd87cb77407d",
+        "stage_recount": {
+          "path": "/home/ugrp/ugrp-sim/runs/act18/finish-r3/R100-train/raw-recount.json",
+          "sha256": "7a64de7e570f83d6f04256e02d17b6688564000f9e7f54874024322677a4ae84"
+        },
+        "independent_recount": {
+          "path": "/home/ugrp/ugrp-sim/runs/act18/recount-r1/R100-train.json",
+          "sha256": "0aad9f3c7b5785787eb6a695ecb37c2b45408e7659542e0ed5793099273e943a"
+        }
+      },
+      "funnel": [
+        {
+          "gate": "requested",
+          "passed": 4,
+          "rejected": 0
+        },
+        {
+          "gate": "grasp_done",
+          "passed": 0,
+          "rejected": 4
+        },
+        {
+          "gate": "stable_lift",
+          "passed": 0,
+          "rejected": 0
+        },
+        {
+          "gate": "stable_release",
+          "passed": 0,
+          "rejected": 0
+        },
+        {
+          "gate": "task_success",
+          "passed": 0,
+          "rejected": 0
+        }
+      ],
+      "rows": [
+        {
+          "seed": 88600,
+          "kind": "cyan",
+          "cap_end": true,
+          "physical_lift": false,
+          "stable_release": false
+        },
+        {
+          "seed": 88601,
+          "kind": "red",
+          "cap_end": true,
+          "physical_lift": false,
+          "stable_release": false
+        },
+        {
+          "seed": 88602,
+          "kind": "green",
+          "cap_end": true,
+          "physical_lift": false,
+          "stable_release": false
+        },
+        {
+          "seed": 88603,
+          "kind": "yellow",
+          "cap_end": true,
+          "physical_lift": false,
+          "stable_release": false
+        }
+      ],
+      "montage": {
+        "path": "outputs/e2e18-admin/playback/act18-R100-TRAIN4/failure-montage-1hz.png",
+        "sha256": "6a6013eceea0c16fe87fee615b1bc4840219a4fc15a51a88ed520c3c7e88213c",
+        "vm_path": "/home/ugrp/ugrp-sim/runs/act18/montages/R100-TRAIN4-1hz.png",
+        "window": "last10 SIM seconds, 10Hz ring sampled at 1Hz, 4 rows x 10 columns",
+        "mac_copy_tracked": false,
+        "note": "outputs/ is git-excluded; VM copy kept at vm_path with same sha256"
+      }
+    },
+    {
+      "name": "finish-r3 (post-training owner)",
+      "kind": "finite TRAIN fit -> gated VAL -> conditional FINAL -> package",
+      "status": "COMPARISON_COMPLETE",
+      "complete": true,
+      "started_utc": "2026-10-17T10:09:20.681185+00:00",
+      "raw": {
+        "vm_dir": "/home/ugrp/ugrp-sim/runs/act18/finish-r3",
+        "summary_sha256": "54feb0b97b1a639873fabd6e91a43a26e7a8118a614c169081cc53869a742a6a"
+      },
+      "gates": {
+        "train4": "4/4 required before VAL8",
+        "R8": {
+          "TRAIN": "0/4",
+          "VAL": "NOT_SUBMITTED_TRAIN_FIT_FAILED"
+        },
+        "R100": {
+          "TRAIN": "0/4",
+          "VAL": "NOT_SUBMITTED_TRAIN_FIT_FAILED"
+        },
+        "FINAL40_submitted": false,
+        "winner": null
+      },
+      "packages": {
+        "R8": {
+          "pending_entry_sha256": "17b1649c0e03152cf866ca22de3696e65a1d5d391cd9ea20ddb3ccfa23b8c261"
+        },
+        "R100": {
+          "pending_entry_sha256": "b3f4aec754a2652f6a76d8a5c94239dd9c61ea7f5605a0497bb77d5756c5ea92"
+        }
+      }
+    },
+    {
+      "name": "finish-r1",
+      "kind": "superseded post-training owner",
+      "status": "never_completed",
+      "note": "학습 완료 전 정지·재시작으로 대체됨. 실패 원인 분석 대상 아님.",
+      "raw": {
+        "vm_dir": "/home/ugrp/ugrp-sim/runs/act18/finish-r1",
+        "summary_sha256": "8d95cb6a852345b5320df9008c2f6fc7ccc4d31c8a7e869c5f7b8ce342f50f84"
+      }
+    },
+    {
+      "name": "finish-r2",
+      "kind": "post-training owner HOST_ERROR",
+      "status": "HOST_ERROR",
+      "error": "RuntimeError('training owner disappeared before complete receipt')",
+      "raw": {
+        "vm_dir": "/home/ugrp/ugrp-sim/runs/act18/finish-r2",
+        "summary_sha256": "bd58ebb5fddf89c47240e05bdb6808f6a70804d19b13714c727981b681955afa"
+      }
+    },
+    {
+      "name": "baseline-F-TRAIN4-r1",
+      "kind": "pre-training baseline F10k TRAIN4 diagnostic",
+      "status": "HOST_ERROR(recount defect)",
+      "complete": false,
+      "wall_s": 1646.5,
+      "n_fixed": 0,
+      "N": 4,
+      "note": "원 recount가 eval-owner에 없는 input_audit 키를 요구해 HOST_ERROR. 8d21fbe1a 수정 뒤 raw-fixed recount 0/4.",
+      "raw": {
+        "vm_dir": "/home/ugrp/ugrp-sim/runs/act18/baseline-F-TRAIN4-r1",
+        "summary_sha256": "1d2be421eabb4a44077f8112414fe050d52da2376ba98939a8e5c97be25b1686",
+        "fixed_recount": {
+          "path": "/home/ugrp/ugrp-sim/runs/act18/baseline-F-TRAIN4-r1/raw-recount-fixed-8d21fbe1a.json",
+          "sha256": "95a95ac2425648465ab2d16f8ad133c8f4626e8e9c17354297b3a6720a5c0a1e"
+        }
+      }
+    },
+    {
+      "name": "bf16-probe-r1",
+      "kind": "gcp5 fp32/bf16 paired 2000-step probe (not pooled)",
+      "status": "complete",
+      "host": "gcp5",
+      "records": [
+        "experiments/2026-10-17-act18/bf16-probe.json",
+        "experiments/2026-10-17-act18/bf16-probe-decision.json",
+        "experiments/2026-10-17-act18/bf16-probe-progress-fp32.jsonl",
+        "experiments/2026-10-17-act18/bf16-probe-progress-bf16.jsonl"
+      ],
+      "conclusion": "수용(단계 중앙값 0.1675->0.1523s, 1.10배, VAL8 손실 0.7358->0.6448). 이 100k fp32 학습과 합산하지 않음."
+    },
+    {
+      "name": "faildiag-r3",
+      "kind": "TRAIN4 stop-onset/posture diagnosis (no physics)",
+      "status": "complete",
+      "records": {
+        "json": "experiments/2026-10-17-act18/results/faildiag-r3.json",
+        "json_sha256": "4dff82efa5e3821f83d5fd65cc04265ebe37b29396b749f787734db6c1328610",
+        "vm_dir": "/home/ugrp/ugrp-sim/runs/act18/faildiag-r3"
+      },
+      "montages": [
+        {
+          "candidate": "R8",
+          "kind": "stop-window-10hz",
+          "path": "outputs/e2e18-admin/playback/act18-faildiag/R8-stop-window-10hz.png",
+          "sha256": "a8974c98b537d494a9ad6d5e59a9d66b20a5f060e452d03ddd7eaf3115753dee",
+          "vm_path": "/home/ugrp/ugrp-sim/runs/act18/faildiag-r3/R8-stop-window-10hz.png"
+        },
+        {
+          "candidate": "R8",
+          "kind": "align1hz",
+          "path": "outputs/e2e18-admin/playback/act18-faildiag/R8-align1hz.png",
+          "sha256": "3371564f7fad06f6b4af99c685c9f281dc834a89bc82916fc8f9d87ad67a2ed8",
+          "vm_path": "/home/ugrp/ugrp-sim/runs/act18/faildiag-r3/R8-align1hz.png"
+        },
+        {
+          "candidate": "R100",
+          "kind": "stop-window-10hz",
+          "path": "outputs/e2e18-admin/playback/act18-faildiag/R100-stop-window-10hz.png",
+          "sha256": "e8523233380f28786e4e6b4df397469d1ce4d7ede09ed6748f22d85ddb3a70a9",
+          "vm_path": "/home/ugrp/ugrp-sim/runs/act18/faildiag-r3/R100-stop-window-10hz.png"
+        },
+        {
+          "candidate": "R100",
+          "kind": "align1hz",
+          "path": "outputs/e2e18-admin/playback/act18-faildiag/R100-align1hz.png",
+          "sha256": "a15623bcaa9727ede23a56d2a541b5aca43f8b3b9c944167a1a8ead7cea42176",
+          "vm_path": "/home/ugrp/ugrp-sim/runs/act18/faildiag-r3/R100-align1hz.png"
+        }
+      ],
+      "findings": {
+        "R8": "base 마지막 이동 9.9–13.8s(교사 align 시작 직후), 그리퍼 close 10.5–14.4s, 물리 이동 0.023–0.125m, 손가락힘 3.7–5.2N, 물리 lift 2/4, done 0/4",
+        "R100": "base 마지막 이동 21.6–24.7s(88603은 바퀴 명령 지속·물리 이동 0), 88601 물리 이동·손가락힘 0, lift 0/4",
+        "common": "align 1Hz 몽타주에서 목표 상자가 t≈10–15s 화면 하단으로 이탈, 이후 정적; cap_end 8/8"
+      }
+    },
+    {
+      "name": "tune-r1-eval-rejection",
+      "kind": "TUNE probe evaluation guard rejection (fixed)",
+      "status": "HOST_ERROR",
+      "error": "ValueError('complete registered100k reference model required')",
+      "wall_s": 2.0,
+      "note": "tune-r1 학습은 정상 완료했으나 evaluator guard가 100k 참조 모델만 허용해 세계 실행 전 거부. c7e652e80에서 등록된 short probe 허용(init sha·chunk·protocol·training_complete·packaging_eligible=false 검증) + 패키징 거부로 수정.",
+      "raw": {
+        "training_summary": {
+          "path": "/home/ugrp/ugrp-sim/runs/act18/tune-r1/act18-tune/summary.json",
+          "sha256": "874df2b98f8ac75eaabd067c1de6616a9958ffafb2b03f9542c0d462ba68c2b0"
+        },
+        "stage_summary": {
+          "path": "/home/ugrp/ugrp-sim/runs/act18/tune-r1/tune-TRAIN4/summary.json",
+          "sha256": "6e77466c97d931eebaac53f22584b4eef9611ccba166b6da81c5207aa09d5dd1"
+        }
+      }
+    },
+    {
+      "name": "tune-r2 (act18-tune)",
+      "kind": "post-close weighted 2000-step bf16 fine-tune probe (not packaged, not pooled)",
+      "status": "NOT_READY",
+      "complete": true,
+      "steps": 2000,
+      "wall_s": 269.8,
+      "readback_verified": true,
+      "checkpoint": {
+        "path": "/home/ugrp/ugrp-sim/runs/act18/tune-r2/act18-tune/step-2000",
+        "model_sha256": "89c53c3c4b31270097d59b5d474c57bb93547cac267f79f1a16d4ea098eb0369",
+        "adapter_sha256": "dda7ea2ff92d0d3f22d4ab7bc12c5032e355bb8559be9397fb623c30f5823827"
+      },
+      "setup": {
+        "init_checkpoint": "training-r1/R8/step-100000",
+        "init_model_sha256": "e1ec659216e289e1e5e9bb48ac597763ad8d1a088c3c85eb3205336307bb8d5a",
+        "precision": "bf16_autocast_v1",
+        "sampling": "weighted_post_close_v1",
+        "post_close_weight": 4.0,
+        "pre_close_weight": 2.0,
+        "post_close_phases": [
+          "grasp:lift",
+          "grasp:lift_settle",
+          "grasp:lookback_pose",
+          "grasp:lookback",
+          "grasp:lookback_settle",
+          "grasp:verify_lift",
+          "grasp:hold"
+        ],
+        "pre_close_phases": [
+          "grasp:hover",
+          "grasp:descent",
+          "grasp:close"
+        ],
+        "note": "episode 균등 유지+행 가중; completion prior는 가중 측도로 재계산. 마지막 short step만 저장, packaging_eligible=false"
+      },
+      "raw": {
+        "training_summary": {
+          "path": "/home/ugrp/ugrp-sim/runs/act18/tune-r2/act18-tune/summary.json",
+          "sha256": "fc6d9135e87bef92cd00af6f9a652d83ef5c5fa69502a1e0132859e254ef3b56"
+        },
+        "open_loop": {
+          "path": "/home/ugrp/ugrp-sim/runs/act18/tune-r2/tune-TRAIN-open/summary.json",
+          "sha256": "85a1f31ad10e47e25a73f74ceda7ec6c0f55e9bd57de23640d41d45269d9b8ac"
+        },
+        "train4_summary": {
+          "path": "/home/ugrp/ugrp-sim/runs/act18/tune-r2/tune-TRAIN4/summary.json",
+          "sha256": "512e00713357b7756373241c1f55417956ff8836993f9aba20f4dd294c8a4099"
+        },
+        "train4_stage_recount": {
+          "path": "/home/ugrp/ugrp-sim/runs/act18/tune-r2/tune-TRAIN4/raw-recount.json",
+          "sha256": "d5cb8181bdb2d6e80cbe8f1bed583a10afa4f137cfe675a6a8fc3a8f9989ea51"
+        },
+        "independent_recount": {
+          "path": "/home/ugrp/ugrp-sim/runs/act18/recount-r1/act18-tune-TRAIN4.json",
+          "sha256": "59f3b6ae18ed389b1d41e7580c03f26780484ee26c623174d8394c838e80d0a8"
+        }
+      },
+      "results": {
+        "train4": {
+          "n": 0,
+          "N": 4,
+          "wall_s": 856.6,
+          "rows": [
+            {
+              "seed": 88600,
+              "kind": "cyan",
+              "cap_end": true,
+              "physical_lift": true,
+              "grasp_done": false
+            },
+            {
+              "seed": 88601,
+              "kind": "red",
+              "cap_end": true,
+              "physical_lift": true,
+              "grasp_done": false
+            },
+            {
+              "seed": 88602,
+              "kind": "green",
+              "cap_end": true,
+              "physical_lift": true,
+              "grasp_done": false
+            },
+            {
+              "seed": 88603,
+              "kind": "yellow",
+              "cap_end": true,
+              "physical_lift": true,
+              "grasp_done": false
+            }
+          ],
+          "funnel": [
+            {
+              "gate": "requested",
+              "passed": 4
+            },
+            {
+              "gate": "grasp_done",
+              "passed": 0
+            },
+            {
+              "gate": "stable_lift",
+              "passed": 0
+            },
+            {
+              "gate": "stable_release",
+              "passed": 0
+            },
+            {
+              "gate": "task_success",
+              "passed": 0
+            }
+          ]
+        },
+        "val8": "NOT_SUBMITTED_TRAIN_FIT_FAILED",
+        "open_loop": {
+          "rows": 1430,
+          "wall_s": 15.7,
+          "wheel_raw_median": 0.0010943577041958585,
+          "wheel_raw_p90": 0.00749645846112242,
+          "servo_PWM_raw_p90": 18.84,
+          "teacher_moving": 2482,
+          "projected_stop_while_teacher_moves": 111,
+          "raw_opposite_sign_while_teacher_moves": 61
+        },
+        "comparison_to_R8": {
+          "physical_lift": "tune 4/4 vs R8 2/4",
+          "grasp_done": "tune 0/4 vs R8 0/4",
+          "base_last_move_s": "tune 10.1–15.1 vs R8 9.9–13.8",
+          "path_length_m": "tune 0.114–0.121 vs R8 0.023–0.125",
+          "finger_force_max_N": "tune 5.21–5.23 vs R8 3.72–5.19"
+        }
+      },
+      "conclusion": "물리 lift는 4/4로 개선됐지만 done/grasp_done 신호는 여전히 0/4이고 base가 조기 정지해 TRAIN4 0/4. 프로브는 패키징·배포·합산하지 않는다."
+    },
+    {
+      "name": "guard-fix",
+      "kind": "code fix",
+      "status": "complete",
+      "commit": "c7e652e808dc11170baea281bb88f758d36ca909",
+      "change": "evaluator guard가 등록된 short probe(init sha·chunk·protocol sha·training_complete·step=steps_override·packaging_eligible=false)만 허용; package_act18_model.py는 packaging_eligible=false를 명시 거부",
+      "tests": "tests/test_act18_tune.py 9 passed (probe registration allow/deny 포함)",
+      "note": "같은 HOST_ERROR 재발 방지용. 자세한 구현은 act18_policy.registered_tune_probe()"
+    }
+  ],
+  "release": {
+    "tag": "models-20261017-act18-v7-r1",
+    "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/tag/models-20261017-act18-v7-r1",
+    "prerelease": true,
+    "draft": false,
+    "assets": [
+      {
+        "name": "act18-v7-r8-step100000-20261017.zip",
+        "bytes": 191989583,
+        "sha256": "6ac5a49ecb871120cbbd0ac240d499f8a4eddddcffb3af84b48a322b9308a2c7"
+      },
+      {
+        "name": "act18-v7-r100-step100000-20261017.zip",
+        "bytes": 192343472,
+        "sha256": "79be292ed14a8612e7d214bef56df1d19719d80da634a0f1d935323d4bda6719"
+      },
+      {
+        "name": "SHA256SUMS",
+        "bytes": 206
+      },
+      {
+        "name": "act18-model-artifacts.json",
+        "bytes": 92153
+      },
+      {
+        "name": "public-verification.json",
+        "bytes": 3776
+      }
+    ],
+    "verification": {
+      "record": "experiments/2026-10-17-act18/results/release-r1/public-verification.json",
+      "sha256": "fc74c8967ea43f9341b13a8c6bff36e0ea934d6822b60d24020f94be35ed9f7a",
+      "checkout_source_sha": "e91d418097d3104c457211dc8c44b8b7d2534d80",
+      "registry_sha256": "b5e7b094b6c8e11a9f2ae73a1ceed8302d0627c296ea3697d1b04ab71f270253",
+      "R8": {
+        "verified_files": 24,
+        "verified_bytes": 207592611,
+        "loading": "ready=true, chunk=8, cpu"
+      },
+      "R100": {
+        "verified_files": 24,
+        "verified_bytes": 207969467,
+        "loading": "ready=true, chunk=100, cpu"
+      },
+      "metadata_redownload": "experiments/2026-10-17-act18/results/release-r1/github-assets-verified.json",
+      "scope": "익명 공개 재다운로드·전체 archive/file SHA·bundled CPU 로딩만; 물리 성공 아님"
+    },
+    "registry": "configs/model_artifacts.json (artifacts act18-v7-r8-step100000-20261017, act18-v7-r100-step100000-20261017; NOT_READY 라벨)"
+  },
+  "gates": {
+    "train4": {
+      "required": "4/4 before VAL8",
+      "R8": "0/4",
+      "R100": "0/4"
+    },
+    "validation8": {
+      "status": "NOT_SUBMITTED",
+      "reason": "TRAIN4 4/4 미달"
+    },
+    "final40": {
+      "status": "NOT_SUBMITTED",
+      "reason": "VAL8 8/8 미달"
+    },
+    "tune_train4": {
+      "required": "4/4 before VAL8",
+      "candidate": "act18-tune",
+      "result": "0/4",
+      "status": "NOT_READY"
+    }
+  },
+  "deviations": [
+    {
+      "item": "R100 gcp5 이동",
+      "decision": "이동하지 않음",
+      "reason": "BF16_PROBE 결과 bf16이 1.10배 빨랐지만, R8이 gcp2에서 fp32로 학습 중이라 정밀도가 섞이고(합산 금지), act18_train.py가 옵티마이저/RNG 재개를 지원하지 않아 42,400 step(≈13,484s)을 폐기해야 하며, gcp5 예산 1,000KRW 정지 위험이 있었다. HANDOVER 지시대로 gcp2 matched fp32 pair 유지.",
+      "evidence": "bf16-probe-decision.json / bf16-probe.json"
+    },
+    {
+      "item": "training precision",
+      "decision": "fp32",
+      "reason": "이 학습은 09:25Z 시작으로 bf16 기본값 도입(c7900c0ac) 전 소스(52e486316)다. autocast/precision 코드가 없어 fp32로 끝까지 실행했고 bf16 결과와 합산하지 않는다."
+    },
+    {
+      "item": "model artifacts 라벨",
+      "decision": "전부 NOT_READY",
+      "reason": "두 후보 TRAIN4 0/4. 재현·비교용 보존이며 기본 제어기 아님."
+    }
+  ],
+  "unverified": [
+    "실제 물리 임무 성공: R8/R100 TRAIN4 0/4, act18-tune TRAIN4 0/4 (VAL8·FINAL40 전부 미실행, 일반화 성공률 없음)",
+    "100k bf16 학습: 미실행(2,000 step 짝 프로브 + 2,000 step tune 프로브만)",
+    "R100 gcp5 이전·재개: 미실행(deviation)",
+    "다른 호스트·정밀도·조건과 합산: 금지",
+    "raw 학습자료(시연)의 원격 백업: 별도(Release에는 포함하지 않음)",
+    "act18-tune 모델 패키징·Release: 하지 않음(프로브, packaging_eligible=false)"
+  ],
+  "cleanup": {
+    "schema": "ugrp.act18.cleanup.v1",
+    "utc": "2026-10-17T19:20:47Z",
+    "vm": {
+      "instance": "ugrp-act-l4-gcp2",
+      "project_id": "ugrp-sim-b-1014",
+      "account": "changmin5781@gmail.com",
+      "zone": "asia-northeast3-a",
+      "status": "TERMINATED",
+      "stopped_utc": "2026-10-17T19:20:47Z",
+      "confirmed_by": "gcloud compute instances describe --format=value(status)"
+    },
+    "before_stop": {
+      "act18_processes": "none",
+      "gpu_utilization_percent": 0,
+      "gpu_memory_MiB": 0,
+      "leases_before": [
+        "leases/act18.json (stale pid 11757, removed)"
+      ],
+      "leases_after": "no act18 lease",
+      "runs_act18_bytes": 2300000000,
+      "disk_free_bytes_approx": 16106127360,
+      "note": "disk and raw evidence preserved; VM stopped only"
+    },
+    "vm_scratch_removed": [
+      "/tmp/act18_faildiag.py",
+      "/tmp/act18_montage.py",
+      "/tmp/act18_failure_montage.py"
+    ],
+    "local": {
+      "worktree": "/Users/changmin/projects/ugrp-wt/act16w",
+      "removed_untracked_with_hashes": [
+        {
+          "path": "COORDINATOR_NOTE.md",
+          "bytes": 8744,
+          "sha256": "2018f5765e37eb6125e3a6874e9a261df45276b7b58575c237af23471d832f24",
+          "reason": "stale coordinator scratch note"
+        },
+        {
+          "path": "experiments/2026-10-16-act16w/resume2/capacity-refresh.jsonl",
+          "bytes": 295293,
+          "sha256": "8be40f623578cd851d10ba4f4c088178b10644b1da3f293be233e16d05b88b11",
+          "reason": "act16w thread residual progress capture; hash recorded then removed for clean worktree"
+        },
+        {
+          "path": "experiments/2026-10-16-act16w/resume2/progress.jsonl",
+          "bytes": 32367,
+          "sha256": "92ccb6448cf8961b45f2c4e125dc08e08eb372a6f44e53096bc5f0a49331e71e",
+          "reason": "same"
+        },
+        {
+          "path": "experiments/2026-10-16-act16w/resume2/record-progress-latest.json",
+          "bytes": 36150,
+          "sha256": "b04c6bc59c37d3fab2e7f4645c0305925751af9d6f6897fe71c80c4619f0703e",
+          "reason": "same"
+        },
+        {
+          "path": "experiments/2026-10-16-act16w/resume2/record-progress.jsonl",
+          "bytes": 5562499,
+          "sha256": "62a0039e8073fdd99d9f53ae5ed2cd3bdae24e28c97c93ee4c49ab278927a3e3",
+          "reason": "same"
+        }
+      ],
+      "scratch_removed": [
+        "/private/tmp/act18-dsh"
+      ],
+      "note": "Mac weights not written; no VM credentials copied"
+    }
+  },
+  "memory_input_design": "experiments/2026-10-17-act18/MEMORY_INPUT_DESIGN.md"
+}

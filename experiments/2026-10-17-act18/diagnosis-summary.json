@@ -1,0 +1,1071 @@
+{
+  "schema": "ugrp.act18.diagnosis.v1",
+  "source_sha": "1b79f6eec91b2de124949677adf030eb05c0c462",
+  "host": {
+    "project_id": "ugrp-sim-b-1014",
+    "instance": "ugrp-act-l4-gcp2",
+    "machine_type": "g2-standard-8",
+    "zone": "asia-northeast3-a"
+  },
+  "complete": true,
+  "status": "complete",
+  "physics_steps": 0,
+  "training_updates": 0,
+  "dataset_manifest_sha256": "44c1c46073aa08ea028324ffe924b67d862a2f01b56f4db11afad17000a9b198",
+  "reproduce": [
+    "scripts/act18_diagnose.py",
+    "--enabled",
+    "--dataset",
+    "/home/ugrp/ugrp-sim/runs/act17-v7/dataset-r1",
+    "--models-root",
+    "/home/ugrp/ugrp-sim/runs/act17-v7/training-r1",
+    "--out",
+    "/home/ugrp/ugrp-sim/runs/act18/diagnosis-r1/audit"
+  ],
+  "open_loop": {
+    "F": {
+      "checkpoint_sha256": "dc64dd5fee4c153f02babc89e562a7d139a9f5cbfefd7e601d6c2eb9717e21ae",
+      "parity": [
+        {
+          "seed": 88600,
+          "sample_id": "act17-v7-88600:0:r1",
+          "equal": {
+            "observation.images.own_history": true,
+            "observation.state": true
+          },
+          "image_shape": [
+            3,
+            480,
+            640
+          ]
+        },
+        {
+          "seed": 88601,
+          "sample_id": "act17-v7-88601:0:r1",
+          "equal": {
+            "observation.images.own_history": true,
+            "observation.state": true
+          },
+          "image_shape": [
+            3,
+            480,
+            640
+          ]
+        },
+        {
+          "seed": 88602,
+          "sample_id": "act17-v7-88602:0:r1",
+          "equal": {
+            "observation.images.own_history": true,
+            "observation.state": true
+          },
+          "image_shape": [
+            3,
+            480,
+            640
+          ]
+        },
+        {
+          "seed": 88603,
+          "sample_id": "act17-v7-88603:0:r1",
+          "equal": {
+            "observation.images.own_history": true,
+            "observation.state": true
+          },
+          "image_shape": [
+            3,
+            480,
+            640
+          ]
+        }
+      ],
+      "stages": {
+        "all": {
+          "rows": 5739,
+          "errors": {
+            "raw:wheel_full_scale": {
+              "n": 22956,
+              "median": 0.025958561881213787,
+              "p90": 0.3079948134714501
+            },
+            "raw:pulse_ms": {
+              "n": 22956,
+              "median": 3.104259159189813,
+              "p90": 24.33981039976883
+            },
+            "raw:servo_PWM_counts": {
+              "n": 28695,
+              "median": 19.835021008674623,
+              "p90": 65.63249482566776
+            },
+            "raw:gripper_PWM_counts": {
+              "n": 5739,
+              "median": 13.92619022199626,
+              "p90": 34.34954347513787
+            },
+            "projected:wheel_full_scale": {
+              "n": 22956,
+              "median": 0.02465687827225574,
+              "p90": 0.3499999940395355
+            },
+            "projected:pulse_ms": {
+              "n": 22956,
+              "median": 2.5739883522046023,
+              "p90": 40.00000208616257
+            },
+            "projected:servo_PWM_counts": {
+              "n": 28695,
+              "median": 17.99997854232793,
+              "p90": 56.00000715255737
+            },
+            "projected:gripper_PWM_counts": {
+              "n": 5739,
+              "median": 14.000000000000012,
+              "p90": 34.19999999999984
+            }
+          },
+          "wheel_confusion": {
+            "N": 22956,
+            "teacher_moving": 16242,
+            "teacher_stopped": 6714,
+            "projected_stop_while_teacher_moves": 2919,
+            "raw_opposite_sign_while_teacher_moves": 1322,
+            "projected_opposite_sign_while_teacher_moves": 938,
+            "projected_moves_while_teacher_stops": 90
+          }
+        },
+        "approach": {
+          "rows": 326,
+          "errors": {
+            "raw:wheel_full_scale": {
+              "n": 1304,
+              "median": 0.02089582354389119,
+              "p90": 0.094867708460333
+            },
+            "raw:pulse_ms": {
+              "n": 1304,
+              "median": 5.249392152561665,
+              "p90": 24.88862545856809
+            },
+            "raw:servo_PWM_counts": {
+              "n": 1630,
+              "median": 22.159071553470103,
+              "p90": 47.19394624886756
+            },
+            "raw:gripper_PWM_counts": {
+              "n": 326,
+              "median": 19.76677387212972,
+              "p90": 31.290594507386636
+            },
+            "projected:wheel_full_scale": {
+              "n": 1304,
+              "median": 0.020013166364672486,
+              "p90": 0.3495773776124836
+            },
+            "projected:pulse_ms": {
+              "n": 1304,
+              "median": 5.042156023990672,
+              "p90": 25.201985425678252
+            },
+            "projected:servo_PWM_counts": {
+              "n": 1630,
+              "median": 22.000002011656754,
+              "p90": 46.999992847442634
+            },
+            "projected:gripper_PWM_counts": {
+              "n": 326,
+              "median": 20.000000000000018,
+              "p90": 31.00000000000003
+            }
+          },
+          "wheel_confusion": {
+            "N": 1304,
+            "teacher_moving": 1186,
+            "teacher_stopped": 118,
+            "projected_stop_while_teacher_moves": 61,
+            "raw_opposite_sign_while_teacher_moves": 66,
+            "projected_opposite_sign_while_teacher_moves": 62,
+            "projected_moves_while_teacher_stops": 30
+          }
+        },
+        "alignment": {
+          "rows": 4412,
+          "errors": {
+            "raw:wheel_full_scale": {
+              "n": 17648,
+              "median": 0.029010701006230877,
+              "p90": 0.321043100443072
+            },
+            "raw:pulse_ms": {
+              "n": 17648,
+              "median": 3.704700059351798,
+              "p90": 26.25901623323137
+            },
+            "raw:servo_PWM_counts": {
+              "n": 22060,
+              "median": 20.225238899560765,
+              "p90": 64.7279046239496
+            },
+            "raw:gripper_PWM_counts": {
+              "n": 4412,
+              "median": 12.207758622505338,
+              "p90": 20.13298930652835
+            },
+            "projected:wheel_full_scale": {
+              "n": 17648,
+              "median": 0.02777546638847181,
+              "p90": 0.3499999940395355
+            },
+            "projected:pulse_ms": {
+              "n": 17648,
+              "median": 3.315375269639806,
+              "p90": 40.00000208616257
+            },
+            "projected:servo_PWM_counts": {
+              "n": 22060,
+              "median": 17.000021457672098,
+              "p90": 55.00000791549683
+            },
+            "projected:gripper_PWM_counts": {
+              "n": 4412,
+              "median": 12.00000000000001,
+              "p90": 20.000000000000018
+            }
+          },
+          "wheel_confusion": {
+            "N": 17648,
+            "teacher_moving": 14096,
+            "teacher_stopped": 3552,
+            "projected_stop_while_teacher_moves": 2650,
+            "raw_opposite_sign_while_teacher_moves": 1252,
+            "projected_opposite_sign_while_teacher_moves": 876,
+            "projected_moves_while_teacher_stops": 0
+          }
+        },
+        "grasp": {
+          "rows": 650,
+          "errors": {
+            "raw:wheel_full_scale": {
+              "n": 2600,
+              "median": 0.003855480201268864,
+              "p90": 0.038793706442649276
+            },
+            "raw:pulse_ms": {
+              "n": 2600,
+              "median": 1.5401295572659643,
+              "p90": 2.9785674474790858
+            },
+            "raw:servo_PWM_counts": {
+              "n": 3250,
+              "median": 15.367571828277859,
+              "p90": 67.23942427667426
+            },
+            "raw:gripper_PWM_counts": {
+              "n": 650,
+              "median": 37.01387471359188,
+              "p90": 74.78149016105844
+            },
+            "projected:wheel_full_scale": {
+              "n": 2600,
+              "median": 0.0,
+              "p90": 0.03687331851575638
+            },
+            "projected:pulse_ms": {
+              "n": 2600,
+              "median": 0.0,
+              "p90": 2.421456255555707
+            },
+            "projected:servo_PWM_counts": {
+              "n": 3250,
+              "median": 14.000028610229531,
+              "p90": 55.000006079673796
+            },
+            "projected:gripper_PWM_counts": {
+              "n": 650,
+              "median": 37.0,
+              "p90": 74.99999999999996
+            }
+          },
+          "wheel_confusion": {
+            "N": 2600,
+            "teacher_moving": 320,
+            "teacher_stopped": 2280,
+            "projected_stop_while_teacher_moves": 80,
+            "raw_opposite_sign_while_teacher_moves": 4,
+            "projected_opposite_sign_while_teacher_moves": 0,
+            "projected_moves_while_teacher_stops": 0
+          }
+        },
+        "release": {
+          "rows": 351,
+          "errors": {
+            "raw:wheel_full_scale": {
+              "n": 1404,
+              "median": 0.012842818270445002,
+              "p90": 0.05300124855593068
+            },
+            "raw:pulse_ms": {
+              "n": 1404,
+              "median": 2.2660499047591176,
+              "p90": 5.709287944524852
+            },
+            "raw:servo_PWM_counts": {
+              "n": 1755,
+              "median": 19.90450624924045,
+              "p90": 99.36460567983298
+            },
+            "raw:gripper_PWM_counts": {
+              "n": 351,
+              "median": 37.41132926077368,
+              "p90": 90.19038619766873
+            },
+            "projected:wheel_full_scale": {
+              "n": 1404,
+              "median": 0.0,
+              "p90": 0.3499999940395355
+            },
+            "projected:pulse_ms": {
+              "n": 1404,
+              "median": 0.0,
+              "p90": 42.85714477300644
+            },
+            "projected:servo_PWM_counts": {
+              "n": 1755,
+              "median": 18.000015258789027,
+              "p90": 95.99999961853025
+            },
+            "projected:gripper_PWM_counts": {
+              "n": 351,
+              "median": 37.0,
+              "p90": 89.99999999999997
+            }
+          },
+          "wheel_confusion": {
+            "N": 1404,
+            "teacher_moving": 640,
+            "teacher_stopped": 764,
+            "projected_stop_while_teacher_moves": 128,
+            "raw_opposite_sign_while_teacher_moves": 0,
+            "projected_opposite_sign_while_teacher_moves": 0,
+            "projected_moves_while_teacher_stops": 60
+          }
+        }
+      }
+    },
+    "S": {
+      "checkpoint_sha256": "020989d6ca11380167e7b2eea7dc214bd3f7c4454dcaa56f32a3280d54cfaf59",
+      "parity": [
+        {
+          "seed": 88600,
+          "sample_id": "act17-v7-88600:0:r1",
+          "equal": {
+            "observation.images.own_history": true,
+            "observation.state": true
+          },
+          "image_shape": [
+            3,
+            480,
+            640
+          ]
+        },
+        {
+          "seed": 88601,
+          "sample_id": "act17-v7-88601:0:r1",
+          "equal": {
+            "observation.images.own_history": true,
+            "observation.state": true
+          },
+          "image_shape": [
+            3,
+            480,
+            640
+          ]
+        },
+        {
+          "seed": 88602,
+          "sample_id": "act17-v7-88602:0:r1",
+          "equal": {
+            "observation.images.own_history": true,
+            "observation.state": true
+          },
+          "image_shape": [
+            3,
+            480,
+            640
+          ]
+        },
+        {
+          "seed": 88603,
+          "sample_id": "act17-v7-88603:0:r1",
+          "equal": {
+            "observation.images.own_history": true,
+            "observation.state": true
+          },
+          "image_shape": [
+            3,
+            480,
+            640
+          ]
+        }
+      ],
+      "stages": {
+        "all": {
+          "rows": 5739,
+          "errors": {
+            "raw:wheel_full_scale": {
+              "n": 22956,
+              "median": 0.019415143965014033,
+              "p90": 0.26692289186726137
+            },
+            "raw:pulse_ms": {
+              "n": 22956,
+              "median": 2.4898887996801236,
+              "p90": 9.765309744152958
+            },
+            "raw:servo_PWM_counts": {
+              "n": 28695,
+              "median": 18.196276580113413,
+              "p90": 52.56827388800498
+            },
+            "raw:gripper_PWM_counts": {
+              "n": 5739,
+              "median": 10.677841963817158,
+              "p90": 30.492168675312556
+            },
+            "projected:wheel_full_scale": {
+              "n": 22956,
+              "median": 0.017085929069597022,
+              "p90": 0.3499999940395355
+            },
+            "projected:pulse_ms": {
+              "n": 22956,
+              "median": 1.405371271312622,
+              "p90": 12.088611506107709
+            },
+            "projected:servo_PWM_counts": {
+              "n": 28695,
+              "median": 16.999992847442634,
+              "p90": 50.599993991854
+            },
+            "projected:gripper_PWM_counts": {
+              "n": 5739,
+              "median": 11.00000000000001,
+              "p90": 30.19999999999984
+            }
+          },
+          "wheel_confusion": {
+            "N": 22956,
+            "teacher_moving": 16242,
+            "teacher_stopped": 6714,
+            "projected_stop_while_teacher_moves": 1615,
+            "raw_opposite_sign_while_teacher_moves": 1516,
+            "projected_opposite_sign_while_teacher_moves": 885,
+            "projected_moves_while_teacher_stops": 101
+          }
+        },
+        "approach": {
+          "rows": 326,
+          "errors": {
+            "raw:wheel_full_scale": {
+              "n": 1304,
+              "median": 0.020449993002181144,
+              "p90": 0.07714512520138138
+            },
+            "raw:pulse_ms": {
+              "n": 1304,
+              "median": 5.100924316045036,
+              "p90": 21.08085267825693
+            },
+            "raw:servo_PWM_counts": {
+              "n": 1630,
+              "median": 18.70201881423894,
+              "p90": 46.86111761532268
+            },
+            "raw:gripper_PWM_counts": {
+              "n": 326,
+              "median": 13.820539802299358,
+              "p90": 24.36247120384949
+            },
+            "projected:wheel_full_scale": {
+              "n": 1304,
+              "median": 0.020178971179107053,
+              "p90": 0.0500000059604645
+            },
+            "projected:pulse_ms": {
+              "n": 1304,
+              "median": 4.882985947199351,
+              "p90": 21.871902267294214
+            },
+            "projected:servo_PWM_counts": {
+              "n": 1630,
+              "median": 18.999992847442638,
+              "p90": 46.99999865889549
+            },
+            "projected:gripper_PWM_counts": {
+              "n": 326,
+              "median": 14.000000000000012,
+              "p90": 24.00000000000002
+            }
+          },
+          "wheel_confusion": {
+            "N": 1304,
+            "teacher_moving": 1186,
+            "teacher_stopped": 118,
+            "projected_stop_while_teacher_moves": 67,
+            "raw_opposite_sign_while_teacher_moves": 58,
+            "projected_opposite_sign_while_teacher_moves": 46,
+            "projected_moves_while_teacher_stops": 16
+          }
+        },
+        "alignment": {
+          "rows": 4412,
+          "errors": {
+            "raw:wheel_full_scale": {
+              "n": 17648,
+              "median": 0.021671811449217593,
+              "p90": 0.33069878522357127
+            },
+            "raw:pulse_ms": {
+              "n": 17648,
+              "median": 2.8096257410851457,
+              "p90": 9.980806968329114
+            },
+            "raw:servo_PWM_counts": {
+              "n": 22060,
+              "median": 17.244463859658833,
+              "p90": 50.9312461969079
+            },
+            "raw:gripper_PWM_counts": {
+              "n": 4412,
+              "median": 9.459327666635264,
+              "p90": 15.631921339409738
+            },
+            "projected:wheel_full_scale": {
+              "n": 17648,
+              "median": 0.019797622829841294,
+              "p90": 0.3499999940395355
+            },
+            "projected:pulse_ms": {
+              "n": 17648,
+              "median": 1.8296178936626482,
+              "p90": 13.41652466405809
+            },
+            "projected:servo_PWM_counts": {
+              "n": 22060,
+              "median": 15.999992847442634,
+              "p90": 49.000001800060275
+            },
+            "projected:gripper_PWM_counts": {
+              "n": 4412,
+              "median": 9.000000000000007,
+              "p90": 16.000000000000014
+            }
+          },
+          "wheel_confusion": {
+            "N": 17648,
+            "teacher_moving": 14096,
+            "teacher_stopped": 3552,
+            "projected_stop_while_teacher_moves": 1468,
+            "raw_opposite_sign_while_teacher_moves": 1458,
+            "projected_opposite_sign_while_teacher_moves": 839,
+            "projected_moves_while_teacher_stops": 0
+          }
+        },
+        "grasp": {
+          "rows": 650,
+          "errors": {
+            "raw:wheel_full_scale": {
+              "n": 2600,
+              "median": 0.0132723821241029,
+              "p90": 0.028567885072969406
+            },
+            "raw:pulse_ms": {
+              "n": 2600,
+              "median": 1.1734826937493863,
+              "p90": 2.399056867593264
+            },
+            "raw:servo_PWM_counts": {
+              "n": 3250,
+              "median": 21.839518939334,
+              "p90": 53.31522002188824
+            },
+            "raw:gripper_PWM_counts": {
+              "n": 650,
+              "median": 31.861073967490995,
+              "p90": 45.242751108668074
+            },
+            "projected:wheel_full_scale": {
+              "n": 2600,
+              "median": 0.0,
+              "p90": 0.02843314167886056
+            },
+            "projected:pulse_ms": {
+              "n": 2600,
+              "median": 0.0,
+              "p90": 0.6570432677241227
+            },
+            "projected:servo_PWM_counts": {
+              "n": 3250,
+              "median": 21.0,
+              "p90": 49.99997615814211
+            },
+            "projected:gripper_PWM_counts": {
+              "n": 650,
+              "median": 32.0,
+              "p90": 45.0
+            }
+          },
+          "wheel_confusion": {
+            "N": 2600,
+            "teacher_moving": 320,
+            "teacher_stopped": 2280,
+            "projected_stop_while_teacher_moves": 16,
+            "raw_opposite_sign_while_teacher_moves": 0,
+            "projected_opposite_sign_while_teacher_moves": 0,
+            "projected_moves_while_teacher_stops": 16
+          }
+        },
+        "release": {
+          "rows": 351,
+          "errors": {
+            "raw:wheel_full_scale": {
+              "n": 1404,
+              "median": 0.014515153469138033,
+              "p90": 0.05348433385068004
+            },
+            "raw:pulse_ms": {
+              "n": 1404,
+              "median": 1.4189316250785664,
+              "p90": 8.45645098927858
+            },
+            "raw:servo_PWM_counts": {
+              "n": 1755,
+              "median": 28.870624895223575,
+              "p90": 79.90230022735699
+            },
+            "raw:gripper_PWM_counts": {
+              "n": 351,
+              "median": 33.28576261618799,
+              "p90": 59.09335141729627
+            },
+            "projected:wheel_full_scale": {
+              "n": 1404,
+              "median": 0.004402486113080167,
+              "p90": 0.039999994039535525
+            },
+            "projected:pulse_ms": {
+              "n": 1404,
+              "median": 0.01765135052482769,
+              "p90": 11.99660746689546
+            },
+            "projected:servo_PWM_counts": {
+              "n": 1755,
+              "median": 27.000007152557348,
+              "p90": 66.59999914169325
+            },
+            "projected:gripper_PWM_counts": {
+              "n": 351,
+              "median": 33.0,
+              "p90": 59.0
+            }
+          },
+          "wheel_confusion": {
+            "N": 1404,
+            "teacher_moving": 640,
+            "teacher_stopped": 764,
+            "projected_stop_while_teacher_moves": 64,
+            "raw_opposite_sign_while_teacher_moves": 0,
+            "projected_opposite_sign_while_teacher_moves": 0,
+            "projected_moves_while_teacher_stops": 69
+          }
+        }
+      }
+    }
+  },
+  "TRAIN_selection": {
+    "seeds": [
+      88600,
+      88601,
+      88602,
+      88603
+    ],
+    "rows": 5739,
+    "rule": "first four preregistered TRAIN seeds union all TRAIN alignment",
+    "no_outcome_selection": true
+  },
+  "wall_s": 138.589001058,
+  "distributions": {
+    "train": {
+      "all": {
+        "rows": 72572,
+        "wheel_sign": {
+          "negative": 43208,
+          "zero": 161996,
+          "positive": 85084
+        },
+        "servo_PWM": [
+          {
+            "n": 72572,
+            "median": 1979.0,
+            "p90": 2000.0
+          },
+          {
+            "n": 72572,
+            "median": 740.0,
+            "p90": 1116.0
+          },
+          {
+            "n": 72572,
+            "median": 2016.0,
+            "p90": 2440.0
+          },
+          {
+            "n": 72572,
+            "median": 2195.0,
+            "p90": 2392.0
+          },
+          {
+            "n": 72572,
+            "median": 1500.0,
+            "p90": 1560.0
+          }
+        ]
+      },
+      "approach": {
+        "rows": 18221,
+        "wheel_sign": {
+          "negative": 7182,
+          "zero": 6688,
+          "positive": 59014
+        },
+        "servo_PWM": [
+          {
+            "n": 18221,
+            "median": 2000.0,
+            "p90": 2000.0
+          },
+          {
+            "n": 18221,
+            "median": 740.0,
+            "p90": 800.0
+          },
+          {
+            "n": 18221,
+            "median": 2360.0,
+            "p90": 2460.0
+          },
+          {
+            "n": 18221,
+            "median": 1320.0,
+            "p90": 1320.0
+          },
+          {
+            "n": 18221,
+            "median": 1500.0,
+            "p90": 1680.0
+          }
+        ]
+      },
+      "alignment": {
+        "rows": 4412,
+        "wheel_sign": {
+          "negative": 4026,
+          "zero": 3552,
+          "positive": 10070
+        },
+        "servo_PWM": [
+          {
+            "n": 4412,
+            "median": 2000.0,
+            "p90": 2000.0
+          },
+          {
+            "n": 4412,
+            "median": 560.0,
+            "p90": 640.0
+          },
+          {
+            "n": 4412,
+            "median": 2500.0,
+            "p90": 2500.0
+          },
+          {
+            "n": 4412,
+            "median": 1320.0,
+            "p90": 1320.0
+          },
+          {
+            "n": 4412,
+            "median": 1500.0,
+            "p90": 1739.0
+          }
+        ]
+      },
+      "grasp": {
+        "rows": 32409,
+        "wheel_sign": {
+          "negative": 16000,
+          "zero": 113636,
+          "positive": 0
+        },
+        "servo_PWM": [
+          {
+            "n": 32409,
+            "median": 1500.0,
+            "p90": 2000.0
+          },
+          {
+            "n": 32409,
+            "median": 749.0,
+            "p90": 1188.0
+          },
+          {
+            "n": 32409,
+            "median": 1853.0,
+            "p90": 2050.0
+          },
+          {
+            "n": 32409,
+            "median": 2219.0,
+            "p90": 2447.0
+          },
+          {
+            "n": 32409,
+            "median": 1501.0,
+            "p90": 1518.0
+          }
+        ]
+      },
+      "release": {
+        "rows": 17530,
+        "wheel_sign": {
+          "negative": 16000,
+          "zero": 38120,
+          "positive": 16000
+        },
+        "servo_PWM": [
+          {
+            "n": 17530,
+            "median": 1824.0,
+            "p90": 2000.0
+          },
+          {
+            "n": 17530,
+            "median": 741.0,
+            "p90": 1205.0
+          },
+          {
+            "n": 17530,
+            "median": 1965.0,
+            "p90": 2320.0
+          },
+          {
+            "n": 17530,
+            "median": 2208.0,
+            "p90": 2488.0
+          },
+          {
+            "n": 17530,
+            "median": 1500.0,
+            "p90": 1516.0
+          }
+        ]
+      }
+    },
+    "validation": {
+      "all": {
+        "rows": 14528,
+        "wheel_sign": {
+          "negative": 8449,
+          "zero": 32527,
+          "positive": 17136
+        },
+        "servo_PWM": [
+          {
+            "n": 14528,
+            "median": 1979.0,
+            "p90": 2000.0
+          },
+          {
+            "n": 14528,
+            "median": 740.0,
+            "p90": 1111.0
+          },
+          {
+            "n": 14528,
+            "median": 2017.0,
+            "p90": 2440.0
+          },
+          {
+            "n": 14528,
+            "median": 2202.0,
+            "p90": 2389.300000000001
+          },
+          {
+            "n": 14528,
+            "median": 1500.0,
+            "p90": 1535.0
+          }
+        ]
+      },
+      "approach": {
+        "rows": 3659,
+        "wheel_sign": {
+          "negative": 1241,
+          "zero": 1507,
+          "positive": 11888
+        },
+        "servo_PWM": [
+          {
+            "n": 3659,
+            "median": 2000.0,
+            "p90": 2000.0
+          },
+          {
+            "n": 3659,
+            "median": 740.0,
+            "p90": 820.0
+          },
+          {
+            "n": 3659,
+            "median": 2360.0,
+            "p90": 2500.0
+          },
+          {
+            "n": 3659,
+            "median": 1320.0,
+            "p90": 1320.0
+          },
+          {
+            "n": 3659,
+            "median": 1500.0,
+            "p90": 1620.0
+          }
+        ]
+      },
+      "alignment": {
+        "rows": 889,
+        "wheel_sign": {
+          "negative": 808,
+          "zero": 700,
+          "positive": 2048
+        },
+        "servo_PWM": [
+          {
+            "n": 889,
+            "median": 2000.0,
+            "p90": 2000.0
+          },
+          {
+            "n": 889,
+            "median": 580.0,
+            "p90": 640.0
+          },
+          {
+            "n": 889,
+            "median": 2500.0,
+            "p90": 2500.0
+          },
+          {
+            "n": 889,
+            "median": 1320.0,
+            "p90": 1320.0
+          },
+          {
+            "n": 889,
+            "median": 1466.0,
+            "p90": 1692.0
+          }
+        ]
+      },
+      "grasp": {
+        "rows": 6476,
+        "wheel_sign": {
+          "negative": 3200,
+          "zero": 22704,
+          "positive": 0
+        },
+        "servo_PWM": [
+          {
+            "n": 6476,
+            "median": 1500.0,
+            "p90": 2000.0
+          },
+          {
+            "n": 6476,
+            "median": 751.0,
+            "p90": 1188.5
+          },
+          {
+            "n": 6476,
+            "median": 1850.0,
+            "p90": 2045.0
+          },
+          {
+            "n": 6476,
+            "median": 2217.0,
+            "p90": 2445.0
+          },
+          {
+            "n": 6476,
+            "median": 1498.0,
+            "p90": 1522.0
+          }
+        ]
+      },
+      "release": {
+        "rows": 3504,
+        "wheel_sign": {
+          "negative": 3200,
+          "zero": 7616,
+          "positive": 3200
+        },
+        "servo_PWM": [
+          {
+            "n": 3504,
+            "median": 1824.0,
+            "p90": 2000.0
+          },
+          {
+            "n": 3504,
+            "median": 740.0,
+            "p90": 1204.0
+          },
+          {
+            "n": 3504,
+            "median": 1961.0,
+            "p90": 2320.0
+          },
+          {
+            "n": 3504,
+            "median": 2210.0,
+            "p90": 2490.0
+          },
+          {
+            "n": 3504,
+            "median": 1500.0,
+            "p90": 1521.0
+          }
+        ]
+      }
+    }
+  },
+  "normalization_max_abs_error": {
+    "action_mean": 3.896995670604753e-09,
+    "action_std": 4.6952978449699145e-09
+  },
+  "raw": {
+    "histogram.json": {
+      "path": "/home/ugrp/ugrp-sim/runs/act18/diagnosis-r1/audit/histogram.json.zst",
+      "sha256": "ca59a5c947b1b9612da72c8ab9db0867327dbe8ba978b015a14eeeb0d4fbf410",
+      "compressed_sha256": "c00ef3f1f52b5db8fbf74a731444aaac2f38812d0b083e01b8ed9bdf9ad5feed",
+      "bytes": 1800923
+    },
+    "summary.json": {
+      "path": "/home/ugrp/ugrp-sim/runs/act18/diagnosis-r1/audit/summary.json.zst",
+      "sha256": "81df92443a801a48abb1b945a5c69c7e87859fc4b50d8c01f57ef6ea6c50a76c",
+      "compressed_sha256": "4206540232974286fbfb1f8ef3391891e0c341e54bdac12b2c91b2bc55213af1",
+      "bytes": 1821146
+    }
+  }
+}
