@@ -1,0 +1,65 @@
+{
+ "schema": "ugrp.beamact5.r5_preregistration.v1",
+ "written_before_run_utc": "2026-10-17T21:45:00Z",
+ "author": "beamact5 worker (DSH)",
+ "approved_by": "Lead (자율 진행: 38/40까지 r4/r5 반복 지시)",
+ "scope": "r5b = beamact5_r4c (6/10/20 PASS in the r4c 4-world run; 27 FAIL 25.4) plus search26_reobserve_refresh (bounded extra obstacle refreshes only after a fresh-ended encounter, max two extras, default off). 5-world known-failure validation (6,10,20,27,37) first; not pooled.",
+ "r5a_result": {
+  "candidate": "beamact5_r5a (r4c + wide_stance)",
+  "status": "stopped as ineffective/slow candidate",
+  "case27": "FAIL teacher_terminal 24.2 s (approach_blocked_handoff/peer_approach_handoff)",
+  "speed": "per-world wall/SIM ~13 vs r4c ~5.8 (wide-angle family roughly doubles planning cost)",
+  "interpretation": "wide_stance did not fix case27: at the case-27 target height the jaw predicate allows only ~19.7 deg, so the 1-degree family adds little lateral clearance, and the stale red_1 margin still blocks every stance. wide_stance is not used in r5b."
+ },
+ "decision_basis": "case-27 r4b timeline: the two obstacle encounters are consumed by SIM 15.2 s while subsequent blocked stretches at ~21 s and ~27 s need another refresh; the extra bounded refreshes are the next attempts.",
+ "stack": {
+  "root": "f540cc34de9e83853b45093f32091babad7dcfe9",
+  "adapter": "358411441938e6e82f981b2ae1aa729ccd9c7193",
+  "teacher": "088b5548df677c27b2621f337202db5426b8d6aa",
+  "cases_r5b_sha256": "57bb258cb7cd8241addc6e516876c2037847d111c7f3aa01836426cc4523bb49",
+  "plan_sha256": "f1a50e8c833c1da9113bdf8cff3844913380e3c821b15c072c0a23c0f54f5148",
+  "rejection_table": "/home/ugrp/ugrp-sim/runs/beamact5/gate-40-r5/rejection_table.json"
+ },
+ "profile": {
+  "search23_rects": "search23_batched_rects_v1",
+  "search26_circles": "off",
+  "search26_circles_farfirst": "search26_circles_farfirst_v1",
+  "search26_static_peer": "search26_static_peer_stance_v1",
+  "search26_peer_memory": "search26_peer_memory_v1",
+  "search26_reobserve": "search26_reobserve_views_v1",
+  "search26_reobserve_refresh": "search26_reobserve_refresh_v1"
+ },
+ "runs": {
+  "r5b_5world": {
+   "indices": [
+    6,
+    10,
+    20,
+    27,
+    37
+   ],
+   "out": "/home/ugrp/ugrp-sim/runs/beamact5/validation-r5b-5",
+   "cap_s": 60
+  },
+  "gate_out": "/home/ugrp/ugrp-sim/runs/beamact5/gate39-r5b-run"
+ },
+ "expectations": {
+  "6": "PASS",
+  "10": "PASS (r4c 49.5)",
+  "20": "PASS",
+  "27": "PASS if the extra bounded refreshes keep the stance feasible while red_1 staleness re-accumulates",
+  "37": "expected FAIL (r1/r2 structural label; not remeasured in r4/r5)"
+ },
+ "gate_arithmetic": {
+  "target": "38/40 = 6,10,20,27 PASS with no regressions (15 expected FAIL, 37 expected FAIL)",
+  "if_27_fails": "37/40 FAIL",
+  "if_one_regression": "37/40 FAIL"
+ },
+ "not_claimed": [
+  "teacher success is not student success",
+  "no student recording/training",
+  "wide_stance not used (separate family)",
+  "world15 excluded/unverified",
+  "no new distance/angle/time threshold (refresh count is bounded to 2 extras and default off)"
+ ]
+}
