@@ -197,9 +197,11 @@ def train_module(dataset, out_dir, epochs, lr, seed, extra_native=None):
     if extra_native is not None:
         data = data+[dict(item, source='act16w') for item in native_episodes(extra_native, 'train')]
         data += [dict(item, source='act16w') for item in native_episodes(extra_native, 'validation')]
+    def compact(item):
+        onehot = np.stack([skill_onehot_vector(name) for name in item['skill']])
+        return np.concatenate([onehot, command_features(item['action0'])], axis=1)
     for item in data:
-        item['compact'] = np.concatenate([skill_onehot(item['skill']),
-                                          command_features(item['action0'])], axis=1)
+        item['compact'] = compact(item)
     train = [d for d in data if d['split'] == 'train']
     validation = [d for d in data if d['split'] == 'validation']
     train_y = np.concatenate([d['done'] for d in train])
