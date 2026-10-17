@@ -1,0 +1,66 @@
+{
+ "schema": "ugrp.beamact5.validation_preregistration.v1",
+ "gate_id": "beamact5-teacher-gate-r3",
+ "candidate": "beamact5_r3",
+ "written_before_run_utc": "2026-10-17T16:42:00Z",
+ "author": "beamact5 worker (DSH)",
+ "scope": "6-world known-failure validation subset of the frozen 40-start plan after the r3 fix bundle. NOT the 40-run gate: planned_N=6, gate_eligible=false, training RGB off, weld off. No result may be pooled with r1/r2 or with any C-profile run.",
+ "world_indices": [
+  6,
+  10,
+  15,
+  20,
+  27,
+  37
+ ],
+ "seeds": [
+  8420006,
+  8420010,
+  8420015,
+  8420020,
+  8420027,
+  8420037
+ ],
+ "host": "ugrp-act-l4-gcp6",
+ "cap_s": 60,
+ "profile": {
+  "search23_rects": "search23_batched_rects_v1",
+  "search26_circles": "search26_downfirst_circles_v1",
+  "search26_static_peer": "search26_static_peer_stance_v1",
+  "search26_peer_memory": "search26_peer_memory_v1",
+  "search26_reobserve": "search26_reobserve_views_v1",
+  "search26_wide_stance": "off"
+ },
+ "profile_note": "wide_stance is a separate never-pooled candidate family and is deliberately NOT enabled in beamact5_r3.",
+ "stack": {
+  "root": "9cf2b21136a2c48c96e97c158f83994bc888099c",
+  "adapter": "3bc6dd68c718294bbcd8346584052e69efdce9c3",
+  "teacher": "968bf1d9bb75d28c2ce2d515f061775e79528db5",
+  "cases_sha256": "ccdbe6bd6630ba021a8ac393d39ca20939f2ee30187fd6117b92126d35484b96",
+  "plan_sha256": "f1a50e8c833c1da9113bdf8cff3844913380e3c821b15c072c0a23c0f54f5148",
+  "rejection_table_sha256": "16fe662ac3f054106217a116697b9f396f2fcfc0d34215924970e8159f6c7d3f"
+ },
+ "expectations": {
+  "10": "regression check: must stay PASS (r2 down-first circles fix)",
+  "20": "regression check: must stay PASS (r2 down-first circles fix)",
+  "6": "expected PASS if search26_peer_memory keeps the static-peer goal set engaged before the encounter deadline",
+  "27": "expected PASS if search26_reobserve turns the retreat boundary into view attempts and the wall-layer ordering keeps the reobserve alive",
+  "15": "expected FAIL: direct end reason is the host planning wall safety cap (a planning tick >30 wall s). r2 raw shows 46 planner calls in 6.4 SIM s, 91-pose retained-proposal blocked loop, no body-planning compute row; this bundle does not batch that path and the profile shows the cost is dominated by repeated goal_set/search22 audits plus post-run JSON serialisation. Cause table only, no cap/margin change.",
+  "37": "expected FAIL: structural, best sampled +/-15 deg stance gap 4.87 mm < runtime floor margin 11.07 mm. Not targeted by this bundle."
+ },
+ "remaining_after_if_6_and_27_pass": "the r1 set fixed by r2/r3 would be 10,20,6,27; gate arithmetic becomes 38/40 (= pre-registered min 38) with 15 and 37 failing, provided no previously passing world regresses. A full 40-run gate is only launched after this subset passes.",
+ "not_claimed": [
+  "teacher success is not student success",
+  "no student camera recording or ACT training",
+  "no margin/cap/clearance constant change",
+  "C/MJWarp results are not pooled"
+ ],
+ "prelaunch_attempt": {
+  "attempt": "validation-r3-6 (2026-10-17T16:38Z)",
+  "result": "HOST_ERROR before any world started",
+  "cause": "the first r3 teacher commit added the new modes to the teacher classes but not to scripts/run_grasp_act_teacher.py:run(); the adapter calls run(**profiles(candidate)) and the process died with TypeError: run() got an unexpected keyword argument 'search26_peer_memory'",
+  "evidence": "started_N=0, completed_N=0, HOST_ERROR=1, summary kept on the run disk at runs/beamact5/validation-r3-6-wiring-error (renamed from validation-r3-6); not a physics run and not pooled",
+  "fix": "runner keyword/report/search15 plumbing added and a signature regression test; teacher 968bf1d9, adapter 3bc6dd68 (DEPENDENCY_SHA pin), root 9cf2b211 (ADAPTER_SHA/TEACHER_SHA pin)",
+  "repeat_guard": "tests/test_beamact5_r3_modes.py::test_teacher_runner_accepts_the_round3_profile_values"
+ }
+}
