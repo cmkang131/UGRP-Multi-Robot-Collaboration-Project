@@ -1,0 +1,209 @@
+{
+  "complete": true,
+  "stage": "train",
+  "source_sha": "8d21fbe1abf37d09da973c881917eae53fa19255",
+  "host": {
+    "project_id": "ugrp-sim-b-1014",
+    "instance": "ugrp-act-l4-gcp2",
+    "machine_type": "g2-standard-8",
+    "zone": "asia-northeast3-a"
+  },
+  "n": 0,
+  "N": 4,
+  "checkpoint_sha256": "dc64dd5fee4c153f02babc89e562a7d139a9f5cbfefd7e601d6c2eb9717e21ae",
+  "rows": [
+    {
+      "seed": 88601,
+      "kind": "red",
+      "success": false,
+      "lift_success": false,
+      "release_success": false,
+      "grasp_done": true,
+      "cap_end": false,
+      "reason_category": "lift_not_stable",
+      "blocked_object": "not_attributed_by_physical_score",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not_measured",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "top": 0,
+        "actor_input_rows": 180,
+        "source": "eval-owner result.json has no input_audit; actor-inputs.jsonl exact whitelist verified"
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/act18/baseline-F-TRAIN4-r1/group-001/evaluation/owner/world-000",
+      "score_matches": true
+    },
+    {
+      "seed": 88602,
+      "kind": "green",
+      "success": false,
+      "lift_success": false,
+      "release_success": false,
+      "grasp_done": false,
+      "cap_end": true,
+      "reason_category": "cap_end",
+      "blocked_object": "not_attributed_by_physical_score",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not_measured",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "top": 0,
+        "actor_input_rows": 900,
+        "source": "eval-owner result.json has no input_audit; actor-inputs.jsonl exact whitelist verified"
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/act18/baseline-F-TRAIN4-r1/group-001/evaluation/owner/world-001",
+      "score_matches": true
+    },
+    {
+      "seed": 88600,
+      "kind": "cyan",
+      "success": false,
+      "lift_success": false,
+      "release_success": false,
+      "grasp_done": false,
+      "cap_end": true,
+      "reason_category": "cap_end",
+      "blocked_object": "not_attributed_by_physical_score",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not_measured",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "top": 0,
+        "actor_input_rows": 900,
+        "source": "eval-owner result.json has no input_audit; actor-inputs.jsonl exact whitelist verified"
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/act18/baseline-F-TRAIN4-r1/group-000/evaluation/owner/world-000",
+      "score_matches": true
+    },
+    {
+      "seed": 88603,
+      "kind": "yellow",
+      "success": false,
+      "lift_success": false,
+      "release_success": false,
+      "grasp_done": true,
+      "cap_end": false,
+      "reason_category": "lift_not_stable",
+      "blocked_object": "not_attributed_by_physical_score",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not_measured",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "top": 0,
+        "actor_input_rows": 229,
+        "source": "eval-owner result.json has no input_audit; actor-inputs.jsonl exact whitelist verified"
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/act18/baseline-F-TRAIN4-r1/group-000/evaluation/owner/world-001",
+      "score_matches": true
+    }
+  ],
+  "funnel": [
+    {
+      "gate": "requested",
+      "passed": 4,
+      "rejected": 0
+    },
+    {
+      "gate": "grasp_done",
+      "passed": 2,
+      "rejected": 2
+    },
+    {
+      "gate": "stable_lift",
+      "passed": 0,
+      "rejected": 2
+    },
+    {
+      "gate": "stable_release",
+      "passed": 0,
+      "rejected": 0
+    },
+    {
+      "gate": "task_success",
+      "passed": 0,
+      "rejected": 0
+    }
+  ],
+  "actor_input_rows_verified": 2209,
+  "reasons": {
+    "lift_not_stable": 2,
+    "cap_end": 2
+  },
+  "raw": [
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act18/baseline-F-TRAIN4-r1/group-001/evaluation/owner/world-000/result.json",
+      "sha256": "ff34e0b843964168a2dfc92f8dfe5e62e70c46108a0a7b3dfd6ee9816c1d79c0",
+      "original_sha256": "ff34e0b843964168a2dfc92f8dfe5e62e70c46108a0a7b3dfd6ee9816c1d79c0"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act18/baseline-F-TRAIN4-r1/group-001/evaluation/owner/world-000/scene.xml",
+      "sha256": "3511bc8bd98deb1b0cf3132d6b04fd072a09459213439fc9ec2567b7f348b705",
+      "original_sha256": "3511bc8bd98deb1b0cf3132d6b04fd072a09459213439fc9ec2567b7f348b705"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act18/baseline-F-TRAIN4-r1/group-001/evaluation/owner/world-001/result.json",
+      "sha256": "929cd8dd30677a5ae1fe06a44efad396ea51e417e6da59f10ddeecde9d1c0b03",
+      "original_sha256": "929cd8dd30677a5ae1fe06a44efad396ea51e417e6da59f10ddeecde9d1c0b03"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act18/baseline-F-TRAIN4-r1/group-001/evaluation/owner/world-001/scene.xml",
+      "sha256": "a50dc524b6c23366a2d2249a62091af8c3d9c5c76e013bf76ab39bf9fbaad96e",
+      "original_sha256": "a50dc524b6c23366a2d2249a62091af8c3d9c5c76e013bf76ab39bf9fbaad96e"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act18/baseline-F-TRAIN4-r1/group-001/evaluation/owner/evaluation-only.jsonl",
+      "sha256": "a8708669b884e6d04166d9d60cd903fe0bc6e851e35b64ee78e52463ef73fe8d"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act18/baseline-F-TRAIN4-r1/group-000/evaluation/owner/world-000/result.json",
+      "sha256": "8feb181425b7c6f2e74bc45c10c7968021242589f21acbba5a9040cebc79dabc",
+      "original_sha256": "8feb181425b7c6f2e74bc45c10c7968021242589f21acbba5a9040cebc79dabc"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act18/baseline-F-TRAIN4-r1/group-000/evaluation/owner/world-000/scene.xml",
+      "sha256": "015dc0f75d399bacbd16f01ed31aecf6f151014ca3318ee0847e5e324894642c",
+      "original_sha256": "015dc0f75d399bacbd16f01ed31aecf6f151014ca3318ee0847e5e324894642c"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act18/baseline-F-TRAIN4-r1/group-000/evaluation/owner/world-001/result.json",
+      "sha256": "c5609d774f8529c435ccc8b8af482a3dc6d9e1fa1c8a6f640b12c5f20387064b",
+      "original_sha256": "c5609d774f8529c435ccc8b8af482a3dc6d9e1fa1c8a6f640b12c5f20387064b"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act18/baseline-F-TRAIN4-r1/group-000/evaluation/owner/world-001/scene.xml",
+      "sha256": "336ec2d7c8641f29555df92d11b397dcefe9cc22ecd12f209dc74af4813b1c72",
+      "original_sha256": "336ec2d7c8641f29555df92d11b397dcefe9cc22ecd12f209dc74af4813b1c72"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act18/baseline-F-TRAIN4-r1/group-000/evaluation/owner/evaluation-only.jsonl",
+      "sha256": "5865404f26abca6858a2726e596b719d9723465ea1f5b680e9ac0d31294fab92"
+    }
+  ],
+  "reproduce": [
+    "scripts/act18_recount.py",
+    "--runs",
+    "/home/ugrp/ugrp-sim/runs/act18/baseline-F-TRAIN4-r1/group-001/evaluation",
+    "/home/ugrp/ugrp-sim/runs/act18/baseline-F-TRAIN4-r1/group-000/evaluation",
+    "--stage",
+    "train",
+    "--checkpoint",
+    "/home/ugrp/ugrp-sim/runs/act17-v7/training-r1/F/actor",
+    "--out",
+    "/tmp/recount-test4.json"
+  ],
+  "training_updates": 0,
+  "physics_steps": 0,
+  "scope": "raw native physical Score and issued completion recount; no generalization claim for TRAIN"
+}
