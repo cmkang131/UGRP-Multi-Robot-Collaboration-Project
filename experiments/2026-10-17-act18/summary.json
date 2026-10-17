@@ -1462,6 +1462,38 @@
       "experiments/2026-10-17-act18/PHASE_C_PLAN.md"
     ],
     "terminal_exec_offline": "B1 로그 기반 청크 내 터미널 예측(.65)은 t=9.2/20.1/21.5/41.7s 발화로 교사 close(12.9–17.7s)·hold(23.6–31.3s) 대비 3.5–19s 어긋남 — 신뢰 불가, 평가계약 변경 없이 메모만.",
-    "next_candidate": "offline done classifier (후보 1, GPU 없는 offline 검증부터) — Lead 보고·승인 카드"
+    "next_candidate": "B4 완료: done 신호 확보(4/4 issued_done) 후 남은 것은 행동/물리 축. action-axis offline 결과 행동형식/클램프는 주원인 아님(교사 클램프 0%, 모델 예측 MAE~0.01, gripper 일치). 잔여 후보: (1) closed-loop 상태분포 진단 (2) co-training 100k(Phase C, B2 미통과로 승인 필요) (3) 평가계약(물리 성공 정의) 사용자 결정."
+  },
+  "cleanup_stage3": {
+    "schema": "ugrp.act18.cleanup.v3",
+    "utc": "2026-10-17T23:10:41Z",
+    "reason": "B4 done-head TRAIN4(및 action-axis/offline doneclass CPU 분석) 완료 후 유휴 → gcp2 정지.",
+    "vm": {
+      "instance": "ugrp-act-l4-gcp2",
+      "project_id": "ugrp-sim-b-1014",
+      "status": "TERMINATED",
+      "stopped_utc": "2026-10-17T23:10:41Z",
+      "confirmed_by": "gcloud describe --format=value(status)"
+    },
+    "before_stop": {
+      "act18_processes": "none",
+      "gpu_utilization_percent": 0,
+      "gpu_memory_MiB": 0,
+      "leases": "no act18 lease",
+      "note": "B1/B2/B3/B4 원본·doneclass/actionaxis 결과를 디스크에 보존"
+    },
+    "vm_scratch_removed": [
+      "/tmp/act18_done_offline.py",
+      "/tmp/act18_action_offline.py",
+      "/tmp/act18_done_probe_analysis.py",
+      "/tmp/act18_faildiag.py"
+    ],
+    "local": {
+      "scratch_removed": [
+        "/private/tmp/act18-dsh"
+      ],
+      "worktree": "/Users/changmin/projects/ugrp-wt/act16w",
+      "worktree_status": "clean (git status empty)"
+    }
   }
 }
