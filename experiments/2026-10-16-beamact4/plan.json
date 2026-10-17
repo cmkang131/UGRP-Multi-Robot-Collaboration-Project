@@ -1,0 +1,37 @@
+{
+  "schema": "ugrp.beamact4.code_spec_plan.v1",
+  "ready": false,
+  "queue_submission": false,
+  "source_sha": null,
+  "base_sha": "14f9c135de2a008ef1224d503c7cdbda6ae98f68",
+  "branch": "codex/beamact4",
+  "parent_pr": 545,
+  "scope": "student code and teacher specification only",
+  "recording_authorized": false,
+  "training_authorized": false,
+  "gcp_execution_authorized": false,
+  "rejection_table": "/Users/changmin/projects/ugrp-wt/beamact3c/experiments/2026-10-16-beamact4/rejection_table.json",
+  "rejection_table_sha256": "6832cdade4a75728a1f2a4bf91728de0123817e2bb0db9bdef448638e2000eec",
+  "candidate_toggles": {
+    "beamact4_stage_v1": "beamact4_stage_v1",
+    "beamact4_done_recovery_v1": "beamact4_done_recovery_v1"
+  },
+  "defaults": {
+    "beamact4_stage_v1": "off",
+    "beamact4_done_recovery_v1": "off"
+  },
+  "handoff_spec": {
+    "toggle_reserved": "beamact4_handoff_v1",
+    "implemented": false,
+    "relative_distance_error_budget_m": null,
+    "relative_yaw_error_budget_rad": null
+  },
+  "model_checkpoint": null,
+  "blockers": [
+    "warp8 teacher gate completion and coordinator assignment",
+    "new stage/actual opposite-role/recovery demonstration provenance",
+    "measured relative pose error budgets and TRAIN joint handoff support",
+    "trained READY checkpoint and real save/reload verification",
+    "separate authorization and registration for any recording/training/remote rollout"
+  ]
+}

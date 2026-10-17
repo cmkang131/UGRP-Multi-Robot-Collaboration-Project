@@ -26,6 +26,7 @@ from scripts.check_ci_fixtures import check_fixtures
 TEST_PATTERNS = (
     "tests/test_beamact1.py",
     "tests/test_beamact2.py",
+    "tests/test_beamact3.py",
     "tests/test_beampair1.py",
     "tests/test_beampair2.py",
     "tests/test_beampair4.py",
@@ -498,6 +499,8 @@ TEST_PATTERNS = (
     "tests/test_visual_arm_v3.py",
     "tests/test_masterpi_v3_static_audit.py",
     "tests/test_masterpi_robot_models.py",
+    "tests/test_beamact4.py",
+    "tests/test_beamact4_policy.py",
 )
 
 

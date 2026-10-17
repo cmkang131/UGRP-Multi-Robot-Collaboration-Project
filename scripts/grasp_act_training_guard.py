@@ -34,7 +34,7 @@ def require_gcp(*, training):
 
 
 def authorize_main(approval, *, source, dataset_hash, smoke_hash, steps, blank,
-                   command_history_dropout=0., history_causal_split_v1="off"):
+                   command_history_dropout=0., history_causal_split_v1="off", beamact3_v1='off'):
     data = json.loads(Path(approval).read_text()) if approval else {}
     expected = {'approved': True, 'stage': 'main', 'source_sha': source,
                 'dataset_manifest_sha256': dataset_hash, 'smoke_summary_sha256': smoke_hash,
@@ -48,4 +48,6 @@ def authorize_main(approval, *, source, dataset_hash, smoke_hash, steps, blank,
         raise ValueError('main approval command history dropout mismatch')
     if data.get('history_causal_split_v1', 'off') != history_causal_split_v1:
         raise ValueError('main approval history mask mismatch')
+    if data.get('beamact3_v1', 'off') != beamact3_v1:
+        raise ValueError('main approval categorical ACT arm mismatch')
     return data

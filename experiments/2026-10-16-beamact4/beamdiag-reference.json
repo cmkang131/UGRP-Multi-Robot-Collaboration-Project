@@ -1,0 +1,370 @@
+{
+  "schema": "ugrp.beamdiag.v1",
+  "train_N": 60023,
+  "train_seed_N": 166,
+  "thresholds": {
+    "color_assay": {
+      "resize": [
+        320,
+        240
+      ],
+      "interpolation": "cv2.INTER_AREA",
+      "S_min": 128,
+      "V_min": 128,
+      "hues": {
+        "body": [
+          20,
+          61
+        ],
+        "teal": [
+          62,
+          101
+        ],
+        "blue": [
+          102,
+          140
+        ]
+      },
+      "raw_hue_modes": [
+        40,
+        83,
+        120
+      ],
+      "area_sensitivity": [
+        1,
+        9,
+        25
+      ]
+    },
+    "visible_largest_component_pixels": 9,
+    "visible_sensitivity": [
+      1,
+      9,
+      25
+    ],
+    "area_basis": "minimum observed component among >=5-probe-visible TRAIN frames=34 pixels; tested1/9/25; >=9 is3x3 connected-pixel reporting assay, not control",
+    "edge_margin": 0.119286519709685,
+    "edge_basis": "TRAIN align visible centroid frame-margin p10",
+    "oscillation_prominence_px": 15.214154455349995,
+    "oscillation_basis": "TRAIN align adjacent visible horizontal displacement p95; 1px resolution floor",
+    "body_occlusion_primary_basis": "one actor axis-body/no-end in >=half of run frames; literal majority, not controller tolerance",
+    "sustained_blind_longest_s_above": 0.1,
+    "blind_basis": "strictly beyond maximum TRAIN pregrasp contiguous axis-body/no-end dwell",
+    "station_m": 0.203,
+    "XY_tol_m": 0.03,
+    "yaw_tol_rad": 0.06,
+    "geometry_basis": "inherited pinned teacher/evaluator; not new acceptance criteria"
+  },
+  "sources": [
+    {
+      "id": "deHaan2019",
+      "title": "Causal Confusion in Imitation Learning",
+      "url": "https://arxiv.org/html/1905.11979v1",
+      "read_scope": "abstract and section4.2 targeted interventions; dropout baseline"
+    },
+    {
+      "id": "Wen2020",
+      "title": "Fighting Copycat Agents in Behavioral Cloning from Observation Histories",
+      "url": "https://arxiv.org/abs/2010.14876",
+      "read_scope": "primary abstract: previous-action nuisance and adversarial representation; no claim of our causal effect"
+    },
+    {
+      "id": "Ross2011",
+      "title": "A Reduction of Imitation Learning and Structured Prediction to No-Regret Online Learning",
+      "url": "https://proceedings.mlr.press/v15/ross11a.html",
+      "read_scope": "primary paper abstract: policy-induced distribution and dataset aggregation"
+    },
+    {
+      "id": "Zhao2023",
+      "title": "Learning Fine-Grained Bimanual Manipulation with Low-Cost Hardware",
+      "url": "https://arxiv.org/html/2304.13705v1",
+      "read_scope": "IV action chunking/temporal ensemble, V tasks/failures, appendixF policy-learning limitations"
+    }
+  ],
+  "limitations": [
+    "No randomized/matched-state closed-loop causal intervention; learning mechanism remains hypotheses.",
+    "RGB bright saturated connected-component assay is validated on TRAIN approach/align but is a proxy under student OOD; tiny/masked/dark bands and same-colored objects can confound it.",
+    "Robot-to-robot/body obstruction contact ledger absent. Same-end close occupation is not proof of physical collision; target-finger signed gaps are not blocker clearance.",
+    "TRAIN successful selected local rows only; failed/excluded teacher recordings are not counted as TRAIN.",
+    "C1/C2 results are not part of this analysis; local candidate definitions read only; no remote C1/C2 operations."
+  ],
+  "hypotheses": [
+    {
+      "rank": 1,
+      "name": "local-entry distribution and weak assigned-end conditioning",
+      "evidence": "initial30/40 actors outside0.8m in each arm; TRAIN54/60023 outside; opposite authored station first A3/20 B8/20; TRAIN0/332 actor tracks",
+      "C1": "does not add missing cold-start/recovery/role counterexamples",
+      "C2": "does not by itself add missing examples or make role identifiable"
+    },
+    {
+      "rank": 2,
+      "name": "continuous gripper prediction used as READY and irreversible one-actor done",
+      "evidence": "all20/20 GO before joint geometric alignment in each arm; premature individual READY A33/40 B34/40; source PWM1 decrease->READY then latched started; done->stop without more inference",
+      "C1": "may change PWM errors but removes useful issued PWM/pan too; no verified fix",
+      "C2": "may alter error frequency; interface semantics unchanged"
+    },
+    {
+      "rank": 3,
+      "name": "fine visual/body alignment and recovery after drift",
+      "evidence": "A8329001 r2 assignedcolorvisible89.2percent but yaw>=0.314rad and never centers; long bandless body-view actors A6/40 B5/40, all r2; teacher pregrasp8/40767 vs pick11371/18924",
+      "C1": "can remove information needed for partial observation and camera/body alignment",
+      "C2": "does not supply recovery targets; improvement uncertain"
+    }
+  ],
+  "recommendations": [
+    {
+      "rank": 1,
+      "change": "match map-code-to-ACT handoff with actual TRAIN support and collect visible-only student-state recovery demonstrations with genuine opposite-role assignments",
+      "rationale": "largest acquisition/role failures; DAgger distribution argument; do not flip role token while retaining incompatible labels; no hidden-target GT recovery"
+    },
+    {
+      "rank": 2,
+      "change": "replace tiny continuous gripper-PWM decrease as READY with a separately learned own-observation READY/phase output, and supervise completion transitions",
+      "rationale": "explicitly fix measured interface/phase mismatch; keep GO/ACK formatting in code, do not add GT or handmade near-grasp fallback; require new finite evaluation"
+    }
+  ],
+  "train_geometry": {
+    "approach": {
+      "N": 26499,
+      "assigned_distance_m": {
+        "min": 0.1414823425721142,
+        "p10": 0.1492887947357228,
+        "p25": 0.15683129259997988,
+        "p50": 0.3070789647271131,
+        "p75": 0.5295456377210921,
+        "p90": 0.6862025833127354,
+        "p95": 0.7387497508745312,
+        "p99": 0.7816726268189497,
+        "max": 0.8485531701038711
+      },
+      "station_error_m": {
+        "min": 0.07502534132329705,
+        "p10": 0.12334083311847115,
+        "p25": 0.19756828519251768,
+        "p50": 0.3624299078797469,
+        "p75": 0.6030707144848264,
+        "p90": 0.7946408900778794,
+        "p95": 0.876195939269947,
+        "p99": 0.9551746342688843,
+        "max": 1.0394360939015592
+      },
+      "yaw_error_rad": {
+        "min": 0.0003044231131521524,
+        "p10": 0.7285366717581075,
+        "p25": 1.1488275746975178,
+        "p50": 1.7806183648512186,
+        "p75": 2.320568357313216,
+        "p90": 2.604582430571428,
+        "p95": 2.6913796237174425,
+        "p99": 2.936715138172937,
+        "max": 3.1411613837843193
+      },
+      "outside_0p8_fraction": 0.0018491263821276275
+    },
+    "align": {
+      "N": 10530,
+      "assigned_distance_m": {
+        "min": 0.149551995725142,
+        "p10": 0.154090018483299,
+        "p25": 0.15645471323067314,
+        "p50": 0.16200645594273608,
+        "p75": 0.1946701237918743,
+        "p90": 0.2224124256314089,
+        "p95": 0.24863193612191517,
+        "p99": 0.26758890787274625,
+        "max": 0.2824474707772506
+      },
+      "station_error_m": {
+        "min": 2.0065638332455665e-05,
+        "p10": 0.011666849711979567,
+        "p25": 0.036223623611271974,
+        "p50": 0.06765542368177094,
+        "p75": 0.07566616673936924,
+        "p90": 0.07698444014416973,
+        "p95": 0.07766946875833894,
+        "p99": 0.07961281324399862,
+        "max": 0.12507715760539861
+      },
+      "yaw_error_rad": {
+        "min": 6.31662045581086e-07,
+        "p10": 0.003449983004298972,
+        "p25": 0.009837173358368513,
+        "p50": 0.025395907101538717,
+        "p75": 0.3091766629254136,
+        "p90": 0.5924448077067404,
+        "p95": 0.7094022648409314,
+        "p99": 0.8120270585607118,
+        "max": 0.9709323066102189
+      },
+      "outside_0p8_fraction": 0.0
+    },
+    "search": {
+      "N": 3378,
+      "assigned_distance_m": {
+        "min": 0.1820152705965885,
+        "p10": 0.25345931011136974,
+        "p25": 0.42795627288624216,
+        "p50": 0.5619001661215399,
+        "p75": 0.7209350865841452,
+        "p90": 0.7734967622150019,
+        "p95": 0.7835987781466901,
+        "p99": 0.7925739409023341,
+        "max": 0.802078598844696
+      },
+      "station_error_m": {
+        "min": 0.03379388592119472,
+        "p10": 0.18217815593425835,
+        "p25": 0.4105251289085636,
+        "p50": 0.6438144836547397,
+        "p75": 0.8532020894783807,
+        "p90": 0.9297030795532293,
+        "p95": 0.9635180520907081,
+        "p99": 0.9751502373397636,
+        "max": 0.9920089519919465
+      },
+      "yaw_error_rad": {
+        "min": 0.00463230599935216,
+        "p10": 0.13394411385770366,
+        "p25": 0.708702580903278,
+        "p50": 1.3630461040196138,
+        "p75": 2.568703329937651,
+        "p90": 2.902724557076988,
+        "p95": 3.0027829136677795,
+        "p99": 3.0601640356053754,
+        "max": 3.1407442706244204
+      },
+      "outside_0p8_fraction": 0.0014801657785671995
+    },
+    "pick": {
+      "N": 18924,
+      "assigned_distance_m": {
+        "min": 0.1826909772564985,
+        "p10": 0.19341594611973906,
+        "p25": 0.1954256324653965,
+        "p50": 0.19825620957759155,
+        "p75": 0.20182183890621147,
+        "p90": 0.20558206471129895,
+        "p95": 0.20723732585136403,
+        "p99": 0.20911732822981688,
+        "max": 0.21202860907611906
+      },
+      "station_error_m": {
+        "min": 1.5324715865430652e-05,
+        "p10": 0.0016549036569306827,
+        "p25": 0.005684640642159975,
+        "p50": 0.008753276761537528,
+        "p75": 0.011329447231805765,
+        "p90": 0.014172061576036846,
+        "p95": 0.017374809092065867,
+        "p99": 0.029832599892757942,
+        "max": 0.054825635481988495
+      },
+      "yaw_error_rad": {
+        "min": 2.6229077334584435e-07,
+        "p10": 0.0014355645714897603,
+        "p25": 0.0045757707176074525,
+        "p50": 0.011218192695236407,
+        "p75": 0.021100533393178272,
+        "p90": 0.032097993579679136,
+        "p95": 0.038800825389685725,
+        "p99": 0.056685027464557114,
+        "max": 0.30419401816877034
+      },
+      "outside_0p8_fraction": 0.0
+    },
+    "all": {
+      "N": 60023,
+      "assigned_distance_m": {
+        "min": 0.1414823425721142,
+        "p10": 0.15275049424983853,
+        "p25": 0.18010065893499422,
+        "p50": 0.19978324151152232,
+        "p75": 0.3387720406518058,
+        "p90": 0.6137825101578751,
+        "p95": 0.7150905927489926,
+        "p99": 0.779265624509801,
+        "max": 0.8485531701038711
+      },
+      "station_error_m": {
+        "min": 1.5324715865430652e-05,
+        "p10": 0.0062299060140520585,
+        "p25": 0.010944639382987911,
+        "p50": 0.07840853060030377,
+        "p75": 0.39073105958034704,
+        "p90": 0.6996552710505675,
+        "p95": 0.8288459319108201,
+        "p99": 0.9482863946460178,
+        "max": 1.0394360939015592
+      },
+      "yaw_error_rad": {
+        "min": 2.6229077334584435e-07,
+        "p10": 0.0043003067755994166,
+        "p25": 0.013641710470391033,
+        "p50": 0.40515319661989163,
+        "p75": 1.739081791255157,
+        "p90": 2.4543542380625185,
+        "p95": 2.61425543115052,
+        "p99": 2.9250868441132223,
+        "max": 3.1411613837843193
+      },
+      "outside_0p8_fraction": 0.0008996551321993236
+    }
+  },
+  "student_initial": {
+    "A": {
+      "N": 40,
+      "outside_0p8_N": 30,
+      "assigned_visible_N": 18,
+      "distance_m": {
+        "min": 0.20286237017735523,
+        "p10": 0.2029770682536436,
+        "p25": 0.824495427066662,
+        "p50": 1.0831999166043211,
+        "p75": 1.3439281272090848,
+        "p90": 1.4863922070990097,
+        "p95": 1.5705553428657766,
+        "p99": 1.6799183372068114,
+        "max": 1.6878017037889643
+      }
+    },
+    "B": {
+      "N": 40,
+      "outside_0p8_N": 30,
+      "assigned_visible_N": 18,
+      "distance_m": {
+        "min": 0.20286237017735523,
+        "p10": 0.2029770682536436,
+        "p25": 0.824495427066662,
+        "p50": 1.0831999166043211,
+        "p75": 1.3439281272090848,
+        "p90": 1.4863922070990097,
+        "p95": 1.5705553428657766,
+        "p99": 1.6799183372068114,
+        "max": 1.6878017037889643
+      }
+    }
+  },
+  "source_files": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/research/beamdiag.md",
+      "sha256": "7747cec461d2e8f461d38824ea6072b77f04cbb6511e86ad894277e06982a0d2",
+      "size_bytes": 18418
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/research/beamdiag.json",
+      "sha256": "f6b2825ee5f642d82757ee3fe8e5cef48a9701a0e9e2aedb9b8e189f78036c6e",
+      "size_bytes": 1480120
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/research/beamdiag-evidence/rejection-table.json",
+      "sha256": "7bf962fe2393e7ebe70b6153f70d8a8ce46eb431ea0dfc8b0e74c326246788a7",
+      "size_bytes": 33181
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/research/beamdiag-evidence/visual-review.json",
+      "sha256": "c72033dbf7f7e6834cc8d7e56bf0bd590be31b4da87acdddd33005cbd80ecfd7",
+      "size_bytes": 22548
+    }
+  ],
+  "copied_at_utc": "2026-10-16T11:09:05.607849+00:00"
+}
