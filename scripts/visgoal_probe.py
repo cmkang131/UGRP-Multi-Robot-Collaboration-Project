@@ -210,7 +210,7 @@ def run(a):
         # west start (no destination colour) and one east start where the zone
         # is inside the initial FOV.  Filter by --episodes first; truncating
         # before the filter previously tested two west starts only.
-        a.sim_cap = min(a.sim_cap, 35.)
+        a.sim_cap = min(a.sim_cap, 60.)
         if not a.episodes:
             east = [e for e in setups
                     if e.get('split') == 'east_zone_possible_visibility']
