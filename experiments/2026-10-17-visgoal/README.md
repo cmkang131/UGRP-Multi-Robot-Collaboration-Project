@@ -412,6 +412,126 @@ it is not expected to fix this cause, but its result decides the next step.
 Candidate C (below) fixes this cause and the arrival aim; it is queued to run
 after B with the same 16 starts and batch, and is not pooled with B or r4.
 
+### Paired candidate B results (nworld=16 batch, mirror pulse on)
+
+Raw `/home/ugrp/ugrp-sim/runs/visgoal-gate-r4-mirror` (VM); copied summary,
+strict recount, analysis, arrival/FOV analysis, cap-end analysis and the 16
+9-frame montages under `gate-mirror/`. Queue `queue-gate-mirror.json` (source
+pin `3d06f8b4f`, checkout `aa8c6fe26`, toggle `visgoal_mirror_pulse_v1: on`,
+`worlds_per_batch: 16`), stack admission `stack-gate-mirror-v17.json`, prior
+funnel = gate-r4 `recount.json`. The execution stack, source pin and pinned
+input hashes are identical to gate r4, but the committed gate-r4 `queue.json`
+differs from B's in seven metadata keys: `candidate`, `output`, `paired_with`,
+`pairing_note`, `rejection_table`, `run_name` and `toggles`.  In gate-r4's
+copy `run_name` and `output` still say `visgoal-gate-r2`, `rejection_table`
+points to the preflight-r8 funnel, and the four pairing fields are absent;
+the other 26 keys (`stack_values`, `source_sha`, `input_sha256`, `setups`,
+`sim_cap_s` 120, `worlds_per_batch` 16, `renderer_source`, `legacy_source`,
+...) are identical.  Whether that gate-r4 metadata is a copy error or
+reflects a different launch queue cannot be determined from the artifacts;
+it is recorded as unverified and no cause is estimated.  The mirror toggle
+rewrites no issued command: it changes only the motion prediction used by
+the same controller, so behaviour can still diverge in closed loop (below).
+
+Run `EXIT` DONE (no error, no HOST_ERROR). Batch wall 5277.47 s for
+120 SIM s x 16 worlds = 2.749 wall/(sim_s*nworld); the first-30-SIM check
+(tick-300 `progress.json` wall 1441.52/1441.69 s) is
+1441.69/(30*16) = 3.004, below the 6.0 block and the record-only 3.5
+warning; in-flight samples are 2.746-3.066.
+
+Result (independent recount, `gate-mirror/recount.json`: 0 mismatches, all
+aggregate checks true): n=16, colour_seen 8/16, found 8/16, arrived_declared
+8/16, GT-inside-zone-B 1/16 (e13), entered zone any 1/16, cap_end 8/16
+(separate, never counted as a failure). Strict funnel: starts 16 ->
+colour_seen 8 -> found_metric_or_arrived 8 -> arrived_declared 8 ->
+arrived_gt 1.
+
+| reason_category | n | episodes | blocked_object | minimum_gap_m |
+|---|---:|---|---|---|
+| cap_end_no_colour_metric | 8 | 00,01,02,03,04,05,06,07 | not_observed | null (not_measured) |
+| false_arrival_outside_zone | 7 | 08,09,10,11,12,14,15 | not_observed | null (not_measured) |
+| arrived_gt_inside (success) | 1 | 13 | - | - |
+
+The seven false arrivals are the same stop geometry as gate r4: the skill
+declares at a base->remembered-point range of 0.0959-0.0993 m (its unchanged
+0.10 m tolerance) while the remembered point is only 0.0385-0.0610 m inside
+zone B, so the base centre stops 0.0079-0.0375 m outside. The currently
+visible paint was 0.407-0.413 m ahead with 35,552-41,037 lower-centre pixels,
+so `on_paint` was satisfied by paint in front; no arrival test was changed.
+
+| ep | declared t | base (x,y) m | base margin (m) | memory range (m) | remembered point margin (m) | radius95 (m) | nearest visible paint (m) |
+|---:|---:|---|---:|---:|---:|---:|---:|
+| 08 | 31.9 | 4.2852,-1.5589 | -0.0148 | 0.0964 | +0.0592 | 0.0450 | 0.4097 |
+| 09 | 25.9 | 4.2625,-1.5625 | -0.0375 | 0.0985 | +0.0411 | 0.0447 | 0.4108 |
+| 10 | 19.5 | 4.2632,-1.5499 | -0.0368 | 0.0959 | +0.0385 | 0.0447 | 0.4131 |
+| 11 | 32.9 | 4.2921,-1.5089 | -0.0079 | 0.0971 | +0.0541 | 0.0444 | 0.4071 |
+| 12 | 27.2 | 4.2774,-1.4888 | -0.0226 | 0.0993 | +0.0425 | 0.0443 | 0.4093 |
+| 14 | 20.5 | 4.2887,-1.9214 | -0.0113 | 0.0972 | +0.0610 | 0.0451 | 0.4124 |
+| 15 | 14.0 | 4.2853,-1.9416 | -0.0147 | 0.0959 | +0.0571 | 0.0451 | 0.4093 |
+
+Cap-end/no-colour episodes: all eight rotated 20.5-27.4 rad and visited all
+12 yaw bins; with half-HFOV 27.3 deg and <=3.5 m, the zone geometry entered
+the wedge on e00 208 ticks (17.3%), e04 187 (15.6%), e01 146 (12.2%) and
+never on the other five. The offline paint-band check (H 99-125, V>=30,
+S>=110) on 16 sampled in-FOV frames found at most 7-8 px largest component
+(e00 7, e04 8, e01 6) against the zone-sized >=600 px requirement; the
+43k-167k band pixels are the blue-tinted floor, whose saturation stays below
+the paint threshold. The zone was therefore not visible from the visited
+viewpoints (search coverage/occlusion), not a colour-detection failure.
+e02/e05 ended in `approach_wall`; the other six ended in `leg_forward` (r4:
+e02/e04/e05 leg_forward). e01 is the one changed find: gate r4 found the
+paint at 96.2 s, B never saw colour at all.
+
+Visual check: all 16 episode montages (9 self-camera frames each, ticks
+0..last, `gate-mirror/montages/eNN.jpg`, sha256 in `montages.json`) were
+opened. The eight west/no-colour episodes never show the saturated zone-B
+patch; e02/e05 linger on cargo (a green beam / yellow cube) and e03/e06/e07
+turn through the divider area and the start-bay walls. The seven false
+arrivals show the bright patch appearing through the doorway at 4.1-16.4 s
+and the base stopping on its near edge with paint in the lower field of view;
+e13 shows the patch from tick 0 and stops inside. No blocked object was
+observed in any episode, so the ledger keeps `not_observed` and a null gap
+explicitly.
+
+Effect of B versus gate r4 (comparison scope: B's own raw recount plus a
+cross-run comparison of the runner summary fields — `rotation_cmd_rad`,
+declared times and final eval-only poses — and of the raw `stage_runs`; no
+full 16-episode raw recount of gate r4 and no trajectory-path comparison
+were made). Although the mirror toggle itself rewrites no command, the
+closed loop diverges: `rotation_cmd_rad` differs in 15/16 episodes (e00
+31.269 -> 20.514 rad, e02 23.716 -> 25.396 rad; cross-checked against the
+raw trace sum of |command_delta[2]|), and among the seven shared cap_end
+episodes the stage progression differs in 6/7 (only e07 identical: e00 gains
+follow_north/gap_cross/gap_forward/east_search/leg_forward over 45.5-120 s,
+while e02 keeps only orient then approach_wall 27.4-120 s). Outcome counts do
+not improve: found 8 vs 9 (e01 lost), declared 8 vs 8, GT-inside 1 vs 1;
+declared-time differences are -1.9 to +0.3 s (median 0.0) and final
+eval-only positions differ by 0.0032-1.4809 m (median 0.1724). B therefore
+changes behaviour as well as the own-motion prior, but the score stays the
+same.
+
+Verification scope: B's funnel and aggregates are an independent recount of
+its raw trace/eval-only cells (`recount.json`: 0 mismatches, all aggregate
+checks true). The control-field zeros (`held_world_reads`,
+`static_map_control`, `spawn_control`, `truth_control`, `top_camera_frames`)
+are runner-written constants in the episode records
+(`scripts/visgoal_probe.py` lines 649-650 and 961-962), so they are not an
+independent input audit; whether any held-object world read actually
+happened is unverified. The B-vs-r4 comparison above uses runner summary
+fields and raw stage runs, not a full recount of gate r4's 16 episodes and
+not a trajectory comparison.
+
+**Candidate B verdict: FAIL** against the pre-registered arrival criterion
+(GT-inside 1/16 with seven false arrivals) — the same failure mode as gate
+r4, with one fewer find (e01). The single GT-inside episode is also the only
+start where the paint was visible at tick 0 (`start_visibility_pixels`
+28,856; the base was inside for 29 frames, first at 9.1 s, declared at
+10.9 s trace time, episode `sim_s` 11.8), and among the 15 initially
+invisible starts the GT-inside count is 0/15 (`initially_invisible_n` 15,
+`initially_invisible_gt_n` 0). The outcome is therefore also consistent with
+"only the easy, paint-visible-at-start case succeeds". B is not pooled with
+gate r4 or with C.
+
 ### Candidate C (default off): expanding lawnmower and arrival aim inset
 
 Candidate C is the fix for the two raw-verified causes above.  It is behind
@@ -470,6 +590,11 @@ tolerance untouched.
   `scripts/visgoal_arrival_analysis.py`) and 9-frame montages (self camera
   only), plus the compressed full SHA256SUMS list (`SHA256SUMS.json.zst`,
   original sha/bytes in `SHA256SUMS.manifest.json`).
+* `gate-mirror/` — paired candidate B summary, strict recount, analysis,
+  arrival/FOV analysis (`analysis2.json`), cap-end analysis
+  (`capend_analysis.json`), the 16 9-frame self-camera montages and the
+  compressed SHA256SUMS list. Candidate B is a separate condition and is not
+  pooled with gate r4.
 * `queue-gate-mirror.json` / `queue-gate-lawnmower.json` — paired candidate B
   and C queues (same 16 starts, 120 SIM s, nworld=16); their stack admission
   files are `stack-gate-mirror-v17.json` and `stack-gate-lawnmower-v19.json`.
