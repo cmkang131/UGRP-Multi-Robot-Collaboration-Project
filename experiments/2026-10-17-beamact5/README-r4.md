@@ -35,6 +35,25 @@
 2. 6·10·20·27이 모두 PASS하고 회귀가 없으면 **39-world gate**(world15 제외, r3 승인 deviation 유지) 실행.
 3. 38/40 요건: 6·10·20·27 전부 PASS + 기존 통과 world 회귀 없음(15 expected FAIL, 37 구조적 FAIL). 27이 실패하면 37/40 FAIL, 회귀 1개면 37/40 FAIL — margin 없음.
 
-## 5. 결과
+## 5. 결과 (조건 A·B 진행, C 준비)
 
-(실행 완료 후 갱신)
+### 5.1 조건 A — r4a (r1 검색 revert + 6/10/20 유지, reobserve off)
+
+실행 `/home/ugrp/ugrp-sim/runs/beamact5/validation-r4a-4` (4 worlds 6·10·20·27, wall 1437.03 s, HOST_ERROR 0, success 2).
+
+|case|결과|end|SIM s|비고|
+|---|---|---|---|---|
+|6|**PASS**|teacher_terminal|54.7|peer-memory/static-peer 유지|
+|10|**FAIL**|cap_end|60.0|양 로봇 pick/episode_timeout — close-start low pitch가 3번째 원까지 지연|
+|20|**PASS**|teacher_terminal|55.2|검색 순서 revert에도 유지|
+|27|**FAIL**|teacher_terminal|26.4|approach_blocked_handoff/peer_approach_handoff (reobserve off, 설계상)|
+
+→ **ablation 확인:** 순수 r1 revert는 6·20을 유지하지만 **10이 회귀**한다(close-start fallback이 3번째 원). → 조건 C(조건부 far-first circles) 채택.
+
+### 5.2 조건 B — r4b (r4a + case27 reobserve 수정)
+
+실행 `/home/ugrp/ugrp-sim/runs/beamact5/validation-r4b-4` — 결과는 이 절 갱신에서 채운다.
+
+### 5.3 조건 C — r4c (far→close→mid circles + case27 수정)
+
+실행 예정 `/home/ugrp/ugrp-sim/runs/beamact5/validation-r4c-4` (4 worlds). 사전 등록: [r4c-preregistration-amendment.json](teacher/gate-40-r4/r4c-preregistration-amendment.json), 스택 점검 `teacher-gate-stack-check-r4c.json`(ok true). 통과 시 39-world gate(`gate39-r4c-run`, world15 제외).
