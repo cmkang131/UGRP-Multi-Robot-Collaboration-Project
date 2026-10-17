@@ -146,7 +146,7 @@ def convert(protocol,gate,records,output):
     locations={};checked_capture_roots=set();recording_receipts=[]
     for root in records:
         report=read(root/'gate-recount.json')
-        if report.get('cohort')!='act17-v7-native' or not report.get('complete'):
+        if report.get('cohort')!='act17-v7-native' or not report.get('complete') or report.get('input_audit_violations')!=0:
             raise ValueError('completed v7 recording results required')
         recording_receipts.append(dict(path=str(root/'gate-recount.json'),sha256=sha256(root/'gate-recount.json'),
             n=report['n'],N=report['N'],source_sha=report['source_sha']))
@@ -170,14 +170,17 @@ def convert(protocol,gate,records,output):
         storage='raw JPEG references; no copied or expanded image arrays',normalization=None,
         native_gate={k:gate[k] for k in ['source_sha','n','N','training_rgb','input_audit_violations','raw_results','runtime_profiles']},
         recording_receipts=recording_receipts)
-    train_x=[];train_y=[];train_seeds=[];counts=Counter()
+    train_x=[];train_y=[];train_seeds=[];counts=Counter();frame_counts=Counter()
     for seed in protocol['record_seeds']:
         raw,controller,plan=locations[seed];score=read(controller/'result.json')
+        observations=read(raw/'student-r1.jsonl',lines=True)
+        frame_counts['raw_observation_rows']+=len(observations)
         if not score.get('physical_success') or score['status']!='complete' or score.get('cap_end'):
             report['rejections'].append(dict(seed=seed,reason_category='unsuccessful_teacher_recording',
                 blocked_object='not_attributed',minimum_gap_m=None,minimum_gap_status='not_measured',raw=str(controller)));continue
         if any(score['input_audit'][k] for k in ['invisible_measurements','held_world_reads']):
             raise ValueError('teacher input boundary violation')
+        frame_counts['successful_audited_observation_rows']+=len(observations)
         scene=read(controller/'scene.json')
         # Gate/pilot writer added its note before Scene.build reset manifest.
         # Validate the unchanged actual final XML, never invent that old note.
@@ -189,9 +192,10 @@ def convert(protocol,gate,records,output):
                 or any(any(token in b.get('name','') for token in ['_can','_tile','_crate','_frame'])
                     for b in xml.findall('.//body') if b.get('name','').startswith('cargo_'))):
             raise ValueError('actual v7 scene/contact XML required')
-        observations=read(raw/'student-r1.jsonl',lines=True);labels=read(raw/'teacher-r1.jsonl',lines=True)
+        labels=read(raw/'teacher-r1.jsonl',lines=True)
         groups=paired_segments(observations,labels,done_label='last_local_row_v1',include_initial_approach_v1=True)
         selected=[p for group in groups for p in group];frames={};states=[];actions=[];pads=[];images=[];metadata=[]
+        frame_counts['paired_rows']+=len(selected)
         split='validation' if seed in protocol['validation_seeds'] else 'train'
         for group in groups:
             windows=c.training_windows([v[0] for v in group],[v[1] for v in group])
@@ -212,6 +216,8 @@ def convert(protocol,gate,records,output):
                 if split=='train':
                     train_x.append(state);train_y.append(c.encode_action(label['clean_teacher_command'],done=label['done']));train_seeds.append(seed)
         folder=output/str(seed);folder.mkdir()
+        frame_counts['future_slots']+=len(actions)*c.CHUNK
+        frame_counts['valid_future_targets']+=int((~np.asarray(pads,bool)).sum())
         np.savez_compressed(folder/'tensors.npz',state=np.asarray(states,np.float32),action=np.asarray(actions,np.float32),
             action_is_pad=np.asarray(pads,bool),image_index=np.asarray(images,np.int64))
         frame_file=pack_json(folder/'frames.json',[{k:v for k,v in r.items() if k!='index'} for r in frames.values()])
@@ -223,11 +229,18 @@ def convert(protocol,gate,records,output):
     stats=fit_stats(train_x,train_y,train_seeds)
     norm=output/'normalization.json';norm.write_text(json.dumps(stats,indent=2)+'\n')
     report.update(complete=True,status='complete',normalization=dict(path=norm.name,sha256=sha256(norm)),stage_counts=dict(counts),
-        eligible_train_seeds=stats['train_seeds'],selected_episode_counts=dict(Counter(e['split']+':'+e['kind'] for e in report['episodes'])))
+        frame_counts=dict(frame_counts),eligible_train_seeds=stats['train_seeds'],selected_episode_counts=dict(Counter(e['split']+':'+e['kind'] for e in report['episodes'])))
     pack_json(output/'manifest.json',report)
     (output/'rejection_table.json').write_text(json.dumps(dict(funnel=[dict(gate='requested_recordings',passed=len(protocol['record_seeds']),rejected=0),
-        dict(gate='successful_audited_recordings',passed=len(report['episodes']),rejected=len(report['rejections'])),
-        dict(gate='selected_frame_pairs',passed=sum(e['rows'] for e in report['episodes']),rejected=0)],rejections=report['rejections'],
+        dict(gate='successful_audited_recordings',passed=len(report['episodes']),rejected=len(report['rejections']))],
+        frame_funnel=[dict(gate='raw_observation_rows',passed=frame_counts['raw_observation_rows'],rejected=0),
+            dict(gate='successful_audited_observations',passed=frame_counts['successful_audited_observation_rows'],rejected=frame_counts['raw_observation_rows']-frame_counts['successful_audited_observation_rows']),
+            dict(gate='paired_local_skill_rows',passed=frame_counts['paired_rows'],rejected=frame_counts['successful_audited_observation_rows']-frame_counts['paired_rows'])],
+        target_funnel=[dict(gate='future_slots',passed=frame_counts['future_slots'],rejected=0),
+            dict(gate='valid_nonpadding_future_targets',passed=frame_counts['valid_future_targets'],rejected=frame_counts['future_slots']-frame_counts['valid_future_targets'])],
+        rejection_reason_definitions=dict(successful_audited_observations='unsuccessful episode excluded, raw preserved',paired_local_skill_rows='outside paired supported local skill/boundary rows',valid_nonpadding_future_targets='padding after local skill boundary is excluded from loss'),
+        funnel_units=dict(funnel='recordings',frame_funnel='observation_rows',target_funnel='future_action_vectors'),
+        rejections=report['rejections'],
         raw=[str(r) for r in records],reproduce=sys.argv),indent=2)+'\n')
     return report
 

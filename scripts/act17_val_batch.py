@@ -121,10 +121,13 @@ def main():
             N=sum(r['candidate']==c for r in rows)) for c in candidates})
         funnel=[]
         for c in candidates:
-            eligible=[r for r in rows if r['candidate']==c];previous=len(wanted)
-            for key in ['scored','issued_sequence_complete','lift_success','release_success','task_success']:
-                if key!='scored':eligible=[r for r in eligible if r[key]]
-                funnel.append(dict(candidate=c,gate=key,passed=len(eligible),rejected=previous-len(eligible)));previous=len(eligible)
+            children=[read(Path(job['out'])/'rejection_table.json')['funnel'] for job in finished if job['candidate']==c]
+            # Preserve the child's chronological grasp-done -> lift -> release
+            # funnel, rather than putting whole-sequence completion first.
+            for index,gate in enumerate(children[0]):
+                funnel.append(dict(candidate=c,gate=gate['gate'],passed=sum(v[index]['passed'] for v in children),rejected=sum(v[index]['rejected'] for v in children)))
+        report['raw_outcomes']={c:{key:sum(bool(r[key]) for r in rows if r['candidate']==c)
+            for key in ['issued_sequence_complete','lift_success','release_success','task_success','cap_end']} for c in candidates}
         write(a.out/'rejection_table-final.json',dict(funnel=funnel,rejections=[dict(candidate=r['candidate'],seed=r['seed'],
             reason_category='cap_end' if r['cap_end'] else 'student_task_failure',reason=r.get('failure_reason') or 'physical_or_sequence_gate_failed',
             blocked_object='not_attributed_before_saved_frame_analysis',minimum_gap_m=None,minimum_gap_status='not_measured',raw=r['raw']) for r in rows if not r['task_success']],
