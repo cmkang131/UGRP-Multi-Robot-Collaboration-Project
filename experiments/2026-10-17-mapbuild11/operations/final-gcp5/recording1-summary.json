@@ -1,0 +1,69 @@
+{
+  "status": "HOST_ERROR",
+  "error": "ModuleNotFoundError(\"No module named 'markerless_probe'\")",
+  "frames": 0,
+  "sim_s": -0.1,
+  "wall_s": 0.5263772140000071,
+  "source_sha": "cfdcd88450b8bef8730dfdec1fa8e3baa67ede7f",
+  "teacher_sha": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+  "scene": "walls_floor_contrast_v5_indigo110_s80",
+  "physics_backend": "mjwarp",
+  "contact_profile": {
+    "profile": "warp_native_contact_v1",
+    "noslip_iterations": 0,
+    "gpu_noslip_iterations": 0
+  },
+  "cpu_physics_steps": 0,
+  "top_camera_frames": 0,
+  "terminal_ring": {
+    "indices": [],
+    "hz": 10
+  },
+  "required_route_complete": false,
+  "input_audit": {
+    "invisible_measurements": 0,
+    "held_world_reads": 0,
+    "blocked_hidden": 0,
+    "blocked_held": 0,
+    "measurements_by_phase": {},
+    "scope": "decision input boundary only; evaluation excluded"
+  },
+  "student_success": false,
+  "llm_success": false,
+  "wall_cap": null,
+  "flow": "self_map",
+  "selfmap_map_correction_v1": "on",
+  "localization": {
+    "path": "texture_self_map_lk",
+    "engine": "OpenCV",
+    "map_correction": "on",
+    "correction_attempts": 0,
+    "correction_adopted": 0,
+    "static_registered": false
+  },
+  "camera_pose": "servo_fk_carry_v1",
+  "rejection_table": "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded/rejection_table.json",
+  "top_camera_control": false,
+  "held_object_hidden_v1": true,
+  "planning_cap_basis": "compute_or_sim",
+  "cap_end_label": "cap_end",
+  "cohort": "mapbuild11-public-box-native-v7-long-dev-light",
+  "production_qualified": false,
+  "diagnostic_navigation_approval": {
+    "authority": "coordinator",
+    "evidence": "user task 2026-10-17 12:45 mapbuild11: one round, max2 recordings, dev_light would_stop, same public west-lane ~5.65m /180deg"
+  },
+  "amcl_profile": "nav2_defaults_v1",
+  "start_zone_prior_v1": "on",
+  "rbpf": "off",
+  "heading_mode": "path_tangent_v1",
+  "map_correction_diagnostic_proposals_used": 0,
+  "current_stack_preflight": "/home/ugrp/ugrp-sim/ops-reviews/mapbuild11/long/stack-ready.json",
+  "nworld": 1,
+  "speed_first_30_sim_ratio": null,
+  "start_zone_path": "public-start-zone.json",
+  "uniform_setup_path": "setup-eval-only.json",
+  "dev_light": true,
+  "would_stop_events": 0,
+  "scope": "unloaded diagnostic recording; uncertain navigation continues; no production admission"
+}

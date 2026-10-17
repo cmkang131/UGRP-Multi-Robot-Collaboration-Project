@@ -1,0 +1,32 @@
+{
+  "inputs": {
+    "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2/own.json": "d06643faa3920f9df3aa099348cdf3e8720f1528645a320b4224e28f6ea87a0f",
+    "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2/online-trajectory.json": "aacc5202447ee3a9cad7732fb43ffecaabafca0bdf7f90b705eb0b720d0a7df9",
+    "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2/scans.json": "7a597856e0ecb9c743d11fea418e8501c2724f1202e78e8d80294a3f62906903",
+    "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2/static-map.json": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17",
+    "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2/public-start-zone.json": "9db95ff5a4c7953f2da8cf43e7de06a9722b4078fcdf3229d69552fc2f195dfe",
+    "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2/commands.json": "da3f6ba62f57933f0096af7cf05aa038640cd1799c3a0ae6826ace3ec6e6d31e",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/own-noise-command-r1-r2.json": "53aed9536e8bd543d8b093febf3fb3a75cd7a44cdd6b7bc7b3c1837c0d1c6242",
+    "/home/ugrp/ugrp-sim/src/mapbuild11-cfdcd8845/experiments/2026-10-17-mapbuild8/requirements.json": "d9f3c1f3a00273be3aa901613d01386fa493b1ed5edb561e40a58d367360875c",
+    "/home/ugrp/ugrp-sim/src/mapbuild11-cfdcd8845/scripts/mapbuild11_long.py": "c80abd7b7d2622be899a12b89fc76cc2e08357c68fe720eb0b6c038f1d162279",
+    "harness/mapbuild_amcl.py": "6354e571f2aa6f94da1ff32354fc0ea8199200df388e6498099b852776893ef9",
+    "harness/mapbuild_amcl_vendor/algorithms.py": "39dff9e3633ac21eb0761e1992e7732f30c9dad62b9bfe44cbb93d3fc4f2e929"
+  },
+  "prediction_sha256": "5af88a5b8339878299697578893dc4ec123298059f3353316789eb8d87c20ad0",
+  "own_maps_sha256": "f9177a75fe805cf1edc8ad4a1b7cea4be99bb8bbdb35362daf6e5fb12eb16008",
+  "truth_inputs": 0,
+  "rgb_verified": 2026,
+  "reproduction": [
+    "/home/ugrp/ugrp-sim/src/mapbuild11-cfdcd8845/scripts/mapbuild11_long.py",
+    "--input",
+    "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2",
+    "--output",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild11/long-recording2/score",
+    "--calibration",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/own-noise-command-r1-r2.json",
+    "--requirements",
+    "/home/ugrp/ugrp-sim/src/mapbuild11-cfdcd8845/experiments/2026-10-17-mapbuild8/requirements.json",
+    "--stage",
+    "predict"
+  ]
+}

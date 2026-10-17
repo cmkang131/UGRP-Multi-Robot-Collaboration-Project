@@ -1,0 +1,28 @@
+{
+  "source": "cfdcd88450b8bef8730dfdec1fa8e3baa67ede7f",
+  "mac_nonphysics": {
+    "command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_mapbuild11_diagnostic.py tests/test_mapbuild10_diagnostic.py tests/test_mapbuild10_mc.py",
+    "passed": 6,
+    "seconds": 1.35,
+    "physics_steps": 0,
+    "render_calls": 0
+  },
+  "compile": [
+    "scripts/mapbuild11_long.py",
+    "scripts/mapbuild11_compare.py"
+  ],
+  "full_ci": "최종 PR CI와 별도; 전체 통과 미확인, 병합 없음",
+  "physical": "completed: 1 approved round / 2 attempts, HOST_ERROR1 + command_complete1; no new-field physical control claim",
+  "production_qualified": false,
+  "stack_enum_nonphysics": {
+    "command": "python -m pytest -q tests/test_current_stack.py",
+    "passed": 4,
+    "seconds": 0.14,
+    "source_sha": "8a6a4917f176729abe6081b088ee21f6296a13bb"
+  },
+  "integrity": "4078 original files incl4052 RGB / 11 prediction inputs / 16772 source files: mismatch0; independent error recount0; 15 zstd verified; retrieval48 mismatch0",
+  "vm": {
+    "status": "TERMINATED",
+    "last_stop_kst": "2026-10-17 15:12:04 KST"
+  }
+}

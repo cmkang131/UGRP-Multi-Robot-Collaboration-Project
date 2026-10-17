@@ -1,0 +1,351 @@
+{
+  "schema": "ugrp.mapbuild11.funnel.v1",
+  "raw_recordings": [
+    "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded",
+    "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2"
+  ],
+  "reproduction": "API.md: exact source / scripts/mapbuild11_compare.py and mapbuild11_long.py; postprocess mapbuild11_plots.py",
+  "recording_attempts": [
+    {
+      "stage": "submitted",
+      "input_n": 2,
+      "cumulative_pass_n": 2,
+      "rejected_n": 0
+    },
+    {
+      "stage": "saved_own_frames",
+      "input_n": 2,
+      "cumulative_pass_n": 1,
+      "rejected_n": 1,
+      "reason_category": "HOST_ERROR",
+      "reason": "sparse camera dependency absent before first frame",
+      "blocked_object": "not_observed",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "stage": "route_command_complete",
+      "input_n": 1,
+      "cumulative_pass_n": 1,
+      "rejected_n": 0
+    },
+    {
+      "stage": "at_least_3m_route",
+      "input_n": 1,
+      "cumulative_pass_n": 1,
+      "rejected_n": 0
+    },
+    {
+      "stage": "cumulative_abs_turn_at_least_pi_minus_frozen_yaw_budget",
+      "input_n": 1,
+      "cumulative_pass_n": 1,
+      "rejected_n": 0
+    }
+  ],
+  "mc": {
+    "unit": "measurement updates per profile; 20 correlated replays of one recording each, not physical trials",
+    "table": "operations/final-gcp5/mc-funnel.json",
+    "matched_loss_table": "operations/final-gcp5/mc-matched-loss-summary.json"
+  },
+  "long_route": {
+    "raw": "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2",
+    "reproduction": [
+      "scripts/mapbuild11_plots.py",
+      "--input",
+      "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2",
+      "--score",
+      "/home/ugrp/ugrp-sim/ops-reviews/mapbuild11/long-recording2/score"
+    ],
+    "live_navigation_profile": "nav2_defaults_v1",
+    "live_diagnostic_proposals_used": 1967,
+    "comparison_scope": "same recording, offline filters; no physical nav2_rgb_field_v1 admission",
+    "models": {
+      "off": {
+        "route_frames": 1642,
+        "frame_stages": [
+          {
+            "stage": "finite_candidate",
+            "input_n": 1642,
+            "cumulative_pass_n": 1642,
+            "rejected_n": 0
+          },
+          {
+            "stage": "actual_xy_budget",
+            "input_n": 1642,
+            "cumulative_pass_n": 203,
+            "rejected_n": 1439
+          },
+          {
+            "stage": "actual_coupled_budget",
+            "input_n": 203,
+            "cumulative_pass_n": 140,
+            "rejected_n": 63
+          }
+        ],
+        "recording_stages": [
+          {
+            "stage": "record_command_complete",
+            "input_n": 1,
+            "cumulative_pass_n": 1,
+            "rejected_n": 0
+          },
+          {
+            "stage": "three_metre_route",
+            "input_n": 1,
+            "cumulative_pass_n": 1,
+            "rejected_n": 0
+          },
+          {
+            "stage": "authored_reversal",
+            "input_n": 1,
+            "cumulative_pass_n": 1,
+            "rejected_n": 0
+          }
+        ],
+        "distribution_ready_route_frames": 0,
+        "quality": {
+          "frames": 1642,
+          "end_xy_mm": 3323.175969529329,
+          "max_xy_mm": 3327.912645419836,
+          "rmse_xy_mm": 1532.3051785876178,
+          "end_yaw_deg": 52.54647960663114,
+          "max_yaw_deg": 101.88560840503766,
+          "end_coupled_deg": 179.2225581901679,
+          "requirement_frames": 140,
+          "end_requirement_pass": false,
+          "first_converged_sim_s": null,
+          "ready_updates": 0,
+          "wrong_ready_updates": 0
+        },
+        "whole_recording": {
+          "frames": 2026,
+          "end_xy_mm": 3323.175969529329,
+          "max_xy_mm": 3327.912645419836,
+          "rmse_xy_mm": 1379.477312401172,
+          "end_yaw_deg": 52.54647960663114,
+          "max_yaw_deg": 101.88560840503766,
+          "end_coupled_deg": 179.2225581901679,
+          "requirement_frames": 524,
+          "end_requirement_pass": false,
+          "first_converged_sim_s": null,
+          "ready_updates": 0,
+          "wrong_ready_updates": 0
+        },
+        "production_adopted_poses": 0,
+        "production_qualified": false,
+        "reason_category": "evaluation_requirement_or_posterior",
+        "blocked_object": "own_observed_wall",
+        "blocked_object_status": "wall_identity_not_measured",
+        "minimum_gap_m": null,
+        "gap_status": "not_measured"
+      },
+      "nav2_defaults_v1": {
+        "route_frames": 1642,
+        "frame_stages": [
+          {
+            "stage": "finite_candidate",
+            "input_n": 1642,
+            "cumulative_pass_n": 1642,
+            "rejected_n": 0
+          },
+          {
+            "stage": "actual_xy_budget",
+            "input_n": 1642,
+            "cumulative_pass_n": 1642,
+            "rejected_n": 0
+          },
+          {
+            "stage": "actual_coupled_budget",
+            "input_n": 1642,
+            "cumulative_pass_n": 1507,
+            "rejected_n": 135
+          }
+        ],
+        "recording_stages": [
+          {
+            "stage": "record_command_complete",
+            "input_n": 1,
+            "cumulative_pass_n": 1,
+            "rejected_n": 0
+          },
+          {
+            "stage": "three_metre_route",
+            "input_n": 1,
+            "cumulative_pass_n": 1,
+            "rejected_n": 0
+          },
+          {
+            "stage": "authored_reversal",
+            "input_n": 1,
+            "cumulative_pass_n": 1,
+            "rejected_n": 0
+          },
+          {
+            "stage": "distribution_converged",
+            "input_n": 1,
+            "cumulative_pass_n": 1,
+            "rejected_n": 0
+          },
+          {
+            "stage": "no_wrong_convergence",
+            "input_n": 1,
+            "cumulative_pass_n": 1,
+            "rejected_n": 0
+          },
+          {
+            "stage": "all_route_frames_within_budget",
+            "input_n": 1,
+            "cumulative_pass_n": 0,
+            "rejected_n": 1
+          },
+          {
+            "stage": "end_and_max_xy_improve_off",
+            "input_n": 0,
+            "cumulative_pass_n": 0,
+            "rejected_n": 0
+          }
+        ],
+        "distribution_ready_route_frames": 105,
+        "quality": {
+          "frames": 1642,
+          "end_xy_mm": 69.4896427917162,
+          "max_xy_mm": 174.71783730248353,
+          "rmse_xy_mm": 96.83698640958394,
+          "end_yaw_deg": 19.605872913036922,
+          "max_yaw_deg": 36.842010446316394,
+          "end_coupled_deg": 24.704513171881164,
+          "requirement_frames": 1507,
+          "end_requirement_pass": false,
+          "first_converged_sim_s": 165.3,
+          "ready_updates": 6,
+          "wrong_ready_updates": 0
+        },
+        "whole_recording": {
+          "frames": 2022,
+          "end_xy_mm": 69.4896427917162,
+          "max_xy_mm": 281.35762398322,
+          "rmse_xy_mm": 107.0573465700354,
+          "end_yaw_deg": 19.605872913036922,
+          "max_yaw_deg": 36.842010446316394,
+          "end_coupled_deg": 24.704513171881164,
+          "requirement_frames": 1775,
+          "end_requirement_pass": false,
+          "first_converged_sim_s": 21.0,
+          "ready_updates": 10,
+          "wrong_ready_updates": 0
+        },
+        "production_adopted_poses": 0,
+        "production_qualified": false,
+        "reason_category": "evaluation_requirement_or_posterior",
+        "blocked_object": "own_observed_wall",
+        "blocked_object_status": "wall_identity_not_measured",
+        "minimum_gap_m": null,
+        "gap_status": "not_measured"
+      },
+      "nav2_rgb_field_v1": {
+        "route_frames": 1642,
+        "frame_stages": [
+          {
+            "stage": "finite_candidate",
+            "input_n": 1642,
+            "cumulative_pass_n": 1642,
+            "rejected_n": 0
+          },
+          {
+            "stage": "actual_xy_budget",
+            "input_n": 1642,
+            "cumulative_pass_n": 1642,
+            "rejected_n": 0
+          },
+          {
+            "stage": "actual_coupled_budget",
+            "input_n": 1642,
+            "cumulative_pass_n": 1625,
+            "rejected_n": 17
+          }
+        ],
+        "recording_stages": [
+          {
+            "stage": "record_command_complete",
+            "input_n": 1,
+            "cumulative_pass_n": 1,
+            "rejected_n": 0
+          },
+          {
+            "stage": "three_metre_route",
+            "input_n": 1,
+            "cumulative_pass_n": 1,
+            "rejected_n": 0
+          },
+          {
+            "stage": "authored_reversal",
+            "input_n": 1,
+            "cumulative_pass_n": 1,
+            "rejected_n": 0
+          },
+          {
+            "stage": "distribution_converged",
+            "input_n": 1,
+            "cumulative_pass_n": 0,
+            "rejected_n": 1
+          },
+          {
+            "stage": "no_wrong_convergence",
+            "input_n": 0,
+            "cumulative_pass_n": 0,
+            "rejected_n": 0
+          },
+          {
+            "stage": "all_route_frames_within_budget",
+            "input_n": 0,
+            "cumulative_pass_n": 0,
+            "rejected_n": 0
+          },
+          {
+            "stage": "end_and_max_xy_improve_off",
+            "input_n": 0,
+            "cumulative_pass_n": 0,
+            "rejected_n": 0
+          }
+        ],
+        "distribution_ready_route_frames": 0,
+        "quality": {
+          "frames": 1642,
+          "end_xy_mm": 35.12904393708447,
+          "max_xy_mm": 88.87269364783538,
+          "rmse_xy_mm": 53.31156916100288,
+          "end_yaw_deg": 18.594941018687983,
+          "max_yaw_deg": 21.620221051286762,
+          "end_coupled_deg": 21.06854051424354,
+          "requirement_frames": 1625,
+          "end_requirement_pass": true,
+          "first_converged_sim_s": null,
+          "ready_updates": 0,
+          "wrong_ready_updates": 0
+        },
+        "whole_recording": {
+          "frames": 2022,
+          "end_xy_mm": 35.12904393708447,
+          "max_xy_mm": 266.5840614238757,
+          "rmse_xy_mm": 75.30608309855404,
+          "end_yaw_deg": 18.594941018687983,
+          "max_yaw_deg": 21.620221051286762,
+          "end_coupled_deg": 21.06854051424354,
+          "requirement_frames": 1922,
+          "end_requirement_pass": true,
+          "first_converged_sim_s": null,
+          "ready_updates": 0,
+          "wrong_ready_updates": 0
+        },
+        "production_adopted_poses": 0,
+        "production_qualified": false,
+        "reason_category": "evaluation_requirement_or_posterior",
+        "blocked_object": "own_observed_wall",
+        "blocked_object_status": "wall_identity_not_measured",
+        "minimum_gap_m": null,
+        "gap_status": "not_measured"
+      }
+    }
+  },
+  "production_admissions": 0
+}

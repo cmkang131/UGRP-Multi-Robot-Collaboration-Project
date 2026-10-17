@@ -1,0 +1,147 @@
+{
+  "recording_status": "ROUTE_COMMAND_COMPLETE",
+  "frames": 2026,
+  "sim_s": 202.5,
+  "route_frames": 1642,
+  "route_start_sim_s": 38.4,
+  "first_registration_would_stop": {
+    "t": 5.8,
+    "event": "prescan",
+    "status": "accepted",
+    "reason": "dev_light_would_stop_unresolved",
+    "category": "static_amcl",
+    "blocked_object": "own_observed_wall",
+    "minimum_gap_m": null,
+    "gap_status": "not_measured",
+    "static_from_own": [
+      -0.53151615645628,
+      -1.875896974565427,
+      1.5284259639964943
+    ],
+    "production_qualified": false,
+    "runtime_qualified": false,
+    "would_stop": true
+  },
+  "first_route_would_stop": {
+    "t": 38.4,
+    "event": "would_stop",
+    "stop_code": "LOCALIZATION_UNRESOLVED",
+    "category": "static_amcl",
+    "reason": "handoff_budget_or_ess_not_met",
+    "blocked_object": "own_observed_wall",
+    "minimum_gap_m": null,
+    "gap_status": "not_measured",
+    "belief": {
+      "candidate_pose": [
+        -0.3086891061442324,
+        -2.0250379562310106,
+        1.8071744632942162
+      ],
+      "covariance": [
+        [
+          0.003168912818273327,
+          0.00033208953317149023,
+          0.002134924698956681
+        ],
+        [
+          0.00033208953317149007,
+          0.0047877589391701215,
+          -0.002530832540923027
+        ],
+        [
+          0.0021349246989566806,
+          -0.002530832540923027,
+          0.009444418267012764
+        ]
+      ],
+      "xy_p95_m": 0.14994835628548248,
+      "yaw_p95_rad": 0.18127717335670845,
+      "direction_coupled_p95_rad": 0.3927790679656056,
+      "ess": 470.0753187928397,
+      "samples": 501,
+      "converged": false,
+      "ready_for_handoff": false,
+      "runtime_qualified": false,
+      "circular_resultant": 0.9952915025733221,
+      "post_resample_ess": 500.99999999999994
+    }
+  },
+  "would_stop_events": 1539,
+  "movement_observation_status": {
+    "unknown_servo_change": 3,
+    "unknown_camera_unsettled": 3,
+    "measured": 1378,
+    "unknown_rigid_consensus": 251,
+    "unknown_texture": 7
+  },
+  "fusion": {
+    "command_kept": 264,
+    "vo_replaced": 1106,
+    "fused": 272
+  },
+  "requirements_misses": {
+    "off": {
+      "route_frames": 1642,
+      "xy_over": 1439,
+      "coupled_over": 1502,
+      "first_miss_t": 52.4,
+      "last_miss_t": 202.5,
+      "max_coupled_deg": 228.54851362355052,
+      "worst_xy_t": 201.4,
+      "worst_yaw_t": 193.3
+    },
+    "nav2_defaults_v1": {
+      "route_frames": 1642,
+      "xy_over": 0,
+      "coupled_over": 135,
+      "first_miss_t": 57.4,
+      "last_miss_t": 202.5,
+      "max_coupled_deg": 42.55974339146062,
+      "worst_xy_t": 62.8,
+      "worst_yaw_t": 122.4
+    },
+    "nav2_rgb_field_v1": {
+      "route_frames": 1642,
+      "xy_over": 0,
+      "coupled_over": 17,
+      "first_miss_t": 114.5,
+      "last_miss_t": 122.8,
+      "max_coupled_deg": 23.64925823831672,
+      "worst_xy_t": 39.2,
+      "worst_yaw_t": 122.3
+    }
+  },
+  "estimated_waypoints_evaluation_only": [
+    {
+      "t": 119.3,
+      "index": 0,
+      "evaluation_pose": [
+        -0.6421730518341064,
+        1.0015747547149658,
+        -1.0517336130142212
+      ],
+      "body_yaw_deg": -60.25989719776027
+    },
+    {
+      "t": 202.5,
+      "index": 1,
+      "evaluation_pose": [
+        -0.5961390137672424,
+        -1.9481239318847656,
+        1.2671922445297241
+      ],
+      "body_yaw_deg": 72.60476744326297
+    }
+  ],
+  "route_yaw_increment_abs_deg_quantiles": {
+    "p50": 0.4855888839474715,
+    "p90": 4.339549077846013,
+    "p95": 4.58584125969371,
+    "max": 4.871659746268276
+  },
+  "whole_net_yaw_deg": 325.17034508230125,
+  "route_net_yaw_deg": -39.07688510966612,
+  "actual_route_abs_turn_deg": 2250.6582883970104,
+  "loaded_frames": 0,
+  "production_qualified": false
+}

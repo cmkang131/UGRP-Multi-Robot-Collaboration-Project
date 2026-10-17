@@ -1,0 +1,69 @@
+{
+  "raw": "/home/ugrp/ugrp-sim/runs/mapbuild10-mc20",
+  "paired_field_raw": "/home/ugrp/ugrp-sim/runs/mapbuild10-rgb-field-legacy-v2",
+  "reproduction": [
+    "scripts/mapbuild11_compare.py",
+    "--output",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild11/paired-r3-v2"
+  ],
+  "profiles": {
+    "nav2_defaults_v1": [
+      {
+        "stage": "supported",
+        "input_n": 880,
+        "cumulative_pass_n": 880,
+        "rejected_n": 0
+      },
+      {
+        "stage": "xy95",
+        "input_n": 880,
+        "cumulative_pass_n": 595,
+        "rejected_n": 285
+      },
+      {
+        "stage": "coupled95",
+        "input_n": 595,
+        "cumulative_pass_n": 178,
+        "rejected_n": 417
+      },
+      {
+        "stage": "pre_ess",
+        "input_n": 178,
+        "cumulative_pass_n": 178,
+        "rejected_n": 0
+      }
+    ],
+    "nav2_rgb_field_v1": [
+      {
+        "stage": "supported",
+        "input_n": 880,
+        "cumulative_pass_n": 880,
+        "rejected_n": 0
+      },
+      {
+        "stage": "xy95",
+        "input_n": 880,
+        "cumulative_pass_n": 530,
+        "rejected_n": 350
+      },
+      {
+        "stage": "coupled95",
+        "input_n": 530,
+        "cumulative_pass_n": 10,
+        "rejected_n": 520
+      },
+      {
+        "stage": "pre_ess",
+        "input_n": 10,
+        "cumulative_pass_n": 10,
+        "rejected_n": 0
+      }
+    ]
+  },
+  "rejection_fields": {
+    "blocked_object": "own_observed_wall",
+    "minimum_gap_m": null,
+    "gap_status": "not_measured",
+    "reason_category": "posterior_budget"
+  }
+}

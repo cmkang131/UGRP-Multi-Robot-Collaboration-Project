@@ -1,0 +1,36 @@
+{
+  "groups": {
+    "preparation/command_kept": {
+      "n": 80,
+      "signed_yaw_increment_residual_deg": -1.930034391026722,
+      "absolute_yaw_increment_residual_deg": 10.165243120267245
+    },
+    "preparation/vo_replaced": {
+      "n": 63,
+      "signed_yaw_increment_residual_deg": -0.5524359019440335,
+      "absolute_yaw_increment_residual_deg": 0.7731997753054146
+    },
+    "preparation/fused": {
+      "n": 240,
+      "signed_yaw_increment_residual_deg": 0.002140759361437084,
+      "absolute_yaw_increment_residual_deg": 6.149796897451369
+    },
+    "route/command_kept": {
+      "n": 264,
+      "signed_yaw_increment_residual_deg": -49.4623088364093,
+      "absolute_yaw_increment_residual_deg": 484.5350165530624
+    },
+    "route/vo_replaced": {
+      "n": 1106,
+      "signed_yaw_increment_residual_deg": 0.431385972566227,
+      "absolute_yaw_increment_residual_deg": 75.41363611466303
+    },
+    "route/fused": {
+      "n": 272,
+      "signed_yaw_increment_residual_deg": -1.0352272091787886,
+      "absolute_yaw_increment_residual_deg": 16.714398623877646
+    }
+  },
+  "scope": "evaluation-only increment residual decomposition; not causal XY attribution or a fitted motion model",
+  "reproduction": "wrap(recorded motion_delta yaw - between(eval-only adjacent poses).yaw), grouped by recorded fusion and phase"
+}

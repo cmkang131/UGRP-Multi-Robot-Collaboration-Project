@@ -1,0 +1,40 @@
+{
+  "source": "executed launcher argv from task tool record; original command-ready.json remains on gcp5 ops",
+  "argv": [
+    "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+    "/home/ugrp/ugrp-sim/src/mapbuild11-cfdcd8845/scripts/mapbuild7_capture.py",
+    "--enabled",
+    "--queue",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild11/long-recording2/queue-ready.json",
+    "--renderer",
+    "/home/ugrp/ugrp-sim/src/drivecheck-renderer-5974a181",
+    "--teacher-source",
+    "/home/ugrp/ugrp-sim/src/mapbuild7-teacher-6f057f7e",
+    "--vision",
+    "/home/ugrp/ugrp-sim/src/mapbuild5b-complete-vision597",
+    "--pickup",
+    "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79800-6f057f7e/plan.json",
+    "--output",
+    "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2",
+    "--body-sweep",
+    "--map-correction",
+    "--sweep-camera-folded",
+    "--sweep-model",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild8/own-sweep-model-r1.json",
+    "--own-motion-model",
+    "/home/ugrp/ugrp-sim/src/mapbuild11-cfdcd8845/experiments/2026-10-17-mapbuild8/calibration/own-command-calibration-r2.json",
+    "--amcl-calibration",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/own-noise-command-r1-r2.json",
+    "--requirements",
+    "/home/ugrp/ugrp-sim/src/mapbuild11-cfdcd8845/experiments/2026-10-17-mapbuild8/requirements.json",
+    "--long-config",
+    "/home/ugrp/ugrp-sim/src/mapbuild11-cfdcd8845/experiments/2026-10-17-mapbuild10/long-route-config.json",
+    "--dev-light"
+  ],
+  "defaults": {
+    "setup_seed": 2026101710,
+    "sim_budget_s": 1800
+  },
+  "preflight": "same argv + --preflight with separate output; no integration/render",
+  "no_new_submission": true
+}

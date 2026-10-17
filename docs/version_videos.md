@@ -4,6 +4,14 @@
 
 **영상은 stage probe를 다시 그린 것이다.** 위에서 본 그림은 정답 위치(평가용, 로봇 입력 아님)를 그린 도식이며 top 카메라 영상이 아니다(probe는 공용 top 카메라 프레임을 저장하지 않는다). 아래 곡선은 로봇이 추정한 yaw 불확실도 σ다. E2E 성공, 학생 성공, 성공률이 아니다.
 
+## 2026-10-17 mapbuild11 — 실제 native 미적재 장경로 진단
+
+위 stage-probe 설명과 달리 **저장된 자기 r1/r2 RGB**다. source `cfdcd8845`, 공개 시작 상자 무작위1라운드/2시도 중 기록이 있는 녹화2 하나를 선택했다(녹화1은 첫 프레임 전 HOST_ERROR). 같은2026프레임에서 OFF/수정 전/수정 후 AMCL만 paired 비교했고, 과거 짧은 녹화와 byte paired라고 주장하지 않는다.
+
+[대표4배속](../experiments/2026-10-17-mapbuild11/representative-4x.mp4) (640×240,50.9초,736907bytes, SHA256 `7d35f222e635167648a9dd7cb0c60d7302875fe42c82cbfb3f4aa5ab24ef5b5f`). 실제 주행6.461m, command_complete202.5 SIM초. 수정 후 끝/최대 추정 XY35.13/88.87mm, OFF3323.18/3327.91mm지만 방향결합17/1642초과·분포 수렴0으로 **NOT_READY**다. 미적재 녹화 하나이며 새 프로필의 실제 제어·적재·학생·LLM·실물 성공을 일반화하지 않는다.
+
+원본 gcp5 `runs/mapbuild11-long-round1/unloaded-v2`, 대표 증거 milestone 보존(필터 성공이 아님). [원자료·해시·한계](../experiments/2026-10-17-mapbuild11/README.md), [원래 manifest/압축](../experiments/2026-10-17-mapbuild11/operations/final-gcp5/closure-integrity.json).
+
 ## 2026-10-08 자기 지도 감독 승인 DEV (egomap34)
 
 아래 기존 stage-probe 영상과 별개로 새 물리180초를 기록했다. 단 한 번 승인된 seed32002이며

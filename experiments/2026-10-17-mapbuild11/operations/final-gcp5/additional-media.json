@@ -1,0 +1,154 @@
+{
+  "dense_range_sim_s": [
+    112.8,
+    123.7
+  ],
+  "dense_hz": 10,
+  "artifact": {
+    "representative-4x-under1m.mp4": {
+      "bytes": 736907,
+      "sha256": "7d35f222e635167648a9dd7cb0c60d7302875fe42c82cbfb3f4aa5ab24ef5b5f"
+    },
+    "turn-budget-112.8-123.7-10hz.jpg": {
+      "bytes": 235875,
+      "sha256": "93c9b53c7ef29fdc6c819ffd8223960e8e62d6e129f6e5c7802d31ff24840833"
+    }
+  },
+  "commands": [
+    [
+      "ffmpeg",
+      "-v",
+      "error",
+      "-itsoffset",
+      "112.8",
+      "-framerate",
+      "10",
+      "-start_number",
+      "1128",
+      "-i",
+      "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2/own-rgb/r1-%05d.jpg",
+      "-itsoffset",
+      "112.8",
+      "-framerate",
+      "10",
+      "-start_number",
+      "1128",
+      "-i",
+      "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2/own-rgb/r2-%05d.jpg",
+      "-filter_complex",
+      "[0:v][1:v]hstack=inputs=2,scale=320:120,drawtext=text='SIM %{pts\\:flt}':fontcolor=white:box=1:boxcolor=black:fontsize=12:x=2:y=2,tile=10x11",
+      "-frames:v",
+      "1",
+      "/home/ugrp/ugrp-sim/ops-reviews/mapbuild11/finish-v2/playback/turn-budget-112.8-123.7-10hz.jpg"
+    ],
+    [
+      "ffmpeg",
+      "-v",
+      "error",
+      "-i",
+      "/home/ugrp/ugrp-sim/ops-reviews/mapbuild11/finish-v2/playback/own-r1-r2-4x.mp4",
+      "-an",
+      "-c:v",
+      "libx264",
+      "-preset",
+      "fast",
+      "-b:v",
+      "128k",
+      "-maxrate",
+      "128k",
+      "-bufsize",
+      "256k",
+      "-pix_fmt",
+      "yuv420p",
+      "-movflags",
+      "+faststart",
+      "/home/ugrp/ugrp-sim/ops-reviews/mapbuild11/finish-v2/playback/representative-4x-under1m.mp4"
+    ]
+  ],
+  "representative_ffprobe": {
+    "streams": [
+      {
+        "index": 0,
+        "codec_name": "h264",
+        "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+        "profile": "High",
+        "codec_type": "video",
+        "codec_tag_string": "avc1",
+        "codec_tag": "0x31637661",
+        "width": 640,
+        "height": 240,
+        "coded_width": 640,
+        "coded_height": 240,
+        "closed_captions": 0,
+        "film_grain": 0,
+        "has_b_frames": 2,
+        "sample_aspect_ratio": "1:1",
+        "display_aspect_ratio": "8:3",
+        "pix_fmt": "yuv420p",
+        "level": 21,
+        "chroma_location": "left",
+        "field_order": "progressive",
+        "refs": 1,
+        "is_avc": "true",
+        "nal_length_size": "4",
+        "id": "0x1",
+        "r_frame_rate": "10/1",
+        "avg_frame_rate": "10/1",
+        "time_base": "1/10240",
+        "start_pts": 0,
+        "start_time": "0.000000",
+        "duration_ts": 521216,
+        "duration": "50.900000",
+        "bit_rate": "114782",
+        "bits_per_raw_sample": "8",
+        "nb_frames": "509",
+        "extradata_size": 45,
+        "disposition": {
+          "default": 1,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "non_diegetic": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0
+        },
+        "tags": {
+          "language": "und",
+          "handler_name": "VideoHandler",
+          "vendor_id": "[0][0][0][0]",
+          "encoder": "Lavc60.31.102 libx264"
+        }
+      }
+    ],
+    "format": {
+      "filename": "/home/ugrp/ugrp-sim/ops-reviews/mapbuild11/finish-v2/playback/representative-4x-under1m.mp4",
+      "nb_streams": 1,
+      "nb_programs": 0,
+      "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+      "format_long_name": "QuickTime / MOV",
+      "start_time": "0.000000",
+      "duration": "50.900000",
+      "size": "736907",
+      "bit_rate": "115820",
+      "probe_score": 100,
+      "tags": {
+        "major_brand": "isom",
+        "minor_version": "512",
+        "compatible_brands": "isomiso2avc1mp41",
+        "encoder": "Lavf60.16.100"
+      }
+    }
+  },
+  "dense_frames": 110
+}
