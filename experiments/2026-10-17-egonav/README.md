@@ -148,3 +148,31 @@ world02의 4.431 m는 받아들인 목표의 오차가 아니라 **첫 거짓 �
   mp4로 만든다.
 * 산출물: Mac `/Users/changmin/projects/ugrp/outputs/egonav-mapbuild/`
   (mp4·트레이스·메타). VM 원본은 `/home/ugrp/ugrp-sim/runs/egonav/mapbuild-01`.
+
+### 실행 결과 (2026-10-17)
+
+* `mapbuild-01`(파이프라인 확인): gate world00 스폰 (3.55, 0.4), sim 6.3 s,
+  트레이스/프레임 64행, GT 구역 도착 1/1, 충돌 0. 영상 960×560·10 fps·6.4 s.
+  목표가 0.99 m 앞에서 시작해 6.3 s 만에 도착, 기억이 1개뿐이라 시연용으로는
+  너무 짧았다(원본 보존).
+* `mapbuild-02`(시연): gate world02 스폰 (2.75, 0.4, yaw 1.570796) —
+  `gate-setup.json`의 `worlds[2]`와 같은 값. sim 15.7 s, wall 186.9 s,
+  트레이스/프레임 158행, GT 구역 도착 1/1, 충돌 0, target_loss 2회.
+  이벤트: t=1.6·3.8 `small_marking_rejected` → t=3.9 `target_acquired`
+  (+reacquired) → t=12.8 `target_lost` → t=13.5 `target_reacquired` →
+  t=15.7 `arrival_from_recent_close_observation`. 기억 개수 0→1,
+  불확실성 반경 0.19→0.06 m, 자기 기준 상대 위치 1.83→0.17 m(접근에 따라
+  왼쪽 패널에서 반대로 이동).
+* 영상: 960×560, 158프레임, 10 fps(=10 Hz 트레이스, **1× SIM 속도**), 15.8 s,
+  mp4 sha256 `332be3d8901f45be33c9acb6319986b16cdf7ee51991479b3d94446f6f25c4f2`,
+  트레이스 sha256 `e346e915227b1951bcf7bd8c7bc370dbd047ed9ce1ea4d2d274e0f125f2bd5c3`,
+  빌더 sha256 `d30e4fc7a54a0e5a05cf410eb52665c773fbd6fdd48de79defe8a1b97301d4d5`.
+* Mac 산출물: `/Users/changmin/projects/ugrp/outputs/egonav-mapbuild/`
+  (`egonav-memory-replay-world02-15.8s.mp4`, `memory_trace-world02-spawn.jsonl`,
+  `replay-meta.json`, `run-summary.json`, `preview/*.png`).
+* VM 원본: `/home/ugrp/ugrp-sim/runs/egonav/mapbuild-01`,
+  `/home/ugrp/ugrp-sim/runs/egonav/mapbuild-02`(VM 정지, 디스크 보존).
+  gcp4는 리스 해제 후 TERMINATED 확인.
+* 주의: 이 영상은 시각화이며 성공 판정 근거가 아니다. gate-09/PR #583 결과와
+  합산하지 않는다. 왼쪽 패널의 기억은 컨트롤러가 받아들인 목표 표시 1개이고,
+  거부된 작은 패치는 기억으로 만들지 않으므로 이벤트 텍스트로만 보인다.
