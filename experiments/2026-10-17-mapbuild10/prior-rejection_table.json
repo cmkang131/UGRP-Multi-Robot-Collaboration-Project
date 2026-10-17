@@ -1,29 +1,7 @@
 {
   "scope": "BEFORE estimator changes; mapbuild9 post-seal rejection and support audit",
   "source": "/home/ugrp/ugrp-sim/ops-reviews/mapbuild10",
-  "stages": [
-    {
-      "stage": "saved_frames",
-      "cumulative_pass_n": 1044,
-      "rejected_n": 0
-    },
-    {
-      "stage": "wall_visible_mapbuild9",
-      "cumulative_pass_n": 805,
-      "rejected_n": 239
-    },
-    {
-      "stage": "sensor_updates_mapbuild9_product",
-      "cumulative_pass_n": 106,
-      "rejected_n": 699
-    },
-    {
-      "stage": "offline_recording_accepted",
-      "cumulative_pass_n": 0,
-      "rejected_n": 3
-    }
-  ],
-  "units": "first 3 stages frames; final recording gate separately 3->0",
+  "units": "separate cumulative funnels for frames and recordings",
   "distribution": [
     {
       "reason_category": "finite_support_likelihood_collapse",
@@ -48,5 +26,34 @@
     "/home/ugrp/ugrp-sim/ops-reviews/mapbuild10/measurement-r3.json"
   ],
   "support_table": "/home/ugrp/ugrp-sim/ops-reviews/mapbuild10/support-models.json",
-  "reproduction": "scripts/mapbuild10_measurement_audit.py (argv recorded in each full frame table)"
+  "reproduction": "scripts/mapbuild10_measurement_audit.py (argv recorded in each full frame table)",
+  "frame_stages": [
+    {
+      "stage": "saved_frames",
+      "cumulative_pass_n": 1044,
+      "rejected_n": 0
+    },
+    {
+      "stage": "wall_visible_mapbuild9",
+      "cumulative_pass_n": 805,
+      "rejected_n": 239
+    },
+    {
+      "stage": "sensor_updates_mapbuild9_product",
+      "cumulative_pass_n": 106,
+      "rejected_n": 699
+    }
+  ],
+  "recording_stages": [
+    {
+      "stage": "recordings",
+      "cumulative_pass_n": 3,
+      "rejected_n": 0
+    },
+    {
+      "stage": "previous_offline_accepted",
+      "cumulative_pass_n": 0,
+      "rejected_n": 3
+    }
+  ]
 }

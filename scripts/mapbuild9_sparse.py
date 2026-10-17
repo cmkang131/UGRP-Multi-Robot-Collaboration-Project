@@ -41,7 +41,15 @@ def predict_robot(job):
     if sha(calibration)!='a37cf96551abbfb8b38df3efc1cd61f3f357ac9eb3a1dcd0b4d9947242e4e24f':raise ValueError('FROZEN_COLOR_REQUIRED')
     state=ColourBoundaryState('walls_floor_contrast_v5_indigo110_s80',read(calibration),option=RELOC16_OPTION)
     pair,scan=adapters(CARRY_OPTION)
-    amcl=StaticAMCL(read(a.input/w['static']),read(a.calibration),read(a.requirements),option=OPTION,seed=20261017)
+    static_path=a.input/w['static'];prior_kwargs={}
+    if getattr(a,'initial_prior',None) is not None:
+        manifest=read(a.initial_prior)
+        key=f"{w['world']}:{rid}"
+        if key not in manifest['streams']:raise ValueError('COARSE_STREAM_PRIOR_REQUIRED:'+key)
+        entry=manifest['streams'][key]
+        if entry['static_map_sha256']!=sha(static_path):raise ValueError('START_ZONE_MAP_HASH_MISMATCH')
+        prior_kwargs=dict(profile='nav2_defaults_v1',initial_prior_option='start_zone_prior_v1',initial_prior=entry['prior'])
+    amcl=StaticAMCL(read(static_path),read(a.calibration),read(a.requirements),option=OPTION,seed=20261017,**prior_kwargs)
     previous=None;servo_old=None;old_t=None;command_old=frames[0]['command_pose'];rows=[];scans=[];off=np.zeros(3)
     folder=a.output/f"world-{w['world']:03d}-{rid}";folder.mkdir()
     for f in frames:
@@ -67,7 +75,8 @@ def predict_robot(job):
     summary=dict(world=w['world'],rid=rid,seed=w['seed'],frames=len(rows),visible=sum(bool(s['segments']) for s in scans),
         attempted=sum(r['event']['attempted'] for r in rows),ready_n=len(ready),first_ready_sim_s=ready[0]['t'] if ready else None,
         motion_status=dict(Counter(r['lk']['status'] for r in rows)),reasons=dict(Counter(r['event']['reason'] for r in rows)),
-        loaded_camera_frames=0,physics_steps=0,truth_inputs=0,full_posterior=amcl.current)
+        loaded_camera_frames=0,physics_steps=0,truth_inputs=0,full_posterior=amcl.current,
+        initial_prior_option=amcl.initial_prior_option,start_zone_id=amcl.start_zone_id)
     dump(folder/'summary.json',summary);print(json.dumps({k:v for k,v in summary.items() if k!='full_posterior'}),flush=True)
     return summary
 
@@ -87,6 +96,7 @@ def predict(a):
         dict(stage='sensor_update',cumulative_pass_n=attempted,rejected_n=visible-attempted),dict(stage='full_posterior_ready',cumulative_pass_n=ready,rejected_n=attempted-ready)],
         distribution=[dict(category='static_amcl',reason=k,n=v,blocked_object='sparse_own_wall_observations',minimum_gap_m=None,gap_status='not_measured') for k,v in reasons.items()]))
     sources=[a.input/'own-inputs.json',a.calibration,a.requirements,a.queue,a.stack_check,root/'harness/mapbuild_amcl.py',root/'harness/mapbuild_amcl_vendor/algorithms.py',Path(__file__)]
+    if getattr(a,'initial_prior',None) is not None:sources.extend([a.initial_prior,root/'harness/mapbuild_start_zone.py'])
     # Own RGB hashes are checked per stream and recorded by original manifest.
     dump(a.output/'prediction-seal.json',dict(input_sha256={str(p):sha(p) for p in sources},
         prediction_sha256={str(p.relative_to(a.output)):sha(p) for p in a.output.rglob('*') if p.is_file()},
