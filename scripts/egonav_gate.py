@@ -186,7 +186,7 @@ def run(args):
     worlds = setup['worlds']
     nworld = len(worlds) if not args.worlds else min(args.worlds, len(worlds))
     worlds = worlds[:nworld]
-    if not args.preflight and not args.probe_rotation and nworld != 16:
+    if not args.preflight and not args.probe_rotation and not args.memory_trace and nworld != 16:
         raise ValueError('GATE_N16_REQUIRED')
     z1 = st.default_free_z(m, 'r1__robot')
     z2 = st.default_free_z(m, 'r2__robot')
@@ -324,6 +324,7 @@ def run(args):
     controllers = [EgocentricGoto(option=GOTO_OPTION, footprint_radius_m=footprint)
                    for _ in range(nworld)]
     per_world = [dict(world=w, spawn=list(spec['r1']), events=[], trace=[],
+                      memory_trace=[], frames=[],
                       ring=deque(maxlen=100), seen=False, anchor_world=None,
                       anchor_t=None, memory_errors=[], visible_flags=[],
                       target_losses=0, collisions=0, collision_events=[],
@@ -501,6 +502,33 @@ def run(args):
                                       center_distance_m=float(np.linalg.norm(np.asarray(pose[:2])-center)),
                                       inside_zone=inside_zone(pose[:2], center, half),
                                       anchor_available=state['anchor_world'] is not None)
+                if args.memory_trace:
+                    # Recording-only toggle egonav_memory_trace_v1 (default
+                    # off).  The pose below is an evaluation-only label; none
+                    # of these fields is ever passed to a controller.
+                    state['memory_trace'].append(dict(
+                        t=t, tick=tick, pose_eval_only=pose,
+                        action_kind=action['kind'], visible=visible,
+                        observation_relative_xy_m=(None if not obs
+                                                   else obs[0]['relative_xy_m']),
+                        memory_count=len(controllers[w].memories),
+                        memories=[dict(id=item.get('id'), kind=item.get('kind'),
+                                       signature=item.get('signature'),
+                                       relative_xy_m=item.get('relative_xy_m'),
+                                       range_m=item.get('range_m'),
+                                       bearing_rad=item.get('bearing_rad'),
+                                       uncertainty_m2=item.get('covariance_m2'),
+                                       radius95_m=item.get('radius95_m'),
+                                       first_seen_s=item.get('first_seen_s'),
+                                       last_seen_s=item.get('last_seen_s'),
+                                       age_s=item.get('age_s'),
+                                       observations=item.get('observations'))
+                                  for item in controllers[w].memories],
+                        events=[dict(t=e['t'], reason=e['reason'],
+                                     blocked_object=e.get('blocked_object'),
+                                     minimum_gap_m=e.get('minimum_gap_m'),
+                                     gap_status=e.get('gap_status'))
+                                for e in controllers[w].events if e['t'] == t]))
             # Issue one 0.1 s command per world through the same finite pulse
             # decoder.  Controller still receives only RGB/servo/own history.
             tape_rows = []
@@ -551,6 +579,9 @@ def run(args):
                 ok, enc = cv2.imencode('.jpg', cv2.cvtColor(raw[w], cv2.COLOR_RGB2BGR),
                                        [cv2.IMWRITE_JPEG_QUALITY, 75])
                 state['ring'].append(dict(tick=tick, t=t, jpeg=enc.tobytes(), sha256=hashlib.sha256(enc.tobytes()).hexdigest()))
+                if args.memory_trace:
+                    # Whole-run own-RGB frames for the offline replay only.
+                    state['frames'].append((tick, enc.tobytes()))
             if tick % 50 == 0:
                 progress = dict(t=t, world_done=sum(s['done'] for s in per_world),
                                 memory_max=max(len(c.memories) for c in controllers),
@@ -567,6 +598,22 @@ def run(args):
         error = repr(exc)
         raise
     finally:
+        if args.memory_trace:
+            # Whole-run recording-only trace/frames (toggle
+            # egonav_memory_trace_v1, default off).  Never read by control.
+            frames_folder = args.output/'frames'
+            trace_folder = args.output/'memory_trace'
+            trace_folder.mkdir(parents=True)
+            for w, state in enumerate(per_world):
+                folder = frames_folder/f'world{w:02d}'
+                folder.mkdir(parents=True)
+                for tick, data in state['frames']:
+                    (folder/f'{tick:04d}.jpg').write_bytes(data)
+                path = trace_folder/f'world{w:02d}.jsonl'
+                with path.open('w', encoding='utf-8') as handle:
+                    for row in state['memory_trace']:
+                        handle.write(json.dumps(row, ensure_ascii=False,
+                                                allow_nan=False, default=json_default) + '\n')
         # Write the 10 Hz terminal rings first (recording-only).
         for w, state in enumerate(per_world):
             folder = args.output/'ring'/f'world{w:02d}'
@@ -672,6 +719,13 @@ def run(args):
                                                     frames=sum(len(s['ring']) for s in per_world),
                                                     bytes=sum(p.stat().st_size for p in (args.output/'ring').rglob('*.jpg'))),
             cap_end_label='cap_end')
+        if args.memory_trace:
+            summary['memory_trace'] = dict(
+                toggle='egonav_memory_trace_v1', recording_only=True,
+                trace=[str((args.output/'memory_trace'/f'world{w:02d}.jsonl').relative_to(args.output))
+                       for w in range(nworld)],
+                trace_rows=[len(s['memory_trace']) for s in per_world],
+                frame_rows=[len(s['frames']) for s in per_world])
         dump(args.output/'summary.json', summary)
         dump(args.output/'rejection_table.json', dict(
             unit='world', funnel=funnel, reasons=dict(reasons), reason_rows=reason_rows,
@@ -695,6 +749,7 @@ def main():
     parser.add_argument('--preflight', action='store_true')
     parser.add_argument('--probe-rotation', type=int, default=0)
     parser.add_argument('--worlds', type=int, default=0)
+    parser.add_argument('--memory-trace', action='store_true')
     args = parser.parse_args()
     run(args)
 

@@ -125,3 +125,26 @@ world02의 4.431 m는 받아들인 목표의 오차가 아니라 **첫 거짓 �
   수정 효과는 gate-09 원본으로만 판정한다(아직 미확인).
 * 로컬 `raw/`(프레임·replay 디버그, 5.2 MiB)는 실험 미디어 5 MiB 제한
   때문에 커밋하지 않고 VM 원본 경로와 해시로 연결한다.
+
+## 시각화 실행: egonav_memory_trace_v1 (2026-10-17 사용자 요청)
+
+사용자 요청: "자기 지도를 어떻게 만들고 있는지 실시간으로 보여줄 수 있나".
+기억(지형지물)이 만들어지고 이동·소실되는 과정을 눈으로 보기 위한
+**기록 전용** 실행이다. 성공 판정 근거가 아니며 gate-09/PR #583 결과와
+합산하지 않는다. 다른 조건·16세계 gate는 바꾸지 않는다.
+
+* 토글 `egonav_memory_trace_v1`(기본 off, `--memory-trace`): 매 10 Hz 틱마다
+  기억 항목(id·종류·자기 기준 상대 x/y·불확실성·마지막 관측 시각), 그 틱의
+  이벤트, 로봇 자세(`pose_eval_only`, 평가 전용)를 `memory_trace/world00.jsonl`에
+  남기고, 전 구간 자기 RGB 프레임을 `frames/world00/`에 저장한다. 이 값은
+  제어기에 전달되지 않는다(제어 변경 없음). 게이트의 기존 `trace`·`summary`
+  동작은 토글 off에서 이전과 같다.
+* 실행: 세계 1개(world00), 같은 장면·시드·설정. 캡만 120 SIM초
+  (`gate-setup-visual120.json`, `step_budget` 500→1200; 다른 키는
+  `gate-setup.json`과 동일). `--worlds 1 --memory-trace`.
+* 재생: `scripts/egonav_memory_replay.py`가 왼쪽 자기 중심 top-down(로봇은
+  원점·정면 고정, 기억·불확실성 원이 상대 위치로 반대로 이동), 오른쪽 자기
+  RGB, 아래 t·기억 개수·이벤트를 그려 10 fps(=10 Hz 트레이스, 1× SIM 속도)
+  mp4로 만든다.
+* 산출물: Mac `/Users/changmin/projects/ugrp/outputs/egonav-mapbuild/`
+  (mp4·트레이스·메타). VM 원본은 `/home/ugrp/ugrp-sim/runs/egonav/mapbuild-01`.
