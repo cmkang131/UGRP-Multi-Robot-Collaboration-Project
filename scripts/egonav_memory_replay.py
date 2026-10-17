@@ -12,6 +12,11 @@ facing +x; remembered landmarks keep their self-relative coordinates, so
 they move opposite to the robot's real motion.  Right = own RGB frame.
 Bottom = SIM time, memory count and the events of the tick.
 
+When the trace was recorded with the default-off ``egonav_wall_memory_v1``
+toggle, ``wall_memories`` are drawn as green points (goal memories stay
+amber), and the wall segments observed by the own-RGB scan on that tick are
+drawn as thin grey lines.  All of it is recording/visualization only.
+
 1x SIM speed: the trace is 10 Hz and one output frame is emitted per tick at
 ``--fps 10``.  The GT pose printed in the corner is an evaluation-only label
 from the trace; it is not used for drawing or control.
@@ -84,10 +89,16 @@ def load_trace(path: Path) -> list[dict]:
 def view_range(rows: list[dict]) -> float:
     reach = 2.5
     for row in rows:
-        for item in row.get('memories') or []:
+        for item in (row.get('memories') or [])+(row.get('wall_memories') or []):
             xy = item.get('relative_xy_m') or [0.0, 0.0]
             reach = max(reach, math.hypot(float(xy[0]), float(xy[1]))
                         + uncertainty_radius(item))
+        for segment in row.get('scan_segments') or []:
+            try:
+                for point in segment:
+                    reach = max(reach, math.hypot(float(point[0]), float(point[1])))
+            except (TypeError, ValueError, IndexError):
+                continue
         observed = row.get('observation_relative_xy_m')
         if observed:
             reach = max(reach, math.hypot(float(observed[0]), float(observed[1])))
@@ -121,22 +132,37 @@ def draw_left(panel: np.ndarray, row: dict, scale: float) -> None:
     cv2.putText(panel, 'ego-centric memory (self-relative)',
                 (10, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (220, 220, 220), 1, cv2.LINE_AA)
 
-    # Remembered landmarks: self-relative position, 95% uncertainty circle.
-    for item in row.get('memories') or []:
+    # Wall segments observed by the own-RGB scan on this tick (recording-only
+    # extra field of egonav_wall_memory_v1 traces), drawn faintly as context.
+    for segment in row.get('scan_segments') or []:
+        try:
+            a, b = segment
+            p1, p2 = to_px(float(a[0]), float(a[1])), to_px(float(b[0]), float(b[1]))
+        except (TypeError, ValueError, IndexError):
+            continue
+        cv2.line(panel, p1, p2, (95, 95, 95), 2, cv2.LINE_AA)
+
+    def draw_item(item: dict, point_colour, text_colour) -> None:
+        # Self-relative position with its 95% uncertainty circle.
         xy = item.get('relative_xy_m') or [0.0, 0.0]
-        x, y = float(xy[0]), float(xy[1])
-        px, py = to_px(x, y)
+        px, py = to_px(float(xy[0]), float(xy[1]))
         radius = uncertainty_radius(item) * scale
         if radius >= 3:
-            cv2.circle(panel, (px, py), int(round(radius)), (60, 170, 255), 1, cv2.LINE_AA)
+            cv2.circle(panel, (px, py), int(round(radius)), point_colour, 1, cv2.LINE_AA)
         cv2.line(panel, (cx, cy), (px, py), (70, 110, 130), 1, cv2.LINE_AA)
-        cv2.circle(panel, (px, py), 5, (0, 190, 255), -1, cv2.LINE_AA)
+        cv2.circle(panel, (px, py), 5, point_colour, -1, cv2.LINE_AA)
         age = item.get('age_s')
         age_text = '' if age is None else f' {float(age):.1f}s'
         cv2.putText(panel, short(item.get('kind')) + age_text, (px + 8, py - 6),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.38, (0, 210, 255), 1, cv2.LINE_AA)
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.38, text_colour, 1, cv2.LINE_AA)
         cv2.putText(panel, short(item.get('id'), 20), (px + 8, py + 12),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.32, (170, 170, 170), 1, cv2.LINE_AA)
+
+    # Goal memories amber; wall_segment memories green (distinct colour).
+    for item in row.get('memories') or []:
+        draw_item(item, (0, 190, 255), (0, 210, 255))
+    for item in row.get('wall_memories') or []:
+        draw_item(item, (120, 255, 120), (140, 240, 140))
 
     observed = row.get('observation_relative_xy_m')
     if row.get('visible') and observed:
@@ -204,7 +230,12 @@ def build(run: Path, world: int, out: Path, fps: int, width: int) -> dict:
 
             t = float(row['t'])
             cv2.rectangle(canvas, (0, PANEL_H), (WIDTH, HEIGHT), (16, 16, 18), -1)
-            cv2.putText(canvas, f't = {t:5.1f} s   memories = {int(row.get("memory_count") or 0)}',
+            memory_text = (f't = {t:5.1f} s   memories = '
+                           f'{int(row.get("memory_count") or 0)}')
+            if row.get('wall_memory_count') is not None:
+                memory_text += (f'   wall memories = '
+                                f'{int(row.get("wall_memory_count") or 0)}')
+            cv2.putText(canvas, memory_text,
                         (12, PANEL_H + 30), cv2.FONT_HERSHEY_SIMPLEX, 0.62,
                         (240, 240, 240), 1, cv2.LINE_AA)
             current = [short(e.get('reason'), 30) for e in (row.get('events') or [])]
@@ -243,6 +274,16 @@ def build(run: Path, world: int, out: Path, fps: int, width: int) -> dict:
         trace_sha256=sha256_file(trace_path),
         mp4=str(out), mp4_sha256=sha256_file(out),
         mp4_bytes=out.stat().st_size)
+    wall_rows = [row for row in rows if row.get('wall_memory_count') is not None]
+    meta['wall_memory'] = dict(
+        toggle='egonav_wall_memory_v1', kind='wall_segment',
+        present=bool(wall_rows),
+        count_max=max((int(row.get('wall_memory_count') or 0)
+                       for row in wall_rows), default=0),
+        count_final=(int(wall_rows[-1].get('wall_memory_count') or 0)
+                     if wall_rows else 0),
+        scan_segments_recorded=bool(wall_rows and any(
+            row.get('scan_segments') for row in wall_rows)))
     meta_path = out.with_suffix('.json')
     meta_path.write_text(json.dumps(meta, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     return meta
