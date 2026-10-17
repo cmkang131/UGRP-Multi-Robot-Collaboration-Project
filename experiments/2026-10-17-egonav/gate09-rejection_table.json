@@ -1,0 +1,46 @@
+{
+  "unit": "world",
+  "funnel": [
+    {
+      "stage": "requested_n16",
+      "input_n": 16,
+      "cumulative_pass_n": 16,
+      "rejected_n": 0
+    },
+    {
+      "stage": "input_audit_zero_held_world_reads",
+      "input_n": 16,
+      "cumulative_pass_n": 16,
+      "rejected_n": 0
+    },
+    {
+      "stage": "target_observed_at_least_once",
+      "input_n": 16,
+      "cumulative_pass_n": 16,
+      "rejected_n": 0
+    },
+    {
+      "stage": "arrived_inside_authored_zone",
+      "input_n": 16,
+      "cumulative_pass_n": 16,
+      "rejected_n": 0
+    }
+  ],
+  "reasons": {},
+  "reason_rows": [],
+  "blocked_object": "not_observed",
+  "minimum_gap_m": null,
+  "gap_status": "not_measured",
+  "raw": "/home/ugrp/ugrp-sim/runs/egonav/gate-n16-09",
+  "reproduction": [
+    "scripts/egonav_gate.py",
+    "--queue",
+    "/home/ugrp/egonav-queue-09.json",
+    "--setup",
+    "experiments/2026-10-17-egonav/gate-setup.json",
+    "--renderer",
+    "/home/ugrp/ugrp-sim/src/41584d3a1-warp10-pool",
+    "--output",
+    "/home/ugrp/ugrp-sim/runs/egonav/gate-n16-09"
+  ]
+}
