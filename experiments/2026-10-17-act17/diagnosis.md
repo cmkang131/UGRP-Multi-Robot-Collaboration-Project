@@ -38,6 +38,10 @@ A의 정렬 바퀴 p90은 TRAIN0.350 / VAL0.633이다. B/C/D1의 VAL p90도0.350
 
 전체47663관측 중 기존 전문가 유효 라벨1025개, 잠재 집게 닫기 경계로46638개 제외. 이탈 전1초에 유효 교사 명령이 있는 실행14/72, 없는 실행58/72다. 후자는 미확인으로 남긴다.
 
+[실패72개 전체 표](results/pre-exit72-table.md)에 각 실행의 이탈 시각, 시간순 학생/교사 회전 부호,
+0.1 SIM초 명령마다의 예측 yaw 절댓값 중앙/p90(deg), 유효 교사 수와 분류를 적었다.
+이는 저장 원장의 파생 요약이며 실제 차체 회전·픽셀 분할·실패 인과 판정이 아니다.
+
 |이탈 전 학생 회전 명령 분류|실행 수|
 |---|---:|
 |unidirectional|7|
@@ -60,10 +64,13 @@ A의 정렬 바퀴 p90은 TRAIN0.350 / VAL0.633이다. B/C/D1의 VAL p90도0.350
 
 CPU seven-probe 복원은 첫 일부 probe의 이탈을 재며 실제 픽셀 전체 이탈 시각과 다르다. 영상에서91621은12–13.5초에 상자 끝이 일부 남고14초에는 사라진다. 91637의 안정 들기 반례 때문에 화면 이탈도 단독 실패 판정이 아니다. invisible_measurements=0, held_world_reads=0, 교사 행동 실행0.
 
-## 새 물리 대기열 차단
+## 초기 v4 물리 대기열 차단
 
 `cadence-queue.json`의 세 후보(off/replan1/ensemble1)는 같은 A 체크포인트·VAL8을 쓰도록 준비했다. `check_current_stack.py`는 **blocked**다. 실제 v4 시나리오·v4 화물(can/tile/crate/frame)·end color off가 최신 v7/v6·heavy 제외와 불일치한다. ACT 근거리에서 heading_mode가 적용되지 않는 범위 문제도 별도 차이로 남겼다. 승인 근거 없는 stack_deviations나 replay_of를 새 후보에 붙이지 않았다. 기존 저장 진단만 historical_replay 통과이며 current_compliant=false다. 새 후보 물리0, FINAL40 제출0, 추가 학습0.
 
 기준 변경 없이 v7로 재관문·재시연·학습하거나, 같은 v4 비교만 명시적 예외 승인을 받아야 한다. 사용자에게 이 두 경로를 질문했고 답변 전에는 종속 실행을 내지 않는다.
+
+후속 조정자 답변은 v4 예외 거부·v7 재관문→기록→학습이었다. 현재 진행은
+[v7 기록](v7/progress.md)에 이어 적으며, 위 차단 결과는 초기 v4 큐의 역사로 보존한다.
 
 원본: `/home/ugrp/ugrp-sim/runs/act17-{open-loop-r1,closed-loop-r1,diagnostic-summary-r1}`. 전체 per-frame 원장은 VM에 남았고 Mac에는 요약만 회수했다. `results/compression.json`의 압축·해제 SHA 모두 일치한다.

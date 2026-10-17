@@ -23,6 +23,28 @@ Q = B/'src/f0db6b1abb842ea65b71c433738210254f300a7c'
 T = B/'src/warp1-teacher-snapshot-6f057f7e'
 
 
+def completed_v7_groups(root):
+    """Only closed registered jobs; never mistake partial output for a failure."""
+    root=Path(root);summary=read(root/'summary.json')
+    if (summary.get('cohort')!='act17-v7-native' or not summary.get('complete')
+            or summary.get('status')!='complete' or not summary.get('finished')):
+        raise ValueError('complete registered v7 evaluation batch required')
+    groups=[];seen=set()
+    for job in summary['finished']:
+        out=Path(job['out']).resolve()
+        if (job['returncode'] or out.parent.parent!=root.resolve() or out.name!='evaluation'
+                or out in seen):raise ValueError('closed unique local evaluation jobs required')
+        seen.add(out);result=read(out/'summary.json');plans=read(out.parent/'plans.json')['episodes']
+        if (not result.get('complete') or result.get('status') not in ['complete','cap_end']
+                or result.get('cohort')!='act17-v7-native' or len(plans)!=len(result.get('student_scores',[]))):
+            raise ValueError('fully observed native per-world outcomes required')
+        for plan,row in zip(plans,result['student_scores']):
+            if row['seed']!=plan['seed'] or row['candidate'] not in job['candidates']:
+                raise ValueError('per-world candidate/seed assignment differs')
+        groups.append(out.parent)
+    return groups
+
+
 def command_yaw_deg(command):
     # Exact frozen visible-world issued-command odometry. It predicts command
     # motion; it does not claim measured body yaw or actuator execution.
@@ -33,6 +55,7 @@ def command_yaw_deg(command):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--out', type=Path, required=True)
+    parser.add_argument('--v7-root',type=Path,help='closed ACT17 VAL/FINAL batch; analyze failed worlds only')
     args = parser.parse_args()
     host, source = require_gcp2(training=True), frozen_source(ROOT)
     sys.path.insert(0, str(Q/'scripts'))
@@ -50,9 +73,11 @@ def main():
     totals = Counter()
     from gzip import open as gzopen
     with gzopen(args.out/'frames.jsonl.gz', 'xt') as stream:
-        for arm,root in [(a,exp/f'validation-{a}/validation') for a in ('A','B','C','D1')]+[('FINAL_A',exp/'final40')]:
-            for group in sorted(root.glob('group-*')):
-                launch = read(group/'launch.json')['args']
+        roots=([(None,args.v7_root)] if args.v7_root else
+               [(a,exp/f'validation-{a}/validation') for a in ('A','B','C','D1')]+[('FINAL_A',exp/'final40')])
+        for arm,root in roots:
+            for group in completed_v7_groups(root) if args.v7_root else sorted(root.glob('group-*')):
+                launched=read(group/'launch.json');launch=launched.get('args') or launched['argv']
                 references_path = Path(launch[launch.index('--references')+1])
                 references = read(references_path)
                 raw[str(references_path)] = sha256(references_path)
@@ -61,7 +86,10 @@ def main():
                 actions = read(evaluation/'actor-actions.jsonl', lines=True)
                 observations = read(evaluation/'actor-inputs.jsonl', lines=True)
                 camera = read(evaluation/'owner/RUN_META.json')['camera']
+                outcomes=read(evaluation/'summary.json')['student_scores'] if args.v7_root else None
                 for wi,plan in enumerate(plans):
+                    if outcomes is not None and outcomes[wi]['task_success']:continue
+                    current_arm=outcomes[wi]['candidate'] if outcomes is not None else arm
                     folder = evaluation/f'owner/world-{wi:03d}'
                     xml = folder/'scene.xml'
                     model = mujoco.MjModel.from_xml_string(xml.read_text())
@@ -116,7 +144,7 @@ def main():
                         owner.observation=obs
                         label=oracle.query(eyes,selected)
                         command=label.get('teacher_command')
-                        value=dict(arm=arm,seed=plan['seed'],tick=tick,elapsed_SIM_s=tick*.1,skill=obs['skill'],
+                        value=dict(arm=current_arm,seed=plan['seed'],tick=tick,elapsed_SIM_s=tick*.1,skill=obs['skill'],
                             in_frame_probes=int(inside.sum()),probe_N=len(points),
                             student_yaw_command_deg=command_yaw_deg(selected),student_command=selected,
                             teacher_command=command,teacher_label_valid=bool(label.get('label_valid')),
@@ -146,7 +174,7 @@ def main():
                     category=('no_geometric_exit' if exit_tick is None else 'oscillation' if switches else
                         'stopped_rotation' if not nonzero else 'opposite_to_available_teacher' if comparison['opposite'] else
                         'unidirectional_teacher_unavailable' if not valid else 'unidirectional')
-                    row=dict(arm=arm,seed=plan['seed'],assigned_item_id=plan['item_id'],samples=len(timeline),
+                    row=dict(arm=current_arm,seed=plan['seed'],assigned_item_id=plan['item_id'],samples=len(timeline),
                         geometric_exit_SIM_s=exit_tick*.1 if exit_tick is not None else None,
                         exit_skill=timeline[exit_tick]['skill'] if exit_tick is not None else None,
                         pre_exit_one_second=window,valid_teacher_comparisons=len(valid),comparison=dict(comparison),
@@ -157,11 +185,13 @@ def main():
                         cap_end=bool(read(folder/'result.json').get('cap_end',False)),raw=str(folder))
                     rows.append(row);totals[category]+=1
                     for path in (xml,folder/'states.npz',group/'plans.json',evaluation/'actor-actions.jsonl',evaluation/'actor-inputs.jsonl'):
-                        raw[str(path)]=sha256(path)
+                        actual=path if path.exists() else Path(str(path)+'.zst')
+                        raw[str(actual)]=sha256(actual)
                     (args.out/'progress.json').write_text(json.dumps(dict(completed=len(rows),latest_seed=plan['seed'])))
     report=dict(schema='ugrp.act17.saved_closed_loop.v1',status='complete',complete=True,source_sha=source,host=host,
         rows=rows,reason_distribution=dict(totals),physics_steps=0,training_steps=0,rendered_frames=0,
         teacher_actions_executed=0,student_inputs_changed=False,
+        cohort='act17-v7-native' if args.v7_root else 'historical_act16w_v4_native',
         caveats=['CPU seven-probe/FOV reconstruction on saved MJWarp poses; not native per-pixel segmentation',
                  'Original pre-hover oracle scope and potential-hold exclusion retained; missing teacher labels are not imputed',
                  'Geometric screen exit during grasp can be expected occlusion and is not itself a causal failure'],

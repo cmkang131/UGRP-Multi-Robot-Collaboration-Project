@@ -39,7 +39,8 @@ def main():
             (a.out/(row['id']+'-load.stdout')).write_text(proc.stdout);(a.out/(row['id']+'-load.stderr')).write_text(proc.stderr)
             if proc.returncode:raise RuntimeError('public bundle loading failed '+row['id'])
             response=json.loads(proc.stdout.strip().splitlines()[-1])
-            if response.get('ready') is not True or response.get('device')!='cpu' or response.get('bundled_inference_library') is not True:
+            if (response.get('ready') is not True or response.get('device')!='cpu'
+                    or response.get('bundled_inference_library') is not True or response.get('bundled_act_runtime') is not True):
                 raise ValueError('actual bundled CPU ready proof required')
             results.append(dict(id=row['id'],archive=row['archive'],release=row['release'],download=downloaded,full_inventory=verified,
                 loading=response,loading_exit_code=proc.returncode,loader_sha256=sha256(destination/'inference/load_model.py')))

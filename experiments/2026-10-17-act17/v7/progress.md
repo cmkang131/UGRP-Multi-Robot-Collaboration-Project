@@ -7,7 +7,7 @@
 | 학습카메라 OFF native 교사 관문 | 40/40 | 각 종류10/10, Score 재계산·실제XML·native noslip0·입력감사 위반0, manifest8226파일 |
 | 기록 pilot | 4/4 | 실제10Hz JPEG·명령·라벨, 네 종류 각1, 원본Score·입력경계 재계산 일치 |
 | 실제 pilot 학습 준비 | 3/3 경로 | M/F/S 실제 전처리 배열일치·각1회 준비 gradient·저장재로딩 동일 예측, 연구모델 아님 |
-| 나머지 기록 | 236 제출·진행 | source376fa86c0, 완료로 표시하지 않음 |
+| 나머지 기록 | 닫힌167/236·성공167 | 05:33:13Z 원본재계수·held/invisible0, pilot포함171/240; 남은69 진행, 전체완료 아님 |
 | 연구 학습 / VAL8 / FINAL40 | 미제출 | 준비용 체크포인트는 삭제한 임시 시험본이며 성능·연구모델에 포함하지 않음 |
 
 첫 준비 시도는 Scene.build가 빌드 전의 메타데이터 주석을 덮어써서 중단했다. 실제 XML은 v7이었다.
@@ -30,3 +30,8 @@
 [results/bulk-stack-check.json](results/bulk-stack-check.json)에 있다. [디스크 예약 재검사](results/record-budget-r2.json)는 PASS다.
 원본은 `/home/ugrp/ugrp-sim/runs/act17-v7/`에 있고 Mac에는 요약·대표 재생만 가져왔다.
 실행 SHA는 gate be39af6fc, pilot5160938e5, 준비270164c89, bulk376fa86c0이다.
+
+main4bb02030b의 gcp2 정지예산2,000KRW 후속 사용자 결정을 확인했다. budget-stop과 idle20을 유지하며,
+이 문서에 실청구액을 추정값으로 채우지 않는다. [닫힌167회 요약](results/record-progress-167.json)은 중간 증거다.
+gate/pilot/bulk와 준비 시도에 RUN_META 보존 분류를 소급 추가했다(실제 추가시각 표시, 원 채점·시각·해시 변경 없음).
+완료된 관문은 milestone, 재현할 v7 학습자료 기록은 study, 임시 준비 시도는 dev로 구분한다.

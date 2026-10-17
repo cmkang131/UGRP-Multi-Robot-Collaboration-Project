@@ -74,23 +74,45 @@ def main():
     training_source=B/'src'/provenance['source_sha'];frozen_source(training_source,provenance['source_sha'])
     for name in ['act17_policy.py','act17_data.py','act17_compact_records.py','act17_open_loop.py','act16w_runtime.py']:
         shutil.copy2(training_source/'scripts'/name,inference/name)
-    loader="""import json,sys
+    # The normalizer/loss-compatible ACT file is hash-pinned by Actor.load.
+    # Bundle its exact bytes so loading does not depend on an unpublished
+    # modification to the existing environment. Other dependency versions are
+    # recorded below; no installed package is modified by the bundle loader.
+    from lerobot.policies.act import modeling_act
+    runtime=inference/'runtime';runtime.mkdir()
+    if sha256(Path(modeling_act.__file__))!=LEROBOT_ACT_SHA256:raise ValueError('pinned ACT runtime changed')
+    shutil.copy2(modeling_act.__file__,runtime/'modeling_act.py')
+    distribution=importlib.metadata.distribution('lerobot')
+    licenses=[distribution.locate_file(p) for p in distribution.files or [] if str(p).endswith('/licenses/LICENSE')]
+    if len(licenses)!=1:raise ValueError('exact upstream runtime license required')
+    shutil.copy2(licenses[0],runtime/'LICENSE.lerobot')
+    loader="""import hashlib,importlib.util,json,sys
 from pathlib import Path
 HERE=Path(__file__).resolve().parent
 sys.path.insert(0,str(HERE));sys.path.insert(0,str(HERE/'act_library'))
+import lerobot.policies.act as act_package
+runtime=HERE/'runtime/modeling_act.py'
+expected=json.loads((HERE.parent/'environment.json').read_text())['lerobot_ACT_file_sha256']
+if hashlib.sha256(runtime.read_bytes()).hexdigest()!=expected:raise ValueError('bundled ACT runtime changed')
+name='lerobot.policies.act.modeling_act'
+spec=importlib.util.spec_from_file_location(name,runtime)
+module=importlib.util.module_from_spec(spec);sys.modules[name]=module
+act_package.modeling_act=module;spec.loader.exec_module(module)
 import act17_data
 act17_data.library=lambda: HERE/'act_library'
 from act17_policy import Actor
 actor=Actor.load(HERE.parent/'act',device='cpu')
 from harness import grasp_act_contract as c
 if not Path(c.__file__).resolve().is_relative_to(HERE.resolve()):raise ValueError('bundle inference library not used')
-print(json.dumps(dict(ready=True,device='cpu',image_mode=actor.image_mode,bundled_inference_library=True,scope='model loading only; not physical success')))
+from lerobot.policies.act import modeling_act
+if Path(modeling_act.__file__).resolve()!=runtime.resolve():raise ValueError('bundled ACT runtime not used')
+print(json.dumps(dict(ready=True,device='cpu',image_mode=actor.image_mode,bundled_inference_library=True,bundled_act_runtime=True,scope='model loading only; not physical success')))
 """
     (inference/'load_model.py').write_text(loader)
     for file,name in [(a.protocol,'comparison-protocol.json'),(a.training_summary,'training-summary.json'),(a.dataset_manifest,'dataset-manifest.json')]:
         if file.exists():shutil.copy2(file,stage/name)
         else:shutil.copy2(Path(str(file)+'.zst'),stage/(name+'.zst'))
-    environment=dict(python=sys.version,packages={k:importlib.metadata.version(k) for k in ['torch','torchvision','lerobot','numpy','Pillow','draccus','safetensors']},lerobot_ACT_file_sha256=LEROBOT_ACT_SHA256)
+    environment=dict(python=sys.version,packages={k:importlib.metadata.version(k) for k in ['torch','torchvision','lerobot','numpy','Pillow','draccus','safetensors']},lerobot_ACT_file_sha256=LEROBOT_ACT_SHA256,bundled_ACT_runtime=True)
     (stage/'environment.json').write_text(json.dumps(environment,indent=2)+'\n')
     (stage/'provenance.json').write_text(json.dumps(dict(training=provenance,ACT_library_source_sha=ACT_SHA,packaging_source_sha=source,
         packaging_host=host,original_checkpoint=str(a.checkpoint),contact_profile='warp_native_contact_v1',raw_dataset_backup_included=False,
