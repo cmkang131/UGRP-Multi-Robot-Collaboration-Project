@@ -1,0 +1,25 @@
+{
+  "utc": "2026-10-17T08:25:26.365343+00:00",
+  "command": [
+    "gcloud",
+    "compute",
+    "instances",
+    "describe",
+    "ugrp-act-l4-gcp2",
+    "--zone",
+    "asia-northeast3-a",
+    "--account",
+    "changmin5781@gmail.com",
+    "--project",
+    "ugrp-sim-b-1014",
+    "--format=json(name,status,machineType,scheduling.maxRunDuration,scheduling.instanceTerminationAction)"
+  ],
+  "result": {
+    "machineType": "https://www.googleapis.com/compute/v1/projects/ugrp-sim-b-1014/zones/asia-northeast3-a/machineTypes/g2-standard-8",
+    "name": "ugrp-act-l4-gcp2",
+    "status": "TERMINATED"
+  },
+  "prestop": "prestop-r1.json",
+  "own_leases_released": true,
+  "foreign_compute_found": false
+}

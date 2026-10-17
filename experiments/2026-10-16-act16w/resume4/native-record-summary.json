@@ -1,0 +1,168 @@
+{
+  "status": "PASS_REQUIRES_RECORD_REVIEW",
+  "complete": true,
+  "source_sha": "c27a9d537eaae873c7e7bc2ceaeeada69696cc48",
+  "host": {
+    "project_id": "ugrp-sim-b-1014",
+    "instance": "ugrp-act-l4-gcp2",
+    "machine_type": "g2-standard-8",
+    "zone": "asia-northeast3-a"
+  },
+  "started_utc": "2026-10-16T15:11:28.076888+00:00",
+  "wall_cap": null,
+  "contact_profile": "warp_native_contact_v1",
+  "stage": "record",
+  "final40_accessed": false,
+  "speed_gate_override": "Native camera-off40 completed and all8254 hashes/raw scores verified. First30 weighted world latency median 34.292 wall/SIM; 40 worlds use7 exact unsupported-field model groups on one L4. Retain user-required MJWarp profile and cameras; no latency pass claim, no CPU fallback or wall cap. Native record40 is finite and idle20/budget-stop stay enabled.",
+  "camera_off_gate_speed": {
+    "measured_worlds": 40,
+    "N": 40,
+    "median_wall_per_SIM": 34.2915794728,
+    "complete": true,
+    "passed": false,
+    "threshold_source": "AGENTS: first30 median>6.0 blocks new submission unless recorded --speed-gate-override",
+    "raw_receipts": [
+      {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-gate-r2/group-00/first30.json",
+        "sha256": "609144d323a995dab01764da01a71ecadecb9d04fc4208dd71b9e2ecc30bcfeb",
+        "worlds": 12
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-gate-r2/group-01/first30.json",
+        "sha256": "1935629f2b1c553b7049442659eb0b6440c577076b03130772dedd1f8997a81f",
+        "worlds": 7
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-gate-r2/group-02/first30.json",
+        "sha256": "0bdfef18b27d862eaf7bc7e2d0f8335f74fb03c42524f3f43145da16ad84d712",
+        "worlds": 10
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-gate-r2/group-03/first30.json",
+        "sha256": "e55ceb65aaeceacabf62e6f6290b41b5edcd70b0111506ad5a7a600921956e89",
+        "worlds": 6
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-gate-r2/group-04/first30.json",
+        "sha256": "1ed425c27d4c87b6aa749076718bd4d4d5e0e1ac6a927dcb31476a1c6ef482c9",
+        "worlds": 3
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-gate-r2/group-05/first30.json",
+        "sha256": "f907d56eca64a01c7b161f2e5f0e2072c1296b3bbbe8c311915452405a5a8571",
+        "worlds": 1
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-native-gate-r2/group-06/first30.json",
+        "sha256": "3f3ad712c1d1728a11bc90b42de7e22673cb97f027437d77f414961b5a6adbb1",
+        "worlds": 1
+      }
+    ]
+  },
+  "groups": [
+    [
+      0,
+      [
+        0,
+        2,
+        6,
+        8,
+        14,
+        18,
+        22,
+        26,
+        30,
+        34,
+        36,
+        38
+      ]
+    ],
+    [
+      1,
+      [
+        1,
+        4,
+        10,
+        24,
+        29,
+        32
+      ]
+    ],
+    [
+      2,
+      [
+        3,
+        7,
+        11,
+        15,
+        19,
+        23,
+        27,
+        31,
+        35,
+        39
+      ]
+    ],
+    [
+      3,
+      [
+        5,
+        12,
+        13,
+        16,
+        17,
+        21,
+        33,
+        37
+      ]
+    ],
+    [
+      4,
+      [
+        9,
+        20,
+        25
+      ]
+    ],
+    [
+      5,
+      [
+        28
+      ]
+    ]
+  ],
+  "active": [],
+  "finished": [
+    {
+      "group": 5,
+      "exit_code": 0
+    },
+    {
+      "group": 4,
+      "exit_code": 0
+    },
+    {
+      "group": 1,
+      "exit_code": 0
+    },
+    {
+      "group": 3,
+      "exit_code": 0
+    },
+    {
+      "group": 0,
+      "exit_code": 0
+    },
+    {
+      "group": 2,
+      "exit_code": 0
+    }
+  ],
+  "n": 40,
+  "N": 40,
+  "gate_passed": true,
+  "input_audit_violations": 0,
+  "next": "inspect native raw/review before next stage",
+  "ended_utc": "2026-10-16T15:35:31.705299+00:00",
+  "vm_stop_attempted": false
+}

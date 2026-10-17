@@ -1,0 +1,84 @@
+{
+  "source_sha": "4a28126228df93f0de4949e6a8db1adcdb59f26e",
+  "host": {
+    "project_id": "ugrp-sim-b-1014",
+    "instance": "ugrp-act-l4-gcp2",
+    "machine_type": "g2-standard-8",
+    "zone": "asia-northeast3-a"
+  },
+  "scope": "real optimizer loss logs only; no physical task inference",
+  "contact_profile": "warp_native_contact_v1",
+  "raw": [
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-training-r1/A/smoke/summary.json",
+      "sha256": "387af3a6480dc093653cd8aaacf4b99443279eac84330bbe90dcb1c9db5ca3ad"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-training-r1/A/smoke/progress.jsonl",
+      "sha256": "fd6ab6ef8d95c2fe0d453282466f745889a8d15a8f1209cbe4ae1f8d96aee640"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-training-r1/A/main/summary.json",
+      "sha256": "7e6c2a802bef3b6dd3fb4411a5fff09900af62ef7f837f533c963c153c79df79"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-training-r1/A/main/progress.jsonl",
+      "sha256": "953d8152c4462803d60a466dea2b84042c08a7800dfc03fdd341596af489a13a"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-training-r1/B/smoke/summary.json",
+      "sha256": "a7760ad6e9c3786376a0f3b18bf0c77bfafebe22e37eaa36564afece8e9332dc"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-training-r1/B/smoke/progress.jsonl",
+      "sha256": "b9613cef8f9844ae187f39e734204f8df545c272ca464e12f0a04996946ddc69"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-training-r1/B/main/summary.json",
+      "sha256": "61e69228993bd310cd714e0804aa58a3f8aa69e8844ce4cc5693a1f39b6767c9"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-training-r1/B/main/progress.jsonl",
+      "sha256": "477f6cfa2b40181755be43b163990ea21c9386096b79adefb204e096b9667276"
+    }
+  ],
+  "arms": {
+    "A": {
+      "step": 10000,
+      "complete": true,
+      "logged_points": 1002,
+      "last": {
+        "step": 10000,
+        "loss": 0.21971753239631653,
+        "legacy_l1_loss": 0.6750503182411194,
+        "movement_l1_loss": 0.18635958433151245,
+        "done_bce_loss": 0.0005721715861000121,
+        "kld_loss": 0.003278575837612152,
+        "gradient_norm": 13.785768508911133,
+        "wall_s": 3160.241309617999,
+        "eligible_rows": 11860
+      },
+      "last100_logged_total_loss_median": 0.1816355586051941
+    },
+    "B": {
+      "step": 10000,
+      "complete": true,
+      "logged_points": 1002,
+      "last": {
+        "step": 10000,
+        "loss": 0.21307750046253204,
+        "legacy_l1_loss": 0.6910673379898071,
+        "movement_l1_loss": 0.186750590801239,
+        "done_bce_loss": 0.0005012377514503896,
+        "kld_loss": 0.0025825686752796173,
+        "gradient_norm": 11.50345230102539,
+        "wall_s": 3160.5622945449995,
+        "eligible_rows": 11860
+      },
+      "last100_logged_total_loss_median": 0.20134225487709045
+    }
+  },
+  "files": {
+    "learning-curves.png": "441d9615ae25c078a2dac101c75e07cfce518b411e37ba017df5f62d3394473f"
+  }
+}

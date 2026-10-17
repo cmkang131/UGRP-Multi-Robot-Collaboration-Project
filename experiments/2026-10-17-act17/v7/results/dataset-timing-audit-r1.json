@@ -1,0 +1,33 @@
+{
+  "status": "complete",
+  "utc": "2026-10-17T06:34:23.705572+00:00",
+  "source_sha": "e1b7de0f789305e12a3612e7cbf392b8e4ac21ee",
+  "scope": "saved dataset timing/issued-history alignment, no new training/physics/render/inference",
+  "counts": {
+    "selected_rows": 87100,
+    "startup_rows": 240,
+    "nonstartup_rows": 86860,
+    "changed_label_rows": 32299,
+    "history_matches_previous_label": 32299
+  },
+  "RGB_time_minus_observation_s": {
+    "N": 87100,
+    "min": 0.0,
+    "median": 0.0,
+    "max": 0.0
+  },
+  "teacher_label_time_minus_observation_s": {
+    "N": 87100,
+    "min": 0.0,
+    "median": 0.0,
+    "max": 0.0
+  },
+  "observation_minus_last_issued_time_s": {
+    "N": 87100,
+    "min": 0.0,
+    "median": 0.10000000000000009,
+    "max": 0.10000000000000142
+  },
+  "nonprevious_examples": [],
+  "comparison": "exact encoded first13 action coordinates on label-change rows; startup own-command initialization excluded from temporal check; no new tolerance threshold"
+}

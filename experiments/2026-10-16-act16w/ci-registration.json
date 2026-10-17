@@ -1,0 +1,30 @@
+{
+  "scope": "offline CI registration/listing only; pytest/CUDA/physics not run by this command",
+  "command": [
+    "python3",
+    "scripts/run_ci_tests.py",
+    "--shard-count",
+    "8",
+    "--list-shards",
+    "--durations-json",
+    "configs/ci_test_durations.json"
+  ],
+  "coverage_verified": true,
+  "total_files": 673,
+  "new_files": [
+    "tests/test_act16w_curriculum.py",
+    "tests/test_act16w_dagger.py",
+    "tests/test_act16w_input.py",
+    "tests/test_act16w_prerequisites.py",
+    "tests/test_act16w_runtime.py"
+  ],
+  "occurrences": {
+    "tests/test_act16w_curriculum.py": 1,
+    "tests/test_act16w_dagger.py": 1,
+    "tests/test_act16w_input.py": 1,
+    "tests/test_act16w_prerequisites.py": 1,
+    "tests/test_act16w_runtime.py": 1
+  },
+  "layout_sha256": "236dbfaa2c01cb31a687212862db3a25134b6a7db1922afc4d8bd9e75b00a241",
+  "trainer_syntax": "PASS; CUDA execution not tested"
+}

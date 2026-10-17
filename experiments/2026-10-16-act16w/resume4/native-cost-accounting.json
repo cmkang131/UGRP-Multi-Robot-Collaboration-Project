@@ -1,0 +1,36 @@
+{
+  "machine": "g2-standard-8/L4",
+  "project": "ugrp-sim-b-1014",
+  "VM": "ugrp-act-l4-gcp2",
+  "rate_usd_per_hour": 1.096224308,
+  "price_record": "experiments/2026-10-16-warp3/published-price-verification.json",
+  "price_record_sha256": "2a9e7d4140337845ee32d39d0dfc5ab75a1865c1210a27c1a4ebd9bedc65c479",
+  "price_recorded_utc": "2026-10-16T07:30:11.495951+00:00",
+  "whole_VM": {
+    "start_utc": "2026-10-16T12:37:32.766000+00:00",
+    "stop_utc": "2026-10-16T20:37:41.438000+00:00",
+    "hours": 8.002408888888889,
+    "estimated_compute_usd": 8.77243514655527,
+    "scope": "includes earlier inherited/shared usage; not wholly attributed to resume4"
+  },
+  "resume4_observed_owned_window": {
+    "start_utc": "2026-10-16T14:39:46.792828+00:00",
+    "end_utc": "2026-10-16T20:37:41.438000+00:00",
+    "hours": 5.965179214444444,
+    "estimated_compute_usd": 6.539174456450345
+  },
+  "optimizer_main_process_wall_s": {
+    "A": 3164.3540772549986,
+    "B": 3164.6981861019995,
+    "C": 1680.519566476003,
+    "D1": 1788.8525923800007
+  },
+  "optimizer_scope": "A/B parallel; process wall times must not be summed as allocated GPU hours",
+  "actual_bill_or_credit_balance_queried": false,
+  "excluded_costs": [
+    "disk",
+    "network",
+    "other projects"
+  ],
+  "VM_terminated_verified": true
+}

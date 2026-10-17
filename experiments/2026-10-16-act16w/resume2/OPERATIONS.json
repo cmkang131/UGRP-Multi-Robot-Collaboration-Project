@@ -1,0 +1,136 @@
+{
+  "updated_utc": "2026-10-16T13:03:59.738275+00:00",
+  "project": "ugrp-sim-b-1014",
+  "account": "changmin5781@gmail.com",
+  "L4_instance": "ugrp-act-l4-gcp2",
+  "zone": "asia-northeast3-a",
+  "L4_IP": "34.64.52.225",
+  "remote_helper": "/tmp/ugrp-act16w-remote.py",
+  "deploy_helper": "/tmp/ugrp-act16w-deploy.py",
+  "local_monitor_session": 98961,
+  "monitor_script": "/tmp/act16w-monitor.py",
+  "hard_end_UTC": null,
+  "drain_UTC": null,
+  "L4_reboot": "automatic8h stop06:00:38Z, restarted by warp7 account06:01:09Z, task cap not reset",
+  "roots": {
+    "pilots": [
+      "/home/ugrp/ugrp-sim/runs/act16w-resume2-pilot-86821",
+      "/home/ugrp/ugrp-sim/runs/act16w-resume2-pilot-86822"
+    ],
+    "references": "/home/ugrp/ugrp-sim/runs/act16w-resume2-record-references",
+    "groups": "/home/ugrp/ugrp-sim/runs/act16w-resume2-record-groups",
+    "qualified": "/home/ugrp/ugrp-sim/src/f0db6b1abb842ea65b71c433738210254f300a7c",
+    "teacher": "/home/ugrp/ugrp-sim/src/warp1-teacher-snapshot-6f057f7e",
+    "API": "/home/ugrp/ugrp-sim/src/0362037280c6cbc4677f70366db43b9892b23690",
+    "ACT": "/home/ugrp/ugrp-sim/src/3f99d58c5ada0862e669ef4065c0ba957f1b4547"
+  },
+  "python": {
+    "warp": "/home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python",
+    "C_compile": "/home/ugrp/ugrp-sim/runs/simalt3/c-env/bin/python",
+    "ACT": "/home/ugrp/ugrp-rl1b-act-env/bin/python"
+  },
+  "pilot_driver_source": "27ae19eccc67d44e5276d95ca1ab91ba83e28ba1",
+  "pilot_driver_pids": [
+    2224,
+    2225
+  ],
+  "pilot_2h_cap": "2026-10-16T08:02:58.539954+00:00",
+  "implemented_prepared": [
+    "scripts/act16w_record_batch.py",
+    "scripts/act16w_dataset.py",
+    "scripts/train_act16w.py",
+    "scripts/act16w_input.py",
+    "scripts/act16w_curriculum.py",
+    "scripts/act16w_dagger.py"
+  ],
+  "next_required": [
+    "No wall deadline. User cancelled original8h/13:47 caps via coordinator. Keep idle20/budget-stop; actual ACT workload patterns added to runtime+startup idle guard. gcp2 L4 exclusive owner act16w2; CPU lease shared; never touch other VMs.",
+    "Watch training-r2 main A/B to10000, validation5 both, then C h4 and D1 h5 matched10000, optional second DAgger, frozen final40 only after comparisons. Use active-training pointer in /runs. Training source78485 stays immutable.",
+    "New evaluation uses own act16w_eval_owner.py and private instance metrics; assigned success and any-same-kind success both mandatory; no input token changes. Initial pixel instance count requested by coordinator.",
+    "Start-instance audit r1 matched2 pilot JPEGs then failed numeric invariant in13-world init; new code45e517/cap-free9fd uses STRICT bitwise state identity and writes diff arrays if real mutation. Retry once on9fd in unique r2 root WITHOUT wall cap; if same failure3rounds stop that metric and report. Original r1 logs remain. No backend edits.",
+    "Use current9fd status/finalize helpers; report actual curves, raw event funnel links, separate failed/capped diagnostics. No fake curve if no optimization. Preserve used checkpoints Release/public redownload/all hashes/CPU loading.",
+    "Own finite monitors end via local resume2/MONITOR_DONE file when task ends; no time cutoff. Record actual total VM window cost estimate, not billing/additive share. Final VM stop only after current foreign leases/non-owned processes check."
+  ],
+  "bulk_source": "813b9113b16e382712a00b911a9dcc7c06fbd77d",
+  "bulk_root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2",
+  "bulk_pid": 34414,
+  "train_pipeline_source": "78485f10596b4512e731fdcd8ee25eafd6d8fcad",
+  "train_pipeline_root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training-r2",
+  "train_pipeline_pid": 6607,
+  "status_monitor_session": null,
+  "capacity_monitor_session": 66527,
+  "own_task_gpu_processes": [
+    7955,
+    7956
+  ],
+  "native_policy_probe_complete": true,
+  "final40_references": "/home/ugrp/ugrp-sim/runs/act16w-resume2-final40-references",
+  "final40_groups": "/home/ugrp/ugrp-sim/runs/act16w-resume2-final40-groups/model-groups.json",
+  "latest_worker": "82e81244340042d76b5a96eeb87b8a2a7bc6ae1a",
+  "latest_local_commit": "9fd696a598f4f4167c6988baca5b7b9722e4e2c7",
+  "latest_deployed_worker": "2c72c882489fdfac216f617860feffc69694b7b3",
+  "status_helper_latest_deployed": "bacd3256c618ef91e66bb754c20342132da4043c",
+  "status_helper_monitor_uses": "24751a1ebeb6ce2e7268017b5ff388244daf254b",
+  "final_status_note": "Use latest helper after cap: it distinguishes resource_cut and requires40 native audits. Old monitor is valid during normal running but final records need latest helper.",
+  "converter_canary": {
+    "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-converter-canary-r1",
+    "rows": 715,
+    "optimizer_updates": 0,
+    "research_data_admitted": false,
+    "proof": "converter-canary.json"
+  },
+  "strict_clock_pilots": {
+    "tolerance_s": 1e-05,
+    "max_period_error_s": 5.689893001203927e-15,
+    "durations_sim_s": [
+      44.8,
+      42.3
+    ],
+    "old_coverage_s": [
+      44.9,
+      42.4
+    ],
+    "proof": "strict-clock-pilot-checks.json"
+  },
+  "package_helper": "scripts/package_act16w.py; --dataset-manifest required; only real stopped/readback-verified checkpoint; --allow-incomplete explicit, never synthetic; no upload credentials on VM",
+  "actual_research_optimizer_steps": "live per-arm main summaries; A/B smoke300 complete/readback, main active",
+  "actual_student_evaluations": 0,
+  "study_model_release_count": 0,
+  "ops_alert": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/ops-alert.md",
+  "bulk_pid_state": "all recording processes ended before coordinator VM restart",
+  "parallel_scheduler_pid": 93226,
+  "parallel_scheduler_source": "a6d08b6ac397cd0e3a29f3ff9c9490895d863a20",
+  "parallel_scheduler_root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-record-parallel-r1",
+  "recording_active_worlds": 0,
+  "recording_pending_worlds": 0,
+  "finalize_helper_source": "9fd696a598f4f4167c6988baca5b7b9722e4e2c7",
+  "alignment_helper_source": "c567a4724df2604d275f8abaaf4885388af8e4da",
+  "completed_bulk_groups": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "completed_native_audit_worlds": 40,
+  "completed_native_pairs": 17706,
+  "gpu_wall_cap": null,
+  "cap_decision": "cap-decision.json",
+  "reused_dataset_manifest_sha256": "c65e74daea6b1d616b84aa0028dbff22d4128a551c5c4d7f5479d732acff8fed",
+  "status_monitor_pid": 46432,
+  "capacity_monitor_pid": 77431,
+  "validation_pipeline_pid": 22076,
+  "validation_source": "dce0c8032a31b908622c2600caefe3539a5371c3",
+  "validation_root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-validation-r1",
+  "validation_scope": "wait complete/readback A/B10000, then registered native5 + teacher-forced audits; no selection/final access",
+  "initial_same_colour_pixel_2plus": "4/40 independent recording starts; exact native JPEG replay",
+  "native_instance_post_step_probe": "instance-interface-probe-r2.json;0.1SIM,3 strict input/integration checks, no policy inference",
+  "capacity_monitor_scope": "owned L4 lease sum<=40 only; no CPU VM SSH/status/start; coordinator22:17 ownership directive",
+  "plotting_pythonpath": "/home/ugrp/ugrp-sim/tooling/act16w-plotting",
+  "plotting_note": "analysis helpers only; never set this path for training/model package environment receipts; existing ACT environment unchanged",
+  "coordinator_counts": "dataset-row-accounting.json; 40=bulk38+pilot2; report kinds separately",
+  "public_model_verification": "public-model-verification-ab.json; A/B2 models,19 files each, fresh clone f41e659d4; CPU load only",
+  "release_url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/tag/models-20261016-act16w-v1",
+  "checkpoint_release_verified": 2,
+  "model_packaging_root": "/home/ugrp/ugrp-sim/runs/act16w-release-r1",
+  "latest_local_record_commit": "f41e659d4a7581717b2925319acd43d52511d220"
+}

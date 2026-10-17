@@ -1,0 +1,278 @@
+{
+  "schema": "ugrp.current_stack.check.v1",
+  "ok": true,
+  "current_compliant": true,
+  "checker_sha256": "bdef5ad98b8e5ee8a21126f75430a58193d5f44f11f23fa60fd9ca487511eb3b",
+  "scope": "declared manifest fields; not independent runtime/physics verification",
+  "inputs": [
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act17-v7/training-r1/queue.json",
+      "sha256": "542b6017aed873071537b82e5bede086aa346173c79f25aa33667152fd40bf83"
+    }
+  ],
+  "rows": [
+    {
+      "record": "$",
+      "flow": "train",
+      "id": "physics_backend",
+      "expected": "mjwarp_batch_v1",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.physics_backend",
+          "value": "mjwarp_batch_v1"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/runs/act17-v7/training-r1/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "train",
+      "id": "contact_profile",
+      "expected": "warp_native_contact_v1",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.contact_profile",
+          "value": "warp_native_contact_v1"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/runs/act17-v7/training-r1/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "train",
+      "id": "noslip_iterations",
+      "expected": 0,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.noslip_iterations",
+          "value": 0
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/runs/act17-v7/training-r1/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "train",
+      "id": "scene_profile",
+      "expected": "walls_floor_contrast_v5_indigo110_s80",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.scene_profile",
+          "value": "walls_floor_contrast_v5_indigo110_s80"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/runs/act17-v7/training-r1/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "train",
+      "id": "cargo_version",
+      "expected": "v6",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.cargo_version",
+          "value": "v6"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/runs/act17-v7/training-r1/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "train",
+      "id": "scenario_version",
+      "expected": "v7",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.scenario_version",
+          "value": "v7"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/runs/act17-v7/training-r1/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "train",
+      "id": "heavy_crate",
+      "expected": false,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.heavy_crate",
+          "value": false
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/runs/act17-v7/training-r1/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "train",
+      "id": "weld",
+      "expected": false,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.weld",
+          "value": false
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/runs/act17-v7/training-r1/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "train",
+      "id": "wall_cap",
+      "expected": null,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.wall_cap",
+          "value": null
+        },
+        {
+          "field": "parent[0].wall_cap",
+          "value": null
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/runs/act17-v7/training-r1/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "train",
+      "id": "gcp_host",
+      "expected": [
+        "ugrp-act-l4-gcp2",
+        "ugrp-act-l4-gcp3",
+        "ugrp-act-l4-gcp4",
+        "ugrp-act-l4-gcp5",
+        "ugrp-act-l4-gcp6"
+      ],
+      "observed": [
+        {
+          "field": "parent[0].stack_values.gcp_host",
+          "value": "ugrp-act-l4-gcp2"
+        },
+        {
+          "field": "parent[0].host.instance",
+          "value": "ugrp-act-l4-gcp2"
+        },
+        {
+          "field": "host.project_id",
+          "value": "ugrp-sim-b-1014"
+        },
+        {
+          "field": "stack_values.gcp_project",
+          "value": "ugrp-sim-b-1014"
+        },
+        {
+          "field": "stack_values.gcp_account",
+          "value": "changmin5781@gmail.com"
+        },
+        {
+          "field": "host.project_id",
+          "value": "ugrp-sim-b-1014"
+        },
+        {
+          "field": "stack_values.gcp_project",
+          "value": "ugrp-sim-b-1014"
+        },
+        {
+          "field": "stack_values.gcp_account",
+          "value": "changmin5781@gmail.com"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/runs/act17-v7/training-r1/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "train",
+      "id": "gcp_guards",
+      "expected": {
+        "idle_minutes": 20,
+        "budget_stop": true,
+        "credentials_on_vm": false
+      },
+      "observed": [
+        {
+          "field": "parent[0].stack_values.gcp_guards",
+          "value": {
+            "idle_minutes": 20,
+            "budget_stop": true,
+            "credentials_on_vm": false
+          }
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/runs/act17-v7/training-r1/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "train",
+      "id": "no_pooling",
+      "expected": true,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.no_pooling",
+          "value": true
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/runs/act17-v7/training-r1/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "train",
+      "id": "gcp_project",
+      "expected": [
+        "ugrp-sim-b-1014",
+        "ugrp-sim-c-1016",
+        "ugrp-sim-d-1016",
+        "ugrp-sim-e-1016",
+        "ugrp-sim-f-1016"
+      ],
+      "observed": [
+        {
+          "field": "parent[0].stack_values.gcp_project",
+          "value": "ugrp-sim-b-1014"
+        },
+        {
+          "field": "parent[0].host.project_id",
+          "value": "ugrp-sim-b-1014"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/runs/act17-v7/training-r1/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "train",
+      "id": "gcp_account",
+      "expected": [
+        "changmin5781@gmail.com",
+        "kcm5781kcm5781@gmail.com"
+      ],
+      "observed": [
+        {
+          "field": "parent[0].stack_values.gcp_account",
+          "value": "changmin5781@gmail.com"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/runs/act17-v7/training-r1/queue.json"
+    }
+  ],
+  "stack": {
+    "path": "/home/ugrp/ugrp-sim/runs/act17-v7/reference/act17-current-stack-efc484ad5.json",
+    "sha256": "d4309b89d26e692d9530dc0725fa6df7c61576ea1f00545d07f47c554e882ffe"
+  },
+  "counts": {
+    "current": 14
+  },
+  "admission": "pass"
+}

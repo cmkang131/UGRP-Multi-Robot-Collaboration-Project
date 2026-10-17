@@ -1,0 +1,124 @@
+{
+  "id": "act16w-native-v1-a-step10000-20261016",
+  "status": "available",
+  "description": "ACT16 A experimental 10000-step model",
+  "source_sha": "c27a9d537eaae873c7e7bc2ceaeeada69696cc48",
+  "training_source_sha": "c27a9d537eaae873c7e7bc2ceaeeada69696cc48",
+  "packaging_source_sha": "c27a9d537eaae873c7e7bc2ceaeeada69696cc48",
+  "release": {
+    "tag": "models-20261016-act16w-native-v1",
+    "asset": "act16w-native-v1-a-step10000-20261016.zip",
+    "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/download/models-20261016-act16w-native-v1/act16w-native-v1-a-step10000-20261016.zip"
+  },
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 512,
+      "sha256": "80b821814dfe86e3da7dcf40633ea94a7658dd645c1bd174c52729fc2833139a"
+    },
+    {
+      "path": "act/SHA256.json",
+      "bytes": 265,
+      "sha256": "8b2806540f87928d0e55f29e8b6a9e15c994180cc1f2106cd9a9ee82dfc15beb"
+    },
+    {
+      "path": "act/adapter.json",
+      "bytes": 15330,
+      "sha256": "5a33b2f0a76c22af78919e4eb2dd318fda0fa0c1b0731a2494f94b4ef3fc4d73"
+    },
+    {
+      "path": "act/config.json",
+      "bytes": 1278,
+      "sha256": "b63bc05fb84e5c0f53329336a7a147f18ca73f297ed25279b42b968e279f571f"
+    },
+    {
+      "path": "act/model.safetensors",
+      "bytes": 207363320,
+      "sha256": "4955436e15054d76adf3ea7a339896dc1e500e4ed930aeb0c873ec23899f7719"
+    },
+    {
+      "path": "comparison-protocol.json",
+      "bytes": 5143,
+      "sha256": "49be968d2ec8a5cd6c4d3eb058bc92d026989b498daf51b09da387a24aca0c08"
+    },
+    {
+      "path": "dataset-manifest.json",
+      "bytes": 83708,
+      "sha256": "3d0a1c4907f0c91a5674d23e52c9fbf339f03952ce3bcf92dee21f7e8ab7dbd2"
+    },
+    {
+      "path": "environment.json",
+      "bytes": 372,
+      "sha256": "b9d1e7b57f4afcaa61ba75afa10b0c1780c47c428168b1b1293c2937b7796c0e"
+    },
+    {
+      "path": "inference/act16w_input.py",
+      "bytes": 6421,
+      "sha256": "f49bcdbd91b4762e09cfb896467f5cc3712795bbe79066d41697560f4e4142ff"
+    },
+    {
+      "path": "inference/act16w_runtime.py",
+      "bytes": 9353,
+      "sha256": "e08ae134705b9844ca69e72365afdb86d13cb6d44d9dfd999f55aee7ef19b201"
+    },
+    {
+      "path": "inference/act_library/harness/__init__.py",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "inference/act_library/harness/grasp_act_contract.py",
+      "bytes": 9352,
+      "sha256": "6bc58d6f9707abd5d854c6dbbb63357ed14dab6c37bcf055ddd8d1d66d171056"
+    },
+    {
+      "path": "inference/act_library/harness/grasp_act_data.py",
+      "bytes": 22381,
+      "sha256": "8206d215ee14b3cc5935b9353d29ae28a2ac046061f23674dffeb3d6048d497f"
+    },
+    {
+      "path": "inference/act_library/harness/grasp_act_loss.py",
+      "bytes": 3829,
+      "sha256": "d9dd54c32613f56b63d1f8a641b1156a1e7f925afd36e0c5ff68f3febd53dc52"
+    },
+    {
+      "path": "inference/act_library/harness/grasp_act_policy.py",
+      "bytes": 10405,
+      "sha256": "0cfa080f086ea991368e3c686960cf54cab9a8f9796e1077557f17a639f79c6c"
+    },
+    {
+      "path": "inference/load_model.py",
+      "bytes": 466,
+      "sha256": "78ccbeb7a3fc5e22480c7b90661b59132f97cbef87672c378c4f29771b3007bc"
+    },
+    {
+      "path": "native-camera.json",
+      "bytes": 1314,
+      "sha256": "99da2a1cbea62d5f7cc578144cfebe972447b6b1f5c253689afe95489f61267f"
+    },
+    {
+      "path": "provenance.json",
+      "bytes": 1871,
+      "sha256": "7a93f6c0306d07eeed69dc08d872866044351a7399864a0e859087ed878215da"
+    },
+    {
+      "path": "training-summary.json",
+      "bytes": 3688,
+      "sha256": "7e6c2a802bef3b6dd3fb4411a5fff09900af62ef7f837f533c963c153c79df79"
+    }
+  ],
+  "limitations": [
+    "experimental; not a default controller",
+    "BOX task tokens do not distinguish same-colour item instances; effect unmeasured",
+    "public re-download/hash/loading verification pending",
+    "matched10000 steps complete"
+  ],
+  "verification": {
+    "state": "PENDING",
+    "scope": "no deployment or task-success claim before public checks"
+  },
+  "archive": {
+    "sha256": "aa2ef32718ccc5bf03990c061c467e93ebbcee9b40fff3cd0d8a40a8d556504e",
+    "bytes": 191908847
+  }
+}

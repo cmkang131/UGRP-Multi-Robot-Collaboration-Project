@@ -1,0 +1,103 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "act17-v7-preflight",
+      "version": "1.0.0",
+      "purpose": "Real-pilot preprocessing, one-gradient and model readback preparation",
+      "entry": "scripts/act17_preflight.py",
+      "runner": "scripts.act17_preflight",
+      "docs": "experiments/2026-10-17-act17/v7/README.md",
+      "requires": "gcp2 L4; successful4 recording pilot and independent40 gate; preparation-only checkpoints cannot enter research evaluation",
+      "output_flag": "--out",
+      "output_kind": "directory",
+      "required_inputs": ["--pilot", "--gate", "--protocol"],
+      "side_effect": "preparation_training",
+      "adapter": "managed_legacy_cli"
+    },
+    {
+      "id": "act17-v7-training-queue",
+      "version": "1.0.0",
+      "purpose": "One current-stack checked matched M/F/S finite training queue",
+      "entry": "scripts/act17_train_batch.py",
+      "runner": "scripts.act17_train_batch",
+      "docs": "experiments/2026-10-17-act17/v7/README.md",
+      "requires": "gcp2 L4; explicit --enabled; all200 audited TRAIN starts; raw data rejection table; no physical simulation",
+      "output_flag": "--out",
+      "output_kind": "directory",
+      "required_inputs": ["--dataset", "--protocol", "--stack", "--checker", "--stack-values"],
+      "side_effect": "training",
+      "adapter": "managed_legacy_cli"
+    },
+    {
+      "id": "act17-v7-val-queue",
+      "version": "1.0.0",
+      "purpose": "Same-seed native M/F/S VAL8 or separately frozen selected FINAL40",
+      "entry": "scripts/act17_val_batch.py",
+      "runner": "scripts.act17_val_batch",
+      "docs": "experiments/2026-10-17-act17/v7/README.md",
+      "requires": "gcp2 L4; explicit --enabled; new camera-off v7 gate; completed M/F/S; --split final also requires frozen real VAL8 evidence via --selection",
+      "output_flag": "--out",
+      "output_kind": "directory",
+      "required_inputs": ["--models-root", "--references", "--protocol", "--native-gate", "--stack", "--checker", "--stack-values", "--prior-rejections"],
+      "side_effect": "remote_simulation",
+      "adapter": "managed_legacy_cli"
+    },
+    {
+      "id": "act17-v7-teacher",
+      "version": "1.0.0",
+      "purpose": "ACT17 v7 camera-off native teacher gate or separately admitted recording",
+      "entry": "scripts/act17_v7_stage.py",
+      "runner": "scripts.act17_v7_stage",
+      "docs": "experiments/2026-10-17-act17/v7/README.md",
+      "requires": "gcp2 L4 only; immutable sources; native0; current_stack pass; lease/global40; camera-off40 before recording; explicit --out under persistent runs",
+      "output_flag": "--out",
+      "output_kind": "directory",
+      "required_inputs": ["--stage", "--protocol", "--references", "--stack", "--checker", "--stack-values", "--prior-rejections"],
+      "side_effect": "remote_simulation",
+      "adapter": "managed_legacy_cli"
+    },
+    {
+      "id": "act17-v7-data",
+      "version": "1.0.0",
+      "purpose": "Audit v7 successful recordings into JPEG-backed tensors and TRAIN-only statistics",
+      "entry": "scripts/act17_data.py",
+      "runner": "scripts.act17_data",
+      "docs": "experiments/2026-10-17-act17/v7/README.md",
+      "requires": "gcp2 L4 CPU; completed v7 camera-off40 gate and all recording starts; no physics or image rendering",
+      "output_flag": "--out",
+      "output_kind": "directory",
+      "required_inputs": ["--protocol", "--gate", "--records"],
+      "side_effect": "remote_dataset_conversion",
+      "adapter": "managed_legacy_cli"
+    },
+    {
+      "id": "act17-v7-train",
+      "version": "1.0.0",
+      "purpose": "Matched M/F/S finite ACT training with serialized preprocessing and real capture parity",
+      "entry": "scripts/act17_train.py",
+      "runner": "scripts.act17_train",
+      "docs": "experiments/2026-10-17-act17/v7/README.md",
+      "requires": "gcp2 L4; complete audited200 TRAIN starts; no simulator/renderer/LLM; no v4 pooling; default-off model candidates",
+      "output_flag": "--out",
+      "output_kind": "directory",
+      "required_inputs": ["--dataset", "--protocol", "--candidate"],
+      "side_effect": "training",
+      "adapter": "managed_legacy_cli"
+    },
+    {
+      "id": "act17-v7-evaluate",
+      "version": "1.0.0",
+      "purpose": "Own-observation ACT17 VAL8 then separately frozen fresh FINAL40",
+      "entry": "scripts/act17_evaluate_v7.py",
+      "runner": "scripts.act17_evaluate_v7",
+      "docs": "experiments/2026-10-17-act17/v7/README.md",
+      "requires": "gcp2 L4; explicit --act17-v7; new native v7 gate in UGRP_ACT16W_NATIVE_GATE; full frozen evaluator arguments; no GT policy inputs or teacher fallback",
+      "output_flag": "--out",
+      "output_kind": "directory",
+      "required_inputs": ["--protocol", "--checkpoint", "--plans", "--split"],
+      "side_effect": "remote_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}

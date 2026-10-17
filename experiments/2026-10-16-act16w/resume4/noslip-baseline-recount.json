@@ -1,0 +1,303 @@
+{
+  "status": "complete",
+  "complete": true,
+  "host": {
+    "project_id": "ugrp-sim-b-1014",
+    "instance": "ugrp-act-l4-gcp2",
+    "machine_type": "g2-standard-8",
+    "zone": "asia-northeast3-a"
+  },
+  "contact_profile": "baseline_noslip10",
+  "pooled_with_native_contact": false,
+  "final40_accessed": false,
+  "arms": {
+    "A": {
+      "n": 0,
+      "N": 5,
+      "n_any_same_kind": 0,
+      "kinds": {
+        "cyan": {
+          "n": 0,
+          "N": 1
+        },
+        "red": {
+          "n": 0,
+          "N": 2
+        },
+        "green": {
+          "n": 0,
+          "N": 1
+        },
+        "yellow": {
+          "n": 0,
+          "N": 1
+        }
+      },
+      "rows": [
+        {
+          "seed": 86866,
+          "kind": "green",
+          "task_success": false,
+          "any_same_kind_success": false,
+          "cap_end": false,
+          "issued_sequence_complete": true,
+          "lift_success": false,
+          "release_success": false,
+          "physical_success": false,
+          "drop_detected": false
+        },
+        {
+          "seed": 86867,
+          "kind": "yellow",
+          "task_success": false,
+          "any_same_kind_success": false,
+          "cap_end": false,
+          "issued_sequence_complete": true,
+          "lift_success": false,
+          "release_success": false,
+          "physical_success": false,
+          "drop_detected": false
+        },
+        {
+          "seed": 86865,
+          "kind": "red",
+          "task_success": false,
+          "any_same_kind_success": false,
+          "cap_end": false,
+          "issued_sequence_complete": true,
+          "lift_success": false,
+          "release_success": false,
+          "physical_success": false,
+          "drop_detected": false
+        },
+        {
+          "seed": 86868,
+          "kind": "cyan",
+          "task_success": false,
+          "any_same_kind_success": false,
+          "cap_end": false,
+          "issued_sequence_complete": true,
+          "lift_success": false,
+          "release_success": false,
+          "physical_success": false,
+          "drop_detected": false
+        },
+        {
+          "seed": 86869,
+          "kind": "red",
+          "task_success": false,
+          "any_same_kind_success": false,
+          "cap_end": false,
+          "issued_sequence_complete": true,
+          "lift_success": false,
+          "release_success": false,
+          "physical_success": false,
+          "drop_detected": false
+        }
+      ],
+      "funnel": [
+        {
+          "gate": "requested",
+          "passed": 5,
+          "rejected": 0
+        },
+        {
+          "gate": "sequence_done",
+          "passed": 5,
+          "rejected": 0
+        },
+        {
+          "gate": "stable_lift",
+          "passed": 0,
+          "rejected": 5
+        },
+        {
+          "gate": "stable_release",
+          "passed": 0,
+          "rejected": 0
+        },
+        {
+          "gate": "task_success",
+          "passed": 0,
+          "rejected": 0
+        }
+      ],
+      "cap_end": 0,
+      "raw_receipts": [
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/act16w-resume2-validation-r1/A-native/group-00/evaluation/owner/evaluation-only.jsonl",
+          "sha256": "a400cbc450f654ff64511094844754400f0fa38222db48e9941db558777ac87d"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/act16w-resume2-validation-r1/A-native/group-00/evaluation/owner/same-kind-evaluation-only.jsonl",
+          "sha256": "a9e19a44e0d22807ccfd493cb22051b3c76f2c19fb27c0ce6cd298e2d43a09dc"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/act16w-resume2-validation-r1/A-native/group-02/evaluation/owner/evaluation-only.jsonl",
+          "sha256": "c368758011b639e114ef45a74e9eee5f64fdb51683293013e818d127259cd83c"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/act16w-resume2-validation-r1/A-native/group-02/evaluation/owner/same-kind-evaluation-only.jsonl",
+          "sha256": "5c395b1df9d2a13fd6b8407da6a986b3976472c75e0656989cea01e9b58fec3c"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/act16w-resume2-validation-r1/A-native/group-03/evaluation/owner/evaluation-only.jsonl",
+          "sha256": "543ed7a1839eb2097c8e38aa056c753201434f069cd086ab6f46f8a6f15c10eb"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/act16w-resume2-validation-r1/A-native/group-03/evaluation/owner/same-kind-evaluation-only.jsonl",
+          "sha256": "1633d2cd7e8d14ab0df659d211caf134a52d5750786bd7df992206e0e190197d"
+        }
+      ],
+      "raw_recomputed_metrics_match_original": true
+    },
+    "B": {
+      "n": 0,
+      "N": 5,
+      "n_any_same_kind": 0,
+      "kinds": {
+        "cyan": {
+          "n": 0,
+          "N": 1
+        },
+        "red": {
+          "n": 0,
+          "N": 2
+        },
+        "green": {
+          "n": 0,
+          "N": 1
+        },
+        "yellow": {
+          "n": 0,
+          "N": 1
+        }
+      },
+      "rows": [
+        {
+          "seed": 86866,
+          "kind": "green",
+          "task_success": false,
+          "any_same_kind_success": false,
+          "cap_end": false,
+          "issued_sequence_complete": true,
+          "lift_success": false,
+          "release_success": false,
+          "physical_success": false,
+          "drop_detected": false
+        },
+        {
+          "seed": 86867,
+          "kind": "yellow",
+          "task_success": false,
+          "any_same_kind_success": false,
+          "cap_end": false,
+          "issued_sequence_complete": true,
+          "lift_success": false,
+          "release_success": false,
+          "physical_success": false,
+          "drop_detected": false
+        },
+        {
+          "seed": 86865,
+          "kind": "red",
+          "task_success": false,
+          "any_same_kind_success": false,
+          "cap_end": false,
+          "issued_sequence_complete": true,
+          "lift_success": false,
+          "release_success": false,
+          "physical_success": false,
+          "drop_detected": false
+        },
+        {
+          "seed": 86868,
+          "kind": "cyan",
+          "task_success": false,
+          "any_same_kind_success": false,
+          "cap_end": false,
+          "issued_sequence_complete": true,
+          "lift_success": false,
+          "release_success": false,
+          "physical_success": false,
+          "drop_detected": false
+        },
+        {
+          "seed": 86869,
+          "kind": "red",
+          "task_success": false,
+          "any_same_kind_success": false,
+          "cap_end": false,
+          "issued_sequence_complete": true,
+          "lift_success": false,
+          "release_success": false,
+          "physical_success": false,
+          "drop_detected": false
+        }
+      ],
+      "funnel": [
+        {
+          "gate": "requested",
+          "passed": 5,
+          "rejected": 0
+        },
+        {
+          "gate": "sequence_done",
+          "passed": 5,
+          "rejected": 0
+        },
+        {
+          "gate": "stable_lift",
+          "passed": 0,
+          "rejected": 5
+        },
+        {
+          "gate": "stable_release",
+          "passed": 0,
+          "rejected": 0
+        },
+        {
+          "gate": "task_success",
+          "passed": 0,
+          "rejected": 0
+        }
+      ],
+      "cap_end": 0,
+      "raw_receipts": [
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/act16w-resume2-validation-r1/B-native/group-00/evaluation/owner/evaluation-only.jsonl",
+          "sha256": "84764893f654c9d10ef62dda3a9f2031b2053e408acb569d60d346d256d5f1ff"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/act16w-resume2-validation-r1/B-native/group-00/evaluation/owner/same-kind-evaluation-only.jsonl",
+          "sha256": "88a35eb98aabbaa98b2ecfa6a23fd8445d19b0faf34be974d75f9c58fe6c03b1"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/act16w-resume2-validation-r1/B-native/group-02/evaluation/owner/evaluation-only.jsonl",
+          "sha256": "46e761e8bfda95534e2d3324dcb463b5804d56fd1aebb4b41e377f4687ddfdc4"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/act16w-resume2-validation-r1/B-native/group-02/evaluation/owner/same-kind-evaluation-only.jsonl",
+          "sha256": "50326d9705f417d5e220e11f7b7c813d24a824490ff9a411c4ddb2842520ea95"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/act16w-resume2-validation-r1/B-native/group-03/evaluation/owner/evaluation-only.jsonl",
+          "sha256": "348f340b3c9f18dbc44d661441105c02c03c034241c104fa6b7a53cea15b288c"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/act16w-resume2-validation-r1/B-native/group-03/evaluation/owner/same-kind-evaluation-only.jsonl",
+          "sha256": "4371281556969f15104ee30bfde999c1cf0293af53bcaa66907b505bac07d371"
+        }
+      ],
+      "raw_recomputed_metrics_match_original": true
+    }
+  },
+  "limitation": "per-chunk done timestamps unavailable; failure message wording not independently reconstructed",
+  "reproduce": [
+    "/home/ugrp/ugrp-sim/src/8ad29c869/scripts/act16w_baseline_recount.py",
+    "--root",
+    "/home/ugrp/ugrp-sim/runs/act16w-resume2-validation-r1",
+    "--out",
+    "/home/ugrp/ugrp-sim/runs/act16w-native-gate-r1/noslip-baseline-recount.json"
+  ]
+}

@@ -1,0 +1,167 @@
+{
+  "status": "complete",
+  "comparison": "h5 D1 vs C",
+  "arms": {
+    "C": {
+      "n": 0,
+      "N": 8,
+      "kinds": {
+        "cyan": {
+          "n": 0,
+          "N": 2
+        },
+        "red": {
+          "n": 0,
+          "N": 2
+        },
+        "green": {
+          "n": 0,
+          "N": 2
+        },
+        "yellow": {
+          "n": 0,
+          "N": 2
+        }
+      },
+      "stages": {
+        "bilateral_load_observed": 0,
+        "lift_success": 0,
+        "release_success": 0,
+        "issued_sequence_complete": 5,
+        "task_success": 0
+      },
+      "funnel": [
+        {
+          "gate": "requested",
+          "passed": 8,
+          "rejected": 0
+        },
+        {
+          "gate": "sequence_done",
+          "passed": 5,
+          "rejected": 3
+        },
+        {
+          "gate": "stable_lift",
+          "passed": 0,
+          "rejected": 5
+        },
+        {
+          "gate": "stable_release",
+          "passed": 0,
+          "rejected": 0
+        },
+        {
+          "gate": "task_success",
+          "passed": 0,
+          "rejected": 0
+        }
+      ],
+      "cap_end": 3,
+      "HOST_ERROR": 0,
+      "alignment_rejections": 8,
+      "raw_recount_matches": true,
+      "teacher_forced": {
+        "wheel_MAE": 0.044908051495100985,
+        "persistence_wheel_MAE": 0.040185183939219826,
+        "continuous13_MAE": 0.04038212620070632,
+        "transition_h0_wheel_MAE": 0.14939528236829122,
+        "transition_h0_persistence_MAE": 0.3167355317961086,
+        "done_Brier_h0": 0.025115232340674302
+      },
+      "teacher_forced_scope_annotation": {
+        "original_label": "teacher-forced prediction on validation5; not task success, not final40, no checkpoint/policy selection",
+        "actual_validation_seed_N": 8,
+        "rows": 3026,
+        "reason": "legacy validation5 text; actual fixed native8/3026 rows; original retained"
+      }
+    },
+    "D1": {
+      "n": 0,
+      "N": 8,
+      "kinds": {
+        "cyan": {
+          "n": 0,
+          "N": 2
+        },
+        "red": {
+          "n": 0,
+          "N": 2
+        },
+        "green": {
+          "n": 0,
+          "N": 2
+        },
+        "yellow": {
+          "n": 0,
+          "N": 2
+        }
+      },
+      "stages": {
+        "bilateral_load_observed": 0,
+        "lift_success": 0,
+        "release_success": 0,
+        "issued_sequence_complete": 1,
+        "task_success": 0
+      },
+      "funnel": [
+        {
+          "gate": "requested",
+          "passed": 8,
+          "rejected": 0
+        },
+        {
+          "gate": "sequence_done",
+          "passed": 1,
+          "rejected": 7
+        },
+        {
+          "gate": "stable_lift",
+          "passed": 0,
+          "rejected": 1
+        },
+        {
+          "gate": "stable_release",
+          "passed": 0,
+          "rejected": 0
+        },
+        {
+          "gate": "task_success",
+          "passed": 0,
+          "rejected": 0
+        }
+      ],
+      "cap_end": 7,
+      "HOST_ERROR": 0,
+      "alignment_rejections": 8,
+      "raw_recount_matches": true,
+      "teacher_forced": {
+        "wheel_MAE": 0.046468088413060236,
+        "persistence_wheel_MAE": 0.040185183939219826,
+        "continuous13_MAE": 0.03986245947707557,
+        "transition_h0_wheel_MAE": 0.15150643878584297,
+        "transition_h0_persistence_MAE": 0.3167355317961086,
+        "done_Brier_h0": 0.032027117715396486
+      },
+      "teacher_forced_scope_annotation": {
+        "original_label": "teacher-forced prediction on validation5; not task success, not final40, no checkpoint/policy selection",
+        "actual_validation_seed_N": 8,
+        "rows": 3026,
+        "reason": "legacy validation5 label; actual8 seeds/3026 rows, original unchanged"
+      }
+    }
+  },
+  "only_manipulation": "same h4/D0 input normalization, same seed/10000/chunk8/period0.1; D1 adds290 audited TRAIN h0 rows, future7 padding",
+  "observed_success_delta_percentage_points": 0,
+  "interpretation": "No observed task-success gain in matched VAL8; not proof of zero general effect",
+  "limits": [
+    "noninitial labels270 from7 of20 starts only",
+    "no full recovery expert qualification",
+    "h1/h2/h3 off and unevaluated"
+  ],
+  "recount": "native-validation-D1-independent.json",
+  "rejection_table": "native-validation-D1-rejection_table-enriched.json",
+  "playback": "native-D1-87429-playback-review.json",
+  "review_ack": "native-review-D1.json",
+  "noslip10_pooled": false
+}

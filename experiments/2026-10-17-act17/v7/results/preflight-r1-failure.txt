@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/home/ugrp/ugrp-sim/src/a0ddd36c9ab38f3cbaed75fac2d2f0acbaa49215/scripts/act17_preflight.py", line 74, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/home/ugrp/ugrp-sim/src/a0ddd36c9ab38f3cbaed75fac2d2f0acbaa49215/scripts/act17_preflight.py", line 27, in main
+    convert(micro,read(a.gate),[a.pilot],a.out/'pilot-dataset')
+  File "/home/ugrp/ugrp-sim/src/a0ddd36c9ab38f3cbaed75fac2d2f0acbaa49215/scripts/act17_data.py", line 181, in convert
+    if scene.get('act17_v7',{}).get('scenario_version')!='v7':raise ValueError('v7 scene receipt missing')
+                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: v7 scene receipt missing

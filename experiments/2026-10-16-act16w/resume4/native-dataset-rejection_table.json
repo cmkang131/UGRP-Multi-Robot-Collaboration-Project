@@ -1,0 +1,50 @@
+{
+  "funnel": [
+    {
+      "gate": "prepared_starts",
+      "passed": 40,
+      "rejected": 0
+    },
+    {
+      "gate": "predeclared_model_subset",
+      "passed": 40,
+      "rejected": 0
+    },
+    {
+      "gate": "recorded_native_streams",
+      "passed": 40,
+      "rejected": 0
+    },
+    {
+      "gate": "physical_teacher_complete",
+      "passed": 40,
+      "rejected": 0
+    }
+  ],
+  "rejections": [],
+  "missing": [],
+  "raw": [
+    "/home/ugrp/ugrp-sim/runs/act16w-native-record-r1/group-00",
+    "/home/ugrp/ugrp-sim/runs/act16w-native-record-r1/group-01",
+    "/home/ugrp/ugrp-sim/runs/act16w-native-record-r1/group-02",
+    "/home/ugrp/ugrp-sim/runs/act16w-native-record-r1/group-03",
+    "/home/ugrp/ugrp-sim/runs/act16w-native-record-r1/group-04",
+    "/home/ugrp/ugrp-sim/runs/act16w-native-record-r1/group-05"
+  ],
+  "reproduce": [
+    "/home/ugrp/ugrp-sim/src/c27a9d537eaae873c7e7bc2ceaeeada69696cc48/scripts/act16w_dataset.py",
+    "--enabled",
+    "--root",
+    "/home/ugrp/ugrp-sim/runs/act16w-native-dataset-r1/records",
+    "--batch",
+    "/home/ugrp/ugrp-sim/runs/act16w-native-record-r1",
+    "--selection",
+    "/home/ugrp/ugrp-sim/runs/act16w-native-dataset-r1/selection.json",
+    "--protocol",
+    "/home/ugrp/ugrp-sim/src/c27a9d537eaae873c7e7bc2ceaeeada69696cc48/experiments/2026-10-16-act16w/resume3/protocol.json",
+    "--act-source",
+    "/home/ugrp/ugrp-sim/src/3f99d58c5ada0862e669ef4065c0ba957f1b4547",
+    "--native-gate",
+    "/home/ugrp/ugrp-sim/runs/act16w-native-gate-r2/independent-gate-recount.json"
+  ]
+}

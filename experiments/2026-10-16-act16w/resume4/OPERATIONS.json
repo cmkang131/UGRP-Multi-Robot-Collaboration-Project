@@ -1,0 +1,205 @@
+{
+  "task": "act16w4",
+  "branch": "claude/act16w",
+  "PR": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/539",
+  "base": "claude/warp-act",
+  "account": "changmin5781@gmail.com",
+  "project": "ugrp-sim-b-1014",
+  "VM": "ugrp-act-l4-gcp2",
+  "zone": "asia-northeast3-a",
+  "ssh": [
+    "ssh",
+    "-o",
+    "BatchMode=yes",
+    "-o",
+    "ProxyCommand=none",
+    "-o",
+    "HostName=34.64.52.225",
+    "gcp2"
+  ],
+  "warning": "plain gcp2 SSH alias targets stopped CPU VM; never start it",
+  "hard_wall_end": null,
+  "idle_seconds": 1200,
+  "budget_stop": "untouched",
+  "active_gate": {
+    "root": "/home/ugrp/ugrp-sim/runs/act16w-native-gate-r2",
+    "pid": 52916,
+    "source": "e40ff44ce97219d075b1a58eabd48007b6f8b2ac",
+    "references": "/home/ugrp/ugrp-sim/runs/act16w-native-gate-references-r1",
+    "N_requested": 40,
+    "seeds": [
+      87220,
+      87259
+    ],
+    "status": "40/40 PASS; raw Score40 match,8254 files SHA match"
+  },
+  "native_record_references": "/home/ugrp/ugrp-sim/runs/act16w-native-record-references-r1",
+  "learning_source": "/home/ugrp/ugrp-sim/src/c27a9d537eaae873c7e7bc2ceaeeada69696cc48",
+  "qualified_source": "/home/ugrp/ugrp-sim/src/f0db6b1abb842ea65b71c433738210254f300a7c",
+  "teacher_source": "/home/ugrp/ugrp-sim/src/warp1-teacher-snapshot-6f057f7e",
+  "ACT_source": "/home/ugrp/ugrp-sim/src/3f99d58c5ada0862e669ef4065c0ba957f1b4547",
+  "python": {
+    "warp": "/home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python",
+    "act": "/home/ugrp/ugrp-rl1b-act-env/bin/python"
+  },
+  "noslip_baseline": {
+    "root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-validation-r1",
+    "complete": true,
+    "A": "0/5",
+    "B": "0/5",
+    "pooled": false
+  },
+  "progress": "COMPLETE study, NOT_READY policy: finalA0/40 eachkind0/10, raw match, physical funnel40/2/1/0/0; done16 cap24; all40 geometry and3 full direct reviews done. Models4/76files/CPUload4 and final summary public hash verified. Owned L4 TERMINATED.",
+  "next": [
+    "No remote job remains; never resubmit final40 or tune on its outcomes.",
+    "PR539 stays draft for independent control/preregistration review; see summary/README and current-head CI.",
+    "h1/h2/h3 and C CPU robustness remain unevaluated; proposed next RGB candidates are not results."
+  ],
+  "native_gate_qualification": "/home/ugrp/ugrp-sim/runs/act16w-native-gate-r2/independent-gate-recount.json",
+  "native_record": {
+    "root": "/home/ugrp/ugrp-sim/runs/act16w-native-record-r1",
+    "pid": 64948,
+    "source": "c27a9d537eaae873c7e7bc2ceaeeada69696cc48",
+    "stage": "40/40 complete; independent raw Score40 and8315 hashes match",
+    "recording_seeds": [
+      87420,
+      87459
+    ]
+  },
+  "dataset_root": "/home/ugrp/ugrp-sim/runs/act16w-native-dataset-r1/records",
+  "native_training": {
+    "root": "/home/ugrp/ugrp-sim/runs/act16w-native-training-r1",
+    "A_pid": 72060,
+    "B_pid": 72061,
+    "source": "c27a9d537eaae873c7e7bc2ceaeeada69696cc48",
+    "stage": "A/B10000 each COMPLETE; checkpoint readback_verified=true both"
+  },
+  "orchestrator": {
+    "pid": 73402,
+    "orchestration_source": "37a8c833656a58ba25472e2106276f225e95ad26",
+    "execution_source": "c27a9d537eaae873c7e7bc2ceaeeada69696cc48",
+    "argv": [
+      "python3",
+      "-u",
+      "/home/ugrp/ugrp-sim/src/37a8c833656a58ba25472e2106276f225e95ad26/scripts/act16w_native_experiment.py",
+      "--enabled",
+      "--out",
+      "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1"
+    ],
+    "wall_cap": null,
+    "original_A_B_not_resubmitted": true,
+    "review_boundaries": [
+      "A_B",
+      "C",
+      "D1"
+    ],
+    "root": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1",
+    "status": "complete/exit0"
+  },
+  "analysis_source": "/home/ugrp/ugrp-sim/src/34d53cfaadc093ac957bbfffc780a76f372041f9",
+  "completed_native_provenance_annotations": "/home/ugrp/ugrp-sim/runs/act16w-native-provenance-annotations.json",
+  "gap_analysis_source": "/home/ugrp/ugrp-sim/src/82702ea74d641d68377eeb331142298ca4ff49b1",
+  "monitor_C": {
+    "session": 71527,
+    "pid": 84287,
+    "scope": "read-only; auto exits WAIT_REVIEW_C/error",
+    "progress": "/home/ugrp/ugrp-sim/runs/act16w-native-progress-C.jsonl",
+    "status": "complete WAIT_REVIEW_C"
+  },
+  "dagger_coverage_counterfactual": {
+    "file": "native-label-boundary-A-B-counterfactual.json",
+    "observations": 10462,
+    "possible_query_upper_bound": 268,
+    "noninitial_possible_upper_bound": 252,
+    "actual_DAgger_data": false,
+    "interpretation": "noninitial ceiling is nonzero, so initial-only defect is not established; actual C TRAIN label counts/rejections must be measured. Do not relax held-object boundary or change execution based on this validation diagnostic."
+  },
+  "dagger_actual_coverage_helper": "/home/ugrp/ugrp-sim/src/34d53cfaadc093ac957bbfffc780a76f372041f9/scripts/audit_act16w_dagger_coverage.py",
+  "validation_gap_batch": {
+    "root": "/home/ugrp/ugrp-sim/runs/act16w-native-val-gap-audit-r1",
+    "complete": true,
+    "worlds": 16,
+    "physics_steps": 0,
+    "local": "native-validation-gaps-summary.json"
+  },
+  "matched_teacher_playback": "native-teacher-87429-playback-review.json",
+  "matched_montage": "native-A-B-teacher-montage.png",
+  "split_annotations": [
+    "native-dataset-split-annotation.json",
+    "native-validation-split-annotation.json"
+  ],
+  "first30_helper": "/home/ugrp/ugrp-sim/src/7381482975ae5fac440c7f3dcb22403133df972b/scripts/act16w_own_first30.py",
+  "C_first30_waiter": {
+    "pid": 89180,
+    "exec_session": 33508,
+    "out": "/home/ugrp/ugrp-sim/runs/act16w-native-C-87429-first30",
+    "scope": "read-only until existing group04 reaches30SIM; then compose first30 images, or report early complete",
+    "status": "complete;61 frames reviewed and hashes verified"
+  },
+  "C_first30_review": "native-C-first30-review.json",
+  "C_playback_waiter": {
+    "pid": 90089,
+    "script": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/delivery-ops/C-playback-wait.py",
+    "out": "/home/ugrp/ugrp-sim/runs/act16w-native-playback-C-87429",
+    "scope": "wait for completed seed87429 then saved-state render only; no native physics or model calls",
+    "status": "complete, full2Hz147 +last10Hz100 directly reviewed"
+  },
+  "monitor_D1": {
+    "session": 72616,
+    "pid": 94859,
+    "log": "/home/ugrp/ugrp-sim/runs/act16w-native-progress-D1.jsonl",
+    "scope": "read-only to WAIT_REVIEW_D1/error",
+    "status": "complete WAIT_REVIEW_D1"
+  },
+  "dagger_pose_coverage_helper": "/home/ugrp/ugrp-sim/src/34d53cfaadc093ac957bbfffc780a76f372041f9/scripts/audit_act16w_dagger_pose_coverage.py",
+  "dagger_audits_waiter": {
+    "pid": 95055,
+    "script": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/delivery-ops/DAgger-audits-wait.py",
+    "log": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/delivery-ops/DAgger-audits-wait.log",
+    "scope": "after completed20, raw valid/noninitial/afterchangedcommand label audit then evaluation-only robot-pose distributions; no physics; output summaries only to Mac",
+    "status": "complete: coverage20 and robot-pose distributions verified"
+  },
+  "D1_delivery_waiter": {
+    "pid": 98172,
+    "script": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/delivery-ops/D1-delivery-wait.py",
+    "log": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/delivery-ops/D1-delivery-wait.log",
+    "scope": "after existing D1 VAL: first30 ifavailable, full87429 playback, all8 raw recount and saved geometry gap supplement; no physics/no auto review ack",
+    "status": "complete all8 raw/gaps + full87429 replay"
+  },
+  "completed_h5_data_receipt": "native-h5-data-receipt.json",
+  "completed_h5_prefix_reviews": [
+    "native-dagger-87422-playback-review.json",
+    "native-dagger-87431-playback-review.json"
+  ],
+  "native_models": {
+    "tag": "models-20261016-act16w-native-v1",
+    "staged": 4,
+    "uploaded": 4,
+    "public_verified": 4,
+    "loading_verified": 4,
+    "registry_contains_all4": true,
+    "release_source_sha": "805a3b4400f1d633df24e813c5b2b8cae43b32e8",
+    "verification_root": "/home/ugrp/ugrp-sim/runs/act16w-native-release-public-verify-r1",
+    "source": "/home/ugrp/ugrp-sim/src/805a3b4400f1d633df24e813c5b2b8cae43b32e8",
+    "scope": "fresh public tag805 clone; anonymous redownload/all76 hashes/real CPU loading; no clean-venv/physics claim",
+    "internal_files_verified": 76
+  },
+  "PR_base": "6d680e375f4e4dd4bbdeb231acfd9f1f92688dba",
+  "PR_conflict": "resolved by owner-byte-exact merge49af0c092; MERGEABLE/CIrunning",
+  "final_delivery": {
+    "script": "final-delivery.py",
+    "remote": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/delivery-ops/final-delivery.py",
+    "scope": "wait existing final40 then finite saved-state analyses; no duplicate physics",
+    "pid": 107322,
+    "script_sha256": "c096522cc359ed2e3a2cb1071bf544d0ef855ecf86c6e4818fa818501b65053a",
+    "status": "complete/exit0"
+  },
+  "final_first30_waiter": {
+    "pid": 109580,
+    "script": "final-first30-wait.py",
+    "scope": "finite existing first30 composition, no physics/model",
+    "status": "complete"
+  },
+  "VM_status": "TERMINATED",
+  "resource_receipt": "owned-VM-terminated.json"
+}

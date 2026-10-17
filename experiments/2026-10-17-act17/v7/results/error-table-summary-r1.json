@@ -1,0 +1,273 @@
+{
+  "source_sha": "8e4b08fd80b6d83105ee7ae7daba69936fcf9b25",
+  "host": {
+    "project_id": "ugrp-sim-b-1014",
+    "instance": "ugrp-act-l4-gcp2",
+    "machine_type": "g2-standard-8",
+    "zone": "asia-northeast3-a"
+  },
+  "complete": true,
+  "physics_steps": 0,
+  "training_updates": 0,
+  "audit": {
+    "path": "/home/ugrp/ugrp-sim/runs/act17-v7/open-loop-r1/summary.json",
+    "sha256": "bca26180353c7b24d07553bf69a5c68b4c6e48ae4658688800f848576b4adf3e"
+  },
+  "arms": {
+    "M": {
+      "frame_prediction_sha256": "1c5164c9519e4550648978634ab9cb0865c1af48d1ed4d485ff64a0d7de95da6",
+      "completion_and_wheel_confusion": {
+        "approach": {
+          "frames": 3659,
+          "teacher_done_positive": 0,
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "wheel_components": 14636,
+          "teacher_nonzero_wheels": 13129,
+          "student_stopped_teacher_moves": 537,
+          "student_moves_teacher_stopped": 156,
+          "opposite_wheel_sign": 284
+        },
+        "alignment": {
+          "frames": 889,
+          "teacher_done_positive": 0,
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "wheel_components": 3556,
+          "teacher_nonzero_wheels": 2856,
+          "student_stopped_teacher_moves": 307,
+          "student_moves_teacher_stopped": 57,
+          "opposite_wheel_sign": 167
+        },
+        "grasp": {
+          "frames": 6476,
+          "teacher_done_positive": 40,
+          "true_positive": 40,
+          "false_positive": 414,
+          "false_negative": 0,
+          "wheel_components": 25904,
+          "teacher_nonzero_wheels": 3200,
+          "student_stopped_teacher_moves": 800,
+          "student_moves_teacher_stopped": 0,
+          "opposite_wheel_sign": 0
+        },
+        "release": {
+          "frames": 3504,
+          "teacher_done_positive": 40,
+          "true_positive": 40,
+          "false_positive": 160,
+          "false_negative": 0,
+          "wheel_components": 14016,
+          "teacher_nonzero_wheels": 6400,
+          "student_stopped_teacher_moves": 1280,
+          "student_moves_teacher_stopped": 516,
+          "opposite_wheel_sign": 0
+        }
+      }
+    },
+    "F": {
+      "frame_prediction_sha256": "56400917708bf6cdceaf2b31552a6a4a1f7c95960ea26976637f4c76290abbb6",
+      "completion_and_wheel_confusion": {
+        "approach": {
+          "frames": 3659,
+          "teacher_done_positive": 0,
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "wheel_components": 14636,
+          "teacher_nonzero_wheels": 13129,
+          "student_stopped_teacher_moves": 704,
+          "student_moves_teacher_stopped": 257,
+          "opposite_wheel_sign": 333
+        },
+        "alignment": {
+          "frames": 889,
+          "teacher_done_positive": 0,
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "wheel_components": 3556,
+          "teacher_nonzero_wheels": 2856,
+          "student_stopped_teacher_moves": 525,
+          "student_moves_teacher_stopped": 0,
+          "opposite_wheel_sign": 202
+        },
+        "grasp": {
+          "frames": 6476,
+          "teacher_done_positive": 40,
+          "true_positive": 40,
+          "false_positive": 394,
+          "false_negative": 0,
+          "wheel_components": 25904,
+          "teacher_nonzero_wheels": 3200,
+          "student_stopped_teacher_moves": 800,
+          "student_moves_teacher_stopped": 0,
+          "opposite_wheel_sign": 0
+        },
+        "release": {
+          "frames": 3504,
+          "teacher_done_positive": 40,
+          "true_positive": 40,
+          "false_positive": 160,
+          "false_negative": 0,
+          "wheel_components": 14016,
+          "teacher_nonzero_wheels": 6400,
+          "student_stopped_teacher_moves": 1280,
+          "student_moves_teacher_stopped": 592,
+          "opposite_wheel_sign": 0
+        }
+      }
+    },
+    "S": {
+      "frame_prediction_sha256": "3afb5dae55b8c412a40bb2c09807d93ed6b1c74ffb661871a905f1be923c51c9",
+      "completion_and_wheel_confusion": {
+        "approach": {
+          "frames": 3659,
+          "teacher_done_positive": 0,
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "wheel_components": 14636,
+          "teacher_nonzero_wheels": 13129,
+          "student_stopped_teacher_moves": 704,
+          "student_moves_teacher_stopped": 182,
+          "opposite_wheel_sign": 336
+        },
+        "alignment": {
+          "frames": 889,
+          "teacher_done_positive": 0,
+          "true_positive": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "wheel_components": 3556,
+          "teacher_nonzero_wheels": 2856,
+          "student_stopped_teacher_moves": 357,
+          "student_moves_teacher_stopped": 1,
+          "opposite_wheel_sign": 150
+        },
+        "grasp": {
+          "frames": 6476,
+          "teacher_done_positive": 40,
+          "true_positive": 39,
+          "false_positive": 185,
+          "false_negative": 1,
+          "wheel_components": 25904,
+          "teacher_nonzero_wheels": 3200,
+          "student_stopped_teacher_moves": 160,
+          "student_moves_teacher_stopped": 160,
+          "opposite_wheel_sign": 0
+        },
+        "release": {
+          "frames": 3504,
+          "teacher_done_positive": 40,
+          "true_positive": 40,
+          "false_positive": 160,
+          "false_negative": 0,
+          "wheel_components": 14016,
+          "teacher_nonzero_wheels": 6400,
+          "student_stopped_teacher_moves": 640,
+          "student_moves_teacher_stopped": 640,
+          "opposite_wheel_sign": 0
+        }
+      }
+    }
+  },
+  "last_issued_command_reference": {
+    "approach": {
+      "wheel_full_scale": {
+        "n": 14636,
+        "median": 0.0,
+        "p90": 0.0
+      },
+      "pulse_ms": {
+        "n": 14636,
+        "median": 0.0,
+        "p90": 4.444958925247192
+      },
+      "servo_PWM_counts": {
+        "n": 18295,
+        "median": 0.0,
+        "p90": 0.0
+      },
+      "gripper_PWM_counts": {
+        "n": 3659,
+        "median": 0.0,
+        "p90": 0.0
+      }
+    },
+    "alignment": {
+      "wheel_full_scale": {
+        "n": 3556,
+        "median": 0.0,
+        "p90": 0.17499999701976776
+      },
+      "pulse_ms": {
+        "n": 3556,
+        "median": 0.0,
+        "p90": 3.669878840446472
+      },
+      "servo_PWM_counts": {
+        "n": 4445,
+        "median": 0.0,
+        "p90": 0.0
+      },
+      "gripper_PWM_counts": {
+        "n": 889,
+        "median": 0.0,
+        "p90": 0.0
+      }
+    },
+    "grasp": {
+      "wheel_full_scale": {
+        "n": 25904,
+        "median": 0.0,
+        "p90": 0.0
+      },
+      "pulse_ms": {
+        "n": 25904,
+        "median": 0.0,
+        "p90": 0.0
+      },
+      "servo_PWM_counts": {
+        "n": 32380,
+        "median": 0.0,
+        "p90": 18.00000762939453
+      },
+      "gripper_PWM_counts": {
+        "n": 6476,
+        "median": 0.0,
+        "p90": 0.0
+      }
+    },
+    "release": {
+      "wheel_full_scale": {
+        "n": 14016,
+        "median": 0.0,
+        "p90": 0.0
+      },
+      "pulse_ms": {
+        "n": 14016,
+        "median": 0.0,
+        "p90": 0.0
+      },
+      "servo_PWM_counts": {
+        "n": 17520,
+        "median": 0.0,
+        "p90": 34.999996185302734
+      },
+      "gripper_PWM_counts": {
+        "n": 3504,
+        "median": 0.0,
+        "p90": 0.0
+      }
+    }
+  },
+  "scope": "expert-state action error and uncalibrated completion-score confusion; no task-success or causal-failure claim",
+  "notes": [
+    "TRAIN is actual optimizer log including posterior/KL; VAL is prior-z0 eval without KL, so objectives differ",
+    "completion uses the existing frozen decode_action output, not a new threshold",
+    "last issued command is a numerical persistence reference, not an executable fallback"
+  ]
+}

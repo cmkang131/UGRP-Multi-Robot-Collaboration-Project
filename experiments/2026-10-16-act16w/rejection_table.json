@@ -1,0 +1,69 @@
+{
+  "schema": "ugrp.act16w.rejection_table.v1",
+  "status": "BLOCKED_PREREQUISITE_WAIT_EXPIRED",
+  "scope": "admission funnel only; zero act16w teacher/student attempts, no physical failure rate",
+  "checked_at": "2026-10-16T04:15:54.225115+00:00",
+  "funnel": [
+    {
+      "gate": "scene_decision",
+      "entered": 1,
+      "passed": 1,
+      "rejected": 0
+    },
+    {
+      "gate": "upstream_distinct_starts_receipt",
+      "entered": 1,
+      "passed": 1,
+      "rejected": 0
+    },
+    {
+      "gate": "upstream_full_teacher_gate",
+      "entered": 1,
+      "passed": 0,
+      "rejected": 1,
+      "reason": "29 completed,11 still running; incomplete40 cohort"
+    },
+    {
+      "gate": "record_api",
+      "entered": 1,
+      "passed": 0,
+      "rejected": 1,
+      "reason": "RECORD_API_READY absent"
+    },
+    {
+      "gate": "act16w_data",
+      "entered": 0,
+      "passed": 0,
+      "rejected": 0,
+      "not_evaluated": true
+    },
+    {
+      "gate": "act16w_training_and_student_evaluation",
+      "entered": 0,
+      "passed": 0,
+      "rejected": 0,
+      "not_evaluated": true
+    }
+  ],
+  "rejections": [
+    {
+      "category": "prerequisite_wait_expired",
+      "reason": "warp3 reports29 successful completed/40 planned,11 still running; full>=40 teacher gate not passed",
+      "blocking_object": "not_applicable_non_geometric",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not_applicable_non_geometric"
+    },
+    {
+      "category": "prerequisite_wait_expired",
+      "reason": "RECORD_API_READY not received before start wait limit",
+      "blocking_object": "not_applicable_non_geometric",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not_applicable_non_geometric"
+    }
+  ],
+  "raw": "prerequisite-checks.jsonl",
+  "raw_sha256": "0cb0291ca3f7439380d0a4bd14fe3da555333d2af8b372a90831c6f081f1f182",
+  "initial_snapshot": "preflight-initial.json",
+  "reproduce": "python3 scripts/act16w_prerequisites.py --ops-alert /Users/changmin/projects/ugrp/outputs/e2e18-admin/ops-alert.md --upstream-job warp3 --out <fresh-state-directory>",
+  "reproduce_scope": "read-only signal inspection; do not reset expired wait for execution without a new task decision"
+}

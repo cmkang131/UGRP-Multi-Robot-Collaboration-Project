@@ -1,0 +1,69 @@
+{
+  "reviewer": "act17 Codex",
+  "utc": "2026-10-17T02:26:00.223688+00:00",
+  "viewer_opened": false,
+  "ffprobe_only": true,
+  "source": "existing gcp2 overview+r1+r2-N/A videos, gcp2 ffmpeg all-frame strips",
+  "runs": [
+    {
+      "seed": 91620,
+      "kind": "student_failure",
+      "full_2hz": [
+        0,
+        90
+      ],
+      "terminal_10hz": [
+        80.1,
+        90
+      ],
+      "timeline": [
+        "0–6.5s approaches and target slides toward lower-right edge",
+        "6.7s geometric seven-probe exit; by7s own RGB shows floor",
+        "9–90s floor persists; final10s has no target reappearance"
+      ],
+      "full_2hz_frames": 181,
+      "terminal_10hz_frames": 100
+    },
+    {
+      "seed": 91621,
+      "kind": "student_failure",
+      "full_2hz": [
+        0,
+        90
+      ],
+      "terminal_10hz": [
+        80.1,
+        90
+      ],
+      "timeline": [
+        "0–10.5s red target expands and moves toward lower edge",
+        "11.8s seven-probe exit, actual box edge still visible intermittently12–13.5s",
+        "14–90s floor persists; terminal10s no recovery"
+      ],
+      "full_2hz_frames": 181,
+      "terminal_10hz_frames": 100
+    },
+    {
+      "seed": 87429,
+      "kind": "teacher_success_reference_not_student_success",
+      "full_2hz": [
+        0,
+        45
+      ],
+      "terminal_10hz": [
+        35.5,
+        45.4
+      ],
+      "timeline": [
+        "0–10.8s approach, then10.8–12.8s alignment",
+        "12.8hover,13.7descent,15.3close,16.4lift; RGB target exits during normal nearfield sequence",
+        "28.9release,33open,35.5backoff,37.6lookaround; red target partly reappears during pan",
+        "World evaluator success40/40 is previous verified result; visual disappearance alone is not failure"
+      ],
+      "full_2hz_frames": 91,
+      "terminal_10hz_frames": 100
+    }
+  ],
+  "difference_from_sparse_review": "Dense frame sequence distinguishes probe exit from last visible box edge and confirms persistent floor after early loss; successful teacher also loses target during grasp, so exit alone is not causal.",
+  "limitations": "all-frame compact sheets show continuity at thumbnail scale; early0–17.5s full-size sheets and terminal10Hz sheets inspected separately"
+}

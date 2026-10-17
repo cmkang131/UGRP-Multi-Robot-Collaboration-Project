@@ -1,0 +1,142 @@
+{
+  "stage": "noslip10 reference only",
+  "seed": 86866,
+  "arm": "B",
+  "reviewed_range_SIM_s": [
+    0.0,
+    15.0
+  ],
+  "full_Hz": 2,
+  "tail_Hz": 10,
+  "tail_range_SIM_s": [
+    5.2,
+    15.1
+  ],
+  "reviewed_all_sheets": true,
+  "reviewed_local_files": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/act16w4-noslip-B-86866/full-2hz-01.jpg",
+      "sha256": "8743f5837119ffe009f2c296ed05498927b43be4cd87b42457d6fb63f7d69c97"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/act16w4-noslip-B-86866/last10s-10hz-03.jpg",
+      "sha256": "9becd2651840b4f21311404352bf425a60367d60828a2bc5724d5ea6f29eb891"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/act16w4-noslip-B-86866/last10s-10hz-02.jpg",
+      "sha256": "07c8f5804c5272f4a9689da0ab30f218c8002883ec3c85907c7b198de0bd7125"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/act16w4-noslip-B-86866/full-2hz-00.jpg",
+      "sha256": "deb3213563d9967bb11f8b4fa66bc07a2e3213742dba44eca7a6c24645cd915c"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/act16w4-noslip-B-86866/last10s-10hz-01.jpg",
+      "sha256": "4612e3e65a09f89fcf8af510b12fa632e6034e9333e22024a034a9b6cfc3b5cd"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/act16w4-noslip-B-86866/last10s-10hz-00.jpg",
+      "sha256": "7c6a719d83f61c598694c0f521621ba15ec60b17451365d0aaef8fe73aa07f4e"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/act16w4-noslip-B-86866/last10s-10hz-04.jpg",
+      "sha256": "34df4ff26b8f555e841098993fadffbf8be4dfa8bc320673162a3edad67c1cc9"
+    }
+  ],
+  "movie": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/act16w4-noslip-B-86866/playback-3x.mp4",
+  "movie_sha256": "fff7808f322f98288391a60b4eddd4b3751f74fe756a90f2ec6b43d366a57cea",
+  "ffprobe_verified": {
+    "streams": [
+      {
+        "index": 0,
+        "codec_name": "h264",
+        "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+        "profile": "High",
+        "codec_type": "video",
+        "codec_tag_string": "avc1",
+        "codec_tag": "0x31637661",
+        "width": 960,
+        "height": 240,
+        "coded_width": 960,
+        "coded_height": 240,
+        "closed_captions": 0,
+        "film_grain": 0,
+        "has_b_frames": 2,
+        "pix_fmt": "yuv420p",
+        "level": 22,
+        "color_range": "tv",
+        "color_space": "bt470bg",
+        "chroma_location": "center",
+        "field_order": "progressive",
+        "refs": 1,
+        "is_avc": "true",
+        "nal_length_size": "4",
+        "id": "0x1",
+        "r_frame_rate": "6/1",
+        "avg_frame_rate": "6/1",
+        "time_base": "1/12288",
+        "start_pts": 0,
+        "start_time": "0.000000",
+        "duration_ts": 63488,
+        "duration": "5.166667",
+        "bit_rate": "48374",
+        "bits_per_raw_sample": "8",
+        "nb_frames": "31",
+        "extradata_size": 48,
+        "disposition": {
+          "default": 1,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "non_diegetic": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0
+        },
+        "tags": {
+          "language": "und",
+          "handler_name": "VideoHandler",
+          "vendor_id": "[0][0][0][0]",
+          "encoder": "Lavc60.31.102 libx264"
+        }
+      }
+    ],
+    "format": {
+      "filename": "/home/ugrp/ugrp-sim/runs/act16w-noslip-val-B-86866-playback-r1/playback-3x.mp4",
+      "nb_streams": 1,
+      "nb_programs": 0,
+      "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+      "format_long_name": "QuickTime / MOV",
+      "start_time": "0.000000",
+      "duration": "5.166667",
+      "size": "32451",
+      "bit_rate": "50246",
+      "probe_score": 100,
+      "tags": {
+        "major_brand": "isom",
+        "minor_version": "512",
+        "compatible_brands": "isomiso2avc1mp41",
+        "encoder": "Lavf60.16.100"
+      }
+    }
+  },
+  "timeline": [
+    "0-2.5: green target approaches left edge; evaluation overview robot shifts away from the still target",
+    "3.0: green exits left edge",
+    "3.0-8.5: wall and floor only; original target does not reappear",
+    "9.0-11.5: camera points down, floor dominates entire own image",
+    "12.0-15.1: wall returns in upper image, no target recovery before completion"
+  ],
+  "dense_tail_observation": "10Hz resolves brief camera up/down changes near7.2-7.4s and11.5-12.1s that2Hz undersamples; no green in full final10s",
+  "claim_scope": "one noslip B failure; no native-policy outcome or causal treatment effect inferred"
+}

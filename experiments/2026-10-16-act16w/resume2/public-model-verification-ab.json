@@ -1,0 +1,84 @@
+{
+  "status": "VERIFIED",
+  "complete": true,
+  "source_sha": "f41e659d4a7581717b2925319acd43d52511d220",
+  "credentials_on_VM": false,
+  "results": {
+    "A": {
+      "id": "act16w-a-step10000-20261016",
+      "public_url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/download/models-20261016-act16w-v1/act16w-a-step10000-20261016.zip",
+      "expected_archive_sha256": "c47f0b8714d5d9796a4d294e6389f542ff80d66b1a54d868df96fb60b59e9f93",
+      "fetch": {
+        "id": "act16w-a-step10000-20261016",
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-release-r1/public-verification-r1/A",
+        "verified_files": 19,
+        "verified_bytes": 207535816,
+        "installed": true
+      },
+      "loading": {
+        "ready": true,
+        "device": "cpu",
+        "history_mode": "off",
+        "scope": "hash-checked model loading only; no physics success claim"
+      },
+      "commands": [
+        [
+          "python3",
+          "/home/ugrp/ugrp-sim/runs/act16w-release-r1/public-verification-r1/fresh-clone/scripts/model_artifacts.py",
+          "fetch",
+          "act16w-a-step10000-20261016",
+          "--output",
+          "/home/ugrp/ugrp-sim/runs/act16w-release-r1/public-verification-r1/A"
+        ],
+        [
+          "/home/ugrp/ugrp-rl1b-act-env/bin/python",
+          "/home/ugrp/ugrp-sim/runs/act16w-release-r1/public-verification-r1/A/inference/load_model.py",
+          "--model-dir",
+          "/home/ugrp/ugrp-sim/runs/act16w-release-r1/public-verification-r1/A/act"
+        ]
+      ],
+      "model_sha256": "91082c3dc9da1fe741eb0e92498091f38db96251860de165378a3133d69306ea",
+      "scope": "public archive and all inventory bytes verified; fresh clone CPU loading only; no physics/inference success claim"
+    },
+    "B": {
+      "id": "act16w-b-step10000-20261016",
+      "public_url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/download/models-20261016-act16w-v1/act16w-b-step10000-20261016.zip",
+      "expected_archive_sha256": "ad9c740d6fb67e0defeab780462b1aa0ecf9b2e0f3e95a47b217a645a7af2c7b",
+      "fetch": {
+        "id": "act16w-b-step10000-20261016",
+        "path": "/home/ugrp/ugrp-sim/runs/act16w-release-r1/public-verification-r1/B",
+        "verified_files": 19,
+        "verified_bytes": 207537218,
+        "installed": true
+      },
+      "loading": {
+        "ready": true,
+        "device": "cpu",
+        "history_mode": "wheel_pulse_train_mean",
+        "scope": "hash-checked model loading only; no physics success claim"
+      },
+      "commands": [
+        [
+          "python3",
+          "/home/ugrp/ugrp-sim/runs/act16w-release-r1/public-verification-r1/fresh-clone/scripts/model_artifacts.py",
+          "fetch",
+          "act16w-b-step10000-20261016",
+          "--output",
+          "/home/ugrp/ugrp-sim/runs/act16w-release-r1/public-verification-r1/B"
+        ],
+        [
+          "/home/ugrp/ugrp-rl1b-act-env/bin/python",
+          "/home/ugrp/ugrp-sim/runs/act16w-release-r1/public-verification-r1/B/inference/load_model.py",
+          "--model-dir",
+          "/home/ugrp/ugrp-sim/runs/act16w-release-r1/public-verification-r1/B/act"
+        ]
+      ],
+      "model_sha256": "be6e30fff78a14336d24d9b2c5f08d965a5ba77edd05015ae23105b01564154d",
+      "scope": "public archive and all inventory bytes verified; fresh clone CPU loading only; no physics/inference success claim"
+    }
+  },
+  "fresh_clone_clean_before": true,
+  "verified_models": 2,
+  "fresh_clone_clean_after": true,
+  "ended_utc": "2026-10-16T14:00:10.961183+00:00"
+}

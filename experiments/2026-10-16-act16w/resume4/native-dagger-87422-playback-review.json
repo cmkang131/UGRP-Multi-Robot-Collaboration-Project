@@ -1,0 +1,194 @@
+{
+  "status": "reviewed",
+  "utc": "2026-10-16T18:51:25.268867+00:00",
+  "seed": 87422,
+  "policy": "C fixed10000, TRAIN-only DAgger prefix",
+  "whole_2Hz_SIM_range": [
+    0.0,
+    24.5
+  ],
+  "whole_2Hz_frames": 50,
+  "terminal_10Hz_SIM_range": [
+    14.6,
+    24.5
+  ],
+  "terminal_10Hz_frames": 100,
+  "viewed_sheets": [
+    "full-2hz-00.jpg",
+    "full-2hz-01.jpg",
+    "full-2hz-02.jpg",
+    "last10s-10hz-00.jpg",
+    "last10s-10hz-01.jpg",
+    "last10s-10hz-02.jpg",
+    "last10s-10hz-03.jpg",
+    "last10s-10hz-04.jpg"
+  ],
+  "timeline": [
+    {
+      "SIM": [
+        0,
+        7.5
+      ],
+      "observation": "green box grows and moves toward lower image edge during approach"
+    },
+    {
+      "SIM": [
+        8,
+        14.5
+      ],
+      "observation": "last green sliver exits below by9; then own RGB shows floor while overview keeps green box beside the robot"
+    },
+    {
+      "SIM": [
+        15,
+        20.8
+      ],
+      "observation": "camera view rises to wall/base/floor; no green box reappears"
+    },
+    {
+      "SIM": [
+        20.9,
+        21.5
+      ],
+      "observation": "10Hz reveals a brief rapid vertical view change including the upper bracket"
+    },
+    {
+      "SIM": [
+        21.6,
+        24.5
+      ],
+      "observation": "wall/floor view settles; no box recovery before command completion"
+    }
+  ],
+  "transfer_sha_verified": [
+    {
+      "name": "full-2hz-00.jpg",
+      "bytes": 150316,
+      "sha256": "2b87db238afdb0c3ce4d8ef0b2c968e8e41382c28896e0f557b3e49555456805"
+    },
+    {
+      "name": "full-2hz-01.jpg",
+      "bytes": 138002,
+      "sha256": "79237102dc1b17db308578b826e205b4ac48f17bbd74db3822e627d7153b4ec3"
+    },
+    {
+      "name": "full-2hz-02.jpg",
+      "bytes": 123656,
+      "sha256": "fb6d86f1fe16785e1378fc7d2a1e82acfec1cec864674622475ddb131d3c9cc8"
+    },
+    {
+      "name": "last10s-10hz-00.jpg",
+      "bytes": 68862,
+      "sha256": "abe1e62edfb9d135f4dcf303b7b2a38bfe0e7a4a1097e1dfa292600b71b6ee5c"
+    },
+    {
+      "name": "last10s-10hz-01.jpg",
+      "bytes": 69761,
+      "sha256": "fe51075b2c8d517433e880594cdb166211d80397454fb7b78476eb5204c889da"
+    },
+    {
+      "name": "last10s-10hz-02.jpg",
+      "bytes": 69339,
+      "sha256": "020942e1a447902b4b40a7b02cddebbdd4a54c88321a85b947739eb07c7c6b2c"
+    },
+    {
+      "name": "last10s-10hz-03.jpg",
+      "bytes": 69740,
+      "sha256": "f648aad6c3145fd506ff2b46923303c1a974c1f9df4a1d750f32568ac4511b52"
+    },
+    {
+      "name": "last10s-10hz-04.jpg",
+      "bytes": 71857,
+      "sha256": "4591e11b9227ac7afade5583c1339f78815a76c9d2dbdf35240c83df57413edd"
+    },
+    {
+      "name": "playback-3x.mp4",
+      "bytes": 59784,
+      "sha256": "14eba93f368c40e7392dd5999c4d98d28d743f0bcc5b5f51343af1aa585fc2ad"
+    },
+    {
+      "name": "playback-meta.json",
+      "bytes": 4296,
+      "sha256": "fcf0ceed1694fd6af440a1aa82054c14c6d8b98333ec585028f444750664ef21"
+    }
+  ],
+  "video_bytes": 59784,
+  "ffprobe_verified_on_L4": true,
+  "label_coverage": {
+    "seed": 87422,
+    "kind": "green",
+    "observations": 245,
+    "valid_h0": 1,
+    "valid_noninitial": 0,
+    "valid_after_different_student_command": 0,
+    "teacher_phase_counts": {
+      "start": 1
+    },
+    "target_visible_valid_N": 1,
+    "last_valid_elapsed_SIM_s": 0.0,
+    "planned_prefix_cap_end": false
+  },
+  "raw_evaluator_diagnostics": {
+    "seed": 87422,
+    "world": 1,
+    "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-collection/group-00/collection",
+    "result": {
+      "status": "complete",
+      "cap_end": false,
+      "issued_done": true,
+      "evaluation": {
+        "world": 1,
+        "seed": 87422,
+        "generation": 0,
+        "t": 26.200000000000152,
+        "elapsed_sim_s": 24.5,
+        "min_z": -0.00018539236934157072,
+        "support_z": 0.0,
+        "tilt_deg": 0.13122123336572936,
+        "finger_forces": [
+          0.0,
+          0.0
+        ],
+        "speed": 0.0,
+        "open_issued": true,
+        "placement_offset": 8.381649082357186e-05,
+        "weld_active": false,
+        "lift_success": false,
+        "release_success": false,
+        "physical_success": false,
+        "max_stable_lift_s": 0.0,
+        "max_stable_release_s": 0.0,
+        "criteria": {
+          "min_clearance_m": 0.012,
+          "max_tilt_deg": 10.0,
+          "lift_hold_s": 3.0,
+          "finger_min_n": 0.5,
+          "release_settle_s": 2.0,
+          "release_speed_m_s": 0.01,
+          "release_max_tilt_deg": 3.0,
+          "release_clearance_m": 0.005,
+          "placement_offset_m": 0.05,
+          "weld": "off"
+        }
+      }
+    },
+    "max_clearance_m": -0.00010775512456893954,
+    "max_min_bilateral_force_N": 0.0,
+    "actions_N": 245
+  },
+  "blocking_object": "not_attributed_no_blockage_causality_claim",
+  "nearest_non_floor_object": "cargo_green_1_geom",
+  "minimum_gap_m": -0.00022309746395207604,
+  "gap_report": {
+    "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-gaps-87422.json",
+    "sha256": "c77c8a294f32b2f8cd2c0a23c0454295b80597391ebd1477ad09b9f2cac205ab"
+  },
+  "limits": [
+    "TRAIN coverage examples, not final evaluation or a task-success denominator",
+    "floor-only RGB alone does not prove holding; evaluator diagnostics are separate",
+    "saved geometric distances are not GPU forces or proof of a blocker",
+    "no new threshold, teacher query, student command or policy change"
+  ],
+  "sparse_review_difference": "full sequence locates the image exit and lack of recovery; terminal10Hz exposes the brief view change in87422 and floor-only tail in87431",
+  "local": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/act16w4-native-dagger-87422"
+}

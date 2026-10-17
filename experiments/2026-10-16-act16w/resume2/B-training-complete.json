@@ -1,0 +1,92 @@
+{
+  "source_sha": "78485f10596b4512e731fdcd8ee25eafd6d8fcad",
+  "act_source_sha": "3f99d58c5ada0862e669ef4065c0ba957f1b4547",
+  "dataset_manifest_sha256": "c65e74daea6b1d616b84aa0028dbff22d4128a551c5c4d7f5479d732acff8fed",
+  "seed": 20261015,
+  "history_causal_split_v1": "wheel_pulse_train_mean",
+  "curriculum_starts_sha256": null,
+  "done_loss": "balanced_bce_v1",
+  "batch_size": 8,
+  "chunk": 8,
+  "period_s": 0.1,
+  "schedule_steps": 10000,
+  "lerobot_act_sha256": "8d622935319af7d03f1efd95d51e726af2921010f7e4f5ec3742f62280493111",
+  "status": "complete",
+  "complete": true,
+  "stage": "main",
+  "host": {
+    "project_id": "ugrp-sim-b-1014",
+    "instance": "ugrp-act-l4-gcp2",
+    "machine_type": "g2-standard-8",
+    "zone": "asia-northeast3-a"
+  },
+  "steps_requested": 10000,
+  "steps_completed": 10000,
+  "readback_verified": true,
+  "selection": "fixed final optimizer step; no final evaluation checkpoint selection",
+  "admission_sha256": "9dad8fafaf6fcee1de8018e1a4499c9317c480bca93e8fd724e07e9a4f006ef6",
+  "teacher_gate": {
+    "teacher_success_n": 40,
+    "teacher_attempts_N": 40
+  },
+  "class": "dev",
+  "research_result": false,
+  "environment": {
+    "torch": "2.11.0+cu128",
+    "torchvision": "0.26.0+cu128",
+    "lerobot": "0.6.2",
+    "numpy": "2.2.6"
+  },
+  "gpu": "NVIDIA L4",
+  "cuda": "12.8",
+  "training_rows": 12734,
+  "done_class_counts": {
+    "grasp": {
+      "positive_n": 35,
+      "rows_N": 9665,
+      "positive_fraction": 0.0036213140196585617
+    },
+    "release": {
+      "positive_n": 35,
+      "rows_N": 3069,
+      "positive_fraction": 0.011404366243075921
+    }
+  },
+  "latest": {
+    "step": 10000,
+    "loss": 0.1269988864660263,
+    "legacy_l1_loss": 0.5656465291976929,
+    "movement_l1_loss": 0.09936434030532837,
+    "done_bce_loss": 0.0007194079807959497,
+    "kld_loss": 0.0026915110647678375,
+    "gradient_norm": 11.707301139831543,
+    "wall_s": 3143.117012414,
+    "eligible_rows": 12734
+  },
+  "last_checkpoint": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training-r2/B-main/step-010000",
+  "peak_gpu_bytes": 1548071424,
+  "input_audit": {
+    "keys": [
+      "observation.images.own_history",
+      "observation.state"
+    ],
+    "teacher_input_fields": 0,
+    "train_inference_same_transform": true
+  },
+  "wall_s": 3147.242645434,
+  "artifacts": {
+    "progress.jsonl": "354d86cc76097aa2d5518024dae611e0b048d69f735b5d789f4b011b038e17f2",
+    "step-010000/resume.json": "c4a6ccfe3168a0b8d4870232afd4a8b00dc7a5026f76e9bba9d811b4e12b2f1b",
+    "step-010000/optimizer.pt": "aa56bb1f9ef66128010b8eeecfe88155a8564ee4f71ccab3ff3242f22cfa3d4c",
+    "step-005000/resume.json": "6e58caf965bfc9a35676aa5d096fdde94eb8e8afeb70cb2822a39e861294c949",
+    "step-005000/optimizer.pt": "b76f56ca45042519e11338a577530bcefb51553ea9586dcdc15675a19f4c5cad",
+    "step-010000/actor/SHA256.json": "555be79e3ca39787c1f2ce440a88d4c6156b1e09e0e24cda431bd59c03c8bd83",
+    "step-010000/actor/model.safetensors": "be6e30fff78a14336d24d9b2c5f08d965a5ba77edd05015ae23105b01564154d",
+    "step-010000/actor/adapter.json": "6e02a27ec18bc11f42af5a90af23d43981bc51c822b6e23992ccc9cf34fa5292",
+    "step-010000/actor/config.json": "b63bc05fb84e5c0f53329336a7a147f18ca73f297ed25279b42b968e279f571f",
+    "step-005000/actor/SHA256.json": "b6a46b729b52ebd550f1ad2c0238e4e8edd0aa7ed567cd63557ab8cad05d1cfc",
+    "step-005000/actor/model.safetensors": "a008f31154a9c20896f383aefd84ff02454178f36df48d8b0c7e09166974dc75",
+    "step-005000/actor/adapter.json": "5a65831ae25fdc742e4f29a1e5ccc180ddfc85095269c66acd4c3d7d5c73ea52",
+    "step-005000/actor/config.json": "b63bc05fb84e5c0f53329336a7a147f18ca73f297ed25279b42b968e279f571f"
+  }
+}

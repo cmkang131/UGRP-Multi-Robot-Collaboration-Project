@@ -1,0 +1,43 @@
+{
+  "schema": "ugrp.act17.diagnostic_replay.v1",
+  "flow": "replay",
+  "replay_of": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1",
+  "stack_values": {
+    "physics_backend": "mjwarp_batch_v1",
+    "contact_profile": "warp_native_contact_v1",
+    "noslip_iterations": 0,
+    "scene_profile": "walls_floor_contrast_v5_indigo110_s80",
+    "end_color_scene": "off",
+    "cargo_version": "v4",
+    "scenario_version": "v4",
+    "heavy_crate": true,
+    "held_object_hidden_v1": true,
+    "held_world_reads": 0,
+    "nearfield_executor": "ACT",
+    "weld": false,
+    "top_camera_control": false,
+    "heading_mode": "not_applicable_ACT_nearfield",
+    "ultrasonic_front": "off",
+    "wall_cap": null,
+    "speed_gate": "record_only",
+    "speed_metric": "wall_s/(sim_s*nworld)",
+    "gcp_host": "ugrp-act-l4-gcp2",
+    "gcp_project": "ugrp-sim-b-1014",
+    "gcp_account": "changmin5781@gmail.com",
+    "gcp_guards": {
+      "idle_minutes": 20,
+      "budget_stop": true,
+      "credentials_on_vm": false
+    },
+    "no_pooling": true,
+    "rejection_ledger": [
+      "reason_category",
+      "blocked_object",
+      "minimum_gap_m"
+    ],
+    "cap_end_label": "cap_end"
+  },
+  "physics_steps": 0,
+  "training_steps": 0,
+  "rejection_table": "/Users/changmin/projects/ugrp-wt/act16w/experiments/2026-10-17-act17/results/rejection_table.json"
+}

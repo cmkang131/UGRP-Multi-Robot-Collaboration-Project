@@ -1,0 +1,254 @@
+{
+  "candidate": "F",
+  "seed": 88620,
+  "metadata": {
+    "run": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-3/evaluation/owner",
+    "world": 3,
+    "sim_range": [
+      0.0,
+      14.0
+    ],
+    "postprocessor_sha256": "cb4cf24890ddfc63f5ea66983447650af6243bac5bb51537b5f9c662e21dbea6",
+    "source_sha": "75d54e08d4bcc5f1e22657b1a02bcd06e304f0e9",
+    "host": {
+      "project_id": "ugrp-sim-b-1014",
+      "instance": "ugrp-act-l4-gcp2",
+      "machine_type": "g2-standard-8",
+      "zone": "asia-northeast3-a"
+    },
+    "source_state": {
+      "path": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-3/evaluation/owner/world-003/states.npz",
+      "sha256": "33bd7686eafbf9787f84c88810368a30d0c9733c4bf910985dca1cc4c7bcb3e1"
+    },
+    "source_scene": {
+      "path": "/home/ugrp/ugrp-sim/runs/act17-v7/validation-r1/MFS-3/evaluation/owner/world-003/scene.xml",
+      "sha256": "03b117ae10352e60f5d6542d8935701cf81315c032980daf2eea054a05af1dd2"
+    },
+    "full_2hz_frames": 29,
+    "terminal_10hz_frames": 100,
+    "video_bytes": 31915,
+    "ffprobe": {
+      "streams": [
+        {
+          "index": 0,
+          "codec_name": "h264",
+          "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+          "profile": "High",
+          "codec_type": "video",
+          "codec_tag_string": "avc1",
+          "codec_tag": "0x31637661",
+          "width": 960,
+          "height": 240,
+          "coded_width": 960,
+          "coded_height": 240,
+          "closed_captions": 0,
+          "film_grain": 0,
+          "has_b_frames": 2,
+          "pix_fmt": "yuv420p",
+          "level": 22,
+          "color_range": "tv",
+          "color_space": "bt470bg",
+          "chroma_location": "center",
+          "field_order": "progressive",
+          "refs": 1,
+          "is_avc": "true",
+          "nal_length_size": "4",
+          "id": "0x1",
+          "r_frame_rate": "6/1",
+          "avg_frame_rate": "6/1",
+          "time_base": "1/12288",
+          "start_pts": 0,
+          "start_time": "0.000000",
+          "duration_ts": 59392,
+          "duration": "4.833333",
+          "bit_rate": "50823",
+          "bits_per_raw_sample": "8",
+          "nb_frames": "29",
+          "extradata_size": 48,
+          "disposition": {
+            "default": 1,
+            "dub": 0,
+            "original": 0,
+            "comment": 0,
+            "lyrics": 0,
+            "karaoke": 0,
+            "forced": 0,
+            "hearing_impaired": 0,
+            "visual_impaired": 0,
+            "clean_effects": 0,
+            "attached_pic": 0,
+            "timed_thumbnails": 0,
+            "non_diegetic": 0,
+            "captions": 0,
+            "descriptions": 0,
+            "metadata": 0,
+            "dependent": 0,
+            "still_image": 0
+          },
+          "tags": {
+            "language": "und",
+            "handler_name": "VideoHandler",
+            "vendor_id": "[0][0][0][0]",
+            "encoder": "Lavc60.31.102 libx264"
+          }
+        }
+      ],
+      "format": {
+        "filename": "/home/ugrp/ugrp-sim/runs/act17-v7/student-F-88620-playback-r1/playback-3x.mp4",
+        "nb_streams": 1,
+        "nb_programs": 0,
+        "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+        "format_long_name": "QuickTime / MOV",
+        "start_time": "0.000000",
+        "duration": "4.833333",
+        "size": "31915",
+        "bit_rate": "52824",
+        "probe_score": 100,
+        "tags": {
+          "major_brand": "isom",
+          "minor_version": "512",
+          "compatible_brands": "isomiso2avc1mp41",
+          "encoder": "Lavf60.16.100"
+        }
+      }
+    },
+    "overview": {
+      "original": {
+        "pos": [
+          0.55,
+          -2.0,
+          2.5
+        ],
+        "quat": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "pos": [
+        -0.0028846451912667714,
+        -2.505653524481967,
+        0.8858512964240826
+      ],
+      "quat": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "geometry_bounds": [
+        [
+          -0.43651014864087684,
+          -2.628852457601775,
+          -0.07228620028615035
+        ],
+        [
+          0.4307408582583433,
+          -2.3824545913621584,
+          0.2571819817632716
+        ]
+      ],
+      "basis": "full recorded r1+target geom bounding spheres, existing fovy/aspect and one output-pixel border"
+    },
+    "compiled_geometry": {
+      "inventory": "/home/ugrp/ugrp-sim/runs/act17-v7/record-references-r1/per-world-references.json",
+      "inventory_sha256": "9132a1fd9c97a3036991b4a4f55645cfc0b94b18324ab3819cdefc4f6e7715f2",
+      "geometry_file": "/home/ugrp/ugrp-sim/runs/act17-v7/record-references-r1/case-020/compiled-geometry312.npz",
+      "geometry_sha256": "87b573b4747da65ad317041a75ad44403fd48632818d409cbd16707344cdecda",
+      "qualified_source_sha": "f0db6b1abb842ea65b71c433738210254f300a7c",
+      "scope": "compiled geometry applied only to saved-state evaluation overview; recorded own RGB unchanged"
+    },
+    "scope": "overview reframed for full recorded r1/target geometry using evaluation states only; r1 own RGB is actual and unchanged, r2 not an actor; no native physics step"
+  },
+  "viewed_all_full_2Hz_sheets": true,
+  "viewed_full_SIM": [
+    0,
+    14
+  ],
+  "viewed_all_terminal_10Hz_sheets": true,
+  "viewed_terminal_SIM": [
+    4.4,
+    14.3
+  ],
+  "review_method": "GCP ffmpeg sheets read as files; ffprobe only, no Mac player/GUI/render",
+  "timeline": [
+    {
+      "SIM": [
+        0,
+        3
+      ],
+      "observation": "청록 목표가 화면 왼쪽 가장자리로 밀려남"
+    },
+    {
+      "SIM": [
+        3.5,
+        8.9
+      ],
+      "observation": "목표가 보이지 않고 바닥/벽 경계 위주로 거의 같은 장면"
+    },
+    {
+      "SIM": [
+        9,
+        11.1
+      ],
+      "observation": "배경 빨강 물체가 왼쪽 가장자리에 나타나며 시야가 조금씩 변함"
+    },
+    {
+      "SIM": [
+        11.2,
+        14.3
+      ],
+      "observation": "시야가 갑자기 위쪽 벽으로 바뀐 뒤 정체,14.3SIM에 완료 신호로 종료"
+    }
+  ],
+  "difference_from_sparse_review": "10Hz는9초 전후의 작은 시야 변화와11.2초의 급격한 시야 전환을 구분한다. 명령 부호 반전 분류를 큰 실제 차체 진동으로 읽을 수 없다.",
+  "physical_result": "assigned lift/release/task all false in independent native score; images alone do not determine contact/height",
+  "files": [
+    {
+      "name": "full-2hz-00.jpg",
+      "bytes": 145519,
+      "sha256": "caab83ccaeae31ed0ce3adccc907dabd5b344236e766678c2374675e2da6c85f"
+    },
+    {
+      "name": "full-2hz-01.jpg",
+      "bytes": 98035,
+      "sha256": "a4aaef9a7358e8bfb2a86f520e486506946b43f22fb956f52766cae028945112"
+    },
+    {
+      "name": "last10s-10hz-00.jpg",
+      "bytes": 63240,
+      "sha256": "0e2f403803ea4b4f7e74d933bfc0c8357fd2479460abfe42e91d4196573b9189"
+    },
+    {
+      "name": "last10s-10hz-01.jpg",
+      "bytes": 63532,
+      "sha256": "2219e469c3bf79e034b15f129199cce061965ce650da5344ba71cf6393821ed8"
+    },
+    {
+      "name": "last10s-10hz-02.jpg",
+      "bytes": 63825,
+      "sha256": "ca2b0e5105b51c77d05d55c6f2473b04522ffcf5d0c41df07251028299f1a7cf"
+    },
+    {
+      "name": "last10s-10hz-03.jpg",
+      "bytes": 58881,
+      "sha256": "2ac44a96465e9fe223b19328c69606f543ede4901489c93448a53e5bd047a647"
+    },
+    {
+      "name": "last10s-10hz-04.jpg",
+      "bytes": 54759,
+      "sha256": "f7fd5de1033cc6497b22a6701fd2e4dae88a09213807785efd1302d28500aa92"
+    },
+    {
+      "name": "playback-3x.mp4",
+      "bytes": 31915,
+      "sha256": "c20b56aee22fb3c929a07729b0cf2c2b1f217ded53adca56c051f8cbd6978f62"
+    },
+    {
+      "name": "playback-meta.json",
+      "bytes": 4828,
+      "sha256": "b8d087eba29ef4939bea86f6317f579a0b4d0fae05d82b4d5372dc9b4d70e0c4"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "utc": "2026-10-16T20:35:46.899472+00:00",
+  "leases": [],
+  "ugrp_candidate_processes": [
+    {
+      "pid": 121823,
+      "args": "bash -c python3 - <<'PY'\nfrom pathlib import Path\nimport json,os,subprocess,datetime,shutil\nb=Path(\"/home/ugrp/ugrp-sim\");leases=[dict(path=str(p),data=json.loads(p.read_text())) for p in (b/\"leases\").glob(\"*.json\")];processes=[]\nfor p in Path(\"/proc\").iterdir():\n if not p.name.isdigit():continue\n try:\n  args=(p/\"cmdline\").read_bytes().replace(b\"\\0\",b\" \").decode();uid=p.stat().st_uid\n  if uid==os.getuid() and any(x in args for x in [\"python\",\"mujoco\",\"ffmpeg\"]) and (\"ugrp-sim\" in args or \"act16w\" in args):\n   processes.append(dict(pid=int(p.name),args=args[:700],cwd=os.readlink(p/\"cwd\")))\n except (OSError,UnicodeError):pass\nout=dict(utc=datetime.datetime.now(datetime.timezone.utc).isoformat(",
+      "cwd": "/home/ugrp"
+    }
+  ],
+  "current_inspector_pid": 121824,
+  "GPU": "0 %, 0 MiB",
+  "top_cpu": [
+    "    PID    PPID USER     %CPU     ELAPSED COMMAND",
+    " 121824  121823 ugrp     37.5       00:00 python3 -",
+    " 121724       1 ugrp      8.9       00:01 /usr/lib/systemd/systemd --user",
+    " 121779    1121 root      3.2       00:00 sshd: ugrp [priv]",
+    " 111241       2 root      0.1       12:11 [kworker/u32:1-events_power_efficient]",
+    " 110868       2 root      0.0       26:14 [kworker/4:2-mm_percpu_wq]",
+    "      1       0 root      0.0    07:58:05 /sbin/init",
+    " 101645       2 root      0.0    01:13:11 [kworker/u32:0-events_power_efficient]",
+    "    704       1 message+  0.0    07:57:55 @dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only",
+    "    165       1 root      0.0    07:58:04 /usr/lib/systemd/systemd-journald",
+    " 111080       2 root      0.0       18:34 [kworker/u32:3-events_power_efficient]",
+    "     16       2 root      0.0    07:58:05 [rcu_sched]"
+  ],
+  "disk_free_bytes": 13693292544
+}

@@ -1,0 +1,121 @@
+{
+  "utc": "2026-10-17T06:42:22.203474+00:00",
+  "scope": "saved teacher action-coordinate diagnostics only; no model update or new physical success",
+  "basis": "forward [1,1,1,1], lateral [-1,1,1,-1], yaw [-1,1,-1,1], null [1,1,-1,-1], each/4 from frozen VisibleWorld command_delta",
+  "units": "wheel full-scale fractions and issued pulse seconds; not measured chassis velocity",
+  "rows": [
+    {
+      "split": "train",
+      "stage": "alignment",
+      "N": 4412,
+      "null_speed_exact_zero_n": 4412,
+      "null_speed_max_abs": 0.0,
+      "common_duration_exact_n": 4412,
+      "duration_range_max_s": 0.0,
+      "three_component_reconstruction_max_wheel_error": 1.6653345369377348e-16,
+      "teacher_issued_yaw_component_nonzero_n": 10
+    },
+    {
+      "split": "train",
+      "stage": "all",
+      "N": 72572,
+      "null_speed_exact_zero_n": 68425,
+      "null_speed_max_abs": 0.17499999701976776,
+      "common_duration_exact_n": 58645,
+      "duration_range_max_s": 0.10000000298023223,
+      "three_component_reconstruction_max_wheel_error": 0.17499999701976787,
+      "teacher_issued_yaw_component_nonzero_n": 13938
+    },
+    {
+      "split": "train",
+      "stage": "approach",
+      "N": 18221,
+      "null_speed_exact_zero_n": 14074,
+      "null_speed_max_abs": 0.17499999701976776,
+      "common_duration_exact_n": 4294,
+      "duration_range_max_s": 0.10000000298023223,
+      "three_component_reconstruction_max_wheel_error": 0.17499999701976787,
+      "teacher_issued_yaw_component_nonzero_n": 13928
+    },
+    {
+      "split": "train",
+      "stage": "grasp",
+      "N": 32409,
+      "null_speed_exact_zero_n": 32409,
+      "null_speed_max_abs": 0.0,
+      "common_duration_exact_n": 32409,
+      "duration_range_max_s": 0.0,
+      "three_component_reconstruction_max_wheel_error": 5.551115123125783e-17,
+      "teacher_issued_yaw_component_nonzero_n": 0
+    },
+    {
+      "split": "train",
+      "stage": "release",
+      "N": 17530,
+      "null_speed_exact_zero_n": 17530,
+      "null_speed_max_abs": 0.0,
+      "common_duration_exact_n": 17530,
+      "duration_range_max_s": 0.0,
+      "three_component_reconstruction_max_wheel_error": 5.551115123125783e-17,
+      "teacher_issued_yaw_component_nonzero_n": 0
+    },
+    {
+      "split": "validation",
+      "stage": "alignment",
+      "N": 889,
+      "null_speed_exact_zero_n": 889,
+      "null_speed_max_abs": 0.0,
+      "common_duration_exact_n": 889,
+      "duration_range_max_s": 0.0,
+      "three_component_reconstruction_max_wheel_error": 1.6653345369377348e-16,
+      "teacher_issued_yaw_component_nonzero_n": 3
+    },
+    {
+      "split": "validation",
+      "stage": "all",
+      "N": 14528,
+      "null_speed_exact_zero_n": 13786,
+      "null_speed_max_abs": 0.17499999701976776,
+      "common_duration_exact_n": 11835,
+      "duration_range_max_s": 0.10000000298023223,
+      "three_component_reconstruction_max_wheel_error": 0.17499999701976787,
+      "teacher_issued_yaw_component_nonzero_n": 2696
+    },
+    {
+      "split": "validation",
+      "stage": "approach",
+      "N": 3659,
+      "null_speed_exact_zero_n": 2917,
+      "null_speed_max_abs": 0.17499999701976776,
+      "common_duration_exact_n": 966,
+      "duration_range_max_s": 0.10000000298023223,
+      "three_component_reconstruction_max_wheel_error": 0.17499999701976787,
+      "teacher_issued_yaw_component_nonzero_n": 2693
+    },
+    {
+      "split": "validation",
+      "stage": "grasp",
+      "N": 6476,
+      "null_speed_exact_zero_n": 6476,
+      "null_speed_max_abs": 0.0,
+      "common_duration_exact_n": 6476,
+      "duration_range_max_s": 0.0,
+      "three_component_reconstruction_max_wheel_error": 5.551115123125783e-17,
+      "teacher_issued_yaw_component_nonzero_n": 0
+    },
+    {
+      "split": "validation",
+      "stage": "release",
+      "N": 3504,
+      "null_speed_exact_zero_n": 3504,
+      "null_speed_max_abs": 0.0,
+      "common_duration_exact_n": 3504,
+      "duration_range_max_s": 0.0,
+      "three_component_reconstruction_max_wheel_error": 5.551115123125783e-17,
+      "teacher_issued_yaw_component_nonzero_n": 0
+    }
+  ],
+  "physics_steps": 0,
+  "training_updates": 0,
+  "new_model_inference": 0
+}

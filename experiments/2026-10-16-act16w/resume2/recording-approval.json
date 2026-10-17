@@ -1,0 +1,44 @@
+{
+  "approved": true,
+  "source_sha": "f0db6b1abb842ea65b71c433738210254f300a7c",
+  "gate_promotion_authorized_if_all_conditions_pass": false,
+  "corrected_teacher_gate": {
+    "source_sha": "f0db6b1abb842ea65b71c433738210254f300a7c",
+    "solo_truth_free_lookaround_v1": true,
+    "n": 40,
+    "N": 40,
+    "execution_host": {
+      "project_id": "ugrp-sim-b-1014",
+      "instance": "ugrp-act-l4-gcp2",
+      "machine_type": "g2-standard-8",
+      "zone": "asia-northeast3-a"
+    },
+    "independent": false,
+    "seed_overlap": "warp1 debugging8317100-8317139"
+  },
+  "pilot_checks": [
+    {
+      "passed": true,
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-resume2-pilot-86821/native-pilot-check.json",
+      "sha256": "3fb1d7cf2d447267047bdba0df85b3a6ff7b9af86889a036c02054f0a58cac66",
+      "visually_inspected": true
+    },
+    {
+      "passed": true,
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-resume2-pilot-86822/native-pilot-check.json",
+      "sha256": "6c0df5884be600386a076c822bc9fe337438aa3b3c198921f921eeb607fa5d31",
+      "visually_inspected": true
+    }
+  ],
+  "authorization": "2026-10-16 user autonomous continuation and resume2 recording admission; concrete worker review",
+  "scene": "walls_floor_contrast_v5_indigo110_s80+v1+no_mip_v1",
+  "fresh_confirmation": {
+    "status": "PENDING",
+    "N": 40,
+    "minimum_success": 38,
+    "training_data_admitted": false
+  },
+  "scope": "bulk native recording only; no automatic training promotion",
+  "review": "two complete success pilots reviewed full2Hz and final10s10Hz; no failed physical pilot exists"
+}
+

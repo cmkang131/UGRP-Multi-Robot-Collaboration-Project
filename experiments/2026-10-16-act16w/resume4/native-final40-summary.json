@@ -1,0 +1,4457 @@
+{
+  "status": "complete",
+  "complete": true,
+  "source_sha": "c27a9d537eaae873c7e7bc2ceaeeada69696cc48",
+  "host": {
+    "project_id": "ugrp-sim-b-1014",
+    "instance": "ugrp-act-l4-gcp2",
+    "machine_type": "g2-standard-8",
+    "zone": "asia-northeast3-a"
+  },
+  "started_utc": "2026-10-16T19:39:12.719358+00:00",
+  "split": "final",
+  "checkpoint_sha256": "4955436e15054d76adf3ea7a339896dc1e500e4ed930aeb0c873ec23899f7719",
+  "checkpoint_provenance": {
+    "source_sha": "c27a9d537eaae873c7e7bc2ceaeeada69696cc48",
+    "act_source_sha": "3f99d58c5ada0862e669ef4065c0ba957f1b4547",
+    "dataset_manifest_sha256": "3d0a1c4907f0c91a5674d23e52c9fbf339f03952ce3bcf92dee21f7e8ab7dbd2",
+    "seed": 20261015,
+    "history_causal_split_v1": "off",
+    "curriculum_starts_sha256": null,
+    "done_loss": "balanced_bce_v1",
+    "batch_size": 8,
+    "chunk": 8,
+    "period_s": 0.1,
+    "schedule_steps": 10000,
+    "lerobot_act_sha256": "8d622935319af7d03f1efd95d51e726af2921010f7e4f5ec3742f62280493111",
+    "contact_profile": "warp_native_contact_v1",
+    "step": 10000
+  },
+  "requested_seeds": [
+    91620,
+    91621,
+    91622,
+    91623,
+    91624,
+    91625,
+    91626,
+    91627,
+    91628,
+    91629,
+    91630,
+    91631,
+    91632,
+    91633,
+    91634,
+    91635,
+    91636,
+    91637,
+    91638,
+    91639,
+    91640,
+    91641,
+    91642,
+    91643,
+    91644,
+    91645,
+    91646,
+    91647,
+    91648,
+    91649,
+    91650,
+    91651,
+    91652,
+    91653,
+    91654,
+    91655,
+    91656,
+    91657,
+    91658,
+    91659
+  ],
+  "N_requested": 40,
+  "speed_gate_override": "User-required native MJWarp cohort; actual per-world latency recorded; no wall cap or speed-pass claim.",
+  "rejection_table": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40/rejection_table.json",
+  "finished": [
+    {
+      "group": 6,
+      "indices": [
+        28
+      ],
+      "exit_code": 0,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40/group-06/evaluation"
+    },
+    {
+      "group": 5,
+      "indices": [
+        24
+      ],
+      "exit_code": 0,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40/group-05/evaluation"
+    },
+    {
+      "group": 3,
+      "indices": [
+        5,
+        8,
+        21,
+        29,
+        33,
+        37
+      ],
+      "exit_code": 0,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40/group-03/evaluation"
+    },
+    {
+      "group": 4,
+      "indices": [
+        9,
+        13,
+        16,
+        20,
+        25
+      ],
+      "exit_code": 0,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40/group-04/evaluation"
+    },
+    {
+      "group": 0,
+      "indices": [
+        0,
+        1,
+        10,
+        17,
+        18,
+        32,
+        36
+      ],
+      "exit_code": 0,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40/group-00/evaluation"
+    },
+    {
+      "group": 1,
+      "indices": [
+        2,
+        4,
+        6,
+        12,
+        14,
+        22,
+        26,
+        30,
+        34,
+        38
+      ],
+      "exit_code": 0,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40/group-01/evaluation"
+    },
+    {
+      "group": 2,
+      "indices": [
+        3,
+        7,
+        11,
+        15,
+        19,
+        23,
+        27,
+        31,
+        35,
+        39
+      ],
+      "exit_code": 0,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/final40/group-02/evaluation"
+    }
+  ],
+  "pending": [],
+  "active": [],
+  "wall_s": 2793.6571768020003,
+  "n": 0,
+  "N": 40,
+  "rows": [
+    {
+      "seed": 91648,
+      "cap_end": false,
+      "issued_sequence_complete": true,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "lift_not_stable",
+      "task_success": false,
+      "assigned_item_id": "cyan_1",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "lift_not_stable",
+          "item_id": "cyan_1",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false
+    },
+    {
+      "seed": 91644,
+      "cap_end": true,
+      "issued_sequence_complete": false,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "task_success": false,
+      "assigned_item_id": "cyan_1",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "grasp_done_not_requested",
+          "item_id": "cyan_1",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false
+    },
+    {
+      "seed": 91625,
+      "cap_end": true,
+      "issued_sequence_complete": false,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "task_success": false,
+      "assigned_item_id": "red_1",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "grasp_done_not_requested",
+          "item_id": "red_1",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false
+    },
+    {
+      "seed": 91628,
+      "cap_end": true,
+      "issued_sequence_complete": false,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "task_success": false,
+      "assigned_item_id": "cyan_1",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "grasp_done_not_requested",
+          "item_id": "cyan_1",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false
+    },
+    {
+      "seed": 91641,
+      "cap_end": true,
+      "issued_sequence_complete": false,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "task_success": false,
+      "assigned_item_id": "red_1",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "grasp_done_not_requested",
+          "item_id": "red_1",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false
+    },
+    {
+      "seed": 91649,
+      "cap_end": true,
+      "issued_sequence_complete": false,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "task_success": false,
+      "assigned_item_id": "red_1",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "grasp_done_not_requested",
+          "item_id": "red_1",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false
+    },
+    {
+      "seed": 91653,
+      "cap_end": false,
+      "issued_sequence_complete": true,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "lift_not_stable",
+      "task_success": false,
+      "assigned_item_id": "red_1",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "lift_not_stable",
+          "item_id": "red_1",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false
+    },
+    {
+      "seed": 91657,
+      "cap_end": false,
+      "issued_sequence_complete": true,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "lift_not_stable",
+      "task_success": false,
+      "assigned_item_id": "red_1",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "lift_not_stable",
+          "item_id": "red_1",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false
+    },
+    {
+      "seed": 91629,
+      "cap_end": true,
+      "issued_sequence_complete": false,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "task_success": false,
+      "assigned_item_id": "red_1",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "grasp_done_not_requested",
+          "item_id": "red_1",
+          "task_success": false
+        },
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "grasp_done_not_requested",
+          "item_id": "red_2",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false
+    },
+    {
+      "seed": 91633,
+      "cap_end": true,
+      "issued_sequence_complete": false,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "task_success": false,
+      "assigned_item_id": "red_2",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "grasp_done_not_requested",
+          "item_id": "red_1",
+          "task_success": false
+        },
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "grasp_done_not_requested",
+          "item_id": "red_2",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false
+    },
+    {
+      "seed": 91636,
+      "cap_end": true,
+      "issued_sequence_complete": false,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "task_success": false,
+      "assigned_item_id": "cyan_1",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "grasp_done_not_requested",
+          "item_id": "cyan_1",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false
+    },
+    {
+      "seed": 91640,
+      "cap_end": true,
+      "issued_sequence_complete": false,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "task_success": false,
+      "assigned_item_id": "cyan_1",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "grasp_done_not_requested",
+          "item_id": "cyan_1",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false
+    },
+    {
+      "seed": 91645,
+      "cap_end": true,
+      "issued_sequence_complete": false,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 2.9000000000000057,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "lift_not_stable",
+      "task_success": false,
+      "assigned_item_id": "red_2",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "lift_not_stable",
+          "item_id": "red_1",
+          "task_success": false
+        },
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 2.9000000000000057,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "lift_not_stable",
+          "item_id": "red_2",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false
+    },
+    {
+      "seed": 91620,
+      "cap_end": true,
+      "issued_sequence_complete": false,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "task_success": false,
+      "assigned_item_id": "cyan_1",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "grasp_done_not_requested",
+          "item_id": "cyan_1",
+          "task_success": false
+        },
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "grasp_done_not_requested",
+          "item_id": "cyan_2",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false
+    },
+    {
+      "seed": 91621,
+      "cap_end": true,
+      "issued_sequence_complete": false,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "task_success": false,
+      "assigned_item_id": "red_1",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "grasp_done_not_requested",
+          "item_id": "red_1",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false
+    },
+    {
+      "seed": 91630,
+      "cap_end": true,
+      "issued_sequence_complete": false,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "task_success": false,
+      "assigned_item_id": "green_1",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "grasp_done_not_requested",
+          "item_id": "green_1",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false
+    },
+    {
+      "seed": 91637,
+      "cap_end": true,
+      "issued_sequence_complete": false,
+      "resource_cap_end": false,
+      "lift_success": true,
+      "max_stable_lift_s": 73.1,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "task_success": false,
+      "assigned_item_id": "red_1",
+      "same_kind_items": [
+        {
+          "lift_success": true,
+          "max_stable_lift_s": 73.1,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "grasp_done_not_requested",
+          "item_id": "red_1",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false
+    },
+    {
+      "seed": 91638,
+      "cap_end": false,
+      "issued_sequence_complete": true,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "lift_not_stable",
+      "task_success": false,
+      "assigned_item_id": "green_1",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "lift_not_stable",
+          "item_id": "green_1",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false
+    },
+    {
+      "seed": 91652,
+      "cap_end": true,
+      "issued_sequence_complete": false,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "task_success": false,
+      "assigned_item_id": "cyan_1",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "grasp_done_not_requested",
+          "item_id": "cyan_1",
+          "task_success": false
+        },
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "grasp_done_not_requested",
+          "item_id": "cyan_2",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false
+    },
+    {
+      "seed": 91656,
+      "cap_end": true,
+      "issued_sequence_complete": false,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "task_success": false,
+      "assigned_item_id": "cyan_2",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "grasp_done_not_requested",
+          "item_id": "cyan_1",
+          "task_success": false
+        },
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "grasp_done_not_requested",
+          "item_id": "cyan_2",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false
+    },
+    {
+      "seed": 91622,
+      "cap_end": true,
+      "issued_sequence_complete": false,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "task_success": false,
+      "assigned_item_id": "green_1",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "grasp_done_not_requested",
+          "item_id": "green_1",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false
+    },
+    {
+      "seed": 91624,
+      "cap_end": false,
+      "issued_sequence_complete": true,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "lift_not_stable",
+      "task_success": false,
+      "assigned_item_id": "cyan_1",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "lift_not_stable",
+          "item_id": "cyan_1",
+          "task_success": false
+        },
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "lift_not_stable",
+          "item_id": "cyan_2",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false
+    },
+    {
+      "seed": 91626,
+      "cap_end": false,
+      "issued_sequence_complete": true,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "lift_not_stable",
+      "task_success": false,
+      "assigned_item_id": "green_1",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "lift_not_stable",
+          "item_id": "green_1",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false
+    },
+    {
+      "seed": 91632,
+      "cap_end": true,
+      "issued_sequence_complete": false,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "task_success": false,
+      "assigned_item_id": "cyan_2",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "grasp_done_not_requested",
+          "item_id": "cyan_1",
+          "task_success": false
+        },
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "grasp_done_not_requested",
+          "item_id": "cyan_2",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false
+    },
+    {
+      "seed": 91634,
+      "cap_end": true,
+      "issued_sequence_complete": false,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "task_success": false,
+      "assigned_item_id": "green_1",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "grasp_done_not_requested",
+          "item_id": "green_1",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false
+    },
+    {
+      "seed": 91642,
+      "cap_end": false,
+      "issued_sequence_complete": true,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "lift_not_stable",
+      "task_success": false,
+      "assigned_item_id": "green_1",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "lift_not_stable",
+          "item_id": "green_1",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false
+    },
+    {
+      "seed": 91646,
+      "cap_end": false,
+      "issued_sequence_complete": true,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "lift_not_stable",
+      "task_success": false,
+      "assigned_item_id": "green_1",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "lift_not_stable",
+          "item_id": "green_1",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false
+    },
+    {
+      "seed": 91650,
+      "cap_end": true,
+      "issued_sequence_complete": false,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "task_success": false,
+      "assigned_item_id": "green_1",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "grasp_done_not_requested",
+          "item_id": "green_1",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false
+    },
+    {
+      "seed": 91654,
+      "cap_end": true,
+      "issued_sequence_complete": false,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "task_success": false,
+      "assigned_item_id": "green_1",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "grasp_done_not_requested",
+          "item_id": "green_1",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false
+    },
+    {
+      "seed": 91658,
+      "cap_end": false,
+      "issued_sequence_complete": true,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "lift_not_stable",
+      "task_success": false,
+      "assigned_item_id": "green_1",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "lift_not_stable",
+          "item_id": "green_1",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false
+    },
+    {
+      "seed": 91623,
+      "cap_end": false,
+      "issued_sequence_complete": true,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "lift_not_stable",
+      "task_success": false,
+      "assigned_item_id": "yellow_2",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "lift_not_stable",
+          "item_id": "yellow_1",
+          "task_success": false
+        },
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "lift_not_stable",
+          "item_id": "yellow_2",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false
+    },
+    {
+      "seed": 91627,
+      "cap_end": false,
+      "issued_sequence_complete": true,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "lift_not_stable",
+      "task_success": false,
+      "assigned_item_id": "yellow_1",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "lift_not_stable",
+          "item_id": "yellow_1",
+          "task_success": false
+        },
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "lift_not_stable",
+          "item_id": "yellow_2",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false
+    },
+    {
+      "seed": 91631,
+      "cap_end": false,
+      "issued_sequence_complete": true,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "lift_not_stable",
+      "task_success": false,
+      "assigned_item_id": "yellow_1",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "lift_not_stable",
+          "item_id": "yellow_1",
+          "task_success": false
+        },
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "lift_not_stable",
+          "item_id": "yellow_2",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false
+    },
+    {
+      "seed": 91635,
+      "cap_end": true,
+      "issued_sequence_complete": false,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "task_success": false,
+      "assigned_item_id": "yellow_2",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "grasp_done_not_requested",
+          "item_id": "yellow_1",
+          "task_success": false
+        },
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "grasp_done_not_requested",
+          "item_id": "yellow_2",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false
+    },
+    {
+      "seed": 91639,
+      "cap_end": false,
+      "issued_sequence_complete": true,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "lift_not_stable",
+      "task_success": false,
+      "assigned_item_id": "yellow_1",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "lift_not_stable",
+          "item_id": "yellow_1",
+          "task_success": false
+        },
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "lift_not_stable",
+          "item_id": "yellow_2",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false
+    },
+    {
+      "seed": 91643,
+      "cap_end": false,
+      "issued_sequence_complete": true,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "lift_not_stable",
+      "task_success": false,
+      "assigned_item_id": "yellow_2",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "lift_not_stable",
+          "item_id": "yellow_1",
+          "task_success": false
+        },
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "lift_not_stable",
+          "item_id": "yellow_2",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false
+    },
+    {
+      "seed": 91647,
+      "cap_end": false,
+      "issued_sequence_complete": true,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "lift_not_stable",
+      "task_success": false,
+      "assigned_item_id": "yellow_2",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "lift_not_stable",
+          "item_id": "yellow_1",
+          "task_success": false
+        },
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "lift_not_stable",
+          "item_id": "yellow_2",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false
+    },
+    {
+      "seed": 91651,
+      "cap_end": true,
+      "issued_sequence_complete": false,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "task_success": false,
+      "assigned_item_id": "yellow_2",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "grasp_done_not_requested",
+          "item_id": "yellow_1",
+          "task_success": false
+        },
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "grasp_done_not_requested",
+          "item_id": "yellow_2",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false
+    },
+    {
+      "seed": 91655,
+      "cap_end": false,
+      "issued_sequence_complete": true,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "lift_not_stable",
+      "task_success": false,
+      "assigned_item_id": "yellow_1",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "lift_not_stable",
+          "item_id": "yellow_1",
+          "task_success": false
+        },
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "lift_not_stable",
+          "item_id": "yellow_2",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false
+    },
+    {
+      "seed": 91659,
+      "cap_end": true,
+      "issued_sequence_complete": false,
+      "resource_cap_end": false,
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": false,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": {
+        "clearance_m": [
+          -0.005,
+          0.006
+        ],
+        "tilt_deg": 10.0,
+        "finger_max_n": 0.1,
+        "linear_speed_m_s": 0.02,
+        "hold_s": 3.0,
+        "airborne_unloaded_drop_clearance_m": 0.012
+      },
+      "physical_success": false,
+      "failure_reason": "grasp_done_not_requested",
+      "task_success": false,
+      "assigned_item_id": "yellow_2",
+      "same_kind_items": [
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "grasp_done_not_requested",
+          "item_id": "yellow_1",
+          "task_success": false
+        },
+        {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          },
+          "release_success": false,
+          "max_stable_release_s": 0.0,
+          "drop_detected": false,
+          "release_criteria": {
+            "clearance_m": [
+              -0.005,
+              0.006
+            ],
+            "tilt_deg": 10.0,
+            "finger_max_n": 0.1,
+            "linear_speed_m_s": 0.02,
+            "hold_s": 3.0,
+            "airborne_unloaded_drop_clearance_m": 0.012
+          },
+          "physical_success": false,
+          "failure_reason": "grasp_done_not_requested",
+          "item_id": "yellow_2",
+          "task_success": false
+        }
+      ],
+      "any_same_kind_success": false
+    }
+  ],
+  "teacher_actions_executed": 0,
+  "selection_tuning_performed": false,
+  "n_assigned": 0,
+  "n_any_same_kind": 0,
+  "SIM_cap_end_N": 24,
+  "resource_cap_end_N": 0,
+  "initial_same_kind_visibility": {
+    "N": 40,
+    "pixel_2plus_n": 6,
+    "any_probe_2plus_n": 6,
+    "qualified_2plus_n": 6,
+    "rows": [
+      {
+        "seed": 91648,
+        "world": 0,
+        "items": [
+          {
+            "item_id": "cyan_1",
+            "seen_probes": 7,
+            "total_probes": 7,
+            "visible_pixels": 1190,
+            "visible_bbox_xyxy": [
+              87,
+              180,
+              128,
+              212
+            ],
+            "any_probe_visible": true,
+            "qualified_visible": true
+          }
+        ],
+        "pixel_visible_count": 1,
+        "any_probe_visible_count": 1,
+        "qualified_visible_count": 1,
+        "own_start_RGB_sha256": "dcceb7b0e4f00e20fdde94157775d1d6f3d64a2cea932d73fae2852bf9baa588"
+      },
+      {
+        "seed": 91644,
+        "world": 0,
+        "items": [
+          {
+            "item_id": "cyan_1",
+            "seen_probes": 7,
+            "total_probes": 7,
+            "visible_pixels": 1768,
+            "visible_bbox_xyxy": [
+              92,
+              221,
+              136,
+              264
+            ],
+            "any_probe_visible": true,
+            "qualified_visible": true
+          }
+        ],
+        "pixel_visible_count": 1,
+        "any_probe_visible_count": 1,
+        "qualified_visible_count": 1,
+        "own_start_RGB_sha256": "60709b94c957bb6630b9832e53da4f280018d80854308cf14cba61db5e988af8"
+      },
+      {
+        "seed": 91625,
+        "world": 0,
+        "items": [
+          {
+            "item_id": "red_1",
+            "seen_probes": 7,
+            "total_probes": 7,
+            "visible_pixels": 1742,
+            "visible_bbox_xyxy": [
+              262,
+              206,
+              310,
+              248
+            ],
+            "any_probe_visible": true,
+            "qualified_visible": true
+          }
+        ],
+        "pixel_visible_count": 1,
+        "any_probe_visible_count": 1,
+        "qualified_visible_count": 1,
+        "own_start_RGB_sha256": "2ad8e2c096fdd9936739bb69ce1b27a2e2bd6cee96827b1e832f2e1c1e4562a8"
+      },
+      {
+        "seed": 91628,
+        "world": 1,
+        "items": [
+          {
+            "item_id": "cyan_1",
+            "seen_probes": 7,
+            "total_probes": 7,
+            "visible_pixels": 827,
+            "visible_bbox_xyxy": [
+              330,
+              144,
+              364,
+              171
+            ],
+            "any_probe_visible": true,
+            "qualified_visible": true
+          }
+        ],
+        "pixel_visible_count": 1,
+        "any_probe_visible_count": 1,
+        "qualified_visible_count": 1,
+        "own_start_RGB_sha256": "eb3b2f4c20933f9c16aa400904e64e4fe4598b33f95479ead1e4367670295b0c"
+      },
+      {
+        "seed": 91641,
+        "world": 2,
+        "items": [
+          {
+            "item_id": "red_1",
+            "seen_probes": 7,
+            "total_probes": 7,
+            "visible_pixels": 988,
+            "visible_bbox_xyxy": [
+              182,
+              158,
+              219,
+              188
+            ],
+            "any_probe_visible": true,
+            "qualified_visible": true
+          }
+        ],
+        "pixel_visible_count": 1,
+        "any_probe_visible_count": 1,
+        "qualified_visible_count": 1,
+        "own_start_RGB_sha256": "1a3266e02f8405f1986e1675c79f8c731f1672cf919644fce97a3ab78101f02f"
+      },
+      {
+        "seed": 91649,
+        "world": 3,
+        "items": [
+          {
+            "item_id": "red_1",
+            "seen_probes": 7,
+            "total_probes": 7,
+            "visible_pixels": 713,
+            "visible_bbox_xyxy": [
+              90,
+              154,
+              119,
+              180
+            ],
+            "any_probe_visible": true,
+            "qualified_visible": true
+          }
+        ],
+        "pixel_visible_count": 1,
+        "any_probe_visible_count": 1,
+        "qualified_visible_count": 1,
+        "own_start_RGB_sha256": "b1ce8bc2d6e6b3ec079b10e94ce5eb2533a186dd98c00ea7979efbff25b864b1"
+      },
+      {
+        "seed": 91653,
+        "world": 4,
+        "items": [
+          {
+            "item_id": "red_1",
+            "seen_probes": 7,
+            "total_probes": 7,
+            "visible_pixels": 906,
+            "visible_bbox_xyxy": [
+              46,
+              169,
+              81,
+              197
+            ],
+            "any_probe_visible": true,
+            "qualified_visible": true
+          }
+        ],
+        "pixel_visible_count": 1,
+        "any_probe_visible_count": 1,
+        "qualified_visible_count": 1,
+        "own_start_RGB_sha256": "40918e8ba1f16978b2d0b8e04c5d32b4e187ad37409b34417a0dce2dbc6e1a83"
+      },
+      {
+        "seed": 91657,
+        "world": 5,
+        "items": [
+          {
+            "item_id": "red_1",
+            "seen_probes": 7,
+            "total_probes": 7,
+            "visible_pixels": 891,
+            "visible_bbox_xyxy": [
+              394,
+              156,
+              429,
+              183
+            ],
+            "any_probe_visible": true,
+            "qualified_visible": true
+          }
+        ],
+        "pixel_visible_count": 1,
+        "any_probe_visible_count": 1,
+        "qualified_visible_count": 1,
+        "own_start_RGB_sha256": "5775c41133a4923225e0882847df5dcd52e8d7df4e0301466bba55f5158e0bd5"
+      },
+      {
+        "seed": 91629,
+        "world": 0,
+        "items": [
+          {
+            "item_id": "red_1",
+            "seen_probes": 7,
+            "total_probes": 7,
+            "visible_pixels": 778,
+            "visible_bbox_xyxy": [
+              118,
+              149,
+              151,
+              176
+            ],
+            "any_probe_visible": true,
+            "qualified_visible": true
+          },
+          {
+            "item_id": "red_2",
+            "seen_probes": 7,
+            "total_probes": 7,
+            "visible_pixels": 270,
+            "visible_bbox_xyxy": [
+              23,
+              114,
+              41,
+              130
+            ],
+            "any_probe_visible": true,
+            "qualified_visible": true
+          }
+        ],
+        "pixel_visible_count": 2,
+        "any_probe_visible_count": 2,
+        "qualified_visible_count": 2,
+        "own_start_RGB_sha256": "20f2bc51145dfa0d530abb4d6f830e7a277f91c855cf8283465e77939c752a9a"
+      },
+      {
+        "seed": 91633,
+        "world": 1,
+        "items": [
+          {
+            "item_id": "red_1",
+            "seen_probes": 0,
+            "total_probes": 7,
+            "visible_pixels": 0,
+            "visible_bbox_xyxy": null,
+            "any_probe_visible": false,
+            "qualified_visible": false
+          },
+          {
+            "item_id": "red_2",
+            "seen_probes": 7,
+            "total_probes": 7,
+            "visible_pixels": 2191,
+            "visible_bbox_xyxy": [
+              476,
+              237,
+              532,
+              288
+            ],
+            "any_probe_visible": true,
+            "qualified_visible": true
+          }
+        ],
+        "pixel_visible_count": 1,
+        "any_probe_visible_count": 1,
+        "qualified_visible_count": 1,
+        "own_start_RGB_sha256": "62a74d71ff9870488b52024d95e0fe54322f18130b82bc0787da39a86ffebbd5"
+      },
+      {
+        "seed": 91636,
+        "world": 2,
+        "items": [
+          {
+            "item_id": "cyan_1",
+            "seen_probes": 7,
+            "total_probes": 7,
+            "visible_pixels": 1991,
+            "visible_bbox_xyxy": [
+              143,
+              219,
+              194,
+              265
+            ],
+            "any_probe_visible": true,
+            "qualified_visible": true
+          }
+        ],
+        "pixel_visible_count": 1,
+        "any_probe_visible_count": 1,
+        "qualified_visible_count": 1,
+        "own_start_RGB_sha256": "7751daffca7c5a9e03f2d45cd10eda325846ee27632418dfd445993e94cf58a9"
+      },
+      {
+        "seed": 91640,
+        "world": 3,
+        "items": [
+          {
+            "item_id": "cyan_1",
+            "seen_probes": 7,
+            "total_probes": 7,
+            "visible_pixels": 1752,
+            "visible_bbox_xyxy": [
+              349,
+              207,
+              398,
+              247
+            ],
+            "any_probe_visible": true,
+            "qualified_visible": true
+          }
+        ],
+        "pixel_visible_count": 1,
+        "any_probe_visible_count": 1,
+        "qualified_visible_count": 1,
+        "own_start_RGB_sha256": "bf2943ea903c1f9e9f1e75588b23c4452809290b60ae605debbb8fc5de209603"
+      },
+      {
+        "seed": 91645,
+        "world": 4,
+        "items": [
+          {
+            "item_id": "red_1",
+            "seen_probes": 0,
+            "total_probes": 7,
+            "visible_pixels": 0,
+            "visible_bbox_xyxy": null,
+            "any_probe_visible": false,
+            "qualified_visible": false
+          },
+          {
+            "item_id": "red_2",
+            "seen_probes": 7,
+            "total_probes": 7,
+            "visible_pixels": 975,
+            "visible_bbox_xyxy": [
+              563,
+              181,
+              600,
+              212
+            ],
+            "any_probe_visible": true,
+            "qualified_visible": true
+          }
+        ],
+        "pixel_visible_count": 1,
+        "any_probe_visible_count": 1,
+        "qualified_visible_count": 1,
+        "own_start_RGB_sha256": "fe0e70ab90db3c0f9131836e345c4dc6b09126abc9d9ba2c277230552e2c9f89"
+      },
+      {
+        "seed": 91620,
+        "world": 0,
+        "items": [
+          {
+            "item_id": "cyan_1",
+            "seen_probes": 7,
+            "total_probes": 7,
+            "visible_pixels": 1989,
+            "visible_bbox_xyxy": [
+              330,
+              214,
+              383,
+              259
+            ],
+            "any_probe_visible": true,
+            "qualified_visible": true
+          },
+          {
+            "item_id": "cyan_2",
+            "seen_probes": 7,
+            "total_probes": 7,
+            "visible_pixels": 580,
+            "visible_bbox_xyxy": [
+              104,
+              135,
+              132,
+              158
+            ],
+            "any_probe_visible": true,
+            "qualified_visible": true
+          }
+        ],
+        "pixel_visible_count": 2,
+        "any_probe_visible_count": 2,
+        "qualified_visible_count": 2,
+        "own_start_RGB_sha256": "71a391ab0b9e8750be576b975e04c7d1a4b0cda765c20196cc652e396166555f"
+      },
+      {
+        "seed": 91621,
+        "world": 1,
+        "items": [
+          {
+            "item_id": "red_1",
+            "seen_probes": 7,
+            "total_probes": 7,
+            "visible_pixels": 783,
+            "visible_bbox_xyxy": [
+              390,
+              147,
+              424,
+              173
+            ],
+            "any_probe_visible": true,
+            "qualified_visible": true
+          }
+        ],
+        "pixel_visible_count": 1,
+        "any_probe_visible_count": 1,
+        "qualified_visible_count": 1,
+        "own_start_RGB_sha256": "19c66bfc9523fa39af11ee515b84a1c730cd9c40f7e5ffeffea66724dee62c19"
+      },
+      {
+        "seed": 91630,
+        "world": 2,
+        "items": [
+          {
+            "item_id": "green_1",
+            "seen_probes": 7,
+            "total_probes": 7,
+            "visible_pixels": 1960,
+            "visible_bbox_xyxy": [
+              417,
+              218,
+              469,
+              262
+            ],
+            "any_probe_visible": true,
+            "qualified_visible": true
+          }
+        ],
+        "pixel_visible_count": 1,
+        "any_probe_visible_count": 1,
+        "qualified_visible_count": 1,
+        "own_start_RGB_sha256": "fecb5d5ab8fcba38e976710de115f5ef07b9d7e451b4d961889d510183e2bd11"
+      },
+      {
+        "seed": 91637,
+        "world": 3,
+        "items": [
+          {
+            "item_id": "red_1",
+            "seen_probes": 7,
+            "total_probes": 7,
+            "visible_pixels": 841,
+            "visible_bbox_xyxy": [
+              41,
+              161,
+              76,
+              188
+            ],
+            "any_probe_visible": true,
+            "qualified_visible": true
+          }
+        ],
+        "pixel_visible_count": 1,
+        "any_probe_visible_count": 1,
+        "qualified_visible_count": 1,
+        "own_start_RGB_sha256": "d6470ebc71b54888dab92c21ed547c4392e550533c05c6cc33776a424c6e290c"
+      },
+      {
+        "seed": 91638,
+        "world": 4,
+        "items": [
+          {
+            "item_id": "green_1",
+            "seen_probes": 0,
+            "total_probes": 7,
+            "visible_pixels": 0,
+            "visible_bbox_xyxy": null,
+            "any_probe_visible": false,
+            "qualified_visible": false
+          }
+        ],
+        "pixel_visible_count": 0,
+        "any_probe_visible_count": 0,
+        "qualified_visible_count": 0,
+        "own_start_RGB_sha256": "90a725556d1e3bc608f4ae58783f01fc6ce058bd9e101fa00f15b89383ecc018"
+      },
+      {
+        "seed": 91652,
+        "world": 5,
+        "items": [
+          {
+            "item_id": "cyan_1",
+            "seen_probes": 7,
+            "total_probes": 7,
+            "visible_pixels": 2442,
+            "visible_bbox_xyxy": [
+              505,
+              252,
+              564,
+              304
+            ],
+            "any_probe_visible": true,
+            "qualified_visible": true
+          },
+          {
+            "item_id": "cyan_2",
+            "seen_probes": 7,
+            "total_probes": 7,
+            "visible_pixels": 655,
+            "visible_bbox_xyxy": [
+              300,
+              134,
+              329,
+              157
+            ],
+            "any_probe_visible": true,
+            "qualified_visible": true
+          }
+        ],
+        "pixel_visible_count": 2,
+        "any_probe_visible_count": 2,
+        "qualified_visible_count": 2,
+        "own_start_RGB_sha256": "50f977646b79da548f48eb19560ff6029d39be202784a8883664deec434c03d8"
+      },
+      {
+        "seed": 91656,
+        "world": 6,
+        "items": [
+          {
+            "item_id": "cyan_1",
+            "seen_probes": 0,
+            "total_probes": 7,
+            "visible_pixels": 0,
+            "visible_bbox_xyxy": null,
+            "any_probe_visible": false,
+            "qualified_visible": false
+          },
+          {
+            "item_id": "cyan_2",
+            "seen_probes": 7,
+            "total_probes": 7,
+            "visible_pixels": 852,
+            "visible_bbox_xyxy": [
+              438,
+              155,
+              473,
+              182
+            ],
+            "any_probe_visible": true,
+            "qualified_visible": true
+          }
+        ],
+        "pixel_visible_count": 1,
+        "any_probe_visible_count": 1,
+        "qualified_visible_count": 1,
+        "own_start_RGB_sha256": "eb8acafbe2e914b5c8e7c6481068a4916a970d00064914f0a2b9aafbf8b01b65"
+      },
+      {
+        "seed": 91622,
+        "world": 0,
+        "items": [
+          {
+            "item_id": "green_1",
+            "seen_probes": 7,
+            "total_probes": 7,
+            "visible_pixels": 775,
+            "visible_bbox_xyxy": [
+              46,
+              154,
+              78,
+              181
+            ],
+            "any_probe_visible": true,
+            "qualified_visible": true
+          }
+        ],
+        "pixel_visible_count": 1,
+        "any_probe_visible_count": 1,
+        "qualified_visible_count": 1,
+        "own_start_RGB_sha256": "4c2a4e067f20a2a433f7bcba5d6f42cc24b1caf6e10ee57765311742a973a49e"
+      },
+      {
+        "seed": 91624,
+        "world": 1,
+        "items": [
+          {
+            "item_id": "cyan_1",
+            "seen_probes": 7,
+            "total_probes": 7,
+            "visible_pixels": 895,
+            "visible_bbox_xyxy": [
+              423,
+              158,
+              459,
+              186
+            ],
+            "any_probe_visible": true,
+            "qualified_visible": true
+          },
+          {
+            "item_id": "cyan_2",
+            "seen_probes": 0,
+            "total_probes": 7,
+            "visible_pixels": 0,
+            "visible_bbox_xyxy": null,
+            "any_probe_visible": false,
+            "qualified_visible": false
+          }
+        ],
+        "pixel_visible_count": 1,
+        "any_probe_visible_count": 1,
+        "qualified_visible_count": 1,
+        "own_start_RGB_sha256": "9037fd0d1909019e169c387e70f5d590ca73095e6f6375bd56413885171af84b"
+      },
+      {
+        "seed": 91626,
+        "world": 2,
+        "items": [
+          {
+            "item_id": "green_1",
+            "seen_probes": 7,
+            "total_probes": 7,
+            "visible_pixels": 1536,
+            "visible_bbox_xyxy": [
+              395,
+              205,
+              439,
+              245
+            ],
+            "any_probe_visible": true,
+            "qualified_visible": true
+          }
+        ],
+        "pixel_visible_count": 1,
+        "any_probe_visible_count": 1,
+        "qualified_visible_count": 1,
+        "own_start_RGB_sha256": "2134193ff9e3aa0abc89a538ae33e2ca4368c47543c2b0f769d54c60d3c8bef0"
+      },
+      {
+        "seed": 91632,
+        "world": 3,
+        "items": [
+          {
+            "item_id": "cyan_1",
+            "seen_probes": 7,
+            "total_probes": 7,
+            "visible_pixels": 4512,
+            "visible_bbox_xyxy": [
+              357,
+              315,
+              435,
+              393
+            ],
+            "any_probe_visible": true,
+            "qualified_visible": true
+          },
+          {
+            "item_id": "cyan_2",
+            "seen_probes": 7,
+            "total_probes": 7,
+            "visible_pixels": 911,
+            "visible_bbox_xyxy": [
+              54,
+              166,
+              89,
+              197
+            ],
+            "any_probe_visible": true,
+            "qualified_visible": true
+          }
+        ],
+        "pixel_visible_count": 2,
+        "any_probe_visible_count": 2,
+        "qualified_visible_count": 2,
+        "own_start_RGB_sha256": "5a92ae91a22d0f2dff53643bf92eddd80e33d465644a95d70626e2c34b30ffcb"
+      },
+      {
+        "seed": 91634,
+        "world": 4,
+        "items": [
+          {
+            "item_id": "green_1",
+            "seen_probes": 7,
+            "total_probes": 7,
+            "visible_pixels": 1035,
+            "visible_bbox_xyxy": [
+              503,
+              178,
+              541,
+              207
+            ],
+            "any_probe_visible": true,
+            "qualified_visible": true
+          }
+        ],
+        "pixel_visible_count": 1,
+        "any_probe_visible_count": 1,
+        "qualified_visible_count": 1,
+        "own_start_RGB_sha256": "171205d83de68aac4fd31f48d20625e30de796cea29e6ce5c34e3f4227843ddb"
+      },
+      {
+        "seed": 91642,
+        "world": 5,
+        "items": [
+          {
+            "item_id": "green_1",
+            "seen_probes": 7,
+            "total_probes": 7,
+            "visible_pixels": 797,
+            "visible_bbox_xyxy": [
+              101,
+              155,
+              133,
+              183
+            ],
+            "any_probe_visible": true,
+            "qualified_visible": true
+          }
+        ],
+        "pixel_visible_count": 1,
+        "any_probe_visible_count": 1,
+        "qualified_visible_count": 1,
+        "own_start_RGB_sha256": "e1420a5bb3968a768e874e0cd33a7cdac61779cf4b5a938616265b0ebebc9228"
+      },
+      {
+        "seed": 91646,
+        "world": 6,
+        "items": [
+          {
+            "item_id": "green_1",
+            "seen_probes": 7,
+            "total_probes": 7,
+            "visible_pixels": 1368,
+            "visible_bbox_xyxy": [
+              494,
+              202,
+              536,
+              242
+            ],
+            "any_probe_visible": true,
+            "qualified_visible": true
+          }
+        ],
+        "pixel_visible_count": 1,
+        "any_probe_visible_count": 1,
+        "qualified_visible_count": 1,
+        "own_start_RGB_sha256": "aa320a82d00158e6df9b2817a56409f9a7eb897a8f5392f3e4f16d16390ab1d0"
+      },
+      {
+        "seed": 91650,
+        "world": 7,
+        "items": [
+          {
+            "item_id": "green_1",
+            "seen_probes": 7,
+            "total_probes": 7,
+            "visible_pixels": 1004,
+            "visible_bbox_xyxy": [
+              379,
+              163,
+              415,
+              192
+            ],
+            "any_probe_visible": true,
+            "qualified_visible": true
+          }
+        ],
+        "pixel_visible_count": 1,
+        "any_probe_visible_count": 1,
+        "qualified_visible_count": 1,
+        "own_start_RGB_sha256": "fe96499fd4b26b28393ebdc59108787e6b600d06a43742b7130e5a33f5c88a34"
+      },
+      {
+        "seed": 91654,
+        "world": 8,
+        "items": [
+          {
+            "item_id": "green_1",
+            "seen_probes": 7,
+            "total_probes": 7,
+            "visible_pixels": 1925,
+            "visible_bbox_xyxy": [
+              163,
+              215,
+              215,
+              259
+            ],
+            "any_probe_visible": true,
+            "qualified_visible": true
+          }
+        ],
+        "pixel_visible_count": 1,
+        "any_probe_visible_count": 1,
+        "qualified_visible_count": 1,
+        "own_start_RGB_sha256": "4bc527abc7419d8acd6e32b21a69cbf4d407537b52569cee4543696350677bf8"
+      },
+      {
+        "seed": 91658,
+        "world": 9,
+        "items": [
+          {
+            "item_id": "green_1",
+            "seen_probes": 7,
+            "total_probes": 7,
+            "visible_pixels": 763,
+            "visible_bbox_xyxy": [
+              535,
+              161,
+              567,
+              189
+            ],
+            "any_probe_visible": true,
+            "qualified_visible": true
+          }
+        ],
+        "pixel_visible_count": 1,
+        "any_probe_visible_count": 1,
+        "qualified_visible_count": 1,
+        "own_start_RGB_sha256": "8079e4aa9ff60ef0b047ed154f016913d9a651dd2a05ed25d078a6067e5b9eb2"
+      },
+      {
+        "seed": 91623,
+        "world": 0,
+        "items": [
+          {
+            "item_id": "yellow_1",
+            "seen_probes": 0,
+            "total_probes": 7,
+            "visible_pixels": 0,
+            "visible_bbox_xyxy": null,
+            "any_probe_visible": false,
+            "qualified_visible": false
+          },
+          {
+            "item_id": "yellow_2",
+            "seen_probes": 7,
+            "total_probes": 7,
+            "visible_pixels": 1826,
+            "visible_bbox_xyxy": [
+              127,
+              212,
+              177,
+              256
+            ],
+            "any_probe_visible": true,
+            "qualified_visible": true
+          }
+        ],
+        "pixel_visible_count": 1,
+        "any_probe_visible_count": 1,
+        "qualified_visible_count": 1,
+        "own_start_RGB_sha256": "8a71a58d44e97531e4da2d4e8cd265d4efa94c9b8d85ddb231d3d86a36c5e1a7"
+      },
+      {
+        "seed": 91627,
+        "world": 1,
+        "items": [
+          {
+            "item_id": "yellow_1",
+            "seen_probes": 7,
+            "total_probes": 7,
+            "visible_pixels": 1429,
+            "visible_bbox_xyxy": [
+              292,
+              186,
+              336,
+              223
+            ],
+            "any_probe_visible": true,
+            "qualified_visible": true
+          },
+          {
+            "item_id": "yellow_2",
+            "seen_probes": 7,
+            "total_probes": 7,
+            "visible_pixels": 501,
+            "visible_bbox_xyxy": [
+              540,
+              137,
+              567,
+              160
+            ],
+            "any_probe_visible": true,
+            "qualified_visible": true
+          }
+        ],
+        "pixel_visible_count": 2,
+        "any_probe_visible_count": 2,
+        "qualified_visible_count": 2,
+        "own_start_RGB_sha256": "0376d6b43ae3476a83214b4ebfc9e9a0c459856c1cbf7fcfd4966504d24a6691"
+      },
+      {
+        "seed": 91631,
+        "world": 2,
+        "items": [
+          {
+            "item_id": "yellow_1",
+            "seen_probes": 7,
+            "total_probes": 7,
+            "visible_pixels": 1549,
+            "visible_bbox_xyxy": [
+              534,
+              212,
+              580,
+              253
+            ],
+            "any_probe_visible": true,
+            "qualified_visible": true
+          },
+          {
+            "item_id": "yellow_2",
+            "seen_probes": 0,
+            "total_probes": 7,
+            "visible_pixels": 0,
+            "visible_bbox_xyxy": null,
+            "any_probe_visible": false,
+            "qualified_visible": false
+          }
+        ],
+        "pixel_visible_count": 1,
+        "any_probe_visible_count": 1,
+        "qualified_visible_count": 1,
+        "own_start_RGB_sha256": "ce4ffa839fefac27b8433cca263bdc8f62e3932f10f03f3f51c4cc4ec5a937de"
+      },
+      {
+        "seed": 91635,
+        "world": 3,
+        "items": [
+          {
+            "item_id": "yellow_1",
+            "seen_probes": 0,
+            "total_probes": 7,
+            "visible_pixels": 0,
+            "visible_bbox_xyxy": null,
+            "any_probe_visible": false,
+            "qualified_visible": false
+          },
+          {
+            "item_id": "yellow_2",
+            "seen_probes": 7,
+            "total_probes": 7,
+            "visible_pixels": 2603,
+            "visible_bbox_xyxy": [
+              340,
+              240,
+              399,
+              295
+            ],
+            "any_probe_visible": true,
+            "qualified_visible": true
+          }
+        ],
+        "pixel_visible_count": 1,
+        "any_probe_visible_count": 1,
+        "qualified_visible_count": 1,
+        "own_start_RGB_sha256": "8dec987bfece2563a88bf91c26271f7347c07b04d717b3b763407283fc8bec1b"
+      },
+      {
+        "seed": 91639,
+        "world": 4,
+        "items": [
+          {
+            "item_id": "yellow_1",
+            "seen_probes": 7,
+            "total_probes": 7,
+            "visible_pixels": 2919,
+            "visible_bbox_xyxy": [
+              259,
+              253,
+              319,
+              313
+            ],
+            "any_probe_visible": true,
+            "qualified_visible": true
+          },
+          {
+            "item_id": "yellow_2",
+            "seen_probes": 0,
+            "total_probes": 7,
+            "visible_pixels": 0,
+            "visible_bbox_xyxy": null,
+            "any_probe_visible": false,
+            "qualified_visible": false
+          }
+        ],
+        "pixel_visible_count": 1,
+        "any_probe_visible_count": 1,
+        "qualified_visible_count": 1,
+        "own_start_RGB_sha256": "7a0474bd0a58503ccc8a102c3a74d1778d1981c210fa34a8aa03ce45cfc9b602"
+      },
+      {
+        "seed": 91643,
+        "world": 5,
+        "items": [
+          {
+            "item_id": "yellow_1",
+            "seen_probes": 0,
+            "total_probes": 7,
+            "visible_pixels": 0,
+            "visible_bbox_xyxy": null,
+            "any_probe_visible": false,
+            "qualified_visible": false
+          },
+          {
+            "item_id": "yellow_2",
+            "seen_probes": 7,
+            "total_probes": 7,
+            "visible_pixels": 979,
+            "visible_bbox_xyxy": [
+              101,
+              163,
+              138,
+              193
+            ],
+            "any_probe_visible": true,
+            "qualified_visible": true
+          }
+        ],
+        "pixel_visible_count": 1,
+        "any_probe_visible_count": 1,
+        "qualified_visible_count": 1,
+        "own_start_RGB_sha256": "e216c89fa125a6307d5cbfe5d31676effcf1d04a61a7192dc468144c4e388381"
+      },
+      {
+        "seed": 91647,
+        "world": 6,
+        "items": [
+          {
+            "item_id": "yellow_1",
+            "seen_probes": 0,
+            "total_probes": 7,
+            "visible_pixels": 0,
+            "visible_bbox_xyxy": null,
+            "any_probe_visible": false,
+            "qualified_visible": false
+          },
+          {
+            "item_id": "yellow_2",
+            "seen_probes": 7,
+            "total_probes": 7,
+            "visible_pixels": 1128,
+            "visible_bbox_xyxy": [
+              291,
+              171,
+              328,
+              203
+            ],
+            "any_probe_visible": true,
+            "qualified_visible": true
+          }
+        ],
+        "pixel_visible_count": 1,
+        "any_probe_visible_count": 1,
+        "qualified_visible_count": 1,
+        "own_start_RGB_sha256": "68f66e37436e73022c06dbb212ffd4ac7751e840bfb02ba42fa920ed71c92df6"
+      },
+      {
+        "seed": 91651,
+        "world": 7,
+        "items": [
+          {
+            "item_id": "yellow_1",
+            "seen_probes": 0,
+            "total_probes": 7,
+            "visible_pixels": 0,
+            "visible_bbox_xyxy": null,
+            "any_probe_visible": false,
+            "qualified_visible": false
+          },
+          {
+            "item_id": "yellow_2",
+            "seen_probes": 7,
+            "total_probes": 7,
+            "visible_pixels": 1581,
+            "visible_bbox_xyxy": [
+              267,
+              197,
+              313,
+              237
+            ],
+            "any_probe_visible": true,
+            "qualified_visible": true
+          }
+        ],
+        "pixel_visible_count": 1,
+        "any_probe_visible_count": 1,
+        "qualified_visible_count": 1,
+        "own_start_RGB_sha256": "952f503abd11b1b7c6f20999d49916c67c695e656d1ada717167cbc080961e00"
+      },
+      {
+        "seed": 91655,
+        "world": 8,
+        "items": [
+          {
+            "item_id": "yellow_1",
+            "seen_probes": 7,
+            "total_probes": 7,
+            "visible_pixels": 2600,
+            "visible_bbox_xyxy": [
+              22,
+              261,
+              79,
+              317
+            ],
+            "any_probe_visible": true,
+            "qualified_visible": true
+          },
+          {
+            "item_id": "yellow_2",
+            "seen_probes": 0,
+            "total_probes": 7,
+            "visible_pixels": 0,
+            "visible_bbox_xyxy": null,
+            "any_probe_visible": false,
+            "qualified_visible": false
+          }
+        ],
+        "pixel_visible_count": 1,
+        "any_probe_visible_count": 1,
+        "qualified_visible_count": 1,
+        "own_start_RGB_sha256": "81b384e7fbf7c779ed9ee6f79e0c64282dc06756ba937cbb433193e1ba11b912"
+      },
+      {
+        "seed": 91659,
+        "world": 9,
+        "items": [
+          {
+            "item_id": "yellow_1",
+            "seen_probes": 7,
+            "total_probes": 7,
+            "visible_pixels": 5778,
+            "visible_bbox_xyxy": [
+              256,
+              392,
+              350,
+              464
+            ],
+            "any_probe_visible": true,
+            "qualified_visible": true
+          },
+          {
+            "item_id": "yellow_2",
+            "seen_probes": 7,
+            "total_probes": 7,
+            "visible_pixels": 870,
+            "visible_bbox_xyxy": [
+              118,
+              165,
+              150,
+              194
+            ],
+            "any_probe_visible": true,
+            "qualified_visible": true
+          }
+        ],
+        "pixel_visible_count": 2,
+        "any_probe_visible_count": 2,
+        "qualified_visible_count": 2,
+        "own_start_RGB_sha256": "021ba48a5c57faf05896d3370d97e10e02b53895792c18a766cbfa4a8b3d96bd"
+      }
+    ],
+    "scope": "native MJWarp start-frame instance pixels; existing geometric probe diagnostics also retained; evaluation only"
+  }
+}

@@ -24,6 +24,8 @@ from scripts import agent_lock
 from scripts.check_ci_fixtures import check_fixtures
 
 TEST_PATTERNS = (
+    "tests/test_act16w_*.py",
+    "tests/test_act17*.py",  # metadata, units, samplers and pure XML only
     "tests/test_warp_act*.py",  # array math/admission only; no physics or renderer
     "tests/test_e2e18.py",
     "tests/test_e2e18_beam_axis.py",

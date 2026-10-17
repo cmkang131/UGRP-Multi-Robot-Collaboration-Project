@@ -1,0 +1,103 @@
+{
+  "status": "complete",
+  "complete": true,
+  "host": {
+    "project_id": "ugrp-sim-b-1014",
+    "instance": "ugrp-act-l4-gcp2",
+    "machine_type": "g2-standard-8",
+    "zone": "asia-northeast3-a"
+  },
+  "source_sha": "82702ea74d641d68377eeb331142298ca4ff49b1",
+  "seed": 87429,
+  "assigned_item_id": "red_2",
+  "samples": 901,
+  "geometry_queries": 233735,
+  "closest": {
+    "all_external": {
+      "tick": 145,
+      "elapsed_SIM_s": 14.5,
+      "gap_m": -0.0018164457509610204,
+      "robot_geom": "r1__left_finger",
+      "external_geom": "cargo_red_2_geom",
+      "censored_at_model_extent": false
+    },
+    "non_floor_external": {
+      "tick": 145,
+      "elapsed_SIM_s": 14.5,
+      "gap_m": -0.0018164457509610204,
+      "robot_geom": "r1__left_finger",
+      "external_geom": "cargo_red_2_geom",
+      "censored_at_model_extent": false
+    }
+  },
+  "exhaustive_first_last_checks": [
+    {
+      "tick": 0,
+      "kind": "all_external",
+      "exact_match": true,
+      "pairs": 2962
+    },
+    {
+      "tick": 0,
+      "kind": "non_floor_external",
+      "exact_match": true,
+      "pairs": 2912
+    },
+    {
+      "tick": 900,
+      "kind": "all_external",
+      "exact_match": true,
+      "pairs": 2962
+    },
+    {
+      "tick": 900,
+      "kind": "non_floor_external",
+      "exact_match": true,
+      "pairs": 2912
+    }
+  ],
+  "API_reference": "https://mujoco.readthedocs.io/en/stable/APIreference/APIfunctions.html#mj-geomdistance",
+  "distance_limit": "API distances are capped by distmax; legacy CCD may be inaccurate; existing nativeccd flags untouched",
+  "model_enableflags": 16,
+  "model_disableflags": 0,
+  "physics_steps": 0,
+  "rendered_frames": 0,
+  "policy_or_scores_changed": false,
+  "scope": "C3.16 distance queries on saved MJWarp poses and exact compiled-reference geometry; no contact-force, blockage-cause, C-physics robustness or policy-input claim",
+  "raw": [
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-B/validation/group-04/evaluation/owner/world-000/scene.xml",
+      "sha256": "99e2454e578184725c55607aab0250fc52de745a1ddec24d2a91a3fee673af97"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-B/validation/group-04/evaluation/owner/world-000/states.npz",
+      "sha256": "643d6b0f23e11a789dd4f5b7259e67dc5aa1b4674543764feec248eb29fccd97"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-B/validation/group-04/evaluation/owner/world-000/plan.json",
+      "sha256": "15f0442454591e4483074741202034cef69d508ac78ac0305c620a943382238a"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-record-references-r1/per-world-references.json",
+      "sha256": "fc7a7e122f4a0ad2c47db5cebf81c77e08618c82116ef8cc4cd273ae56b1af13"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-record-references-r1/case-09/compiled-geometry312.npz",
+      "sha256": "cf4925c34abc862ed87947cb744f30e372597f164ffead1d960f7f0c26b76d89"
+    }
+  ],
+  "reproduce": [
+    "/home/ugrp/ugrp-sim/src/82702ea74d641d68377eeb331142298ca4ff49b1/scripts/audit_act16w_saved_gaps.py",
+    "--enabled",
+    "--world-root",
+    "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-B/validation/group-04/evaluation/owner/world-000",
+    "--references",
+    "/home/ugrp/ugrp-sim/runs/act16w-native-record-references-r1/per-world-references.json",
+    "--out",
+    "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/gaps-B-87429.json"
+  ],
+  "full_report": {
+    "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/gaps-B-87429.json",
+    "sha256": "ee1a829a69f7922eda8180322f00ee5ec21cdddf0498b76a0580a8696e04a958"
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "source_sha": "376fa86c08cb8de5e2d442600baad1340534eec2",
+  "host": {
+    "project_id": "ugrp-sim-b-1014",
+    "instance": "ugrp-act-l4-gcp2",
+    "machine_type": "g2-standard-8",
+    "zone": "asia-northeast3-a"
+  },
+  "status": "PASS",
+  "complete": true,
+  "basis": "completed pilot P100 allocated bytes/SIM x unchanged90SIM cap; all236 pending starts; exact old-architecture weight bytes; JPEG hardlinks preserve all bytes/paths",
+  "rows": [
+    {
+      "seed": 88601,
+      "bytes": 7305216.0,
+      "SIM_s": 43.800000000000004,
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/record-pilot-r1/group-001/controller/world-000",
+      "bytes_per_SIM": 166785.7534246575
+    },
+    {
+      "seed": 88602,
+      "bytes": 7702528.0,
+      "SIM_s": 41.400000000000006,
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/record-pilot-r1/group-001/controller/world-001",
+      "bytes_per_SIM": 186051.40096618354
+    },
+    {
+      "seed": 88600,
+      "bytes": 6735872.0,
+      "SIM_s": 42.7,
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/record-pilot-r1/group-000/controller/world-000",
+      "bytes_per_SIM": 157748.7587822014
+    },
+    {
+      "seed": 88603,
+      "bytes": 9885696.0,
+      "SIM_s": 46.300000000000004,
+      "raw": "/home/ugrp/ugrp-sim/runs/act17-v7/record-pilot-r1/group-000/controller/world-001",
+      "bytes_per_SIM": 213513.9524838013
+    }
+  ],
+  "remaining_recordings": 236,
+  "free_bytes": 32170356736,
+  "floor_bytes": 8589934592,
+  "recording_reservation_bytes": 4535036351,
+  "dataset_reservation_bytes": 59930453,
+  "model_reservation_bytes": 829453280,
+  "old_model_weight_bytes": 207363320,
+  "archive_disk_reservation_bytes": 0,
+  "archive_basis": "deterministic double-pass ZIP stream; model staging hardlinks",
+  "total_reservation_bytes": 5424420084,
+  "projected_free_bytes": 26745936652,
+  "shortfall_bytes": 0,
+  "minimum_additional_GiB": 0,
+  "future_live_raw_buffer_not_included": true,
+  "pilot_receipt": {
+    "path": "/home/ugrp/ugrp-sim/runs/act17-v7/record-pilot-r1/gate-recount.json",
+    "sha256": "2481d7348597a4f0fd789c90000437fd679d76e0ac43807483a756f49d83e7f2"
+  },
+  "preflight_receipt": {
+    "path": "/home/ugrp/ugrp-sim/runs/act17-v7/preflight-r2/summary.json",
+    "sha256": "9e9146d1e6225b20d093c406dfcfda61cdb830ea586cd45ee1fb95bb1ed29af3"
+  },
+  "reproduce": [
+    "/home/ugrp/ugrp-sim/src/376fa86c08cb8de5e2d442600baad1340534eec2/scripts/act17_record_budget.py",
+    "--pilot",
+    "/home/ugrp/ugrp-sim/runs/act17-v7/record-pilot-r1",
+    "--preflight",
+    "/home/ugrp/ugrp-sim/runs/act17-v7/preflight-r2",
+    "--protocol",
+    "/home/ugrp/ugrp-sim/src/376fa86c08cb8de5e2d442600baad1340534eec2/experiments/2026-10-17-act17/v7/protocol.json",
+    "--out",
+    "/home/ugrp/ugrp-sim/runs/act17-v7/record-budget-r2.json"
+  ]
+}

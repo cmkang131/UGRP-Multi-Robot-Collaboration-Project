@@ -1,0 +1,647 @@
+{
+  "funnel": [
+    {
+      "gate": "registered_TRAIN_starts",
+      "passed": 20,
+      "rejected": 0
+    },
+    {
+      "gate": "collected_starts",
+      "passed": 20,
+      "rejected": 0
+    },
+    {
+      "gate": "current_state_valid_teacher_targets",
+      "passed": 290,
+      "rejected": 5137
+    }
+  ],
+  "per_episode": [
+    {
+      "scope": "pre-hover h0-only DAgger labels; not full-skill oracle",
+      "funnel": [
+        {
+          "gate": "student_oracle_pairs",
+          "passed": 300,
+          "rejected": 0
+        },
+        {
+          "gate": "qualified_oracle_action",
+          "passed": 57,
+          "rejected": 243
+        }
+      ],
+      "rejections": [
+        {
+          "category": "potential_hold_after_student_issued_close",
+          "reason": "potential_hold_after_student_issued_close",
+          "count": 243,
+          "blocking_object": "not_applicable_label_admission",
+          "minimum_gap_m": null,
+          "minimum_gap_status": "not_applicable_non_geometric"
+        }
+      ],
+      "teacher_actions_executed": 0,
+      "valid_horizons_per_sample": 1,
+      "future_student_path_borrowed_as_expert_chunk": false,
+      "seed": 87440,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-collection/group-04/collection/world-000"
+    },
+    {
+      "scope": "pre-hover h0-only DAgger labels; not full-skill oracle",
+      "funnel": [
+        {
+          "gate": "student_oracle_pairs",
+          "passed": 285,
+          "rejected": 0
+        },
+        {
+          "gate": "qualified_oracle_action",
+          "passed": 1,
+          "rejected": 284
+        }
+      ],
+      "rejections": [
+        {
+          "category": "potential_hold_after_student_issued_close",
+          "reason": "potential_hold_after_student_issued_close",
+          "count": 284,
+          "blocking_object": "not_applicable_label_admission",
+          "minimum_gap_m": null,
+          "minimum_gap_status": "not_applicable_non_geometric"
+        }
+      ],
+      "teacher_actions_executed": 0,
+      "valid_horizons_per_sample": 1,
+      "future_student_path_borrowed_as_expert_chunk": false,
+      "seed": 87421,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-collection/group-01/collection/world-000"
+    },
+    {
+      "scope": "pre-hover h0-only DAgger labels; not full-skill oracle",
+      "funnel": [
+        {
+          "gate": "student_oracle_pairs",
+          "passed": 300,
+          "rejected": 0
+        },
+        {
+          "gate": "qualified_oracle_action",
+          "passed": 31,
+          "rejected": 269
+        }
+      ],
+      "rejections": [
+        {
+          "category": "potential_hold_after_student_issued_close",
+          "reason": "potential_hold_after_student_issued_close",
+          "count": 269,
+          "blocking_object": "not_applicable_label_admission",
+          "minimum_gap_m": null,
+          "minimum_gap_status": "not_applicable_non_geometric"
+        }
+      ],
+      "teacher_actions_executed": 0,
+      "valid_horizons_per_sample": 1,
+      "future_student_path_borrowed_as_expert_chunk": false,
+      "seed": 87430,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-collection/group-01/collection/world-001"
+    },
+    {
+      "scope": "pre-hover h0-only DAgger labels; not full-skill oracle",
+      "funnel": [
+        {
+          "gate": "student_oracle_pairs",
+          "passed": 300,
+          "rejected": 0
+        },
+        {
+          "gate": "qualified_oracle_action",
+          "passed": 1,
+          "rejected": 299
+        }
+      ],
+      "rejections": [
+        {
+          "category": "potential_hold_after_student_issued_close",
+          "reason": "potential_hold_after_student_issued_close",
+          "count": 299,
+          "blocking_object": "not_applicable_label_admission",
+          "minimum_gap_m": null,
+          "minimum_gap_status": "not_applicable_non_geometric"
+        }
+      ],
+      "teacher_actions_executed": 0,
+      "valid_horizons_per_sample": 1,
+      "future_student_path_borrowed_as_expert_chunk": false,
+      "seed": 87423,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-collection/group-02/collection/world-000"
+    },
+    {
+      "scope": "pre-hover h0-only DAgger labels; not full-skill oracle",
+      "funnel": [
+        {
+          "gate": "student_oracle_pairs",
+          "passed": 300,
+          "rejected": 0
+        },
+        {
+          "gate": "qualified_oracle_action",
+          "passed": 1,
+          "rejected": 299
+        }
+      ],
+      "rejections": [
+        {
+          "category": "potential_hold_after_student_issued_close",
+          "reason": "potential_hold_after_student_issued_close",
+          "count": 299,
+          "blocking_object": "not_applicable_label_admission",
+          "minimum_gap_m": null,
+          "minimum_gap_status": "not_applicable_non_geometric"
+        }
+      ],
+      "teacher_actions_executed": 0,
+      "valid_horizons_per_sample": 1,
+      "future_student_path_borrowed_as_expert_chunk": false,
+      "seed": 87427,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-collection/group-02/collection/world-001"
+    },
+    {
+      "scope": "pre-hover h0-only DAgger labels; not full-skill oracle",
+      "funnel": [
+        {
+          "gate": "student_oracle_pairs",
+          "passed": 300,
+          "rejected": 0
+        },
+        {
+          "gate": "qualified_oracle_action",
+          "passed": 121,
+          "rejected": 179
+        }
+      ],
+      "rejections": [
+        {
+          "category": "potential_hold_after_student_issued_close",
+          "reason": "potential_hold_after_student_issued_close",
+          "count": 179,
+          "blocking_object": "not_applicable_label_admission",
+          "minimum_gap_m": null,
+          "minimum_gap_status": "not_applicable_non_geometric"
+        }
+      ],
+      "teacher_actions_executed": 0,
+      "valid_horizons_per_sample": 1,
+      "future_student_path_borrowed_as_expert_chunk": false,
+      "seed": 87431,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-collection/group-02/collection/world-002"
+    },
+    {
+      "scope": "pre-hover h0-only DAgger labels; not full-skill oracle",
+      "funnel": [
+        {
+          "gate": "student_oracle_pairs",
+          "passed": 300,
+          "rejected": 0
+        },
+        {
+          "gate": "qualified_oracle_action",
+          "passed": 1,
+          "rejected": 299
+        }
+      ],
+      "rejections": [
+        {
+          "category": "potential_hold_after_student_issued_close",
+          "reason": "potential_hold_after_student_issued_close",
+          "count": 299,
+          "blocking_object": "not_applicable_label_admission",
+          "minimum_gap_m": null,
+          "minimum_gap_status": "not_applicable_non_geometric"
+        }
+      ],
+      "teacher_actions_executed": 0,
+      "valid_horizons_per_sample": 1,
+      "future_student_path_borrowed_as_expert_chunk": false,
+      "seed": 87435,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-collection/group-02/collection/world-003"
+    },
+    {
+      "scope": "pre-hover h0-only DAgger labels; not full-skill oracle",
+      "funnel": [
+        {
+          "gate": "student_oracle_pairs",
+          "passed": 300,
+          "rejected": 0
+        },
+        {
+          "gate": "qualified_oracle_action",
+          "passed": 1,
+          "rejected": 299
+        }
+      ],
+      "rejections": [
+        {
+          "category": "potential_hold_after_student_issued_close",
+          "reason": "potential_hold_after_student_issued_close",
+          "count": 299,
+          "blocking_object": "not_applicable_label_admission",
+          "minimum_gap_m": null,
+          "minimum_gap_status": "not_applicable_non_geometric"
+        }
+      ],
+      "teacher_actions_executed": 0,
+      "valid_horizons_per_sample": 1,
+      "future_student_path_borrowed_as_expert_chunk": false,
+      "seed": 87443,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-collection/group-02/collection/world-004"
+    },
+    {
+      "scope": "pre-hover h0-only DAgger labels; not full-skill oracle",
+      "funnel": [
+        {
+          "gate": "student_oracle_pairs",
+          "passed": 300,
+          "rejected": 0
+        },
+        {
+          "gate": "qualified_oracle_action",
+          "passed": 17,
+          "rejected": 283
+        }
+      ],
+      "rejections": [
+        {
+          "category": "potential_hold_after_student_issued_close",
+          "reason": "potential_hold_after_student_issued_close",
+          "count": 283,
+          "blocking_object": "not_applicable_label_admission",
+          "minimum_gap_m": null,
+          "minimum_gap_status": "not_applicable_non_geometric"
+        }
+      ],
+      "teacher_actions_executed": 0,
+      "valid_horizons_per_sample": 1,
+      "future_student_path_borrowed_as_expert_chunk": false,
+      "seed": 87425,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-collection/group-03/collection/world-000"
+    },
+    {
+      "scope": "pre-hover h0-only DAgger labels; not full-skill oracle",
+      "funnel": [
+        {
+          "gate": "student_oracle_pairs",
+          "passed": 300,
+          "rejected": 0
+        },
+        {
+          "gate": "qualified_oracle_action",
+          "passed": 17,
+          "rejected": 283
+        }
+      ],
+      "rejections": [
+        {
+          "category": "potential_hold_after_student_issued_close",
+          "reason": "potential_hold_after_student_issued_close",
+          "count": 283,
+          "blocking_object": "not_applicable_label_admission",
+          "minimum_gap_m": null,
+          "minimum_gap_status": "not_applicable_non_geometric"
+        }
+      ],
+      "teacher_actions_executed": 0,
+      "valid_horizons_per_sample": 1,
+      "future_student_path_borrowed_as_expert_chunk": false,
+      "seed": 87432,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-collection/group-03/collection/world-001"
+    },
+    {
+      "scope": "pre-hover h0-only DAgger labels; not full-skill oracle",
+      "funnel": [
+        {
+          "gate": "student_oracle_pairs",
+          "passed": 181,
+          "rejected": 0
+        },
+        {
+          "gate": "qualified_oracle_action",
+          "passed": 1,
+          "rejected": 180
+        }
+      ],
+      "rejections": [
+        {
+          "category": "potential_hold_after_student_issued_close",
+          "reason": "potential_hold_after_student_issued_close",
+          "count": 180,
+          "blocking_object": "not_applicable_label_admission",
+          "minimum_gap_m": null,
+          "minimum_gap_status": "not_applicable_non_geometric"
+        }
+      ],
+      "teacher_actions_executed": 0,
+      "valid_horizons_per_sample": 1,
+      "future_student_path_borrowed_as_expert_chunk": false,
+      "seed": 87433,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-collection/group-03/collection/world-002"
+    },
+    {
+      "scope": "pre-hover h0-only DAgger labels; not full-skill oracle",
+      "funnel": [
+        {
+          "gate": "student_oracle_pairs",
+          "passed": 300,
+          "rejected": 0
+        },
+        {
+          "gate": "qualified_oracle_action",
+          "passed": 1,
+          "rejected": 299
+        }
+      ],
+      "rejections": [
+        {
+          "category": "potential_hold_after_student_issued_close",
+          "reason": "potential_hold_after_student_issued_close",
+          "count": 299,
+          "blocking_object": "not_applicable_label_admission",
+          "minimum_gap_m": null,
+          "minimum_gap_status": "not_applicable_non_geometric"
+        }
+      ],
+      "teacher_actions_executed": 0,
+      "valid_horizons_per_sample": 1,
+      "future_student_path_borrowed_as_expert_chunk": false,
+      "seed": 87436,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-collection/group-03/collection/world-003"
+    },
+    {
+      "scope": "pre-hover h0-only DAgger labels; not full-skill oracle",
+      "funnel": [
+        {
+          "gate": "student_oracle_pairs",
+          "passed": 300,
+          "rejected": 0
+        },
+        {
+          "gate": "qualified_oracle_action",
+          "passed": 1,
+          "rejected": 299
+        }
+      ],
+      "rejections": [
+        {
+          "category": "potential_hold_after_student_issued_close",
+          "reason": "potential_hold_after_student_issued_close",
+          "count": 299,
+          "blocking_object": "not_applicable_label_admission",
+          "minimum_gap_m": null,
+          "minimum_gap_status": "not_applicable_non_geometric"
+        }
+      ],
+      "teacher_actions_executed": 0,
+      "valid_horizons_per_sample": 1,
+      "future_student_path_borrowed_as_expert_chunk": false,
+      "seed": 87437,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-collection/group-03/collection/world-004"
+    },
+    {
+      "scope": "pre-hover h0-only DAgger labels; not full-skill oracle",
+      "funnel": [
+        {
+          "gate": "student_oracle_pairs",
+          "passed": 170,
+          "rejected": 0
+        },
+        {
+          "gate": "qualified_oracle_action",
+          "passed": 17,
+          "rejected": 153
+        }
+      ],
+      "rejections": [
+        {
+          "category": "potential_hold_after_student_issued_close",
+          "reason": "potential_hold_after_student_issued_close",
+          "count": 153,
+          "blocking_object": "not_applicable_label_admission",
+          "minimum_gap_m": null,
+          "minimum_gap_status": "not_applicable_non_geometric"
+        }
+      ],
+      "teacher_actions_executed": 0,
+      "valid_horizons_per_sample": 1,
+      "future_student_path_borrowed_as_expert_chunk": false,
+      "seed": 87441,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-collection/group-03/collection/world-005"
+    },
+    {
+      "scope": "pre-hover h0-only DAgger labels; not full-skill oracle",
+      "funnel": [
+        {
+          "gate": "student_oracle_pairs",
+          "passed": 300,
+          "rejected": 0
+        },
+        {
+          "gate": "qualified_oracle_action",
+          "passed": 17,
+          "rejected": 283
+        }
+      ],
+      "rejections": [
+        {
+          "category": "potential_hold_after_student_issued_close",
+          "reason": "potential_hold_after_student_issued_close",
+          "count": 283,
+          "blocking_object": "not_applicable_label_admission",
+          "minimum_gap_m": null,
+          "minimum_gap_status": "not_applicable_non_geometric"
+        }
+      ],
+      "teacher_actions_executed": 0,
+      "valid_horizons_per_sample": 1,
+      "future_student_path_borrowed_as_expert_chunk": false,
+      "seed": 87420,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-collection/group-00/collection/world-000"
+    },
+    {
+      "scope": "pre-hover h0-only DAgger labels; not full-skill oracle",
+      "funnel": [
+        {
+          "gate": "student_oracle_pairs",
+          "passed": 245,
+          "rejected": 0
+        },
+        {
+          "gate": "qualified_oracle_action",
+          "passed": 1,
+          "rejected": 244
+        }
+      ],
+      "rejections": [
+        {
+          "category": "potential_hold_after_student_issued_close",
+          "reason": "potential_hold_after_student_issued_close",
+          "count": 244,
+          "blocking_object": "not_applicable_label_admission",
+          "minimum_gap_m": null,
+          "minimum_gap_status": "not_applicable_non_geometric"
+        }
+      ],
+      "teacher_actions_executed": 0,
+      "valid_horizons_per_sample": 1,
+      "future_student_path_borrowed_as_expert_chunk": false,
+      "seed": 87422,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-collection/group-00/collection/world-001"
+    },
+    {
+      "scope": "pre-hover h0-only DAgger labels; not full-skill oracle",
+      "funnel": [
+        {
+          "gate": "student_oracle_pairs",
+          "passed": 194,
+          "rejected": 0
+        },
+        {
+          "gate": "qualified_oracle_action",
+          "passed": 1,
+          "rejected": 193
+        }
+      ],
+      "rejections": [
+        {
+          "category": "potential_hold_after_student_issued_close",
+          "reason": "potential_hold_after_student_issued_close",
+          "count": 193,
+          "blocking_object": "not_applicable_label_admission",
+          "minimum_gap_m": null,
+          "minimum_gap_status": "not_applicable_non_geometric"
+        }
+      ],
+      "teacher_actions_executed": 0,
+      "valid_horizons_per_sample": 1,
+      "future_student_path_borrowed_as_expert_chunk": false,
+      "seed": 87426,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-collection/group-00/collection/world-002"
+    },
+    {
+      "scope": "pre-hover h0-only DAgger labels; not full-skill oracle",
+      "funnel": [
+        {
+          "gate": "student_oracle_pairs",
+          "passed": 300,
+          "rejected": 0
+        },
+        {
+          "gate": "qualified_oracle_action",
+          "passed": 1,
+          "rejected": 299
+        }
+      ],
+      "rejections": [
+        {
+          "category": "potential_hold_after_student_issued_close",
+          "reason": "potential_hold_after_student_issued_close",
+          "count": 299,
+          "blocking_object": "not_applicable_label_admission",
+          "minimum_gap_m": null,
+          "minimum_gap_status": "not_applicable_non_geometric"
+        }
+      ],
+      "teacher_actions_executed": 0,
+      "valid_horizons_per_sample": 1,
+      "future_student_path_borrowed_as_expert_chunk": false,
+      "seed": 87428,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-collection/group-00/collection/world-003"
+    },
+    {
+      "scope": "pre-hover h0-only DAgger labels; not full-skill oracle",
+      "funnel": [
+        {
+          "gate": "student_oracle_pairs",
+          "passed": 300,
+          "rejected": 0
+        },
+        {
+          "gate": "qualified_oracle_action",
+          "passed": 1,
+          "rejected": 299
+        }
+      ],
+      "rejections": [
+        {
+          "category": "potential_hold_after_student_issued_close",
+          "reason": "potential_hold_after_student_issued_close",
+          "count": 299,
+          "blocking_object": "not_applicable_label_admission",
+          "minimum_gap_m": null,
+          "minimum_gap_status": "not_applicable_non_geometric"
+        }
+      ],
+      "teacher_actions_executed": 0,
+      "valid_horizons_per_sample": 1,
+      "future_student_path_borrowed_as_expert_chunk": false,
+      "seed": 87438,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-collection/group-00/collection/world-004"
+    },
+    {
+      "scope": "pre-hover h0-only DAgger labels; not full-skill oracle",
+      "funnel": [
+        {
+          "gate": "student_oracle_pairs",
+          "passed": 152,
+          "rejected": 0
+        },
+        {
+          "gate": "qualified_oracle_action",
+          "passed": 1,
+          "rejected": 151
+        }
+      ],
+      "rejections": [
+        {
+          "category": "potential_hold_after_student_issued_close",
+          "reason": "potential_hold_after_student_issued_close",
+          "count": 151,
+          "blocking_object": "not_applicable_label_admission",
+          "minimum_gap_m": null,
+          "minimum_gap_status": "not_applicable_non_geometric"
+        }
+      ],
+      "teacher_actions_executed": 0,
+      "valid_horizons_per_sample": 1,
+      "future_student_path_borrowed_as_expert_chunk": false,
+      "seed": 87442,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-collection/group-00/collection/world-005"
+    }
+  ],
+  "raw": [
+    "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-collection/group-04/collection",
+    "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-collection/group-01/collection",
+    "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-collection/group-02/collection",
+    "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-collection/group-03/collection",
+    "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-collection/group-00/collection"
+  ],
+  "reproduce": [
+    "/home/ugrp/ugrp-sim/src/c27a9d537eaae873c7e7bc2ceaeeada69696cc48/scripts/act16w_dagger_dataset.py",
+    "--enabled",
+    "--base-root",
+    "/home/ugrp/ugrp-sim/runs/act16w-native-dataset-r1/records",
+    "--starts",
+    "/home/ugrp/ugrp-sim/runs/act16w-native-training-r1/C/admission/dagger-starts.json",
+    "--act-source",
+    "/home/ugrp/ugrp-sim/src/3f99d58c5ada0862e669ef4065c0ba957f1b4547",
+    "--out",
+    "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset",
+    "--collections",
+    "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-collection/group-04/collection",
+    "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-collection/group-01/collection",
+    "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-collection/group-02/collection",
+    "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-collection/group-03/collection",
+    "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-collection/group-00/collection"
+  ],
+  "teacher_actions_executed": 0
+}

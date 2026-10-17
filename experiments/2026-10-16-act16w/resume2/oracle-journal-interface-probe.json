@@ -1,0 +1,61 @@
+{
+  "status": "complete",
+  "complete": true,
+  "source_sha": "63683a9b0a6cf48e10f0ff3ccd29d585d9a1b5b7",
+  "host": {
+    "project_id": "ugrp-sim-b-1014",
+    "instance": "ugrp-act-l4-gcp2",
+    "machine_type": "g2-standard-8",
+    "zone": "asia-northeast3-a"
+  },
+  "interface_probe_only": true,
+  "training_data_admitted": false,
+  "checkpoint_sha256": null,
+  "teacher_actions_executed": 0,
+  "prefix_cap_SIM_s": 30,
+  "scope": "student-induced TRAIN states with h0-only pre-hover labels; capped prefix is not task success",
+  "labels": [
+    {
+      "label_valid": true,
+      "teacher_command": {
+        "t": 1.7000000000001514,
+        "wheels": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "duration_s": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "pwm": {
+          "1": 2000,
+          "3": 740,
+          "4": 2320,
+          "5": 1320,
+          "6": 1500
+        }
+      },
+      "target_visible": true,
+      "sample_id": "warp3-86822-0-g0:0:r1",
+      "t": 1.7000000000001514,
+      "teacher_phase": "start",
+      "phase_after": "fold",
+      "done": false,
+      "route_rejections": []
+    }
+  ],
+  "oracle_audit": {
+    "invisible_measurements": 0,
+    "held_world_reads": 0,
+    "teacher_actions_executed": 0,
+    "queries": 1,
+    "integration_and_actor_inputs_unchanged": true,
+    "scope": "pre-hover h0-only training labels; no teacher action applied"
+  },
+  "student_actions": 0,
+  "research_optimizer_steps": 0
+}

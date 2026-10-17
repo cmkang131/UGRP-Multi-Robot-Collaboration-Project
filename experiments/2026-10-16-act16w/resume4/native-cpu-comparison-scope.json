@@ -1,0 +1,29 @@
+{
+  "status": "not_run",
+  "optional": true,
+  "backend": "C MuJoCo CPU",
+  "N": 0,
+  "host_scope": "owned ugrp-act-l4-gcp2 CPU only; stopped CPU VM never started",
+  "reason": "existing frozen student API constructs WarpTransport and uses GPU-specific initialize/state/render/force members; legacy C runner loads GraspActor instead of the ACT16 history adapter, uses a different scene/host path and a wall cap. It is not a qualified drop-in comparison for these native checkpoints.",
+  "inspected_sources": [
+    {
+      "source_sha": "0362037280c6cbc4677f70366db43b9892b23690",
+      "path": "scripts/warp_act_api.py",
+      "evidence": "Owner.__init__ local ActorTransport(WarpTransport), initialize and direct GPU state; no C actor option"
+    },
+    {
+      "source_sha": "3f99d58c5ada0862e669ef4065c0ba957f1b4547",
+      "path": "scripts/run_grasp_act_student.py",
+      "evidence": "legacy scene composition, old host guard, wall cap1800; adapter differs"
+    },
+    {
+      "source_sha": "3f99d58c5ada0862e669ef4065c0ba957f1b4547",
+      "path": "scripts/grasp_act_student_worker.py",
+      "evidence": "GraspActor.load rather than Act16wActor.load"
+    }
+  ],
+  "physics_runs_launched": 0,
+  "backend_robustness_claim": false,
+  "pooled_with_MJWarp": false,
+  "scope": "eligibility inspection, not experimental evidence; core matched native A/B+h4+h5+final40 retains priority"
+}

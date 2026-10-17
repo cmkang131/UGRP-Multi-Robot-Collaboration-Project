@@ -1,0 +1,54 @@
+[
+  {
+    "arm": "A",
+    "pid": 72060,
+    "argv": [
+      "/home/ugrp/ugrp-rl1b-act-env/bin/python",
+      "-u",
+      "/home/ugrp/ugrp-sim/src/c27a9d537eaae873c7e7bc2ceaeeada69696cc48/scripts/act16w_native_learning.py",
+      "--enabled",
+      "--stage",
+      "train",
+      "--native-gate",
+      "/home/ugrp/ugrp-sim/runs/act16w-native-gate-r2/independent-gate-recount.json",
+      "--out",
+      "/home/ugrp/ugrp-sim/runs/act16w-native-training-r1/A",
+      "--references",
+      "/home/ugrp/ugrp-sim/runs/act16w-native-record-references-r1",
+      "--dataset-root",
+      "/home/ugrp/ugrp-sim/runs/act16w-native-dataset-r1/records",
+      "--arm",
+      "A",
+      "--history",
+      "off"
+    ],
+    "source_sha": "c27a9d537eaae873c7e7bc2ceaeeada69696cc48",
+    "wall_cap": null
+  },
+  {
+    "arm": "B",
+    "pid": 72061,
+    "argv": [
+      "/home/ugrp/ugrp-rl1b-act-env/bin/python",
+      "-u",
+      "/home/ugrp/ugrp-sim/src/c27a9d537eaae873c7e7bc2ceaeeada69696cc48/scripts/act16w_native_learning.py",
+      "--enabled",
+      "--stage",
+      "train",
+      "--native-gate",
+      "/home/ugrp/ugrp-sim/runs/act16w-native-gate-r2/independent-gate-recount.json",
+      "--out",
+      "/home/ugrp/ugrp-sim/runs/act16w-native-training-r1/B",
+      "--references",
+      "/home/ugrp/ugrp-sim/runs/act16w-native-record-references-r1",
+      "--dataset-root",
+      "/home/ugrp/ugrp-sim/runs/act16w-native-dataset-r1/records",
+      "--arm",
+      "B",
+      "--history",
+      "wheel_pulse_train_mean"
+    ],
+    "source_sha": "c27a9d537eaae873c7e7bc2ceaeeada69696cc48",
+    "wall_cap": null
+  }
+]

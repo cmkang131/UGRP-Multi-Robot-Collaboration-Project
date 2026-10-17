@@ -1,0 +1,117 @@
+{
+  "source_sha": "7381482975ae5fac440c7f3dcb22403133df972b",
+  "host": {
+    "project_id": "ugrp-sim-b-1014",
+    "instance": "ugrp-act-l4-gcp2",
+    "machine_type": "g2-standard-8",
+    "zone": "asia-northeast3-a"
+  },
+  "scope": "real optimizer loss logs only; no physical task inference",
+  "contact_profile": "warp_native_contact_v1",
+  "raw": [
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-training-r1/A/smoke/summary.json",
+      "sha256": "387af3a6480dc093653cd8aaacf4b99443279eac84330bbe90dcb1c9db5ca3ad"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-training-r1/A/smoke/progress.jsonl",
+      "sha256": "fd6ab6ef8d95c2fe0d453282466f745889a8d15a8f1209cbe4ae1f8d96aee640"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-training-r1/A/main/summary.json",
+      "sha256": "7e6c2a802bef3b6dd3fb4411a5fff09900af62ef7f837f533c963c153c79df79"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-training-r1/A/main/progress.jsonl",
+      "sha256": "953d8152c4462803d60a466dea2b84042c08a7800dfc03fdd341596af489a13a"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-training-r1/B/smoke/summary.json",
+      "sha256": "a7760ad6e9c3786376a0f3b18bf0c77bfafebe22e37eaa36564afece8e9332dc"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-training-r1/B/smoke/progress.jsonl",
+      "sha256": "b9613cef8f9844ae187f39e734204f8df545c272ca464e12f0a04996946ddc69"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-training-r1/B/main/summary.json",
+      "sha256": "61e69228993bd310cd714e0804aa58a3f8aa69e8844ce4cc5693a1f39b6767c9"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-training-r1/B/main/progress.jsonl",
+      "sha256": "477f6cfa2b40181755be43b163990ea21c9386096b79adefb204e096b9667276"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-training-r1/C/smoke/summary.json",
+      "sha256": "4a606a6b354d4fbe19180c23911aa0b25ef7d39bd51fe66103bcbc6c4589fe38"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-training-r1/C/smoke/progress.jsonl",
+      "sha256": "e89ce1970dd9decc961a76b3421d4df73975dd9f070f10090bdc29389b4c04b0"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-training-r1/C/main/summary.json",
+      "sha256": "5b5b07a0acdc368a4105e1cffcf6a50edb4fe8620beefae15a51099c0f60b70d"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-training-r1/C/main/progress.jsonl",
+      "sha256": "b2d2c820c916add353cb3aff2e9dfb7b9894177f72d26ab53c2061b7fed35485"
+    }
+  ],
+  "arms": {
+    "A": {
+      "step": 10000,
+      "complete": true,
+      "logged_points": 1002,
+      "last": {
+        "step": 10000,
+        "loss": 0.21971753239631653,
+        "legacy_l1_loss": 0.6750503182411194,
+        "movement_l1_loss": 0.18635958433151245,
+        "done_bce_loss": 0.0005721715861000121,
+        "kld_loss": 0.003278575837612152,
+        "gradient_norm": 13.785768508911133,
+        "wall_s": 3160.241309617999,
+        "eligible_rows": 11860
+      },
+      "last100_logged_total_loss_median": 0.1816355586051941
+    },
+    "B": {
+      "step": 10000,
+      "complete": true,
+      "logged_points": 1002,
+      "last": {
+        "step": 10000,
+        "loss": 0.21307750046253204,
+        "legacy_l1_loss": 0.6910673379898071,
+        "movement_l1_loss": 0.186750590801239,
+        "done_bce_loss": 0.0005012377514503896,
+        "kld_loss": 0.0025825686752796173,
+        "gradient_norm": 11.50345230102539,
+        "wall_s": 3160.5622945449995,
+        "eligible_rows": 11860
+      },
+      "last100_logged_total_loss_median": 0.20134225487709045
+    },
+    "C": {
+      "step": 10000,
+      "complete": true,
+      "logged_points": 1002,
+      "last": {
+        "step": 10000,
+        "loss": 0.22816438972949982,
+        "legacy_l1_loss": 0.6859623789787292,
+        "movement_l1_loss": 0.19447344541549683,
+        "done_bce_loss": 0.0005584551254287362,
+        "kld_loss": 0.0033132508397102356,
+        "gradient_norm": 12.49815845489502,
+        "wall_s": 1676.3765411090026,
+        "eligible_rows": 11860
+      },
+      "last100_logged_total_loss_median": 0.19565431773662567
+    }
+  },
+  "files": {
+    "learning-curves.png": "870d1d6ca7d6228a910fab37b9eae0e6f6c80b08fec84e2001e5c0728a8cee37"
+  }
+}
