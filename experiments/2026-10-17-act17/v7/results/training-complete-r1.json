@@ -1,0 +1,288 @@
+{
+  "status": "complete",
+  "complete": true,
+  "source_sha": "e1b7de0f789305e12a3612e7cbf392b8e4ac21ee",
+  "started_utc": "2026-10-17T06:09:21.776819+00:00",
+  "queue_sha256": "542b6017aed873071537b82e5bede086aa346173c79f25aa33667152fd40bf83",
+  "active": {},
+  "pending": [],
+  "finished": [
+    {
+      "candidate": "F",
+      "returncode": 0,
+      "summary": {
+        "source_sha": "e1b7de0f789305e12a3612e7cbf392b8e4ac21ee",
+        "cohort": "act17-v7-native",
+        "host": {
+          "project_id": "ugrp-sim-b-1014",
+          "instance": "ugrp-act-l4-gcp2",
+          "machine_type": "g2-standard-8",
+          "zone": "asia-northeast3-a"
+        },
+        "contact_profile": "warp_native_contact_v1",
+        "dataset_manifest_sha256": "44c1c46073aa08ea028324ffe924b67d862a2f01b56f4db11afad17000a9b198",
+        "protocol_sha256": "9bcf20f4ee91a95ae84ce548b8dc0c99c44de4b0351e1f156749ec93a1d89adc",
+        "normalization_sha256": "d08f8672434791ad68cf99fb36a87d76e6d089c908da7b2a27effbf729ba6ee6",
+        "candidate": "F",
+        "id": "F",
+        "image_mode": "current_full_v1",
+        "sampling": "uniform_episode_v1",
+        "steps_requested": 10000,
+        "batch_size": 8,
+        "chunk": 8,
+        "period_s": 0.1,
+        "seed": 20261017,
+        "done_loss": "balanced_bce_v1",
+        "lerobot_act_sha256": "8d622935319af7d03f1efd95d51e726af2921010f7e4f5ec3742f62280493111",
+        "act_library_source_sha": "3f99d58c5ada0862e669ef4065c0ba957f1b4547",
+        "data_conversion_source_sha": "2ac6e70270703acbf9ef736217977048a9cd84fa",
+        "provenance_note": "new v7 data only; no v4 teacher states or checkpoints",
+        "train_inference_transform_identical": true,
+        "status": "complete",
+        "complete": true,
+        "steps_completed": 10000,
+        "readback_verified": true,
+        "TRAIN_rows": 72572,
+        "TRAIN_starts": 200,
+        "TRAIN_stage_counts": {
+          "approach": 18221,
+          "alignment": 4412,
+          "grasp": 32409,
+          "release": 17530
+        },
+        "environment": {
+          "torch": "2.11.0+cu128",
+          "torchvision": "0.26.0+cu128",
+          "lerobot": "0.6.2",
+          "numpy": "2.2.6"
+        },
+        "gpu": "NVIDIA L4",
+        "started_utc": "2026-10-17T06:09:29.116129+00:00",
+        "raw_optimizer_state_saved": false,
+        "optimizer_note": "final weights and exact training recipe retained; no implicit resume or additional updates",
+        "student_input_keys": [
+          "observation.images.own_history",
+          "observation.state"
+        ],
+        "teacher_phase_policy_input": false,
+        "TRAIN_completion_priors": {
+          "grasp": {
+            "mass": 0.7575757125523833,
+            "positive_mass": 0.0027657692910897135,
+            "positive_n": 200,
+            "rows_N": 55042,
+            "positive_fraction": 0.0036508156812095154,
+            "source": "unique TRAIN h0 labels weighted by exact declared sampler; not VAL"
+          },
+          "release": {
+            "mass": 0.24242428744761868,
+            "positive_mass": 0.0027657692910897135,
+            "positive_n": 200,
+            "rows_N": 17530,
+            "positive_fraction": 0.011408796206887156,
+            "source": "unique TRAIN h0 labels weighted by exact declared sampler; not VAL"
+          }
+        },
+        "latest": {
+          "step": 10000,
+          "loss": 0.31269848346710205,
+          "legacy_l1_loss": 0.5150764584541321,
+          "movement_l1_loss": 0.07700726389884949,
+          "done_bce_loss": 0.18142183125019073,
+          "kld_loss": 0.005426935851573944,
+          "gradient_norm": 18.8395938873291,
+          "wall_s": 2593.5060240149996
+        },
+        "checkpoint": "/home/ugrp/ugrp-sim/runs/act17-v7/training-r1/F/actor",
+        "checkpoint_sha256": "dc64dd5fee4c153f02babc89e562a7d139a9f5cbfefd7e601d6c2eb9717e21ae",
+        "peak_gpu_bytes": 1549413888,
+        "wall_s": 2596.9908966069997
+      }
+    },
+    {
+      "candidate": "M",
+      "returncode": 0,
+      "summary": {
+        "source_sha": "e1b7de0f789305e12a3612e7cbf392b8e4ac21ee",
+        "cohort": "act17-v7-native",
+        "host": {
+          "project_id": "ugrp-sim-b-1014",
+          "instance": "ugrp-act-l4-gcp2",
+          "machine_type": "g2-standard-8",
+          "zone": "asia-northeast3-a"
+        },
+        "contact_profile": "warp_native_contact_v1",
+        "dataset_manifest_sha256": "44c1c46073aa08ea028324ffe924b67d862a2f01b56f4db11afad17000a9b198",
+        "protocol_sha256": "9bcf20f4ee91a95ae84ce548b8dc0c99c44de4b0351e1f156749ec93a1d89adc",
+        "normalization_sha256": "d08f8672434791ad68cf99fb36a87d76e6d089c908da7b2a27effbf729ba6ee6",
+        "candidate": "M",
+        "id": "M",
+        "image_mode": "history_montage_v1",
+        "sampling": "uniform_episode_v1",
+        "steps_requested": 10000,
+        "batch_size": 8,
+        "chunk": 8,
+        "period_s": 0.1,
+        "seed": 20261017,
+        "done_loss": "balanced_bce_v1",
+        "lerobot_act_sha256": "8d622935319af7d03f1efd95d51e726af2921010f7e4f5ec3742f62280493111",
+        "act_library_source_sha": "3f99d58c5ada0862e669ef4065c0ba957f1b4547",
+        "data_conversion_source_sha": "2ac6e70270703acbf9ef736217977048a9cd84fa",
+        "provenance_note": "new v7 data only; no v4 teacher states or checkpoints",
+        "train_inference_transform_identical": true,
+        "status": "complete",
+        "complete": true,
+        "steps_completed": 10000,
+        "readback_verified": true,
+        "TRAIN_rows": 72572,
+        "TRAIN_starts": 200,
+        "TRAIN_stage_counts": {
+          "approach": 18221,
+          "alignment": 4412,
+          "grasp": 32409,
+          "release": 17530
+        },
+        "environment": {
+          "torch": "2.11.0+cu128",
+          "torchvision": "0.26.0+cu128",
+          "lerobot": "0.6.2",
+          "numpy": "2.2.6"
+        },
+        "gpu": "NVIDIA L4",
+        "started_utc": "2026-10-17T06:09:29.127138+00:00",
+        "raw_optimizer_state_saved": false,
+        "optimizer_note": "final weights and exact training recipe retained; no implicit resume or additional updates",
+        "student_input_keys": [
+          "observation.images.own_history",
+          "observation.state"
+        ],
+        "teacher_phase_policy_input": false,
+        "TRAIN_completion_priors": {
+          "grasp": {
+            "mass": 0.7575757125523833,
+            "positive_mass": 0.0027657692910897135,
+            "positive_n": 200,
+            "rows_N": 55042,
+            "positive_fraction": 0.0036508156812095154,
+            "source": "unique TRAIN h0 labels weighted by exact declared sampler; not VAL"
+          },
+          "release": {
+            "mass": 0.24242428744761868,
+            "positive_mass": 0.0027657692910897135,
+            "positive_n": 200,
+            "rows_N": 17530,
+            "positive_fraction": 0.011408796206887156,
+            "source": "unique TRAIN h0 labels weighted by exact declared sampler; not VAL"
+          }
+        },
+        "latest": {
+          "step": 10000,
+          "loss": 1.3290998935699463,
+          "legacy_l1_loss": 0.4951244294643402,
+          "movement_l1_loss": 0.07234644889831543,
+          "done_bce_loss": 1.199783205986023,
+          "kld_loss": 0.00569702684879303,
+          "gradient_norm": 757.6770629882812,
+          "wall_s": 4470.365360933999
+        },
+        "checkpoint": "/home/ugrp/ugrp-sim/runs/act17-v7/training-r1/M/actor",
+        "checkpoint_sha256": "b5a2c5d2be233df065d900ed58216f05a715f18f0c9de6227eeac49922b97b9f",
+        "peak_gpu_bytes": 1548414464,
+        "wall_s": 4474.043529005
+      }
+    },
+    {
+      "candidate": "S",
+      "returncode": 0,
+      "summary": {
+        "source_sha": "e1b7de0f789305e12a3612e7cbf392b8e4ac21ee",
+        "cohort": "act17-v7-native",
+        "host": {
+          "project_id": "ugrp-sim-b-1014",
+          "instance": "ugrp-act-l4-gcp2",
+          "machine_type": "g2-standard-8",
+          "zone": "asia-northeast3-a"
+        },
+        "contact_profile": "warp_native_contact_v1",
+        "dataset_manifest_sha256": "44c1c46073aa08ea028324ffe924b67d862a2f01b56f4db11afad17000a9b198",
+        "protocol_sha256": "9bcf20f4ee91a95ae84ce548b8dc0c99c44de4b0351e1f156749ec93a1d89adc",
+        "normalization_sha256": "d08f8672434791ad68cf99fb36a87d76e6d089c908da7b2a27effbf729ba6ee6",
+        "candidate": "S",
+        "id": "S",
+        "image_mode": "current_full_v1",
+        "sampling": "uniform_stage_v1",
+        "steps_requested": 10000,
+        "batch_size": 8,
+        "chunk": 8,
+        "period_s": 0.1,
+        "seed": 20261017,
+        "done_loss": "balanced_bce_v1",
+        "lerobot_act_sha256": "8d622935319af7d03f1efd95d51e726af2921010f7e4f5ec3742f62280493111",
+        "act_library_source_sha": "3f99d58c5ada0862e669ef4065c0ba957f1b4547",
+        "data_conversion_source_sha": "2ac6e70270703acbf9ef736217977048a9cd84fa",
+        "provenance_note": "new v7 data only; no v4 teacher states or checkpoints",
+        "train_inference_transform_identical": true,
+        "status": "complete",
+        "complete": true,
+        "steps_completed": 10000,
+        "readback_verified": true,
+        "TRAIN_rows": 72572,
+        "TRAIN_starts": 200,
+        "TRAIN_stage_counts": {
+          "approach": 18221,
+          "alignment": 4412,
+          "grasp": 32409,
+          "release": 17530
+        },
+        "environment": {
+          "torch": "2.11.0+cu128",
+          "torchvision": "0.26.0+cu128",
+          "lerobot": "0.6.2",
+          "numpy": "2.2.6"
+        },
+        "gpu": "NVIDIA L4",
+        "started_utc": "2026-10-17T06:52:55.942865+00:00",
+        "raw_optimizer_state_saved": false,
+        "optimizer_note": "final weights and exact training recipe retained; no implicit resume or additional updates",
+        "student_input_keys": [
+          "observation.images.own_history",
+          "observation.state"
+        ],
+        "teacher_phase_policy_input": false,
+        "TRAIN_completion_priors": {
+          "grasp": {
+            "mass": 0.7500000000009182,
+            "positive_mass": 0.0015427813261748328,
+            "positive_n": 200,
+            "rows_N": 55042,
+            "positive_fraction": 0.0020570417682305923,
+            "source": "unique TRAIN h0 labels weighted by exact declared sampler; not VAL"
+          },
+          "release": {
+            "mass": 0.24999999999991449,
+            "positive_mass": 0.002852253280091263,
+            "positive_n": 200,
+            "rows_N": 17530,
+            "positive_fraction": 0.011409013120368955,
+            "source": "unique TRAIN h0 labels weighted by exact declared sampler; not VAL"
+          }
+        },
+        "latest": {
+          "step": 10000,
+          "loss": 0.3871772885322571,
+          "legacy_l1_loss": 0.673281192779541,
+          "movement_l1_loss": 0.1890793740749359,
+          "done_bce_loss": 0.14117120206356049,
+          "kld_loss": 0.005692675709724426,
+          "gradient_norm": 14.063943862915039,
+          "wall_s": 2378.1388982000008
+        },
+        "checkpoint": "/home/ugrp/ugrp-sim/runs/act17-v7/training-r1/S/actor",
+        "checkpoint_sha256": "020989d6ca11380167e7b2eea7dc214bd3f7c4454dcaa56f32a3280d54cfaf59",
+        "peak_gpu_bytes": 1548414464,
+        "wall_s": 2381.419093515
+      }
+    }
+  ],
+  "wall_s": 5001.010840760001
+}

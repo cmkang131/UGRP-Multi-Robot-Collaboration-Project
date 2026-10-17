@@ -1,7 +1,7 @@
 {
   "schema": "ugrp.act17.v7.all_stages.v2",
   "cohort": "act17-v7-native",
-  "status": "OFFLINE_AND_VAL_PENDING",
+  "status": "VAL_RUNNING",
   "student_success_measured": false,
   "sources": {
     "gate": "be39af6fc05ae79ee7550ed98c411dce35e68d7a",
@@ -75,10 +75,12 @@
     "VAL8": {
       "unit": "candidate_runs",
       "requested": 24,
-      "admitted": 0,
+      "admitted": 24,
       "complete": 0,
-      "unsubmitted": 24,
-      "passed": null
+      "unsubmitted": 0,
+      "passed": null,
+      "started": 24,
+      "pending": 24
     },
     "FINAL40": {
       "unit": "runs",
@@ -157,5 +159,5 @@
     "conversion": "results/retrieved-r1/dataset-r1/rejection_table.json",
     "training": "results/retrieved-r1/training-r1/queue.json"
   },
-  "scope": "distinct units/cohorts kept in separate funnels; native teacher outcomes are not student task success; running models remain incomplete"
+  "scope": "distinct units/cohorts in separate funnels; teacher success and offline fit are not student task success; VAL24 running, final unsubmitted"
 }
