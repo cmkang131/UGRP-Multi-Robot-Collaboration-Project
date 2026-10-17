@@ -273,7 +273,8 @@ def run(args):
     detect = goal_detector()
     images = rc.render()
     pinhole = np.clip(images['r1'][0], 0, 255).astype(np.uint8)
-    raw = cv2.remap(pinhole, mx, my, cv2.INTER_LINEAR, borderMode=cv2.BORDER_CONSTANT)
+    raw = np.stack([cv2.remap(pinhole[w], mx, my, cv2.INTER_LINEAR, borderMode=cv2.BORDER_CONSTANT)
+                    for w in range(nworld)])
     if args.preflight:
         (args.output/'preflight').mkdir()
         cv2.imwrite(str(args.output/'preflight'/'world00-pinhole.jpg'), cv2.cvtColor(pinhole[0], cv2.COLOR_RGB2BGR))
@@ -351,7 +352,8 @@ def run(args):
                 raise RuntimeError('NONFINITE_OR_CAPACITY')
             images = rc.render()
             pinhole = np.clip(images['r1'][0], 0, 255).astype(np.uint8)
-            raw = cv2.remap(pinhole, mx, my, cv2.INTER_LINEAR, borderMode=cv2.BORDER_CONSTANT)
+            raw = np.stack([cv2.remap(pinhole[w], mx, my, cv2.INTER_LINEAR, borderMode=cv2.BORDER_CONSTANT)
+                            for w in range(nworld)])
             actions, observations, scans = [], [], []
             for w in range(nworld):
                 state = per_world[w]
