@@ -22,7 +22,8 @@ def main(a):
         with p.open('x') as f:json.dump(v,f,indent=2,allow_nan=False);f.write('\n')
     b=a.work;seal=read(b/'prediction-seal.json');g=read(b/'prior-generation-eval-only.json');own=read(b/'own-seal.json');bad=[]
     for p,h in seal['input_sha256'].items():
-        if sha(Path(p))!=h:bad.append(p)
+        source_path=Path(p) if Path(p).is_absolute() else a.source/p
+        if sha(source_path)!=h:bad.append(p)
     for p,h in seal['prediction_sha256'].items():
         if sha(b/'predictions'/p)!=h:bad.append(p)
     for p,h in {**own['sources'],**g['truth_sources']}.items():
@@ -61,10 +62,12 @@ def main(a):
                 xy=float(np.linalg.norm(np.array(r['candidate'][:2])-t['pose'][:2]))
                 diagnostics.append(dict(trial=trial,t=f['t'],ready=r['ready'],xy_error_m=xy,
                     exact_evaluation_pose_likelihood=float(values[0]),candidate_likelihood=float(values[1]),candidate_scores_higher=bool(values[1]>values[0])))
-        dump(b/'r3-likelihood-diagnostic.json',dict(scope='post-seal evaluation only; never changes predictions/thresholds',rows=diagnostics,
+        diagnostic=dict(scope='post-seal evaluation only; never changes predictions/thresholds',rows=diagnostics,
             final_xy_bias_mean_m=np.mean(end_bias,axis=0).tolist(),final_xy_bias_std_m=np.std(end_bias,axis=0).tolist(),
             candidate_scores_higher_updates=sum(d['candidate_scores_higher'] for d in diagnostics),updates=len(diagnostics),
-            warning='A score comparison is not a proof of a global optimum or a complete causal explanation.'))
+            warning='A score comparison is not a proof of a global optimum or a complete causal explanation.')
+        dump(b/'r3-likelihood-diagnostic.json',diagnostic)
+        dump(b/'r3-likelihood-summary.json',{k:v for k,v in diagnostic.items() if k!='rows'})
     compressed=[]
     for p in sorted(b.rglob('*.json')):
         if p.stat().st_size<=65536:continue
