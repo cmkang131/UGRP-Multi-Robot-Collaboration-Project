@@ -22,6 +22,9 @@ ROOT=Path(__file__).resolve().parents[1]
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--enabled',action='store_true')
+    # AGENTS 2026-10-17: bf16 is the default for new ACT training; fp32 is an
+    # explicit replay/matched-fp32 comparison and never pools with bf16.
+    p.add_argument('--precision',choices=('bf16_autocast_v1','fp32'),default='bf16_autocast_v1')
     for name in ('dataset','protocol','out','prior-rejections','stack-values'):
         p.add_argument('--'+name,type=Path,required=True)
     a=p.parse_args()
@@ -40,6 +43,7 @@ def main():
     queue=dict(flow='train',source_sha=source,host=host,candidates=['R8','R100'],
         dataset_manifest_sha256=original_sha256(a.dataset/'manifest.json'),
         protocol_sha256=sha256(a.protocol),stack_values=read(a.stack_values),
+        training_precision=a.precision,
         rejection_table=str(a.out/'rejection_table.json'),wall_cap=None,max_parallel=2,
         dataset_provenance=read(a.stack_values))
     write(a.out/'queue.json',queue)
@@ -59,6 +63,7 @@ def main():
     try:
         for name in queue['candidates']:
             cmd=[sys.executable,'-u',str(ROOT/'scripts/act18_train.py'),'--enabled','--candidate',name,
+                '--precision',a.precision,
                 '--dataset',str(a.dataset),'--protocol',str(a.protocol),'--queue',str(a.out/'queue.json'),'--out',str(a.out/name)]
             log=(a.out/(name+'.log')).open('x')
             proc=subprocess.Popen(cmd,stdout=log,stderr=subprocess.STDOUT,cwd=ROOT,start_new_session=True,

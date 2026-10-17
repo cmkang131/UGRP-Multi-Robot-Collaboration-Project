@@ -24,6 +24,10 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--enabled', action='store_true')
     p.add_argument('--candidate', choices=tuple(CANDIDATES), required=True)
+    # AGENTS 2026-10-17 user decision: new ACT training runs bf16 by default after
+    # the gcp5 paired probe (2000 steps/arm, 1.10x, 0 NaN). fp32 stays selectable
+    # only for replay/matched-fp32 comparison; bf16 and fp32 results never pool.
+    p.add_argument('--precision', choices=('bf16_autocast_v1','fp32'), default='bf16_autocast_v1')
     for name in ('dataset','protocol','out','queue'):
         p.add_argument('--'+name, type=Path, required=True)
     a = p.parse_args()
@@ -37,6 +41,9 @@ def main():
             or protocol['steps']!=100000 or protocol['batch_size']!=8
             or a.candidate not in queue['candidates']):
         raise ValueError('fixed registered matched queue required')
+    # Strict: a queue without the precision receipt must not silently run bf16.
+    if queue.get('training_precision')!=a.precision:
+        raise ValueError('queue training_precision receipt and --precision must match')
     data = ReferenceDataset(a.dataset, 'train', chunk=CANDIDATES[a.candidate])
     if (set(data.manifest['eligible_train_seeds'])!=set(protocol['train_seeds'])
             or original_sha256(a.dataset/'manifest.json')!=queue['dataset_manifest_sha256']):
@@ -72,6 +79,9 @@ def main():
         lerobot_act_sha256=LEROBOT_ACT_SHA256,act_library_source_sha=ACT_SHA,
         done_loss='balanced_bce_v1',image_mode='current_full_v1',sampling='uniform_episode_v1',
         train_inference_transform_identical=True,gradient_checkpointing=False,
+        training_precision=a.precision,
+        training_precision_scope=('fp32 weights/optimizer/grad clip; forward+loss bf16 autocast'
+                                  if a.precision=='bf16_autocast_v1' else 'fp32 end-to-end'),
         static_map_use='none',wall_cap=None,optimizer_recipe='LeRobot AdamW defaults; no implicit resume')
     report=dict(**config,status='running',complete=False,steps_completed=0,
         started_utc=datetime.now(timezone.utc).isoformat(),TRAIN_rows=len(data),
@@ -93,7 +103,10 @@ def main():
                 batch={k:v.to('cuda') for k,v in torch.utils.data.default_collate([data[i] for i in ids]).items()}
                 policy.train()
                 optimizer.zero_grad(set_to_none=True)
-                loss,metrics=policy_loss(policy,batch,mode='balanced_bce_v1',stats=data.stats,priors=priors)
+                # Probe-verified scope: only forward/loss autocast; weights,
+                # optimizer state and grad clip stay fp32.
+                with torch.autocast('cuda',dtype=torch.bfloat16,enabled=a.precision=='bf16_autocast_v1'):
+                    loss,metrics=policy_loss(policy,batch,mode='balanced_bce_v1',stats=data.stats,priors=priors)
                 if not torch.isfinite(loss):
                     raise ValueError('nonfinite loss')
                 loss.backward()
