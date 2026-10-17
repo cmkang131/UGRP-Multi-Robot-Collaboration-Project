@@ -114,8 +114,8 @@ class CoTrainingDataset:
         # fit_stats only normalizes CONTINUOUS indices. Reproduce that exactly.
         from act17_data import library
         library()
-        import harness.grasp_act_contract as contract
-        continuous = np.asarray(contract.CONTINUOUS, np.int64)
+        from harness.grasp_act_data import CONTINUOUS
+        continuous = np.asarray(CONTINUOUS, np.int64)
         state_mean = np.zeros(state.shape[1], np.float64)
         state_std = np.ones(state.shape[1], np.float64)
         state_mean[continuous] = state[:, continuous].mean(axis=0)
@@ -240,8 +240,8 @@ class CoTrainingValidation:
         self.metadata = self.data.metadata
         from act17_data import library
         library()
-        import harness.grasp_act_contract as contract
-        self.continuous = np.asarray(contract.CONTINUOUS, np.int64)
+        from harness.grasp_act_data import CONTINUOUS
+        self.continuous = np.asarray(CONTINUOUS, np.int64)
         self.state_mean = np.asarray(stats['state_mean'], np.float32)
         self.state_std = np.asarray(stats['state_std'], np.float32)
         self.action_mean = np.asarray(stats['action_mean'], np.float32)
