@@ -1,7 +1,7 @@
 {
   "schema": "ugrp.visgoal_run_queue.v1",
   "flow": "self_map",
-  "source_sha": "f6cf61c23e8b4aef457c7fc3c0b70e0fd25cfc18",
+  "source_sha": "a2e6f2ea27e8c16a060cae1e5d8d19913700ac1f",
   "branch": "claude/visgoal",
   "task": "visgoal",
   "goal": "zone B blue paint, own RGB only",
@@ -75,9 +75,10 @@
     "experiments/2026-10-17-visgoal/vendor/warp_act_core.py": "c7ba4bd91113796b7bd958afdee69e510bb45c911a499c57d3973aaa64d5adc5",
     "experiments/2026-10-17-visgoal/vendor/warp_act_scene.py": "3d9407cfbd25e9c783296303793aafa657283a8852e9884996e4c2334adcbd59",
     "experiments/2026-10-17-visgoal/vendor/warp_native_contact.py": "a5c8d370755034b9f9615f66a94b87883327b7d7ecc4e13082eac2c2d4751c6a",
-    "scripts/visgoal_probe.py": "66c64c977622ef7b94ffbef6d67e8c166a64727f17c81ac5e30f066e25f881a1",
-    "sim/visual_goal_search.py": "229ce4346d5e0d40e66442b2d35c60ced18158e67b3d3671a668343c5caf5e63",
-    "tests/test_visual_goal_search.py": "e60abbae05fa1c19f84e656f713b34aa0d5b0ae4209a7a8e7c0b2c256b7c50d5"
+    "scripts/visgoal_probe.py": "9132c0438603a4d8bca77550f6cd66edda8223924d96f4fe8b6b0f6653b6e514",
+    "sim/visual_goal_search.py": "b8597bd33e5d1daaeb5e50bdfe686586e11ad44d763a606c43bd3f1447d9bc79",
+    "tests/test_visual_goal_search.py": "fb65f98facf6d67e986150c3cc3dfa57166f9edee25bd2b4002b25668232e3a4",
+    "experiments/2026-10-17-visgoal/calibration/paint_saturation.json": "394b538da0a7d024417689a9eef11bbaa6faa4d75bbb0ea74dcd0fd7717126b6"
   },
   "rendered_host": "ugrp-act-l4-gcp3",
   "renderer_source": "/home/ugrp/ugrp-sim/src/16a946ff3",
@@ -88,8 +89,8 @@
   "preflight": false,
   "sim_cap_s": 120.0,
   "output": "/home/ugrp/ugrp-sim/runs/visgoal-gate-r1",
-  "rejection_table": "/home/ugrp/ugrp-sim/runs/visgoal-preflight-r1/rejection_table.json",
-  "prior_funnel_note": "produced by the 2-episode preflight on the same host and source pin",
+  "rejection_table": "/home/ugrp/ugrp-sim/runs/visgoal-preflight-r2/rejection_table.json",
+  "prior_funnel_note": "produced by the 2-episode preflight (west e00 + zone-visible east e13) on the same host and source pin",
   "episode_count": 16,
   "legacy_source": "/home/ugrp/ugrp-sim/src/warp8f-selfmap-0ace43f25"
 }
