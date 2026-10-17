@@ -304,6 +304,7 @@ raise SystemExit(3 if a.fail else 0)
             "zone-pair-dev": ["--prereg", str(PROJECT / "experiments/2026-09-27-zone-pair-dev/prereg_v2_DRAFT.json"), "--run-id", "dev03"],
             "zone-pair-bootstrap-probe": ["--seeds", "911", "--policy", "b-boot"],
             "masterpi-v3-static-audit": [],
+            "zone-target-checks": ["--group", "t13a", "--condition", "no_comm"],
             "zone-final-environment-check": ["--check", "p01", "--expected-source-sha", "0" * 40],
             "zone-final-environment-floor-light-check": ["--check", "p01", "--expected-source-sha", "0" * 40],
             "zone-final-pair-v3": ["--check", "calibration-loaded", "--expected-source-sha", "0" * 40],
