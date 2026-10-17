@@ -105,8 +105,9 @@
 
 - GO(ledger `ready→pick`)가 있는 로봇 **70/80**; 없는 10은 모두 실패 6 runs 소속. tail window 이전 GO 0.
 - witness 승인 후 GO **2/70**: world 14 blue(witness 36.1 ≤ GO 38.3), world 28 teal(31.3 ≤ 33.4).
-- GO 시점 결정: `BEAM_NOT_VISIBLE_OR_UNBOUNDED` 55/70, `FIT_UNCERTAIN` 15/70, 정렬 0/70. end band 검출은 **70/70 null**. grip x 오차(관측 x − station_radius 0.2032) 중앙 **-0.0667 m**(최소 -0.0817, 최대 -0.0235). 정렬 프레임 8/2478, 꼬리-원장 결합 실패 16(프레임 간격 >0.05 s 또는 GO 없음).
-- 판정: **이 replay로 witness를 평가할 수 없다(out of domain).** witness `_evaluate`의 x 기준은 `station_grasp_convention('masterpi_v3')['station_radius_m']=0.2032 m`인데, 이 교사 run의 ready 자세 grip x는 0.1215–0.1797 m로 기준보다 2.4–8.2 cm 안쪽이다. 또한 GO 프레임의 색 밴드 검출이 전부 null인데 MJWarp render의 partial-alpha/C 대비 차이가 알려져 있어 C-profile 색 assay 결과를 전이할 수 없다. 따라서 2/70은 witness의 성능 수치가 아니며, **on-domain 검증(C-profile 학생 기록 또는 station 반경에 선 교사 replay)은 아직 없다.** toggle은 default off로 두고 코드/기본값을 바꾸지 않았다.
+- GO 시점 결정: `BEAM_NOT_VISIBLE_OR_UNBOUNDED` 55/70, `FIT_UNCERTAIN` 15/70, 정렬 0/70. grip x 오차(관측 x − station_radius 0.2032) 중앙 **-0.0667 m**(최소 -0.0817, 최대 -0.0235). 정렬 프레임 8/2478, 꼬리-원장 결합 실패 16(프레임 간격 >0.05 s 또는 GO 없음).
+- **정정(2026-10-18, 독립검증):** 이전 기록의 "end band 검출 70/70 null"은 **색 밴드 검출 실패의 근거로 쓸 수 없다.** GO 사유가 55/70 `BEAM_NOT_VISIBLE_OR_UNBOUNDED`, 15/70 `FIT_UNCERTAIN`이고 `FIT_UNCERTAIN`은 band 계산 **전에** 반환되므로 band null은 **선행 관문 탈락의 구조적 결과**다. band 검사를 통과한 aligned 프레임은 8/2478 존재한다. MJWarp render partial-alpha/C 대비 차이는 별개의 미확인 사항이며 이 null의 근거가 아니다.
+- 판정: **이 replay로 witness를 평가할 수 없다(out of domain).** witness `_evaluate`의 x 기준은 `station_grasp_convention('masterpi_v3')['station_radius_m']=0.2032 m`인데, 이 교사 run의 ready 자세 grip x는 0.1215–0.1797 m로 기준보다 2.4–8.2 cm 안쪽이다. 판정 근거는 이 x 기준 불일치, 정렬 0/70, witness 승인 2/70(결정함수 replay)뿐이다. **검증 범위:** witness 2/70은 해시·동일 코드 대조까지만 확인했고 **재실행으로 검증되지 않았다**(기록 시점 gcp6 r3 6-world 실행 중). 따라서 2/70은 witness의 성능 수치가 아니며, **on-domain 검증(C-profile 학생 기록 또는 station 반경에 선 교사 replay)은 아직 없다.** toggle은 default off로 두고 코드/기본값을 바꾸지 않았다.
 
 ### 5.6 관측한 실패 프레임 (원인 주장 아님)
 
@@ -132,7 +133,7 @@
 - 교사 성공은 학생 성공이 아니다. 훈련 RGB 기록·ACT 학습·학생 평가는 하지 않았다(사용자 지시 범위).
 - 6 실패 중 4 runs(world 6·10·20·37의 상대 로봇 포함)는 clearance 행이 없어 `blocked_object=not_observed`, `min_gap_m=null`이다. world 15·27만 accepted path 간격이 있다.
 - safety cap 2 runs는 호스트 wall-clock 행정 상한이며 SIM 시간 상한과 구분해 `cap_end`로 표시했다.
-- witness 점검은 out-of-domain replay다(5.5절). C-profile 학생 기록에서의 on-domain 재검증 전까지 witness의 작동/불작동을 주장하지 않는다.
+- witness 점검은 out-of-domain replay다(5.5절). band null 70/70은 선행 관문 탈락의 구조적 결과이지 색 밴드 검출 실패 근거가 아니다(정정). witness 승인 2/70은 해시·동일 코드 대조까지만 확인했고 재실행은 미검증이다. C-profile 학생 기록에서의 on-domain 재검증 전까지 witness의 작동/불작동을 주장하지 않는다.
 - 층별 `planned_runs/actual_runs=4` 라벨은 r1-only다. 실제 노출은 8 runs/8 starts다.
 - MJWarp와 C 결과를 합산하지 않는다. C 대비 물리·렌더 동등성, 청구 비용, 실기 전이는 미확인이다.
 - 이번 gate FAIL에 대한 원인 진단·수정 후보·재실행은 하지 않았다. 다음 단계는 6 실패 run의 search23/frontier 로그 분포를 먼저 재계수해 가장 큰 원인을 정하고, 그 뒤 후보를 정하는 것이다.
