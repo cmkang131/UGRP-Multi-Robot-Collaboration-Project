@@ -13,27 +13,36 @@ from act16w_runtime import require_gcp2, frozen_source, sha256, LEROBOT_ACT_SHA2
 from act17_data import library, read
 from act17_compact_records import original_sha256
 from act17_policy import observation_batch
-from act18_policy import (CANDIDATES, TUNE_CANDIDATE, ReferenceDataset,
-                          WeightedReferenceDataset, make_policy, save_actor, Actor)
+from act18_policy import (CANDIDATES, TUNE_CANDIDATE, PILOT_CANDIDATES, ReferenceDataset,
+                          WeightedReferenceDataset, done_positive_indices, make_policy, save_actor, Actor)
 from act18_diagnose import write
 
 B = Path('/home/ugrp/ugrp-sim')
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def validate_probe_options(candidate, init_checkpoint, steps, post_close_weight, pre_close_weight):
-    """TUNE-only default-off probe options; never silently mixes with R8/R100."""
-    supplied = [value is not None for value in (init_checkpoint, steps, post_close_weight, pre_close_weight)]
-    if candidate == TUNE_CANDIDATE:
-        if init_checkpoint is None or steps is None:
-            raise ValueError('act18-tune requires --init-checkpoint and --steps')
+def validate_probe_options(candidate, init_checkpoint, steps, post_close_weight, pre_close_weight,
+                           done_positive_batch_fraction=None):
+    """Default-off pilot options; never silently mixes with the R8/R100 reference pair."""
+    supplied = [value is not None for value in
+                (init_checkpoint, steps, post_close_weight, pre_close_weight, done_positive_batch_fraction)]
+    if candidate in PILOT_CANDIDATES:
+        if steps is None:
+            raise ValueError(candidate+' requires --steps')
+        if candidate in (TUNE_CANDIDATE, 'act18-doneb1') and init_checkpoint is None:
+            raise ValueError(candidate+' requires --init-checkpoint')
     elif any(supplied):
-        raise ValueError('tune options require --candidate '+TUNE_CANDIDATE)
+        raise ValueError('pilot options require a registered pilot candidate '+str(PILOT_CANDIDATES))
     if steps is not None and not 1 <= steps <= 20000:
         raise ValueError('probe --steps must be within [1, 20000]')
     for value, label in ((post_close_weight, '--post-close-weight'), (pre_close_weight, '--pre-close-weight')):
         if value is not None and not 1 <= value <= 20:
             raise ValueError(label+' must be within [1, 20]')
+    if done_positive_batch_fraction is not None:
+        if candidate not in PILOT_CANDIDATES:
+            raise ValueError('--done-positive-batch-fraction requires a pilot candidate')
+        if not 0 <= done_positive_batch_fraction <= 1:
+            raise ValueError('--done-positive-batch-fraction must be within [0, 1]')
     return steps
 
 
@@ -74,6 +83,11 @@ def main():
     # preceding hover/descent/close tail. Both default OFF.
     p.add_argument('--post-close-weight', type=float)
     p.add_argument('--pre-close-weight', type=float)
+    # B1 pre-registration (2026-10-18): done-only supervision probe. Fraction of
+    # batches that force one positive completion row plus uniform rows; the
+    # existing balanced BCE weights (0.5/prior vs 0.5/(1-prior) = 361:1) stay
+    # the harness implementation, so action losses are unchanged.
+    p.add_argument('--done-positive-batch-fraction', type=float)
     for name in ('dataset','protocol','out','queue'):
         p.add_argument('--'+name, type=Path, required=True)
     a = p.parse_args()
@@ -91,7 +105,9 @@ def main():
     if queue.get('training_precision')!=a.precision:
         raise ValueError('queue training_precision receipt and --precision must match')
     total_steps = validate_probe_options(a.candidate, a.init_checkpoint, a.steps,
-                                         a.post_close_weight, a.pre_close_weight) or protocol['steps']
+                                         a.post_close_weight, a.pre_close_weight,
+                                         a.done_positive_batch_fraction) or protocol['steps']
+    done_positive_fraction = a.done_positive_batch_fraction
     weighted = a.post_close_weight is not None or a.pre_close_weight is not None
     sampling = 'weighted_post_close_v1' if weighted else 'uniform_episode_v1'
     if weighted:
@@ -100,6 +116,7 @@ def main():
                                         pre_close_weight=a.pre_close_weight)
     else:
         data = ReferenceDataset(a.dataset, 'train', chunk=CANDIDATES[a.candidate])
+    positive_indices = done_positive_indices(data) if done_positive_fraction is not None else None
     if (set(data.manifest['eligible_train_seeds'])!=set(protocol['train_seeds'])
             or original_sha256(a.dataset/'manifest.json')!=queue['dataset_manifest_sha256']):
         raise ValueError('same complete v7 TRAIN dataset required')
@@ -153,6 +170,7 @@ def main():
             pre_close_phases=['grasp:'+phase for phase in ('hover','descent','close')],
             other_rows_weight=1.0,
             packaging_eligible=False,
+            done_positive_batch_fraction=done_positive_fraction,
             note='short default-off diagnostic probe; never packaged or pooled with R8/R100'))
     report=dict(**config,status='running',complete=False,steps_completed=0,
         started_utc=datetime.now(timezone.utc).isoformat(),TRAIN_rows=len(data),
@@ -172,6 +190,10 @@ def main():
                 if stop['requested']:
                     raise InterruptedError('explicit supervisor stop')
                 ids=data.sample(generator,8,sampling)
+                if positive_indices is not None and torch.rand(1,generator=generator).item() < done_positive_fraction:
+                    ids[0]=int(positive_indices[int(torch.randint(len(positive_indices),(1,),generator=generator))])
+                    report['done_positive_batches']=report.get('done_positive_batches',0)+1
+                report['batches_seen']=report.get('batches_seen',0)+1
                 batch={k:v.to('cuda') for k,v in torch.utils.data.default_collate([data[i] for i in ids]).items()}
                 policy.train()
                 optimizer.zero_grad(set_to_none=True)
@@ -195,7 +217,7 @@ def main():
                 # A TUNE probe only saves its final short-step checkpoint.
                 if step in save_steps:
                     folder=a.out/('step-'+str(step))
-                    completed = step == total_steps if a.init_checkpoint is not None else step == protocol['steps']
+                    completed = step == total_steps
                     save_actor(policy,folder,data.stats,dict(**config,step=step,training_complete=completed))
                     restored=Actor.load(folder,device='cuda')
                     inputs={k:torch.from_numpy(v.copy()).unsqueeze(0).to('cuda') for k,v in own.items()}

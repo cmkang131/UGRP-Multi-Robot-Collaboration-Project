@@ -8,7 +8,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'scripts'))
 from act16w_runtime import sha256
 from act17_compact_records import original_sha256
-from act18_policy import align_close_row_weights, registered_tune_probe, weighted_sampler_mass
+from act18_policy import (align_close_row_weights, done_positive_indices,
+                          registered_pilot_checkpoint, weighted_sampler_mass)
 from act18_train import init_checkpoint_receipt, validate_probe_options
 
 
@@ -56,14 +57,17 @@ def test_init_checkpoint_rejects_tamper_incomplete_or_wrong_chunk(tmp_path):
 def test_probe_options_require_tune_candidate_and_bounds():
     assert validate_probe_options('act18-tune', Path('ckpt'), 2000, 4.0, 2.0) == 2000
     assert validate_probe_options('act18-tune', Path('ckpt'), 2000, None, None) == 2000
-    with pytest.raises(ValueError, match='requires --init-checkpoint and --steps'):
+    assert validate_probe_options('act18-doneb1', Path('ckpt'), 5000, None, None, 0.5) == 5000
+    with pytest.raises(ValueError, match='requires --init-checkpoint'):
         validate_probe_options('act18-tune', None, 2000, 4.0, 2.0)
-    with pytest.raises(ValueError, match='requires --init-checkpoint and --steps'):
+    with pytest.raises(ValueError, match='requires --steps'):
         validate_probe_options('act18-tune', Path('ckpt'), None, None, None)
-    with pytest.raises(ValueError, match='tune options require'):
+    with pytest.raises(ValueError, match='pilot options require'):
         validate_probe_options('R8', Path('ckpt'), 2000, None, None)
-    with pytest.raises(ValueError, match='tune options require'):
+    with pytest.raises(ValueError, match='pilot options require'):
         validate_probe_options('R100', None, None, 4.0, None)
+    with pytest.raises(ValueError, match=r'within \[0, 1\]'):
+        validate_probe_options('act18-doneb1', Path('ckpt'), 5000, None, None, 1.5)
     with pytest.raises(ValueError, match=r'\[1, 20000\]'):
         validate_probe_options('act18-tune', Path('ckpt'), 0, None, None)
     with pytest.raises(ValueError, match=r'\[1, 20000\]'):
@@ -119,13 +123,30 @@ def _probe_provenance(**overrides):
 
 
 def test_only_the_registered_short_probe_is_evaluable_but_never_packaged():
-    assert registered_tune_probe(_probe_provenance(), 'a' * 64) is True
+    assert registered_pilot_checkpoint(_probe_provenance(), 'a' * 64) is True
     # Any deviation falls back to the strict completed-100k requirement.
-    assert registered_tune_probe(_probe_provenance(step=100000), 'a' * 64) is False
-    assert registered_tune_probe(_probe_provenance(training_complete=False), 'a' * 64) is False
-    assert registered_tune_probe(_probe_provenance(protocol_sha256='c' * 64), 'a' * 64) is False
+    assert registered_pilot_checkpoint(_probe_provenance(step=100000), 'a' * 64) is False
+    assert registered_pilot_checkpoint(_probe_provenance(training_complete=False), 'a' * 64) is False
+    assert registered_pilot_checkpoint(_probe_provenance(protocol_sha256='c' * 64), 'a' * 64) is False
     packaging = _probe_provenance()
     packaging['probe']['packaging_eligible'] = True
-    assert registered_tune_probe(packaging, 'a' * 64) is False
+    assert registered_pilot_checkpoint(packaging, 'a' * 64) is False
     wrong_candidate = _probe_provenance(candidate='R8')
-    assert registered_tune_probe(wrong_candidate, 'a' * 64) is False
+    assert registered_pilot_checkpoint(wrong_candidate, 'a' * 64) is False
+
+
+def test_done_positive_indices_use_the_raw_completion_target():
+    class FakeDataset:
+        shards = [dict(action=__import__('numpy').asarray([[[0.0, 1.0]], [[0.0, 0.0]], [[0.0, 1.0]]]))]
+        index = [(0, 0), (0, 1), (0, 2)]
+    indices = done_positive_indices(FakeDataset())
+    assert indices.tolist() == [0, 2]
+
+
+def test_doneb1_probe_provenance_is_registered_for_evaluation_only():
+    provenance = _probe_provenance(candidate='act18-doneb1')
+    provenance['probe']['done_positive_batch_fraction'] = 0.5
+    assert registered_pilot_checkpoint(provenance, 'a' * 64) is True
+    scratch = _probe_provenance(candidate='act18-doneb1')
+    scratch['probe']['packaging_eligible'] = True
+    assert registered_pilot_checkpoint(scratch, 'a' * 64) is False

@@ -159,8 +159,8 @@ def main():
                 or provenance.get('protocol_sha256')!=sha256(protocol_path)):
             raise ValueError('complete registered100k reference model required')
         elif provenance.get('step')!=100000:
-            from act18_policy import registered_tune_probe
-            if not registered_tune_probe(provenance,sha256(protocol_path)):
+            from act18_policy import registered_pilot_checkpoint
+            if not registered_pilot_checkpoint(provenance,sha256(protocol_path)):
                 raise ValueError('complete registered100k reference model required')
     class Client(originals[2]):
         def reset(self,plans,indices=None):

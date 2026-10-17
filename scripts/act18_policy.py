@@ -20,8 +20,12 @@ from act17_policy import observation_batch
 # from the completed R8 100k checkpoint and optionally upweighting the
 # align..close demonstration segments. It is never a packaged comparison model
 # (adapter training_complete stays False because its step != protocol steps).
-CANDIDATES = {'R8': 8, 'R100': 100, 'act18-tune': 8}
+CANDIDATES = {'R8': 8, 'R100': 100, 'act18-tune': 8, 'act18-doneb1': 100}
 TUNE_CANDIDATE = 'act18-tune'
+# Registered short pilot checkpoints (never 100k reference models, never packaged):
+# 'act18-tune' = post-close weighted 2k probe on R8; 'act18-doneb1' = done-only
+# 5k probe on R100 (pre-registered 2026-10-18 for Lead-approved B1).
+PILOT_CANDIDATES = ('act18-tune', 'act18-doneb1')
 # Segment table frozen before the probe run (Lead 2026-10-18 instruction):
 # the post-close phases are where the student halts, pre-close phases are the
 # immediately preceding approach/alignment tail. Phase labels are the recorded
@@ -112,7 +116,7 @@ class ReferenceDataset(Dataset):
             offset += n
 
 
-def registered_tune_probe(provenance, protocol_sha256):
+def registered_pilot_checkpoint(provenance, protocol_sha256):
     """True only for the default-off short TUNE probe checkpoint (not a 100k model).
 
     The probe completes its own short schedule, so training_complete is True for
@@ -123,13 +127,27 @@ def registered_tune_probe(provenance, protocol_sha256):
     probe = provenance.get('probe') or {}
     step = provenance.get('step')
     receipt = probe.get('init_checkpoint') or {}
-    return bool(provenance.get('candidate') == TUNE_CANDIDATE
+    return bool(provenance.get('candidate') in PILOT_CANDIDATES
                 and probe.get('kind') == 'init_aligned_finetune_v1'
                 and provenance.get('training_complete') is True
                 and probe.get('packaging_eligible') is False
                 and type(step) is int and step == probe.get('steps_override') and 1 <= step <= 20000
                 and isinstance(receipt.get('model_sha256'), str) and len(receipt['model_sha256']) == 64
                 and provenance.get('protocol_sha256') == protocol_sha256)
+
+
+def done_positive_indices(data):
+    """Global dataset indices whose first-step completion target is 1 (raw label)."""
+    indices = []
+    for index, (shard, row) in enumerate(data.index):
+        value = float(data.shards[shard]['action'][row, 0, -1])
+        if value not in (0.0, 1.0):
+            raise ValueError('binary TRAIN completion target required')
+        if value == 1.0:
+            indices.append(index)
+    if not indices:
+        raise ValueError('at least one positive completion row required')
+    return np.asarray(indices, dtype=np.int64)
 
 
 class WeightedReferenceDataset(ReferenceDataset):
