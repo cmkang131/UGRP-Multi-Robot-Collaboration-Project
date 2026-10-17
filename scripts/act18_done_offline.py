@@ -147,7 +147,7 @@ def train_gru(train_windows, train_mask, train_y, seed, epochs, lr, hidden, pos_
         model.eval(); head.eval(); result = []
         with torch.inference_mode():
             for start in range(0, len(windows_), 1024):
-                block = torch.from_numpy(windows_[start:start+2048])
+                block = torch.from_numpy(windows_[start:start+1024])
                 output, _ = model(block)
                 lengths = torch.from_numpy(mask_[start:start+1024]).sum(dim=1).clamp(min=1).long()
                 last = output[torch.arange(len(block)), lengths-1]
