@@ -1,0 +1,80 @@
+{
+ "schema": "ugrp.beamact5.r5_preregistration.v1",
+ "written_before_run_utc": "2026-10-17T21:12:00Z",
+ "author": "beamact5 worker (DSH)",
+ "approved_by": "Lead (자율 진행: 38/40까지 r4/r5 반복 지시)",
+ "scope": "r5a = beamact5_r4c (far-first conditional circles + reobserve boundary fix + 6/10/20 fixes) plus search26_wide_stance (separate 1-degree certified family, default off). 5-world known-failure validation (6,10,20,27,37) first; conditions are not pooled with r4a/r4b/r4c/r1/r2/r3.",
+ "r4_summary": {
+  "r4a": {
+   "6": "PASS 54.7",
+   "10": "FAIL cap_end 60",
+   "20": "PASS 55.2",
+   "27": "FAIL 26.4"
+  },
+  "r4b": {
+   "6": "PASS 54.7",
+   "10": "FAIL cap_end 60",
+   "20": "PASS 55.2",
+   "27": "FAIL 28.4 (reobserve converted, refresh did not stop staleness)"
+  },
+  "r4c": {
+   "6": "PASS 54.7",
+   "10": "PASS 49.5",
+   "20": "PASS 55.2",
+   "27": "FAIL 25.4",
+   "cap_end": 0
+  }
+ },
+ "decision_basis": "case27 timeline (r4b): red_1 is refreshed only during short glimpses/encounters (15.2, 20.7, 26.5 s) and the sampled +/-15-degree family best gap 46.7 mm is below the stale margin 46.3-52.1 mm, so 92/92 stances are blocked whenever the cargo is stale; after 2/2 obstacle encounters and a 3 s blocked window the teacher hands off. A wider-angle family may contain stances with larger red_1 clearance that stay feasible while stale.",
+ "stack": {
+  "root": "4a92a4ac9e18fc1e66fa87fd47ea13eaff1c4681",
+  "adapter": "4f896c15011dff1dc83aa62f684f172216b827ef",
+  "teacher": "67f177892388ae71db44811361891f80820ed182",
+  "cases_r5a_sha256": "bdf2aede100e185565fda286cb1f557f822907110b3460ba92c5d4a247ae02d8",
+  "plan_sha256": "f1a50e8c833c1da9113bdf8cff3844913380e3c821b15c072c0a23c0f54f5148",
+  "rejection_table": "/home/ugrp/ugrp-sim/runs/beamact5/gate-40-r5/rejection_table.json"
+ },
+ "profile": {
+  "search23_rects": "search23_batched_rects_v1",
+  "search26_circles": "off",
+  "search26_circles_farfirst": "search26_circles_farfirst_v1",
+  "search26_static_peer": "search26_static_peer_stance_v1",
+  "search26_peer_memory": "search26_peer_memory_v1",
+  "search26_reobserve": "search26_reobserve_views_v1",
+  "search26_wide_stance": "search26_wide_stance_v1"
+ },
+ "runs": {
+  "r5a_5world": {
+   "indices": [
+    6,
+    10,
+    20,
+    27,
+    37
+   ],
+   "out": "/home/ugrp/ugrp-sim/runs/beamact5/validation-r5a-5",
+   "cap_s": 60
+  },
+  "gate_out": "/home/ugrp/ugrp-sim/runs/beamact5/gate39-r5a-run"
+ },
+ "expectations": {
+  "6": "PASS",
+  "10": "PASS (r4c 49.5)",
+  "20": "PASS",
+  "27": "PASS if a wide-angle stance clears the stale red_1 margin",
+  "37": "structural expected FAIL in r1/r2 labelling; wide_stance is the only candidate that samples angles beyond +/-15 deg, so a PASS would be reported as new evidence (not pooled)"
+ },
+ "gate_arithmetic": {
+  "target": "38/40 = 6,10,20,27 all PASS with no regressions (15 expected FAIL, 37 expected FAIL)",
+  "if_27_fails": "37/40 FAIL",
+  "if_37_also_passes_and_27_passes": "39/40 (report as new wide_stance evidence, not pooled with r1/r2 labels)"
+ },
+ "fallback": "if 27 still fails, r5b adds a default-off bounded extra obstacle-refresh rule (evidence: 2/2 encounters used by SIM 15.2 s while blocked stretch resumes at 27.6 s; a third refresher would be the next attempt) before the gate.",
+ "not_claimed": [
+  "teacher success is not student success",
+  "no student recording/training",
+  "wide_stance is a separate never-pooled family",
+  "world15 excluded/unverified",
+  "no margin/cap constant change"
+ ]
+}
