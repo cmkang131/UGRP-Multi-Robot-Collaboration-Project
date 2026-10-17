@@ -1,0 +1,46 @@
+{
+  "run": "gcp2:/home/ugrp/ugrp-sim/ops-reviews/warpfit/raw/R1-Cref/box-tape-baseline_noslip10",
+  "scope": "success reference; evaluator reconstruction on gcp2, no Mac app",
+  "full_2hz_range": [
+    0,
+    13.5
+  ],
+  "tail_10hz_range": [
+    3.8,
+    13.7
+  ],
+  "frames_reviewed": {
+    "full2hz": 28,
+    "tail10hz": 100
+  },
+  "timeline": [
+    {
+      "range": [
+        0,
+        1.1
+      ],
+      "observed": "fingers close around cyan load; own image dominated by flat blue surface with cyan strip at lower edge"
+    },
+    {
+      "range": [
+        1.2,
+        2.7
+      ],
+      "observed": "arm/load rise and stop in evaluator overview; no drop visible"
+    },
+    {
+      "range": [
+        2.7,
+        13.7
+      ],
+      "observed": "load remains at jaws, no visible oscillation or escape at10Hz; r2 absent from reduced single-robot model"
+    }
+  ],
+  "limits": [
+    "overview target is small; micron-scale slip cannot be resolved visually",
+    "own camera source is marked C reconstruction; this is not a MJWarp renderer or RGB-controller validation",
+    "10Hz dense sequence reveals no extra vibration relative to2Hz in this reference"
+  ],
+  "video_bytes": 30160,
+  "ffprobe_verified": true
+}

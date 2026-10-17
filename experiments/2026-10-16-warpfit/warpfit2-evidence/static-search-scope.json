@@ -1,0 +1,110 @@
+{
+  "search": "rg -l mujoco_warp|simalt|warp_act harness sim scripts --glob *.py",
+  "files": [
+    {
+      "file": "scripts/simalt_pilot.py",
+      "sha256": "cfef9fc9131bd4d15330e5cd42830288aa545e3945ae610e750bd43b083d673b"
+    },
+    {
+      "file": "scripts/simalt_collision_compat.py",
+      "sha256": "8fc5a9eb29980445fabaf6801253fb0b8d4fb8c81af63156605cc35a819c3ad5"
+    },
+    {
+      "file": "scripts/simalt_compiled_import_audit.py",
+      "sha256": "744aff1b15c6590bff915377eafd6540d47b50e47806651f5a56cefe92b26d01"
+    },
+    {
+      "file": "scripts/simalt_physics_compare.py",
+      "sha256": "6ef918f9c1576713bd9c6a6b9752fd05f7b9e28877fb79eecf8ccb5245c4a593"
+    },
+    {
+      "file": "sim/warp_native_runtime.py",
+      "sha256": "65d98e07d52bf5d4e7b8e81245952e35700f6c1c555fd650e04d042fa0750078"
+    },
+    {
+      "file": "scripts/simalt_select_snapshots.py",
+      "sha256": "3d784db1b9402bf947d87d1189355fcf945afff884976f047187d534ab25b1dc"
+    },
+    {
+      "file": "scripts/run_warp_flow_teacher.py",
+      "sha256": "d34d45101f8d045724c7717dd4a92e22b0291ae835fa124801d80df6f98bd7bd"
+    },
+    {
+      "file": "scripts/run_warp_act_teacher.py",
+      "sha256": "4fef456e04083ecf452fd22b994a20ebfcf91fad6ab05c0fe4cab45503444712"
+    },
+    {
+      "file": "scripts/simalt_batch.py",
+      "sha256": "314deb8d5dbca6518aa06957650f31344dbce179ff75371d21146294858bda36"
+    },
+    {
+      "file": "scripts/simalt_mjwarp.py",
+      "sha256": "ee6eb9cab27f42acbb6485ea7aec99611a82de3d6bf885cd38ac54a7230bd0ba"
+    },
+    {
+      "file": "scripts/simalt_step_analysis.py",
+      "sha256": "77f050404a7f34127d6b54f3d0c7aa6ed801f189fc42fe73cd7941cf959fee40"
+    },
+    {
+      "file": "scripts/simalt_version_analysis.py",
+      "sha256": "15370c392b8da9a4b76e95a9029f773c2d591e183af0176edb6f5c35cde32dd9"
+    },
+    {
+      "file": "scripts/simalt_full_model_audit.py",
+      "sha256": "b5044c011b4653560a6ea3e5f0d2ba9b8daf86897808b437b2c564e094ba8f3b"
+    },
+    {
+      "file": "scripts/simalt_review_physics.py",
+      "sha256": "f749e39db0ae067b324355f0bf68972eb39bfe3df32c11c15254d138ca05ce50"
+    },
+    {
+      "file": "scripts/simalt_numeric_audit.py",
+      "sha256": "3c65c385d6a0f1ed3532d967b53d9c856249a83b2d67aa1bfb2dfadafae71d45"
+    },
+    {
+      "file": "scripts/simalt_host.py",
+      "sha256": "7d9dd1e1bfe177a9fe3316feb3c0bc7a1a5a8ae49cfea40494400d018ce1e78d"
+    },
+    {
+      "file": "scripts/simalt_review_trace.py",
+      "sha256": "65966d4a982911fdf12e1d7dacaef7c6e0f1bb4b9af6758ac068199d76fa4d55"
+    },
+    {
+      "file": "scripts/warpfit_prepare.py",
+      "sha256": "99c505da9315b5f58d10eebcbd56292bb3ac3a3054496eabe4a9e349268bae97"
+    },
+    {
+      "file": "scripts/simalt_lease_audit.py",
+      "sha256": "f8da7cfd1c8d15f5e46702fadce29ac717c6bb6b2ab34dafbc90bf4dbeec846d"
+    },
+    {
+      "file": "scripts/simalt_analyze_physics.py",
+      "sha256": "b50b840436bcb44cd870eaf1aaf28ce23c373a9a10b9a6585f9b765918b7e187"
+    },
+    {
+      "file": "scripts/warp_act_backend.py",
+      "sha256": "e22979a89da7cf6a2afb176a78bfa03cbf2fbde8b82c3232ace07a5cc00b5749"
+    },
+    {
+      "file": "scripts/simalt_compiled_compat.py",
+      "sha256": "5f62059714716285eae390271da6615c4a87162ade29a2f0b012249f086bc355"
+    },
+    {
+      "file": "scripts/warpfit.py",
+      "sha256": "c5453e5b4ad01bdd4212080621b98bc29ee5e56e89e29ffdb8d29e64af528730"
+    },
+    {
+      "file": "scripts/simalt_step_probe.py",
+      "sha256": "857e4deb72dbcd8dc012ad5a5d9f58a688c29fd19a084638b1ebd07ec0776d0d"
+    }
+  ],
+  "additional_remote_ref": "origin/codex/warp6",
+  "scope": "current worktree scripts + all warp references in harness/sim; active worker vendor paths remain owned elsewhere",
+  "baseline_context": "df5a1f86aad420f2fab2c10e3ee77cdb5ec11807",
+  "audit_worktree_source": "6a76b3735f79e7b2a35aa3757a6a356d56d7b92d",
+  "remote_refs": {
+    "origin/main": "c8dc1e6545124ed69a996618bd11df684d233969",
+    "origin/codex/warp6": "470f1caddc69373f7f4b016283f6c4cdc7ece9b2",
+    "origin/claude/warp-act": "6d680e375f4e4dd4bbdeb231acfd9f1f92688dba"
+  }
+}

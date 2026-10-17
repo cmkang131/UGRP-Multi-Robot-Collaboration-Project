@@ -1,0 +1,16 @@
+{
+  "command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_simulation_workflow_manager.py tests/test_warp_native_contact.py",
+  "passed": 27,
+  "failed": 0,
+  "wall_s": 4.5,
+  "scope": "non-physics profile boundaries, exact short-pulse recording times, workflow catalog, thirty-lift selection and C quantile self-consistency",
+  "prior_failure": {
+    "test": "catalog explicit-plan sample map",
+    "reason": "new workflow was missing from the existing test sample dictionary",
+    "resolved": true
+  },
+  "mac_physics": 0,
+  "mac_gui": 0,
+  "tested_sha": "7514029f96842e8d3b0582a363915004fc6b7d65",
+  "additional_regression": "cleared fixture directory without trailing slash routes to correct metadata"
+}

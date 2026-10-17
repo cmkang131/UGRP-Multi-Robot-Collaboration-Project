@@ -1,0 +1,40 @@
+{
+  "enabled": true,
+  "profiles": [
+    "baseline_noslip10",
+    "warp_native_contact_v1",
+    "warp_native_contact_v2",
+    "warp_native_fast_v1"
+  ],
+  "nworld": [
+    16,
+    64
+  ],
+  "round_limit": 3,
+  "rounds": [
+    "R1 import and 0.1 SIM second smoke for every profile/model",
+    "R2 N16 fixed command suite, C reference distribution",
+    "R3 N64 same fixed suite; no speculative retuning"
+  ],
+  "gcp": {
+    "account": "kcm5781kcm5781@gmail.com",
+    "project": "ugrp-sim-f-1016",
+    "instance": "ugrp-act-l4-gcp6"
+  },
+  "rejection_table": "/Users/changmin/projects/ugrp-wt/gcp6setup/experiments/2026-10-16-warpfit/rejection_table.json",
+  "raw_budget_gib": 3,
+  "mac_budget_mib": 150,
+  "control_feedback": 0,
+  "default_changes": 0,
+  "trial_scope": "N16 two16world batches32 trajectories; N64 one64world batch. Use first30 in fixed batch/world index order; same initial condition, not random-seed generalization.",
+  "acceptance": "derive slip p95 and clearance p5 from C3.12 fixed reference; never use arbitrary extra-mm allowance",
+  "drivecheck": "reuse PR564 exact setup intervention and three registered short pulses; preserve original N16 eighteen-pulse diagnostic separately",
+  "paired_batch_jobs": 36,
+  "box_batches": {
+    "N16": 2,
+    "N64": 1
+  },
+  "requested_box_trajectories": 30,
+  "box_hold": "30 temporal10Hz samples per trajectory over3s, distinct from30 lift attempts",
+  "primary_batch_jobs": 28
+}

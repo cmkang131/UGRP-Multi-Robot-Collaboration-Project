@@ -1,0 +1,62 @@
+{
+  "enabled": true,
+  "round": 2,
+  "nworld": 16,
+  "jobs": [
+    {
+      "kind": "box",
+      "case": "tape",
+      "repeat": 1,
+      "profile": "off"
+    },
+    {
+      "kind": "box",
+      "case": "tape",
+      "repeat": 1,
+      "profile": "warp_measured_capacity_v1"
+    },
+    {
+      "kind": "box",
+      "case": "tape",
+      "repeat": 2,
+      "profile": "off"
+    },
+    {
+      "kind": "box",
+      "case": "tape",
+      "repeat": 2,
+      "profile": "warp_measured_capacity_v1"
+    },
+    {
+      "kind": "beam",
+      "case": "tape",
+      "repeat": 1,
+      "profile": "off"
+    },
+    {
+      "kind": "beam",
+      "case": "tape",
+      "repeat": 1,
+      "profile": "warp_measured_capacity_v1"
+    },
+    {
+      "kind": "drive",
+      "case": "warm6",
+      "repeat": 1,
+      "profile": "off"
+    },
+    {
+      "kind": "drive",
+      "case": "warm6",
+      "repeat": 1,
+      "profile": "warp_measured_capacity_v1"
+    }
+  ],
+  "rejection_table": "/home/ugrp/ugrp-sim/runs/warpfit2/R1/funnel.json",
+  "fixed_contact_profile": "warp_native_contact_v1",
+  "source_sha": "4748ef1f0331675ac3849fed5ad9c391b51e6295",
+  "runtime_default": "off",
+  "round_limit": 3,
+  "limit_kind": "fixed issued tape ticks; no wall cap",
+  "models": 0
+}

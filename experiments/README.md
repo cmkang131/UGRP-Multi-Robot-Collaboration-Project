@@ -1,3 +1,5 @@
+- [2026-10-16 warpfit](2026-10-16-warpfit/README.md) — MJWarp 기본 off 접촉 후보3개, NoSlip10 짝 N16/N64; 원본·funnel·물리 GPU/step·파지/주행 표는 해당 기록.
+
 - [e2e1 입력·상태 계약](2026-10-11-e2e-one-beam/README.md): 기본 off 자기 payload·S3 세 입력 계약과 정적 fallback 차단, 새 빔 한 주문/B .80×1.40m 시나리오; 실제 E2E는 후속 단계.
 
 - [2026-10-16 plannerswap](2026-10-16-plannerswap/README.md) — 새 판단 공급자 CoreWeave fp4; 실제 3/3, 경보 0, E2E 첫 30 SIM초 점검 TODO.

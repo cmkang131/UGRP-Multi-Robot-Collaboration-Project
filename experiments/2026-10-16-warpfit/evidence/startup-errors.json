@@ -1,0 +1,55 @@
+{
+  "scope": "preparation only, before GPU comparison round1; all original logs retained",
+  "errors": [
+    {
+      "category": "runtime_import",
+      "reason": "EGL unavailable in unused C render context import",
+      "blocked_object": "EGL loader",
+      "minimum_gap_m": null,
+      "gap_status": "not_geometric",
+      "resolution": "MUJOCO_GL=disable; physics-only preparation"
+    },
+    {
+      "category": "fixture_asset_path",
+      "reason": "recorded absolute source path absent on gcp6",
+      "blocked_object": "public fuji_roller.stl path",
+      "minimum_gap_m": null,
+      "gap_status": "not_geometric",
+      "resolution": "rebase filename prefix to verified copied public assets; no geometry edit"
+    },
+    {
+      "category": "fixture_asset_path",
+      "reason": "from_xml_path resolves relative texture filenames under saved fixture directory",
+      "blocked_object": "public scene texture path",
+      "minimum_gap_m": null,
+      "gap_status": "not_geometric",
+      "resolution": "from_xml_string in recorded asset cwd; verify resumable export hashes"
+    }
+  ],
+  "git_preparation": {
+    "reference_clone": "existing gcp6 pool was shallow/sparse; --reference rejected",
+    "resolution": "direct alternates to the same object pool, only missing snapshot objects; no history copy or gc/prune"
+  },
+  "analysis_rendering": [
+    {
+      "category": "renderer_backend",
+      "reason": "gcp2 CPU host has OSMesa but no usable EGL entrypoint",
+      "blocked_object": "EGL loader",
+      "minimum_gap_m": null,
+      "gap_status": "not_geometric",
+      "resolution": "retry own review with MUJOCO_GL=osmesa, matching existing drivecheck headless path; no physics stepping"
+    }
+  ],
+  "analysis_postprocessing": [
+    {
+      "category": "fixture_route",
+      "reason": "clear fixture path without trailing slash routed to original drive metadata; KeyErrorclear3",
+      "resolution": "Path.name routing; regression27pass; finalsource751 contains820fix; no physics rerun"
+    },
+    {
+      "category": "metadata_float_equality",
+      "reason": "13.7SIM duration represented in binary floating point; bookkeeping exact-equality assertion",
+      "resolution": "validate completed full tape flag; preserve original attempts before reconciliation; no result data changed"
+    }
+  ]
+}

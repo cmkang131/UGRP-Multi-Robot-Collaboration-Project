@@ -1,0 +1,17 @@
+{
+  "eventTrigger": {
+    "eventType": "google.cloud.pubsub.topic.v1.messagePublished",
+    "pubsubTopic": "projects/ugrp-sim-f-1016/topics/budget-stop",
+    "retryPolicy": "RETRY_POLICY_DO_NOT_RETRY",
+    "serviceAccountEmail": "budget-stopper@ugrp-sim-f-1016.iam.gserviceaccount.com",
+    "trigger": "projects/ugrp-sim-f-1016/locations/us-central1/triggers/budget-stop-511627",
+    "triggerRegion": "us-central1"
+  },
+  "serviceConfig": {
+    "environmentVariables": {
+      "LOG_EXECUTION_ID": "true",
+      "TARGET_PROJECT": "ugrp-sim-f-1016"
+    }
+  },
+  "state": "ACTIVE"
+}

@@ -138,6 +138,8 @@ TEST_PATTERNS = (
     "tests/test_simulation_extensions.py",
     "tests/test_simulation_scenes.py",
     "tests/test_simulation_workflow_manager.py",
+    "tests/test_warp_native_contact.py",
+    "tests/test_warp_native_runtime.py",
     "tests/test_simulation_input_provenance.py",
     "tests/test_simulation_launch_options.py",
     "tests/test_simulation_start_menu.py",
