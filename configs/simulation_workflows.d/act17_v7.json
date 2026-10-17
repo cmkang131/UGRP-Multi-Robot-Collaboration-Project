@@ -2,6 +2,34 @@
   "schema": "ugrp.local_workflow_catalog.v1",
   "workflows": [
     {
+      "id": "act17-v7-training-queue",
+      "version": "1.0.0",
+      "purpose": "One current-stack checked matched M/F/S finite training queue",
+      "entry": "scripts/act17_train_batch.py",
+      "runner": "scripts.act17_train_batch",
+      "docs": "experiments/2026-10-17-act17/v7/README.md",
+      "requires": "gcp2 L4; explicit --enabled; all200 audited TRAIN starts; raw data rejection table; no physical simulation",
+      "output_flag": "--out",
+      "output_kind": "directory",
+      "required_inputs": ["--dataset", "--protocol", "--stack", "--checker", "--stack-values"],
+      "side_effect": "training",
+      "adapter": "managed_legacy_cli"
+    },
+    {
+      "id": "act17-v7-val-queue",
+      "version": "1.0.0",
+      "purpose": "Same-seed native VAL8 for all completed M/F/S models",
+      "entry": "scripts/act17_val_batch.py",
+      "runner": "scripts.act17_val_batch",
+      "docs": "experiments/2026-10-17-act17/v7/README.md",
+      "requires": "gcp2 L4; explicit --enabled; new camera-off v7 gate; completed M/F/S; no FINAL admission through this entry",
+      "output_flag": "--out",
+      "output_kind": "directory",
+      "required_inputs": ["--models-root", "--references", "--protocol", "--native-gate", "--stack", "--checker", "--stack-values", "--prior-rejections"],
+      "side_effect": "remote_simulation",
+      "adapter": "managed_legacy_cli"
+    },
+    {
       "id": "act17-v7-teacher",
       "version": "1.0.0",
       "purpose": "ACT17 v7 camera-off native teacher gate or separately admitted recording",

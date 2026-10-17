@@ -492,6 +492,11 @@ raise SystemExit(3 if a.fail else 0)
             samples['act17-v7-train'] = ['--dataset', str(model), '--protocol', str(source), '--candidate', 'M']
             samples['act17-v7-evaluate'] = ['--act17-v7', '--protocol', str(source), '--checkpoint', str(model),
                 '--plans', str(source), '--split', 'validation']
+            samples['act17-v7-training-queue'] = ['--enabled', '--dataset', str(model), '--protocol', str(source),
+                '--stack', str(source), '--checker', str(source), '--stack-values', str(source)]
+            samples['act17-v7-val-queue'] = ['--enabled', '--models-root', str(model), '--references', str(model),
+                '--protocol', str(source), '--native-gate', str(source), '--stack', str(source), '--checker', str(source),
+                '--stack-values', str(source), '--prior-rejections', str(source)]
             plans = {row["id"]: wm.plan(PROJECT, row["id"], samples[row["id"]]) for row in data["workflows"] if row["id"] not in retired_invalid}
             for name in retired_invalid:
                 with self.assertRaises(ValueError):

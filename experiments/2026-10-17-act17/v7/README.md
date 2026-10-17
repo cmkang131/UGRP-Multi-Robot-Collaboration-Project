@@ -33,3 +33,17 @@ S는 단계 균등 확률을 반영하며 VAL은 쓰지 않는다. 행동 정규
 고정 소스가 받는 기존 train/heldout 범위 안에서, main과 모든 fetch된 열린 작업 브랜치의 명시적 seed registry/10월 protocol에 숫자 충돌이 없음을 확인했다.
 VAL8은 VAL40의 처음 두 시작/종류다. 이후 기록·학습·평가에서 같은 split을 쓴다.
 진행은 새 v7 관문→기록 pilot4·직접 확인/디스크 예측→나머지 기록→M/F/S 학습→같은 VAL8 순서다.
+
+관문 실행은 `be39af6fc`, 원본 XML·Score 재계산은 `5160938e5`다. 40/40(종류별10/10),
+학습카메라 OFF, 입력 감사 위반0이며8,226개 manifest 파일 해시를 확인했다.
+[성공 시연 직접 검토](playback-review.json)는0–45.5 SIM초 전체2Hz와35.6–45.5초10Hz,
+3배속 mp4의 ffprobe 검증을 기록한다. 이는 교사 결과이며 학생 평가가 아니다.
+최신 main `efc484ad5`의 스택 검사도 통과했다. 추가된 시작구역 prior는 위치추정 경로 규칙이며
+이 근거리 ACT 후보에 정확한 시작 좌표나 새 입력을 추가하지 않는다.
+
+공개 ACT [README](https://github.com/tonyzhaozh/act/blob/main/README.md)는 sim 예제2000 epochs,
+실물은 최소5000 epochs 또는 loss plateau 뒤3–4배 학습을 권한다. epoch은 episode 표집 단위이므로
+우리 update10000과 같다고 하지 않는다. 첫 라운드는 위 세 후보10000으로 고정하고,
+추가 학습은 loss·개루프·VAL8 결과와 예산을 본 뒤 최대3라운드 안의 별도 후보로만 다룬다.
+`act17_train_batch.py`와 `act17_val_batch.py`는 각각 공통 queue에 스택 검사·원인 표를 묶는다.
+VAL 대기열은 세 모델을 모두 마친 뒤 같은8시작을 비교하며 FINAL40을 실행할 수 없다.
