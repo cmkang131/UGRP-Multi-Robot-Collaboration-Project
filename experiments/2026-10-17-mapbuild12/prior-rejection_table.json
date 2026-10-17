@@ -1,0 +1,40 @@
+{
+  "source": "e2c1c7425 experiments/2026-10-17-mapbuild11/operations/final-gcp5/long-summary.json",
+  "raw": "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2",
+  "frames": 1642,
+  "stages": [
+    {
+      "stage": "finite_candidate",
+      "input_n": 1642,
+      "cumulative_pass_n": 1642,
+      "rejected_n": 0
+    },
+    {
+      "stage": "xy_budget",
+      "input_n": 1642,
+      "cumulative_pass_n": 1642,
+      "rejected_n": 0
+    },
+    {
+      "stage": "coupled_budget",
+      "input_n": 1642,
+      "cumulative_pass_n": 1625,
+      "rejected_n": 17
+    },
+    {
+      "stage": "distribution_converged",
+      "input_n": 1625,
+      "cumulative_pass_n": 0,
+      "rejected_n": 1625
+    }
+  ],
+  "reasons": {
+    "direction_coupled_budget": 17,
+    "own_grid_not_implemented": 1642
+  },
+  "blocked_object": "own_observed_wall_identity_not_measured",
+  "minimum_gap_m": null,
+  "gap_status": "not_measured",
+  "reproduction": "scripts/mapbuild11_long.py --stage score (see mapbuild11/API.md)",
+  "largest_open_issue": "all own observations are only segment overlays and cannot affect localization"
+}
