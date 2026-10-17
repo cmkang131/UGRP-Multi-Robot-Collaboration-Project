@@ -38,6 +38,8 @@ workflow에 read-only plan 샘플이 필요하다는 시험이었고, 다른 하
 실행해 workflow 등록이 필요 없었으므로, 전역 카탈로그와 시험 변경을
 `origin/main` 바이트로 되돌렸다. 되돌린 뒤 관련 시험 8개가 로컬에서 통과했다.
 이 작업은 기존 기록의 동결 hash를 바꾸지 않는다.
+최종 PR CI run [39027344732](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/39027344732)는
+33/33 success(2026-10-17T11:46:18Z, head 5e4a0df1a)다.
 
 ## 최종 요약
 
