@@ -124,7 +124,7 @@ def make_model(renderer, legacy, plan):
         if sha(vendor / 'warp_native_contact.py') != \
                 'a5c8d370755034b9f9615f66a94b87883327b7d7ecc4e13082eac2c2d4751c6a':
             raise ValueError('NATIVE_OWNER_BYTES_REQUIRED')
-        plan = {**plan, 'end_color_scene': 'grasp_act_teal_blue_v1'}
+        plan.setdefault('end_color_scene', 'grasp_act_teal_blue_v1')
         plan.setdefault('scenario_id', 's1_normal_mixed_v7')
         scene = scene_factory.make_scene(plan)
         hardware, _ = load_fitted_hardware()
