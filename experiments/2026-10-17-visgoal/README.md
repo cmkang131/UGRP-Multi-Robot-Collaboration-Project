@@ -239,6 +239,20 @@ nworld=4 (four concurrent episodes). Rerun `visgoal-gate-r3-p0..p3` started
 13:52Z with leases `visgoal-p0..p3`; raw r2 stays under
 `/home/ugrp/ugrp-sim/runs/visgoal-gate-r2`.
 
+The four-process rerun was stopped too: with four single-world processes
+sharing one L4, each worker fell to 0.32 ticks/s (3.1 s per 0.1 s tick,
+3.2x slower than one process) with the GPU at 100%, so the effective
+metric was about 7.8 wall/SIM (4 concurrent worlds), still above 6.0.
+Those partial dirs (`visgoal-gate-r3-p0..p3`, ABORTED with
+`SPEED_GATE_FAIL_EXECUTION_MODE`) are preserved and invalid. Root fix:
+in-process nworld batching (`--nworld`, queue `worlds_per_batch`), which
+is what `physics_backend: mjwarp_batch_v1` declares. Every selected start
+is initialized as its own world in one MJWarp data batch; each 0.1 s tick
+issues one 400-step graph launch for all worlds, while each world keeps
+the identical per-episode perception, control and command tape. The
+sequential `nworld=1` path is unchanged and stays the default; batch is a
+separate execution condition and is not pooled with it.
+
 ## Files
 
 * `setups.json` — 16 fixed starts (setup only; includes parked

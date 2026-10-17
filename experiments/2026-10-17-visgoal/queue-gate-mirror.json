@@ -1,7 +1,7 @@
 {
   "schema": "ugrp.visgoal_run_queue.v1",
   "flow": "self_map",
-  "source_sha": "35aa67b58",
+  "source_sha": "3d06f8b4f7a8eb75a3caa25255d7fb4de5b7a576",
   "branch": "claude/visgoal",
   "task": "visgoal",
   "goal": "zone B blue paint, own RGB only",
@@ -75,7 +75,7 @@
     "experiments/2026-10-17-visgoal/vendor/warp_act_core.py": "c7ba4bd91113796b7bd958afdee69e510bb45c911a499c57d3973aaa64d5adc5",
     "experiments/2026-10-17-visgoal/vendor/warp_act_scene.py": "3d9407cfbd25e9c783296303793aafa657283a8852e9884996e4c2334adcbd59",
     "experiments/2026-10-17-visgoal/vendor/warp_native_contact.py": "a5c8d370755034b9f9615f66a94b87883327b7d7ecc4e13082eac2c2d4751c6a",
-    "scripts/visgoal_probe.py": "95f26b7fac38f5b95a4146867b19930a9ca669558a31bf52db17db59160122ae",
+    "scripts/visgoal_probe.py": "947fe4ad4a23d3a3510b866cd5f5b5bf125e6e4f34a28e90da3b5c610c45426a",
     "sim/visual_goal_search.py": "43c70fce6e570550eda9a793dea4d8c734208bca46cba56e123cec3da4f8c8d4",
     "tests/test_visual_goal_search.py": "919155f91dd4df547e8aa85ed57f6748a4043a004247ace2385358703768c95b",
     "experiments/2026-10-17-visgoal/calibration/paint_saturation.json": "394b538da0a7d024417689a9eef11bbaa6faa4d75bbb0ea74dcd0fd7717126b6"
@@ -98,5 +98,6 @@
   "pairing_note": "same 16 starts, 120 SIM s cap and prior funnel as visgoal-gate-r2; only the own-motion prior for the exact mirrored turn pulse differs; results are not pooled with the default (mirror off) gate run",
   "toggles": {
     "visgoal_mirror_pulse_v1": "on"
-  }
+  },
+  "worlds_per_batch": 16
 }
