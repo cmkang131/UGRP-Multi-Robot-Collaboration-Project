@@ -33,9 +33,9 @@
  },
  "profile_note": "wide_stance is a separate never-pooled candidate family and is deliberately NOT enabled in beamact5_r3.",
  "stack": {
-  "root": "9cf2b21136a2c48c96e97c158f83994bc888099c",
-  "adapter": "3bc6dd68c718294bbcd8346584052e69efdce9c3",
-  "teacher": "968bf1d9bb75d28c2ce2d515f061775e79528db5",
+  "root": "73ff19fa905d7c94af94316c469efd23e6d70368",
+  "adapter": "ed5e162478f2fa689a56006cd36661dcfef6194b",
+  "teacher": "f919ca72a43c3f8c3b3b6b9b4f7d260e241fdfe3",
   "cases_sha256": "ccdbe6bd6630ba021a8ac393d39ca20939f2ee30187fd6117b92126d35484b96",
   "plan_sha256": "f1a50e8c833c1da9113bdf8cff3844913380e3c821b15c072c0a23c0f54f5148",
   "rejection_table_sha256": "16fe662ac3f054106217a116697b9f396f2fcfc0d34215924970e8159f6c7d3f"
@@ -70,7 +70,15 @@
    "cause": "the launch command set WARP_SOURCE_ROOT but did not cd into it, so the canonical scene's relative texture paths (sim/assets/scene_contrast_v5/...) did not resolve: ValueError opening zone_wall_divider_1_250_9625_2000_fileright.png",
    "evidence": "started_N=0, HOST_ERROR=1; summary kept at runs/beamact5/validation-r3-6b-cwd-error (renamed); not a physics run and not pooled",
    "fix": "launch command now cd $WARP_SOURCE_ROOT before the python entrypoint (same as the r2/profile launches)"
+  },
+  {
+   "attempt": "validation-r3-6c (2026-10-17T16:41Z)",
+   "result": "HOST_ERROR after worlds started (code defect, no completed results)",
+   "cause": "grasp_act_reobserve.py:156 IndexError: list index out of range. A retreat-first reobserve that converts to view attempts by the 6 cm distance rule before RETREAT_S re-filters targets by 'not seen'; when every target is already fresh (peer-clear dwell still pending) the list is empty and targets[-1] is indexed.",
+   "evidence": "started_N=6, completed_N=0, success_n=0, HOST_ERROR=1; summary+logs kept at runs/beamact5/validation-r3-6c-reobserve-indexerror (renamed); no world result, not pooled",
+   "fix": "on conversion, finish fresh_measurements_replan when seen==set(targets); regression test test_reobserve_transition_ends_when_every_target_is_already_fresh reproduces the same IndexError on the pre-fix code; teacher f919ca72, adapter ed5e1624, root 73ff19fa",
+   "repeat_guard": "tests/test_beamact5_r3_modes.py::test_reobserve_transition_ends_when_every_target_is_already_fresh"
   }
  ],
- "attempt_plan": "validation-r3-6c: same command with cd $WARP_SOURCE_ROOT and out dir runs/beamact5/validation-r3-6c"
+ "attempt_plan": "validation-r3-6d: same command with the fixed tree SHAs and out dir runs/beamact5/validation-r3-6d"
 }

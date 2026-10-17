@@ -13,9 +13,9 @@
 
 |항목|SHA/값|
 |---|---|
-|root (WARP_SOURCE_ROOT)|`9cf2b21136a2c48c96e97c158f83994bc888099c`|
-|adapter|`3bc6dd68c718294bbcd8346584052e69efdce9c3`|
-|teacher|`968bf1d9bb75d28c2ce2d515f061775e79528db5`|
+|root (WARP_SOURCE_ROOT)|`73ff19fa905d7c94af94316c469efd23e6d70368`|
+|adapter|`ed5e162478f2fa689a56006cd36661dcfef6194b`|
+|teacher|`f919ca72a43c3f8c3b3b6b9b4f7d260e241fdfe3`|
 |cases|`ccdbe6bd6630ba021a8ac393d39ca20939f2ee30187fd6117b92126d35484b96` (r2 cases `24903b69…`와 candidate 필드만 다름)|
 |plan|`f1a50e8c833c1da9113bdf8cff3844913380e3c821b15c072c0a23c0f54f5148` (r1/r2와 byte-identical)|
 |rejection ledger 입력|`16fe662ac3f054106217a116697b9f396f2fcfc0d34215924970e8159f6c7d3f` (gate-40-r2 표 복사)|
@@ -33,12 +33,13 @@
 - `search26_wide_stance` (teacher, **이 후보에서는 켜지 않음**): 5°→1° 각도 격자의 새 certified family. world 37의 ±15° best 4.87 mm < runtime floor 11.07 mm, jaw bound 17.88°가 근거. 5° family와 pooling 금지.
 - runner 배선: `scripts/run_grasp_act_teacher.py:run()` 인자·report·search15 dict에 세 키 추가 + signature 회귀 테스트.
 
-## 3. 사전 실행 오류 2건 (물리 실행 아님, 집계 제외, 원본 보존)
+## 3. 실행 실패/설정 오류 3건 (집계 제외, 원본 보존)
 
 1. `validation-r3-6-wiring-error` — adapter가 `run(**profiles(candidate))`로 부르는데 teacher runner에 r3 키 배선이 없어 `TypeError` (started_N=0, HOST_ERROR=1).
 2. `validation-r3-6b-cwd-error` — 실행 명령이 `WARP_SOURCE_ROOT`로 cd하지 않아 canonical scene의 상대 texture 경로가 안 잡힘(`ValueError: zone_wall_divider_1_...png`). started_N=0, HOST_ERROR=1.
+3. `validation-r3-6c-reobserve-indexerror` — **world 6개가 시작된 뒤** SIM 약 6 s에서 `grasp_act_reobserve.py:156 IndexError: list index out of range`로 전체가 죽었다. retreat-first reobserve가 0.6 s 경계가 아닌 6 cm 이동으로 view 단계로 전환될 때, 모든 target이 이미 fresh(peer clear dwell 진행 중)면 필터 결과가 비어 `targets[-1]`을 인덱스하는 결함. 전환 시 `fresh_measurements_replan`으로 종료하도록 고쳤고, 수정 전 코드에서 같은 IndexError로 실패하는 회귀 테스트를 넣었다. started_N=6, completed_N=0, HOST_ERROR=1, world 결과 없음.
 
-두 경우 모두 world가 시작되지 않았고 summary/로그를 VM 디스크에 보존했다. 상세는 preregistration의 `prelaunch_attempts`.
+1·2는 world 시작 전, 3은 world 시작 후 코드 결함으로 끝났고 모두 summary/로그를 VM 디스크에 보존했다. 상세는 preregistration의 `prelaunch_attempts`.
 
 ## 4. world 15 원인표 (r2 raw + cProfile)
 
@@ -68,14 +69,14 @@ sampled ±15° family best gap 4.87 mm < runtime floor margin 11.07 mm. `search2
 
 ## 6. 테스트
 
-- `tests/test_beamact5_r3_modes.py` 9 tests: 등록·기본 off, validate fail-closed, peer memory 유지/만료, 기본 reset, retreat 경계→view attempt, 기본 경계 종료 불변, wide family 상위집합/각도, teacher runner 인자 배선.
-- 기존 회귀: `tests/test_grasp_act_search15/21/22/23/24/25.py`, `tests/test_beamact5_r2_modes.py` 포함 69 passed (Mac, 물리/렌더 없음).
+- `tests/test_beamact5_r3_modes.py` 10 tests: 등록·기본 off, validate fail-closed, peer memory 유지/만료, 기본 reset, retreat 경계→view attempt, 기본 경계 종료 불변, wide family 상위집합/각도, teacher runner 인자 배선, reobserve 전환 시 빈 target 가드(수정 전 IndexError 재현).
+- 기존 회귀: `tests/test_grasp_act_search15/21/22/23/24/25.py`, `tests/test_beamact5_r2_modes.py` 포함 **71 passed** (Mac, 물리/렌더 없음).
 
 ## 7. 결과 (6-world, gcp6) — 진행 중
 
-실행 `validation-r3-6c` (out `/home/ugrp/ugrp-sim/runs/beamact5/validation-r3-6c`, log `…/validation-r3-6c.log`). 결과·원본 해시·funnel은 완료 후 이 절과 PR 본문에 채운다.
+실행 `validation-r3-6d` (out `/home/ugrp/ugrp-sim/runs/beamact5/validation-r3-6d`, log `…/validation-r3-6d.log`). 결과·원본 해시·funnel은 완료 후 이 절과 PR 본문에 채운다.
 
 ## 8. 원본·미확인
 
-- gcp6 영속 디스크: `runs/beamact5/validation-r3-6c/`, `gate-40-r3/rejection_table.json`, `wide-start-8420000d-r3/`.
+- gcp6 영속 디스크: `runs/beamact5/validation-r3-6d/`, `gate-40-r3/rejection_table.json`, `wide-start-8420000d-r3/`.
 - 미확인: 청구 비용, C 대비 물리/렌더 동등성, 실기 전이. 교사 성공은 학생 성공이 아니다.
