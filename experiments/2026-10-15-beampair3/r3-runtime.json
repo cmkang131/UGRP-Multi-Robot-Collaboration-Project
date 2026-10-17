@@ -1,0 +1,837 @@
+{
+  "source_sha": "e645b34beb4fa693ab4ddedfe77045ae26b46388",
+  "runs": [
+    {
+      "seed": 8318611,
+      "mode": "peer_rendezvous_v2",
+      "sim_s": 48.00000000014659,
+      "wall_per_sim": 1.8092575048069721,
+      "first30": {
+        "sim_s": 30.00000000006064,
+        "wall_s": 53.609496097000374,
+        "scope": "first 30 SIM seconds including initialization; recording only",
+        "wall_per_sim": 1.7869832032297337
+      },
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1589,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "held_world_reads": 0,
+      "hidden_measurement_ticks": 94,
+      "first_close_t": 45.10000000012433,
+      "probe_burst_ticks": {
+        "r1": 12,
+        "r2": 1
+      },
+      "probe_executed_ticks": {
+        "r1": 12,
+        "r2": 1
+      },
+      "teacher_events": {
+        "r1": [
+          {
+            "t": 2.4999999999999742,
+            "from": "approach",
+            "to": "search"
+          },
+          {
+            "t": 3.7,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 4.5,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 4.699999999999998,
+            "from": "search",
+            "to": "approach"
+          },
+          {
+            "t": 8.800000000002166,
+            "from": "approach",
+            "to": "search"
+          },
+          {
+            "t": 16.89999999998968,
+            "from": "search",
+            "to": "approach"
+          },
+          {
+            "t": 20.800000000008303,
+            "approach_progress": "replan",
+            "phase": "approach",
+            "required_movement_m": 0.01,
+            "allowance_s": 3.0,
+            "planner_calls": 9,
+            "no_path_calls": 0,
+            "blocked_goal_calls": 0,
+            "reason": "no_goal_error_progress",
+            "input": "current visible goal and issued-command pose"
+          },
+          {
+            "t": 34.600000000074196,
+            "from": "approach",
+            "to": "align"
+          },
+          {
+            "t": 38.90000000009473,
+            "from": "align",
+            "to": "ready"
+          },
+          {
+            "t": 41.60000000010762,
+            "from": "ready",
+            "to": "pick"
+          },
+          {
+            "t": 47.30000000013484,
+            "from": "pick",
+            "to": "complete"
+          }
+        ],
+        "r2": [
+          {
+            "t": 2.4999999999999742,
+            "from": "approach",
+            "to": "search"
+          },
+          {
+            "t": 4.0,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 4.8,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 5.000000000000365,
+            "from": "search",
+            "to": "approach"
+          },
+          {
+            "t": 18.99999999999971,
+            "from": "approach",
+            "to": "search"
+          },
+          {
+            "t": 19.200000000000664,
+            "from": "search",
+            "to": "approach"
+          },
+          {
+            "t": 37.30000000008709,
+            "from": "approach",
+            "to": "align"
+          },
+          {
+            "t": 41.400000000106665,
+            "from": "align",
+            "to": "ready"
+          },
+          {
+            "t": 42.30000000011096,
+            "from": "ready",
+            "to": "pick"
+          },
+          {
+            "t": 48.00000000013818,
+            "from": "pick",
+            "to": "complete"
+          }
+        ]
+      },
+      "yield_expiry_events": [
+        {
+          "t": 21.00000000000926,
+          "event": "yield_plan_expired",
+          "robot": "r2",
+          "goal": [
+            0.6569341018230391,
+            -0.5370761460636378
+          ],
+          "blocked_object": "r1",
+          "min_gap_m": 0.28253909164726415,
+          "reason_category": "prediction_horizon_elapsed",
+          "blocked": false,
+          "blockers": [],
+          "fresh_peers": [
+            "r1"
+          ],
+          "observed_peer_velocity_m_s": {
+            "r1": [
+              0.013875159167287349,
+              0.11149948856060295
+            ]
+          },
+          "gap_scope": "visible_model_goal_signed_clearance; not physical clearance"
+        }
+      ],
+      "model_calls": 0
+    },
+    {
+      "seed": 8318604,
+      "mode": "peer_rendezvous_v2",
+      "sim_s": 48.60000000014946,
+      "wall_per_sim": 2.018673662668687,
+      "first30": {
+        "sim_s": 30.00000000006064,
+        "wall_s": 58.33895831100017,
+        "scope": "first 30 SIM seconds including initialization; recording only",
+        "wall_per_sim": 1.9446319436960748
+      },
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1774,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "held_world_reads": 0,
+      "hidden_measurement_ticks": 92,
+      "first_close_t": 45.800000000127675,
+      "probe_burst_ticks": {
+        "r1": 5,
+        "r2": 8
+      },
+      "probe_executed_ticks": {
+        "r1": 5,
+        "r2": 8
+      },
+      "teacher_events": {
+        "r1": [
+          {
+            "t": 2.4999999999999742,
+            "from": "approach",
+            "to": "search"
+          },
+          {
+            "t": 4.2,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 5.0,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 5.2000000000006095,
+            "from": "search",
+            "to": "approach"
+          },
+          {
+            "t": 9.799999999999836,
+            "from": "approach",
+            "to": "search"
+          },
+          {
+            "t": 14.499999999988882,
+            "from": "search",
+            "to": "approach"
+          },
+          {
+            "t": 38.200000000091386,
+            "from": "approach",
+            "to": "align"
+          },
+          {
+            "t": 42.10000000011001,
+            "from": "align",
+            "to": "ready"
+          },
+          {
+            "t": 42.30000000011096,
+            "from": "ready",
+            "to": "pick"
+          },
+          {
+            "t": 48.00000000013818,
+            "from": "pick",
+            "to": "complete"
+          }
+        ],
+        "r2": [
+          {
+            "t": 2.4999999999999742,
+            "from": "approach",
+            "to": "search"
+          },
+          {
+            "t": 3.9,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 4.7,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 4.900000000000243,
+            "from": "search",
+            "to": "approach"
+          },
+          {
+            "t": 6.800000000002565,
+            "from": "approach",
+            "to": "search"
+          },
+          {
+            "t": 16.19999999998634,
+            "from": "search",
+            "to": "approach"
+          },
+          {
+            "t": 31.000000000057007,
+            "from": "approach",
+            "to": "align"
+          },
+          {
+            "t": 35.000000000076106,
+            "from": "align",
+            "to": "ready"
+          },
+          {
+            "t": 42.90000000011383,
+            "from": "ready",
+            "to": "pick"
+          },
+          {
+            "t": 48.600000000141044,
+            "from": "pick",
+            "to": "complete"
+          }
+        ]
+      },
+      "yield_expiry_events": [],
+      "model_calls": 0
+    },
+    {
+      "seed": 8318600,
+      "mode": "peer_rendezvous_v2",
+      "sim_s": 31.20000000006637,
+      "wall_per_sim": 1.919469777399811,
+      "first30": {
+        "sim_s": 30.00000000006064,
+        "wall_s": 56.9504613220015,
+        "scope": "first 30 SIM seconds including initialization; recording only",
+        "wall_per_sim": 1.898348710729546
+      },
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 938,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "held_world_reads": 0,
+      "hidden_measurement_ticks": 102,
+      "first_close_t": 27.900000000042205,
+      "probe_burst_ticks": {
+        "r1": 1,
+        "r2": 12
+      },
+      "probe_executed_ticks": {
+        "r1": 1,
+        "r2": 0
+      },
+      "teacher_events": {
+        "r1": [
+          {
+            "t": 2.4999999999999742,
+            "from": "approach",
+            "to": "search"
+          },
+          {
+            "t": 4.1,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 4.9,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 5.5,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 5.7000000000012205,
+            "from": "search",
+            "to": "approach"
+          },
+          {
+            "t": 20.10000000000496,
+            "from": "approach",
+            "to": "align"
+          },
+          {
+            "t": 24.200000000024538,
+            "from": "align",
+            "to": "ready"
+          },
+          {
+            "t": 24.400000000025493,
+            "from": "ready",
+            "to": "pick"
+          },
+          {
+            "t": 30.10000000005271,
+            "from": "pick",
+            "to": "complete"
+          }
+        ],
+        "r2": [
+          {
+            "t": 2.4999999999999742,
+            "from": "approach",
+            "to": "search"
+          },
+          {
+            "t": 3.3999999999994754,
+            "from": "search",
+            "to": "approach"
+          },
+          {
+            "t": 3.3999999999994754,
+            "from": "approach",
+            "to": "align"
+          },
+          {
+            "t": 3.7999999999992538,
+            "from": "align",
+            "to": "ready"
+          },
+          {
+            "t": 25.500000000030745,
+            "from": "ready",
+            "to": "pick"
+          },
+          {
+            "t": 31.200000000057962,
+            "from": "pick",
+            "to": "complete"
+          }
+        ]
+      },
+      "yield_expiry_events": [],
+      "model_calls": 0
+    },
+    {
+      "seed": 8318601,
+      "mode": "peer_rendezvous_v2",
+      "sim_s": 30.10000000006112,
+      "wall_per_sim": 2.019477384946076,
+      "first30": {
+        "sim_s": 30.00000000006064,
+        "wall_s": 60.4941029090005,
+        "scope": "first 30 SIM seconds including initialization; recording only",
+        "wall_per_sim": 2.0164700969626073
+      },
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1105,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "held_world_reads": 0,
+      "hidden_measurement_ticks": 106,
+      "first_close_t": 26.600000000035998,
+      "probe_burst_ticks": {
+        "r1": 3,
+        "r2": 10
+      },
+      "probe_executed_ticks": {
+        "r1": 3,
+        "r2": 10
+      },
+      "teacher_events": {
+        "r1": [
+          {
+            "t": 2.4999999999999742,
+            "from": "approach",
+            "to": "search"
+          },
+          {
+            "t": 4.3,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 5.1,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 5.300000000000732,
+            "from": "search",
+            "to": "approach"
+          },
+          {
+            "t": 10.29999999999867,
+            "from": "approach",
+            "to": "search"
+          },
+          {
+            "t": 10.499999999998204,
+            "from": "search",
+            "to": "approach"
+          },
+          {
+            "t": 18.699999999998276,
+            "from": "approach",
+            "to": "align"
+          },
+          {
+            "t": 22.90000000001833,
+            "from": "align",
+            "to": "ready"
+          },
+          {
+            "t": 23.100000000019286,
+            "from": "ready",
+            "to": "pick"
+          },
+          {
+            "t": 28.800000000046502,
+            "from": "pick",
+            "to": "complete"
+          }
+        ],
+        "r2": [
+          {
+            "t": 4.800000000000121,
+            "from": "approach",
+            "to": "search"
+          },
+          {
+            "t": 8.00000000000403,
+            "from": "search",
+            "to": "approach"
+          },
+          {
+            "t": 14.799999999988183,
+            "from": "approach",
+            "to": "align"
+          },
+          {
+            "t": 17.79999999999398,
+            "from": "align",
+            "to": "ready"
+          },
+          {
+            "t": 24.400000000025493,
+            "from": "ready",
+            "to": "pick"
+          },
+          {
+            "t": 30.10000000005271,
+            "from": "pick",
+            "to": "complete"
+          }
+        ]
+      },
+      "yield_expiry_events": [],
+      "model_calls": 0
+    },
+    {
+      "seed": 8318602,
+      "mode": "peer_rendezvous_v2",
+      "sim_s": 34.50000000008213,
+      "wall_per_sim": 1.962124188082279,
+      "first30": {
+        "sim_s": 30.00000000006064,
+        "wall_s": 56.940835843999594,
+        "scope": "first 30 SIM seconds including initialization; recording only",
+        "wall_per_sim": 1.8980278614628165
+      },
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1140,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "held_world_reads": 0,
+      "hidden_measurement_ticks": 106,
+      "first_close_t": 31.000000000057007,
+      "probe_burst_ticks": {
+        "r1": 8,
+        "r2": 5
+      },
+      "probe_executed_ticks": {
+        "r1": 8,
+        "r2": 5
+      },
+      "teacher_events": {
+        "r1": [
+          {
+            "t": 4.699999999999998,
+            "from": "approach",
+            "to": "search"
+          },
+          {
+            "t": 7.300000000003176,
+            "from": "search",
+            "to": "approach"
+          },
+          {
+            "t": 19.40000000000162,
+            "from": "approach",
+            "to": "align"
+          },
+          {
+            "t": 23.400000000020718,
+            "from": "align",
+            "to": "ready"
+          },
+          {
+            "t": 27.500000000040295,
+            "from": "ready",
+            "to": "pick"
+          },
+          {
+            "t": 33.20000000006751,
+            "from": "pick",
+            "to": "complete"
+          }
+        ],
+        "r2": [
+          {
+            "t": 2.4999999999999742,
+            "from": "approach",
+            "to": "search"
+          },
+          {
+            "t": 3.8,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 4.6,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 4.800000000000121,
+            "from": "search",
+            "to": "approach"
+          },
+          {
+            "t": 6.700000000002443,
+            "from": "approach",
+            "to": "search"
+          },
+          {
+            "t": 7.600000000003543,
+            "from": "search",
+            "to": "approach"
+          },
+          {
+            "t": 23.000000000018808,
+            "from": "approach",
+            "to": "align"
+          },
+          {
+            "t": 27.30000000003934,
+            "from": "align",
+            "to": "ready"
+          },
+          {
+            "t": 28.800000000046502,
+            "from": "ready",
+            "to": "pick"
+          },
+          {
+            "t": 34.50000000007372,
+            "from": "pick",
+            "to": "complete"
+          }
+        ]
+      },
+      "yield_expiry_events": [],
+      "model_calls": 0
+    },
+    {
+      "seed": 8318603,
+      "mode": "peer_rendezvous_v2",
+      "sim_s": 34.10000000008022,
+      "wall_per_sim": 1.8886629505234365,
+      "first30": {
+        "sim_s": 30.00000000006064,
+        "wall_s": 54.28841118899982,
+        "scope": "first 30 SIM seconds including initialization; recording only",
+        "wall_per_sim": 1.809613706296336
+      },
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 994,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "held_world_reads": 0,
+      "hidden_measurement_ticks": 90,
+      "first_close_t": 31.400000000058917,
+      "probe_burst_ticks": {
+        "r1": 10,
+        "r2": 3
+      },
+      "probe_executed_ticks": {
+        "r1": 10,
+        "r2": 0
+      },
+      "teacher_events": {
+        "r1": [
+          {
+            "t": 2.4999999999999742,
+            "from": "approach",
+            "to": "search"
+          },
+          {
+            "t": 4.1,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 4.9,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 5.100000000000487,
+            "from": "search",
+            "to": "approach"
+          },
+          {
+            "t": 7.000000000002809,
+            "from": "approach",
+            "to": "search"
+          },
+          {
+            "t": 16.399999999987294,
+            "from": "search",
+            "to": "approach"
+          },
+          {
+            "t": 24.50000000002597,
+            "from": "approach",
+            "to": "align"
+          },
+          {
+            "t": 27.70000000004125,
+            "from": "align",
+            "to": "ready"
+          },
+          {
+            "t": 27.900000000042205,
+            "from": "ready",
+            "to": "pick"
+          },
+          {
+            "t": 33.60000000006942,
+            "from": "pick",
+            "to": "complete"
+          }
+        ],
+        "r2": [
+          {
+            "t": 2.4999999999999742,
+            "from": "approach",
+            "to": "search"
+          },
+          {
+            "t": 2.799999999999808,
+            "from": "search",
+            "to": "approach"
+          },
+          {
+            "t": 2.799999999999808,
+            "from": "approach",
+            "to": "align"
+          },
+          {
+            "t": 3.1999999999995863,
+            "from": "align",
+            "to": "ready"
+          },
+          {
+            "t": 28.400000000044592,
+            "from": "ready",
+            "to": "pick"
+          },
+          {
+            "t": 34.10000000007181,
+            "from": "pick",
+            "to": "complete"
+          }
+        ]
+      },
+      "yield_expiry_events": [],
+      "model_calls": 0
+    }
+  ],
+  "wall_per_sim_median": 1.9407969827410452,
+  "mode": "peer_rendezvous_v2",
+  "cap_end_N": 0,
+  "HOST_ERROR_N": 0,
+  "model_calls": 0,
+  "raw_training_rgb_N": 0,
+  "repeated_8318604": {
+    "compared_commands": 974,
+    "mismatch_N": 0,
+    "first_mismatches": []
+  },
+  "scope": "first two sentinels serial then four concurrent, reserve6; not16-concurrent speed evidence"
+}

@@ -1,0 +1,247 @@
+{
+  "source_sha": "835ccef26aa84b08cc8f7e256fd0f43aa1583ef9",
+  "raw_root": "/home/ugrp/ugrp-sim/ops-reviews/beampair7/input-gate-r2",
+  "episode_funnel": [
+    {
+      "gate": "started",
+      "entered": 40,
+      "passed": 40,
+      "rejected": 0
+    },
+    {
+      "gate": "both_align",
+      "entered": 40,
+      "passed": 40,
+      "rejected": 0
+    },
+    {
+      "gate": "both_ready",
+      "entered": 40,
+      "passed": 40,
+      "rejected": 0
+    },
+    {
+      "gate": "both_pick",
+      "entered": 40,
+      "passed": 40,
+      "rejected": 0
+    },
+    {
+      "gate": "both_command_complete",
+      "entered": 40,
+      "passed": 40,
+      "rejected": 0
+    },
+    {
+      "gate": "joint_hold_3s",
+      "entered": 40,
+      "passed": 40,
+      "rejected": 0
+    },
+    {
+      "gate": "input_eligible_success",
+      "entered": 40,
+      "passed": 40,
+      "rejected": 0
+    }
+  ],
+  "reason_distribution": {
+    "reservation_goal": 147,
+    "peer_goal": 203,
+    "cargo_goal": 3
+  },
+  "blocked_objects": {
+    "reserved:teal_stance": 147,
+    "r1": 70,
+    "beam_1": 3,
+    "r3": 55,
+    "r2": 78
+  },
+  "candidate_population_totals": {
+    "reservation_escape_anchors": {
+      "N": 151,
+      "ordered_funnel": [
+        {
+          "gate": "inside_planning_bounds",
+          "entered": 151,
+          "passed": 151,
+          "rejected": 0
+        },
+        {
+          "gate": "endpoint_clear",
+          "entered": 151,
+          "passed": 4,
+          "rejected": 147
+        },
+        {
+          "gate": "continuous_connector_clear",
+          "entered": 4,
+          "passed": 4,
+          "rejected": 0
+        }
+      ]
+    },
+    "reservation_escape_routes": {
+      "N": 4,
+      "ordered_funnel": [
+        {
+          "gate": "selected_checked_anchor",
+          "entered": 4,
+          "passed": 4,
+          "rejected": 0
+        },
+        {
+          "gate": "native_continuation_found",
+          "entered": 4,
+          "passed": 4,
+          "rejected": 0
+        }
+      ]
+    },
+    "rendezvous_wait_candidates": {
+      "N": 1,
+      "ordered_funnel": [
+        {
+          "gate": "current_and_predicted_clear_path",
+          "entered": 1,
+          "passed": 1,
+          "rejected": 0
+        },
+        {
+          "gate": "nonrepeated_selected_wait",
+          "entered": 1,
+          "passed": 1,
+          "rejected": 0
+        }
+      ]
+    }
+  },
+  "frame_population_totals": {
+    "own_frame_candidates": {
+      "N": 29510,
+      "ordered_funnel": [
+        {
+          "gate": "any_assigned_probe",
+          "entered": 29510,
+          "passed": 19342,
+          "rejected": 10168
+        },
+        {
+          "gate": "meaningful_region_5_of_15",
+          "entered": 19342,
+          "passed": 18885,
+          "rejected": 457
+        },
+        {
+          "gate": "measurement_admitted_not_held",
+          "entered": 18885,
+          "passed": 18885,
+          "rejected": 0
+        }
+      ]
+    }
+  },
+  "event_population_totals": {
+    "own_protocol_events": {
+      "N": 80,
+      "ordered_funnel": [
+        {
+          "gate": "own_ready",
+          "entered": 80,
+          "passed": 80,
+          "rejected": 0
+        },
+        {
+          "gate": "own_pick_after_go_ack",
+          "entered": 80,
+          "passed": 80,
+          "rejected": 0
+        },
+        {
+          "gate": "own_command_complete",
+          "entered": 80,
+          "passed": 80,
+          "rejected": 0
+        }
+      ]
+    }
+  },
+  "rendezvous_event_population_totals": {
+    "retry_events": {
+      "N": 3,
+      "ordered_funnel": [
+        {
+          "gate": "deadline_replanned",
+          "entered": 3,
+          "passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "own_align_after_retry",
+          "entered": 3,
+          "passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "own_complete_after_retry",
+          "entered": 3,
+          "passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "joint_hold_3s_after_retry",
+          "entered": 3,
+          "passed": 3,
+          "rejected": 0
+        }
+      ]
+    }
+  },
+  "anchor_grid_queries": [
+    {
+      "seed": 8318728,
+      "robot": "r1",
+      "t": 5.7000000000012205,
+      "potential_grid_N": 441,
+      "checked_N": 70,
+      "not_checked_N": 371,
+      "endpoint_clear_N": 1,
+      "continuation_found": true
+    },
+    {
+      "seed": 8318728,
+      "robot": "r1",
+      "t": 7.200000000003054,
+      "potential_grid_N": 625,
+      "checked_N": 36,
+      "not_checked_N": 589,
+      "endpoint_clear_N": 1,
+      "continuation_found": true
+    },
+    {
+      "seed": 8318728,
+      "robot": "r1",
+      "t": 8.500000000002865,
+      "potential_grid_N": 625,
+      "checked_N": 36,
+      "not_checked_N": 589,
+      "endpoint_clear_N": 1,
+      "continuation_found": true
+    },
+    {
+      "seed": 8318728,
+      "robot": "r1",
+      "t": 10.399999999998437,
+      "potential_grid_N": 841,
+      "checked_N": 9,
+      "not_checked_N": 832,
+      "endpoint_clear_N": 1,
+      "continuation_found": true
+    }
+  ],
+  "anchor_population_note": "Checked closest-first prefixes form the acceptance funnel. Remaining lattice candidates are unexamined, not rejections.",
+  "missing_rejection_audit_N": 0,
+  "full_table_path": "/home/ugrp/ugrp-sim/ops-reviews/beampair7/analysis-gate-r2/rejection-table.json",
+  "full_table_sha256": "e9d195ee7ebf43ad7b4e7c718613e504e31c9bef6db8904cd515d32846b193fd",
+  "reproduce": "cd /home/ugrp/ugrp-sim/src/835ccef26aa84b08cc8f7e256fd0f43aa1583ef9 && PYTHONPATH=. /home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python /home/ugrp/ugrp-sim/src/835ccef26aa84b08cc8f7e256fd0f43aa1583ef9/scripts/analyze_beampair1.py /home/ugrp/ugrp-sim/ops-reviews/beampair7/input-gate-r2 --out /home/ugrp/ugrp-sim/ops-reviews/beampair7/analysis-gate-r2"
+}
