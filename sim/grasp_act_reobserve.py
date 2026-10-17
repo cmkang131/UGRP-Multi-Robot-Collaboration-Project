@@ -142,14 +142,17 @@ class ActiveReobserve:
             return teacher._hold(now)
         view_age = now-a.get('view_start',a['start'])
         attempt = (3 if age<self.RETREAT_S else 0) if a['retreat_first'] else min(3, int((view_age+1e-8)/self.VIEW_S))
-        # Round-3 opt-in: a retreat-first reobserve no longer ends at the
-        # retreat boundary; it continues into the same three bounded view
-        # attempts. Default off preserves the previous boundary finish.
+        # Opt-in: a retreat-first reobserve no longer ends at the retreat
+        # boundary; it continues into the same three bounded view attempts.
+        # Default off preserves the previous boundary finish. The boundary is
+        # measured from the reobserve start so a quantized 0.1 s run converts
+        # on its 0.6 s tick (checking only while attempt==3 missed that tick,
+        # which left case-27's retreat-first reobserve ending at the boundary).
         if (teacher.search15_modes.get('search26_reobserve','off')!='off'
-                and a['retreat_first'] and attempt==3):
-            if a['retreat_start'] is None:a['retreat_start']=(now,tuple(pose[:2]))
+                and a['retreat_first']):
+            if a['retreat_start'] is None:a['retreat_start']=(a['start'],tuple(pose[:2]))
             t0,p0=a['retreat_start']
-            if now-t0>=self.RETREAT_S-1e-8 or math.dist(pose[:2],p0)>=.06:
+            if now-t0>=self.RETREAT_S-1e-8 or (p0 is not None and math.dist(pose[:2],p0)>=.06):
                 a['retreat_first']=False;a['view_start']=now;a['retreat_start']=None
                 attempt=0;view_age=0.
                 # Every target already fresh: the normal view phase would end

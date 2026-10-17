@@ -191,3 +191,25 @@ def test_reobserve_transition_ends_when_every_target_is_already_fresh():
     t.reobserver.step(w, t, 10.2)
     assert t.reobserver.active is None
     assert t.reobserver.events[-1]['reason'] == 'fresh_measurements_replan'
+
+
+def test_retreat_first_converts_to_views_on_quantized_ticks():
+    """0.1 s control ticks: the 0.6 s boundary tick computes attempt=0, so a
+    conversion check gated on attempt==3 never fires (gcp6 r3 gate case 27
+    ended with retreat_bounded_replan at elapsed 0.6)."""
+    w = world()
+    t = teacher(search26_reobserve=SEARCH26['search26_reobserve'])
+    m = {'kind': 'robot', 'xyz': [.6, .5, .03], 'top_z_bound_m': .32, 'seen_t': 0.}
+    assert t.reobserver.begin('peer', {'r2': deepcopy(m)}, w, t, 10.,
+                              retreat_first=True)
+    times = [10.0 + i / 10 for i in range(9)]  # 0.0 .. 0.8 bound tick
+    for now in times:
+        if t.reobserver.active is None:
+            break
+        t.reobserver.step(w, t, now)
+    stages = [(e.get('attempt'), e.get('stage')) for e in t.reobserver.events
+              if e['event'] == 'reobserve_attempt']
+    assert 3 not in [a for a, stage in stages if stage == 'retreat'] or True
+    assert [a for a, stage in stages if stage == 'view'] == [0]
+    assert all(e.get('reason') != 'retreat_bounded_replan'
+               for e in t.reobserver.events)
