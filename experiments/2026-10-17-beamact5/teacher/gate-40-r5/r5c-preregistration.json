@@ -59,5 +59,18 @@
   "world15 excluded/unverified",
   "37 structural label from r1/r2 not remeasured",
   "no margin/cap constant change"
- ]
+ ],
+ "r5b_5world_result": {
+  "run": "/home/ugrp/ugrp-sim/runs/beamact5/validation-r5b-5",
+  "wall_s": 1392.66,
+  "success_n": 3,
+  "worlds": {
+   "6": "PASS 59.1",
+   "10": "PASS 49.0",
+   "20": "PASS 42.1",
+   "27": "FAIL 20.4 (approach_blocked_handoff; 4 bounded refreshes insufficient)",
+   "37": "FAIL 29.7 (teacher_terminal, approach/peer handoff — wide_stance/structure not remeasured as pass)"
+  },
+  "interpretation": "refresh mode does not regress 6/10/20; it changes 37 from the sampled-stance 57 s path to a 29.7 s handoff but does not pass."
+ }
 }
