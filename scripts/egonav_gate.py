@@ -331,13 +331,12 @@ def run(args):
     step_index = wp.zeros(1, dtype=int)
 
     @wp.kernel
-    def issue(tape: wp.array3d(dtype=float), index: wp.array(dtype=int),
-              out: wp.array2d(dtype=float)):
+    def issue(tape, index, out):
         i, j = wp.tid()
         out[i, j] = tape[index[0], i, j]
 
     @wp.kernel
-    def advance(index: wp.array(dtype=int)):
+    def advance(index):
         index[0] = index[0] + 1
 
     with wp.ScopedCapture() as cap:
