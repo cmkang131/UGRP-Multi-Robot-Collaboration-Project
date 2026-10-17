@@ -76,7 +76,16 @@ def recount(folder):
             input_audit=audit,raw=str(world),score_matches=True))
         for f in (world/'result.json',world/'eval-only.jsonl',world/'scene.xml'):
             actual_path=f if f.exists() else Path(str(f)+'.zst')
+            if not actual_path.exists():
+                # eval-owner keeps its per-world events in owner/evaluation-only.jsonl;
+                # an absent optional per-world trace is recorded as absent, not invented.
+                if f.name=='eval-only.jsonl':
+                    continue
+                raise ValueError('required raw receipt missing: '+str(f))
             receipts.append(dict(path=str(actual_path),sha256=sha256(actual_path),original_sha256=original_sha256(f)))
+    owner_events=folder/'owner/evaluation-only.jsonl'
+    if owner_events.exists():
+        receipts.append(dict(path=str(owner_events),sha256=sha256(owner_events)))
     return rows,receipts
 
 
