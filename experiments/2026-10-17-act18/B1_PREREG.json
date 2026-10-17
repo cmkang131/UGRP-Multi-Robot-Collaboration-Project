@@ -1,0 +1,50 @@
+{
+  "schema": "ugrp.act18.b1_prereg.v1",
+  "experiment": "2026-10-17-act18",
+  "phase": "B1",
+  "candidate": "act18-doneb1",
+  "pre_registered_utc": "2026-10-18T05:30:00Z",
+  "approval": "Lead 2026-10-18 (user 'ㄱㄱ', B1 go): done 감독만 바꾸는 5k bf16 fit probe. 실패 시 B2 자동 시작 금지.",
+  "base_checkpoint": {
+    "path": "/home/ugrp/ugrp-sim/runs/act18/training-r1/R100/step-100000",
+    "model_sha256": "44b11c3c147fb633fffa9e9cb6a0a48c5801f0b8fd2bdd9e33ea14a16804a544",
+    "reason": "chunk100은 ACT/LeRobot 표준 chunk. B1은 행동 표현을 바꾸지 않고 done 감독만 바꾼다."
+  },
+  "training": {
+    "init_checkpoint": "training-r1/R100/step-100000",
+    "steps": 5000,
+    "precision": "bf16_autocast_v1",
+    "batch_size": 8,
+    "lr": 1e-05,
+    "optimizer": "AdamW wd1e-4 (기존 act18_train 그대로)",
+    "chunk": 100,
+    "sampling": "uniform_episode_v1",
+    "seed": 20261017,
+    "data": "act17-v7/dataset-r1 TRAIN200 (manifest sha256 44c1c46073aa08ea028324ffe924b67d862a2f01b56f4db11afad17000a9b198)",
+    "done_positive_batch_fraction": 0.5,
+    "changes_vs_R100": ["배치 50%에서 양성 done 행 1개를 강제 포함(나머지 7개 uniform)",
+                        "그 외 행동 손실·정규화·청크·배치·lr·데이터 변경 없음"],
+    "unchanged": ["balanced_bce_v1 완료 손실 공식", "movement L1 + KL(10) 손실", "mean/std 정규화(floor .01)", "ACT 이미지 aug 없음"]
+  },
+  "done_handling": {
+    "label": "last_local_row_v1: grasp 구간 마지막 local_skill_sample 행(hold 끝)에만 done=1",
+    "positive_rows_train": 200,
+    "train_rows": 72572,
+    "uniform_episode_prior": 0.002766,
+    "balanced_weights_note": "harness balanced BCE는 양성 0.5/prior≈180.8, 음성 0.5/(1-prior)≈0.5014 (비율 361:1). 이 공식은 변경하지 않는다.",
+    "why": "양성 희소로 batch8의 97.8% 스텝이 양성 없이 학습되어 done 확률이 6e-4로 포화됐다. 양성 포함 배치를 50%로 올려 양성 신호를 정기적으로 준다."
+  },
+  "evaluation": {
+    "stage": "train4",
+    "instrumentation": "--record-done-prob (default-off 계측, 입력·명령·ensemble·채점 불변)",
+    "gate": "TRAIN4 4/4만 판정. 통과 시에만 VAL8 제출. B1에서는 FINAL40 없음.",
+    "report": ["done 확률 max(raw/ensemble)", "문턱 .65 발화 틱과 lift/hold 시점 정렬", "조기 발화 여부", "TRAIN4 n/N"],
+    "fail_rule": "실패 시 B2 자동 시작 금지, 원인표 보고 후 Lead 승인"
+  },
+  "pooling": {
+    "no_pooling_with": ["act18 R8", "act18 R100", "act18-tune", "bf16 probe"],
+    "packaging": "금지(packaging_eligible=false, step=5000 != 100000)",
+    "release": "금지"
+  },
+  "stop_after": "TRAIN4 결과·원본/SHA 기록 후 gcp2 임대 해제·프로세스0·GPU0·TERMINATED 확인."
+}
