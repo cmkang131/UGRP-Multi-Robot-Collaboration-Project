@@ -82,12 +82,15 @@ def installed():
         scene=original({**plan,'scenario_id':data,'end_color_scene':'off'})
         transform=scene.robot_transform
         def wrapped(xml,**kwargs):
-            return color_xml(transform(xml,**kwargs))
+            result=color_xml(transform(xml,**kwargs))
+            # Scene.build replaces manifest before applying this transform.
+            # Write the annotation here so it describes the final XML.
+            scene.manifest['act17_v7']=dict(scenario_id=plan['scenario_id'],scenario_sha256=digest,
+                cargo_version='v6',scenario_version='v7',end_color_scene=PROFILE,
+                heavy_crate=False,excluded_cargo=['can','tile','heavy_crate','tri_frame'],
+                scene_profile=SCENE,adapter_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest())
+            return result
         scene.robot_transform=wrapped
-        scene.manifest['act17_v7']=dict(scenario_id=plan['scenario_id'],scenario_sha256=digest,
-            cargo_version='v6',scenario_version='v7',end_color_scene=PROFILE,
-            heavy_crate=False,excluded_cargo=['can','tile','heavy_crate','tri_frame'],
-            scene_profile=SCENE,adapter_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest())
         return scene
     warp_act_scene.make_scene=make_scene
     try:

@@ -71,4 +71,11 @@ def main():
         if lease.exists() and read(lease).get('pid')==os.getpid():lease.unlink()
 
 
-if __name__=='__main__':main()
+if __name__=='__main__':
+    try:main()
+    except BaseException as error:
+        out=Path(sys.argv[sys.argv.index('--out')+1]);out.mkdir(parents=True,exist_ok=True)
+        if not (out/'summary.json').exists():
+            (out/'summary.json').write_text(json.dumps(dict(status='HOST_ERROR',complete=False,error=repr(error),
+                source_sha=frozen_source(ROOT),scope='preparation before any research training',research_training_updates=0),indent=2)+'\n')
+        raise

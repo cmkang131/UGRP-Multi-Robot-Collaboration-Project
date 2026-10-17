@@ -12,6 +12,7 @@ import json
 from pathlib import Path
 import subprocess
 import sys
+import xml.etree.ElementTree as ET
 
 import numpy as np
 sys.path.insert(0,str(Path(__file__).resolve().parent))
@@ -178,7 +179,15 @@ def convert(protocol,gate,records,output):
         if any(score['input_audit'][k] for k in ['invisible_measurements','held_world_reads']):
             raise ValueError('teacher input boundary violation')
         scene=read(controller/'scene.json')
-        if scene.get('act17_v7',{}).get('scenario_version')!='v7':raise ValueError('v7 scene receipt missing')
+        # Gate/pilot writer added its note before Scene.build reset manifest.
+        # Validate the unchanged actual final XML, never invent that old note.
+        xml=ET.fromstring((controller/'scene.xml').read_text())
+        fields={v.get('name'):v.get('data') for v in xml.findall('custom/text')}
+        if (not plan['scenario_id'].endswith('_v7') or fields.get('scene_profile')!='walls_floor_contrast_v5_indigo110_s80'
+                or fields.get('end_color_scene')!='grasp_act_teal_blue_v1' or xml.find('option').get('noslip_iterations')!='0'
+                or sha256(ROOT/'configs/zone_study_scenarios_v7'/(plan['scenario_id']+'.json'))!=plan['scenario_source_sha256']
+                or any(any(token in b.get('name','') for token in ['cargo_can','cargo_tile','cargo_crate','cargo_frame']) for b in xml.findall('.//body'))):
+            raise ValueError('actual v7 scene/contact XML required')
         observations=read(raw/'student-r1.jsonl',lines=True);labels=read(raw/'teacher-r1.jsonl',lines=True)
         groups=paired_segments(observations,labels,done_label='last_local_row_v1',include_initial_approach_v1=True)
         selected=[p for group in groups for p in group];frames={};states=[];actions=[];pads=[];images=[];metadata=[]
