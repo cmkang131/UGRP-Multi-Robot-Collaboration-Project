@@ -123,6 +123,17 @@ def profiles(candidate):
                       search26_static_peer='search26_static_peer_stance_v1',
                       search26_peer_memory='search26_peer_memory_v1',
                       search26_reobserve='search26_reobserve_views_v1')
+    # beamact5 round 4, ablation condition A: the r2 down-first search order is
+    # NOT enabled (r1 up-first circles with the existing 3rd-circle low-pitch
+    # fallback), keeping the 6/10/20 fixes (batched rects, static peer,
+    # peer-memory).  r4-b adds the reobserve boundary fix for the peer handoff
+    # in world 27.  Neither condition is pooled with r1/r2/r3.
+    if candidate in ('beamact5_r4a','beamact5_r4b'):
+        values.update(search23_rects='search23_batched_rects_v1',
+                      search26_static_peer='search26_static_peer_stance_v1',
+                      search26_peer_memory='search26_peer_memory_v1')
+    if candidate=='beamact5_r4b':
+        values.update(search26_reobserve='search26_reobserve_views_v1')
     return values
 
 
