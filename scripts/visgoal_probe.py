@@ -45,6 +45,11 @@ def vendor_root():
 
 def register_vendor():
     """Register byte-vendored reuse under its original module names."""
+    # The vendored modules import harness/sim at load time, before the
+    # renderer/legacy paths are installed by prefixed_paths.  Keep the clone
+    # root importable so a plain ``python scripts/visgoal_probe.py`` works.
+    if str(ROOT) not in sys.path:
+        sys.path.insert(0, str(ROOT))
     v = vendor_root()
     load_module('sim.grasp_act_solo_lookback', v / 'grasp_act_solo_lookback.py')
     load_module('sim.destination_visual_acquire', v / 'destination_visual_acquire.py')
