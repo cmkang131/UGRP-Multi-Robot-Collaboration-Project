@@ -66,6 +66,28 @@ the egomem2 `snapshot()` (`relative_xy_m`, `range_m`, `bearing_rad`, `age_s`,
 `radius95_m`, covariance); the coordinator's `center_body_m` naming maps to
 `relative_xy_m` in this repository's snapshot.
 
+## Paint appearance calibration (preflight blocker)
+
+The v5 floor is deliberately blue-tinted: its hue is 108, inside `PAINT_HUE['B']`
+(104-120).  The inherited `floor_patch` gate (S>=30) therefore called the whole
+floor a destination.  Preflight r1 (west start e00) saw 202557 "paint" pixels at
+tick 0, declared arrival at spawn, and the GT verdict was false.  Runner-accurate
+frames rendered on gcp3 with the arm held (the same setup as the loop) showed:
+
+* west/no-zone floor: band saturation p50 66-70, p99 74-77, max 196 (a few
+  isolated specular pixels); largest accepted component 0 at S>=110;
+* east-away e10: band max 99, no component;
+* east-visible e13: paint S p50 128, 29859 band pixels at S>=110, 28856 px
+  after the 3x3 opening, one component.
+
+The calibrated gate is `PAINT_SATURATION_MIN=110`.  `floor_patch` is still used
+as the metric fit, but only inside the accepted component via
+`clear=component_clear(px)`; no fit is attempted without a visible paint
+component.  Evidence and frame hashes are in
+`calibration/paint_saturation.json` with the two boundary frames
+(`e00-west-no-zone.jpg`, `e13-east-zone-visible.jpg`).  This is an appearance
+constant only; no zone coordinate or visibility label is used.
+
 ## Files
 
 * `setups.json` — 16 fixed starts (setup only; includes parked
@@ -80,11 +102,13 @@ the egomem2 `snapshot()` (`relative_xy_m`, `range_m`, `bearing_rad`, `age_s`,
 
 ```bash
 python3 scripts/check_current_stack.py experiments/2026-10-17-visgoal/queue-preflight.json \
-  --flow self_map --output experiments/2026-10-17-visgoal/stack-preflight.json
-python3 scripts/visgoal_probe.py --enabled --preflight \
-  --queue ... --renderer /home/ugrp/ugrp-sim/src/warp8f-selfmap-0ace43f25 \
-  --legacy /home/ugrp/ugrp-sim/src/legacy-... --setups ... \
-  --output /home/ugrp/ugrp-sim/runs/visgoal-preflight-r1
+  --flow self_map --output experiments/2026-10-17-visgoal/stack-preflight-v4.json
+python3 scripts/visgoal_probe.py --enabled --preflight --episodes 0,13 --sim-cap 60 \
+  --queue experiments/2026-10-17-visgoal/queue-preflight.json \
+  --renderer /home/ugrp/ugrp-sim/src/16a946ff3 \
+  --legacy /home/ugrp/ugrp-sim/src/warp8f-selfmap-0ace43f25 \
+  --setups /home/ugrp/ugrp-sim/src/<clone>/experiments/2026-10-17-visgoal/setups.json \
+  --output /home/ugrp/ugrp-sim/runs/visgoal-preflight-r2
 ```
 
 `--enabled` is mandatory; the module's default constructor option is `off`.

@@ -38,6 +38,12 @@ PATCH_FIT_RANGE_M = SLOT_MAX_RANGE_M
 FAR_RANGE_M = 4.0
 MIN_COLOUR_PIXELS = 120
 MIN_METRIC_PIXELS = 600
+# Calibrated on rendered v5 frames from the assigned VM (2026-10-17): the
+# blue-tinted floor lies in the hue band (hue 108) but its band saturation is
+# p99 73-77 (west frames) and max 99 (east-away frame e10).  Zone-B paint
+# measured S median 128; S>=110 retains 29859 px (vs 31491 at S>=30) and
+# leaves 0 px on the no-zone frames.  Appearance gate, not zone position.
+PAINT_SATURATION_MIN = 110
 SIGMA_RANGE_M = .20               # inherited PR406 range assumption
 SIGMA_BEARING_RAD = math.radians(3.)
 # No authored zone size is available with static_map_use=none.  This generic
@@ -59,13 +65,16 @@ def _point_covariance(xy):
     return j @ np.diag([SIGMA_RANGE_M ** 2, SIGMA_BEARING_RAD ** 2]) @ j.T
 
 
-def paint_components(bgr, band, *, min_pixels=MIN_COLOUR_PIXELS):
+def paint_components(bgr, band, *, min_pixels=MIN_COLOUR_PIXELS,
+                     saturation_min=PAINT_SATURATION_MIN):
     """Largest destination-colour component from own raw fisheye RGB.
 
-    Hue/S/V limits are unchanged from ``destination_visual_acquire.floor_patch``
-    (hue +/-5, S,V >= 30, usable remap region, 8-connected components).  The
-    120 px far gate is below that function's 600 px metric gate and is used only
-    as a bearing/approach hint; it is never the remembered metric landmark.
+    Hue/V/region/connectivity limits are those of ``floor_patch``; saturation
+    is raised from its S>=30 floor to the calibrated v5 paint gate.  The v5
+    floor itself has hue 108 (inside the paint band) but only S<=99, so S>=30
+    would call the whole floor a destination.  The 120 px far gate is below
+    floor_patch's 600 px metric gate and is used only as a bearing/approach
+    hint; it is never the remembered metric landmark by itself.
     """
     if bgr is None or bgr.shape != (480, 640, 3) or bgr.dtype != np.uint8:
         return dict(pixels=0, reason='own_rgb_missing', components=0)
@@ -73,7 +82,8 @@ def paint_components(bgr, band, *, min_pixels=MIN_COLOUR_PIXELS):
     hsv = cv2.cvtColor(bgr, cv2.COLOR_BGR2HSV)
     lo, hi = band
     mask = ((hsv[..., 0] >= lo - 5) & (hsv[..., 0] <= hi + 5)
-            & (hsv[..., 1] >= 30) & (hsv[..., 2] >= 30) & _usable_region(w, h))
+            & (hsv[..., 1] >= int(saturation_min)) & (hsv[..., 2] >= 30)
+            & _usable_region(w, h))
     mask = cv2.morphologyEx(mask.astype(np.uint8), cv2.MORPH_OPEN, np.ones((3, 3), np.uint8))
     n, labels, stats, cents = cv2.connectedComponentsWithStats(mask, 8)
     if n <= 1:
@@ -85,6 +95,24 @@ def paint_components(bgr, band, *, min_pixels=MIN_COLOUR_PIXELS):
     return dict(pixels=pixels, reason='destination_colour_observed',
                 components=int(n - 1), label=i, labels=labels, mask=mask,
                 bbox=[int(v) for v in stats[i, :4]], centroid=[float(v) for v in cents[i]])
+
+
+def component_clear(paint, *, dilate_px=2):
+    """Boolean mask of the accepted high-saturation paint component.
+
+    Passed as ``floor_patch(..., clear=...)`` so the vendored fitted-segment
+    helper cannot select the blue-tinted floor (its own S>=30 gate) instead of
+    the paint.  Dilation restores the 3x3-opening edge before the fit.
+    """
+    labels = paint.get('labels') if paint else None
+    label = paint.get('label') if paint else None
+    if labels is None or label is None:
+        return None
+    mask = (np.asarray(labels) == int(label)).astype(np.uint8)
+    if int(dilate_px) > 0:
+        k = 2 * int(dilate_px) + 1
+        mask = cv2.dilate(mask, np.ones((k, k), np.uint8))
+    return mask.astype(bool)
 
 
 def _ground_points(label_mask, pwm, *, max_range=FAR_RANGE_M):
@@ -117,9 +145,9 @@ def _ground_points(label_mask, pwm, *, max_range=FAR_RANGE_M):
                 ground_pixels=int(ok.sum()), source='own_rgb_nominal_ground_projection')
 
 
-def detect_paint(bgr, pwm, band):
+def detect_paint(bgr, pwm, band, *, saturation_min=PAINT_SATURATION_MIN):
     """Far colour hint + lower-centre on-paint evidence, never a zone identity."""
-    comp = paint_components(bgr, band)
+    comp = paint_components(bgr, band, saturation_min=saturation_min)
     if comp.get('pixels', 0) < MIN_COLOUR_PIXELS:
         return comp
     label = comp['label']
@@ -189,6 +217,7 @@ def wall_points(bgr, pwm, calibration, *, max_range=3.2):
 class Options:
     hue_band: tuple = PAINT_HUE['B']
     signature: str = 'paint_hue_B'
+    paint_saturation_min: int = PAINT_SATURATION_MIN
     exact_turn_rad: float = TURN_STEP_RAD
     max_stage_s: float = 240.
     wall_clear_m: float = .55

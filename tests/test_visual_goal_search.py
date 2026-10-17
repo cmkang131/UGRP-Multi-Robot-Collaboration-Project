@@ -4,7 +4,7 @@ import cv2
 import pytest
 
 from sim.visual_goal_search import (TURN_STEP_RAD, VisualGoalSearch, Options, OPTION,
-                                    paint_components, _point_covariance)
+                                    paint_components, component_clear, _point_covariance)
 
 
 def _hsv_image(hue, s=200, v=150, rect=(200, 150, 120, 80)):
@@ -33,9 +33,18 @@ def test_destination_colour_component_and_wall_hue_rejection():
     # v5 indigo wall hue is outside the destination band.
     wall = _hsv_image(133, s=81, v=110)
     assert paint_components(wall, (104, 120))['pixels'] == 0
+    # v5 floor hue 108 is inside the band, but its measured S<=77 must not be
+    # mistaken for paint (the preflight false positive on 2026-10-17).
+    floor = _hsv_image(108, s=66, v=155, rect=(0, 60, 640, 360))
+    assert paint_components(floor, (104, 120))['pixels'] == 0
+    mid = _hsv_image(110, s=105, v=155, rect=(0, 60, 640, 360))
+    assert paint_components(mid, (104, 120))['reason'] == 'destination_colour_absent'
     # A same-colour patch below the far gate is not a landmark hint.
     small = _hsv_image(110, rect=(300, 300, 8, 8))
     assert paint_components(small, (104, 120))['reason'] == 'destination_component_small'
+    # The fitted-segment helper is restricted to the accepted component.
+    clear = component_clear(comp)
+    assert clear is not None and int(clear.sum()) >= comp['pixels']
 
 
 def test_state_machine_look_wall_follow_gap_and_arrival():

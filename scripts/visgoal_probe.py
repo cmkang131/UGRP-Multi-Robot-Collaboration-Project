@@ -197,12 +197,19 @@ def run(a):
     dump(a.output / 'queue.json', q)
     register_vendor()
     setups = json.loads(a.setups.read_text())['episodes']
-    if a.preflight:
-        a.sim_cap = min(a.sim_cap, 4.)
-        setups = setups[:2]
     if a.episodes:
         keep = {int(x) for x in a.episodes.split(',')}
         setups = [e for i, e in enumerate(setups) if i in keep]
+    if a.preflight:
+        # A preflight must cover both sides of the perception decision: one
+        # west start (no destination colour) and one east start where the zone
+        # is inside the initial FOV.  Filter by --episodes first; truncating
+        # before the filter previously tested two west starts only.
+        a.sim_cap = min(a.sim_cap, 35.)
+        if not a.episodes:
+            east = [e for e in setups
+                    if e.get('split') == 'east_zone_possible_visibility']
+            setups = [setups[0]] + ([east[5]] if len(east) > 5 else east[:1])
     with prefixed_paths(a.renderer, a.legacy):
         import numpy as np
         import cv2
@@ -222,7 +229,7 @@ def run(a):
         from harness.mapbuild_command_prior import CommandPrior, OPTION as PRIOR
         from harness.egocentric_landmark_memory import LandmarkMemory, MemoryOptions, OPTION as MEMORY
         from sim.visual_goal_search import (VisualGoalSearch, OPTION as SKILL,
-                                            detect_paint, wall_points)
+                                            detect_paint, wall_points, component_clear)
         from sim.destination_visual_acquire import floor_patch
         from sim.solo_carry_obstacles import detections as obstacle_detections
         from harness.scene_colour_boundary import surface_masks
@@ -346,6 +353,7 @@ def run(a):
             inside_at_declared = None
             colour_seen = False
             start_visibility = None
+            start_paint_reason = None
             rotation_cmd = 0.
             rotation_gt = 0.
             last_yaw = None
@@ -377,24 +385,34 @@ def run(a):
                     cov = np.asarray(prior['covariance'])
                     if tick % 3 == 0:
                         obstacle_cache, _ = obstacle_detections(bgr, servo)
-                    paint = detect_paint(bgr, servo, hue_band)
+                    paint = detect_paint(bgr, servo, hue_band,
+                                         saturation_min=skill.options.paint_saturation_min)
                     walls = wall_points(bgr, servo, calibration)
                     if tick == 0:
-                        if paint.get('mask') is not None:
-                            cv2.imwrite(str(out / 'paint-mask.png'),
-                                        (paint['mask'] * 255).astype(np.uint8))
+                        pm = (paint.get('mask') if paint.get('mask') is not None
+                              else np.zeros(bgr.shape[:2], np.uint8))
+                        cv2.imwrite(str(out / 'paint-mask.png'),
+                                    (pm * 255).astype(np.uint8))
                         wm_tmp, _ = surface_masks(bgr, calibration)
                         cv2.imwrite(str(out / 'wall-mask.png'),
                                     (wm_tmp['wall'] * 255).astype(np.uint8))
+                        dump(out / 'tick0-perception.json',
+                             {k: v for k, v in paint.items()
+                              if k not in ('labels', 'mask') and not isinstance(v, np.ndarray)})
                     patch = None
                     patch_rec = None
-                    need_patch = ((paint.get('pixels', 0) >= 120
-                                   and paint.get('nearest_range_m', 99.) <= 1.8)
-                                  or skill.stage in ('target', 'approach'))
+                    # The vendored floor_patch uses S>=30, which also matches
+                    # the v5 blue floor.  Restrict its fitted segment to the
+                    # calibrated high-saturation component; never fit without
+                    # a visible destination-colour component.
+                    paint_clear = component_clear(paint)
+                    need_patch = (paint_clear is not None and
+                                  (paint.get('nearest_range_m', 99.) <= 1.8
+                                   or skill.stage in ('target', 'approach')))
                     if need_patch:
                         patch, patch_rec = floor_patch(
                             bgr, servo, 'B', (1.5, 1.5),
-                            clear=None, excluded=None)
+                            clear=paint_clear, excluded=None)
                     obs = skill.memory_observation(t, patch, patch_rec or {})
                     mem = memory.step(t, delta, cov, [obs] if obs else [])
                     action = skill.control(t, paint=paint, walls=walls,
@@ -427,7 +445,10 @@ def run(a):
                         inside_at_declared = bool(inside)
                     colour_seen = skill.colour_seen
                     if tick == 0:
-                        start_visibility = int(paint.get('pixels', 0))
+                        start_paint_reason = paint.get('reason')
+                        start_visibility = (int(paint.get('pixels', 0))
+                                            if paint.get('reason') ==
+                                            'destination_colour_observed' else 0)
                     labels.append(dict(t=t, frame_id=tick,
                                        pose=[float(qp[adr]), float(qp[adr + 1]), float(yaw)],
                                        inside_zone_B=inside,
@@ -500,6 +521,7 @@ def run(a):
                           arrive_pose_eval_only=arrive_pose,
                           rotation_cmd_rad=rotation_cmd, rotation_gt_rad_eval_only=rotation_gt,
                           start_visibility_pixels=start_visibility,
+                          start_paint_reason=start_paint_reason,
                           final_pose_eval_only=[float(locals()['qp'][adr]),
                                                 float(locals()['qp'][adr + 1])]
                           if 'qp' in locals() else None,
