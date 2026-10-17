@@ -1,0 +1,416 @@
+{
+  "schema": "ugrp.current_stack.check.v1",
+  "ok": true,
+  "current_compliant": true,
+  "checker_sha256": "bdef5ad98b8e5ee8a21126f75430a58193d5f44f11f23fa60fd9ca487511eb3b",
+  "scope": "declared manifest fields; not independent runtime/physics verification",
+  "inputs": [
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act17-v7/record-bulk-r1/queue.json",
+      "sha256": "b50401c8ca750d533b8bbd20708214cc49f578619e425522fb43bbe5074feb3a"
+    }
+  ],
+  "rows": [
+    {
+      "record": "$",
+      "flow": "record",
+      "id": "physics_backend",
+      "expected": "mjwarp_batch_v1",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.physics_backend",
+          "value": "mjwarp_batch_v1"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/runs/act17-v7/record-bulk-r1/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "record",
+      "id": "contact_profile",
+      "expected": "warp_native_contact_v1",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.contact_profile",
+          "value": "warp_native_contact_v1"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/runs/act17-v7/record-bulk-r1/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "record",
+      "id": "noslip_iterations",
+      "expected": 0,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.noslip_iterations",
+          "value": 0
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/runs/act17-v7/record-bulk-r1/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "record",
+      "id": "scene_profile",
+      "expected": "walls_floor_contrast_v5_indigo110_s80",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.scene_profile",
+          "value": "walls_floor_contrast_v5_indigo110_s80"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/runs/act17-v7/record-bulk-r1/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "record",
+      "id": "cargo_version",
+      "expected": "v6",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.cargo_version",
+          "value": "v6"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/runs/act17-v7/record-bulk-r1/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "record",
+      "id": "scenario_version",
+      "expected": "v7",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.scenario_version",
+          "value": "v7"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/runs/act17-v7/record-bulk-r1/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "record",
+      "id": "heavy_crate",
+      "expected": false,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.heavy_crate",
+          "value": false
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/runs/act17-v7/record-bulk-r1/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "record",
+      "id": "setdown_lookaround_v1",
+      "expected": true,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.setdown_lookaround_v1",
+          "value": true
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/runs/act17-v7/record-bulk-r1/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "record",
+      "id": "held_object_hidden_v1",
+      "expected": true,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.held_object_hidden_v1",
+          "value": true
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/runs/act17-v7/record-bulk-r1/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "record",
+      "id": "held_world_reads",
+      "expected": 0,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.held_world_reads",
+          "value": 0
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/runs/act17-v7/record-bulk-r1/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "record",
+      "id": "teacher_visibility",
+      "expected": "visible_only",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.teacher_visibility",
+          "value": "visible_only"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/runs/act17-v7/record-bulk-r1/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "record",
+      "id": "invisible_measurements",
+      "expected": 0,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.invisible_measurements",
+          "value": 0
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/runs/act17-v7/record-bulk-r1/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "record",
+      "id": "weld",
+      "expected": false,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.weld",
+          "value": false
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/runs/act17-v7/record-bulk-r1/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "record",
+      "id": "top_camera_control",
+      "expected": false,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.top_camera_control",
+          "value": false
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/runs/act17-v7/record-bulk-r1/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "record",
+      "id": "ultrasonic_front",
+      "expected": "off",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.ultrasonic_front",
+          "value": "off"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/runs/act17-v7/record-bulk-r1/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "record",
+      "id": "wall_cap",
+      "expected": null,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.wall_cap",
+          "value": null
+        },
+        {
+          "field": "parent[0].wall_cap",
+          "value": null
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/runs/act17-v7/record-bulk-r1/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "record",
+      "id": "speed_gate",
+      "expected": "record_only",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.speed_gate",
+          "value": "record_only"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/runs/act17-v7/record-bulk-r1/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "record",
+      "id": "speed_metric",
+      "expected": "wall_s/(sim_s*nworld)",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.speed_metric",
+          "value": "wall_s/(sim_s*nworld)"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/runs/act17-v7/record-bulk-r1/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "record",
+      "id": "gcp_host",
+      "expected": [
+        "ugrp-act-l4-gcp2",
+        "ugrp-act-l4-gcp3",
+        "ugrp-act-l4-gcp4",
+        "ugrp-act-l4-gcp5",
+        "ugrp-act-l4-gcp6"
+      ],
+      "observed": [
+        {
+          "field": "parent[0].stack_values.gcp_host",
+          "value": "ugrp-act-l4-gcp2"
+        },
+        {
+          "field": "stack_values.gcp_project",
+          "value": "ugrp-sim-b-1014"
+        },
+        {
+          "field": "stack_values.gcp_account",
+          "value": "changmin5781@gmail.com"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/runs/act17-v7/record-bulk-r1/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "record",
+      "id": "gcp_guards",
+      "expected": {
+        "idle_minutes": 20,
+        "budget_stop": true,
+        "credentials_on_vm": false
+      },
+      "observed": [
+        {
+          "field": "parent[0].stack_values.gcp_guards",
+          "value": {
+            "idle_minutes": 20,
+            "budget_stop": true,
+            "credentials_on_vm": false
+          }
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/runs/act17-v7/record-bulk-r1/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "record",
+      "id": "no_pooling",
+      "expected": true,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.no_pooling",
+          "value": true
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/runs/act17-v7/record-bulk-r1/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "record",
+      "id": "rejection_ledger",
+      "expected": [
+        "reason_category",
+        "blocked_object",
+        "minimum_gap_m"
+      ],
+      "observed": [
+        {
+          "field": "parent[0].stack_values.rejection_ledger",
+          "value": [
+            "reason_category",
+            "blocked_object",
+            "minimum_gap_m"
+          ]
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/runs/act17-v7/record-bulk-r1/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "record",
+      "id": "cap_end_label",
+      "expected": "cap_end",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.cap_end_label",
+          "value": "cap_end"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/runs/act17-v7/record-bulk-r1/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "record",
+      "id": "gcp_project",
+      "expected": [
+        "ugrp-sim-b-1014",
+        "ugrp-sim-c-1016",
+        "ugrp-sim-d-1016",
+        "ugrp-sim-e-1016",
+        "ugrp-sim-f-1016"
+      ],
+      "observed": [
+        {
+          "field": "parent[0].stack_values.gcp_project",
+          "value": "ugrp-sim-b-1014"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/runs/act17-v7/record-bulk-r1/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "record",
+      "id": "gcp_account",
+      "expected": [
+        "changmin5781@gmail.com",
+        "kcm5781kcm5781@gmail.com"
+      ],
+      "observed": [
+        {
+          "field": "parent[0].stack_values.gcp_account",
+          "value": "changmin5781@gmail.com"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/runs/act17-v7/record-bulk-r1/queue.json"
+    }
+  ],
+  "stack": {
+    "path": "/home/ugrp/ugrp-sim/runs/act17-v7/reference/act17-current-stack-efc484ad5.json",
+    "sha256": "d4309b89d26e692d9530dc0725fa6df7c61576ea1f00545d07f47c554e882ffe"
+  },
+  "counts": {
+    "current": 25
+  },
+  "admission": "pass"
+}
