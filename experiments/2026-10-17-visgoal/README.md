@@ -253,6 +253,17 @@ the identical per-episode perception, control and command tape. The
 sequential `nworld=1` path is unchanged and stays the default; batch is a
 separate execution condition and is not pooled with it.
 
+Batch evidence (VM `visgoal-batch-eq-n1` vs `n2`, 10 SIM s, same queue and
+seeds; `scripts/visgoal_batch_compare.py`): e00 0/101 and e01 4/101 command
+mismatches (max wheel diff 0.7, max duration diff 0.024 s), all
+status/found/stage values identical, max eval-only pose/yaw diff 0.088.
+A 16-world short run (`visgoal-batch-g16-short`, 16 x 10 SIM s) completed
+16/16 as `cap_end` with wall 490.9 s, i.e. wall/(sim_s*nworld) = 3.07
+(steady-state per-tick 2.9), below the 6.0 block. Gate r4
+(`visgoal-gate-r4`) reruns all 16 seeds at 120 SIM s with the same queue,
+source pin `3d06f8b4f` and `worlds_per_batch: 16`; candidate B
+(`visgoal_mirror_pulse_v1`) is queued after it in the same batch mode.
+
 ## Files
 
 * `setups.json` — 16 fixed starts (setup only; includes parked
