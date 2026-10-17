@@ -61,6 +61,10 @@
 |20|**PASS**|teacher_terminal|55.2|변동 없음|
 |27|**FAIL**|teacher_terminal|28.4|reobserve 전환은 **수정 확인**(14.9 s에 view attempt 0 → 15.2 fresh_measurements_replan)했으나 red_1 staleness 재발로 handoff. 25.4→28.4 s로 지연만 증가|
 
+### 5.4 r5a (r4c + wide_stance) — **중단·무효**
+
+`validation-r5a-5-stopped` — case27 FAIL 24.2 s(wide_stance로도 stale red_1 차단 미해소, jaw bound ~19.7°로 lateral 이득 작음), per-world wall/SIM ~13으로 r4c(~5.8)의 2.2배 → gate 후보로 부적합, SIGINT 후 원본 보존(집계 제외).
+
 ### 5.3 조건 C — r4c (far→close→mid circles + case27 수정)
 
 실행 `/home/ugrp/ugrp-sim/runs/beamact5/validation-r4c-4` (wall 1382.10 s, **성공 3/4, cap_end 0**).
