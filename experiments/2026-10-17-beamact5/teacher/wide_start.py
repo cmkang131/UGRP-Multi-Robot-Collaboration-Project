@@ -160,7 +160,13 @@ def pre_registration(seed, script_sha):
     )
 
 
-def generate(seed, output, dependency, frozen_root, *, setup_validity=True):
+def generate(seed, output, dependency, frozen_root, *, setup_validity=True, candidate=None):
+    """Regenerate the unchanged 40 starts.
+
+    ``candidate`` is forwarded to the runner's case contract.  ``None`` keeps
+    the historical unused label; the r2 gate passes the adapter candidate name
+    so the same immutable plans select the new default-off mode bundle.
+    """
     output = Path(output)
     output.mkdir(parents=True, exist_ok=True)
     for name in ('wide-pre-registration.json', 'wide-gate-plan.json', 'wide-cases.json',
@@ -169,6 +175,8 @@ def generate(seed, output, dependency, frozen_root, *, setup_validity=True):
             raise ValueError('new output directory required; previous evidence is immutable')
     script_sha = digest(Path(__file__))
     prereg = pre_registration(seed, script_sha)
+    if candidate is not None:
+        prereg['candidate'] = candidate
     dump(output / 'wide-pre-registration.json', prereg)
 
     scenario_path = BEAMPAIR_EXP / 'scenario-v7.json'
@@ -369,7 +377,8 @@ def generate(seed, output, dependency, frozen_root, *, setup_validity=True):
     cases = [
         dict(plan=e, profile=dict(scene_profile=SCENE_PROFILE, held_object='hidden_v1',
                                   teacher_visibility='visible_only', top_camera_control=False),
-             candidate=f"wide_start_{e['start_layers']['r1']['layer']}_{e['seed']}")
+             candidate=(candidate if candidate is not None else
+                        f"wide_start_{e['start_layers']['r1']['layer']}_{e['seed']}"))
         for e in episodes]
     dump(output / 'wide-cases.json', cases)
     dump(output / 'wide-setup-funnel.json', dict(
@@ -426,5 +435,7 @@ if __name__ == '__main__':
     p.add_argument('--dependency-root', type=Path, required=True)
     p.add_argument('--frozen-root', type=Path, required=True)
     p.add_argument('--no-setup-validity', action='store_true')
+    p.add_argument('--candidate', help='runner case candidate; default keeps the historical unused label')
     a = p.parse_args()
-    generate(a.seed, a.output, a.dependency_root, a.frozen_root, setup_validity=not a.no_setup_validity)
+    generate(a.seed, a.output, a.dependency_root, a.frozen_root,
+             setup_validity=not a.no_setup_validity, candidate=a.candidate)

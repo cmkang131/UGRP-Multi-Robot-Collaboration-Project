@@ -217,7 +217,8 @@ def main():
     try:
         for i,case in enumerate(selected):
             lane,bridge=make_lane(a.adapter_source,a.teacher_source,case['plan'],a.out/f'world-{i:03d}',hooks,i,a.cap_s,
-                flow=a.flow,profile=case.get('profile'),canonical=canonical)
+                flow=a.flow,profile=case.get('profile'),canonical=canonical,
+                candidate=case.get('candidate','baseline'))
             lanes.append(lane);bridges.append(bridge)
             contexts.append(next(lane));report['started_N']+=1
         write(a.out/'single-model-audit.json',model_arrays_equal([c['world'].model for c in contexts]))
