@@ -30,3 +30,5 @@
 - [Nav2 OmniMotionModel](https://api.nav2.org/nav2-rolling/html/omni__motion__model_8cpp_source.html)
 - 현재 vendor는 `harness/mapbuild_amcl_vendor/NOTICE.md`의 고정 소스/라이선스와 함께 보존.
 - 계수: `operations/r3-likelihood-summary.json`, `operations/camera-summary.json`, `wall-observations.md`.
+
+동일 R3 coarse trial0의 동결 예측 재현 차이는0. 44갱신 모두501입자(원문 `count>limit` 종료 때문에 최소500에서1개 더), 갱신 간격 중앙.8/p90 1.0/최대1.5 SIM초. 측정 전 ESS 최소365.06/중앙439.61. 이동 모델이 넣는 1회 전진 잡음 SD는 중앙24.84/p90 26.18/최대27.28 mm이며, 회전 SD 최대3.606°. 최대 전진 SD 갱신 t21.5에는 실제 입력 delta translation1.267 mm/yaw.228956 rad, rot1=0이었다. 따라서 이 자료에서 큰 rot1 역회전 분해가 주원인이라는 가설은 지지되지 않는다. 회전 자체의 alpha4 항이 전진 확산을 넣는 표준 differential 모델의 성질은 확인된다. 이것이62 mm 편향 전부를 설명하는 인과 검증은 아니다. 근거 operations/bias-r3.json, scripts/mapbuild10_bias.py; 물리/렌더0.

@@ -247,8 +247,7 @@ def run(a):
             old=rgb['r1'];last_servo=servo
             if long_config and tick==300:
                 speed_first30=(time.monotonic()-start)/30.
-                dump(a.output/'speed-first30.json',dict(metric='wall_s/(sim_s*nworld)',value=speed_first30,nworld=1,includes_recording=True,warning=speed_first30>3.5,blocking=speed_first30>6.,basis='AGENTS existing 30 SIM sample, 3.5 warning / 6.0 blocking'))
-                if speed_first30>6.:status='SPEED_GATE_BLOCKED';break
+                dump(a.output/'speed-first30.json',dict(mode='record_only',metric='wall_s/(sim_s*nworld)',value=speed_first30,nworld=1,includes_recording=True,blocking=False,basis='current_stack speed_gate 2026-10-17 explicitly supersedes former >6 block; first30 SIM measurement only'))
             if tick==round(a.sim_budget*10):break
             if stage in ('prescan','rescan'):
                 cmd,done=prescan.step(t,servo,lambda:rgb['r1'])

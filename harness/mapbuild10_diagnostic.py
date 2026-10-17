@@ -61,8 +61,7 @@ class DiagnosticCorrection:
                 gap_status='not_measured', static_from_own=None, production_qualified=False)
         # One fixed gauge; later AMCL estimates change the own-frame pose.
         if self.static_from_own is None:
-            from harness.selfmap_map_correction import inverse
-            self.static_from_own = compose(self.absolute_pose(), inverse(self.amcl.odom))
+            self.static_from_own = compose(self.absolute_pose(), between(self.amcl.odom, np.zeros(3)))
         self.pose = between(self.static_from_own, self.absolute_pose())
         return dict(status='accepted', reason='coordinator_approved_diagnostic_only',
             category='static_amcl', blocked_object='own_observed_wall', minimum_gap_m=None,
