@@ -299,5 +299,9 @@ world0 도착·world1 실패, 후보 이벤트 7행, 수용 0)에서 만들었�
   visual 8/8; 영상·재생 산출물은 게이트 SUMS 이후 생성이라 별도 해시).
 * 원본: VM `/home/ugrp/ugrp-sim/runs/egonav/far-probe-off-03`,
   `far-probe-on-03`, `far-visual-01`. Mac `outputs/egonav-far/`의 같은 이름.
-* gcp4는 리스 해제 뒤 정지·TERMINATED를 확인한다. 다른 GCP 프로젝트
-  결과와 합산하지 않는다.
+* gcp4: egonav 리스(`/home/ugrp/ugrp-sim/leases/egonav.json`)를 제거하고
+  2026-10-18 01:11 KST(2026-10-17 16:11 UTC)에 정지했다. `gcpctl.py
+  status gcp4` → `TERMINATED` 확인(남은 숨김 claim 잠금 2개는 소유
+  프로세스가 없어 `--force`로 정지; 원본 디스크는 보존). 다른 GCP
+  프로젝트 결과와 합산하지 않는다.
+* PR: #587 (draft). 사용한 새 실행 번들·runnable ID는 없다.
