@@ -1,0 +1,123 @@
+{
+  "schema": "ugrp.llmnomap_run_manifest.v1",
+  "flow": "e2e_llm",
+  "scope": "Mac-only paired LLM prompt replay. No VM/SSH/sim/render/physics. The original arm is the stored static-map prompt; the variant arm is the same request projected by planner_egocentric_memory_v1. Physical/localization/goal-discovery values below are inherited declarations from configs/current_stack.json, not measurements of this replay.",
+  "stack_check": null,
+  "rejection_table": "/Users/changmin/projects/ugrp-wt/llmnomap/experiments/2026-10-17-llmnomap/rejection_table_preflight.json",
+  "stack_values": {
+    "physics_backend": "mjwarp_batch_v1",
+    "contact_profile": "warp_native_contact_v1",
+    "noslip_iterations": 0,
+    "scene_profile": "walls_floor_contrast_v5_indigo110_s80",
+    "end_color_scene": "grasp_act_teal_blue_v1",
+    "cargo_version": "v6",
+    "scenario_version": "v7",
+    "heavy_crate": false,
+    "localization_path": "egocentric_landmark_memory_v1",
+    "rbpf": "off",
+    "localization_engine": "OpenCV",
+    "setdown_lookaround_v1": true,
+    "held_object_hidden_v1": true,
+    "held_world_reads": 0,
+    "teacher_visibility": "visible_only",
+    "invisible_measurements": 0,
+    "nearfield_executor": "ACT",
+    "weld": false,
+    "top_camera_control": false,
+    "planner_model": "google/gemma-4-31b-it",
+    "planner_provider": "CoreWeave",
+    "planner_quantization": "fp4",
+    "planner_fallbacks": false,
+    "planner_own_rgb_count": 1,
+    "planner_cache_order": [
+      "system",
+      "static",
+      "dynamic",
+      "image"
+    ],
+    "heading_mode": "on",
+    "ultrasonic_front": "off",
+    "wall_cap": null,
+    "speed_gate": "record_only",
+    "speed_metric": "wall_s/(sim_s*nworld)",
+    "gcp_host": null,
+    "gcp_guards": {
+      "idle_minutes": 20,
+      "budget_stop": true,
+      "credentials_on_vm": false
+    },
+    "no_pooling": true,
+    "planning_cap_basis": "compute_or_sim",
+    "rejection_ledger": [
+      "reason_category",
+      "blocked_object",
+      "minimum_gap_m"
+    ],
+    "cap_end_label": "cap_end",
+    "gcp_project": null,
+    "gcp_account": null,
+    "dialogue_language": "peer_en",
+    "selfmap_map_correction": "off",
+    "localization_initial_prior": "none",
+    "static_map_use": "none",
+    "goal_discovery": "visual_search"
+  },
+  "stack_deviations": [
+    {
+      "id": "static_map_use",
+      "reason": "원팔(original)은 저장된 정적지도 프롬프트를 그대로 재생하고, 변형팔만 static_map_use=none으로 투영한다. 두 팔의 짝지은 비교가 목적이며 새 실행 경로는 변형팔이다.",
+      "approval": {
+        "authority": "user",
+        "evidence": "작업 지시 2026-10-17: \"목표: 판단 LLM 요청에서 정적 지도 ...를 빼고 ... 기본 off 토글\" + \"3) 저장된 실제 판단 요청 ...을 변형으로 바꿔 ... 원래 요청과 짝지어 잰다.\""
+      }
+    },
+    {
+      "id": "gcp_host",
+      "reason": "VM 없음(시뮬 금지) 지시에 따라 이 배치는 GCP 호스트를 사용하지 않는다.",
+      "approval": {
+        "authority": "user",
+        "evidence": "작업 지시 2026-10-17: \"VM 없음(시뮬 금지). LLM 호출은 Mac에서 OpenRouter 키로만\"."
+      }
+    },
+    {
+      "id": "gcp_project",
+      "reason": "GCP 호스트를 사용하지 않으므로 프로젝트를 배정하지 않는다.",
+      "approval": {
+        "authority": "user",
+        "evidence": "작업 지시 2026-10-17: \"VM 없음(시뮬 금지)\"."
+      }
+    },
+    {
+      "id": "gcp_account",
+      "reason": "GCP 호스트를 사용하지 않으므로 계정을 배정하지 않는다.",
+      "approval": {
+        "authority": "user",
+        "evidence": "작업 지시 2026-10-17: \"VM 없음(시뮬 금지)\"."
+      }
+    }
+  ],
+  "llm_replay": {
+    "endpoint": {
+      "model": "google/gemma-4-31b-it",
+      "provider": "CoreWeave",
+      "tag": "coreweave/fp4",
+      "quantization": "fp4",
+      "allow_fallbacks": false
+    },
+    "temperature": 0,
+    "max_tokens": 300,
+    "calls_planned": 80,
+    "calls_cap": 200,
+    "prompt_arms": [
+      "original",
+      "planner_egocentric_memory_v1"
+    ],
+    "image_attached": true,
+    "image_sha256": "15673f61873991c84cfe449747efa858b4986e36d8f48c5874f483574ec0cfc3",
+    "stored_requests_text_only": true,
+    "task_accuracy_measured": false
+  },
+  "inputs": {
+    "replay_inputs": "experiments/2026-10-17-llmnomap/replay_inputs.jsonl"
+  }
+}

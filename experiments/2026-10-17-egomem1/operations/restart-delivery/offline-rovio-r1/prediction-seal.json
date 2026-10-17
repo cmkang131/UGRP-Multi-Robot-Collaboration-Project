@@ -1,0 +1,41 @@
+{
+  "prediction_sha256": "86968cadbfcf12f9be258a2d774fc9843d711dcef4ad7478de46980e6a7d6268",
+  "allowed_sha256": "b25eb9ae61798191d6cc8966cc21133975f9e618adecafa3cee208f1e8596e25",
+  "extraction_seal_sha256": "6b25dc157e459e68c7fcf835a1119abd6da8fba2bad90cb2ea7caf5f31219b28",
+  "sources": {
+    "/home/ugrp/ugrp-sim/src/egomem1-ff0a6067a/harness/egocentric_landmark_memory.py": "bb7b9a85dbfc0f2a519cb9700e4cc8852966e9282285a489d6ed21b8ed583e63",
+    "/home/ugrp/ugrp-sim/src/egomem1-ff0a6067a/harness/egomem_vision.py": "ce359e30f1c8a92f863924391c937437a5adac1f71b1f232047b88734c35d886",
+    "/home/ugrp/ugrp-sim/src/egomem1-ff0a6067a/harness/rovio_feature_statistics.py": "97f943d4c342b5bca9f608df504029b36444745ba46896c4338b6b7bf62b380e",
+    "/home/ugrp/ugrp-sim/src/egomem1-ff0a6067a/harness/vendor/rovio/FeatureStatistics.hpp": "8b2ae273573ca53ddc4c6cb492d824a72c75dfad2b1c9eac4dfebe7a2151a732",
+    "/home/ugrp/ugrp-sim/src/egomem1-ff0a6067a/harness/vendor/rovio/rovio.info": "15f25e237ece2c5980435b8c9a2a144d142651e958510551ec7534fbbe8b4d4c",
+    "/home/ugrp/ugrp-sim/src/egomem1-ff0a6067a/harness/vendor/rovio/statistics_c_api.cpp": "2c0711dfb5935f1789c97013d5e291a1445e76de1a72f97aab26670ed737bc71",
+    "/home/ugrp/ugrp-sim/src/egomem1-ff0a6067a/scripts/egomem1_offline.py": "a81baa7d058ff2a4e32254f519dc77114aa18aae44967a396c37a414948ea1e6"
+  },
+  "implementation": "rovio_local_v1",
+  "statistics_library_sha256": "be73c1df9d37af4416b6c4ca22c58b9f51219894fcc381bd9eff32e24284797c",
+  "truth_inputs": 0,
+  "static_map_inputs": 0,
+  "global_pose_state": false,
+  "full_cross_covariance": true,
+  "events": {
+    "created": 96,
+    "reobserved": 220,
+    "association_ambiguous": 101,
+    "association_gate_rejected": 80,
+    "rovio_quality_removed": 59,
+    "duplicate_frame_observation": 29,
+    "rovio_reserve_removed": 29
+  },
+  "reproduction": [
+    "/home/ugrp/ugrp-sim/src/egomem1-ff0a6067a/scripts/egomem1_offline.py",
+    "predict",
+    "--input",
+    "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2",
+    "--output",
+    "/home/ugrp/ugrp-sim/ops-reviews/egomem1/offline-rovio-r1",
+    "--implementation",
+    "rovio_local_v1",
+    "--rovio-library",
+    "/home/ugrp/ugrp-sim/ops-reviews/egomem1/rovio-statistics-ff0a6067a.so"
+  ]
+}

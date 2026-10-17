@@ -1,0 +1,55 @@
+{
+  "unit": "recording",
+  "funnel": [
+    {
+      "stage": "rgb_sha",
+      "input_n": 1,
+      "cumulative_pass_n": 1,
+      "rejected_n": 0
+    },
+    {
+      "stage": "visual_memory",
+      "input_n": 1,
+      "cumulative_pass_n": 1,
+      "rejected_n": 0
+    },
+    {
+      "stage": "gt_label_qualified",
+      "input_n": 1,
+      "cumulative_pass_n": 1,
+      "rejected_n": 0
+    },
+    {
+      "stage": "departure_verified",
+      "input_n": 1,
+      "cumulative_pass_n": 1,
+      "rejected_n": 0
+    },
+    {
+      "stage": "goal_absent_sample",
+      "input_n": 1,
+      "cumulative_pass_n": 1,
+      "rejected_n": 0
+    },
+    {
+      "stage": "same_zone_reacquired",
+      "input_n": 1,
+      "cumulative_pass_n": 1,
+      "rejected_n": 0
+    }
+  ],
+  "raw": "/home/ugrp/ugrp-sim/runs/egomem1-round1/recording1",
+  "reproduction": [
+    "/home/ugrp/ugrp-sim/src/e1afa7f3146b51f825a81169c0b8ad2ad415f935/scripts/egomem1_evaluate.py",
+    "--input",
+    "/home/ugrp/ugrp-sim/runs/egomem1-round1/recording1",
+    "--output",
+    "/home/ugrp/ugrp-sim/ops-reviews/egomem1/recording1-eval"
+  ],
+  "reasons": {
+    "reason": "see first rejected funnel gate",
+    "blocked_object": "not_observed",
+    "minimum_gap_m": null,
+    "gap_status": "not_measured"
+  }
+}

@@ -1,0 +1,2541 @@
+{
+  "schema": "ugrp.stackgrep.v1",
+  "generated_at": "2026-10-17",
+  "baseline": {
+    "config": "configs/current_stack.json",
+    "as_of": "2026-10-17",
+    "config_commit": "c43a9f515",
+    "config_base_sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+    "main_head": "79a4918d0",
+    "open_prs": 51,
+    "pr_head_refs_verified": true,
+    "pr_head_ref_count": 51
+  },
+  "decisions": {
+    "localization_path": "egocentric_landmark_memory_v1",
+    "static_map_use": "none",
+    "selfmap_map_correction": "off",
+    "localization_initial_prior": "none",
+    "goal_discovery": "visual_search",
+    "setdown_lookaround_v1": "egocentric rewrite required",
+    "planner": {
+      "model": "google/gemma-4-31b-it",
+      "provider": "CoreWeave",
+      "quantization": "fp4",
+      "fallbacks": false,
+      "own_rgb_count": 1,
+      "cache_order": [
+        "system",
+        "static",
+        "dynamic",
+        "image"
+      ]
+    },
+    "input_boundary": [
+      "own RGB",
+      "own command history"
+    ],
+    "top_camera": "evaluation only",
+    "held_object_hidden_v1": true,
+    "held_world_reads": 0,
+    "invisible_measurements": 0,
+    "weld": false,
+    "nearfield_executor": "ACT"
+  },
+  "research": [
+    {
+      "id": "R1",
+      "topic": "egocentric visual-inertial state estimation",
+      "source": "ROVIO (Bloesch et al., IJRR 2017) / ROVIO FeatureStatistics.hpp (BSD-3-Clause)",
+      "url": "https://github.com/ethz-asl/rovio",
+      "verified_in": "PR #574 / experiments/2026-10-17-egomem2",
+      "use": "자기 RGB/LK+자기 명령의 예측→관측 순서; 정적 지도 없는 상대 위치 갱신"
+    },
+    {
+      "id": "R2",
+      "topic": "optical flow tracking",
+      "source": "OpenCV Lucas-Kanade optical flow tutorial (official docs)",
+      "url": "https://docs.opencv.org/4.x/d4/dee/tutorial_optical_flow.html",
+      "verified_in": "PR #574 body (LK 사용)",
+      "use": "자기 RGB feature tracking; map 없이 frame-to-frame 상대 변위"
+    },
+    {
+      "id": "R3",
+      "topic": "map/odom frame conventions (retired path)",
+      "source": "ROS REP-105",
+      "url": "https://ros.org/reps/rep-0105.html",
+      "verified_in": "PR #440 / #507",
+      "use": "기존 map→odom 보정이 왜 정적 지도 경로였는지 설명; 새 경로는 ego frame"
+    },
+    {
+      "id": "R4",
+      "topic": "AMCL / likelihood field (retired path)",
+      "source": "Nav2 nav2_amcl (pinned b58a7573) and Probabilistic Robotics",
+      "url": "https://github.com/ros-navigation/navigation2/tree/b58a7573f44a984fdc5f3eaa80c4b62ac529ab9d/nav2_amcl",
+      "verified_in": "PR #507 / #440",
+      "use": "정적 지도 위치추정의 공개 표준 구현; 대체 대상 비교 기준"
+    },
+    {
+      "id": "R5",
+      "topic": "own-map occupancy/frontier (aligned alternative)",
+      "source": "Moravec & Elfes 1985; Elfes 1990; Yamauchi 1997; slam_toolbox/gmapping",
+      "url": "https://biorobotics.ri.cmu.edu/papers/sbp_papers/integrated1/yamauchi_frontiers.pdf",
+      "verified_in": "PR #506",
+      "use": "자기 관측 점유 격자/frontier; 정적 지도 대신 자기 지도"
+    },
+    {
+      "id": "R6",
+      "topic": "visual search / active perception",
+      "source": "active visual search / next-best-view literature (Connolly 1985; Bajcsy 1988) — 원문 미열람, 프로젝트 기존 참고 목록",
+      "url": "",
+      "verified_in": "PR #502 참고 목록",
+      "use": "둘러보기 방향을 정보이득/미확인 영역 기준으로 선택; static landmark 대신 ego memory"
+    }
+  ],
+  "static_map_audit": [
+    {
+      "id": "M01",
+      "ref": "main",
+      "file": "harness/zone_study_inputs.py",
+      "line": "365,385,408-410,513-515",
+      "flow": "zone-study LLM judgment",
+      "use": "build_call_input payload에 static_map을 매 호출 복사; caller map을 frozen original과 검증",
+      "replacement_needed": "yes",
+      "status": "violation",
+      "replacement_target": "own RGB 1장 + command history(+system/static/dynamic ordering)로 대체; static_map 키 삭제",
+      "note": "현재 입력 경계 위반의 원천"
+    },
+    {
+      "id": "M02",
+      "ref": "main",
+      "file": "harness/zone_study_prompts_ko.py",
+      "line": "52,174-189,328,359,412,449,655-656,788-791",
+      "flow": "zone-study LLM prompt/cache",
+      "use": "static_map/order_sheet 텍스트와 STATIC MAP FIGURE 이미지 첨부",
+      "replacement_needed": "yes",
+      "status": "violation",
+      "replacement_target": "프롬프트에서 static_map/map figure 제거; 자기 RGB 1장만 이미지로",
+      "note": "캐시 고정 구간에서 지도 제거 필요"
+    },
+    {
+      "id": "M03",
+      "ref": "main",
+      "file": "harness/zone_study_integration.py",
+      "line": "193-196,538-540",
+      "flow": "zone-study runtime",
+      "use": "pose provider와 LLM 요청에 static_map 전달",
+      "replacement_needed": "yes",
+      "status": "violation",
+      "replacement_target": "pose provider는 egocentric memory로, 요청 인자에서 static_map 제거",
+      "note": ""
+    },
+    {
+      "id": "M04",
+      "ref": "main",
+      "file": "harness/zone_study_offline.py",
+      "line": "159,203,303,373",
+      "flow": "zone-study offline replay",
+      "use": "decision_sources에 static_map 기록, replay에 static_map 전달",
+      "replacement_needed": "yes",
+      "status": "violation",
+      "replacement_target": "replay 입력 경계를 own RGB/commands로 재정의",
+      "note": "기존 기록의 provenance는 보존"
+    },
+    {
+      "id": "M05",
+      "ref": "main",
+      "file": "scripts/run_zone_study_integration.py",
+      "line": "75-76,518,538-540,631",
+      "flow": "zone-study runner",
+      "use": "zone map asset 로드, build_call_input, eval_only/static_map.json",
+      "replacement_needed": "partial",
+      "status": "violation",
+      "replacement_target": "런타임 입력에서 제거; eval_only/static_map.json은 평가 산출로만 유지",
+      "note": "top camera는 이미 eval_only"
+    },
+    {
+      "id": "M06",
+      "ref": "main",
+      "file": "harness/zone_map_schematic.py",
+      "line": "1-25,41,169-180",
+      "flow": "static map serialization",
+      "use": "public_map에 walls/terrain/passages/regions/zone_slots/pickup/landmarks 노출",
+      "replacement_needed": "yes",
+      "status": "violation",
+      "replacement_target": "로봇 입력용 serializer 폐기; 평가/기록용으로만 축소",
+      "note": ""
+    },
+    {
+      "id": "M07",
+      "ref": "main",
+      "file": "harness/rgb_communication_planner.py",
+      "line": "26-28,178-184,193-196",
+      "flow": "RGB communication LLM judgment",
+      "use": "system prompt가 shared top RGB/static task/map을 입력으로 명시; own_rgb+top_rgb 이미지 pairs",
+      "replacement_needed": "yes",
+      "status": "violation",
+      "replacement_target": "top RGB/static map 제거, 자기 RGB 1장만 사용",
+      "note": "top camera 제어 금지와 충돌"
+    },
+    {
+      "id": "M08",
+      "ref": "main",
+      "file": "harness/rgb_communication_runtime.py",
+      "line": "478-496,544-545,804-808",
+      "flow": "RGB communication runtime",
+      "use": "static_context(static_map,camera_calibration) 필수, image channels own_rgb+top_rgb",
+      "replacement_needed": "yes",
+      "status": "violation",
+      "replacement_target": "static_context 제거, 채널을 own_rgb로 제한",
+      "note": ""
+    },
+    {
+      "id": "M09",
+      "ref": "main",
+      "file": "harness/dispatch_plan_guidance.py",
+      "line": "13,67-76,248-249",
+      "flow": "dispatch LLM guidance",
+      "use": "authored static map으로 passage/objective 문장 생성 후 prompt 교체",
+      "replacement_needed": "yes",
+      "status": "violation",
+      "replacement_target": "시각 관측/자기 기억 기반 문장으로 대체",
+      "note": "scripts/run_dispatch_skills.py:1635에서 static_map 주입"
+    },
+    {
+      "id": "M10",
+      "ref": "main",
+      "file": "harness/dispatch_execution.py",
+      "line": "97,148-152",
+      "flow": "dispatch program execution",
+      "use": "SYSTEM prompt와 compile_programs에 static map",
+      "replacement_needed": "yes",
+      "status": "violation",
+      "replacement_target": "정적 지도 인자 제거; 자기 경로/기억 기반 program",
+      "note": ""
+    },
+    {
+      "id": "M11",
+      "ref": "main",
+      "file": "harness/dispatch_goto.py",
+      "line": "31-36,39-58,64-98,108-145,157-176,249-255",
+      "flow": "dispatch driving",
+      "use": "top RGB beam center, static keepouts/route/park, map→pixel waypoints",
+      "replacement_needed": "yes",
+      "status": "violation",
+      "replacement_target": "ego memory + own RGB 장애물/경로로 대체; top camera는 평가만",
+      "note": ""
+    },
+    {
+      "id": "M12",
+      "ref": "main",
+      "file": "harness/dispatch_navigation_map.py",
+      "line": "20,39-43,49-52,68-100,126-134",
+      "flow": "dispatch pair navigation",
+      "use": "static top_camera/bounds/obstacles/goal/slots와 top RGB pixel→world",
+      "replacement_needed": "yes",
+      "status": "violation",
+      "replacement_target": "own RGB 상대 위치/ego memory로 대체",
+      "note": ""
+    },
+    {
+      "id": "M13",
+      "ref": "main",
+      "file": "harness/dispatch_pair_navigation.py",
+      "line": "1",
+      "flow": "dispatch pair navigation",
+      "use": "docstring: authored static map 위 RGB-only paired navigation",
+      "replacement_needed": "yes",
+      "status": "violation",
+      "replacement_target": "ego memory 기반 pair navigation",
+      "note": ""
+    },
+    {
+      "id": "M14",
+      "ref": "main",
+      "file": "harness/dispatch_skill_binding.py",
+      "line": "104,111,179,193,198,210,217,243-245,267,310,318,346-347,371-373,396",
+      "flow": "dispatch skill binding",
+      "use": "static map/top_camera/route/resource 결합",
+      "replacement_needed": "yes",
+      "status": "violation",
+      "replacement_target": "자기 기억/자기 RGB 기반 binding",
+      "note": ""
+    },
+    {
+      "id": "M15",
+      "ref": "main",
+      "file": "harness/map_goto.py",
+      "line": "68-73,81-84,94-111,119-125,179-228,304-316,322-355",
+      "flow": "static map path planning",
+      "use": "places/bounds/obstacles/regions/path/A*",
+      "replacement_needed": "yes",
+      "status": "violation",
+      "replacement_target": "ego frame 경로 계획으로 대체(지도는 이동)",
+      "note": "43+ static-map 참조"
+    },
+    {
+      "id": "M16",
+      "ref": "main",
+      "file": "harness/pair_passage_plan.py",
+      "line": "78-117,139-161,176-224,295-299,338-372,383-425,443-461,479-481",
+      "flow": "pair route planning",
+      "use": "static passages/opening/A*/SDF/guard/target zone",
+      "replacement_needed": "yes",
+      "status": "violation",
+      "replacement_target": "own 관측 기반 passage/route로 대체",
+      "note": ""
+    },
+    {
+      "id": "M17",
+      "ref": "main",
+      "file": "harness/pair_navigation.py",
+      "line": "52-56,221-260,315,350,399-441,504-514",
+      "flow": "pair navigation runtime",
+      "use": "map_id/top_camera/start_zone/goal 필수, top RGB 관측/decide",
+      "replacement_needed": "yes",
+      "status": "violation",
+      "replacement_target": "ego memory + own RGB; start_zone prior 제거",
+      "note": ""
+    },
+    {
+      "id": "M18",
+      "ref": "main",
+      "file": "harness/pair_llm_inputs.py",
+      "line": "48-50,133-143,194,278-282,321,352",
+      "flow": "pair LLM input",
+      "use": "required keys에 static_map, payload/static map figure",
+      "replacement_needed": "yes",
+      "status": "violation",
+      "replacement_target": "static_map 키/그림 제거",
+      "note": "판단 LLM 입력 경계"
+    },
+    {
+      "id": "M19",
+      "ref": "main",
+      "file": "harness/known_map_navigation.py",
+      "line": "1-8,42-64,208-213,239-255,336-358",
+      "flow": "known-map navigation",
+      "use": "top RGB pixel→world, static map localization, static goal/route",
+      "replacement_needed": "yes",
+      "status": "violation",
+      "replacement_target": "전면 대체(현재 경로에서 퇴역)",
+      "note": "top camera+static map 동시 위반"
+    },
+    {
+      "id": "M20",
+      "ref": "main",
+      "file": "harness/zone_solo_cyan_landmarks.py",
+      "line": "1-7,40-53,73-124,162-196",
+      "flow": "own-RGB localization",
+      "use": "MapFeatures(static)의 regions/doors/edges로 landmark likelihood",
+      "replacement_needed": "yes",
+      "status": "violation",
+      "replacement_target": "자기 관측 상대 landmark memory로 대체",
+      "note": ""
+    },
+    {
+      "id": "M21",
+      "ref": "main",
+      "file": "harness/zone_solo_cyan_likelihood_field.py",
+      "line": "1-9,24-41,81-82",
+      "flow": "particle-filter sensor model",
+      "use": "static wall occupancy likelihood field",
+      "replacement_needed": "yes",
+      "status": "violation",
+      "replacement_target": "ego/own-map occupancy로 대체 또는 퇴역",
+      "note": ""
+    },
+    {
+      "id": "M22",
+      "ref": "main",
+      "file": "harness/zone_solo_cyan_amcl_update.py",
+      "line": "60-61",
+      "flow": "AMCL update",
+      "use": "Field(static) 설치",
+      "replacement_needed": "yes",
+      "status": "violation",
+      "replacement_target": "정적 지도 field 제거",
+      "note": ""
+    },
+    {
+      "id": "M23",
+      "ref": "main",
+      "file": "harness/own_map_amcl_vendor/landmarks.py",
+      "line": "31-42",
+      "flow": "AMCL landmarks",
+      "use": "static regions/passages 기반 MapFeatures",
+      "replacement_needed": "yes",
+      "status": "violation",
+      "replacement_target": "own-map/egocentric landmark로 대체",
+      "note": ""
+    },
+    {
+      "id": "M24",
+      "ref": "main",
+      "file": "harness/own_map_amcl_vendor/field.py",
+      "line": "14-21",
+      "flow": "AMCL likelihood field",
+      "use": "static occupied walls 필수",
+      "replacement_needed": "yes",
+      "status": "violation",
+      "replacement_target": "own-map 자유/점유 격자로 대체",
+      "note": ""
+    },
+    {
+      "id": "M25",
+      "ref": "origin/codex/e2e18-pose-diagnosis (PR #480) / PR #506/#507",
+      "file": "harness/e2e_static_rgb_localizer.py",
+      "line": "3-4,12,15,18",
+      "flow": "global localization",
+      "use": "static free geometry + static landmarks global init",
+      "replacement_needed": "yes",
+      "status": "violation",
+      "replacement_target": "egocentric memory로 대체",
+      "note": "main에는 파일 없음; PR 계열 브랜치에서 사용. 정적 지도 global localization."
+    },
+    {
+      "id": "M26",
+      "ref": "main",
+      "file": "harness/beam_initial_pose_plan.py",
+      "line": "1-7,77-106,127-140,170-179,182-243",
+      "flow": "beam initial pose",
+      "use": "static bounds/obstacles/pickup region으로 beam pose 계획",
+      "replacement_needed": "conditional",
+      "status": "setup-only",
+      "replacement_target": "beam 재위치 결정이면 대체; evaluator-authored setup이면 라벨 유지",
+      "note": "현재 런타임 action 입력으로 쓰이면 위반"
+    },
+    {
+      "id": "M27",
+      "ref": "main",
+      "file": "harness/beam_approach.py",
+      "line": "127-146,313-319",
+      "flow": "legacy beam approach",
+      "use": "static map validation/plan/clearance",
+      "replacement_needed": "yes",
+      "status": "legacy",
+      "replacement_target": "현재 beam pair 런타임에서는 퇴역; 재사용 금지",
+      "note": ""
+    },
+    {
+      "id": "M28",
+      "ref": "main",
+      "file": "configs/simulation_workflows.json",
+      "line": "navigation / zone-study-integration-run / rgb-communication entries",
+      "flow": "workflow manifests",
+      "use": "static map/top RGB 필수 workflow 등록",
+      "replacement_needed": "yes",
+      "status": "violation",
+      "replacement_target": "manifest를 새 입력 경계로 갱신; checker가 reject해야 함",
+      "note": ""
+    },
+    {
+      "id": "M29",
+      "ref": "main",
+      "file": "AGENTS.md",
+      "line": "90,104",
+      "flow": "policy text",
+      "use": "setdown_lookaround_v1 설명과 고정 프롬프트에 정적 지도 포함",
+      "replacement_needed": "yes",
+      "status": "stale-policy",
+      "replacement_target": "egocentric memory/visual search로 문구 교체(조정자)",
+      "note": "최신 결정 AGENTS.md:26과 모순"
+    },
+    {
+      "id": "M30",
+      "ref": "main",
+      "file": "harness/self_map_relocalize.py",
+      "line": "45-57,94-120",
+      "flow": "self-map relocalization",
+      "use": "optional landmark_map(정적 landmark로 오용 가능)",
+      "replacement_needed": "conditional",
+      "status": "guard-needed",
+      "replacement_target": "현재 경로에서 landmark_map=None 강제/토글 off",
+      "note": "own-map 자체는 허용"
+    },
+    {
+      "id": "M31",
+      "ref": "main",
+      "file": "harness/active_wall_mapping.py",
+      "line": "25-26,114-117",
+      "flow": "own-map wall mapping",
+      "use": "own pose/map_to_odom compose",
+      "replacement_needed": "no",
+      "status": "compliant",
+      "replacement_target": "유지",
+      "note": "정적 지도 아님"
+    },
+    {
+      "id": "M32",
+      "ref": "main",
+      "file": "harness/own_map_navigation.py",
+      "line": "3",
+      "flow": "own-map navigation",
+      "use": "map file/world bounds/goal/truth 없음",
+      "replacement_needed": "no",
+      "status": "compliant",
+      "replacement_target": "유지",
+      "note": ""
+    },
+    {
+      "id": "M33",
+      "ref": "main",
+      "file": "harness/ego_pose_continuity.py",
+      "line": "1-7,14-21,286-288",
+      "flow": "ego pose continuity",
+      "use": "own commands + own RGB posterior; map_pose=own trace",
+      "replacement_needed": "no",
+      "status": "compliant",
+      "replacement_target": "유지",
+      "note": "정적 지도 아님"
+    },
+    {
+      "id": "M34",
+      "ref": "origin/codex/e2e18 (PR #461)",
+      "file": "harness/e2e_stage_checkpoint.py",
+      "line": "89",
+      "flow": "E2E checkpoint",
+      "use": "static_map_sha256 fingerprint(provenance)",
+      "replacement_needed": "no",
+      "status": "provenance-only",
+      "replacement_target": "유지(기록용)",
+      "note": "main에는 파일 없음; PR #461 브랜치의 기록용 fingerprint."
+    },
+    {
+      "id": "M35",
+      "ref": "origin/codex/e2e18 (PR #461)",
+      "file": "scripts/run_e2e_stage_probe.py",
+      "line": "51",
+      "flow": "E2E stage probe",
+      "use": "stage_observations 문자열에 static_map",
+      "replacement_needed": "partial",
+      "status": "diagnostic",
+      "replacement_target": "진단 라벨/문서화; 런타임 입력으로 승격 금지",
+      "note": "main에는 파일 없음; PR #461 브랜치의 진단 문자열."
+    },
+    {
+      "id": "B01",
+      "ref": "origin/claude/release25 (PR #535, #491 base)",
+      "file": "sim/lookaround_localization.py",
+      "line": "1-26,38,76-126,163-189,192-256,278-330,333-432",
+      "flow": "setdown_lookaround_v1",
+      "use": "static map wall faces/zone edges/door jambs, visible_fn, Field, MapFeatures, plan_views",
+      "replacement_needed": "yes",
+      "status": "violation",
+      "replacement_target": "자기 RGB LK + 자기 명령 이력의 egocentric memory로 대체; lookaround 방향은 기억 속 미확인 landmark/next-best-view",
+      "note": "핵심 위반. OPTION=setdown_lookaround_v1"
+    },
+    {
+      "id": "B02",
+      "ref": "branch release25 / act-solo-teacher",
+      "file": "sim/active_lookaround.py",
+      "line": "1-8,47-59,116-159",
+      "flow": "lookaround view planning",
+      "use": "static map landmarks + map-frame own pose + 정보이득 greedy",
+      "replacement_needed": "yes",
+      "status": "violation",
+      "replacement_target": "ego frame memory/불확실 landmark 기반 next-best-view",
+      "note": ""
+    },
+    {
+      "id": "B03",
+      "ref": "branch release25",
+      "file": "sim/global_landmark_localization.py",
+      "line": "1-6,89-108,110-138",
+      "flow": "global localization",
+      "use": "static map edges/walls/regions 전역 SE(2) landmark consensus",
+      "replacement_needed": "yes",
+      "status": "violation",
+      "replacement_target": "전역 정합 폐기; egocentric relative memory",
+      "note": ""
+    },
+    {
+      "id": "B04",
+      "ref": "branch release25",
+      "file": "sim/release_zone_servo.py",
+      "line": "1-8,19-20,97-108,133-150",
+      "flow": "release centering",
+      "use": "static destination hue/half_extents/MapFeatures, global_localized_release_v1",
+      "replacement_needed": "yes",
+      "status": "violation",
+      "replacement_target": "자기 RGB zone fit만 유지; static half_extents/global pose 제거",
+      "note": ""
+    },
+    {
+      "id": "B05",
+      "ref": "branch release25",
+      "file": "sim/grasp_act_release_teacher.py",
+      "line": "1-13,149-186",
+      "flow": "release teacher",
+      "use": "destination static zone_rect prior, map_pose_known/map_prior, reanchor_priors",
+      "replacement_needed": "yes",
+      "status": "violation",
+      "replacement_target": "자기 RGB 재관측 + 자기 명령 이동 기억으로 대체",
+      "note": ""
+    },
+    {
+      "id": "B06",
+      "ref": "branch release25",
+      "file": "scripts/run_grasp_act_release.py",
+      "line": "30,34-36,209-224,250-252,282,328,363-372,589-635,928-933,990-1003",
+      "flow": "release runner",
+      "use": "static zone slots, static bounds/keepouts, LookaroundLocalizer(static), reanchor from loc.own.x",
+      "replacement_needed": "yes",
+      "status": "violation",
+      "replacement_target": "static 인자 제거; egocentric lookaround/release",
+      "note": ""
+    },
+    {
+      "id": "B07",
+      "ref": "origin/claude/act-solo-teacher (PR #502)",
+      "file": "sim/grasp_act_solo_lookaround.py",
+      "line": "1-26,39-83,107,123-133",
+      "flow": "solo lookaround",
+      "use": "static map + map-frame estimate로 localizer 생성/script",
+      "replacement_needed": "yes",
+      "status": "violation",
+      "replacement_target": "truth_free_v1 pan sweep을 egocentric memory 기반으로 승격; static 경로 삭제",
+      "note": ""
+    },
+    {
+      "id": "B08",
+      "ref": "main / PR #534,#549,#570",
+      "file": "scripts/warp_act_episode.py",
+      "line": "49,149-152,330-337,395",
+      "flow": "warp ACT episode",
+      "use": "static=scene.config[\"static_map\"], SoloLookaround(static), live-truth estimate 경로",
+      "replacement_needed": "yes",
+      "status": "violation",
+      "replacement_target": "SoloLookaround(static) 제거; egocentric lookaround로 교체",
+      "note": "main에서는 import 대상 모듈 부재(불일치)"
+    },
+    {
+      "id": "B09",
+      "ref": "origin/codex/warp6 (PR #557)",
+      "file": "scripts/warp_flow_episode.py",
+      "line": "19,307",
+      "flow": "warp flow release",
+      "use": "RELEASE_SHA=8e81b7d로 frozen release runner(static map) import",
+      "replacement_needed": "yes",
+      "status": "superseded",
+      "replacement_target": "frozen release runner 교체; 래퍼의 funnel/scheduling은 재사용",
+      "note": ""
+    },
+    {
+      "id": "B10",
+      "ref": "origin/codex/warp6 (PR #557)",
+      "file": "scripts/release_reloc_selfmap.py",
+      "line": "6,79-89",
+      "flow": "release relocalization",
+      "use": "own RGB+commands+authored static map, map pose/correction",
+      "replacement_needed": "yes",
+      "status": "violation",
+      "replacement_target": "egocentric memory로 대체",
+      "note": ""
+    },
+    {
+      "id": "B11",
+      "ref": "origin/codex/warp6 (PR #557)",
+      "file": "scripts/release_reloc_static_selfmap.py",
+      "line": "1-3,78-80",
+      "flow": "release static selfmap",
+      "use": "byte-pinned mapbuild7 static CSM API",
+      "replacement_needed": "yes",
+      "status": "superseded",
+      "replacement_target": "mapbuild static CSM 폐기",
+      "note": ""
+    },
+    {
+      "id": "B12",
+      "ref": "origin/claude/e2e18-gemma-planner (PR #473)",
+      "file": "harness/task_planner.py",
+      "line": "34,99,223-227",
+      "flow": "judgment LLM planner",
+      "use": "static_map/order_sheet/own estimate context, source=static_map_and_own_estimate",
+      "replacement_needed": "yes",
+      "status": "violation",
+      "replacement_target": "own RGB 1장 + command history; static_map 키 삭제",
+      "note": ""
+    },
+    {
+      "id": "B13",
+      "ref": "PR #473",
+      "file": "harness/task_planner_model.py",
+      "line": "57,68",
+      "flow": "planner serialization",
+      "use": "STATIC_KEYS에 static_map 포함, key order에 static_map",
+      "replacement_needed": "yes",
+      "status": "violation",
+      "replacement_target": "static_map을 STATIC_KEYS/key order에서 제거",
+      "note": ""
+    },
+    {
+      "id": "B14",
+      "ref": "PR #473",
+      "file": "scripts/evaluate_task_planner.py",
+      "line": "82,109",
+      "flow": "planner evaluation",
+      "use": "public_context.static_map을 context에 주입",
+      "replacement_needed": "yes",
+      "status": "violation",
+      "replacement_target": "평가 입력도 own RGB/commands로 재구성",
+      "note": ""
+    },
+    {
+      "id": "B15",
+      "ref": "PR #537/#533 beampair",
+      "file": "scripts/run_beampair1.py",
+      "line": "117-145",
+      "flow": "beam setup admission",
+      "use": "author resolve(map_id)+keepout_rects/bounds로 setup overlap 검사, blocked_object=static_map",
+      "replacement_needed": "conditional",
+      "status": "setup-only",
+      "replacement_target": "평가 전용 authored setup으로만 유지; beam_pose가 런타임 action 입력이면 대체",
+      "note": "주석: before physics, no setup coordinates enter actions"
+    },
+    {
+      "id": "B16",
+      "ref": "branch release25/actsolo",
+      "file": "harness/beampair_wall_layer.py",
+      "line": "1-7,52-75",
+      "flow": "teacher wall layer",
+      "use": "GT world pose + sim visibility로 teacher wall log-odds",
+      "replacement_needed": "no",
+      "status": "teacher-only",
+      "replacement_target": "정적 지도 아님; GT는 교사/평가에만, 학생 입력 금지 라벨",
+      "note": "인접 경계 발견(정적 지도 아님)"
+    },
+    {
+      "id": "B17",
+      "ref": "PR #570 e2ewarp",
+      "file": "scripts/... / integration manifest",
+      "line": "selfmap_map_correction=on, own/static map 보정 인수 필수",
+      "flow": "MJWarp E2E integration",
+      "use": "정적 지도 보정 필수 계약",
+      "replacement_needed": "yes",
+      "status": "superseded",
+      "replacement_target": "selfmap_map_correction=off, static map 인수 제거",
+      "note": "PR 본문 기준"
+    },
+    {
+      "id": "B18",
+      "ref": "PR #541 reloc19",
+      "file": "release destination acquisition",
+      "line": "지도/추정 공분산 + 자기 RGB/명령",
+      "flow": "visual goal acquisition",
+      "use": "search target을 map pose/covariance에 결합",
+      "replacement_needed": "partial",
+      "status": "rework",
+      "replacement_target": "자기 RGB 시각 탐색만 유지; 지도/공분산 제거",
+      "note": "visual_search 재사용 후보"
+    },
+    {
+      "id": "B19",
+      "ref": "PR #521 release-record",
+      "file": "frozen release runner",
+      "line": "static map 기반 release14 경로",
+      "flow": "ACT12 observation recording",
+      "use": "기록 어댑터는 유효하나 실행 모체가 static release",
+      "replacement_needed": "partial",
+      "status": "rework",
+      "replacement_target": "기록 어댑터 유지, 실행 모체는 egocentric release로 교체",
+      "note": ""
+    },
+    {
+      "id": "B20",
+      "ref": "PR #505 map-carry-zone",
+      "file": "scripts/run... / carry zone",
+      "line": "정적 pickup 구역 서쪽 0.25m 고정 prior",
+      "flow": "solo carry/place",
+      "use": "localization_initial_prior=none 위반",
+      "replacement_needed": "yes",
+      "status": "superseded",
+      "replacement_target": "시작 prior 제거; 자기 카메라 visual_search",
+      "note": ""
+    }
+  ],
+  "adjacent_boundary_findings": [
+    {
+      "id": "A1",
+      "file": "harness/beampair_wall_layer.py",
+      "line": "52-75",
+      "issue": "teacher-only GT world pose 사용",
+      "status": "teacher-only",
+      "action": "학생/런타임 입력으로 승격 금지; 교사 데이터 라벨 유지"
+    },
+    {
+      "id": "A2",
+      "file": "scripts/run_e2e_stage_probe.py",
+      "line": "51",
+      "issue": "stage_observations에 static_map 문자열",
+      "status": "diagnostic",
+      "action": "진단/기록 라벨; 로봇 입력 아님"
+    },
+    {
+      "id": "A3",
+      "file": "harness/e2e_stage_checkpoint.py",
+      "line": "89",
+      "issue": "static_map_sha256 fingerprint",
+      "status": "provenance-only",
+      "action": "기록/재현용 유지"
+    },
+    {
+      "id": "A4",
+      "file": "AGENTS.md",
+      "line": "90,104",
+      "issue": "최신 결정과 모순되는 정적 지도 문구",
+      "status": "stale-policy",
+      "action": "조정자가 문구 갱신; 코드 변경 아님"
+    }
+  ],
+  "pr_classification": [
+    {
+      "number": 575,
+      "branch": "codex/act18",
+      "title": "act18: 공개 ACT 설정 대조와 TRAIN 적합도 관문",
+      "superseded_by": null,
+      "reuse": [
+        "ACT 설정 대조",
+        "TRAIN 적합도 관문"
+      ],
+      "must_change": [
+        "없음(현재 ACT 경로)"
+      ],
+      "evidence_grade": "study",
+      "evidence_preserve": true,
+      "merge_ready_candidate": false,
+      "ci": {
+        "mergeable": "MERGEABLE",
+        "merge_state": "UNSTABLE",
+        "draft": true,
+        "review_decision": "",
+        "success": 22,
+        "failure": 2,
+        "pending": 0,
+        "failing_checks": [
+          "offline-regression-checks",
+          "ubuntu-simulation-runtime"
+        ],
+        "total_checks": 32
+      },
+      "notes": "CI 2실패(offline-regression-checks, ubuntu-simulation-runtime). 학습/설정 근거 보존.",
+      "classification": "keep"
+    },
+    {
+      "number": 574,
+      "branch": "codex/egomem1",
+      "title": "egomem2: ROVIO 재사용·물체 기억 유지/일대일 연관 — DEV 재획득 PASS, 오프라인 NOT_READY",
+      "superseded_by": null,
+      "reuse": [
+        "egocentric_landmark_memory.py",
+        "ROVIO FeatureStatistics 재사용",
+        "일대일 물체 기억/연관",
+        "자기 RGB+LK+자기 명령"
+      ],
+      "must_change": [
+        "목표 발견(visual_search) 미구현",
+        "오프라인 정확도 NOT_READY",
+        "시작 prior 없음 확인"
+      ],
+      "evidence_grade": "dev",
+      "evidence_preserve": true,
+      "merge_ready_candidate": false,
+      "ci": {
+        "mergeable": "MERGEABLE",
+        "merge_state": "BEHIND",
+        "draft": true,
+        "review_decision": "REVIEW_REQUIRED",
+        "success": 25,
+        "failure": 1,
+        "pending": 0,
+        "failing_checks": [
+          "offline-regression-shard (6/8)"
+        ],
+        "total_checks": 32
+      },
+      "notes": "2026-10-17 결정과 가장 정렬. BEHIND + shard 6/8 실패. 물리 재획득 PASS는 보존.",
+      "classification": "keep"
+    },
+    {
+      "number": 570,
+      "branch": "codex/e2ewarp",
+      "title": "e2ewarp: MJWarp 배치 LLM E2E 통합 후보와 native first30 검증",
+      "superseded_by": "configs/current_stack.json @ c43a9f515 (static_map_use=none, selfmap_map_correction=off)",
+      "reuse": [
+        "MJWarp 배치 E2E 통합",
+        "native first30",
+        "Gemma CoreWeave fp4 중계",
+        "ACT/release 어댑터 연결"
+      ],
+      "must_change": [
+        "정적 지도 보정 인수 필수 제거",
+        "selfmap_map_correction=on 제거",
+        "정적 지도 기반 주행/릴리스 제거",
+        "구 stackaudit 45623168 vendor 교체"
+      ],
+      "evidence_grade": "dev",
+      "evidence_preserve": true,
+      "merge_ready_candidate": false,
+      "ci": {
+        "mergeable": "CONFLICTING",
+        "merge_state": "DIRTY",
+        "draft": true,
+        "review_decision": "REVIEW_REQUIRED",
+        "success": 33,
+        "failure": 0,
+        "pending": 0,
+        "failing_checks": [],
+        "total_checks": 33
+      },
+      "notes": "PR 본문이 selfmap_map_correction=on과 own/static map 보정을 필수로 요구. DIRTY. 부정 결과 보존.",
+      "classification": "rework"
+    },
+    {
+      "number": 566,
+      "branch": "codex/mast3rcmp",
+      "title": "MASt3R-SLAM 오프라인 비교: 동일 401프레임 ATE·추적·자원 측정",
+      "superseded_by": null,
+      "reuse": [
+        "MASt3R-SLAM 오프라인 ATE/추적 비교",
+        "ego localization 후보 근거"
+      ],
+      "must_change": [
+        "현재 런타임 미연결(연구)"
+      ],
+      "evidence_grade": "study",
+      "evidence_preserve": true,
+      "merge_ready_candidate": false,
+      "ci": {
+        "mergeable": "MERGEABLE",
+        "merge_state": "BEHIND",
+        "draft": true,
+        "review_decision": "REVIEW_REQUIRED",
+        "success": 33,
+        "failure": 0,
+        "pending": 0,
+        "failing_checks": [],
+        "total_checks": 33
+      },
+      "notes": "정적 지도 미사용. 동일 401프레임 비교 근거 보존. BEHIND.",
+      "classification": "keep"
+    },
+    {
+      "number": 564,
+      "branch": "codex/drivecheck",
+      "title": "drivecheck: 초기 화물 관통의 CPU/MJWarp 주행 진단",
+      "superseded_by": null,
+      "reuse": [
+        "초기 화물 관통 CPU/MJWarp 진단",
+        "100ms 전진 회복 측정"
+      ],
+      "must_change": [
+        "없음(진단)"
+      ],
+      "evidence_grade": "dev",
+      "evidence_preserve": true,
+      "merge_ready_candidate": false,
+      "ci": {
+        "mergeable": "CONFLICTING",
+        "merge_state": "DIRTY",
+        "draft": true,
+        "review_decision": "REVIEW_REQUIRED",
+        "success": 33,
+        "failure": 0,
+        "pending": 0,
+        "failing_checks": [],
+        "total_checks": 33
+      },
+      "notes": "정적 지도 무관. DIRTY. 진단 원장 보존.",
+      "classification": "keep"
+    },
+    {
+      "number": 563,
+      "branch": "codex/beamact4",
+      "title": "beamact4: 학습 READY·완료 뒤 복구 후보와 교사 인수 명세",
+      "superseded_by": null,
+      "reuse": [
+        "ACT 학습 READY/완료",
+        "복구 후보·교사 인수 명세"
+      ],
+      "must_change": [
+        "없음"
+      ],
+      "evidence_grade": "study",
+      "evidence_preserve": true,
+      "merge_ready_candidate": true,
+      "ci": {
+        "mergeable": "MERGEABLE",
+        "merge_state": "CLEAN",
+        "draft": true,
+        "review_decision": "",
+        "success": 33,
+        "failure": 0,
+        "pending": 0,
+        "failing_checks": [],
+        "total_checks": 33
+      },
+      "notes": "CLEAN·33 SUCCESS. draft→ready 판단만 남음.",
+      "classification": "keep"
+    },
+    {
+      "number": 562,
+      "branch": "codex/warpfit",
+      "title": "warpfit: native 접촉·CPU 모방 감사와 runtime 2후보 실측",
+      "superseded_by": null,
+      "reuse": [
+        "native contact/CPU 모방 감사",
+        "runtime 2후보 실측"
+      ],
+      "must_change": [
+        "없음(물리 경로)"
+      ],
+      "evidence_grade": "study",
+      "evidence_preserve": true,
+      "merge_ready_candidate": false,
+      "ci": {
+        "mergeable": "MERGEABLE",
+        "merge_state": "BEHIND",
+        "draft": true,
+        "review_decision": "REVIEW_REQUIRED",
+        "success": 29,
+        "failure": 4,
+        "pending": 0,
+        "failing_checks": [
+          "offline-regression-shard (0/8)",
+          "offline-regression-shard (3/8)",
+          "offline-regression-shard (6/8)",
+          "offline-regressions"
+        ],
+        "total_checks": 33
+      },
+      "notes": "CI shard 실패. BEHIND. 물리/접촉 근거 보존.",
+      "classification": "keep"
+    },
+    {
+      "number": 557,
+      "branch": "codex/warp6",
+      "title": "warp8f: native 빔 관문·release 정적 자기 지도 CSM 점검 (NOT_READY)",
+      "superseded_by": "2026-10-17 static_map_use=none / egocentric_landmark_memory_v1",
+      "reuse": [
+        "warp8f native 빔 관문 실행기",
+        "funnel/rejection_table/영상 검증"
+      ],
+      "must_change": [
+        "release 정적 자기지도 CSM 경로",
+        "RELEASE_SHA=8e81b7d 고정 해제",
+        "정적 map→odom/보정 제거"
+      ],
+      "evidence_grade": "study",
+      "evidence_preserve": true,
+      "merge_ready_candidate": false,
+      "ci": {
+        "mergeable": "MERGEABLE",
+        "merge_state": "UNSTABLE",
+        "draft": true,
+        "review_decision": "",
+        "success": 29,
+        "failure": 4,
+        "pending": 0,
+        "failing_checks": [
+          "offline-regression-shard (0/8)",
+          "offline-regression-shard (3/8)",
+          "offline-regression-shard (7/8)",
+          "offline-regressions"
+        ],
+        "total_checks": 33
+      },
+      "notes": "release static selfmap NOT_READY. CI shard 실패. 게이트/원본 보존.",
+      "classification": "superseded"
+    },
+    {
+      "number": 556,
+      "branch": "codex/mapbuild1",
+      "title": "mapbuild11: AMCL 긴 경로 오차 비교·DEV 녹화 (NOT_READY)",
+      "superseded_by": "2026-10-17 static_map_use=none / localization_path=egocentric_landmark_memory_v1",
+      "reuse": [
+        "AMCL 긴 경로 오차 비교 방법",
+        "DEV 녹화/funnel"
+      ],
+      "must_change": [
+        "정적 지도 AMCL 위치추정",
+        "mapbuild7 static CSM 경로"
+      ],
+      "evidence_grade": "study",
+      "evidence_preserve": true,
+      "merge_ready_candidate": false,
+      "ci": {
+        "mergeable": "MERGEABLE",
+        "merge_state": "BEHIND",
+        "draft": true,
+        "review_decision": "REVIEW_REQUIRED",
+        "success": 33,
+        "failure": 0,
+        "pending": 0,
+        "failing_checks": [],
+        "total_checks": 33
+      },
+      "notes": "정적 지도 위치추정 계열. BEHIND, all-success. 비교 근거 보존.",
+      "classification": "superseded"
+    },
+    {
+      "number": 555,
+      "branch": "codex/macprune",
+      "title": "fix(storage): prune idle legacy dev evidence in one batch",
+      "superseded_by": null,
+      "reuse": [
+        "idle legacy dev evidence 일괄 정리 도구"
+      ],
+      "must_change": [
+        "없음(저장소 운영)"
+      ],
+      "evidence_grade": "infra",
+      "evidence_preserve": false,
+      "merge_ready_candidate": false,
+      "ci": {
+        "mergeable": "MERGEABLE",
+        "merge_state": "BEHIND",
+        "draft": false,
+        "review_decision": "REVIEW_REQUIRED",
+        "success": 33,
+        "failure": 0,
+        "pending": 0,
+        "failing_checks": [],
+        "total_checks": 33
+      },
+      "notes": "all-success이나 BEHIND. 증거 삭제는 조정자 결정; 이 PR은 도구만.",
+      "classification": "keep"
+    },
+    {
+      "number": 551,
+      "branch": "codex/llmhost",
+      "title": "llmhost: GCP L4 Gemma VLM 자체 서빙 시험 준비 (GPU 미기동)",
+      "superseded_by": "planner_provider=CoreWeave / planner_fallbacks=false",
+      "reuse": [
+        "GCP L4 Gemma VLM 자체 서빙 준비",
+        "GPU 미기동 절차"
+      ],
+      "must_change": [
+        "CoreWeave 고정 결정과 불일치",
+        "자체 서빙을 기본 경로로 승격하지 않음"
+      ],
+      "evidence_grade": "study",
+      "evidence_preserve": true,
+      "merge_ready_candidate": false,
+      "ci": {
+        "mergeable": "CONFLICTING",
+        "merge_state": "DIRTY",
+        "draft": true,
+        "review_decision": "REVIEW_REQUIRED",
+        "success": 33,
+        "failure": 0,
+        "pending": 0,
+        "failing_checks": [],
+        "total_checks": 33
+      },
+      "notes": "DIRTY, all-success. 서빙 하네스는 참고 보존.",
+      "classification": "superseded"
+    },
+    {
+      "number": 550,
+      "branch": "claude/warp5",
+      "title": "warp10: 호스트 처리량 개선·CPU 접촉 export 3회 중단 (NOT_READY)",
+      "superseded_by": "2026-10-17 static_map_use=none / release static map 금지",
+      "reuse": [
+        "호스트 처리량 개선",
+        "CPU 접촉 export/funnel"
+      ],
+      "must_change": [
+        "정적 지도 release 경로",
+        "중단된 3회 HOST_ERROR 재현 조건"
+      ],
+      "evidence_grade": "dev",
+      "evidence_preserve": true,
+      "merge_ready_candidate": false,
+      "ci": {
+        "mergeable": "CONFLICTING",
+        "merge_state": "DIRTY",
+        "draft": true,
+        "review_decision": "REVIEW_REQUIRED",
+        "success": 0,
+        "failure": 0,
+        "pending": 0,
+        "failing_checks": [],
+        "total_checks": 0
+      },
+      "notes": "DIRTY, no checks. 부정 결과 보존.",
+      "classification": "rework"
+    },
+    {
+      "number": 549,
+      "branch": "claude/warp4",
+      "title": "warp4: 빔 짝·release MJWarp 배치 후보와 HOST_ERROR 근거",
+      "superseded_by": "2026-10-17 static_map_use=none / release static map 금지",
+      "reuse": [
+        "MJWarp 배치 빔 짝/release 후보",
+        "HOST_ERROR 원인 기록"
+      ],
+      "must_change": [
+        "SoloLookaround(static) 경로",
+        "정적 지도 release 보정"
+      ],
+      "evidence_grade": "dev",
+      "evidence_preserve": true,
+      "merge_ready_candidate": false,
+      "ci": {
+        "mergeable": "MERGEABLE",
+        "merge_state": "UNSTABLE",
+        "draft": true,
+        "review_decision": "",
+        "success": 29,
+        "failure": 4,
+        "pending": 0,
+        "failing_checks": [
+          "offline-regression-shard (0/8)",
+          "offline-regression-shard (3/8)",
+          "offline-regression-shard (7/8)",
+          "offline-regressions"
+        ],
+        "total_checks": 33
+      },
+      "notes": "CI shard 실패. teacher/물리 실행 파이프라인은 재사용.",
+      "classification": "rework"
+    },
+    {
+      "number": 547,
+      "branch": "claude/reloc21",
+      "title": "reloc21: 운반 진행·완전 place 계획 관문",
+      "superseded_by": "2026-10-17 localization_path=egocentric_landmark_memory_v1 / static_map_use=none",
+      "reuse": [
+        "운반 진행·완전 place 계획 관문",
+        "raw/funnel/영상 검증"
+      ],
+      "must_change": [
+        "정적 지도 기반 재위치추정",
+        "목적지 색 획득을 static map pose에 결합"
+      ],
+      "evidence_grade": "dev",
+      "evidence_preserve": true,
+      "merge_ready_candidate": false,
+      "ci": {
+        "mergeable": "MERGEABLE",
+        "merge_state": "UNSTABLE",
+        "draft": true,
+        "review_decision": "",
+        "success": 28,
+        "failure": 5,
+        "pending": 0,
+        "failing_checks": [
+          "offline-regression-shard (0/8)",
+          "offline-regression-shard (1/8)",
+          "offline-regression-shard (3/8)",
+          "offline-regression-shard (4/8)",
+          "offline-regressions"
+        ],
+        "total_checks": 33
+      },
+      "notes": "place 0/6, pose 악화. CI shard 실패. 부정 결과 보존.",
+      "classification": "superseded"
+    },
+    {
+      "number": 545,
+      "branch": "codex/beamact3",
+      "title": "beamact3: wheel 분류·compact history A/B 20k 재학습과 학생0/20 검증",
+      "superseded_by": null,
+      "reuse": [
+        "wheel 분류/compact history A/B 20k 재학습",
+        "학생 0/20 검증",
+        "공개 model release"
+      ],
+      "must_change": [
+        "없음"
+      ],
+      "evidence_grade": "study",
+      "evidence_preserve": true,
+      "merge_ready_candidate": true,
+      "ci": {
+        "mergeable": "MERGEABLE",
+        "merge_state": "CLEAN",
+        "draft": true,
+        "review_decision": "",
+        "success": 33,
+        "failure": 0,
+        "pending": 0,
+        "failing_checks": [],
+        "total_checks": 33
+      },
+      "notes": "CLEAN·33 SUCCESS. 모델 release 자산 보존.",
+      "classification": "keep"
+    },
+    {
+      "number": 544,
+      "branch": "codex/actdiag",
+      "title": "actdiag: persistence 열세를 안정 구간 잡음·행동 표현·학습량으로 분해",
+      "superseded_by": null,
+      "reuse": [
+        "persistence 열세 원인 분해",
+        "잡음/행동 표현/학습량 비교"
+      ],
+      "must_change": [
+        "없음(ACT 진단)"
+      ],
+      "evidence_grade": "study",
+      "evidence_preserve": true,
+      "merge_ready_candidate": false,
+      "ci": {
+        "mergeable": "CONFLICTING",
+        "merge_state": "DIRTY",
+        "draft": true,
+        "review_decision": "REVIEW_REQUIRED",
+        "success": 30,
+        "failure": 3,
+        "pending": 0,
+        "failing_checks": [
+          "offline-regression-shard (0/8)",
+          "offline-regression-shard (3/8)",
+          "offline-regressions"
+        ],
+        "total_checks": 33
+      },
+      "notes": "DIRTY, CI shard 실패. 진단 근거 보존.",
+      "classification": "keep"
+    },
+    {
+      "number": 543,
+      "branch": "claude/reloc20",
+      "title": "reloc20: 화물 footprint·RGB 막힘·heading drive (NOT_READY, place 0/4)",
+      "superseded_by": "2026-10-17 static_map_use=none / localization_initial_prior=none",
+      "reuse": [
+        "화물 footprint·RGB 막힘·heading drive 기본off 후보",
+        "입력 경계 감사"
+      ],
+      "must_change": [
+        "정적 초기 빔/지도 기반 위치추정",
+        "시작 prior 의존"
+      ],
+      "evidence_grade": "dev",
+      "evidence_preserve": true,
+      "merge_ready_candidate": false,
+      "ci": {
+        "mergeable": "MERGEABLE",
+        "merge_state": "UNSTABLE",
+        "draft": true,
+        "review_decision": "",
+        "success": 28,
+        "failure": 5,
+        "pending": 0,
+        "failing_checks": [
+          "offline-regression-shard (0/8)",
+          "offline-regression-shard (1/8)",
+          "offline-regression-shard (3/8)",
+          "offline-regression-shard (4/8)",
+          "offline-regressions"
+        ],
+        "total_checks": 33
+      },
+      "notes": "place 0/4. CI shard 실패. 부정 결과 보존.",
+      "classification": "rework"
+    },
+    {
+      "number": 542,
+      "branch": "claude/beampair9",
+      "title": "beampair9: 기록 실패15 분석·기본off 형상/계산량 후보 (NOT_READY)",
+      "superseded_by": null,
+      "reuse": [
+        "기록 실패15 분석",
+        "기본off 형상/계산량 후보"
+      ],
+      "must_change": [
+        "정적 지도가 런타임 입력이면 제거(교사 기록 경계 확인)"
+      ],
+      "evidence_grade": "dev",
+      "evidence_preserve": true,
+      "merge_ready_candidate": false,
+      "ci": {
+        "mergeable": "CONFLICTING",
+        "merge_state": "DIRTY",
+        "draft": true,
+        "review_decision": "REVIEW_REQUIRED",
+        "success": 31,
+        "failure": 2,
+        "pending": 0,
+        "failing_checks": [
+          "offline-regression-shard (1/8)",
+          "offline-regressions"
+        ],
+        "total_checks": 33
+      },
+      "notes": "DIRTY, CI shard 실패. 기록 실패 분석 보존.",
+      "classification": "keep"
+    },
+    {
+      "number": 541,
+      "branch": "claude/reloc19",
+      "title": "reloc19: default-off destination visual acquisition (NOT_READY)",
+      "superseded_by": "2026-10-17 goal_discovery=visual_search / static_map_use=none",
+      "reuse": [
+        "목적지 시각 획득·운반 중 재관측 경로",
+        "RGB 벽 마스크/장애물 폐기"
+      ],
+      "must_change": [
+        "지도/추정 공분산을 검색 목표로 쓰는 부분",
+        "정적 지도 pose 결합"
+      ],
+      "evidence_grade": "dev",
+      "evidence_preserve": true,
+      "merge_ready_candidate": false,
+      "ci": {
+        "mergeable": "MERGEABLE",
+        "merge_state": "UNSTABLE",
+        "draft": true,
+        "review_decision": "",
+        "success": 27,
+        "failure": 6,
+        "pending": 0,
+        "failing_checks": [
+          "offline-regression-shard (0/8)",
+          "offline-regression-shard (1/8)",
+          "offline-regression-shard (2/8)",
+          "offline-regression-shard (3/8)",
+          "offline-regression-shard (4/8)",
+          "offline-regressions"
+        ],
+        "total_checks": 33
+      },
+      "notes": "시각 획득 0/4. CI shard 실패. visual_search 재사용 후보.",
+      "classification": "rework"
+    },
+    {
+      "number": 540,
+      "branch": "codex/beamact1",
+      "title": "beamact2: ACT 학습·학생20 평가 완료, 0/20 NOT_READY",
+      "superseded_by": null,
+      "reuse": [
+        "ACT 학습·학생20 평가",
+        "0/20 NOT_READY 기록"
+      ],
+      "must_change": [
+        "없음"
+      ],
+      "evidence_grade": "study",
+      "evidence_preserve": true,
+      "merge_ready_candidate": false,
+      "ci": {
+        "mergeable": "CONFLICTING",
+        "merge_state": "DIRTY",
+        "draft": true,
+        "review_decision": "",
+        "success": 0,
+        "failure": 0,
+        "pending": 0,
+        "failing_checks": [],
+        "total_checks": 0
+      },
+      "notes": "DIRTY, no checks. 학습/평가 원장 보존.",
+      "classification": "keep"
+    },
+    {
+      "number": 539,
+      "branch": "claude/act16w",
+      "title": "act17: ACT 실패 정량 진단·v7 비교 결과와 모델 보존",
+      "superseded_by": null,
+      "reuse": [
+        "ACT 실패 정량 진단",
+        "v7 비교·모델 보존"
+      ],
+      "must_change": [
+        "없음"
+      ],
+      "evidence_grade": "study",
+      "evidence_preserve": true,
+      "merge_ready_candidate": true,
+      "ci": {
+        "mergeable": "MERGEABLE",
+        "merge_state": "CLEAN",
+        "draft": true,
+        "review_decision": "",
+        "success": 33,
+        "failure": 0,
+        "pending": 0,
+        "failing_checks": [],
+        "total_checks": 33
+      },
+      "notes": "CLEAN·33 SUCCESS. 공개 model release 보존.",
+      "classification": "keep"
+    },
+    {
+      "number": 538,
+      "branch": "claude/reloc18",
+      "title": "reloc18: innovation·map→odom 비교와 place 실패 진단 (NOT_READY)",
+      "superseded_by": "2026-10-17 static_map_use=none / selfmap_map_correction=off",
+      "reuse": [
+        "innovation/map→odom 원인 분리",
+        "place 실패 진단"
+      ],
+      "must_change": [
+        "정적 지도 map→odom 보정",
+        "정적 지도 selfmap 후보"
+      ],
+      "evidence_grade": "dev",
+      "evidence_preserve": true,
+      "merge_ready_candidate": false,
+      "ci": {
+        "mergeable": "MERGEABLE",
+        "merge_state": "UNSTABLE",
+        "draft": true,
+        "review_decision": "",
+        "success": 28,
+        "failure": 5,
+        "pending": 0,
+        "failing_checks": [
+          "offline-regression-shard (0/8)",
+          "offline-regression-shard (3/8)",
+          "offline-regression-shard (4/8)",
+          "offline-regression-shard (5/8)",
+          "offline-regressions"
+        ],
+        "total_checks": 33
+      },
+      "notes": "NOT_READY. CI shard 실패. 진단 근거 보존.",
+      "classification": "superseded"
+    },
+    {
+      "number": 537,
+      "branch": "claude/beampair8",
+      "title": "beampair8: 검증된 ACT 빔 짝 데이터185쌍·370로봇기록",
+      "superseded_by": null,
+      "reuse": [
+        "검증된 ACT 빔 짝 데이터 185쌍/370로봇",
+        "visible_only teacher",
+        "setup admission/rejection_table"
+      ],
+      "must_change": [
+        "setup admission의 정적 지도는 평가 전용 라벨 유지(런타임 action 입력 금지)"
+      ],
+      "evidence_grade": "milestone",
+      "evidence_preserve": true,
+      "merge_ready_candidate": true,
+      "ci": {
+        "mergeable": "MERGEABLE",
+        "merge_state": "CLEAN",
+        "draft": false,
+        "review_decision": "",
+        "success": 33,
+        "failure": 0,
+        "pending": 0,
+        "failing_checks": [],
+        "total_checks": 33
+      },
+      "notes": "CLEAN·33 SUCCESS·non-draft. 정적 지도는 physics 이전 authored setup에만 사용(코드 주석). merge-ready 최우선 후보.",
+      "classification": "keep"
+    },
+    {
+      "number": 536,
+      "branch": "claude/reloc17",
+      "title": "reloc17: 위치 추정 원인 분리·서보 대기 취소 수정, 2라운드 NOT_READY",
+      "superseded_by": "2026-10-17 static_map_use=none / selfmap_map_correction=off",
+      "reuse": [
+        "위치추정 원인 분리",
+        "서보 대기 취소 수정",
+        "2라운드 부정 결과"
+      ],
+      "must_change": [
+        "정적 지도 보정 경로"
+      ],
+      "evidence_grade": "dev",
+      "evidence_preserve": true,
+      "merge_ready_candidate": false,
+      "ci": {
+        "mergeable": "MERGEABLE",
+        "merge_state": "UNSTABLE",
+        "draft": true,
+        "review_decision": "",
+        "success": 28,
+        "failure": 5,
+        "pending": 0,
+        "failing_checks": [
+          "offline-regression-shard (0/8)",
+          "offline-regression-shard (3/8)",
+          "offline-regression-shard (4/8)",
+          "offline-regression-shard (5/8)",
+          "offline-regressions"
+        ],
+        "total_checks": 33
+      },
+      "notes": "CI shard 실패. 수정 조각은 재사용 가능하나 현재 위치추정 기반은 폐기.",
+      "classification": "superseded"
+    },
+    {
+      "number": 535,
+      "branch": "claude/release25",
+      "title": "release25: fix uncertainty-only north-wall sweep rejection in pinned scene",
+      "superseded_by": "2026-10-17 static_map_use=none / release static map 금지",
+      "reuse": [
+        "release_sweep_wall_aware_v1의 halo/분리평면 인증",
+        "gate40 40/40 원본/funnel"
+      ],
+      "must_change": [
+        "정적 지도·자기 RGB 추정·자기 명령 조합의 release 위치추정",
+        "North-wall sweep 보정 자체는 안전 부품"
+      ],
+      "evidence_grade": "milestone",
+      "evidence_preserve": true,
+      "merge_ready_candidate": false,
+      "ci": {
+        "mergeable": "CONFLICTING",
+        "merge_state": "DIRTY",
+        "draft": true,
+        "review_decision": "REVIEW_REQUIRED",
+        "success": 28,
+        "failure": 5,
+        "pending": 0,
+        "failing_checks": [
+          "offline-regression-shard (0/8)",
+          "offline-regression-shard (3/8)",
+          "offline-regression-shard (4/8)",
+          "offline-regression-shard (5/8)",
+          "offline-regressions"
+        ],
+        "total_checks": 33
+      },
+      "notes": "A/B 40/40, raw 22,544, CI shard 실패. 마일스톤 증거 보존; 현재 경로에는 정적 지도라 대체.",
+      "classification": "superseded"
+    },
+    {
+      "number": 534,
+      "branch": "claude/warp-act",
+      "title": "warp3: MJWarp ACT 교사40/40·기록 및 학생 API (warm 검증 중)",
+      "superseded_by": "2026-10-17 setdown_lookaround_v1 egocentric 재작성 / static_map_use=none",
+      "reuse": [
+        "MJWarp ACT 교사 40/40",
+        "7 exact-model 그룹",
+        "warp batch 물리·기록 API"
+      ],
+      "must_change": [
+        "scripts/warp_act_episode.py:49,149-160 SoloLookaround(static)",
+        "lookaround estimate/map pose 기록"
+      ],
+      "evidence_grade": "milestone",
+      "evidence_preserve": true,
+      "merge_ready_candidate": false,
+      "ci": {
+        "mergeable": "MERGEABLE",
+        "merge_state": "CLEAN",
+        "draft": true,
+        "review_decision": "",
+        "success": 33,
+        "failure": 0,
+        "pending": 0,
+        "failing_checks": [],
+        "total_checks": 33
+      },
+      "notes": "CLEAN·33 SUCCESS이나 정적 지도 lookaround 때문에 merge-ready 아님. 교사/물리 증거는 최우선 보존.",
+      "classification": "rework"
+    },
+    {
+      "number": 533,
+      "branch": "claude/beampair7",
+      "title": "beampair7: 새 장면 빔 짝 교사 gate40 40/40, 목적 자세 예약·시작 연결",
+      "superseded_by": null,
+      "reuse": [
+        "새 장면 빔 짝 교사 gate40 40/40",
+        "목적 자세 예약·시작 연결",
+        "setup admission/rejection_table"
+      ],
+      "must_change": [
+        "setup admission 정적 지도는 평가 전용 라벨 유지"
+      ],
+      "evidence_grade": "milestone",
+      "evidence_preserve": true,
+      "merge_ready_candidate": true,
+      "ci": {
+        "mergeable": "MERGEABLE",
+        "merge_state": "CLEAN",
+        "draft": false,
+        "review_decision": "",
+        "success": 33,
+        "failure": 0,
+        "pending": 0,
+        "failing_checks": [],
+        "total_checks": 33
+      },
+      "notes": "CLEAN·33 SUCCESS·non-draft. 설정/교사 데이터 보존. beam_pose 출처가 런타임 action으로 들어가지 않는지 확인 필요.",
+      "classification": "keep"
+    },
+    {
+      "number": 532,
+      "branch": "claude/reloc16",
+      "title": "reloc16: 확정 v5 RGB 경계·Manhattan yaw 후보와 3라운드 NOT_READY 기록",
+      "superseded_by": "2026-10-17 static_map_use=none / localization_path=egocentric_landmark_memory_v1",
+      "reuse": [
+        "RGB 경계·Manhattan yaw 후보",
+        "정적 88자세 재생"
+      ],
+      "must_change": [
+        "정적 지도 기반 위치보정"
+      ],
+      "evidence_grade": "dev",
+      "evidence_preserve": true,
+      "merge_ready_candidate": false,
+      "ci": {
+        "mergeable": "MERGEABLE",
+        "merge_state": "UNSTABLE",
+        "draft": true,
+        "review_decision": "",
+        "success": 28,
+        "failure": 5,
+        "pending": 0,
+        "failing_checks": [
+          "offline-regression-shard (0/8)",
+          "offline-regression-shard (3/8)",
+          "offline-regression-shard (4/8)",
+          "offline-regression-shard (5/8)",
+          "offline-regressions"
+        ],
+        "total_checks": 33
+      },
+      "notes": "CI shard 실패. RGB 검출 조각만 재사용.",
+      "classification": "superseded"
+    },
+    {
+      "number": 530,
+      "branch": "claude/rl-act",
+      "title": "rlprep: ACT 잔차 RL 준비 설계·기본 off 골격과 rl1b BLOCKED 기록",
+      "superseded_by": null,
+      "reuse": [
+        "ACT 잔차 RL 준비 설계",
+        "기본off 골격",
+        "rl1b BLOCKED 기록"
+      ],
+      "must_change": [
+        "없음(연구)"
+      ],
+      "evidence_grade": "dev",
+      "evidence_preserve": true,
+      "merge_ready_candidate": false,
+      "ci": {
+        "mergeable": "CONFLICTING",
+        "merge_state": "DIRTY",
+        "draft": true,
+        "review_decision": "REVIEW_REQUIRED",
+        "success": 0,
+        "failure": 0,
+        "pending": 0,
+        "failing_checks": [],
+        "total_checks": 0
+      },
+      "notes": "DIRTY, no checks. 설계/부정 결과 보존.",
+      "classification": "keep"
+    },
+    {
+      "number": 527,
+      "branch": "claude/scene-tex2",
+      "title": "scenetex5: 벽·바닥 장면과 색 전이 경계 검출 (NOT_READY)",
+      "superseded_by": null,
+      "reuse": [
+        "벽·바닥 장면/색 전이 경계 검출",
+        "NOT_READY 기록"
+      ],
+      "must_change": [
+        "없음(장면)"
+      ],
+      "evidence_grade": "study",
+      "evidence_preserve": true,
+      "merge_ready_candidate": false,
+      "ci": {
+        "mergeable": "CONFLICTING",
+        "merge_state": "DIRTY",
+        "draft": true,
+        "review_decision": "REVIEW_REQUIRED",
+        "success": 33,
+        "failure": 0,
+        "pending": 0,
+        "failing_checks": [],
+        "total_checks": 33
+      },
+      "notes": "DIRTY, all-success. 장면 대조 근거 보존.",
+      "classification": "keep"
+    },
+    {
+      "number": 522,
+      "branch": "claude/beam-pair-teacher",
+      "title": "gatesv5: 빔 짝 관문 NOT_READY (성공15·cap_end1·잔여24 미제출)",
+      "superseded_by": null,
+      "reuse": [
+        "gatesv5 빔 짝 관문",
+        "실패/cap_end 원장"
+      ],
+      "must_change": [
+        "setup static map 라벨 확인"
+      ],
+      "evidence_grade": "dev",
+      "evidence_preserve": true,
+      "merge_ready_candidate": false,
+      "ci": {
+        "mergeable": "MERGEABLE",
+        "merge_state": "UNSTABLE",
+        "draft": true,
+        "review_decision": "",
+        "success": 31,
+        "failure": 2,
+        "pending": 0,
+        "failing_checks": [
+          "offline-regression-shard (7/8)",
+          "offline-regressions"
+        ],
+        "total_checks": 33
+      },
+      "notes": "CI shard 실패. 게이트 부정 결과 보존.",
+      "classification": "keep"
+    },
+    {
+      "number": 521,
+      "branch": "claude/release-record",
+      "title": "rel22adapt: release 교사 ACT12 관측 전용 RGB 기록기",
+      "superseded_by": "2026-10-17 static_map_use=none / release static map 금지",
+      "reuse": [
+        "ACT12 관측 전용 RGB 기록기",
+        "off/on 동일성·해시 검증"
+      ],
+      "must_change": [
+        "frozen release runner의 정적 지도 위치추정",
+        "release14 record 경로"
+      ],
+      "evidence_grade": "milestone",
+      "evidence_preserve": true,
+      "merge_ready_candidate": false,
+      "ci": {
+        "mergeable": "CONFLICTING",
+        "merge_state": "DIRTY",
+        "draft": true,
+        "review_decision": "REVIEW_REQUIRED",
+        "success": 29,
+        "failure": 4,
+        "pending": 0,
+        "failing_checks": [
+          "offline-regression-shard (0/8)",
+          "offline-regression-shard (3/8)",
+          "offline-regression-shard (4/8)",
+          "offline-regressions"
+        ],
+        "total_checks": 33
+      },
+      "notes": "4/4, 864장, 입력감사 0/0. 기록 어댑터는 재사용, static release는 교체.",
+      "classification": "rework"
+    },
+    {
+      "number": 510,
+      "branch": "claude/drive-model-deadband",
+      "title": "feat: M1·M2 공용 물리 기반 자기 구동 모델 (기본 off)",
+      "superseded_by": null,
+      "reuse": [
+        "M1/M2 공용 물리 기반 자기 구동 모델",
+        "기본 off deadband"
+      ],
+      "must_change": [
+        "없음(주행 모델)"
+      ],
+      "evidence_grade": "study",
+      "evidence_preserve": true,
+      "merge_ready_candidate": false,
+      "ci": {
+        "mergeable": "CONFLICTING",
+        "merge_state": "DIRTY",
+        "draft": false,
+        "review_decision": "REVIEW_REQUIRED",
+        "success": 30,
+        "failure": 3,
+        "pending": 0,
+        "failing_checks": [
+          "offline-regression-shard (0/8)",
+          "offline-regression-shard (3/8)",
+          "offline-regressions"
+        ],
+        "total_checks": 33
+      },
+      "notes": "DIRTY, CI shard 실패. 구동 모델 근거 보존.",
+      "classification": "keep"
+    },
+    {
+      "number": 507,
+      "branch": "claude/map-amcl",
+      "title": "DEV: 기본 off 지도 AMCL·KLD와 #480 동일 80구간 재생",
+      "superseded_by": "2026-10-17 static_map_use=none / localization_path=egocentric_landmark_memory_v1",
+      "reuse": [
+        "Nav2 AMCL/KLD 포팅",
+        "80구간 재생/원본 SHA 검증"
+      ],
+      "must_change": [
+        "정적 자유공간 균일 초기화",
+        "정적 지도 AMCL 자체"
+      ],
+      "evidence_grade": "study",
+      "evidence_preserve": true,
+      "merge_ready_candidate": false,
+      "ci": {
+        "mergeable": "MERGEABLE",
+        "merge_state": "BEHIND",
+        "draft": true,
+        "review_decision": "REVIEW_REQUIRED",
+        "success": 25,
+        "failure": 8,
+        "pending": 0,
+        "failing_checks": [
+          "offline-regression-checks",
+          "offline-regression-shard (0/8)",
+          "offline-regression-shard (2/8)",
+          "offline-regression-shard (3/8)",
+          "offline-regression-shard (4/8)",
+          "offline-regression-shard (5/8)",
+          "offline-regression-shard (6/8)",
+          "offline-regressions"
+        ],
+        "total_checks": 33
+      },
+      "notes": "BEHIND, CI 실패. 비교/재생 방법은 보존, 런타임 채택 금지.",
+      "classification": "superseded"
+    },
+    {
+      "number": 506,
+      "branch": "claude/map-selfmap",
+      "title": "DEV: 자기 지도 pose→점유 격자→frontier 연결과 저장 RGB 평가",
+      "superseded_by": "2026-10-17 static_map_use=none / egocentric memory",
+      "reuse": [
+        "pose→점유격자→frontier",
+        "RGB 벽/바닥 관측만으로 점유 갱신",
+        "정답 pose 평가 분리"
+      ],
+      "must_change": [
+        "정적 landmark map/static map 조건",
+        "start prior가 있는 평가"
+      ],
+      "evidence_grade": "study",
+      "evidence_preserve": true,
+      "merge_ready_candidate": false,
+      "ci": {
+        "mergeable": "CONFLICTING",
+        "merge_state": "DIRTY",
+        "draft": true,
+        "review_decision": "REVIEW_REQUIRED",
+        "success": 29,
+        "failure": 4,
+        "pending": 0,
+        "failing_checks": [
+          "offline-regression-shard (0/8)",
+          "offline-regression-shard (3/8)",
+          "offline-regression-shard (4/8)",
+          "offline-regressions"
+        ],
+        "total_checks": 33
+      },
+      "notes": "NOT_READY_FOR_COMPLETE_MAPPING_OR_DRIVING. own-map 부분 재사용. DIRTY.",
+      "classification": "rework"
+    },
+    {
+      "number": 505,
+      "branch": "claude/map-carry-zone",
+      "title": "DEV: solo 목적 구역 운반·놓기 분리 진단 (기본 off)",
+      "superseded_by": "2026-10-17 localization_initial_prior=none / static_map_use=none",
+      "reuse": [
+        "운반/놓기 분리 진단",
+        "top camera 제어 금지 준수",
+        "runner 테스트"
+      ],
+      "must_change": [
+        "정적 pickup 구역 서쪽 0.25m 고정 prior",
+        "정적 지도 기반 set-down re-look"
+      ],
+      "evidence_grade": "dev",
+      "evidence_preserve": true,
+      "merge_ready_candidate": false,
+      "ci": {
+        "mergeable": "CONFLICTING",
+        "merge_state": "DIRTY",
+        "draft": true,
+        "review_decision": "REVIEW_REQUIRED",
+        "success": 28,
+        "failure": 5,
+        "pending": 0,
+        "failing_checks": [
+          "offline-regression-shard (0/8)",
+          "offline-regression-shard (3/8)",
+          "offline-regression-shard (4/8)",
+          "offline-regression-shard (7/8)",
+          "offline-regressions"
+        ],
+        "total_checks": 33
+      },
+      "notes": "초기 prior가 명시적으로 결정 위반. DIRTY, CI shard 실패. 테스트/진단 보존.",
+      "classification": "superseded"
+    },
+    {
+      "number": 502,
+      "branch": "claude/act-solo-teacher",
+      "title": "DEV: 1대 화물 교사 (tile_low_reach_v1, RGB 들기 확인, 공용 둘러보기)",
+      "superseded_by": "2026-10-17 setdown_lookaround_v1 egocentric 재작성",
+      "reuse": [
+        "solo 화물 교사(tile_low_reach_v1)",
+        "RGB 들기 확인",
+        "ACT 기록/시드 계획"
+      ],
+      "must_change": [
+        "공용 LookaroundLocalizer(static)",
+        "정적 지도 기반 둘러보기 방향"
+      ],
+      "evidence_grade": "study",
+      "evidence_preserve": true,
+      "merge_ready_candidate": false,
+      "ci": {
+        "mergeable": "CONFLICTING",
+        "merge_state": "DIRTY",
+        "draft": true,
+        "review_decision": "",
+        "success": 0,
+        "failure": 0,
+        "pending": 0,
+        "failing_checks": [],
+        "total_checks": 0
+      },
+      "notes": "물리 실행 0(PR 본문), Mac 단위시험만. DIRTY, no checks. 교사/보정 상수 보존.",
+      "classification": "rework"
+    },
+    {
+      "number": 499,
+      "branch": "claude/sim-speed",
+      "title": "perf: opt-in grasp teacher speed toggles (adaptive dt, idle freeze, review period)",
+      "superseded_by": null,
+      "reuse": [
+        "grasp teacher speed toggles",
+        "adaptive dt/idle"
+      ],
+      "must_change": [
+        "없음(성능)"
+      ],
+      "evidence_grade": "infra",
+      "evidence_preserve": false,
+      "merge_ready_candidate": false,
+      "ci": {
+        "mergeable": "CONFLICTING",
+        "merge_state": "DIRTY",
+        "draft": false,
+        "review_decision": "REVIEW_REQUIRED",
+        "success": 28,
+        "failure": 5,
+        "pending": 0,
+        "failing_checks": [
+          "offline-regression-shard (0/8)",
+          "offline-regression-shard (3/8)",
+          "offline-regression-shard (4/8)",
+          "offline-regression-shard (7/8)",
+          "offline-regressions"
+        ],
+        "total_checks": 33
+      },
+      "notes": "DIRTY, CI shard 실패. 기본 off 성능 토글 보존.",
+      "classification": "keep"
+    },
+    {
+      "number": 493,
+      "branch": "codex/robot-clock-sync",
+      "title": "Synchronize robots directly to internet NTP and add UTC reservations",
+      "superseded_by": null,
+      "reuse": [
+        "NTP 직접 동기화",
+        "UTC 기록"
+      ],
+      "must_change": [
+        "없음(인프라)"
+      ],
+      "evidence_grade": "infra",
+      "evidence_preserve": false,
+      "merge_ready_candidate": false,
+      "ci": {
+        "mergeable": "MERGEABLE",
+        "merge_state": "BEHIND",
+        "draft": true,
+        "review_decision": "REVIEW_REQUIRED",
+        "success": 26,
+        "failure": 7,
+        "pending": 0,
+        "failing_checks": [
+          "offline-regression-checks",
+          "offline-regression-shard (0/8)",
+          "offline-regression-shard (2/8)",
+          "offline-regression-shard (4/8)",
+          "offline-regression-shard (5/8)",
+          "offline-regression-shard (6/8)",
+          "offline-regressions"
+        ],
+        "total_checks": 33
+      },
+      "notes": "BEHIND, CI 실패. 인프라 근거 보존.",
+      "classification": "keep"
+    },
+    {
+      "number": 491,
+      "branch": "claude/grasp-act-release",
+      "title": "gatesv5: release24 관문 NOT_READY (A31/40·B31/40, 결함 확인 후 중단)",
+      "superseded_by": "2026-10-17 static_map_use=none / release static map 금지",
+      "reuse": [
+        "release24 관문 A/B 31/40 원본",
+        "입력감사 78/78",
+        "funnel/영상/SHA 대조"
+      ],
+      "must_change": [
+        "정적 지도 기반 release 위치추정",
+        "정적 지도·자기 RGB·명령 조합"
+      ],
+      "evidence_grade": "milestone",
+      "evidence_preserve": true,
+      "merge_ready_candidate": false,
+      "ci": {
+        "mergeable": "CONFLICTING",
+        "merge_state": "DIRTY",
+        "draft": true,
+        "review_decision": "",
+        "success": 0,
+        "failure": 0,
+        "pending": 0,
+        "failing_checks": [],
+        "total_checks": 0
+      },
+      "notes": "DIRTY, no checks. NOT_READY 마일스톤 증거는 반드시 보존; 현재 경로에는 대체.",
+      "classification": "superseded"
+    },
+    {
+      "number": 484,
+      "branch": "claude/e2e18-grasp-rootcause",
+      "title": "WIP: 봉 파지 감사와 정답 교사 → 자기 RGB ACT 학생",
+      "superseded_by": null,
+      "reuse": [
+        "봉 파지 감사",
+        "정답 교사→자기 RGB ACT 학생"
+      ],
+      "must_change": [
+        "없음(ACT/근거리)"
+      ],
+      "evidence_grade": "dev",
+      "evidence_preserve": true,
+      "merge_ready_candidate": false,
+      "ci": {
+        "mergeable": "CONFLICTING",
+        "merge_state": "DIRTY",
+        "draft": true,
+        "review_decision": "REVIEW_REQUIRED",
+        "success": 30,
+        "failure": 3,
+        "pending": 0,
+        "failing_checks": [
+          "offline-regression-shard (4/8)",
+          "offline-regression-shard (7/8)",
+          "offline-regressions"
+        ],
+        "total_checks": 33
+      },
+      "notes": "DIRTY, CI shard 실패. ACT 학생/감사 근거 보존.",
+      "classification": "keep"
+    },
+    {
+      "number": 483,
+      "branch": "codex/e2e18-end-assignment",
+      "title": "DEV: 실제 색 띠 RGB 재생·파지 관측 후보 v430/v431",
+      "superseded_by": null,
+      "reuse": [
+        "실제 색 띠 HSV 검출",
+        "파지 관측 후보 v430/v431",
+        "자기 RGB 재생"
+      ],
+      "must_change": [
+        "없음(자기 RGB)"
+      ],
+      "evidence_grade": "study",
+      "evidence_preserve": true,
+      "merge_ready_candidate": false,
+      "ci": {
+        "mergeable": "MERGEABLE",
+        "merge_state": "UNSTABLE",
+        "draft": true,
+        "review_decision": "",
+        "success": 27,
+        "failure": 6,
+        "pending": 0,
+        "failing_checks": [
+          "offline-regression-shard (0/8)",
+          "offline-regression-shard (1/8)",
+          "offline-regression-shard (2/8)",
+          "offline-regression-shard (3/8)",
+          "offline-regression-shard (7/8)",
+          "offline-regressions"
+        ],
+        "total_checks": 33
+      },
+      "notes": "BEHIND/UNSTABLE, CI shard 실패. 검출 근거 보존.",
+      "classification": "keep"
+    },
+    {
+      "number": 480,
+      "branch": "codex/e2e18-pose-diagnosis",
+      "title": "DEV: 단계 위치 추정 시각 정합·원인 분해와 기본 off 후보 재생",
+      "superseded_by": null,
+      "reuse": [
+        "단계 위치추정 시각 정합",
+        "SE(2) 평가·원인 분해",
+        "기본 off 후보 재생"
+      ],
+      "must_change": [
+        "정적 지도 절대오차는 평가 칸에만 유지"
+      ],
+      "evidence_grade": "study",
+      "evidence_preserve": true,
+      "merge_ready_candidate": false,
+      "ci": {
+        "mergeable": "MERGEABLE",
+        "merge_state": "UNSTABLE",
+        "draft": true,
+        "review_decision": "",
+        "success": 27,
+        "failure": 6,
+        "pending": 0,
+        "failing_checks": [
+          "offline-regression-shard (0/8)",
+          "offline-regression-shard (1/8)",
+          "offline-regression-shard (2/8)",
+          "offline-regression-shard (3/8)",
+          "offline-regression-shard (7/8)",
+          "offline-regressions"
+        ],
+        "total_checks": 33
+      },
+      "notes": "UNSTABLE, CI shard 실패. 평가 방법/48실행 근거 보존.",
+      "classification": "keep"
+    },
+    {
+      "number": 475,
+      "branch": "claude/e2e18-grasp1",
+      "title": "DEV: 봉 시야·기억 후보와 저장 상태 파지 단계 어댑터 (v384–v387)",
+      "superseded_by": null,
+      "reuse": [
+        "봉 시야·기억 후보",
+        "저장 상태 파지 단계 어댑터"
+      ],
+      "must_change": [
+        "없음(근거리 ACT)"
+      ],
+      "evidence_grade": "dev",
+      "evidence_preserve": true,
+      "merge_ready_candidate": false,
+      "ci": {
+        "mergeable": "CONFLICTING",
+        "merge_state": "DIRTY",
+        "draft": true,
+        "review_decision": "REVIEW_REQUIRED",
+        "success": 30,
+        "failure": 3,
+        "pending": 0,
+        "failing_checks": [
+          "offline-regression-shard (4/8)",
+          "offline-regression-shard (7/8)",
+          "offline-regressions"
+        ],
+        "total_checks": 33
+      },
+      "notes": "DIRTY, CI shard 실패. 파지 단계 기록 보존.",
+      "classification": "keep"
+    },
+    {
+      "number": 473,
+      "branch": "claude/e2e18-gemma-planner",
+      "title": "DEV: Gemma fp4 계획기와 캐시 순서 검증 (v405/v406)",
+      "superseded_by": "2026-10-17 planner_own_rgb_count=1 / static_map_use=none / cache order system→static→dynamic→image",
+      "reuse": [
+        "Gemma 31B fp4 번들",
+        "JSON strict/reask",
+        "캐시 순서·비용 계측",
+        "400+40+5 실행"
+      ],
+      "must_change": [
+        "task_planner.py:99,223-227 static_map",
+        "task_planner_model.py:57,68",
+        "evaluate_task_planner.py:82,109",
+        "프롬프트의 static map/order sheet 의존"
+      ],
+      "evidence_grade": "study",
+      "evidence_preserve": true,
+      "merge_ready_candidate": false,
+      "ci": {
+        "mergeable": "CONFLICTING",
+        "merge_state": "DIRTY",
+        "draft": true,
+        "review_decision": "REVIEW_REQUIRED",
+        "success": 23,
+        "failure": 10,
+        "pending": 0,
+        "failing_checks": [
+          "offline-regression-checks",
+          "offline-regression-shard (0/8)",
+          "offline-regression-shard (1/8)",
+          "offline-regression-shard (2/8)",
+          "offline-regression-shard (3/8)",
+          "offline-regression-shard (4/8)",
+          "offline-regression-shard (5/8)",
+          "offline-regression-shard (6/8)"
+        ],
+        "total_checks": 33
+      },
+      "notes": "DIRTY, CI 10실패. LLM 인프라/비용 근거는 핵심 재사용; 판단 입력 경계는 대체.",
+      "classification": "rework"
+    },
+    {
+      "number": 461,
+      "branch": "codex/e2e18",
+      "title": "E2E18 DEV: 자기 경로·카메라 명령·파지 접근 통합 및 Azure 실행",
+      "superseded_by": null,
+      "reuse": [
+        "자기 경로·카메라 명령·파지 접근 통합",
+        "r80 16실행 원본/해시",
+        "복구 메뉴/릴레이 상태 수정"
+      ],
+      "must_change": [
+        "e2e_stage_checkpoint.py:89 static_map_sha256은 provenance만 유지",
+        "run_e2e_stage_probe.py:51 stage_observations는 진단 라벨"
+      ],
+      "evidence_grade": "milestone",
+      "evidence_preserve": true,
+      "merge_ready_candidate": false,
+      "ci": {
+        "mergeable": "MERGEABLE",
+        "merge_state": "UNSTABLE",
+        "draft": true,
+        "review_decision": "",
+        "success": 28,
+        "failure": 5,
+        "pending": 0,
+        "failing_checks": [
+          "offline-regression-shard (1/8)",
+          "offline-regression-shard (2/8)",
+          "offline-regression-shard (7/8)",
+          "offline-regressions",
+          "ubuntu-simulation-runtime"
+        ],
+        "total_checks": 33
+      },
+      "notes": "UNSTABLE, CI shard 실패. 0/16 성공 부정 결과와 raw 보존. 런타임 입력은 자기 RGB/명령/자기지도.",
+      "classification": "keep"
+    },
+    {
+      "number": 459,
+      "branch": "claude/e2e-bcones",
+      "title": "B marker redesign: corner cones (corner_cones_v1 / cones_v1), default off",
+      "superseded_by": null,
+      "reuse": [
+        "B marker corner cones",
+        "장면 지형지물 설계"
+      ],
+      "must_change": [
+        "visual_search 목적지 마커와 정합 확인"
+      ],
+      "evidence_grade": "study",
+      "evidence_preserve": true,
+      "merge_ready_candidate": false,
+      "ci": {
+        "mergeable": "MERGEABLE",
+        "merge_state": "BEHIND",
+        "draft": true,
+        "review_decision": "REVIEW_REQUIRED",
+        "success": 30,
+        "failure": 3,
+        "pending": 0,
+        "failing_checks": [
+          "offline-regression-shard (4/8)",
+          "offline-regressions",
+          "ubuntu-simulation-runtime"
+        ],
+        "total_checks": 33
+      },
+      "notes": "BEHIND, CI 실패. 장면 근거 보존.",
+      "classification": "keep"
+    },
+    {
+      "number": 440,
+      "branch": "codex/ego-pose-continuity",
+      "title": "fix: 자기 위치 점프 보정 토글과 Azure 18회 DEV 결과",
+      "superseded_by": null,
+      "reuse": [
+        "자기 위치 점프 보정 기본off 토글",
+        "REP-105 odom/map 분리",
+        "Azure 18회 검증"
+      ],
+      "must_change": [
+        "정적 지도 정답은 평가에만"
+      ],
+      "evidence_grade": "study",
+      "evidence_preserve": true,
+      "merge_ready_candidate": false,
+      "ci": {
+        "mergeable": "CONFLICTING",
+        "merge_state": "DIRTY",
+        "draft": true,
+        "review_decision": "REVIEW_REQUIRED",
+        "success": 31,
+        "failure": 2,
+        "pending": 0,
+        "failing_checks": [
+          "offline-regression-shard (7/8)",
+          "offline-regressions"
+        ],
+        "total_checks": 33
+      },
+      "notes": "DIRTY, CI shard 실패. 18회/28,872파일 근거 보존.",
+      "classification": "keep"
+    },
+    {
+      "number": 437,
+      "branch": "codex/egomap70-overview",
+      "title": "Egomap70: 동일 소스 zone 재실행과 평가 전용 8배속 영상",
+      "superseded_by": null,
+      "reuse": [
+        "egomap70 동일 소스 재실행",
+        "평가 전용 8배속 영상",
+        "원본 SHA 대조"
+      ],
+      "must_change": [
+        "런타임 아님(증거)"
+      ],
+      "evidence_grade": "milestone",
+      "evidence_preserve": true,
+      "merge_ready_candidate": false,
+      "ci": {
+        "mergeable": "MERGEABLE",
+        "merge_state": "BEHIND",
+        "draft": true,
+        "review_decision": "REVIEW_REQUIRED",
+        "success": 33,
+        "failure": 0,
+        "pending": 0,
+        "failing_checks": [],
+        "total_checks": 33
+      },
+      "notes": "BEHIND, all-success. 마일스톤 증거 보존; merge 대신 참조 유지.",
+      "classification": "keep"
+    },
+    {
+      "number": 385,
+      "branch": "codex/real-robot-link",
+      "title": "Windows SIM-to-REAL arm connection boundary (dry-run verified)",
+      "superseded_by": null,
+      "reuse": [
+        "Windows SIM-to-REAL arm 연결 경계",
+        "dry-run 검증"
+      ],
+      "must_change": [
+        "없음(인프라)"
+      ],
+      "evidence_grade": "dev",
+      "evidence_preserve": true,
+      "merge_ready_candidate": false,
+      "ci": {
+        "mergeable": "CONFLICTING",
+        "merge_state": "DIRTY",
+        "draft": true,
+        "review_decision": "REVIEW_REQUIRED",
+        "success": 31,
+        "failure": 2,
+        "pending": 0,
+        "failing_checks": [
+          "offline-regression-shard (7/8)",
+          "offline-regressions"
+        ],
+        "total_checks": 33
+      },
+      "notes": "DIRTY, CI shard 실패. 실물 연결 경계 보존.",
+      "classification": "keep"
+    },
+    {
+      "number": 339,
+      "branch": "codex/integ-target-backend",
+      "title": "T13: 표적 backend 검토 수정·최종 v3 환경 계약 (v86, 실행 차단)",
+      "superseded_by": null,
+      "reuse": [
+        "T13 표적 backend v3 환경 계약",
+        "실행 차단 기록"
+      ],
+      "must_change": [
+        "없음(인프라)"
+      ],
+      "evidence_grade": "policy",
+      "evidence_preserve": true,
+      "merge_ready_candidate": false,
+      "ci": {
+        "mergeable": "MERGEABLE",
+        "merge_state": "BEHIND",
+        "draft": true,
+        "review_decision": "REVIEW_REQUIRED",
+        "success": 33,
+        "failure": 0,
+        "pending": 0,
+        "failing_checks": [],
+        "total_checks": 33
+      },
+      "notes": "BEHIND, all-success, 실행 차단. 계약/부정 결과 보존.",
+      "classification": "keep"
+    }
+  ],
+  "ci_summary": {
+    "open_prs": 51,
+    "clean_mergeable_all_success": [
+      537,
+      533,
+      534,
+      539,
+      545,
+      563
+    ],
+    "all_success_but_behind": [
+      339,
+      437,
+      555,
+      556,
+      566
+    ],
+    "all_success_but_dirty": [
+      527,
+      551,
+      564,
+      570
+    ],
+    "no_checks": [
+      491,
+      502,
+      530,
+      540,
+      550
+    ],
+    "draft_count": 46,
+    "mergeable_clean": 6,
+    "conflicting": 22,
+    "behind": 10
+  },
+  "counts": {
+    "static_map_audit_rows": 55,
+    "pr_total": 51,
+    "keep": 30,
+    "rework": 10,
+    "superseded": 11,
+    "merge_ready_candidates": 5,
+    "violation_rows": 38,
+    "violation_main": 25,
+    "violation_branch": 13
+  },
+  "limitations": [
+    "이 작업은 기록 전용: 코드/VM/시뮬/LLM 호출 없음",
+    "PR 본문 수치는 각 PR/실험 기록의 자기 보고이며 재실행 검증하지 않음",
+    "static map audit은 main HEAD 79a4918d0과 51개 open PR head ref의 코드 grep/열람 기준",
+    "CI 상태는 2026-10-17 수집 시점의 GitHub rollup",
+    "정적 지도 \"setup-only\" 허용 여부는 조정자 결정 필요"
+  ],
+  "classification_legend": {
+    "keep": "현재 경로에 필요하거나 정합. 일부는 후속 구현 필요.",
+    "rework": "부품은 재사용 가능하나 정적 지도/입력 경계를 수정해야 함.",
+    "superseded": "2026-10-17 결정 또는 후속 PR이 대체. 증거는 보존.",
+    "merge_ready_candidate": "CI all-success + MERGEABLE/CLEAN + 정책 위반 없음(또는 setup-only 라벨)을 모두 만족하는 후보."
+  }
+}

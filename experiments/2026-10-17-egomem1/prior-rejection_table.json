@@ -1,0 +1,16 @@
+{
+  "status": "prior_to_new_memory",
+  "source_sha": "95769da0e12326e41b71d29843c4da75c5b10a00",
+  "raw": "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2",
+  "counts": {
+    "route_frames": 1642,
+    "own_lk_measured": 1378,
+    "own_lk_unknown": 264,
+    "rigid_consensus_unknown": 251
+  },
+  "reason": "old RGB/command dead-reckoning yaw fallback residual sums -49.462 deg vs measured -.604 deg; new point-detector distribution must be measured before tuning",
+  "blocked_object": "not_observed",
+  "minimum_gap_m": null,
+  "gap_status": "not_measured",
+  "reproduction": "git show codex/mapbuild1:experiments/2026-10-17-mapbuild11/operations/final-gcp5/yaw-increment-decomposition.json"
+}

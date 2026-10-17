@@ -1,0 +1,42 @@
+{
+  "unit": "frames",
+  "funnel": [
+    {
+      "stage": "sensor_sampled",
+      "input_n": 2026,
+      "cumulative_pass_n": 203,
+      "rejected_n": 1823
+    },
+    {
+      "stage": "camera_settled",
+      "input_n": 203,
+      "cumulative_pass_n": 197,
+      "rejected_n": 6
+    },
+    {
+      "stage": "point_detected",
+      "input_n": 197,
+      "cumulative_pass_n": 24,
+      "rejected_n": 173
+    }
+  ],
+  "reasons": {
+    "camera_unsettled": 6,
+    "parallel_floor_lines": 71,
+    "different_floor_hue": 546,
+    "no_supported_point_landmark": 173,
+    "corner_outside_observed_segments": 343
+  },
+  "raw": "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2",
+  "reproduction": [
+    "scripts/egomem1_offline.py",
+    "extract",
+    "--input",
+    "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2",
+    "--output",
+    "/home/ugrp/ugrp-sim/ops-reviews/egomem1/offline-v1"
+  ],
+  "blocked_object": "not_observed",
+  "minimum_gap_m": null,
+  "gap_status": "not_measured"
+}

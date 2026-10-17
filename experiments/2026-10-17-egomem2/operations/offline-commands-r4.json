@@ -1,0 +1,55 @@
+{
+  "commands": [
+    [
+      "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+      "scripts/check_current_stack.py",
+      "/home/ugrp/ugrp-sim/ops-reviews/egomem2/offline-queue-v2.json",
+      "--flow",
+      "self_map",
+      "--output",
+      "/home/ugrp/ugrp-sim/ops-reviews/egomem2/offline-stack-r4.json"
+    ],
+    [
+      "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+      "-m",
+      "scripts.egomem1_offline",
+      "predict",
+      "--input",
+      "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2",
+      "--output",
+      "/home/ugrp/ugrp-sim/ops-reviews/egomem2/offline-object-gnn-r4",
+      "--implementation",
+      "rovio_object_gnn_v1",
+      "--rovio-library",
+      "/home/ugrp/ugrp-sim/ops-reviews/egomem1/rovio-statistics-ff0a6067a.so",
+      "--lease-name",
+      "egomem2"
+    ],
+    [
+      "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+      "-m",
+      "scripts.egomem1_offline",
+      "score",
+      "--input",
+      "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2",
+      "--output",
+      "/home/ugrp/ugrp-sim/ops-reviews/egomem2/offline-object-gnn-r4",
+      "--lease-name",
+      "egomem2"
+    ],
+    [
+      "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+      "-m",
+      "scripts.egomem2_compare",
+      "--baseline",
+      "/home/ugrp/ugrp-sim/ops-reviews/egomem1/baseline-legacy-r1",
+      "--rovio",
+      "/home/ugrp/ugrp-sim/ops-reviews/egomem1/offline-rovio-r1",
+      "--candidate",
+      "/home/ugrp/ugrp-sim/ops-reviews/egomem2/offline-object-gnn-r4",
+      "--output",
+      "/home/ugrp/ugrp-sim/ops-reviews/egomem2/fixed-denominator-comparison.json"
+    ]
+  ],
+  "source_sha": "48411d133bae2cf872ddf7ffed5554fb91048259"
+}

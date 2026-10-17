@@ -1,0 +1,117 @@
+{
+  "status": "DIAGNOSIS_ONLY",
+  "denominator": 14912,
+  "shared": 6424,
+  "unique": 1226,
+  "missing": {
+    "after_rovio_quality_removed": 6648,
+    "after_rovio_reserve_removed": 1840
+  },
+  "duplicate": {
+    "both_duplicate": 2688,
+    "baseline_only_duplicate": 2510
+  },
+  "by_20_sim_s": {
+    "000-020": {
+      "both_duplicate": 140,
+      "after_rovio_quality_removed": 70
+    },
+    "020-040": {
+      "baseline_only_duplicate": 200,
+      "after_rovio_quality_removed": 100,
+      "both_duplicate": 300,
+      "after_rovio_reserve_removed": 250
+    },
+    "040-060": {
+      "after_rovio_reserve_removed": 470,
+      "baseline_only_duplicate": 190,
+      "both_duplicate": 320,
+      "after_rovio_quality_removed": 350
+    },
+    "060-080": {
+      "after_rovio_reserve_removed": 250,
+      "baseline_only_duplicate": 490,
+      "after_rovio_quality_removed": 490,
+      "both_duplicate": 290
+    },
+    "080-100": {
+      "baseline_only_duplicate": 310,
+      "after_rovio_reserve_removed": 200,
+      "after_rovio_quality_removed": 920,
+      "both_duplicate": 170
+    },
+    "100-120": {
+      "after_rovio_quality_removed": 1200,
+      "after_rovio_reserve_removed": 200,
+      "baseline_only_duplicate": 170,
+      "both_duplicate": 30
+    },
+    "120-140": {
+      "after_rovio_quality_removed": 720,
+      "after_rovio_reserve_removed": 120,
+      "both_duplicate": 420,
+      "baseline_only_duplicate": 350
+    },
+    "140-160": {
+      "after_rovio_reserve_removed": 330,
+      "after_rovio_quality_removed": 700,
+      "both_duplicate": 460,
+      "baseline_only_duplicate": 160
+    },
+    "160-180": {
+      "after_rovio_reserve_removed": 20,
+      "after_rovio_quality_removed": 920,
+      "both_duplicate": 370,
+      "baseline_only_duplicate": 230
+    },
+    "180-200": {
+      "baseline_only_duplicate": 390,
+      "after_rovio_quality_removed": 1060,
+      "both_duplicate": 150
+    },
+    "200-220": {
+      "after_rovio_quality_removed": 118,
+      "baseline_only_duplicate": 20,
+      "both_duplicate": 38
+    }
+  },
+  "baseline_birth_observation_candidate_outcomes": {
+    "created": 47,
+    "association_gate_rejected": 35,
+    "reobserved": 4,
+    "duplicate_frame_observation": 1
+  },
+  "candidate_same_tick_duplicate_birth_excess": {
+    "('pickup-edge3', 'zone_boundary')": 9,
+    "('pickup-edge1', 'zone_boundary')": 5,
+    "('pickup-corner2', 'zone_corner')": 2,
+    "('pickup-edge2', 'zone_boundary')": 4,
+    "('pickup-edge0', 'zone_boundary')": 1
+  },
+  "first_detection_failure": "not identifiable in baseline-present denominator; shared detector, excluded objects never observed by either require separate detector audit",
+  "limitation": "Evaluator birth labels are nearest same-appearance geometry; label duplicates may include wrong labels, never ground-truth identities in control.",
+  "raw": [
+    "/home/ugrp/ugrp-sim/ops-reviews/egomem1/baseline-legacy-r1",
+    "/home/ugrp/ugrp-sim/ops-reviews/egomem1/offline-rovio-r1"
+  ],
+  "reproduction": [
+    "/home/ugrp/ugrp-sim/src/egomem2-6f9e1d7a3/scripts/egomem2_diagnose.py",
+    "--baseline",
+    "/home/ugrp/ugrp-sim/ops-reviews/egomem1/baseline-legacy-r1",
+    "--candidate",
+    "/home/ugrp/ugrp-sim/ops-reviews/egomem1/offline-rovio-r1",
+    "--output",
+    "/home/ugrp/ugrp-sim/ops-reviews/egomem2/prior-diagnosis"
+  ],
+  "blocked_object": "not_observed",
+  "minimum_gap_m": null,
+  "gap_status": "not_measured",
+  "sha256": {
+    "/home/ugrp/ugrp-sim/ops-reviews/egomem1/baseline-legacy-r1/predictions.json": "3e8e8e1bcf5e7f317b9b691969fcc5a833ecca850db1878285953a30d9109dcb",
+    "/home/ugrp/ugrp-sim/ops-reviews/egomem1/baseline-legacy-r1/frame-errors.json": "10a689cdaaae95dccf6d205b6629d8b413ecf3cca6e611cebf29ab1924a864db",
+    "/home/ugrp/ugrp-sim/ops-reviews/egomem1/baseline-legacy-r1/allowed.json": "1aefea75f23961060b27bbbf94aa88a5b92c03588a85ec5eb51a7c1422567316",
+    "/home/ugrp/ugrp-sim/ops-reviews/egomem1/offline-rovio-r1/predictions.json": "ecff301977b29b3910cb27458d0dbc164a72ccef7b4ba4455756751c83ffaa6c",
+    "/home/ugrp/ugrp-sim/ops-reviews/egomem1/offline-rovio-r1/frame-errors.json": "78af29416439e4539079a4b59b656c3561acc4f6de164c3e6f1d25308d26bf9e",
+    "/home/ugrp/ugrp-sim/ops-reviews/egomem1/offline-rovio-r1/allowed.json": "1aefea75f23961060b27bbbf94aa88a5b92c03588a85ec5eb51a7c1422567316"
+  }
+}

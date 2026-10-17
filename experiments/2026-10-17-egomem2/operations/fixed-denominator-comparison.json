@@ -1,0 +1,191 @@
+{
+  "status": "OFFLINE_ONLY",
+  "frames": 2026,
+  "denominator": 14912,
+  "selection": "minimum age_s then numeric memory birth ID, equally on both; never minimum error",
+  "report": {
+    "baseline": {
+      "zone_boundary": {
+        "covered": 10790,
+        "denominator": 10790,
+        "coverage": 1.0,
+        "conditional_median_m": 0.603106993560363,
+        "conditional_p95_m": 4.23155687248555,
+        "full_denominator_median_m": 0.603001091203408,
+        "full_denominator_p95_m": 4.235267570878745,
+        "null_quantile_meaning": "rank falls into missing-memory mass (+infinity), not zero",
+        "duplicate_keys": 7974,
+        "evaluated_memory_rows": 38942
+      },
+      "zone_corner": {
+        "covered": 4122,
+        "denominator": 4122,
+        "coverage": 1.0,
+        "conditional_median_m": 0.6363811419421586,
+        "conditional_p95_m": 1.8288200001034103,
+        "full_denominator_median_m": 0.6360674002001345,
+        "full_denominator_p95_m": 1.8288408754311247,
+        "null_quantile_meaning": "rank falls into missing-memory mass (+infinity), not zero",
+        "duplicate_keys": 2526,
+        "evaluated_memory_rows": 9610
+      }
+    },
+    "rovio": {
+      "zone_boundary": {
+        "covered": 5398,
+        "denominator": 10790,
+        "coverage": 0.5002780352177942,
+        "conditional_median_m": 0.06173963204961186,
+        "conditional_p95_m": 2.3777993853817327,
+        "full_denominator_median_m": 3.276443638932854,
+        "full_denominator_p95_m": null,
+        "null_quantile_meaning": "rank falls into missing-memory mass (+infinity), not zero",
+        "duplicate_keys": 2418,
+        "evaluated_memory_rows": 10192
+      },
+      "zone_corner": {
+        "covered": 1026,
+        "denominator": 4122,
+        "coverage": 0.24890829694323144,
+        "conditional_median_m": 0.4071610671497389,
+        "conditional_p95_m": 1.661017675101405,
+        "full_denominator_median_m": null,
+        "full_denominator_p95_m": null,
+        "null_quantile_meaning": "rank falls into missing-memory mass (+infinity), not zero",
+        "duplicate_keys": 270,
+        "evaluated_memory_rows": 1446
+      }
+    },
+    "candidate": {
+      "zone_boundary": {
+        "covered": 10580,
+        "denominator": 10790,
+        "coverage": 0.9805375347544022,
+        "conditional_median_m": 0.4764654768833442,
+        "conditional_p95_m": 4.121056924104703,
+        "full_denominator_median_m": 0.5169858199660164,
+        "full_denominator_p95_m": 4.712614775253916,
+        "null_quantile_meaning": "rank falls into missing-memory mass (+infinity), not zero",
+        "duplicate_keys": 7894,
+        "evaluated_memory_rows": 40148
+      },
+      "zone_corner": {
+        "covered": 4122,
+        "denominator": 4122,
+        "coverage": 1.0,
+        "conditional_median_m": 0.6374571359496677,
+        "conditional_p95_m": 1.9182643659716476,
+        "full_denominator_median_m": 0.6373318207398425,
+        "full_denominator_p95_m": 1.918268782505917,
+        "null_quantile_meaning": "rank falls into missing-memory mass (+infinity), not zero",
+        "duplicate_keys": 2426,
+        "evaluated_memory_rows": 6984
+      }
+    }
+  },
+  "matched_recency_selected_error": {
+    "zone_boundary": {
+      "baseline": {
+        "covered": 10580,
+        "denominator": 10580,
+        "coverage": 1.0,
+        "conditional_median_m": 0.600735466943485,
+        "conditional_p95_m": 4.151769957071497,
+        "full_denominator_median_m": 0.6007290196877237,
+        "full_denominator_p95_m": 4.151763733402283,
+        "null_quantile_meaning": "rank falls into missing-memory mass (+infinity), not zero"
+      },
+      "candidate": {
+        "covered": 10580,
+        "denominator": 10580,
+        "coverage": 1.0,
+        "conditional_median_m": 0.4764654768833442,
+        "conditional_p95_m": 4.121056924104703,
+        "full_denominator_median_m": 0.4764106512567228,
+        "full_denominator_p95_m": 4.121051069667201,
+        "null_quantile_meaning": "rank falls into missing-memory mass (+infinity), not zero"
+      },
+      "candidate_lower_n": 6788
+    },
+    "zone_corner": {
+      "baseline": {
+        "covered": 4122,
+        "denominator": 4122,
+        "coverage": 1.0,
+        "conditional_median_m": 0.6363811419421586,
+        "conditional_p95_m": 1.8288200001034103,
+        "full_denominator_median_m": 0.6360674002001345,
+        "full_denominator_p95_m": 1.8288408754311247,
+        "null_quantile_meaning": "rank falls into missing-memory mass (+infinity), not zero"
+      },
+      "candidate": {
+        "covered": 4122,
+        "denominator": 4122,
+        "coverage": 1.0,
+        "conditional_median_m": 0.6374571359496677,
+        "conditional_p95_m": 1.9182643659716476,
+        "full_denominator_median_m": 0.6373318207398425,
+        "full_denominator_p95_m": 1.918268782505917,
+        "null_quantile_meaning": "rank falls into missing-memory mass (+infinity), not zero"
+      },
+      "candidate_lower_n": 686
+    }
+  },
+  "rejection_table": {
+    "unit": "unchanged_baseline_label_timestamp_keys",
+    "funnel": [
+      {
+        "stage": "all_baseline_keys",
+        "input_n": 14912,
+        "cumulative_pass_n": 14912,
+        "rejected_n": 0
+      },
+      {
+        "stage": "candidate_present",
+        "input_n": 14912,
+        "cumulative_pass_n": 14702,
+        "rejected_n": 210
+      },
+      {
+        "stage": "recency_selected_including_duplicates",
+        "input_n": 14702,
+        "cumulative_pass_n": 14702,
+        "rejected_n": 0
+      }
+    ],
+    "reasons": {
+      "candidate_memory_absent": 210,
+      "duplicate_excluded": 0
+    },
+    "blocked_object": "not_observed",
+    "minimum_gap_m": null,
+    "gap_status": "not_measured",
+    "raw": [
+      "/home/ugrp/ugrp-sim/ops-reviews/egomem1/baseline-legacy-r1",
+      "/home/ugrp/ugrp-sim/ops-reviews/egomem1/offline-rovio-r1",
+      "/home/ugrp/ugrp-sim/ops-reviews/egomem2/offline-object-gnn-r4"
+    ],
+    "reproduction": [
+      "/home/ugrp/ugrp-sim/src/egomem2-6f9e1d7a3/scripts/egomem2_compare.py",
+      "--baseline",
+      "/home/ugrp/ugrp-sim/ops-reviews/egomem1/baseline-legacy-r1",
+      "--rovio",
+      "/home/ugrp/ugrp-sim/ops-reviews/egomem1/offline-rovio-r1",
+      "--candidate",
+      "/home/ugrp/ugrp-sim/ops-reviews/egomem2/offline-object-gnn-r4",
+      "--output",
+      "/home/ugrp/ugrp-sim/ops-reviews/egomem2/fixed-denominator-comparison.json"
+    ]
+  },
+  "original_unique_only_comparison_is_additional": true,
+  "actual_reacquisition_trials": 0,
+  "physical_success": false,
+  "student_success": false,
+  "llm_success": false,
+  "limitation": "Offline birth labels remain nearest same-appearance evaluator geometry; cannot prove correct identity or actual navigational return.",
+  "sha256": {
+    "/home/ugrp/ugrp-sim/ops-reviews/egomem1/baseline-legacy-r1/frame-errors.json": "10a689cdaaae95dccf6d205b6629d8b413ecf3cca6e611cebf29ab1924a864db",
+    "/home/ugrp/ugrp-sim/ops-reviews/egomem1/offline-rovio-r1/frame-errors.json": "78af29416439e4539079a4b59b656c3561acc4f6de164c3e6f1d25308d26bf9e",
+    "/home/ugrp/ugrp-sim/ops-reviews/egomem2/offline-object-gnn-r4/frame-errors.json": "8269192568eef72f55217d21f254bb064c92969ecc626e98918b29a50ef1cd96"
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "inputs": {
+    "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2/own.json": "f19642487826c2c63e9ca90a0e163e404f8b5113930d69b7203589f22a3fd68e",
+    "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2/online-trajectory.json": "10ad1e247622fe6d5525a0e01b1d3fe42c7445fe08f83f8947acbf4d5591cf54",
+    "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2/scans.json": "0c8c2ed1d00fdea612e18439d02c68c23e4842950364837a97b2fc8126508672"
+  },
+  "allowed_sha256": "00e839bd38c76b00de59bda2d5270874c92df3817173d32f8650d70a5a4e5e0b",
+  "controller_fields": [
+    "motion_delta",
+    "motion_covariance",
+    "observations",
+    "t",
+    "frame_id"
+  ],
+  "excluded": [
+    "corrected_pose",
+    "map_event",
+    "static-map",
+    "public-start-zone",
+    "eval-only",
+    "spawn",
+    "top_rgb"
+  ],
+  "truth_inputs": 0,
+  "static_map_inputs": 0,
+  "rgb_verified": 2026,
+  "counts": {
+    "sampled": 203,
+    "settled": 197,
+    "features": 700,
+    "point_frames": 24,
+    "points": 26
+  },
+  "rejection_distribution": {
+    "camera_unsettled": 6,
+    "parallel_floor_lines": 71,
+    "different_floor_hue": 546,
+    "no_supported_point_landmark": 173,
+    "corner_outside_observed_segments": 343
+  }
+}

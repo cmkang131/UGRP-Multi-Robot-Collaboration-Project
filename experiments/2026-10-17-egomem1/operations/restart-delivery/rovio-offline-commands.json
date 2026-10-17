@@ -1,0 +1,175 @@
+{
+  "commands": [
+    [
+      "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+      "-m",
+      "scripts.egomem1_curves",
+      "--input",
+      "/home/ugrp/ugrp-sim/ops-reviews/egomem1/baseline-legacy-r1",
+      "--output",
+      "/home/ugrp/ugrp-sim/ops-reviews/egomem1/baseline-legacy-r1-curves"
+    ],
+    [
+      "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+      "-m",
+      "scripts.egomem1_offline",
+      "predict",
+      "--input",
+      "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2",
+      "--output",
+      "/home/ugrp/ugrp-sim/ops-reviews/egomem1/offline-rovio-r1",
+      "--implementation",
+      "rovio_local_v1",
+      "--rovio-library",
+      "/home/ugrp/ugrp-sim/ops-reviews/egomem1/rovio-statistics-ff0a6067a.so"
+    ],
+    [
+      "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+      "-m",
+      "scripts.egomem1_offline",
+      "score",
+      "--input",
+      "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2",
+      "--output",
+      "/home/ugrp/ugrp-sim/ops-reviews/egomem1/offline-rovio-r1"
+    ],
+    [
+      "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+      "-m",
+      "scripts.egomem1_curves",
+      "--input",
+      "/home/ugrp/ugrp-sim/ops-reviews/egomem1/offline-rovio-r1",
+      "--output",
+      "/home/ugrp/ugrp-sim/ops-reviews/egomem1/offline-rovio-r1-curves"
+    ],
+    [
+      "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+      "-m",
+      "scripts.egomem1_playback",
+      "--input",
+      "/home/ugrp/ugrp-sim/runs/egomem1-round1/recording2",
+      "--output",
+      "/home/ugrp/ugrp-sim/ops-reviews/egomem1/recording2-restart-playback"
+    ]
+  ],
+  "source_sha": "ff0a6067aec849c6ad9ef28d8421566be4793ca6",
+  "versions": [
+    {
+      "name": "absl-py",
+      "version": "2.5.1"
+    },
+    {
+      "name": "contourpy",
+      "version": "1.4.0"
+    },
+    {
+      "name": "cycler",
+      "version": "0.12.1"
+    },
+    {
+      "name": "etils",
+      "version": "1.14.0"
+    },
+    {
+      "name": "fonttools",
+      "version": "4.67.0"
+    },
+    {
+      "name": "fsspec",
+      "version": "2026.9.0"
+    },
+    {
+      "name": "glfw",
+      "version": "2.10.2"
+    },
+    {
+      "name": "iniconfig",
+      "version": "2.3.1"
+    },
+    {
+      "name": "kiwisolver",
+      "version": "1.5.1"
+    },
+    {
+      "name": "matplotlib",
+      "version": "3.11.2"
+    },
+    {
+      "name": "mujoco",
+      "version": "3.16.0"
+    },
+    {
+      "name": "mujoco-warp",
+      "version": "3.16.0"
+    },
+    {
+      "name": "numpy",
+      "version": "2.5.2"
+    },
+    {
+      "name": "opencv-python-headless",
+      "version": "5.0.0.93"
+    },
+    {
+      "name": "packaging",
+      "version": "26.3"
+    },
+    {
+      "name": "pillow",
+      "version": "12.3.0"
+    },
+    {
+      "name": "pip",
+      "version": "24.0"
+    },
+    {
+      "name": "pluggy",
+      "version": "1.7.0"
+    },
+    {
+      "name": "Pygments",
+      "version": "2.21.0"
+    },
+    {
+      "name": "PyOpenGL",
+      "version": "3.1.10"
+    },
+    {
+      "name": "pyparsing",
+      "version": "3.3.3"
+    },
+    {
+      "name": "pytest",
+      "version": "9.1.1"
+    },
+    {
+      "name": "python-dateutil",
+      "version": "2.9.0.post0"
+    },
+    {
+      "name": "scipy",
+      "version": "1.17.1"
+    },
+    {
+      "name": "six",
+      "version": "1.17.0"
+    },
+    {
+      "name": "typing_extensions",
+      "version": "4.16.0"
+    },
+    {
+      "name": "warp-lang",
+      "version": "1.15.0"
+    },
+    {
+      "name": "websockets",
+      "version": "17.2"
+    },
+    {
+      "name": "zipp",
+      "version": "4.1.1"
+    }
+  ],
+  "prior_error": "score baseline saved JSON then plotting import matplotlib missing; installed matplotlib in existing venv-warp; kept original summary and resumed from curves"
+}

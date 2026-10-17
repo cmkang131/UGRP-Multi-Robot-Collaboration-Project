@@ -1,0 +1,212 @@
+# egomem1 — 자기 중심 지형지물 기억
+
+**재시작 최종 판정: NOT_READY.** ROVIO 실사용 공개 구현을 조사한 뒤
+원본 C++ 특징 관리 코드를 직접 연결했다. 실행 소스 `ff0a6067a`.
+비물리 검사43개 통과. 같은2026프레임의 동일 시각·평가 지형지물 대응
+1,226개를 비교하면 선790개 P95 **2.42039→2.42051m**, 모서리436개
+P95 **.722887→.722986m**로 정확도 개선을 확인하지 못했다.
+전체 선 P95 3.00→2.30m는 기억 삭제로 평가 표본이 바뀐 수치다.
+[전체 결과·실패 포함 요약](restart-summary.json),
+[오차·경과시간·이동거리 곡선](operations/restart-delivery/offline-rovio-r1-curves/zone_boundary-curves.png),
+[공통 표본 관문표](operations/restart-delivery/rovio-paired-comparison.json).
+새 후보 물리 재획득률은 미측정. 이전 녹화1은 색 이탈 실패, 녹화2는
+재시작 중단(HOST_ERROR)이며 최대2녹화를 모두 사용했다.
+
+## 재시작 이전 기록
+
+사용자 2026-10-17 결정: 정적 지도·시작 구역 사전·전역 좌표 없이,
+자기 자신은 항상(0,0)·정면이다. 목적지는 자기 RGB로 보고 찾는다.
+이 README는 구현·오프라인 평가·실제 MJWarp 복귀를 각각 구분한다.
+실제 복귀 성공은 아직 측정하지 않았다. 최초 점 검출 재생은
+203표본→안정197→검출24프레임/26점→기억11·재관측10이었다.
+평가 오차 감소는4/10, 최초 라벨 오차 중앙1.092m로 인수 불가다.
+첫0–29.5초·60–89.5초2Hz 및192.5–202.5초10Hz 자기 RGB 띠를 직접 봤다.
+동료 r2는 정지하고 r1은 벽을 따라 이동한다. 25초/74초 검출 선분은
+색칠된 벽/벽–바닥 경계 부근으로, 바닥 지형지물이라 단정할 수 없다.
+하향 ray만으로 바닥이라고 간주한 어댑터가 벽을 배제하지 않았고,
+실제 바닥 부분 경계의 끝은 대부분 시야 밖이다. 다음 후보는 관측된
+벽 발 아래의 바닥만 허용하며 부분 경계는 선으로 기억한다.
+mapbuild12 미커밋 결과는 원래 브랜치 codex/mapbuild1의
+`95769da0e12326e41b71d29843c4da75c5b10a00`으로 먼저 커밋·push했다.
+새 브랜치는 origin/main `4bb02030b`에서 만들었다.
+PR573 미병합 시 그 AGENTS와 기준표를 읽었으며
+[정확한 기준표 사본](policy-pr573.json)은 검사에만 사용한다.
+
+## 재시작: 실사용 방식 조사와 선택 (2026-10-17)
+
+조사 완료→공용 ops-alert `egomem1: SURVEY` 기록 뒤 구현을 변경했다.
+선택은 **ROVIO의 로봇 상대 특징 EKF 예측→영상 갱신 + 원본 특징 관리 코드**다.
+ROVIO 전체 VIO를 실행하거나 제품 수준 성능을 승계한 것이 아니다.
+
+| 방식·저장소 | 확인한 실제 사용처 | 라이선스 | 확인한 규칙·선택 |
+|---|---|---|---|
+| [ROVIO](https://github.com/ethz-asl/rovio/tree/34735c0bfd786d44f6d21d31c0776290f1f91185) | ETH ASL 실제 MAV 실험·[ROVIOLI](https://github.com/ethz-asl/maplab/wiki/ROVIOLI-Introduction) 추정 전단; 상용 제품 채택은 미확인 | BSD-3-Clause | 선택: `ImuPrediction.hpp` 상대 특징 예측, `ImgUpdate.hpp` 갱신·삭제 순서, `FeatureStatistics.hpp` 원본 직접 호출 |
+| [Nav2 costmap_2d](https://docs.nav2.org/jazzy/configuration_and_development/configuration_guide/core_servers/costmap_2d/) | Nav2 공식 문서의 이동 로봇 내비게이션; 공식 프로젝트는 상용 사용을 명시 | package.xml: BSD-3-Clause·Apache-2.0 | rolling_window는 로봇 중심 창을 옮기지만 격자·odom 고정축을 유지. 짧은 상대 물체 목록·정면 회전 조건과 달라 미채택 |
+| [OpenVINS](https://github.com/rpng/open_vins/tree/69488123ed9362dd44b6f28e7f4680abbff1442b) | 공개 VIO 연구 플랫폼·EuRoC/실제 센서 구성; 상용 제품 사용 미확인 | GPL-3.0 | `FeatureDatabase::cleanup_measurements`는 marginal clone보다 오래된 측정을 제거. IMU·전역 clone 상태창이 필요해 미채택 |
+| [hector_object_tracker](https://index.ros.org/p/hector_object_tracker/) | Team Hector 공개 ROS 물체 추적 패키지 | 확인한 최신 package.xml은 TODO, 확인 불가 | 존재·패키지 용도만 확인; 갱신/잊기 코드와 제품 사용은 확인하지 않아 미채택 |
+
+ROVIO 고정 SHA는 `34735c0bfd786d44f6d21d31c0776290f1f91185`.
+원본 `FeatureStatistics.hpp`·`rovio.info`·BSD 고지는
+`harness/vendor/rovio/`에 바이트 그대로 보존하고 SHA를 기록한다.
+C ABI만 추가해 Python에서 원본 C++를 호출한다. ROVIO의 관측 프레임 단위
+품질창10·가시성창100·전역품질 최소100, 추적 상/하한 .9/.8,
+추적+빈 슬롯 비율 .75·강제 삭제 배율1.1을 `rovio.info` 그대로 쓴다.
+새 장면에 맞춘 성능 상수라는 주장은 하지 않는다.
+
+| 항목 | 기존 자체 후보(보존) | 선택 방식 적용 | 제약 때문에 바꾼 부분 |
+|---|---|---|---|
+| 필터 순서 | 이동 변수를 추가→옛 프레임 갱신→역합성 | 상대 특징을 먼저 예측→현재 영상 EKF 갱신 | ROVIO 3D bearing/depth 대신 기존 RGB 검출의 2D점·부분선. 점은 `p_new=R(-yaw)(p-dxy)`, P는 전체 Jacobian으로 전파 |
+| 이동 센서 | LK/자기 발행명령 | 같은 허용 입력 유지 | ROVIO IMU·bias·world pose는 금지여서 사용 안 함. VIO 전체를 재현했다는 주장 없음 |
+| 재관측 | semantic 외형+마할라노비스 | 동일 관문과 Joseph 갱신 유지 | ROVIO photometric patch 대신 기존 색/기하 검출. 다중 대응은 여전히 거부 |
+| 잊기 | 관측 gap P95의 지수 fade·6m 불확실 삭제 | 원본 품질×가시성 > .9−(.9−.8)×전역품질; 실패 시 삭제 | 실제 카메라 투영으로 보임을 보장 못 하므로 미대응은 UNKNOWN(가시성 감소, 추적 실패로 단정 안 함). 성공 대응만 TRACKED |
+| 슬롯 | 32슬롯 LRU | 원본 .75 free/tracked reserve·1.1 단계 강제 삭제 | 슬롯 수32는 기존 계산 예산 유지. 새로 생긴 관측 초과는 거부·원장 기록 |
+| 주기 | 매.1초 step, 1초 detector | 품질 통계는 실제 안정 detector tick만 갱신 | 명령 예측만 있는 프레임은 품질/가시성 관측 횟수로 세지 않음 |
+
+토글 `rovio_local_v1`은 기본 off이며 새 오프라인 후보만 켠다. 원본의
+3D IMU 노이즈·patch 수용 상수를 2D 검출에 복사하지 않는다. 기존 검출
+공분산·chi-square(2)99%는 기존 후보와 동일, 새 정확도 검증 필요다.
+
+이전 세션 녹화2(`112d48753`, PID6862)가 재시작 때 실행 중이었다.
+소유·명령·lease를 확인하고 SIGINT로 종료했으며 HOST_ERROR 원본을 보존한다.
+녹화1은 실제 색 이탈 미충족 NOT_READY, 녹화2는 중단이므로 총2녹화를
+소비했고 새 방식의 물리 검증은 실행하지 않는다.
+
+## 기존 구현과 검증 경계(재시작 이전 후보)
+
+기본 off `egocentric_landmark_memory_v1`. 상태는 상대 점 목록과 전체
+교차 공분산이며 world anchor·점유 격자·로봇 전역 자세를 저장하지 않는다.
+이동량을 독립 변수로 추가→이전 좌표계에서 재관측 EKF 갱신→역변환
+합성 후 이동 변수를 제거하는 Castellanos2007 §4 순서를 사용한다.
+점 p의 합성은 `R(-dtheta)(p-dxy)`이며 F=R(-dtheta),
+G=[-R(-dtheta), -J*p_new]로 공유 이동 오차를 보존한다.
+재관측은 Joseph 공분산 갱신과 chi-square(2)99% 마할라노비스 관문이다.
+같은 외형의 여러 기억이 관문 안에 있으면 모호로 거부한다.
+
+검출은 기존 PR406 OpenCV floor_features/door_features·고정 K/D·자기
+발행 서보 FK·자기 차체/동료 RGB 마스크를 재사용한다. 지도 palette 대신
+전체 hue 공간을 기존 허용폭 간격으로 탐색한다. 부분 선분 중앙은 고정점으로
+취급하지 않으며 관측된 선분 안의 교점만 구역 모서리 후보로 저장한다.
+교점이 없으면 부분 구역 경계를 법선거리ρ·법선각φ의 oriented line으로
+기억한다. `ρ'=ρ-n(φ)·dxy`, `φ'=φ-dtheta`와 정확한 Jacobian을
+같은 robocentric 예측→갱신→합성에 적용한다. 선의 중점/끝/구역 중심은
+미관측으로 남긴다. 관측 벽 발이 없는 방위는 unknown이며 바닥으로 채우지 않는다.
+색은 외형일 뿐 구역 고유 ID가 아니다. 벽 모서리·빔 끝·화물·파트너의
+안정된 점 검출/움직임 모델은 아직 연결하지 않았으며 지원을 주장하지 않는다.
+
+상수: 거리σ.2m·방향σ3°·선각σ5°·최대6m·색 허용12는 기존 PR406
+검출기 값을 그대로 쓴다. 새 장면의 공분산 보정 완료를 뜻하지 않는다.
+sensor 간격1SIM초는 기존 mapbuild scan 주기다. 95%반경이 센서 전체
+6m를 넘으면 국소 목표를 지정할 수 없어 삭제한다. 근거 없는 나이 상한은
+없고 관측 간격 분포를 확인한 뒤에만 선택적 fade 시간을 설정한다.
+32슬롯은 계산·LLM 목록 길이를 제한하는 후보 자원 예산(최대67차원)이며
+물리 수용 기준이 아니다. 초과 시 가장 오래 안 본 슬롯을 교체하고 기록한다.
+
+LLM 어댑터는 고정 규칙을 prefix에, 상대 기억·시각·불확실성·탐색 후보를
+suffix에 둔다. 실제 LLM 호출/통합은 별도 검증이다.
+
+## 승인된 물리1라운드의 DEV 진단
+
+**녹화1은 NOT_READY로 정정했다.** 381프레임/38SIM초, 실제 이동.630m,
+첫 평가기의 같은색 구역 경계 재검출 판정은1/1이었으나, 영상 전체2Hz와
+마지막10초10Hz를 보니25.4–38초에 파란 바닥 표시가 계속 화면에 남아 있었다.
+경계선 검출 실패3표본은 구역 자체의 시야 이탈이 아니다. 마지막 라벨도
+처음 pickup-edge2와 다른 경계다. 이 약한 판정과 최초 파일은 보존하고
+[실패 관문표](recording1-strict-review.json)로 새 수정을 연결한다.
+
+남은 녹화1회에만 기본off `--strict-reacquisition`을 켠다. 색 영역 안쪽을
+향하는 관측 선 법선의 반대쪽으로 나가며, 안쪽 출발이면 경계까지의 거리+
+고정 로봇 반지름을 이동한다. 바퀴 명령/LK로 그 거리만큼 갔어도 실제 자기
+RGB에서 해당 색의300px 이상 연결 성분이 사라지지 않으면 복귀로 전환하지
+않는다. 같은 기존 PR406 색/성분 상수를 재사용한다. 돌아볼 때도 기억 방향이
+카메라 수평 화각 안에 있고 색과 경계가 실제로 다시 검출돼야 한다.
+평가기는 매10Hz 자기 RGB의 색 가시성·같은 구역 정답 라벨을 별도로 재센다.
+
+`scripts/egomem1_record.py`는 기존 v7 장면·카메라·MJWarp 렌더·noslip0을
+재사용한다. 초기 spawn은 장면 배치에만 쓰고 제어기는 받지 않는다.
+몸체를 돌리며 실제 RGB로 둘러본다→관측한 구역 경계 중 가장 최근 것을
+기억→반대쪽을 향해 한 목표 거리만큼 이동→기억 방향으로 돌고 자기 RGB로
+같은 외형을 재관측한다. 목표 이동 거리는 최초 관측 경계 거리와 고정 로봇
+기하의 지름 중 큰 값이다. 완전한 구역 중심/임무 도착은 주장하지 않는다.
+같은 색의 다른 경계를 잡았는지는 평가에서 따로 판정한다.
+
+이것은 사용자가 지정한 순서의 코드 진단이며 LLM의 운반·파트너 판단을
+대체한 본 E2E가 아니다. 실제 LLM 호출0이다. 회전은 기존 R2에서 자기 RGB로
+측정한 정확한 양의 바퀴 명령/27.857ms만 사용한다. 음의 회전을 임의로
+대칭 보정하지 않는다. phase 상한은 기존 R1 자기 LK 양의 yaw P05에 근거한
+692명령이며 wall 상한은 없다. 불확실 반경이 목표 거리보다 커지는 상황은
+dev_light would_stop으로만 기록한다. 모든 자기 영상은10Hz로 기록하여
+종료 직전10SIM초101프레임의 기록 버퍼와 크기를 별도로 남긴다.
+
+첫 오프라인 점 후보 b85da1f0c는 실패 비교용으로 보존한다. 바닥 가림과
+선 표현을 넣은8e79e06c2는 197안정 표본 중153프레임446관측,
+기억 생성52·재관측240·모호126·중복28이었다. 재관측157/240에서
+오차가 줄었고, 전후 중앙12.4→9.3cm다. 전체 line 법선거리 오차 중앙
+54.8cm·P95 3.00m라 인수할 수 없다. 같은 녹화의 탐색 자료이며 실제
+재획득률은 새 물리에서만 측정한다. 점XY와 선 법선거리의 단위/의미는
+별도 summary 필드로 보존하며 혼합 수치로 성능을 주장하지 않는다.
+
+## 오프라인 절차
+
+gcp5 원본 `/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2`
+6.461m를 그대로 재생한다. 원래 기록은 정적 AMCL 제어로 만든 과거 코호트다.
+새 기억에는 자기 RGB·명령·보정과 기존 LK 증분만 명시 allowlist로 전달한다.
+정적 보정 자세·초기 사전·TOP·spawn은 제거한다. 예측을 SHA로 봉인한 뒤
+별도 score만 평가 정답과 지형지물 라벨을 연다. 같은 외형의 정확한 장면
+모서리 중 가장 가까운 것을 평가 라벨로 쓰므로 오검출·잘못된 대응은 한계다.
+실제 복귀 재획득률은 이 재생으로 측정할 수 없으며 새 물리 기록에서 잰다.
+
+수정 전 사유 분포는 [prior-rejection_table.json](prior-rejection_table.json).
+새 detector의 관문표는 실행 뒤 별도 파일로 남긴다. Mac 물리/렌더/화면 앱,
+CPU VM, 모델 키 전송, Drive는 사용하지 않는다.
+
+## 참고 자료 — 원문 확인 범위
+
+- [Castellanos·Neira·Tardós2004, Limits to the Consistency of EKF-based SLAM](https://webdiis.unizar.es/~jdtardos/papers/2004_IFAC_IAV_Castellanos_et_al.pdf): §4 식11–13의 자기 중심 역합성·이동 변수 추가·EKF 갱신을 확인했다.
+- [Castellanos·Martínez-Cantín·Tardós·Neira2007, Robocentric Map Joining](https://webdiis.unizar.es/GRPTR/pubs/2006_Caste_JRAS_draft.pdf): §4 식11–16에서 이동 변수를 재관측으로 먼저 갱신한 뒤 합성하는 순서를 확인했다. 전체 map joining을 구현했다는 주장은 아니다.
+- [Solà 외, Civera 연구실 공개 IJCV 원문 §7.1](https://webdiis.unizar.es/~jcivera/papers/sola_etal_ijcv11.pdf): 자기 중심 EKF에서 로봇이 매번 공분산0의 원점이 되는 설명·Civera2009 논문/학위논문 인용을 확인했다. Civera 학위논문 직접 URL은 찾지 못했으므로 전문 확인으로 표시하지 않는다.
+- [Wang & Spelke2002, Human spatial representation: insights from animals](https://doi.org/10.1016/S1364-6613(02)01961-7): 서지 확인, 전문 접근 실패. 관련 직접 실험 [Wang & Spelke2000, Updating egocentric representations](https://www.sciencedirect.com/science/article/pii/S0010027700001050)의 초록에서 자기 중심 표적 갱신·방향 상실 결과를 확인했다. 이를 공학 성능 보장으로 쓰지 않는다.
+- [Warren2019, Non-Euclidean navigation](https://doi.org/10.1242/jeb.187971): [저자 초록/서지](https://pubmed.ncbi.nlm.nih.gov/30728233/)와 [학회 저자 발표](https://www.biologists.com/meetings/jeb2018/programme/warren/)에서 전역 좌표에 통합하지 않는 국소 거리·경로 그래프 가설을 확인했다.
+- [Beeching 외2020 EgoMap](https://arxiv.org/abs/2002.02286): 공개 전문에서 자기 이동의 affine 변환으로 자기 중심 기억을 갱신하는 구조를 확인했다. 해당 학습 격자/정답 ego-motion 입력을 가져오지 않는다.
+- [Manigrasso 외, ESOM](https://arxiv.org/abs/2411.16934): 공개 초록의 관측 기반 object discovery→tracking→memory 흐름을 참고했다. 이 시스템의 학습 모델·3D 추적을 재현한 것은 아니다.
+
+알고리즘 수식을 독립 Python으로 구현했다. 기존 검출기·카메라 FK는 저장소
+코드를 재사용한다. `harness/servo_camera_fk.py`는 mapbuild1/95769da0e의
+바이트를 그대로 가져왔으며 기본 off 및 과거 동작을 유지한다.
+
+## 재현과 회수
+
+원본은 gcp5에 보존한다. 6.461m는 원래 코호트 보고/지시문의 값이며,
+이번 별도 평가기의 전체10Hz XY 증분 합은 두 후보 모두6.688m다.
+기존 거리 보고의 샘플링 규약은 재검증하지 못했으므로 서로 바꿔 쓰지 않는다.
+이 값이나 정답 라벨은 제어/상수 보정에 쓰지 않았다.
+
+같은 allowed 입력과 extraction-seal을 새 출력 폴더에 복사한 뒤
+`scripts.egomem1_offline predict --implementation rovio_local_v1 --rovio-library LIB`
+→`score`→`scripts.egomem1_curves` 순서로 실행한다. 원본 라이브러리는
+`python -m scripts.build_egomem_rovio_statistics --output NEW.so`로 빌드한다.
+정확한 입력·인수·설치 패키지 버전은
+[실행 원장](operations/restart-delivery/rovio-offline-commands.json),
+원본/코드/라이브러리 해시는 prediction-seal·native-build에 있다.
+기존 `.venv-warp`에 누락된 matplotlib3.11.2와 의존성을 설치해 도표를 생성했다.
+첫 baseline score는 도표 import 전에 JSON을 저장한 뒤 실패했다. 그 결과를
+덮어쓰지 않고 curves 단계에서 재개했으며 예측·평가 JSON은 보존했다.
+새 baseline/candidate의64KiB 초과 JSON만 zstd 압축·해제 SHA 확인 후
+압축본으로 보존했다. 재비교 스크립트는 `.json.zst`도 읽는다.
+
+회수23파일과 녹화2 영상/띠4파일의 전체 SHA·크기가 일치했다.
+녹화1 원본776파일·녹화2 원본552파일 재해시도 모두 일치한다.
+Mac에는 요약·곡선·프레임 띠·36,197byte 대표 영상만 가져왔다.
+실제 카메라/물리 렌더와 분석은 gcp5에서만 수행했다.
+
+직접 본 범위: 녹화1 전체0–38초2Hz·28–38초10Hz, 녹화2 전체
+0–26.8초2Hz·16.8–26.8초10Hz. r2는 정지, r1은0–25초 한 바퀴
+둘러보고 파란 표시를 다시 본다. 녹화1은25–38초 파란 바닥이 계속
+화면에 남고 내부 바닥 무늬/물체가 화면 안쪽으로 커지며 이동한다.
+녹화2는25.7초에 기억한 뒤 depart_turn 도중26.8초 감독 중단이다.
+희소 프레임의 검출 없음3회와 달리10Hz 띠에는 파란 표면이 연속해서
+남는다. 성공 녹화는 없으므로 성공 예시1개 검토는 수행할 자료가 없다.
+TOP/overview 원본은 없으며 자기 r1·r2만 나란히 검토했다.
+
+GCP5는 자기 lease 해제·타 작업 프로세스/GPU0 확인 후 정지했고,
+최종 API 상태는 **TERMINATED**(2026-10-17 17:33:19 KST)다.
+PR574는 DRAFT·CI 대기이며 main에 병합하지 않았다.

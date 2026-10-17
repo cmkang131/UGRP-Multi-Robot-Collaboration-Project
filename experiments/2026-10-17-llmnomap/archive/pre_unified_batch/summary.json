@@ -1,0 +1,121 @@
+{
+  "schema": "ugrp.llmnomap_summary.v1",
+  "generated_utc": "2026-10-17T10:36:38Z",
+  "endpoint": {
+    "model": "google/gemma-4-31b-it",
+    "provider": "CoreWeave",
+    "tag": "coreweave/fp4",
+    "quantization": "fp4"
+  },
+  "calls_planned": 80,
+  "calls_attempted": 80,
+  "no_retries": true,
+  "task_accuracy_measured": false,
+  "arms": {
+    "original": {
+      "attempted": 40,
+      "http_200": 40,
+      "http_429": 0,
+      "errors": 0,
+      "format_success_n": 40,
+      "format_success_over_attempted": 1.0,
+      "format_success_over_200": 1.0,
+      "wall_median_s": 2.5028,
+      "wall_p90_s": 3.6381,
+      "over_8s": 0,
+      "prompt_tokens_median": 4016.5,
+      "completion_tokens_median": 57.0,
+      "cached_tokens_total": 1408,
+      "prompt_tokens_total": 177086,
+      "cached_ratio_weighted": 0.007951,
+      "cached_ratio_median": 0.0,
+      "reported_cost_total_usd": 0.01845354,
+      "reported_cost_per_call_usd": 0.00046134,
+      "formula_cost_total_usd": 0.01845354,
+      "act_counts": {
+        "carry": 9,
+        "go_to": 3,
+        "help": 9,
+        "report": 2,
+        "reroute": 6,
+        "search": 4,
+        "wait": 2,
+        "yield": 5
+      },
+      "calls_with_cached_tokens": 3
+    },
+    "planner_egocentric_memory_v1": {
+      "attempted": 40,
+      "http_200": 40,
+      "http_429": 0,
+      "errors": 0,
+      "format_success_n": 40,
+      "format_success_over_attempted": 1.0,
+      "format_success_over_200": 1.0,
+      "wall_median_s": 1.90575,
+      "wall_p90_s": 3.2019,
+      "over_8s": 0,
+      "prompt_tokens_median": 3321.5,
+      "completion_tokens_median": 56.0,
+      "cached_tokens_total": 5184,
+      "prompt_tokens_total": 141838,
+      "cached_ratio_weighted": 0.036549,
+      "cached_ratio_median": 0.0,
+      "reported_cost_total_usd": 0.01492942,
+      "reported_cost_per_call_usd": 0.00037324,
+      "formula_cost_total_usd": 0.01492942,
+      "act_counts": {
+        "carry": 6,
+        "go_to": 3,
+        "help": 11,
+        "report": 3,
+        "reroute": 6,
+        "search": 4,
+        "wait": 2,
+        "yield": 5
+      },
+      "calls_with_cached_tokens": 9
+    }
+  },
+  "paired": {
+    "n_pairs_both_200": 40,
+    "wall_delta_median_s_variant_minus_original": -0.2738,
+    "cached_ratio_delta_median": 0.0,
+    "cost_delta_median_usd": -8e-05,
+    "prompt_tokens_delta_median": -800.5,
+    "n_pairs_both_format_ok": 40,
+    "cached_ratio_weighted_delta": 0.028598,
+    "calls_with_cached_tokens": {
+      "original": 3,
+      "planner_egocentric_memory_v1": 9
+    },
+    "prompt_tokens_saved_median": 800.5,
+    "cost_saved_per_call_median_usd": 8e-05
+  },
+  "limits": [
+    "과제 정확도는 측정하지 않았다. 형식 성공(act 필드)만 잰다.",
+    "저장 원장은 text-only라 같은 번들의 저장 own-RGB 프레임 1장을 원/변형 양쪽에 동일하게 첨부했다. 프레임이 요청별 실제 관측과 일치하지 않는다.",
+    "cached_tokens는 제공자 보고값이며 프롬프트 접두 일치 정책에 의존한다. OpenRouter에서 provider.order를 수동 지정하면 sticky routing이 꺼질 수 있다.",
+    "40개 표본은 한 저장 원장의 앞 40행이며 과제 분포를 대표하지 않는다."
+  ],
+  "balance_before": {
+    "credits_remaining_usd": 6.573023,
+    "total_credits": 25.0,
+    "total_usage": 18.426976601,
+    "key_remaining_usd": 12.023628
+  },
+  "balance_after": {
+    "credits_remaining_usd": 6.543402,
+    "total_credits": 25.0,
+    "total_usage": 18.456597961,
+    "key_remaining_usd": 11.994006
+  },
+  "endpoint_watch": {
+    "ok": true,
+    "alerts": [],
+    "exit_code": 0
+  },
+  "elapsed_s": 121.04,
+  "spend_cap_usd": 0.25,
+  "reported_cost_total_usd": 0.03338296
+}

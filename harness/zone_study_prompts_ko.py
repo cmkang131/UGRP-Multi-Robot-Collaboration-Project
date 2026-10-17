@@ -34,6 +34,7 @@ from collections.abc import Mapping
 from dataclasses import dataclass
 
 from harness import zone_study_protocol as zp
+from harness import planner_egocentric_memory as egocentric_memory
 from harness.zone_study_contract import (MAIN_CONDITIONS, ORDER_SHEET_SCHEMA, PAYLOAD_SCHEMA,
                                          ROLE_NAMES, validate_robot_payload)
 from harness.zone_study_inputs import INPUT_PROFILE, payload_sha256, vocabulary
@@ -764,7 +765,7 @@ def build_request(inputs, *, seed=None, leader=None, window=None, sent=(), robot
     request['request_sha256'] = request_digest(system, user, images)
     request['tokens'] = request_tokens(system, user, images)
     request['billed_tokens'] = billed_prompt_tokens(request, seed=seed, robots=robots)
-    return request
+    return egocentric_memory.apply_request_if_enabled(request)  # planner_egocentric_memory_v1 (default off)
 
 
 def image_manifest(inputs) -> list:

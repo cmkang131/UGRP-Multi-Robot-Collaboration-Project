@@ -1,0 +1,451 @@
+{
+  "schema": "ugrp.current_stack.check.v1",
+  "ok": true,
+  "current_compliant": false,
+  "checker_sha256": "bdef5ad98b8e5ee8a21126f75430a58193d5f44f11f23fa60fd9ca487511eb3b",
+  "scope": "declared manifest fields; not independent runtime/physics verification",
+  "inputs": [
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/mapbuild1/experiments/2026-10-17-egomem1/offline-v2-queue.json",
+      "sha256": "3e56f2260e3abf9282bbab2c823e20e6f49e3fb965ac8909eedf9ebb9e7be9ab"
+    }
+  ],
+  "rows": [
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "physics_backend",
+      "expected": "mjwarp_batch_v1",
+      "observed": [],
+      "status": "replay_exception",
+      "recorded_status": "unknown",
+      "replay_of": [
+        "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2"
+      ],
+      "input": "experiments/2026-10-17-egomem1/offline-v2-queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "contact_profile",
+      "expected": "warp_native_contact_v1",
+      "observed": [],
+      "status": "replay_exception",
+      "recorded_status": "unknown",
+      "replay_of": [
+        "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2"
+      ],
+      "input": "experiments/2026-10-17-egomem1/offline-v2-queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "noslip_iterations",
+      "expected": 0,
+      "observed": [],
+      "status": "replay_exception",
+      "recorded_status": "unknown",
+      "replay_of": [
+        "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2"
+      ],
+      "input": "experiments/2026-10-17-egomem1/offline-v2-queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "scene_profile",
+      "expected": "walls_floor_contrast_v5_indigo110_s80",
+      "observed": [],
+      "status": "replay_exception",
+      "recorded_status": "unknown",
+      "replay_of": [
+        "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2"
+      ],
+      "input": "experiments/2026-10-17-egomem1/offline-v2-queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "cargo_version",
+      "expected": "v6",
+      "observed": [],
+      "status": "replay_exception",
+      "recorded_status": "unknown",
+      "replay_of": [
+        "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2"
+      ],
+      "input": "experiments/2026-10-17-egomem1/offline-v2-queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "scenario_version",
+      "expected": "v7",
+      "observed": [],
+      "status": "replay_exception",
+      "recorded_status": "unknown",
+      "replay_of": [
+        "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2"
+      ],
+      "input": "experiments/2026-10-17-egomem1/offline-v2-queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "heavy_crate",
+      "expected": false,
+      "observed": [],
+      "status": "replay_exception",
+      "recorded_status": "unknown",
+      "replay_of": [
+        "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2"
+      ],
+      "input": "experiments/2026-10-17-egomem1/offline-v2-queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "localization_path",
+      "expected": "egocentric_landmark_memory_v1",
+      "observed": [
+        {
+          "field": "parent[0].localization_path",
+          "value": "egocentric_landmark_memory_v1"
+        }
+      ],
+      "status": "replay_exception",
+      "recorded_status": "current",
+      "replay_of": [
+        "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2"
+      ],
+      "input": "experiments/2026-10-17-egomem1/offline-v2-queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "rbpf",
+      "expected": "off",
+      "observed": [],
+      "status": "replay_exception",
+      "recorded_status": "unknown",
+      "replay_of": [
+        "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2"
+      ],
+      "input": "experiments/2026-10-17-egomem1/offline-v2-queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "localization_engine",
+      "expected": "OpenCV",
+      "observed": [],
+      "status": "replay_exception",
+      "recorded_status": "unknown",
+      "replay_of": [
+        "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2"
+      ],
+      "input": "experiments/2026-10-17-egomem1/offline-v2-queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "held_object_hidden_v1",
+      "expected": true,
+      "observed": [],
+      "status": "replay_exception",
+      "recorded_status": "unknown",
+      "replay_of": [
+        "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2"
+      ],
+      "input": "experiments/2026-10-17-egomem1/offline-v2-queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "held_world_reads",
+      "expected": 0,
+      "observed": [],
+      "status": "replay_exception",
+      "recorded_status": "unknown",
+      "replay_of": [
+        "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2"
+      ],
+      "input": "experiments/2026-10-17-egomem1/offline-v2-queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "weld",
+      "expected": false,
+      "observed": [],
+      "status": "replay_exception",
+      "recorded_status": "unknown",
+      "replay_of": [
+        "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2"
+      ],
+      "input": "experiments/2026-10-17-egomem1/offline-v2-queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "top_camera_control",
+      "expected": false,
+      "observed": [],
+      "status": "replay_exception",
+      "recorded_status": "unknown",
+      "replay_of": [
+        "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2"
+      ],
+      "input": "experiments/2026-10-17-egomem1/offline-v2-queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "heading_mode",
+      "expected": "on",
+      "observed": [],
+      "status": "replay_exception",
+      "recorded_status": "unknown",
+      "replay_of": [
+        "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2"
+      ],
+      "input": "experiments/2026-10-17-egomem1/offline-v2-queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "ultrasonic_front",
+      "expected": "off",
+      "observed": [],
+      "status": "replay_exception",
+      "recorded_status": "unknown",
+      "replay_of": [
+        "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2"
+      ],
+      "input": "experiments/2026-10-17-egomem1/offline-v2-queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "wall_cap",
+      "expected": null,
+      "observed": [
+        {
+          "field": "parent[0].wall_cap",
+          "value": null
+        }
+      ],
+      "status": "replay_exception",
+      "recorded_status": "current",
+      "replay_of": [
+        "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2"
+      ],
+      "input": "experiments/2026-10-17-egomem1/offline-v2-queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "speed_gate",
+      "expected": "record_only",
+      "observed": [],
+      "status": "replay_exception",
+      "recorded_status": "unknown",
+      "replay_of": [
+        "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2"
+      ],
+      "input": "experiments/2026-10-17-egomem1/offline-v2-queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "speed_metric",
+      "expected": "wall_s/(sim_s*nworld)",
+      "observed": [],
+      "status": "replay_exception",
+      "recorded_status": "unknown",
+      "replay_of": [
+        "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2"
+      ],
+      "input": "experiments/2026-10-17-egomem1/offline-v2-queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "gcp_host",
+      "expected": [
+        "ugrp-act-l4-gcp2",
+        "ugrp-act-l4-gcp3",
+        "ugrp-act-l4-gcp4",
+        "ugrp-act-l4-gcp5",
+        "ugrp-act-l4-gcp6"
+      ],
+      "observed": [],
+      "status": "replay_exception",
+      "recorded_status": "unknown",
+      "replay_of": [
+        "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2"
+      ],
+      "input": "experiments/2026-10-17-egomem1/offline-v2-queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "gcp_guards",
+      "expected": {
+        "idle_minutes": 20,
+        "budget_stop": true,
+        "credentials_on_vm": false
+      },
+      "observed": [],
+      "status": "replay_exception",
+      "recorded_status": "unknown",
+      "replay_of": [
+        "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2"
+      ],
+      "input": "experiments/2026-10-17-egomem1/offline-v2-queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "no_pooling",
+      "expected": true,
+      "observed": [],
+      "status": "replay_exception",
+      "recorded_status": "unknown",
+      "replay_of": [
+        "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2"
+      ],
+      "input": "experiments/2026-10-17-egomem1/offline-v2-queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "planning_cap_basis",
+      "expected": "compute_or_sim",
+      "observed": [
+        {
+          "field": "parent[0].planning_cap_basis",
+          "value": "compute_or_sim"
+        }
+      ],
+      "status": "replay_exception",
+      "recorded_status": "current",
+      "replay_of": [
+        "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2"
+      ],
+      "input": "experiments/2026-10-17-egomem1/offline-v2-queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "rejection_ledger",
+      "expected": [
+        "reason_category",
+        "blocked_object",
+        "minimum_gap_m"
+      ],
+      "observed": [],
+      "status": "replay_exception",
+      "recorded_status": "unknown",
+      "replay_of": [
+        "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2"
+      ],
+      "input": "experiments/2026-10-17-egomem1/offline-v2-queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "cap_end_label",
+      "expected": "cap_end",
+      "observed": [],
+      "status": "replay_exception",
+      "recorded_status": "unknown",
+      "replay_of": [
+        "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2"
+      ],
+      "input": "experiments/2026-10-17-egomem1/offline-v2-queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "gcp_project",
+      "expected": [
+        "ugrp-sim-b-1014",
+        "ugrp-sim-c-1016",
+        "ugrp-sim-d-1016",
+        "ugrp-sim-e-1016",
+        "ugrp-sim-f-1016"
+      ],
+      "observed": [],
+      "status": "replay_exception",
+      "recorded_status": "unknown",
+      "replay_of": [
+        "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2"
+      ],
+      "input": "experiments/2026-10-17-egomem1/offline-v2-queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "gcp_account",
+      "expected": [
+        "changmin5781@gmail.com",
+        "kcm5781kcm5781@gmail.com"
+      ],
+      "observed": [],
+      "status": "replay_exception",
+      "recorded_status": "unknown",
+      "replay_of": [
+        "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2"
+      ],
+      "input": "experiments/2026-10-17-egomem1/offline-v2-queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "selfmap_map_correction",
+      "expected": "off",
+      "observed": [],
+      "status": "replay_exception",
+      "recorded_status": "unknown",
+      "replay_of": [
+        "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2"
+      ],
+      "input": "experiments/2026-10-17-egomem1/offline-v2-queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "localization_initial_prior",
+      "expected": "none",
+      "observed": [],
+      "status": "replay_exception",
+      "recorded_status": "unknown",
+      "replay_of": [
+        "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2"
+      ],
+      "input": "experiments/2026-10-17-egomem1/offline-v2-queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "static_map_use",
+      "expected": "none",
+      "observed": [],
+      "status": "replay_exception",
+      "recorded_status": "unknown",
+      "replay_of": [
+        "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2"
+      ],
+      "input": "experiments/2026-10-17-egomem1/offline-v2-queue.json"
+    }
+  ],
+  "stack": {
+    "path": "/Users/changmin/projects/ugrp-wt/mapbuild1/experiments/2026-10-17-egomem1/policy-pr573.json",
+    "sha256": "04978bc6390724be1095dbcf63360cbfc2a8cdf05107112e14e77cfe2dd4ce89"
+  },
+  "counts": {
+    "replay_exception": 30
+  },
+  "admission": "historical_replay"
+}
