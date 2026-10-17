@@ -216,6 +216,29 @@ progress into the east area within the cap. This is recorded as the
 pre-registered skill's result, not as a physics/command failure; the full
 16-episode cause table follows after completion.
 
+### Gate r2 stopped: SPEED_GATE_FAIL (execution mode)
+
+At 13:40Z the first two episodes showed wall/SIM 1174.07/120.0 = 9.78 and
+1176.76/120.0 = 9.81, above the AGENTS block threshold 6.0. The VM recorded
+`SPEED_GATE_FAIL.json` (median 9.795, nworld 1) and `ABORTED.json`
+(`valid_gate=false`, reason `SPEED_GATE_FAIL`); e00/e01 are complete raw
+`cap_end` episodes, e02 was stopped at 59.8 SIM s (wall 579.1 s) with
+`SUPERVISOR_STOP.json`, and all three episode directories are preserved as
+invalid/partial. None of r2 is pooled.
+
+Cause (checked on the VM): the runner was strictly sequential — one process,
+one world, 400 MJWarp physics steps per 0.1 s control tick at timestep
+0.00025 through `wp.capture_launch` — so the GPU stayed mostly idle (2-48%
+sampled) while one CPU core ran at ~129%. Render/JPEG work is inside the same
+serial loop, but physics stepping dominates and no control code reads wall
+time. Fix: the same queue runs as four independent worker processes over
+disjoint episode subsets (0-3, 4-7, 8-11, 12-15). Each process still runs
+`nworld=1` with identical per-episode code, queue, source pin and seeds, so
+per-episode physics and results are unchanged; the effective metric uses
+nworld=4 (four concurrent episodes). Rerun `visgoal-gate-r3-p0..p3` started
+13:52Z with leases `visgoal-p0..p3`; raw r2 stays under
+`/home/ugrp/ugrp-sim/runs/visgoal-gate-r2`.
+
 ## Files
 
 * `setups.json` — 16 fixed starts (setup only; includes parked
