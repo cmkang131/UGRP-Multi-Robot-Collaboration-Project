@@ -114,6 +114,15 @@ def profiles(candidate):
         values.update(search23_rects='search23_batched_rects_v1',
                       search26_circles='search26_downfirst_circles_v1',
                       search26_static_peer='search26_static_peer_stance_v1')
+    # beamact5 round 3: the same r2 fixes plus the peer-memory and reobserve
+    # ordering fixes (all default off in the teacher).  ``search26_wide_stance``
+    # stays a separate, never-pooled candidate family and is NOT enabled here.
+    if candidate=='beamact5_r3':
+        values.update(search23_rects='search23_batched_rects_v1',
+                      search26_circles='search26_downfirst_circles_v1',
+                      search26_static_peer='search26_static_peer_stance_v1',
+                      search26_peer_memory='search26_peer_memory_v1',
+                      search26_reobserve='search26_reobserve_views_v1')
     return values
 
 
@@ -275,7 +284,15 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,ren
                         self.approach_repair_log.append(dict(t=now,event='wall_layer_activate',
                             reason_category='all_stances_blocked_goal',blocked_object='wall_layer',min_gap_m=None,
                             gap_scope='preceding candidate ledger; full grid marked from visible history'))
-                        if self.reobserver.active:self.reobserver.finish(self,now,'wall_layer_hit_miss_replan')
+                        if self.reobserver.active:
+                            # Round-3 opt-in: a just-started reobserve for a
+                            # visible-history cargo/peer target keeps its
+                            # bounded view attempts; the wall layer already
+                            # covers wall-only targets. Default off aborts.
+                            targets=self.reobserver.active.get('targets',{})
+                            keep=(self.search15_modes.get('search26_reobserve','off')!='off'
+                                  and targets and not all(m.get('kind')=='wall' for m in targets.values()))
+                            if not keep:self.reobserver.finish(self,now,'wall_layer_hit_miss_replan')
                         self.next_plan=now
                 return valid
             def step(self,w,now,**kw):
