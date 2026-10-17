@@ -263,6 +263,15 @@ def run(a):
     # ARRIVAL_AIM_INSET_M) from the gate-r4 raw.
     expanding_search = bool(
         q.get('toggles', {}).get('visgoal_expanding_search_v1') == 'on')
+    # The visgoal candidate C run (2026-10-18) measured that C's 0.142 m
+    # arrival-aim inset broke the arrival declaration (0/16 declared; all
+    # eight east episodes ended physically inside zone B but never declared).
+    # Stage A therefore separates the two changes: the expanding search is on
+    # and the arrival aim stays at the r4 declaration (inset 0).  Both are the
+    # queue's toggles and are recorded in stack.json; the vendored policy is
+    # unchanged.
+    arrival_aim_on = bool(
+        q.get('toggles', {}).get('visgoal_arrival_aim_inset_v1') == 'on')
     # Cross-room flow: only the unloaded Stage A is implemented here.  The
     # queue's ``stage`` pins the flow and is copied into stack.json and every
     # episode record; the runner refuses anything else.
@@ -358,8 +367,10 @@ def run(a):
                                            'on' if expanding_search else 'off',
                                        'expanding_leg_ticks': (list(EXPANDING_LEG_TICKS)
                                                                if expanding_search else None),
+                                       'visgoal_arrival_aim_inset_v1':
+                                           'on' if arrival_aim_on else 'off',
                                        'arrival_aim_inset_m': (ARRIVAL_AIM_INSET_M
-                                                               if expanding_search else 0.),
+                                                               if arrival_aim_on else 0.),
                                        'crossroom_stage': stage,
                                        'destination_zone': target_zone,
                                        'sim_cap_s': float(a.sim_cap),
@@ -496,7 +507,7 @@ def run(a):
                         options=SkillOptions(
                             expanding_search=expanding_search,
                             arrival_aim_inset_m=(ARRIVAL_AIM_INSET_M
-                                                 if expanding_search else 0.))),
+                                                 if arrival_aim_on else 0.))),
                     memory=memory, audit=InputAudit(),
                     found=False, declared=False, declared_t=None,
                     status='cap_end', error=None, colour_seen=False,
@@ -864,7 +875,7 @@ def run(a):
                 options=SkillOptions(
                     expanding_search=expanding_search,
                     arrival_aim_inset_m=(ARRIVAL_AIM_INSET_M
-                                         if expanding_search else 0.)))
+                                         if arrival_aim_on else 0.)))
             body = m.body('r1__robot').id
             adr = int(m.jnt_qposadr[int(m.body_jntadr[body])])
             frames = []

@@ -84,6 +84,7 @@ TOGGLES = {
     "crossroom_route_memory_v1": "on",
     "crossroom_safe_lookaround_v1": "on",
     "visgoal_expanding_search_v1": "on",
+    "visgoal_arrival_aim_inset_v1": "off",
     "visgoal_mirror_pulse_v1": "off",
 }
 

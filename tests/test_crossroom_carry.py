@@ -83,6 +83,9 @@ def test_prereg_is_stage_a_with_frozen_funnel_and_no_pooling():
         assert name in funnel
     assert 'input_audit_zero' in funnel
     assert prereg['input_audit']['targets']['held_world_reads'] == 0
+    assert prereg['toggles']['visgoal_expanding_search_v1'] == 'on'
+    assert prereg['toggles']['visgoal_arrival_aim_inset_v1'] == 'off'
+    assert prereg['control_policy']['arrival'].startswith('gate r4')
     assert prereg['no_pooling']
     assert 'visgoal-gate-r4-lawnmower' in prereg['no_pooling']
     # the 180 s cap is explicitly not pooled with the 120 s visgoal runs
@@ -96,6 +99,8 @@ def test_queue_pins_existing_inputs_and_current_stack_values():
     assert queue['worlds_per_batch'] == 16
     assert queue['destination_zone'] == 'B'
     assert queue['toggles']['visgoal_expanding_search_v1'] == 'on'
+    # Stage A separates C's expanding search from C's arrival-aim regression:
+    assert queue['toggles']['visgoal_arrival_aim_inset_v1'] == 'off'
     assert queue['stack_values']['static_map_use'] == 'none'
     assert queue['stack_values']['no_pooling'] is True
     assert len(queue['source_sha']) == 40

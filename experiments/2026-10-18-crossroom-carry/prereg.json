@@ -4,7 +4,7 @@
  "stage": "A_unloaded",
  "flow": "self_map",
  "title": "Cross-room carry Stage A: west pickup room -> divider door -> zone B arrival (unloaded solo)",
- "frozen_at": "2026-10-17T18:16:28Z",
+ "frozen_at": "2026-10-17T19:07:34Z",
  "policy_source_sha": "c390105c2663a5b780e4ad8d69da72a5ffe1bce8",
  "policy_source_commit_note": "visgoal candidate C build (PR #582 draft). Vendored byte copy in experiments/2026-10-18-crossroom-carry/vendor/visual_goal_search.py; the runner registers it as sim.visual_goal_search before use.",
  "checkout_branch": "claude/crossroom-carry",
@@ -137,9 +137,10 @@
   "crossroom_route_memory_v1": "on",
   "crossroom_safe_lookaround_v1": "on",
   "visgoal_expanding_search_v1": "on",
-  "visgoal_mirror_pulse_v1": "off"
+  "visgoal_mirror_pulse_v1": "off",
+  "visgoal_arrival_aim_inset_v1": "off"
  },
- "search_policy_note": "Stage A reuses the visgoal C search policy (expanding lawnmower schedule 20/344/60/300/60 ticks and the 0.142 m arrival aim inset) with the cap raised to 180 Sim s. Candidate C's own 120 Sim s gate result is a separate condition and is not pooled with this run; its recount is used only as the prior funnel and as the basis for keeping/changing the search schedule before this prereg is frozen.",
+ "search_policy_note": "Stage A reuses the visgoal candidate C expanding-search schedule (20/344/60/300/60 ticks) with the arrival declaration of gate r4/B (arrival aim inset 0), because the C 120 Sim s gate measured that the 0.142 m aim inset broke the declaration (0/16 declared even though the eight east episodes ended inside zone B). The 180 Sim s cap, 16 west starts and the search schedule form a new condition, not pooled with r4/B/C.",
  "prior_funnel": {
   "A": "/home/ugrp/ugrp-sim/runs/visgoal-gate-r4-lawnmower/recount.json"
  },
@@ -193,5 +194,13 @@
   "peer_parks_pass": true,
   "note": "All 16 starts pass the simulator spawn-overlap admission and no start is inside a destination zone. The long_beam sits on the straight start->door segment for five starts (0.0-0.19 m clearance); this is a scene obstacle kept by design (full s1 v7 scene), not a start overlap, and the policy is wall-following rather than straight-line, so starts are not replaced.",
   "artifact": "experiments/2026-10-18-crossroom-carry/setup-validation.json"
+ },
+ "candidate": "stage_a_unloaded_C_search_r4_arrival",
+ "control_policy": {
+  "search": "visgoal candidate C expanding lawnmower (EXPANDING_LEG_TICKS 20/344/60/300/60)",
+  "arrival": "gate r4 / candidate B declaration behaviour (0.10 m point tolerance, arrival aim inset 0)",
+  "reason": "Candidate C was measured on 2026-10-18 (16 starts, 120 Sim s, same host/source): found 9/16, arrived_declared 0/16, GT-inside 0/16, cap_end 16/16, west crossed 5/8. All eight east episodes ended physically inside zone B but never declared; the C-only change on the arrival path (0.142 m aim inset) is the identified regression (near-field paint loss -> local_reacquire_spin loop). Stage A therefore separates the two changes before the gate, not after any gate result.",
+  "c_result_reference": "experiments/2026-10-17-visgoal/README.md (candidate C results); raw /home/ugrp/ugrp-sim/runs/visgoal-gate-r4-lawnmower",
+  "no_pooling": "the C gate result is not pooled with Stage A; it is only the basis for this pre-registered policy choice."
  }
 }

@@ -1,6 +1,6 @@
 # Cross-room carry — Stage A (unloaded) : west pickup room -> divider door -> zone B
 
-[![powered by dsh](https://img.shields.io/badge/powered%20by-dsh-5B4DF0?style=flat-square)](https://github.com/deepseek-ai/DeepSeek-Harness)
+[![](https://img.shields.io/badge/powered_by-dsh-4D6BFE?style=flat-square&logo=deepseek&logoColor=white)](https://github.com/deepseek-ai/deepseek-harness)
 
 Status: **frozen, run pending** (2026-10-18). This record is the pre-registration
 and the execution/analysis pipeline for Stage A only. Stage B (loaded arrival)
@@ -26,7 +26,11 @@ run (different starts, stage and 180 s cap). The previous visgoal runs (no
 cargo, 120 s cap, 8 west + 8 east starts) are used only as the prior funnel
 and as the reason this gate exists: in visgoal B the west side crossed 6/8
 but found zone B after crossing 0/6 (`experiments/2026-10-17-visgoal/`,
-candidate B section).
+candidate B section). The candidate C gate then showed that the C arrival
+aim change breaks the declaration test (found 9/16, declared 0/16; see
+`experiments/2026-10-17-visgoal/` candidate C section), so Stage A keeps C's
+expanding search but reverts the arrival aim to the r4/B declaration. That
+separation is pre-registered here before this gate runs.
 
 ## Pre-registration (condensed §3-4)
 
@@ -43,13 +47,20 @@ candidate B section).
 * **Execution**: MJWarp `nworld=16` batch, `sim_cap_s=180`, 1200->1800 control
   ticks at 10 Hz; `cap_end` is a separate termination label, never a
   rejection reason. Physics `warp_native_contact_v1`, noslip 0, weld off.
-* **Policy**: vendored byte copy of the visgoal candidate C build
-  (`sim/visual_goal_search.py` @ policy source `c390105c2`, PR #582 draft):
-  own-RGB full spin, Bug2 wall following, gap crossing, expanding lawnmower
-  (`20/344/60/300/60` ticks) and the 0.142 m arrival aim inset. The runner
-  registers the vendored module as `sim.visual_goal_search` before use.
-  The search schedule and the 180 s cap are the pre-registered hypothesis,
-  not a measured optimum; they are not tuned after seeing this gate's result.
+* **Policy (two separated toggles)**: the search half of the vendored visgoal
+  candidate C build (`sim/visual_goal_search.py` @ policy source `c390105c2`,
+  PR #582 draft) is used with `visgoal_expanding_search_v1=on`
+  (expanding lawnmower `20/344/60/300/60` ticks, own-RGB full spin, Bug2 wall
+  following, gap crossing); the arrival half stays at the gate r4/B
+  declaration (`visgoal_arrival_aim_inset_v1=off`, arrival aim inset 0).
+  Rationale (measured, not tuned): the candidate C gate on 2026-10-18/19
+  produced found 9/16 but **arrived_declared 0/16** — all eight east episodes
+  ended physically inside zone B (eval-only) but never declared, because the
+  C-only 0.142 m aim inset caused a near-field paint loss ->
+  `local_reacquire_spin` loop. Both toggles are read from the queue and
+  recorded in `stack.json`; the vendored policy bytes are unchanged. The
+  search schedule and the 180 s cap are the pre-registered hypothesis, not a
+  measured optimum, and are not tuned after seeing this gate's result.
 * **Control inputs only**: own raw fisheye RGB, issued wheel/servo commands,
   egocentric memory items. No static map, world pose, spawn pose, zone/door
   coordinate, top camera or truth enters the controller.
