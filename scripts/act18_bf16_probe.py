@@ -174,6 +174,10 @@ def main():
                 for i in val.episode_indices[j]]
     if not selected:
         raise ValueError('VAL8 rows required')
+    missing = [row['path'] for shard in (data.shards + val.shards) for row in shard['frames']
+               if not Path(row['path']).is_file()]
+    if missing:
+        raise ValueError(f'{len(missing)} dataset images missing, e.g. {missing[0]}')
     priors = data.completion_priors('uniform_episode_v1')
     a.out.mkdir(parents=True, exist_ok=False)
     lease = B / 'leases' / 'act18-bf16-probe.json'
