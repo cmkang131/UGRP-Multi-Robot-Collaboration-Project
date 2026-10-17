@@ -45,6 +45,9 @@ def main():
             raise ValueError('v7 evaluation split/seed mismatch')
         if split=='final':
             s=selection or {}
+            # Operator interpretation of user "VAL8 ... FINAL40 after pass":
+            # every one of the requested8 task cases passes. This is a finite
+            # development gate, not the teacher95% rule or a population claim.
             if (not s.get('frozen_before_final') or s.get('checkpoint_sha256')!=model_sha256
                     or s.get('validation_n')!=8 or s.get('validation_N')!=8
                     or sorted(s.get('completed_candidates',[]))!=['F','M','S']):

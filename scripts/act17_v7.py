@@ -104,6 +104,8 @@ def plans(split,protocol,out,selection=None):
     require_gcp2(training=True);source=frozen_source(ROOT)
     if split=='final':
         s=selection or {}
+        # Same explicit all8 development-pass interpretation as evaluator;
+        # user specified VAL8/pass, not a statistical student95% guarantee.
         if (s.get('frozen_before_final') is not True or s.get('validation_n')!=8 or s.get('validation_N')!=8
                 or sorted(s.get('completed_candidates',[]))!=['F','M','S'] or not s.get('checkpoint_path')):
             raise ValueError('matched M/F/S completion and frozen VAL8 pass required before final setup')
