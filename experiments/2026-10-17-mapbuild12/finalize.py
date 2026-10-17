@@ -5,6 +5,7 @@ import numpy as np
 p=argparse.ArgumentParser();p.add_argument('--host',choices=['gcp5','gcp3'],required=True);p.add_argument('--source',type=Path,required=True);a=p.parse_args()
 if not platform.node().startswith('ugrp-act-l4-'+a.host):raise ValueError('SOURCE_VM_ONLY')
 sys.path.insert(0,str(a.source))
+os.chdir(a.source)  # prediction seals intentionally retain source-relative paths
 from scripts.mapbuild10_mc import read,sha,dump
 from harness.mapbuild_amcl import StaticField
 from harness.mapbuild_own_grid import RESOLUTION,LIMIT,MIN_HITS
