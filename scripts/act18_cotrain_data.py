@@ -117,6 +117,11 @@ class CoTrainingDataset:
         self.state_dim = int(state.shape[1])+(STATE_TOKEN_DIM if state_token else 0)
         self.rows = len(self.v7)+sum(episode['rows'] for episode in self.native)
         self.starts = len(self.v7.episode_indices)+len(self.native)
+        # Trainer-facing v7 view attributes (metadata[0] is a recorded v7 row;
+        # episode_indices only needs the combined episode count for the report).
+        self.metadata = self.v7.metadata
+        self.episode_indices = list(self.v7.episode_indices)
+        self.episode_indices += [np.zeros(episode['rows'], np.int64) for episode in self.native]
         self.episode_origins = [ORIGIN_V7]*len(self.v7.episode_indices)
         self.episode_origins += [ORIGIN_NATIVE]*len(self.native)
         self.v7_state_mean = np.asarray(self.stats['state_mean'], np.float32)
