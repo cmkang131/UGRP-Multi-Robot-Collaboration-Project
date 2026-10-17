@@ -275,9 +275,16 @@ def run(a):
     # Cross-room flow: Stage A (unloaded) and Stage B (loaded, single red box)
     # are separate conditions; each has its own queue and is never pooled.
     stage = str(q.get('stage', a.stage or 'A_unloaded'))
-    if stage not in ('A_unloaded', 'B_loaded'):
+    if stage not in ('A_unloaded', 'B_loaded', 'A_unloaded_fix'):
         raise ValueError('CROSSROOM_STAGE_UNKNOWN')
     carry_loaded = stage == 'B_loaded'
+    fix_stage = stage == 'A_unloaded_fix'
+    fix_toggles = ({k: q.get('toggles', {}).get(k) == 'on'
+                    for k in ('crossroom_gap_twosided_v1',
+                              'crossroom_door_align_v1',
+                              'crossroom_paint_area_v1',
+                              'crossroom_contacts_v1')}
+                   if fix_stage else {})
     target_zone = str(q.get('destination_zone', 'B'))
     if target_zone != 'B':
         raise ValueError('CROSSROOM_ZONE_B_ONLY')
@@ -334,6 +341,17 @@ def run(a):
         carry_mod = load_module(
             'crossroom_carry_state',
             ROOT / 'experiments/2026-10-18-crossroom-carry/scripts/carry_state_own.py')
+    fix_mod = paint_filter_mod = contact_mod = None
+    if fix_stage:
+        fix_mod = load_module(
+            'crossroom_vgs_fix',
+            ROOT / 'experiments/2026-10-18-crossroom-carry/scripts/vgs_fix.py')
+        paint_filter_mod = load_module(
+            'crossroom_paint_filter',
+            ROOT / 'experiments/2026-10-18-crossroom-carry/scripts/paint_area_filter.py')
+        contact_mod = load_module(
+            'crossroom_contact_recorder',
+            ROOT / 'experiments/2026-10-18-crossroom-carry/scripts/contact_recorder.py')
     setups = json.loads(a.setups.read_text())['episodes']
     if a.episodes:
         keep = {int(x) for x in a.episodes.split(',')}
@@ -454,6 +472,8 @@ def run(a):
                                                                if arrival_aim_on else 0.),
                                        'crossroom_stage': stage,
                                        'destination_zone': target_zone,
+                                       'fix_stage': fix_stage,
+                                       'fix_toggles': fix_toggles,
                                        'carry_loaded': carry_loaded,
                                        'gripper_pwm_closed': (gripper_pwm
                                                               if carry_loaded else None),
@@ -470,6 +490,18 @@ def run(a):
         own_prior = CommandPrior(command_calibration, option=PRIOR)
         from sim.spawn_overlap_check import check, OPTION as OVERLAP
         hue_band = (104, 120)  # PAINT_HUE['B']: appearance only, no zone position.
+
+        def make_skill():
+            opts = SkillOptions(
+                expanding_search=expanding_search,
+                arrival_aim_inset_m=(ARRIVAL_AIM_INSET_M if arrival_aim_on else 0.))
+            if fix_mod is not None and (fix_toggles.get('crossroom_gap_twosided_v1')
+                                        or fix_toggles.get('crossroom_door_align_v1')):
+                return fix_mod.FixedVisualGoalSearch(
+                    option=SKILL, options=opts,
+                    gap_twosided=fix_toggles.get('crossroom_gap_twosided_v1', False),
+                    door_align=fix_toggles.get('crossroom_door_align_v1', False))
+            return VisualGoalSearch(option=SKILL, options=opts)
 
         def run_batch(plans):
             """Run every selected start as one MJWarp nworld batch.
@@ -574,6 +606,9 @@ def run(a):
                     wp.launch(advance, dim=1, inputs=[step_index])
             rc = Renderer(m, wm, wd, [('r1', 'r1__robot_cam', (640, 480))],
                           enabled=True, texture_after_lighting=True)
+            contact_rec = (contact_mod.ContactRecorder(m, G)
+                           if fix_stage and fix_toggles.get('crossroom_contacts_v1')
+                           else None)
             mx, my = raw_fisheye_remap(640, 480)
             servos = (1, 3, 4, 5, 6)
             jointnames = {1: ('left_gripper_close', 'right_gripper_close'),
@@ -604,12 +639,7 @@ def run(a):
                                         options=MemoryOptions(implementation=a.implementation))
                 states.append(dict(
                     episode=row['episode'], plan=row['plan'], out=row['out'],
-                    ctrl=row['ctrl'], skill=VisualGoalSearch(
-                        option=SKILL,
-                        options=SkillOptions(
-                            expanding_search=expanding_search,
-                            arrival_aim_inset_m=(ARRIVAL_AIM_INSET_M
-                                                 if arrival_aim_on else 0.))),
+                    ctrl=row['ctrl'], skill=make_skill(),
                     memory=memory, audit=InputAudit(),
                     found=False, declared=False, declared_t=None,
                     status='cap_end', error=None, colour_seen=False,
@@ -623,6 +653,7 @@ def run(a):
                     cargo_at_start=None, cargo_at_cross=None,
                     cargo_at_arrival=None, cargo_state_counts={},
                     box_at_declared=None, box_final=None, cargo_own=None,
+                    ncon_last=None, paint_filter_counts={},
                     crossed=False, last_base_x=None,
                     applied=np.array(
                         [[gripper_pwm if sid == 1 else SEARCH[sid]
@@ -715,6 +746,17 @@ def run(a):
                             patch, patch_rec = floor_patch(
                                 bgr, servo, 'B', (1.5, 1.5),
                                 clear=paint_clear, excluded=None)
+                        paint_filter_info = None
+                        if (fix_stage and fix_toggles.get('crossroom_paint_area_v1')
+                                and paint_filter_mod is not None
+                                and paint.get('pixels', 0) >= MIN_COLOUR_PIXELS):
+                            paint, paint_filter_info = paint_filter_mod.filter_paint(
+                                paint, patch_rec)
+                            counts = s['paint_filter_counts']
+                            key = paint_filter_info.get('action', 'unknown')
+                            counts[key] = counts.get(key, 0) + 1
+                            if key == 'rejected':
+                                patch, patch_rec = None, None
                         audit = s['audit']
                         audit.scan('memory_observation',
                                    dict(t=t, patch=patch, patch_rec=patch_rec or {}))
@@ -792,6 +834,7 @@ def run(a):
                             pose=[float(qp[adr]), float(qp[adr + 1]), float(yaw)],
                             inside_zone_B=inside,
                             box_pose_eval_only=box_pose,
+                            ncon_eval_only=s.get('ncon_last'),
                             start_paint_pixels=s['start_visibility']))
                         s['ring'].append(tick)
                         paint_log = {k: v for k, v in paint.items()
@@ -804,6 +847,7 @@ def run(a):
                             obstacles=s['obstacle_cache'],
                             patch=None if patch is None else np.asarray(patch).tolist(),
                             patch_record=patch_rec,
+                            paint_filter=paint_filter_info,
                             memory=mem['memories'], memory_events=mem['events'],
                             action=action, command_motion_source=prior['source'],
                             command_delta=delta.tolist(),
@@ -872,6 +916,11 @@ def run(a):
                 wp.copy(tape, wp.array(tape_np, dtype=float))
                 step_index.zero_()
                 wp.capture_launch(cap.graph)
+                if contact_rec is not None:
+                    cinfo = contact_rec.update(wd, t)
+                    if cinfo:
+                        for w, s in enumerate(states):
+                            s['ncon_last'] = cinfo['counts'][w]
             results = list(rejected)
             for s in states:
                 out = s['out']
@@ -930,6 +979,12 @@ def run(a):
                     cargo_zone_margin_final_gt=(round(zone_margin(
                         s['box_final'][0], s['box_final'][1]), 4)
                         if s.get('box_final') else None),
+                    fix_toggles=fix_toggles,
+                    fix_summary=(s['skill'].fix_summary()
+                                 if hasattr(s['skill'], 'fix_summary') else None),
+                    contact_summary=(contact_rec.summary()
+                                     if contact_rec is not None else None),
+                    paint_filter_counts=s.get('paint_filter_counts'),
                     rejection_table=str(a.output / 'rejection_table.json'))
                 dump(out / 'episode.json', ep)
                 with (out / 'trace.jsonl').open('w') as fh:
@@ -1028,12 +1083,22 @@ def run(a):
             relay = np.zeros((1, 4), int)
             drive = __import__('sim.masterpi_drive_friction_v7', fromlist=['DriveParameters']).DriveParameters()
             memory = LandmarkMemory(option=MEMORY, options=MemoryOptions(implementation=a.implementation))
-            skill = VisualGoalSearch(
-                option=SKILL if a.enabled else 'off',
-                options=SkillOptions(
-                    expanding_search=expanding_search,
-                    arrival_aim_inset_m=(ARRIVAL_AIM_INSET_M
-                                         if arrival_aim_on else 0.)))
+            if fix_mod is not None and (fix_toggles.get('crossroom_gap_twosided_v1')
+                                        or fix_toggles.get('crossroom_door_align_v1')):
+                skill = fix_mod.FixedVisualGoalSearch(
+                    option=SKILL if a.enabled else 'off', options=SkillOptions(
+                        expanding_search=expanding_search,
+                        arrival_aim_inset_m=(ARRIVAL_AIM_INSET_M
+                                             if arrival_aim_on else 0.)),
+                    gap_twosided=fix_toggles.get('crossroom_gap_twosided_v1', False),
+                    door_align=fix_toggles.get('crossroom_door_align_v1', False))
+            else:
+                skill = VisualGoalSearch(
+                    option=SKILL if a.enabled else 'off',
+                    options=SkillOptions(
+                        expanding_search=expanding_search,
+                        arrival_aim_inset_m=(ARRIVAL_AIM_INSET_M
+                                             if arrival_aim_on else 0.)))
             body = m.body('r1__robot').id
             adr = int(m.jnt_qposadr[int(m.body_jntadr[body])])
             frames = []

@@ -42,6 +42,13 @@ FILES = [
      'walls_floor_contrast_v5_indigo110_s80-calibration.json'),
 ]
 
+STAGE_FIX_FILES = [
+    'experiments/2026-10-18-crossroom-carry/prereg-stageA-fix.json',
+    'experiments/2026-10-18-crossroom-carry/scripts/vgs_fix.py',
+    'experiments/2026-10-18-crossroom-carry/scripts/paint_area_filter.py',
+    'experiments/2026-10-18-crossroom-carry/scripts/contact_recorder.py',
+]
+
 STAGE_B_FILES = [
     'experiments/2026-10-18-crossroom-carry/prereg-stageB.json',
     'experiments/2026-10-18-crossroom-carry/crossroom_carry_scene_v1.json',
@@ -102,7 +109,7 @@ def sha(path: Path) -> str:
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument('--stage', choices=('A_unloaded', 'B_loaded'),
+    ap.add_argument('--stage', choices=('A_unloaded', 'B_loaded', 'A_unloaded_fix'),
                     default='A_unloaded')
     ap.add_argument('--policy-source-sha',
                     default='c390105c2663a5b780e4ad8d69da72a5ffe1bce8')
@@ -110,11 +117,17 @@ def main() -> int:
                     default=f'{MAIN}/visgoal-gate-r4-lawnmower/recount.json')
     ap.add_argument('--output', default=None)
     a = ap.parse_args()
-    files = FILES + (STAGE_B_FILES if a.stage == 'B_loaded' else [])
+    if a.stage == 'B_loaded':
+        files = FILES + STAGE_B_FILES
+    elif a.stage == 'A_unloaded_fix':
+        files = FILES + STAGE_FIX_FILES
+    else:
+        files = list(FILES)
     missing = [f for f in files if not (ROOT / f).is_file()]
     if missing:
         raise SystemExit('MISSING_INPUTS ' + repr(missing))
     stage_b = a.stage == 'B_loaded'
+    stage_fix = a.stage == 'A_unloaded_fix'
     toggles = dict(TOGGLES)
     stage_fields = {}
     if stage_b:
@@ -128,8 +141,18 @@ def main() -> int:
             'cargo_own_thresholds_file': ('experiments/2026-10-18-crossroom-carry/'
                                           'setup-validation-B.json'),
         }
-    out_path = (ROOT / 'experiments/2026-10-18-crossroom-carry/'
-                / ('queue-stageB.json' if stage_b else 'queue-stageA.json'))
+    if stage_b:
+        queue_name = 'queue-stageB.json'
+    elif stage_fix:
+        queue_name = 'queue-stageA-fix.json'
+    else:
+        queue_name = 'queue-stageA.json'
+    if stage_fix:
+        toggles.update({'crossroom_gap_twosided_v1': 'on',
+                        'crossroom_door_align_v1': 'on',
+                        'crossroom_paint_area_v1': 'on',
+                        'crossroom_contacts_v1': 'on'})
+    out_path = (ROOT / 'experiments/2026-10-18-crossroom-carry/' / queue_name)
     queue = {
         "schema": "ugrp.crossroom_run_queue.v1",
         "stage": a.stage,
@@ -162,18 +185,23 @@ def main() -> int:
         "no_llm_calls": True,
         "top_camera_control": False,
         "own_rgb_count": 1,
-        "run_name": "crossroom-stageB" if stage_b else "crossroom-stageA",
+        "run_name": ("crossroom-stageB" if stage_b else
+                     "crossroom-stageA-fix" if stage_fix else "crossroom-stageA"),
         "preflight": False,
         "sim_cap_s": 180.0,
-        "output": f"{MAIN}/crossroom-stageB" if stage_b else f"{MAIN}/crossroom-stageA",
+        "output": (f"{MAIN}/crossroom-stageB" if stage_b else
+                   f"{MAIN}/crossroom-stageA-fix" if stage_fix else
+                   f"{MAIN}/crossroom-stageA"),
         "rejection_table": (f"{MAIN}/crossroom-stageA/recount.json"
-                            if stage_b else a.prior_funnel),
+                            if stage_b else
+                            f"{MAIN}/crossroom-stageA/recount.json" if stage_fix
+                            else a.prior_funnel),
         "prior_funnel_note": ("prior funnel is the visgoal candidate C recount "
                               "(separate condition; used only as the prior "
                               "search-budget record, not pooled)"),
         "episode_count": 16,
-        "candidate": ("stage_b_loaded_single_red_box" if stage_b
-                      else "stage_a_unloaded"),
+        "candidate": ("stage_b_loaded_single_red_box" if stage_b else
+                      "stage_a_unloaded_fix" if stage_fix else "stage_a_unloaded"),
         "no_pooling_conditions": ["visgoal-gate-r4", "visgoal-gate-r4-mirror",
                        "visgoal-gate-r4-lawnmower", "egonav-gate-n16-09",
                        "act15", "act16a", "act18"],

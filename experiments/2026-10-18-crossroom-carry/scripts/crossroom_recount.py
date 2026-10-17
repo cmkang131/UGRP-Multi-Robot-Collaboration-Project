@@ -215,6 +215,11 @@ def recount_episode(ep_dir: Path):
                           if ep.get('collision_events') is not None
                           else 'not_measured'),
         carry_loaded=bool(ep.get('carry_loaded')),
+        fix_stage=(ep.get('crossroom_stage') == 'A_unloaded_fix'),
+        fix_summary=ep.get('fix_summary'),
+        paint_filter_counts=ep.get('paint_filter_counts'),
+        contact_summary=ep.get('contact_summary'),
+        ncon_ticks=(sum(1 for f in labels if f.get('ncon_eval_only'))),
         cargo_held_at_start=cargo_at_start,
         cargo_held_at_cross=cargo_at_cross,
         cargo_held_at_arrival=cargo_at_arrival,
@@ -279,6 +284,7 @@ def main() -> int:
             if (d / 'episode.json').is_file()]
     rows = [recount_episode(d) for d in dirs]
     carry_stage = bool(rows) and rows[0]['carry_loaded']
+    fix_stage = bool(rows) and any(r['fix_stage'] for r in rows)
     n = len(rows)
     ep_summary = {e['episode']: e for e in summary.get('episodes', [])}
     mismatches = []
@@ -341,6 +347,27 @@ def main() -> int:
             1 for r in rows if r['cargo_in_zone_at_declared_gt'] is True),
         cargo_in_zone_final_n=sum(
             1 for r in rows if r['cargo_in_zone_final_gt'] is True),
+        fix_stage=fix_stage,
+        gap_claim_false_n=sum(1 for r in rows
+                              if r['skill_claimed_gap'] and not r['door_crossed']),
+        gap_claims_with_gt_crossing_n=sum(
+            1 for r in rows if r['skill_claimed_gap'] and r['door_crossed']),
+        gap_rejected_front_missing_n=sum(
+            int(((r.get('fix_summary') or {}).get('gap_rejected', 0))) for r in rows),
+        gap_confirmed_n=sum(
+            int(((r.get('fix_summary') or {}).get('gap_confirmed', 0))) for r in rows),
+        door_align_turns_n=sum(
+            int(((r.get('fix_summary') or {}).get('align_turns', 0))) for r in rows),
+        door_align_uncertain_ticks=sum(
+            int(((r.get('fix_summary') or {}).get('align_uncertain_ticks', 0)))
+            for r in rows),
+        paint_rejected_small_extent_n=sum(
+            int(((r.get('paint_filter_counts') or {}).get('rejected', 0))) for r in rows),
+        collision_ticks_n=sum(
+            int(((r.get('contact_summary') or {}).get('ticks_with_contact', 0)))
+            for r in rows),
+        contact_events_n=sum(
+            len(((r.get('contact_summary') or {}).get('events') or [])) for r in rows),
         door_crossed_n=sum(1 for r in rows if r['door_crossed']),
         post_cross_colour_n=sum(1 for r in rows if r['post_cross_colour_seen']),
         post_cross_found_n=sum(1 for r in rows if r['post_cross_found']),

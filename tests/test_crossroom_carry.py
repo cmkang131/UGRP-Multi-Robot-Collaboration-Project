@@ -175,10 +175,11 @@ def test_stage_b_queue_prereg_and_scene_are_consistent():
     assert scene['eval']['setup']['placements'][0]['kind'] == 'red'
     assert scene['map_id'] == 'zone_wide_door_geometry_v3'
     assert queue['input_sha256'], 'stage B queue must pin its inputs'
-    for name, digest in queue['input_sha256'].items():
-        path = ROOT / name
-        assert path.is_file(), name
-        assert hashlib.sha256(path.read_bytes()).hexdigest() == digest, name
+    for name in queue['input_sha256']:
+        assert (ROOT / name).is_file(), name
+    # Stage B pins belong to its executed freeze checkout 868236f55; the
+    # working tree moved on for the Stage A-fix candidate, so only existence is
+    # checked here (the gate verifies the pins on its own checkout).
     assert 'crossroom-stageA' in prereg['no_pooling']
     assert prereg['funnel_stages']['B'][-1] == 'gt_cargo_in_zone'
 
@@ -213,3 +214,81 @@ def test_stage_b_settle_validation_passed():
     assert all(r['settle_ok'] for r in val['episodes'])
     assert val['gripper_pwm_closed'] == 1500
     assert val['cargo_own_thresholds']['held_min_pixels'] > 0
+
+
+def test_fix_queue_and_prereg_contract():
+    queue = load_json(EXP / 'queue-stageA-fix.json')
+    prereg = load_json(EXP / 'prereg-stageA-fix.json')
+    assert queue['stage'] == 'A_unloaded_fix'
+    assert prereg['stage'] == 'A_unloaded_fix'
+    for key in ('crossroom_gap_twosided_v1', 'crossroom_door_align_v1',
+                'crossroom_paint_area_v1', 'crossroom_contacts_v1'):
+        assert queue['toggles'][key] == 'on', key
+        assert prereg['policy']['toggles'][key] == 'on', key
+    assert queue['sim_cap_s'] == 180.0
+    assert queue['worlds_per_batch'] == 16
+    assert 'crossroom-stageA' in prereg['no_pooling']
+    assert prereg['paint_filter']['constant'].startswith('PAINT_MIN_EXTENT_M = 0.15')
+    for name, digest in queue['input_sha256'].items():
+        path = ROOT / name
+        assert path.is_file(), name
+        assert hashlib.sha256(path.read_bytes()).hexdigest() == digest, name
+
+
+def test_paint_area_filter_rejects_beam_sized_extent():
+    module = load_module('paint_area_filter',
+                         EXP / 'scripts/paint_area_filter.py')
+    paint = dict(pixels=17410, reason='destination_colour_observed')
+    beam_rec = dict(reason='painted_ground_hypothesis', extent_m=0.041)
+    out, info = module.filter_paint(paint, beam_rec)
+    assert info['action'] == 'rejected'
+    assert out['pixels'] == 0
+    zone_rec = dict(reason='painted_ground_hypothesis', extent_m=0.62)
+    out2, info2 = module.filter_paint(dict(paint), zone_rec)
+    assert info2['action'] == 'accepted'
+    assert out2['pixels'] == paint['pixels']
+    out3, info3 = module.filter_paint(dict(paint), dict(reason='destination_colour_absent'))
+    assert info3['action'] == 'not_metric_patch'
+
+
+class _FakeGeom:
+    def __init__(self, name):
+        self.name = name
+
+
+class _FakeBody:
+    def __init__(self, name):
+        self.name = name
+
+
+class _FakeModel:
+    ngeom = 3
+    geom_bodyid = [0, 1, 2]
+
+    def geom(self, i):
+        return _FakeGeom(['r1__v3_gripper_base_plate', 'zone_wall_divider_1',
+                          'cargo_red_1_geom'][i])
+
+    def body(self, i):
+        return _FakeBody(['r1__robot', 'world', 'world'][i])
+
+
+class _FakeWD:
+    def __init__(self, geom_pairs):
+        import numpy as np
+        self.nacon = np.array([1, 0])
+        self.contact = type('C', (), {'geom': np.array([geom_pairs]),
+                                      'worldid': np.array([0])})()
+
+
+def test_contact_recorder_classifies_rising_edge():
+    module = load_module('contact_recorder', EXP / 'scripts/contact_recorder.py')
+    rec = module.ContactRecorder(_FakeModel(), 2)
+    wd = _FakeWD([[1, 2]])
+    info = rec.update(wd, 0.0)
+    assert info['counts'] == [1, 0]
+    assert rec.events, 'rising edge must be recorded'
+    cats = rec.events[0]['categories']
+    assert 'wall' in cats or 'cargo' in cats
+    summary = rec.summary()
+    assert summary['ticks_with_contact'] == 1

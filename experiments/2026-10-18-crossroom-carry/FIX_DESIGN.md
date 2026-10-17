@@ -45,9 +45,10 @@ queue에서만 켠다. Stage A 원본 결과와 합산 금지, 자체 관문으�
    gap 주장 수와 GT 통과 수를 항상 병기한다.
 
 구현 위치: `scripts/vgs_fix.py` 서브클래스 `FixedVisualGoalSearch
-(VisualGoalSearch)`에서 `_follow`/`_gap_cross` 오버라이드. vendored 정책
-바이트는 수정하지 않고 provenance에 기반 커밋(c390105c2)과 오버라이드
-범위를 기록한다.
+(VisualGoalSearch)`에서 `_follow` 오버라이드. vendored 정책 바이트는
+수정하지 않고 provenance에 기반 커밋(c390105c2)과 오버라이드 범위를
+기록한다. **구현 완료**: `gap_rejected_front_missing`/`gap_confirmed`
+이벤트, `gap_claims/gap_confirmed/gap_rejected` 카운터.
 
 ### ② 문 중심 lateral 정렬 (`crossroom_door_align_v1`)
 
@@ -76,15 +77,16 @@ queue에서만 켠다. Stage A 원본 결과와 합산 금지, 자체 관문으�
 현재: `MIN_COLOUR_PIXELS=600`(존 크기)만 확인하고, `floor_patch` 미터 피팅은
 부가 조건이다. 근거리 파란 색 띠는 화면상 크게 보일 수 있어 600px 조건을
 통과한다.
-수정: 색 성분이 metric 피팅까지 성공하더라도 **피팅 면적**이
-`paint_min_area_m2` 미만이면 목적지 페인트로 받지 않는다.
+수정: 색 성분이 metric 피팅까지 성공하더라도 **metric extent**(피팅된
+바닥점들의 대각 길이, `floor_patch` record의 `extent_m`)가
+`PAINT_MIN_EXTENT_M = 0.15 m` 미만이면 목적지 페인트로 받지 않는다.
 
-- 근거: zone B footprint 0.6 x 1.4 = 0.84 m². long_beam blue band는
-  0.018 x 0.0205 ≈ 3.7e-4 m² (약 2,300배 차이). 임계값 후보 0.05 m²
-  (beam band 대비 135배, zone 대비 6%) — 근거 없는 "보수적" 값이 아니라
-  두 알려진 기하 값 사이에서 고른 값임을 prereg에 기록한다.
-- 미터 피팅 record에 `area_m2`가 있으면 그것을 쓰고, 없으면 component
-  픽셀수·range·fisheye ray로 계산한 footprint를 기록한다.
+- 근거: long_beam blue band의 실제 footprint는 0.036 x 0.041 m
+  (`zone_cargo.py` band half extents 0.018/0.0205) → 대각 0.054 m. zone B는
+  0.6 x 1.4 m이므로 보이는 zone 패치의 extent는 최소 0.30 m. 임계값 0.15 m는
+  두 알려진 기하 값 사이이며 gate episode로 조정하지 않는다.
+- `extent_m`가 없는 record(피팅 실패/비피팅)는 필터하지 않고
+  `not_measured`로 기록한다(오탐을 줄이는 필터이지 found를 늘리지 않는다).
 - 오탐 거부는 trace event `paint_rejected_small_area`로 남긴다.
 - 이 수정은 **found 오탐만 줄이는 것**이지 성공을 늘리는 것이 아니다.
   수정 후 found/pre-cross found와 GT 문 통과를 분리 보고한다.
@@ -108,6 +110,10 @@ queue에서만 켠다. Stage A 원본 결과와 합산 금지, 자체 관문으�
 4. 기록은 eval-only이며 제어기 입력으로 절대 전달하지 않는다.
 5. `collision_events`가 0인 실행과 `nacon` 기록 실패를 구분한다
    (후자는 `contact_record_error`로 실패 라벨).
+6. **구현 완료**: `scripts/contact_recorder.py` (nacon per world, rising edge
+   에서 contact.geom/worldid를 읽어 geom category 분류; layout 불명이면
+   `layout_unknown`/`errors`로 보고하고 추측하지 않음). 수정 후 preflight에서
+   레이아웃을 확인해 필드 이름을 prereg에 고정한다.
 
 ## 사전등록(초안) — crossroom-stageA-fix
 
@@ -122,6 +128,16 @@ queue에서만 켠다. Stage A 원본 결과와 합산 금지, 자체 관문으�
 | 합산 금지 | Stage A, Stage B, visgoal r4/B/C, egonav, ACT |
 | 입력 감사 | controller_boundary_v1 (기존) + 접촉 배열은 eval-only |
 | 실행 순서 | Stage B gate 완료·정리 후. 새 freeze commit → preflight → gate |
+
+## 구현 상태 (2026-10-18)
+
+- `scripts/vgs_fix.py` — 양쪽 wall-face gap 확인 + 문 lateral 정렬 오버라이드.
+- `scripts/paint_area_filter.py` — `extent_m` 기반 blue end-band 거부.
+- `scripts/contact_recorder.py` — MJWarp nacon/contact geom 기반 eval-only 접촉 기록.
+- `prereg-stageA-fix.json` / `queue-stageA-fix.json` / `stack-stageA-fix.json`
+  — 동결 전 초안, `check_current_stack` admission pass.
+- 단위 테스트 `tests/test_crossroom_carry.py`에 필터·접촉 recorder·queue 계약 추가.
+- 다음: Stage B gate 종료 후 gcp3에서 fix preflight → 동결 커밋 → fix gate.
 
 ## 작업 순서
 
