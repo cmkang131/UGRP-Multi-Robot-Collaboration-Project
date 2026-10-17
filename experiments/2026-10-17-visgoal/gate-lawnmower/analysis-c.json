@@ -1,0 +1,424 @@
+{
+ "schema": "ugrp.visgoal.c_analysis.v1",
+ "run": "/home/ugrp/ugrp-sim/runs/visgoal-gate-r4-lawnmower",
+ "scope": "read-only; truth read only in eval-only analysis cells",
+ "expected_schedule_ticks": [
+  20,
+  344,
+  60,
+  300,
+  60
+ ],
+ "n": 16,
+ "found_n": 9,
+ "colour_seen_n": 9,
+ "declared_n": 0,
+ "gt_inside_n": 0,
+ "cap_end_n": 16,
+ "false_arrival_n": 0,
+ "schedule_matched_n": 0,
+ "reached_x_gt_1p2_n": 12,
+ "episodes": [
+  {
+   "episode": 0,
+   "status": "cap_end",
+   "found": false,
+   "colour_seen": false,
+   "arrived_declared": false,
+   "gt_inside": null,
+   "cap_end": true,
+   "max_x": -0.712,
+   "min_zone_range_m": 5.012,
+   "final_pose_eval_only": [
+    -0.7348813414573669,
+    -2.304701328277588
+   ],
+   "forward_runs_n": 0,
+   "longest_forward_run": null,
+   "leg_turns_n": 0,
+   "leg_turn_lengths": [],
+   "schedule_matches_expected": false,
+   "declared": null
+  },
+  {
+   "episode": 1,
+   "status": "cap_end",
+   "found": false,
+   "colour_seen": false,
+   "arrived_declared": false,
+   "gt_inside": null,
+   "cap_end": true,
+   "max_x": 1.763,
+   "min_zone_range_m": 2.537,
+   "final_pose_eval_only": [
+    1.4560601711273193,
+    -0.9009348154067993
+   ],
+   "forward_runs_n": 3,
+   "longest_forward_run": {
+    "ticks": 178,
+    "dist_m": 2.4896,
+    "m_per_tick": 0.01399,
+    "t0": 83.8,
+    "t1": 101.5
+   },
+   "leg_turns_n": 3,
+   "leg_turn_lengths": [
+    344,
+    60,
+    300
+   ],
+   "schedule_matches_expected": false,
+   "declared": null
+  },
+  {
+   "episode": 2,
+   "status": "cap_end",
+   "found": false,
+   "colour_seen": false,
+   "arrived_declared": false,
+   "gt_inside": null,
+   "cap_end": true,
+   "max_x": 1.751,
+   "min_zone_range_m": 2.699,
+   "final_pose_eval_only": [
+    -0.5760936141014099,
+    -0.3783424496650696
+   ],
+   "forward_runs_n": 5,
+   "longest_forward_run": {
+    "ticks": 164,
+    "dist_m": 2.2797,
+    "m_per_tick": 0.0139,
+    "t0": 93.5,
+    "t1": 109.8
+   },
+   "leg_turns_n": 4,
+   "leg_turn_lengths": [
+    344,
+    60,
+    300,
+    60
+   ],
+   "schedule_matches_expected": false,
+   "declared": null
+  },
+  {
+   "episode": 3,
+   "status": "cap_end",
+   "found": false,
+   "colour_seen": false,
+   "arrived_declared": false,
+   "gt_inside": null,
+   "cap_end": true,
+   "max_x": 0.329,
+   "min_zone_range_m": 4.491,
+   "final_pose_eval_only": [
+    0.294763445854187,
+    0.9036174416542053
+   ],
+   "forward_runs_n": 7,
+   "longest_forward_run": {
+    "ticks": 59,
+    "dist_m": 0.805,
+    "m_per_tick": 0.01364,
+    "t0": 96.8,
+    "t1": 102.6
+   },
+   "leg_turns_n": 6,
+   "leg_turn_lengths": [
+    344,
+    60,
+    300,
+    60,
+    120,
+    180
+   ],
+   "schedule_matches_expected": false,
+   "declared": null
+  },
+  {
+   "episode": 4,
+   "status": "cap_end",
+   "found": true,
+   "colour_seen": true,
+   "arrived_declared": false,
+   "gt_inside": null,
+   "cap_end": true,
+   "max_x": 1.758,
+   "min_zone_range_m": 2.774,
+   "final_pose_eval_only": [
+    1.354882836341858,
+    0.7788518071174622
+   ],
+   "forward_runs_n": 2,
+   "longest_forward_run": {
+    "ticks": 96,
+    "dist_m": 1.3311,
+    "m_per_tick": 0.01387,
+    "t0": 96.3,
+    "t1": 105.8
+   },
+   "leg_turns_n": 2,
+   "leg_turn_lengths": [
+    344,
+    60
+   ],
+   "schedule_matches_expected": false,
+   "declared": null
+  },
+  {
+   "episode": 5,
+   "status": "cap_end",
+   "found": false,
+   "colour_seen": false,
+   "arrived_declared": false,
+   "gt_inside": null,
+   "cap_end": true,
+   "max_x": -0.076,
+   "min_zone_range_m": 4.449,
+   "final_pose_eval_only": [
+    -0.1110682263970375,
+    -0.586008608341217
+   ],
+   "forward_runs_n": 0,
+   "longest_forward_run": null,
+   "leg_turns_n": 0,
+   "leg_turn_lengths": [],
+   "schedule_matches_expected": false,
+   "declared": null
+  },
+  {
+   "episode": 6,
+   "status": "cap_end",
+   "found": false,
+   "colour_seen": false,
+   "arrived_declared": false,
+   "gt_inside": null,
+   "cap_end": true,
+   "max_x": 1.76,
+   "min_zone_range_m": 2.54,
+   "final_pose_eval_only": [
+    -0.06571842730045319,
+    -1.0825034379959106
+   ],
+   "forward_runs_n": 5,
+   "longest_forward_run": {
+    "ticks": 174,
+    "dist_m": 2.4119,
+    "m_per_tick": 0.01386,
+    "t0": 71.2,
+    "t1": 88.5
+   },
+   "leg_turns_n": 3,
+   "leg_turn_lengths": [
+    344,
+    60,
+    300
+   ],
+   "schedule_matches_expected": false,
+   "declared": null
+  },
+  {
+   "episode": 7,
+   "status": "cap_end",
+   "found": false,
+   "colour_seen": false,
+   "arrived_declared": false,
+   "gt_inside": null,
+   "cap_end": true,
+   "max_x": 1.024,
+   "min_zone_range_m": 3.973,
+   "final_pose_eval_only": [
+    0.340297669172287,
+    -0.1899244636297226
+   ],
+   "forward_runs_n": 6,
+   "longest_forward_run": {
+    "ticks": 94,
+    "dist_m": 1.3029,
+    "m_per_tick": 0.01386,
+    "t0": 110.7,
+    "t1": 120.0
+   },
+   "leg_turns_n": 5,
+   "leg_turn_lengths": [
+    344,
+    60,
+    300,
+    60,
+    120
+   ],
+   "schedule_matches_expected": false,
+   "declared": null
+  },
+  {
+   "episode": 8,
+   "status": "cap_end",
+   "found": true,
+   "colour_seen": true,
+   "arrived_declared": false,
+   "gt_inside": null,
+   "cap_end": true,
+   "max_x": 4.736,
+   "min_zone_range_m": 0.0,
+   "final_pose_eval_only": [
+    4.539841651916504,
+    -2.369082450866699
+   ],
+   "forward_runs_n": 0,
+   "longest_forward_run": null,
+   "leg_turns_n": 0,
+   "leg_turn_lengths": [],
+   "schedule_matches_expected": false,
+   "declared": null
+  },
+  {
+   "episode": 9,
+   "status": "cap_end",
+   "found": true,
+   "colour_seen": true,
+   "arrived_declared": false,
+   "gt_inside": null,
+   "cap_end": true,
+   "max_x": 4.741,
+   "min_zone_range_m": 0.0,
+   "final_pose_eval_only": [
+    4.5954437255859375,
+    -2.4880528450012207
+   ],
+   "forward_runs_n": 0,
+   "longest_forward_run": null,
+   "leg_turns_n": 0,
+   "leg_turn_lengths": [],
+   "schedule_matches_expected": false,
+   "declared": null
+  },
+  {
+   "episode": 10,
+   "status": "cap_end",
+   "found": true,
+   "colour_seen": true,
+   "arrived_declared": false,
+   "gt_inside": null,
+   "cap_end": true,
+   "max_x": 4.743,
+   "min_zone_range_m": 0.0,
+   "final_pose_eval_only": [
+    4.623598575592041,
+    -2.4933626651763916
+   ],
+   "forward_runs_n": 0,
+   "longest_forward_run": null,
+   "leg_turns_n": 0,
+   "leg_turn_lengths": [],
+   "schedule_matches_expected": false,
+   "declared": null
+  },
+  {
+   "episode": 11,
+   "status": "cap_end",
+   "found": true,
+   "colour_seen": true,
+   "arrived_declared": false,
+   "gt_inside": null,
+   "cap_end": true,
+   "max_x": 4.745,
+   "min_zone_range_m": 0.0,
+   "final_pose_eval_only": [
+    4.520361423492432,
+    -2.3992128372192383
+   ],
+   "forward_runs_n": 0,
+   "longest_forward_run": null,
+   "leg_turns_n": 0,
+   "leg_turn_lengths": [],
+   "schedule_matches_expected": false,
+   "declared": null
+  },
+  {
+   "episode": 12,
+   "status": "cap_end",
+   "found": true,
+   "colour_seen": true,
+   "arrived_declared": false,
+   "gt_inside": null,
+   "cap_end": true,
+   "max_x": 4.75,
+   "min_zone_range_m": 0.0,
+   "final_pose_eval_only": [
+    4.546178340911865,
+    -2.419147253036499
+   ],
+   "forward_runs_n": 0,
+   "longest_forward_run": null,
+   "leg_turns_n": 0,
+   "leg_turn_lengths": [],
+   "schedule_matches_expected": false,
+   "declared": null
+  },
+  {
+   "episode": 13,
+   "status": "cap_end",
+   "found": true,
+   "colour_seen": true,
+   "arrived_declared": false,
+   "gt_inside": null,
+   "cap_end": true,
+   "max_x": 4.758,
+   "min_zone_range_m": 0.0,
+   "final_pose_eval_only": [
+    4.69661808013916,
+    -2.3457603454589844
+   ],
+   "forward_runs_n": 0,
+   "longest_forward_run": null,
+   "leg_turns_n": 0,
+   "leg_turn_lengths": [],
+   "schedule_matches_expected": false,
+   "declared": null
+  },
+  {
+   "episode": 14,
+   "status": "cap_end",
+   "found": true,
+   "colour_seen": true,
+   "arrived_declared": false,
+   "gt_inside": null,
+   "cap_end": true,
+   "max_x": 4.727,
+   "min_zone_range_m": 0.0,
+   "final_pose_eval_only": [
+    4.666904926300049,
+    -2.4017550945281982
+   ],
+   "forward_runs_n": 0,
+   "longest_forward_run": null,
+   "leg_turns_n": 0,
+   "leg_turn_lengths": [],
+   "schedule_matches_expected": false,
+   "declared": null
+  },
+  {
+   "episode": 15,
+   "status": "cap_end",
+   "found": true,
+   "colour_seen": true,
+   "arrived_declared": false,
+   "gt_inside": null,
+   "cap_end": true,
+   "max_x": 4.724,
+   "min_zone_range_m": 0.0,
+   "final_pose_eval_only": [
+    4.684430122375488,
+    -2.313380479812622
+   ],
+   "forward_runs_n": 0,
+   "longest_forward_run": null,
+   "leg_turns_n": 0,
+   "leg_turn_lengths": [],
+   "schedule_matches_expected": false,
+   "declared": null
+  }
+ ]
+}

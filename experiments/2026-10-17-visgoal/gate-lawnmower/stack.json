@@ -1,0 +1,56 @@
+{
+  "stack_values": {
+    "physics_backend": "mjwarp_batch_v1",
+    "contact_profile": "warp_native_contact_v1",
+    "noslip_iterations": 0,
+    "scene_profile": "walls_floor_contrast_v5_indigo110_s80",
+    "cargo_version": "v6",
+    "scenario_version": "v7",
+    "heavy_crate": false,
+    "localization_path": "egocentric_landmark_memory_v1",
+    "rbpf": "off",
+    "localization_engine": "OpenCV",
+    "held_object_hidden_v1": true,
+    "held_world_reads": 0,
+    "weld": false,
+    "top_camera_control": false,
+    "heading_mode": "on",
+    "ultrasonic_front": "off",
+    "wall_cap": null,
+    "speed_gate": "record_only",
+    "speed_metric": "wall_s/(sim_s*nworld)",
+    "gcp_host": "ugrp-act-l4-gcp3",
+    "gcp_guards": {
+      "idle_minutes": 20,
+      "budget_stop": true,
+      "credentials_on_vm": false
+    },
+    "no_pooling": true,
+    "planning_cap_basis": "compute_or_sim",
+    "rejection_ledger": [
+      "reason_category",
+      "blocked_object",
+      "minimum_gap_m"
+    ],
+    "cap_end_label": "cap_end",
+    "gcp_project": "ugrp-sim-c-1016",
+    "gcp_account": "changmin5781@gmail.com",
+    "selfmap_map_correction": "off",
+    "localization_initial_prior": "none",
+    "static_map_use": "none",
+    "goal_discovery": "visual_search"
+  },
+  "flow": "self_map",
+  "source_sha": "c390105c2663a5b780e4ad8d69da72a5ffe1bce8",
+  "worlds_per_batch": 16,
+  "visgoal_mirror_pulse_v1": "off",
+  "visgoal_expanding_search_v1": "on",
+  "expanding_leg_ticks": [
+    20,
+    344,
+    60,
+    300,
+    60
+  ],
+  "arrival_aim_inset_m": 0.142
+}

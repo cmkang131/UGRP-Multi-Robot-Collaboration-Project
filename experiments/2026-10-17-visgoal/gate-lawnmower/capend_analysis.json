@@ -1,0 +1,1091 @@
+{
+ "run": "/home/ugrp/ugrp-sim/runs/visgoal-gate-r4-lawnmower",
+ "half_hfov_deg": 27.3,
+ "zone": [
+  4.3,
+  4.9,
+  -2.8,
+  -1.4
+ ],
+ "episodes": [
+  {
+   "episode": 0,
+   "sim_s": 120.0,
+   "final_stage": null,
+   "rotation_cmd_rad": 35.354,
+   "rotation_gt_rad_eval_only": 21.401926522827395,
+   "yaw_bins_visited_30deg": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
+   ],
+   "yaw_bins_n": 12,
+   "yaw_coverage_frac": 1.0,
+   "stage_runs": [
+    {
+     "stage": "orient",
+     "t0": 0.0,
+     "t1": 27.4,
+     "dur": 27.4
+    },
+    {
+     "stage": "approach_wall",
+     "t0": 27.4,
+     "t1": 120.0,
+     "dur": 92.6
+    }
+   ],
+   "in_fov_ticks": 0,
+   "in_fov_frac": 0.0,
+   "in_fov_first_t": null,
+   "in_fov_last_t": null,
+   "in_fov_with_any_paint": 0,
+   "in_fov_paint_first_t": null,
+   "samples": []
+  },
+  {
+   "episode": 1,
+   "sim_s": 120.0,
+   "final_stage": null,
+   "rotation_cmd_rad": 21.134,
+   "rotation_gt_rad_eval_only": 18.92417880178767,
+   "yaw_bins_visited_30deg": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
+   ],
+   "yaw_bins_n": 12,
+   "yaw_coverage_frac": 1.0,
+   "stage_runs": [
+    {
+     "stage": "orient",
+     "t0": 0.0,
+     "t1": 27.4,
+     "dur": 27.4
+    },
+    {
+     "stage": "approach_wall",
+     "t0": 27.4,
+     "t1": 44.3,
+     "dur": 16.9
+    },
+    {
+     "stage": "follow_north",
+     "t0": 44.3,
+     "t1": 59.3,
+     "dur": 15.0
+    },
+    {
+     "stage": "gap_cross",
+     "t0": 59.3,
+     "t1": 59.6,
+     "dur": 0.3
+    },
+    {
+     "stage": "gap_forward",
+     "t0": 59.6,
+     "t1": 68.0,
+     "dur": 8.4
+    },
+    {
+     "stage": "east_search",
+     "t0": 68.0,
+     "t1": 74.9,
+     "dur": 6.9
+    },
+    {
+     "stage": "leg_forward",
+     "t0": 74.9,
+     "t1": 120.0,
+     "dur": 45.1
+    }
+   ],
+   "in_fov_ticks": 41,
+   "in_fov_frac": 0.034,
+   "in_fov_first_t": 103.9,
+   "in_fov_last_t": 107.9,
+   "in_fov_with_any_paint": 0,
+   "in_fov_paint_first_t": null,
+   "samples": [
+    {
+     "t": 103.9,
+     "frame_id": 1039,
+     "rng": 2.564,
+     "bearing_deg": 26.5,
+     "trace_paint_px": 0,
+     "trace_reason": "destination_colour_absent",
+     "band_px": 734,
+     "paint_px": 0,
+     "largest_component_px": 0,
+     "paint_sat_median": null,
+     "paint_hue_median": null
+    },
+    {
+     "t": 104.2,
+     "frame_id": 1042,
+     "rng": 2.566,
+     "bearing_deg": 22.6,
+     "trace_paint_px": 0,
+     "trace_reason": "destination_colour_absent",
+     "band_px": 753,
+     "paint_px": 0,
+     "largest_component_px": 0,
+     "paint_sat_median": null,
+     "paint_hue_median": null
+    },
+    {
+     "t": 104.4,
+     "frame_id": 1044,
+     "rng": 2.565,
+     "bearing_deg": 19.4,
+     "trace_paint_px": 0,
+     "trace_reason": "destination_colour_absent",
+     "band_px": 701,
+     "paint_px": 0,
+     "largest_component_px": 0,
+     "paint_sat_median": null,
+     "paint_hue_median": null
+    },
+    {
+     "t": 104.7,
+     "frame_id": 1047,
+     "rng": 2.566,
+     "bearing_deg": 14.8,
+     "trace_paint_px": 0,
+     "trace_reason": "destination_colour_absent",
+     "band_px": 747,
+     "paint_px": 0,
+     "largest_component_px": 0,
+     "paint_sat_median": null,
+     "paint_hue_median": null
+    },
+    {
+     "t": 105.0,
+     "frame_id": 1050,
+     "rng": 2.569,
+     "bearing_deg": 12.4,
+     "trace_paint_px": 0,
+     "trace_reason": "destination_colour_absent",
+     "band_px": 729,
+     "paint_px": 0,
+     "largest_component_px": 0,
+     "paint_sat_median": null,
+     "paint_hue_median": null
+    },
+    {
+     "t": 105.2,
+     "frame_id": 1052,
+     "rng": 2.57,
+     "bearing_deg": 9.2,
+     "trace_paint_px": 0,
+     "trace_reason": "destination_colour_absent",
+     "band_px": 574,
+     "paint_px": 0,
+     "largest_component_px": 0,
+     "paint_sat_median": null,
+     "paint_hue_median": null
+    },
+    {
+     "t": 105.5,
+     "frame_id": 1055,
+     "rng": 2.569,
+     "bearing_deg": 3.8,
+     "trace_paint_px": 0,
+     "trace_reason": "destination_colour_absent",
+     "band_px": 845,
+     "paint_px": 0,
+     "largest_component_px": 0,
+     "paint_sat_median": null,
+     "paint_hue_median": null
+    },
+    {
+     "t": 105.8,
+     "frame_id": 1058,
+     "rng": 2.57,
+     "bearing_deg": 1.4,
+     "trace_paint_px": 0,
+     "trace_reason": "destination_colour_absent",
+     "band_px": 742,
+     "paint_px": 0,
+     "largest_component_px": 0,
+     "paint_sat_median": null,
+     "paint_hue_median": null
+    },
+    {
+     "t": 106.0,
+     "frame_id": 1060,
+     "rng": 2.571,
+     "bearing_deg": -1.8,
+     "trace_paint_px": 0,
+     "trace_reason": "destination_colour_absent",
+     "band_px": 758,
+     "paint_px": 0,
+     "largest_component_px": 0,
+     "paint_sat_median": null,
+     "paint_hue_median": null
+    },
+    {
+     "t": 106.3,
+     "frame_id": 1063,
+     "rng": 2.57,
+     "bearing_deg": -6.4,
+     "trace_paint_px": 0,
+     "trace_reason": "destination_colour_absent",
+     "band_px": 651,
+     "paint_px": 0,
+     "largest_component_px": 0,
+     "paint_sat_median": null,
+     "paint_hue_median": null
+    },
+    {
+     "t": 106.6,
+     "frame_id": 1066,
+     "rng": 2.568,
+     "bearing_deg": -8.7,
+     "trace_paint_px": 0,
+     "trace_reason": "destination_colour_absent",
+     "band_px": 447,
+     "paint_px": 0,
+     "largest_component_px": 0,
+     "paint_sat_median": null,
+     "paint_hue_median": null
+    },
+    {
+     "t": 106.8,
+     "frame_id": 1068,
+     "rng": 2.568,
+     "bearing_deg": -11.8,
+     "trace_paint_px": 0,
+     "trace_reason": "destination_colour_absent",
+     "band_px": 689,
+     "paint_px": 0,
+     "largest_component_px": 0,
+     "paint_sat_median": null,
+     "paint_hue_median": null
+    },
+    {
+     "t": 107.1,
+     "frame_id": 1071,
+     "rng": 2.569,
+     "bearing_deg": -16.6,
+     "trace_paint_px": 0,
+     "trace_reason": "destination_colour_absent",
+     "band_px": 642,
+     "paint_px": 0,
+     "largest_component_px": 0,
+     "paint_sat_median": null,
+     "paint_hue_median": null
+    },
+    {
+     "t": 107.4,
+     "frame_id": 1074,
+     "rng": 2.567,
+     "bearing_deg": -19.5,
+     "trace_paint_px": 0,
+     "trace_reason": "destination_colour_absent",
+     "band_px": 799,
+     "paint_px": 0,
+     "largest_component_px": 0,
+     "paint_sat_median": null,
+     "paint_hue_median": null
+    },
+    {
+     "t": 107.6,
+     "frame_id": 1076,
+     "rng": 2.566,
+     "bearing_deg": -21.8,
+     "trace_paint_px": 0,
+     "trace_reason": "destination_colour_absent",
+     "band_px": 612,
+     "paint_px": 0,
+     "largest_component_px": 0,
+     "paint_sat_median": null,
+     "paint_hue_median": null
+    },
+    {
+     "t": 107.9,
+     "frame_id": 1079,
+     "rng": 2.567,
+     "bearing_deg": -26.1,
+     "trace_paint_px": 0,
+     "trace_reason": "destination_colour_absent",
+     "band_px": 627,
+     "paint_px": 0,
+     "largest_component_px": 0,
+     "paint_sat_median": null,
+     "paint_hue_median": null
+    }
+   ]
+  },
+  {
+   "episode": 2,
+   "sim_s": 120.0,
+   "final_stage": null,
+   "rotation_cmd_rad": 20.455,
+   "rotation_gt_rad_eval_only": 19.478687551224027,
+   "yaw_bins_visited_30deg": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
+   ],
+   "yaw_bins_n": 12,
+   "yaw_coverage_frac": 1.0,
+   "stage_runs": [
+    {
+     "stage": "orient",
+     "t0": 0.0,
+     "t1": 27.4,
+     "dur": 27.4
+    },
+    {
+     "stage": "seek_wall",
+     "t0": 27.4,
+     "t1": 38.8,
+     "dur": 11.4
+    },
+    {
+     "stage": "approach_wall",
+     "t0": 38.8,
+     "t1": 46.3,
+     "dur": 7.5
+    },
+    {
+     "stage": "follow_north",
+     "t0": 46.3,
+     "t1": 53.9,
+     "dur": 7.6
+    },
+    {
+     "stage": "gap_cross",
+     "t0": 53.9,
+     "t1": 54.2,
+     "dur": 0.3
+    },
+    {
+     "stage": "gap_forward",
+     "t0": 54.2,
+     "t1": 61.1,
+     "dur": 6.9
+    },
+    {
+     "stage": "east_search",
+     "t0": 61.1,
+     "t1": 68.0,
+     "dur": 6.9
+    },
+    {
+     "stage": "leg_forward",
+     "t0": 68.0,
+     "t1": 120.0,
+     "dur": 52.0
+    }
+   ],
+   "in_fov_ticks": 152,
+   "in_fov_frac": 0.127,
+   "in_fov_first_t": 41.8,
+   "in_fov_last_t": 81.9,
+   "in_fov_with_any_paint": 0,
+   "in_fov_paint_first_t": null,
+   "samples": [
+    {
+     "t": 41.8,
+     "frame_id": 418,
+     "rng": 3.487,
+     "bearing_deg": -3.6,
+     "trace_paint_px": 0,
+     "trace_reason": "destination_colour_absent",
+     "band_px": 145107,
+     "paint_px": 88,
+     "largest_component_px": 7,
+     "paint_sat_median": 128.0,
+     "paint_hue_median": 106.0
+    },
+    {
+     "t": 42.8,
+     "frame_id": 428,
+     "rng": 3.345,
+     "bearing_deg": -3.8,
+     "trace_paint_px": 0,
+     "trace_reason": "destination_colour_absent",
+     "band_px": 120881,
+     "paint_px": 80,
+     "largest_component_px": 8,
+     "paint_sat_median": 128.0,
+     "paint_hue_median": 107.0
+    },
+    {
+     "t": 43.8,
+     "frame_id": 438,
+     "rng": 3.203,
+     "bearing_deg": -4.0,
+     "trace_paint_px": 0,
+     "trace_reason": "destination_colour_absent",
+     "band_px": 85587,
+     "paint_px": 69,
+     "largest_component_px": 6,
+     "paint_sat_median": 127.0,
+     "paint_hue_median": 106.0
+    },
+    {
+     "t": 44.8,
+     "frame_id": 448,
+     "rng": 3.061,
+     "bearing_deg": -4.2,
+     "trace_paint_px": 0,
+     "trace_reason": "destination_colour_absent",
+     "band_px": 28622,
+     "paint_px": 46,
+     "largest_component_px": 6,
+     "paint_sat_median": 138.0,
+     "paint_hue_median": 107.0
+    },
+    {
+     "t": 45.8,
+     "frame_id": 458,
+     "rng": 2.919,
+     "bearing_deg": -4.4,
+     "trace_paint_px": 0,
+     "trace_reason": "destination_colour_absent",
+     "band_px": 678,
+     "paint_px": 0,
+     "largest_component_px": 0,
+     "paint_sat_median": null,
+     "paint_hue_median": null
+    },
+    {
+     "t": 46.8,
+     "frame_id": 468,
+     "rng": 2.841,
+     "bearing_deg": -12.2,
+     "trace_paint_px": 0,
+     "trace_reason": "destination_colour_absent",
+     "band_px": 812,
+     "paint_px": 0,
+     "largest_component_px": 0,
+     "paint_sat_median": null,
+     "paint_hue_median": null
+    },
+    {
+     "t": 59.4,
+     "frame_id": 594,
+     "rng": 2.85,
+     "bearing_deg": -25.7,
+     "trace_paint_px": 0,
+     "trace_reason": "destination_colour_absent",
+     "band_px": 1673,
+     "paint_px": 0,
+     "largest_component_px": 0,
+     "paint_sat_median": null,
+     "paint_hue_median": null
+    },
+    {
+     "t": 60.4,
+     "frame_id": 604,
+     "rng": 2.848,
+     "bearing_deg": -11.0,
+     "trace_paint_px": 0,
+     "trace_reason": "destination_colour_absent",
+     "band_px": 647,
+     "paint_px": 0,
+     "largest_component_px": 0,
+     "paint_sat_median": null,
+     "paint_hue_median": null
+    },
+    {
+     "t": 61.5,
+     "frame_id": 615,
+     "rng": 2.846,
+     "bearing_deg": 5.5,
+     "trace_paint_px": 0,
+     "trace_reason": "destination_colour_absent",
+     "band_px": 787,
+     "paint_px": 0,
+     "largest_component_px": 0,
+     "paint_sat_median": null,
+     "paint_hue_median": null
+    },
+    {
+     "t": 62.5,
+     "frame_id": 625,
+     "rng": 2.847,
+     "bearing_deg": 19.9,
+     "trace_paint_px": 0,
+     "trace_reason": "destination_colour_absent",
+     "band_px": 1494,
+     "paint_px": 5,
+     "largest_component_px": 1,
+     "paint_sat_median": 131.0,
+     "paint_hue_median": 107.0
+    },
+    {
+     "t": 76.9,
+     "frame_id": 769,
+     "rng": 2.923,
+     "bearing_deg": 20.9,
+     "trace_paint_px": 0,
+     "trace_reason": "destination_colour_absent",
+     "band_px": 40936,
+     "paint_px": 42,
+     "largest_component_px": 6,
+     "paint_sat_median": 136.5,
+     "paint_hue_median": 107.0
+    },
+    {
+     "t": 77.9,
+     "frame_id": 779,
+     "rng": 2.801,
+     "bearing_deg": 22.1,
+     "trace_paint_px": 0,
+     "trace_reason": "destination_colour_absent",
+     "band_px": 6185,
+     "paint_px": 20,
+     "largest_component_px": 2,
+     "paint_sat_median": 131.0,
+     "paint_hue_median": 108.5
+    },
+    {
+     "t": 78.9,
+     "frame_id": 789,
+     "rng": 2.743,
+     "bearing_deg": 15.1,
+     "trace_paint_px": 0,
+     "trace_reason": "destination_colour_absent",
+     "band_px": 738,
+     "paint_px": 0,
+     "largest_component_px": 0,
+     "paint_sat_median": null,
+     "paint_hue_median": null
+    },
+    {
+     "t": 79.9,
+     "frame_id": 799,
+     "rng": 2.74,
+     "bearing_deg": 0.1,
+     "trace_paint_px": 0,
+     "trace_reason": "destination_colour_absent",
+     "band_px": 738,
+     "paint_px": 0,
+     "largest_component_px": 0,
+     "paint_sat_median": null,
+     "paint_hue_median": null
+    },
+    {
+     "t": 80.9,
+     "frame_id": 809,
+     "rng": 2.742,
+     "bearing_deg": -14.0,
+     "trace_paint_px": 0,
+     "trace_reason": "destination_colour_absent",
+     "band_px": 787,
+     "paint_px": 0,
+     "largest_component_px": 0,
+     "paint_sat_median": null,
+     "paint_hue_median": null
+    },
+    {
+     "t": 81.9,
+     "frame_id": 819,
+     "rng": 2.746,
+     "bearing_deg": -26.8,
+     "trace_paint_px": 0,
+     "trace_reason": "destination_colour_absent",
+     "band_px": 609,
+     "paint_px": 0,
+     "largest_component_px": 0,
+     "paint_sat_median": null,
+     "paint_hue_median": null
+    }
+   ]
+  },
+  {
+   "episode": 3,
+   "sim_s": 120.0,
+   "final_stage": null,
+   "rotation_cmd_rad": 27.103,
+   "rotation_gt_rad_eval_only": 25.76262566560985,
+   "yaw_bins_visited_30deg": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
+   ],
+   "yaw_bins_n": 12,
+   "yaw_coverage_frac": 1.0,
+   "stage_runs": [
+    {
+     "stage": "orient",
+     "t0": 0.0,
+     "t1": 27.4,
+     "dur": 27.4
+    },
+    {
+     "stage": "follow_north",
+     "t0": 27.4,
+     "t1": 34.3,
+     "dur": 6.9
+    },
+    {
+     "stage": "follow_south",
+     "t0": 34.3,
+     "t1": 48.3,
+     "dur": 14.0
+    },
+    {
+     "stage": "gap_cross",
+     "t0": 48.3,
+     "t1": 48.6,
+     "dur": 0.3
+    },
+    {
+     "stage": "gap_forward",
+     "t0": 48.6,
+     "t1": 55.5,
+     "dur": 6.9
+    },
+    {
+     "stage": "east_search",
+     "t0": 55.5,
+     "t1": 62.4,
+     "dur": 6.9
+    },
+    {
+     "stage": "leg_forward",
+     "t0": 62.4,
+     "t1": 120.0,
+     "dur": 57.6
+    }
+   ],
+   "in_fov_ticks": 0,
+   "in_fov_frac": 0.0,
+   "in_fov_first_t": null,
+   "in_fov_last_t": null,
+   "in_fov_with_any_paint": 0,
+   "in_fov_paint_first_t": null,
+   "samples": []
+  },
+  {
+   "episode": 5,
+   "sim_s": 120.0,
+   "final_stage": null,
+   "rotation_cmd_rad": 35.555,
+   "rotation_gt_rad_eval_only": 22.318816272950436,
+   "yaw_bins_visited_30deg": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
+   ],
+   "yaw_bins_n": 12,
+   "yaw_coverage_frac": 1.0,
+   "stage_runs": [
+    {
+     "stage": "orient",
+     "t0": 0.0,
+     "t1": 27.4,
+     "dur": 27.4
+    },
+    {
+     "stage": "approach_wall",
+     "t0": 27.4,
+     "t1": 120.0,
+     "dur": 92.6
+    }
+   ],
+   "in_fov_ticks": 0,
+   "in_fov_frac": 0.0,
+   "in_fov_first_t": null,
+   "in_fov_last_t": null,
+   "in_fov_with_any_paint": 0,
+   "in_fov_paint_first_t": null,
+   "samples": []
+  },
+  {
+   "episode": 6,
+   "sim_s": 120.0,
+   "final_stage": null,
+   "rotation_cmd_rad": 22.853,
+   "rotation_gt_rad_eval_only": 20.449705159036665,
+   "yaw_bins_visited_30deg": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
+   ],
+   "yaw_bins_n": 12,
+   "yaw_coverage_frac": 1.0,
+   "stage_runs": [
+    {
+     "stage": "orient",
+     "t0": 0.0,
+     "t1": 27.4,
+     "dur": 27.4
+    },
+    {
+     "stage": "follow_north",
+     "t0": 27.4,
+     "t1": 43.4,
+     "dur": 16.0
+    },
+    {
+     "stage": "gap_cross",
+     "t0": 43.4,
+     "t1": 43.7,
+     "dur": 0.3
+    },
+    {
+     "stage": "gap_forward",
+     "t0": 43.7,
+     "t1": 52.1,
+     "dur": 8.4
+    },
+    {
+     "stage": "east_search",
+     "t0": 52.1,
+     "t1": 59.0,
+     "dur": 6.9
+    },
+    {
+     "stage": "leg_forward",
+     "t0": 59.0,
+     "t1": 120.0,
+     "dur": 61.0
+    }
+   ],
+   "in_fov_ticks": 40,
+   "in_fov_frac": 0.033,
+   "in_fov_first_t": 91.3,
+   "in_fov_last_t": 95.2,
+   "in_fov_with_any_paint": 0,
+   "in_fov_paint_first_t": null,
+   "samples": [
+    {
+     "t": 91.3,
+     "frame_id": 913,
+     "rng": 2.547,
+     "bearing_deg": 26.6,
+     "trace_paint_px": 0,
+     "trace_reason": "destination_colour_absent",
+     "band_px": 650,
+     "paint_px": 0,
+     "largest_component_px": 0,
+     "paint_sat_median": null,
+     "paint_hue_median": null
+    },
+    {
+     "t": 91.6,
+     "frame_id": 916,
+     "rng": 2.546,
+     "bearing_deg": 21.7,
+     "trace_paint_px": 0,
+     "trace_reason": "destination_colour_absent",
+     "band_px": 738,
+     "paint_px": 0,
+     "largest_component_px": 0,
+     "paint_sat_median": null,
+     "paint_hue_median": null
+    },
+    {
+     "t": 91.8,
+     "frame_id": 918,
+     "rng": 2.548,
+     "bearing_deg": 18.9,
+     "trace_paint_px": 0,
+     "trace_reason": "destination_colour_absent",
+     "band_px": 706,
+     "paint_px": 0,
+     "largest_component_px": 0,
+     "paint_sat_median": null,
+     "paint_hue_median": null
+    },
+    {
+     "t": 92.1,
+     "frame_id": 921,
+     "rng": 2.547,
+     "bearing_deg": 15.2,
+     "trace_paint_px": 0,
+     "trace_reason": "destination_colour_absent",
+     "band_px": 818,
+     "paint_px": 0,
+     "largest_component_px": 0,
+     "paint_sat_median": null,
+     "paint_hue_median": null
+    },
+    {
+     "t": 92.3,
+     "frame_id": 923,
+     "rng": 2.547,
+     "bearing_deg": 11.9,
+     "trace_paint_px": 0,
+     "trace_reason": "destination_colour_absent",
+     "band_px": 756,
+     "paint_px": 0,
+     "largest_component_px": 0,
+     "paint_sat_median": null,
+     "paint_hue_median": null
+    },
+    {
+     "t": 92.6,
+     "frame_id": 926,
+     "rng": 2.549,
+     "bearing_deg": 8.3,
+     "trace_paint_px": 0,
+     "trace_reason": "destination_colour_absent",
+     "band_px": 791,
+     "paint_px": 0,
+     "largest_component_px": 0,
+     "paint_sat_median": null,
+     "paint_hue_median": null
+    },
+    {
+     "t": 92.9,
+     "frame_id": 929,
+     "rng": 2.551,
+     "bearing_deg": 4.5,
+     "trace_paint_px": 0,
+     "trace_reason": "destination_colour_absent",
+     "band_px": 694,
+     "paint_px": 0,
+     "largest_component_px": 0,
+     "paint_sat_median": null,
+     "paint_hue_median": null
+    },
+    {
+     "t": 93.1,
+     "frame_id": 931,
+     "rng": 2.551,
+     "bearing_deg": 1.0,
+     "trace_paint_px": 0,
+     "trace_reason": "destination_colour_absent",
+     "band_px": 649,
+     "paint_px": 0,
+     "largest_component_px": 0,
+     "paint_sat_median": null,
+     "paint_hue_median": null
+    },
+    {
+     "t": 93.4,
+     "frame_id": 934,
+     "rng": 2.552,
+     "bearing_deg": -2.9,
+     "trace_paint_px": 0,
+     "trace_reason": "destination_colour_absent",
+     "band_px": 790,
+     "paint_px": 0,
+     "largest_component_px": 0,
+     "paint_sat_median": null,
+     "paint_hue_median": null
+    },
+    {
+     "t": 93.6,
+     "frame_id": 936,
+     "rng": 2.554,
+     "bearing_deg": -4.6,
+     "trace_paint_px": 0,
+     "trace_reason": "destination_colour_absent",
+     "band_px": 741,
+     "paint_px": 0,
+     "largest_component_px": 0,
+     "paint_sat_median": null,
+     "paint_hue_median": null
+    },
+    {
+     "t": 93.9,
+     "frame_id": 939,
+     "rng": 2.552,
+     "bearing_deg": -7.0,
+     "trace_paint_px": 0,
+     "trace_reason": "destination_colour_absent",
+     "band_px": 548,
+     "paint_px": 0,
+     "largest_component_px": 0,
+     "paint_sat_median": null,
+     "paint_hue_median": null
+    },
+    {
+     "t": 94.2,
+     "frame_id": 942,
+     "rng": 2.55,
+     "bearing_deg": -10.9,
+     "trace_paint_px": 0,
+     "trace_reason": "destination_colour_absent",
+     "band_px": 965,
+     "paint_px": 0,
+     "largest_component_px": 0,
+     "paint_sat_median": null,
+     "paint_hue_median": null
+    },
+    {
+     "t": 94.4,
+     "frame_id": 944,
+     "rng": 2.55,
+     "bearing_deg": -14.5,
+     "trace_paint_px": 0,
+     "trace_reason": "destination_colour_absent",
+     "band_px": 698,
+     "paint_px": 0,
+     "largest_component_px": 0,
+     "paint_sat_median": null,
+     "paint_hue_median": null
+    },
+    {
+     "t": 94.7,
+     "frame_id": 947,
+     "rng": 2.55,
+     "bearing_deg": -18.9,
+     "trace_paint_px": 0,
+     "trace_reason": "destination_colour_absent",
+     "band_px": 515,
+     "paint_px": 0,
+     "largest_component_px": 0,
+     "paint_sat_median": null,
+     "paint_hue_median": null
+    },
+    {
+     "t": 94.9,
+     "frame_id": 949,
+     "rng": 2.55,
+     "bearing_deg": -21.9,
+     "trace_paint_px": 0,
+     "trace_reason": "destination_colour_absent",
+     "band_px": 765,
+     "paint_px": 0,
+     "largest_component_px": 0,
+     "paint_sat_median": null,
+     "paint_hue_median": null
+    },
+    {
+     "t": 95.2,
+     "frame_id": 952,
+     "rng": 2.55,
+     "bearing_deg": -27.0,
+     "trace_paint_px": 0,
+     "trace_reason": "destination_colour_absent",
+     "band_px": 835,
+     "paint_px": 0,
+     "largest_component_px": 0,
+     "paint_sat_median": null,
+     "paint_hue_median": null
+    }
+   ]
+  },
+  {
+   "episode": 7,
+   "sim_s": 120.0,
+   "final_stage": null,
+   "rotation_cmd_rad": 21.587,
+   "rotation_gt_rad_eval_only": 21.197759794611812,
+   "yaw_bins_visited_30deg": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
+   ],
+   "yaw_bins_n": 12,
+   "yaw_coverage_frac": 1.0,
+   "stage_runs": [
+    {
+     "stage": "orient",
+     "t0": 0.0,
+     "t1": 27.4,
+     "dur": 27.4
+    },
+    {
+     "stage": "follow_north",
+     "t0": 27.4,
+     "t1": 34.5,
+     "dur": 7.1
+    },
+    {
+     "stage": "gap_cross",
+     "t0": 34.5,
+     "t1": 34.8,
+     "dur": 0.3
+    },
+    {
+     "stage": "gap_forward",
+     "t0": 34.8,
+     "t1": 41.7,
+     "dur": 6.9
+    },
+    {
+     "stage": "east_search",
+     "t0": 41.7,
+     "t1": 48.6,
+     "dur": 6.9
+    },
+    {
+     "stage": "leg_forward",
+     "t0": 48.6,
+     "t1": 120.0,
+     "dur": 71.4
+    }
+   ],
+   "in_fov_ticks": 0,
+   "in_fov_frac": 0.0,
+   "in_fov_first_t": null,
+   "in_fov_last_t": null,
+   "in_fov_with_any_paint": 0,
+   "in_fov_paint_first_t": null,
+   "samples": []
+  }
+ ]
+}

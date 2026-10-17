@@ -632,6 +632,109 @@ left turns), the growing fallback, and the 0.098 m false-arrival geometry
 (default declares; C keeps driving; 0.06 m past the point declares) with the
 tolerance untouched.
 
+Candidate C was measured afterwards (results below): the expanding search did
+not improve the west side and the 0.142 m arrival aim broke the declaration
+test (0/16 declared). The arrival aim is therefore identified as a defect to
+separate from the search strategy, not a setting to retune; the constant is
+unchanged and the result is not pooled with r4/B.
+
+### Candidate C results (nworld=16 batch, expanding search + arrival aim)
+
+Raw `/home/ugrp/ugrp-sim/runs/visgoal-gate-r4-lawnmower` (VM); copied summary,
+strict recount, analysis, arrival/FOV analysis, cap-end analysis, west/east
+mission split, the read-only schedule analysis (`analysis-c.json`) and the 16
+9-frame montages under `gate-lawnmower/`. Queue `queue-gate-lawnmower.json`
+(source pin `c390105c2`, executed checkout `0b44a3f0d`, toggle
+`visgoal_expanding_search_v1: on`, `worlds_per_batch: 16`), stack admission
+`stack-gate-lawnmower-v19.json`, prior funnel = gate-r4 `recount.json`.
+
+Intended changes vs gate r4/B: the equal short-leg square is replaced by the
+expanding lawnmower schedule (`20/344/60/300/60` ticks), the arrival aim moves
+from the remembered point to 0.142 m past it along the robot-forward axis
+(`ARRIVAL_AIM_INSET_M`), and the runner gained the toggle plumbing that records
+both settings in `stack.json`. Gate r4's 120 SIM s cap, `nworld=16`, the 16
+starts file, `stack_values` and the renderer/legacy pins are unchanged; the
+`input_sha256` differs only for the three intended code files
+(`scripts/visgoal_probe.py`, `sim/visual_goal_search.py`,
+`tests/test_visual_goal_search.py`). The gate-r4 queue's stale metadata
+(seven fields listed in the candidate B section) is the same in this queue;
+C's own `run_name`/`output`/`rejection_table` point to its own run.
+
+Run `EXIT` DONE (no error, no HOST_ERROR). Batch wall 6091.75 s for
+120 SIM s x 16 worlds = 3.173 wall/(sim_s*nworld) (r4 2.745, B 2.749 on the
+same host; record-only speed gate, still below the 6.0 block). All 16 episodes
+ran to the cap, so the `progress.json` records only hold `t=120`; the
+first-30-SIM frame-mtime estimate is 1504.34/(30*16) = 3.134 and is labelled
+as an estimate, not a progress-record measurement.
+
+Result (independent recount, `gate-lawnmower/recount.json`: 0 mismatches):
+n=16, colour_seen 9/16, found 9/16, **arrived_declared 0/16**, GT-inside
+0/16, entered-zone-any 8/16 (eval-only reference only, never a success),
+cap_end 16/16. Strict funnel: starts 16 -> colour_seen 9 ->
+found_metric_or_arrived 9 -> arrived_declared 0 -> arrived_gt 0. Reasons:
+`cap_end_no_colour_metric` 7 (e00,01,02,03,05,06,07) and
+`cap_end_found_no_arrival` 9 (e04,08,09,10,11,12,13,14,15).
+
+West/east mission split (e00-e07 west of the divider, e08-e15 east):
+
+| side | starts | crossed gap | colour after crossing | found | declared | GT-inside |
+|---|---:|---:|---:|---:|---:|---:|
+| west (e00-e07) | 8 | 5 | 0 | 0 | 0 | 0/8 |
+| east (e08-e15) | 8 | not needed | 8 | 8 | 0 | 0/8 |
+
+West: crossing at 34.5-59.3 s for e01,02,03,06,07; e00/e05 never crossed
+(`approach_wall` to the cap); e04 saw paint while still west of the divider
+(found without crossing). After crossing, `leg_forward` absorbed 60.8-85.6 s
+of the cap and the closest approach to the zone-B rectangle was 2.54-4.49 m
+(e01 2.54, e06 2.54, e02 2.70 m) — the post-cross search still does not reach
+the zone. East: all eight episodes found the paint and their final eval-only
+pose was inside zone B (final zone range 0.0 m), yet none declared arrival.
+
+**Arrival declaration regression (raw trace, no rerun).** Gate r4 and B
+declared 8/16 arrivals; C declared 0/16 although the east side found the paint
+8/8 and ended physically inside the zone. All found episodes stay in
+`approach` until the cap; each has 2-3 `local_reacquire_spin` events (a full
+calibrated 2*pi spin, ~27 s each at this pulse rate) and continuous paint
+memory observations. At the final ticks the paint is still in the lower-centre
+field of view and the memory is fresh, but `aim_rng` is about 0.18 m > 0.10 m,
+so the declaration test — which in C targets a point 0.142 m past the
+remembered point — never fires. r4/B declared at a base->remembered-point
+range of 0.0952-0.0983 m, i.e. before the remembered point. The only
+arrival-path change from r4/B is `ARRIVAL_AIM_INSET_M = 0.142 m`; the constant
+is not retuned after seeing this result, no rerun was made, and the exact
+limit-cycle mechanism is unconfirmed. This is recorded as a defect of the C
+candidate, separate from its search change: the arrival-aim change must be
+separated from the search change before it is used again (Stage A does this).
+
+Cap-end/no-colour (7 episodes): rotations 20.5-35.6 rad, all 12 yaw bins
+visited. Zone geometry entered the half-HFOV 27.3 deg / <=3.5 m wedge on e02
+152 ticks (12.7%), e01 41 (3.4%), e06 40 (3.3%) and never on the other four;
+the offline paint-band check on 16 sampled in-FOV frames found at most 8 px
+largest component (e02; 7 frames with any paint pixel) against the
+zone-sized >=600 px requirement. As in r4/B the large band counts are the
+blue-tinted floor below the S>=110 paint threshold; the zone was not visible
+from those viewpoints, not a colour-detection failure.
+
+Visual check: all 16 episode montages (9 self-camera frames each, ticks
+0..last, `gate-lawnmower/montages/eNN.jpg`, sha256 in `montages.json`) were
+opened. The west episodes never show the saturated zone-B patch (pickup room,
+corridor and walls; e05 lingers on a yellow cube). The eight east episodes
+show the robot approaching and then standing on/next to the blue zone paint
+while still turning and re-acquiring (e13-e15 are stationary over the paint at
+the last frames) — the paint is visible but the arrival test never fires. No
+blocked object was observed (`not_observed`) and no gap was measured
+(`not_measured`).
+
+**Candidate C verdict: FAIL (worse than r4/B)** — arrived_declared 0/16 and
+GT-inside 0/16, west crossing 5/8 with post-cross colour 0/5 and found 0/8.
+The search schedule did not improve the west search, and the arrival-aim
+change broke the declaration test that had produced eight declarations in
+r4/B. Next-fix direction from this table: (1) separate or revert the arrival
+aim change (done for Stage A); (2) harden west crossing (2/8 stalled in
+`approach_wall`); (3) the post-cross search still ends 2.5-4.5 m from the zone
+with `leg_forward` absorbing 61-86 s, so search coverage remains the dominant
+cause. C is not pooled with gate r4/B, Stage A, or each other.
+
 ## Files
 
 * `setups.json` — 16 fixed starts (setup only; includes parked
@@ -654,6 +757,13 @@ tolerance untouched.
   (`analysis-mission.json`), the 16 9-frame self-camera montages and the
   compressed SHA256SUMS list. Candidate B is a separate condition and is not
   pooled with gate r4.
+* `gate-lawnmower/` — paired candidate C summary, strict recount, analysis,
+  arrival/FOV analysis (`analysis2.json`), cap-end analysis
+  (`capend_analysis.json`), west/east mission split (`analysis-mission.json`),
+  the read-only schedule analysis (`analysis-c.json`, reproduced by
+  `scripts/visgoal_c_analysis.py`), the 16 9-frame self-camera montages and
+  the compressed SHA256SUMS list. Candidate C is a separate condition and is
+  not pooled with gate r4/B or with any later run.
 * `queue-gate-mirror.json` / `queue-gate-lawnmower.json` — paired candidate B
   and C queues (same 16 starts, 120 SIM s, nworld=16); their stack admission
   files are `stack-gate-mirror-v17.json` and `stack-gate-lawnmower-v19.json`.
