@@ -1,0 +1,224 @@
+{
+  "schema": "ugrp.current_stack.check.v1",
+  "ok": true,
+  "current_compliant": false,
+  "checker_sha256": "bdef5ad98b8e5ee8a21126f75430a58193d5f44f11f23fa60fd9ca487511eb3b",
+  "scope": "declared manifest fields; not independent runtime/physics verification",
+  "inputs": [
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/beamact3c/experiments/2026-10-17-beamact5/stack-check-input.json",
+      "sha256": "2aba961d6df1af639af2cd2f4844354b3083b6f72c55b0549173c23ffbc5eab5"
+    }
+  ],
+  "rows": [
+    {
+      "record": "$",
+      "flow": "replay",
+      "id": "physics_backend",
+      "expected": "mjwarp_batch_v1",
+      "observed": [],
+      "status": "replay_exception",
+      "recorded_status": "unknown",
+      "replay_of": [
+        "/Users/changmin/projects/ugrp-wt/beamact3c/experiments/2026-10-16-beamdiag/summary.json"
+      ],
+      "input": "experiments/2026-10-17-beamact5/stack-check-input.json"
+    },
+    {
+      "record": "$",
+      "flow": "replay",
+      "id": "contact_profile",
+      "expected": "warp_native_contact_v1",
+      "observed": [],
+      "status": "replay_exception",
+      "recorded_status": "unknown",
+      "replay_of": [
+        "/Users/changmin/projects/ugrp-wt/beamact3c/experiments/2026-10-16-beamdiag/summary.json"
+      ],
+      "input": "experiments/2026-10-17-beamact5/stack-check-input.json"
+    },
+    {
+      "record": "$",
+      "flow": "replay",
+      "id": "noslip_iterations",
+      "expected": 0,
+      "observed": [],
+      "status": "replay_exception",
+      "recorded_status": "unknown",
+      "replay_of": [
+        "/Users/changmin/projects/ugrp-wt/beamact3c/experiments/2026-10-16-beamdiag/summary.json"
+      ],
+      "input": "experiments/2026-10-17-beamact5/stack-check-input.json"
+    },
+    {
+      "record": "$",
+      "flow": "replay",
+      "id": "scene_profile",
+      "expected": "walls_floor_contrast_v5_indigo110_s80",
+      "observed": [],
+      "status": "replay_exception",
+      "recorded_status": "unknown",
+      "replay_of": [
+        "/Users/changmin/projects/ugrp-wt/beamact3c/experiments/2026-10-16-beamdiag/summary.json"
+      ],
+      "input": "experiments/2026-10-17-beamact5/stack-check-input.json"
+    },
+    {
+      "record": "$",
+      "flow": "replay",
+      "id": "cargo_version",
+      "expected": "v6",
+      "observed": [],
+      "status": "replay_exception",
+      "recorded_status": "unknown",
+      "replay_of": [
+        "/Users/changmin/projects/ugrp-wt/beamact3c/experiments/2026-10-16-beamdiag/summary.json"
+      ],
+      "input": "experiments/2026-10-17-beamact5/stack-check-input.json"
+    },
+    {
+      "record": "$",
+      "flow": "replay",
+      "id": "scenario_version",
+      "expected": "v7",
+      "observed": [],
+      "status": "replay_exception",
+      "recorded_status": "unknown",
+      "replay_of": [
+        "/Users/changmin/projects/ugrp-wt/beamact3c/experiments/2026-10-16-beamdiag/summary.json"
+      ],
+      "input": "experiments/2026-10-17-beamact5/stack-check-input.json"
+    },
+    {
+      "record": "$",
+      "flow": "replay",
+      "id": "heavy_crate",
+      "expected": false,
+      "observed": [],
+      "status": "replay_exception",
+      "recorded_status": "unknown",
+      "replay_of": [
+        "/Users/changmin/projects/ugrp-wt/beamact3c/experiments/2026-10-16-beamdiag/summary.json"
+      ],
+      "input": "experiments/2026-10-17-beamact5/stack-check-input.json"
+    },
+    {
+      "record": "$",
+      "flow": "replay",
+      "id": "weld",
+      "expected": false,
+      "observed": [],
+      "status": "replay_exception",
+      "recorded_status": "unknown",
+      "replay_of": [
+        "/Users/changmin/projects/ugrp-wt/beamact3c/experiments/2026-10-16-beamdiag/summary.json"
+      ],
+      "input": "experiments/2026-10-17-beamact5/stack-check-input.json"
+    },
+    {
+      "record": "$",
+      "flow": "replay",
+      "id": "wall_cap",
+      "expected": null,
+      "observed": [],
+      "status": "replay_exception",
+      "recorded_status": "unknown",
+      "replay_of": [
+        "/Users/changmin/projects/ugrp-wt/beamact3c/experiments/2026-10-16-beamdiag/summary.json"
+      ],
+      "input": "experiments/2026-10-17-beamact5/stack-check-input.json"
+    },
+    {
+      "record": "$",
+      "flow": "replay",
+      "id": "gcp_host",
+      "expected": [
+        "ugrp-act-l4-gcp2",
+        "ugrp-act-l4-gcp3",
+        "ugrp-act-l4-gcp4",
+        "ugrp-act-l4-gcp5",
+        "ugrp-act-l4-gcp6"
+      ],
+      "observed": [],
+      "status": "replay_exception",
+      "recorded_status": "unknown",
+      "replay_of": [
+        "/Users/changmin/projects/ugrp-wt/beamact3c/experiments/2026-10-16-beamdiag/summary.json"
+      ],
+      "input": "experiments/2026-10-17-beamact5/stack-check-input.json"
+    },
+    {
+      "record": "$",
+      "flow": "replay",
+      "id": "gcp_guards",
+      "expected": {
+        "idle_minutes": 20,
+        "budget_stop": true,
+        "credentials_on_vm": false
+      },
+      "observed": [],
+      "status": "replay_exception",
+      "recorded_status": "unknown",
+      "replay_of": [
+        "/Users/changmin/projects/ugrp-wt/beamact3c/experiments/2026-10-16-beamdiag/summary.json"
+      ],
+      "input": "experiments/2026-10-17-beamact5/stack-check-input.json"
+    },
+    {
+      "record": "$",
+      "flow": "replay",
+      "id": "no_pooling",
+      "expected": true,
+      "observed": [],
+      "status": "replay_exception",
+      "recorded_status": "unknown",
+      "replay_of": [
+        "/Users/changmin/projects/ugrp-wt/beamact3c/experiments/2026-10-16-beamdiag/summary.json"
+      ],
+      "input": "experiments/2026-10-17-beamact5/stack-check-input.json"
+    },
+    {
+      "record": "$",
+      "flow": "replay",
+      "id": "gcp_project",
+      "expected": [
+        "ugrp-sim-b-1014",
+        "ugrp-sim-c-1016",
+        "ugrp-sim-d-1016",
+        "ugrp-sim-e-1016",
+        "ugrp-sim-f-1016"
+      ],
+      "observed": [],
+      "status": "replay_exception",
+      "recorded_status": "unknown",
+      "replay_of": [
+        "/Users/changmin/projects/ugrp-wt/beamact3c/experiments/2026-10-16-beamdiag/summary.json"
+      ],
+      "input": "experiments/2026-10-17-beamact5/stack-check-input.json"
+    },
+    {
+      "record": "$",
+      "flow": "replay",
+      "id": "gcp_account",
+      "expected": [
+        "changmin5781@gmail.com",
+        "kcm5781kcm5781@gmail.com"
+      ],
+      "observed": [],
+      "status": "replay_exception",
+      "recorded_status": "unknown",
+      "replay_of": [
+        "/Users/changmin/projects/ugrp-wt/beamact3c/experiments/2026-10-16-beamdiag/summary.json"
+      ],
+      "input": "experiments/2026-10-17-beamact5/stack-check-input.json"
+    }
+  ],
+  "stack": {
+    "path": "/Users/changmin/projects/ugrp-wt/beamact3c/configs/current_stack.json",
+    "sha256": "04978bc6390724be1095dbcf63360cbfc2a8cdf05107112e14e77cfe2dd4ce89"
+  },
+  "counts": {
+    "replay_exception": 14
+  },
+  "admission": "historical_replay"
+}

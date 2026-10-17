@@ -30,24 +30,36 @@ class StudentBarrier:
     @property
     def ready(self):
         if self.stage_mode == STAGE_MODE:
-            return self.stage == 'ready' or (self.started and self.stage in ('execute', 'complete'))
+            # A READY already sent to the pinned barrier stays true until it is
+            # released by GO/ACK or explicitly withdrawn, even if the learned
+            # chunk advances to execute/complete while waiting.
+            return (self.pending is not None or self.stage == 'ready'
+                    or (self.started and self.stage in ('execute', 'complete')))
         return self.pending is not None or self.started
 
     def propose(self, value, done, previous, *, stage=None):
         if self.stage_mode == STAGE_MODE:
             if stage not in LEARNED_STAGES:
                 raise ValueError('learned stage required; no PWM readiness fallback')
-            self.stage, self.blocked, self.pending = stage, False, None
+            # approach/alignment/recover withdraw READY; only withholding is
+            # allowed from a learned output. A pending READY proposal is frozen
+            # like the legacy close proposal: later chunks cannot overwrite the
+            # command that earned READY while GO/ACK is pending.
             if stage in ('approach', 'alignment', 'recover'):
+                self.stage, self.blocked, self.pending = stage, False, None
                 self.started = False
                 # Existing protocol hold only. A premature close cannot grant
                 # READY or leak through before GO/ACK. Re-infer after rejection.
                 self.blocked = value['pwm']['1'] < previous['pwm']['1']
+            elif self.pending is not None:
+                # Keep the original READY proposal and its original command.
+                self.stage, self.blocked = stage, False
             elif stage == 'ready':
+                self.stage, self.blocked = stage, False
                 self.pending = (deepcopy(value), bool(done))
                 self.events.append(dict(t=value['t'], event='READY', source='own_ACT_stage_head'))
-            elif not self.started:
-                self.blocked = True
+            else:
+                self.stage, self.blocked = stage, not self.started
             if self.blocked:
                 self.events.append(dict(t=value['t'], event='proposal_rejected',
                     reason_category='close_before_learned_ready' if stage in ('approach', 'alignment', 'recover')
@@ -105,7 +117,10 @@ class RearmingStartSync:
     def tick(self, ready, now):
         if set(ready) != set(self.participants) or any(type(v) is not bool for v in ready.values()):
             raise ValueError('READY messages only')
-        if self.sync.go_at is not None and any(self.previous[r] and not ready[r] for r in ready):
+        # Any withdrawal invalidates the old READY report, including one made
+        # before the first GO. Waiting until go_at is not None would let a
+        # stale readiness report survive a pre-GO withdrawal.
+        if any(self.previous[r] and not ready[r] for r in ready):
             self.cycle += 1
             self.events.append(dict(t=now, event='READY_withdrawn_rearm', cycle=self.cycle))
             self.sync = self.factory(self.participants, self.delays)

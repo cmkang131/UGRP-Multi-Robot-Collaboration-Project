@@ -18,6 +18,7 @@ from harness.beamact4_execution import PairChunkExecutor
 from harness.grasp_act_rollout import OwnHistory, InputAudit, LiftScore, SoloSequence
 from harness.beamact_pair_student import (MODE, STAGE_MODE, RECOVERY_MODE,
     StudentBarrier, RearmingStartSync, Funnel)
+from harness.beamact5_ready import READY_GATE, ReadyWitness
 from harness.beamact_pair_score import assigned_forces
 from harness.beampair_teacher import DEPENDENCY_SHA, validate_plan
 from harness.failure_rgb_tail import FailureRGBTail
@@ -30,12 +31,16 @@ from scripts.run_beampair1 import dependency_modules, setup_admission
 
 
 def run(plan, output, dependency, model, actor_python, *, mode='off', cap_s=60.,
-        stage_mode='off', done_recovery='off'):
+        stage_mode='off', done_recovery='off', ready_gate='off'):
     host = require_gcp2(training=False)
     if mode != MODE:
         raise ValueError('explicit student opt-in required')
     if stage_mode not in ('off', STAGE_MODE) or done_recovery not in ('off', RECOVERY_MODE):
         raise ValueError('unknown pair student candidate')
+    if ready_gate not in ('off', READY_GATE):
+        raise ValueError('unknown observable READY candidate')
+    if ready_gate != 'off' and stage_mode != STAGE_MODE:
+        raise ValueError('observable READY witness requires the learned-stage candidate')
     validate_plan(plan)
     if plan['seed'] not in range(8329000, 8329020):
         raise ValueError('exact reserved20 plan required')
@@ -43,6 +48,7 @@ def run(plan, output, dependency, model, actor_python, *, mode='off', cap_s=60.,
     model_meta = json.loads((model/'adapter.json').read_text())
     candidate_arm = model_meta.get('beamact3_v1', 'off')
     candidate4 = stage_mode != 'off' or done_recovery != 'off'
+    candidate5 = ready_gate != 'off'
     if (model_meta.get('beamact4_stage_v1', 'off') != stage_mode):
         raise ValueError('stage toggle/checkpoint mismatch; no legacy READY fallback')
     output.mkdir(parents=True, exist_ok=False)
@@ -56,10 +62,13 @@ def run(plan, output, dependency, model, actor_python, *, mode='off', cap_s=60.,
         loadavg_at_start=os.getloadavg())
     if candidate_arm != 'off':
         report.update(beamact3_v1=candidate_arm,compact_history=model_meta['compact_history'])
-    report.update(beamact4_stage_v1=stage_mode, beamact4_done_recovery_v1=done_recovery)
-    write_json(output/'RUN_META.json', dict(**{'class':'milestone'}, pr=None if candidate4 else 545 if candidate_arm!='off' else 540,
-        branch='codex/beamact4' if candidate4 else 'codex/beamact3' if candidate_arm!='off' else 'codex/beamact1', sha=source,
-        batch='beamact4-development-only' if candidate4 else 'beamact3-'+candidate_arm+'-heldout20' if candidate_arm!='off' else 'beamact2-heldout20',
+    report.update(beamact4_stage_v1=stage_mode, beamact4_done_recovery_v1=done_recovery,
+        beamact5_ready_witness_v1=ready_gate)
+    write_json(output/'RUN_META.json', dict(**{'class':'milestone'},
+        pr=563 if candidate5 else None if candidate4 else 545 if candidate_arm!='off' else 540,
+        branch='claude/beamact5' if candidate5 else 'codex/beamact4' if candidate4 else 'codex/beamact3' if candidate_arm!='off' else 'codex/beamact1',
+        sha=source,
+        batch='beamact5-ready-witness-development-only' if candidate5 else 'beamact4-development-only' if candidate4 else 'beamact3-'+candidate_arm+'-heldout20' if candidate_arm!='off' else 'beamact2-heldout20',
         keep=['commands.jsonl', 'student-inputs.jsonl', 'eval-only.jsonl', 'review']))
     write_json(output/'plan.json', plan)
     write_json(output/'result.json', report)
@@ -140,6 +149,8 @@ def run(plan, output, dependency, model, actor_python, *, mode='off', cap_s=60.,
             (output/'scene.xml').write_text(world.scene_xml)
             write_json(output/'scene.json',scene.manifest)
             ports={r:DutyActPort(world,r,allow_reverse=True,allow_mecanum=True) for r in plan['roles']}
+            witness=(ReadyWitness(camera_profile=camera.PROFILE_ID)
+                     if ready_gate != 'off' else None)
             write_json(output/'camera-runtime.json',dict(scope='evaluation-only runtime camera verification',
                 cameras={rid:{key:getattr(world.model,'cam_'+key)[world.controllers[rid].robot_cam_cid].tolist()
                     for key in ('pos','quat','intrinsic','resolution')} for rid in ports},
@@ -175,7 +186,8 @@ def run(plan, output, dependency, model, actor_python, *, mode='off', cap_s=60.,
             streams.extend([inputs,commands,evaluations])
             review=output/'review';review.mkdir()
             review_rows=[]
-            def issue_proposal(rid, proposal, done, waiting, now, permits):
+            def issue_proposal(rid, proposal, done, waiting, now, permits,
+                    reported_ready, witness_decision=None):
                 barrier=barriers[rid]
                 value,done=barrier.issue(now,previous[rid],proposal,done,permits[rid])
                 if stage_mode != 'off' and (barrier.blocked or
@@ -186,12 +198,19 @@ def run(plan, output, dependency, model, actor_python, *, mode='off', cap_s=60.,
                 apply(ports[rid],value,now,previous[rid])
                 histories[rid].issue(value);previous[rid]=value
                 row=dict(t=now,robot=rid,command=value,done=done,
-                    ready=barrier.ready,permit=permits[rid],waiting=waiting)
+                    ready=bool(reported_ready),permit=permits[rid],waiting=waiting)
                 if stage_mode != 'off':
                     row.update(learned_stage=executors[rid].stage,
-                        waiting=barrier.ready and not permits[rid],proposal_rejected=barrier.blocked)
+                        waiting=(bool(reported_ready) if witness is not None
+                                 else barrier.ready) and not permits[rid],
+                        proposal_rejected=barrier.blocked)
+                    if witness is not None:
+                        row.update(internal_ready=barrier.ready,
+                            ready_witness=witness_decision)
                 commands.write(json.dumps(row,allow_nan=False)+'\n')
             tick=0
+            witness_latest={}
+            witness_counts={'calls':0,'aligned':0,'gated_ready_ticks':0}
             while float(world.data.time)-origin<cap_s-1e-8:
                 if (output/'SUPERVISOR_STOP.json').exists():raise KeyboardInterrupt('supervisor stop')
                 now=float(world.data.time)
@@ -217,13 +236,35 @@ def run(plan, output, dependency, model, actor_python, *, mode='off', cap_s=60.,
                             executors[rid].discard_pending()
                     if stage_mode == 'off':
                         # Preserve the baseline per-robot capture/issue order.
-                        issue_proposal(rid,proposal,done,waiting,now,permits)
+                        issue_proposal(rid,proposal,done,waiting,now,permits,barrier.ready)
                     else:
-                        proposals[rid]=(proposal,done,waiting)
+                        reported_ready=False;witness_decision=None
+                        if witness is not None and barrier.ready and not barrier.started:
+                            # READY is a precondition over own RGB + issued
+                            # commands. A learned stage alone cannot send it.
+                            ready, witness_decision = witness.ready(obs,jpegs)
+                            witness_latest[rid]=witness_decision
+                            witness_counts['calls']+=1
+                            witness_counts['aligned']+=int(bool(ready))
+                            reported_ready=bool(ready)
+                        elif witness is not None and barrier.started:
+                            # The pinned protocol already delivered GO/ACK.
+                            # Own-band loss during execution does not retract
+                            # an executed start; only a new pre-start READY is
+                            # gated by the witness.
+                            reported_ready=barrier.ready
+                        else:
+                            reported_ready=barrier.ready
+                        proposals[rid]=(proposal,done,waiting,reported_ready,witness_decision)
                 if stage_mode != 'off':
-                    permits=sync.tick({r:b.ready for r,b in barriers.items()},now)
-                    for rid,(proposal,done,waiting) in proposals.items():
-                        issue_proposal(rid,proposal,done,waiting,now,permits)
+                    readiness=({r:proposals[r][3] for r in ports} if witness is not None
+                               else {r:b.ready for r,b in barriers.items()})
+                    if witness is not None:
+                        witness_counts['gated_ready_ticks']+=int(any(readiness.values()))
+                    permits=sync.tick(readiness,now)
+                    for rid,(proposal,done,waiting,reported_ready,witness_decision) in proposals.items():
+                        issue_proposal(rid,proposal,done,waiting,now,permits,
+                            reported_ready,witness_decision)
                 # Private evaluation truth is created AFTER commands, and never
                 # passed into histories, executor, barrier, worker or sync.
                 truth=snapshot(world,inst,plan['roles'],scene)
@@ -254,9 +295,11 @@ def run(plan, output, dependency, model, actor_python, *, mode='off', cap_s=60.,
                     geometry[rid]=dict(end_distance_m=math.dist(pose[:2],end[:2]),
                         station_error_m=math.dist(pose[:2],goal),
                         yaw_error_rad=abs(math.atan2(math.sin(yaw-pose[2]),math.cos(yaw-pose[2]))))
+                reported_ready=({r:b.ready for r,b in barriers.items()}
+                                 if witness is None else readiness)
                 passed=dict(approach=all(g['end_distance_m']<=.8 for g in geometry.values()),
                     alignment=all(g['station_error_m']<=.03 and g['yaw_error_rad']<=.06 for g in geometry.values()),
-                    READY=all(b.ready for b in barriers.values()),grasp=min(forces)>=.5,
+                    READY=all(reported_ready.values()),grasp=min(forces)>=.5,
                     lift_3s=score.record()['lift_success'])
                 funnel.add(now,passed)
                 # Same evaluation-only target gap as the existing ACT student;
@@ -300,10 +343,23 @@ def run(plan, output, dependency, model, actor_python, *, mode='off', cap_s=60.,
                 funnel=funnel.record(),inference_calls=len(latencies),
                 inference_latency_median_s=float(np.median(latencies)) if latencies else None,
                 protocol_delays_s=delays,capture_cache=capture_stats)
+            if witness is not None:
+                report.update(ready_witness=dict(
+                    toggle=ready_gate,counts=witness_counts,
+                    last=witness_latest,config=witness.config,
+                    station_radius_m=witness.station_radius_m,
+                    camera_profile=witness.camera_profile,image_hw=witness.image_hw,
+                    owner='own RGB 0s frame + 16 issued commands only'))
             write_json(output/'start-protocol.json',dict(events=sync.events,
                 own_events={r:b.events for r,b in barriers.items()},delays_s=delays,
                 **(dict(beamact4_stage_v1=stage_mode,beamact4_done_recovery_v1=done_recovery) if candidate4 else {}),
+                **(dict(beamact5_ready_witness_v1=ready_gate,
+                    ready_witness=dict(counts=witness_counts,last=witness_latest,
+                        config=witness.config,station_radius_m=witness.station_radius_m,
+                        camera_profile=witness.camera_profile,image_hw=witness.image_hw))
+                   if witness is not None else {}),
                 source='unchanged pinned GraspStartSync READY/GO/ACK; '+
+                    ('own-RGB/issued-command witness gates pre-start READY; ' if witness is not None else '')+
                     ('learned stage, rearmed on withdrawal' if stage_mode != 'off' else 'close proposal only')))
             write_json(review/'manifest.json',review_rows)
     except BaseException as exc:
@@ -342,10 +398,11 @@ def main():
     p.add_argument('--mode',default='off',choices=('off',MODE))
     p.add_argument('--stage-mode',default='off',choices=('off',STAGE_MODE))
     p.add_argument('--done-recovery',default='off',choices=('off',RECOVERY_MODE))
+    p.add_argument('--ready-gate',default='off',choices=('off',READY_GATE))
     a=p.parse_args()
     plan=json.loads(a.plan.read_text())['episodes'][a.episode]
     run(plan,a.output,a.dependency_root,a.model,a.actor_python,mode=a.mode,
-        stage_mode=a.stage_mode,done_recovery=a.done_recovery)
+        stage_mode=a.stage_mode,done_recovery=a.done_recovery,ready_gate=a.ready_gate)
 
 
 if __name__=='__main__':main()

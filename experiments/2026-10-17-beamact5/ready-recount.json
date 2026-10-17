@@ -1,0 +1,770 @@
+{
+  "schema": "ugrp.beamact5.ready-recount.v1",
+  "source": {
+    "summary": "/Users/changmin/projects/ugrp-wt/beamact3c/experiments/2026-10-16-beamdiag/summary.json",
+    "sha256": "c184e720feb037feafa6e987003d2e432d6534e9c390571e7fa8b1379ce9740c",
+    "robots_csv": "/Users/changmin/projects/ugrp-wt/beamact3c/experiments/2026-10-16-beamdiag/robots.csv",
+    "robots_csv_sha256": "57d465c00bacd0328211a6921b7286496b8ea525a49cee3ef7369df7c76d0acc"
+  },
+  "stored_protocol_audit": {
+    "source": "experiments/2026-10-16-beamdiag/summary.json hypotheses[1].evidence",
+    "tool": "experiments/2026-10-16-beamdiag/analysis/protocol_audit.py",
+    "raw_inputs": "gcp2 start-protocol.json + eval-only.jsonl (not re-read here)",
+    "arms": {
+      "A": {
+        "GO_N": 20,
+        "GO_before_joint_alignment_N": 20
+      },
+      "B": {
+        "GO_N": 20,
+        "GO_before_joint_alignment_N": 20
+      }
+    }
+  },
+  "recount": {
+    "runs_N": 40,
+    "original_GO_N": 40,
+    "original_GO_before_joint_alignment_N": 40,
+    "admitted_at_original_GO_N": 0,
+    "admitted_at_original_GO": "0/40",
+    "reason": "every stored GO preceded joint alignment, so an alignment witness would not have emitted READY at that GO time",
+    "both_ever_aligned_N": 4,
+    "both_ever_aligned_by_arm": {
+      "A": 1,
+      "B": 3
+    },
+    "witness_ready_upper_bound": "4/40 (A 1/20, B 3/20) if each aligned robot could observe and hold its own alignment for two frames",
+    "physical_success_N": 0
+  },
+  "both_ever_aligned_runs": [
+    {
+      "arm": "A",
+      "seed": 8329000,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/heldout20-v1/seed-8329000",
+      "first_assigned_aligned_sim_s": {
+        "r1": 30.700000000063984,
+        "r2": 0.0
+      },
+      "ever_assigned_aligned": {
+        "r1": true,
+        "r2": true
+      },
+      "sim_end_s": 59.90000000020341,
+      "termination": "cap_end",
+      "physical_success": false,
+      "earliest_possible_witness_ready_s": 30.800000000063985,
+      "cap_margin_after_witness_s": 29.100000000139428
+    },
+    {
+      "arm": "B",
+      "seed": 8329000,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/heldout20-v1/seed-8329000",
+      "first_assigned_aligned_sim_s": {
+        "r1": 18.10000000000382,
+        "r2": 0.0
+      },
+      "ever_assigned_aligned": {
+        "r1": true,
+        "r2": true
+      },
+      "sim_end_s": 59.90000000020341,
+      "termination": "cap_end",
+      "physical_success": false,
+      "earliest_possible_witness_ready_s": 18.200000000003822,
+      "cap_margin_after_witness_s": 41.700000000199594
+    },
+    {
+      "arm": "B",
+      "seed": 8329003,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/heldout20-v1/seed-8329003",
+      "first_assigned_aligned_sim_s": {
+        "r1": 12.59999999998893,
+        "r2": 0.0
+      },
+      "ever_assigned_aligned": {
+        "r1": true,
+        "r2": true
+      },
+      "sim_end_s": 59.90000000020341,
+      "termination": "cap_end",
+      "physical_success": false,
+      "earliest_possible_witness_ready_s": 12.699999999988929,
+      "cap_margin_after_witness_s": 47.20000000021449
+    },
+    {
+      "arm": "B",
+      "seed": 8329015,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/heldout20-v1/seed-8329015",
+      "first_assigned_aligned_sim_s": {
+        "r1": 58.00000000019434,
+        "r2": 0.0
+      },
+      "ever_assigned_aligned": {
+        "r1": true,
+        "r2": true
+      },
+      "sim_end_s": 59.90000000020341,
+      "termination": "cap_end",
+      "physical_success": false,
+      "earliest_possible_witness_ready_s": 58.10000000019434,
+      "cap_margin_after_witness_s": 1.8000000000090708
+    }
+  ],
+  "runs": [
+    {
+      "arm": "A",
+      "seed": 8329000,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/heldout20-v1/seed-8329000",
+      "first_assigned_aligned_sim_s": {
+        "r1": 30.700000000063984,
+        "r2": 0.0
+      },
+      "ever_assigned_aligned": {
+        "r1": true,
+        "r2": true
+      },
+      "sim_end_s": 59.90000000020341,
+      "termination": "cap_end",
+      "physical_success": false,
+      "earliest_possible_witness_ready_s": 30.800000000063985,
+      "cap_margin_after_witness_s": 29.100000000139428
+    },
+    {
+      "arm": "A",
+      "seed": 8329001,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/heldout20-v1/seed-8329001",
+      "first_assigned_aligned_sim_s": {
+        "r1": null,
+        "r2": null
+      },
+      "ever_assigned_aligned": {
+        "r1": false,
+        "r2": false
+      },
+      "sim_end_s": 59.90000000020341,
+      "termination": "cap_end",
+      "physical_success": false
+    },
+    {
+      "arm": "A",
+      "seed": 8329002,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/heldout20-v1/seed-8329002",
+      "first_assigned_aligned_sim_s": {
+        "r1": 53.60000000017333,
+        "r2": null
+      },
+      "ever_assigned_aligned": {
+        "r1": true,
+        "r2": false
+      },
+      "sim_end_s": 59.90000000020341,
+      "termination": "cap_end",
+      "physical_success": false
+    },
+    {
+      "arm": "A",
+      "seed": 8329003,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/heldout20-v1/seed-8329003",
+      "first_assigned_aligned_sim_s": {
+        "r1": null,
+        "r2": 0.0
+      },
+      "ever_assigned_aligned": {
+        "r1": false,
+        "r2": true
+      },
+      "sim_end_s": 59.90000000020341,
+      "termination": "cap_end",
+      "physical_success": false
+    },
+    {
+      "arm": "A",
+      "seed": 8329004,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/heldout20-v1/seed-8329004",
+      "first_assigned_aligned_sim_s": {
+        "r1": 15.699999999992361,
+        "r2": null
+      },
+      "ever_assigned_aligned": {
+        "r1": true,
+        "r2": false
+      },
+      "sim_end_s": 59.90000000020341,
+      "termination": "cap_end",
+      "physical_success": false
+    },
+    {
+      "arm": "A",
+      "seed": 8329005,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/heldout20-v1/seed-8329005",
+      "first_assigned_aligned_sim_s": {
+        "r1": 55.10000000018049,
+        "r2": null
+      },
+      "ever_assigned_aligned": {
+        "r1": true,
+        "r2": false
+      },
+      "sim_end_s": 59.90000000020341,
+      "termination": "cap_end",
+      "physical_success": false
+    },
+    {
+      "arm": "A",
+      "seed": 8329006,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/heldout20-v1/seed-8329006",
+      "first_assigned_aligned_sim_s": {
+        "r1": null,
+        "r2": 0.0
+      },
+      "ever_assigned_aligned": {
+        "r1": false,
+        "r2": true
+      },
+      "sim_end_s": 59.90000000020341,
+      "termination": "cap_end",
+      "physical_success": false
+    },
+    {
+      "arm": "A",
+      "seed": 8329007,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/heldout20-v1/seed-8329007",
+      "first_assigned_aligned_sim_s": {
+        "r1": 17.400000000000478,
+        "r2": null
+      },
+      "ever_assigned_aligned": {
+        "r1": true,
+        "r2": false
+      },
+      "sim_end_s": 59.90000000020341,
+      "termination": "cap_end",
+      "physical_success": false
+    },
+    {
+      "arm": "A",
+      "seed": 8329008,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/heldout20-v1/seed-8329008",
+      "first_assigned_aligned_sim_s": {
+        "r1": null,
+        "r2": null
+      },
+      "ever_assigned_aligned": {
+        "r1": false,
+        "r2": false
+      },
+      "sim_end_s": 59.90000000020341,
+      "termination": "cap_end",
+      "physical_success": false
+    },
+    {
+      "arm": "A",
+      "seed": 8329009,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/heldout20-v1/seed-8329009",
+      "first_assigned_aligned_sim_s": {
+        "r1": null,
+        "r2": 0.0
+      },
+      "ever_assigned_aligned": {
+        "r1": false,
+        "r2": true
+      },
+      "sim_end_s": 59.90000000020341,
+      "termination": "cap_end",
+      "physical_success": false
+    },
+    {
+      "arm": "A",
+      "seed": 8329010,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/heldout20-v1/seed-8329010",
+      "first_assigned_aligned_sim_s": {
+        "r1": null,
+        "r2": null
+      },
+      "ever_assigned_aligned": {
+        "r1": false,
+        "r2": false
+      },
+      "sim_end_s": 59.90000000020341,
+      "termination": "cap_end",
+      "physical_success": false
+    },
+    {
+      "arm": "A",
+      "seed": 8329011,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/heldout20-v1/seed-8329011",
+      "first_assigned_aligned_sim_s": {
+        "r1": null,
+        "r2": null
+      },
+      "ever_assigned_aligned": {
+        "r1": false,
+        "r2": false
+      },
+      "sim_end_s": 59.90000000020341,
+      "termination": "cap_end",
+      "physical_success": false
+    },
+    {
+      "arm": "A",
+      "seed": 8329012,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/heldout20-v1/seed-8329012",
+      "first_assigned_aligned_sim_s": {
+        "r1": null,
+        "r2": 0.0
+      },
+      "ever_assigned_aligned": {
+        "r1": false,
+        "r2": true
+      },
+      "sim_end_s": 59.90000000020341,
+      "termination": "cap_end",
+      "physical_success": false
+    },
+    {
+      "arm": "A",
+      "seed": 8329013,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/heldout20-v1/seed-8329013",
+      "first_assigned_aligned_sim_s": {
+        "r1": null,
+        "r2": null
+      },
+      "ever_assigned_aligned": {
+        "r1": false,
+        "r2": false
+      },
+      "sim_end_s": 59.90000000020341,
+      "termination": "cap_end",
+      "physical_success": false
+    },
+    {
+      "arm": "A",
+      "seed": 8329014,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/heldout20-v1/seed-8329014",
+      "first_assigned_aligned_sim_s": {
+        "r1": null,
+        "r2": null
+      },
+      "ever_assigned_aligned": {
+        "r1": false,
+        "r2": false
+      },
+      "sim_end_s": 59.90000000020341,
+      "termination": "cap_end",
+      "physical_success": false
+    },
+    {
+      "arm": "A",
+      "seed": 8329015,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/heldout20-v1/seed-8329015",
+      "first_assigned_aligned_sim_s": {
+        "r1": null,
+        "r2": 0.0
+      },
+      "ever_assigned_aligned": {
+        "r1": false,
+        "r2": true
+      },
+      "sim_end_s": 59.90000000020341,
+      "termination": "cap_end",
+      "physical_success": false
+    },
+    {
+      "arm": "A",
+      "seed": 8329016,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/heldout20-v1/seed-8329016",
+      "first_assigned_aligned_sim_s": {
+        "r1": null,
+        "r2": null
+      },
+      "ever_assigned_aligned": {
+        "r1": false,
+        "r2": false
+      },
+      "sim_end_s": 59.90000000020341,
+      "termination": "cap_end",
+      "physical_success": false
+    },
+    {
+      "arm": "A",
+      "seed": 8329017,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/heldout20-v1/seed-8329017",
+      "first_assigned_aligned_sim_s": {
+        "r1": null,
+        "r2": 26.000000000041542
+      },
+      "ever_assigned_aligned": {
+        "r1": false,
+        "r2": true
+      },
+      "sim_end_s": 59.90000000020341,
+      "termination": "cap_end",
+      "physical_success": false
+    },
+    {
+      "arm": "A",
+      "seed": 8329018,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/heldout20-v1/seed-8329018",
+      "first_assigned_aligned_sim_s": {
+        "r1": null,
+        "r2": 0.0
+      },
+      "ever_assigned_aligned": {
+        "r1": false,
+        "r2": true
+      },
+      "sim_end_s": 59.90000000020341,
+      "termination": "cap_end",
+      "physical_success": false
+    },
+    {
+      "arm": "A",
+      "seed": 8329019,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/heldout20-v1/seed-8329019",
+      "first_assigned_aligned_sim_s": {
+        "r1": null,
+        "r2": null
+      },
+      "ever_assigned_aligned": {
+        "r1": false,
+        "r2": false
+      },
+      "sim_end_s": 59.90000000020341,
+      "termination": "cap_end",
+      "physical_success": false
+    },
+    {
+      "arm": "B",
+      "seed": 8329000,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/heldout20-v1/seed-8329000",
+      "first_assigned_aligned_sim_s": {
+        "r1": 18.10000000000382,
+        "r2": 0.0
+      },
+      "ever_assigned_aligned": {
+        "r1": true,
+        "r2": true
+      },
+      "sim_end_s": 59.90000000020341,
+      "termination": "cap_end",
+      "physical_success": false,
+      "earliest_possible_witness_ready_s": 18.200000000003822,
+      "cap_margin_after_witness_s": 41.700000000199594
+    },
+    {
+      "arm": "B",
+      "seed": 8329001,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/heldout20-v1/seed-8329001",
+      "first_assigned_aligned_sim_s": {
+        "r1": null,
+        "r2": null
+      },
+      "ever_assigned_aligned": {
+        "r1": false,
+        "r2": false
+      },
+      "sim_end_s": 59.90000000020341,
+      "termination": "cap_end",
+      "physical_success": false
+    },
+    {
+      "arm": "B",
+      "seed": 8329002,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/heldout20-v1/seed-8329002",
+      "first_assigned_aligned_sim_s": {
+        "r1": null,
+        "r2": null
+      },
+      "ever_assigned_aligned": {
+        "r1": false,
+        "r2": false
+      },
+      "sim_end_s": 59.90000000020341,
+      "termination": "cap_end",
+      "physical_success": false
+    },
+    {
+      "arm": "B",
+      "seed": 8329003,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/heldout20-v1/seed-8329003",
+      "first_assigned_aligned_sim_s": {
+        "r1": 12.59999999998893,
+        "r2": 0.0
+      },
+      "ever_assigned_aligned": {
+        "r1": true,
+        "r2": true
+      },
+      "sim_end_s": 59.90000000020341,
+      "termination": "cap_end",
+      "physical_success": false,
+      "earliest_possible_witness_ready_s": 12.699999999988929,
+      "cap_margin_after_witness_s": 47.20000000021449
+    },
+    {
+      "arm": "B",
+      "seed": 8329004,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/heldout20-v1/seed-8329004",
+      "first_assigned_aligned_sim_s": {
+        "r1": 14.099999999985434,
+        "r2": null
+      },
+      "ever_assigned_aligned": {
+        "r1": true,
+        "r2": false
+      },
+      "sim_end_s": 59.90000000020341,
+      "termination": "cap_end",
+      "physical_success": false
+    },
+    {
+      "arm": "B",
+      "seed": 8329005,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/heldout20-v1/seed-8329005",
+      "first_assigned_aligned_sim_s": {
+        "r1": null,
+        "r2": null
+      },
+      "ever_assigned_aligned": {
+        "r1": false,
+        "r2": false
+      },
+      "sim_end_s": 59.90000000020341,
+      "termination": "cap_end",
+      "physical_success": false
+    },
+    {
+      "arm": "B",
+      "seed": 8329006,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/heldout20-v1/seed-8329006",
+      "first_assigned_aligned_sim_s": {
+        "r1": null,
+        "r2": 0.0
+      },
+      "ever_assigned_aligned": {
+        "r1": false,
+        "r2": true
+      },
+      "sim_end_s": 59.90000000020341,
+      "termination": "cap_end",
+      "physical_success": false
+    },
+    {
+      "arm": "B",
+      "seed": 8329007,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/heldout20-v1/seed-8329007",
+      "first_assigned_aligned_sim_s": {
+        "r1": null,
+        "r2": 10.499999999993824
+      },
+      "ever_assigned_aligned": {
+        "r1": false,
+        "r2": true
+      },
+      "sim_end_s": 59.90000000020341,
+      "termination": "cap_end",
+      "physical_success": false
+    },
+    {
+      "arm": "B",
+      "seed": 8329008,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/heldout20-v1/seed-8329008",
+      "first_assigned_aligned_sim_s": {
+        "r1": null,
+        "r2": null
+      },
+      "ever_assigned_aligned": {
+        "r1": false,
+        "r2": false
+      },
+      "sim_end_s": 59.90000000020341,
+      "termination": "cap_end",
+      "physical_success": false
+    },
+    {
+      "arm": "B",
+      "seed": 8329009,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/heldout20-v1/seed-8329009",
+      "first_assigned_aligned_sim_s": {
+        "r1": null,
+        "r2": 0.0
+      },
+      "ever_assigned_aligned": {
+        "r1": false,
+        "r2": true
+      },
+      "sim_end_s": 59.90000000020341,
+      "termination": "cap_end",
+      "physical_success": false
+    },
+    {
+      "arm": "B",
+      "seed": 8329010,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/heldout20-v1/seed-8329010",
+      "first_assigned_aligned_sim_s": {
+        "r1": null,
+        "r2": null
+      },
+      "ever_assigned_aligned": {
+        "r1": false,
+        "r2": false
+      },
+      "sim_end_s": 59.90000000020341,
+      "termination": "cap_end",
+      "physical_success": false
+    },
+    {
+      "arm": "B",
+      "seed": 8329011,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/heldout20-v1/seed-8329011",
+      "first_assigned_aligned_sim_s": {
+        "r1": null,
+        "r2": null
+      },
+      "ever_assigned_aligned": {
+        "r1": false,
+        "r2": false
+      },
+      "sim_end_s": 59.90000000020341,
+      "termination": "cap_end",
+      "physical_success": false
+    },
+    {
+      "arm": "B",
+      "seed": 8329012,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/heldout20-v1/seed-8329012",
+      "first_assigned_aligned_sim_s": {
+        "r1": null,
+        "r2": 0.0
+      },
+      "ever_assigned_aligned": {
+        "r1": false,
+        "r2": true
+      },
+      "sim_end_s": 59.90000000020341,
+      "termination": "cap_end",
+      "physical_success": false
+    },
+    {
+      "arm": "B",
+      "seed": 8329013,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/heldout20-v1/seed-8329013",
+      "first_assigned_aligned_sim_s": {
+        "r1": null,
+        "r2": null
+      },
+      "ever_assigned_aligned": {
+        "r1": false,
+        "r2": false
+      },
+      "sim_end_s": 59.90000000020341,
+      "termination": "cap_end",
+      "physical_success": false
+    },
+    {
+      "arm": "B",
+      "seed": 8329014,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/heldout20-v1/seed-8329014",
+      "first_assigned_aligned_sim_s": {
+        "r1": null,
+        "r2": null
+      },
+      "ever_assigned_aligned": {
+        "r1": false,
+        "r2": false
+      },
+      "sim_end_s": 59.90000000020341,
+      "termination": "cap_end",
+      "physical_success": false
+    },
+    {
+      "arm": "B",
+      "seed": 8329015,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/heldout20-v1/seed-8329015",
+      "first_assigned_aligned_sim_s": {
+        "r1": 58.00000000019434,
+        "r2": 0.0
+      },
+      "ever_assigned_aligned": {
+        "r1": true,
+        "r2": true
+      },
+      "sim_end_s": 59.90000000020341,
+      "termination": "cap_end",
+      "physical_success": false,
+      "earliest_possible_witness_ready_s": 58.10000000019434,
+      "cap_margin_after_witness_s": 1.8000000000090708
+    },
+    {
+      "arm": "B",
+      "seed": 8329016,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/heldout20-v1/seed-8329016",
+      "first_assigned_aligned_sim_s": {
+        "r1": null,
+        "r2": null
+      },
+      "ever_assigned_aligned": {
+        "r1": false,
+        "r2": false
+      },
+      "sim_end_s": 59.90000000020341,
+      "termination": "cap_end",
+      "physical_success": false
+    },
+    {
+      "arm": "B",
+      "seed": 8329017,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/heldout20-v1/seed-8329017",
+      "first_assigned_aligned_sim_s": {
+        "r1": null,
+        "r2": null
+      },
+      "ever_assigned_aligned": {
+        "r1": false,
+        "r2": false
+      },
+      "sim_end_s": 59.90000000020341,
+      "termination": "cap_end",
+      "physical_success": false
+    },
+    {
+      "arm": "B",
+      "seed": 8329018,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/heldout20-v1/seed-8329018",
+      "first_assigned_aligned_sim_s": {
+        "r1": null,
+        "r2": 0.0
+      },
+      "ever_assigned_aligned": {
+        "r1": false,
+        "r2": true
+      },
+      "sim_end_s": 59.90000000020341,
+      "termination": "cap_end",
+      "physical_success": false
+    },
+    {
+      "arm": "B",
+      "seed": 8329019,
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/heldout20-v1/seed-8329019",
+      "first_assigned_aligned_sim_s": {
+        "r1": null,
+        "r2": null
+      },
+      "ever_assigned_aligned": {
+        "r1": false,
+        "r2": false
+      },
+      "sim_end_s": 24.50000000003438,
+      "termination": "student_done",
+      "physical_success": false
+    }
+  ],
+  "not_computable": [
+    "exact later re-GO/re-ACK time and any execution outcome after it",
+    "whether the own camera could detect the alignment at those times (stored times are eval-truth geometry, not witness outputs)",
+    "later alignment loss/reacquisition and streak resets"
+  ],
+  "why_not_computable": "the merged Mac artifacts keep per-run first-alignment times and aggregate protocol counts, but not per-tick own RGB, issued commands or the GO time; those raw files are under the gcp2 ops-review paths and gcp2 is outside this worker assignment.",
+  "scope": "historical stored-ledger recount only; no new run, inference, physics or render"
+}
