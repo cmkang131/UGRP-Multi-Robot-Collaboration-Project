@@ -2738,6 +2738,47 @@
         "source_artifact": "source_confirmed_runtime_separate",
         "applied_runtime": "확인 안 됨: 구현 전"
       }
+    },
+    {
+      "id": "act_training_precision",
+      "current": "bf16_autocast_v1",
+      "decision_date": "2026-10-17",
+      "source": {
+        "references": [
+          {
+            "sha": "b422c05bb8fb941c338e6b67ff6d44405fc533b5",
+            "path": "AGENTS.md",
+            "lines": [
+              95
+            ],
+            "note": "학습 정밀도 (2026-10-17 사용자 원문): 다음 학습부터 bf16 쓰자. 먼저 짧게 시험해서 fp32와 비교해."
+          },
+          {
+            "sha": "5e863474bbff08cd604ef0e6310955130c5ad349",
+            "path": "experiments/2026-10-17-act18/bf16-probe-decision.json",
+            "lines": [],
+            "note": "gcp5 L4 2,000단계×2팔 짝 비교: 단계 중앙값 0.1675→0.1523초(1.10배), NaN/inf 0/2000, VAL8 손실 0.7358→0.6448(2,834행). haiku 독립 재계수 41점 표본(2.05%) 방향·크기 일치."
+          }
+        ],
+        "decision_text": "다음 학습부터 bf16 쓰자. 먼저 짧게 시험해서 fp32와 비교해."
+      },
+      "supersedes": [
+        "ACT fp32 default (new training)"
+      ],
+      "flows": [
+        "train"
+      ],
+      "verification": {
+        "paths": [
+          "stack_values.act_training_precision",
+          "training_precision",
+          "runtime.training_precision"
+        ],
+        "method": "all present values must agree; missing is 확인 안 됨; source config alone is not runtime evidence",
+        "source_artifact": "source_confirmed_runtime_separate",
+        "applied_runtime": "확인 안 됨: gcp5 단독 2,000단계 프로브만 완료; 100k bf16 학습 적용 전"
+      },
+      "notes": "새 ACT 학습 기본. 가중치·옵티마이저·grad clip은 fp32, forward/loss만 bf16 autocast. bf16 결과는 fp32 결과와 합산하지 않는다. 진행 중 act18 R8/R100 fp32 짝은 정밀도 혼합을 피하려고 그대로 둔다."
     }
   ]
 }
