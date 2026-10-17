@@ -1,0 +1,29 @@
+{
+  "lastStartTimestamp": "2026-10-16T12:02:49.262-07:00",
+  "lastStopTimestamp": "2026-10-16T12:46:12.232-07:00",
+  "machineType": "https://www.googleapis.com/compute/v1/projects/ugrp-sim-e-1016/zones/asia-northeast3-a/machineTypes/g2-standard-8",
+  "metadata": {
+    "items": [
+      {
+        "key": "block-project-ssh-keys",
+        "value": "true"
+      },
+      {
+        "key": "ssh-keys",
+        "value": "ugrp:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMALzpM9EnNEUxinyTmgrn0u2FvEiUYQuZc0rntaLeZj ugrp-gcp5\nchangmin:ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDo6/bX5jZ7jOveB8M3ukLEBrc9X1K3QMhtZy+KXy5ny8Wla0sXFELYLUOw1E2d6cKJUUQj4NjeMvw8vnIORpzYEiiN9Cv3qwLnf9CyKOwZwTgtzTnN2R0kRXHqFHG4vIDKadVMOf4Hp0ZFaWyHvCbkqKF0PQQ/phkKAGLlLvyBW/p7tWSzdNShW3r6bUQpI+JWv4MBdwAoU9mZUPcILbOnpYsbzrJ1i4GLKZoHUujF+xQAZqelyqo8jxM0gUQCbJot/6zpuyPyMulF41GhnPbhAB97QS2VODOmmwrk4+dYXBw8x0MVSekgl3jxKQtIZLrskZXFQVCWDAzZLG0BCHs1l5VfSHn7DxxASHU8LIuJYQvuDhCLVtimZWd3aJ9azfoq6xoo0FsjP4v6/pRslJBrcgem3Pt84N6cDScYO7q/UZquVfVJkDomqWPUwkfmSfzydGF60JvBFOBKsnhMqC4rXhAvkfDlN+fBSj2LDzLZuUsAbqQDMIrzjAuoCSayQZU= changmin@gangchangmin-ui-MacBookAir.local"
+      },
+      {
+        "key": "startup-script",
+        "value": "#!/bin/bash\n# UGRP GCP benchmark VM: idle guard. Powers off after 20 min with no simulation/setup process.\ncat > /usr/local/sbin/ugrp-idle-guard <<'G'\n#!/bin/bash\nstate=/run/ugrp-idle-since\nnow=$(date +%s)\n# Leases block manual stop in gcpctl. A stale detached lease must not disable\n# the independent 20-minute idle backstop once all execution processes are gone.\nif pgrep -u ugrp -x 'python[0-9.]*|mujoco|ffmpeg' >/dev/null; then\n  echo \"$now\" > \"$state\"; exit 0\nfi\nif pgrep -f 'scripts\\.sim_cli|scripts[./](train_grasp_act|prepare_grasp_act_data|evaluate_grasp_act_offline|run_grasp_act_student|grasp_act_student_worker)|gcp_speed_probe|pip install|pip3 install|apt-get|apt install|dpkg|git index-pack|git pack-objects|git reset|pytest|rsync|scp|sshd: ugrp|zstd|tar ' >/dev/null; then\n  echo \"$now\" > \"$state\"; exit 0\nfi\n[ -f \"$state\" ] || echo \"$now\" > \"$state\"\nsince=$(cat \"$state\")\nif [ $((now - since)) -ge 1200 ]; then\n  logger -t ugrp-idle-guard \"idle 20 min, shutting down\"\n  shutdown -h now\nfi\nG\nchmod 755 /usr/local/sbin/ugrp-idle-guard\ncat > /etc/systemd/system/ugrp-idle-guard.service <<'G'\n[Unit]\nDescription=UGRP idle guard\n[Service]\nType=oneshot\nExecStart=/usr/local/sbin/ugrp-idle-guard\nG\ncat > /etc/systemd/system/ugrp-idle-guard.timer <<'G'\n[Unit]\nDescription=UGRP idle guard timer\n[Timer]\nOnBootSec=60\nOnUnitActiveSec=60\n[Install]\nWantedBy=timers.target\nG\nrm -f /run/ugrp-idle-since\nsystemctl daemon-reload\nsystemctl enable --now ugrp-idle-guard.timer\n"
+      }
+    ]
+  },
+  "name": "ugrp-act-l4-gcp5",
+  "scheduling": {
+    "automaticRestart": true,
+    "onHostMaintenance": "TERMINATE",
+    "preemptible": false,
+    "provisioningModel": "STANDARD"
+  },
+  "status": "TERMINATED"
+}
