@@ -59,8 +59,7 @@ class StaticAMCL:
             raise ValueError('OWN_CALIBRATION_REQUIRED')
         if profile not in ('calibrated_kld_v1','fixed_population_v1','nav2_sigma_fixed_v1','likelihood_product_v1','nav2_defaults_v1'):
             raise ValueError('UNKNOWN_AMCL_PROFILE')
-        from harness.mapbuild_start_zone import OPTION as START_ZONE, sample
-        if initial_prior_option not in ('off', START_ZONE):
+        if initial_prior_option not in ('off', 'start_zone_prior_v1'):
             raise ValueError('UNKNOWN_INITIAL_PRIOR_OPTION')
         if initial_prior_option == 'off' and initial_prior is not None:
             raise ValueError('EXPLICIT_START_ZONE_TOGGLE_REQUIRED')
@@ -74,9 +73,10 @@ class StaticAMCL:
         self.minimum_particles=2000 if profile=='calibrated_kld_v1' else 100000
         self.maximum_particles=100000
         # Nav2 official configuring_amcl: min/max=500/2000, sigma=.2,
-        # recovery alpha slow/fast=0/0. This new explicit profile preserves
-        # every historical profile byte-for-byte; no GT fitting or beam cap
+        # recovery alpha slow/fast=0/0. This new explicit profile leaves
+        # historical settings unchanged; no GT fitting or beam cap
         # invented here. Upstream cubic sum can use 96 beams on 96 slots.
+        # https://docs.nav2.org/rolling/configuration_and_development/configuration_guide/others/configuring_amcl/
         if profile == 'nav2_defaults_v1':
             self.minimum_particles, self.maximum_particles = 500, 2000
         self.alpha_slow, self.alpha_fast = ((0., 0.) if profile == 'nav2_defaults_v1' else (.001, .1))
@@ -92,6 +92,7 @@ class StaticAMCL:
         self.sigma_hit = .2 if profile in ('nav2_sigma_fixed_v1', 'nav2_defaults_v1') else .0202
         self.requirements = requirements
         if initial_prior_option != 'off':
+            from harness.mapbuild_start_zone import sample
             initial = sample(self.field, static_map, initial_prior, self.rng, self.maximum_particles)
             self.particles = initial if option != 'off' else None
         else:

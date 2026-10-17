@@ -1,0 +1,23 @@
+{
+  "status": "NEEDS_OPERATOR_OR_AUTHORED_REGION",
+  "exact_spawn_rounding_allowed": false,
+  "source_truth_used": false,
+  "gcp5_recordings": {
+    "R1": null,
+    "R2": null,
+    "R3": null
+  },
+  "gcp3_streams": "28 world:robot keys; see operations/gcp3-start-zone-inventory.json",
+  "required_fields": [
+    "static_map_sha256",
+    "prior.schema=ugrp.coarse_start_zone.v1",
+    "prior.zone_id",
+    "prior.map_id",
+    "prior.bounds_m=[xmin,xmax,ymin,ymax]",
+    "prior.heading_center_rad",
+    "prior.heading_half_width_rad (at least pi/6)",
+    "prior.source_kind=operator_coarse or authored_static_zone",
+    "prior.source_evidence"
+  ],
+  "scope": "This is a missing-input record, not an executable prior. Do not fill from evaluation state or exact spawn."
+}

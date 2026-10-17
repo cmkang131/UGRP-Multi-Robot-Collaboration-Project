@@ -1,0 +1,51 @@
+{
+  "source": "/home/ugrp/ugrp-sim/runs/warp8/selfmap-open-r1",
+  "reproduction": [
+    "scripts/mapbuild10_sparse_measurement.py",
+    "--input",
+    "/home/ugrp/ugrp-sim/runs/warp8/selfmap-open-r1",
+    "--prediction",
+    "/home/ugrp/ugrp-sim/runs/warp8/mapbuild9-amcl-v1",
+    "--output",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild10/measurement-418"
+  ],
+  "stages": [
+    {
+      "stage": "saved_views",
+      "cumulative_pass_n": 418,
+      "rejected_n": 0
+    },
+    {
+      "stage": "wall_visible",
+      "cumulative_pass_n": 190,
+      "rejected_n": 228
+    },
+    {
+      "stage": "old_sensor_updates",
+      "cumulative_pass_n": 176,
+      "rejected_n": 14
+    }
+  ],
+  "stream_stages": [
+    {
+      "stage": "streams",
+      "cumulative_pass_n": 28,
+      "rejected_n": 0
+    },
+    {
+      "stage": "external_or_authored_coarse_prior",
+      "cumulative_pass_n": 0,
+      "rejected_n": 28
+    }
+  ],
+  "distribution": [
+    {
+      "reason_category": "coarse_start_prior_missing",
+      "reason": "No operator region/rough heading supplied; static fields inventoried separately",
+      "n": 28,
+      "blocked_object": "not_observed",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    }
+  ]
+}

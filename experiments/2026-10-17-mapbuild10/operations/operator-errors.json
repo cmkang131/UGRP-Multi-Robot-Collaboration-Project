@@ -1,0 +1,46 @@
+{
+  "operator_preparation_errors": [
+    {
+      "stage": "readonly_cli",
+      "error": "gh pr diff extra path arguments unsupported",
+      "resolution": "retried without path arguments"
+    },
+    {
+      "stage": "guard_lookup",
+      "error": "function name/region differed from narrative docs; list --gen2 unsupported",
+      "resolution": "functions list --v2 found ACTIVE us-central1/budget-stop; guard unchanged"
+    },
+    {
+      "stage": "source_transfer",
+      "error": "gcp5 shared git lacked bundle prerequisite 5c977d20e",
+      "resolution": "rebundled from verified shared ancestor cdf90d1d"
+    },
+    {
+      "stage": "local_tests",
+      "error": "worktree has no local .venv-sim-worker-mac",
+      "resolution": "reused primary checkout existing environment; 24 pass"
+    },
+    {
+      "stage": "fk_audit",
+      "error": "ACT environment lacks mujoco",
+      "resolution": "reused recorded .venv-warp, no package install"
+    },
+    {
+      "stage": "fk_assets",
+      "error": "mapbuild6 cwd lacked generated divider texture",
+      "resolution": "used exact original renderer cwd drivecheck-renderer-5974a181; 1044 frame FK audit complete"
+    },
+    {
+      "stage": "gcp3_lifecycle",
+      "error": "historical gcp3setup script path missing",
+      "resolution": "used current gcp5setup gcp_hosts.json gcp3 entry, explicit account/project; temporary SSH config only"
+    },
+    {
+      "stage": "gcp3_inventory",
+      "error": "own-inputs.json stored as .zst",
+      "resolution": "read losslessly with recorded zstd reader"
+    }
+  ],
+  "prediction_or_physics_failures": 0,
+  "scope": "preparation failures preserved; none reclassified as successful experiment"
+}

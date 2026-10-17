@@ -1,0 +1,79 @@
+{
+  "schema": "ugrp.mapbuild10.funnel.v1",
+  "status": "START_ZONE_INPUT_REQUIRED",
+  "source_raw": [
+    "gcp5:/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r1",
+    "gcp5:/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r2",
+    "gcp5:/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3",
+    "gcp3:/home/ugrp/ugrp-sim/runs/warp8/selfmap-open-r1"
+  ],
+  "units": "candidate streams; independent gcp5/gcp3 cohorts are NOT a pooled accuracy rate",
+  "cohorts": [
+    {
+      "host": "gcp5",
+      "stages": [
+        {
+          "stage": "recording_streams",
+          "cumulative_pass_n": 3,
+          "rejected_n": 0
+        },
+        {
+          "stage": "external_coarse_start_prior_available",
+          "cumulative_pass_n": 0,
+          "rejected_n": 3
+        }
+      ],
+      "new_filter_replays_executed": 0,
+      "metric_gate": "NOT_MEASURED"
+    },
+    {
+      "host": "gcp3",
+      "stages": [
+        {
+          "stage": "sparse_robot_streams",
+          "cumulative_pass_n": 28,
+          "rejected_n": 0
+        },
+        {
+          "stage": "external_or_authored_coarse_start_prior_available",
+          "cumulative_pass_n": 0,
+          "rejected_n": 28
+        }
+      ],
+      "new_filter_replays_executed": 0,
+      "metric_gate": "NOT_MEASURED"
+    }
+  ],
+  "distribution": [
+    {
+      "host": "gcp5",
+      "reason_category": "input_missing",
+      "reason": "operator coarse start zone bounds and rough heading absent; static map has no start_zones",
+      "n": 3,
+      "blocked_object": "not_observed",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "host": "gcp3",
+      "reason_category": "input_missing",
+      "reason": "14 authored maps and 28 streams contain no start zone or initial region ID",
+      "n": 28,
+      "blocked_object": "not_observed",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    }
+  ],
+  "measurement_tables": [
+    "operations/measurement-summary.json",
+    "operations/camera-summary.json",
+    "operations/gcp3-rejection_table.json"
+  ],
+  "prior_rejection_table": "prior-rejection_table.json",
+  "reproduction": [
+    "scripts/mapbuild10_measurement_audit.py; recorded exact argv in per-frame tables",
+    "scripts/mapbuild10_support_audit.py; argv in operations/support-models.json",
+    "scripts/mapbuild10_sparse_measurement.py; argv in operations/gcp3-measurement-summary.json"
+  ],
+  "physical_submission_allowed": false
+}
