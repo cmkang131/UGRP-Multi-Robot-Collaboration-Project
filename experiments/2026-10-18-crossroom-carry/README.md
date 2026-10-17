@@ -321,5 +321,30 @@ measured jamb clearance above. Full per-episode ledger with evidence paths in
 `stageA/recount.json` (rejection_table block).
 
 
+## crossroom-stageA-fix (candidate, default off)
+
+A separate candidate fixes the four Stage A failure modes and is **not pooled**
+with Stage A or Stage B. Code, prereg and queue are committed; execution runs
+after the Stage B gate.
+
+* `FIX_DESIGN.md` — evidence -> fix mapping (gap two-sided confirmation, door
+  lateral alignment, blue end-band rejection, contact recording).
+* `scripts/vgs_fix.py` — subclass overrides only: `crossroom_gap_twosided_v1`
+  (same-side front wall face <=1.6 m + >=12 tracked side-wall ticks before a
+  gap; otherwise `gap_rejected_front_missing`) and
+  `crossroom_door_align_v1` (two-jamb lateral estimate, small calibrated turns,
+  no forward motion while |offset| > 0.02 m).
+* `scripts/paint_area_filter.py` — `crossroom_paint_area_v1`: rejects colour
+  components whose metric ground extent is below `PAINT_MIN_EXTENT_M = 0.15 m`
+  (beam end band 0.054 m diagonal; zone side >=0.30 m).
+* `scripts/contact_recorder.py` — `crossroom_contacts_v1`: eval-only MJWarp
+  contact counts / geom categories (`nacon` + `contact.geom/worldid`), with
+  `layout_unknown` instead of guessing if the layout differs.
+* `prereg-stageA-fix.json`, `queue-stageA-fix.json` (180 Sim s, nworld=16,
+  16 west starts), `stack-stageA-fix.json` (admission pass).
+* Fix metrics on top of the Stage A funnel: false gap claims, gap
+  rejected/confirmed counts, door-align turns, paint rejections, contact
+  ticks/events; GT crossing lateral offset and min jamb gap stay eval-only.
+
 Produced with [DeepSeek Harness](https://github.com/deepseek-ai/DeepSeek-Harness)
 (dsh). Badge above; PR attribution follows the repository `dsh-badge` format.
