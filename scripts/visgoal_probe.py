@@ -194,6 +194,15 @@ def run(a):
     # the applied value is recorded in stack.json.
     pulse_mirror = bool(a.mirror_pulse or
                         q.get('toggles', {}).get('visgoal_mirror_pulse_v1') == 'on')
+    # The queue declares ``physics_backend: mjwarp_batch_v1``.  The earlier
+    # runner executed one world at a time (nworld=1), which measured 9.78
+    # wall/SIM and even four separate processes only reached ~7.8; the GPU
+    # kernels of one small world underfill an L4.  nworld starts every selected
+    # episode in one MJWarp data batch (one 400-step graph launch per control
+    # tick).  Per-world perception/control/command bytes are unchanged; the
+    # batch is a new execution condition and is not pooled with sequential
+    # runs.
+    a.nworld = int(a.nworld or q.get('worlds_per_batch', 1))
     import subprocess
     if subprocess.call(['git', '-C', str(ROOT), 'cat-file', '-e',
                          q['source_sha'] + '^{commit}'],
@@ -265,6 +274,7 @@ def run(a):
         dump(a.output / 'scene.json', scene.manifest)
         dump(a.output / 'stack.json', {'stack_values': q['stack_values'], 'flow': q['flow'],
                                        'source_sha': q['source_sha'],
+                                       'worlds_per_batch': a.nworld,
                                        'visgoal_mirror_pulse_v1':
                                            'on' if pulse_mirror else 'off'})
         (a.output / 'scene.xml').write_text(xml)
@@ -273,8 +283,396 @@ def run(a):
         own_prior = CommandPrior(command_calibration, option=PRIOR)
         from sim.spawn_overlap_check import check, OPTION as OVERLAP
         hue_band = (104, 120)  # PAINT_HUE['B']: appearance only, no zone position.
+
+        def run_batch(plans):
+            """Run every selected start as one MJWarp nworld batch.
+
+            Each world executes the identical per-episode perception/control
+            code with its own camera frame and command tape; only the physics
+            graph is shared (one 400-step capture launch per 0.1 s tick).
+            Ground truth stays eval-only, as in the sequential runner.
+            """
+            G = len(plans)
+            if a.nworld != G:
+                raise ValueError('NWORLD_MUST_EQUAL_SELECTED_EPISODES')
+            batch_start = time.monotonic()
+            worlds, rejected = [], []
+            for episode_index, plan in enumerate(plans):
+                plan = {**plan, 'scenario_id': 's1_normal_mixed_v7',
+                        'end_color_scene': 'grasp_act_teal_blue_v1'}
+                out = a.output / 'episodes' / f'e{episode_index:02d}'
+                out.mkdir(parents=True)
+                (out / 'frames').mkdir()
+                d = reset_episode(m, hardware, plan, st, SEARCH, mujoco)
+                admission = overlap_check(m, d, mujoco, check, OVERLAP)
+                dump(out / 'admission.json', admission)
+                if not admission['accepted']:
+                    ep = dict(episode=episode_index, status='START_REJECTED',
+                              admission=admission)
+                    dump(out / 'episode.json', ep)
+                    rejected.append(ep)
+                    continue
+                # Setup-only initial state; no pose ever enters the skill.
+                dump(out / 'setup-eval-only.json',
+                     dict(evaluation_only=True, spawns=plan['spawns']))
+                ctrl = np.zeros(m.nu)
+                for i in range(m.nu):
+                    if '__servo_' in m.actuator(i).name:
+                        ctrl[i] = d.qpos[int(m.jnt_qposadr[int(m.actuator_trnid[i, 0])])]
+                d.ctrl[:] = ctrl
+                worlds.append(dict(episode=episode_index, plan=plan, out=out,
+                                   ctrl=ctrl, data=d))
+            if not worlds:
+                return rejected
+            G = len(worlds)
+
+            def stack_state():
+                for name in ('qpos', 'qvel', 'act', 'ctrl', 'qacc_warmstart',
+                             'qfrc_applied', 'xfrc_applied', 'mocap_pos',
+                             'mocap_quat', 'eq_active', 'time'):
+                    target = getattr(wd, name, None)
+                    if target is None or not isinstance(target, wp.array):
+                        continue
+                    values = np.stack([np.asarray(getattr(s['data'], name))
+                                       for s in worlds])
+                    if values.size:
+                        wp.copy(target, wp.array(values, dtype=target.dtype))
+                wp.synchronize()
+
+            wp.init()
+            wm = mjw.put_model(m)
+            with unused_efm(m, worlds[0]['data']):
+                wd = mjw.put_data(m, worlds[0]['data'], nworld=G,
+                                  nconmax=512, njmax=2048)
+            stack_state()
+            # Compile once, then discard the warm-up state before any rollout.
+            mjw.step(wm, wd)
+            wp.synchronize()
+            with unused_efm(m, worlds[0]['data']):
+                wd = mjw.put_data(m, worlds[0]['data'], nworld=G,
+                                  nconmax=512, njmax=2048)
+            stack_state()
+            steps = round(DT / m.opt.timestep)
+            tape = wp.zeros((steps, G, m.nu), dtype=float)
+            step_index = wp.zeros(1, dtype=int)
+
+            @wp.kernel
+            def issue(tape: wp.array3d(dtype=float), index: wp.array(dtype=int),
+                      out: wp.array2d(dtype=float)):
+                w, j = wp.tid()
+                out[w, j] = tape[index[0], w, j]
+
+            @wp.kernel
+            def advance(index: wp.array(dtype=int)):
+                index[0] = index[0] + 1
+
+            with wp.ScopedCapture() as cap:
+                for _ in range(steps):
+                    wp.launch(issue, dim=(G, m.nu), inputs=[tape, step_index, wd.ctrl])
+                    mjw.step(wm, wd)
+                    wp.launch(advance, dim=1, inputs=[step_index])
+            rc = Renderer(m, wm, wd, [('r1', 'r1__robot_cam', (640, 480))],
+                          enabled=True, texture_after_lighting=True)
+            mx, my = raw_fisheye_remap(640, 480)
+            servos = (1, 3, 4, 5, 6)
+            jointnames = {1: ('left_gripper_close', 'right_gripper_close'),
+                          3: ('wrist_pitch',), 4: ('elbow',), 5: ('shoulder',), 6: ('arm_yaw',)}
+            sidnames = {1: 'gripper', 3: 'wrist', 4: 'elbow', 5: 'shoulder', 6: 'yaw'}
+            lookup = np.empty((5, 2001))
+            servo_ids = []
+            for k, sid in enumerate(servos):
+                joints = [m.joint('r1__' + j).id for j in jointnames[sid]]
+                ids = [i for i in range(m.nu) if int(m.actuator_trnid[i, 0]) in joints]
+                servo_ids.append(ids)
+                for pwm in range(500, 2501):
+                    targets = MasterPiDynamicsV2.pulse_to_joint_targets(
+                        SimpleNamespace(physical_params=hardware), {sid: pwm})
+                    jid = joints[0]
+                    v = targets[sidnames[sid]]
+                    lookup[k, pwm - 500] = float(np.clip(v, *m.jnt_range[jid])) \
+                        if m.jnt_limited[jid] else v
+            wheel_ids = [m.actuator('r1__wheel_' + n + '_drive').id
+                         for n in ('fl', 'fr', 'rl', 'rr')]
+            drive = __import__('sim.masterpi_drive_friction_v7',
+                               fromlist=['DriveParameters']).DriveParameters()
+            body = m.body('r1__robot').id
+            adr = int(m.jnt_qposadr[int(m.body_jntadr[body])])
+            states = []
+            for w, row in enumerate(worlds):
+                memory = LandmarkMemory(option=MEMORY,
+                                        options=MemoryOptions(implementation=a.implementation))
+                states.append(dict(
+                    episode=row['episode'], plan=row['plan'], out=row['out'],
+                    ctrl=row['ctrl'], skill=VisualGoalSearch(option=SKILL),
+                    memory=memory, found=False, declared=False, declared_t=None,
+                    status='cap_end', error=None, colour_seen=False,
+                    start_visibility=None, start_paint_reason=None,
+                    labels=[], trace=[], commands=[], ring=deque(maxlen=101),
+                    previous=None, last_servo=None, rotation_cmd=0.,
+                    rotation_gt=0., last_yaw=None, arrived_gt=False,
+                    arrive_pose=None, inside_at_declared=None,
+                    obstacle_cache=[], applied=np.array(
+                        [[SEARCH[s] for s in servos]], float),
+                    relay=np.zeros((1, 4), int), active=True,
+                    last_qp=None, mem=None))
+            TICKS = int(round(a.sim_cap * HZ)) + 1
+            tape_np = np.zeros((steps, G, m.nu), np.float32)
+            for tick in range(TICKS):
+                t = tick / HZ
+                if (a.output / 'SUPERVISOR_STOP.json').exists():
+                    for s in states:
+                        if s['active']:
+                            s['status'] = 'SUPERVISOR_STOP'
+                            s['active'] = False
+                    break
+                qp_all = wd.qpos.numpy()
+                overflow = wd.overflow.numpy()
+                images = rc.render()
+                rgb_all = images['r1'][0]
+                rows = []
+                for w, s in enumerate(states):
+                    if not s['active']:
+                        rows.append(dict(
+                            ctrl=s['ctrl'], wheels=[0., 0., 0., 0.],
+                            deadlines=[-1.] * 4, applied=s['applied'][0],
+                            target=[SEARCH[x] for x in servos],
+                            servo_active=[False] * 5, now=t, servo_time=t))
+                        continue
+                    qp = qp_all[w]
+                    try:
+                        if not np.isfinite(qp).all() or bool(overflow[w]):
+                            raise RuntimeError('NONFINITE_OR_CAPACITY')
+                        raw = np.clip(rgb_all[w], 0, 255).astype(np.uint8)
+                        im = cv2.remap(raw, mx, my, cv2.INTER_LINEAR,
+                                       borderMode=cv2.BORDER_CONSTANT)
+                        out = s['out']
+                        file = out / 'frames' / f'{tick:05d}.jpg'
+                        cv2.imwrite(str(file), cv2.cvtColor(im, cv2.COLOR_RGB2BGR),
+                                    [cv2.IMWRITE_JPEG_QUALITY, 90])
+                        bgr = cv2.imread(str(file))
+                        servo = {sid: int(v) for sid, v in
+                                 zip(servos, np.rint(s['applied'][0]))}
+                        delta_nom = np.asarray(command_delta(s['previous'])) \
+                            if s['previous'] else np.zeros(3)
+                        cov_nom = np.diag(motion_variance(delta_nom))
+                        prior = own_prior.predict(delta_nom, cov_nom, s['previous'],
+                                                  servo, s['last_servo'], DT)
+                        if (pulse_mirror and
+                                prior.get('source') == 'nominal_6f_unqualified_native'):
+                            mirrored = mirrored_pulse_delta(
+                                s['previous'], command_calibration, servo,
+                                s['last_servo'], DT)
+                            if mirrored is not None:
+                                prior = mirrored
+                        delta = np.asarray(prior['delta'])
+                        cov = np.asarray(prior['covariance'])
+                        if tick % 3 == 0:
+                            s['obstacle_cache'], _ = obstacle_detections(bgr, servo)
+                        paint = detect_paint(
+                            bgr, servo, hue_band,
+                            saturation_min=s['skill'].options.paint_saturation_min)
+                        walls = wall_points(bgr, servo, calibration)
+                        if tick == 0:
+                            pm = (paint.get('mask') if paint.get('mask') is not None
+                                  else np.zeros(bgr.shape[:2], np.uint8))
+                            cv2.imwrite(str(out / 'paint-mask.png'),
+                                        (pm * 255).astype(np.uint8))
+                            wm_tmp, _ = surface_masks(bgr, calibration)
+                            cv2.imwrite(str(out / 'wall-mask.png'),
+                                        (wm_tmp['wall'] * 255).astype(np.uint8))
+                            dump(out / 'tick0-perception.json',
+                                 {k: v for k, v in paint.items()
+                                  if k not in ('labels', 'mask')
+                                  and not isinstance(v, np.ndarray)})
+                        patch = None
+                        patch_rec = None
+                        paint_clear = component_clear(paint)
+                        need_patch = (paint_clear is not None and
+                                      (paint.get('nearest_range_m', 99.) <= 1.8
+                                       or s['skill'].stage in ('target', 'approach')))
+                        if need_patch:
+                            patch, patch_rec = floor_patch(
+                                bgr, servo, 'B', (1.5, 1.5),
+                                clear=paint_clear, excluded=None)
+                        obs = s['skill'].memory_observation(t, patch, patch_rec or {})
+                        mem = s['memory'].step(t, delta, cov, [obs] if obs else [])
+                        action = s['skill'].control(
+                            t, paint=paint, walls=walls,
+                            obstacles=s['obstacle_cache'],
+                            memories=mem['memories'],
+                            patch_ok=patch is not None, patch_xy=patch)
+                        if action['found']:
+                            s['found'] = True
+                        just_declared = bool(action['arrived'] and not s['declared'])
+                        if just_declared:
+                            s['declared'] = True
+                            s['declared_t'] = t
+                            s['status'] = 'ARRIVED_DECLARED'
+                        if action['stop'] and not s['declared']:
+                            s['status'] = 'STOPPED_NO_ARRIVAL'
+                        # EVALUATION ONLY: pose/yaw/visibility never enter control.
+                        ww, xx, yy, zz = qp[adr + 3:adr + 7]
+                        yaw = math.atan2(2 * (ww * zz + xx * yy),
+                                         1 - 2 * (yy * yy + zz * zz))
+                        if s['last_yaw'] is not None:
+                            s['rotation_gt'] += abs(math.atan2(
+                                math.sin(yaw - s['last_yaw']),
+                                math.cos(yaw - s['last_yaw'])))
+                        s['last_yaw'] = yaw
+                        s['rotation_cmd'] += abs(float(delta[2]))
+                        inside = bool(4.3 <= qp[adr] <= 4.9 and
+                                      -2.8 <= qp[adr + 1] <= -1.4)
+                        if inside:
+                            s['arrived_gt'] = True
+                            s['arrive_pose'] = [float(qp[adr]),
+                                                float(qp[adr + 1]), float(yaw)]
+                        if just_declared:
+                            s['inside_at_declared'] = bool(inside)
+                        s['colour_seen'] = s['skill'].colour_seen
+                        if tick == 0:
+                            s['start_paint_reason'] = paint.get('reason')
+                            s['start_visibility'] = (
+                                int(paint.get('pixels', 0))
+                                if paint.get('reason') ==
+                                'destination_colour_observed' else 0)
+                        s['labels'].append(dict(
+                            t=t, frame_id=tick,
+                            pose=[float(qp[adr]), float(qp[adr + 1]), float(yaw)],
+                            inside_zone_B=inside,
+                            start_paint_pixels=s['start_visibility']))
+                        s['ring'].append(tick)
+                        paint_log = {k: v for k, v in paint.items()
+                                     if k not in ('labels', 'mask')
+                                     and not isinstance(v, np.ndarray)}
+                        s['trace'].append(dict(
+                            t=t, frame_id=tick, stage=action['stage'],
+                            paint=paint_log, walls=len(walls),
+                            obstacles=s['obstacle_cache'],
+                            patch=None if patch is None else np.asarray(patch).tolist(),
+                            patch_record=patch_rec,
+                            memory=mem['memories'], memory_events=mem['events'],
+                            action=action, command_motion_source=prior['source'],
+                            command_delta=delta.tolist(),
+                            command_covariance=cov.tolist(), servo=servo,
+                            rgb=str(file.relative_to(out)), frame_sha256=sha(file)))
+                        if tick == 0 and s['start_visibility'] is None:
+                            s['start_visibility'] = 0
+                        s['last_servo'] = servo
+                        s['last_qp'] = qp.copy()
+                        s['mem'] = mem
+                        if s['declared_t'] is not None and t - s['declared_t'] >= 1.0:
+                            s['active'] = False
+                            rows.append(dict(
+                                ctrl=s['ctrl'], wheels=[0., 0., 0., 0.],
+                                deadlines=[-1.] * 4, applied=s['applied'][0],
+                                target=[SEARCH[x] for x in servos],
+                                servo_active=[False] * 5, now=t, servo_time=t))
+                            continue
+                        if action['exact_turn']:
+                            wheels = signed_turn_wheels(
+                                action['exact_turn'], command_calibration['wheels'])
+                            duration = list(command_calibration['duration_s'])
+                        else:
+                            wheels, duration = duty([action['forward'],
+                                                     action['left'], action['turn']])
+                            if action['stop']:
+                                wheels, duration = [0., 0., 0., 0.], [0., 0., 0., 0.]
+                        cmd = dict(t=t, wheels=wheels, duration_s=duration,
+                                   pwm={sid: SEARCH[sid] for sid in servos})
+                        s['commands'].append(cmd)
+                        s['previous'] = cmd
+                        rows.append(dict(
+                            ctrl=s['ctrl'], wheels=wheels,
+                            deadlines=[t + v if v else -1 for v in duration],
+                            applied=s['applied'][0],
+                            target=[SEARCH[x] for x in servos],
+                            servo_active=[False] * 5, now=t, servo_time=t))
+                        if tick % 100 == 0:
+                            dump(out / 'progress.json',
+                                 dict(t=t, stage=action['stage'],
+                                      found=s['found'], declared=s['declared'],
+                                      source_sha=q['source_sha'],
+                                      wall_s=time.monotonic() - batch_start))
+                    except BaseException as exc:
+                        s['error'] = repr(exc)
+                        s['status'] = 'HOST_ERROR'
+                        s['active'] = False
+                        rows.append(dict(
+                            ctrl=s['ctrl'], wheels=[0., 0., 0., 0.],
+                            deadlines=[-1.] * 4, applied=s['applied'][0],
+                            target=[SEARCH[x] for x in servos],
+                            servo_active=[False] * 5, now=t, servo_time=t))
+                if not any(s['active'] for s in states):
+                    break
+                tape_np, cmd_state = control_tape(
+                    rows, np.stack([s['relay'][0] for s in states]),
+                    dt=float(m.opt.timestep), steps=steps, lookup=lookup,
+                    wheel_ids=wheel_ids, servo_ids=servo_ids,
+                    start_fraction=drive.start_fraction,
+                    kinetic_fraction=drive.kinetic_fraction,
+                    torque_cap_nm=drive.torque_cap_nm)
+                for w, s in enumerate(states):
+                    s['applied'] = cmd_state['applied'][w][None, :].copy()
+                    s['relay'] = cmd_state['relay'][w][None, :].copy()
+                wp.copy(tape, wp.array(tape_np, dtype=float))
+                step_index.zero_()
+                wp.capture_launch(cap.graph)
+            results = list(rejected)
+            for s in states:
+                out = s['out']
+                ep = dict(
+                    episode=s['episode'], status=s['status'], error=s['error'],
+                    frames=len(s['commands']),
+                    sim_s=(len(s['commands']) - 1) / HZ if s['commands'] else 0.,
+                    wall_s=time.monotonic() - batch_start,
+                    source_sha=q['source_sha'], skill=SKILL,
+                    found=s['found'], colour_seen=s['colour_seen'],
+                    arrived_declared=s['declared'],
+                    arrival_verdict_gt_inside_zone_B=s['inside_at_declared'],
+                    entered_zone_gt_any=s['arrived_gt'],
+                    arrive_pose_eval_only=s['arrive_pose'],
+                    rotation_cmd_rad=s['rotation_cmd'],
+                    rotation_gt_rad_eval_only=s['rotation_gt'],
+                    start_visibility_pixels=s['start_visibility'],
+                    start_paint_reason=s['start_paint_reason'],
+                    final_pose_eval_only=([float(s['last_qp'][adr]),
+                                           float(s['last_qp'][adr + 1])]
+                                          if s['last_qp'] is not None else None),
+                    spawn_eval_only=s['plan']['spawns']['r1'],
+                    camera_frames=len(s['labels']),
+                    memory_landmarks=(len(s['mem']['memories'])
+                                      if s['mem'] is not None else 0),
+                    terminal_ring=dict(
+                        hz=10, indices=list(s['ring']),
+                        bytes=sum((out / 'frames' / f'{i:05d}.jpg').stat().st_size
+                                  for i in s['ring'])),
+                    static_map_control=0, spawn_control=0, truth_control=0,
+                    top_camera_frames=0, held_world_reads=0, initial_prior='none',
+                    noslip_iterations=int(m.opt.noslip_iterations),
+                    worlds_per_batch=G,
+                    rejection_table=str(a.output / 'rejection_table.json'))
+                dump(out / 'episode.json', ep)
+                with (out / 'trace.jsonl').open('w') as fh:
+                    for row in s['trace']:
+                        fh.write(json.dumps(json_safe(row), allow_nan=False) + '\n')
+                dump(out / 'commands.json', s['commands'])
+                dump(out / 'eval-only.json', dict(evaluation_only=True,
+                                                  frames=s['labels']))
+                dump(out / 'events.json', s['skill'].events)
+                dump(out / 'SHA256SUMS.json',
+                     {str(p.relative_to(out)): sha(p)
+                      for p in out.rglob('*') if p.is_file()})
+                results.append(ep)
+                dump(a.output / 'summary.json',
+                     dict(status='running', episodes=results, n=len(results),
+                          source_sha=q['source_sha'], raw=str(a.output),
+                          worlds_per_batch=G))
+            return sorted(results, key=lambda e: e['episode'])
+
         summaries = []
-        for episode_index, plan in enumerate(setups):
+        if a.nworld > 1:
+            summaries = run_batch(setups)
+        for episode_index, plan in enumerate(setups if a.nworld <= 1 else []):
             plan = {**plan, 'scenario_id': 's1_normal_mixed_v7',
                     'end_color_scene': 'grasp_act_teal_blue_v1'}
             out = a.output / 'episodes' / f'e{episode_index:02d}'
@@ -637,6 +1035,7 @@ if __name__ == '__main__':
     p.add_argument('--lease-name', default='visgoal')
     p.add_argument('--sim-cap', type=float, default=120.)
     p.add_argument('--episodes', default='')
+    p.add_argument('--nworld', type=int, default=None)
     for key in ('queue', 'renderer', 'legacy', 'setups', 'output'):
         p.add_argument('--' + key, type=Path, required=True)
     run(p.parse_args())
