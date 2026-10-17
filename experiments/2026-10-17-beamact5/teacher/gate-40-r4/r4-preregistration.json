@@ -1,0 +1,80 @@
+{
+ "schema": "ugrp.beamact5.r4_preregistration.v1",
+ "written_before_run_utc": "2026-10-17T19:47:00Z",
+ "author": "beamact5 worker (DSH)",
+ "approved_by": "Lead (r4 범위 지시: 검색 revert + case27 수정, ablation 2조건)",
+ "scope": "r4 ablation: condition A (beamact5_r4a) = r2 down-first search order reverted to r1 up-first circles (with the existing 3rd-circle low-pitch fallback) while keeping the 6/10/20 fixes; condition B (beamact5_r4b) = A + the case27 reobserve boundary fix. Two conditions run separately on the 4-world known-failure subset (6,10,20,27); results never pooled with r1/r2/r3 or each other.",
+ "stack": {
+  "root": "729670fd4193f7225c3f03050b97cd85f674a49c",
+  "adapter": "63c56bd99f3ef627c247eda1cb25593d2d0d85a3",
+  "teacher": "82b46ed22e16f05fd4b47838b9a31cb8f1e56a35",
+  "plan_sha256": "f1a50e8c833c1da9113bdf8cff3844913380e3c821b15c072c0a23c0f54f5148",
+  "cases_r4a_sha256": "dc02bcec5b8159c04a76e75f6084ea64e9811db95e546c72dec047abae5058c0",
+  "cases_r4b_sha256": "65412505b12612a22437181e3613f5c7746925c1f0ef61293c6bd3e23de64b92",
+  "rejection_table": "/home/ugrp/ugrp-sim/runs/beamact5/gate-40-r4/rejection_table.json"
+ },
+ "profiles": {
+  "r4a": {
+   "search23_rects": "search23_batched_rects_v1",
+   "search26_circles": "off",
+   "search26_static_peer": "search26_static_peer_stance_v1",
+   "search26_peer_memory": "search26_peer_memory_v1",
+   "search26_reobserve": "off",
+   "search26_wide_stance": "off"
+  },
+  "r4b": {
+   "search23_rects": "search23_batched_rects_v1",
+   "search26_circles": "off",
+   "search26_static_peer": "search26_static_peer_stance_v1",
+   "search26_peer_memory": "search26_peer_memory_v1",
+   "search26_reobserve": "search26_reobserve_views_v1",
+   "search26_wide_stance": "off"
+  }
+ },
+ "runs": {
+  "r4a_4world": {
+   "indices": [
+    6,
+    10,
+    20,
+    27
+   ],
+   "out": "/home/ugrp/ugrp-sim/runs/beamact5/validation-r4a-4",
+   "cap_s": 60
+  },
+  "r4b_4world": {
+   "indices": [
+    6,
+    10,
+    20,
+    27
+   ],
+   "out": "/home/ugrp/ugrp-sim/runs/beamact5/validation-r4b-4",
+   "cap_s": 60
+  },
+  "gate_candidate": "beamact5_r4b (39-world gate; world15 excluded by the r3-approved deviation)",
+  "gate_out": "/home/ugrp/ugrp-sim/runs/beamact5/gate39-r4-run"
+ },
+ "expectations": {
+  "6": "PASS expected: peer-memory/static-peer fix kept (not search-order dependent).",
+  "10": "ablation signal: r2 fixed 10 only with down-first circles; with r1 order it may regress. PASS desirable.",
+  "20": "ablation signal: same as 10.",
+  "27": "condition B test: the retreat-first reobserve must now convert to view attempts on 0.1 s ticks; expected to stop the approach handoff if the stale red_1 is refreshed."
+ },
+ "decision_rule": "If 4-world shows 6/10/20/27 all PASS in either condition, run the 39-world gate with the best condition (prefer r4b). If 10 or 20 regress, the search revert needs a conditional/alternate circle order before the gate; record that as a new condition and do not pool.",
+ "gate_arithmetic": {
+  "baseline_r1": "34/40",
+  "r3_gate": "25/40 (12 search-order regressions + 27 + 37; 15 excluded expected FAIL)",
+  "r4_target": "38/40 = 6,10,20,27 all PASS with no regressions (15 expected FAIL, 37 structural fail)",
+  "if_27_still_fails": "37/40 FAIL",
+  "if_one_regression": "37/40 FAIL",
+  "margin": "none"
+ },
+ "not_claimed": [
+  "teacher success is not student success",
+  "no student recording/training",
+  "down-first circles causality remains unproven (ablation A vs r1 baseline measures it)",
+  "world15 excluded/unverified",
+  "no margin/cap constant change"
+ ]
+}

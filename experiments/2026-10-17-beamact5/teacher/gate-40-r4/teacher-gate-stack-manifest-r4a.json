@@ -1,0 +1,60 @@
+{
+ "schema": "ugrp.beamact5.teacher_gate_manifest.v1",
+ "flow": "teacher_gate",
+ "gate_id": "beamact5-teacher-gate-r4-r4a",
+ "purpose": "r4 ablation condition R4A on assigned gcp6: 4-world known-failure validation first (6,10,20,27), then 39-world gate if it passes; training RGB off; same 40 immutable starts; not pooled",
+ "candidate": "beamact5_r4a",
+ "planned_N": 4,
+ "min_success": null,
+ "cap_s": 60,
+ "training_rgb": false,
+ "cases_path": "/home/ugrp/ugrp-sim/runs/beamact5/wide-start-8420000d-r4/wide-cases-r4a.json",
+ "cases_sha256": "dc02bcec5b8159c04a76e75f6084ea64e9811db95e546c72dec047abae5058c0",
+ "plan_path": "/home/ugrp/ugrp-sim/runs/beamact5/wide-start-8420000d-r4/wide-gate-plan.json",
+ "plan_sha256": "f1a50e8c833c1da9113bdf8cff3844913380e3c821b15c072c0a23c0f54f5148",
+ "plan_identity": "byte-identical to the r1/r2/r3 plan; r4 cases differ only in the candidate field",
+ "old_export_path": "/home/ugrp/ugrp-sim/runs/beamact5/wide-export-old-8420000e",
+ "native_refs_path": "/home/ugrp/ugrp-sim/runs/beamact5/native-refs-8420000e",
+ "source_sha": "729670fd4193f7225c3f03050b97cd85f674a49c",
+ "source_shas": {
+  "root": "729670fd4193f7225c3f03050b97cd85f674a49c",
+  "adapter": "63c56bd99f3ef627c247eda1cb25593d2d0d85a3",
+  "teacher": "82b46ed22e16f05fd4b47838b9a31cb8f1e56a35"
+ },
+ "rejection_table": "/home/ugrp/ugrp-sim/runs/beamact5/gate-40-r4/rejection_table.json",
+ "stack_values": {
+  "physics_backend": "mjwarp_batch_v1",
+  "contact_profile": "warp_native_contact_v1",
+  "noslip_iterations": 0,
+  "scene_profile": "walls_floor_contrast_v5_indigo110_s80",
+  "cargo_version": "v6",
+  "scenario_version": "v7",
+  "heavy_crate": false,
+  "setdown_lookaround_v1": true,
+  "held_object_hidden_v1": true,
+  "held_world_reads": 0,
+  "teacher_visibility": "visible_only",
+  "invisible_measurements": 0,
+  "weld": false,
+  "top_camera_control": false,
+  "ultrasonic_front": "off",
+  "wall_cap": null,
+  "speed_gate": "record_only",
+  "speed_metric": "wall_s/(sim_s*nworld)",
+  "gcp_host": "ugrp-act-l4-gcp6",
+  "gcp_guards": {
+   "idle_minutes": 20,
+   "budget_stop": true,
+   "credentials_on_vm": false
+  },
+  "no_pooling": true,
+  "rejection_ledger": [
+   "reason_category",
+   "blocked_object",
+   "minimum_gap_m"
+  ],
+  "cap_end_label": "cap_end",
+  "gcp_project": "ugrp-sim-f-1016",
+  "gcp_account": "kcm5781kcm5781@gmail.com"
+ }
+}
