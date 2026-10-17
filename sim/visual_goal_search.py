@@ -31,6 +31,40 @@ from harness.zone_own_perception import PAINT_HUE, SLOT_MAX_RANGE_M, _usable_reg
 
 OPTION = 'visual_goal_search_v1'
 MIRROR_OPTION = 'visgoal_mirror_pulse_v1'
+EXPANDING_OPTION = 'visgoal_expanding_search_v1'
+# Candidate C (default off through ``Options.expanding_search``).  Basis is
+# the gate-r4 raw on this host and source pin (analysis2.json, recount.json):
+#   * forward-only displacement: median 0.0128 m/tick over 42 forward runs
+#     (range 0.0095-0.0134), from eval-only poses at run ends;
+#   * one 90 deg exact turn: 69 ticks = 6.9 s at 10 Hz (exact_turn_rad
+#     0.022921 rad/pulse; gate-r4 leg runs measured 69-tick turns);
+#   * gap-exit/leg-start to the nearest zone-B point: 2.65, 2.91, 2.94 m for
+#     the three starts that reached the corridor (e02/e04/e05) and 4.37-5.52 m
+#     for the three that did not (e03/e06/e07); the coordinator bound is
+#     2.6-4.4 m.
+# The old 4-leg square used equal short legs (20 ticks) for the first four
+# legs, so it closed where it started: gate-r4 cap-end episodes spent 75-79%
+# of leg_forward ticks turning, made 6-9 leg turns, and netted only
+# 0.03-0.54 m over 51-71 s.  A closed square cannot cover 4.4 m within the
+# 1200-tick cap either (a 3-unit expanding square costs 12*U + 6*69 ticks).
+# The schedule below is a lawnmower, not a square: the first stroke is the
+# measured upper bound 4.4 m / 0.0128 = 344 ticks, then a 0.77 m (60 tick)
+# lateral step and a 300-tick return stroke on a parallel line.  All turns are
+# right turns so each parallel line steps toward the zone side (the zone is
+# south of the corridor; e02/e04/e05 relative bearing after the entry turn was
+# -33..+3 deg).  Forward budget 344+60+300+60+200 = 964 and entry+4 turns = 345,
+# so the last strokes may end in cap_end; that is labeled separately and the
+# first stroke alone covers the measured 2.6-4.4 m.  B and C are not pooled.
+EXPANDING_LEG_TICKS = (344, 60, 300, 60, 200)
+# Arrival aim: gate-r4 false arrivals declared at a base->remembered-point
+# range of 0.0952-0.0983 m (the 0.10 m point tolerance), with memory radius95
+# 0.0442-0.0451 m, while the remembered point sat only 0.0228-0.0602 m inside
+# zone B and the base centre 0.0121-0.0534 m outside.  Aim the same 0.10 m
+# tolerance at a point this far past the remembered point along the approach
+# bearing: 0.098 + 0.044 = 0.142 m (the rounded measured base->point stop
+# distance plus the rounded radius95).  The tolerance is unchanged; only the
+# target point moves inward.
+ARRIVAL_AIM_INSET_M = 0.142
 CHI2_95 = 5.991464547107979
 TURN_STEP_RAD = 0.022921          # own-command calibration r2, one exact pulse
 TURN_PULSE_WHEELS = (-.35, .35, -.35, .35)
@@ -292,6 +326,11 @@ class Options:
     front_block_m: float = .45
     obstacle_block_m: float = .42
     gap_missing_ticks: int = 3
+    # Candidate C (default off).  The queue's ``visgoal_expanding_search_v1``
+    # toggle sets both fields; the defaults preserve the gate-r4 behavior.
+    expanding_search: bool = False
+    search_leg_ticks: tuple = EXPANDING_LEG_TICKS
+    arrival_aim_inset_m: float = 0.
 
 
 class VisualGoalSearch:
@@ -320,6 +359,8 @@ class VisualGoalSearch:
         self.leg = 0
         self.leg_ticks = 0
         self.leg_len = 20
+        self.leg_schedule = (tuple(self.options.search_leg_ticks)
+                             if self.options.expanding_search else None)
         self._next_stage = None
         self._turn_sign = 1
         self._spin_pulses = 0
@@ -637,7 +678,10 @@ class VisualGoalSearch:
         self._set_stage(t, 'east_search', reason=reason)
         self.leg = 0
         self.leg_ticks = 0
-        self.leg_len = 20
+        if self.leg_schedule:
+            self.leg_len = int(self.leg_schedule[0])
+        else:
+            self.leg_len = 20
         self._start_turn(self._turn_pulses(math.pi / 2), -1, 'leg_forward')
 
     def _east_search(self, t, paint, walls, obstacles, target_mem=None, patch_ok=False, patch_xy=None):
@@ -679,11 +723,26 @@ class VisualGoalSearch:
     def _next_leg(self, t, reason):
         self.leg_ticks = 0
         self.leg += 1
-        if self.leg >= 4:
-            self.leg = 0
-            self.leg_len = min(60, self.leg_len + 8)
-        self._start_turn(self._turn_pulses(math.pi / 2), +1, 'leg_forward')
+        if self.leg_schedule:
+            # Candidate C lawnmower: the next stroke length is the measured
+            # schedule (a stroke that hit a wall early is cut short, which is
+            # expected); all turns are right turns so each parallel line steps
+            # toward the zone side.  If the schedule is exhausted, grow the
+            # last stroke instead of closing a fixed square in place.
+            if self.leg >= len(self.leg_schedule):
+                self.leg = len(self.leg_schedule) - 1
+                self.leg_len = min(400, self.leg_len + 60)
+            else:
+                self.leg_len = int(self.leg_schedule[self.leg])
+            sign = -1
+        else:
+            if self.leg >= 4:
+                self.leg = 0
+                self.leg_len = min(60, self.leg_len + 8)
+            sign = +1
+        self._start_turn(self._turn_pulses(math.pi / 2), sign, 'leg_forward')
         self.event(t, 'search_leg_turn', category='search', leg_reason=reason, leg=self.leg,
+                   leg_len_ticks=self.leg_len, turn_sign=sign,
                    blocked_object='not_observed')
 
     def _target(self, t, paint, walls, obstacles, target_mem=None, patch_ok=False, patch_xy=None):
@@ -714,6 +773,19 @@ class VisualGoalSearch:
                 return self._east_search(t, paint, walls, obstacles, target_mem, patch_ok, patch_xy)
         xy = np.asarray(target_mem['relative_xy_m'], float)
         rng = float(np.linalg.norm(xy)); bearing = math.atan2(xy[1], xy[0])
+        # Candidate C arrival aim (default off): drive the same 0.10 m point
+        # tolerance at a point ARRIVAL_AIM_INSET_M past the remembered point
+        # along the robot-forward axis, which the approach aligns to the
+        # remembered point within 8 deg before driving.  The +(inset, 0) form
+        # keeps working after the base passes the remembered point (a
+        # base->memory bearing would flip backwards there).  With the gate-r4
+        # values this ends the base 0.044 m beyond the remembered point
+        # instead of 0.095-0.098 m short of it.  Truth is not used; both
+        # quantities are own-memory and raw-control measurements.
+        aim_inset = (float(self.options.arrival_aim_inset_m)
+                     if self.options.expanding_search else 0.)
+        aim_xy = xy + np.array([aim_inset, 0.]) if aim_inset > 0. else xy
+        aim_rng = float(np.linalg.norm(aim_xy))
         age = float(target_mem.get('age_s', 99.))
         fresh = age <= 1.0
         lost = paint.get('pixels', 0) < MIN_COLOUR_PIXELS
@@ -742,22 +814,24 @@ class VisualGoalSearch:
         # only ~0.18 m inside the near edge (preflight r3 e13: patch x 4.48 vs
         # zone edge 4.30).  Stopping 0.25-0.55 m short therefore declared a
         # place while the base was still outside.  Drive to the point itself.
-        if on_paint and rng <= .10 and fresh:
+        if on_paint and aim_rng <= .10 and fresh:
             self.arrived = True
             self.event(t, 'arrival_inside_paint_hypothesis', category='arrival',
                        blocked_object='not_observed', memory_range_m=rng,
+                       aim_range_m=aim_rng, aim_inset_m=aim_inset,
                        memory_age_s=age, nearest_range_m=paint.get('nearest_range_m'))
             return self._result(0., 0., 0., True)
         if abs(bearing) > math.radians(8):
             return self._result(0., 0., 0., exact_turn=(+1 if bearing > 0 else -1))
-        if rng > .50:
-            return self._result(.45 if rng > 1.0 else .28, 0., 0.)
-        if fresh and rng > .10:
+        if aim_rng > .50:
+            return self._result(.45 if aim_rng > 1.0 else .28, 0., 0.)
+        if fresh and aim_rng > .10:
             return self._result(.18, 0., 0.)
         if fresh:
             self.arrived = True
             self.event(t, 'arrival_memory_range', category='arrival',
                        blocked_object='not_observed', memory_range_m=rng,
+                       aim_range_m=aim_rng, aim_inset_m=aim_inset,
                        memory_age_s=age)
             return self._result(0., 0., 0., True)
         # Stale memory with no visual on-paint evidence is not an arrival claim.

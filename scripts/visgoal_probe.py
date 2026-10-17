@@ -194,6 +194,12 @@ def run(a):
     # the applied value is recorded in stack.json.
     pulse_mirror = bool(a.mirror_pulse or
                         q.get('toggles', {}).get('visgoal_mirror_pulse_v1') == 'on')
+    # Candidate C (default off): a lawnmower search that does not close in
+    # place, plus the arrival aim moved inward past the remembered point.
+    # Basis and budget are in sim/visual_goal_search.py (EXPANDING_LEG_TICKS,
+    # ARRIVAL_AIM_INSET_M) from the gate-r4 raw.
+    expanding_search = bool(
+        q.get('toggles', {}).get('visgoal_expanding_search_v1') == 'on')
     # The queue declares ``physics_backend: mjwarp_batch_v1``.  The earlier
     # runner executed one world at a time (nworld=1), which measured 9.78
     # wall/SIM and even four separate processes only reached ~7.8; the GPU
@@ -251,7 +257,10 @@ def run(a):
         from harness.rbpf_rejection import motion_variance
         from harness.mapbuild_command_prior import CommandPrior, OPTION as PRIOR
         from harness.egocentric_landmark_memory import LandmarkMemory, MemoryOptions, OPTION as MEMORY
-        from sim.visual_goal_search import (VisualGoalSearch, OPTION as SKILL,
+        from sim.visual_goal_search import (VisualGoalSearch, Options as SkillOptions,
+                                            OPTION as SKILL,
+                                            EXPANDING_OPTION, EXPANDING_LEG_TICKS,
+                                            ARRIVAL_AIM_INSET_M,
                                             detect_paint, wall_points, component_clear,
                                             signed_turn_wheels, mirrored_pulse_delta,
                                             MIRROR_OPTION as MIRROR)
@@ -276,7 +285,13 @@ def run(a):
                                        'source_sha': q['source_sha'],
                                        'worlds_per_batch': a.nworld,
                                        'visgoal_mirror_pulse_v1':
-                                           'on' if pulse_mirror else 'off'})
+                                           'on' if pulse_mirror else 'off',
+                                       EXPANDING_OPTION:
+                                           'on' if expanding_search else 'off',
+                                       'expanding_leg_ticks': (list(EXPANDING_LEG_TICKS)
+                                                               if expanding_search else None),
+                                       'arrival_aim_inset_m': (ARRIVAL_AIM_INSET_M
+                                                               if expanding_search else 0.)})
         (a.output / 'scene.xml').write_text(xml)
         calibration = json.loads((vendor_root() / 'walls_floor_contrast_v5_indigo110_s80-calibration.json').read_text())
         command_calibration = json.loads((vendor_root() / 'own-command-calibration-r2.json').read_text())
@@ -403,7 +418,12 @@ def run(a):
                                         options=MemoryOptions(implementation=a.implementation))
                 states.append(dict(
                     episode=row['episode'], plan=row['plan'], out=row['out'],
-                    ctrl=row['ctrl'], skill=VisualGoalSearch(option=SKILL),
+                    ctrl=row['ctrl'], skill=VisualGoalSearch(
+                        option=SKILL,
+                        options=SkillOptions(
+                            expanding_search=expanding_search,
+                            arrival_aim_inset_m=(ARRIVAL_AIM_INSET_M
+                                                 if expanding_search else 0.))),
                     memory=memory, found=False, declared=False, declared_t=None,
                     status='cap_end', error=None, colour_seen=False,
                     start_visibility=None, start_paint_reason=None,
@@ -749,7 +769,12 @@ def run(a):
             relay = np.zeros((1, 4), int)
             drive = __import__('sim.masterpi_drive_friction_v7', fromlist=['DriveParameters']).DriveParameters()
             memory = LandmarkMemory(option=MEMORY, options=MemoryOptions(implementation=a.implementation))
-            skill = VisualGoalSearch(option=SKILL if a.enabled else 'off')
+            skill = VisualGoalSearch(
+                option=SKILL if a.enabled else 'off',
+                options=SkillOptions(
+                    expanding_search=expanding_search,
+                    arrival_aim_inset_m=(ARRIVAL_AIM_INSET_M
+                                         if expanding_search else 0.)))
             body = m.body('r1__robot').id
             adr = int(m.jnt_qposadr[int(m.body_jntadr[body])])
             frames = []

@@ -4,6 +4,8 @@ import cv2
 import pytest
 
 from sim.visual_goal_search import (TURN_STEP_RAD, VisualGoalSearch, Options, OPTION,
+                                    EXPANDING_OPTION, EXPANDING_LEG_TICKS,
+                                    ARRIVAL_AIM_INSET_M,
                                     paint_components, component_clear, signed_turn_wheels,
                                     mirrored_pulse_delta, MIRROR_OPTION,
                                     _point_covariance)
@@ -169,6 +171,61 @@ def test_freshest_memory_wins_and_stale_memory_cannot_arrive():
     assert not s.arrived and a['forward'] > 0  # toward fresh 0.8 m, not stale 0.2 m
     a = s.control(1.1, paint={}, memories=[stale])
     assert not s.arrived and a['stop']
+
+
+def test_expanding_search_is_default_off_and_schedule_does_not_close():
+    # Default off: the gate-r4 square schedule is unchanged.
+    off = VisualGoalSearch(option=OPTION)
+    off._enter_east_search(0.0, reason='test')
+    assert off.leg_len == 20 and off._turn_sign == -1
+    off._next_leg(0.1, 'leg_complete')
+    off._next_leg(0.2, 'leg_complete')
+    off._next_leg(0.3, 'leg_complete')
+    off._next_leg(0.4, 'leg_complete')
+    assert off.leg == 0 and off.leg_len == 28  # 4-leg square grows only after 4 legs
+    # Candidate C: first stroke is the gate-r4 2.6-4.4 m bound at the measured
+    # 0.0128 m/tick (344 ticks), then the recorded lawnmower schedule, with a
+    # right turn at every stroke so the parallel lines step off the start.
+    s = VisualGoalSearch(option=OPTION, options=Options(
+        expanding_search=True, arrival_aim_inset_m=ARRIVAL_AIM_INSET_M))
+    s._enter_east_search(0.0, reason='test')
+    assert s.leg_schedule == EXPANDING_LEG_TICKS
+    assert s.leg_len == EXPANDING_LEG_TICKS[0] == 344
+    assert s.turn_left == 69 and s._turn_sign == -1
+    for want in EXPANDING_LEG_TICKS[1:]:
+        s._next_leg(0.1, 'leg_complete')
+        assert s.leg_len == want and s._turn_sign == -1
+    # Exhausted schedule grows the last stroke instead of closing a square.
+    last = s.leg_len
+    s._next_leg(0.2, 'leg_complete')
+    assert s.leg_len == min(400, last + 60) and s.leg == len(EXPANDING_LEG_TICKS) - 1
+
+
+def test_arrival_aim_inset_moves_the_target_inward_and_keeps_tolerance():
+    paint = dict(pixels=4000, bearing_rad=0.0, nearest_range_m=0.4,
+                 lower_centre_pixels=900, relative_xy_m=[0.4, 0.0], range_m=0.4)
+    mem_at = lambda x: [dict(relative_xy_m=[x, 0.0], range_m=abs(x), bearing_rad=0.0,
+                             age_s=0.0, covariance_m2=_point_covariance((x, 0.0)).tolist())]
+    # Gate-r4 false arrival: on-paint, fresh memory, base->point 0.098 m <= the
+    # unchanged 0.10 m tolerance.  Default still declares there.
+    a = VisualGoalSearch(option=OPTION)
+    a.stage = 'approach'; a.stage_t = 0.0
+    out = a.control(1.0, paint=paint, walls=(), obstacles=(), memories=mem_at(0.098),
+                    patch_ok=True, patch_xy=(0.098, 0.0))
+    assert a.arrived and out['stop']
+    # Candidate C aims 0.142 m past the point: same geometry keeps driving.
+    s = VisualGoalSearch(option=OPTION, options=Options(
+        expanding_search=True, arrival_aim_inset_m=ARRIVAL_AIM_INSET_M))
+    s.stage = 'approach'; s.stage_t = 0.0
+    out = s.control(1.0, paint=paint, walls=(), obstacles=(), memories=mem_at(0.098),
+                    patch_ok=True, patch_xy=(0.098, 0.0))
+    assert not s.arrived and out['forward'] > 0
+    # 0.06 m past the remembered point leaves the aim 0.082 m ahead: declare.
+    out = s.control(1.1, paint=paint, walls=(), obstacles=(), memories=mem_at(-0.06),
+                    patch_ok=True, patch_xy=(-0.06, 0.0))
+    assert s.arrived and out['stop']
+    assert any(e.get('aim_inset_m') == pytest.approx(ARRIVAL_AIM_INSET_M)
+               for e in s.events)
 
 
 def test_mirror_pulse_toggle_is_signature_gated_and_preserves_default():
