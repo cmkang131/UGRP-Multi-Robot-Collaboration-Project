@@ -1,0 +1,53 @@
+{
+  "unit": "observations",
+  "input_n": 446,
+  "funnel": [
+    {
+      "stage": "unambiguous",
+      "input_n": 446,
+      "cumulative_pass_n": 345,
+      "rejected_n": 101
+    },
+    {
+      "stage": "one_vote_per_memory_frame",
+      "input_n": 345,
+      "cumulative_pass_n": 316,
+      "rejected_n": 29
+    },
+    {
+      "stage": "free_memory_slot",
+      "input_n": 316,
+      "cumulative_pass_n": 316,
+      "rejected_n": 0
+    }
+  ],
+  "represented": {
+    "updated": 220,
+    "initialized": 96
+  },
+  "reasons": {
+    "created": 96,
+    "reobserved": 220,
+    "association_ambiguous": 101,
+    "association_gate_rejected": 80,
+    "rovio_quality_removed": 59,
+    "duplicate_frame_observation": 29,
+    "rovio_reserve_removed": 29
+  },
+  "raw": "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2",
+  "reproduction": [
+    "/home/ugrp/ugrp-sim/src/egomem1-ff0a6067a/scripts/egomem1_offline.py",
+    "predict",
+    "--input",
+    "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2",
+    "--output",
+    "/home/ugrp/ugrp-sim/ops-reviews/egomem1/offline-rovio-r1",
+    "--implementation",
+    "rovio_local_v1",
+    "--rovio-library",
+    "/home/ugrp/ugrp-sim/ops-reviews/egomem1/rovio-statistics-ff0a6067a.so"
+  ],
+  "blocked_object": "not_observed",
+  "minimum_gap_m": null,
+  "gap_status": "not_measured"
+}

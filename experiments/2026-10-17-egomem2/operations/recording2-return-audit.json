@@ -1,0 +1,90 @@
+{
+  "status": "DEV_REACQUISITION_PASS",
+  "source_sha": "85924812a198e2cb1d8ab32fbbba3a3f0213c30b",
+  "original_files_sha256_verified": 1298,
+  "frames": 641,
+  "sim_s": 64.0,
+  "wall_s": 761.7907505860003,
+  "first30_wall_sim": 12.073636384499999,
+  "recording_status": "RGB_SIGNATURE_REACQUIRED_EVAL_PENDING",
+  "actual_departure_m": 0.7364967423627045,
+  "actual_return_net_m": 0.6423732373116126,
+  "actual_return_forward_first_sim_s": 58.1,
+  "required_return_translation_m": 0.3164745064763584,
+  "acceptance_basis": "same existing robot envelope diameter as departure; evaluator-only actual XY displacement, not commands or accumulated rotation wobble",
+  "colour_absent_frames": 129,
+  "same_zone": true,
+  "physical_diagnostic_pass": true,
+  "physical_delivery_success": false,
+  "student_success": false,
+  "llm_success": false,
+  "funnel": [
+    {
+      "stage": "all_recordings",
+      "input_n": 1,
+      "cumulative_pass_n": 1,
+      "rejected_n": 0
+    },
+    {
+      "stage": "original_hashes",
+      "input_n": 1,
+      "cumulative_pass_n": 1,
+      "rejected_n": 0
+    },
+    {
+      "stage": "visual_zone_remembered",
+      "input_n": 1,
+      "cumulative_pass_n": 1,
+      "rejected_n": 0
+    },
+    {
+      "stage": "actual_departure",
+      "input_n": 1,
+      "cumulative_pass_n": 1,
+      "rejected_n": 0
+    },
+    {
+      "stage": "colour_left_camera",
+      "input_n": 1,
+      "cumulative_pass_n": 1,
+      "rejected_n": 0
+    },
+    {
+      "stage": "actual_return_translation",
+      "input_n": 1,
+      "cumulative_pass_n": 1,
+      "rejected_n": 0
+    },
+    {
+      "stage": "qualified_same_zone_rgb",
+      "input_n": 1,
+      "cumulative_pass_n": 1,
+      "rejected_n": 0
+    },
+    {
+      "stage": "all_reacquisition_gates",
+      "input_n": 1,
+      "cumulative_pass_n": 1,
+      "rejected_n": 0
+    }
+  ],
+  "reason": "passed_all_reacquisition_gates",
+  "blocked_object": "not_observed",
+  "minimum_gap_m": null,
+  "gap_status": "not_measured",
+  "raw": "/home/ugrp/ugrp-sim/runs/egomem2-round1/recording2",
+  "evaluation": "/home/ugrp/ugrp-sim/ops-reviews/egomem2/recording2-eval",
+  "reproduction": [
+    "/home/ugrp/ugrp-sim/ops-reviews/egomem2/return-audit-5f16b824d.py",
+    "--input",
+    "/home/ugrp/ugrp-sim/runs/egomem2-round1/recording2",
+    "--evaluation",
+    "/home/ugrp/ugrp-sim/ops-reviews/egomem2/recording2-eval",
+    "--output",
+    "/home/ugrp/ugrp-sim/ops-reviews/egomem2/recording2-return-audit.json"
+  ],
+  "sha256": {
+    "original_manifest": "5cc20833ec2cd5a0774da7c1cf737bff88a28fc76e6fde414c199d95d5154557",
+    "evaluation_summary": "c01b28660053d65175a9b1912aeddb191a10070cac55cec2c4197f83414dd7d2"
+  }
+}

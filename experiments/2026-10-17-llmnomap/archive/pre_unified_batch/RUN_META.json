@@ -1,0 +1,70 @@
+{
+  "schema": "ugrp.llmnomap_run_meta.v1",
+  "generated_utc": "2026-10-17T10:36:38Z",
+  "scope": "Mac-only paired LLM prompt replay; no VM/sim/render/physics",
+  "endpoint": {
+    "model": "google/gemma-4-31b-it",
+    "provider": "CoreWeave",
+    "tag": "coreweave/fp4",
+    "quantization": "fp4",
+    "temperature": 0,
+    "max_tokens": 300,
+    "fallbacks": false
+  },
+  "calls": {
+    "planned": 80,
+    "attempted": 80,
+    "h202": 80,
+    "h429": 0,
+    "errors": 0,
+    "format_success_act": 80,
+    "retries": 0,
+    "cap": 200,
+    "pairs": 40
+  },
+  "cost": {
+    "reported_total_usd": 0.03338296,
+    "cap_usd": 0.25,
+    "balance_before_usd": 6.573023,
+    "balance_after_usd": 6.543402
+  },
+  "endpoint_watch": {"ok": true, "alerts": [], "path": "model_endpoint_watch_preflight.json"},
+  "elapsed_s": 121.04,
+  "input_audit": {
+    "rows": 40,
+    "leaks": 0,
+    "static_map_requests_before": 40,
+    "static_map_requests_after": 0,
+    "world_pose_keys_before": 296,
+    "world_pose_keys_after": 0,
+    "system_mentions_before": 80,
+    "system_mentions_after": 0,
+    "memory_nonempty": 32,
+    "memory_empty": 8,
+    "text_tokens_saved_total": 16068
+  },
+  "tests": {"test_planner_egocentric_memory": "13 passed", "call_site_suite": "120 passed"},
+  "stack_check": {
+    "path": "stack_check.json",
+    "ok": true,
+    "admission": "pass",
+    "current_rules": 38,
+    "approved_deviations": 3,
+    "flow": "e2e_llm"
+  },
+  "task_accuracy_measured": false,
+  "limitations": [
+    "과제 정확도 미측정",
+    "저장 원장 text-only; 같은 번들의 own-RGB 1장을 양쪽에 동일 첨부",
+    "cached_tokens 제공자 보고값, provider.order로 sticky routing 영향 가능",
+    "40행은 한 원장 앞부분으로 대표성 없음"
+  ],
+  "raw": {
+    "calls": {"path": "calls.jsonl", "sha256": "e44caa779dbf081bcc9569a4e4c115b056cd95b883f7c035694c238844b84d15"},
+    "summary": {"path": "summary.json", "sha256": "fb72600814f25c9f8fb267c2261fcfd9738643bc59af846ecf582b78b27601a0"},
+    "input_audit": {"path": "input_audit.json", "sha256": "97b8d62ea8ef22a5948b4e53e14e838b9aa1c4f7c55719dace4cc5dc6ee79761"},
+    "rejection_table": {"path": "rejection_table.json", "sha256": "fbab64cec99d9c898dbc3447d4b4a5e3c05b6c1196836ab5b45abae9ed2764cf"},
+    "replay_inputs": {"path": "replay_inputs.jsonl", "sha256": "b306f13a26361dc109ea4c4ce078f45c8e1669c86180182abca212315829d021"},
+    "own_rgb": {"path": "raw/own_rgb_r80-r1-00000.jpg", "sha256": "15673f61873991c84cfe449747efa858b4986e36d8f48c5874f483574ec0cfc3"}
+  }
+}

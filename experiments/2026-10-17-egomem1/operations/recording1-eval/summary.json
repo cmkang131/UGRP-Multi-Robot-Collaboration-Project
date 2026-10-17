@@ -1,0 +1,261 @@
+{
+  "status": "DEV_VISUAL_RETURN_PASS",
+  "recording_status": "RGB_SIGNATURE_REACQUIRED_EVAL_PENDING",
+  "recordings": 1,
+  "appearance_reacquired": true,
+  "actual_same_zone_reacquired": true,
+  "departure_verified": true,
+  "actual_departure_m": 0.6300070708154284,
+  "required_departure_m": 0.3164745064763584,
+  "sensor_samples_without_goal_during_departure": 3,
+  "actual_return_reacquisition_rate": 1.0,
+  "physical_diagnostic_pass": true,
+  "physical_delivery_success": false,
+  "student_success": false,
+  "llm_success": false,
+  "initial_assignment": {
+    "id": "pickup-edge2",
+    "zone": "pickup",
+    "hue": 107.58621215820312,
+    "state_world": [
+      -2.8,
+      1.5707963267948966
+    ],
+    "mahalanobis2": 0.03748006563536935,
+    "distance_error_m": 0.019228288539672067,
+    "angle_error_deg": 0.11262300152288365,
+    "qualified": true
+  },
+  "final_assignments": [
+    {
+      "id": "pickup-edge3",
+      "zone": "pickup",
+      "hue": 107.58621215820312,
+      "state_world": [
+        -1.1,
+        -1.5707963267948966
+      ],
+      "mahalanobis2": 11.92013574273317,
+      "distance_error_m": 0.18388468193931784,
+      "angle_error_deg": 14.610593859885334,
+      "qualified": false
+    },
+    {
+      "id": "pickup-edge3",
+      "zone": "pickup",
+      "hue": 107.58621215820312,
+      "state_world": [
+        -1.1,
+        -1.5707963267948966
+      ],
+      "mahalanobis2": 7.844665178551055,
+      "distance_error_m": 0.1287532121462549,
+      "angle_error_deg": 12.436766274592044,
+      "qualified": true
+    },
+    {
+      "id": "pickup-edge3",
+      "zone": "pickup",
+      "hue": 107.58621215820312,
+      "state_world": [
+        -1.1,
+        -1.5707963267948966
+      ],
+      "mahalanobis2": 2.172021915046854,
+      "distance_error_m": 0.12530807308758263,
+      "angle_error_deg": 3.878822620830189,
+      "qualified": true
+    },
+    {
+      "id": "pickup-edge0",
+      "zone": "pickup",
+      "hue": 107.58621215820312,
+      "state_world": [
+        -0.44999999999999996,
+        0.0
+      ],
+      "mahalanobis2": 0.8278398826673169,
+      "distance_error_m": 0.08046611075383331,
+      "angle_error_deg": 2.1234428688011615,
+      "qualified": true
+    }
+  ],
+  "creation": {
+    "t": 1.0,
+    "pose": [
+      -0.3802490532398224,
+      -2.134061098098755,
+      -0.4861691535361996
+    ],
+    "observation": {
+      "id": "line-0",
+      "kind": "zone_boundary",
+      "signature": "floor_hue_4",
+      "representation": "oriented_line",
+      "measurement_state": [
+        -0.685167190440917,
+        2.0549998381410433
+      ],
+      "covariance_m2": [
+        [
+          0.010000000000000002,
+          0.0
+        ],
+        [
+          0.0,
+          0.007615435494667714
+        ]
+      ],
+      "hue": 107.0,
+      "pixels": [
+        [
+          167.0,
+          88.0
+        ],
+        [
+          581.0,
+          223.0
+        ]
+      ],
+      "observed_endpoints_m": [
+        [
+          2.0575354263480947,
+          0.3080324786928443
+        ],
+        [
+          0.8419415316887898,
+          -0.3313278581279201
+        ]
+      ]
+    },
+    "label": {
+      "id": "pickup-edge2",
+      "zone": "pickup",
+      "hue": 107.58621215820312,
+      "state_world": [
+        -2.8,
+        1.5707963267948966
+      ],
+      "mahalanobis2": 0.03748006563536935,
+      "distance_error_m": 0.019228288539672067,
+      "angle_error_deg": 0.11262300152288365,
+      "qualified": true
+    }
+  },
+  "events": [
+    {
+      "t": 25.4,
+      "stage": "look",
+      "category": "memory_return",
+      "reason": "visual_zone_remembered",
+      "blocked_object": "not_observed",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured",
+      "memory_id": "m1",
+      "signature": "floor_hue_4",
+      "departure_distance_m": 0.6542188340094788,
+      "scan_own_yaw_rad": 6.291594342547512
+    },
+    {
+      "t": 32.7,
+      "stage": "depart",
+      "category": "memory_return",
+      "reason": "departure_heading_observed_history",
+      "blocked_object": "not_observed",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "t": 37.3,
+      "stage": "return",
+      "category": "memory_return",
+      "reason": "departure_command_distance_reached",
+      "blocked_object": "not_observed",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured",
+      "own_path_m": 0.669297806396465
+    },
+    {
+      "t": 38.0,
+      "stage": "return",
+      "category": "memory_return",
+      "reason": "rgb_signature_reacquired",
+      "blocked_object": "not_observed",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured",
+      "memory_id": "m1",
+      "signature": "floor_hue_4",
+      "evaluation_required": true,
+      "arrival_verified": false
+    },
+    {
+      "t": 1.0,
+      "stage": "look",
+      "category": "uncertainty",
+      "reason": "95pct_radius_exceeds_target_range",
+      "blocked_object": "not_observed",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured",
+      "record_only": true
+    },
+    {
+      "t": 25.5,
+      "stage": "depart_turn",
+      "category": "uncertainty",
+      "reason": "95pct_radius_exceeds_target_range",
+      "blocked_object": "not_observed",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured",
+      "record_only": true
+    },
+    {
+      "t": 32.8,
+      "stage": "depart",
+      "category": "uncertainty",
+      "reason": "95pct_radius_exceeds_target_range",
+      "blocked_object": "not_observed",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured",
+      "record_only": true
+    }
+  ],
+  "actual_path_m": 0.8723911357589283,
+  "frames": 381,
+  "stage_frames": {
+    "look": 255,
+    "depart_turn": 73,
+    "depart": 46,
+    "return": 7
+  },
+  "motion_sources": {
+    "nominal_6f_unqualified_native": 47,
+    "own_command_motion_v1": 334
+  },
+  "memory_event_reasons": {
+    "created": 21,
+    "reobserved": 32,
+    "association_ambiguous": 18,
+    "duplicate_frame_observation": 8
+  },
+  "input_hashes": {
+    "/home/ugrp/ugrp-sim/runs/egomem1-round1/recording1/summary.json": "98f705fd3450027c0e636a63edc20d122953e1878ffdbd2ab42676c450a2612d",
+    "/home/ugrp/ugrp-sim/runs/egomem1-round1/recording1/online-trajectory.json": "5c9b506b581154a0e83331e22b57a67fbde90e8584b7ecddd972887c591eb589",
+    "/home/ugrp/ugrp-sim/runs/egomem1-round1/recording1/eval-only.json": "b71fb934af9b3cabbe21dce079e4c1c4a64deb7009e68f9fb51afd9445b93a1a",
+    "/home/ugrp/ugrp-sim/runs/egomem1-round1/recording1/events.json": "bac30bf42af8b956a3cbaf26a561524131d72b2c90419150e1616cbb0b1b8b25",
+    "/home/ugrp/ugrp-sim/runs/egomem1-round1/recording1/own.json": "5c1f52ea6cf748e1122a209be956e8fa25a243cd0ad54e5fb1d23aa9ca9b447e",
+    "/home/ugrp/ugrp-sim/runs/egomem1-round1/recording1/commands.json": "993dddfc7e71fb7716f978316abd91548091978db2c6e1210fd63ac6f0944138"
+  },
+  "rgb_sha_verified": 381,
+  "raw": "/home/ugrp/ugrp-sim/runs/egomem1-round1/recording1",
+  "source_sha": "cae3bd30b3c2e2c4fe76952d7a013cd26e064cbe",
+  "assignment_gate": "Inherited line covariance + chi-square(2)99%; evaluator only, not proof of detector semantics",
+  "control_input_audit": {
+    "static_map": 0,
+    "global_pose": 0,
+    "spawn": 0,
+    "top_rgb": 0,
+    "truth": 0,
+    "scope": "separate API fields and saved command/memory trace; model calls0"
+  },
+  "rejection_table": "/home/ugrp/ugrp-sim/ops-reviews/egomem1/recording1-eval/rejection_table.json"
+}

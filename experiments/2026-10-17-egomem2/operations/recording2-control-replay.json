@@ -1,0 +1,359 @@
+{
+  "status": "EXACT_OWN_INPUT_REPLAY",
+  "frames_verified": 641,
+  "action_mismatches": 0,
+  "reason_distribution": {
+    "no_matching_boundary_this_frame": 130,
+    "memory_heading": 1,
+    "translated": 2,
+    "all_passed": 1
+  },
+  "return_action_frames": {
+    "turn": 86,
+    "forward": 47,
+    "stop": 1
+  },
+  "final_own_return_path_m": 0.6666286710152088,
+  "required_return_path_m": 0.3164745064763584,
+  "matching_rgb_frames": [
+    {
+      "t": 58.0,
+      "gates": {
+        "visual_exit": true,
+        "colour_visible": true,
+        "memory_heading": false,
+        "translated": false
+      },
+      "first_reject": "memory_heading",
+      "own_return_path_m": 0.0,
+      "memory_bearing_deg": 108.864014458862,
+      "mode": "turn"
+    },
+    {
+      "t": 59.0,
+      "gates": {
+        "visual_exit": true,
+        "colour_visible": true,
+        "memory_heading": true,
+        "translated": false
+      },
+      "first_reject": "translated",
+      "own_return_path_m": 0.11343907154956709,
+      "memory_bearing_deg": 101.30999117125712,
+      "mode": "forward"
+    },
+    {
+      "t": 60.0,
+      "gates": {
+        "visual_exit": true,
+        "colour_visible": true,
+        "memory_heading": true,
+        "translated": false
+      },
+      "first_reject": "translated",
+      "own_return_path_m": 0.23021605956906852,
+      "memory_bearing_deg": 95.77259652846313,
+      "mode": "forward"
+    },
+    {
+      "t": 64.0,
+      "gates": {
+        "visual_exit": true,
+        "colour_visible": true,
+        "memory_heading": true,
+        "translated": true
+      },
+      "first_reject": "all_passed",
+      "own_return_path_m": 0.6666286710152088,
+      "memory_bearing_deg": 78.79433067919078,
+      "mode": "stop"
+    }
+  ],
+  "rho_sign_changes": [],
+  "action_segments": [
+    {
+      "phase": "look",
+      "mode": "turn",
+      "first_t": 0.0,
+      "last_t": 24.6,
+      "frames": 247
+    },
+    {
+      "phase": "depart_turn",
+      "mode": "turn",
+      "first_t": 24.7,
+      "last_t": 45.1,
+      "frames": 205
+    },
+    {
+      "phase": "depart_turn",
+      "mode": "forward",
+      "first_t": 45.2,
+      "last_t": 45.2,
+      "frames": 1
+    },
+    {
+      "phase": "depart",
+      "mode": "forward",
+      "first_t": 45.3,
+      "last_t": 50.5,
+      "frames": 53
+    },
+    {
+      "phase": "depart",
+      "mode": "turn",
+      "first_t": 50.6,
+      "last_t": 50.6,
+      "frames": 1
+    },
+    {
+      "phase": "return",
+      "mode": "turn",
+      "first_t": 50.7,
+      "last_t": 58.0,
+      "frames": 74
+    },
+    {
+      "phase": "return",
+      "mode": "forward",
+      "first_t": 58.1,
+      "last_t": 58.1,
+      "frames": 1
+    },
+    {
+      "phase": "return",
+      "mode": "turn",
+      "first_t": 58.2,
+      "last_t": 58.2,
+      "frames": 1
+    },
+    {
+      "phase": "return",
+      "mode": "forward",
+      "first_t": 58.3,
+      "last_t": 58.7,
+      "frames": 5
+    },
+    {
+      "phase": "return",
+      "mode": "turn",
+      "first_t": 58.8,
+      "last_t": 58.8,
+      "frames": 1
+    },
+    {
+      "phase": "return",
+      "mode": "forward",
+      "first_t": 58.9,
+      "last_t": 59.3,
+      "frames": 5
+    },
+    {
+      "phase": "return",
+      "mode": "turn",
+      "first_t": 59.4,
+      "last_t": 59.4,
+      "frames": 1
+    },
+    {
+      "phase": "return",
+      "mode": "forward",
+      "first_t": 59.5,
+      "last_t": 59.8,
+      "frames": 4
+    },
+    {
+      "phase": "return",
+      "mode": "turn",
+      "first_t": 59.9,
+      "last_t": 59.9,
+      "frames": 1
+    },
+    {
+      "phase": "return",
+      "mode": "forward",
+      "first_t": 60.0,
+      "last_t": 60.6,
+      "frames": 7
+    },
+    {
+      "phase": "return",
+      "mode": "turn",
+      "first_t": 60.7,
+      "last_t": 60.7,
+      "frames": 1
+    },
+    {
+      "phase": "return",
+      "mode": "forward",
+      "first_t": 60.8,
+      "last_t": 61.0,
+      "frames": 3
+    },
+    {
+      "phase": "return",
+      "mode": "turn",
+      "first_t": 61.1,
+      "last_t": 61.1,
+      "frames": 1
+    },
+    {
+      "phase": "return",
+      "mode": "forward",
+      "first_t": 61.2,
+      "last_t": 61.4,
+      "frames": 3
+    },
+    {
+      "phase": "return",
+      "mode": "turn",
+      "first_t": 61.5,
+      "last_t": 61.5,
+      "frames": 1
+    },
+    {
+      "phase": "return",
+      "mode": "forward",
+      "first_t": 61.6,
+      "last_t": 61.9,
+      "frames": 4
+    },
+    {
+      "phase": "return",
+      "mode": "turn",
+      "first_t": 62.0,
+      "last_t": 62.0,
+      "frames": 1
+    },
+    {
+      "phase": "return",
+      "mode": "forward",
+      "first_t": 62.1,
+      "last_t": 62.5,
+      "frames": 5
+    },
+    {
+      "phase": "return",
+      "mode": "turn",
+      "first_t": 62.6,
+      "last_t": 62.6,
+      "frames": 1
+    },
+    {
+      "phase": "return",
+      "mode": "forward",
+      "first_t": 62.7,
+      "last_t": 62.9,
+      "frames": 3
+    },
+    {
+      "phase": "return",
+      "mode": "turn",
+      "first_t": 63.0,
+      "last_t": 63.0,
+      "frames": 1
+    },
+    {
+      "phase": "return",
+      "mode": "forward",
+      "first_t": 63.1,
+      "last_t": 63.3,
+      "frames": 3
+    },
+    {
+      "phase": "return",
+      "mode": "turn",
+      "first_t": 63.4,
+      "last_t": 63.4,
+      "frames": 1
+    },
+    {
+      "phase": "return",
+      "mode": "forward",
+      "first_t": 63.5,
+      "last_t": 63.7,
+      "frames": 3
+    },
+    {
+      "phase": "return",
+      "mode": "turn",
+      "first_t": 63.8,
+      "last_t": 63.8,
+      "frames": 1
+    },
+    {
+      "phase": "return",
+      "mode": "forward",
+      "first_t": 63.9,
+      "last_t": 63.9,
+      "frames": 1
+    },
+    {
+      "phase": "return",
+      "mode": "stop",
+      "first_t": 64.0,
+      "last_t": 64.0,
+      "frames": 1
+    }
+  ],
+  "controller_events": [
+    {
+      "t": 24.6,
+      "stage": "look",
+      "category": "memory_return",
+      "reason": "visual_zone_remembered",
+      "blocked_object": "not_observed",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured",
+      "memory_id": "m1",
+      "signature": "floor_hue_4",
+      "departure_distance_m": 0.8384480778992103,
+      "scan_own_yaw_rad": 6.285803513261374,
+      "observed_search_aim": [
+        1.1781963445937507,
+        -0.03941998050411347
+      ]
+    },
+    {
+      "t": 45.2,
+      "stage": "depart",
+      "category": "memory_return",
+      "reason": "departure_heading_observed_history",
+      "blocked_object": "not_observed",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "t": 50.6,
+      "stage": "return",
+      "category": "memory_return",
+      "reason": "departure_command_distance_reached",
+      "blocked_object": "not_observed",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured",
+      "own_path_m": 0.8480907799124928
+    },
+    {
+      "t": 64.0,
+      "stage": "return",
+      "category": "memory_return",
+      "reason": "rgb_signature_reacquired",
+      "blocked_object": "not_observed",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured",
+      "memory_id": "m1",
+      "signature": "floor_hue_4",
+      "evaluation_required": true,
+      "arrival_verified": false,
+      "own_return_path_m": 0.6666286710152088
+    }
+  ],
+  "raw": "/home/ugrp/ugrp-sim/runs/egomem2-round1/recording2",
+  "blocked_object": "not_observed",
+  "minimum_gap_m": null,
+  "gap_status": "not_measured",
+  "sha256": {
+    "controller": "64f80a1856451bfcf1e6c7cbe1f7e6ba9ec454b2d7251528ad0773518f77251b",
+    "trace": "f267605f1a73421013e2a40b38647a19ed5f901f9c5f4216122c5616d3f522fb"
+  }
+}

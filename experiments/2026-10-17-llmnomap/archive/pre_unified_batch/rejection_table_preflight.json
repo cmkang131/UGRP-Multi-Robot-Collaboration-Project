@@ -1,0 +1,67 @@
+{
+  "schema": "ugrp.llmnomap_rejection_table.v1",
+  "stage": "preflight",
+  "generated_utc": "2026-10-17T10:32:32Z",
+  "scope": "Mac-only paired planner prompt replay; no VM/sim/physics",
+  "funnel": [
+    {
+      "stage": "source_rows",
+      "n": 136,
+      "note": "task-planner-ling-vl-main-20261013/off-calls.jsonl.zst 전체 행"
+    },
+    {
+      "stage": "selected_rows",
+      "n": 40,
+      "excluded": 96,
+      "reason_category": "budget_cap",
+      "note": "앞 40행만 사용; 나머지는 호출 예산 보존을 위해 제외"
+    },
+    {
+      "stage": "has_audit_request",
+      "n": 40,
+      "excluded": 0,
+      "reason_category": null
+    },
+    {
+      "stage": "has_static_map",
+      "n": 40,
+      "excluded": 0,
+      "reason_category": null
+    },
+    {
+      "stage": "projection_ok",
+      "n": 40,
+      "excluded": 0,
+      "reason_category": "projection_leak"
+    },
+    {
+      "stage": "input_audit_leaks",
+      "n": 0,
+      "excluded": 0,
+      "reason_category": "projection_leak"
+    },
+    {
+      "stage": "llm_calls_planned",
+      "n": 80,
+      "excluded": 0,
+      "reason_category": null,
+      "note": "원 40 + 변형 40, 재시도 없음"
+    }
+  ],
+  "reason_distribution": {
+    "budget_cap": 96,
+    "projection_leak": 0,
+    "api_error": 0,
+    "http_429": 0,
+    "format_invalid": 0,
+    "none": 80
+  },
+  "failures": [],
+  "fields": {
+    "reason_category": "required",
+    "blocking_object": "required on failure; null when no physical blocker",
+    "minimum_gap_m": "required on failure; null when not a physical near-miss"
+  },
+  "task_accuracy_measured": false,
+  "note": "LLM 형식/시간/429/캐시/비용만 측정한다. 과제 정확도는 측정하지 않는다."
+}

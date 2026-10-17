@@ -1,0 +1,57 @@
+{
+  "task": "egomem1-round1",
+  "flow": "self_map",
+  "source_sha": "cae3bd30b3c2e2c4fe76952d7a013cd26e064cbe",
+  "ready": true,
+  "submit": true,
+  "rejection_table": "/home/ugrp/ugrp-sim/ops-reviews/egomem1/offline-v2/rejection_table.json",
+  "stack_values": {
+    "physics_backend": "mjwarp_batch_v1",
+    "contact_profile": "warp_native_contact_v1",
+    "noslip_iterations": 0,
+    "scene_profile": "walls_floor_contrast_v5_indigo110_s80",
+    "cargo_version": "v6",
+    "scenario_version": "v7",
+    "heavy_crate": false,
+    "localization_path": "egocentric_landmark_memory_v1",
+    "rbpf": "off",
+    "localization_engine": "OpenCV",
+    "held_object_hidden_v1": true,
+    "held_world_reads": 0,
+    "weld": false,
+    "top_camera_control": false,
+    "heading_mode": "on",
+    "ultrasonic_front": "off",
+    "wall_cap": null,
+    "speed_gate": "record_only",
+    "speed_metric": "wall_s/(sim_s*nworld)",
+    "gcp_host": "ugrp-act-l4-gcp5",
+    "gcp_guards": {
+      "idle_minutes": 20,
+      "budget_stop": true,
+      "credentials_on_vm": false
+    },
+    "no_pooling": true,
+    "planning_cap_basis": "compute_or_sim",
+    "rejection_ledger": [
+      "reason_category",
+      "blocked_object",
+      "minimum_gap_m"
+    ],
+    "cap_end_label": "cap_end",
+    "gcp_project": "ugrp-sim-e-1016",
+    "gcp_account": "changmin5781@gmail.com",
+    "selfmap_map_correction": "off",
+    "localization_initial_prior": "none",
+    "static_map_use": "none"
+  },
+  "input_sha256": {
+    "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79800-6f057f7e/plan.json": "cd3fa585d21097e51fa7bb7474440cd537a9cfaf7f907e13cca52724e2e1cdeb",
+    "/home/ugrp/ugrp-sim/src/mapbuild5b-complete-vision597/experiments/2026-10-16-reloc16/colour-calibration.json": "a37cf96551abbfb8b38df3efc1cd61f3f357ac9eb3a1dcd0b4d9947242e4e24f",
+    "/home/ugrp/ugrp-sim/src/mapbuild11-cfdcd8845/experiments/2026-10-17-mapbuild8/calibration/own-command-calibration-r2.json": "f69221708442e42be60d1ec5e4619077f220ebcd7b9010a1bb60e9e96be1abbc",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild8/own-sweep-model-r1.json": "a0e2f576aeba5d36a21d97d024b745b30157b42ce2fc7e72612037ad99246032"
+  },
+  "max_recordings": 2,
+  "dev_light": true,
+  "goal_discovery": "visual_search"
+}
