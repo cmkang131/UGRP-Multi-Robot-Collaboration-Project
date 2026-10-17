@@ -8,6 +8,7 @@ from collections import Counter
 import hashlib
 import json
 import math
+import os
 from pathlib import Path
 import platform
 import sys
@@ -42,6 +43,17 @@ def main(a):
     if not (len(scans) == len(own) == len(truth) == len(rows)):
         raise ValueError('EXACT_FRAME_JOIN_REQUIRED')
     walls = np.asarray(wall_segments(static))
+    model = data = states = None
+    if a.kinematic_assets is not None:
+        import mujoco
+        os.chdir(a.kinematic_assets)
+        model = mujoco.MjModel.from_xml_string((a.input/'scene.xml').read_text())
+        data = mujoco.MjData(model)
+        states = np.load(a.input/'eval-state.npz')['qpos']
+        if len(states) != len(own):raise ValueError('EXACT_STATE_JOIN_REQUIRED')
+        cid = model.camera('r1__robot_cam').id
+        from harness.e2e_rgb_vo import K
+        inv_k = np.linalg.inv(K)
 
     def stats(x):
         x = np.asarray(x)
@@ -71,7 +83,7 @@ def main(a):
         return out
 
     result, distances, biases, reasons = [], [], [], Counter()
-    for f, scan, gt, pred in zip(own, scans, truth, rows):
+    for index, (f, scan, gt, pred) in enumerate(zip(own, scans, truth, rows)):
         if not f['frame_id'] == gt['frame_id'] == pred['frame_id']:
             raise ValueError('EXACT_FRAME_JOIN_REQUIRED')
         columns = scan.get('columns', [])
@@ -102,6 +114,7 @@ def main(a):
                        (world[:, 1]<bounds[2])|(world[:, 1]>bounds[3])).sum())
         reasons.update([pred['event']['reason']])
         result.append(dict(t=f['t'], frame_id=f['frame_id'], sensor_updated=pred['event']['attempted'],
+            scan_segments_available=bool(scan.get('segments')),qualification=scan.get('qualification'),
             hits=int(valid.sum()), original_slots=len(points),
             additive_beams=int(np.isfinite(points[::max(1, (len(points)-1)//59)]).all(1).sum()),
             product_beams=int(np.isfinite(points[::max(1, math.ceil(len(points)/60))]).all(1).sum()),
@@ -112,12 +125,37 @@ def main(a):
             nominal_projected_point_z_m=0., point_height_status='floor-plane projection assumption; not measured height',
             likelihood_at_evaluation_pose=likelihood, reason_category='measurement_audit',
             blocked_object='authored_static_wall_nearest_only', minimum_gap_m=None, gap_status='not_measured'))
+        if states is not None:
+            data.qpos[:] = states[index]
+            mujoco.mj_forward(model, data)  # kinematics only, zero integration/render
+            yaw_rot=np.array([[c,-s,0],[s,c,0],[0,0,1]])
+            actual_o=yaw_rot.T@(data.cam_xpos[cid]-np.r_[pose[:2],0.])
+            actual_r=yaw_rot.T@data.cam_xmat[cid].reshape(3,3)@np.diag([1,-1,-1])
+            nominal_o,nominal_r=fk
+            angle=math.acos(float(np.clip((np.trace(nominal_r.T@actual_r)-1)/2,-1,1)))
+            nominal_point_heights=[]; actual_points=[]
+            for col in columns:
+                if col['status']!='hit':continue
+                ray=inv_k@[col['column'],col['row'],1.]
+                nr,ar=nominal_r@ray,actual_r@ray
+                nominal_depth=-nominal_o[2]/nr[2]
+                nominal_point_heights.append(float((actual_o+nominal_depth*ar)[2]))
+                if ar[2]<0:actual_points.append((actual_o-actual_o[2]/ar[2]*ar)[:2])
+            actual_points=np.asarray(actual_points).reshape(-1,2)@rot+pose[:2]
+            result[-1]['evaluation_camera_fk']=dict(position_error_m=float(np.linalg.norm(nominal_o-actual_o)),
+                rotation_error_deg=math.degrees(angle),actual_height_m=float(actual_o[2]),
+                nominal_minus_actual_height_m=float(nominal_o[2]-actual_o[2]),
+                nominal_depth_point_height_m=stats(nominal_point_heights),
+                actual_camera_floor_projection_wall_distance_m=stats(nearest(actual_points)) if len(actual_points) else dict(n=0))
         distances.extend(residual.tolist()); biases.extend(bias)
     output = dict(scope='post-seal measurement audit only; no tuning or estimator truth',
         frames=len(result), rows=result, all_wall_residual_m=stats(distances), signed_range_bias_m=stats(biases),
         prior_rejection_distribution=dict(reasons), truth_to_estimator=0, threshold_fitting=0,
+        cpu_integration_steps=0,render_calls=0,
         sources={str(p):sha(p) for p in [a.scans, a.input/'own.json', a.input/'eval-only.json', a.input/'static-map.json', a.prediction/'prediction-seal.json', Path(__file__)]},
         reproduction=sys.argv)
+    if states is not None:
+        output['sources'].update({str(p):sha(p) for p in [a.input/'eval-state.npz',a.input/'scene.xml']})
     a.output.parent.mkdir(parents=True, exist_ok=True)
     with a.output.open('x') as handle:
         json.dump(output, handle, indent=2, allow_nan=False); handle.write('\n')
@@ -128,4 +166,5 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ('input', 'scans', 'prediction', 'output'):
         parser.add_argument('--'+name, type=Path, required=True)
+    parser.add_argument('--kinematic-assets', type=Path)
     main(parser.parse_args())

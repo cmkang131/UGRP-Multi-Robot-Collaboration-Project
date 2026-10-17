@@ -1,0 +1,1080 @@
+{
+  "runs": [
+    {
+      "run": "R1",
+      "frames": 277,
+      "wall_residual_all": {
+        "n": 9432,
+        "p05": 0.0044951254810310926,
+        "p50": 0.010836942219140222,
+        "p95": 0.018613858615175078,
+        "max": 0.07741120725658801,
+        "rms": 0.013486694225543423
+      },
+      "signed_range_bias_all": {
+        "n": 9432,
+        "p05": 0.0048783957647788034,
+        "p50": 0.012726104440416719,
+        "p95": 0.028698658355880362,
+        "max": 0.14262497495590776,
+        "rms": 0.020293622735924714
+      },
+      "attempted_updates": 20,
+      "first_six_updates": [
+        {
+          "t": 0.4,
+          "frame_id": 4,
+          "sensor_updated": true,
+          "hits": 96,
+          "original_slots": 96,
+          "additive_beams": 96,
+          "product_beams": 48,
+          "nearest_wall_m": {
+            "n": 96,
+            "p05": 0.007101122366209078,
+            "p50": 0.010642672043613244,
+            "p95": 0.015064161644357421,
+            "max": 0.017679296654126375,
+            "rms": 0.011133683967821634
+          },
+          "field_distance_m": {
+            "n": 96,
+            "p05": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "max": 0.0,
+            "rms": 0.0
+          },
+          "signed_range_bias_m": {
+            "n": 96,
+            "p05": 0.007286675976978657,
+            "p50": 0.012138230098032443,
+            "p95": 0.022256832339521193,
+            "max": 0.02873248797387995,
+            "rms": 0.014280468335523818
+          },
+          "outside_map_n": 0,
+          "farther_than_nav2_sigma_n": 0,
+          "command_fk_height_m": 0.2507544975017694,
+          "command_fk_status": "servo_fk_nominal_unloaded",
+          "command_fk_camera_xy_delta_m": 0.0,
+          "nominal_projected_point_z_m": 0.0,
+          "point_height_status": "floor-plane projection assumption; not measured height",
+          "likelihood_at_evaluation_pose": {
+            "0.0202": {
+              "additive": 13.363611999999998,
+              "log_product": -32.79344878592531
+            },
+            "0.2": {
+              "additive": 13.363611999999998,
+              "log_product": -32.79344878592531
+            }
+          },
+          "reason_category": "measurement_audit",
+          "blocked_object": "authored_static_wall_nearest_only",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "t": 1.4,
+          "frame_id": 14,
+          "sensor_updated": true,
+          "hits": 96,
+          "original_slots": 96,
+          "additive_beams": 96,
+          "product_beams": 48,
+          "nearest_wall_m": {
+            "n": 96,
+            "p05": 0.002257039684286255,
+            "p50": 0.006341536270594084,
+            "p95": 0.01102804660088541,
+            "max": 0.0131750199593208,
+            "rms": 0.007016355154966388
+          },
+          "field_distance_m": {
+            "n": 96,
+            "p05": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "max": 0.01,
+            "rms": 0.0010206207261596577
+          },
+          "signed_range_bias_m": {
+            "n": 96,
+            "p05": 0.0021340898913727313,
+            "p50": 0.00641925810464794,
+            "p95": 0.012938486033695906,
+            "max": 0.016728977602981088,
+            "rms": 0.007769186002930003
+          },
+          "outside_map_n": 0,
+          "farther_than_nav2_sigma_n": 0,
+          "command_fk_height_m": 0.2305006653568391,
+          "command_fk_status": "servo_fk_nominal_unloaded",
+          "command_fk_camera_xy_delta_m": 0.0,
+          "nominal_projected_point_z_m": 0.0,
+          "point_height_status": "floor-plane projection assumption; not measured height",
+          "likelihood_at_evaluation_pose": {
+            "0.0202": {
+              "additive": 13.324340906885514,
+              "log_product": -32.91469592186992
+            },
+            "0.2": {
+              "additive": 13.363134717671919,
+              "log_product": -32.79468640202599
+            }
+          },
+          "reason_category": "measurement_audit",
+          "blocked_object": "authored_static_wall_nearest_only",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "t": 2.2,
+          "frame_id": 22,
+          "sensor_updated": true,
+          "hits": 96,
+          "original_slots": 96,
+          "additive_beams": 96,
+          "product_beams": 48,
+          "nearest_wall_m": {
+            "n": 96,
+            "p05": 0.004454966809283811,
+            "p50": 0.008060862871762886,
+            "p95": 0.012003660883719403,
+            "max": 0.013189030574570992,
+            "rms": 0.008463660683472445
+          },
+          "field_distance_m": {
+            "n": 96,
+            "p05": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "max": 0.0,
+            "rms": 0.0
+          },
+          "signed_range_bias_m": {
+            "n": 96,
+            "p05": 0.004619420034778526,
+            "p50": 0.008358611171065011,
+            "p95": 0.013169048770408476,
+            "max": 0.014679129680502556,
+            "rms": 0.008855247463233252
+          },
+          "outside_map_n": 0,
+          "farther_than_nav2_sigma_n": 0,
+          "command_fk_height_m": 0.19319937749756314,
+          "command_fk_status": "servo_fk_nominal_unloaded",
+          "command_fk_camera_xy_delta_m": 0.0,
+          "nominal_projected_point_z_m": 0.0,
+          "point_height_status": "floor-plane projection assumption; not measured height",
+          "likelihood_at_evaluation_pose": {
+            "0.0202": {
+              "additive": 13.363611999999998,
+              "log_product": -32.79344878592531
+            },
+            "0.2": {
+              "additive": 13.363611999999998,
+              "log_product": -32.79344878592531
+            }
+          },
+          "reason_category": "measurement_audit",
+          "blocked_object": "authored_static_wall_nearest_only",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "t": 3.0,
+          "frame_id": 30,
+          "sensor_updated": true,
+          "hits": 75,
+          "original_slots": 96,
+          "additive_beams": 75,
+          "product_beams": 37,
+          "nearest_wall_m": {
+            "n": 75,
+            "p05": 0.01113926977336277,
+            "p50": 0.014032623153791945,
+            "p95": 0.01739145241838793,
+            "max": 0.018629604360032914,
+            "rms": 0.014203687454518926
+          },
+          "field_distance_m": {
+            "n": 75,
+            "p05": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "max": 0.0,
+            "rms": 0.0
+          },
+          "signed_range_bias_m": {
+            "n": 75,
+            "p05": 0.011162954906365074,
+            "p50": 0.014545273230455513,
+            "p95": 0.019743231450070942,
+            "max": 0.022366840617055184,
+            "rms": 0.015081226380147217
+          },
+          "outside_map_n": 0,
+          "farther_than_nav2_sigma_n": 0,
+          "command_fk_height_m": 0.19319937749756314,
+          "command_fk_status": "servo_fk_nominal_unloaded",
+          "command_fk_camera_xy_delta_m": 0.0,
+          "nominal_projected_point_z_m": 0.0,
+          "point_height_status": "floor-plane projection assumption; not measured height",
+          "likelihood_at_evaluation_pose": {
+            "0.0202": {
+              "additive": 10.659071874999997,
+              "log_product": -25.278283439150762
+            },
+            "0.2": {
+              "additive": 10.659071874999997,
+              "log_product": -25.278283439150762
+            }
+          },
+          "reason_category": "measurement_audit",
+          "blocked_object": "authored_static_wall_nearest_only",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "t": 3.8,
+          "frame_id": 38,
+          "sensor_updated": true,
+          "hits": 38,
+          "original_slots": 96,
+          "additive_beams": 38,
+          "product_beams": 19,
+          "nearest_wall_m": {
+            "n": 38,
+            "p05": 0.011728611626307584,
+            "p50": 0.014596531205227414,
+            "p95": 0.01653438921825461,
+            "max": 0.01705321761225642,
+            "rms": 0.014389425231175394
+          },
+          "field_distance_m": {
+            "n": 38,
+            "p05": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "max": 0.0,
+            "rms": 0.0
+          },
+          "signed_range_bias_m": {
+            "n": 38,
+            "p05": 0.012329686471664908,
+            "p50": 0.015647920851814323,
+            "p95": 0.017769938860210655,
+            "max": 0.018461349327056897,
+            "rms": 0.015447436333989562
+          },
+          "outside_map_n": 0,
+          "farther_than_nav2_sigma_n": 0,
+          "command_fk_height_m": 0.19319937749756314,
+          "command_fk_status": "servo_fk_nominal_unloaded",
+          "command_fk_camera_xy_delta_m": 0.0,
+          "nominal_projected_point_z_m": 0.0,
+          "point_height_status": "floor-plane projection assumption; not measured height",
+          "likelihood_at_evaluation_pose": {
+            "0.0202": {
+              "additive": 5.893929750000001,
+              "log_product": -12.980740144428765
+            },
+            "0.2": {
+              "additive": 5.893929750000001,
+              "log_product": -12.980740144428765
+            }
+          },
+          "reason_category": "measurement_audit",
+          "blocked_object": "authored_static_wall_nearest_only",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "t": 4.6,
+          "frame_id": 46,
+          "sensor_updated": true,
+          "hits": 9,
+          "original_slots": 96,
+          "additive_beams": 9,
+          "product_beams": 4,
+          "nearest_wall_m": {
+            "n": 9,
+            "p05": 0.013588279516438284,
+            "p50": 0.015485533439649757,
+            "p95": 0.018632070611840044,
+            "max": 0.018859479326524653,
+            "rms": 0.01609384164407629
+          },
+          "field_distance_m": {
+            "n": 9,
+            "p05": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "max": 0.0,
+            "rms": 0.0
+          },
+          "signed_range_bias_m": {
+            "n": 9,
+            "p05": 0.015867082025395173,
+            "p50": 0.018197104669692488,
+            "p95": 0.021732295108127485,
+            "max": 0.0221327725739473,
+            "rms": 0.018797356780891762
+          },
+          "outside_map_n": 0,
+          "farther_than_nav2_sigma_n": 0,
+          "command_fk_height_m": 0.19319937749756314,
+          "command_fk_status": "servo_fk_nominal_unloaded",
+          "command_fk_camera_xy_delta_m": 0.0,
+          "nominal_projected_point_z_m": 0.0,
+          "point_height_status": "floor-plane projection assumption; not measured height",
+          "likelihood_at_evaluation_pose": {
+            "0.0202": {
+              "additive": 2.159088625,
+              "log_product": -2.7327873988271087
+            },
+            "0.2": {
+              "additive": 2.159088625,
+              "log_product": -2.7327873988271087
+            }
+          },
+          "reason_category": "measurement_audit",
+          "blocked_object": "authored_static_wall_nearest_only",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        }
+      ],
+      "max_update_residual_p95_m": 0.01913044620936799,
+      "outside_map_at_updates": 0,
+      "far_points_at_updates": 0,
+      "prior_rejection_distribution": {
+        "no_visible_wall": 143,
+        "posterior_unresolved": 20,
+        "nav2_motion_gate": 114
+      },
+      "full_frame_table": "/home/ugrp/ugrp-sim/ops-reviews/mapbuild10/measurement-r1.json",
+      "full_frame_sha256": "22df0bbfa2f6991cb902cbe61fe927c30737934ed8f5f3496f12e7f6142e34b1"
+    },
+    {
+      "run": "R2",
+      "frames": 378,
+      "wall_residual_all": {
+        "n": 31458,
+        "p05": 0.002636399805878209,
+        "p50": 0.011198489652874843,
+        "p95": 0.08493172067229342,
+        "max": 0.25430669772994974,
+        "rms": 0.03750203871749001
+      },
+      "signed_range_bias_all": {
+        "n": 31458,
+        "p05": 0.003073796416397984,
+        "p50": 0.013609593875980097,
+        "p95": 0.14868502531957167,
+        "max": 0.3251439481072964,
+        "rms": 0.06239416551071089
+      },
+      "attempted_updates": 42,
+      "first_six_updates": [
+        {
+          "t": 0.4,
+          "frame_id": 4,
+          "sensor_updated": true,
+          "hits": 96,
+          "original_slots": 96,
+          "additive_beams": 96,
+          "product_beams": 48,
+          "nearest_wall_m": {
+            "n": 96,
+            "p05": 0.007100860834150291,
+            "p50": 0.010642324298182348,
+            "p95": 0.015063723619418656,
+            "max": 0.017678837651680546,
+            "rms": 0.011133337045097634
+          },
+          "field_distance_m": {
+            "n": 96,
+            "p05": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "max": 0.0,
+            "rms": 0.0
+          },
+          "signed_range_bias_m": {
+            "n": 96,
+            "p05": 0.00728637528893869,
+            "p50": 0.012137837746888258,
+            "p95": 0.022256226135787816,
+            "max": 0.02873174858261507,
+            "rms": 0.014280019393775314
+          },
+          "outside_map_n": 0,
+          "farther_than_nav2_sigma_n": 0,
+          "command_fk_height_m": 0.2507544975017694,
+          "command_fk_status": "servo_fk_nominal_unloaded",
+          "command_fk_camera_xy_delta_m": 0.0,
+          "nominal_projected_point_z_m": 0.0,
+          "point_height_status": "floor-plane projection assumption; not measured height",
+          "likelihood_at_evaluation_pose": {
+            "0.0202": {
+              "additive": 13.363611999999998,
+              "log_product": -32.79344878592531
+            },
+            "0.2": {
+              "additive": 13.363611999999998,
+              "log_product": -32.79344878592531
+            }
+          },
+          "reason_category": "measurement_audit",
+          "blocked_object": "authored_static_wall_nearest_only",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "t": 1.4,
+          "frame_id": 14,
+          "sensor_updated": true,
+          "hits": 96,
+          "original_slots": 96,
+          "additive_beams": 96,
+          "product_beams": 48,
+          "nearest_wall_m": {
+            "n": 96,
+            "p05": 0.002262342047675725,
+            "p50": 0.006342962035905897,
+            "p95": 0.011004854343659387,
+            "max": 0.013138336166325093,
+            "rms": 0.007003587447083813
+          },
+          "field_distance_m": {
+            "n": 96,
+            "p05": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "max": 0.01,
+            "rms": 0.0010206207261596577
+          },
+          "signed_range_bias_m": {
+            "n": 96,
+            "p05": 0.0021423804370628574,
+            "p50": 0.006412455509315351,
+            "p95": 0.012906644277934143,
+            "max": 0.01668312979411457,
+            "rms": 0.007753717561357656
+          },
+          "outside_map_n": 0,
+          "farther_than_nav2_sigma_n": 0,
+          "command_fk_height_m": 0.2305006653568391,
+          "command_fk_status": "servo_fk_nominal_unloaded",
+          "command_fk_camera_xy_delta_m": 0.0,
+          "nominal_projected_point_z_m": 0.0,
+          "point_height_status": "floor-plane projection assumption; not measured height",
+          "likelihood_at_evaluation_pose": {
+            "0.0202": {
+              "additive": 13.324340906885514,
+              "log_product": -32.91469592186992
+            },
+            "0.2": {
+              "additive": 13.363134717671919,
+              "log_product": -32.79468640202599
+            }
+          },
+          "reason_category": "measurement_audit",
+          "blocked_object": "authored_static_wall_nearest_only",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "t": 2.2,
+          "frame_id": 22,
+          "sensor_updated": true,
+          "hits": 96,
+          "original_slots": 96,
+          "additive_beams": 96,
+          "product_beams": 48,
+          "nearest_wall_m": {
+            "n": 96,
+            "p05": 0.004519261426422783,
+            "p50": 0.008289388761819172,
+            "p95": 0.012259136080319033,
+            "max": 0.013252832377325774,
+            "rms": 0.00863613256003843
+          },
+          "field_distance_m": {
+            "n": 96,
+            "p05": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "max": 0.0,
+            "rms": 0.0
+          },
+          "signed_range_bias_m": {
+            "n": 96,
+            "p05": 0.004784862930138772,
+            "p50": 0.008579385459704714,
+            "p95": 0.01321590983212656,
+            "max": 0.01474904297575863,
+            "rms": 0.009027840033577891
+          },
+          "outside_map_n": 0,
+          "farther_than_nav2_sigma_n": 0,
+          "command_fk_height_m": 0.19319937749756314,
+          "command_fk_status": "servo_fk_nominal_unloaded",
+          "command_fk_camera_xy_delta_m": 0.0,
+          "nominal_projected_point_z_m": 0.0,
+          "point_height_status": "floor-plane projection assumption; not measured height",
+          "likelihood_at_evaluation_pose": {
+            "0.0202": {
+              "additive": 13.363611999999998,
+              "log_product": -32.79344878592531
+            },
+            "0.2": {
+              "additive": 13.363611999999998,
+              "log_product": -32.79344878592531
+            }
+          },
+          "reason_category": "measurement_audit",
+          "blocked_object": "authored_static_wall_nearest_only",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "t": 3.0,
+          "frame_id": 30,
+          "sensor_updated": true,
+          "hits": 75,
+          "original_slots": 96,
+          "additive_beams": 75,
+          "product_beams": 37,
+          "nearest_wall_m": {
+            "n": 75,
+            "p05": 0.011174516285086788,
+            "p50": 0.01406311104636071,
+            "p95": 0.01758345103900516,
+            "max": 0.018598195637443915,
+            "rms": 0.014322993732355472
+          },
+          "field_distance_m": {
+            "n": 75,
+            "p05": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "max": 0.0,
+            "rms": 0.0
+          },
+          "signed_range_bias_m": {
+            "n": 75,
+            "p05": 0.011236854364159665,
+            "p50": 0.014760834341088658,
+            "p95": 0.019708980303318878,
+            "max": 0.02232935215085352,
+            "rms": 0.015201111168034999
+          },
+          "outside_map_n": 0,
+          "farther_than_nav2_sigma_n": 0,
+          "command_fk_height_m": 0.19319937749756314,
+          "command_fk_status": "servo_fk_nominal_unloaded",
+          "command_fk_camera_xy_delta_m": 0.0,
+          "nominal_projected_point_z_m": 0.0,
+          "point_height_status": "floor-plane projection assumption; not measured height",
+          "likelihood_at_evaluation_pose": {
+            "0.0202": {
+              "additive": 10.659071874999997,
+              "log_product": -25.278283439150762
+            },
+            "0.2": {
+              "additive": 10.659071874999997,
+              "log_product": -25.278283439150762
+            }
+          },
+          "reason_category": "measurement_audit",
+          "blocked_object": "authored_static_wall_nearest_only",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "t": 3.8,
+          "frame_id": 38,
+          "sensor_updated": true,
+          "hits": 38,
+          "original_slots": 96,
+          "additive_beams": 38,
+          "product_beams": 19,
+          "nearest_wall_m": {
+            "n": 38,
+            "p05": 0.011727906706242908,
+            "p50": 0.014597602161611878,
+            "p95": 0.016533063849190444,
+            "max": 0.017052371181130788,
+            "rms": 0.014389238756544971
+          },
+          "field_distance_m": {
+            "n": 38,
+            "p05": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "max": 0.0,
+            "rms": 0.0
+          },
+          "signed_range_bias_m": {
+            "n": 38,
+            "p05": 0.012328896754493907,
+            "p50": 0.01564593157679106,
+            "p95": 0.017771462109615423,
+            "max": 0.018463652786672502,
+            "rms": 0.015447274374753812
+          },
+          "outside_map_n": 0,
+          "farther_than_nav2_sigma_n": 0,
+          "command_fk_height_m": 0.19319937749756314,
+          "command_fk_status": "servo_fk_nominal_unloaded",
+          "command_fk_camera_xy_delta_m": 0.0,
+          "nominal_projected_point_z_m": 0.0,
+          "point_height_status": "floor-plane projection assumption; not measured height",
+          "likelihood_at_evaluation_pose": {
+            "0.0202": {
+              "additive": 5.893929750000001,
+              "log_product": -12.980740144428765
+            },
+            "0.2": {
+              "additive": 5.893929750000001,
+              "log_product": -12.980740144428765
+            }
+          },
+          "reason_category": "measurement_audit",
+          "blocked_object": "authored_static_wall_nearest_only",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "t": 4.6,
+          "frame_id": 46,
+          "sensor_updated": true,
+          "hits": 9,
+          "original_slots": 96,
+          "additive_beams": 9,
+          "product_beams": 4,
+          "nearest_wall_m": {
+            "n": 9,
+            "p05": 0.013584020096208604,
+            "p50": 0.015481470785015272,
+            "p95": 0.01862779856301273,
+            "max": 0.01885514128755883,
+            "rms": 0.01608959210622751
+          },
+          "field_distance_m": {
+            "n": 9,
+            "p05": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "max": 0.0,
+            "rms": 0.0
+          },
+          "signed_range_bias_m": {
+            "n": 9,
+            "p05": 0.01586215607279562,
+            "p50": 0.018191900860633048,
+            "p95": 0.021727378158714127,
+            "max": 0.02212775047285076,
+            "rms": 0.01879244744498641
+          },
+          "outside_map_n": 0,
+          "farther_than_nav2_sigma_n": 0,
+          "command_fk_height_m": 0.19319937749756314,
+          "command_fk_status": "servo_fk_nominal_unloaded",
+          "command_fk_camera_xy_delta_m": 0.0,
+          "nominal_projected_point_z_m": 0.0,
+          "point_height_status": "floor-plane projection assumption; not measured height",
+          "likelihood_at_evaluation_pose": {
+            "0.0202": {
+              "additive": 2.159088625,
+              "log_product": -2.7327873988271087
+            },
+            "0.2": {
+              "additive": 2.159088625,
+              "log_product": -2.7327873988271087
+            }
+          },
+          "reason_category": "measurement_audit",
+          "blocked_object": "authored_static_wall_nearest_only",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        }
+      ],
+      "max_update_residual_p95_m": 0.17948109449851157,
+      "outside_map_at_updates": 310,
+      "far_points_at_updates": 269,
+      "prior_rejection_distribution": {
+        "no_visible_wall": 48,
+        "posterior_unresolved": 40,
+        "nav2_motion_gate": 288,
+        "posterior_converged_unqualified": 2
+      },
+      "full_frame_table": "/home/ugrp/ugrp-sim/ops-reviews/mapbuild10/measurement-r2.json",
+      "full_frame_sha256": "3ecfea0fd5a91d24c4bc26789288d55553234a68ecb4ce54d628eb1545f36f29"
+    },
+    {
+      "run": "R3",
+      "frames": 389,
+      "wall_residual_all": {
+        "n": 31084,
+        "p05": 0.0026862210631004913,
+        "p50": 0.009644562909875809,
+        "p95": 0.08360403121022882,
+        "max": 0.23442345531929099,
+        "rms": 0.03582006248660989
+      },
+      "signed_range_bias_all": {
+        "n": 31084,
+        "p05": 0.0028978266471423155,
+        "p50": 0.012440374983034963,
+        "p95": 0.14761837928569324,
+        "max": 0.3018568116635132,
+        "rms": 0.06101567906081512
+      },
+      "attempted_updates": 44,
+      "first_six_updates": [
+        {
+          "t": 0.4,
+          "frame_id": 4,
+          "sensor_updated": true,
+          "hits": 96,
+          "original_slots": 96,
+          "additive_beams": 96,
+          "product_beams": 48,
+          "nearest_wall_m": {
+            "n": 96,
+            "p05": 0.007100030431354765,
+            "p50": 0.01064195370003751,
+            "p95": 0.015063834511981344,
+            "max": 0.01767906042427647,
+            "rms": 0.011133014793407057
+          },
+          "field_distance_m": {
+            "n": 96,
+            "p05": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "max": 0.0,
+            "rms": 0.0
+          },
+          "signed_range_bias_m": {
+            "n": 96,
+            "p05": 0.00728568764811921,
+            "p50": 0.01213737606128068,
+            "p95": 0.02225623625329437,
+            "max": 0.02873207552963808,
+            "rms": 0.014279756294743779
+          },
+          "outside_map_n": 0,
+          "farther_than_nav2_sigma_n": 0,
+          "command_fk_height_m": 0.2507544975017694,
+          "command_fk_status": "servo_fk_nominal_unloaded",
+          "command_fk_camera_xy_delta_m": 0.0,
+          "nominal_projected_point_z_m": 0.0,
+          "point_height_status": "floor-plane projection assumption; not measured height",
+          "likelihood_at_evaluation_pose": {
+            "0.0202": {
+              "additive": 13.363611999999998,
+              "log_product": -32.79344878592531
+            },
+            "0.2": {
+              "additive": 13.363611999999998,
+              "log_product": -32.79344878592531
+            }
+          },
+          "reason_category": "measurement_audit",
+          "blocked_object": "authored_static_wall_nearest_only",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "t": 1.4,
+          "frame_id": 14,
+          "sensor_updated": true,
+          "hits": 96,
+          "original_slots": 96,
+          "additive_beams": 96,
+          "product_beams": 48,
+          "nearest_wall_m": {
+            "n": 96,
+            "p05": 0.002265203718218922,
+            "p50": 0.006343419384396309,
+            "p95": 0.010990043272941175,
+            "max": 0.013115157469522298,
+            "rms": 0.006995293559762853
+          },
+          "field_distance_m": {
+            "n": 96,
+            "p05": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "max": 0.01,
+            "rms": 0.0010206207261596577
+          },
+          "signed_range_bias_m": {
+            "n": 96,
+            "p05": 0.0021470901810027865,
+            "p50": 0.006407793014283569,
+            "p95": 0.012886397150950607,
+            "max": 0.01665415025846384,
+            "rms": 0.007743720341867635
+          },
+          "outside_map_n": 0,
+          "farther_than_nav2_sigma_n": 0,
+          "command_fk_height_m": 0.2305006653568391,
+          "command_fk_status": "servo_fk_nominal_unloaded",
+          "command_fk_camera_xy_delta_m": 0.0,
+          "nominal_projected_point_z_m": 0.0,
+          "point_height_status": "floor-plane projection assumption; not measured height",
+          "likelihood_at_evaluation_pose": {
+            "0.0202": {
+              "additive": 13.324340906885514,
+              "log_product": -32.91469592186992
+            },
+            "0.2": {
+              "additive": 13.363134717671919,
+              "log_product": -32.79468640202599
+            }
+          },
+          "reason_category": "measurement_audit",
+          "blocked_object": "authored_static_wall_nearest_only",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "t": 2.2,
+          "frame_id": 22,
+          "sensor_updated": true,
+          "hits": 96,
+          "original_slots": 96,
+          "additive_beams": 96,
+          "product_beams": 48,
+          "nearest_wall_m": {
+            "n": 96,
+            "p05": 0.0035529274736045835,
+            "p50": 0.007256284850657657,
+            "p95": 0.011446461855563195,
+            "max": 0.013012932003908073,
+            "rms": 0.007773204877380069
+          },
+          "field_distance_m": {
+            "n": 96,
+            "p05": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "max": 0.0,
+            "rms": 0.0
+          },
+          "signed_range_bias_m": {
+            "n": 96,
+            "p05": 0.0037185863711701184,
+            "p50": 0.007478375634141721,
+            "p95": 0.012427571847761831,
+            "max": 0.014486347872146088,
+            "rms": 0.008149804138946509
+          },
+          "outside_map_n": 0,
+          "farther_than_nav2_sigma_n": 0,
+          "command_fk_height_m": 0.19319937749756314,
+          "command_fk_status": "servo_fk_nominal_unloaded",
+          "command_fk_camera_xy_delta_m": 0.0,
+          "nominal_projected_point_z_m": 0.0,
+          "point_height_status": "floor-plane projection assumption; not measured height",
+          "likelihood_at_evaluation_pose": {
+            "0.0202": {
+              "additive": 13.363611999999998,
+              "log_product": -32.79344878592531
+            },
+            "0.2": {
+              "additive": 13.363611999999998,
+              "log_product": -32.79344878592531
+            }
+          },
+          "reason_category": "measurement_audit",
+          "blocked_object": "authored_static_wall_nearest_only",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "t": 3.0,
+          "frame_id": 30,
+          "sensor_updated": true,
+          "hits": 75,
+          "original_slots": 96,
+          "additive_beams": 75,
+          "product_beams": 37,
+          "nearest_wall_m": {
+            "n": 75,
+            "p05": 0.011039345342523354,
+            "p50": 0.01394920895970575,
+            "p95": 0.017369832707409927,
+            "max": 0.018333771432395007,
+            "rms": 0.01415070384646327
+          },
+          "field_distance_m": {
+            "n": 75,
+            "p05": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "max": 0.0,
+            "rms": 0.0
+          },
+          "signed_range_bias_m": {
+            "n": 75,
+            "p05": 0.011095695284575824,
+            "p50": 0.014668670809664164,
+            "p95": 0.019435909465826462,
+            "max": 0.022015651957556726,
+            "rms": 0.015015082677743857
+          },
+          "outside_map_n": 0,
+          "farther_than_nav2_sigma_n": 0,
+          "command_fk_height_m": 0.19319937749756314,
+          "command_fk_status": "servo_fk_nominal_unloaded",
+          "command_fk_camera_xy_delta_m": 0.0,
+          "nominal_projected_point_z_m": 0.0,
+          "point_height_status": "floor-plane projection assumption; not measured height",
+          "likelihood_at_evaluation_pose": {
+            "0.0202": {
+              "additive": 10.659071874999997,
+              "log_product": -25.278283439150762
+            },
+            "0.2": {
+              "additive": 10.659071874999997,
+              "log_product": -25.278283439150762
+            }
+          },
+          "reason_category": "measurement_audit",
+          "blocked_object": "authored_static_wall_nearest_only",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "t": 3.8,
+          "frame_id": 38,
+          "sensor_updated": true,
+          "hits": 38,
+          "original_slots": 96,
+          "additive_beams": 38,
+          "product_beams": 19,
+          "nearest_wall_m": {
+            "n": 38,
+            "p05": 0.011440016763860084,
+            "p50": 0.014370802257097859,
+            "p95": 0.016199346550527394,
+            "max": 0.01670291425334902,
+            "rms": 0.014139882464190857
+          },
+          "field_distance_m": {
+            "n": 38,
+            "p05": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "max": 0.0,
+            "rms": 0.0
+          },
+          "signed_range_bias_m": {
+            "n": 38,
+            "p05": 0.011957358699569359,
+            "p50": 0.015456967375004682,
+            "p95": 0.017631261372480573,
+            "max": 0.018509715144808814,
+            "rms": 0.015198697929487342
+          },
+          "outside_map_n": 0,
+          "farther_than_nav2_sigma_n": 0,
+          "command_fk_height_m": 0.19319937749756314,
+          "command_fk_status": "servo_fk_nominal_unloaded",
+          "command_fk_camera_xy_delta_m": 0.0,
+          "nominal_projected_point_z_m": 0.0,
+          "point_height_status": "floor-plane projection assumption; not measured height",
+          "likelihood_at_evaluation_pose": {
+            "0.0202": {
+              "additive": 5.893929750000001,
+              "log_product": -12.980740144428765
+            },
+            "0.2": {
+              "additive": 5.893929750000001,
+              "log_product": -12.980740144428765
+            }
+          },
+          "reason_category": "measurement_audit",
+          "blocked_object": "authored_static_wall_nearest_only",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "t": 4.6,
+          "frame_id": 46,
+          "sensor_updated": true,
+          "hits": 9,
+          "original_slots": 96,
+          "additive_beams": 9,
+          "product_beams": 4,
+          "nearest_wall_m": {
+            "n": 9,
+            "p05": 0.014293683967999904,
+            "p50": 0.015814422332112166,
+            "p95": 0.0190094473513982,
+            "max": 0.019214794891824205,
+            "rms": 0.01661814352264086
+          },
+          "field_distance_m": {
+            "n": 9,
+            "p05": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "max": 0.0,
+            "rms": 0.0
+          },
+          "signed_range_bias_m": {
+            "n": 9,
+            "p05": 0.016894932523097685,
+            "p50": 0.018368340134800043,
+            "p95": 0.02204096421048076,
+            "max": 0.022102327982588932,
+            "rms": 0.019387782511366865
+          },
+          "outside_map_n": 0,
+          "farther_than_nav2_sigma_n": 0,
+          "command_fk_height_m": 0.19319937749756314,
+          "command_fk_status": "servo_fk_nominal_unloaded",
+          "command_fk_camera_xy_delta_m": 0.0,
+          "nominal_projected_point_z_m": 0.0,
+          "point_height_status": "floor-plane projection assumption; not measured height",
+          "likelihood_at_evaluation_pose": {
+            "0.0202": {
+              "additive": 2.159088625,
+              "log_product": -2.7327873988271087
+            },
+            "0.2": {
+              "additive": 2.159088625,
+              "log_product": -2.7327873988271087
+            }
+          },
+          "reason_category": "measurement_audit",
+          "blocked_object": "authored_static_wall_nearest_only",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        }
+      ],
+      "max_update_residual_p95_m": 0.17165863039786158,
+      "outside_map_at_updates": 311,
+      "far_points_at_updates": 288,
+      "prior_rejection_distribution": {
+        "no_visible_wall": 48,
+        "posterior_unresolved": 40,
+        "nav2_motion_gate": 297,
+        "posterior_converged_unqualified": 4
+      },
+      "full_frame_table": "/home/ugrp/ugrp-sim/ops-reviews/mapbuild10/measurement-r3.json",
+      "full_frame_sha256": "8f679f7d08d2cc85aa8d1cd7d91da64fd780360497d38b119976ad191b11295a"
+    }
+  ],
+  "reproduction": "scripts/mapbuild10_measurement_audit.py (argv recorded in each full frame table)",
+  "truth_to_estimator": 0,
+  "threshold_fitting": 0
+}

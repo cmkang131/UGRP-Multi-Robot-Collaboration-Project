@@ -52,17 +52,34 @@ class StaticField:
 
 
 class StaticAMCL:
-    def __init__(self, static_map, calibration, requirements, *, option='off', method=METHOD, seed=20261017, profile='calibrated_kld_v1'):
+    def __init__(self, static_map, calibration, requirements, *, option='off', method=METHOD, seed=20261017, profile='calibrated_kld_v1', initial_prior_option='off', initial_prior=None):
         if option not in ('off', OPTION) or method != METHOD:
             raise ValueError('UNKNOWN_AMCL_OPTION')
         if calibration.get('truth_inputs') != 0:
             raise ValueError('OWN_CALIBRATION_REQUIRED')
-        if profile not in ('calibrated_kld_v1','fixed_population_v1','nav2_sigma_fixed_v1','likelihood_product_v1'):
+        if profile not in ('calibrated_kld_v1','fixed_population_v1','nav2_sigma_fixed_v1','likelihood_product_v1','nav2_defaults_v1'):
             raise ValueError('UNKNOWN_AMCL_PROFILE')
+        from harness.mapbuild_start_zone import OPTION as START_ZONE, sample
+        if initial_prior_option not in ('off', START_ZONE):
+            raise ValueError('UNKNOWN_INITIAL_PRIOR_OPTION')
+        if initial_prior_option == 'off' and initial_prior is not None:
+            raise ValueError('EXPLICIT_START_ZONE_TOGGLE_REQUIRED')
+        if initial_prior_option != 'off' and (initial_prior is None or profile != 'nav2_defaults_v1'):
+            raise ValueError('COARSE_START_ZONE_AND_NAV2_DEFAULTS_REQUIRED')
+        self.initial_prior_option = initial_prior_option
+        self.start_zone_id = initial_prior.get('zone_id') if isinstance(initial_prior, dict) else None
         self.profile=profile
         # Controlled standard settings, not a new matcher: min=max=100000
         # is Nav2's fixed-population MCL setting. .2m is its documented sigma.
         self.minimum_particles=2000 if profile=='calibrated_kld_v1' else 100000
+        self.maximum_particles=100000
+        # Nav2 official configuring_amcl: min/max=500/2000, sigma=.2,
+        # recovery alpha slow/fast=0/0. This new explicit profile preserves
+        # every historical profile byte-for-byte; no GT fitting or beam cap
+        # invented here. Upstream cubic sum can use 96 beams on 96 slots.
+        if profile == 'nav2_defaults_v1':
+            self.minimum_particles, self.maximum_particles = 500, 2000
+        self.alpha_slow, self.alpha_fast = ((0., 0.) if profile == 'nav2_defaults_v1' else (.001, .1))
         self.option = option; self.method = method
         self.field = StaticField(static_map); self.rng = np.random.default_rng(seed)
         self.alphas = np.asarray(calibration['alphas'], float)
@@ -72,10 +89,14 @@ class StaticAMCL:
         # sigma directly (not fitted to these replays). It is NOT a confidence
         # bound or proof of sensor Gaussianity. The prior diagnostic used GT
         # only to measure scan error, not to fit motion or initialize poses.
-        self.sigma_hit = .2 if profile=='nav2_sigma_fixed_v1' else .0202
+        self.sigma_hit = .2 if profile in ('nav2_sigma_fixed_v1', 'nav2_defaults_v1') else .0202
         self.requirements = requirements
-        self.particles = self.uniform_free(100000) if option != 'off' else None
-        self.weights = np.ones(100000)/100000 if self.particles is not None else None
+        if initial_prior_option != 'off':
+            initial = sample(self.field, static_map, initial_prior, self.rng, self.maximum_particles)
+            self.particles = initial if option != 'off' else None
+        else:
+            self.particles = self.uniform_free(self.maximum_particles) if option != 'off' else None
+        self.weights = np.ones(len(self.particles))/len(self.particles) if self.particles is not None else None
         self.odom = np.zeros(3); self.sensor_odom = np.zeros(3)
         self.slow = self.fast = 0.; self.last_t = None; self.updated = False
         self.local_map = []; self.ledger = []; self.last_map_t = -math.inf
@@ -162,8 +183,8 @@ class StaticAMCL:
         total = float(self.weights@values); avg = total/len(self.weights)
         self.weights *= values; self.weights /= total
         # Published augmented-MCL defaults in existing UGRP port, .001/.1.
-        self.slow = avg if self.slow==0 else self.slow+.001*(avg-self.slow)
-        self.fast = avg if self.fast==0 else self.fast+.1*(avg-self.fast)
+        self.slow = avg if self.slow==0 else self.slow+self.alpha_slow*(avg-self.slow)
+        self.fast = avg if self.fast==0 else self.fast+self.alpha_fast*(avg-self.fast)
         injection = max(0., 1-self.fast/self.slow) if self.slow>0 else 0.
         ess = float(1/np.sum(self.weights*self.weights))
         row.update(attempted=True, reason='posterior_unresolved', pre_resample_ess=ess,
@@ -171,7 +192,7 @@ class StaticAMCL:
                 point_checks=len(self.particles)*int(np.isfinite(points[::max(1,math.ceil(len(points)/60) if self.profile=='likelihood_product_v1' else (len(points)-1)//59)]).all(axis=1).sum()), wall_seconds_used_as_gate=0))
         # Standard adaptive resampling each sensor update, Nav2 interval=1.
         self.particles, stats = nav2.resample(self.particles, self.weights, self.rng,
-            self.uniform_free, injection, minimum=self.minimum_particles)
+            self.uniform_free, injection, minimum=self.minimum_particles, maximum=self.maximum_particles)
         self.weights = np.ones(len(self.particles))/len(self.particles)
         if injection>0:
             self.slow=self.fast=0.

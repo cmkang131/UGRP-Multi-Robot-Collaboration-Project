@@ -31,7 +31,13 @@ def run(a):
     if len(saved)!=len(own) or len(scans)!=len(own):raise ValueError('FRAME_COUNT_MISMATCH')
     if [r['frame_id'] for r in saved]!=[f['frame_id'] for f in own]:raise ValueError('EXACT_FRAME_JOIN_REQUIRED')
     calibration=read(a.calibration);req=read(a.requirements)
-    amcl=StaticAMCL(read(a.input/'static-map.json'),calibration,req,option=OPTION,seed=a.seed,profile=a.profile)
+    initial=getattr(a,'initial_prior',None)
+    prior_kwargs={}
+    if initial is not None:
+        manifest=read(initial)
+        if manifest['static_map_sha256']!=sha(a.input/'static-map.json'):raise ValueError('START_ZONE_MAP_HASH_MISMATCH')
+        prior_kwargs=dict(initial_prior_option='start_zone_prior_v1',initial_prior=manifest['prior'])
+    amcl=StaticAMCL(read(a.input/'static-map.json'),calibration,req,option=OPTION,seed=a.seed,profile=a.profile,**prior_kwargs)
     from harness.mapbuild_command_prior import CommandPrior,OPTION as COMMAND
     from harness.selfmap_map_correction import SelfMapCorrection
     prior=CommandPrior(read(a.command_model),option=COMMAND)
@@ -68,10 +74,12 @@ def run(a):
     dump(a.output/'rejection_table.json',dict(stages=stages,source=str(a.input),reproduction=sys.argv,
         distribution=[dict(category='static_amcl',reason=k,n=v,blocked_object='observed_wall_or_global_ambiguity',minimum_gap_m=None,gap_status='not_measured') for k,v in reasons.items()]))
     sources=[a.input/'own.json',a.input/'static-map.json',a.saved/'trajectory.json',scan_path,a.command_model,a.input/'commands.json',a.calibration,a.requirements,a.queue,a.stack_check,root/'configs/current_stack.json',root/'harness/mapbuild_amcl.py',root/'harness/mapbuild_amcl_vendor/algorithms.py',Path(__file__)]
+    if initial is not None:sources.extend([initial,root/'harness/mapbuild_start_zone.py'])
     dump(a.output/'prediction-seal.json',dict(input_sha256={str(p):sha(p) for p in sources},prediction_sha256={p.name:sha(p) for p in a.output.iterdir() if p.is_file()},truth_inputs=0,top_inputs=0,held_world_reads=0,spawn_inputs=0,seed=a.seed,scale=1))
     summary=dict(status='PREDICTIONS_SEALED_UNSCORED',raw=str(a.input),saved=str(a.saved),frames=len(rows),method=METHOD,profile=a.profile,map_correction=OPTION,
         measured_updates=len(attempts),ready_updates=len(ready),first_converged_sim_s=ready[0]['t'] if ready else None,
-        motion_sources=dict(motion_sources),full_posterior=amcl.current,own_map_frames=len(amcl.local_map),rejection_table=str(a.output/'rejection_table.json'),truth_inputs=0,seed=a.seed)
+        motion_sources=dict(motion_sources),full_posterior=amcl.current,own_map_frames=len(amcl.local_map),rejection_table=str(a.output/'rejection_table.json'),truth_inputs=0,seed=a.seed,
+        initial_prior_option=amcl.initial_prior_option,start_zone_id=amcl.start_zone_id)
     dump(a.output/'summary.json',summary);print(json.dumps(summary),flush=True)
 
 

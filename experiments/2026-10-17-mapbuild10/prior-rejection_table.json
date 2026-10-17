@@ -1,0 +1,52 @@
+{
+  "scope": "BEFORE estimator changes; mapbuild9 post-seal rejection and support audit",
+  "source": "/home/ugrp/ugrp-sim/ops-reviews/mapbuild10",
+  "stages": [
+    {
+      "stage": "saved_frames",
+      "cumulative_pass_n": 1044,
+      "rejected_n": 0
+    },
+    {
+      "stage": "wall_visible_mapbuild9",
+      "cumulative_pass_n": 805,
+      "rejected_n": 239
+    },
+    {
+      "stage": "sensor_updates_mapbuild9_product",
+      "cumulative_pass_n": 106,
+      "rejected_n": 699
+    },
+    {
+      "stage": "offline_recording_accepted",
+      "cumulative_pass_n": 0,
+      "rejected_n": 3
+    }
+  ],
+  "units": "first 3 stages frames; final recording gate separately 3->0",
+  "distribution": [
+    {
+      "reason_category": "finite_support_likelihood_collapse",
+      "reason": "R3 first product update removes valid-budget particles despite highest likelihood at exact evaluation pose",
+      "n": 1,
+      "blocked_object": "authored_walls_nearest_only",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "reason_category": "wrong_convergence",
+      "reason": "R2/R3 product-model proposals outside fixed handoff budget",
+      "n": 6,
+      "blocked_object": "static_map_aliases",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    }
+  ],
+  "source_tables": [
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild10/measurement-r1.json",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild10/measurement-r2.json",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild10/measurement-r3.json"
+  ],
+  "support_table": "/home/ugrp/ugrp-sim/ops-reviews/mapbuild10/support-models.json",
+  "reproduction": "scripts/mapbuild10_measurement_audit.py (argv recorded in each full frame table)"
+}
