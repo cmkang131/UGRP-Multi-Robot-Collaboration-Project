@@ -24,9 +24,11 @@
 각 ZIP 24파일: `model.safetensors`·`config.json`·`adapter.json`·`SHA256.json`, `comparison-protocol.json`·`training-summary.json`·`dataset-manifest.json(.zst)`, `inference/`(bundled ACT runtime·정책·입력계약·로더), `environment.json`·`provenance.json`·`README.md`.
 포함하지 않음: 옵티마이저 상태, raw 시연 전체, 학습 로그 원본.
 
-## 검증
-- 공개 재다운로드·전체 파일 SHA-256·CPU 로딩: 아래 `public-verification.json`(익명 다운로드, 고정 ACT 환경 CPU load_model.py).
-- 이 검증은 배포·로딩 확인이며 물리 성공이나 일반화 결과가 아닙니다.
+## 검증 (2026-10-17 완료)
+- 새 checkout `e91d418097d3104c457211dc8c44b8b7d2534d80`에서 익명으로 2 ZIP을 다시 받아 archive SHA·크기(191,989,583 / 192,343,472 bytes)가 일치함을 확인했습니다.
+- 내부 파일은 각 24/24개, 총 207,592,611 / 207,969,467 bytes의 SHA-256이 전부 일치했습니다.
+- 고정 ACT 환경에서 bundled CPU 로더가 R8 `ready=true, chunk=8` · R100 `ready=true, chunk=100`(bundled inference library·bundled ACT runtime 사용)을 반환했습니다.
+- 기록: `public-verification.json`(registry sha256 `b5e7b094b6c8e11a9f2ae73a1ceed8302d0627c296ea3697d1b04ab71f270253`). 이 검증은 배포·로딩 확인이며 물리 성공이나 일반화 결과가 아닙니다.
 
 ## 미검증 범위
 - 실제 임무 성공 0/4(TRAIN4), VAL8·FINAL40 미실행
