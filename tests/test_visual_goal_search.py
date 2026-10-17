@@ -92,15 +92,15 @@ def test_state_machine_look_wall_follow_gap_and_arrival():
     assert s.stage == 'target' and a['exact_turn'] == 1
     obs = s.memory_observation(1.0, (0.8, 0.0), dict(pixels=900))
     assert obs['kind'] == 'destination_zone' and s.found
-    mem = [dict(relative_xy_m=[0.45, 0.0], range_m=0.45, bearing_rad=0.0, age_s=0.0,
-                covariance_m2=_point_covariance((0.45, 0.0)).tolist())]
+    mem = [dict(relative_xy_m=[0.08, 0.0], range_m=0.08, bearing_rad=0.0, age_s=0.0,
+                covariance_m2=_point_covariance((0.08, 0.0)).tolist())]
     p = dict(pixels=4000, bearing_rad=0.0, nearest_range_m=0.4, lower_centre_pixels=900,
              relative_xy_m=[0.4, 0.0], range_m=0.4)
     a = s.control(1.1, paint=p, walls=(), obstacles=(), memories=mem, patch_ok=True,
-                  patch_xy=(0.45, 0.0))
+                  patch_xy=(0.08, 0.0))
     assert s.stage == 'approach'
     a = s.control(1.2, paint=p, walls=(), obstacles=(), memories=mem, patch_ok=True,
-                  patch_xy=(0.45, 0.0))
+                  patch_xy=(0.08, 0.0))
     assert s.arrived and a['stop']
     # Empty scan (no wall foot projectable at long range): drive the initial
     # heading until the wall enters the 1.6 m fitted range.

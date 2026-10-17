@@ -662,9 +662,11 @@ class VisualGoalSearch:
             self.reacquire_pulses = None
         on_paint = (paint.get('lower_centre_pixels', 0) >= 700
                     and paint.get('nearest_range_m', 99.) <= .55)
-        # Freshness is required for a place claim: preflight r2 declared arrival
-        # on a 32 s old ghost while no paint had been seen for 5.8 s.
-        if on_paint and rng <= .55 and fresh:
+        # The remembered point is the median of *visible* paint, which can sit
+        # only ~0.18 m inside the near edge (preflight r3 e13: patch x 4.48 vs
+        # zone edge 4.30).  Stopping 0.25-0.55 m short therefore declared a
+        # place while the base was still outside.  Drive to the point itself.
+        if on_paint and rng <= .10 and fresh:
             self.arrived = True
             self.event(t, 'arrival_inside_paint_hypothesis', category='arrival',
                        blocked_object='not_observed', memory_range_m=rng,
@@ -674,7 +676,7 @@ class VisualGoalSearch:
             return self._result(0., 0., 0., exact_turn=(+1 if bearing > 0 else -1))
         if rng > .50:
             return self._result(.45 if rng > 1.0 else .28, 0., 0.)
-        if fresh and rng > .25:
+        if fresh and rng > .10:
             return self._result(.18, 0., 0.)
         if fresh:
             self.arrived = True
