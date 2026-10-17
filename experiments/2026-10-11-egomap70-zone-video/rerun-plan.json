@@ -1,0 +1,58 @@
+{
+  "class": "milestone",
+  "pr": 405,
+  "source_sha": "f26d9322c48eadbe2b28777ac1f07684ca03e124",
+  "seed": 63003,
+  "condition": "calib_traversed_zone",
+  "checkpoint_sha256": "fbb1159a172daa9b4151fbd05ba74dda29d9d9f65b908ee08db8d0f041dc4824",
+  "criteria": {
+    "original_match": "exact sha256 commands.jsonl, own-controller.jsonl, result.json; n/3",
+    "truth_B": "declared chassis center inside GT B, evaluator only",
+    "true_return": "actual distance to original start <=0.2m at declaration",
+    "final_error": "original and rerun final own-pose estimation error, independent rows"
+  },
+  "video": {
+    "speed": 8,
+    "observer": "passive evaluator from rerun frames; overview + r3 own RGB; B boundary and return origin",
+    "prefix_video": false,
+    "start_sim_s": 15.5
+  },
+  "host": "azure",
+  "core": 0,
+  "floor_gib": {
+    "azure": 8,
+    "arm": 25,
+    "mac": 20
+  },
+  "arm_wave2_audit": "wave2-audit.json",
+  "startup_attempts": [
+    {
+      "run": "egomap70view-calib_traversed_zone-s63003",
+      "status": "HOST_ERROR_PREFLIGHT",
+      "physics_started": false,
+      "cause": "source deploy omitted PNG; added original committed assets"
+    },
+    {
+      "run": "egomap70view-calib_traversed_zone-s63003-r2",
+      "status": "HOST_ERROR_CHECKPOINT_IMPORT",
+      "physics_frames": 0
+    },
+    {
+      "run": "egomap70view-calib_traversed_zone-s63003-r3",
+      "status": "HOST_ERROR_PREFIX_RGB",
+      "physics_frames": 0
+    }
+  ],
+  "driver_sha": "52db3d6c",
+  "host_adaptations": [
+    "Azure resource admission only, CPU0; original module bytes f26d9322",
+    "checkpoint import file paths relocated; serialized checkpoint unchanged",
+    "archived XML texture paths relocated in evaluation renderer only",
+    "missing prefix JPEGs reconstructed from original issued commands: exact SHA-256 71/71 before controller admission"
+  ],
+  "references": [
+    "scripts/dev_pair_checkpoint.py:439 restore + stream prefix SHA-256 verification",
+    "scripts/dev_pair_checkpoint.py:296 load_module_table",
+    "scripts/replay_egomap70_overview.py recorded-command replay order"
+  ]
+}

@@ -4,6 +4,8 @@ import bisect
 import hashlib
 import itertools
 import json
+import os
+import re
 import shutil
 import subprocess
 
@@ -33,7 +35,14 @@ class Video:
         import numpy as np
         from PIL import ImageFont
         self.mj,self.np=mujoco,np;self.title,self.robots=title,robots
-        self.model=mujoco.MjModel.from_xml_path(str(host.out/'scene.xml'))
+        source=os.environ.get('UGRP_OVERVIEW_SOURCE')
+        if source:
+            # Evaluation model only: resolve retained XML assets on a new host.
+            xml=(host.out/'scene.xml').read_text()
+            xml=re.sub(r'/home/ubuntu/ugrp-sim/src/[0-9a-f]{40}/',str(Path(source))+'/',xml)
+            self.model=mujoco.MjModel.from_xml_string(xml)
+        else:
+            self.model=mujoco.MjModel.from_xml_path(str(host.out/'scene.xml'))
         self.model.vis.global_.offwidth=max(960,self.model.vis.global_.offwidth)
         self.model.vis.global_.offheight=max(420,self.model.vis.global_.offheight)
         self.model.vis.global_.fovy=32
@@ -45,8 +54,9 @@ class Video:
         self.camera.distance=8.6;self.camera.azimuth=90.;self.camera.elevation=-65.
         self.B=static['regions']['zone_B'];self.trace=own_trace;self.origin=origin
         self.return_valid=return_valid;self.actual_path=[];self.estimated_path=[]
-        self.font=ImageFont.truetype('/home/ubuntu/ugrp-sim/s3view3-font.ttf',19)
-        self.small=ImageFont.truetype('/home/ubuntu/ugrp-sim/s3view3-font.ttf',17)
+        font=os.environ.get('UGRP_OVERVIEW_FONT','/home/ubuntu/ugrp-sim/s3view3-font.ttf')
+        self.font=ImageFont.truetype(font,19)
+        self.small=ImageFont.truetype(font,17)
         self.frames=0;self.next_t=host.now;self.output=host.out.parent/'overview.mp4'
         self.last=None
         self.process=subprocess.Popen([shutil.which('ffmpeg'),'-nostdin','-n','-v','error',
