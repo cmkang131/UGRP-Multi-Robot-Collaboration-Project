@@ -150,3 +150,23 @@ def test_doneb1_probe_provenance_is_registered_for_evaluation_only():
     scratch = _probe_provenance(candidate='act18-doneb1')
     scratch['probe']['packaging_eligible'] = True
     assert registered_pilot_checkpoint(scratch, 'a' * 64) is False
+
+
+def test_act18_std_scratch_probe_registers_without_init_checkpoint():
+    provenance = dict(candidate='act18-std', cohort='act18-v7-reference', training_complete=True,
+                      step=20000, protocol_sha256='a' * 64,
+                      probe=dict(kind='standard_aligned_scratch_v1', steps_override=20000,
+                                 packaging_eligible=False, base_smooth_window=5))
+    assert registered_pilot_checkpoint(provenance, 'a' * 64) is True
+    provenance['probe']['kind'] = 'init_aligned_finetune_v1'
+    assert registered_pilot_checkpoint(provenance, 'a' * 64) is False
+
+
+def test_standard_aligned_options_are_pilot_only_and_bounded():
+    assert validate_probe_options('act18-std', None, 20000, None, None, 0.5, 5, True) == 20000
+    with pytest.raises(ValueError, match='pilot options require'):
+        validate_probe_options('R100', None, None, None, None, None, 5, False)
+    with pytest.raises(ValueError, match=r'\[1, 21\]'):
+        validate_probe_options('act18-std', None, 20000, None, None, None, 0, False)
+    with pytest.raises(ValueError, match='requires --steps'):
+        validate_probe_options('act18-std', None, None, None, None, None, None, False)

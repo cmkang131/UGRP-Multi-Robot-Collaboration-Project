@@ -13,7 +13,7 @@ from act16w_runtime import require_gcp2, frozen_source, sha256, LEROBOT_ACT_SHA2
 from act17_data import library, read
 from act17_compact_records import original_sha256
 from act17_policy import observation_batch
-from act18_policy import (CANDIDATES, TUNE_CANDIDATE, PILOT_CANDIDATES, ReferenceDataset,
+from act18_policy import (CANDIDATES, TUNE_CANDIDATE, PILOT_CANDIDATES, PILOT_KINDS, ReferenceDataset,
                           WeightedReferenceDataset, done_positive_indices, make_policy, save_actor, Actor)
 from act18_diagnose import write
 
@@ -22,10 +22,11 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def validate_probe_options(candidate, init_checkpoint, steps, post_close_weight, pre_close_weight,
-                           done_positive_batch_fraction=None):
+                           done_positive_batch_fraction=None, base_smooth_window=None, val_select=False):
     """Default-off pilot options; never silently mixes with the R8/R100 reference pair."""
     supplied = [value is not None for value in
-                (init_checkpoint, steps, post_close_weight, pre_close_weight, done_positive_batch_fraction)]
+                (init_checkpoint, steps, post_close_weight, pre_close_weight, done_positive_batch_fraction,
+                 base_smooth_window)] + ([True] if val_select else [])
     if candidate in PILOT_CANDIDATES:
         if steps is None:
             raise ValueError(candidate+' requires --steps')
@@ -43,6 +44,13 @@ def validate_probe_options(candidate, init_checkpoint, steps, post_close_weight,
             raise ValueError('--done-positive-batch-fraction requires a pilot candidate')
         if not 0 <= done_positive_batch_fraction <= 1:
             raise ValueError('--done-positive-batch-fraction must be within [0, 1]')
+    if base_smooth_window is not None:
+        if candidate not in PILOT_CANDIDATES:
+            raise ValueError('--base-smooth-window requires a pilot candidate')
+        if type(base_smooth_window) is not int or not 1 <= base_smooth_window <= 21:
+            raise ValueError('--base-smooth-window must be an integer within [1, 21]')
+    if val_select and candidate not in PILOT_CANDIDATES:
+        raise ValueError('--val-select requires a pilot candidate')
     return steps
 
 
@@ -88,6 +96,14 @@ def main():
     # existing balanced BCE weights (0.5/prior vs 0.5/(1-prior) = 361:1) stay
     # the harness implementation, so action losses are unchanged.
     p.add_argument('--done-positive-batch-fraction', type=float)
+    # B2 standard alignment (default OFF): act-plus-plus smooths the mobile base
+    # action with a per-episode moving average at data-load time.
+    p.add_argument('--base-smooth-window', type=int)
+    # Checkpoint selection on validation episodes EXCLUDING the protocol VAL8
+    # seeds, so the later VAL8 gate is not used for selection.
+    p.add_argument('--val-select', action='store_true')
+    p.add_argument('--val-rows', type=int, default=256)
+    p.add_argument('--validate-every', type=int, default=1000)
     for name in ('dataset','protocol','out','queue'):
         p.add_argument('--'+name, type=Path, required=True)
     a = p.parse_args()
@@ -106,7 +122,8 @@ def main():
         raise ValueError('queue training_precision receipt and --precision must match')
     total_steps = validate_probe_options(a.candidate, a.init_checkpoint, a.steps,
                                          a.post_close_weight, a.pre_close_weight,
-                                         a.done_positive_batch_fraction) or protocol['steps']
+                                         a.done_positive_batch_fraction,
+                                         a.base_smooth_window, a.val_select) or protocol['steps']
     done_positive_fraction = a.done_positive_batch_fraction
     weighted = a.post_close_weight is not None or a.pre_close_weight is not None
     sampling = 'weighted_post_close_v1' if weighted else 'uniform_episode_v1'
@@ -115,7 +132,8 @@ def main():
                                         post_close_weight=a.post_close_weight,
                                         pre_close_weight=a.pre_close_weight)
     else:
-        data = ReferenceDataset(a.dataset, 'train', chunk=CANDIDATES[a.candidate])
+        data = ReferenceDataset(a.dataset, 'train', chunk=CANDIDATES[a.candidate],
+                                base_smooth_window=a.base_smooth_window)
     positive_indices = done_positive_indices(data) if done_positive_fraction is not None else None
     if (set(data.manifest['eligible_train_seeds'])!=set(protocol['train_seeds'])
             or original_sha256(a.dataset/'manifest.json')!=queue['dataset_manifest_sha256']):
@@ -142,6 +160,22 @@ def main():
         del state
     optimizer=torch.optim.AdamW(policy.get_optim_params(),lr=1e-5,weight_decay=1e-4)
     priors=data.completion_priors(sampling)
+    val_batches=None
+    if a.val_select:
+        # Selection data: validation episodes EXCLUDING the protocol VAL8 seeds,
+        # so the later VAL8 gate never selects the checkpoint.
+        val_data=ReferenceDataset(a.dataset,'validation',chunk=CANDIDATES[a.candidate],
+                                  base_smooth_window=a.base_smooth_window)
+        val8=set(protocol['validation8_seeds'])
+        selectable=[index for index,row in enumerate(val_data.metadata) if row['seed'] not in val8]
+        if len(selectable)<a.val_rows:
+            raise ValueError('insufficient non-VAL8 validation rows for selection')
+        val_generator=torch.Generator().manual_seed(protocol['seed']+1)
+        picked=[selectable[int(i)] for i in torch.randperm(len(selectable),generator=val_generator)[:a.val_rows].tolist()]
+        val_batches=[]
+        for start in range(0,len(picked),64):
+            batch={k:v.to('cuda') for k,v in torch.utils.data.default_collate([val_data[i] for i in picked[start:start+64]]).items()}
+            val_batches.append(batch)
     first=next(ep for ep in data.manifest['episodes'] if ep['split']=='train')
     obs=next(o for o in read(Path(first['source_capture'])/'student-r1.jsonl',lines=True)
              if o['sample_id']==data.metadata[0]['sample_id'])
@@ -162,8 +196,14 @@ def main():
         training_precision_scope=('fp32 weights/optimizer/grad clip; forward+loss bf16 autocast'
                                   if a.precision=='bf16_autocast_v1' else 'fp32 end-to-end'),
         static_map_use='none',wall_cap=None,optimizer_recipe='LeRobot AdamW defaults; no implicit resume')
-    if init_receipt is not None:
-        config.update(probe=dict(kind='init_aligned_finetune_v1',init_checkpoint=init_receipt,
+    if a.candidate in PILOT_CANDIDATES:
+        if done_positive_fraction is not None:
+            probe_kind='done_positive_balanced_finetune_v1'
+        elif a.init_checkpoint is not None:
+            probe_kind='init_aligned_finetune_v1'
+        else:
+            probe_kind='standard_aligned_scratch_v1'
+        probe=dict(kind=probe_kind,init_checkpoint=init_receipt,
             steps_override=a.steps if a.steps is not None else None,
             post_close_weight=a.post_close_weight,pre_close_weight=a.pre_close_weight,sampling=sampling,
             post_close_phases=['grasp:'+phase for phase in ('lift','lift_settle','lookback_pose','lookback','lookback_settle','verify_lift','hold')],
@@ -171,7 +211,10 @@ def main():
             other_rows_weight=1.0,
             packaging_eligible=False,
             done_positive_batch_fraction=done_positive_fraction,
-            note='short default-off diagnostic probe; never packaged or pooled with R8/R100'))
+            base_smooth_window=a.base_smooth_window,
+            val_select=a.val_select,
+            note='short default-off pilot probe; never packaged or pooled with R8/R100')
+        config.update(probe=probe)
     report=dict(**config,status='running',complete=False,steps_completed=0,
         started_utc=datetime.now(timezone.utc).isoformat(),TRAIN_rows=len(data),
         TRAIN_starts=len(data.episode_indices),readback_verified=False,checkpoints=[])
@@ -183,6 +226,15 @@ def main():
     for sig in (signal.SIGINT,signal.SIGTERM):
         signal.signal(sig,lambda *_:stop.update(requested=True))
     save_steps=(10000,50000,100000) if a.steps is None else (total_steps,)
+    best_val={'loss':float('inf'),'step':None,'state':None}
+
+    def validation_loss():
+        policy.eval();total=0.;count=0
+        with torch.inference_mode():
+            for batch in val_batches:
+                value,_=policy_loss(policy,batch,mode='balanced_bce_v1',stats=data.stats,priors=priors)
+                size=batch['action'].shape[0];total+=float(value)*size;count+=size
+        policy.train();return total/count
     started=time.monotonic()
     try:
         with (a.out/'progress.jsonl').open('x') as stream:
@@ -207,6 +259,13 @@ def main():
                 # Same existing LeRobot training gradient clip1.0; no new motion/acceptance threshold.
                 norm=torch.nn.utils.clip_grad_norm_(policy.parameters(),1.,error_if_nonfinite=True)
                 optimizer.step()
+                if val_batches is not None and (step%a.validate_every==0 or step==total_steps):
+                    value=validation_loss()
+                    history=report.setdefault('val_history',[])
+                    history.append(dict(step=step,val_loss=value))
+                    if value<best_val['loss']:
+                        best_val=dict(loss=value,step=step,
+                            state={k:t.detach().cpu().clone() for k,t in policy.state_dict().items()})
                 if step==1 or step%100==0:
                     row=dict(step=step,loss=float(loss),**metrics,gradient_norm=float(norm),wall_s=time.monotonic()-started)
                     stream.write(json.dumps(row)+'\n');stream.flush()
@@ -228,6 +287,21 @@ def main():
                     del restored
                     report['checkpoints'].append(dict(step=step,path=str(folder),sha256=sha256(folder/'model.safetensors'),readback_verified=True))
                     write(a.out/'summary.json',report)
+        if best_val['state'] is not None and best_val['step']!=total_steps:
+            policy.load_state_dict(best_val['state'])
+            folder=a.out/('step-'+str(total_steps)+'-best')
+            save_actor(policy,folder,data.stats,dict(**config,step=total_steps,training_complete=True,
+                val_selected_step=best_val['step'],val_selected_loss=best_val['loss']))
+            restored=Actor.load(folder,device='cuda')
+            inputs={k:torch.from_numpy(v.copy()).unsqueeze(0).to('cuda') for k,v in own.items()}
+            policy.eval()
+            with torch.inference_mode():
+                if not torch.equal(policy.predict_action_chunk(inputs),restored.policy.predict_action_chunk(inputs)):
+                    raise ValueError('saved prediction readback changed')
+            del restored
+            report['checkpoints'].append(dict(step=total_steps,path=str(folder),
+                sha256=sha256(folder/'model.safetensors'),readback_verified=True,selected='best_val'))
+            report['best_val']=dict(step=best_val['step'],loss=best_val['loss'],checkpoint=str(folder))
         report.update(status='complete',complete=True,readback_verified=True,
             checkpoint=report['checkpoints'][-1]['path'],checkpoint_sha256=report['checkpoints'][-1]['sha256'],
             peak_gpu_bytes=torch.cuda.max_memory_allocated())

@@ -20,12 +20,14 @@ from act17_policy import observation_batch
 # from the completed R8 100k checkpoint and optionally upweighting the
 # align..close demonstration segments. It is never a packaged comparison model
 # (adapter training_complete stays False because its step != protocol steps).
-CANDIDATES = {'R8': 8, 'R100': 100, 'act18-tune': 8, 'act18-doneb1': 100}
+CANDIDATES = {'R8': 8, 'R100': 100, 'act18-tune': 8, 'act18-doneb1': 100, 'act18-std': 20}
 TUNE_CANDIDATE = 'act18-tune'
 # Registered short pilot checkpoints (never 100k reference models, never packaged):
 # 'act18-tune' = post-close weighted 2k probe on R8; 'act18-doneb1' = done-only
 # 5k probe on R100 (pre-registered 2026-10-18 for Lead-approved B1).
-PILOT_CANDIDATES = ('act18-tune', 'act18-doneb1')
+PILOT_CANDIDATES = ('act18-tune', 'act18-doneb1', 'act18-std')
+PILOT_KINDS = ('init_aligned_finetune_v1', 'done_positive_balanced_finetune_v1',
+               'standard_aligned_scratch_v1')
 # Segment table frozen before the probe run (Lead 2026-10-18 instruction):
 # the post-close phases are where the student halts, pre-close phases are the
 # immediately preceding approach/alignment tail. Phase labels are the recorded
@@ -97,21 +99,42 @@ def extend_targets(actions, metadata, chunk):
 
 
 class ReferenceDataset(Dataset):
-    def __init__(self, root, split, *, chunk=8):
+    # First eight encoded action dims are the base command (wheel magnitude x4 +
+    # pulse duration x4); act-plus-plus applies a 5-sample moving average to the
+    # mobile base action at data-load time (utils.preprocess_base_action). The
+    # optional window keeps that standard alignment toggle default OFF.
+    BASE_ACTION_DIMS = 8
+
+    def __init__(self, root, split, *, chunk=8, base_smooth_window=None):
         super().__init__(root, split, image_mode='current_full_v1')
         if chunk not in CANDIDATES.values():
             raise ValueError('registered ACT chunk required')
+        if base_smooth_window is not None and (type(base_smooth_window) is not int or base_smooth_window < 1):
+            raise ValueError('base_smooth_window must be a positive integer')
         self.chunk = chunk
+        self.base_smooth_window = base_smooth_window
         offset = 0
         for shard in self.shards:
             n = len(shard['state'])
-            actions, pad = extend_targets(shard['action'][:, 0], self.metadata[offset:offset+n], chunk)
+            raw = shard['action'][:, 0]
+            if base_smooth_window is not None and base_smooth_window > 1:
+                kernel = np.ones(base_smooth_window, dtype=np.float64) / base_smooth_window
+                smoothed = np.array(raw, dtype=np.float64, copy=True)
+                for column in range(self.BASE_ACTION_DIMS):
+                    smoothed[:, column] = np.convolve(raw[:, column], kernel, mode='same')
+                target_source = smoothed.astype(np.float32)
+            else:
+                target_source = raw
+            actions, pad = extend_targets(target_source, self.metadata[offset:offset+n], chunk)
             # This is a new view over existing successful v7 recordings. Verify
             # byte-exact parity with all original horizons that still exist.
             common = min(chunk, shard['action'].shape[1])
-            if (not np.array_equal(actions[:, :common], shard['action'][:, :common])
-                    or not np.array_equal(pad[:, :common], shard['action_is_pad'][:, :common])):
-                raise ValueError('reconstructed future targets differ from original chunk8')
+            if base_smooth_window is None:
+                if (not np.array_equal(actions[:, :common], shard['action'][:, :common])
+                        or not np.array_equal(pad[:, :common], shard['action_is_pad'][:, :common])):
+                    raise ValueError('reconstructed future targets differ from original chunk8')
+            elif not np.array_equal(actions[:, :common, self.BASE_ACTION_DIMS:], shard['action'][:, :common, self.BASE_ACTION_DIMS:]):
+                raise ValueError('smoothed base action changed non-base targets')
             shard['action'], shard['action_is_pad'] = actions, pad
             offset += n
 
@@ -126,13 +149,22 @@ def registered_pilot_checkpoint(provenance, protocol_sha256):
     """
     probe = provenance.get('probe') or {}
     step = provenance.get('step')
-    receipt = probe.get('init_checkpoint') or {}
-    return bool(provenance.get('candidate') in PILOT_CANDIDATES
-                and probe.get('kind') == 'init_aligned_finetune_v1'
+    receipt = probe.get('init_checkpoint')
+    if receipt is not None and (not isinstance(receipt.get('model_sha256'), str)
+                                or len(receipt['model_sha256']) != 64):
+        return False
+    candidate = provenance.get('candidate')
+    kind = probe.get('kind')
+    init_kinds = ('init_aligned_finetune_v1', 'done_positive_balanced_finetune_v1')
+    if kind in init_kinds and not isinstance(receipt, dict):
+        return False
+    if kind == 'standard_aligned_scratch_v1' and candidate != 'act18-std':
+        return False
+    return bool(candidate in PILOT_CANDIDATES
+                and kind in PILOT_KINDS
                 and provenance.get('training_complete') is True
                 and probe.get('packaging_eligible') is False
                 and type(step) is int and step == probe.get('steps_override') and 1 <= step <= 20000
-                and isinstance(receipt.get('model_sha256'), str) and len(receipt['model_sha256']) == 64
                 and provenance.get('protocol_sha256') == protocol_sha256)
 
 

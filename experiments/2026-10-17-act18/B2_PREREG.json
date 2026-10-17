@@ -1,0 +1,44 @@
+{
+  "schema": "ugrp.act18.b2_prereg.v1",
+  "experiment": "2026-10-17-act18",
+  "phase": "B2",
+  "candidate": "act18-std",
+  "pre_registered_utc": "2026-10-18T05:35:00Z",
+  "approval": "Lead 2026-10-18 자율 진행 지시(사용자 15:00 KST 부재): B1 실패 시 즉시 B2, 추가 승인 불필요. 평가 계약 변경 금지, 새 녹화·카메라 변경·pooling 금지.",
+  "purpose": "Phase A 감사에서 확인된 연구표준 편차만 바로잡은 20k bf16 fit probe. B1(done-only)과 다른 축: 표준 chunk 시간스케일·base 이동평균·best-val 선택.",
+  "training": {
+    "from_scratch": true,
+    "steps": 20000,
+    "precision": "bf16_autocast_v1",
+    "batch_size": 8,
+    "lr": 1e-05,
+    "optimizer": "AdamW wd1e-4",
+    "kl_weight": 10,
+    "chunk": 20,
+    "chunk_rationale": "ALOHA/ACT chunk100은 50Hz에서 2.0s다. 우리 제어는 10Hz이므로 같은 시간 수평은 20틱(=2.0s)이다. R8(8=0.8s)·R100(100=10s)보다 표준 시간스케일에 가깝다.",
+    "execution": "매틱 재예측 + temporal ensemble k=.01 (ACT 논문/act-plus-plus --temporal_agg와 같은 방향, 기존 act18_evaluate 그대로)",
+    "seed": 20261017,
+    "data": "act17-v7/dataset-r1 TRAIN200 (manifest sha256 44c1c46073aa08ea028324ffe924b67d862a2f01b56f4db11afad17000a9b198)",
+    "base_smooth_window": 5,
+    "base_smooth_rationale": "act-plus-plus utils.preprocess_base_action = smooth_base_action(5-tap moving average) at data load. 우리는 wheel magnitude+duration 8차원(=base)에 같은 5-샘플 이동평균을 학습 표적에만 적용한다(추론 명령 후처리 변경 없음).",
+    "val_select": true,
+    "val_select_scope": "validation split 중 protocol validation8_seeds(88620-23,88644-47)를 제외한 32에피소드에서 고정 256행(seed+1 결정적) 손실로 선택. VAL8 시드는 선택에 사용하지 않는다.",
+    "validate_every": 1000,
+    "done_supervision": "B1과 동일(배치 50%에서 양성 done 행 1개 강제 포함, balanced BCE 공식 불변, 행동손실 불변). Phase A에서 done 감독이 버그급으로 분류되어 표준 정렬과 별개로 유지한다.",
+    "unchanged": ["batch 8", "lr 1e-5 AdamW wd1e-4", "KL 10", "mean/std floor .01", "ACT 이미지 aug 없음(표준)", "현재 RGB 1장(표준 관측1)", "자기 발행명령 state(사용자 입력 제약)"]
+  },
+  "evaluation": {
+    "stage": "train4",
+    "instrumentation": "--record-done-prob 유지",
+    "checkpoint": "best-val 선택 체크포인트(step-20000-best가 있으면 그 경로)",
+    "gate": "TRAIN4 4/4만 판정. 통과 시에만 VAL8 제출. FINAL40은 VAL8 통과·Lead 보고 후.",
+    "report": ["TRAIN4 n/N·funnel·원본/SHA", "done 확률 분포·문턱 .65 발화와 lift/hold 정렬", "best-val 곡선·선택 step", "행동 붕괴/정지 원인표(실패 시)"]
+  },
+  "pooling": {
+    "no_pooling_with": ["R8", "R100", "act18-tune", "act18-doneb1", "bf16 probe"],
+    "packaging": "금지(packaging_eligible=false, step=20000 != 100000)",
+    "release": "금지"
+  },
+  "phase_c_rule": "B2 TRAIN4 4/4 → Phase C co-training 100k 자동 진행(act16w 40 + act17-v7 240 + 근거리, 조건 토큰, Mobile ALOHA 2401.02117), TRAIN4→VAL8, FINAL40은 VAL8 통과·Lead 보고 후.",
+  "stop_after": "단계 사이 유휴 시 gcp2 정지, 결과·원본/SHA 기록."
+}
