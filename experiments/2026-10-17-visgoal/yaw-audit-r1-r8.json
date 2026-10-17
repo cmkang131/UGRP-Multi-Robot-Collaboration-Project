@@ -1,0 +1,376 @@
+{
+ "schema": "ugrp.visgoal.yaw_audit.v1",
+ "calibration": {
+  "path": "/home/ugrp/ugrp-sim/src/visgoal-3665508e8/experiments/2026-10-17-visgoal/vendor/own-command-calibration-r2.json",
+  "wheels": [
+   -0.35,
+   0.35,
+   -0.35,
+   0.35
+  ],
+  "duration_s": [
+   0.027857142857142865,
+   0.027857142857142865,
+   0.027857142857142865,
+   0.027857142857142865
+  ],
+  "interval_s": 0.1,
+  "mean_delta": [
+   -8.834147012334151e-05,
+   -0.00020642641055137426,
+   0.02292102597657116
+  ],
+  "qualified_servo": {
+   "1": 2000,
+   "3": 740,
+   "4": 2320,
+   "5": 1320,
+   "6": 1500
+  }
+ },
+ "runs": {
+  "/home/ugrp/ugrp-sim/runs/visgoal-gate-r1": {
+   "summary_status": "running",
+   "episodes": {
+    "e00": {
+     "ticks": 678,
+     "signatures": [
+      {
+       "wheels": [
+        -0.35,
+        0.35,
+        -0.35,
+        0.35
+       ],
+       "duration_s": [
+        0.0279,
+        0.0279,
+        0.0279,
+        0.0279
+       ],
+       "source": "own_command_motion_v1",
+       "n": 552,
+       "gt_sum": 13.493792,
+       "prior_sum": 12.652406,
+       "analytic_sum": 21.892896,
+       "gt_per_pulse": 0.024445,
+       "prior_per_pulse": 0.022921,
+       "analytic_per_pulse": 0.039661,
+       "prior_ratio": 0.9376,
+       "analytic_ratio": 1.6224
+      },
+      {
+       "wheels": [
+        0.35,
+        0.35,
+        0.35,
+        0.35
+       ],
+       "duration_s": [
+        0.1,
+        0.1,
+        0.1,
+        0.1
+       ],
+       "source": "nominal_6f_unqualified_native",
+       "n": 103,
+       "gt_sum": 0.020373,
+       "prior_sum": 0.0,
+       "analytic_sum": 0.0,
+       "gt_per_pulse": 0.000198,
+       "prior_per_pulse": 0.0,
+       "analytic_per_pulse": 0.0,
+       "prior_ratio": 0.0,
+       "analytic_ratio": 0.0
+      },
+      {
+       "wheels": [
+        0.35,
+        0.35,
+        0.35,
+        0.35
+       ],
+       "duration_s": [
+        0.0714,
+        0.0714,
+        0.0714,
+        0.0714
+       ],
+       "source": "nominal_6f_unqualified_native",
+       "n": 22,
+       "gt_sum": -0.001869,
+       "prior_sum": 0.0,
+       "analytic_sum": 0.0,
+       "gt_per_pulse": -8.5e-05,
+       "prior_per_pulse": 0.0,
+       "analytic_per_pulse": 0.0,
+       "prior_ratio": -0.0,
+       "analytic_ratio": -0.0
+      }
+     ]
+    },
+    "e01": {
+     "ticks": 7,
+     "signatures": [
+      {
+       "wheels": [
+        -0.35,
+        0.35,
+        -0.35,
+        0.35
+       ],
+       "duration_s": [
+        0.0279,
+        0.0279,
+        0.0279,
+        0.0279
+       ],
+       "source": "own_command_motion_v1",
+       "n": 6,
+       "gt_sum": 0.107549,
+       "prior_sum": 0.137526,
+       "analytic_sum": 0.237966,
+       "gt_per_pulse": 0.017925,
+       "prior_per_pulse": 0.022921,
+       "analytic_per_pulse": 0.039661,
+       "prior_ratio": 1.2787,
+       "analytic_ratio": 2.2126
+      }
+     ]
+    }
+   }
+  },
+  "/home/ugrp/ugrp-sim/runs/visgoal-preflight-r8": {
+   "summary_status": "DONE",
+   "episodes": {
+    "e00": {
+     "ticks": 601,
+     "signatures": [
+      {
+       "wheels": [
+        -0.35,
+        0.35,
+        -0.35,
+        0.35
+       ],
+       "duration_s": [
+        0.0279,
+        0.0279,
+        0.0279,
+        0.0279
+       ],
+       "source": "own_command_motion_v1",
+       "n": 358,
+       "gt_sum": 8.484476,
+       "prior_sum": 8.205727,
+       "analytic_sum": 14.198653,
+       "gt_per_pulse": 0.0237,
+       "prior_per_pulse": 0.022921,
+       "analytic_per_pulse": 0.039661,
+       "prior_ratio": 0.9671,
+       "analytic_ratio": 1.6735
+      },
+      {
+       "wheels": [
+        0.35,
+        0.35,
+        0.35,
+        0.35
+       ],
+       "duration_s": [
+        0.1,
+        0.1,
+        0.1,
+        0.1
+       ],
+       "source": "nominal_6f_unqualified_native",
+       "n": 199,
+       "gt_sum": -0.055046,
+       "prior_sum": 0.0,
+       "analytic_sum": 0.0,
+       "gt_per_pulse": -0.000277,
+       "prior_per_pulse": 0.0,
+       "analytic_per_pulse": 0.0,
+       "prior_ratio": -0.0,
+       "analytic_ratio": -0.0
+      },
+      {
+       "wheels": [
+        0.35,
+        -0.35,
+        0.35,
+        -0.35
+       ],
+       "duration_s": [
+        0.0279,
+        0.0279,
+        0.0279,
+        0.0279
+       ],
+       "source": "nominal_6f_unqualified_native",
+       "n": 40,
+       "gt_sum": -1.020428,
+       "prior_sum": -1.586442,
+       "analytic_sum": -1.586442,
+       "gt_per_pulse": -0.025511,
+       "prior_per_pulse": -0.039661,
+       "analytic_per_pulse": -0.039661,
+       "prior_ratio": 1.5547,
+       "analytic_ratio": 1.5547
+      },
+      {
+       "wheels": [
+        0.35,
+        0.35,
+        0.35,
+        0.35
+       ],
+       "duration_s": [
+        0.0857,
+        0.0857,
+        0.0857,
+        0.0857
+       ],
+       "source": "nominal_6f_unqualified_native",
+       "n": 2,
+       "gt_sum": -0.000756,
+       "prior_sum": 0.0,
+       "analytic_sum": 0.0,
+       "gt_per_pulse": -0.000378,
+       "prior_per_pulse": 0.0,
+       "analytic_per_pulse": 0.0,
+       "prior_ratio": -0.0,
+       "analytic_ratio": -0.0
+      },
+      {
+       "wheels": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+       ],
+       "duration_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+       ],
+       "source": "nominal_6f_unqualified_native",
+       "n": 1,
+       "gt_sum": -0.008449,
+       "prior_sum": 0.0,
+       "analytic_sum": 0.0,
+       "gt_per_pulse": -0.008449,
+       "prior_per_pulse": 0.0,
+       "analytic_per_pulse": 0.0,
+       "prior_ratio": -0.0,
+       "analytic_ratio": -0.0
+      }
+     ]
+    },
+    "e01": {
+     "ticks": 118,
+     "signatures": [
+      {
+       "wheels": [
+        0.35,
+        0.35,
+        0.35,
+        0.35
+       ],
+       "duration_s": [
+        0.0514,
+        0.0514,
+        0.0514,
+        0.0514
+       ],
+       "source": "nominal_6f_unqualified_native",
+       "n": 70,
+       "gt_sum": 0.027399,
+       "prior_sum": 0.0,
+       "analytic_sum": 0.0,
+       "gt_per_pulse": 0.000391,
+       "prior_per_pulse": 0.0,
+       "analytic_per_pulse": 0.0,
+       "prior_ratio": 0.0,
+       "analytic_ratio": 0.0
+      },
+      {
+       "wheels": [
+        0.35,
+        0.35,
+        0.35,
+        0.35
+       ],
+       "duration_s": [
+        0.08,
+        0.08,
+        0.08,
+        0.08
+       ],
+       "source": "nominal_6f_unqualified_native",
+       "n": 31,
+       "gt_sum": -0.011075,
+       "prior_sum": 0.0,
+       "analytic_sum": 0.0,
+       "gt_per_pulse": -0.000357,
+       "prior_per_pulse": 0.0,
+       "analytic_per_pulse": 0.0,
+       "prior_ratio": -0.0,
+       "analytic_ratio": -0.0
+      },
+      {
+       "wheels": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+       ],
+       "duration_s": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+       ],
+       "source": "nominal_6f_unqualified_native",
+       "n": 9,
+       "gt_sum": 0.004473,
+       "prior_sum": 0.0,
+       "analytic_sum": 0.0,
+       "gt_per_pulse": 0.000497,
+       "prior_per_pulse": 0.0,
+       "analytic_per_pulse": 0.0,
+       "prior_ratio": 0.0,
+       "analytic_ratio": 0.0
+      },
+      {
+       "wheels": [
+        0.35,
+        -0.35,
+        0.35,
+        -0.35
+       ],
+       "duration_s": [
+        0.0279,
+        0.0279,
+        0.0279,
+        0.0279
+       ],
+       "source": "nominal_6f_unqualified_native",
+       "n": 7,
+       "gt_sum": -0.16741,
+       "prior_sum": -0.277627,
+       "analytic_sum": -0.277627,
+       "gt_per_pulse": -0.023916,
+       "prior_per_pulse": -0.039661,
+       "analytic_per_pulse": -0.039661,
+       "prior_ratio": 1.6584,
+       "analytic_ratio": 1.6584
+      }
+     ]
+    }
+   }
+  }
+ },
+ "scope": "eval-only yaw used for the audit only; no controller input; signed per-signature sums over consecutive frames"
+}

@@ -156,6 +156,49 @@ committed here.
 The gate's pre-registered 120 s cap covers the crossing and the subsequent
 east search; `cap_end` is still labelled separately in the gate report.
 
+## Yaw audit and mirror-pulse candidate (gate r1/r8 raw)
+
+`scripts/visgoal_yaw_audit.py` (stdlib, read-only) groups recorded ticks by the
+exact issued command signature and motion source and compares the controller's
+own-command yaw with the sign-wrapped eval-only GT yaw. The GT yaw is read only
+for this audit; it is never a controller input, and the recorded runs/verdicts
+are unchanged. Result file `yaw-audit-r1-r8.json`:
+
+| run | signature | n | GT yaw/pulse | prior yaw/pulse | ratio |
+|---|---|---:|---:|---:|---:|
+| gate r1 e00 | calibrated left pulse, `own_command_motion_v1` | 552 | 0.024445 | 0.022921 | 0.94 |
+| r8 e00 | calibrated left pulse, `own_command_motion_v1` | 358 | 0.023700 | 0.022921 | 0.97 |
+| r8 e00 | mirrored right pulse, `nominal_6f_unqualified_native` | 40 | -0.025511 | -0.039661 | **1.55** |
+| r8 e01 | mirrored right pulse, `nominal_6f_unqualified_native` | 7 | -0.023916 | -0.039661 | **1.66** |
+
+The analytic wheel model over-predicts pure-rotation yaw 1.55-1.66x, but only
+where `CommandPrior` cannot match the calibration. The calibrated left pulse
+(-0.35, 0.35, -0.35, 0.35, 0.02786 s, qualified servo) tracks GT at 0.94-0.97x;
+the exact mirrored right pulse (0.35, -0.35, 0.35, -0.35) has no calibration
+entry and falls back to the analytic model. Forward drive signatures have
+|GT yaw/pulse| <= 0.0005 rad and no measurable bias.
+
+Candidate B `visgoal_mirror_pulse_v1` (default off, `sim/visual_goal_search.py`
+`mirrored_pulse_delta`) mirrors the calibrated delta and covariance
+(`S P S`, `S = diag(1, -1, -1)`) only when the issued command is the exact
+negation of the calibrated pulse under the same qualified servo state and
+interval, and only when the prior would otherwise use the nominal fallback. It
+introduces no new constant and changes only the motion prediction, not the
+issued command. The runner enables it from the queue's `toggles` object (or
+`--mirror-pulse`) and records the applied value in `stack.json`; the name was
+dup-checked against all remote branches. Candidate B is queued with the same 16
+starts after gate r2 and its results are not pooled with the default (mirror
+off) gate run.
+
+## Gate r2 (16 starts)
+
+Gate r2 (`visgoal-gate-r2`, source `cc2c9cfd9`, 16 starts, 120 SIM s each,
+prior funnel = preflight r8) started at 13:01Z on gcp3. It runs the default
+mirror-off configuration, so it is the unpooled baseline for candidate B.
+Results are added here only after the run is complete and independently
+recounted from the raw files; a `cap_end` episode is reported separately and
+not counted as a failure.
+
 ## Files
 
 * `setups.json` — 16 fixed starts (setup only; includes parked

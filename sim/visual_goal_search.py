@@ -30,6 +30,7 @@ import numpy as np
 from harness.zone_own_perception import PAINT_HUE, SLOT_MAX_RANGE_M, _usable_region
 
 OPTION = 'visual_goal_search_v1'
+MIRROR_OPTION = 'visgoal_mirror_pulse_v1'
 CHI2_95 = 5.991464547107979
 TURN_STEP_RAD = 0.022921          # own-command calibration r2, one exact pulse
 TURN_PULSE_WHEELS = (-.35, .35, -.35, .35)
@@ -64,6 +65,61 @@ def signed_turn_wheels(direction, calibrated):
     """Apply the r2 positive-yaw pulse in the requested signed direction."""
     sign = 1. if float(direction) > 0 else -1.
     return [sign * float(w) for w in calibrated]
+
+
+def mirrored_pulse_delta(command, calibration, servo, previous_servo,
+                         interval_s):
+    """Calibrated own-motion delta for the exact mirror of the r2 turn pulse.
+
+    Calibration r2 records only the left (positive-yaw) pulse
+    ``TURN_PULSE_WHEELS``.  ``CommandPrior`` matches that exact signature and
+    uses the calibrated delta, but the mirrored right pulse does not match and
+    falls back to the analytic wheel model.  On the recorded gate-r1 and
+    preflight-r8 raw (``scripts/visgoal_yaw_audit.py``) the analytic fallback
+    over-predicted pure-rotation yaw by 1.55-1.66x, while the calibrated pulse
+    itself tracked the eval-only yaw within 0.94-0.97x.  Mirroring a wheel
+    command negates lateral displacement and yaw, so the mirrored delta is
+    ``diag(1,-1,-1) @ mean_delta`` and its covariance ``S P S``.  No new
+    measured constant is introduced and the default-off toggle only changes
+    the prior, never the issued command.
+
+    Returns ``None`` unless the issued command is the exact negation of the
+    calibrated pulse under the same qualified servo state and interval.
+    Ground truth is not an argument; the mirror relation is kinematic.
+    """
+    if not command or not calibration:
+        return None
+    try:
+        qualified = {int(k): int(v)
+                     for k, v in calibration['qualified_servo'].items()}
+        current = {int(k): int(v) for k, v in dict(servo).items()}
+        before = {int(k): int(v) for k, v in dict(previous_servo).items()}
+        if current != qualified or before != qualified:
+            return None
+        if abs(float(interval_s) - float(calibration['interval_s'])) > 1e-9:
+            return None
+        wheels = [round(float(w), 6) for w in command['wheels']]
+        calibrated = [round(float(w), 6) for w in calibration['wheels']]
+        if wheels != [-w for w in calibrated]:
+            return None
+        duration = sorted(round(float(d), 9)
+                          for d in command['duration_s'])
+        expected = sorted(round(float(d), 9)
+                          for d in calibration['duration_s'])
+        if duration != expected:
+            return None
+        mean = [float(v) for v in calibration['mean_delta']]
+        cov = [[float(v) for v in row]
+               for row in calibration['predictive_covariance']]
+    except (KeyError, TypeError, ValueError):
+        return None
+    sign = (1., -1., -1.)
+    mirrored = [sign[i] * mean[i] for i in range(3)]
+    mirrored_cov = [[sign[i] * cov[i][j] * sign[j] for j in range(3)]
+                    for i in range(3)]
+    return dict(delta=mirrored, covariance=mirrored_cov,
+                source=MIRROR_OPTION, reason='exact_mirror_of_calibrated_pulse',
+                calibration_sha256=calibration.get('source_sha256'))
 
 
 def _point_covariance(xy):

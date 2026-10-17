@@ -185,6 +185,15 @@ def run(a):
     if not lease.is_file():
         raise ValueError('OWN_LEASE_REQUIRED')
     q = json.loads(a.queue.read_text())
+    # Default-off correction for the uncalibrated right turn.  Calibration r2
+    # records only the left pulse; the exact mirrored right pulse otherwise
+    # falls back to the analytic wheel model, which over-predicted yaw
+    # 1.55-1.66x on the recorded gate-r1/r8 raw (scripts/visgoal_yaw_audit.py).
+    # The queue's ``toggles`` object declares the candidate (stack_values is
+    # reserved for current_stack rule ids); the CLI flag can only add it, and
+    # the applied value is recorded in stack.json.
+    pulse_mirror = bool(a.mirror_pulse or
+                        q.get('toggles', {}).get('visgoal_mirror_pulse_v1') == 'on')
     import subprocess
     if subprocess.call(['git', '-C', str(ROOT), 'cat-file', '-e',
                          q['source_sha'] + '^{commit}'],
@@ -235,7 +244,8 @@ def run(a):
         from harness.egocentric_landmark_memory import LandmarkMemory, MemoryOptions, OPTION as MEMORY
         from sim.visual_goal_search import (VisualGoalSearch, OPTION as SKILL,
                                             detect_paint, wall_points, component_clear,
-                                            signed_turn_wheels)
+                                            signed_turn_wheels, mirrored_pulse_delta,
+                                            MIRROR_OPTION as MIRROR)
         from sim.destination_visual_acquire import floor_patch
         from sim.solo_carry_obstacles import detections as obstacle_detections
         from harness.scene_colour_boundary import surface_masks
@@ -254,7 +264,9 @@ def run(a):
             never=int(en.mjSLEEP_NEVER), allowed=int(en.mjSLEEP_ALLOWED))
         dump(a.output / 'scene.json', scene.manifest)
         dump(a.output / 'stack.json', {'stack_values': q['stack_values'], 'flow': q['flow'],
-                                       'source_sha': q['source_sha']})
+                                       'source_sha': q['source_sha'],
+                                       'visgoal_mirror_pulse_v1':
+                                           'on' if pulse_mirror else 'off'})
         (a.output / 'scene.xml').write_text(xml)
         calibration = json.loads((vendor_root() / 'walls_floor_contrast_v5_indigo110_s80-calibration.json').read_text())
         command_calibration = json.loads((vendor_root() / 'own-command-calibration-r2.json').read_text())
@@ -387,6 +399,12 @@ def run(a):
                     delta_nom = np.asarray(command_delta(previous)) if previous else np.zeros(3)
                     cov_nom = np.diag(motion_variance(delta_nom))
                     prior = own_prior.predict(delta_nom, cov_nom, previous, servo, last_servo, DT)
+                    if (pulse_mirror and
+                            prior.get('source') == 'nominal_6f_unqualified_native'):
+                        mirrored = mirrored_pulse_delta(
+                            previous, command_calibration, servo, last_servo, DT)
+                        if mirrored is not None:
+                            prior = mirrored
                     delta = np.asarray(prior['delta'])
                     cov = np.asarray(prior['covariance'])
                     if tick % 3 == 0:
@@ -613,6 +631,7 @@ def run(a):
 if __name__ == '__main__':
     p = argparse.ArgumentParser()
     p.add_argument('--enabled', action='store_true')
+    p.add_argument('--mirror-pulse', action='store_true')
     p.add_argument('--preflight', action='store_true')
     p.add_argument('--implementation', default='legacy_v1')
     p.add_argument('--lease-name', default='visgoal')

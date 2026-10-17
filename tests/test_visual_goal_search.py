@@ -5,6 +5,7 @@ import pytest
 
 from sim.visual_goal_search import (TURN_STEP_RAD, VisualGoalSearch, Options, OPTION,
                                     paint_components, component_clear, signed_turn_wheels,
+                                    mirrored_pulse_delta, MIRROR_OPTION,
                                     _point_covariance)
 
 
@@ -168,3 +169,45 @@ def test_freshest_memory_wins_and_stale_memory_cannot_arrive():
     assert not s.arrived and a['forward'] > 0  # toward fresh 0.8 m, not stale 0.2 m
     a = s.control(1.1, paint={}, memories=[stale])
     assert not s.arrived and a['stop']
+
+
+def test_mirror_pulse_toggle_is_signature_gated_and_preserves_default():
+    cal = dict(
+        wheels=[-.35, .35, -.35, .35],
+        duration_s=[0.027857142857142865] * 4,
+        interval_s=0.1,
+        mean_delta=[-8.834147012334151e-05, -2.0642641055137426e-04,
+                    0.02292102597657116],
+        qualified_servo={1: 2000, 3: 740, 4: 2320, 5: 1320, 6: 1500},
+        predictive_covariance=[[5.84e-06, -7.29e-07, 3.45e-07],
+                               [-7.29e-07, 1.62e-06, -2.15e-07],
+                               [3.45e-07, -2.15e-07, 3.97e-05]],
+        source_sha256='test')
+    servo = dict(cal['qualified_servo'])
+    left = dict(wheels=list(cal['wheels']), duration_s=list(cal['duration_s']))
+    right = dict(wheels=[-w for w in cal['wheels']],
+                 duration_s=list(cal['duration_s']))
+    # Default off: the module is unchanged unless the runner opts in, and the
+    # helper itself never claims the calibrated left pulse.
+    assert VisualGoalSearch().control(0.0, paint={}, walls=(),
+                                      obstacles=())['status'] == 'off'
+    assert mirrored_pulse_delta(left, cal, servo, servo, 0.1) is None
+    m = mirrored_pulse_delta(right, cal, servo, servo, 0.1)
+    assert m['source'] == MIRROR_OPTION
+    assert m['delta'] == pytest.approx([cal['mean_delta'][0],
+                                        -cal['mean_delta'][1],
+                                        -cal['mean_delta'][2]])
+    assert m['covariance'][0][2] == pytest.approx(-cal['predictive_covariance'][0][2])
+    # Both indices of the (y, yaw) block flip, so that entry keeps its sign.
+    assert m['covariance'][2][1] == pytest.approx(cal['predictive_covariance'][2][1])
+    assert m['covariance'][1][1] == pytest.approx(cal['predictive_covariance'][1][1])
+    # Unqualified servo state, interval or command signature must not match.
+    assert mirrored_pulse_delta(right, cal, {**servo, 1: 1900}, servo, 0.1) is None
+    assert mirrored_pulse_delta(right, cal, servo, {**servo, 5: 999}, 0.1) is None
+    assert mirrored_pulse_delta(right, cal, servo, servo, 0.05) is None
+    assert mirrored_pulse_delta(dict(wheels=[-w * .5 for w in cal['wheels']],
+                                     duration_s=cal['duration_s']),
+                                cal, servo, servo, 0.1) is None
+    assert mirrored_pulse_delta(dict(wheels=right['wheels'], duration_s=[0.1] * 4),
+                                cal, servo, servo, 0.1) is None
+    assert mirrored_pulse_delta(None, cal, servo, servo, 0.1) is None
