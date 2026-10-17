@@ -587,6 +587,90 @@
       "change": "evaluator guard가 등록된 short probe(init sha·chunk·protocol sha·training_complete·step=steps_override·packaging_eligible=false)만 허용; package_act18_model.py는 packaging_eligible=false를 명시 거부",
       "tests": "tests/test_act18_tune.py 9 passed (probe registration allow/deny 포함)",
       "note": "같은 HOST_ERROR 재발 방지용. 자세한 구현은 act18_policy.registered_tune_probe()"
+    },
+    {
+      "name": "doneprobe-r1",
+      "kind": "default-off done-probability instrumentation and two TRAIN4 re-runs",
+      "status": "complete",
+      "commit": "a5d712667c8aaa5c0f43573562226b9d6eb6aeb7",
+      "setup": {
+        "flag": "--record-done-prob (default OFF; env UGRP_ACT18_DONE_PROB)",
+        "model_tune": "tune-r2/act18-tune/step-2000",
+        "model_R8": "training-r1/R8/step-100000",
+        "ensemble_coeff": 0.01,
+        "decode_threshold": 0.65
+      },
+      "raw": {
+        "vm_dir": "/home/ugrp/ugrp-sim/runs/act18/doneprobe-r1",
+        "logs": {
+          "tune_group000": "01d201ec60b5ffe4dd065eacb26b097a5930372dae993bd2f3183015575f9e85",
+          "tune_group001": "d0bf69273b0d5f51d6e4a2f5d1a5dc3cf40cc57cf480b2b7c382d0764262ed10",
+          "R8_group000": "773d3bc2ea3db2a219dcd84c67b0e3df354416a339bf3d3a144f5181ff71840a",
+          "R8_group001": "7eae8dfda52f7b0e8986c4d0768c0afa5b4b34c54ec1f34559d8458be13869c4"
+        },
+        "stage_summaries": {
+          "tune": "f9c27cd7cb3098f8240424c9cea3aad1978dc88d1cec637e98a8944a5fff6396",
+          "R8": "42daf507f3ffb0fb267664d15d4db64e9a157f56c44ec84ce5bb2e94de86cac7"
+        },
+        "analysis": {
+          "tune_group000": "d88209f0972524bff8daa6cdff5ba632c93cf20c2ba64dedd369615ae8f7ff68",
+          "tune_group001": "3838d5af0f7990108ffa86b8063700ff20473c8ee977076faef44dfc099ff935",
+          "R8_group000": "55e05aa9475e862bb58be679e2b800892e2453f46b040afdc88fe8ae0b265664",
+          "R8_group001": "e561c5c7bb5e37a259c0eaafd58d609ff50ebdf3ffa53d730d5dae4767827db8"
+        }
+      },
+      "results": {
+        "tune_train4": "0/4",
+        "R8_train4": "0/4",
+        "done_prob_max": 0.000577,
+        "conclusion": "done head not learned: raw and exact temporal-ensemble probability never exceed ~6e-4; no threshold .65/.5/.3/.2/.1 fires"
+      },
+      "evidence_local": "experiments/2026-10-17-act18/results/doneprobe-r1"
+    },
+    {
+      "name": "recipe-audit-A",
+      "kind": "ALOHA/act-plus-plus recipe audit and done-label audit (no GPU)",
+      "status": "complete",
+      "document": "experiments/2026-10-17-act18/RECIPE_AUDIT.md",
+      "done_label": {
+        "train_episodes": 200,
+        "train_rows": 72572,
+        "positive_rows": 200,
+        "raw_fraction": 0.002756,
+        "episode_uniform_prior": 0.002766,
+        "positive_batch_prob_batch8": 0.0219,
+        "balanced_bce_weights": {
+          "positive": 180.8,
+          "negative": 0.5014
+        }
+      },
+      "findings": {
+        "bug_level": [
+          "done head supervision is unlearnable under current sampling/loss"
+        ],
+        "deviations": [
+          "action/state representation (wheel pulses, no measured qpos)",
+          "base velocity not smoothed/normalized like act-plus-plus",
+          "10Hz vs 50Hz horizon scaling",
+          "fixed 100k/no best-val selection",
+          "single dataset (no co-training)",
+          "evaluation requires issued_done while standard ACT has none"
+        ],
+        "normal": [
+          "batch 8",
+          "lr 1e-5/AdamW wd 1e-4",
+          "KL 10/ResNet18/d512/FF3200",
+          "mean/std floor .01",
+          "no ACT image augmentation",
+          "single current frame",
+          "temporal ensemble k=.01 direction matches official code"
+        ]
+      },
+      "phase_B_proposals": [
+        "B1 done-only 5k fine-tune with positive-balanced batches and pos_weight (~30 min GPU)",
+        "B2 standard-aligned 20k from scratch chunk100 with fixed done supervision (~65 min GPU)"
+      ],
+      "phase_C_memo": "co-training via act-plus-plus dataset_dir list + sample_weights (Mobile ALOHA 2401.02117)"
     }
   ],
   "release": {
@@ -683,7 +767,8 @@
     "R100 gcp5 이전·재개: 미실행(deviation)",
     "다른 호스트·정밀도·조건과 합산: 금지",
     "raw 학습자료(시연)의 원격 백업: 별도(Release에는 포함하지 않음)",
-    "act18-tune 모델 패키징·Release: 하지 않음(프로브, packaging_eligible=false)"
+    "act18-tune 모델 패키징·Release: 하지 않음(프로브, packaging_eligible=false)",
+    "done 신호: 현재 학습으로 습득 불가(최대 확률 6e-4). 개선안(B1/B2)은 미실행·승인 대기"
   ],
   "cleanup": {
     "schema": "ugrp.act18.cleanup.v1",
@@ -754,5 +839,28 @@
       "note": "Mac weights not written; no VM credentials copied"
     }
   },
-  "memory_input_design": "experiments/2026-10-17-act18/MEMORY_INPUT_DESIGN.md"
+  "memory_input_design": "experiments/2026-10-17-act18/MEMORY_INPUT_DESIGN.md",
+  "cleanup_stage2": {
+    "schema": "ugrp.act18.cleanup.v2",
+    "utc": "2026-10-17T20:10:40Z",
+    "reason": "done-probe 계측 2회(TRAIN4 8세계)와 분석 완료 후 유휴 → Lead 지시로 정지. Phase A는 로컬 CPU 작업.",
+    "vm": {
+      "instance": "ugrp-act-l4-gcp2",
+      "project_id": "ugrp-sim-b-1014",
+      "account": "changmin5781@gmail.com",
+      "zone": "asia-northeast3-a",
+      "status": "TERMINATED",
+      "stopped_utc": "2026-10-17T20:10:40Z",
+      "confirmed_by": "gcloud compute instances describe --format=value(status)"
+    },
+    "before_stop": {
+      "act18_processes": "none",
+      "gpu_utilization_percent": 0,
+      "gpu_memory_MiB": 0,
+      "leases": "no act18 lease",
+      "runs_act18_bytes_approx": 2684354560.0,
+      "note": "doneprobe-r1 원본·분석 JSON·stage 원본을 디스크에 보존"
+    },
+    "relaunch": "Phase B 승인 시 재기동"
+  }
 }

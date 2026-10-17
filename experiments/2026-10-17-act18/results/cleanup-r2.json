@@ -1,0 +1,23 @@
+{
+  "schema": "ugrp.act18.cleanup.v2",
+  "utc": "2026-10-17T20:10:40Z",
+  "reason": "done-probe 계측 2회(TRAIN4 8세계)와 분석 완료 후 유휴 → Lead 지시로 정지. Phase A는 로컬 CPU 작업.",
+  "vm": {
+    "instance": "ugrp-act-l4-gcp2",
+    "project_id": "ugrp-sim-b-1014",
+    "account": "changmin5781@gmail.com",
+    "zone": "asia-northeast3-a",
+    "status": "TERMINATED",
+    "stopped_utc": "2026-10-17T20:10:40Z",
+    "confirmed_by": "gcloud compute instances describe --format=value(status)"
+  },
+  "before_stop": {
+    "act18_processes": "none",
+    "gpu_utilization_percent": 0,
+    "gpu_memory_MiB": 0,
+    "leases": "no act18 lease",
+    "runs_act18_bytes_approx": 2684354560.0,
+    "note": "doneprobe-r1 원본·분석 JSON·stage 원본을 디스크에 보존"
+  },
+  "relaunch": "Phase B 승인 시 재기동"
+}
