@@ -125,6 +125,16 @@ def test_approach_wall_accepts_seek_handover_range():
         a = s.control(i * 0.1, paint={}, walls=wall, obstacles=())
         assert s.stage == 'approach_wall'
         assert a['forward'] > 0
+    # r6 west e00 handed over from the full scan at 2.71 m; the old 1.8 m
+    # acceptance counted ten missing ticks and restarted the 27 s scan.
+    s = VisualGoalSearch(option=OPTION)
+    s.stage = 'approach_wall'
+    s.stage_t = 0.0
+    far = [dict(relative_xy_m=[2.7, 0.0], range_m=2.7, bearing_rad=0.0)]
+    for i in range(12):
+        a = s.control(i * 0.1, paint={}, walls=far, obstacles=())
+        assert s.stage == 'approach_wall'
+        assert a['forward'] > 0
     # A loose cargo cube in the seek cone must cause one bounded away-turn,
     # not abandon the divider for the lawnmower (r5 west e00).
     s = VisualGoalSearch(option=OPTION)

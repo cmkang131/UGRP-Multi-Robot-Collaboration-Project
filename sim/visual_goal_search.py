@@ -453,11 +453,13 @@ class VisualGoalSearch:
         if paint.get('pixels', 0) >= MIN_COLOUR_PIXELS:
             self._set_stage(t, 'target', reason='destination_colour_while_approaching_wall')
             return self._target(t, paint, walls, obstacles, target_mem, patch_ok, patch_xy)
-        # seek_wall hands over at <=1.6 m, but approach_wall previously only
-        # accepted <=1.2 m and counted ten "missing" ticks before the wall
-        # entered that band; r4 west e00 lost a visible divider at 1.58 m and
-        # restarted the full scan.  Keep the same 1.8 m front acceptance here.
-        front = self._nearest(walls, -30, 30, 1.8)
+        # Both handovers must fit inside this acceptance band.  seek_wall hands
+        # over at <=1.6 m and orient hands over at <=3.0 m (the range at which
+        # the floor-projected wall foot is still usable).  r4 west e00 lost a
+        # visible divider at 1.58 m; r6 west e00 accepted 2.71 m after the full
+        # spin, then counted ten "missing" ticks at 1.8 m and restarted the
+        # 27 s scan.  Accept the full orient handover range and drive on.
+        front = self._nearest(walls, -30, 30, 3.2)
         if front is None:
             self.missing += 1
             if self.missing > 10:
