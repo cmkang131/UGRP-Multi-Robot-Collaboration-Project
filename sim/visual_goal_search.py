@@ -267,6 +267,7 @@ class VisualGoalSearch:
         self.last_paint_t = None
         self.last_patch_t = None
         self.follow_t = 0.
+        self.reacquire_pulses = None
 
     # ---- event ledger -------------------------------------------------
     def event(self, t, reason, *, category='navigation', blocked_object='not_observed',
@@ -351,7 +352,13 @@ class VisualGoalSearch:
                 self.colour_seen = True
                 self.event(t, 'destination_colour_seen', category='perception',
                            pixels=int(paint.get('pixels', 0)), blocked_object='not_observed')
-        target_mem = (min(memories, key=lambda m: m['range_m'])
+        # Prefer the freshest memory.  A large wrong-sign spin in preflight r2
+        # broke association: a 0.9 m first patch and a later 1.15 m patch became
+        # two landmarks, and min(range) then selected the stale 0.33 m ghost and
+        # declared arrival outside zone B.  Age is the only ownership-neutral
+        # discriminator available to the skill.
+        target_mem = (min(memories, key=lambda m: (float(m.get('age_s', 99.)),
+                                                   float(m['range_m'])))
                       if memories else None)
         if self.arrived:
             return self._result(0., 0., 0., True)
@@ -631,23 +638,51 @@ class VisualGoalSearch:
                 return self._east_search(t, paint, walls, obstacles, target_mem, patch_ok, patch_xy)
         xy = np.asarray(target_mem['relative_xy_m'], float)
         rng = float(np.linalg.norm(xy)); bearing = math.atan2(xy[1], xy[0])
+        age = float(target_mem.get('age_s', 99.))
+        fresh = age <= 1.0
+        lost = paint.get('pixels', 0) < MIN_COLOUR_PIXELS
+        # Close to the remembered patch but the colour vanished for >2 SIM s:
+        # look around locally before abandoning a near landmark.  This is the
+        # public Spin primitive, not a new place estimate.
+        if (lost and self.last_paint_t is not None
+                and t - self.last_paint_t > 2.0 and rng <= 1.2):
+            if self.reacquire_pulses is None:
+                self.reacquire_pulses = int(round(
+                    2 * math.pi / self.options.exact_turn_rad))
+                self.event(t, 'local_reacquire_spin', category='search',
+                           blocked_object='not_observed', memory_range_m=rng)
+            if self.reacquire_pulses > 0:
+                self.reacquire_pulses -= 1
+                return self._result(0., 0., 0., exact_turn=+1)
+            self.reacquire_pulses = None
+            self._enter_east_search(t, reason='local_reacquire_failed')
+            return self._east_search(t, paint, walls, obstacles, target_mem,
+                                     patch_ok, patch_xy)
+        if not lost:
+            self.reacquire_pulses = None
         on_paint = (paint.get('lower_centre_pixels', 0) >= 700
                     and paint.get('nearest_range_m', 99.) <= .55)
-        if on_paint and rng <= .75:
+        # Freshness is required for a place claim: preflight r2 declared arrival
+        # on a 32 s old ghost while no paint had been seen for 5.8 s.
+        if on_paint and rng <= .55 and fresh:
             self.arrived = True
             self.event(t, 'arrival_inside_paint_hypothesis', category='arrival',
                        blocked_object='not_observed', memory_range_m=rng,
-                       nearest_range_m=paint.get('nearest_range_m'))
+                       memory_age_s=age, nearest_range_m=paint.get('nearest_range_m'))
             return self._result(0., 0., 0., True)
         if abs(bearing) > math.radians(8):
             return self._result(0., 0., 0., exact_turn=(+1 if bearing > 0 else -1))
         if rng > .50:
             return self._result(.45 if rng > 1.0 else .28, 0., 0.)
-        if rng > .34:
+        if fresh and rng > .25:
             return self._result(.18, 0., 0.)
-        self.arrived = True
-        self.event(t, 'arrival_memory_range', category='arrival',
-                   blocked_object='not_observed', memory_range_m=rng)
+        if fresh:
+            self.arrived = True
+            self.event(t, 'arrival_memory_range', category='arrival',
+                       blocked_object='not_observed', memory_range_m=rng,
+                       memory_age_s=age)
+            return self._result(0., 0., 0., True)
+        # Stale memory with no visual on-paint evidence is not an arrival claim.
         return self._result(0., 0., 0., True)
 
     def _nearest_obstacle(self, obstacles, half_angle_deg, max_range):

@@ -92,15 +92,15 @@ def test_state_machine_look_wall_follow_gap_and_arrival():
     assert s.stage == 'target' and a['exact_turn'] == 1
     obs = s.memory_observation(1.0, (0.8, 0.0), dict(pixels=900))
     assert obs['kind'] == 'destination_zone' and s.found
-    mem = [dict(relative_xy_m=[0.7, 0.0], range_m=0.7, bearing_rad=0.0, age_s=0.0,
-                covariance_m2=_point_covariance((0.7, 0.0)).tolist())]
+    mem = [dict(relative_xy_m=[0.45, 0.0], range_m=0.45, bearing_rad=0.0, age_s=0.0,
+                covariance_m2=_point_covariance((0.45, 0.0)).tolist())]
     p = dict(pixels=4000, bearing_rad=0.0, nearest_range_m=0.4, lower_centre_pixels=900,
              relative_xy_m=[0.4, 0.0], range_m=0.4)
     a = s.control(1.1, paint=p, walls=(), obstacles=(), memories=mem, patch_ok=True,
-                  patch_xy=(0.7, 0.0))
+                  patch_xy=(0.45, 0.0))
     assert s.stage == 'approach'
     a = s.control(1.2, paint=p, walls=(), obstacles=(), memories=mem, patch_ok=True,
-                  patch_xy=(0.7, 0.0))
+                  patch_xy=(0.45, 0.0))
     assert s.arrived and a['stop']
     # Empty scan (no wall foot projectable at long range): drive the initial
     # heading until the wall enters the 1.6 m fitted range.
@@ -112,3 +112,18 @@ def test_state_machine_look_wall_follow_gap_and_arrival():
     wall = [dict(relative_xy_m=[1.5, 0.0], range_m=1.5, bearing_rad=0.0)]
     a = s.control((rounds + 1) * 0.1, paint={}, walls=wall, obstacles=())
     assert s.stage == 'approach_wall' and a['forward'] > 0
+
+
+def test_freshest_memory_wins_and_stale_memory_cannot_arrive():
+    s = VisualGoalSearch(option=OPTION)
+    s.stage = 'approach'
+    s.stage_t = 0.0
+    stale = dict(relative_xy_m=[0.2, 0.0], range_m=0.2, bearing_rad=0.0, age_s=32.0,
+                 covariance_m2=_point_covariance((0.2, 0.0)).tolist())
+    fresh = dict(relative_xy_m=[0.8, 0.0], range_m=0.8, bearing_rad=0.0, age_s=0.0,
+                 covariance_m2=_point_covariance((0.8, 0.0)).tolist())
+    a = s.control(1.0, paint={}, memories=[stale, fresh], patch_ok=True,
+                  patch_xy=(0.8, 0.0))
+    assert not s.arrived and a['forward'] > 0  # toward fresh 0.8 m, not stale 0.2 m
+    a = s.control(1.1, paint={}, memories=[stale])
+    assert not s.arrived and a['stop']
