@@ -184,7 +184,9 @@ Candidate B `visgoal_mirror_pulse_v1` (default off, `sim/visual_goal_search.py`
 negation of the calibrated pulse under the same qualified servo state and
 interval, and only when the prior would otherwise use the nominal fallback. It
 introduces no new constant and changes only the motion prediction, not the
-issued command. The runner enables it from the queue's `toggles` object (or
+issued command. Offline replay of the new helper over the same raw (r8 e00, 40
+exact mirrored pulses, no sim rerun): GT -1.02043 rad, nominal prior -1.58644
+(1.55x), mirrored -0.91684 (0.90x). The runner enables it from the queue's `toggles` object (or
 `--mirror-pulse`) and records the applied value in `stack.json`; the name was
 dup-checked against all remote branches. Candidate B is queued with the same 16
 starts after gate r2 and its results are not pooled with the default (mirror
