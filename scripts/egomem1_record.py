@@ -230,7 +230,7 @@ def run(a):
 
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--enabled',action='store_true')
-    p.add_argument('--implementation',choices=['legacy_v1','rovio_local_v1'],default='legacy_v1')
+    p.add_argument('--implementation',choices=['legacy_v1','rovio_local_v1','rovio_object_gnn_v1'],default='legacy_v1')
     p.add_argument('--rovio-library',type=Path)
     p.add_argument('--lease-name',choices=['egomem1','egomem2'],default='egomem1')
     p.add_argument('--preflight',action='store_true')

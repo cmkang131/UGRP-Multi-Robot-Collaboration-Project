@@ -204,7 +204,7 @@ def score(a):
 
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('stage',choices=['extract','predict','score']);p.add_argument('--input',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--fade-scale',type=Path);p.add_argument('--implementation',choices=['legacy_v1','rovio_local_v1'],default='legacy_v1');p.add_argument('--rovio-library',type=Path)
+    p=argparse.ArgumentParser();p.add_argument('stage',choices=['extract','predict','score']);p.add_argument('--input',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--fade-scale',type=Path);p.add_argument('--implementation',choices=['legacy_v1','rovio_local_v1','rovio_object_gnn_v1'],default='legacy_v1');p.add_argument('--rovio-library',type=Path)
     p.add_argument('--lease-name',choices=['egomem1','egomem2'],default='egomem1')
     a=p.parse_args()
     if not platform.node().startswith('ugrp-act-l4-gcp5'): raise ValueError('GCP5_ORIGINAL_CPU_ONLY')
