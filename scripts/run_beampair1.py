@@ -136,12 +136,19 @@ def profiles(candidate):
         values.update(search26_reobserve='search26_reobserve_views_v1')
     # r4 condition C: the conditional far-first circle order (far, close, mid)
     # replaces the pure r1 revert, and keeps the case27 reobserve fix.
-    if candidate=='beamact5_r4c':
+    if candidate in ('beamact5_r4c','beamact5_r5a'):
         values.update(search23_rects='search23_batched_rects_v1',
                       search26_circles_farfirst='search26_circles_farfirst_v1',
                       search26_static_peer='search26_static_peer_stance_v1',
                       search26_peer_memory='search26_peer_memory_v1',
                       search26_reobserve='search26_reobserve_views_v1')
+    # r5-a preparation: r4c plus the separate wide-angle certified family.
+    # Basis: r4b case27 timeline shows the sampled +/-15 deg family's best
+    # red_1 clearance 46.7 mm is already below the stale margin (~46.3-52.1 mm),
+    # so every stance is blocked whenever the cargo is stale; a wider angle
+    # family may contain poses with larger clearance that stay feasible.
+    if candidate=='beamact5_r5a':
+        values.update(search26_wide_stance='search26_wide_stance_v1')
     return values
 
 
