@@ -95,7 +95,24 @@ sampled ±15° family best gap 4.87 mm < runtime floor margin 11.07 mm. `search2
 
 - **6-world(`validation-r3-6d`)**: world15 stall로 중단(3절 4항). 원본 보존·집계 제외. 다른 world(6/10/20/27/37)의 r3 거동은 이 실행으로 판정할 수 없다.
 - **gate deviation (조정자 A안 승인, 2026-10-18 KST)**: full gate를 **world15 물리 실행만 제외한 39-world**로 실행한다. world15는 **사전등록 expected FAIL**로 분모에 남긴다(nominal 38/40). 실행된 39 world 중 **최소 38 성공**(비-15 실패 최대 1)이면 pass. world37은 이미 알려진 구조적 expected fail(4.87 mm < floor 11.07 mm)이라, 37도 실패하면 38/40 = 정확히 최소 기준이다. 코드·cap·margin 변경 없음. 사전등록: [gate-40-r3/gate39-deviation-preregistration.json].
-- 실행: `runs/beamact5/gate39-r3-run`(39 worlds, indices 0–14·16–39, cap 60 SIM s, training RGB off, weld off, gcp6 isolated), 로그 `…/gate39-r3-run.log`. 결과·wall·first30·원본 SHA·funnel은 완료 후 이 절과 PR #588 본문에 채운다.
+- 실행: `runs/beamact5/gate39-r3-run`(39 worlds, indices 0–14·16–39, cap 60 SIM s, training RGB off, weld off, gcp6 isolated), 로그 `…/gate39-r3-run.log`.
+
+### 7.1 결과: **25/40 nominal — FAIL** (최소 38)
+
+|항목|값|
+|---|---|
+|실행/완료|39/39 (`HOST_ERROR=0`), world15는 제외·expected FAIL|
+|성공|**25** (nominal 25/40)|
+|cap_end|**12**|
+|wall|3,209.94 s (loop 2,946.24 s, 606 ticks, SIM 60.6)|
+|first30 speed|per-world **1.231 wall/SIM**, speed_gate_fail false (block 6.0)|
+|원본|`runs/beamact5/gate39-r3-run`(874 MB), summary sha `02a1260f…`, first30 `12e219d4…`, rejection_table `9072dfc4…`, artifact-sha256 `d837f875…`, progress `a0ea331c…`; 결과 기록 [gate39-result.json], 원시 재계수 [raw-fetch/gate39-recount.json](raw-fetch/gate39-recount.json). run dir i ↔ case index는 0–14,16–39 순서.|
+
+- 실패 14: **cap_end 12** (case 2·4·8·12·14·18·22·24·28·29·34·39) + case **27**(teacher_terminal 22.2 s, peer handoff 그대로) + case **37**(구조적 expected fail).
+- 확인된 수정: **case 6 PASS(59.2 s)·10 PASS(45.8 s)·20 PASS(44.4 s)**.
+- **회귀: r1에서 통과했던 12개가 전부 cap_end.** phase 비교에서 회귀 world들은 한 로봇의 초기 search가 r1보다 2–3배 길다(case2 r2 47.8 vs 20.4 s, case4 r2 48.9 vs 21.4, case14 r2 47.4 vs 19.9, case24 r2 44.5 vs 17.1, case29 r1 48.8 vs 21.3, case39 r1 45.7 vs 18.3). 상대 로봇은 ready에서 대기 후 60 SIM cap.
+- **원인 우선 후보:** `search26_circles`(down-first search order)가 r1 실패 10/20만 보고 도입됐는데, 전 40 starts에 켜지면서 up-first가 맞는 world들의 획득을 느리게 만들었다. peer_memory/reobserve는 search 시간 증가를 설명하지 못한다. **정확한 per-mode attribution은 ablation 미실행으로 미확정.**
+- 판정: r3 후보 **gate FAIL**. r4 방향(후속): down-first circles를 제거하거나 조건부(up-first 3원 fallback)로 되돌리고 6/10/20만 유지한 조합으로 재검증. r1/r2 결과와 pooling 없음.
 
 
 ## 8. 원본·미확인
