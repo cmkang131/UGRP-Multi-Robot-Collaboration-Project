@@ -12,6 +12,7 @@ MODES = {'search24_irm': 'search24_irm_v1',
          'search24_budget': 'search24_checks_v1'}
 DISTANCE_STEP_M = .002
 ANGLE_STEP_DEG = 5
+WIDE_ANGLE_STEP_DEG = 1
 
 
 def enabled(t):
@@ -66,16 +67,48 @@ def reachability_map(z):
     return tuple(sorted(result,key=lambda p:(abs(p[0]),abs(p[1]-STATION_M),p[0],p[1])))
 
 
+@lru_cache(maxsize=128)
+def reachability_map_wide(z):
+    """New default-off candidate family: jaw-allowed angles on a 1-degree grid.
+
+    Identical calibrated radial envelope, certificates, jaw predicate and
+    ordering as ``reachability_map``; only the angle sampling is finer, so the
+    family can include offsets beyond the 5-degree grid's +/-15 degree maximum
+    while the existing jaw predicate still prunes every infeasible angle.
+    Never pooled with results from the 5-degree family.
+    """
+    from harness.visual_arm import CALIBRATED_GRASP_RADIUS_CM
+    from harness.visual_arm_v3 import MOUNT_X_M
+    from sim.grasp_act_teacher import STATION_M
+    from sim.grasp_act_pregrasp import jaw_geometry
+    lo, hi = (MOUNT_X_M+r/100 for r in CALIBRATED_GRASP_RADIUS_CM)
+    distances = sorted({lo+i*DISTANCE_STEP_M for i in range(math.floor((hi-lo)/DISTANCE_STEP_M)+1)} |
+                       {d for d in (.190,.194,.198,STATION_M,.208,.212) if lo<=d<=hi})
+    result=[]
+    for d in distances:
+        try: hover, descent=certified_poses(d,z)
+        except ValueError: continue
+        for deg in range(-90,91,WIDE_ANGLE_STEP_DEG):
+            a=math.radians(deg);jaw=jaw_geometry(a,descent[-1])
+            if jaw['allowed']:
+                result.append((a,d,(-d*math.cos(a),-d*math.sin(a),a),
+                    tuple(tuple(sorted(p.items())) for p in (hover,*descent))))
+    return tuple(sorted(result,key=lambda p:(abs(p[0]),abs(p[1]-STATION_M),p[0],p[1])))
+
+
 def choices_for_world(t,world):
     from sim.grasp_act_search23 import BodyNavigation
     nav=BodyNavigation(t,world,admission=True)
     if not nav.fresh_target or world['beam'] is None:
         return []
     z=world['beam']['ends'][t.end][2]
-    cells=reachability_map(z)
+    wide=t.search15_modes.get('search26_wide_stance','off')!='off'
+    cells=reachability_map_wide(z) if wide else reachability_map(z)
     t.search23_log.append({'t':world['t'],'event':'inverse_reachability',
         'target':'band_'+t.end,'target_z_m':z,'reachable_cells':len(cells),
-        'radial_step_m':DISTANCE_STEP_M,'angle_step_deg':ANGLE_STEP_DEG,
+        'radial_step_m':DISTANCE_STEP_M,
+        'angle_step_deg':WIDE_ANGLE_STEP_DEG if wide else ANGLE_STEP_DEG,
+        'candidate_family':'search26_wide_stance_v1' if wide else 'search24_irm_v1',
         'frame':'assigned visible end; yaw points inward',
         'kinematics':'unchanged full grasp_poses and jaw_geometry',
         'reason':'reachable_map' if cells else 'empty_reachability_map',

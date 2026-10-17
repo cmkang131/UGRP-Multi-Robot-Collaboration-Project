@@ -47,6 +47,11 @@ def validate(values, *, recovery, profile='visible_only', pose_source='issued', 
     if any(values.get(k,'off')!='off' for k in SEARCH25_MODES):
         if any(values.get(k,'off')!=v for k,v in SEARCH24_MODES.items()):
             raise ValueError('search25 requires IRM and deterministic search24 budget')
+    # Round-3 modes fail closed instead of silently doing nothing.
+    if values.get('search26_peer_memory', 'off') != 'off' and values.get('search26_static_peer', 'off') == 'off':
+        raise ValueError('search26_peer_memory requires search26_static_peer')
+    if values.get('search26_wide_stance', 'off') != 'off' and values.get('search24_irm', 'off') == 'off':
+        raise ValueError('search26_wide_stance requires search24_irm')
 
 def add_arguments(parser):
     for key, mode in ALL_MODES.items():

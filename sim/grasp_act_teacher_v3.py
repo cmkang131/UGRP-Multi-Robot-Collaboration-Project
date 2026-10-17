@@ -624,13 +624,19 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         return self._continuous(now,**drive(pose,goal,target,end))
 
     def _track_still_peers(self,world,now):
-        """Visible-only stopped-peer witness; no world pose or truth input."""
+        """Visible-history stopped-peer witness; no world pose or truth input."""
         if self.search15_modes.get('search26_static_peer','off')=='off':
             return
-        fresh=set(world['visibility'][self.rid]['peers'])
+        # Memory mode keeps the witness across non-fresh ticks while the peer
+        # is still in visible-history memory; the peer disappears from
+        # ``world['robots']`` at the existing PEER_TTL_S expiry, so a witness
+        # is never kept for a peer whose remembered observation expired.
+        memory=self.search15_modes.get('search26_peer_memory','off')!='off'
+        observed=set(world['robots']) if memory else set(world['visibility'][self.rid]['peers'])
+        observed.discard(self.rid)
         for rid in list(self.still_peer):
-            if rid not in fresh:del self.still_peer[rid]
-        for rid in fresh:
+            if rid not in observed:del self.still_peer[rid]
+        for rid in observed:
             xy=tuple(world['robots'][rid]['pose'][:2]);row=self.still_peer.get(rid)
             if row is None or math.dist(xy,row[1])>self.STILL_PEER_MOVE_M:
                 self.still_peer[rid]=(now,xy)

@@ -88,7 +88,8 @@ class ActiveReobserve:
         self.active = {'kind': kind, 'targets': deepcopy(targets), 'start': now,
                        'pwm': dict(teacher.sink.pwm), 'world':snapshot, 'radius': rad, 'discs': ds, 'rects': rs,
                        'goal':teacher._geometry(world)[3],
-                       'attempt': -1, 'retreat_start': None, 'retreat_first':retreat_first}
+                       'attempt': -1, 'retreat_start': None, 'retreat_first':retreat_first,
+                       'view_start': now}
         self.events.append({'t': now, 'event': 'reobserve_start', 'kind': kind,
                             'encounter': self.used[kind], 'targets': deepcopy(targets),
                             'input': 'own visible history and issued-command pose only'})
@@ -139,8 +140,20 @@ class ActiveReobserve:
         if age >= self.LIMIT_S-1e-8:
             self.finish(teacher, now, 'bounded_reobserve_exhausted_replan')
             return teacher._hold(now)
+        view_age = now-a.get('view_start',a['start'])
+        attempt = (3 if age<self.RETREAT_S else 0) if a['retreat_first'] else min(3, int((view_age+1e-8)/self.VIEW_S))
+        # Round-3 opt-in: a retreat-first reobserve no longer ends at the
+        # retreat boundary; it continues into the same three bounded view
+        # attempts. Default off preserves the previous boundary finish.
+        if (teacher.search15_modes.get('search26_reobserve','off')!='off'
+                and a['retreat_first'] and attempt==3):
+            if a['retreat_start'] is None:a['retreat_start']=(now,tuple(pose[:2]))
+            t0,p0=a['retreat_start']
+            if now-t0>=self.RETREAT_S-1e-8 or math.dist(pose[:2],p0)>=.06:
+                a['retreat_first']=False;a['view_start']=now;a['retreat_start']=None
+                attempt=0;view_age=0.
         targets = [v for k, v in sorted(a['targets'].items()) if k not in seen or a['retreat_first']]
-        target = targets[min(int(age/self.VIEW_S), len(targets)-1)]
+        target = targets[min(int(view_age/self.VIEW_S), len(targets)-1)]
         x, y = local(pose, target['xyz'])
         z = (min(.20,target.get('top_z_bound_m',.32)/2) if target['kind']=='robot' else target['xyz'][2])
         view = gaze_pose((x, y, z), teacher.sink.pwm)
@@ -148,7 +161,6 @@ class ActiveReobserve:
                 if teacher.last_command is not None else dict(teacher.sink.pwm))
         teacher.sink.pwm.update(slew(teacher.sink.pwm, view))
         teacher.arm.commanded.update(teacher.sink.pwm)
-        attempt = (3 if age<self.RETREAT_S else 0) if a['retreat_first'] else min(3, int((age+1e-8)/self.VIEW_S))
         if attempt != a['attempt']:
             a['attempt'] = attempt
             self.events.append({'t': now, 'event': 'reobserve_attempt', 'kind': a['kind'],

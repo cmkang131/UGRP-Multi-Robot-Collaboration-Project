@@ -1,0 +1,166 @@
+"""Beamact5 round-3 opt-in modes: registration, defaults and behavior."""
+import argparse
+import math
+from copy import deepcopy
+
+import pytest
+
+from scripts.zone_teacher import FOLDED
+from scripts.replay_grasp_act_recovery import KW
+from sim.grasp_act_search15_modes import ALL_MODES, add_arguments, validate
+from sim.grasp_act_search26 import MODES as SEARCH26
+from sim.grasp_act_teacher_v3 import VisibleOnlyGraspTeacher
+
+
+def world():
+    return {'t': 10., 'robots': {'r1': {'pose': [-.8, -.3, 0]}}, 'objects': {}, 'walls': [],
+            'beam': {'pose': [0., 0., 0.], 'ends': {'teal': [-.27, 0., .024], 'blue': [.27, 0., .024]}},
+            'visibility': {'r1': {'visible_probes': 15, 'peers': [], 'objects': [], 'observations': {}}}}
+
+
+def teacher(**kwargs):
+    t = VisibleOnlyGraspTeacher('r1', 'teal', FOLDED, **KW,
+                                approach_recovery='progress_view_recovery_v3', **kwargs)
+    t.folded_ready = True
+    return t
+
+
+def profile(**overrides):
+    values = {k: 'off' for k in ALL_MODES}
+    values.update(search23_rects='search23_batched_rects_v1',
+                  search26_circles='search26_downfirst_circles_v1',
+                  search26_static_peer='search26_static_peer_stance_v1',
+                  search26_peer_memory='search26_peer_memory_v1',
+                  search26_reobserve='search26_reobserve_views_v1',
+                  search20='search20_v1', search21='search21_v1', search22='search22_v1',
+                  search23='search23_v1', search24_irm='search24_irm_v1',
+                  search24_budget='search24_checks_v1', search25_budget='search25_checks_v1',
+                  search18_free_space='search18_free_space_v1',
+                  search19_motion='search19_motion_v1',
+                  search19_footprint='search19_footprint_v1')
+    values.update(overrides)
+    return values
+
+
+def test_round3_modes_are_registered_and_default_off():
+    assert ALL_MODES['search26_peer_memory'] == 'search26_peer_memory_v1'
+    assert ALL_MODES['search26_reobserve'] == 'search26_reobserve_views_v1'
+    assert ALL_MODES['search26_wide_stance'] == 'search26_wide_stance_v1'
+    assert 'search26_cloud_cache' not in ALL_MODES
+    parser = argparse.ArgumentParser()
+    add_arguments(parser)
+    args = parser.parse_args([])
+    for key in ('search26_peer_memory', 'search26_reobserve', 'search26_wide_stance'):
+        assert getattr(args, key) == 'off'
+
+
+def test_r3_profile_passes_the_unchanged_validator():
+    validate(profile(), recovery='progress_view_recovery_v3', profile='visible_only',
+             pose_source='issued', coordination='off')
+
+
+def test_round3_modes_fail_closed_without_their_prerequisite():
+    with pytest.raises(ValueError, match='search26_peer_memory requires search26_static_peer'):
+        validate(profile(search26_static_peer='off'),
+                 recovery='progress_view_recovery_v3', profile='visible_only',
+                 pose_source='issued', coordination='off')
+    with pytest.raises(ValueError, match='search26_wide_stance requires search24_irm'):
+        validate(profile(search26_wide_stance=SEARCH26['search26_wide_stance'],
+                         search24_irm='off', search24_budget='off', search25_budget='off'),
+                 recovery='progress_view_recovery_v3', profile='visible_only',
+                 pose_source='issued', coordination='off')
+
+
+def test_reachability_map_wide_keeps_the_five_degree_family_and_adds_angles():
+    from sim.grasp_act_search24 import reachability_map, reachability_map_wide
+    z = .024
+    narrow = reachability_map(z)
+    wide = reachability_map_wide(z)
+    assert narrow, 'the calibrated envelope must contain jaw-allowed poses'
+    assert set(narrow) <= set(wide)
+    assert {math.floor(math.degrees(a) + 1e-9) for a, _, _, _ in wide} >= {-15, 15}
+    assert any(abs(math.degrees(a)) > 15. + 1e-9 for a, _, _, _ in wide)
+
+
+def _peer(w, xy, seen_t):
+    w['robots']['r2'] = {'pose': [*xy, 0.]}
+    w['visibility']['r1']['peers'] = ['r2']
+    w['visibility']['r1']['observations'] = {'r2': {'kind': 'robot', 'xyz': [*xy, .03],
+                                                     'yaw': 0., 'seen_t': seen_t}}
+
+
+def test_peer_memory_keeps_the_still_witness_across_nonfresh_ticks_only():
+    t = teacher(search26_static_peer=SEARCH26['search26_static_peer'],
+                search26_peer_memory=SEARCH26['search26_peer_memory'])
+    w = world()
+    _peer(w, (1., 0.), 10.)
+    t._track_still_peers(w, 10.)
+    assert 'r2' in t.still_peer
+    # Remembered-only tick: the same peer is still in world['robots'] memory.
+    w['t'] = 11.
+    w['visibility']['r1']['peers'] = []
+    t._track_still_peers(w, 11.)
+    assert 'r2' in t.still_peer and t.still_peer['r2'][0] == 10.
+    # Memory expiry drops the witness.
+    del w['robots']['r2']
+    w['visibility']['r1']['observations'] = {}
+    t._track_still_peers(w, 12.5)
+    assert 'r2' not in t.still_peer
+
+
+def test_default_peer_witness_still_resets_on_a_nonfresh_tick():
+    t = teacher(search26_static_peer=SEARCH26['search26_static_peer'])
+    w = world()
+    _peer(w, (1., 0.), 10.)
+    t._track_still_peers(w, 10.)
+    assert 'r2' in t.still_peer
+    w['t'] = 11.
+    w['visibility']['r1']['peers'] = []
+    t._track_still_peers(w, 11.)
+    assert 'r2' not in t.still_peer
+
+
+def _retreat_times():
+    """The observed tick sequence: a floating tick lands just below RETREAT_S."""
+    times = [10. + i / 10 for i in range(6)]
+    times += [10.5999999999999988]
+    times += [10.7 + i / 10 for i in range(22)]
+    return times
+
+
+def _drive_retreat_first(t, w, times):
+    m = {'kind': 'robot', 'xyz': [.6, .5, .03], 'top_z_bound_m': .32, 'seen_t': 0.}
+    assert t.reobserver.begin('peer', {'r2': deepcopy(m)}, w, t, times[0], retreat_first=True)
+    for now in times:
+        if t.reobserver.active is None:
+            break
+        t.reobserver.step(w, t, now)
+
+
+def test_reobserve_mode_converts_the_retreat_boundary_into_view_attempts():
+    w = world()
+    t = teacher(search26_reobserve=SEARCH26['search26_reobserve'])
+    _drive_retreat_first(t, w, _retreat_times())
+    stages = [(e.get('attempt'), e.get('stage')) for e in t.reobserver.events
+              if e['event'] == 'reobserve_attempt']
+    assert [a for a, stage in stages if stage == 'view'] == [0, 1, 2]
+    assert t.reobserver.events[-1]['reason'] == 'bounded_reobserve_exhausted_replan'
+
+
+def test_default_reobserve_still_finishes_at_the_retreat_boundary():
+    w = world()
+    t = teacher()
+    _drive_retreat_first(t, w, _retreat_times())
+    assert t.reobserver.events[-1]['reason'] == 'retreat_bounded_replan'
+    assert not [e for e in t.reobserver.events if e['event'] == 'reobserve_attempt'
+                and e.get('stage') == 'view']
+
+
+def test_teacher_runner_accepts_the_round3_profile_values():
+    """The adapter calls scripts.run_grasp_act_teacher.run(**profiles(candidate));
+    a missing keyword there is a HOST_ERROR before any world starts."""
+    import inspect
+    from scripts.run_grasp_act_teacher import run
+    params = inspect.signature(run).parameters
+    for key in ('search26_peer_memory', 'search26_reobserve', 'search26_wide_stance'):
+        assert params[key].default == 'off'
