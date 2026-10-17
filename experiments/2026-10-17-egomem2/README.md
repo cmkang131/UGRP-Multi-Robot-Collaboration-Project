@@ -1,10 +1,50 @@
 # egomem2 — 관측 밖 대상 보존과 일대일 연관
 
-진행 중. PR574·codex/egomem1의 ada1e3f60에서 계속한다. 최신 main
-AGENTS.md와 current_stack.json을 fetch 후 대조했으며 둘 다 동일했다.
-ROVIO 원본 FeatureStatistics 재사용과 상대 예측→RGB EKF 갱신 선택은 유지한다.
-기본 off `rovio_object_gnn_v1`은 관측 밖 물체/지형지물의 보존과 연관만 바꾼다.
-정적 지도·spawn·TOP·평가 정답을 제어에 전달하지 않는다.
+**최종 판정: NOT_READY(오프라인 정확도).** 물리 DEV 재획득은 녹화2에서
+`DEV_REACQUISITION_PASS`(원본1298 SHA 일치, 실제 복귀 순변위 .642m >
+로봇 지름 .316m, 색 소실129프레임, 같은 구역 RGB)지만, 같은2026프레임
+전체분모 오차가 개선되지 않아 인수하지 않는다. 물리예산2/2를 모두 썼고
+추가 녹화는 없다. PR574·codex/egomem1의 ada1e3f60에서 계속한다.
+최신 main(75aaa7f20) AGENTS.md는 DeepSeek 작업자 한 줄만 추가됐고
+current_stack.json은 바뀌지 않았다. ROVIO 원본 FeatureStatistics 재사용과
+상대 예측→RGB EKF 갱신 선택은 유지한다. 기본 off `rovio_object_gnn_v1`은
+관측 밖 물체/지형지물의 보존과 연관만 바꾼다. 정적 지도·spawn·TOP·평가
+정답을 제어에 전달하지 않는다.
+
+## CI 회귀 수정(정적 뷰 지문)
+
+첫 PR CI의 shard6에서 `test_cached_static_views_and_fast_distance`가
+`STATIC_VIEW_INPUT_CHANGED`로 1개 실패했다(나머지 1566 pass). 원인은
+egomem1이 `harness/servo_camera_fk.py`에 기본 off `servo_fk_carry_v1` 분기를
+추가한 것이었고, 기존 `servo_fk_v1` 경로의 동작은 바뀌지 않았는데 정적 뷰
+캐시의 입력 지문만 옛 SHA로 남아 있었다.
+
+수정 전 원본 `0083e07a…`와 새 `8a0156…`를 같은 기하 파일로 로드해
+`commanded_joints`, `transform_from_commands`(off/`servo_fk_v1`),
+`camera_output`(off/`servo_fk_v1`)을 73,020회 비교했고 불일치 0이었다.
+다른 정적 입력 11개 SHA는 그대로였고 85뷰·top100도 유지됐다. 그래서
+`configs/e2e18_static_views_v1.json`의 `servo_camera_fk.py` 지문만 갱신했다.
+근거·재현은 [static-fingerprint.json](operations/static-fingerprint.json),
+스크립트는 `scripts/egomem2_static_fingerprint.py`다. 새 carry 분기 자체의
+물리 정확도를 검증한 것은 아니며, 정적 뷰 플랜의 입력 동등성만 확인한 것이다.
+수정 뒤 `tests/test_e2e18.py::test_cached_static_views_and_fast_distance`와
+`tests/test_servo_camera_fk.py` 6개가 로컬에서 통과했다.
+
+## 최종 요약
+
+| 항목 | 결과 | 판정 |
+|---|---|---|
+| 오프라인 커버리지(분모14912) | 새 후보 14702, 누락210(전부 LRU 슬롯) | 개선 |
+| 오프라인 전체분모 선 P95 | baseline 4.235m → 새 후보 4.713m | 악화·NOT_READY |
+| 오프라인 전체분모 점 P95 | baseline 1.829m → 새 후보 1.918m | 악화·NOT_READY |
+| 같은10580선 키 조건부 P95 | 4.152m → 4.121m | 소폭 개선이나 커버리지 회복과 함께 해석 금지 |
+| 물리 녹화2 DEV 재획득 | 모든 재획득 관문 통과·원본 재계수 | PASS(운반/LLM/학생 성공 아님) |
+| 물리 녹화1 | `cap_end`·복귀 순변위 .221m < .316m | NOT_READY(발 조준 원인 감사 완료) |
+
+오프라인 판정은 판정 대상을 줄이지 않은 `denominator=14912` 전체분모와
+같은 키 조건부를 함께 기록한다. 누락은 0으로 채우지 않고 무한오차 질량으로
+남겼다. 성공으로 보고하는 물리 수치는 녹화2 원본을 다시 해시·재생한
+[return audit](operations/recording2-return-audit.json)에서만 가져온다.
 
 ## 수정 전 원본 분해
 
@@ -18,12 +58,34 @@ gcp5 CPU, 소스6f9e1d7a3. 같은2026프레임·동일 allowed.json SHA.
 | duplicate_label_memory | 5198 | baseline만2510·양쪽2688·candidate만0 |
 | 짝지어 유일 | 1226 | 기존 비교가 사용한 표본 |
 
+언제 빠졌는지(20SIM초 구간, `prior-rejection_table.json`의 `by_20_sim_s`):
+
+| 구간 | 품질삭제 | 슬롯삭제 | 양쪽 중복 | baseline만 중복 |
+|---|---:|---:|---:|---:|
+| 000–020 | 70 | 0 | 140 | 0 |
+| 020–040 | 100 | 250 | 300 | 200 |
+| 040–060 | 350 | 470 | 320 | 190 |
+| 060–080 | 490 | 250 | 290 | 490 |
+| 080–100 | 920 | 200 | 170 | 310 |
+| 100–120 | 1200 | 200 | 30 | 170 |
+| 120–140 | 720 | 120 | 420 | 350 |
+| 140–160 | 700 | 330 | 460 | 160 |
+| 160–180 | 920 | 20 | 370 | 230 |
+| 180–200 | 1060 | 0 | 150 | 390 |
+| 200–220 | 118 | 0 | 38 | 20 |
+| 합계 | 6648 | 1840 | 2688 | 2510 |
+
+첫 검출 실패는 이 분모에서 **0개**다. 8488개 누락 모두 후보가 만든 기억의
+삭제 이벤트를 마지막 사유로 가지며, `never_candidate_labelled`나
+`before_first_candidate_birth`로 분류된 키가 없다. 두 검출기가 한 번도 보지
+못한 대상은 baseline-present 분모에 존재하지 않으므로 별도 검출 감사 없이
+셀 수 없다. 위 삭제별 수는 각 누락 키 이전의 마지막 삭제 사유이며 개별
+물체 정답 원인으로 단정하지 않는다.
+
 동일 프레임 신규 기억 중 같은 평가 라벨 중복초과21개도 있었다.
 생성 보류 목록은 그 프레임에 새로 만든 기억과 다시 비교하지 않았다.
 평가 라벨은 nearest same-appearance 지형이므로 동일 라벨=동일 실제 물체를
-보장하지 않는다. 위 삭제별 수는 각 누락 키 이전의 마지막 삭제 사유이며
-개별 물체 정답 원인으로 단정하지 않는다. 두 검출기가 한 번도 보지 못한
-대상은 baseline-present 분모에 없으므로 첫 검출 실패 수는 이 표에서 식별 불가다.
+보장하지 않는다.
 
 ## 실사용 공개 구현 조사와 적용
 
@@ -231,6 +293,29 @@ translated 거부→t=64 `all_passed`·정지였고, return ρ는 0.08~0.14로 �
 회전을 12~13% 과소측정한다. 기억과 제어기가 같은 증분을 쓰므로 transport
 일관성에는 영향이 없지만 로봇은 자기 믿음보다 실제로 더 돌아 있다. 이번
 실패의 원인이 아니며(정지 판정은 게이트가 스스로 수렴) 후속 위치추정 과제다.
+
+## 물리 녹화2 원본 재계수(DEV 재획득)
+
+녹화2는 `--observed-segment-aim`·엄격 색 소실·실제 이동 복귀를 켠 새 후보
+`85924812a`다. 종료 뒤 원본641프레임/1298파일 SHA를 다시 확인하고,
+`scripts/egomem2_return_audit.py`(5f16b824d)로 저장 명령을 641/641 재생했다.
+평가 정답은 제어기 입력이 아니라 종료 후 이동·동일 구역 판정에만 썼다.
+[원본 재계수](operations/recording2-return-audit.json) 관문은
+1/1→1/1→1/1→1/1→1/1→1/1→1/1→1/1로 전부 통과했다.
+
+| 항목 | 값 | 기준 |
+|---|---:|---|
+| 실제 출발 변위 | .736497m | >0 |
+| 실제 복귀 순변위 | .642373m | > 로봇 외피 지름 .316475m |
+| 색이 화면에서 사라진 프레임 | 129 | >0 |
+| 같은 구역 RGB 재관측 | true | 같은 외형·구역 |
+| 복귀 turn/forward/stop | 86/47/1 | 저장 명령 재생 일치 |
+| rho 부호 전환 | 0회 | 이전 실패는 4회 |
+
+이것은 **DEV 재획득 진단 통과**이며 운반·학생 정책·LLM 성공이 아니다
+(`physical_delivery_success=false`). 같은 후보의 오프라인 정확도는
+NOT_READY이므로 전체 과제 판정은 NOT_READY다. 녹화1은 `cap_end`·복귀
+순변위 .221m로 실패했고, 그 원인은 위 발 조준 감사에서 확인했다.
 
 대표 영상: [녹화2 자기 카메라 4배속](operations/recording2-own-r1-r2-4x.mp4)
 (4437a6cb…, [매니페스트](operations/recording2-playback-manifest.json) 0ca98c0b…,

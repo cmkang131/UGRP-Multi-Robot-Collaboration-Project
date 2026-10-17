@@ -1,0 +1,22 @@
+{
+  "status": "EXACT_COMPATIBILITY",
+  "servo_source": "harness/servo_camera_fk.py",
+  "old_sha256": "0083e07af1a78b1da35cefb7f85011f65e1e2c61b5c21c03f337ceaff741a3b3",
+  "new_sha256": "8a0156044a83430d1fe5979ae9bdb2f097f6b4b656015510c194d3fb5e80b32a",
+  "other_static_inputs_match": true,
+  "cases_checked": 73020,
+  "mismatches": [],
+  "static_views": 85,
+  "static_top": 100,
+  "scope": "transform_from_commands/camera_output for off and existing servo_fk_v1; new carry option not compared",
+  "reproduction": [
+    "/opt/anaconda3/bin/python3",
+    "scripts/egomem2_static_fingerprint.py",
+    "--old-source",
+    "/tmp/old_servo_camera_fk.py",
+    "--output",
+    "experiments/2026-10-17-egomem2/operations/static-fingerprint.json"
+  ],
+  "fingerprint_updated": true,
+  "static_file_sha256": "f9825a042211d0f49f7f71c2aba79ec2be6b3618870c645a76966fcbf2894506"
+}

@@ -1,5 +1,5 @@
 {
-  "status": "DEV_REACQUISITION_PASS",
+  "status": "FINAL_NOT_READY",
   "source_sha": "48411d133bae2cf872ddf7ffed5554fb91048259",
   "analysis_source_sha": "5f16b824d",
   "offline": {
@@ -14,6 +14,39 @@
       "sampled": 203,
       "settled": 197,
       "detected": 153
+    },
+    "coverage": {
+      "denominator": 14912,
+      "candidate_present": 14702,
+      "candidate_present_fraction": 0.9859173819742489,
+      "unique_in_both": 4202,
+      "candidate_memory_absent": 210,
+      "candidate_memory_absent_reasons": {
+        "memory_slot_evicted": 210
+      },
+      "first_detection_failure_in_baseline_present_denominator": 0,
+      "note": "all 8488 pre-change missing keys had a prior candidate memory deletion; baseline-present denominator cannot count objects never seen by either detector"
+    },
+    "full_denominator_errors_m": {
+      "zone_boundary_p95": {
+        "baseline": 4.235267570878745,
+        "candidate": 4.712614775253916,
+        "denominator": 10790,
+        "candidate_covered": 10580
+      },
+      "zone_corner_p95": {
+        "baseline": 1.8288408754311247,
+        "candidate": 1.918268782505917,
+        "denominator": 4122,
+        "candidate_covered": 4122
+      }
+    },
+    "matched_10580_line_conditional": {
+      "baseline_median": 0.600735466943485,
+      "baseline_p95": 4.151769957071497,
+      "candidate_median": 0.4764654768833442,
+      "candidate_p95": 4.121056924104703,
+      "note": "conditional on keys covered by both after candidate change; not a full-denominator score"
     }
   },
   "recordings": {
@@ -21,8 +54,22 @@
     "started": 2,
     "completed": 2,
     "remaining": 0,
-    "recording1_status": "cap_end / NOT_READY (foot-aim registration failure, audit complete)",
-    "recording2_status": "RGB_SIGNATURE_REACQUIRED_EVAL_PENDING -> DEV_REACQUISITION_PASS"
+    "recording1_status": "cap_end / NOT_READY (foot-aim registration failure; rotation audit complete)",
+    "recording2_status": "DEV_REACQUISITION_PASS (original 1298 SHA verified; return net displacement .642373m > .316475m; colour absent 129 frames; same zone RGB)",
+    "recording2_return_audit": {
+      "source_sha": "85924812a198e2cb1d8ab32fbbba3a3f0213c30b",
+      "frames": 641,
+      "sim_s": 64.0,
+      "wall_s": 761.7907505860003,
+      "actual_departure_m": 0.7364967423627045,
+      "actual_return_net_m": 0.6423732373116126,
+      "required_return_translation_m": 0.3164745064763584,
+      "colour_absent_frames": 129,
+      "same_zone": true,
+      "all_reacquisition_gates": true,
+      "physical_delivery_success": false,
+      "rejection_table": "/Users/changmin/projects/ugrp-wt/mapbuild1/experiments/2026-10-17-egomem2/operations/recording2-return-audit.json"
+    }
   },
   "rotation_audit": {
     "script": "scripts/egomem2_rotation_audit.py",
@@ -46,5 +93,43 @@
   "physical_success": false,
   "student_success": false,
   "llm_success": false,
-  "measurement_state": "both recordings complete; reacquisition gate passed on recording2 with observed_segment_aim; no additional recording allowed (budget 2/2)"
+  "measurement_state": "both recordings complete; recording2 passed DEV reacquisition gates with observed_segment_aim; no additional recording allowed (budget 2/2); offline accuracy remains NOT_READY",
+  "dev_reacquisition_status": "DEV_REACQUISITION_PASS",
+  "final_reason": "offline full-denominator accuracy did not improve; physical recording2 passed all DEV reacquisition gates, but delivery/student/LLM success is false",
+  "physical_dev_reacquisition_pass": true,
+  "limitations": [
+    "offline full-denominator line and point P95 did not improve; conditional improvement is not a full-denominator score",
+    "physical recording2 is a DEV reacquisition diagnostic, not delivery/student/LLM success",
+    "recording1 failed with cap_end; its foot-aim cause is audited, but the run is not a success",
+    "detector labels remain nearest same-appearance evaluator geometry and may be wrong",
+    "doors/zone boundaries/corners only; moving cargo/partner tracking and actual LLM integration remain unverified",
+    "only two approved recordings were available and both are used"
+  ],
+  "gcp_state": {
+    "host": "ugrp-act-l4-gcp5",
+    "project": "ugrp-sim-e-1016",
+    "zone": "asia-northeast3-a",
+    "status": "TERMINATED",
+    "last_stop_timestamp": "2026-10-17T01:33:19.573-07:00",
+    "lease": "released",
+    "other_processes_or_gpu_seen": false,
+    "remaining_work": "PR574 CI and merge decision only; no VM work queued"
+  },
+  "finalized_by": "egomem2 (Claude Code, DeepSeek 4.1 Flash max API)",
+  "finalized_at_utc": "2026-10-17T10:04:42Z",
+  "ci_fixes": {
+    "failed_job": "offline-regression-shard (6/8)",
+    "failed_test": "tests/test_e2e18.py::test_cached_static_views_and_fast_distance",
+    "failure": "STATIC_VIEW_INPUT_CHANGED due to opt-in servo_fk_carry_v1 addition",
+    "equivalence_cases_checked": 73020,
+    "equivalence_mismatches": 0,
+    "old_servo_sha256": "0083e07af1a78b1da35cefb7f85011f65e1e2c61b5c21c03f337ceaff741a3b3",
+    "new_servo_sha256": "8a0156044a83430d1fe5979ae9bdb2f097f6b4b656015510c194d3fb5e80b32a",
+    "static_views": 85,
+    "static_top": 100,
+    "other_static_inputs_match": true,
+    "evidence": "experiments/2026-10-17-egomem2/operations/static-fingerprint.json",
+    "local_tests": "6 passed (static-view fingerprint + servo FK)",
+    "note": "behavioral equivalence for existing servo_fk_v1/off only; new carry branch not physically validated"
+  }
 }
