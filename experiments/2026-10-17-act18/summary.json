@@ -769,6 +769,136 @@
         "packaged": false,
         "released": false
       }
+    },
+    {
+      "name": "b2-r1 (act18-std)",
+      "kind": "standard-aligned 20k bf16 from scratch (chunk20=2.0s, base smoothing5, best-val, done positive batches)",
+      "status": "NOT_READY",
+      "complete": true,
+      "prereg": "experiments/2026-10-17-act18/B2_PREREG.json",
+      "training": {
+        "steps": 20000,
+        "wall_s": 2565.7,
+        "precision": "bf16_autocast_v1",
+        "chunk": 20,
+        "base_smooth_window": 5,
+        "val_select": "32 non-VAL8 validation episodes, 256 fixed rows",
+        "done_positive_batch_fraction": 0.5,
+        "done_positive_batches": 10075,
+        "batches_seen": 20000,
+        "val_final": 0.13919566571712494,
+        "val_history_best": {
+          "step": 20000,
+          "val_loss": 0.13919566571712494
+        },
+        "checkpoint_sha256": "75a56028f517a63b444119127c19ca36daf363615876d9da36301cfa9faa6a95",
+        "adapter_sha256": "9b89aaaa335edb0a29784ab6e36f276b0052e5612d46caaaec4e54dda3d8f6d5",
+        "summary_sha256": "df7e307d098bc388ac4242b80ba48ab91524e3be63cf97b7da99c38d2d99dd8a"
+      },
+      "gate": {
+        "stage": "train4",
+        "n": 0,
+        "N": 4,
+        "wall_s": 804.5,
+        "status": "NOT_READY",
+        "raw": {
+          "vm_dir": "/home/ugrp/ugrp-sim/runs/act18/b2-r1",
+          "summary_sha256": "8b9d5ec8418e82b1f1eb3648e23b1337648dc92719e111b837aa72569471bd07",
+          "stage_recount_sha256": "f15b77c4ac4adc6ffd29bc7eceeac55e010b738e17a8c85717b93e33201f550a",
+          "independent_recount": "/home/ugrp/ugrp-sim/runs/act18/recount-r1/act18-std-TRAIN4.json",
+          "done_logs": {
+            "group000": "d4706a80494161d4513f0178ed866941ed5a592e8a0ce3c6be41e36842b7ba20",
+            "group001": "e7ed0eb9fd0acf6af68e5054fffbb720c395e4f3e81fd24b65cf9b487260e01e"
+          },
+          "analysis": {
+            "group000": "97e0cffcd1d2b4f2e6eaf9c6c797b6c7d79b501d87ea53ab7a46367f37fc390d",
+            "group001": "70b4aa18438d81b28d7ca4c048be0677ef820d623d564b6bc067b2f17332442e"
+          }
+        },
+        "rows": [
+          {
+            "seed": 88600,
+            "kind": "cyan",
+            "cap_end": true,
+            "physical_lift": false
+          },
+          {
+            "seed": 88601,
+            "kind": "red",
+            "cap_end": true,
+            "physical_lift": false
+          },
+          {
+            "seed": 88602,
+            "kind": "green",
+            "cap_end": true,
+            "physical_lift": true
+          },
+          {
+            "seed": 88603,
+            "kind": "yellow",
+            "cap_end": true,
+            "physical_lift": false
+          }
+        ]
+      },
+      "behavior": {
+        "base_last_move_s": [
+          10.4,
+          11.8,
+          9.5,
+          18.9
+        ],
+        "gripper_close_s": [
+          11.0,
+          12.4,
+          10.1,
+          19.5
+        ],
+        "path_m": [
+          0.028,
+          0.011,
+          0.128,
+          0.0
+        ],
+        "finger_force_max": [
+          3.095,
+          3.124,
+          5.276,
+          0.0
+        ],
+        "physical_stop_s": [
+          15.4,
+          16.7,
+          15.2,
+          null
+        ]
+      },
+      "done_probe": {
+        "max_raw": 0.0014,
+        "max_ensemble": 0.0013,
+        "fires_at_065": false,
+        "fires_at_01": false,
+        "conclusion": "standard alignment did not change the early-stop/done failure pattern; from-scratch 20k did not learn done (unlike B1 5k fine-tune from 100k)"
+      },
+      "cause_table": {
+        "action_format": "not tested by B2 (wheel pulse/dt/PWM + decode clamps unchanged) — still suspect",
+        "base_smoothing": "applied 5-tap; no change in early-stop pattern",
+        "chunk_horizon": "chunk20 (2.0s) applied; no change",
+        "best_val": "worked (selected final 0.139), not the bottleneck",
+        "done_supervision": "positive batches 50% but from-scratch 20k still yields ~1e-3 done probability; B1 fine-tune showed done learning needs a pre-trained base",
+        "data_scale": "TRAIN200 single dataset unchanged; co-training untested (Phase C)"
+      },
+      "pooling": {
+        "no_pooling_with": [
+          "R8",
+          "R100",
+          "act18-tune",
+          "act18-doneb1"
+        ],
+        "packaged": false,
+        "released": false
+      }
     }
   ],
   "release": {
@@ -867,7 +997,8 @@
     "raw 학습자료(시연)의 원격 백업: 별도(Release에는 포함하지 않음)",
     "act18-tune 모델 패키징·Release: 하지 않음(프로브, packaging_eligible=false)",
     "done 신호: 현재 학습으로 습득 불가(최대 확률 6e-4). 개선안(B1/B2)은 미실행·승인 대기",
-    "B1 done horizon 계약: 현재스텝 h=0 확률 ~1e-4, 미래 h≈99만 0.999 — 실행 계약과 학습 라벨 불일치(후보 실험 필요)"
+    "B1 done horizon 계약: 현재스텝 h=0 확률 ~1e-4, 미래 h≈99만 0.999 — 실행 계약과 학습 라벨 불일치(후보 실험 필요)",
+    "B2 표준 정렬(20k)도 TRAIN4 0/4: chunk20·base smooth·best-val는 병리를 바꾸지 못함. 잔여 축=행동 형식(펄스/PWM+디코드 클램프)·done 학습·데이터 규모."
   ],
   "cleanup": {
     "schema": "ugrp.act18.cleanup.v1",

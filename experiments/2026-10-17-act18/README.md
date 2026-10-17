@@ -42,6 +42,12 @@ TRAIN4 원본으로 정지 시점·자세를 재계수했다(`results/faildiag-r
 
 핵심 발견(원본 `results/b1-r1/`, VM `runs/act18/b1-r1/`): done 감독은 **일부 학습됐다** — 청크 미래 스텝(h≈99) 확률은 평균 0.454–0.574, 최대 **0.999**(전체 step-prediction 중 9,356개 ≥ .65). 그러나 실행이 읽는 **현재 스텝 h=0 확률은 평균 1e-4–2e-4, 최대 0.0034**이고 temporal ensemble 후 실행 결정도 max 0.21이라 문턱 .65·.5·.3·.2는 0틱, .1에서만 t≈50–84s에 발화(lift/grip 정렬 없음). tune/R8의 전체 max가 0.0008이었던 것과 달리 done 신호 자체는 학습됐으나 **미래 horizon에 치우친 라벨/실행 불일치**가 지배적이다. 즉 문턱·pos_weight 상향만으로는 해결 불가(h=0이 ~1e-4). B1 실패 원인표: (1) horizon 계약 불일치(주원인), (2) 물리 lift 0/4로 행동 축도 여전히 미달(R100과 동일). 후속 B3a(현재스텝 라벨만, `B3_PREREG.json`)와 (b) 터미널 예측 실행의 오프라인 분석으로 분리 검증한다.
 
+### B2 표준 정렬 프로브 결과 (act18-std, 10/18)
+
+사전등록 `B2_PREREG.json`. 20,000 step bf16 from scratch(wall 2,565.7s), chunk20(2.0s @10Hz), base 명령 5샘플 이동평균, best-val 선택(VAL8 시드 제외 32검증·256행), done 양성배치 10,075/20,000. val 손실 0.4907→**0.1392(step20000 최선)**. **TRAIN4 0/4**(wall 804.5s, 독립 recount 일치, cap_end 4/4, 물리 lift 1/4(88602)). done 확률 max raw 0.0014/ensemble 0.0013으로 문턱 미발화.
+
+행동 프로파일(원본): base 마지막 이동 9.5–18.9s, 그리퍼 close 10.1–19.5s, 이동거리 0.011–0.128m, 손가락힘 0–5.28N — **R8/tune/B1과 같은 조기 정지 패턴**이다. 원인표: chunk 시간스케일·base 이동평균·best-val은 병리를 바꾸지 못했고, 잔여 축은 (1) 행동 형식(wheel 펄스/dt/PWM+디코드 클램프; `ACTION_FORMAT_DESIGN.md`), (2) from-scratch 20k에서는 done이 학습되지 않음(B1의 5k fine-tune은 100k 기반에서 미래 horizon done을 학습), (3) 단일 200시연 규모(co-training 미검증). gcp2는 B3로 이어서 진행.
+
 ### B2/B3 사전등록 (10/18)
 
 - B2(`B2_PREREG.json`, 커밋 `8bafca6c7`): `act18-std`, 20k bf16 from scratch, **chunk20(2.0s @10Hz=ALOHA 100@50Hz 시간수평)**, base 명령 5샘플 이동평균(act-plus-plus `preprocess_base_action`), **best-val 선택**(VAL8 시드 제외 32검증에피소드·고정 256행), ACT 표준 aug 없음·현재프레임 1장 유지, done 양성배치 유지. TRAIN4 4/4 판정.
