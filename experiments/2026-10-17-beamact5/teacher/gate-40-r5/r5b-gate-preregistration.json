@@ -1,0 +1,42 @@
+{
+ "schema": "ugrp.beamact5.r5b_gate_preregistration.v1",
+ "written_before_run_utc": "2026-10-17T22:20:00Z",
+ "author": "beamact5 worker (DSH)",
+ "approved_by": "Lead (자율 진행: 38/40까지 r4/r5 반복, r5까지 자동 반복 승인)",
+ "scope": "r5b 39-world gate: world15 excluded from physical execution and counted as expected FAIL (r3-approved deviation), 37 is the known structural expected FAIL from r1/r2 labels (not remeasured in r3/r4/r5). condition r5b = r4c profile + bounded extra obstacle refreshes. Not pooled with r4 runs or r1/r2/r3.",
+ "criterion": {
+  "nominal_denominator": 40,
+  "nominal_min_success": 38,
+  "executed_N": 39,
+  "rule": "at least 38 of the 39 executed worlds must succeed (at most one non-15 failure)",
+  "known_expected_fail": {
+   "15": "excluded, expected FAIL",
+   "37": "structural expected FAIL; if 37 fails and all others pass -> exactly 38/40 = PASS at minimum"
+  },
+  "if_27_or_any_other_regression": "37/40 FAIL"
+ },
+ "stack": {
+  "root": "1e0dc0c13e894372c81a343fa2046514e76cf59b",
+  "adapter": "65a9b5dd7d8fa5a938ec5fac36a88a22b1e92b91",
+  "teacher": "088b5548df677c27b2621f337202db5426b8d6aa",
+  "cases_sha256": "57bb258cb7cd8241addc6e516876c2037847d111c7f3aa01836426cc4523bb49",
+  "plan_sha256": "f1a50e8c833c1da9113bdf8cff3844913380e3c821b15c072c0a23c0f54f5148",
+  "rejection_table": "/home/ugrp/ugrp-sim/runs/beamact5/gate-40-r5/rejection_table.json"
+ },
+ "run": {
+  "out": "/home/ugrp/ugrp-sim/runs/beamact5/gate39-r5b-run",
+  "indices": "0-14,16-39",
+  "cap_s": 60,
+  "host": "ugrp-act-l4-gcp6",
+  "training_rgb": false,
+  "weld": "off"
+ },
+ "gate_runtime_decision": "gate launch is conditional on the r5b 5-world run passing 6/10/20/27 (with 37 allowed to fail as expected). If the 5-world run does not pass, this gate prereg is superseded and no gate result is claimed.",
+ "not_claimed": [
+  "teacher success is not student success",
+  "no student recording/training",
+  "world15 control behaviour unverified (excluded)",
+  "37 structural label from r1/r2 not remeasured",
+  "no margin/cap constant change"
+ ]
+}
