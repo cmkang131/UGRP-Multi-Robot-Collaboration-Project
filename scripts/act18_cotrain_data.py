@@ -194,3 +194,38 @@ class CoTrainingDataset:
         return {skill: {**value, 'positive_fraction': value['positive_mass']/value['mass'],
                         'source': 'combined mixture TRAIN h0 labels; not VAL'}
                 for skill, value in totals.items() if value['rows_N'] and 0 < value['positive_mass'] < value['mass']}
+
+
+class CoTrainingValidation:
+    """Held-out v7 validation rows normalized with the combined TRAIN statistics.
+
+    Used only for best-val checkpoint selection; the protocol VAL8 seeds are
+    excluded by the caller, so VAL8 never selects the checkpoint.
+    """
+
+    def __init__(self, v7_root, stats, *, chunk=20):
+        self.data = ReferenceDataset(v7_root, 'validation', chunk=chunk)
+        self.chunk = chunk
+        self.metadata = self.data.metadata
+        self.state_mean = np.asarray(stats['state_mean'], np.float32)
+        self.state_std = np.asarray(stats['state_std'], np.float32)
+        self.action_mean = np.asarray(stats['action_mean'], np.float32)
+        self.action_std = np.asarray(stats['action_std'], np.float32)
+        self.token = origin_token(ORIGIN_V7)
+
+    def __len__(self):
+        return len(self.data)
+
+    def __getitem__(self, index):
+        from harness.grasp_act_data import normalized_image
+        shard_id, row = self.data.index[index]
+        shard = self.data.shards[shard_id]
+        frame = shard['frames'][shard['image_index'][row][-1]]
+        image = normalized_image(raw_image(frame['path'], frame['sha256'], False))
+        state = (shard['state'][row]-self.state_mean)/self.state_std
+        state = np.concatenate([state, self.token]).astype(np.float32)
+        action = (shard['action'][row]-self.action_mean)/self.action_std
+        pad = np.asarray(shard['action_is_pad'][row], bool).copy()
+        action[pad] = 0.
+        return {'observation.images.own_history': image, 'observation.state': state,
+                'action': action.astype(np.float32), 'action_is_pad': pad}

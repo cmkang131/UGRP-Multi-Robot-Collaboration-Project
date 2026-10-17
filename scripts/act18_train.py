@@ -209,8 +209,12 @@ def main():
     if a.val_select:
         # Selection data: validation episodes EXCLUDING the protocol VAL8 seeds,
         # so the later VAL8 gate never selects the checkpoint.
-        val_data=ReferenceDataset(a.dataset,'validation',chunk=CANDIDATES[a.candidate],
-                                  base_smooth_window=a.base_smooth_window)
+        if cotrain:
+            from act18_cotrain_data import CoTrainingValidation
+            val_data=CoTrainingValidation(a.dataset,data.stats,chunk=CANDIDATES[a.candidate])
+        else:
+            val_data=ReferenceDataset(a.dataset,'validation',chunk=CANDIDATES[a.candidate],
+                                      base_smooth_window=a.base_smooth_window)
         val8=set(protocol['validation8_seeds'])
         selectable=[index for index,row in enumerate(val_data.metadata) if row['seed'] not in val8]
         if len(selectable)<a.val_rows:
