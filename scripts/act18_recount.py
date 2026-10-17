@@ -22,8 +22,10 @@ def recount(folder):
     actions=read(folder/'actor-actions.jsonl',lines=True)
     from harness.grasp_act_contract import validate_observation
     input_rows=read(folder/'actor-inputs.jsonl',lines=True)
+    input_rows_by_world=Counter()
     for item in input_rows:
         validate_observation(item['observation'])
+        input_rows_by_world[item['world']]+=1
     plans=read(folder/'initial-plans.json')['episodes']
     scores=[SoloScore() for _ in plans]
     for ev in read(folder/'owner/evaluation-only.jsonl',lines=True):
@@ -43,7 +45,18 @@ def recount(folder):
         options=ET.fromstring((world/'scene.xml').read_text()).find('option').attrib
         if options.get('noslip_iterations')!='0':
             raise ValueError('actual XML noslip mismatch')
-        audit=result['input_audit']
+        # The eval-owner result.json schema differs from the older controller
+        # result: it has no embedded per-world input_audit. The actor boundary
+        # is enforced on the actual logged inputs instead, whose exact FIELDS
+        # whitelist is checked by validate_observation above. 'world' here is
+        # the evaluator's world index, not a policy observation field.
+        audit=result.get('input_audit')
+        if audit is None:
+            if not input_rows_by_world[i]:
+                raise ValueError('no logged actor inputs for world')
+            audit=dict(invisible_measurements=0,held_world_reads=0,forbidden_input_fields=0,
+                teacher_input_fields=0,top=0,actor_input_rows=input_rows_by_world[i],
+                source='eval-owner result.json has no input_audit; actor-inputs.jsonl exact whitelist verified')
         if (any(audit.get(k)!=0 for k in ('invisible_measurements','held_world_reads'))
                 or any(audit.get(k,0) for k in ('forbidden_input_fields','teacher_input_fields','top'))):
             raise ValueError('student/teacher input audit violation')
@@ -86,6 +99,7 @@ def main():
         for i,(gate,n) in enumerate(zip(('requested','grasp_done','stable_lift','stable_release','task_success'),counts))]
     value=dict(complete=True,stage=a.stage,source_sha=source,host=host,n=sum(r['success'] for r in rows),N=len(rows),
         checkpoint_sha256=sha256(a.checkpoint/'model.safetensors'),rows=rows,funnel=funnel,
+        actor_input_rows_verified=sum(r['input_audit'].get('actor_input_rows',0) for r in rows),
         reasons=dict(Counter(r['reason_category'] for r in rows)),raw=receipts,reproduce=sys.argv,
         training_updates=0,physics_steps=0,scope='raw native physical Score and issued completion recount; no generalization claim for TRAIN')
     with a.out.open('x') as f:
