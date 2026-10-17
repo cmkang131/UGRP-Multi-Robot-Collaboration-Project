@@ -36,7 +36,12 @@ TURN_PULSE_WHEELS = (-.35, .35, -.35, .35)
 TURN_PULSE_S = 0.027857142857142865
 PATCH_FIT_RANGE_M = SLOT_MAX_RANGE_M
 FAR_RANGE_M = 4.0
-MIN_COLOUR_PIXELS = 120
+# A far colour hint must be zone-sized, not just zone-hued.  Preflight r7
+# west e00 targeted the 25x7 px blue end cap of a green beam (128-150 px,
+# bbox bottom near the horizon) for 10 s before losing it.  Zone B at 1.05 m
+# measured 28856 px and its 0.84 m^2 footprint is still >1000 px at the
+# arena's 5-6 m sight lines.  Require the same 600 px as the metric fit.
+MIN_COLOUR_PIXELS = 600
 MIN_METRIC_PIXELS = 600
 # Calibrated on rendered v5 frames from the assigned VM (2026-10-17): the
 # blue-tinted floor lies in the hue band (hue 108) but its band saturation is
