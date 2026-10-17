@@ -1,0 +1,122 @@
+{
+  "schema": "ugrp.visual_goal_paint_calibration.v1",
+  "scene": "walls_floor_contrast_v5_indigo110_s80",
+  "source": "renderer 16a946ff3, runner-accurate ctrl-hold frame on gcp3",
+  "camera": "r1__robot_cam 640x480 pinhole render -> raw_fisheye_remap -> JPEG90",
+  "band_hue": [
+    99,
+    125
+  ],
+  "band_value_min": 30,
+  "zone_b_min_hue": [
+    104,
+    120
+  ],
+  "paint_hue_B": "PAINT_HUE[B] from harness.zone_own_perception",
+  "decision": {
+    "saturation_min": 110,
+    "reason": "v5 blue floor hue 108 is inside PAINT_HUE[B]; its band saturation is p99 74-77 on west frames and max 99 on east-away e10, so the floor_patch S>=30 gate false-positives. Zone-B paint is S~128; S>=110 retains 29859 px on e13 and 0 px on all no-zone frames."
+  },
+  "frames": {
+    "e00": {
+      "sha256": "03f6f89894b13ac1aa915fbbd96406eff16ea068b7dcc86b4518125fc1f31ba7",
+      "band_pixels": 208585,
+      "band_sat_p50": 66.0,
+      "band_sat_p99": 74.0,
+      "band_sat_max": 196.0,
+      "detected_pixels": 0,
+      "reason": "destination_colour_absent",
+      "components": 0
+    },
+    "e01": {
+      "sha256": "3868bd86977152ba8359eaeea93408438845c02ff015a303217e78605c6f3584",
+      "band_pixels": 218231,
+      "band_sat_p50": 70.0,
+      "band_sat_p99": 77.0,
+      "band_sat_max": 191.0,
+      "detected_pixels": 0,
+      "reason": "destination_colour_absent",
+      "components": 0
+    },
+    "e08": {
+      "sha256": "3ca04119a51c95dc8931ccd488fc4719f01288384b07b573dbf1c6edb01fb328",
+      "band_pixels": 1206,
+      "band_sat_p50": 4.0,
+      "band_sat_p99": 89.90000000000009,
+      "band_sat_max": 94.0,
+      "detected_pixels": 0,
+      "reason": "destination_colour_absent",
+      "components": 0
+    },
+    "e09": {
+      "sha256": "8beeffaa355a32c5b3f951919596658b103a94cdd3d8a82264a10a1fc86479db",
+      "band_pixels": 2,
+      "band_sat_p50": 6.0,
+      "band_sat_p99": 7.96,
+      "band_sat_max": 8.0,
+      "detected_pixels": 0,
+      "reason": "destination_colour_absent",
+      "components": 0
+    },
+    "e10": {
+      "sha256": "195a6d643a2368e1cd6eccd6b81d23636bf303c701a2a1b0ff6f5258da04bc21",
+      "band_pixels": 1249,
+      "band_sat_p50": 4.0,
+      "band_sat_p99": 83.0,
+      "band_sat_max": 99.0,
+      "detected_pixels": 0,
+      "reason": "destination_colour_absent",
+      "components": 0
+    },
+    "e11": {
+      "sha256": "f10c61518efc5696a741aad9993a210d4d03ffd0c61225c342846c10995d1835",
+      "band_pixels": 1553,
+      "band_sat_p50": 4.0,
+      "band_sat_p99": 20.0,
+      "band_sat_max": 29.0,
+      "detected_pixels": 0,
+      "reason": "destination_colour_absent",
+      "components": 0
+    },
+    "e12": {
+      "sha256": "03d36e2d1962600c2cd2575b6121e006593fd48add36c38ac69e9fb8d88f8fd8",
+      "band_pixels": 924,
+      "band_sat_p50": 4.0,
+      "band_sat_p99": 22.0,
+      "band_sat_max": 61.0,
+      "detected_pixels": 0,
+      "reason": "destination_colour_absent",
+      "components": 0
+    },
+    "e13": {
+      "sha256": "20db05ff32befeafa8d7768d1d8a022f6708a6754d657d052721e7b5521527e4",
+      "band_pixels": 34634,
+      "band_sat_p50": 128.0,
+      "band_sat_p99": 137.0,
+      "band_sat_max": 255.0,
+      "detected_pixels": 28856,
+      "reason": "destination_colour_observed",
+      "components": 1
+    },
+    "e14": {
+      "sha256": "bff513c7dcaec5ba316a1e4b0617d0fa42540fc66d1119ae8eccfaac06c43b60",
+      "band_pixels": 799,
+      "band_sat_p50": 3.0,
+      "band_sat_p99": 12.019999999999982,
+      "band_sat_max": 16.0,
+      "detected_pixels": 0,
+      "reason": "destination_colour_absent",
+      "components": 0
+    },
+    "e15": {
+      "sha256": "2b611d15cff1d33efcb8b2d50258b43f4c90acb94aa1852c4c3f14042443ee0d",
+      "band_pixels": 637,
+      "band_sat_p50": 4.0,
+      "band_sat_p99": 21.0,
+      "band_sat_max": 24.0,
+      "detected_pixels": 0,
+      "reason": "destination_colour_absent",
+      "components": 0
+    }
+  }
+}

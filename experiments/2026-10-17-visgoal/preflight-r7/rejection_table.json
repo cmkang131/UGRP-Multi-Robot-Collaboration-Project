@@ -1,0 +1,62 @@
+{
+  "unit": "episode",
+  "funnel": [
+    {
+      "stage": "starts",
+      "input_n": 2,
+      "cumulative_pass_n": 2,
+      "rejected_n": 0
+    },
+    {
+      "stage": "found_metric_or_arrived",
+      "input_n": 2,
+      "cumulative_pass_n": 1,
+      "rejected_n": 1
+    },
+    {
+      "stage": "colour_seen",
+      "input_n": 1,
+      "cumulative_pass_n": 2,
+      "rejected_n": -1
+    },
+    {
+      "stage": "arrived_declared",
+      "input_n": 2,
+      "cumulative_pass_n": 1,
+      "rejected_n": 1
+    },
+    {
+      "stage": "arrived_gt",
+      "input_n": 1,
+      "cumulative_pass_n": 1,
+      "rejected_n": 0
+    }
+  ],
+  "reasons": {
+    "cap_end": 1
+  },
+  "invisible_starts": 1,
+  "raw": "/home/ugrp/ugrp-sim/runs/visgoal-preflight-r7",
+  "reproduction": [
+    "scripts/visgoal_probe.py",
+    "--enabled",
+    "--preflight",
+    "--episodes",
+    "0,13",
+    "--sim-cap",
+    "60",
+    "--queue",
+    "experiments/2026-10-17-visgoal/queue-preflight.json",
+    "--renderer",
+    "/home/ugrp/ugrp-sim/src/16a946ff3",
+    "--legacy",
+    "/home/ugrp/ugrp-sim/src/warp8f-selfmap-0ace43f25",
+    "--setups",
+    "experiments/2026-10-17-visgoal/setups.json",
+    "--output",
+    "/home/ugrp/ugrp-sim/runs/visgoal-preflight-r7"
+  ],
+  "blocked_object": "not_observed",
+  "minimum_gap_m": null,
+  "gap_status": "not_measured"
+}

@@ -1,0 +1,65 @@
+{
+  "unit": "episode",
+  "funnel": [
+    {
+      "stage": "starts",
+      "input_n": 16,
+      "cumulative_pass_n": 16,
+      "rejected_n": 0
+    },
+    {
+      "stage": "found_metric_or_arrived",
+      "input_n": 16,
+      "cumulative_pass_n": 9,
+      "rejected_n": 7
+    },
+    {
+      "stage": "colour_seen",
+      "input_n": 9,
+      "cumulative_pass_n": 9,
+      "rejected_n": 0
+    },
+    {
+      "stage": "arrived_declared",
+      "input_n": 9,
+      "cumulative_pass_n": 8,
+      "rejected_n": 1
+    },
+    {
+      "stage": "arrived_gt",
+      "input_n": 8,
+      "cumulative_pass_n": 1,
+      "rejected_n": 7
+    }
+  ],
+  "reasons": {
+    "cap_end": 8
+  },
+  "invisible_starts": 15,
+  "raw": "/home/ugrp/ugrp-sim/runs/visgoal-gate-r4",
+  "reproduction": [
+    "scripts/visgoal_probe.py",
+    "--enabled",
+    "--sim-cap",
+    "120",
+    "--nworld",
+    "16",
+    "--episodes",
+    "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15",
+    "--queue",
+    "experiments/2026-10-17-visgoal/queue-gate.json",
+    "--renderer",
+    "/home/ugrp/ugrp-sim/src/16a946ff3",
+    "--legacy",
+    "/home/ugrp/ugrp-sim/src/warp8f-selfmap-0ace43f25",
+    "--setups",
+    "experiments/2026-10-17-visgoal/setups.json",
+    "--output",
+    "/home/ugrp/ugrp-sim/runs/visgoal-gate-r4",
+    "--lease-name",
+    "visgoal-gate-r4"
+  ],
+  "blocked_object": "not_observed",
+  "minimum_gap_m": null,
+  "gap_status": "not_measured"
+}
