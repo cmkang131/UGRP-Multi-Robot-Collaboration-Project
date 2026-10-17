@@ -1,0 +1,49 @@
+{
+  "schema": "ugrp.act17.v7.queue.v1",
+  "flow": "teacher_gate",
+  "status": "PREPARED_V7",
+  "stack_values": {
+    "physics_backend": "mjwarp_batch_v1",
+    "contact_profile": "warp_native_contact_v1",
+    "noslip_iterations": 0,
+    "scene_profile": "walls_floor_contrast_v5_indigo110_s80",
+    "end_color_scene": "grasp_act_teal_blue_v1",
+    "cargo_version": "v6",
+    "scenario_version": "v7",
+    "heavy_crate": false,
+    "held_object_hidden_v1": true,
+    "held_world_reads": 0,
+    "nearfield_executor": "ACT",
+    "weld": false,
+    "top_camera_control": false,
+    "heading_mode": "on",
+    "ultrasonic_front": "off",
+    "wall_cap": null,
+    "speed_gate": "record_only",
+    "speed_metric": "wall_s/(sim_s*nworld)",
+    "gcp_host": "ugrp-act-l4-gcp2",
+    "gcp_project": "ugrp-sim-b-1014",
+    "gcp_account": "changmin5781@gmail.com",
+    "gcp_guards": {
+      "idle_minutes": 20,
+      "budget_stop": true,
+      "credentials_on_vm": false
+    },
+    "no_pooling": true,
+    "rejection_ledger": [
+      "reason_category",
+      "blocked_object",
+      "minimum_gap_m"
+    ],
+    "cap_end_label": "cap_end",
+    "teacher_visibility": "visible_only",
+    "invisible_measurements": 0,
+    "setdown_lookaround_v1": true,
+    "planning_cap_basis": "compute_or_sim"
+  },
+  "training_rgb": false,
+  "N": 40,
+  "rejection_table": "/Users/changmin/projects/ugrp-wt/act16w/experiments/2026-10-17-act17/results/rejection_table.json",
+  "protocol": "/Users/changmin/projects/ugrp-wt/act16w/experiments/2026-10-17-act17/v7/protocol.json",
+  "scope": "planned v7 gate; runtime XML/options/input audits are verified separately; no past v4 success inherited"
+}
