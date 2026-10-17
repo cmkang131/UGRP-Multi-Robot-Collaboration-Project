@@ -1,0 +1,81 @@
+# beamact5 r3: 남은 원인(6·15·27·37) 수정과 6-world 검증
+
+이 문서는 PR #585(claude/beamact5, r2 34/40 FAIL 기록)와 분리된 **새 후보 코드 PR**의 기록이다. 브랜치 `claude/beamact5-r2-t`(r2 base `85b99214` + r3 커밋)이며, companion 고정 트리는 adapter `claude/beamact5-r2-a`, root `claude/beamact5-r2-r`이다. stacked PR: base는 `main`, 선행 후보 커밋은 r1/r2 동결 트리 체인 위에 있다.
+
+## 0. 범위
+
+- ACT 학습·학생 카메라 기록·학생 평가는 하지 않는다. 교사 gate/검증만.
+- r1/r2 결과와 합산하지 않는다. MJWarp 결과를 C 결과와 합산하지 않는다.
+- 새 거리·각도·시간·간격·margin 상수는 없다. 새 모드는 모두 **기본 off**이고 profile에 항상 기록된다.
+- wide_start 40 starts(seed 8420000–8420039)는 r1과 동일한 동결 plan이다(cases는 candidate 필드만 다름).
+
+## 1. 스택 (r3 6-world 실행, gcp6)
+
+|항목|SHA/값|
+|---|---|
+|root (WARP_SOURCE_ROOT)|`9cf2b21136a2c48c96e97c158f83994bc888099c`|
+|adapter|`3bc6dd68c718294bbcd8346584052e69efdce9c3`|
+|teacher|`968bf1d9bb75d28c2ce2d515f061775e79528db5`|
+|cases|`ccdbe6bd6630ba021a8ac393d39ca20939f2ee30187fd6117b92126d35484b96` (r2 cases `24903b69…`와 candidate 필드만 다름)|
+|plan|`f1a50e8c833c1da9113bdf8cff3844913380e3c821b15c072c0a23c0f54f5148` (r1/r2와 byte-identical)|
+|rejection ledger 입력|`16fe662ac3f054106217a116697b9f396f2fcfc0d34215924970e8159f6c7d3f` (gate-40-r2 표 복사)|
+|physics/contact|`mjwarp_batch_v1` + `warp_native_contact_v1` (noslip 0)|
+|scene|cargo v6, scenario v7, `walls_floor_contrast_v5_indigo110_s80`, canonical XML 재컴파일|
+|기타|training RGB off, weld off, held_object_hidden on, top camera control off, gcp6 isolated, placement filter, cap 60 SIM s|
+
+스택 점검: `teacher-gate-stack-check.json` — `ok=true`, `current_compliant=true`, admission `pass` (25 rows). 사전 등록: `validation-r3-preregistration.json` — **실행 전**에 6 world·예상·금지 범위를 고정했다.
+
+## 2. r3 변경(모두 기본 off)
+
+- `search26_peer_memory` (teacher): static-peer witness를 visible-history 기억(`world['robots']`, 기존 `PEER_TTL_S`)이 살아있는 동안 유지. r2 world 6에서 6 s 창이 가시성 flicker마다 재시작해 goal set이 56.1 SIM s에야 열린 것이 근거.
+- `search26_reobserve` (teacher): retreat-first reobserve가 0.6 s 경계에서 끝나지 않고 기존 3회 bounded view attempt로 이어진다(r2 world 27의 `retreat_bounded_replan` 근거).
+- `search26_reobserve` (adapter ordering): wall layer 활성화가 방금 시작한 비-벽 대상 reobserve를 elapsed 0.0에서 죽이던 순서를, 이 모드가 켜진 실행에서만 유지하도록 고친다(r2 world 27 `wall_layer_hit_miss_replan`).
+- `search26_wide_stance` (teacher, **이 후보에서는 켜지 않음**): 5°→1° 각도 격자의 새 certified family. world 37의 ±15° best 4.87 mm < runtime floor 11.07 mm, jaw bound 17.88°가 근거. 5° family와 pooling 금지.
+- runner 배선: `scripts/run_grasp_act_teacher.py:run()` 인자·report·search15 dict에 세 키 추가 + signature 회귀 테스트.
+
+## 3. 사전 실행 오류 2건 (물리 실행 아님, 집계 제외, 원본 보존)
+
+1. `validation-r3-6-wiring-error` — adapter가 `run(**profiles(candidate))`로 부르는데 teacher runner에 r3 키 배선이 없어 `TypeError` (started_N=0, HOST_ERROR=1).
+2. `validation-r3-6b-cwd-error` — 실행 명령이 `WARP_SOURCE_ROOT`로 cd하지 않아 canonical scene의 상대 texture 경로가 안 잡힘(`ValueError: zone_wall_divider_1_...png`). started_N=0, HOST_ERROR=1.
+
+두 경우 모두 world가 시작되지 않았고 summary/로그를 VM 디스크에 보존했다. 상세는 preregistration의 `prelaunch_attempts`.
+
+## 4. world 15 원인표 (r2 raw + cProfile)
+
+### 4.1 r2 비프로파일 원본 (validation-r2-6/world-002)
+
+|관측|값|
+|---|---|
+|end_reason|`planning_wall_safety_cap` (SIM 6.4 s; `planning host safety cap; 30 wall seconds per tick`)|
+|world wall|**324.75 s** (SIM 6.4 s → 50.7 wall/SIM)|
+|planner_calls|46 (r1)|
+|search20_log|44 rows, **body-planning `search20_compute` 0 rows** — cap 전에 body planning이 없었다|
+|반복 이벤트|`retained_proposal_blocked` + `reasons.blocked_goal=91`가 0.1 s tick마다 2회씩 기록 (91 = 5° 격자 sampled certified family 전체)|
+|로그 크기|`search22_log` 47 rows = **281.5 MB chars**, `goal_set_log` 46 rows = **274.9 MB chars** (result JSON 전체 약 1 GB의 대부분)|
+|해석|goal-set/search22 memory audit가 매 tick 전체 91 pose에 대해 재계산·기록되고, 보이는 기억(grid cell)이 늘수록 tick 비용이 커져 어느 tick이 30 wall s를 넘겨 행정 상한이 걸렸다. body planning(search19/20)은 이 시간에 실행되지 않았다.|
+
+### 4.2 cProfile (r2 후보, world 15, `profile15.prof` sha256 `94d426ac…`, 16:05–16:27Z)
+
+- 총 profiled 1312.5 s, 함수호출 4.08e9.
+- `write_json`(harness/grasp_act_data) **992.6 s = 75.6%** (24 calls) — 사후 대형 artifact 직렬화(raw/result 52 MB zst, diagnostic-snapshot 49 MB zst, adapter result 52 MB zst). 이 실행은 SIM 6.9 s에서 cap으로 끊겨 **사후 저장이 프로파일의 대부분**을 차지한다. 따라서 이 75.6%를 일반 60 SIM s 실행의 비중으로 전용하지 않는다.
+- in-run 상위(profiled): teacher.step 176.2 s/129 ticks, peer_rendezvous `_step` 141.0 s/126, `plan_active` 109.1 s/95, `body_fallback` 93.0 s/44(search19→21→23 fallback 체인), `select_sampled_goal` 55.2 s/53, `ghost_visible_region` 46.3 s/68, search23 `__init__` 71.5 s/363, `measure` 30.0 s/9706(`rectangle_gaps_many` 22.6 s, `_wall_name` 20.1 s/151658), `candidate_audit` 13.2 s/4009, warp step 63.5 s/69(`capture_launch` 57.6 s).
+- 가설(certified-family fallback) 판정: **부분 지지**. 상위 계획 경로가 certified family/sampled goal 계열(`body_fallback`·`select_sampled_goal`·`plan_active`)인 것은 확인했지만, 이 프로파일은 6.9 SIM s에서 끝나 그 비중을 60 s 실행으로 전용할 수 없고, 30 s를 넘긴 단일 tick의 실시간 스택은 프로파일에 남지 않았다(도구 한계). r2 raw의 반복 91-pose blocked loop와 body planning 0 rows가 직접 증거다.
+- 결론: world 15는 **cap/margin 상수를 올릴 대상이 아니고**, 반복되는 91-pose goal-set/memory audit 경로를 batch/cache하는 후속 수정 대상이다. 이번 r3 후보에는 그 수정을 넣지 않았고(원인표만 확정), gate 산술은 15를 expected fail로 둔다.
+
+## 5. world 37 (구조적, 수정 제외)
+
+sampled ±15° family best gap 4.87 mm < runtime floor margin 11.07 mm. `search26_wide_stance`는 이 구조를 겨냥한 별도 family지만 이 후보에서 켜지 않는다(단독 비교 실행 필요, r3와 pooling 금지).
+
+## 6. 테스트
+
+- `tests/test_beamact5_r3_modes.py` 9 tests: 등록·기본 off, validate fail-closed, peer memory 유지/만료, 기본 reset, retreat 경계→view attempt, 기본 경계 종료 불변, wide family 상위집합/각도, teacher runner 인자 배선.
+- 기존 회귀: `tests/test_grasp_act_search15/21/22/23/24/25.py`, `tests/test_beamact5_r2_modes.py` 포함 69 passed (Mac, 물리/렌더 없음).
+
+## 7. 결과 (6-world, gcp6) — 진행 중
+
+실행 `validation-r3-6c` (out `/home/ugrp/ugrp-sim/runs/beamact5/validation-r3-6c`, log `…/validation-r3-6c.log`). 결과·원본 해시·funnel은 완료 후 이 절과 PR 본문에 채운다.
+
+## 8. 원본·미확인
+
+- gcp6 영속 디스크: `runs/beamact5/validation-r3-6c/`, `gate-40-r3/rejection_table.json`, `wide-start-8420000d-r3/`.
+- 미확인: 청구 비용, C 대비 물리/렌더 동등성, 실기 전이. 교사 성공은 학생 성공이 아니다.

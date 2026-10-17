@@ -1,0 +1,40 @@
+{
+ "schema": "ugrp.beamact5.gate_preregistration.v1",
+ "gate_id": "beamact5-teacher-gate-r3",
+ "candidate": "beamact5_r3",
+ "written_before_run_utc": "2026-10-17T16:45:00Z",
+ "author": "beamact5 worker (DSH)",
+ "scope": "Full 40-run wide-start teacher gate. Same 40 immutable starts (seed 8420000-8420039) and byte-identical plan as r1/r2; only the candidate field in the cases differs. training RGB off, weld off, cap 60 SIM s, min success 38/40. Results must not be pooled with r1 (34/40) or with the r2 6-world subset.",
+ "planned_N": 40,
+ "min_success": 38,
+ "cap_s": 60,
+ "host": "ugrp-act-l4-gcp6",
+ "stack": {
+  "root": "9cf2b21136a2c48c96e97c158f83994bc888099c",
+  "adapter": "3bc6dd68c718294bbcd8346584052e69efdce9c3",
+  "teacher": "968bf1d9bb75d28c2ce2d515f061775e79528db5",
+  "cases_sha256": "ccdbe6bd6630ba021a8ac393d39ca20939f2ee30187fd6117b92126d35484b96",
+  "plan_sha256": "f1a50e8c833c1da9113bdf8cff3844913380e3c821b15c072c0a23c0f54f5148"
+ },
+ "expected_arithmetic": {
+  "r1_baseline": "34/40 (failures 6,10,15,20,27,37)",
+  "r2_fixed": [
+   10,
+   20
+  ],
+  "r3_expected_fixed": [
+   6,
+   27
+  ],
+  "expected_result": "38/40 PASS by exactly the pre-registered minimum, with 15 and 37 failing",
+  "regression_budget": "zero: any previously passing world that regresses drops the gate to 37/40 and fails. This is stated before the run; if the gate lands at 38/40 the claim is PASS-at-minimum, not margin.",
+  "world15": "expected FAIL - planning wall safety cap; cause table in README-r3 section 4 (repeated 91-pose goal-set/memory audit; no cap/margin change in this bundle)",
+  "world37": "expected FAIL - structural sampled-stance clearance 4.87 mm < runtime floor margin 11.07 mm"
+ },
+ "not_claimed": [
+  "teacher success is not student success",
+  "no student camera recording or ACT training",
+  "no margin/cap/clearance constant change",
+  "no pooling across candidates/hosts/physics profiles"
+ ]
+}

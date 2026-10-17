@@ -55,12 +55,22 @@
   "no margin/cap/clearance constant change",
   "C/MJWarp results are not pooled"
  ],
- "prelaunch_attempt": {
-  "attempt": "validation-r3-6 (2026-10-17T16:38Z)",
-  "result": "HOST_ERROR before any world started",
-  "cause": "the first r3 teacher commit added the new modes to the teacher classes but not to scripts/run_grasp_act_teacher.py:run(); the adapter calls run(**profiles(candidate)) and the process died with TypeError: run() got an unexpected keyword argument 'search26_peer_memory'",
-  "evidence": "started_N=0, completed_N=0, HOST_ERROR=1, summary kept on the run disk at runs/beamact5/validation-r3-6-wiring-error (renamed from validation-r3-6); not a physics run and not pooled",
-  "fix": "runner keyword/report/search15 plumbing added and a signature regression test; teacher 968bf1d9, adapter 3bc6dd68 (DEPENDENCY_SHA pin), root 9cf2b211 (ADAPTER_SHA/TEACHER_SHA pin)",
-  "repeat_guard": "tests/test_beamact5_r3_modes.py::test_teacher_runner_accepts_the_round3_profile_values"
- }
+ "prelaunch_attempts": [
+  {
+   "attempt": "validation-r3-6 (2026-10-17T16:38Z)",
+   "result": "HOST_ERROR before any world started",
+   "cause": "the first r3 teacher commit added the new modes to the teacher classes but not to scripts/run_grasp_act_teacher.py:run(); the adapter calls run(**profiles(candidate)) and the process died with TypeError: run() got an unexpected keyword argument 'search26_peer_memory'",
+   "evidence": "started_N=0, completed_N=0, HOST_ERROR=1; summary kept at runs/beamact5/validation-r3-6-wiring-error (renamed); not a physics run and not pooled",
+   "fix": "runner keyword/report/search15 plumbing added + signature regression test; teacher 968bf1d9, adapter 3bc6dd68, root 9cf2b211",
+   "repeat_guard": "tests/test_beamact5_r3_modes.py::test_teacher_runner_accepts_the_round3_profile_values"
+  },
+  {
+   "attempt": "validation-r3-6b (2026-10-17T16:39Z)",
+   "result": "HOST_ERROR before any world started",
+   "cause": "the launch command set WARP_SOURCE_ROOT but did not cd into it, so the canonical scene's relative texture paths (sim/assets/scene_contrast_v5/...) did not resolve: ValueError opening zone_wall_divider_1_250_9625_2000_fileright.png",
+   "evidence": "started_N=0, HOST_ERROR=1; summary kept at runs/beamact5/validation-r3-6b-cwd-error (renamed); not a physics run and not pooled",
+   "fix": "launch command now cd $WARP_SOURCE_ROOT before the python entrypoint (same as the r2/profile launches)"
+  }
+ ],
+ "attempt_plan": "validation-r3-6c: same command with cd $WARP_SOURCE_ROOT and out dir runs/beamact5/validation-r3-6c"
 }
