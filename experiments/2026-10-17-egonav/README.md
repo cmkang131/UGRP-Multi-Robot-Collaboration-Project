@@ -77,13 +77,46 @@ gate-07 world06의 "6.41 rad 모델 대 1.49 rad 실제(4.29x)"는 펄스당 델
 기억 이송 yaw는 `median/model=0.744774`로 보정. `SEARCH_SWEEP_MARGIN=5`
 배율 상수는 삭제했다. 근거 수치는 코드 주석에 같은 값으로 적었다.
 
-## 후보 A (gate-09)
+## 후보 A (gate-09) — 통과 16/16
 
-queue: `queue-gate09.json` (source 2e27dc5), stack check:
-`stack_check_gate09.json`(ok true, 30행). 변경: (1) 0.10 m² 관측 넓이
+queue: `queue-gate09.json` (source 2e27dc5, sha256 `80521816…c9449`), stack
+check: `stack_check_gate09.json`(ok true, 30행). 변경: (1) 0.10 m² 관측 넓이
 탄생 게이트(면적 없는 관측은 fail-closed로 무시), (2) 측정 회전 한계
 62펄스, (3) 기억 이송 yaw 0.744774 보정. gate-08과 같은 setup·세계·시드.
-raw: `/home/ugrp/ugrp-sim/runs/egonav/gate-n16-09` (진행/결과는 아래에 추가).
+
+원본 `/home/ugrp/ugrp-sim/runs/egonav/gate-n16-09` (gcp4),
+`SHA256SUMS.json` sha256 `8f170246851bf7cf19e54e49c15204b7375ba6dc63c61bce1cd3e188d0fb1edf`,
+`summary.json` sha256 `a8d5e4d3df9a167633cf6e022e05381cc8cbba5eb7e8234e84053e0370e309ca`.
+재계수 `recount_gate09.json`(원본 JSON만 읽음, `all_checks_match true`),
+표 `world-table-gate09.md`.
+
+| 항목 | 값 |
+|---|---|
+| GT 구역 A 안 도착 | **16/16** |
+| 도착 선언(`done`) | 16/16 (그중 world04는 `arrival_unverified` 후 정지, GT는 구역 안) |
+| 한 번 이상 표시 관측 | 16/16 |
+| 중간 상실 world | 15/16 (world09는 상실 없음) |
+| 충돌 | 0/16, 0회 |
+| 제외/분모 축소 | 없음 (world_n 16) |
+| 최종 중심 거리 | 0.043–0.475 m |
+| 기억 미관측 오차 기울기 | median -9.63e-6 m/s (n=15) |
+| status | ALL_WORLDS_DONE, sim 25.5 s, wall 1317.5 s, speed 3.23 wall/(sim·world) |
+
+funnel(`gate09-rejection_table.json`): requested_n16 16 → input_audit 16 →
+target_observed 16 → arrived_inside 16, 거부 0. 원장 `reasons={}`,
+`blocked_object=not_observed`, `minimum_gap_m=null`/`not_measured`.
+
+world02 회복 확인: t=1.6·3.8·15.7에 `small_marking_rejected`
+(최소 넓이 0.0221·0.0761·0.0945 m²), t=3.9에 진짜 표시로 `target_acquired`,
+t=15.7 구역 안 도착. area 게이트가 gate-08 실패를 직접 막았다.
+13개 `small_marking_rejected` 이벤트가 전 world에 걸쳐 기록됐다.
+
+**기록 주의:** 평가 칸의 `final memory err`와 `target_lost`는 게이트가
+"첫 원시 패치"를 기준으로 라벨링하므로(gate 스크립트의 `visible=bool(obs)`),
+world02의 4.431 m는 받아들인 목표의 오차가 아니라 **첫 거짓 패치와 최종
+목표 사이 거리**다. 다음 게이트에서는 평가 앵커도 area 게이트를 통과한
+첫 관측으로 바꿔야 한다(이번 실행 코드는 그대로 두고 기록만 남긴다).
+성공 판정(GT 구역 안)과 충돌 수는 이 라벨과 무관하다.
 
 ## 검증 범위와 남은 확인
 
