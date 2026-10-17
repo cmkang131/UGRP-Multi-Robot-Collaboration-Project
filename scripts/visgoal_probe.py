@@ -583,10 +583,12 @@ def run(a):
         for gate, passed in [('starts', left), ('found_metric_or_arrived', ok_found),
                              ('colour_seen', ok_colour),
                              ('arrived_declared', ok_decl), ('arrived_gt', ok_gt)]:
-            passed = bool(left and passed)
+            # Counts, not bool(passed): the r3 preflight runner collapsed every
+            # non-zero gate to 1, so the 16-start funnel could not be read n/N.
+            passed = int(passed) if left else 0
             gates.append(dict(stage=gate, input_n=left, cumulative_pass_n=passed,
-                              rejected_n=int(left) - int(passed)))
-            left = int(passed)
+                              rejected_n=int(left) - passed))
+            left = passed
         summary = dict(status='DONE', n=len(summaries), source_sha=q['source_sha'],
                        found_n=ok_found, colour_seen_n=ok_colour,
                        arrived_declared_n=ok_decl, arrived_gt_n=ok_gt,
