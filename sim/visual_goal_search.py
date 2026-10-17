@@ -448,7 +448,11 @@ class VisualGoalSearch:
         if paint.get('pixels', 0) >= MIN_COLOUR_PIXELS:
             self._set_stage(t, 'target', reason='destination_colour_while_approaching_wall')
             return self._target(t, paint, walls, obstacles, target_mem, patch_ok, patch_xy)
-        front = self._nearest(walls, -30, 30, 1.2)
+        # seek_wall hands over at <=1.6 m, but approach_wall previously only
+        # accepted <=1.2 m and counted ten "missing" ticks before the wall
+        # entered that band; r4 west e00 lost a visible divider at 1.58 m and
+        # restarted the full scan.  Keep the same 1.8 m front acceptance here.
+        front = self._nearest(walls, -30, 30, 1.8)
         if front is None:
             self.missing += 1
             if self.missing > 10:

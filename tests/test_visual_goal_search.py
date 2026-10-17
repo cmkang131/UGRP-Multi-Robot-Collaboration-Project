@@ -114,6 +114,19 @@ def test_state_machine_look_wall_follow_gap_and_arrival():
     assert s.stage == 'approach_wall' and a['forward'] > 0
 
 
+def test_approach_wall_accepts_seek_handover_range():
+    # r4 west e00 handed over at 1.58 m but approach_wall only looked inside
+    # 1.2 m, counted ten missing ticks, and restarted the scan.
+    s = VisualGoalSearch(option=OPTION)
+    s.stage = 'approach_wall'
+    s.stage_t = 0.0
+    wall = [dict(relative_xy_m=[1.5, 0.03], range_m=1.5, bearing_rad=0.02)]
+    for i in range(12):
+        a = s.control(i * 0.1, paint={}, walls=wall, obstacles=())
+        assert s.stage == 'approach_wall'
+        assert a['forward'] > 0
+
+
 def test_freshest_memory_wins_and_stale_memory_cannot_arrive():
     s = VisualGoalSearch(option=OPTION)
     s.stage = 'approach'
