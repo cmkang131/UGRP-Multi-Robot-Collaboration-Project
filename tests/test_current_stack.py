@@ -21,6 +21,18 @@ def status(rows, key):
     return [x["status"] for x in rows if x["id"] == key]
 
 
+def test_actual_shared_heading_default_matches_on_without_masking_disabled_runtime():
+    from harness.path_heading_policy import DEFAULT
+    stack, doc = baseline("self_map")
+    rule = next(r for r in stack["rules"] if r["id"] == "heading_mode")
+    assert rule["aliases"].get(DEFAULT) == "on"
+    doc["heading_mode"] = DEFAULT
+    assert status(check_document(doc, stack), "heading_mode") == ["current"]
+    for disabled_or_unknown in ("off", "crab", "unknown_heading_v1"):
+        doc["heading_mode"] = disabled_or_unknown
+        assert status(check_document(doc, stack), "heading_mode") == ["deviation"]
+
+
 def test_latest_unknown_and_conflicting_runtime_cannot_be_hidden_by_declarations():
     stack, doc = baseline()
     assert all(x["status"] == "current" for x in check_document(doc, stack))

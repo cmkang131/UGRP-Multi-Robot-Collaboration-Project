@@ -1810,6 +1810,7 @@
               3,
               4,
               6,
+              9,
               14,
               15,
               16,
@@ -1848,7 +1849,11 @@
         "method": "all present values must agree; missing is 확인 안 됨; source config alone is not runtime evidence",
         "source_artifact": "source_confirmed_runtime_separate",
         "applied_runtime": "확인 안 됨: 입력 manifest/summary별 점검 필요"
-      }
+      },
+      "aliases": {
+        "path_tangent_v1": "on"
+      },
+      "notes": "활성 구현의 정확한 enum은 harness/path_heading_policy.py DEFAULT=path_tangent_v1 (고정 source c8dc1e6545124ed69a996618bd11df684d233969:9). 기준표 on의 이 이름만 정규화하며 off/다른 모드는 계속 이탈이다. 사용자 결정·제어·문턱 변경 없음."
     },
     {
       "id": "ultrasonic_front",
