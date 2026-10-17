@@ -20,6 +20,10 @@ episode 단위 Dataset에서 무작위 시작 시각을 뽑는 방법이다. F�
 S의 네 단계 층화는 우리 설계 후보다. [Mobile ALOHA](https://arxiv.org/html/2401.02117)의
 동일 비중 source sampling과 관련되지만, 이 논문이 단계별25%의 효과를 검증했다고 주장하지 않는다.
 행동 std최소.01은 공개 ACT와 고정 ACT 라이브러리의 기존 값이며 새 물리 허용치가 아니다.
+done BCE의 skill별 prior는 같은 TRAIN 표집 확률로 계산한다. M/F는 episode 균등·episode 안 시각 균등,
+S는 단계 균등 확률을 반영하며 VAL은 쓰지 않는다. 행동 정규화 통계는 표집과 별개로 고유 TRAIN h0에서 계산한다.
+새 JPEG loader와 추론 adapter의 실제 capture 전처리를 첫 gradient 전에 배열 단위로 대조한다.
+각 후보는 최종 weights만 저장하고 다시 로드해 동일 입력 예측을 비교한다. 모델·원본 삭제로 디스크를 확보하지 않는다.
 
 [ACT 논문](https://arxiv.org/html/2304.13705)은 대부분50시연/과제, Velcro100과 실제25평가를 보고했다.
 [Diffusion Policy](https://arxiv.org/html/2303.04137v4)의 실물 Push-T136시연·20평가, pouring/spreading50시연 중90% TRAIN도 대비했다.

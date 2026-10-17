@@ -15,6 +15,7 @@ import subprocess
 import sys
 import time
 
+sys.path.insert(0,str(Path(__file__).resolve().parent))
 from act16w_runtime import require_gcp2,frozen_source,sha256
 from act17_open_loop import read
 from act17_v7 import ROOT,B,Q,T
@@ -101,6 +102,15 @@ def main():
                 if job['p'].poll() is not None:
                     job['log'].close();finished.append(dict(group=i,indices=job['indices'],returncode=job['p'].returncode,raw=str(job['folder'])));del running[i]
                     if job['p'].returncode:stop['requested']=True
+                else:
+                    progress=job['folder']/'controller/progress.json'
+                    first30=job['folder']/'first30.json'
+                    if progress.exists() and not first30.exists():
+                        value=read(progress);sim=min(value['ticks'])*.1
+                        if sim>=30:
+                            write(first30,dict(observed_SIM_s=sim,wall_s=value['loop_wall_s'],nworld=len(job['indices']),
+                                metric='wall_s/(sim_s*nworld)',value=value['loop_wall_s']/(sim*len(job['indices'])),
+                                mode='record_only',sampling='first parent2s poll after30SIM; no speed-based stop'))
             foreign=0
             for f in lease.parent.glob('*.json'):
                 if f!=lease:foreign+=int(read(f).get('concurrency',0))

@@ -15,6 +15,7 @@ import sys
 import xml.etree.ElementTree as ET
 
 ROOT=Path(__file__).resolve().parents[1]
+sys.path.insert(0,str(ROOT/'scripts'))
 B=Path('/home/ugrp/ugrp-sim')
 Q=B/'src/f0db6b1abb842ea65b71c433738210254f300a7c'
 T=B/'src/warp1-teacher-snapshot-6f057f7e'

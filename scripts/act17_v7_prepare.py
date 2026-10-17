@@ -11,6 +11,7 @@ from pathlib import Path
 import subprocess
 import sys
 
+sys.path.insert(0,str(Path(__file__).resolve().parent))
 from act16w_runtime import require_gcp2,frozen_source,sha256
 from act17_v7 import ROOT,B,Q,T
 
