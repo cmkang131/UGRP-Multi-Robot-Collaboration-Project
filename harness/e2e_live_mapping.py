@@ -19,7 +19,7 @@ from harness.e2e_speed5 import using as speed5_using
 from harness.e2e_speed4 import OFF as SPEED4_OFF, using as speed4_using
 
 
-def make_goal(rid, seed, covariance_profile, *, relook='off',goal_geometry='off',exploration_progress='off',pose_fix='off',path_follow='off',stall_options=None,mapping_budget_s=None,boundary_views='off',b_marker_detect='off',b_partial_accept='off',vo_floor_mask='off',vo_rotation_policy='off',explore_deadlock='off',boundary_association='off',boundary_retry='off',boundary_coverage='off'):
+def make_goal(rid, seed, covariance_profile, *, relook='off',goal_geometry='off',exploration_progress='off',pose_fix='off',path_follow='off',stall_options=None,mapping_budget_s=None,boundary_views='off',b_marker_detect='off',b_partial_accept='off',vo_floor_mask='off',vo_rotation_policy='off',explore_deadlock='off',boundary_association='off',boundary_retry='off',boundary_coverage='off',b_cone_accept='off',camera_calib='off'):
     if goal_geometry not in ('off','e2e_b80_v1'):raise ValueError('UNKNOWN_GOAL_GEOMETRY')
     from harness.e2e_rgb_gate import MARKER_OPTIONS
     if b_marker_detect not in ('off',*MARKER_OPTIONS):raise ValueError('UNKNOWN_B_MARKER_DETECT')
@@ -46,6 +46,10 @@ def make_goal(rid, seed, covariance_profile, *, relook='off',goal_geometry='off'
         setdown_only_when_relook=relook)
     install(goal,map_acceleration='scalar_rays_v1')
     goal.e2e_gate.marker_detect=b_marker_detect
+    from harness import camera_calib as _calib  # camera_calib=measured_v1 (default off): process-wide, set once per run
+    _calib.set_mode(camera_calib)
+    if b_cone_accept not in ('off','on_v1') or (b_cone_accept!='off' and b_marker_detect!='cones_v1'):raise ValueError('UNKNOWN_B_CONE_ACCEPT')
+    goal.e2e_gate.cone_accept=b_cone_accept
     if b_partial_accept not in ('off','on_v1'):raise ValueError('UNKNOWN_B_PARTIAL_ACCEPT')
     goal.e2e_gate.partial_accept=b_partial_accept
     # This mission maps a beam route, not the old B+cyan+return benchmark.

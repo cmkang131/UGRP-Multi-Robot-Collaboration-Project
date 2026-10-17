@@ -19,8 +19,9 @@ from harness.self_odom_grid import transform
 from harness.zone_study_contract import ContractViolation
 
 OPTION = 'candidate_views_v1'
-STANDOFF_OPTION = 'standoff_fullquad_v1'  # offline static-map planner; live registration is unavailable
-OPTIONS = (OPTION, STANDOFF_OPTION)
+STANDOFF_OPTION = 'standoff_fullquad_v1'  # static-map stand-off poses where all four B corners are in frame
+STANDOFF_CONES_OPTION = 'standoff_cones_v1'  # same, but >=3 corner cones in frame (b_marker_detect=cones_v1 needs them)
+OPTIONS = (OPTION, STANDOFF_OPTION, STANDOFF_CONES_OPTION)
 RADII_M = (.8, 1.2, 1.6, 2., 2.4)  # SAP-Nav AVV Eq. 4, same finite rings
 N_ANGLES = 24
 MAX_VIEWS = 3
@@ -278,6 +279,10 @@ def install(goal, option='off', *, retry='off', coverage='off'):
     if type(old) is not Navigator: raise ValueError('FRONTIER_PROGRESS_V1_REQUIRED_BEFORE_VIEWS')
     goal.explorer.navigator = CandidateNavigator(old.driver, goal)
     goal.explorer.navigator.option = option
+    if option in (STANDOFF_OPTION, STANDOFF_CONES_OPTION):
+        from harness.e2e_b_standoff import plan_standoffs
+        views, _, _ = plan_standoffs(top=100, cones=option == STANDOFF_CONES_OPTION)  # static map + fixed camera only; one-time, ~9 s
+        goal.explorer.navigator.standoff = [v['pose'] for v in views]
     goal.explorer.navigator.retry_option = retry
     goal.explorer.navigator.coverage_option = coverage
     goal.e2e_gate.diagnostics_enabled = True

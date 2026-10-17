@@ -16,22 +16,30 @@ def servo_output(legacy, *, camera_pose='off'):
     return {**legacy,3:858}
 
 
-def transform(servo):
+def transform(servo, *, calibrated=True):
     result, reason = transform_from_commands(servo,camera_pose='servo_fk_v1')
     if result is None:
         raise ValueError(reason)
-    return result
+    if not calibrated:  # nominal FK: the frame the self-body envelopes were authored in (camera_calib never moves them)
+        return result
+    from harness import camera_calib  # camera_calib=measured_v1 (default off): fixed-posture lab extrinsics replace nominal FK
+    return camera_calib.apply(servo, result)
 
 
 def pitch(servo):
     return math.degrees(math.asin(float(transform(servo)[1][2,2])))
 
 
-def goal_camera(servo, profile):
+def goal_camera(servo, profile, *, calibrated=True):
     if profile != 'camera_v3':
         raise ValueError('ACTIVE_CAMERA_REQUIRES_V3')
-    origin, rotation = transform(servo)
+    origin, rotation = transform(servo, calibrated=calibrated)
     return origin, rotation.T
+
+
+def mask_camera(servo, profile):
+    """Camera for projecting the robot's own body envelopes: always the nominal FK, never camera_calib."""
+    return goal_camera(servo, profile, calibrated=False)
 
 
 def bind(fn, **injected):
@@ -47,7 +55,7 @@ def goal_detector():
     @lru_cache(maxsize=4)
     def own_mask(items, profile, w, h):
         servo=dict(items)
-        origin,axes=goal_camera(servo,profile)
+        origin,axes=mask_camera(servo,profile)
         return mask.project_envelopes(mask.body_envelopes(servo,profile),origin,axes,w,h)
     def self_mask(servo,profile,w,h):
         return own_mask(tuple(sorted(servo.items())),profile,w,h)
