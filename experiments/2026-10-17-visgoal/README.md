@@ -405,12 +405,12 @@ close a small square near the start, which is why the net displacement stays
 0.03-0.54 m while 1.7-2.4 m of path is driven.  The search pattern is the
 defect: a leg of ~1.1 m with a ~7 s turn cannot cover the 2.6-4.4 m east
 distance (gap exit to zone) inside the 120 s cap; e02/e04/e05 end 2.6-2.8 m
-from the zone and e03/e06/e07 end west of x=0.6.  Per the instruction,
-additional runs wait; the largest cause is fixed before new candidates are
-submitted.  The mirror-pulse candidate finishes first because it is the
-already-queued paired condition; it changes only the own-motion prediction,
-not the issued command or the leg pattern, so it is not expected to fix this
-cause, but its result decides the next step.
+from the zone and e03/e06/e07 end west of x=0.6.  The mirror-pulse candidate
+finishes first because it is the already-queued paired condition; it changes
+only the own-motion prediction, not the issued command or the leg pattern, so
+it is not expected to fix this cause, but its result decides the next step.
+Candidate C (below) fixes this cause and the arrival aim; it is queued to run
+after B with the same 16 starts and batch, and is not pooled with B or r4.
 
 ### Candidate C (default off): expanding lawnmower and arrival aim inset
 
@@ -470,6 +470,10 @@ tolerance untouched.
   `scripts/visgoal_arrival_analysis.py`) and 9-frame montages (self camera
   only), plus the compressed full SHA256SUMS list (`SHA256SUMS.json.zst`,
   original sha/bytes in `SHA256SUMS.manifest.json`).
+* `queue-gate-mirror.json` / `queue-gate-lawnmower.json` — paired candidate B
+  and C queues (same 16 starts, 120 SIM s, nworld=16); their stack admission
+  files are `stack-gate-mirror-v17.json` and `stack-gate-lawnmower-v19.json`.
+  Candidate results are not pooled with gate r4 or with each other.
 * Raw outputs stay on gcp3 under `/home/ugrp/ugrp-sim/runs/visgoal-*`; only
   summaries, funnels, montages and failure frames are copied to the Mac.
 
@@ -508,6 +512,22 @@ python3 scripts/visgoal_probe.py --enabled --sim-cap 120 --nworld 16 \
   --legacy /home/ugrp/ugrp-sim/src/warp8f-selfmap-0ace43f25 \
   --setups /home/ugrp/ugrp-sim/src/<clone>/experiments/2026-10-17-visgoal/setups.json \
   --output /home/ugrp/ugrp-sim/runs/visgoal-gate-r4-mirror
+
+# Candidate C (same 16 starts, expanding lawnmower + arrival aim on; not pooled).
+python3 scripts/check_current_stack.py \
+  experiments/2026-10-17-visgoal/queue-gate-lawnmower.json \
+  --flow self_map --output experiments/2026-10-17-visgoal/stack-gate-lawnmower-v19.json
+python3 scripts/visgoal_probe.py --enabled --sim-cap 120 --nworld 16 \
+  --episodes 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15 \
+  --queue experiments/2026-10-17-visgoal/queue-gate-lawnmower.json \
+  --renderer /home/ugrp/ugrp-sim/src/16a946ff3 \
+  --legacy /home/ugrp/ugrp-sim/src/warp8f-selfmap-0ace43f25 \
+  --setups /home/ugrp/ugrp-sim/src/<clone>/experiments/2026-10-17-visgoal/setups.json \
+  --output /home/ugrp/ugrp-sim/runs/visgoal-gate-r4-lawnmower
+
+# Read-only candidate C analysis (schedule strokes, long run, arrival aim).
+python3 scripts/visgoal_c_analysis.py /home/ugrp/ugrp-sim/runs/visgoal-gate-r4-lawnmower \
+  --output /home/ugrp/ugrp-sim/runs/visgoal-gate-r4-lawnmower/analysis-c.json
 ```
 
 `--enabled` is mandatory; the module's default constructor option is `off`.
