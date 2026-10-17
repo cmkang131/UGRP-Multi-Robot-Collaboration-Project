@@ -171,7 +171,7 @@ def draw_right(canvas: np.ndarray, frame: np.ndarray | None, row: dict,
                 (120, 255, 140) if row.get('visible') else (150, 150, 150), 1, cv2.LINE_AA)
     cv2.putText(canvas, 'events:', (x0, below + 24),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.42, (220, 220, 220), 1, cv2.LINE_AA)
-    for index, text in enumerate(events[-4:]):
+    for index, text in enumerate(events[-3:]):
         cv2.putText(canvas, text, (x0 + 8, below + 46 + 20 * index),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.36, (190, 190, 160), 1, cv2.LINE_AA)
 
@@ -237,6 +237,7 @@ def build(run: Path, world: int, out: Path, fps: int, width: int) -> dict:
         kind='egonav_memory_replay_v1',
         note='visualization only; not a success criterion and not pooled with gate results',
         toggle='egonav_memory_trace_v1', fps=fps, width=width, height=HEIGHT,
+        builder_sha256=sha256_file(Path(__file__).resolve()),
         frames=len(rows), sim_seconds=round((len(rows) - 1) / 10.0, 3),
         trace=str(trace_path), trace_rows=len(rows),
         trace_sha256=sha256_file(trace_path),
