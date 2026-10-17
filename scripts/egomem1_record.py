@@ -74,7 +74,7 @@ def run(a):
     from harness.scene_colour_boundary import ColourBoundaryState,RELOC16_OPTION
     from harness.active_camera import SEARCH
     from harness.egomem_vision import EgocentricDetector,colour_component_pixels
-    from harness.egocentric_landmark_memory import LandmarkMemory,OPTION
+    from harness.egocentric_landmark_memory import MemoryOptions, LandmarkMemory,OPTION
     from harness.egomem_navigation import MemoryReturn
     from harness.floor_goal_self_mask import body_envelopes
     cv2.setNumThreads(1)
@@ -114,7 +114,7 @@ def run(a):
     # Static labels remain in evaluator artifact, never controller arguments.
     dump(a.output/'static-map-eval-only.json',scene.config['static_map'])
     if a.preflight:
-        dump(a.output/'preflight.json',dict(accepted=True,cpu_physics_steps=0,mjwarp_physics_steps=0,noslip_iterations=int(m.opt.noslip_iterations),source_sha=q['source_sha']))
+        dump(a.output/'preflight.json',dict(accepted=True,cpu_physics_steps=0,mjwarp_physics_steps=0,memory_implementation=a.implementation,noslip_iterations=int(m.opt.noslip_iterations),source_sha=q['source_sha']))
         return
     ctrl=np.zeros((1,m.nu))
     for i in range(m.nu):
@@ -146,7 +146,7 @@ def run(a):
     wheel_ids=[m.actuator('r1__wheel_'+n+'_drive').id for n in ('fl','fr','rl','rr')]
     applied=np.array([[SEARCH[s] for s in servos]],float);relay=np.zeros((1,4),int);drive=DriveParameters()
     color=json.loads(a.colour.read_text());state=ColourBoundaryState('walls_floor_contrast_v5_indigo110_s80',color,option=RELOC16_OPTION)
-    camera_stream=CommandCamera(camera_pose=CARRY_OPTION);detector=EgocentricDetector();memory=LandmarkMemory(option=OPTION)
+    camera_stream=CommandCamera(camera_pose=CARRY_OPTION);detector=EgocentricDetector();memory=LandmarkMemory(option=OPTION,options=MemoryOptions(implementation=a.implementation,statistics_library=str(a.rovio_library) if a.rovio_library else None))
     own_prior=CommandPrior(json.loads(a.own_motion.read_text()),option=PRIOR)
     sweep=json.loads(a.sweep.read_text())
     diameter=2*max(float(np.linalg.norm(vertices[:,:2],axis=1).max()) for _,vertices in body_envelopes(SEARCH,'camera_v3'))
@@ -177,7 +177,7 @@ def run(a):
                 next_sensor=t+1.
                 if not any(x in flow['status'] for x in ('camera_unsettled','servo_change','bootstrap')):
                     obs,diagnostic=detector.observe(rgb['r1'],servo,scan)
-            result=memory.step(t,increment,c,obs)
+            result=memory.step(t,increment,c,obs,observation_tick=diagnostic is not None)
             colour_pixels=colour_component_pixels(rgb['r1'],controller.goal_hue) if controller.goal_hue is not None else None
             before=controller.stage;action=controller.step(t,increment,result['memories'],obs,colour_pixels=colour_pixels)
             if any(m['radius95_m']>m['range_m'] for m in result['memories']) and not any(e['stage']==before for e in would_stop):
@@ -211,7 +211,7 @@ def run(a):
         dump(a.output/'events.json',controller.events+would_stop);dump(a.output/'llm-input-example.json',controller.context(memory.snapshot(trace[-1]['t']) if trace else []))
         dump(a.output/'summary.json',dict(status=status,error=error,source_sha=q['source_sha'],frames=len(own),sim_s=(len(own)-1)/10,wall_s=time.monotonic()-start,
             physical_success=False,actual_return_reacquisition_rate=None,student_success=False,llm_success=False,model_calls=0,
-            noslip_iterations=int(m.opt.noslip_iterations),gpu_noslip_iterations=int(wm.opt.noslip_iterations),cpu_physics_steps=0,
+            memory_implementation=a.implementation,noslip_iterations=int(m.opt.noslip_iterations),gpu_noslip_iterations=int(wm.opt.noslip_iterations),cpu_physics_steps=0,
             static_map_control=0,spawn_control=0,truth_control=0,top_camera_frames=0,held_world_reads=0,initial_prior='none',
             terminal_ring=dict(hz=10,indices=list(ring),bytes=sum((a.output/'own-rgb'/f'{rid}-{i:05d}.jpg').stat().st_size for rid in ('r1','r2') for i in ring)),
             first30_wall_sim=first30,work_cap=dict(phase_steps=sweep['step_budget'],total_steps=4*sweep['step_budget'],wall_cap=None),
@@ -228,6 +228,8 @@ def run(a):
 
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--enabled',action='store_true')
+    p.add_argument('--implementation',choices=['legacy_v1','rovio_local_v1'],default='legacy_v1')
+    p.add_argument('--rovio-library',type=Path)
     p.add_argument('--preflight',action='store_true')
     p.add_argument('--strict-reacquisition',action='store_true',help='default off; outward normal departure + actual color disappearance before memory-facing reacquisition')
     for key in ('queue','renderer','legacy','setup','colour','own-motion','sweep','output'):p.add_argument('--'+key,type=Path,required=True)

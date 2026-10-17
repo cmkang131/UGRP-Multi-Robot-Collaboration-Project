@@ -3,7 +3,9 @@
 Castellanos et al. RAS 2007, sec.4 eqs.11--16: augment independent
 increment, update in the old frame, THEN compose with its inverse. Keep
 the full covariance, including shared motion error between landmarks.
-Only the world-anchor/submap-joining part is omitted: this is local memory.
+The preserved legacy candidate uses that update order. Opt-in rovio_local_v1
+instead predicts relative features before the image update and directly calls
+ROVIO FeatureStatistics for retention; see the experiment survey/deviations.
 """
 from dataclasses import dataclass
 import math
@@ -60,6 +62,8 @@ def covariance(value, n, *, positive=False):
 class MemoryOptions:
     # Resource budget, not a physical acceptance threshold. Candidate explicitly
     # selects 32 slots: at most 64 point variables + 3 increment variables.
+    implementation: str = 'legacy_v1'
+    statistics_library: str | None = None
     max_landmarks: int = 32
     # Existing RGB landmark detector's measurable range, not GT-fitted tolerance.
     sensor_range_m: float = 6.
@@ -77,6 +81,18 @@ class LandmarkMemory:
             raise ValueError('INVALID_MEMORY_BUDGET')
         if self.options.fade_tau_s is not None and self.options.fade_tau_s <= 0:
             raise ValueError('INVALID_FADE_TIME')
+        from harness.rovio_feature_statistics import RovioLibrary, PROFILE
+        if self.options.implementation not in ('legacy_v1', PROFILE):
+            raise ValueError('UNKNOWN_MEMORY_IMPLEMENTATION')
+        self.rovio = self.options.implementation == PROFILE
+        self.statistics = {}
+        self.library = None
+        if self.enabled and self.rovio:
+            if self.options.fade_tau_s is not None:
+                raise ValueError('ROVIO_POLICY_REPLACES_CUSTOM_FADE')
+            if not self.options.statistics_library:
+                raise ValueError('EXPLICIT_ROVIO_LIBRARY_REQUIRED')
+            self.library = RovioLibrary(self.options.statistics_library)
         self.x = np.empty(0); self.p = np.empty((0, 0))
         self.items = []; self.sequence = 0; self.t = None
 
@@ -98,10 +114,13 @@ class LandmarkMemory:
                            'radius95_m': math.sqrt(CHI2_95)*sigma, 'age_s': age,
                            'measurement_state': state.tolist(),
                            'extent_unknown': meta['representation'] == 'oriented_line',
-                           'freshness': math.exp(-age/tau) if tau is not None else None})
+                           'retention_policy': self.options.implementation,
+                           'tracking_statistics': self.statistics[meta['id']].values() if self.rovio else None,
+                           'freshness': (self.statistics[meta['id']].values()['local_quality']*self.statistics[meta['id']].values()['local_visibility']
+                                         if self.rovio else math.exp(-age/tau) if tau is not None else None)})
         return result
 
-    def step(self, t, delta, motion_covariance, observations=()):
+    def step(self, t, delta, motion_covariance, observations=(), *, observation_tick=True):
         if not self.enabled:
             return dict(status='off', memories=[], events=[], self_pose=[0., 0., 0.])
         if not math.isfinite(t) or (self.t is not None and t <= self.t):
@@ -113,6 +132,17 @@ class LandmarkMemory:
         # eq.12: no global/world reference in this state.
         n = len(self.x); x = np.r_[self.x, delta]
         p = np.zeros((n+3, n+3)); p[:n, :n] = self.p; p[n:, n:] = q
+        if self.rovio:
+            # ROVIO ImuPrediction -> ImgUpdate order. Finite SE(2) inverse
+            # transport is the planar Cartesian restriction of its robocentric
+            # bearing/depth motion; retain common-motion cross covariance.
+            y = []; jac = np.zeros((n, n+3))
+            for i, item in enumerate(self.items):
+                z, h = observation_model(x, i, item['representation'])
+                y.extend(z); jac[2*i:2*i+2] = h
+            x = np.asarray(y); p = jac @ p @ jac.T
+        if self.rovio and observations and not observation_tick:
+            raise ValueError('OBSERVATIONS_REQUIRE_OBSERVATION_TICK')
         events = []; pending = []; used = set()
         for obs in observations:
             allowed = {'id','kind','signature','relative_xy_m','measurement_state','covariance_m2',
@@ -130,7 +160,11 @@ class LandmarkMemory:
             for i, item in enumerate(self.items):
                 if item['kind'] != obs['kind'] or item['signature'] != obs['signature'] or item['representation'] != representation:
                     continue
-                predicted, h = observation_model(x, i, representation)
+                if self.rovio:
+                    predicted = x[2*i:2*i+2].copy()
+                    h = np.zeros((2, n)); h[:,2*i:2*i+2] = np.eye(2)
+                else:
+                    predicted, h = observation_model(x, i, representation)
                 s = h @ p @ h.T+r; innovation = z-predicted
                 if representation == 'oriented_line': innovation[1] = wrap(innovation[1])
                 d2 = float(innovation @ np.linalg.solve(s, innovation))
@@ -157,28 +191,65 @@ class LandmarkMemory:
             a = np.eye(len(x))-k @ h
             p = a @ p @ a.T+k @ r @ k.T  # Joseph form, standard EKF eq.6.
             item = self.items[i]
+            updated = x[2*i:2*i+2].tolist() if self.rovio else observation_model(x, i, representation)[0].tolist()
             events.append(self.event('reobserved', observation=obs['id'], memory_id=item['id'],
                                      gap_s=t-item['last_seen_s'], mahalanobis2=d2,
                                      representation=representation,
-                                     predicted_state=before, updated_state=observation_model(x, i, representation)[0].tolist()))
+                                     predicted_state=before, updated_state=updated))
             item['last_seen_s'] = t; item['observations'] += 1
             if 'hue' in obs:item['appearance_hue']=obs['hue']
-        # eq.15/16: inverse composition AFTER correction of local displacement.
-        y = []; jac = np.zeros((n, n+3))
-        for i in range(len(self.items)):
-            z, h = observation_model(x, i, self.items[i]['representation']); y.extend(z); jac[2*i:2*i+2] = h
-        self.x = np.asarray(y); self.p = jac @ p @ jac.T
-        self.p = (self.p+self.p.T)/2
-        prior = self.snapshot(t)
-        # An uncertainty disc wider than the whole measurable range cannot
-        # specify a usable local target. No age-based deletion without evidence.
-        keep = [i for i, item in enumerate(prior) if item['radius95_m'] <= self.options.sensor_range_m]
-        for i, item in enumerate(prior):
-            if i not in keep:
-                events.append(self.event('uncertainty_exceeds_sensor_range', memory_id=item['id']))
-        self._retain(keep)
+        if self.rovio:
+            self.x = x; self.p = (p+p.T)/2
+            for i, item in enumerate(self.items):
+                if item['representation'] == 'oriented_line':
+                    self.x[2*i+1] = wrap(self.x[2*i+1])
+            if observation_tick:
+                for i, item in enumerate(self.items):
+                    self.statistics[item['id']].observe(t, i in used)
+                # ImgUpdate.hpp: remove bad features, then enforce the same
+                # tracked+free reserve using factors 1.1, 1.1^2, ... .
+                keep = []
+                for i, item in enumerate(self.items):
+                    if self.statistics[item['id']].good():
+                        keep.append(i)
+                    else:
+                        events.append(self.event('rovio_quality_removed', memory_id=item['id'],
+                                                 statistics=self.statistics[item['id']].values()))
+                self._retain(keep)
+                params = self.library.parameters
+                tracked = {e['memory_id'] for e in events if e['reason']=='reobserved'}
+                required_free = int(self.options.max_landmarks*params['minTrackedAndFreeFeatures']-len(tracked))
+                factor = params['removalFactor']
+                while self.options.max_landmarks-len(self.items) < required_free:
+                    keep = []
+                    for i, item in enumerate(self.items):
+                        if item['id'] not in tracked and not self.statistics[item['id']].good(factor):
+                            events.append(self.event('rovio_reserve_removed', memory_id=item['id'], factor=factor))
+                        else:
+                            keep.append(i)
+                        # Match upstream early termination after enough free slots.
+                        if self.options.max_landmarks-(len(self.items)-(i+1-len(keep))) >= required_free:
+                            keep.extend(range(i+1,len(self.items))); break
+                    self._retain(keep)
+                    factor *= params['removalFactor']
+        else:
+            # Preserved Castellanos old-frame update -> inverse composition.
+            y = []; jac = np.zeros((n, n+3))
+            for i in range(len(self.items)):
+                z, h = observation_model(x, i, self.items[i]['representation']); y.extend(z); jac[2*i:2*i+2] = h
+            self.x = np.asarray(y); self.p = jac @ p @ jac.T
+            self.p = (self.p+self.p.T)/2
+            prior = self.snapshot(t)
+            keep = [i for i, item in enumerate(prior) if item['radius95_m'] <= self.options.sensor_range_m]
+            for i, item in enumerate(prior):
+                if i not in keep:
+                    events.append(self.event('uncertainty_exceeds_sensor_range', memory_id=item['id']))
+            self._retain(keep)
         for obs in pending:
             if len(self.items) >= self.options.max_landmarks:
+                if self.rovio:
+                    events.append(self.event('rovio_no_free_slot', observation=obs['id']))
+                    continue
                 # Bounded list eviction is a resource policy, never a failure
                 # inference about the observed object.
                 i = min(range(len(self.items)), key=lambda i: self.items[i]['last_seen_s'])
@@ -193,13 +264,20 @@ class LandmarkMemory:
                                    representation=obs.get('representation', 'point'),
                                    appearance_hue=obs.get('hue'),
                                    first_seen_s=t, last_seen_s=t, observations=1))
+            if self.rovio:
+                self.statistics[f'm{self.sequence}'] = self.library.create(t)
             events.append(self.event('created', observation=obs['id'], memory_id=f'm{self.sequence}'))
         self.t = t
         return dict(status='updated', self_pose=[0., 0., 0.], memories=self.snapshot(t), events=events,
+                    implementation=self.options.implementation, observation_tick=observation_tick,
                     work=dict(landmarks=len(self.items), max_landmarks=self.options.max_landmarks,
                               wall_cap=None, cap_end=False))
 
     def _retain(self, keep):
+        if self.rovio:
+            for i, item in enumerate(self.items):
+                if i not in keep:
+                    self.statistics.pop(item['id']).close()
         indices = [j for i in keep for j in (2*i, 2*i+1)]
         self.items = [self.items[i] for i in keep]
         self.x = self.x[indices]; self.p = self.p[np.ix_(indices, indices)]

@@ -18,7 +18,46 @@ mapbuild12 미커밋 결과는 원래 브랜치 codex/mapbuild1의
 PR573 미병합 시 그 AGENTS와 기준표를 읽었으며
 [정확한 기준표 사본](policy-pr573.json)은 검사에만 사용한다.
 
-## 구현과 검증 경계
+## 재시작: 실사용 방식 조사와 선택 (2026-10-17)
+
+조사 완료→공용 ops-alert `egomem1: SURVEY` 기록 뒤 구현을 변경했다.
+선택은 **ROVIO의 로봇 상대 특징 EKF 예측→영상 갱신 + 원본 특징 관리 코드**다.
+ROVIO 전체 VIO를 실행하거나 제품 수준 성능을 승계한 것이 아니다.
+
+| 방식·저장소 | 확인한 실제 사용처 | 라이선스 | 확인한 규칙·선택 |
+|---|---|---|---|
+| [ROVIO](https://github.com/ethz-asl/rovio/tree/34735c0bfd786d44f6d21d31c0776290f1f91185) | ETH ASL 실제 MAV 실험·[ROVIOLI](https://github.com/ethz-asl/maplab/wiki/ROVIOLI-Introduction) 추정 전단; 상용 제품 채택은 미확인 | BSD-3-Clause | 선택: `ImuPrediction.hpp` 상대 특징 예측, `ImgUpdate.hpp` 갱신·삭제 순서, `FeatureStatistics.hpp` 원본 직접 호출 |
+| [Nav2 costmap_2d](https://docs.nav2.org/configuration/packages/configuring-costmaps.html) | Nav2 공식 문서의 이동 로봇 내비게이션; 공식 프로젝트는 상용 사용을 명시 | package.xml: BSD-3-Clause·Apache-2.0 | rolling_window는 로봇 중심 창을 옮기지만 격자·odom 고정축을 유지. 짧은 상대 물체 목록·정면 회전 조건과 달라 미채택 |
+| [OpenVINS](https://github.com/rpng/open_vins/tree/69488123ed9362dd44b6f28e7f4680abbff1442b) | 공개 VIO 연구 플랫폼·EuRoC/실제 센서 구성; 상용 제품 사용 미확인 | GPL-3.0 | `FeatureDatabase::cleanup_measurements`는 marginal clone보다 오래된 측정을 제거. IMU·전역 clone 상태창이 필요해 미채택 |
+| [hector_object_tracker](https://index.ros.org/p/hector_object_tracker/) | Team Hector 공개 ROS 물체 추적 패키지 | 확인한 최신 package.xml은 TODO, 확인 불가 | 존재·패키지 용도만 확인; 갱신/잊기 코드와 제품 사용은 확인하지 않아 미채택 |
+
+ROVIO 고정 SHA는 `34735c0bfd786d44f6d21d31c0776290f1f91185`.
+원본 `FeatureStatistics.hpp`·`rovio.info`·BSD 고지는
+`harness/vendor/rovio/`에 바이트 그대로 보존하고 SHA를 기록한다.
+C ABI만 추가해 Python에서 원본 C++를 호출한다. ROVIO의 관측 프레임 단위
+품질창10·가시성창100·전역품질 최소100, 추적 상/하한 .9/.8,
+추적+빈 슬롯 비율 .75·강제 삭제 배율1.1을 `rovio.info` 그대로 쓴다.
+새 장면에 맞춘 성능 상수라는 주장은 하지 않는다.
+
+| 항목 | 기존 자체 후보(보존) | 선택 방식 적용 | 제약 때문에 바꾼 부분 |
+|---|---|---|---|
+| 필터 순서 | 이동 변수를 추가→옛 프레임 갱신→역합성 | 상대 특징을 먼저 예측→현재 영상 EKF 갱신 | ROVIO 3D bearing/depth 대신 기존 RGB 검출의 2D점·부분선. 점은 `p_new=R(-yaw)(p-dxy)`, P는 전체 Jacobian으로 전파 |
+| 이동 센서 | LK/자기 발행명령 | 같은 허용 입력 유지 | ROVIO IMU·bias·world pose는 금지여서 사용 안 함. VIO 전체를 재현했다는 주장 없음 |
+| 재관측 | semantic 외형+마할라노비스 | 동일 관문과 Joseph 갱신 유지 | ROVIO photometric patch 대신 기존 색/기하 검출. 다중 대응은 여전히 거부 |
+| 잊기 | 관측 gap P95의 지수 fade·6m 불확실 삭제 | 원본 품질×가시성 > .9−(.9−.8)×전역품질; 실패 시 삭제 | 실제 카메라 투영으로 보임을 보장 못 하므로 미대응은 UNKNOWN(가시성 감소, 추적 실패로 단정 안 함). 성공 대응만 TRACKED |
+| 슬롯 | 32슬롯 LRU | 원본 .75 free/tracked reserve·1.1 단계 강제 삭제 | 슬롯 수32는 기존 계산 예산 유지. 새로 생긴 관측 초과는 거부·원장 기록 |
+| 주기 | 매.1초 step, 1초 detector | 품질 통계는 실제 안정 detector tick만 갱신 | 명령 예측만 있는 프레임은 품질/가시성 관측 횟수로 세지 않음 |
+
+토글 `rovio_local_v1`은 기본 off이며 새 오프라인 후보만 켠다. 원본의
+3D IMU 노이즈·patch 수용 상수를 2D 검출에 복사하지 않는다. 기존 검출
+공분산·chi-square(2)99%는 기존 후보와 동일, 새 정확도 검증 필요다.
+
+이전 세션 녹화2(`112d48753`, PID6862)가 재시작 때 실행 중이었다.
+소유·명령·lease를 확인하고 SIGINT로 종료했으며 HOST_ERROR 원본을 보존한다.
+녹화1은 실제 색 이탈 미충족 NOT_READY, 녹화2는 중단이므로 총2녹화를
+소비했고 새 방식의 물리 검증은 실행하지 않는다.
+
+## 기존 구현과 검증 경계(재시작 이전 후보)
 
 기본 off `egocentric_landmark_memory_v1`. 상태는 상대 점 목록과 전체
 교차 공분산이며 world anchor·점유 격자·로봇 전역 자세를 저장하지 않는다.

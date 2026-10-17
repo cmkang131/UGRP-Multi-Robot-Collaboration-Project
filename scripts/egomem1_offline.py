@@ -81,24 +81,26 @@ def predict(a):
     seal = read(a.output/'extraction-seal.json')
     if digest(a.output/'allowed.json') != seal['allowed_sha256']: raise ValueError('ALLOWED_INPUT_CHANGED')
     fade=read(a.fade_scale)['fade_tau_s'] if a.fade_scale else None
-    mem = LandmarkMemory(option=OPTION,options=MemoryOptions(fade_tau_s=fade)); rows = []; events = Counter(); observations_n=0
+    mem = LandmarkMemory(option=OPTION,options=MemoryOptions(fade_tau_s=fade,implementation=a.implementation,statistics_library=str(a.rovio_library) if a.rovio_library else None)); rows = []; events = Counter(); observations_n=0
     for row in read(a.output/'allowed.json'):
         observations_n+=len(row['observations'])
-        result = mem.step(row['t'], row['motion_delta'], row['motion_covariance'], row['observations'])
+        result = mem.step(row['t'], row['motion_delta'], row['motion_covariance'], row['observations'], observation_tick=row['detector'] is not None)
         events.update(e['reason'] for e in result['events'])
         rows.append(dict(t=row['t'], frame_id=row['frame_id'], **result))
     dump(a.output/'predictions.json', rows)
     dump(a.output/'llm-input-example.json', language_context(rows[-1]['memories']))
     left=observations_n; funnel=[]
-    for gate,rejected in [('unambiguous',events['association_ambiguous']),('one_vote_per_memory_frame',events['duplicate_frame_observation'])]:
+    for gate,rejected in [('unambiguous',events['association_ambiguous']),('one_vote_per_memory_frame',events['duplicate_frame_observation']),('free_memory_slot',events['rovio_no_free_slot'])]:
         passed=left-rejected;funnel.append(dict(stage=gate,input_n=left,cumulative_pass_n=passed,rejected_n=rejected));left=passed
     dump(a.output/'memory-funnel.json',dict(unit='observations',input_n=observations_n,funnel=funnel,
          represented=dict(updated=events['reobserved'],initialized=events['created']),
          reasons=dict(events),raw=str(a.input),reproduction=sys.argv,
          blocked_object='not_observed',minimum_gap_m=None,gap_status='not_measured'))
-    sources = {str(Path(p).resolve()): digest(p) for p in ('harness/egocentric_landmark_memory.py', 'harness/egomem_vision.py', __file__)}
+    sources = {str(Path(p).resolve()): digest(p) for p in ('harness/egocentric_landmark_memory.py', 'harness/egomem_vision.py', 'harness/rovio_feature_statistics.py', 'harness/vendor/rovio/FeatureStatistics.hpp', 'harness/vendor/rovio/rovio.info', 'harness/vendor/rovio/statistics_c_api.cpp', __file__)}
     dump(a.output/'prediction-seal.json', dict(prediction_sha256=digest(a.output/'predictions.json'),
          allowed_sha256=seal['allowed_sha256'], extraction_seal_sha256=digest(a.output/'extraction-seal.json'), sources=sources,
+         implementation=a.implementation,
+         statistics_library_sha256=digest(a.rovio_library) if a.rovio_library else None,
          truth_inputs=0, static_map_inputs=0, global_pose_state=False, full_cross_covariance=True, events=dict(events), reproduction=sys.argv))
     print(json.dumps(dict(stage='predictions_sealed', frames=len(rows), events=dict(events))), flush=True)
 
@@ -199,7 +201,7 @@ def score(a):
 
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('stage',choices=['extract','predict','score']);p.add_argument('--input',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--fade-scale',type=Path)
+    p=argparse.ArgumentParser();p.add_argument('stage',choices=['extract','predict','score']);p.add_argument('--input',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--fade-scale',type=Path);p.add_argument('--implementation',choices=['legacy_v1','rovio_local_v1'],default='legacy_v1');p.add_argument('--rovio-library',type=Path)
     a=p.parse_args()
     if not platform.node().startswith('ugrp-act-l4-gcp5'): raise ValueError('GCP5_ORIGINAL_CPU_ONLY')
     if not Path('/home/ugrp/ugrp-sim/leases/egomem1.json').is_file(): raise ValueError('OWN_LEASE_REQUIRED')
