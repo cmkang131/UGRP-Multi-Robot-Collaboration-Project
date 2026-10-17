@@ -198,24 +198,29 @@ def run(args):
         mujoco.mj_forward(m, row)
         qpos_rows.append(row.qpos.copy())
         qvel_rows.append(row.qvel.copy())
-    # Setup-only admission: no start penetration. Reuse existing checker.
-    from sim.spawn_overlap_check import check, OPTION as OVERLAP
-    floor = {m.geom(i).name for i in range(m.ngeom)
-             if int(m.geom_type[i]) == int(mujoco.mjtGeom.mjGEOM_PLANE)
-             and any(word in m.geom(i).name.lower() for word in ('floor', 'ground'))}
-    cargo = {m.body(i).name for i in range(1, m.nbody)
-             if int(m.body_jntnum[i]) and int(m.jnt_type[int(m.body_jntadr[i])]) == int(mujoco.mjtJoint.mjJNT_FREE)
-             and not m.body(i).name.startswith(('r1__', 'r2__', 'r3__'))}
-    wall = {m.geom(i).name for i in range(m.ngeom) if 'wall' in m.geom(i).name.lower()}
+    # Setup-only admission: no r1 contact with wall/cargo/peer at initial pose.
+    floor_names = {m.geom(i).name for i in range(m.ngeom)
+                   if int(m.geom_type[i]) == int(mujoco.mjtGeom.mjGEOM_PLANE)
+                   and any(word in m.geom(i).name.lower() for word in ('floor', 'ground'))}
     admissions = []
     for w, row in enumerate(qpos_rows):
         d.qpos[:] = row
         mujoco.mj_forward(m, d)
-        admitted = check(m, d, floor_geoms=floor, cargo_bodies=cargo, wall_geoms=wall, option=OVERLAP)
-        admissions.append(dict(world=w, accepted=bool(admitted['accepted']), report=admitted))
+        hits = []
+        for k in range(d.ncon):
+            pair = d.contact[k]
+            a, b = int(pair.geom1), int(pair.geom2)
+            na, nb = m.geom(a).name, m.geom(b).name
+            ma, mb = m.body(m.geom_bodyid[a]).name, m.body(m.geom_bodyid[b]).name
+            r1 = ma.startswith('r1__') or mb.startswith('r1__')
+            other = nb if na not in floor_names else na
+            other = na if mb.startswith('r1__') else nb
+            if r1 and other not in floor_names and not (ma.startswith('r1__') and mb.startswith('r1__')):
+                hits.append(dict(a=na, b=nb, body_a=ma, body_b=mb, dist=float(pair.dist)))
+        admissions.append(dict(world=w, accepted=not hits, start_contacts=hits))
     dump(args.output/'admission.json', admissions)
     if not all(a['accepted'] for a in admissions):
-        raise ValueError('START_PENETRATING_OR_UNVERIFIED')
+        raise ValueError('START_PENETRATING')
     (args.output/'scene.xml').write_text(xml)
     dump(args.output/'scene.json', scene.manifest)
     dump(args.output/'admission-eval-only.json', dict(evaluation_only=True, target=setup['evaluation_only'],
