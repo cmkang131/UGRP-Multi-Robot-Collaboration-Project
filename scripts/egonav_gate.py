@@ -469,7 +469,8 @@ def run(args):
     # Full gate.
     footprint = max(float(np.linalg.norm(np.asarray(v)[:, :2], axis=1).max())
                     for _, v in body_envelopes(SEARCH, 'camera_v3'))
-    controllers = [EgocentricGoto(option=GOTO_OPTION, footprint_radius_m=footprint)
+    controllers = [EgocentricGoto(option=GOTO_OPTION, footprint_radius_m=footprint,
+                                  far_candidate=bool(setup.get('far_candidate_v1', False)))
                    for _ in range(nworld)]
     per_world = [dict(world=w, spawn=list(spec['r1']), events=[], trace=[],
                       memory_trace=[], frames=[],
@@ -587,16 +588,24 @@ def run(args):
                 obs = []
                 scan = dict(segments=[])
                 if not state['done']:
-                    patches, _, diag = detect(rgb, servo=SEARCH, profile='camera_v3', options=detector_options)
+                    patches, patch_labels, diag = detect(rgb, servo=SEARCH, profile='camera_v3', options=detector_options)
                     if patches:
                         patch = max(patches, key=lambda p: (p.get('observed_area_m2', 0.), p['confidence']))
                         xy = np.asarray(patch['center_body_m'], float)
+                        # Measured own-RGB hue of exactly this component; no
+                        # authored/GT hue enters the controller observation.
+                        hue = None
+                        component = int(patch.get('component', 0))
+                        if component > 0:
+                            values = cv2.cvtColor(rgb, cv2.COLOR_RGB2HSV)[..., 0][patch_labels == component]
+                            if values.size:
+                                hue = float(np.median(values))
                         obs = [dict(id='zone-A-floor-marking', kind='zone_marking',
                                     signature='floor_orange_zone_marking',
                                     relative_xy_m=xy.tolist(),
                                     covariance_m2=point_covariance(xy).tolist(),
                                     observed_area_m2=patch.get('observed_area_m2'),
-                                    hue=target.get('hue'), pixels=patch['pixels'])]
+                                    hue=hue, pixels=patch['pixels'])]
                     scan = wall_observe(rgb, SEARCH)
                     if tick == 0:
                         # No initial GT enters the controller. The spawn is an
@@ -843,6 +852,7 @@ def run(args):
         summary = dict(
             status=status, source_sha=q['source_sha'], host=platform.node(),
             world_n=nworld, gate_probe=bool(args.gate_probe),
+            far_candidate=bool(setup.get('far_candidate_v1', False)),
             step_budget=setup['step_budget'], sim_s=(len(per_world[0]['trace'])-1)/10,
             wall_s=time.monotonic()-start, first30_wall_sim=first30,
             controller=GOTO_OPTION, memory_implementation='legacy_v1',
