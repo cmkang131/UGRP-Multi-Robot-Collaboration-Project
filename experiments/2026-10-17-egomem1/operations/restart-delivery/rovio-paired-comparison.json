@@ -1,0 +1,203 @@
+{
+  "status": "OFFLINE_NOT_READY",
+  "baseline": {
+    "status": "OFFLINE_ONLY",
+    "frames": 2026,
+    "actual_path_m": 6.688057601835536,
+    "memories_created": 52,
+    "last_memory_count": 32,
+    "evaluated_memories": 52,
+    "memory_error_m": {
+      "n": 48552,
+      "median": 0.6377630511170592,
+      "p95": 3.059390281151569,
+      "maximum": 5.242859539174583
+    },
+    "point_xy_error_m": {
+      "n": 9610,
+      "median": 0.7763560857051903,
+      "p95": 3.4573163558288926,
+      "maximum": 5.23493443905411
+    },
+    "line_normal_distance_error_m": {
+      "n": 38942,
+      "median": 0.5476305166148157,
+      "p95": 2.997036666662219,
+      "maximum": 5.242859539174583
+    },
+    "initial_label_distance_m": {
+      "n": 52,
+      "median": 0.5420451401178408,
+      "p95": 2.4018205949945517,
+      "maximum": 3.2732628561929666
+    },
+    "reobservations": 240,
+    "reobservations_error_reduced": 157,
+    "before_m": {
+      "n": 240,
+      "median": 0.12396206902229778,
+      "p95": 2.945551240613792,
+      "maximum": 3.2105856507422783
+    },
+    "after_m": {
+      "n": 240,
+      "median": 0.0928627311060427,
+      "p95": 2.9444048481114646,
+      "maximum": 3.186563887532965
+    },
+    "actual_return_reacquisition_rate": null,
+    "actual_return_trials": 0,
+    "physical_success": false,
+    "student_success": false,
+    "llm_success": false,
+    "evaluation_catalogue": "nearest same-appearance exact scene corner/door, evaluation only; wrong RGB detections may be mislabeled",
+    "raw": "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2",
+    "truth_sha256": "dbfdff521e96888c4745df400bf4c7ae525768575022dbdda260d95f9f26549d",
+    "evaluation_catalogue_sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17",
+    "prediction_sha256": "5a170be63b9df210a5d14cd6e615c02afb50038faea696a80f5ba03845cf7e42",
+    "rejection_table": "/home/ugrp/ugrp-sim/ops-reviews/egomem1/baseline-legacy-r1/rejection_table.json"
+  },
+  "candidate": {
+    "status": "OFFLINE_ONLY",
+    "frames": 2026,
+    "actual_path_m": 6.688057601835536,
+    "memories_created": 96,
+    "last_memory_count": 8,
+    "evaluated_memories": 96,
+    "memory_error_m": {
+      "n": 11638,
+      "median": 0.2600050386718629,
+      "p95": 2.2732566844317414,
+      "maximum": 3.277910459501337
+    },
+    "point_xy_error_m": {
+      "n": 1446,
+      "median": 0.5511554494912261,
+      "p95": 1.5236746263574528,
+      "maximum": 1.9740168810102217
+    },
+    "line_normal_distance_error_m": {
+      "n": 10192,
+      "median": 0.1884676494131423,
+      "p95": 2.302912988091382,
+      "maximum": 3.277910459501337
+    },
+    "initial_label_distance_m": {
+      "n": 96,
+      "median": 0.3493037710973146,
+      "p95": 2.3428086286444954,
+      "maximum": 3.2732628561929666
+    },
+    "reobservations": 220,
+    "reobservations_error_reduced": 161,
+    "before_m": {
+      "n": 220,
+      "median": 0.03232152691377991,
+      "p95": 2.2184713916872223,
+      "maximum": 3.211089496997312
+    },
+    "after_m": {
+      "n": 220,
+      "median": 0.028039151252422085,
+      "p95": 2.236921617435938,
+      "maximum": 3.1419381911397877
+    },
+    "actual_return_reacquisition_rate": null,
+    "actual_return_trials": 0,
+    "physical_success": false,
+    "student_success": false,
+    "llm_success": false,
+    "evaluation_catalogue": "nearest same-appearance exact scene corner/door, evaluation only; wrong RGB detections may be mislabeled",
+    "raw": "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2",
+    "truth_sha256": "dbfdff521e96888c4745df400bf4c7ae525768575022dbdda260d95f9f26549d",
+    "evaluation_catalogue_sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17",
+    "prediction_sha256": "86968cadbfcf12f9be258a2d774fc9843d711dcef4ad7478de46980e6a7d6268",
+    "rejection_table": "/home/ugrp/ugrp-sim/ops-reviews/egomem1/offline-rovio-r1/rejection_table.json"
+  },
+  "pairing": "exact (SIM timestamp, evaluator birth-label ID, kind), unique in both; ambiguous duplicates excluded",
+  "limitation": "birth-label uses nearest same-appearance truth geometry; wrong labels/associations remain possible; this is not navigational reacquisition",
+  "matched_error_by_kind": {
+    "zone_boundary": {
+      "baseline_m": {
+        "n": 790,
+        "median": 0.18432044604439368,
+        "p95": 2.4203860133072395
+      },
+      "candidate_m": {
+        "n": 790,
+        "median": 0.1843204460461474,
+        "p95": 2.4205132912415386
+      },
+      "candidate_lower_n": 331
+    },
+    "zone_corner": {
+      "baseline_m": {
+        "n": 436,
+        "median": 0.4235472209218924,
+        "p95": 0.7228868680035192
+      },
+      "candidate_m": {
+        "n": 436,
+        "median": 0.42711364058975765,
+        "p95": 0.7229861073574231
+      },
+      "candidate_lower_n": 147
+    }
+  },
+  "rejection_table": {
+    "unit": "baseline_label_timestamp_keys",
+    "funnel": [
+      {
+        "stage": "baseline_label_timestamp",
+        "input_n": 14912,
+        "cumulative_pass_n": 14912,
+        "rejected_n": 0
+      },
+      {
+        "stage": "present_in_candidate",
+        "input_n": 14912,
+        "cumulative_pass_n": 6424,
+        "rejected_n": 8488
+      },
+      {
+        "stage": "unique_in_both",
+        "input_n": 6424,
+        "cumulative_pass_n": 1226,
+        "rejected_n": 5198
+      }
+    ],
+    "reason_categories": {
+      "candidate_memory_absent": 8488,
+      "duplicate_label_memory": 5198
+    },
+    "blocked_object": "not_observed",
+    "minimum_gap_m": null,
+    "gap_status": "not_measured",
+    "raw": [
+      "/home/ugrp/ugrp-sim/ops-reviews/egomem1/baseline-legacy-r1",
+      "/home/ugrp/ugrp-sim/ops-reviews/egomem1/offline-rovio-r1"
+    ],
+    "reproduction": [
+      "/home/ugrp/ugrp-sim/ops-reviews/egomem1/compare-ac560f052.py",
+      "--baseline",
+      "/home/ugrp/ugrp-sim/ops-reviews/egomem1/baseline-legacy-r1",
+      "--candidate",
+      "/home/ugrp/ugrp-sim/ops-reviews/egomem1/offline-rovio-r1",
+      "--output",
+      "/home/ugrp/ugrp-sim/ops-reviews/egomem1/rovio-paired-comparison.json"
+    ]
+  },
+  "sha256": {
+    "/home/ugrp/ugrp-sim/ops-reviews/egomem1/baseline-legacy-r1/frame-errors.json": "b5bd9e8d6847225154add7fb8da66d661eba2b070a57cdbf4c4d3ea50df02915",
+    "/home/ugrp/ugrp-sim/ops-reviews/egomem1/baseline-legacy-r1/summary.json": "d10692d761ca12a3370e852774652dff676f9c3885045366f5c9c26e039d69f6",
+    "/home/ugrp/ugrp-sim/ops-reviews/egomem1/baseline-legacy-r1/prediction-seal.json": "5c311598bbf6390dc25130814a68010f80af3394f469f5a5176081795afb4315",
+    "/home/ugrp/ugrp-sim/ops-reviews/egomem1/offline-rovio-r1/frame-errors.json": "7dcd4c9a69ea696809471b4b68e6c831d60f08567865407160678b04cb2b9fb2",
+    "/home/ugrp/ugrp-sim/ops-reviews/egomem1/offline-rovio-r1/summary.json": "391f0da91aadf8cef5bd697b08f438bf6c8037c42501de7a0b9f0cc322fe9134",
+    "/home/ugrp/ugrp-sim/ops-reviews/egomem1/offline-rovio-r1/prediction-seal.json": "b345dbdef8d0551fa44d76b406e7c3df59ea25396ad95bd38b79c07ad31708a1"
+  },
+  "actual_reacquisition_trials": 0,
+  "actual_reacquisition_rate": null,
+  "physical_success": false,
+  "student_success": false,
+  "llm_success": false
+}

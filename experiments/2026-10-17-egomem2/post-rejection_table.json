@@ -1,0 +1,90 @@
+{
+  "status": "DIAGNOSIS_ONLY",
+  "denominator": 14912,
+  "shared": 14702,
+  "unique": 4202,
+  "missing": {
+    "after_memory_slot_evicted": 210
+  },
+  "duplicate": {
+    "both_duplicate": 10320,
+    "baseline_only_duplicate": 180
+  },
+  "by_20_sim_s": {
+    "000-020": {
+      "both_duplicate": 190
+    },
+    "020-040": {
+      "both_duplicate": 700,
+      "baseline_only_duplicate": 10
+    },
+    "040-060": {
+      "both_duplicate": 930
+    },
+    "060-080": {
+      "both_duplicate": 1310
+    },
+    "080-100": {
+      "both_duplicate": 1400
+    },
+    "100-120": {
+      "both_duplicate": 1400
+    },
+    "120-140": {
+      "both_duplicate": 1260,
+      "baseline_only_duplicate": 100,
+      "after_memory_slot_evicted": 40
+    },
+    "140-160": {
+      "both_duplicate": 1000,
+      "after_memory_slot_evicted": 170
+    },
+    "160-180": {
+      "both_duplicate": 1000,
+      "baseline_only_duplicate": 70
+    },
+    "180-200": {
+      "both_duplicate": 1000
+    },
+    "200-220": {
+      "both_duplicate": 130
+    }
+  },
+  "baseline_birth_observation_candidate_outcomes": {
+    "created": 42,
+    "same_frame_birth_suppressed": 7,
+    "association_gate_rejected": 40,
+    "reobserved": 3
+  },
+  "candidate_same_tick_duplicate_birth_excess": {
+    "('pickup-edge3', 'zone_boundary')": 2,
+    "('pickup-edge1', 'zone_boundary')": 2,
+    "('pickup-edge0', 'zone_boundary')": 1
+  },
+  "first_detection_failure": "not identifiable in baseline-present denominator; shared detector, excluded objects never observed by either require separate detector audit",
+  "limitation": "Evaluator birth labels are nearest same-appearance geometry; label duplicates may include wrong labels, never ground-truth identities in control.",
+  "raw": [
+    "/home/ugrp/ugrp-sim/ops-reviews/egomem1/baseline-legacy-r1",
+    "/home/ugrp/ugrp-sim/ops-reviews/egomem2/offline-object-gnn-r4"
+  ],
+  "reproduction": [
+    "/home/ugrp/ugrp-sim/src/egomem2-6f9e1d7a3/scripts/egomem2_diagnose.py",
+    "--baseline",
+    "/home/ugrp/ugrp-sim/ops-reviews/egomem1/baseline-legacy-r1",
+    "--candidate",
+    "/home/ugrp/ugrp-sim/ops-reviews/egomem2/offline-object-gnn-r4",
+    "--output",
+    "/home/ugrp/ugrp-sim/ops-reviews/egomem2/post-diagnosis"
+  ],
+  "blocked_object": "not_observed",
+  "minimum_gap_m": null,
+  "gap_status": "not_measured",
+  "sha256": {
+    "/home/ugrp/ugrp-sim/ops-reviews/egomem1/baseline-legacy-r1/predictions.json": "3e8e8e1bcf5e7f317b9b691969fcc5a833ecca850db1878285953a30d9109dcb",
+    "/home/ugrp/ugrp-sim/ops-reviews/egomem1/baseline-legacy-r1/frame-errors.json": "10a689cdaaae95dccf6d205b6629d8b413ecf3cca6e611cebf29ab1924a864db",
+    "/home/ugrp/ugrp-sim/ops-reviews/egomem1/baseline-legacy-r1/allowed.json": "1aefea75f23961060b27bbbf94aa88a5b92c03588a85ec5eb51a7c1422567316",
+    "/home/ugrp/ugrp-sim/ops-reviews/egomem2/offline-object-gnn-r4/predictions.json": "3ce8ca5ff17ccd681c9cf95f59cde6a8a4ee95a3fdf79d632e93d1aef8a27c16",
+    "/home/ugrp/ugrp-sim/ops-reviews/egomem2/offline-object-gnn-r4/frame-errors.json": "8269192568eef72f55217d21f254bb064c92969ecc626e98918b29a50ef1cd96",
+    "/home/ugrp/ugrp-sim/ops-reviews/egomem2/offline-object-gnn-r4/allowed.json": "1aefea75f23961060b27bbbf94aa88a5b92c03588a85ec5eb51a7c1422567316"
+  }
+}

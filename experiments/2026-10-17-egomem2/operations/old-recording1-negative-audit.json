@@ -1,0 +1,90 @@
+{
+  "status": "NOT_READY",
+  "source_sha": "cae3bd30b3c2e2c4fe76952d7a013cd26e064cbe",
+  "original_files_sha256_verified": 776,
+  "frames": 381,
+  "sim_s": 38.0,
+  "wall_s": 465.2336996810001,
+  "first30_wall_sim": 12.225482950499998,
+  "recording_status": "RGB_SIGNATURE_REACQUIRED_EVAL_PENDING",
+  "actual_departure_m": 0.6300070708154284,
+  "actual_return_net_m": 0.0,
+  "actual_return_forward_first_sim_s": null,
+  "required_return_translation_m": 0.3164745064763584,
+  "acceptance_basis": "same existing robot envelope diameter as departure; evaluator-only actual XY displacement, not commands or accumulated rotation wobble",
+  "colour_absent_frames": 0,
+  "same_zone": true,
+  "physical_diagnostic_pass": false,
+  "physical_delivery_success": false,
+  "student_success": false,
+  "llm_success": false,
+  "funnel": [
+    {
+      "stage": "all_recordings",
+      "input_n": 1,
+      "cumulative_pass_n": 1,
+      "rejected_n": 0
+    },
+    {
+      "stage": "original_hashes",
+      "input_n": 1,
+      "cumulative_pass_n": 1,
+      "rejected_n": 0
+    },
+    {
+      "stage": "visual_zone_remembered",
+      "input_n": 1,
+      "cumulative_pass_n": 1,
+      "rejected_n": 0
+    },
+    {
+      "stage": "actual_departure",
+      "input_n": 1,
+      "cumulative_pass_n": 1,
+      "rejected_n": 0
+    },
+    {
+      "stage": "colour_left_camera",
+      "input_n": 1,
+      "cumulative_pass_n": 0,
+      "rejected_n": 1
+    },
+    {
+      "stage": "actual_return_translation",
+      "input_n": 0,
+      "cumulative_pass_n": 0,
+      "rejected_n": 0
+    },
+    {
+      "stage": "qualified_same_zone_rgb",
+      "input_n": 0,
+      "cumulative_pass_n": 0,
+      "rejected_n": 0
+    },
+    {
+      "stage": "all_reacquisition_gates",
+      "input_n": 0,
+      "cumulative_pass_n": 0,
+      "rejected_n": 0
+    }
+  ],
+  "reason": "colour_left_camera",
+  "blocked_object": "not_observed",
+  "minimum_gap_m": null,
+  "gap_status": "not_measured",
+  "raw": "/home/ugrp/ugrp-sim/runs/egomem1-round1/recording1",
+  "evaluation": "/home/ugrp/ugrp-sim/ops-reviews/egomem2/old-recording1-strict-eval",
+  "reproduction": [
+    "/home/ugrp/ugrp-sim/ops-reviews/egomem2/return-audit-5f16b824d.py",
+    "--input",
+    "/home/ugrp/ugrp-sim/runs/egomem1-round1/recording1",
+    "--evaluation",
+    "/home/ugrp/ugrp-sim/ops-reviews/egomem2/old-recording1-strict-eval",
+    "--output",
+    "/home/ugrp/ugrp-sim/ops-reviews/egomem2/old-recording1-negative-audit.json"
+  ],
+  "sha256": {
+    "original_manifest": "f5fdc30a5bdae61f646b4bcf3c0c247bc0cb0db238e4ee141c6f769d5c06ca8e",
+    "evaluation_summary": "204e7b0c1542c8072f49a1f7ec2ab041e42ad54594c0661b54f87f6b4c73166c"
+  }
+}
