@@ -51,6 +51,30 @@ def allowed_seeds(protocol, stage, selection, checkpoint_sha):
     return set(protocol['final_seeds'])
 
 
+DONE_PROB_ENV='UGRP_ACT18_DONE_PROB'
+
+
+def done_prob_log_path():
+    value=os.environ.get(DONE_PROB_ENV)
+    return Path(value) if value else None
+
+
+def done_prob_row(observation,world,probabilities):
+    """Default-off evaluation record of the decoded done probability per chunk step.
+
+    The last decoded action dimension is the balanced-BCE completion probability
+    (decode_action thresholds it at .65). Recording hook only: adds no input and
+    does not change the executed command, temporal ensemble or scoring.
+    """
+    values=[float(x) for x in probabilities]
+    if not values or not all(0.0<=x<=1.0 for x in values):
+        raise ValueError('decoded done probabilities must be a nonempty list within [0,1]')
+    return dict(schema='ugrp.act18.done_prob_row.v1',
+        world=int(world),sample_id=observation.get('sample_id'),t=observation.get('t'),
+        skill=observation.get('skill'),robot_id=observation.get('robot_id'),
+        chunk=len(values),done_probs=[round(x,6) for x in values])
+
+
 def main():
     p=argparse.ArgumentParser(description=__doc__,add_help=False)
     p.add_argument('--act18-reference-v1',action='store_true')
@@ -59,9 +83,16 @@ def main():
     # User requirement: last10 SIM seconds at10Hz; recording only, no policy field.
     p.add_argument('--failure-camera-window-s',type=float,default=10.)
     p.add_argument('--fit-selection',type=Path)
+    # Default OFF: record decoded done probabilities per tick for diagnosis only.
+    p.add_argument('--record-done-prob',type=Path)
     a,args=p.parse_known_args()
     if not a.act18_reference_v1 or a.failure_camera_window_s!=10.:
         raise ValueError('explicit reference toggle and user10SIMs camera window required')
+    done_log_path=done_prob_log_path() if a.record_done_prob is None else a.record_done_prob
+    if done_log_path is not None:
+        if os.environ.get(DONE_PROB_ENV) not in (None,str(done_log_path)):
+            raise ValueError('conflicting done-prob recording paths')
+        os.environ[DONE_PROB_ENV]=str(done_log_path)
     require_gcp2(training=True);source=frozen_source(ROOT);library()
     value=lambda flag:Path(args[args.index(flag)+1])
     protocol_path=value('--protocol');protocol=read(protocol_path)
@@ -88,6 +119,7 @@ def main():
     actor_class=OldActor if a.baseline_act17 else Actor
     chunk=8 if a.baseline_act17 else meta['chunk']
     contract.CHUNK=chunk
+    done_log=dict(handle=(open(done_log_path,'x') if done_log_path is not None else None),world=None)
     sequences=[];buffers=defaultdict(lambda:deque(maxlen=round(10./contract.PERIOD_S)+1))
     inference=dict(attempts=0,completed=0,wall_s=0.,first30=dict(attempts=0,completed=0,wall_s=0.))
     class TrackedActor(actor_class):
@@ -100,6 +132,11 @@ def main():
                 result=super().predict(*args)
                 inference['completed']+=1
                 if first30:inference['first30']['completed']+=1
+                if done_log['handle'] is not None:
+                    if done_log['world'] is None:
+                        raise ValueError('done-prob recorder lost world context')
+                    row=done_prob_row(args[0],done_log['world'],[action[-1] for action in result])
+                    done_log['handle'].write(json.dumps(row)+'\n');done_log['handle'].flush()
                 return result
             finally:
                 elapsed=time.perf_counter()-started;inference['wall_s']+=elapsed
@@ -143,6 +180,7 @@ def main():
             return result
         def read_actor(self,index):
             obs,jpgs=super().read_actor(index)
+            done_log['world']=index
             buffer=buffers[index]
             if not buffer or obs['t']!=buffer[-1][0]['t']:
                 buffer.append((obs,jpgs[-1]))
@@ -155,6 +193,8 @@ def main():
     try:
         runpy.run_path(str(target),run_name='__main__')
     finally:
+        if done_log['handle'] is not None:
+            done_log['handle'].close();done_log['handle']=None
         (act16w_runtime.evaluation_seed_guard,act16w_input.Act16wActor,
          act16w_eval_rpc.EvaluationClient,pm.ChunkExecutor,rm.SoloSequence,contract.CHUNK)=originals
         out=value('--out')

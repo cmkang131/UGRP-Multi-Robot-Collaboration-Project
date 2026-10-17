@@ -22,6 +22,8 @@ def main():
     p.add_argument('--enabled',action='store_true')
     p.add_argument('--stage',choices=['train','validation','final'],required=True)
     p.add_argument('--baseline-act17',action='store_true')
+    # Default OFF: pass a per-group done-probability record path to the evaluator.
+    p.add_argument('--record-done-prob',type=Path)
     p.add_argument('--selection',type=Path)
     for key in ('checkpoint','references','protocol','native-gate','out','stack-values','prior-rejections'):
         p.add_argument('--'+key,type=Path,required=True)
@@ -93,6 +95,8 @@ def main():
                     cmd+=['--baseline-act17']
                 if a.selection:
                     cmd+=['--fit-selection',str(a.selection)]
+                if a.record_done_prob is not None:
+                    cmd+=['--record-done-prob',str(a.record_done_prob)+'-group-%03d.jsonl'%group]
                 log=(folder/'run.log').open('x')
                 proc=subprocess.Popen(cmd,stdout=log,stderr=subprocess.STDOUT,cwd=Q,start_new_session=True,
                     env={**os.environ,'UGRP_ACT16W_NATIVE_GATE':str(a.native_gate),'MUJOCO_GL':'osmesa',
