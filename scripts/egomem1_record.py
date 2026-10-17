@@ -49,7 +49,7 @@ def run(a):
     sys.path[:0]=[str(ROOT),str(ROOT/'scripts'),str(a.renderer),str(a.renderer/'scripts'),str(a.legacy)]
     import sim,harness,scripts
     sim.__path__[:0]=[str(a.renderer/'sim'),str(a.legacy/'sim')]
-    harness.__path__.append(str(a.legacy/'harness'));scripts.__path__.append(str(a.renderer/'scripts'))
+    harness.__path__.extend([str(a.legacy/'harness'),str(a.renderer/'harness')]);scripts.__path__.append(str(a.renderer/'scripts'))
     os.chdir(a.renderer)
     import numpy as np
     import cv2
