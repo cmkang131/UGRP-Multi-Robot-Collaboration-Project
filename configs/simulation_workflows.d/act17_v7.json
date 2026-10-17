@@ -2,6 +2,20 @@
   "schema": "ugrp.local_workflow_catalog.v1",
   "workflows": [
     {
+      "id": "act17-v7-preflight",
+      "version": "1.0.0",
+      "purpose": "Real-pilot preprocessing, one-gradient and model readback preparation",
+      "entry": "scripts/act17_preflight.py",
+      "runner": "scripts.act17_preflight",
+      "docs": "experiments/2026-10-17-act17/v7/README.md",
+      "requires": "gcp2 L4; successful4 recording pilot and independent40 gate; preparation-only checkpoints cannot enter research evaluation",
+      "output_flag": "--out",
+      "output_kind": "directory",
+      "required_inputs": ["--pilot", "--gate", "--protocol"],
+      "side_effect": "preparation_training",
+      "adapter": "managed_legacy_cli"
+    },
+    {
       "id": "act17-v7-training-queue",
       "version": "1.0.0",
       "purpose": "One current-stack checked matched M/F/S finite training queue",

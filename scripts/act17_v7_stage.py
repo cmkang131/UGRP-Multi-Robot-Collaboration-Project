@@ -102,6 +102,9 @@ def main():
                 if job['p'].poll() is not None:
                     job['log'].close();finished.append(dict(group=i,indices=job['indices'],returncode=job['p'].returncode,raw=str(job['folder'])));del running[i]
                     if job['p'].returncode:stop['requested']=True
+                    elif a.stage=='record':
+                        subprocess.run([str(py),str(ROOT/'scripts/act17_compact_records.py'),'--root',str(job['folder']),
+                            '--out',str(job['folder']/'storage-receipt.json')],check=True)
                 else:
                     progress=job['folder']/'controller/progress.json'
                     first30=job['folder']/'first30.json'

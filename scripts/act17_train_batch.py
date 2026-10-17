@@ -12,6 +12,7 @@ import time
 sys.path.insert(0,str(Path(__file__).resolve().parent))
 from act16w_runtime import require_gcp2,frozen_source,sha256
 from act17_data import read
+from act17_compact_records import original_sha256
 from act17_v7 import ROOT,B
 
 
@@ -32,7 +33,7 @@ def main():
     a.out.mkdir(parents=True,exist_ok=False)
     queue=dict(flow='train',cohort='act17-v7-native',source_sha=source,host=host,stack_values=read(a.stack_values),
         rejection_table=str(a.dataset/'rejection_table.json'),rejection_table_sha256=sha256(a.dataset/'rejection_table.json'),
-        dataset_manifest_sha256=sha256(a.dataset/'manifest.json'),protocol_sha256=sha256(a.protocol),
+        dataset_manifest_sha256=original_sha256(a.dataset/'manifest.json'),protocol_sha256=sha256(a.protocol),
         candidates=protocol['candidates'],training=protocol['training'],max_parallel=a.max_parallel,wall_cap=None)
     write(a.out/'queue.json',queue)
     subprocess.run([sys.executable,str(a.checker),str(a.out/'queue.json'),'--stack',str(a.stack),
@@ -53,6 +54,8 @@ def main():
                 finished.append(dict(candidate=candidate,returncode=rc,summary=summary))
                 if rc or not summary.get('complete') or not summary.get('readback_verified'):
                     raise RuntimeError('training child HOST_ERROR or incomplete')
+                subprocess.run([sys.executable,str(ROOT/'scripts/act17_compact_records.py'),'--root',str(a.out/candidate),
+                    '--out',str(a.out/(candidate+'-storage-receipt.json'))],check=True)
             while pending and len(running)<a.max_parallel:
                 candidate=pending.pop(0);command=[sys.executable,'-u',str(ROOT/'scripts/act17_train.py'),
                     '--candidate',candidate,'--dataset',str(a.dataset),'--protocol',str(a.protocol),'--out',str(a.out/candidate)]

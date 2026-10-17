@@ -17,6 +17,7 @@ import numpy as np
 sys.path.insert(0,str(Path(__file__).resolve().parent))
 from act16w_runtime import require_gcp2,frozen_source,sha256,ACT_SHA
 from act17_open_loop import read,phase_group
+from act17_compact_records import original_sha256
 
 ROOT=Path(__file__).resolve().parents[1]
 B=Path('/home/ugrp/ugrp-sim')
@@ -141,11 +142,13 @@ def convert(protocol,gate,records,output):
         raise ValueError('new native v7 camera-off gate40 required')
     for r in gate['raw_results']:
         if sha256(r['path'])!=r['sha256']:raise ValueError('v7 gate raw hash mismatch')
-    locations={};checked_capture_roots=set()
+    locations={};checked_capture_roots=set();recording_receipts=[]
     for root in records:
         report=read(root/'gate-recount.json')
         if report.get('cohort')!='act17-v7-native' or not report.get('complete'):
             raise ValueError('completed v7 recording results required')
+        recording_receipts.append(dict(path=str(root/'gate-recount.json'),sha256=sha256(root/'gate-recount.json'),
+            n=report['n'],N=report['N'],source_sha=report['source_sha']))
         for group in root.glob('group-*'):
             capture_root=group/'capture'
             if capture_root not in checked_capture_roots:
@@ -153,7 +156,7 @@ def convert(protocol,gate,records,output):
                 if capture.get('status')!='recording_complete' or capture.get('error'):
                     raise ValueError('capture/pairing incomplete')
                 for name,digest in capture['sha256'].items():
-                    if sha256(capture_root/name)!=digest:raise ValueError('raw capture manifest changed')
+                    if original_sha256(capture_root/name)!=digest:raise ValueError('raw capture manifest changed')
                 checked_capture_roots.add(capture_root)
             for folder in (group/'capture').glob('world-*'):
                 controller=group/'controller'/folder.name;plan=read(controller/'plan.json')
@@ -163,7 +166,9 @@ def convert(protocol,gate,records,output):
     output.mkdir(parents=True,exist_ok=False)
     report=dict(schema='ugrp.act17.jpeg_dataset.v1',source_sha=source,host=host,cohort='act17-v7-native',
         complete=False,protocol=protocol,contact_profile='warp_native_contact_v1',episodes=[],rejections=[],
-        storage='raw JPEG references; no copied or expanded image arrays',normalization=None)
+        storage='raw JPEG references; no copied or expanded image arrays',normalization=None,
+        native_gate={k:gate[k] for k in ['source_sha','n','N','training_rgb','input_audit_violations','raw_results','runtime_profiles']},
+        recording_receipts=recording_receipts)
     train_x=[];train_y=[];train_seeds=[];counts=Counter()
     for seed in protocol['record_seeds']:
         raw,controller,plan=locations[seed];score=read(controller/'result.json')
@@ -209,7 +214,7 @@ def convert(protocol,gate,records,output):
     norm=output/'normalization.json';norm.write_text(json.dumps(stats,indent=2)+'\n')
     report.update(complete=True,status='complete',normalization=dict(path=norm.name,sha256=sha256(norm)),stage_counts=dict(counts),
         eligible_train_seeds=stats['train_seeds'],selected_episode_counts=dict(Counter(e['split']+':'+e['kind'] for e in report['episodes'])))
-    (output/'manifest.json').write_text(json.dumps(report,indent=2)+'\n')
+    pack_json(output/'manifest.json',report)
     (output/'rejection_table.json').write_text(json.dumps(dict(funnel=[dict(gate='requested_recordings',passed=len(protocol['record_seeds']),rejected=0),
         dict(gate='successful_audited_recordings',passed=len(report['episodes']),rejected=len(report['rejections'])),
         dict(gate='selected_frame_pairs',passed=sum(e['rows'] for e in report['episodes']),rejected=0)],rejections=report['rejections'],

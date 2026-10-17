@@ -7,6 +7,7 @@ import xml.etree.ElementTree as ET
 
 sys.path.insert(0,str(Path(__file__).resolve().parent))
 from act17_open_loop import read
+from act17_compact_records import original_sha256
 from act16w_runtime import require_gcp2,frozen_source,sha256
 from act17_v7 import ROOT,T,PROFILE,SCENE
 
@@ -23,7 +24,7 @@ def main():
     for group in sorted(a.run.glob('group-*')):
         controller=group/'controller';raw_manifest=read(controller/'summary.json')
         for name,digest in raw_manifest['sha256'].items():
-            if sha256(controller/name)!=digest:raise ValueError('closed controller manifest changed')
+            if original_sha256(controller/name)!=digest:raise ValueError('closed controller manifest changed')
             all_files+=1
         for folder in sorted(controller.glob('world-*')):
             if not folder.is_dir():continue

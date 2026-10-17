@@ -10,8 +10,9 @@ import sys
 import time
 
 sys.path.insert(0,str(Path(__file__).resolve().parent))
-from act16w_runtime import require_gcp2,frozen_source,sha256,LEROBOT_ACT_SHA256
+from act16w_runtime import require_gcp2,frozen_source,sha256,LEROBOT_ACT_SHA256,ACT_SHA
 from act17_data import Dataset,library,read
+from act17_compact_records import original_sha256
 from act17_policy import save_actor,Actor,observation_batch
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -28,8 +29,10 @@ def main():
     p.add_argument('--candidate',choices=['M','F','S'],required=True)
     a=p.parse_args();host=require_gcp2(training=True);source=frozen_source(ROOT);library()
     protocol=read(a.protocol);candidate=next(c for c in protocol['candidates'] if c['id']==a.candidate)
+    if protocol.get('schema')!='ugrp.act17.v7.protocol.v1' or len(protocol['train_seeds'])!=200 or len(protocol['validation_seeds'])!=40:
+        raise ValueError('registered v7 research protocol required; pilot preparation is not research training')
     data=Dataset(a.dataset,'train',image_mode=candidate['image_mode'])
-    if set(data.manifest['eligible_train_seeds'])!=set(protocol['train_seeds']):
+    if data.manifest['protocol']!=protocol or set(data.manifest['eligible_train_seeds'])!=set(protocol['train_seeds']):
         raise ValueError('all preregistered200 TRAIN demonstrations must be valid before this comparison')
     a.out.mkdir(parents=True,exist_ok=False)
     import torch
@@ -56,10 +59,11 @@ def main():
     if any(not __import__('numpy').array_equal(value,train[key]) for key,value in own.items()):
         raise ValueError('recorded TRAIN and deployment preprocessing differ')
     config=dict(source_sha=source,cohort='act17-v7-native',host=host,contact_profile='warp_native_contact_v1',
-        dataset_manifest_sha256=sha256(a.dataset/'manifest.json'),protocol_sha256=sha256(a.protocol),
+        dataset_manifest_sha256=original_sha256(a.dataset/'manifest.json'),protocol_sha256=sha256(a.protocol),
         normalization_sha256=data.manifest['normalization']['sha256'],candidate=a.candidate,**candidate,
         steps_requested=protocol['training']['steps_round1'],batch_size=8,chunk=8,period_s=.1,
         seed=protocol['training']['seed'],done_loss='balanced_bce_v1',lerobot_act_sha256=LEROBOT_ACT_SHA256,
+        act_library_source_sha=ACT_SHA,data_conversion_source_sha=data.manifest['source_sha'],
         provenance_note='new v7 data only; no v4 teacher states or checkpoints',
         train_inference_transform_identical=True)
     report={**config,'status':'running','complete':False,'steps_completed':0,'readback_verified':False,

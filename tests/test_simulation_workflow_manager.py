@@ -489,6 +489,7 @@ raise SystemExit(3 if a.fail else 0)
             samples['act17-v7-teacher'] = ['--stage', 'gate', '--protocol', str(source), '--references', str(model),
                 '--stack', str(source), '--checker', str(source), '--stack-values', str(source), '--prior-rejections', str(source)]
             samples['act17-v7-data'] = ['--protocol', str(source), '--gate', str(source), '--records', str(model)]
+            samples['act17-v7-preflight'] = ['--pilot', str(model), '--gate', str(source), '--protocol', str(source)]
             samples['act17-v7-train'] = ['--dataset', str(model), '--protocol', str(source), '--candidate', 'M']
             samples['act17-v7-evaluate'] = ['--act17-v7', '--protocol', str(source), '--checkpoint', str(model),
                 '--plans', str(source), '--split', 'validation']

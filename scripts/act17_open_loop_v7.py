@@ -13,6 +13,7 @@ import numpy as np
 sys.path.insert(0,str(Path(__file__).resolve().parent))
 from act16w_runtime import require_gcp2,frozen_source,sha256
 from act17_data import Dataset,library,read
+from act17_compact_records import original_sha256
 from act17_policy import Actor
 from act17_open_loop import action_errors,quantiles
 from act17_v7 import ROOT,B
@@ -28,7 +29,7 @@ def main():
     from harness.grasp_act_loss import policy_loss
     torch.set_num_threads(2)
     report=dict(source_sha=source,host=host,complete=False,status='running',cohort='act17-v7-native',arms={},physics_steps=0,training_updates=0,
-        dataset_manifest_sha256=sha256(a.dataset/'manifest.json'),scope='VAL expert states, not closed-loop student success',reproduce=sys.argv)
+        dataset_manifest_sha256=original_sha256(a.dataset/'manifest.json'),scope='VAL expert states, not closed-loop student success',reproduce=sys.argv)
     lease=B/'leases/act17-open-loop-v7.json'
     with lease.open('x') as f:json.dump(dict(task='act17',pid=os.getpid(),start=datetime.now(timezone.utc).isoformat(),expected_end='finite3xallVALframes',concurrency=0),f)
     started=time.monotonic()
