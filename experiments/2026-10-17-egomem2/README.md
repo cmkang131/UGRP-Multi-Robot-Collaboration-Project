@@ -186,7 +186,10 @@ eval-only 89dfdcce…, 녹화2 online f267605f…·eval-only 80648c83…; 해당
 녹화2 641/641) 뒤 표를 만든다. [녹화1 표](operations/rotation-audit-recording1.csv)·
 [요약](operations/rotation-audit-recording1.json), [녹화2 표](operations/rotation-audit-recording2.csv)·
 [요약](operations/rotation-audit-recording2.json). VM에는 첫 감사(입력을 압축
-SHA로 기록한 판)가 `.v1`로 남아 있다. 표의 정답 회전은 평가 전용이며
+SHA로 기록한 판)가 `.v1`로 남아 있다. 재현: 원본 run 디렉터리에서
+`summary.json`을 복사하고 `zstd -dc online-trajectory.json.zst > online-trajectory.json`
+(및 `eval-only.json.zst` 동일)로 푼 입력 디렉터리를 만들어 `--input`으로 준다.
+표의 정답 회전은 평가 전용이며
 제어기·기억에 되돌려 넣지 않는다.
 
 | 구간 | 틱 | 적용 Δθ합 | 정답 Δθ합(평가 전용) | 적용/정답 | 순수 transport 정확/검사 | 최대 잔차 |
