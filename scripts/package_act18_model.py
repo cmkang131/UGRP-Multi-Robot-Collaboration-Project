@@ -39,6 +39,7 @@ def main():
     provenance=meta['provenance']
     frozen_source(a.training_source,provenance['source_sha'])
     if (meta.get('schema')!='ugrp.act18.adapter.v1' or not provenance.get('training_complete')
+            or provenance.get('packaging_eligible') is False
             or provenance.get('step')!=protocol['steps'] or protocol['steps']!=100000
             or not summary.get('complete') or not summary.get('readback_verified')
             or summary.get('checkpoint_sha256')!=sha256(a.checkpoint/'model.safetensors')

@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'scripts'))
 from act16w_runtime import sha256
 from act17_compact_records import original_sha256
-from act18_policy import align_close_row_weights, weighted_sampler_mass
+from act18_policy import align_close_row_weights, registered_tune_probe, weighted_sampler_mass
 from act18_train import init_checkpoint_receipt, validate_probe_options
 
 
@@ -106,3 +106,26 @@ def test_weighted_sampler_mass_is_episode_uniform_and_row_weighted():
         weighted_sampler_mass(episodes, [1.0, 1.0, 1.0])
     with pytest.raises(ValueError, match='positive finite'):
         weighted_sampler_mass(episodes, [1.0, 0.0, 1.0, 1.0])
+
+
+def _probe_provenance(**overrides):
+    provenance = dict(candidate='act18-tune', cohort='act18-v7-reference', training_complete=True,
+                      step=2000, protocol_sha256='a' * 64,
+                      probe=dict(kind='init_aligned_finetune_v1', steps_override=2000,
+                                 packaging_eligible=False,
+                                 init_checkpoint=dict(model_sha256='b' * 64)))
+    provenance.update(overrides)
+    return provenance
+
+
+def test_only_the_registered_short_probe_is_evaluable_but_never_packaged():
+    assert registered_tune_probe(_probe_provenance(), 'a' * 64) is True
+    # Any deviation falls back to the strict completed-100k requirement.
+    assert registered_tune_probe(_probe_provenance(step=100000), 'a' * 64) is False
+    assert registered_tune_probe(_probe_provenance(training_complete=False), 'a' * 64) is False
+    assert registered_tune_probe(_probe_provenance(protocol_sha256='c' * 64), 'a' * 64) is False
+    packaging = _probe_provenance()
+    packaging['probe']['packaging_eligible'] = True
+    assert registered_tune_probe(packaging, 'a' * 64) is False
+    wrong_candidate = _probe_provenance(candidate='R8')
+    assert registered_tune_probe(wrong_candidate, 'a' * 64) is False

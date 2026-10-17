@@ -112,6 +112,26 @@ class ReferenceDataset(Dataset):
             offset += n
 
 
+def registered_tune_probe(provenance, protocol_sha256):
+    """True only for the default-off short TUNE probe checkpoint (not a 100k model).
+
+    The probe completes its own short schedule, so training_complete is True for
+    that schedule. Packaging stays impossible because the packaging script also
+    requires provenance.step == protocol steps (100000) and an explicit
+    packaging_eligible flag.
+    """
+    probe = provenance.get('probe') or {}
+    step = provenance.get('step')
+    receipt = probe.get('init_checkpoint') or {}
+    return bool(provenance.get('candidate') == TUNE_CANDIDATE
+                and probe.get('kind') == 'init_aligned_finetune_v1'
+                and provenance.get('training_complete') is True
+                and probe.get('packaging_eligible') is False
+                and type(step) is int and step == probe.get('steps_override') and 1 <= step <= 20000
+                and isinstance(receipt.get('model_sha256'), str) and len(receipt['model_sha256']) == 64
+                and provenance.get('protocol_sha256') == protocol_sha256)
+
+
 class WeightedReferenceDataset(ReferenceDataset):
     """TUNE-only episode-balanced sampling with post-close/pre-close upweighting."""
 

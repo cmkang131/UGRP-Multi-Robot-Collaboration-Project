@@ -152,6 +152,7 @@ def main():
             post_close_phases=['grasp:'+phase for phase in ('lift','lift_settle','lookback_pose','lookback','lookback_settle','verify_lift','hold')],
             pre_close_phases=['grasp:'+phase for phase in ('hover','descent','close')],
             other_rows_weight=1.0,
+            packaging_eligible=False,
             note='short default-off diagnostic probe; never packaged or pooled with R8/R100'))
     report=dict(**config,status='running',complete=False,steps_completed=0,
         started_utc=datetime.now(timezone.utc).isoformat(),TRAIN_rows=len(data),
@@ -194,7 +195,8 @@ def main():
                 # A TUNE probe only saves its final short-step checkpoint.
                 if step in save_steps:
                     folder=a.out/('step-'+str(step))
-                    save_actor(policy,folder,data.stats,dict(**config,step=step,training_complete=step==protocol['steps']))
+                    completed = step == total_steps if a.init_checkpoint is not None else step == protocol['steps']
+                    save_actor(policy,folder,data.stats,dict(**config,step=step,training_complete=completed))
                     restored=Actor.load(folder,device='cuda')
                     inputs={k:torch.from_numpy(v.copy()).unsqueeze(0).to('cuda') for k,v in own.items()}
                     policy.eval()

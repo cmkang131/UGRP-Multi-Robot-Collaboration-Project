@@ -119,8 +119,12 @@ def main():
                     or provenance.get('candidate') not in ('F','S') or not provenance.get('training_complete')):
                 raise ValueError('complete old F/S model required')
         elif (provenance.get('cohort')!='act18-v7-reference' or not provenance.get('training_complete')
-                or provenance.get('step')!=100000 or provenance.get('protocol_sha256')!=sha256(protocol_path)):
+                or provenance.get('protocol_sha256')!=sha256(protocol_path)):
             raise ValueError('complete registered100k reference model required')
+        elif provenance.get('step')!=100000:
+            from act18_policy import registered_tune_probe
+            if not registered_tune_probe(provenance,sha256(protocol_path)):
+                raise ValueError('complete registered100k reference model required')
     class Client(originals[2]):
         def reset(self,plans,indices=None):
             if self.training or self.audit_state or self.proc is not None or len(plans)!=self.nworld or indices not in (None,list(range(self.nworld))):
