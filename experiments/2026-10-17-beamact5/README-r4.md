@@ -52,8 +52,24 @@
 
 ### 5.2 조건 B — r4b (r4a + case27 reobserve 수정)
 
-실행 `/home/ugrp/ugrp-sim/runs/beamact5/validation-r4b-4` — 결과는 이 절 갱신에서 채운다.
+실행 `/home/ugrp/ugrp-sim/runs/beamact5/validation-r4b-4` (wall 1688.18 s, 성공 2).
+
+|case|결과|end|SIM s|비고|
+|---|---|---|---|---|
+|6|**PASS**|teacher_terminal|54.7|변동 없음|
+|10|**FAIL**|cap_end|60.0|검색 revert 영향 (pick/pick)|
+|20|**PASS**|teacher_terminal|55.2|변동 없음|
+|27|**FAIL**|teacher_terminal|28.4|reobserve 전환은 **수정 확인**(14.9 s에 view attempt 0 → 15.2 fresh_measurements_replan)했으나 red_1 staleness 재발로 handoff. 25.4→28.4 s로 지연만 증가|
 
 ### 5.3 조건 C — r4c (far→close→mid circles + case27 수정)
 
-실행 예정 `/home/ugrp/ugrp-sim/runs/beamact5/validation-r4c-4` (4 worlds). 사전 등록: [r4c-preregistration-amendment.json](teacher/gate-40-r4/r4c-preregistration-amendment.json), 스택 점검 `teacher-gate-stack-check-r4c.json`(ok true). 통과 시 39-world gate(`gate39-r4c-run`, world15 제외).
+실행 `/home/ugrp/ugrp-sim/runs/beamact5/validation-r4c-4` (wall 1382.10 s, **성공 3/4, cap_end 0**).
+
+|case|결과|end|SIM s|비고|
+|---|---|---|---|---|
+|6|**PASS**|teacher_terminal|54.7||
+|10|**PASS**|teacher_terminal|49.5|down-first 45.6 s 대비 +3.9 s, close fallback 2원으로 회복|
+|20|**PASS**|teacher_terminal|55.2||
+|27|**FAIL**|teacher_terminal|25.4|case27 잔여 원인 → r5a(wide_stance)로 시도|
+
+→ **far-first 조건부 circles가 검색 revert의 10 회귀를 해소**(ablation: r4a 10 FAIL → r4c 10 PASS). 파이프라인: [r4c-preregistration-amendment.json](teacher/gate-40-r4/r4c-preregistration-amendment.json), 스택 점검 ok true. 사전 등록: [r4c-preregistration-amendment.json](teacher/gate-40-r4/r4c-preregistration-amendment.json), 스택 점검 `teacher-gate-stack-check-r4c.json`(ok true). 통과 시 39-world gate(`gate39-r4c-run`, world15 제외).
