@@ -110,10 +110,20 @@ class CoTrainingDataset:
         actions += [episode['action'][:, 0, :].astype(np.float64) for episode in self.native]
         action = np.concatenate(actions)
         action_std = np.maximum(action.std(axis=0), STD_FLOOR)
-        state_std = np.maximum(state.std(axis=0), STD_FLOOR)
-        self.stats = dict(state_mean=state.mean(axis=0).tolist(), state_std=state_std.tolist(),
+        # State tokens (skill/object one-hots) must stay unnormalized; the pinned
+        # fit_stats only normalizes CONTINUOUS indices. Reproduce that exactly.
+        from act17_data import library
+        library()
+        import harness.grasp_act_contract as contract
+        continuous = np.asarray(contract.CONTINUOUS, np.int64)
+        state_mean = np.zeros(state.shape[1], np.float64)
+        state_std = np.ones(state.shape[1], np.float64)
+        state_mean[continuous] = state[:, continuous].mean(axis=0)
+        state_std[continuous] = np.maximum(state[:, continuous].std(axis=0), STD_FLOOR)
+        self.continuous = continuous
+        self.stats = dict(state_mean=state_mean.tolist(), state_std=state_std.tolist(),
                           action_mean=action.mean(axis=0).tolist(), action_std=action_std.tolist(),
-                          scope='combined v7 TRAIN200 + act16w TRAIN32; std floor .01')
+                          scope='combined v7 TRAIN200 + act16w TRAIN32; continuous state dims only; std floor .01')
         self.state_dim = int(state.shape[1])+(STATE_TOKEN_DIM if state_token else 0)
         self.rows = len(self.v7)+sum(episode['rows'] for episode in self.native)
         self.starts = len(self.v7.episode_indices)+len(self.native)
@@ -163,7 +173,9 @@ class CoTrainingDataset:
             state = episode['state'][row]
             action = episode['action'][row]
             pad = episode['action_is_pad'][row]
-        normalized_state = (state-self.v7_state_mean)/self.v7_state_std
+        normalized_state = np.array(state, dtype=np.float32)
+        normalized_state[self.continuous] = ((state[self.continuous]-self.v7_state_mean[self.continuous])
+                                             / self.v7_state_std[self.continuous])
         normalized_state = np.concatenate([normalized_state, self._token(origin)])
         normalized_action = (action-self.v7_action_mean)/self.v7_action_std
         normalized_action[np.asarray(pad, bool)] = 0.
@@ -226,6 +238,10 @@ class CoTrainingValidation:
         self.data = ReferenceDataset(v7_root, 'validation', chunk=chunk)
         self.chunk = chunk
         self.metadata = self.data.metadata
+        from act17_data import library
+        library()
+        import harness.grasp_act_contract as contract
+        self.continuous = np.asarray(contract.CONTINUOUS, np.int64)
         self.state_mean = np.asarray(stats['state_mean'], np.float32)
         self.state_std = np.asarray(stats['state_std'], np.float32)
         self.action_mean = np.asarray(stats['action_mean'], np.float32)
@@ -241,7 +257,9 @@ class CoTrainingValidation:
         shard = self.data.shards[shard_id]
         frame = shard['frames'][shard['image_index'][row][-1]]
         image = normalized_image(raw_image(frame['path'], frame['sha256'], False))
-        state = (shard['state'][row]-self.state_mean)/self.state_std
+        state = np.array(shard['state'][row], dtype=np.float32)
+        state[self.continuous] = ((shard['state'][row][self.continuous]-self.state_mean[self.continuous])
+                                  / self.state_std[self.continuous])
         state = np.concatenate([state, self.token]).astype(np.float32)
         action = (shard['action'][row]-self.action_mean)/self.action_std
         pad = np.asarray(shard['action_is_pad'][row], bool).copy()
