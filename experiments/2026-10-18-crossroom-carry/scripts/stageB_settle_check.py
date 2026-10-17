@@ -88,17 +88,18 @@ def main() -> int:
                 mujoco.mj_step(m, d)
             after = d.qpos[box_qadr:box_qadr + 3].copy()
             gs_after = d.site_xpos[gs_id].copy()
+            box_to_site = float(np.linalg.norm(after - gs_after))
             rows.append(dict(
                 episode=idx, group='N' if idx < 8 else 'F',
                 spawn_eval_only=plan['spawns']['r1'],
                 box_start_eval_only=[round(float(v), 4) for v in start],
                 box_after_eval_only=[round(float(v), 4) for v in after],
                 box_displacement_1s_m=round(float(np.linalg.norm(after - start)), 5),
-                box_to_grip_site_m=round(float(np.linalg.norm(after - gs_after)), 5),
+                box_to_grip_site_m=round(box_to_site, 5),
                 box_z_after_m=round(float(after[2]), 4),
                 gripper_closed_joint_target=float(closed),
                 settle_steps=settle_steps,
-                settle_ok=bool(np.linalg.norm(after - start) < 0.02),
+                settle_ok=bool(box_to_site < 0.01 and float(after[2]) > 0.03),
             ))
     out = dict(schema='ugrp.crossroom_carry.stageB_settle_check.v1',
                scene=scenario['scenario_id'], n=len(rows),

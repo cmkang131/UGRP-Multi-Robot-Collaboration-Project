@@ -425,8 +425,11 @@ def run(a):
             for _ in range(settle_steps):
                 mujoco.mj_step(m, d)
             disp = float(np.linalg.norm(d.qpos[box_qadr:box_qadr + 3] - start_box))
+            gs_after = d.site_xpos[m.site('r1__grip_site').id].copy()
+            rel = float(np.linalg.norm(d.qpos[box_qadr:box_qadr + 3] - gs_after))
             d.ctrl[:] = 0.
             return dict(box_displacement_m=round(disp, 5),
+                        box_to_grip_site_m=round(rel, 5),
                         box_pose_eval_only=[float(v) for v in d.qpos[box_qadr:box_qadr + 3]],
                         gripper_closed_joint_target=float(closed),
                         settle_steps=settle_steps)
