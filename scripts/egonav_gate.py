@@ -147,6 +147,7 @@ def run(args):
     from harness.egocentric_goto import (
         OPTION as GOTO_OPTION, EgocentricGoto, command_delta, duty, point_covariance)
     from harness.floor_goal_v3 import FloorGoalV3Options
+    from harness.floor_goal import commanded_camera, floor_intersections, optical_rays
     from harness.active_camera import goal_detector
     cv2.setNumThreads(1)
     vendor = ROOT/'experiments/2026-10-17-egonav/vendor'
@@ -186,7 +187,8 @@ def run(args):
     worlds = setup['worlds']
     nworld = len(worlds) if not args.worlds else min(args.worlds, len(worlds))
     worlds = worlds[:nworld]
-    if not args.preflight and not args.probe_rotation and not args.memory_trace and nworld != 16:
+    if (not args.preflight and not args.probe_rotation and not args.memory_trace
+            and not args.detect_probe and not args.gate_probe and nworld != 16):
         raise ValueError('GATE_N16_REQUIRED')
     z1 = st.default_free_z(m, 'r1__robot')
     z2 = st.default_free_z(m, 'r2__robot')
@@ -317,11 +319,158 @@ def run(args):
             contact_pairs=contact_pairs(wd, nworld)[:20],
             warp_noslip=int(wm.opt.noslip_iterations), cpu_noslip=int(m.opt.noslip_iterations)))
         return
+    if args.detect_probe:
+        # Evaluation-only static detection probe for the far-candidate decision.
+        # The robot holds still (zero wheel commands) at authored spawns; own
+        # RGB detection runs at every 10 Hz tick.  Ground-truth distances are
+        # recorded for the measurement table only and never enter control.
+        (args.output/'detect_probe').mkdir()
+        (args.output/'detect_probe'/'frames').mkdir()
+        target = setup['evaluation_only']
+        center = np.asarray(target['center_m'], float)
+        half = np.asarray(target['half_m'], float)
+        origin, axes = commanded_camera(SEARCH, 'camera_v3')
+        _, valid_floor = floor_intersections(
+            optical_rays(640, 480), origin, axes,
+            downward_min=detector_options.downward_min,
+            max_range_m=detector_options.max_range_m)
+        steps = round(.1/m.opt.timestep)
+        tape = wp.zeros((steps, nworld, m.nu), dtype=float)
+        step_index = wp.zeros(1, dtype=int)
+
+        @wp.kernel
+        def issue_probe(tape: wp.array3d(dtype=float), index: wp.array(dtype=int),
+                        out: wp.array2d(dtype=float)):
+            i, j = wp.tid()
+            out[i, j] = tape[index[0], i, j]
+
+        @wp.kernel
+        def advance_probe(index: wp.array(dtype=int)):
+            index[0] = index[0] + 1
+
+        with wp.ScopedCapture() as probe_cap:
+            for _ in range(steps):
+                wp.launch(issue_probe, dim=(nworld, m.nu),
+                          inputs=[tape, step_index, wd.ctrl])
+                mjw.step(wm, wd)
+                wp.launch(advance_probe, dim=1, inputs=[step_index])
+        rows = []
+        for tick in range(setup['step_budget']):
+            t = tick/10
+            qp = wd.qpos.numpy()
+            images = rc.render()
+            pinhole = np.clip(images['r1'][0], 0, 255).astype(np.uint8)
+            raw = np.stack([cv2.remap(pinhole[w], mx, my, cv2.INTER_LINEAR,
+                                      borderMode=cv2.BORDER_CONSTANT)
+                            for w in range(nworld)])
+            body = m.body('r1__robot').id
+            adr = int(m.jnt_qposadr[int(m.body_jntadr[body])])
+            for w in range(nworld):
+                patches, labels, diag = detect(raw[w], servo=SEARCH, profile='camera_v3',
+                                               options=detector_options)
+                hsv = cv2.cvtColor(raw[w], cv2.COLOR_RGB2HSV)
+                patch_rows = []
+                for patch in patches:
+                    region = labels == patch['component']
+                    hue = hsv[..., 0][region].astype(float)
+                    xy = np.asarray(patch['center_body_m'], float)
+                    patch_rows.append(dict(
+                        component=int(patch['component']),
+                        pixels=int(patch['pixels']),
+                        observed_area_m2=patch.get('observed_area_m2'),
+                        hull_area_m2=patch.get('hull_area_m2'),
+                        rect_sides_m=patch.get('rect_sides_m'),
+                        solidity=patch.get('solidity'),
+                        floor_connection=patch.get('floor_connection'),
+                        center_body_m=patch['center_body_m'],
+                        range_m=float(np.linalg.norm(xy)),
+                        bearing_rad=float(math.atan2(float(xy[1]), float(xy[0]))),
+                        hue_median=(float(np.median(hue)) if hue.size else None),
+                        hue_p10=(float(np.percentile(hue, 10)) if hue.size else None),
+                        hue_p90=(float(np.percentile(hue, 90)) if hue.size else None)))
+                quad = qp[w][adr+3:adr+7]
+                wq, xq, yq, zq = quad
+                yaw = math.atan2(2*(wq*zq+xq*yq), 1-2*(yq*yq+zq*zq))
+                pose = [float(qp[w][adr]), float(qp[w][adr+1]), yaw]
+                rows.append(dict(
+                    world=w, tick=tick, t=t, pose_eval_only=pose,
+                    distance_to_target_center_m=float(np.linalg.norm(
+                        np.asarray(pose[:2], float)-center)),
+                    distance_to_target_edge_m=float(zone_distance(pose[:2], center, half)),
+                    bearing_to_target_center_rad=float(wrap(math.atan2(
+                        float(center[1]-pose[1]), float(center[0]-pose[0]))-yaw)),
+                    visible=bool(patch_rows), patches=patch_rows, diagnostics=diag))
+                if tick in (0, setup['step_budget']//2, setup['step_budget']-1):
+                    cv2.imwrite(str(args.output/'detect_probe'/'frames'/
+                                    f'world{w:02d}-t{tick:04d}.jpg'),
+                                cv2.cvtColor(raw[w], cv2.COLOR_RGB2BGR))
+            tape_rows = [dict(ctrl=ctrl, wheels=[0., 0., 0., 0.],
+                              deadlines=[-1., -1., -1., -1.], applied=applied[w],
+                              target=[SEARCH[s] for s in servos],
+                              servo_active=[False]*5, now=t, servo_time=t)
+                         for w in range(nworld)]
+            values, cmd_state = control_tape(
+                tape_rows, relay, dt=float(m.opt.timestep),
+                steps=steps, lookup=lookup, wheel_ids=wheel_ids,
+                servo_ids=servo_ids, start_fraction=drive.start_fraction,
+                kinetic_fraction=drive.kinetic_fraction,
+                torque_cap_nm=drive.torque_cap_nm)
+            applied = cmd_state['applied']; relay = cmd_state['relay']
+            wp.copy(tape, wp.array(values, dtype=float))
+            step_index.zero_()
+            wp.capture_launch(probe_cap.graph)
+        per_world = []
+        for w in range(nworld):
+            world_rows = [row for row in rows if row['world'] == w]
+            visible_rows = [row for row in world_rows if row['visible']]
+            areas = [p['observed_area_m2'] for row in visible_rows
+                     for p in row['patches'] if p['observed_area_m2'] is not None]
+            pixels = [p['pixels'] for row in visible_rows for p in row['patches']]
+            hues = [p['hue_median'] for row in visible_rows
+                    for p in row['patches'] if p['hue_median'] is not None]
+            per_world.append(dict(
+                world=w, spawn=list(worlds[w]['r1']),
+                authored_distance_to_target_center_m=float(np.linalg.norm(
+                    np.asarray(worlds[w]['r1'][:2], float)-center)),
+                detected_ticks=len(visible_rows), tick_n=len(world_rows),
+                detection_fraction=len(visible_rows)/max(1, len(world_rows)),
+                area_m2=(dict(n=len(areas), min=min(areas), max=max(areas),
+                              median=float(np.median(areas))) if areas else dict(n=0)),
+                pixels=(dict(n=len(pixels), min=min(pixels), max=max(pixels),
+                             median=float(np.median(pixels))) if pixels else dict(n=0)),
+                hue_median=(dict(n=len(hues), min=min(hues), max=max(hues),
+                                 median=float(np.median(hues))) if hues else dict(n=0)),
+                first_detection=(visible_rows[0] if visible_rows else None)))
+        dump(args.output/'detect_probe'/'detect_probe.json', dict(
+            schema='ugrp.egonav.detect_probe.v1', mode='static_hold_zero_wheels',
+            evaluation_only=True, control_use=False, source_sha=q['source_sha'],
+            host=platform.node(), nworld=nworld, step_budget=setup['step_budget'],
+            sim_s=(len(rows)//max(1, nworld)-1)/10,
+            target=dict(center_m=center.tolist(), half_m=half.tolist(),
+                        distance_definition='robot chassis xy to authored zone center'),
+            detector_effective=[f.name+':'+str(getattr(detector_options, f.name))
+                                for f in __import__('dataclasses').fields(detector_options)],
+            floor_valid_pixels=int(valid_floor.sum()), floor_pixels=int(valid_floor.size),
+            floor_max_range_m=float(detector_options.max_range_m),
+            downward_min=float(detector_options.downward_min),
+            noslip_iterations=int(m.opt.noslip_iterations),
+            warp_noslip_iterations=int(wm.opt.noslip_iterations),
+            worlds=per_world, rows=rows))
+        dump(args.output/'EXIT', dict(status='DETECT_PROBE_DONE', error=None))
+        dump(args.output/'SHA256SUMS.json', {str(p.relative_to(args.output)): sha(p)
+                                             for p in args.output.rglob('*') if p.is_file()})
+        print(json.dumps(dict(status='DETECT_PROBE_DONE',
+                              detected=[row['detected_ticks'] for row in per_world],
+                              tick_n=[row['tick_n'] for row in per_world],
+                              area_max=[row['area_m2'].get('max') for row in per_world])),
+              flush=True)
+        return
 
     # Full gate.
     footprint = max(float(np.linalg.norm(np.asarray(v)[:, :2], axis=1).max())
                     for _, v in body_envelopes(SEARCH, 'camera_v3'))
-    controllers = [EgocentricGoto(option=GOTO_OPTION, footprint_radius_m=footprint)
+    controllers = [EgocentricGoto(option=GOTO_OPTION, footprint_radius_m=footprint,
+                                  far_candidate=bool(setup.get('far_candidate_v1', False)))
                    for _ in range(nworld)]
     per_world = [dict(world=w, spawn=list(spec['r1']), events=[], trace=[],
                       memory_trace=[], frames=[],
@@ -439,16 +588,24 @@ def run(args):
                 obs = []
                 scan = dict(segments=[])
                 if not state['done']:
-                    patches, _, diag = detect(rgb, servo=SEARCH, profile='camera_v3', options=detector_options)
+                    patches, patch_labels, diag = detect(rgb, servo=SEARCH, profile='camera_v3', options=detector_options)
                     if patches:
                         patch = max(patches, key=lambda p: (p.get('observed_area_m2', 0.), p['confidence']))
                         xy = np.asarray(patch['center_body_m'], float)
+                        # Measured own-RGB hue of exactly this component; no
+                        # authored/GT hue enters the controller observation.
+                        hue = None
+                        component = int(patch.get('component', 0))
+                        if component > 0:
+                            values = cv2.cvtColor(rgb, cv2.COLOR_RGB2HSV)[..., 0][patch_labels == component]
+                            if values.size:
+                                hue = float(np.median(values))
                         obs = [dict(id='zone-A-floor-marking', kind='zone_marking',
                                     signature='floor_orange_zone_marking',
                                     relative_xy_m=xy.tolist(),
                                     covariance_m2=point_covariance(xy).tolist(),
                                     observed_area_m2=patch.get('observed_area_m2'),
-                                    hue=target.get('hue'), pixels=patch['pixels'])]
+                                    hue=hue, pixels=patch['pixels'])]
                     scan = wall_observe(rgb, SEARCH)
                     if tick == 0:
                         # No initial GT enters the controller. The spawn is an
@@ -694,7 +851,9 @@ def run(args):
                          if g['unseen_slope_m_per_s'] is not None]
         summary = dict(
             status=status, source_sha=q['source_sha'], host=platform.node(),
-            world_n=nworld, step_budget=setup['step_budget'], sim_s=(len(per_world[0]['trace'])-1)/10,
+            world_n=nworld, gate_probe=bool(args.gate_probe),
+            far_candidate=bool(setup.get('far_candidate_v1', False)),
+            step_budget=setup['step_budget'], sim_s=(len(per_world[0]['trace'])-1)/10,
             wall_s=time.monotonic()-start, first30_wall_sim=first30,
             controller=GOTO_OPTION, memory_implementation='legacy_v1',
             footprint_radius_m=footprint, detector=setup['detector'],
@@ -750,6 +909,8 @@ def main():
     parser.add_argument('--probe-rotation', type=int, default=0)
     parser.add_argument('--worlds', type=int, default=0)
     parser.add_argument('--memory-trace', action='store_true')
+    parser.add_argument('--detect-probe', action='store_true')
+    parser.add_argument('--gate-probe', action='store_true')
     args = parser.parse_args()
     run(args)
 
