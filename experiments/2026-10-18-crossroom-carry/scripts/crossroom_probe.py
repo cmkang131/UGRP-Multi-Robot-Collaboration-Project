@@ -490,7 +490,12 @@ def run(a):
                 out.mkdir(parents=True)
                 (out / 'frames').mkdir()
                 d = reset_episode(m, hardware, plan, st, SEARCH, mujoco)
-                loaded = place_loaded_start(d, plan) if carry_loaded else None
+                # Admission is evaluated on the authored start state (robots,
+                # peers and scene cargo at their setup positions).  The loaded
+                # placement then puts the single box in the closed gripper; that
+                # setup-only grasp is validated separately by
+                # stageB_settle_check.py and must not fail the start admission
+                # (the jaws intentionally touch the box).
                 admission = overlap_check(m, d, mujoco, check, OVERLAP)
                 dump(out / 'admission.json', admission)
                 if not admission['accepted']:
@@ -499,11 +504,15 @@ def run(a):
                     dump(out / 'episode.json', ep)
                     rejected.append(ep)
                     continue
+                loaded = place_loaded_start(d, plan) if carry_loaded else None
+                loaded_admission = (overlap_check(m, d, mujoco, check, OVERLAP)
+                                    if carry_loaded else None)
                 # Setup-only initial state; no pose ever enters the skill.
                 dump(out / 'setup-eval-only.json',
                      dict(evaluation_only=True, spawns=plan['spawns'],
                           carry_stage=stage,
                           loaded_start_setup_only=loaded,
+                          loaded_state_admission_for_reference=(loaded_admission),
                           gripper_pwm_closed=(gripper_pwm if carry_loaded else None),
                           cargo_own_thresholds=(carry_mod.thresholds()
                                                 if carry_loaded else None)))

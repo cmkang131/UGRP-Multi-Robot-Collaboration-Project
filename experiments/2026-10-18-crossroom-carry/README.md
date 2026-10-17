@@ -196,6 +196,10 @@ with Stage A** or with any visgoal/egonav/ACT run.
   joints and the gripper commanded closed (1500 pulse), then the CPU solver
   settles 1 Sim s. 16/16 starts keep the box at the gripper site
   (`setup-validation-B.json`). No weld and no teacher after t=0.
+  Start admission (`start_valid`) is evaluated on the authored start state
+  before the loaded placement; the loaded grasp intentionally touches the box,
+  so a loaded-state overlap check is reference-only and the loaded validity is
+  established by the settle check plus the preflight carry monitor.
 * Loaded funnel: requested_n16 -> input_audit_zero -> start_valid ->
   cargo_held_own_at_start -> door_crossed -> cargo_held_own_at_cross ->
   post_cross_colour_seen -> post_cross_found -> arrived_declared ->

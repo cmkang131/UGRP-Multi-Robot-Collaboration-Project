@@ -4,7 +4,7 @@
  "stage": "B_loaded",
  "flow": "self_map",
  "title": "Cross-room carry Stage B: loaded single red box, west pickup room -> divider door -> zone B arrival",
- "frozen_at": "2026-10-17T22:01:36Z",
+ "frozen_at": "2026-10-17T22:03:04Z",
  "policy_source_sha": "c390105c2663a5b780e4ad8d69da72a5ffe1bce8",
  "policy_source_commit_note": "visgoal candidate C build (PR #582 draft), vendored byte copy; Stage B uses the same expanded-search + r4-arrival-declaration policy as Stage A.",
  "checkout_branch": "claude/crossroom-carry",
@@ -63,7 +63,8 @@
    "settle_sim_s": 1.0,
    "settle_steps": 4000,
    "place_method": "the box free joint is placed at the r1 grip site with the arm in the calibrated SEARCH joints and the gripper commanded closed; the CPU solver settles the grasp for 1 Sim s before the batch starts; no teacher and no weld after t=0",
-   "setup_validation": "experiments/2026-10-18-crossroom-carry/setup-validation-B.json (16/16 starts: box stays at the gripper site through the 1 Sim s settle)"
+   "setup_validation": "experiments/2026-10-18-crossroom-carry/setup-validation-B.json (16/16 starts: box stays at the gripper site through the 1 Sim s settle)",
+   "admission_semantics": "start_valid is evaluated by the simulator spawn-overlap admission on the authored start state (robots/peers/scene cargo at their setup positions) before the setup-only loaded placement. The loaded grasp intentionally has jaw-box contact, so a re-run of the overlap check on the loaded state is recorded only as loaded_state_admission_for_reference; the loaded start validity is established by stageB_settle_check.py (16/16 starts keep the box at the gripper site through the 1 Sim s settle) plus the preflight carry monitor."
   },
   "own_monitor": {
    "module": "experiments/2026-10-18-crossroom-carry/scripts/carry_state_own.py",
