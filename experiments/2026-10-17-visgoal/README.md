@@ -264,6 +264,55 @@ A 16-world short run (`visgoal-batch-g16-short`, 16 x 10 SIM s) completed
 source pin `3d06f8b4f` and `worlds_per_batch: 16`; candidate B
 (`visgoal_mirror_pulse_v1`) is queued after it in the same batch mode.
 
+### Gate r4 results (nworld=16 batch, 16 starts, 120 SIM s)
+
+Raw `/home/ugrp/ugrp-sim/runs/visgoal-gate-r4` (VM), copied summary/recount/
+analysis/montages under `gate-r4/`. Run wall 5270.1 s for the batch
+(120 SIM s x 16 worlds) = 2.745 wall/(sim_s*nworld); first-30-SIM check
+(progress at tick 300) was 1439.87/(30*16) = 3.00, both below the 6.0 block
+and record-only 3.5 warning. `EXIT` DONE, no HOST_ERROR.
+
+Result: n=16, found 9/16, colour_seen 9/16, arrived_declared 8/16,
+GT-inside-zone-B 1/16 (e13), entered zone any 1/16, cap_end 8/16
+(separate, never counted as a failure). The strict recounted funnel
+(`recount.json`, scripts/visgoal_recount.py) is starts 16 -> colour_seen 9
+-> found_metric_or_arrived 9 -> arrived_declared 8 -> arrived_gt 1. The
+runner's own table lists `found` before `colour_seen`; the recounted table
+keeps a strictly sequential chain (colour can exceed found, and the short
+run exposed a negative rejected_n under the old order), so the recount is
+the funnel of record for this run.
+
+Failure table (each episode has a 9-frame self-camera montage in
+`gate-r4/montages/`, hashes in `gate-r4/montages.json`):
+
+| reason_category | n | episodes | blocked_object | minimum_gap_m |
+|---|---:|---|---|---|
+| cap_end_no_colour_metric | 7 | 00,02,03,04,05,06,07 | not_observed | null (not_measured) |
+| cap_end_found_no_arrival | 1 | 01 | not_observed | null (not_measured) |
+| false_arrival_outside_zone | 7 | 08,09,10,11,12,14,15 | not_observed | null (not_measured) |
+| arrived_gt_inside (success) | 1 | 13 | - | - |
+
+All seven false arrivals declared at a remembered point whose stop pose was
+just outside the west zone boundary: final eval-only x = 4.247-4.292
+(boundary 4.3) and y = -1.49 to -1.94, i.e. 0.0084-0.0528 m outside zone B,
+`final_stage=approach`. The skill's declared-arrival tolerance is 0.10 m to
+the remembered paint point, so a stop on the outside edge is accepted by
+the skill while the pre-registered GT-inside gate rejects it. e13 (the only
+start where the paint was visible at t=0, 28,856 px) stopped at x=4.423 and
+is the single GT-inside success. The 7 no-colour cap_end episodes ended at
+`leg_forward` after a full 120 s search; e01 found the paint at 96.2 s but
+hit the cap 23.8 s before it could declare. This is a search/arrival
+judgment result of the pre-registered skill, not a physics or command
+failure; no blocked object was observed, so the ledger records
+`not_observed` and a null gap explicitly.
+
+The recount cross-checks reported 0 mismatches and all aggregate checks
+true (summary n/found/declared/GT and source_sha); control fields stay zero
+(`static_map_control`, `truth_control`, `top_camera_frames`,
+`held_world_reads`). This batch run is a separate execution condition from
+the invalid sequential r2 (and from the aborted r3 workers); none of their
+results are pooled here.
+
 ## Files
 
 * `setups.json` — 16 fixed starts (setup only; includes parked
@@ -271,6 +320,10 @@ source pin `3d06f8b4f` and `worlds_per_batch: 16`; candidate B
 * `scripts/visgoal_probe.py` — MJWarp runner: 10 Hz render -> raw fisheye ->
   paint/wall/obstacle detection -> memory -> control -> command tape.
 * `vendor/` — byte copies; no egomem-owned file is edited.
+* `gate-r4/` — gate r4 summary, strict-funnel recount, per-episode analysis
+  table and 9-frame montages (self camera only), plus the compressed full
+  SHA256SUMS list (`SHA256SUMS.json.zst`, original sha/bytes in
+  `SHA256SUMS.manifest.json`).
 * Raw outputs stay on gcp3 under `/home/ugrp/ugrp-sim/runs/visgoal-*`; only
   summaries, funnels, montages and failure frames are copied to the Mac.
 
@@ -286,15 +339,25 @@ python3 scripts/visgoal_probe.py --enabled --preflight --episodes 0,13 --sim-cap
   --setups /home/ugrp/ugrp-sim/src/<clone>/experiments/2026-10-17-visgoal/setups.json \
   --output /home/ugrp/ugrp-sim/runs/visgoal-preflight-r8
 
-# Gate r2: all 16 starts, 120 SIM s each, prior funnel = r8.
+# Gate r4: all 16 starts, 120 SIM s each, nworld=16 batch, prior funnel = r8.
 python3 scripts/check_current_stack.py experiments/2026-10-17-visgoal/queue-gate.json \
-  --flow self_map --output experiments/2026-10-17-visgoal/stack-gate-v14.json
-python3 scripts/visgoal_probe.py --enabled --sim-cap 120 \
+  --flow self_map --output experiments/2026-10-17-visgoal/stack-gate-v16.json
+python3 scripts/visgoal_probe.py --enabled --sim-cap 120 --nworld 16 \
+  --episodes 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15 \
   --queue experiments/2026-10-17-visgoal/queue-gate.json \
   --renderer /home/ugrp/ugrp-sim/src/16a946ff3 \
   --legacy /home/ugrp/ugrp-sim/src/warp8f-selfmap-0ace43f25 \
   --setups /home/ugrp/ugrp-sim/src/<clone>/experiments/2026-10-17-visgoal/setups.json \
-  --output /home/ugrp/ugrp-sim/runs/visgoal-gate-r2
+  --output /home/ugrp/ugrp-sim/runs/visgoal-gate-r4
+
+# Candidate B (same 16 starts, mirror pulse on; not pooled with gate r4).
+python3 scripts/visgoal_probe.py --enabled --sim-cap 120 --nworld 16 \
+  --episodes 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15 \
+  --queue experiments/2026-10-17-visgoal/queue-gate-mirror.json \
+  --renderer /home/ugrp/ugrp-sim/src/16a946ff3 \
+  --legacy /home/ugrp/ugrp-sim/src/warp8f-selfmap-0ace43f25 \
+  --setups /home/ugrp/ugrp-sim/src/<clone>/experiments/2026-10-17-visgoal/setups.json \
+  --output /home/ugrp/ugrp-sim/runs/visgoal-gate-r4-mirror
 ```
 
 `--enabled` is mandatory; the module's default constructor option is `off`.
