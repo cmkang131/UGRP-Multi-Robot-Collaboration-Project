@@ -1,0 +1,89 @@
+{
+  "raw": "/home/ugrp/ugrp-sim/runs/mapbuild10-long-round1/unloaded-v2",
+  "reproduction": [
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild10/long-round1-v2/score-5d1b50eb3.py",
+    "--source",
+    "/home/ugrp/ugrp-sim/src/mapbuild10-f3a91cb85",
+    "--input",
+    "/home/ugrp/ugrp-sim/runs/mapbuild10-long-round1/unloaded-v2",
+    "--output",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild10/long-round1-v2/score-with-plots",
+    "--requirements",
+    "/home/ugrp/ugrp-sim/src/mapbuild10-f3a91cb85/experiments/2026-10-17-mapbuild8/requirements.json"
+  ],
+  "case_gates": [
+    {
+      "stage": "record_command_complete",
+      "cumulative_pass_n": 0,
+      "rejected_n": 1,
+      "predicate": false
+    },
+    {
+      "stage": "at_least_3m_route_and_authored_turn",
+      "cumulative_pass_n": 0,
+      "rejected_n": 0,
+      "predicate": false
+    },
+    {
+      "stage": "distribution_converged",
+      "cumulative_pass_n": 0,
+      "rejected_n": 0,
+      "predicate": true
+    },
+    {
+      "stage": "no_wrong_convergence",
+      "cumulative_pass_n": 0,
+      "rejected_n": 0,
+      "predicate": true
+    },
+    {
+      "stage": "all_route_frames_in_requirement",
+      "cumulative_pass_n": 0,
+      "rejected_n": 0,
+      "predicate": true
+    },
+    {
+      "stage": "end_and_max_xy_improve_off",
+      "cumulative_pass_n": 0,
+      "rejected_n": 0,
+      "predicate": false
+    }
+  ],
+  "frame_gates": [
+    {
+      "stage": "recorded_frames",
+      "cumulative_pass_n": 381,
+      "rejected_n": 0
+    },
+    {
+      "stage": "amcl_pose_available",
+      "cumulative_pass_n": 377,
+      "rejected_n": 4
+    },
+    {
+      "stage": "measurement_updates",
+      "cumulative_pass_n": 38,
+      "rejected_n": 339
+    },
+    {
+      "stage": "converged_updates",
+      "cumulative_pass_n": 7,
+      "rejected_n": 31
+    },
+    {
+      "stage": "correctly_converged_updates",
+      "cumulative_pass_n": 7,
+      "rejected_n": 0
+    }
+  ],
+  "distribution": [
+    {
+      "reason": "long_route_requirement_or_improvement_not_met",
+      "category": "long_diagnostic",
+      "n": 1,
+      "blocked_object": "own_observed_wall",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    }
+  ]
+}

@@ -1,21 +1,32 @@
 {
-  "schema": "ugrp.mapbuild10.queue.v1",
-  "status": "NOT_READY_OFF_IMPROVEMENT_GATE_FAILED",
+  "schema": "ugrp.mapbuild10.queue.v2",
+  "status": "NOT_READY",
   "ready": false,
-  "source_sha": "9fa2aad39",
-  "rejection_table": "/Users/changmin/projects/ugrp-wt/mapbuild1/experiments/2026-10-17-mapbuild10/rejection_table.json",
+  "submit": false,
+  "source_sha": "7f2f1baae58bd591ab6ba7daf60dd6961f99f857",
+  "profile": "nav2_rgb_field_v1",
   "initial_prior_option": "start_zone_prior_v1",
-  "profile": "nav2_defaults_v1",
-  "required_input": null,
-  "new_physical_runs": 0,
+  "rejection_table": "/Users/changmin/projects/ugrp-wt/mapbuild1/experiments/2026-10-17-mapbuild10/rejection_table.json",
   "physics_submission_allowed": false,
   "wall_cap": null,
   "planning_cap_basis": "compute_or_sim",
-  "scope": "R1\u2013R3/418 saved inputs only; not current runtime certification",
-  "core_candidate_sha": "0df021e73",
-  "sparse_adapter_sha": "eae94efe1",
-  "postprocess_sha": "44a29092a",
-  "reason": "R1 unresolved; R2/R3 coarse-prior XY/RMSE worse than same-motion OFF; gcp3 sparse-view OFF improvement 0",
-  "initial_prior_scope": "coordinator-authorized synthetic conditional coarse boxes from evaluator; predictor receives ranges only",
-  "trials_per_stream": 20
+  "reason": "All-required OFF improvement gate failed. Approved long diagnostic ended at2.15cm and allocated1-round/2-recording diagnostic was consumed.",
+  "required_before_next_submission": [
+    "standard motion/own-camera transition audit and valid native own-command response evidence",
+    "all required offline convergence/error gates",
+    "separate approval for any diagnostic beyond the recorded allocation"
+  ],
+  "scope": "review only; no queued/started additional physics or training",
+  "vm_stop": {
+    "gcp5": {
+      "lastStopTimestamp": "2026-10-16T20:38:53.449-07:00",
+      "name": "ugrp-act-l4-gcp5",
+      "status": "TERMINATED"
+    },
+    "gcp3": {
+      "lastStopTimestamp": "2026-10-16T20:38:54.149-07:00",
+      "name": "ugrp-act-l4-gcp3",
+      "status": "TERMINATED"
+    }
+  }
 }

@@ -1,59 +1,468 @@
 {
-  "schema": "ugrp.mapbuild10.summary.v2",
-  "status": "NOT_READY_OFF_IMPROVEMENT_GATE_FAILED",
+  "schema": "ugrp.mapbuild10.summary.v3",
+  "status": "NOT_READY",
   "goal_achieved": false,
   "default_adoption": false,
   "actual_route_ready": false,
-  "source_sha": "9fa2aad39",
-  "postprocess_sha": "44a29092a",
-  "new_physical_rounds": 0,
-  "physical_round_budget_remaining": 3,
   "method": "static_amcl_v1",
-  "profile": "nav2_defaults_v1",
-  "map_correction_option": "selfmap_map_correction_v1",
-  "initial_prior_option": "start_zone_prior_v1",
+  "latest_explicit_profile": "nav2_rgb_field_v1",
   "default": "off",
-  "prior_scope": "coordinator-authorized evaluation-derived conditional .5m x .5m / +/-30 degree boxes; truth not centered; predictor receives only coarse ranges; not actual operator priors",
-  "prior_generation_truth_use": true,
-  "exact_truth_pose_to_filter": 0,
-  "prior_offsets_or_generator_seed_to_filter": 0,
-  "top_inputs": 0,
-  "render_calls": 0,
-  "physics_steps": 0,
-  "model_calls": 0,
-  "credentials_transferred": 0,
-  "gcp5": {
-    "unique_recordings": 3,
-    "unique_frames": 1044,
-    "trials_per_stream_per_mode": 20,
-    "cases": 120,
-    "compact": {
-      "host": "gcp5",
-      "trials": 20,
+  "source_sha": "7f2f1baae58bd591ab6ba7daf60dd6961f99f857",
+  "post_audit_sha": "c5febc53c",
+  "policy_main_sha": "efc484ad5",
+  "initial_mc20": {
+    "schema": "ugrp.mapbuild10.summary.v2",
+    "status": "NOT_READY_OFF_IMPROVEMENT_GATE_FAILED",
+    "goal_achieved": false,
+    "default_adoption": false,
+    "actual_route_ready": false,
+    "source_sha": "9fa2aad39",
+    "postprocess_sha": "44a29092a",
+    "new_physical_rounds": 0,
+    "physical_round_budget_remaining": 3,
+    "method": "static_amcl_v1",
+    "profile": "nav2_defaults_v1",
+    "map_correction_option": "selfmap_map_correction_v1",
+    "initial_prior_option": "start_zone_prior_v1",
+    "default": "off",
+    "prior_scope": "coordinator-authorized evaluation-derived conditional .5m x .5m / +/-30 degree boxes; truth not centered; predictor receives only coarse ranges; not actual operator priors",
+    "prior_generation_truth_use": true,
+    "exact_truth_pose_to_filter": 0,
+    "prior_offsets_or_generator_seed_to_filter": 0,
+    "top_inputs": 0,
+    "render_calls": 0,
+    "physics_steps": 0,
+    "model_calls": 0,
+    "credentials_transferred": 0,
+    "gcp5": {
+      "unique_recordings": 3,
+      "unique_frames": 1044,
+      "trials_per_stream_per_mode": 20,
       "cases": 120,
-      "scope": "conditional synthetic coarse priors; no actual operator prior, no physical success",
-      "modes": [
+      "compact": {
+        "host": "gcp5",
+        "trials": 20,
+        "cases": 120,
+        "scope": "conditional synthetic coarse priors; no actual operator prior, no physical success",
+        "modes": [
+          {
+            "mode": "coarse",
+            "cases": 60,
+            "converged_cases": 39,
+            "wrong_converged_cases": 0,
+            "offline_pass_cases": 0,
+            "endpoint_requirement_pass_cases": 60,
+            "note": "endpoint scores include unresolved proposals; no physical/runtime admission"
+          },
+          {
+            "mode": "global",
+            "cases": 60,
+            "converged_cases": 24,
+            "wrong_converged_cases": 18,
+            "offline_pass_cases": 0,
+            "endpoint_requirement_pass_cases": 6,
+            "note": "endpoint scores include unresolved proposals; no physical/runtime admission"
+          }
+        ]
+      },
+      "aggregates": [
         {
+          "stream": "r1",
           "mode": "coarse",
-          "cases": 60,
-          "converged_cases": 39,
-          "wrong_converged_cases": 0,
-          "offline_pass_cases": 0,
-          "endpoint_requirement_pass_cases": 60,
-          "note": "endpoint scores include unresolved proposals; no physical/runtime admission"
+          "trials": 20,
+          "converged_trials": 0,
+          "wrong_converged_trials": 0,
+          "wrong_ready_updates": 0,
+          "offline_pass_trials": 0,
+          "final_handoff_pass_trials": 20,
+          "final_xy_m": {
+            "n": 20,
+            "median": 0.0563867445888073,
+            "p90": 0.11033208431911583
+          },
+          "final_yaw_deg": {
+            "n": 20,
+            "median": 1.491286056936781,
+            "p90": 3.235746121790107
+          },
+          "xy_rmse_m": {
+            "n": 20,
+            "median": 0.10417979271107469,
+            "p90": 0.20832315023330922
+          },
+          "convergence_sim_s": {
+            "n": 0,
+            "median": null,
+            "p90": null
+          },
+          "convergence_own_path_m": {
+            "n": 0,
+            "median": null,
+            "p90": null
+          },
+          "off_final_xy_m": 0.02513458135994727,
+          "off_final_yaw_deg": 2.6015865309588495,
+          "off_xy_rmse_m": 0.022932261590879605
         },
         {
+          "stream": "r1",
           "mode": "global",
-          "cases": 60,
-          "converged_cases": 24,
-          "wrong_converged_cases": 18,
-          "offline_pass_cases": 0,
-          "endpoint_requirement_pass_cases": 6,
-          "note": "endpoint scores include unresolved proposals; no physical/runtime admission"
+          "trials": 20,
+          "converged_trials": 0,
+          "wrong_converged_trials": 0,
+          "wrong_ready_updates": 0,
+          "offline_pass_trials": 0,
+          "final_handoff_pass_trials": 0,
+          "final_xy_m": {
+            "n": 20,
+            "median": 2.8894303642368317,
+            "p90": 3.1879363014831714
+          },
+          "final_yaw_deg": {
+            "n": 20,
+            "median": 125.51320206841348,
+            "p90": 173.74749322628153
+          },
+          "xy_rmse_m": {
+            "n": 20,
+            "median": 2.9393622632799117,
+            "p90": 3.233473540665034
+          },
+          "convergence_sim_s": {
+            "n": 0,
+            "median": null,
+            "p90": null
+          },
+          "convergence_own_path_m": {
+            "n": 0,
+            "median": null,
+            "p90": null
+          },
+          "off_final_xy_m": 0.02513458135994727,
+          "off_final_yaw_deg": 2.6015865309588495,
+          "off_xy_rmse_m": 0.022932261590879605
+        },
+        {
+          "stream": "r2",
+          "mode": "coarse",
+          "trials": 20,
+          "converged_trials": 19,
+          "wrong_converged_trials": 0,
+          "wrong_ready_updates": 0,
+          "offline_pass_trials": 0,
+          "final_handoff_pass_trials": 20,
+          "final_xy_m": {
+            "n": 20,
+            "median": 0.05474227676363126,
+            "p90": 0.06812307316557975
+          },
+          "final_yaw_deg": {
+            "n": 20,
+            "median": 0.41143389622197624,
+            "p90": 0.9520071154685913
+          },
+          "xy_rmse_m": {
+            "n": 20,
+            "median": 0.09399649627446681,
+            "p90": 0.1242169471208835
+          },
+          "convergence_sim_s": {
+            "n": 19,
+            "median": 32.3,
+            "p90": 34.1
+          },
+          "convergence_own_path_m": {
+            "n": 19,
+            "median": 0.4691982450616032,
+            "p90": 0.47030748538084954
+          },
+          "off_final_xy_m": 0.015748898877834618,
+          "off_final_yaw_deg": 2.9434428543689237,
+          "off_xy_rmse_m": 0.012509007448109288
+        },
+        {
+          "stream": "r2",
+          "mode": "global",
+          "trials": 20,
+          "converged_trials": 13,
+          "wrong_converged_trials": 11,
+          "wrong_ready_updates": 50,
+          "offline_pass_trials": 0,
+          "final_handoff_pass_trials": 2,
+          "final_xy_m": {
+            "n": 20,
+            "median": 3.1555852897136463,
+            "p90": 5.6490660579653715
+          },
+          "final_yaw_deg": {
+            "n": 20,
+            "median": 1.3181168859548549,
+            "p90": 179.70941795260026
+          },
+          "xy_rmse_m": {
+            "n": 20,
+            "median": 2.921466143035939,
+            "p90": 4.562902299418881
+          },
+          "convergence_sim_s": {
+            "n": 13,
+            "median": 33.3,
+            "p90": 36.5
+          },
+          "convergence_own_path_m": {
+            "n": 13,
+            "median": 0.46979807361635306,
+            "p90": 0.47110488869161965
+          },
+          "off_final_xy_m": 0.015748898877834618,
+          "off_final_yaw_deg": 2.9434428543689237,
+          "off_xy_rmse_m": 0.012509007448109288
+        },
+        {
+          "stream": "r3",
+          "mode": "coarse",
+          "trials": 20,
+          "converged_trials": 20,
+          "wrong_converged_trials": 0,
+          "wrong_ready_updates": 0,
+          "offline_pass_trials": 0,
+          "final_handoff_pass_trials": 20,
+          "final_xy_m": {
+            "n": 20,
+            "median": 0.06196449799765437,
+            "p90": 0.07365385054107128
+          },
+          "final_yaw_deg": {
+            "n": 20,
+            "median": 1.3654304459860662,
+            "p90": 1.9509087259056186
+          },
+          "xy_rmse_m": {
+            "n": 20,
+            "median": 0.08677264735822751,
+            "p90": 0.13183852389135228
+          },
+          "convergence_sim_s": {
+            "n": 20,
+            "median": 31.5,
+            "p90": 32.5
+          },
+          "convergence_own_path_m": {
+            "n": 20,
+            "median": 0.4428334484513894,
+            "p90": 0.46697829522768114
+          },
+          "off_final_xy_m": 0.043216172651981244,
+          "off_final_yaw_deg": 3.311160348954784,
+          "off_xy_rmse_m": 0.029769172281536256
+        },
+        {
+          "stream": "r3",
+          "mode": "global",
+          "trials": 20,
+          "converged_trials": 11,
+          "wrong_converged_trials": 7,
+          "wrong_ready_updates": 45,
+          "offline_pass_trials": 0,
+          "final_handoff_pass_trials": 4,
+          "final_xy_m": {
+            "n": 20,
+            "median": 3.0412975318565714,
+            "p90": 5.687943308871068
+          },
+          "final_yaw_deg": {
+            "n": 20,
+            "median": 88.3927188216189,
+            "p90": 179.05121276170533
+          },
+          "xy_rmse_m": {
+            "n": 20,
+            "median": 3.0043461593264524,
+            "p90": 4.654027533303801
+          },
+          "convergence_sim_s": {
+            "n": 11,
+            "median": 31.5,
+            "p90": 34.4
+          },
+          "convergence_own_path_m": {
+            "n": 11,
+            "median": 0.4428334484513894,
+            "p90": 0.48502354152564686
+          },
+          "off_final_xy_m": 0.043216172651981244,
+          "off_final_yaw_deg": 3.311160348954784,
+          "off_xy_rmse_m": 0.029769172281536256
         }
-      ]
+      ],
+      "terminated": {
+        "lastStartTimestamp": "2026-10-16T19:07:38.001-07:00",
+        "lastStopTimestamp": "2026-10-16T19:20:38.914-07:00",
+        "name": "ugrp-act-l4-gcp5",
+        "status": "TERMINATED"
+      }
     },
-    "aggregates": [
+    "gcp3": {
+      "unique_worlds": 14,
+      "unique_robot_streams": 28,
+      "unique_views": 418,
+      "trials_per_stream_per_mode": 20,
+      "cases": 1120,
+      "compact": {
+        "host": "gcp3",
+        "trials": 20,
+        "cases": 1120,
+        "scope": "conditional synthetic coarse priors; no actual operator prior, no physical success",
+        "modes": [
+          {
+            "mode": "coarse",
+            "cases": 560,
+            "converged_cases": 3,
+            "wrong_converged_cases": 0,
+            "offline_pass_cases": 0,
+            "endpoint_requirement_pass_cases": 405,
+            "note": "endpoint scores include unresolved proposals; no physical/runtime admission"
+          },
+          {
+            "mode": "global",
+            "cases": 560,
+            "converged_cases": 0,
+            "wrong_converged_cases": 0,
+            "offline_pass_cases": 0,
+            "endpoint_requirement_pass_cases": 0,
+            "note": "endpoint scores include unresolved proposals; no physical/runtime admission"
+          }
+        ]
+      },
+      "aggregates_file": "operations/gcp3-mc20-summary.json",
+      "terminated": {
+        "lastStartTimestamp": "2026-10-16T18:53:18.554-07:00",
+        "lastStopTimestamp": "2026-10-16T19:20:37.900-07:00",
+        "name": "ugrp-act-l4-gcp3",
+        "status": "TERMINATED"
+      },
+      "other_empty_claim_lock_preserved": true
+    },
+    "measured_audit": {
+      "gcp5_frames": 1044,
+      "camera_fk_frames": 1044,
+      "gcp3_views": 418,
+      "first_r3_original_support_n": 23,
+      "first_r3_original_support_mass": 1.1356159228846674e-28,
+      "first_r3_nav2_default_counterfactual_support_mass": 0.0007074970406736644,
+      "counterfactual_not_filter_replay": true
+    },
+    "tests": {
+      "mac_final_passed": 27,
+      "mac_final_seconds": 1.73,
+      "gcp5_core_source_0df021e73_passed": 24,
+      "full_project_ci": "no checks reported / not verified"
+    },
+    "integrity": {
+      "gcp5": [],
+      "gcp3": [],
+      "local_retrieval_files": 9,
+      "local_mismatch": 0
+    },
+    "requirements_sha256": "d9f3c1f3a00273be3aa901613d01386fa493b1ed5edb561e40a58d367360875c",
+    "rejection_table": "/Users/changmin/projects/ugrp-wt/mapbuild1/experiments/2026-10-17-mapbuild10/rejection_table.json",
+    "queue": "/Users/changmin/projects/ugrp-wt/mapbuild1/experiments/2026-10-17-mapbuild10/next-queue.json",
+    "raw": {
+      "gcp5": "/home/ugrp/ugrp-sim/runs/mapbuild10-mc20",
+      "gcp3": "/home/ugrp/ugrp-sim/runs/mapbuild10-mc20"
+    },
+    "work_limits": {
+      "trials_per_mode_per_stream": 20,
+      "max_particles": 2000,
+      "workers_per_vm": 4,
+      "max_original_scan_slots": 96,
+      "wall_action_cap": null,
+      "planning_cap_basis": "compute_or_sim"
+    },
+    "unverified": [
+      "remaining XY bias cause; no constant retuning",
+      "real public-box spawn and live runtime integration",
+      "loaded servo_fk_carry_v1 travel",
+      "door/zone/return/setdown/ACT/LLM handoff",
+      "corrected self-map quality",
+      "successful transport playback comparison",
+      "full current_stack runtime admission"
+    ],
+    "artifact_sha256": {
+      "operations/audit-integrity.json": "f51e5a9c58921a783e80be82168ed9897cc079d4f07dc446a7833a1bd5d716b3",
+      "operations/camera-summary.json": "0298a1c5556250e1d198bf48a70a12a15653841325a7fb8802e5158eda8aa6cd",
+      "operations/close-load-check.json": "dc6df52b76abec655f6c8800e4a6a40b35aca101c36eeba08b641f6bdf663062",
+      "operations/gcp3-before.json": "71947297aa53cd7ccc22fceda8d7eda950d8034e43b7e4d69b43da76629daa67",
+      "operations/gcp3-budget-guard.json": "0458fbb6872dc5c5bc687b403ed58ed9832676585dd8418d3f5486625963497e",
+      "operations/gcp3-close-load-check.json": "0d0ea6406687953dedf7eb10f2bfc65504422088946b16320fd2f1684e88cae1",
+      "operations/gcp3-integrity.json": "2fe344b84b05d907e641eab1deb5eba2e1c6cd744e5ef0f44b1c1ce349c808a6",
+      "operations/gcp3-mc20-close-load-check.json": "91dd428972dd8229e8c148abcf5bf267a4e52e9cec912aa2256c6570d2d2c03b",
+      "operations/gcp3-mc20-compact-summary.json": "bb1fd82d9f4e2e5f273e4549ae1909d18bea52695a977871cde3883425557da6",
+      "operations/gcp3-mc20-final-integrity.json": "34c2c0329d341a357b762b233c1ebbfce067f03e4a8709d0dc9a38a5d43f9b66",
+      "operations/gcp3-mc20-phase-summary.json": "d2f238b0cbb65f8ca6d7f0de6cb5469b7a7662c4f59a52552a2e6c07784f8977",
+      "operations/gcp3-mc20-queue.json": "90d6455fb141075f98491c1865ab3807798ebc963887b78c898bdb865ed8aa7e",
+      "operations/gcp3-mc20-rejection_table.json": "4fd497cf7ae28d7c00076fb45cfde8e599f91ab6ca7567f3e07e2de611d154f6",
+      "operations/gcp3-mc20-stack.json": "ec151f54e890e6d3bd5c332ab6a15a2e3d521ae860999d1bdc09af8ccea3204b",
+      "operations/gcp3-mc20-stopped.json": "1edf1fabc75d346a3078eb763cc3d719a47a748cbd320043f57b4b8dd49f7726",
+      "operations/gcp3-mc20-summary.json": "c69ff6257fafc2c571ffec31aea25a15c31740deee2736ab46cfa08485040003",
+      "operations/gcp3-measurement-summary.json": "3ae53a5ae849d0adb23503a39e9e36b22e4d8c27f3714e50f00e9da5d76ae421",
+      "operations/gcp3-rejection_table.json": "4928b2648ca9702b7601d603d955973beeaadfd9b5ed87aec752a041bf85b978",
+      "operations/gcp3-start-zone-inventory.json": "c249a064b3179c197c719486d87c5fc6e7bb78d0b97921c54661ae237b7f8300",
+      "operations/gcp3-state.json": "1edf1fabc75d346a3078eb763cc3d719a47a748cbd320043f57b4b8dd49f7726",
+      "operations/gcp5-before.json": "ddbf1975aac3832975119e2e406168b7cdfbf90947cbcc1163c3cf9d5950f0ee",
+      "operations/gcp5-budget-guard.json": "ba479892a0def2e5f9a37b2d960549a8349069e67a291640f1aefb5734872035",
+      "operations/gcp5-mc20-close-load-check.json": "e5408eb61d5775f046ad13d5fc40daa37cdff76f4192b839b637ffe5a6df7219",
+      "operations/gcp5-mc20-compact-summary.json": "f6ac87bc4cea0d508a9647c3e418a9951ab33d13ac5c8904a07b3ad99c151af2",
+      "operations/gcp5-mc20-final-integrity.json": "58d92fd5003c72e7bcae4598abdae81b62b3e907391755e77c971cb84fa03a5c",
+      "operations/gcp5-mc20-phase-summary.json": "fbb0783c19a590cd123383854d142fd883526c444d5d90e8be9b720b1648b6c7",
+      "operations/gcp5-mc20-queue.json": "9d336690a4d1620297bbd63bfbc868c36701eaebb3199cbcb24cd3dd5ae23a70",
+      "operations/gcp5-mc20-rejection_table.json": "87d460c1c0e4a2985c532b7f50bc53b02096639fa978e9b2bc5be96a0c51157b",
+      "operations/gcp5-mc20-stack.json": "d055dbcc1686bd678182c85608f6e964f97c6ccc880820e5bb4cdcfe86601c8f",
+      "operations/gcp5-mc20-stopped.json": "45e14e24bcb1e403a70a52fd5ad0a7fedafe8aca455463685c16127a5a63f498",
+      "operations/gcp5-mc20-summary.json": "f5d90a991db6e4823df1c6b681d8ed38a8136c9716707e4f094d7edc2599efaa",
+      "operations/gcp5-stopped.json": "bcf3e6c6c17b82ec72ca2235ca0476d66a5035309afd2d2a8fab3d6d5cd33468",
+      "operations/mc20-local-retrieval.json": "4099b3d109cfc9a825c9cbe27bc6621110d01cbe62e945b533554f48cf026f64",
+      "operations/measurement-summary.json": "7a39103374b267624b3d89d9255f1953d38c5f026d5107d5fbf6693de45fb09c",
+      "operations/operator-errors.json": "b320a4f7632d0464325508030838402ada80a8d1ba54e7a995d5753b7dc1b1a2",
+      "operations/r3-likelihood-summary.json": "94ef85ba6712d67f4d222f1968fc67d8dcf74080ebd49913cc2a795f07f20c93",
+      "operations/support-models.json": "7a56667ff366470c304547031721d4856a0ae29458a0749a826175958654ceb5",
+      "validation.json": "3587d26a71015933380a02885a432f57f6f6c03cfac0aae54646980feb0aa344"
+    }
+  },
+  "physical_diagnostic": {
+    "source_sha": "f3a91cb8509914786488b661527d33ccf9b8f539",
+    "approved_rounds": 1,
+    "recordings": 2,
+    "excluded_configuration_error_recordings": 1,
+    "valid_recordings": 1,
+    "status": "LOCALIZATION_UNRESOLVED",
+    "frames": 381,
+    "recorded_sim_s": 38.0,
+    "wall_s": 467.40928419,
+    "actual_total_path_m": 0.1928857199996171,
+    "actual_route_path_m": 0.02146737621738582,
+    "loaded_frames": 0,
+    "off": {
+      "frames": 6,
+      "end_xy_m": 0.03633289112040217,
+      "max_xy_m": 0.052524487233747676,
+      "xy_rmse_m": 0.045580693285064776,
+      "end_yaw_deg": 8.399478567659378,
+      "max_yaw_deg": 9.671662772276783
+    },
+    "amcl": {
+      "frames": 6,
+      "end_xy_m": 0.0838562894702223,
+      "max_xy_m": 0.0838562894702223,
+      "xy_rmse_m": 0.07034857656514108,
+      "end_yaw_deg": 5.502799360498037,
+      "max_yaw_deg": 8.50579523062466
+    },
+    "minimum_3m_verified": false,
+    "scope": "MJWarp diagnostic, not real hardware or ACT/LLM mission success"
+  },
+  "corrected_offline_replays": {
+    "gcp5_legacy_coarse": [
       {
         "stream": "r1",
         "mode": "coarse",
@@ -62,59 +471,21 @@
         "wrong_converged_trials": 0,
         "wrong_ready_updates": 0,
         "offline_pass_trials": 0,
-        "final_handoff_pass_trials": 20,
+        "final_handoff_pass_trials": 18,
         "final_xy_m": {
           "n": 20,
-          "median": 0.0563867445888073,
-          "p90": 0.11033208431911583
+          "median": 0.07603309051303164,
+          "p90": 0.11495727314077692
         },
         "final_yaw_deg": {
           "n": 20,
-          "median": 1.491286056936781,
-          "p90": 3.235746121790107
+          "median": 3.497714606155956,
+          "p90": 7.978813640322367
         },
         "xy_rmse_m": {
           "n": 20,
-          "median": 0.10417979271107469,
-          "p90": 0.20832315023330922
-        },
-        "convergence_sim_s": {
-          "n": 0,
-          "median": null,
-          "p90": null
-        },
-        "convergence_own_path_m": {
-          "n": 0,
-          "median": null,
-          "p90": null
-        },
-        "off_final_xy_m": 0.02513458135994727,
-        "off_final_yaw_deg": 2.6015865309588495,
-        "off_xy_rmse_m": 0.022932261590879605
-      },
-      {
-        "stream": "r1",
-        "mode": "global",
-        "trials": 20,
-        "converged_trials": 0,
-        "wrong_converged_trials": 0,
-        "wrong_ready_updates": 0,
-        "offline_pass_trials": 0,
-        "final_handoff_pass_trials": 0,
-        "final_xy_m": {
-          "n": 20,
-          "median": 2.8894303642368317,
-          "p90": 3.1879363014831714
-        },
-        "final_yaw_deg": {
-          "n": 20,
-          "median": 125.51320206841348,
-          "p90": 173.74749322628153
-        },
-        "xy_rmse_m": {
-          "n": 20,
-          "median": 2.9393622632799117,
-          "p90": 3.233473540665034
+          "median": 0.10904490871881417,
+          "p90": 0.2195252444263372
         },
         "convergence_sim_s": {
           "n": 0,
@@ -132,6 +503,84 @@
       },
       {
         "stream": "r2",
+        "mode": "coarse",
+        "trials": 20,
+        "converged_trials": 4,
+        "wrong_converged_trials": 0,
+        "wrong_ready_updates": 0,
+        "offline_pass_trials": 0,
+        "final_handoff_pass_trials": 20,
+        "final_xy_m": {
+          "n": 20,
+          "median": 0.050770718345031385,
+          "p90": 0.061088900202350215
+        },
+        "final_yaw_deg": {
+          "n": 20,
+          "median": 0.7214483835375614,
+          "p90": 1.2986759693838301
+        },
+        "xy_rmse_m": {
+          "n": 20,
+          "median": 0.09988334421387336,
+          "p90": 0.12797610365192685
+        },
+        "convergence_sim_s": {
+          "n": 4,
+          "median": 36.9,
+          "p90": 37.3
+        },
+        "convergence_own_path_m": {
+          "n": 4,
+          "median": 0.47112712662981604,
+          "p90": 0.4711493645680125
+        },
+        "off_final_xy_m": 0.015748898877834618,
+        "off_final_yaw_deg": 2.9434428543689237,
+        "off_xy_rmse_m": 0.012509007448109288
+      },
+      {
+        "stream": "r3",
+        "mode": "coarse",
+        "trials": 20,
+        "converged_trials": 5,
+        "wrong_converged_trials": 0,
+        "wrong_ready_updates": 0,
+        "offline_pass_trials": 4,
+        "final_handoff_pass_trials": 20,
+        "final_xy_m": {
+          "n": 20,
+          "median": 0.03877508170526823,
+          "p90": 0.06064345202128167
+        },
+        "final_yaw_deg": {
+          "n": 20,
+          "median": 1.4737593165606435,
+          "p90": 2.7539273138539615
+        },
+        "xy_rmse_m": {
+          "n": 20,
+          "median": 0.07303223706850462,
+          "p90": 0.1329178982258606
+        },
+        "convergence_sim_s": {
+          "n": 5,
+          "median": 38.4,
+          "p90": 38.4
+        },
+        "convergence_own_path_m": {
+          "n": 5,
+          "median": 0.48589538548556516,
+          "p90": 0.48589538548556516
+        },
+        "off_final_xy_m": 0.043216172651981244,
+        "off_final_yaw_deg": 3.311160348954784,
+        "off_xy_rmse_m": 0.029769172281536256
+      }
+    ],
+    "gcp5_public_baseline_coarse": [
+      {
+        "stream": "public-r1",
         "mode": "coarse",
         "trials": 20,
         "converged_trials": 19,
@@ -141,162 +590,75 @@
         "final_handoff_pass_trials": 20,
         "final_xy_m": {
           "n": 20,
-          "median": 0.05474227676363126,
-          "p90": 0.06812307316557975
+          "median": 0.07205111059834277,
+          "p90": 0.08833177009909415
         },
         "final_yaw_deg": {
           "n": 20,
-          "median": 0.41143389622197624,
-          "p90": 0.9520071154685913
+          "median": 7.356484343279605,
+          "p90": 8.999645871960505
         },
         "xy_rmse_m": {
           "n": 20,
-          "median": 0.09399649627446681,
-          "p90": 0.1242169471208835
+          "median": 0.14512278781631047,
+          "p90": 0.15383098757085598
         },
         "convergence_sim_s": {
           "n": 19,
-          "median": 32.3,
-          "p90": 34.1
+          "median": 20.7,
+          "p90": 21.5
         },
         "convergence_own_path_m": {
           "n": 19,
-          "median": 0.4691982450616032,
-          "p90": 0.47030748538084954
+          "median": 0.27110621812960706,
+          "p90": 0.28382192086526425
         },
-        "off_final_xy_m": 0.015748898877834618,
-        "off_final_yaw_deg": 2.9434428543689237,
-        "off_xy_rmse_m": 0.012509007448109288
-      },
+        "off_final_xy_m": 0.03633289112040218,
+        "off_final_yaw_deg": 8.399478567659378,
+        "off_xy_rmse_m": 0.027266251872987982
+      }
+    ],
+    "gcp5_public_corrected_coarse": [
       {
-        "stream": "r2",
-        "mode": "global",
-        "trials": 20,
-        "converged_trials": 13,
-        "wrong_converged_trials": 11,
-        "wrong_ready_updates": 50,
-        "offline_pass_trials": 0,
-        "final_handoff_pass_trials": 2,
-        "final_xy_m": {
-          "n": 20,
-          "median": 3.1555852897136463,
-          "p90": 5.6490660579653715
-        },
-        "final_yaw_deg": {
-          "n": 20,
-          "median": 1.3181168859548549,
-          "p90": 179.70941795260026
-        },
-        "xy_rmse_m": {
-          "n": 20,
-          "median": 2.921466143035939,
-          "p90": 4.562902299418881
-        },
-        "convergence_sim_s": {
-          "n": 13,
-          "median": 33.3,
-          "p90": 36.5
-        },
-        "convergence_own_path_m": {
-          "n": 13,
-          "median": 0.46979807361635306,
-          "p90": 0.47110488869161965
-        },
-        "off_final_xy_m": 0.015748898877834618,
-        "off_final_yaw_deg": 2.9434428543689237,
-        "off_xy_rmse_m": 0.012509007448109288
-      },
-      {
-        "stream": "r3",
+        "stream": "public-r1",
         "mode": "coarse",
         "trials": 20,
-        "converged_trials": 20,
+        "converged_trials": 10,
         "wrong_converged_trials": 0,
         "wrong_ready_updates": 0,
         "offline_pass_trials": 0,
         "final_handoff_pass_trials": 20,
         "final_xy_m": {
           "n": 20,
-          "median": 0.06196449799765437,
-          "p90": 0.07365385054107128
+          "median": 0.051623915574733545,
+          "p90": 0.06772903958636277
         },
         "final_yaw_deg": {
           "n": 20,
-          "median": 1.3654304459860662,
-          "p90": 1.9509087259056186
+          "median": 4.208373473547554,
+          "p90": 5.063429493116267
         },
         "xy_rmse_m": {
           "n": 20,
-          "median": 0.08677264735822751,
-          "p90": 0.13183852389135228
+          "median": 0.1421998646109771,
+          "p90": 0.15395705082110764
         },
         "convergence_sim_s": {
-          "n": 20,
-          "median": 31.5,
-          "p90": 32.5
+          "n": 10,
+          "median": 36.6,
+          "p90": 38.0
         },
         "convergence_own_path_m": {
-          "n": 20,
-          "median": 0.4428334484513894,
-          "p90": 0.46697829522768114
+          "n": 10,
+          "median": 0.5214680141869801,
+          "p90": 0.5573519217406671
         },
-        "off_final_xy_m": 0.043216172651981244,
-        "off_final_yaw_deg": 3.311160348954784,
-        "off_xy_rmse_m": 0.029769172281536256
-      },
-      {
-        "stream": "r3",
-        "mode": "global",
-        "trials": 20,
-        "converged_trials": 11,
-        "wrong_converged_trials": 7,
-        "wrong_ready_updates": 45,
-        "offline_pass_trials": 0,
-        "final_handoff_pass_trials": 4,
-        "final_xy_m": {
-          "n": 20,
-          "median": 3.0412975318565714,
-          "p90": 5.687943308871068
-        },
-        "final_yaw_deg": {
-          "n": 20,
-          "median": 88.3927188216189,
-          "p90": 179.05121276170533
-        },
-        "xy_rmse_m": {
-          "n": 20,
-          "median": 3.0043461593264524,
-          "p90": 4.654027533303801
-        },
-        "convergence_sim_s": {
-          "n": 11,
-          "median": 31.5,
-          "p90": 34.4
-        },
-        "convergence_own_path_m": {
-          "n": 11,
-          "median": 0.4428334484513894,
-          "p90": 0.48502354152564686
-        },
-        "off_final_xy_m": 0.043216172651981244,
-        "off_final_yaw_deg": 3.311160348954784,
-        "off_xy_rmse_m": 0.029769172281536256
+        "off_final_xy_m": 0.03633289112040218,
+        "off_final_yaw_deg": 8.399478567659378,
+        "off_xy_rmse_m": 0.027266251872987982
       }
     ],
-    "terminated": {
-      "lastStartTimestamp": "2026-10-16T19:07:38.001-07:00",
-      "lastStopTimestamp": "2026-10-16T19:20:38.914-07:00",
-      "name": "ugrp-act-l4-gcp5",
-      "status": "TERMINATED"
-    }
-  },
-  "gcp3": {
-    "unique_worlds": 14,
-    "unique_robot_streams": 28,
-    "unique_views": 418,
-    "trials_per_stream_per_mode": 20,
-    "cases": 1120,
-    "compact": {
+    "gcp3": {
       "host": "gcp3",
       "trials": 20,
       "cases": 1120,
@@ -305,10 +667,10 @@
         {
           "mode": "coarse",
           "cases": 560,
-          "converged_cases": 3,
+          "converged_cases": 1,
           "wrong_converged_cases": 0,
           "offline_pass_cases": 0,
-          "endpoint_requirement_pass_cases": 405,
+          "endpoint_requirement_pass_cases": 427,
           "note": "endpoint scores include unresolved proposals; no physical/runtime admission"
         },
         {
@@ -322,98 +684,42 @@
         }
       ]
     },
-    "aggregates_file": "operations/gcp3-mc20-summary.json",
-    "terminated": {
-      "lastStartTimestamp": "2026-10-16T18:53:18.554-07:00",
-      "lastStopTimestamp": "2026-10-16T19:20:37.900-07:00",
-      "name": "ugrp-act-l4-gcp3",
+    "scope": "host/cohort/profile separate; seed repeats are not independent physical trials"
+  },
+  "additional_physics_submission_allowed": false,
+  "new_physical_rounds": 1,
+  "offline_new_physics_steps": 0,
+  "recording_cpu_physics_steps": 0,
+  "model_calls": 0,
+  "exact_truth_pose_to_filter": 0,
+  "top_control_inputs": 0,
+  "credentials_transferred": 0,
+  "verification": {
+    "mac_nonphysical_passed": 39,
+    "seconds": 2.66,
+    "raw_and_retrieval_hash_mismatch": 0,
+    "latest_manifest_and_xml_stack_current_count": 32,
+    "full_project_ci": "not independently verified",
+    "new_profile_actual_long_route": "\ud655\uc778 \uc548 \ub428",
+    "loaded_native_route": "\ud655\uc778 \uc548 \ub428"
+  },
+  "vm_stop": {
+    "gcp5": {
+      "lastStopTimestamp": "2026-10-16T20:38:53.449-07:00",
+      "name": "ugrp-act-l4-gcp5",
       "status": "TERMINATED"
     },
-    "other_empty_claim_lock_preserved": true
+    "gcp3": {
+      "lastStopTimestamp": "2026-10-16T20:38:54.149-07:00",
+      "name": "ugrp-act-l4-gcp3",
+      "status": "TERMINATED"
+    }
   },
-  "measured_audit": {
-    "gcp5_frames": 1044,
-    "camera_fk_frames": 1044,
-    "gcp3_views": 418,
-    "first_r3_original_support_n": 23,
-    "first_r3_original_support_mass": 1.1356159228846674e-28,
-    "first_r3_nav2_default_counterfactual_support_mass": 0.0007074970406736644,
-    "counterfactual_not_filter_replay": true
-  },
-  "tests": {
-    "mac_final_passed": 27,
-    "mac_final_seconds": 1.73,
-    "gcp5_core_source_0df021e73_passed": 24,
-    "full_project_ci": "no checks reported / not verified"
-  },
-  "integrity": {
-    "gcp5": [],
-    "gcp3": [],
-    "local_retrieval_files": 9,
-    "local_mismatch": 0
-  },
-  "requirements_sha256": "d9f3c1f3a00273be3aa901613d01386fa493b1ed5edb561e40a58d367360875c",
-  "rejection_table": "/Users/changmin/projects/ugrp-wt/mapbuild1/experiments/2026-10-17-mapbuild10/rejection_table.json",
-  "queue": "/Users/changmin/projects/ugrp-wt/mapbuild1/experiments/2026-10-17-mapbuild10/next-queue.json",
-  "raw": {
-    "gcp5": "/home/ugrp/ugrp-sim/runs/mapbuild10-mc20",
-    "gcp3": "/home/ugrp/ugrp-sim/runs/mapbuild10-mc20"
-  },
-  "work_limits": {
-    "trials_per_mode_per_stream": 20,
-    "max_particles": 2000,
-    "workers_per_vm": 4,
-    "max_original_scan_slots": 96,
-    "wall_action_cap": null,
-    "planning_cap_basis": "compute_or_sim"
-  },
-  "unverified": [
-    "remaining XY bias cause; no constant retuning",
-    "real public-box spawn and live runtime integration",
-    "loaded servo_fk_carry_v1 travel",
-    "door/zone/return/setdown/ACT/LLM handoff",
-    "corrected self-map quality",
-    "successful transport playback comparison",
-    "full current_stack runtime admission"
+  "remaining": [
+    "R1/R2 and public-box OFF improvement gate failed; gcp3 improved cases0",
+    ">=3m route and loaded segment not verified",
+    "camera-command transition suppresses LK and route commands use unqualified native nominal fallback",
+    "provisional own-map before localization convergence is not a qualified map"
   ],
-  "artifact_sha256": {
-    "operations/audit-integrity.json": "f51e5a9c58921a783e80be82168ed9897cc079d4f07dc446a7833a1bd5d716b3",
-    "operations/camera-summary.json": "0298a1c5556250e1d198bf48a70a12a15653841325a7fb8802e5158eda8aa6cd",
-    "operations/close-load-check.json": "dc6df52b76abec655f6c8800e4a6a40b35aca101c36eeba08b641f6bdf663062",
-    "operations/gcp3-before.json": "71947297aa53cd7ccc22fceda8d7eda950d8034e43b7e4d69b43da76629daa67",
-    "operations/gcp3-budget-guard.json": "0458fbb6872dc5c5bc687b403ed58ed9832676585dd8418d3f5486625963497e",
-    "operations/gcp3-close-load-check.json": "0d0ea6406687953dedf7eb10f2bfc65504422088946b16320fd2f1684e88cae1",
-    "operations/gcp3-integrity.json": "2fe344b84b05d907e641eab1deb5eba2e1c6cd744e5ef0f44b1c1ce349c808a6",
-    "operations/gcp3-mc20-close-load-check.json": "91dd428972dd8229e8c148abcf5bf267a4e52e9cec912aa2256c6570d2d2c03b",
-    "operations/gcp3-mc20-compact-summary.json": "bb1fd82d9f4e2e5f273e4549ae1909d18bea52695a977871cde3883425557da6",
-    "operations/gcp3-mc20-final-integrity.json": "34c2c0329d341a357b762b233c1ebbfce067f03e4a8709d0dc9a38a5d43f9b66",
-    "operations/gcp3-mc20-phase-summary.json": "d2f238b0cbb65f8ca6d7f0de6cb5469b7a7662c4f59a52552a2e6c07784f8977",
-    "operations/gcp3-mc20-queue.json": "90d6455fb141075f98491c1865ab3807798ebc963887b78c898bdb865ed8aa7e",
-    "operations/gcp3-mc20-rejection_table.json": "4fd497cf7ae28d7c00076fb45cfde8e599f91ab6ca7567f3e07e2de611d154f6",
-    "operations/gcp3-mc20-stack.json": "ec151f54e890e6d3bd5c332ab6a15a2e3d521ae860999d1bdc09af8ccea3204b",
-    "operations/gcp3-mc20-stopped.json": "1edf1fabc75d346a3078eb763cc3d719a47a748cbd320043f57b4b8dd49f7726",
-    "operations/gcp3-mc20-summary.json": "c69ff6257fafc2c571ffec31aea25a15c31740deee2736ab46cfa08485040003",
-    "operations/gcp3-measurement-summary.json": "3ae53a5ae849d0adb23503a39e9e36b22e4d8c27f3714e50f00e9da5d76ae421",
-    "operations/gcp3-rejection_table.json": "4928b2648ca9702b7601d603d955973beeaadfd9b5ed87aec752a041bf85b978",
-    "operations/gcp3-start-zone-inventory.json": "c249a064b3179c197c719486d87c5fc6e7bb78d0b97921c54661ae237b7f8300",
-    "operations/gcp3-state.json": "1edf1fabc75d346a3078eb763cc3d719a47a748cbd320043f57b4b8dd49f7726",
-    "operations/gcp5-before.json": "ddbf1975aac3832975119e2e406168b7cdfbf90947cbcc1163c3cf9d5950f0ee",
-    "operations/gcp5-budget-guard.json": "ba479892a0def2e5f9a37b2d960549a8349069e67a291640f1aefb5734872035",
-    "operations/gcp5-mc20-close-load-check.json": "e5408eb61d5775f046ad13d5fc40daa37cdff76f4192b839b637ffe5a6df7219",
-    "operations/gcp5-mc20-compact-summary.json": "f6ac87bc4cea0d508a9647c3e418a9951ab33d13ac5c8904a07b3ad99c151af2",
-    "operations/gcp5-mc20-final-integrity.json": "58d92fd5003c72e7bcae4598abdae81b62b3e907391755e77c971cb84fa03a5c",
-    "operations/gcp5-mc20-phase-summary.json": "fbb0783c19a590cd123383854d142fd883526c444d5d90e8be9b720b1648b6c7",
-    "operations/gcp5-mc20-queue.json": "9d336690a4d1620297bbd63bfbc868c36701eaebb3199cbcb24cd3dd5ae23a70",
-    "operations/gcp5-mc20-rejection_table.json": "87d460c1c0e4a2985c532b7f50bc53b02096639fa978e9b2bc5be96a0c51157b",
-    "operations/gcp5-mc20-stack.json": "d055dbcc1686bd678182c85608f6e964f97c6ccc880820e5bb4cdcfe86601c8f",
-    "operations/gcp5-mc20-stopped.json": "45e14e24bcb1e403a70a52fd5ad0a7fedafe8aca455463685c16127a5a63f498",
-    "operations/gcp5-mc20-summary.json": "f5d90a991db6e4823df1c6b681d8ed38a8136c9716707e4f094d7edc2599efaa",
-    "operations/gcp5-stopped.json": "bcf3e6c6c17b82ec72ca2235ca0476d66a5035309afd2d2a8fab3d6d5cd33468",
-    "operations/mc20-local-retrieval.json": "4099b3d109cfc9a825c9cbe27bc6621110d01cbe62e945b533554f48cf026f64",
-    "operations/measurement-summary.json": "7a39103374b267624b3d89d9255f1953d38c5f026d5107d5fbf6693de45fb09c",
-    "operations/operator-errors.json": "b320a4f7632d0464325508030838402ada80a8d1ba54e7a995d5753b7dc1b1a2",
-    "operations/r3-likelihood-summary.json": "94ef85ba6712d67f4d222f1968fc67d8dcf74080ebd49913cc2a795f07f20c93",
-    "operations/support-models.json": "7a56667ff366470c304547031721d4856a0ae29458a0749a826175958654ceb5",
-    "validation.json": "3587d26a71015933380a02885a432f57f6f6c03cfac0aae54646980feb0aa344"
-  }
+  "rejection_table": "/Users/changmin/projects/ugrp-wt/mapbuild1/experiments/2026-10-17-mapbuild10/rejection_table.json"
 }

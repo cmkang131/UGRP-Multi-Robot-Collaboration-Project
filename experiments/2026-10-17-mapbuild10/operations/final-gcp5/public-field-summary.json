@@ -1,0 +1,89 @@
+{
+  "host": "gcp5",
+  "trials": 20,
+  "streams": 1,
+  "cases": 40,
+  "aggregates": [
+    {
+      "stream": "public-r1",
+      "mode": "coarse",
+      "trials": 20,
+      "converged_trials": 10,
+      "wrong_converged_trials": 0,
+      "wrong_ready_updates": 0,
+      "offline_pass_trials": 0,
+      "final_handoff_pass_trials": 20,
+      "final_xy_m": {
+        "n": 20,
+        "median": 0.051623915574733545,
+        "p90": 0.06772903958636277
+      },
+      "final_yaw_deg": {
+        "n": 20,
+        "median": 4.208373473547554,
+        "p90": 5.063429493116267
+      },
+      "xy_rmse_m": {
+        "n": 20,
+        "median": 0.1421998646109771,
+        "p90": 0.15395705082110764
+      },
+      "convergence_sim_s": {
+        "n": 10,
+        "median": 36.6,
+        "p90": 38.0
+      },
+      "convergence_own_path_m": {
+        "n": 10,
+        "median": 0.5214680141869801,
+        "p90": 0.5573519217406671
+      },
+      "off_final_xy_m": 0.03633289112040218,
+      "off_final_yaw_deg": 8.399478567659378,
+      "off_xy_rmse_m": 0.027266251872987982
+    },
+    {
+      "stream": "public-r1",
+      "mode": "global",
+      "trials": 20,
+      "converged_trials": 0,
+      "wrong_converged_trials": 0,
+      "wrong_ready_updates": 0,
+      "offline_pass_trials": 0,
+      "final_handoff_pass_trials": 3,
+      "final_xy_m": {
+        "n": 20,
+        "median": 2.8746455793012693,
+        "p90": 5.156487489869743
+      },
+      "final_yaw_deg": {
+        "n": 20,
+        "median": 18.73320539927601,
+        "p90": 176.0972916473436
+      },
+      "xy_rmse_m": {
+        "n": 20,
+        "median": 2.8249543369256873,
+        "p90": 4.246504110399234
+      },
+      "convergence_sim_s": {
+        "n": 0,
+        "median": null,
+        "p90": null
+      },
+      "convergence_own_path_m": {
+        "n": 0,
+        "median": null,
+        "p90": null
+      },
+      "off_final_xy_m": 0.03633289112040218,
+      "off_final_yaw_deg": 8.399478567659378,
+      "off_xy_rmse_m": 0.027266251872987982
+    }
+  ],
+  "status": "NOT_READY",
+  "scope": "actual recorded public coarse box; particle-seed repeats of one recording, not independent physical trials",
+  "amcl_profile": "nav2_rgb_field_v1",
+  "new_physical_runs": 0,
+  "rejection_table": "/home/ugrp/ugrp-sim/runs/mapbuild10-public-rgb-field-v2/rejection_table.json"
+}

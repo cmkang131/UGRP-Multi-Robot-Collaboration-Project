@@ -1,15 +1,12 @@
 {
   "mac": {
-    "command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_mapbuild9.py tests/test_mapbuild10.py",
-    "passed": 24,
-    "seconds": 0.91,
+    "command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_mapbuild7.py tests/test_mapbuild9.py tests/test_mapbuild10.py tests/test_mapbuild10_mc.py tests/test_mapbuild10_diagnostic.py tests/test_mapbuild10_long_score.py tests/test_mapbuild10_field.py",
+    "passed": 39,
+    "seconds": 2.66,
+    "source_sha": "7f2f1baae",
     "physics_steps": 0,
-    "render_calls": 0,
-    "latest_run": "after lazy prior import; legacy consumers do not require the new helper unless enabled",
-    "module_sha256": {
-      "harness/mapbuild_amcl.py": "a94d5a93386c78ef7568343c2cb5dc021b56742cfc987daa4ca7fadb0dd14e93",
-      "harness/mapbuild_start_zone.py": "c93527a7cc5c47954ede10f2b75f1bccaa74a2061ce3868f5bf9f73520043db1"
-    }
+    "mujoco_render_calls": 0,
+    "scope": "synthetic nonphysical tests only"
   },
   "gcp5": {
     "source_sha": "0df021e73",
@@ -18,7 +15,7 @@
     "seconds": 1.33
   },
   "sparse_adapters": "coarse MC runner reused cached sparse own scan/odom; direct RGB sparse --initial-prior adapter remains compile/help only",
-  "full_project_ci": "not verified",
+  "full_project_ci": "not independently verified; inspect PR checks separately",
   "new_physical_runs": 0,
   "ci_registration": "tests/test_mapbuild10.py confirmed in --shard-count 8 --list-shards",
   "mac_mc_tests": {
@@ -38,5 +35,28 @@
     "gcp3_cases": 1120,
     "source_sha": "9fa2aad39",
     "both_status": "NOT_READY"
+  },
+  "historical_mac": {
+    "command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_mapbuild9.py tests/test_mapbuild10.py",
+    "passed": 24,
+    "seconds": 0.91,
+    "physics_steps": 0,
+    "render_calls": 0,
+    "latest_run": "after lazy prior import; legacy consumers do not require the new helper unless enabled",
+    "module_sha256": {
+      "harness/mapbuild_amcl.py": "a94d5a93386c78ef7568343c2cb5dc021b56742cfc987daa4ca7fadb0dd14e93",
+      "harness/mapbuild_start_zone.py": "c93527a7cc5c47954ede10f2b75f1bccaa74a2061ce3868f5bf9f73520043db1"
+    }
+  },
+  "followup_runtime": {
+    "physical_source": "f3a91cb85",
+    "corrected_offline_source": "7f2f1baae",
+    "camera_audit_source": "c5febc53c",
+    "local_retrieval": "operations/final-local-retrieval.json",
+    "gpu_noslip_iterations": 0,
+    "cpu_recording_integrations": 0,
+    "teacher_invisible_measurements": 0,
+    "held_world_reads": 0,
+    "stack_main_current_rows": 32
   }
 }

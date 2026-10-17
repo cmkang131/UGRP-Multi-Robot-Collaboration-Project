@@ -1,0 +1,184 @@
+{
+  "source": "/home/ugrp/ugrp-sim/runs/mapbuild10-rgb-field-legacy-v2",
+  "reproduction": [
+    "/home/ugrp/ugrp-sim/src/mapbuild10-7f2f1baae/scripts/mapbuild10_mc.py",
+    "--host",
+    "gcp5",
+    "--work",
+    "/home/ugrp/ugrp-sim/runs/mapbuild10-rgb-field-legacy-v2",
+    "--calibration",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/own-noise-command-r1-r2.json",
+    "--requirements",
+    "/home/ugrp/ugrp-sim/src/mapbuild10-7f2f1baae/experiments/2026-10-17-mapbuild8/requirements.json",
+    "--queue",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild10/field-7f2f1baae-v2/mapbuild10-rgb-field-legacy-v2/queue.json",
+    "--stack-check",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild10/field-7f2f1baae-v2/mapbuild10-rgb-field-legacy-v2/stack.json",
+    "--amcl-profile",
+    "nav2_rgb_field_v1",
+    "--stage",
+    "score"
+  ],
+  "cohorts": [
+    {
+      "mode": "coarse",
+      "stages": [
+        {
+          "stage": "case_replays",
+          "cumulative_pass_n": 60,
+          "rejected_n": 0
+        },
+        {
+          "stage": "convergence",
+          "cumulative_pass_n": 9,
+          "rejected_n": 51
+        },
+        {
+          "stage": "no_wrong_convergence",
+          "cumulative_pass_n": 9,
+          "rejected_n": 0
+        },
+        {
+          "stage": "existing_OFF_improvement_and_requirement_gate",
+          "cumulative_pass_n": 4,
+          "rejected_n": 5
+        }
+      ]
+    },
+    {
+      "mode": "global",
+      "stages": [
+        {
+          "stage": "case_replays",
+          "cumulative_pass_n": 60,
+          "rejected_n": 0
+        },
+        {
+          "stage": "convergence",
+          "cumulative_pass_n": 4,
+          "rejected_n": 56
+        },
+        {
+          "stage": "no_wrong_convergence",
+          "cumulative_pass_n": 1,
+          "rejected_n": 3
+        },
+        {
+          "stage": "existing_OFF_improvement_and_requirement_gate",
+          "cumulative_pass_n": 0,
+          "rejected_n": 1
+        }
+      ]
+    }
+  ],
+  "frame_cohorts": [
+    {
+      "mode": "coarse",
+      "scope": "20 repeated priors/seeds, not independent recorded frames",
+      "stages": [
+        {
+          "stage": "replayed_frames",
+          "cumulative_pass_n": 20880,
+          "rejected_n": 0
+        },
+        {
+          "stage": "visible_wall",
+          "cumulative_pass_n": 16100,
+          "rejected_n": 4780
+        },
+        {
+          "stage": "sensor_update",
+          "cumulative_pass_n": 2120,
+          "rejected_n": 13980
+        },
+        {
+          "stage": "converged_event",
+          "cumulative_pass_n": 17,
+          "rejected_n": 2103
+        }
+      ]
+    },
+    {
+      "mode": "global",
+      "scope": "20 repeated priors/seeds, not independent recorded frames",
+      "stages": [
+        {
+          "stage": "replayed_frames",
+          "cumulative_pass_n": 20880,
+          "rejected_n": 0
+        },
+        {
+          "stage": "visible_wall",
+          "cumulative_pass_n": 16100,
+          "rejected_n": 4780
+        },
+        {
+          "stage": "sensor_update",
+          "cumulative_pass_n": 2120,
+          "rejected_n": 13980
+        },
+        {
+          "stage": "converged_event",
+          "cumulative_pass_n": 9,
+          "rejected_n": 2111
+        }
+      ]
+    }
+  ],
+  "distribution": [
+    {
+      "mode": "coarse",
+      "reason_category": "unresolved",
+      "reason": "unresolved",
+      "n": 51,
+      "blocked_object": "static_wall_likelihood_and_motion_uncertainty",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "mode": "coarse",
+      "reason_category": "wrong_convergence",
+      "reason": "wrong_convergence",
+      "n": 0,
+      "blocked_object": "static_wall_likelihood_and_motion_uncertainty",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "mode": "coarse",
+      "reason_category": "OFF_improvement_or_requirement_failure",
+      "reason": "OFF_improvement_or_requirement_failure",
+      "n": 5,
+      "blocked_object": "static_wall_likelihood_and_motion_uncertainty",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "mode": "global",
+      "reason_category": "unresolved",
+      "reason": "unresolved",
+      "n": 56,
+      "blocked_object": "static_wall_likelihood_and_motion_uncertainty",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "mode": "global",
+      "reason_category": "wrong_convergence",
+      "reason": "wrong_convergence",
+      "n": 3,
+      "blocked_object": "static_wall_likelihood_and_motion_uncertainty",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "mode": "global",
+      "reason_category": "OFF_improvement_or_requirement_failure",
+      "reason": "OFF_improvement_or_requirement_failure",
+      "n": 1,
+      "blocked_object": "static_wall_likelihood_and_motion_uncertainty",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    }
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "raw": "/home/ugrp/ugrp-sim/runs/mapbuild10-long-round1/unloaded-v2",
+  "reproduction": [
+    "/home/ugrp/ugrp-sim/src/mapbuild10-f3a91cb85/scripts/mapbuild7_capture.py",
+    "--enabled",
+    "--queue",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild10/long-round1-v2/queue.json",
+    "--renderer",
+    "/home/ugrp/ugrp-sim/src/drivecheck-renderer-5974a181",
+    "--teacher-source",
+    "/home/ugrp/ugrp-sim/src/mapbuild7-teacher-6f057f7e",
+    "--vision",
+    "/home/ugrp/ugrp-sim/src/mapbuild5b-complete-vision597",
+    "--pickup",
+    "/home/ugrp/ugrp-sim/runs/mapbuild6/teacher-ledgers/solo-truth-free-gate-79800-6f057f7e/plan.json",
+    "--output",
+    "/home/ugrp/ugrp-sim/runs/mapbuild10-long-round1/unloaded-v2",
+    "--body-sweep",
+    "--map-correction",
+    "--sweep-camera-folded",
+    "--sweep-model",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild8/own-sweep-model-r1.json",
+    "--own-motion-model",
+    "/home/ugrp/ugrp-sim/src/mapbuild10-f3a91cb85/experiments/2026-10-17-mapbuild8/calibration/own-command-calibration-r2.json",
+    "--amcl-calibration",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/own-noise-command-r1-r2.json",
+    "--requirements",
+    "/home/ugrp/ugrp-sim/src/mapbuild10-f3a91cb85/experiments/2026-10-17-mapbuild8/requirements.json",
+    "--long-config",
+    "/home/ugrp/ugrp-sim/src/mapbuild10-f3a91cb85/experiments/2026-10-17-mapbuild10/long-route-config.json"
+  ],
+  "stages": [
+    {
+      "stage": "frames",
+      "cumulative_pass_n": 381,
+      "rejected_n": 0
+    },
+    {
+      "stage": "visible_wall",
+      "cumulative_pass_n": 293,
+      "rejected_n": 88
+    },
+    {
+      "stage": "scheduled_supported",
+      "cumulative_pass_n": 38,
+      "rejected_n": 255
+    },
+    {
+      "stage": "adopted_pose_correction",
+      "cumulative_pass_n": 0,
+      "rejected_n": 38
+    }
+  ],
+  "mapping_branch": {
+    "supported": 38,
+    "inserted": 33,
+    "policy": "immutable observations at corrected or covariance-retaining motion prior; correction rejection does not mean zero uncertainty"
+  },
+  "distribution": [
+    {
+      "category": "map_correction",
+      "reason": "no_visible_wall",
+      "n": 88,
+      "blocked_object": "own_observed_wall",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "map_correction",
+      "reason": "posterior_unresolved",
+      "n": 31,
+      "blocked_object": "own_observed_wall",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "map_correction",
+      "reason": "nav2_motion_gate",
+      "n": 255,
+      "blocked_object": "own_observed_wall",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "map_correction",
+      "reason": "posterior_converged_unqualified",
+      "n": 7,
+      "blocked_object": "own_observed_wall",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    }
+  ]
+}

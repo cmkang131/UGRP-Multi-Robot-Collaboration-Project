@@ -1,0 +1,516 @@
+{
+  "schema": "ugrp.current_stack.check.v1",
+  "ok": true,
+  "current_compliant": true,
+  "checker_sha256": "bdef5ad98b8e5ee8a21126f75430a58193d5f44f11f23fa60fd9ca487511eb3b",
+  "scope": "declared manifest fields; not independent runtime/physics verification",
+  "inputs": [
+    {
+      "path": "/home/ugrp/ugrp-sim/ops-reviews/mapbuild10/long-round1-v2/queue.json",
+      "sha256": "05eac93609eb0b0258b6086025748acbc88ed8bc1fc262b1b7f222ac262891c4"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/mapbuild10-long-round1/preflight-v2/scene.xml",
+      "sha256": "664b588015cee3748c6f671d22747ea930f4e9dfa97bc94db396c1b92b2f59dc"
+    }
+  ],
+  "rows": [
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "physics_backend",
+      "expected": "mjwarp_batch_v1",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.physics_backend",
+          "value": "mjwarp_batch_v1"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/ops-reviews/mapbuild10/long-round1-v2/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "contact_profile",
+      "expected": "warp_native_contact_v1",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.contact_profile",
+          "value": "warp_native_contact_v1"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/ops-reviews/mapbuild10/long-round1-v2/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "noslip_iterations",
+      "expected": 0,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.noslip_iterations",
+          "value": 0
+        },
+        {
+          "field": "/home/ugrp/ugrp-sim/runs/mapbuild10-long-round1/preflight-v2/scene.xml:noslip_iterations",
+          "value": "0"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/ops-reviews/mapbuild10/long-round1-v2/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "scene_profile",
+      "expected": "walls_floor_contrast_v5_indigo110_s80",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.scene_profile",
+          "value": "walls_floor_contrast_v5_indigo110_s80"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/ops-reviews/mapbuild10/long-round1-v2/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "cargo_version",
+      "expected": "v6",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.cargo_version",
+          "value": "v6"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/ops-reviews/mapbuild10/long-round1-v2/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "scenario_version",
+      "expected": "v7",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.scenario_version",
+          "value": "v7"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/ops-reviews/mapbuild10/long-round1-v2/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "heavy_crate",
+      "expected": false,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.heavy_crate",
+          "value": false
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/ops-reviews/mapbuild10/long-round1-v2/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "localization_path",
+      "expected": "texture_self_map_lk",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.localization_path",
+          "value": "texture_self_map_lk"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/ops-reviews/mapbuild10/long-round1-v2/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "rbpf",
+      "expected": "off",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.rbpf",
+          "value": "off"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/ops-reviews/mapbuild10/long-round1-v2/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "localization_engine",
+      "expected": "OpenCV",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.localization_engine",
+          "value": "OpenCV"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/ops-reviews/mapbuild10/long-round1-v2/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "held_object_hidden_v1",
+      "expected": true,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.held_object_hidden_v1",
+          "value": true
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/ops-reviews/mapbuild10/long-round1-v2/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "held_world_reads",
+      "expected": 0,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.held_world_reads",
+          "value": 0
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/ops-reviews/mapbuild10/long-round1-v2/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "weld",
+      "expected": false,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.weld",
+          "value": false
+        },
+        {
+          "field": "/home/ugrp/ugrp-sim/runs/mapbuild10-long-round1/preflight-v2/scene.xml:weld",
+          "value": false
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/ops-reviews/mapbuild10/long-round1-v2/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "top_camera_control",
+      "expected": false,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.top_camera_control",
+          "value": false
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/ops-reviews/mapbuild10/long-round1-v2/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "heading_mode",
+      "expected": "on",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.heading_mode",
+          "value": "on"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/ops-reviews/mapbuild10/long-round1-v2/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "ultrasonic_front",
+      "expected": "off",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.ultrasonic_front",
+          "value": "off"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/ops-reviews/mapbuild10/long-round1-v2/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "wall_cap",
+      "expected": null,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.wall_cap",
+          "value": null
+        },
+        {
+          "field": "parent[0].wall_cap",
+          "value": null
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/ops-reviews/mapbuild10/long-round1-v2/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "speed_gate",
+      "expected": "record_only",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.speed_gate",
+          "value": "record_only"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/ops-reviews/mapbuild10/long-round1-v2/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "speed_metric",
+      "expected": "wall_s/(sim_s*nworld)",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.speed_metric",
+          "value": "wall_s/(sim_s*nworld)"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/ops-reviews/mapbuild10/long-round1-v2/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "gcp_host",
+      "expected": [
+        "ugrp-act-l4-gcp2",
+        "ugrp-act-l4-gcp3",
+        "ugrp-act-l4-gcp4",
+        "ugrp-act-l4-gcp5",
+        "ugrp-act-l4-gcp6"
+      ],
+      "observed": [
+        {
+          "field": "parent[0].stack_values.gcp_host",
+          "value": "ugrp-act-l4-gcp5"
+        },
+        {
+          "field": "project",
+          "value": "ugrp-sim-e-1016"
+        },
+        {
+          "field": "stack_values.gcp_project",
+          "value": "ugrp-sim-e-1016"
+        },
+        {
+          "field": "account",
+          "value": "changmin5781@gmail.com"
+        },
+        {
+          "field": "stack_values.gcp_account",
+          "value": "changmin5781@gmail.com"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/ops-reviews/mapbuild10/long-round1-v2/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "gcp_guards",
+      "expected": {
+        "idle_minutes": 20,
+        "budget_stop": true,
+        "credentials_on_vm": false
+      },
+      "observed": [
+        {
+          "field": "parent[0].stack_values.gcp_guards",
+          "value": {
+            "idle_minutes": 20,
+            "budget_stop": true,
+            "credentials_on_vm": false
+          }
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/ops-reviews/mapbuild10/long-round1-v2/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "no_pooling",
+      "expected": true,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.no_pooling",
+          "value": true
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/ops-reviews/mapbuild10/long-round1-v2/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "planning_cap_basis",
+      "expected": "compute_or_sim",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.planning_cap_basis",
+          "value": "compute_or_sim"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/ops-reviews/mapbuild10/long-round1-v2/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "rejection_ledger",
+      "expected": [
+        "reason_category",
+        "blocked_object",
+        "minimum_gap_m"
+      ],
+      "observed": [
+        {
+          "field": "parent[0].stack_values.rejection_ledger",
+          "value": [
+            "reason_category",
+            "blocked_object",
+            "minimum_gap_m"
+          ]
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/ops-reviews/mapbuild10/long-round1-v2/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "cap_end_label",
+      "expected": "cap_end",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.cap_end_label",
+          "value": "cap_end"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/ops-reviews/mapbuild10/long-round1-v2/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "gcp_project",
+      "expected": [
+        "ugrp-sim-b-1014",
+        "ugrp-sim-c-1016",
+        "ugrp-sim-d-1016",
+        "ugrp-sim-e-1016",
+        "ugrp-sim-f-1016"
+      ],
+      "observed": [
+        {
+          "field": "parent[0].stack_values.gcp_project",
+          "value": "ugrp-sim-e-1016"
+        },
+        {
+          "field": "parent[0].project",
+          "value": "ugrp-sim-e-1016"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/ops-reviews/mapbuild10/long-round1-v2/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "gcp_account",
+      "expected": [
+        "changmin5781@gmail.com",
+        "kcm5781kcm5781@gmail.com"
+      ],
+      "observed": [
+        {
+          "field": "parent[0].stack_values.gcp_account",
+          "value": "changmin5781@gmail.com"
+        },
+        {
+          "field": "parent[0].account",
+          "value": "changmin5781@gmail.com"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/ops-reviews/mapbuild10/long-round1-v2/queue.json"
+    },
+    {
+      "record": "$",
+      "flow": "self_map",
+      "id": "selfmap_map_correction",
+      "expected": "on",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.selfmap_map_correction",
+          "value": "on"
+        }
+      ],
+      "status": "current",
+      "input": "/home/ugrp/ugrp-sim/ops-reviews/mapbuild10/long-round1-v2/queue.json"
+    },
+    {
+      "id": "contact_profile",
+      "field": "XML.option.cone",
+      "expected": "elliptic",
+      "observed": "elliptic",
+      "status": "current",
+      "record": "$",
+      "flow": "self_map",
+      "input": "/home/ugrp/ugrp-sim/runs/mapbuild10-long-round1/preflight-v2/scene.xml"
+    },
+    {
+      "id": "contact_profile",
+      "field": "XML.option.integrator",
+      "expected": "implicitfast",
+      "observed": "implicitfast",
+      "status": "current",
+      "record": "$",
+      "flow": "self_map",
+      "input": "/home/ugrp/ugrp-sim/runs/mapbuild10-long-round1/preflight-v2/scene.xml"
+    },
+    {
+      "id": "contact_profile",
+      "field": "XML.option.impratio",
+      "expected": "5",
+      "observed": "5",
+      "status": "current",
+      "record": "$",
+      "flow": "self_map",
+      "input": "/home/ugrp/ugrp-sim/runs/mapbuild10-long-round1/preflight-v2/scene.xml"
+    }
+  ],
+  "stack": {
+    "path": "/home/ugrp/ugrp-sim/src/mapbuild10-f3a91cb85/configs/current_stack.json",
+    "sha256": "f7a2b2148d96e3d80ccedd6fa5a0ae171236e6f6635febb52f9fd255a4eddd9b"
+  },
+  "counts": {
+    "current": 31
+  },
+  "admission": "pass"
+}

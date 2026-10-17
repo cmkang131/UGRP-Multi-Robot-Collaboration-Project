@@ -1,0 +1,128 @@
+{
+  "evaluation_only": true,
+  "truth_to_filter": 0,
+  "threshold_fitting": 0,
+  "physics_steps": 0,
+  "render_calls": 0,
+  "visible_frames": 321,
+  "updates": 38,
+  "points": 27253,
+  "outside_points": 6726,
+  "legacy_max2_points": 6050,
+  "full_max2_points": 0,
+  "legacy_max2_nearest_within_existing_sigma_points": 5895,
+  "all_frame_nearest_p95_min_median_max": [
+    0.005511004639230377,
+    0.02392156835741808,
+    0.4094540811226745
+  ],
+  "legacy_update_field_p95_is2_count": 15,
+  "full_update_field_p95_is2_count": 0,
+  "free_space_byte_identical": true,
+  "low_residual": [
+    {
+      "t": 12.5,
+      "frame_id": 125,
+      "attempted": false,
+      "n": 96,
+      "outside": 0,
+      "nearest_p50_p95_m": [
+        0.004050277497261168,
+        0.005511004639230377
+      ],
+      "legacy_field_p50_p95_m": [
+        0.0,
+        0.0
+      ],
+      "full_field_p50_p95_m": [
+        0.0,
+        0.0
+      ],
+      "legacy_max2_nearest_within_sigma_n": 0,
+      "legacy_max2_points": 0,
+      "full_max2_points": 0
+    },
+    {
+      "t": 13.6,
+      "frame_id": 136,
+      "attempted": false,
+      "n": 96,
+      "outside": 0,
+      "nearest_p50_p95_m": [
+        0.003971084205412367,
+        0.005996405675626149
+      ],
+      "legacy_field_p50_p95_m": [
+        0.0,
+        0.0
+      ],
+      "full_field_p50_p95_m": [
+        0.0,
+        0.0
+      ],
+      "legacy_max2_nearest_within_sigma_n": 0,
+      "legacy_max2_points": 0,
+      "full_max2_points": 0
+    }
+  ],
+  "high_residual": [
+    {
+      "t": 0.1,
+      "frame_id": 1,
+      "attempted": false,
+      "n": 83,
+      "outside": 73,
+      "nearest_p50_p95_m": [
+        0.3516823238805158,
+        0.3618045864587715
+      ],
+      "legacy_field_p50_p95_m": [
+        2.0,
+        2.0
+      ],
+      "full_field_p50_p95_m": [
+        0.36,
+        0.37
+      ],
+      "legacy_max2_nearest_within_sigma_n": 5,
+      "legacy_max2_points": 65,
+      "full_max2_points": 0
+    },
+    {
+      "t": 31.7,
+      "frame_id": 317,
+      "attempted": false,
+      "n": 94,
+      "outside": 85,
+      "nearest_p50_p95_m": [
+        0.3338899933945292,
+        0.4094540811226745
+      ],
+      "legacy_field_p50_p95_m": [
+        2.0,
+        2.0
+      ],
+      "full_field_p50_p95_m": [
+        0.34,
+        0.4135
+      ],
+      "legacy_max2_nearest_within_sigma_n": 15,
+      "legacy_max2_points": 77,
+      "full_max2_points": 0
+    }
+  ],
+  "raw": "/home/ugrp/ugrp-sim/runs/mapbuild10-long-round1/unloaded-v2",
+  "reproduction": [
+    "/home/ugrp/ugrp-sim/src/mapbuild10-7f2f1baae/scripts/mapbuild10_field_audit.py",
+    "--source",
+    "/home/ugrp/ugrp-sim/src/mapbuild10-7f2f1baae",
+    "--input",
+    "/home/ugrp/ugrp-sim/runs/mapbuild10-long-round1/unloaded-v2",
+    "--prediction",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild10/long-round1-v2/score",
+    "--output",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild10/field-7f2f1baae-v2/adapter-audit"
+  ],
+  "script_sha256": "81f9dd18320182e6acdd86491e807a63d793a391c8dcc3b577f6b973e39a1e4b",
+  "warning": "same frozen poses/observations, descriptive adapter comparison only; not a new trajectory or causal success proof"
+}

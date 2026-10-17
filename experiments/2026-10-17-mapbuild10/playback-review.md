@@ -29,4 +29,14 @@ QuickTime 등 앱으로 동영상을 재생했다는 주장이 아니다.
 
 로컬: /Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/mapbuild10-recording1/ ; VM원본과재현은ops-reviews/mapbuild10/long-round1/playback.
 
-교체녹화2는아직실행중이다. 전체2Hz·마지막10SIM초10Hz검토,성공비교영상,장경로판정은확인안됨이다. 과거실패/성공직접검토는mapbuild8/9의playback-review와구분한다.
+이 단락 작성 당시 교체녹화2는 실행 중이었다. 완료 후 전체/말미 검토는 아래 후속 절에 기록했다. 성공 운반 비교 영상은 여전히 이 코호트에 없다.
+
+## 교체 녹화2 완료 후 직접 검토
+
+0–38.0 SIM초를 원본2Hz(프레임0,5,...380)로, 마지막28.0–38.0초를10Hz의101개 R1/R2쌍으로 직접 봤다. terminal page1은28.0–33.5, page2는33.6–38.0초다. 각 카메라160×120의 띠 해상도 범위에서 검토했다. 전체 GUI 동영상 재생이 아닌 원본 프레임 띠 검토이며 미세 진동까지 배제한 것은 아니다.
+
+시간순: 초기0–약6초는카메라상하/좌우둘러보기, 약6.5–31.5초는몸체회전하며벽·모서리·청록/적색화물·문이차례로지나간다.31.6–37.4초는재차pan하면서바닥접점높이가바뀐다.37.5–38.0초에는작은선회/짧은전진뒤종료한다. R2는전체에서정지한벽/바닥시야다. 이범위에빠른좌우왕복·동료끼리막는양상·파지/운반은보이지않는다.10Hz에서는카메라전환이정지전까지연속적임을확인했고,2Hz와달리마지막짧은동작의순서를확인할수있었다.
+
+평가원장상실제주행2.15cm이며, 영상만으로그거리를재지않았다.37.5–38.0초LK가unknown_servo_change/unknown_camera_unsettled이고nominal명령예측을썼다는것은로그로분리해확인했다. 전체영상은원본gcp5ffmpeg명목3배속,ffprobe383프레임/30fps/12.766667초/82543bytes(끝중복포함). TOP개요는원본없음, 성공운반대조는이코호트에없어미충족이다. 잔차가작은프레임을성공임무로대체하지않았다.
+
+로컬 /Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/mapbuild10-recording2/ ; 비교사진은operations/final-gcp5/selected-r1-*.jpg. 새도표는post-seal평가이며GT제어입력0이다.

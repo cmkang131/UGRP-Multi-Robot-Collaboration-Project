@@ -119,7 +119,7 @@ coarse/global 각각20회다. R1–R3 각40=120조건, gcp3 28스트림 각40=11
 검증한다. final-integrity.json이 모든 input/prediction/GT/사전 생성 연결과
 Mac에 회수한 요약의 SHA를 기록한다. 알고리즘/예측은 후처리에서 바꾸지 않는다.
 
-모든 조건의 OFF 개선 관문이 실패했으므로 새 물리는0이다. 공개 시작 상자에서
+초기 MC20 단계는 모든 조건의 OFF 개선 관문이 실패했으므로 당시 새 물리는0이다. 공개 시작 상자에서
 실제 spawn을 균일 샘플링하는 장면 경로는 이 라운드에서 구현/실행하지 않았다.
 현재 API는 runtime_qualified=false/adopted_pose=null을 유지한다.
 
@@ -131,3 +131,12 @@ MC20의 OFF 미개선 관문은 유지한다. 원문 승인과 원인 표는 coo
 실행원본 /home/ugrp/ugrp-sim/runs/mapbuild10-long-round1, 큐/명령/SHA/최신스택확인은 /home/ugrp/ugrp-sim/ops-reviews/mapbuild10/long-round1-v2. 원본f3a91cb85는실행전commit/push했고서버사본은git-shared.git에직접reference clone했다. 소스와큐는실행중수정하지않는다. 초기5f18d4938의52프레임은예전속도차단코드발견으로감독중단·제외, 교체본의속도는current_stack 최신record_only다. 1라운드중2녹화(1제외+1교체)이며추가실행은없다.
 
 후처리는 scripts/mapbuild10_long_score.py --source <frozen-source> --input <unloaded-v2> --output <new-score-dir> --requirements <frozen requirements>. 자기입력/온라인제안봉인과RGB해시를먼저확인한뒤GT를연다. OFF에는초기SE2정렬한번만주며척도피팅하지않고AMCL은절대오차를채점한다. .5m구간표는보고용이고계산/행동관문이아니다. 실제3m와설계반전turn π에서기존방향요구오차를뺀회전량, 끝/최대오차·전체경로요구표를분리해낸다. 오프라인비교통과를ACT/LLM/임무물리성공으로보고하지않는다.
+
+
+## 수정된 거리장/센서 어댑터
+
+명시 `--amcl-profile nav2_rgb_field_v1`만 authored wall extent+기존max_occ_dist2m 지지영역과actual RGB range4m를사용한다. 기본profile/기존기록/허용free-pose배열은바꾸지않는다. σ/α/입자/수렴/요구관문불변. `field-run.py`는host별기존Python을선택하고sealed입력을hardlink로재사용한다(zstd는symlink를거부). gcp5의legacy/public-baseline/public-fixed는v2경로, gcp3legacy는v3경로다. 운영오류n0은operations별JSON에남긴다.
+
+최종원본은각실행VM의runs/mapbuild10-*와ops-reviews/mapbuild10/field-7f2f1baae-v2(gcp5)/v3(gcp3), long-round1-v2에보존했다. 큰JSON은SHA검증후zstd로무손실보존했다. read_text를쓰는후처리재현전 `zstd -dk <file.json.zst>`로원래경로에복원하고raw-archive.json의원본SHA와대조한다. 원본은삭제된것이아니며같은bytes를압축보관했다. MC의raw()는압축본을직접읽는다. 원래실행소스f3/평가5d1/카메라진단c5/후속필터7f를구분한다.
+
+operations/final-gcp5와final-gcp3는회수요약(각48/11파일), 자체SHA256SUMS와retrieval-manifest가원본/회수SHA를연결한다. 큰summary가회수용축약이면export_projection으로표시하고원본SHA도보존한다. final-local-retrieval.json은회수전체해시검증이다. 공개녹화baseline재생과온라인제안의차는XY4.44e-16m/yaw8.88e-16rad(381프레임,존재불일치0), 플롯추가전후frame-errors SHA동일이다.

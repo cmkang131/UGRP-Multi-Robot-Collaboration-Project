@@ -1,0 +1,111 @@
+[
+  {
+    "t": 5.8,
+    "event": "prescan",
+    "status": "rejected",
+    "reason": "amcl_distribution_unresolved",
+    "category": "static_amcl",
+    "blocked_object": "own_observed_wall",
+    "minimum_gap_m": null,
+    "gap_status": "not_measured",
+    "static_from_own": null,
+    "production_qualified": false
+  },
+  {
+    "t": 5.8,
+    "event": "body_sweep_start",
+    "command_budget": 692,
+    "basis": "2pi / frozen R1 own measured yaw increment P05; source 5972833c6adb5497cf4f226c61ab26a84220fcc5fb26f9eee55c094289ffcd06"
+  },
+  {
+    "t": 6.4,
+    "event": "fixed_folded_sweep_pose_issued_settled",
+    "pwm": {
+      "1": 2000,
+      "3": 740,
+      "4": 2320,
+      "5": 1320,
+      "6": 1500
+    }
+  },
+  {
+    "t": 31.5,
+    "event": "body_sweep_end",
+    "own_yaw_travel_rad": 6.2996136240019425,
+    "issued_ticks": 251,
+    "command_budget": 692,
+    "reason": "own_measured_revolution",
+    "actual_revolution": "evaluation_only"
+  },
+  {
+    "t": 37.4,
+    "event": "rescan",
+    "status": "accepted",
+    "reason": "coordinator_approved_diagnostic_only",
+    "category": "static_amcl",
+    "blocked_object": "own_observed_wall",
+    "minimum_gap_m": null,
+    "gap_status": "not_measured",
+    "static_from_own": [
+      -0.2871710132525999,
+      -2.017557118224995,
+      1.8954326274209639
+    ],
+    "production_qualified": false,
+    "runtime_qualified": false
+  },
+  {
+    "t": 37.4,
+    "event": "map_to_teacher_handoff",
+    "student": false,
+    "navigation_before_handoff": false
+  },
+  {
+    "t": 37.5,
+    "event": "shared_heading_pulse",
+    "action": {
+      "kind": "mecanum",
+      "forward": 0.35,
+      "left": 0.0,
+      "turn": 0.0,
+      "duration_s": 0.1
+    },
+    "basis": "existing_v145_profile_and_coast",
+    "transfer": null
+  },
+  {
+    "t": 37.7,
+    "event": "shared_heading_pulse",
+    "action": {
+      "kind": "mecanum",
+      "forward": 0.0,
+      "left": 0.0,
+      "turn": -0.35,
+      "duration_s": 0.1
+    },
+    "basis": "existing_v145_profile_and_coast",
+    "transfer": null
+  },
+  {
+    "t": 37.9,
+    "event": "shared_heading_pulse",
+    "action": {
+      "kind": "mecanum",
+      "forward": 0.35,
+      "left": 0.0,
+      "turn": 0.0,
+      "duration_s": 0.1
+    },
+    "basis": "existing_v145_profile_and_coast",
+    "transfer": null
+  },
+  {
+    "t": 38.0,
+    "event": "amcl_distribution_lost",
+    "category": "static_amcl",
+    "reason": "handoff_budget_or_ess_not_met",
+    "blocked_object": "own_observed_wall",
+    "minimum_gap_m": null,
+    "gap_status": "not_measured"
+  }
+]
