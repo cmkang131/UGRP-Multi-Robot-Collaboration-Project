@@ -53,3 +53,5 @@ gate/pilot/bulk와 준비 시도에 RUN_META 보존 분류를 소급 추가했�
 [실제 평가 초기 입력 대조](results/initial-runtime-parity-r1.json): 같은 VAL8×3의24세계 모두 첫 RGB SHA와252차원 자기 명령 문맥 배열이 교사 기록과 정확히 일치했다. 이는 시작 입력 대조이며 이후 관측·동작·성공을 보장하지 않는다. [학습 완료 원장](results/training-complete-r1.json)은 M/F/S 각각10000 update·실제 저장 재로딩을 확인한다.
 
 재생 원본 대조에서 기존 overview 재구성이 native compiled geometry 참조를 적용하지 않았음을 확인했다. 저장 자기 RGB는 원 바이트라 영향이 없으며 제어·채점도 변경되지 않았다. 새 재생은 명시한 geometry inventory/SHA를 적용하고 별도 산출물로 남긴다. 이전 overview 형상의 정밀 일치 주장은 하지 않는다.
+
+[모델 공개 배포 검증](results/release-r1/public-verification.json): M/F/S 세 모델의 공개 ZIP을 새 checkout b8028ebea에서 익명 재다운로드하고 전체 ZIP·내부 파일 SHA/크기와 bundle의 CPU 실제 로딩을 확인했다. 기존 고정 ACT 환경 재사용이며 새 가상환경·물리 성공·raw 전체 백업 검증은 아니다. 가중치·ZIP은 Mac에 쓰지 않았다.
