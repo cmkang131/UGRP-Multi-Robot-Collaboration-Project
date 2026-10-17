@@ -118,6 +118,44 @@ r1/r2/r3 runs are excluded from current success claims because they contain the
 known S-gate false positive (r1), the old unsigned-turn/import failures
 (r2), or the false place claim fixed in r4 (r3).
 
+## Gate r1 (aborted, not counted)
+
+Gate r1 (`visgoal-gate-r1`, source `422fa98f`, started 11:52Z) ran the west
+start first. Episode e00 was stopped by the worker at 67.7 SIM s after the
+trace showed `seek_wall` handing over at 1.576 m while `approach_wall` accepted
+only <=1.2 m: the visible divider was lost, the full 27 s spin restarted, and
+the supervisor stop was initially written to the run root instead of
+`episodes/eNN`. `ABORTED.json` records `valid_gate=false` and lists e00
+SUPERVISOR_STOP, e01 SUPERVISOR_STOP at 0.6 s and e02 killed; the run is
+**not counted** and no result from it is pooled. This was an internal
+(worker) stop, not an external one. The defect was fixed in `725f0d194`
+(accept the same band on both sides of the handover) and re-probed below.
+
+## Preflight r5-r8 (west cap and door, east arrival)
+
+All runs are two starts with a 60 SIM s cap: setup 0 (west, no destination
+colour at tick 0) and setup 13 (east, 28856 paint px at tick 0). Each run
+changed one control defect found by the previous run.
+
+| run | source | west e00 | east e01 | change |
+|---|---|---|---|---|
+| r5 | `725f0d194` | cap_end 60.0 s, final (-0.68,-2.27) | arrived GT-inside 11.8 s | accept 1.8 m wall handover |
+| r6 | `2a1a12ed1` | cap_end 60.0 s, final (-0.54,-2.27) | arrived GT-inside 11.8 s | bounded turn around cargo cubes instead of abandoning the wall |
+| r7 | `1e2826404` | cap_end 60.0 s, final (0.865,-0.317) | arrived GT-inside 11.6 s | accept the full 3.0 m scan handover (r6 accepted 2.71 m, then lost it at 1.8 m and restarted the 27 s scan) |
+| r8 | `cc2c9cfd9` | cap_end 60.0 s, final (1.62,-0.95), stage `gap_forward` | arrived GT-inside 11.7 s, final (4.42,-1.51) | require zone-sized (>=600 px) colour components; r7 spent 10 s on a 25x7 px blue end cap of a green beam |
+
+r8 west e00 stage timeline: orient 0-27.4 s (full calibrated spin), seek_wall
+27.4-40.2 s (one cyan-cube evasion at .526 m gap), approach_wall 40.2-48.6 s
+(wall at 1.598 m), follow_north 48.6-55.7 s, gap_cross/gap_forward 55.7-60 s.
+The montage (ticks 0/100/200/300/400/500/590/600, raw
+`/home/ugrp/ugrp-sim/runs/visgoal-preflight-r8/analysis/e00-cap-end-montage.jpg`,
+sha256 `78d3c827...`) shows the divider doorway ahead at ticks 590-600: the
+west episode is cut by the 60 s preflight cap while crossing the door, not
+stuck. Failure frames stay with the raw run; JSON summaries and funnels are
+committed here.
+The gate's pre-registered 120 s cap covers the crossing and the subsequent
+east search; `cap_end` is still labelled separately in the gate report.
+
 ## Files
 
 * `setups.json` — 16 fixed starts (setup only; includes parked
@@ -132,23 +170,23 @@ known S-gate false positive (r1), the old unsigned-turn/import failures
 
 ```bash
 python3 scripts/check_current_stack.py experiments/2026-10-17-visgoal/queue-preflight.json \
-  --flow self_map --output experiments/2026-10-17-visgoal/stack-preflight-v10.json
+  --flow self_map --output experiments/2026-10-17-visgoal/stack-preflight-v14.json
 python3 scripts/visgoal_probe.py --enabled --preflight --episodes 0,13 --sim-cap 60 \
   --queue experiments/2026-10-17-visgoal/queue-preflight.json \
   --renderer /home/ugrp/ugrp-sim/src/16a946ff3 \
   --legacy /home/ugrp/ugrp-sim/src/warp8f-selfmap-0ace43f25 \
   --setups /home/ugrp/ugrp-sim/src/<clone>/experiments/2026-10-17-visgoal/setups.json \
-  --output /home/ugrp/ugrp-sim/runs/visgoal-preflight-r4
+  --output /home/ugrp/ugrp-sim/runs/visgoal-preflight-r8
 
-# Gate: all 16 starts, 120 SIM s each, prior funnel = r4.
+# Gate r2: all 16 starts, 120 SIM s each, prior funnel = r8.
 python3 scripts/check_current_stack.py experiments/2026-10-17-visgoal/queue-gate.json \
-  --flow self_map --output experiments/2026-10-17-visgoal/stack-gate-v10.json
+  --flow self_map --output experiments/2026-10-17-visgoal/stack-gate-v14.json
 python3 scripts/visgoal_probe.py --enabled --sim-cap 120 \
   --queue experiments/2026-10-17-visgoal/queue-gate.json \
   --renderer /home/ugrp/ugrp-sim/src/16a946ff3 \
   --legacy /home/ugrp/ugrp-sim/src/warp8f-selfmap-0ace43f25 \
   --setups /home/ugrp/ugrp-sim/src/<clone>/experiments/2026-10-17-visgoal/setups.json \
-  --output /home/ugrp/ugrp-sim/runs/visgoal-gate-r1
+  --output /home/ugrp/ugrp-sim/runs/visgoal-gate-r2
 ```
 
 `--enabled` is mandatory; the module's default constructor option is `off`.
