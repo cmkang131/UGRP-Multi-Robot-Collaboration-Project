@@ -29,13 +29,14 @@ from harness.failure_rgb_tail import FailureRGBTail
 from harness.beampair_host import gcp2_identity
 from harness.beampair_wall_layer import WallLayer, MODE as WALL_MODE
 from harness.beampair_visible_rays import visible_rays
+from harness.beampair_peer_yield import PeerYieldMixin, MODE as PEER_YIELD_MODE
 
 ROOT=Path(__file__).resolve().parents[1]
 EXP=ROOT/'experiments/2026-10-15-beampair1'
 
 
 @contextmanager
-def recording_json(runner):
+def recording_json(runner, run_meta=None):
     """Bind every pinned-runner JSON/JSONL sink to the same strict encoder.
 
     The dependency remains clean and pinned. Replace only its module reference,
@@ -43,7 +44,10 @@ def recording_json(runner):
     """
     original_json, original_write = runner.json, runner.write
     runner.json = SimpleNamespace(**{**vars(original_json), 'dumps': dumps})
-    runner.write = write_json
+    def write(path,value):
+        if run_meta is not None and Path(path).name=='RUN_META.json':value={**value,**run_meta}
+        return write_json(path,value)
+    runner.write = write_json if run_meta is None else write
     try:
         yield
     finally:
@@ -142,11 +146,19 @@ def setup_admission(plan,scenario):
 
 
 def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,rendezvous='off',
-        approach_repair='off',failure_tail=True,wall_layer='off'):
+        approach_repair='off',failure_tail=True,wall_layer='off',peer_yield='off',
+        record_training=False,recording_proof=None,recording_capture_cache='off'):
     if platform.system()!='Linux':raise RuntimeError('GCP Linux only; Mac physics/render forbidden')
     if mode!=MODE:raise ValueError('explicit beampair1_v1 opt-in required')
     if approach_repair not in ('off',APPROACH_MODE,APPROACH_BOUNDED_MODE):raise ValueError('unknown approach repair')
     if wall_layer not in ('off',WALL_MODE):raise ValueError('unknown wall layer')
+    if peer_yield not in ('off',PEER_YIELD_MODE):raise ValueError('unknown peer yield')
+    if record_training and (not recording_proof or recording_proof.get('qualified') is not True):
+        raise ValueError('verified beampair7 gate proof required for recording')
+    if recording_capture_cache not in ('off','recording_capture_cache_v1'):
+        raise ValueError('unknown recording capture cache')
+    if recording_capture_cache!='off' and not record_training:
+        raise ValueError('capture cache is restricted to training recording sinks')
     validate_plan(plan)
     source=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
     if subprocess.check_output(['git','status','--porcelain'],cwd=ROOT):raise ValueError('committed source required')
@@ -160,7 +172,8 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,ren
     scene_binding=scene_bindings(plan.get('scene_profile','off'))
     guard=HeldCargoGuard();teachers={};models={};visible={};audit={};probe_rows=[]
     selected=profiles(candidate)
-    ray_rows=[];current_rays={}
+    ray_rows=[];current_rays={};capture_stats=[]
+    from harness.beampair_recording import install_capture_cache
     with dependency_modules(dependency_root):
         from scripts.grasp_act_host import identity
         host=gcp2_identity(identity)
@@ -174,6 +187,7 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,ren
         def build_world(*args,**kwargs):
             world=original_build(*args,**kwargs)
             if scene_binding is not None:scene_binding[1](world,out)
+            if recording_capture_cache!='off':capture_stats.append(install_capture_cache(world))
             return world
         from sim.final_pair_highpose_nearclip import wrap
         from sim import masterpi_camera_review_v3 as camera
@@ -248,12 +262,14 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,ren
                         input='own visible optical endpoint + issued camera FK; no measured joints'))
                     w=self.wall_layer.update(w,self.rid,ms,rays)
                 return w
-        class Teacher(ApproachRepairMixin,RendezvousTeacherMixin,original_teacher):
+        class Teacher(PeerYieldMixin,ApproachRepairMixin,RendezvousTeacherMixin,original_teacher):
             def __init__(self,rid,*a,**kw):
                 super().__init__(rid,*a,**kw);teachers[rid]=self
                 self.rendezvous=PeerRendezvous(rendezvous)
                 self.approach_repair=approach_repair;self.approach_repair_log=[]
                 self.wall_layer_mode=wall_layer
+                self.peer_yield=peer_yield;self.peer_yield_log=[]
+                self.peer_yield_connector_log=[];self.peer_yield_failed_anchors=set()
                 ticks=plan['burst_ticks'] if rid=='r1' else 13-plan['burst_ticks']
                 self.pair_perturb=PairRecoveryPerturb(perturb_model(ticks),seed=plan['seed']+(rid=='r2'))
             def _plan_approach(self,w,now):
@@ -303,8 +319,10 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,ren
         drive_module.build_world=build_world
         report=None
         try:
-            with recording_json(runner):
-                report=runner.run(plan,out,cap_s=cap_s,record_training=False,noise=False,execution_host=host,**selected)
+            meta={'class':'dev','pr':537,'branch':'claude/beampair8','recording_adapter_sha':source} if record_training else None
+            with recording_json(runner,meta):
+                report=runner.run(plan,out,cap_s=cap_s,record_training=record_training,
+                    recording_proof=recording_proof,noise=False,execution_host=host,**selected)
         finally:
             scene_module.make_scene=original_make_scene;measurements_module.measurements=original_measure
             world_module.VisibleWorld=original_world;teacher_module.VisibleOnlyGraspTeacher=original_teacher
@@ -315,6 +333,7 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,ren
             # Separate adapter result, leaving the dependency's raw result and
             # manifest intact. Both full source SHAs are required for identity.
             adapter=out.parent/'adapter';adapter.mkdir(parents=True,exist_ok=False)
+            if capture_stats:write_json(adapter/'recording-capture-cache.json',capture_stats)
             if report is None:
                 result_path=out/'result.json'
                 if result_path.exists():report=json.loads(result_path.read_text())
@@ -324,9 +343,10 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,ren
                 'source_sha':source,'dependency_sha':DEPENDENCY_SHA,'candidate':candidate,
                 'peer_rendezvous':rendezvous,
                 'approach_repair':approach_repair,'failure_tail_recording':failure_tail,'wall_layer':wall_layer,
+                'peer_yield':peer_yield,
                 'mode':mode,'held_object_hidden_v1':True,'held_world_reads':guard.held_world_reads,
                 'first_close_t':guard.first_close_t,'hidden_measurement_ticks':guard.hidden_measurement_ticks,
-                'input_audit':audit,'training_rgb':False,'profiles':selected,'result':report,
+                'input_audit':audit,'training_rgb':record_training,'profiles':selected,'result':report,
                 'setup_admission':setup_rows,
                 'probe_burst_ticks':{r:t.pair_perturb.ticks for r,t in teachers.items()},
                 'probe_executed_ticks':{r:sum(x['robot_id']==r and x['disturbance'] is not None for x in probe_rows) for r in teachers}})
@@ -354,8 +374,10 @@ if __name__=='__main__':
     p.add_argument('--rendezvous',choices=['off',RENDEZVOUS_MODE,BOUNDED_MODE],default='off')
     p.add_argument('--approach-repair',choices=['off',APPROACH_MODE,APPROACH_BOUNDED_MODE],default='off')
     p.add_argument('--wall-layer',choices=['off',WALL_MODE],default='off')
+    p.add_argument('--peer-yield',choices=['off',PEER_YIELD_MODE],default='off')
     p.add_argument('--failure-tail',action=argparse.BooleanOptionalAction,default=True,
                    help='Recording only: retain last10 SIM seconds own RGB on failure/interruption')
     a=p.parse_args();run(json.loads(a.plan.read_text())['episodes'][a.episode],a.out,a.dependency_root,
                          mode=a.mode,candidate=a.candidate,cap_s=a.cap_s,rendezvous=a.rendezvous,
-                         approach_repair=a.approach_repair,failure_tail=a.failure_tail,wall_layer=a.wall_layer)
+                         approach_repair=a.approach_repair,failure_tail=a.failure_tail,wall_layer=a.wall_layer,
+                         peer_yield=a.peer_yield)

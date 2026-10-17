@@ -1,0 +1,71 @@
+{
+  "task": "beampair8",
+  "released_utc": "2026-10-15T22:09:33.547714+00:00",
+  "lease_before": {
+    "task": "beampair8",
+    "pid": 405377,
+    "started": "2026-10-15T21:01:31.259565+00:00",
+    "expected_end": "bounded audit + tensor conversion + lossless archive verification",
+    "concurrency": 0,
+    "source_sha": "72c0e83dab384b4f7d4bb73e37e440e0d1b248f6",
+    "batch": "/home/ugrp/ugrp-sim/ops-reviews/beampair8/record200-72c0e83d",
+    "stage": "Mac summary retrieval/verification"
+  },
+  "owned_execution_processes": [],
+  "other_leases": {
+    "reloc18.json": {
+      "task": "reloc18",
+      "pid": 390487,
+      "started": "2026-10-15T21:18:36.408228+00:00",
+      "expected_end": "finite <=3 rounds, <=8 workers; analysis and retrieval",
+      "concurrency": 4,
+      "stage": "round2",
+      "source_sha": "46dd7ec3048a50a5443b2d61b0dece462e43b763",
+      "pids": [
+        390718,
+        390723,
+        390724,
+        390726,
+        413141,
+        416491,
+        427578
+      ]
+    }
+  },
+  "other_ugrp_processes": [
+    {
+      "pid": 381419,
+      "binary": "python3",
+      "argv_prefix": [
+        "/home/ugrp/ugrp-sim/ops-reviews/reloc18/after-round1.py",
+        ""
+      ]
+    },
+    {
+      "pid": 390487,
+      "binary": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+      "argv_prefix": [
+        "/home/ugrp/ugrp-sim/src/46dd7ec3048a50a5443b2d61b0dece462e43b763/experiments/2026-10-16-reloc18/run_round.py",
+        "--round"
+      ]
+    },
+    {
+      "pid": 416492,
+      "binary": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+      "argv_prefix": [
+        "/home/ugrp/ugrp-sim/src/46dd7ec3048a50a5443b2d61b0dece462e43b763/experiments/2026-10-16-reloc18/run_round.py",
+        "--worker"
+      ]
+    },
+    {
+      "pid": 427579,
+      "binary": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+      "argv_prefix": [
+        "/home/ugrp/ugrp-sim/src/46dd7ec3048a50a5443b2d61b0dece462e43b763/experiments/2026-10-16-reloc18/run_round.py",
+        "--worker"
+      ]
+    }
+  ],
+  "vm_stop_attempted": false,
+  "reason": "other task leases/processes remain; VM left running under existing idle/budget guards"
+}

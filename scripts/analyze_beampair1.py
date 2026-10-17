@@ -27,6 +27,18 @@ def rejection_rows(result):
             min_gap_m=None,gap_scope='not_geometric; '+str(result.get('error') or terminal),
             candidate=dict(status=result.get('status'),cap_end=result.get('cap_end',False))))
     for rid,t in result.get('teachers',{}).items():
+        for event in t.get('peer_yield_connector_log',[]):
+            for c in event['candidates']:
+                if c['reason']!='connector_feasible':
+                    rows.append(dict(robot=rid,t=event['t'],population='reservation_escape_anchors',
+                        reason=c['reason'],reason_category=c['reason_category'],
+                        blocked_object=c['blocked_object'],min_gap_m=c['min_gap_m'],
+                        gap_scope=c['gap_scope'],candidate=c))
+            if not event['rest_path_found']:
+                rows.append(dict(robot=rid,t=event['t'],population='reservation_escape_routes',
+                    reason='no_escape_route',reason_category='no_escape_route',
+                    blocked_object='none:native_path_connectivity',min_gap_m=None,
+                    gap_scope='original bounded A* returned no continuation; geometric anchor rejections separate',candidate=event))
         for event in t.get('approach_progress_log', []):
             rows.append(dict(robot=rid,t=event['t'],population='approach_progress_events',
                 reason=event.get('reason') or 'progress_window_expired',
@@ -74,6 +86,15 @@ def candidate_funnels(result):
             'no_path','unsafe_body_sweep','band_not_visible','arm','endpoint_feasible',
             'connector','planning_budget','feasible')
     out={}
+    connectors=[e for t in result.get('teachers',{}).values() for e in t.get('peer_yield_connector_log',[])]
+    anchors=[c for e in connectors for c in e['candidates']]
+    out['reservation_escape_anchors']=dict(N=len(anchors),ordered_funnel=ordered_funnel(len(anchors),[
+        ('inside_planning_bounds',sum(c['reason']!='outside_bounds' for c in anchors)),
+        ('endpoint_clear',sum(c['reason'] not in ('outside_bounds','endpoint_blocked') for c in anchors)),
+        ('continuous_connector_clear',sum(c['reason']=='connector_feasible' for c in anchors))]))
+    out['reservation_escape_routes']=dict(N=len(connectors),ordered_funnel=ordered_funnel(len(connectors),[
+        ('selected_checked_anchor',sum(e['anchor'] is not None for e in connectors)),
+        ('native_continuation_found',sum(e['rest_path_found'] for e in connectors))]))
     waits=[e for t in result.get('teachers',{}).values() for e in t.get('rendezvous_log',[])
            if e['event']=='wait_candidate']
     out['rendezvous_wait_candidates']=dict(N=len(waits),
@@ -131,6 +152,12 @@ def analyze(root,out):
         entry['frame_funnel']=ordered_funnel(frame_N,[('any_assigned_probe',any_visible),
             ('meaningful_region_5_of_15',region_visible),('measurement_admitted_not_held',admitted)])
         entry['adapter_sha']=adapter['source_sha'];entry['dependency_sha']=adapter['dependency_sha']
+        entry['peer_yield']=adapter.get('peer_yield','off')
+        entry['reservation_population']={rid:dict(N=len(t.get('peer_yield_log',[])),
+            ordered_funnel=ordered_funnel(len(t.get('peer_yield_log',[])),[
+                ('outside_reserved_teal_destination',sum(not e['blocked'] for e in t.get('peer_yield_log',[])))]),
+            scope='constraint-query states; not candidate rejections or physical peer positions')
+            for rid,t in result.get('teachers',{}).items()}
         entry['candidate']=adapter['candidate'];entry['held_object_hidden_v1']=adapter['held_object_hidden_v1']
         entry['hidden_measurement_ticks']=adapter['hidden_measurement_ticks']
         entry['held_world_reads']=adapter['held_world_reads']
@@ -190,6 +217,7 @@ def analyze(root,out):
     dump(out/'rejection-table.json',dict(schema='ugrp.beampair1.funnel.v1',source_sha=batch['source_sha'],
         raw_root=str(root),episode_funnel=funnel,reason_distribution=dict(reasons),blocked_objects=dict(blocker_counts),
         candidate_populations={e['raw']:e['candidate_populations'] for e in episodes},
+        reservation_state_populations={e['raw']:e['reservation_population'] for e in episodes},
         frame_populations={e['raw']:e['frame_funnel'] for e in episodes},
         event_populations={e['raw']:e['event_funnel'] for e in episodes},
         rendezvous_event_populations={e['raw']:e['rendezvous_event_funnel'] for e in episodes},

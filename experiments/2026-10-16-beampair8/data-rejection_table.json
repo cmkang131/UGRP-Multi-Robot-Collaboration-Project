@@ -1,0 +1,162 @@
+{
+  "funnel": [
+    {
+      "gate": "planned",
+      "entered": 200,
+      "passed": 200,
+      "rejected": 0
+    },
+    {
+      "gate": "teacher_success",
+      "entered": 200,
+      "passed": 185,
+      "rejected": 15
+    },
+    {
+      "gate": "input_camera_clock_sha",
+      "entered": 185,
+      "passed": 185,
+      "rejected": 0
+    }
+  ],
+  "failures": [
+    {
+      "seed": 8328015,
+      "episode": 15,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328015-72c0e83d",
+      "exit": 0,
+      "category": "teacher_failure",
+      "admitted": false,
+      "sim_s": 30.300000000062074
+    },
+    {
+      "seed": 8328010,
+      "episode": 10,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328010-72c0e83d",
+      "exit": 0,
+      "category": "teacher_failure",
+      "admitted": false,
+      "sim_s": 39.500000000106006
+    },
+    {
+      "seed": 8328036,
+      "episode": 36,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328036-72c0e83d",
+      "exit": 0,
+      "category": "teacher_failure",
+      "admitted": false,
+      "sim_s": 56.80000000018861
+    },
+    {
+      "seed": 8328038,
+      "episode": 38,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328038-72c0e83d",
+      "exit": 0,
+      "category": "teacher_failure",
+      "admitted": false,
+      "sim_s": 54.200000000176196
+    },
+    {
+      "seed": 8328052,
+      "episode": 52,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328052-72c0e83d",
+      "exit": 0,
+      "category": "cap_end",
+      "admitted": false,
+      "sim_s": 60.00000000020389
+    },
+    {
+      "seed": 8328061,
+      "episode": 61,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328061-72c0e83d",
+      "exit": 0,
+      "category": "teacher_failure",
+      "admitted": false,
+      "sim_s": 45.80000000013609
+    },
+    {
+      "seed": 8328068,
+      "episode": 68,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328068-72c0e83d",
+      "exit": 0,
+      "category": "teacher_failure",
+      "admitted": false,
+      "sim_s": 10.399999999994057
+    },
+    {
+      "seed": 8328122,
+      "episode": 122,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328122-72c0e83d",
+      "exit": 0,
+      "category": "cap_end",
+      "admitted": false,
+      "sim_s": 60.00000000020389
+    },
+    {
+      "seed": 8328128,
+      "episode": 128,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328128-72c0e83d",
+      "exit": 0,
+      "category": "cap_end",
+      "admitted": false,
+      "sim_s": 60.00000000020389
+    },
+    {
+      "seed": 8328168,
+      "episode": 168,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328168-72c0e83d",
+      "exit": 0,
+      "category": "teacher_failure",
+      "admitted": false,
+      "sim_s": 11.29999999999196
+    },
+    {
+      "seed": 8328183,
+      "episode": 183,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328183-72c0e83d",
+      "exit": 0,
+      "category": "teacher_failure",
+      "admitted": false,
+      "sim_s": 9.499999999996154
+    },
+    {
+      "seed": 8328195,
+      "episode": 195,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328195-72c0e83d",
+      "exit": 0,
+      "category": "cap_end",
+      "admitted": false,
+      "sim_s": 60.00000000020389
+    },
+    {
+      "seed": 8328152,
+      "episode": 152,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328152-72c0e83d",
+      "exit": 0,
+      "category": "teacher_failure",
+      "admitted": false,
+      "sim_s": 8.599999999998252
+    },
+    {
+      "seed": 8328198,
+      "episode": 198,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328198-72c0e83d",
+      "exit": 0,
+      "category": "cap_end",
+      "admitted": false,
+      "sim_s": 60.00000000020389
+    },
+    {
+      "seed": 8328188,
+      "episode": 188,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328188-72c0e83d",
+      "exit": 0,
+      "category": "cap_end",
+      "admitted": false,
+      "sim_s": 22.000000000022442
+    }
+  ],
+  "source_batch": "/home/ugrp/ugrp-sim/ops-reviews/beampair8/record200-72c0e83d",
+  "reproduce": "/home/ugrp/ugrp-sim/ops-reviews/beampair8/prepare_dataset.py --batch /home/ugrp/ugrp-sim/ops-reviews/beampair8/record200-72c0e83d --output /home/ugrp/ugrp-sim/ops-reviews/beampair8/dataset-v1 --heldout /home/ugrp/ugrp-sim/ops-reviews/beampair8/heldout-plan.json --convert",
+  "constants_basis": "5 probes and1e-5s from existing teacher/paired_segments; no new eligibility thresholds"
+}
