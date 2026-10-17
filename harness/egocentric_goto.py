@@ -80,6 +80,64 @@ ZONE_MARKING_MIN_OBSERVED_AREA_M2 = .10
 TURN_RAD_PER_PULSE_MEDIAN = 0.10603575778058376
 TURN_RAD_PER_PULSE_P10 = 0.10271914804372737
 
+# Default-off far sub-gate candidate (``egonav_far_candidate_v1``).  The static
+# far-measure probe on gcp4 (4 authored starts, 100 ticks each, own RGB only)
+# measured the true zone marking at 0.842-0.903 m^2 (2.0 m), 0.822-0.893 m^2
+# (3.0 m) and 0.378-0.442 m^2 (3.94 m), all far above the 0.10 m^2 birth gate;
+# at 4.90 m the marking was outside the floor-projection max_range_m=4.0 and
+# the only sub-gate patch was red cargo at 1.32 m (0.00917-0.00957 m^2, hue 1).
+# The per-world static area max/min ratio over 100 ticks was <=1.169, so the
+# 1.25 growth threshold sits above the measured static noise.  True patches
+# were present on 100/100 ticks; 5 frames (0.5 s) is a minimal persistence
+# window well below that.
+#
+# Hue reference: the task map's declared zone-A marking colour, not a live
+# observation.  maps/zones/zone_wide_door_geometry_v3.json regions.zone_A.rgba
+# is ".95 .45 .10 .30"; RGB (0.95, 0.45, 0.10) converts to OpenCV hue 12.3529
+# (uint8 12).  This is a fixed task label, so a candidate can be judged before
+# the first 0.10 m^2 confirmation (the earlier observed-confirmation reference
+# made the toggle inert on fresh far starts: world3 logged only
+# hue_reference_unavailable).  Tolerance 1.35 = |12.3529 - 11|: the true
+# marking's per-tick uint8 hue medians were exactly 12 with p10 12 / p90 13 on
+# 100/100 ticks at 2.0/3.0/3.94 m, so integer hues 11-13 are inside the class;
+# hue 14 and the red cargo class (kind red ".80 .12 .10" -> hue 1) are outside.
+# Raw: outputs/egonav-far/far-measure-02 (VM far-measure-02).
+#
+# A candidate never creates memory, never sets seen_target/done and never
+# drives forward: it can only select the sign of the in-place search turn, so
+# confirmation/arrival stay owned by the 0.10 m^2 gate.
+FAR_CANDIDATE_OPTION = 'egonav_far_candidate_v1'
+FAR_CANDIDATE_MIN_FRAMES = 5
+DECLARED_TARGET_HUE = 12.352941176470589
+DECLARED_TARGET_HUE_TOLERANCE = 1.35
+FAR_CANDIDATE_AREA_GROWTH_RATIO = 1.25
+FAR_CANDIDATE_MAX_AGE_S = 1.
+
+
+def hue_distance(a, b):
+    """Circular distance on OpenCV's 0..179 hue wheel."""
+    difference = abs(float(a)-float(b))
+    return min(difference, 180.-difference)
+
+
+def issued_forward(command):
+    """True iff the previously issued wheel pulse has net forward duty.
+
+    Turn pulses cancel across wheels (left/right opposite signs), so their
+    duration-weighted sum is zero; forward pulses sum positive.  Uses only the
+    controller's own issued command, never pose or contact.
+    """
+    if not isinstance(command, dict):
+        return False
+    try:
+        wheels = [float(w) for w in command['wheels']]
+        durations = [float(d) for d in command['duration_s']]
+    except (KeyError, TypeError, ValueError):
+        return False
+    if not wheels or len(wheels) != len(durations):
+        return False
+    return math.fsum(w*d for w, d in zip(wheels, durations)) > 0.
+
 
 def wrap(angle):
     return math.atan2(math.sin(angle), math.cos(angle))
@@ -156,11 +214,30 @@ class EgocentricGoto:
                  target_kind=TARGET_KIND,
                  target_signature=TARGET_SIGNATURE, footprint_radius_m,
                  arrival_radius_m=ARRIVAL_RADIUS_M,
-                 heading_tolerance_rad=HEADING_TOLERANCE_RAD):
+                 heading_tolerance_rad=HEADING_TOLERANCE_RAD,
+                 far_candidate=False,
+                 declared_target_hue=DECLARED_TARGET_HUE,
+                 declared_target_hue_tolerance=DECLARED_TARGET_HUE_TOLERANCE):
         if option not in ('off', OPTION):
             raise ValueError('UNKNOWN_EGOCENTRIC_GOTO_OPTION')
         if wall_memory not in ('off', WALL_OPTION):
             raise ValueError('UNKNOWN_EGONAV_WALL_MEMORY_OPTION')
+        if not isinstance(far_candidate, (bool, np.bool_)):
+            raise ValueError('INVALID_FAR_CANDIDATE_FLAG')
+        if declared_target_hue is not None:
+            try:
+                declared_target_hue = float(declared_target_hue)
+            except (TypeError, ValueError):
+                raise ValueError('INVALID_DECLARED_TARGET_HUE')
+            if not math.isfinite(declared_target_hue) or not 0 <= declared_target_hue < 180:
+                raise ValueError('INVALID_DECLARED_TARGET_HUE')
+        try:
+            declared_target_hue_tolerance = float(declared_target_hue_tolerance)
+        except (TypeError, ValueError):
+            raise ValueError('INVALID_DECLARED_TARGET_HUE_TOLERANCE')
+        if (not math.isfinite(declared_target_hue_tolerance)
+                or declared_target_hue_tolerance < 0):
+            raise ValueError('INVALID_DECLARED_TARGET_HUE_TOLERANCE')
         if not math.isfinite(footprint_radius_m) or footprint_radius_m <= 0:
             raise ValueError('OWN_FOOTPRINT_REQUIRED')
         if not math.isfinite(arrival_radius_m) or arrival_radius_m < 0:
@@ -170,6 +247,11 @@ class EgocentricGoto:
         self.enabled = option == OPTION
         self.target_kind = target_kind
         self.target_signature = target_signature
+        self.far_candidate = bool(far_candidate)
+        self.far_candidate_state = None
+        self.declared_target_hue = declared_target_hue
+        self.declared_target_hue_tolerance = declared_target_hue_tolerance
+        self.confirmed_hue = None
         self.footprint_radius_m = float(footprint_radius_m)
         self.arrival_radius_m = float(arrival_radius_m)
         # Derived from the actual calibrated pulse, never a fitted threshold:
@@ -239,6 +321,92 @@ class EgocentricGoto:
                                 blocked_object=blocked_object,
                                 minimum_gap_m=None if minimum_gap_m is None else float(minimum_gap_m),
                                 gap_status=gap_status, t=float(t), stage=self.stage, **extra))
+
+    def _far_event(self, reason, t, state, reason_category, **extra):
+        """Candidate ledger: every row carries reason/blocked_object/min_gap."""
+        self._event(reason, blocked_object='orange_object_below_zone_marking_area',
+                    minimum_gap_m=None, gap_status='not_measured', t=t,
+                    toggle=FAR_CANDIDATE_OPTION, reason_category=reason_category,
+                    observed_area_m2=state.get('last_area'),
+                    first_area_m2=state.get('first_area'),
+                    frames=state.get('frames'), hue=state.get('hue'),
+                    declared_hue=self.declared_target_hue,
+                    declared_tolerance=self.declared_target_hue_tolerance,
+                    confirmed_hue=self.confirmed_hue,
+                    forward_approach=bool(state.get('forward_approach')), **extra)
+
+    def _far_candidate(self, t, command, rejected_markings):
+        """Track one below-gate orange patch; return it only after (a)(b)(c).
+
+        Inputs are the same own-RGB observations already rejected by the birth
+        gate and the own previously issued command.  Candidates never enter
+        memory and never decide arrival; a returned candidate may only select
+        the sign of the in-place search turn.
+        """
+        if not self.far_candidate:
+            return None
+        forward = issued_forward(command)
+        candidates = []
+        for obs in rejected_markings:
+            xy = np.asarray(obs.get('relative_xy_m', []), float)
+            if xy.shape != (2,) or not np.isfinite(xy).all():
+                continue
+            try:
+                area = float(obs.get('observed_area_m2'))
+            except (TypeError, ValueError):
+                continue
+            if math.isfinite(area) and area > 0:
+                candidates.append((area, obs, xy))
+        state = self.far_candidate_state
+        if not candidates:
+            if state is not None and t-state['last_t'] > FAR_CANDIDATE_MAX_AGE_S:
+                self._far_event('far_candidate_expired', t, state, 'stale')
+                self.far_candidate_state = None
+            return None
+        area, obs, xy = max(candidates, key=lambda value: value[0])
+        try:
+            hue = None if obs.get('hue') is None else float(obs.get('hue'))
+        except (TypeError, ValueError):
+            hue = None
+        if state is None or t-state['last_t'] > FAR_CANDIDATE_MAX_AGE_S:
+            state = dict(first_t=float(t), last_t=float(t), first_area=area,
+                         last_area=area, frames=1, hue=hue,
+                         relative_xy_m=xy.tolist(), forward_approach=False,
+                         accepted=False, last_reason=None, logged_sign=None)
+            self.far_candidate_state = state
+            self._far_event('far_candidate_tracking', t, state, 'tracking')
+            return None
+        state['last_t'] = float(t)
+        state['last_area'] = area
+        state['relative_xy_m'] = xy.tolist()
+        state['frames'] += 1
+        state['forward_approach'] = bool(state['forward_approach'] or forward)
+        if hue is None:
+            reason = 'hue_not_measured'
+        elif self.declared_target_hue is None:
+            # Fail-closed only when the task/detector profile declares no
+            # target hue class; an accepted-observation reference is not used.
+            reason = 'hue_reference_unavailable'
+        elif hue_distance(hue, self.declared_target_hue) > self.declared_target_hue_tolerance:
+            reason = 'hue_mismatch'
+        elif state['frames'] < FAR_CANDIDATE_MIN_FRAMES:
+            reason = 'persistence'
+        elif not state['forward_approach']:
+            reason = 'no_forward_approach'
+        elif area < state['first_area']*FAR_CANDIDATE_AREA_GROWTH_RATIO:
+            reason = 'no_area_growth'
+        else:
+            reason = None
+        if reason is not None:
+            state['accepted'] = False
+            if state['last_reason'] != reason:
+                self._far_event('far_candidate_rejected', t, state, reason)
+                state['last_reason'] = reason
+            return None
+        if not state['accepted']:
+            state['accepted'] = True
+            self._far_event('far_candidate_accepted', t, state, 'accepted')
+        return state
 
     @staticmethod
     def _validate_memories(memories):
@@ -563,6 +731,18 @@ class EgocentricGoto:
                            if o.get('kind') == self.target_kind
                            and o.get('signature') == self.target_signature]
         observations = self._zone_marking_observations(observations)
+        accepted_hues = []
+        for o in observations:
+            try:
+                value = float(o.get('hue'))
+            except (TypeError, ValueError):
+                continue
+            if math.isfinite(value):
+                accepted_hues.append(value)
+        if accepted_hues:
+            # Diagnostic only: recorded in the ledger.  The far candidate judges
+            # against DECLARED_TARGET_HUE, never against live observations.
+            self.confirmed_hue = float(np.median(accepted_hues))
         # Recording-only this round: wall segments go to a separate store and
         # never into the goal/clearance/action path.
         wall_observations = (self._wall_segment_observations(scan)
@@ -630,6 +810,7 @@ class EgocentricGoto:
             self.search_steps = 0
             points = self._obstacle_points(scan, obstacles)
             return self._target_action(target, observation, points, t)
+        candidate = self._far_candidate(t, command, rejected_markings)
         self.stage = 'search'
         self.search_steps += 1
         if self.search_steps > self.search_limit:
@@ -640,8 +821,16 @@ class EgocentricGoto:
         if self.search_steps == 1:
             self._event('search_started', blocked_object='not_observed',
                         minimum_gap_m=None, gap_status='not_measured', t=t)
-        return self._action([0., 0., float(self.search_sign)], t, 'search',
-                            0., math.inf)
+        sign = float(self.search_sign)
+        if candidate is not None:
+            bearing = math.atan2(float(candidate['relative_xy_m'][1]),
+                                 float(candidate['relative_xy_m'][0]))
+            sign = 1. if bearing > 0. else -1.
+            if candidate.get('logged_sign') != sign:
+                self._far_event('far_candidate_turn', t, candidate, 'accepted',
+                                bearing_rad=bearing, turn_sign=sign)
+                candidate['logged_sign'] = sign
+        return self._action([0., 0., sign], t, 'search', 0., math.inf)
 
     def context(self):
         memories = self.memories

@@ -260,8 +260,9 @@ def build(run: Path, world: int, out: Path, fps: int, width: int) -> dict:
     setup_path = run/'setup.json'
     if setup_path.is_file():
         try:
-            spawn = (json.loads(setup_path.read_text()).get('worlds') or [{}])[0].get('r1')
-        except (OSError, ValueError, IndexError):
+            worlds = json.loads(setup_path.read_text()).get('worlds') or []
+            spawn = worlds[world].get('r1') if world < len(worlds) else None
+        except (OSError, ValueError, IndexError, KeyError):
             spawn = None
     meta = dict(
         source_run=str(run), world=world, spawn=spawn,

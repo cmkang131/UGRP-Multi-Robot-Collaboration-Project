@@ -1,0 +1,173 @@
+{
+  "schema": "ugrp.experiment.run_summary.v1",
+  "experiment": "2026-10-17-egonav",
+  "run": "far-diag-range-01",
+  "condition": {
+    "flow": "self_map",
+    "mode": "detect_probe_static_hold_zero_wheels",
+    "source_sha": "c4256a3fbe8027cb2826f2015d11e8cf8db4c9e2",
+    "host": "ugrp-act-l4-gcp4.asia-northeast3-a.c.ugrp-sim-d-1016.internal",
+    "gcp_project": "ugrp-sim-d-1016",
+    "scene_plan": "s1_normal_mixed_v7",
+    "seed": 20261017,
+    "nworld": 4,
+    "step_budget": 100,
+    "sim_s": 9.9,
+    "detector_max_range_m": 10.0,
+    "detector_downward_min": 0.05,
+    "control_default_unchanged": {
+      "max_range_m": 4.0,
+      "minimum_observed_area_m2": 0.1
+    },
+    "evaluation_only": true,
+    "control_use": false,
+    "authored_starts_m": [
+      4.0,
+      4.5,
+      5.0,
+      5.5
+    ],
+    "input_audit": {
+      "held_world_reads": 0,
+      "top_camera_control": false,
+      "static_map_control": 0,
+      "truth_control": 0,
+      "wheel_commands": 0
+    }
+  },
+  "raw": {
+    "vm": "/home/ugrp/ugrp-sim/runs/egonav/far-diag-range-01",
+    "mac_local": "experiments/2026-10-17-egonav/raw/far-diag-range-01",
+    "mac_committed": true,
+    "sha256sums_verified": "21/21",
+    "detect_probe_json_sha256": "ed9e5fa7db92f66c4b2f97b655eba5fe37698cf30d2c6998cf3b77cc18841b81",
+    "sha256sums_json_sha256": "8a7ef7f347b5bef019b83386485a6ee47cfcba31d85474aba535ca06a7bbbc1d",
+    "frames": "detect_probe/frames 12장(각 세계 tick 0/50/99)",
+    "vm_status_after": "TERMINATED 2026-10-18 01:28 KST, lease(egonav.json) removed, 0 run processes"
+  },
+  "recount": {
+    "script": "scripts/egonav_far_diag_recount.py",
+    "output": "experiments/2026-10-17-egonav/recount_far_diag_range_01.json",
+    "stack_check": "experiments/2026-10-17-egonav/stack_check_far-diag-range-01.json (ok true)"
+  },
+  "results_zone_marking": {
+    "4.0m": {
+      "total_ticks": 100,
+      "detected": 1,
+      "stable_ticks": 99,
+      "stable_detected": 0,
+      "stable_rejections": {
+        "metric_size": 99
+      },
+      "tick0_only": true,
+      "tick0_area_m2": 0.5306,
+      "tick0_pixels": 893,
+      "tick0_sides_m": [
+        0.681,
+        1.101
+      ]
+    },
+    "4.5m": {
+      "total_ticks": 100,
+      "detected": 100,
+      "stable_ticks": 99,
+      "stable_detected": 99,
+      "area_m2": {
+        "min": 0.1722,
+        "median": 0.1987,
+        "max": 0.4224
+      },
+      "pixels": {
+        "min": 237,
+        "median": 269,
+        "max": 533
+      },
+      "hue": {
+        "min": 12,
+        "median": 12,
+        "max": 12
+      },
+      "sides_m_median": [
+        0.447,
+        0.644
+      ]
+    },
+    "5.0m": {
+      "total_ticks": 100,
+      "detected": 0,
+      "other_accepted": {
+        "cargo_red_hue1": {
+          "range_m": 1.43,
+          "area_m2": 0.01,
+          "pixels": 397
+        }
+      }
+    },
+    "5.5m": {
+      "total_ticks": 100,
+      "detected": 0,
+      "other_accepted": {
+        "cargo_red_hue1": {
+          "range_m": 1.97,
+          "area_m2": 0.0117,
+          "pixels": 185
+        },
+        "cargo_yellow_hue25": {
+          "range_m": 1.29,
+          "area_m2": 0.0095,
+          "pixels": 526
+        }
+      }
+    }
+  },
+  "failure_mechanism": {
+    "category": "floor_projection_valid_region_grazing_cut",
+    "not": [
+      "minimum_observed_area_m2 gate",
+      "max_range_m clamp",
+      "min_pixels"
+    ],
+    "camera_height_m": 0.2309,
+    "downward_min": 0.05,
+    "valid_floor_pixels": 269137,
+    "floor_pixels": 307200,
+    "center_column_grazing_cut_range_m": 4.785,
+    "zone_corner_distance_from_camera_m": {
+      "4.0m": [
+        3.494,
+        4.356
+      ],
+      "4.5m": [
+        3.987,
+        4.852
+      ],
+      "5.0m": [
+        4.482,
+        5.348
+      ],
+      "5.5m": [
+        4.978,
+        5.845
+      ]
+    },
+    "hue_11_15_valid_fraction_tick50": {
+      "4.0m": "956/956",
+      "4.5m": "346/547",
+      "5.0m": "0/402",
+      "5.5m": "0/334"
+    },
+    "notes": "zone marking is present in the image at 5.0/5.5 m but every marking pixel lies outside the detector floor-projection valid region, so the mask excludes all of them; frames are JPEG and boundary counts shift a few pixels"
+  },
+  "verdict": {
+    "far_profile_promoted": false,
+    "decision": "no new far detection profile; keep control default max_range_m=4.0 and the 0.10 m2 birth gate; record 4.5 m as a single measured margin point",
+    "reason": "4.5 m holds (100/100, area 1.7-4.2x gate, hue 12) but 5.0/5.5 m collapse with zero zone-marking components; the collapse is a camera/floor-projection validity limit, not a threshold that a new profile could fix",
+    "six_meter_not_measured_reason": "farthest legal authored start along the door sight line is ~5.58 m (west wall inner face x=-1.025 m minus robot envelope radius 0.1582 m); the 4.785 m center-column validity cut makes 6.0 m undetectable anyway, so a 6.0 m run cannot change the verdict",
+    "not_pooled_with": [
+      "far-measure-02 (max_range_m=4.0)",
+      "gate-09 16-world gate",
+      "far-probe off-03/on-03 (control probe)",
+      "far-visual-01 (record-only video)"
+    ]
+  }
+}

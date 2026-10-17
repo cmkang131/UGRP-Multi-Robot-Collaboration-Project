@@ -3,7 +3,8 @@ import numpy as np
 import pytest
 
 from harness.egocentric_goto import (
-    OPTION, SCHEMA, WALL_KIND, WALL_OPTION, EgocentricGoto, command_delta, duty,
+    DECLARED_TARGET_HUE, OPTION, SCHEMA, WALL_KIND, WALL_OPTION, EgocentricGoto,
+    command_delta, duty,
     point_covariance)
 
 
@@ -110,6 +111,112 @@ def test_small_orange_object_cannot_birth_or_steer_the_target_memory():
     assert action['kind'] == 'search' and not no_area.memories
     action = c.step(.1, None, [observation([2., 0.], area=.6)])
     assert action['kind'] == 'forward' and len(c.memories) == 1
+
+
+def far_observation(xy, area, hue):
+    item = observation(xy, area=area)
+    item.update(hue=hue, pixels=200)
+    return item
+
+
+def far_reasons(controller):
+    return [e['reason'] for e in controller.events
+            if e['reason'].startswith('far_candidate')]
+
+
+def test_far_candidate_default_off_is_inert():
+    c = EgocentricGoto(option=OPTION, footprint_radius_m=.12)
+    for i in range(8):
+        action = c.step(.1*i, forward_command() if i else None,
+                        [far_observation([-1., -.2], .02+.01*i, 12)])
+    assert action['kind'] == 'search' and action['drive'] == [0., 0., 1.]
+    assert not c.memories and not c.done and c.far_candidate_state is None
+    assert far_reasons(c) == []
+    with pytest.raises(ValueError, match='INVALID_FAR_CANDIDATE_FLAG'):
+        EgocentricGoto(option=OPTION, footprint_radius_m=.12,
+                       far_candidate='yes')
+
+
+def test_far_candidate_fails_closed_without_a_declared_hue_class():
+    # Fail-closed only when the task/detector profile declares no target hue
+    # class; an observed confirmation is never required and never used.
+    c = EgocentricGoto(option=OPTION, footprint_radius_m=.12, far_candidate=True,
+                       declared_target_hue=None)
+    for i in range(8):
+        action = c.step(.1*i, forward_command() if i else None,
+                        [far_observation([-1., -.2], .02+.01*i, 12)])
+    assert action['kind'] == 'search' and not c.memories and not c.done
+    assert 'far_candidate_accepted' not in far_reasons(c)
+    assert 'far_candidate_turn' not in far_reasons(c)
+    rejected = [e for e in c.events if e['reason'] == 'far_candidate_rejected']
+    assert rejected and rejected[-1]['reason_category'] == 'hue_reference_unavailable'
+    assert rejected[-1]['blocked_object'] == 'orange_object_below_zone_marking_area'
+    assert rejected[-1]['minimum_gap_m'] is None
+    assert rejected[-1]['gap_status'] == 'not_measured'
+    with pytest.raises(ValueError, match='INVALID_DECLARED_TARGET_HUE'):
+        EgocentricGoto(option=OPTION, footprint_radius_m=.12, far_candidate=True,
+                       declared_target_hue=200.)
+    with pytest.raises(ValueError, match='INVALID_DECLARED_TARGET_HUE_TOLERANCE'):
+        EgocentricGoto(option=OPTION, footprint_radius_m=.12, far_candidate=True,
+                       declared_target_hue_tolerance=-1.)
+
+
+def test_far_candidate_is_only_a_search_turn_hint():
+    # The declared task-map hue class is available before any confirmation.
+    c = EgocentricGoto(option=OPTION, footprint_radius_m=.12, far_candidate=True)
+    for i in range(4):
+        action = c.step(.1*i, forward_command() if i else None,
+                        [far_observation([-1., -.2], .02, 12)])
+    assert action['drive'] == [0., 0., 1.] and 'far_candidate_accepted' not in far_reasons(c)
+    action = c.step(.4, forward_command(), [far_observation([-1., -.2], .03, 12)])
+    assert action['kind'] == 'search' and action['drive'] == [0., 0., -1.]
+    assert 'far_candidate_accepted' in far_reasons(c)
+    turn = [e for e in c.events if e['reason'] == 'far_candidate_turn'][-1]
+    assert turn['turn_sign'] == -1 and turn['hue'] == 12
+    assert turn['declared_hue'] == pytest.approx(DECLARED_TARGET_HUE)
+    assert turn['confirmed_hue'] is None
+    assert turn['blocked_object'] == 'orange_object_below_zone_marking_area'
+    assert turn['minimum_gap_m'] is None and turn['gap_status'] == 'not_measured'
+    assert not c.memories and not c.done and c.seen_target is False
+
+
+def test_far_candidate_uses_the_declared_hue_class_not_observations():
+    # The old defect: no accepted marking yet -> hue_reference_unavailable.
+    # Now a red-cargo patch (hue 1) is rejected against the declared orange
+    # class even if some earlier observation had set confirmed_hue to 1.
+    c = EgocentricGoto(option=OPTION, footprint_radius_m=.12, far_candidate=True)
+    c.confirmed_hue = 1.
+    for i in range(6):
+        c.step(.1*i, forward_command() if i else None,
+               [far_observation([-1., -.2], .02+.002*i, 1)])
+    rejected = [e for e in c.events if e['reason'] == 'far_candidate_rejected']
+    assert rejected[-1]['reason_category'] == 'hue_mismatch'
+    assert rejected[-1]['hue'] == 1 and rejected[-1]['frames'] >= 2
+    assert rejected[-1]['declared_hue'] == pytest.approx(DECLARED_TARGET_HUE)
+    # Hue 13 is the measured p90 of the true marking, inside the class.
+    edge = EgocentricGoto(option=OPTION, footprint_radius_m=.12, far_candidate=True)
+    for i in range(6):
+        edge.step(.1*(i+1), forward_command() if i else None,
+                  [far_observation([-1., -.2], .02+.002*i, 13)])
+    rejected = [e for e in edge.events if e['reason'] == 'far_candidate_rejected']
+    assert rejected[-1]['reason_category'] != 'hue_mismatch'
+
+
+def test_far_candidate_rejection_reasons_are_distinct():
+    static = EgocentricGoto(option=OPTION, footprint_radius_m=.12, far_candidate=True)
+    for i in range(6):
+        static.step(.1*i, None, [far_observation([-1., -.2], .02+.002*i, 12)])
+    rejected = [e for e in static.events if e['reason'] == 'far_candidate_rejected']
+    assert rejected[-1]['reason_category'] == 'no_forward_approach'
+    assert rejected[-1]['forward_approach'] is False
+    cropped = EgocentricGoto(option=OPTION, footprint_radius_m=.12, far_candidate=True)
+    for i in range(6):
+        cropped.step(.1*i, forward_command() if i else None,
+                     [far_observation([-1., -.2], .02, 12)])
+    rejected = [e for e in cropped.events if e['reason'] == 'far_candidate_rejected']
+    assert rejected[-1]['reason_category'] == 'no_area_growth'
+    assert rejected[-1]['first_area_m2'] == pytest.approx(.02)
+    assert not cropped.memories and not cropped.done
 
 
 
