@@ -83,7 +83,8 @@ def main() -> int:
                     ctrl[i] = closed
             d.ctrl[:] = ctrl
             start = d.qpos[box_qadr:box_qadr + 3].copy()
-            for _ in range(10):
+            settle_steps = int(round(1.0 / float(m.opt.timestep)))
+            for _ in range(settle_steps):
                 mujoco.mj_step(m, d)
             after = d.qpos[box_qadr:box_qadr + 3].copy()
             gs_after = d.site_xpos[gs_id].copy()
@@ -96,6 +97,7 @@ def main() -> int:
                 box_to_grip_site_m=round(float(np.linalg.norm(after - gs_after)), 5),
                 box_z_after_m=round(float(after[2]), 4),
                 gripper_closed_joint_target=float(closed),
+                settle_steps=settle_steps,
                 settle_ok=bool(np.linalg.norm(after - start) < 0.02),
             ))
     out = dict(schema='ugrp.crossroom_carry.stageB_settle_check.v1',

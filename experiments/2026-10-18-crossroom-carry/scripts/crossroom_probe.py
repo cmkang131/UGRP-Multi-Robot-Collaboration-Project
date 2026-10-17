@@ -421,14 +421,15 @@ def run(a):
                     ctrl[i] = closed
             d.ctrl[:] = ctrl
             start_box = d.qpos[box_qadr:box_qadr + 3].copy()
-            for _ in range(int(round(HZ))):
+            settle_steps = int(round(1.0 / float(m.opt.timestep)))
+            for _ in range(settle_steps):
                 mujoco.mj_step(m, d)
             disp = float(np.linalg.norm(d.qpos[box_qadr:box_qadr + 3] - start_box))
             d.ctrl[:] = 0.
             return dict(box_displacement_m=round(disp, 5),
                         box_pose_eval_only=[float(v) for v in d.qpos[box_qadr:box_qadr + 3]],
                         gripper_closed_joint_target=float(closed),
-                        settle_steps=int(round(HZ)))
+                        settle_steps=settle_steps)
         en = mujoco.mjtSleepPolicy
         m.tree_sleep_policy[:] = runtime_sleep_policy(
             m.tree_sleep_policy.copy(), auto=int(en.mjSLEEP_AUTO),
