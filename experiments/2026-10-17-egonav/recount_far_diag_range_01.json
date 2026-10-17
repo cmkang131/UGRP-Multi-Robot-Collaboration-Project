@@ -1,0 +1,604 @@
+{
+  "schema": "ugrp.egonav.far_diag_range_recount.v1",
+  "run": "far-diag-range-01",
+  "source_sha": "c4256a3fbe8027cb2826f2015d11e8cf8db4c9e2",
+  "host": "ugrp-act-l4-gcp4.asia-northeast3-a.c.ugrp-sim-d-1016.internal",
+  "mode": "static_hold_zero_wheels",
+  "evaluation_only": true,
+  "control_use": false,
+  "nworld": 4,
+  "step_budget": 100,
+  "sim_s": 9.9,
+  "target": {
+    "center_m": [
+      4.6,
+      0.4
+    ],
+    "half_m": [
+      0.3,
+      0.7
+    ],
+    "distance_definition": "robot chassis xy to authored zone center"
+  },
+  "detector_effective": [
+    "hue_low:0",
+    "hue_high:30",
+    "saturation_min:70",
+    "value_min:40",
+    "min_pixels:64",
+    "roi_top:0.0",
+    "downward_min:0.05",
+    "max_range_m:10.0",
+    "floor_saturation_max:128",
+    "floor_ring_min:0.35",
+    "cell_m:0.1",
+    "association_gap_m:0.3",
+    "minimum_solidity:0.3",
+    "minimum_observed_area_m2:0.005",
+    "temporal_overlap_min:0.35",
+    "temporal_center_max_m:0.1",
+    "known_region_width_m:0.6"
+  ],
+  "floor_valid_pixels": 269137,
+  "floor_pixels": 307200,
+  "floor_max_range_m": 10.0,
+  "downward_min": 0.05,
+  "noslip_iterations": 0,
+  "warp_noslip_iterations": 0,
+  "detect_probe_sha256": "ed9e5fa7db92f66c4b2f97b655eba5fe37698cf30d2c6998cf3b77cc18841b81",
+  "sha256sums": {
+    "file": "8a7ef7f347b5bef019b83386485a6ee47cfcba31d85474aba535ca06a7bbbc1d",
+    "verified": 21,
+    "missing": 0,
+    "bad": 0,
+    "problems": []
+  },
+  "worlds": [
+    {
+      "world": 0,
+      "spawn": [
+        0.684078,
+        -0.415817,
+        0.0,
+        0.205395
+      ],
+      "authored_distance_to_target_center_m": 4.0,
+      "tick_n": 100,
+      "detected_ticks": 1,
+      "zone_marking_ticks": 1,
+      "zone_marking_first_tick": 0,
+      "zone_marking_above_area_gate_ticks": 1,
+      "zone_area_m2": {
+        "n": 1,
+        "min": 0.5306413765410083,
+        "median": 0.5306413765410083,
+        "max": 0.5306413765410083
+      },
+      "zone_pixels": {
+        "n": 1,
+        "min": 893,
+        "median": 893,
+        "max": 893
+      },
+      "zone_hue": {
+        "n": 1,
+        "min": 12.0,
+        "median": 12.0,
+        "max": 12.0
+      },
+      "zone_short_side_m": {
+        "n": 1,
+        "min": 0.6806793212890625,
+        "median": 0.6806793212890625,
+        "max": 0.6806793212890625
+      },
+      "zone_long_side_m": {
+        "n": 1,
+        "min": 1.1014719009399414,
+        "median": 1.1014719009399414,
+        "max": 1.1014719009399414
+      },
+      "zone_dist_to_zone_center_m": {
+        "n": 1,
+        "min": 0.221,
+        "median": 0.221,
+        "max": 0.221
+      },
+      "zone_world_xy_first": [
+        4.661,
+        0.612
+      ],
+      "other_patches_by_class": {},
+      "diagnostics": {
+        "accepted": 1,
+        "before_metric": 100,
+        "metric_size": 99
+      },
+      "tick_stages": {
+        "accepted_visible": 1,
+        "metric_size_only": 99
+      }
+    },
+    {
+      "world": 1,
+      "spawn": [
+        0.194588,
+        -0.517794,
+        0.0,
+        0.205395
+      ],
+      "authored_distance_to_target_center_m": 4.5,
+      "tick_n": 100,
+      "detected_ticks": 100,
+      "zone_marking_ticks": 100,
+      "zone_marking_first_tick": 0,
+      "zone_marking_above_area_gate_ticks": 100,
+      "zone_area_m2": {
+        "n": 100,
+        "min": 0.17217768395152788,
+        "median": 0.19869144164981378,
+        "max": 0.4223798727846404
+      },
+      "zone_pixels": {
+        "n": 100,
+        "min": 237,
+        "median": 269.0,
+        "max": 533
+      },
+      "zone_hue": {
+        "n": 100,
+        "min": 12.0,
+        "median": 12.0,
+        "max": 12.0
+      },
+      "zone_short_side_m": {
+        "n": 100,
+        "min": 0.4370376765727997,
+        "median": 0.4471207559108734,
+        "max": 0.5850662589073181
+      },
+      "zone_long_side_m": {
+        "n": 100,
+        "min": 0.5840734839439392,
+        "median": 0.643966555595398,
+        "max": 0.9139584302902222
+      },
+      "zone_dist_to_zone_center_m": {
+        "n": 100,
+        "min": 0.217,
+        "median": 0.219,
+        "max": 0.235
+      },
+      "zone_world_xy_first": [
+        4.659,
+        0.627
+      ],
+      "other_patches_by_class": {},
+      "diagnostics": {
+        "accepted": 100,
+        "before_metric": 100,
+        "small": 29
+      },
+      "tick_stages": {
+        "accepted_visible": 100
+      }
+    },
+    {
+      "world": 2,
+      "spawn": [
+        -0.294902,
+        -0.619771,
+        0.0,
+        0.205395
+      ],
+      "authored_distance_to_target_center_m": 5.0,
+      "tick_n": 100,
+      "detected_ticks": 100,
+      "zone_marking_ticks": 0,
+      "zone_marking_first_tick": null,
+      "zone_marking_above_area_gate_ticks": 0,
+      "zone_area_m2": {
+        "n": 0
+      },
+      "zone_pixels": {
+        "n": 0
+      },
+      "zone_hue": {
+        "n": 0
+      },
+      "zone_short_side_m": {
+        "n": 0
+      },
+      "zone_long_side_m": {
+        "n": 0
+      },
+      "zone_dist_to_zone_center_m": {
+        "n": 0
+      },
+      "zone_world_xy_first": [
+        1.099,
+        -0.871
+      ],
+      "other_patches_by_class": {
+        "cargo_red": {
+          "ticks": 100,
+          "patches": 100,
+          "hue": {
+            "n": 100,
+            "min": 1.0,
+            "median": 1.0,
+            "max": 1.0
+          },
+          "area_m2": {
+            "n": 100,
+            "min": 0.009545442163979345,
+            "median": 0.00999222410229006,
+            "max": 0.010044107740140973
+          },
+          "pixels": {
+            "n": 100,
+            "min": 394,
+            "median": 397.0,
+            "max": 399
+          },
+          "range_m": {
+            "n": 100,
+            "min": 1.4163546240188856,
+            "median": 1.4338953290064897,
+            "max": 1.435215199605185
+          },
+          "dist_to_zone_center_m": {
+            "n": 100,
+            "min": 3.709,
+            "median": 3.71,
+            "max": 3.725
+          }
+        }
+      },
+      "diagnostics": {
+        "accepted": 100,
+        "before_metric": 100
+      },
+      "tick_stages": {
+        "accepted_visible": 100
+      }
+    },
+    {
+      "world": 3,
+      "spawn": [
+        -0.784392,
+        -0.721748,
+        0.0,
+        0.205395
+      ],
+      "authored_distance_to_target_center_m": 5.5,
+      "tick_n": 100,
+      "detected_ticks": 100,
+      "zone_marking_ticks": 0,
+      "zone_marking_first_tick": null,
+      "zone_marking_above_area_gate_ticks": 0,
+      "zone_area_m2": {
+        "n": 0
+      },
+      "zone_pixels": {
+        "n": 0
+      },
+      "zone_hue": {
+        "n": 0
+      },
+      "zone_short_side_m": {
+        "n": 0
+      },
+      "zone_long_side_m": {
+        "n": 0
+      },
+      "zone_dist_to_zone_center_m": {
+        "n": 0
+      },
+      "zone_world_xy_first": [
+        1.146,
+        -0.863
+      ],
+      "other_patches_by_class": {
+        "cargo_red": {
+          "ticks": 100,
+          "patches": 100,
+          "hue": {
+            "n": 100,
+            "min": 1.0,
+            "median": 1.0,
+            "max": 1.0
+          },
+          "area_m2": {
+            "n": 100,
+            "min": 0.010786329599712374,
+            "median": 0.011699090074188234,
+            "max": 0.011964714460185988
+          },
+          "pixels": {
+            "n": 100,
+            "min": 181,
+            "median": 185.0,
+            "max": 188
+          },
+          "range_m": {
+            "n": 100,
+            "min": 1.9352481701263042,
+            "median": 1.969016004834627,
+            "max": 1.9734287510442827
+          },
+          "dist_to_zone_center_m": {
+            "n": 100,
+            "min": 3.643,
+            "median": 3.647,
+            "max": 3.678
+          }
+        },
+        "cargo_yellow": {
+          "ticks": 100,
+          "patches": 100,
+          "hue": {
+            "n": 100,
+            "min": 25.0,
+            "median": 25.0,
+            "max": 25.0
+          },
+          "area_m2": {
+            "n": 100,
+            "min": 0.009156625085941172,
+            "median": 0.009473946638300035,
+            "max": 0.009573836553574466
+          },
+          "pixels": {
+            "n": 100,
+            "min": 523,
+            "median": 526.0,
+            "max": 530
+          },
+          "range_m": {
+            "n": 100,
+            "min": 1.279589401771613,
+            "median": 1.2936990419321583,
+            "max": 1.2946883670218308
+          },
+          "dist_to_zone_center_m": {
+            "n": 100,
+            "min": 4.288,
+            "median": 4.289,
+            "max": 4.302
+          }
+        }
+      },
+      "diagnostics": {
+        "accepted": 200,
+        "before_metric": 200
+      },
+      "tick_stages": {
+        "accepted_visible": 100
+      }
+    }
+  ],
+  "notes": [
+    "zone_marking class = measured hue 10-16; zone A decal renders at hue 12 (rows: hue p10=p90=12 at 4.5 m). Truth never enters control.",
+    "other-patch classes are measured hues only: red cargo renders hue 1, yellow cargo hue 25 (frame sample p10-p90 24-28). Neither is a zone marking and neither is used for control.",
+    "world_xy/dist_to_zone_center_m are evaluation-only projections of the patch body-frame center with the recorded eval pose; at 4-5 m the frozen forward-floor projection bias is ~0.2 m, so use these only to label which authored zone the patch belongs to.",
+    "tick0 is rendered before the first physics step (initial camera pose); ticks 1-99 are the settled static hold. Split is explicit.",
+    "far-diag detector used max_range_m=10.0 (diagnostic only); the control default stays 4.0."
+  ],
+  "mechanism": {
+    "camera_v3_origin_body_m": [
+      0.1252,
+      0.0,
+      0.2309
+    ],
+    "valid_floor_pixels": 269137,
+    "floor_pixels": 307200,
+    "valid_fraction": 0.8761,
+    "first_row_valid_half_width": 58,
+    "center_column_grazing_cut_range_m": 4.785,
+    "max_valid_floor_range_m": 5.69,
+    "frames": {
+      "world00": {
+        "zone_corner_dist_from_camera_m": [
+          3.494,
+          3.798,
+          4.094,
+          4.356
+        ],
+        "tick0000": {
+          "hue_11_15_pixels": 928,
+          "valid_pixels": 928,
+          "valid_fraction": 1.0,
+          "valid_hue_world_dist_to_zone_center_m": [
+            0.029,
+            0.336,
+            0.905
+          ],
+          "valid_hue_world_xy_bbox": [
+            4.289,
+            5.074,
+            0.113,
+            1.171
+          ]
+        },
+        "tick0050": {
+          "hue_11_15_pixels": 956,
+          "valid_pixels": 956,
+          "valid_fraction": 1.0,
+          "valid_hue_world_dist_to_zone_center_m": [
+            0.029,
+            0.446,
+            1.009
+          ],
+          "valid_hue_world_xy_bbox": [
+            4.448,
+            5.289,
+            0.14,
+            1.224
+          ]
+        },
+        "tick0099": {
+          "hue_11_15_pixels": 931,
+          "valid_pixels": 931,
+          "valid_fraction": 1.0,
+          "valid_hue_world_dist_to_zone_center_m": [
+            0.029,
+            0.454,
+            1.018
+          ],
+          "valid_hue_world_xy_bbox": [
+            4.448,
+            5.289,
+            0.145,
+            1.224
+          ]
+        }
+      },
+      "world01": {
+        "zone_corner_dist_from_camera_m": [
+          3.987,
+          4.289,
+          4.587,
+          4.852
+        ],
+        "tick0000": {
+          "hue_11_15_pixels": 605,
+          "valid_pixels": 525,
+          "valid_fraction": 0.868,
+          "valid_hue_world_dist_to_zone_center_m": [
+            0.061,
+            0.327,
+            0.774
+          ],
+          "valid_hue_world_xy_bbox": [
+            4.391,
+            5.016,
+            0.178,
+            1.167
+          ]
+        },
+        "tick0050": {
+          "hue_11_15_pixels": 547,
+          "valid_pixels": 346,
+          "valid_fraction": 0.633,
+          "valid_hue_world_dist_to_zone_center_m": [
+            0.074,
+            0.376,
+            0.818
+          ],
+          "valid_hue_world_xy_bbox": [
+            4.516,
+            5.028,
+            0.192,
+            1.204
+          ]
+        },
+        "tick0099": {
+          "hue_11_15_pixels": 550,
+          "valid_pixels": 349,
+          "valid_fraction": 0.635,
+          "valid_hue_world_dist_to_zone_center_m": [
+            0.074,
+            0.376,
+            0.818
+          ],
+          "valid_hue_world_xy_bbox": [
+            4.47,
+            5.028,
+            0.178,
+            1.204
+          ]
+        }
+      },
+      "world02": {
+        "zone_corner_dist_from_camera_m": [
+          4.482,
+          4.782,
+          5.081,
+          5.348
+        ],
+        "tick0000": {
+          "hue_11_15_pixels": 421,
+          "valid_pixels": 69,
+          "valid_fraction": 0.164,
+          "valid_hue_world_dist_to_zone_center_m": [
+            0.129,
+            0.179,
+            0.637
+          ],
+          "valid_hue_world_xy_bbox": [
+            4.349,
+            4.521,
+            0.198,
+            0.99
+          ]
+        },
+        "tick0050": {
+          "hue_11_15_pixels": 402,
+          "valid_pixels": 0,
+          "valid_fraction": 0.0
+        },
+        "tick0099": {
+          "hue_11_15_pixels": 398,
+          "valid_pixels": 0,
+          "valid_fraction": 0.0
+        }
+      },
+      "world03": {
+        "zone_corner_dist_from_camera_m": [
+          4.978,
+          5.277,
+          5.576,
+          5.845
+        ],
+        "tick0000": {
+          "hue_11_15_pixels": 318,
+          "valid_pixels": 0,
+          "valid_fraction": 0.0
+        },
+        "tick0050": {
+          "hue_11_15_pixels": 334,
+          "valid_pixels": 0,
+          "valid_fraction": 0.0
+        },
+        "tick0099": {
+          "hue_11_15_pixels": 335,
+          "valid_pixels": 0,
+          "valid_fraction": 0.0
+        }
+      }
+    },
+    "notes": [
+      "valid mask = detector floor_intersections(downward_min=0.05, max_range_m=10.0) with the frozen camera_v3 mount; the detector masks out hue pixels outside this valid floor region, so this is the same geometry the run used.",
+      "frames are the recovered own-RGB JPEGs written at ticks 0/50/99; JPEG quantisation shifts borderline pixel counts by a few pixels."
+    ]
+  },
+  "verdict": {
+    "zone_marking_detected_ticks": {
+      "0": 1,
+      "1": 100,
+      "2": 0,
+      "3": 0
+    },
+    "zone_marking_detected_fraction": {
+      "0": 0.01,
+      "1": 1.0,
+      "2": 0.0,
+      "3": 0.0
+    },
+    "far_profile_promoted": false,
+    "decision": "4.0 m limit kept; no new far detection profile promotion",
+    "evidence": [
+      "4.5 m: zone marking accepted in 100/100 stable ticks with area above the 0.10 m2 birth gate; this is the measured edge.",
+      "5.0/5.5 m: 0/100 zone marking; only cargo (red hue 1, yellow hue 25) components are accepted, so no detection/area/hue evidence at those starts.",
+      "4.0 m: 1/100 accepted (tick0 initial camera pose only); stable ticks are metric_size rejections (footprint outside the 0.6 m known-width*1.2 gate).",
+      "5.0 m+ failure mechanism: zone-marking pixels lie outside the floor-projection valid region (downward_min=0.05 grazing cut at camera height 0.2309 m), not outside the area gate. A lower area threshold or sub-0.10 m2 candidate cannot recover them.",
+      "6.0 m is unmeasured: the farthest legal authored start along the door sight line is ~5.58 m (west wall inner face x=-1.025 minus robot envelope radius 0.1582 m), so 5.5 m was the farthest legal start; the grazing cut makes 6.0 m unreachable anyway, so its absence cannot change the verdict."
+    ],
+    "not_pooled_with": [
+      "far-measure-02 (max_range_m=4.0)",
+      "gate-09 16-world gate",
+      "far-probe off-03/on-03 (control probe)"
+    ]
+  }
+}

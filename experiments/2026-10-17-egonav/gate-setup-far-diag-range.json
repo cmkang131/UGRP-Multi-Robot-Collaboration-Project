@@ -1,0 +1,133 @@
+{
+  "schema": "ugrp.egonav.gate_setup.v1",
+  "flow": "self_map",
+  "scenario_id": "s1_normal_mixed_v7",
+  "seed": 20261017,
+  "end_color_scene": "grasp_act_teal_blue_v1",
+  "scene_plan": {
+    "spawns": {
+      "r1": [
+        0.684078,
+        -0.415817,
+        0.0,
+        0.205395
+      ],
+      "r2": [
+        -0.8,
+        -2.8,
+        0.0,
+        0.0
+      ],
+      "r3": [
+        -0.8,
+        1.15,
+        0.0,
+        0.0
+      ]
+    }
+  },
+  "base_spawns": {
+    "r1": [
+      0.684078,
+      -0.415817,
+      0.0,
+      0.205395
+    ],
+    "r2": [
+      -0.8,
+      -2.8,
+      0.0,
+      0.0
+    ],
+    "r3": [
+      -0.8,
+      1.15,
+      0.0,
+      0.0
+    ]
+  },
+  "worlds": [
+    {
+      "world": 0,
+      "r1": [
+        0.684078,
+        -0.415817,
+        0.0,
+        0.205395
+      ]
+    },
+    {
+      "world": 1,
+      "r1": [
+        0.194588,
+        -0.517794,
+        0.0,
+        0.205395
+      ]
+    },
+    {
+      "world": 2,
+      "r1": [
+        -0.294902,
+        -0.619771,
+        0.0,
+        0.205395
+      ]
+    },
+    {
+      "world": 3,
+      "r1": [
+        -0.784392,
+        -0.721748,
+        0.0,
+        0.205395
+      ]
+    }
+  ],
+  "step_budget": 100,
+  "detector": {
+    "hue_low": 0,
+    "hue_high": 30,
+    "saturation_min": 70,
+    "value_min": 40,
+    "min_pixels": 64,
+    "roi_top": 0.0,
+    "minimum_observed_area_m2": 0.005,
+    "minimum_solidity": 0.3,
+    "max_range_m": 10.0
+  },
+  "evaluation_only": {
+    "target_zone": "A",
+    "center_m": [
+      4.6,
+      0.4
+    ],
+    "half_m": [
+      0.3,
+      0.7
+    ],
+    "success_rule": "robot chassis xy inside authored zone A rectangle; no controller input",
+    "anchor": "first accepted own-RGB floor patch, world-fixed only for evaluation"
+  },
+  "far_measurement": {
+    "purpose": "diagnostic-only floor projection clamp unlock: patch presence/area/pixels/hue at 4.0/4.5/5.0/5.5 m to zone A center",
+    "mode": "static_hold_zero_wheels",
+    "evaluation_only": true,
+    "control_use": false,
+    "intended_distance_m": [
+      4.5,
+      5.0,
+      5.5,
+      6.0
+    ],
+    "authored_distance_m": [
+      4.0,
+      4.5,
+      5.0,
+      5.5
+    ],
+    "distance_definition": "robot chassis xy to authored zone A center; authored placement only",
+    "clamp_note": "detector.max_range_m=10.0 only in this diagnostic setup; control/default stays 4.0. 6.0 m to zone A center is outside the authored map along the door sight line: west wall inner face x=-1.025, envelope radius 0.1582 m -> max ~5.58 m; 5.5 m is the farthest tested legal start.",
+    "source_sha": "c4256a3fbe8027cb2826f2015d11e8cf8db4c9e2"
+  }
+}
