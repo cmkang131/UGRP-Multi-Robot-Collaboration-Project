@@ -396,15 +396,21 @@ did plateaued at x=1.68-1.70 (2.6-2.8 m from the zone).
 entered it, 75-79% of ticks were `exact_turn` and only 20-24% commanded
 forward, with 6-9 `_next_leg` calls (`search_leg_turn`, `leg_wall`) and net
 displacement 0.032-0.537 m against 1.679-2.429 m of path over 51-71 s.  The
-robot therefore circles in place near the walls instead of traversing east
-(e02/e04/e05 end 2.6-2.8 m from the zone; e03/e06/e07 end west of x=0.6).
-The wall branch in `_leg_forward` starts a 90 deg leg turn whenever a front
-wall is within 0.55 m and never backs away, so a wall-adjacent pose keeps
-re-triggering turns; this is a search-strategy/control defect, not a physics
-failure.  Per the instruction, additional runs wait; the largest cause is
-fixed before new candidates are submitted.  The mirror-pulse candidate is
-allowed to finish first because the leg turns use the unqualified right-turn
-pulse that candidate B calibrates, so it can change this behaviour.
+per-run timing shows this is the designed square search, not a wall
+re-trigger deadlock: each leg drives 19-27 ticks (1.9-3.1 s) and each 90 deg
+turn takes 69 ticks (6.9 s; 69 x 0.0244 rad/pulse ~= 96 deg, consistent with
+the yaw audit), i.e. 6-9 leg cycles with `leg_wall` firing at the end of each
+short leg because the start-bay walls are within 0.55 m.  Four equal legs
+close a small square near the start, which is why the net displacement stays
+0.03-0.54 m while 1.7-2.4 m of path is driven.  The search pattern is the
+defect: a leg of ~1.1 m with a ~7 s turn cannot cover the 2.6-4.4 m east
+distance (gap exit to zone) inside the 120 s cap; e02/e04/e05 end 2.6-2.8 m
+from the zone and e03/e06/e07 end west of x=0.6.  Per the instruction,
+additional runs wait; the largest cause is fixed before new candidates are
+submitted.  The mirror-pulse candidate finishes first because it is the
+already-queued paired condition; it changes only the own-motion prediction,
+not the issued command or the leg pattern, so it is not expected to fix this
+cause, but its result decides the next step.
 
 ## Files
 
