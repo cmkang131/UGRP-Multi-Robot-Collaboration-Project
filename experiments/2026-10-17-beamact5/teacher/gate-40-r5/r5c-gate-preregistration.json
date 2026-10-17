@@ -1,0 +1,35 @@
+{
+ "schema": "ugrp.beamact5.r5c_gate_preregistration.v1",
+ "written_before_run_utc": "2026-10-17T22:38:00Z",
+ "author": "beamact5 worker (DSH)",
+ "approved_by": "Lead (자율 진행: 38/40까지 r4/r5 반복)",
+ "scope": "r5c (r4c + open obstacle refresh chain) 39-world gate; world15 excluded from physical execution and counted expected FAIL (r3-approved deviation); 37 is the r1/r2 structural expected FAIL. Not pooled with r4/r1/r2/r3.",
+ "criterion": {
+  "nominal_denominator": 40,
+  "nominal_min_success": 38,
+  "executed_N": 39,
+  "rule": "at least 38 of 39 executed succeed (at most one non-15 failure); 37 expected fail -> exactly 38/40 = PASS at minimum",
+  "if_27_or_other_regression": "37/40 FAIL"
+ },
+ "stack": {
+  "root": "2bf32b5c61e5ee01cd310c86e8d7e5bff2e30cd7",
+  "adapter": "70ee51c4a9d6de1c022ebd4930700e31de9463f9",
+  "teacher": "850fbd2becfcb66cf15664e039916ddd53e6c75f",
+  "cases_sha256": "2f3052ed105482226d930a101cf0cbf494f5bdeac0bd7a2445df3d089a4303f4",
+  "plan_sha256": "f1a50e8c833c1da9113bdf8cff3844913380e3c821b15c072c0a23c0f54f5148"
+ },
+ "run": {
+  "out": "/home/ugrp/ugrp-sim/runs/beamact5/gate39-r5c-run",
+  "indices": "0-14,16-39",
+  "cap_s": 60,
+  "host": "ugrp-act-l4-gcp6"
+ },
+ "gate_runtime_decision": "launch only if the r5c 5-world run passes 6/10/20/27 (37 may fail as expected); otherwise this prereg is superseded with no gate result claimed.",
+ "not_claimed": [
+  "teacher success is not student success",
+  "no student recording/training",
+  "world15 unverified/excluded",
+  "37 structural label from r1/r2 not remeasured",
+  "no margin/cap change"
+ ]
+}
