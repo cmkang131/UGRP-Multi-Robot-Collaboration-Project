@@ -22,6 +22,24 @@ from act17_v7 import ROOT,B,Q,T,SCENARIOS,KINDS,scenario
 from act18_diagnose import write
 
 
+def live_queue_pid(previous,training):
+    """Find the actual act18_queue process for this training directory.
+
+    The lease pid is overwritten by this owner, so a restarted owner cannot
+    assume previous['pid'] is the trainer. Only a live cmdline that names both
+    act18_queue.py and the exact training directory is accepted.
+    """
+    candidates=[]
+    for entry in Path('/proc').glob('[0-9]*/cmdline'):
+        try:value=entry.read_text().replace('\0',' ')
+        except OSError:continue
+        if 'act18_queue.py' in value and str(training) in value:
+            candidates.append(int(entry.parent.name))
+    if len(candidates)!=1:
+        raise ValueError('exactly one live act18 queue owner required')
+    return candidates[0]
+
+
 def command(argv,log):
     with log.open('x') as stream:
         subprocess.run(argv,check=True,stdout=stream,stderr=subprocess.STDOUT,cwd=ROOT,
@@ -81,7 +99,7 @@ def main():
     write(a.out/'RUN_META.json',dict(classification='study',**{'class':'study'},pr=575,branch='codex/act18',sha=source,batch='act18-v7-r1'))
     lease=B/'leases/act18.json';previous=read(lease)
     if previous.get('task')!='act18':raise ValueError('owned lease required')
-    queue_pid=previous['pid']
+    queue_pid=live_queue_pid(previous,a.training)
     previous.update(pid=os.getpid(),queue_pid=queue_pid,active='post-training owner',expected_end='finite100k→TRAIN4→gatedVAL8→conditionalFINAL40→package',concurrency=0)
     write(lease,previous)
     report=dict(source_sha=source,host=host,status='waiting_training',complete=False,
