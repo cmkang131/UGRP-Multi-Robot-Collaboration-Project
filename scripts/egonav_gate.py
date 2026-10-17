@@ -23,8 +23,18 @@ import time
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def json_default(value):
+    """Record numpy scalars/arrays without admitting non-finite numbers."""
+    if isinstance(value, np.ndarray):
+        return value.tolist()
+    if isinstance(value, np.generic):
+        return value.item()
+    raise TypeError(f'NOT_JSON_SERIALIZABLE:{type(value).__name__}')
+
+
 def dump(path, value):
-    Path(path).write_text(json.dumps(value, indent=2, allow_nan=False, ensure_ascii=False)+'\n')
+    Path(path).write_text(json.dumps(value, indent=2, allow_nan=False,
+                                     ensure_ascii=False, default=json_default)+'\n')
 
 
 def sha(path):
