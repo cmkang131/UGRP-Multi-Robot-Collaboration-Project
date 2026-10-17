@@ -308,7 +308,8 @@ class EgocentricGoto:
         wheels, duration = duty(drive)
         return dict(kind=kind, drive=list(drive), wheels=list(wheels),
                     duration_s=list(duration), heading_error_rad=float(heading_error),
-                    target_range_m=float(distance), target_source=self.target_source,
+                    target_range_m=(float(distance) if math.isfinite(distance) else None),
+                    target_source=self.target_source,
                     stage=self.stage, t=float(t))
 
     def _stop(self, t, reason):

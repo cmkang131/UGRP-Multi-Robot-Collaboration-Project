@@ -74,4 +74,7 @@ def test_policy_turns_to_heading_and_refuses_blocked_forward_with_reason():
     assert event['blocked_object'] == 'observed_obstacle'
     assert event['minimum_gap_m'] == pytest.approx(.05, abs=.03)
     assert event['gap_status'] == 'measured'
+    searching = EgocentricGoto(option=OPTION, footprint_radius_m=.12)
+    action = searching.step(0., None, [])
+    assert action['kind'] == 'search' and action['target_range_m'] is None
 
