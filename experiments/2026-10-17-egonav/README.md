@@ -123,9 +123,19 @@ world02의 4.431 m는 받아들인 목표의 오차가 아니라 **첫 거짓 �
 * gate-08 재계수는 VM 원본 JSON·SHA256SUMS로 확인했다(앱 재실행 아님).
 * world02 원인은 디버그·프레임 6장·preflight 분포로 확인했고, 후보 A의
   수정 효과는 gate-09 원본으로만 판정한다(아직 미확인).
-* 로컬 `raw/gate-n16-07/`(5.2 MiB, source `558b94a7`, status `cap_end`,
-  도착 14/16·충돌 0)와 프레임·replay 디버그는 실험 미디어 5 MiB 제한
-  때문에 커밋하지 않고 위치만 남긴다(VM 원본 보존).
+* `gate-n16-07`(VM `/home/ugrp/ugrp-sim/runs/egonav/gate-n16-07`, 로컬
+  `raw/gate-n16-07/`은 정리로 제거): source `558b94a7`, status `cap_end`,
+  도착 14/16·충돌 0, `SHA256SUMS.json` sha256
+  `398296ede3d07f6b1fe2e811c7d50f3ee94bc41810935aa13521814825f00af1`,
+  `summary.json` sha256
+  `e248200b221d0e52324626ed707ffc027470337b5cd1b5a58989cc2305a581b0`.
+  실험 미디어 5 MiB 제한 때문에 저장소에 커밋하지 않고 VM 원본만 보존한다.
+  gate-08 프레임·replay 디버그도 같은 이유로 로컬 보관(비커밋)이다.
+* gate-08 대기열 `queue.json`(현재 sha256 `ef54fa99f1eb99f53aae1337b3bc2ff14078a0e30ec47ec5e39943ac8b7b42d3`)의 stray
+  스택 점검 영수증(ok true, 체커
+  `bdef5ad98b8e5ee8a21126f75430a58193d5f44f11f23fa60fd9ca487511eb3b`)은
+  입력이 이전 revision(`376ea82f97b5e56f8c139c2a1400a903ffc5cd4b767b21d5e9fa857260390222`)이라
+  현재 파일과 불일치해 정리로 제거했다(현재 대기열의 점검 영수증이 아님).
 
 ## 시각화 실행: egonav_memory_trace_v1 (2026-10-17 사용자 요청)
 
