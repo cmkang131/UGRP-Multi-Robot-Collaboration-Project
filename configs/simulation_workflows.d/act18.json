@@ -1,0 +1,46 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "act18-reference-train",
+      "version": "1.0.0",
+      "purpose": "Matched reference ACT100k chunk8/100 on existing audited v7 teacher recordings",
+      "entry": "scripts/act18_queue.py",
+      "runner": "scripts.act18_queue",
+      "docs": "experiments/2026-10-17-act18/README.md",
+      "requires": "gcp2 L4; explicit --enabled; stack pass; prior raw rejection table; owned lease; no new recording",
+      "output_flag": "--out",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--dataset",
+        "--protocol",
+        "--prior-rejections",
+        "--stack-values"
+      ],
+      "side_effect": "training",
+      "adapter": "managed_legacy_cli"
+    },
+    {
+      "id": "act18-reference-evaluate",
+      "version": "1.0.0",
+      "purpose": "TRAIN4 fit then gated VAL8 and frozen FINAL40 with independent native recount",
+      "entry": "scripts/act18_stage.py",
+      "runner": "scripts.act18_stage",
+      "docs": "experiments/2026-10-17-act18/README.md",
+      "requires": "gcp2 L4; --enabled; raw TRAIN4/VAL8 receipts; exact compiled refs; no teacher fallback; own ring10Hz",
+      "output_flag": "--out",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--stage",
+        "--checkpoint",
+        "--references",
+        "--protocol",
+        "--native-gate",
+        "--stack-values",
+        "--prior-rejections"
+      ],
+      "side_effect": "remote_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}
