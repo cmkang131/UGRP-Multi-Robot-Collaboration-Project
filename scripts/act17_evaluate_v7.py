@@ -75,6 +75,15 @@ def main():
         act16w_eval_rpc.EvaluationClient=original_client
         output=Path(args[args.index('--out')+1])
         if output.exists():
+            checkpoint=Path(args[args.index('--checkpoint')+1]);meta=read(checkpoint/'adapter.json')
+            summary=output/'summary.json'
+            if summary.exists():
+                value=read(summary)
+                value['legacy_native_camera_template']=value.pop('native_camera',None)
+                value.update(cohort='act17-v7-native',native_camera='own640x480/10Hz; '+meta['image_mode'],
+                    effective_model_image_hw=meta['model_image_hw'],effective_source_image_hw=meta['image_hw'],
+                    scope='ACT17 v7 own-only native evaluation; private truth scored after all actions')
+                summary.write_text(json.dumps(value,indent=2)+'\n')
             (output/'act17-v7-evaluator.json').write_text(json.dumps(dict(source_sha=source,
                 native_gate_sha256=sha256(gate_path),cohort='act17-v7-native',
                 guard='registered v7 complete training; VAL8 before new final40',

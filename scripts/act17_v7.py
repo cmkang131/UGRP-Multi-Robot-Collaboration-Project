@@ -96,9 +96,16 @@ def installed():
         warp_act_scene.make_scene=original
 
 
-def plans(split,protocol,out):
+def plans(split,protocol,out,selection=None):
     from act16w_runtime import require_gcp2,frozen_source
     require_gcp2(training=True);source=frozen_source(ROOT)
+    if split=='final':
+        s=selection or {}
+        if (s.get('frozen_before_final') is not True or s.get('validation_n')!=8 or s.get('validation_N')!=8
+                or sorted(s.get('completed_candidates',[]))!=['F','M','S'] or not s.get('checkpoint_path')):
+            raise ValueError('matched M/F/S completion and frozen VAL8 pass required before final setup')
+        if hashlib.sha256((Path(s['checkpoint_path'])/'model.safetensors').read_bytes()).hexdigest()!=s.get('checkpoint_sha256'):
+            raise ValueError('frozen final checkpoint hash mismatch')
     sys.path.insert(0,str(T))
     from scripts import make_solo_teacher_plan as original
     def candidates(kind):
@@ -130,6 +137,7 @@ def main():
     p.add_argument('--split',choices=['gate','record','final'])
     p.add_argument('--protocol',type=Path)
     p.add_argument('--out',type=Path)
+    p.add_argument('--selection',type=Path)
     p.add_argument('runner',nargs=argparse.REMAINDER)
     a=p.parse_args()
     if not a.enabled:
@@ -139,7 +147,7 @@ def main():
     if a.action=='plans':
         if not a.split or not a.protocol or not a.out:
             p.error('plans require split, protocol and new output')
-        return plans(a.split,json.loads(a.protocol.read_text()),a.out)
+        return plans(a.split,json.loads(a.protocol.read_text()),a.out,json.loads(a.selection.read_text()) if a.selection else None)
     runner=a.runner[1:] if a.runner[:1]==['--'] else a.runner
     target=ROOT/'scripts/act16w_native_run.py'
     sys.argv=[str(target),*runner]
