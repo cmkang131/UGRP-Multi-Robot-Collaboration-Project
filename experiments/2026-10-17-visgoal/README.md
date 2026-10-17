@@ -199,6 +199,21 @@ Results are added here only after the run is complete and independently
 recounted from the raw files; a `cap_end` episode is reported separately and
 not counted as a failure.
 
+First completed episode (preliminary, while the rest run): e00 (west, setup 0)
+is `cap_end` at 120.0 SIM s, found 0, colour_seen 0, final eval-only pose
+(1.711, -1.045), never inside zone B. It reached `gap_cross`/`gap_forward` at
+54.9/55.2 s and `east_search` at 62.4 s; after 69.0 s it spent 414 of 511 ticks
+(81%) in left 90-degree leg turns (six leg turns: 3 `leg_complete`, 3
+`leg_wall`) and only 91 ticks with forward>0 in 62-120 s; integrated rotation
+22.8 rad. The montage (ticks 0/200/400/550/600/700/900/1100/1199, VM raw
+`analysis/e00-cap-end-montage.jpg`, sha256 `afb4b672...`) shows open floor near
+the divider and different headings, so the base is not physically stuck. Cause
+for this episode: at the calibrated pulse a 90-degree leg turn costs 6.9 s and
+the 2 s legs turn over faster than they translate, so the lawnmower did not
+progress into the east area within the cap. This is recorded as the
+pre-registered skill's result, not as a physics/command failure; the full
+16-episode cause table follows after completion.
+
 ## Files
 
 * `setups.json` — 16 fixed starts (setup only; includes parked
