@@ -11,6 +11,7 @@ import os
 from pathlib import Path
 import platform
 import subprocess
+import sys
 from datetime import datetime, timezone
 
 from act16w_runtime import require_gcp2, frozen_source, sha256
@@ -25,6 +26,8 @@ import mujoco
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('--run',type=Path,required=True);p.add_argument('--world',type=int,required=True)
+    p.add_argument('--compiled-references',type=Path,help='exact native geometry inventory for reconstructed evaluation overview')
+    p.add_argument('--qualified-source',type=Path,help='frozen source containing simalt_compiled_compat')
     p.add_argument('--out',type=Path,required=True);a=p.parse_args();out=a.out;out.mkdir(parents=True,exist_ok=False)
     world=a.run/f'world-{a.world:03d}';state_path=a.run/f'world-{a.world:03d}-states.npz'
     actor_owner=(a.run/'RUN_META.json').exists() and (world/'states.npz').exists()
@@ -33,6 +36,18 @@ def main():
     state=np.load(state_path)
     index={int(t):i for i,t in enumerate(state['ticks'])}
     m=mujoco.MjModel.from_xml_string((world/'scene.xml').read_text());d=mujoco.MjData(m)
+    geometry=None
+    if a.compiled_references:
+        if not a.qualified_source:raise ValueError('compiled references require their frozen qualified source')
+        qualified_sha=frozen_source(a.qualified_source)
+        references=json.loads(a.compiled_references.read_text())
+        reference=references[sha256(world/'scene.xml')]
+        sys.path.insert(0,str(a.qualified_source/'scripts'))
+        from simalt_compiled_compat import apply_geometry
+        apply_geometry(m,world/'scene.xml',Path(reference['geometry']))
+        geometry=dict(inventory=str(a.compiled_references),inventory_sha256=sha256(a.compiled_references),
+            geometry_file=reference['geometry'],geometry_sha256=sha256(reference['geometry']),qualified_source_sha=qualified_sha,
+            scope='compiled geometry applied only to saved-state evaluation overview; recorded own RGB unchanged')
     summary=json.loads((a.run/('RUN_META.json' if actor_owner else 'summary.json')).read_text());camera=summary['camera'];cid=m.camera('r1__robot_cam').id
     m.cam_pos[cid]=camera['mount_pos'];m.cam_quat[cid]=camera['mount_quat']
     # Review camera only: fit actual r1/target geometry across the whole replay.
@@ -108,7 +123,7 @@ def main():
         postprocessor_sha256=sha256(Path(__file__)), source_sha=SOURCE, host=HOST,
         source_state=dict(path=str(state_path),sha256=sha256(state_path)),
         source_scene=dict(path=str(world/'scene.xml'),sha256=sha256(world/'scene.xml')),
-        full_2hz_frames=len(selected),terminal_10hz_frames=len(ring),video_bytes=video.stat().st_size,ffprobe=probe,overview=overview,
+        full_2hz_frames=len(selected),terminal_10hz_frames=len(ring),video_bytes=video.stat().st_size,ffprobe=probe,overview=overview,compiled_geometry=geometry,
         scope='overview reframed for full recorded r1/target geometry using evaluation states only; r1 own RGB is actual and unchanged, r2 not an actor; no native physics step'),indent=2)+'\n')
 
 

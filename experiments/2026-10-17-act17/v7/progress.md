@@ -51,3 +51,5 @@ gate/pilot/bulk와 준비 시도에 RUN_META 보존 분류를 소급 추가했�
 완료된 관문은 milestone, 재현할 v7 학습자료 기록은 study, 임시 준비 시도는 dev로 구분한다.
 
 [실제 평가 초기 입력 대조](results/initial-runtime-parity-r1.json): 같은 VAL8×3의24세계 모두 첫 RGB SHA와252차원 자기 명령 문맥 배열이 교사 기록과 정확히 일치했다. 이는 시작 입력 대조이며 이후 관측·동작·성공을 보장하지 않는다. [학습 완료 원장](results/training-complete-r1.json)은 M/F/S 각각10000 update·실제 저장 재로딩을 확인한다.
+
+재생 원본 대조에서 기존 overview 재구성이 native compiled geometry 참조를 적용하지 않았음을 확인했다. 저장 자기 RGB는 원 바이트라 영향이 없으며 제어·채점도 변경되지 않았다. 새 재생은 명시한 geometry inventory/SHA를 적용하고 별도 산출물로 남긴다. 이전 overview 형상의 정밀 일치 주장은 하지 않는다.
