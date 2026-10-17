@@ -171,18 +171,18 @@ _REWRITES = (
 
 INSTRUCTION_EN = (
     '\n\nEgocentric memory: egocentric_memory.entries are approximate memories from your own '
-    'observations, not current truth. Each entry gives kind, subject, state, distance_m and '
-    'bearing_deg when known (0 degrees = forward, positive = left), an uncertainty block, and '
-    'last_seen_age_s. You are always at the origin facing forward; remembered positions shift '
+    'observations, not current truth. Each entry follows ugrp.memory_item.v1 and gives kind, '
+    'signature, range_m, bearing_rad when known (0 = forward, positive = left), age_s, and '
+    'radius95_m. You are always at the origin facing forward; remembered positions shift '
     'opposite to your own motion. Re-observe before acting when an entry is old, uncertain, or '
     'missing. An empty list means nothing is remembered yet.'
 )
 INSTRUCTION_KO = (
     '\n\n자기 중심 기억: egocentric_memory.entries는 자기 관측에서 나온 대략적인 기억이며 현재 '
-    '사실이 아닙니다. 각 항목은 kind, subject, state, 알 때의 대략 distance_m·bearing_deg'
-    '(0=정면, +=왼쪽), uncertainty, last_seen_age_s입니다. 로봇은 항상 원점에서 정면을 향하며, '
-    '기억 속 위치는 자기 이동의 반대 방향으로 밀립니다. 오래되었거나 불확실하거나 비어 있으면 '
-    '행동 전에 다시 관측하십시오. 빈 목록은 아직 기억이 없음을 뜻합니다.'
+    '사실이 아닙니다. 각 항목은 ugrp.memory_item.v1 형식으로 kind, signature, 알 때의 대략 '
+    'range_m·bearing_rad(0=정면, +=왼쪽), age_s, radius95_m입니다. 로봇은 항상 원점에서 정면을 '
+    '향하며, 기억 속 위치는 자기 이동의 반대 방향으로 밀립니다. 오래되었거나 불확실하거나 비어 '
+    '있으면 행동 전에 다시 관측하십시오. 빈 목록은 아직 기억이 없음을 뜻합니다.'
 )
 _HANGUL = re.compile('[가-힣]')
 
@@ -332,25 +332,25 @@ def build_memory(facts, pose, now=None):
     bearings are relative to that current pose, so when the robot moves the same
     landmark's remembered position shifts opposite to the motion.
     """
-    mean, sigma = _pose(pose)
+    mean, radius95 = _pose(pose)
     entries, seen = [], set()
     for row in facts or ():
         if not isinstance(row, dict):
             continue
-        entry = _entry(row, mean, sigma, now)
+        entry = _entry(row, mean, radius95, now)
         if entry is None:
             continue
-        key = (entry.get('kind'), entry.get('subject'), json.dumps(entry.get('state'),
-                                                                  sort_keys=True, ensure_ascii=False))
+        key = (entry.get('kind'), entry.get('signature'))
         if key in seen:
             continue
         seen.add(key)
         entries.append(entry)
-    entries.sort(key=lambda e: (e['last_seen_age_s'] is None,
-                                e['last_seen_age_s'] if e['last_seen_age_s'] is not None else 0.0,
-                                str(e.get('subject')), str(e.get('kind'))))
+    entries.sort(key=lambda e: (e['age_s'] is None,
+                                e['age_s'] if e['age_s'] is not None else 0.0,
+                                str(e.get('signature')), str(e.get('kind'))))
     entries = entries[:MAX_ENTRIES]
-    return {'schema': SCHEMA, 'entries': entries, 'count': len(entries)}
+    return {'schema': SCHEMA, 'item_schema': 'ugrp.memory_item.v1',
+            'frame': 'self/current', 'entries': entries, 'count': len(entries)}
 
 
 def variant_system(system):
@@ -457,7 +457,7 @@ def audit_projection(original_request, variant_request):
     }
 
 
-def _entry(row, mean, sigma, now):
+def _entry(row, mean, radius95, now):
     subject = _scalar(row.get('subject'))
     if subject is None and isinstance(row.get('entity'), dict):
         subject = _scalar(row['entity'].get('id'))
@@ -467,9 +467,16 @@ def _entry(row, mean, sigma, now):
         value = '<non-scalar omitted>'
     if subject is None and predicate is None:
         return None
+    if subject is not None and value is not None:
+        signature = f'{subject}={value}'
+    elif subject is not None:
+        signature = str(subject)
+    elif value is not None:
+        signature = str(value)
+    else:
+        signature = 'unidentified'
     pos = _coord(row.get('pose_own_m'))
     distance = bearing = None
-    uncertainty = None
     if mean is not None and pos is not None:
         dx, dy = pos[0] - mean[0], pos[1] - mean[1]
         c, s = math.cos(mean[2]), math.sin(mean[2])
@@ -477,31 +484,18 @@ def _entry(row, mean, sigma, now):
         left = -s * dx + c * dy
         distance = math.hypot(forward, left)
         if distance > 0.0:
-            bearing = math.degrees(math.atan2(left, forward))
-            if bearing <= -180.0:
-                bearing += 360.0
-            elif bearing > 180.0:
-                bearing -= 360.0
-        if sigma is not None:
-            uncertainty = {
-                'range_m': round(sigma, 2),
-                'bearing_deg': (round(math.degrees(math.atan2(sigma, max(distance, 1e-9))), 1)
-                                if distance > 0.0 else None),
-                'source': 'own pose covariance at observation (sigma_xy)',
-            }
+            bearing = math.atan2(left, forward)
     observed = _number(row.get('observed_at'))
     age = None
     if observed is not None and now is not None and now >= observed:
         age = round(now - observed, 1)
     return {
         'kind': predicate or 'observation',
-        'subject': subject,
-        'state': value,
-        'distance_m': (round(distance, 2) if distance is not None else None),
-        'bearing_deg': (round(bearing, 1) if bearing is not None else None),
-        'uncertainty': uncertainty,
-        'last_seen_age_s': age,
-        'evidence': 'own observation',
+        'signature': signature,
+        'range_m': (round(distance, 2) if distance is not None else None),
+        'bearing_rad': (round(bearing, 3) if bearing is not None else None),
+        'age_s': age,
+        'radius95_m': (round(radius95, 2) if radius95 is not None else None),
     }
 
 
@@ -517,14 +511,17 @@ def _pose(pose):
     if vals[0] is None or vals[1] is None:
         return None, None
     yaw = vals[2] if len(vals) > 2 and vals[2] is not None else 0.0
-    sigma = None
+    radius95 = None
     cov = pose.get('covariance')
     if isinstance(cov, (list, tuple)) and len(cov) >= 2:
         a = cov[0][0] if isinstance(cov[0], (list, tuple)) and cov[0] else None
         b = cov[1][1] if isinstance(cov[1], (list, tuple)) and len(cov[1]) > 1 else None
-        if _number(a) is not None and _number(b) is not None and a >= 0 and b >= 0:
-            sigma = math.sqrt(a + b)
-    return (vals[0], vals[1], yaw), sigma
+        c = cov[0][1] if isinstance(cov[0], (list, tuple)) and len(cov[0]) > 1 else 0.0
+        d = cov[1][0] if isinstance(cov[1], (list, tuple)) and cov[1] else 0.0
+        if all(_number(v) is not None for v in (a, b, c, d)) and a >= 0 and b >= 0:
+            lam = (a + b) / 2 + math.sqrt(max(0.0, ((a - b) / 2) ** 2 + c * d))
+            radius95 = math.sqrt(5.991464547107979) * math.sqrt(max(0.0, lam))
+    return (vals[0], vals[1], yaw), radius95
 
 
 def _coord(value):

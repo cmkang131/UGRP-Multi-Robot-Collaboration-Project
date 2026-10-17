@@ -94,28 +94,28 @@ def test_projection_removes_map_pose_and_duplicate_facts():
     assert 'own_observed_facts' not in body['evidence_assessment']
     assert 'both doors may be remembered' in body['task'].lower()
     entry = body['egocentric_memory']['entries'][0]
-    assert entry['kind'] == 'help_request' and entry['subject'] == 'beam_1'
-    assert entry['state'] == 'needs_help'
-    assert entry['distance_m'] == 2.0 and entry['bearing_deg'] == 0.0
-    assert entry['last_seen_age_s'] == 10.0
-    assert entry['uncertainty']['range_m'] == 0.36
-    assert entry['evidence'] == 'own observation'
+    assert entry['kind'] == 'help_request' and entry['signature'] == 'beam_1=needs_help'
+    assert entry['range_m'] == 2.0 and entry['bearing_rad'] == 0.0
+    assert entry['age_s'] == 10.0
+    assert entry['radius95_m'] == 0.73
+    assert set(entry) == {'kind', 'signature', 'range_m', 'bearing_rad', 'age_s', 'radius95_m'}
 
 
 def test_memory_shifts_opposite_to_own_motion_and_uses_current_heading():
     # Same world landmark [2,0]; after moving 1 m forward the remembered range is 1 m.
     body = eg.project_context(_context(pose=(1.0, 0.0, 0.0)))
     entry = body['egocentric_memory']['entries'][0]
-    assert entry['distance_m'] == 1.0 and entry['bearing_deg'] == 0.0
+    assert entry['range_m'] == 1.0 and entry['bearing_rad'] == 0.0
     # Heading +90 deg (left): world [0,2] is straight ahead, world [1,0] is right (-90).
     body = eg.project_context(_context(pose=(0.0, 0.0, math.pi / 2)))
     entry = body['egocentric_memory']['entries'][0]
-    assert entry['distance_m'] == 2.0 and entry['bearing_deg'] == -90.0
+    assert entry['range_m'] == 2.0 and entry['bearing_rad'] == pytest.approx(-math.pi / 2, abs=1e-3)
 
 
 def test_empty_memory_is_explicit():
     body = eg.project_context(_context(facts=[]))
-    assert body['egocentric_memory'] == {'schema': eg.SCHEMA, 'entries': [], 'count': 0}
+    assert body['egocentric_memory'] == {'schema': eg.SCHEMA, 'item_schema': 'ugrp.memory_item.v1',
+                                         'frame': 'self/current', 'entries': [], 'count': 0}
 
 
 def test_fixed_then_variable_order():

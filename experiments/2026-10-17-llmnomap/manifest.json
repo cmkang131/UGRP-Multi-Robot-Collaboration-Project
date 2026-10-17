@@ -121,39 +121,52 @@
     "replay_inputs": "experiments/2026-10-17-llmnomap/replay_inputs.jsonl"
   },
   "run_meta": {
-    "generated_utc": "2026-10-17T10:36:38Z",
+    "generated_utc": "2026-10-17T10:42:45Z",
     "calls_attempted": 80,
+    "calls_superseded_schema_change": 80,
+    "calls_total_attempted": 160,
     "calls_cap": 200,
+    "calls_remaining": 40,
     "no_retries": true,
     "http_200": 80,
     "http_429": 0,
     "format_success": 80,
-    "reported_cost_total_usd": 0.03338296,
-    "balance_before_usd": 6.573023,
-    "balance_after_usd": 6.543402,
+    "reported_cost_total_usd": 0.03333732,
+    "reported_cost_superseded_usd": 0.03338296,
+    "reported_cost_all_batches_usd": 0.06672028,
+    "balance_before_usd": 6.53964,
+    "balance_after_usd": 6.511262,
     "endpoint_watch_ok": true,
     "task_accuracy_measured": false
   },
   "artifacts": {
     "calls": {
       "path": "experiments/2026-10-17-llmnomap/calls.jsonl",
-      "sha256": "e44caa779dbf081bcc9569a4e4c115b056cd95b883f7c035694c238844b84d15"
+      "sha256": "fd149e24c073a6b9c74f220cc8b12d61cc209b69d2555e9f062c2871c2cbb9c7"
     },
     "summary": {
       "path": "experiments/2026-10-17-llmnomap/summary.json",
-      "sha256": "fb72600814f25c9f8fb267c2261fcfd9738643bc59af846ecf582b78b27601a0"
+      "sha256": "5b3ce4909ec9f91eab196c2822112293f341fc429389deebe3848643648d5a22"
     },
     "input_audit": {
       "path": "experiments/2026-10-17-llmnomap/input_audit.json",
-      "sha256": "97b8d62ea8ef22a5948b4e53e14e838b9aa1c4f7c55719dace4cc5dc6ee79761"
+      "sha256": "0e8882229170cc6bc100bde71e4f6955aca8d3c9023a97c475458315c08887bb"
     },
     "rejection_table": {
       "path": "experiments/2026-10-17-llmnomap/rejection_table.json",
-      "sha256": "fbab64cec99d9c898dbc3447d4b4a5e3c05b6c1196836ab5b45abae9ed2764cf"
+      "sha256": "cdb3e5c535c15e140f9e021dd1c5873ee503ba34ff7cce8c21680683e1eb1d56"
     },
     "preflight": {
       "path": "experiments/2026-10-17-llmnomap/preflight.json",
-      "sha256": "7482231e287bcfb07f5e48dd6d5140ea90b6c7a9c443c19859f32f20efd58ebf"
+      "sha256": "cea51fb4f0fcd697e4cbc7d1effaa1aefcf4e2171e6208e78c819ca4f2c11a07"
+    },
+    "superseded_calls": {
+      "path": "experiments/2026-10-17-llmnomap/archive/pre_unified_batch/calls.jsonl",
+      "sha256": "e44caa779dbf081bcc9569a4e4c115b056cd95b883f7c035694c238844b84d15"
+    },
+    "superseded_summary": {
+      "path": "experiments/2026-10-17-llmnomap/archive/pre_unified_batch/summary.json",
+      "sha256": "fb72600814f25c9f8fb267c2261fcfd9738643bc59af846ecf582b78b27601a0"
     },
     "replay_inputs": {
       "path": "experiments/2026-10-17-llmnomap/replay_inputs.jsonl",

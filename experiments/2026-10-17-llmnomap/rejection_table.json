@@ -1,7 +1,7 @@
 {
   "schema": "ugrp.llmnomap_rejection_table.v1",
   "stage": "final",
-  "generated_utc": "2026-10-17T10:36:38Z",
+  "generated_utc": "2026-10-17T10:42:45Z",
   "scope": "Mac-only paired planner prompt replay; no VM/sim/physics",
   "funnel": [
     {
@@ -123,18 +123,39 @@
       "detail": "act 형식 실패 없음"
     }
   ],
+  "budget_ledger": {
+    "final_batch_calls": 80,
+    "superseded_batch_calls": 80,
+    "total_calls_attempted": 160,
+    "cap": 200,
+    "remaining": 40,
+    "note": "이전 80콜은 ugrp.memory_item.v1 필드 통일 전 배치이며 archive/pre_unified_batch에 보관; 최종 수치로 인용하지 않는다.",
+    "superseded_archive": {
+      "calls": {
+        "path": "experiments/2026-10-17-llmnomap/archive/pre_unified_batch/calls.jsonl",
+        "sha256": "e44caa779dbf081bcc9569a4e4c115b056cd95b883f7c035694c238844b84d15"
+      },
+      "summary": {
+        "path": "experiments/2026-10-17-llmnomap/archive/pre_unified_batch/summary.json",
+        "sha256": "fb72600814f25c9f8fb267c2261fcfd9738643bc59af846ecf582b78b27601a0"
+      }
+    },
+    "reported_cost_final_batch_usd": 0.03333732,
+    "reported_cost_superseded_batch_usd": 0.03338296,
+    "reported_cost_total_usd": 0.06672027999999999
+  },
   "raw": {
     "calls": {
       "path": "experiments/2026-10-17-llmnomap/calls.jsonl",
-      "sha256": "e44caa779dbf081bcc9569a4e4c115b056cd95b883f7c035694c238844b84d15"
+      "sha256": "fd149e24c073a6b9c74f220cc8b12d61cc209b69d2555e9f062c2871c2cbb9c7"
     },
     "summary": {
       "path": "experiments/2026-10-17-llmnomap/summary.json",
-      "sha256": "fb72600814f25c9f8fb267c2261fcfd9738643bc59af846ecf582b78b27601a0"
+      "sha256": "5b3ce4909ec9f91eab196c2822112293f341fc429389deebe3848643648d5a22"
     },
     "input_audit": {
       "path": "experiments/2026-10-17-llmnomap/input_audit.json",
-      "sha256": "97b8d62ea8ef22a5948b4e53e14e838b9aa1c4f7c55719dace4cc5dc6ee79761"
+      "sha256": "0e8882229170cc6bc100bde71e4f6955aca8d3c9023a97c475458315c08887bb"
     },
     "replay_inputs": {
       "path": "experiments/2026-10-17-llmnomap/replay_inputs.jsonl",
