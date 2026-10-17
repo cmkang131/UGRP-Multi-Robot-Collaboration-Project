@@ -1,0 +1,49 @@
+{
+  "raw": "/home/ugrp/ugrp-sim/runs/mapbuild10-long-round1/unloaded-v2",
+  "reproduction": "scripts/mapbuild10_field_audit.py --input <raw> --prediction <score> --source <source> --output <new audit directory>",
+  "scope": "pre-fix descriptive counterexample; eval GT pose only here, never a control gate",
+  "frame_funnel": [
+    {
+      "stage": "recorded",
+      "cumulative_pass_n": 381,
+      "rejected_n": 0
+    },
+    {
+      "stage": "visible_wall",
+      "cumulative_pass_n": 321,
+      "rejected_n": 60
+    },
+    {
+      "stage": "scheduled_updates",
+      "cumulative_pass_n": 38,
+      "rejected_n": 283
+    },
+    {
+      "stage": "legacy_field_p95_below_saturated_2m",
+      "cumulative_pass_n": 23,
+      "rejected_n": 15
+    }
+  ],
+  "wall_points": 27253,
+  "authored_navigation_bounds_outside_points": 6726,
+  "legacy_field_farther_than_nav2_sigma_points": 6050,
+  "updated_frame_nearest_wall_p95_median_m": 0.024354276590982438,
+  "distribution": [
+    {
+      "reason_category": "field_extent_adapter",
+      "reason": "authored_navigation_bounds_used_as_occupancy_extent; near-boundary returns jump to max_occ_dist",
+      "n": 15,
+      "blocked_object": "authored_perimeter_walls",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "reason_category": "runtime_uncertainty",
+      "reason": "coupled_P95=.389902 > frozen.373907 after first forward; actual distance <3m",
+      "n": 1,
+      "blocked_object": "own_observed_wall",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    }
+  ]
+}

@@ -54,16 +54,22 @@ class DiagnosticCorrection:
             return None
         return compose(self.amcl.current['candidate_pose'], between(self.amcl.sensor_odom, self.amcl.odom))
 
-    def initialize_static(self):
-        if not self.navigation_ready:
+    def initialize_static(self, *, dev_light=False):
+        unresolved = not self.navigation_ready
+        if unresolved and not dev_light:
             return dict(status='rejected', reason='amcl_distribution_unresolved',
                 category='static_amcl', blocked_object='own_observed_wall', minimum_gap_m=None,
                 gap_status='not_measured', static_from_own=None, production_qualified=False)
+        # DEV recording only: continue with an explicitly unqualified belief.
+        # This never changes the convergence test or production admission.
+        if self.amcl.current is None:
+            self.amcl.current = self.amcl.belief()
+            self.amcl.sensor_odom = self.amcl.odom.copy()
         # One fixed gauge; later AMCL estimates change the own-frame pose.
         if self.static_from_own is None:
             self.static_from_own = compose(self.absolute_pose(), between(self.amcl.odom, np.zeros(3)))
         self.pose = between(self.static_from_own, self.absolute_pose())
-        return dict(status='accepted', reason='coordinator_approved_diagnostic_only',
+        return dict(status='accepted', reason='dev_light_would_stop_unresolved' if unresolved else 'coordinator_approved_diagnostic_only',
             category='static_amcl', blocked_object='own_observed_wall', minimum_gap_m=None,
             gap_status='not_measured', static_from_own=self.static_from_own.tolist(),
-            production_qualified=False, runtime_qualified=False)
+            production_qualified=False, runtime_qualified=False, would_stop=unresolved)

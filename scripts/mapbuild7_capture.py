@@ -30,8 +30,9 @@ def run(a):
         if sha(ROOT/name)!=h:raise ValueError('SOURCE_BYTES_CHANGED:'+name)
     if not Path(q['rejection_table']).is_file():raise ValueError('PRIOR_FUNNEL_REQUIRED')
     long_config=json.loads(a.long_config.read_text()) if a.long_config else None
+    if a.dev_light and not long_config:raise ValueError('DEV_LIGHT_LONG_DIAGNOSTIC_ONLY')
     if long_config and (not a.map_correction or sha(a.long_config)!=q['long_config_sha256']):raise ValueError('PINNED_LONG_DIAGNOSTIC_REQUIRED')
-    task='mapbuild10' if long_config else 'mapbuild8' if a.map_correction else 'mapbuild7'
+    task='mapbuild11' if a.dev_light else 'mapbuild10' if long_config else 'mapbuild8' if a.map_correction else 'mapbuild7'
     if not Path('/home/ugrp/ugrp-sim/leases/'+task+'.json').is_file():raise ValueError('OWN_LEASE_REQUIRED')
     own_motion=None;own_motion_config=None
     if a.own_motion_model:
@@ -204,7 +205,7 @@ def run(a):
     rects=[(*o['center_m'],*o['half_extents_m'],o.get('yaw_rad',0.)) for o in static['obstacles']]
     def try_register(t,label):
         nonlocal anchor
-        result=correction.initialize_static() if correction else registration.register(wall_ledger,camera_origins=camera_ledger)
+        result=correction.initialize_static(**({'dev_light':True} if a.dev_light else {})) if correction else registration.register(wall_ledger,camera_origins=camera_ledger)
         events.append(dict(t=t,event=label,**result))
         if result['status']=='accepted':anchor=np.asarray(result['static_from_own'])
         dump(a.output/('registration-'+label+'.json'),result)
@@ -312,7 +313,8 @@ def run(a):
                 if anchor is None:raise RuntimeError('NO_REGISTERED_STATIC_FRAME')
                 absolute=compose(anchor,pose)
                 if long_config and not correction.navigation_ready:
-                    events.append(dict(t=t,event='amcl_distribution_lost',category='static_amcl',reason='handoff_budget_or_ess_not_met',blocked_object='own_observed_wall',minimum_gap_m=None,gap_status='not_measured'));status='LOCALIZATION_UNRESOLVED';break
+                    events.append(dict(t=t,event='would_stop' if a.dev_light else 'amcl_distribution_lost',stop_code='LOCALIZATION_UNRESOLVED',category='static_amcl',reason='handoff_budget_or_ess_not_met',blocked_object='own_observed_wall',minimum_gap_m=None,gap_status='not_measured',belief=correction.amcl.current))
+                    if not a.dev_light:status='LOCALIZATION_UNRESOLVED';break
                 if route is None or tick%10==0:route=plan_path(tuple(absolute[:2]),goal,tuple(static['bounds_m']),[],rects=rects)
                 if not route:
                     events.append(dict(t=t,event='no_static_route',category='map_planner',reason='40000_node_search_no_route',blocked_object='static_walls',minimum_gap_m=None,gap_status='not_measured'));status='NO_ROUTE';break
@@ -391,6 +393,10 @@ def run(a):
                 current_stack_preflight=str(q.get('stack_check')),nworld=1,
                 speed_first_30_sim_ratio=speed_first30,
                 start_zone_path='public-start-zone.json',uniform_setup_path='setup-eval-only.json')
+            if a.dev_light:
+                summary.update(cohort='mapbuild11-public-box-native-v7-long-dev-light',dev_light=True,
+                    would_stop_events=sum(e['event']=='would_stop' or e.get('would_stop',False) for e in events),
+                    scope='unloaded diagnostic recording; uncertain navigation continues; no production admission')
             dump(a.output/'summary.json',summary)
         dump(a.output/'SHA256SUMS.json',{str(p.relative_to(a.output)):sha(p) for p in a.output.rglob('*') if p.is_file()})
 
@@ -405,6 +411,7 @@ if __name__=='__main__':
     p.add_argument('--sweep-camera-folded',action='store_true',help='default off; existing FOLDED command pose, settle before body sweep')
     p.add_argument('--own-motion-model',type=Path,help='default off own_command_motion_v1 exact repeat-command predictive distribution')
     p.add_argument('--long-config',type=Path,help='default off coordinator-approved mapbuild10 diagnostic, public uniform start box')
+    p.add_argument('--dev-light',action='store_true',help='default off long diagnostic: record localization would_stop and continue; physical/runtime failures still stop')
     p.add_argument('--setup-seed',type=int,default=2026101710,help='setup/evaluation only; never passed to AMCL')
     p.add_argument('--amcl-calibration',type=Path);p.add_argument('--requirements',type=Path)
     run(p.parse_args())
