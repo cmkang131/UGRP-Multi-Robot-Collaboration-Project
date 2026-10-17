@@ -32,6 +32,33 @@ def main(a):
     if not platform.node().startswith('ugrp-act-l4-gcp5'):raise ValueError('ORIGINAL_GCP5_ONLY')
     rows=read(a.score/'frame-errors.json');summary=read(a.score/'summary.json');req=summary['requirements']
     names=['off','nav2_defaults_v1','nav2_rgb_field_v1'];route=[r for r in rows if r['stage']=='diagnostic_route']
+    # Frame and whole-recording units stay separate. These are EVALUATION
+    # gates, not controller acceptance: unready poses never become admissions.
+    funnel=dict(raw=str(a.input),reproduction=['scripts/mapbuild11_plots.py','--input',str(a.input),'--score',str(a.score)],models={})
+    for name in names:
+        remaining=list(route);stages=[]
+        tests=[('finite_candidate',lambda r:r['models'][name]['xy_m'] is not None),
+            ('actual_xy_budget',lambda r:r['models'][name]['xy_m']<=req['position_error_m']),
+            ('actual_coupled_budget',lambda r:r['models'][name]['requirement_pass'])]
+        for gate,test in tests:
+            before=len(remaining);remaining=[r for r in remaining if test(r)]
+            stages.append(dict(stage=gate,input_n=before,cumulative_pass_n=len(remaining),rejected_n=before-len(remaining)))
+        quality=summary['route'][name];off=summary['route']['off'];before=1;cases=[]
+        checks=[('record_command_complete',summary['recording_status']=='ROUTE_COMMAND_COMPLETE'),
+            ('three_metre_route',summary['route_path_m']>=3),
+            ('authored_reversal',summary['route_abs_turn_deg']>=math.degrees(math.pi-req['yaw_error_rad']))]
+        if name!='off':checks += [('distribution_converged',bool(quality and quality['ready_updates'])),
+            ('no_wrong_convergence',bool(quality and not quality['wrong_ready_updates'])),
+            ('all_route_frames_within_budget',bool(quality and quality['requirement_frames']==len(route))),
+            ('end_and_max_xy_improve_off',bool(quality and off and quality['end_xy_mm']<off['end_xy_mm'] and quality['max_xy_mm']<off['max_xy_mm']))]
+        for gate,passed in checks:
+            after=before*int(passed);cases.append(dict(stage=gate,input_n=before,cumulative_pass_n=after,rejected_n=before-after));before=after
+        funnel['models'][name]=dict(route_frames=len(route),frame_stages=stages,recording_stages=cases,
+            distribution_ready_route_frames=sum(r['models'][name]['ready'] for r in route),quality=quality,
+            runtime_adopted_poses=0,production_qualified=False,
+            reason_category='evaluation_requirement_or_posterior',blocked_object='own_observed_wall',
+            blocked_object_status='wall_identity_not_measured',minimum_gap_m=None,gap_status='not_measured')
+    (a.score/'model-funnel.json').write_text(json.dumps(funnel,indent=2)+'\n')
     fig,axes=plt.subplots(2,1,figsize=(10,7),sharex=True)
     for name in names:
         rs=[r for r in route if r['models'][name]['xy_m'] is not None]
