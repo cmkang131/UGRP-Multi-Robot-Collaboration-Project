@@ -108,6 +108,12 @@ def profiles(candidate):
         search22='search22_v1',search23='search23_v1',search24_irm='search24_irm_v1',
         search24_budget='search24_checks_v1',search25_budget='search25_checks_v1')
     if candidate=='soft':values['search25_inflation']='search25_soft_v1'
+    # beamact5 round 2: same frozen profile plus the three new default-off
+    # modes.  Fixes are recorded in PR #585 and the gate-40-r2 record.
+    if candidate=='beamact5_r2':
+        values.update(search23_rects='search23_batched_rects_v1',
+                      search26_circles='search26_downfirst_circles_v1',
+                      search26_static_peer='search26_static_peer_stance_v1')
     return values
 
 
