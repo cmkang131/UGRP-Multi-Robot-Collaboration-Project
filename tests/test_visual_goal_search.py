@@ -125,6 +125,24 @@ def test_approach_wall_accepts_seek_handover_range():
         a = s.control(i * 0.1, paint={}, walls=wall, obstacles=())
         assert s.stage == 'approach_wall'
         assert a['forward'] > 0
+    # A loose cargo cube in the seek cone must cause one bounded away-turn,
+    # not abandon the divider for the lawnmower (r5 west e00).
+    s = VisualGoalSearch(option=OPTION)
+    s.stage = 'seek_wall'
+    s.stage_t = 0.0
+    cube = [dict(kind='cyan', xy=[0.45, -0.15], radius=0.03)]
+    s.control(0.0, paint={}, walls=(), obstacles=cube)
+    assert s.stage == 'seek_wall' and s.turn_left >= 10
+    turned = 0
+    t = 0.1
+    while s.turn_left > 0:
+        a = s.control(t, paint={}, walls=(), obstacles=())
+        assert a['exact_turn'] == 1
+        turned += 1
+        t += 0.1
+    assert turned >= 10
+    a = s.control(t, paint={}, walls=(), obstacles=())
+    assert s.stage == 'seek_wall' and a['forward'] > 0
 
 
 def test_freshest_memory_wins_and_stale_memory_cannot_arrive():

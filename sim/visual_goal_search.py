@@ -428,12 +428,17 @@ class VisualGoalSearch:
                                        patch_ok, patch_xy)
         ob = self._nearest_obstacle(obstacles, 30, .50)
         if ob is not None:
+            # The arena contains loose cargo cubes.  Preflight r5 west e00 met
+            # a cyan cube at 0.50-0.62 m during the very first seek tick and
+            # aborted the wall approach for the lawnmower, losing the whole
+            # 60 s probe.  A cube is not a reason to abandon the divider:
+            # make one bounded away-turn (20 deg) and resume the same stage.
             self.event(t, 'obstacle_avoid', category='navigation',
                        blocked_object=ob['kind'], minimum_gap_m=ob['range_m'],
                        gap_status='floor_projection')
-            self._enter_east_search(t, reason='wall_seek_obstacle')
-            return self._east_search(t, paint, walls, obstacles, target_mem,
-                                     patch_ok, patch_xy)
+            away = +1 if ob['bearing_rad'] < 0 else -1
+            self._start_turn(self._turn_pulses(math.radians(20.)), away, self.stage)
+            return self._result(0., 0., 0.)
         self.seek_t += .1
         if self.seek_t > 20.:
             self.seek_t = 0.
@@ -590,9 +595,13 @@ class VisualGoalSearch:
             return self._target(t, paint, walls, obstacles, target_mem, patch_ok, patch_xy)
         ob = self._nearest_obstacle(obstacles, 30, .50)
         if ob is not None:
+            # A 90 deg leg turn for every cargo cube burns many seconds in
+            # place (r5 e00 spent most of its 60 s rotating).  Evade by 20 deg
+            # and keep the same leg length instead of starting a new leg.
             self.event(t, 'obstacle_avoid', category='navigation', blocked_object=ob['kind'],
                        minimum_gap_m=ob['range_m'], gap_status='floor_projection')
-            self._next_leg(t, reason='leg_obstacle')
+            away = +1 if ob['bearing_rad'] < 0 else -1
+            self._start_turn(self._turn_pulses(math.radians(20.)), away, self.stage)
             return self._result(0., 0., 0.)
         front = self._nearest(walls, -35, 35, .55)
         if front is not None:
