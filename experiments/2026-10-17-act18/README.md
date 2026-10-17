@@ -1,6 +1,32 @@
 # act18: 근거리 ACT TRAIN 적합도부터 검증
 
-상태: 조사·기존 F/S TRAIN 개루프 완료. 새 후보는 아직 검증 전이다. 학생 성공을 얻었다는 결과가 아니다.
+상태: **NOT_READY (2026-10-18 03:33 KST)**. R8·R100 모두 100k fp32 학습을 끝냈지만 TRAIN4 관문이 **각 0/4**로, VAL8·FINAL40은 제출하지 않았다. 물리 임무 성공은 0/4이며 기본 제어기가 아니다. 두 모델은 NOT_READY 라벨의 재현·비교용으로 공개 Release에 보존했고, 배포 검증(익명 재다운로드·전체 SHA·CPU 로딩)만 완료했다.
+
+## 최종 결과 (2026-10-17 09:25Z 학습 시작 → 10/18 03:33 KST 종료)
+
+학습은 gcp2 L4 `ugrp-act-l4-gcp2`(g2-standard-8, project `ugrp-sim-b-1014`, account `changmin5781@gmail.com`)에서 소스 `52e486316c25be122dc1e872b10ef8cd1e8b98e8`로 실행했다. 두 후보 모두 100,000/100,000 updates, seed20261017, batch8, AdamW1e-5, **fp32**(당시 소스에 autocast/precision 코드 없음), readback_verified=true다.
+
+|후보|chunk|steps|wall|체크포인트 sha256(step100000)|TRAIN4|VAL8|FINAL40|
+|---|---:|---:|---:|---|---|---|---|
+|R8|8|100,000|30,812s|`e1ec659216e289e1e5e9bb48ac597763ad8d1a088c3c85eb3205336307bb8d5a`|0/4|미제출|미제출|
+|R100|100|100,000|30,779s|`44b11c3c147fb633fffa9e9cb6a0a48c5801f0b8fd2bdd9e33ea14a16804a544`|0/4|미제출|미제출|
+
+TRAIN4(원 프로토콜 첫 4시드, 네 종류 각1개) 4세계는 모두 `cap_end`(90 SIM초 상한)로 끝났다. `requested 4 → grasp_done 0(4 전부 cap_end) → stable_lift 0 → stable_release 0 → task_success 0` funnel이며, R8은 88601·88603에서 물리 lift만 2/4, R100은 물리 lift도 0/4다. stage 자체 recount와 별도 실행한 독립 원본 재계수(같은 `act18_recount.py`, actor-actions/actor-inputs/owner evaluation-only/scene.xml에서 재계산)가 **둘 다 0/4로 일치**했다.
+
+마지막 10 SIM초 10Hz 링을 1Hz로 샘플링한 4행 몽타주(각 후보 4시드): `results/train4-montage/R8-TRAIN4-1hz.png` sha256 `a4466db727d50ef2f36a2fb4972c45d1a88093b574291d714f9c56fa80b05d9b`, `results/train4-montage/R100-TRAIN4-1hz.png` sha256 `6a6013eceea0c16fe87fee615b1bc4840219a4fc15a51a88ed520c3c7e88213c`. 원본 VM 경로는 `/home/ugrp/ugrp-sim/runs/act18/montages/`다. 몽타주에서 마지막 구간은 대부분 파란 바닥/상자 하단 띠이며, Lead 시각 분석(독립 재검증 아님)으로는 R8 4/4가 t≈9.7–12.4s에 base·arm이 전체 정지(마지막 100틱 관절 range ≤0.005rad, 속도 0, 손가락힘 0)하고 목표상자와 정확히 0.20m 지점에 머문다.
+
+개루프 TRAIN 적합도(물리0, 1,430행)는 정지/진동 설명만으로 부족함을 보인다. R8 wheel 오차 median 0.00146·p90 0.00754, servo PWM p90 16.29, 교사 이동 2,482틱 중 projected-stop 123·raw 반대부호 44였다. R100은 wheel median 0.00225·p90 0.02017, servo p90 29.56, projected-stop 124·raw 반대부호 49다. 즉 교사 상태에서의 예측 오차는 작은 편인데(act17 10k 대비 크게 개선) 폐루프에서는 조기 정지한다. 이는 "개루프 fit 문제"와 "폐루프 누적/정지"를 분리해야 한다는 기존 act17 진단과 같은 방향이며, 이번에도 기본 제어기로 채택하지 않는다.
+
+게이트 규칙은 코드로 강제됐다. `act18_evaluate.allowed_seeds`가 VAL8에 TRAIN4 raw-recount 4/4 영수증을, FINAL40에 VAL8 8/8·frozen selection을 요구하고 `act18_finish.prepare_final`도 같은 조건을 재확인한다. 이번에는 TRAIN4가 0/4였으므로 finish-r3 summary에 `VAL: NOT_SUBMITTED_TRAIN_FIT_FAILED`, `FINAL40_submitted=false`, `winner=null`이 기록됐다.
+
+패키징은 두 후보 모두 수행했다(`finish-r3/packages/{R8,R100}/registry-entry.pending.json`, sha256 `17b1649c0e03152cf866ca22de3696e65a1d5d391cd9ea20ddb3ccfa23b8c261`/`b3f4aec754a2652f6a76d8a5c94239dd9c61ea7f5605a0497bb77d5756c5ea92`). 공개 Release: <https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/tag/models-20261017-act18-v7-r1> (Pre-release, **TRAIN4 0/4 NOT_READY, 재현용·사용 금지**). 공개 검증은 `results/release-r1/public-verification.json`(sha256 `fc74c8967ea43f9341b13a8c6bff36e0ea934d6822b60d24020f94be35ed9f7a`)에 있다: 새 checkout `e91d41809`에서 익명 재다운로드로 ZIP SHA·크기 일치, 내부 24/24파일 SHA(207,592,611 / 207,969,467 bytes) 일치, bundled CPU 로더 `ready=true, chunk=8/100`. 이는 배포·로딩 검증이며 물리 성공이 아니다. registry는 `configs/model_artifacts.json`에 append했다(과거 자산 덮어쓰기 없음).
+
+### 조건 이탈·미검증 범위
+- **R100 gcp5 미이동(deviation):** bf16 프로브(2,000 step, 1.10배)는 수용했지만, R8이 gcp2에서 fp32로 학습 중이라 정밀도가 섞이고(합산 금지), `act18_train.py`가 옵티마이저/RNG 재개를 지원하지 않아 42,400/100,000(≈13,484s)을 폐기해야 하며, gcp5 예산 1,000KRW 정지 위험이 있어 gcp2 matched fp32 pair를 끝까지 유지했다. 근거는 `bf16-probe-decision.json`.
+- 이 학습은 **fp32**다. bf16 기본 전환 커밋(c7900c0ac)은 이 학습 시작 뒤다. 100k bf16 학습은 아직 없다(runtime 증거는 2,000 step 프로브뿐). bf16 결과와 합산하지 않는다.
+- 미검증: VAL8·FINAL40·일반화 성공률(미실행), 100k bf16, R100 gcp5 이전·재개, raw 시연 전체의 원격 백업(Release 범위 아님), 다른 호스트/정밀도/조건과의 합산.
+- 실행 실패 원본 보존: `finish-r1`(학습 전 정지, `8d95cb6a…`), `finish-r2` HOST_ERROR(`bd58ebb5…`, training owner disappeared), `baseline-F-TRAIN4-r1` HOST_ERROR(원 recount가 eval-owner에 없는 input_audit 키를 요구한 결함, wall 1,646.5s; 수정 8d21fbe1a 뒤 raw recount 0/4, sha256 `95a95ac2…`)를 그대로 남겼다.
+- 기계 판독용 전체 실행·경로·SHA는 `summary.json`에 있다.
 
 `SURVEY.md`는 공개 구현 비교, `DIAGNOSIS.md`와 `rejection_table.json`은 변경 전 실패 분포다. `diagnosis-summary.json`은 gcp2 원본에서 만든 축약 요약이며 전체 히스토그램·프레임 예측은 VM에 있다. 회수 SHA-256은 각각 `b36b39aa2b952c4c7e3e0048e272b9d75295f44256ffa7da9d5893190f7ea217`, `370de0a0c3ec6a2f31b3f25d4921413dbc00fbe1b8ec91faa98d12a02ad55307`이다. 첫 진단 시도는 물리 전용 환경에 torch가 없어 실행 전 실패했고, 기존 ACT 환경으로 재시도했다(새 환경·새 물리0).
 
