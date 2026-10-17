@@ -188,7 +188,7 @@ def run(args):
     nworld = len(worlds) if not args.worlds else min(args.worlds, len(worlds))
     worlds = worlds[:nworld]
     if (not args.preflight and not args.probe_rotation and not args.memory_trace
-            and not args.detect_probe and nworld != 16):
+            and not args.detect_probe and not args.gate_probe and nworld != 16):
         raise ValueError('GATE_N16_REQUIRED')
     z1 = st.default_free_z(m, 'r1__robot')
     z2 = st.default_free_z(m, 'r2__robot')
@@ -842,7 +842,8 @@ def run(args):
                          if g['unseen_slope_m_per_s'] is not None]
         summary = dict(
             status=status, source_sha=q['source_sha'], host=platform.node(),
-            world_n=nworld, step_budget=setup['step_budget'], sim_s=(len(per_world[0]['trace'])-1)/10,
+            world_n=nworld, gate_probe=bool(args.gate_probe),
+            step_budget=setup['step_budget'], sim_s=(len(per_world[0]['trace'])-1)/10,
             wall_s=time.monotonic()-start, first30_wall_sim=first30,
             controller=GOTO_OPTION, memory_implementation='legacy_v1',
             footprint_radius_m=footprint, detector=setup['detector'],
@@ -899,6 +900,7 @@ def main():
     parser.add_argument('--worlds', type=int, default=0)
     parser.add_argument('--memory-trace', action='store_true')
     parser.add_argument('--detect-probe', action='store_true')
+    parser.add_argument('--gate-probe', action='store_true')
     args = parser.parse_args()
     run(args)
 
