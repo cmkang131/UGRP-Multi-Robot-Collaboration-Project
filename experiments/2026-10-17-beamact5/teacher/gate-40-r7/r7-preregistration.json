@@ -1,0 +1,76 @@
+{
+ "schema": "ugrp.beamact5.r7_preregistration.v1",
+ "written_before_run_utc": "2026-10-18T00:02:00Z",
+ "author": "beamact5 worker (DSH)",
+ "approved_by": "Lead (자율 진행: 38/40까지 반복)",
+ "r6_result": {
+  "run": "/home/ugrp/ugrp-sim/runs/beamact5/validation-r6-5",
+  "wall_s": 2185.23,
+  "success_n": 3,
+  "worlds": {
+   "6": "PASS 54.7",
+   "10": "PASS 49.5",
+   "20": "PASS 36.3",
+   "27": "FAIL cap_end 60.0",
+   "37": "FAIL 29.6"
+  },
+  "case27_mechanism": "commit-plan mode (r6 implementation) never engaged in practice: the guard required the current-world waypoint/unusable checks, which the stale red_1 margins made fail on every blocked tick, so the plan was still replaced each tick; behavior matched r5c (18 refreshes, approach 20.9 s + search 38.8 s, no translation after ~18 s)."
+ },
+ "r7_change": {
+  "mode": "search26_commit_plan (corrected implementation; default off)",
+  "rule": "on a successful selection, freeze the path, goal and the feasible constraints (radius/discs/rects) and drive that frozen plan with the existing next_plan = now + 1 s boundary, before the peer-route/escape/progress-recovery blocks; when the boundary is reached the normal replan/refresh cycle resumes.",
+  "basis": "r5c/r6 logs show the robot needs ~0.36 m but only ever received ~0.1 s of driving per refresh cycle; a 1 s committed window is 10x. No new time constant."
+ },
+ "stack": {
+  "root": "74ae376678cc88db0b28798e148c38440c97c48d",
+  "adapter": "259995a7ba9b3c290054d833f2f52774a11523ec",
+  "teacher": "d6bb5480124f205f752ae7fa228a8cbab9235051",
+  "cases_r7_sha256": "60825408e632f7a277e34e36fd3e2736a5aab2be0bb2b9e5bdbb623af529abbb",
+  "plan_sha256": "f1a50e8c833c1da9113bdf8cff3844913380e3c821b15c072c0a23c0f54f5148",
+  "rejection_table": "/home/ugrp/ugrp-sim/runs/beamact5/gate-40-r7/rejection_table.json"
+ },
+ "profile": {
+  "search23_rects": "search23_batched_rects_v1",
+  "search26_circles": "off",
+  "search26_circles_farfirst": "search26_circles_farfirst_v1",
+  "search26_static_peer": "search26_static_peer_stance_v1",
+  "search26_peer_memory": "search26_peer_memory_v1",
+  "search26_reobserve": "search26_reobserve_views_v1",
+  "search26_reobserve_refresh_open": "search26_reobserve_refresh_open_v1",
+  "search26_commit_plan": "search26_commit_plan_v1"
+ },
+ "runs": {
+  "r7_5world": {
+   "indices": [
+    6,
+    10,
+    20,
+    27,
+    37
+   ],
+   "out": "/home/ugrp/ugrp-sim/runs/beamact5/validation-r7-5",
+   "cap_s": 60
+  },
+  "gate_out": "/home/ugrp/ugrp-sim/runs/beamact5/gate39-r7-run"
+ },
+ "expectations": {
+  "6": "PASS",
+  "10": "PASS",
+  "20": "PASS",
+  "27": "PASS if the frozen 1 s windows deliver ~0.15-0.25 m/cycle and the refresh keeps the stance feasible at boundaries",
+  "37": "expected FAIL"
+ },
+ "gate_arithmetic": {
+  "target": "38/40 = 6,10,20,27 PASS with no regressions (15 expected FAIL, 37 expected FAIL)",
+  "if_27_fails": "37/40 FAIL",
+  "if_one_regression": "37/40 FAIL"
+ },
+ "risk": "driving a frozen plan for up to 1 s may use slightly stale clearance; only committed feasible plans and embedded collision guards; default off; 6/10/20 regression-checked.",
+ "not_claimed": [
+  "teacher success is not student success",
+  "no student recording/training",
+  "world15 excluded/unverified",
+  "37 structural label from r1/r2 not remeasured",
+  "no margin/cap constant change"
+ ]
+}

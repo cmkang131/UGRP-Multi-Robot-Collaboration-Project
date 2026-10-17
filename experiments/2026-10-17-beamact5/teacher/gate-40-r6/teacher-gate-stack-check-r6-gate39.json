@@ -1,0 +1,412 @@
+{
+  "schema": "ugrp.current_stack.check.v1",
+  "ok": true,
+  "current_compliant": true,
+  "checker_sha256": "bdef5ad98b8e5ee8a21126f75430a58193d5f44f11f23fa60fd9ca487511eb3b",
+  "scope": "declared manifest fields; not independent runtime/physics verification",
+  "inputs": [
+    {
+      "path": "/private/tmp/beamact5-r4-t/experiments/2026-10-17-beamact5/teacher/gate-40-r6/teacher-gate-stack-manifest-r6-gate39.json",
+      "sha256": "4003a7b44aad473db2c48ca6f88bad2d4022ebcd1c88f43319868117d454c36b"
+    }
+  ],
+  "rows": [
+    {
+      "record": "$",
+      "flow": "teacher_gate",
+      "id": "physics_backend",
+      "expected": "mjwarp_batch_v1",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.physics_backend",
+          "value": "mjwarp_batch_v1"
+        }
+      ],
+      "status": "current",
+      "input": "/private/tmp/beamact5-r4-t/experiments/2026-10-17-beamact5/teacher/gate-40-r6/teacher-gate-stack-manifest-r6-gate39.json"
+    },
+    {
+      "record": "$",
+      "flow": "teacher_gate",
+      "id": "contact_profile",
+      "expected": "warp_native_contact_v1",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.contact_profile",
+          "value": "warp_native_contact_v1"
+        }
+      ],
+      "status": "current",
+      "input": "/private/tmp/beamact5-r4-t/experiments/2026-10-17-beamact5/teacher/gate-40-r6/teacher-gate-stack-manifest-r6-gate39.json"
+    },
+    {
+      "record": "$",
+      "flow": "teacher_gate",
+      "id": "noslip_iterations",
+      "expected": 0,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.noslip_iterations",
+          "value": 0
+        }
+      ],
+      "status": "current",
+      "input": "/private/tmp/beamact5-r4-t/experiments/2026-10-17-beamact5/teacher/gate-40-r6/teacher-gate-stack-manifest-r6-gate39.json"
+    },
+    {
+      "record": "$",
+      "flow": "teacher_gate",
+      "id": "scene_profile",
+      "expected": "walls_floor_contrast_v5_indigo110_s80",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.scene_profile",
+          "value": "walls_floor_contrast_v5_indigo110_s80"
+        }
+      ],
+      "status": "current",
+      "input": "/private/tmp/beamact5-r4-t/experiments/2026-10-17-beamact5/teacher/gate-40-r6/teacher-gate-stack-manifest-r6-gate39.json"
+    },
+    {
+      "record": "$",
+      "flow": "teacher_gate",
+      "id": "cargo_version",
+      "expected": "v6",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.cargo_version",
+          "value": "v6"
+        }
+      ],
+      "status": "current",
+      "input": "/private/tmp/beamact5-r4-t/experiments/2026-10-17-beamact5/teacher/gate-40-r6/teacher-gate-stack-manifest-r6-gate39.json"
+    },
+    {
+      "record": "$",
+      "flow": "teacher_gate",
+      "id": "scenario_version",
+      "expected": "v7",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.scenario_version",
+          "value": "v7"
+        }
+      ],
+      "status": "current",
+      "input": "/private/tmp/beamact5-r4-t/experiments/2026-10-17-beamact5/teacher/gate-40-r6/teacher-gate-stack-manifest-r6-gate39.json"
+    },
+    {
+      "record": "$",
+      "flow": "teacher_gate",
+      "id": "heavy_crate",
+      "expected": false,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.heavy_crate",
+          "value": false
+        }
+      ],
+      "status": "current",
+      "input": "/private/tmp/beamact5-r4-t/experiments/2026-10-17-beamact5/teacher/gate-40-r6/teacher-gate-stack-manifest-r6-gate39.json"
+    },
+    {
+      "record": "$",
+      "flow": "teacher_gate",
+      "id": "setdown_lookaround_v1",
+      "expected": true,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.setdown_lookaround_v1",
+          "value": true
+        }
+      ],
+      "status": "current",
+      "input": "/private/tmp/beamact5-r4-t/experiments/2026-10-17-beamact5/teacher/gate-40-r6/teacher-gate-stack-manifest-r6-gate39.json"
+    },
+    {
+      "record": "$",
+      "flow": "teacher_gate",
+      "id": "held_object_hidden_v1",
+      "expected": true,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.held_object_hidden_v1",
+          "value": true
+        }
+      ],
+      "status": "current",
+      "input": "/private/tmp/beamact5-r4-t/experiments/2026-10-17-beamact5/teacher/gate-40-r6/teacher-gate-stack-manifest-r6-gate39.json"
+    },
+    {
+      "record": "$",
+      "flow": "teacher_gate",
+      "id": "held_world_reads",
+      "expected": 0,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.held_world_reads",
+          "value": 0
+        }
+      ],
+      "status": "current",
+      "input": "/private/tmp/beamact5-r4-t/experiments/2026-10-17-beamact5/teacher/gate-40-r6/teacher-gate-stack-manifest-r6-gate39.json"
+    },
+    {
+      "record": "$",
+      "flow": "teacher_gate",
+      "id": "teacher_visibility",
+      "expected": "visible_only",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.teacher_visibility",
+          "value": "visible_only"
+        }
+      ],
+      "status": "current",
+      "input": "/private/tmp/beamact5-r4-t/experiments/2026-10-17-beamact5/teacher/gate-40-r6/teacher-gate-stack-manifest-r6-gate39.json"
+    },
+    {
+      "record": "$",
+      "flow": "teacher_gate",
+      "id": "invisible_measurements",
+      "expected": 0,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.invisible_measurements",
+          "value": 0
+        }
+      ],
+      "status": "current",
+      "input": "/private/tmp/beamact5-r4-t/experiments/2026-10-17-beamact5/teacher/gate-40-r6/teacher-gate-stack-manifest-r6-gate39.json"
+    },
+    {
+      "record": "$",
+      "flow": "teacher_gate",
+      "id": "weld",
+      "expected": false,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.weld",
+          "value": false
+        }
+      ],
+      "status": "current",
+      "input": "/private/tmp/beamact5-r4-t/experiments/2026-10-17-beamact5/teacher/gate-40-r6/teacher-gate-stack-manifest-r6-gate39.json"
+    },
+    {
+      "record": "$",
+      "flow": "teacher_gate",
+      "id": "top_camera_control",
+      "expected": false,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.top_camera_control",
+          "value": false
+        }
+      ],
+      "status": "current",
+      "input": "/private/tmp/beamact5-r4-t/experiments/2026-10-17-beamact5/teacher/gate-40-r6/teacher-gate-stack-manifest-r6-gate39.json"
+    },
+    {
+      "record": "$",
+      "flow": "teacher_gate",
+      "id": "ultrasonic_front",
+      "expected": "off",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.ultrasonic_front",
+          "value": "off"
+        }
+      ],
+      "status": "current",
+      "input": "/private/tmp/beamact5-r4-t/experiments/2026-10-17-beamact5/teacher/gate-40-r6/teacher-gate-stack-manifest-r6-gate39.json"
+    },
+    {
+      "record": "$",
+      "flow": "teacher_gate",
+      "id": "wall_cap",
+      "expected": null,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.wall_cap",
+          "value": null
+        }
+      ],
+      "status": "current",
+      "input": "/private/tmp/beamact5-r4-t/experiments/2026-10-17-beamact5/teacher/gate-40-r6/teacher-gate-stack-manifest-r6-gate39.json"
+    },
+    {
+      "record": "$",
+      "flow": "teacher_gate",
+      "id": "speed_gate",
+      "expected": "record_only",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.speed_gate",
+          "value": "record_only"
+        }
+      ],
+      "status": "current",
+      "input": "/private/tmp/beamact5-r4-t/experiments/2026-10-17-beamact5/teacher/gate-40-r6/teacher-gate-stack-manifest-r6-gate39.json"
+    },
+    {
+      "record": "$",
+      "flow": "teacher_gate",
+      "id": "speed_metric",
+      "expected": "wall_s/(sim_s*nworld)",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.speed_metric",
+          "value": "wall_s/(sim_s*nworld)"
+        }
+      ],
+      "status": "current",
+      "input": "/private/tmp/beamact5-r4-t/experiments/2026-10-17-beamact5/teacher/gate-40-r6/teacher-gate-stack-manifest-r6-gate39.json"
+    },
+    {
+      "record": "$",
+      "flow": "teacher_gate",
+      "id": "gcp_host",
+      "expected": [
+        "ugrp-act-l4-gcp2",
+        "ugrp-act-l4-gcp3",
+        "ugrp-act-l4-gcp4",
+        "ugrp-act-l4-gcp5",
+        "ugrp-act-l4-gcp6"
+      ],
+      "observed": [
+        {
+          "field": "parent[0].stack_values.gcp_host",
+          "value": "ugrp-act-l4-gcp6"
+        },
+        {
+          "field": "stack_values.gcp_project",
+          "value": "ugrp-sim-f-1016"
+        },
+        {
+          "field": "stack_values.gcp_account",
+          "value": "kcm5781kcm5781@gmail.com"
+        }
+      ],
+      "status": "current",
+      "input": "/private/tmp/beamact5-r4-t/experiments/2026-10-17-beamact5/teacher/gate-40-r6/teacher-gate-stack-manifest-r6-gate39.json"
+    },
+    {
+      "record": "$",
+      "flow": "teacher_gate",
+      "id": "gcp_guards",
+      "expected": {
+        "idle_minutes": 20,
+        "budget_stop": true,
+        "credentials_on_vm": false
+      },
+      "observed": [
+        {
+          "field": "parent[0].stack_values.gcp_guards",
+          "value": {
+            "idle_minutes": 20,
+            "budget_stop": true,
+            "credentials_on_vm": false
+          }
+        }
+      ],
+      "status": "current",
+      "input": "/private/tmp/beamact5-r4-t/experiments/2026-10-17-beamact5/teacher/gate-40-r6/teacher-gate-stack-manifest-r6-gate39.json"
+    },
+    {
+      "record": "$",
+      "flow": "teacher_gate",
+      "id": "no_pooling",
+      "expected": true,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.no_pooling",
+          "value": true
+        }
+      ],
+      "status": "current",
+      "input": "/private/tmp/beamact5-r4-t/experiments/2026-10-17-beamact5/teacher/gate-40-r6/teacher-gate-stack-manifest-r6-gate39.json"
+    },
+    {
+      "record": "$",
+      "flow": "teacher_gate",
+      "id": "rejection_ledger",
+      "expected": [
+        "reason_category",
+        "blocked_object",
+        "minimum_gap_m"
+      ],
+      "observed": [
+        {
+          "field": "parent[0].stack_values.rejection_ledger",
+          "value": [
+            "reason_category",
+            "blocked_object",
+            "minimum_gap_m"
+          ]
+        }
+      ],
+      "status": "current",
+      "input": "/private/tmp/beamact5-r4-t/experiments/2026-10-17-beamact5/teacher/gate-40-r6/teacher-gate-stack-manifest-r6-gate39.json"
+    },
+    {
+      "record": "$",
+      "flow": "teacher_gate",
+      "id": "cap_end_label",
+      "expected": "cap_end",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.cap_end_label",
+          "value": "cap_end"
+        }
+      ],
+      "status": "current",
+      "input": "/private/tmp/beamact5-r4-t/experiments/2026-10-17-beamact5/teacher/gate-40-r6/teacher-gate-stack-manifest-r6-gate39.json"
+    },
+    {
+      "record": "$",
+      "flow": "teacher_gate",
+      "id": "gcp_project",
+      "expected": [
+        "ugrp-sim-b-1014",
+        "ugrp-sim-c-1016",
+        "ugrp-sim-d-1016",
+        "ugrp-sim-e-1016",
+        "ugrp-sim-f-1016"
+      ],
+      "observed": [
+        {
+          "field": "parent[0].stack_values.gcp_project",
+          "value": "ugrp-sim-f-1016"
+        }
+      ],
+      "status": "current",
+      "input": "/private/tmp/beamact5-r4-t/experiments/2026-10-17-beamact5/teacher/gate-40-r6/teacher-gate-stack-manifest-r6-gate39.json"
+    },
+    {
+      "record": "$",
+      "flow": "teacher_gate",
+      "id": "gcp_account",
+      "expected": [
+        "changmin5781@gmail.com",
+        "kcm5781kcm5781@gmail.com"
+      ],
+      "observed": [
+        {
+          "field": "parent[0].stack_values.gcp_account",
+          "value": "kcm5781kcm5781@gmail.com"
+        }
+      ],
+      "status": "current",
+      "input": "/private/tmp/beamact5-r4-t/experiments/2026-10-17-beamact5/teacher/gate-40-r6/teacher-gate-stack-manifest-r6-gate39.json"
+    }
+  ],
+  "stack": {
+    "path": "/Users/changmin/projects/ugrp-wt/beamact3c/configs/current_stack.json",
+    "sha256": "8539f9c5c31d3effd91fc0ef5b737fe451066d4659c094909317b07b9bc8f7d9"
+  },
+  "counts": {
+    "current": 25
+  },
+  "admission": "pass"
+}
