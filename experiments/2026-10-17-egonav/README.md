@@ -176,3 +176,128 @@ world02의 4.431 m는 받아들인 목표의 오차가 아니라 **첫 거짓 �
 * 주의: 이 영상은 시각화이며 성공 판정 근거가 아니다. gate-09/PR #583 결과와
   합산하지 않는다. 왼쪽 패널의 기억은 컨트롤러가 받아들인 목표 표시 1개이고,
   거부된 작은 패치는 기억으로 만들지 않으므로 이벤트 텍스트로만 보인다.
+
+## 원거리 검출 한계와 기본 off far 후보 (2026-10-18)
+
+사용자 질문: "좀 더 멀리서 찾아서 다가오게는 못할까?" 현재 0.10 m²
+관문은 gate-08 world02의 동료 바퀴 오탐(0.0223 m²)을 막기 위한 값이다.
+이 관문이 원거리 검출을 막는지, 더 먼 시작에서도 표시가 보이는지를
+먼저 정적으로 쟀다(1단계). 정답 좌표는 시작 배치 저작과 평가 표에만
+쓰고 제어 입력에는 넣지 않았다.
+
+### 1단계 — 2·3·4·5 m 정적 검출 측정 (far-measure-02)
+
+`scripts/egonav_gate.py --detect-probe`, world 4개, 각 100틱(9.9 SIM초),
+바퀴 명령 0으로 정지한 채 자기 RGB만 사용. 바닥 투영은
+`downward_min=0.05`, `max_range_m=4.0`(하드 클램프),
+유효 바닥 픽셀 264686/307200. 저작 시작은 중심까지 2.000/3.000/
+3.939/4.903 m(가장자리까지 1.700/2.267/3.191/4.510 m).
+
+| 시작(중심/가장자리) | 목표 표시 검출 | observed_area_m2 | 픽셀 수 | hue 중앙값 | 패치 range | 판정 |
+|---|---|---|---|---|---|---|
+| 2.000 / 1.700 m | 100/100틱 | 0.842–0.903 | 11031–11116 | 12 | 1.969 m | 진짜 표시 |
+| 3.000 / 2.267 m | 100/100틱 | 0.822–0.893 | 3347–3390 | 12 | 2.929 m | 진짜 표시 |
+| 3.939 / 3.191 m | 100/100틱 | 0.378–0.442 | 805–959 | 12 | 3.716 m | 진짜 표시 |
+| 4.903 / 4.510 m | 0/100틱 | 0.0092–0.0096 | 465–470 | 1 | 1.319 m | 목표 아님(빨간 화물, hue 1) |
+
+* **핵심:** 0.10 m² 출생 관문은 원거리 한계가 아니다. 3.94 m에서도 진짜
+  표시는 0.378–0.442 m²로 관문의 3.8–4.4배였다. 한계는 바닥 투영의
+  `max_range_m=4.0`이다. 4.90 m에서는 구역 가장자리까지 4.510 m라
+  진짜 표시의 유효 바닥점이 하나도 없고, 검출된 유일한 패치는 문 근처
+  1.32 m의 빨간 화물(0.0092 m², hue 1)이다. 따라서 0.10 m² 미만 패치를
+  추적하는 후보 토글로는 이 4.9 m 시작을 살릴 수 없다(추적할 진짜 패치가
+  없다). 더 멀리 보려면 투영 `max_range_m`이나 카메라 기하를 바꿔야 하며,
+  이번 작업 범위 밖이라 바꾸지 않았다.
+* 원본: VM `/home/ugrp/ugrp-sim/runs/egonav/far-measure-02`,
+  Mac `outputs/egonav-far/far-measure-02/`. `detect_probe.json` sha256
+  `ecb96271e825d3666758bbe5c552f8906d62193edafa70310235e5152c0e5874`,
+  `SHA256SUMS.json` sha256
+  `2888d9336b792fd04412d4659f40f681cc756b69ff5c762543d8f05501bea1c9`
+  (Mac 회수분 9/9 검증, 프레임 12장은 VM 보존).
+* 실패 보존: `far-measure-01`은 `.venv-sim`에 `mujoco_warp`가 없어
+  ModuleNotFoundError로 끝났다(정확한 환경은 `.venv-warp`). 원본 보존.
+
+### 2단계 — 기본 off 토글 `egonav_far_candidate_v1`
+
+`harness/egocentric_goto.py`: 0.10 m² 미만 패치를 '후보'로 추적하되
+다음 조건을 모두 만족할 때만 **탐색 회전의 부호**를 바꾼다(기본 off,
+`far_candidate=False`).
+
+1. 같은 kind/signature이며, 측정 hue가 이미 받아들인(≥0.10 m²) 표시의
+   실측 hue와 3 이내. 아직 받아들인 표시가 없으면 `hue_reference_unavailable`로
+   거부한다(fail-closed). hue는 게이트가 받아들인 구성요소 픽셀에서
+   직접 측정하며 정답 hue를 넣지 않는다.
+2. 5프레임(0.5 s) 연속 지속.
+3. 자기 발행 명령 이력에 전진 명령이 있고, 관측 면적이 첫 면적의 1.25배 이상.
+
+상수 근거(측정 분포): 진짜 표시 hue는 100/100틱에서 12, 빨간 화물은 1이라
+허용 3은 둘을 구분한다. 정지 상태 면적 max/min은 ≤1.169라 1.25는 잡음
+위이고, 진짜 패치는 100/100틱 존재해 5프레임은 최소 지속 창이다.
+후보는 기억을 만들지 않고, `seen_target`/`done`을 세우지 않으며, 전진
+주행에 쓰지 않는다. 확정·도착 판정은 계속 0.10 m² 관문이 소유한다.
+수용/거부 원장은 `reason_category`, `blocked_object=
+orange_object_below_zone_marking_area`, `minimum_gap_m=None`,
+`gap_status=not_measured`, `observed_area_m2`, `first_area_m2`, `frames`,
+`hue`, `confirmed_hue`, `forward_approach`를 남긴다. 1.0 s 넘게 후보가
+안 보이면 `far_candidate_expired`를 남긴다. 거부 사유:
+`hue_not_measured`, `hue_reference_unavailable`, `hue_mismatch`,
+`persistence`, `no_forward_approach`, `no_area_growth`.
+
+### 3단계 — 같은 시작 4세계 off/on 프로브 (source aa5d503e)
+
+같은 4개 저작 시작, `step_budget` 1200(모든 세계가 끝나면 자동 종료),
+gcp4 L4·`.venv-warp`·`41584d3a1-warp10-pool`. off/on은 같은 SHA의 별도
+프로세스이며 서로 합산하지 않는다.
+
+| world | 시작 | off-03 | on-03 | far 후보 이벤트(on) |
+|---|---|---|---|---|
+| 0 | 2.0 m | 구역 도착 | 구역 도착 | 0 |
+| 1 | 3.0 m | 구역 도착 | 구역 도착 | 0 |
+| 2 | 3.94 m | 구역 도착 | 구역 도착 | 0 |
+| 3 | 4.9 m | 실패(구역 밖 4.506 m) | 실패(구역 밖 4.506 m) | 7행, 수용·회전 0 |
+
+* 합계: off 3/4, on 3/4 도착. 충돌 0/0. SIM 25.6/25.5 s, wall
+  449.9/448.1 s. `arrival_claimed_outside_zone` 1(world3)은
+  `search_exhausted`로 끝난 실패다.
+* on world3 원장: t=0.0 빨간 화물(hue 1, 0.00917 m²) 추적 → t=1.1 만료;
+  t=1.3 hue 14·0.0620 m² 패치 추적 → t=1.4 `hue_reference_unavailable`
+  거부 → t=3.2 만료; t=3.7 hue 13·0.0167 m² 추적 → t=3.8 같은 사유 거부.
+  이 세계는 진짜 표시가 투영 범위 밖이라 한 번도 확정되지 않아 기준
+  hue가 없고, 후보는 fail-closed로 회전에 쓰이지 않았다
+  (`far_candidate_turn` 0회).
+* off/on은 별도 프로세스라 물리 궤적이 비트 단위로 같지 않다(world1
+  t=8.3, world2 t=15.4에서 turn/forward 선택이 갈렸고 둘 다 도착). 두
+  세계 모두 far 이벤트가 0이므로 이 차이는 토글에 귀속할 수 없다.
+  실행 간 시뮬레이터 비결정성 여부는 별도로 재지 않았다.
+* 입력 감사(전 실행): `held_world_reads=0`, `top_camera_control=false`,
+  `static_map_control=0`, `truth_control=0`.
+* 실패 보존: `far-probe-off-01`은 source 908bd2c1c에 `--gate-probe`가
+  없어 `GATE_N16_REQUIRED`로 끝났다(4628ac6c에서 우회 추가). 원본 보존.
+  `far-probe-off-02`는 토글 코드 이전 source 4628ac6c의 off 기록으로,
+  off-03/on-03과 합산하지 않는다(결과는 같은 3/4).
+
+### 영상 (시각화, 성공 판정 근거 아님)
+
+`outputs/egonav-far/far-visual-01/far-candidate-confirm-and-reject.mp4`
+(960×560, 10 fps=1× SIM, 33.6 s, 798610 bytes, sha256
+`1531c8e07621ca723360c66d9a843e3606a64a4e629cde64441768d8ded30ca3`).
+앞 25.3 s는 world0(3.94 m)의 표시 확정·도착, 뒤 8 s는 world1(4.9 m)의
+후보 검출·거부·탐색 구간이다. 기록 전용 `egonav_memory_trace_v1` 실행
+`far-visual-01`(source aa5d503e, 세계 2개, 세계당 254프레임, SIM 25.3 s,
+world0 도착·world1 실패, 후보 이벤트 7행, 수용 0)에서 만들었다. 재생
+빌더는 world별 스폰 메타데이터 버그를 고친 7cc7fdd(sha256
+`b76359afd115f445f496e1594e63e5b0821abfe9ea8be6c4de8da2d73dff09f5`)를
+쓴다. 구성 mp4 sha256: world0 `83142a8c…`, world1 `e2598055…`.
+
+### 검증 범위
+
+* 1–3단계만 수행했다. 16세계 전체 관문은 돌리지 않았고, 이 4세계
+  프로브는 gate-09(16세계)와 별개 조건이라 합산하지 않는다.
+* 오프라인 단위 시험 8개(`tests/test_egocentric_goto.py`)만 로컬에서
+  통과했고, 물리 검증은 gcp4 원본으로 위 표를 다시 센 것이다.
+* Mac 회수분은 SHA256SUMS.json 대조로 검증했다(off-03 9/9, on-03 9/9,
+  visual 8/8; 영상·재생 산출물은 게이트 SUMS 이후 생성이라 별도 해시).
+* 원본: VM `/home/ugrp/ugrp-sim/runs/egonav/far-probe-off-03`,
+  `far-probe-on-03`, `far-visual-01`. Mac `outputs/egonav-far/`의 같은 이름.
+* gcp4는 리스 해제 뒤 정지·TERMINATED를 확인한다. 다른 GCP 프로젝트
+  결과와 합산하지 않는다.
