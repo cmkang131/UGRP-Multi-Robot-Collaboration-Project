@@ -21,7 +21,7 @@ from act17_policy import observation_batch
 # align..close demonstration segments. It is never a packaged comparison model
 # (adapter training_complete stays False because its step != protocol steps).
 CANDIDATES = {'R8': 8, 'R100': 100, 'act18-tune': 8, 'act18-doneb1': 100,
-              'act18-std': 20, 'act18-b3': 20}
+              'act18-std': 20, 'act18-b3': 20, 'act18-co': 20}
 TUNE_CANDIDATE = 'act18-tune'
 # Registered short pilot checkpoints (never 100k reference models, never packaged):
 # 'act18-tune' = post-close weighted 2k probe on R8; 'act18-doneb1' = done-only
@@ -248,14 +248,33 @@ class WeightedReferenceDataset(ReferenceDataset):
                 for skill, value in totals.items() if value['rows_N'] and 0 < value['positive_mass'] < value['mass']}
 
 
-def make_policy(chunk, *, device='cpu', pretrained=False):
+def make_policy(chunk, *, device='cpu', pretrained=False, state_dim=None):
     library()
-    from harness.grasp_act_policy import make_policy as old_make
     from lerobot.policies.act.modeling_act import ACTPolicy
-    # Reuse the exact pinned configuration; alter only the registered horizon.
-    original = old_make(device=device, pretrained=False)
-    config = replace(original.config, chunk_size=chunk, n_action_steps=1, temporal_ensemble_coeff=None)
-    del original
+    if state_dim is None:
+        from harness.grasp_act_policy import make_policy as old_make
+        # Reuse the exact pinned configuration; alter only the registered horizon.
+        original = old_make(device=device, pretrained=False)
+        config = replace(original.config, chunk_size=chunk, n_action_steps=1, temporal_ensemble_coeff=None)
+        del original
+    else:
+        # Co-training view: same pinned ACT recipe with an explicit state width
+        # (252 recorded context + dataset-origin token); no other model change.
+        from lerobot.configs.types import FeatureType, PolicyFeature
+        from lerobot.policies.act.configuration_act import ACTConfig
+        import harness.grasp_act_contract as contract
+        import harness.grasp_act_data as data_module
+        features = {key: PolicyFeature(type=FeatureType.VISUAL, shape=(3, *data_module.MODEL_IMAGE_HW))
+                    for key in data_module.IMAGE_KEYS}
+        features['observation.state'] = PolicyFeature(type=FeatureType.STATE, shape=(state_dim,))
+        config = ACTConfig(input_features=features,
+            output_features={'action': PolicyFeature(type=FeatureType.ACTION, shape=(contract.ACTION_DIM,))},
+            chunk_size=chunk, n_action_steps=1, temporal_ensemble_coeff=None,
+            vision_backbone='resnet18', pretrained_backbone_weights=None,
+            dim_model=512, n_heads=8, dim_feedforward=3200, n_encoder_layers=4,
+            n_decoder_layers=1, n_vae_encoder_layers=4, latent_dim=32, kl_weight=10.,
+            dropout=.1, optimizer_lr=1e-5, optimizer_lr_backbone=1e-5,
+            optimizer_weight_decay=1e-4, device=device)
     policy = ACTPolicy(config).to(device)
     if pretrained:
         from torchvision.models import ResNet18_Weights, resnet18
@@ -279,13 +298,17 @@ def save_actor(policy, root, stats, provenance):
         upstream_sha=UPSTREAM_SHA, lerobot_act_sha256=LEROBOT_ACT_SHA256,
         contract_sha256=sha256(Path(c.__file__)),
         student_input_contract='own RGB + own issued command history + task labels/clocks only',
-        static_map_use='none', policy_ground_truth_fields=0, handwritten_nearfield_fallback=False), indent=2)+'\n')
+        static_map_use='none', policy_ground_truth_fields=0, handwritten_nearfield_fallback=False,
+        state_dim=int(policy.config.input_features['observation.state'].shape[0]),
+        condition_token=provenance.get('condition_token')), indent=2)+'\n')
     (root/'SHA256.json').write_text(json.dumps({name:sha256(root/name) for name in ['model.safetensors','config.json','adapter.json']}, indent=2)+'\n')
 
 
 class Actor:
-    def __init__(self, policy, stats, device, chunk):
+    def __init__(self, policy, stats, device, chunk, state_dim=None, condition_token=None):
         self.policy, self.stats, self.device, self.chunk = policy.eval(), stats, device, chunk
+        self.state_dim = state_dim
+        self.condition_token = np.asarray(condition_token, np.float32) if condition_token is not None else None
 
     def decode(self, values):
         values = np.asarray(values)
@@ -295,8 +318,15 @@ class Actor:
 
     def predict(self, obs, jpgs):
         import torch
+        values = observation_batch(obs,jpgs,self.stats,'current_full_v1')
+        state = np.asarray(values['observation.state'], np.float32)
+        if self.state_dim is not None and state.shape[-1] != self.state_dim:
+            if self.condition_token is None or state.shape[-1]+len(self.condition_token) != self.state_dim:
+                raise ValueError('co-training condition token required for this state width')
+            values = dict(values)
+            values['observation.state'] = np.concatenate([state, self.condition_token]).astype(np.float32)
         batch = {k:torch.from_numpy(v.copy()).unsqueeze(0).to(self.device)
-            for k,v in observation_batch(obs,jpgs,self.stats,'current_full_v1').items()}
+            for k,v in values.items()}
         with torch.inference_mode():
             values = self.decode(self.policy.predict_action_chunk(batch)[0].cpu().numpy())
         if values.shape != (self.chunk,14) or not np.isfinite(values).all():
@@ -321,11 +351,13 @@ class Actor:
                 or sha256(Path(modeling_act.__file__))!=LEROBOT_ACT_SHA256
                 or meta.get('image_mode')!='current_full_v1' or meta.get('done_mode')!='balanced_bce_v1'):
             raise ValueError('ACT18 frozen runtime/input mismatch')
-        policy = make_policy(meta['chunk'], device=device)
+        policy = make_policy(meta['chunk'], device=device, state_dim=meta.get('state_dim'))
         saved = json.loads((root/'config.json').read_text())
         actual = json.loads(json.dumps(draccus.encode(policy.config)))
         saved['device'] = actual['device']
         if saved != actual:
             raise ValueError('saved ACT configuration changed')
         policy.load_state_dict(load_file(str(root/'model.safetensors')), strict=True)
-        return cls(policy, meta['stats'], device, meta['chunk'])
+        token = (meta.get('condition_token') or {}).get('default') if isinstance(meta.get('condition_token'), dict) else None
+        return cls(policy, meta['stats'], device, meta['chunk'], state_dim=meta.get('state_dim'),
+                   condition_token=token)

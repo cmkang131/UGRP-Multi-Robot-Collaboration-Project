@@ -21,11 +21,34 @@ from act17_compact_records import original_sha256
 
 HISTORY = 16
 HIDDEN = 64
-SKILLS = ('grasp', 'release', 'approach', 'align', 'alignment')
+SKILLS = ('grasp', 'wait', 'regrasp', 'release')
 SERVOS = ('1', '3', '4', '5', '6')
-FEATURE_SPEC = 'skill_onehot+command14_v1'
+FEATURE_SPEC = 'skill4_onehot+command14_v2'
 THRESHOLD = .65
 PERSISTENCE = 1
+
+
+def native_episodes(root, split):
+    from act17_data import read
+    root = Path(root)
+    manifest = read(root/'manifest.json')
+    if manifest.get('schema') != 'ugrp.grasp_act.dataset.v1' or not manifest.get('complete'):
+        raise ValueError('complete act16w native dataset required')
+    rows = []
+    for episode in manifest['episodes']:
+        if episode['split'] != split:
+            continue
+        folder = root/episode['path']
+        with np.load(folder/'tensors.npz') as archive:
+            action = archive['action'].astype(np.float32)
+        metadata = read(folder/'samples.json')
+        rows.append(dict(seed=episode['seed'], split=split, action0=action[:, 0, :].copy(),
+                         done=action[:, 0, -1],
+                         t=np.asarray([m['t'] for m in metadata], np.float64),
+                         skill=np.asarray([m['skill'] for m in metadata])))
+    if not rows:
+        raise ValueError('native split has no episodes')
+    return rows
 
 
 def command_vector(command):
@@ -165,12 +188,15 @@ class DoneHead:
         return instance
 
 
-def train_module(dataset, out_dir, epochs, lr, seed):
+def train_module(dataset, out_dir, epochs, lr, seed, extra_native=None):
     import torch, json
     from act18_done_offline import episodes, command_features, skill_onehot, windows, auc, firing_report
     torch.set_num_threads(8)
     torch.manual_seed(seed)
     data = episodes(dataset)
+    if extra_native is not None:
+        data = data+[dict(item, source='act16w') for item in native_episodes(extra_native, 'train')]
+        data += [dict(item, source='act16w') for item in native_episodes(extra_native, 'validation')]
     for item in data:
         item['compact'] = np.concatenate([skill_onehot(item['skill']),
                                           command_features(item['action0'])], axis=1)
@@ -221,6 +247,9 @@ def train_module(dataset, out_dir, epochs, lr, seed):
                 hidden=HIDDEN, threshold=THRESHOLD, persistence=PERSISTENCE, skills=list(SKILLS),
                 servos=list(SERVOS), source_sha=frozen_source(Path(__file__).resolve().parents[1]),
                 dataset_manifest_sha256=original_sha256(Path(dataset)/'manifest.json'),
+                native_manifest_sha256=(original_sha256(Path(extra_native)/'manifest.json')
+                                        if extra_native is not None else None),
+                datasets=('v7 TRAIN200 + act16w TRAIN32' if extra_native is not None else 'v7 TRAIN200'),
                 train_seeds=[d['seed'] for d in train], train_rows=len(train_y),
                 train_positive_rows=int(train_y.sum()), validation_rows=len(val_y),
                 validation_positive_rows=int(val_y.sum()), validation_auc=float(validation_auc),
@@ -236,6 +265,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--enabled', action='store_true')
     parser.add_argument('--dataset', type=Path, required=True)
+    parser.add_argument('--extra-native', type=Path)
     parser.add_argument('--out-dir', type=Path, required=True)
     parser.add_argument('--epochs', type=int, default=8)
     parser.add_argument('--lr', type=float, default=1e-3)
@@ -243,7 +273,7 @@ def main():
     args = parser.parse_args()
     if not args.enabled:
         parser.error('done-head training default OFF')
-    meta = train_module(args.dataset, args.out_dir, args.epochs, args.lr, args.seed)
+    meta = train_module(args.dataset, args.out_dir, args.epochs, args.lr, args.seed, args.extra_native)
     import json
     print(json.dumps(dict(out=str(args.out_dir), validation_auc=meta['validation_auc'],
                           model_sha256=meta['model_sha256']), ensure_ascii=False))

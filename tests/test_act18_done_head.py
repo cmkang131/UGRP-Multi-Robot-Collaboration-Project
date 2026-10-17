@@ -7,7 +7,7 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'scripts'))
-from act18_done_head import (CommandFeatureState, apply_done_override, command_vector,
+from act18_done_head import (FEATURE_SPEC, CommandFeatureState, apply_done_override, command_vector,
                              done_fires, padded_window, skill_onehot_vector, validate_metadata)
 from act18_done_offline import command_features
 
@@ -57,9 +57,9 @@ def test_padded_window_keeps_newest_features_and_mask():
 
 
 def test_metadata_requires_frozen_spec_hash_and_auc():
-    meta = dict(schema='ugrp.act18.done_head.v1', feature_spec='skill_onehot+command14_v1',
+    meta = dict(schema='ugrp.act18.done_head.v1', feature_spec=FEATURE_SPEC,
                 history=16, hidden=64, threshold=.65, persistence=1,
-                skills=['grasp', 'release', 'approach', 'align', 'alignment'],
+                skills=['grasp', 'wait', 'regrasp', 'release'],
                 servos=['1', '3', '4', '5', '6'], source_sha='a'*40,
                 dataset_manifest_sha256='b'*64, validation_auc=.99, model_sha256='c'*64)
     assert validate_metadata(meta, 'c'*64) is meta
@@ -69,3 +69,10 @@ def test_metadata_requires_frozen_spec_hash_and_auc():
         validate_metadata(meta, 'd'*64)
     with pytest.raises(ValueError, match='validation auc'):
         validate_metadata({**meta, 'validation_auc': .4}, 'c'*64)
+
+
+def test_co_training_origin_token_dimensions():
+    from act18_cotrain_data import ORIGIN_NATIVE, ORIGIN_V7, origin_token
+    assert origin_token(ORIGIN_V7).tolist() == [1.0, 0.0]
+    assert origin_token(ORIGIN_NATIVE).tolist() == [0.0, 1.0]
+    assert origin_token(ORIGIN_V7, state_token=False).shape == (0,)

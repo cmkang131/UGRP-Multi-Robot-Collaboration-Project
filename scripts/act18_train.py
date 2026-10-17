@@ -47,11 +47,11 @@ def validate_probe_options(candidate, init_checkpoint, steps, post_close_weight,
         if not 0 <= done_positive_batch_fraction <= 1:
             raise ValueError('--done-positive-batch-fraction must be within [0, 1]')
     if base_smooth_window is not None:
-        if candidate not in PILOT_CANDIDATES:
+        if candidate not in PILOT_CANDIDATES and candidate != 'act18-co':
             raise ValueError('--base-smooth-window requires a pilot candidate')
         if type(base_smooth_window) is not int or not 1 <= base_smooth_window <= 21:
             raise ValueError('--base-smooth-window must be an integer within [1, 21]')
-    if val_select and candidate not in PILOT_CANDIDATES:
+    if val_select and candidate not in PILOT_CANDIDATES and candidate != 'act18-co':
         raise ValueError('--val-select requires a pilot candidate')
     if done_current_step_only and candidate not in PILOT_CANDIDATES:
         raise ValueError('--done-current-step-only requires a pilot candidate')
@@ -117,6 +117,12 @@ def main():
     p.add_argument('--done-current-step-only', action='store_true')
     # Pilot-only optimizer lr override (default 1e-5, the standard ACT value).
     p.add_argument('--lr', type=float)
+    # Phase C co-training (Lead-approved): v7 TRAIN200 + act16w 40-world dataset,
+    # with a 2-dim dataset-origin token appended to observation.state.
+    p.add_argument('--cotrain-native', type=Path)
+    p.add_argument('--cotrain-weight', type=float, default=.5)
+    p.add_argument('--checkpoint-every', type=int)
+    p.add_argument('--co-smooth-window', type=int, default=5)
     for name in ('dataset','protocol','out','queue'):
         p.add_argument('--'+name, type=Path, required=True)
     a = p.parse_args()
@@ -133,11 +139,17 @@ def main():
     # Strict: a queue without the precision receipt must not silently run bf16.
     if queue.get('training_precision')!=a.precision:
         raise ValueError('queue training_precision receipt and --precision must match')
+    cotrain = a.cotrain_native is not None
     total_steps = validate_probe_options(a.candidate, a.init_checkpoint, a.steps,
                                          a.post_close_weight, a.pre_close_weight,
                                          a.done_positive_batch_fraction,
                                          a.base_smooth_window, a.val_select,
                                          a.done_current_step_only) or protocol['steps']
+    if cotrain and (a.post_close_weight is not None or a.pre_close_weight is not None
+                    or a.done_positive_batch_fraction is not None or a.done_current_step_only):
+        raise ValueError('co-training does not combine with tuning options')
+    if cotrain and a.candidate != 'act18-co':
+        raise ValueError('--cotrain-native requires --candidate act18-co')
     if a.lr is not None:
         if a.candidate not in PILOT_CANDIDATES:
             raise ValueError('--lr override requires a pilot candidate')
@@ -145,8 +157,13 @@ def main():
             raise ValueError('--lr override must be within [1e-7, 1e-4]')
     done_positive_fraction = a.done_positive_batch_fraction
     weighted = a.post_close_weight is not None or a.pre_close_weight is not None
-    sampling = 'weighted_post_close_v1' if weighted else 'uniform_episode_v1'
-    if weighted:
+    sampling = 'cotrain_v1' if cotrain else ('weighted_post_close_v1' if weighted else 'uniform_episode_v1')
+    if cotrain:
+        from act18_cotrain_data import CoTrainingDataset
+        data = CoTrainingDataset(a.dataset, a.cotrain_native, chunk=CANDIDATES[a.candidate],
+                                 base_smooth_window=a.co_smooth_window, native_weight=a.cotrain_weight)
+        state_dim = data.state_dim
+    elif weighted:
         data = WeightedReferenceDataset(a.dataset, 'train', chunk=CANDIDATES[a.candidate],
                                         post_close_weight=a.post_close_weight,
                                         pre_close_weight=a.pre_close_weight)
@@ -158,6 +175,12 @@ def main():
     if (set(data.manifest['eligible_train_seeds'])!=set(protocol['train_seeds'])
             or original_sha256(a.dataset/'manifest.json')!=queue['dataset_manifest_sha256']):
         raise ValueError('same complete v7 TRAIN dataset required')
+    if cotrain:
+        if queue.get('cotrain_native_manifest_sha256') != data.native_manifest_sha256:
+            raise ValueError('registered act16w co-training manifest required')
+        if queue.get('cotrain_weight') != a.cotrain_weight:
+            raise ValueError('registered co-training weight required')
+
     import torch
     from harness.grasp_act_loss import policy_loss
     from lerobot.policies.act import modeling_act
@@ -170,7 +193,8 @@ def main():
     torch.cuda.manual_seed_all(protocol['seed'])
     torch.backends.cudnn.benchmark=False
     generator=torch.Generator().manual_seed(protocol['seed'])
-    policy=make_policy(data.chunk,device='cuda',pretrained=True)
+    policy=make_policy(data.chunk,device='cuda',pretrained=True,
+                       state_dim=(data.state_dim if cotrain else None))
     init_receipt=None
     if a.init_checkpoint is not None:
         init_receipt=init_checkpoint_receipt(a.init_checkpoint,protocol,a.protocol,a.dataset,data.chunk)
@@ -202,7 +226,20 @@ def main():
              if o['sample_id']==data.metadata[0]['sample_id'])
     jpgs=[(Path(first['source_capture'])/r['path']).read_bytes() for r in obs['rgb']]
     own=observation_batch(obs,jpgs,data.stats,'current_full_v1')
-    if any(not __import__('numpy').array_equal(v,data[0][k]) for k,v in own.items()):
+    first_batch=data[0]
+    state_dim=own['observation.state'].shape[-1]
+    if state_dim!=first_batch['observation.state'].shape[-1]:
+        # co-training view: deck the registered v7 condition token onto the v7 obs
+        import numpy as _np
+        token=_np.asarray([1.0,0.0],_np.float32)
+        if first_batch['observation.state'].shape[-1]!=state_dim+len(token):
+            raise ValueError('unexpected co-training state width')
+        own=dict(own);own['observation.state']=_np.concatenate([own['observation.state'],token])
+        if not _np.array_equal(first_batch['observation.state'][:state_dim],own['observation.state'][:state_dim]):
+            raise ValueError('real training/deployment transforms differ')
+        if not _np.array_equal(first_batch['observation.state'][state_dim:],token):
+            raise ValueError('condition token mismatch')
+    elif any(not __import__('numpy').array_equal(v,first_batch[k]) for k,v in own.items()):
         raise ValueError('real training/deployment transforms differ')
     a.out.mkdir(parents=True,exist_ok=False)
     config=dict(source_sha=source,cohort='act18-v7-reference',candidate=a.candidate,
@@ -216,7 +253,14 @@ def main():
         training_precision=a.precision,
         training_precision_scope=('fp32 weights/optimizer/grad clip; forward+loss bf16 autocast'
                                   if a.precision=='bf16_autocast_v1' else 'fp32 end-to-end'),
-        static_map_use='none',wall_cap=None,optimizer_recipe='LeRobot AdamW defaults; no implicit resume')
+        static_map_use='none',wall_cap=None,optimizer_recipe='LeRobot AdamW defaults; no implicit resume',
+        state_dim=(data.state_dim if cotrain else None))
+    if cotrain:
+        config.update(cotraining=dict(v7_root=str(a.dataset),native_root=str(a.cotrain_native),
+            native_manifest_sha256=data.native_manifest_sha256,native_weight=a.cotrain_weight,
+            state_token_dim=2,state_token_order=['v7','act16w'],base_smooth_window=a.co_smooth_window,
+            condition_token=dict(default=[1.0,0.0],order=['v7','act16w'],dim=2),
+            note='v7 TRAIN200 + act16w TRAIN32; condition token appended to state; done head trained separately'))
     if a.candidate in PILOT_CANDIDATES:
         if a.done_current_step_only:
             probe_kind='done_horizon_current_only_v1'
@@ -251,7 +295,11 @@ def main():
     stop={'requested':False}
     for sig in (signal.SIGINT,signal.SIGTERM):
         signal.signal(sig,lambda *_:stop.update(requested=True))
-    save_steps=(10000,50000,100000) if a.steps is None else (total_steps,)
+    if a.checkpoint_every is not None:
+        save_steps=tuple(range(a.checkpoint_every,total_steps+1,a.checkpoint_every))
+        if total_steps not in save_steps:save_steps=save_steps+(total_steps,)
+    else:
+        save_steps=(10000,50000,100000) if a.steps is None else (total_steps,)
     best_val={'loss':float('inf'),'step':None,'state':None}
 
     def validation_loss():
