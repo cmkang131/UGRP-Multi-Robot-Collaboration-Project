@@ -105,7 +105,7 @@ def run(args):
     # files (textures/renderer) resolve by append, never by editing them.
     sys.path[:0] = [str(ROOT), str(ROOT/'scripts'), str(args.renderer), str(args.renderer/'scripts')]
     import sim, harness, scripts
-    sim.__path__.extend([str(args.renderer/'sim')])
+    sim.__path__.insert(0, str(args.renderer/'sim'))
     harness.__path__.extend([str(args.renderer/'harness')])
     scripts.__path__.append(str(args.renderer/'scripts'))
     os.chdir(args.renderer)
