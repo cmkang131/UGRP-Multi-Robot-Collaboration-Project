@@ -136,7 +136,7 @@ def profiles(candidate):
         values.update(search26_reobserve='search26_reobserve_views_v1')
     # r4 condition C: the conditional far-first circle order (far, close, mid)
     # replaces the pure r1 revert, and keeps the case27 reobserve fix.
-    if candidate in ('beamact5_r4c','beamact5_r5a','beamact5_r5b'):
+    if candidate in ('beamact5_r4c','beamact5_r5a','beamact5_r5b','beamact5_r5c'):
         values.update(search23_rects='search23_batched_rects_v1',
                       search26_circles_farfirst='search26_circles_farfirst_v1',
                       search26_static_peer='search26_static_peer_stance_v1',
@@ -154,6 +154,9 @@ def profiles(candidate):
     # is only in r5a).
     if candidate=='beamact5_r5b':
         values.update(search26_reobserve_refresh='search26_reobserve_refresh_v1')
+    # r5-c: r4c plus the open (uncapped while fresh-ended) obstacle refresh chain.
+    if candidate=='beamact5_r5c':
+        values.update(search26_reobserve_refresh_open='search26_reobserve_refresh_open_v1')
     return values
 
 
