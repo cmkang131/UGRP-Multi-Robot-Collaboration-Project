@@ -152,7 +152,7 @@ def run(a):
     sweep=json.loads(a.sweep.read_text())
     diameter=2*max(float(np.linalg.norm(vertices[:,:2],axis=1).max()) for _,vertices in body_envelopes(SEARCH,'camera_v3'))
     from harness.e2e_rgb_vo import K
-    controller=MemoryReturn(sweep_steps=sweep['step_budget'],footprint_diameter_m=diameter,horizontal_half_fov_rad=math.atan(320/K[0,0]),strict_return=a.strict_reacquisition,translated_return=a.translated_return)
+    controller=MemoryReturn(sweep_steps=sweep['step_budget'],footprint_diameter_m=diameter,horizontal_half_fov_rad=math.atan(320/K[0,0]),strict_return=a.strict_reacquisition,translated_return=a.translated_return,observed_segment_aim=a.observed_segment_aim)
     own=[];trace=[];labels=[];commands=[];old=None;previous=None;last_servo=None;next_sensor=0.;ring=deque(maxlen=101)
     status='cap_end';error=None;start=time.monotonic();first30=None;would_stop=[]
     body=m.body('r1__robot').id;adr=int(m.jnt_qposadr[int(m.body_jntadr[body])])
@@ -186,6 +186,7 @@ def run(a):
             file=a.output/'own-rgb'/f'r1-{tick:05d}.jpg'
             own.append(dict(frame_id=tick,t=t,rgb=str(file.relative_to(a.output)),sha256=sha(file),servo=servo,command_delta=delta.tolist(),command_covariance=cov.tolist()))
             trace.append(dict(t=t,frame_id=tick,stage=before,lk=flow,motion_delta=increment.tolist(),motion_covariance=c.tolist(),observations=obs,detector=diagnostic,memory=result,action=action,command_motion_source=prior['source'],colour_component_pixels=colour_pixels))
+            trace[-1]['navigation_aim_relative_xy_m']=controller.aim.tolist() if controller.aim is not None else None
             # EVALUATION ONLY. Its values never enter step()/memory.step().
             w,x,y,z=qp[adr+3:adr+7];yaw=math.atan2(2*(w*z+x*y),1-2*(y*y+z*z))
             labels.append(dict(t=t,frame_id=tick,pose=[float(qp[adr]),float(qp[adr+1]),yaw]));ring.append(tick)
@@ -214,6 +215,7 @@ def run(a):
             physical_success=False,actual_return_reacquisition_rate=None,student_success=False,llm_success=False,model_calls=0,
             memory_implementation=a.implementation,noslip_iterations=int(m.opt.noslip_iterations),gpu_noslip_iterations=int(wm.opt.noslip_iterations),cpu_physics_steps=0,
             strict_reacquisition=a.strict_reacquisition,translated_return=a.translated_return,own_return_path_m=controller.return_path,
+            observed_segment_aim=a.observed_segment_aim,
             static_map_control=0,spawn_control=0,truth_control=0,top_camera_frames=0,held_world_reads=0,initial_prior='none',
             terminal_ring=dict(hz=10,indices=list(ring),bytes=sum((a.output/'own-rgb'/f'{rid}-{i:05d}.jpg').stat().st_size for rid in ('r1','r2') for i in ring)),
             first30_wall_sim=first30,work_cap=dict(phase_steps=sweep['step_budget'],total_steps=4*sweep['step_budget'],wall_cap=None),
@@ -236,5 +238,6 @@ if __name__=='__main__':
     p.add_argument('--preflight',action='store_true')
     p.add_argument('--strict-reacquisition',action='store_true',help='default off; outward normal departure + actual color disappearance before memory-facing reacquisition')
     p.add_argument('--translated-return',action='store_true',help='default off; require one robot envelope diameter of own-motion translation during return before accepting RGB reacquisition')
+    p.add_argument('--observed-segment-aim',action='store_true',help='default off; commit an observed patch search point, transport by own motion; never use an infinite line foot as a destination')
     for key in ('queue','renderer','legacy','setup','colour','own-motion','sweep','output'):p.add_argument('--'+key,type=Path,required=True)
     run(p.parse_args())

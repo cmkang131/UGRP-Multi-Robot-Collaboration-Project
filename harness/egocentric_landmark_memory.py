@@ -30,6 +30,20 @@ def wrap(a):
     return math.atan2(math.sin(a), math.cos(a))
 
 
+def search_hint(obs):
+    """Observed ground patch to look toward, never an EKF landmark/zone center.
+
+    Nav2 initializeGoalPose stores a selected observed goal independently of
+    obstacle/line geometry. Our only frame transport is the existing ROVIO
+    inverse own-motion function; no global TF/odom or static map is imported.
+    Tangential position of a line is unknown: a measured segment midpoint is
+    qualified only as a search aim, not a stationary feature to re-associate.
+    """
+    if 'observed_endpoints_m' in obs:
+        return np.mean(obs['observed_endpoints_m'],axis=0).tolist()
+    return obs.get('relative_xy_m')
+
+
 def observation_model(x, index, representation='point'):
     """Cartesian observation of old-frame point from uncertain current frame."""
     if representation == 'oriented_line':
@@ -131,6 +145,10 @@ class LandmarkMemory:
         if delta.shape != (3,) or not np.isfinite(delta).all():
             raise ValueError('INVALID_OWN_INCREMENT')
         q = covariance(motion_covariance, 3)
+        if self.persistent:
+            for item in self.items:
+                hint=item.get('navigation_hint_relative_xy_m')
+                if hint is not None:item['navigation_hint_relative_xy_m']=relative(hint,delta).tolist()
         # eq.12: no global/world reference in this state.
         n = len(self.x); x = np.r_[self.x, delta]
         p = np.zeros((n+3, n+3)); p[:n, :n] = self.p; p[n:, n:] = q
@@ -222,6 +240,9 @@ class LandmarkMemory:
                                      representation=representation,
                                      predicted_state=before, updated_state=updated))
             item['last_seen_s'] = t; item['observations'] += 1
+            if self.persistent:
+                item.update(navigation_hint_relative_xy_m=search_hint(obs),
+                            navigation_hint_status='observed_patch_search_only_uncertainty_unqualified')
             if 'hue' in obs:item['appearance_hue']=obs['hue']
         if self.rovio:
             self.x = x; self.p = (p+p.T)/2
@@ -310,6 +331,9 @@ class LandmarkMemory:
                                    representation=obs.get('representation', 'point'),
                                    appearance_hue=obs.get('hue'),
                                    first_seen_s=t, last_seen_s=t, observations=1))
+            if self.persistent:
+                self.items[-1].update(navigation_hint_relative_xy_m=search_hint(obs),
+                                     navigation_hint_status='observed_patch_search_only_uncertainty_unqualified')
             if self.rovio:
                 self.statistics[f'm{self.sequence}'] = self.library.create(t)
             events.append(self.event('created', observation=obs['id'], memory_id=f'm{self.sequence}'))
@@ -346,10 +370,16 @@ def language_context(memories, *, goal_signature=None, scan=None, footprint_radi
                      f"{m['age_s']:.0f}초 전에 봄, 불확실 95% 반경 {m['radius95_m']:.1f} m"+
                      (' (부분 경계, 끝/중심 위치 미관측)' if m['extent_unknown'] else '')+
                      (f", 기억 선명도 {100*m['freshness']:.0f}%" if m['freshness'] is not None else ''))
+        hint=m.get('navigation_hint_relative_xy_m')
+        if hint is not None:
+            lines[-1]+=f"; 관측 부분의 탐색 방향 {math.degrees(math.atan2(hint[1],hint[0])):.0f}도·약 {np.linalg.norm(hint):.1f}m, 탐색 힌트 불확실성 미보정"
     goals = [m for m in memories if m['signature'] == goal_signature]
     candidates = ([dict(action='look_toward_memory', memory_id=m['id'], bearing_rad=m['bearing_rad'],
                         range_m=m['range_m'], arrival_verified=False) for m in goals]
                   if goals else [dict(action='look_left'), dict(action='look_right'), dict(action='turn_and_observe')])
+    for candidate,m in zip(candidates,goals):
+        hint=m.get('navigation_hint_relative_xy_m')
+        if hint is not None:candidate.update(bearing_rad=math.atan2(hint[1],hint[0]),range_m=float(np.linalg.norm(hint)),search_hint_only=True,uncertainty_status='unqualified')
     if not goals and scan is not None and footprint_radius_m is not None:
         # Relative, currently observed directions only. Missing returns are
         # unknown, never free. Three choices is an LLM context work budget.

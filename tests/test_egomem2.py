@@ -89,3 +89,34 @@ def test_full_denominator_quantile_includes_missing_mass():
     from scripts.egomem2_compare import stats
     r=stats([.1,.2],10)
     assert r['coverage']==.2 and r['full_denominator_p95_m'] is None
+
+
+def test_observed_patch_hint_transports_separately_from_infinite_line(library):
+    from harness.egocentric_landmark_memory import relative
+    o=dict(id='line',kind='zone_boundary',signature='blue',representation='oriented_line',
+           measurement_state=[1.,math.pi/2],covariance_m2=np.diag([.01,.01]).tolist(),
+           observed_endpoints_m=[[1.,1.],[2.,1.]])
+    m=mem(library);first=m.step(0.,[0,0,0],np.zeros((3,3)),[o])['memories'][0]
+    assert np.allclose(first['navigation_hint_relative_xy_m'],[1.5,1.])
+    assert not np.allclose(first['relative_xy_m'],first['navigation_hint_relative_xy_m'])
+    delta=np.array([.2,0,.3]);last=m.step(1.,delta,np.zeros((3,3)),observation_tick=False)['memories'][0]
+    assert np.allclose(last['navigation_hint_relative_xy_m'],relative([1.5,1.],delta))
+    assert last['navigation_hint_status'].endswith('uncertainty_unqualified')
+
+
+def test_observed_goal_does_not_turn_back_when_line_foot_flips():
+    from harness.egomem_navigation import MemoryReturn
+    c=MemoryReturn(sweep_steps=100,footprint_diameter_m=.4,horizontal_half_fov_rad=.5,
+                   strict_return=True,translated_return=True,observed_segment_aim=True)
+    m=dict(id='m',kind='zone_boundary',signature='blue',age_s=0.,range_m=.6,
+           bearing_rad=0.,measurement_state=[-.6,math.pi],appearance_hue=107.,
+           navigation_hint_relative_xy_m=[2.,0.])
+    c.step(0.,[0,0,2*math.pi],[m],[],colour_pixels=1000)
+    c.step(1.,[1.,0,0],[m],[],colour_pixels=0)
+    # A line foot jumps behind at rho=0. The measured patch remains ahead.
+    m['bearing_rad']=math.pi;m['measurement_state'][0]=.4
+    o=[dict(kind='zone_boundary',signature='blue')]
+    action=c.step(2.,[.1,0,0],[m],o,colour_pixels=1000)
+    assert action==[.35,0.,0.] and not c.done
+    c.step(3.,[.3,0,0],[m],o,colour_pixels=1000)
+    assert c.done and c.return_path==pytest.approx(.4)

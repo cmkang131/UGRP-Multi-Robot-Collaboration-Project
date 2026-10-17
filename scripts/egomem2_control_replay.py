@@ -18,7 +18,8 @@ def replay(raw):
                    footprint_diameter_m=summary['geometric_departure_distance_floor_m'],
                    horizontal_half_fov_rad=math.atan(320/K[0,0]),
                    strict_return=summary.get('strict_reacquisition',False),
-                   translated_return=summary.get('translated_return',False))
+                   translated_return=summary.get('translated_return',False),
+                   observed_segment_aim=summary.get('observed_segment_aim',False))
     reasons=Counter();modes=Counter();details=[];changes=[];previous_sign=None;segments=[]
     for row in rows:
         phase=c.stage;memories=row['memory']['memories']
@@ -42,8 +43,9 @@ def replay(raw):
             previous_sign=sign
         matching=any(o['kind']=='zone_boundary' and o['signature']==target['signature'] for o in row['observations'])
         if not matching:reasons['no_matching_boundary_this_frame']+=1;continue
+        angle=math.atan2(c.aim[1],c.aim[0]) if c.aim is not None else target['bearing_rad']
         gates=dict(visual_exit=c.visual_exit,colour_visible=bool(row['colour_component_pixels']),
-                   memory_heading=abs(target['bearing_rad'])<=c.half_fov,
+                   memory_heading=abs(angle)<=c.half_fov,
                    translated=(not c.translated_return or c.return_path>=c.diameter))
         failed=next((k for k,v in gates.items() if not v),'all_passed')
         reasons[failed]+=1

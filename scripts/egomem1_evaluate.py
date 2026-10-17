@@ -94,12 +94,18 @@ def main():
     from harness.e2e_rgb_vo import K
     final_memory=next((m for m in trace[-1]['memory']['memories'] if m['id']==goal),None) if trace else None
     heading_ok=bool(final_memory and abs(final_memory['bearing_rad'])<=math.atan(320/K[0,0]))
+    heading_basis='infinite_line_perpendicular_foot_legacy'
+    if summary.get('observed_segment_aim'):
+        aim=trace[-1].get('navigation_aim_relative_xy_m')
+        heading_ok=bool(aim is not None and abs(math.atan2(aim[1],aim[0]))<=math.atan(320/K[0,0]))
+        heading_basis='saved_own_motion_transported_observed_patch_search_aim'
     passed=bool(weak_pass and absent and final_colour and heading_ok)
     result=dict(status='DEV_VISUAL_RETURN_PASS' if passed else 'NOT_READY',recording_status=summary['status'],
         recordings=1,appearance_reacquired=bool(reacquired),actual_same_zone_reacquired=same_zone,
         departure_verified=departed,actual_departure_m=net_departure,required_departure_m=summary['geometric_departure_distance_floor_m'],
         sensor_samples_without_goal_during_departure=misses,actual_return_reacquisition_rate=float(passed),
         weak_same_colour_boundary_pass=weak_pass,rgb_colour_absent_frames=len(absent),memory_heading_verified=heading_ok,
+        heading_evidence_basis=heading_basis,
         final_colour_component_pixels=final_colour,
         physical_diagnostic_pass=passed,physical_delivery_success=False,student_success=False,llm_success=False,
         initial_assignment=initial,final_assignments=final_labels,creation=creation,events=events,actual_path_m=path,

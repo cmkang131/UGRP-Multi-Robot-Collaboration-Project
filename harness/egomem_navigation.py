@@ -6,19 +6,21 @@ turn toward memory, visually reacquire. It never declares delivery/arrival.
 """
 import math
 import numpy as np
-from harness.egocentric_landmark_memory import wrap, language_context
+from harness.egocentric_landmark_memory import wrap, relative, language_context
 
 
 class MemoryReturn:
-    def __init__(self, *, sweep_steps, footprint_diameter_m, horizontal_half_fov_rad, strict_return=False, translated_return=False):
+    def __init__(self, *, sweep_steps, footprint_diameter_m, horizontal_half_fov_rad, strict_return=False, translated_return=False, observed_segment_aim=False):
         self.sweep_steps=sweep_steps;self.diameter=footprint_diameter_m;self.half_fov=horizontal_half_fov_rad
         self.stage='look';self.steps=0;self.turn=0.;self.away_path=0.;self.goal=None;self.goal_range=None
         self.departed=False;self.done=False;self.events=[]
         self.strict_return=strict_return;self.goal_hue=None;self.visual_exit=False
         self.translated_return=translated_return;self.return_path=0.;self.return_moving=False
+        self.observed_segment_aim=observed_segment_aim;self.aim=None
 
     def step(self,t,increment,memories,observations,*,colour_pixels=None):
         self.steps+=1
+        if self.aim is not None:self.aim=relative(self.aim,np.asarray(increment))
         def event(reason,**extra):
             self.events.append(dict(t=t,stage=self.stage,category='memory_return',reason=reason,
                 blocked_object='not_observed',minimum_gap_m=None,gap_status='not_measured',**extra))
@@ -32,6 +34,15 @@ class MemoryReturn:
                     event('cap_end_no_visual_zone');self.done=True;return [0.,0.,0.]
                 chosen=min(choices,key=lambda m:m['age_s'])
                 self.goal=chosen['id'];self.goal_range=max(self.diameter,chosen['range_m'])
+                if self.observed_segment_aim:
+                    hint=chosen.get('navigation_hint_relative_xy_m')
+                    if hint is None:
+                        event('missing_observed_search_hint');self.done=True;return [0.,0.,0.]
+                    # Nav2 goal pose commitment, adapted to a continuously
+                    # self-centered frame. Do not aim at an infinite line's
+                    # perpendicular foot (it can lie behind the camera and
+                    # flip 180deg at rho=0). This is no claim of a zone center.
+                    self.aim=np.asarray(hint,float).copy()
                 self.goal_hue=chosen.get('appearance_hue')
                 if self.strict_return:
                     rho=chosen['measurement_state'][0]
@@ -40,7 +51,8 @@ class MemoryReturn:
                     # envelope radius. No map boundary/zone center is supplied.
                     self.goal_range=max(self.diameter,max(0.,-rho)+self.diameter/2)
                 event('visual_zone_remembered',memory_id=self.goal,signature=chosen['signature'],
-                      departure_distance_m=self.goal_range,scan_own_yaw_rad=self.turn)
+                      departure_distance_m=self.goal_range,scan_own_yaw_rad=self.turn,
+                      observed_search_aim=self.aim.tolist() if self.aim is not None else None)
                 self.stage='depart_turn';self.steps=0
             else:return [0.,0.,.35]
         target=next((m for m in memories if m['id']==self.goal),None)
@@ -61,6 +73,7 @@ class MemoryReturn:
             if self.away_path<self.goal_range or (self.strict_return and not self.visual_exit):return [.35,0.,0.]
             self.departed=True;self.stage='return';self.steps=0;event('departure_command_distance_reached',own_path_m=self.away_path)
         if self.stage=='return':
+            if self.aim is not None:angle=math.atan2(self.aim[1],self.aim[0])
             if self.return_moving:self.return_path+=float(np.linalg.norm(increment[:2]))
             self.return_moving=False
             matching=[o for o in observations if o['kind']=='zone_boundary' and o['signature']==target['signature']]
