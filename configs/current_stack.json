@@ -623,61 +623,25 @@
     },
     {
       "id": "localization_path",
-      "current": "texture_self_map_lk",
-      "decision_date": "2026-10-15",
+      "current": "egocentric_landmark_memory_v1",
+      "decision_date": "2026-10-17",
       "source": {
         "references": [
           {
-            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "sha": "4bb02030b8890b143e2f52f8fe9250af296f412e",
             "path": "AGENTS.md",
             "lines": [
-              27
+              26
             ],
-            "note": "speed/rbpf/localization 최신 우선 근거는 사용자 2026-10-17 작업 지시"
-          },
-          {
-            "evidence": "localization",
-            "sha": "c7477b1f64910f498b52e1697488c28b2c4569e1",
-            "path": "scripts/mapbuild6_replay.py",
-            "lines": [
-              1,
-              27,
-              28,
-              29,
-              38,
-              46,
-              65,
-              70,
-              91
-            ]
-          },
-          {
-            "evidence": "lk",
-            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
-            "path": "harness/e2e_rgb_vo.py",
-            "lines": [
-              144,
-              169,
-              172
-            ]
-          },
-          {
-            "evidence": "localization_pending",
-            "sha": "c7477b1f64910f498b52e1697488c28b2c4569e1",
-            "path": "experiments/2026-10-17-mapbuild6/README.md",
-            "lines": [
-              3,
-              5,
-              9,
-              11
-            ]
+            "note": "정적 지도 미사용·자기 중심 기억 (2026-10-17 사용자)"
           }
         ],
-        "decision_text": "그 상황에 효율적일 수 있는 알고리즘으로 다시 설계 ㄱ"
+        "decision_text": "정적 지도는 안 쓸 거야. 차라리, 자기 위치를 항상 0,0으로 하고 -> 지도가 움직이게 해주라. 진짜 사람이 생각하듯이."
       },
       "supersedes": [
         "zone_solo_cyan_landmarks Hough + global consensus",
-        "own_map_amcl_vendor/landmarks.py"
+        "own_map_amcl_vendor/landmarks.py",
+        "texture_self_map_lk"
       ],
       "flows": [
         "release",
@@ -2627,23 +2591,24 @@
     },
     {
       "id": "selfmap_map_correction",
-      "current": "on",
+      "current": "off",
       "decision_date": "2026-10-17",
       "source": {
         "references": [
           {
-            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "sha": "4bb02030b8890b143e2f52f8fe9250af296f412e",
             "path": "AGENTS.md",
             "lines": [
-              45
+              26
             ],
-            "note": "사용자 2026-10-17 대화 원문; 지도 경로 예외(정적 지도 허용)"
+            "note": "정적 지도 미사용·자기 중심 기억 (2026-10-17 사용자)"
           }
         ],
-        "decision_text": "지도 제대로 해줘. 이동 얼마나 했는지 판단하면서 지도 그리고, 또한 그 지도와 주변 인식을 바탕으로 내 위치 보정하게 해야지"
+        "decision_text": "정적 지도는 안 쓸 거야. 차라리, 자기 위치를 항상 0,0으로 하고 -> 지도가 움직이게 해주라. 진짜 사람이 생각하듯이."
       },
       "supersedes": [
-        "odometry-only self-map (LK + command prediction, no map-based correction)"
+        "odometry-only self-map (LK + command prediction, no map-based correction)",
+        "on"
       ],
       "flows": [
         "release",
@@ -2663,23 +2628,24 @@
     },
     {
       "id": "localization_initial_prior",
-      "current": "start_zone_coarse",
+      "current": "none",
       "decision_date": "2026-10-17",
       "source": {
         "references": [
           {
-            "sha": "d56492584a16cd4ea321157662d849f14f58a1ba",
+            "sha": "4bb02030b8890b143e2f52f8fe9250af296f412e",
             "path": "AGENTS.md",
             "lines": [
               26
             ],
-            "note": "지도 경로 예외 다음 줄 '시작 구역 사전 정보'"
+            "note": "정적 지도 미사용·자기 중심 기억 (2026-10-17 사용자)"
           }
         ],
-        "decision_text": "대략 구역만 허용 (정확한 좌표가 아닌, 사람이 로봇을 놓을 때 아는 수준)"
+        "decision_text": "정적 지도는 안 쓸 거야. 차라리, 자기 위치를 항상 0,0으로 하고 -> 지도가 움직이게 해주라. 진짜 사람이 생각하듯이."
       },
       "supersedes": [
-        "global free-space initialization only (no start prior)"
+        "global free-space initialization only (no start prior)",
+        "start_zone_coarse"
       ],
       "flows": [
         "release",
@@ -2688,7 +2654,7 @@
       ],
       "operator": "one_of",
       "allowed": [
-        "start_zone_coarse"
+        "none"
       ],
       "verification": {
         "paths": [
@@ -2698,6 +2664,79 @@
         "method": "initial pose prior must be the coarse start zone box + rough heading only; exact spawn pose or live GT is a violation",
         "source_artifact": "source_confirmed_runtime_separate",
         "applied_runtime": "확인 안 됨: 구현 전(mapbuild10)"
+      }
+    },
+    {
+      "id": "static_map_use",
+      "current": "none",
+      "decision_date": "2026-10-17",
+      "source": {
+        "references": [
+          {
+            "sha": "4bb02030b8890b143e2f52f8fe9250af296f412e",
+            "path": "AGENTS.md",
+            "lines": [
+              26
+            ],
+            "note": "정적 지도 미사용·자기 중심 기억 (2026-10-17 사용자)"
+          }
+        ],
+        "decision_text": "정적 지도는 안 쓸 거야. 차라리, 자기 위치를 항상 0,0으로 하고 -> 지도가 움직이게 해주라. 진짜 사람이 생각하듯이."
+      },
+      "supersedes": [
+        "static map for localization/driving (지도 경로 예외)",
+        "static map in planner LLM prompt (2025-09-25)"
+      ],
+      "flows": [
+        "release",
+        "self_map",
+        "e2e_llm",
+        "beam_pair"
+      ],
+      "verification": {
+        "paths": [
+          "stack_values.static_map_use",
+          "localization.static_map",
+          "planner.static_map",
+          "prompt.static_map"
+        ],
+        "method": "no prebuilt static map (walls/zones/doors/coordinates) in localization, driving or LLM prompt; egocentric memory only; destinations found visually",
+        "source_artifact": "source_confirmed_runtime_separate",
+        "applied_runtime": "확인 안 됨: 구현 전"
+      }
+    },
+    {
+      "id": "goal_discovery",
+      "current": "visual_search",
+      "decision_date": "2026-10-17",
+      "source": {
+        "references": [
+          {
+            "sha": "4bb02030b8890b143e2f52f8fe9250af296f412e",
+            "path": "AGENTS.md",
+            "lines": [
+              26
+            ],
+            "note": "정적 지도 미사용·자기 중심 기억 (2026-10-17 사용자)"
+          }
+        ],
+        "decision_text": "목적지: 보고 찾기 (Recommended)"
+      },
+      "supersedes": [
+        "goal coordinates from static map"
+      ],
+      "flows": [
+        "release",
+        "e2e_llm"
+      ],
+      "verification": {
+        "paths": [
+          "stack_values.goal_discovery",
+          "planner.goal_discovery"
+        ],
+        "method": "zone/goal found by own camera (floor marking/colour) and remembered egocentrically; lookaround/explore when not visible",
+        "source_artifact": "source_confirmed_runtime_separate",
+        "applied_runtime": "확인 안 됨: 구현 전"
       }
     }
   ]
