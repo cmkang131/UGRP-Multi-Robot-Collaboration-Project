@@ -390,10 +390,21 @@ those viewpoints/ranges (wall occlusion); colour detection was not the
 limiting step.  The other four episodes never brought the zone within
 3.5 m in the wedge at all.  The dominant cause in this gate is east
 traversal/occlusion: four of seven never reached x>1.2, and the three that
-did plateaued at x=1.68-1.70 (2.6-2.8 m from the zone) with the final
-`leg_forward` ending in `search_leg_turn` (`leg_wall`).  Per the instruction,
-additional runs wait; the largest cause is fixed before new candidates are
-submitted.
+did plateaued at x=1.68-1.70 (2.6-2.8 m from the zone).
+
+`leg_forward` is the stage that fails: in all six cap-end episodes that
+entered it, 75-79% of ticks were `exact_turn` and only 20-24% commanded
+forward, with 6-9 `_next_leg` calls (`search_leg_turn`, `leg_wall`) and net
+displacement 0.032-0.537 m against 1.679-2.429 m of path over 51-71 s.  The
+robot therefore circles in place near the walls instead of traversing east
+(e02/e04/e05 end 2.6-2.8 m from the zone; e03/e06/e07 end west of x=0.6).
+The wall branch in `_leg_forward` starts a 90 deg leg turn whenever a front
+wall is within 0.55 m and never backs away, so a wall-adjacent pose keeps
+re-triggering turns; this is a search-strategy/control defect, not a physics
+failure.  Per the instruction, additional runs wait; the largest cause is
+fixed before new candidates are submitted.  The mirror-pulse candidate is
+allowed to finish first because the leg turns use the unqualified right-turn
+pulse that candidate B calibrates, so it can change this behaviour.
 
 ## Files
 
