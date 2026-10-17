@@ -1,0 +1,92 @@
+{
+ "schema": "ugrp.beamact5.r4_preregistration_amendment.v1",
+ "written_before_run_utc": "2026-10-17T20:15:00Z",
+ "amendment": "condition C added after the condition A result; condition B still running/analysed separately. No pooling.",
+ "condition_a_result": {
+  "run": "/home/ugrp/ugrp-sim/runs/beamact5/validation-r4a-4",
+  "wall_s": 1437.03,
+  "success_n": 2,
+  "worlds": {
+   "6": {
+    "result": "PASS",
+    "end": "teacher_terminal",
+    "sim_s": 54.7
+   },
+   "10": {
+    "result": "FAIL",
+    "end": "cap_end",
+    "sim_s": 60.0,
+    "teacher": "pick/episode_timeout both",
+    "interpretation": "the r1 circle order delays the close-start low-pitch fallback; down-first had fixed 10 in r2"
+   },
+   "20": {
+    "result": "PASS",
+    "end": "teacher_terminal",
+    "sim_s": 55.2
+   },
+   "27": {
+    "result": "FAIL",
+    "end": "teacher_terminal",
+    "sim_s": 26.4,
+    "teacher": "approach_blocked_handoff/peer_approach_handoff",
+    "interpretation": "reobserve fix not enabled in condition A by design"
+   }
+  },
+  "ablation_observation": "pure r1 search revert keeps 6/20 but regresses 10 -> conditional circle order is needed"
+ },
+ "condition_c": {
+  "candidate": "beamact5_r4c",
+  "profile": {
+   "search23_rects": "search23_batched_rects_v1",
+   "search26_circles": "off",
+   "search26_circles_farfirst": "search26_circles_farfirst_v1",
+   "search26_static_peer": "search26_static_peer_stance_v1",
+   "search26_peer_memory": "search26_peer_memory_v1",
+   "search26_reobserve": "search26_reobserve_views_v1",
+   "search26_wide_stance": "off"
+  },
+  "change": "new default-off conditional circle order (far pitch, close pitch, mid pitch) keeps the far pitch at circle 1 (fixes the r3 regressions) and moves the close low-pitch fallback to circle 2 (recovers the world-10 close-start benefit), plus the case27 reobserve boundary fix.",
+  "stack": {
+   "root": "2125f149a5098d5316cc1e737440c5a46d0f8d04",
+   "adapter": "69a62bcadd0ea5017fffe74342227ce58d948624",
+   "teacher": "f7015667a4bc3e340d0970eb6c2e03e6b8f22ad8",
+   "cases_r4c_sha256": "PENDING",
+   "plan_sha256": "f1a50e8c833c1da9113bdf8cff3844913380e3c821b15c072c0a23c0f54f5148"
+  },
+  "runs": {
+   "r4c_4world": {
+    "indices": [
+     6,
+     10,
+     20,
+     27
+    ],
+    "out": "/home/ugrp/ugrp-sim/runs/beamact5/validation-r4c-4",
+    "cap_s": 60
+   },
+   "gate_out": "/home/ugrp/ugrp-sim/runs/beamact5/gate39-r4c-run"
+  },
+  "expectations": {
+   "6": "PASS",
+   "10": "PASS if close pitch at circle 2 is early enough (r2 down-first 45.6 s; this adds about one circle vs down-first)",
+   "20": "PASS",
+   "27": "PASS if the reobserve boundary fix stops the peer handoff"
+  },
+  "decision_rule": "if 6/10/20/27 all PASS in either r4b or r4c, run the 39-world gate with that condition (prefer r4c). 10 failing again means the close fallback must move to circle 1 (equivalent to down-first) and the gate cannot reach 38 without another regression fix."
+ },
+ "gate_arithmetic": {
+  "baseline_r1": "34/40",
+  "r3_gate": "25/40 (12 search-order regressions + 27 + 37; 15 excluded expected FAIL)",
+  "r4_target": "38/40 = 6,10,20,27 all PASS with no regressions (15 expected FAIL, 37 structural fail)",
+  "if_27_still_fails": "37/40 FAIL",
+  "if_one_regression": "37/40 FAIL",
+  "margin": "none"
+ },
+ "not_claimed": [
+  "teacher success is not student success",
+  "no student recording/training",
+  "down-first circles causality remains unproven (ablation A vs r1 baseline measures it)",
+  "world15 excluded/unverified",
+  "no margin/cap constant change"
+ ]
+}
