@@ -1208,6 +1208,57 @@
         "packaged": false,
         "released": false
       }
+    },
+    {
+      "name": "actionaxis-r1",
+      "kind": "offline action-axis decomposition (teacher vs B2 model vs frozen decode clamps)",
+      "status": "complete",
+      "document": "experiments/2026-10-17-act18/results/actionaxis-r1/action-axis.json",
+      "setup": {
+        "checkpoint": "b2-r1/act18-std/step-20000 (model sha 75a56028...)",
+        "sampled_rows": 1200,
+        "dataset": "act17-v7/dataset-r1 TRAIN200",
+        "device": "cpu"
+      },
+      "teacher_raw": {
+        "rows": 290288,
+        "wheel_zero_fraction": 0.5581,
+        "wheel_abs_quantiles": [
+          0.0,
+          0.0,
+          0.35,
+          0.35,
+          0.35
+        ],
+        "wheel_in_deadzone_fraction": 0.0,
+        "wheel_below_min_fraction": 0.0,
+        "wheel_above_max_fraction": 0.0,
+        "duration_nonzero_quantiles_encoded": [
+          0.286,
+          0.514,
+          0.667
+        ],
+        "duration_too_small_fraction": 0.0,
+        "gripper_closed_fraction": 0.6026
+      },
+      "model": {
+        "teacher_moving_fraction": 0.4725,
+        "teacher_moving_but_model_decodes_stop_fraction": 0.0723,
+        "model_decoded_stop_fraction": 0.5617,
+        "model_raw_in_deadzone_fraction": 0.5758,
+        "wheel_mae_median": 0.0114,
+        "duration_mae_median": 0.0091,
+        "gripper_closed_fraction_teacher": 0.6025,
+        "gripper_closed_fraction_model": 0.6033
+      },
+      "executed_B4": {
+        "rows": 1744,
+        "all_wheels_zero_fraction": 0.3538,
+        "wheel_abs_nonzero_median": 0.31,
+        "duration_nonzero_median_s": 0.028,
+        "gripper_closed_fraction": 0.2856
+      },
+      "conclusion": "교사 명령은 deadzone/min/max 클램프에 전혀 걸리지 않고(비영 wheel 전부 0.35, dt 0.043–0.10s), B2 모델의 open-loop 예측도 wheel/duration MAE 중앙값 0.011/0.009, gripper close 비율 일치(0.603 vs 0.603)로 행동 형식·클램프가 lift 실패의 주원인이 아님을 지지한다. 다만 실행 명령은 wheel 0.31·pulse 0.028s로 교사(0.35·0.043–0.10s)보다 약하고, teacher-moving 행의 7.2%가 디코드에서 정지로 바뀐다. 잔여 lift 실패 원인은 closed-loop 상태 분포/조기 정지와 데이터 규모 쪽이다."
     }
   ],
   "release": {

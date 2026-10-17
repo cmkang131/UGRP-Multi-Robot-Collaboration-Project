@@ -71,6 +71,14 @@ TRAIN4 원본으로 정지 시점·자세를 재계수했다(`results/faildiag-r
 - 실패 원인: **물리 lift 0/4, reason=lift_not_stable** — done 모듈은 명령 패턴 기반이라 물리 lift 없이도 발화했고(발화≠성공), 외부 성공 판정은 물리 Score+issued_done 둘 다 요구해 0/4. 즉 **done 축은 해소됐고 남은 원인은 전적으로 행동/물리 축**이다.
 - 원본: `runs/act18/doneh-r1/`(head sha 82b797b9…, gate summary 39ea94e0…/raw-recount 4385b8a3…, head logs 39cf463d…/88fd8cf6…, done logs 9b48c548…/5425cec7…), Mac `results/doneh-r1/`. 다음: 교사 명령 vs 모델 예측 분포·디코드 클램프 offline 분해(행동축).
 
+### 행동축 offline 분해 (10/18, GPU 없음)
+
+B2 체크포인트(act18-std step-20000)를 TRAIN 발췌 1,200행에 CPU로 돌려 교사 명령·모델 예측·동결 디코더 클램프를 비교했다(`results/actionaxis-r1/action-axis.json`, sha256 `c9504188…`).
+- 교사 원본 명령(TRAIN 290,288 wheel 값): 정지 55.8%, 비영 wheel은 **전부 0.35**, `deadzone(.155)/min(.31)/max(.40)`에 걸리는 값 **0.0%**. duration 비영 값 0.043–0.10s. 즉 교사 라벨은 클램프와 무관하다.
+- 모델 open-loop 예측: wheel MAE 중앙 0.0114, duration MAE 0.0091, gripper close 비율 0.603(교사 0.603) — **예측은 교사를 잘 따르며 행동 형식/클램프가 lift 실패의 주원인이 아님**을 지지. 다만 teacher-moving 행의 7.2%가 디코드에서 정지로 바뀐다.
+- 실제 실행(B4 actor-actions): wheel 0.31(교사 0.35), pulse 0.028s(교사 0.043–0.10s)로 **더 약하게** 실행되고 all-zero 35.4%. 잔여 lift 실패(0–2/4)는 closed-loop 상태 분포/조기 정지·데이터 규모 축으로 좁혀진다.
+- 다음 카드 후보: (1) closed-loop 상태 분포 진단(자기 관측에서 정지가 시작되는 조건), (2) co-training(Phase C, 100k) — 단 B2 TRAIN4 미통과 상태라 Lead/사용자 승인 필요. 평가계약 후보 메모는 사용자 결정 대기.
+
 ### 조건 이탈·미검증 범위
 - **R100 gcp5 미이동(deviation):** bf16 프로브(2,000 step, 1.10배)는 수용했지만, R8이 gcp2에서 fp32로 학습 중이라 정밀도가 섞이고(합산 금지), `act18_train.py`가 옵티마이저/RNG 재개를 지원하지 않아 42,400/100,000(≈13,484s)을 폐기해야 하며, gcp5 예산 1,000KRW 정지 위험이 있어 gcp2 matched fp32 pair를 끝까지 유지했다. 근거는 `bf16-probe-decision.json`.
 - 이 학습은 **fp32**다. bf16 기본 전환 커밋(c7900c0ac)은 이 학습 시작 뒤다. 100k bf16 학습은 아직 없다(runtime 증거는 2,000 step 프로브뿐). bf16 결과와 합산하지 않는다.
