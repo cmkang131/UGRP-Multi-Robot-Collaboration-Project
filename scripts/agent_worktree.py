@@ -49,6 +49,9 @@ SPARSE_PROFILE = "agent-media-v1"
 RUNTIME_KEEP = (
     "experiments/dispatch-skill-integration-20260917/models.zip",
     "experiments/2026-09-10-rgb-varied-start/models.zip",
+    # 12 KB recorded frame read by test_neutral_pickup_floor and
+    # test_e2ewarp_selfnav; sparse worktrees must keep it or those tests error.
+    "experiments/2026-10-18-nav-gate-1/raw/r1-tick5.jpg",
     *REQUIRED_FIXTURES,
 )
 CACHE_PARTS = {"__pycache__", ".pytest_cache", ".mypy_cache", ".ruff_cache"}
