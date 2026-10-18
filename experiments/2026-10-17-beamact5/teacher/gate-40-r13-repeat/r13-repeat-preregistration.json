@@ -1,0 +1,46 @@
+{
+ "schema": "ugrp.beamact5.r13_repeat_diag.v1",
+ "written_before_run_utc": "2026-10-18T03:55:00Z",
+ "author": "beamact5 worker (DSH)",
+ "approved_by": "Lead (자율 진행; align 보정 즉시 실행)",
+ "purpose": "case-27 flakiness diagnostic: run world 27 alone three times with the exact r13 stack to measure the flake rate after the 39-gate attempt-1 failed only on 27 (alignment_no_progress) while r13 stage2 5-world passed 27. Not a gate, not pooled, no success claim for the gate. Each run is preserved separately.",
+ "context": {
+  "gate_attempt1": "gate39-r13-run: 37/40 FAIL (failures 27 alignment_no_progress 26.0 s, 37 expected)",
+  "stage2": "validation-r13-5: 27 PASS sim 24.0"
+ },
+ "stack": {
+  "root": "05046e9d245e46b4ee3d1c43308f7258a9fa41c5",
+  "adapter": "d354468a303e1ebc961e58deedd35d05bed40098",
+  "teacher": "fe6858eca7fa7b2ba6fb518c54f18a071995d5b4",
+  "cases_sha256": "3d4e065db0299c0efa4c91676f537ac9b0e130773e598dfc5767d97a34ffdc63"
+ },
+ "runs": [
+  {
+   "indices": [
+    27
+   ],
+   "out": "/home/ugrp/ugrp-sim/runs/beamact5/diag-r13-27-repeat1",
+   "cap_s": 60
+  },
+  {
+   "indices": [
+    27
+   ],
+   "out": "/home/ugrp/ugrp-sim/runs/beamact5/diag-r13-27-repeat2",
+   "cap_s": 60
+  },
+  {
+   "indices": [
+    27
+   ],
+   "out": "/home/ugrp/ugrp-sim/runs/beamact5/diag-r13-27-repeat3",
+   "cap_s": 60
+  }
+ ],
+ "not_claimed": [
+  "diagnostic only",
+  "no gate result",
+  "no pooling",
+  "no success claim"
+ ]
+}
