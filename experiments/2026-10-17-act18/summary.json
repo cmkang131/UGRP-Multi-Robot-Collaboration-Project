@@ -1333,6 +1333,124 @@
         "N": null
       },
       "pooling": "금지: co-r1은 HOST_ERROR. co-r2는 step-40000에서 이어간 labelled continuation(cotrain_continuation_v1)이며 co-r1과 합산하지 않는다."
+    },
+    {
+      "name": "co-r2 (labelled continuation)",
+      "kind": "Phase C co-training continuation: warm start step-40000 + 30k new steps (cumulative 70k), best-val step-68000, condition-token co-training, BF16",
+      "status": "NOT_READY",
+      "complete": true,
+      "label": "cotrain_continuation_v1 (co-r1 HOST_ERROR 후속; NOT a resume of optimizer/RNG; co-r1과 pooling 금지)",
+      "prereg": "experiments/2026-10-17-act18/CO_PREREG.json",
+      "resume_label": "experiments/2026-10-17-act18/results/co-r2/resume-label-and-gate-log.txt",
+      "training": {
+        "started_utc": "2026-10-18T01:58:40Z",
+        "finished_utc": "2026-10-18T03:11:02Z",
+        "resume_from": "co-r1/act18-co/step-40000",
+        "new_steps": 30000,
+        "cumulative_steps": 70000,
+        "best_val": {
+          "step": 68000,
+          "loss": 0.0947116781026125
+        },
+        "checkpoint": "step-70000-best",
+        "model_sha256": "8643b0e5b9b3a0f51b00316affdccf48c8e5179f4a3d3797ec84e681f5f99eca",
+        "summary_sha256": "e89a595e85a5c4a8fdb9ac9cd4041e7d1c563c8e7ca4297b2cf24e6d1c649f81",
+        "vm_dir": "/home/ugrp/ugrp-sim/runs/act18/co-r2"
+      },
+      "done_head": {
+        "model_sha256": "e3c0b09860cd259a8e09d412bcbbac9e93240fbd5e5c2b4476bef24c6ecd0d8c",
+        "validation_auc": 0.9995942643296292,
+        "trained_on": "v7 TRAIN200 + act16w TRAIN32 command streams"
+      },
+      "gate": {
+        "stage": "train4",
+        "n": 0,
+        "N": 4,
+        "wall_s": 385.7,
+        "status": "NOT_READY",
+        "raw": {
+          "vm_dir": "/home/ugrp/ugrp-sim/runs/act18/co-r2",
+          "summary_sha256": "bd3553a65c480ddd678a31f675d3a82fe848b03bca3b6f004838b09684464b33",
+          "stage_recount_sha256": "0ac0ae9226c55a8e36a8fdefb2b4a8fbb29201f6592d6394770577dea2ae9ec0",
+          "independent_recount": "/home/ugrp/ugrp-sim/runs/act18/co-r2/analysis/summary.txt (independent 0/4 = stage 0/4)"
+        },
+        "rows": [
+          {
+            "seed": 88600,
+            "kind": "cyan",
+            "issued_done": true,
+            "cap_end": false,
+            "physical_lift": false,
+            "release": false
+          },
+          {
+            "seed": 88601,
+            "kind": "red",
+            "issued_done": true,
+            "cap_end": false,
+            "physical_lift": false,
+            "release": false
+          },
+          {
+            "seed": 88602,
+            "kind": "green",
+            "issued_done": true,
+            "cap_end": false,
+            "physical_lift": true,
+            "release": false
+          },
+          {
+            "seed": 88603,
+            "kind": "yellow",
+            "issued_done": true,
+            "cap_end": false,
+            "physical_lift": false,
+            "release": false
+          }
+        ]
+      },
+      "done_firing": {
+        "rows": 1519,
+        "fired_ticks": 138,
+        "p_median": 0.140232,
+        "p_p90": 0.563766,
+        "p_max": 0.993409,
+        "grasp_done_s": {
+          "88600": 46.7,
+          "88601": 20.6,
+          "88602": 20.5,
+          "88603": 38.8
+        },
+        "teacher_grasp_done_s": {
+          "88600": 27.7,
+          "88601": 28.8,
+          "88602": 26.5,
+          "88603": 31.3
+        },
+        "errors_s": {
+          "88600": 19.0,
+          "88601": -8.2,
+          "88602": -6.0,
+          "88603": 7.5
+        },
+        "summary": "2 early(-6.0,-8.2s)/2 late(+7.5,+19.0s); first firings 20.5-20.6s(g001) and 38.8-46.7s(g000)",
+        "release_done_s": {
+          "88600": 51.9,
+          "88601": 23.8,
+          "88602": 23.7,
+          "88603": 46.5
+        }
+      },
+      "physical": {
+        "train4_lift": "1/4(88602, max_stable_lift 8.9s)",
+        "release": "0/4",
+        "cap_end": "0/4",
+        "issued_complete": "4/4"
+      },
+      "conclusion": "Phase C continuation도 TRAIN4 0/4. done 신호는 4/4 작동했지만 발화 시점이 조기/지연으로 갈렸고(2 early/2 late), 물리 lift 1/4·release 0/4 — 행동/물리 축은 co-training 70k으로도 해소되지 않았다. 조건 토큰 co-training 자체는 정상 학습(val 0.0947, B2 20k 0.123보다 낮은 val loss)됐으므로, 남은 축은 데이터 규모/closed-loop 제어로 좁혀진다.",
+      "pooling": "금지: co-r1(중단)·단일데이터 후보(R8/R100/tune/B1-B4)와 합산하지 않는다.",
+      "packaging": false,
+      "release": false
     }
   ],
   "release": {
@@ -1436,7 +1554,8 @@
     "B3a/B3b 현재스텝(h=0) done 라벨: 안정 최적화에서도 done 확률 ~1e-3, 문턱 미발화 — 단일 프레임으로 현재 완료시점 식별 불가. done-history/시퀀스 입력 또는 라벨 재정의(사용자 승인) 필요.",
     "B4 done 모듈은 명령패턴 기반 발화로 물리 lift 없이도 done을 냈다(발화≠성공). 행동/물리 lift 0/4가 남은 원인이며 행동축 offline 분해가 다음 단계.",
     "closed-loop 진단은 4-world 단일 실행(B4)과 TRAIN200 교사 분포 비교이며, GPU 비결정성으로 실행 간 궤적이 분기할 수 있다.",
-    "co-r2는 step-40000 warm-start continuation(새 30k 스텝, cumulative 70k)이다. optimizer state는 복원되지 않았고, co-r1(중단)과 합산하지 않는다."
+    "co-r2는 step-40000 warm-start continuation(새 30k 스텝, cumulative 70k)이다. optimizer state는 복원되지 않았고, co-r1(중단)과 합산하지 않는다.",
+    "co-r2는 step-40000 warm-start continuation(cumulative 70k)이며, 동일 조건의 100k full run이 아니다. optimizer/RNG state는 복원하지 않았고 co-r1과 pooling 금지."
   ],
   "cleanup": {
     "schema": "ugrp.act18.cleanup.v1",
@@ -1538,7 +1657,7 @@
       "experiments/2026-10-17-act18/PHASE_C_PLAN.md"
     ],
     "terminal_exec_offline": "B1 로그 기반 청크 내 터미널 예측(.65)은 t=9.2/20.1/21.5/41.7s 발화로 교사 close(12.9–17.7s)·hold(23.6–31.3s) 대비 3.5–19s 어긋남 — 신뢰 불가, 평가계약 변경 없이 메모만.",
-    "next_candidate": "B4 완료: done 신호 확보(4/4 issued_done) 후 남은 것은 행동/물리 축. action-axis offline 결과 행동형식/클램프는 주원인 아님(교사 클램프 0%, 모델 예측 MAE~0.01, gripper 일치). 잔여 후보: (1) closed-loop 상태분포 진단 (2) co-training 100k(Phase C, B2 미통과로 승인 필요) (3) 평가계약(물리 성공 정의) 사용자 결정."
+    "next_candidate": "B4/co-r2 결과: done 신호는 작동하나 물리 lift/release 실패가 남음. 다음 후보(승인 필요): (1) 데이터 규모 확대(co-training 추가/더 많은 시연) (2) closed-loop 제어(종료 시점·base 정지 조건) 진단 후 후보 (3) 평가계약(물리 성공 정의) 사용자 결정. 패키징/배포 금지."
   },
   "cleanup_stage3": {
     "schema": "ugrp.act18.cleanup.v3",
@@ -1578,6 +1697,7 @@
     "shutdown_utc": "2026-10-18T01:42:06Z",
     "cause": "VM-local idle guard whitelist missed act18 scripts",
     "action": "guard timer disabled and whitelist patched; resumed from step-40000 with explicit continuation label; no pooling",
-    "recorded_by": "act18 (Lead-instructed investigation)"
+    "recorded_by": "act18 (Lead-instructed investigation)",
+    "resumed_run": "co-r2"
   }
 }

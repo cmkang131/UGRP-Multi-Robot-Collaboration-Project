@@ -95,6 +95,14 @@ B4 실행(raw `doneh-r1/DONEH-TRAIN4`)의 **발행 명령 이력**과 교사(TRA
 - 조치: 타이머 비활성화 + 화이트리스트에 `act18_[a-z_]+[.]py|run_co[.]sh` 추가(문서화). 
 - 재개: **`co-r2` = step-40000 warm-start continuation(새 30k 스텝, cumulative 70k)**. optimizer state는 복원하지 않았고(`cotrain_continuation_v1` 라벨), co-r1·단일데이터 후보와 **pooling 금지**. 완료 후 TRAIN4(≤14:15) → 통과 시 VAL8(≤14:40) 순서로 판정.
 
+### Phase C continuation 결과 (co-r2, 10/18)
+
+중단(co-r1) 후 **step-40000 warm-start + 30k 새 스텝(cumulative 70k)**, best-val step-68000(val loss 0.0947, B2 20k 0.123보다 낮음). `cotrain_continuation_v1` 라벨, co-r1과 pooling 금지.
+- TRAIN4 **0/4**(wall 385.7s, 독립 recount 0/4 일치), **issued_done 4/4·cap_end 0/4**.
+- done 발화: grasp done 20.5/20.6/38.8/46.7s (교사 26.5–31.3s 대비 **early 2 / late 2**, −8.2~+19.0s), release 23.7–51.9s. 헤드 p median 0.140·p90 0.564·max 0.993.
+- 물리: **lift 1/4(88602, max_stable_lift 8.9s)·release 0/4** → 종합 0/4.
+- 해석: 조건 토큰 co-training은 정상 학습됐고 done 신호도 작동했지만, **행동/물리 축(lift·release)과 done 시점 안정성**이 남았다. co-training 70k만으로 TRAIN4를 통과하지 못했다. 원본 `results/co-r2/`, VM `runs/act18/co-r2/`.
+
 ### 조건 이탈·미검증 범위
 - **R100 gcp5 미이동(deviation):** bf16 프로브(2,000 step, 1.10배)는 수용했지만, R8이 gcp2에서 fp32로 학습 중이라 정밀도가 섞이고(합산 금지), `act18_train.py`가 옵티마이저/RNG 재개를 지원하지 않아 42,400/100,000(≈13,484s)을 폐기해야 하며, gcp5 예산 1,000KRW 정지 위험이 있어 gcp2 matched fp32 pair를 끝까지 유지했다. 근거는 `bf16-probe-decision.json`.
 - 이 학습은 **fp32**다. bf16 기본 전환 커밋(c7900c0ac)은 이 학습 시작 뒤다. 100k bf16 학습은 아직 없다(runtime 증거는 2,000 step 프로브뿐). bf16 결과와 합산하지 않는다.
