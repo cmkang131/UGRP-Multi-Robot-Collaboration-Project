@@ -136,7 +136,7 @@ def profiles(candidate):
         values.update(search26_reobserve='search26_reobserve_views_v1')
     # r4 condition C: the conditional far-first circle order (far, close, mid)
     # replaces the pure r1 revert, and keeps the case27 reobserve fix.
-    if candidate in ('beamact5_r4c','beamact5_r5a','beamact5_r5b','beamact5_r5c','beamact5_r6','beamact5_r7','beamact5_r8','beamact5_r9','beamact5_r10diag','beamact5_r11','beamact5_r11b','beamact5_r12','beamact5_r13'):
+    if candidate in ('beamact5_r4c','beamact5_r5a','beamact5_r5b','beamact5_r5c','beamact5_r6','beamact5_r7','beamact5_r8','beamact5_r9','beamact5_r10diag','beamact5_r11','beamact5_r11b','beamact5_r12','beamact5_r13','beamact5_r13diag'):
         values.update(search23_rects='search23_batched_rects_v1',
                       search26_circles_farfirst='search26_circles_farfirst_v1',
                       search26_static_peer='search26_static_peer_stance_v1',
@@ -200,6 +200,13 @@ def profiles(candidate):
                       search26_align_pulse='search26_align_pulse_v1',
                       search26_reobserve_refresh_open='search26_reobserve_refresh_open_v1',
                       search26_commit_plan='search26_commit_plan_v1')
+    # r13diag: r13 profile + alignment diagnostic logging (behavior unchanged).
+    if candidate=='beamact5_r13diag':
+        values.update(search26_wide_rescue='search26_wide_rescue_v1',
+                      search26_align_pulse='search26_align_pulse_v1',
+                      search26_reobserve_refresh_open='search26_reobserve_refresh_open_v1',
+                      search26_commit_plan='search26_commit_plan_v1',
+                      search26_align_diag='search26_align_diag_v1')
     return values
 
 
