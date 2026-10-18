@@ -1,0 +1,75 @@
+{
+ "schema": "ugrp.beamact5.r8_preregistration.v1",
+ "written_before_run_utc": "2026-10-18T00:50:00Z",
+ "author": "beamact5 worker (DSH)",
+ "approved_by": "Lead (자율 진행: 38/40까지 반복)",
+ "r7_result": {
+  "run": "/home/ugrp/ugrp-sim/runs/beamact5/validation-r7-5",
+  "wall_s": 2474.9,
+  "success_n": 3,
+  "worlds": {
+   "6": "PASS 54.7",
+   "10": "PASS 49.8",
+   "20": "PASS 36.3",
+   "27": "FAIL cap_end 60.0",
+   "37": "FAIL 29.5"
+  },
+  "case27_mechanism": "the frozen-plan window only engaged occasionally (wheel-command trace: almost all hold/turn search circles after SIM 21 s); the teacher repeatedly lost the assigned band (search phase 34.4 s) and the reobserve/fresh windows did not line up with selection ticks. Position crept only ~0.03-0.05 m after 18 s."
+ },
+ "r8_change": {
+  "mode": "search26_wide_rescue (default off)",
+  "rule": "when the normal sampled stance family returns no selection, retry the selection against the separate 1-degree wide-angle certified family (reachability_map_wide) as a bounded rescue; normal planning cost unchanged; never pooled with the 5-degree family.",
+  "basis": "world 27: sampled family best red_1 gap 46.7 mm < stale margin up to 52.1 mm; world 37: sampled +/-15 deg best gap 4.87 mm < runtime floor 11.07 mm. A wider angle family may contain larger-clearance poses for both."
+ },
+ "stack": {
+  "root": "05b26b510c2bf365dcb3aeb28bc37bceba77e300",
+  "adapter": "17f690afc2e1e8e135e9fe0546782240ad355031",
+  "teacher": "f8c1b7162d2d4d19c25c1cd1c7b325b2bdfea13c",
+  "cases_r8_sha256": "ee2c8e31a3f3f88a084d7471958fc3faa652ba1a65b21b0eec803a525349570c",
+  "plan_sha256": "f1a50e8c833c1da9113bdf8cff3844913380e3c821b15c072c0a23c0f54f5148",
+  "rejection_table": "/home/ugrp/ugrp-sim/runs/beamact5/gate-40-r8/rejection_table.json"
+ },
+ "profile": {
+  "search23_rects": "search23_batched_rects_v1",
+  "search26_circles": "off",
+  "search26_circles_farfirst": "search26_circles_farfirst_v1",
+  "search26_static_peer": "search26_static_peer_stance_v1",
+  "search26_peer_memory": "search26_peer_memory_v1",
+  "search26_reobserve": "search26_reobserve_views_v1",
+  "search26_wide_rescue": "search26_wide_rescue_v1"
+ },
+ "runs": {
+  "r8_5world": {
+   "indices": [
+    6,
+    10,
+    20,
+    27,
+    37
+   ],
+   "out": "/home/ugrp/ugrp-sim/runs/beamact5/validation-r8-5",
+   "cap_s": 60
+  },
+  "gate_out": "/home/ugrp/ugrp-sim/runs/beamact5/gate39-r8-run"
+ },
+ "expectations": {
+  "6": "PASS",
+  "10": "PASS",
+  "20": "PASS",
+  "27": "PASS if the wide family contains a stance with stale-margin clearance",
+  "37": "PASS if the wide family contains a pose at/above the runtime floor margin (then gate arithmetic could reach 39/40)"
+ },
+ "gate_arithmetic": {
+  "target": "38/40 = 6,10,20,27 PASS with no regressions (15 expected FAIL; 37 expected FAIL; if 37 also passes -> 39/40)",
+  "if_27_fails": "37/40 FAIL",
+  "if_one_regression": "37/40 FAIL"
+ },
+ "risk": "wide rescue adds planning cost only on ticks where the normal family fails; 6/10/20 regression-checked; default off.",
+ "not_claimed": [
+  "teacher success is not student success",
+  "no student recording/training",
+  "world15 excluded/unverified",
+  "wide family never pooled with 5-degree results",
+  "no margin/cap constant change"
+ ]
+}

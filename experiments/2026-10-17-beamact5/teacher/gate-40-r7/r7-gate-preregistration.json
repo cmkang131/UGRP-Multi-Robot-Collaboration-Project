@@ -1,0 +1,34 @@
+{
+ "schema": "ugrp.beamact5.r7_gate_preregistration.v1",
+ "written_before_run_utc": "2026-10-18T00:20:00Z",
+ "author": "beamact5 worker (DSH)",
+ "approved_by": "Lead (자율 진행: 38/40까지 반복)",
+ "scope": "r7 (frozen-plan commit window) 39-world gate; 15 excluded expected FAIL; 37 structural expected FAIL; not pooled.",
+ "criterion": {
+  "nominal_denominator": 40,
+  "nominal_min_success": 38,
+  "executed_N": 39,
+  "rule": "at least 38 of 39 executed succeed; 37 expected fail -> exactly 38/40 = PASS at minimum",
+  "if_27_or_other_regression": "37/40 FAIL"
+ },
+ "stack": {
+  "root": "74ae376678cc88db0b28798e148c38440c97c48d",
+  "adapter": "259995a7ba9b3c290054d833f2f52774a11523ec",
+  "teacher": "d6bb5480124f205f752ae7fa228a8cbab9235051",
+  "cases_sha256": "60825408e632f7a277e34e36fd3e2736a5aab2be0bb2b9e5bdbb623af529abbb",
+  "plan_sha256": "f1a50e8c833c1da9113bdf8cff3844913380e3c821b15c072c0a23c0f54f5148"
+ },
+ "run": {
+  "out": "/home/ugrp/ugrp-sim/runs/beamact5/gate39-r7-run",
+  "indices": "0-14,16-39",
+  "cap_s": 60
+ },
+ "gate_runtime_decision": "launch only if the r7 5-world run passes 6/10/20/27; otherwise superseded.",
+ "not_claimed": [
+  "teacher success is not student success",
+  "no student recording/training",
+  "world15 unverified/excluded",
+  "37 structural label not remeasured",
+  "no margin/cap change"
+ ]
+}
