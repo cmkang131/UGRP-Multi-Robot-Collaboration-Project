@@ -381,7 +381,7 @@ def run(a):
         from harness.mapbuild_command_prior import CommandPrior, OPTION as PRIOR
         from harness.egocentric_landmark_memory import LandmarkMemory, MemoryOptions, OPTION as MEMORY
         from sim.visual_goal_search import (VisualGoalSearch, Options as SkillOptions,
-                                            OPTION as SKILL,
+                                            OPTION as SKILL, MIN_COLOUR_PIXELS,
                                             EXPANDING_OPTION, EXPANDING_LEG_TICKS,
                                             ARRIVAL_AIM_INSET_M,
                                             detect_paint, wall_points, component_clear,
