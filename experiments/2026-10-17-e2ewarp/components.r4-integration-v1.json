@@ -1,0 +1,71 @@
+{
+  "schema": "ugrp.e2ewarp.components.v1",
+  "navigation": {
+    "ready": false,
+    "owner": "mapbuild8",
+    "evidence": "E2EWarpNavigation ABI (mapcorr) with owner-navigation injection; actual route controller owner part not yet merged → wheel hold; physical gate pending"
+  },
+  "loaded_camera_fk": {
+    "ready": false,
+    "owner": "mapbuild8",
+    "evidence": "LoadedCameraFK command-only adapter (egonav mapcorr) Mac tests; new physical gate pending"
+  },
+  "static_map_registration": {
+    "ready": false,
+    "owner": "mapbuild8",
+    "evidence": "owner assets byte-copied from codex/mapbuild1 95769da0e; owner registration API wired; physical gate pending"
+  },
+  "release_relocalization": {
+    "ready": false,
+    "owner": "warp8f",
+    "evidence": "e2ewarp release ABI adapter (harness.e2e_warp_release) Mac tests 13/13; owner warp8f StaticReleaseSelfmap shim merge + new physical release gate pending"
+  },
+  "ACT": {
+    "ready": false,
+    "owner": "act16w4",
+    "native_contact": "warp_native_contact_v1",
+    "evidence": "act18 analysis: all act18 candidates fail e2ewarp ACT admission (schema act16w.v3, history 2x2, step=10000/schedule_steps=10000, selection evidence); act16w4 artifact/training pending"
+  },
+  "navigation_factory": {
+    "entry": "harness.e2ewarp_mapcorr:navigation_factory",
+    "sha256": "1879d289b193f27a138d585e194ba784d6f6088795fecc58c148356b9d0043eb"
+  },
+  "release_factory": {
+    "entry": "harness.e2e_warp_release:release_factory",
+    "sha256": "b81c89579eaf7666c62834c4281fa062940c286692d88124805b3eb1dc05fd22"
+  },
+  "evaluator_factory": {
+    "entry": "",
+    "sha256": ""
+  },
+  "selfmap_map_correction": {
+    "ready": false,
+    "owner": "mapbuild8",
+    "evidence": "OwnStaticMapCorrection adapter (egonav mapcorr) Mac tests 24 passed; new physical gate pending",
+    "mode": "on",
+    "own_and_static_map": true,
+    "spawn_anchor_used": false
+  },
+  "zone_visdet": {
+    "entry": "harness.own_rgb_zone_visdet:visdet",
+    "sha256": "1ace2164364ffeb6932d9b13f5e7486aba079fbfbad84386bc695d75664b30d1",
+    "default": "off",
+    "appearance": "gpu_calib_v1",
+    "evidence": "GPU zone calibration 36 frames; zone positives 33/33, pickup FP 3->0, R4 floor FP 36/180->0; owner hash-bound manifest integration pending",
+    "research_result": false
+  },
+  "zonecal_gpu": {
+    "frames": 36,
+    "scene_sha256": "38c7fdcd9a83dfc104d4b9f998a5ec69a9ce143a3dcd2e38c341686c9541d4b4",
+    "remap_sha256": "eb9b67fbe2cd9323054c779f34e925507caec635b6e74306241469c5d9c32e42",
+    "profile": "gpu_calib_v1",
+    "label": "GPU appearance calibration, not research result"
+  },
+  "integration": {
+    "source_sha": "718777118be41991156b047faff78621969101bb",
+    "r4_result_sha256": "c61ecce4cc9ae68cc5c859d4a2d6c6f16b7fe51306bd80b527250af26fddbad0",
+    "no_pooling": true,
+    "components_ready": false,
+    "note": "merge of visdet(c45abe420/b894d8cb1), mapcorr(9626c25fe), release(30d244c94) on codex/e2ewarp tip; ready=false until physical gates and act16w ACT artifact"
+  }
+}
