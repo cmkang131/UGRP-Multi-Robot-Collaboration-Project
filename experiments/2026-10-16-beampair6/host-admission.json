@@ -1,0 +1,30 @@
+{
+  "processes": [
+    {
+      "pid": 1181,
+      "command": "/usr/bin/python3 /usr/bin/networkd-dispatcher --run-startup-triggers "
+    },
+    {
+      "pid": 1254,
+      "command": "/usr/bin/python3 /usr/share/unattended-upgrades/unattended-upgrade-shutdown --wait-for-signal "
+    },
+    {
+      "pid": 40528,
+      "command": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python /home/ugrp/ugrp-sim/ops-reviews/beampair6/run-round.py 08f129213031255dd188e20df832bb6714dfca9a r1 "
+    }
+  ],
+  "leases": {
+    "beampair6.json": "{\"task\": \"beampair6\", \"pid\": 40528, \"started_utc\": \"2026-10-15T17:00:45.071207+00:00\", \"expected_end\": \"bounded short6; 8h process cap\", \"source\": \"08f129213031255dd188e20df832bb6714dfca9a\", \"round\": \"r1\"}",
+    "simalt5.json": "{\"task\": \"simalt5\", \"pid\": 36053, \"role\": \"L4 diagnostic reservation; CPU VM must remain shared\", \"started_utc\": \"2026-10-15T16:44:58.067037+00:00\", \"expected_end\": \"L4 start + 3 hours maximum\"}"
+  },
+  "free_bytes": 369262395392,
+  "memory_available_bytes": 132836696064,
+  "loadavg": [
+    0.06689453125,
+    0.06689453125,
+    0.8046875
+  ],
+  "planned_max": 6,
+  "global_limit": 40,
+  "disk_budget_bytes": 1610612736
+}

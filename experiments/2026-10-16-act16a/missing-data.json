@@ -1,0 +1,1671 @@
+{
+  "host": {
+    "project": "ugrp-sim-b-1014",
+    "instance": "ugrp-sim-gcp2",
+    "machine_type": "n4-highcpu-64",
+    "zone": "asia-northeast3-a"
+  },
+  "gcp1_accessed": false,
+  "original_dataset": {
+    "root": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset",
+    "manifest_sha256": "314539e8d815eee17dcc8bbf488afaefca18e4fe6cb425ff5bd98b5dcd407b64",
+    "required_files": 282,
+    "inventory_basis": "70 episodes x4 converter files plus manifest and normalization; original manifest not recovered",
+    "files": [
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/manifest.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/normalization.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86820-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86820-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86820-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86820-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86821-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86821-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86821-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86821-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86822-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86822-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86822-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86822-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86823-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86823-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86823-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86823-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86824-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86824-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86824-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86824-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86825-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86825-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86825-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86825-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86826-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86826-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86826-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86826-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86827-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86827-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86827-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86827-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86828-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86828-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86828-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86828-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86829-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86829-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86829-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86829-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86830-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86830-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86830-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86830-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86831-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86831-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86831-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86831-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86832-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86832-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86832-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86832-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86833-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86833-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86833-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86833-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86834-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86834-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86834-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86834-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86835-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86835-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86835-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86835-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86836-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86836-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86836-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86836-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86837-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86837-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86837-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86837-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86838-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86838-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86838-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86838-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86839-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86839-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86839-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86839-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86840-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86840-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86840-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86840-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86841-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86841-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86841-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86841-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86842-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86842-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86842-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86842-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86843-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86843-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86843-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86843-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86844-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86844-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86844-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86844-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86845-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86845-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86845-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86845-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86846-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86846-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86846-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86846-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86847-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86847-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86847-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86847-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86848-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86848-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86848-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86848-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86849-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86849-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86849-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86849-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86850-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86850-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86850-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86850-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86851-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86851-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86851-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86851-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86852-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86852-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86852-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86852-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86853-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86853-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86853-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86853-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86854-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86854-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86854-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86854-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86855-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86855-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86855-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86855-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86856-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86856-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86856-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86856-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86857-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86857-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86857-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86857-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86858-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86858-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86858-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86858-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86859-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86859-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86859-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86859-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86860-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86860-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86860-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86860-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86861-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86861-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86861-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86861-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86862-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86862-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86862-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86862-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86863-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86863-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86863-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86863-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86864-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86864-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86864-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86864-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86865-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86865-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86865-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86865-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86866-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86866-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86866-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86866-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86867-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86867-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86867-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86867-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86868-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86868-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86868-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86868-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86869-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86869-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86869-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/86869-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87020-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87020-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87020-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87020-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87021-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87021-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87021-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87021-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87022-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87022-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87022-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87022-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87023-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87023-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87023-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87023-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87024-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87024-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87024-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87024-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87025-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87025-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87025-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87025-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87026-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87026-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87026-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87026-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87027-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87027-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87027-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87027-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87028-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87028-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87028-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87028-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87029-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87029-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87029-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87029-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87030-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87030-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87030-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87030-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87031-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87031-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87031-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87031-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87032-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87032-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87032-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87032-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87033-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87033-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87033-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87033-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87034-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87034-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87034-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87034-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87035-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87035-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87035-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87035-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87036-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87036-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87036-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87036-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87037-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87037-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87037-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87037-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87038-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87038-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87038-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87038-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87039-r1/images.npy",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87039-r1/tensors.npz",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87039-r1/samples.json",
+        "present_on_gcp2": false
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/87039-r1/rgb-provenance.json",
+        "present_on_gcp2": false
+      }
+    ],
+    "optional_metadata": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset/RUN_META.json",
+    "train_mean_available": "Release actor/adapter.json contains TRAIN normalization; original normalization file unavailable"
+  },
+  "original_evaluation_raw": [
+    {
+      "run": "act15-n8-91420-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91420-686cccb6/raw",
+      "required_files_or_patterns": [
+        "summary.json",
+        "student-inputs.jsonl",
+        "commands.jsonl",
+        "chunk-predictions.jsonl",
+        "eval-only.jsonl",
+        "rgb/r1/*.jpg"
+      ],
+      "actual_original_directory_present_on_gcp2": false
+    },
+    {
+      "run": "act15-n8-91434-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91434-686cccb6/raw",
+      "required_files_or_patterns": [
+        "summary.json",
+        "student-inputs.jsonl",
+        "commands.jsonl",
+        "chunk-predictions.jsonl",
+        "eval-only.jsonl",
+        "rgb/r1/*.jpg"
+      ],
+      "actual_original_directory_present_on_gcp2": false
+    },
+    {
+      "run": "act15-n8-91422-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91422-686cccb6/raw",
+      "required_files_or_patterns": [
+        "summary.json",
+        "student-inputs.jsonl",
+        "commands.jsonl",
+        "chunk-predictions.jsonl",
+        "eval-only.jsonl",
+        "rgb/r1/*.jpg"
+      ],
+      "actual_original_directory_present_on_gcp2": false
+    },
+    {
+      "run": "act15-n8-91426-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91426-686cccb6/raw",
+      "required_files_or_patterns": [
+        "summary.json",
+        "student-inputs.jsonl",
+        "commands.jsonl",
+        "chunk-predictions.jsonl",
+        "eval-only.jsonl",
+        "rgb/r1/*.jpg"
+      ],
+      "actual_original_directory_present_on_gcp2": false
+    },
+    {
+      "run": "act15-n8-91421-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91421-686cccb6/raw",
+      "required_files_or_patterns": [
+        "summary.json",
+        "student-inputs.jsonl",
+        "commands.jsonl",
+        "chunk-predictions.jsonl",
+        "eval-only.jsonl",
+        "rgb/r1/*.jpg"
+      ],
+      "actual_original_directory_present_on_gcp2": false
+    },
+    {
+      "run": "act15-n8-91423-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91423-686cccb6/raw",
+      "required_files_or_patterns": [
+        "summary.json",
+        "student-inputs.jsonl",
+        "commands.jsonl",
+        "chunk-predictions.jsonl",
+        "eval-only.jsonl",
+        "rgb/r1/*.jpg"
+      ],
+      "actual_original_directory_present_on_gcp2": false
+    },
+    {
+      "run": "act15-n8-91424-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91424-686cccb6/raw",
+      "required_files_or_patterns": [
+        "summary.json",
+        "student-inputs.jsonl",
+        "commands.jsonl",
+        "chunk-predictions.jsonl",
+        "eval-only.jsonl",
+        "rgb/r1/*.jpg"
+      ],
+      "actual_original_directory_present_on_gcp2": false
+    },
+    {
+      "run": "act15-n8-91425-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91425-686cccb6/raw",
+      "required_files_or_patterns": [
+        "summary.json",
+        "student-inputs.jsonl",
+        "commands.jsonl",
+        "chunk-predictions.jsonl",
+        "eval-only.jsonl",
+        "rgb/r1/*.jpg"
+      ],
+      "actual_original_directory_present_on_gcp2": false
+    },
+    {
+      "run": "act15-n8-91427-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91427-686cccb6/raw",
+      "required_files_or_patterns": [
+        "summary.json",
+        "student-inputs.jsonl",
+        "commands.jsonl",
+        "chunk-predictions.jsonl",
+        "eval-only.jsonl",
+        "rgb/r1/*.jpg"
+      ],
+      "actual_original_directory_present_on_gcp2": false
+    },
+    {
+      "run": "act15-n8-91428-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91428-686cccb6/raw",
+      "required_files_or_patterns": [
+        "summary.json",
+        "student-inputs.jsonl",
+        "commands.jsonl",
+        "chunk-predictions.jsonl",
+        "eval-only.jsonl",
+        "rgb/r1/*.jpg"
+      ],
+      "actual_original_directory_present_on_gcp2": false
+    },
+    {
+      "run": "act15-n8-91429-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91429-686cccb6/raw",
+      "required_files_or_patterns": [
+        "summary.json",
+        "student-inputs.jsonl",
+        "commands.jsonl",
+        "chunk-predictions.jsonl",
+        "eval-only.jsonl",
+        "rgb/r1/*.jpg"
+      ],
+      "actual_original_directory_present_on_gcp2": false
+    },
+    {
+      "run": "act15-n8-91430-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91430-686cccb6/raw",
+      "required_files_or_patterns": [
+        "summary.json",
+        "student-inputs.jsonl",
+        "commands.jsonl",
+        "chunk-predictions.jsonl",
+        "eval-only.jsonl",
+        "rgb/r1/*.jpg"
+      ],
+      "actual_original_directory_present_on_gcp2": false
+    },
+    {
+      "run": "act15-n8-91431-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91431-686cccb6/raw",
+      "required_files_or_patterns": [
+        "summary.json",
+        "student-inputs.jsonl",
+        "commands.jsonl",
+        "chunk-predictions.jsonl",
+        "eval-only.jsonl",
+        "rgb/r1/*.jpg"
+      ],
+      "actual_original_directory_present_on_gcp2": false
+    },
+    {
+      "run": "act15-n8-91432-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91432-686cccb6/raw",
+      "required_files_or_patterns": [
+        "summary.json",
+        "student-inputs.jsonl",
+        "commands.jsonl",
+        "chunk-predictions.jsonl",
+        "eval-only.jsonl",
+        "rgb/r1/*.jpg"
+      ],
+      "actual_original_directory_present_on_gcp2": false
+    },
+    {
+      "run": "act15-n8-91433-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91433-686cccb6/raw",
+      "required_files_or_patterns": [
+        "summary.json",
+        "student-inputs.jsonl",
+        "commands.jsonl",
+        "chunk-predictions.jsonl",
+        "eval-only.jsonl",
+        "rgb/r1/*.jpg"
+      ],
+      "actual_original_directory_present_on_gcp2": false
+    },
+    {
+      "run": "act15-n8-91435-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91435-686cccb6/raw",
+      "required_files_or_patterns": [
+        "summary.json",
+        "student-inputs.jsonl",
+        "commands.jsonl",
+        "chunk-predictions.jsonl",
+        "eval-only.jsonl",
+        "rgb/r1/*.jpg"
+      ],
+      "actual_original_directory_present_on_gcp2": false
+    },
+    {
+      "run": "act15-n8-91436-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91436-686cccb6/raw",
+      "required_files_or_patterns": [
+        "summary.json",
+        "student-inputs.jsonl",
+        "commands.jsonl",
+        "chunk-predictions.jsonl",
+        "eval-only.jsonl",
+        "rgb/r1/*.jpg"
+      ],
+      "actual_original_directory_present_on_gcp2": false
+    },
+    {
+      "run": "act15-n8-91437-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91437-686cccb6/raw",
+      "required_files_or_patterns": [
+        "summary.json",
+        "student-inputs.jsonl",
+        "commands.jsonl",
+        "chunk-predictions.jsonl",
+        "eval-only.jsonl",
+        "rgb/r1/*.jpg"
+      ],
+      "actual_original_directory_present_on_gcp2": false
+    },
+    {
+      "run": "act15-n8-91438-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91438-686cccb6/raw",
+      "required_files_or_patterns": [
+        "summary.json",
+        "student-inputs.jsonl",
+        "commands.jsonl",
+        "chunk-predictions.jsonl",
+        "eval-only.jsonl",
+        "rgb/r1/*.jpg"
+      ],
+      "actual_original_directory_present_on_gcp2": false
+    },
+    {
+      "run": "act15-n8-91439-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91439-686cccb6/raw",
+      "required_files_or_patterns": [
+        "summary.json",
+        "student-inputs.jsonl",
+        "commands.jsonl",
+        "chunk-predictions.jsonl",
+        "eval-only.jsonl",
+        "rgb/r1/*.jpg"
+      ],
+      "actual_original_directory_present_on_gcp2": false
+    },
+    {
+      "run": "act15-n8-91500-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91500-686cccb6/raw",
+      "required_files_or_patterns": [
+        "summary.json",
+        "student-inputs.jsonl",
+        "commands.jsonl",
+        "chunk-predictions.jsonl",
+        "eval-only.jsonl",
+        "rgb/r1/*.jpg"
+      ],
+      "actual_original_directory_present_on_gcp2": false
+    },
+    {
+      "run": "act15-n8-91501-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91501-686cccb6/raw",
+      "required_files_or_patterns": [
+        "summary.json",
+        "student-inputs.jsonl",
+        "commands.jsonl",
+        "chunk-predictions.jsonl",
+        "eval-only.jsonl",
+        "rgb/r1/*.jpg"
+      ],
+      "actual_original_directory_present_on_gcp2": false
+    },
+    {
+      "run": "act15-n8-91502-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91502-686cccb6/raw",
+      "required_files_or_patterns": [
+        "summary.json",
+        "student-inputs.jsonl",
+        "commands.jsonl",
+        "chunk-predictions.jsonl",
+        "eval-only.jsonl",
+        "rgb/r1/*.jpg"
+      ],
+      "actual_original_directory_present_on_gcp2": false
+    },
+    {
+      "run": "act15-n8-91503-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91503-686cccb6/raw",
+      "required_files_or_patterns": [
+        "summary.json",
+        "student-inputs.jsonl",
+        "commands.jsonl",
+        "chunk-predictions.jsonl",
+        "eval-only.jsonl",
+        "rgb/r1/*.jpg"
+      ],
+      "actual_original_directory_present_on_gcp2": false
+    },
+    {
+      "run": "act15-n8-91504-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91504-686cccb6/raw",
+      "required_files_or_patterns": [
+        "summary.json",
+        "student-inputs.jsonl",
+        "commands.jsonl",
+        "chunk-predictions.jsonl",
+        "eval-only.jsonl",
+        "rgb/r1/*.jpg"
+      ],
+      "actual_original_directory_present_on_gcp2": false
+    },
+    {
+      "run": "act15-n8-91505-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91505-686cccb6/raw",
+      "required_files_or_patterns": [
+        "summary.json",
+        "student-inputs.jsonl",
+        "commands.jsonl",
+        "chunk-predictions.jsonl",
+        "eval-only.jsonl",
+        "rgb/r1/*.jpg"
+      ],
+      "actual_original_directory_present_on_gcp2": false
+    },
+    {
+      "run": "act15-n8-91506-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91506-686cccb6/raw",
+      "required_files_or_patterns": [
+        "summary.json",
+        "student-inputs.jsonl",
+        "commands.jsonl",
+        "chunk-predictions.jsonl",
+        "eval-only.jsonl",
+        "rgb/r1/*.jpg"
+      ],
+      "actual_original_directory_present_on_gcp2": false
+    },
+    {
+      "run": "act15-n8-91507-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91507-686cccb6/raw",
+      "required_files_or_patterns": [
+        "summary.json",
+        "student-inputs.jsonl",
+        "commands.jsonl",
+        "chunk-predictions.jsonl",
+        "eval-only.jsonl",
+        "rgb/r1/*.jpg"
+      ],
+      "actual_original_directory_present_on_gcp2": false
+    },
+    {
+      "run": "act15-n8-91508-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91508-686cccb6/raw",
+      "required_files_or_patterns": [
+        "summary.json",
+        "student-inputs.jsonl",
+        "commands.jsonl",
+        "chunk-predictions.jsonl",
+        "eval-only.jsonl",
+        "rgb/r1/*.jpg"
+      ],
+      "actual_original_directory_present_on_gcp2": false
+    },
+    {
+      "run": "act15-n8-91509-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91509-686cccb6/raw",
+      "required_files_or_patterns": [
+        "summary.json",
+        "student-inputs.jsonl",
+        "commands.jsonl",
+        "chunk-predictions.jsonl",
+        "eval-only.jsonl",
+        "rgb/r1/*.jpg"
+      ],
+      "actual_original_directory_present_on_gcp2": false
+    },
+    {
+      "run": "act15-n8-91510-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91510-686cccb6/raw",
+      "required_files_or_patterns": [
+        "summary.json",
+        "student-inputs.jsonl",
+        "commands.jsonl",
+        "chunk-predictions.jsonl",
+        "eval-only.jsonl",
+        "rgb/r1/*.jpg"
+      ],
+      "actual_original_directory_present_on_gcp2": false
+    },
+    {
+      "run": "act15-n8-91511-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91511-686cccb6/raw",
+      "required_files_or_patterns": [
+        "summary.json",
+        "student-inputs.jsonl",
+        "commands.jsonl",
+        "chunk-predictions.jsonl",
+        "eval-only.jsonl",
+        "rgb/r1/*.jpg"
+      ],
+      "actual_original_directory_present_on_gcp2": false
+    },
+    {
+      "run": "act15-n8-91512-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91512-686cccb6/raw",
+      "required_files_or_patterns": [
+        "summary.json",
+        "student-inputs.jsonl",
+        "commands.jsonl",
+        "chunk-predictions.jsonl",
+        "eval-only.jsonl",
+        "rgb/r1/*.jpg"
+      ],
+      "actual_original_directory_present_on_gcp2": false
+    },
+    {
+      "run": "act15-n8-91513-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91513-686cccb6/raw",
+      "required_files_or_patterns": [
+        "summary.json",
+        "student-inputs.jsonl",
+        "commands.jsonl",
+        "chunk-predictions.jsonl",
+        "eval-only.jsonl",
+        "rgb/r1/*.jpg"
+      ],
+      "actual_original_directory_present_on_gcp2": false
+    },
+    {
+      "run": "act15-n8-91514-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91514-686cccb6/raw",
+      "required_files_or_patterns": [
+        "summary.json",
+        "student-inputs.jsonl",
+        "commands.jsonl",
+        "chunk-predictions.jsonl",
+        "eval-only.jsonl",
+        "rgb/r1/*.jpg"
+      ],
+      "actual_original_directory_present_on_gcp2": false
+    },
+    {
+      "run": "act15-n8-91515-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91515-686cccb6/raw",
+      "required_files_or_patterns": [
+        "summary.json",
+        "student-inputs.jsonl",
+        "commands.jsonl",
+        "chunk-predictions.jsonl",
+        "eval-only.jsonl",
+        "rgb/r1/*.jpg"
+      ],
+      "actual_original_directory_present_on_gcp2": false
+    },
+    {
+      "run": "act15-n8-91516-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91516-686cccb6/raw",
+      "required_files_or_patterns": [
+        "summary.json",
+        "student-inputs.jsonl",
+        "commands.jsonl",
+        "chunk-predictions.jsonl",
+        "eval-only.jsonl",
+        "rgb/r1/*.jpg"
+      ],
+      "actual_original_directory_present_on_gcp2": false
+    },
+    {
+      "run": "act15-n8-91517-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91517-686cccb6/raw",
+      "required_files_or_patterns": [
+        "summary.json",
+        "student-inputs.jsonl",
+        "commands.jsonl",
+        "chunk-predictions.jsonl",
+        "eval-only.jsonl",
+        "rgb/r1/*.jpg"
+      ],
+      "actual_original_directory_present_on_gcp2": false
+    },
+    {
+      "run": "act15-n8-91518-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91518-686cccb6/raw",
+      "required_files_or_patterns": [
+        "summary.json",
+        "student-inputs.jsonl",
+        "commands.jsonl",
+        "chunk-predictions.jsonl",
+        "eval-only.jsonl",
+        "rgb/r1/*.jpg"
+      ],
+      "actual_original_directory_present_on_gcp2": false
+    },
+    {
+      "run": "act15-n8-91519-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91519-686cccb6/raw",
+      "required_files_or_patterns": [
+        "summary.json",
+        "student-inputs.jsonl",
+        "commands.jsonl",
+        "chunk-predictions.jsonl",
+        "eval-only.jsonl",
+        "rgb/r1/*.jpg"
+      ],
+      "actual_original_directory_present_on_gcp2": false
+    }
+  ],
+  "status": "GCP1-only original raw/dataset remain unavailable and prohibited; GCP2 outputs are new provenance",
+  "retrieval_policy": "Mac receives summary/montage/failure frames only; full raw remains GCP2, no complete independent backup"
+}

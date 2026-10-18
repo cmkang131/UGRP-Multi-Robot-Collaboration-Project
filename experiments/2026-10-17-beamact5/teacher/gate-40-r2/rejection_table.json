@@ -1,0 +1,202 @@
+{
+  "schema": "ugrp.beamact5.rejection_table.v1",
+  "gate_id": "beamact5-teacher-gate-r2",
+  "prior_gate": "beamact5-teacher-gate-r1",
+  "raw": "/home/ugrp/ugrp-sim/runs/beamact5/gate-run-40-r1",
+  "scope": "r1 failure-cause distribution computed from the stored raw ledgers before the r2 fix; r2 gate reruns the same 40 immutable starts and is never pooled with r1",
+  "funnel": [
+    {"stage": "requested", "passed_cumulative_N": 40, "rejected_N": 0},
+    {"stage": "setup", "passed_cumulative_N": 40, "rejected_N": 0},
+    {"stage": "completed", "passed_cumulative_N": 40, "rejected_N": 0},
+    {"stage": "success", "passed_cumulative_N": 34, "rejected_N": 6}
+  ],
+  "rejections": [
+    {
+      "reason_category": "cap_end_60s",
+      "worlds": [6, 10],
+      "seeds": [8420006, 8420010],
+      "count": 2,
+      "ledger_reason": "cap_end",
+      "blocked_object": "not_observed",
+      "min_gap_m": null,
+      "diagnosed_causes": {
+        "6": "parked r3 inside the nominal peer-wait stance; 12 s peer_wait retries repeat to the 60 s cap; diagnostic peer disc clearance -0.056406 m (raw world poses, diagnostic scope only)",
+        "10": "up-first initial search circles; 0.16 m close start acquired only in the third circle (500,2500) at 44.7 SIM s"
+      },
+      "fix": {
+        "6": "search26_static_peer=search26_static_peer_stance_v1",
+        "10": "search26_circles=search26_downfirst_circles_v1"
+      },
+      "fix_scope": "default-off modes registered through the existing search15_modes profile contract; no new distance/angle/time/clearance threshold"
+    },
+    {
+      "reason_category": "planning_wall_safety_cap",
+      "worlds": [15, 37],
+      "seeds": [8420015, 8420037],
+      "count": 2,
+      "ledger_reason": "planning_wall_safety_cap",
+      "blocked_object": "not_observed",
+      "min_gap_m": null,
+      "diagnosed_causes": {
+        "15": "search23.measure loops every wall-layer rectangle; 467 goal checks in 30.024 s body planning with the wall layer active; one logged path row blocked_object=cyan_1 min_gap_m=-0.02024 at t=5.5 (accepted_path scope) is not the cap cause",
+        "37": "same wall-rect measure cost; 410 checks, elapsed 30.403 s, body_planning 30.095 s"
+      },
+      "fix": {
+        "15": "search23_rects=search23_batched_rects_v1",
+        "37": "search23_rects=search23_batched_rects_v1"
+      },
+      "fix_scope": "bit-identical batched rectangle_gaps_many; chunk-bound only; unit test asserts equality with the per-rect values"
+    },
+    {
+      "reason_category": "peer_search_handoff+search_timeout_handoff",
+      "worlds": [20],
+      "seeds": [8420020],
+      "count": 1,
+      "ledger_reason": "peer_search_handoff+search_timeout_handoff",
+      "blocked_object": "not_observed",
+      "min_gap_m": null,
+      "diagnosed_causes": {
+        "20": "0.18 m close start acquired at 42.0 SIM s in the third up-first circle, then lost during alignment; same initial-circle mechanism as world 10"
+      },
+      "fix": {
+        "20": "search26_circles=search26_downfirst_circles_v1"
+      },
+      "fix_scope": "same default-off mode as world 10; reacquire order unchanged"
+    },
+    {
+      "reason_category": "approach_blocked_handoff+peer_approach_handoff",
+      "worlds": [27],
+      "seeds": [8420027],
+      "count": 1,
+      "ledger_reason": "approach_blocked_handoff+peer_approach_handoff",
+      "blocked_object": "red_1",
+      "min_gap_m": 0.01903,
+      "gap_scope": "accepted_path, t=19.5",
+      "diagnosed_causes": {
+        "27": "approach stance blocked by cargo red_1 with positive 0.01903 m gap; peer approach handoff"
+      },
+      "fix": {
+        "27": "none this round"
+      },
+      "fix_scope": "kept as the expected remaining failure; the gate can pass at 39/40, minimum is 38/40"
+    }
+  ],
+  "not_observed_note": "not_observed and null mean not measured or not recorded, never zero. Worlds 10, 20, 37 and the 60 s cap ledger rows have no clearance row.",
+  "r2": {
+    "candidate": "beamact5_r2",
+    "profile_values": {
+      "search23_rects": "search23_batched_rects_v1",
+      "search26_circles": "search26_downfirst_circles_v1",
+      "search26_static_peer": "search26_static_peer_stance_v1"
+    },
+    "cases": "/home/ugrp/ugrp-sim/runs/beamact5/wide-start-8420000d-r2/wide-cases.json",
+    "cases_sha256": "24903b6950a5f41ae0e256543589a05e61461bb35c2707c82348de9b0f392a43",
+    "plan_sha256": "f1a50e8c833c1da9113bdf8cff3844913380e3c821b15c072c0a23c0f54f5148",
+    "plan_identity": "byte-identical to r1 wide-gate-plan.json (same sha256); per-case plans equal, only the candidate field differs",
+    "source_shas": {
+      "root": "c997c3a884d770bae232fa9a78d053fc063008ce",
+      "adapter": "036d04abcada6a3f067ffb281879bba1424f39ab",
+      "teacher": "85b992140ac56856e944f519e0e316fbe8d7fde0"
+    }
+  },
+  "r2_validation": {
+    "run": "validation-r2-6",
+    "scope": "6-world known-failure subset of the frozen plan after the r2 fix bundle. NOT the 40-run gate; not pooled with r1. gate_eligible=false, planned_N=6.",
+    "raw": "/home/ugrp/ugrp-sim/runs/beamact5/validation-r2-6",
+    "raw_size": "603M",
+    "summary_sha256": "e2417ecde2e6a0daaec3eee63124f8a3566ed9140406c1d6f16d1f9887f300da",
+    "first30_speed_sha256": "a24b6014300645bf279cfbdaca8bb86bd3627e7b10f60a9bf025b8a4f8d79172",
+    "result_sha256": {
+      "world-000": "962127148d17c2619c513f8c4b6df85052d7e9f430cc43c44fdd5e5c1a92fe42",
+      "world-001": "69ff00285a706d05c07de9204478e71d8874db45261037f7cb62d98237f20fae",
+      "world-002": "15b7273da31df7ebf9d489a5e248ba998138221c957f23971709091494d45dd9",
+      "world-003": "1e886f4ee06d41df2dc0e31663b27cc2d6320990ffa767e931837d8e745cd1c7",
+      "world-004": "a5543592fc6a933dbf5aebe5a35fa52547ccfd238c7413d4a7f14c6b086d5ae7",
+      "world-005": "74d25e387282e656a0d4da6797658eea7de706df02fcbc36d4b4a3aeb950807b"
+    },
+    "summary": {
+      "completed_N": 6,
+      "success_n": 2,
+      "cap_end": 1,
+      "HOST_ERROR": 0,
+      "training_rgb": false,
+      "weld": "off",
+      "wall_s": 2010.825050705
+    },
+    "outcomes": [
+      {
+        "world": 6,
+        "seed": 8420006,
+        "result": "FAIL",
+        "end_reason": "cap_end",
+        "sim_s": 60.0,
+        "blocked_object": "r3",
+        "min_gap_m": null,
+        "gap_scope": "not_recorded; static-peer goal set engaged at 56.1 SIM s, first feasible stance selected at 59.5 SIM s",
+        "reason_category": "static_peer_goal_set_late"
+      },
+      {
+        "world": 10,
+        "seed": 8420010,
+        "result": "PASS",
+        "end_reason": "teacher_terminal",
+        "sim_s": 45.6,
+        "fix": "search26_downfirst_circles_v1"
+      },
+      {
+        "world": 15,
+        "seed": 8420015,
+        "result": "FAIL",
+        "end_reason": "planning_wall_safety_cap",
+        "sim_s": 6.4,
+        "blocked_object": "cyan_1",
+        "best_stance_gap_m": 0.01494,
+        "min_candidate_gap_m": -0.035740852297878795,
+        "gap_scope": "best blocked_goal stance gap over 46 goal_set rows; cap is the direct end reason",
+        "reason_category": "planning_host_safety_cap_remaining"
+      },
+      {
+        "world": 20,
+        "seed": 8420020,
+        "result": "PASS",
+        "end_reason": "teacher_terminal",
+        "sim_s": 44.4,
+        "fix": "search26_downfirst_circles_v1"
+      },
+      {
+        "world": 27,
+        "seed": 8420027,
+        "result": "FAIL",
+        "end_reason": "teacher_terminal",
+        "sim_s": 21.8,
+        "blocked_object": "red_1",
+        "best_stance_gap_m": 0.0467,
+        "stale_margin_m": [0.04626, 0.0521],
+        "min_candidate_gap_m": null,
+        "gap_scope": "stance gap vs stale red_1 memory margin; fresh floor margin 0.01107 m",
+        "reason_category": "stale_cargo_margin_oscillation",
+        "reobserve_failures": ["retreat_bounded_replan at 3.4 s (0.6 s boundary, no view attempts)", "wall_layer_hit_miss_replan at 14.9 s (0.0 s, aborted by wall-layer activation)"]
+      },
+      {
+        "world": 37,
+        "seed": 8420037,
+        "result": "FAIL",
+        "end_reason": "teacher_terminal",
+        "sim_s": 57.5,
+        "blocked_object": "cyan_1",
+        "best_stance_gap_m": 0.00487,
+        "min_candidate_gap_m": -0.035740852297878795,
+        "gap_scope": "best sampled +/-15-degree stance; below the measurement-floor margin 0.01107 m",
+        "reason_category": "admission_runtime_margin_mismatch",
+        "admission": {"free_goal_N": 12, "min_gap_m": 0.0}
+      }
+    ],
+    "fixed_this_round": [10, 20],
+    "remaining_gate_arithmetic": "r1 34/40; r2 fixes 10 and 20 -> 36/40 at best. Min 38 needs any two of {6, 15, 27, 37}. 6 (timing), 15 (remaining planning cap + close fresh stance), and 27 (freshness/ordering) are plausible round-3 fixes; 37 is structurally blocked under the sampled stance set (best 4.87 mm < floor margin 11.07 mm).",
+    "structural_finding": "Admission accepted assigned ends at >=5 mm clearance (free_goal_N>0), while runtime rejects below 5 mm + 3.03*sigma; the floor margin is 11.07 mm. Worlds 15 (26 free poses), 27 (39) and 37 (12) were admitted at min_gap_m 0.0. The full r2 40-run gate was not run because it could not reach 38/40 until the remaining causes are fixed."
+  },
+  "reproduce": {
+    "r1_raw": ["/home/ugrp/ugrp-sim/src/beamact5-tools/run_warp_flow_teacher_gcp6.py", "--flow", "beampair", "--adapter-source", "/home/ugrp/ugrp-sim/src/835ccef26aa84b08cc8f7e256fd0f43aa1583ef9", "--teacher-source", "/home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247", "--cases", "/home/ugrp/ugrp-sim/runs/beamact5/wide-start-8420000d/wide-cases.json", "--indices", "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", "--cap-s", "60", "--out", "/home/ugrp/ugrp-sim/runs/beamact5/gate-run-40-r1", "--vm-hourly-usd", "1.096", "--gcp6-isolated-v1", "--placement-graspable-filter-v1", "--world-model-parameters-v1", "--native-sleep-policy-compat-v1", "--full-active-dof-workspace-v1", "--warp-native-contact-v1", "--canonical-xml", "/home/ugrp/ugrp-sim/runs/beamact5/wide-export-old-8420000e/canonical-scene.xml", "--per-world-model-references-v1", "/home/ugrp/ugrp-sim/runs/beamact5/native-refs-8420000e/per-world-references.json", "--rejection-table", "/home/ugrp/ugrp-sim/runs/beamact5/wide-start-8420000d/wide-setup-funnel.json", "--batch-per-world-speed-v1"],
+    "r2_gate": ["/home/ugrp/ugrp-sim/src/beamact5-tools/run_warp_flow_teacher_gcp6.py", "--flow", "beampair", "--adapter-source", "/home/ugrp/ugrp-sim/src/835ccef26aa84b08cc8f7e256fd0f43aa1583ef9", "--teacher-source", "/home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247", "--cases", "/home/ugrp/ugrp-sim/runs/beamact5/wide-start-8420000d-r2/wide-cases.json", "--indices", "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", "--cap-s", "60", "--out", "/home/ugrp/ugrp-sim/runs/beamact5/gate-run-40-r2", "--vm-hourly-usd", "1.096", "--gcp6-isolated-v1", "--placement-graspable-filter-v1", "--world-model-parameters-v1", "--native-sleep-policy-compat-v1", "--full-active-dof-workspace-v1", "--warp-native-contact-v1", "--canonical-xml", "/home/ugrp/ugrp-sim/runs/beamact5/wide-export-old-8420000e/canonical-scene.xml", "--per-world-model-references-v1", "/home/ugrp/ugrp-sim/runs/beamact5/native-refs-8420000e/per-world-references.json", "--rejection-table", "/home/ugrp/ugrp-sim/runs/beamact5/gate-40-r2/rejection_table.json", "--batch-per-world-speed-v1"]
+  }
+}

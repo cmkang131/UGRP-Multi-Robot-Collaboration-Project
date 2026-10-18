@@ -1,0 +1,21 @@
+{
+  "non_physics": {
+    "host": "gcp5 CPU",
+    "passed": 21,
+    "duration_s": 2.39,
+    "files": [
+      "tests/test_egomem2.py",
+      "tests/test_egomem1.py",
+      "tests/test_egomem_rovio.py"
+    ],
+    "source_scope": "candidate modules later committed as b69c17d1f; CLI-only fix48411d133 checked separately"
+  },
+  "cli": [
+    "python3 -m scripts.egomem1_offline --help",
+    "python3 -m scripts.egomem1_record --help"
+  ],
+  "cli_profile": "rovio_object_gnn_v1 exposed in both parsers",
+  "mac_physics_steps": 0,
+  "mac_render_frames": 0,
+  "model_calls": 0
+}

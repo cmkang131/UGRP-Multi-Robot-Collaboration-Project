@@ -1,5 +1,7 @@
 """Synthetic-only overlap regressions; forbidden held-out raw is never opened."""
 import copy
+import hashlib
+import subprocess
 import json
 from pathlib import Path
 
@@ -8,6 +10,25 @@ import pytest
 
 from harness.kinematic_overlap import POLICY, audit, overlap, read_trace, trace
 from scripts import validate_consumer_criterion_b_v95 as validator
+
+
+
+def use_historical_frozen_root(tmp_path, monkeypatch):
+    """Run the frozen scorer against its recorded source, never bless live drift."""
+    project_root = validator.ROOT
+    relative = str(validator.FROZEN.relative_to(project_root))
+    source = subprocess.check_output(['git','log','-1','--format=%H','--',relative],
+                                     cwd=project_root,text=True).strip()
+    frozen = json.loads(validator.FROZEN.read_text())
+    root = tmp_path/'historical-frozen-source'
+    for name, expected in frozen.items():
+        data = subprocess.check_output(['git','show',source+':'+name],cwd=project_root)
+        assert hashlib.sha256(data).hexdigest() == expected, name
+        path = root/name
+        path.parent.mkdir(parents=True,exist_ok=True)
+        path.write_bytes(data)
+    monkeypatch.setattr(validator,'ROOT',root)
+    return project_root
 
 
 def rows(n=40):
@@ -115,6 +136,7 @@ def test_malformed_pose_fails_closed(corruption):
 
 
 def test_v91_gate_rejects_before_any_legacy_result_or_residual_reads(tmp_path, monkeypatch):
+    use_historical_frozen_root(tmp_path, monkeypatch)
     from scripts import validate_consumer_criterion_b_v91 as old
     path = write(tmp_path/'map/eval_only/r1/pose.jsonl', rows())
     monkeypatch.setattr(validator, 'load_prior', lambda: [read_trace(path)])
@@ -132,9 +154,10 @@ def test_all_prior_robots_are_compared_not_only_same_id():
     assert len(result['comparisons']) == 1
 
 
-def test_frozen_hashes_unchanged_and_tests_registered():
+def test_frozen_hashes_unchanged_and_tests_registered(tmp_path, monkeypatch):
     from scripts.run_ci_tests import TEST_PATTERNS, collect_test_files
+    project_root = use_historical_frozen_root(tmp_path, monkeypatch)
     frozen = validator.verify_frozen()
     assert frozen['experiments/2026-10-01-final-env-v87-calibration-fit/consumer_criterion_B.json'].startswith('74c312b5')
     for name in ('tests/test_consumer_criterion_b_v95.py', 'tests/test_zone_final_pair_new_starts.py'):
-        assert collect_test_files(validator.ROOT, TEST_PATTERNS).count(name) == 1
+        assert collect_test_files(project_root, TEST_PATTERNS).count(name) == 1

@@ -50,7 +50,7 @@ def cap_world_steps(world, cap_s):
     world._physics_step_for = limited_step
 
 
-def build_world(scene, profile, *, initial_sim_cap_s=5., **kwargs):
+def build_world(scene, profile='cargo_native_v1', *, initial_sim_cap_s=5., **kwargs):
     """Same standard v3 construction hook, explicit new-map admission.
 
     Kept outside frozen zone_masterpi_v3_scene: its allow-list and historical
@@ -65,8 +65,8 @@ def build_world(scene, profile, *, initial_sim_cap_s=5., **kwargs):
     from sim.zone_cargo_contact import apply
     from sim.masterpi_model_v3 import v3_hardware
     from sim.masterpi_robot_models import V3_DRAWING_HARDWARE_KEYS
-    if profile != 'cargo_noslip_v1':
-        raise ValueError('final v3 check requires cargo_noslip_v1')
+    if profile not in ('cargo_native_v1', 'warp_native_contact_v1', 'cargo_noslip_v1'):
+        raise ValueError('final v3 check requires a supported native or recorded legacy contact profile')
     world = MultiMasterPiProductionV2.__new__(MultiMasterPiProductionV2)
     cap_world_steps(world, initial_sim_cap_s)
 

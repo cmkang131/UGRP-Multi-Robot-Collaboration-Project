@@ -1,0 +1,328 @@
+{
+  "complete": true,
+  "arm": "B",
+  "host": {
+    "project": "ugrp-sim-b-1014",
+    "instance": "ugrp-sim-gcp2",
+    "machine_type": "n4-highcpu-64",
+    "zone": "asia-northeast3-a"
+  },
+  "source_sha": "67dd59df03ce5b84a695494bc83a0a0bc3c179f7",
+  "model_sha256": "908a594c6865ae38373910bfa9ba3764e8194c985c74e4fea56627e5a66e0389",
+  "N": 40,
+  "metrics": {
+    "first_translation_reversed": 0,
+    "chunk_translation_reversed": 0,
+    "first_turn_sign_flipped": 0,
+    "chunk_turn_sign_flipped": 0,
+    "first_wheel_classes_changed": 2,
+    "chunk_wheel_classes_changed": 4,
+    "original_first_stationary": 19,
+    "swapped_first_stationary": 20
+  },
+  "input_change": "role token only; own RGB/issued history/task clocks identical",
+  "no_truth_or_labels": true,
+  "new_physical_runs": 0,
+  "checkpoint_selection": "fixed final20000; probe never selects model",
+  "motion_units": "wheel * pulse_seconds /0.1 body-axis command dose, never measured pose/speed",
+  "roundoff_policy": "wheel classes mapped to exact data alphabet -0.35/0/+0.35 before body-axis sums; no fitted deadband",
+  "scope": "saved baseline same20 cold-start counterfactual; not proof of correct end selection in closed loop",
+  "original_full_summary": {
+    "path": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/role-probe-coldstart.json",
+    "bytes": 111288,
+    "sha256": "f6798e7a0b2e1a06163cd8b7b0d0341b119ddfa07deaf5f99d860f6d550157a9"
+  },
+  "changed_first_cases": [
+    {
+      "seed": 8329005,
+      "robot": "r1",
+      "t": 1.8000000000001848,
+      "sim_start_s": 0.0,
+      "role": "blue",
+      "swapped_role": "teal",
+      "source_trace": "/home/ugrp/ugrp-sim/ops-reviews/beamact2/heldout20-v1/seed-8329005/student-inputs.jsonl.zst",
+      "source_trace_sha256": "39a2331db086d5012bc1836ccdb46c89c4654b058e195486583371eae32e4f4f",
+      "rgb_sha256": [
+        "43eb04eb234e4adc118a39215388a76560920c50abb59703b3eef3d8a2e39865",
+        "43eb04eb234e4adc118a39215388a76560920c50abb59703b3eef3d8a2e39865",
+        "43eb04eb234e4adc118a39215388a76560920c50abb59703b3eef3d8a2e39865",
+        "43eb04eb234e4adc118a39215388a76560920c50abb59703b3eef3d8a2e39865"
+      ],
+      "original_first_motion": [
+        0.1021829373460621,
+        0.10582216846335657,
+        0.11296413100964853
+      ],
+      "swapped_first_motion": [
+        0.15512382470511252,
+        0.0481383147085766,
+        0.05595372019024279
+      ],
+      "original_chunk_motion": [
+        1.6476043041432922,
+        0.10289092414194413,
+        0.19695369044954564
+      ],
+      "swapped_chunk_motion": [
+        1.6709093795551473,
+        0.039980559851167885,
+        0.13873671831405993
+      ],
+      "first_translation_reversed": false,
+      "chunk_translation_reversed": false,
+      "first_turn_sign_flipped": false,
+      "chunk_turn_sign_flipped": false,
+      "first_wheel_classes_changed": true,
+      "chunk_wheel_classes_changed": true,
+      "original_wheel_classes": [
+        [
+          0,
+          2,
+          2,
+          2
+        ],
+        [
+          1,
+          2,
+          2,
+          2
+        ],
+        [
+          2,
+          2,
+          2,
+          2
+        ],
+        [
+          2,
+          2,
+          2,
+          2
+        ],
+        [
+          2,
+          2,
+          2,
+          2
+        ],
+        [
+          2,
+          2,
+          2,
+          2
+        ],
+        [
+          2,
+          2,
+          2,
+          2
+        ],
+        [
+          2,
+          2,
+          2,
+          2
+        ]
+      ],
+      "swapped_wheel_classes": [
+        [
+          1,
+          2,
+          2,
+          2
+        ],
+        [
+          1,
+          2,
+          2,
+          2
+        ],
+        [
+          2,
+          2,
+          2,
+          2
+        ],
+        [
+          2,
+          2,
+          2,
+          2
+        ],
+        [
+          2,
+          2,
+          2,
+          2
+        ],
+        [
+          2,
+          2,
+          2,
+          2
+        ],
+        [
+          2,
+          2,
+          2,
+          2
+        ],
+        [
+          2,
+          2,
+          2,
+          2
+        ]
+      ],
+      "original_first_stationary": false,
+      "swapped_first_stationary": false,
+      "decoded_chunk_l1": 0.006123128501015602
+    },
+    {
+      "seed": 8329008,
+      "robot": "r2",
+      "t": 1.8000000000001848,
+      "sim_start_s": 0.0,
+      "role": "blue",
+      "swapped_role": "teal",
+      "source_trace": "/home/ugrp/ugrp-sim/ops-reviews/beamact2/heldout20-v1/seed-8329008/student-inputs.jsonl.zst",
+      "source_trace_sha256": "a24a0f9bab74d4bb83a324abdc5e0dee26e2d3e5203fe5d6dba8629fd32b7ddb",
+      "rgb_sha256": [
+        "c359ab52cc38433009e4721673a32b0cb582250493b10e2914fe3dce22f7234f",
+        "c359ab52cc38433009e4721673a32b0cb582250493b10e2914fe3dce22f7234f",
+        "c359ab52cc38433009e4721673a32b0cb582250493b10e2914fe3dce22f7234f",
+        "c359ab52cc38433009e4721673a32b0cb582250493b10e2914fe3dce22f7234f"
+      ],
+      "original_first_motion": [
+        -0.023829178734562764,
+        0.023829178734562764,
+        0.023829178734562764
+      ],
+      "swapped_first_motion": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "original_chunk_motion": [
+        -0.10672883432788155,
+        0.14629293847471808,
+        0.14629293847471808
+      ],
+      "swapped_chunk_motion": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "first_translation_reversed": false,
+      "chunk_translation_reversed": false,
+      "first_turn_sign_flipped": false,
+      "chunk_turn_sign_flipped": false,
+      "first_wheel_classes_changed": true,
+      "chunk_wheel_classes_changed": true,
+      "original_wheel_classes": [
+        [
+          0,
+          1,
+          1,
+          1
+        ],
+        [
+          0,
+          1,
+          1,
+          1
+        ],
+        [
+          0,
+          1,
+          1,
+          1
+        ],
+        [
+          0,
+          1,
+          1,
+          1
+        ],
+        [
+          0,
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          2,
+          1,
+          1
+        ]
+      ],
+      "swapped_wheel_classes": [
+        [
+          1,
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1,
+          1
+        ]
+      ],
+      "original_first_stationary": false,
+      "swapped_first_stationary": true,
+      "decoded_chunk_l1": 0.02313957845965311
+    }
+  ],
+  "reversed_case_scope": "command dose only; no body translation reversal among these40"
+}

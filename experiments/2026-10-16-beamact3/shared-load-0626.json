@@ -1,0 +1,87 @@
+{
+  "at": "2026-10-16T06:27:48.405403+00:00",
+  "free_bytes": 39003951104,
+  "load": [
+    3.66015625,
+    3.3076171875,
+    2.93408203125
+  ],
+  "leases": {
+    "beamact3-B.json": {
+      "task": "beamact3-B",
+      "pid": 1544,
+      "start": "2026-10-16T06:01:48.397227+00:00",
+      "expected_end": "2026-10-16T12:01:48.397227+00:00",
+      "source_sha": "4747c4144a972e348a9ae4c7bbcc769ad116106d",
+      "stage": "main",
+      "concurrency": 0,
+      "gpu_shared": true
+    },
+    "warp7.json": {
+      "task": "warp7",
+      "pid": 5765,
+      "start": "2026-10-16T05:16:24.612314+00:00",
+      "expected_end": "2026-10-16T06:31:17.385485+00:00",
+      "concurrency": 16,
+      "stage": "N16 transport DEV",
+      "shared_load": true,
+      "source_sha": "8cd3316f76344d1507547b78440dd4d8b671eacd"
+    },
+    "act16w-pilot-86822.json": {
+      "task": "act16w",
+      "pid": 2225,
+      "start": "2026-10-16T06:02:58.742528+00:00",
+      "expected_end": "2026-10-16T08:02:58.539954+00:00",
+      "stage": "recording_pilot",
+      "concurrency": 1,
+      "gpu_shared": true
+    },
+    "warp3.json": {
+      "task": "warp3",
+      "pid": 95838,
+      "start": "2026-10-15T22:02:08.673132+00:00",
+      "expected_end": "2026-10-16T05:59:25.154+00:00",
+      "source_sha": "d9f732f63110a6a5abb44a500aa5c1f806c6acfd",
+      "stage": "stage4 waiting for exclusive warm window after external main restart; no restart/stop by warp3",
+      "pids": [
+        7804,
+        8648,
+        8649,
+        8650,
+        8651,
+        8652,
+        8653
+      ],
+      "remaining_not_submitted": 0,
+      "paused_pids": [],
+      "active_pids": [],
+      "scheduling_note": "all remaining exact model groups active after resource audit",
+      "scheduler_pid": 54448,
+      "pid_scope": "previous boot worker finished; coordinator is on Mac",
+      "scheduler_status": "completed",
+      "next_gpu_window_requested": true
+    },
+    "act16w-pilot-86821.json": {
+      "task": "act16w",
+      "pid": 2224,
+      "start": "2026-10-16T06:02:58.810202+00:00",
+      "expected_end": "2026-10-16T08:02:58.539954+00:00",
+      "stage": "recording_pilot",
+      "concurrency": 1,
+      "gpu_shared": true
+    },
+    "act16w-sap-diagnostic.json": {
+      "task": "act16w-sap-diagnostic",
+      "pid": 12391,
+      "start": "2026-10-16T06:26:58.548591+00:00",
+      "expected_end": "2026-10-16T06:31:58.548630+00:00",
+      "concurrency": 1,
+      "stage": "3SIM default-off broadphase diagnostic; no recording"
+    }
+  },
+  "gpu": "4724 MiB, 17840 MiB, 100 %",
+  "original_full_summary": {
+    "raw": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/shared-load-0626.json",
+    "sha256": "89a39e979297eba9946df4fc57d2292b4266fe2c373f7c2a364c18ea6c7361f7"
+  }
+}

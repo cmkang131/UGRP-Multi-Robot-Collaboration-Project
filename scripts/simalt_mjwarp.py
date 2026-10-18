@@ -1,4 +1,4 @@
-"""Linux/L4-only noslip import-and-step gate; no option overrides or training.
+"""Linux/L4-only selected-profile import-and-step gate; no training.
 
 A failed import, ignored noslip, NaN or overflow stops the probe before batch
 expansion. The reference MjModel XML is loaded intact; a passing import/step
@@ -20,12 +20,16 @@ def main():
     p.add_argument('--xml',type=Path,required=True)
     p.add_argument('--out',type=Path,required=True)
     p.add_argument('--enabled',action='store_true')
+    from sim.execution_contact_profile import add_argument
+    add_argument(p, warp=True)
     a=p.parse_args()
     if not a.enabled or platform.system()!='Linux':p.error('explicit Linux-only opt-in required')
     a.out.mkdir(parents=True,exist_ok=False)
     result={'engine':'mjwarp','commit':COMMIT,'attempted':1,'completed':0,'HOST_ERROR':0,
         'failure':0,'status':'running','xml_sha256':hashlib.sha256(a.xml.read_bytes()).hexdigest(),
-        'training':False,'option_overrides':{},'stage':'C0 intact-scene compatibility gate',
+        'training':False,'contact_profile':a.contact_profile,
+        'option_overrides':{} if a.contact_profile in ('legacy_noslip10','cargo_noslip_v1','baseline_noslip10') else 'warp_native_contact_v1 options',
+        'stage':'selected-profile compatibility gate',
         'rejection_table':str(a.out/'rejection_table.json')}
     start=time.perf_counter()
     def save():
@@ -42,13 +46,15 @@ def main():
         wp.init()
         result.update(mujoco_version=mujoco.__version__,warp_version=wp.__version__)
         m=mujoco.MjModel.from_xml_path(str(a.xml))
+        from sim.execution_contact_profile import configure_model, assert_model_profile
+        configure_model(m, a.contact_profile)
         result['model']={k:int(getattr(m,k)) for k in ('nq','nv','nu','ngeom','nbody','neq')}
         result['options']={k:float(getattr(m.opt,k)) for k in ('timestep','iterations','ls_iterations','noslip_iterations','solver','integrator','cone')}
-        if m.opt.noslip_iterations!=10 or np.any(m.eq_active0):raise RuntimeError('noslip=10/weld OFF required')
+        assert_model_profile(m, a.contact_profile)
         d=mujoco.MjData(m);mujoco.mj_forward(m,d)
         result.update(status='converting_model',reference_ncon=int(d.ncon),reference_nefc=int(d.nefc));save()
         model=mjw.put_model(m)
-        if model.opt.noslip_iterations!=10:raise RuntimeError('noslip ignored by model conversion')
+        assert_model_profile(model, a.contact_profile)
         result.update(status='allocating_data',noslip_preserved=True,model_import_s=time.perf_counter()-start);save()
         data=mjw.put_data(m,d,nworld=1)
         result.update(status='compiling_step',capacities={'naconmax':int(data.naconmax),'njmax':int(data.njmax)});save()

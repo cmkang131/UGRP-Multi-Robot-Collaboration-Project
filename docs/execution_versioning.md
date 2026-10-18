@@ -4,6 +4,17 @@
 
 2026-09-23 단독 운반 비교에서는 기존 성공 경로의 `local_contact_fine` 설정이 공통 실행기에 전달되지 않았고, `VisualMacroExecutor`와 `MacroQueue`의 이동 궤적·안정화 시간도 달랐다. 영상 크기 수정과 단위 검사 통과만으로 성공 경로 복원을 확인할 수 없었다. 이 문서의 절차는 이런 차이를 실행 전에 드러내고 과거 성공 판정의 잘못된 승계를 막는다.
 
+## 2026-10-16 새 접촉 실행 기본값
+
+새 실행은 `noslip-off-v445` 접촉 정책을 함께 기록한다. MJWarp 기본은
+`warp_native_contact_v1`, CPU 기본은 `cargo_native_v1`이며 noslip 0이다.
+CPU 새 프로필과 재생 예외는 (조정자 해석, 사용자 미확인)이다.
+과거 실행 번들·은퇴 목록·실험 기록은 바이트 그대로 보존한다. 기록된
+`cargo_noslip_v1`은 과거 소스 SHA와 함께 명시 재생하고, MJWarp CLI에서는
+`--contact-profile legacy_noslip10`을 고른다. 저장 번들의 profile을 기본값으로
+치환하지 않는다. 과거 noslip10 결과와 새 native 결과, CPU와 MJWarp 결과를
+합산하지 않는다. 컴파일 검증은 물리·렌더·GPU 변환·학습 검증이 아니다.
+
 ## 함께 고정하는 정보
 
 | 범위 | 기록·검사 대상 |

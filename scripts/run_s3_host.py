@@ -28,6 +28,8 @@ def parser():
     p.add_argument('--execute', action='store_true')
     p.add_argument('--release-s3-simulation', action='store_true',
                    help='coordinator explicitly releases S3 after the S2 reservation; lock vacancy alone is not release')
+    from sim.execution_contact_profile import add_argument
+    add_argument(p)
     return p
 
 
@@ -176,7 +178,7 @@ def main(argv=None):
     selected = contract
     if args.door_yield != 'off':
         from harness import zone_s3_door_contract as selected
-    bundle = selected.bundle(args.expected_source_sha, seed=args.seed, speedups=args.speedups)
+    bundle = selected.bundle(args.expected_source_sha, seed=args.seed, speedups=args.speedups, contact_profile=args.contact_profile)
     if not args.execute:
         print(json.dumps({'execution_started': False, 'execution_bundle_id': selected.BUNDLE_ID,
             'bundle_sha256': contract.hp.base.digest(bundle), 'seed': args.seed,

@@ -1,0 +1,44 @@
+{
+  "python": "3.12.3",
+  "platform": "Linux-7.0.0-1013-gcp-x86_64-with-glibc2.39",
+  "idle_timer": {
+    "returncode": 0,
+    "stdout": "active\n",
+    "stderr": ""
+  },
+  "idle_guard_sha256": "25dfbc9e42e65ec1b6541e3ba2b6e2154c35227bf744b66b0ad81887435d20ed",
+  "idle_guard": "#!/bin/bash\nstate=/run/ugrp-idle-since\nnow=$(date +%s)\n# Leases block manual stop in gcpctl. A stale detached lease must not disable\n# the independent 20-minute idle backstop once all execution processes are gone.\nif pgrep -u ugrp -x 'python[0-9.]*|mujoco|ffmpeg' >/dev/null; then\n  echo \"$now\" > \"$state\"; exit 0\nfi\nif pgrep -f 'scripts\\.sim_cli|scripts[./](train_grasp_act|prepare_grasp_act_data|evaluate_grasp_act_offline|run_grasp_act_student|grasp_act_student_worker)|gcp_speed_probe|pip install|pip3 install|apt-get|apt install|dpkg|git index-pack|git pack-objects|git reset|pytest|rsync|scp|sshd: ugrp|zstd|tar ' >/dev/null; then\n  echo \"$now\" > \"$state\"; exit 0\nfi\n[ -f \"$state\" ] || echo \"$now\" > \"$state\"\nsince=$(cat \"$state\")\nif [ $((now - since)) -ge 1200 ]; then\n  logger -t ugrp-idle-guard \"idle 20 min, shutting down\"\n  shutdown -h now\nfi\n",
+  "leases": [
+    "gcp3setup.json"
+  ],
+  "execution_processes": {
+    "returncode": 0,
+    "stdout": "    PID COMMAND         COMMAND\n   1267 systemd         /usr/lib/systemd/systemd --user\n   1269 (sd-pam)        (sd-pam)\n   1430 sshd            sshd: ugrp@notty\n   1431 bash            bash -c printf %s '{\"task\": \"gcp3setup\", \"pid\": 62855, \"owner_host\": \"gangchangmin-ui-MacBookAir.local\", \"started_unix\": 1792122378.694902, \"expected_end_unix\": 1792122978.694902}' > ~/ugrp-sim/leases/gcp3setup.json && sudo python3 ~/ugrp-sim/setup/audit_guest.py /home/ugrp/ugrp-sim/setup/guest-audit-final.json && sudo chown ugrp:ugrp ~/ugrp-sim/setup/guest-audit-final.json\n",
+    "stderr": ""
+  },
+  "disk": {
+    "returncode": 0,
+    "stdout": "Filesystem        1B-blocks        Used    Available Use% Mounted on\n/dev/root      144492969984 21334978560 123141214208  15% /\n",
+    "stderr": ""
+  },
+  "gpu": {
+    "returncode": 0,
+    "stdout": "Fri Oct 16 03:46:19 2026       \n+-----------------------------------------------------------------------------------------+\n| NVIDIA-SMI 580.178.04             Driver Version: 580.178.04     CUDA Version: 13.0     |\n+-----------------------------------------+------------------------+----------------------+\n| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |\n| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |\n|                                         |                        |               MIG M. |\n|=========================================+========================+======================|\n|   0  NVIDIA L4                      On  |   00000000:00:03.0 Off |                    0 |\n| N/A   37C    P8             12W /   72W |       0MiB /  23034MiB |      0%      Default |\n|                                         |                        |                  N/A |\n+-----------------------------------------+------------------------+----------------------+\n\n+-----------------------------------------------------------------------------------------+\n| Processes:                                                                              |\n|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |\n|        ID   ID                                                               Usage      |\n|=========================================================================================|\n|  No running processes found                                                             |\n+-----------------------------------------------------------------------------------------+\n",
+    "stderr": ""
+  },
+  "known_credential_paths_present": [],
+  "ssh_files": [
+    "authorized_keys"
+  ],
+  "cpu": {
+    "returncode": 0,
+    "stdout": "Architecture:                            x86_64\nCPU op-mode(s):                          32-bit, 64-bit\nAddress sizes:                           46 bits physical, 48 bits virtual\nByte Order:                              Little Endian\nCPU(s):                                  8\nOn-line CPU(s) list:                     0-7\nVendor ID:                               GenuineIntel\nBIOS Vendor ID:                          Google\nModel name:                              Intel(R) Xeon(R) CPU @ 2.20GHz\nBIOS Model name:                           CPU @ 2.0GHz\nBIOS CPU family:                         1\nCPU family:                              6\nModel:                                   85\nThread(s) per core:                      2\nCore(s) per socket:                      4\nSocket(s):                               1\nStepping:                                7\nBogoMIPS:                                4400.36\nFlags:                                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ss ht syscall nx pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology nonstop_tsc cpuid tsc_known_freq pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm abm 3dnowprefetch ssbd ibrs ibpb stibp ibrs_enhanced fsgsbase tsc_adjust bmi1 hle avx2 smep bmi2 erms invpcid rtm mpx avx512f avx512dq rdseed adx smap clflushopt clwb avx512cd avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves arat avx512_vnni md_clear arch_capabilities\nHypervisor vendor:                       KVM\nVirtualization type:                     full\nL1d cache:                               128 KiB (4 instances)\nL1i cache:                               128 KiB (4 instances)\nL2 cache:                                4 MiB (4 instances)\nL3 cache:                                38.5 MiB (1 instance)\nNUMA node(s):                            1\nNUMA node0 CPU(s):                       0-7\nVulnerability Gather data sampling:      Not affected\nVulnerability Ghostwrite:                Not affected\nVulnerability Indirect target selection: Mitigation; Aligned branch/return thunks\nVulnerability Itlb multihit:             Not affected\nVulnerability L1tf:                      Not affected\nVulnerability Mds:                       Not affected\nVulnerability Meltdown:                  Not affected\nVulnerability Mmio stale data:           Vulnerable: Clear CPU buffers attempted, no microcode; SMT Host state unknown\nVulnerability Old microcode:             Not affected\nVulnerability Reg file data sampling:    Not affected\nVulnerability Retbleed:                  Mitigation; Enhanced IBRS\nVulnerability Spec rstack overflow:      Not affected\nVulnerability Spec store bypass:         Mitigation; Speculative Store Bypass disabled via prctl\nVulnerability Spectre v1:                Mitigation; usercopy/swapgs barriers and __user pointer sanitization\nVulnerability Spectre v2:                Mitigation; Enhanced / Automatic IBRS; IBPB conditional; PBRSB-eIBRS SW sequence; BHI SW loop, KVM SW loop\nVulnerability Srbds:                     Not affected\nVulnerability Tsa:                       Not affected\nVulnerability Tsx async abort:           Vulnerable: Clear CPU buffers attempted, no microcode; SMT Host state unknown\nVulnerability Vmscape:                   Not affected\n",
+    "stderr": ""
+  },
+  "os_release": "PRETTY_NAME=\"Ubuntu 24.04.5 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"24.04\"\nVERSION=\"24.04.5 LTS (Noble Numbat)\"\nVERSION_CODENAME=noble\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=noble\nLOGO=ubuntu-logo\n",
+  "shared_git_config": {
+    "returncode": 0,
+    "stdout": "core.repositoryformatversion=0\ncore.filemode=true\ncore.bare=true\ngc.auto=0\ngc.pruneexpire=never\nmaintenance.auto=false\n",
+    "stderr": ""
+  }
+}

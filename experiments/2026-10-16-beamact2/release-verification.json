@@ -1,0 +1,42 @@
+{
+  "complete": true,
+  "public_redownload": true,
+  "metadata_sha256": "1cdcdfd637419c35df9e2148055c6206329f598274f57bc27954735bff10f6d0",
+  "archive": {
+    "sha256": "1dc60f6bad63009c8aecfaa60688b9982dcc65e027932d571e7cd71418f2c56d",
+    "bytes": 191867389
+  },
+  "release": {
+    "tag": "models-20261016-beamact2-v1",
+    "asset": "beamact2-pair-shared-step10000-20261016.zip",
+    "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/download/models-20261016-beamact2-v1/beamact2-pair-shared-step10000-20261016.zip"
+  },
+  "fetch": {
+    "id": "beamact2-pair-shared-step10000-20261016",
+    "path": "/home/ugrp/ugrp-sim/ops-reviews/beamact2/redownload-v1",
+    "verified_files": 10,
+    "verified_bytes": 207403649,
+    "installed": true
+  },
+  "all_files_verified": {
+    "id": "beamact2-pair-shared-step10000-20261016",
+    "path": "/home/ugrp/ugrp-sim/ops-reviews/beamact2/redownload-v1",
+    "verified_files": 10,
+    "verified_bytes": 207403649
+  },
+  "model_load": {
+    "ready": true
+  },
+  "load_exit": 0,
+  "load_command": [
+    "/home/ugrp/ugrp-act-cpu-env/bin/python",
+    "-m",
+    "scripts.beamact2_worker",
+    "--model",
+    "/home/ugrp/ugrp-sim/ops-reviews/beamact2/redownload-v1/actor"
+  ],
+  "fresh_clone": "/home/ugrp/ugrp-sim/src/beamact2-release-fresh-24222c51",
+  "source_sha": "24222c51e86c938799e7619290734db8e530a3f4",
+  "credentials_on_vm": false,
+  "physical_inference_repeated": false
+}

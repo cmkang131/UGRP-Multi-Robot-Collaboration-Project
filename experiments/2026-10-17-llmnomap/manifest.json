@@ -1,0 +1,180 @@
+{
+  "schema": "ugrp.llmnomap_run_manifest.v1",
+  "flow": "e2e_llm",
+  "scope": "Mac-only paired LLM prompt replay. No VM/SSH/sim/render/physics. The original arm is the stored static-map prompt; the variant arm is the same request projected by planner_egocentric_memory_v1. Physical/localization/goal-discovery values below are inherited declarations from configs/current_stack.json, not measurements of this replay. Task accuracy is not measured.",
+  "stack_check": "/Users/changmin/projects/ugrp-wt/llmnomap/experiments/2026-10-17-llmnomap/stack_check.json",
+  "rejection_table": "/Users/changmin/projects/ugrp-wt/llmnomap/experiments/2026-10-17-llmnomap/rejection_table.json",
+  "stack_values": {
+    "physics_backend": "mjwarp_batch_v1",
+    "contact_profile": "warp_native_contact_v1",
+    "noslip_iterations": 0,
+    "scene_profile": "walls_floor_contrast_v5_indigo110_s80",
+    "end_color_scene": "grasp_act_teal_blue_v1",
+    "cargo_version": "v6",
+    "scenario_version": "v7",
+    "heavy_crate": false,
+    "localization_path": "egocentric_landmark_memory_v1",
+    "rbpf": "off",
+    "localization_engine": "OpenCV",
+    "setdown_lookaround_v1": true,
+    "held_object_hidden_v1": true,
+    "held_world_reads": 0,
+    "teacher_visibility": "visible_only",
+    "invisible_measurements": 0,
+    "nearfield_executor": "ACT",
+    "weld": false,
+    "top_camera_control": false,
+    "planner_model": "google/gemma-4-31b-it",
+    "planner_provider": "CoreWeave",
+    "planner_quantization": "fp4",
+    "planner_fallbacks": false,
+    "planner_own_rgb_count": 1,
+    "planner_cache_order": [
+      "system",
+      "static",
+      "dynamic",
+      "image"
+    ],
+    "heading_mode": "on",
+    "ultrasonic_front": "off",
+    "wall_cap": null,
+    "speed_gate": "record_only",
+    "speed_metric": "wall_s/(sim_s*nworld)",
+    "gcp_host": null,
+    "gcp_guards": {
+      "idle_minutes": 20,
+      "budget_stop": true,
+      "credentials_on_vm": false
+    },
+    "no_pooling": true,
+    "planning_cap_basis": "compute_or_sim",
+    "rejection_ledger": [
+      "reason_category",
+      "blocked_object",
+      "minimum_gap_m"
+    ],
+    "cap_end_label": "cap_end",
+    "gcp_project": null,
+    "gcp_account": null,
+    "dialogue_language": "peer_en",
+    "selfmap_map_correction": "off",
+    "localization_initial_prior": "none",
+    "static_map_use": "none",
+    "goal_discovery": "visual_search"
+  },
+  "stack_deviations": [
+    {
+      "id": "static_map_use",
+      "reason": "원팔(original)은 저장된 정적지도 프롬프트를 그대로 재생하고, 변형팔만 static_map_use=none으로 투영한다. 두 팔의 짝지은 비교가 목적이며 새 실행 경로는 변형팔이다.",
+      "approval": {
+        "authority": "user",
+        "evidence": "작업 지시 2026-10-17: \"목표: 판단 LLM 요청에서 정적 지도 ...를 빼고 ... 기본 off 토글\" + \"3) 저장된 실제 판단 요청 ...을 변형으로 바꿔 ... 원래 요청과 짝지어 잰다.\""
+      }
+    },
+    {
+      "id": "gcp_host",
+      "reason": "VM 없음(시뮬 금지) 지시에 따라 이 배치는 GCP 호스트를 사용하지 않는다.",
+      "approval": {
+        "authority": "user",
+        "evidence": "작업 지시 2026-10-17: \"VM 없음(시뮬 금지). LLM 호출은 Mac에서 OpenRouter 키로만\"."
+      }
+    },
+    {
+      "id": "gcp_project",
+      "reason": "GCP 호스트를 사용하지 않으므로 프로젝트를 배정하지 않는다.",
+      "approval": {
+        "authority": "user",
+        "evidence": "작업 지시 2026-10-17: \"VM 없음(시뮬 금지)\"."
+      }
+    },
+    {
+      "id": "gcp_account",
+      "reason": "GCP 호스트를 사용하지 않으므로 계정을 배정하지 않는다.",
+      "approval": {
+        "authority": "user",
+        "evidence": "작업 지시 2026-10-17: \"VM 없음(시뮬 금지)\"."
+      }
+    }
+  ],
+  "llm_replay": {
+    "endpoint": {
+      "model": "google/gemma-4-31b-it",
+      "provider": "CoreWeave",
+      "tag": "coreweave/fp4",
+      "quantization": "fp4",
+      "allow_fallbacks": false
+    },
+    "temperature": 0,
+    "max_tokens": 300,
+    "calls_planned": 80,
+    "calls_cap": 200,
+    "prompt_arms": [
+      "original",
+      "planner_egocentric_memory_v1"
+    ],
+    "image_attached": true,
+    "image_sha256": "15673f61873991c84cfe449747efa858b4986e36d8f48c5874f483574ec0cfc3",
+    "stored_requests_text_only": true,
+    "task_accuracy_measured": false
+  },
+  "inputs": {
+    "replay_inputs": "experiments/2026-10-17-llmnomap/replay_inputs.jsonl"
+  },
+  "run_meta": {
+    "generated_utc": "2026-10-17T10:42:45Z",
+    "calls_attempted": 80,
+    "calls_superseded_schema_change": 80,
+    "calls_total_attempted": 160,
+    "calls_cap": 200,
+    "calls_remaining": 40,
+    "no_retries": true,
+    "http_200": 80,
+    "http_429": 0,
+    "format_success": 80,
+    "reported_cost_total_usd": 0.03333732,
+    "reported_cost_superseded_usd": 0.03338296,
+    "reported_cost_all_batches_usd": 0.06672028,
+    "balance_before_usd": 6.53964,
+    "balance_after_usd": 6.511262,
+    "endpoint_watch_ok": true,
+    "task_accuracy_measured": false
+  },
+  "artifacts": {
+    "calls": {
+      "path": "experiments/2026-10-17-llmnomap/calls.jsonl",
+      "sha256": "fd149e24c073a6b9c74f220cc8b12d61cc209b69d2555e9f062c2871c2cbb9c7"
+    },
+    "summary": {
+      "path": "experiments/2026-10-17-llmnomap/summary.json",
+      "sha256": "5b3ce4909ec9f91eab196c2822112293f341fc429389deebe3848643648d5a22"
+    },
+    "input_audit": {
+      "path": "experiments/2026-10-17-llmnomap/input_audit.json",
+      "sha256": "0e8882229170cc6bc100bde71e4f6955aca8d3c9023a97c475458315c08887bb"
+    },
+    "rejection_table": {
+      "path": "experiments/2026-10-17-llmnomap/rejection_table.json",
+      "sha256": "cdb3e5c535c15e140f9e021dd1c5873ee503ba34ff7cce8c21680683e1eb1d56"
+    },
+    "preflight": {
+      "path": "experiments/2026-10-17-llmnomap/preflight.json",
+      "sha256": "cea51fb4f0fcd697e4cbc7d1effaa1aefcf4e2171e6208e78c819ca4f2c11a07"
+    },
+    "superseded_calls": {
+      "path": "experiments/2026-10-17-llmnomap/archive/pre_unified_batch/calls.jsonl",
+      "sha256": "e44caa779dbf081bcc9569a4e4c115b056cd95b883f7c035694c238844b84d15"
+    },
+    "superseded_summary": {
+      "path": "experiments/2026-10-17-llmnomap/archive/pre_unified_batch/summary.json",
+      "sha256": "fb72600814f25c9f8fb267c2261fcfd9738643bc59af846ecf582b78b27601a0"
+    },
+    "replay_inputs": {
+      "path": "experiments/2026-10-17-llmnomap/replay_inputs.jsonl",
+      "sha256": "b306f13a26361dc109ea4c4ce078f45c8e1669c86180182abca212315829d021"
+    },
+    "own_rgb": {
+      "path": "experiments/2026-10-17-llmnomap/raw/own_rgb_r80-r1-00000.jpg",
+      "sha256": "15673f61873991c84cfe449747efa858b4986e36d8f48c5874f483574ec0cfc3"
+    }
+  }
+}

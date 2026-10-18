@@ -25,7 +25,7 @@ from harness.zone_study_contract import ROBOTS
 
 CONTACT_DEDUPE_S = .1
 HOST_APIS = ('deliver', 'goto', 'look_around', 'hold', 'wait', 'abort', 'pair_carry')
-CONTACT_PROFILE_DECISION = {'cargo_noslip_v1': 'approved by the user 2026-09-26 as the study-wide contact profile'}
+CONTACT_PROFILE_DECISION = {'cargo_native_v1': 'noslip 0 user decision 2026-10-16; CPU profile coordinator interpretation', 'warp_native_contact_v1': 'noslip 0 user decision 2026-10-16', 'cargo_noslip_v1': 'approved by the user 2026-09-26 as the study-wide contact profile'}
 
 
 class _RobotSlot:
@@ -96,8 +96,9 @@ class OwnCamTeamHost:
                                'noslip_iterations': int(self.world.model.opt.noslip_iterations),
                                'timestep_s': float(self.world.model.opt.timestep),
                                'user_decision': CONTACT_PROFILE_DECISION.get(profile, 'none recorded')}
-        if profile == 'cargo_noslip_v1' and self.contact_record['noslip_iterations'] <= 0:
-            raise RuntimeError('cargo_noslip_v1 requested but noslip_iterations is 0')
+        if profile in CARGO_PROFILES:
+            from sim.execution_contact_profile import assert_model_profile
+            assert_model_profile(self.world.model, profile, self.world.data.eq_active)
         self.static = self.scene.config['static_map']
         self.objects = copy.deepcopy(self.scene.config['setup_only']['objects'])
         for cargo in getattr(self.scene, 'cargo', ()):

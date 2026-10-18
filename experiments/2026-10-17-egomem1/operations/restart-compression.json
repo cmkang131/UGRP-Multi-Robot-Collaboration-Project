@@ -1,0 +1,63 @@
+{
+  "scope": "generated restart baseline/candidate only; no prior-session raw touched",
+  "commands": [
+    "zstd -q -T1 -3 --keep FILE",
+    "zstd -dc FILE.zst | sha256; verify before removing uncompressed generated copy"
+  ],
+  "files": [
+    {
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/egomem1/baseline-legacy-r1/allowed.json",
+      "uncompressed_bytes": 1955135,
+      "sha256": "b25eb9ae61798191d6cc8966cc21133975f9e618adecafa3cee208f1e8596e25",
+      "compressed": "/home/ugrp/ugrp-sim/ops-reviews/egomem1/baseline-legacy-r1/allowed.json.zst",
+      "compressed_bytes": 327910,
+      "compressed_sha256": "1aefea75f23961060b27bbbf94aa88a5b92c03588a85ec5eb51a7c1422567316",
+      "roundtrip_verified": true
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/egomem1/baseline-legacy-r1/frame-errors.json",
+      "uncompressed_bytes": 17299048,
+      "sha256": "b5bd9e8d6847225154add7fb8da66d661eba2b070a57cdbf4c4d3ea50df02915",
+      "compressed": "/home/ugrp/ugrp-sim/ops-reviews/egomem1/baseline-legacy-r1/frame-errors.json.zst",
+      "compressed_bytes": 2675733,
+      "compressed_sha256": "10a689cdaaae95dccf6d205b6629d8b413ecf3cca6e611cebf29ab1924a864db",
+      "roundtrip_verified": true
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/egomem1/baseline-legacy-r1/predictions.json",
+      "uncompressed_bytes": 59974679,
+      "sha256": "5a170be63b9df210a5d14cd6e615c02afb50038faea696a80f5ba03845cf7e42",
+      "compressed": "/home/ugrp/ugrp-sim/ops-reviews/egomem1/baseline-legacy-r1/predictions.json.zst",
+      "compressed_bytes": 8413626,
+      "compressed_sha256": "3e8e8e1bcf5e7f317b9b691969fcc5a833ecca850db1878285953a30d9109dcb",
+      "roundtrip_verified": true
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/egomem1/offline-rovio-r1/allowed.json",
+      "uncompressed_bytes": 1955135,
+      "sha256": "b25eb9ae61798191d6cc8966cc21133975f9e618adecafa3cee208f1e8596e25",
+      "compressed": "/home/ugrp/ugrp-sim/ops-reviews/egomem1/offline-rovio-r1/allowed.json.zst",
+      "compressed_bytes": 327910,
+      "compressed_sha256": "1aefea75f23961060b27bbbf94aa88a5b92c03588a85ec5eb51a7c1422567316",
+      "roundtrip_verified": true
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/egomem1/offline-rovio-r1/frame-errors.json",
+      "uncompressed_bytes": 4197721,
+      "sha256": "7dcd4c9a69ea696809471b4b68e6c831d60f08567865407160678b04cb2b9fb2",
+      "compressed": "/home/ugrp/ugrp-sim/ops-reviews/egomem1/offline-rovio-r1/frame-errors.json.zst",
+      "compressed_bytes": 632171,
+      "compressed_sha256": "78af29416439e4539079a4b59b656c3561acc4f6de164c3e6f1d25308d26bf9e",
+      "roundtrip_verified": true
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/ops-reviews/egomem1/offline-rovio-r1/predictions.json",
+      "uncompressed_bytes": 17679343,
+      "sha256": "86968cadbfcf12f9be258a2d774fc9843d711dcef4ad7478de46980e6a7d6268",
+      "compressed": "/home/ugrp/ugrp-sim/ops-reviews/egomem1/offline-rovio-r1/predictions.json.zst",
+      "compressed_bytes": 2056683,
+      "compressed_sha256": "ecff301977b29b3910cb27458d0dbc164a72ccef7b4ba4455756751c83ffaa6c",
+      "roundtrip_verified": true
+    }
+  ]
+}

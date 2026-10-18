@@ -184,7 +184,7 @@ def test_research_scenarios_and_bundle_use_study_wide_profile():
     assert scene.config['setup_only']['objects'] == {} and scene.inventory == []
     assert scene.config['cargo_set']['items'] == bundle['host_spec']['team_cargo']
     bad = copy.deepcopy(pre['episodes'][0]); bad['contact_profile'] = 'local_contact_fine'
-    with pytest.raises(zi.ContractViolation, match='cargo_noslip'):
+    with pytest.raises(zi.ContractViolation, match='matching supported contact profiles'):
         runner.run_bundle(pre, bad)
 
 

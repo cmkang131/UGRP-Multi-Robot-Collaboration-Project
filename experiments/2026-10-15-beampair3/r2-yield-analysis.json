@@ -1,0 +1,37 @@
+{
+  "source_sha": "9f6caa6a8f68cd628197562fdb878843ad2a4104",
+  "raw": "/home/ugrp/ugrp-sim/runs/beampair3-r2-9f6caa6a/probe/diagnostic/episode-000/raw",
+  "rejection_table": "/Users/changmin/projects/ugrp-wt/beam-pair/experiments/2026-10-15-beampair3/r2-rejection-table.json",
+  "physical_failure_N": 0,
+  "cap_end_N": 1,
+  "HOST_ERROR_N": 0,
+  "unstarted_N": 5,
+  "primary_reason": "unbounded proportional yield plan; old arrival condition remaining_distance<=issued_translation cannot hold during proportional contraction; old yield bypasses normal approach progress/replan",
+  "wait_goal_issued_frame": [
+    0.6569341018230391,
+    -0.5370761460636378
+  ],
+  "selected_world_t": 20.000000000004484,
+  "saved_command_reconstruction": [
+    {
+      "world_t": 26.8,
+      "distance_m": 0.018909954639244976,
+      "pulse_translation_m": 0.0008260914437715821
+    },
+    {
+      "world_t": 31.8,
+      "distance_m": 0.0020576160839383354,
+      "pulse_translation_m": 8.788721215407029e-05
+    },
+    {
+      "world_t": 56.8,
+      "distance_m": 4.248065910571086e-08,
+      "pulse_translation_m": 1.7920552268302707e-09
+    }
+  ],
+  "new_mode": "peer_rendezvous_v2",
+  "default": "off",
+  "fix": "expire yield after its existing1 SIMs prediction/route-refresh horizon; discard stale route and replan; expiry does not imply arrival",
+  "constant_basis": "1 SIMs already used by pinned teacher _peer_route peer_route_next=now+1 and rendezvous moving-peer prediction. No new metric tolerance, cap or success threshold.",
+  "input_boundary": "own admitted measurements + issued-command odometry only; evaluator qpos is playback/verification only"
+}

@@ -1,0 +1,44 @@
+{
+  "unit": "observations",
+  "input_n": 446,
+  "funnel": [
+    {
+      "stage": "unambiguous",
+      "input_n": 446,
+      "cumulative_pass_n": 320,
+      "rejected_n": 126
+    },
+    {
+      "stage": "one_vote_per_memory_frame",
+      "input_n": 320,
+      "cumulative_pass_n": 292,
+      "rejected_n": 28
+    }
+  ],
+  "represented": {
+    "updated": 240,
+    "initialized": 52
+  },
+  "reasons": {
+    "created": 52,
+    "reobserved": 240,
+    "association_ambiguous": 126,
+    "association_gate_rejected": 44,
+    "duplicate_frame_observation": 28,
+    "memory_slot_evicted": 20
+  },
+  "raw": "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2",
+  "reproduction": [
+    "/home/ugrp/ugrp-sim/src/e1afa7f3146b51f825a81169c0b8ad2ad415f935/scripts/egomem1_offline.py",
+    "predict",
+    "--input",
+    "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2",
+    "--output",
+    "/home/ugrp/ugrp-sim/ops-reviews/egomem1/offline-v3",
+    "--fade-scale",
+    "/home/ugrp/ugrp-sim/ops-reviews/egomem1/own-fade-v2/fade-scale.json"
+  ],
+  "blocked_object": "not_observed",
+  "minimum_gap_m": null,
+  "gap_status": "not_measured"
+}

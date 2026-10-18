@@ -1,0 +1,19 @@
+{
+  "run": "gv5-beampair-gate-baseline-8318711-0b5faa4c",
+  "roles": {
+    "r1": "blue",
+    "r2": "teal"
+  },
+  "minimum_peer_base_distance": {
+    "sim_s": 48.10000000014707,
+    "robot_base_distance_m": 0.15487672103750275
+  },
+  "range_after20": {
+    "min_distance": 0.15487672103750275,
+    "max_distance": 0.1989771490100715
+  },
+  "observation": "Repeated issued motion with sustained close active-peer bodies and own-camera occlusion; no joint READY/pick. Exact path/odometry/peer-wait subcause unresolved. No wall/floor detector regression established.",
+  "raw": "/home/ugrp/ugrp-sim/runs/gv5-beampair-gate-baseline-8318711-0b5faa4c/raw",
+  "input": "evaluation only; no control correction",
+  "reproduce": "Read eval-only.jsonl.zst robots.r1/r2.pose XY and compute Euclidean distance, inspect saved full2Hz/tail10Hz playback"
+}

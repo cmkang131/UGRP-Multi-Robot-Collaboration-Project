@@ -1,0 +1,666 @@
+{
+  "schema": "ugrp.current_stack.check.v1",
+  "ok": true,
+  "current_compliant": false,
+  "checker_sha256": "bdef5ad98b8e5ee8a21126f75430a58193d5f44f11f23fa60fd9ca487511eb3b",
+  "scope": "declared manifest fields; not independent runtime/physics verification",
+  "inputs": [
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/llmnomap/experiments/2026-10-17-llmnomap/manifest_preflight.json",
+      "sha256": "e3f8de5ee25cffb762e103ea7fd98a7030621a48da1f3657ad591c93df14cf35"
+    }
+  ],
+  "rows": [
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "physics_backend",
+      "expected": "mjwarp_batch_v1",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.physics_backend",
+          "value": "mjwarp_batch_v1"
+        }
+      ],
+      "status": "current",
+      "input": "/Users/changmin/projects/ugrp-wt/llmnomap/experiments/2026-10-17-llmnomap/manifest_preflight.json"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "contact_profile",
+      "expected": "warp_native_contact_v1",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.contact_profile",
+          "value": "warp_native_contact_v1"
+        }
+      ],
+      "status": "current",
+      "input": "/Users/changmin/projects/ugrp-wt/llmnomap/experiments/2026-10-17-llmnomap/manifest_preflight.json"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "noslip_iterations",
+      "expected": 0,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.noslip_iterations",
+          "value": 0
+        }
+      ],
+      "status": "current",
+      "input": "/Users/changmin/projects/ugrp-wt/llmnomap/experiments/2026-10-17-llmnomap/manifest_preflight.json"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "scene_profile",
+      "expected": "walls_floor_contrast_v5_indigo110_s80",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.scene_profile",
+          "value": "walls_floor_contrast_v5_indigo110_s80"
+        }
+      ],
+      "status": "current",
+      "input": "/Users/changmin/projects/ugrp-wt/llmnomap/experiments/2026-10-17-llmnomap/manifest_preflight.json"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "end_color_scene",
+      "expected": "grasp_act_teal_blue_v1",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.end_color_scene",
+          "value": "grasp_act_teal_blue_v1"
+        }
+      ],
+      "status": "current",
+      "input": "/Users/changmin/projects/ugrp-wt/llmnomap/experiments/2026-10-17-llmnomap/manifest_preflight.json"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "cargo_version",
+      "expected": "v6",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.cargo_version",
+          "value": "v6"
+        }
+      ],
+      "status": "current",
+      "input": "/Users/changmin/projects/ugrp-wt/llmnomap/experiments/2026-10-17-llmnomap/manifest_preflight.json"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "scenario_version",
+      "expected": "v7",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.scenario_version",
+          "value": "v7"
+        }
+      ],
+      "status": "current",
+      "input": "/Users/changmin/projects/ugrp-wt/llmnomap/experiments/2026-10-17-llmnomap/manifest_preflight.json"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "heavy_crate",
+      "expected": false,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.heavy_crate",
+          "value": false
+        }
+      ],
+      "status": "current",
+      "input": "/Users/changmin/projects/ugrp-wt/llmnomap/experiments/2026-10-17-llmnomap/manifest_preflight.json"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "localization_path",
+      "expected": "egocentric_landmark_memory_v1",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.localization_path",
+          "value": "egocentric_landmark_memory_v1"
+        }
+      ],
+      "status": "current",
+      "input": "/Users/changmin/projects/ugrp-wt/llmnomap/experiments/2026-10-17-llmnomap/manifest_preflight.json"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "rbpf",
+      "expected": "off",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.rbpf",
+          "value": "off"
+        }
+      ],
+      "status": "current",
+      "input": "/Users/changmin/projects/ugrp-wt/llmnomap/experiments/2026-10-17-llmnomap/manifest_preflight.json"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "localization_engine",
+      "expected": "OpenCV",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.localization_engine",
+          "value": "OpenCV"
+        }
+      ],
+      "status": "current",
+      "input": "/Users/changmin/projects/ugrp-wt/llmnomap/experiments/2026-10-17-llmnomap/manifest_preflight.json"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "setdown_lookaround_v1",
+      "expected": true,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.setdown_lookaround_v1",
+          "value": true
+        }
+      ],
+      "status": "current",
+      "input": "/Users/changmin/projects/ugrp-wt/llmnomap/experiments/2026-10-17-llmnomap/manifest_preflight.json"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "held_object_hidden_v1",
+      "expected": true,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.held_object_hidden_v1",
+          "value": true
+        }
+      ],
+      "status": "current",
+      "input": "/Users/changmin/projects/ugrp-wt/llmnomap/experiments/2026-10-17-llmnomap/manifest_preflight.json"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "held_world_reads",
+      "expected": 0,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.held_world_reads",
+          "value": 0
+        }
+      ],
+      "status": "current",
+      "input": "/Users/changmin/projects/ugrp-wt/llmnomap/experiments/2026-10-17-llmnomap/manifest_preflight.json"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "nearfield_executor",
+      "expected": "ACT",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.nearfield_executor",
+          "value": "ACT"
+        }
+      ],
+      "status": "current",
+      "input": "/Users/changmin/projects/ugrp-wt/llmnomap/experiments/2026-10-17-llmnomap/manifest_preflight.json"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "weld",
+      "expected": false,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.weld",
+          "value": false
+        }
+      ],
+      "status": "current",
+      "input": "/Users/changmin/projects/ugrp-wt/llmnomap/experiments/2026-10-17-llmnomap/manifest_preflight.json"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "top_camera_control",
+      "expected": false,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.top_camera_control",
+          "value": false
+        }
+      ],
+      "status": "current",
+      "input": "/Users/changmin/projects/ugrp-wt/llmnomap/experiments/2026-10-17-llmnomap/manifest_preflight.json"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "planner_model",
+      "expected": "google/gemma-4-31b-it",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.planner_model",
+          "value": "google/gemma-4-31b-it"
+        }
+      ],
+      "status": "current",
+      "input": "/Users/changmin/projects/ugrp-wt/llmnomap/experiments/2026-10-17-llmnomap/manifest_preflight.json"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "planner_provider",
+      "expected": "CoreWeave",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.planner_provider",
+          "value": "CoreWeave"
+        }
+      ],
+      "status": "current",
+      "input": "/Users/changmin/projects/ugrp-wt/llmnomap/experiments/2026-10-17-llmnomap/manifest_preflight.json"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "planner_quantization",
+      "expected": "fp4",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.planner_quantization",
+          "value": "fp4"
+        }
+      ],
+      "status": "current",
+      "input": "/Users/changmin/projects/ugrp-wt/llmnomap/experiments/2026-10-17-llmnomap/manifest_preflight.json"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "planner_fallbacks",
+      "expected": false,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.planner_fallbacks",
+          "value": false
+        }
+      ],
+      "status": "current",
+      "input": "/Users/changmin/projects/ugrp-wt/llmnomap/experiments/2026-10-17-llmnomap/manifest_preflight.json"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "planner_own_rgb_count",
+      "expected": 1,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.planner_own_rgb_count",
+          "value": 1
+        }
+      ],
+      "status": "current",
+      "input": "/Users/changmin/projects/ugrp-wt/llmnomap/experiments/2026-10-17-llmnomap/manifest_preflight.json"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "planner_cache_order",
+      "expected": [
+        "system",
+        "static",
+        "dynamic",
+        "image"
+      ],
+      "observed": [
+        {
+          "field": "parent[0].stack_values.planner_cache_order",
+          "value": [
+            "system",
+            "static",
+            "dynamic",
+            "image"
+          ]
+        }
+      ],
+      "status": "current",
+      "input": "/Users/changmin/projects/ugrp-wt/llmnomap/experiments/2026-10-17-llmnomap/manifest_preflight.json"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "heading_mode",
+      "expected": "on",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.heading_mode",
+          "value": "on"
+        }
+      ],
+      "status": "current",
+      "input": "/Users/changmin/projects/ugrp-wt/llmnomap/experiments/2026-10-17-llmnomap/manifest_preflight.json"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "ultrasonic_front",
+      "expected": "off",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.ultrasonic_front",
+          "value": "off"
+        }
+      ],
+      "status": "current",
+      "input": "/Users/changmin/projects/ugrp-wt/llmnomap/experiments/2026-10-17-llmnomap/manifest_preflight.json"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "wall_cap",
+      "expected": null,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.wall_cap",
+          "value": null
+        }
+      ],
+      "status": "current",
+      "input": "/Users/changmin/projects/ugrp-wt/llmnomap/experiments/2026-10-17-llmnomap/manifest_preflight.json"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "speed_gate",
+      "expected": "record_only",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.speed_gate",
+          "value": "record_only"
+        }
+      ],
+      "status": "current",
+      "input": "/Users/changmin/projects/ugrp-wt/llmnomap/experiments/2026-10-17-llmnomap/manifest_preflight.json"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "speed_metric",
+      "expected": "wall_s/(sim_s*nworld)",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.speed_metric",
+          "value": "wall_s/(sim_s*nworld)"
+        }
+      ],
+      "status": "current",
+      "input": "/Users/changmin/projects/ugrp-wt/llmnomap/experiments/2026-10-17-llmnomap/manifest_preflight.json"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "gcp_host",
+      "expected": [
+        "ugrp-act-l4-gcp2",
+        "ugrp-act-l4-gcp3",
+        "ugrp-act-l4-gcp4",
+        "ugrp-act-l4-gcp5",
+        "ugrp-act-l4-gcp6"
+      ],
+      "observed": [
+        {
+          "field": "parent[0].stack_values.gcp_host",
+          "value": null
+        }
+      ],
+      "status": "approved_deviation",
+      "original_status": "unknown",
+      "approval": {
+        "id": "gcp_host",
+        "reason": "VM 없음(시뮬 금지) 지시에 따라 이 배치는 GCP 호스트를 사용하지 않는다.",
+        "approval": {
+          "authority": "user",
+          "evidence": "작업 지시 2026-10-17: \"VM 없음(시뮬 금지). LLM 호출은 Mac에서 OpenRouter 키로만\"."
+        }
+      },
+      "input": "/Users/changmin/projects/ugrp-wt/llmnomap/experiments/2026-10-17-llmnomap/manifest_preflight.json"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "gcp_guards",
+      "expected": {
+        "idle_minutes": 20,
+        "budget_stop": true,
+        "credentials_on_vm": false
+      },
+      "observed": [
+        {
+          "field": "parent[0].stack_values.gcp_guards",
+          "value": {
+            "idle_minutes": 20,
+            "budget_stop": true,
+            "credentials_on_vm": false
+          }
+        }
+      ],
+      "status": "current",
+      "input": "/Users/changmin/projects/ugrp-wt/llmnomap/experiments/2026-10-17-llmnomap/manifest_preflight.json"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "no_pooling",
+      "expected": true,
+      "observed": [
+        {
+          "field": "parent[0].stack_values.no_pooling",
+          "value": true
+        }
+      ],
+      "status": "current",
+      "input": "/Users/changmin/projects/ugrp-wt/llmnomap/experiments/2026-10-17-llmnomap/manifest_preflight.json"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "planning_cap_basis",
+      "expected": "compute_or_sim",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.planning_cap_basis",
+          "value": "compute_or_sim"
+        }
+      ],
+      "status": "current",
+      "input": "/Users/changmin/projects/ugrp-wt/llmnomap/experiments/2026-10-17-llmnomap/manifest_preflight.json"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "rejection_ledger",
+      "expected": [
+        "reason_category",
+        "blocked_object",
+        "minimum_gap_m"
+      ],
+      "observed": [
+        {
+          "field": "parent[0].stack_values.rejection_ledger",
+          "value": [
+            "reason_category",
+            "blocked_object",
+            "minimum_gap_m"
+          ]
+        }
+      ],
+      "status": "current",
+      "input": "/Users/changmin/projects/ugrp-wt/llmnomap/experiments/2026-10-17-llmnomap/manifest_preflight.json"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "cap_end_label",
+      "expected": "cap_end",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.cap_end_label",
+          "value": "cap_end"
+        }
+      ],
+      "status": "current",
+      "input": "/Users/changmin/projects/ugrp-wt/llmnomap/experiments/2026-10-17-llmnomap/manifest_preflight.json"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "gcp_project",
+      "expected": [
+        "ugrp-sim-b-1014",
+        "ugrp-sim-c-1016",
+        "ugrp-sim-d-1016",
+        "ugrp-sim-e-1016",
+        "ugrp-sim-f-1016"
+      ],
+      "observed": [
+        {
+          "field": "parent[0].stack_values.gcp_project",
+          "value": null
+        }
+      ],
+      "status": "approved_deviation",
+      "original_status": "unknown",
+      "approval": {
+        "id": "gcp_project",
+        "reason": "GCP 호스트를 사용하지 않으므로 프로젝트를 배정하지 않는다.",
+        "approval": {
+          "authority": "user",
+          "evidence": "작업 지시 2026-10-17: \"VM 없음(시뮬 금지)\"."
+        }
+      },
+      "input": "/Users/changmin/projects/ugrp-wt/llmnomap/experiments/2026-10-17-llmnomap/manifest_preflight.json"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "gcp_account",
+      "expected": [
+        "changmin5781@gmail.com",
+        "kcm5781kcm5781@gmail.com"
+      ],
+      "observed": [
+        {
+          "field": "parent[0].stack_values.gcp_account",
+          "value": null
+        }
+      ],
+      "status": "approved_deviation",
+      "original_status": "unknown",
+      "approval": {
+        "id": "gcp_account",
+        "reason": "GCP 호스트를 사용하지 않으므로 계정을 배정하지 않는다.",
+        "approval": {
+          "authority": "user",
+          "evidence": "작업 지시 2026-10-17: \"VM 없음(시뮬 금지)\"."
+        }
+      },
+      "input": "/Users/changmin/projects/ugrp-wt/llmnomap/experiments/2026-10-17-llmnomap/manifest_preflight.json"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "dialogue_language",
+      "expected": "peer_en",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.dialogue_language",
+          "value": "peer_en"
+        }
+      ],
+      "status": "current",
+      "input": "/Users/changmin/projects/ugrp-wt/llmnomap/experiments/2026-10-17-llmnomap/manifest_preflight.json"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "selfmap_map_correction",
+      "expected": "off",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.selfmap_map_correction",
+          "value": "off"
+        }
+      ],
+      "status": "current",
+      "input": "/Users/changmin/projects/ugrp-wt/llmnomap/experiments/2026-10-17-llmnomap/manifest_preflight.json"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "localization_initial_prior",
+      "expected": "none",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.localization_initial_prior",
+          "value": "none"
+        }
+      ],
+      "status": "current",
+      "input": "/Users/changmin/projects/ugrp-wt/llmnomap/experiments/2026-10-17-llmnomap/manifest_preflight.json"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "static_map_use",
+      "expected": "none",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.static_map_use",
+          "value": "none"
+        }
+      ],
+      "status": "current",
+      "input": "/Users/changmin/projects/ugrp-wt/llmnomap/experiments/2026-10-17-llmnomap/manifest_preflight.json"
+    },
+    {
+      "record": "$",
+      "flow": "e2e_llm",
+      "id": "goal_discovery",
+      "expected": "visual_search",
+      "observed": [
+        {
+          "field": "parent[0].stack_values.goal_discovery",
+          "value": "visual_search"
+        }
+      ],
+      "status": "current",
+      "input": "/Users/changmin/projects/ugrp-wt/llmnomap/experiments/2026-10-17-llmnomap/manifest_preflight.json"
+    }
+  ],
+  "stack": {
+    "path": "/Users/changmin/projects/ugrp-wt/llmnomap/configs/current_stack.json",
+    "sha256": "04978bc6390724be1095dbcf63360cbfc2a8cdf05107112e14e77cfe2dd4ce89"
+  },
+  "counts": {
+    "current": 38,
+    "approved_deviation": 3
+  },
+  "admission": "pass"
+}

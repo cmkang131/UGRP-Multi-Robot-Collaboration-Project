@@ -184,3 +184,90 @@ def physics_schedule(period_s, timestep_s, graph_chunk=16):
         raise ValueError('control period must contain an integral number of physics ticks')
     steps=int(ratio);chunk=gcd(steps,graph_chunk)
     return steps,chunk,steps//chunk
+
+def multi_control_tape(robot_rows, relay_states, bindings, **clock):
+    """Compose existing command tapes on disjoint actuator columns.
+
+    Both robots share ONE world clock and physics step. No measured position,
+    velocity or contact is used. The scalar decoder and its constants are
+    unchanged; this only prevents r2's template overwriting r1's substep tape.
+    """
+    tapes, states, used = {}, {}, set()
+    for rid, rows in robot_rows.items():
+        binding = bindings[rid]
+        columns = list(binding['wheel_ids']) + [j for ids in binding['servo_ids'] for j in ids]
+        if len(set(columns)) != len(columns) or used.intersection(columns):
+            raise ValueError('robot actuator columns must be disjoint')
+        used.update(columns)
+        tape, state = control_tape(rows, relay_states[rid], **binding, **clock)
+        tapes[rid] = (tape, columns)
+        states[rid] = state
+    if not tapes:
+        raise ValueError('nonempty robot command batch required')
+    combined = next(iter(tapes.values()))[0].copy()
+    for tape, columns in tapes.values():
+        if tape.shape != combined.shape:
+            raise ValueError('robots must share world and substep dimensions')
+        combined[:, :, columns] = tape[:, :, columns]
+    return combined, states
+
+
+def model_key(xml):
+    """Same scene/model excluding only free-body initial pose declarations.
+
+    MuJoCo free-joint qpos stores that pose per world. Static bodies, geometry,
+    dynamics, materials, sensors and camera parameters must remain exact.
+    No approximate numeric model matching or mixed-map batching is admitted.
+    """
+    import hashlib
+    import xml.etree.ElementTree as ET
+    root=ET.fromstring(xml)
+    for body in root.iter('body'):
+        free=body.find('freejoint') is not None or any(j.get('type')=='free' for j in body.findall('joint'))
+        if free:
+            for attr in ('pos','quat','euler','axisangle','xyaxes','zaxis'):
+                body.attrib.pop(attr,None)
+    return hashlib.sha256(ET.tostring(root)).hexdigest()
+
+
+def contact_maps(ngeom, targets, fingers):
+    """Evaluator-only per-world cargo/finger membership, including multi-geoms."""
+    if len(targets) != len(fingers) or not targets:
+        raise ValueError('matching nonempty per-world contact groups required')
+    target_mask = np.zeros((len(targets), ngeom), dtype=np.int32)
+    finger_map = np.full((len(targets), ngeom), -1, dtype=np.int32)
+    for i, (cargo, mapping) in enumerate(zip(targets, fingers)):
+        if not cargo or set(cargo).intersection(mapping):
+            raise ValueError('cargo and fingers must be distinct')
+        target_mask[i, cargo] = 1
+        for geom, channel in mapping.items():
+            finger_map[i, geom] = channel
+    return target_mask, finger_map
+
+
+def varying_model_arrays(rows, batchable):
+    """Exact converted-model array audit; no unsupported field is shared.
+
+    Leading singleton dimensions come from pinned MJWarp put_model. Concatenate
+    supported fields in world order; return only differing arrays to upload.
+    """
+    if not rows or any(set(row)!=set(rows[0]) for row in rows):
+        raise ValueError('matching converted model fields required')
+    out={}
+    for key,first in rows[0].items():
+        values=[np.asarray(row[key]) for row in rows]
+        if any(v.shape!=values[0].shape or v.dtype!=values[0].dtype for v in values):
+            raise ValueError('model layout differs: '+key)
+        if all(np.array_equal(values[0],v) for v in values[1:]):continue
+        if key not in batchable or not values[0].ndim or values[0].shape[0]!=1:
+            raise ValueError('unbatchable model difference: '+key)
+        out[key]=np.concatenate(values,axis=0)
+    return out
+
+
+def exact_model_groups(keys):
+    """Stable world-to-model partition; equality only, no approximate matching."""
+    groups = {}
+    for index, key in enumerate(keys):
+        groups.setdefault(key, []).append(index)
+    return list(groups.items())

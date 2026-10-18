@@ -1,0 +1,158 @@
+{
+  "status": "complete",
+  "complete": true,
+  "stage": "main",
+  "class": "milestone",
+  "research_result": null,
+  "source_sha": "4747c4144a972e348a9ae4c7bbcc769ad116106d",
+  "dataset_manifest_sha256": "a0f5d8a1c6c9b6c4988122ae40bf412c4c705f3c34740d8d7a91c93fef58d6cd",
+  "host": {
+    "project": "ugrp-sim-b-1014",
+    "instance": "ugrp-act-l4-gcp2",
+    "machine_type": "g2-standard-8",
+    "zone": "asia-northeast3-a"
+  },
+  "steps_requested": 20000,
+  "steps_completed": 20000,
+  "seed": 20261015,
+  "blank_images": false,
+  "done_loss": "balanced_bce_v1",
+  "done_loss_weight": 1.0,
+  "command_history_dropout": 0.0,
+  "history_causal_split_v1": "wheel_pulse_train_mean",
+  "beamact3_v1": "B",
+  "checkpoint_every": 5000,
+  "batch_size": 8,
+  "readback_verified": true,
+  "gate_promotion_authorized_if_all_conditions_pass": false,
+  "selection": "fixed final step; validation never selects checkpoint",
+  "done_class_counts": {
+    "grasp": {
+      "positive_n": 332,
+      "rows_N": 60023,
+      "positive_fraction": 0.005531213035003249
+    }
+  },
+  "environment": {
+    "torch": "2.11.0+cu128",
+    "torchvision": "0.26.0+cu128",
+    "lerobot": "0.6.2",
+    "numpy": "2.2.6"
+  },
+  "training_rows": 60023,
+  "gpu": "NVIDIA L4",
+  "cuda": "12.8",
+  "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "backbone_initialization": "ResNet18_Weights.IMAGENET1K_V1; fine-tuned; no freeze/cache",
+  "activation_checkpointing": "harness.act_training.checkpoint_encoder",
+  "timing": {
+    "dataset_load_s": 69.26368699900002,
+    "setup_s": 94.03972091299997,
+    "checkpoints": [
+      {
+        "step": 5000,
+        "save_s": 2.9823560530003306,
+        "bytes": 622055528
+      },
+      {
+        "step": 10000,
+        "save_s": 3.025181312999848,
+        "bytes": 622055530
+      },
+      {
+        "step": 15000,
+        "save_s": 3.090985170001659,
+        "bytes": 622055530
+      },
+      {
+        "step": 20000,
+        "save_s": 3.0569057580014487,
+        "bytes": 622055530
+      }
+    ],
+    "method": "CUDA synchronized step including batch load, H2D, forward, backward, optimizer; excludes checkpoint/log",
+    "checkpoint_load_s": 3.315528119999726,
+    "inference_s": 0.023935216000609216,
+    "step_mean_s": 0.658013938582808,
+    "step_median_s": 0.6105252805000418,
+    "step_p95_s": 0.8165755320000017
+  },
+  "latest": {
+    "step": 20000,
+    "loss": 0.11765742301940918,
+    "legacy_l1_loss": 0.7223065495491028,
+    "movement_l1_loss": 0.06341099366545677,
+    "done_bce_loss": 8.718464232515544e-05,
+    "kld_loss": 0.000204477459192276,
+    "wheel_ce_loss": 0.052114441990852356,
+    "wheel_l1_removed": 0.01911276951432228,
+    "gradient_norm": 6.181954860687256,
+    "wall_s": 12346.104364251,
+    "steps_per_s": 1.4986103676212088,
+    "peak_gpu_bytes": 1548142592
+  },
+  "last_checkpoint": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/main-attempt2/step-020000",
+  "peak_training_gpu_bytes": 1548142592,
+  "peak_training_gpu_reserved_bytes": 2164260864,
+  "input_audit": {
+    "keys": [
+      "observation.images.own_history",
+      "observation.state"
+    ],
+    "shapes": {
+      "observation.images.own_history": [
+        1,
+        3,
+        480,
+        640
+      ],
+      "observation.state": [
+        1,
+        252
+      ]
+    },
+    "whitelist_verified": true,
+    "teacher_input_fields": 0,
+    "scope": "saved training input; own RGB history and contract context only; not closed-loop validation"
+  },
+  "wall_s": 12352.785972998001,
+  "artifacts": {
+    "progress.jsonl": "96ca82f7dd1f079dfeacf29a4352d315deac2d05e01b390cf1ab32fb61ee20b4",
+    "RUN_META.json": "4eeb1a581946b3a091940005254d511959e9a1a50fb4dfaa693d4901aef2b4b7",
+    "step-015000/resume.json": "d9b15df1354b6fd4976828818e0cd8464a0aa3f2664a44020a8f72519f4f33ea",
+    "step-015000/optimizer.pt": "df75da72df35e3b64984f1f604decd1b0c7b4dd75ddc7d69c247b5daabcdeee1",
+    "step-010000/resume.json": "8d446bec5eef26f1e8b4f26f34a3fddc363196d4e63ef5629405df199c2c8dca",
+    "step-010000/optimizer.pt": "d5391c659ca04b16de1ffd6ce0cb2d59aab027f6e59fa84abdf499c47bf21fa0",
+    "step-005000/resume.json": "b5fbe5bb2aaff639b368b3fcf8588de63c7a0404588973f564cb3c6f8ad98895",
+    "step-005000/optimizer.pt": "b156eb4bac4cde746774f51c923ccec99c33df64d2c0c168fe29666bc17c04b0",
+    "step-020000/resume.json": "4ab8a10cc58bc031c2a6c381cc44c8516a692627e50abc7e74dbc59e3dfcb598",
+    "step-020000/optimizer.pt": "d73b83725b47268ea3faff94f48a80ccb412f359b6674a771cfa8ad6327feff4",
+    "step-015000/actor/SHA256.json": "2c7cbd9147fd655115b061ac298a195d91c58d8fb9ae8eeb775b15e1570890dd",
+    "step-015000/actor/model.safetensors": "3755737a3eb3e52066493252aed945a76e30df82fb5acaa38902dde210588974",
+    "step-015000/actor/adapter.json": "457c6e271fe1c8f75b60c8210f24e7e317a391931eee3b2a42f94af300d0cd10",
+    "step-015000/actor/config.json": "b63bc05fb84e5c0f53329336a7a147f18ca73f297ed25279b42b968e279f571f",
+    "step-010000/actor/SHA256.json": "9744de0abb9fe533dd0c318d4c566619a1ab114d828ef19861662faa6a60aaea",
+    "step-010000/actor/model.safetensors": "ff81f2fff02de3247f7acd3c936e08d9efb3918281adcf9e38fa34d51872b064",
+    "step-010000/actor/adapter.json": "7706f411ce12fc4c1fad2804700d177fb0664e6cad06edbfeeeb9c7ec68013ef",
+    "step-010000/actor/config.json": "b63bc05fb84e5c0f53329336a7a147f18ca73f297ed25279b42b968e279f571f",
+    "step-005000/actor/SHA256.json": "55f7a7066b9a06af291534f62e1a895c4b2be803a4c8d359135a6af703ce7f47",
+    "step-005000/actor/model.safetensors": "680b1df835a2f2db608d68fe9a5d8fc5a93caffb2a7be30688960b2d14ad864a",
+    "step-005000/actor/adapter.json": "9719a808d0404eec860b19bdc6d5dfbf8699399db61e47c6de00ce66824c9ddf",
+    "step-005000/actor/config.json": "b63bc05fb84e5c0f53329336a7a147f18ca73f297ed25279b42b968e279f571f",
+    "step-020000/actor/SHA256.json": "0004418998f7acb58282f09d329ff2c1ec2ada9c2cd4517ee5f06909d1c39357",
+    "step-020000/actor/model.safetensors": "908a594c6865ae38373910bfa9ba3764e8194c985c74e4fea56627e5a66e0389",
+    "step-020000/actor/adapter.json": "6f1e67861be0b0a4f49f8546390f64c7866cfffb0777b0ef0002af873a3213f1",
+    "step-020000/actor/config.json": "b63bc05fb84e5c0f53329336a7a147f18ca73f297ed25279b42b968e279f571f"
+  },
+  "original_full_summary": {
+    "path": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/main-attempt2/summary.json",
+    "sha256": "b4fe2e5d5c7dc6e105abf5ab07e7e078e761efeb8088b00b7c27e5f2eece0d84",
+    "bytes": 990103
+  },
+  "checkpoint_integrity": {
+    "actor_files_verified": 3,
+    "optimizer_sha256_verified": true,
+    "optimizer_sha256": "d73b83725b47268ea3faff94f48a80ccb412f359b6674a771cfa8ad6327feff4",
+    "model_sha256": "908a594c6865ae38373910bfa9ba3764e8194c985c74e4fea56627e5a66e0389"
+  }
+}

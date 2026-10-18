@@ -111,3 +111,50 @@ SHA256 `69bdd4f62546e3e38ea024cf94b6bc12b86cef39b8a187ee155b7f11794a1c69`.
 고른 이유는 source plan0의 첫 완료 케이스이기 때문이다. ≥40회 관문·학생·일반 성공률을 보이지 못한다. 최적화 sleep/SAP 후보와는 별도 코호트이며, N1 pause가 포함된 wall 시간은 처리량으로 쓰지 않는다. 반투명 구역의 C/Warp RGB 차이도 남아 있다. 원본/경로/한계는 [warp1 기록](../experiments/2026-10-16-warp1/README.md)에 있다.
 
 같은 작업의 별도 기본 off `native_sleep_policy_compat_v1`, source `8d157d6c`는 N1 시드8317100 1회와 N16 동일 시드 복제16세계에서 모두40.6SIM초 파지·들기·놓기를 완료했다. [native N16 world0 3배속](../experiments/2026-10-16-warp1/videos/warp1-native-mjwarp-n16-world0-8317100-3x.mp4)·[해시/ffprobe](../experiments/2026-10-16-warp1/video-native.json). 첫 사전 지정 시드의 world0 전체2Hz 및 마지막10SIM초10Hz를 검토했다. 독립 시드는1개이며 ≥40회 관문·학생 검증이 아니다. 추가 시드8317104의17SIM초 자원 cap_end는 별도 원장에 남겼다. 기본 no-sleep/C 결과와 합산하지 않는다.
+
+## 2026-10-15 beampair1 long_beam 근거리 교사
+
+`d79f04a39e3eec9d418e5c44929182e0ec79f51c` + dependency `26f84d0f0ada1c33473c83cca2d3415ce51bd247`, gcp1/n4-highcpu-64, v7·청록/파랑 끝·weld OFF. 짧은 탐색6/6 공동 들기(3초), 정식40회 관문 미실행. 대표 seed71001 own r1/r2 1Hz 검토 영상은 gcp1 `/home/ugrp/ugrp-sim/outputs/beampair1-r3-analysis-v2/representative/beampair1-d79f04a3-71001.mp4` (SHA256 `dd4c7644280bd101e4a0ef6bb3670a34ec31581b9f0cc71c41b573a9b0f81b2c`). [프레임/원본/인코더 기록](../experiments/2026-10-15-beampair1/representative.json). 근거리 접근·정렬·집기·들기만이며 운반·놓기·학생·실물 성공이 아니다. Mac에는 영상 원본을 회수하지 않았다.
+
+
+## 2026-10-15 beampair2 peer rendezvous
+
+`f84b2c8a436feff9775758876248c3054ff3553b` + dependency `26f84d0f0ada1c33473c83cca2d3415ce51bd247`, gcp1/n4-highcpu-64, v7·색 끝·weld OFF·기본 off peer_rendezvous_v1. 짧은 탐색R2 6/6 공동 들기3초, 40회 재시작 큐 미제출. 대표 실패복구seed8318604 own r1/r2 1Hz 영상: gcp1 `/home/ugrp/ugrp-sim/outputs/beampair2/representative-f84b2c8a/beampair2-f84b2c8a-8318604.mp4`, SHA256 `57aff4d304d3a8dec9c9e869480f5dade0e23c7dc222474c961cbaad061abe6b`. [프레임·인코더·보존 기록](../experiments/2026-10-15-beampair2/representative.json). Mac에는 요약·몽타주만 회수. 근거리 교사 탐색이며 학생·운반·놓기·실물 성공은 아니다.
+
+
+## 2026-10-15 beampair3 양보 계획 만료
+
+`e645b34beb4fa693ab4ddedfe77045ae26b46388` + dependency `26f84d0f0ada1c33473c83cca2d3415ce51bd247`, gcp1/n4-highcpu-64, 기본off `peer_rendezvous_v2`. R3 짧은 탐색6/6 공동 들기3초; 정식40회는 미제출 큐. 대표8318611 개요(평가만)+r1/r2 자기 카메라 3배속, 원본10Hz 평가 qpos 복원: `/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beampair3/r3-8318611/playback-3x.mp4` (449970bytes, SHA256 `2f833a2796b7b78470a6d97872525f9e43c630a9fc9a742147c1659626d0a2b1`). [원본·프레임·ffprobe·직접 검토](../experiments/2026-10-15-beampair3/r3-visual-review.json). 전체2Hz·끝10초10Hz 검토, 카메라 보정 복원·위치차이0. 원본 own JPEG는1Hz이며 새 카메라 관측이나 학생 실행이 아니다. 학습·운반·놓기·실물 성공 아님.
+
+## 2026-10-16 beampair5 재관측 뒤 목표 막힘 — NOT_READY
+
+`1ead2bb999bbb0e9d07c7d707be727f8ad563f93` + dependency `26f84d0f`, gcp2/n4-highcpu-64,
+기본 off `beampair_wall_clear_v1`, 기존 beampair3 장면·weld OFF. 대표 실패8318626은
+26.3SIM초 감독 중단, 짧은 계획6개 중0성공·시작1·미시작5, gate40 미생성이다.
+[대표 영상](../experiments/2026-10-16-beampair5/representative-8318626.mp4)
+(193399bytes, SHA256 `e4df23eaebb790c86b9a668d7990b642894e4622687eaea45c8f42db96290b61`).
+개요(평가 전용)+r1/r2 자기 카메라3배속, 전체2Hz54장·마지막10초10Hz101장 직접 확인,
+tail은 원촬영202장이다. [원본·해시·검토](../experiments/2026-10-16-beampair5/r1-playback-review.json).
+재관측 뒤 정지와 실제 북쪽 벽에 걸린 인증 목표 집합을 보여준다. 학생·전체 파지 공간·
+다른 장면 성공으로 일반화하지 않는다. 후속 인터럽트 원장 수정은 비물리 검사만 했다.
+
+## 2026-10-16 beampair6 — v7 배치 지원 조건
+
+실행 소스 `08f129213031255dd188e20df832bb6714dfca9a`, 의존성 `26f84d0f0ada1c33473c83cca2d3415ce51bd247`, gcp2/n4-highcpu-64. 기본 off `beampair_gate_valid_v2`(초기화만)·`beampair_wall_clear_v1` 교사 후보. 새 배치8318726의 공동 들기 완료38.0 SIM초. [대표 영상](../experiments/2026-10-16-beampair6/representative-8318726.mp4)은 개요(평가용)+r1/r2 자기 카메라3배속, 284710bytes, SHA256 `3bd8f031066f010bf0ce168f048b197f19210cd61dce6118b7fe9dc50f0d12b5`. 전체0–38초2Hz77프레임을 직접 봤다. 자기 카메라는10Hz 저장 qpos 재렌더이며 원촬영10Hz가 아니다. [원본·ffprobe·검토](../experiments/2026-10-16-beampair6/playback-review.json). 학생·운반·놓기·실물 성공을 뜻하지 않는다.
+
+
+## 2026-10-16 beampair7 — 현재 보이는 빔의 상대 목적 자세 예약
+
+실행 소스 `ef284e92510ca4283f1db5de9aecd1dac5c17b0b`, 의존성 `26f84d0f0ada1c33473c83cca2d3415ce51bd247`, gcp2/n4-highcpu-64/C MuJoCo3.12. 기본 off `beampair_peer_yield_v1`. 새 장면 `walls_floor_contrast_v5_indigo110_s80`+v1 바닥+no_mip. 실패8318711의 수정 후 짧은 검증은46.4 SIM초에 공동3초 유지 성공. [대표 영상](../experiments/2026-10-16-beampair7/representative-8318711.mp4)은 개요(평가용)+r1/r2 자기 카메라3배속,390806B,SHA256 `cde6bf6cc4095dba7f671398ed0cf37d1d9183f30114978cf426847ddc10a4c1`. 전체0–46.4초2Hz94시점을 직접 확인했으며 자기 화면은 저장 qpos 재렌더다. [검토·ffprobe·출처](../experiments/2026-10-16-beampair7/playback-short-summary.json). 짧은5/5를 새 gate40·학생·운반·실물 성공으로 합산하지 않는다.
+
+
+## 2026-10-16 beampair7 R2 — 깊은 예약 시작점의 연속 연결
+
+실행 소스 `835ccef26aa84b08cc8f7e256fd0f43aa1583ef9`, gcp2/C MuJoCo3.12, 같은 확정 장면·기본 off 토글이다. [8318728 대표 영상](../experiments/2026-10-16-beampair7/representative-r2-8318728.mp4)309130B,SHA256 `c763b8b87f2d67f3537af9850051a36a3475326276a875de3d55991f3e630861`. 전체0–38.9초2Hz79시점을 직접 보았다. 예약 자리에서 뒤로 빠져나온 뒤 다른 끝으로 접근·정렬·공동파지한다. 개요는 평가용,자기 화면은 저장 qpos 재렌더이며 원촬영10Hz가 아니다. [출처/ffprobe/검토](../experiments/2026-10-16-beampair7/playback-short-r2-8318728.json). 짧은5/5와 새로운 gate40 결과는 분리한다.
+## 2026-10-15 ACT15 DAgger1 근거리 학생 (실패 비교)
+
+저장된 **자기 RGB** 영상이며 정답 도식/top 카메라가 아니다.
+
+|버전·소스|대표 case|결과|영상·해시|범위와 한계|
+|---|---|---|---|---|
+|ACT15 DAgger1; 학습1535c8a3, 실행686cccb6|91420, ACT14 p0 실패와 같은 seed; 최다 거부 단계인 정렬 실패 선택|90 SIM초 cap_end, 안정 들기/완료0; 전체 같은20 0/20·새20 0/20|[자기 RGB4배속](../experiments/2026-10-15-act-train/videos/act15-91420-4x.mp4),22.5초/900프레임/169401bytes;SHA256 `e9a95fd808c256f12d37ffa5b753a29bf8e441201340100f4b5ca3d2bb3a34fd`|접근 후 목표가 화면 밖으로 빠지는 사례. 단일 원인·일반화·E2E·실물·기본 채택 아님. [원본·milestone 복제·해시](../experiments/2026-10-15-act-train/act15-video.json), [전체 결과](../experiments/2026-10-15-act-train/act15.md).|

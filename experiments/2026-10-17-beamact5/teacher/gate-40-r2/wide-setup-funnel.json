@@ -1,0 +1,593 @@
+{
+  "schema": "ugrp.beamact5.wide_setup_funnel.v1",
+  "funnel": [
+    {
+      "gate": "beam_static",
+      "entered": 101,
+      "passed": 101,
+      "rejected": 0
+    },
+    {
+      "gate": "beam_cargo",
+      "entered": 101,
+      "passed": 91,
+      "rejected": 10
+    },
+    {
+      "gate": "placement_graspable_filter",
+      "entered": 91,
+      "passed": 82,
+      "rejected": 9
+    },
+    {
+      "gate": "robot_environment",
+      "entered": 82,
+      "passed": 44,
+      "rejected": 38
+    },
+    {
+      "gate": "robot_peer",
+      "entered": 44,
+      "passed": 44,
+      "rejected": 0
+    },
+    {
+      "gate": "initial_static_los",
+      "entered": 44,
+      "passed": 40,
+      "rejected": 4
+    },
+    {
+      "gate": "parking",
+      "entered": 40,
+      "passed": 40,
+      "rejected": 0
+    }
+  ],
+  "rejections": [
+    {
+      "proposal": 1,
+      "population": "wide_start",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "static_wall_5",
+      "min_gap_m": -0.015739939528468458,
+      "robot": "r2"
+    },
+    {
+      "proposal": 4,
+      "population": "wide_start",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.6504164907092965,
+      "robot": "r2"
+    },
+    {
+      "proposal": 5,
+      "population": "wide_start",
+      "reason_category": "placement_graspable_filter",
+      "blocked_object": "wall_north",
+      "min_gap_m": 0.0,
+      "end": "blue",
+      "free_goal_N": 0,
+      "certified_N": 91
+    },
+    {
+      "proposal": 7,
+      "population": "parking_trials",
+      "trial": 0,
+      "reason_category": "parking_overlap",
+      "blocked_object": "r2",
+      "min_gap_m": -0.058361846295721886
+    },
+    {
+      "proposal": 8,
+      "population": "wide_start",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.2424202188047489,
+      "robot": "r2"
+    },
+    {
+      "proposal": 9,
+      "population": "wide_start",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.16518310284155385,
+      "robot": "r1"
+    },
+    {
+      "proposal": 10,
+      "population": "wide_start",
+      "reason_category": "beam_cargo_overlap",
+      "blocked_object": "cyan_1",
+      "min_gap_m": -0.08555707177473826
+    },
+    {
+      "proposal": 11,
+      "population": "wide_start",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -1.1442909832458008,
+      "robot": "r2"
+    },
+    {
+      "proposal": 12,
+      "population": "wide_start",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.5827859872960598,
+      "robot": "r2"
+    },
+    {
+      "proposal": 13,
+      "population": "wide_start",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "static_wall_2",
+      "min_gap_m": -0.12229574808635009,
+      "robot": "r2"
+    },
+    {
+      "proposal": 14,
+      "population": "parking_trials",
+      "trial": 0,
+      "reason_category": "parking_overlap",
+      "blocked_object": "static_wall_4",
+      "min_gap_m": -0.04490556987684095
+    },
+    {
+      "proposal": 15,
+      "population": "wide_start",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.14516339750224422,
+      "robot": "r1"
+    },
+    {
+      "proposal": 18,
+      "population": "wide_start",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.2615775407919639,
+      "robot": "r1"
+    },
+    {
+      "proposal": 21,
+      "population": "wide_start",
+      "reason_category": "beam_cargo_overlap",
+      "blocked_object": "cyan_1",
+      "min_gap_m": -0.07544317875221532
+    },
+    {
+      "proposal": 22,
+      "population": "wide_start",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -1.1105572859922077,
+      "robot": "r1"
+    },
+    {
+      "proposal": 23,
+      "population": "wide_start",
+      "reason_category": "placement_graspable_filter",
+      "blocked_object": "cyan_1",
+      "min_gap_m": 0.0,
+      "end": "teal",
+      "free_goal_N": 0,
+      "certified_N": 91
+    },
+    {
+      "proposal": 25,
+      "population": "wide_start",
+      "reason_category": "beam_cargo_overlap",
+      "blocked_object": "red_1",
+      "min_gap_m": -0.045204107502581165
+    },
+    {
+      "proposal": 26,
+      "population": "wide_start",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "static_wall_1",
+      "min_gap_m": -0.09557680283771547,
+      "robot": "r2"
+    },
+    {
+      "proposal": 28,
+      "population": "wide_start",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "static_wall_0",
+      "min_gap_m": -0.12229574808635009,
+      "robot": "r2"
+    },
+    {
+      "proposal": 29,
+      "population": "wide_start",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "static_wall_2",
+      "min_gap_m": -0.10768129611680582,
+      "robot": "r2"
+    },
+    {
+      "proposal": 30,
+      "population": "wide_start",
+      "reason_category": "beam_cargo_overlap",
+      "blocked_object": "cyan_1",
+      "min_gap_m": -0.15885290108132197
+    },
+    {
+      "proposal": 34,
+      "population": "wide_start",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.8837567019981217,
+      "robot": "r2"
+    },
+    {
+      "proposal": 35,
+      "population": "wide_start",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.45794596533240256,
+      "robot": "r1"
+    },
+    {
+      "proposal": 36,
+      "population": "wide_start",
+      "reason_category": "placement_graspable_filter",
+      "blocked_object": "cyan_1",
+      "min_gap_m": 0.0,
+      "end": "blue",
+      "free_goal_N": 0,
+      "certified_N": 91
+    },
+    {
+      "proposal": 37,
+      "population": "wide_start",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.45875343352769044,
+      "robot": "r1"
+    },
+    {
+      "proposal": 38,
+      "population": "wide_start",
+      "reason_category": "placement_graspable_filter",
+      "blocked_object": "wall_north",
+      "min_gap_m": 0.0,
+      "end": "blue",
+      "free_goal_N": 0,
+      "certified_N": 91
+    },
+    {
+      "proposal": 39,
+      "population": "wide_start",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "static_wall_0",
+      "min_gap_m": -0.03784501054009663,
+      "robot": "r2"
+    },
+    {
+      "proposal": 40,
+      "population": "wide_start",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "static_wall_1",
+      "min_gap_m": -0.06633705936938278,
+      "robot": "r1"
+    },
+    {
+      "proposal": 41,
+      "population": "parking_trials",
+      "trial": 0,
+      "reason_category": "parking_overlap",
+      "blocked_object": "beam_1",
+      "min_gap_m": -0.2914138900144367
+    },
+    {
+      "proposal": 43,
+      "population": "wide_start",
+      "reason_category": "beam_cargo_overlap",
+      "blocked_object": "red_1",
+      "min_gap_m": -0.0736972028287384
+    },
+    {
+      "proposal": 46,
+      "population": "wide_start",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "static_wall_2",
+      "min_gap_m": -0.08925341191395847,
+      "robot": "r2"
+    },
+    {
+      "proposal": 48,
+      "population": "wide_start",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.46654473182594997,
+      "robot": "r1"
+    },
+    {
+      "proposal": 49,
+      "population": "wide_start",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "static_wall_4",
+      "min_gap_m": -0.04532355126876435,
+      "robot": "r2"
+    },
+    {
+      "proposal": 53,
+      "population": "wide_start",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "static_wall_4",
+      "min_gap_m": -0.09153880492911187,
+      "robot": "r2"
+    },
+    {
+      "proposal": 54,
+      "population": "wide_start",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.34696958717774967,
+      "robot": "r2"
+    },
+    {
+      "proposal": 55,
+      "population": "wide_start",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "static_wall_4",
+      "min_gap_m": -0.12229574808635009,
+      "robot": "r2"
+    },
+    {
+      "proposal": 56,
+      "population": "wide_start",
+      "reason_category": "initial_static_los",
+      "blocked_object": "static_wall_4",
+      "min_gap_m": 0.0,
+      "robot": "r2",
+      "gap_scope": "intersecting_center_ray"
+    },
+    {
+      "proposal": 57,
+      "population": "wide_start",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.1860699842692169,
+      "robot": "r1"
+    },
+    {
+      "proposal": 58,
+      "population": "wide_start",
+      "reason_category": "placement_graspable_filter",
+      "blocked_object": "red_1",
+      "min_gap_m": 0.0,
+      "end": "teal",
+      "free_goal_N": 0,
+      "certified_N": 91
+    },
+    {
+      "proposal": 59,
+      "population": "wide_start",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.2573549232244146,
+      "robot": "r2"
+    },
+    {
+      "proposal": 61,
+      "population": "wide_start",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "static_wall_2",
+      "min_gap_m": -0.06593771261326647,
+      "robot": "r2"
+    },
+    {
+      "proposal": 63,
+      "population": "wide_start",
+      "reason_category": "initial_static_los",
+      "blocked_object": "static_wall_4",
+      "min_gap_m": 0.0,
+      "robot": "r2",
+      "gap_scope": "intersecting_center_ray"
+    },
+    {
+      "proposal": 66,
+      "population": "wide_start",
+      "reason_category": "placement_graspable_filter",
+      "blocked_object": "cyan_1",
+      "min_gap_m": 0.0,
+      "end": "teal",
+      "free_goal_N": 0,
+      "certified_N": 91
+    },
+    {
+      "proposal": 68,
+      "population": "wide_start",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "static_wall_0",
+      "min_gap_m": -0.10483697432809874,
+      "robot": "r1"
+    },
+    {
+      "proposal": 69,
+      "population": "wide_start",
+      "reason_category": "placement_graspable_filter",
+      "blocked_object": "wall_south",
+      "min_gap_m": 0.0,
+      "end": "teal",
+      "free_goal_N": 0,
+      "certified_N": 91
+    },
+    {
+      "proposal": 70,
+      "population": "wide_start",
+      "reason_category": "beam_cargo_overlap",
+      "blocked_object": "red_1",
+      "min_gap_m": -0.060592111331057436
+    },
+    {
+      "proposal": 72,
+      "population": "wide_start",
+      "reason_category": "beam_cargo_overlap",
+      "blocked_object": "red_1",
+      "min_gap_m": -0.19209505353088285
+    },
+    {
+      "proposal": 73,
+      "population": "wide_start",
+      "reason_category": "initial_static_los",
+      "blocked_object": "static_wall_4",
+      "min_gap_m": 0.0,
+      "robot": "r1",
+      "gap_scope": "intersecting_center_ray"
+    },
+    {
+      "proposal": 74,
+      "population": "wide_start",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.19263641513270807,
+      "robot": "r1"
+    },
+    {
+      "proposal": 75,
+      "population": "wide_start",
+      "reason_category": "initial_static_los",
+      "blocked_object": "static_wall_4",
+      "min_gap_m": 0.0,
+      "robot": "r1",
+      "gap_scope": "intersecting_center_ray"
+    },
+    {
+      "proposal": 76,
+      "population": "wide_start",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.4621812869326228,
+      "robot": "r1"
+    },
+    {
+      "proposal": 78,
+      "population": "wide_start",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.2170378744552502,
+      "robot": "r1"
+    },
+    {
+      "proposal": 82,
+      "population": "wide_start",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.1961789912969008,
+      "robot": "r1"
+    },
+    {
+      "proposal": 83,
+      "population": "wide_start",
+      "reason_category": "beam_cargo_overlap",
+      "blocked_object": "cyan_1",
+      "min_gap_m": -0.07638364014130836
+    },
+    {
+      "proposal": 84,
+      "population": "parking_trials",
+      "trial": 0,
+      "reason_category": "parking_overlap",
+      "blocked_object": "static_wall_2",
+      "min_gap_m": -0.01612378882711056
+    },
+    {
+      "proposal": 84,
+      "population": "parking_trials",
+      "trial": 1,
+      "reason_category": "parking_overlap",
+      "blocked_object": "r2",
+      "min_gap_m": -0.060782189958758615
+    },
+    {
+      "proposal": 86,
+      "population": "wide_start",
+      "reason_category": "beam_cargo_overlap",
+      "blocked_object": "red_1",
+      "min_gap_m": -0.03588243829385837
+    },
+    {
+      "proposal": 87,
+      "population": "wide_start",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.3992875749173275,
+      "robot": "r1"
+    },
+    {
+      "proposal": 89,
+      "population": "wide_start",
+      "reason_category": "placement_graspable_filter",
+      "blocked_object": "red_1",
+      "min_gap_m": 0.0,
+      "end": "teal",
+      "free_goal_N": 0,
+      "certified_N": 91
+    },
+    {
+      "proposal": 90,
+      "population": "wide_start",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "static_wall_5",
+      "min_gap_m": -0.06829269152313938,
+      "robot": "r1"
+    },
+    {
+      "proposal": 92,
+      "population": "wide_start",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.3601803082193136,
+      "robot": "r1"
+    },
+    {
+      "proposal": 94,
+      "population": "wide_start",
+      "reason_category": "beam_cargo_overlap",
+      "blocked_object": "cyan_1",
+      "min_gap_m": -0.049343639295784975
+    },
+    {
+      "proposal": 96,
+      "population": "wide_start",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.7567325515994502,
+      "robot": "r1"
+    },
+    {
+      "proposal": 97,
+      "population": "wide_start",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.31673639219912625,
+      "robot": "r1"
+    },
+    {
+      "proposal": 99,
+      "population": "wide_start",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "static_wall_1",
+      "min_gap_m": -0.0035548352292195523,
+      "robot": "r2"
+    },
+    {
+      "proposal": 100,
+      "population": "wide_start",
+      "reason_category": "placement_graspable_filter",
+      "blocked_object": "wall_north",
+      "min_gap_m": 0.0,
+      "end": "blue",
+      "free_goal_N": 0,
+      "certified_N": 91
+    }
+  ],
+  "proposal_count": 101,
+  "source_scenario_sha256": "6382011a64cc0eea17edbdfe8b44fbd070a54467afc6b4db547c42dbd28df6f7",
+  "scope": "static initialization only; finite strata and enclosures do not prove physical success",
+  "reproduce": "python /home/ugrp/ugrp-sim/src/beamact5-tools/wide_start.py --seed 8420000 --output /home/ugrp/ugrp-sim/runs/beamact5/wide-start-8420000d-r2 --dependency-root /home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247 --frozen-root /home/ugrp/ugrp-sim/src/beamact5-teacher-3170d909"
+}

@@ -1,0 +1,21 @@
+{
+  "command": [
+    "gcloud",
+    "compute",
+    "instances",
+    "delete",
+    "ugrp-budget-test-gcp4",
+    "--zone=asia-northeast3-a",
+    "--delete-disks=all",
+    "--account",
+    "changmin5781@gmail.com",
+    "--project",
+    "ugrp-sim-d-1016",
+    "--quiet",
+    "--format=json"
+  ],
+  "started_utc": "2026-10-16T07:19:29.376084+00:00",
+  "elapsed_s": 4.1650230884552,
+  "returncode": 0,
+  "stderr": "Deleted [https://www.googleapis.com/compute/v1/projects/ugrp-sim-d-1016/zones/asia-northeast3-a/instances/ugrp-budget-test-gcp4].\n"
+}

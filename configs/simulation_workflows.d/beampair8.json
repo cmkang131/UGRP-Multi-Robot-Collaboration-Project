@@ -1,0 +1,23 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "beampair8-record",
+      "version": "0.1.0",
+      "purpose": "Qualified beam-pair teacher own-only ACT recording",
+      "entry": "scripts/run_beampair8.py",
+      "runner": "scripts.run_beampair8",
+      "docs": "experiments/2026-10-16-beampair8/README.md",
+      "requires": "gcp2 CPU only; raw40 qualified gate; exact 4-seed identity before bulk; own640x48010Hz; weld off",
+      "output_flag": "--out",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--plan",
+        "--episode",
+        "--dependency-root"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}

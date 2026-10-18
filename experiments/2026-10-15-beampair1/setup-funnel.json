@@ -1,0 +1,351 @@
+{
+  "schema": "ugrp.beampair1.setup_funnel.v1",
+  "funnel": [
+    {
+      "gate": "beam_static",
+      "entered": 76,
+      "passed": 76,
+      "rejected": 0
+    },
+    {
+      "gate": "beam_cargo",
+      "entered": 76,
+      "passed": 71,
+      "rejected": 5
+    },
+    {
+      "gate": "robot_environment",
+      "entered": 71,
+      "passed": 46,
+      "rejected": 25
+    },
+    {
+      "gate": "robot_peer",
+      "entered": 46,
+      "passed": 46,
+      "rejected": 0
+    },
+    {
+      "gate": "initial_static_los",
+      "entered": 46,
+      "passed": 40,
+      "rejected": 6
+    },
+    {
+      "gate": "parking",
+      "entered": 40,
+      "passed": 40,
+      "rejected": 0
+    }
+  ],
+  "rejections": [
+    {
+      "proposal": 1,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "static_wall_0",
+      "min_gap_m": -0.08416457521330573,
+      "robot": "r1"
+    },
+    {
+      "proposal": 5,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.13339785013073385,
+      "robot": "r2"
+    },
+    {
+      "proposal": 7,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.49085019149227144,
+      "robot": "r1"
+    },
+    {
+      "proposal": 8,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.9447759580403369,
+      "robot": "r1"
+    },
+    {
+      "proposal": 9,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.41033681050901955,
+      "robot": "r1"
+    },
+    {
+      "proposal": 10,
+      "population": "main_proposals",
+      "reason_category": "initial_static_los",
+      "blocked_object": "static_wall_5",
+      "min_gap_m": 0.0,
+      "robot": "r1",
+      "gap_scope": "intersecting_center_ray"
+    },
+    {
+      "proposal": 11,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.3753545219537496,
+      "robot": "r1"
+    },
+    {
+      "proposal": 13,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.21124272928239446,
+      "robot": "r1"
+    },
+    {
+      "proposal": 14,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.4875290156901602,
+      "robot": "r1"
+    },
+    {
+      "proposal": 19,
+      "population": "main_proposals",
+      "reason_category": "initial_static_los",
+      "blocked_object": "static_wall_4",
+      "min_gap_m": 0.0,
+      "robot": "r1",
+      "gap_scope": "intersecting_center_ray"
+    },
+    {
+      "proposal": 25,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.871733892342002,
+      "robot": "r2"
+    },
+    {
+      "proposal": 26,
+      "population": "main_proposals",
+      "reason_category": "beam_cargo_overlap",
+      "blocked_object": "cyan_1",
+      "min_gap_m": -0.05067830743814941
+    },
+    {
+      "proposal": 30,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.47636211852218274,
+      "robot": "r1"
+    },
+    {
+      "proposal": 32,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "static_wall_4",
+      "min_gap_m": -0.10774228602429464,
+      "robot": "r1"
+    },
+    {
+      "proposal": 33,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "static_wall_4",
+      "min_gap_m": -0.02291177375023616,
+      "robot": "r1"
+    },
+    {
+      "proposal": 35,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.28397493267596513,
+      "robot": "r1"
+    },
+    {
+      "proposal": 37,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.7237347330371139,
+      "robot": "r2"
+    },
+    {
+      "proposal": 39,
+      "population": "main_proposals",
+      "reason_category": "beam_cargo_overlap",
+      "blocked_object": "red_1",
+      "min_gap_m": -0.1832996940255056
+    },
+    {
+      "proposal": 42,
+      "population": "parking_trials",
+      "trial": 0,
+      "reason_category": "parking_overlap",
+      "blocked_object": "static_wall_4",
+      "min_gap_m": -0.0636887295468182
+    },
+    {
+      "proposal": 45,
+      "population": "main_proposals",
+      "reason_category": "beam_cargo_overlap",
+      "blocked_object": "cyan_1",
+      "min_gap_m": -0.051891201182901164
+    },
+    {
+      "proposal": 46,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.400835320443042,
+      "robot": "r1"
+    },
+    {
+      "proposal": 47,
+      "population": "main_proposals",
+      "reason_category": "beam_cargo_overlap",
+      "blocked_object": "cyan_1",
+      "min_gap_m": -0.24402691761552567
+    },
+    {
+      "proposal": 48,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "static_wall_2",
+      "min_gap_m": -0.12229574808635009,
+      "robot": "r1"
+    },
+    {
+      "proposal": 50,
+      "population": "main_proposals",
+      "reason_category": "initial_static_los",
+      "blocked_object": "static_wall_4",
+      "min_gap_m": 0.0,
+      "robot": "r1",
+      "gap_scope": "intersecting_center_ray"
+    },
+    {
+      "proposal": 52,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -1.0506415413221948,
+      "robot": "r1"
+    },
+    {
+      "proposal": 54,
+      "population": "main_proposals",
+      "reason_category": "beam_cargo_overlap",
+      "blocked_object": "cyan_1",
+      "min_gap_m": -0.20717691842614414
+    },
+    {
+      "proposal": 58,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.27417855594087187,
+      "robot": "r2"
+    },
+    {
+      "proposal": 59,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.7980068132091905,
+      "robot": "r2"
+    },
+    {
+      "proposal": 60,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.5504101953257391,
+      "robot": "r2"
+    },
+    {
+      "proposal": 62,
+      "population": "parking_trials",
+      "trial": 0,
+      "reason_category": "parking_overlap",
+      "blocked_object": "static_wall_4",
+      "min_gap_m": -0.056700204574326646
+    },
+    {
+      "proposal": 64,
+      "population": "main_proposals",
+      "reason_category": "initial_static_los",
+      "blocked_object": "static_wall_4",
+      "min_gap_m": 0.0,
+      "robot": "r2",
+      "gap_scope": "intersecting_center_ray"
+    },
+    {
+      "proposal": 65,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.45257188833036494,
+      "robot": "r1"
+    },
+    {
+      "proposal": 66,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "static_wall_4",
+      "min_gap_m": -0.03876402895378976,
+      "robot": "r2"
+    },
+    {
+      "proposal": 68,
+      "population": "main_proposals",
+      "reason_category": "initial_static_los",
+      "blocked_object": "static_wall_4",
+      "min_gap_m": 0.0,
+      "robot": "r1",
+      "gap_scope": "intersecting_center_ray"
+    },
+    {
+      "proposal": 69,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "static_wall_5",
+      "min_gap_m": -0.12229574808635009,
+      "robot": "r1"
+    },
+    {
+      "proposal": 70,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.27616273755156545,
+      "robot": "r1"
+    },
+    {
+      "proposal": 73,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.3705073619452491,
+      "robot": "r1"
+    },
+    {
+      "proposal": 75,
+      "population": "main_proposals",
+      "reason_category": "initial_static_los",
+      "blocked_object": "static_wall_4",
+      "min_gap_m": 0.0,
+      "robot": "r1",
+      "gap_scope": "intersecting_center_ray"
+    }
+  ],
+  "source_scenario_sha256": "6382011a64cc0eea17edbdfe8b44fbd070a54467afc6b4db547c42dbd28df6f7",
+  "reproduce": "python -m scripts.prepare_beampair1 --seed 8318600",
+  "scope": "static initialization only; finite strata and enclosures do not prove physical success"
+}

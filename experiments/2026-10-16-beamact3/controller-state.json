@@ -1,0 +1,641 @@
+{
+  "task": "beamact3",
+  "status": "training_offline_student_complete",
+  "started": "2026-10-16T02:26:59.098195+00:00",
+  "training_source": "4747c4144a972e348a9ae4c7bbcc769ad116106d",
+  "arms": {
+    "A": {
+      "smoke": {
+        "supervisor_status": "complete",
+        "supervisor": {
+          "status": "complete",
+          "wall_s": 511.2388579010003,
+          "output": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/smoke-attempt1",
+          "summary_sha256": "a8bcdd7ac4ea63a3760672133bd6bf656f894714a00a3b722cde8a699fb21593",
+          "complete": true,
+          "exit": 0,
+          "source_sha": "4747c4144a972e348a9ae4c7bbcc769ad116106d"
+        },
+        "status": "complete",
+        "complete": true,
+        "steps_completed": 300,
+        "readback_verified": true,
+        "checkpoint": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/smoke-attempt1/step-000300",
+        "wall_s": 309.4779546359987,
+        "timing": 0.7951448429994343,
+        "lease_exists": false
+      },
+      "smoke_managed_overhead_s": 201.76090326500162,
+      "main_attempts": [
+        {
+          "supervisor_status": "complete",
+          "supervisor": {
+            "status": "complete",
+            "wall_s": 10346.051524063998,
+            "output": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/main-attempt1",
+            "summary_sha256": "8259d1ec599834ef30d5a575926c9be17f1e31a1a4e9df4f883e30664bfa7ab6",
+            "complete": true,
+            "exit": 0,
+            "source_sha": "4747c4144a972e348a9ae4c7bbcc769ad116106d"
+          },
+          "status": "complete",
+          "complete": true,
+          "steps_completed": 20000,
+          "readback_verified": true,
+          "checkpoint": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/main-attempt1/step-020000",
+          "wall_s": 10120.580819447998,
+          "timing": 0.17697606350157002,
+          "lease_exists": false,
+          "attempt": 1
+        }
+      ],
+      "model": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/main-attempt1/step-020000/actor",
+      "training_summary": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/main-attempt1/summary.json",
+      "offline_summary": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/offline-attempt1/summary.json",
+      "cpu_model": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/model-v1",
+      "cpu_relay_pid": 45785,
+      "student20": {
+        "n": 0,
+        "N": 20,
+        "complete": true,
+        "funnel": {
+          "approach": {
+            "cumulative_runs": 16,
+            "frame_pass": 5111,
+            "frame_reject": 6889
+          },
+          "alignment": {
+            "cumulative_runs": 0,
+            "frame_pass": 0,
+            "frame_reject": 7347
+          },
+          "READY": {
+            "cumulative_runs": 0,
+            "frame_pass": 0,
+            "frame_reject": 0
+          },
+          "grasp": {
+            "cumulative_runs": 0,
+            "frame_pass": 0,
+            "frame_reject": 0
+          },
+          "lift_3s": {
+            "cumulative_runs": 0,
+            "frame_pass": 0,
+            "frame_reject": 0
+          }
+        },
+        "reason_distribution": {
+          "cap_end": 20
+        },
+        "failure_stage_distribution": {
+          "alignment": 16,
+          "approach": 4
+        }
+      }
+    },
+    "B": {
+      "smoke": {
+        "supervisor_status": "complete",
+        "supervisor": {
+          "status": "complete",
+          "wall_s": 330.72942701600186,
+          "output": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/smoke-attempt1",
+          "summary_sha256": "cbcd502bcc07ce3e0ac4228f05942539114740937a087401ec0b8747ab9ea3c3",
+          "complete": true,
+          "exit": 0,
+          "source_sha": "4747c4144a972e348a9ae4c7bbcc769ad116106d"
+        },
+        "status": "complete",
+        "complete": true,
+        "steps_completed": 300,
+        "readback_verified": true,
+        "checkpoint": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/smoke-attempt1/step-000300",
+        "wall_s": 126.75528744300027,
+        "timing": 0.19313427250017412,
+        "lease_exists": false
+      },
+      "smoke_managed_overhead_s": 203.9741395730016,
+      "main_attempts": [
+        {
+          "supervisor_status": "WALL_CAP",
+          "supervisor": {
+            "status": "WALL_CAP",
+            "wall_s": 661.7198086440003,
+            "output": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/main-attempt1",
+            "summary_sha256": "ec30396c0d6e22f86703dfcb61944f2a2a0fcd0813d2308c9369f0461bb2685e",
+            "complete": false,
+            "exit": 0,
+            "source_sha": "4747c4144a972e348a9ae4c7bbcc769ad116106d"
+          },
+          "status": "WALL_CAP",
+          "complete": false,
+          "steps_completed": 1498,
+          "readback_verified": true,
+          "checkpoint": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/main-attempt1/step-001498",
+          "wall_s": 429.5278927420004,
+          "timing": 0.20887277550173167,
+          "lease_exists": false,
+          "attempt": 1
+        },
+        {
+          "supervisor_status": "complete",
+          "supervisor": {
+            "status": "complete",
+            "wall_s": 12658.779545374,
+            "output": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/main-attempt2",
+            "summary_sha256": "b4fe2e5d5c7dc6e105abf5ab07e7e078e761efeb8088b00b7c27e5f2eece0d84",
+            "complete": true,
+            "exit": 0,
+            "source_sha": "4747c4144a972e348a9ae4c7bbcc769ad116106d"
+          },
+          "status": "complete",
+          "complete": true,
+          "steps_completed": 20000,
+          "readback_verified": true,
+          "checkpoint": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/main-attempt2/step-020000",
+          "wall_s": 12352.785972998001,
+          "timing": 0.6105252805000418,
+          "lease_exists": false,
+          "attempt": 2
+        }
+      ],
+      "model": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/main-attempt2/step-020000/actor",
+      "training_summary": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/main-attempt2/summary.json",
+      "offline_summary": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/offline-attempt1/summary.json",
+      "cpu_model": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/model-v1",
+      "cpu_relay_pid": 1889,
+      "student20": {
+        "n": 0,
+        "N": 20,
+        "complete": true,
+        "funnel": {
+          "approach": {
+            "cumulative_runs": 13,
+            "frame_pass": 6528,
+            "frame_reject": 5118
+          },
+          "alignment": {
+            "cumulative_runs": 1,
+            "frame_pass": 86,
+            "frame_reject": 6447
+          },
+          "READY": {
+            "cumulative_runs": 1,
+            "frame_pass": 419,
+            "frame_reject": 0
+          },
+          "grasp": {
+            "cumulative_runs": 0,
+            "frame_pass": 0,
+            "frame_reject": 419
+          },
+          "lift_3s": {
+            "cumulative_runs": 0,
+            "frame_pass": 0,
+            "frame_reject": 0
+          }
+        },
+        "reason_distribution": {
+          "cap_end": 19,
+          "alignment": 1
+        },
+        "failure_stage_distribution": {
+          "grasp": 1,
+          "alignment": 12,
+          "approach": 7
+        }
+      }
+    }
+  },
+  "events": [
+    {
+      "t": "2026-10-16T02:28:03.783572+00:00",
+      "kind": "smoke_readback_pass",
+      "arm": "A",
+      "steps": 300,
+      "wall_s": 309.4779546359987
+    },
+    {
+      "t": "2026-10-16T02:28:07.400134+00:00",
+      "kind": "stage_launch",
+      "arm": "A",
+      "stage": "main",
+      "attempt": 1,
+      "limit_s": 12166,
+      "receipt": {
+        "pid": 50591,
+        "source": "/home/ugrp/ugrp-sim/src/4747c4144a972e348a9ae4c7bbcc769ad116106d",
+        "argv": [
+          "/home/ugrp/ugrp-rl1b-act-env/bin/python",
+          "experiments/2026-10-16-beamact3/train_shared.py",
+          "--arm",
+          "A",
+          "--stage",
+          "main",
+          "--attempt",
+          "1",
+          "--max-wall-s",
+          "12166",
+          "--resume",
+          "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/smoke-attempt1/step-000300",
+          "--smoke-summary",
+          "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/smoke-attempt1/summary.json"
+        ]
+      }
+    },
+    {
+      "t": "2026-10-16T02:49:20.851483+00:00",
+      "kind": "controller_error",
+      "error_type": "KeyboardInterrupt",
+      "error": ""
+    },
+    {
+      "t": "2026-10-16T02:49:43.820720+00:00",
+      "kind": "smoke_readback_pass",
+      "arm": "A",
+      "steps": 300,
+      "wall_s": 309.4779546359987
+    },
+    {
+      "t": "2026-10-16T03:00:19.883032+00:00",
+      "kind": "controller_error",
+      "error_type": "KeyboardInterrupt",
+      "error": ""
+    },
+    {
+      "t": "2026-10-16T03:00:22.718863+00:00",
+      "kind": "smoke_readback_pass",
+      "arm": "A",
+      "steps": 300,
+      "wall_s": 309.4779546359987
+    },
+    {
+      "t": "2026-10-16T03:40:23.105311+00:00",
+      "kind": "controller_error",
+      "error_type": "KeyboardInterrupt",
+      "error": ""
+    },
+    {
+      "t": "2026-10-16T03:40:27.178854+00:00",
+      "kind": "smoke_readback_pass",
+      "arm": "A",
+      "steps": 300,
+      "wall_s": 309.4779546359987
+    },
+    {
+      "t": "2026-10-16T03:54:16.535317+00:00",
+      "kind": "controller_error",
+      "error_type": "CalledProcessError",
+      "error": "Command '['gcloud', 'logging', 'read', 'resource.type=\"cloud_run_revision\" AND resource.labels.service_name=\"budget-stop\" AND timestamp>=\"2026-10-16T02:09:00Z\"', '--limit=20', '--account', 'changmin5781@gmail.com', '--project', 'ugrp-sim-b-1014', '--format=json']' returned non-zero exit status 1."
+    },
+    {
+      "t": "2026-10-16T03:59:15.633339+00:00",
+      "kind": "smoke_readback_pass",
+      "arm": "A",
+      "steps": 300,
+      "wall_s": 309.4779546359987
+    },
+    {
+      "t": "2026-10-16T05:20:40.619690+00:00",
+      "kind": "fixed20000_complete",
+      "arm": "A",
+      "model": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/main-attempt1/step-020000/actor",
+      "attempts": 1,
+      "train_wall_s": 10120.580819447998
+    },
+    {
+      "t": "2026-10-16T05:20:45.331683+00:00",
+      "kind": "stage_launch",
+      "arm": "A",
+      "stage": "offline",
+      "attempt": 1,
+      "limit_s": 1808,
+      "receipt": {
+        "pid": 89700,
+        "source": "/home/ugrp/ugrp-sim/src/5ad43e1e096822d7a4ed2e7ce720c2900e7f5ff6",
+        "argv": [
+          "/home/ugrp/ugrp-rl1b-act-env/bin/python",
+          "experiments/2026-10-16-beamact3/train_shared.py",
+          "--arm",
+          "A",
+          "--stage",
+          "offline",
+          "--attempt",
+          "1",
+          "--max-wall-s",
+          "1808",
+          "--model",
+          "/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/main-attempt1/step-020000/actor"
+        ]
+      }
+    },
+    {
+      "t": "2026-10-16T05:34:12.620091+00:00",
+      "kind": "offline_complete",
+      "arm": "A"
+    },
+    {
+      "t": "2026-10-16T05:36:17.025965+00:00",
+      "kind": "controller_error",
+      "error_type": "RuntimeError",
+      "error": "CPU SSH did not become ready"
+    },
+    {
+      "t": "2026-10-16T05:40:55.453030+00:00",
+      "kind": "model_transfer_verified",
+      "arm": "A",
+      "files": 3,
+      "model_sha256": "e5c48771f03660b20cff525515cddb6cf82566c2797b2d89a8b57a9c17e27650"
+    },
+    {
+      "t": "2026-10-16T05:40:58.927743+00:00",
+      "kind": "student20_launch",
+      "arm": "A",
+      "cpu_source": "/home/ugrp/ugrp-sim/src/5ad43e1e096822d7a4ed2e7ce720c2900e7f5ff6"
+    },
+    {
+      "t": "2026-10-16T05:41:02.245077+00:00",
+      "kind": "stage_launch",
+      "arm": "B",
+      "stage": "smoke",
+      "attempt": 1,
+      "limit_s": 1800,
+      "receipt": {
+        "pid": 97228,
+        "source": "/home/ugrp/ugrp-sim/src/4747c4144a972e348a9ae4c7bbcc769ad116106d",
+        "argv": [
+          "/home/ugrp/ugrp-rl1b-act-env/bin/python",
+          "experiments/2026-10-16-beamact3/train_shared.py",
+          "--arm",
+          "B",
+          "--stage",
+          "smoke",
+          "--attempt",
+          "1",
+          "--max-wall-s",
+          "1800"
+        ]
+      }
+    },
+    {
+      "t": "2026-10-16T05:46:42.786028+00:00",
+      "kind": "smoke_readback_pass",
+      "arm": "B",
+      "steps": 300,
+      "wall_s": 126.75528744300027
+    },
+    {
+      "t": "2026-10-16T05:46:49.105205+00:00",
+      "kind": "stage_launch",
+      "arm": "B",
+      "stage": "main",
+      "attempt": 1,
+      "limit_s": 425,
+      "receipt": {
+        "pid": 100098,
+        "source": "/home/ugrp/ugrp-sim/src/4747c4144a972e348a9ae4c7bbcc769ad116106d",
+        "argv": [
+          "/home/ugrp/ugrp-rl1b-act-env/bin/python",
+          "experiments/2026-10-16-beamact3/train_shared.py",
+          "--arm",
+          "B",
+          "--stage",
+          "main",
+          "--attempt",
+          "1",
+          "--max-wall-s",
+          "425",
+          "--resume",
+          "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/smoke-attempt1/step-000300",
+          "--smoke-summary",
+          "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/smoke-attempt1/summary.json"
+        ]
+      }
+    },
+    {
+      "t": "2026-10-16T05:58:13.024846+00:00",
+      "kind": "resource_window_checkpoint",
+      "arm": "B",
+      "checkpoint": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/main-attempt1/step-001498",
+      "step": 1498
+    },
+    {
+      "t": "2026-10-16T05:58:17.367764+00:00",
+      "kind": "wait_existing_VM_lifetime",
+      "arm": "B",
+      "remaining_s": 67.78628799999933,
+      "measured_finalization_margin_s": 331
+    },
+    {
+      "t": "2026-10-16T06:00:57.718892+00:00",
+      "kind": "known_8h_host_interruption",
+      "last_start": "2026-10-15T14:59:25.154-07:00",
+      "status": "TERMINATED"
+    },
+    {
+      "t": "2026-10-16T06:01:47.646537+00:00",
+      "kind": "stage_launch",
+      "arm": "B",
+      "stage": "main",
+      "attempt": 2,
+      "limit_s": 21600,
+      "receipt": {
+        "pid": 1544,
+        "source": "/home/ugrp/ugrp-sim/src/4747c4144a972e348a9ae4c7bbcc769ad116106d",
+        "argv": [
+          "/home/ugrp/ugrp-rl1b-act-env/bin/python",
+          "experiments/2026-10-16-beamact3/train_shared.py",
+          "--arm",
+          "B",
+          "--stage",
+          "main",
+          "--attempt",
+          "2",
+          "--max-wall-s",
+          "21600",
+          "--resume",
+          "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/main-attempt1/step-001498",
+          "--smoke-summary",
+          "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/smoke-attempt1/summary.json"
+        ]
+      }
+    },
+    {
+      "t": "2026-10-16T09:05:12.796707+00:00",
+      "kind": "controller_error",
+      "error_type": "CalledProcessError",
+      "error": "Command '['gcloud', 'compute', 'instances', 'describe', 'ugrp-act-l4-gcp2', '--zone', 'asia-northeast3-a', '--account', 'changmin5781@gmail.com', '--project', 'ugrp-sim-b-1014', '--format=json']' returned non-zero exit status 1."
+    },
+    {
+      "t": "2026-10-16T09:14:32.920972+00:00",
+      "kind": "existing_cpu_model_reverified",
+      "arm": "A",
+      "files": 3,
+      "model_sha256": "e5c48771f03660b20cff525515cddb6cf82566c2797b2d89a8b57a9c17e27650"
+    },
+    {
+      "t": "2026-10-16T09:14:37.632718+00:00",
+      "kind": "student20_recount",
+      "arm": "A",
+      "reused_completed_batch": true,
+      "n": 0,
+      "N": 20,
+      "complete": true,
+      "funnel": {
+        "approach": {
+          "cumulative_runs": 16,
+          "frame_pass": 5111,
+          "frame_reject": 6889
+        },
+        "alignment": {
+          "cumulative_runs": 0,
+          "frame_pass": 0,
+          "frame_reject": 7347
+        },
+        "READY": {
+          "cumulative_runs": 0,
+          "frame_pass": 0,
+          "frame_reject": 0
+        },
+        "grasp": {
+          "cumulative_runs": 0,
+          "frame_pass": 0,
+          "frame_reject": 0
+        },
+        "lift_3s": {
+          "cumulative_runs": 0,
+          "frame_pass": 0,
+          "frame_reject": 0
+        }
+      },
+      "reason_distribution": {
+        "cap_end": 20
+      },
+      "failure_stage_distribution": {
+        "alignment": 16,
+        "approach": 4
+      }
+    },
+    {
+      "t": "2026-10-16T09:14:37.636302+00:00",
+      "kind": "smoke_readback_pass",
+      "arm": "B",
+      "steps": 300,
+      "wall_s": 126.75528744300027
+    },
+    {
+      "t": "2026-10-16T09:33:16.320225+00:00",
+      "kind": "fixed20000_complete",
+      "arm": "B",
+      "model": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/main-attempt2/step-020000/actor",
+      "attempts": 2,
+      "train_wall_s": 12782.313865740001
+    },
+    {
+      "t": "2026-10-16T09:33:20.547111+00:00",
+      "kind": "stage_launch",
+      "arm": "B",
+      "stage": "offline",
+      "attempt": 1,
+      "limit_s": 15738,
+      "receipt": {
+        "pid": 74260,
+        "source": "/home/ugrp/ugrp-sim/src/5ad43e1e096822d7a4ed2e7ce720c2900e7f5ff6",
+        "argv": [
+          "/home/ugrp/ugrp-rl1b-act-env/bin/python",
+          "experiments/2026-10-16-beamact3/train_shared.py",
+          "--arm",
+          "B",
+          "--stage",
+          "offline",
+          "--attempt",
+          "1",
+          "--max-wall-s",
+          "15738",
+          "--model",
+          "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/main-attempt2/step-020000/actor"
+        ]
+      }
+    },
+    {
+      "t": "2026-10-16T10:04:06.225763+00:00",
+      "kind": "offline_complete",
+      "arm": "B"
+    },
+    {
+      "t": "2026-10-16T10:04:23.713344+00:00",
+      "kind": "model_transfer_verified",
+      "arm": "B",
+      "files": 3,
+      "model_sha256": "908a594c6865ae38373910bfa9ba3764e8194c985c74e4fea56627e5a66e0389"
+    },
+    {
+      "t": "2026-10-16T10:04:28.132092+00:00",
+      "kind": "student20_launch",
+      "arm": "B",
+      "cpu_source": "/home/ugrp/ugrp-sim/src/5ad43e1e096822d7a4ed2e7ce720c2900e7f5ff6"
+    },
+    {
+      "t": "2026-10-16T10:14:23.451256+00:00",
+      "kind": "student20_recount",
+      "arm": "B",
+      "reused_completed_batch": false,
+      "n": 0,
+      "N": 20,
+      "complete": true,
+      "funnel": {
+        "approach": {
+          "cumulative_runs": 13,
+          "frame_pass": 6528,
+          "frame_reject": 5118
+        },
+        "alignment": {
+          "cumulative_runs": 1,
+          "frame_pass": 86,
+          "frame_reject": 6447
+        },
+        "READY": {
+          "cumulative_runs": 1,
+          "frame_pass": 419,
+          "frame_reject": 0
+        },
+        "grasp": {
+          "cumulative_runs": 0,
+          "frame_pass": 0,
+          "frame_reject": 419
+        },
+        "lift_3s": {
+          "cumulative_runs": 0,
+          "frame_pass": 0,
+          "frame_reject": 0
+        }
+      },
+      "reason_distribution": {
+        "cap_end": 19,
+        "alignment": 1
+      },
+      "failure_stage_distribution": {
+        "grasp": 1,
+        "alignment": 12,
+        "approach": 7
+      }
+    },
+    {
+      "t": "2026-10-16T10:14:23.452054+00:00",
+      "kind": "finite_controller_complete"
+    }
+  ],
+  "vm_stop_performed": false,
+  "analysis_gpu_sha": "5ad43e1e096822d7a4ed2e7ce720c2900e7f5ff6",
+  "analysis_cpu_source": "/home/ugrp/ugrp-sim/src/5ad43e1e096822d7a4ed2e7ce720c2900e7f5ff6",
+  "latest_budget_evidence": {
+    "timestamp": "2026-10-16T09:31:44.306582Z",
+    "payload": {
+      "budgetAmount": 1000,
+      "costAmount": 0,
+      "currency": "KRW"
+    }
+  },
+  "restart_count": 1
+}

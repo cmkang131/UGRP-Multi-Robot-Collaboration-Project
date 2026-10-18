@@ -42,6 +42,8 @@ def main():
     p.add_argument('--export-compiled-geometry', type=Path, help='export compiled geometry/caches without steps')
     p.add_argument('--compiled-geometry-312-v1', type=Path,
                    help='default OFF: same-XML C312 mesh representation and compiled geometry caches')
+    from sim.execution_contact_profile import add_argument
+    add_argument(p, warp=True)
     a = p.parse_args()
     if not a.enabled or platform.system() != 'Linux':
         p.error('explicit Linux gcp2 opt-in required; Mac physics/render forbidden')
@@ -57,6 +59,8 @@ def main():
         p.error('damping ablation requires C3.12 and an explicit C3.16 reference')
     a.out.mkdir(parents=True, exist_ok=False)
     m = mujoco.MjModel.from_xml_path(str(a.fixture/'scene.xml'))
+    from sim.execution_contact_profile import configure_model, assert_model_profile
+    configure_model(m, a.contact_profile)
     from simalt_compiled_compat import apply_reference, export_reference, export_geometry, apply_geometry
     if a.export_compiled:
         export_reference(m, a.fixture/'scene.xml', mujoco.__version__, a.export_compiled)
@@ -77,8 +81,7 @@ def main():
     d = mujoco.MjData(m)
     d.qpos[:] = f['qpos']; d.qvel[:] = f['qvel']; d.ctrl[:] = tape[0]
     mujoco.mj_forward(m, d)
-    if m.opt.noslip_iterations != 10 or np.any(m.eq_active0):
-        raise RuntimeError('frozen noslip10 / weld OFF required')
+    assert_model_profile(m, a.contact_profile)
     left, right, box = [m.geom(n).id for n in
                         ('r1__left_finger', 'r1__right_finger', 'cargo_cyan_2_geom')]
     joints = []
@@ -100,7 +103,7 @@ def main():
                 'xml_sha256': digest(a.fixture/'scene.xml'), 'case': a.case,
                 'dt': dt, 'steps_planned': len(tape), 'columns': COLUMNS,
                 'nq': int(m.nq), 'nv': int(m.nv), 'pad_joint_qpos_indices': joints,
-                'options': {k: float(getattr(m.opt, k)) for k in
+                'contact_profile': a.contact_profile, 'options': {k: float(getattr(m.opt, k)) for k in
                             ('timestep','solver','cone','integrator','iterations','ls_iterations',
                              'tolerance','noslip_iterations','noslip_tolerance','ccd_iterations','ccd_tolerance')},
                 'physics_overrides': {}, 'status': 'running',
@@ -187,7 +190,8 @@ def main():
                 metadata['compiled_compatibility']['put_model_bias_exact_float32'] = True
             # Pinned upstream io.py:433 adjusts to 1e-6 for float32. Match C's
             # original solver configuration; this does not change m.opt.
-            wm.opt.tolerance.fill_(float(m.opt.tolerance))
+            if a.contact_profile in ('legacy_noslip10', 'cargo_noslip_v1', 'baseline_noslip10'):
+                wm.opt.tolerance.fill_(float(m.opt.tolerance))
             if a.backend_mode.startswith('legacy-plane'):
                 from simalt_collision_compat import install_legacy_plane
                 metadata['collision_adapter']=install_legacy_plane(m)

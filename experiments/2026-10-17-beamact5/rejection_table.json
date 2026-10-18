@@ -1,0 +1,193 @@
+{
+  "schema": "ugrp.beamact5.rejection-table.v1",
+  "scope": "READY/done defect candidates and offline recount; no new run, inference, physics or render",
+  "source": {
+    "path": "/Users/changmin/projects/ugrp-wt/beamact3c/experiments/2026-10-16-beamdiag/summary.json",
+    "sha256": "c184e720feb037feafa6e987003d2e432d6534e9c390571e7fa8b1379ce9740c",
+    "original_source_root": "gcp2 /home/ugrp/ugrp-sim/ops-reviews/beamact3/{A,B}/heldout20-v1 (paths as stored; not accessed)",
+    "original_source_root_note": "merged summary stores original run directories and per-file hashes"
+  },
+  "offline_recount": {
+    "path": "/Users/changmin/projects/ugrp-wt/beamact3c/experiments/2026-10-17-beamact5/ready-recount.json",
+    "sha256": "206742e79ebcde4bdf218bae567b8402173beef8ffc30c219edb058bea3520a8",
+    "admitted_at_original_GO": "0/40",
+    "both_ever_aligned_upper_bound": "4/40",
+    "original_GO_before_joint_alignment": "40/40"
+  },
+  "prior_funnel": {
+    "A": {
+      "approach": {
+        "cumulative_runs": 16,
+        "frame_pass": 5111,
+        "frame_reject": 6889
+      },
+      "alignment": {
+        "cumulative_runs": 0,
+        "frame_pass": 0,
+        "frame_reject": 7347
+      },
+      "READY": {
+        "cumulative_runs": 0,
+        "frame_pass": 0,
+        "frame_reject": 0
+      },
+      "grasp": {
+        "cumulative_runs": 0,
+        "frame_pass": 0,
+        "frame_reject": 0
+      },
+      "lift_3s": {
+        "cumulative_runs": 0,
+        "frame_pass": 0,
+        "frame_reject": 0
+      }
+    },
+    "B": {
+      "approach": {
+        "cumulative_runs": 13,
+        "frame_pass": 6528,
+        "frame_reject": 5118
+      },
+      "alignment": {
+        "cumulative_runs": 1,
+        "frame_pass": 86,
+        "frame_reject": 6447
+      },
+      "READY": {
+        "cumulative_runs": 1,
+        "frame_pass": 419,
+        "frame_reject": 0
+      },
+      "grasp": {
+        "cumulative_runs": 0,
+        "frame_pass": 0,
+        "frame_reject": 419
+      },
+      "lift_3s": {
+        "cumulative_runs": 0,
+        "frame_pass": 0,
+        "frame_reject": 0
+      }
+    }
+  },
+  "prior_category_distribution": {
+    "A": {
+      "body_occlusion_majority": 4,
+      "alignment_not_completed": 4,
+      "assigned_station_not_reached": 4,
+      "approach_not_acquired": 4,
+      "opposite_end_station_first": 3,
+      "same_end_close_competition": 1
+    },
+    "B": {
+      "body_occlusion_majority": 3,
+      "same_end_close_competition": 3,
+      "opposite_end_station_first": 5,
+      "approach_not_acquired": 7,
+      "alignment_not_completed": 1,
+      "assigned_station_not_reached": 1
+    }
+  },
+  "reason_category": [
+    {
+      "name": "PRE_GO_GO_BEFORE_JOINT_ALIGNMENT",
+      "measured": "40/40 (A20/20, B20/20)",
+      "reason": "learned PWM/READY fired before both robots were aligned at the original GO",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "no obstacle gap recorded in the stored protocol ledger",
+      "candidate_effect": "alignment witness withholds READY at original GO: 0/40 admitted"
+    },
+    {
+      "name": "DONE_ABSORBED_ONE_SIDE",
+      "measured": "A 11/20 actor-done, B 9/20; final_state one_done_peer_incomplete",
+      "reason": "legacy done stops further inference for that actor while the peer is incomplete",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "completion is a model request, not a physical gap measurement",
+      "candidate_effect": "beamact4_done_recovery_v1 already re-infers next tick; multi-tick unit test added"
+    },
+    {
+      "name": "APPROACH_NOT_ACQUIRED",
+      "measured": "A4/20, B7/20",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "stored category; obstacle/contact not recorded"
+    },
+    {
+      "name": "SAME_END_CLOSE_COMPETITION",
+      "measured": "A1/20, B3/20",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "stored category; robot-robot contact UNRECORDED"
+    },
+    {
+      "name": "OPPOSITE_END_STATION_FIRST",
+      "measured": "A3/20, B5/20",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "stored category; obstacle/contact not recorded"
+    },
+    {
+      "name": "BODY_OCCLUSION_MAJORITY",
+      "measured": "A4/20, B3/20",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "stored category; obstacle/contact not recorded"
+    },
+    {
+      "name": "ASSIGNED_STATION_NOT_REACHED",
+      "measured": "A4/20, B1/20",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "stored category; obstacle/contact not recorded"
+    },
+    {
+      "name": "ALIGNMENT_NOT_COMPLETED",
+      "measured": "A4/20, B1/20",
+      "blocked_object": "UNKNOWN:not_observed",
+      "min_gap_m": null,
+      "gap_scope": "stored category; obstacle/contact not recorded"
+    }
+  ],
+  "candidate_funnel": [
+    {
+      "order": 1,
+      "gate": "unit tests + exact replay path",
+      "cumulative_pass": "18 passed, 1 skipped",
+      "rejected": 0,
+      "evidence": "tests/test_beamact5.py and existing beamact2/4/policy tests",
+      "scope": "synthetic; not runtime evidence"
+    },
+    {
+      "order": 2,
+      "gate": "READY witness at original GO",
+      "cumulative_pass": "0/40",
+      "rejected": "40/40",
+      "evidence": "ready-recount.json",
+      "scope": "offline stored-ledger recount"
+    },
+    {
+      "order": 3,
+      "gate": "both robots ever aligned (later re-GO upper bound)",
+      "cumulative_pass": "4/40",
+      "rejected": "36/40",
+      "evidence": "ready-recount.json",
+      "scope": "upper bound; own-camera observability not measured"
+    },
+    {
+      "order": 4,
+      "gate": "exact later GO/ACK timing and post-GO execution",
+      "cumulative_pass": null,
+      "rejected": null,
+      "evidence": null,
+      "scope": "not computable without gcp2 raw per-tick RGB/commands and start-protocol GO time"
+    }
+  ],
+  "reproduce": {
+    "recount": "python3 experiments/2026-10-17-beamact5/analysis/ready_recount.py",
+    "tests": "python3 -m pytest -q tests/test_beamact5.py tests/test_beamact2.py tests/test_beamact4.py tests/test_beamact4_policy.py",
+    "stack_check": "python3 scripts/check_current_stack.py experiments/2026-10-17-beamact5/stack-check-input.json --flow replay --output experiments/2026-10-17-beamact5/stack-check.json"
+  },
+  "verdict": "READY_GATE_CODE_READY; offline 0/40 at original GO; later re-GO not computable; no student evaluation"
+}

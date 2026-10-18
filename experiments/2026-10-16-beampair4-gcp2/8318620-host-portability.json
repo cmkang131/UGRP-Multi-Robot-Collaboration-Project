@@ -1,0 +1,11 @@
+{
+  "baseline_source_sha": "e645b34beb4fa693ab4ddedfe77045ae26b46388",
+  "execution_host": "gcp2",
+  "project_id": "ugrp-sim-b-1014",
+  "controller_source_unchanged": true,
+  "original_runner_sha256": "e5c7c5018a92364cf80afeebc2dea93b97163a8b10ec5042a2c5d4e0e84754ad",
+  "loaded_runner_sha256": "d05bf4577c93e6610081d8a3ee88d07efce5dc0f1305c2b2153791dde752e1f6",
+  "host_only_diff": "--- \n+++ \n@@ -134,9 +134,7 @@\n     selected=profiles(candidate)\n     with dependency_modules(dependency_root):\n         from scripts.grasp_act_host import identity\n-        host=identity('gcp1')\n-        if host['instance']!='ugrp-sim-gcp1' or host['machine_type']!='n4-highcpu-64':\n-            raise ValueError('gcp1 n4-highcpu-64 only')\n+        host=gcp2_identity(identity)\n         setup_rows=setup_admission(plan,scenario)\n         from scripts import run_grasp_act_teacher as runner\n         from sim import grasp_act_scene as scene_module\n",
+  "wrapper_sha256": "495214a575510620fc3ad58300a87fb9fdc57b8fdd5ee341204942324b0c242a",
+  "scope": "gcp2 reproduction only; never pool with gcp1"
+}

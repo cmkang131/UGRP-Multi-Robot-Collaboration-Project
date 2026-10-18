@@ -1,0 +1,27 @@
+{
+  "command": [
+    "gcloud",
+    "billing",
+    "budgets",
+    "create",
+    "--billing-account=01C770-8A2F1F-63BA5F",
+    "--display-name=ugrp gcp5 stop when credit used",
+    "--budget-amount=1000KRW",
+    "--filter-projects=projects/1034909621664",
+    "--credit-types-treatment=include-all-credits",
+    "--calendar-period=month",
+    "--threshold-rule=percent=0.5,basis=current-spend",
+    "--threshold-rule=percent=1,basis=current-spend",
+    "--notifications-rule-pubsub-topic=projects/ugrp-sim-e-1016/topics/budget-stop",
+    "--account",
+    "changmin5781@gmail.com",
+    "--project",
+    "ugrp-sim-e-1016",
+    "--quiet",
+    "--format=json"
+  ],
+  "started_utc": "2026-10-16T09:29:40.090763+00:00",
+  "elapsed_s": 2.5914716720581055,
+  "returncode": 0,
+  "stderr": "Created [6b9e2995-5b6f-4b1b-bec3-c10347a6ded4].\n"
+}

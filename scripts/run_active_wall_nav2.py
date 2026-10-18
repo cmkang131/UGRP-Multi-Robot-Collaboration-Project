@@ -43,7 +43,7 @@ def frozen_bundle(case, source):
     seed=31001
     cap=180.
     bundle=dict(source_sha=source,execution_bundle_id='egomap31-active-nav2-v1',check='active-nav2',case='active-'+case,
-        map_id='zone_wide_two_doors_final_v3',contact_profile='cargo_noslip_v1',
+        map_id='zone_wide_two_doors_final_v3',contact_profile='cargo_native_v1',
         task=dict(robot_id='r3',seed=seed,destination='B',pickup_slot='P1-2'),
         spawn=[3.25,.75,math.pi],initial_servo=SEARCH,case_cap_s=cap,capture_s=.2,
         options=dict(servo_stiffness='real_v1',wall_texture='tape_v1',

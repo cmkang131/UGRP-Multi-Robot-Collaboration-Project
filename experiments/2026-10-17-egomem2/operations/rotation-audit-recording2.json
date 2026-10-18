@@ -1,0 +1,466 @@
+{
+  "status": "ROTATION_TRANSPORT_AUDIT",
+  "source_sha": "85924812a198e2cb1d8ab32fbbba3a3f0213c30b",
+  "raw": "/home/ugrp/ugrp-sim/ops-reviews/egomem2/audit-input-recording2",
+  "frames": 641,
+  "half_fov_deg": 27.31768239401667,
+  "observed_segment_aim": true,
+  "phases": {
+    "look": {
+      "t_first": 0.0,
+      "t_last": 24.6,
+      "ticks": 247,
+      "turn_ticks": 247,
+      "forward_ticks": 0,
+      "stop_ticks": 0,
+      "sum_action_turn": 86.44999999999999,
+      "sum_applied_dtheta_deg": 360.1500121583819,
+      "sum_gt_dtheta_deg": 367.3113931780189,
+      "applied_over_gt": 0.9805032428815347,
+      "target_bearing_first_deg": null,
+      "target_bearing_last_deg": null,
+      "transport_ticks": 0,
+      "transport_exact_ticks": 0,
+      "transport_max_abs_residual_deg": null,
+      "transport_residual_mean_deg": null,
+      "nonzero_residual_ticks": [],
+      "rho_flip_ticks": [],
+      "direct_target_update_ticks": [],
+      "gt_error_median_abs_deg": 0.051873104916586144,
+      "gt_error_p95_abs_deg": 0.301804876314056,
+      "gt_error_bias_deg": -0.029111304957873643,
+      "motion_source_counts": {
+        "nominal_6f_unqualified_native": 1,
+        "own_command_motion_v1": 246
+      }
+    },
+    "depart_turn": {
+      "t_first": 24.7,
+      "t_last": 45.2,
+      "ticks": 206,
+      "turn_ticks": 205,
+      "forward_ticks": 1,
+      "stop_ticks": 0,
+      "sum_action_turn": 71.75,
+      "sum_applied_dtheta_deg": 278.2676749785054,
+      "sum_gt_dtheta_deg": 280.9869190776893,
+      "applied_over_gt": 0.9903225242366813,
+      "target_bearing_first_deg": -55.45654684343516,
+      "target_bearing_last_deg": 25.807890012780394,
+      "transport_ticks": 203,
+      "transport_exact_ticks": 193,
+      "transport_max_abs_residual_deg": 0.7743371165442969,
+      "transport_residual_mean_deg": -0.0018354946669386252,
+      "nonzero_residual_ticks": [
+        {
+          "t": 26.0,
+          "residual_deg": 0.04759287354547382,
+          "other_landmark_updates": 1
+        },
+        {
+          "t": 28.0,
+          "residual_deg": -0.3981831654261316,
+          "other_landmark_updates": 1
+        },
+        {
+          "t": 30.0,
+          "residual_deg": -0.024711931266035547,
+          "other_landmark_updates": 1
+        },
+        {
+          "t": 31.0,
+          "residual_deg": 0.4291917304125987,
+          "other_landmark_updates": 1
+        },
+        {
+          "t": 32.0,
+          "residual_deg": -0.7743371165442969,
+          "other_landmark_updates": 3
+        },
+        {
+          "t": 33.0,
+          "residual_deg": 0.3315740799400537,
+          "other_landmark_updates": 2
+        },
+        {
+          "t": 34.0,
+          "residual_deg": 0.2129210119748497,
+          "other_landmark_updates": 2
+        },
+        {
+          "t": 35.0,
+          "residual_deg": -0.01844992090121389,
+          "other_landmark_updates": 1
+        },
+        {
+          "t": 36.0,
+          "residual_deg": -0.013833633831549454,
+          "other_landmark_updates": 1
+        },
+        {
+          "t": 45.0,
+          "residual_deg": -0.16436934529235583,
+          "other_landmark_updates": 1
+        }
+      ],
+      "rho_flip_ticks": [],
+      "direct_target_update_ticks": [
+        {
+          "t": 25.0,
+          "residual_deg": -0.8456710360511008
+        },
+        {
+          "t": 27.0,
+          "residual_deg": -0.48489055746175724
+        }
+      ],
+      "gt_error_median_abs_deg": 0.046174753965922966,
+      "gt_error_p95_abs_deg": 0.2353996403857616,
+      "gt_error_bias_deg": -0.0132002140737085,
+      "motion_source_counts": {
+        "own_command_motion_v1": 206
+      }
+    },
+    "depart": {
+      "t_first": 45.3,
+      "t_last": 50.6,
+      "ticks": 54,
+      "turn_ticks": 1,
+      "forward_ticks": 53,
+      "stop_ticks": 0,
+      "sum_action_turn": 0.35,
+      "sum_applied_dtheta_deg": 0.17485351801072,
+      "sum_gt_dtheta_deg": 0.05876556161777679,
+      "applied_over_gt": 2.9754419628966193,
+      "target_bearing_first_deg": 25.960905984654886,
+      "target_bearing_last_deg": -154.5472591694421,
+      "transport_ticks": 53,
+      "transport_exact_ticks": 52,
+      "transport_max_abs_residual_deg": 0.18029566421171342,
+      "transport_residual_mean_deg": -0.003401804985127674,
+      "nonzero_residual_ticks": [
+        {
+          "t": 46.0,
+          "residual_deg": -0.18029566421171342,
+          "other_landmark_updates": 1
+        }
+      ],
+      "rho_flip_ticks": [
+        {
+          "t": 50.0,
+          "residual_deg": -180.0,
+          "rho": 0.0118453779899386
+        }
+      ],
+      "direct_target_update_ticks": [],
+      "gt_error_median_abs_deg": 0.04274884475019923,
+      "gt_error_p95_abs_deg": 0.1934420699467803,
+      "gt_error_bias_deg": 0.002149776970239688,
+      "motion_source_counts": {
+        "nominal_6f_unqualified_native": 54
+      }
+    },
+    "return": {
+      "t_first": 50.7,
+      "t_last": 64.0,
+      "ticks": 134,
+      "turn_ticks": 86,
+      "forward_ticks": 47,
+      "stop_ticks": 1,
+      "sum_action_turn": 30.099999999999998,
+      "sum_applied_dtheta_deg": 113.47625931186256,
+      "sum_gt_dtheta_deg": 128.2406536995222,
+      "applied_over_gt": 0.8848696262711374,
+      "target_bearing_first_deg": -155.86053722000935,
+      "target_bearing_last_deg": 78.79433067919078,
+      "transport_ticks": 130,
+      "transport_exact_ticks": 128,
+      "transport_max_abs_residual_deg": 0.06414199253139848,
+      "transport_residual_mean_deg": -4.235238875294093e-05,
+      "nonzero_residual_ticks": [
+        {
+          "t": 62.0,
+          "residual_deg": 0.05863618199360283,
+          "other_landmark_updates": 1
+        },
+        {
+          "t": 63.0,
+          "residual_deg": -0.06414199253139848,
+          "other_landmark_updates": 1
+        }
+      ],
+      "rho_flip_ticks": [],
+      "direct_target_update_ticks": [
+        {
+          "t": 58.0,
+          "residual_deg": -5.6154033497533895
+        },
+        {
+          "t": 59.0,
+          "residual_deg": -2.4256449826861797
+        },
+        {
+          "t": 60.0,
+          "residual_deg": -2.5793492158755615
+        },
+        {
+          "t": 64.0,
+          "residual_deg": -2.5562474806515043
+        }
+      ],
+      "gt_error_median_abs_deg": 0.0651047000842222,
+      "gt_error_p95_abs_deg": 0.8257625615014887,
+      "gt_error_bias_deg": -0.1101820476691018,
+      "motion_source_counts": {
+        "own_command_motion_v1": 87,
+        "nominal_6f_unqualified_native": 47
+      }
+    }
+  },
+  "rho_flips": [
+    {
+      "t": 50.0,
+      "rho_m": 0.0118453779899386,
+      "bearing_deg": -154.5472591694421,
+      "applied_dtheta_deg": 0.0,
+      "mode": "forward"
+    }
+  ],
+  "matching_frames": [
+    {
+      "t": 25.0,
+      "mode": "turn",
+      "first_reject": "visual_exit",
+      "gates": {
+        "visual_exit": false,
+        "colour_visible": true,
+        "memory_heading": true,
+        "translated": false
+      },
+      "target_bearing_deg": -61.47670072694446,
+      "aim_deg": -8.196676706765803,
+      "observed_mid_deg": 0.15119643914045552,
+      "rho": -0.6805558465448336,
+      "own_return_path_m": 0.0
+    },
+    {
+      "t": 27.0,
+      "mode": "turn",
+      "first_reject": "visual_exit",
+      "gates": {
+        "visual_exit": false,
+        "colour_visible": true,
+        "memory_heading": false,
+        "translated": false
+      },
+      "target_bearing_deg": -90.57935438137336,
+      "aim_deg": -36.252858119196254,
+      "observed_mid_deg": 6.018926643301782,
+      "rho": -0.6700929867399074,
+      "own_return_path_m": 0.0
+    },
+    {
+      "t": 31.0,
+      "mode": "turn",
+      "first_reject": "visual_exit",
+      "gates": {
+        "visual_exit": false,
+        "colour_visible": true,
+        "memory_heading": false,
+        "translated": false
+      },
+      "target_bearing_deg": -147.41219739381177,
+      "aim_deg": -92.78886103945956,
+      "observed_mid_deg": -24.867371408956377,
+      "rho": -0.6557653139579462,
+      "own_return_path_m": 0.0
+    },
+    {
+      "t": 32.0,
+      "mode": "turn",
+      "first_reject": "visual_exit",
+      "gates": {
+        "visual_exit": false,
+        "colour_visible": true,
+        "memory_heading": false,
+        "translated": false
+      },
+      "target_bearing_deg": -161.9406390425216,
+      "aim_deg": -107.08943530609245,
+      "observed_mid_deg": 9.065171813772315,
+      "rho": -0.659838758322866,
+      "own_return_path_m": 0.0
+    },
+    {
+      "t": 33.0,
+      "mode": "turn",
+      "first_reject": "visual_exit",
+      "gates": {
+        "visual_exit": false,
+        "colour_visible": true,
+        "memory_heading": false,
+        "translated": false
+      },
+      "target_bearing_deg": -175.20790328876595,
+      "aim_deg": -120.95576262941591,
+      "observed_mid_deg": 7.034831582711521,
+      "rho": -0.6619274151995467,
+      "own_return_path_m": 0.0
+    },
+    {
+      "t": 34.0,
+      "mode": "turn",
+      "first_reject": "visual_exit",
+      "gates": {
+        "visual_exit": false,
+        "colour_visible": true,
+        "memory_heading": false,
+        "translated": false
+      },
+      "target_bearing_deg": 171.9587098464582,
+      "aim_deg": -133.72533390478335,
+      "observed_mid_deg": -5.243567643486789,
+      "rho": -0.6516520217252676,
+      "own_return_path_m": 0.0
+    },
+    {
+      "t": 35.0,
+      "mode": "turn",
+      "first_reject": "visual_exit",
+      "gates": {
+        "visual_exit": false,
+        "colour_visible": true,
+        "memory_heading": false,
+        "translated": false
+      },
+      "target_bearing_deg": 158.60969231342716,
+      "aim_deg": -147.1694954876831,
+      "observed_mid_deg": -18.898949866126397,
+      "rho": -0.6560171197972366,
+      "own_return_path_m": 0.0
+    },
+    {
+      "t": 36.0,
+      "mode": "turn",
+      "first_reject": "visual_exit",
+      "gates": {
+        "visual_exit": false,
+        "colour_visible": true,
+        "memory_heading": false,
+        "translated": false
+      },
+      "target_bearing_deg": 146.99240042810942,
+      "aim_deg": -159.14928110767647,
+      "observed_mid_deg": -24.289524482528734,
+      "rho": -0.6630753723156217,
+      "own_return_path_m": 0.0
+    },
+    {
+      "t": 45.0,
+      "mode": "turn",
+      "first_reject": "visual_exit",
+      "gates": {
+        "visual_exit": false,
+        "colour_visible": true,
+        "memory_heading": false,
+        "translated": false
+      },
+      "target_bearing_deg": 28.60048400596763,
+      "aim_deg": 82.54071695263448,
+      "observed_mid_deg": 17.586290347412316,
+      "rho": -0.6615999394118439,
+      "own_return_path_m": 0.0
+    },
+    {
+      "t": 46.0,
+      "mode": "forward",
+      "first_reject": "visual_exit",
+      "gates": {
+        "visual_exit": false,
+        "colour_visible": true,
+        "memory_heading": false,
+        "translated": false
+      },
+      "target_bearing_deg": 25.898181942853483,
+      "aim_deg": 86.13460389565289,
+      "observed_mid_deg": 18.822668514912106,
+      "rho": -0.5492641821670521,
+      "own_return_path_m": 0.0
+    },
+    {
+      "t": 58.0,
+      "mode": "turn",
+      "first_reject": "memory_heading",
+      "gates": {
+        "visual_exit": true,
+        "colour_visible": true,
+        "memory_heading": false,
+        "translated": false
+      },
+      "target_bearing_deg": 108.864014458862,
+      "aim_deg": 28.61649564254361,
+      "observed_mid_deg": 8.737608528179159,
+      "rho": 0.10126812743107706,
+      "own_return_path_m": 0.0
+    },
+    {
+      "t": 59.0,
+      "mode": "forward",
+      "first_reject": "translated",
+      "gates": {
+        "visual_exit": true,
+        "colour_visible": true,
+        "memory_heading": true,
+        "translated": false
+      },
+      "target_bearing_deg": 101.30999117125712,
+      "aim_deg": 26.11657401658308,
+      "observed_mid_deg": 4.335029352229463,
+      "rho": 0.11753650355657173,
+      "own_return_path_m": 0.11343907154956709
+    },
+    {
+      "t": 60.0,
+      "mode": "forward",
+      "first_reject": "translated",
+      "gates": {
+        "visual_exit": true,
+        "colour_visible": true,
+        "memory_heading": true,
+        "translated": false
+      },
+      "target_bearing_deg": 95.77259652846313,
+      "aim_deg": 26.031166841038242,
+      "observed_mid_deg": 0.4097212780930934,
+      "rho": 0.12279058034120746,
+      "own_return_path_m": 0.23021605956906852
+    },
+    {
+      "t": 64.0,
+      "mode": "stop",
+      "first_reject": "all_passed",
+      "gates": {
+        "visual_exit": true,
+        "colour_visible": true,
+        "memory_heading": true,
+        "translated": true
+      },
+      "target_bearing_deg": 78.79433067919078,
+      "aim_deg": 26.47356411271701,
+      "observed_mid_deg": -16.54830260985074,
+      "rho": 0.08188297608079971,
+      "own_return_path_m": 0.6666286710152088
+    }
+  ],
+  "rejection_distribution": {
+    "visual_exit": 10,
+    "memory_heading": 1,
+    "translated": 2,
+    "all_passed": 1
+  },
+  "note": "applied dtheta is the own-motion increment the memory transport used (LK when qualified, own command model otherwise); gt dtheta is the evaluation-only actual heading delta used solely as the measuring stick",
+  "sha256": {
+    "trace": "f267605f1a73421013e2a40b38647a19ed5f901f9c5f4216122c5616d3f522fb",
+    "eval_only": "80648c83d6ebf2f8802e7585b45ee91273ffb168e62bb9b0d61e2cd3f3c497ab"
+  }
+}

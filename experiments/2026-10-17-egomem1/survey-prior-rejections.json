@@ -1,0 +1,28 @@
+{
+  "before_change": "112d48753",
+  "primary_rejection": "association_ambiguous",
+  "distribution": {
+    "created": 52,
+    "reobserved": 240,
+    "association_ambiguous": 126,
+    "association_gate_rejected": 44,
+    "duplicate_frame_observation": 28,
+    "memory_slot_evicted": 20
+  },
+  "raw": "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2",
+  "prior_rejection_table": "/Users/changmin/projects/ugrp-wt/mapbuild1/experiments/2026-10-17-egomem1/operations/offline-v3/memory-funnel.json",
+  "intervention": "ROVIO feature visibility/quality lifetime and tracked/free reservation replace custom fade/LRU; do not relax association gate",
+  "blocked_object": "not_observed",
+  "minimum_gap_m": null,
+  "gap_status": "not_measured",
+  "reproduction": [
+    "/home/ugrp/ugrp-sim/src/e1afa7f3146b51f825a81169c0b8ad2ad415f935/scripts/egomem1_offline.py",
+    "predict",
+    "--input",
+    "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2",
+    "--output",
+    "/home/ugrp/ugrp-sim/ops-reviews/egomem1/offline-v3",
+    "--fade-scale",
+    "/home/ugrp/ugrp-sim/ops-reviews/egomem1/own-fade-v2/fade-scale.json"
+  ]
+}

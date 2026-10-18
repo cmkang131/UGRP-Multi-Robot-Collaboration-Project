@@ -1,0 +1,166 @@
+{
+  "schema": "ugrp.beampair3.visual_review.v1",
+  "analysis_host": "gcp1",
+  "runs": [
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair2-gate-8318611-f84b2c8a/raw",
+      "seed": 8318611,
+      "roles": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "assignment_source": "demo_rule_color_balanced",
+      "duration_sim_s": 19.000000000008118,
+      "saved_eval_rows": 191,
+      "max_body_xyz_error_m": 0.0,
+      "video_bytes": 223258,
+      "video_sha256": "0620c1838795fecc3fb5accf7dc63c11bf5f9d835a02478de440ec312b9460bb",
+      "ffprobe": {
+        "programs": [],
+        "streams": [
+          {
+            "width": 960,
+            "height": 272,
+            "duration": "6.366667",
+            "nb_read_frames": "191"
+          }
+        ]
+      },
+      "sources": {
+        "/home/ugrp/ugrp-sim/runs/beampair2-gate-8318611-f84b2c8a/raw/scene.xml": "802875435c00cc30b1f503de9c9cca22229631829bac891fbe78c7322ff8c251",
+        "/home/ugrp/ugrp-sim/runs/beampair2-gate-8318611-f84b2c8a/raw/camera-runtime.json": "0e3e26679926b58acf4471e2686aaab7ef5b1c5ec8e452e18d998db145558c6d",
+        "/home/ugrp/ugrp-sim/runs/beampair2-gate-8318611-f84b2c8a/raw/plan.json": "04761042845cd459b62babd06a3601b8143d0f2b68ac735254ec6289f1605995",
+        "/home/ugrp/ugrp-sim/runs/beampair2-gate-8318611-f84b2c8a/raw/eval-only.jsonl.zst": "52384dd3c0be67f8b4b2c6df37b8de61663fee30ffe4abc70ae831c9684170c1",
+        "/home/ugrp/ugrp-sim/runs/beampair2-gate-8318611-f84b2c8a/raw/teacher-r1.jsonl.zst": "b8762f8f96a2d3ec55e9573e913b0a03dacba3bdb06f011b0cc41aefa1732659",
+        "/home/ugrp/ugrp-sim/runs/beampair2-gate-8318611-f84b2c8a/raw/teacher-r2.jsonl.zst": "aba7e4c7b2347ec593e3d37bc4c1d4b683942a54a30e1393590ac2ff05f010ea"
+      },
+      "scope": "Evaluation saved-state rendering, no physics/controller rerun; original own JPEGs are 1Hz; qpos is 10Hz. No inferred motion frames.",
+      "review_manifest": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beampair3/old-8318611/review.json",
+      "review_manifest_sha256": "af431ae0720511684a58b169376552489f18cf4dc0d19f1390e86050b30b0c05",
+      "full2hz_frames": 39,
+      "tail10hz_frames": 101,
+      "direct_visual_review_completed": true
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair2-gate-8318604-f84b2c8a/raw",
+      "seed": 8318604,
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "assignment_source": "demo_rule_color_balanced",
+      "duration_sim_s": 48.60000000014946,
+      "saved_eval_rows": 487,
+      "max_body_xyz_error_m": 0.0,
+      "video_bytes": 366192,
+      "video_sha256": "f4612d3dc8a333ae0096a647ce71464d6ffa2a299dabf5ddf74e00ae3deac205",
+      "ffprobe": {
+        "programs": [],
+        "streams": [
+          {
+            "width": 960,
+            "height": 272,
+            "duration": "16.233333",
+            "nb_read_frames": "487"
+          }
+        ]
+      },
+      "sources": {
+        "/home/ugrp/ugrp-sim/runs/beampair2-gate-8318604-f84b2c8a/raw/scene.xml": "0665e942c6329dde17441521f2d90ccca2b41f7aec077781e8f656fdf3b5d6cf",
+        "/home/ugrp/ugrp-sim/runs/beampair2-gate-8318604-f84b2c8a/raw/camera-runtime.json": "0e3e26679926b58acf4471e2686aaab7ef5b1c5ec8e452e18d998db145558c6d",
+        "/home/ugrp/ugrp-sim/runs/beampair2-gate-8318604-f84b2c8a/raw/plan.json": "eaaba876db61a165f692a5a059f3e5e6fc07a537385e0012be7f950a88f1c223",
+        "/home/ugrp/ugrp-sim/runs/beampair2-gate-8318604-f84b2c8a/raw/eval-only.jsonl.zst": "9102cb17dfb737245e375188f83a33d00632fc1c25d08aa5713b72136546ed0d",
+        "/home/ugrp/ugrp-sim/runs/beampair2-gate-8318604-f84b2c8a/raw/teacher-r1.jsonl.zst": "06c5cb03be1aa1e9239ae07775f42758f11c16e09f62e2ab8a7bec3834161e50",
+        "/home/ugrp/ugrp-sim/runs/beampair2-gate-8318604-f84b2c8a/raw/teacher-r2.jsonl.zst": "92bfc81475d30798fd4aabcfcf4e6ec535e054a8398ce2efb9f836bd6111d765"
+      },
+      "scope": "Evaluation saved-state rendering, no physics/controller rerun; original own JPEGs are 1Hz; qpos is 10Hz. No inferred motion frames.",
+      "review_manifest": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beampair3/old-8318604/review.json",
+      "review_manifest_sha256": "8c6248f42bd6b08d2d69b731d5c3b91b5c53edde8be48fabd5c71c897e8a13a5",
+      "full2hz_frames": 99,
+      "tail10hz_frames": 101,
+      "direct_visual_review_completed": true
+    }
+  ],
+  "timeline_8318611": [
+    {
+      "sim_s": [
+        0,
+        3
+      ],
+      "observed": "r1 blue, r2 teal assigned; both scan/reorient; initial closest end is opposite assigned end"
+    },
+    {
+      "sim_s": [
+        3,
+        6.5
+      ],
+      "observed": "r1 sees assigned blue band while remaining nearer teal; r2 sees assigned teal from opposite side"
+    },
+    {
+      "sim_s": [
+        6.5,
+        14.5
+      ],
+      "observed": "r1 search rotates and temporarily loses assigned band; r2 approaches from blue side toward teal"
+    },
+    {
+      "sim_s": [
+        14.5,
+        19
+      ],
+      "observed": "r1 reacquires blue and resumes approach; both chassis are near teal and see each other; no pick/close before HOST_ERROR at19"
+    }
+  ],
+  "timeline_8318604": [
+    {
+      "sim_s": [
+        0,
+        16
+      ],
+      "observed": "own scans and beam reacquisition; r2 passes near teal while assigned blue"
+    },
+    {
+      "sim_s": [
+        16,
+        31
+      ],
+      "observed": "r2 continues around to blue; r1 remains approaching teal"
+    },
+    {
+      "sim_s": [
+        31,
+        41
+      ],
+      "observed": "separate teal/blue alignment and READY"
+    },
+    {
+      "sim_s": [
+        41,
+        48.6
+      ],
+      "observed": "both pick then complete; distinct colors remain visible until close range"
+    }
+  ],
+  "preliminary_assignment_verdict": "No duplicate end assignment in plan/own-band measurements; transient same-teal proximity during search/approach. 8318611 ended at19 before separation could be established. Verify continuation with fixed writer; do not claim its path succeeded yet.",
+  "difference_from_sparse12": "Dense frames expose r1 search rotation/view loss and r2 continuous cross-end approach; proximity is not an end assignment or grasp event.",
+  "rendering": "Saved10Hz evaluator joints restored with mj_forward only, no physics/controller rerun. Calibrated original own pose/FOV; top evaluation only. Original saved own RGB is1Hz. MP4 decoded by ffprobe only, no Mac application.",
+  "reviewed_sheets": [
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beampair3/old-8318611/full-01.jpg",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beampair3/old-8318611/full-02.jpg",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beampair3/old-8318611/tail-01.jpg",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beampair3/old-8318611/tail-02.jpg",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beampair3/old-8318611/tail-03.jpg",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beampair3/old-8318611/tail-04.jpg",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beampair3/old-8318611/tail-05.jpg",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beampair3/old-8318604/full-01.jpg",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beampair3/old-8318604/full-02.jpg",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beampair3/old-8318604/full-03.jpg",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beampair3/old-8318604/full-04.jpg",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beampair3/old-8318604/full-05.jpg",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beampair3/old-8318604/tail-01.jpg",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beampair3/old-8318604/tail-02.jpg",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beampair3/old-8318604/tail-03.jpg",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beampair3/old-8318604/tail-04.jpg",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beampair3/old-8318604/tail-05.jpg"
+  ]
+}

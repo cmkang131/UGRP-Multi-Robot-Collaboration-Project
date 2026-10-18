@@ -16,7 +16,7 @@ def command(output,seed,reasoning_effort='none',request_timeout=30,model='gemini
     return [sys.executable,'-m','scripts.evaluate_gemini_team','--output',str(output),
         '--seed',str(seed),'--robots','1','--seconds','300','--model',model,
         '--max-calls','30','--max-input-tokens','120000','--input-request-estimate','6000',
-        '--impratio','10','--noslip-iterations','3','--communication','none',
+        '--impratio','10','--noslip-iterations','0','--communication','none',
         '--request-timeout',str(request_timeout),'--max-transient-failures','2',
         '--reasoning-effort',reasoning_effort,'--record']
 

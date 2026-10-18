@@ -102,7 +102,7 @@ def run_case(case, out):
             'pair_policy': case['policy'],
             'team_cargo': [{'item_id': 'cargoX', 'kind': 'long_beam', 'pose': BEAM_XYYAW}],
             'pair_order_sheets': {'cargoX': SHEET}, 'order_sheet': copy.deepcopy(ORDER),
-            'contact_profile': 'cargo_noslip_v1', 'job_sim_limit_s': 900.}
+            'contact_profile': case.get('contact_profile', 'cargo_native_v1'), 'job_sim_limit_s': 900.}
     student = {'mode': 'm1', 'calibration': str(CALIBRATION.relative_to(ROOT)),
                'skill_module': 'harness.wrist_zone_skill_v9', 'skill_class': 'WristZoneDeliveryV9'}
     scene = make_scene(spec)

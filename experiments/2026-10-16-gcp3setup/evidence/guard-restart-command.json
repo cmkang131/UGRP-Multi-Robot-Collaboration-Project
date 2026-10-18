@@ -1,0 +1,20 @@
+{
+  "command": [
+    "gcloud",
+    "compute",
+    "instances",
+    "start",
+    "ugrp-act-l4-gcp3",
+    "--zone=asia-northeast3-a",
+    "--account",
+    "changmin5781@gmail.com",
+    "--project",
+    "ugrp-sim-c-1016",
+    "--quiet",
+    "--format=json"
+  ],
+  "started_utc": "2026-10-16T03:45:33.597890+00:00",
+  "elapsed_s": 11.411879777908325,
+  "returncode": 0,
+  "stderr": "Starting instance(s) ugrp-act-l4-gcp3...\n.................................................done.\nUpdated [https://compute.googleapis.com/compute/v1/projects/ugrp-sim-c-1016/zones/asia-northeast3-a/instances/ugrp-act-l4-gcp3].\nInstance internal IP is 10.178.0.3\nInstance external IP is 34.64.71.146\n"
+}

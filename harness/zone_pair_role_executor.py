@@ -293,7 +293,7 @@ class PairTeam(legacy.PairTeam):
                 pending['closed'] = True
                 self.poll(now)
                 return refuse('PAIR_SUBMISSION_MISMATCH')
-        if self.contact_profile != CONTACT_PROFILE or self.weld is not False:
+        if self.contact_profile not in ('cargo_native_v1', 'warp_native_contact_v1', 'cargo_noslip_v1') or self.weld is not False:
             return refuse('PAIR_REQUIRES_NOSLIP_WELD_OFF')
         if _digest(ex.params) != _digest(self.params):
             return refuse('PAIR_CALIBRATION_MISMATCH')

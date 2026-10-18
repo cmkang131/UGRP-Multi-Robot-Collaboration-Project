@@ -1,0 +1,36 @@
+{
+  "prediction_sha256": "5a170be63b9df210a5d14cd6e615c02afb50038faea696a80f5ba03845cf7e42",
+  "allowed_sha256": "b25eb9ae61798191d6cc8966cc21133975f9e618adecafa3cee208f1e8596e25",
+  "extraction_seal_sha256": "6b25dc157e459e68c7fcf835a1119abd6da8fba2bad90cb2ea7caf5f31219b28",
+  "sources": {
+    "/home/ugrp/ugrp-sim/src/egomem1-ff0a6067a/harness/egocentric_landmark_memory.py": "bb7b9a85dbfc0f2a519cb9700e4cc8852966e9282285a489d6ed21b8ed583e63",
+    "/home/ugrp/ugrp-sim/src/egomem1-ff0a6067a/harness/egomem_vision.py": "ce359e30f1c8a92f863924391c937437a5adac1f71b1f232047b88734c35d886",
+    "/home/ugrp/ugrp-sim/src/egomem1-ff0a6067a/harness/rovio_feature_statistics.py": "97f943d4c342b5bca9f608df504029b36444745ba46896c4338b6b7bf62b380e",
+    "/home/ugrp/ugrp-sim/src/egomem1-ff0a6067a/harness/vendor/rovio/FeatureStatistics.hpp": "8b2ae273573ca53ddc4c6cb492d824a72c75dfad2b1c9eac4dfebe7a2151a732",
+    "/home/ugrp/ugrp-sim/src/egomem1-ff0a6067a/harness/vendor/rovio/rovio.info": "15f25e237ece2c5980435b8c9a2a144d142651e958510551ec7534fbbe8b4d4c",
+    "/home/ugrp/ugrp-sim/src/egomem1-ff0a6067a/harness/vendor/rovio/statistics_c_api.cpp": "2c0711dfb5935f1789c97013d5e291a1445e76de1a72f97aab26670ed737bc71",
+    "/home/ugrp/ugrp-sim/src/egomem1-ff0a6067a/scripts/egomem1_offline.py": "a81baa7d058ff2a4e32254f519dc77114aa18aae44967a396c37a414948ea1e6"
+  },
+  "implementation": "legacy_v1",
+  "statistics_library_sha256": null,
+  "truth_inputs": 0,
+  "static_map_inputs": 0,
+  "global_pose_state": false,
+  "full_cross_covariance": true,
+  "events": {
+    "created": 52,
+    "reobserved": 240,
+    "association_ambiguous": 126,
+    "association_gate_rejected": 44,
+    "duplicate_frame_observation": 28,
+    "memory_slot_evicted": 20
+  },
+  "reproduction": [
+    "/home/ugrp/ugrp-sim/src/egomem1-ff0a6067a/scripts/egomem1_offline.py",
+    "predict",
+    "--input",
+    "/home/ugrp/ugrp-sim/runs/mapbuild11-long-round1/unloaded-v2",
+    "--output",
+    "/home/ugrp/ugrp-sim/ops-reviews/egomem1/baseline-legacy-r1"
+  ]
+}

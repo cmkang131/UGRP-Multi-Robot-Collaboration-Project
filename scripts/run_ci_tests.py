@@ -28,6 +28,29 @@ TEST_PATTERNS = (
     "tests/test_act17*.py",  # metadata, units, samplers and pure XML only
     "tests/test_act18*.py",  # pure future-target boundaries and stage admission
     "tests/test_warp_act*.py",  # array math/admission only; no physics or renderer
+    "tests/test_beamact1.py",
+    "tests/test_beamact2.py",
+    "tests/test_beamact3.py",
+    "tests/test_beamact5.py",
+    "tests/test_beampair1.py",
+    "tests/test_beampair2.py",
+    "tests/test_beampair4.py",
+    "tests/test_beampair7.py",
+    "tests/test_beampair8.py",
+    'tests/test_egomem2.py',
+    'tests/test_egomem1.py',
+    'tests/test_egomem_rovio.py',
+    "tests/test_current_stack.py",
+    'tests/test_execution_contact_profile.py',
+    "tests/test_grasp_act_data.py",
+    "tests/test_grasp_act_policy.py",
+    "tests/test_grasp_act_pilot.py",
+    "tests/test_grasp_act_act4.py",
+    "tests/test_grasp_act_memory.py",
+    "tests/test_grasp_act_act6.py",
+    "tests/test_grasp_act_act7.py",
+    "tests/test_grasp_act_act8.py",
+    "tests/test_grasp_act_act9.py",
     "tests/test_e2e18.py",
     "tests/test_e2e18_beam_axis.py",
     "tests/test_e2e18_cadence.py",
@@ -488,6 +511,8 @@ TEST_PATTERNS = (
     "tests/test_visual_arm_v3.py",
     "tests/test_masterpi_v3_static_audit.py",
     "tests/test_masterpi_robot_models.py",
+    "tests/test_beamact4.py",
+    "tests/test_beamact4_policy.py",
 )
 
 

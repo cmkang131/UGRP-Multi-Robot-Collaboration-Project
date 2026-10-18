@@ -1,8 +1,11 @@
 - [e2e1 입력·상태 계약](2026-10-11-e2e-one-beam/README.md): 기본 off 자기 payload·S3 세 입력 계약과 정적 fallback 차단, 새 빔 한 주문/B .80×1.40m 시나리오; 실제 E2E는 후속 단계.
+
+- [2026-10-16 plannerswap](2026-10-16-plannerswap/README.md) — 새 판단 공급자 CoreWeave fp4; 실제 3/3, 경보 0, E2E 첫 30 SIM초 점검 TODO.
 - [2026-10-10 S3 내려놓기 v166](2026-10-10-s3-setdown/README.md): 기준0/2, A2/2·B2/2·C4/4(공통2/2), 후보 조기 개방·실제 정지·HOST0; 기본 off A 선택, 끝점 오차16–54mm 미해결.
 - [S3 s3fix19 정수 tick 운반](2026-10-10-s3-integer-carry/README.md): 관련22시험 통과·20조건 on/off 등록; 디스크 거부/원본 소실/SSH 단절로 물리 판정 미완료.
 - [2026-10-10 S3 공동 운반 v164/v165](2026-10-10-s3-synchronized-carry/README.md): x86 동시10조건 v165 정렬·집기·상승·20mm 운반10/10; pair endpoint1/6, 이후 하강 낙하가드4/6·포즈계약 실패2/6, HOST_ERROR0. 기본 off·미채택.
 # 실험 인덱스
+- [2026-10-16 ACT16a 실패 분석](2026-10-16-act16a/README.md): 학습0, GCP2 같은40회 관문 재현·RGB 지문240/240. 정렬22/40, 새 추론 persistence 대비 wheel MAE2.96% 감소·교정 때 이전 부호79.4% 유지. history A/B 우선·계획 미승인.
 - [2026-10-15 시나리오 v7 heavy_crate 제외](2026-10-15-scenario-v7/README.md): 선택 버전 8종, s2·s7·s8 crate→2대 long_beam; 화물 33·필요 로봇 작업 수 40 유지, 정적/XML/입력 3시험 통과. 물리·렌더 0, v6 보존·합산 금지.
 - [2026-10-12 PR #405 main 병합 정리](2026-10-12-pr405-main-merge/README.md): 물리0. 충돌2건 합집합, v195 seal 보존 위해 v7 main 바이트 유지·pickle 처리 이전, egomap64/65 재개 계획 퇴역(원본 보존, 재등록 없음).
 - [2026-10-10 S3 정렬 소유권·끝점 v162](2026-10-10-s3-alignment-ownership/README.md): 기본 off A/B/C, x86 10조건 정렬·집기·상승9/10·실제 운반4/10; pair 운반0/6·c3 정렬 잔여, raw/TensorBoard 검증.

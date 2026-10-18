@@ -62,7 +62,7 @@ def build_run_command(args, run):
             '--model', args.model, '--max-calls', str(args.max_calls),
             '--max-input-tokens', str(args.max_input_tokens),
             '--input-request-estimate', str(args.input_request_estimate),
-            '--impratio', '10', '--noslip-iterations', '3',
+            '--impratio', '10', '--noslip-iterations', '0',
             '--communication', run['communication'], '--record']
 
 

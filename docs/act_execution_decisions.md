@@ -126,3 +126,7 @@
 - [SmolVLA](https://huggingface.co/blog/smolvla) (검색 결과 요약만 열람)
 - [allenai vla-evaluation-harness](https://github.com/allenai/vla-evaluation-harness) (검색 결과 요약만 열람)
 - [Opening Articulated Objects: modular vs end-to-end](https://arxiv.org/html/2402.17767v2) (검색 결과 요약만 열람)
+
+## 2026-10-16 모든 새 실행 noslip 0
+
+사용자: "noslip은 다 끈 상태로 되게 해". 앞서 "걍 그면 되잖아. 아니 왜 이상한 것만 가져와". 새 MJWarp 기본 `warp_native_contact_v1`, CPU 기본 `cargo_native_v1`, 모두 `noslip_iterations=0`; 기본 off 규칙의 명시 결정 예외다. CPU 새 프로필과 과거 재생만 `legacy_noslip10`/기록된 `cargo_noslip_v1` 허용은 (조정자 해석, 사용자 미확인)이다. weld OFF 유지. 기존 번들·실험·은퇴 JSON은 보존하며 새 결과와 합산하지 않는다. 새 접촉 실행 번들 `noslip-off-v445`, 컴파일만 확인한 범위와 미확인은 [진입점 표](../experiments/2026-10-16-noslip-off/entrypoints.md)에 남긴다. 물리 성공률은 미검증이다.

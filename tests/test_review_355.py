@@ -40,7 +40,7 @@ def test_legacy_registered_source_hash_is_not_substituted(tmp_path, version, map
     from scripts import run_final_pair_v3, run_final_pair_heldout
     frozen = json.loads((c.ROOT/'tests/fixtures/review_355_legacy.json').read_text())
     expected = frozen['cases'][f'{contract.BUNDLE_ID}/{map_id}/{check}']
-    current_bundle = contract.bundle(map_id, check)
+    current_bundle = contract.bundle(map_id, check, contact_profile='cargo_noslip_v1')
     assert all(c.base.sha(c.ROOT/p) == digest for p,digest in current_bundle['source_sha256'].items())
     paths = tuple(current_bundle['source_sha256']) + tuple(expected['source_paths'])
     bundle = bundle_at(BASE, contract.__name__, map_id, check, paths)
@@ -54,8 +54,8 @@ def test_legacy_registered_source_hash_is_not_substituted(tmp_path, version, map
             'output=io.StringIO();\nwith contextlib.redirect_stdout(output):\n '
             'assert run.main('+repr(args(tmp_path,map_id,check))+')==0\nprint(output.getvalue())')
     registration = json_at(BASE, code, paths)
-    assert {k:v for k,v in current_bundle.items() if k != 'source_sha256'} == {
-        k:v for k,v in bundle.items() if k != 'source_sha256'}
+    assert {k:v for k,v in current_bundle.items() if k not in ('source_sha256', 'contact_execution_bundle_id')} == {
+        k:v for k,v in bundle.items() if k not in ('source_sha256', 'contact_execution_bundle_id')}
     assert {k:v for k,v in current_plan.items() if k != 'bundles_sha256'} == {
         k:v for k,v in registration.items() if k != 'bundles_sha256'}
     for name, value in [('bundle', bundle), ('plan', registration)]:

@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "scope": "random initialized CPU ACT adapter serialization and exact predictions; not optimizer smoke or trained model",
+  "tests_passed": 6,
+  "training_steps": 0,
+  "gpu_used": false,
+  "policy": "pinned LeRobot ACT",
+  "environment": {
+    "torch": "2.11.0+cpu",
+    "torchvision": "0.26.0+cpu",
+    "lerobot": "0.6.2",
+    "numpy": "2.2.6"
+  },
+  "command": "UGRP_BEAMACT_SERIALIZE_CHECK=1 /home/ugrp/ugrp-act-cpu-env/bin/python -m pytest -q tests/test_beamact1.py",
+  "source_sha": "5cf752b5e5e885bf4effe353829fd89806b30ce9"
+}
