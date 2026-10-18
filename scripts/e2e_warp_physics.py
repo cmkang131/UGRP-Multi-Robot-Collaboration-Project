@@ -89,12 +89,15 @@ def build_context(seed, out, stack, *, nav_scene=False, nav_spawns=None):
         xml = stiffness(xml, servo_stiffness='real_v1', robot_id=rid)
     tree = ET.fromstring(xml)
     # Existing approved end-color appearance, exact owner RGBA, all beam IDs.
-    for suffix, rgba in (('band_neg', '.02 .95 .60 1'), ('band_pos', '.02 .02 .95 1')):
-        geoms = [g for g in tree.iter('geom') if g.get('name', '').endswith('__' + suffix)]
-        if not geoms:
-            raise ValueError('existing original beam band required')
-        for g in geoms:
-            g.set('rgba', rgba)
+    # The navigation gate spawns no cargo, so the long-beam bands do not exist;
+    # the recolour only applies to runs that carry the beam (gate 2 and later).
+    if not nav_scene:
+        for suffix, rgba in (('band_neg', '.02 .95 .60 1'), ('band_pos', '.02 .02 .95 1')):
+            geoms = [g for g in tree.iter('geom') if g.get('name', '').endswith('__' + suffix)]
+            if not geoms:
+                raise ValueError('existing original beam band required')
+            for g in geoms:
+                g.set('rgba', rgba)
     xml = transform_xml(ET.tostring(tree, encoding='unicode'), DriveParameters(), 'mesh', 'off')
     xml = apply_xml(xml, stack['contact_profile'])
     if nav_scene:
