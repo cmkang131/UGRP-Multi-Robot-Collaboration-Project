@@ -1,0 +1,64 @@
+{
+  "schema": "ugrp.act18.b5_prereg.v1",
+  "experiment": "2026-10-17-act18",
+  "phase": "B5",
+  "candidate": "act18-loop",
+  "pre_registered_utc": "2026-10-18T09:50:00Z",
+  "approval": "Lead 2026-10-18 자율 트랙: closed-loop 제어 후보(B5) 설계·구현, 5k probe TRAIN4, co-r2 best와 같은 시드·조건 비교, no-pooling. 새 녹화·평가계약 변경 금지.",
+  "diagnosis_target": "closed-loop 진단(`results/closedloop-r1/`): grasp 10-15s hold 전환에서 교사는 base 이동 0.91→0.26·gripper closed 0.05→0.63→0.98인데 모델은 base 이동 0.73-0.75 유지·gripper 0.24-0.25; release 0-2s 교사 이동 1.0인데 모델 0.05(물러나기 누락).",
+  "init": {
+    "checkpoint": "co-r2/act18-co/step-70000-best (cumulative 70k, labelled cotrain_continuation_v1)",
+    "model_sha256": "8643b0e5b9b3a0f51b00316affdccf48c8e5179f4a3d3797ec84e681f5f99eca",
+    "state_dim": 254,
+    "label": "warm start from the Phase C continuation; B5 is a separate 5k probe, not pooled"
+  },
+  "training": {
+    "steps": 5000,
+    "precision": "bf16_autocast_v1",
+    "batch_size": 8,
+    "lr": 1e-05,
+    "chunk": 20,
+    "data": "v7 TRAIN200 + act16w TRAIN32 co-training mixture (condition token), same as co-r2",
+    "transition_weight": 3.0,
+    "transition_weight_scope": "v7 rows with teacher_phase in {close,lift} ×3.0, {hold,verify_lift} ×1.5; other rows ×1.0; native rows ×1.0 (no phase labels)",
+    "sampler": "cotrain_transition_v1 (episode-uniform mixture, then phase-weighted row sampling within v7 episodes)",
+    "val_select": "none (5k probe; no VAL8 selection)",
+    "probe": {"kind": "transition_weighted_finetune_v1", "packaging_eligible": false}
+  },
+  "execution_overlay": {
+    "kind": "closed_loop_transition_overlay_v1",
+    "scope": "자기 발행 base 명령의 후처리만. 교사/GT/top camera/지도 입력 없음.",
+    "rationale": "교사는 close 이후 base 이동 0.86→0.13으로 줄이고 release 0-2s에 물러난다(자가 시연 통계). overlay는 이 전환을 자기 명령 이력으로 감지해 감속/후퇴만 보정한다.",
+    "constants": {
+      "hold_wheel_scale": 0.25,
+      "hold_ticks": 20,
+      "close_pwm": 1900,
+      "close_streak": 3,
+      "retreat_ticks": 15,
+      "retreat_wheel": 0.31,
+      "stop_threshold": 0.155,
+      "approach_direction": "grasp 구간 자기 wheel 명령 평균의 부호(자기 이력)"
+    },
+    "constraint": "감지·보정은 skill 토큰과 자기 발행 명령 이력만 사용. 발화 시각·정답 없음."
+  },
+  "evaluation": {
+    "gates": [
+      {"name": "overlay_only", "checkpoint": "co-r2/act18-co/step-70000-best", "purpose": "overlay 단독 효과(훈련 없이)와 co-r2 기존 gate(0/4) 비교"},
+      {"name": "b5", "checkpoint": "b5-r1/act18-loop/step-5000", "purpose": "transition 가중 5k + overlay 결합"}
+    ],
+    "stage": "train4",
+    "seeds": [88600, 88601, 88602, 88603],
+    "done_head": "co-r1/head (자기 명령이력 GRU, AUC .9996; B4 방식)",
+    "instrumentation": ["--record-done-prob", "--done-head-log", "--loop-overlay-log"],
+    "report_items": ["TRAIN4 n/N", "physical lift/release", "done 발화 시각 vs 교사", "overlay 개입 횟수(hold_brake/release_retreat)", "closed-loop 분기 재현(co-r2 대비)"],
+    "compare": "co-r2 best gate와 같은 시드·조건. 결과 pooling 금지.",
+    "pass_rule": "TRAIN4 4/4일 때만 VAL8(가능하면, 최대 시간 내)."
+  },
+  "risks": [
+    "수작업 base 후처리가 물리 성공을 만들 수 있지만 ACT 정책 자체 개선은 아니다 — hybrid controller 라벨 유지, 성공해도 순수 ACT 성과로 보고 금지.",
+    "transition 가중 5k로 전환 구간을 과적합할 수 있다.",
+    "co-r2는 continuation(70k)이라 B5 fine-tune의 초기 조건이 full 100k가 아니다."
+  ],
+  "pooling": "R8/R100/tune/B1-B4/co-r1/co-r2와 합산 금지. 패키징·Release 금지.",
+  "time_budget": "학습 ~20분, 게이트 2회 ~15분; 완료 후 gcp2 즉시 정지·CLEAN."
+}

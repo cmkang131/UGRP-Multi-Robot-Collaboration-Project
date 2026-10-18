@@ -91,6 +91,11 @@ def main():
     p.add_argument('--done-head',type=Path)
     p.add_argument('--done-head-threshold',type=float,default=.65)
     p.add_argument('--done-head-log',type=Path)
+    # act18-loop (Lead-approved B5): frozen closed-loop transition overlay that only
+    # post-processes the student's own issued base commands (own command history
+    # only; no teacher/GT/top-camera input). Params are pre-registered constants.
+    p.add_argument('--loop-overlay',action='store_true')
+    p.add_argument('--loop-overlay-log',type=Path)
     a,args=p.parse_known_args()
     if not a.act18_reference_v1 or a.failure_camera_window_s!=10.:
         raise ValueError('explicit reference toggle and user10SIMs camera window required')
@@ -155,6 +160,7 @@ def main():
             finally:
                 elapsed=time.perf_counter()-started;inference['wall_s']+=elapsed
                 if first30:inference['first30']['wall_s']+=elapsed
+    from act18_loop_overlay import LoopOverlay, overlay_receipt
     class Executor(originals[3]):
         def __init__(self,predict):
             # Public ACT temporal ensemble; no additional motion guard/fallback.
@@ -164,13 +170,17 @@ def main():
             super().__init__(predict)
             self.world=executor_counter[0];executor_counter[0]+=1
             self.last_t=None
+            self.overlay=LoopOverlay() if a.loop_overlay else None
         def step(self,observation,jpegs,*,interrupt=False):
             if self.last_t is not None and observation['t']<=self.last_t:
                 done_head.reset()
+                if self.overlay is not None: self.overlay.reset(observation['skill'])
             self.last_t=observation['t']
             value,done=super().step(observation,jpegs,interrupt=interrupt)
             if interrupt or done:
                 return value,done
+            if self.overlay is not None:
+                value=self.overlay.step(observation['skill'],value)
             probability=done_head.update(value,observation['skill'])
             fired=done_fires(probability,a.done_head_threshold)
             if fired:
@@ -180,6 +190,19 @@ def main():
                     skill=observation['skill'],done_prob=round(probability,6),fired=fired,
                     threshold=a.done_head_threshold))+'\n');done_head_log['handle'].flush()
             return value,done or fired
+    class LoopExecutor(Executor):
+        def __init__(self,predict):
+            super().__init__(predict)
+            self.last_t=None
+            self.overlay=LoopOverlay()
+        def step(self,observation,jpegs,*,interrupt=False):
+            if self.last_t is not None and observation['t']<=self.last_t:
+                self.overlay.reset(observation['skill'])
+            self.last_t=observation['t']
+            value,done=super().step(observation,jpegs,interrupt=interrupt)
+            if interrupt or done:
+                return value,done
+            return self.overlay.step(observation['skill'],value),done
     class Sequence(originals[4]):
         def __init__(self,*args,**kwargs):
             super().__init__(*args,**kwargs);sequences.append(self)
@@ -226,11 +249,13 @@ def main():
     act16w_runtime.evaluation_seed_guard=guard
     act16w_input.Act16wActor=TrackedActor
     act16w_eval_rpc.EvaluationClient=Client
-    pm.ChunkExecutor=DoneHeadExecutor if done_head is not None else Executor;rm.SoloSequence=Sequence
+    pm.ChunkExecutor=(DoneHeadExecutor if done_head is not None else (LoopExecutor if a.loop_overlay else Executor));rm.SoloSequence=Sequence
     target=ROOT/'scripts/evaluate_act16w.py';sys.argv=[str(target),*args]
     try:
         runpy.run_path(str(target),run_name='__main__')
     finally:
+        if loop_log['handle'] is not None:
+            loop_log['handle'].close();loop_log['handle']=None
         if done_head_log['handle'] is not None:
             done_head_log['handle'].close();done_head_log['handle']=None
         if done_log['handle'] is not None:
@@ -270,7 +295,11 @@ def main():
                     feature_spec=done_meta.get('feature_spec'),history=done_meta.get('history'),
                     validation_auc=done_meta.get('validation_auc'),
                     scope='own-command-history done module combined with unchanged ACT action policy; not an ACT-learned done head')
+            loop_receipt=None
+            if a.loop_overlay:
+                loop_receipt=overlay_receipt()
             (out/'act18-evaluator.json').write_text(json.dumps(dict(source_sha=source,stage=a.stage,
+                loop_overlay=loop_receipt,
                 allowed_seeds=sorted(allowed),checkpoint_sha256=digest,native_gate_sha256=sha256(gate_path),
                 failure_recording_only=True,recorded_bytes=sum(r['bytes'] for r in ring),
                 done_head=done_head_receipt),indent=2)+'\n')

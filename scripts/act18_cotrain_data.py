@@ -86,12 +86,15 @@ def native_episodes(root, split, chunk=20, smooth=5):
 class CoTrainingDataset:
     """Episode-uniform mixture of the v7 reference view and the native 40-world set."""
 
+    TRANSITION_PHASES = {'close': 3.0, 'lift': 3.0, 'hold': 1.5, 'verify_lift': 1.5}
+
     def __init__(self, v7_root, native_root, *, chunk=20, base_smooth_window=5,
-                 native_weight=.5, state_token=True):
+                 native_weight=.5, state_token=True, transition_weight=None):
         if not 0 < native_weight < 1:
             raise ValueError('native weight must be within (0,1)')
         self.chunk = chunk
         self.native_weight = float(native_weight)
+        self.transition_weight = None if transition_weight is None else float(transition_weight)
         self.state_token = bool(state_token)
         self.v7 = ReferenceDataset(v7_root, 'train', chunk=chunk,
                                    base_smooth_window=base_smooth_window)
@@ -132,6 +135,17 @@ class CoTrainingDataset:
         self.metadata = self.v7.metadata
         self.episode_indices = list(self.v7.episode_indices)
         self.episode_indices += [np.zeros(episode['rows'], np.int64) for episode in self.native]
+        self.v7_episode_weights = []
+        for indices in self.v7.episode_indices:
+            weights = np.ones(len(indices), np.float64)
+            if self.transition_weight is not None:
+                phases = [self.v7.metadata[int(i)].get('teacher_phase') for i in indices]
+                for slot, phase in enumerate(phases):
+                    if phase in ('close', 'lift'):
+                        weights[slot] = self.transition_weight
+                    elif phase in ('hold', 'verify_lift'):
+                        weights[slot] = max(1.5, self.transition_weight)
+            self.v7_episode_weights.append(weights)
         self.episode_origins = [ORIGIN_V7]*len(self.v7.episode_indices)
         self.episode_origins += [ORIGIN_NATIVE]*len(self.native)
         self.v7_state_mean = np.asarray(self.stats['state_mean'], np.float32)
@@ -184,7 +198,8 @@ class CoTrainingDataset:
 
     def sample(self, generator, batch_size, sampling):
         import torch
-        if sampling != 'cotrain_v1':
+        expected = 'cotrain_transition_v1' if self.transition_weight is not None else 'cotrain_v1'
+        if sampling != expected:
             raise ValueError('declared co-training sampler required')
         selected = []
         for _ in range(batch_size):
@@ -196,18 +211,26 @@ class CoTrainingDataset:
             else:
                 episode = int(torch.randint(len(self.v7.episode_indices), (1,), generator=generator))
                 indices = self.v7.episode_indices[episode]
-                selected.append(int(indices[int(torch.randint(len(indices), (1,), generator=generator))]))
+                weights = self.v7_episode_weights[episode]
+                if weights is None or self.transition_weight is None:
+                    slot = int(torch.randint(len(indices), (1,), generator=generator))
+                else:
+                    probs = torch.from_numpy(weights/weights.sum())
+                    slot = int(torch.multinomial(probs, 1, generator=generator))
+                selected.append(int(indices[slot]))
         return selected
 
     def completion_priors(self, sampling):
         """Completion class fractions under the declared mixture measure."""
-        if sampling != 'cotrain_v1':
+        expected = 'cotrain_transition_v1' if self.transition_weight is not None else 'cotrain_v1'
+        if sampling != expected:
             raise ValueError('declared co-training sampler required')
         totals = {skill: dict(mass=0., positive_mass=0., rows_N=0) for skill in SKILLS}
         # v7 episodes
-        for indices in self.v7.episode_indices:
-            mass = (1-self.native_weight)/len(self.v7.episode_indices)/len(indices)
-            for index in indices:
+        for indices, weights in zip(self.v7.episode_indices, self.v7_episode_weights):
+            episode_mass = (1-self.native_weight)/len(self.v7.episode_indices)
+            for slot, index in enumerate(indices):
+                mass = episode_mass*float(weights[slot])/float(weights.sum())
                 shard_id, row = self.v7.index[index]
                 done = float(self.v7.shards[shard_id]['action'][row, 0, -1])
                 skill = self.v7.metadata[index]['skill']

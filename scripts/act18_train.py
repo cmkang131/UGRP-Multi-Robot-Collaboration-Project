@@ -78,8 +78,10 @@ def init_checkpoint_receipt(path, protocol, protocol_path, dataset, chunk):
     reference = step == protocol['steps']
     pilot = (probe.get('kind') in PILOT_KINDS and step == probe.get('steps_override')
              and 1 <= step <= 20000 and probe.get('packaging_eligible') is False)
+    continuation = (provenance.get('candidate') == 'act18-co' and isinstance(provenance.get('resume'), dict)
+                    and isinstance(step, int) and 20000 <= step <= 100000 and not probe)
     if (adapter.get('schema') != 'ugrp.act18.adapter.v1' or adapter.get('chunk') != chunk
-            or not provenance.get('training_complete') or not (reference or pilot)
+            or not provenance.get('training_complete') or not (reference or pilot or continuation)
             or provenance.get('protocol_sha256') != sha256(protocol_path)
             or provenance.get('dataset_manifest_sha256') != original_sha256(dataset/'manifest.json')):
         raise ValueError('init checkpoint must be a completed matched reference or registered pilot ACT18 model')
@@ -130,6 +132,7 @@ def main():
     p.add_argument('--co-smooth-window', type=int, default=5)
     # Phase C continuation after a host interruption (label required; never
     # resumed silently): warm-start the ACT weights from a completed co run.
+    p.add_argument('--transition-weight', type=float)
     p.add_argument('--resume-from', type=Path)
     p.add_argument('--resume-extra-steps', type=int)
     for name in ('dataset','protocol','out','queue'):
@@ -167,8 +170,13 @@ def main():
     if cotrain and (a.post_close_weight is not None or a.pre_close_weight is not None
                     or a.done_positive_batch_fraction is not None or a.done_current_step_only):
         raise ValueError('co-training does not combine with tuning options')
-    if cotrain and a.candidate != 'act18-co':
-        raise ValueError('--cotrain-native requires --candidate act18-co')
+    if cotrain and a.candidate not in ('act18-co', 'act18-loop'):
+        raise ValueError('--cotrain-native requires --candidate act18-co or act18-loop')
+    if a.transition_weight is not None:
+        if a.candidate != 'act18-loop' or a.init_checkpoint is None:
+            raise ValueError('--transition-weight requires the act18-loop pilot with an init checkpoint')
+        if not .01 <= a.transition_weight <= 10.:
+            raise ValueError('transition weight bounds [0.01,10]')
     if a.lr is not None:
         if a.candidate not in PILOT_CANDIDATES:
             raise ValueError('--lr override requires a pilot candidate')
@@ -180,7 +188,8 @@ def main():
     if cotrain:
         from act18_cotrain_data import CoTrainingDataset
         data = CoTrainingDataset(a.dataset, a.cotrain_native, chunk=CANDIDATES[a.candidate],
-                                 base_smooth_window=a.co_smooth_window, native_weight=a.cotrain_weight)
+                                 base_smooth_window=a.co_smooth_window, native_weight=a.cotrain_weight,
+                                 transition_weight=a.transition_weight)
         state_dim = data.state_dim
     elif weighted:
         data = WeightedReferenceDataset(a.dataset, 'train', chunk=CANDIDATES[a.candidate],
@@ -298,7 +307,8 @@ def main():
         if a.done_current_step_only:
             probe_kind='done_horizon_current_only_v1'
         elif a.init_checkpoint is not None:
-            probe_kind='init_aligned_finetune_v1'
+            probe_kind=('transition_weighted_finetune_v1' if a.transition_weight is not None
+                        else 'init_aligned_finetune_v1')
         elif a.base_smooth_window is not None or a.val_select:
             probe_kind='standard_aligned_scratch_v1'
         elif done_positive_fraction is not None:

@@ -27,6 +27,8 @@ def main():
     p.add_argument('--done-head',type=Path)
     p.add_argument('--done-head-threshold',type=float,default=.65)
     p.add_argument('--done-head-log',type=Path)
+    p.add_argument('--loop-overlay',action='store_true')
+    p.add_argument('--loop-overlay-log',type=Path)
     p.add_argument('--selection',type=Path)
     for key in ('checkpoint','references','protocol','native-gate','out','stack-values','prior-rejections'):
         p.add_argument('--'+key,type=Path,required=True)
@@ -104,6 +106,10 @@ def main():
                     cmd+=['--done-head',str(a.done_head),'--done-head-threshold',str(a.done_head_threshold)]
                     if a.done_head_log is not None:
                         cmd+=['--done-head-log',str(a.done_head_log)+'-group-%03d.jsonl'%group]
+                if a.loop_overlay:
+                    cmd+=['--loop-overlay']
+                    if a.loop_overlay_log is not None:
+                        cmd+=['--loop-overlay-log',str(a.loop_overlay_log)+'-group-%03d.jsonl'%group]
                 log=(folder/'run.log').open('x')
                 proc=subprocess.Popen(cmd,stdout=log,stderr=subprocess.STDOUT,cwd=Q,start_new_session=True,
                     env={**os.environ,'UGRP_ACT16W_NATIVE_GATE':str(a.native_gate),'MUJOCO_GL':'osmesa',
