@@ -336,3 +336,25 @@ def test_fix3_queue_and_prereg_contract():
         path = ROOT / name
         assert path.is_file(), name
         assert hashlib.sha256(path.read_bytes()).hexdigest() == digest, name
+
+
+def test_stageb_fix_two_arm_contract():
+    m0 = load_json(EXP / 'queue-stageB-fix-M0.json')
+    m1 = load_json(EXP / 'queue-stageB-fix-M1.json')
+    prereg = load_json(EXP / 'prereg-stageB-fix.json')
+    assert m0['stage'] == 'B_loaded_mask_off'
+    assert m1['stage'] == 'B_loaded_mask_on'
+    assert m0['toggles']['crossroom_carry_mask_v1'] == 'off'
+    assert m1['toggles']['crossroom_carry_mask_v1'] == 'on'
+    assert m0['counterfactual_arm'] == 'M0_mask_off'
+    assert m1['counterfactual_arm'] == 'M1_mask_on'
+    for arm in (m0, m1):
+        assert arm['sim_cap_s'] == 180.0 and arm['worlds_per_batch'] == 16
+        assert arm['episode_count'] == 16
+        assert arm['toggles']['crossroom_carry_scene_v1'] == 'on'
+        assert arm['only_difference'] == 'crossroom_carry_mask_v1 toggle'
+    assert set(prereg['arms']) == {'M0_mask_off', 'M1_mask_on'}
+    for name, digest in m0['input_sha256'].items():
+        path = ROOT / name
+        assert path.is_file(), name
+        assert hashlib.sha256(path.read_bytes()).hexdigest() == digest, name

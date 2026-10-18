@@ -63,6 +63,12 @@ STAGE_FIX_FILES = [
     'experiments/2026-10-18-crossroom-carry/scripts/contact_recorder.py',
 ]
 
+STAGE_BFIX_FILES = [
+    'experiments/2026-10-18-crossroom-carry/prereg-stageB-fix.json',
+    'experiments/2026-10-18-crossroom-carry/scripts/carry_state_own.py',
+    'experiments/2026-10-18-crossroom-carry/crossroom_carry_scene_v1.json',
+]
+
 STAGE_B_FILES = [
     'experiments/2026-10-18-crossroom-carry/prereg-stageB.json',
     'experiments/2026-10-18-crossroom-carry/crossroom_carry_scene_v1.json',
@@ -123,7 +129,8 @@ def sha(path: Path) -> str:
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument('--stage', choices=('A_unloaded', 'B_loaded', 'A_unloaded_fix',
+    ap.add_argument('--stage', choices=('A_unloaded', 'B_loaded', 'B_loaded_mask_off',
+                                        'B_loaded_mask_on', 'A_unloaded_fix',
                                         'A_unloaded_fix2', 'A_unloaded_fix3'),
                     default='A_unloaded')
     ap.add_argument('--policy-source-sha',
@@ -132,7 +139,9 @@ def main() -> int:
                     default=f'{MAIN}/visgoal-gate-r4-lawnmower/recount.json')
     ap.add_argument('--output', default=None)
     a = ap.parse_args()
-    if a.stage == 'B_loaded':
+    if a.stage in ('B_loaded_mask_off', 'B_loaded_mask_on'):
+        files = FILES + STAGE_BFIX_FILES
+    elif a.stage == 'B_loaded':
         files = FILES + STAGE_B_FILES
     elif a.stage == 'A_unloaded_fix3':
         files = FILES + STAGE_FIX3_FILES
@@ -145,7 +154,10 @@ def main() -> int:
     missing = [f for f in files if not (ROOT / f).is_file()]
     if missing:
         raise SystemExit('MISSING_INPUTS ' + repr(missing))
-    stage_b = a.stage == 'B_loaded'
+    stage_b = a.stage in ('B_loaded', 'B_loaded_mask_off', 'B_loaded_mask_on')
+    stage_bfix = a.stage in ('B_loaded_mask_off', 'B_loaded_mask_on')
+    bfix_arm = ('M1_mask_on' if a.stage == 'B_loaded_mask_on'
+                else 'M0_mask_off') if stage_bfix else None
     stage_fix = a.stage == 'A_unloaded_fix'
     stage_fix2 = a.stage in ('A_unloaded_fix2', 'A_unloaded_fix3')
     stage_fix3 = a.stage == 'A_unloaded_fix3'
@@ -153,6 +165,9 @@ def main() -> int:
     stage_fields = {}
     if stage_b:
         toggles['crossroom_carry_scene_v1'] = 'on'
+    if stage_bfix:
+        toggles['crossroom_carry_mask_v1'] = (
+            'on' if a.stage == 'B_loaded_mask_on' else 'off')
         stage_fields = {
             'loaded_scene': ('experiments/2026-10-18-crossroom-carry/'
                              'crossroom_carry_scene_v1.json'),
@@ -162,7 +177,14 @@ def main() -> int:
             'cargo_own_thresholds_file': ('experiments/2026-10-18-crossroom-carry/'
                                           'setup-validation-B.json'),
         }
-    if stage_b:
+        if stage_bfix:
+            stage_fields['counterfactual_arm'] = bfix_arm
+            stage_fields['counterfactual_pair'] = 'prereg-stageB-fix.json'
+            stage_fields['only_difference'] = 'crossroom_carry_mask_v1 toggle' 
+    if stage_bfix:
+        queue_name = ('queue-stageB-fix-M1.json' if a.stage == 'B_loaded_mask_on'
+                      else 'queue-stageB-fix-M0.json')
+    elif stage_b:
         queue_name = 'queue-stageB.json'
     elif stage_fix3:
         queue_name = 'queue-stageA-fix3.json'
@@ -195,7 +217,9 @@ def main() -> int:
         "flow": "self_map",
         "branch": "claude/crossroom-carry",
         "task": "crossroom",
-        "goal": ("west pickup room, loaded with the red box -> divider door (0.50 m) -> "
+        "goal": ("west pickup room, loaded red box, held-object MASK ON arm -> divider door (0.50 m) -> zone B" if a.stage == "B_loaded_mask_on" else
+                 "west pickup room, loaded red box, held-object MASK OFF arm -> divider door (0.50 m) -> zone B" if stage_bfix else
+                 "west pickup room, loaded with the red box -> divider door (0.50 m) -> "
                  "zone B arrival (loaded, single box reduced scene)" if stage_b else
                  "west pickup room -> divider door (0.50 m) -> zone B arrival, unloaded solo"),
         "source_sha": a.policy_source_sha,
@@ -221,18 +245,24 @@ def main() -> int:
         "no_llm_calls": True,
         "top_camera_control": False,
         "own_rgb_count": 1,
-        "run_name": ("crossroom-stageB" if stage_b else
+        "run_name": ("crossroom-stageB-fix-M1" if a.stage == 'B_loaded_mask_on'
+                     else "crossroom-stageB-fix-M0" if stage_bfix
+                     else "crossroom-stageB" if stage_b else
                      "crossroom-stageA-fix3" if stage_fix3 else
                      "crossroom-stageA-fix2" if stage_fix2 else
                      "crossroom-stageA-fix" if stage_fix else "crossroom-stageA"),
         "preflight": False,
         "sim_cap_s": 180.0,
-        "output": (f"{MAIN}/crossroom-stageB" if stage_b else
+        "output": (f"{MAIN}/crossroom-stageB-fix-M1" if a.stage == 'B_loaded_mask_on'
+                   else f"{MAIN}/crossroom-stageB-fix-M0" if stage_bfix
+                   else f"{MAIN}/crossroom-stageB" if stage_b else
                    f"{MAIN}/crossroom-stageA-fix3" if stage_fix3 else
                    f"{MAIN}/crossroom-stageA-fix2" if stage_fix2 else
                    f"{MAIN}/crossroom-stageA-fix" if stage_fix else
                    f"{MAIN}/crossroom-stageA"),
-        "rejection_table": (f"{MAIN}/crossroom-stageA/recount.json"
+        "rejection_table": (f"{MAIN}/crossroom-stageB/recount.json"
+                            if stage_bfix else
+                            f"{MAIN}/crossroom-stageA/recount.json"
                             if stage_b else
                             f"{MAIN}/crossroom-stageA/recount.json" if stage_fix
                             else f"{MAIN}/crossroom-stageA/recount.json"
@@ -241,7 +271,9 @@ def main() -> int:
                               "(separate condition; used only as the prior "
                               "search-budget record, not pooled)"),
         "episode_count": 16,
-        "candidate": ("stage_b_loaded_single_red_box" if stage_b else
+        "candidate": ("stage_b_loaded_mask_on_counterfactual" if a.stage == 'B_loaded_mask_on'
+                      else "stage_b_loaded_mask_off_counterfactual" if stage_bfix
+                      else "stage_b_loaded_single_red_box" if stage_b else
                       "stage_a_unloaded_fix3" if stage_fix3 else
                       "stage_a_unloaded_fix2" if stage_fix2 else
                       "stage_a_unloaded_fix" if stage_fix else "stage_a_unloaded"),
