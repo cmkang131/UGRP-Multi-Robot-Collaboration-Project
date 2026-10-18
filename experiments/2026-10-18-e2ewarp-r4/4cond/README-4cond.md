@@ -62,5 +62,14 @@ relay: Mac loopback(127.0.0.1:18626) ↔ gcp6 역터널(127.0.0.1:18627), OpenRo
 
 - 모든 조건 `E2E_success=false`, `research_result=false`, `student_execution=false`, `dependency_status="waiting for selected ACT / loaded FK / mapbuild8 own+static map correction / release API"` — **smoke이며 성공/학생 실행 주장 없음**.
 - 4조건은 동일 소스·설정의 조건별 별도 실행이며 서로 pooling하지 않는다. R3(peer_ko, policy off, source e0e12448)와도 pooling 금지.
-- 원본: VM `/home/ugrp/ugrp-sim/runs/e2ewarp-r4-{no_comm,leader_en,structured}(-admission/-managed)` + R4 peer_en `/home/ugrp/ugrp-sim/runs/e2ewarp-r4-run`. SHAs: `raw-sha256.json`(러너 자체 `sha256.json`과 `run-metrics.json` 포함), 조건 요약 `condition-summary.json`(두 wall 기준·정정 이력 포함), relay `relay-summary-r4b.json`.
+- 원본: VM `/home/ugrp/ugrp-sim/runs/e2ewarp-r4-{no_comm,leader_en,structured}(-admission/-managed)` + R4 peer_en `/home/ugrp/ugrp-sim/runs/e2ewarp-r4-run`. SHA: **VM run dir의 러너 원본 manifest는 `sha256.json`**(이 디렉토리 요약 `raw-sha256.json`과 이름이 다름, 아래 8절), 조건 요약 `condition-summary.json`(두 wall 기준·정정 이력 포함), relay `relay-summary-r4b.json`.
 - 조건별 소형 원본 JSON은 이 디렉토리에 복사, 대용량 `localization.json`(2.1 MB)·review-rgb는 VM 원본 경로·SHA만 기록.
+
+## 8. 문서 정정·한계 (독립 검증자 최종 판정, 2026-10-18T20:30Z)
+
+추가 GPU 실행 없음. 문서·기록에만 반영한 3건:
+
+1. **run dir의 raw SHA manifest 이름은 `sha256.json`** — VM run dir(`/home/ugrp/ugrp-sim/runs/e2ewarp-r4-<c>/`)에는 `raw-sha256.json`이 존재하지 않고, 러너가 raw 파일 SHA를 기록하는 파일은 **`sha256.json`**이다. `4cond/raw-sha256.json`은 VM 원본 파일 SHA를 인용해 정리한 **실험 디렉토리 요약**이며 run dir 파일이 아니다. 러너 `sha256.json`의 사본은 조건별 `4cond/<condition>/raw-run-sha256.json`으로 보존(이름 혼동 방지).
+2. **queue.json `rejection_table` cross-ref(의도된 prior 연결)** — 3조건(`no_comm`·`leader_en`·`structured`)의 admission/run `queue.json` 모두 `rejection_table=/home/ugrp/ugrp-sim/runs/e2ewarp-r4-run/rejection_table.json`(R4 peer_en run)을 가리킨다. 이는 4조건을 **R4 peer_en funnel 뒤에 사슬로 연결**하기 위한 의도된 prior 경로이며 오류·우회가 아니다. 따라서 각 조건의 funnel은 조건별 독립 baseline이 아니라 R4 prior가 붙은 라벨(`attempt R4`) 실행이다.
+3. **structured `rejection_table.json` 원거부 원장 누락** — stages는 `world_attempted 2/0`, `first30_complete 2/0`, **`actual_transport cumulative_pass_n=0·rejected_n=2`**인데, `reasons`에는 `llm_http_0` 1건(world 0/r2, sim 20.0)만 있고 **dependency 거부 2건(no_comm/leader_en에 있는 `marked_smoke_dependency_wait` 항목)이 누락**되어 있다. 수치 조작이 아니라 **원본 거부 원장의 기록 누락**이며, 후속 분석/집계 시 structured의 rejection 분포는 1건만 있는 것으로 오인하지 말 것.
+   - 참고(원본 값): no_comm/leader_en reasons = `dependency/ marked_smoke_dependency_wait count 2`; structured reasons = `llm/ llm_http_0 1건`(dependency 항목 없음).

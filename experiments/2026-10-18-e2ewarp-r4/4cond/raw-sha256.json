@@ -64,5 +64,22 @@
  "corrections": {
   "at": "2026-10-18T20:05Z",
   "note": "structured relay explanation and wall basis corrected after independent verifier evidence; see condition-summary.json correction_history and relay-summary-r4b.json"
- }
+ },
+ "title": "4cond/raw-sha256.json — 실험 디렉토리 요약(VM run dir 파일 아님)",
+ "run_raw_manifest_naming": {
+  "vm_run_dir_file": "sha256.json",
+  "not_in_vm_run_dir": "raw-sha256.json",
+  "per_condition_copy": "4cond/<condition>/raw-run-sha256.json",
+  "note": "아래 conditions[*].`raw-run-sha256.json` 값은 러너 sha256.json 사본의 SHA이고, VM 원본 경로는 conditions[*].raw_dir 참고."
+ },
+ "queue_rejection_table_crossref": {
+  "applies_to": [
+   "no_comm",
+   "leader_en",
+   "structured"
+  ],
+  "path": "/home/ugrp/ugrp-sim/runs/e2ewarp-r4-run/rejection_table.json",
+  "meaning": "의도된 R4 peer_en prior 연결"
+ },
+ "structured_rejection_table_omission": "stages actual_transport 0/2 vs reasons llm_http_0 1건만(dependency 2건 누락) — 원본 거부 원장 기록 누락, 수치 조작 아님."
 }
