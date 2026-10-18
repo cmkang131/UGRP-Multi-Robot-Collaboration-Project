@@ -1,0 +1,46 @@
+{
+  "schema": "ugrp.e2ewarp.visdet_replay.v1",
+  "raw": "/private/tmp/e2ewarp-r4-replay",
+  "analysis_script_sha256": "072cd903e253ac1a4caa842d431f12568ac83a3c6c1e64cf44d64c98d88b0827",
+  "frames": 183,
+  "observed_n": 180,
+  "arrival_evidence_n": 0,
+  "reason_distribution": {
+    "observed:painted_ground_hypothesis": 180,
+    "command_row_missing": 3
+  },
+  "nearest_range_m": {
+    "min": 0.4191,
+    "median": 0.44345,
+    "max": 0.4824
+  },
+  "frames_by_world_robot": {
+    "0-r1": 61,
+    "0-r2": 61,
+    "0-r3": 61
+  },
+  "camera_model": "servo_fk_v1 (issued command rows) + measured raw-fisheye undistort table; floor plane z=0 in the FK floor frame",
+  "inputs": [
+    "world-*/review-rgb/*.jpg",
+    "commands.json",
+    "harness/servo_camera_fk.py",
+    "harness/data/servo_camera_v3_chain.json",
+    "sim/masterpi_camera_profile.py (fixed calibration)"
+  ],
+  "not_read": [
+    "TOP camera",
+    "simulator/GT pose",
+    "contacts",
+    "measured joints",
+    "teacher/outcomes",
+    "llm choices"
+  ],
+  "scope": "detector replay on recorded GPU E2E own frames only; no new execution, no navigation/mission success claim. FK is the issued-command nominal pose, so metric range/extent on replay frames are approximate; the colour component/status evidence does not depend on the pose.",
+  "dependency_wait": [
+    "selected ACT student",
+    "loaded FK",
+    "mapbuild8 map correction",
+    "release relocalization"
+  ],
+  "extent_cap": "off"
+}

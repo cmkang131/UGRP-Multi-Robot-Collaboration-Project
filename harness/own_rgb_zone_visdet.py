@@ -63,6 +63,11 @@ PAINT_VALUE_MIN = 30
 PAINT_MIN_PIXELS = 600
 FLOOR_MAX_RANGE_M = 1.8
 ARRIVAL_BOTTOM_NORM = 0.98
+# Authored zone-B rectangle is 0.60 x 1.40 m; a visible zone patch cannot have a
+# floor-projected extent larger than its diagonal (1.52 m). 2.0 m leaves room for
+# truncated/oblique patches while rejecting a floor/wall component whose extent
+# spans metres. Measured CPU raw zone patches were 0.205-1.236 m.
+MAX_EXTENT_M = 2.0
 # Bottom 25% rows and centre 40% columns, matching the own-RGB "under the
 # robot" evidence used by the carry monitor and the CPU zone-edge check.
 LOWER_CENTRE_ROWS = 0.25
@@ -160,7 +165,8 @@ def detect(rgb, camera: CameraModel, *, enabled=False, zone='B',
            spec: ZoneSpec | None = None, exclude_mask=None,
            arrival_bottom_norm=ARRIVAL_BOTTOM_NORM,
            min_pixels=PAINT_MIN_PIXELS,
-           floor_max_range_m=FLOOR_MAX_RANGE_M) -> Detection:
+           floor_max_range_m=FLOOR_MAX_RANGE_M,
+           max_extent_m=MAX_EXTENT_M) -> Detection:
     """Detect the destination zone paint and its metric evidence in one frame.
 
     ``rgb`` must be an HxWx3 uint8 RGB array of ``camera.width`` x
@@ -223,6 +229,11 @@ def detect(rgb, camera: CameraModel, *, enabled=False, zone='B',
                          bbox=bbox, nearest_range_m=near,
                          reason='destination_too_far')
     extent = float(np.linalg.norm(np.ptp(xy, axis=0)))
+    if max_extent_m is not None and extent > float(max_extent_m):
+        return Detection(status='unknown', enabled=True, pixels=count,
+                         bbox=bbox, nearest_range_m=near, extent_m=extent,
+                         reason='destination_extent_not_zone',
+                         notes=dict(max_extent_m=float(max_extent_m)))
     if spec is not None:
         limit = 2 * math.hypot(spec.rect[1] - spec.rect[0],
                                spec.rect[3] - spec.rect[2]) + spec.extent_slack

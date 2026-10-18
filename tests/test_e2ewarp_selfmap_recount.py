@@ -85,4 +85,4 @@ def test_cli_exit_zero_when_insertions_gt_zero(tmp_path):
                           capture_output=True, text=True)
     assert proc.returncode == 0, proc.stderr
     assert out.is_file()
-    assert (out.parent / 'sha256.json').is_file()
+    assert (out.parent / (out.stem + '.sha256.json')).is_file()

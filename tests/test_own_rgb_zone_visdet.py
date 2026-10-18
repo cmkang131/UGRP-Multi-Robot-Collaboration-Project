@@ -123,3 +123,14 @@ def test_reporter_debounces_arrival():
     for _ in range(2):
         out = rep.observe(rgb_far)
     assert out['destination_arrived'] is False
+
+
+def test_large_floor_component_rejected_by_extent_cap():
+    m = load_module()
+    camera = make_camera(m)
+    # A blue region spanning several metres of floor (like the GPU-rendered
+    # floor appearance) must not be accepted as the authored zone patch.
+    rgb, _ = paint_floor_rect(m, camera, (0.40, 6.0, -3.0, 3.0))
+    det = m.detect(rgb, camera, enabled=True)
+    assert det.status == 'unknown'
+    assert det.reason in ('destination_extent_not_zone', 'destination_too_far')

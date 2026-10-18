@@ -81,8 +81,40 @@ python3 scripts/e2ewarp_selfmap_recount.py \
   exclude mask, reporter 디바운스.
 - `tests/test_e2ewarp_selfmap_recount.py` 3 tests: elapsed_sim_v1 funnel/off-grid/
   rule 위반, 삽입 0이면 exit 1, 삽입>0이면 정상 JSON+sha.
+- `tests/test_e2ewarp_visdet_replay.py` 1 test: 기록 프레임 디렉터리 재생 경로가
+  FK 카메라 모델을 만들고 GPU 프레임에서 모듈을 돌리며 엔진 import가 없음을 확인.
 - 전부 비물리·Mac CPU. **GPU 실행·R4 원본 재계수는 아직 하지 않았다.** R4 원본이
   나오면 위 명령으로 재계수해 funnel과 `elapsed_sim_v1` 키프레임 삽입을 원본에서
   확인한다. 검출 모듈의 GPU 렌더 프레임 실측은 R4 또는 별도 승인 실행에서만 한다.
 
 Produced with DeepSeek Harness. https://github.com/deepseek-ai/deepseek-harness
+
+## 4. R4 GPU 원본 공식 재계수 (2026-10-18)
+
+라벨: **R4 = attempt**, `queue.round=3`, source `718777118be41991156b047faff78621969101bb`,
+gcp6, nworld 2, smoke 30 SIM s `cap_end`, `mjwarp_batch_v1` /
+`warp_native_contact_v1`, policy `elapsed_sim_v1`.
+원본 `gcp6:/home/ugrp/ugrp-sim/runs/e2ewarp-r4-run`, Mac 사본 `/tmp/e2ewarp-r4-raw`.
+공식 결과: [`r4-selfmap-recount/`](r4-selfmap-recount/) (`recount.json`,
+`input-sha256.json`, `visdet-replay*.json`, `SHA256SUMS.json`).
+
+- **funnel 재계수**: `own_rgb 1806 → qualified_unloaded_FK 1806 →
+  settled_scan 48 → observed_wall_contacts 48 → inserted_keyframe 48`
+  (R3: 0). per-stream 6개 모두 frames 301 / settled 8 / inserted 8,
+  삽입 ticks `[24,71,124,148,195,224,248,295]`.
+- **elapsed_sim_v1 검증**: 삽입 48>0, elapsed-rule 위반 0(gap min/median/max =
+  24/47/53 ticks), **old `tick%10` 게이트가 놓쳤을 삽입 48**. (1차 재계수의
+  off-grid 0은 localization row에 `tick`이 없어 gap 계산이 비었던 탓이고,
+  공식 재계수는 `sim_s*10`으로 10Hz clock을 유도했다. 결론 동일: 통과.)
+- **visdet GPU 프레임 재생(새 실행 없음)**: 기록된 own RGB 2Hz review frames
+  183장(world-00)에 발행 명령 FK + 고정 fisheye 보정 카메라 모델로 모듈을 돌림
+  (Mac CPU 2.66s). **관측 결함**: GPU 렌더에서는 바닥이 채도 높은 파란색이라
+  CPU에서 쓰던 파란색 밴드가 floor를 zone paint로 오인한다(uncapped 180/183
+  observed, component 185k px·extent 4.05m). zone 크기 기반 extent cap 2.0m
+  (zone 대각 1.52m 근거)를 넣으면 144건이 거부되지만 하단 잘린 near-floor
+  36건은 여전히 통과하고 arrival evidence는 0이다. **R4 smoke 프레임에는
+  zone B paint가 보이는 프레임이 없어 GPU zone 외관을 이 원본으로 보정할 수
+  없다** → navigation_factory 도착 판정 연결 전에 GPU zone-visible 프레임
+  (동쪽 방 도달 프레임 또는 정적 캘리브레이션 캡처)이 필요하다. 그 전까지
+  모듈은 기본 off이고, 재생 검증 범위는 "GPU 프레임에서 동작·근거 기록"까지다.
+- 의존성: ACT/loaded FK/mapbuild8 correction/release **waiting** 그대로.

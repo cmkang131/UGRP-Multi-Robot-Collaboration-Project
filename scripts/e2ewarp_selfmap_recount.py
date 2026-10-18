@@ -63,6 +63,15 @@ def funnel(values):
     return out
 
 
+def _tick(row):
+    if row.get('tick') is not None:
+        return int(row['tick'])
+    sim_s = row.get('sim_s')
+    if sim_s is None:
+        return None
+    return int(round(float(sim_s) * 10))
+
+
 def recount(raw: Path, *, interval_ticks=10):
     rows = read(raw, 'localization.json', []) or []
     applied = read(raw, 'runtime-applied.json', {}) or {}
@@ -95,9 +104,12 @@ def recount(raw: Path, *, interval_ticks=10):
         b['inserted'] += bool(sm.get('inserted'))
     per_stream = []
     for key, b in sorted(by_key.items(), key=lambda kv: str(kv[0])):
-        ticks = sorted(int(r['tick']) for r in insert_rows
+        # localization rows in the R4 raw carry sim_s but not always an
+        # integer tick; the 10 Hz frame clock is the declared control rate.
+        ticks = sorted(_tick(r) for r in insert_rows
                        if (r.get('world'), r.get('robot')) == key
-                       and r.get('tick') is not None)
+                       and _tick(r) is not None)
+        ticks = [t for t in ticks if t is not None]
         gaps = [b - a for a, b in zip(ticks, ticks[1:])]
         violations = [g for g in gaps if g < interval_ticks]
         per_stream.append(dict(world=key[0], robot=key[1], **b,
@@ -183,9 +195,9 @@ def main():
         report['prior_raw'] = prior.get('raw')
     a.output.parent.mkdir(parents=True, exist_ok=True)
     a.output.write_text(json.dumps(report, indent=2, ensure_ascii=False) + '\n')
-    (a.output.parent / 'sha256.json').write_text(json.dumps({
-        a.output.name: hashlib.sha256(a.output.read_bytes()).hexdigest()},
-        indent=2) + '\n')
+    (a.output.parent / (a.output.stem + '.sha256.json')).write_text(
+        json.dumps({a.output.name: hashlib.sha256(a.output.read_bytes()).hexdigest()},
+                   indent=2) + '\n')
     if not a.json_only:
         print_table(report)
     if (report['elapsed_sim_check']['policy'] == 'elapsed_sim_v1'
