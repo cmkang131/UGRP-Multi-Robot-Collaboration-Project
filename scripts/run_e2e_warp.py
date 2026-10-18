@@ -195,6 +195,7 @@ def run(a, queue):
     write(a.output/'RUN_META.json', meta)
     contexts, planners, tasks, channels, ownstates, rings = [], {}, {}, [], {}, {}
     decisions, maprows, rejects, commands, evaluations, evalstates = [], [], [], [], [], []
+    message_drops = []
     status, error, tick, hooks = 'HOST_ERROR', None, 0, None
     started = time.monotonic()
     try:
@@ -281,6 +282,19 @@ def run(a, queue):
                                    **peer_input)
                     answer, reason = planners[key].decide(frame, dynamic)
                     if answer is not None:
+                        if nav:
+                            # Navigation gate: an out-of-spec chat message is a
+                            # recorded rejection and the message is dropped, but
+                            # it must not discard the navigation action (the
+                            # gate measures navigation, not phrasing).
+                            try:
+                                channels[w].validate(robot, answer['message'])
+                            except (ValueError, TypeError) as exc:
+                                rejects.append(dict(world=w, robot=robot, sim_s=now,
+                                                    **rejection(str(exc), category='message_envelope')))
+                                answer = dict(answer, message=None)
+                                message_drops.append(dict(world=w, robot=robot, sim_s=now,
+                                                          reason=str(exc)))
                         try:
                             channels[w].validate(robot, answer['message'])
                             # The LLM picks a candidate *id*; controller tasks
@@ -357,6 +371,7 @@ def run(a, queue):
         write(a.output/'messages.json', [dict(world=w, events=c.events) for w, c in enumerate(channels)])
         if nav:
             write(a.output/'nav-events.json', {f'{w}:{r}': task.component.events for (w,r),task in tasks.items()})
+            write(a.output/'message-drops.json', message_drops)
         elif components:
             write(a.output/'mission-events.json', {f'{w}:{r}': task.component.events for (w,r),task in tasks.items()})
         sizes = []
@@ -384,6 +399,7 @@ def run(a, queue):
             rejection_distribution=dict(Counter(r['reason'] for r in rejects)),
             dependency_status=queue['dependency_status'])
         if nav:
+            summary['message_dropped_n'] = len(message_drops)
             # Nav-only result: no evaluator, so no E2E/physical success field can
             # be set true even after an own-input arrival report.
             summary.update(nav_result_fields())

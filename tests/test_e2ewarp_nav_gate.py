@@ -270,3 +270,11 @@ def test_controller_tasks_receive_the_candidate_mapping_not_the_id():
     assert calls and calls[0][0] == 'start' and calls[0][1]['id'] == 'order_0'
     with pytest.raises(ValueError):
         controller.select('order_0', 0.1)
+
+
+def test_noncompliance_of_chat_envelope_is_recorded_not_fatal_for_navigation():
+    from harness.e2e_warp_runtime import Channels
+    channels = Channels('peer_en', 601, robots=('r1', 'r2'))
+    channels.validate('r1', None)  # null message is the contract's "no message"
+    with pytest.raises(ValueError):
+        channels.validate('r1', {'recipients': ['r2'], 'body': 'REQUEST_CARRY_PAIR:order-1'})
