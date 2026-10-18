@@ -1,0 +1,52 @@
+{
+  "schema": "ugrp.nav_scene_neutral.measure.v1",
+  "frame": "experiments/2026-10-18-nav-gate-1/raw/r1-tick5.jpg",
+  "frame_sha256": "4e921717dbcc05c1b2c2caeabf97d39bd9ae2cf354a0e863eb5e48b160860ab9",
+  "frame_shape": [
+    480,
+    640,
+    3
+  ],
+  "before": {
+    "pickup_paint_rgba_linear": [
+      0.12,
+      0.36,
+      0.7
+    ],
+    "indigo_mask": "H 100-120 and S>=100 (OpenCV units)",
+    "indigo_fraction": 0.57,
+    "median_hsv": [
+      108.0,
+      212.0,
+      90.0
+    ],
+    "median_rgb8": [
+      15.0,
+      46.0,
+      90.0
+    ],
+    "detector_band_pixels": 1583,
+    "detector_band_fraction": 0.005153
+  },
+  "prediction": {
+    "method": "irradiance from the recorded frame (median of G/B channels) x 0.70/0.30; first-order, not a render",
+    "irradiance_v1_gb_median": 0.111,
+    "irradiance_v2": 0.2589,
+    "neutral_palette_srgb8": [
+      225,
+      241,
+      255
+    ],
+    "predicted_pickup_v_srgb8": [
+      122,
+      131,
+      139
+    ],
+    "predicted_pickup_saturation": 0,
+    "predicted_pickup_opencv_hue": null
+  },
+  "notes": [
+    "after frame is NOT rendered: no local MuJoCo/GPU; run the nav gate on gcp6",
+    "zone B paint is unchanged in the map; its rendered V rises with the light scale, so the gpu_calib_v1 V<=110 band must be recalibrated on the new scene"
+  ]
+}

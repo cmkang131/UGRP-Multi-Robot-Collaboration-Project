@@ -342,6 +342,7 @@ TEST_PATTERNS = (
     "tests/test_render_pair_probe_video.py",  # stage-probe report video renderer (reads saved cases only)
     "tests/test_natural_scene_texture.py",  # pinned PNG, pure XML; no renderer
     "tests/test_render_profile.py",  # opt-in shadow/reflection render profiles (default path unchanged)
+    "tests/test_neutral_pickup_floor.py",  # 2026-10-18 nav-gate: neutral pickup paint + brighter lights (no renderer)
     "tests/test_carry_relocalization_b1.py",  # 2026-09-29: offline B1 relocalization measurement (pure arithmetic/thresholds)
     "tests/test_stall_detector_d1.py",  # offline D1 draft reference: NumPy frames only, no controller/simulator
     "tests/test_carry_lateral_error_model.py",  # offline endpoint extraction, grouped validation and paired prediction
