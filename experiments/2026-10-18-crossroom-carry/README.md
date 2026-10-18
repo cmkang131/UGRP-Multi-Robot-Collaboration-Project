@@ -469,6 +469,66 @@ What the v1 fixes did and did not do (all from the raw):
 
 ### crossroom-stageA-fix2 (candidate v2, unloaded)
 
+#### v2 results (unloaded, 16 starts, 180 SIM s)
+
+Raw VM `/home/ugrp/ugrp-sim/runs/crossroom-stageA-fix2`, copied under
+`stageA-fix2/`; executed from freeze commit `097c335d6`; `EXIT` DONE. Batch
+wall 8732.72 s = **3.0322 wall/(sim_s*nworld)**; first-30 is a frame-mtime
+estimate 1409.2/(30*16) = 2.9358 (15 cap_end + 1 arrival, so no t=30 record).
+
+Recounted funnel (0 mismatches): `16 -> audit 16 -> start_valid 16 ->
+**GT door_crossed 1** -> post-cross colour 1 -> post-cross found 1 ->
+arrived_declared 1 -> gt_inside 0`; `cap_end` 15, `false_arrival_outside_zone`
+1. **Verdict: FAIL under the mission (GT-inside 0)** but it recovers the GT
+crossing, true colour, found and declaration that fix v1 lost; the only
+crossing (e02/N03) is declared **0.0162 m outside zone B** (Stage A: -0.0281 m;
+v1: no crossing), i.e. the same stop-margin defect, now 1.2 cm smaller.
+
+| ep | status | GT door | found | declared | GT-inside | cross_t | decl_t | lateral | jamb gap | GT margin | gap rej | paint rej/acc | escapes |
+|---:|---|---|---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| 0 | cap_end | no | no | no | - | - | - | - | - | - | 6 | 0/0 | 0 |
+| 1 | cap_end | no | no | no | - | - | - | - | - | - | 0 | 31/0 | 0 |
+| 2 | ARRIVED_DECLARED | yes | yes | yes | no | 58.0 | 79.9 | -0.16 | -0.11 | -0.02 | 2 | 44/133 | 0 |
+| 3 | cap_end | no | no | no | - | - | - | - | - | - | 60 | 0/0 | 0 |
+| 4 | cap_end | no | no | no | - | - | - | - | - | - | 13 | 65/0 | 0 |
+| 5 | cap_end | no | no | no | - | - | - | - | - | - | 43 | 79/0 | 8 |
+| 6 | cap_end | no | no | no | - | - | - | - | - | - | 51 | 132/0 | 0 |
+| 7 | cap_end | no | no | no | - | - | - | - | - | - | 57 | 35/0 | 1 |
+| 8 | cap_end | no | no | no | - | - | - | - | - | - | 31 | 0/0 | 0 |
+| 9 | cap_end | no | no | no | - | - | - | - | - | - | 48 | 122/0 | 1 |
+| 10 | cap_end | no | no | no | - | - | - | - | - | - | 31 | 0/0 | 0 |
+| 11 | cap_end | no | no | no | - | - | - | - | - | - | 83 | 0/0 | 0 |
+| 12 | cap_end | no | no | no | - | - | - | - | - | - | 30 | 0/0 | 0 |
+| 13 | cap_end | no | no | no | - | - | - | - | - | - | 0 | 40/0 | 0 |
+| 14 | cap_end | no | no | no | - | - | - | - | - | - | 97 | 0/0 | 0 |
+| 15 | cap_end | no | no | no | - | - | - | - | - | - | 54 | 0/0 | 0 |
+
+What v2 changed (from the raw):
+
+* **The v2 gap rule is too strict**: 606 gap attempts rejected and **0
+  confirmed**, so no episode claimed `gap_cross` and door alignment was never
+  exercised (0 turns). e02 crossed the doorway GT at t=58.0 s while pathing
+  without a gap claim, then found the zone (133 accepted true zone patches) and
+  declared at t=79.9 s. The crossing episode's lateral offset (-0.1628 m) and
+  min jamb gap (-0.1078 m) are essentially the Stage A values
+  (-0.1634 / -0.1084): the alignment fix still needs a real gap entry.
+* **Paint filter v2 works as calibrated**: 548 rejections (beam-class) and
+  **133 accepted true zone patches** on e02, i.e. the range-conditioned rule
+  keeps true zone paint (v1 accepted 0) while still removing the beam-band
+  false candidates (Stage A found false positives).
+* **Approach escape fires** (10 total: e05 8, e07 1, e09 1) so no episode was
+  stuck in `approach_wall`; all but one ran to the cap.
+* Contact recorder: 656 classified rising edges (eval-only, cargo+robot_r1 /
+  wall classes), global `nacon` so per-world attribution unavailable.
+* **Next defect to fix (not done here)**: (a) accept the real doorway (v2
+  requires both jamb sectors while the door is narrow: 0 confirmed), e.g.
+  front wall + side-wall loss + jamb width estimate; (b) arrival stop margin:
+  declared 1.6 cm outside - add an own-RGB zone-edge check before declaring;
+  (c) door lateral/jamb clipping remains. Then a loaded candidate
+  (`crossroom-stageB-fix`, mask on/off counterfactual) per the design doc.
+
+
+
 Separate candidate built from the v1 raw (not pooled with Stage A, Stage B
 or fix v1). Freeze/execution: `queue-stageA-fix2.json`,
 `prereg-stageA-fix2.json`; code in `scripts/vgs_fix.py` (v2 flags) and
