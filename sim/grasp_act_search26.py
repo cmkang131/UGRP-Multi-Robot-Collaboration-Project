@@ -71,6 +71,17 @@ new candidate selects them.
   at align and stalled (alignment_no_progress) while wheel commands were all
   zero; the teacher needs to report whether it is waiting on a stale-memory
   pick-cloud collision or on missing visible error.
+- ``search26_align_refresh``: alignment-phase bounded obstacle refresh.  Basis:
+  r13diag case 27 FAIL trace: align reaches x=0.0188 m with 15 visible probes and
+  issues drive every tick, but from SIM 17.6 s the wrapper logs
+  ``alignment_axes_blocked`` and the segment-safety check replaces the pulse with
+  hold because the remembered red_1 cargo margin is stale; the robot then holds
+  3 s -> relook x3 -> alignment_no_progress.  A fresh observation of the cargo
+  makes the same pulse admissible (the approach phase already uses the bounded
+  ``reobserve`` obstacle path for exactly this).  This mode reuses that existing
+  bounded refresh when an align command is rejected while the robot is not
+  ready, then resumes align.  Default off; no new constants (VIEW_S/RETREAT_S/
+  LIMIT_S/MAX_ENCOUNTERS and the existing open-refresh bound are reused).
 - ``search26_align_pulse``: alignment breakaway pulse.  In the align phase
   every issued wheel pulse is widened to the full 0.1 s control period (the
   existing period only; the 0.35 board speed and duty ratios are unchanged).
@@ -102,6 +113,7 @@ new stance candidate uses only the existing calibrated envelope, the existing
 jaw predicate, and the existing margins.
 """
 MODES = {'search26_circles': 'search26_downfirst_circles_v1',
+         'search26_align_refresh': 'search26_align_refresh_v1',
          'search26_align_pulse': 'search26_align_pulse_v1',
          'search26_align_diag': 'search26_align_diag_v1',
          'search26_wide_rescue': 'search26_wide_rescue_v1',

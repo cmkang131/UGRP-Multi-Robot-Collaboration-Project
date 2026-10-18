@@ -342,3 +342,19 @@ def test_align_pulse_mode_is_registered_and_plumbed():
     from scripts.run_grasp_act_teacher import run
     import inspect
     assert 'search26_align_pulse' in inspect.signature(run).parameters
+
+
+def test_align_refresh_mode_is_registered_and_plumbed():
+    """r14: a rejected align pulse triggers the bounded obstacle refresh."""
+    from sim.grasp_act_search26 import MODES as M26
+    from sim.grasp_act_search15_modes import ALL_MODES
+    assert M26['search26_align_refresh'] == 'search26_align_refresh_v1'
+    assert 'search26_align_refresh' in ALL_MODES
+    from scripts.run_grasp_act_teacher import run
+    import inspect
+    assert 'search26_align_refresh' in inspect.signature(run).parameters
+    import argparse
+    from sim.grasp_act_search15_modes import add_arguments
+    parser = argparse.ArgumentParser()
+    add_arguments(parser)
+    assert parser.parse_args([]).search26_align_refresh == 'off'

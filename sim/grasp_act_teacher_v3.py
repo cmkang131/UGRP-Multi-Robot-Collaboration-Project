@@ -1063,6 +1063,18 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
                 self.sink.pwm.update(before_pwm);self.arm.commanded.update(before_pwm)
                 value=self._hold(now)
                 self.search18_log.append({'t':now,'event':'footprint_pulse_reject','reason':reason})
+        # Align-phase bounded obstacle refresh: a rejected align pulse is often
+        # only blocked by a stale remembered cargo margin; the same bounded
+        # reobserve used by the approach phase freshens it and then align resumes.
+        if (self.search15_modes.get('search26_align_refresh','off')!='off'
+                and self.phase=='align' and self.reobserver.active is None
+                and not any(value.get('wheels') or [0.,0.,0.,0.])
+                and self.goal_set_log):
+            from sim.grasp_act_reobserve import remembered_blockers
+            checked=(self.goal_set_log[-1] or {}).get('candidates') or []
+            blockers=remembered_blockers(truth,self.rid,checked,self.folded_ready)
+            if blockers and self.reobserver.begin('obstacle',blockers,truth,self,now):
+                self.recovery_log.append({'t':now,'event':'align_refresh_begin','blockers':sorted(blockers)})
         # READY waiting belongs to GO/ACK, and fine alignment has its own
         # error-progress checker. A search detour does not erase route debt.
         if self.phase in ('align','ready','pick','complete'):self.progress.reset()
