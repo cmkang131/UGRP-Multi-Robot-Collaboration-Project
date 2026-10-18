@@ -208,3 +208,20 @@ def test_nested_static_map_is_rejected_at_any_depth():
         nav.nav_static({'orders': [{'id': 'o1', 'geometry': {'doors': []}}]})
     assert nav.nav_static({'orders': [{'id': 'o1', 'destination_zone': 'B'}]}) == {
         'orders': [{'id': 'o1', 'destination_zone': 'B'}]}
+
+
+def test_prune_robots_removes_only_the_dropped_robot():
+    xml = """<mujoco><worldbody>
+      <body name="r1__robot"><geom name="r1__base"/></body>
+      <body name="r2__robot"><geom name="r2__base"/></body>
+      <body name="r3__robot"><geom name="r3__base"/></body>
+    </worldbody><actuator>
+      <motor name="r1__wheel_fl_drive"/><motor name="r2__wheel_fl_drive"/>
+      <motor name="r3__wheel_fl_drive"/>
+    </actuator><equality><weld name="r3__grasp_red"/><weld name="r1__grasp_blue"/></equality></mujoco>"""
+    out = gate.prune_robots(xml, keep=('r1', 'r2'))
+    assert 'r3__' not in out
+    assert out.count('r1__') == 4 and out.count('r2__') == 3
+    assert '<body name="r1__robot">' in out and '<body name="r2__robot">' in out
+    with pytest.raises(ValueError):
+        gate.prune_robots(xml, keep=('r1', 'r2', 'r3'))

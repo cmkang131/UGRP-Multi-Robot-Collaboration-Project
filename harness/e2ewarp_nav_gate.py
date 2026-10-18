@@ -30,6 +30,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import xml.etree.ElementTree as ET
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -61,6 +62,30 @@ def pair_lane_spawns(scene_spawns):
             raise ValueError('spawn must be x,y,z,yaw')
         out[rid] = [float(pose[0]), float(LANE_Y[rid]), float(pose[2]), float(pose[3])]
     return out
+
+
+def prune_robots(xml, keep=ROBOTS):
+    """Drop every named element of a robot that is not in ``keep``.
+
+    The zone scene builder requires the three production robots on input
+    (``sim/research_dispatch_arena.py`` raises 'expected three production
+    robots'), so the two-robot gate prunes r3 from the *final* XML, after all
+    scene/hardware/contact transforms. Bodies, actuators, welds and any other
+    named element with the dropped prefix are removed; nothing else changes.
+    """
+    keep = tuple(str(k).strip().lower() for k in keep)
+    prefixes = tuple(p + '__' for p in ('r1', 'r2', 'r3') if p not in keep)
+    root = ET.fromstring(xml)
+    removed = []
+    for parent in list(root.iter()):
+        for child in list(parent):
+            name = str(child.get('name') or '')
+            if any(name.startswith(prefix) for prefix in prefixes):
+                parent.remove(child)
+                removed.append(name)
+    if not removed:
+        raise ValueError('no robot prefix was pruned; check the XML names')
+    return ET.tostring(root, encoding='unicode')
 
 
 def nav_orders(scenario_orders):

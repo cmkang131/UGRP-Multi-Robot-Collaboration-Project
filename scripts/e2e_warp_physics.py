@@ -79,11 +79,13 @@ def build_context(seed, out, stack, *, nav_scene=False, nav_spawns=None):
         scene.cargo = []
         scene.config['setup_only']['objects'] = {}
     hw, _ = load_fitted_hardware()
-    robot_ids = ('r1', 'r2') if nav_scene else ('r1', 'r2', 'r3')
-    xml = scene.robot_transform(scene.transform(build_multi_robot_xml(hw, robot_ids=robot_ids)),
+    # The zone scene builder itself requires the three production robots, so the
+    # XML is authored with all three and r3 is pruned after every scene/hardware
+    # /contact transform (navigation gate only).
+    xml = scene.robot_transform(scene.transform(build_multi_robot_xml(hw)),
                                 hardware=hw, calibrated_keys=hw)
     xml = camera.transform_xml(nearclip(xml), profile_id=camera.PROFILE_ID)
-    for rid in robot_ids:
+    for rid in ('r1', 'r2', 'r3'):
         xml = stiffness(xml, servo_stiffness='real_v1', robot_id=rid)
     tree = ET.fromstring(xml)
     # Existing approved end-color appearance, exact owner RGBA, all beam IDs.
@@ -95,6 +97,9 @@ def build_context(seed, out, stack, *, nav_scene=False, nav_spawns=None):
             g.set('rgba', rgba)
     xml = transform_xml(ET.tostring(tree, encoding='unicode'), DriveParameters(), 'mesh', 'off')
     xml = apply_xml(xml, stack['contact_profile'])
+    if nav_scene:
+        from harness.e2ewarp_nav_gate import prune_robots
+        xml = prune_robots(xml, keep=('r1', 'r2'))
     model = mujoco.MjModel.from_xml_string(xml)
     data = mujoco.MjData(model)
     assert_model_profile(model, stack['contact_profile'], data.eq_active)
