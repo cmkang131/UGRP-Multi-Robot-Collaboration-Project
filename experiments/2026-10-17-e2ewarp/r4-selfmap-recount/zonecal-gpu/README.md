@@ -21,3 +21,18 @@ with any research result.
   not read or change the R4 physics/control stack.
 - Labels (`zone rectangle`, base/actual camera pose, distance) are eval-only;
   the detector never receives them. Not pooled with any research result.
+
+## Reproduce
+
+The capture script is `scripts/e2ewarp_zonecal_capture.py` (run on gcp6 with the
+warp venv; the R4 scene XML plus its asset dir; no physics stepping):
+
+```
+python3 scripts/e2ewarp_zonecal_capture.py \
+  --scene /tmp/zonecal/scene.xml \
+  --out /home/ugrp/ugrp-sim/runs/e2ewarp-zonecal-gpu-v2 \
+  --source-root /home/ugrp/ugrp-sim/src/e2ewarp-r4-src
+```
+
+Threshold fitting: `scripts/e2ewarp_zonecal_analyze.py` (Mac, non-physics) with
+the capture dir and the recorded R4 raw; it writes `zone-appearance-calib.json`.
