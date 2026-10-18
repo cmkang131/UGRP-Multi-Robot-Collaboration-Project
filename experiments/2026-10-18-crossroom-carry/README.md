@@ -574,6 +574,21 @@ or fix v1). Freeze/execution: `queue-stageA-fix2.json`,
   `seek_wall` with an `approach_wall_escape` event.
 * door alignment, contact recorder and the rest of v1 stay on.
 
+### crossroom-stageA-fix3 gate status: SUPERVISOR_STOP (no result)
+
+fix v3 was implemented and frozen (prereg `fb738fdee`), the 2-start preflight
+passed, and the 16x180 gate started at 2026-10-18T09:58:57Z. Per the user
+correction that every flow must run on the GPU/MJWarp path, the CPU MuJoCo
+gate was **supervisor-stopped at 10:09:15Z after 130/1801 frames per world**
+(`SUPERVISOR_STOP.json` in the raw run dir, SIGINT to PID 2959). The raw is
+preserved on the stopped gcp3 disk (`/home/ugrp/ugrp-sim/runs/crossroom-stageA-fix3`)
+and the Mac stop record is `outputs/e2e18-admin/stop-crossroom-fix3-supervisor.json`.
+It is an incomplete run, not HOST_ERROR; the runner's interrupt handler wrote
+`EXIT {"status":"DONE"}` before the stop file was noticed, so the stop record
+is authoritative. **CPU fix3 results are discarded and are not pooled** with
+Stage A/B/fix v1/v2 or with any GPU/MJWarp result. v3 remains a design/prereg
+record for a possible GPU port, not an executed measurement.
+
 ## crossroom-stageA-fix (candidate, default off)
 
 A separate candidate fixes the four Stage A failure modes and is **not pooled**
