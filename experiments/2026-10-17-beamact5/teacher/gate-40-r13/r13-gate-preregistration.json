@@ -1,0 +1,35 @@
+{
+ "schema": "ugrp.beamact5.r13_gate_preregistration.v1",
+ "written_before_run_utc": "2026-10-18T03:05:00Z",
+ "author": "beamact5 worker (DSH)",
+ "approved_by": "Lead (자율 진행: 38/40까지 반복)",
+ "scope": "r13 39-world gate: world15 excluded from physical execution and counted expected FAIL (r3-approved deviation); 37 is the r1/r2 structural expected FAIL. Not pooled with any earlier condition.",
+ "criterion": {
+  "nominal_denominator": 40,
+  "nominal_min_success": 38,
+  "executed_N": 39,
+  "rule": "at least 38 of 39 executed succeed; 37 expected FAIL -> exactly 38/40 = PASS at minimum",
+  "if_27_or_other_regression": "37/40 FAIL"
+ },
+ "stack": {
+  "root": "05046e9d245e46b4ee3d1c43308f7258a9fa41c5",
+  "adapter": "d354468a303e1ebc961e58deedd35d05bed40098",
+  "teacher": "fe6858eca7fa7b2ba6fb518c54f18a071995d5b4",
+  "cases_sha256": "3d4e065db0299c0efa4c91676f537ac9b0e130773e598dfc5767d97a34ffdc63",
+  "plan_sha256": "f1a50e8c833c1da9113bdf8cff3844913380e3c821b15c072c0a23c0f54f5148"
+ },
+ "run": {
+  "out": "/home/ugrp/ugrp-sim/runs/beamact5/gate39-r13-run",
+  "indices": "0-14,16-39",
+  "cap_s": 60,
+  "host": "ugrp-act-l4-gcp6"
+ },
+ "gate_runtime_decision": "launch only if stage2 has 6/10/20/27 PASS.",
+ "not_claimed": [
+  "teacher success is not student success",
+  "no student recording/training",
+  "world15 unverified/excluded",
+  "37 structural label from r1/r2 not remeasured",
+  "no margin/cap change"
+ ]
+}
