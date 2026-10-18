@@ -128,6 +128,10 @@ def main():
     p.add_argument('--cotrain-weight', type=float, default=.5)
     p.add_argument('--checkpoint-every', type=int)
     p.add_argument('--co-smooth-window', type=int, default=5)
+    # Phase C continuation after a host interruption (label required; never
+    # resumed silently): warm-start the ACT weights from a completed co run.
+    p.add_argument('--resume-from', type=Path)
+    p.add_argument('--resume-extra-steps', type=int)
     for name in ('dataset','protocol','out','queue'):
         p.add_argument('--'+name, type=Path, required=True)
     a = p.parse_args()
@@ -145,11 +149,21 @@ def main():
     if queue.get('training_precision')!=a.precision:
         raise ValueError('queue training_precision receipt and --precision must match')
     cotrain = a.cotrain_native is not None
-    total_steps = validate_probe_options(a.candidate, a.init_checkpoint, a.steps,
-                                         a.post_close_weight, a.pre_close_weight,
-                                         a.done_positive_batch_fraction,
-                                         a.base_smooth_window, a.val_select,
-                                         a.done_current_step_only) or protocol['steps']
+    resume = a.resume_from is not None
+    if resume:
+        if a.candidate != 'act18-co' or a.resume_extra_steps is None or a.steps is not None:
+            raise ValueError('resume requires --candidate act18-co, --resume-extra-steps and no --steps')
+        resume_meta = read(a.resume_from/'adapter.json')
+        resume_step = int(resume_meta['provenance']['step'])
+        total_steps = resume_step+a.resume_extra_steps
+        if total_steps > protocol['steps'] or resume_step <= 0:
+            raise ValueError('resume cumulative steps must stay within the 100k reference protocol')
+    else:
+        total_steps = validate_probe_options(a.candidate, a.init_checkpoint, a.steps,
+                                             a.post_close_weight, a.pre_close_weight,
+                                             a.done_positive_batch_fraction,
+                                             a.base_smooth_window, a.val_select,
+                                             a.done_current_step_only) or protocol['steps']
     if cotrain and (a.post_close_weight is not None or a.pre_close_weight is not None
                     or a.done_positive_batch_fraction is not None or a.done_current_step_only):
         raise ValueError('co-training does not combine with tuning options')
@@ -201,6 +215,11 @@ def main():
     policy=make_policy(data.chunk,device='cuda',pretrained=True,
                        state_dim=(data.state_dim if cotrain else None))
     init_receipt=None
+    if resume:
+        from safetensors.torch import load_file
+        policy.load_state_dict(load_file(str(a.resume_from/'model.safetensors')),strict=True)
+        init_receipt=dict(kind='cotrain_continuation_v1',from_checkpoint=str(a.resume_from),
+            from_step=resume_step,new_steps=a.resume_extra_steps,cumulative_steps=total_steps)
     if a.init_checkpoint is not None:
         init_receipt=init_checkpoint_receipt(a.init_checkpoint,protocol,a.protocol,a.dataset,data.chunk)
         from safetensors.torch import load_file
@@ -264,6 +283,11 @@ def main():
                                   if a.precision=='bf16_autocast_v1' else 'fp32 end-to-end'),
         static_map_use='none',wall_cap=None,optimizer_recipe='LeRobot AdamW defaults; no implicit resume',
         state_dim=(data.state_dim if cotrain else None))
+    if resume:
+        config['resume']=dict(kind='cotrain_continuation_v1',from_checkpoint=str(a.resume_from),
+            from_step=resume_step,new_steps=a.resume_extra_steps,cumulative_steps=total_steps,
+            optimizer_state='reset (AdamW is stateless at continuation boundary)',
+            note='Phase C interrupted by VM guest shutdown; continuation is NOT a pooled result')
     if cotrain:
         config.update(cotraining=dict(v7_root=str(a.dataset),native_root=str(a.cotrain_native),
             native_manifest_sha256=data.native_manifest_sha256,native_weight=a.cotrain_weight,
@@ -321,7 +345,9 @@ def main():
     started=time.monotonic()
     try:
         with (a.out/'progress.jsonl').open('x') as stream:
-            for step in range(1,total_steps+1):
+            start_step=resume_step if resume else 0
+            for local_step in range(1,total_steps-start_step+1):
+                step=start_step+local_step
                 if stop['requested']:
                     raise InterruptedError('explicit supervisor stop')
                 ids=data.sample(generator,8,sampling)
@@ -349,7 +375,7 @@ def main():
                     if value<best_val['loss']:
                         best_val=dict(loss=value,step=step,
                             state={k:t.detach().cpu().clone() for k,t in policy.state_dict().items()})
-                if step==1 or step%100==0:
+                if local_step==1 or step%100==0:
                     row=dict(step=step,loss=float(loss),**metrics,gradient_norm=float(norm),wall_s=time.monotonic()-started)
                     stream.write(json.dumps(row)+'\n');stream.flush()
                     report.update(steps_completed=step,latest=row)

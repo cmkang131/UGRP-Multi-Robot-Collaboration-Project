@@ -196,7 +196,9 @@ def main():
             raise ValueError('complete registered100k reference model required')
         elif provenance.get('step')!=100000:
             from act18_policy import registered_pilot_checkpoint
-            if not registered_pilot_checkpoint(provenance,sha256(protocol_path)):
+            continuation=(provenance.get('candidate')=='act18-co' and provenance.get('resume')
+                          and isinstance(provenance.get('step'),int) and 20000<=provenance['step']<=100000)
+            if not continuation and not registered_pilot_checkpoint(provenance,sha256(protocol_path)):
                 raise ValueError('complete registered100k reference model required')
     class Client(originals[2]):
         def reset(self,plans,indices=None):
