@@ -93,3 +93,46 @@ def test_contract_scenario_is_two_robot_without_static_map():
     assert scenario['mission']['robots_required'] == 2
     assert scenario['physics']['backend'] == 'mjwarp_batch_v1' and scenario['physics']['noslip_iterations'] == 0
     assert scenario['language_conditions'] == ['no_comm', 'peer_en', 'leader_en', 'structured']
+
+
+def test_gpu_calib_zone_detector_accepts_zone_and_rejects_bright_floor():
+    import numpy as np
+    det = sn.GpuCalibZoneDetector()
+    img = np.zeros((48, 64, 3), dtype=np.uint8)  # black
+    # zone paint: hue 112 -> RGB approx (0,0,153) with S=255, V=153/255 -> V 60 fits 30..110
+    img[20:, 20:44] = (8, 60, 0)  # rgb->HSV hue 112 deg, V=60, S=255 (gpu_calib_v1 band)
+    out = det(img)
+    assert len(out) == 1 and out[0]['kind'] == 'zone_B'
+    assert out[0]['bottom_norm'] >= 0.98 and out[0]['pixels'] >= 600
+    # bright pickup-room floor (V~135) must be rejected by gpu_calib_v1 ceiling
+    floor = np.zeros((48, 64, 3), dtype=np.uint8)
+    floor[:, :] = (0, 0, 135)
+    assert det(floor) == []
+
+
+def test_own_command_odometry_requires_injected_calibration():
+    with pytest.raises(TypeError):
+        sn.OwnCommandOdometry()  # calibration must be injected; no invented defaults
+    od = sn.OwnCommandOdometry(forward_m_per_pct_s=0.001, yaw_deg_per_pct_s=0.01)
+    row = dict(t=0.0, wheels=[.4, .4, .4, .4], duration_s=[.15] * 4, pwm={})
+    f, y = od.step(row)
+    assert f > 0 and abs(y) < 1e-9
+
+
+def test_odometry_shifts_self_centric_memory_opposite_to_motion():
+    od = sn.OwnCommandOdometry(forward_m_per_pct_s=0.001, yaw_deg_per_pct_s=0.01)
+    nav = sn.navigation_factory('r1', {}, option=sn.OPTION, odometry=od,
+                                detector=lambda fr: [{'kind': 'zone_B', 'bearing_deg': 0.0,
+                                                      'range_m': 2.0, 'bottom_norm': 0.3}])
+    nav.observe(frame(0.0))
+    row = dict(t=0.0, wheels=[.4, .4, .4, .4], duration_s=[.15] * 4, pwm={})
+    out = nav.step_odometry(row)
+    assert out[0] > 0
+    # memory range decreases as the robot moves toward the landmark
+    assert nav.memory.items[0].range_m < 2.0
+
+
+def test_arrival_uses_recorded_bottom_band_evidence():
+    det = [{'kind': 'zone_B', 'bearing_deg': 0.0, 'bottom_norm': 0.985, 'range_m': 1.0}]
+    nav = sn.navigation_factory('r2', {}, option=sn.OPTION, detector=lambda fr: det)
+    assert nav.observe(frame(1.0))['destination_arrived'] is True
