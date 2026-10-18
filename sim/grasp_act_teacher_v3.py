@@ -518,6 +518,23 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
                     selected,sampled=select_sampled_goal(world,self.rid,self.end,self.bounds,self.folded_ready,self.sink.pwm,navigation=nav)
                     checked+=sampled
                     self.sampled_stance=selected is not None
+            if (selected is None and self.search15_modes.get('search26_wide_rescue','off')!='off'
+                    and self.reobserver.active is None):
+                # Bounded rescue: retry the same unchanged selection against the
+                # separate 1-degree wide-angle certified family.
+                from sim.grasp_act_search24 import reachability_map_wide
+                from sim.grasp_act_pregrasp import select_sampled_goal
+                g=self._geometry(world)[1]
+                wide_choices=[(a,d) for (a,d,_goal,_cert) in reachability_map_wide(g[2])]
+                wide_selected,wide_checked=select_sampled_goal(
+                    world,self.rid,self.end,self.bounds,self.folded_ready,self.sink.pwm,
+                    choices=wide_choices,navigation=nav)
+                checked+=wide_checked
+                self.search17_log.append({'t':now,'event':'wide_stance_rescue',
+                    'family':'search26_wide_rescue_v1','tested':len(wide_choices),
+                    'feasible':sum(c.get('reason')=='feasible' for c in wide_checked)})
+                if wide_selected is not None:
+                    selected=wide_selected;self.sampled_stance=True
             if selected is None and self.search15_modes['search17_candidates']!='off' and self.reobserver.active is None:
                 from sim.grasp_act_pregrasp import select_sampled_goal
                 from sim.grasp_act_search17 import expanded_choices

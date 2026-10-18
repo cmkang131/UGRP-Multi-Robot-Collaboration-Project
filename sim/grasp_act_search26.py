@@ -55,6 +55,15 @@ new candidate selects them.
   SIM 15.8-17.4 s, each fresh window allowing only ~0.1 m of movement before
   the stale-margin blocked the plan again, and handed off at 20.4 s; the
   bounded count, not the refresh mechanism, ended the attempt.
+- ``search26_wide_rescue``: when the normal sampled stance family returns no
+  selection, retry the selection against the separate 1-degree wide-angle
+  certified family (search26_wide_stance's map) as a bounded rescue.  Basis:
+  r4c/r5/r6/r7 world 27 has 92/92 stances blocked whenever the remembered
+  red_1 cargo is stale (sampled family best gap 46.7 mm vs stale margin up to
+  52.1 mm), and r1/r2 world 37's sampled +/-15 deg family best gap is 4.87 mm
+  below the runtime floor 11.07 mm; a wider family may contain clearance poses
+  in both.  Used only when the normal family fails, so the normal planning
+  cost is unchanged.  Default off; separate never-pooled family.
 - ``search26_commit_plan``: keep driving a feasible committed approach plan
   until its existing 1 s replan boundary instead of re-planning on every
   blocked tick caused by stale-memory margins.  Basis: gcp6 r5c case 27 spent
@@ -77,6 +86,7 @@ new stance candidate uses only the existing calibrated envelope, the existing
 jaw predicate, and the existing margins.
 """
 MODES = {'search26_circles': 'search26_downfirst_circles_v1',
+         'search26_wide_rescue': 'search26_wide_rescue_v1',
          'search26_commit_plan': 'search26_commit_plan_v1',
          'search26_reobserve_refresh_open': 'search26_reobserve_refresh_open_v1',
          'search26_reobserve_refresh': 'search26_reobserve_refresh_v1',

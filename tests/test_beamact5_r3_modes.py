@@ -312,3 +312,13 @@ def test_commit_plan_mode_is_registered_and_plumbed():
     parser = argparse.ArgumentParser()
     add_arguments(parser)
     assert parser.parse_args([]).search26_commit_plan == 'off'
+
+
+def test_wide_rescue_mode_is_registered_and_plumbed():
+    from sim.grasp_act_search26 import MODES as M26
+    from sim.grasp_act_search15_modes import ALL_MODES
+    assert M26['search26_wide_rescue'] == 'search26_wide_rescue_v1'
+    assert 'search26_wide_rescue' in ALL_MODES
+    from scripts.run_grasp_act_teacher import run
+    import inspect
+    assert 'search26_wide_rescue' in inspect.signature(run).parameters
