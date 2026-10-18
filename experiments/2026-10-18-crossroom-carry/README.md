@@ -527,6 +527,35 @@ What v2 changed (from the raw):
   (c) door lateral/jamb clipping remains. Then a loaded candidate
   (`crossroom-stageB-fix`, mask on/off counterfactual) per the design doc.
 
+**Field definitions (summary vs strict recount) - no numeric conflict.** The
+run summary reports `colour_seen_n = 3` while the recount funnel reports
+`post_cross_colour_seen = 1`; these are different fields:
+
+| field | source | definition | v2 value |
+|---|---|---|---|
+| `colour_seen_n` | summary | episodes where the skill saw at least one destination-colour component (`pixels >= MIN_COLOUR_PIXELS`) at **any** SIM time, before or without a GT door crossing (includes beam end-band hints and colour glimpses from the pickup room) | 3/16 (e02, e06, e10) |
+| `post_cross_colour_seen` | strict recount funnel | colour observed only on ticks **after** the eval-only GT door crossing (`cross_t`) - the east-room colour stage | 1/16 (e02, cross_t 58.0) |
+| `found_n` | summary | skill metric landmark (`floor_patch` painted_ground_hypothesis) acquired at any time | 1/16 (e02) |
+| `post_cross_found_n` | strict recount funnel | metric landmark acquired after the GT door crossing | 1/16 (e02) |
+| `arrived_declared_n` | both | skill declared arrival (own evidence) | 1/16 |
+| `gt_inside` | strict recount (eval-only) | declared stop is inside zone B rectangle | **0/16** (e02 margin -0.0162 m) |
+
+The two extra `colour_seen` episodes (e06, e10) never GT-crossed: their final
+base x is 1.63 / 1.86 m, west of the door line 2.175 m, so they are pre-cross
+colour detections (beam-band hints / pickup-room glimpses) and are **not**
+east-room evidence. `arrived_gt_n = 0` in the summary is the same eval-only
+GT-inside count as the recount's `gt_inside = 0`; `sim_s_total = 2780.8` is
+the observed SIM sum (15 x 180 + 80.8 for the declared episode).
+
+**Verification scope for the fix candidates.** The fix v1/v2 raw recounts
+were **not** re-run by an independent verifier. The Lead spot-checked the Mac
+copies (`stageA-fix2/summary.json`, recount) for found 1, declared 1,
+GT-inside 0 and the e02 declared margin -0.0162 m; the raw run directories and
+the 16 montages are preserved on the stopped gcp3 disk
+(`/home/ugrp/ugrp-sim/runs/crossroom-stageA-fix2`, `...-fix`) and gcp3 is
+TERMINATED. Stage A and Stage B have their own independent verifier notes
+above; the fix candidates do not.
+
 
 
 Separate candidate built from the v1 raw (not pooled with Stage A, Stage B
