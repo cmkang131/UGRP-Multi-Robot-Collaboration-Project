@@ -282,6 +282,18 @@ def run(a):
     carry_loaded = stage in ('B_loaded', 'B_loaded_mask_off',
                              'B_loaded_mask_on')
     carry_mask_on = stage == 'B_loaded_mask_on'
+    # Loaded wall-line v1 (default off; design outputs/reports/crossroom-stageB-fix.md
+    # section 2).  Admitted only for the loaded stages: an unloaded queue that
+    # asks for it is rejected, never silently ignored.
+    loaded_wallline_mod = load_module(
+        'crossroom_loaded_wallline',
+        ROOT / 'experiments/2026-10-18-crossroom-carry/scripts/loaded_wallline.py')
+    loaded_wallline_on = loaded_wallline_mod.admit(q.get('toggles', {}), stage)
+    if (loaded_wallline_on
+            and int(a.nworld or q.get('worlds_per_batch', 1)) <= 1):
+        # The cargo band + wall rows are only produced by the batch runner that
+        # also places the cargo; the single-world path cannot honour the toggle.
+        raise ValueError('CROSSROOM_LOADED_WALLLINE_BATCH_ONLY')
     fix_stage = stage in ('A_unloaded_fix', 'A_unloaded_fix2',
                           'A_unloaded_fix3')
     fix_stage_v2 = stage in ('A_unloaded_fix2', 'A_unloaded_fix3')
@@ -358,10 +370,11 @@ def run(a):
             'crossroom_carry_state',
             ROOT / 'experiments/2026-10-18-crossroom-carry/scripts/carry_state_own.py')
     fix_mod = paint_filter_mod = contact_mod = None
-    if fix_stage:
+    if fix_stage or loaded_wallline_on:
         fix_mod = load_module(
             'crossroom_vgs_fix',
             ROOT / 'experiments/2026-10-18-crossroom-carry/scripts/vgs_fix.py')
+    if fix_stage:
         paint_filter_mod = load_module(
             'crossroom_paint_filter',
             ROOT / 'experiments/2026-10-18-crossroom-carry/scripts/paint_area_filter.py')
@@ -405,6 +418,7 @@ def run(a):
                                             MIRROR_OPTION as MIRROR)
         from sim.destination_visual_acquire import floor_patch
         from sim.solo_carry_obstacles import detections as obstacle_detections
+        from sim.grasp_act_solo_lookback import project as fk_project
         from harness.scene_colour_boundary import surface_masks
         cv2.setNumThreads(1)
         if a.implementation != 'legacy_v1':
@@ -488,6 +502,13 @@ def run(a):
                                                                if arrival_aim_on else 0.),
                                        'crossroom_stage': stage,
                                        'carry_mask_on': carry_mask_on,
+                                       'loaded_wallline_v1': ('on'
+                                                              if loaded_wallline_on
+                                                              else 'off'),
+                                       'loaded_wallline_inputs': (
+                                           'own_rgb_cargo_band_top+own_rgb_'
+                                           'wall_support_row' if loaded_wallline_on
+                                           else None),
                                        'destination_zone': target_zone,
                                        'fix_stage': fix_stage,
                                        'fix_stage_v2': fix_stage_v2,
@@ -514,6 +535,11 @@ def run(a):
             opts = SkillOptions(
                 expanding_search=expanding_search,
                 arrival_aim_inset_m=(ARRIVAL_AIM_INSET_M if arrival_aim_on else 0.))
+            if loaded_wallline_on and fix_mod is not None:
+                # crossroom_loaded_wallline_v1: the only difference from the
+                # loaded baseline is this subclass + its own-RGB band input.
+                return fix_mod.LoadedWallLineSearch(
+                    option=SKILL, options=opts, loaded_wallline=True)
             if fix_mod is not None and (fix_toggles.get('crossroom_gap_twosided_v1')
                                         or fix_toggles.get('crossroom_door_align_v1')):
                 return fix_mod.FixedVisualGoalSearch(
@@ -683,6 +709,7 @@ def run(a):
                     cargo=(carry_mod.CarryStateOwn() if carry_loaded else None),
                     cargo_at_start=None, cargo_at_cross=None,
                     cargo_at_arrival=None, cargo_state_counts={},
+                    cargo_band_top=None, cargo_band_full=None,
                     box_at_declared=None, box_final=None, cargo_own=None,
                     ncon_last=None, nacon_global_last=None, paint_filter_counts={},
                     crossed=False, last_base_x=None,
@@ -767,6 +794,34 @@ def run(a):
                         s['wall_points_total'] += len(walls)
                         if not walls:
                             s['wall_zero_ticks'] += 1
+                        # crossroom_loaded_wallline_v1 (default off): the only
+                        # new control input is the own-RGB cargo band top and
+                        # the supporting pixel row of each own-RGB wall point.
+                        loaded_kwargs = {}
+                        if loaded_wallline_on:
+                            carry_state = (s['cargo_own'] or {}).get(
+                                'state', 'uncertain')
+                            band_comp = carry_mod.full_frame_red_component(bgr)
+                            band_top = loaded_wallline_mod.band_top_for_state(
+                                carry_state, band_comp.get('band_top_row'))
+                            if walls:
+                                xy = np.asarray(
+                                    [p['relative_xy_m'] for p in walls], float)
+                                px, front = fk_project(
+                                    np.column_stack(
+                                        [xy, np.zeros(len(xy), float)]), servo)
+                                walls = loaded_wallline_mod.attach_rows(
+                                    walls, px[:, 1], front)
+                            s['cargo_band_top'] = band_top
+                            s['cargo_band_full'] = dict(
+                                pixels=band_comp.get('pixels'),
+                                largest=band_comp.get('largest'),
+                                bbox_xywh=band_comp.get('bbox_xywh'),
+                                band_top_row=band_comp.get('band_top_row'),
+                                state=carry_state)
+                            loaded_kwargs = dict(
+                                cargo_held=(carry_state == 'held'),
+                                cargo_band_top=band_top)
                         if s['obstacle_cache']:
                             s['obstacle_ticks'] += 1
                         if tick == 0:
@@ -819,12 +874,14 @@ def run(a):
                                    dict(t=t, paint=paint, walls=walls,
                                         obstacles=s['obstacle_cache'],
                                         memories=mem['memories'],
-                                        patch_ok=patch is not None, patch_xy=patch))
+                                        patch_ok=patch is not None, patch_xy=patch,
+                                        **loaded_kwargs))
                         action = s['skill'].control(
                             t, paint=paint, walls=walls,
                             obstacles=s['obstacle_cache'],
                             memories=mem['memories'],
-                            patch_ok=patch is not None, patch_xy=patch)
+                            patch_ok=patch is not None, patch_xy=patch,
+                            **loaded_kwargs)
                         if audit.violations:
                             raise RuntimeError('INPUT_AUDIT_FAIL')
                         if action['found']:
@@ -899,6 +956,11 @@ def run(a):
                         s['trace'].append(dict(
                             t=t, frame_id=tick, stage=action['stage'],
                             cargo_own=s.get('cargo_own'),
+                            cargo_band_top=s.get('cargo_band_top'),
+                            cargo_band_full=s.get('cargo_band_full'),
+                            loaded_wallline=(s['skill'].loaded_debug()
+                                             if hasattr(s['skill'], 'loaded_debug')
+                                             else None),
                             paint=paint_log, walls=len(walls),
                             obstacles=s['obstacle_cache'],
                             patch=None if patch is None else np.asarray(patch).tolist(),
