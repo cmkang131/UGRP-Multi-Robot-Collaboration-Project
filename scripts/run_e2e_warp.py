@@ -283,7 +283,15 @@ def run(a, queue):
                     if answer is not None:
                         try:
                             channels[w].validate(robot, answer['message'])
-                            task.select(answer['act'], now)
+                            # The LLM picks a candidate *id*; controller tasks
+                            # take the candidate mapping (the diagnostic task
+                            # keeps the id). Resolve against the same candidate
+                            # list the prompt advertised.
+                            selection = answer['act']
+                            if active:
+                                selection = next(c for c in dynamic['candidates']
+                                                 if c['id'] == answer['act'])
+                            task.select(selection, now)
                             channels[w].send(robot, answer['message'], now=now)
                         except (ValueError, TypeError) as exc:
                             answer, reason = None, rejection(str(exc), category='message_or_selection')

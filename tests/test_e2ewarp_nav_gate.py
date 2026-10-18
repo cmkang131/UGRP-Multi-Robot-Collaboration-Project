@@ -241,3 +241,32 @@ def test_issue_normalizes_percent_wheel_commands_for_the_mjwarp_relay():
     with pytest.raises(ValueError):
         issue(context, 'r1', dict(t=1.0, wheels=[100., 0., 0., 0.], duration_s=[.1, 0., 0., 0.],
                                   pwm={'1': 1500, '3': 1500, '4': 1500, '5': 1500, '6': 1500}))
+
+
+def test_controller_tasks_receive_the_candidate_mapping_not_the_id():
+    """Regression: the runner used to pass the LLM's act id to select()."""
+    from harness.e2ewarp_nav_mode import NavigationOnlyController
+    calls = []
+
+    class Nav:
+        def observe(self, frame):
+            return {'destination_arrived': False}
+
+        def task_candidates(self, completed):
+            return [dict(id='order_0', skill='carry_pair', order=dict(destination_zone='B'))]
+
+        def start(self, instruction, phase='approach'):
+            calls.append(('start', instruction, phase))
+
+        def command(self, now):
+            return dict(t=now, wheels=[0.] * 4, duration_s=[0.] * 4, pwm={str(s): 1500 for s in (1, 3, 4, 5, 6)})
+
+        def on_messages(self, rows):
+            pass
+
+    controller = NavigationOnlyController('r1', {'destination_zone': 'B'}, Nav())
+    candidate = controller.candidates()[0]
+    controller.select(candidate, 0.0)
+    assert calls and calls[0][0] == 'start' and calls[0][1]['id'] == 'order_0'
+    with pytest.raises(ValueError):
+        controller.select('order_0', 0.1)
