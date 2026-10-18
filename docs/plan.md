@@ -1,6 +1,6 @@
 # UGRP 작업 계획 (DSH 조정자 유지)
 
-최종 갱신: 2026-10-18 15:35 KST. 이 파일이 **단일 계획표**다. 상세 원본·수치는 `outputs/e2e18-admin/ops-alert.md`(로컬), 실험별 README, PR을 따른다.
+최종 갱신: 2026-10-18 20:20 KST. 이 파일이 **단일 계획표**다. 상세 원본·수치는 `outputs/e2e18-admin/ops-alert.md`(로컬), 실험별 README, PR을 따른다.
 
 ## 0. 이번 세션 목표
 - 미션: 두 로봇이 서쪽 픽업존 → divider 문 → 동쪽 목적 구역으로 짐(빔/박스) 운반. 근거리 파지·놓기는 ACT.
@@ -64,3 +64,30 @@
 - 사용자 결정 대기: (1) act18 데이터/closed-loop/평가계약 (2) beamact5 27 안정화 vs margin-aware 재승인 (3) visgoal 문 gap v3·선언 전 경계 확인·loaded stageB-fix.
 - 전 스레드 CLEAN, 실행 중 작업 없음. 신규 실험은 사용자 결정 후 착수.
 - 핸드오프 상세 수치·원본 SHA: `outputs/e2e18-admin/ops-alert.md` 및 각 실험 README.
+
+## 8. GPU(MJWarp) 전환과 Codex 독립 리뷰 (2026-10-18 20:20)
+
+### 8.1 사용자 정정과 폐기
+- 사용자: "내가 MuJoCo 안 쓰기로 했었잖 / 모두 GPU로 하기로 했었잖" (2026-10-18). **모든 연구 실행은 GPU/MJWarp만** 사용한다 ([AGENTS.md](../AGENTS.md) 정적 지도·결과 규칙, 2026-10-16 "모두 MJWarp로").
+- **폐기(ABANDONED_NONCOMPLIANT)**: CPU MuJoCo zone-study 통합 경로(`experiments/2026-09-26-zone-study-integration`의 CPU 실행·`prereg_v3`·GCP CPU VM 실행). 수행 결과·파일은 폐기하고 어떤 새 결과와도 합산하지 않는다. 미추적 `prereg_v3.json`은 작업트리에서 제거했다.
+
+### 8.2 GPU 경로 현황 (e2ewarp, PR #570 draft)
+- source `718777118`, `mjwarp_batch_v1`, `warp_native_contact_v1`, noslip0, `elapsed_sim_v1` 채택.
+- **R4**: self-map funnel 1806→48→**48 keyframes**(R3 0), 6스트림×8, off-modulo 48/48; LLM 18/18; 독립 검증자 "확인됨".
+- **4조건 GPU 스모크**: keyframes 48/48/54/46(peer_en/no_comm/leader_en/structured), LLM 18/18·18/18·17/18; `E2E_success=false`, `student_execution=false`, `cap_end`; 독립 검증자 "일부만 확인됨"(structured timeout=journal 늦은 200, wall 두 기준 병기, queue rejection_table cross-ref, structured rejection 누락, run dir `sha256.json`).
+- **부품 어댑터(기본 off·Mac 비물리)**: release(e2ewarp release_factory, 13 tests), map correction+loaded FK(24 tests), zone visdet+GPU 외관 캘리브레이션 gpu_calib_v1(35 tests, zone 33/33·floor FP 36/180→0).
+- **components manifest**: `components.r4-integration-v1.json`(ready=false). mission prepare → `DEPENDENCY_WAIT:navigation`.
+- **PR #595**: 통합 기록용 draft였으나 base 대비 324파일·+54k, CONFLICTING으로 검토/병합 불가 → **기록 전용으로 닫고**, 최소 PR을 main에서 새로 만든다.
+
+### 8.3 Codex 독립 리뷰 요지 (2026-10-18, 6/10)
+- 잘한 것: CPU 중단·비합산, R4/4조건 원본 재계수·정직 라벨, timeout/ wall 정정 공개, fail-closed 유지, VM/원본 관리.
+- 문제: (1) 최신 결정 지연 준수(CPU 경로·전원 HOLD), (2) **e2ewarp 통합 코드가 정적 지도 등록(`static_map_registration`,`own_and_static_map=true`)을 필수로 강제** — 2026-10-17 "정적 지도 미사용·자기중심 기억" 결정과 **계약 불일치**, (3) e2ewarp는 **3로봇** 전제 — 현재 목표(2로봇 서쪽→문→동쪽 B 운반)와 미션 불일치, (4) "ACT가 blocker" 설명 불완전 — **첫 blocker는 navigation**(wheel hold), 이후 loaded FK·registration·release·evaluator·ACT, (5) ACT 10k 재현·통합 스모크 마감 옵션의 가치/목표 부합성 문제, (6) 계획표 stale·미추적 CPU prereg·checkout 브랜치 상태 등 위생, (7) 검증 완료 전 확정적 요약 지양.
+- 제안: 최신 main에서 최소 PR로 계약(2로봇·영어 4조건·정적 지도 없음·자기중심 기억·MJWarp/noslip0) 고정 → navigation·loaded FK·release·evaluator MJWarp 관문 먼저 → ACT는 실패 원인에 연결된 새 후보 1개로 소규모 물리 관문 → peer_en 1조건·1시드 처음→끝 운반 성공 후 4조건 확장.
+
+### 8.4 다음 작업 (정렬)
+1. **계약 정렬 결정(사용자)**: (a) e2ewarp를 2로봇·정적 지도 없음·자기중심 기억 계약으로 재설계, 또는 (b) e2ewarp를 과거 설계 기준선으로만 유지(연구 결과 아님).
+2. **navigation owner 부품**을 MJWarp에서 구현/이관해 wheel hold 제거(서쪽→문→동쪽 B 실제 주행·자기 RGB 도착 확인).
+3. loaded FK·static registration·release·evaluator MJWarp 관문 순차 통과.
+4. ACT는 실패 원인(물리 grasp 기하/데이터 규모/행동형식)에 연결된 후보 하나를 골라 소규모 물리 관문 → peer_en 1조건·1시드 처음→끝 → 성공 시 4조건 확장.
+5. 최소 PR·계획표·위생 유지(검증 전 요약 확정 금지).
+
