@@ -50,11 +50,11 @@
  },
  "tests": {
   "path": "tests/test_e2e_warp_release.py",
-  "sha256": "d0c1f96d2d9a19efe93a4c14ba9bfd343e47db2083dcb3df3f058e622456daa8",
-  "cases": 11,
+  "sha256": "64c522d91d5e428726a0abe59f209f98d6a83ab38f9b4a1f6e9e23278da7e153",
+  "cases": 13,
   "command": "python -m pytest tests/test_e2e_warp_release.py -q",
   "result": "pass",
-  "scope": "Mac non-physical unit tests only; no GPU/physics run"
+  "scope": "Mac non-physical unit tests only; includes e2ewarp mission ABI integration with a stub navigation owner and fake owner relocalizer; no GPU/physics run"
  },
  "integration": {
   "target_run": "/home/ugrp/ugrp-sim/runs/e2ewarp-r4-run",
@@ -63,11 +63,74 @@
   "component_manifest_key": "release_factory",
   "merge_note": "copy adapter entry into e2ewarp components manifest release_factory; release_relocalization.ready stays false until warp8f observation bytes + mapbuild8 static-map correction API are integrated and a new physical gate is run",
   "no_prior_result_inheritance": "rel21/release18/warp8f prior physical gates are NOT inherited; this adapter only carries the e2ewarp input-boundary contract and Mac unit evidence",
-  "no_pooling": true
+  "no_pooling": true,
+  "manifest_path_in_tip": "experiments/2026-10-17-e2ewarp/components.pending.json",
+  "ready": false
  },
  "pending": [
   "warp8f own-RGB observation bytes / global CSM acceptance (prior offline 0/28 accepted)",
   "mapbuild8 static-map registration/correction API",
   "new physical release gate (A40/B40 or equivalent) under gcp6 + new r4-era source pin"
- ]
+ ],
+ "prior_release_audit": {
+  "policy": "no prior physical-gate result is inherited; only the e2ewarp input-boundary contract is reused",
+  "candidates": [
+   {
+    "id": "warp8f observation/CSM r1",
+    "commits": [
+     "31657fc91 (docs/warp8f rejected static registrations)",
+     "d8c9ec262 (raw CSM recount)"
+    ],
+    "artifacts": "experiments/2026-10-16-warp8/* offline selfmap CSM queue/requirements/artifact-integrity",
+    "boundary": "observation-only vendor: own RGB/servo/static calibration, truth_inputs=0/held_world_reads=0 rows; offline CSM accepted 0/28 (ambiguous 17, unobservable 11)",
+    "inherited": false,
+    "reason": "offline only; no e2ewarp physical gate; A40/B40 held"
+   },
+   {
+    "id": "warp8f opt-in static selfmap API",
+    "commits": [
+     "a40eb3994"
+    ],
+    "path": "scripts/release_reloc_static_selfmap.py:StaticReleaseSelfmap",
+    "abi": "observe(now, rgb, servo, command_delta=..., settled=...) -> row; register() -> static registration",
+    "boundary": "own RGB, issued servo, command delta, settled flag, authored static map via harness.mapbuild_static_registration.StaticRegistration; own-map zero is a gauge not world spawn; truth_inputs=0/held_world_reads=0; explicit no spawn/legacy fallback",
+    "inherited": false,
+    "reason": "not present in the R4 source tip 718777118; must be merged and rerun under e2ewarp boundary before ready=true. It is the intended owner callable for the adapter owner= injection (needs small evidence-shaping shim for observe/register)."
+   },
+   {
+    "id": "release21 (CPU MuJoCo)",
+    "commits": [
+     "b75b130f2 (bounded opt-in FOV recovery)",
+     "508fa59af (DEV6 summary)"
+    ],
+    "path": "sim/release21.py, scripts/run_grasp_act_release.py",
+    "boundary": "docstring: no world state or measured joints enter; uses own camera FK + release15 reprojections",
+    "inherited": false,
+    "reason": "CPU/MuJoCo release controller path, not the e2ewarp release_factory ABI or boundary; prior GCP DEV6 gate is a different stack and is not pooled"
+   },
+   {
+    "id": "release18 (CPU MuJoCo gate40 plan)",
+    "commits": [
+     "1cb74c366"
+    ],
+    "path": "experiments/2026-10-14-e2e18-grasp-rootcause/release18-gate40-plan.json",
+    "boundary": "queue/plan only; no code in R4 tip",
+    "inherited": false,
+    "reason": "disabled gate40 queue on the CPU stack; no e2ewarp-boundary evidence"
+   },
+   {
+    "id": "e2ewarp vendor observation adapter",
+    "path": "scripts/e2ewarp_vendor/release_reloc_selfmap.py",
+    "boundary": "own RGB/servo/static calibration; rows record truth_inputs=0/held_world_reads=0; decision() always accepted=False (owner static map API pending)",
+    "inherited": false,
+    "reason": "observation-only, different ABI; no claim of relocalization/registration"
+   }
+  ]
+ },
+ "owner_integration_path": {
+  "future_owner_entry": "scripts/release_reloc_static_selfmap.py:StaticReleaseSelfmap (warp8f commit a40eb3994, not in R4 tip)",
+  "wiring": "adapter owner callable receives only own-lookaround evidence {robot_id, static_sha256, instruction, views[{t, rgb_sha256, pwm}]}; shim forwards frames to StaticReleaseSelfmap.observe(...settled=True...) and register(); returns {owner:\"warp8f\", relocalized, static_map_registered, static_map_sha256, map_pose, truth_inputs:0, held_world_reads:0}",
+  "mapbuild8_dependency": "static registration stays pending until harness.mapbuild_static_registration + mapbuild8 correction API are merged/qualified",
+  "ready_rule": "release_relocalization.ready stays false until the above integration and a fresh physical release gate under the e2ewarp boundary"
+ }
 }
