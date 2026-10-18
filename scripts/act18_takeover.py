@@ -1,9 +1,9 @@
 """C1 executable teacher takeover from the student's own current state.
 
-Default-off.  The existing label-only oracle path is untouched: the private
-DAgger owner imports this module only when ``--takeover`` is supplied.  No
-simulator, torch, GPU or MuJoCo import happens at import time; the frozen
-``SoloTeacher`` (or a test double) is injected by the caller.
+Default-off.  The existing label-only oracle path is untouched: these helpers
+are constructed only when the private DAgger owner is launched with
+``--takeover``.  No simulator, torch, GPU or MuJoCo import happens at import
+time; the frozen ``SoloTeacher`` (or a test double) is injected by the caller.
 
 What this module owns:
 
