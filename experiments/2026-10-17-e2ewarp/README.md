@@ -18,6 +18,7 @@ CPU, noslip10 결과를 합산하지 않는다.
 | R1 | b8270d07b | 1, no_comm | 0 | 0 | HOST_ERROR: backend/core vendor ABI 불일치. 같은 소스 core로 교체 |
 | R2 | fb651f59c | 1, no_comm | 22.1 | 0 | 중계 Journal의 64자리 hex 키 계약 오류. 클라이언트9회 모두400, 원본 확인 즉시 감독 중단 |
 | R3 | e0e124483 | 2, peer_ko | 30 | 18 | 지정 진단 SIM 예산으로 cap_end. 학생·운반 실행0 |
+| R4 | 718777118 | 2, no_comm(진단) | 30 | 18 | `elapsed_sim_v1` 재검증: 자기지도 keyframe 48 삽입, cap_end. 학생·운반 실행0, ACT 등 의존 대기 |
 
 R2 원본 `result.model_calls=9`는 클라이언트 요청 수였다. 원본은 보존하고
 [독립 재계수](r2/review.json)에 상류0을 명시했다. 이후 코드에서 클라이언트 요청과
@@ -54,6 +55,23 @@ CoreWeave/fp4·fallback false, 자기 JPEG1장을 전달한 요청의 Mac 수신
 공급자 usage의 image_tokens는0으로 보고됐다. 전송 증거와 공급자의 실제 시각 활용·과제
 정확도 검증을 구분한다. 실제 peer 메시지는0건으로, 네 조건의 채널 격리는 단위 시험
 범위이며 실시간 통신 효과를 입증하지 않았다.
+
+## R4 자기지도 재검증 (attempt, queue.round=3, source 718777118)
+
+`elapsed_sim_v1` 수정 뒤 GPU 재실행 R4에서 자기지도 관문이 **1806 RGB →
+1806 qualified FK → 48 settled scan → 48 wall contacts → 48 inserted
+keyframe**으로 재계수됐다(R3 inserted 0). 6개 스트림 모두 8 삽입,
+elapsed-cadence 위반 0, old `tick%10` 게이트가 놓쳤을 삽입 48이다. 공식
+비물리 재계수·원본 해시·재현은
+[`r4-selfmap-recount/`](r4-selfmap-recount/README.md)에 있고, 이는 자기지도
+게이트만의 검증이다. E2E_success/student_execution은 false이고 ACT·loaded FK
+·mapbuild8 correction·release 의존 대기는 그대로다.
+
+같은 R4 프레임으로 pure-RGB zone/arrival detector 재생 검증도 했다: GPU
+렌더에서는 바닥이 파란색으로 나타나 CPU visgoal 파란색 밴드가 floor를 오인
+(uncapped 180/183, extent cap 후 36/183)하고, R4 smoke에는 zone paint가 보이는
+프레임이 없어 GPU 외관 보정은 아직 불가하다. 상세·재현은
+[`visdet_gpu.md`](visdet_gpu.md) 4절.
 
 ## 자기 지도 관문에서 발견한 결함
 

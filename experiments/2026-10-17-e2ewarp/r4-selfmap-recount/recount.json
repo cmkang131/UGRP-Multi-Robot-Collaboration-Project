@@ -1,0 +1,276 @@
+{
+  "schema": "ugrp.e2ewarp.selfmap_recount.v1",
+  "raw": "/private/tmp/e2ewarp-r4-raw",
+  "analysis_script_sha256": "131037b2d684c53a45f2712fa5ca0c1a6290aec6778f58f6db30cba70045d9bd",
+  "status": "cap_end",
+  "source_sha": "718777118be41991156b047faff78621969101bb",
+  "nworld": 2,
+  "map_keyframe_admission": "elapsed_sim_v1",
+  "frame_funnel": [
+    {
+      "stage": "own_rgb",
+      "cumulative_pass_n": 1806,
+      "rejected_n": 0
+    },
+    {
+      "stage": "qualified_unloaded_FK",
+      "cumulative_pass_n": 1806,
+      "rejected_n": 0
+    },
+    {
+      "stage": "settled_scan",
+      "cumulative_pass_n": 48,
+      "rejected_n": 1758
+    },
+    {
+      "stage": "observed_wall_contacts",
+      "cumulative_pass_n": 48,
+      "rejected_n": 0
+    },
+    {
+      "stage": "inserted_keyframe",
+      "cumulative_pass_n": 48,
+      "rejected_n": 0
+    }
+  ],
+  "elapsed_sim_check": {
+    "policy": "elapsed_sim_v1",
+    "interval_ticks": 10,
+    "keyframe_insertions": 48,
+    "keyframe_insertions_gt_zero": true,
+    "inserted_off_old_modulo_grid": 48,
+    "elapsed_rule_violations": 0,
+    "gap_ticks": {
+      "min": 24,
+      "median": 47.0,
+      "max": 53
+    },
+    "note": "elapsed_sim_v1 keys on the last accepted frame; >0 off-grid insertions prove the old modulo gate would have missed them"
+  },
+  "per_stream": [
+    {
+      "world": 0,
+      "robot": "r1",
+      "inserted": 8,
+      "frames": 301,
+      "qualified": 301,
+      "settled": 8,
+      "hits": 639,
+      "inserted_ticks": [
+        24,
+        71,
+        124,
+        148,
+        195,
+        224,
+        248,
+        295
+      ],
+      "inserted_gaps_ticks": [
+        47,
+        53,
+        24,
+        47,
+        29,
+        24,
+        47
+      ],
+      "elapsed_rule_violations": 0,
+      "off_modulo_grid": 8
+    },
+    {
+      "world": 0,
+      "robot": "r2",
+      "inserted": 8,
+      "frames": 301,
+      "qualified": 301,
+      "settled": 8,
+      "hits": 387,
+      "inserted_ticks": [
+        24,
+        71,
+        124,
+        148,
+        195,
+        224,
+        248,
+        295
+      ],
+      "inserted_gaps_ticks": [
+        47,
+        53,
+        24,
+        47,
+        29,
+        24,
+        47
+      ],
+      "elapsed_rule_violations": 0,
+      "off_modulo_grid": 8
+    },
+    {
+      "world": 0,
+      "robot": "r3",
+      "inserted": 8,
+      "frames": 301,
+      "qualified": 301,
+      "settled": 8,
+      "hits": 538,
+      "inserted_ticks": [
+        24,
+        71,
+        124,
+        148,
+        195,
+        224,
+        248,
+        295
+      ],
+      "inserted_gaps_ticks": [
+        47,
+        53,
+        24,
+        47,
+        29,
+        24,
+        47
+      ],
+      "elapsed_rule_violations": 0,
+      "off_modulo_grid": 8
+    },
+    {
+      "world": 1,
+      "robot": "r1",
+      "inserted": 8,
+      "frames": 301,
+      "qualified": 301,
+      "settled": 8,
+      "hits": 657,
+      "inserted_ticks": [
+        24,
+        71,
+        124,
+        148,
+        195,
+        224,
+        248,
+        295
+      ],
+      "inserted_gaps_ticks": [
+        47,
+        53,
+        24,
+        47,
+        29,
+        24,
+        47
+      ],
+      "elapsed_rule_violations": 0,
+      "off_modulo_grid": 8
+    },
+    {
+      "world": 1,
+      "robot": "r2",
+      "inserted": 8,
+      "frames": 301,
+      "qualified": 301,
+      "settled": 8,
+      "hits": 373,
+      "inserted_ticks": [
+        24,
+        71,
+        124,
+        148,
+        195,
+        224,
+        248,
+        295
+      ],
+      "inserted_gaps_ticks": [
+        47,
+        53,
+        24,
+        47,
+        29,
+        24,
+        47
+      ],
+      "elapsed_rule_violations": 0,
+      "off_modulo_grid": 8
+    },
+    {
+      "world": 1,
+      "robot": "r3",
+      "inserted": 8,
+      "frames": 301,
+      "qualified": 301,
+      "settled": 8,
+      "hits": 525,
+      "inserted_ticks": [
+        24,
+        71,
+        124,
+        148,
+        195,
+        224,
+        248,
+        295
+      ],
+      "inserted_gaps_ticks": [
+        47,
+        53,
+        24,
+        47,
+        29,
+        24,
+        47
+      ],
+      "elapsed_rule_violations": 0,
+      "off_modulo_grid": 8
+    }
+  ],
+  "rejection_reasons": {},
+  "nonphysics": true,
+  "inputs": [
+    "localization.json",
+    "runtime-applied.json",
+    "result.json",
+    "rejections.json"
+  ],
+  "not_read": [
+    "TOP camera frames",
+    "simulator/GT pose",
+    "contacts",
+    "measured joints",
+    "teacher phases/outcomes"
+  ],
+  "scope": "self-supervised map gate recount only; no transport or localization-accuracy claim",
+  "prior_frame_funnel": [
+    {
+      "stage": "own_rgb",
+      "cumulative_pass_n": 1806,
+      "rejected_n": 0
+    },
+    {
+      "stage": "qualified_unloaded_FK",
+      "cumulative_pass_n": 1806,
+      "rejected_n": 0
+    },
+    {
+      "stage": "settled_scan",
+      "cumulative_pass_n": 48,
+      "rejected_n": 1758
+    },
+    {
+      "stage": "observed_wall_contacts",
+      "cumulative_pass_n": 48,
+      "rejected_n": 0
+    },
+    {
+      "stage": "inserted_keyframe",
+      "cumulative_pass_n": 0,
+      "rejected_n": 48
+    }
+  ],
+  "prior_raw": "/home/ugrp/ugrp-sim/runs/e2ewarp-r3"
+}
