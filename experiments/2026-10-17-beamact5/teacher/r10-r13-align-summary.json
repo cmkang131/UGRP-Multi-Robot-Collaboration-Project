@@ -1,0 +1,94 @@
+{
+ "schema": "ugrp.beamact5.r10_r13_align_summary.v1",
+ "written_utc": "2026-10-18T04:15:00Z",
+ "author": "beamact5 worker (DSH)",
+ "scope": "align-phase correction after the r4-r9 track could not pass world 27. All conditions are separate; single-world diagnostics and gate runs are not pooled. training RGB off, weld off, cap 60 SIM s, gcp6 isolated.",
+ "diagnosis": {
+  "r10diag2": "case 27 reached align at ~19.9 s with visible probes 15 and errors x=0.0135 m, y=0.0085 m, yaw=-0.0037 rad; the teacher issued drive x=0.021-0.030 every tick but the reported pose never moved; wheel pulses were the candidate 40 ms floor at 0.35 board speed. The 40 ms floor does not break static friction in the align phase, while the approach phase pulses reach the full 0.1 s control period and move normally.",
+  "stall_signature": "visible alignment errors unchanged for many consecutive ticks -> merit stagnant -> relook x3 -> alignment_no_progress"
+ },
+ "conditions": [
+  {
+   "id": "r11",
+   "change": "full-period align pulse every tick",
+   "stage1_27": "PASS sim 29.9 (align 2.6 s)",
+   "stage2_5world": "6/10/20 PASS, 27 FAIL 23.4 (alternating_error_sign_4), 37 FAIL",
+   "verdict": "single-world pass, batch oscillation"
+  },
+  {
+   "id": "r11b",
+   "change": "full-period pulse only when teacher pose unchanged",
+   "stage2_5world": "6/10/20 PASS, 27 FAIL 20.0 (approach handoff; pose is command odometry so the trigger never fired), 37 FAIL",
+   "verdict": "trigger invalid"
+  },
+  {
+   "id": "r12",
+   "change": "r11b + open refresh + frozen commit",
+   "stage2_5world": "6/10/20 PASS, 27 FAIL 26.8 (align 9.1 s, no_visible_error_progress x3), 37 FAIL",
+   "verdict": "align still stalls"
+  },
+  {
+   "id": "r13",
+   "change": "full-period pulse only when the active axis visible error is unchanged within 1e-4 m for 3 consecutive ticks; r12 profile otherwise",
+   "stage2_5world": "6 PASS 54.7, 10 PASS 49.5, 20 PASS 36.3, 27 PASS 24.0 (align 2.6 s, relook 0), 37 FAIL 30.6",
+   "stage1": "PASS 24.0",
+   "verdict": "precondition met; gate launched"
+  }
+ ],
+ "gate_attempt1": {
+  "run": "/home/ugrp/ugrp-sim/runs/beamact5/gate39-r13-run",
+  "result": "37/40 FAIL",
+  "executed_N": 39,
+  "success_n": 37,
+  "failures": [
+   {
+    "case": 27,
+    "end": "teacher_terminal",
+    "sim": 26.0,
+    "stage": "alignment_no_progress"
+   },
+   {
+    "case": 37,
+    "end": "teacher_terminal",
+    "sim": 29.5,
+    "stage": "approach_blocked_handoff (expected)"
+   }
+  ],
+  "cap_end": 0,
+  "HOST_ERROR": 0,
+  "wall_s": 2619.97,
+  "summary_sha256": "470c2b91d1fd8c189ee1b07e0bb024f12911a9694756e018d0ab50632b64c6c0",
+  "funnel": "runs/gate39-r13-run/funnel-attempt1.json"
+ },
+ "flake_diagnostic": {
+  "purpose": "quantify world-27 flakiness with the frozen r13 stack (1-world repeats 3x)",
+  "runs": [
+   {
+    "i": 1,
+    "result": "FAIL sim 25.5 align 7.8 s relooks 3",
+    "summary_sha256": "f6378f6ca7ce4989f08560d164e17de63b64c6e7643d9e31b0e0a3a86788de8d"
+   },
+   {
+    "i": 2,
+    "result": "FAIL sim 25.5 align 7.8 s relooks 3 (identical signature)",
+    "summary_sha256": "aa3ec70e4a6086af400a250a355aaeef413ecc66afc092ffaff127be531219c1"
+   },
+   {
+    "i": 3,
+    "result": "PASS sim 24.0 align 2.6 s relooks 0 (same signature as the r13 stage2 pass)",
+    "summary_sha256": "12212de0e3125e80a9c0dcc0dd3adb5d5f8f057792d254bdad0d5f73e7cdb780"
+   }
+  ],
+  "conclusion": "world 27 passes 1 of 3 standalone repeats and 1 of 2 batch runs; the failing runs all share the late-align stall signature, the passing runs share the early-align signature, so the flake is decided upstream of the align law (wide-rescue selection/approach trajectory). The align breakaway pulse fixed the earlier deterministic align stall but does not make world 27 stable."
+ },
+ "attempt2": {
+  "status": "launched 2026-10-18T04:07Z as a frozen-stack repetition pre-registered in gate-40-r13-attempt2/r13-attempt2-preregistration.json; result will be reported together with attempt 1 and never claimed as a stable 38/40 pass"
+ },
+ "not_claimed": [
+  "no stable 38/40 gate pass",
+  "no student recording/training",
+  "world15 excluded/unverified",
+  "37 structural label from r1/r2",
+  "no margin/cap constant change"
+ ]
+}
