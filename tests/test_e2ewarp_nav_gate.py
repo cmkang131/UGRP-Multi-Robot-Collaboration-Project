@@ -198,3 +198,13 @@ def test_calibration_binding_rejects_a_changed_artifact(tmp_path, monkeypatch):
     assert gate.validate_calibration_binding(queue)['sha256'] == record['sha256']
     with pytest.raises(ValueError, match='NAV_CALIBRATION_CHANGED'):
         gate.validate_calibration_binding(valid_queue(nav_calibration=dict(sha256='c' * 64)))
+
+
+def test_nested_static_map_is_rejected_at_any_depth():
+    from harness import e2ewarp_nav_mode as nav
+    with pytest.raises(ValueError, match='forbidden'):
+        nav.nav_static({'mission': {'static_map': {'walls': [1]}}})
+    with pytest.raises(ValueError, match='forbidden'):
+        nav.nav_static({'orders': [{'id': 'o1', 'geometry': {'doors': []}}]})
+    assert nav.nav_static({'orders': [{'id': 'o1', 'destination_zone': 'B'}]}) == {
+        'orders': [{'id': 'o1', 'destination_zone': 'B'}]}

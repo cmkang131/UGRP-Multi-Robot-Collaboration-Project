@@ -40,6 +40,29 @@ def leader_for_seed(seed):
     return ROBOTS[seed % len(ROBOTS)]
 
 
+#: Map/GT geometry names rejected at *any* nesting depth (independent verifier
+#: finding 2026-10-18: top-level checks alone let {'mission': {'static_map': ...}}
+#: through to the adapter and the LLM prompt).
+FORBIDDEN_KEYS = ('static_map', 'map_geometry', 'wall_map', 'geometry', 'walls',
+                  'doors', 'ground_truth', 'groundtruth', 'gt', 'truth', 'pose',
+                  'coordinates', 'bounds_m')
+
+
+def _reject_geometry(value, path='static'):
+    """Recursively reject map/GT-like keys; never silently strip them."""
+    if isinstance(value, dict):
+        for key, item in value.items():
+            low = str(key).lower()
+            where = path + '.' + low
+            if low in FORBIDDEN_KEYS or (low.startswith('static_map') and not isinstance(item, bool)):
+                raise ValueError('static map/GT input is forbidden by contract v1 at ' + where)
+            _reject_geometry(item, where)
+    elif isinstance(value, (list, tuple)):
+        for index, item in enumerate(value):
+            _reject_geometry(item, path + f'[{index}]')
+    return value
+
+
 def nav_static(static):
     """Return only order/condition metadata; reject any map input.
 
@@ -55,7 +78,8 @@ def nav_static(static):
     if unknown:
         raise ValueError('nav mode accepts order/condition metadata only; rejected keys: '
                          + ','.join(unknown))
-    return {k: copy.deepcopy(static[k]) for k in STATIC_KEYS if k in static}
+    value = {k: copy.deepcopy(static[k]) for k in STATIC_KEYS if k in static}
+    return _reject_geometry(value)
 
 
 def queue_fields(seed):
@@ -81,6 +105,8 @@ def validate_queue(queue, seed):
         raise ValueError('NAV_STATIC_MAP_INPUT_FORBIDDEN')
     if tuple(queue.get('component_requirements') or ()) != REQUIRED:
         raise ValueError('NAV_COMPONENT_REQUIREMENTS_MISMATCH')
+    # A tampered queue cannot smuggle map/GT geometry into the run.
+    _reject_geometry(queue, path='queue')
     return queue
 
 
