@@ -106,6 +106,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
 
     def _reset_alignment(self):
         self.align_integral=[0.,0.,0.];self.align_t=None
+        self._align_prev_pose=None;self.align_pulse_floor=None
         self.align_active=[False]*3;self.align_sign=[0]*3
         self.align_flips=[0]*3;self.align_best=None;self.align_progress_t=None
 
@@ -145,6 +146,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
             return self._route(truth,goal,heading,now),False
         if self.phase=='approach':self._set('align',now);self._reset_alignment()
         gx,gy=local(pose,g);errors=(gx-self.staging_distance,gy,wrap(heading-pose[2]))
+        self.align_pulse_floor=None
         if (self.search15_modes.get('search26_align_diag','off')!='off'
                 and self.phase=='align'):
             row={'t':now,'event':'align_diag','errors':[float(e) for e in errors],
@@ -213,6 +215,15 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         effort=(.9,.9,.8)[axis]*errors[axis]+self.align_integral[axis]
         lo,hi=((- .05,.08),(-.06,.06),(-.10,.10))[axis]
         drive=[0.,0.,0.];drive[axis]=max(lo,min(hi,effort))
+        if (self.search15_modes.get('search26_align_pulse','off')!='off'
+                and self.phase=='align' and abs(errors[axis])>inner[axis]):
+            # Issue the full-period breakaway pulse only when the previous
+            # command produced no measured motion; otherwise keep the nominal
+            # short pulse so the robot cannot oscillate around a small error.
+            stuck=(self._align_prev_pose is not None
+                   and math.dist(pose[:2],self._align_prev_pose)<=1e-4)
+            self.align_pulse_floor=.1 if stuck else None
+        self._align_prev_pose=(float(pose[0]),float(pose[1]))
         if self.search15_modes.get('search26_align_diag','off')!='off' and self.phase=='align':
             self.recovery_log.append({'t':now,'event':'align_cmd_diag','axis':axis,
                 'drive':[float(x) for x in drive],'errors':[float(e) for e in errors],
@@ -841,8 +852,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         wheels,widths=duty_wheels([3.*forward,3.*left,.65*turn])
         if self.teacher_stability!='off' and self.phase in ('align','search'):
             # Candidate 40 ms floor; real-wheel response remains unmeasured.
-            floor=(.1 if (self.phase=='align'
-                          and self.search15_modes.get('search26_align_pulse','off')!='off')
+            floor=(self.align_pulse_floor if (self.phase=='align' and self.align_pulse_floor)
                    else .04)
             widths=[max(floor,d) if w else 0. for w,d in zip(wheels,widths)]
         value=self._hold(now);value.update(wheels=wheels,duration_s=widths)
