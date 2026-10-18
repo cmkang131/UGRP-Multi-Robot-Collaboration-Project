@@ -609,6 +609,7 @@ def run(a):
             contact_rec = (contact_mod.ContactRecorder(m, G)
                            if fix_stage and fix_toggles.get('crossroom_contacts_v1')
                            else None)
+            contact_error = None
             mx, my = raw_fisheye_remap(640, 480)
             servos = (1, 3, 4, 5, 6)
             jointnames = {1: ('left_gripper_close', 'right_gripper_close'),
@@ -917,10 +918,16 @@ def run(a):
                 step_index.zero_()
                 wp.capture_launch(cap.graph)
                 if contact_rec is not None:
-                    cinfo = contact_rec.update(wd, t)
+                    try:
+                        cinfo = contact_rec.update(wd, t)
+                    except Exception as exc:  # eval-only recorder must not kill the run
+                        contact_error = repr(exc)
+                        contact_rec = None
+                        cinfo = None
                     if cinfo:
                         for w, s in enumerate(states):
-                            s['ncon_last'] = cinfo['counts'][w]
+                            ncon = cinfo['counts']
+                            s['ncon_last'] = ncon[w] if w < len(ncon) else None
             results = list(rejected)
             for s in states:
                 out = s['out']
@@ -984,6 +991,7 @@ def run(a):
                                  if hasattr(s['skill'], 'fix_summary') else None),
                     contact_summary=(contact_rec.summary()
                                      if contact_rec is not None else None),
+                    contact_record_error=contact_error,
                     paint_filter_counts=s.get('paint_filter_counts'),
                     rejection_table=str(a.output / 'rejection_table.json'))
                 dump(out / 'episode.json', ep)

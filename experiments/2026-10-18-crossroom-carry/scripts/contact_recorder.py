@@ -37,6 +37,7 @@ class ContactRecorder:
         self.events = []
         self.ticks_with_contact = 0
         self.layout = 'unknown'
+        self.count_layout = 'unknown'
         self.errors = []
         # geom id -> category
         self.geom_category = {}
@@ -77,7 +78,19 @@ class ContactRecorder:
             if not self.errors:
                 self.errors.append('nacon_unavailable')
             return None
-        counts = np.asarray(nacon).reshape(-1)[:self.nworld].astype(int).tolist()
+        raw = np.asarray(nacon).reshape(-1)
+        if raw.size == self.nworld:
+            counts = raw.astype(int).tolist()
+            self.count_layout = 'per_world'
+        elif raw.size == 1:
+            # A single global contact count: keep it as a total and do not
+            # invent per-world attribution (eval-only reference).
+            counts = [int(raw[0])] + [0] * (self.nworld - 1)
+            self.count_layout = 'global_only'
+        else:
+            self.count_layout = 'size_%d' % raw.size
+            counts = raw.astype(int).tolist()[:self.nworld]
+            counts += [0] * (self.nworld - len(counts))
         if any(counts):
             self.ticks_with_contact += 1
         for w in range(self.nworld):
@@ -120,4 +133,5 @@ class ContactRecorder:
     def summary(self):
         return dict(ticks_with_contact=self.ticks_with_contact,
                     events=self.events[-50:], layout=self.layout,
+                    count_layout=self.count_layout,
                     errors=self.errors[:5])
