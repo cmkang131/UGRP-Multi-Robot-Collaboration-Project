@@ -1291,6 +1291,48 @@
         "caveat": "같은 B2 체크포인트의 별도 실행(B2 run3 vs B4)이 t≈2.2s에서 분기 — closed-loop GPU 비결정성. B2 raw와 B4 raw 직접 비교가 아니라 B4 단일 실행 내 교사 대비로 해석."
       },
       "eval_contract": "EVAL_CONTRACT_CANDIDATES.md (사용자 결정용; 실행 금지)"
+    },
+    {
+      "name": "co-r1 (interrupted)",
+      "kind": "Phase C co-training 100k (v7 TRAIN200 + act16w TRAIN32, condition token, BF16) — HOST_ERROR",
+      "status": "HOST_ERROR",
+      "complete": false,
+      "reason": "guest OS shutdown by VM-local ugrp-idle-guard.service (journal: \"idle 20 min, shutting down\") at 2026-10-18T01:42:06Z while training was active; the guard whitelist did not include act18 scripts, so the running 100k trainer did not count as activity",
+      "evidence": {
+        "audit": "compute.instances.guestTerminate (system) 2026-10-17T18:42:45-07:00",
+        "journal": [
+          "Oct 18 01:42:06 ... systemd[1]: Starting ugrp-idle-guard.service - UGRP idle guard...",
+          "Oct 18 01:42:06 ... ugrp-idle-guard[12231]: idle 20 min, shutting down",
+          "Oct 18 01:42:06 ... systemd-logind[1178]: The system will power off now!"
+        ],
+        "guard": "/usr/local/sbin/ugrp-idle-guard (whitelist of act17/act16w scripts; act18_train.py absent)",
+        "fix": "systemctl disable ugrp-idle-guard.timer; whitelist patched with act18_[a-z_]+[.]py|run_co[.]sh (documented in EXPERIMENT notes)"
+      },
+      "training": {
+        "started_utc": "2026-10-17T23:39:49Z",
+        "interrupted_utc": "2026-10-18T01:42:06Z",
+        "last_progress_step": 51600,
+        "wall_s": 7343.7,
+        "summary_sha256": "b56aa6a7ccf14a97b8801081b14ab5f8cebd3ca270df69a89e1804f22877eb43",
+        "progress_sha256": "8ebca0a6e373982f49beff43d961964af184b70d12ddd4dcbf90143ff62624bb",
+        "checkpoints": {
+          "step20000": "f34d6f76e1ed82a2bb0e2c6270b22dd2a3bf9a30f2e5215703178fab01a3e502",
+          "step40000": "772f11b8cd486abb957a20229ee2e953c6ce308e0bb73eb59cea1432caa9084f"
+        },
+        "vm_dir": "/home/ugrp/ugrp-sim/runs/act18/co-r1",
+        "done_head": {
+          "model_sha256": "e3c0b09860cd259a8e09d412bcbbac9e93240fbd5e5c2b4476bef24c6ecd0d8c",
+          "metadata_sha256": "b02a6de48fe6392197f3148f7c398372f49a963dbfcb572c50de85fb9b038339",
+          "validation_auc": 0.9995942643296292
+        }
+      },
+      "gate": {
+        "stage": "train4",
+        "status": "NOT_RUN",
+        "n": null,
+        "N": null
+      },
+      "pooling": "금지: co-r1은 HOST_ERROR. co-r2는 step-40000에서 이어간 labelled continuation(cotrain_continuation_v1)이며 co-r1과 합산하지 않는다."
     }
   ],
   "release": {
@@ -1393,7 +1435,8 @@
     "B2 표준 정렬(20k)도 TRAIN4 0/4: chunk20·base smooth·best-val는 병리를 바꾸지 못함. 잔여 축=행동 형식(펄스/PWM+디코드 클램프)·done 학습·데이터 규모.",
     "B3a/B3b 현재스텝(h=0) done 라벨: 안정 최적화에서도 done 확률 ~1e-3, 문턱 미발화 — 단일 프레임으로 현재 완료시점 식별 불가. done-history/시퀀스 입력 또는 라벨 재정의(사용자 승인) 필요.",
     "B4 done 모듈은 명령패턴 기반 발화로 물리 lift 없이도 done을 냈다(발화≠성공). 행동/물리 lift 0/4가 남은 원인이며 행동축 offline 분해가 다음 단계.",
-    "closed-loop 진단은 4-world 단일 실행(B4)과 TRAIN200 교사 분포 비교이며, GPU 비결정성으로 실행 간 궤적이 분기할 수 있다."
+    "closed-loop 진단은 4-world 단일 실행(B4)과 TRAIN200 교사 분포 비교이며, GPU 비결정성으로 실행 간 궤적이 분기할 수 있다.",
+    "co-r2는 step-40000 warm-start continuation(새 30k 스텝, cumulative 70k)이다. optimizer state는 복원되지 않았고, co-r1(중단)과 합산하지 않는다."
   ],
   "cleanup": {
     "schema": "ugrp.act18.cleanup.v1",
@@ -1528,5 +1571,13 @@
       "worktree": "/Users/changmin/projects/ugrp-wt/act16w",
       "worktree_status": "clean (git status empty)"
     }
+  },
+  "incident": {
+    "service": "ugrp-idle-guard",
+    "vm": "ugrp-act-l4-gcp2",
+    "shutdown_utc": "2026-10-18T01:42:06Z",
+    "cause": "VM-local idle guard whitelist missed act18 scripts",
+    "action": "guard timer disabled and whitelist patched; resumed from step-40000 with explicit continuation label; no pooling",
+    "recorded_by": "act18 (Lead-instructed investigation)"
   }
 }

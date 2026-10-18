@@ -89,6 +89,12 @@ B4 실행(raw `doneh-r1/DONEH-TRAIN4`)의 **발행 명령 이력**과 교사(TRA
 - 주의: 같은 B2 체크포인트의 별도 실행(B2 run3)이 t≈2.2s에서 이미 분기했다 — closed-loop GPU 비결정성. 따라서 B2 raw와 B4 raw의 직접 비교가 아니라 **B4 단일 실행 내 교사 대비**로 해석한다. 실패 시작점은 open-loop 예측이 아니라 **grasp hold 전환과 release 물러나기 단계**다.
 - 평가계약(물리 성공 정의) 후보는 `EVAL_CONTRACT_CANDIDATES.md`(사용자 결정용, 실행 금지).
 
+### Phase C co-training 중단·재개 (10/18)
+
+- `co-r1` 100k co-training은 **HOST_ERROR(guest shutdown)**로 중단됐다. 발생: 2026-10-18T01:42:06Z, 진행 step 51,600, 마지막 저장 체크포인트 step-40000. 원인: VM 내 **`ugrp-idle-guard.service`**(act17/act16w 화이트리스트만 있어 `act18_train.py`를 활동으로 보지 않음)가 "idle 20 min, shutting down"을 실행. 감사로그 `guestTerminate` + journal 3줄을 summary.incident에 보존.
+- 조치: 타이머 비활성화 + 화이트리스트에 `act18_[a-z_]+[.]py|run_co[.]sh` 추가(문서화). 
+- 재개: **`co-r2` = step-40000 warm-start continuation(새 30k 스텝, cumulative 70k)**. optimizer state는 복원하지 않았고(`cotrain_continuation_v1` 라벨), co-r1·단일데이터 후보와 **pooling 금지**. 완료 후 TRAIN4(≤14:15) → 통과 시 VAL8(≤14:40) 순서로 판정.
+
 ### 조건 이탈·미검증 범위
 - **R100 gcp5 미이동(deviation):** bf16 프로브(2,000 step, 1.10배)는 수용했지만, R8이 gcp2에서 fp32로 학습 중이라 정밀도가 섞이고(합산 금지), `act18_train.py`가 옵티마이저/RNG 재개를 지원하지 않아 42,400/100,000(≈13,484s)을 폐기해야 하며, gcp5 예산 1,000KRW 정지 위험이 있어 gcp2 matched fp32 pair를 끝까지 유지했다. 근거는 `bf16-probe-decision.json`.
 - 이 학습은 **fp32**다. bf16 기본 전환 커밋(c7900c0ac)은 이 학습 시작 뒤다. 100k bf16 학습은 아직 없다(runtime 증거는 2,000 step 프로브뿐). bf16 결과와 합산하지 않는다.
