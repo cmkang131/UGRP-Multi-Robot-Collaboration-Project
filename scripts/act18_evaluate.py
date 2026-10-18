@@ -7,6 +7,7 @@ TRAIN4 seed guard; the final receipt always reports the real stage.
 import argparse
 from collections import defaultdict, deque
 import json
+import numpy as np
 import os
 from pathlib import Path
 import runpy
@@ -134,6 +135,7 @@ def main():
     contract.CHUNK=chunk
     done_log=dict(handle=(open(done_log_path,'x') if done_log_path is not None else None),world=None)
     done_head=None;done_head_log=dict(handle=None);executor_counter=[0]
+    loop_log=dict(handle=(open(a.loop_overlay_log,'x') if a.loop_overlay_log is not None else None))
     if a.done_head is not None:
         from act18_done_head import DoneHead,done_fires,apply_done_override
         done_head=DoneHead.load(a.done_head,device='cpu')
