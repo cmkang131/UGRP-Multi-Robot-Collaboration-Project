@@ -1,0 +1,66 @@
+{
+ "schema": "ugrp.beamact5.r9_preregistration.v1",
+ "written_before_run_utc": "2026-10-18T01:00:00Z",
+ "author": "beamact5 worker (DSH)",
+ "approved_by": "Lead (자율 진행: 38/40까지 반복)",
+ "r8_result": {
+  "run": "/home/ugrp/ugrp-sim/runs/beamact5/validation-r8-5",
+  "wall_s": 1354.33,
+  "success_n": 3,
+  "cap_end": 0,
+  "worlds": {
+   "6": "PASS",
+   "10": "PASS",
+   "20": "PASS",
+   "27": "FAIL teacher_terminal 29.5 (alignment_no_progress; wide_rescue 2회, approach 17.6 s 후 align 8 s 실패)",
+   "37": "FAIL teacher_terminal 29.7 (approach_blocked_handoff; wide_rescue 6회)"
+  },
+  "signal": "wide rescue moved case 27 past the stale-cargo approach deadlock into the fine-alignment stage, i.e. the approach succeeded; the remaining failure is align-phase visible-error progress."
+ },
+ "r9_change": {
+  "mode": "combine search26_wide_rescue + search26_reobserve_refresh_open + search26_commit_plan (all default off in the teacher; same teacher commit f8c1b716)",
+  "rule": "same individual rules; the combination is a separate never-pooled candidate.",
+  "basis": "r8 reached align; the refresh chain and frozen-plan windows may keep the band/cargo observations stable during the final approach so align has visible error progress."
+ },
+ "stack": {
+  "root": "37acb64c056a7c8aba3ffa1334296877909ad0ab",
+  "adapter": "b663fcb76caaf36300bddca751cdd0356fc94096",
+  "teacher": "f8c1b7162d2d4d19c25c1cd1c7b325b2bdfea13c",
+  "cases_r9_sha256": "ee0c4b0331c8905f6a604369e8a2a65186ba075b2288210a2c04cb79fde2cdbe",
+  "plan_sha256": "f1a50e8c833c1da9113bdf8cff3844913380e3c821b15c072c0a23c0f54f5148"
+ },
+ "runs": {
+  "r9_5world": {
+   "indices": [
+    6,
+    10,
+    20,
+    27,
+    37
+   ],
+   "out": "/home/ugrp/ugrp-sim/runs/beamact5/validation-r9-5",
+   "cap_s": 60
+  },
+  "gate_out": "/home/ugrp/ugrp-sim/runs/beamact5/gate39-r9-run"
+ },
+ "expectations": {
+  "6": "PASS",
+  "10": "PASS",
+  "20": "PASS",
+  "27": "PASS if align visible-error progress is restored",
+  "37": "FAIL expected (approach handoff in r8)"
+ },
+ "gate_arithmetic": {
+  "target": "38/40 = 6,10,20,27 PASS with no regressions (15 expected FAIL, 37 expected FAIL)",
+  "if_27_fails": "37/40 FAIL",
+  "if_one_regression": "37/40 FAIL"
+ },
+ "risk": "combination may add planning cost on failing ticks; 6/10/20 regression-checked; default off.",
+ "not_claimed": [
+  "teacher success is not student success",
+  "no student recording/training",
+  "world15 excluded/unverified",
+  "37 structural label not remeasured",
+  "no margin/cap change"
+ ]
+}
