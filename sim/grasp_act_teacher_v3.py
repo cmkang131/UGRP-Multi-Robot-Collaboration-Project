@@ -163,7 +163,11 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
             except Exception as error:
                 row['pick_cloud_error']=type(error).__name__
             self.recovery_log.append(row)
-        if self.ready_geometry(truth):
+        ready_now=self.ready_geometry(truth)
+        if self.search15_modes.get('search26_align_diag','off')!='off' and self.phase=='align' and ready_now:
+            self.recovery_log.append({'t':now,'event':'align_ready_diag',
+                'stable_since':self.stable_since,'errors':[float(e) for e in errors]})
+        if ready_now:
             self.stable_since=now if self.stable_since is None else self.stable_since
             self._reset_alignment()
             return self._hold(now),now-self.stable_since>=.3
@@ -186,6 +190,12 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         except ValueError:reachable=False
         if not reachable and abs(errors[0])>.0005:self.align_active[0]=True
         axis=next((i for i in (2,1,0) if self.align_active[i]),None)
+        if self.search15_modes.get('search26_align_diag','off')!='off' and self.phase=='align':
+            self.recovery_log.append({'t':now,'event':'align_axis_diag','axis':axis,
+                'align_active':list(self.align_active),'merit':float(merit),
+                'align_best':(None if self.align_best is None else float(self.align_best)),
+                'progress_age_s':(None if self.align_progress_t is None else float(now-self.align_progress_t)),
+                'stable_since':self.stable_since})
         if axis is None:return self._hold(now),False
         sign=1 if errors[axis]>0 else -1
         old=self.align_sign[axis]
@@ -203,6 +213,10 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         effort=(.9,.9,.8)[axis]*errors[axis]+self.align_integral[axis]
         lo,hi=((- .05,.08),(-.06,.06),(-.10,.10))[axis]
         drive=[0.,0.,0.];drive[axis]=max(lo,min(hi,effort))
+        if self.search15_modes.get('search26_align_diag','off')!='off' and self.phase=='align':
+            self.recovery_log.append({'t':now,'event':'align_cmd_diag','axis':axis,
+                'drive':[float(x) for x in drive],'errors':[float(e) for e in errors],
+                'integral':[float(x) for x in self.align_integral]})
         # One axis per command keeps the four-wheel ratios intact when the
         # bounded minimum width is applied. No new grasp motion/IK path.
         return self._continuous(now,*drive),False
