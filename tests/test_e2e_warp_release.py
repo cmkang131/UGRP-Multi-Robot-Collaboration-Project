@@ -164,3 +164,84 @@ def test_hash_bound_manifest_entry_and_factory():
     assert fragment['adapter']['sha256'] == entry['sha256']
     assert fragment['component'] == 'release_relocalization'
     assert fragment['adapter']['default'] == 'off'
+
+
+class _MissionNavigation:
+    """Minimal own-input navigation owner used only to prove the release ABI."""
+
+    def __init__(self):
+        self.accepted = []
+
+    def observe(self, frame):
+        return dict(map_correction_active=True, handoff_ready=False,
+                    destination_arrived=False, holding_status='held',
+                    evidence_revision=0)
+
+    def start(self, instruction, phase):
+        self.started = (dict(instruction), phase)
+
+    def command(self, now):
+        return dict(t=now, wheels=[0.] * 4, duration_s=[0.] * 4, pwm=SEARCH_PWM_STR)
+
+    def task_candidates(self, completed):
+        return []
+
+    def confirm_act(self, frame, skill):
+        return skill == 'release'
+
+    def on_messages(self, rows):
+        self.messages = list(rows)
+
+    def accept_release_fix(self, report):
+        self.accepted.append(dict(report))
+        return (report.get('relocalized') is True
+                and report.get('static_map_registered') is True)
+
+
+SEARCH_PWM_STR = {str(k): int(v) for k, v in SEARCH_PWM.items()}
+
+
+class _TickFrame:
+    def __init__(self, t, pwm):
+        self.robot_id, self.sim_s = 'r1', t
+        self.tick, self.jpeg = int(round(t * 10)), b'own-rgb'
+        self.issued = ({'t': t, 'pwm': dict(pwm)},)
+
+
+def _mission_frames(adapter_factory, controller, start_t=0.0):
+    dwell = release._view_dwell_s()
+    t = start_t
+    result = None
+    for _ in range(release.PAN_VIEWS):
+        command = controller.command(t)  # RELOCALIZE -> release.command
+        t += dwell
+        result = controller.observe(_TickFrame(t, {k: v for k, v in command['pwm'].items()}))
+        t += 0.1
+    return result
+
+
+def test_mission_controller_accepts_owner_report_and_completes():
+    from harness.e2e_warp_mission import IntegratedController
+    navigation = _MissionNavigation()
+    adapter = release.release_factory('r1', STATIC, option=release.OPTION_SELFMAP, owner=owner_ok)
+    controller = IntegratedController('r1', STATIC, None, navigation, adapter)
+    controller.phase = 'RELOCALIZE'
+    controller.instruction = dict(destination_zone='A', object_kind='long_beam', role='teal')
+    adapter.start(dict(controller.instruction), {})
+    result = _mission_frames(None, controller)
+    assert result['phase'] == 'TASK'
+    assert navigation.accepted and navigation.accepted[-1]['relocalized'] is True
+    assert navigation.accepted[-1]['static_map_registered'] is True
+    assert controller.completed[0]['destination_zone'] == 'A'
+
+
+def test_mission_controller_stays_blocked_when_adapter_off():
+    from harness.e2e_warp_mission import IntegratedController
+    navigation = _MissionNavigation()
+    adapter = release.release_factory('r1', STATIC)  # default off
+    controller = IntegratedController('r1', STATIC, None, navigation, adapter)
+    controller.phase = 'RELOCALIZE'
+    adapter.start(dict(destination_zone='A'), {})
+    result = _mission_frames(None, controller)
+    assert result['phase'] == 'RELOCALIZE'
+    assert navigation.accepted == []  # fail closed: no fix, no completion
