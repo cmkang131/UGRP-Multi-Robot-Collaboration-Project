@@ -1,0 +1,36 @@
+{
+  "schema": "ugrp.act18.cleanup.v4",
+  "utc": "2026-10-18T03:42:26Z",
+  "reason": "Phase C co-training continuation(co-r2) TRAIN4 0/4 판정 후 유휴 → gcp2 정지.",
+  "vm": {
+    "instance": "ugrp-act-l4-gcp2",
+    "project_id": "ugrp-sim-b-1014",
+    "status": "TERMINATED",
+    "stopped_utc": "2026-10-18T03:42:26Z",
+    "confirmed_by": "gcloud describe --format=value(status)"
+  },
+  "before_stop": {
+    "act18_processes": "none",
+    "gpu_utilization_percent": 0,
+    "gpu_memory_MiB": 0,
+    "leases": "no act18 lease",
+    "disk_free": "88G",
+    "note": "co-r1(중단)·co-r2(continuation)·B1-B4·doneclass·closedloop 원본 디스크 보존"
+  },
+  "idle_guard": {
+    "service": "ugrp-idle-guard",
+    "action": "timer disabled + whitelist patched(act18_[a-z_]+[.]py|run_co[.]sh)",
+    "incident": "co-r1을 2026-10-18T01:42:06Z에 guest shutdown 시킴(HOST_ERROR 기록)"
+  },
+  "restored_snapshots": [
+    "/home/ugrp/ugrp-sim/src/f0db6b1abb842ea65b71c433738210254f300a7c (qualified-source)",
+    "/home/ugrp/ugrp-sim/src/warp1-teacher-snapshot-6f057f7e (teacher-source)"
+  ],
+  "local": {
+    "scratch_removed": [
+      "/private/tmp/act18-*.sh"
+    ],
+    "worktree": "/Users/changmin/projects/ugrp-wt/act16w",
+    "worktree_status": "clean"
+  }
+}
