@@ -222,7 +222,7 @@ def test_prune_robots_removes_only_the_dropped_robot():
     </actuator><equality><weld name="r3__grasp_red"/><weld name="r1__grasp_blue"/></equality></mujoco>"""
     out = gate.prune_robots(xml, keep=('r1', 'r2'))
     assert 'r3__' not in out
-    assert out.count('r1__') == 5 and out.count('r2__') == 3
+    assert out.count('r1__') == 5 and out.count('r2__') == 4
     assert '<body name="r1__robot">' in out and '<body name="r2__robot">' in out
     assert out.count('<pair ') == 1
     with pytest.raises(ValueError):
