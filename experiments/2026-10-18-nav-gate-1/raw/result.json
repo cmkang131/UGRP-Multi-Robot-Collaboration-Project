@@ -1,0 +1,44 @@
+{
+  "schema": "ugrp.e2ewarp.result.v1",
+  "status": "cap_end",
+  "error": null,
+  "sim_s": 60.0,
+  "source_sha": "d182b679f390eed4a7add825c6345ba538f2092d",
+  "mode": "nav",
+  "nworld": 1,
+  "wall_s": 369.1042016879999,
+  "map_keyframe_admission": "off",
+  "physics_backend": "mjwarp_batch_v1",
+  "contact_profile": "warp_native_contact_v1",
+  "E2E_success": false,
+  "student_execution": false,
+  "research_result": false,
+  "no_pooling": true,
+  "input_audit": {
+    "top_camera_control": false,
+    "held_world_reads": 0,
+    "scope": "capability boundary: controllers never receive world/model/evaluator; smoke has no holding"
+  },
+  "raw": "/home/ugrp/ugrp-sim/runs/e2ewarp-nav1-run-4",
+  "client_requests": 2,
+  "review_hz": 2,
+  "model_calls": 2,
+  "decisions": 2,
+  "rejection_distribution": {
+    "a free message body must be exactly {\"text\": \"...\"}": 2
+  },
+  "dependency_status": "nav-only own-input navigation adapter pending; selfnav wiring and own-command odometry not injected",
+  "message_dropped_n": 2,
+  "nav_only": true,
+  "robots": [
+    "r1",
+    "r2"
+  ],
+  "component_requirements": [
+    "navigation"
+  ],
+  "static_map_input": false,
+  "physical_success_available": false,
+  "success_claim": "not_available",
+  "success_evidence": null
+}

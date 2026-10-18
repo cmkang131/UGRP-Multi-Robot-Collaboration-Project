@@ -1,0 +1,58 @@
+{
+ "schema": "ugrp.e2ewarp.nav_calibration.v1",
+ "measured": true,
+ "measured_n": 60,
+ "source_sha": "d182b679f390eed4a7add825c6345ba538f2092d",
+ "seed": 601,
+ "scene": "s7_pair_with_solo_v7",
+ "robots": [
+  "r1",
+  "r2"
+ ],
+ "pulse": {
+  "percent": 35.0,
+  "width_s": 0.1
+ },
+ "per_robot": {
+  "r1": {
+   "distance_m": 0.5633187295267699,
+   "turn_deg": 120.94263263380782,
+   "forward_pulses": 40,
+   "turn_pulses": 20,
+   "forward_m_per_pct_s": 0.0040237052109054995,
+   "yaw_deg_per_pct_s": 1.7277518947686832
+  },
+  "r2": {
+   "distance_m": 0.5634582117849994,
+   "turn_deg": 120.91421076309177,
+   "forward_pulses": 40,
+   "turn_pulses": 20,
+   "forward_m_per_pct_s": 0.004024701512749996,
+   "yaw_deg_per_pct_s": 1.7273458680441682
+  }
+ },
+ "constants": {
+  "forward_m_per_pct_s": 0.004024203361827748,
+  "yaw_deg_per_pct_s": 1.7275488814064257
+ },
+ "spread": {
+  "forward": 0.0002475774097172963,
+  "yaw": 0.00023503052728927637
+ },
+ "sim_s": 7.0,
+ "wall_s": 45.83704435300001,
+ "host": {
+  "instance": "ugrp-act-l4-gcp6",
+  "project_id": "ugrp-sim-f-1016",
+  "account": "kcm5781kcm5781@gmail.com",
+  "idle_minutes": 20,
+  "budget_stop": true,
+  "wall_cap": null,
+  "credentials_on_vm": false,
+  "verified_utc": "2026-10-18T13:13Z"
+ },
+ "host_receipt_sha256": "ada617d09e8127cb1e1168abd4a425a80fd9ad9171bdf6aceb9c674e0bebce9e",
+ "scene_geometry_sha256": "7d1c52169f924044883313d73d954d74ec94c6e0bdbbc920ecec4a898a2dc34c",
+ "eval_only": true,
+ "note": "measured from simulator base state; never a controller input"
+}

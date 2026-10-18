@@ -1,0 +1,69 @@
+{
+ "schema": "ugrp.e2ewarp.nav_evaluation.v1",
+ "eval_only": true,
+ "no_pooling": true,
+ "research_result": false,
+ "success_claim": "not_available",
+ "run": "/home/ugrp/ugrp-sim/runs/e2ewarp-nav1-run-4",
+ "source_sha": "d182b679f390eed4a7add825c6345ba538f2092d",
+ "status": "cap_end",
+ "sim_s": 60.0,
+ "world_n": 1,
+ "robot_n": 2,
+ "arrival_gt_n": 0,
+ "arrival_claim_n": 0,
+ "claim_mismatch_n": 0,
+ "wall_contacts": "not_measured",
+ "inputs": {
+  "evaluation_state_sha256": "e32b0a9330dfb02949757b5d58898ef376724692568d30ab1aa278c8b31f93a4",
+  "result_sha256": "9c95bf36ed799334f057a07d9e43aa004cf19eb3b7b2344a1874103a18ec0777"
+ },
+ "scope": "eval-only GT recount of raw base qpos; not an E2E or physical-success claim",
+ "worlds": [
+  {
+   "world": 0,
+   "ticks": 601,
+   "dt_s": 0.1,
+   "eval_geometry_sha256": "7d1c52169f924044883313d73d954d74ec94c6e0bdbbc920ecec4a898a2dc34c",
+   "destination": {
+    "kind": "zone_B",
+    "zone": "B",
+    "center_m": [
+     4.6,
+     -2.1
+    ],
+    "half_extents_m": [
+     0.3,
+     0.7
+    ]
+   },
+   "robots": [
+    {
+     "robot": "r1",
+     "final_xy": [
+      -0.8981,
+      -2.375
+     ],
+     "distance_m": 0.0039,
+     "inside_destination_gt": false,
+     "own_arrival_claim": false,
+     "claim_matches_gt": true
+    },
+    {
+     "robot": "r2",
+     "final_xy": [
+      -0.8981,
+      -2.875
+     ],
+     "distance_m": 0.0033,
+     "inside_destination_gt": false,
+     "own_arrival_claim": false,
+     "claim_matches_gt": true
+    }
+   ],
+   "arrival_gt_n": 0,
+   "arrival_claim_n": 0,
+   "claim_mismatch_n": 0
+  }
+ ]
+}

@@ -1,0 +1,149 @@
+{
+ "schema": "ugrp.experiment.v1",
+ "id": "2026-10-18-nav-gate-1",
+ "title": "GPU(MJWarp) 2-robot wide-door navigation gate — acquisition FAIL",
+ "status": "FAIL_NAVIGATION_ACQUISITION",
+ "research_result": false,
+ "e2e_success": false,
+ "source_sha": "d182b679f390eed4a7add825c6345ba538f2092d",
+ "host": "ugrp-act-l4-gcp6 / ugrp-sim-f-1016 / kcm5781kcm5781@gmail.com",
+ "physics": {
+  "backend": "mjwarp_batch_v1",
+  "contact_profile": "warp_native_contact_v1",
+  "noslip_iterations": 0,
+  "cpu_physics_steps": 0,
+  "topology": "2 robots (r3 XML-pruned), no cargo"
+ },
+ "scene": {
+  "scenario": "s7_pair_with_solo_v7",
+  "map": "zone_wide_two_doors_final_v3",
+  "scene_profile": "walls_floor_contrast_v5_indigo110_s80",
+  "wide_door_m": 1.0,
+  "spawns": {
+   "r1": [
+    -0.8981,
+    -2.375
+   ],
+   "r2": [
+    -0.8981,
+    -2.875
+   ]
+  },
+  "destination": "zone_B",
+  "lane_visibility": {
+   "r1": 0.6205,
+   "r2": 0.8935,
+   "source": "outputs/e2e18-admin/nav-gate/visibility-check.json"
+  }
+ },
+ "calibration": {
+  "sha256": "afe2a3bc008ac73c0a1c134797a0b0f710703038fc58adcd0874105a2871010a",
+  "source_sha": "d182b679f390eed4a7add825c6345ba538f2092d",
+  "constants": {
+   "forward_m_per_pct_s": 0.004024203361827748,
+   "yaw_deg_per_pct_s": 1.7275488814064257
+  },
+  "measured_n": 60,
+  "spread": {
+   "forward": 0.0002475774097172963,
+   "yaw": 0.00023503052728927637
+  },
+  "note": "own-command odometry only; the appearance detector profile was NOT re-calibrated on this scene"
+ },
+ "run": {
+  "status": "cap_end",
+  "sim_s": 60.0,
+  "wall_s": 369.1042016879999,
+  "ticks": 601,
+  "robots": 2,
+  "observations": 1202,
+  "nworld": 1,
+  "seed": 601,
+  "condition": "peer_en",
+  "sim_budget_s": 60.0,
+  "llm_model_calls": 2,
+  "decisions": 2,
+  "message_dropped_n": 2,
+  "moving_wheel_command_rows": 0,
+  "drive_reason": {
+   "no_destination": 1202
+  },
+  "self_centric_memory_items": 0,
+  "distance_m": {
+   "r1": 0.0039,
+   "r2": 0.0033
+  },
+  "arrival_gt_n": 0,
+  "own_arrival_claim_n": 0,
+  "claim_mismatch_n": 0,
+  "input_audit": {
+   "top_camera_control": false,
+   "held_world_reads": 0,
+   "scope": "capability boundary: controllers never receive world/model/evaluator; smoke has no holding"
+  },
+  "success_claim": "not_available"
+ },
+ "funnel": [
+  {
+   "stage": "world_attempted",
+   "n": 1,
+   "rejected": 0
+  },
+  {
+   "stage": "nav_dependencies_ready",
+   "n": 2,
+   "rejected": 0
+  },
+  {
+   "stage": "phase_navigate",
+   "n": 2,
+   "rejected": 0
+  },
+  {
+   "stage": "destination_detected",
+   "n": 0,
+   "rejected": 2
+  },
+  {
+   "stage": "moving_wheel_commands",
+   "n": 0,
+   "rejected": 2
+  },
+  {
+   "stage": "arrival_gt",
+   "n": 0,
+   "rejected": 2
+  }
+ ],
+ "appearance": {
+  "frames_checked": 2,
+  "detector_profile": "gpu_calib_v1",
+  "profile_range": "hue 110-114, S>=100, 30<=V<=110, component>=600",
+  "detections": 0,
+  "frame": "raw/r1-tick5.jpg",
+  "measured_deg": {
+   "hue_110_115_px": 0,
+   "blue_200_240_px": 172245
+  },
+  "measured_opencv": {
+   "hue_110_114_px": 1583,
+   "hue_105_107_px": 38299,
+   "hue_100_130_px": 172275
+  },
+  "finding": "profile hue values are consistent with OpenCV H (0-180) units while rgb_to_hsv returns degrees (0-360): under OpenCV units the same frame has 1583 px in 110-114, under degrees 0. Even under OpenCV units the dark indigo floor (OpenCV H ~105-108, V~90) sits inside the S/V band, so the profile also fires on the floor; visgoal found the same floor/zone-paint confusion on GPU renders. The profile was never calibrated on this scene profile."
+ },
+ "cause": "Two independent causes: (1) hue unit mismatch (profile OpenCV 0-180 vs code degrees 0-360), and (2) profile/scene mismatch - the 36-frame calibration was not captured on walls_floor_contrast_v5_indigo110_s80, where the dark indigo floor is inside the S/V band. Fixing units alone would fire on floor pixels, not on the zone painting, so it was not shipped. The controller has no search/acquisition policy, so it held with no_destination (fail closed).",
+ "raw": {
+  "vm": "/home/ugrp/ugrp-sim/runs/e2ewarp-nav1-run-4",
+  "calibration_run": "/home/ugrp/ugrp-sim/runs/e2ewarp-nav1-calib-h",
+  "oracle_package": "outputs/e2e18-admin/nav-gate/evidence-run4.tar.gz",
+  "oracle_package_sha256": "81e8130bcd5d7cd6f721c84b2da8ab10d098bedecec904e92ea806cce0043f40"
+ },
+ "no_pooling": true,
+ "unverified": [
+  "loaded FK / release / evaluator / ACT (gate 2+)",
+  "any E2E or physical-success claim",
+  "whether a scene-specific appearance profile plus a search policy can reach zone B"
+ ],
+ "next": "scene-specific appearance calibration (eval-only known poses) + search/acquisition policy; any profile/threshold change requires explicit user approval (one change per gate)"
+}
