@@ -284,7 +284,7 @@ class _FakeWD:
 def test_contact_recorder_records_interesting_rising_edge():
     module = load_module('contact_recorder', EXP / 'scripts/contact_recorder.py')
     rec = module.ContactRecorder(_FakeModel(), 2, decimate=1)
-    wd = _FakeWD([[1, 2]])
+    wd = _FakeWD([[0, 2]])  # r1 robot vs cargo contact
     for i in range(3):
         info = rec.update(wd, i * 0.1)
         assert info['counts'] == [1, 0]
