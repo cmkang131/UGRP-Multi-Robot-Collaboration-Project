@@ -1,0 +1,1256 @@
+{
+  "schema": "ugrp.warp4.batch.v1",
+  "status": "running",
+  "source_sha": "f540cc34de9e83853b45093f32091babad7dcfe9",
+  "host": {
+    "project_id": "ugrp-sim-f-1016",
+    "instance": "ugrp-act-l4-gcp6",
+    "machine_type": "g2-standard-8",
+    "zone": "asia-northeast3-a",
+    "account": "kcm5781kcm5781@gmail.com",
+    "provider": "gcp",
+    "schema": "ugrp.grasp_act.host.v1",
+    "cpu_count": 8
+  },
+  "flow": "beampair",
+  "physics_backend": "mjwarp_batch_v1",
+  "mujoco": "3.16.0",
+  "cases_sha256": "57bb258cb7cd8241addc6e516876c2037847d111c7f3aa01836426cc4523bb49",
+  "world_indices": [
+    6,
+    10,
+    20,
+    27,
+    37
+  ],
+  "planned_N": 5,
+  "started_N": 5,
+  "completed_N": 0,
+  "success_n": 0,
+  "cap_end": 0,
+  "HOST_ERROR": 0,
+  "training_rgb": false,
+  "model_calls": 0,
+  "weld": "off",
+  "cpu_results_pooled": false,
+  "gcp3_isolated_v1": false,
+  "gcp6_isolated_v1": true,
+  "warp_debug_v1": false,
+  "workspace_trace_v1": false,
+  "warp_verify_cuda_v1": false,
+  "diagnostic_ticks": null,
+  "sap_segmented_v1": false,
+  "physics_profile_v1": false,
+  "gate_eligible": false,
+  "shared_load": false,
+  "vm_hourly_usd": 1.096,
+  "placement_graspable_filter_v1": true,
+  "batch_per_world_speed_v1": true,
+  "full_active_dof_workspace_v1": true,
+  "contact_profile": {
+    "profile": "warp_native_contact_v1",
+    "options": {
+      "noslip_iterations": "0",
+      "cone": "elliptic",
+      "integrator": "implicitfast",
+      "impratio": "5"
+    },
+    "playground_commit": "d59156e099a8785dd58fbce2e25a6ee1f7b5800c",
+    "default_off": true,
+    "sha256": "a1196005ef686c41e7796968315e1ba99a929502f50c0ae461f4e4eab76120a6",
+    "module_sha256": "a5c8d370755034b9f9615f66a94b87883327b7d7ecc4e13082eac2c2d4751c6a",
+    "origin_commit": "df5a1f86aad420f2fab2c10e3ee77cdb5ec11807",
+    "origin_PR": 562
+  },
+  "prior_rejection_table": "/home/ugrp/ugrp-sim/runs/beamact5/gate-40-r5/rejection_table.json",
+  "cuda_runtime_profile": "gcp6_isolated_no_mps_v1",
+  "price_basis": "inherited regional VM estimate; billing unverified",
+  "reproduce": [
+    "/home/ugrp/ugrp-sim/src/beamact5-tools/run_warp_flow_teacher_gcp6.py",
+    "--flow",
+    "beampair",
+    "--adapter-source",
+    "/home/ugrp/ugrp-sim/src/835ccef26aa84b08cc8f7e256fd0f43aa1583ef9",
+    "--teacher-source",
+    "/home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+    "--cases",
+    "/home/ugrp/ugrp-sim/runs/beamact5/wide-start-8420000d-r4/wide-cases-r5b.json",
+    "--indices",
+    "6,10,20,27,37",
+    "--cap-s",
+    "60",
+    "--out",
+    "/home/ugrp/ugrp-sim/runs/beamact5/validation-r5b-5",
+    "--vm-hourly-usd",
+    "1.096",
+    "--gcp6-isolated-v1",
+    "--placement-graspable-filter-v1",
+    "--world-model-parameters-v1",
+    "--native-sleep-policy-compat-v1",
+    "--full-active-dof-workspace-v1",
+    "--warp-native-contact-v1",
+    "--canonical-xml",
+    "/home/ugrp/ugrp-sim/runs/beamact5/wide-export-old-8420000e/canonical-scene.xml",
+    "--per-world-model-references-v1",
+    "/home/ugrp/ugrp-sim/runs/beamact5/native-refs-8420000e/per-world-references.json",
+    "--rejection-table",
+    "/home/ugrp/ugrp-sim/runs/beamact5/gate-40-r5/rejection_table.json",
+    "--batch-per-world-speed-v1"
+  ],
+  "beamact5_gate_eligible": false,
+  "native_initialization_only_sim_s": [
+    1.7000000000001514,
+    1.7000000000001514,
+    1.7000000000001514,
+    1.7000000000001514,
+    1.7000000000001514
+  ],
+  "camera": {
+    "resolution": [
+      640,
+      480
+    ],
+    "hz": 10,
+    "K": [
+      [
+        619.5194540517232,
+        0.0,
+        287.68910608896766
+      ],
+      [
+        0.0,
+        622.1654884818748,
+        218.69686648455726
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "D": [
+      -0.0199819517209417,
+      -0.1707593617153504,
+      -0.2568318201202376,
+      0.9650933421665181
+    ],
+    "mount_pos": [
+      0.052982009925558314,
+      0.0,
+      0.028152173913043477
+    ],
+    "mount_quat": [
+      0.4545194776720437,
+      0.5416752204197018,
+      -0.5416752204197018,
+      -0.4545194776720437
+    ],
+    "remap_sha256": "eb9b67fbe2cd9323054c779f34e925507caec635b6e74306241469c5d9c32e42",
+    "renderer": "MJWarp batch RGB; known partial-alpha difference from C remains",
+    "quality_requested": "no_mip_v1"
+  },
+  "capacities": {
+    "nconmax": 32,
+    "njmax": 256,
+    "naconmax": 160,
+    "nvmax": 222,
+    "control_steps": 400,
+    "graph_chunk": 16,
+    "graph_repeats": 25
+  },
+  "compatibility": {
+    "0": {
+      "geometry": {
+        "mode": "compiled-geometry-312-v1",
+        "reference": "/home/ugrp/ugrp-sim/runs/beamact5/native-refs-8420000e/references/9b6da02b2c6204139853cbf48df5bc227ff80808a24fa69ab06e97d176184c72/compiled-geometry312.npz",
+        "reference_sha256": "d8b04debaf39df59b8015a818feced6a43ef7655c8ba8a0eb2d0e5683d8085c6",
+        "fields_copied": 65,
+        "changes": [
+          {
+            "array": "bvh_aabb",
+            "entries": 73545,
+            "before_sha256": "babf49404ea05cb3de1b6e97470bd0a0bac902a6bd7589e9fc03db667b2f3746",
+            "after_sha256": "4d5a6852fa72fd5cb56e36a59c6938ddf4e297b9cdf83f20bb012dfb84896ea2"
+          },
+          {
+            "array": "bvh_nodeid",
+            "entries": 5971,
+            "before_sha256": "cdcbd34445bb0d8f01d1d345b35e5c0bb69bf5122700184493acd16ab9bbd642",
+            "after_sha256": "66581c48a8adcf43349d75b943ff7ff773e9b4f98e3dc069a53527806d12d34c"
+          },
+          {
+            "array": "geom_aabb",
+            "entries": 927,
+            "before_sha256": "25ed39e3c6fd4e751058bf243a1ae99ce705ff391c7f2e9aa8d37b71afb474ed",
+            "after_sha256": "4eb00fb7254b71be172de7c6dbda33d183f18a256fcc337166e4613bf5c57198"
+          },
+          {
+            "array": "geom_quat",
+            "entries": 612,
+            "before_sha256": "b49468bd598d96f397e0fabd52176e36b3746074fa2d5a90eb81cd7ec27e84c1",
+            "after_sha256": "c75ae3104fdb7eab97f6c49788e0d9e1cb7a32ffc365a0c6450f1e919f94542b"
+          },
+          {
+            "array": "geom_rbound",
+            "entries": 156,
+            "before_sha256": "a442de603f98e5a5f4af14824b025fe9601e08d71692d4c1f51069e94b543cea",
+            "after_sha256": "d7c8fd4224625f5b1b3652f755b155b94d1716892d6164631cef48d1bcbe4b63"
+          },
+          {
+            "array": "geom_sameframe",
+            "entries": 36,
+            "before_sha256": "251ede7b8c15ef269c0414650f75319b3c3931dea54debaeb799bd6941e46711",
+            "after_sha256": "e549cecb04fdacf1a98b7371a9197b6deeb025e8af478fced3d66b72950707e5"
+          },
+          {
+            "array": "geom_size",
+            "entries": 468,
+            "before_sha256": "4a05f92b739ccd0be9a14a26026590d749ee02cdc6c10822460a872e8428c45d",
+            "after_sha256": "e228658df389f652b105263718db8208283a4c957aeb6ad02ce7fed84b27f7fb"
+          },
+          {
+            "array": "mesh_extrema",
+            "entries": 26,
+            "before_sha256": "c7356de6bccad32046ad4c4ca5923e7af67c66bc4f36fbca29496e23eead167d",
+            "after_sha256": "b87b9578a5aaa8f2c9f486cf09e68f37720f71f0229590b9a508392dad0194cf"
+          },
+          {
+            "array": "mesh_normal",
+            "entries": 10056,
+            "before_sha256": "1372b3c7560d04961a38cc0e27f91604fb2f8b95b1515c38121462699488d1af",
+            "after_sha256": "1185bd88161d9c2da76422e974e7c273a29564a57b6b45c4852a7fb8be6e8d23"
+          },
+          {
+            "array": "mesh_polynormal",
+            "entries": 9111,
+            "before_sha256": "dc7cc865463dc840301f0d6a49e15e7644230f910c1dc6962c1d67b2c00e16e1",
+            "after_sha256": "bcd310eeaa441c0fdcaecaf594d1156713c8ee071b6de150ce2f9510d41828a2"
+          },
+          {
+            "array": "mesh_quat",
+            "entries": 64,
+            "before_sha256": "5fa4b1ecb45d94c08a4eb5ddaefb41903588ce883ccd74ba201438fa91ae9710",
+            "after_sha256": "189788156b49a16bfbaa735e41b00ccafeeec1d1b45f78d9dc25183d69bff160"
+          },
+          {
+            "array": "mesh_vert",
+            "entries": 10279,
+            "before_sha256": "7e1cf1d091a752599029002d58f7493a46f1f3696e6e8d2279fca9d68195d0a7",
+            "after_sha256": "9053f0dc25a6d76d14a9fc147262e7b057a36eabb2e6391eb5437a070a0ba46f"
+          }
+        ],
+        "basis": "same XML and same physical geometry; C312 compiled mesh principal axes, vertices and caches transferred as a unit",
+        "new_physical_parameters": false
+      },
+      "damping": {
+        "mode": "compiled-312-v1",
+        "reference": "/home/ugrp/ugrp-sim/runs/beamact5/native-refs-8420000e/references/9b6da02b2c6204139853cbf48df5bc227ff80808a24fa69ab06e97d176184c72/compiled-312.json",
+        "reference_sha256": "3d98ef9fc22506bc7e44c136906302d37421401a6faa587dbb97cc5fb624b6b0",
+        "reference_version": "3.12.0",
+        "xml_sha256": "9b6da02b2c6204139853cbf48df5bc227ff80808a24fa69ab06e97d176184c72",
+        "copied_array": "actuator_biasprm[:,2]",
+        "changes": [
+          {
+            "actuator": "r1__servo_arm_yaw",
+            "before": -0.9525326956383661,
+            "after": -1.4003999090747683
+          },
+          {
+            "actuator": "r1__servo_shoulder",
+            "before": -0.3514994573664441,
+            "after": -1.3904017267004583
+          },
+          {
+            "actuator": "r1__servo_elbow",
+            "before": -0.05706531248208201,
+            "after": -0.3104011296873109
+          },
+          {
+            "actuator": "r1__servo_wrist",
+            "before": -0.05662326423820336,
+            "after": -0.16026536692805718
+          },
+          {
+            "actuator": "r2__servo_arm_yaw",
+            "before": -0.9525326956383661,
+            "after": -1.4003999090747683
+          },
+          {
+            "actuator": "r2__servo_shoulder",
+            "before": -0.3514994573664441,
+            "after": -1.3904017267004583
+          },
+          {
+            "actuator": "r2__servo_elbow",
+            "before": -0.05706531248208201,
+            "after": -0.3104011296873109
+          },
+          {
+            "actuator": "r2__servo_wrist",
+            "before": -0.05662326423820336,
+            "after": -0.16026536692805718
+          },
+          {
+            "actuator": "r3__servo_arm_yaw",
+            "before": -0.9525326956383661,
+            "after": -1.4003999090747683
+          },
+          {
+            "actuator": "r3__servo_shoulder",
+            "before": -0.3514994573664441,
+            "after": -1.3904017267004583
+          },
+          {
+            "actuator": "r3__servo_elbow",
+            "before": -0.05706531248208201,
+            "after": -0.3104011296873109
+          },
+          {
+            "actuator": "r3__servo_wrist",
+            "before": -0.05662326423820336,
+            "after": -0.16026536692805718
+          }
+        ],
+        "other_audited_arrays_exact": true,
+        "source": "https://github.com/google-deepmind/mujoco/commit/b3dd9e617",
+        "new_physical_parameters": false
+      },
+      "sleep_policy": {
+        "original": [
+          3,
+          3,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "runtime_equivalent": [
+          1,
+          1,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "basis": "C3.16 engine_sleep.c125-126; pinned MJWarp sleep.py290-292; INIT rejected"
+      }
+    },
+    "1": {
+      "geometry": {
+        "mode": "compiled-geometry-312-v1",
+        "reference": "/home/ugrp/ugrp-sim/runs/beamact5/native-refs-8420000e/references/a41120b4e41025ccacb2b0cf336699e633a609b96087fc26adf615d142abcc8d/compiled-geometry312.npz",
+        "reference_sha256": "bc8fa01406e3962f2f8bd0a5c1309692606d04762b1fb7b0db951e0a5930a263",
+        "fields_copied": 65,
+        "changes": [
+          {
+            "array": "bvh_aabb",
+            "entries": 73545,
+            "before_sha256": "babf49404ea05cb3de1b6e97470bd0a0bac902a6bd7589e9fc03db667b2f3746",
+            "after_sha256": "4d5a6852fa72fd5cb56e36a59c6938ddf4e297b9cdf83f20bb012dfb84896ea2"
+          },
+          {
+            "array": "bvh_nodeid",
+            "entries": 5971,
+            "before_sha256": "cdcbd34445bb0d8f01d1d345b35e5c0bb69bf5122700184493acd16ab9bbd642",
+            "after_sha256": "66581c48a8adcf43349d75b943ff7ff773e9b4f98e3dc069a53527806d12d34c"
+          },
+          {
+            "array": "geom_aabb",
+            "entries": 927,
+            "before_sha256": "f1f7a10e6905acc93bc3053693b068de106a79a5752ffa58dc30056bc72686b5",
+            "after_sha256": "603bff8b5d936c28476839a448972ea584a38f76ba8259c036650b722b245732"
+          },
+          {
+            "array": "geom_quat",
+            "entries": 612,
+            "before_sha256": "b49468bd598d96f397e0fabd52176e36b3746074fa2d5a90eb81cd7ec27e84c1",
+            "after_sha256": "c75ae3104fdb7eab97f6c49788e0d9e1cb7a32ffc365a0c6450f1e919f94542b"
+          },
+          {
+            "array": "geom_rbound",
+            "entries": 156,
+            "before_sha256": "513dae659f2099303787689d2368b24dc5d196150fe0b775c9227c7aabd93c02",
+            "after_sha256": "dc58361637b9591071b7b0dae0db88d9d9cc0409693d96d5bca5822af374aa5b"
+          },
+          {
+            "array": "geom_sameframe",
+            "entries": 36,
+            "before_sha256": "251ede7b8c15ef269c0414650f75319b3c3931dea54debaeb799bd6941e46711",
+            "after_sha256": "e549cecb04fdacf1a98b7371a9197b6deeb025e8af478fced3d66b72950707e5"
+          },
+          {
+            "array": "geom_size",
+            "entries": 468,
+            "before_sha256": "1135b6c8470bfa2c2ff77995970aa8a96245da67571929a24f1d1b3232c653d7",
+            "after_sha256": "53718d1bf759eddb7b2f0ccd54ca11b4ea2d74da2a8385ab21359464910568a0"
+          },
+          {
+            "array": "mesh_extrema",
+            "entries": 26,
+            "before_sha256": "c7356de6bccad32046ad4c4ca5923e7af67c66bc4f36fbca29496e23eead167d",
+            "after_sha256": "b87b9578a5aaa8f2c9f486cf09e68f37720f71f0229590b9a508392dad0194cf"
+          },
+          {
+            "array": "mesh_normal",
+            "entries": 10056,
+            "before_sha256": "1372b3c7560d04961a38cc0e27f91604fb2f8b95b1515c38121462699488d1af",
+            "after_sha256": "1185bd88161d9c2da76422e974e7c273a29564a57b6b45c4852a7fb8be6e8d23"
+          },
+          {
+            "array": "mesh_polynormal",
+            "entries": 9111,
+            "before_sha256": "dc7cc865463dc840301f0d6a49e15e7644230f910c1dc6962c1d67b2c00e16e1",
+            "after_sha256": "bcd310eeaa441c0fdcaecaf594d1156713c8ee071b6de150ce2f9510d41828a2"
+          },
+          {
+            "array": "mesh_quat",
+            "entries": 64,
+            "before_sha256": "5fa4b1ecb45d94c08a4eb5ddaefb41903588ce883ccd74ba201438fa91ae9710",
+            "after_sha256": "189788156b49a16bfbaa735e41b00ccafeeec1d1b45f78d9dc25183d69bff160"
+          },
+          {
+            "array": "mesh_vert",
+            "entries": 10279,
+            "before_sha256": "7e1cf1d091a752599029002d58f7493a46f1f3696e6e8d2279fca9d68195d0a7",
+            "after_sha256": "9053f0dc25a6d76d14a9fc147262e7b057a36eabb2e6391eb5437a070a0ba46f"
+          }
+        ],
+        "basis": "same XML and same physical geometry; C312 compiled mesh principal axes, vertices and caches transferred as a unit",
+        "new_physical_parameters": false
+      },
+      "damping": {
+        "mode": "compiled-312-v1",
+        "reference": "/home/ugrp/ugrp-sim/runs/beamact5/native-refs-8420000e/references/a41120b4e41025ccacb2b0cf336699e633a609b96087fc26adf615d142abcc8d/compiled-312.json",
+        "reference_sha256": "3bb070fdbdd400e6f3a92de1c6b243956c979f5151e1bf905c15fb5cbb77cfc0",
+        "reference_version": "3.12.0",
+        "xml_sha256": "a41120b4e41025ccacb2b0cf336699e633a609b96087fc26adf615d142abcc8d",
+        "copied_array": "actuator_biasprm[:,2]",
+        "changes": [
+          {
+            "actuator": "r1__servo_arm_yaw",
+            "before": -0.9525326956383661,
+            "after": -1.4003999090747683
+          },
+          {
+            "actuator": "r1__servo_shoulder",
+            "before": -0.3514994573664441,
+            "after": -1.3904017267004583
+          },
+          {
+            "actuator": "r1__servo_elbow",
+            "before": -0.05706531248208201,
+            "after": -0.3104011296873109
+          },
+          {
+            "actuator": "r1__servo_wrist",
+            "before": -0.05662326423820336,
+            "after": -0.16026536692805718
+          },
+          {
+            "actuator": "r2__servo_arm_yaw",
+            "before": -0.9525326956383661,
+            "after": -1.4003999090747683
+          },
+          {
+            "actuator": "r2__servo_shoulder",
+            "before": -0.3514994573664441,
+            "after": -1.3904017267004583
+          },
+          {
+            "actuator": "r2__servo_elbow",
+            "before": -0.05706531248208201,
+            "after": -0.3104011296873109
+          },
+          {
+            "actuator": "r2__servo_wrist",
+            "before": -0.05662326423820336,
+            "after": -0.16026536692805718
+          },
+          {
+            "actuator": "r3__servo_arm_yaw",
+            "before": -0.9525326956383661,
+            "after": -1.4003999090747683
+          },
+          {
+            "actuator": "r3__servo_shoulder",
+            "before": -0.3514994573664441,
+            "after": -1.3904017267004583
+          },
+          {
+            "actuator": "r3__servo_elbow",
+            "before": -0.05706531248208201,
+            "after": -0.3104011296873109
+          },
+          {
+            "actuator": "r3__servo_wrist",
+            "before": -0.05662326423820336,
+            "after": -0.16026536692805718
+          }
+        ],
+        "other_audited_arrays_exact": true,
+        "source": "https://github.com/google-deepmind/mujoco/commit/b3dd9e617",
+        "new_physical_parameters": false
+      },
+      "sleep_policy": {
+        "original": [
+          3,
+          3,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "runtime_equivalent": [
+          1,
+          1,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "basis": "C3.16 engine_sleep.c125-126; pinned MJWarp sleep.py290-292; INIT rejected"
+      }
+    },
+    "2": {
+      "geometry": {
+        "mode": "compiled-geometry-312-v1",
+        "reference": "/home/ugrp/ugrp-sim/runs/beamact5/native-refs-8420000e/references/b7ba48e8cf82e3b96d4f8d49870d72eeb77ea31f76e1dfeffc173bb69ce59ef2/compiled-geometry312.npz",
+        "reference_sha256": "0fec7c8861407ce0a622adf6e9552f0e8103eb97805d3fd24bffa70bf0eab2f7",
+        "fields_copied": 65,
+        "changes": [
+          {
+            "array": "bvh_aabb",
+            "entries": 73545,
+            "before_sha256": "babf49404ea05cb3de1b6e97470bd0a0bac902a6bd7589e9fc03db667b2f3746",
+            "after_sha256": "4d5a6852fa72fd5cb56e36a59c6938ddf4e297b9cdf83f20bb012dfb84896ea2"
+          },
+          {
+            "array": "bvh_nodeid",
+            "entries": 5971,
+            "before_sha256": "cdcbd34445bb0d8f01d1d345b35e5c0bb69bf5122700184493acd16ab9bbd642",
+            "after_sha256": "66581c48a8adcf43349d75b943ff7ff773e9b4f98e3dc069a53527806d12d34c"
+          },
+          {
+            "array": "geom_aabb",
+            "entries": 927,
+            "before_sha256": "179ab5f52e7d4ea47e0063b7897722a1b7a9abc206b8967dcf807835aa8644bb",
+            "after_sha256": "d5b8e27fc3211fb268d7e29e9dbf274eeb0d968de57f1249279ac12503fae68b"
+          },
+          {
+            "array": "geom_quat",
+            "entries": 612,
+            "before_sha256": "b49468bd598d96f397e0fabd52176e36b3746074fa2d5a90eb81cd7ec27e84c1",
+            "after_sha256": "c75ae3104fdb7eab97f6c49788e0d9e1cb7a32ffc365a0c6450f1e919f94542b"
+          },
+          {
+            "array": "geom_rbound",
+            "entries": 156,
+            "before_sha256": "8d6fede3da7e1417a8dd177413242f6b92b8337b6a535f656696bc6ee10e29dd",
+            "after_sha256": "b269f790d104bf69c317b845f0934c6cfc2e5bc1f7b5e15abed2533a8a956f6f"
+          },
+          {
+            "array": "geom_sameframe",
+            "entries": 36,
+            "before_sha256": "251ede7b8c15ef269c0414650f75319b3c3931dea54debaeb799bd6941e46711",
+            "after_sha256": "e549cecb04fdacf1a98b7371a9197b6deeb025e8af478fced3d66b72950707e5"
+          },
+          {
+            "array": "geom_size",
+            "entries": 468,
+            "before_sha256": "91c762ac4d08d9f7bb939e01be0347ce328ca0794c4fc883a0ad75c646f192de",
+            "after_sha256": "fda8d2a69b0eea9d18b3f4bc447190da526c8106c26e3eab2a4505e55f5c32a8"
+          },
+          {
+            "array": "mesh_extrema",
+            "entries": 26,
+            "before_sha256": "c7356de6bccad32046ad4c4ca5923e7af67c66bc4f36fbca29496e23eead167d",
+            "after_sha256": "b87b9578a5aaa8f2c9f486cf09e68f37720f71f0229590b9a508392dad0194cf"
+          },
+          {
+            "array": "mesh_normal",
+            "entries": 10056,
+            "before_sha256": "1372b3c7560d04961a38cc0e27f91604fb2f8b95b1515c38121462699488d1af",
+            "after_sha256": "1185bd88161d9c2da76422e974e7c273a29564a57b6b45c4852a7fb8be6e8d23"
+          },
+          {
+            "array": "mesh_polynormal",
+            "entries": 9111,
+            "before_sha256": "dc7cc865463dc840301f0d6a49e15e7644230f910c1dc6962c1d67b2c00e16e1",
+            "after_sha256": "bcd310eeaa441c0fdcaecaf594d1156713c8ee071b6de150ce2f9510d41828a2"
+          },
+          {
+            "array": "mesh_quat",
+            "entries": 64,
+            "before_sha256": "5fa4b1ecb45d94c08a4eb5ddaefb41903588ce883ccd74ba201438fa91ae9710",
+            "after_sha256": "189788156b49a16bfbaa735e41b00ccafeeec1d1b45f78d9dc25183d69bff160"
+          },
+          {
+            "array": "mesh_vert",
+            "entries": 10279,
+            "before_sha256": "7e1cf1d091a752599029002d58f7493a46f1f3696e6e8d2279fca9d68195d0a7",
+            "after_sha256": "9053f0dc25a6d76d14a9fc147262e7b057a36eabb2e6391eb5437a070a0ba46f"
+          }
+        ],
+        "basis": "same XML and same physical geometry; C312 compiled mesh principal axes, vertices and caches transferred as a unit",
+        "new_physical_parameters": false
+      },
+      "damping": {
+        "mode": "compiled-312-v1",
+        "reference": "/home/ugrp/ugrp-sim/runs/beamact5/native-refs-8420000e/references/b7ba48e8cf82e3b96d4f8d49870d72eeb77ea31f76e1dfeffc173bb69ce59ef2/compiled-312.json",
+        "reference_sha256": "884649960d2d043372fb0d4f44855b8841509a8c89917ddd6b931c597877d18a",
+        "reference_version": "3.12.0",
+        "xml_sha256": "b7ba48e8cf82e3b96d4f8d49870d72eeb77ea31f76e1dfeffc173bb69ce59ef2",
+        "copied_array": "actuator_biasprm[:,2]",
+        "changes": [
+          {
+            "actuator": "r1__servo_arm_yaw",
+            "before": -0.9525326956383661,
+            "after": -1.4003999090747683
+          },
+          {
+            "actuator": "r1__servo_shoulder",
+            "before": -0.3514994573664441,
+            "after": -1.3904017267004583
+          },
+          {
+            "actuator": "r1__servo_elbow",
+            "before": -0.05706531248208201,
+            "after": -0.3104011296873109
+          },
+          {
+            "actuator": "r1__servo_wrist",
+            "before": -0.05662326423820336,
+            "after": -0.16026536692805718
+          },
+          {
+            "actuator": "r2__servo_arm_yaw",
+            "before": -0.9525326956383661,
+            "after": -1.4003999090747683
+          },
+          {
+            "actuator": "r2__servo_shoulder",
+            "before": -0.3514994573664441,
+            "after": -1.3904017267004583
+          },
+          {
+            "actuator": "r2__servo_elbow",
+            "before": -0.05706531248208201,
+            "after": -0.3104011296873109
+          },
+          {
+            "actuator": "r2__servo_wrist",
+            "before": -0.05662326423820336,
+            "after": -0.16026536692805718
+          },
+          {
+            "actuator": "r3__servo_arm_yaw",
+            "before": -0.9525326956383661,
+            "after": -1.4003999090747683
+          },
+          {
+            "actuator": "r3__servo_shoulder",
+            "before": -0.3514994573664441,
+            "after": -1.3904017267004583
+          },
+          {
+            "actuator": "r3__servo_elbow",
+            "before": -0.05706531248208201,
+            "after": -0.3104011296873109
+          },
+          {
+            "actuator": "r3__servo_wrist",
+            "before": -0.05662326423820336,
+            "after": -0.16026536692805718
+          }
+        ],
+        "other_audited_arrays_exact": true,
+        "source": "https://github.com/google-deepmind/mujoco/commit/b3dd9e617",
+        "new_physical_parameters": false
+      },
+      "sleep_policy": {
+        "original": [
+          3,
+          3,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "runtime_equivalent": [
+          1,
+          1,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "basis": "C3.16 engine_sleep.c125-126; pinned MJWarp sleep.py290-292; INIT rejected"
+      }
+    },
+    "3": {
+      "geometry": {
+        "mode": "compiled-geometry-312-v1",
+        "reference": "/home/ugrp/ugrp-sim/runs/beamact5/native-refs-8420000e/references/18eceecfa08aea59287b9895b8afd5079eb3e55c319e674210eddd099c4e430b/compiled-geometry312.npz",
+        "reference_sha256": "e96042b792cd64884b2249758920b2dd19e2c12f7451663e363cdee764b636cf",
+        "fields_copied": 65,
+        "changes": [
+          {
+            "array": "bvh_aabb",
+            "entries": 73545,
+            "before_sha256": "babf49404ea05cb3de1b6e97470bd0a0bac902a6bd7589e9fc03db667b2f3746",
+            "after_sha256": "4d5a6852fa72fd5cb56e36a59c6938ddf4e297b9cdf83f20bb012dfb84896ea2"
+          },
+          {
+            "array": "bvh_nodeid",
+            "entries": 5971,
+            "before_sha256": "cdcbd34445bb0d8f01d1d345b35e5c0bb69bf5122700184493acd16ab9bbd642",
+            "after_sha256": "66581c48a8adcf43349d75b943ff7ff773e9b4f98e3dc069a53527806d12d34c"
+          },
+          {
+            "array": "geom_aabb",
+            "entries": 927,
+            "before_sha256": "db86f7ceb429a6dc14bbffe29ef8c2fae3d574cd81f32a310cb2f2a4f62cc70a",
+            "after_sha256": "b6390ce59b250316078891d82e2ef8bae3aea6722dd2d96e8722c88b0e8fc137"
+          },
+          {
+            "array": "geom_quat",
+            "entries": 612,
+            "before_sha256": "b49468bd598d96f397e0fabd52176e36b3746074fa2d5a90eb81cd7ec27e84c1",
+            "after_sha256": "c75ae3104fdb7eab97f6c49788e0d9e1cb7a32ffc365a0c6450f1e919f94542b"
+          },
+          {
+            "array": "geom_rbound",
+            "entries": 156,
+            "before_sha256": "f995f87188ce10d6a8ae94328ae3e7ef72f0dfa897e094f596325cd1ea4eaac0",
+            "after_sha256": "5f0e5396aea059e24a9591aa0f528b4dd538b7565d17a141814387f32f687f75"
+          },
+          {
+            "array": "geom_sameframe",
+            "entries": 36,
+            "before_sha256": "251ede7b8c15ef269c0414650f75319b3c3931dea54debaeb799bd6941e46711",
+            "after_sha256": "e549cecb04fdacf1a98b7371a9197b6deeb025e8af478fced3d66b72950707e5"
+          },
+          {
+            "array": "geom_size",
+            "entries": 468,
+            "before_sha256": "762f1faba90d2d60235b044f48a065e2a434558963989b821ce2faa6dbfbfe51",
+            "after_sha256": "04c77c12be813074b2388c5d067a7351731de065aa5cf53c0f576946d3ef7f60"
+          },
+          {
+            "array": "mesh_extrema",
+            "entries": 26,
+            "before_sha256": "c7356de6bccad32046ad4c4ca5923e7af67c66bc4f36fbca29496e23eead167d",
+            "after_sha256": "b87b9578a5aaa8f2c9f486cf09e68f37720f71f0229590b9a508392dad0194cf"
+          },
+          {
+            "array": "mesh_normal",
+            "entries": 10056,
+            "before_sha256": "1372b3c7560d04961a38cc0e27f91604fb2f8b95b1515c38121462699488d1af",
+            "after_sha256": "1185bd88161d9c2da76422e974e7c273a29564a57b6b45c4852a7fb8be6e8d23"
+          },
+          {
+            "array": "mesh_polynormal",
+            "entries": 9111,
+            "before_sha256": "dc7cc865463dc840301f0d6a49e15e7644230f910c1dc6962c1d67b2c00e16e1",
+            "after_sha256": "bcd310eeaa441c0fdcaecaf594d1156713c8ee071b6de150ce2f9510d41828a2"
+          },
+          {
+            "array": "mesh_quat",
+            "entries": 64,
+            "before_sha256": "5fa4b1ecb45d94c08a4eb5ddaefb41903588ce883ccd74ba201438fa91ae9710",
+            "after_sha256": "189788156b49a16bfbaa735e41b00ccafeeec1d1b45f78d9dc25183d69bff160"
+          },
+          {
+            "array": "mesh_vert",
+            "entries": 10279,
+            "before_sha256": "7e1cf1d091a752599029002d58f7493a46f1f3696e6e8d2279fca9d68195d0a7",
+            "after_sha256": "9053f0dc25a6d76d14a9fc147262e7b057a36eabb2e6391eb5437a070a0ba46f"
+          }
+        ],
+        "basis": "same XML and same physical geometry; C312 compiled mesh principal axes, vertices and caches transferred as a unit",
+        "new_physical_parameters": false
+      },
+      "damping": {
+        "mode": "compiled-312-v1",
+        "reference": "/home/ugrp/ugrp-sim/runs/beamact5/native-refs-8420000e/references/18eceecfa08aea59287b9895b8afd5079eb3e55c319e674210eddd099c4e430b/compiled-312.json",
+        "reference_sha256": "a1bd56e16a862e2bd5c18754d9d093d03d7b54f03f0ee03c8e368e84dfb7f068",
+        "reference_version": "3.12.0",
+        "xml_sha256": "18eceecfa08aea59287b9895b8afd5079eb3e55c319e674210eddd099c4e430b",
+        "copied_array": "actuator_biasprm[:,2]",
+        "changes": [
+          {
+            "actuator": "r1__servo_arm_yaw",
+            "before": -0.9525326956383661,
+            "after": -1.4003999090747683
+          },
+          {
+            "actuator": "r1__servo_shoulder",
+            "before": -0.3514994573664441,
+            "after": -1.3904017267004583
+          },
+          {
+            "actuator": "r1__servo_elbow",
+            "before": -0.05706531248208201,
+            "after": -0.3104011296873109
+          },
+          {
+            "actuator": "r1__servo_wrist",
+            "before": -0.05662326423820336,
+            "after": -0.16026536692805718
+          },
+          {
+            "actuator": "r2__servo_arm_yaw",
+            "before": -0.9525326956383661,
+            "after": -1.4003999090747683
+          },
+          {
+            "actuator": "r2__servo_shoulder",
+            "before": -0.3514994573664441,
+            "after": -1.3904017267004583
+          },
+          {
+            "actuator": "r2__servo_elbow",
+            "before": -0.05706531248208201,
+            "after": -0.3104011296873109
+          },
+          {
+            "actuator": "r2__servo_wrist",
+            "before": -0.05662326423820336,
+            "after": -0.16026536692805718
+          },
+          {
+            "actuator": "r3__servo_arm_yaw",
+            "before": -0.9525326956383661,
+            "after": -1.4003999090747683
+          },
+          {
+            "actuator": "r3__servo_shoulder",
+            "before": -0.3514994573664441,
+            "after": -1.3904017267004583
+          },
+          {
+            "actuator": "r3__servo_elbow",
+            "before": -0.05706531248208201,
+            "after": -0.3104011296873109
+          },
+          {
+            "actuator": "r3__servo_wrist",
+            "before": -0.05662326423820336,
+            "after": -0.16026536692805718
+          }
+        ],
+        "other_audited_arrays_exact": true,
+        "source": "https://github.com/google-deepmind/mujoco/commit/b3dd9e617",
+        "new_physical_parameters": false
+      },
+      "sleep_policy": {
+        "original": [
+          3,
+          3,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "runtime_equivalent": [
+          1,
+          1,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "basis": "C3.16 engine_sleep.c125-126; pinned MJWarp sleep.py290-292; INIT rejected"
+      }
+    },
+    "4": {
+      "geometry": {
+        "mode": "compiled-geometry-312-v1",
+        "reference": "/home/ugrp/ugrp-sim/runs/beamact5/native-refs-8420000e/references/392b53389c8c7993be1962047eba98ae4adb968d8ea99ea833e247ca2fdd5c3e/compiled-geometry312.npz",
+        "reference_sha256": "4302c0690ebd28ae2836a120f4e64c08906bf3916b5cbd67ad1e6a5907fe59ed",
+        "fields_copied": 65,
+        "changes": [
+          {
+            "array": "bvh_aabb",
+            "entries": 73545,
+            "before_sha256": "babf49404ea05cb3de1b6e97470bd0a0bac902a6bd7589e9fc03db667b2f3746",
+            "after_sha256": "4d5a6852fa72fd5cb56e36a59c6938ddf4e297b9cdf83f20bb012dfb84896ea2"
+          },
+          {
+            "array": "bvh_nodeid",
+            "entries": 5971,
+            "before_sha256": "cdcbd34445bb0d8f01d1d345b35e5c0bb69bf5122700184493acd16ab9bbd642",
+            "after_sha256": "66581c48a8adcf43349d75b943ff7ff773e9b4f98e3dc069a53527806d12d34c"
+          },
+          {
+            "array": "geom_aabb",
+            "entries": 927,
+            "before_sha256": "658b947eb2c920df73df1a086b6de9f8db9e780d0e021974e45debd36a4dcd98",
+            "after_sha256": "7c06746633e37628d3e4c0200af08649221394200e5a382ebdc90f504b62fb9b"
+          },
+          {
+            "array": "geom_quat",
+            "entries": 612,
+            "before_sha256": "b49468bd598d96f397e0fabd52176e36b3746074fa2d5a90eb81cd7ec27e84c1",
+            "after_sha256": "c75ae3104fdb7eab97f6c49788e0d9e1cb7a32ffc365a0c6450f1e919f94542b"
+          },
+          {
+            "array": "geom_rbound",
+            "entries": 156,
+            "before_sha256": "9672e6b85d2e625087d9dfd76b47e5838d1c78973c3285bdf47af257b3aea2a2",
+            "after_sha256": "60bf2aea53fe34ed0baa50ca861810022e31852ab810c492168b7f7c77e89bd2"
+          },
+          {
+            "array": "geom_sameframe",
+            "entries": 36,
+            "before_sha256": "251ede7b8c15ef269c0414650f75319b3c3931dea54debaeb799bd6941e46711",
+            "after_sha256": "e549cecb04fdacf1a98b7371a9197b6deeb025e8af478fced3d66b72950707e5"
+          },
+          {
+            "array": "geom_size",
+            "entries": 468,
+            "before_sha256": "34e811e1fb865513209297a1b87c5dba83f7b64a3a44d313fecdb8e2f792a671",
+            "after_sha256": "4f751e28b6bc9724ab43320bc40f209bda610ca635f256b174d000ea82498bfb"
+          },
+          {
+            "array": "mesh_extrema",
+            "entries": 26,
+            "before_sha256": "c7356de6bccad32046ad4c4ca5923e7af67c66bc4f36fbca29496e23eead167d",
+            "after_sha256": "b87b9578a5aaa8f2c9f486cf09e68f37720f71f0229590b9a508392dad0194cf"
+          },
+          {
+            "array": "mesh_normal",
+            "entries": 10056,
+            "before_sha256": "1372b3c7560d04961a38cc0e27f91604fb2f8b95b1515c38121462699488d1af",
+            "after_sha256": "1185bd88161d9c2da76422e974e7c273a29564a57b6b45c4852a7fb8be6e8d23"
+          },
+          {
+            "array": "mesh_polynormal",
+            "entries": 9111,
+            "before_sha256": "dc7cc865463dc840301f0d6a49e15e7644230f910c1dc6962c1d67b2c00e16e1",
+            "after_sha256": "bcd310eeaa441c0fdcaecaf594d1156713c8ee071b6de150ce2f9510d41828a2"
+          },
+          {
+            "array": "mesh_quat",
+            "entries": 64,
+            "before_sha256": "5fa4b1ecb45d94c08a4eb5ddaefb41903588ce883ccd74ba201438fa91ae9710",
+            "after_sha256": "189788156b49a16bfbaa735e41b00ccafeeec1d1b45f78d9dc25183d69bff160"
+          },
+          {
+            "array": "mesh_vert",
+            "entries": 10279,
+            "before_sha256": "7e1cf1d091a752599029002d58f7493a46f1f3696e6e8d2279fca9d68195d0a7",
+            "after_sha256": "9053f0dc25a6d76d14a9fc147262e7b057a36eabb2e6391eb5437a070a0ba46f"
+          }
+        ],
+        "basis": "same XML and same physical geometry; C312 compiled mesh principal axes, vertices and caches transferred as a unit",
+        "new_physical_parameters": false
+      },
+      "damping": {
+        "mode": "compiled-312-v1",
+        "reference": "/home/ugrp/ugrp-sim/runs/beamact5/native-refs-8420000e/references/392b53389c8c7993be1962047eba98ae4adb968d8ea99ea833e247ca2fdd5c3e/compiled-312.json",
+        "reference_sha256": "976094113d929a18218de775abbbc3a0d7574bb3ac17d716e9e705a4e17905ce",
+        "reference_version": "3.12.0",
+        "xml_sha256": "392b53389c8c7993be1962047eba98ae4adb968d8ea99ea833e247ca2fdd5c3e",
+        "copied_array": "actuator_biasprm[:,2]",
+        "changes": [
+          {
+            "actuator": "r1__servo_arm_yaw",
+            "before": -0.9525326956383661,
+            "after": -1.4003999090747683
+          },
+          {
+            "actuator": "r1__servo_shoulder",
+            "before": -0.3514994573664441,
+            "after": -1.3904017267004583
+          },
+          {
+            "actuator": "r1__servo_elbow",
+            "before": -0.05706531248208201,
+            "after": -0.3104011296873109
+          },
+          {
+            "actuator": "r1__servo_wrist",
+            "before": -0.05662326423820336,
+            "after": -0.16026536692805718
+          },
+          {
+            "actuator": "r2__servo_arm_yaw",
+            "before": -0.9525326956383661,
+            "after": -1.4003999090747683
+          },
+          {
+            "actuator": "r2__servo_shoulder",
+            "before": -0.3514994573664441,
+            "after": -1.3904017267004583
+          },
+          {
+            "actuator": "r2__servo_elbow",
+            "before": -0.05706531248208201,
+            "after": -0.3104011296873109
+          },
+          {
+            "actuator": "r2__servo_wrist",
+            "before": -0.05662326423820336,
+            "after": -0.16026536692805718
+          },
+          {
+            "actuator": "r3__servo_arm_yaw",
+            "before": -0.9525326956383661,
+            "after": -1.4003999090747683
+          },
+          {
+            "actuator": "r3__servo_shoulder",
+            "before": -0.3514994573664441,
+            "after": -1.3904017267004583
+          },
+          {
+            "actuator": "r3__servo_elbow",
+            "before": -0.05706531248208201,
+            "after": -0.3104011296873109
+          },
+          {
+            "actuator": "r3__servo_wrist",
+            "before": -0.05662326423820336,
+            "after": -0.16026536692805718
+          }
+        ],
+        "other_audited_arrays_exact": true,
+        "source": "https://github.com/google-deepmind/mujoco/commit/b3dd9e617",
+        "new_physical_parameters": false
+      },
+      "sleep_policy": {
+        "original": [
+          3,
+          3,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "runtime_equivalent": [
+          1,
+          1,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "basis": "C3.16 engine_sleep.c125-126; pinned MJWarp sleep.py290-292; INIT rejected"
+      }
+    },
+    "broadphase": {
+      "name": "NXN",
+      "candidate": false,
+      "basis": "pinned io.py439 default NXN; types.py124-135 upstream SAP_SEGMENTED; same geometry/contact parameters"
+    },
+    "collision": {
+      "mode": "legacy-plane-v1",
+      "source": "https://github.com/google-deepmind/mujoco/blob/3.12.0/src/engine/engine_collision_convex.c#L966",
+      "maxplanemesh": 3,
+      "tolplanemesh": 0.3,
+      "mesh_rbound_size_identity_verified": true,
+      "physics_parameters_modified": false
+    }
+  },
+  "initial_state_proof": {
+    "stage": "after warmup reset and first batch RGB, before any teacher action",
+    "expected_unique_qpos": 5,
+    "measured_unique_qpos": 5,
+    "first_rgb_unique": 5,
+    "rows": [
+      {
+        "world": 0,
+        "qpos_match": true,
+        "expected_qpos_sha256": "6514dcf1c172069aa11b1ea8c64ec75421abbdbaa8dacb20c64f26a9b665fc71",
+        "actual_qpos_sha256": "6514dcf1c172069aa11b1ea8c64ec75421abbdbaa8dacb20c64f26a9b665fc71",
+        "first_rgb_sha256": "24c8a1710c2dd06f5ff4fdc30d55ffabc818af7c692d14a7d0ec733f4f821a2f"
+      },
+      {
+        "world": 1,
+        "qpos_match": true,
+        "expected_qpos_sha256": "61133123daa674bef5a372fdbe459856db3ee1cea48d7129246ca2bc3fc0d9eb",
+        "actual_qpos_sha256": "61133123daa674bef5a372fdbe459856db3ee1cea48d7129246ca2bc3fc0d9eb",
+        "first_rgb_sha256": "ab1aa9f0e4024f5f7e376b3a901aaf34f417144b6a67f75db4c514fbc8a14aa4"
+      },
+      {
+        "world": 2,
+        "qpos_match": true,
+        "expected_qpos_sha256": "ec618124b7a0378660f2a5f6d617aa435d5e1e411518a3d302d7b6729da57dcf",
+        "actual_qpos_sha256": "ec618124b7a0378660f2a5f6d617aa435d5e1e411518a3d302d7b6729da57dcf",
+        "first_rgb_sha256": "96268734f662440fc6aa8b715f17cb1e5bc3ccffbd6a148c6926e50ee0ebde5c"
+      },
+      {
+        "world": 3,
+        "qpos_match": true,
+        "expected_qpos_sha256": "e5a2528c6c9109501d1f0dd8e988a271861aba8b6921a71f2fe4a35ffcf286f2",
+        "actual_qpos_sha256": "e5a2528c6c9109501d1f0dd8e988a271861aba8b6921a71f2fe4a35ffcf286f2",
+        "first_rgb_sha256": "cb2a52dcd8659642aebe895a2ce57d8254f3faebcc1db32660338c9e491de784"
+      },
+      {
+        "world": 4,
+        "qpos_match": true,
+        "expected_qpos_sha256": "3891da7e1e87e776b9009c4f5508e8961d85da05815808dcd2e254bd08a1784a",
+        "actual_qpos_sha256": "3891da7e1e87e776b9009c4f5508e8961d85da05815808dcd2e254bd08a1784a",
+        "first_rgb_sha256": "7c12d8208fa673dfb6d03df24e916c98817aef0791f7fcc7a78c21035b82e50b"
+      }
+    ]
+  },
+  "model_batch_audit": {
+    "mode": "per_world_model_v1",
+    "varying_fields": [
+      "body_inertia",
+      "body_invweight0",
+      "body_mass",
+      "body_subtreemass",
+      "cam_poscom0",
+      "dof_invweight0",
+      "geom_aabb",
+      "geom_rbound",
+      "geom_size",
+      "light_poscom0",
+      "stat.meaninertia"
+    ],
+    "worlds": 5,
+    "all_unsupported_arrays_exact": true,
+    "world_array_sha256": {
+      "stat.meaninertia": "b0150b198df1bbb67d9c30517f6cfd050e91553bc4efe4bc9f0a7f038d0c1a1b",
+      "body_mass": "37a3e609a9464a2a5ec15b3bb2415d029f2a9673b4331d8f565b01ebfe5b0ffb",
+      "body_subtreemass": "eb59befcbe45065493560a853165ec1e019554084c877ea3dc09134d9c5b470b",
+      "body_inertia": "e6a7587b4d49cc5accc35ac230e0eb1602032fed7f71c028c0560d227d06a964",
+      "body_invweight0": "074fef1e23c49650c4066fde5fbacec8f5c4550ac491852e17a05415813e444f",
+      "dof_invweight0": "558c6be2d1fa68e5ca6b1ce9de46ac4d7b09e9ab32cc1b7aa3266cf4dbbf44df",
+      "geom_size": "bdce252a3900317de2112bf87fe63b5f9b67b3d539e10853df664126ed00b7e3",
+      "geom_aabb": "7cba6fd59d7143acc9e975a52f8bb62010d2cf1d6756102705b8b6d3eaef0023",
+      "geom_rbound": "53e2769c2c3f6be7b4fa79637eaf92fefa531befe735260b8caacc7d23674d78",
+      "cam_poscom0": "524cd91bbb2004683272ff6702f90ff5449c564dc7f1b0605c4123aac1b38daf",
+      "light_poscom0": "c855f6e2daff83fe4aae203c6f1c836c0b0af1b10a8c4d3a0b32d3e72b9a3e1c"
+    },
+    "basis": "pinned MJWarp io.put_model batchable * fields; no parameter approximation",
+    "world_sleep": {
+      "upstream_sha256": "5b50688a8949afa30df1ae6ce2195132fdf50cf6ed821746badd8e06b92d91b0",
+      "generated_sha256": "9285897c33af8c6272a704f956425349162125552e290c793d6349cf7e2e25b3",
+      "before": "weight = dof_length[dof_idx]",
+      "after": "weight = dof_length[worldid * 222 + dof_idx]",
+      "scope": "one world-specific exact array lookup; all sleep/wake predicates unchanged",
+      "length_sha256": "cdd3a8329e0e370fcfdbb72be31aa79aa5a1ed4bc3322a1e73f5c9f59cdc0210"
+    }
+  },
+  "sleep_audit": {
+    "enabled": true,
+    "native_initial_active_dofs": [
+      110,
+      110,
+      110,
+      110,
+      110
+    ],
+    "active_robot_plus_target_dofs": [
+      110,
+      110,
+      110,
+      110,
+      110
+    ],
+    "nvmax": 222,
+    "full_active_dof_workspace_v1": true,
+    "model_nv": 222,
+    "capacity_basis": "exact full model nv, documented upstream default; admits every legal wakeup, no sleep/physics setting change"
+  },
+  "solver_numerics": {
+    "profile": "source_tolerance",
+    "source_tolerance": 1e-08,
+    "upstream_tolerance": 9.999999974752427e-07,
+    "effective_tolerance": 9.99999993922529e-09,
+    "basis": "pinned io.py433 clamps float64 C tolerance to minimum1e-6 to avoid float32 needless iterations; task Score unchanged",
+    "compact_ctol": [
+      9.910713743011001e-07
+    ],
+    "compact_cls_tol": [
+      0.009910713881254196
+    ],
+    "nvmax_pad": 224,
+    "compact_basis": "pinned io.py1791-1797: max(source tolerance,1e-6)*nv/nvmax_pad; separate compact cohort"
+  },
+  "setup_compile_s": 40.336925350000456
+}

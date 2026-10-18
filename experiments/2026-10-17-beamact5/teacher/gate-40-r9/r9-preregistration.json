@@ -62,5 +62,17 @@
   "world15 excluded/unverified",
   "37 structural label not remeasured",
   "no margin/cap change"
- ]
+ ],
+ "result": {
+  "success_n": 3,
+  "cap_end": 0,
+  "worlds": {
+   "6": "PASS 49.3",
+   "10": "PASS 49.5",
+   "20": "PASS",
+   "27": "FAIL 28.0 alignment_no_progress",
+   "37": "FAIL 30.5"
+  }
+ },
+ "result_note": "5-world run; 39-gate not launched because the 6/10/20/27 precondition failed (27 never passed)."
 }

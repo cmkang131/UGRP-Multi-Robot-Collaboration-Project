@@ -1,0 +1,197 @@
+{
+ "schema": "ugrp.beamact5.r4_r9_summary.v1",
+ "written_utc": "2026-10-18T01:25:00Z",
+ "author": "beamact5 worker (DSH)",
+ "scope": "r4-r9 automated iteration after the r3 gate FAIL (25/40). All candidates are separate, coordinator-approved-stack runs on gcp6 (single L4); no pooling with r1/r2/r3 or between conditions. training RGB off, weld off, cap 60 SIM s. Each 5-world run uses the fixed 4-world/5-world known-failure subset; no 39-gate was run for r4-r9 because the pre-registered 6/10/20/27 precondition was never met.",
+ "conditions": [
+  {
+   "id": "r4a",
+   "profile": "search26_circles off (r1 up-first); rects+static_peer+peer_memory; reobserve off",
+   "result": {
+    "success_n": 2,
+    "cap_end": 1,
+    "HOST_ERROR": 0
+   },
+   "worlds": {
+    "6": "PASS 54.7",
+    "10": "FAIL cap_end 60.0 (pick/pick)",
+    "20": "PASS 55.2",
+    "27": "FAIL 26.4"
+   },
+   "role": "ablation A"
+  },
+  {
+   "id": "r4b",
+   "profile": "r4a + reobserve boundary fix",
+   "result": {
+    "success_n": 2,
+    "cap_end": 1,
+    "HOST_ERROR": 0
+   },
+   "worlds": {
+    "6": "PASS 54.7",
+    "10": "FAIL cap_end 60.0",
+    "20": "PASS 55.2",
+    "27": "FAIL 28.4 (retreat->view conversion confirmed)"
+   },
+   "role": "ablation B"
+  },
+  {
+   "id": "r4c",
+   "profile": "r4b + conditional far-first circles (far, close, mid)",
+   "result": {
+    "success_n": 3,
+    "cap_end": 0,
+    "HOST_ERROR": 0
+   },
+   "worlds": {
+    "6": "PASS 54.7",
+    "10": "PASS 49.5",
+    "20": "PASS 55.2",
+    "27": "FAIL 25.4"
+   },
+   "role": "search-order fix candidate"
+  },
+  {
+   "id": "r5a",
+   "profile": "r4c + wide_stance (1 degree family, global)",
+   "result": {
+    "status": "stopped",
+    "reason": "case27 FAIL 24.2; planning ~2.2x slower (per-world wall/SIM ~13 vs 5.8)"
+   },
+   "role": "rejected"
+  },
+  {
+   "id": "r5b",
+   "profile": "r4c + bounded extra obstacle refresh (+2)",
+   "result": {
+    "success_n": 3,
+    "cap_end": 0,
+    "HOST_ERROR": 0
+   },
+   "worlds": {
+    "6": "PASS 59.1",
+    "10": "PASS 49.0",
+    "20": "PASS 42.1",
+    "27": "FAIL 20.4 (4 refreshes, each ~0.1 m window)",
+    "37": "FAIL 29.7"
+   },
+   "role": "case27 attempt 1"
+  },
+  {
+   "id": "r5c",
+   "profile": "r5b with open refresh chain",
+   "result": {
+    "success_n": 3,
+    "cap_end": 1,
+    "HOST_ERROR": 0
+   },
+   "worlds": {
+    "6": "PASS 50.2",
+    "10": "PASS 49.0",
+    "20": "PASS 55.7",
+    "27": "FAIL cap_end 60.0 (18 refreshes, no translation after ~18 s)",
+    "37": "FAIL 29.5"
+   },
+   "role": "case27 attempt 2"
+  },
+  {
+   "id": "r6",
+   "profile": "r5c + commit_plan v1",
+   "result": {
+    "success_n": 3,
+    "cap_end": 1,
+    "HOST_ERROR": 0
+   },
+   "worlds": {
+    "6": "PASS 54.7",
+    "10": "PASS 49.5",
+    "20": "PASS 36.3",
+    "27": "FAIL cap_end 60.0 (guard blocked by current-world checks)",
+    "37": "FAIL 29.6"
+   },
+   "role": "case27 attempt 3"
+  },
+  {
+   "id": "r7",
+   "profile": "r5c + frozen-plan commit window (corrected)",
+   "result": {
+    "success_n": 3,
+    "cap_end": 1,
+    "HOST_ERROR": 0
+   },
+   "worlds": {
+    "6": "PASS 54.7",
+    "10": "PASS 49.8",
+    "20": "PASS 36.3",
+    "27": "FAIL cap_end 60.0 (frozen window rarely engaged; band search 34.4 s)",
+    "37": "FAIL 29.5"
+   },
+   "role": "case27 attempt 4"
+  },
+  {
+   "id": "r8",
+   "profile": "r4c + wide_rescue (bounded 1-degree rescue family)",
+   "result": {
+    "success_n": 3,
+    "cap_end": 0,
+    "HOST_ERROR": 0
+   },
+   "worlds": {
+    "6": "PASS 49.3",
+    "10": "PASS 49.5",
+    "20": "PASS",
+    "27": "FAIL 29.5 alignment_no_progress (wide rescue cleared the stale-cargo approach; align failed)",
+    "37": "FAIL 29.7"
+   },
+   "role": "case27 attempt 5 (progress)"
+  },
+  {
+   "id": "r9",
+   "profile": "r8 + open refresh + frozen commit (combined)",
+   "result": {
+    "success_n": 3,
+    "cap_end": 0,
+    "HOST_ERROR": 0
+   },
+   "worlds": {
+    "6": "PASS 49.3",
+    "10": "PASS 49.5",
+    "20": "PASS",
+    "27": "FAIL 28.0 alignment_no_progress",
+    "37": "FAIL 30.5"
+   },
+   "role": "case27 attempt 6"
+  }
+ ],
+ "verdict": {
+  "gate_target": "38/40 (15 excluded expected FAIL; 37 expected FAIL)",
+  "gate_run": false,
+  "reason": "the 6/10/20/27 precondition never held: 6/10/20 stayed PASS in every r4c+ condition, but 27 never passed. No 39-gate was run for r4-r9.",
+  "best_candidate": "r8/r9 reach the fine-alignment stage on world 27 (approach solved via wide rescue); remaining failure is align-phase visible-error progress (alignment_no_progress, 28-30 s)."
+ },
+ "confirmed_fixes": {
+  "10": "r4c conditional circles restored PASS (49.5 s) after the r4a revert regression",
+  "6": "peer-memory/static-peer fix kept PASS across all conditions",
+  "20": "kept PASS across all conditions",
+  "regressions": "none observed in 6/10/20 for r4c/r5b/r5c/r6/r7/r8/r9"
+ },
+ "remaining_causes": {
+  "world27": "fine-alignment phase fails when the robot arrives via the wide-rescue stance (alignment_no_progress after relook; the aligned band cannot produce visible error progress). This is a new, narrower failure than the earlier stale-cargo approach deadlock.",
+  "world37": "approach_blocked_handoff 29.5-30.5 s in r8/r9; structural sampled-stance label comes from r1/r2 evidence and was not remeasured as a pass.",
+  "world15": "excluded by the r3-approved logging-volume deviation; r4-r9 did not touch its known defect."
+ },
+ "recommendations": [
+  "Next round should target the align-phase visible-error stall for world 27 (band visibility/alignment error model when arriving at -18 degree wide stances), not the approach/search order.",
+  "If align cannot be fixed within the controller bundle, decide whether to re-admit the three min_gap 0.0 starts (15/27/37) with a margin-aware admission criterion; that changes the pre-registered 40 starts and must be a separate approved deviation, not pooled.",
+  "A full 39-gate remains blocked on 27 (or on an approved start-set decision); this record claims no gate result for r4-r9."
+ ],
+ "not_claimed": [
+  "no ACT training/student recording",
+  "no 39-world gate for r4-r9",
+  "no pooling across conditions or with r1/r2/r3",
+  "world15 control behaviour unverified (excluded)",
+  "no margin/cap constant change",
+  "billing unverified"
+ ]
+}

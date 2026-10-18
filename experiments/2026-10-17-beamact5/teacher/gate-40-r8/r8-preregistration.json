@@ -71,5 +71,17 @@
   "world15 excluded/unverified",
   "wide family never pooled with 5-degree results",
   "no margin/cap constant change"
- ]
+ ],
+ "result": {
+  "success_n": 3,
+  "cap_end": 0,
+  "worlds": {
+   "6": "PASS",
+   "10": "PASS",
+   "20": "PASS",
+   "27": "FAIL 29.5 alignment_no_progress",
+   "37": "FAIL 29.7"
+  }
+ },
+ "result_note": "5-world run; 39-gate not launched because the 6/10/20/27 precondition failed (27 never passed)."
 }

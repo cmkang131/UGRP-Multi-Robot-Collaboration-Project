@@ -89,3 +89,26 @@
 |27|**FAIL**|teacher_terminal|25.4|case27 잔여 원인 → r5a(wide_stance)로 시도|
 
 → **far-first 조건부 circles가 검색 revert의 10 회귀를 해소**(ablation: r4a 10 FAIL → r4c 10 PASS). 파이프라인: [r4c-preregistration-amendment.json](teacher/gate-40-r4/r4c-preregistration-amendment.json), 스택 점검 ok true. 사전 등록: [r4c-preregistration-amendment.json](teacher/gate-40-r4/r4c-preregistration-amendment.json), 스택 점검 `teacher-gate-stack-check-r4c.json`(ok true). 통과 시 39-world gate(`gate39-r4c-run`, world15 제외).
+
+## 6. 최종 상태 (r4–r9 자율 반복, 2026-10-18 01:25Z)
+
+전체 조건 요약: [r4-r9-summary.json](teacher/r4-r9-summary.json). 모든 조건은 **별도 실행·pooling 없음**, 학습 RGB off·weld off·cap 60 SIM s, 단일 gcp6 L4.
+
+|조건|핵심 변경|5-world 결과(6/10/20/27/37)|판정|
+|---|---|---|---|
+|r4a|검색 r1 revert(ablation A)|54.7P / **cap_end 60 F** / 55.2P / 26.4F|10 회귀 확인|
+|r4b|+ reobserve 경계 수정|54.7P / cap_end F / 55.2P / 28.4F(전환 확인)|27 미해결|
+|r4c|+ far→close→mid 조건부 circles|54.7P / **49.5P** / 55.2P / 25.4F|**검색 회귀 해소**|
+|r5a|r4c + wide_stance 전면|27 FAIL 24.2, planning 2.2x|중단·무효|
+|r5b|r4c + refresh +2|59.1P / 49.0P / 42.1P / 20.4F / 29.7F|27 미해결|
+|r5c|r4c + open refresh|50.2P / 49.0P / 55.7P / cap60 F / 29.5F|27 진전 없음|
+|r6/r7|r5c + commit plan(1차/동결)|6·10·20 P / 27 cap60 F / 37 F|27 미해결|
+|r8|r4c + wide_rescue|P/P/P / **29.5F align** / 29.7F|**approach 돌파**, align 잔여|
+|r9|r8 + open refresh + 동결 commit|49.3P / 49.5P / P / **28.0F align** / 30.5F|align 잔여|
+
+**판정: 38/40 gate 기준 미달로 39-gate를 실행하지 않았다.** 6·10·20은 r4c 이후 모든 조건에서 PASS(회귀 없음), 27은 r8/r9에서 **stale-cargo approach는 wide rescue로 해결**됐고 잔여 실패는 **fine-alignment phase(`alignment_no_progress`, 28–30 s)**다. 37은 r8/r9에서 approach handoff(29.7–30.5 s)이며 구조 라벨은 r1/r2 근거다. 15는 r3 승인 로그 폭발 deviation으로 계속 제외.
+
+**다음 라운드 제안**
+1. world 27의 **align 단계 visible-error 정체** 수정(wide-rescue -18° stance 도착 후 band 기반 alignment error가 진행되지 않음) — 접근/검색이 아니라 정렬/관측 문제.
+2. align을 bundle 내에서 고칠 수 없으면 **min_gap 0.0으로 승인된 3개 start(15/27/37)의 margin-aware 재승인** 여부를 별도 승인·사전등록 deviation으로 결정(기존 40 starts 변경, pooling 금지).
+3. 39-gate는 27 통과 또는 start-set 승인 전까지 **실행 불가·결과 주장 없음**.
