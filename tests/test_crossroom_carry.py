@@ -316,3 +316,23 @@ def test_fix2_queue_and_prereg_contract():
         path = ROOT / name
         assert path.is_file(), name
         assert hashlib.sha256(path.read_bytes()).hexdigest() == digest, name
+
+
+def test_fix3_queue_and_prereg_contract():
+    queue = load_json(EXP / 'queue-stageA-fix3.json')
+    prereg = load_json(EXP / 'prereg-stageA-fix3.json')
+    assert queue['stage'] == 'A_unloaded_fix3'
+    assert prereg['stage'] == 'A_unloaded_fix3'
+    for key in ('crossroom_gap_v3_v1', 'crossroom_zone_edge_v1'):
+        assert queue['toggles'][key] == 'on', key
+        assert prereg['policy']['toggles'][key] == 'on', key
+    assert queue['sim_cap_s'] == 180.0 and queue['worlds_per_batch'] == 16
+    assert 'crossroom-stageA-fix2' in prereg['no_pooling']
+    cal = prereg['v3_changes']['gap_v3']['calibration_from_recorded_stage_A_gap_events']
+    assert len(cal['events']) == 9
+    assert cal['events'][1]['front_cone_points'] == 418
+    assert '0.960' in prereg['v3_changes']['zone_edge']['calibration']
+    for name, digest in queue['input_sha256'].items():
+        path = ROOT / name
+        assert path.is_file(), name
+        assert hashlib.sha256(path.read_bytes()).hexdigest() == digest, name

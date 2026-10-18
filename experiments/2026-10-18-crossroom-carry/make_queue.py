@@ -42,6 +42,13 @@ FILES = [
      'walls_floor_contrast_v5_indigo110_s80-calibration.json'),
 ]
 
+STAGE_FIX3_FILES = [
+    'experiments/2026-10-18-crossroom-carry/prereg-stageA-fix3.json',
+    'experiments/2026-10-18-crossroom-carry/scripts/vgs_fix.py',
+    'experiments/2026-10-18-crossroom-carry/scripts/paint_area_filter.py',
+    'experiments/2026-10-18-crossroom-carry/scripts/contact_recorder.py',
+]
+
 STAGE_FIX2_FILES = [
     'experiments/2026-10-18-crossroom-carry/prereg-stageA-fix2.json',
     'experiments/2026-10-18-crossroom-carry/scripts/vgs_fix.py',
@@ -117,7 +124,7 @@ def sha(path: Path) -> str:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument('--stage', choices=('A_unloaded', 'B_loaded', 'A_unloaded_fix',
-                                        'A_unloaded_fix2'),
+                                        'A_unloaded_fix2', 'A_unloaded_fix3'),
                     default='A_unloaded')
     ap.add_argument('--policy-source-sha',
                     default='c390105c2663a5b780e4ad8d69da72a5ffe1bce8')
@@ -127,6 +134,8 @@ def main() -> int:
     a = ap.parse_args()
     if a.stage == 'B_loaded':
         files = FILES + STAGE_B_FILES
+    elif a.stage == 'A_unloaded_fix3':
+        files = FILES + STAGE_FIX3_FILES
     elif a.stage == 'A_unloaded_fix2':
         files = FILES + STAGE_FIX2_FILES
     elif a.stage == 'A_unloaded_fix':
@@ -138,7 +147,8 @@ def main() -> int:
         raise SystemExit('MISSING_INPUTS ' + repr(missing))
     stage_b = a.stage == 'B_loaded'
     stage_fix = a.stage == 'A_unloaded_fix'
-    stage_fix2 = a.stage == 'A_unloaded_fix2'
+    stage_fix2 = a.stage in ('A_unloaded_fix2', 'A_unloaded_fix3')
+    stage_fix3 = a.stage == 'A_unloaded_fix3'
     toggles = dict(TOGGLES)
     stage_fields = {}
     if stage_b:
@@ -154,6 +164,8 @@ def main() -> int:
         }
     if stage_b:
         queue_name = 'queue-stageB.json'
+    elif stage_fix3:
+        queue_name = 'queue-stageA-fix3.json'
     elif stage_fix2:
         queue_name = 'queue-stageA-fix2.json'
     elif stage_fix:
@@ -173,6 +185,9 @@ def main() -> int:
                         'crossroom_gap_twosided_v2_v1': 'on',
                         'crossroom_paint_area_v2_v1': 'on',
                         'crossroom_approach_escape_v1': 'on'})
+    if stage_fix3:
+        toggles.update({'crossroom_gap_v3_v1': 'on',
+                        'crossroom_zone_edge_v1': 'on'})
     out_path = (ROOT / 'experiments/2026-10-18-crossroom-carry/' / queue_name)
     queue = {
         "schema": "ugrp.crossroom_run_queue.v1",
@@ -207,11 +222,13 @@ def main() -> int:
         "top_camera_control": False,
         "own_rgb_count": 1,
         "run_name": ("crossroom-stageB" if stage_b else
+                     "crossroom-stageA-fix3" if stage_fix3 else
                      "crossroom-stageA-fix2" if stage_fix2 else
                      "crossroom-stageA-fix" if stage_fix else "crossroom-stageA"),
         "preflight": False,
         "sim_cap_s": 180.0,
         "output": (f"{MAIN}/crossroom-stageB" if stage_b else
+                   f"{MAIN}/crossroom-stageA-fix3" if stage_fix3 else
                    f"{MAIN}/crossroom-stageA-fix2" if stage_fix2 else
                    f"{MAIN}/crossroom-stageA-fix" if stage_fix else
                    f"{MAIN}/crossroom-stageA"),
@@ -225,6 +242,7 @@ def main() -> int:
                               "search-budget record, not pooled)"),
         "episode_count": 16,
         "candidate": ("stage_b_loaded_single_red_box" if stage_b else
+                      "stage_a_unloaded_fix3" if stage_fix3 else
                       "stage_a_unloaded_fix2" if stage_fix2 else
                       "stage_a_unloaded_fix" if stage_fix else "stage_a_unloaded"),
         "no_pooling_conditions": ["visgoal-gate-r4", "visgoal-gate-r4-mirror",

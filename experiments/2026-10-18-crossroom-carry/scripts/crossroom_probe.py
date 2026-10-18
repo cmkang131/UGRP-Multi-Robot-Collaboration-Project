@@ -276,11 +276,13 @@ def run(a):
     # are separate conditions; each has its own queue and is never pooled.
     stage = str(q.get('stage', a.stage or 'A_unloaded'))
     if stage not in ('A_unloaded', 'B_loaded', 'A_unloaded_fix',
-                      'A_unloaded_fix2'):
+                      'A_unloaded_fix2', 'A_unloaded_fix3'):
         raise ValueError('CROSSROOM_STAGE_UNKNOWN')
     carry_loaded = stage == 'B_loaded'
-    fix_stage = stage in ('A_unloaded_fix', 'A_unloaded_fix2')
-    fix_stage_v2 = stage == 'A_unloaded_fix2'
+    fix_stage = stage in ('A_unloaded_fix', 'A_unloaded_fix2',
+                          'A_unloaded_fix3')
+    fix_stage_v2 = stage in ('A_unloaded_fix2', 'A_unloaded_fix3')
+    fix_stage_v3 = stage == 'A_unloaded_fix3'
     fix_toggles = ({k: q.get('toggles', {}).get(k) == 'on'
                     for k in ('crossroom_gap_twosided_v1',
                               'crossroom_door_align_v1',
@@ -288,7 +290,9 @@ def run(a):
                               'crossroom_contacts_v1',
                               'crossroom_gap_twosided_v2_v1',
                               'crossroom_paint_area_v2_v1',
-                              'crossroom_approach_escape_v1')}
+                              'crossroom_approach_escape_v1',
+                              'crossroom_gap_v3_v1',
+                              'crossroom_zone_edge_v1')}
                    if fix_stage else {})
     target_zone = str(q.get('destination_zone', 'B'))
     if target_zone != 'B':
@@ -479,6 +483,7 @@ def run(a):
                                        'destination_zone': target_zone,
                                        'fix_stage': fix_stage,
                                        'fix_stage_v2': fix_stage_v2,
+                                       'fix_stage_v3': fix_stage_v3,
                                        'fix_toggles': fix_toggles,
                                        'carry_loaded': carry_loaded,
                                        'gripper_pwm_closed': (gripper_pwm
@@ -507,8 +512,13 @@ def run(a):
                     option=SKILL, options=opts,
                     gap_twosided=fix_toggles.get('crossroom_gap_twosided_v1', False),
                     door_align=fix_toggles.get('crossroom_door_align_v1', False),
-                    two_sided_v2=(fix_stage_v2 and fix_toggles.get(
-                        'crossroom_gap_twosided_v2_v1', False)),
+                    two_sided_v2=(fix_stage_v2 and not fix_stage_v3
+                                  and fix_toggles.get(
+                                      'crossroom_gap_twosided_v2_v1', False)),
+                    gap_v3=(fix_stage_v3 and fix_toggles.get(
+                        'crossroom_gap_v3_v1', False)),
+                    zone_edge_check=(fix_stage_v3 and fix_toggles.get(
+                        'crossroom_zone_edge_v1', False)),
                     approach_escape_s=(15.0 if (fix_stage_v2 and fix_toggles.get(
                         'crossroom_approach_escape_v1', False)) else 0.))
             return VisualGoalSearch(option=SKILL, options=opts)
@@ -1007,6 +1017,7 @@ def run(a):
                         if s.get('box_final') else None),
                     fix_toggles=fix_toggles,
                     fix_stage_v2=fix_stage_v2,
+                    fix_stage_v3=fix_stage_v3,
                     fix_summary=(s['skill'].fix_summary()
                                  if hasattr(s['skill'], 'fix_summary') else None),
                     contact_summary=(contact_rec.summary()
@@ -1120,8 +1131,13 @@ def run(a):
                                              if arrival_aim_on else 0.)),
                     gap_twosided=fix_toggles.get('crossroom_gap_twosided_v1', False),
                     door_align=fix_toggles.get('crossroom_door_align_v1', False),
-                    two_sided_v2=(fix_stage_v2 and fix_toggles.get(
-                        'crossroom_gap_twosided_v2_v1', False)),
+                    two_sided_v2=(fix_stage_v2 and not fix_stage_v3
+                                  and fix_toggles.get(
+                                      'crossroom_gap_twosided_v2_v1', False)),
+                    gap_v3=(fix_stage_v3 and fix_toggles.get(
+                        'crossroom_gap_v3_v1', False)),
+                    zone_edge_check=(fix_stage_v3 and fix_toggles.get(
+                        'crossroom_zone_edge_v1', False)),
                     approach_escape_s=(15.0 if (fix_stage_v2 and fix_toggles.get(
                         'crossroom_approach_escape_v1', False)) else 0.))
             else:

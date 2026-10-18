@@ -26,6 +26,22 @@ from sim.visual_goal_search import VisualGoalSearch, MIN_COLOUR_PIXELS
 ALIGN_TOLERANCE_M = 0.02
 GAP_FRONT_RANGE_M_V2 = 1.2
 APPROACH_ESCAPE_S = 15.0
+# v3 constants (measured, see FIX_DESIGN v3 section):
+#  - false-gap events in the recorded Stage A raw show a dense wall directly
+#    ahead (front cone |bearing|<=20 deg, range<=1.0 m: 377-418 points on
+#    e03/e14, 23 on e10) or no jamb at all after the side wall is lost
+#    (e00/e04/e06/e08/e12/e15); a doorway keeps the ahead cone empty and a
+#    jamb in the 20-110 deg side sector.
+GAP_FRONT_CONE_MAX_POINTS = 10
+GAP_JAMB_RANGE_M_V3 = 1.3
+GAP_JAMB_BEARING = (20., 110.)
+#  - the single recorded declaration outside zone B (fix v2 e02, margin
+#    -0.0162 m) had the zone paint bbox bottom at 461/480 = 0.960 of the
+#    frame; the v3 edge check requires the paint to reach the bottom 2% band
+#    (>=0.98) before the declaration is kept.
+ZONE_EDGE_BOTTOM_NORM = 0.98
+ZONE_EDGE_MAX_RETRACT = 30
+ZONE_EDGE_FRAME_H = 480
 TRACKED_SIDE_TICKS_MIN = 12
 GAP_FRONT_RANGE_M = 1.6
 
@@ -37,6 +53,8 @@ class FixedVisualGoalSearch(VisualGoalSearch):
                  gap_front_range_m=GAP_FRONT_RANGE_M,
                  align_tolerance_m=ALIGN_TOLERANCE_M,
                  two_sided_v2=False,
+                 gap_v3=False,
+                 zone_edge_check=False,
                  approach_escape_s=APPROACH_ESCAPE_S):
         super().__init__(option=option, options=options)
         self.gap_twosided = bool(gap_twosided)
@@ -51,6 +69,11 @@ class FixedVisualGoalSearch(VisualGoalSearch):
         self.align_events = 0
         self.align_uncertain_ticks = 0
         self.two_sided_v2 = bool(two_sided_v2)
+        self.gap_v3 = bool(gap_v3)
+        self.zone_edge_check = bool(zone_edge_check)
+        self.zone_retracts = 0
+        self.zone_edge_ok = 0
+        self.zone_edge_forced = 0
         self.approach_escape_s = float(approach_escape_s)
         self.approach_t = 0.0
         self.approach_escapes = 0
@@ -147,6 +170,45 @@ class FixedVisualGoalSearch(VisualGoalSearch):
         return super()._approach_wall(t, paint, walls, obstacles, target_mem,
                                       patch_ok, patch_xy)
 
+    # ---- 3) own-RGB zone-edge check before the arrival declaration --
+    def _paint_bottom_norm(self, paint):
+        bbox = (paint or {}).get('bbox')
+        if not bbox or len(bbox) != 4:
+            return None
+        bottom = float(bbox[1]) + float(bbox[3])
+        return max(0.0, min(1.5, bottom / float(ZONE_EDGE_FRAME_H)))
+
+    def _target(self, t, paint, walls, obstacles, target_mem=None,
+                patch_ok=False, patch_xy=None):
+        action = super()._target(t, paint, walls, obstacles, target_mem,
+                                 patch_ok, patch_xy)
+        if not self.zone_edge_check or not action.get('arrived'):
+            return action
+        bottom = self._paint_bottom_norm(paint)
+        if bottom is not None and bottom >= ZONE_EDGE_BOTTOM_NORM:
+            self.zone_edge_ok += 1
+            self.event(t, 'zone_edge_ok', category='arrival',
+                       blocked_object='not_observed',
+                       paint_bottom_norm=round(bottom, 4))
+            return action
+        if self.zone_retracts >= ZONE_EDGE_MAX_RETRACT:
+            self.zone_edge_forced += 1
+            self.event(t, 'zone_edge_force_declare', category='arrival',
+                       blocked_object='not_observed',
+                       paint_bottom_norm=(round(bottom, 4)
+                                          if bottom is not None else None))
+            return action
+        # retract the declaration and creep until the paint reaches the
+        # bottom band (own RGB only; no world pose is used).
+        self.arrived = False
+        self.zone_retracts += 1
+        self.event(t, 'zone_edge_retract', category='arrival',
+                   blocked_object='not_observed',
+                   paint_bottom_norm=(round(bottom, 4)
+                                      if bottom is not None else None),
+                   paint_pixels=int((paint or {}).get('pixels', 0)))
+        return self._result(.06, 0., 0.)
+
     # ---- 2) door-center lateral alignment ---------------------------
     def _gap_forward(self, t, paint, walls, obstacles, target_mem=None,
                      patch_ok=False, patch_xy=None):
@@ -180,4 +242,9 @@ class FixedVisualGoalSearch(VisualGoalSearch):
                     align_turns=self.align_events,
                     align_uncertain_ticks=self.align_uncertain_ticks,
                     two_sided_v2=self.two_sided_v2,
+                    gap_v3=self.gap_v3,
+                    zone_edge_check=self.zone_edge_check,
+                    zone_retracts=self.zone_retracts,
+                    zone_edge_ok=self.zone_edge_ok,
+                    zone_edge_forced=self.zone_edge_forced,
                     approach_escapes=self.approach_escapes)
