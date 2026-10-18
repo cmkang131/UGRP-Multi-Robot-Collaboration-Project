@@ -5,6 +5,9 @@ actions) with the teacher command distribution at the same skill/elapsed phase,
 so early stopping and weakened wheel commands can be located in phase space.
 Parts: (1) per phase-bin activity table, (2) halt-onset (last movement) table,
 (3) wheel magnitude comparison. Default OFF.
+
+Gripper-closed means servo 1 below 1900 (`act18_gripper_state`); servo 5 is the
+shoulder and must not be used as a gripper proxy.
 """
 import argparse
 import json
@@ -15,11 +18,12 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from act17_data import read
+from act18_gripper_state import (GRIPPER_ACTION_DIM, gripper_closed,
+                                 gripper_closed_pulse, pwm_from_encoded)
 
 SKILLS = ('grasp', 'release')
 BINS = (0, 2, 5, 10, 15, 20, 30, 45)
 MOVING_WHEEL = 1e-9
-GRIPPER_CLOSED_PWM = 1900
 
 
 def tick_features(command):
@@ -29,7 +33,7 @@ def tick_features(command):
                 wheel_max=float(wheels.max()), wheel_mean=float(wheels.mean()),
                 duration_mean=float(duration.mean()),
                 displacement_proxy=float(wheels.sum()*duration.mean()),
-                gripper_closed=bool(float(command['pwm']['5']) > GRIPPER_CLOSED_PWM))
+                gripper_closed=gripper_closed(command['pwm']))
 
 
 def elapsed_bin(elapsed, bins=BINS):
@@ -90,12 +94,12 @@ def teacher_rows(dataset):
             elapsed = sample['t']-start
             wheels = np.abs(action[index, 0, :4].astype(np.float64))
             duration = action[index, 0, 4:8].astype(np.float64)*.15  # encoded dt/0.15 -> s
-            pwm5 = 1500.0+1000.0*float(action[index, 0, 11])
+            gripper_pwm = pwm_from_encoded(action[index, 0, GRIPPER_ACTION_DIM])
             rows.append((skill, elapsed, dict(moving=bool(wheels.max() > MOVING_WHEEL),
                                               wheel_max=float(wheels.max()), wheel_mean=float(wheels.mean()),
                                               duration_mean=float(duration.mean()),
                                               displacement_proxy=float(wheels.sum()*duration.mean()),
-                                              gripper_closed=bool(pwm5 > GRIPPER_CLOSED_PWM),
+                                              gripper_closed=gripper_closed_pulse(gripper_pwm),
                                               wheel_values=wheels.tolist())))
     return aggregate(rows)
 

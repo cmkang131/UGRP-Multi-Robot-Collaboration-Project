@@ -82,3 +82,96 @@ def prepare_single_step(observations, labels, *, contract, audit):
                             minimum_gap_status='not_applicable_non_geometric') for k,v in sorted(reasons.items())],
         'teacher_actions_executed': 0, 'valid_horizons_per_sample': 1,
         'future_student_path_borrowed_as_expert_chunk': False}
+
+
+def prepare_takeover_step(observations, labels, *, contract, audit):
+    """Admit one executed-takeover episode without changing label-only defaults.
+
+    Rows before the takeover trigger pass the unchanged pre-hover/close gate.
+    Rows at/after it are explicit ``takeover=True`` labels: the pre-hover phase
+    and student-issued-close gates are intentionally released because the
+    teacher command was executed at this exact state through ``owner.step``.
+    The takeover rows must be one final contiguous suffix, and the audited
+    emitted-command count must equal that suffix, so a partially switched
+    episode is rejected instead of silently relabelled.
+    """
+    if (contract.CHUNK, contract.ACTION_DIM) != (8, 14):
+        raise ValueError('frozen ACT chunk/action contract required')
+    if any(audit.get(k) != 0 for k in ('invisible_measurements', 'held_world_reads')):
+        raise ValueError('audited visible-only oracle required')
+    if audit.get('integration_and_actor_inputs_unchanged') is not True:
+        raise ValueError('audited oracle isolation required')
+    if len(observations) != len(labels) or not observations:
+        raise ValueError('nonempty one-to-one student/oracle alignment required')
+    accepted, reasons, seen = [], Counter(), set()
+    label_rows = takeover_rows = 0
+    seen_takeover = False
+    for index, (obs, label) in enumerate(zip(observations, labels)):
+        contract.validate_observation(obs)
+        sid = obs['sample_id']
+        if (sid in seen or label.get('sample_id') != sid
+                or abs(label['t']-obs['t']) > 1e-6):
+            raise ValueError('mismatched, duplicated or time-shifted teacher label')
+        seen.add(sid)
+        takeover = label.get('takeover') is True
+        if not takeover and seen_takeover:
+            raise ValueError('takeover rows must be the final contiguous suffix')
+        if takeover:
+            seen_takeover = True
+            takeover_rows += 1
+            if label.get('label_valid') is not True or label.get('teacher_command') is None:
+                reasons['takeover_no_valid_action'] += 1
+                continue
+            if type(label.get('done')) is not bool:
+                raise ValueError('takeover rows require an explicit bool done flag')
+            # Completion is evidence, not a done training target: C1 success is
+            # physical lift and release, independent of the issued done head.
+            target = contract.command(label['teacher_command'])
+            if abs(target['t']-obs['t']) > 1e-6:
+                raise ValueError('takeover command is not for the current state')
+            action = np.zeros((8, 14), np.float32)
+            pad = np.ones(8, bool)
+            action[0] = contract.encode_action(target, done=False)
+            pad[0] = False
+            accepted.append({'observation_index': index, 'sample_id': sid,
+                             'action': action, 'action_is_pad': pad, 'takeover': True})
+            continue
+        label_rows += 1
+        # From here on this is the unchanged pre-hover label-only gate.
+        if label.get('query_blocked_by_hold_boundary') is True:
+            reasons['potential_hold_after_student_issued_close'] += 1; continue
+        if label.get('teacher_phase') not in PHASES:
+            reasons['oracle_phase_outside_qualified_scope'] += 1; continue
+        if label.get('phase_after') in ('failed', 'handoff', 'complete'):
+            reasons['oracle_failed_or_unqualified_completion'] += 1; continue
+        if label.get('label_valid') is not True or label.get('teacher_command') is None:
+            reasons['oracle_no_valid_action'] += 1; continue
+        if label.get('done', False):
+            raise ValueError('pre-hover single-step oracle cannot supply a done target')
+        target = contract.command(label['teacher_command'])
+        if abs(target['t']-obs['t']) > 1e-6:
+            raise ValueError('oracle command is not for the current student state')
+        action = np.zeros((8, 14), np.float32)
+        pad = np.ones(8, bool)
+        action[0] = contract.encode_action(target, done=False)
+        pad[0] = False
+        accepted.append({'observation_index': index, 'sample_id': sid,
+                         'action': action, 'action_is_pad': pad, 'takeover': False})
+    executed = audit.get('teacher_actions_executed')
+    if type(executed) is not int or executed != takeover_rows:
+        raise ValueError('takeover command execution count does not match takeover rows')
+    label_accepted = sum(1 for row in accepted if not row['takeover'])
+    takeover_accepted = sum(1 for row in accepted if row['takeover'])
+    return accepted, {
+        'scope': 'executed teacher takeover h0 rows; pre-trigger label-only gate unchanged',
+        'funnel': [dict(gate='student_oracle_pairs', passed=len(observations), rejected=0),
+                   dict(gate='label_only_qualified_action', passed=label_accepted,
+                        rejected=label_rows-label_accepted),
+                   dict(gate='takeover_action', passed=takeover_accepted,
+                        rejected=takeover_rows-takeover_accepted)],
+        'rejections': [dict(category=k, reason=k, count=v,
+                            blocking_object='not_applicable_label_admission', minimum_gap_m=None,
+                            minimum_gap_status='not_applicable_non_geometric') for k,v in sorted(reasons.items())],
+        'teacher_actions_executed': executed, 'takeover_rows': takeover_rows,
+        'label_only_rows': label_rows, 'valid_horizons_per_sample': 1,
+        'future_student_path_borrowed_as_expert_chunk': False}

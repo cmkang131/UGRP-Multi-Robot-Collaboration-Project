@@ -64,6 +64,11 @@ def command_features(action0):
     pwm = np.stack([action0[:, 8+i] for i in range(len(SERVOS))], axis=1)  # raw PWM counts after decode? encoded [-1,1]
     # encode_action stores (pwm-1500)/1000, so recover approximate PWM counts.
     pwm_counts = 1500.0 + 1000.0*pwm
+    # NOTE (2026-10-18 정정): SERVOS=(1,3,4,5,6) so slice index 3..4 is servo 5
+    # (shoulder) + servo 6 (yaw), not the gripper (servo 1, index 0). `closed`
+    # below therefore never encoded gripper closure. Frozen on purpose: changing
+    # it changes the done-head training input (FEATURE_SPEC) and needs a new
+    # prereg + retrain, so it is annotated here instead of silently fixed.
     gripper = pwm_counts[:, 3:5].mean(axis=1)
     moving = wheels.max(axis=1) > MOVING_WHEEL
     closed = gripper > GRIPPER_CLOSED_PWM

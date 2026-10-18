@@ -9,6 +9,13 @@ from PIL import Image, ImageDraw, ImageFont
 VM_BASE=Path('/home/ugrp/ugrp-sim/runs/act18')
 DATASET=Path('/home/ugrp/ugrp-sim/runs/act17-v7/dataset-r1')
 PWM_KEYS=('1','3','4','5','6')
+# Servo map (harness/research_camera_actor.py:15): 1=gripper, 3=wrist pitch,
+# 4=elbow, 5=shoulder, 6=yaw. The gripper is servo 1 only: an earlier version
+# read keys 5,6 as "gripper fingers" (shoulder/yaw) and left servo 5 out of the
+# arm set. Fixed here for future diagnostics; results/faildiag-r3.json keeps the
+# historical keys/values (raw sha256 recorded in summary.json).
+GRIPPER_CHANNEL=PWM_KEYS.index('1')
+ARM_CHANNELS=tuple(PWM_KEYS.index(k) for k in ('3','4','5','6'))
 
 
 def font(size=12):
@@ -48,11 +55,11 @@ def analyse_world(actions,index,physics):
         return idx[-1] if idx else None
     base_last=[i for i in range(ticks) if any(abs(x)>0.01 for x in wheels[i])]
     base_last=base_last[-1] if base_last else None
-    arm_last=last_change([0,1,2],3)   # pwm keys 1,3,4: lift/arm servos
-    finger_last=last_change([3,4],10) # pwm keys 5,6: gripper fingers
+    arm_last=last_change(ARM_CHANNELS,3)   # servos 3,4,5,6: wrist/elbow/shoulder/yaw
+    gripper_last=last_change([GRIPPER_CHANNEL],10)  # servo 1 only
     close_onset=None
     for i in range(1,ticks):
-        if abs(pwm[i][3]-pwm[i-1][3])>=100 or abs(pwm[i][4]-pwm[i-1][4])>=100:
+        if abs(pwm[i][GRIPPER_CHANNEL]-pwm[i-1][GRIPPER_CHANNEL])>=100:
             close_onset=i;break
     # last tick at which any wheel command or servo PWM still differs from the
     # final held pose beyond sensor/rounding noise
@@ -74,15 +81,18 @@ def analyse_world(actions,index,physics):
         static_tail_ticks=ticks-(last_moving+1),
         base_last_move_sim_s=round(base_last*0.1+1.7,2) if base_last is not None else None,
         arm_last_change_sim_s=round(arm_last*0.1+1.7,2) if arm_last is not None else None,
-        finger_last_change_sim_s=round(finger_last*0.1+1.7,2) if finger_last is not None else None,
+        # legacy alias kept for schema stability; both keys are servo-1 last change
+        finger_last_change_sim_s=round(gripper_last*0.1+1.7,2) if gripper_last is not None else None,
+        gripper_last_change_sim_s=round(gripper_last*0.1+1.7,2) if gripper_last is not None else None,
         gripper_close_onset_sim_s=round(close_onset*0.1+1.7,2) if close_onset is not None else None,
         final_command=dict(wheels=final_wheels,pwm=dict(zip(PWM_KEYS,final_pwm))),
         last100_ranges=dict(
             pwm={k:max(p[i] for p in pwm[-100:])-min(p[i] for p in pwm[-100:]) for i,k in enumerate(PWM_KEYS)},
             wheels=[max(w[i] for w in wheels[-100:])-min(w[i] for w in wheels[-100:]) for i in range(4)]),
         path_length_m=path_m,
-        gripper_pwm_distinct=len({tuple(p[3:]) for p in pwm}),
-        gripper_pwm_range=[max(p[3] for p in pwm)-min(p[3] for p in pwm),max(p[4] for p in pwm)-min(p[4] for p in pwm)],
+        gripper_pwm_distinct=len({p[GRIPPER_CHANNEL] for p in pwm}),
+        gripper_pwm_range=(max(p[GRIPPER_CHANNEL] for p in pwm)
+                           -min(p[GRIPPER_CHANNEL] for p in pwm)),
         done_issued=any(done),skill=[skills[0],skills[-1]],
         speed_max=round(max((s or 0) for _,s in speeds),3) if speeds else None,
         min_clearance_m=round(min(e.get('min_z',0) for e in physics),5) if physics else None,
