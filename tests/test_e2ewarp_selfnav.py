@@ -6,13 +6,26 @@ import types
 import pytest
 
 from harness import e2ewarp_selfnav as sn
-from harness.grasp_act_contract import SERVOS
+from harness.grasp_act_contract import SERVOS, command as issued_command
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 
 
-def frame(sim_s=0.0, jpeg=b'jpg'):
-    return types.SimpleNamespace(robot_id='r1', world_id=0, tick=int(sim_s * 10), sim_s=sim_s, jpeg=jpeg, issued=())
+def frame(sim_s=0.0, jpeg=b'jpg', robot_id='r1'):
+    return types.SimpleNamespace(robot_id=robot_id, world_id=0, tick=int(sim_s * 10), sim_s=sim_s, jpeg=jpeg, issued=())
+
+
+def odometry(forward_m_per_pct_s=0.01, yaw_deg_per_pct_s=0.5):
+    return sn.OwnCommandOdometry(forward_m_per_pct_s=forward_m_per_pct_s,
+                                 yaw_deg_per_pct_s=yaw_deg_per_pct_s)
+
+
+def constant_detector(detections):
+    return lambda fr: detections
+
+
+def zone_detection(range_m=2.0, bearing_deg=0.0, bottom_norm=0.3):
+    return [{'kind': 'zone_B', 'range_m': range_m, 'bearing_deg': bearing_deg, 'bottom_norm': bottom_norm}]
 
 
 def test_default_off_fails_closed():
@@ -20,11 +33,31 @@ def test_default_off_fails_closed():
     rep = nav.observe(frame(1.0))
     assert rep['map_correction_active'] is False
     assert rep['destination_arrived'] is False
+    assert rep['ready'] is False and rep['drive_reason'] == 'option_off'
     assert nav.accept_release_fix({'relocalized': True, 'memory_registered': True}) is False
     cmd = nav.command(1.0)
     assert cmd['wheels'] == [0.0, 0.0, 0.0, 0.0] and cmd['duration_s'] == [0.0, 0.0, 0.0, 0.0]
     assert set(cmd) == {'t', 'wheels', 'duration_s', 'pwm'} and set(cmd['pwm']) == {str(i) for i in SERVOS}
     assert all(isinstance(v, int) and 500 <= v <= 2500 for v in cmd['pwm'].values())
+
+
+def test_default_off_holds_wheels_even_with_controller_inputs():
+    nav = sn.navigation_factory('r1', {}, detector=constant_detector(zone_detection()),
+                                odometry=odometry())
+    rep = nav.observe(frame(0.0))
+    assert rep['ready'] is False and rep['destination_arrived'] is False
+    assert rep['drive_reason'] == 'option_off'
+    cmd = nav.command(0.0)
+    assert cmd['wheels'] == [0.0] * 4 and cmd['duration_s'] == [0.0] * 4
+
+
+def test_ready_requires_active_option_detector_and_odometry():
+    det, od = constant_detector(zone_detection()), odometry()
+    assert sn.navigation_factory('r1', {}, detector=det, odometry=od).ready is False
+    assert sn.navigation_factory('r1', {}, option=sn.OPTION, detector=det).ready is False
+    assert sn.navigation_factory('r1', {}, option=sn.OPTION, odometry=od).ready is False
+    nav = sn.navigation_factory('r1', {}, option=sn.OPTION, detector=det, odometry=od)
+    assert nav.ready is True and nav.observe(frame(0.0))['ready'] is True
 
 
 def test_no_static_map_geometry_allowed():
@@ -45,7 +78,7 @@ def test_memory_updates_and_decays():
 def test_arrival_and_handoff_are_own_memory_evidence():
     dets = [{'kind': 'zone_B', 'range_m': 0.2, 'bearing_deg': 0.0}]
     nav = sn.navigation_factory('r2', {}, option=sn.OPTION, detector=lambda fr: dets)
-    rep = nav.observe(frame(3.0))
+    rep = nav.observe(frame(3.0, robot_id='r2'))
     assert rep['destination_arrived'] is True and rep['robot_id'] == 'r2'
 
 
@@ -135,4 +168,98 @@ def test_odometry_shifts_self_centric_memory_opposite_to_motion():
 def test_arrival_uses_recorded_bottom_band_evidence():
     det = [{'kind': 'zone_B', 'bearing_deg': 0.0, 'bottom_norm': 0.985, 'range_m': 1.0}]
     nav = sn.navigation_factory('r2', {}, option=sn.OPTION, detector=lambda fr: det)
+    assert nav.observe(frame(1.0, robot_id='r2'))['destination_arrived'] is True
+
+
+def test_active_drive_emits_pulses_and_reduces_destination_range_and_bearing():
+    nav = sn.navigation_factory('r1', {}, option=sn.OPTION, odometry=odometry(),
+                                detector=constant_detector(zone_detection(range_m=2.0, bearing_deg=10.0)))
+    rep = nav.observe(frame(0.0))
+    assert rep['ready'] is True and rep['destination_arrived'] is False
+    assert rep['drive_reason'] == 'driving'
+    range0, bearing0 = nav.memory.items[0].range_m, nav.memory.items[0].bearing_deg
+    for step in range(6):
+        cmd = nav.command(0.1 + 0.1 * step)
+        issued_command(cmd)  # own issued-command whitelist (percent x pulse width)
+        assert any(w != 0.0 for w in cmd['wheels'])
+        assert all(abs(w) <= sn.WHEEL_PCT + 1e-9 for w in cmd['wheels'])
+        assert all(0.0 <= dt <= 0.15 for dt in cmd['duration_s'])
+        # proportional differential: left and right pulse widths differ
+        assert cmd['duration_s'][0] != cmd['duration_s'][1]
+        delta = nav.step_odometry(cmd)
+        assert delta is not None and delta[0] > 0.0 and delta[1] > 0.0
+    assert nav.memory.items[0].range_m < range0
+    assert abs(nav.memory.items[0].bearing_deg) < abs(bearing0)
+
+
+def test_off_axis_destination_rotates_in_place_before_translating():
+    nav = sn.navigation_factory('r1', {}, option=sn.OPTION, odometry=odometry(),
+                                detector=constant_detector(zone_detection(range_m=2.0, bearing_deg=90.0)))
+    nav.observe(frame(0.0))
+    cmd = nav.command(0.0)
+    assert cmd['wheels'][0] < 0.0 < cmd['wheels'][1]
+    assert cmd['wheels'][2] < 0.0 < cmd['wheels'][3]
+    assert all(dt > 0.0 for dt in cmd['duration_s'])
+
+
+def test_arrival_evidence_stops_wheels():
+    cases = [
+        (zone_detection(range_m=0.2, bearing_deg=0.0, bottom_norm=0.3), sn.ARRIVAL_RANGE_M),
+        (zone_detection(range_m=1.0, bearing_deg=0.0, bottom_norm=0.99), sn.ARRIVAL_RANGE_M),
+        (zone_detection(range_m=0.4, bearing_deg=0.0, bottom_norm=0.3), 0.5),
+    ]
+    for dets, threshold in cases:
+        nav = sn.navigation_factory('r1', {}, option=sn.OPTION, detector=constant_detector(dets),
+                                    odometry=odometry(), arrival_range_m=threshold)
+        rep = nav.observe(frame(0.0))
+        assert rep['destination_arrived'] is True, dets
+        assert rep['drive_reason'] == 'arrived', dets
+        cmd = nav.command(0.1)
+        assert cmd['wheels'] == [0.0] * 4 and cmd['duration_s'] == [0.0] * 4, dets
+
+
+def test_missing_odometry_or_destination_fails_closed():
+    nav = sn.navigation_factory('r1', {}, option=sn.OPTION,
+                                detector=constant_detector(zone_detection()))
+    rep = nav.observe(frame(0.0))
+    assert rep['ready'] is False and rep['drive_reason'] == 'no_odometry'
+    cmd = nav.command(0.0)
+    assert cmd['wheels'] == [0.0] * 4 and cmd['duration_s'] == [0.0] * 4
+
+    nav = sn.navigation_factory('r1', {}, option=sn.OPTION, detector=constant_detector([]),
+                                odometry=odometry())
+    rep = nav.observe(frame(0.0))
+    assert rep['ready'] is True and rep['drive_reason'] == 'no_destination'
+    cmd = nav.command(0.0)
+    assert cmd['wheels'] == [0.0] * 4 and cmd['duration_s'] == [0.0] * 4
+
+
+def test_appearance_only_destination_drives_and_bottom_band_stops():
+    det = [{'kind': 'zone_B', 'bearing_deg': 0.0, 'bottom_norm': 0.3}]
+    nav = sn.navigation_factory('r1', {}, option=sn.OPTION, detector=constant_detector(det),
+                                odometry=odometry())
+    rep = nav.observe(frame(0.0))
+    assert rep['self_centric_memory'][0]['range_measured'] is False
+    # A detector default range of 0.0 must not be read as "arrived at 0 m".
+    assert rep['destination_arrived'] is False
+    assert any(w != 0.0 for w in nav.command(0.0)['wheels'])
+
+    near = [{'kind': 'zone_B', 'bearing_deg': 0.0, 'bottom_norm': 0.99}]
+    nav = sn.navigation_factory('r1', {}, option=sn.OPTION, detector=constant_detector(near),
+                                odometry=odometry())
     assert nav.observe(frame(1.0))['destination_arrived'] is True
+    assert nav.command(1.0)['wheels'] == [0.0] * 4
+
+
+def test_cross_robot_frame_and_issued_row_are_rejected():
+    nav = sn.navigation_factory('r1', {}, option=sn.OPTION, detector=constant_detector([]),
+                                odometry=odometry())
+    with pytest.raises(ValueError, match='robot_id'):
+        nav.observe(frame(0.0, robot_id='r2'))
+    with pytest.raises(ValueError, match='robot_id'):
+        nav.step_odometry(dict(t=0.0, wheels=[0.0] * 4, duration_s=[0.0] * 4, pwm={}, robot_id='r2'))
+    with pytest.raises(ValueError, match='robot_id'):
+        nav.observe(types.SimpleNamespace(sim_s=0.0, jpeg=b'jpg'))
+    assert nav.observe(frame(0.0, robot_id='r1'))['robot_id'] == 'r1'
+    # owned issued rows carry no robot_id and still apply
+    assert nav.step_odometry(dict(t=0.0, wheels=[0.0] * 4, duration_s=[0.0] * 4, pwm={})) == (0.0, 0.0)
