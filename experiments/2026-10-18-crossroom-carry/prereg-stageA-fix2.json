@@ -4,7 +4,7 @@
  "stage": "A_unloaded_fix2",
  "flow": "self_map",
  "title": "Cross-room carry Stage A-fix2: v2 gap confirmation, range-conditioned paint filter, approach-wall escape",
- "frozen_at": "PENDING_FREEZE_COMMIT",
+ "frozen_at": "2026-10-18T03:58:42Z",
  "independent_from": [
   "Stage A (unloaded baseline)",
   "Stage B (loaded baseline)",
@@ -163,5 +163,12 @@
   "act18"
  ],
  "expected_wall": "about 2.5-3.0 h for 16 x 180 Sim s at the gcp3 batch rate (v1: 8747 s).",
- "dsh": "Produced with DeepSeek Harness. https://github.com/deepseek-ai/deepseek-harness"
+ "dsh": "Produced with DeepSeek Harness. https://github.com/deepseek-ai/deepseek-harness",
+ "preflight": {
+  "run": "/home/ugrp/ugrp-sim/runs/crossroom-stageA-fix2-preflight",
+  "status": "PREFLIGHT_DONE (2 starts, 60 Sim s, nworld=2)",
+  "result": "cap_end 2/2, input audit 2/2 passed, no HOST_ERROR",
+  "v2_telemetry": "two_sided_v2 active; ep0 49 gap claims all rejected (0 confirmed), ep1 28 rejected; paint filter no colour within 60 s; contact recorder checked 120 ticks, no errors; approach escapes 0 in 60 s",
+  "note": "the v2 toggles were active in the preflight; the gate itself is the measurement."
+ }
 }
