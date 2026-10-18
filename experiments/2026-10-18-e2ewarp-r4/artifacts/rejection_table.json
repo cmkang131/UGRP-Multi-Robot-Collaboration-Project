@@ -1,0 +1,59 @@
+{
+  "raw": "/home/ugrp/ugrp-sim/runs/e2ewarp-r4-run",
+  "reproduction": [
+    "python",
+    "-m",
+    "scripts.run_e2e_warp",
+    "--e2e-warp-batch",
+    "on_v1",
+    "--mode",
+    "smoke",
+    "--execute",
+    "--round",
+    "3",
+    "--nworld",
+    "2",
+    "--condition",
+    "peer_en",
+    "--map-keyframe-admission",
+    "elapsed_sim_v1",
+    "--expected-source-sha",
+    "718777118be41991156b047faff78621969101bb",
+    "--queue",
+    "/home/ugrp/ugrp-sim/runs/e2ewarp-r4-admission/queue.json",
+    "--host-receipt",
+    "/home/ugrp/ugrp-sim/runs/e2ewarp-r4-host-receipt.json",
+    "--output",
+    "/home/ugrp/ugrp-sim/runs/e2ewarp-r4-run",
+    "--relay-url",
+    "http://127.0.0.1:18627/v1/chat/completions"
+  ],
+  "stages": [
+    {
+      "stage": "world_attempted",
+      "cumulative_pass_n": 2,
+      "rejected_n": 0
+    },
+    {
+      "stage": "first30_complete",
+      "cumulative_pass_n": 2,
+      "rejected_n": 0
+    },
+    {
+      "stage": "actual_transport",
+      "cumulative_pass_n": 0,
+      "rejected_n": 2
+    }
+  ],
+  "reasons": [
+    {
+      "count": 2,
+      "category": "dependency",
+      "reason_category": "dependency",
+      "reason": "marked_smoke_dependency_wait",
+      "blocked_object": "not_observed",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    }
+  ]
+}

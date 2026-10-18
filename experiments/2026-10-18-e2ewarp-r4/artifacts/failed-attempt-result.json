@@ -1,0 +1,10 @@
+{
+  "status": "HOST_ERROR",
+  "source_sha": "718777118be41991156b047faff78621969101bb",
+  "mode": "smoke",
+  "sim_s": 0,
+  "E2E_success": false,
+  "research_result": false,
+  "error": "Traceback (most recent call last):\n  File \"/home/ugrp/ugrp-sim/src/e2ewarp-r4-git/scripts/run_e2e_warp.py\", line 376, in main\n    result = run(a, json.loads(a.queue.read_text()))\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/e2ewarp-r4-git/scripts/run_e2e_warp.py\", line 135, in run\n    relay, proof = admit(a, queue)\n                   ^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/e2ewarp-r4-git/scripts/run_e2e_warp.py\", line 105, in admit\n    raise ValueError('OWN_LEASE_REQUIRED')\nValueError: OWN_LEASE_REQUIRED\n",
+  "phase": "admission"
+}
