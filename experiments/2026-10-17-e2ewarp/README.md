@@ -169,3 +169,40 @@ idle20/budget-stop 유지, VM wall cap 없음. Mac 중계·자기 SSH tunnel도 
 
 재현/다음 제출은 [reproduce.md](reproduce.md), 부품 ABI는
 `harness/e2e_warp_mission.py`의 docstring과 설계서를 따른다.
+
+## 2026-10-18 GPU(MJWarp) 후속: R4 자기지도 관문·4조건 스모크·부품 어댑터 통합 (DSH Lead, NOT_READY)
+
+사용자 결정(2026-10-18: MuJoCo/CPU 금지, 모두 GPU/MJWarp)에 따라 이 실험은 **MJWarp GPU 경로만** 사용한다. 아래는 GPU 실행 결과와 부품 어댑터 통합 상태이며, **E2E_success=false·research_result=false** 라벨을 유지한다. CPU/과거 소스 결과와 합산하지 않는다.
+
+### R4 — 자기지도 키프레임 관문 (source 718777118, elapsed_sim_v1)
+- gcp6 L4, smoke, nworld 2, peer_en, 30 SIM, `e2e-warp-batch-v446`, physics `mjwarp_batch_v1`, contact `warp_native_contact_v1`.
+- funnel: own_rgb 1806 → qualified_unloaded_FK 1806 → settled_scan 48(rejected 1758, 전부 camera_qualification/settling) → observed_wall 48 → **inserted_keyframe 48** (R3 동일 스냅샷 아님·R3 inserted 0과 대비, 합산 금지).
+- 6 streams(2 world × 3 robot) 각 frames 301·inserted 8, 삽입 ticks [24,71,124,148,195,224,248,295], **off old-modulo 48/48**, cadence 위반 0.
+- LLM 18/18 status 200, image 18/18, prompt 78,120/total 78,372/cached 18,496(23.68%), http·upstream 429 0, format 0.
+- **독립 검증자 판정: 확인됨** — funnel·48키프레임·elapsed_sim_v1·LLM·result 플래그·SHA(1030/1030) 일치. 유일 차이 wall 정의(run-metrics 363.64 vs result.json 374.51, 초기화 10.87s).
+
+### 4조건 GPU 스모크 (동결 tip 718777118, nworld 2, 30 SIM)
+| 조건 | funnel (RGB→settled→keyframes) | LLM | wall/(SIM·world) result.json | wall/(SIM·world) run-metrics |
+|---|---|---:|---:|---:|
+| peer_en (R4) | 1806→48→48 | 18/18 | 6.2418 | 6.0607 |
+| no_comm | 1806→48→48 | 18/18 | 5.9785 | 5.7670 |
+| leader_en | 1806→128→54 (74 keyframe_interval_wait) | 18/18 | 6.3479 | 6.1766 |
+| structured | 1806→46→46 | 17/18 accepted | 9.7934 | 9.6221 |
+
+- 전 조건 **keyframes>0**(R3 off=0), status cap_end, sim 30.0, E2E_success=false·student_execution=false·research_result=false, 조건 간 pooling 없음.
+- structured: `...structured:w0:r2:3` 클라이언트 180.10s TimeoutError, relay journal에는 최종 200(attempts 429→502(180.52s)→200). **"journal 미도달/터널 단절" 초기 판정 철회** — 상류 429/502 재시도로 클라이언트 타임아웃, 클라이언트 ledger($0.007411)는 수신 17호출 기준이고 타임아웃 호출 상류 사용량(prompt 4,777·cost $0.00048246)은 relay journal에만 있음.
+- 기록: `claude/beamact5-e2ewarp-r4` `b24961aa8`(4cond/README-4cond·condition-summary·relay-summary·raw-sha256).
+
+### 부품 어댑터 (기본 OFF·fail-closed, Mac 비물리)
+- release: `harness/e2e_warp_release.py` e2ewarp release_factory ABI, owner 주입 evidence 검증 후에만 relocalized+registered=true, tests 13/13 (`a74ff9acd`→`30d244c94`).
+- map correction+loaded FK: `harness/e2ewarp_mapcorr.py`(loaded_camera_fk_v1·selfmap_map_correction_v1·e2ewarp_navigation_v1), owner assets `codex/mapbuild1 95769da0e` byte-copy 7파일, tests 24/24 (`9626c25fe`).
+- zone visdet: `harness/own_rgb_zone_visdet.py` + GPU appearance `gpu_calib_v1`(hue 110–114·S≥100·30≤V≤110·extent≤1.75m) — zone 33/33 유지·pickup FP 3→0·R4 floor FP 36/180→0/180, 테스트 35 pass (`b894d8cb1`).
+- merged components manifest: `components.r4-integration-v1.json`(visdet+mapcorr+release entries, **ready=false** 유지).
+
+### Mission prepare fail-closed 검증
+- `python -m scripts.run_e2e_warp --components components.r4-integration-v1.json --prepare --mode mission` → `DEPENDENCY_WAIT:navigation`(첫 미충족; 이후 loaded_camera_fk/static_map_registration/selfmap_map_correction/release_relocalization/ACT 순). 기록 `mission-prep-failclosed.json`.
+
+### 남은 차단과 결정
+- ACT: e2ewarp는 act16w v3·step=10000/schedule_steps=10000·native contact·선택 검증 artifact 요구. act18 전 후보 미충족(상세: act18 E2EWARP_ACT 분석). **사용자 결정 대기**(①act16w v3 10k 재현 ②새 녹화/데이터 확대 ③통합 스모크로 마감).
+- owner navigation(실제 주행)·static map registration·release의 새 물리 관문 필요. **full mission 성공은 아직 주장하지 않는다.**
+- 모든 실행 VM은 종료(원본 디스크 보존), CPU MuJoCo 경로 결과는 이 문서에 포함하지 않는다.
