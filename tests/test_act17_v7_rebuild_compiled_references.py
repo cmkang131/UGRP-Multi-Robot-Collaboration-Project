@@ -97,8 +97,13 @@ def _reference_case(root, manifest):
     (case / 'compiled-312.json').write_text(json.dumps(dict(actuator_names=['a'])))
     (case / 'compiled-geometry312.npz.json').write_text(json.dumps(dict(geom_names=names)))
     np.savez(case / 'compiled-geometry312.npz', geom_type=np.array([7, 7], dtype=np.int32),
-             geom_dataid=np.array([0, 0], dtype=np.int32), geom_size=np.ones((2, 3)),
-             geom_pos=np.zeros((2, 3)), geom_quat=np.tile([1., 0, 0, 0], (2, 1)))
+             geom_bodyid=np.array([1, 1], dtype=np.int32), geom_dataid=np.array([0, 0], dtype=np.int32),
+             geom_friction=np.ones((2, 3)), geom_solref=np.ones((2, 2)), geom_solimp=np.ones((2, 5)),
+             geom_margin=np.zeros(2), geom_gap=np.zeros(2), geom_condim=np.array([3, 3], dtype=np.int32),
+             geom_contype=np.ones(2, dtype=np.int32), geom_conaffinity=np.ones(2, dtype=np.int32),
+             geom_solmix=np.ones(2), geom_priority=np.zeros(2, dtype=np.int32),
+             geom_size=np.ones((2, 3)), geom_pos=np.zeros((2, 3)),
+             geom_quat=np.tile([1., 0, 0, 0], (2, 1)))
     return case
 
 
@@ -107,7 +112,12 @@ def test_scene_semantics_compare_fails_on_robot_or_map_change(tmp_path):
     case = _reference_case(tmp_path, manifest)
     model = SimpleNamespace(nu=1, actuator=lambda i: SimpleNamespace(name='a'), ngeom=2,
         geom=lambda i: SimpleNamespace(name=['zone_wall_north', 'robot'][i]),
-        geom_type=np.array([7, 7], dtype=np.int32), geom_dataid=np.array([0, 0], dtype=np.int32),
+        geom_type=np.array([7, 7], dtype=np.int32), geom_bodyid=np.array([1, 1], dtype=np.int32),
+        geom_dataid=np.array([0, 0], dtype=np.int32), geom_friction=np.ones((2, 3)),
+        geom_solref=np.ones((2, 2)), geom_solimp=np.ones((2, 5)), geom_margin=np.zeros(2),
+        geom_gap=np.zeros(2), geom_condim=np.array([3, 3], dtype=np.int32),
+        geom_contype=np.ones(2, dtype=np.int32), geom_conaffinity=np.ones(2, dtype=np.int32),
+        geom_solmix=np.ones(2), geom_priority=np.zeros(2, dtype=np.int32),
         geom_size=np.ones((2, 3)), geom_pos=np.zeros((2, 3)),
         geom_quat=np.tile([1., 0, 0, 0], (2, 1)))
     result = regen.compare_scene_semantics(manifest, model, plan(), case)

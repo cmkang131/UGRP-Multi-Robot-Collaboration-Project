@@ -141,6 +141,8 @@ def compare_scene_semantics(manifest, model, plan, reference_case):
         checks['manifest.' + key] = manifest.get(key) == reference_scene.get(key)
     checks['geom_names'] = [model.geom(i).name for i in range(model.ngeom)] == reference_meta['geom_names']
     checks['actuator_names'] = [model.actuator(i).name for i in range(model.nu)] == reference_actuator['actuator_names']
+    for field in STRUCTURAL:
+        checks['structural.' + field] = bool(np.array_equal(getattr(model, field), reference_arrays[field]))
     names = reference_meta['geom_names']
     door = [i for i, name in enumerate(names) if name.startswith(DOOR_PREFIXES)]
     door_checks = {}
