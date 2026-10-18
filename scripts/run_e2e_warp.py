@@ -89,6 +89,20 @@ def prepare(a):
         record_tail=dict(hz=10, sim_s=10, purpose='recording_only; no control changes'),
         dependency_status='waiting for selected ACT / loaded FK / mapbuild8 own+static map correction / release API')
     if a.mode == NAV_MODE:
+        # Navigation-only gate: components that are neither used nor loaded are
+        # declared as approved deviations of the current stack, not as silently
+        # missing values. Approval evidence is the merged contract v1 (PR #597).
+        approval = dict(authority='user', evidence=(
+            '2026-10-18 GPU E2E contract v1 approved (PR #597 merged, main 3699547b1): '
+            'the navigation gate runs without ACT / loaded FK / static map / own-static '
+            'map correction / release'))
+        for key, value in (('nearfield_executor', 'not_required'),
+                           ('localization_path', 'self_centric_memory_none'),
+                           ('setdown_lookaround_v1', False),
+                           ('selfmap_map_correction', 'off')):
+            values[key] = value
+            deviations.append(dict(id=key, reason='navigation-only gate: component not used and not loaded',
+                                   approval=dict(approval)))
         # Explicit opt-in queue markers; the smoke/mission queue stays byte-identical.
         queue.update(nav_queue_fields(a.seed))
         queue.update(nav_gate_fields(a.seed))
