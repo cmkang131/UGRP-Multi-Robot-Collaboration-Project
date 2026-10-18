@@ -300,7 +300,8 @@ def save_actor(policy, root, stats, provenance):
         student_input_contract='own RGB + own issued command history + task labels/clocks only',
         static_map_use='none', policy_ground_truth_fields=0, handwritten_nearfield_fallback=False,
         state_dim=int(policy.config.input_features['observation.state'].shape[0]),
-        condition_token=provenance.get('condition_token')), indent=2)+'\n')
+        condition_token=(provenance.get('condition_token')
+                         or (provenance.get('cotraining') or {}).get('condition_token'))), indent=2)+'\n')
     (root/'SHA256.json').write_text(json.dumps({name:sha256(root/name) for name in ['model.safetensors','config.json','adapter.json']}, indent=2)+'\n')
 
 
@@ -358,6 +359,9 @@ class Actor:
         if saved != actual:
             raise ValueError('saved ACT configuration changed')
         policy.load_state_dict(load_file(str(root/'model.safetensors')), strict=True)
-        token = (meta.get('condition_token') or {}).get('default') if isinstance(meta.get('condition_token'), dict) else None
+        token_meta = meta.get('condition_token')
+        if token_meta is None:
+            token_meta = ((meta.get('provenance') or {}).get('cotraining') or {}).get('condition_token')
+        token = token_meta.get('default') if isinstance(token_meta, dict) else None
         return cls(policy, meta['stats'], device, meta['chunk'], state_dim=meta.get('state_dim'),
                    condition_token=token)
