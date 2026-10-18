@@ -841,7 +841,10 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         wheels,widths=duty_wheels([3.*forward,3.*left,.65*turn])
         if self.teacher_stability!='off' and self.phase in ('align','search'):
             # Candidate 40 ms floor; real-wheel response remains unmeasured.
-            widths=[max(.04,d) if w else 0. for w,d in zip(wheels,widths)]
+            floor=(.1 if (self.phase=='align'
+                          and self.search15_modes.get('search26_align_pulse','off')!='off')
+                   else .04)
+            widths=[max(floor,d) if w else 0. for w,d in zip(wheels,widths)]
         value=self._hold(now);value.update(wheels=wheels,duration_s=widths)
         return command(value)
 

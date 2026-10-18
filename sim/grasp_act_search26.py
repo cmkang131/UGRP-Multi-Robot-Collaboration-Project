@@ -71,6 +71,15 @@ new candidate selects them.
   at align and stalled (alignment_no_progress) while wheel commands were all
   zero; the teacher needs to report whether it is waiting on a stale-memory
   pick-cloud collision or on missing visible error.
+- ``search26_align_pulse``: alignment breakaway pulse.  In the align phase
+  every issued wheel pulse is widened to the full 0.1 s control period (the
+  existing period only; the 0.35 board speed and duty ratios are unchanged).
+  Measured basis: gcp6 r10diag case 27 issued 40 ms-wide 0.35-speed wheel
+  pulses on the x axis for 2.5+ SIM s (drive 0.021-0.030, errors x=0.0135 m)
+  while the reported robot pose did not move at all, i.e. the candidate 40 ms
+  floor never breaks static friction; the same teacher drives normally in the
+  approach phase where pulses reach the full period.  No new level/time
+  constant: the pulse width is the existing control period.
 - ``search26_commit_plan``: keep driving a feasible committed approach plan
   until its existing 1 s replan boundary instead of re-planning on every
   blocked tick caused by stale-memory margins.  Basis: gcp6 r5c case 27 spent
@@ -93,6 +102,7 @@ new stance candidate uses only the existing calibrated envelope, the existing
 jaw predicate, and the existing margins.
 """
 MODES = {'search26_circles': 'search26_downfirst_circles_v1',
+         'search26_align_pulse': 'search26_align_pulse_v1',
          'search26_align_diag': 'search26_align_diag_v1',
          'search26_wide_rescue': 'search26_wide_rescue_v1',
          'search26_commit_plan': 'search26_commit_plan_v1',

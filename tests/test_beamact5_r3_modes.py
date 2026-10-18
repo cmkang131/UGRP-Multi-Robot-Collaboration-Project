@@ -332,3 +332,13 @@ def test_align_diag_mode_is_registered_and_plumbed():
     from scripts.run_grasp_act_teacher import run
     import inspect
     assert 'search26_align_diag' in inspect.signature(run).parameters
+
+
+def test_align_pulse_mode_is_registered_and_plumbed():
+    from sim.grasp_act_search26 import MODES as M26
+    from sim.grasp_act_search15_modes import ALL_MODES
+    assert M26['search26_align_pulse'] == 'search26_align_pulse_v1'
+    assert 'search26_align_pulse' in ALL_MODES
+    from scripts.run_grasp_act_teacher import run
+    import inspect
+    assert 'search26_align_pulse' in inspect.signature(run).parameters
