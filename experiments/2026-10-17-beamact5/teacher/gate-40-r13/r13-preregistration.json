@@ -1,0 +1,52 @@
+{
+ "schema": "ugrp.beamact5.r13_preregistration.v1",
+ "written_before_run_utc": "2026-10-18T02:55:00Z",
+ "author": "beamact5 worker (DSH)",
+ "approved_by": "Lead (align 단계 보정 즉시 실행 지시)",
+ "r12_stage2_result": {
+  "worlds": {
+   "6": "PASS 54.7",
+   "10": "PASS 38.6",
+   "20": "PASS 35.8",
+   "27": "FAIL 26.8 align 9.1 s, relooks 3, no_visible_error_progress_3s",
+   "37": "FAIL 29.6"
+  }
+ },
+ "diagnosis": "the adaptive breakaway in r12/r11b detected \"no motion\" from the teacher pose, but that pose is command odometry: the 40 ms pulses change the odometry every tick while the physical robot does not move, so the boost never fired. r10diag had recorded the exact stall signature: the visible alignment errors stayed at x=0.0135 m for many consecutive ticks.",
+ "r13_change": {
+  "mode": "search26_align_pulse (implementation updated; default off; same r12 profile)",
+  "rule": "issue the full-period breakaway pulse only when the visible error on the active axis has not changed by more than 1e-4 m for three consecutive ticks; otherwise keep the nominal 40 ms pulse."
+ },
+ "stack": {
+  "root": "05046e9d245e46b4ee3d1c43308f7258a9fa41c5",
+  "adapter": "d354468a303e1ebc961e58deedd35d05bed40098",
+  "teacher": "fe6858eca7fa7b2ba6fb518c54f18a071995d5b4",
+  "cases_r13_sha256": "3d4e065db0299c0efa4c91676f537ac9b0e130773e598dfc5767d97a34ffdc63",
+  "plan_sha256": "f1a50e8c833c1da9113bdf8cff3844913380e3c821b15c072c0a23c0f54f5148"
+ },
+ "runs": {
+  "stage2": {
+   "indices": [
+    6,
+    10,
+    20,
+    27,
+    37
+   ],
+   "out": "/home/ugrp/ugrp-sim/runs/beamact5/validation-r13-5",
+   "pass_condition": "6/10/20/27 PASS"
+  },
+  "stage3": {
+   "indices": "0-14,16-39",
+   "out": "/home/ugrp/ugrp-sim/runs/beamact5/gate39-r13-run",
+   "criterion": "38 of 39 executed succeed"
+  }
+ },
+ "not_claimed": [
+  "no gate until stage2 passes",
+  "no pooling",
+  "world15 excluded/unverified",
+  "37 structural label from r1/r2",
+  "no margin/cap change"
+ ]
+}
