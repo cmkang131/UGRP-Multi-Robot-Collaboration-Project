@@ -4,8 +4,16 @@
  "stage": "A_unloaded_fix3",
  "flow": "self_map",
  "title": "Cross-room carry Stage A-fix3: measured door-gap acceptance, own-RGB zone-edge declaration check, alignment kept",
- "frozen_at": "PENDING_FREEZE_COMMIT",
- "independent_from": ["Stage A", "Stage B", "crossroom-stageA-fix (v1)", "crossroom-stageA-fix2 (v2)", "visgoal gate r4/B/C", "egonav gate-09", "ACT15/16a/18"],
+ "frozen_at": "2026-10-18T09:58:42Z",
+ "independent_from": [
+  "Stage A",
+  "Stage B",
+  "crossroom-stageA-fix (v1)",
+  "crossroom-stageA-fix2 (v2)",
+  "visgoal gate r4/B/C",
+  "egonav gate-09",
+  "ACT15/16a/18"
+ ],
  "policy": {
   "base": "visgoal candidate C build c390105c2 (vendored byte copy)",
   "overrides": "vgs_fix.py + paint_area_filter.py (v2 filter); vendored bytes unchanged",
@@ -31,15 +39,39 @@
  },
  "destination": {
   "zone": "B",
-  "rectangle_eval_only": [4.30, 4.90, -2.80, -1.40],
-  "door": {"center_m": [2.20, 0.05], "width_m": 0.50, "opening_y_eval_only": [-0.20, 0.30]}
+  "rectangle_eval_only": [
+   4.3,
+   4.9,
+   -2.8,
+   -1.4
+  ],
+  "door": {
+   "center_m": [
+    2.2,
+    0.05
+   ],
+   "width_m": 0.5,
+   "opening_y_eval_only": [
+    -0.2,
+    0.3
+   ]
+  }
  },
  "starts": "experiments/2026-10-18-crossroom-carry/setups.json#16",
  "n_starts": 16,
  "cap_sim_s": 180,
  "nworld": 16,
  "funnel_stages": {
-  "A": ["requested_n16", "input_audit_zero", "start_valid", "door_crossed", "post_cross_colour_seen", "post_cross_found", "arrived_declared", "gt_inside"]
+  "A": [
+   "requested_n16",
+   "input_audit_zero",
+   "start_valid",
+   "door_crossed",
+   "post_cross_colour_seen",
+   "post_cross_found",
+   "arrived_declared",
+   "gt_inside"
+  ]
  },
  "prior_results": {
   "A": "1/16 GT door, 9/16 false gap claims, declared 8/16 (r4 arrival), found 4/16 (3 beam false)",
@@ -53,15 +85,51 @@
    "calibration_from_recorded_stage_A_gap_events": {
     "note": "wall points recomputed offline from the recorded frames and trace servo poses; no gate outcome used",
     "events": [
-     {"ep": 0, "front_cone_points": 0, "jamb": false},
-     {"ep": 3, "front_cone_points": 418, "jamb": false},
-     {"ep": 4, "front_cone_points": 0, "jamb": false},
-     {"ep": 6, "front_cone_points": 0, "jamb": false},
-     {"ep": 8, "front_cone_points": 0, "jamb": false},
-     {"ep": 10, "front_cone_points": 23, "jamb": false},
-     {"ep": 12, "front_cone_points": 0, "jamb": false},
-     {"ep": 14, "front_cone_points": 377, "jamb": false},
-     {"ep": 15, "front_cone_points": 0, "jamb": false}
+     {
+      "ep": 0,
+      "front_cone_points": 0,
+      "jamb": false
+     },
+     {
+      "ep": 3,
+      "front_cone_points": 418,
+      "jamb": false
+     },
+     {
+      "ep": 4,
+      "front_cone_points": 0,
+      "jamb": false
+     },
+     {
+      "ep": 6,
+      "front_cone_points": 0,
+      "jamb": false
+     },
+     {
+      "ep": 8,
+      "front_cone_points": 0,
+      "jamb": false
+     },
+     {
+      "ep": 10,
+      "front_cone_points": 23,
+      "jamb": false
+     },
+     {
+      "ep": 12,
+      "front_cone_points": 0,
+      "jamb": false
+     },
+     {
+      "ep": 14,
+      "front_cone_points": 377,
+      "jamb": false
+     },
+     {
+      "ep": 15,
+      "front_cone_points": 0,
+      "jamb": false
+     }
     ],
     "conclusion": "all 9 recorded gap claims are rejected by this rule (dense front cone on e03/e10/e14; no jamb on the rest), while the authored doorway keeps the ahead cone empty and shows the far jamb"
    }
@@ -100,7 +168,26 @@
   "fix_v2": "/home/ugrp/ugrp-sim/runs/crossroom-stageA-fix2/rejection_table.json",
   "fix_v3": "/home/ugrp/ugrp-sim/runs/crossroom-stageA-fix3/rejection_table.json"
  },
- "no_pooling": ["crossroom-stageA", "crossroom-stageB", "crossroom-stageA-fix", "crossroom-stageA-fix2", "visgoal-gate-r4", "visgoal-gate-r4-mirror", "visgoal-gate-r4-lawnmower", "egonav-gate-n16-09", "act15", "act16a", "act18"],
+ "no_pooling": [
+  "crossroom-stageA",
+  "crossroom-stageB",
+  "crossroom-stageA-fix",
+  "crossroom-stageA-fix2",
+  "visgoal-gate-r4",
+  "visgoal-gate-r4-mirror",
+  "visgoal-gate-r4-lawnmower",
+  "egonav-gate-n16-09",
+  "act15",
+  "act16a",
+  "act18"
+ ],
  "expected_wall": "about 2.5-3.0 h for 16 x 180 Sim s (v2: 8732.72 s)",
- "dsh": "Produced with DeepSeek Harness. https://github.com/deepseek-ai/deepseek-harness"
+ "dsh": "Produced with DeepSeek Harness. https://github.com/deepseek-ai/deepseek-harness",
+ "preflight": {
+  "run": "/home/ugrp/ugrp-sim/runs/crossroom-stageA-fix3-preflight",
+  "status": "PREFLIGHT_DONE (2 starts, 60 Sim s, nworld=2)",
+  "result": "cap_end 2/2, input audit 2/2 passed, no HOST_ERROR, no PINNED_INPUT_CHANGED",
+  "v3_telemetry": "gap_v3 active (ep0 45 claims / 1 confirmed / 44 rejected; ep1 20 rejected); zone_edge_check active with 0 retracts within 60 s; paint filter v2 active; contact recorder no errors",
+  "note": "the v3 toggles were active in the preflight; the gate itself is the measurement."
+ }
 }
