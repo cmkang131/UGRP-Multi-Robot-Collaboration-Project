@@ -215,7 +215,9 @@ def recount_episode(ep_dir: Path):
                           if ep.get('collision_events') is not None
                           else 'not_measured'),
         carry_loaded=bool(ep.get('carry_loaded')),
-        fix_stage=(ep.get('crossroom_stage') == 'A_unloaded_fix'),
+        fix_stage=(ep.get('crossroom_stage') in ('A_unloaded_fix',
+                                                  'A_unloaded_fix2')),
+        fix_stage_v2=(ep.get('crossroom_stage') == 'A_unloaded_fix2'),
         fix_summary=ep.get('fix_summary'),
         paint_filter_counts=ep.get('paint_filter_counts'),
         contact_summary=ep.get('contact_summary'),
@@ -285,6 +287,7 @@ def main() -> int:
     rows = [recount_episode(d) for d in dirs]
     carry_stage = bool(rows) and rows[0]['carry_loaded']
     fix_stage = bool(rows) and any(r['fix_stage'] for r in rows)
+    fix_stage_v2 = bool(rows) and any(r.get('fix_stage_v2') for r in rows)
     n = len(rows)
     ep_summary = {e['episode']: e for e in summary.get('episodes', [])}
     mismatches = []
@@ -327,7 +330,8 @@ def main() -> int:
     else:
         first30_source = 'progress.json t=30'
     stage_label = ('B_loaded' if carry_stage
-                   else 'A_unloaded_fix' if fix_stage else 'A_unloaded')
+                   else ('A_unloaded_fix2' if fix_stage_v2
+                         else 'A_unloaded_fix' if fix_stage else 'A_unloaded'))
     out = dict(
         schema='ugrp.crossroom_carry.recount.v1',
         stage=stage_label,
@@ -350,6 +354,7 @@ def main() -> int:
         cargo_in_zone_final_n=sum(
             1 for r in rows if r['cargo_in_zone_final_gt'] is True),
         fix_stage=fix_stage,
+        fix_stage_v2=fix_stage_v2,
         gap_claim_false_n=sum(1 for r in rows
                               if r['skill_claimed_gap'] and not r['door_crossed']),
         gap_claims_with_gt_crossing_n=sum(
