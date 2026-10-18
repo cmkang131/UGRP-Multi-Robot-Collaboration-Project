@@ -1,0 +1,28 @@
+{
+ "schema": "ugrp.beamact5.align_diag_preregistration.v1",
+ "written_before_run_utc": "2026-10-18T01:35:00Z",
+ "author": "beamact5 worker (DSH)",
+ "approved_by": "Lead (align 단계 보정 즉시 실행 지시)",
+ "scope": "r10diag: one-world (case 27) diagnostic run with the r8 profile (wide_rescue) plus alignment diagnostic logging. Behavior/commands are unchanged; the run only records align errors, merit, visibility, stance and pick-cloud collision reason. No success/gate claim, not pooled.",
+ "why": "r8/r9 case 27 reached align then held with zero wheel commands and failed alignment_no_progress after 3 relooks; the log must distinguish stale-memory pick-cloud collision from missing visible alignment error.",
+ "stack": {
+  "root": "d8b8eee38a97e33cdd32ecdc9513433671234ee1",
+  "adapter": "4733ebd75a4bb358005469de4ffca6f7fd3631a4",
+  "teacher": "a4a285cdc2deb4f093d1c52eebf1da50865840eb",
+  "cases_sha256": "de1dc17ce233bfaf89905c7d026ec735c0db00b94778c6c09a718d428ec3f98b",
+  "plan_sha256": "f1a50e8c833c1da9113bdf8cff3844913380e3c821b15c072c0a23c0f54f5148"
+ },
+ "run": {
+  "indices": [
+   27
+  ],
+  "out": "/home/ugrp/ugrp-sim/runs/beamact5/validation-r10diag-27",
+  "cap_s": 60
+ },
+ "not_claimed": [
+  "diagnostic only",
+  "no success claim",
+  "no gate result",
+  "not pooled"
+ ]
+}
