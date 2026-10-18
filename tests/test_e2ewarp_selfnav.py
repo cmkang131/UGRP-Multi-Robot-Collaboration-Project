@@ -24,8 +24,26 @@ def constant_detector(detections):
     return lambda fr: detections
 
 
-def zone_detection(range_m=2.0, bearing_deg=0.0, bottom_norm=0.3):
-    return [{'kind': 'zone_B', 'range_m': range_m, 'bearing_deg': bearing_deg, 'bottom_norm': bottom_norm}]
+def zone_detection(range_m=2.0, bearing_deg=0.0, bottom_norm=0.3, **patch):
+    """Detection with measured range plus plausible-patch geometry."""
+    det = {'kind': 'zone_B', 'range_m': range_m, 'bearing_deg': bearing_deg, 'bottom_norm': bottom_norm}
+    det.update(patch_geometry(**patch))
+    return [det]
+
+
+def patch_geometry(**overrides):
+    """Largest-component geometry of a plausible zone patch (frame fractions)."""
+    value = dict(width_norm=0.60, height_norm=0.20, area_norm=0.10, solidity=0.85,
+                 spans_center_x=True, touches_top=False)
+    value.update(overrides)
+    return value
+
+
+def appearance_detection(bottom_norm=0.3, bearing_deg=0.0, **patch):
+    """Appearance-only detection: no range_m, so only the bottom band can arrive."""
+    det = {'kind': 'zone_B', 'bearing_deg': bearing_deg, 'bottom_norm': bottom_norm}
+    det.update(patch_geometry(**patch))
+    return [det]
 
 
 def test_default_off_fails_closed():
@@ -131,16 +149,119 @@ def test_contract_scenario_is_two_robot_without_static_map():
 def test_gpu_calib_zone_detector_accepts_zone_and_rejects_bright_floor():
     import numpy as np
     det = sn.GpuCalibZoneDetector()
+    assert sn.GPU_CALIB_V1['hue_cv'] == (110.0, 114.0)
+    assert 'opencv' in sn.GPU_CALIB_V1['units']
     img = np.zeros((48, 64, 3), dtype=np.uint8)  # black
-    # zone paint: hue 112 -> RGB approx (0,0,153) with S=255, V=153/255 -> V 60 fits 30..110
-    img[20:, 20:44] = (8, 60, 0)  # rgb->HSV hue 112 deg, V=60, S=255 (gpu_calib_v1 band)
+    # Measured zone-B median in OpenCV units: H 112, S ~202, V ~85.
+    # RGB (18, 36, 85) -> OpenCV H 112, S 201, V 85 (degrees 224, NOT 112).
+    img[20:, 20:44] = (18, 36, 85)
     out = det(img)
     assert len(out) == 1 and out[0]['kind'] == 'zone_B'
     assert out[0]['bottom_norm'] >= 0.98 and out[0]['pixels'] >= 600
-    # bright pickup-room floor (V~135) must be rejected by gpu_calib_v1 ceiling
-    floor = np.zeros((48, 64, 3), dtype=np.uint8)
-    floor[:, :] = (0, 0, 135)
-    assert det(floor) == []
+    assert out[0]['hue_units'] == 'opencv_h_0_180_sv_0_255'
+    assert out[0]['solidity'] == 1.0 and out[0]['spans_center_x'] is True
+    # Bright pickup-room floor (OpenCV H 120, V~135) must be rejected by the
+    # V ceiling, and a bright green block (degrees 112, OpenCV 56) by hue.
+    bright_floor = np.zeros((48, 64, 3), dtype=np.uint8)
+    bright_floor[:, :] = (0, 0, 135)
+    assert det(bright_floor) == []
+    green_degrees112 = np.zeros((48, 64, 3), dtype=np.uint8)
+    green_degrees112[10:, 10:40] = (8, 60, 0)  # RGB hue 112 DEGREES = OpenCV 56
+    assert det(green_degrees112) == []
+
+
+def test_gpu_calib_zone_detector_classifies_by_largest_component():
+    import numpy as np
+    det = sn.GpuCalibZoneDetector()
+    img = np.zeros((80, 80, 3), dtype=np.uint8)
+    img[5:25, 5:25] = (18, 36, 85)     # 400 px
+    img[50:70, 50:70] = (18, 36, 85)   # 400 px, disconnected
+    mask = np.zeros((80, 80), dtype=bool)
+    mask[5:25, 5:25] = True
+    mask[50:70, 50:70] = True
+    comp = sn.largest_component(mask)
+    assert int(mask.sum()) == 800 and comp['area'] == 400  # total >= 600, largest < 600
+    assert det(img) == []  # the old mask.sum() classification would have fired
+
+
+def test_gpu_calib_detector_floor_only_frame_produces_zero_detections():
+    import numpy as np
+    from PIL import Image
+    path = ROOT / 'experiments/2026-10-18-nav-gate-1/raw/r1-tick5.jpg'
+    assert path.is_file()
+    det = sn.GpuCalibZoneDetector()
+    assert det(path.read_bytes()) == []
+    # Regression evidence: the total mask alone is >= min_pixels on this real
+    # floor frame, but the largest component is far below it.  This is exactly
+    # the fail-open path the component rule replaces (measured 1583 vs 381 px).
+    rgb = np.asarray(Image.open(path).convert('RGB'))
+    h_deg, s, v = sn.rgb_to_hsv(rgb)
+    h_cv = sn.hue_degrees_to_opencv(h_deg)
+    mask = ((h_cv >= 110) & (h_cv <= 114) & (s >= 100) & (v >= 30) & (v <= 110))
+    assert int(mask.sum()) >= sn.GPU_CALIB_V1['min_pixels']
+    assert sn.largest_component(mask)['area'] < sn.GPU_CALIB_V1['min_pixels']
+
+
+def test_gpu_calib_detector_rejects_measured_floor_colour_fill():
+    import numpy as np
+    # Measured pickup-overlay floor median: OpenCV H 108, S 212, V 90.
+    # RGB (15, 45, 90) -> OpenCV H 108, S 212, V 90.
+    img = np.zeros((48, 64, 3), dtype=np.uint8)
+    img[:, :] = (15, 45, 90)
+    assert sn.GpuCalibZoneDetector()(img) == []
+
+
+def test_arrival_guard_rejects_bottom_fill_floor_detection():
+    # Largest connected component of the real floor frame when the band is
+    # widened to 108-116 (the only way the pickup floor becomes one blob):
+    # width .848, height .677, area .341, solidity .594, bottom .846.  Force the
+    # bottom to the frame edge and it must still not arrive.
+    floor_fill = [dict(kind='zone_B', bearing_deg=0.0, bottom_norm=1.0,
+                       width_norm=0.8484, height_norm=0.6771, area_norm=0.3415,
+                       solidity=0.5945, spans_center_x=True, touches_top=False)]
+    nav = sn.navigation_factory('r1', {}, option=sn.OPTION,
+                                detector=constant_detector(floor_fill), odometry=odometry())
+    rep = nav.observe(frame(0.0))
+    assert rep['destination_arrived'] is False
+    assert rep['drive_reason'] != 'arrived'
+    # A floor fill that also reaches the top of the frame is rejected harder.
+    full_fill = [dict(kind='zone_B', bearing_deg=0.0, bottom_norm=1.0,
+                      width_norm=0.95, height_norm=0.83, area_norm=0.42,
+                      solidity=0.59, spans_center_x=True, touches_top=False)]
+    nav = sn.navigation_factory('r1', {}, option=sn.OPTION,
+                                detector=constant_detector(full_fill), odometry=odometry())
+    assert nav.observe(frame(0.0))['destination_arrived'] is False
+    # A 3-px JPEG edge strip (the real floor frame's largest component) is not
+    # a patch either, even with a high bottom band.
+    strip = [dict(kind='zone_B', bearing_deg=0.0, bottom_norm=0.999,
+                  width_norm=0.20, height_norm=0.006, area_norm=0.001,
+                  solidity=0.99, spans_center_x=True, touches_top=False)]
+    nav = sn.navigation_factory('r1', {}, option=sn.OPTION,
+                                detector=constant_detector(strip), odometry=odometry())
+    assert nav.observe(frame(0.0))['destination_arrived'] is False
+
+
+def test_arrival_guard_accepts_a_plausible_zone_patch():
+    nav = sn.navigation_factory('r1', {}, option=sn.OPTION,
+                                detector=constant_detector(appearance_detection(bottom_norm=0.99)),
+                                odometry=odometry())
+    rep = nav.observe(frame(0.0))
+    assert rep['destination_arrived'] is True and rep['drive_reason'] == 'arrived'
+
+
+def test_stale_bottom_band_detection_cannot_claim_arrival():
+    near = appearance_detection(bottom_norm=0.99)
+    calls = {'n': 0}
+
+    def once(frame_or_rgb):
+        calls['n'] += 1
+        return near if calls['n'] == 1 else []
+
+    nav = sn.navigation_factory('r1', {}, option=sn.OPTION, detector=once, odometry=odometry())
+    assert nav.observe(frame(0.0))['destination_arrived'] is True
+    rep = nav.observe(frame(10.0))  # no fresh detection; memory retains the old one
+    assert rep['destination_arrived'] is False
+    assert rep['drive_reason'] != 'arrived'
 
 
 def test_own_command_odometry_requires_injected_calibration():
@@ -166,7 +287,7 @@ def test_odometry_shifts_self_centric_memory_opposite_to_motion():
 
 
 def test_arrival_uses_recorded_bottom_band_evidence():
-    det = [{'kind': 'zone_B', 'bearing_deg': 0.0, 'bottom_norm': 0.985, 'range_m': 1.0}]
+    det = zone_detection(range_m=1.0, bottom_norm=0.985)
     nav = sn.navigation_factory('r2', {}, option=sn.OPTION, detector=lambda fr: det)
     assert nav.observe(frame(1.0, robot_id='r2'))['destination_arrived'] is True
 
@@ -235,7 +356,7 @@ def test_missing_odometry_or_destination_fails_closed():
 
 
 def test_appearance_only_destination_drives_and_bottom_band_stops():
-    det = [{'kind': 'zone_B', 'bearing_deg': 0.0, 'bottom_norm': 0.3}]
+    det = appearance_detection(bottom_norm=0.3)
     nav = sn.navigation_factory('r1', {}, option=sn.OPTION, detector=constant_detector(det),
                                 odometry=odometry())
     rep = nav.observe(frame(0.0))
@@ -244,7 +365,7 @@ def test_appearance_only_destination_drives_and_bottom_band_stops():
     assert rep['destination_arrived'] is False
     assert any(w != 0.0 for w in nav.command(0.0)['wheels'])
 
-    near = [{'kind': 'zone_B', 'bearing_deg': 0.0, 'bottom_norm': 0.99}]
+    near = appearance_detection(bottom_norm=0.99)
     nav = sn.navigation_factory('r1', {}, option=sn.OPTION, detector=constant_detector(near),
                                 odometry=odometry())
     assert nav.observe(frame(1.0))['destination_arrived'] is True
