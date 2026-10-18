@@ -27,7 +27,7 @@ def make_camera(m):
                          translation_m=(0.0, 0.0, 0.20))
 
 
-def paint_floor_rect(m, camera, rect):
+def paint_floor_rect(m, camera, rect, hue=112, sat=200, val=200):
     """Render a blue floor rectangle (robot frame x0,x1,y0,y1) into an RGB frame."""
     rays = camera.ray_grid()
     origin = camera.origin()
@@ -41,9 +41,9 @@ def paint_floor_rect(m, camera, rect):
     y = origin[1] + scale * rays[..., 1]
     inside = ((scale > 0) & (x >= rect[0]) & (x <= rect[1])
               & (y >= rect[2]) & (y <= rect[3]))
-    hsv[inside, 0] = 112
-    hsv[inside, 1] = 200
-    hsv[inside, 2] = 200
+    hsv[inside, 0] = hue
+    hsv[inside, 1] = sat
+    hsv[inside, 2] = val
     bgr = importlib.import_module('cv2').cvtColor(hsv, importlib.import_module('cv2').COLOR_HSV2BGR)
     rgb = importlib.import_module('cv2').cvtColor(bgr, importlib.import_module('cv2').COLOR_BGR2RGB)
     return rgb, inside
@@ -134,3 +134,37 @@ def test_large_floor_component_rejected_by_extent_cap():
     det = m.detect(rgb, camera, enabled=True)
     assert det.status == 'unknown'
     assert det.reason in ('destination_extent_not_zone', 'destination_too_far')
+
+
+def test_gpu_profile_separates_dark_zone_from_bright_floor_blue():
+    m = load_module()
+    camera = make_camera(m)
+    # Calibrated GPU zone-B paint is darker than the bright pickup-room floor
+    # (see zone-appearance-calib.json: zone V~77-86, pickup floor V~135).
+    zone_rgb, _ = paint_floor_rect(m, camera, (1.2, 1.8, -0.3, 0.3),
+                                   hue=112, sat=190, val=85)
+    floor_rgb, _ = paint_floor_rect(m, camera, (1.2, 1.8, -0.3, 0.3),
+                                    hue=110, sat=205, val=135)
+    zone = m.detect(zone_rgb, camera, enabled=True,
+                    appearance='gpu_calib_v1')
+    floor_cpu = m.detect(floor_rgb, camera, enabled=True,
+                         appearance='cpu_v1')
+    floor_gpu = m.detect(floor_rgb, camera, enabled=True,
+                         appearance='gpu_calib_v1')
+    assert zone.status == 'observed', zone.reason
+    assert floor_cpu.status == 'observed'      # CPU profile accepts it
+    assert floor_gpu.status == 'unknown'       # GPU profile rejects it
+    assert floor_gpu.reason in ('destination_colour_absent',
+                                'destination_component_small')
+
+
+def test_unknown_appearance_profile_is_rejected():
+    m = load_module()
+    camera = make_camera(m)
+    rgb, _ = paint_floor_rect(m, camera, (1.2, 1.8, -0.3, 0.3))
+    try:
+        m.detect(rgb, camera, enabled=True, appearance='nope')
+    except ValueError as exc:
+        assert 'UNKNOWN_APPEARANCE_PROFILE' in str(exc)
+    else:
+        raise AssertionError('unknown profile must raise')

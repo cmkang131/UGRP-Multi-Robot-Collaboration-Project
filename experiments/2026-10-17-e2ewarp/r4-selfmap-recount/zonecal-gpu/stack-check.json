@@ -1,0 +1,20 @@
+{
+  "schema": "ugrp.current_stack.check.v1",
+  "ok": false,
+  "current_compliant": false,
+  "checker_sha256": "bdef5ad98b8e5ee8a21126f75430a58193d5f44f11f23fa60fd9ca487511eb3b",
+  "scope": "declared manifest fields; not independent runtime/physics verification",
+  "inputs": [
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/e2ewarp-r4-run/queue.json",
+      "sha256": "076e917c5464c9f81be5b83e8713f489a923d7ebbb440db98a8e657df86506aa"
+    }
+  ],
+  "rows": [],
+  "stack": {
+    "path": "/home/ugrp/ugrp-sim/src/e2ewarp-r4-src/configs/current_stack.json",
+    "sha256": "f7a2b2148d96e3d80ccedd6fa5a0ae171236e6f6635febb52f9fd255a4eddd9b"
+  },
+  "error": "$: explicit consistent flow required (['teacher_gate', 'record', 'train', 'act_eval', 'beam_pair', 'release', 'self_map', 'e2e_llm', 'replay'])",
+  "admission": "blocked"
+}

@@ -69,9 +69,12 @@ elapsed-cadence 위반 0, old `tick%10` 게이트가 놓쳤을 삽입 48이다. 
 
 같은 R4 프레임으로 pure-RGB zone/arrival detector 재생 검증도 했다: GPU
 렌더에서는 바닥이 파란색으로 나타나 CPU visgoal 파란색 밴드가 floor를 오인
-(uncapped 180/183, extent cap 후 36/183)하고, R4 smoke에는 zone paint가 보이는
-프레임이 없어 GPU 외관 보정은 아직 불가하다. 상세·재현은
-[`visdet_gpu.md`](visdet_gpu.md) 4절.
+(uncapped 180/183, extent cap 후 36/183)해 GPU 외관 보정이 필요함을 확인했다.
+승인된 보정 전용 캡처(MJWarp native render 36프레임, "not research result")로
+`gpu_calib_v1` 프로필(hue 110-114, S≥100, 30≤V≤110, extent≤1.75m)을 fit해
+zone-B positives 33/33 유지·pickup FP 3→0·기록 R4 floor FP 36/180→0/180을
+확인했다. 반영은 [`r4-selfmap-recount/`](r4-selfmap-recount/README.md)와
+[`visdet_gpu.md`](visdet_gpu.md) 4-5절.
 
 ## 자기 지도 관문에서 발견한 결함
 
