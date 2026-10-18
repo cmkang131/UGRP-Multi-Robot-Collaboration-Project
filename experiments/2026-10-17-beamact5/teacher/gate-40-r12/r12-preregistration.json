@@ -1,0 +1,55 @@
+{
+ "schema": "ugrp.beamact5.r12_preregistration.v1",
+ "written_before_run_utc": "2026-10-18T02:36:00Z",
+ "author": "beamact5 worker (DSH)",
+ "approved_by": "Lead (align 단계 보정 즉시 실행 지시)",
+ "r11b_stage2_result": {
+  "run": "/home/ugrp/ugrp-sim/runs/beamact5/validation-r11b-5",
+  "success_n": 3,
+  "cap_end": 0,
+  "worlds": {
+   "6": "PASS 54.7",
+   "10": "PASS 38.6",
+   "20": "PASS 35.8",
+   "27": "FAIL 20.0 approach_blocked_handoff (did not reach align)",
+   "37": "FAIL 29.6"
+  }
+ },
+ "diagnosis": "r11b fixed the align-phase pulse but case 27 failed earlier this batch: the approach stalled on stale-cargo margins and the blocked deadline handed off at 20.0 s before align. In r11 stage2 the same world reached align but oscillated. Both pieces are needed: approach refresh/frozen-plan windows (from r5c/r7) plus the align breakaway pulse.",
+ "r12_change": {
+  "mode": "combine search26_wide_rescue + search26_align_pulse + search26_reobserve_refresh_open + search26_commit_plan (all default off; same teacher 9b56c200, profile-only new candidate)",
+  "reference": "r9 showed 6/10/20 PASS with the refresh+commit combination; r11b showed 6/10/20 PASS with the align pulse."
+ },
+ "stack": {
+  "root": "a6cc167274df2fd839583fd2a2d13278797af39e",
+  "adapter": "3644d54eadc7674d19af8105363bfa762648a46e",
+  "teacher": "9b56c2000a6a70db00fec09b591165bbc62c08f3",
+  "cases_r12_sha256": "f26b4f57951cf533d49b67bd243344ea946dc1645f207b85b9de532d5b8f732f",
+  "plan_sha256": "f1a50e8c833c1da9113bdf8cff3844913380e3c821b15c072c0a23c0f54f5148"
+ },
+ "runs": {
+  "stage2": {
+   "indices": [
+    6,
+    10,
+    20,
+    27,
+    37
+   ],
+   "out": "/home/ugrp/ugrp-sim/runs/beamact5/validation-r12-5",
+   "pass_condition": "6/10/20/27 PASS"
+  },
+  "stage3": {
+   "indices": "0-14,16-39",
+   "out": "/home/ugrp/ugrp-sim/runs/beamact5/gate39-r12-run",
+   "criterion": "38 of 39 executed succeed (15 excluded expected FAIL; 37 expected FAIL)"
+  }
+ },
+ "not_claimed": [
+  "no gate until stage2 passes",
+  "no pooling",
+  "world15 excluded/unverified",
+  "37 structural label from r1/r2",
+  "no margin/cap change"
+ ]
+}
