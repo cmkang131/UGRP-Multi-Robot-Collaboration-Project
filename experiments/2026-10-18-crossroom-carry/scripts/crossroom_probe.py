@@ -275,10 +275,13 @@ def run(a):
     # Cross-room flow: Stage A (unloaded) and Stage B (loaded, single red box)
     # are separate conditions; each has its own queue and is never pooled.
     stage = str(q.get('stage', a.stage or 'A_unloaded'))
-    if stage not in ('A_unloaded', 'B_loaded', 'A_unloaded_fix',
+    if stage not in ('A_unloaded', 'B_loaded', 'B_loaded_mask_off',
+                      'B_loaded_mask_on', 'A_unloaded_fix',
                       'A_unloaded_fix2', 'A_unloaded_fix3'):
         raise ValueError('CROSSROOM_STAGE_UNKNOWN')
-    carry_loaded = stage == 'B_loaded'
+    carry_loaded = stage in ('B_loaded', 'B_loaded_mask_off',
+                             'B_loaded_mask_on')
+    carry_mask_on = stage == 'B_loaded_mask_on'
     fix_stage = stage in ('A_unloaded_fix', 'A_unloaded_fix2',
                           'A_unloaded_fix3')
     fix_stage_v2 = stage in ('A_unloaded_fix2', 'A_unloaded_fix3')
@@ -307,6 +310,10 @@ def run(a):
     # Stage B carries the box from t=0: the gripper command is closed while the
     # control tape runs. Stage A keeps the calibrated open gripper pose.
     gripper_pwm = int(q.get('gripper_pwm_closed', 1500)) if carry_loaded else 2000
+    if stage in ('B_loaded_mask_off', 'B_loaded_mask_on'):
+        want = 'off' if stage.endswith('_off') else 'on'
+        if str(q.get('toggles', {}).get('crossroom_carry_mask_v1')) != want:
+            raise ValueError('CARRY_MASK_TOGGLE_MISMATCH')
     zone_x0, zone_x1, zone_y0, zone_y1 = 4.30, 4.90, -2.80, -1.40
 
     def scene_plan(plan):
@@ -480,6 +487,7 @@ def run(a):
                                        'arrival_aim_inset_m': (ARRIVAL_AIM_INSET_M
                                                                if arrival_aim_on else 0.),
                                        'crossroom_stage': stage,
+                                       'carry_mask_on': carry_mask_on,
                                        'destination_zone': target_zone,
                                        'fix_stage': fix_stage,
                                        'fix_stage_v2': fix_stage_v2,
@@ -670,6 +678,8 @@ def run(a):
                     rotation_gt=0., last_yaw=None, arrived_gt=False,
                     arrive_pose=None, inside_at_declared=None,
                     obstacle_cache=[],
+                    obstacle_ticks=0, wall_zero_ticks=0, wall_points_total=0,
+                    box_share_sum=0.0, box_share_max=0.0, box_share_n=0,
                     cargo=(carry_mod.CarryStateOwn() if carry_loaded else None),
                     cargo_at_start=None, cargo_at_cross=None,
                     cargo_at_arrival=None, cargo_state_counts={},
@@ -718,6 +728,11 @@ def run(a):
                         bgr = cv2.imread(str(file))
                         if carry_loaded:
                             s['cargo_own'] = s['cargo'].update(t, bgr, gripper_pwm)
+                            px = int(s['cargo_own'].get('pixels') or 0)
+                            share = px / float(640 * 480)
+                            s['box_share_sum'] += share
+                            s['box_share_n'] += 1
+                            s['box_share_max'] = max(s['box_share_max'], share)
                             if tick == 0:
                                 s['cargo_at_start'] = s['cargo_own']['state']
                             st_count = s['cargo_state_counts']
@@ -740,11 +755,20 @@ def run(a):
                         delta = np.asarray(prior['delta'])
                         cov = np.asarray(prior['covariance'])
                         if tick % 3 == 0:
-                            s['obstacle_cache'], _ = obstacle_detections(bgr, servo)
+                            s['obstacle_cache'], _ = obstacle_detections(
+                                bgr, servo,
+                                **({'held_kind': 'red',
+                                    'grasp_pwm': gripper_pwm}
+                                   if carry_mask_on else {}))
                         paint = detect_paint(
                             bgr, servo, hue_band,
                             saturation_min=s['skill'].options.paint_saturation_min)
                         walls = wall_points(bgr, servo, calibration)
+                        s['wall_points_total'] += len(walls)
+                        if not walls:
+                            s['wall_zero_ticks'] += 1
+                        if s['obstacle_cache']:
+                            s['obstacle_ticks'] += 1
                         if tick == 0:
                             pm = (paint.get('mask') if paint.get('mask') is not None
                                   else np.zeros(bgr.shape[:2], np.uint8))
@@ -860,6 +884,11 @@ def run(a):
                             pose=[float(qp[adr]), float(qp[adr + 1]), float(yaw)],
                             inside_zone_B=inside,
                             box_pose_eval_only=box_pose,
+                            obstacles_n=len(s['obstacle_cache']),
+                            walls_n=len(walls),
+                            box_occlusion_share=round(s['box_share_sum'] /
+                                                      s['box_share_n'], 4)
+                            if s['box_share_n'] else None,
                             ncon_eval_only=s.get('ncon_last'),
                             nacon_global_eval_only=s.get('nacon_global_last'),
                             start_paint_pixels=s['start_visibility']))
@@ -990,6 +1019,7 @@ def run(a):
                     top_camera_frames=0, held_world_reads=0, initial_prior='none',
                     noslip_iterations=int(m.opt.noslip_iterations),
                     worlds_per_batch=G, crossroom_stage=stage,
+                    carry_mask_on=carry_mask_on,
                     destination_zone=target_zone,
                     input_audit=s['audit'].summary(),
                     carry_loaded=carry_loaded,
@@ -1022,6 +1052,13 @@ def run(a):
                                  if hasattr(s['skill'], 'fix_summary') else None),
                     contact_summary=(contact_rec.summary()
                                      if contact_rec is not None else None),
+                    obstacle_detection_ticks=s.get('obstacle_ticks'),
+                    wall_zero_ticks=s.get('wall_zero_ticks'),
+                    wall_points_total=s.get('wall_points_total'),
+                    box_occlusion_share_mean=(round(s['box_share_sum'] /
+                                                     s['box_share_n'], 5)
+                                              if s.get('box_share_n') else None),
+                    box_occlusion_share_max=(round(s.get('box_share_max', 0.0), 5)),
                     contact_record_error=contact_error,
                     paint_filter_counts=s.get('paint_filter_counts'),
                     rejection_table=str(a.output / 'rejection_table.json'))
@@ -1371,7 +1408,8 @@ def run(a):
                           static_map_control=0, spawn_control=0, truth_control=0,
                           top_camera_frames=0, held_world_reads=0, initial_prior='none',
                           noslip_iterations=int(m.opt.noslip_iterations),
-                          crossroom_stage=stage, destination_zone=target_zone,
+                          crossroom_stage=stage, carry_mask_on=carry_mask_on,
+                          destination_zone=target_zone,
                           input_audit=audit.summary(),
                           rejection_table=str(a.output / 'rejection_table.json'))
                 dump(out / 'episode.json', ep)

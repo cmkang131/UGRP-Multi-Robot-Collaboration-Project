@@ -27,6 +27,12 @@ from __future__ import annotations
 
 import argparse
 import json
+import statistics
+
+
+def r2mean(values):
+    vals = [float(v) for v in values if v is not None]
+    return round(sum(vals) / len(vals), 5) if vals else None
 import math
 from pathlib import Path
 
@@ -216,12 +222,22 @@ def recount_episode(ep_dir: Path):
                           else 'not_measured'),
         carry_loaded=bool(ep.get('carry_loaded')),
         fix_stage=(ep.get('crossroom_stage') in ('A_unloaded_fix',
-                                                  'A_unloaded_fix2')),
-        fix_stage_v2=(ep.get('crossroom_stage') == 'A_unloaded_fix2'),
+                                                  'A_unloaded_fix2',
+                                                  'A_unloaded_fix3')),
+        fix_stage_v2=(ep.get('crossroom_stage') in ('A_unloaded_fix2',
+                                                    'A_unloaded_fix3')),
+        fix_stage_v3=(ep.get('crossroom_stage') == 'A_unloaded_fix3'),
         fix_summary=ep.get('fix_summary'),
         paint_filter_counts=ep.get('paint_filter_counts'),
         contact_summary=ep.get('contact_summary'),
         ncon_ticks=(sum(1 for f in labels if f.get('ncon_eval_only'))),
+        obstacle_detection_ticks=(sum(1 for f in labels
+                                      if (f.get('obstacles_n') or 0) > 0)),
+        wall_zero_ticks=(sum(1 for f in labels if f.get('walls_n') == 0)),
+        wall_points_total=(sum(int(f.get('walls_n') or 0) for f in labels)),
+        box_occlusion_share_mean=(r2mean([f.get('box_occlusion_share')
+                                          for f in labels
+                                          if f.get('box_occlusion_share') is not None])),
         cargo_held_at_start=cargo_at_start,
         cargo_held_at_cross=cargo_at_cross,
         cargo_held_at_arrival=cargo_at_arrival,
@@ -288,6 +304,7 @@ def main() -> int:
     carry_stage = bool(rows) and rows[0]['carry_loaded']
     fix_stage = bool(rows) and any(r['fix_stage'] for r in rows)
     fix_stage_v2 = bool(rows) and any(r.get('fix_stage_v2') for r in rows)
+    fix_stage_v3 = bool(rows) and any(r.get('fix_stage_v3') for r in rows)
     n = len(rows)
     ep_summary = {e['episode']: e for e in summary.get('episodes', [])}
     mismatches = []
@@ -329,8 +346,10 @@ def main() -> int:
             first30_source = None
     else:
         first30_source = 'progress.json t=30'
-    stage_label = ('B_loaded' if carry_stage
-                   else ('A_unloaded_fix2' if fix_stage_v2
+    stage_label = (str(rows[0].get('crossroom_stage') or 'B_loaded')
+                   if carry_stage
+                   else ('A_unloaded_fix3' if fix_stage_v3
+                         else 'A_unloaded_fix2' if fix_stage_v2
                          else 'A_unloaded_fix' if fix_stage else 'A_unloaded'))
     out = dict(
         schema='ugrp.crossroom_carry.recount.v1',
@@ -355,6 +374,7 @@ def main() -> int:
             1 for r in rows if r['cargo_in_zone_final_gt'] is True),
         fix_stage=fix_stage,
         fix_stage_v2=fix_stage_v2,
+        fix_stage_v3=fix_stage_v3,
         gap_claim_false_n=sum(1 for r in rows
                               if r['skill_claimed_gap'] and not r['door_crossed']),
         gap_claims_with_gt_crossing_n=sum(
