@@ -17,8 +17,10 @@ Episode construction (setup-only, never a controller input):
   zone B marking is visible through the wide door (0.620 / 0.894 of the paint
   rectangle, setup/eval geometry check
   outputs/e2e18-admin/nav-gate/visibility-check.json). The default spawn rows
-  (-2.25/-0.85/0.55) leave zone B invisible from the two driven rows and the
-  controller would hold forever with ``no_destination``.
+  (-2.25/-0.85/0.55) leave zone B invisible from the two driven rows: there the
+  adapter's bounded SEARCH turns in place (20 sim s) and holds with
+  ``search_timeout`` once the budget is spent, instead of holding immediately
+  with ``no_destination``.
 
 Odometry calibration: ``OwnCommandOdometry`` requires *measured* metres and
 degrees per percent-second. The constants are read from a calibration artifact

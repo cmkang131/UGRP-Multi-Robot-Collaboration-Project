@@ -339,7 +339,7 @@ def test_arrival_evidence_stops_wheels():
         assert cmd['wheels'] == [0.0] * 4 and cmd['duration_s'] == [0.0] * 4, dets
 
 
-def test_missing_odometry_or_destination_fails_closed():
+def test_missing_odometry_or_detector_fails_closed():
     nav = sn.navigation_factory('r1', {}, option=sn.OPTION,
                                 detector=constant_detector(zone_detection()))
     rep = nav.observe(frame(0.0))
@@ -347,12 +347,159 @@ def test_missing_odometry_or_destination_fails_closed():
     cmd = nav.command(0.0)
     assert cmd['wheels'] == [0.0] * 4 and cmd['duration_s'] == [0.0] * 4
 
+    # No own-RGB detector: nothing could ever be acquired, so SEARCH must not
+    # run (this is the pre-search hold, not a search timeout).
+    nav = sn.navigation_factory('r1', {}, option=sn.OPTION, odometry=odometry())
+    rep = nav.observe(frame(0.0))
+    assert rep['ready'] is False and rep['drive_reason'] == 'no_destination'
+    cmd = nav.command(0.0)
+    assert cmd['wheels'] == [0.0] * 4 and cmd['duration_s'] == [0.0] * 4
+
+
+def test_search_rotates_in_place_when_no_destination_is_remembered():
     nav = sn.navigation_factory('r1', {}, option=sn.OPTION, detector=constant_detector([]),
                                 odometry=odometry())
     rep = nav.observe(frame(0.0))
-    assert rep['ready'] is True and rep['drive_reason'] == 'no_destination'
+    assert rep['ready'] is True and rep['destination_arrived'] is False
+    assert rep['drive_reason'] == 'searching' and rep['search_steps'] == 0
     cmd = nav.command(0.0)
-    assert cmd['wheels'] == [0.0] * 4 and cmd['duration_s'] == [0.0] * 4
+    issued_command(cmd)  # inside the own issued-command whitelist
+    # Symmetric in-place turn: left/right wheels in opposite directions at the
+    # calibrated amplitude and the short search pulse (35 % x 75 ms).
+    assert cmd['wheels'][0] < 0.0 < cmd['wheels'][1]
+    assert cmd['wheels'][0] == cmd['wheels'][2] and cmd['wheels'][1] == cmd['wheels'][3]
+    assert all(abs(w) == sn.WHEEL_PCT for w in cmd['wheels'])
+    assert all(dt == pytest.approx(sn.SEARCH_PULSE_DUTY * sn.PULSE_S) for dt in cmd['duration_s'])
+    # The search pulse is shorter than a drive pulse and leaves an inter-command gap.
+    assert sn.SEARCH_PULSE_DUTY * sn.PULSE_S < sn.PULSE_S
+    assert rep['search_elapsed_s'] == 0.0
+    # Still no destination: keep sweeping, never claim arrival.
+    for step in range(1, 4):
+        rep = nav.observe(frame(0.1 * step))
+        assert rep['destination_arrived'] is False and rep['drive_reason'] == 'searching'
+        cmd = nav.command(0.1 * step)
+        assert cmd['wheels'] != [0.0] * 4
+
+
+def test_search_direction_reverses_every_leg():
+    nav = sn.navigation_factory('r1', {}, option=sn.OPTION, detector=constant_detector([]),
+                                odometry=odometry())
+    first = nav.command(0.0)['wheels'][0]
+    for step in range(1, sn.SEARCH_LEG_STEPS):
+        cmd = nav.command(0.1 * step)
+        assert cmd['wheels'][0] == first
+    # Leg boundary: the sweep reverses so the heading cannot wind past one turn.
+    cmd = nav.command(0.1 * sn.SEARCH_LEG_STEPS)
+    assert cmd['wheels'][0] == -first and cmd['wheels'][1] == first
+
+
+def test_search_switches_to_driving_the_moment_the_destination_appears():
+    detections = {'items': []}
+    nav = sn.navigation_factory('r1', {}, option=sn.OPTION,
+                                detector=lambda fr: detections['items'], odometry=odometry())
+    assert nav.observe(frame(0.0))['drive_reason'] == 'searching'
+    assert nav.command(0.0)['wheels'][0] < 0.0
+    detections['items'] = zone_detection(range_m=2.0, bearing_deg=0.0)
+    rep = nav.observe(frame(0.1))
+    assert rep['drive_reason'] == 'driving' and rep['destination_arrived'] is False
+    cmd = nav.command(0.1)
+    assert cmd['wheels'] == [sn.WHEEL_PCT] * 4  # straight ahead, no residual turn
+    assert all(dt == pytest.approx(sn.PULSE_S) for dt in cmd['duration_s'])
+
+
+def test_search_times_out_to_a_hold_after_the_budget():
+    nav = sn.navigation_factory('r1', {}, option=sn.OPTION, detector=constant_detector([]),
+                                odometry=odometry())
+    last = None
+    for step in range(round(sn.SEARCH_BUDGET_S * 10)):
+        last = nav.command(step / 10.0)
+        assert last['wheels'] != [0.0] * 4
+    assert nav._search_elapsed_s(round(sn.SEARCH_BUDGET_S * 10) / 10.0) == pytest.approx(
+        sn.SEARCH_BUDGET_S)
+    timed_out = nav.command(sn.SEARCH_BUDGET_S)
+    assert timed_out['wheels'] == [0.0] * 4 and timed_out['duration_s'] == [0.0] * 4
+    rep = nav.observe(frame(sn.SEARCH_BUDGET_S))
+    assert rep['drive_reason'] == 'search_timeout'
+    assert rep['destination_arrived'] is False
+    assert rep['search_steps'] == round(sn.SEARCH_BUDGET_S * 10)
+    # The timeout is sticky: further commands hold.
+    assert nav.command(sn.SEARCH_BUDGET_S + 0.1)['wheels'] == [0.0] * 4
+    assert nav.command(sn.SEARCH_BUDGET_S + 5.0)['wheels'] == [0.0] * 4
+
+
+def test_search_timeout_does_not_block_a_later_detection():
+    detections = {'items': []}
+    nav = sn.navigation_factory('r1', {}, option=sn.OPTION,
+                                detector=lambda fr: detections['items'], odometry=odometry())
+    for step in range(round(sn.SEARCH_BUDGET_S * 10) + 1):
+        nav.command(step / 10.0)
+    assert nav.command(sn.SEARCH_BUDGET_S)['wheels'] == [0.0] * 4
+    detections['items'] = zone_detection(range_m=2.0, bearing_deg=0.0)
+    rep = nav.observe(frame(sn.SEARCH_BUDGET_S + 0.1))
+    assert rep['drive_reason'] == 'driving'
+    assert any(w != 0.0 for w in nav.command(sn.SEARCH_BUDGET_S + 0.1)['wheels'])
+
+
+def test_search_hard_step_cap_bounds_a_non_monotonic_clock():
+    nav = sn.navigation_factory('r1', {}, option=sn.OPTION, detector=constant_detector([]),
+                                odometry=odometry())
+    for _ in range(sn.SEARCH_MAX_STEPS):
+        nav.command(0.0)  # frozen clock: sim time never reaches the budget
+    timed_out = nav.command(0.0)
+    assert timed_out['wheels'] == [0.0] * 4
+    assert nav._drive_plan(0.0)['reason'] == 'search_timeout'
+
+
+def test_search_sweeps_a_180_deg_zone_into_a_120_deg_camera():
+    """Acquisition geometry: a zone behind the robot enters the camera in budget.
+
+    The camera model is a synthetic 120 deg HFOV and the heading is integrated
+    from the *issued* pulses with the measured gate yaw rate
+    (1.7275 deg per percent-second, experiments/2026-10-18-nav-gate-1).  Both
+    are eval-only assumptions of this pure-python test, never controller inputs.
+    """
+    yaw_deg_per_pct_s = 1.7275488814064257  # measured gate calibration
+    zone_bearing_deg = 180.0  # directly behind the spawn heading
+    state = {'heading_deg': 0.0}
+
+    def fov_detector(fr):
+        bearing = sn.wrap_deg(zone_bearing_deg - state['heading_deg'])
+        if abs(bearing) <= 60.0:  # 120 deg camera HFOV
+            return zone_detection(range_m=2.0, bearing_deg=bearing)
+        return []
+
+    nav = sn.navigation_factory('r1', {}, option=sn.OPTION, detector=fov_detector,
+                                odometry=odometry())
+    acquired_at = None
+    for step in range(round(sn.SEARCH_BUDGET_S * 10)):
+        rep = nav.observe(frame(step / 10.0))
+        if rep['drive_reason'] == 'driving':
+            acquired_at = step / 10.0
+            break
+        assert rep['drive_reason'] == 'searching'
+        cmd = nav.command(step / 10.0)
+        assert cmd['wheels'] != [0.0] * 4
+        # +turn pulse has wheels[0] < 0; the issued row is normalized (0.35 =
+        # 35 %), so convert back to percent-seconds before applying the rate.
+        sign = 1.0 if cmd['wheels'][0] < 0.0 else -1.0
+        state['heading_deg'] = sn.wrap_deg(
+            state['heading_deg'] + sign * 100.0 * abs(cmd['wheels'][0])
+            * cmd['duration_s'][0] * yaw_deg_per_pct_s)
+    assert acquired_at is not None and 0.0 < acquired_at < sn.SEARCH_BUDGET_S
+    assert rep['destination_arrived'] is False
+    # The acquired landmark is followed (rotate toward it), not the blind sweep.
+    follow = nav.command(acquired_at)
+    assert follow['wheels'] != [0.0] * 4
+    assert follow['duration_s'] != [0.0] * 4
+
+
+def test_default_off_never_searches_when_no_destination_is_detected():
+    nav = sn.navigation_factory('r1', {}, detector=constant_detector([]), odometry=odometry())
+    for step in range(3):
+        rep = nav.observe(frame(0.1 * step))
+        assert rep['drive_reason'] == 'option_off' and rep['destination_arrived'] is False
+        cmd = nav.command(0.1 * step)
+        assert cmd['wheels'] == [0.0] * 4 and cmd['duration_s'] == [0.0] * 4
 
 
 def test_appearance_only_destination_drives_and_bottom_band_stops():
