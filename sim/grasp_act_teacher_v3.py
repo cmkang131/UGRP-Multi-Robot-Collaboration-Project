@@ -107,6 +107,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
     def _reset_alignment(self):
         self.align_integral=[0.,0.,0.];self.align_t=None
         self._align_prev_pose=None;self.align_pulse_floor=None
+        self._align_prev_errors=None;self._align_err_stagnant=0
         self.align_active=[False]*3;self.align_sign=[0]*3
         self.align_flips=[0]*3;self.align_best=None;self.align_progress_t=None
 
@@ -217,13 +218,16 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         drive=[0.,0.,0.];drive[axis]=max(lo,min(hi,effort))
         if (self.search15_modes.get('search26_align_pulse','off')!='off'
                 and self.phase=='align' and abs(errors[axis])>inner[axis]):
-            # Issue the full-period breakaway pulse only when the previous
-            # command produced no measured motion; otherwise keep the nominal
-            # short pulse so the robot cannot oscillate around a small error.
-            stuck=(self._align_prev_pose is not None
-                   and math.dist(pose[:2],self._align_prev_pose)<=1e-4)
-            self.align_pulse_floor=.1 if stuck else None
-        self._align_prev_pose=(float(pose[0]),float(pose[1]))
+            # Issue the full-period breakaway pulse only when the visible
+            # alignment error has not changed for three consecutive ticks
+            # (static friction keeps the short pulses from moving the robot);
+            # otherwise keep the nominal short pulse so the robot cannot
+            # oscillate around a small error.
+            stagnant=(self._align_prev_errors is not None
+                      and abs(errors[axis]-self._align_prev_errors[axis])<=1e-4)
+            self._align_err_stagnant=(self._align_err_stagnant+1 if stagnant else 0)
+            self.align_pulse_floor=.1 if self._align_err_stagnant>=3 else None
+        self._align_prev_errors=[float(e) for e in errors]
         if self.search15_modes.get('search26_align_diag','off')!='off' and self.phase=='align':
             self.recovery_log.append({'t':now,'event':'align_cmd_diag','axis':axis,
                 'drive':[float(x) for x in drive],'errors':[float(e) for e in errors],
