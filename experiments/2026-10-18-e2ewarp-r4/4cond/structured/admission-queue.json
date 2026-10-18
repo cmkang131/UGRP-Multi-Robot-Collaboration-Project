@@ -1,0 +1,116 @@
+{
+  "schema": "ugrp.e2ewarp.queue.v1",
+  "execution_bundle_id": "e2e-warp-batch-v446",
+  "flow": "e2e_llm",
+  "source_sha": "718777118be41991156b047faff78621969101bb",
+  "option": "e2e_warp_batch_v1",
+  "enabled": true,
+  "mode": "smoke",
+  "round": 3,
+  "nworld": 2,
+  "condition": "structured",
+  "seed": 601,
+  "sim_budget_s": 30.0,
+  "map_keyframe_admission": "elapsed_sim_v1",
+  "stack_sha256": "f7a2b2148d96e3d80ccedd6fa5a0ae171236e6f6635febb52f9fd255a4eddd9b",
+  "stack_values": {
+    "physics_backend": "mjwarp_batch_v1",
+    "contact_profile": "warp_native_contact_v1",
+    "noslip_iterations": 0,
+    "scene_profile": "walls_floor_contrast_v5_indigo110_s80",
+    "end_color_scene": "grasp_act_teal_blue_v1",
+    "cargo_version": "v6",
+    "scenario_version": "v7",
+    "heavy_crate": false,
+    "localization_path": "own_gauge_LK_diagnostic",
+    "rbpf": "off",
+    "localization_engine": "OpenCV",
+    "setdown_lookaround_v1": false,
+    "held_object_hidden_v1": true,
+    "held_world_reads": 0,
+    "nearfield_executor": "dependency_wait",
+    "weld": false,
+    "top_camera_control": false,
+    "planner_model": "google/gemma-4-31b-it",
+    "planner_provider": "CoreWeave",
+    "planner_quantization": "fp4",
+    "planner_fallbacks": false,
+    "planner_own_rgb_count": 1,
+    "planner_cache_order": [
+      "system",
+      "static",
+      "dynamic",
+      "image"
+    ],
+    "heading_mode": "on",
+    "ultrasonic_front": "off",
+    "wall_cap": null,
+    "speed_gate": "record_only",
+    "speed_metric": "wall_s/(sim_s*nworld)",
+    "gcp_host": "ugrp-act-l4-gcp6",
+    "gcp_guards": {
+      "idle_minutes": 20,
+      "budget_stop": true,
+      "credentials_on_vm": false
+    },
+    "no_pooling": true,
+    "planning_cap_basis": "compute_or_sim",
+    "rejection_ledger": [
+      "reason_category",
+      "blocked_object",
+      "minimum_gap_m"
+    ],
+    "cap_end_label": "cap_end",
+    "gcp_project": "ugrp-sim-f-1016",
+    "gcp_account": "kcm5781kcm5781@gmail.com",
+    "dialogue_language": "structured",
+    "selfmap_map_correction": "off"
+  },
+  "stack_deviations": [
+    {
+      "id": "nearfield_executor",
+      "reason": "first30 diagnostic; incomplete component blocked; no transport/student success",
+      "approval": {
+        "authority": "user",
+        "evidence": "2026-10-17 e2ewarp request §3(b): marked substitutions permitted for first30; pending parts interface/toggle only"
+      }
+    },
+    {
+      "id": "localization_path",
+      "reason": "first30 diagnostic; incomplete component blocked; no transport/student success",
+      "approval": {
+        "authority": "user",
+        "evidence": "2026-10-17 e2ewarp request §3(b): marked substitutions permitted for first30; pending parts interface/toggle only"
+      }
+    },
+    {
+      "id": "setdown_lookaround_v1",
+      "reason": "first30 diagnostic; incomplete component blocked; no transport/student success",
+      "approval": {
+        "authority": "user",
+        "evidence": "2026-10-17 e2ewarp request §3(b): marked substitutions permitted for first30; pending parts interface/toggle only"
+      }
+    },
+    {
+      "id": "selfmap_map_correction",
+      "reason": "first30 diagnostic; incomplete component blocked; no transport/student success",
+      "approval": {
+        "authority": "user",
+        "evidence": "2026-10-17 e2ewarp request §3(b): marked substitutions permitted for first30; pending parts interface/toggle only"
+      }
+    }
+  ],
+  "host": {
+    "instance": "ugrp-act-l4-gcp6",
+    "project_id": "ugrp-sim-f-1016",
+    "account": "kcm5781kcm5781@gmail.com"
+  },
+  "no_pooling": true,
+  "rejection_table": "/home/ugrp/ugrp-sim/runs/e2ewarp-r4-run/rejection_table.json",
+  "record_tail": {
+    "hz": 10,
+    "sim_s": 10,
+    "purpose": "recording_only; no control changes"
+  },
+  "dependency_status": "waiting for selected ACT / loaded FK / mapbuild8 own+static map correction / release API"
+}

@@ -1,0 +1,284 @@
+{
+ "peer_en": {
+  "run": "/home/ugrp/ugrp-sim/runs/e2ewarp-r4-run",
+  "result_sha256": "c61ecce4cc9ae68cc5c859d4a2d6c6f16b7fe51306bd80b527250af26fddbad0",
+  "status": "cap_end",
+  "E2E_success": false,
+  "research_result": false,
+  "student_execution": false,
+  "error": null,
+  "dependency_status": "waiting for selected ACT / loaded FK / mapbuild8 own+static map correction / release API",
+  "mode": "smoke",
+  "condition": "peer_en",
+  "nworld": 2,
+  "round": 3,
+  "source_sha": "718777118be41991156b047faff78621969101bb",
+  "map_keyframe_admission": "elapsed_sim_v1",
+  "runtime_applied_keyframe": "elapsed_sim_v1",
+  "wall_s": 374.51012685599994,
+  "sim_s": 30.0,
+  "wall_per_sim": 12.484,
+  "wall_per_sim_world": 6.242,
+  "first30": {
+   "wall_s": 363.642940575,
+   "model_calls": 18,
+   "client_requests": 18,
+   "cache_ratio": 0.23676395289298516,
+   "http_429": 0,
+   "upstream_429": 0,
+   "format_errors": 0,
+   "image_calls": 18,
+   "batch_wall_per_sim_s": 12.1214313525
+  },
+  "relay_upstream": "CoreWeave",
+  "relay_model": "google/gemma-4-31b-it",
+  "funnel": {
+   "frames": 1806,
+   "status": {
+    "bootstrap": 6,
+    "unknown_servo_change": 90,
+    "unknown_commanded_camera_settling": 1662,
+    "measured": 48
+   },
+   "measured": 48,
+   "inserted_keyframes": 48,
+   "scan_status": {
+    "unknown_commanded_camera_settling": 1758,
+    "observed_wall_contacts": 48
+   },
+   "rejection_reasons": {
+    "unknown_commanded_camera_settling": 1758,
+    "null": 48
+   }
+  },
+  "ledger": {
+   "calls": 18,
+   "status": [
+    200
+   ],
+   "accepted": 18,
+   "attempts_1": 18,
+   "prompt_tokens": 78120,
+   "cached_tokens": 18496,
+   "cache_ratio": 0.2368,
+   "cost_usd": 0.007898,
+   "response_wall_s_median": 1.357,
+   "response_wall_s_max": 3.038
+  },
+  "localization_sha256": "1c3195c187f52fcf8ff401e8c1c88bb55d2de74ba440fb051d2e9a32da41ed3e",
+  "llm_ledger_sha256": "bcc36ef2bd4074e1bc76f2ae8f22d054c8fc7d61bac219926a2f7f8e59b2abd8",
+  "queue_sha256": "076e917c5464c9f81be5b83e8713f489a923d7ebbb440db98a8e657df86506aa"
+ },
+ "no_comm": {
+  "run": "/home/ugrp/ugrp-sim/runs/e2ewarp-r4-no_comm",
+  "result_sha256": "0c8ca279c34da4a3fcd142422841fdd24227e5a5edfd621cf8882e7a6a0783cf",
+  "status": "cap_end",
+  "E2E_success": false,
+  "research_result": false,
+  "student_execution": false,
+  "error": null,
+  "dependency_status": "waiting for selected ACT / loaded FK / mapbuild8 own+static map correction / release API",
+  "mode": "smoke",
+  "condition": "no_comm",
+  "nworld": 2,
+  "round": 3,
+  "source_sha": "718777118be41991156b047faff78621969101bb",
+  "map_keyframe_admission": "elapsed_sim_v1",
+  "runtime_applied_keyframe": "elapsed_sim_v1",
+  "wall_s": 358.709092414,
+  "sim_s": 30.0,
+  "wall_per_sim": 11.957,
+  "wall_per_sim_world": 5.978,
+  "first30": {
+   "wall_s": 346.01677941,
+   "model_calls": 18,
+   "client_requests": 18,
+   "cache_ratio": 0.20582996988916652,
+   "http_429": 0,
+   "upstream_429": 0,
+   "format_errors": 0,
+   "image_calls": 18,
+   "batch_wall_per_sim_s": 11.533892647
+  },
+  "relay_upstream": "CoreWeave",
+  "relay_model": "google/gemma-4-31b-it",
+  "funnel": {
+   "frames": 1806,
+   "status": {
+    "bootstrap": 6,
+    "unknown_servo_change": 90,
+    "unknown_commanded_camera_settling": 1662,
+    "measured": 48
+   },
+   "measured": 48,
+   "inserted_keyframes": 48,
+   "scan_status": {
+    "unknown_commanded_camera_settling": 1758,
+    "observed_wall_contacts": 48
+   },
+   "rejection_reasons": {
+    "unknown_commanded_camera_settling": 1758,
+    "null": 48
+   }
+  },
+  "ledger": {
+   "calls": 18,
+   "status": [
+    200
+   ],
+   "accepted": 18,
+   "attempts_1": 18,
+   "prompt_tokens": 78045,
+   "cached_tokens": 16064,
+   "cache_ratio": 0.2058,
+   "cost_usd": 0.00789,
+   "response_wall_s_median": 1.648,
+   "response_wall_s_max": 6.291
+  },
+  "localization_sha256": "d376c4d92dbac84825b9a9c19db5619c155b6ba092f4c5ec6fbefad0c0d45813",
+  "llm_ledger_sha256": "4fd327c29075e919655b07be2e6df0db103081fcdcd6d2110aadd39298a6b1e4",
+  "queue_sha256": "b2f5f2227583f2f90a2e0e605e6b915ada4ec5d0a1246032886e04ebfbc5bcf1"
+ },
+ "leader_en": {
+  "run": "/home/ugrp/ugrp-sim/runs/e2ewarp-r4-leader_en",
+  "result_sha256": "f81d530636cdca27b2622755fe27d844135353b2c57bf7a0291d6cc9ca183401",
+  "status": "cap_end",
+  "E2E_success": false,
+  "research_result": false,
+  "student_execution": false,
+  "error": null,
+  "dependency_status": "waiting for selected ACT / loaded FK / mapbuild8 own+static map correction / release API",
+  "mode": "smoke",
+  "condition": "leader_en",
+  "nworld": 2,
+  "round": 3,
+  "source_sha": "718777118be41991156b047faff78621969101bb",
+  "map_keyframe_admission": "elapsed_sim_v1",
+  "runtime_applied_keyframe": "elapsed_sim_v1",
+  "wall_s": 380.872643531,
+  "sim_s": 30.0,
+  "wall_per_sim": 12.696,
+  "wall_per_sim_world": 6.348,
+  "first30": {
+   "wall_s": 370.597305055,
+   "model_calls": 18,
+   "client_requests": 18,
+   "cache_ratio": 0.37607315925365353,
+   "http_429": 0,
+   "upstream_429": 0,
+   "format_errors": 0,
+   "image_calls": 18,
+   "batch_wall_per_sim_s": 12.353243501833333
+  },
+  "relay_upstream": "CoreWeave",
+  "relay_model": "google/gemma-4-31b-it",
+  "funnel": {
+   "frames": 1806,
+   "status": {
+    "bootstrap": 6,
+    "unknown_servo_change": 85,
+    "unknown_commanded_camera_settling": 1587,
+    "measured": 128
+   },
+   "measured": 128,
+   "inserted_keyframes": 54,
+   "scan_status": {
+    "unknown_commanded_camera_settling": 1678,
+    "observed_wall_contacts": 128
+   },
+   "rejection_reasons": {
+    "unknown_commanded_camera_settling": 1678,
+    "null": 54,
+    "keyframe_interval_wait": 74
+   }
+  },
+  "ledger": {
+   "calls": 18,
+   "status": [
+    200
+   ],
+   "accepted": 18,
+   "attempts_1": 18,
+   "prompt_tokens": 78623,
+   "cached_tokens": 29568,
+   "cache_ratio": 0.3761,
+   "cost_usd": 0.007947,
+   "response_wall_s_median": 1.409,
+   "response_wall_s_max": 1.936
+  },
+  "localization_sha256": "35479f9f17ed09bcbbe31f43aa96d3241112f1607b158a7b27c1c1557da04147",
+  "llm_ledger_sha256": "069760098005555c703706954b267166e67a3ddde68aee123739d2c1f9ed4d18",
+  "queue_sha256": "8c8794d3fc83d3c952bb0aed59839e2a7f4d8f92d0815b3e594df00c75a04b64"
+ },
+ "structured": {
+  "run": "/home/ugrp/ugrp-sim/runs/e2ewarp-r4-structured",
+  "result_sha256": "d1623f114d03a22879cf48447cea963289eaf2ad19bdbee483282805b7d6edc6",
+  "status": "cap_end",
+  "E2E_success": false,
+  "research_result": false,
+  "student_execution": false,
+  "error": null,
+  "dependency_status": "waiting for selected ACT / loaded FK / mapbuild8 own+static map correction / release API",
+  "mode": "smoke",
+  "condition": "structured",
+  "nworld": 2,
+  "round": 3,
+  "source_sha": "718777118be41991156b047faff78621969101bb",
+  "map_keyframe_admission": "elapsed_sim_v1",
+  "runtime_applied_keyframe": "elapsed_sim_v1",
+  "wall_s": 587.6058013749999,
+  "sim_s": 30.0,
+  "wall_per_sim": 19.587,
+  "wall_per_sim_world": 9.793,
+  "first30": {
+   "wall_s": 577.325412339,
+   "model_calls": 18,
+   "client_requests": 18,
+   "cache_ratio": 0.2156528382194453,
+   "http_429": 0,
+   "upstream_429": 1,
+   "format_errors": 0,
+   "image_calls": 18,
+   "batch_wall_per_sim_s": 19.2441804113
+  },
+  "relay_upstream": "CoreWeave",
+  "relay_model": "google/gemma-4-31b-it",
+  "funnel": {
+   "frames": 1806,
+   "status": {
+    "bootstrap": 6,
+    "unknown_servo_change": 89,
+    "unknown_commanded_camera_settling": 1665,
+    "measured": 46
+   },
+   "measured": 46,
+   "inserted_keyframes": 46,
+   "scan_status": {
+    "unknown_commanded_camera_settling": 1760,
+    "observed_wall_contacts": 46
+   },
+   "rejection_reasons": {
+    "unknown_commanded_camera_settling": 1760,
+    "null": 46
+   }
+  },
+  "ledger": {
+   "calls": 18,
+   "status": [
+    0,
+    200
+   ],
+   "accepted": 17,
+   "attempts_1": 16,
+   "prompt_tokens": 73303,
+   "cached_tokens": 15808,
+   "cache_ratio": 0.2157,
+   "cost_usd": 0.007411,
+   "response_wall_s_median": 1.495,
+   "response_wall_s_max": 180.101
+  },
+  "localization_sha256": "838d11af9362d1d2ccced1242b470b688bd783009103e7624efb81efac7d7c86",
+  "llm_ledger_sha256": "0767589464e263365061e4b79ecc35167e76c1e95438560c7933cab9d103e3cc",
+  "queue_sha256": "1a114483da2496ac8b2ad46f20dbee7f7aae8f75c9c91e3b6d2f8cd44368e017"
+ }
+}

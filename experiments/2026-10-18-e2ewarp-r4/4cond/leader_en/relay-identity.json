@@ -1,0 +1,45 @@
+{
+  "alerts": [],
+  "balance_usd": 6.498405438999999,
+  "cache_order": [
+    "system",
+    "static",
+    "dynamic",
+    "image"
+  ],
+  "checked_unix": 1792319555.839572,
+  "credentials_on_vm": false,
+  "own_rgb_count": 1,
+  "scope": "provider credits API; actual final usage remains in upstream ledger",
+  "upstream": {
+    "allow_fallbacks": false,
+    "dropped_fields": [
+      "reasoning_effort"
+    ],
+    "endpoint": "https://openrouter.ai/api/v1/chat/completions",
+    "key_location": "macOS Keychain: ugrp-openrouter",
+    "max_attempts": 3,
+    "model": "google/gemma-4-31b-it",
+    "profile": "coreweave_fp4_v1",
+    "provider": "CoreWeave",
+    "provider_order": [
+      "CoreWeave"
+    ],
+    "quantization": "fp4",
+    "quantizations": [
+      "fp4"
+    ],
+    "retry_delay_s": 1.0,
+    "retry_statuses": [
+      429,
+      500,
+      502,
+      503,
+      504
+    ],
+    "tag": "coreweave/fp4",
+    "upstream": "openrouter_v1",
+    "usage_include": true
+  },
+  "wall_cap": null
+}

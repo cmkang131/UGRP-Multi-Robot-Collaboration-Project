@@ -1,0 +1,146 @@
+{
+ "relay_dir": "/Users/changmin/projects/ugrp/outputs/e2ewarp-relay-r4b-193234",
+ "identity": {
+  "alerts": [],
+  "balance_usd": 6.498405438999999,
+  "cache_order": [
+   "system",
+   "static",
+   "dynamic",
+   "image"
+  ],
+  "checked_unix": 1792319555.839572,
+  "credentials_on_vm": false,
+  "own_rgb_count": 1,
+  "scope": "provider credits API; actual final usage remains in upstream ledger",
+  "upstream": {
+   "allow_fallbacks": false,
+   "dropped_fields": [
+    "reasoning_effort"
+   ],
+   "endpoint": "https://openrouter.ai/api/v1/chat/completions",
+   "key_location": "macOS Keychain: ugrp-openrouter",
+   "max_attempts": 3,
+   "model": "google/gemma-4-31b-it",
+   "profile": "coreweave_fp4_v1",
+   "provider": "CoreWeave",
+   "provider_order": [
+    "CoreWeave"
+   ],
+   "quantization": "fp4",
+   "quantizations": [
+    "fp4"
+   ],
+   "retry_delay_s": 1.0,
+   "retry_statuses": [
+    429,
+    500,
+    502,
+    503,
+    504
+   ],
+   "tag": "coreweave/fp4",
+   "upstream": "openrouter_v1",
+   "usage_include": true
+  },
+  "wall_cap": null
+ },
+ "runs": {
+  "e2ewarp-r4-no_comm": {
+   "rows": 18,
+   "status": {
+    "200": 18
+   },
+   "attempts_shapes": {
+    "[200]": 18
+   },
+   "upstream_429": 0,
+   "retried_call_ids": [],
+   "request_sha256": [
+    "bc53cfe5266bf4eaa7bd44c7232ee518295f78247d6fd8412a8b8563991e2ec7",
+    "e719f8b896416fea374698c417630087437b5a6f793ccd149c4796500cefab01",
+    "36fb7a34f9143de052d8d52881650e781ee79144b4a0d105be4593256d7c5873",
+    "ecd52d96f914213371b574e7bf96d59ce5199d0d56d868823f4b2c7c13a477aa",
+    "a807dcd1bfd35ff738a6f47d70999a395e3648555bffd427a7455b8519de1e6f",
+    "f09ab60e46e6c67644f941f0e0668899992c0e985fd8f3fc3aef2a93272c81dc",
+    "95d699e70f3aae3ea81590bd3c6fdf8b800763059361e5119e5abda7e863c931",
+    "6ee4c5745106a5d0562ccac651958f3e25a3555275e4312091cc26512bdd9110",
+    "ebb52f7e98265925aca9ffc2da8220b24a74350475012047aa958ea293cef47f",
+    "7735104d9c3638bb07f7e0d1622b6c4e5674f75515e9ac5bb6c7d0f11b0c7084",
+    "747ecd74f1540f4abd4fa37beba423242cce424c3d649fb917ead788077a9633",
+    "c0de98b019fa07c801c1211f47c4da9e3a40ae32b053da4726c0f9e42ad89c6b",
+    "2bfe3dc02040f7e23b675bdf508e3c20165decb6498834aa18f288ae6f4307a6",
+    "288917acbfdb7d505ec64ac5161830c5afde7a3afd0d6c9bbcf691f0bd3e0bc9",
+    "4e4d0763ec84a8ae5a2363345b7052c8ba0385f78bdded7e2ef5051e468ac9df",
+    "548f4af4d75349f798ed1eba925f44889f932c0849afc374209307754c23e519",
+    "35ca68e30b0f8393be78aa252c157ab8ed0de9b5b24cf891da8f35111a3efdc6",
+    "7af215f72256a08d50cbdbe2dd4285ea8d1565873b8aa504225878db0251bada"
+   ]
+  },
+  "e2ewarp-r4-leader_en": {
+   "rows": 18,
+   "status": {
+    "200": 18
+   },
+   "attempts_shapes": {
+    "[200]": 18
+   },
+   "upstream_429": 0,
+   "retried_call_ids": [],
+   "request_sha256": [
+    "750f7dea59a20d1fda17fb6f010554613484f47a3829a6b7e9009648ea2059fc",
+    "092091df766da929c4c720ba4483625ef31deefc96eb9cb7459d9d18a52fba87",
+    "20f3d95a9da619390e311987cd3b9dff5d79a6bf2fff691b11bd61047fd0ce9c",
+    "82851400446469bc3e798d38ba9fe2b6b56f4da0f458a76883e096003088ff40",
+    "007bcc2889c583c7e111f86ae3b819ee90f4f710a4c405ad1f8e5d30ef5b524e",
+    "c62e5e1e56b3b6de6ef9db8dd78d754071c8ebe9107d487b42a04ba8bdfc272d",
+    "318df764628a150d786c9736c33a4f256dcbbdbf1adce1be428ce472ed95053e",
+    "83f56e20440b3eea7054c81e1032f5cab9fa648117763011659e3d3c69c368f4",
+    "310e1de5d8aa16e0c5c5a6712f54b24eebe1380d0b1de572471ff5d4c25cb971",
+    "dc6d86b36d3b2ff195a4b4483f0a983280219b7b8f2830722f0a6430cf487dea",
+    "1d8b7ed2b8e33015aa1383c464f8dc86ef5d5f5e0b5d81f238b7f377379f9222",
+    "ab25f081637823f04fb3d50b5b418cc088fb93a444f1e9a283cba80e13f8c235",
+    "42f82d297fa59893da21f533ee2f31b87c1b3d102034ca2293bc889d49604c88",
+    "799067bb13a9c608f82e058a50ea1c0339f892bfc1756612a1c2dcd05fae4f19",
+    "95cea1e599a41e5a0a454fc5cfa4a13147d831910c4b51e718053ae254920624",
+    "de38afee232a2be6b698bb73e1c308b6dc8a48a19d200375d18a92a983886d04",
+    "e160bb1ca1d529a5dd57083a536690d85aa637033c2f2cb0eba87399540cb54f",
+    "3b95778242812eb16d48cf6301639e4f33ebf1213379f35ffdf62157837d3015"
+   ]
+  },
+  "e2ewarp-r4-structured": {
+   "rows": 17,
+   "status": {
+    "200": 17
+   },
+   "attempts_shapes": {
+    "[200]": 16,
+    "[429, 200]": 1
+   },
+   "upstream_429": 1,
+   "retried_call_ids": [
+    "e2ewarp-r4-structured:w0:r1:3"
+   ],
+   "request_sha256": [
+    "4836bb2ee45deb1fce663aa72486cde1f3131f5123aa9e80857f299f039c8f94",
+    "fde552ca6531a4768f6eb3ebc3f001761496b6a955ade5ea380863fe561bd6b3",
+    "47a83ca05695045623e0fc5c6f2f502e702ddc7931d8f1ccd2ec399d3e9de365",
+    "fa36d55e9cf73dfe55f0f5a4e03a3b59a3e1e0841f5ff7706524161706f9a2e5",
+    "d77cb0268f71e61e42fc7853a91dfd5b6d269d95cac0789efb836ac868f6c060",
+    "17ebe31e7ba63c93099160b1bed474e1dd7af09e3375d1eb1261046403e98746",
+    "5a289a57ab1f8ddb41c89da915ab81962a484eb64b53387d77f002e15ae1b007",
+    "70d3fe53c944a961740278f9c4e63da74b607fb3fb86ec851613663c0c9749f5",
+    "675cc6adc5d8ca5ca65505157d1eb6dbf7fa9cbaf1b43cadf7be2c808f787ea7",
+    "a5d41a71b586173575379b50e85d4ea189a1528c6f6e6b4b7211d7d06cf523c9",
+    "1c29bd0e173c8272ddd29f9616025b33cdfbcea7c697eed33b9b731631ee6a9c",
+    "acdc564e5e7c2d5c513d07945d4111253fce91c59e58a6c3cfdc2a26f4f2f8d8",
+    "ffb17f2fd4f46112fab9a08bacff56de0f1bfee39673439a8eabef1fc9bf0738",
+    "d873301a53e8b0af8b6c17eb4f5c2b1f5a2e9127bbb5fc89ace417d5ed84fce5",
+    "0ae11ffaacecee32a8945a7bc488c35cc44cb40437803e0ae37638269ea52373",
+    "a7331e0f4008d0c108c1b1fdf0f63e7fa0431811b378e70f30cf374968e25b1e",
+    "89df755890021054f806724acdc23183e6f19667142b6b4f5b4a0355f24aae04"
+   ]
+  }
+ },
+ "responses_total": 54
+}

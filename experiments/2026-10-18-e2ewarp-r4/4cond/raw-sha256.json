@@ -1,0 +1,56 @@
+{
+ "tip_source_sha": "718777118be41991156b047faff78621969101bb",
+ "note": "SHA of VM raw files captured via byte-preserving cat on gcp6; big localization files stay on VM (read-only). R4 peer_en lives under e2ewarp-r4-run (recorded in ../README.md).",
+ "conditions": {
+  "peer_en": {
+   "raw_dir": "/home/ugrp/ugrp-sim/runs/e2ewarp-r4-run",
+   "result.json": "c61ecce4cc9ae68cc5c859d4a2d6c6f16b7fe51306bd80b527250af26fddbad0",
+   "first30.json": "e2ff4a48a1d726b6df0a8e70e164c40eef16b0111e150919d7afc4fd01faf64d",
+   "queue.json": "076e917c5464c9f81be5b83e8713f489a923d7ebbb440db98a8e657df86506aa",
+   "runtime-applied.json": "709be67474e90453e1c87365706e6ea52b309031c7650ef5d430e031d49efc43",
+   "rejection_table.json": "eca7132639fbfd0c1381888d07a912cec5be2de621d6ff53428166d40f2f033d",
+   "relay-identity.json": "3ffd9ef4bb36a6315d797292b612892a83954b4251abedb0461606805646eb63",
+   "localization.json": "1c3195c187f52fcf8ff401e8c1c88bb55d2de74ba440fb051d2e9a32da41ed3e",
+   "llm_ledger.json": "bcc36ef2bd4074e1bc76f2ae8f22d054c8fc7d61bac219926a2f7f8e59b2abd8"
+  },
+  "no_comm": {
+   "raw_dir": "/home/ugrp/ugrp-sim/runs/e2ewarp-r4-no_comm",
+   "result.json": "0c8ca279c34da4a3fcd142422841fdd24227e5a5edfd621cf8882e7a6a0783cf",
+   "first30.json": "b0779b11634f2416b764927a7e8fb48fa6c201bc805724d2b0b71a9128f25ea6",
+   "queue.json": "b2f5f2227583f2f90a2e0e605e6b915ada4ec5d0a1246032886e04ebfbc5bcf1",
+   "runtime-applied.json": "5825cb32a8add58929e34a05193afa83623125e0c3fd68409392d65bcd76b2dd",
+   "rejection_table.json": "6505861e4be06dc0ce8eccdffa5d86c3168d0c8e5e47023df8ae586ac0decda3",
+   "localization.json": "d376c4d92dbac84825b9a9c19db5619c155b6ba092f4c5ec6fbefad0c0d45813",
+   "llm_ledger.json": "4fd327c29075e919655b07be2e6df0db103081fcdcd6d2110aadd39298a6b1e4"
+  },
+  "leader_en": {
+   "raw_dir": "/home/ugrp/ugrp-sim/runs/e2ewarp-r4-leader_en",
+   "result.json": "f81d530636cdca27b2622755fe27d844135353b2c57bf7a0291d6cc9ca183401",
+   "first30.json": "be810070a107e4eac43a8802381e62618282ee3a723ca6654307fa97346b98b3",
+   "queue.json": "8c8794d3fc83d3c952bb0aed59839e2a7f4d8f92d0815b3e594df00c75a04b64",
+   "runtime-applied.json": "cda71335bcd2accc07f45aa9377ab29fa88e7fed9b47adbc1689e357235d19a6",
+   "rejection_table.json": "2a5288574bb202e915f6ede2b2d43c8890d0c8b0f4743936a4e86cda541a3415",
+   "localization.json": "35479f9f17ed09bcbbe31f43aa96d3241112f1607b158a7b27c1c1557da04147",
+   "llm_ledger.json": "069760098005555c703706954b267166e67a3ddde68aee123739d2c1f9ed4d18"
+  },
+  "structured": {
+   "raw_dir": "/home/ugrp/ugrp-sim/runs/e2ewarp-r4-structured",
+   "result.json": "d1623f114d03a22879cf48447cea963289eaf2ad19bdbee483282805b7d6edc6",
+   "first30.json": "fcc011e39997ecda9ad14740b45c1d495b12d0faa144b3a8c176673414bedf1f",
+   "queue.json": "1a114483da2496ac8b2ad46f20dbee7f7aae8f75c9c91e3b6d2f8cd44368e017",
+   "runtime-applied.json": "603ffd046d3be75573cda5c187e64ec51cfda0f957e8d859be867249be9945f6",
+   "rejection_table.json": "05db2f255a6a8fbabf09a787406b9f1f6b8f4bbf69058ea6861557caaf69fbd4",
+   "localization.json": "838d11af9362d1d2ccced1242b470b688bd783009103e7624efb81efac7d7c86",
+   "llm_ledger.json": "0767589464e263365061e4b79ecc35167e76c1e95438560c7933cab9d103e3cc"
+  }
+ },
+ "relay_journal": {
+  "dir": "/Users/changmin/projects/ugrp/outputs/e2ewarp-relay-r4b-193234",
+  "ledger_sha256": null,
+  "runs": {
+   "e2ewarp-r4-no_comm": "18 rows / all 200 / 0 upstream 429",
+   "e2ewarp-r4-leader_en": "18 rows / all 200 / 0 upstream 429",
+   "e2ewarp-r4-structured": "17 rows / all 200 / 1 upstream 429 retried on e2ewarp-r4-structured:w0:r1:3"
+  }
+ }
+}
