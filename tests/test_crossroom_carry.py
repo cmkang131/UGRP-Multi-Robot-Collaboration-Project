@@ -281,14 +281,17 @@ class _FakeWD:
                                       'worldid': np.array([0])})()
 
 
-def test_contact_recorder_classifies_rising_edge():
+def test_contact_recorder_records_interesting_rising_edge():
     module = load_module('contact_recorder', EXP / 'scripts/contact_recorder.py')
-    rec = module.ContactRecorder(_FakeModel(), 2)
+    rec = module.ContactRecorder(_FakeModel(), 2, decimate=1)
     wd = _FakeWD([[1, 2]])
-    info = rec.update(wd, 0.0)
-    assert info['counts'] == [1, 0]
-    assert rec.events, 'rising edge must be recorded'
+    for i in range(3):
+        info = rec.update(wd, i * 0.1)
+        assert info['counts'] == [1, 0]
+    assert rec.events, 'interesting rising edge must be recorded'
     cats = rec.events[0]['categories']
     assert 'wall' in cats or 'cargo' in cats
     summary = rec.summary()
-    assert summary['ticks_with_contact'] == 1
+    assert summary['ticks_with_contact'] == 3
+    assert summary['ticks_checked'] == 3
+    assert summary['ticks_with_interest'] >= 1

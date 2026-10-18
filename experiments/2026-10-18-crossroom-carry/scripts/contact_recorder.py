@@ -30,12 +30,16 @@ def _np(value):
 
 
 class ContactRecorder:
-    def __init__(self, model, nworld):
+    def __init__(self, model, nworld, decimate=5):
         self.m = model
         self.nworld = nworld
-        self.prev = [0] * nworld
+        self.decimate = max(1, int(decimate))
+        self._tick = 0
+        self.prev_interest = 0
         self.events = []
         self.ticks_with_contact = 0
+        self.ticks_checked = 0
+        self.ticks_with_interest = 0
         self.layout = 'unknown'
         self.count_layout = 'unknown'
         self.errors = []
@@ -72,36 +76,79 @@ class ContactRecorder:
         return sorted(cats)
 
     def update(self, wd, t):
-        """Call after each control tick's physics launch. Returns per-world ncon."""
+        """Call after each control tick's physics launch.
+
+        Global ``nacon`` is read every tick (cheap).  The contact geom pairs are
+        read every ``decimate`` ticks (0.5 SIM s at 10 Hz) because the global
+        count includes permanent wheel-floor contacts; an "interesting" contact
+        is a pair that joins the r1 robot with a wall, cargo or peer geom.
+        Events are rising edges of that interesting count and are eval-only.
+        """
         nacon = _np(getattr(wd, 'nacon', None))
         if nacon is None:
             if not self.errors:
                 self.errors.append('nacon_unavailable')
-            return None
+            return {'counts': None, 'global_nacon': None}
         raw = np.asarray(nacon).reshape(-1)
+        global_nacon = int(raw[0]) if raw.size else 0
         if raw.size == self.nworld:
             counts = raw.astype(int).tolist()
             self.count_layout = 'per_world'
         elif raw.size == 1:
-            # A single global contact count: keep it as a total and do not
-            # invent per-world attribution (eval-only reference).
-            counts = [int(raw[0])] + [0] * (self.nworld - 1)
+            counts = None
             self.count_layout = 'global_only'
         else:
             self.count_layout = 'size_%d' % raw.size
             counts = raw.astype(int).tolist()[:self.nworld]
-            counts += [0] * (self.nworld - len(counts))
-        if any(counts):
+        if global_nacon > 0:
             self.ticks_with_contact += 1
-        for w in range(self.nworld):
-            if counts[w] > 0 and self.prev[w] == 0:
-                cats = self._classify_rising(wd, w)
-                self.events.append(dict(t=t, world=w, ncon=counts[w],
-                                        categories=cats,
-                                        blocked_object=('not_observed' if not cats
-                                                        else ','.join(cats))))
-        self.prev = counts
-        return dict(counts=counts, ticks_with_contact=self.ticks_with_contact)
+        self._tick += 1
+        if self._tick % self.decimate == 0:
+            self.ticks_checked += 1
+            interest, pairs = self._interesting_pairs(wd)
+            if interest > 0:
+                self.ticks_with_interest += 1
+            if interest > self.prev_interest and interest > 0:
+                self.events.append(dict(
+                    t=float(t), interesting=interest,
+                    nacon=global_nacon, layout=self.layout,
+                    pairs=pairs[:8],
+                    categories=sorted({c for p in pairs for c in p[1]}),
+                    blocked_object=','.join(sorted({c for p in pairs for c in p[1]
+                                                    if c != 'robot_r1'})) or 'not_observed'))
+            self.prev_interest = interest
+        return dict(counts=counts, global_nacon=global_nacon,
+                    ticks_with_interest=self.ticks_with_interest)
+
+    def _interesting_pairs(self, wd):
+        contact = getattr(wd, 'contact', None)
+        if contact is None:
+            return 0, []
+        geom = _np(getattr(contact, 'geom', None))
+        if geom is None:
+            return 0, []
+        try:
+            g = np.asarray(geom)
+            if g.ndim == 3 and g.shape[-1] == 2:
+                flat = g.reshape(-1, 2)
+                self.layout = 'world_first_pairs'
+            elif g.ndim == 2 and g.shape[-1] == 2:
+                flat = g
+                self.layout = 'flat_pairs_with_worldid'
+            else:
+                self.errors.append('contact_geom_layout:%s' % (g.shape,))
+                return 0, []
+            pairs = []
+            for pair in flat:
+                cats = [self.geom_category.get(int(gid), ('other',))[0]
+                        for gid in pair if int(gid) >= 0]
+                if 'robot_r1' in cats and any(c in ('wall', 'cargo', 'peer')
+                                              for c in cats):
+                    pairs.append(([int(pair[0]), int(pair[1])], cats))
+            return len(pairs), pairs
+        except Exception as exc:  # noqa: BLE001 - eval only, report not crash
+            self.errors.append(repr(exc))
+            return 0, []
 
     def _classify_rising(self, wd, w):
         contact = getattr(wd, 'contact', None)
@@ -132,6 +179,9 @@ class ContactRecorder:
 
     def summary(self):
         return dict(ticks_with_contact=self.ticks_with_contact,
+                    ticks_checked=self.ticks_checked,
+                    ticks_with_interest=self.ticks_with_interest,
                     events=self.events[-50:], layout=self.layout,
                     count_layout=self.count_layout,
+                    decimate=self.decimate,
                     errors=self.errors[:5])

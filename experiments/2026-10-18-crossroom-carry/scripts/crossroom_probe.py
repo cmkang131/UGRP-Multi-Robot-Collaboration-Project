@@ -654,7 +654,7 @@ def run(a):
                     cargo_at_start=None, cargo_at_cross=None,
                     cargo_at_arrival=None, cargo_state_counts={},
                     box_at_declared=None, box_final=None, cargo_own=None,
-                    ncon_last=None, paint_filter_counts={},
+                    ncon_last=None, nacon_global_last=None, paint_filter_counts={},
                     crossed=False, last_base_x=None,
                     applied=np.array(
                         [[gripper_pwm if sid == 1 else SEARCH[sid]
@@ -836,6 +836,7 @@ def run(a):
                             inside_zone_B=inside,
                             box_pose_eval_only=box_pose,
                             ncon_eval_only=s.get('ncon_last'),
+                            nacon_global_eval_only=s.get('nacon_global_last'),
                             start_paint_pixels=s['start_visibility']))
                         s['ring'].append(tick)
                         paint_log = {k: v for k, v in paint.items()
@@ -925,9 +926,12 @@ def run(a):
                         contact_rec = None
                         cinfo = None
                     if cinfo:
+                        ncon = cinfo.get('counts')
+                        gcount = cinfo.get('global_nacon')
                         for w, s in enumerate(states):
-                            ncon = cinfo['counts']
-                            s['ncon_last'] = ncon[w] if w < len(ncon) else None
+                            s['ncon_last'] = (ncon[w] if ncon is not None
+                                              and w < len(ncon) else None)
+                            s['nacon_global_last'] = gcount
             results = list(rejected)
             for s in states:
                 out = s['out']
