@@ -1,0 +1,38 @@
+{
+ "schema": "ugrp.beamact5.r13_gate_attempt2_preregistration.v1",
+ "written_before_run_utc": "2026-10-18T03:58:00Z",
+ "author": "beamact5 worker (DSH)",
+ "approved_by": "Lead (frozen-stack repetition 승인, 조건 1-4)",
+ "status": "This is a REPETITION of gate attempt 1 after the attempt-1 failure was observed (37/40: world 27 alignment_no_progress, world 37 expected). It is NOT a best-of selection and the result is not pooled with attempt 1.",
+ "attempt1": {
+  "run": "/home/ugrp/ugrp-sim/runs/beamact5/gate39-r13-run",
+  "summary_sha256": "470c2b91d1fd8c189ee1b07e0bb024f12911a9694756e018d0ab50632b64c6c0",
+  "result": "37/40 FAIL (executed 39; failures: 27 alignment_no_progress sim 26.0 s; 37 approach_blocked_handoff sim 29.5 s expected)",
+  "wall_s": 2619.97,
+  "cap_end": 0,
+  "HOST_ERROR": 0
+ },
+ "frozen_stack": {
+  "root": "05046e9d245e46b4ee3d1c43308f7258a9fa41c5",
+  "adapter": "d354468a303e1ebc961e58deedd35d05bed40098",
+  "teacher": "fe6858eca7fa7b2ba6fb518c54f18a071995d5b4",
+  "cases_sha256": "3d4e065db0299c0efa4c91676f537ac9b0e130773e598dfc5767d97a34ffdc63",
+  "plan_sha256": "f1a50e8c833c1da9113bdf8cff3844913380e3c821b15c072c0a23c0f54f5148",
+  "prereg_attempt1": "fba83f586 (실행 전 커밋, 변경 금지)",
+  "no_code_or_stack_change": true
+ },
+ "design": {
+  "indices": "0-14,16-39 (world15 excluded by r3-approved deviation, expected FAIL)",
+  "cap_s": 60,
+  "criterion": "identical to attempt 1: at least 38 of the 39 executed succeed (37 expected FAIL -> exactly 38/40 at minimum)",
+  "reporting": "attempt-1 and attempt-2 results are both published; if only attempt 2 passes, the report states \"two repetitions, one pass (unstable)\" and does not claim 38/40 as a stable gate pass. No pooling/no selection.",
+  "out": "/home/ugrp/ugrp-sim/runs/beamact5/gate39-r13-attempt2-run"
+ },
+ "not_claimed": [
+  "stable gate pass",
+  "no student recording/training",
+  "world15 unverified/excluded",
+  "37 structural label from r1/r2 not remeasured",
+  "no margin/cap change"
+ ]
+}
