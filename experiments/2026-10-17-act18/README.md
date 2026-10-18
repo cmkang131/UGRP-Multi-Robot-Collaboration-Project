@@ -103,6 +103,10 @@ B4 실행(raw `doneh-r1/DONEH-TRAIN4`)의 **발행 명령 이력**과 교사(TRA
 - 물리: **lift 1/4(88602, max_stable_lift 8.9s)·release 0/4** → 종합 0/4.
 - 해석: 조건 토큰 co-training은 정상 학습됐고 done 신호도 작동했지만, **행동/물리 축(lift·release)과 done 시점 안정성**이 남았다. co-training 70k만으로 TRAIN4를 통과하지 못했다. 원본 `results/co-r2/`, VM `runs/act18/co-r2/`.
 
+### B5 HOLD (10/18)
+
+Lead 우선순위 변경(사용자: zone dialogue study #223/#224 시뮬 완전 실행이 최우선)에 따라 **B5 closed-loop 후보는 HOLD**. B5 프리레그·overlay 모듈·테스트는 보존(`B5_PREREG.json`, `scripts/act18_loop_overlay.py`, `tests/test_act18_loop_overlay.py`). B5 학습/게이트는 **실행 전 코드 검증 실패로 0 GPU step**(과학적 결과 아님)이며 로그만 원본 보존. gcp2는 프로세스0·GPU 0%·lease 없음 확인 후 정지(TERMINATED). 재개 지시 시 snapshot `f39cd8e10` 계열에서 pilot 등록부터 수정해 이어간다.
+
 ### 조건 이탈·미검증 범위
 - **R100 gcp5 미이동(deviation):** bf16 프로브(2,000 step, 1.10배)는 수용했지만, R8이 gcp2에서 fp32로 학습 중이라 정밀도가 섞이고(합산 금지), `act18_train.py`가 옵티마이저/RNG 재개를 지원하지 않아 42,400/100,000(≈13,484s)을 폐기해야 하며, gcp5 예산 1,000KRW 정지 위험이 있어 gcp2 matched fp32 pair를 끝까지 유지했다. 근거는 `bf16-probe-decision.json`.
 - 이 학습은 **fp32**다. bf16 기본 전환 커밋(c7900c0ac)은 이 학습 시작 뒤다. 100k bf16 학습은 아직 없다(runtime 증거는 2,000 step 프로브뿐). bf16 결과와 합산하지 않는다.

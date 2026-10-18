@@ -1451,6 +1451,20 @@
       "pooling": "금지: co-r1(중단)·단일데이터 후보(R8/R100/tune/B1-B4)와 합산하지 않는다.",
       "packaging": false,
       "release": false
+    },
+    {
+      "name": "b5-r1 (HOLD)",
+      "kind": "B5 closed-loop transition candidate act18-loop — 실행 중 Lead HOLD 지시로 중단",
+      "status": "SUPERVISOR_STOP",
+      "complete": false,
+      "hold_reason": "Lead 우선순위 변경(zone dialogue study #223/#224 최우선): 새 GPU 실험 금지·현재 작업 안전 중단 지시. HOST_ERROR 아님.",
+      "progress": {
+        "training": "B5 5k 학습은 시작 전 코드 검증에서 중단(act18-loop가 그 시점 PILOT_CANDIDATES에 없음) — 0 GPU step, 과학적 결과 아님",
+        "overlay_only_gate": "co-r2 best+overlay 게이트 child HOST_ERROR로 평가 산출 없음(로그만 보존)",
+        "artifacts": "/home/ugrp/ugrp-sim/runs/act18/b5-r1 (queue/train.log/실패 게이트 로그) — 원본 보존, 유효 결과 아님"
+      },
+      "prereg": "experiments/2026-10-17-act18/B5_PREREG.json (구현·설계 보존)",
+      "note": "B5 코드·프리레그는 유지. 재개 지시 시 snapshot f39cd8e10 계열에서 이어가면 됨."
     }
   ],
   "release": {
@@ -1735,5 +1749,34 @@
       "worktree": "/Users/changmin/projects/ugrp-wt/act16w",
       "worktree_status": "clean"
     }
+  },
+  "cleanup_stage5": {
+    "schema": "ugrp.act18.cleanup.v5",
+    "utc": "2026-10-18T09:20:00Z",
+    "reason": "Lead HOLD 지시(GPU 실험 금지·작업 안전 중단) → gcp2 정지.",
+    "vm": {
+      "instance": "ugrp-act-l4-gcp2",
+      "project_id": "ugrp-sim-b-1014",
+      "status": "TERMINATED",
+      "stopped_utc": "2026-10-18T09:20:00Z"
+    },
+    "before_stop": {
+      "act18_processes": "none",
+      "gpu_utilization_percent": 0,
+      "gpu_memory_MiB": 0,
+      "leases": "no act18 lease"
+    },
+    "preserved": [
+      "co-r1/co-r2/B4/B1-B3/offline 분석 원본",
+      "B5 실패 로그(과학적 결과 아님)"
+    ],
+    "hold": "Lead 재개 지시 전까지 새 GPU 실험 없음"
+  },
+  "hold": {
+    "active": true,
+    "started_utc": "2026-10-18T09:20:00Z",
+    "reason": "Lead 우선순위 변경: zone dialogue study (#223/#224) 완전 시뮬 실행이 최우선. ACT/GPU 실험 hold.",
+    "resume_from": "experiments/2026-10-17-act18/B5_PREREG.json + snapshot f39cd8e10",
+    "pending_b5": "B5 training/gates 미실행(과학적 결과 없음). 재개 시 pilot 등록/코드 검증부터."
   }
 }
