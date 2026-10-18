@@ -1,6 +1,6 @@
 # UGRP 작업 계획 (DSH 조정자 유지)
 
-최종 갱신: 2026-10-18 14:45 KST. 이 파일이 **단일 계획표**다. 상세 원본·수치는 `outputs/e2e18-admin/ops-alert.md`(로컬), 실험별 README, PR을 따른다.
+최종 갱신: 2026-10-18 15:35 KST. 이 파일이 **단일 계획표**다. 상세 원본·수치는 `outputs/e2e18-admin/ops-alert.md`(로컬), 실험별 README, PR을 따른다.
 
 ## 0. 이번 세션 목표
 - 미션: 두 로봇이 서쪽 픽업존 → divider 문 → 동쪽 목적 구역으로 짐(빔/박스) 운반. 근거리 파지·놓기는 ACT.
@@ -12,7 +12,7 @@
 |---|---|---|
 | act18 (PR #575, merged) | R8/R100 100k fp32 **TRAIN4 0/4 NOT_READY**(Release 재현용). 튜닝 트랙: B1 done 양성배치(h=0 학습 실패) → B2 표준축 20k(실패) → B3 h=0 라벨(실패) → **B4 done cmd-history GRU 헤드(4/4 issued_done 성공, 물리 lift 0/4)** → **co-r2 70k TRAIN4 0/4**(issued_done 4/4, lift 1/4, release 0/4). gcp2 TERMINATED·CLEAN. | 데이터 규모/새 녹화 / closed-loop 제어 / 평가계약(물리 성공 정의) — **사용자 결정** |
 | beamact5 (PR #585 merged, #588 draft) | r4c 검색축 수정(10 회귀 해결) → r10–r13 **align breakaway**(align 정체=40ms pulse static friction) → case27 단독/batch 통과 일부. **두 39-gate attempt 모두 37/40 FAIL**(27 flaky 1/3·37 expected). gcp6 TERMINATED·CLEAN | 27 안정화(align 이전 상류) 또는 margin-aware 재승인 — **사용자 결정** |
-| visgoal (PR #582, #592 draft) | 후보 B/C 종료. **Stage A FAIL**(GT 문통과 1/16, gap 주장 9/9 허위) · **Stage B FAIL**(적재 16/16 유지했으나 문통과 0/16, 화물이 하단 화면 가림) · fix v1 FAIL(문 0, 원인 분해) · **fix2 gate 진행 중**(12:58 시작, ETA 15:15 KST) | fix2 결과 → 재계수·PR #592 → gcp3 정리 |
+| visgoal (PR #582, #592 draft) | 후보 B/C 종료. **Stage A FAIL**(GT 문통과 1/16, gap 주장 9/9 허위) · **Stage B FAIL**(적재 16/16 유지했으나 문통과 0/16, 화물이 하단 화면 가림) · fix v1 FAIL(문 0) · **fix2 FAIL(미션)**: GT 1/16·declared 1·GT-inside 0(margin −0.0162m), v2 gap 규칙 너무 엄격(confirmed 0)·paint v2 true zone 133 수용. CLEAN·gcp3 TERMINATED | 문 gap v3·선언 전 zone 경계 확인·loaded stageB-fix mask 반사실 — **사용자 결정** |
 | egonav (PR #587, merged) | 완료·CLEAN | 없음 |
 | crossroom Stage B+ | Stage B(적재) baseline FAIL 기록. 오클루전 대응 loaded 후보 설계 필요 | fix2 결과 후 `crossroom-stageB-fix` 설계 |
 
@@ -51,16 +51,16 @@
 - 후보 C FAIL(선언 회귀·서쪽 악화) → **Stage A(무적재, 16 west starts, 180 SIM)**: GT door_crossed **1/16**, gap_cross 주장 9/16 전부 허위(e02만 GT 통과 — lateral -0.1634m·문틀 겹침 -0.1084m·margin -0.028m), found 4/16(3건 beam blue end-band 오탐), cap_end 13·STOPPED_NO_ARRIVAL 2. 독립 검증자 재계수 일치·정정 3건 반영.
 - **Stage B(적재 red box)**: funnel 16→…→cargo_held_at_start 16→**GT door 0/16**, cap_end 16/16. 화물 유지 **28,816/28,816틱**(무 weld·낙하 0). 원인: 들고 있는 box가 자기 RGB 하단 밴드(y400–463, 25k px)를 가려 근접 바닥·장애물 검출 0 → 허위 gap 16/16. 독립 검증자 재계수 일치(라벨/범위 정정 3건).
 - **fix v1 FAIL**: 문 통과 0(GT door 0), gap claim 6 전부 허위, paint filter는 클래스 분리는 정확(beam band ≤.099 vs zone .205–1.236)했으나 문 못 넘어 zone 미관측.
-- **fix v2 진행 중**: paint 필터 range 조건부·gap 양쪽섹터·approach escape. 12:58 시작, ETA **≈15:15 KST**. 원본 `runs/crossroom-stageA-fix2`.
-- 기록: `experiments/2026-10-18-crossroom-carry/{stageA,stageB}`·PR #592. **다음**: fix2 결과 후 재계수·PR, loaded `crossroom-stageB-fix` 설계.
+- **fix v2 결과: FAIL(미션)** — funnel 16→…→GT door 1→post-cross found 1→declared 1→**GT-inside 0**. e02: cross 58.0s·decl 79.9s·lateral −0.1628·min jamb −0.1078·**margin −0.0162m(1.6cm 밖)**. v2 gap 규칙이 실제 문을 너무 엄격히 거부(606 reject·confirmed 0·align 미실행), paint v2는 true zone 133 수용/beam 548 거부, approach escape 10회. wall 8732.72=3.0322. v1이 잃었던 GT 통과·진짜 found·선언 회복.
+- 기록: `experiments/2026-10-18-crossroom-carry/{stageA,stageB,stageA-fix2}`·PR #592. **다음(사용자 결정)**: 문 gap v3(전방 foot+side loss+jamb 폭), 선언 전 zone 경계 own-RGB 확인, loaded `crossroom-stageB-fix`(mask on/off 반사실 2-arm).
 
 ## 6. 인프라·비용 (2026-10-18 14:45)
-- VM: gcp2 **TERMINATED**, gcp6 **TERMINATED**, gcp3 **RUNNING(fix2 gate)**; gcp4·gcp5 off.
-- DeepSeek 잔액 **≈USD 23.8**(충전 반영 후, 감시 중). GCP 예산 정지 장치 유지.
-- 노트북 덮개 슬립 가드(`SleepDisabled=1`+launchd heartbeat 자동 복구) 유지 중 — 작업 종료 시 자동 복원.
+- VM: gcp2·gcp3·gcp6 **전부 TERMINATED**; gcp4·gcp5 off. (원본 디스크 보존)
+- DeepSeek 잔액 **≈USD 23.7**(충전 반영 후). GCP 예산 정지 장치 유지.
+- 노트북 덮개 슬립 가드: 작업 종료 후 **원복 완료**(SleepDisabled=0, launchd·heartbeat 제거). scoped pmset sudoers(`/etc/sudoers.d/ugrp-pmset`)만 남음 — 제거: `sudo rm /etc/sudoers.d/ugrp-pmset`.
 - PR: 오늘 병합 #533·#537·#545·#563·#575·#585·#586·#587·#589·#590·#591. 열린 draft #588(beamact5)·#582/#592(visgoal). #570·#566·#564 등 과거 draft 유지.
 
 ## 7. 다음 이벤트
-- visgoal fix2 gate 결과(~15:15 KST) → 재계수·PR #592·gcp3 정리.
-- 사용자 복귀(15:00) 후 결정: act18 데이터/closed-loop/평가계약, beamact5 27 안정화 vs 재승인, visgoal fix2 이후 방향, crossroom Stage B.
+- 사용자 결정 대기: (1) act18 데이터/closed-loop/평가계약 (2) beamact5 27 안정화 vs margin-aware 재승인 (3) visgoal 문 gap v3·선언 전 경계 확인·loaded stageB-fix.
+- 전 스레드 CLEAN, 실행 중 작업 없음. 신규 실험은 사용자 결정 후 착수.
 - 핸드오프 상세 수치·원본 SHA: `outputs/e2e18-admin/ops-alert.md` 및 각 실험 README.
