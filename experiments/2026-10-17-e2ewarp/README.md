@@ -206,3 +206,13 @@ idle20/budget-stop 유지, VM wall cap 없음. Mac 중계·자기 SSH tunnel도 
 - ACT: e2ewarp는 act16w v3·step=10000/schedule_steps=10000·native contact·선택 검증 artifact 요구. act18 전 후보 미충족(상세: act18 E2EWARP_ACT 분석). **사용자 결정 대기**(①act16w v3 10k 재현 ②새 녹화/데이터 확대 ③통합 스모크로 마감).
 - owner navigation(실제 주행)·static map registration·release의 새 물리 관문 필요. **full mission 성공은 아직 주장하지 않는다.**
 - 모든 실행 VM은 종료(원본 디스크 보존), CPU MuJoCo 경로 결과는 이 문서에 포함하지 않는다.
+
+### 4조건 독립 검증 (2026-10-18, read-only)
+- 판정: **일부만 확인됨**. funnel/LLM/flags/source pin/runtime admission/SHA는 원본 일치.
+  - no_comm 1806→48→48(interval_wait 0, camera_qualification 1758), leader_en 1806→128→54(wait 74, gap 1–9틱), structured 1806→46→46.
+  - LLM 18/18, 18/18, 17/18(+status0 1: `...structured:w0:r2:3`, connected false, wall 180.1008687 s, usage {}, upstream null). request 54/54 image SHA 일치.
+  - SHA: run `sha256.json` manifest 1030/1030, managed receipt 1031/1031, mismatch/missing 0. (run dir에는 `raw-sha256.json`이 아니라 `sha256.json`; 실험 기록 디렉토리의 raw-sha256와 구분.)
+- **정정**: "structured timeout이 relay journal에 없다"는 초기 주장은 반대 증거 — journal 마지막 줄에 status 200(429 0.31s→502 180.52s→200 0.87s, latency 183.71s, retries 2; run 종료 10:55:16Z·client timeout 10:52:28Z·response mtime 10:56:06Z). journal은 timeout을 표시하지 않음.
+- wall: result.json 기준 5.9785/6.3479/9.7934, run-metrics(rollout-only) 기준 5.7670/6.1766/9.6221. (setup 10.3–12.7 s 차이)
+- 부수: queue.json의 rejection_table가 3조건 모두 peer_en run을 prior로 참조; structured rejection_table stages actual_transport 0/2이나 reasons에 dependency 2건 누락(`llm_http_0` 1건만).
+- 검증 한계: 물리 재실행 없음, own-RGB 픽셀은 요청에 removed=true+sha만, relay 지연 원인·evaluation-state.npz 내용 미확인.
