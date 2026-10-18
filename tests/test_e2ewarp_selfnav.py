@@ -273,6 +273,33 @@ def test_own_command_odometry_requires_injected_calibration():
     assert f > 0 and abs(y) < 1e-9
 
 
+def test_own_command_odometry_converts_normalized_duty_to_percent():
+    """0.35 (35 %) for 0.1 s integrates as 3.5 pct-s, not as 0.035 pct-s.
+
+    Gate calibration: 0.0040237052 m/pct-s and 1.7277518948 deg/pct-s, measured
+    with a 35 % x 0.1 s pulse (experiments/2026-10-18-nav-gate-1/raw/calibration.json).
+    One such pulse moved 0.5633 m / 40 = 0.01408 m, so that is the expected step.
+    Before the fix the same row returned 0.35 x 0.1 x calibration = 1.41e-4 m
+    (100x too small); the yaw step was 100x too small for the same reason.
+    """
+    forward_m_per_pct_s = 0.0040237052109054995
+    yaw_deg_per_pct_s = 1.7277518947686832
+    od = sn.OwnCommandOdometry(forward_m_per_pct_s=forward_m_per_pct_s,
+                               yaw_deg_per_pct_s=yaw_deg_per_pct_s)
+    row = dict(t=0.0, wheels=[.35] * 4, duration_s=[.1] * 4, pwm={})
+    forward_m, yaw_deg = od.step(row)
+    assert forward_m == pytest.approx(.1 * 35.0 * forward_m_per_pct_s, rel=1e-12)
+    assert forward_m == pytest.approx(0.014083, rel=1e-4)  # one calibration pulse
+    assert abs(yaw_deg) < 1e-12
+
+    # +turn pattern from the calibration run: [-PCT, PCT, -PCT, PCT].
+    row = dict(t=0.0, wheels=[-.35, .35, -.35, .35], duration_s=[.1] * 4, pwm={})
+    forward_m, yaw_deg = od.step(row)
+    assert forward_m == pytest.approx(0.0, abs=1e-12)
+    assert yaw_deg == pytest.approx(.1 * 35.0 * yaw_deg_per_pct_s, rel=1e-12)
+    assert yaw_deg == pytest.approx(6.04713, rel=1e-4)  # 20 pulses measured 120.94 deg
+
+
 def test_odometry_shifts_self_centric_memory_opposite_to_motion():
     od = sn.OwnCommandOdometry(forward_m_per_pct_s=0.001, yaw_deg_per_pct_s=0.01)
     nav = sn.navigation_factory('r1', {}, option=sn.OPTION, odometry=od,

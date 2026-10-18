@@ -592,20 +592,40 @@ class GpuCalibZoneDetector:
                      hue_units=GPU_CALIB_V1['units'], profile='gpu_calib_v1')]
 
 
+# Issued rows carry the adapter's *normalized* wheel duty in [-1, 1] (`WHEEL_PCT =
+# .35` is 35 %), while the injected calibration is measured per *percent*-second
+# (calibration JSON: pulse.percent = 35.0, width_s = 0.1).  This constant is the
+# single conversion boundary between those two vocabularies; the calibration JSON
+# contract (forward_m_per_pct_s, yaw_deg_per_pct_s) stays unchanged.
+PCT_PER_NORMALIZED_WHEEL = 100.0
+
+
 class OwnCommandOdometry:
     """Integrate own issued wheel pulses into self-centric displacement (injected calibration).
 
-    Wheel mix matches harness.grasp_act_contract.wheel_mix: (f-l-t, f+l+t, f+l-t, f-l+t).
-    Calibration is owner-supplied measured metres / degrees per percent-second; this
+    Wheel mix matches harness.grasp_act_contract.wheel_mix: (f-l-t, f+l+t, f-l-t, f-l+t).
+    Calibration is owner-supplied measured metres / degrees per *percent*-second; this
     class invents no defaults (contract v1: no unjustified constants).
+
+    Input rows are the adapter's own commands, whose wheel values are normalized duty
+    in [-1, 1] (a 0.35 wheel is 35 %).  `step` converts that duty to percent (x100)
+    before applying the percent-second constants, so 0.35 for 0.1 s integrates as
+    3.5 pct-s (0.0141 m at the gate forward calibration), not as 0.035 pct-s
+    (1.4e-4 m, a 100x under-integration).
     """
     def __init__(self, *, forward_m_per_pct_s, yaw_deg_per_pct_s):
         self.forward = float(forward_m_per_pct_s); self.yaw = float(yaw_deg_per_pct_s)
         if not (self.forward > 0.0 and self.yaw > 0.0):
             raise ValueError('odometry calibration must be positive')
 
+    @staticmethod
+    def wheels_percent(row):
+        """Own normalized wheel duty in [-1, 1] expressed as percent (-100 .. 100)."""
+        return [float(w) * PCT_PER_NORMALIZED_WHEEL for w in row['wheels']]
+
     def step(self, row):
-        wheels = list(row['wheels']); dts = list(row['duration_s'])
+        # Convert at the boundary: normalized duty -> percent, the calibration unit.
+        wheels = self.wheels_percent(row); dts = list(row['duration_s'])
         if len(wheels) != 4 or len(dts) != 4:
             raise ValueError('four own wheel pulses required')
         f = sum(w * dt for w, dt in zip(wheels, dts)) / 4.0
