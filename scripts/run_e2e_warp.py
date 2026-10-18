@@ -28,6 +28,11 @@ from harness.e2ewarp_nav_mode import (MODE as NAV_MODE, ROBOTS as NAV_ROBOTS,
                                       leader_for_seed as nav_leader, nav_static,
                                       queue_fields as nav_queue_fields,
                                       validate_queue as nav_validate_queue)
+from harness.e2ewarp_nav_gate import (NAV_SCENARIO, SIM_BUDGET_S as NAV_SIM_BUDGET_S,
+                                      gate_queue_fields as nav_gate_fields,
+                                      nav_orders as nav_gate_orders,
+                                      validate_calibration_binding as nav_validate_calibration,
+                                      validate_gate_queue as nav_validate_gate_queue)
 from harness.zone_study_contract import ROBOTS
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -75,7 +80,8 @@ def prepare(a):
     queue = dict(schema='ugrp.e2ewarp.queue.v1', execution_bundle_id=BUNDLE_ID, flow='e2e_llm',
         source_sha=head(), option=OPTION, enabled=a.e2e_warp_batch == 'on_v1', mode=a.mode,
         round=a.round, nworld=a.nworld, condition=a.condition, seed=a.seed,
-        sim_budget_s=30. if a.mode == 'smoke' else 1800.,
+        sim_budget_s=(30. if a.mode == 'smoke' else
+                      float(a.nav_sim_budget_s) if a.mode == NAV_MODE else 1800.),
         map_keyframe_admission=a.map_keyframe_admission,
         stack_sha256=digest, stack_values=values, stack_deviations=deviations,
         host=dict(instance=INSTANCE, project_id=PROJECT, account=ACCOUNT),
@@ -85,6 +91,8 @@ def prepare(a):
     if a.mode == NAV_MODE:
         # Explicit opt-in queue markers; the smoke/mission queue stays byte-identical.
         queue.update(nav_queue_fields(a.seed))
+        queue.update(nav_gate_fields(a.seed))
+        nav_validate_gate_queue(queue)
     a.output.mkdir(parents=True, exist_ok=False)
     write(funnel, dict(raw=str(a.output.resolve()), reproduction=a.command,
         stages=[dict(stage='queue_prepared', cumulative_pass_n=a.nworld, rejected_n=0),
@@ -150,6 +158,8 @@ def run(a, queue):
     if nav:
         # Fail closed before any host admission or physics import.
         nav_validate_queue(queue, a.seed)
+        nav_validate_gate_queue(queue)
+        nav_validate_calibration(queue)
     # Admission is complete before importing physics/render packages.
     relay, proof = admit(a, queue)
     components = (require_components(a.components, ROOT) if a.mode == 'mission'
@@ -176,14 +186,15 @@ def run(a, queue):
     try:
         for w in range(a.nworld):
             # Same static model/seed per batch; worlds have independent control.
-            context = build_context(a.seed, a.output/f'world-{w:02d}', queue['stack_values'])
+            context = build_context(a.seed, a.output/f'world-{w:02d}', queue['stack_values'], nav_scene=nav)
             contexts.append(context)
             scenario = context['scene'].scene['params']['scenario_setup']
             if nav:
                 # No static map: only order/condition metadata reaches the
                 # navigation component and the LLM prompt.
-                static = nav_static(dict(orders=scenario['orders'], condition=a.condition,
-                                         robot_count=len(robots)))
+                static = nav_static(dict(orders=nav_gate_orders(scenario['orders']),
+                                         condition=a.condition, robot_count=len(robots),
+                                         destination_zone='B'))
             else:
                 static = dict(orders=scenario['orders'], static_map=context['static_map'],
                               condition=a.condition, communication_schema=dict(
@@ -403,6 +414,8 @@ def build_parser():
     p.add_argument('--round', type=int, choices=(1, 2, 3), default=1)
     p.add_argument('--nworld', type=int, choices=range(1, 41), default=1)
     p.add_argument('--seed', type=int, default=601)
+    p.add_argument('--nav-sim-budget-s', type=float, default=NAV_SIM_BUDGET_S,
+                   help='navigation-gate SIM budget cap (<=120 s); ignored outside --mode nav')
     p.add_argument('--condition', choices=COMM_CONDITIONS, default='no_comm')
     p.add_argument('--prepare', action='store_true')
     p.add_argument('--execute', action='store_true')

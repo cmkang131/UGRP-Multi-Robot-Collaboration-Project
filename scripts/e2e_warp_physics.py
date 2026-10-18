@@ -6,6 +6,7 @@ MJWarp options, with no C-equivalence shims, legacy plane or noslip10 path.
 from pathlib import Path
 import importlib.util
 import hashlib
+import json
 from types import SimpleNamespace
 import sys
 
@@ -39,8 +40,14 @@ def source_module():
     return backend, core, schedule
 
 
-def build_context(seed, out, stack):
-    """Privileged initial construction only. No CPU integration/settling."""
+def build_context(seed, out, stack, *, nav_scene=False, nav_spawns=None):
+    """Privileged initial construction only. No CPU integration/settling.
+
+    ``nav_scene`` builds the contract-v1 two-robot navigation gate: cargo is not
+    spawned, r3 is pruned from the XML and only the two wide-door lane spawns are
+    initialised. Setup-only values never reach a controller.
+    """
+    from harness.e2ewarp_nav_gate import NAV_SCENARIO, eval_geometry, pair_lane_spawns
     import mujoco
     from sim.zone_scenario_scene import ScenarioFinalV3Scene
     from sim.multi_masterpi_production import build_multi_robot_xml
@@ -64,12 +71,19 @@ def build_context(seed, out, stack):
     natural.manifest = lambda assets=natural.ASSETS, extension=False: original_manifest(assets, extension=extension)
     natural.apply = lambda root, extension=False: original_apply(root, assets=natural.ASSETS, extension=extension)
     contrast.v1 = natural
-    scene = contrast.install(ScenarioFinalV3Scene.from_scenario('s1_normal_mixed_v7', seed),
+    scenario_id = NAV_SCENARIO if nav_scene else 's1_normal_mixed_v7'
+    scene = contrast.install(ScenarioFinalV3Scene.from_scenario(scenario_id, seed),
                              stack['scene_profile'], extension=True)
+    if nav_scene:
+        # Navigation gate: no cargo bodies and no cargo setup rows (gate 2 loads).
+        scene.cargo = []
+        scene.config['setup_only']['objects'] = {}
     hw, _ = load_fitted_hardware()
-    xml = scene.robot_transform(scene.transform(build_multi_robot_xml(hw)), hardware=hw, calibrated_keys=hw)
+    robot_ids = ('r1', 'r2') if nav_scene else ('r1', 'r2', 'r3')
+    xml = scene.robot_transform(scene.transform(build_multi_robot_xml(hw, robot_ids=robot_ids)),
+                                hardware=hw, calibrated_keys=hw)
     xml = camera.transform_xml(nearclip(xml), profile_id=camera.PROFILE_ID)
-    for rid in ('r1', 'r2', 'r3'):
+    for rid in robot_ids:
         xml = stiffness(xml, servo_stiffness='real_v1', robot_id=rid)
     tree = ET.fromstring(xml)
     # Existing approved end-color appearance, exact owner RGBA, all beam IDs.
@@ -87,11 +101,17 @@ def build_context(seed, out, stack):
     hw = v3_hardware(hw)
     hw.setdefault('servo6_center_pwm', 1500.)
     robots, ports = {}, {}
+    if nav_scene:
+        spawns = nav_spawns or pair_lane_spawns(scene.config['setup_only']['spawns'])
+    else:
+        spawns = scene.config['setup_only']['spawns']
     servo_joint = dict(yaw='arm_yaw', shoulder='shoulder', elbow='elbow', wrist='wrist_pitch')
-    for rid, pose in scene.config['setup_only']['spawns'].items():
+    robot_qpos_adr = {}
+    for rid, pose in spawns.items():
         bid = model.body(rid + '__robot').id
         adr = int(model.jnt_qposadr[int(model.body_jntadr[bid])])
         data.qpos[adr:adr+7] = [*pose[:3], np.cos(pose[3]/2), 0, 0, np.sin(pose[3]/2)]
+        robot_qpos_adr[rid] = adr
         robot = SimpleNamespace(model=model, physical_params=hw,
             wheel_act=[model.actuator(rid+'__wheel_'+n+'_drive').id for n in ('fl', 'fr', 'rl', 'rr')],
             arm_joint={k: model.joint(rid+'__'+n).id for k, n in servo_joint.items()},
@@ -126,6 +146,9 @@ def build_context(seed, out, stack):
     mujoco.mj_forward(model, data)
     out.mkdir(parents=True, exist_ok=False)
     (out/'scene.xml').write_text(xml)
+    if nav_scene:
+        geometry = eval_geometry(scene, spawns, robot_qpos_adr)
+        (out/'eval-geometry.json').write_text(json.dumps(geometry, ensure_ascii=False, indent=1) + '\n')
     cargo = [i for i in range(model.ngeom) if model.body(int(model.geom_bodyid[i])).name.startswith('cargo_')]
     fingers = {model.geom(r+'__'+s+'_finger').id: 2*k+j for k, r in enumerate(robots) for j, s in enumerate(('left', 'right'))}
     world = SimpleNamespace(model=model, data=data, scene_xml=xml, robot=robots.__getitem__,
