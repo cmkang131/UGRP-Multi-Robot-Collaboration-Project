@@ -25,9 +25,12 @@ def main():
     p.add_argument('--takeover',action='store_true');p.add_argument('--takeover-hold-s',type=float,default=3.0)
     p.add_argument('--takeover-after-s',type=float,default=6.0);p.add_argument('--max-ticks',type=int,default=300)
     p.add_argument('--takeover-pilot',action='store_true')
+    p.add_argument('--plan-seeds',type=int,nargs='+')
     a=p.parse_args()
     if not a.enabled:p.error('DAgger collection default OFF')
     if a.takeover_pilot and not a.takeover:p.error('--takeover-pilot requires explicit --takeover')
+    if a.plan_seeds and not a.takeover_pilot:p.error('--plan-seeds is takeover-pilot-only')
+    if a.plan_seeds and len(set(a.plan_seeds))!=len(a.plan_seeds):p.error('unique pilot seeds required')
     if a.takeover_pilot and a.max_ticks!=900:p.error('takeover pilot uses the unchanged 90 SIM s owner cap (--max-ticks 900)')
     if a.takeover and a.interface_probe_only:p.error('takeover requires the applied student rollout lane, not an interface probe')
     if not 0<a.takeover_hold_s<=60:p.error('takeover hold must be in (0, 60] SIM s')
@@ -35,6 +38,11 @@ def main():
     if not 1<=a.max_ticks<=900:p.error('1..900 SIM ticks (the unchanged owner cap is 90 SIM s)')
     host=require_gcp2(training=True);source=frozen_source(ROOT);frozen_source(a.actor_source,ACT_SHA)
     plans=json.loads(a.plans.read_text())['episodes']
+    if a.plan_seeds:
+        by_seed={plan['seed']:plan for plan in plans}
+        missing=[seed for seed in a.plan_seeds if seed not in by_seed]
+        if missing:raise ValueError('pilot seeds missing from reference plans: '+repr(missing))
+        plans=[by_seed[seed] for seed in a.plan_seeds]
     if a.interface_probe_only:
         if len(plans)!=1 or not 86820<=plans[0]['seed']<=86864:p.error('single TRAIN-world interface probe only')
     else:
