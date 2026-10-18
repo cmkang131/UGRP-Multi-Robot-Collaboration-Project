@@ -105,7 +105,7 @@ def prepare(a):
                                    approval=dict(approval)))
         # Explicit opt-in queue markers; the smoke/mission queue stays byte-identical.
         queue.update(nav_queue_fields(a.seed))
-        queue.update(nav_gate_fields(a.seed))
+        queue.update(nav_gate_fields(a.seed, sim_budget_s=a.nav_sim_budget_s))
         nav_validate_gate_queue(queue)
     a.output.mkdir(parents=True, exist_ok=False)
     write(funnel, dict(raw=str(a.output.resolve()), reproduction=a.command,

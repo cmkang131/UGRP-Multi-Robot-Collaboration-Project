@@ -12,7 +12,9 @@ from harness import e2ewarp_nav_gate as gate
 def calibration(**overrides):
     value = dict(schema=gate.CALIBRATION_SCHEMA, measured=True, measured_n=40,
                  source_sha='a' * 40,
-                 constants=dict(forward_m_per_pct_s=0.0095, yaw_deg_per_pct_s=1.25))
+                 constants=dict(forward_m_per_pct_s=0.0095, yaw_deg_per_pct_s=1.25),
+                 per_robot={rid: dict(forward_m_per_pct_s=0.0095, yaw_deg_per_pct_s=1.25)
+                            for rid in gate.ROBOTS})
     value.update(overrides)
     return value
 
@@ -67,6 +69,9 @@ def test_calibration_requires_measured_artifact(tmp_path):
      'CONSTANT_INVALID'),
     (calibration(constants=dict(forward_m_per_pct_s=0.01, yaw_deg_per_pct_s=-1.0)),
      'CONSTANT_INVALID'),
+    (calibration(per_robot={'r1': dict(forward_m_per_pct_s=0.005, yaw_deg_per_pct_s=1.0),
+                            'r2': dict(forward_m_per_pct_s=0.015, yaw_deg_per_pct_s=1.0)}),
+     'INCONSISTENT:forward'),
 ])
 def test_calibration_fails_closed(tmp_path, value, message):
     with pytest.raises(ValueError, match=message):
@@ -278,3 +283,28 @@ def test_noncompliance_of_chat_envelope_is_recorded_not_fatal_for_navigation():
     channels.validate('r1', None)  # null message is the contract's "no message"
     with pytest.raises(ValueError):
         channels.validate('r1', {'recipients': ['r2'], 'body': 'REQUEST_CARRY_PAIR:order-1'})
+
+
+def test_gate_budget_follows_the_cli_up_to_the_cap(tmp_path):
+    record = gate.load_calibration(write_calibration(tmp_path))
+    fields = gate.gate_queue_fields(601, calibration=record, sim_budget_s=90.0)
+    assert fields['nav_sim_budget_s'] == 90.0
+    queue = valid_queue(**{k: v for k, v in fields.items() if k.startswith('nav_')})
+    queue['sim_budget_s'] = 90.0
+    assert gate.validate_gate_queue(queue)['nav_sim_budget_s'] == 90.0
+
+
+def test_factory_uses_only_the_admitted_calibration(tmp_path, monkeypatch):
+    monkeypatch.setattr(gate, '_ADMITTED', None)
+    path = write_calibration(tmp_path)
+    record = gate.load_calibration(path)
+    monkeypatch.setenv(gate.CALIBRATION_ENV, str(path))
+    with pytest.raises(ValueError, match='NOT_ADMITTED'):
+        gate.navigation_factory('r1', {})
+    queue = valid_queue(nav_calibration=dict(sha256=record['sha256'], source_sha=record['source_sha'],
+                                             constants=record['constants']))
+    gate.validate_calibration_binding(queue)
+    changed = calibration(constants=dict(forward_m_per_pct_s=0.0096, yaw_deg_per_pct_s=1.25))
+    path.write_text(json.dumps(changed))
+    nav = gate.navigation_factory('r1', {'destination_zone': 'B'})
+    assert nav.odometry.forward == record['constants']['forward_m_per_pct_s']

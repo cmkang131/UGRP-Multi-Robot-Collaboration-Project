@@ -42,9 +42,11 @@ DESTINATION_ZONE = 'B'
 DESTINATION_KIND = 'zone_B'
 SIM_BUDGET_S = 60.
 MAX_SIM_BUDGET_S = 120.
+MAX_REL_SPREAD = 0.20
 CALIBRATION_SCHEMA = 'ugrp.e2ewarp.nav_calibration.v1'
 CALIBRATION_ENV = 'E2EWARP_NAV_CALIBRATION'
 CALIBRATION_PATH = ROOT / 'configs/e2ewarp/nav_gate_calibration.json'
+_ADMITTED = None
 
 
 def pair_lane_spawns(scene_spawns):
@@ -127,6 +129,19 @@ def load_calibration(path=None):
             raise ValueError('NAV_CALIBRATION_CONSTANT_INVALID:' + name)
     if int(payload.get('measured_n') or 0) <= 0:
         raise ValueError('NAV_CALIBRATION_MEASURED_N_REQUIRED')
+    per_robot = payload.get('per_robot') or {}
+    if set(per_robot) != set(ROBOTS):
+        raise ValueError('NAV_CALIBRATION_PER_ROBOT_REQUIRED')
+    for rid, row in per_robot.items():
+        for name in ('forward_m_per_pct_s', 'yaw_deg_per_pct_s'):
+            value = row.get(name)
+            if isinstance(value, bool) or not isinstance(value, (int, float)) or not value > 0.0:
+                raise ValueError(f'NAV_CALIBRATION_PER_ROBOT_INVALID:{rid}:{name}')
+    for name, key in (('forward', 'forward_m_per_pct_s'), ('yaw', 'yaw_deg_per_pct_s')):
+        values = [float(per_robot[rid][key]) for rid in ROBOTS]
+        mean = sum(values) / len(values)
+        if (max(values) - min(values)) / mean > MAX_REL_SPREAD:
+            raise ValueError('NAV_CALIBRATION_INCONSISTENT:' + name)
     source_sha = str(payload.get('source_sha') or '')
     if len(source_sha) != 40 or any(c not in '0123456789abcdef' for c in source_sha):
         raise ValueError('NAV_CALIBRATION_SOURCE_SHA_REQUIRED')
@@ -137,13 +152,23 @@ def load_calibration(path=None):
 
 
 def navigation_factory(robot_id, static=None, **kwargs):
-    """Hash-bound factory entry expected by ``--mode nav`` manifests."""
+    """Hash-bound factory entry expected by ``--mode nav`` manifests.
+
+    Uses only the calibration record admitted by ``validate_calibration_binding``
+    (same bytes, same constants); a file changed after admission cannot alter the
+    run (no re-read / TOCTOU).
+    """
     from harness.e2ewarp_selfnav import (GpuCalibZoneDetector, OPTION, OwnCommandOdometry,
                                         SelfCentricNavigation)
     calibration = kwargs.pop('calibration', None)
     if kwargs:
         raise ValueError('unexpected navigation factory kwargs: ' + ','.join(sorted(kwargs)))
-    record = calibration or load_calibration()
+    if calibration is not None:
+        record = calibration
+    elif _ADMITTED is not None:
+        record = _ADMITTED
+    else:
+        raise ValueError('NAV_CALIBRATION_NOT_ADMITTED')
     constants = record['constants']
     return SelfCentricNavigation(
         robot_id, static, option=OPTION,
@@ -153,14 +178,14 @@ def navigation_factory(robot_id, static=None, **kwargs):
         destination_kind=DESTINATION_KIND)
 
 
-def gate_queue_fields(seed, calibration=None):
+def gate_queue_fields(seed, calibration=None, sim_budget_s=SIM_BUDGET_S):
     """Scene/adaptor markers written by ``--prepare --mode nav`` (audit only)."""
     record = calibration or load_calibration()
     return dict(nav_scene=NAV_SCENARIO, nav_map='zone_wide_two_doors_final_v3',
                 nav_robots=list(ROBOTS), nav_spawn_y=dict(LANE_Y),
                 nav_destination_kind=DESTINATION_KIND,
                 nav_static_map_input=False, nav_cargo_spawned=False,
-                nav_sim_budget_s=SIM_BUDGET_S, nav_leader_rotation=True,
+                nav_sim_budget_s=float(sim_budget_s), nav_leader_rotation=True,
                 nav_calibration=dict(path=record['path'], sha256=record['sha256'],
                                      source_sha=record['source_sha'],
                                      constants=dict(record['constants'])))
@@ -195,10 +220,12 @@ def validate_gate_queue(queue):
 
 def validate_calibration_binding(queue):
     """The artifact read by the factory must be the one the queue admitted."""
+    global _ADMITTED
     record = load_calibration()
     admitted = (queue.get('nav_calibration') or {}).get('sha256')
     if record['sha256'] != admitted:
         raise ValueError('NAV_CALIBRATION_CHANGED')
+    _ADMITTED = record
     return record
 
 
