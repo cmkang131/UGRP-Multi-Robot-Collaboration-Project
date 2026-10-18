@@ -20,8 +20,19 @@ Contract v1 (2026-10-18, user decisions):
   solidity >= 0.45, area <= 65% and height <= 65% of the frame, spanning the
   horizontal centre, and not touching the top edge.  A bare `bottom_norm` (for
   example scattered floor pixels) no longer produces an arrival claim.  Missing
-  calibration or a missing destination stays fail-closed (wheels 0) with a
+  calibration or a missing detector stays fail-closed (wheels 0) with a
   reported reason.
+- Acquisition (bounded SEARCH): when the option is active and ready but *no*
+  destination landmark is remembered, the robot first turns in place instead of
+  holding blindly.  The turn is a symmetric in-place pair of 35 % wheel pulses
+  of 75 ms (inside the existing percent x pulse-width vocabulary); the
+  direction reverses every SEARCH_LEG_STEPS steps so the heading never winds
+  more than about one turn from the spawn heading, and the whole search is
+  bounded by SEARCH_BUDGET_S (20 sim s) and a SEARCH_MAX_STEPS hard cap.  A
+  fresh detection is acted on in the same control step, so search stops as soon
+  as the destination enters the camera; if the budget expires first, the wheels
+  hold with `drive_reason='search_timeout'`.  SEARCH never records arrival
+  evidence and cannot bypass the arrival guard.
 - `ready` is true only when the option is active AND both the own-RGB detector
   and the odometry/motion model were injected. Detector and motion model are
   deliberately absent in this scaffold; the physical gates still apply.
@@ -49,6 +60,22 @@ PULSE_S = .10
 BEARING_FULL_DEG = 45.0
 ALIGN_GATE_DEG = 30.0
 APPROACH_RANGE_M = .75
+# Bounded acquisition (SEARCH) before destination following.  Gate 1 held with
+# `no_destination` because the zone paint through the doorway was only ~91 px,
+# below the detector's 600 px largest-component threshold: the robot must turn
+# to bring the zone into view.  One leg is 80 steps x (35 % x .10 s x .75) =
+# 210 percent-seconds; at the measured gate yaw calibration (1.7275 deg/pct-s,
+# experiments/2026-10-18-nav-gate-1/raw/calibration.json) that is ~363 deg, i.e.
+# a full turn per leg, and a 20 % calibration error still leaves >= 290 deg
+# (full directional coverage with the 120 deg camera HFOV).  Reversing the
+# direction every leg keeps the heading within ~one turn of the spawn heading.
+# A .75 duty at the 10 Hz gate cadence is a 75 ms pulse with a 25 ms gap, so
+# consecutive commands do not overlap.  20 s of search is 200 steps at 10 Hz;
+# the step cap protects against a non-monotonic or faster sim clock.
+SEARCH_BUDGET_S = 20.0
+SEARCH_MAX_STEPS = 220
+SEARCH_LEG_STEPS = 80
+SEARCH_PULSE_DUTY = .75
 # Arrival evidence recorded in self-centric memory (contract v1 scaffold values).
 ARRIVAL_BOTTOM_NORM = .98
 ARRIVAL_RANGE_M = .25
@@ -198,6 +225,11 @@ class SelfCentricNavigation:
         self._messages = []
         self._issued = []
         self._drive_reason = 'idle'
+        # Bounded SEARCH state: the timer starts on the first issued search
+        # pulse, not on the first report, so a delayed command cannot exhaust
+        # the budget before the robot actually moves.
+        self._search_started_s = None
+        self._search_steps = 0
 
     @property
     def ready(self):
@@ -246,6 +278,24 @@ class SelfCentricNavigation:
                 and landmark.range_m <= self.arrival_range_m
                 and landmark.uncertainty_m <= ARRIVAL_UNCERTAINTY_M)
 
+    def _search_elapsed_s(self, now_s):
+        """Own-clock time spent searching; 0 until the first search pulse."""
+        if self._search_started_s is None:
+            return 0.0
+        return max(0.0, float(now_s) - self._search_started_s)
+
+    def _search_turn(self):
+        """Symmetric in-place turn sign for the current leg (±1): alternates."""
+        leg = self._search_steps // SEARCH_LEG_STEPS
+        return 1.0 if leg % 2 == 0 else -1.0
+
+    def _search_reason(self, now_s):
+        """`searching` while the bounded budget lasts, then `search_timeout`."""
+        if (self._search_elapsed_s(now_s) >= SEARCH_BUDGET_S
+                or self._search_steps >= SEARCH_MAX_STEPS):
+            return 'search_timeout'
+        return 'searching'
+
     def _drive_plan(self, now_s=None):
         """Own-memory control plan; no plan means the wheel hold is returned."""
         if now_s is None:  # test/introspection default: the last own frame's time
@@ -256,7 +306,15 @@ class SelfCentricNavigation:
         if self.odometry is None:
             return dict(reason='no_odometry', landmark=landmark, forward=0.0, turn=0.0)
         if landmark is None:
-            return dict(reason='no_destination', landmark=None, forward=0.0, turn=0.0)
+            # No remembered destination: acquire it with a bounded in-place
+            # sweep.  Fail closed when the detector was not injected (nothing
+            # could ever be acquired) or when the budget is exhausted.
+            if not self.ready:
+                return dict(reason='no_destination', landmark=None, forward=0.0, turn=0.0)
+            reason = self._search_reason(now_s)
+            if reason == 'search_timeout':
+                return dict(reason=reason, landmark=None, forward=0.0, turn=0.0)
+            return dict(reason=reason, landmark=None, forward=0.0, turn=self._search_turn())
         if self._arrival_evidence(landmark, now_s):
             return dict(reason='arrived', landmark=landmark, forward=0.0, turn=0.0)
         bearing = wrap_deg(landmark.bearing_deg)
@@ -289,7 +347,9 @@ class SelfCentricNavigation:
                     holding_status=holding, destination_arrived=arrived, handoff_ready=handoff,
                     evidence_revision=self._revision, return_landmark=bool(returned),
                     ready=self.ready, drive_reason=plan['reason'],
-                    destination_landmark=(None if zone is None else zone.kind))
+                    destination_landmark=(None if zone is None else zone.kind),
+                    search_elapsed_s=round(self._search_elapsed_s(now_s), 3),
+                    search_steps=int(self._search_steps))
 
     # --- task/order sheet -------------------------------------------------
     def task_candidates(self, completed):
@@ -309,16 +369,27 @@ class SelfCentricNavigation:
         Drive is the calibrated finite-pulse vocabulary: every moving wheel is
         sent at WHEEL_PCT and the proportional left/right magnitudes are encoded
         in the per-wheel pulse width (PULSE_S full scale), so the issued row
-        stays inside the own-command whitelist.  No calibration is invented.
+        stays inside the own-command whitelist.  SEARCH uses the same amplitude
+        with a shorter symmetric pulse (SEARCH_PULSE_DUTY * PULSE_S) and turns
+        left/right wheels in opposite directions.  No calibration is invented.
         """
         from harness.active_camera import SEARCH  # hold PWM values only (no map)
         pwm = {str(k): int(v) for k, v in SEARCH.items()}
         plan = self._drive_plan(now_s)
         self._drive_reason = plan['reason']
-        if plan['reason'] == 'driving':
+        searching = plan['reason'] == 'searching'
+        if searching:
+            # The budget clock starts with the first issued pulse, and each
+            # pulse advances the sweep leg (direction reverses every leg).
+            if self._search_started_s is None:
+                self._search_started_s = float(now_s)
+            self._search_steps += 1
+        if plan['reason'] == 'driving' or searching:
             from harness.grasp_act_contract import wheel_mix
+            forward, turn = (0.0, plan['turn']) if searching else (plan['forward'], plan['turn'])
+            pulse_s = SEARCH_PULSE_DUTY * PULSE_S if searching else PULSE_S
             wheels, duration = [], []
-            for value in wheel_mix((plan['forward'], 0.0, plan['turn'])):
+            for value in wheel_mix((forward, 0.0, turn)):
                 value = clamp(float(value), -1.0, 1.0)
                 if abs(value) < MIN_PULSE_FRACTION:
                     wheels.append(0.0)
@@ -327,7 +398,7 @@ class SelfCentricNavigation:
                     # Existing finite-pulse vocabulary: calibrated percent
                     # amplitude, pulse width proportional to wheel magnitude.
                     wheels.append(math.copysign(WHEEL_PCT, value))
-                    duration.append(abs(value) * PULSE_S)
+                    duration.append(abs(value) * pulse_s)
         else:
             wheels, duration = [0.0] * 4, [0.0] * 4
         row = dict(t=float(now_s), wheels=wheels, duration_s=duration, pwm=pwm)

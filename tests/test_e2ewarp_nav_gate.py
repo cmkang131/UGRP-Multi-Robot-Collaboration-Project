@@ -79,15 +79,19 @@ def test_calibration_fails_closed(tmp_path, value, message):
 
 
 def test_navigation_factory_builds_self_centric_navigation(tmp_path):
+    from harness.e2ewarp_selfnav import SEARCH_BUDGET_S
     path = write_calibration(tmp_path)
     nav = gate.navigation_factory('r1', {'destination_zone': 'B'},
                                   calibration=gate.load_calibration(path))
     assert nav.ready is True
     assert nav.destination_kind == 'zone_B'
-    # No observation yet: memory empty -> the wheel hold, never an arrival claim.
+    # No observation yet: memory empty -> the bounded SEARCH turns in place to
+    # acquire the destination (never an arrival claim, never a silent hold).
     row = nav.command(0.0)
-    assert row['wheels'] == [0.0] * 4
-    assert nav._drive_plan()['reason'] == 'no_destination'
+    assert row['wheels'] != [0.0] * 4
+    assert row['wheels'][0] < 0.0 < row['wheels'][1]
+    assert nav._drive_plan(0.0)['reason'] == 'searching'
+    assert nav._drive_plan(SEARCH_BUDGET_S)['reason'] == 'search_timeout'
     with pytest.raises(ValueError):
         gate.navigation_factory('r3', {})
 
