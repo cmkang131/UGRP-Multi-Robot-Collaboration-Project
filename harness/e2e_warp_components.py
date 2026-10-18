@@ -97,6 +97,10 @@ def require_components(path, root):
     if (correction.get('mode') != 'on' or correction.get('own_and_static_map') is not True
             or correction.get('spawn_anchor_used') is not False):
         raise ValueError('DEPENDENCY_WAIT:own/static map correction without spawn anchor required')
+    evaluator = manifest.get('evaluator_factory', {})
+    if (evaluator.get('ready') is not True or not evaluator.get('owner')
+            or not evaluator.get('evidence')):
+        raise ValueError('DEPENDENCY_WAIT:evaluator_factory')
     for name in ('navigation_factory', 'release_factory', 'evaluator_factory'):
         _hash_bound(root, manifest.get(name, {}), name)
     _require_actor(manifest)

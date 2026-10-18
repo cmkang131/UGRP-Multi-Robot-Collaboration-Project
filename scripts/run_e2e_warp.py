@@ -54,6 +54,176 @@ def stack_config():
     return json.loads(path.read_text()), sha(path.read_bytes())
 
 
+def _report_section(row, name):
+    value = row.get(name)
+    if isinstance(value, dict):
+        return value
+    navigation = row.get('own_navigation')
+    return navigation if isinstance(navigation, dict) and isinstance(navigation.get(name), dict) else {}
+
+
+def _forbidden_keys(value):
+    keys = set()
+    if isinstance(value, dict):
+        for key, item in value.items():
+            name = str(key)
+            if (name in ('top_rgb', 'top_camera', 'ground_truth', 'gt_pose', 'gt_poses', 'object_poses',
+                         'robot_poses', 'measured_joints', 'contact_state', 'grasp_success', 'simulator_state',
+                         'qpos', 'evaluator', 'evaluator_state')
+                    or name.startswith(('gt_', 'top_'))):
+                keys.add(name)
+            keys |= _forbidden_keys(item)
+    elif isinstance(value, list):
+        for item in value:
+            keys |= _forbidden_keys(item)
+    return keys
+
+
+def _self_map_evidence(maprows, robot_ids, nworld):
+    """Eval-only own-map ledger summary; never returned to a controller."""
+    worlds = []
+    for world in range(nworld):
+        robots = {}
+        for robot in robot_ids:
+            rows = [row for row in maprows if row.get('world') == world and row.get('robot') == robot]
+            inserted = sum(1 for row in rows if _report_section(row, 'self_map').get('inserted') is True)
+            cells = [_report_section(row, 'self_map').get('occupied_cells') for row in rows]
+            occupied = max([value for value in cells if type(value) is int], default=0)
+            correction = sum(1 for row in rows
+                             if _report_section(row, 'own_navigation').get('map_correction_active') is True)
+            poses = 0
+            for row in rows:
+                pose = row.get('own_gauge_pose')
+                if pose is None:
+                    navigation = _report_section(row, 'own_navigation')
+                    pose = navigation.get('own_gauge_pose')
+                if (isinstance(pose, (list, tuple)) and len(pose) == 3
+                        and all(type(v) in (int, float) and v == v and abs(v) != float('inf') for v in pose)):
+                    poses += 1
+            gt = sorted({key for row in rows for key in _forbidden_keys(row) if key not in ('world', 'robot')})
+            robots[robot] = dict(observations=len(rows), inserted_frames=inserted,
+                                 occupied_cells_max=occupied, map_correction_active_rows=correction,
+                                 own_gauge_pose_rows=poses, gt_fields_present=gt)
+        worlds.append(dict(world_id=world, robots=robots))
+    digest = hashlib.sha256(json.dumps(maprows, sort_keys=True, separators=(',', ':'),
+                                       default=str).encode()).hexdigest()
+    return dict(source='localization.json', rows_sha256=digest, worlds=worlds)
+
+
+def _cargo_half_extents(item_id, kind, scene):
+    objects = scene.config.get('setup_only', {}).get('objects', {})
+    if item_id in objects and objects[item_id].get('half_extents_m'):
+        return [float(v) for v in objects[item_id]['half_extents_m'][:2]]
+    try:
+        from sim.zone_cargo import CATALOGUE
+        spec = CATALOGUE.get(kind)
+        return [float(v) for v in spec.landing_half_extents_m[:2]] if spec is not None else None
+    except ImportError:
+        return None
+
+
+def evaluation_geometry(contexts, initial, maprows, source_sha, state_sha, dt):
+    """Build eval-only geometry after controllers stopped.
+
+    Zone rectangles and the door aperture come from the static map; robot/cargo
+    qpos addresses and pickup poses come from the built model. This document is
+    only handed to the post-run evaluator and never re-enters a controller,
+    mapper, ACT input or LLM prompt.
+    """
+    from harness.e2ewarp_evaluator import build_geometry, yaw_from_quat
+    world = contexts[0]['world']
+    model, scene = world.model, contexts[0]['scene']
+    scenario = scene.scene['params']['scenario_setup']
+    robot_ids = list(contexts[0]['ports'])
+    robots = []
+    for robot in robot_ids:
+        body = model.body(robot + '__robot').id
+        joint = int(model.body_jntadr[body])
+        if joint < 0 or int(model.jnt_type[joint]) != 0:
+            raise ValueError('EVALUATOR_GEOMETRY_INVALID:robot base free joint ' + robot)
+        robots.append(dict(id=robot, base_qpos_adr=int(model.jnt_qposadr[joint])))
+    kinds = {item['item_id']: item['kind'] for item in scene.config.get('cargo_set', {}).get('items', [])}
+    for item in scenario.get('eval', {}).get('setup', {}).get('placements', []):
+        kinds.setdefault(item['item_id'], item.get('kind', ''))
+    objects = scene.config.get('setup_only', {}).get('objects', {})
+    for item_id, item in objects.items():
+        kinds.setdefault(item_id, item.get('kind', ''))
+    authored = {item['item_id']: item for item in scene.config.get('cargo_set', {}).get('items', [])}
+    cargo = []
+    for index in range(int(model.nbody)):
+        name = model.body(index).name
+        if not name.startswith('cargo_'):
+            continue
+        joint = int(model.body_jntadr[index])
+        if joint < 0 or int(model.jnt_type[joint]) != 0:
+            continue
+        item_id = name[len('cargo_'):]
+        address = int(model.jnt_qposadr[joint])
+        start = initial[0][address:address + 7]
+        if item_id in objects and len(objects[item_id].get('position_m', [])) >= 2:
+            initial_xy = [float(v) for v in objects[item_id]['position_m'][:2]]
+            initial_yaw = 0.
+        elif item_id in authored and len(authored[item_id].get('pose', [])) == 3:
+            initial_xy = [float(v) for v in authored[item_id]['pose'][:2]]
+            initial_yaw = float(authored[item_id]['pose'][2])
+        else:
+            initial_xy = [float(start[0]), float(start[1])]
+            initial_yaw = float(yaw_from_quat(*[float(v) for v in start[3:7]]))
+        cargo.append(dict(id=item_id, kind=kinds.get(item_id, ''), qpos_adr=address,
+                          initial_xy_m=initial_xy, initial_yaw_rad=initial_yaw,
+                          half_extents_m=_cargo_half_extents(item_id, kinds.get(item_id, ''), scene)))
+    static = scene.config['static_map']
+    zones = {}
+    for name, region in (static.get('regions') or {}).items():
+        if name.startswith('zone_') and region.get('center_m') and region.get('half_extents_m'):
+            zones[name[len('zone_'):]] = dict(center_m=[float(v) for v in region['center_m']],
+                                              half_extents_m=[float(v) for v in region['half_extents_m']])
+    gate = None
+    for passage in static.get('passages') or []:
+        if passage.get('kind') != 'door':
+            continue
+        axis = passage.get('axis')
+        center, half = passage['center_m'], passage['half_extents_m']
+        if axis == 'x':
+            gate = dict(id=passage.get('id', 'door'), axis='x', plane_m=float(center[0]),
+                        center_lateral_m=float(center[1]), half_width_m=float(half[1]))
+        elif axis == 'y':
+            gate = dict(id=passage.get('id', 'door'), axis='y', plane_m=float(center[1]),
+                        center_lateral_m=float(center[0]), half_width_m=float(half[0]))
+        break
+    orders = scenario.get('orders') or []
+    destination = 'B'
+    destined = [order for order in orders if order.get('destination_zone') == destination]
+    if not destined:
+        raise ValueError('EVALUATOR_MISSION_INVALID:no order for destination ' + destination)
+    order_ids = {order.get('order_id') for order in destined}
+    placements = (scenario.get('eval', {}).get('setup', {}).get('placements')
+                  or scenario.get('placements') or [])
+    cargo_ids = [item['item_id'] for item in placements
+                 if item.get('order_id') in order_ids or item.get('destination_zone') == destination]
+    cargo_ids = [item for item in cargo_ids if any(row['id'] == item for row in cargo)]
+    if not cargo_ids:
+        for order in destined:
+            cargo_ids.extend(item for item in (order.get('item_ids') or []) if item not in cargo_ids)
+            if isinstance(order.get('cargo'), str):
+                cargo_ids.extend(row['id'] for row in cargo
+                                 if row['kind'] == order['cargo'] and row['id'] not in cargo_ids)
+    if not cargo_ids:
+        raise ValueError('EVALUATOR_MISSION_INVALID:no cargo for destination ' + destination)
+    required = []
+    for order in destined:
+        for robot in order.get('robots') or []:
+            if robot in robot_ids and robot not in required:
+                required.append(robot)
+    mission = dict(destination_zone=destination, base_requirement='all' if required else 'any',
+                   required_robots=required or list(robot_ids), cargo_ids=cargo_ids,
+                   require_cargo=True, require_gate=gate is not None)
+    return build_geometry(source_sha=source_sha, evaluation_state_sha256=state_sha, dt=float(dt),
+                          worlds=[dict(world_id=w, robots=robots, cargo=cargo) for w in range(len(contexts))],
+                          zones=zones, gate=gate, mission=mission,
+                          self_map=_self_map_evidence(maprows, robot_ids, len(contexts)))
+
+
 def prepare(a):
     stack, digest = stack_config()
     if a.mode == 'mission':
@@ -228,6 +398,9 @@ def run(a, queue):
                 else:
                     tasks[key] = DiagnosticTask(scenario['orders'])
                 ownstates[key], rings[key] = {}, deque(maxlen=101)  # 10 SIM s at existing 10Hz + current
+        # Eval-only initial state; kept in this local scope and used solely by
+        # the post-run evaluator after every controller stopped.
+        initial_state = [c['world'].data.qpos.copy() for c in contexts]
         hooks = transport(contexts, a.output, head(), queue['stack_values'])
         hooks.initialize(contexts)
         write(a.output/'runtime-applied.json', dict(flow='e2e_llm', stack_values=queue['stack_values'],
@@ -411,6 +584,12 @@ def run(a, queue):
             # Post-run evaluator receives raw state files ONLY after controllers
             # stop. Its output never re-enters their observations or transitions.
             try:
+                state_path = a.output/'evaluation-state.npz'
+                if not state_path.is_file():
+                    raise ValueError('EVALUATOR_INPUT_MISSING:evaluation-state.npz')
+                geometry = evaluation_geometry(contexts, initial_state, maprows, head(),
+                                               sha(state_path.read_bytes()), .1)
+                write(a.output/'eval-geometry.json', geometry)
                 outcome = factory(components['evaluator_factory'])(raw=a.output)
                 write(a.output/'physical-evaluation.json', outcome)
                 worlds = outcome.get('worlds', [])
