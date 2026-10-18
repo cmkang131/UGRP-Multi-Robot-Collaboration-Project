@@ -187,3 +187,53 @@ Stage B baseline의 재현이므로 baseline과 조건 차이가 없을 때만 �
 3. Stage B 게이트 종료 후 gcp3에서 preflight(2 starts 60 s) → 자체 gate(16×180).
 4. 결과는 원본 재계수(Stage A 표와 같은 형식 + fix 항목 표)로 보고하고
    Stage A와 합산하지 않는다.
+
+## v3 addendum (2026-10-18, built from the recorded raw - not from gate outcomes)
+
+### v3-a door gap acceptance (measured)
+
+Stage A's 9 gap claims were all false. The wall points were recomputed offline
+from the recorded frames + trace servo poses (`/tmp/vg3_analyze.py`) and the
+ahead cone (|bearing| <= 20 deg, range <= 1.0 m) was measured at each claim:
+
+| episode | front-cone points | jamb in 20-110 deg | real door? |
+|---:|---:|---|---|
+| e00 | 0 | no | no |
+| e03 | 418 | no | no |
+| e04 | 0 | no | no |
+| e06 | 0 | no | no |
+| e08 | 0 | no | no |
+| e10 | 23 | no | no |
+| e12 | 0 | no | no |
+| e14 | 377 | no | no |
+| e15 | 0 | no | no |
+
+Rule v3: accept only if (a) side wall tracked >= 12 ticks, (b) ahead cone has
+<= 10 wall points (an open doorway keeps the cone empty; a pickup-room wall
+fills it with 377-418 points), (c) a jamb wall face exists on the followed side
+in 20-110 deg within 1.3 m. Constants are between the measured classes (0/23
+vs 377/418) and the authored door width 0.50 m; **all nine recorded false
+claims are rejected by construction**. The true-door side is not exercised in
+the recorded unloaded raw (the single GT crossing, e02, happened in `target`
+stage while chasing visible paint, not through `gap_cross`), so v3's acceptance
+side is a prediction to be measured by the gate, not a measured fact.
+
+### v3-b zone-edge declaration check (own RGB)
+
+The only recorded declaration outside zone B (fix v2 e02, t=79.9 s, GT margin
+-0.0162 m) had the destination paint bbox bottom at 461/480 = **0.960** of the
+frame. v3 requires the paint to reach >= 0.98 (bottom 2% band) before keeping
+a declaration; otherwise it retracts and creeps forward at most 30 ticks
+(3 SIM s), then force-declares with `zone_edge_force_declare`. Own RGB only;
+the declared-stop GT margin remains eval-only.
+
+### v3-c alignment
+
+v1's two-jamb lateral estimate (tolerance 0.02 m, no forward motion while
+misaligned) is kept; it is only exercised if v3-a accepts a real gap.
+
+### Constants
+
+`GAP_FRONT_CONE_MAX_POINTS=10`, `GAP_JAMB_RANGE_M_V3=1.3`,
+`ZONE_EDGE_BOTTOM_NORM=0.98`, `ZONE_EDGE_MAX_RETRACT=30`; all justified above
+from recorded raw + authored geometry, none tuned on a gate.
