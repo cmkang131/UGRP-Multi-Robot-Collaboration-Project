@@ -11,10 +11,10 @@
   - detector(자기 RGB landmark 검출)·motion_model(자기 명령 기반 변위)은 **owner 주입식**이며 이번 스캐폴드에는 없음 → `ready=false`.
   - `accept_release_fix`는 own-memory 기반(`relocalized`+`memory_registered`, truth/held 0)만; 정적 지도 등록 요구 없음.
 - `configs/e2ewarp/contract_v1_two_robot_scenario.json` — **2로봇**(r1/r2) west pickup→divider→zone B, `static_map_input=false`, English 4조건, MJWarp/noslip0, scaffold label.
-- `tests/test_e2ewarp_selfnav.py` — 8 tests: default-off fail-closed, 정적 지도 키 거부, 기억 갱신·감쇠, 도착 evidence, ABI·채널, r3 거부, 시뮬레이터/GT import·access 부재, 2로봇 시나리오 스키마.
+- `tests/test_e2ewarp_selfnav.py` — 12 tests: default-off fail-closed, 정적 지도 키 거부, 기억 갱신·감쇠, 도착 evidence, ABI·채널, r3 거부, 시뮬레이터/GT import·access 부재, 2로봇 시나리오 스키마 + `GpuCalibZoneDetector`(zone 수용·밝은 바닥 거부), `OwnCommandOdometry`(주입 캘리브레이션 필수), 기억 역보정, bottom-band 도착 evidence.
 
 ## 검증 범위
-- Mac 비물리 pytest 8 passed. GPU·물리·모델 호출 0. 연구 결과 아님.
+- 비물리 pytest 12 passed (Mac 작성, Oracle `/home/ubuntu/ugrp-venv`에서 재실행 확인). GPU·물리·모델 호출 0. 연구 결과 아님.
 - 기존 e2ewarp(PR #570)와 합산하지 않는다. `map_correction_active` 의미는 계약 v1에서 **자기중심 기억 보정 활성**으로 재정의 제안(기존 코드는 정적 지도 보정 전제 — 통합 시 별도 수정 필요).
 
 ## 다음 (계약 승인 후)
