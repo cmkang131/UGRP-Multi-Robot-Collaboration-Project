@@ -24,6 +24,8 @@ import numpy as np
 from sim.visual_goal_search import VisualGoalSearch, MIN_COLOUR_PIXELS
 
 ALIGN_TOLERANCE_M = 0.02
+GAP_FRONT_RANGE_M_V2 = 1.2
+APPROACH_ESCAPE_S = 15.0
 TRACKED_SIDE_TICKS_MIN = 12
 GAP_FRONT_RANGE_M = 1.6
 
@@ -33,7 +35,9 @@ class FixedVisualGoalSearch(VisualGoalSearch):
                  door_align=False,
                  tracked_side_ticks_min=TRACKED_SIDE_TICKS_MIN,
                  gap_front_range_m=GAP_FRONT_RANGE_M,
-                 align_tolerance_m=ALIGN_TOLERANCE_M):
+                 align_tolerance_m=ALIGN_TOLERANCE_M,
+                 two_sided_v2=False,
+                 approach_escape_s=APPROACH_ESCAPE_S):
         super().__init__(option=option, options=options)
         self.gap_twosided = bool(gap_twosided)
         self.door_align = bool(door_align)
@@ -46,6 +50,10 @@ class FixedVisualGoalSearch(VisualGoalSearch):
         self.gap_rejected = 0
         self.align_events = 0
         self.align_uncertain_ticks = 0
+        self.two_sided_v2 = bool(two_sided_v2)
+        self.approach_escape_s = float(approach_escape_s)
+        self.approach_t = 0.0
+        self.approach_escapes = 0
 
     # ---- side-wall tracking ------------------------------------------
     def _side_sector(self):
@@ -78,7 +86,24 @@ class FixedVisualGoalSearch(VisualGoalSearch):
                                    if ahead else None),
                     ahead_bearing_deg=(round(math.degrees(float(ahead['bearing_rad'])), 1)
                                        if ahead else None))
-        return (ahead is not None) and tracked_ok, info
+        if not self.two_sided_v2:
+            return (ahead is not None) and tracked_ok, info
+        # v2: a real doorway keeps a wall face on BOTH sides of the gap.  In
+        # the robot frame with the wall on the right, the far jamb is in the
+        # forward-right sector and the near segment behind-right.
+        if self.wall_side == 'right':
+            ahead_sector, behind_sector = (-80., -20.), (-160., -100.)
+        else:
+            ahead_sector, behind_sector = (20., 80.), (100., 160.)
+        far = self._nearest(walls, *ahead_sector, GAP_FRONT_RANGE_M_V2)
+        near = self._nearest(walls, *behind_sector, 1.6)
+        ok = tracked_ok and far is not None and near is not None
+        info.update(two_sided_v2=True,
+                    far_range_m=(round(float(far['range_m']), 4)
+                                 if far else None),
+                    near_range_m=(round(float(near['range_m']), 4)
+                                  if near else None))
+        return ok, info
 
     def _follow(self, t, paint, walls, obstacles, target_mem=None,
                 patch_ok=False, patch_xy=None):
@@ -106,6 +131,21 @@ class FixedVisualGoalSearch(VisualGoalSearch):
                        blocked_object='not_observed',
                        **{k: v for k, v in info.items() if v is not None})
         return action
+
+    def _approach_wall(self, t, paint, walls, obstacles, target_mem=None,
+                       patch_ok=False, patch_xy=None):
+        self.approach_t += .1
+        if (self.approach_escape_s > 0 and self.approach_t > self.approach_escape_s):
+            self.approach_t = 0.
+            self.approach_escapes += 1
+            self.event(t, 'approach_wall_escape', category='navigation',
+                       blocked_object='not_observed',
+                       budget_sim_s=self.approach_escape_s)
+            self._set_stage(t, 'seek_wall', reason='approach_wall_escape')
+            return self._seek_wall(t, paint, walls, obstacles, target_mem,
+                                   patch_ok, patch_xy)
+        return super()._approach_wall(t, paint, walls, obstacles, target_mem,
+                                      patch_ok, patch_xy)
 
     # ---- 2) door-center lateral alignment ---------------------------
     def _gap_forward(self, t, paint, walls, obstacles, target_mem=None,
@@ -138,4 +178,6 @@ class FixedVisualGoalSearch(VisualGoalSearch):
                     gap_claims=self.gap_claims, gap_confirmed=self.gap_confirmed,
                     gap_rejected=self.gap_rejected,
                     align_turns=self.align_events,
-                    align_uncertain_ticks=self.align_uncertain_ticks)
+                    align_uncertain_ticks=self.align_uncertain_ticks,
+                    two_sided_v2=self.two_sided_v2,
+                    approach_escapes=self.approach_escapes)

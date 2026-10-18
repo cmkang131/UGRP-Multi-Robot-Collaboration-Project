@@ -1,0 +1,167 @@
+{
+ "schema": "ugrp.crossroom_carry.prereg.v1",
+ "experiment_id": "2026-10-18-crossroom-carry",
+ "stage": "A_unloaded_fix2",
+ "flow": "self_map",
+ "title": "Cross-room carry Stage A-fix2: v2 gap confirmation, range-conditioned paint filter, approach-wall escape",
+ "frozen_at": "PENDING_FREEZE_COMMIT",
+ "independent_from": [
+  "Stage A (unloaded baseline)",
+  "Stage B (loaded baseline)",
+  "crossroom-stageA-fix (v1)",
+  "visgoal gate r4/B/C",
+  "egonav gate-09",
+  "ACT15/16a/18"
+ ],
+ "policy": {
+  "base": "visgoal candidate C build c390105c2 (vendored byte copy), expanding search on, arrival aim inset 0",
+  "overrides": "experiments/2026-10-18-crossroom-carry/scripts/vgs_fix.py + paint_area_filter.py v2 (subclass/helpers only; vendored bytes unchanged)",
+  "toggles": {
+   "crossroom_gap_twosided_v1": "on",
+   "crossroom_door_align_v1": "on",
+   "crossroom_paint_area_v1": "on",
+   "crossroom_contacts_v1": "on",
+   "crossroom_gap_twosided_v2_v1": "on",
+   "crossroom_paint_area_v2_v1": "on",
+   "crossroom_approach_escape_v1": "on"
+  },
+  "design": "experiments/2026-10-18-crossroom-carry/FIX_DESIGN.md (v2 addendum below)"
+ },
+ "scene": {
+  "map_id": "zone_wide_door_geometry_v3",
+  "scene_profile": "walls_floor_contrast_v5_indigo110_s80",
+  "scenario": "s1_normal_mixed_v7 (full scene, same as Stage A/fix v1)",
+  "renderer_source": "/home/ugrp/ugrp-sim/src/16a946ff3",
+  "legacy_source": "/home/ugrp/ugrp-sim/src/warp8f-selfmap-0ace43f25",
+  "host": "ugrp-act-l4-gcp3"
+ },
+ "destination": {
+  "zone": "B",
+  "rectangle_eval_only": [
+   4.3,
+   4.9,
+   -2.8,
+   -1.4
+  ],
+  "door": {
+   "center_m": [
+    2.2,
+    0.05
+   ],
+   "width_m": 0.5,
+   "opening_y_eval_only": [
+    -0.2,
+    0.3
+   ]
+  }
+ },
+ "starts": "experiments/2026-10-18-crossroom-carry/setups.json#16",
+ "n_starts": 16,
+ "cap_sim_s": 180,
+ "nworld": 16,
+ "funnel_stages": {
+  "A": [
+   "requested_n16",
+   "input_audit_zero",
+   "start_valid",
+   "door_crossed",
+   "post_cross_colour_seen",
+   "post_cross_found",
+   "arrived_declared",
+   "gt_inside"
+  ]
+ },
+ "v1_result_prior": "crossroom-stageA-fix FAIL: GT door 0/16, found 0/16, gap claims 6/16 (all false), gap_rejected 264, approach_wall stalls 4/16, paint rejected 1673 (all beam-class extents 0.055-0.102 m)",
+ "v2_changes": {
+  "paint_filter_v2": {
+   "rule": "reject only if floor_patch extent_m < 0.15 AND nearest_range_m < 0.90 m",
+   "calibration_from_recorded_frames": {
+    "true_zone_B_patches": {
+     "n": 133,
+     "source": "Stage A e02 trace.jsonl t=55-80 s",
+     "extent_m": {
+      "min": 0.205,
+      "median": 1.118,
+      "max": 1.236
+     },
+     "nearest_range_m": {
+      "min": 0.406,
+      "median": 0.42,
+      "max": 1.19
+     }
+    },
+    "long_beam_blue_end_band_patches": {
+     "n": 1578,
+     "source": "Stage A e05/e06/e07 (false found moments)",
+     "extent_m": {
+      "min": 0.044,
+      "median": 0.091,
+      "max": 0.099
+     },
+     "nearest_range_m": {
+      "min": 0.396,
+      "median": 0.711,
+      "max": 0.758
+     }
+    }
+   },
+   "basis": "the two recorded classes separate on metric extent (0.099 vs 0.205); v1's unconditional 0.15 m cut is unchanged for the near band but no longer rejects a small far patch, addressing the distance dependence without using any gate outcome. New constants are recorded here BEFORE the v2 gate."
+  },
+  "gap_twosided_v2": {
+   "rule": "with wall on the right: require the far jamb in bearing -80..-20 deg (<=1.2 m) AND the near segment in -160..-100 deg (<=1.6 m), plus >=12 tracked side-wall ticks and the v1 front-foot check",
+   "basis": "v1 confirmed 6/16 false gaps because a single pickup-room front wall face passed; a real doorway keeps wall faces on both sides of the opening. Measurement gate only.",
+   "constants": {
+    "far_range_m": 1.2,
+    "near_range_m": 1.6,
+    "tracked_side_ticks_min": 12
+   }
+  },
+  "approach_escape": {
+   "rule": "if _approach_wall persists > 15 SIM s, transition to seek_wall with approach_wall_escape event",
+   "basis": "v1 had 4/16 episodes stuck in approach_wall to the cap (Stage A had 2-3); the budget is a SIM-time bound, not wall-clock.",
+   "constants": {
+    "approach_escape_s": 15.0
+   }
+  }
+ },
+ "fix_metrics": {
+  "gap_claims_n": "trace openings",
+  "gap_claims_with_gt_crossing_n": "claimed and GT crossed",
+  "gap_claim_false_n": "gap claims without GT crossing",
+  "gap_rejected_front_missing_n": "vgs_fix event",
+  "gap_confirmed_n": "vgs_fix event",
+  "approach_wall_escapes_n": "vgs_fix event",
+  "door_align_turns_n": "vgs_fix event",
+  "door_align_uncertain_ticks": "vgs_fix counter",
+  "paint_rejected_small_extent_n": "paint filter rejections",
+  "paint_accepted_far_small_n": "v2 keep-decisions",
+  "collision_ticks_n": "ticks with r1 wall/cargo/peer contact (contact recorder)",
+  "contact_events": "rising edges classified",
+  "door_lateral_offset_m": "eval-only at GT crossing",
+  "door_min_jamb_gap_m": "eval-only at GT crossing"
+ },
+ "success_threshold": "none (measurement gate). Compare with Stage A and fix v1: false gap claims, GT crossing, found/colour, lateral/min jamb, approach stalls, paint rejections. Any claim checked against raw.",
+ "prior_funnel": {
+  "A": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/recount.json",
+  "fix_v1": "/home/ugrp/ugrp-sim/runs/crossroom-stageA-fix/recount.json"
+ },
+ "rejection_table": {
+  "A": "/home/ugrp/ugrp-sim/runs/crossroom-stageA/rejection_table.json",
+  "fix_v1": "/home/ugrp/ugrp-sim/runs/crossroom-stageA-fix/rejection_table.json",
+  "fix_v2": "/home/ugrp/ugrp-sim/runs/crossroom-stageA-fix2/rejection_table.json"
+ },
+ "no_pooling": [
+  "crossroom-stageA",
+  "crossroom-stageB",
+  "crossroom-stageA-fix",
+  "visgoal-gate-r4",
+  "visgoal-gate-r4-mirror",
+  "visgoal-gate-r4-lawnmower",
+  "egonav-gate-n16-09",
+  "act15",
+  "act16a",
+  "act18"
+ ],
+ "expected_wall": "about 2.5-3.0 h for 16 x 180 Sim s at the gcp3 batch rate (v1: 8747 s).",
+ "dsh": "Produced with DeepSeek Harness. https://github.com/deepseek-ai/deepseek-harness"
+}

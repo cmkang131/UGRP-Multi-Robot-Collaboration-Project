@@ -275,15 +275,20 @@ def run(a):
     # Cross-room flow: Stage A (unloaded) and Stage B (loaded, single red box)
     # are separate conditions; each has its own queue and is never pooled.
     stage = str(q.get('stage', a.stage or 'A_unloaded'))
-    if stage not in ('A_unloaded', 'B_loaded', 'A_unloaded_fix'):
+    if stage not in ('A_unloaded', 'B_loaded', 'A_unloaded_fix',
+                      'A_unloaded_fix2'):
         raise ValueError('CROSSROOM_STAGE_UNKNOWN')
     carry_loaded = stage == 'B_loaded'
-    fix_stage = stage == 'A_unloaded_fix'
+    fix_stage = stage in ('A_unloaded_fix', 'A_unloaded_fix2')
+    fix_stage_v2 = stage == 'A_unloaded_fix2'
     fix_toggles = ({k: q.get('toggles', {}).get(k) == 'on'
                     for k in ('crossroom_gap_twosided_v1',
                               'crossroom_door_align_v1',
                               'crossroom_paint_area_v1',
-                              'crossroom_contacts_v1')}
+                              'crossroom_contacts_v1',
+                              'crossroom_gap_twosided_v2_v1',
+                              'crossroom_paint_area_v2_v1',
+                              'crossroom_approach_escape_v1')}
                    if fix_stage else {})
     target_zone = str(q.get('destination_zone', 'B'))
     if target_zone != 'B':
@@ -473,6 +478,7 @@ def run(a):
                                        'crossroom_stage': stage,
                                        'destination_zone': target_zone,
                                        'fix_stage': fix_stage,
+                                       'fix_stage_v2': fix_stage_v2,
                                        'fix_toggles': fix_toggles,
                                        'carry_loaded': carry_loaded,
                                        'gripper_pwm_closed': (gripper_pwm
@@ -500,7 +506,11 @@ def run(a):
                 return fix_mod.FixedVisualGoalSearch(
                     option=SKILL, options=opts,
                     gap_twosided=fix_toggles.get('crossroom_gap_twosided_v1', False),
-                    door_align=fix_toggles.get('crossroom_door_align_v1', False))
+                    door_align=fix_toggles.get('crossroom_door_align_v1', False),
+                    two_sided_v2=(fix_stage_v2 and fix_toggles.get(
+                        'crossroom_gap_twosided_v2_v1', False)),
+                    approach_escape_s=(15.0 if (fix_stage_v2 and fix_toggles.get(
+                        'crossroom_approach_escape_v1', False)) else 0.))
             return VisualGoalSearch(option=SKILL, options=opts)
 
         def run_batch(plans):
@@ -751,8 +761,13 @@ def run(a):
                         if (fix_stage and fix_toggles.get('crossroom_paint_area_v1')
                                 and paint_filter_mod is not None
                                 and paint.get('pixels', 0) >= MIN_COLOUR_PIXELS):
-                            paint, paint_filter_info = paint_filter_mod.filter_paint(
-                                paint, patch_rec)
+                            if (fix_stage_v2 and fix_toggles.get(
+                                    'crossroom_paint_area_v2_v1')):
+                                paint, paint_filter_info = (
+                                    paint_filter_mod.filter_paint_v2(paint, patch_rec))
+                            else:
+                                paint, paint_filter_info = (
+                                    paint_filter_mod.filter_paint(paint, patch_rec))
                             counts = s['paint_filter_counts']
                             key = paint_filter_info.get('action', 'unknown')
                             counts[key] = counts.get(key, 0) + 1
@@ -991,6 +1006,7 @@ def run(a):
                         s['box_final'][0], s['box_final'][1]), 4)
                         if s.get('box_final') else None),
                     fix_toggles=fix_toggles,
+                    fix_stage_v2=fix_stage_v2,
                     fix_summary=(s['skill'].fix_summary()
                                  if hasattr(s['skill'], 'fix_summary') else None),
                     contact_summary=(contact_rec.summary()
@@ -1103,7 +1119,11 @@ def run(a):
                         arrival_aim_inset_m=(ARRIVAL_AIM_INSET_M
                                              if arrival_aim_on else 0.)),
                     gap_twosided=fix_toggles.get('crossroom_gap_twosided_v1', False),
-                    door_align=fix_toggles.get('crossroom_door_align_v1', False))
+                    door_align=fix_toggles.get('crossroom_door_align_v1', False),
+                    two_sided_v2=(fix_stage_v2 and fix_toggles.get(
+                        'crossroom_gap_twosided_v2_v1', False)),
+                    approach_escape_s=(15.0 if (fix_stage_v2 and fix_toggles.get(
+                        'crossroom_approach_escape_v1', False)) else 0.))
             else:
                 skill = VisualGoalSearch(
                     option=SKILL if a.enabled else 'off',

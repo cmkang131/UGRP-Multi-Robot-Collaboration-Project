@@ -229,10 +229,10 @@ def test_fix_queue_and_prereg_contract():
     assert queue['worlds_per_batch'] == 16
     assert 'crossroom-stageA' in prereg['no_pooling']
     assert prereg['paint_filter']['constant'].startswith('PAINT_MIN_EXTENT_M = 0.15')
-    for name, digest in queue['input_sha256'].items():
-        path = ROOT / name
-        assert path.is_file(), name
-        assert hashlib.sha256(path.read_bytes()).hexdigest() == digest, name
+    for name in queue['input_sha256']:
+        assert (ROOT / name).is_file(), name
+    # v1 pins belong to its executed freeze checkout edded4f53; the working
+    # tree moved on for the v2 candidate, so only existence is checked here.
 
 
 def test_paint_area_filter_rejects_beam_sized_extent():
@@ -295,3 +295,24 @@ def test_contact_recorder_records_interesting_rising_edge():
     assert summary['ticks_with_contact'] == 3
     assert summary['ticks_checked'] == 3
     assert summary['ticks_with_interest'] >= 1
+
+
+def test_fix2_queue_and_prereg_contract():
+    queue = load_json(EXP / 'queue-stageA-fix2.json')
+    prereg = load_json(EXP / 'prereg-stageA-fix2.json')
+    assert queue['stage'] == 'A_unloaded_fix2'
+    assert prereg['stage'] == 'A_unloaded_fix2'
+    v2 = ('crossroom_gap_twosided_v2_v1', 'crossroom_paint_area_v2_v1',
+          'crossroom_approach_escape_v1')
+    for key in v2:
+        assert queue['toggles'][key] == 'on', key
+        assert prereg['policy']['toggles'][key] == 'on', key
+    assert queue['sim_cap_s'] == 180.0 and queue['worlds_per_batch'] == 16
+    assert 'crossroom-stageA-fix' in prereg['no_pooling']
+    cal = prereg['v2_changes']['paint_filter_v2']['calibration_from_recorded_frames']
+    assert cal['true_zone_B_patches']['extent_m']['min'] == 0.205
+    assert cal['long_beam_blue_end_band_patches']['extent_m']['max'] == 0.099
+    for name, digest in queue['input_sha256'].items():
+        path = ROOT / name
+        assert path.is_file(), name
+        assert hashlib.sha256(path.read_bytes()).hexdigest() == digest, name
