@@ -162,11 +162,20 @@ def build_context(seed, out, stack, *, nav_scene=False, nav_spawns=None):
     world = SimpleNamespace(model=model, data=data, scene_xml=xml, robot=robots.__getitem__,
                             drive_parameters=DriveParameters())
     return dict(world=world, ports=ports, gids=cargo, finger_ids=fingers, scene_xml_path=out/'scene.xml',
-                scene=scene, static_map=scene.config['static_map'])
+                scene=scene, static_map=scene.config['static_map'], no_cargo=not cargo)
 
 
 def transport(contexts, out, sha, stack):
     backend, core, schedule = source_module()
+    if all(not context.get('gids') for context in contexts):
+        # Navigation gate: no cargo exists, so the evaluator-only contact
+        # telemetry has no targets. An all-zero target mask is the honest
+        # representation (the evaluate kernel then reports no finger force);
+        # the vendored file stays byte-identical (module-level rebind only).
+        def _no_cargo_contact_maps(ngeom, targets, fingers):
+            return (np.zeros((len(targets), ngeom), dtype=np.int32),
+                    np.full((len(targets), ngeom), -1, dtype=np.int32))
+        backend.contact_maps = _no_cargo_contact_maps
 
     class NativeE2E(backend.WarpTransport):
         def initialize(self, contexts):

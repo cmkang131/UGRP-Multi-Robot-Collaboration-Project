@@ -235,6 +235,8 @@ def run(a, queue):
                 noslip_iterations=int(hooks.m.opt.noslip_iterations)),
             gpu_noslip_iterations=int(hooks.wm.opt.noslip_iterations),
             map_keyframe_admission=queue.get('map_keyframe_admission','off'),
+            cargo_contact_telemetry=('no_cargo_zero_targets' if all(c.get('no_cargo') for c in contexts)
+                                     else 'cargo_targets'),
             camera=dict(robots=list(robots), resolution=[640, 480], hz=10, top_control=False),
             cpu_physics_steps=0, cpu_render_calls=0, legacy_equivalence_shims=False,
             xml_sha256=[sha(c['world'].scene_xml.encode()) for c in contexts]))
