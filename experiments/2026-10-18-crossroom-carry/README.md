@@ -213,7 +213,7 @@ with Stage A** or with any visgoal/egonav/ACT run.
   `--stage B_loaded --sim-cap 180 --nworld 16`, output
   `/home/ugrp/ugrp-sim/runs/crossroom-stageB`.
 
-Status: **frozen, gate pending**. Stage B is a separate condition and is not
+Status: **executed (FAIL, loaded baseline); see Stage B results below**. Stage B is a separate condition and is not
 pooled with Stage A. It uses the **same search/gap/door policy as Stage A with
 no fixes**: the Stage A failure modes (skill-claimed gap crossing without a GT
 crossing, jamb overlap on the single GT crossing, declaration just outside
@@ -320,6 +320,77 @@ with `gap_status: not_measured` for all rows except that e02 records the
 measured jamb clearance above. Full per-episode ledger with evidence paths in
 `stageA/recount.json` (rejection_table block).
 
+
+### Stage B results (loaded, single red box, 16 starts, 180 SIM s)
+
+Raw VM `/home/ugrp/ugrp-sim/runs/crossroom-stageB`; copied summary, strict
+recount, 16 9-frame montages and SHA256SUMS under `stageB/`. Executed from
+freeze commit `868236f55`; `EXIT` DONE, no HOST_ERROR. Batch wall 8229.22 s
+for 180 SIM s x 16 worlds = **2.857 wall/(sim_s*nworld)**; the first-30-SIM
+number is a **frame-mtime estimate** 1372.81/(30*16) = 2.86 (all episodes ran
+to the cap, so no progress t=30 record exists).
+
+Recounted loaded funnel (raw trace/eval-only; 0 mismatches):
+`requested_n16 16 -> input_audit_zero 16 -> start_valid 16 ->
+**cargo_held_own_at_start 16** -> **GT door_crossed 0** ->
+cargo_held_own_at_cross 0 -> post_cross_colour 0 -> post_cross_found 0 ->
+arrived_declared 0 -> cargo_at_arrival 0 -> gt_cargo_in_zone 0`.
+`cap_end` 16/16 (separate label). Loaded Stage B did not reach the door.
+
+| ep | grp | status | skill gap_cross claim | GT door crossed | cargo held (own) | box final (x,y) | base final (x,y) |
+|---:|---|---|---|---|---|---|---|
+| 0 | N | cap_end | yes | no | held | -0.69,-0.06 | -0.67,0.08 |
+| 1 | N | cap_end | yes | no | held | 0.87,-2.16 | 0.76,-2.08 |
+| 2 | N | cap_end | yes | no | held | 0.65,0.88 | 0.69,0.74 |
+| 3 | N | cap_end | yes | no | held | -0.4,-2.33 | -0.45,-2.2 |
+| 4 | N | cap_end | yes | no | held | -0.57,0.74 | -0.5,0.87 |
+| 5 | N | cap_end | yes | no | held | 1.77,-2.25 | 1.66,-2.33 |
+| 6 | N | cap_end | yes | no | held | 0.14,-0.15 | 0.23,-0.25 |
+| 7 | N | cap_end | yes | no | held | 0.47,0.68 | 0.61,0.73 |
+| 8 | F | cap_end | yes | no | held | 0.53,-2.72 | 0.44,-2.61 |
+| 9 | F | cap_end | yes | no | held | 1.58,-2.54 | 1.47,-2.45 |
+| 10 | F | cap_end | yes | no | held | 1.79,-2.35 | 1.65,-2.31 |
+| 11 | F | cap_end | yes | no | held | 0.41,-0.69 | 0.29,-0.62 |
+| 12 | F | cap_end | yes | no | held | 0.43,0.28 | 0.54,0.37 |
+| 13 | F | cap_end | yes | no | held | 0.64,-2.12 | 0.53,-2.22 |
+| 14 | F | cap_end | yes | no | held | 0.96,-2.46 | 0.82,-2.48 |
+| 15 | F | cap_end | yes | no | held | -0.23,-2.21 | -0.29,-2.08 |
+
+Key facts:
+
+* **The box is physically carried for the whole episode.** The own-evidence
+  monitor reports `held` for all 1801 ticks in 16/16 episodes
+  (own RGB + closed-gripper command history), the box final pose stays at the
+  gripper site (base->box distance ~0.14 m), and no episode lost the box. The
+  setup-only loaded start (closed jaws, 1 Sim s CPU settle, no weld) held
+  through wall following and 180 s of driving.
+* **The skill's gap claim is 16/16 false and the GT door crossing is 0/16**
+  (Stage A: 9 false claims and 1 GT crossing). Every episode followed the
+  wall north, entered `gap_cross` at 34.5-83.2 s in the pickup room, turned
+  into `east_search`, and stayed west of the divider until the cap.
+* **Loaded-condition cause (measured, not assumed):** the carried red box
+  renders as a full-width near-field band at the bottom of the own-RGB frame
+  (visible in every checked montage), which occludes the floor region the
+  obstacle detector uses. In this run `obstacle_avoid` events are **0**
+  (Stage A: 4,736) and obstacle detections are **0 ticks** on e00 (Stage A:
+  859 ticks), while the wall-point zero share rises from 1.7% to 3.3%. With
+  obstacle avoidance gone and the wall foot less reliable, the wall follow
+  reaches a false gap in every episode. The fix design adds a held-box mask
+  exclusion for the floor/obstacle perception as item 5.
+* No post-cross colour, found, declaration or cargo-in-zone is possible
+  without a crossing; the loaded run says nothing about destination search
+  beyond confirming the carry-over gap/alignment failure.
+* Input audit (actual controller-boundary counters) 16/16; start admission
+  16/16; `collision_events` `not_measured` (raw has no contact events).
+* Montages: representative set e00,e02,e04,e06,e08,e10,e13,e15 (9 self-camera
+  frames each, ticks 0..1800) was opened; all show the red box band at the
+  bottom and pickup-room wandering. Full 16-montage set with hashes in
+  `stageB/montages.json`.
+* **Stage B verdict: FAIL under the mission framing** (GT door crossing 0/16,
+  arrived_declared 0/16, gt_cargo_in_zone 0/16). This is the loaded baseline
+  with the unchanged Stage A policy; the box-occlusion finding is the
+  Stage B-specific addition to the fix list. Not pooled with Stage A or with
+  the crossroom-stageA-fix candidate.
 
 ## crossroom-stageA-fix (candidate, default off)
 

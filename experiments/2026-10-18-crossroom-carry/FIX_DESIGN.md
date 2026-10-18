@@ -115,6 +115,19 @@ queue에서만 켠다. Stage A 원본 결과와 합산 금지, 자체 관문으�
    `layout_unknown`/`errors`로 보고하고 추측하지 않음). 수정 후 preflight에서
    레이아웃을 확인해 필드 이름을 prereg에 고정한다.
 
+### ⑤ 적재 시 화물 근접 가림 처리 (`crossroom_carry_occlusion_v1`, Stage B에서 측정)
+
+Stage B 원본에서 적재 화물(빨간 box)이 자기 RGB 하단에 **화면 폭 전체 밴드**로
+잡혀 근접 바닥 영역을 가린다. 그 결과 obstacle_avoid 이벤트 0(Stage A 4,736),
+e00 obstacle 검출 0틱(Stage A 859틱), wall point zero 비율 3.3%(Stage A 1.7%)
+였고 16/16이 허위 gap으로 픽업룸 east_search를 돌았다.
+수정: 적재 상태에서 held box로 판정된 색 성분을
+(a) obstacle 검출 입력에서 마스킹하고(바닥 ray는 유지),
+(b) wall foot 검출의 하단 가림 영역만 제외하되 가려진 비율을 기록하며,
+(c) 가려진 비율이 임계(예: 하단 ROI의 40%)를 넘으면 wall follow 대신
+정지·재정렬을 선택한다. 이 항목은 적재 전용 게이트(별도 조건)로 측정하고
+무적재 fix와 합산하지 않는다.
+
 ## 사전등록(초안) — crossroom-stageA-fix
 
 | 항목 | 값 |
