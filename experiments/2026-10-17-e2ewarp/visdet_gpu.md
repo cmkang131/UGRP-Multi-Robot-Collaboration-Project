@@ -118,3 +118,34 @@ gcp6, nworld 2, smoke 30 SIM s `cap_end`, `mjwarp_batch_v1` /
   (동쪽 방 도달 프레임 또는 정적 캘리브레이션 캡처)이 필요하다. 그 전까지
   모듈은 기본 off이고, 재생 검증 범위는 "GPU 프레임에서 동작·근거 기록"까지다.
 - 의존성: ACT/loaded FK/mapbuild8 correction/release **waiting** 그대로.
+
+
+## 5. GPU zone-B appearance 캘리브레이션 캡처 + `gpu_calib_v1` 프로필 (2026-10-18)
+
+라벨: **GPU appearance calibration, not research result**. LLM·제어·물리 step
+없이, 기록된 R4 scene을 MJWarp native renderer로 실험자 설정 포즈에서 렌더했다
+(zone-B paint가 보이는 10 포즈 + pickup/zoneA negative 2 포즈, 포즈당 2Hz 3프레임
+= 36 프레임). 사용 카메라·remap·JPEG 설정은 R4 own frames와 동일하다.
+
+- 원본: gcp6 `/home/ugrp/ugrp-sim/runs/e2ewarp-zonecal-gpu-v2` (TERMINATED 디스크
+  보존), Mac `/tmp/e2ewarp-zonecal-gpu-v2`, 저장소 증거
+  [`r4-selfmap-recount/zonecal-gpu/`](r4-selfmap-recount/zonecal-gpu/)
+  (RGB 36장, `conditions.json`, `frames.json`, SHA256SUMS). scene sha256
+  `38c7fdcd9a83dfc104d4b9f998a5ec69a9ce143a3dcd2e38c341686c9541d4b4`,
+  remap sha256 `eb9b67fbe2cd9323054c779f34e925507caec635b6e74306241469c5d9c32e42`.
+  (pose-aim 버그가 있던 v1 캡처 `...-zonecal-gpu`는 superseded·미사용.)
+- fit 결과 [`r4-selfmap-recount/zone-appearance-calib.json`](r4-selfmap-recount/zone-appearance-calib.json):
+  eval-only zone-B mask 라벨로 threshold grid 탐색 → **`gpu_calib_v1` = hue
+  110-114, S>=100, 30<=V<=110, extent<=1.75 m**.
+- before/after (같은 프레임):
+  - 캘리브레이션 zone-B positives **33/33 → 33/33 유지**
+  - pickup-zone negatives **3/3 FP → 0**
+  - 기록 R4 own frames **36/180 FP → 0/180** (`visdet-replay-gpu.json`)
+- near-floor bottom-cropped 케이스: 근접(d0.45 m) zone 프레임은 component가
+  화면 하단까지 차고(bbox bottom 0.967) V~82로 GPU 프로필에서 정상 검출된다.
+  R4의 하단 잘림 blue-floor 36건은 V가 높아(밝은 pickup floor) 새 프로필에서
+  전부 거부된다.
+- **한계**: 프로필은 이 캡처의 조명/장면에서 fit했다. 다른 조명/원거리 zone
+  외관은 그대로 일반화된다고 주장하지 않는다. `navigation_factory`에 연결하는
+  실행 검증은 owner manifest의 hash-bound entry 통합(Lead) 뒤에 하고, 그 전까지
+  모듈은 **기본 off**다. ACT/loaded FK/mapbuild8 correction/release 대기는 그대로.

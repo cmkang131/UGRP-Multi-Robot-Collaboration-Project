@@ -44,6 +44,16 @@ Threshold provenance
   bottom at 461/480 = 0.960, so >=0.98 (bottom 2% band) is the measured
   condition used there; this module records it as evidence, it is not a
   mission success claim.
+* ``gpu_calib_v1`` is fitted on the approved GPU zone-B appearance calibration
+  capture (MJWarp native render, e2ewarp R4 scene, 36 frames; evidence under
+  ``experiments/2026-10-17-e2ewarp/r4-selfmap-recount/zonecal-gpu/`` and
+  ``zone-appearance-calib.json``).  On that capture the zone-B paint renders
+  darker (component median V 77-86) than the bright pickup-room blue floor
+  (V~135), so the GPU profile narrows the hue band to 110-114, raises the
+  saturation floor to 100 and adds a V<=110 ceiling.  Fit result: 33/33
+  zone-B capture frames accepted, 0/3 pickup negatives, 0/180 recorded R4
+  floor frames (CPU profile produced 36/180).  The capture is labelled
+  "GPU appearance calibration, not research result" and is not pooled.
 """
 from __future__ import annotations
 
@@ -68,6 +78,21 @@ ARRIVAL_BOTTOM_NORM = 0.98
 # truncated/oblique patches while rejecting a floor/wall component whose extent
 # spans metres. Measured CPU raw zone patches were 0.205-1.236 m.
 MAX_EXTENT_M = 2.0
+# Appearance profiles.  cpu_v1 is the CPU crossroom visgoal appearance band
+# (floor there was pale blue-gray and did not enter the band).  gpu_calib_v1 is
+# fitted on the GPU zone-B appearance calibration capture
+# (experiments/2026-10-17-e2ewarp/r4-selfmap-recount/zone-appearance-calib.json):
+# the MJWarp-rendered pickup-room floor is a bright saturated blue (component
+# V~135) while the zone-B paint renders darker (V~77-86), so the GPU profile
+# narrows hue and adds a value ceiling.  Thresholds are calibration evidence,
+# not a mission claim; the capture is labelled "not research result".
+APPEARANCE_PROFILES = {
+    'cpu_v1': dict(hue=(104, 120), s_min=30, v_min=30, v_max=255,
+                   max_extent_m=MAX_EXTENT_M),
+    'gpu_calib_v1': dict(hue=(110, 114), s_min=100, v_min=30, v_max=110,
+                         max_extent_m=1.75),
+}
+DEFAULT_APPEARANCE = 'cpu_v1'
 # Bottom 25% rows and centre 40% columns, matching the own-RGB "under the
 # robot" evidence used by the carry monitor and the CPU zone-edge check.
 LOWER_CENTRE_ROWS = 0.25
@@ -166,7 +191,9 @@ def detect(rgb, camera: CameraModel, *, enabled=False, zone='B',
            arrival_bottom_norm=ARRIVAL_BOTTOM_NORM,
            min_pixels=PAINT_MIN_PIXELS,
            floor_max_range_m=FLOOR_MAX_RANGE_M,
-           max_extent_m=MAX_EXTENT_M) -> Detection:
+           max_extent_m=MAX_EXTENT_M,
+           appearance=DEFAULT_APPEARANCE,
+           override=None) -> Detection:
     """Detect the destination zone paint and its metric evidence in one frame.
 
     ``rgb`` must be an HxWx3 uint8 RGB array of ``camera.width`` x
@@ -175,6 +202,11 @@ def detect(rgb, camera: CameraModel, *, enabled=False, zone='B',
     """
     if not enabled:
         return _off()
+    prof = dict(APPEARANCE_PROFILES.get(str(appearance), {}))
+    if not prof:
+        raise ValueError('UNKNOWN_APPEARANCE_PROFILE:' + str(appearance))
+    if override:
+        prof.update(override)
     if zone != 'B':
         return _off('zone_unsupported')
     if rgb is None:
@@ -187,10 +219,11 @@ def detect(rgb, camera: CameraModel, *, enabled=False, zone='B',
         raise ValueError('camera/frame size mismatch')
     bgr = cv2.cvtColor(rgb, cv2.COLOR_RGB2BGR)
     hsv = cv2.cvtColor(bgr, cv2.COLOR_BGR2HSV)
-    lo, hi = PAINT_HUE
+    lo, hi = prof['hue']
     mask = ((hsv[..., 0] >= lo) & (hsv[..., 0] <= hi)
-            & (hsv[..., 1] >= PAINT_SATURATION_MIN)
-            & (hsv[..., 2] >= PAINT_VALUE_MIN))
+            & (hsv[..., 1] >= prof['s_min'])
+            & (hsv[..., 2] >= prof['v_min'])
+            & (hsv[..., 2] <= prof['v_max']))
     if exclude_mask is not None:
         mask &= ~np.asarray(exclude_mask, bool)
     n, labels, stats, centroids = cv2.connectedComponentsWithStats(
@@ -229,6 +262,8 @@ def detect(rgb, camera: CameraModel, *, enabled=False, zone='B',
                          bbox=bbox, nearest_range_m=near,
                          reason='destination_too_far')
     extent = float(np.linalg.norm(np.ptp(xy, axis=0)))
+    if max_extent_m is None:
+        max_extent_m = prof.get('max_extent_m')
     if max_extent_m is not None and extent > float(max_extent_m):
         return Detection(status='unknown', enabled=True, pixels=count,
                          bbox=bbox, nearest_range_m=near, extent_m=extent,
@@ -263,7 +298,8 @@ def detect(rgb, camera: CameraModel, *, enabled=False, zone='B',
                      paint_reaches_bottom_band=reaches,
                      arrival_ready=reaches,
                      reason='painted_ground_hypothesis',
-                     notes=dict(zone=zone, origin=list(map(float, origin)),
+                     notes=dict(zone=zone, appearance=appearance,
+                                origin=list(map(float, origin)),
                                 extent_ptp=[float(v) for v in np.ptp(xy, axis=0)]))
 
 

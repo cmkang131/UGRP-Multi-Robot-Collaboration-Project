@@ -71,6 +71,25 @@ zone paint가 보이는 프레임(동쪽 방 도달 프레임 또는 별도 정�
 먼저 필요하다. 그 전까지 모듈은 기본 off이며, replay 검증 범위는 "GPU 렌더
 프레임에서 모듈이 동작하고 근거/reason을 남긴다"까지다(도착/임무 성공 주장 아님).
 
+## 4b. GPU zone-B appearance 보정 (`gpu_calib_v1`)
+
+승인된 보정 전용 캡처(MJWarp native render, R4 scene, 36 프레임 = zone-B 10포즈
++ pickup/zoneA negative 2포즈, 2Hz×3)를 eval-only zone-B mask 라벨로 fit했다.
+원본 `gcp6:/home/ugrp/ugrp-sim/runs/e2ewarp-zonecal-gpu-v2`(TERMINATED, 디스크
+보존), 증거 `zonecal-gpu/`, 결과 `zone-appearance-calib.json`.
+**GPU appearance calibration, not research result** (LLM·제어·물리 step 없음,
+연구 결과와 합산 금지).
+
+| 항목 | 값 |
+|---|---|
+| 선택 프로필 | hue 110-114, S≥100, 30≤V≤110, extent≤1.75 m |
+| zone-B capture positives | 33/33 유지 |
+| pickup-zone negatives | 3 FP → **0** |
+| 기록 R4 floor negatives | 36/180 FP → **0/180** |
+
+한계: 이 장면/조명 캡처에 fit한 값이며 다른 외관 일반화를 주장하지 않는다.
+모듈은 계속 기본 off, 도착 판정은 owner navigation adapter 결정이다.
+
 ## 5. 재현
 
 ```

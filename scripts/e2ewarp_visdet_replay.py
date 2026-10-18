@@ -84,7 +84,7 @@ def load_commands(raw: Path):
 
 
 def replay(raw: Path, *, enabled=True, worlds=None, robots=('r1', 'r2', 'r3'),
-           max_frames=None, max_extent_m='default'):
+           max_frames=None, max_extent_m='default', appearance='cpu_v1'):
     if str(ROOT) not in sys.path:
         sys.path.insert(0, str(ROOT))
     module = load_path_module(
@@ -132,7 +132,8 @@ def replay(raw: Path, *, enabled=True, worlds=None, robots=('r1', 'r2', 'r3'),
                 reasons[reason] += 1
                 continue
         kwargs = {} if max_extent_m == 'default' else dict(max_extent_m=max_extent_m)
-        det = module.detect(rgb, models[bucket], enabled=enabled, **kwargs)
+        det = module.detect(rgb, models[bucket], enabled=enabled,
+                            appearance=appearance, **kwargs)
         row = dict(world=world, robot=robot, tick=tick, status=det.status,
                    reason=det.reason,
                    pixels=det.pixels,
@@ -159,6 +160,7 @@ def replay(raw: Path, *, enabled=True, worlds=None, robots=('r1', 'r2', 'r3'),
         frames_by_world_robot={f'{k[0]}-{k[1]}': v for k, v in
                                Counter((r['world'], r['robot'])
                                        for r in results).items()},
+        appearance=str(appearance),
         camera_model='servo_fk_v1 (issued command rows) + measured raw-fisheye '
                      'undistort table; floor plane z=0 in the FK floor frame',
         inputs=['world-*/review-rgb/*.jpg', 'commands.json',
@@ -187,11 +189,14 @@ def main():
     p.add_argument('--max-frames', type=int, default=None)
     p.add_argument('--no-extent-cap', action='store_true',
                    help='diagnostic only: disable the zone-size extent cap')
+    p.add_argument('--appearance', default='cpu_v1',
+                   choices=('cpu_v1', 'gpu_calib_v1'))
     a = p.parse_args()
     worlds = None if a.worlds is None else {int(v) for v in a.worlds.split(',')}
     report = replay(a.raw, worlds=worlds, robots=tuple(a.robots.split(',')),
                     max_frames=a.max_frames,
-                    max_extent_m=None if a.no_extent_cap else 'default')
+                    max_extent_m=None if a.no_extent_cap else 'default',
+                    appearance=a.appearance)
     report['extent_cap'] = 'off' if a.no_extent_cap else 'module-default'
     a.output.parent.mkdir(parents=True, exist_ok=True)
     a.output.write_text(json.dumps(report, indent=2, ensure_ascii=False) + '\n')
