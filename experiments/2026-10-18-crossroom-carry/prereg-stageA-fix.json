@@ -4,7 +4,7 @@
  "stage": "A_unloaded_fix",
  "flow": "self_map",
  "title": "Cross-room carry Stage A-fix: unloaded west -> divider door -> zone B, with the four Stage A failure-mode fixes",
- "frozen_at": "PENDING_FREEZE_COMMIT",
+ "frozen_at": "2026-10-18T01:15:44Z",
  "independent_from": [
   "Stage A (unloaded baseline)",
   "Stage B (loaded baseline)",
@@ -119,5 +119,13 @@
   "act18"
  ],
  "expected_wall": "about 2.5-3.1 h for 16 x 180 Sim s at the gcp3 batch rate, same as Stage A.",
- "dsh": "Produced with DeepSeek Harness. https://github.com/deepseek-ai/deepseek-harness"
+ "dsh": "Produced with DeepSeek Harness. https://github.com/deepseek-ai/deepseek-harness",
+ "preflight": {
+  "run": "/home/ugrp/ugrp-sim/runs/crossroom-stageA-fix-preflight",
+  "status": "PREFLIGHT_DONE (2 starts, 60 Sim s, nworld=2)",
+  "result": "cap_end 2/2, input audit 2/2 passed, no HOST_ERROR",
+  "fix_telemetry": "ep0 gap claims 4 / rejected 4 (two-sided filter active), align turns 0, paint filter counts {} (no colour within 60 s)",
+  "contacts": "recorder ran without errors: 120 checked ticks, layout flat_pairs_with_worldid, count_layout global_only (global nacon only; per-world count unavailable in this mujoco_warp layout)",
+  "note": "the fix toggles were active in the preflight; the unloaded gate itself is the measurement."
+ }
 }
