@@ -182,7 +182,10 @@ def main():
             if interrupt or done:
                 return value,done
             if self.overlay is not None:
-                value=self.overlay.step(observation['skill'],value)
+                value,event=self.overlay.step(observation['skill'],value)
+                if event is not None and loop_log['handle'] is not None:
+                    loop_log['handle'].write(json.dumps(dict(t=value['t'],skill=observation['skill'],**event))+'\n')
+                    loop_log['handle'].flush()
             probability=done_head.update(value,observation['skill'])
             fired=done_fires(probability,a.done_head_threshold)
             if fired:
@@ -204,7 +207,11 @@ def main():
             value,done=super().step(observation,jpegs,interrupt=interrupt)
             if interrupt or done:
                 return value,done
-            return self.overlay.step(observation['skill'],value),done
+            value,event=self.overlay.step(observation['skill'],value)
+            if event is not None and loop_log['handle'] is not None:
+                loop_log['handle'].write(json.dumps(dict(t=value['t'],skill=observation['skill'],**event))+'\n')
+                loop_log['handle'].flush()
+            return value,done
     class Sequence(originals[4]):
         def __init__(self,*args,**kwargs):
             super().__init__(*args,**kwargs);sequences.append(self)
