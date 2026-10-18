@@ -11,6 +11,17 @@ from pathlib import Path
 
 REQUIRED = ('navigation', 'loaded_camera_fk', 'static_map_registration',
             'selfmap_map_correction', 'release_relocalization')
+#: Nav-only mode admits the navigation adapter alone (opt-in; see
+#: harness.e2ewarp_nav_mode). The full REQUIRED tuple above is unchanged.
+NAV_REQUIRED = ('navigation',)
+
+
+def _hash_bound(root, record, name):
+    module, sep, attr = record.get('entry', '').partition(':')
+    file = Path(root) / (module.replace('.', '/') + '.py')
+    if (not sep or not attr or not file.is_file() or not file.resolve().is_relative_to(Path(root).resolve())
+            or hashlib.sha256(file.read_bytes()).hexdigest() != record.get('sha256')):
+        raise ValueError('DEPENDENCY_WAIT:hash-bound ' + name)
 
 
 def require_components(path, root):
@@ -26,12 +37,7 @@ def require_components(path, root):
             or correction.get('spawn_anchor_used') is not False):
         raise ValueError('DEPENDENCY_WAIT:own/static map correction without spawn anchor required')
     for name in ('navigation_factory', 'release_factory', 'evaluator_factory'):
-        item = manifest.get(name, {})
-        module, sep, attr = item.get('entry', '').partition(':')
-        file = Path(root) / (module.replace('.', '/') + '.py')
-        if (not sep or not attr or not file.is_file() or not file.resolve().is_relative_to(Path(root).resolve())
-                or hashlib.sha256(file.read_bytes()).hexdigest() != item.get('sha256')):
-            raise ValueError('DEPENDENCY_WAIT:hash-bound ' + name)
+        _hash_bound(root, manifest.get(name, {}), name)
     actor = manifest.get('ACT', {})
     if actor.get('ready') is not True or actor.get('native_contact') != 'warp_native_contact_v1':
         raise ValueError('DEPENDENCY_WAIT:selected native ACT artifact')
@@ -53,6 +59,26 @@ def require_components(path, root):
         raise ValueError('actual checkpoint provenance must bind native contact; no legacy substitution')
     if not actor.get('selection_evidence'):
         raise ValueError('ACT validation selection evidence required')
+    return manifest
+
+
+def require_navigation(path, root):
+    """Opt-in nav-only admission: the navigation adapter is the only component.
+
+    No ACT artifact, loaded FK, static-map registration, own/static map
+    correction or release relocalization is required or validated here. The
+    manifest may still contain those records; they are simply not admission
+    requirements for ``--mode nav``.
+    """
+    if path is None:
+        raise ValueError('DEPENDENCY_WAIT:component manifest missing')
+    manifest = json.loads(Path(path).read_text())
+    record = manifest.get('navigation', {})
+    if record.get('ready') is not True or not record.get('owner') or not record.get('evidence'):
+        raise ValueError('DEPENDENCY_WAIT:navigation')
+    _hash_bound(root, manifest.get('navigation_factory', {}), 'navigation_factory')
+    if 'static_map_input' in manifest and manifest['static_map_input'] is not False:
+        raise ValueError('NAV_STATIC_MAP_INPUT_FORBIDDEN')
     return manifest
 
 

@@ -19,7 +19,15 @@ from urllib.request import urlopen
 
 from harness.e2e_warp_runtime import (OPTION, OwnFrame, Channels, Planner, DiagnosticTask,
                                      COMM_CONDITIONS, encode, sha, rejection, first30)
-from harness.e2e_warp_components import require_components, MissionRobot, load_actor, factory
+from harness.e2e_warp_components import (require_components, require_navigation, MissionRobot,
+                                         load_actor, factory)
+from harness.e2ewarp_nav_mode import (MODE as NAV_MODE, ROBOTS as NAV_ROBOTS,
+                                      REQUIRED as NAV_REQUIRED, NavRobot,
+                                      all_arrived as nav_all_arrived,
+                                      fail_closed_result_fields as nav_result_fields,
+                                      leader_for_seed as nav_leader, nav_static,
+                                      queue_fields as nav_queue_fields,
+                                      validate_queue as nav_validate_queue)
 from harness.zone_study_contract import ROBOTS
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -45,6 +53,9 @@ def prepare(a):
     stack, digest = stack_config()
     if a.mode == 'mission':
         require_components(a.components, ROOT)
+    elif a.mode == NAV_MODE:
+        # Opt-in nav-only admission: navigation is the only required component.
+        require_navigation(a.components, ROOT)
     values = {r['id']: r['current'] for r in stack['rules'] if 'e2e_llm' in r['flows']}
     values['gcp_host'] = INSTANCE
     values['gcp_project'], values['gcp_account'] = PROJECT, ACCOUNT
@@ -71,10 +82,14 @@ def prepare(a):
         no_pooling=True, rejection_table=str(prior or funnel.resolve()),
         record_tail=dict(hz=10, sim_s=10, purpose='recording_only; no control changes'),
         dependency_status='waiting for selected ACT / loaded FK / mapbuild8 own+static map correction / release API')
+    if a.mode == NAV_MODE:
+        # Explicit opt-in queue markers; the smoke/mission queue stays byte-identical.
+        queue.update(nav_queue_fields(a.seed))
     a.output.mkdir(parents=True, exist_ok=False)
     write(funnel, dict(raw=str(a.output.resolve()), reproduction=a.command,
         stages=[dict(stage='queue_prepared', cumulative_pass_n=a.nworld, rejected_n=0),
-                dict(stage='mission_dependencies_ready', cumulative_pass_n=0, rejected_n=a.nworld)],
+                dict(stage='nav_dependencies_ready' if a.mode == NAV_MODE else 'mission_dependencies_ready',
+                     cumulative_pass_n=0, rejected_n=a.nworld)],
         reasons=[dict(count=a.nworld, **rejection(queue['dependency_status']))], runtime_started=False))
     write(a.output/'queue.json', queue)
     from scripts.check_current_stack import check_document
@@ -131,18 +146,29 @@ def admit(a, queue):
 
 
 def run(a, queue):
+    nav = a.mode == NAV_MODE
+    if nav:
+        # Fail closed before any host admission or physics import.
+        nav_validate_queue(queue, a.seed)
     # Admission is complete before importing physics/render packages.
     relay, proof = admit(a, queue)
-    components = require_components(a.components, ROOT) if a.mode == 'mission' else None
-    actor = load_actor(components['ACT']) if components else None
+    components = (require_components(a.components, ROOT) if a.mode == 'mission'
+                  else require_navigation(a.components, ROOT) if nav else None)
+    active = bool(components) or nav
+    robots = NAV_ROBOTS if nav else ROBOTS
+    actor = load_actor(components['ACT']) if components and not nav else None
     from scripts.e2e_warp_physics import build_context, transport, issue, own_map
     import numpy as np
     a.output.mkdir(parents=True, exist_ok=False)
     write(a.output/'queue.json', queue)
     write(a.output/'relay-identity.json', relay)
     write(a.output/'host-receipt.json', proof)
-    write(a.output/'RUN_META.json', dict(class_='dev', branch='codex/e2ewarp', sha=head(), batch=a.output.name,
-          **{'class': 'dev'}, source='e2ewarp', physics_backend='mjwarp_batch_v1'))
+    meta = dict(class_='dev', branch='codex/e2ewarp', sha=head(), batch=a.output.name,
+          **{'class': 'dev'}, source='e2ewarp', physics_backend='mjwarp_batch_v1')
+    if nav:
+        meta.update(execution_mode=NAV_MODE, robots=list(NAV_ROBOTS), leader_id=nav_leader(a.seed),
+                    component_requirements=list(NAV_REQUIRED), static_map_input=False)
+    write(a.output/'RUN_META.json', meta)
     contexts, planners, tasks, channels, ownstates, rings = [], {}, {}, [], {}, {}
     decisions, maprows, rejects, commands, evaluations, evalstates = [], [], [], [], [], []
     status, error, tick, hooks = 'HOST_ERROR', None, 0, None
@@ -153,16 +179,28 @@ def run(a, queue):
             context = build_context(a.seed, a.output/f'world-{w:02d}', queue['stack_values'])
             contexts.append(context)
             scenario = context['scene'].scene['params']['scenario_setup']
-            static = dict(orders=scenario['orders'], static_map=context['static_map'],
-                          condition=a.condition, communication_schema=dict(
-                              free=dict(body={'text': 'English sentence'}), structured=dict(body={'act': 'inform', 'state': 'unknown'})),
-                          input_boundary='own RGB and own issued commands only; no top/GT/contact')
-            channels.append(Channels(a.condition, a.seed))
-            for robot in ROBOTS:
+            if nav:
+                # No static map: only order/condition metadata reaches the
+                # navigation component and the LLM prompt.
+                static = nav_static(dict(orders=scenario['orders'], condition=a.condition,
+                                         robot_count=len(robots)))
+            else:
+                static = dict(orders=scenario['orders'], static_map=context['static_map'],
+                              condition=a.condition, communication_schema=dict(
+                                  free=dict(body={'text': 'English sentence'}), structured=dict(body={'act': 'inform', 'state': 'unknown'})),
+                              input_boundary='own RGB and own issued commands only; no top/GT/contact')
+            channels.append(Channels(a.condition, a.seed, robots=robots) if nav
+                            else Channels(a.condition, a.seed))
+            for robot in robots:
                 key = w, robot
                 planners[key] = Planner(a.relay_url, a.output/f'world-{w:02d}'/'llm'/robot, static,
                                        run_id=a.output.name, world_id=w, robot=robot)
-                tasks[key] = (MissionRobot(robot, static, components, actor) if components else DiagnosticTask(scenario['orders']))
+                if nav:
+                    tasks[key] = NavRobot(robot, static, components)
+                elif components:
+                    tasks[key] = MissionRobot(robot, static, components, actor)
+                else:
+                    tasks[key] = DiagnosticTask(scenario['orders'])
                 ownstates[key], rings[key] = {}, deque(maxlen=101)  # 10 SIM s at existing 10Hz + current
         hooks = transport(contexts, a.output, head(), queue['stack_values'])
         hooks.initialize(contexts)
@@ -172,7 +210,7 @@ def run(a, queue):
                 noslip_iterations=int(hooks.m.opt.noslip_iterations)),
             gpu_noslip_iterations=int(hooks.wm.opt.noslip_iterations),
             map_keyframe_admission=queue.get('map_keyframe_admission','off'),
-            camera=dict(robots=list(ROBOTS), resolution=[640, 480], hz=10, top_control=False),
+            camera=dict(robots=list(robots), resolution=[640, 480], hz=10, top_control=False),
             cpu_physics_steps=0, cpu_render_calls=0, legacy_equivalence_shims=False,
             xml_sha256=[sha(c['world'].scene_xml.encode()) for c in contexts]))
         rollout_start = time.monotonic()
@@ -199,17 +237,17 @@ def run(a, queue):
                     rgb_path.parent.mkdir(parents=True, exist_ok=True)
                     rgb_path.write_bytes(jpeg)
                 planners[key].health.check(now)
-                report = task.observe(frame) if components else own_map(frame, ownstates[key],
+                report = task.observe(frame) if active else own_map(frame, ownstates[key],
                     keyframe_policy=queue.get('map_keyframe_admission','off'))
                 maprows.append(dict(world=w, robot=robot, sim_s=now, rgb_sha256=sha(jpeg), **report))
                 # Smoke: 3 decision epochs within user-prescribed first30. Full
                 # owner controller requests decisions on task/observation events.
-                delivered = channels[w].inbox(robot) if components else None
-                if components:
+                delivered = channels[w].inbox(robot) if active else None
+                if active:
                     task.receive(delivered.get('inbox', []))
-                needs_decision = bool(getattr(task.component, 'needs_decision', False)) if components else tick in (0, 100, 200)
+                needs_decision = bool(getattr(task.component, 'needs_decision', False)) if active else tick in (0, 100, 200)
                 if needs_decision:
-                    peer_input = channels[w].inbox(robot) if not components else {
+                    peer_input = channels[w].inbox(robot) if not active else {
                         **delivered, **({'inbox': task.take_inbox()} if 'inbox' in delivered else {})}
                     dynamic = dict(robot_id=robot, world_id=w, sim_s=now, own_map=report,
                                    issued_commands=list(frame.issued), candidates=task.candidates(),
@@ -248,8 +286,13 @@ def run(a, queue):
             if tick == limit:
                 status = 'cap_end'
                 break
-            if components and all(task.complete for task in tasks.values()):
+            if active and all(task.complete for task in tasks.values()):
                 status = 'OWN_COMPLETION_CLAIM'
+                break
+            if nav and nav_all_arrived(tasks.values()):
+                # Own-input arrival is unverified: it stops the run but never
+                # becomes a success claim (nav mode has no evaluator).
+                status = 'NAV_ARRIVAL_UNVERIFIED'
                 break
             hooks.step(contexts, np.ones(a.nworld, dtype=bool))
             if (tick+1) % 10 == 0:
@@ -259,8 +302,11 @@ def run(a, queue):
         sim_s = tick/10
         rows = [r for p in planners.values() for r in p.rows]
         report = first30(rows, decisions, sim_s, a.nworld, time.monotonic()-rollout_start)
+        scope = ('raw first30 smoke' if not active else
+                 'nav-only; no evaluator; arrival claim unverified' if nav else
+                 'mission; separate physical evaluator required')
         report.update(status=status, stop_intervals='all wheel commands held in smoke; no global registration',
-                      scope='raw first30 smoke' if not components else 'mission; separate physical evaluator required')
+                      scope=scope)
         write(a.output/'run-metrics.json', report)
     except BaseException as exc:
         error = traceback.format_exc()
@@ -274,7 +320,9 @@ def run(a, queue):
         if evalstates:
             np.savez_compressed(a.output/'evaluation-state.npz', qpos=np.asarray(evalstates), dt=.1)
         write(a.output/'messages.json', [dict(world=w, events=c.events) for w, c in enumerate(channels)])
-        if components:
+        if nav:
+            write(a.output/'nav-events.json', {f'{w}:{r}': task.component.events for (w,r),task in tasks.items()})
+        elif components:
             write(a.output/'mission-events.json', {f'{w}:{r}': task.component.events for (w,r),task in tasks.items()})
         sizes = []
         for (w, robot), frames in rings.items():
@@ -292,7 +340,7 @@ def run(a, queue):
             source_sha=head(), mode=a.mode, nworld=a.nworld, wall_s=time.monotonic()-started,
             map_keyframe_admission=queue.get('map_keyframe_admission','off'),
             physics_backend='mjwarp_batch_v1', contact_profile='warp_native_contact_v1',
-            E2E_success=False, student_execution=bool(components), research_result=False,
+            E2E_success=False, student_execution=bool(components) and not nav, research_result=False,
             no_pooling=True, input_audit=dict(top_camera_control=False, held_world_reads=0,
                 scope='capability boundary: controllers never receive world/model/evaluator; smoke has no holding'),
             raw=str(a.output), client_requests=len(allrows),
@@ -300,11 +348,15 @@ def run(a, queue):
             model_calls=sum(len((r.get('upstream') or {}).get('attempts', [])) for r in allrows), decisions=len(decisions),
             rejection_distribution=dict(Counter(r['reason'] for r in rejects)),
             dependency_status=queue['dependency_status'])
+        if nav:
+            # Nav-only result: no evaluator, so no E2E/physical success field can
+            # be set true even after an own-input arrival report.
+            summary.update(nav_result_fields())
         if not (a.output/'first30.json').exists():
             incomplete = first30(allrows, decisions, sim_s, a.nworld, time.monotonic()-started)
             incomplete.update(scope='incomplete prefix; first30 not reached', completed_first30=False)
             write(a.output/'first30.json', incomplete)
-        if components and not error:
+        if components and not nav and not error:
             # Post-run evaluator receives raw state files ONLY after controllers
             # stop. Its output never re-enters their observations or transitions.
             try:
@@ -319,7 +371,7 @@ def run(a, queue):
                     r.get('physical_success') is True and r.get('first_to_end_transport') is True
                     and r.get('same_episode') is True and r.get('self_map_used') is True for r in worlds)
                 per_robot_llm = all(any(row['world'] == w and row['robot'] == r and row['accepted']
-                    for row in allrows) for w in range(a.nworld) for r in ROBOTS)
+                    for row in allrows) for w in range(a.nworld) for r in robots)
                 summary['E2E_success'] = eligible and per_robot_llm and status == 'OWN_COMPLETION_CLAIM'
                 summary['research_result'] = summary['E2E_success']
             except Exception:
@@ -341,10 +393,12 @@ def run(a, queue):
     return summary
 
 
-def main(argv=None):
+def build_parser():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--e2e-warp-batch', choices=('off', 'on_v1'), default='off')
-    p.add_argument('--mode', choices=('smoke', 'mission'), default='smoke')
+    p.add_argument('--mode', choices=('smoke', 'mission', NAV_MODE), default='smoke',
+                   help='smoke=first30 diagnostic (default); mission=full owner composition; '
+                        'nav=opt-in two-robot navigation-only mode (no static map, no ACT/release)')
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--round', type=int, choices=(1, 2, 3), default=1)
     p.add_argument('--nworld', type=int, choices=range(1, 41), default=1)
@@ -360,6 +414,11 @@ def main(argv=None):
     p.add_argument('--host-receipt', type=Path)
     p.add_argument('--components', type=Path)
     p.add_argument('--relay-url', default='http://127.0.0.1:18627/v1/chat/completions')
+    return p
+
+
+def main(argv=None):
+    p = build_parser()
     a = p.parse_args(argv)
     if a.mode == 'smoke' and a.nworld > 2:
         p.error('first30 smoke is restricted to 1–2 worlds')

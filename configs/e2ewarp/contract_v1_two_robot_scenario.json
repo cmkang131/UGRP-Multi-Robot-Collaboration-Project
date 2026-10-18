@@ -1,0 +1,22 @@
+{
+  "schema": "ugrp.e2ewarp.contract_v1_scenario",
+  "scenario_id": "west_pickup_door_zoneB_two_robot_v1",
+  "contract": "2026-10-18-gpu-e2e-contract/README.md",
+  "physics": {"backend": "mjwarp_batch_v1", "noslip_iterations": 0, "contact_profile": "warp_native_contact_v1"},
+  "robots": ["r1", "r2"],
+  "static_map_input": false,
+  "position_input": "self_centric_zero_origin_with_memory",
+  "language_conditions": ["no_comm", "peer_en", "leader_en", "structured"],
+  "mission": {
+    "pickup_room": "west",
+    "door": "divider_wide_door",
+    "destination_zone": "B",
+    "cargo": "long_beam",
+    "robots_required": 2,
+    "carry": "cooperative_long_beam"
+  },
+  "orders": [
+    {"id": "pair_carry_1", "cargo": "long_beam", "robots": ["r1", "r2"], "pickup": "west", "destination_zone": "B"}
+  ],
+  "labels": {"research_result": false, "scaffold": true, "note": "contract v1 scaffold; no physical gate yet"}
+}

@@ -17,7 +17,7 @@ import time
 from urllib.error import HTTPError, URLError
 from urllib.request import Request
 
-from harness.zone_study_contract import ROBOTS, check_message
+from harness.zone_study_contract import ROBOTS, ContractViolation, check_message
 from harness.s4_compact_prompt import legacy_condition
 from harness.zone_study_llm_transport import no_redirect_opener
 
@@ -84,15 +84,20 @@ class OwnFrame:
 
 class Channels:
     """No shared robot state. Inbox is written only by an accepted LLM message."""
-    def __init__(self, condition, seed):
+    def __init__(self, condition, seed, *, robots=ROBOTS):
         if condition not in COMM_CONDITIONS:
             raise ValueError('four main communication conditions only')
-        self.condition, self.seed = condition, seed
-        self.leader = ROBOTS[seed % len(ROBOTS)]
-        self.inboxes = {r: [] for r in ROBOTS}
+        robots = tuple(robots)
+        if not robots or len(set(robots)) != len(robots) or not set(robots) <= set(ROBOTS):
+            raise ValueError('invalid execution robot set')
+        self.condition, self.seed, self.robots = condition, seed, robots
+        self.leader = robots[seed % len(robots)]
+        self.inboxes = {r: [] for r in robots}
         self.events = []
 
     def inbox(self, robot):
+        if robot not in self.robots:
+            raise ContractViolation('robot outside execution robot set: ' + str(robot))
         if self.condition == 'no_comm':
             return {}  # no inbox key at all
         rows, self.inboxes[robot] = self.inboxes[robot], []
@@ -117,6 +122,13 @@ class Channels:
         if not isinstance(message, dict) or set(message) != {'recipients', 'body'}:
             raise ValueError('invalid message envelope')
         recipients = message['recipients']
+        if sender not in self.robots:
+            raise ContractViolation('sender outside execution robot set: ' + str(sender))
+        if isinstance(recipients, (list, tuple)):
+            outside = [r for r in recipients if r not in self.robots]
+            if outside:
+                raise ContractViolation('recipient outside execution robot set: '
+                                        + ','.join(str(r) for r in outside))
         # Existing validator supplies topology/schema only; its historic *_ko
         # names are never written as the external execution condition.
         check_message(legacy_condition(self.condition), sender, recipients, message['body'], seed=self.seed)
