@@ -64,6 +64,13 @@ new candidate selects them.
   below the runtime floor 11.07 mm; a wider family may contain clearance poses
   in both.  Used only when the normal family fails, so the normal planning
   cost is unchanged.  Default off; separate never-pooled family.
+- ``search26_align_diag``: alignment-phase diagnostic logging only (no
+  command/behavior change).  Logs the alignment errors, merit, visibility,
+  chosen stance and the sampled-stance pick-cloud collision check whenever the
+  robot holds in align or ready_geometry fails.  Basis: r8/r9 case 27 arrived
+  at align and stalled (alignment_no_progress) while wheel commands were all
+  zero; the teacher needs to report whether it is waiting on a stale-memory
+  pick-cloud collision or on missing visible error.
 - ``search26_commit_plan``: keep driving a feasible committed approach plan
   until its existing 1 s replan boundary instead of re-planning on every
   blocked tick caused by stale-memory margins.  Basis: gcp6 r5c case 27 spent
@@ -86,6 +93,7 @@ new stance candidate uses only the existing calibrated envelope, the existing
 jaw predicate, and the existing margins.
 """
 MODES = {'search26_circles': 'search26_downfirst_circles_v1',
+         'search26_align_diag': 'search26_align_diag_v1',
          'search26_wide_rescue': 'search26_wide_rescue_v1',
          'search26_commit_plan': 'search26_commit_plan_v1',
          'search26_reobserve_refresh_open': 'search26_reobserve_refresh_open_v1',

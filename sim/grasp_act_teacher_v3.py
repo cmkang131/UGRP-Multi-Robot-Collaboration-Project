@@ -145,6 +145,24 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
             return self._route(truth,goal,heading,now),False
         if self.phase=='approach':self._set('align',now);self._reset_alignment()
         gx,gy=local(pose,g);errors=(gx-self.staging_distance,gy,wrap(heading-pose[2]))
+        if (self.search15_modes.get('search26_align_diag','off')!='off'
+                and self.phase=='align'):
+            row={'t':now,'event':'align_diag','errors':[float(e) for e in errors],
+                 'staging_distance_m':self.staging_distance,
+                 'visible_probes':truth['visibility'][self.rid]['visible_probes'],
+                 'reobserve_active':self.reobserver.active is not None,
+                 'approach_plan_valid':self.approach_plan_valid,
+                 'approach_choice':[float(self.approach_choice[0]),float(self.approach_choice[1])],
+                 'sampled_stance':self.sampled_stance,
+                 'pose':[float(x) for x in pose[:3]],
+                 'goal':[float(x) for x in goal[:2]]}
+            try:
+                from sim.grasp_act_pregrasp import actual_pick_cloud, collision_reason
+                xyz,radii,contact=actual_pick_cloud(self.sink.pwm,(gx,gy,g[2]))
+                row['pick_cloud_reason']=collision_reason(truth,self.rid,pose,xyz,radii,contact)
+            except Exception as error:
+                row['pick_cloud_error']=type(error).__name__
+            self.recovery_log.append(row)
         if self.ready_geometry(truth):
             self.stable_since=now if self.stable_since is None else self.stable_since
             self._reset_alignment()
