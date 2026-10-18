@@ -26,7 +26,7 @@ TUNE_CANDIDATE = 'act18-tune'
 # Registered short pilot checkpoints (never 100k reference models, never packaged):
 # 'act18-tune' = post-close weighted 2k probe on R8; 'act18-doneb1' = done-only
 # 5k probe on R100 (pre-registered 2026-10-18 for Lead-approved B1).
-PILOT_CANDIDATES = ('act18-tune', 'act18-doneb1', 'act18-std', 'act18-b3')
+PILOT_CANDIDATES = ('act18-tune', 'act18-doneb1', 'act18-std', 'act18-b3', 'act18-loop')
 PILOT_KINDS = ('init_aligned_finetune_v1', 'done_positive_balanced_finetune_v1',
                'standard_aligned_scratch_v1', 'done_horizon_current_only_v1')
 # Segment table frozen before the probe run (Lead 2026-10-18 instruction):
