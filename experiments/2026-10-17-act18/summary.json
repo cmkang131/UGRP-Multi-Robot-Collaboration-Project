@@ -1465,6 +1465,111 @@
       },
       "prereg": "experiments/2026-10-17-act18/B5_PREREG.json (구현·설계 보존)",
       "note": "B5 코드·프리레그는 유지. 재개 지시 시 snapshot f39cd8e10 계열에서 이어가면 됨."
+    },
+    {
+      "name": "b5-r2",
+      "kind": "B5 closed-loop transition candidate act18-loop: 5k transition-weighted fine-tune from co-r2 best + frozen overlay (own command history only)",
+      "status": "NOT_READY",
+      "complete": true,
+      "prereg": "experiments/2026-10-17-act18/B5_PREREG.json",
+      "init": {
+        "checkpoint": "co-r2/act18-co/step-70000-best",
+        "step": 70000,
+        "label": "cotrain_continuation_v1"
+      },
+      "training": {
+        "steps": 5000,
+        "candidate": "act18-loop",
+        "agent": "transition_weighted_finetune_v1",
+        "transition_weight": 3.0,
+        "co_data": "v7 TRAIN200 + act16w TRAIN32",
+        "precision": "bf16_autocast_v1",
+        "checkpoint_sha256": "11db39fb58fddc4c756d688b65769a0669ac866982727f8283e228ad6fbb96ab",
+        "summary_sha256": "3413b57c0a90c140d68ae3a9ec8950387cf157f7a303b8305900b3d5b21b776f",
+        "vm_dir": "/home/ugrp/ugrp-sim/runs/act18/b5-r2"
+      },
+      "overlay": {
+        "kind": "closed_loop_transition_overlay_v1",
+        "hold_wheel_scale": 0.25,
+        "hold_ticks": 20,
+        "retreat_ticks": 15,
+        "retreat_wheel": 0.31,
+        "scope": "own issued base command post-processing only"
+      },
+      "gates": {
+        "overlay_only": {
+          "checkpoint": "co-r2/act18-co/step-70000-best",
+          "n": 0,
+          "N": 4,
+          "wall_s": 323.5,
+          "summary_sha256": "567516a658a5c4c0b1ee2e9e36766a4bea9446bb63dac684641d5dc1152ee2a7",
+          "issued_done": "4/4",
+          "cap_end": "0/4",
+          "physical_lift": "1/4 (88600)",
+          "release": "0/4",
+          "loop_events": {
+            "hold_brake": 60,
+            "release_retreat": 13
+          },
+          "done_grasp_s": {
+            "88600": 31.3,
+            "88601": 20.1,
+            "88602": 20.1,
+            "88603": 34.1
+          }
+        },
+        "b5": {
+          "n": 0,
+          "N": 4,
+          "wall_s": 559.9,
+          "summary_sha256": "365ae315569a5571a9bcd7a3ca3fac71356cda154461807ced14db97edbfe5f7",
+          "raw_recount_sha256": "7a425b1ad40bde030f41a08f6ea2b54bc07e661fd1547c59147a49be0f3d33c7",
+          "issued_done": "4/4",
+          "cap_end": "0/4",
+          "physical_lift": "0/4",
+          "release": "0/4",
+          "loop_events": {
+            "hold_brake": 76,
+            "release_retreat": 19
+          },
+          "head": {
+            "rows": 1995,
+            "fired": 120,
+            "p_median": 0.298,
+            "p90": 0.606,
+            "p_max": 0.993
+          },
+          "done_grasp_s": {
+            "88600": 73.8,
+            "88601": 18.7,
+            "88602": 18.7,
+            "88603": 45.3
+          },
+          "done_release_s": {
+            "88600": 85.6,
+            "88601": 23.5,
+            "88602": 30.7,
+            "88603": 56.6
+          }
+        }
+      },
+      "compare": {
+        "co_r2_best": {
+          "n": "0/4",
+          "lift": "1/4 (88602)",
+          "release": "0/4",
+          "issued_done": "4/4",
+          "done_grasp_s": {
+            "88600": 46.7,
+            "88601": 20.6,
+            "88602": 20.5,
+            "88603": 38.8
+          }
+        },
+        "delta": "overlay만: lift 1/4(다른 시드 88600), B5: lift 0/4 — TRAIN4 개선 없음, done 시점은 더 불안정"
+      },
+      "conclusion": "B5(전환 가중 5k + overlay)도 TRAIN4 0/4. overlay는 개입(hold_brake 76·retreat 19)했지만 물리 lift가 0/4로 악화됐고(overlay만 1/4, co-r2 1/4), done 발화는 18.7–73.8s로 분산이 커졌다. 전환 제어만으로는 grasp lift/release 실패를 해소하지 못함 — 남은 축: 물리 grasp 기하/데이터 규모/행동형식.",
+      "pooling": "co-r2/B4/tune/R8/R100과 합산 금지. 패키징/Release 금지."
     }
   ],
   "release": {

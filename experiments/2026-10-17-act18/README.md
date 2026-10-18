@@ -107,6 +107,18 @@ B4 실행(raw `doneh-r1/DONEH-TRAIN4`)의 **발행 명령 이력**과 교사(TRA
 
 Lead 우선순위 변경(사용자: zone dialogue study #223/#224 시뮬 완전 실행이 최우선)에 따라 **B5 closed-loop 후보는 HOLD**. B5 프리레그·overlay 모듈·테스트는 보존(`B5_PREREG.json`, `scripts/act18_loop_overlay.py`, `tests/test_act18_loop_overlay.py`). B5 학습/게이트는 **실행 전 코드 검증 실패로 0 GPU step**(과학적 결과 아님)이며 로그만 원본 보존. gcp2는 프로세스0·GPU 0%·lease 없음 확인 후 정지(TERMINATED). 재개 지시 시 snapshot `f39cd8e10` 계열에서 pilot 등록부터 수정해 이어간다.
 
+### B5 closed-loop 후보 결과 (b5-r2, 10/18)
+
+HOLD 해제 후 재개. `act18-loop` = co-r2 best(step-68k)에서 **전환 가중 5k**(teacher_phase close/lift ×3.0, hold/verify ×1.5) + **frozen overlay**(자기 명령 이력만: close 3틱 후 hold brake ×0.25·20틱, release 정지 시 grasp 평균 방향 반대로 0.31·15틱). 비교는 co-r2 best와 같은 시드·no-pooling.
+- **B5: TRAIN4 0/4**(wall 559.9s, 독립 recount 일치), issued_done 4/4·cap_end 0/4, 물리 **lift 0/4·release 0/4**. grasp done 18.7/18.7/45.3/73.8s(분산 확대), release 23.5–85.6s. 헤드 p median 0.298·p90 0.606·max 0.993. overlay 개입 hold_brake 76·release_retreat 19.
+- **overlay만(co-r2 best+overlay, 훈련 없음): TRAIN4 0/4**(wall 323.5s), issued_done 4/4·cap_end 0/4, **lift 1/4(88600)·release 0/4**, 개입 hold_brake 60·retreat 13.
+- co-r2 best 기존 gate: 0/4, lift 1/4(88602), done grasp 46.7/20.6/20.5/38.8s.
+- 해석: 전환 제어/가중은 TRAIN4를 개선하지 못했다(lift 0–1/4). overlay는 실제로 개입했지만 물리 grasp 성공으로 이어지지 않았고, 5k 전환 가중은 done 시점을 더 불안정하게 만들었다(18.7–73.8s). 남은 축은 **물리 grasp 기하/데이터 규모/행동형식**이다. 패키징·Release 금지, pooled 아님.
+
+### e2ewarp ACT 인수 요구사항 대비 현황 (10/18)
+
+e2ewarp `harness/e2e_warp_components.py:require_components()` + `scripts/e2ewarp_vendor/act16w_input.py:Act16wActor.load()` 기준. 상세 표·진단 방법은 Lead 보고(E2EWARP_ACT)에 기록.
+
 ### 조건 이탈·미검증 범위
 - **R100 gcp5 미이동(deviation):** bf16 프로브(2,000 step, 1.10배)는 수용했지만, R8이 gcp2에서 fp32로 학습 중이라 정밀도가 섞이고(합산 금지), `act18_train.py`가 옵티마이저/RNG 재개를 지원하지 않아 42,400/100,000(≈13,484s)을 폐기해야 하며, gcp5 예산 1,000KRW 정지 위험이 있어 gcp2 matched fp32 pair를 끝까지 유지했다. 근거는 `bf16-probe-decision.json`.
 - 이 학습은 **fp32**다. bf16 기본 전환 커밋(c7900c0ac)은 이 학습 시작 뒤다. 100k bf16 학습은 아직 없다(runtime 증거는 2,000 step 프로브뿐). bf16 결과와 합산하지 않는다.
