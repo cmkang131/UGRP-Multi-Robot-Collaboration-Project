@@ -1,0 +1,43 @@
+{
+ "schema": "ugrp.beamact5.r11_gate_preregistration.v1",
+ "written_before_run_utc": "2026-10-18T02:05:00Z",
+ "author": "beamact5 worker (DSH)",
+ "approved_by": "Lead (자율 진행: 38/40까지 반복; align 단계 보정 즉시 실행 지시)",
+ "stage1_result": {
+  "world": 27,
+  "result": "PASS",
+  "sim_s": 29.9,
+  "physical_success": true,
+  "teacher_success_n": 2,
+  "run": "/home/ugrp/ugrp-sim/runs/beamact5/validation-r11-27"
+ },
+ "stage2_condition": "launch stage3 only if stage2 5-world has 6/10/20/27 PASS (37 may fail as expected).",
+ "scope": "r11 39-world gate: world15 excluded from physical execution and counted expected FAIL (r3-approved deviation); 37 is the r1/r2 structural expected FAIL. Not pooled with r1/r2/r3/r4/r5/r6/r7/r8/r9/r10diag.",
+ "criterion": {
+  "nominal_denominator": 40,
+  "nominal_min_success": 38,
+  "executed_N": 39,
+  "rule": "at least 38 of 39 executed succeed (at most one non-15 failure); 37 expected FAIL -> exactly 38/40 = PASS at minimum",
+  "if_27_or_other_regression": "37/40 FAIL"
+ },
+ "stack": {
+  "root": "0e1f493dd5ab782ba0224fe1f5b944ec35467c63",
+  "adapter": "aa2cdc41cc96ad61d0fc5f3c964bad08b4528e80",
+  "teacher": "2545899079902e6d343df6a763de3a5ba03ccac2",
+  "cases_sha256": "f116f07d453f917a330bc0e8b77f17dc770c969d611b5a236de30ac2f546185d",
+  "plan_sha256": "f1a50e8c833c1da9113bdf8cff3844913380e3c821b15c072c0a23c0f54f5148"
+ },
+ "run": {
+  "out": "/home/ugrp/ugrp-sim/runs/beamact5/gate39-r11-run",
+  "indices": "0-14,16-39",
+  "cap_s": 60,
+  "host": "ugrp-act-l4-gcp6"
+ },
+ "not_claimed": [
+  "teacher success is not student success",
+  "no student recording/training",
+  "world15 unverified/excluded",
+  "37 structural label from r1/r2 not remeasured",
+  "no margin/cap constant change"
+ ]
+}
