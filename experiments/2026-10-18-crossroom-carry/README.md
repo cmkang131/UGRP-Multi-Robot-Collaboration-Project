@@ -407,11 +407,89 @@ Key facts:
   Stage B-specific addition to the fix list. Not pooled with Stage A or with
   the crossroom-stageA-fix candidate.
 
+### crossroom-stageA-fix v1 results (unloaded, 16 starts, 180 SIM s)
+
+Raw VM `/home/ugrp/ugrp-sim/runs/crossroom-stageA-fix`, copied under
+`stageA-fix/` (summary, recount, 16 montages, compressed SHA256SUMS).
+Executed from freeze commit `edded4f53`; `EXIT` DONE. Batch wall 8747.03 s =
+**3.0372 wall/(sim_s*nworld)**; first-30 is a **frame-mtime estimate**
+1409.79/(30*16) = 2.9371 (all 16 ran to the cap).
+
+Recounted funnel (0 mismatches): `requested 16 -> audit 16 -> start_valid 16
+-> **GT door_crossed 0** -> post-cross colour 0 -> found 0 -> declared 0 ->
+gt_inside 0`; `cap_end` 16/16. **Verdict: FAIL** - no GT crossing, so no
+destination result (Stage A baseline had 1/16 GT crossing).
+
+| ep | status | gap claim | GT door | gap confirmed/rejected | paint rejected | approach escapes | final base (x,y) |
+|---:|---|---|---|---:|---:|---:|---|
+| 0 | cap_end | no | no | 0/5 | 0 | 0 | 0.32,-0.21 |
+| 1 | cap_end | yes | no | 1/0 | 0 | 0 | 0.98,-0.08 |
+| 2 | cap_end | yes | no | 1/0 | 25 | 0 | 1.5,0.88 |
+| 3 | cap_end | yes | no | 1/30 | 0 | 0 | 1.07,-1.21 |
+| 4 | cap_end | no | no | 0/11 | 0 | 0 | -0.34,-1.32 |
+| 5 | cap_end | no | no | 0/0 | 1502 | 0 | 1.27,0.73 |
+| 6 | cap_end | yes | no | 1/82 | 0 | 0 | 1.02,-1.51 |
+| 7 | cap_end | no | no | 0/51 | 34 | 0 | 1.48,-0.63 |
+| 8 | cap_end | no | no | 0/0 | 0 | 0 | -0.51,-1.15 |
+| 9 | cap_end | no | no | 0/0 | 14 | 0 | 1.8,0.16 |
+| 10 | cap_end | no | no | 0/0 | 0 | 0 | 0.48,0.27 |
+| 11 | cap_end | no | no | 0/0 | 0 | 0 | 0.01,0.91 |
+| 12 | cap_end | yes | no | 1/41 | 98 | 0 | 1.26,0.19 |
+| 13 | cap_end | no | no | 0/0 | 0 | 0 | -0.1,-0.61 |
+| 14 | cap_end | no | no | 0/1 | 0 | 0 | 0.75,-0.14 |
+| 15 | cap_end | yes | no | 1/43 | 0 | 0 | 1.57,-1.72 |
+
+What the v1 fixes did and did not do (all from the raw):
+
+* **Two-sided gap filter reduced false gap claims from 9/16 to 6/16 and
+  rejected 264 gap attempts**, but the 6 confirmed gaps were still false:
+  the pickup-room front wall satisfies the single front-foot condition. It
+  also delayed recovery: 4/16 episodes (e00,e05,e10,e13) stayed in
+  `approach_wall` to the cap (Stage A: 2-3 episodes).
+* **Metric-extent paint filter rejected 1,673 colour patches**, all with
+  extent 0.055-0.102 m. Recorded-frame calibration shows this is the
+  long_beam blue end-band class (extent 0.044-0.099 m, range 0.396-0.758 m),
+  while true zone-B metric patches have extent 0.205-1.236 m
+  (range 0.406-1.19 m). So the filter removed the Stage A false `found`
+  candidates (e05/e06/e07) as intended; **it is not why found=0**.
+* **found=0 direct cause is the missing GT crossing**: the metric zone patch
+  needs the zone within the floor-fit range, and no episode reached the east
+  room. No true zone candidate existed in this run (0 accepted patches).
+* **Door lateral alignment was never exercised** (0 turns, 79 uncertain
+  ticks) because no true approach to the doorway happened.
+* **Contact recorder works** (eval-only): 624 rising-edge events classified
+  `cargo+robot_r1` (robot body vs cargo geoms), decimated to 0.5 SIM s. The
+  raw `nacon` is a single global count, so per-world attribution is not
+  available; `ticks_with_contact` includes the permanent floor baseline and
+  is reported separately from the interesting-contact count.
+* **Not the filter's fault**: the v1 filter constant 0.15 m sits between the
+  two measured classes, but the run shows the candidate still fails upstream
+  at the doorway. v2 keeps the class boundary and only stops rejecting a
+  *small far* patch (range-conditioned rule).
+
+### crossroom-stageA-fix2 (candidate v2, unloaded)
+
+Separate candidate built from the v1 raw (not pooled with Stage A, Stage B
+or fix v1). Freeze/execution: `queue-stageA-fix2.json`,
+`prereg-stageA-fix2.json`; code in `scripts/vgs_fix.py` (v2 flags) and
+`scripts/paint_area_filter.py` (`filter_paint_v2`). v2 changes:
+
+* gap confirmation v2 requires wall faces on **both same-side sectors**
+  (far jamb -80..-20 deg <=1.2 m AND near segment -160..-100 deg <=1.6 m)
+  plus >=12 tracked side-wall ticks, instead of one front foot.
+* paint filter v2 rejects only `extent < 0.15 m AND nearest_range < 0.90 m`
+  (beam-band regime measured at 0.396-0.758 m), so a small far patch is no
+  longer rejected. Calibration comes from the recorded Stage A frames
+  (zone: extent 0.205-1.236 m; beam: 0.044-0.099 m), not from any gate.
+* approach-wall escape: after 15 SIM s without progress, hand over to
+  `seek_wall` with an `approach_wall_escape` event.
+* door alignment, contact recorder and the rest of v1 stay on.
+
 ## crossroom-stageA-fix (candidate, default off)
 
 A separate candidate fixes the four Stage A failure modes and is **not pooled**
-with Stage A or Stage B. Code, prereg and queue are committed; execution runs
-after the Stage B gate.
+with Stage A or Stage B. v1 executed (FAIL, see results below); v2 is a
+separate candidate built from the v1 raw.
 
 * `FIX_DESIGN.md` — evidence -> fix mapping (gap two-sided confirmation, door
   lateral alignment, blue end-band rejection, contact recording).
