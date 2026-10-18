@@ -227,3 +227,17 @@ def test_prune_robots_removes_only_the_dropped_robot():
     assert out.count('<pair ') == 1
     with pytest.raises(ValueError):
         gate.prune_robots(xml, keep=('r1', 'r2', 'r3'))
+
+
+def test_issue_normalizes_percent_wheel_commands_for_the_mjwarp_relay():
+    from types import SimpleNamespace
+    from scripts.e2e_warp_physics import issue
+    port = SimpleNamespace(_motor_commands=(), _wheel_deadlines=[], _servo_targets={})
+    context = {'ports': {'r1': port}}
+    issue(context, 'r1', dict(t=1.0, wheels=[35., -35., 0., 35.], duration_s=[.1, .1, 0., .1],
+                              pwm={'1': 1500, '3': 1500, '4': 1500, '5': 1500, '6': 1500}))
+    assert port._motor_commands == (.35, -.35, 0., .35)
+    assert port._wheel_deadlines[:2] == [1.1, 1.1]
+    with pytest.raises(ValueError):
+        issue(context, 'r1', dict(t=1.0, wheels=[100., 0., 0., 0.], duration_s=[.1, 0., 0., 0.],
+                                  pwm={'1': 1500, '3': 1500, '4': 1500, '5': 1500, '6': 1500}))

@@ -241,8 +241,27 @@ def transport(contexts, out, sha, stack):
 
 
 def issue(context, robot, command):
+    """Issue one contract command row to a robot port.
+
+    ``command()`` from harness.grasp_act_contract emits wheel values in percent
+    (0 or 31..40), while the MJWarp relay consumes normalized [-1, 1] commands.
+    The conversion belongs here; mixing both conventions in the port was the
+    cause of 'finite normalized issued commands required' on the first executed
+    navigation-gate calibration attempt.
+    """
+    wheels = []
+    for value in command['wheels']:
+        value = float(value)
+        if value == 0.:
+            wheels.append(0.)
+        elif .31 - 1e-9 <= abs(value) <= .40 + 1e-9:
+            wheels.append(value)
+        elif .31 - 1e-9 <= abs(value) <= 40. + 1e-9:
+            wheels.append(value / 100.0)
+        else:
+            raise ValueError('wheel command outside the 31..40 percent vocabulary')
     port = context['ports'][robot]
-    port._motor_commands = tuple(command['wheels'])
+    port._motor_commands = tuple(wheels)
     port._wheel_deadlines = [command['t']+v if v else None for v in command['duration_s']]
     port._servo_targets.update({int(k): v for k, v in command['pwm'].items()})
 
