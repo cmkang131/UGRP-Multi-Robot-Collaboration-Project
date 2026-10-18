@@ -1,0 +1,47 @@
+{
+ "schema": "ugrp.beamact5.r13diag_preregistration.v1",
+ "written_before_run_utc": "2026-10-18T09:25:00Z",
+ "author": "beamact5 worker (DSH)",
+ "approved_by": "Lead (flake 상류 원인 확정 지시)",
+ "purpose": "case-27 flake upstream diagnosis after both 39-gate attempts failed on 27 (align stall) while the same frozen stack passed 27 in the 5-world stage2 and 1 of 3 standalone repeats. Behavior/commands are IDENTICAL to r13; only align diagnostic rows are logged (errors, merit, axis, visibility, stance, pick-cloud collision reason, stable_since).",
+ "hypothesis_table": {
+  "same_initial_state": "all six saved runs have byte-identical initial qpos (first-tick difference 0.0); the robot trajectory diverges within ~5 state samples, i.e. the sim is not bit-reproducible across runs. Therefore the flake is a robustness issue, not a code branch difference.",
+  "selection": "all runs select the same stance (-18 deg, 0.2092 m); wide_rescue fires at 2.8 s in all; the later wide_rescue at 18.3 s appears only in a failing run.",
+  "signature": "PASS align 2.6 s/relook 0 vs FAIL align 7.8-8.4 s/relook 3 with no_visible_error_progress_3s."
+ },
+ "runs": [
+  {
+   "indices": [
+    27
+   ],
+   "out": "/home/ugrp/ugrp-sim/runs/beamact5/diag-r13diag-rep1",
+   "cap_s": 60
+  },
+  {
+   "indices": [
+    27
+   ],
+   "out": "/home/ugrp/ugrp-sim/runs/beamact5/diag-r13diag-rep2",
+   "cap_s": 60
+  },
+  {
+   "indices": [
+    27
+   ],
+   "out": "/home/ugrp/ugrp-sim/runs/beamact5/diag-r13diag-rep3",
+   "cap_s": 60
+  }
+ ],
+ "stack": {
+  "root": "d0fdeeb93366f6f395fc699ca13d9129269d036c",
+  "adapter": "230c9985b5dc78ac9b5d81e9c7ef92d2481f8991",
+  "teacher": "fe6858eca7fa7b2ba6fb518c54f18a071995d5b4",
+  "cases_sha256": "21cf43f9f5f2b756f1731d263b9ee0ca857ff06b0bde642cf5da37e634eb543d"
+ },
+ "not_claimed": [
+  "diagnostic only",
+  "no gate result",
+  "no pooling",
+  "no success claim"
+ ]
+}
