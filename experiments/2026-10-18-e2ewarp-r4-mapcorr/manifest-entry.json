@@ -1,0 +1,135 @@
+{
+ "schema": "ugrp.e2ewarp.mapcorr_adapter_entry.v1",
+ "component": "loaded_camera_fk + selfmap_map_correction (navigation_factory composition)",
+ "owner": "mapbuild8 owner modules / egonav e2ewarp adapter integration",
+ "adapter": {
+  "navigation_factory": {
+   "entry": "harness.e2ewarp_mapcorr:navigation_factory",
+   "sha256": "1879d289b193f27a138d585e194ba784d6f6088795fecc58c148356b9d0043eb",
+   "default": "off",
+   "options": [
+    "e2e_warp_navigation_v1",
+    "off"
+   ]
+  },
+  "loaded_camera_fk": {
+   "entry": "harness.e2ewarp_mapcorr:loaded_camera_fk",
+   "sha256": "1879d289b193f27a138d585e194ba784d6f6088795fecc58c148356b9d0043eb",
+   "default": "off",
+   "options": [
+    "off",
+    "loaded_camera_fk_v1"
+   ]
+  },
+  "selfmap_map_correction": {
+   "entry": "harness.e2ewarp_mapcorr:selfmap_map_correction",
+   "sha256": "1879d289b193f27a138d585e194ba784d6f6088795fecc58c148356b9d0043eb",
+   "default": "off",
+   "options": [
+    "off",
+    "selfmap_map_correction_v1"
+   ]
+  }
+ },
+ "component_records": {
+  "loaded_camera_fk": {
+   "ready": false,
+   "owner": "mapbuild8",
+   "evidence": "command-only carry camera FK adapter + Mac unit tests; new physical gate required",
+   "option": "loaded_camera_fk_v1",
+   "default": "off",
+   "command_only": true,
+   "load_measured": false,
+   "entry": "harness.e2ewarp_mapcorr:loaded_camera_fk"
+  },
+  "selfmap_map_correction": {
+   "ready": false,
+   "owner": "mapbuild8",
+   "evidence": "causal own-map+static-wall correction adapter (owner CSM/registration byte modules) + Mac unit tests; new physical gate required",
+   "option": "selfmap_map_correction_v1",
+   "default": "off",
+   "mode": "on",
+   "own_and_static_map": true,
+   "spawn_anchor_used": false,
+   "entry": "harness.e2ewarp_mapcorr:selfmap_map_correction"
+  }
+ },
+ "contract": {
+  "factory": "factory(robot_id=..., static=...) -> adapter",
+  "navigation": {
+   "observe": "observe(OwnFrame) -> map_correction_active, handoff_ready, destination_arrived, holding_status, evidence_revision",
+   "methods": [
+    "task_candidates(completed)",
+    "start(instruction, phase)",
+    "command(sim_s)",
+    "confirm_act(OwnFrame, skill)",
+    "on_messages(rows)",
+    "accept_release_fix(report)"
+   ]
+  },
+  "parts": {
+   "loaded_camera_fk": "resolve(own issued PWM) -> command_only carry FK evidence",
+   "selfmap_map_correction": "step(t, frame_id, flow, scan, issued, perception_available) -> causal pose/correction ledger"
+  },
+  "claim_rule": "map_correction_active=true only when the toggle is on AND the own-RGB perception path is available; a frame without own-RGB perception never updates the pose (odometry-only blocked); spawn/GT anchors are rejected; ready stays false until a new physical gate"
+ },
+ "boundary_audit": {
+  "allowed_inputs": [
+   "own JPEG bytes (OwnFrame.jpeg)",
+   "own issued commands (OwnFrame.issued)",
+   "authored static map/orders (static factory argument)",
+   "own servo commanded PWM via the mapbuild owner FK/colour constants"
+  ],
+  "forbidden_inputs": [
+   "world/model/data objects",
+   "evaluator/ground-truth/contact/success",
+   "top camera",
+   "measured joints",
+   "spawn anchor",
+   "odometry-only pose update",
+   "cross-robot frames",
+   "non-causal frames"
+  ],
+  "import_scan": "no sim.*, no mujoco/warp/torch, no scripts.e2e_warp_physics; imports limited to hashlib/json/math/numpy/cv2/harness owner modules (tests enforce)",
+  "owner_evidence_validation": [
+   "own-RGB perception required for any accepted correction",
+   "static map/orders sha256 bound",
+   "spawn_anchor_used=false",
+   "truth_inputs=0",
+   "held_world_reads=0",
+   "odometry_only=false"
+  ]
+ },
+ "owner_assets": {
+  "origin_branch": "codex/mapbuild1",
+  "origin_commit": "95769da0e12326e41b71d29843c4da75c5b10a00",
+  "manifest": "experiments/2026-10-18-e2ewarp-r4-mapcorr/owner-assets.json"
+ },
+ "tests": {
+  "path": "tests/test_e2ewarp_mapcorr.py",
+  "sha256": "7065ab64cbf8c0ce96b60ef256a894b5bd600f6d4586c0ef84e946ce7bbcb543",
+  "cases": 24,
+  "command": "python -m pytest tests/test_e2ewarp_mapcorr.py -q",
+  "result": "pass",
+  "scope": "Mac non-physical unit tests only; no GPU/physics run"
+ },
+ "integration": {
+  "target_run": "/home/ugrp/ugrp-sim/runs/e2ewarp-r4-run",
+  "target_run_result_sha256": "c61ecce4cc9ae68cc5c859d4a2d6c6f16b7fe51306bd80b527250af26fddbad0",
+  "target_source_sha": "718777118be41991156b047faff78621969101bb",
+  "component_manifest_key": [
+   "loaded_camera_fk",
+   "selfmap_map_correction",
+   "navigation_factory"
+  ],
+  "merge_note": "copy adapter entries into the e2ewarp components manifest; component records stay ready=false until the owner navigation/ACT/release parts are integrated and a new physical gate runs on gcp6"
+ },
+ "pending": [
+  "owner navigation adapter (mapbuild8) for route/motion commands; this factory holds wheels until injected",
+  "new gcp6 physical gate with selfmap_map_correction=on + loaded_camera_fk_v1 on",
+  "release_relocalization + selected ACT artifact readiness",
+  "registration acceptance/error ledger from a real GPU run"
+ ],
+ "no_pooling": true,
+ "no_prior_result_inheritance": "R4 self-map 48-keyframe success is context only; mapbuild11/mapbuild12 prior gates are NOT inherited"
+}

@@ -163,7 +163,7 @@ class CorrelativeMatcher:
     def __init__(self, options=None):
         self.options = options or CSMOptions()
 
-    def match(self, pose, covariance, points, camera, reference, anchor_covariance):
+    def match(self, pose, covariance, points, camera, reference, anchor_covariance, *, prior_window=None):
         o = self.options
         pose, points, covariance = np.asarray(pose), np.asarray(points), np.asarray(covariance)
         radii = np.linalg.norm(points-camera, axis=1)
@@ -172,9 +172,18 @@ class CorrelativeMatcher:
         step = np.array([o.field_resolution_m, o.field_resolution_m, math.radians(o.yaw_step_deg)])
         limits = np.array([o.translation_window_m]*2 + [math.radians(o.yaw_window_deg)])
         window = np.minimum(limits, np.maximum(3*step, 3*np.sqrt(np.diag(covariance))))
+        if prior_window is not None:
+            # mapbuild8 explicit candidate: exactly +/- the supplied prior sigma,
+            # no SIGMA_SCALE or minimum .15m window. The endpoint samples below
+            # allow sub-grid priors without manufacturing a wider uncertainty.
+            window = np.minimum(limits, np.asarray(prior_window, float))
+            if window.shape != (3,) or np.any(window <= 0) or not np.isfinite(window).all():
+                raise ValueError('FINITE_POSITIVE_PRIOR_WINDOW_REQUIRED')
         counts = np.floor(window/step+1e-8).astype(int)
-        window = counts*step
-        candidates = np.stack(np.meshgrid(*[np.arange(-n, n+1)*s for n, s in zip(counts, step)],
+        if prior_window is None:window = counts*step
+        axes = [np.arange(-n, n+1)*s for n, s in zip(counts, step)]
+        if prior_window is not None:axes = [np.unique(np.r_[a, -w, w]) for a,w in zip(axes,window)]
+        candidates = np.stack(np.meshgrid(*axes,
                                          indexing='ij'), axis=-1).reshape(-1, 3)
         field = DistanceField(reference, o.field_resolution_m, o.translation_window_m+1.)
         c, s = np.cos(pose[2]+candidates[:, 2]), np.sin(pose[2]+candidates[:, 2])
@@ -197,6 +206,12 @@ class CorrelativeMatcher:
         V, N = axes[:, observable], axes[:, ~observable]
         projector = V@V.T
         delta = S@projector@D@candidates[best]
+        if prior_window is not None:
+            # Orthogonal observable-subspace projection can increase one box
+            # coordinate. Uniform contraction preserves that subspace while
+            # enforcing the ORIGINAL prior box, without an acceptance margin.
+            nonzero=np.abs(delta)>0
+            if np.any(nonzero):delta*=min(1.,float(np.min(window[nonzero]/np.abs(delta[nonzero]))))
         projected_separation = (candidates-candidates[best])@D@projector
         separated = np.linalg.norm(projected_separation, axis=1) >= o.mode_distance_m-1e-9
         second = int(np.argmin(np.where(separated, sensor, np.inf))) if separated.any() else None
@@ -205,7 +220,13 @@ class CorrelativeMatcher:
         projected_distances = field.query(transform(points, corrected))
         overlap = float(np.mean(projected_distances <= o.overlap_distance_m))
         residual = float(np.sqrt(np.mean(projected_distances**2)))
-        boundary = bool(np.any((np.abs(candidates[best]) >= window-step*.49) & (np.diag(projector) > .1)))
+        # With an explicit sigma box smaller than one historical grid cell,
+        # window-step*.49 can become NEGATIVE: even zero motion was falsely
+        # labelled boundary (R2 counterexample: +/-2mm, delta exactly zero).
+        # Use this grid's actual spacing. No window/score threshold is widened;
+        # the legacy caller retains the bit-identical original expression.
+        boundary_step=np.minimum(step,window) if prior_window is not None else step
+        boundary = bool(np.any((np.abs(candidates[best]) >= window-boundary_step*.49) & (np.diag(projector) > .1)))
         reason = ('unobservable' if not observable.any() else
                   'search_boundary' if boundary else
                   'low_overlap' if overlap < o.min_overlap else
@@ -229,7 +250,8 @@ class CorrelativeMatcher:
                 'best_sensor_cost': float(sensor[best]), 'second_sensor_gap': gap,
                 'second_delta': candidates[second].tolist() if second is not None else None,
                 'hessian_eigenvalues': eigen.tolist(), 'observable_axes_scaled': V.T.tolist(),
-                'search_window': window.tolist(), 'search_boundary': boundary, 'candidates': len(candidates)}
+                'search_window': window.tolist(), 'search_boundary': boundary, 'candidates': len(candidates),
+                'points':len(points),'point_checks':len(points)*len(candidates)}
 
 
 class CorrectedOdomGrid(OdomGrid):

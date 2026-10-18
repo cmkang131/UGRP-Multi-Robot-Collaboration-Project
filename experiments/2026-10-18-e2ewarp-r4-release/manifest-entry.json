@@ -1,0 +1,73 @@
+{
+ "schema": "ugrp.e2ewarp.release_adapter_entry.v1",
+ "component": "release_relocalization",
+ "owner": "warp8f (observation source) / beamact5 (e2ewarp release ABI integration)",
+ "adapter": {
+  "entry": "harness.e2e_warp_release:release_factory",
+  "sha256": "b81c89579eaf7666c62834c4281fa062940c286692d88124805b3eb1dc05fd22",
+  "options": [
+   "release_relocalization_off_v1",
+   "release_relocalization_selfmap_v1"
+  ],
+  "default": "off"
+ },
+ "contract": {
+  "factory": "factory(robot_id=..., static=...) -> adapter",
+  "adapter": {
+   "start": "start(instruction, own_report)",
+   "observe": "observe(OwnFrame) -> {relocalized, static_map_registered, ...}",
+   "command": "command(sim_s) -> issued-command whitelist"
+  },
+  "claim_rule": "relocalized=true AND static_map_registered=true required before navigation.accept_release_fix; adapter never fabricates them",
+  "default_off_behavior": "observe returns relocalized/static_map_registered false with explicit reason; command only holds (zero wheels) with approved pan PWM"
+ },
+ "boundary_audit": {
+  "allowed_inputs": [
+   "own JPEG bytes (OwnFrame.jpeg)",
+   "own issued commands (OwnFrame.issued)",
+   "authored static map/orders (static factory argument)",
+   "existing SEARCH pan / max(settle_s)+0.1 dwell / +-500 PWM pan span constants (reused, no new tolerance)"
+  ],
+  "forbidden_inputs": [
+   "world/model/data objects",
+   "evaluator/ground-truth/contact/success",
+   "top camera",
+   "measured joints",
+   "cross-robot frames",
+   "non-causal frames",
+   "claimed owner evidence without static-map hash"
+  ],
+  "import_scan": "no sim.*, no scripts.e2e_warp_physics, no mujoco/warp import, no file reads; imports limited to __future__/hashlib/json/math/harness.active_camera/harness.e2e_rgb_vo/harness.grasp_act_contract",
+  "owner_evidence_validation": [
+   "owner == warp8f",
+   "relocalized is True",
+   "static_map_registered is True",
+   "static_map_sha256 == sha256(authored static)",
+   "truth_inputs == 0",
+   "held_world_reads == 0",
+   "finite 3-axis map_pose"
+  ]
+ },
+ "tests": {
+  "path": "tests/test_e2e_warp_release.py",
+  "sha256": "d0c1f96d2d9a19efe93a4c14ba9bfd343e47db2083dcb3df3f058e622456daa8",
+  "cases": 11,
+  "command": "python -m pytest tests/test_e2e_warp_release.py -q",
+  "result": "pass",
+  "scope": "Mac non-physical unit tests only; no GPU/physics run"
+ },
+ "integration": {
+  "target_run": "/home/ugrp/ugrp-sim/runs/e2ewarp-r4-run",
+  "target_run_result_sha256": "c61ecce4cc9ae68cc5c859d4a2d6c6f16b7fe51306bd80b527250af26fddbad0",
+  "target_source_sha": "718777118be41991156b047faff78621969101bb",
+  "component_manifest_key": "release_factory",
+  "merge_note": "copy adapter entry into e2ewarp components manifest release_factory; release_relocalization.ready stays false until warp8f observation bytes + mapbuild8 static-map correction API are integrated and a new physical gate is run",
+  "no_prior_result_inheritance": "rel21/release18/warp8f prior physical gates are NOT inherited; this adapter only carries the e2ewarp input-boundary contract and Mac unit evidence",
+  "no_pooling": true
+ },
+ "pending": [
+  "warp8f own-RGB observation bytes / global CSM acceptance (prior offline 0/28 accepted)",
+  "mapbuild8 static-map registration/correction API",
+  "new physical release gate (A40/B40 or equivalent) under gcp6 + new r4-era source pin"
+ ]
+}
