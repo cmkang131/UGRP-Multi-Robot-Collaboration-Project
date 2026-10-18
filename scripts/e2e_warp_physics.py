@@ -6,6 +6,7 @@ MJWarp options, with no C-equivalence shims, legacy plane or noslip10 path.
 from pathlib import Path
 import importlib.util
 import hashlib
+import json
 from types import SimpleNamespace
 import sys
 
@@ -39,8 +40,14 @@ def source_module():
     return backend, core, schedule
 
 
-def build_context(seed, out, stack):
-    """Privileged initial construction only. No CPU integration/settling."""
+def build_context(seed, out, stack, *, nav_scene=False, nav_spawns=None):
+    """Privileged initial construction only. No CPU integration/settling.
+
+    ``nav_scene`` builds the contract-v1 two-robot navigation gate: cargo is not
+    spawned, r3 is pruned from the XML and only the two wide-door lane spawns are
+    initialised. Setup-only values never reach a controller.
+    """
+    from harness.e2ewarp_nav_gate import NAV_SCENARIO, eval_geometry, pair_lane_spawns
     import mujoco
     from sim.zone_scenario_scene import ScenarioFinalV3Scene
     from sim.multi_masterpi_production import build_multi_robot_xml
@@ -64,34 +71,55 @@ def build_context(seed, out, stack):
     natural.manifest = lambda assets=natural.ASSETS, extension=False: original_manifest(assets, extension=extension)
     natural.apply = lambda root, extension=False: original_apply(root, assets=natural.ASSETS, extension=extension)
     contrast.v1 = natural
-    scene = contrast.install(ScenarioFinalV3Scene.from_scenario('s1_normal_mixed_v7', seed),
+    scenario_id = NAV_SCENARIO if nav_scene else 's1_normal_mixed_v7'
+    scene = contrast.install(ScenarioFinalV3Scene.from_scenario(scenario_id, seed),
                              stack['scene_profile'], extension=True)
+    if nav_scene:
+        # Navigation gate: no cargo bodies and no cargo setup rows (gate 2 loads).
+        scene.cargo = []
+        scene.config['setup_only']['objects'] = {}
     hw, _ = load_fitted_hardware()
-    xml = scene.robot_transform(scene.transform(build_multi_robot_xml(hw)), hardware=hw, calibrated_keys=hw)
+    # The zone scene builder itself requires the three production robots, so the
+    # XML is authored with all three and r3 is pruned after every scene/hardware
+    # /contact transform (navigation gate only).
+    xml = scene.robot_transform(scene.transform(build_multi_robot_xml(hw)),
+                                hardware=hw, calibrated_keys=hw)
     xml = camera.transform_xml(nearclip(xml), profile_id=camera.PROFILE_ID)
     for rid in ('r1', 'r2', 'r3'):
         xml = stiffness(xml, servo_stiffness='real_v1', robot_id=rid)
     tree = ET.fromstring(xml)
     # Existing approved end-color appearance, exact owner RGBA, all beam IDs.
-    for suffix, rgba in (('band_neg', '.02 .95 .60 1'), ('band_pos', '.02 .02 .95 1')):
-        geoms = [g for g in tree.iter('geom') if g.get('name', '').endswith('__' + suffix)]
-        if not geoms:
-            raise ValueError('existing original beam band required')
-        for g in geoms:
-            g.set('rgba', rgba)
+    # The navigation gate spawns no cargo, so the long-beam bands do not exist;
+    # the recolour only applies to runs that carry the beam (gate 2 and later).
+    if not nav_scene:
+        for suffix, rgba in (('band_neg', '.02 .95 .60 1'), ('band_pos', '.02 .02 .95 1')):
+            geoms = [g for g in tree.iter('geom') if g.get('name', '').endswith('__' + suffix)]
+            if not geoms:
+                raise ValueError('existing original beam band required')
+            for g in geoms:
+                g.set('rgba', rgba)
     xml = transform_xml(ET.tostring(tree, encoding='unicode'), DriveParameters(), 'mesh', 'off')
     xml = apply_xml(xml, stack['contact_profile'])
+    if nav_scene:
+        from harness.e2ewarp_nav_gate import prune_robots
+        xml = prune_robots(xml, keep=('r1', 'r2'))
     model = mujoco.MjModel.from_xml_string(xml)
     data = mujoco.MjData(model)
     assert_model_profile(model, stack['contact_profile'], data.eq_active)
     hw = v3_hardware(hw)
     hw.setdefault('servo6_center_pwm', 1500.)
     robots, ports = {}, {}
+    if nav_scene:
+        spawns = nav_spawns or pair_lane_spawns(scene.config['setup_only']['spawns'])
+    else:
+        spawns = scene.config['setup_only']['spawns']
     servo_joint = dict(yaw='arm_yaw', shoulder='shoulder', elbow='elbow', wrist='wrist_pitch')
-    for rid, pose in scene.config['setup_only']['spawns'].items():
+    robot_qpos_adr = {}
+    for rid, pose in spawns.items():
         bid = model.body(rid + '__robot').id
         adr = int(model.jnt_qposadr[int(model.body_jntadr[bid])])
         data.qpos[adr:adr+7] = [*pose[:3], np.cos(pose[3]/2), 0, 0, np.sin(pose[3]/2)]
+        robot_qpos_adr[rid] = adr
         robot = SimpleNamespace(model=model, physical_params=hw,
             wheel_act=[model.actuator(rid+'__wheel_'+n+'_drive').id for n in ('fl', 'fr', 'rl', 'rr')],
             arm_joint={k: model.joint(rid+'__'+n).id for k, n in servo_joint.items()},
@@ -126,16 +154,28 @@ def build_context(seed, out, stack):
     mujoco.mj_forward(model, data)
     out.mkdir(parents=True, exist_ok=False)
     (out/'scene.xml').write_text(xml)
+    if nav_scene:
+        geometry = eval_geometry(scene, spawns, robot_qpos_adr)
+        (out/'eval-geometry.json').write_text(json.dumps(geometry, ensure_ascii=False, indent=1) + '\n')
     cargo = [i for i in range(model.ngeom) if model.body(int(model.geom_bodyid[i])).name.startswith('cargo_')]
     fingers = {model.geom(r+'__'+s+'_finger').id: 2*k+j for k, r in enumerate(robots) for j, s in enumerate(('left', 'right'))}
     world = SimpleNamespace(model=model, data=data, scene_xml=xml, robot=robots.__getitem__,
                             drive_parameters=DriveParameters())
     return dict(world=world, ports=ports, gids=cargo, finger_ids=fingers, scene_xml_path=out/'scene.xml',
-                scene=scene, static_map=scene.config['static_map'])
+                scene=scene, static_map=scene.config['static_map'], no_cargo=not cargo)
 
 
 def transport(contexts, out, sha, stack):
     backend, core, schedule = source_module()
+    if all(not context.get('gids') for context in contexts):
+        # Navigation gate: no cargo exists, so the evaluator-only contact
+        # telemetry has no targets. An all-zero target mask is the honest
+        # representation (the evaluate kernel then reports no finger force);
+        # the vendored file stays byte-identical (module-level rebind only).
+        def _no_cargo_contact_maps(ngeom, targets, fingers):
+            return (np.zeros((len(targets), ngeom), dtype=np.int32),
+                    np.full((len(targets), ngeom), -1, dtype=np.int32))
+        backend.contact_maps = _no_cargo_contact_maps
 
     class NativeE2E(backend.WarpTransport):
         def initialize(self, contexts):
@@ -201,8 +241,27 @@ def transport(contexts, out, sha, stack):
 
 
 def issue(context, robot, command):
+    """Issue one contract command row to a robot port.
+
+    ``command()`` from harness.grasp_act_contract emits wheel values in percent
+    (0 or 31..40), while the MJWarp relay consumes normalized [-1, 1] commands.
+    The conversion belongs here; mixing both conventions in the port was the
+    cause of 'finite normalized issued commands required' on the first executed
+    navigation-gate calibration attempt.
+    """
+    wheels = []
+    for value in command['wheels']:
+        value = float(value)
+        if value == 0.:
+            wheels.append(0.)
+        elif .31 - 1e-9 <= abs(value) <= .40 + 1e-9:
+            wheels.append(value)
+        elif .31 - 1e-9 <= abs(value) <= 40. + 1e-9:
+            wheels.append(value / 100.0)
+        else:
+            raise ValueError('wheel command outside the 31..40 percent vocabulary')
     port = context['ports'][robot]
-    port._motor_commands = tuple(command['wheels'])
+    port._motor_commands = tuple(wheels)
     port._wheel_deadlines = [command['t']+v if v else None for v in command['duration_s']]
     port._servo_targets.update({int(k): v for k, v in command['pwm'].items()})
 
