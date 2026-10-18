@@ -121,12 +121,27 @@ Stage B 원본에서 적재 화물(빨간 box)이 자기 RGB 하단에 **화면 
 잡혀 근접 바닥 영역을 가린다. 그 결과 obstacle_avoid 이벤트 0(Stage A 4,736),
 e00 obstacle 검출 0틱(Stage A 859틱), wall point zero 비율 3.3%(Stage A 1.7%)
 였고 16/16이 허위 gap으로 픽업룸 east_search를 돌았다.
-수정: 적재 상태에서 held box로 판정된 색 성분을
-(a) obstacle 검출 입력에서 마스킹하고(바닥 ray는 유지),
-(b) wall foot 검출의 하단 가림 영역만 제외하되 가려진 비율을 기록하며,
-(c) 가려진 비율이 임계(예: 하단 ROI의 40%)를 넘으면 wall follow 대신
-정지·재정렬을 선택한다. 이 항목은 적재 전용 게이트(별도 조건)로 측정하고
-무적재 fix와 합산하지 않는다.
+수정(적재 전용, 별도 조건):
+1. **하단 밴드 마스킹/사용 금지**: held box로 판정된 색 성분의 bbox(화면 하단
+   밴드)를 obstacle·wall·paint 검출 입력에서 마스킹하고, 마스킹 영역과
+   비율을 trace에 기록한다. 마스킹은 "본 것"과 "가려서 못 본 것"을 구분하는
+   evidence이지 정답 보정이 아니다.
+2. **상단 영역 우선 검출**: obstacle/wall foot 검출 ROI를 마스킹되지 않은
+   상단·중단 영역 우선으로 재구성하고, 가려진 근접 영역이 필요한 판단
+   (문 앞 근접 wall foot)은 `blocked_by_cargo`로 표시해 추정값 대신 미관측을
+   남긴다.
+3. **화물 자세로 하단 시야 확보 여지 측정**: carry 자세(SEARCH arm + closed
+   gripper)에서 box가 화면 하단 몇 %를 차지하는지, arm/wrist servo를 조금
+   올린 자세에서 그 비율이 얼마나 줄어드는지 setup-only로 측정한다
+   (perception ROI와 box footprint, 정답 미사용). 자세 변경은 별도
+   토글·별도 조건이며 이 표에 근거를 남긴 뒤에만 켠다.
+4. **loaded 전용 후보 `crossroom-stageB-fix` prereg**: 적재 monitor
+   (`carry_state_own.py`)를 재사용하고 위 1-3을 기본 off 토글로 묶는다.
+   Stage B baseline과 합산 금지, unloaded crossroom-stageA-fix 결과가 나온
+   뒤에 실행한다. funnel은 Stage B와 동일하게 유지하고 `cargo_held` ·
+   `blocked_by_cargo` · obstacle 검출 카운트를 추가 지표로 보고한다.
+
+이 항목은 적재 전용 게이트(별도 조건)로 측정하고 무적재 fix와 합산하지 않는다.
 
 ## 사전등록(초안) — crossroom-stageA-fix
 
