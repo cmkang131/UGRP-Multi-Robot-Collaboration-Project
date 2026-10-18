@@ -14,9 +14,14 @@ Contract v1 (2026-10-18, user decisions):
   active, an owner-injected motion model (odometry with injected calibration)
   and a self-centric destination landmark are both present, `command()` emits a
   proportional differential wheel pulse toward the landmark every control step
-  and holds the wheels once arrival evidence is recorded (bottom band >= 0.98
-  or measured range <= the configured threshold). Missing calibration or a
-  missing destination stays fail-closed (wheels 0) with a reported reason.
+  and holds the wheels once arrival evidence is recorded.  Arrival by bottom
+  band additionally requires a *current* detection (<= 1 s old) whose largest
+  connected component is a plausible zone patch: at least 4% of the frame tall,
+  solidity >= 0.45, area <= 65% and height <= 65% of the frame, spanning the
+  horizontal centre, and not touching the top edge.  A bare `bottom_norm` (for
+  example scattered floor pixels) no longer produces an arrival claim.  Missing
+  calibration or a missing destination stays fail-closed (wheels 0) with a
+  reported reason.
 - `ready` is true only when the option is active AND both the own-RGB detector
   and the odometry/motion model were injected. Detector and motion model are
   deliberately absent in this scaffold; the physical gates still apply.
@@ -48,6 +53,17 @@ APPROACH_RANGE_M = .75
 ARRIVAL_BOTTOM_NORM = .98
 ARRIVAL_RANGE_M = .25
 ARRIVAL_UNCERTAINTY_M = .5
+# A bottom-band arrival is a *visual* claim about the current frame, so the
+# landmark must have been observed recently; without this, one false detection
+# stays an arrival claim until memory decays (0.5 -> 3.0 m at 0.02 m/s is 125 s).
+ARRIVAL_EVIDENCE_MAX_AGE_S = 1.0
+# Plausible zone patch, in frame fractions, applied to the largest connected
+# component.  These are guards against a floor fill, not a second classifier:
+# they cannot separate a floor that is colour-identical to the zone paint.
+ARRIVAL_MIN_HEIGHT_NORM = .04
+ARRIVAL_MIN_SOLIDITY = .45
+ARRIVAL_MAX_AREA_NORM = .65
+ARRIVAL_MAX_HEIGHT_NORM = .65
 MIN_PULSE_FRACTION = 1e-6
 DESTINATION_KIND = 'zone_B'
 
@@ -90,6 +106,14 @@ class Landmark:
     bottom_norm: float = 0.0
     width_norm: float = 0.0
     pixels: int = 0
+    # Geometry of the detector's largest connected component, used only by the
+    # arrival guard.  Defaults fail closed (height 0, solidity 0): a detection
+    # that does not attest its patch geometry can never claim arrival.
+    height_norm: float = 0.0
+    area_norm: float = 0.0
+    solidity: float = 0.0
+    spans_center_x: bool = False
+    touches_top: bool = False
     # Appearance-only detectors (e.g. GpuCalibZoneDetector) report no metric
     # range.  A default 0.0 must never be read as "arrived at 0 m".
     range_measured: bool = True
@@ -115,6 +139,11 @@ class SelfCentricMemory:
             kept.append(Landmark(str(det['kind']), float(det.get('range_m') or 0.0), float(det['bearing_deg']),
                                  float(now_s), bottom_norm=float(det.get('bottom_norm', 0.0)),
                                  width_norm=float(det.get('width_norm', 0.0)), pixels=int(det.get('pixels', 0)),
+                                 height_norm=float(det.get('height_norm', 0.0)),
+                                 area_norm=float(det.get('area_norm', 0.0)),
+                                 solidity=float(det.get('solidity', 0.0)),
+                                 spans_center_x=bool(det.get('spans_center_x', False)),
+                                 touches_top=bool(det.get('touches_top', False)),
                                  range_measured=measured))
         self.items = kept[-16:]
 
@@ -133,7 +162,9 @@ class SelfCentricMemory:
     def as_report(self):
         return [dict(kind=i.kind, range_m=round(i.range_m, 3), bearing_deg=round(i.bearing_deg, 2),
                      last_seen_s=round(i.last_seen_s, 3), uncertainty_m=round(i.uncertainty_m, 3),
-                     bottom_norm=round(i.bottom_norm, 3), range_measured=bool(i.range_measured))
+                     bottom_norm=round(i.bottom_norm, 3), width_norm=round(i.width_norm, 3),
+                     height_norm=round(i.height_norm, 3), solidity=round(i.solidity, 3),
+                     range_measured=bool(i.range_measured))
                 for i in self.items]
 
 
@@ -188,21 +219,37 @@ class SelfCentricNavigation:
         self._check_owner(frame, required=True)
         self._last_frame = frame
         if self.option != OPTION:
-            return self._report(active=False)
+            return self._report(active=False, now_s=frame.sim_s)
         self.memory.observe(frame.sim_s, self.detector(frame) if self.detector else ())
         self._revision += 1
-        return self._report(active=True)
+        return self._report(active=True, now_s=frame.sim_s)
 
-    def _arrival_evidence(self, landmark):
-        """Recorded own-memory arrival: near bottom band or measured close range."""
-        if landmark.bottom_norm >= ARRIVAL_BOTTOM_NORM:
+    def _arrival_evidence(self, landmark, now_s):
+        """Current own-memory arrival: bottom band or measured close range.
+
+        The bottom-band path is a visual claim, so it must be fresh and its
+        component must look like a paint patch rather than a floor fill.  A
+        stale claim is not evidence: memory keeps landmarks for driving, but it
+        must not keep an arrival claim after the patch left the camera.
+        """
+        if now_s - landmark.last_seen_s > ARRIVAL_EVIDENCE_MAX_AGE_S:
+            return False
+        if (landmark.bottom_norm >= ARRIVAL_BOTTOM_NORM
+                and landmark.height_norm >= ARRIVAL_MIN_HEIGHT_NORM
+                and landmark.height_norm <= ARRIVAL_MAX_HEIGHT_NORM
+                and landmark.area_norm <= ARRIVAL_MAX_AREA_NORM
+                and landmark.solidity >= ARRIVAL_MIN_SOLIDITY
+                and landmark.spans_center_x
+                and not landmark.touches_top):
             return True
         return (landmark.range_measured
                 and landmark.range_m <= self.arrival_range_m
                 and landmark.uncertainty_m <= ARRIVAL_UNCERTAINTY_M)
 
-    def _drive_plan(self):
+    def _drive_plan(self, now_s=None):
         """Own-memory control plan; no plan means the wheel hold is returned."""
+        if now_s is None:  # test/introspection default: the last own frame's time
+            now_s = self._last_frame.sim_s if self._last_frame is not None else 0.0
         landmark = self.memory.nearest(self.destination_kind)
         if self.option != OPTION:
             return dict(reason='option_off', landmark=landmark, forward=0.0, turn=0.0)
@@ -210,7 +257,7 @@ class SelfCentricNavigation:
             return dict(reason='no_odometry', landmark=landmark, forward=0.0, turn=0.0)
         if landmark is None:
             return dict(reason='no_destination', landmark=None, forward=0.0, turn=0.0)
-        if self._arrival_evidence(landmark):
+        if self._arrival_evidence(landmark, now_s):
             return dict(reason='arrived', landmark=landmark, forward=0.0, turn=0.0)
         bearing = wrap_deg(landmark.bearing_deg)
         turn = clamp(bearing / BEARING_FULL_DEG, -1.0, 1.0)
@@ -229,12 +276,12 @@ class SelfCentricNavigation:
         return dict(reason='driving', landmark=landmark,
                     forward=(left + right) / 2.0, turn=(right - left) / 2.0)
 
-    def _report(self, *, active):
+    def _report(self, *, active, now_s):
         holding = 'unknown'
         returned = self.memory.nearest('return')
-        plan = self._drive_plan()
+        plan = self._drive_plan(now_s)
         zone = plan['landmark']
-        arrived = bool(active and zone is not None and self._arrival_evidence(zone))
+        arrived = bool(active and zone is not None and self._arrival_evidence(zone, now_s))
         handoff = bool(self.phase == 'APPROACH' and self.memory.nearest('cargo') is not None
                        and self.memory.nearest('cargo').range_m <= 0.6)
         return dict(robot_id=self.robot_id, phase=self.phase, position_xy=(0.0, 0.0),
@@ -266,7 +313,7 @@ class SelfCentricNavigation:
         """
         from harness.active_camera import SEARCH  # hold PWM values only (no map)
         pwm = {str(k): int(v) for k, v in SEARCH.items()}
-        plan = self._drive_plan()
+        plan = self._drive_plan(now_s)
         self._drive_reason = plan['reason']
         if plan['reason'] == 'driving':
             from harness.grasp_act_contract import wheel_mix
@@ -322,7 +369,12 @@ def navigation_factory(robot_id, static=None, **kwargs):
     return SelfCentricNavigation(robot_id, static, **kwargs)
 
 # ---- own-RGB zone detector (GPU appearance profile, no sim imports) ----
-GPU_CALIB_V1 = dict(hue=(110.0, 114.0), sat_min=100.0, val=(30.0, 110.0), min_pixels=600)
+# gpu_calib_v1 was fitted on **OpenCV HSV** pixels: H in 0-180, S and V in
+# 0-255.  These are NOT degrees.  hue 110-114 OpenCV == 220-228 degrees.
+# `rgb_to_hsv` below returns degrees for readability, so the detector converts
+# with /2.0 before comparing.  Mixing the two units was the gate-1 failure.
+GPU_CALIB_V1 = dict(hue_cv=(110.0, 114.0), sat_min=100.0, val=(30.0, 110.0),
+                    min_pixels=600, units='opencv_h_0_180_sv_0_255')
 
 
 def rgb_to_hsv(rgb):
@@ -343,14 +395,96 @@ def rgb_to_hsv(rgb):
     return h, sat, mx * 255.0
 
 
+def hue_degrees_to_opencv(hue_deg):
+    """Map hue degrees (0-360) to OpenCV hue units (0-180), scalar or array.
+
+    `gpu_calib_v1` thresholds live in OpenCV units; this is the only conversion
+    the detector is allowed to use.
+    """
+    return hue_deg / 2.0
+
+
+def largest_component(mask):
+    """Largest 4-connected component of a boolean mask.
+
+    Returns ``dict(area, left, top, right, bottom)`` with exclusive right/bottom,
+    or ``None``.  Run-length union-find: each row is compressed to its True runs
+    and runs from adjacent rows are unioned when their columns overlap.  This is
+    dependency-free (no scipy/cv2) and linear in the number of runs, which keeps
+    the CPU adapter cheap at 10 Hz.  The detector classifies by this component,
+    never by ``mask.sum()``: scattered floor pixels add up without forming a
+    patch.
+    """
+    import numpy as np
+    m = np.asarray(mask, dtype=bool)
+    if m.ndim != 2 or not m.any():
+        return None
+    parent = []
+    spans = []  # run id -> (row, left, right_exclusive)
+
+    def find(i):
+        while parent[i] != i:
+            parent[i] = parent[parent[i]]
+            i = parent[i]
+        return i
+
+    def union(a, b):
+        ra, rb = find(a), find(b)
+        if ra != rb:
+            parent[rb] = ra
+
+    prev = []
+    for y in range(m.shape[0]):
+        d = np.diff(np.concatenate(([False], m[y], [False])).astype(np.int8))
+        starts = np.flatnonzero(d == 1)
+        ends = np.flatnonzero(d == -1)  # exclusive
+        cur = []
+        j = 0
+        for x0, x1 in zip(starts.tolist(), ends.tolist()):
+            rid = len(parent)
+            parent.append(rid)
+            spans.append((y, x0, x1))
+            cur.append(rid)
+            while j < len(prev) and spans[prev[j]][2] <= x0:
+                j += 1
+            k = j
+            while k < len(prev) and spans[prev[k]][1] < x1:
+                union(rid, prev[k])
+                k += 1
+        prev = cur
+
+    agg = {}
+    for rid, (y, x0, x1) in enumerate(spans):
+        root = find(rid)
+        box = agg.get(root)
+        if box is None:
+            agg[root] = [x1 - x0, x0, x1, y, y + 1]
+        else:
+            box[0] += x1 - x0
+            box[1] = min(box[1], x0)
+            box[2] = max(box[2], x1)
+            box[3] = min(box[3], y)
+            box[4] = max(box[4], y + 1)
+    area, left, right, top, bottom = max(agg.values(), key=lambda b: b[0])
+    return dict(area=int(area), left=int(left), top=int(top),
+                right=int(right), bottom=int(bottom))
+
+
 class GpuCalibZoneDetector:
     """Detect destination zone paint from one own RGB frame (gpu_calib_v1 profile).
 
     Threshold provenance: experiments/2026-10-17-e2ewarp/r4-selfmap-recount/zonecal-gpu
-    (MJWarp native render, 36 frames): hue 110-114, S>=100, 30<=V<=110, component
-    >=600 px; on that capture zone-B 33/33 accepted, pickup FP 0/3, R4 floor FP 0/180.
-    This detector supplies *evidence only* (bearing/bottom band), never a success claim
-    and never reads a map, GT, top camera, or simulator state.
+    (MJWarp native render, 36 frames): OpenCV hue 110-114, S>=100, 30<=V<=110,
+    largest connected component >=600 px.  Re-measured offline in OpenCV units:
+    30/30 zone-B poses detected and 0/2 nav-gate floor frames detected
+    (experiments/2026-10-18-nav-gate-1/CALIBRATION_PREREG.md).  The earlier
+    extent-gated CPU detector reported zone-B 33/33, pickup FP 0/3, R4 floor
+    FP 0/180 on the same capture.  Units are explicit: ``hue_cv`` is OpenCV
+    H 0-180 (220-228 degrees), not degrees.  Classification uses the largest
+    connected component only; the total mask is reported for audit but never
+    decides.  This detector supplies *evidence only* (bearing/bottom band/component
+    geometry), never a success claim and never reads a map, GT, top camera, or
+    simulator state.
     """
     def __init__(self, *, profile='gpu_calib_v1', hfov_deg=120.0, min_pixels=None):
         if profile != 'gpu_calib_v1':
@@ -364,19 +498,27 @@ class GpuCalibZoneDetector:
         raw = frame_or_rgb.jpeg if hasattr(frame_or_rgb, 'jpeg') else frame_or_rgb
         img = Image.open(io.BytesIO(raw)).convert('RGB') if isinstance(raw, (bytes, bytearray)) else Image.fromarray(np.asarray(raw, dtype=np.uint8))
         rgb = np.asarray(img)
-        h, s, v = rgb_to_hsv(rgb)
-        lo, hi = GPU_CALIB_V1['hue']; vlo, vhi = GPU_CALIB_V1['val']
+        h_deg, s, v = rgb_to_hsv(rgb)
+        h = hue_degrees_to_opencv(h_deg)  # OpenCV H 0-180, the profile's unit
+        lo, hi = GPU_CALIB_V1['hue_cv']; vlo, vhi = GPU_CALIB_V1['val']
         mask = (h >= lo) & (h <= hi) & (s >= GPU_CALIB_V1['sat_min']) & (v >= vlo) & (v <= vhi)
-        n = int(mask.sum())
-        if n < self.min_pixels:
+        total = int(mask.sum())
+        comp = largest_component(mask)
+        if comp is None or comp['area'] < self.min_pixels:
             return []
-        ys, xs = np.nonzero(mask)
         H, W = mask.shape
-        cx = float(xs.mean()); top, bottom = int(ys.min()), int(ys.max())
+        left, right, top, bottom = comp['left'], comp['right'], comp['top'], comp['bottom']
+        width, height = right - left, bottom - top
+        cx = (left + right - 1) / 2.0
         bearing = (cx / max(W - 1, 1) - 0.5) * self.hfov_deg
-        return [dict(kind='zone_B', bearing_deg=bearing, bottom_norm=(bottom + 1) / H,
-                     width_norm=(xs.max() - xs.min() + 1) / W, height_norm=(bottom - top + 1) / H,
-                     pixels=n, profile='gpu_calib_v1')]
+        return [dict(kind='zone_B', bearing_deg=bearing, bottom_norm=bottom / H,
+                     width_norm=width / W, height_norm=height / H,
+                     area_norm=comp['area'] / (H * W), solidity=comp['area'] / (width * height),
+                     spans_center_x=bool(left <= W // 2 < right),
+                     touches_left=bool(left <= 0), touches_right=bool(right >= W),
+                     touches_top=bool(top <= 0),
+                     bbox=(left, top, right, bottom), pixels=comp['area'], total_pixels=total,
+                     hue_units=GPU_CALIB_V1['units'], profile='gpu_calib_v1')]
 
 
 class OwnCommandOdometry:

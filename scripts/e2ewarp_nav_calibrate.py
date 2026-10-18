@@ -10,7 +10,10 @@ controller and only produces the two constants injected into
 Output: ``nav-calibration.json`` (schema ``ugrp.e2ewarp.nav_calibration.v1``,
 ``measured: true``) plus the raw qpos trace and per-step samples. A run without
 a finite, positive, cross-robot-consistent measurement exits non-zero and does
-not write a calibration artifact.
+not write a calibration artifact.  The turn phase records both the positive
+magnitude (``turn_deg``, feeding ``yaw_deg_per_pct_s``) and the measured
+*signed* yaw (``turn_deg_signed`` plus a top-level ``rotation`` block), so the
+physical direction of the controller's ``+turn`` pattern is never discarded.
 
 Linux gcp6 only; --execute is required. No LLM, no relay, no controller.
 """
@@ -61,6 +64,29 @@ def yaw_deg(qpos7):
 
 def wrap_deg(value):
     return (value + 180.0) % 360.0 - 180.0
+
+
+def turn_measurement(start_yaw_deg, end_yaw_deg):
+    """Return the turn magnitude and the signed turn (negative preserved).
+
+    The turn phase issues the controller's ``+turn`` wheel pattern; only the
+    sign of the measured yaw change says which physical direction that pattern
+    produces.  ``turn_deg`` stays a positive magnitude so the existing
+    ``yaw_deg_per_pct_s`` contract is unchanged, while ``turn_deg_signed`` is
+    the new evidence field (never discard the sign with ``abs()``).
+    """
+    signed = wrap_deg(float(end_yaw_deg) - float(start_yaw_deg))
+    return dict(turn_deg=abs(signed), turn_deg_signed=signed)
+
+
+def rotation_sign(rows):
+    """Classify per-robot signed turns as positive, negative or mixed."""
+    values = [float(row['turn_deg_signed']) for row in rows]
+    if values and all(value > 0.0 for value in values):
+        return 'positive'
+    if values and all(value < 0.0 for value in values):
+        return 'negative'
+    return 'mixed'
 
 
 def main(argv=None):
@@ -156,12 +182,13 @@ def main(argv=None):
         for robot in robots:
             distance = math.dist((forward_start[robot]['x'], forward_start[robot]['y']),
                                  (forward_end[robot]['x'], forward_end[robot]['y']))
-            turn = abs(wrap_deg(turn_end[robot]['yaw_deg'] - turn_start[robot]['yaw_deg']))
+            turn = turn_measurement(turn_start[robot]['yaw_deg'], turn_end[robot]['yaw_deg'])
             measured[robot] = dict(
-                distance_m=distance, turn_deg=turn,
+                distance_m=distance, turn_deg=turn['turn_deg'],
+                turn_deg_signed=turn['turn_deg_signed'],
                 forward_pulses=a.forward_pulses, turn_pulses=a.turn_pulses,
                 forward_m_per_pct_s=distance / (PCT * PULSE_S * a.forward_pulses),
-                yaw_deg_per_pct_s=turn / (PCT * PULSE_S * a.turn_pulses))
+                yaw_deg_per_pct_s=turn['turn_deg'] / (PCT * PULSE_S * a.turn_pulses))
         forwards = [v['forward_m_per_pct_s'] for v in measured.values()]
         yaws = [v['yaw_deg_per_pct_s'] for v in measured.values()]
         for name, values in (('forward', forwards), ('yaw', yaws)):
@@ -178,6 +205,12 @@ def main(argv=None):
                      source_sha=head(), seed=a.seed, scene='s7_pair_with_solo_v7',
                      robots=robots, pulse=dict(percent=PCT, width_s=PULSE_S),
                      per_robot=measured, constants=constants,
+                     rotation=dict(command=dict(forward=0.0, turn=1.0),
+                                   turn_deg_signed={rid: row['turn_deg_signed']
+                                                    for rid, row in measured.items()},
+                                   sign=rotation_sign(measured.values()),
+                                   note='signed measured yaw for the +turn wheel pattern; '
+                                        'yaw_deg_per_pct_s stays a positive magnitude'),
                      spread=dict(forward=(max(forwards) - min(forwards)) / constants['forward_m_per_pct_s'],
                                  yaw=(max(yaws) - min(yaws)) / constants['yaw_deg_per_pct_s']),
                      sim_s=float(world.data.time), wall_s=time.monotonic() - started,
