@@ -23,8 +23,8 @@ TRAIN4(원 프로토콜 첫 4시드, 네 종류 각1개) 4세계는 모두 `cap_
 
 ### 실패 진단과 post-close 가중 fine-tune 프로브 (10/18, gcp2)
 
-TRAIN4 원본으로 정지 시점·자세를 재계수했다(`results/faildiag-r3.json` sha256 `4dff82ef…`, 도구 `scripts/act18_faildiag.py`). 정의: base 마지막 이동=바퀴명령>0.01, arm/finger=서보 PWM 변화≥3/≥10 마지막 tick, 물리 정지=평가-only speed>0.005 마지막 tick, 이동거리=∫speed dt.
-- R8 4/4: base 마지막 이동 9.9/10.5/11.3/13.8s(교사 align 시작 8.0/9.0/10.1/12.3s 직후), 그리퍼 close 10.5–14.4s, 물리 이동 0.023–0.125m, 손가락힘 3.7–5.2N, 물리 lift 2/4·done 0/4, 물리 정지 14.5/15.3/19.2/79.1s.
+TRAIN4 원본으로 정지 시점·자세를 재계수했다(`results/faildiag-r3.json` sha256 `4dff82ef…`, 도구 `scripts/act18_faildiag.py`). 정의: base 마지막 이동=바퀴명령>0.01, arm=서보 3/4/5/6 PWM 변화≥3, gripper=서보 1 PWM 변화≥10(close onset ≥100) 마지막 tick, 물리 정지=평가-only speed>0.005 마지막 tick, 이동거리=∫speed dt. (**정정 10/18:** 기존 `faildiag-r3.json`의 `finger_last_change_sim_s`·`gripper_close_onset_sim_s`·`gripper_pwm_*`는 서보 5/6 기준이었다 — 정정 절.)
+- R8 4/4: base 마지막 이동 9.9/10.5/11.3/13.8s(교사 align 시작 8.0/9.0/10.1/12.3s 직후), 그리퍼 close 10.5–14.4s(**정정: 서보 5/6 변화 기준, gripper 아님**), 물리 이동 0.023–0.125m, 손가락힘 3.7–5.2N, 물리 lift 2/4·done 0/4, 물리 정지 14.5/15.3/19.2/79.1s.
 - R100: base 마지막 이동 21.6–24.7s(88603은 91.6s까지 바퀴명령 지속이나 물리 이동 0), 88601은 물리 이동·손가락힘 0, 88600/88602 손가락힘 3.0N이나 lift 0/4.
 - 공통: align 1Hz 몽타주에서 목표상자가 t≈10–15s에 화면 하단으로 이탈하고 이후 파란 바닥/벽만 보인다. done 0/8, cap_end 8/8. 교사는 같은 시점부터 close→lift→hold를 5–8s 더 수행한다(데모에 post-visibility 예시 있음). 진동 증거는 없고 조기 정지가 지배적이다(Mac 몽타주 `outputs/e2e18-admin/playback/act18-faildiag/`, sha256은 summary.json).
 
@@ -75,7 +75,7 @@ TRAIN4 원본으로 정지 시점·자세를 재계수했다(`results/faildiag-r
 
 B2 체크포인트(act18-std step-20000)를 TRAIN 발췌 1,200행에 CPU로 돌려 교사 명령·모델 예측·동결 디코더 클램프를 비교했다(`results/actionaxis-r1/action-axis.json`, sha256 `c9504188…`).
 - 교사 원본 명령(TRAIN 290,288 wheel 값): 정지 55.8%, 비영 wheel은 **전부 0.35**, `deadzone(.155)/min(.31)/max(.40)`에 걸리는 값 **0.0%**. duration 비영 값 0.043–0.10s. 즉 교사 라벨은 클램프와 무관하다.
-- 모델 open-loop 예측: wheel MAE 중앙 0.0114, duration MAE 0.0091, gripper close 비율 0.603(교사 0.603) — **예측은 교사를 잘 따르며 행동 형식/클램프가 lift 실패의 주원인이 아님**을 지지. 다만 teacher-moving 행의 7.2%가 디코드에서 정지로 바뀐다.
+- 모델 open-loop 예측: wheel MAE 중앙 0.0114, duration MAE 0.0091, gripper close 비율 0.603(교사 0.603; **정정: gripper가 아니라 servo 5 어깨 비율** — 아래 정정 절) — **예측은 교사를 잘 따르며 행동 형식/클램프가 lift 실패의 주원인이 아님**을 지지. 다만 teacher-moving 행의 7.2%가 디코드에서 정지로 바뀐다.
 - 실제 실행(B4 actor-actions): wheel 0.31(교사 0.35), pulse 0.028s(교사 0.043–0.10s)로 **더 약하게** 실행되고 all-zero 35.4%. 잔여 lift 실패(0–2/4)는 closed-loop 상태 분포/조기 정지·데이터 규모 축으로 좁혀진다.
 - 다음 카드 후보: (1) closed-loop 상태 분포 진단(자기 관측에서 정지가 시작되는 조건), (2) co-training(Phase C, 100k) — 단 B2 TRAIN4 미통과 상태라 Lead/사용자 승인 필요. 평가계약 후보 메모는 사용자 결정 대기.
 
@@ -83,11 +83,20 @@ B2 체크포인트(act18-std step-20000)를 TRAIN 발췌 1,200행에 CPU로 돌�
 
 B4 실행(raw `doneh-r1/DONEH-TRAIN4`)의 **발행 명령 이력**과 교사(TRAIN200) 명령을 skill/elapsed 구간에서 비교(`results/closedloop-r1/`, 계약 변경 없음).
 - grasp 0–10s: 모델·교사 모두 base 이동 0.71–1.0로 유사.
-- grasp **10–15s에서 분기**: 교사는 base 이동 0.91→0.26·gripper closed 0.05→0.63→0.98로 접근을 끝내고 hold/lift로 전환. 모델은 base 이동 **0.73–0.75를 20–30s까지 유지**하고 gripper closed는 **0.24–0.25**에 머묾. wheel 크기도 0.35→0.25→0.16으로 약화(디코드 클램프 0.31 하한과 혼재).
+- grasp **10–15s에서 분기**: 교사는 base 이동 0.91→0.26·gripper closed(**정정: servo 5 어깨 비율**) 0.05→0.63→0.98로 접근을 끝내고 hold/lift로 전환. 모델은 base 이동 **0.73–0.75를 20–30s까지 유지**하고 gripper closed는 **0.24–0.25**(정정: servo 5 비율)에 머묾. wheel 크기도 0.35→0.25→0.16으로 약화(디코드 클램프 0.31 하한과 혼재).
 - release 0–2s: 교사는 즉시 물러나기(이동 1.0, 5–10s 0.53). 모델은 이동 0.05·wheel 0.08로 **사실상 정지** — release 동작이 누락.
 - halt onset(grasp 마지막 이동): 모델 29.5/32.7/43.7s, 1세계 9.6s(교사 31.7s). 
 - 주의: 같은 B2 체크포인트의 별도 실행(B2 run3)이 t≈2.2s에서 이미 분기했다 — closed-loop GPU 비결정성. 따라서 B2 raw와 B4 raw의 직접 비교가 아니라 **B4 단일 실행 내 교사 대비**로 해석한다. 실패 시작점은 open-loop 예측이 아니라 **grasp hold 전환과 release 물러나기 단계**다.
 - 평가계약(물리 성공 정의) 후보는 `EVAL_CONTRACT_CANDIDATES.md`(사용자 결정용, 실행 금지).
+
+### 정정 (10/18): gripper closed 판정 = servo 1 < 1900
+
+기존 진단이 `pwm['5'] > 1900`을 "gripper closed"로 썼지만 **서보 5는 어깨**다. 매핑: `harness/research_camera_actor.py:15` "servo_id 1(gripper), 3(wrist pitch), 4(elbow), 5(shoulder)… Gripper 2000 opens, 1500 closes"; `sim/masterpi_production_v2.py:358-359` servo 1 pulse `>= 1900` = clearly open. 따라서 closed = **`pwm['1'] < 1900`**(기록 스케일 500–2500, 판정 단일화 `scripts/act18_gripper_state.py`). 교사 행동은 dim 8..12 = `SERVOS=(1,3,4,5,6)`이므로 gripper는 **dim 8**이고 dim 11(어깨)이 아니다(`tests/fixtures/warp3/grasp_act_contract.py.txt:19,139`, main `harness/grasp_act_contract.py`).
+- 위 `gripper closed 0.05→0.63→0.98`·`0.24–0.25`(`results/closedloop-r1/`), `results/actionaxis-r1/action-axis.json`의 `gripper_closed_fraction*=0.6025/0.6026/0.6033`, `summary.json`의 같은 키는 모두 **서보 5(어깨) 펄스가 1900 초과인 tick 비율**이다. gripper 폐쇄 비율이 아니며, 원본 발행명령·데이터가 VM에만 있어 **이 저장소에서 재계산할 수 없다**. 모델 `0.24–0.25`는 저장된 bin 값에서 그대로 재현되지 않는다(집계 방식 미기록) — 새 수치를 만들지 않는다.
+- `EVAL_CONTRACT_CANDIDATES.md:10`에는 같은 문장에 정정 표시를 달았고, 동결 문서 `B5_PREREG.json:8`과 `summary.json` 문자열은 원본 보존을 위해 **수정하지 않았다**(같은 servo-5 수치 인용).
+- **B5 TRAIN4 0/4는 clean closed-loop null이 아니다.** `results/b5-r2/b5-loop-events.jsonl` 재계수: event 95 = hold_brake 76 + release_retreat 19, hold_brake **76/76이 `wheels_before=[0,0,0,0]`**(wheel 변경 0). grasp 구간 hold brake는 아무 명령도 바꾸지 않았고 트리거도 servo 5였다. 즉 B5·overlay-only의 grasp 결과는 "정상 트리거 hold brake의 효과 없음"이 아니라 **hold brake가 작동하지 않은 상태의 정책 결과**다(release_retreat 19회는 gripper 판정과 무관한 경로). 올바른 트리거로의 발동 횟수는 원본 발행명령 없이 알 수 없고, 재실행하지 않았다(새 조건).
+- 코드 정정: `scripts/act18_gripper_state.py`(순수 파이썬 판정) + `act18_closedloop_diag.py`·`act18_loop_overlay.py`·`act18_action_offline.py`·`act18_faildiag.py`, 테스트 `tests/test_act18_gripper_state.py`·`test_act18_loop_overlay.py`·`test_act18_faildiag_labels.py`. `faildiag-r3.json`의 `finger_last_change_sim_s`·`gripper_close_onset_sim_s`·`gripper_pwm_*`도 서보 5/6 기준이었고, 향후 실행은 servo 1 기준이다(close onset = servo 1의 첫 ≥100 변화, `gripper_last_change_sim_s` 추가·legacy `finger_*` 유지, arm 채널은 기존 servo 1/3/4 → 3/4/5/6). done-head feature 12·13(`since_close`/`close_ticks`)도 같은 servo-5/6 평균에서 나오지만 학습 입력이라 **주석만 달고 동결**(재학습·새 prereg 필요).
+- 저장 원본(`results/*.json`, `summary.json`)은 sha256이 기록돼 있어 수정하지 않았다. `summary.json` b2-r1의 `behavior.gripper_close_s`는 산출 코드가 저장소에 없어 채널을 확인하지 못했다(미검증).
 
 ### Phase C co-training 중단·재개 (10/18)
 
@@ -109,11 +118,12 @@ Lead 우선순위 변경(사용자: zone dialogue study #223/#224 시뮬 완전 
 
 ### B5 closed-loop 후보 결과 (b5-r2, 10/18)
 
-HOLD 해제 후 재개. `act18-loop` = co-r2 best(step-68k)에서 **전환 가중 5k**(teacher_phase close/lift ×3.0, hold/verify ×1.5) + **frozen overlay**(자기 명령 이력만: close 3틱 후 hold brake ×0.25·20틱, release 정지 시 grasp 평균 방향 반대로 0.31·15틱). 비교는 co-r2 best와 같은 시드·no-pooling.
-- **B5: TRAIN4 0/4**(wall 559.9s, 독립 recount 일치), issued_done 4/4·cap_end 0/4, 물리 **lift 0/4·release 0/4**. grasp done 18.7/18.7/45.3/73.8s(분산 확대), release 23.5–85.6s. 헤드 p median 0.298·p90 0.606·max 0.993. overlay 개입 hold_brake 76·release_retreat 19.
+HOLD 해제 후 재개. `act18-loop` = co-r2 best(step-68k)에서 **전환 가중 5k**(teacher_phase close/lift ×3.0, hold/verify ×1.5) + **frozen overlay**(자기 명령 이력만: close 3틱 후 hold brake ×0.25·20틱, release 정지 시 grasp 평균 방향 반대로 0.31·15틱). 비교는 co-r2 best와 같은 시드·no-pooling. **정정: 당시 hold brake 트리거는 `pwm['5']>1900`(어깨)이었고 `pwm['1']`(gripper)이 아니다 — 아래 정정 절.**
+- **B5: TRAIN4 0/4**(wall 559.9s, 독립 recount 일치), issued_done 4/4·cap_end 0/4, 물리 **lift 0/4·release 0/4**. grasp done 18.7/18.7/45.3/73.8s(분산 확대), release 23.5–85.6s. 헤드 p median 0.298·p90 0.606·max 0.993. overlay 개입 hold_brake 76·release_retreat 19(hold_brake 76/76 `wheels_before=[0,0,0,0]` — 정정 절).
 - **overlay만(co-r2 best+overlay, 훈련 없음): TRAIN4 0/4**(wall 323.5s), issued_done 4/4·cap_end 0/4, **lift 1/4(88600)·release 0/4**, 개입 hold_brake 60·retreat 13.
 - co-r2 best 기존 gate: 0/4, lift 1/4(88602), done grasp 46.7/20.6/20.5/38.8s.
 - 해석: 전환 제어/가중은 TRAIN4를 개선하지 못했다(lift 0–1/4). overlay는 실제로 개입했지만 물리 grasp 성공으로 이어지지 않았고, 5k 전환 가중은 done 시점을 더 불안정하게 만들었다(18.7–73.8s). 남은 축은 **물리 grasp 기하/데이터 규모/행동형식**이다. 패키징·Release 금지, pooled 아님.
+- **정정(10/18):** 위 grasp-side overlay 개입은 servo 5(어깨) 트리거였고 B5 hold_brake 76/76이 all-zero wheel 명령에 걸려 wheel을 바꾸지 않았다. 따라서 이 0/4는 정상 트리거 hold brake의 null이 아니다 — `### 정정 (10/18)` 절 참조. release_retreat 경로는 gripper 판정과 무관.
 
 ### e2ewarp ACT 인수 요구사항 대비 현황 (10/18)
 

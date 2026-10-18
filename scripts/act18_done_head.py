@@ -74,6 +74,11 @@ class CommandFeatureState:
         duration = np.asarray(action[4:8], np.float64)
         pwm = np.asarray(action[8:13], np.float64)
         pwm_counts = 1500.0+1000.0*pwm
+        # NOTE (2026-10-18 정정): SERVOS=(1,3,4,5,6) so slice index 3..4 is
+        # servo 5 (shoulder) + servo 6 (yaw), not the gripper (servo 1, index
+        # 0). `closed` below therefore never encoded gripper closure. Frozen on
+        # purpose: changing it changes the done-head training input
+        # (FEATURE_SPEC) and needs a new prereg + retrain; annotated only.
         gripper = float(pwm_counts[3:5].mean())
         moving = bool(wheels.max() > .05)
         closed = gripper > 1900.0
