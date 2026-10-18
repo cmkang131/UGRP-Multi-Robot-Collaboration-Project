@@ -80,9 +80,11 @@ def prune_robots(xml, keep=ROBOTS):
     for parent in list(root.iter()):
         for child in list(parent):
             name = str(child.get('name') or '')
-            if any(name.startswith(prefix) for prefix in prefixes):
+            references = any(prefix in str(value) for value in child.attrib.values()
+                             for prefix in prefixes)
+            if any(name.startswith(prefix) for prefix in prefixes) or references:
+                removed.append(name or child.tag)
                 parent.remove(child)
-                removed.append(name)
     if not removed:
         raise ValueError('no robot prefix was pruned; check the XML names')
     return ET.tostring(root, encoding='unicode')

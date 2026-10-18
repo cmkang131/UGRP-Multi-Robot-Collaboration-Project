@@ -215,7 +215,8 @@ def test_prune_robots_removes_only_the_dropped_robot():
       <body name="r1__robot"><geom name="r1__base"/></body>
       <body name="r2__robot"><geom name="r2__base"/></body>
       <body name="r3__robot"><geom name="r3__base"/></body>
-    </worldbody><actuator>
+    </worldbody><contact><pair geom1="r1__left_finger" geom2="r3__left_finger"/>
+      <pair geom1="r1__left_finger" geom2="r2__right_finger"/></contact><actuator>
       <motor name="r1__wheel_fl_drive"/><motor name="r2__wheel_fl_drive"/>
       <motor name="r3__wheel_fl_drive"/>
     </actuator><equality><weld name="r3__grasp_red"/><weld name="r1__grasp_blue"/></equality></mujoco>"""
@@ -223,5 +224,6 @@ def test_prune_robots_removes_only_the_dropped_robot():
     assert 'r3__' not in out
     assert out.count('r1__') == 4 and out.count('r2__') == 3
     assert '<body name="r1__robot">' in out and '<body name="r2__robot">' in out
+    assert out.count('<pair ') == 1
     with pytest.raises(ValueError):
         gate.prune_robots(xml, keep=('r1', 'r2', 'r3'))
