@@ -1,6 +1,6 @@
 {
  "tip_source_sha": "718777118be41991156b047faff78621969101bb",
- "note": "SHA of VM raw files captured via byte-preserving cat on gcp6; big localization files stay on VM (read-only). R4 peer_en lives under e2ewarp-r4-run (recorded in ../README.md).",
+ "note": "SHA of VM raw files captured via byte-preserving cat on gcp6. run-metrics.json/raw-run-sha256.json(러너 자체 raw SHA manifest)도 추가. 대용량 localization.json·review-rgb는 VM 원본 경로·SHA만 기록. R4 peer_en 원본은 e2ewarp-r4-run.",
  "conditions": {
   "peer_en": {
    "raw_dir": "/home/ugrp/ugrp-sim/runs/e2ewarp-r4-run",
@@ -11,7 +11,9 @@
    "rejection_table.json": "eca7132639fbfd0c1381888d07a912cec5be2de621d6ff53428166d40f2f033d",
    "relay-identity.json": "3ffd9ef4bb36a6315d797292b612892a83954b4251abedb0461606805646eb63",
    "localization.json": "1c3195c187f52fcf8ff401e8c1c88bb55d2de74ba440fb051d2e9a32da41ed3e",
-   "llm_ledger.json": "bcc36ef2bd4074e1bc76f2ae8f22d054c8fc7d61bac219926a2f7f8e59b2abd8"
+   "llm_ledger.json": "bcc36ef2bd4074e1bc76f2ae8f22d054c8fc7d61bac219926a2f7f8e59b2abd8",
+   "run-metrics.json": "b8de761a66a92b16a6cb3293850ef73941f81af7a327c45705064a7bacd9b9dc",
+   "raw-run-sha256.json": "e9180111f76639e954d18b7ccc5c6e7b47be707e8093edceb7a6db10910204ed"
   },
   "no_comm": {
    "raw_dir": "/home/ugrp/ugrp-sim/runs/e2ewarp-r4-no_comm",
@@ -21,7 +23,9 @@
    "runtime-applied.json": "5825cb32a8add58929e34a05193afa83623125e0c3fd68409392d65bcd76b2dd",
    "rejection_table.json": "6505861e4be06dc0ce8eccdffa5d86c3168d0c8e5e47023df8ae586ac0decda3",
    "localization.json": "d376c4d92dbac84825b9a9c19db5619c155b6ba092f4c5ec6fbefad0c0d45813",
-   "llm_ledger.json": "4fd327c29075e919655b07be2e6df0db103081fcdcd6d2110aadd39298a6b1e4"
+   "llm_ledger.json": "4fd327c29075e919655b07be2e6df0db103081fcdcd6d2110aadd39298a6b1e4",
+   "run-metrics.json": "815eedbef06d2e395f9507399db2ffe50630be59bbc2a10f5fcd17292339498b",
+   "raw-run-sha256.json": "2259bb6031b1a874d611346535271b7bc75bd8dfafef0c04ec039530021007b9"
   },
   "leader_en": {
    "raw_dir": "/home/ugrp/ugrp-sim/runs/e2ewarp-r4-leader_en",
@@ -31,7 +35,9 @@
    "runtime-applied.json": "cda71335bcd2accc07f45aa9377ab29fa88e7fed9b47adbc1689e357235d19a6",
    "rejection_table.json": "2a5288574bb202e915f6ede2b2d43c8890d0c8b0f4743936a4e86cda541a3415",
    "localization.json": "35479f9f17ed09bcbbe31f43aa96d3241112f1607b158a7b27c1c1557da04147",
-   "llm_ledger.json": "069760098005555c703706954b267166e67a3ddde68aee123739d2c1f9ed4d18"
+   "llm_ledger.json": "069760098005555c703706954b267166e67a3ddde68aee123739d2c1f9ed4d18",
+   "run-metrics.json": "e0d913cf6835353d8765b9785bfa882e63016159acab9c97be395301f4d57677",
+   "raw-run-sha256.json": "f0b03285e70e2f61475d02e616e69da57a932210b6ede5447c0e29613948c197"
   },
   "structured": {
    "raw_dir": "/home/ugrp/ugrp-sim/runs/e2ewarp-r4-structured",
@@ -41,7 +47,9 @@
    "runtime-applied.json": "603ffd046d3be75573cda5c187e64ec51cfda0f957e8d859be867249be9945f6",
    "rejection_table.json": "05db2f255a6a8fbabf09a787406b9f1f6b8f4bbf69058ea6861557caaf69fbd4",
    "localization.json": "838d11af9362d1d2ccced1242b470b688bd783009103e7624efb81efac7d7c86",
-   "llm_ledger.json": "0767589464e263365061e4b79ecc35167e76c1e95438560c7933cab9d103e3cc"
+   "llm_ledger.json": "0767589464e263365061e4b79ecc35167e76c1e95438560c7933cab9d103e3cc",
+   "run-metrics.json": "7d83e1f47b1f7e62493dd941a4a64725c00bee185726474b681726a8709a7efc",
+   "raw-run-sha256.json": "981af3b01949846e5d753492d354c99082350d8ad745619cfd6fa15015499bae"
   }
  },
  "relay_journal": {
@@ -52,5 +60,9 @@
    "e2ewarp-r4-leader_en": "18 rows / all 200 / 0 upstream 429",
    "e2ewarp-r4-structured": "17 rows / all 200 / 1 upstream 429 retried on e2ewarp-r4-structured:w0:r1:3"
   }
+ },
+ "corrections": {
+  "at": "2026-10-18T20:05Z",
+  "note": "structured relay explanation and wall basis corrected after independent verifier evidence; see condition-summary.json correction_history and relay-summary-r4b.json"
  }
 }

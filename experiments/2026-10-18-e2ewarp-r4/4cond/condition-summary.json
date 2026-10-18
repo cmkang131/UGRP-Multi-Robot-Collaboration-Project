@@ -1,37 +1,18 @@
 {
  "peer_en": {
+  "condition": "peer_en",
   "run": "/home/ugrp/ugrp-sim/runs/e2ewarp-r4-run",
-  "result_sha256": "c61ecce4cc9ae68cc5c859d4a2d6c6f16b7fe51306bd80b527250af26fddbad0",
+  "source_sha": "718777118be41991156b047faff78621969101bb",
+  "mode": "smoke",
+  "nworld": 2,
+  "round_label": 3,
+  "map_keyframe_admission_queue": "elapsed_sim_v1",
+  "map_keyframe_admission_runtime": "elapsed_sim_v1",
   "status": "cap_end",
   "E2E_success": false,
   "research_result": false,
   "student_execution": false,
-  "error": null,
-  "dependency_status": "waiting for selected ACT / loaded FK / mapbuild8 own+static map correction / release API",
-  "mode": "smoke",
-  "condition": "peer_en",
-  "nworld": 2,
-  "round": 3,
-  "source_sha": "718777118be41991156b047faff78621969101bb",
-  "map_keyframe_admission": "elapsed_sim_v1",
-  "runtime_applied_keyframe": "elapsed_sim_v1",
-  "wall_s": 374.51012685599994,
   "sim_s": 30.0,
-  "wall_per_sim": 12.484,
-  "wall_per_sim_world": 6.242,
-  "first30": {
-   "wall_s": 363.642940575,
-   "model_calls": 18,
-   "client_requests": 18,
-   "cache_ratio": 0.23676395289298516,
-   "http_429": 0,
-   "upstream_429": 0,
-   "format_errors": 0,
-   "image_calls": 18,
-   "batch_wall_per_sim_s": 12.1214313525
-  },
-  "relay_upstream": "CoreWeave",
-  "relay_model": "google/gemma-4-31b-it",
   "funnel": {
    "frames": 1806,
    "status": {
@@ -51,7 +32,7 @@
     "null": 48
    }
   },
-  "ledger": {
+  "llm_client_ledger": {
    "calls": 18,
    "status": [
     200
@@ -65,43 +46,54 @@
    "response_wall_s_median": 1.357,
    "response_wall_s_max": 3.038
   },
-  "localization_sha256": "1c3195c187f52fcf8ff401e8c1c88bb55d2de74ba440fb051d2e9a32da41ed3e",
-  "llm_ledger_sha256": "bcc36ef2bd4074e1bc76f2ae8f22d054c8fc7d61bac219926a2f7f8e59b2abd8",
-  "queue_sha256": "076e917c5464c9f81be5b83e8713f489a923d7ebbb440db98a8e657df86506aa"
- },
- "no_comm": {
-  "run": "/home/ugrp/ugrp-sim/runs/e2ewarp-r4-no_comm",
-  "result_sha256": "0c8ca279c34da4a3fcd142422841fdd24227e5a5edfd621cf8882e7a6a0783cf",
-  "status": "cap_end",
-  "E2E_success": false,
-  "research_result": false,
-  "student_execution": false,
-  "error": null,
-  "dependency_status": "waiting for selected ACT / loaded FK / mapbuild8 own+static map correction / release API",
-  "mode": "smoke",
-  "condition": "no_comm",
-  "nworld": 2,
-  "round": 3,
-  "source_sha": "718777118be41991156b047faff78621969101bb",
-  "map_keyframe_admission": "elapsed_sim_v1",
-  "runtime_applied_keyframe": "elapsed_sim_v1",
-  "wall_s": 358.709092414,
-  "sim_s": 30.0,
-  "wall_per_sim": 11.957,
-  "wall_per_sim_world": 5.978,
   "first30": {
-   "wall_s": 346.01677941,
+   "wall_s": 363.642940575,
    "model_calls": 18,
    "client_requests": 18,
-   "cache_ratio": 0.20582996988916652,
+   "cache_ratio": 0.23676395289298516,
    "http_429": 0,
    "upstream_429": 0,
    "format_errors": 0,
    "image_calls": 18,
-   "batch_wall_per_sim_s": 11.533892647
+   "batch_wall_per_sim_s": 12.1214313525
   },
-  "relay_upstream": "CoreWeave",
-  "relay_model": "google/gemma-4-31b-it",
+  "wall_result_json": {
+   "wall_s": 374.51012685599994,
+   "wall_per_sim": 12.4837,
+   "wall_per_sim_world": 6.2418
+  },
+  "wall_run_metrics_json": {
+   "wall_s": 363.643398015,
+   "wall_per_sim": 12.1214,
+   "wall_per_sim_world": 6.0607,
+   "source": "run-metrics.json",
+   "note": "smoke cap_end first30와 동일"
+  },
+  "artifact_sha256": {
+   "result.json": "c61ecce4cc9ae68cc5c859d4a2d6c6f16b7fe51306bd80b527250af26fddbad0",
+   "first30.json": "e2ff4a48a1d726b6df0a8e70e164c40eef16b0111e150919d7afc4fd01faf64d",
+   "queue.json": "076e917c5464c9f81be5b83e8713f489a923d7ebbb440db98a8e657df86506aa",
+   "runtime-applied.json": "709be67474e90453e1c87365706e6ea52b309031c7650ef5d430e031d49efc43",
+   "rejection_table.json": "eca7132639fbfd0c1381888d07a912cec5be2de621d6ff53428166d40f2f033d",
+   "llm_ledger.json": "bcc36ef2bd4074e1bc76f2ae8f22d054c8fc7d61bac219926a2f7f8e59b2abd8",
+   "run-metrics.json": "b8de761a66a92b16a6cb3293850ef73941f81af7a327c45705064a7bacd9b9dc",
+   "raw-run-sha256.json": "e9180111f76639e954d18b7ccc5c6e7b47be707e8093edceb7a6db10910204ed"
+  }
+ },
+ "no_comm": {
+  "condition": "no_comm",
+  "run": "/home/ugrp/ugrp-sim/runs/e2ewarp-r4-no_comm",
+  "source_sha": "718777118be41991156b047faff78621969101bb",
+  "mode": "smoke",
+  "nworld": 2,
+  "round_label": 3,
+  "map_keyframe_admission_queue": "elapsed_sim_v1",
+  "map_keyframe_admission_runtime": "elapsed_sim_v1",
+  "status": "cap_end",
+  "E2E_success": false,
+  "research_result": false,
+  "student_execution": false,
+  "sim_s": 30.0,
   "funnel": {
    "frames": 1806,
    "status": {
@@ -121,7 +113,7 @@
     "null": 48
    }
   },
-  "ledger": {
+  "llm_client_ledger": {
    "calls": 18,
    "status": [
     200
@@ -135,43 +127,54 @@
    "response_wall_s_median": 1.648,
    "response_wall_s_max": 6.291
   },
-  "localization_sha256": "d376c4d92dbac84825b9a9c19db5619c155b6ba092f4c5ec6fbefad0c0d45813",
-  "llm_ledger_sha256": "4fd327c29075e919655b07be2e6df0db103081fcdcd6d2110aadd39298a6b1e4",
-  "queue_sha256": "b2f5f2227583f2f90a2e0e605e6b915ada4ec5d0a1246032886e04ebfbc5bcf1"
- },
- "leader_en": {
-  "run": "/home/ugrp/ugrp-sim/runs/e2ewarp-r4-leader_en",
-  "result_sha256": "f81d530636cdca27b2622755fe27d844135353b2c57bf7a0291d6cc9ca183401",
-  "status": "cap_end",
-  "E2E_success": false,
-  "research_result": false,
-  "student_execution": false,
-  "error": null,
-  "dependency_status": "waiting for selected ACT / loaded FK / mapbuild8 own+static map correction / release API",
-  "mode": "smoke",
-  "condition": "leader_en",
-  "nworld": 2,
-  "round": 3,
-  "source_sha": "718777118be41991156b047faff78621969101bb",
-  "map_keyframe_admission": "elapsed_sim_v1",
-  "runtime_applied_keyframe": "elapsed_sim_v1",
-  "wall_s": 380.872643531,
-  "sim_s": 30.0,
-  "wall_per_sim": 12.696,
-  "wall_per_sim_world": 6.348,
   "first30": {
-   "wall_s": 370.597305055,
+   "wall_s": 346.01677941,
    "model_calls": 18,
    "client_requests": 18,
-   "cache_ratio": 0.37607315925365353,
+   "cache_ratio": 0.20582996988916652,
    "http_429": 0,
    "upstream_429": 0,
    "format_errors": 0,
    "image_calls": 18,
-   "batch_wall_per_sim_s": 12.353243501833333
+   "batch_wall_per_sim_s": 11.533892647
   },
-  "relay_upstream": "CoreWeave",
-  "relay_model": "google/gemma-4-31b-it",
+  "wall_result_json": {
+   "wall_s": 358.709092414,
+   "wall_per_sim": 11.957,
+   "wall_per_sim_world": 5.9785
+  },
+  "wall_run_metrics_json": {
+   "wall_s": 346.017220797,
+   "wall_per_sim": 11.5339,
+   "wall_per_sim_world": 5.767,
+   "source": "run-metrics.json",
+   "note": "smoke cap_end first30와 동일"
+  },
+  "artifact_sha256": {
+   "result.json": "0c8ca279c34da4a3fcd142422841fdd24227e5a5edfd621cf8882e7a6a0783cf",
+   "first30.json": "b0779b11634f2416b764927a7e8fb48fa6c201bc805724d2b0b71a9128f25ea6",
+   "queue.json": "b2f5f2227583f2f90a2e0e605e6b915ada4ec5d0a1246032886e04ebfbc5bcf1",
+   "runtime-applied.json": "5825cb32a8add58929e34a05193afa83623125e0c3fd68409392d65bcd76b2dd",
+   "rejection_table.json": "6505861e4be06dc0ce8eccdffa5d86c3168d0c8e5e47023df8ae586ac0decda3",
+   "llm_ledger.json": "4fd327c29075e919655b07be2e6df0db103081fcdcd6d2110aadd39298a6b1e4",
+   "run-metrics.json": "815eedbef06d2e395f9507399db2ffe50630be59bbc2a10f5fcd17292339498b",
+   "raw-run-sha256.json": "2259bb6031b1a874d611346535271b7bc75bd8dfafef0c04ec039530021007b9"
+  }
+ },
+ "leader_en": {
+  "condition": "leader_en",
+  "run": "/home/ugrp/ugrp-sim/runs/e2ewarp-r4-leader_en",
+  "source_sha": "718777118be41991156b047faff78621969101bb",
+  "mode": "smoke",
+  "nworld": 2,
+  "round_label": 3,
+  "map_keyframe_admission_queue": "elapsed_sim_v1",
+  "map_keyframe_admission_runtime": "elapsed_sim_v1",
+  "status": "cap_end",
+  "E2E_success": false,
+  "research_result": false,
+  "student_execution": false,
+  "sim_s": 30.0,
   "funnel": {
    "frames": 1806,
    "status": {
@@ -192,7 +195,7 @@
     "keyframe_interval_wait": 74
    }
   },
-  "ledger": {
+  "llm_client_ledger": {
    "calls": 18,
    "status": [
     200
@@ -206,43 +209,54 @@
    "response_wall_s_median": 1.409,
    "response_wall_s_max": 1.936
   },
-  "localization_sha256": "35479f9f17ed09bcbbe31f43aa96d3241112f1607b158a7b27c1c1557da04147",
-  "llm_ledger_sha256": "069760098005555c703706954b267166e67a3ddde68aee123739d2c1f9ed4d18",
-  "queue_sha256": "8c8794d3fc83d3c952bb0aed59839e2a7f4d8f92d0815b3e594df00c75a04b64"
+  "first30": {
+   "wall_s": 370.597305055,
+   "model_calls": 18,
+   "client_requests": 18,
+   "cache_ratio": 0.37607315925365353,
+   "http_429": 0,
+   "upstream_429": 0,
+   "format_errors": 0,
+   "image_calls": 18,
+   "batch_wall_per_sim_s": 12.353243501833333
+  },
+  "wall_result_json": {
+   "wall_s": 380.872643531,
+   "wall_per_sim": 12.6958,
+   "wall_per_sim_world": 6.3479
+  },
+  "wall_run_metrics_json": {
+   "wall_s": 370.5977588669999,
+   "wall_per_sim": 12.3533,
+   "wall_per_sim_world": 6.1766,
+   "source": "run-metrics.json",
+   "note": "smoke cap_end first30와 동일"
+  },
+  "artifact_sha256": {
+   "result.json": "f81d530636cdca27b2622755fe27d844135353b2c57bf7a0291d6cc9ca183401",
+   "first30.json": "be810070a107e4eac43a8802381e62618282ee3a723ca6654307fa97346b98b3",
+   "queue.json": "8c8794d3fc83d3c952bb0aed59839e2a7f4d8f92d0815b3e594df00c75a04b64",
+   "runtime-applied.json": "cda71335bcd2accc07f45aa9377ab29fa88e7fed9b47adbc1689e357235d19a6",
+   "rejection_table.json": "2a5288574bb202e915f6ede2b2d43c8890d0c8b0f4743936a4e86cda541a3415",
+   "llm_ledger.json": "069760098005555c703706954b267166e67a3ddde68aee123739d2c1f9ed4d18",
+   "run-metrics.json": "e0d913cf6835353d8765b9785bfa882e63016159acab9c97be395301f4d57677",
+   "raw-run-sha256.json": "f0b03285e70e2f61475d02e616e69da57a932210b6ede5447c0e29613948c197"
+  }
  },
  "structured": {
+  "condition": "structured",
   "run": "/home/ugrp/ugrp-sim/runs/e2ewarp-r4-structured",
-  "result_sha256": "d1623f114d03a22879cf48447cea963289eaf2ad19bdbee483282805b7d6edc6",
+  "source_sha": "718777118be41991156b047faff78621969101bb",
+  "mode": "smoke",
+  "nworld": 2,
+  "round_label": 3,
+  "map_keyframe_admission_queue": "elapsed_sim_v1",
+  "map_keyframe_admission_runtime": "elapsed_sim_v1",
   "status": "cap_end",
   "E2E_success": false,
   "research_result": false,
   "student_execution": false,
-  "error": null,
-  "dependency_status": "waiting for selected ACT / loaded FK / mapbuild8 own+static map correction / release API",
-  "mode": "smoke",
-  "condition": "structured",
-  "nworld": 2,
-  "round": 3,
-  "source_sha": "718777118be41991156b047faff78621969101bb",
-  "map_keyframe_admission": "elapsed_sim_v1",
-  "runtime_applied_keyframe": "elapsed_sim_v1",
-  "wall_s": 587.6058013749999,
   "sim_s": 30.0,
-  "wall_per_sim": 19.587,
-  "wall_per_sim_world": 9.793,
-  "first30": {
-   "wall_s": 577.325412339,
-   "model_calls": 18,
-   "client_requests": 18,
-   "cache_ratio": 0.2156528382194453,
-   "http_429": 0,
-   "upstream_429": 1,
-   "format_errors": 0,
-   "image_calls": 18,
-   "batch_wall_per_sim_s": 19.2441804113
-  },
-  "relay_upstream": "CoreWeave",
-  "relay_model": "google/gemma-4-31b-it",
   "funnel": {
    "frames": 1806,
    "status": {
@@ -262,7 +276,7 @@
     "null": 46
    }
   },
-  "ledger": {
+  "llm_client_ledger": {
    "calls": 18,
    "status": [
     0,
@@ -277,8 +291,97 @@
    "response_wall_s_median": 1.495,
    "response_wall_s_max": 180.101
   },
-  "localization_sha256": "838d11af9362d1d2ccced1242b470b688bd783009103e7624efb81efac7d7c86",
-  "llm_ledger_sha256": "0767589464e263365061e4b79ecc35167e76c1e95438560c7933cab9d103e3cc",
-  "queue_sha256": "1a114483da2496ac8b2ad46f20dbee7f7aae8f75c9c91e3b6d2f8cd44368e017"
- }
+  "first30": {
+   "wall_s": 577.325412339,
+   "model_calls": 18,
+   "client_requests": 18,
+   "cache_ratio": 0.2156528382194453,
+   "http_429": 0,
+   "upstream_429": 1,
+   "format_errors": 0,
+   "image_calls": 18,
+   "batch_wall_per_sim_s": 19.2441804113
+  },
+  "wall_result_json": {
+   "wall_s": 587.6058013749999,
+   "wall_per_sim": 19.5869,
+   "wall_per_sim_world": 9.7934
+  },
+  "wall_run_metrics_json": {
+   "wall_s": 577.32586203,
+   "wall_per_sim": 19.2442,
+   "wall_per_sim_world": 9.6221,
+   "source": "run-metrics.json",
+   "note": "smoke cap_end first30와 동일"
+  },
+  "artifact_sha256": {
+   "result.json": "d1623f114d03a22879cf48447cea963289eaf2ad19bdbee483282805b7d6edc6",
+   "first30.json": "fcc011e39997ecda9ad14740b45c1d495b12d0faa144b3a8c176673414bedf1f",
+   "queue.json": "1a114483da2496ac8b2ad46f20dbee7f7aae8f75c9c91e3b6d2f8cd44368e017",
+   "runtime-applied.json": "603ffd046d3be75573cda5c187e64ec51cfda0f957e8d859be867249be9945f6",
+   "rejection_table.json": "05db2f255a6a8fbabf09a787406b9f1f6b8f4bbf69058ea6861557caaf69fbd4",
+   "llm_ledger.json": "0767589464e263365061e4b79ecc35167e76c1e95438560c7933cab9d103e3cc",
+   "run-metrics.json": "7d83e1f47b1f7e62493dd941a4a64725c00bee185726474b681726a8709a7efc",
+   "raw-run-sha256.json": "981af3b01949846e5d753492d354c99082350d8ad745619cfd6fa15015499bae"
+  }
+ },
+ "relay_journal": {
+  "dir": "/Users/changmin/projects/ugrp/outputs/e2ewarp-relay-r4b-193234",
+  "ledger_rows": 54,
+  "per_run_rows": {
+   "no_comm": 18,
+   "leader_en": 18,
+   "structured": 18
+  },
+  "all_journal_status_200": true,
+  "structured_client_timeout": {
+   "request_id": "e2ewarp-r4-structured:w0:r2:3",
+   "request_sha256": "6b63b09d7694a8be22d0bf756fe57fc553ecd55655b9b693ef192c7742b59383",
+   "attempts": [
+    {
+     "attempt": 1,
+     "status": 429,
+     "wall_s": 0.3057645419612527
+    },
+    {
+     "attempt": 2,
+     "status": 502,
+     "wall_s": 180.52347483404446
+    },
+    {
+     "attempt": 3,
+     "status": 200,
+     "wall_s": 0.8704083329066634
+    }
+   ],
+   "latency_s": 183.71154541696887,
+   "retries": 2,
+   "journal_status": 200,
+   "client": {
+    "status": 0,
+    "connected": false,
+    "response_wall_s": 180.1008687220001,
+    "timeout_s": 180.1,
+    "accepted": false
+   },
+   "explanation": "upstream 429 then 502 retry(180.52 s)로 클라이언트 180 s 타임아웃이 났고, journal은 그 뒤 200으로 완료됨(타임아웃 미표시). 이전 초안의 \"relay journal 미도달/터널 단절\" 판정은 철회.",
+   "upstream_usage_only_in_relay_journal": {
+    "prompt_tokens": 4777,
+    "completion_tokens": 14,
+    "cost_usd": 0.00048246
+   }
+  }
+ },
+ "wall_basis_note": "두 기준 병기: result.json wall_s와 run-metrics.json wall_s(managed record; smoke=fist30 동일). 기존 표는 result.json 기준이며 run-metrics 기준도 별도 열로 추가.",
+ "correction_history": [
+  {
+   "at": "2026-10-18T20:05Z",
+   "by": "beamact5",
+   "changes": [
+    "structured client timeout 원인: \"relay journal 미도달/터널 단절\" 철회 → journal 18행째 status 200(429→502→200, latency 183.71 s, retries 2), 클라이언트 180.10 s TimeoutError 후 종료. 초기 보고는 relay가 마지막 줄을 쓰기 전에 journal을 읽은 race.",
+    "wall 기준: result.json과 run-metrics.json 두 기준 병기(기존 표=result.json 기준)."
+   ],
+   "verification": "Lead 독립 검증자 중간 보고 근거(원본 relay journal·run-metrics) 반영"
+  }
+ ]
 }
