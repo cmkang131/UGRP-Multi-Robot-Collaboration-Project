@@ -3,7 +3,7 @@ from copy import deepcopy
 from harness.grasp_act_perturb import RecoveryPerturb
 
 MODE = 'beampair1_v1'
-DEPENDENCY_SHA = '2545899079902e6d343df6a763de3a5ba03ccac2'
+DEPENDENCY_SHA = '9b56c2000a6a70db00fec09b591165bbc62c08f3'
 V7_SOURCE_SHA = '13f50f31a40f2e87e3964137c8c2d6d3075ba4e1'
 
 
