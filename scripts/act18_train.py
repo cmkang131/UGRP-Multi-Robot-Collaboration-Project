@@ -184,7 +184,8 @@ def main():
             raise ValueError('--lr override must be within [1e-7, 1e-4]')
     done_positive_fraction = a.done_positive_batch_fraction
     weighted = a.post_close_weight is not None or a.pre_close_weight is not None
-    sampling = 'cotrain_v1' if cotrain else ('weighted_post_close_v1' if weighted else 'uniform_episode_v1')
+    sampling = (('cotrain_transition_v1' if a.transition_weight is not None else 'cotrain_v1')
+                if cotrain else ('weighted_post_close_v1' if weighted else 'uniform_episode_v1'))
     if cotrain:
         from act18_cotrain_data import CoTrainingDataset
         data = CoTrainingDataset(a.dataset, a.cotrain_native, chunk=CANDIDATES[a.candidate],
