@@ -1,6 +1,6 @@
 {
  "schema": "ugrp.beamact5.r10_r13_align_summary.v1",
- "written_utc": "2026-10-18T04:15:00Z",
+ "written_utc": "2026-10-18T04:55:00Z",
  "author": "beamact5 worker (DSH)",
  "scope": "align-phase correction after the r4-r9 track could not pass world 27. All conditions are separate; single-world diagnostics and gate runs are not pooled. training RGB off, weld off, cap 60 SIM s, gcp6 isolated.",
  "diagnosis": {
@@ -82,7 +82,30 @@
   "conclusion": "world 27 passes 1 of 3 standalone repeats and 1 of 2 batch runs; the failing runs all share the late-align stall signature, the passing runs share the early-align signature, so the flake is decided upstream of the align law (wide-rescue selection/approach trajectory). The align breakaway pulse fixed the earlier deterministic align stall but does not make world 27 stable."
  },
  "attempt2": {
-  "status": "launched 2026-10-18T04:07Z as a frozen-stack repetition pre-registered in gate-40-r13-attempt2/r13-attempt2-preregistration.json; result will be reported together with attempt 1 and never claimed as a stable 38/40 pass"
+  "schema": "frozen-stack repetition pre-registered before run (gate-40-r13-attempt2/r13-attempt2-preregistration.json, commit ba5c97397)",
+  "run": "/home/ugrp/ugrp-sim/runs/beamact5/gate39-r13-attempt2-run",
+  "result": "37/40 FAIL (identical failures to attempt 1)",
+  "executed_N": 39,
+  "success_n": 37,
+  "cap_end": 0,
+  "HOST_ERROR": 0,
+  "wall_s": 2559.29,
+  "failures": [
+   {
+    "case": 27,
+    "end": "teacher_terminal",
+    "sim": 26.3,
+    "stage": "alignment_no_progress"
+   },
+   {
+    "case": 37,
+    "end": "teacher_terminal",
+    "sim": 30.5,
+    "stage": "approach_blocked_handoff (expected)"
+   }
+  ],
+  "summary_sha256": "bb85fc1d858731666b2bf060781161872b5e14ceb5d1689db74ceff910b03b62",
+  "funnel": "runs/gate39-r13-attempt2-run/funnel-attempt2.json"
  },
  "not_claimed": [
   "no stable 38/40 gate pass",
@@ -90,5 +113,17 @@
   "world15 excluded/unverified",
   "37 structural label from r1/r2",
   "no margin/cap constant change"
- ]
+ ],
+ "final_verdict": {
+  "gate": "FAIL",
+  "best_observed": "two independent 39-gate runs both 37/40 (failures 27 + 37 expected); world 27 additionally passed once in the 5-world stage2 and 1 of 3 standalone repeats",
+  "claim": "no 38/40 gate pass; 27 is unstable after the align fix (approach/selection upstream flake)",
+  "not_pooled": true,
+  "published_results": [
+   "gate39-r13-run (attempt1) 37/40",
+   "gate39-r13-attempt2-run (attempt2) 37/40",
+   "validation-r13-5 stage2 4/5 with 27 PASS",
+   "diag-r13-27-repeat1..3 FAIL/FAIL/PASS"
+  ]
+ }
 }

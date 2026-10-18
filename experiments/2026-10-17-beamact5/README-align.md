@@ -49,6 +49,9 @@ r13 stack: teacher `fe6858ec`, adapter `d354468a`, root `05046e9d`, cases `3d4e0
 - 안정화하려면 flake의 상류 원인(wide-rescue 선택/approach 궤적)을 다뤄야 하며, 이는 남은 시간의 별도 라운드 대상이다.
 - 15·37 라벨/제외는 그대로: 15 r3 deviation 유지, 37 구조 라벨(r1/r2 근거, 재측정 아님).
 
-## attempt 2 결과
+## attempt 2 결과 — **37/40 FAIL (attempt 1과 동일 실패)**
 
-(실행 완료 후 기록)
+- 실행 `gate39-r13-attempt2-run`, 사전등록 `ba5c97397`(launch 전 커밋·동결 스택), funnel: [funnel-attempt2.json](runs/gate39-r13-attempt2-run/funnel-attempt2.json).
+- executed 39, success **37**, cap_end 0, HOST_ERROR 0, wall 2559 s (42.7 min), summary sha256 `bb85fc1d…`.
+- 실패 2: **world 27 `alignment_no_progress` sim 26.3 s**(attempt1 26.0 s와 동일) + world 37 approach handoff 30.5 s(expected).
+- **두 attempt 모두 37/40 FAIL** → 38/40 gate 미달 확정. 27은 stage2 5-world 1회·단독 반복 3회 중 1회 통과했으나 39-gate 2회 모두 실패(불안정).
