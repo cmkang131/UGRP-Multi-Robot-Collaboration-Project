@@ -1777,6 +1777,10 @@
     "started_utc": "2026-10-18T09:20:00Z",
     "reason": "Lead 우선순위 변경: zone dialogue study (#223/#224) 완전 시뮬 실행이 최우선. ACT/GPU 실험 hold.",
     "resume_from": "experiments/2026-10-17-act18/B5_PREREG.json + snapshot f39cd8e10",
-    "pending_b5": "B5 training/gates 미실행(과학적 결과 없음). 재개 시 pilot 등록/코드 검증부터."
+    "pending_b5": "B5 training/gates 미실행(과학적 결과 없음). 재개 시 pilot 등록/코드 검증부터.",
+    "resume_ready": {
+      "commit": "a215c6d9e 이후",
+      "note": "act18-loop pilot 등록(PILOT_CANDIDATES/PILOT_KINDS) 수정 완료 — B5 재개 시 학습부터 가능. overlay-only 게이트 실패는 미해결(재개 시 조사)."
+    }
   }
 }
