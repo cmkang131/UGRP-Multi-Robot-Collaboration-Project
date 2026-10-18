@@ -12,7 +12,7 @@ import numpy as np
 OPTION = 'mapbuild_rbpf_v1'
 
 
-def virtual_scan(rgb, servo, state):
+def virtual_scan(rgb, servo, state, *, camera_pose='off'):
     """Only measured wall/floor contacts; missing bearings remain None.
 
     Inherited 96 columns and colour calibration, servo FK, fixed K/D. Mask
@@ -26,14 +26,25 @@ def virtual_scan(rgb, servo, state):
     from harness.floor_goal_self_mask import self_body_mask
     from harness.e2e_rgb_vo import K, D
     mp, hfw, _ = modules()
-    origin, rotation = transform(servo)
+    if camera_pose=='off':
+        origin, rotation = transform(servo)
+    else:
+        from harness.servo_camera_fk import CARRY_OPTION,transform_from_commands
+        if camera_pose!=CARRY_OPTION:raise ValueError('UNKNOWN_MAPBUILD_CAMERA')
+        value,reason=transform_from_commands(servo,camera_pose=camera_pose)
+        if value is None:raise ValueError(reason)
+        origin,rotation=value
     columns = mp.column_positions(96,2)
     cm = mp.ColumnModel(tuple(sorted(servo.items())),0.,columns,camera_transform=(origin,rotation))
     und = mp.undistort(cv2.cvtColor(rgb,cv2.COLOR_RGB2BGR))
     scan = detect(hfw,und,cm,params={'floor_patch_max_m':.81,'run_step_window':3,'top_edge_px':4},
                   loaded=False,state=state)
     robot = robot_occluded_columns(und)
-    raw_body = self_body_mask(servo,'camera_v3',640,480).astype(np.uint8)
+    if camera_pose=='off':
+        raw_body = self_body_mask(servo,'camera_v3',640,480).astype(np.uint8)
+    else:
+        from harness.floor_goal_self_mask import body_envelopes,project_envelopes
+        raw_body=project_envelopes(body_envelopes(servo,'camera_v3'),origin,rotation.T,640,480).astype(np.uint8)
     # Nearest-neighbour remap preserves the binary own-body exclusion.
     mx,my = cv2.fisheye.initUndistortRectifyMap(K,D,np.eye(3),K,(640,480),cv2.CV_32FC1)
     body = cv2.remap(raw_body,mx,my,cv2.INTER_NEAREST,borderMode=cv2.BORDER_CONSTANT,borderValue=0)>0
@@ -118,12 +129,17 @@ class MapbuildRBPF:
         g.odom.advance=MethodType(advance,g.odom)
         self.grid=g;self.last_scan=-math.inf
 
-    def step(self,t,frame_id,delta,covariance,scan):
+    def step(self,t,frame_id,delta,covariance,scan,*,servo=None):
         from harness.e2e_rgb_vo import compose
         g=self.grid
         if t<g.odom.driver.t: raise ValueError('NONCAUSAL_FRAME')
         propagate_covariance(g,delta,covariance)
         g.odom.driver._pose=compose(g.odom.driver._pose,delta);g.odom.driver.t=t
+        if servo is not None:
+            # Explicit moving-camera caller only. Preserve the existing
+            # unloaded/loaded .25/2.25 SIMs settling gate on OWN PWM changes.
+            # The historical fixed-camera API (servo=None) is unchanged.
+            g.odom.driver.command(dict(kind='initial_servo_command',t=t,pulses=servo))
         prior=list(g.odom.pose)
         event=dict(t=t,frame_id=frame_id,reason='no_visible_scan',inserted=False,resampled=False)
         # Existing CSMOptions.keyframe_interval_s=1 SIMs. The ROS 1m/.5rad

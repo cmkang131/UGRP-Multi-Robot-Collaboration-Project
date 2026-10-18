@@ -14,6 +14,7 @@ import numpy as np
 from harness.visual_arm import PULSE_PER_DEGREE, SERVO_DEVIATION
 
 OPTION='servo_fk_v1'
+CARRY_OPTION='servo_fk_carry_v1'
 MODEL=Path(__file__).with_name('data')/'servo_camera_v3_chain.json'
 MODEL_SHA256='0cced72fd129556cb1e1ecbeef63155129426e669f77b6d5a70244d3d9b269be'
 
@@ -66,12 +67,12 @@ def commanded_joints(servo):
 def transform_from_commands(servo, *, camera_pose='off'):
     if camera_pose=='off':
         return None,'off'
-    if camera_pose!=OPTION:
+    if camera_pose not in (OPTION,CARRY_OPTION):
         raise ValueError('UNKNOWN_CAMERA_POSE')
     pose,joints=commanded_joints(servo)
     # Preserve egomap9's unloaded comparison domain. A closed gripper command
     # does not reveal actual load, and loaded sag is unmeasured by this model.
-    if pose[1]<=1600:
+    if pose[1]<=1600 and camera_pose!=CARRY_OPTION:
         return None,'loaded_or_unknown_load_not_qualified'
     spec=model()
     t=np.eye(4)
@@ -89,7 +90,14 @@ def transform_from_commands(servo, *, camera_pose='off'):
     t=t@fixed_transform(spec['camera'])
     # MuJoCo fixed camera mount convention -> OpenCV right/down/forward.
     rot=t[:3,:3]@np.diag([1.,-1.,-1.])
-    return (t[:3,3].copy(),rot),'servo_fk_nominal_unloaded'
+    # The fixed v3 chain has no finger slider in the camera ancestry. Grip
+    # PWM therefore changes occlusion, not the nominal camera transform.
+    # CARRY_OPTION explicitly admits this command-only kinematic model, NOT
+    # measured load/sag/settling. No fitted offsets, new ranges or tolerances.
+    # Sources: servo_camera_v3_chain.json; MasterPi PWM500--2500 SDK manual;
+    # mapbuild7 evidence records RGB checks and independent evaluation limits.
+    reason=('servo_fk_nominal_carry_commands' if pose[1]<=1600 else 'servo_fk_nominal_unloaded')
+    return (t[:3,3].copy(),rot),reason
 
 
 def camera_output(legacy, *, camera_pose='off', servo=None):

@@ -1,0 +1,55 @@
+{
+ "schema": "ugrp.e2ewarp.owner_assets.v1",
+ "owner": "mapbuild8",
+ "origin_branch": "codex/mapbuild1",
+ "origin_commit": "95769da0e12326e41b71d29843c4da75c5b10a00",
+ "rule": "byte-identical copy; no bytes edited; used only through the e2ewarp adapter tokens",
+ "assets": [
+  {
+   "path": "harness/selfmap_map_correction.py",
+   "mode": "added",
+   "sha256": "552bfb140e5989f7476cedb703ce9c243c64d0752f37359d561de18f5e001774"
+  },
+  {
+   "path": "harness/mapbuild_static_registration.py",
+   "mode": "added",
+   "sha256": "d6f36c182f9d9c21e9fbf038c1124e727ef0bb5f80a52709657b5cb6d95dcba3"
+  },
+  {
+   "path": "harness/mapbuild_camera.py",
+   "mode": "added",
+   "sha256": "18219e99ea7aa50d422d78d5ca56c2fb5cf9d7375173343e9cc43b4998532910"
+  },
+  {
+   "path": "harness/mapbuild_command_prior.py",
+   "mode": "added",
+   "sha256": "06c7a0fd7a45fc4650c39f422678161bc9a78db3823bd83a7a9d8018b1a3a83b"
+  },
+  {
+   "path": "harness/servo_camera_fk.py",
+   "mode": "updated",
+   "sha256": "8a0156044a83430d1fe5979ae9bdb2f097f6b4b656015510c194d3fb5e80b32a"
+  },
+  {
+   "path": "harness/self_map_csm.py",
+   "mode": "updated",
+   "sha256": "c9c184878adea6cba56c55e2d1351dd7de616a9f5fdb7cf96ea2cfdc66767519"
+  },
+  {
+   "path": "harness/mapbuild_rbpf.py",
+   "mode": "updated",
+   "sha256": "08ff31763b23aecd2e434a9d8f375da612ecd5db61e46f36344fe00a4183e926"
+  }
+ ],
+ "not_included": [
+  "harness/mapbuild_own_grid.py",
+  "harness/mapbuild_motion.py",
+  "harness/mapbuild_frontier.py",
+  "harness/mapbuild_start_zone.py"
+ ],
+ "reuse_boundary": {
+  "prior_results_inherited": false,
+  "note": "mapbuild11/mapbuild12 physical/offline results are NOT inherited; a new gcp6 physical gate is required before ready=true"
+ },
+ "no_pooling": true
+}
