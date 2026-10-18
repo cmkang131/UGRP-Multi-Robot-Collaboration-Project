@@ -1,0 +1,35 @@
+{
+ "schema": "ugrp.beamact5.r14_preregistration.v1",
+ "written_before_run_utc": "2026-10-18T10:00:00Z",
+ "author": "beamact5 worker (DSH)",
+ "approved_by": "Lead (flake 분석 2단계·안정화 구현 지시)",
+ "r13diag_finding": {
+  "run": "/home/ugrp/ugrp-sim/runs/beamact5/diag-r13diag-rep1 (case27 FAIL sim 25.5)",
+  "trace": "align starts 15.9 s; x error converges 0.0698->0.0188 m with 15 visible probes and drive issued every tick; from SIM 17.6 s the search20 wrapper logs 91 x alignment_axes_blocked and the segment-safety check replaces every pulse with hold because the remembered red_1 cargo margin is stale; the robot then holds 3 s -> relook x3 -> alignment_no_progress.",
+  "confirmed": "the align deadlock is a stale-memory safety rejection, not a missing drive; a fresh obstacle observation makes the same pulse admissible (approach phase already uses this bounded reobserve)."
+ },
+ "r14_change": {
+  "mode": "search26_align_refresh (default off)",
+  "rule": "when the final align-phase command is a hold, the reobserver is idle, and the last goal-set candidates exist, start the existing bounded obstacle reobserve (remembered_blockers -> begin). After a fresh measurement the align law resumes. No new constants: VIEW_S/RETREAT_S/LIMIT_S/MAX_ENCOUNTERS and the existing open-refresh bound are reused."
+ },
+ "stack": {
+  "root": "3bc6708cc2693feed2cea61dbc7cc4e94250977d",
+  "adapter": "d4398363eab3f6370b96a301de0202c64a8f3e4e",
+  "teacher": "f1cf1926b309d0300159d3afdbb107efe4b50030",
+  "cases_r14_sha256": "9eec6550b204eff21e89fcf9a74d8d7a6515d095490b244fa529e06d0393405b",
+  "cases_r14diag_sha256": "e623637741b1a5fd09ce2ac391f233dafac8826f9589265fee055c3bdff9fe9e",
+  "plan_sha256": "f1a50e8c833c1da9113bdf8cff3844913380e3c821b15c072c0a23c0f54f5148"
+ },
+ "validation": {
+  "stage1": "3 x standalone case-27 repeats with r14diag (need 3/3 PASS for stability; any trace kept)",
+  "stage2": "if 3/3: 5-world (6,10,20,27,37) x3 repeats, need 27 PASS in all 3 and 6/10/20 PASS",
+  "stage3": "if stable: 39-gate attempt3 on this frozen fixed stack; attempt1 (old stack 37/40), attempt2 (old stack 37/40), flake diagnostics and attempt3 are all published; no best-of claim"
+ },
+ "not_claimed": [
+  "no gate result yet",
+  "no student recording/training",
+  "world15 excluded/unverified",
+  "37 structural label from r1/r2",
+  "no margin/cap constant change"
+ ]
+}
