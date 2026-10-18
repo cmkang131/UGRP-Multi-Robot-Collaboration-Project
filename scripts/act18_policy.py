@@ -28,7 +28,8 @@ TUNE_CANDIDATE = 'act18-tune'
 # 5k probe on R100 (pre-registered 2026-10-18 for Lead-approved B1).
 PILOT_CANDIDATES = ('act18-tune', 'act18-doneb1', 'act18-std', 'act18-b3', 'act18-loop')
 PILOT_KINDS = ('init_aligned_finetune_v1', 'done_positive_balanced_finetune_v1',
-               'standard_aligned_scratch_v1', 'done_horizon_current_only_v1')
+               'standard_aligned_scratch_v1', 'done_horizon_current_only_v1',
+               'transition_weighted_finetune_v1')
 # Segment table frozen before the probe run (Lead 2026-10-18 instruction):
 # the post-close phases are where the student halts, pre-close phases are the
 # immediately preceding approach/alignment tail. Phase labels are the recorded
