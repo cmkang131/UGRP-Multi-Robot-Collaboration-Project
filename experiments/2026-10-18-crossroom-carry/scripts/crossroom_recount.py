@@ -326,9 +326,11 @@ def main() -> int:
             first30_source = None
     else:
         first30_source = 'progress.json t=30'
+    stage_label = ('B_loaded' if carry_stage
+                   else 'A_unloaded_fix' if fix_stage else 'A_unloaded')
     out = dict(
         schema='ugrp.crossroom_carry.recount.v1',
-        stage='A_unloaded',
+        stage=stage_label,
         run=str(run),
         summary_status=summary.get('status'),
         source_sha=summary.get('source_sha'),

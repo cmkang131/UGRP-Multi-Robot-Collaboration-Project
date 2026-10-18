@@ -141,6 +141,18 @@ e00 obstacle 검출 0틱(Stage A 859틱), wall point zero 비율 3.3%(Stage A 1.
    뒤에 실행한다. funnel은 Stage B와 동일하게 유지하고 `cargo_held` ·
    `blocked_by_cargo` · obstacle 검출 카운트를 추가 지표로 보고한다.
 
+**반사실 검증 설계 (⑤ 전용, 별도 조건):** held-box mask의 효과는 상관·프레임·
+코드조건만으로 주장하지 않는다. loaded 전용 후보 `crossroom-stageB-fix`를
+**2-arm**으로 사전등록한다: arm M0 = Stage B baseline과 동일(마스크 off, 같은
+starts·cap·monitor), arm M1 = 마스킹/상단 ROI/화물 자세 항목만 on. 두 arm은
+같은 16 starts·180 Sim초·nworld16으로 실행하고 **결과를 합산하지 않는다**.
+비교 지표: obstacle 검출 틱, wall-zero 비율, 허위 gap claim 수, GT door
+crossing, arrived_declared, cargo_held 유지, `blocked_by_cargo` 비율. arm M0은
+Stage B baseline의 재현이므로 baseline과 조건 차이가 없을 때만 비교 기준으로
+쓴다. 이 반사실은 **무적재 fix gate에서는 box가 없어 측정할 수 없다** —
+무적재 fix는 Stage A의 gap/정렬/오탐 수정만 측정하고, held-box mask는
+`crossroom-stageB-fix` 카드에서 별도로 검증한다.
+
 이 항목은 적재 전용 게이트(별도 조건)로 측정하고 무적재 fix와 합산하지 않는다.
 
 ## 사전등록(초안) — crossroom-stageA-fix

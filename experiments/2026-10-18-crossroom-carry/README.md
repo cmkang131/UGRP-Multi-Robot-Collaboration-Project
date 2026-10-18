@@ -359,7 +359,8 @@ arrived_declared 0 -> cargo_at_arrival 0 -> gt_cargo_in_zone 0`.
 Key facts:
 
 * **The box is physically carried for the whole episode.** The own-evidence
-  monitor reports `held` for all 1801 ticks in 16/16 episodes
+  monitor reports `held` for all 1801 ticks in 16/16 episodes (28,816 /
+  28,816 ticks)
   (own RGB + closed-gripper command history), the box final pose stays at the
   gripper site (base->box distance ~0.14 m), and no episode lost the box. The
   setup-only loaded start (closed jaws, 1 Sim s CPU settle, no weld) held
@@ -368,20 +369,34 @@ Key facts:
   (Stage A: 9 false claims and 1 GT crossing). Every episode followed the
   wall north, entered `gap_cross` at 34.5-83.2 s in the pickup room, turned
   into `east_search`, and stayed west of the divider until the cap.
-* **Loaded-condition cause (measured, not assumed):** the carried red box
-  renders as a full-width near-field band at the bottom of the own-RGB frame
-  (visible in every checked montage), which occludes the floor region the
-  obstacle detector uses. In this run `obstacle_avoid` events are **0**
-  (Stage A: 4,736) and obstacle detections are **0 ticks** on e00 (Stage A:
-  859 ticks), while the wall-point zero share rises from 1.7% to 3.3%. With
-  obstacle avoidance gone and the wall foot less reliable, the wall follow
-  reaches a false gap in every episode. The fix design adds a held-box mask
-  exclusion for the floor/obstacle perception as item 5.
+* **Loaded-condition cause (correlation + frames + code conditions; no
+  counterfactual run):** the carried red box renders as a full-width
+  near-field band at the bottom of the own-RGB frame (visible in every checked
+  montage). In this run `obstacle_avoid` events are **0** (Stage A: 4,736);
+  obstacle detections total **657 ticks** across the 16 episodes vs 15,183 in
+  Stage A, and **0 ticks on e00 specifically** (Stage A e00: 859). The
+  wall-point zero share is **3.75% across the 16 episodes** (e00 3.3%;
+  Stage A e00 1.7%) versus **2.37% for Stage A overall**. This is a
+  correlation with the occluding box, the montages and the code conditions -
+  **not a counterfactual result**. At the e00 gap claim (t=51.6 s) the raw
+  trace shows `walls=418` and `obstacles=[]`, so the wall-zero state was not
+  itself the trigger at that instant; the `_follow` 3-tick `side_pt is None`
+  path is in the code, but the trace does not store side-point counts, so the
+  exact trigger cannot be reconstructed from the raw. A held-box-mask on/off
+  counterfactual is planned as a separate loaded condition (fix design item 5)
+  and was not run here.
 * No post-cross colour, found, declaration or cargo-in-zone is possible
   without a crossing; the loaded run says nothing about destination search
   beyond confirming the carry-over gap/alignment failure.
-* Input audit (actual controller-boundary counters) 16/16; start admission
-  16/16; `collision_events` `not_measured` (raw has no contact events).
+* Input audit (actual controller-boundary counters) 16/16. `start_valid`
+  16/16 is the **pre-load authored start** admission; a reference
+  loaded-state overlap check was rejected (8 contacts, min gap -1.1646 mm)
+  because the closed jaws touch the box by design, which the prereg records
+  as the expected semantics. `collision_events` `not_measured` (raw has no
+  contact events). Independent verifier: headline counts matched; this
+  section carries the corrected stage label (`B_loaded`), the e00-specific
+  wall-zero/obstacle framing, the causal wording above and the admission
+  semantics.
 * Montages: representative set e00,e02,e04,e06,e08,e10,e13,e15 (9 self-camera
   frames each, ticks 0..1800) was opened; all show the red box band at the
   bottom and pickup-room wandering. Full 16-montage set with hashes in
