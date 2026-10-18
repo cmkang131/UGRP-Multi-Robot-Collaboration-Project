@@ -62,10 +62,23 @@ python -m pytest tests/test_e2e_warp_release.py -q      # Mac, 11 passed
 
 ## 6. 산출물 SHA (이 커밋 기준)
 
-- `harness/e2e_warp_release.py` sha256: `b81c89579eaf7666…` (전체 값은 manifest-entry.json)
-- `tests/test_e2e_warp_release.py` sha256: `d0c1f96d2d9a19ef…`
+- `harness/e2e_warp_release.py` sha256: `f183ee102c60…` (전체 값은 manifest-entry.json)
+- `tests/test_e2e_warp_release.py` sha256: `1d375e6ae54f…`
 - R4 원본: source `718777118be41991156b047faff78621969101bb`, run result sha `c61ecce4cc9ae68cc5c859d4a2d6c6f16b7fe51306bd80b527250af26fddbad0` (변경 없음)
 
 ## 7. 남은 것
 
 warp8f 관측 바이트(전역 CSM) + mapbuild8 정적지도 보정 API가 준비되어 어댑터에 주입되고, **새 물리 release 관문**을 gcp6에서 다시 잰 뒤에만 `release_relocalization.ready=true`를 주장할 수 있다. 본 단계는 Mac 단위 테스트·경계 감사·manifest 연결 형식까지다.
+
+## 8. Contract v1 memory_registered mode (gate 2, default off)
+
+`release_relocalization_memory_v1` 옵션을 추가했다(기본 off). `static`은 사용하지 않고,
+`start(instruction, own_report)`에서 navigator 보고의 `memory_registration`을 검증해
+`navigator_owner=selfnav_memory_v1`·`memory_sha256`·`evidence_revision`·destination kind를
+바인딩한다. owner(`warp8f`)는 그 hash/revision을 그대로 echo하고 `memory_registered=true`와
+같은 kind의 memory landmark를 내야 한다. `static_map_registered`/`static_map_sha256`/
+`map_pose`가 오면 혼합 증거로 거부한다. selfnav가 없거나 `ready`/`destination_registered`가
+아니면 바인딩 자체를 만들지 않고 pan·view 수집·주장 없이 `relocalized=false`로 닫힌다.
+이 모드의 `pose_estimate`는 항상 self-centric (0,0)이며 `map_pose`는 null이다.
+단위 테스트는 gate 2 self-centric 테스트(`tests/test_e2ewarp_selfcentric.py`)에 포함되어
+있고, 물리 release 관문은 아직 실행하지 않았다.

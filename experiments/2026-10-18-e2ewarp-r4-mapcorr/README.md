@@ -110,7 +110,7 @@ python -m pytest tests/test_e2ewarp_mapcorr.py -q      # Mac, 24 passed
 
 ## 6. 산출물 SHA (이 커밋 기준)
 
-- `harness/e2ewarp_mapcorr.py` sha256: `1879d289b193…` (전체 값은 manifest-entry.json)
+- `harness/e2ewarp_mapcorr.py` sha256: `76960c6de1ef…` (전체 값은 manifest-entry.json)
 - `tests/test_e2ewarp_mapcorr.py` sha256: manifest-entry.json의 `tests.sha256`
 - owner 자산 7개: `owner-assets.json`의 파일별 sha256, origin `95769da0e123…`
 - R4 원본: run result sha `c61ecce4cc9ae68cc5c859d4a2d6c6f16b7fe51306bd80b527250af26fddbad0`,
@@ -125,3 +125,17 @@ python -m pytest tests/test_e2ewarp_mapcorr.py -q      # Mac, 24 passed
    합산하지 않는다.
 3. ACT artifact·release 어댑터 readiness와 함께 components manifest에 연결.
 4. 실제 실행에서 정적 지도 등록 수용/거부 원장(모호·관측부족 상태 포함) 기록.
+
+## 8. Contract v1 self-centric binding (gate 2, default off)
+
+`memory_registered_v1` 토글을 추가했다(기본 off, `selfmap_map_correction_v1`과 상호배타).
+이 모드에서 `navigation_factory`는 `static_map`을 요구하지 않고 order-sheet 메타데이터만
+받으며, `OwnStaticMapCorrection`은 생성하지 않는다. 등록·pose 추정은 주입된
+`harness.e2ewarp_selfnav` navigator의 `memory_registration`
+(`ugrp.e2ewarp.selfnav.v1`, owner `selfnav_memory_v1`, robot (0,0) 상대 landmark,
+`memory_sha256`+`evidence_revision`)에서만 온다. selfnav가 없거나 `ready`가 아니면
+`memory_registered=false`/`map_correction_active=false`로 닫히고 command는 hold다.
+`accept_release_fix`는 memory 증거(owner/hash/revision/destination landmark)만 수용하며
+`static_map_registered=true`는 혼합 증거로 거부한다. 새 단위 테스트 15개는
+`tests/test_e2ewarp_selfcentric.py`(비물리, mujoco 미사용)에 있고 manifest
+`tests.selfcentric`에 sha256이 고정되어 있다. 물리 관문은 아직 실행하지 않았다.

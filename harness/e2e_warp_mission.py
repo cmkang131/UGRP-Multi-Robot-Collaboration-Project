@@ -60,7 +60,11 @@ class IntegratedController:
       is enabled, not that every frame is accepted as a position fix.
     release: start(instruction,own_report), observe(OwnFrame), command(sim_s).
       A report must say relocalized=true AND static_map_registered=true before
-      navigation.accept_release_fix can permit the next task.
+      navigation.accept_release_fix can permit the next task. When the
+      navigation report declares registration_mode='memory_registered'
+      (contract v1, default off), the release report must instead say
+      relocalized=true AND memory_registered=true and must not claim
+      static_map_registered; the static-map branch is unchanged otherwise.
     """
     DECISIONS = ('TASK', 'GRASP_AUTH', 'CARRY_AUTH', 'RELEASE_AUTH', 'UNCERTAIN')
 
@@ -110,10 +114,18 @@ class IntegratedController:
                 self.set_phase('RELEASE_AUTH', 'owner own-map destination arrival')
         elif self.phase == 'RELOCALIZE':
             released = self.release.observe(frame)
-            if (released.get('relocalized') is True and released.get('static_map_registered') is True
+            mode = self.report.get('registration_mode', 'static_map')
+            if mode == 'memory_registered':
+                registered = (released.get('memory_registered') is True
+                              and released.get('static_map_registered') is not True)
+                accepted_reason = 'actual own-RGB lookaround and self-centric memory registration accepted'
+            else:
+                registered = released.get('static_map_registered') is True
+                accepted_reason = 'actual own-RGB lookaround and owner map correction accepted'
+            if (released.get('relocalized') is True and registered
                     and self.navigation.accept_release_fix(released) is True):
                 self.completed.append(self.instruction.copy())
-                self.set_phase('TASK', 'actual own-RGB lookaround and owner map correction accepted')
+                self.set_phase('TASK', accepted_reason)
             self.report = {**self.report, 'release_relocalization': released}
         return dict(phase=self.phase, own_navigation=self.report, estimated_completed=len(self.completed),
                     complete_claim=self.complete, physical_success_available=False)

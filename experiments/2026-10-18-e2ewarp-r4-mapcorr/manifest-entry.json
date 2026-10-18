@@ -5,7 +5,7 @@
  "adapter": {
   "navigation_factory": {
    "entry": "harness.e2ewarp_mapcorr:navigation_factory",
-   "sha256": "1879d289b193f27a138d585e194ba784d6f6088795fecc58c148356b9d0043eb",
+   "sha256": "76960c6de1eff65d7a9ea8de3782a9c362ed101e37b9073b84da9794f255c609",
    "default": "off",
    "options": [
     "e2e_warp_navigation_v1",
@@ -14,7 +14,7 @@
   },
   "loaded_camera_fk": {
    "entry": "harness.e2ewarp_mapcorr:loaded_camera_fk",
-   "sha256": "1879d289b193f27a138d585e194ba784d6f6088795fecc58c148356b9d0043eb",
+   "sha256": "76960c6de1eff65d7a9ea8de3782a9c362ed101e37b9073b84da9794f255c609",
    "default": "off",
    "options": [
     "off",
@@ -23,11 +23,20 @@
   },
   "selfmap_map_correction": {
    "entry": "harness.e2ewarp_mapcorr:selfmap_map_correction",
-   "sha256": "1879d289b193f27a138d585e194ba784d6f6088795fecc58c148356b9d0043eb",
+   "sha256": "76960c6de1eff65d7a9ea8de3782a9c362ed101e37b9073b84da9794f255c609",
    "default": "off",
    "options": [
     "off",
     "selfmap_map_correction_v1"
+   ]
+  },
+  "memory_registered": {
+   "entry": "harness.e2ewarp_mapcorr:memory_registered",
+   "sha256": "76960c6de1eff65d7a9ea8de3782a9c362ed101e37b9073b84da9794f255c609",
+   "default": "off",
+   "options": [
+    "off",
+    "memory_registered_v1"
    ]
   }
  },
@@ -52,6 +61,19 @@
    "own_and_static_map": true,
    "spawn_anchor_used": false,
    "entry": "harness.e2ewarp_mapcorr:selfmap_map_correction"
+  },
+  "memory_registration": {
+   "ready": false,
+   "owner": "selfnav",
+   "evidence": "self-centric own-memory registration contract (memory_registered_v1) + Mac unit tests; no physical gate yet",
+   "option": "memory_registered_v1",
+   "default": "off",
+   "mode": "self_centric_memory",
+   "own_and_static_map": false,
+   "static_map_input": false,
+   "spawn_anchor_used": false,
+   "memory_owner": "selfnav_memory_v1",
+   "entry": "harness.e2ewarp_mapcorr:memory_registered"
   }
  },
  "contract": {
@@ -69,16 +91,18 @@
   },
   "parts": {
    "loaded_camera_fk": "resolve(own issued PWM) -> command_only carry FK evidence",
-   "selfmap_map_correction": "step(t, frame_id, flow, scan, issued, perception_available) -> causal pose/correction ledger"
+   "selfmap_map_correction": "step(t, frame_id, flow, scan, issued, perception_available) -> causal pose/correction ledger",
+   "memory_registered": "navigation_factory with memory_registered_v1: owner selfnav memory_registration (ready/registered/destination_registered, memory_sha256, revision, self-centric pose) replaces static-map registration; order-sheet static only"
   },
-  "claim_rule": "map_correction_active=true only when the toggle is on AND the own-RGB perception path is available; a frame without own-RGB perception never updates the pose (odometry-only blocked); spawn/GT anchors are rejected; ready stays false until a new physical gate"
+  "claim_rule": "map_correction_active=true only when the toggle is on AND the own-RGB perception path is available; a frame without own-RGB perception never updates the pose (odometry-only blocked); spawn/GT anchors are rejected; ready stays false until a new physical gate; in memory_registered mode map_correction_active means the self-centric memory correction is active, static_map_registered stays false and memory_registered=true only with a ready+registered selfnav navigator"
  },
  "boundary_audit": {
   "allowed_inputs": [
    "own JPEG bytes (OwnFrame.jpeg)",
    "own issued commands (OwnFrame.issued)",
    "authored static map/orders (static factory argument)",
-   "own servo commanded PWM via the mapbuild owner FK/colour constants"
+   "own servo commanded PWM via the mapbuild owner FK/colour constants",
+   "selfnav memory_registration block from the injected navigator (own memory only; no map)"
   ],
   "forbidden_inputs": [
    "world/model/data objects",
@@ -88,16 +112,18 @@
    "spawn anchor",
    "odometry-only pose update",
    "cross-robot frames",
-   "non-causal frames"
+   "non-causal frames",
+   "static map geometry/hash in memory_registered mode; global map pose"
   ],
-  "import_scan": "no sim.*, no mujoco/warp/torch, no scripts.e2e_warp_physics; imports limited to hashlib/json/math/numpy/cv2/harness owner modules (tests enforce)",
+  "import_scan": "no sim.*, no mujoco/warp/torch, no scripts.e2e_warp_physics; imports limited to hashlib/json/math/numpy/cv2/harness owner modules incl. harness.e2ewarp_selfnav (tests enforce)",
   "owner_evidence_validation": [
    "own-RGB perception required for any accepted correction",
    "static map/orders sha256 bound",
    "spawn_anchor_used=false",
    "truth_inputs=0",
    "held_world_reads=0",
-   "odometry_only=false"
+   "odometry_only=false",
+   "memory_registered: owner selfnav_memory_v1, 64-hex memory_sha256 bound at release start, non-future navigator revision, live destination landmark, static_map_registered must not be true"
   ]
  },
  "owner_assets": {
@@ -111,7 +137,15 @@
   "cases": 24,
   "command": "python -m pytest tests/test_e2ewarp_mapcorr.py -q",
   "result": "pass",
-  "scope": "Mac non-physical unit tests only; no GPU/physics run"
+  "scope": "Mac non-physical unit tests only; no GPU/physics run",
+  "selfcentric": {
+   "path": "tests/test_e2ewarp_selfcentric.py",
+   "sha256": "bacd7746ade452478d6953dd16296bea6d7fd0bc2252f2777fa1ee67dc4f9233",
+   "cases": 15,
+   "command": "python -m pytest tests/test_e2ewarp_selfcentric.py -q",
+   "result": "pass",
+   "scope": "non-physical unit tests; no GPU/physics/mujoco"
+  }
  },
  "integration": {
   "target_run": "/home/ugrp/ugrp-sim/runs/e2ewarp-r4-run",
@@ -128,7 +162,9 @@
   "owner navigation adapter (mapbuild8) for route/motion commands; this factory holds wheels until injected",
   "new gcp6 physical gate with selfmap_map_correction=on + loaded_camera_fk_v1 on",
   "release_relocalization + selected ACT artifact readiness",
-  "registration acceptance/error ledger from a real GPU run"
+  "registration acceptance/error ledger from a real GPU run",
+  "gate-2 physical run (loaded FK + release + evaluator) under MJWarp; not run here",
+  "release memory_registered owner bytes: warp8f evidence is still a callable stub; offline CSM 0/28 accepted unchanged"
  ],
  "no_pooling": true,
  "no_prior_result_inheritance": "R4 self-map 48-keyframe success is context only; mapbuild11/mapbuild12 prior gates are NOT inherited"

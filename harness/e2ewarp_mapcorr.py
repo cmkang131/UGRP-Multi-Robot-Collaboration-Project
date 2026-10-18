@@ -26,6 +26,18 @@ The two missing e2ewarp parts this module supplies are:
   scan).  No GT/spawn anchor is accepted, and a frame without own-RGB
   perception never updates the pose (odometry-only is blocked).
 
+Contract v1 adds one more, explicit default-off binding:
+
+* ``memory_registered_v1`` — the loaded-FK navigation composition takes its
+  registration and pose estimate from the navigator's self-centric memory
+  (``harness.e2ewarp_selfnav``: owner ``selfnav_memory_v1``, robot at (0,0),
+  relative landmarks) instead of a static map.  In this mode ``static`` may
+  carry only order-sheet metadata; map geometry is refused, the correction
+  object is never constructed, and no static-map hash or global pose is
+  reported.  The binding fails closed while the injected selfnav navigator is
+  missing or not ``ready``.  It is mutually exclusive with
+  ``selfmap_map_correction_v1``; both default off.
+
 Allowed inputs are exactly the e2ewarp control boundary: one own JPEG, own
 issued commands, the authored static map/orders and the per-condition channel
 messages the composition layer receives.  No world/model/data/evaluator object,
@@ -50,15 +62,27 @@ SCHEMA = 'ugrp.e2ewarp.mapcorr.v1'
 OPTION_NAV = 'e2e_warp_navigation_v1'
 OPTION_LOADED_FK = 'loaded_camera_fk_v1'
 OPTION_CORRECTION = 'selfmap_map_correction_v1'
-TOGGLE_KEYS = (OPTION_NAV, OPTION_LOADED_FK, OPTION_CORRECTION)
+OPTION_MEMORY = 'memory_registered_v1'
+TOGGLE_KEYS = (OPTION_NAV, OPTION_LOADED_FK, OPTION_CORRECTION, OPTION_MEMORY)
 OPTION_ZONE = 'own_rgb_zone_visdet_v1'
 ACCEPTED_TOGGLES = TOGGLE_KEYS + (OPTION_ZONE,)
 ENTRY_NAV = 'harness.e2ewarp_mapcorr:navigation_factory'
 ENTRY_LOADED = 'harness.e2ewarp_mapcorr:loaded_camera_fk'
 ENTRY_CORRECTION = 'harness.e2ewarp_mapcorr:selfmap_map_correction'
+ENTRY_MEMORY = 'harness.e2ewarp_mapcorr:memory_registered'
 ROBOTS = ('r1', 'r2', 'r3')
 PHASES = ('approach', 'carry')
 SKILLS = ('grasp', 'regrasp', 'release')
+SELFCENTRIC_OWNER = 'selfnav_memory_v1'
+MEMORY_SCHEMA = 'ugrp.e2ewarp.selfnav.v1'
+#: Keys the composition adapter owns; an injected owner report may not override them.
+_ADAPTER_KEYS = ('schema', 'robot_id', 'option', 'registration_mode',
+                 'map_correction_active', 'odometry_only', 'own_rgb_measurement',
+                 'static_map_registered', 'reason', 'category', 'blocked_object',
+                 'minimum_gap_m', 'gap_status', 'static_map_sha256', 'loaded_fk',
+                 'flow', 'scan_status', 'self_map', 'correction', 'own_rgb_zone',
+                 'truth_inputs', 'spawn_anchor_used', 'held_world_reads',
+                 'input_audit', 'dependency_wait')
 
 # Byte-pinned owner asset origin (mapbuild owner branch tip).  The full
 # per-file sha256 table lives in the experiment owner-assets.json.
@@ -104,6 +128,17 @@ def _static_map(static):
     if not isinstance(obstacles, list) or not obstacles:
         raise ValueError('static map requires authored obstacles')
     return authored
+
+
+def _hex64(value):
+    return isinstance(value, str) and len(value) == 64 and all(c in '0123456789abcdef' for c in value)
+
+
+def _memory_registration(report):
+    """Validate the navigator's self-centric registration block; never a pose claim."""
+    registration = report.get('memory_registration') if isinstance(report, dict) else None
+    from harness.e2ewarp_selfnav import validate_memory_registration
+    return validate_memory_registration(registration)
 
 
 def resolve_toggles(static, toggles=None):
@@ -421,15 +456,32 @@ class E2EWarpNavigation:
     object when provided; without it the adapter only holds the wheels and
     reports dependency wait (no motion or arrival claim is invented).  The
     e2ewarp navigation component itself is still mapbuild8-owned.
+
+    With ``memory_registered_v1`` on, no static map/correction object exists:
+    registration and pose come from the injected selfnav navigator's
+    ``memory_registration`` block, ``static`` is order-sheet metadata only, and
+    every report is gated on the navigator being ready and having a registered
+    own-memory destination.  The mode is default off and fails closed.
     """
 
-    def __init__(self, robot_id, static, *, toggles=None, owner_navigation=None,
+    def __init__(self, robot_id, static=None, *, toggles=None, owner_navigation=None,
                  camera_model=None):
         if robot_id not in ROBOTS:
             raise ValueError('unknown robot_id')
         self.robot_id, self.static = robot_id, static
-        self.static_sha256 = _static_sha(static)
         self.toggles = resolve_toggles(static, toggles)
+        self.memory_mode = self.toggles[OPTION_MEMORY]
+        if self.memory_mode:
+            if self.toggles[OPTION_CORRECTION]:
+                raise ValueError('MEMORY_REGISTERED_AND_MAP_CORRECTION_ARE_EXCLUSIVE')
+            # Contract v1: only order-sheet metadata may reach this mode; the
+            # selfnav validator rejects any map-geometry key.
+            from harness.e2ewarp_selfnav import order_sheet
+            self.order_sheet = order_sheet(static)
+            self.static_sha256 = None
+        else:
+            self.order_sheet = None
+            self.static_sha256 = _static_sha(static)
         self.owner = owner_navigation
         if owner_navigation is not None:
             for name in ('observe', 'task_candidates', 'start', 'command',
@@ -439,9 +491,12 @@ class E2EWarpNavigation:
         self.loaded_fk = LoadedCameraFK(
             option=OPTION_LOADED_FK if self.toggles[OPTION_LOADED_FK] else 'off',
             camera_model=camera_model)
-        self.correction = OwnStaticMapCorrection(
-            static, option=OPTION_CORRECTION if self.toggles[OPTION_CORRECTION] else 'off',
-            loaded_fk=self.loaded_fk)
+        if self.memory_mode:
+            self.correction = None
+        else:
+            self.correction = OwnStaticMapCorrection(
+                static, option=OPTION_CORRECTION if self.toggles[OPTION_CORRECTION] else 'off',
+                loaded_fk=self.loaded_fk)
         self.enabled = self.toggles[OPTION_NAV]
         self.instruction = None
         self.phase = None
@@ -458,6 +513,9 @@ class E2EWarpNavigation:
         self.zone_reporter = None
         self.zone = None
         self.last_zone = None
+        self.memory_registration = None
+        self.memory_owner_report = None
+        self.memory_active = False
 
     # -- own-RGB perception --------------------------------------------------
     def _decode(self, frame):
@@ -569,6 +627,8 @@ class E2EWarpNavigation:
         pwm = {str(k): int(v) for k, v in frame.issued[-1]['pwm'].items()}
         servo = _servo(pwm)
         fk = self.loaded_fk.resolve(pwm)
+        if self.memory_mode:
+            return self._observe_memory(frame, fk)
         flow, scan, scan_status = self._perception(frame, rgb, servo, fk)
         zone = self._zone(rgb, fk)
         self.last_zone = zone
@@ -584,21 +644,48 @@ class E2EWarpNavigation:
             if owner_report.get('map_correction_active') is False:
                 raise ValueError('owner cannot disable the enabled map correction')
             merged = dict(owner_report)
-            adapter_keys = ('schema', 'robot_id', 'option', 'map_correction_active',
-                            'odometry_only', 'own_rgb_measurement', 'static_map_registered',
-                            'reason', 'category', 'blocked_object', 'minimum_gap_m',
-                            'gap_status', 'static_map_sha256', 'loaded_fk', 'flow',
-                            'scan_status', 'self_map', 'correction', 'own_rgb_zone',
-                            'truth_inputs', 'spawn_anchor_used', 'held_world_reads',
-                            'input_audit', 'dependency_wait')
-            for key in adapter_keys:
+            for key in _ADAPTER_KEYS:
                 merged[key] = report[key]
             report = merged
         self.last_report = report
         return report
 
+    def _observe_memory(self, frame, fk):
+        """Self-centric binding: navigator memory replaces static map registration."""
+        owner_report, registration, reason = None, None, None
+        self.memory_owner_report = None
+        if self.owner is None:
+            reason = 'selfnav_navigator_missing'
+        else:
+            owner_report = self.owner.observe(frame)
+            if not isinstance(owner_report, dict):
+                raise ValueError('owner navigation report must be a mapping')
+            self.memory_owner_report = owner_report
+            try:
+                registration = _memory_registration(owner_report)
+            except ValueError as exc:
+                reason = 'selfnav_memory_contract_invalid:' + str(exc)
+            else:
+                if registration['ready'] is not True:
+                    reason = 'selfnav_not_ready'
+                elif registration['registered'] is not True:
+                    reason = 'selfnav_memory_unregistered'
+        if reason is None and not fk.get('qualified'):
+            reason = 'own_rgb_perception_unavailable:' + str(fk.get('reason'))
+        self.memory_registration = registration
+        self.memory_active = bool(reason is None and registration is not None)
+        report = self._report(off_reason=reason, fk=fk, owner_report=owner_report,
+                              memory_registration=registration)
+        self.last_report = report
+        return report
+
     def _report(self, *, off_reason=None, flow=None, scan=None, scan_status=None,
-                fk=None, zone=None, correction_row=None):
+                fk=None, zone=None, correction_row=None, owner_report=None,
+                memory_registration=None):
+        if self.memory_mode:
+            return self._memory_report(off_reason=off_reason, fk=fk,
+                                       owner_report=owner_report,
+                                       registration=memory_registration)
         correction = self.correction.report()
         if correction_row is not None:
             correction['last'] = correction_row
@@ -621,6 +708,7 @@ class E2EWarpNavigation:
             reason = correction.get('last', {}).get('reason', 'observed') if correction.get('last') else 'bootstrap'
         return dict(
             schema=SCHEMA, robot_id=self.robot_id, option=self.toggles,
+            registration_mode='static_map',
             map_correction_active=active,
             odometry_only=False, own_rgb_measurement=True,
             static_map_registered=correction.get('static_map_registered', False),
@@ -642,9 +730,82 @@ class E2EWarpNavigation:
                              truth_inputs=0, spawn_anchor_used=False,
                              odometry_only=False,
                              static_map_correction=bool(self.toggles[OPTION_CORRECTION]),
+                             self_centric_memory=False,
                              static_map_route=False),
             dependency_wait=[name for name, ready in dict(
                 navigation_owner=self.owner is not None,
+                selected_ACT=False, release_relocalization=False).items() if not ready])
+
+    def _memory_report(self, *, off_reason=None, fk=None, owner_report=None,
+                       registration=None):
+        """Report self-centric memory registration; static-map fields stay empty."""
+        fk = fk or dict(qualified=False, reason='navigation_off', carry_command=False,
+                        camera_pose='off', truth_inputs=0, held_world_reads=0)
+        registration = registration if isinstance(registration, dict) else None
+        owner_report = owner_report if isinstance(owner_report, dict) else {}
+        ready = bool(registration is not None and registration.get('ready') is True)
+        registered = bool(ready and registration.get('registered') is True)
+        perception = bool(fk.get('qualified'))
+        active = bool(self.enabled and registered and perception)
+        self.memory_active = active
+        self.memory_registration = registration
+        if not self.enabled:
+            reason = off_reason or 'e2e_warp_navigation_off'
+        elif off_reason:
+            reason = off_reason
+        elif not perception:
+            reason = 'own_rgb_perception_unavailable:' + str(fk.get('reason'))
+        elif registration is None:
+            reason = 'selfnav_navigator_missing'
+        elif not ready:
+            reason = 'selfnav_not_ready'
+        elif not registered:
+            reason = 'selfnav_memory_unregistered'
+        else:
+            reason = str(owner_report.get('drive_reason') or 'self_centric_memory_ready')
+        landmark = None if registration is None else registration.get('destination_landmark')
+        return dict(
+            schema=SCHEMA, robot_id=self.robot_id, option=self.toggles,
+            registration_mode='memory_registered',
+            navigator_owner=None if registration is None else registration.get('owner'),
+            memory_registered=active,
+            memory_active=active,
+            memory_registration=registration,
+            memory_sha256=None if registration is None else registration.get('memory_sha256'),
+            memory_evidence_revision=None if registration is None else registration.get('evidence_revision'),
+            destination_registered=bool(registration is not None
+                                        and registration.get('destination_registered') is True),
+            destination_landmark=landmark,
+            pose_estimate=dict(frame='self_centric', position_xy=[0.0, 0.0]),
+            map_correction_active=active,
+            odometry_only=False, own_rgb_measurement=True,
+            static_map_registered=False,
+            static_map_sha256=None,
+            own_gauge_pose=None,
+            handoff_ready=bool(active and owner_report.get('handoff_ready')),
+            destination_arrived=bool(active and owner_report.get('destination_arrived')),
+            holding_status=str(owner_report.get('holding_status') or 'unknown') if active else 'unknown',
+            evidence_revision=self.evidence_revision,
+            reason=reason, category='own_navigation',
+            blocked_object='not_observed', minimum_gap_m=None,
+            gap_status='not_measured',
+            loaded_fk=fk, flow=None, scan_status='self_centric_memory',
+            self_map=dict(frame='own_start', scan_status='self_centric_memory', segments=0),
+            correction=dict(option='off', enabled=False,
+                            reason='not_used_memory_registered',
+                            static_map_registered=False, truth_inputs=0,
+                            held_world_reads=0),
+            own_rgb_zone=dict(status='off', enabled=False, destination_arrived=False,
+                              zone_visible=False, evidence_revision=0,
+                              reason='self_centric_memory_mode'),
+            truth_inputs=0, spawn_anchor_used=False, held_world_reads=0,
+            input_audit=dict(top_camera_control=False, held_world_reads=0,
+                             truth_inputs=0, spawn_anchor_used=False,
+                             odometry_only=False, static_map_correction=False,
+                             self_centric_memory=True, static_map_route=False),
+            dependency_wait=[name for name, ready in dict(
+                navigation_owner=self.owner is not None,
+                selfnav_ready=ready, selfnav_memory_registered=registered,
                 selected_ACT=False, release_relocalization=False).items() if not ready])
 
     def task_candidates(self, completed):
@@ -672,8 +833,15 @@ class E2EWarpNavigation:
         from harness.grasp_act_contract import command
         if not math.isfinite(float(now)):
             raise ValueError('finite command time required')
+        if self.memory_mode and not self.memory_active:
+            # Fail closed: an unready/missing selfnav navigator gets no motion.
+            return self._hold(now)
         if self.owner is not None:
             return self.owner.command(now)
+        return self._hold(now)
+
+    def _hold(self, now):
+        from harness.grasp_act_contract import command
         from harness.active_camera import SEARCH
         pwm = {str(k): int(v) for k, v in SEARCH.items()}
         pwm['1'] = 2000   # hold the gripper open: no invented grasp/release
@@ -707,6 +875,8 @@ class E2EWarpNavigation:
     def accept_release_fix(self, report):
         if not isinstance(report, dict):
             return False
+        if self.memory_mode:
+            return self._accept_memory_release_fix(report)
         if not (self.toggles[OPTION_CORRECTION] and self.correction._registered()):
             self._event('release_fix_rejected', detail='map_correction_not_registered')
             return False
@@ -723,13 +893,51 @@ class E2EWarpNavigation:
         self._event('release_fix_accepted', detail='registered_correction_and_own_release_evidence')
         return True
 
+    def _accept_memory_release_fix(self, report):
+        """Accept a release fix bound to the navigator's live self-centric memory."""
+        def reject(detail):
+            self._event('release_fix_rejected', detail=detail)
+            return False
+
+        if not self.enabled:
+            return reject('memory_registration_disabled')
+        if report.get('static_map_registered') is True:
+            return reject('mixed_static_map_evidence')
+        if report.get('navigator_owner') != SELFCENTRIC_OWNER:
+            return reject('navigator_owner_mismatch')
+        if report.get('relocalized') is not True or report.get('memory_registered') is not True:
+            return reject('release_evidence_incomplete')
+        if not _hex64(report.get('memory_sha256')):
+            return reject('memory_snapshot_hash_invalid')
+        revision = report.get('navigator_evidence_revision')
+        if type(revision) is not int or revision < 0:
+            return reject('navigator_evidence_revision_invalid')
+        if report.get('truth_inputs', 0) != 0 or report.get('held_world_reads', 0) != 0:
+            return reject('release_reports_forbidden_inputs')
+        registration = self.memory_registration
+        if not isinstance(registration, dict) or registration.get('ready') is not True:
+            return reject('selfnav_not_ready')
+        if registration.get('destination_registered') is not True:
+            return reject('selfnav_destination_unregistered')
+        landmark = report.get('memory_landmark')
+        if (not isinstance(landmark, dict) or landmark.get('kind') != registration.get('destination_kind')):
+            return reject('destination_landmark_mismatch')
+        if revision > registration.get('evidence_revision', -1):
+            return reject('future_release_evidence')
+        if self.owner is not None and callable(getattr(self.owner, 'accept_release_fix', None)):
+            accepted = self.owner.accept_release_fix(report)
+            self._event('release_fix_owner_decision', accepted=bool(accepted))
+            return bool(accepted)
+        self._event('release_fix_accepted', detail='self_centric_memory_registration')
+        return True
+
     def _event(self, name, **extra):
         return self.events.add(dict(category='own_navigation', reason=name, robot_id=self.robot_id,
                                     blocked_object='not_observed', minimum_gap_m=None,
                                     gap_status='not_measured', truth_inputs=0, **extra))
 
 
-def navigation_factory(robot_id, static, *, toggles=None, owner_navigation=None,
+def navigation_factory(robot_id, static=None, *, toggles=None, owner_navigation=None,
                        camera_model=None):
     """Manifest entry point: module:navigation_factory, called with robot_id/static."""
     return E2EWarpNavigation(robot_id, static, toggles=toggles,
@@ -745,3 +953,18 @@ def loaded_camera_fk(*, option='off', camera_model=None):
 def selfmap_map_correction(static, *, option='off', loaded_fk=None):
     """Manifest entry point for the own/static map correction part."""
     return OwnStaticMapCorrection(static, option=option, loaded_fk=loaded_fk)
+
+
+def memory_registered(robot_id, static=None, *, owner_navigation=None, camera_model=None):
+    """Manifest entry point for the explicit self-centric loaded-FK composition.
+
+    Explicitly turns on both ``e2e_warp_navigation_v1`` and the default-off
+    ``memory_registered_v1``; the caller must still inject a ready selfnav
+    navigator or every report/command stays fail-closed.  ``loaded_camera_fk_v1``
+    is deliberately *not* enabled here: the carry-pose FK is its own capability
+    claim and must be opted in separately (static ``toggles`` or factory).
+    """
+    return E2EWarpNavigation(
+        robot_id, static,
+        toggles={OPTION_NAV: 'on', OPTION_MEMORY: 'on'},
+        owner_navigation=owner_navigation, camera_model=camera_model)

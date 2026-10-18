@@ -4,10 +4,11 @@
  "owner": "warp8f (observation source) / beamact5 (e2ewarp release ABI integration)",
  "adapter": {
   "entry": "harness.e2e_warp_release:release_factory",
-  "sha256": "b81c89579eaf7666c62834c4281fa062940c286692d88124805b3eb1dc05fd22",
+  "sha256": "f183ee102c60668eb131417e252ca307c72276c8bd371c16fd3998b89e8c03e6",
   "options": [
    "release_relocalization_off_v1",
-   "release_relocalization_selfmap_v1"
+   "release_relocalization_selfmap_v1",
+   "release_relocalization_memory_v1"
   ],
   "default": "off"
  },
@@ -15,11 +16,19 @@
   "factory": "factory(robot_id=..., static=...) -> adapter",
   "adapter": {
    "start": "start(instruction, own_report)",
-   "observe": "observe(OwnFrame) -> {relocalized, static_map_registered, ...}",
+   "observe": "observe(OwnFrame) -> {relocalized, static_map_registered | memory_registered, ...}",
    "command": "command(sim_s) -> issued-command whitelist"
   },
-  "claim_rule": "relocalized=true AND static_map_registered=true required before navigation.accept_release_fix; adapter never fabricates them",
-  "default_off_behavior": "observe returns relocalized/static_map_registered false with explicit reason; command only holds (zero wheels) with approved pan PWM"
+  "claim_rule": "static_map mode: relocalized=true AND static_map_registered=true; memory mode (release_relocalization_memory_v1, default off): relocalized=true AND memory_registered=true with the navigator snapshot hash/revision, and static_map_registered must not be true. The adapter never fabricates either claim.",
+  "default_off_behavior": "observe returns relocalized/static_map_registered false with explicit reason; command only holds (zero wheels) with approved pan PWM",
+  "memory_mode": {
+   "option": "release_relocalization_memory_v1",
+   "default": "off",
+   "binding": "start() binds the navigator report memory_registration owner selfnav_memory_v1, memory_sha256, evidence_revision and destination kind",
+   "fail_closed": "missing/not-ready/not-registered navigator -> no binding, no pan, no views, relocalized=false with the exact reason",
+   "owner_evidence": "owner=warp8f, memory_registered=true, echoed memory_sha256 and revision, destination landmark of the bound kind, no map_pose/static-map hash",
+   "no_global_pose": "pose_estimate is always self_centric (0,0); map_pose is null"
+  }
  },
  "boundary_audit": {
   "allowed_inputs": [
@@ -35,9 +44,10 @@
    "measured joints",
    "cross-robot frames",
    "non-causal frames",
-   "claimed owner evidence without static-map hash"
+   "claimed owner evidence without static-map hash",
+   "static-map hash/registration or global map pose in memory mode (mixed evidence)"
   ],
-  "import_scan": "no sim.*, no scripts.e2e_warp_physics, no mujoco/warp import, no file reads; imports limited to __future__/hashlib/json/math/harness.active_camera/harness.e2e_rgb_vo/harness.grasp_act_contract",
+  "import_scan": "no sim.*, no scripts.e2e_warp_physics, no mujoco/warp import, no file reads; imports limited to __future__/hashlib/json/math/harness.active_camera/harness.e2e_rgb_vo/harness.e2ewarp_selfnav/harness.grasp_act_contract",
   "owner_evidence_validation": [
    "owner == warp8f",
    "relocalized is True",
@@ -45,12 +55,13 @@
    "static_map_sha256 == sha256(authored static)",
    "truth_inputs == 0",
    "held_world_reads == 0",
-   "finite 3-axis map_pose"
+   "finite 3-axis map_pose",
+   "memory mode: owner == warp8f, memory_registered is True, memory_sha256 and navigator_evidence_revision echo the bound navigator snapshot, destination landmark kind matches, no map_pose/static_map_sha256, truth_inputs==0, held_world_reads==0"
   ]
  },
  "tests": {
   "path": "tests/test_e2e_warp_release.py",
-  "sha256": "d0c1f96d2d9a19efe93a4c14ba9bfd343e47db2083dcb3df3f058e622456daa8",
+  "sha256": "1d375e6ae54f805d8ba8776f9aecbd4db955dfd8e2f988e0680543496bdad87e",
   "cases": 11,
   "command": "python -m pytest tests/test_e2e_warp_release.py -q",
   "result": "pass",
@@ -68,6 +79,7 @@
  "pending": [
   "warp8f own-RGB observation bytes / global CSM acceptance (prior offline 0/28 accepted)",
   "mapbuild8 static-map registration/correction API",
-  "new physical release gate (A40/B40 or equivalent) under gcp6 + new r4-era source pin"
+  "new physical release gate (A40/B40 or equivalent) under gcp6 + new r4-era source pin",
+  "gate-2 physical release run (memory_registered) under MJWarp + evaluator PR #603"
  ]
 }

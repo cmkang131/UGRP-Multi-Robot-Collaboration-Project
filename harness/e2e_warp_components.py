@@ -11,6 +11,12 @@ from pathlib import Path
 
 REQUIRED = ('navigation', 'loaded_camera_fk', 'static_map_registration',
             'selfmap_map_correction', 'release_relocalization')
+#: Contract v1 self-centric admission: memory registration replaces the static
+#: map components. Only used when a manifest explicitly says
+#: ``registration_mode='memory_registered'``; absent means the static path.
+MEMORY_REQUIRED = ('navigation', 'loaded_camera_fk', 'memory_registration',
+                   'release_relocalization')
+REGISTRATION_MODES = ('static_map', 'memory_registered')
 #: Nav-only mode admits the navigation adapter alone (opt-in; see
 #: harness.e2ewarp_nav_mode). The full REQUIRED tuple above is unchanged.
 NAV_REQUIRED = ('navigation',)
@@ -24,20 +30,14 @@ def _hash_bound(root, record, name):
         raise ValueError('DEPENDENCY_WAIT:hash-bound ' + name)
 
 
-def require_components(path, root):
-    if path is None:
-        raise ValueError('DEPENDENCY_WAIT:component manifest missing')
-    manifest = json.loads(Path(path).read_text())
-    for name in REQUIRED:
+def _require_ready(manifest, names):
+    for name in names:
         record = manifest.get(name, {})
         if record.get('ready') is not True or not record.get('owner') or not record.get('evidence'):
             raise ValueError('DEPENDENCY_WAIT:' + name)
-    correction = manifest['selfmap_map_correction']
-    if (correction.get('mode') != 'on' or correction.get('own_and_static_map') is not True
-            or correction.get('spawn_anchor_used') is not False):
-        raise ValueError('DEPENDENCY_WAIT:own/static map correction without spawn anchor required')
-    for name in ('navigation_factory', 'release_factory', 'evaluator_factory'):
-        _hash_bound(root, manifest.get(name, {}), name)
+
+
+def _require_actor(manifest):
     actor = manifest.get('ACT', {})
     if actor.get('ready') is not True or actor.get('native_contact') != 'warp_native_contact_v1':
         raise ValueError('DEPENDENCY_WAIT:selected native ACT artifact')
@@ -59,6 +59,47 @@ def require_components(path, root):
         raise ValueError('actual checkpoint provenance must bind native contact; no legacy substitution')
     if not actor.get('selection_evidence'):
         raise ValueError('ACT validation selection evidence required')
+
+
+def _require_memory_components(manifest, root):
+    """Admit a self-centric manifest: no static map, memory registration instead."""
+    _require_ready(manifest, MEMORY_REQUIRED)
+    registration = manifest['memory_registration']
+    if (registration.get('mode') != 'self_centric_memory'
+            or registration.get('static_map_input') is not False
+            or registration.get('spawn_anchor_used') is not False
+            or registration.get('owner') != 'selfnav_memory_v1'):
+        raise ValueError('DEPENDENCY_WAIT:self-centric memory registration contract')
+    for name in ('static_map_registration', 'selfmap_map_correction'):
+        record = manifest.get(name)
+        if isinstance(record, dict) and record.get('ready') is True:
+            raise ValueError('DEPENDENCY_WAIT:mixed static-map and self-centric registration')
+    for name in ('navigation_factory', 'release_factory', 'evaluator_factory'):
+        _hash_bound(root, manifest.get(name, {}), name)
+    _require_actor(manifest)
+    return manifest
+
+
+def require_components(path, root):
+    if path is None:
+        raise ValueError('DEPENDENCY_WAIT:component manifest missing')
+    manifest = json.loads(Path(path).read_text())
+    mode = manifest.get('registration_mode', 'static_map')
+    if mode not in REGISTRATION_MODES:
+        raise ValueError('DEPENDENCY_WAIT:unknown registration_mode')
+    if mode == 'memory_registered':
+        return _require_memory_components(manifest, root)
+    for name in REQUIRED:
+        record = manifest.get(name, {})
+        if record.get('ready') is not True or not record.get('owner') or not record.get('evidence'):
+            raise ValueError('DEPENDENCY_WAIT:' + name)
+    correction = manifest['selfmap_map_correction']
+    if (correction.get('mode') != 'on' or correction.get('own_and_static_map') is not True
+            or correction.get('spawn_anchor_used') is not False):
+        raise ValueError('DEPENDENCY_WAIT:own/static map correction without spawn anchor required')
+    for name in ('navigation_factory', 'release_factory', 'evaluator_factory'):
+        _hash_bound(root, manifest.get(name, {}), name)
+    _require_actor(manifest)
     return manifest
 
 
