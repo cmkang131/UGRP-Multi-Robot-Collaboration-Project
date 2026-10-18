@@ -1,0 +1,14 @@
+{
+  "schema": "ugrp.e2ewarp.mission_prepare_validation.v1",
+  "manifest": "experiments/2026-10-17-e2ewarp/components.r4-integration-v1.json",
+  "manifest_sha256": "2c662803ba71f4e51d7a4b02a1ac2749d32a7c07093fd54940dff87c30f7f3d2",
+  "command": "python -m scripts.run_e2e_warp --components <manifest> --prepare --mode mission --output /tmp/e2ewarp-mission-prep",
+  "result": "DEPENDENCY_WAIT:navigation",
+  "exit_code": 1,
+  "note": "fail-closed as intended; navigation is first missing ready component (then loaded_camera_fk/static_map_registration/selfmap_map_correction/release_relocalization/ACT)",
+  "labels": {
+    "research_result": false,
+    "no_pooling": true
+  },
+  "date": "2026-10-18"
+}
