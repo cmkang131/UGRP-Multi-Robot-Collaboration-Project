@@ -1,0 +1,110 @@
+{
+ "schema": "ugrp.e2ewarp.release_adapter_entry.v1",
+ "component": "release_relocalization",
+ "owner": "warp8f (observation source) / beamact5 (e2ewarp release ABI integration) / warp8f_memory (owner-side self-centric memory evidence)",
+ "adapter": {
+  "entry": "harness.e2e_warp_release:release_factory",
+  "sha256": "43f35ba22083a27d577b03199fe7ba62aacc3751fcebadbe363df8aa10fd2f59",
+  "options": [
+   "release_relocalization_off_v1",
+   "release_relocalization_selfmap_v1",
+   "release_relocalization_memory_v1"
+  ],
+  "default": "off"
+ },
+ "contract": {
+  "factory": "factory(robot_id=..., static=...) -> adapter",
+  "adapter": {
+   "start": "start(instruction, own_report)",
+   "observe": "observe(OwnFrame) -> {relocalized, static_map_registered | memory_registered, ...}",
+   "command": "command(sim_s) -> issued-command whitelist"
+  },
+  "claim_rule": "static_map mode: relocalized=true AND static_map_registered=true; memory mode (release_relocalization_memory_v1, default off): relocalized=true AND memory_registered=true with the navigator snapshot hash/revision, and no static-map field may be present (even false/null). The adapter never fabricates either claim.",
+  "default_off_behavior": "observe returns relocalized/static_map_registered false with explicit reason; command only holds (zero wheels) with approved pan PWM",
+  "memory_mode": {
+   "option": "release_relocalization_memory_v1",
+   "default": "off",
+   "binding": "start() binds the navigator report memory_registration owner selfnav_memory_v1, memory_sha256, evidence_revision and destination kind",
+   "fail_closed": "missing/not-ready/not-registered navigator -> no binding, no pan, no views, relocalized=false with the exact reason",
+   "owner_evidence": "owner=warp8f, memory_registered=true, echoed memory_sha256 and revision, destination landmark of the bound kind, no map_pose/static-map field",
+   "owner_implementation": "harness.warp8f_memory:Warp8fMemoryOwner; read through release_factory(memory_source=navigator.memory_registration) or owner=warp8f_memory.owner_factory(...)",
+   "owner_source": "navigator memory_registration only (owner selfnav_memory_v1); no static map, global pose, GT or held-world read",
+   "echo_semantics": "the navigator advances evidence_revision during the lookaround; the owner echoes the release-bound hash/revision and reports navigator_current_revision/navigator_current_memory_sha256 for audit, so the memory path does not stay permanently fail-closed",
+   "owner_fail_closed_codes": [
+    "owner_navigator_snapshot_missing",
+    "owner_navigator_snapshot_unavailable",
+    "owner_navigator_snapshot_invalid",
+    "owner_navigator_snapshot_stale",
+    "owner_navigator_snapshot_hash_mismatch",
+    "owner_navigator_not_ready",
+    "owner_navigator_memory_unregistered",
+    "owner_navigator_destination_unregistered",
+    "owner_navigator_destination_mismatch",
+    "owner_navigator_landmark_missing",
+    "owner_navigator_landmark_mismatch",
+    "owner_navigator_landmark_from_future"
+   ],
+   "no_global_pose": "pose_estimate is always self_centric (0,0); map_pose is null"
+  }
+ },
+ "boundary_audit": {
+  "allowed_inputs": [
+   "own JPEG bytes (OwnFrame.jpeg)",
+   "own issued commands (OwnFrame.issued)",
+   "authored static map/orders (static factory argument)",
+   "existing SEARCH pan / max(settle_s)+0.1 dwell / +-500 PWM pan span constants (reused, no new tolerance)"
+  ],
+  "forbidden_inputs": [
+   "world/model/data objects",
+   "evaluator/ground-truth/contact/success",
+   "top camera",
+   "measured joints",
+   "cross-robot frames",
+   "non-causal frames",
+   "claimed owner evidence without static-map hash",
+   "static-map hash/registration or global map pose in memory mode (mixed evidence)"
+  ],
+  "import_scan": "no sim.*, no scripts.e2e_warp_physics, no mujoco/warp import, no file reads; release imports limited to __future__/hashlib/json/math/harness.active_camera/harness.e2e_rgb_vo/harness.e2ewarp_selfnav/harness.grasp_act_contract/harness.warp8f_memory; owner imports limited to __future__/math/harness.e2ewarp_selfnav",
+  "owner_evidence_validation": [
+   "owner == warp8f",
+   "relocalized is True",
+   "static_map_registered is True",
+   "static_map_sha256 == sha256(authored static)",
+   "truth_inputs == 0",
+   "held_world_reads == 0",
+   "finite 3-axis map_pose",
+   "memory mode: owner == warp8f, memory_registered is True, memory_sha256 and navigator_evidence_revision echo the bound navigator snapshot, destination landmark kind matches, no map_pose/static_map_registered/static_map_sha256 (key presence is mixed evidence), truth_inputs==0, held_world_reads==0",
+   "memory owner: live navigator registration must be valid, not behind the bound revision, hash-equal at the same revision, destination-registered with a matching landmark, and the landmark must not be from the future"
+  ]
+ },
+ "tests": {
+  "path": "tests/test_e2e_warp_release.py",
+  "sha256": "b7a5355a443e6f992a88b0106f63ee69023f99cac9121c51857610bde22fbd49",
+  "cases": 11,
+  "command": "python -m pytest tests/test_e2e_warp_release.py tests/test_e2ewarp_warp8f_memory.py -q",
+  "result": "pass",
+  "scope": "Mac non-physical unit tests only; no GPU/physics run",
+  "owner_memory": {
+   "path": "tests/test_e2ewarp_warp8f_memory.py",
+   "sha256": "08a4fb5be93ef9121c24ae70824f2a59811ed0220627efe67980e2ead57d3591",
+   "cases": 12,
+   "scope": "fake navigator snapshots; accepted echo, advanced-revision echo, stale/hash mismatch, wrong landmark kind, static-map field rejection"
+  }
+ },
+ "integration": {
+  "target_run": "/home/ugrp/ugrp-sim/runs/e2ewarp-r4-run",
+  "target_run_result_sha256": "c61ecce4cc9ae68cc5c859d4a2d6c6f16b7fe51306bd80b527250af26fddbad0",
+  "target_source_sha": "718777118be41991156b047faff78621969101bb",
+  "component_manifest_key": "release_factory",
+  "merge_note": "copy adapter entry into e2ewarp components manifest release_factory; release_relocalization.ready stays false until the runner wires memory_source=navigator.memory_registration (or injects warp8f_memory.owner_factory) and a new physical gate is run; the static path still needs warp8f observation bytes + mapbuild8 correction",
+  "no_prior_result_inheritance": "rel21/release18/warp8f prior physical gates are NOT inherited; this adapter only carries the e2ewarp input-boundary contract and Mac unit evidence",
+  "no_pooling": true
+ },
+ "pending": [
+  "wire release memory_source to the live navigator in the gate-2 runner (no runner wiring in this adapter PR)",
+  "warp8f own-RGB observation bytes / global CSM acceptance for the static path (prior offline 0/28 accepted)",
+  "mapbuild8 static-map registration/correction API",
+  "new physical release gate (A40/B40 or equivalent) under gcp6 + new r4-era source pin",
+  "gate-2 physical release run (memory_registered) under MJWarp + evaluator PR #603"
+ ]
+}

@@ -108,7 +108,23 @@ def test_abi_and_channel_isolation():
     nav.on_messages([{'from': 'r2', 'text': 'ready'}])
     assert nav._messages[-1]['from'] == 'r2'
     assert nav.confirm_act(frame(), 'grasp') is False
-    assert nav.accept_release_fix({'relocalized': True, 'memory_registered': True, 'truth_inputs': 0, 'held_world_reads': 0}) is True
+    # Contract v1: acceptance needs the selfnav owner tag, a 64-hex snapshot
+    # hash and a non-future revision, plus a live destination in own memory.
+    nav = sn.navigation_factory('r1', {'orders': [{'id': 'o1'}]}, option=sn.OPTION,
+                                detector=constant_detector(zone_detection(range_m=0.2)),
+                                odometry=odometry())
+    nav.observe(frame(0.0))
+    registration = nav.memory_registration()
+    assert registration['ready'] is True and registration['registered'] is True
+    assert registration['destination_registered'] is True
+    report = dict(relocalized=True, memory_registered=True, truth_inputs=0,
+                  held_world_reads=0, navigator_owner=sn.OWNER,
+                  memory_sha256=registration['memory_sha256'],
+                  navigator_evidence_revision=registration['evidence_revision'])
+    assert nav.accept_release_fix(report) is True
+    assert nav.accept_release_fix(dict(report, static_map_registered=True)) is False
+    assert nav.accept_release_fix(dict(report, memory_sha256='0' * 63)) is False
+    assert nav.accept_release_fix(dict(report, navigator_owner='warp8f')) is False
 
 
 def test_two_robot_only():

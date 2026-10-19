@@ -36,17 +36,29 @@ Contract v1 (2026-10-18, user decisions):
 - `ready` is true only when the option is active AND both the own-RGB detector
   and the odometry/motion model were injected. Detector and motion model are
   deliberately absent in this scaffold; the physical gates still apply.
+- Every report carries `memory_registration` (`ugrp.e2ewarp.selfnav.v1`):
+  owner `selfnav_memory_v1`, `ready`/`registered`/`destination_registered`,
+  `memory_sha256` over the exact snapshot+revision, and a `pose_estimate` that
+  is always `self_centric` at (0, 0).  This is the registration contract that
+  the loaded-FK navigation composition and the release adapter bind to instead
+  of a static map; it is evidence, never a success or global-pose claim.
 
 No ground truth, contact, evaluator, top camera, or peer raw input is accepted.
 """
 from __future__ import annotations
 
 import copy
+import hashlib
+import json
 import math
 from collections.abc import Mapping
 from dataclasses import dataclass, field
 
 OPTION = 'e2ewarp_selfnav_v1'
+#: Owner tag for the self-centric memory registration contract.  It names the
+#: *evidence source* (own memory), not a physical relocalization result.
+OWNER = 'selfnav_memory_v1'
+SCHEMA = 'ugrp.e2ewarp.selfnav.v1'
 ALLOWED_STATIC_KEYS = ('orders', 'goal', 'mission', 'robot_count', 'destination_zone', 'condition')
 # Existing calibrated finite-pulse vocabulary (percent x pulse width), taken from
 # harness.egocentric_goto.duty (scale .35, 0.10 s).  These are command limits,
@@ -108,9 +120,63 @@ def order_sheet(static):
     return {k: copy.deepcopy(static[k]) for k in ALLOWED_STATIC_KEYS if k in static}
 
 
+def destination_kind_for(zone, default=DESTINATION_KIND):
+    """Map an order-sheet zone letter ('B') to the memory landmark kind ('zone_B')."""
+    if not isinstance(zone, str) or not zone:
+        return default
+    return zone if zone.startswith('zone_') else f'zone_{zone}'
+
+
+def memory_sha256(landmarks, evidence_revision):
+    """Canonical hash binding one own-memory snapshot (no global pose, no map).
+
+    The release owner echoes this hash for the snapshot the navigator reported
+    when the lookaround started.  A later snapshot has a different hash because
+    the revision and the landmark list advanced; that is expected and is why
+    the live check uses ``destination_registered`` rather than hash equality.
+    """
+    payload = dict(owner=OWNER, evidence_revision=int(evidence_revision),
+                   landmarks=list(landmarks or ()))
+    raw = json.dumps(payload, sort_keys=True, separators=(',', ':')).encode()
+    return hashlib.sha256(raw).hexdigest()
+
+
 def wrap_deg(angle):
     """Wrap an angle in degrees to (-180, 180]."""
     return (float(angle) + 180.0) % 360.0 - 180.0
+
+
+def validate_memory_registration(registration):
+    """Validate one ``memory_registration`` block; raise on any contract breach.
+
+    Consumers (loaded-FK navigation composition, release adapter) use this
+    single validator instead of re-deriving the schema.  A global pose or any
+    static-map/GT input is a contract breach, not an alternative encoding.
+    """
+    if not isinstance(registration, dict):
+        raise ValueError('selfnav memory_registration mapping required')
+    if registration.get('schema') != SCHEMA:
+        raise ValueError('UNKNOWN_SELFNAV_MEMORY_SCHEMA')
+    if registration.get('owner') != OWNER:
+        raise ValueError('SELFNAV_MEMORY_OWNER_MISMATCH')
+    for key in ('ready', 'registered', 'destination_registered'):
+        if type(registration.get(key)) is not bool:
+            raise ValueError('SELFNAV_MEMORY_FLAG_NOT_BOOLEAN:' + key)
+    digest = registration.get('memory_sha256')
+    if not isinstance(digest, str) or len(digest) != 64 or any(c not in '0123456789abcdef' for c in digest):
+        raise ValueError('SELFNAV_MEMORY_HASH_INVALID')
+    revision = registration.get('evidence_revision')
+    if type(revision) is not int or revision < 0:
+        raise ValueError('SELFNAV_MEMORY_REVISION_INVALID')
+    pose = registration.get('pose_estimate')
+    if (not isinstance(pose, dict) or pose.get('frame') != 'self_centric'
+            or pose.get('position_xy') != [0.0, 0.0]):
+        raise ValueError('SELF_CENTRIC_POSE_REQUIRED')
+    if registration.get('static_map_used') is not False:
+        raise ValueError('STATIC_MAP_MUST_NOT_BE_USED')
+    if registration.get('truth_inputs', 0) != 0 or registration.get('held_world_reads', 0) != 0:
+        raise ValueError('SELFNAV_MEMORY_FORBIDDEN_INPUTS')
+    return registration
 
 
 def clamp(value, low, high):
@@ -210,7 +276,7 @@ class SelfCentricNavigation:
         if zone is None and isinstance(sheet.get('mission'), Mapping):
             zone = sheet['mission'].get('destination_zone')
         if destination_kind is None and isinstance(zone, str) and zone:
-            destination_kind = zone if zone.startswith('zone_') else f'zone_{zone}'
+            destination_kind = destination_kind_for(zone)
         self.destination_kind = str(destination_kind) if destination_kind is not None else DESTINATION_KIND
         self.arrival_range_m = float(arrival_range_m)
         if self.arrival_range_m < 0.0:
@@ -235,6 +301,38 @@ class SelfCentricNavigation:
     def ready(self):
         """True only with the option active and both own-input components injected."""
         return self.option == OPTION and self.detector is not None and self.odometry is not None
+
+    def memory_registration(self):
+        """Canonical self-centric registration evidence (never a global pose).
+
+        ``ready`` is the capability gate (option + detector + odometry);
+        ``registered`` additionally needs at least one own-RGB landmark in
+        memory; ``destination_registered`` additionally needs a live destination
+        landmark.  ``memory_sha256`` binds this exact snapshot/revision, so the
+        release owner can echo the one it saw.  ``static_map_used`` is always
+        false: this object never reads map geometry.
+        """
+        landmarks = self.memory.as_report()
+        destination = self.memory.nearest(self.destination_kind)
+        ready = bool(self.ready)
+        registered = bool(ready and landmarks)
+        destination_registered = bool(registered and destination is not None
+                                      and destination.uncertainty_m < 3.0)
+        return dict(
+            schema=SCHEMA, owner=OWNER, ready=ready, registered=registered,
+            destination_registered=destination_registered,
+            evidence_revision=int(self._revision),
+            memory_sha256=memory_sha256(landmarks, self._revision),
+            landmarks=len(landmarks), destination_kind=self.destination_kind,
+            destination_landmark=None if destination is None else dict(
+                kind=destination.kind, range_m=float(destination.range_m),
+                bearing_deg=float(destination.bearing_deg),
+                last_seen_s=float(destination.last_seen_s),
+                uncertainty_m=float(destination.uncertainty_m),
+                range_measured=bool(destination.range_measured)),
+            pose_estimate=dict(frame='self_centric', position_xy=[0.0, 0.0]),
+            static_map_used=False, truth_inputs=0, held_world_reads=0,
+            source='own_rgb_and_own_issued_commands')
 
     def _check_owner(self, record, *, required):
         """Own-frame ownership: never accept another robot's record."""
@@ -348,6 +446,7 @@ class SelfCentricNavigation:
                     evidence_revision=self._revision, return_landmark=bool(returned),
                     ready=self.ready, drive_reason=plan['reason'],
                     destination_landmark=(None if zone is None else zone.kind),
+                    memory_registration=self.memory_registration(),
                     search_elapsed_s=round(self._search_elapsed_s(now_s), 3),
                     search_steps=int(self._search_steps))
 
@@ -425,13 +524,33 @@ class SelfCentricNavigation:
         self._messages.extend(copy.deepcopy(rows or ()))
 
     def accept_release_fix(self, report):
+        """Accept a release fix only as self-centric memory evidence.
+
+        The report must name this owner, carry the 64-hex memory snapshot hash
+        and a non-future navigator revision, and the robot must still remember
+        its destination landmark.  Any static-map claim is mixed evidence and
+        is rejected; GT/held-world reads are rejected.
+        """
         if self.option != OPTION:
             return False
         if not isinstance(report, dict):
             return False
-        # No static map: acceptance is own-memory based only.
+        if report.get('static_map_registered') is True:
+            return False
+        if report.get('navigator_owner') != OWNER:
+            return False
+        digest = report.get('memory_sha256')
+        if not isinstance(digest, str) or len(digest) != 64:
+            return False
+        revision = report.get('navigator_evidence_revision')
+        if type(revision) is not int or revision < 0:
+            return False
+        registration = self.memory_registration()
+        if revision > registration['evidence_revision']:
+            return False
         return (report.get('relocalized') is True
                 and report.get('memory_registered') is True
+                and registration['destination_registered'] is True
                 and report.get('truth_inputs', 0) == 0
                 and report.get('held_world_reads', 0) == 0)
 

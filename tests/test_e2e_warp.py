@@ -223,6 +223,39 @@ def test_mission_requires_llm_authorizations_and_real_release_fix():
     assert len(calls)==2 and [r['skill'] for r in calls]==['grasp','release']
 
 
+def _drive_to_relocalize(ctl,nav,release,observe,choose):
+    observe(0);choose('task',0)
+    nav.report['handoff_ready']=True;observe(.1)
+    choose('grasp',.1);ctl.command(.1)
+    choose('carry',.1)
+    nav.report['destination_arrived']=True;observe(.2)
+    choose('release',.2);ctl.command(.2)
+    assert ctl.phase=='RELOCALIZE'
+
+
+def test_mission_memory_registration_release_branch():
+    ctl,nav,release,calls,observe,choose=mission_fixture()
+    nav.report['registration_mode']='memory_registered'
+    nav.accept_release_fix=lambda report:(report.get('memory_registered') is True
+                                          and report.get('static_map_registered') is not True)
+    _drive_to_relocalize(ctl,nav,release,observe,choose)
+    # A static-map-only claim is not accepted in the memory branch.
+    release.report={'relocalized':True,'static_map_registered':True}
+    observe(.3);assert ctl.phase=='RELOCALIZE' and not ctl.completed
+    # Mixed evidence is also rejected by the same branch guard.
+    release.report={'relocalized':True,'memory_registered':True,'static_map_registered':True}
+    observe(.4);assert ctl.phase=='RELOCALIZE' and not ctl.completed
+    release.report={'relocalized':True,'memory_registered':True,'static_map_registered':False}
+    observe(.5);assert ctl.phase=='TASK' and len(ctl.completed)==1
+
+
+def test_mission_static_branch_ignores_memory_only_release_claim():
+    ctl,nav,release,calls,observe,choose=mission_fixture()
+    _drive_to_relocalize(ctl,nav,release,observe,choose)
+    release.report={'relocalized':True,'memory_registered':True,'static_map_registered':False}
+    observe(.3);assert ctl.phase=='RELOCALIZE' and not ctl.completed
+
+
 def test_act_done_without_rgb_confirmation_returns_unknown():
     ctl,nav,release,calls,observe,choose=mission_fixture()
     observe(0);choose('task',0);nav.report['handoff_ready']=True;observe(.1)
