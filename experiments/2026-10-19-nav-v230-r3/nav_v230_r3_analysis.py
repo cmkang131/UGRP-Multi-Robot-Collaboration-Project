@@ -131,13 +131,17 @@ def robot_report(run, rows, robot, qpos, destination):
 
     armed = None
     if armed_i is not None:
+        armed_mem = fresh_zone_b(rows[armed_i]) or zone_b_largest(rows[armed_i]) or {}
         armed = dict(index=armed_i, sim_s=sim[armed_i],
                      gt_xy=[round(float(v), 4) for v in gt_at(armed_i)],
                      odom_pose=pose_at(armed_i),
                      u_deg=own[armed_i].get('arrival_u_deg'),
                      bearing_armed_deg=own[armed_i].get('arrival_bearing_armed_deg'),
                      heading_error_deg=own[armed_i].get('arrival_heading_error_deg'),
-                     bottom_norm=(zone_b_largest(rows[armed_i]) or {}).get('bottom_norm'),
+                     bottom_norm=armed_mem.get('bottom_norm'),
+                     height_norm=armed_mem.get('height_norm'),
+                     component_px=component_px(armed_mem),
+                     detection_fresh=bool(fresh_zone_b(rows[armed_i]) is not None),
                      forward_used_m=own[armed_i].get('forward_used_m'),
                      drive_reason=own[armed_i].get('drive_reason'))
     claim = None
@@ -187,6 +191,16 @@ def robot_report(run, rows, robot, qpos, destination):
             note='world-frame GT next to the self-odometry displacement; never a controller input')
     final = track[-1]
     west_edge = float(destination['center_m'][0]) - float(destination['half_extents_m'][0])
+    post_claim = None
+    if claim_i is not None:
+        # GT motion between the claim tick and the final tick: the wheels are
+        # held after the claim, so any motion here is coasting/slip (diagnostic).
+        gt_claim = gt_at(claim_i)
+        post_claim = dict(ticks=len(track) - 1 - claim_i,
+                          dx_m=round(float(final[0]) - float(gt_claim[0]), 4),
+                          dy_m=round(float(final[1]) - float(gt_claim[1]), 4),
+                          norm_m=round(float(np.linalg.norm(final - gt_claim)), 4),
+                          diagnostic_only=True)
     return dict(
         robot=robot,
         sim_s_span=[round(sim[0], 3), round(sim[-1], 3)] if sim else None,
@@ -218,6 +232,7 @@ def robot_report(run, rows, robot, qpos, destination):
         x_margin_to_west_edge_final_m=round(float(final[0]) - west_edge, 4),
         x_margin_to_west_edge_claim_m=(None if claim is None else
                                        round(float(claim['gt_xy'][0]) - west_edge, 4)),
+        post_claim_gt_drift=post_claim,
         gt_y_south_drift_claim_m=(None if claim is None else
                                   round(float(claim['gt_xy'][1]) - float(gt_at(armed_i)[1]), 4)
                                   if armed_i is not None else None),

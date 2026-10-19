@@ -1,0 +1,209 @@
+{
+ "schema": "ugrp.e2ewarp.nav_v230_r3_summary.v1",
+ "domain": "sim",
+ "branch": "dsh/nav-v230-r3",
+ "pushed_sha": "a84082b195967b39a2e486b3c90a5b1e8eb24d0f",
+ "base": "d2e10e7e96c115d6794229f2e493e4caa1b96243",
+ "prereg": {
+  "path": "experiments/2026-10-17-act18/PREREG_V230_R3.md",
+  "sha256": "0fda0a107db9dc13edf589209020fd921236752ba69fa2efc63769a83ba6d87c"
+ },
+ "code_sha256": {
+  "harness/e2ewarp_selfnav.py": "1245be06c26c3c9b12debb2e1416f3a6cdfdebcff9f181f31429f01c08262a55",
+  "harness/e2ewarp_nav_gate.py": "3aa0ff994b6ecae346e8505903093e0f0a9ed0499e6e9a9e824c9c32ae1fa7c7",
+  "harness/e2ewarp_nav_mode.py": "dc907ae40468dbb620174cbf02a628e4f21574cc4d85b2daf24547369798010f",
+  "scripts/run_e2e_warp.py": "1fbccf4b70fe56aa6bc4c330ea96467dfcd9a4c6371b0cef56cc15ae396dbfe0",
+  "tests/test_e2ewarp_nav_v230_r3.py": "a8259bb63ea79580f46fd54c1b7942e5c3ddd9749beed89dfe60671a77a06d95",
+  "experiments/2026-10-19-nav-v230-r3/render_check.py": "aedc0a43cfa315759289a43809b78d3418373902e730922be818d801c8c2624e",
+  "experiments/2026-10-19-nav-v230-r3/nav_v230_r3_analysis.py@prereg": "64d4a613a1e5fe37546d7f558863c813452def68cf8f2be1052e7f0eb4ac5b00",
+  "experiments/2026-10-19-nav-v230-r3/nav_v230_r3_analysis.py@report": "0c0d5519d6cbb4bc661e4ddf061705de1f807eeb2e5ea6ca45cc7f9a45505d4a"
+ },
+ "host": {
+  "instance": "ugrp-act-l4-gcp6",
+  "project": "ugrp-sim-f-1016",
+  "account": "kcm5781kcm5781@gmail.com",
+  "zone": "asia-northeast3-a",
+  "boot_utc": "2026-10-19T20:07:06Z",
+  "stop_utc": "2026-10-19T20:22:19Z",
+  "status": "TERMINATED",
+  "lease": "e2ewarp-nav-v230-r3",
+  "lease_created_utc": "2026-10-19T20:10:30Z",
+  "lease_deleted_utc": "2026-10-19T20:21:15Z",
+  "processes_before_stop": 0,
+  "gpu_before_stop": "0 %, 0 MiB",
+  "relay": "Oracle 127.0.0.1:18648 -> VM 127.0.0.1:18627, CoreWeave fp4 pinned, key on Oracle only, stopped after run"
+ },
+ "runs": [
+  {
+   "id": "render-20261019T2011Z",
+   "class": "preflight",
+   "gate": true,
+   "purpose": "② zone-free FP re-render at the new SHA (5 r1 poses x tick 0/5)",
+   "controller": false,
+   "llm_calls": 0,
+   "source_sha": "a84082b195967b39a2e486b3c90a5b1e8eb24d0f",
+   "raw_vm": "/home/ugrp/ugrp-sim/runs/nav-v230-r3-render-20261019T2011Z",
+   "raw_oracle": "outputs/e2e18-admin/nav-gate/v230-r3/render-20261019T2011Z",
+   "evidence_tar_sha256": "3a82070a6e36546f197659bf60f0ac39f4281c7f4fff79e251a7df39060a5f56",
+   "measure_sha256": "2acd4f1904431e053b430a0634f59b30ae1134e673148e3615e7376632ffdbab",
+   "result": {
+    "zone_free_frames": 10,
+    "zone_free_detections": 0,
+    "zone_free_max_component_px": 1,
+    "min_pixels_threshold": 600,
+    "r2_lane_audit_detections": 0,
+    "r2_lane_audit_max_component_px": 212,
+    "forward_path_audit": "PASS (min obstacle clearance 0.0343 m, lane body gap 0.338 m)"
+   },
+   "verdict": "PASS",
+   "pooled": false
+  },
+  {
+   "id": "stepB-20261019T2025Z",
+   "class": "study",
+   "gate": true,
+   "purpose": "nav Step B v230_r3 odom_projection claim, 2 robots, seed 601, peer_en, 60 s",
+   "source_sha": "a84082b195967b39a2e486b3c90a5b1e8eb24d0f",
+   "raw_vm": "/home/ugrp/ugrp-sim/runs/e2ewarp-nav-v230-r3-run",
+   "admission_vm": "/home/ugrp/ugrp-sim/runs/e2ewarp-nav-v230-r3-admission",
+   "raw_oracle": "outputs/e2e18-admin/nav-gate/v230-r3/stepB-20261019T2025Z",
+   "evidence_tar_sha256": "edf9425585366dac928d9a5a5cf31a55f77f1c502e954e14bb4394bf40a829f8",
+   "artifacts_sha256": {
+    "result.json": "59f2074d81c05ad5e0d4fe8062f3c65ccbfd351d5032e0dc43f7b68037f5ce3c",
+    "nav-evaluation.json": "e23f85cf6c7069f463140319582fd1276415789a754de4aecdf81ee86d384d71",
+    "evaluation-state.npz": "ff83df94a6cb8c53083aead9f3fb9b7acdfbe2acb90629b4a691b13cae99b553",
+    "localization.json": "5d98974ebd7e02b322c2c70140eb8cf3c8a925249f7e6375497465a2ee5d6412",
+    "queue.json": "6c8633e152fa26cd86ef8a7a0d3498fdcd7d47fb891f10c305ae7a1a1739ce0d",
+    "analysis.json": "85add28ef838a1dc24fbeb942645a653b552ccc86a230b7fa740ad6a28dadce4",
+    "analysis-frozen.json": "96f07020af6abea6ccbb81b4893721e9a04ba60d9f18ea03e8fc693ee1519a2b"
+   },
+   "status": "NAV_ARRIVAL_UNVERIFIED",
+   "sim_s": 41.2,
+   "wall_s": 302.552,
+   "wall_per_sim": 7.34,
+   "first30_wall_per_sim": 6.68,
+   "valid": true,
+   "acceptance": {
+    "gt_arrival_final_n": 1,
+    "gt_arrival_final_N": 2,
+    "claim_n": 2,
+    "claim_N": 2,
+    "claim_mismatch_n": 1,
+    "fp_final_gt_n": 1,
+    "fp_claim_time_gt_n": 2,
+    "boundary_violations_n": 0,
+    "no_claim_n": 0,
+    "no_claim_N": 2
+   },
+   "robots": {
+    "r1": {
+     "armed_s": 35.5,
+     "armed_gt_xy": [3.9613, -2.1427],
+     "armed_bearing_deg": 6.761,
+     "armed_u_deg": 14.841,
+     "claim_s": 39.4,
+     "claim_projection_m": 0.533936,
+     "claim_path_m": 0.534601,
+     "claim_gt_xy": [4.2416, -2.4782],
+     "final_gt_xy": [4.3028, -2.5651],
+     "final_inside_gt": true,
+     "x_margin_to_west_edge_claim_m": -0.0584,
+     "x_margin_to_west_edge_final_m": 0.0028,
+     "post_claim_gt_drift_m": 0.1063,
+     "detection_n": 342,
+     "fresh_detection_n": 311,
+     "localization_rows": 413,
+     "moving_command_rows": 394,
+     "forward_used_m": 1.816928,
+     "gt_over_odom_path": 0.842,
+     "gt_dot_u_m": 0.185,
+     "gt_motion_dir_deg": -50.13,
+     "gt_yaw_armed_deg_posthoc": -41.02,
+     "odom_yaw_armed_deg": 8.081
+    },
+    "r2": {
+     "armed_s": 37.2,
+     "armed_gt_xy": [3.9273, -2.2422],
+     "armed_bearing_deg": -15.869,
+     "armed_u_deg": -54.487,
+     "claim_s": 41.2,
+     "claim_projection_m": 0.525325,
+     "claim_path_m": 0.528713,
+     "claim_gt_xy": [4.1642, -2.4603],
+     "final_gt_xy": [4.1642, -2.4603],
+     "final_inside_gt": false,
+     "x_margin_to_west_edge_claim_m": -0.1358,
+     "x_margin_to_west_edge_final_m": -0.1358,
+     "post_claim_gt_drift_m": 0.0,
+     "detection_n": 372,
+     "fresh_detection_n": 347,
+     "localization_rows": 413,
+     "moving_command_rows": 412,
+     "forward_used_m": 1.366217,
+     "gt_over_odom_path": 0.613,
+     "gt_dot_u_m": 0.3152,
+     "gt_motion_dir_deg": -42.64,
+     "gt_yaw_armed_deg_posthoc": -19.31,
+     "odom_yaw_armed_deg": -38.619
+    }
+   },
+   "robot_separation": {
+    "base_collision_box_m": [0.181, 0.087],
+    "cross_robot_exclude_pairs": 0,
+    "first_below_0_20_m_s": 24.2,
+    "first_below_0_181_m_s": 26.4,
+    "ticks_below_0_181": 50,
+    "min_m": 0.1681,
+    "min_at_s": 28.5,
+    "at_claim_m": 0.174
+   },
+   "boundary_audit": {
+    "held_world_reads": 0,
+    "top_camera_control": false,
+    "static_map_input": false,
+    "cargo_spawned": false,
+    "gpu_noslip_iterations": 0,
+    "cpu_physics_steps": 0,
+    "cpu_render_calls": 0
+   },
+   "calibration": {
+    "sha256": "afe2a3bc008ac73c0a1c134797a0b0f710703038fc58adcd0874105a2871010a",
+    "source_sha": "d182b679f390eed4a7add825c6345ba538f2092d",
+    "source_mismatch_documented": true
+   },
+   "llm": {
+    "model_calls": 2,
+    "statuses": [200, 200],
+    "provider_returned": "CoreWeave",
+    "quantization": "fp4",
+    "retries": 0,
+    "http_429": 0,
+    "image_calls": 2,
+    "cache_ratio": 0.0,
+    "message_dropped_n": 2
+   },
+   "verdict": "FAIL",
+   "fail_reasons": [
+    "GT arrival final 1/2 (r2 outside west boundary by 0.1358 m)",
+    "claim_mismatch 1",
+    "FP 1 (final GT) / 2 (GT at claim time)",
+    "root cause: robots converge into base-collision range from 26.4 s (0.174 m at claim) and wheel odometry diverges from GT (r1 1.19x, r2 1.63x); r3 claim definition behaved as designed inside the odometry frame (projection 0.5339/0.5253, heading error <1 deg) but that frame was wrong under contact/slip"
+   ],
+   "pooled": false
+  }
+ ],
+ "r2_step_b": {
+  "recorded_as": "FAIL",
+  "source_sha": "d2e10e7e96c115d6794229f2e493e4caa1b96243",
+  "excluded_from_r3": true,
+  "reason": "r2 claim counted integrated path length while arrival is a position judgement (GT 1/2, claim 2/2, mismatch 1, FP 1)"
+ },
+ "no_pooling": true,
+ "notes": [
+  "sim only; 1 run, 1 seed, 1 scene; not a real-robot claim",
+  "Step B executed once; no re-run",
+  "0.52 m and the 1.0 m fail-safe were not re-tuned after seeing results",
+  "RUN_META.class=dev is the runner constant; this run's prereg grade is study",
+  "post-run analysis-tool fix leaves all acceptance counts identical (verified against the prereg version)"
+ ]
+}
