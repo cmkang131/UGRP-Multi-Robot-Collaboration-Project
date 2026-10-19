@@ -24,6 +24,10 @@ TRAIN4 결과와 합산하지 않는다.
   `:166-169`에서 `n_action_steps=1, temporal_ensemble_coeff=.01`을 쓴다.
   즉 R100은 **100개 horizon 전체를 매 tick 재예측·ensemble**하는 조건으로
   평가됐다. 파일럿만 8로 고정돼 있었다.
+- `harness/grasp_act_rollout.py`는 `OwnHistory`/`SoloSequence`로 관측과
+  스킬 시퀀스만 만들 뿐 chunk를 소비하지 않는다.
+  `scripts/warp_act_episode.py`는 teacher recording adapter라 ACT chunk
+  경로가 아니다. 소비는 전적으로 `ChunkExecutor.step()`에서 일어난다.
 
 재현 증거(추적 파일):
 `experiments/2026-10-17-act18/protocol.json`의 R100 `chunk:100`,
