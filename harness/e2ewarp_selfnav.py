@@ -121,6 +121,71 @@ ARRIVAL_MAX_HEIGHT_NORM = .65
 MIN_PULSE_FRACTION = 1e-6
 DESTINATION_KIND = 'zone_B'
 
+# ---- C: acquisition quality gate (approved 2026-10-19, v230_r2 mode only) ----
+# `height>=0.04` alone would reject *normal* detections: measured on the
+# 2026-10-19 Step A renders (x=1.5 = 2.40 m from spawn) the zone_B component is
+# height_norm 0.0333 (tick 0) / 0.0375 (tick 5), and on the recorded 45 s dev
+# approach it is 0.025-0.033 at the same stop point; the first tick that
+# reaches 0.04 is x=1.666 (2.56 m forward), i.e. *past* the approved 2.4 m cap
+# (`C_HEIGHT_EVIDENCE.json`).  The rejected low-quality sample (r2 first
+# detection, 45 s dev run) is one tick with height 0.025 / width 0.217 /
+# solidity 0.344: a height threshold above 0.025 splits normal detections, so
+# the pre-filter stays at 0.02 (rejects only the 0.015-0.019 far slivers) and
+# the *three consecutive ticks* rule (below) is what rejects the one-tick
+# sliver.  A single threshold is deliberately NOT the gate.
+ACQUIRE_MIN_HEIGHT_NORM = 0.02
+ACQUIRE_CONFIRM_TICKS = 3
+# A target that produced no accepted detection for this long is stale and must
+# be re-acquired.  This reuses the arrival guard's "current frame" bound
+# (`ARRIVAL_EVIDENCE_MAX_AGE_S`) rather than inventing another constant.
+ACQUIRE_MAX_AGE_S = ARRIVAL_EVIDENCE_MAX_AGE_S
+
+# ---- B: distance-based arrival redesign (2026-10-19, default OFF) -----------
+# Both candidates replace the unreachable bottom-band threshold
+# (`ARRIVAL_BOTTOM_NORM=0.98`; observed maximum 0.967 = row 464/480, the
+# occlusion boundary of the visible ground).  They are *distance* claims, not a
+# recalibration of the bottom band, and either may be selected only through the
+# explicit gate flags; the default stays `bottom_band`.
+ARRIVAL_BOTTOM_BAND = 'bottom_band'
+# (a) `--arrival-odom-residual`: after the near paint edge first reaches the
+# bottom of the visible ground region, drive a fixed own-command residual and
+# claim.  The contact threshold is reachable: the recorded r1 approach saturates
+# at 0.967 from 34.8 s to 42.1 s.  At that saturation the base was 0.382 m
+# behind the paint's near edge (x=3.918 vs x=4.3) and the paint centre was
+# 0.682 m ahead; a 0.55 m residual lands 0.168 m inside the west edge
+# (recorded replay: (4.450, -1.959), y inside -2.8..-1.4).
+ARRIVAL_ODOM_RESIDUAL = 'odom_residual'
+ARRIVAL_BOTTOM_CONTACT_NORM = 0.96
+ARRIVAL_ODOM_RESIDUAL_M = 0.55
+# (b) `--arrival-ground-distance-m 0.25`: project the detected patch's centre
+# pixel onto the floor with the measured pinhole+fisheye camera model and claim
+# when the ground distance is at most the flag value.  The camera model is the
+# measured physical fisheye intrinsics (sim/masterpi_camera_profile.py) plus a
+# ground-plane mount pose fitted against the frozen geometry (fit provenance in
+# `GATE_GROUND_PROJECTION`).
+ARRIVAL_GROUND_DISTANCE = 'ground_distance'
+ARRIVAL_GROUND_DISTANCE_M = 0.25
+ARRIVAL_MODES = (ARRIVAL_BOTTOM_BAND, ARRIVAL_ODOM_RESIDUAL, ARRIVAL_GROUND_DISTANCE)
+# Ground-plane camera model used by the ground-distance arrival option.  The
+# intrinsics/distortion are the *measured physical* ones already used by the
+# renderer (sim/masterpi_camera_profile.py scaled to 640x480).  The mount pose
+# (height above floor, pitch down, camera x offset in the base frame) is a
+# ground-plane fit: 184 fresh zone_B detections of the recorded 45 s dev
+# approach (r1, |heading| <= 6 deg) against the frozen map's zone B near edge,
+# RMS 0.049 m, max |residual| 0.161 m.  It is a geometry audit (setup/eval-only
+# pixels + authored map rectangle), never a control input, and it is NOT the
+# legacy `nav_cam` profile (that camera is not the gate's `robot_cam`).
+GATE_GROUND_PROJECTION = dict(
+    width=640, height=480,
+    fx_px=619.5194540517232, fy_px=622.1654884818748,
+    cx_px=287.68910608896766, cy_px=218.69686648455726,
+    fisheye_d=(-0.0199819517209417, -0.1707593617153504,
+               -0.2568318201202376, 0.9650933421665181),
+    camera_height_m=0.29983, pitch_down_deg=18.9934, camera_x_offset_m=0.0255,
+    source='sim/masterpi_camera_profile.py intrinsics + ground-plane mount fit '
+           '(184 fresh detections, RMS 0.049 m)',
+)
+
 
 def order_sheet(static):
     """Return only authored order-sheet metadata; reject map geometry access."""
@@ -168,6 +233,10 @@ class Landmark:
     solidity: float = 0.0
     spans_center_x: bool = False
     touches_top: bool = False
+    # Largest-component pixel box (left, top, right, bottom) as reported by the
+    # detector; used only by the ground-distance arrival option, which projects
+    # the patch's centre pixel onto the floor.  ``None`` fails closed.
+    bbox: tuple | None = None
     # Appearance-only detectors (e.g. GpuCalibZoneDetector) report no metric
     # range.  A default 0.0 must never be read as "arrived at 0 m".
     range_measured: bool = True
@@ -215,6 +284,8 @@ class SelfCentricMemory:
                                  solidity=float(det.get('solidity', 0.0)),
                                  spans_center_x=bool(det.get('spans_center_x', False)),
                                  touches_top=bool(det.get('touches_top', False)),
+                                 bbox=(tuple(int(v) for v in det['bbox'])
+                                       if det.get('bbox') is not None else None),
                                  range_measured=measured))
         self.items = kept[-16:]
 
@@ -235,6 +306,7 @@ class SelfCentricMemory:
                      last_seen_s=round(i.last_seen_s, 3), uncertainty_m=round(i.uncertainty_m, 3),
                      bottom_norm=round(i.bottom_norm, 3), width_norm=round(i.width_norm, 3),
                      height_norm=round(i.height_norm, 3), solidity=round(i.solidity, 3),
+                     bbox=(None if i.bbox is None else [int(v) for v in i.bbox]),
                      range_measured=bool(i.range_measured))
                 for i in self.items]
 
@@ -244,7 +316,13 @@ class SelfCentricNavigation:
 
     def __init__(self, robot_id, static=None, *, option='off', detector=None, odometry=None,
                  destination_kind=None, arrival_range_m=ARRIVAL_RANGE_M,
-                 acquisition_mode=ACQUISITION_SEARCH_IN_PLACE, forward_cap_m=0.0):
+                 acquisition_mode=ACQUISITION_SEARCH_IN_PLACE, forward_cap_m=0.0,
+                 acquire_min_height_norm=0.0, acquire_confirm_ticks=1,
+                 forward_reacquire=False, arrival_mode=ARRIVAL_BOTTOM_BAND,
+                 arrival_odom_residual_m=ARRIVAL_ODOM_RESIDUAL_M,
+                 arrival_ground_distance_m=None,
+                 arrival_bottom_contact_norm=ARRIVAL_BOTTOM_CONTACT_NORM,
+                 ground_projection=None):
         if robot_id not in ('r1', 'r2'):
             raise ValueError('contract v1 navigation is two-robot only (r1/r2)')
         if acquisition_mode not in ACQUISITION_MODES:
@@ -255,6 +333,39 @@ class SelfCentricNavigation:
                 raise ValueError('forward acquisition requires a positive forward cap')
         elif forward_cap_m != 0.0:
             raise ValueError('forward cap is only valid with forward acquisition')
+        # C: acquisition quality gate (v230_r2 only; the constructor defaults
+        # disable it, so every existing v1/gate-1/r5 condition is unchanged).
+        acquire_min_height_norm = float(acquire_min_height_norm)
+        if not 0.0 <= acquire_min_height_norm <= 1.0:
+            raise ValueError('acquire_min_height_norm must be in [0, 1]')
+        if isinstance(acquire_confirm_ticks, bool) or int(acquire_confirm_ticks) != acquire_confirm_ticks:
+            raise ValueError('acquire_confirm_ticks must be an integer')
+        acquire_confirm_ticks = int(acquire_confirm_ticks)
+        if acquire_confirm_ticks < 1:
+            raise ValueError('acquire_confirm_ticks must be >= 1')
+        # B: distance-based arrival (default OFF -> the frozen bottom band).
+        if arrival_mode not in ARRIVAL_MODES:
+            raise ValueError('unknown arrival mode: ' + str(arrival_mode))
+        arrival_odom_residual_m = float(arrival_odom_residual_m)
+        if arrival_mode == ARRIVAL_ODOM_RESIDUAL:
+            if not arrival_odom_residual_m > 0.0:
+                raise ValueError('odometry-residual arrival requires a positive residual')
+            if acquisition_mode != ACQUISITION_FORWARD_THEN_SEARCH:
+                raise ValueError('odometry-residual arrival is an acquisition-mode option')
+        if arrival_mode == ARRIVAL_GROUND_DISTANCE:
+            if arrival_ground_distance_m is None:
+                raise ValueError('ground-distance arrival requires the distance threshold')
+            arrival_ground_distance_m = float(arrival_ground_distance_m)
+            if not arrival_ground_distance_m > 0.0:
+                raise ValueError('ground-distance arrival threshold must be positive')
+            if acquisition_mode != ACQUISITION_FORWARD_THEN_SEARCH:
+                raise ValueError('ground-distance arrival is an acquisition-mode option')
+        else:
+            arrival_ground_distance_m = (None if arrival_ground_distance_m is None
+                                         else float(arrival_ground_distance_m))
+        arrival_bottom_contact_norm = float(arrival_bottom_contact_norm)
+        if not 0.0 < arrival_bottom_contact_norm <= 1.0:
+            raise ValueError('arrival bottom-contact threshold must be in (0, 1]')
         self.robot_id = robot_id
         self.option = option
         self.acquisition_mode = acquisition_mode
@@ -294,6 +405,29 @@ class SelfCentricNavigation:
         self._forward_used_m = 0.0
         self._forward_steps = 0
         self._destination_seen = False
+        # C: acquisition-quality state.  ``_acquire_streak`` counts consecutive
+        # accepted detections; ``_target_confirmed`` latches once the streak
+        # reaches ``acquire_confirm_ticks`` and drops only when the target goes
+        # stale (no accepted detection for ACQUIRE_MAX_AGE_S), so a single
+        # dropped tick cannot restart confirmation or cancel following.
+        self.acquire_min_height_norm = acquire_min_height_norm
+        self.acquire_confirm_ticks = acquire_confirm_ticks
+        self.forward_reacquire = bool(forward_reacquire)
+        self._acquire_streak = 0
+        self._target_confirmed = False
+        self._last_accepted_s = None
+        # B: distance-based arrival state.  ``_arrival_armed`` latches when the
+        # near paint edge first reaches the bottom of the visible ground region;
+        # ``_arrival_travel_m`` is the own-command distance driven since then.
+        self.arrival_mode = arrival_mode
+        self.arrival_odom_residual_m = arrival_odom_residual_m
+        self.arrival_ground_distance_m = arrival_ground_distance_m
+        self.arrival_bottom_contact_norm = arrival_bottom_contact_norm
+        self.ground_projection = (dict(ground_projection) if ground_projection is not None
+                                  else dict(GATE_GROUND_PROJECTION))
+        self._arrival_armed = False
+        self._arrival_travel_m = 0.0
+        self._ground_distance_m = None
 
     @property
     def ready(self):
@@ -316,21 +450,110 @@ class SelfCentricNavigation:
         self._last_frame = frame
         if self.option != OPTION:
             return self._report(active=False, now_s=frame.sim_s)
-        self.memory.observe(frame.sim_s, self.detector(frame) if self.detector else ())
+        detections = self.detector(frame) if self.detector else ()
+        accepted = self._accepted_hit(detections)
+        self.memory.observe(frame.sim_s, detections)
         if self.memory.nearest(self.destination_kind) is not None:
             self._destination_seen = True
+        # C: consecutive accepted detections gate the switch to following.  The
+        # latch drops only when the target goes stale (ACQUIRE_MAX_AGE_S), so a
+        # single dropped tick does not restart the confirmation.
+        if accepted is not None:
+            self._acquire_streak += 1
+            self._last_accepted_s = frame.sim_s
+            if self._acquire_streak >= self.acquire_confirm_ticks:
+                self._target_confirmed = True
+        else:
+            self._acquire_streak = 0
+        if self._target_confirmed and self._last_accepted_s is not None \
+                and frame.sim_s - self._last_accepted_s > ACQUIRE_MAX_AGE_S:
+            self._target_confirmed = False
+            self._acquire_streak = 0
+        # B(a): latch the bottom-contact event once, on an *accepted* detection.
+        if (self.arrival_mode == ARRIVAL_ODOM_RESIDUAL and accepted is not None
+                and not self._arrival_armed
+                and float(accepted.get('bottom_norm') or 0.0) >= self.arrival_bottom_contact_norm):
+            self._arrival_armed = True
         self._revision += 1
         return self._report(active=True, now_s=frame.sim_s)
 
+    # --- C: acquisition quality ------------------------------------------
+    def _accepted_hit(self, detections):
+        """Largest destination component that passes the C height pre-filter.
+
+        Returns ``None`` when nothing passes.  With the constructor default
+        (``acquire_min_height_norm=0``) every destination hit is accepted, so
+        the frozen v1/gate-1/r5 behaviour is unchanged.
+        """
+        best = None
+        for det in detections or ():
+            if str(det.get('kind')) != self.destination_kind:
+                continue
+            if float(det.get('height_norm') or 0.0) < self.acquire_min_height_norm:
+                continue
+            if best is None or float(det.get('height_norm') or 0.0) > float(best.get('height_norm') or 0.0):
+                best = det
+        return best
+
+    def _confirmed(self):
+        """True when following is allowed (C disabled -> any target is allowed)."""
+        if self.acquire_confirm_ticks <= 1 and self.acquire_min_height_norm <= 0.0:
+            return True
+        return bool(self._target_confirmed)
+
+    def _target_usable(self, now_s):
+        """True when a current, confirmed destination may be followed."""
+        landmark = self.memory.nearest(self.destination_kind)
+        if landmark is None:
+            return False
+        if not self._confirmed():
+            return False
+        if self.acquire_confirm_ticks <= 1 and self.acquire_min_height_norm <= 0.0:
+            return True
+        if self._last_accepted_s is None:
+            return False
+        return now_s - self._last_accepted_s <= ACQUIRE_MAX_AGE_S
+
     def _arrival_evidence(self, landmark, now_s):
-        """Current own-memory arrival: bottom band or measured close range.
+        """Current own-memory arrival claim (bottom band by default).
 
         The bottom-band path is a visual claim, so it must be fresh and its
         component must look like a paint patch rather than a floor fill.  A
         stale claim is not evidence: memory keeps landmarks for driving, but it
         must not keep an arrival claim after the patch left the camera.
+
+        Two *distance* modes replace that unreachable band (2026-10-19 approval,
+        default OFF; selected only through the explicit gate flags):
+        (a) ``odom_residual`` - the near paint edge reaching the bottom of the
+        visible ground latches an arming event, then the robot claims after a
+        fixed own-command residual (no band threshold is re-tuned);
+        (b) ``ground_distance`` - the current patch centre is projected onto the
+        floor with the camera model and compared with a metric threshold.
         """
+        if landmark is None:
+            return False
+        if self.arrival_mode == ARRIVAL_ODOM_RESIDUAL:
+            # A distance claim latched at the visual contact: the residual is
+            # integrated from own issued commands, no current frame is needed.
+            return bool(self._arrival_armed
+                        and self._arrival_travel_m >= self.arrival_odom_residual_m)
+        if self.arrival_mode == ARRIVAL_GROUND_DISTANCE:
+            if now_s - landmark.last_seen_s > ARRIVAL_EVIDENCE_MAX_AGE_S:
+                return False
+            if not self._confirmed():
+                return False
+            if self.arrival_ground_distance_m is None or landmark.bbox is None:
+                self._ground_distance_m = None
+                return False
+            left, top, right, bottom = landmark.bbox
+            distance = ground_distance_m((left + right - 1) / 2.0,
+                                         (top + bottom) / 2.0, self.ground_projection)
+            self._ground_distance_m = distance
+            return bool(distance is not None
+                        and distance <= self.arrival_ground_distance_m)
         if now_s - landmark.last_seen_s > ARRIVAL_EVIDENCE_MAX_AGE_S:
+            return False
+        if not self._confirmed():
             return False
         if (landmark.bottom_norm >= ARRIVAL_BOTTOM_NORM
                 and landmark.height_norm >= ARRIVAL_MIN_HEIGHT_NORM
@@ -366,11 +589,28 @@ class SelfCentricNavigation:
         """Own-command odometry distance left in the approved forward-acquisition cap."""
         return max(0.0, self.forward_cap_m - self._forward_used_m)
 
-    def _forward_acquisition_active(self):
-        """True while the bounded, one-shot forward leg may still advance the robot."""
-        return (self.acquisition_mode == ACQUISITION_FORWARD_THEN_SEARCH
-                and not self._destination_seen
-                and self._forward_remaining_m() > FORWARD_ACQUISITION_EPS_M)
+    def _forward_acquisition_active(self, now_s=None):
+        """True while the bounded forward leg may still advance the robot.
+
+        Frozen ``v230_fwd24`` behaviour is one-shot: once the destination has
+        ever been seen, a later loss falls back to the bounded in-place SEARCH.
+        The approved ``v230_r2`` mode adds ``forward_reacquire`` (C): when the
+        target is lost/stale again the same 2.4 m cap may be used to re-advance,
+        because the cap is the approved *geometric* bound of the acquisition
+        leg and re-driving into a lost target is what the 45 s dev run showed
+        is needed.  The cap itself is never exceeded.
+        """
+        if self.acquisition_mode != ACQUISITION_FORWARD_THEN_SEARCH:
+            return False
+        if self._forward_remaining_m() <= FORWARD_ACQUISITION_EPS_M:
+            return False
+        if now_s is None:
+            now_s = self._last_frame.sim_s if self._last_frame is not None else 0.0
+        if self._target_usable(now_s):
+            return False
+        if self._destination_seen and not self.forward_reacquire:
+            return False
+        return True
 
     def _drive_plan(self, now_s=None):
         """Own-memory control plan; no plan means the wheel hold is returned."""
@@ -381,21 +621,28 @@ class SelfCentricNavigation:
             return dict(reason='option_off', landmark=landmark, forward=0.0, turn=0.0)
         if self.odometry is None:
             return dict(reason='no_odometry', landmark=landmark, forward=0.0, turn=0.0)
-        if landmark is None:
-            # No remembered destination: acquire it with a bounded forward leg
+        # A distance-based arrival claim can outlive the visual target (B(a)
+        # latches at the contact event), so it is evaluated before the
+        # acquisition branch.  With the frozen bottom band this is exactly the
+        # old order: the claim still needs a remembered landmark.
+        if landmark is not None and self._arrival_evidence(landmark, now_s):
+            return dict(reason='arrived', landmark=landmark, forward=0.0, turn=0.0)
+        if landmark is None or not self._target_usable(now_s):
+            # No usable destination: acquire it with a bounded forward leg
             # (approved mode only), then the bounded in-place sweep.  Fail
             # closed when the detector was not injected (nothing could ever be
-            # acquired) or when both budgets are exhausted.
+            # acquired) or when both budgets are exhausted.  With C enabled a
+            # remembered but unconfirmed/stale target is *not* usable, so the
+            # robot re-advances within the same 2.4 m cap instead of following
+            # a memory that no longer matches the camera.
             if not self.ready:
                 return dict(reason='no_destination', landmark=None, forward=0.0, turn=0.0)
-            if self._forward_acquisition_active():
+            if self._forward_acquisition_active(now_s):
                 return dict(reason='acquiring_forward', landmark=None, forward=1.0, turn=0.0)
             reason = self._search_reason(now_s)
             if reason == 'search_timeout':
                 return dict(reason=reason, landmark=None, forward=0.0, turn=0.0)
             return dict(reason=reason, landmark=None, forward=0.0, turn=self._search_turn())
-        if self._arrival_evidence(landmark, now_s):
-            return dict(reason='arrived', landmark=landmark, forward=0.0, turn=0.0)
         bearing = wrap_deg(landmark.bearing_deg)
         turn = clamp(bearing / BEARING_FULL_DEG, -1.0, 1.0)
         if abs(bearing) > ALIGN_GATE_DEG:
@@ -432,7 +679,17 @@ class SelfCentricNavigation:
                     acquisition_mode=self.acquisition_mode,
                     forward_cap_m=round(self.forward_cap_m, 6),
                     forward_used_m=round(self._forward_used_m, 6),
-                    forward_steps=int(self._forward_steps))
+                    forward_steps=int(self._forward_steps),
+                    acquire_min_height_norm=round(self.acquire_min_height_norm, 6),
+                    acquire_confirm_ticks=int(self.acquire_confirm_ticks),
+                    acquire_streak=int(self._acquire_streak),
+                    target_confirmed=bool(self._target_confirmed),
+                    forward_reacquire=bool(self.forward_reacquire),
+                    arrival_mode=self.arrival_mode,
+                    arrival_armed=bool(self._arrival_armed),
+                    arrival_travel_m=round(self._arrival_travel_m, 6),
+                    arrival_ground_distance_m=(None if self._ground_distance_m is None
+                                               else round(self._ground_distance_m, 6)))
 
     # --- task/order sheet -------------------------------------------------
     def task_candidates(self, completed):
@@ -493,6 +750,14 @@ class SelfCentricNavigation:
         row = dict(t=float(now_s), wheels=wheels, duration_s=duration, pwm=pwm)
         if acquiring:
             self._consume_forward_step(row)
+        if (self.arrival_mode == ARRIVAL_ODOM_RESIDUAL and self._arrival_armed
+                and self.odometry is not None):
+            # B(a): integrate the own-command distance driven since the contact
+            # event.  `_consume_forward_step` may have clipped the pulse width,
+            # so the same (clipped) row is integrated.
+            step_m, _yaw = self.odometry.step(row)
+            if step_m > 0.0:
+                self._arrival_travel_m += step_m
         self._issued.append(row)
         return row
 
@@ -609,6 +874,69 @@ def hue_degrees_to_opencv(hue_deg):
     the detector is allowed to use.
     """
     return hue_deg / 2.0
+
+
+def _fisheye_theta(radius_px, d):
+    """Invert the OpenCV fisheye radial model for one normalised radius (rad)."""
+    lo, hi = 0.0, math.radians(80.0)
+    for _ in range(60):
+        mid = 0.5 * (lo + hi)
+        t2 = mid * mid
+        r = mid * (1.0 + t2 * (d[0] + t2 * (d[1] + t2 * (d[2] + t2 * d[3]))))
+        if r < radius_px:
+            lo = mid
+        else:
+            hi = mid
+    return 0.5 * (lo + hi)
+
+
+def ground_point_robot(u, v, projection=None):
+    """Project one own-RGB pixel onto the floor; robot base frame (x fwd, y left).
+
+    Uses the measured pinhole+fisheye intrinsics and the ground-plane mount pose
+    in ``GATE_GROUND_PROJECTION`` (or an explicit ``projection`` mapping).  This
+    is a *geometry* projection of the current frame only: no map, no ground
+    truth, no simulator state.  Returns ``(x_forward_m, y_left_m)`` or ``None``
+    when the ray does not hit the floor (at/above the horizon) or the pixel is
+    outside the image.  Fail closed: a bad/absent profile returns ``None``.
+    """
+    proj = projection if projection is not None else GATE_GROUND_PROJECTION
+    try:
+        width = int(proj['width']); height = int(proj['height'])
+        fx = float(proj['fx_px']); fy = float(proj['fy_px'])
+        cx = float(proj['cx_px']); cy = float(proj['cy_px'])
+        height_m = float(proj['camera_height_m'])
+        pitch = math.radians(float(proj['pitch_down_deg']))
+        offset = float(proj.get('camera_x_offset_m') or 0.0)
+        d = tuple(float(x) for x in proj['fisheye_d'])
+    except (KeyError, TypeError, ValueError):
+        return None
+    if not (0.0 <= float(u) <= width - 1.0 and 0.0 <= float(v) <= height - 1.0):
+        return None
+    if not (height_m > 0.0 and fy > 0.0 and fx > 0.0):
+        return None
+    dx = (float(u) - cx) / fx
+    dy = (float(v) - cy) / fy
+    radius = math.hypot(dx, dy)
+    theta = _fisheye_theta(radius, d) if radius > 1e-12 else 0.0
+    phi = math.atan2(dy, dx) if radius > 1e-12 else 0.0
+    right = math.sin(theta) * math.cos(phi)
+    down = math.sin(theta) * math.sin(phi)
+    forward = math.cos(theta)
+    # Optical axis pitched down by `pitch`; image right = robot right.
+    fwd = math.cos(pitch) * forward - math.sin(pitch) * down
+    up = -math.sin(pitch) * forward - math.cos(pitch) * down
+    left = -right
+    if up >= -1e-9:
+        return None
+    scale = height_m / (-up)
+    return scale * fwd + offset, scale * left
+
+
+def ground_distance_m(u, v, projection=None):
+    """Ground distance (m) from the robot base origin to one pixel's floor point."""
+    point = ground_point_robot(u, v, projection)
+    return None if point is None else math.hypot(point[0], point[1])
 
 
 def largest_component(mask):

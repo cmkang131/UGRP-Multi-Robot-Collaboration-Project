@@ -54,7 +54,34 @@ def stack_config():
     return json.loads(path.read_text()), sha(path.read_bytes())
 
 
+def apply_arrival_args(a):
+    """Bind the approved (B) arrival option from the explicit CLI flags.
+
+    Both distance-based arrival candidates are DEFAULT OFF: without a flag the
+    queue records `bottom_band` and the process environment carries no arrival
+    variables, so every frozen condition is unchanged.  The flags exist only for
+    the approved `v230_r2` gate mode (the gate queue rejects them elsewhere).
+    """
+    from harness.e2ewarp_nav_gate import (ARRIVAL_ENV, ARRIVAL_GROUND_M_ENV,
+                                         ARRIVAL_ODOM_M_ENV)
+    odom = bool(getattr(a, 'arrival_odom_residual', False))
+    ground = getattr(a, 'arrival_ground_distance_m', None)
+    if odom and ground is not None:
+        raise ValueError('NAV_ARRIVAL_METHOD_AMBIGUOUS')
+    for key in (ARRIVAL_ENV, ARRIVAL_ODOM_M_ENV, ARRIVAL_GROUND_M_ENV):
+        os.environ.pop(key, None)
+    if odom:
+        os.environ[ARRIVAL_ENV] = 'odom_residual'
+        value = getattr(a, 'arrival_odom_residual_m', None)
+        if value is not None:
+            os.environ[ARRIVAL_ODOM_M_ENV] = repr(float(value))
+    elif ground is not None:
+        os.environ[ARRIVAL_ENV] = 'ground_distance'
+        os.environ[ARRIVAL_GROUND_M_ENV] = repr(float(ground))
+
+
 def prepare(a):
+    apply_arrival_args(a)
     stack, digest = stack_config()
     if a.mode == 'mission':
         require_components(a.components, ROOT)
@@ -168,6 +195,7 @@ def admit(a, queue):
 
 
 def run(a, queue):
+    apply_arrival_args(a)
     nav = a.mode == NAV_MODE
     if nav:
         # Fail closed before any host admission or physics import.
@@ -456,6 +484,15 @@ def build_parser():
     p.add_argument('--seed', type=int, default=601)
     p.add_argument('--nav-sim-budget-s', type=float, default=NAV_SIM_BUDGET_S,
                    help='navigation-gate SIM budget cap (<=120 s); ignored outside --mode nav')
+    p.add_argument('--arrival-odom-residual', action='store_true',
+                   help='B(a) default-off: claim arrival after a fixed own-command '
+                        'residual from the bottom-contact event (v230_r2 only)')
+    p.add_argument('--arrival-odom-residual-m', type=float, default=None,
+                   help='B(a) residual distance (m); default 0.55 from the recorded '
+                        'contact geometry')
+    p.add_argument('--arrival-ground-distance-m', type=float, default=None,
+                   help='B(b) default-off: claim arrival when the ground-projected '
+                        'distance of the patch centre is <= this value (v230_r2 only)')
     p.add_argument('--condition', choices=COMM_CONDITIONS, default='no_comm')
     p.add_argument('--prepare', action='store_true')
     p.add_argument('--execute', action='store_true')
