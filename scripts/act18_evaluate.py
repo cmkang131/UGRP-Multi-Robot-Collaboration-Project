@@ -21,7 +21,41 @@ from act17_data import library, read
 from act17_v7 import ROOT
 
 
-def allowed_seeds(protocol, stage, selection, checkpoint_sha):
+DIAG_SCHEMA='ugrp.act18.c2c_prereg.v1'
+
+
+def diag_holdout(prereg_path, protocol):
+    """Fail-closed HO4 admission from a committed diag prereg.
+
+    Only the seeds written in the prereg are admitted, and they must not touch
+    TRAIN4, VAL8 or FINAL40. This never opens any promotion gate.
+    """
+    value=read(prereg_path)
+    if value.get('schema')!=DIAG_SCHEMA:
+        raise ValueError('registered C2c diag prereg schema required')
+    holdout=value.get('holdout')
+    if not isinstance(holdout,dict):
+        raise ValueError('diag prereg holdout block required')
+    name=holdout.get('name');seeds=holdout.get('seeds')
+    if not isinstance(name,str) or not name or not isinstance(seeds,list) or not seeds:
+        raise ValueError('diag holdout name and seeds required')
+    if any(type(seed) is not int for seed in seeds) or len(set(seeds))!=len(seeds):
+        raise ValueError('unique integer diag seeds required')
+    locked=set(protocol['train4_seeds'])|set(protocol['validation8_seeds'])|set(protocol['final_seeds'])
+    overlap=sorted(set(seeds)&locked)
+    if overlap:
+        raise ValueError(f'diag seeds overlap locked gate seeds: {overlap}')
+    expected=holdout.get('expected_worlds')
+    if expected is not None and expected!=len(seeds):
+        raise ValueError('diag seed count differs from prereg')
+    return dict(name=name,seeds=seeds,path=str(prereg_path),sha256=sha256(prereg_path))
+
+
+def allowed_seeds(protocol, stage, selection, checkpoint_sha, diag=None):
+    if stage=='diag':
+        if diag is None:
+            raise ValueError('diag prereg required for the diag stage')
+        return set(diag['seeds'])
     if stage=='train':
         return set(protocol['train4_seeds'])
     if stage=='validation':
@@ -76,10 +110,112 @@ def done_prob_row(observation,world,probabilities):
         chunk=len(values),done_probs=[round(x,6) for x in values])
 
 
+CLOCK_STATS=dict(instances=0,resets=0,max_pwm_elapsed_s=0.)
+
+
+class DeadbandIssuedClock:
+    """v7 own-issued clock: ignore servo moves inside a ±DEADBAND PWM band.
+
+    ``DEADBAND=2`` keeps the clock running through ±1/±2 jitter and resets only
+    when one servo moves by at least 3 PWM from the previously observed issued
+    value. That is the same threshold as C2b S2's ``|Δ|>=3`` clock; the flag
+    names the tolerated band rather than the reset threshold. Only own issued
+    PWM history is read (no measured joint or simulator state).
+    """
+    DEADBAND=0
+
+    def __init__(self):
+        CLOCK_STATS['instances']+=1
+        self.skill=None;self.started=None;self.changed=None;self.pwm=None
+
+    def observe(self,instruction,now,issued_pwm):
+        now=float(now)
+        if instruction!=self.skill or self.started is None:
+            self.skill=instruction;self.started=now
+        if self.changed is None:
+            self.changed=now
+        elif any(abs(int(issued_pwm[str(s)])-int(self.pwm[str(s)]))>self.DEADBAND
+                 for s in (1,3,4,5,6)):
+            self.changed=now;CLOCK_STATS['resets']+=1
+        self.pwm={str(s):int(issued_pwm[str(s)]) for s in (1,3,4,5,6)}
+        skill_elapsed=now-self.started;pwm_elapsed=now-self.changed
+        CLOCK_STATS['max_pwm_elapsed_s']=max(CLOCK_STATS['max_pwm_elapsed_s'],pwm_elapsed)
+        return {'skill_elapsed_s':skill_elapsed,'pwm_elapsed_s':pwm_elapsed}
+
+
+def c2c_observation_clock(observation,clock):
+    """Replace only pwm_elapsed_s with the v7 own-issued clock value.
+
+    The physics owner builds its own observation in a separate process, so the
+    evaluator re-applies the same clock to the received allowed observation
+    before the policy sees it. ``skill_elapsed_s`` and every other field are
+    left untouched.
+    """
+    value=dict(observation)
+    value['pwm_elapsed_s']=clock.observe(
+        (observation['skill'],observation['object_kind'],observation['role'],
+         observation['destination_zone']),
+        observation['t'],observation['issued'][-1]['pwm'])['pwm_elapsed_s']
+    return value
+
+
+def install_issued_clock(contract, deadband):
+    """Process-local monkeypatch of the contract clock; returns the original."""
+    original=contract.IssuedClock
+    if deadband:
+        if deadband not in (2,):
+            raise ValueError('registered deadband 2 required')
+        DeadbandIssuedClock.DEADBAND=deadband
+        contract.IssuedClock=DeadbandIssuedClock
+    return original
+
+
+def clock_receipt(deadband):
+    return dict(mode='deadband' if deadband else 'v6',deadband=deadband,
+        flag=f'--issued-clock-deadband {deadband}',reset_threshold=deadband+1,
+        resets=CLOCK_STATS['resets'] if deadband else None,
+        max_pwm_elapsed_s=(round(CLOCK_STATS['max_pwm_elapsed_s'],6) if deadband else None),
+        scope='own issued PWM history only; no measured joint or simulator state')
+
+
+def post_lift_max_pe(out):
+    """Evaluation-only receipt from the recorded actor inputs and owner truth."""
+    inputs=out/'actor-inputs.jsonl';truth=out/'owner/evaluation-only.jsonl'
+    if not inputs.exists() or not truth.exists():return None
+    by_world=defaultdict(list)
+    for line in inputs.read_text().splitlines():
+        row=json.loads(line);obs=row['observation']
+        by_world[row['world']].append((float(obs['t']),float(obs['pwm_elapsed_s'])))
+    stable=defaultdict(list)
+    for line in truth.read_text().splitlines():
+        event=json.loads(line)
+        if 'min_z' not in event:continue
+        good=(event['min_z']>=.012 and event['tilt_deg']<=10.
+              and min(event['finger_forces'])>=.5)
+        stable[event['world']].append((float(event['t']),good))
+    result={}
+    for world,rows in by_world.items():
+        onset=None;previous_t=None;previous_good=False;stable_s=0.
+        for t,good in stable[world]:
+            dt=0. if previous_t is None else t-previous_t
+            if not 0<=dt<=.15+1e-8:
+                stable_s=0.;previous_good=False
+            stable_s=stable_s+dt if good and previous_good else 0.
+            if good and stable_s>=3.-1e-8:
+                onset=t-3.;break
+            previous_t,previous_good=t,good
+        if onset is not None:
+            values=[pe for t,pe in rows if t>=onset-1e-8]
+            result[str(world)]=round(max(values),6) if values else None
+    return result or None
+
+
 def main():
     p=argparse.ArgumentParser(description=__doc__,add_help=False)
     p.add_argument('--act18-reference-v1',action='store_true')
-    p.add_argument('--stage',choices=['train','validation','final'],required=True)
+    p.add_argument('--stage',choices=['train','validation','final','diag'],required=True)
+    p.add_argument('--diag-prereg',type=Path)
+    p.add_argument('--issued-clock-deadband',type=int,choices=[0,2],default=0)
     p.add_argument('--baseline-act17',action='store_true')
     # User requirement: last10 SIM seconds at10Hz; recording only, no policy field.
     p.add_argument('--failure-camera-window-s',type=float,default=10.)
@@ -113,7 +249,14 @@ def main():
     checkpoint=value('--checkpoint');digest=sha256(checkpoint/'model.safetensors')
     meta=read(checkpoint/'adapter.json')
     selection=read(a.fit_selection) if a.fit_selection else {}
-    allowed=allowed_seeds(protocol,a.stage,selection,digest)
+    diag=None
+    if a.stage=='diag':
+        if a.diag_prereg is None:
+            raise ValueError('diag stage requires --diag-prereg')
+        diag=diag_holdout(a.diag_prereg,protocol)
+    elif a.diag_prereg is not None:
+        raise ValueError('--diag-prereg is only valid with --stage diag')
+    allowed=allowed_seeds(protocol,a.stage,selection,digest,diag)
     if a.baseline_act17 and a.stage!='train':
         raise ValueError('old models may only diagnose TRAIN, not enter new comparison')
     gate_path=Path(os.environ['UGRP_ACT16W_NATIVE_GATE']);gate=read(gate_path)
@@ -129,7 +272,10 @@ def main():
     from act17_policy import Actor as OldActor
     from act18_policy import Actor
     originals=(act16w_runtime.evaluation_seed_guard,act16w_input.Act16wActor,
-        act16w_eval_rpc.EvaluationClient,pm.ChunkExecutor,rm.SoloSequence,contract.CHUNK)
+        act16w_eval_rpc.EvaluationClient,pm.ChunkExecutor,rm.SoloSequence,contract.CHUNK,
+        contract.IssuedClock)
+    CLOCK_STATS.update(instances=0,resets=0,max_pwm_elapsed_s=0.)
+    install_issued_clock(contract,a.issued_clock_deadband)
     actor_class=OldActor if a.baseline_act17 else Actor
     chunk=8 if a.baseline_act17 else meta['chunk']
     contract.CHUNK=chunk
@@ -232,10 +378,12 @@ def main():
                           and isinstance(provenance.get('step'),int) and 20000<=provenance['step']<=100000)
             if not continuation and not registered_pilot_checkpoint(provenance,sha256(protocol_path)):
                 raise ValueError('complete registered100k reference model required')
+    clocks={}
     class Client(originals[2]):
         def reset(self,plans,indices=None):
             if self.training or self.audit_state or self.proc is not None or len(plans)!=self.nworld or indices not in (None,list(range(self.nworld))):
                 raise ValueError('fresh own-only evaluation required')
+            clocks.clear()
             path=self.out/'initial-plans.json';path.write_text(json.dumps(dict(episodes=plans),indent=2)+'\n')
             argv=[self.python,'-u',str(ROOT/'scripts/act17_v7.py'),'--enabled','--action','launch','--',
                 '--enabled','--mode','eval-owner','--native-gate',str(gate_path),'--',
@@ -251,6 +399,13 @@ def main():
         def read_actor(self,index):
             obs,jpgs=super().read_actor(index)
             done_log['world']=index
+            if a.issued_clock_deadband:
+                # The owner subprocess builds observations; re-apply the v7
+                # own-issued clock here so only the policy's pwm_elapsed_s changes.
+                clock=clocks.get(index)
+                if clock is None:
+                    clock=DeadbandIssuedClock();clocks[index]=clock
+                obs=c2c_observation_clock(obs,clock)
             buffer=buffers[index]
             if not buffer or obs['t']!=buffer[-1][0]['t']:
                 buffer.append((obs,jpgs[-1]))
@@ -270,9 +425,12 @@ def main():
         if done_log['handle'] is not None:
             done_log['handle'].close();done_log['handle']=None
         (act16w_runtime.evaluation_seed_guard,act16w_input.Act16wActor,
-         act16w_eval_rpc.EvaluationClient,pm.ChunkExecutor,rm.SoloSequence,contract.CHUNK)=originals
+         act16w_eval_rpc.EvaluationClient,pm.ChunkExecutor,rm.SoloSequence,contract.CHUNK,
+         contract.IssuedClock)=originals
         out=value('--out')
         if out.exists():
+            clock=clock_receipt(a.issued_clock_deadband)
+            clock['post_lift_max_pe']=post_lift_max_pe(out)
             ring=[]
             for world,frames in buffers.items():
                 folder=out/f'failure-camera-window/world-{world:03d}';folder.mkdir(parents=True,exist_ok=False)
@@ -284,13 +442,19 @@ def main():
             path=out/'summary.json'
             if path.exists():
                 report=read(path)
-                report.update(cohort='act18-v7-reference',split=a.stage,TRAIN_fit_diagnostic=a.stage=='train',
+                report.update(cohort='act18-v7-reference',stage=a.stage,split=a.stage,
+                    TRAIN_fit_diagnostic=a.stage=='train',gate_eligible=a.stage!='diag',
                     baseline_act17=a.baseline_act17,candidate=meta['provenance']['candidate'],
                     actual_ACT_inference=inference,chunk=chunk,n_action_steps=1,temporal_ensemble_coeff=.01,
                     LLM_calls=0,LLM_prompt_tokens=0,LLM_total_tokens=0,
                     static_map_use='none',handwritten_nearfield_fallback=False,policy_ground_truth_fields=0,
                     native_camera='own640x480 at10Hz; identical current_full_v1 transform',
-                    scope='TRAIN fit only, not generalization' if a.stage=='train' else 'held-out native ACT stage')
+                    issued_clock=clock,git_sha=source,
+                    scope=('TRAIN fit only, not generalization' if a.stage=='train' else
+                           'HO4 diagnostic holdout only; not a promotion gate; no pooling' if a.stage=='diag'
+                           else 'held-out native ACT stage'))
+                if diag is not None:
+                    report['diag_prereg']=diag
                 if report.get('student_scores'):
                     for row,seq in zip(report['student_scores'],sequences):
                         row.update(grasp_done_requested='grasp' in seq.done_times,release_done_requested='release' in seq.done_times,
@@ -308,7 +472,7 @@ def main():
             if a.loop_overlay:
                 loop_receipt=overlay_receipt()
             (out/'act18-evaluator.json').write_text(json.dumps(dict(source_sha=source,stage=a.stage,
-                loop_overlay=loop_receipt,
+                git_sha=source,issued_clock=clock,diag_prereg=diag,loop_overlay=loop_receipt,
                 allowed_seeds=sorted(allowed),checkpoint_sha256=digest,native_gate_sha256=sha256(gate_path),
                 failure_recording_only=True,recorded_bytes=sum(r['bytes'] for r in ring),
                 done_head=done_head_receipt),indent=2)+'\n')
