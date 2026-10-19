@@ -143,7 +143,8 @@ def test_module_boundary_has_no_sim_evaluator_or_gt_input():
         assert token not in source, token
     allowed_imports = ('__future__', 'hashlib', 'json', 'math',
                        'harness.active_camera', 'harness.e2e_rgb_vo',
-                       'harness.e2ewarp_selfnav', 'harness.grasp_act_contract')
+                       'harness.e2ewarp_selfnav', 'harness.grasp_act_contract',
+                       'harness.warp8f_memory')
     for line in source.splitlines():
         line = line.strip()
         if line.startswith('from ') or line.startswith('import '):

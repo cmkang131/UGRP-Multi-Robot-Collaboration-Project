@@ -29,8 +29,14 @@ Contract v1 adds the explicit, default-off ``release_relocalization_memory_v1``:
   ``navigator_evidence_revision``, destination kind from the order sheet).
 * The owner evidence must echo that snapshot hash and revision and report
   ``memory_registered=true`` with a destination landmark of the bound kind; any
-  static-map claim, global map pose or GT/held-world read is rejected as mixed
-  evidence.
+  static-map field (even false/null), global map pose or GT/held-world read is
+  rejected as mixed evidence.
+* ``harness.warp8f_memory.Warp8fMemoryOwner`` is the owner-side implementation:
+  ``memory_source`` is the navigator's live ``memory_registration`` provider.
+  It consults that navigation memory (never a map/GT), echoes the bound
+  snapshot and reports the live destination landmark.  Missing, stale, or
+  contradictory navigator snapshots fail closed with their own
+  ``owner_navigator_*`` code, which this adapter forwards verbatim.
 * If the navigator report is missing or not ready/registered, ``start`` binds
   nothing and every later report/command stays fail-closed (no pan, no view
   collection, no claim).
@@ -44,6 +50,8 @@ import math
 from harness.e2ewarp_selfnav import (OWNER as SELFCENTRIC_OWNER,
                                      destination_kind_for,
                                      validate_memory_registration)
+from harness.warp8f_memory import REASONS as OWNER_FAIL_CLOSED
+from harness.warp8f_memory import Warp8fMemoryOwner
 
 OPTION_OFF = 'release_relocalization_off_v1'
 OPTION_SELFMAP = 'release_relocalization_selfmap_v1'
@@ -112,16 +120,26 @@ def _memory_binding(own_report, instruction):
 class ReleaseRelocalization:
     """Fail-closed owner adapter; no motion/claim is invented without evidence."""
 
-    def __init__(self, robot_id, static=None, *, option=OPTION_OFF, owner=None):
+    def __init__(self, robot_id, static=None, *, option=OPTION_OFF, owner=None,
+                 memory_source=None):
         if robot_id not in ('r1', 'r2', 'r3'):
             raise ValueError('unknown robot_id')
         if option not in OPTIONS:
             raise ValueError('UNKNOWN_RELEASE_RELOCALIZATION_OPTION')
         if owner is not None and not callable(owner):
             raise ValueError('owner relocalizer must be callable')
+        if owner is not None and memory_source is not None:
+            raise ValueError('owner and navigator memory source are exclusive')
+        self.memory_mode = option == OPTION_MEMORY
+        if memory_source is not None and not self.memory_mode:
+            raise ValueError('navigator memory source requires release_relocalization_memory_v1')
+        if self.memory_mode and owner is None and memory_source is not None:
+            # Owner-side memory evidence: the owner consults the navigator's
+            # live self-centric registration and echoes the bound snapshot.
+            owner = Warp8fMemoryOwner(memory_source)
         self.robot_id, self.static = robot_id, static
         self.option, self.owner = option, owner
-        self.memory_mode = option == OPTION_MEMORY
+        self.memory_source = memory_source
         # Contract v1: the memory mode has no static map (and no static hash).
         self.static_sha256 = None if self.memory_mode else _static_sha(static)
         self.instruction = None
@@ -256,6 +274,12 @@ class ReleaseRelocalization:
                                          views=int(owner.get('views', 0)),
                                          static_map_sha256=self.static_sha256))
 
+    @staticmethod
+    def _owner_fail_reason(owner, default):
+        """Forward a whitelisted owner fail-closed code instead of a generic one."""
+        reason = owner.get('reason')
+        return reason if reason in OWNER_FAIL_CLOSED else default
+
     def _validate_memory(self, owner):
         """Validate self-centric owner evidence; any map/GT claim is mixed evidence."""
         binding = self.binding
@@ -264,10 +288,14 @@ class ReleaseRelocalization:
         if owner.get('owner') != 'warp8f':
             return self._report(False, 'owner_must_be_warp8f', memory=True)
         if owner.get('relocalized') is not True:
-            return self._report(False, 'owner_relocalized_false', memory=True)
+            return self._report(False, self._owner_fail_reason(owner, 'owner_relocalized_false'),
+                                memory=True)
         if owner.get('memory_registered') is not True:
-            return self._report(False, 'owner_memory_registered_false', memory=True)
-        if owner.get('static_map_registered') is True or owner.get('static_map_sha256') is not None:
+            return self._report(False, self._owner_fail_reason(owner, 'owner_memory_registered_false'),
+                                memory=True)
+        # Memory mode has no static map at all.  The presence of either field,
+        # even a false/null one, is mixed evidence, not a harmless annotation.
+        if 'static_map_registered' in owner or 'static_map_sha256' in owner:
             return self._report(False, 'owner_mixed_static_map_evidence', memory=True)
         if owner.get('memory_sha256') != binding['memory_sha256']:
             return self._report(False, 'owner_memory_hash_mismatch', memory=True)
@@ -293,6 +321,14 @@ class ReleaseRelocalization:
                         source=str(owner.get('source', '')),
                         views=int(owner.get('views', len(self.rows))),
                         view_sha256=[r['rgb_sha256'] for r in self.rows[-PAN_VIEWS:]])
+        # Audit only: the owner may report the live navigator snapshot it
+        # consulted.  It never replaces the bound hash/revision echo above.
+        current_revision = owner.get('navigator_current_revision')
+        if type(current_revision) is int and current_revision >= binding['navigator_evidence_revision']:
+            evidence['navigator_current_revision'] = current_revision
+        current_digest = owner.get('navigator_current_memory_sha256')
+        if isinstance(current_digest, str) and len(current_digest) == 64:
+            evidence['navigator_current_memory_sha256'] = current_digest
         return self._report(True, 'owner_accepted_self_centric_memory', memory=True,
                             memory_landmark=dict(landmark), evidence=evidence)
 
@@ -320,6 +356,13 @@ class ReleaseRelocalization:
         return report
 
 
-def release_factory(robot_id, static=None, *, option=OPTION_OFF, owner=None):
-    """Manifest entry point: module:release_factory, called with robot_id/static."""
-    return ReleaseRelocalization(robot_id, static, option=option, owner=owner)
+def release_factory(robot_id, static=None, *, option=OPTION_OFF, owner=None,
+                    memory_source=None):
+    """Manifest entry point: module:release_factory, called with robot_id/static.
+
+    For ``release_relocalization_memory_v1`` the caller may inject either a
+    ready ``owner`` or the navigator's ``memory_registration`` callable as
+    ``memory_source``; the latter builds ``warp8f_memory.Warp8fMemoryOwner``.
+    """
+    return ReleaseRelocalization(robot_id, static, option=option, owner=owner,
+                                 memory_source=memory_source)

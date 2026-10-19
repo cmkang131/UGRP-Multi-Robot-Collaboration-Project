@@ -62,8 +62,10 @@ python -m pytest tests/test_e2e_warp_release.py -q      # Mac, 11 passed
 
 ## 6. 산출물 SHA (이 커밋 기준)
 
-- `harness/e2e_warp_release.py` sha256: `f183ee102c60…` (전체 값은 manifest-entry.json)
-- `tests/test_e2e_warp_release.py` sha256: `1d375e6ae54f…`
+- `harness/e2e_warp_release.py` sha256: `43f35ba22083…` (전체 값은 manifest-entry.json)
+- `harness/warp8f_memory.py` sha256: `00e507bebff9…` (owner-side memory evidence)
+- `tests/test_e2e_warp_release.py` sha256: `b7a5355a443e…`
+- `tests/test_e2ewarp_warp8f_memory.py` sha256: `972ca4573244…`
 - R4 원본: source `718777118be41991156b047faff78621969101bb`, run result sha `c61ecce4cc9ae68cc5c859d4a2d6c6f16b7fe51306bd80b527250af26fddbad0` (변경 없음)
 
 ## 7. 남은 것
@@ -76,9 +78,28 @@ warp8f 관측 바이트(전역 CSM) + mapbuild8 정적지도 보정 API가 준�
 `start(instruction, own_report)`에서 navigator 보고의 `memory_registration`을 검증해
 `navigator_owner=selfnav_memory_v1`·`memory_sha256`·`evidence_revision`·destination kind를
 바인딩한다. owner(`warp8f`)는 그 hash/revision을 그대로 echo하고 `memory_registered=true`와
-같은 kind의 memory landmark를 내야 한다. `static_map_registered`/`static_map_sha256`/
-`map_pose`가 오면 혼합 증거로 거부한다. selfnav가 없거나 `ready`/`destination_registered`가
-아니면 바인딩 자체를 만들지 않고 pan·view 수집·주장 없이 `relocalized=false`로 닫힌다.
+같은 kind의 memory landmark를 내야 한다. `static_map_registered`/`static_map_sha256` 필드는
+값이 false/null이어도 memory 모드에서는 혼합 증거로 거부한다(`map_pose`는 non-null이면 거부).
+selfnav가 없거나 `ready`/`destination_registered`가 아니면 바인딩 자체를 만들지 않고
+pan·view 수집·주장 없이 `relocalized=false`로 닫힌다.
 이 모드의 `pose_estimate`는 항상 self-centric (0,0)이며 `map_pose`는 null이다.
-단위 테스트는 gate 2 self-centric 테스트(`tests/test_e2ewarp_selfcentric.py`)에 포함되어
-있고, 물리 release 관문은 아직 실행하지 않았다.
+
+## 9. warp8f owner-side memory evidence (`harness/warp8f_memory.py`)
+
+기존 owner 후보는 정적지도 CSM만 구현하고 memory 증거는 테스트 callable stub이었다.
+`Warp8fMemoryOwner`는 navigator의 live `memory_registration`(`memory_source`)을 읽어:
+
+- bound `memory_sha256`/`evidence_revision`을 그대로 echo하고 `memory_registered=true`를 낸다.
+- 같은 kind의 **live** destination landmark를 `memory_landmark`로 낸다(정적지도/GT/전역 pose 없음).
+- lookaround 중 navigator revision이 전진하는 것은 정상이므로 bound echo와 현재
+  `navigator_current_revision`/`navigator_current_memory_sha256`를 분리해 기록한다.
+  현재 hash를 강제하면 memory 경로가 영구 fail-closed가 된다.
+- snapshot 없음/뒤처짐/같은 revision의 hash 불일치/landmark kind 불일치/미래 landmark는
+  `owner_navigator_*` 코드로 닫히고 release 어댑터가 그 코드를 그대로 보고한다.
+
+runner 연결은 아직 없다. gate 2 runner에서 release factory에
+`memory_source=navigator.memory_registration`(또는
+`owner=warp8f_memory.owner_factory(navigator)`)을 주입해야 실제 release가 이 owner를 쓴다.
+단위 테스트는 `tests/test_e2ewarp_warp8f_memory.py`(fake navigator snapshot 10건 + 실제
+selfnav revision 전진 통합 1건 = 11건)이며,
+물리 release 관문은 아직 실행하지 않았다.
