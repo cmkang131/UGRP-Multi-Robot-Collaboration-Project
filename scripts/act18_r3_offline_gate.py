@@ -187,7 +187,9 @@ def checkpoint_identity(root):
 
 
 def load_actor(root):
+    import torch
     from act18_policy import Actor
+    torch.set_num_threads(2)  # Oracle CPU budget: same 2 threads as E1/C2 replay
     identity = checkpoint_identity(root)
     return Actor.load(root, device='cpu'), identity
 
@@ -275,7 +277,7 @@ def run_c2b(args):
         raise ValueError('C2b adapter schema required')
     if not isinstance(value.get('source_sha'), str) or len(value['source_sha']) < 7:
         raise ValueError('C2b source sha required')
-    if args.checkpoint and value.get('checkpoint_sha256') != args.checkpoint:
+    if args.checkpoint_sha and value.get('checkpoint_sha256') != args.checkpoint_sha:
         raise ValueError('C2b checkpoint sha does not match the R3 checkpoint')
     worlds = value.get('worlds') or []
     lift = [row for row in worlds if row.get('role') == 'lift']
@@ -417,6 +419,7 @@ def main(argv=None):
     parser.add_argument('stage', choices=('pilot', 'c2b', 'e0', 'report'))
     parser.add_argument('--enabled', action='store_true')
     parser.add_argument('--checkpoint', type=Path)
+    parser.add_argument('--checkpoint-sha', help='model.safetensors sha for the c2b adapter check')
     parser.add_argument('--prereg', type=Path,
                         default=ROOT / 'experiments/2026-10-17-act18/R3_DONEWINDOW_PREREG.json')
     parser.add_argument('--pilot-root', type=Path)
