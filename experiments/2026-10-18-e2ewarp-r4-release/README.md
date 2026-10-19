@@ -65,7 +65,7 @@ python -m pytest tests/test_e2e_warp_release.py -q      # Mac, 11 passed
 - `harness/e2e_warp_release.py` sha256: `43f35ba22083…` (전체 값은 manifest-entry.json)
 - `harness/warp8f_memory.py` sha256: `00e507bebff9…` (owner-side memory evidence)
 - `tests/test_e2e_warp_release.py` sha256: `b7a5355a443e…`
-- `tests/test_e2ewarp_warp8f_memory.py` sha256: `972ca4573244…`
+- `tests/test_e2ewarp_warp8f_memory.py` sha256: `08a4fb5be93e…`
 - R4 원본: source `718777118be41991156b047faff78621969101bb`, run result sha `c61ecce4cc9ae68cc5c859d4a2d6c6f16b7fe51306bd80b527250af26fddbad0` (변경 없음)
 
 ## 7. 남은 것
@@ -100,6 +100,6 @@ pan·view 수집·주장 없이 `relocalized=false`로 닫힌다.
 runner 연결은 아직 없다. gate 2 runner에서 release factory에
 `memory_source=navigator.memory_registration`(또는
 `owner=warp8f_memory.owner_factory(navigator)`)을 주입해야 실제 release가 이 owner를 쓴다.
-단위 테스트는 `tests/test_e2ewarp_warp8f_memory.py`(fake navigator snapshot 10건 + 실제
-selfnav revision 전진 통합 1건 = 11건)이며,
+단위 테스트는 `tests/test_e2ewarp_warp8f_memory.py`(fake navigator snapshot 11건 + 실제
+selfnav revision 전진 통합 1건 = 12건)이며,
 물리 release 관문은 아직 실행하지 않았다.

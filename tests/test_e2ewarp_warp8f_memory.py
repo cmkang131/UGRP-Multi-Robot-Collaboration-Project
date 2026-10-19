@@ -86,6 +86,20 @@ def test_owner_echoes_bound_navigator_snapshot_and_landmark_kind():
         assert field not in result, field
 
 
+def test_owner_accepts_navigator_object_and_factory_source():
+    bound = registration(revision=7)
+
+    class Navigator:
+        def memory_registration(self):
+            return bound
+
+    result = warp8f_memory.Warp8fMemoryOwner(Navigator())(evidence(bound))
+    assert result['relocalized'] is True and result['memory_registered'] is True
+    assert result['memory_sha256'] == bound['memory_sha256']
+    assert isinstance(warp8f_memory.owner_factory(Navigator()),
+                      warp8f_memory.Warp8fMemoryOwner)
+
+
 def test_owner_echoes_bound_snapshot_when_navigator_memory_advanced():
     """Release lookaround frames advance navigator revision; echo stays bound."""
     bound = registration(revision=7, kind='zone_B')
