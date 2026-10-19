@@ -1,0 +1,416 @@
+{
+  "schema": "ugrp.act18.c2_doneclock_result.v1",
+  "experiment": "2026-10-17-act18",
+  "phase": "C2",
+  "generated_utc": "2026-10-19T21:35:00Z",
+  "labels": [
+    "engineering-only",
+    "sim",
+    "gate 비대상",
+    "pooling 금지"
+  ],
+  "code": {
+    "branch": "dsh/act18-c2-doneclock",
+    "base": "2dc4391",
+    "head": "e5bed0586e07a33272666015955e29a7d2e05e7b",
+    "prereg_commit": "789569aa8",
+    "prereg_sha256": "ed73420b46adb08288970b1e9b7adb882339e52678b643a817906412967cd511"
+  },
+  "checkpoint": {
+    "model_sha256": "e1ec659216e289e1e5e9bb48ac597763ad8d1a088c3c85eb3205336307bb8d5a",
+    "step": 100000,
+    "candidate": "R8"
+  },
+  "host": {
+    "machine": "aarch64",
+    "cpu_count": 2,
+    "gpu": 0,
+    "gpu_compute_minutes": 0
+  },
+  "c2a": {
+    "verdict": "INCONCLUSIVE",
+    "decisions": {
+      "a1_worlds_done_ge_065": 4,
+      "a3_worlds_interval_inside_target": 0,
+      "verdict": "INCONCLUSIVE",
+      "fingerprint_confirmed": false,
+      "D11_condition_i_met": false,
+      "fail_a1_worlds_below_005": 0,
+      "fail_sweep_worlds_all_below_005": 0,
+      "next_action": "INCONCLUSIVE -> C2b proceeds; C2c only via C2b S2"
+    },
+    "run_root": "/home/ubuntu/UGRP/outputs/runs/act18-c2-doneclock-20261019T2002Z/c2a",
+    "summary_sha256": "1693249883113e7c75f15c6b944caf9c5a7003d56775b888ee9ba41a9e2e5973",
+    "wall_s": 1815.0485191670014,
+    "determinism": {
+      "group-000/world-000": {
+        "passed": true,
+        "max_abs_chunk_diff": 0.0
+      },
+      "group-000/world-001": {
+        "passed": true,
+        "max_abs_chunk_diff": 0.0
+      },
+      "group-001/world-000": {
+        "passed": true,
+        "max_abs_chunk_diff": 0.0
+      },
+      "group-001/world-001": {
+        "passed": true,
+        "max_abs_chunk_diff": 0.0
+      }
+    },
+    "worlds": {
+      "group-000-world-000": {
+        "seed": 88600,
+        "a1_done_max_hold_pm10": 0.881495329034637,
+        "a2_first_fire_tick": 256,
+        "a2_delta_vs_hold_end_ticks": 1,
+        "a3_sweep_interval": {
+          "pe_min": 11.1,
+          "pe_max": 13.0,
+          "pe_points": [
+            11.1,
+            11.2,
+            11.3,
+            11.4,
+            11.6,
+            12.0,
+            13.0
+          ],
+          "width_s": 1.9000000000000004,
+          "peak_pe": 13.0,
+          "peak_raw": 0.9989528656005859
+        },
+        "a4_same_as_v0": true,
+        "a4_v4_delta_vs_lookback_ticks": 4
+      },
+      "group-000-world-001": {
+        "seed": 88603,
+        "a1_done_max_hold_pm10": 0.994061199993473,
+        "a2_first_fire_tick": 283,
+        "a2_delta_vs_hold_end_ticks": 0,
+        "a3_sweep_interval": {
+          "pe_min": 11.0,
+          "pe_max": 13.0,
+          "pe_points": [
+            11.0,
+            11.1,
+            11.2,
+            11.3,
+            11.4,
+            11.6,
+            12.0,
+            13.0
+          ],
+          "width_s": 2.0,
+          "peak_pe": 13.0,
+          "peak_raw": 0.9990355968475342
+        },
+        "a4_same_as_v0": true,
+        "a4_v4_delta_vs_lookback_ticks": 4
+      },
+      "group-001-world-000": {
+        "seed": 88601,
+        "a1_done_max_hold_pm10": 0.9407266274873718,
+        "a2_first_fire_tick": 266,
+        "a2_delta_vs_hold_end_ticks": 0,
+        "a3_sweep_interval": {
+          "pe_min": 11.0,
+          "pe_max": 13.0,
+          "pe_points": [
+            11.0,
+            11.1,
+            11.2,
+            11.3,
+            11.4,
+            11.6,
+            12.0,
+            13.0
+          ],
+          "width_s": 2.0,
+          "peak_pe": 13.0,
+          "peak_raw": 0.9990085959434509
+        },
+        "a4_same_as_v0": true,
+        "a4_v4_delta_vs_lookback_ticks": 4
+      },
+      "group-001-world-001": {
+        "seed": 88602,
+        "a1_done_max_hold_pm10": 0.8571083924192258,
+        "a2_first_fire_tick": 247,
+        "a2_delta_vs_hold_end_ticks": 1,
+        "a3_sweep_interval": {
+          "pe_min": 11.1,
+          "pe_max": 13.0,
+          "pe_points": [
+            11.1,
+            11.2,
+            11.3,
+            11.4,
+            11.6,
+            12.0,
+            13.0
+          ],
+          "width_s": 1.9000000000000004,
+          "peak_pe": 13.0,
+          "peak_raw": 0.9989970326423645
+        },
+        "a4_same_as_v0": true,
+        "a4_v4_delta_vs_lookback_ticks": 4
+      }
+    }
+  },
+  "c2b": {
+    "verdict": "PASS",
+    "decisions": {
+      "b1_S2_lift_fires_pe_in_range": 6,
+      "b1_S2_lift_fires_any": 6,
+      "b1_S3_lift_fires_pe_in_range": 6,
+      "b1_S3_lift_fires_any": 6,
+      "done_path_verdict": "PASS",
+      "D11_condition_ii_confirmed": true,
+      "b2_backward_onset_counts_lift": {
+        "S0": 0,
+        "S2": 0,
+        "S3": 0,
+        "S4": 0
+      },
+      "b2_single_variant_attribution": null,
+      "b3_false_positive_control_fires": {
+        "S0": [],
+        "S2": [],
+        "S3": [],
+        "S4": [
+          "finish-r3-R8-train-group-000-world-000"
+        ]
+      },
+      "next_action": "PASS -> C2c ready (off-peak, requires 창민 v7 approval)"
+    },
+    "run_root": "/home/ubuntu/UGRP/outputs/runs/act18-c2-doneclock-20261019T2002Z/c2b/replay",
+    "retrieved_root": "/home/ubuntu/UGRP/outputs/runs/act18-c2-doneclock-20261019T2002Z/c2b/retrieved",
+    "summary_sha256": "830ee7c969fc85664b9809096dadacd23ec4eb9c1cdaee5a8f613f7a642ba1b3",
+    "wall_s": 4485.244623127044,
+    "runs": {
+      "finish-r3-R8-train-group-000-world-000": {
+        "lift_expected": false,
+        "S0": {
+          "done_fire": false,
+          "peak_done_score": 0.00018091022438044676
+        },
+        "S2": {
+          "done_fire": false,
+          "first_done_t": null,
+          "first_done_pe": null,
+          "post_anchor_max_pe": 11.100000000000001
+        },
+        "S3": {
+          "done_fire": false
+        },
+        "S4": {
+          "done_fire": true
+        },
+        "backward_onset": false
+      },
+      "finish-r3-R8-train-group-000-world-001": {
+        "lift_expected": true,
+        "S0": {
+          "done_fire": false,
+          "peak_done_score": 0.00017182366695473055
+        },
+        "S2": {
+          "done_fire": true,
+          "first_done_t": 30.500000000000153,
+          "first_done_pe": 11.2,
+          "post_anchor_max_pe": 13.100000000000001
+        },
+        "S3": {
+          "done_fire": true
+        },
+        "S4": {
+          "done_fire": true
+        },
+        "backward_onset": false
+      },
+      "finish-r3-R8-train-group-001-world-000": {
+        "lift_expected": true,
+        "S0": {
+          "done_fire": false,
+          "peak_done_score": 0.00016516774577849652
+        },
+        "S2": {
+          "done_fire": true,
+          "first_done_t": 28.200000000000152,
+          "first_done_pe": 11.399999999999999,
+          "post_anchor_max_pe": 13.100000000000001
+        },
+        "S3": {
+          "done_fire": true
+        },
+        "S4": {
+          "done_fire": true
+        },
+        "backward_onset": false
+      },
+      "finish-r3-R8-train-group-001-world-001": {
+        "lift_expected": false,
+        "S0": {
+          "done_fire": false,
+          "peak_done_score": 0.00017998467792916818
+        },
+        "S2": {
+          "done_fire": false,
+          "first_done_t": null,
+          "first_done_pe": null,
+          "post_anchor_max_pe": 11.1
+        },
+        "S3": {
+          "done_fire": false
+        },
+        "S4": {
+          "done_fire": false
+        },
+        "backward_onset": false
+      },
+      "repro-dsh-R8-train-group-000-world-000": {
+        "lift_expected": true,
+        "S0": {
+          "done_fire": false,
+          "peak_done_score": 0.00017866853349348844
+        },
+        "S2": {
+          "done_fire": true,
+          "first_done_t": 27.300000000000153,
+          "first_done_pe": 11.200000000000003,
+          "post_anchor_max_pe": 13.100000000000001
+        },
+        "S3": {
+          "done_fire": true
+        },
+        "S4": {
+          "done_fire": true
+        },
+        "backward_onset": false
+      },
+      "repro-dsh-R8-train-group-000-world-001": {
+        "lift_expected": true,
+        "S0": {
+          "done_fire": false,
+          "peak_done_score": 0.00016851063517927885
+        },
+        "S2": {
+          "done_fire": true,
+          "first_done_t": 30.400000000000155,
+          "first_done_pe": 11.200000000000003,
+          "post_anchor_max_pe": 13.100000000000001
+        },
+        "S3": {
+          "done_fire": true
+        },
+        "S4": {
+          "done_fire": true
+        },
+        "backward_onset": false
+      },
+      "repro-dsh-R8-train-group-001-world-000": {
+        "lift_expected": true,
+        "S0": {
+          "done_fire": false,
+          "peak_done_score": 0.00016633055166005923
+        },
+        "S2": {
+          "done_fire": true,
+          "first_done_t": 28.200000000000152,
+          "first_done_pe": 11.399999999999999,
+          "post_anchor_max_pe": 13.100000000000001
+        },
+        "S3": {
+          "done_fire": true
+        },
+        "S4": {
+          "done_fire": true
+        },
+        "backward_onset": false
+      },
+      "repro-dsh-R8-train-group-001-world-001": {
+        "lift_expected": true,
+        "S0": {
+          "done_fire": false,
+          "peak_done_score": 0.00017553325401078516
+        },
+        "S2": {
+          "done_fire": true,
+          "first_done_t": 26.700000000000152,
+          "first_done_pe": 11.299999999999999,
+          "post_anchor_max_pe": 13.1
+        },
+        "S3": {
+          "done_fire": true
+        },
+        "S4": {
+          "done_fire": true
+        },
+        "backward_onset": false
+      }
+    }
+  },
+  "repro_20261019c": {
+    "run_root": "/home/ubuntu/UGRP/outputs/runs/act18-repro-c-recovered-20261019T2002Z",
+    "analysis_sha256": "d9601fd4d46857614d49c0d3418308340ad76a99874befe3a9a72f74240e6905",
+    "retrieval_manifest_sha256": "04637331be19d5392af4141644849c17666ef99103a534e413566f2236408641",
+    "n_N": {
+      "R8/group-000": {
+        "task_success": 0,
+        "grasp_done_requested": 0,
+        "lift_success": 1,
+        "release_success": 0,
+        "cap_end": 2
+      },
+      "R8/group-001": {
+        "task_success": 0,
+        "grasp_done_requested": 0,
+        "lift_success": 1,
+        "release_success": 0,
+        "cap_end": 2
+      },
+      "R100/group-000": {
+        "task_success": 0,
+        "grasp_done_requested": 0,
+        "lift_success": 0,
+        "release_success": 0,
+        "cap_end": 2
+      },
+      "R100/group-001": {
+        "task_success": 0,
+        "grasp_done_requested": 0,
+        "lift_success": 0,
+        "release_success": 0,
+        "cap_end": 2
+      }
+    },
+    "L": {
+      "L1": "4/4",
+      "L2": "2/2",
+      "L3_vs_original": "flip 0/4",
+      "L3_vs_dsh_repro": "flip 2/4"
+    },
+    "original_summary_sha256": {
+      "finish-r3/R8-train/summary.json": "f25299593965bf6f8a163b54d7d94fa98281daa510fcaf3e2d2392038df2896f",
+      "finish-r3/R100-train/summary.json": "aca288d10c9c629f0fd37bee2ec8f4ec7a57fd29987b10c39c4cfd87cb77407d",
+      "finish-r3/summary.json": "54feb0b97b1a639873fabd6e91a43a26e7a8118a614c169081cc53869a742a6a"
+    }
+  },
+  "c2c": {
+    "executed": false,
+    "ready_under_both_pass_rule": false,
+    "spec_open_condition_met": true,
+    "note": "C2a INCONCLUSIVE + C2b PASS. Spec §3 C2c allows PASS or INCONCLUSIVE + C2b PASS + 창민 approval; user instruction requires both PASS. Not executed."
+  },
+  "cleanup": {
+    "temp_vm": "deleted",
+    "temp_disk": "deleted",
+    "snapshot": "deleted",
+    "snapshots_remaining": 0
+  },
+  "scope": "Offline CPU replay only. No rollout, no physical success claim, no closed-loop performance claim. No pooling with VAL8/FINAL40/act17/act16w."
+}
