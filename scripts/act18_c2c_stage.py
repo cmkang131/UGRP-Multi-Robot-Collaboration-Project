@@ -54,10 +54,11 @@ def main():
     if not a.enabled:
         p.error('C2c stage is default OFF')
     # Children run with cwd=frozen qualified source; every path must be absolute.
+    # absolute() (not resolve()) keeps the venv symlink so pyvenv.cfg is honored.
     for key in ('prereg', 'checkpoint', 'run_root', 'native_gate', 'physics_python',
                 'qualified_source', 'teacher_source', 'qualification', 'references',
                 'record_references', 'protocol'):
-        setattr(a, key, getattr(a, key).resolve())
+        setattr(a, key, Path(os.path.abspath(str(getattr(a, key)))))
     host = require_gcp2(training=True); source = frozen_source(ROOT)
     prereg = read(a.prereg)
     if prereg.get('schema') != 'ugrp.act18.c2c_prereg.v1':
