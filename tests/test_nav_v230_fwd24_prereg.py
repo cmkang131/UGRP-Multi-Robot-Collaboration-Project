@@ -50,3 +50,10 @@ def test_prereg_and_render_check_freeze_the_approved_conditions():
     assert max(module.PATH_X) <= module.SPAWN_X + module.FORWARD_CAP_M
     assert min(module.PATH_X) == pytest.approx(module.SPAWN_X)
     compile(RENDER.read_text(), str(RENDER), 'exec')
+
+
+def test_render_check_poses_record_is_json_safe():
+    module = load_render_check()
+    out = module.poses_record({'a': {'r1': [1, 2, 3, 0.1], 'r2': [4, 5, 6, 0.2]}})
+    assert out == {'a': {'r1': [1.0, 2.0, 3.0, 0.1],
+                         'r2': [4.0, 5.0, 6.0, 0.2]}}

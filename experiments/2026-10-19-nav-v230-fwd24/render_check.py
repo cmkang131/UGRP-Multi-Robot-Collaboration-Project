@@ -73,6 +73,13 @@ def poses_zone_free(lane):
     return out
 
 
+def poses_record(poses):
+    """JSON-safe {pose: {robot: [x, y, z, yaw]}} copy of the setup-only spawns."""
+    return {name: {rid: [round(float(v), 6) for v in pose[rid]]
+                   for rid in ('r1', 'r2')}
+            for name, pose in poses.items()}
+
+
 def poses_path(lane):
     r1, r2 = lane['r1'], lane['r2']
     out = {}
@@ -363,10 +370,8 @@ def main(argv=None):
         camera=dict(width=640, height=480, hz=10, gamma=1.0, jpeg_quality=82,
                     remap_sha256=hashlib.sha256(
                         hooks_free.mx.tobytes() + hooks_free.my.tobytes()).hexdigest()),
-        poses=dict(zone_free={k: {rid: [round(float(v), 6) for v in pose]}
-                              for k, pose in zone_free.items()},
-                   forward_path={k: {rid: [round(float(v), 6) for v in pose]}
-                                 for k, pose in path.items()}),
+        poses=dict(zone_free=poses_record(zone_free),
+                   forward_path=poses_record(path)),
         ticks=list(TICKS),
         frames=dict(zone_free=frames_free, forward_path=frames_path),
         checks=dict(
