@@ -1,0 +1,1364 @@
+diff --git a/scripts/act18_evaluate.py b/scripts/act18_evaluate.py
+index 500054928..eede46407 100644
+--- a/scripts/act18_evaluate.py
++++ b/scripts/act18_evaluate.py
+@@ -230,6 +230,13 @@ def main():
+             from act18_policy import registered_pilot_checkpoint
+             continuation=(provenance.get('candidate')=='act18-co' and provenance.get('resume')
+                           and isinstance(provenance.get('step'),int) and 20000<=provenance['step']<=100000)
++            # Registered short probes include the R3 done-window probe
++            # (done_window_finetune_v1). It is evaluable for diagnosis only and
++            # must never be packaging eligible.
++            if provenance.get('probe',{}).get('kind')=='done_window_finetune_v1' and (
++                    provenance['probe'].get('packaging_eligible') is not False
++                    or provenance.get('candidate')!='act18-r3dw'):
++                raise ValueError('R3 done-window probe must stay unpackaged act18-r3dw')
+             if not continuation and not registered_pilot_checkpoint(provenance,sha256(protocol_path)):
+                 raise ValueError('complete registered100k reference model required')
+     class Client(originals[2]):
+diff --git a/scripts/act18_policy.py b/scripts/act18_policy.py
+index f358ecca5..6e45d86cf 100644
+--- a/scripts/act18_policy.py
++++ b/scripts/act18_policy.py
+@@ -21,15 +21,31 @@ from act17_policy import observation_batch
+ # align..close demonstration segments. It is never a packaged comparison model
+ # (adapter training_complete stays False because its step != protocol steps).
+ CANDIDATES = {'R8': 8, 'R100': 100, 'act18-tune': 8, 'act18-doneb1': 100,
+-              'act18-std': 20, 'act18-b3': 20, 'act18-co': 20, 'act18-loop': 20}
++              'act18-std': 20, 'act18-b3': 20, 'act18-co': 20, 'act18-loop': 20,
++              'act18-r3dw': 8}
+ TUNE_CANDIDATE = 'act18-tune'
+ # Registered short pilot checkpoints (never 100k reference models, never packaged):
+ # 'act18-tune' = post-close weighted 2k probe on R8; 'act18-doneb1' = done-only
+-# 5k probe on R100 (pre-registered 2026-10-18 for Lead-approved B1).
+-PILOT_CANDIDATES = ('act18-tune', 'act18-doneb1', 'act18-std', 'act18-b3', 'act18-loop')
++# 5k probe on R100 (pre-registered 2026-10-18 for Lead-approved B1);
++# 'act18-r3dw' = R3 done-window 10k probe on R8 (pre-registered 2026-10-19).
++PILOT_CANDIDATES = ('act18-tune', 'act18-doneb1', 'act18-std', 'act18-b3', 'act18-loop',
++                    'act18-r3dw')
+ PILOT_KINDS = ('init_aligned_finetune_v1', 'done_positive_balanced_finetune_v1',
+                'standard_aligned_scratch_v1', 'done_horizon_current_only_v1',
+-               'transition_weighted_finetune_v1')
++               'transition_weighted_finetune_v1', 'done_window_finetune_v1')
++# R3 done-window label expansion (spec act-C2-R3 2026-10-19 section 4):
++# the last K local rows of the grasp skill are positive, never crossing an
++# episode/skill boundary and only on exactly 0.1 s spaced rows. Release
++# positives are a different skill and stay unchanged, so the window changes
++# 200 grasp rows (one per TRAIN episode) to 200*K rows.
++DONE_WINDOW_SKILL = 'grasp'
++DONE_WINDOW_MAX_TICKS = 20
++DONE_WINDOW_PERIOD_S = .1
++# R3-B only: add U(-jitter,+jitter) seconds to the two recorded clock inputs on
++# verify_lift/hold rows, before normalization. Frozen augmentation seed.
++DONE_CLOCK_JITTER_PHASES = ('verify_lift', 'hold')
++DONE_CLOCK_JITTER_SEED = 20261017
++DONE_CLOCK_MAX_S = 120.
+ # Segment table frozen before the probe run (Lead 2026-10-18 instruction):
+ # the post-close phases are where the student halts, pre-close phases are the
+ # immediately preceding approach/alignment tail. Phase labels are the recorded
+@@ -79,17 +95,66 @@ def weighted_sampler_mass(episode_indices, row_weights):
+     return mass
+ 
+ 
+-def extend_targets(actions, metadata, chunk, done_horizon='all'):
++def expand_done_window(actions, metadata, window_ticks):
++    """Return done labels with the last K local grasp rows positive (R3).
++
++    The window is anchored on each raw grasp completion row and walks backwards
++    over the immediately preceding rows of the same episode and skill at exactly
++    0.1 s spacing. It never crosses an episode or skill boundary and never
++    invents rows. Release completion rows belong to another skill and are left
++    unchanged. ``window_ticks == 0`` returns the input array unchanged.
++    """
++    if type(window_ticks) is not int or not 0 <= window_ticks <= DONE_WINDOW_MAX_TICKS:
++        raise ValueError('done_window_ticks must be an integer within [0, %d]' % DONE_WINDOW_MAX_TICKS)
++    actions = np.asarray(actions)
++    if window_ticks == 0:
++        return actions, dict(window_ticks=0, positive_rows=0, window_rows=0, added_rows=0,
++                             stopped_by_boundary=0, episodes=0)
++    if len(actions) != len(metadata):
++        raise ValueError('one metadata row per action row required')
++    result = np.array(actions, dtype=np.float32, copy=True)
++    positives = [index for index, row in enumerate(metadata)
++                 if row['skill'] == DONE_WINDOW_SKILL and float(actions[index, -1]) == 1.]
++    window_rows = set()
++    stopped_by_boundary = 0
++    for positive in positives:
++        window_rows.add(positive)
++        previous = positive
++        for _ in range(window_ticks - 1):
++            candidate = previous - 1
++            if (candidate < 0
++                    or metadata[candidate]['skill'] != metadata[positive]['skill']
++                    or metadata[candidate]['sample_id'].split(':')[0] != metadata[positive]['sample_id'].split(':')[0]
++                    or abs(float(metadata[previous]['t']) - float(metadata[candidate]['t'])
++                           - DONE_WINDOW_PERIOD_S) > 1e-5):
++                stopped_by_boundary += 1
++                break
++            window_rows.add(candidate)
++            previous = candidate
++    for index in window_rows:
++        result[index, -1] = 1.
++    added = len(window_rows) - len(positives)
++    return result, dict(window_ticks=window_ticks, positive_rows=len(positives),
++                        window_rows=len(window_rows), added_rows=added,
++                        stopped_by_boundary=stopped_by_boundary,
++                        episodes=len({row['sample_id'].split(':')[0] for row in metadata
++                                      if row['skill'] == DONE_WINDOW_SKILL}))
++
++
++def extend_targets(actions, metadata, chunk, done_horizon='all', done_window_ticks=0):
+     """Reconstruct future labels from original h0, within the same skill only.
+ 
+     done_horizon='current_only' keeps the completion target only at the chunk
+     row that corresponds to the observation itself (h=0). B1 showed the learned
+     done mass sits at far horizons (h≈99) while execution reads h=0, so this
+     candidate isolates the horizon-contract hypothesis.
++
++    done_window_ticks>0 first expands the grasp completion labels (R3), then
++    builds chunks from the expanded labels. Default 0 keeps the previous bytes.
+     """
+     if done_horizon not in ('all', 'current_only'):
+         raise ValueError('done_horizon must be all or current_only')
+-    actions = np.asarray(actions)
++    actions, _ = expand_done_window(actions, metadata, done_window_ticks)
+     out = np.zeros((len(actions), chunk, actions.shape[-1]), dtype=np.float32)
+     pad = np.ones((len(actions), chunk), dtype=bool)
+     for i, origin in enumerate(metadata):
+@@ -117,14 +182,38 @@ class ReferenceDataset(Dataset):
+     # optional window keeps that standard alignment toggle default OFF.
+     BASE_ACTION_DIMS = 8
+ 
+-    def __init__(self, root, split, *, chunk=8, base_smooth_window=None, done_horizon='all'):
++    def __init__(self, root, split, *, chunk=8, base_smooth_window=None, done_horizon='all',
++                 done_window_ticks=0, done_clock_jitter_s=None):
+         super().__init__(root, split, image_mode='current_full_v1')
+         if chunk not in CANDIDATES.values():
+             raise ValueError('registered ACT chunk required')
+         if base_smooth_window is not None and (type(base_smooth_window) is not int or base_smooth_window < 1):
+             raise ValueError('base_smooth_window must be a positive integer')
++        if type(done_window_ticks) is not int or not 0 <= done_window_ticks <= DONE_WINDOW_MAX_TICKS:
++            raise ValueError('done_window_ticks must be an integer within [0, %d]' % DONE_WINDOW_MAX_TICKS)
++        if done_clock_jitter_s is not None:
++            if (not isinstance(done_clock_jitter_s, (int, float))
++                    or isinstance(done_clock_jitter_s, bool)
++                    or not 0 < done_clock_jitter_s <= 2.):
++                raise ValueError('done_clock_jitter_s must be within (0, 2] seconds')
++            if split != 'train':
++                raise ValueError('clock jitter is a TRAIN-only input augmentation')
+         self.chunk = chunk
+         self.base_smooth_window = base_smooth_window
++        self.done_window_ticks = done_window_ticks
++        self.done_clock_jitter_s = done_clock_jitter_s
++        self.done_window_receipt = None
++        self.clock_jitter_offsets_s = None
++        self.clock_jitter_rows = 0
++        if done_clock_jitter_s is not None:
++            generator = np.random.Generator(np.random.PCG64(DONE_CLOCK_JITTER_SEED))
++            offsets = generator.uniform(-float(done_clock_jitter_s), float(done_clock_jitter_s),
++                                        size=len(self.metadata))
++            eligible = np.asarray([row.get('teacher_phase') in DONE_CLOCK_JITTER_PHASES
++                                   for row in self.metadata], dtype=bool)
++            offsets[~eligible] = 0.
++            self.clock_jitter_offsets_s = offsets.astype(np.float64)
++            self.clock_jitter_rows = int(eligible.sum())
+         offset = 0
+         for shard in self.shards:
+             n = len(shard['state'])
+@@ -138,23 +227,75 @@ class ReferenceDataset(Dataset):
+             else:
+                 target_source = raw
+             actions, pad = extend_targets(target_source, self.metadata[offset:offset+n], chunk,
+-                                          done_horizon=done_horizon)
++                                          done_horizon=done_horizon,
++                                          done_window_ticks=done_window_ticks)
++            if done_window_ticks:
++                _, receipt = expand_done_window(target_source, self.metadata[offset:offset+n],
++                                                done_window_ticks)
++                if self.done_window_receipt is None:
++                    self.done_window_receipt = dict(receipt)
++                else:
++                    for key in ('positive_rows', 'window_rows', 'added_rows', 'stopped_by_boundary',
++                                'episodes'):
++                        self.done_window_receipt[key] += receipt[key]
+             # This is a new view over existing successful v7 recordings. Verify
+             # byte-exact parity with all original horizons that still exist.
+             common = min(chunk, shard['action'].shape[1])
+             # done_horizon='current_only' intentionally clears the completion
+             # column for h>0, so parity covers only the untouched columns.
+             kept = shard['action'].shape[-1] - 1 if done_horizon == 'current_only' else shard['action'].shape[-1]
++            original_action = shard['action'][:, :common]
++            original_pad = shard['action_is_pad'][:, :common]
+             if base_smooth_window is None:
+-                if (not np.array_equal(actions[:, :common, :kept], shard['action'][:, :common, :kept])
+-                        or not np.array_equal(pad[:, :common], shard['action_is_pad'][:, :common])):
+-                    raise ValueError('reconstructed future targets differ from original chunk8')
+-            elif not np.array_equal(actions[:, :common, self.BASE_ACTION_DIMS:kept],
+-                                    shard['action'][:, :common, self.BASE_ACTION_DIMS:kept]):
+-                raise ValueError('smoothed base action changed non-base targets')
++                if done_window_ticks == 0:
++                    if (not np.array_equal(actions[:, :common, :kept], original_action[..., :kept])
++                            or not np.array_equal(pad[:, :common], original_pad)):
++                        raise ValueError('reconstructed future targets differ from original chunk8')
++                else:
++                    valid = ~pad[:, :common]
++                    if not np.array_equal(actions[:, :common, :13][valid],
++                                          original_action[:, :, :13][valid]):
++                        raise ValueError('done window changed a non-completion target')
++                    if np.any(valid & original_pad):
++                        raise ValueError('done window validated a previously padded slot')
++                    both = valid & ~original_pad
++                    if np.any(actions[:, :common, -1][both] < original_action[:, :, -1][both]):
++                        raise ValueError('done window removed a previously valid completion target')
++            else:
++                if not np.array_equal(actions[:, :common, self.BASE_ACTION_DIMS:13],
++                                      original_action[:, :, self.BASE_ACTION_DIMS:13]):
++                    raise ValueError('smoothed base action changed non-base targets')
++                if np.any(~pad[:, :common] & original_pad):
++                    raise ValueError('smoothed target unexpectedly extended a padded slot')
++                if done_window_ticks == 0 and not np.array_equal(
++                        actions[:, :common, self.BASE_ACTION_DIMS:kept],
++                        original_action[..., self.BASE_ACTION_DIMS:kept]):
++                    raise ValueError('smoothed base action changed non-base targets')
+             shard['action'], shard['action_is_pad'] = actions, pad
+             offset += n
+ 
++    def __getitem__(self,index):
++        """Default path is the parent bytes; R3-B adds clock jitter before normalization."""
++        if self.done_clock_jitter_s is None:
++            return super().__getitem__(index)
++        from harness.grasp_act_data import IMAGE_KEYS,normalized_image,assert_tensor_keys
++        from act17_data import raw_image
++        j,i=self.index[index];s=self.shards[j];refs=[s['frames'][k] for k in s['image_index'][i]]
++        image=normalized_image(raw_image(refs[-1]['path'],refs[-1]['sha256'],False))
++        state=np.array(s['state'][i],dtype=np.float32,copy=True)
++        offset_s=float(self.clock_jitter_offsets_s[index])
++        if offset_s:
++            # Clocks are recorded as min(120 s, elapsed)/120; add seconds in the
++            # same units before normalization and clamp only at zero as specified.
++            state[-2:]=np.maximum(0.,state[-2:]+offset_s/DONE_CLOCK_MAX_S)
++        batch={IMAGE_KEYS[0]:image,'observation.state':
++               (state-np.asarray(self.stats['state_mean'],np.float32))/np.asarray(self.stats['state_std'],np.float32),
++               'action':(s['action'][i]-np.asarray(self.stats['action_mean'],np.float32))/np.asarray(self.stats['action_std'],np.float32),
++               'action_is_pad':s['action_is_pad'][i].copy()}
++        batch['action'][batch['action_is_pad']]=0.
++        assert_tensor_keys(batch,training=True)
++        return batch
++
+ 
+ def registered_pilot_checkpoint(provenance, protocol_sha256):
+     """True only for the default-off short TUNE probe checkpoint (not a 100k model).
+@@ -173,7 +314,8 @@ def registered_pilot_checkpoint(provenance, protocol_sha256):
+     candidate = provenance.get('candidate')
+     kind = probe.get('kind')
+     init_kinds = ('init_aligned_finetune_v1', 'done_positive_balanced_finetune_v1',
+-                  'done_horizon_current_only_v1', 'transition_weighted_finetune_v1')
++                  'done_horizon_current_only_v1', 'transition_weighted_finetune_v1',
++                  'done_window_finetune_v1')
+     if kind in init_kinds and not isinstance(receipt, dict):
+         # B2 was trained from scratch with the done fix and predates the
+         # standard-scratch kind label; its standard flags still register it.
+@@ -181,6 +323,8 @@ def registered_pilot_checkpoint(provenance, protocol_sha256):
+             return False
+     if kind == 'standard_aligned_scratch_v1' and candidate != 'act18-std':
+         return False
++    if kind == 'done_window_finetune_v1' and candidate != 'act18-r3dw':
++        return False
+     return bool(candidate in PILOT_CANDIDATES
+                 and kind in PILOT_KINDS
+                 and provenance.get('training_complete') is True
+diff --git a/scripts/act18_r3_data_delta.py b/scripts/act18_r3_data_delta.py
+new file mode 100644
+index 000000000..06dc84e0d
+--- /dev/null
++++ b/scripts/act18_r3_data_delta.py
+@@ -0,0 +1,260 @@
++"""R3 data dry-run: done-window positive rows, priors and truncated chunks.
++
++CPU only and read-only over the registered dataset. It builds the two exact
++ReferenceDataset views used by R3-A/R3-B (default vs done_window_ticks) and
++records the data delta before any GPU training:
++
++  * grasp positive rows 200 -> 200*K (release rows are a different skill)
++  * per-skill completion priors before/after
++  * rows whose chunk target is truncated by the earlier completion window
++  * R3-B clock-jitter eligible rows (verify_lift/hold) and offsets
++
++The registered dataset may have been retrieved without JPEG frame files (the
++E0 clock audit only needed tensors/samples). Targets, priors and labels do not
++read images, so this tool then creates a derived root of symlinked episodes and
++a manifest whose episode file list omits the absent frames.json. Every present
++tensor/sample file is still sha256-verified against the registered manifest.
++"""
++from __future__ import annotations
++
++import argparse
++import hashlib
++import json
++import os
++from pathlib import Path
++import shutil
++import subprocess
++import sys
++from datetime import datetime, timezone
++
++import numpy as np
++
++ROOT = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(ROOT))
++sys.path.insert(0, str(ROOT / 'scripts'))
++from act18_policy import (DONE_CLOCK_JITTER_PHASES, DONE_CLOCK_JITTER_SEED, ReferenceDataset)
++
++DEFAULT_DATASET_MANIFEST_SHA = '44c1c46073aa08ea028324ffe924b67d862a2f01b56f4db11afad17000a9b198'
++DEFAULT_NORMALIZATION_SHA = 'd08f8672434791ad68cf99fb36a87d76e6d089c908da7b2a27effbf729ba6ee6'
++IMAGE_FILES = ('frames.json', 'frames.json.zst')
++
++
++def sha256(path):
++    digest = hashlib.sha256()
++    with Path(path).open('rb') as stream:
++        for block in iter(lambda: stream.read(1 << 20), b''):
++            digest.update(block)
++    return digest.hexdigest()
++
++
++def read_manifest(path):
++    path = Path(path)
++    data = subprocess.check_output(['zstd', '-dc', str(path)]) if path.suffix == '.zst' else path.read_bytes()
++    return json.loads(data), data
++
++
++def derive_image_free_root(dataset, manifest, scratch):
++    """Symlink episode folders and write a manifest without absent image files."""
++    scratch = Path(scratch)
++    if scratch.exists():
++        raise ValueError('derived dry-run root already exists: %s' % scratch)
++    scratch.mkdir(parents=True)
++    derived = json.loads(json.dumps(manifest))
++    episodes = []
++    missing = set()
++    replaced = 0
++    for episode in manifest['episodes']:
++        folder = Path(dataset) / episode['path']
++        files = {}
++        needs_frames = False
++        for name, digest in episode['files'].items():
++            if not (folder / name).is_file():
++                if name not in IMAGE_FILES:
++                    raise FileNotFoundError('registered non-image file missing: %s/%s' % (folder, name))
++                missing.add(name)
++                needs_frames = True
++                continue
++            files[name] = digest
++        if not files:
++            raise ValueError('episode has no verifiable files: %s' % folder)
++        target = scratch / episode['path']
++        target.mkdir()
++        if needs_frames:
++            # Targets, priors and labels never read images. Dataset.__init__
++            # still opens frames.json, so the derived root gets an explicit
++            # empty placeholder; the image-bearing manifest keys are dropped.
++            frames = target / 'frames.json'
++            frames.write_text('[]')
++            files['frames.json'] = sha256(frames)
++            replaced += 1
++        for name, digest in files.items():
++            if name == 'frames.json':
++                continue
++            os.symlink(folder.resolve() / name, target / name)
++        entry = dict(episode)
++        entry['files'] = files
++        episodes.append(entry)
++    derived['episodes'] = episodes
++    norm = manifest['normalization']['path']
++    shutil.copyfile(Path(dataset) / norm, scratch / norm)
++    manifest_path = scratch / 'manifest.json'
++    manifest_path.write_text(json.dumps(derived))
++    return scratch, missing, manifest_path, replaced
++
++
++def counter(dataset):
++    counts = {}
++    for index, (shard, row) in enumerate(dataset.index):
++        skill = dataset.metadata[index]['skill']
++        value = float(dataset.shards[shard]['action'][row, 0, -1])
++        if value not in (0., 1.):
++            raise ValueError('binary completion target required')
++        counts.setdefault(skill, [0, 0])
++        counts[skill][0] += int(value)
++        counts[skill][1] += 1
++    return {skill: dict(positive_n=n, rows_N=total, positive_fraction=n / total)
++            for skill, (n, total) in counts.items()}
++
++
++def chunk_stats(dataset):
++    """Valid horizon length per row from the reconstructed pads."""
++    lengths = np.asarray([int((~dataset.shards[shard]['action_is_pad'][row]).sum())
++                          for shard, row in dataset.index], dtype=np.int64)
++    return lengths
++
++
++def main(argv=None):
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--dataset', type=Path, required=True,
++                        help='registered v7 dataset root (episode folders, manifest or manifest.json.zst)')
++    parser.add_argument('--manifest', type=Path,
++                        help='registered manifest (json or .zst); default dataset/manifest.json(.zst)')
++    parser.add_argument('--out', type=Path, required=True, help='new data-delta.json path')
++    parser.add_argument('--scratch', type=Path, help='derived image-free root (default next to --out)')
++    parser.add_argument('--chunk', type=int, default=8)
++    parser.add_argument('--window-ticks', type=int, default=10)
++    parser.add_argument('--jitter-s', type=float, default=1.0)
++    parser.add_argument('--expected-manifest-sha', default=DEFAULT_DATASET_MANIFEST_SHA)
++    parser.add_argument('--expected-normalization-sha', default=DEFAULT_NORMALIZATION_SHA)
++    args = parser.parse_args(argv)
++    dataset = args.dataset
++    manifest_path = args.manifest or next(
++        path for path in (dataset / 'manifest.json', dataset / 'manifest.json.zst') if path.is_file())
++    manifest, raw_manifest = read_manifest(manifest_path)
++    manifest_sha = hashlib.sha256(raw_manifest).hexdigest()
++    if args.expected_manifest_sha and manifest_sha != args.expected_manifest_sha:
++        raise ValueError('dataset manifest sha != preregistered value: %s' % manifest_sha)
++    if manifest.get('schema') != 'ugrp.act17.jpeg_dataset.v1' or not manifest.get('complete'):
++        raise ValueError('complete registered v7 dataset required')
++    norm_path = dataset / manifest['normalization']['path']
++    normalization_sha = sha256(norm_path)
++    if args.expected_normalization_sha and normalization_sha != args.expected_normalization_sha:
++        raise ValueError('normalization sha != preregistered value: %s' % normalization_sha)
++    missing = {name for episode in manifest['episodes'] for name in episode['files']
++               if not (dataset / episode['path'] / name).is_file()}
++    derived_manifest_sha = None
++    used_root = dataset
++    if missing:
++        if not missing <= set(IMAGE_FILES):
++            raise FileNotFoundError('registered files missing beyond image frames: %s' % sorted(missing))
++        scratch = args.scratch or (args.out.parent / 'derived-dataset')
++        used_root, missing, derived_path, replaced_frames = derive_image_free_root(dataset, manifest, scratch)
++        derived_manifest_sha = sha256(derived_path)
++    out = Path(args.out)
++    out.parent.mkdir(parents=True, exist_ok=True)
++    base = ReferenceDataset(used_root, 'train', chunk=args.chunk)
++    window = ReferenceDataset(used_root, 'train', chunk=args.chunk,
++                              done_window_ticks=args.window_ticks)
++    jitter = ReferenceDataset(used_root, 'train', chunk=args.chunk,
++                              done_window_ticks=args.window_ticks,
++                              done_clock_jitter_s=args.jitter_s) if args.jitter_s else None
++    base_counts, window_counts = counter(base), counter(window)
++    prior_before = base.completion_priors('uniform_episode_v1')
++    prior_after = window.completion_priors('uniform_episode_v1')
++    base_lengths, window_lengths = chunk_stats(base), chunk_stats(window)
++    if np.any(window_lengths > base_lengths):
++        raise ValueError('done window extended a chunk target')
++    truncated = np.flatnonzero(window_lengths < base_lengths)
++    h0_changed = np.flatnonzero(
++        np.asarray([base.shards[shard]['action'][row, 0, -1] != window.shards[shard]['action'][row, 0, -1]
++                    for shard, row in window.index]))
++    grasp_expected = args.window_ticks * base_counts.get('grasp', {}).get('positive_n', 0)
++    release_unchanged = window_counts.get('release') == base_counts.get('release')
++    boundaries_ok = True
++    if args.window_ticks:
++        receipt = window.done_window_receipt
++        # Every added row must sit in the same episode+skill as its anchor and
++        # be 0.1 s spaced; the helper guarantees it, recheck the aggregate.
++        added = receipt['added_rows']
++        boundaries_ok = receipt['added_rows'] == receipt['window_rows'] - receipt['positive_rows']
++    else:
++        receipt = dict(window_ticks=0, positive_rows=0, window_rows=0, added_rows=0,
++                       stopped_by_boundary=0, episodes=0)
++    jitter_info = None
++    if jitter is not None:
++        eligible = np.asarray([row.get('teacher_phase') in DONE_CLOCK_JITTER_PHASES
++                               for row in jitter.metadata], dtype=bool)
++        offsets = jitter.clock_jitter_offsets_s
++        phases = {}
++        for row, keep in zip(jitter.metadata, eligible):
++            if keep:
++                phases[row['teacher_phase']] = phases.get(row['teacher_phase'], 0) + 1
++        jitter_info = dict(done_clock_jitter_s=args.jitter_s,
++                           rng_seed=DONE_CLOCK_JITTER_SEED,
++                           augmented_rows=jitter.clock_jitter_rows,
++                           rows_by_phase=phases,
++                           ineligible_nonzero=int(np.count_nonzero(offsets[~eligible])),
++                           eligible_min_s=float(offsets[eligible].min()) if eligible.any() else None,
++                           eligible_max_s=float(offsets[eligible].max()) if eligible.any() else None,
++                           eligible_mean_s=float(offsets[eligible].mean()) if eligible.any() else None)
++    checks = dict(
++        grasp_window_rows_equal_window_ticks_times_base=window_counts.get('grasp', {}).get('positive_n') == grasp_expected,
++        release_positives_untouched=release_unchanged,
++        window_only_truncates=bool(np.all(window_lengths <= base_lengths)),
++        window_added_rows_match_receipt=boundaries_ok,
++        prior_both_classes_per_skill=all(0 < value['positive_fraction'] < 1
++                                         for value in prior_after.values()),
++        jitter_outside_target_phases_zero=(jitter_info is None or jitter_info['ineligible_nonzero'] == 0))
++    if not all(checks.values()):
++        raise ValueError('R3 data dry-run checks failed: %s' % checks)
++    report = dict(
++        schema='ugrp.act18.r3_data_delta.v1',
++        generated_utc=datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
++        source=dict(dataset=str(dataset), manifest_path=str(manifest_path),
++                    manifest_sha256=manifest_sha, normalization_sha256=normalization_sha,
++                    used_root=str(used_root), derived_root=bool(derived_manifest_sha),
++                    derived_manifest_sha256=derived_manifest_sha,
++                    missing_files=sorted(missing),
++                    replaced_image_metadata_rows=replaced_frames,
++                    note=('image-free derived root: frozen image frames were not part of the '
++                          'local retrieval; targets/priors/labels read only tensors+samples, whose '
++                          'hashes are verified against the registered manifest')
++                    if derived_manifest_sha else 'complete dataset used directly'),
++        flags=dict(chunk=args.chunk, done_window_ticks=args.window_ticks,
++                   done_clock_jitter_s=args.jitter_s, done_clock_jitter_seed=DONE_CLOCK_JITTER_SEED),
++        rows=dict(train_rows=len(base), train_episodes=len(base.episode_indices)),
++        positives=dict(before=base_counts, after=window_counts,
++                       grasp_expected=window_counts.get('grasp', {}).get('positive_n'),
++                       receipt=receipt),
++        prior=dict(before=prior_before, after=prior_after),
++        chunk_targets=dict(
++            rows_with_earlier_truncation=int(len(truncated)),
++            added_padded_slots=int((base_lengths - window_lengths).sum()),
++            rows_with_h0_done_change=int(len(h0_changed)),
++            max_valid_horizons_before=int(base_lengths.max()),
++            max_valid_horizons_after=int(window_lengths.max()),
++            samples=[dict(index=int(index), skill=base.metadata[index]['skill'],
++                          teacher_phase=base.metadata[index]['teacher_phase'],
++                          before=int(base_lengths[index]), after=int(window_lengths[index]))
++                     for index in truncated[:20]]),
++        jitter=jitter_info,
++        checks=checks,
++        reproduce=sys.argv)
++    out.write_text(json.dumps(report, indent=2) + '\n')
++    print(json.dumps(dict(out=str(out), positives=report['positives'],
++                          prior=report['prior'], chunk_targets=report['chunk_targets'],
++                          jitter=report['jitter']), indent=2))
++
++
++if __name__ == '__main__':
++    main()
+diff --git a/scripts/act18_r3_offline_gate.py b/scripts/act18_r3_offline_gate.py
+new file mode 100644
+index 000000000..5c16b47f7
+--- /dev/null
++++ b/scripts/act18_r3_offline_gate.py
+@@ -0,0 +1,450 @@
++"""R3 offline gate g1-g5 (default OFF, CPU only, no simulator).
++
++The spec (act-C2-R3-spec.md section 4) forbids GPU evaluation unless every gate
++passes. This tool prepares and runs the CPU gates on Oracle:
++
++  pilot  g1/g2/g3: teacher-state temporal-ensemble replay of the 4 pilot worlds
++                   (same TE coefficient, .65 threshold and window definitions
++                   as E1; no simulator, no teacher command execution)
++  c2b    g4:       C2b S2(v7) student stop-state done firing (reads the C2b
++                   owner's adapter summary; never re-infers on Oracle)
++  e0     g5:       E0 open-loop TRAIN4 teacher terminal rows (either evaluates
++                   an existing frames.jsonl.gz or runs CPU positive-row
++                   inference from the full dataset + checkpoint)
++  report:          combines the three receipts; PASS = g1..g5 all true
++
++R8 is the validation checkpoint for this tool: with R8, g1 must fail (done head
++is the known C2 defect), g2/g3 must pass, and the E0 frames evaluator must read
++4/4. The R3 checkpoint is normally absent at prep time.
++"""
++from __future__ import annotations
++
++import argparse
++import gzip
++from datetime import datetime, timezone
++import hashlib
++import json
++import math
++from pathlib import Path
++import subprocess
++import sys
++import time
++
++import numpy as np
++
++ROOT = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(ROOT))
++sys.path.insert(0, str(ROOT / 'scripts'))
++from harness import grasp_act_contract as c
++
++TE_COEFF = .01
++DONE_THRESHOLD = .65
++ONSET_TOLERANCE = 5
++WINDOW_TAIL_S = 1.0
++TRAIN4_SEEDS = (88600, 88601, 88602, 88603)
++EXPECTED_R8_SHA = 'e1ec659216e289e1e5e9bb48ac597763ad8d1a088c3c85eb3205336307bb8d5a'
++DEFAULT_PILOT_ROOT = Path('/home/ubuntu/UGRP/outputs/reports/act-chunk8-pilot/act-chunk8-pilot')
++DEFAULT_EVIDENCE_TAR = Path('/home/ubuntu/UGRP/outputs/reports/act-chunk8-pilot/act-chunk8-pilot-evidence.tar.gz')
++
++
++def sha256(path):
++    digest = hashlib.sha256()
++    with Path(path).open('rb') as stream:
++        for block in iter(lambda: stream.read(1 << 20), b''):
++            digest.update(block)
++    return digest.hexdigest()
++
++
++def utc_now():
++    return datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
++
++
++def read_json(path):
++    return json.loads(Path(path).read_text())
++
++
++def read_rows(path):
++    return [json.loads(line) for line in Path(path).read_text().splitlines() if line.strip()]
++
++
++def write_json(path, value):
++    path = Path(path)
++    path.parent.mkdir(parents=True, exist_ok=True)
++    path.write_text(json.dumps(value, indent=2, allow_nan=False) + '\n')
++
++
++def require_enabled(args):
++    if not args.enabled:
++        raise SystemExit('R3 offline gate is default OFF; pass --enabled')
++
++
++class TemporalEnsemble:
++    """Numpy copy of the frozen evaluation-time ensemble (coeff .01)."""
++
++    def __init__(self, coeff=TE_COEFF):
++        if not math.isfinite(coeff) or coeff < 0:
++            raise ValueError('nonnegative finite ensemble coefficient required')
++        self.coeff = coeff
++        self.chunks = []
++
++    def step(self, chunk):
++        values = np.asarray(chunk, dtype=float)
++        if values.shape != (c.CHUNK, c.ACTION_DIM) or not np.isfinite(values).all():
++            raise ValueError('invalid 8x14 chunk')
++        self.chunks.append(values)
++        weights = np.exp(-self.coeff * np.arange(len(self.chunks)))
++        averaged = np.average([item[0] for item in self.chunks], axis=0, weights=weights)
++        action = c.decode_action(averaged)
++        self.chunks = [item[1:] for item in self.chunks if len(item) > 1]
++        return action
++
++
++def window_bounds(teacher_rows):
++    phases = [row['teacher_phase'] for row in teacher_rows]
++    times = [row['t'] for row in teacher_rows]
++    close = phases.index('close')
++    lookback = phases.index('lookback')
++    lookback_return = phases.index('lookback_return')
++    tail = times[lookback_return] + WINDOW_TAIL_S
++    after = [i for i, t in enumerate(times) if t <= tail + 1e-9]
++    if not after or after[-1] < lookback_return:
++        raise ValueError('window tail truncated')
++    hold = [i for i, phase in enumerate(phases) if phase == 'hold']
++    verify = [i for i, phase in enumerate(phases) if phase == 'verify_lift']
++    if not hold or not verify:
++        raise ValueError('hold/verify_lift phases required')
++    return {'close_tick': close, 'end_tick': after[-1], 'lookback_tick': lookback,
++            'lookback_return_tick': lookback_return, 'hold_end_tick': hold[-1],
++            'verify_lift_tick': verify[0], 'ticks': after[-1] - close + 1}
++
++
++def aligned_world(world_dir):
++    world_dir = Path(world_dir)
++    student = read_rows(world_dir / 'student-r1.jsonl')
++    teacher = read_rows(world_dir / 'teacher-r1.jsonl')
++    if not student or len(student) != len(teacher):
++        raise ValueError('%s: student/teacher row count mismatch' % world_dir)
++    for index, (obs, label) in enumerate(zip(student, teacher)):
++        if obs['sample_id'] != label['sample_id'] or abs(obs['t'] - label['t']) > 1e-6:
++            raise ValueError('%s: student/teacher misaligned at row %d' % (world_dir, index))
++    return student, teacher
++
++
++def load_world_images(world_dir, student):
++    world_dir = Path(world_dir)
++    refs = {}
++    for row in student:
++        for ref in row['rgb']:
++            refs[ref['path']] = ref['sha256']
++    images = {}
++    for rel, digest in sorted(refs.items()):
++        path = (world_dir / rel).resolve()
++        if not path.is_relative_to(world_dir.resolve()) or not path.is_file():
++            raise ValueError('missing in-episode JPEG: %s' % rel)
++        data = path.read_bytes()
++        if hashlib.sha256(data).hexdigest() != digest:
++            raise ValueError('JPEG hash mismatch: %s' % rel)
++        images[rel] = data
++    manifest = hashlib.sha256('\n'.join('%s %s' % (path, refs[path]) for path in sorted(refs)).encode())
++    return images, {'files': len(refs), 'sha256': manifest.hexdigest()}
++
++
++def chunk_prediction(actor, observation, images):
++    jpegs = [images[ref['path']] for ref in observation['rgb']]
++    values = np.asarray(actor.predict(observation, jpegs), dtype=float)
++    if values.shape != (c.CHUNK, c.ACTION_DIM) or not np.isfinite(values).all():
++        raise ValueError('Actor.predict did not return finite 8x14')
++    return values
++
++
++def checkpoint_identity(root):
++    root = Path(root)
++    hashes = read_json(root / 'SHA256.json')
++    if set(hashes) != {'model.safetensors', 'config.json', 'adapter.json'}:
++        raise ValueError('checkpoint inventory mismatch')
++    if any(sha256(root / name) != digest for name, digest in hashes.items()):
++        raise ValueError('checkpoint artifact hash mismatch')
++    adapter = read_json(root / 'adapter.json')
++    provenance = adapter.get('provenance') or {}
++    probe = provenance.get('probe') or {}
++    if (adapter.get('schema') != 'ugrp.act18.adapter.v1' or adapter.get('chunk') != 8
++            or adapter.get('done_mode') != 'balanced_bce_v1'
++            or adapter.get('image_mode') != 'current_full_v1'):
++        raise ValueError('chunk8 balanced-BCE act18 adapter required')
++    if provenance.get('candidate') == 'R8' and provenance.get('step') == 100000:
++        kind = 'R8-reference-validation'
++    elif (provenance.get('candidate') == 'act18-r3dw'
++          and probe.get('kind') == 'done_window_finetune_v1'
++          and probe.get('packaging_eligible') is False and provenance.get('training_complete') is True
++          and type(provenance.get('step')) is int and 1 <= provenance['step'] <= 20000):
++        kind = 'R3-done-window-probe'
++    else:
++        raise ValueError('only R8 or the registered R3 done-window probe may use this gate')
++    return dict(dir=str(root), model_sha256=hashes['model.safetensors'],
++                adapter_sha256=hashes['adapter.json'], candidate=provenance.get('candidate'),
++                step=provenance.get('step'), kind=kind,
++                probe_kind=probe.get('kind'), packaging_eligible=False)
++
++
++def load_actor(root):
++    from act18_policy import Actor
++    identity = checkpoint_identity(root)
++    return Actor.load(root, device='cpu'), identity
++
++
++def pilot_metrics(rows, bounds, lookback_tick):
++    onset = next((row['index'] for row in rows if row['onset']), None)
++    delta = None if onset is None else onset - lookback_tick
++    band = [row for row in rows if bounds['hold_end_tick'] - 10 <= row['index'] <= bounds['hold_end_tick'] + 10]
++    before = [row for row in rows if row['index'] < bounds['verify_lift_tick']]
++    return dict(
++        ticks=len(rows), onset_tick=onset, delta_vs_lookback_ticks=delta,
++        done_max_hold_pm10=max((row['te']['done_score'] for row in band), default=None),
++        done_max_before_verify=max((row['te']['done_score'] for row in before), default=None),
++        done_fire_before_verify=any(row['te']['done_score'] >= DONE_THRESHOLD for row in before),
++        done_fire_hold_pm10=next((row['index'] for row in band
++                                  if row['te']['done_score'] >= DONE_THRESHOLD), None))
++
++
++def run_pilot(args):
++    prereg = read_json(args.prereg)
++    gate = prereg['offline_gate']
++    pilot = gate['pilot_inputs']
++    pilot_root = Path(args.pilot_root or pilot['pilot_root'])
++    evidence = Path(args.evidence_tar or DEFAULT_EVIDENCE_TAR)
++    if sha256(evidence) != pilot['evidence_tar_sha256']:
++        raise ValueError('pilot evidence tar sha mismatch')
++    out = Path(args.out)
++    if out.exists():
++        raise ValueError('gate output root already exists: %s' % out)
++    out.mkdir(parents=True)
++    actor, identity = load_actor(args.checkpoint)
++    worlds = []
++    for world in pilot['worlds']:
++        world_dir = pilot_root / world['group'] / world['world']
++        student_path = world_dir / 'student-r1.jsonl'
++        teacher_path = world_dir / 'teacher-r1.jsonl'
++        if sha256(student_path) != world['student_r1_sha256'] or sha256(teacher_path) != world['teacher_r1_sha256']:
++            raise ValueError('pilot input hash mismatch: %s/%s' % (world['group'], world['world']))
++        student, teacher = aligned_world(world_dir)
++        bounds = window_bounds(teacher)
++        images, rgb = load_world_images(world_dir, student)
++        ensemble = TemporalEnsemble()
++        rows = []
++        started = time.monotonic()
++        for index in range(bounds['close_tick'], bounds['end_tick'] + 1):
++            observation = student[index]
++            chunk = chunk_prediction(actor, observation, images)
++            action = ensemble.step(chunk)
++            rows.append(dict(index=index, t=observation['t'], teacher_phase=teacher[index]['teacher_phase'],
++                             te=action, onset=bool(all(wheel < 0 for wheel in action['wheels']))))
++        metrics = pilot_metrics(rows, bounds, bounds['lookback_tick'])
++        metrics.update(seed=world['seed'], window=bounds, rgb=rgb,
++                       student_r1_sha256=world['student_r1_sha256'],
++                       teacher_r1_sha256=world['teacher_r1_sha256'],
++                       wall_s=round(time.monotonic() - started, 1))
++        worlds.append(dict(group=world['group'], world=world['world'], **metrics))
++        with (out / ('rows-%s-%s.jsonl' % (world['group'], world['world']))).open('x') as stream:
++            for row in rows:
++                stream.write(json.dumps(dict(index=row['index'], t=row['t'],
++                                             teacher_phase=row['teacher_phase'],
++                                             done_score=round(row['te']['done_score'], 6),
++                                             done=row['te']['done'], wheels=row['te']['wheels'],
++                                             onset=row['onset'])) + '\n')
++        del images
++    g1 = sum(1 for world in worlds if (world['done_max_hold_pm10'] or 0.) >= DONE_THRESHOLD) >= 3
++    g2 = not any(world['done_fire_before_verify'] for world in worlds)
++    g3 = sum(1 for world in worlds
++             if world['delta_vs_lookback_ticks'] is not None
++             and abs(world['delta_vs_lookback_ticks']) <= ONSET_TOLERANCE) >= 3
++    report = dict(schema='ugrp.act18.r3_offline_gate.pilot.v1', generated_utc=utc_now(),
++                  checkpoint=identity, prereg=dict(path=str(args.prereg), sha256=sha256(args.prereg)),
++                  pilot_root=str(pilot_root), evidence=dict(path=str(evidence), sha256=sha256(evidence)),
++                  worlds=worlds, gates=dict(g1=g1, g2=g2, g3=g3),
++                  definitions=dict(g1='max TE done in hold end +/-10 >= .65 in >=3/4',
++                                   g2='no TE done >= .65 before verify_lift start (0/4)',
++                                   g3='|onset - lookback start| <= 5 ticks in >=3/4'),
++                  reproduce=sys.argv)
++    write_json(out / 'pilot.json', report)
++    print(json.dumps(dict(gates=report['gates'], checkpoint=identity['kind']), indent=2))
++
++
++def run_c2b(args):
++    value = read_json(args.c2b_summary)
++    if value.get('schema') != 'ugrp.act18.r3_c2b_gate_input.v1':
++        raise ValueError('C2b adapter schema required')
++    if not isinstance(value.get('source_sha'), str) or len(value['source_sha']) < 7:
++        raise ValueError('C2b source sha required')
++    if args.checkpoint and value.get('checkpoint_sha256') != args.checkpoint:
++        raise ValueError('C2b checkpoint sha does not match the R3 checkpoint')
++    worlds = value.get('worlds') or []
++    lift = [row for row in worlds if row.get('role') == 'lift']
++    control = [row for row in worlds if row.get('role') == 'control']
++    if len(lift) != 6 or len(control) != 2:
++        raise ValueError('C2b gate expects exactly 6 lift and 2 control worlds')
++    if any(type(row.get('done_fired')) is not bool for row in worlds):
++        raise ValueError('done_fired must be boolean')
++    g4 = sum(row['done_fired'] for row in lift) >= 4 and sum(row['done_fired'] for row in control) <= 1
++    report = dict(schema='ugrp.act18.r3_offline_gate.c2b.v1', generated_utc=utc_now(),
++                  c2b_summary=dict(path=str(args.c2b_summary), sha256=sha256(args.c2b_summary)),
++                  source_sha=value['source_sha'], checkpoint_sha256=value.get('checkpoint_sha256'),
++                  lift_fired=sum(row['done_fired'] for row in lift), lift_N=len(lift),
++                  control_fired=sum(row['done_fired'] for row in control), control_N=len(control),
++                  worlds=worlds, gates=dict(g4=g4),
++                  definition='lift fired >=4/6 and control fired <=1/2', reproduce=sys.argv)
++    out = Path(args.out)
++    if out.exists():
++        raise ValueError('gate output root already exists: %s' % out)
++    out.mkdir(parents=True)
++    write_json(out / 'c2b.json', report)
++    print(json.dumps(report['gates'], indent=2))
++
++
++def e0_from_frames(path):
++    rows = []
++    with gzip.open(path, 'rt') as stream:
++        for line in stream:
++            if line.strip():
++                rows.append(json.loads(line))
++    grouped = {}
++    for row in rows:
++        grouped.setdefault(int(row['seed']), []).append(row)
++    missing = [seed for seed in TRAIN4_SEEDS if seed not in grouped]
++    if missing:
++        raise ValueError('TRAIN4 seeds missing from open-loop frames: %s' % missing)
++    episodes = []
++    for seed in TRAIN4_SEEDS:
++        grasp = [row for row in grouped[seed] if row['skill'] == 'grasp']
++        positives = [row for row in grasp if float(row['teacher'][13]) >= .5]
++        if len(positives) != 1:
++            raise ValueError('seed %d has %d hold-end done positives (expected 1)' % (seed, len(positives)))
++        positive = positives[0]
++        probability = float(positive['prediction'][13])
++        episodes.append(dict(seed=seed, t=positive['t'],
++                             teacher_phase=positive.get('teacher_phase'),
++                             done_probability=round(probability, 6),
++                             done_ge_065=probability >= DONE_THRESHOLD,
++                             rows=len(grouped[seed]), grasp_rows=len(grasp)))
++    return dict(mode='existing-frames', rows=len(rows), episodes=episodes)
++
++
++def e0_from_inference(dataset, checkpoint):
++    from act18_policy import ReferenceDataset
++    dataset = Path(dataset)
++    data = ReferenceDataset(dataset, 'train', chunk=8)
++    positives = []
++    for seed in TRAIN4_SEEDS:
++        indices = [index for index, row in enumerate(data.metadata)
++                   if row['seed'] == seed and row['skill'] == 'grasp'
++                   and float(data.shards[data.index[index][0]]['action'][data.index[index][1], 0, -1]) == 1.]
++        if len(indices) != 1:
++            raise ValueError('seed %d has %d grasp completion rows (expected 1)' % (seed, len(indices)))
++        positives.append((seed, indices[0]))
++    import torch
++    torch.set_num_threads(2)
++    actor, identity = load_actor(checkpoint)
++    episodes = []
++    for seed, index in positives:
++        meta = data.metadata[index]
++        item = data[index]
++        batch = {key: torch.from_numpy(np.asarray(value)).unsqueeze(0) for key, value in item.items()
++                 if key.startswith('observation.')}
++        with torch.inference_mode():
++            normalized = actor.policy.predict_action_chunk(batch)[0].cpu().numpy()
++        decoded = actor.decode(normalized)
++        probability = float(decoded[0, -1])
++        episodes.append(dict(seed=seed, t=meta['t'], teacher_phase=meta.get('teacher_phase'),
++                             done_probability=round(probability, 6),
++                             done_ge_065=probability >= DONE_THRESHOLD,
++                             sample_id=meta['sample_id']))
++    return dict(mode='cpu-inference', checkpoint=identity, dataset=str(dataset),
++                dataset_manifest_sha256=sha256(dataset / 'manifest.json')
++                if (dataset / 'manifest.json').is_file() else sha256(dataset / 'manifest.json.zst'),
++                episodes=episodes,
++                rows=sum(ep.get('rows', 0) for ep in episodes))
++
++
++def run_e0(args):
++    if args.frames is not None:
++        if args.dataset is not None or args.checkpoint is not None:
++            raise ValueError('e0 takes either --frames or --dataset/--checkpoint')
++        result = e0_from_frames(args.frames)
++    else:
++        if args.dataset is None or args.checkpoint is None:
++            raise ValueError('e0 needs --dataset and --checkpoint for CPU inference')
++        result = e0_from_inference(args.dataset, args.checkpoint)
++    g5 = all(row['done_ge_065'] for row in result['episodes'])
++    report = dict(schema='ugrp.act18.r3_offline_gate.e0.v1', generated_utc=utc_now(),
++                  frames=dict(path=str(args.frames), sha256=sha256(args.frames)) if args.frames else None,
++                  **result, gates=dict(g5=g5),
++                  definition='TRAIN4 teacher terminal done probability >= .65 for 4/4',
++                  reproduce=sys.argv)
++    out = Path(args.out)
++    if out.exists():
++        raise ValueError('gate output root already exists: %s' % out)
++    out.mkdir(parents=True)
++    write_json(out / 'e0.json', report)
++    print(json.dumps(report['gates'], indent=2))
++
++
++def run_report(args):
++    gate_dir = Path(args.gate_dir)
++    paths = dict(pilot=gate_dir / 'pilot' / 'pilot.json',
++                 c2b=gate_dir / 'c2b' / 'c2b.json',
++                 e0=gate_dir / 'e0' / 'e0.json')
++    missing = [name for name, path in paths.items() if not path.is_file()]
++    if missing:
++        raise FileNotFoundError('missing gate receipts: %s' % missing)
++    receipts = {name: read_json(path) for name, path in paths.items()}
++    gates = dict(g1=bool(receipts['pilot']['gates']['g1']),
++                 g2=bool(receipts['pilot']['gates']['g2']),
++                 g3=bool(receipts['pilot']['gates']['g3']),
++                 g4=bool(receipts['c2b']['gates']['g4']),
++                 g5=bool(receipts['e0']['gates']['g5']))
++    passed = all(gates.values())
++    report = dict(schema='ugrp.act18.r3_offline_gate.summary.v1', generated_utc=utc_now(),
++                  gates=gates, PASS=passed,
++                  rule='PASS = g1 AND g2 AND g3 AND g4 AND g5; any failure closes R3 as FAIL and forbids GPU evaluation',
++                  receipts={name: dict(path=str(path), sha256=sha256(path)) for name, path in paths.items()},
++                  checkpoint=receipts['pilot']['checkpoint'],
++                  reproduce=sys.argv)
++    write_json(gate_dir / 'summary.json', report)
++    print(json.dumps(dict(gates=gates, PASS=passed), indent=2))
++
++
++def main(argv=None):
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('stage', choices=('pilot', 'c2b', 'e0', 'report'))
++    parser.add_argument('--enabled', action='store_true')
++    parser.add_argument('--checkpoint', type=Path)
++    parser.add_argument('--prereg', type=Path,
++                        default=ROOT / 'experiments/2026-10-17-act18/R3_DONEWINDOW_PREREG.json')
++    parser.add_argument('--pilot-root', type=Path)
++    parser.add_argument('--evidence-tar', type=Path)
++    parser.add_argument('--out', type=Path)
++    parser.add_argument('--c2b-summary', type=Path)
++    parser.add_argument('--frames', type=Path)
++    parser.add_argument('--dataset', type=Path)
++    parser.add_argument('--gate-dir', type=Path)
++    args = parser.parse_args(argv)
++    require_enabled(args)
++    if args.stage != 'report' and args.out is None:
++        parser.error('--out is required')
++    if args.stage == 'pilot' and args.checkpoint is None:
++        parser.error('--checkpoint is required')
++    if args.stage == 'pilot':
++        run_pilot(args)
++    elif args.stage == 'c2b':
++        if args.c2b_summary is None:
++            parser.error('--c2b-summary is required')
++        run_c2b(args)
++    elif args.stage == 'e0':
++        run_e0(args)
++    else:
++        if args.gate_dir is None:
++            parser.error('--gate-dir is required')
++        run_report(args)
++
++
++if __name__ == '__main__':
++    main()
+diff --git a/scripts/act18_train.py b/scripts/act18_train.py
+index bead5ce6b..7854fdf38 100644
+--- a/scripts/act18_train.py
++++ b/scripts/act18_train.py
+@@ -24,18 +24,20 @@ ROOT = Path(__file__).resolve().parents[1]
+ 
+ def validate_probe_options(candidate, init_checkpoint, steps, post_close_weight, pre_close_weight,
+                            done_positive_batch_fraction=None, base_smooth_window=None, val_select=False,
+-                           done_current_step_only=False):
++                           done_current_step_only=False, done_window_ticks=None, done_clock_jitter_s=None):
+     """Default-off pilot options; never silently mixes with the R8/R100 reference pair."""
+     supplied = [value is not None for value in
+                 (init_checkpoint, steps, post_close_weight, pre_close_weight, done_positive_batch_fraction,
+-                 base_smooth_window)] + ([True] if val_select else [])
++                 base_smooth_window, done_window_ticks, done_clock_jitter_s)] + ([True] if val_select else [])
+     pilot_only = [value is not None for value in
+                   (init_checkpoint, steps, post_close_weight, pre_close_weight, done_positive_batch_fraction)]
+     if candidate in PILOT_CANDIDATES:
+         if steps is None:
+             raise ValueError(candidate+' requires --steps')
+-        if candidate in (TUNE_CANDIDATE, 'act18-doneb1') and init_checkpoint is None:
++        if candidate in (TUNE_CANDIDATE, 'act18-doneb1', 'act18-r3dw') and init_checkpoint is None:
+             raise ValueError(candidate+' requires --init-checkpoint')
++        if candidate == 'act18-r3dw' and done_window_ticks is None:
++            raise ValueError(candidate+' requires --done-window-ticks')
+     elif candidate == 'act18-co':
+         if any(pilot_only):
+             raise ValueError('co-training does not combine with pilot options')
+@@ -60,6 +62,20 @@ def validate_probe_options(candidate, init_checkpoint, steps, post_close_weight,
+         raise ValueError('--val-select requires a pilot candidate')
+     if done_current_step_only and candidate not in PILOT_CANDIDATES:
+         raise ValueError('--done-current-step-only requires a pilot candidate')
++    if done_window_ticks is not None:
++        if candidate != 'act18-r3dw':
++            raise ValueError('--done-window-ticks requires --candidate act18-r3dw')
++        if type(done_window_ticks) is not int or not 1 <= done_window_ticks <= 20:
++            raise ValueError('--done-window-ticks must be an integer within [1, 20]')
++    if done_clock_jitter_s is not None:
++        if candidate != 'act18-r3dw':
++            raise ValueError('--done-clock-jitter-s requires --candidate act18-r3dw')
++        if done_window_ticks is None:
++            raise ValueError('--done-clock-jitter-s requires --done-window-ticks')
++        if (not isinstance(done_clock_jitter_s, (int, float))
++                or isinstance(done_clock_jitter_s, bool)
++                or not 0 < done_clock_jitter_s <= 2.):
++            raise ValueError('--done-clock-jitter-s must be within (0, 2] seconds')
+     return steps
+ 
+ 
+@@ -111,6 +127,11 @@ def main():
+     # existing balanced BCE weights (0.5/prior vs 0.5/(1-prior) = 361:1) stay
+     # the harness implementation, so action losses are unchanged.
+     p.add_argument('--done-positive-batch-fraction', type=float)
++    # R3 done-window (default OFF): expand the grasp completion labels over the
++    # K-1 immediately preceding same-episode/skill rows at 0.1 s spacing.
++    p.add_argument('--done-window-ticks', type=int)
++    # R3-B (default OFF): add U(-s,+s) seconds to verify_lift/hold clock inputs.
++    p.add_argument('--done-clock-jitter-s', type=float)
+     # B2 standard alignment (default OFF): act-plus-plus smooths the mobile base
+     # action with a per-episode moving average at data-load time.
+     p.add_argument('--base-smooth-window', type=int)
+@@ -166,9 +187,11 @@ def main():
+                                              a.post_close_weight, a.pre_close_weight,
+                                              a.done_positive_batch_fraction,
+                                              a.base_smooth_window, a.val_select,
+-                                             a.done_current_step_only) or protocol['steps']
++                                             a.done_current_step_only,
++                                             a.done_window_ticks, a.done_clock_jitter_s) or protocol['steps']
+     if cotrain and (a.post_close_weight is not None or a.pre_close_weight is not None
+-                    or a.done_positive_batch_fraction is not None or a.done_current_step_only):
++                    or a.done_positive_batch_fraction is not None or a.done_current_step_only
++                    or a.done_window_ticks is not None or a.done_clock_jitter_s is not None):
+         raise ValueError('co-training does not combine with tuning options')
+     if cotrain and a.candidate not in ('act18-co', 'act18-loop'):
+         raise ValueError('--cotrain-native requires --candidate act18-co or act18-loop')
+@@ -184,6 +207,8 @@ def main():
+             raise ValueError('--lr override must be within [1e-7, 1e-4]')
+     done_positive_fraction = a.done_positive_batch_fraction
+     weighted = a.post_close_weight is not None or a.pre_close_weight is not None
++    if weighted and (a.done_window_ticks is not None or a.done_clock_jitter_s is not None):
++        raise ValueError('R3 done-window options do not combine with post-close weighting')
+     sampling = (('cotrain_transition_v1' if a.transition_weight is not None else 'cotrain_v1')
+                 if cotrain else ('weighted_post_close_v1' if weighted else 'uniform_episode_v1'))
+     if cotrain:
+@@ -199,7 +224,9 @@ def main():
+     else:
+         data = ReferenceDataset(a.dataset, 'train', chunk=CANDIDATES[a.candidate],
+                                 base_smooth_window=a.base_smooth_window,
+-                                done_horizon='current_only' if a.done_current_step_only else 'all')
++                                done_horizon='current_only' if a.done_current_step_only else 'all',
++                                done_window_ticks=int(a.done_window_ticks or 0),
++                                done_clock_jitter_s=a.done_clock_jitter_s)
+     positive_indices = done_positive_indices(data) if done_positive_fraction is not None else None
+     if (set(data.manifest['eligible_train_seeds'])!=set(protocol['train_seeds'])
+             or original_sha256(a.dataset/'manifest.json')!=queue['dataset_manifest_sha256']):
+@@ -305,7 +332,9 @@ def main():
+             condition_token=dict(default=[1.0,0.0],order=['v7','act16w'],dim=2),
+             note='v7 TRAIN200 + act16w TRAIN32; condition token appended to state; done head trained separately'))
+     if a.candidate in PILOT_CANDIDATES:
+-        if a.done_current_step_only:
++        if a.candidate == 'act18-r3dw':
++            probe_kind='done_window_finetune_v1'
++        elif a.done_current_step_only:
+             probe_kind='done_horizon_current_only_v1'
+         elif a.init_checkpoint is not None:
+             probe_kind=('transition_weighted_finetune_v1' if a.transition_weight is not None
+@@ -327,6 +356,13 @@ def main():
+             base_smooth_window=a.base_smooth_window,
+             val_select=a.val_select,
+             done_current_step_only=a.done_current_step_only,lr_override=a.lr,
++            done_window_ticks=int(a.done_window_ticks or 0),
++            done_window_skill='grasp' if a.done_window_ticks else None,
++            done_window_receipt=(data.done_window_receipt if a.done_window_ticks else None),
++            done_clock_jitter_s=a.done_clock_jitter_s,
++            done_clock_jitter_seed=(20261017 if a.done_clock_jitter_s is not None else None),
++            done_clock_jitter_rows=int(getattr(data,'clock_jitter_rows',0)),
++            completion_prior=priors,
+             note='short default-off pilot probe; never packaged or pooled with R8/R100')
+         config.update(probe=probe)
+     report=dict(**config,status='running',complete=False,steps_completed=0,
+diff --git a/tests/test_act18_r3_donewindow.py b/tests/test_act18_r3_donewindow.py
+new file mode 100644
+index 000000000..26faf1f45
+--- /dev/null
++++ b/tests/test_act18_r3_donewindow.py
+@@ -0,0 +1,247 @@
++"""R3 done-window and clock-jitter probe (default OFF) contract tests.
++
++Spec: outputs/reports/claude-arch-parallel-20261019/act-C2-R3-spec.md section 4.
++The five tests below are the pre-registered CPU checks for R3-A/R3-B:
++  1. flags 0/None keep data, prior and targets byte identical
++  2. K=10 makes exactly 200*10 grasp rows positive (200*9 added)
++  3. the window never crosses an episode or skill boundary
++  4. the policy input whitelist and shapes are unchanged
++  5. R3-B jitter changes only verify_lift/hold clock inputs
++"""
++import json
++from pathlib import Path
++import sys
++
++import numpy as np
++import pytest
++
++ROOT = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(ROOT / 'scripts'))
++from act18_policy import (DONE_CLOCK_JITTER_PHASES, ReferenceDataset, expand_done_window,
++                          extend_targets, registered_pilot_checkpoint)
++from act18_train import validate_probe_options
++from harness import grasp_act_contract as contract
++from harness.grasp_act_data import TRAIN_KEYS
++
++
++def _jpeg_bytes():
++    """One real 640x480 JPEG so Dataset.__getitem__ can decode the current frame."""
++    from io import BytesIO
++    from PIL import Image
++    buffer = BytesIO()
++    Image.new('RGB', (640, 480), (12, 34, 56)).save(buffer, format='JPEG', quality=60)
++    return buffer.getvalue()
++
++
++def _fixture(tmp_path, *, episodes=2, seed_base=99000):
++    import hashlib
++    root = tmp_path / 'dataset'
++    root.mkdir(parents=True)
++    frame = root / 'frame.jpg'
++    frame.write_bytes(_jpeg_bytes())
++    frame_sha = hashlib.sha256(frame.read_bytes()).hexdigest()
++    manifest = dict(schema='ugrp.act17.jpeg_dataset.v1', complete=True, cohort='test',
++                    normalization=None, episodes=[], eligible_train_seeds=[])
++    for episode in range(episodes):
++        seed = seed_base + episode
++        stages = ['approach', 'approach', 'alignment', 'alignment'] + ['grasp'] * 12 + ['release'] * 3
++        phases = ['start', 'fold', 'align', 'align'] + (
++            ['hover', 'descent', 'close'] + ['lift', 'lift_settle', 'lookback_pose', 'lookback',
++                                             'lookback_settle', 'verify_lift', 'hold', 'hold',
++                                             'hold', 'hold', 'hold', 'hold'])[:12] + ['backoff'] * 3
++        skills = ['grasp'] * 16 + ['release'] * 3
++        rows = len(stages)
++        states = np.zeros((rows, contract.CONTEXT_DIM), np.float32)
++        for index in range(rows):
++            states[index] = np.linspace(0., 1., contract.CONTEXT_DIM, dtype=np.float32)
++            states[index, -2:] = np.array([min(120., index * .1) / 120.,
++                                           min(120., index * .1) / 120.], np.float32)
++        actions = np.zeros((rows, 1, contract.ACTION_DIM), np.float32)
++        actions[:, 0, 0] = .35
++        grasp_positive = 15  # last grasp row (hold)
++        release_positive = rows - 1  # last release row
++        actions[grasp_positive, 0, -1] = 1.
++        actions[release_positive, 0, -1] = 1.
++        samples = [dict(seed=seed, sample_id=f'{seed}:{index}:r1', t=.1 * index,
++                        skill=skills[index], stage=stages[index], teacher_phase=phases[index])
++                   for index in range(rows)]
++        folder = root / str(seed)
++        folder.mkdir()
++        tensors = folder / 'tensors.npz'
++        np.savez_compressed(tensors, state=states, action=actions,
++                            action_is_pad=np.zeros((rows, 1), bool),
++                            image_index=np.zeros((rows, 1), np.int64))
++        frames = folder / 'frames.json'
++        frames.write_text(json.dumps([dict(path=str(frame), sha256=frame_sha)]))
++        (folder / 'samples.json').write_text(json.dumps(samples))
++        files = {name: hashlib.sha256((folder / name).read_bytes()).hexdigest()
++                 for name in ('tensors.npz', 'frames.json', 'samples.json')}
++        manifest['episodes'].append(dict(seed=seed, split='train', path=str(seed),
++                                         files=files, rows=rows))
++        manifest['eligible_train_seeds'].append(seed)
++    normalization = dict(schema='ugrp.grasp_act.dataset.v1', train_seeds=manifest['eligible_train_seeds'],
++                         rows=sum(ep['rows'] for ep in manifest['episodes']),
++                         state_mean=[0.] * contract.CONTEXT_DIM,
++                         state_std=[1.] * contract.CONTEXT_DIM,
++                         action_mean=[0.] * contract.ACTION_DIM,
++                         action_std=[1.] * contract.ACTION_DIM)
++    norm = root / 'normalization.json'
++    norm.write_text(json.dumps(normalization))
++    manifest['normalization'] = dict(path='normalization.json',
++                                     sha256=hashlib.sha256(norm.read_bytes()).hexdigest())
++    (root / 'manifest.json').write_text(json.dumps(manifest))
++    return root
++
++
++def test_zero_flags_are_byte_identical_and_explicit_zero_matches_default(tmp_path):
++    root = _fixture(tmp_path)
++    default = ReferenceDataset(root, 'train', chunk=8)
++    explicit = ReferenceDataset(root, 'train', chunk=8, done_window_ticks=0, done_clock_jitter_s=None)
++    for left, right in zip(default.shards, explicit.shards):
++        assert np.array_equal(left['action'], right['action'])
++        assert np.array_equal(left['action_is_pad'], right['action_is_pad'])
++    assert default.completion_priors('uniform_episode_v1') == explicit.completion_priors('uniform_episode_v1')
++    # The default path is the untouched parent implementation, including state.
++    assert np.array_equal(default[0]['observation.state'], explicit[0]['observation.state'])
++    # extend_targets without the flag returns the historical chunks.
++    shard = default.shards[0]
++    meta = default.metadata[:len(shard['state'])]
++    rebuilt, pad = extend_targets(shard['action'][:, 0], meta, 8)
++    assert np.array_equal(rebuilt, shard['action'])
++    assert np.array_equal(pad, shard['action_is_pad'])
++
++
++def test_k10_makes_exactly_200x10_grasp_rows_positive():
++    episodes, rows = 200, 16
++    actions = np.zeros((episodes * rows, 14), np.float32)
++    metadata = []
++    for episode in range(episodes):
++        for index in range(rows):
++            position = episode * rows + index
++            metadata.append(dict(sample_id=f'{episode}:{index}:r1', t=.1 * index,
++                                 skill='grasp' if index < 12 else 'release'))
++        actions[episode * rows + 11, -1] = 1.  # grasp hold end
++        actions[episode * rows + 15, -1] = 1.  # release backoff end
++    expanded, receipt = expand_done_window(actions, metadata, 10)
++    grasp = np.asarray([row['skill'] == 'grasp' for row in metadata])
++    assert int(expanded[grasp, -1].sum()) == 200 * 10
++    assert receipt['positive_rows'] == 200
++    assert receipt['window_rows'] == 2000
++    assert receipt['added_rows'] == 1800
++    # Release positives are a different skill and are not expanded.
++    assert int(expanded[~grasp, -1].sum()) == 200
++    assert int(expanded[:, -1].sum()) == 2200
++    # Every grasp episode has 10 consecutive window rows including the anchor.
++    first = expanded[:rows, -1]
++    assert first.tolist() == [0., 0.] + [1.] * 10 + [0.] * 3 + [1.]
++
++
++def test_window_stops_at_episode_skill_and_time_gaps():
++    actions = np.zeros((10, 14), np.float32)
++    actions[5, -1] = 1.
++    metadata = [dict(sample_id=('ep:0:r1' if i < 7 else 'next:0:r1'), t=.1 * i,
++                     skill=('grasp' if i == 5 else 'release')) for i in range(7)]
++    metadata += [dict(sample_id='other:0:r1', t=.1 * i, skill='grasp') for i in range(3)]
++    actions[9, -1] = 1.
++    expanded, receipt = expand_done_window(actions, metadata, 10)
++    # Row 5 is positive; rows 4 is a different skill, so the window stops there.
++    assert expanded[5, -1] == 1. and expanded[4, -1] == 0.
++    # The second positive at row 9 belongs to another episode prefix: only rows
++    # 7,8,9 share it, so at most 3 rows are positive (not 10).
++    assert int(expanded[7:, -1].sum()) == 3
++    assert receipt['stopped_by_boundary'] >= 1
++    # A missing 0.1 s observation also stops the walk.
++    actions = np.zeros((6, 14), np.float32)
++    actions[5, -1] = 1.
++    metadata = [dict(sample_id='ep:0:r1', t=t, skill='grasp') for t in (.1, .2, .3, .5, .6, .7)]
++    expanded, receipt = expand_done_window(actions, metadata, 4)
++    assert expanded[3:, -1].tolist() == [1., 1., 1.] and expanded[2, -1] == 0.
++
++
++def test_input_whitelist_and_shapes_are_unchanged(tmp_path):
++    root = _fixture(tmp_path)
++    window = ReferenceDataset(root, 'train', chunk=8, done_window_ticks=10)
++    item = window[0]
++    assert set(item) == set(TRAIN_KEYS)
++    assert item['observation.state'].shape == (contract.CONTEXT_DIM,)
++    assert item['action'].shape == (8, contract.ACTION_DIM)
++    assert item['action_is_pad'].shape == (8,)
++    assert contract.CONTEXT_DIM == contract.HISTORY * 14 + len(contract.SKILLS) + len(contract.KINDS) \
++        + len(contract.ROLES) + len(contract.DESTINATIONS) + 2
++    # The window changes only the completion column of the target, never inputs.
++    base = ReferenceDataset(root, 'train', chunk=8)
++    assert np.array_equal(window[0]['observation.state'], base[0]['observation.state'])
++    valid = ~window[0]['action_is_pad']
++    assert not np.any(valid & base[0]['action_is_pad'])  # window only truncates
++    assert np.array_equal(window[0]['action'][valid, :13], base[0]['action'][valid, :13])
++
++
++def test_r3b_jitter_targets_only_verify_lift_and_hold_clocks(tmp_path):
++    root = _fixture(tmp_path, episodes=2)
++    base = ReferenceDataset(root, 'train', chunk=8)
++    jittered = ReferenceDataset(root, 'train', chunk=8, done_window_ticks=10, done_clock_jitter_s=1.0)
++    assert jittered.clock_jitter_rows == sum(
++        row['teacher_phase'] in DONE_CLOCK_JITTER_PHASES for row in base.metadata)
++    assert jittered.clock_jitter_rows > 0
++    state_std = np.asarray(base.stats['state_std'], np.float32)
++    state_mean = np.asarray(base.stats['state_mean'], np.float32)
++    changed = 0
++    for index, row in enumerate(base.metadata):
++        before = base[index]['observation.state']
++        after = jittered[index]['observation.state']
++        delta_s = (after[-2:].astype(np.float64) - before[-2:]) * state_std[-2:]
++        if row['teacher_phase'] in DONE_CLOCK_JITTER_PHASES:
++            # The recorded clock dims are min(120 s, elapsed)/120, so a
++            # U(-1,+1) s offset adds offset_s/120 before normalization.
++            assert np.all(delta_s <= 1. / 120. + 1e-6) and np.all(delta_s >= -1. / 120. - 1e-6)
++            assert np.all(after[-2:] >= (0. - state_mean[-2:]) / state_std[-2:] - 1e-6)
++            changed += int(np.any(np.abs(delta_s) > 0))
++            if np.any(np.abs(delta_s) > 1e-7):
++                assert np.allclose(delta_s * 120., jittered.clock_jitter_offsets_s[index], atol=1e-4)
++        else:
++            assert np.array_equal(after, before)
++        repeat = jittered[index]['observation.state']
++        assert np.array_equal(after, repeat)  # static per-row offsets, not per-access RNG
++    assert changed > 0
++    offsets = jittered.clock_jitter_offsets_s
++    assert np.all(offsets[~np.asarray([row['teacher_phase'] in DONE_CLOCK_JITTER_PHASES
++                                       for row in base.metadata])] == 0.)
++    # Strong evidence against an accidental constant shift: signed mean near 0.
++    eligible = np.asarray([row['teacher_phase'] in DONE_CLOCK_JITTER_PHASES
++                           for row in base.metadata])
++    assert abs(offsets[eligible].mean()) < .35
++
++
++def test_r3dw_options_and_probe_registration():
++    assert validate_probe_options('act18-r3dw', Path('ckpt'), 10000, None, None, .5,
++                                  None, False, False, 10, None) == 10000
++    assert validate_probe_options('act18-r3dw', Path('ckpt'), 10000, None, None, .5,
++                                  None, False, False, 10, 1.0) == 10000
++    with pytest.raises(ValueError, match='requires --done-window-ticks'):
++        validate_probe_options('act18-r3dw', Path('ckpt'), 10000, None, None, .5)
++    with pytest.raises(ValueError, match='requires --init-checkpoint'):
++        validate_probe_options('act18-r3dw', None, 10000, None, None, .5,
++                               None, False, False, 10, None)
++    with pytest.raises(ValueError, match='act18-r3dw'):
++        validate_probe_options('act18-tune', Path('ckpt'), 2000, None, None, None,
++                               None, False, False, 10, None)
++    with pytest.raises(ValueError, match=r'\[1, 20\]'):
++        validate_probe_options('act18-r3dw', Path('ckpt'), 10000, None, None, .5,
++                               None, False, False, 0, None)
++    with pytest.raises(ValueError, match='requires --done-window-ticks'):
++        validate_probe_options('act18-r3dw', Path('ckpt'), 10000, None, None, .5,
++                               None, False, False, None, 1.0)
++    with pytest.raises(ValueError, match=r'\(0, 2\]'):
++        validate_probe_options('act18-r3dw', Path('ckpt'), 10000, None, None, .5,
++                               None, False, False, 10, 2.5)
++    provenance = dict(candidate='act18-r3dw', cohort='act18-v7-reference', training_complete=True,
++                      step=10000, protocol_sha256='a' * 64,
++                      probe=dict(kind='done_window_finetune_v1', steps_override=10000,
++                                 packaging_eligible=False,
++                                 init_checkpoint=dict(model_sha256='b' * 64)))
++    assert registered_pilot_checkpoint(provenance, 'a' * 64) is True
++    provenance['probe']['packaging_eligible'] = True
++    assert registered_pilot_checkpoint(provenance, 'a' * 64) is False
++    provenance['probe']['packaging_eligible'] = False
++    provenance['candidate'] = 'act18-tune'
++    assert registered_pilot_checkpoint(provenance, 'a' * 64) is False

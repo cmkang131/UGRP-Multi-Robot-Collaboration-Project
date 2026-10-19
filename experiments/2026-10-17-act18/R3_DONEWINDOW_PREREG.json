@@ -1,0 +1,169 @@
+{
+  "schema": "ugrp.act18.r3_donewindow_prereg.v1",
+  "experiment": "2026-10-17-act18",
+  "phase": "R3",
+  "candidate": "act18-r3dw",
+  "probe_kind": "done_window_finetune_v1",
+  "pre_registered_utc": "2026-10-19T20:05:32Z",
+  "prepared_only": true,
+  "training_executed": false,
+  "scope": "sim only; default-off short fine-tune probe. Training waits for the operator report and Changmin approval (Claude decision 2026-10-19: branch/data/config diff/offline-gate prep only).",
+  "approval_and_spec": {
+    "directive": "outputs/reports/claude-arch-parallel-20261019/claude-directives-20261019T18.md section 2",
+    "spec": "outputs/reports/claude-arch-parallel-20261019/act-C2-R3-spec.md sections 4-5",
+    "design": "outputs/reports/claude-arch-parallel-20261019/act-student-failure-design.md section 6 R3 (D6 opened R3)",
+    "gpu_gate_change": "Claude decision 2026-10-19: the R3 GPU evaluation gate is relaxed from 'behind a checkpoint with P>=9/12' to 'offline gates g1-g5 all pass'. The original H1 basis was refuted on the lookback path."
+  },
+  "purpose": "The done head is a pwm-clock fingerprint: TRAIN200 grasp done rows are all at teacher pe 11.2-11.3 s and the pilot teacher hold ends at pe 10.3 s. R3 widens the grasp done label window to K=10 local rows so the completion head can fire without a lookback and without the exact teacher clock. R3 does not change the evaluation contract, the .65 threshold or the policy inputs.",
+  "variant_selection": {
+    "rule": "C2a PASS or INCONCLUSIVE -> R3-A. C2a FAIL -> R3-B. If the C2a result has not arrived at training start, run R3-A and mark the conditional status in launch.json; never choose by observed R3 training loss.",
+    "c2a_status_at_prep_utc": "not arrived; no C2a result file existed under outputs/runs at 2026-10-19T20:05:32Z",
+    "conditional_record": "launch.json must record the C2a verdict artifact path and sha256, or 'absent' for R3-A",
+    "R3-A": {
+      "done_window_ticks": 10,
+      "done_positive_batch_fraction": 0.5,
+      "done_clock_jitter_s": null,
+      "label_change": "expand_done_window: each raw grasp completion row and the nine immediately preceding same-episode/skill rows at exactly 0.1 s become done=1. Release completion rows (a different skill) are unchanged; the window never crosses an episode or skill boundary.",
+      "expected_grasp_positive_rows": "200 -> 2000 (dry-run measured 2000, added 1800)"
+    },
+    "R3-B": {
+      "done_window_ticks": 10,
+      "done_positive_batch_fraction": 0.5,
+      "done_clock_jitter_s": 1.0,
+      "clock_jitter_seed": 20261017,
+      "clock_jitter_scope": "TRAIN rows whose teacher_phase is verify_lift or hold: add U(-1,+1) seconds to the two recorded clock state dims before normalization, clamp at 0, targets unchanged. No other row is augmented.",
+      "expected_jitter_rows": "dry-run measured 8200 (verify_lift 2200, hold 6000)"
+    }
+  },
+  "data_delta_dry_run": {
+    "dataset_manifest_sha256": "44c1c46073aa08ea028324ffe924b67d862a2f01b56f4db11afad17000a9b198",
+    "normalization_sha256": "d08f8672434791ad68cf99fb36a87d76e6d089c908da7b2a27effbf729ba6ee6",
+    "train_rows": 72572,
+    "train_episodes": 200,
+    "grasp_rows_N": 55042,
+    "release_rows_N": 17530,
+    "grasp_positive_rows_before": 200,
+    "grasp_positive_rows_after": 2000,
+    "release_positive_rows_before_after": 200,
+    "grasp_prior_before": 0.0036508156812095154,
+    "grasp_prior_after": 0.03650815681209501,
+    "release_prior_before_after": 0.011408796206887156,
+    "prior_note": "The loss uses per-skill priors recomputed from the modified TRAIN h0 labels under the declared uniform-episode sampler. The spec's approximate '0.0277 (1/36)' is the pooled grasp-positive/total-row ratio (2000/72572 = 0.02756), not the per-skill grasp prior the balanced BCE uses (0.03651). Both are recorded; no constant is invented.",
+    "chunk_target_rows_with_earlier_truncation": 3000,
+    "chunk_target_added_padded_slots": 12600,
+    "rows_with_h0_done_change": 1800,
+    "artifact": "experiments/2026-10-17-act18/r3-donewindow/data-delta.json",
+    "artifact_run_root": "/home/ubuntu/UGRP/outputs/runs/act18-r3-donewindow-prep-20261019T200500Z/dryrun/data-delta.json"
+  },
+  "training": {
+    "init_checkpoint": "/home/ugrp/ugrp-sim/runs/act18/training-r1/R8/step-100000",
+    "init_model_sha256": "e1ec659216e289e1e5e9bb48ac597763ad8d1a088c3c85eb3205336307bb8d5a",
+    "init_adapter_sha256": "2b84ac1110a211ddaf5d69d846fafc0e8bae8dd99698e7ef8182857ba1528005",
+    "init_read_only": "R8 is read-only; its SHA256 inventory is recomputed before and after training and recorded in launch.json.",
+    "steps": 10000,
+    "precision": "bf16_autocast_v1",
+    "precision_scope": "fp32 weights/optimizer/grad clip; forward+loss bf16 autocast",
+    "batch_size": 8,
+    "lr": 1e-05,
+    "chunk": 8,
+    "sampling": "uniform_episode_v1",
+    "seed": 20261017,
+    "done_positive_batch_fraction": 0.5,
+    "dataset_manifest_sha256": "44c1c46073aa08ea028324ffe924b67d862a2f01b56f4db11afad17000a9b198",
+    "normalization_sha256": "d08f8672434791ad68cf99fb36a87d76e6d089c908da7b2a27effbf729ba6ee6",
+    "protocol_sha256": "1db4e22345fdf29cdd80d07bbf61f23aa6101a6859e125f974f550577be1fb4e",
+    "new_checkpoint_path": "/home/ugrp/ugrp-sim/runs/act18-r3-donewindow-<UTC TS>/train/step-10000",
+    "run_root": "/home/ugrp/ugrp-sim/runs/act18-r3-donewindow-<UTC TS>/",
+    "run_root_contents": "train/, eval/{R3v6,R3v7}-{ho4,train4}-rep{1,2,3}/, offline/, diff/, logs/, launch.json, prereg.json",
+    "oracle_offline_copy": "/home/ubuntu/UGRP/outputs/runs/act18-r3-donewindow-<UTC TS>/offline/",
+    "packaging_eligible": false,
+    "release_or_registry": false,
+    "command_shape": "python3 scripts/act18_train.py --enabled --candidate act18-r3dw --precision bf16_autocast_v1 --init-checkpoint <R8 step-100000> --steps 10000 --done-window-ticks 10 --done-positive-batch-fraction 0.5 [--done-clock-jitter-s 1.0 for R3-B] --dataset <dataset-r1> --protocol experiments/2026-10-17-act18/protocol.json --queue <single-candidate queue.json> --out <run root>/train",
+    "queue_requirement": "queue candidates must be exactly ['act18-r3dw'], training_precision=bf16_autocast_v1, dataset_manifest_sha256 and protocol_sha256 as above, and must pass scripts/check_current_stack.py --flow train before submission."
+  },
+  "locked_splits": {
+    "TRAIN4": [88600, 88601, 88602, 88603],
+    "HO4": [88668, 88669, 88670, 88671],
+    "VAL8": [88620, 88621, 88622, 88623, 88644, 88645, 88646, 88647],
+    "FINAL40": [91800, 91801, 91802, 91803, 91804, 91805, 91806, 91807, 91808, 91809, 91810, 91811, 91812, 91813, 91814, 91815, 91816, 91817, 91818, 91819, 91820, 91821, 91822, 91823, 91824, 91825, 91826, 91827, 91828, 91829, 91830, 91831, 91832, 91833, 91834, 91835, 91836, 91837, 91838, 91839],
+    "rule": "VAL8 and FINAL40 stay locked: no evaluation, no best-val selection and no normalization use. TRAIN4 is a fit diagnostic only. HO4 is outside the demonstrations.",
+    "no_pooling_with": ["R8", "R100", "act18-tune", "act18-doneb1", "act18-std", "act18-b3", "act18-doneh", "act18-loop", "C2", "C2c"],
+    "note": "R3 results are not official gates and are never summed with the existing act18 results."
+  },
+  "offline_gate": {
+    "device": "Oracle CPU only; GPU evaluation is forbidden until every gate passes",
+    "command_shape": "python3 scripts/act18_r3_offline_gate.py --enabled pilot --checkpoint <R3 step-10000> --prereg experiments/2026-10-17-act18/R3_DONEWINDOW_PREREG.json --out <run root>/offline/pilot",
+    "g1": {
+      "definition": "pilot teacher-state V0 replay: max temporal-ensemble done within hold end +/-10 ticks >= .65 in at least 3 of 4 worlds",
+      "implemented_by": "scripts/act18_r3_offline_gate.py pilot (pilot world list and input hashes embedded below)"
+    },
+    "g2": {
+      "definition": "no temporal-ensemble done >= .65 before the teacher verify_lift phase starts, 0 of 4 worlds",
+      "implemented_by": "scripts/act18_r3_offline_gate.py pilot"
+    },
+    "g3": {
+      "definition": "pilot lookback onset |delta| <= 5 ticks in at least 3 of 4 worlds (no regression from R8)",
+      "implemented_by": "scripts/act18_r3_offline_gate.py pilot"
+    },
+    "g4": {
+      "definition": "C2b S2(v7) student stopped state: done fires at least 4 of 6 lift worlds and at most 1 of 2 non-lift controls",
+      "implemented_by": "scripts/act18_r3_offline_gate.py c2b --c2b-summary <C2b result json>",
+      "input_contract": "{\"schema\":\"ugrp.act18.r3_c2b_gate_input.v1\",\"source_sha\":...,\"checkpoint_sha256\":...,\"worlds\":[{\"id\":...,\"role\":\"lift|control\",\"done_fired\":true|false}]} - the C2b owner must emit this adapter from its own raw result; no re-inference is allowed on Oracle."
+    },
+    "g5": {
+      "definition": "E0 open-loop TRAIN4 teacher terminal rows: done probability >= .65 for 4 of 4 seeds",
+      "implemented_by": "scripts/act18_r3_offline_gate.py e0 --frames <R3 TRAIN4 open-loop frames.jsonl.gz> OR e0 --dataset <dataset-r1> --checkpoint <R3 checkpoint> (CPU positive-row inference)",
+      "note": "Validate the evaluator on the existing R8 frames file before trusting the R3 number; the R8 baseline must read 4/4."
+    },
+    "PASS": "g1 AND g2 AND g3 AND g4 AND g5. If any gate fails, R3 is closed as FAIL without GPU evaluation; the next candidate is R3b (separate command-history head).",
+    "pilot_inputs": {
+      "pilot_root": "/home/ubuntu/UGRP/outputs/reports/act-chunk8-pilot/act-chunk8-pilot",
+      "evidence_tar_sha256": "432baee4c6bd22344368c3966dcd71c4e979d668d5e3ca5feabb30bdb681c40e",
+      "worlds": [
+        {"group": "group-000", "world": "world-000", "seed": 88600, "student_r1_sha256": "6c814f31ac39809f01dbf514c81543230bef7cbbc72f6714b0507d27f5f638e4", "teacher_r1_sha256": "f668e931ccdddc3681cee07d9b16dfe70afb8ebde34367d72fa182b9addee099"},
+        {"group": "group-000", "world": "world-001", "seed": 88603, "student_r1_sha256": "392f8ab87564aa64803f99b33921f9e4a7c41ec9f04b429ce2b040ec27d46778", "teacher_r1_sha256": "f0ffaa920848cbea3e458e2174cebc3dd7695023c066b600184231dfb1d2b5ad"},
+        {"group": "group-001", "world": "world-000", "seed": 88601, "student_r1_sha256": "058a8bc95d64d6551e96715d20b0eb4b93d5d2a528c31503fcff0d43eb48f9d1", "teacher_r1_sha256": "8b66ef2324b1f8d50fa8053f766ad4c9b13791d40a65d1890b0c3ec1b7e6ee4c"},
+        {"group": "group-001", "world": "world-001", "seed": 88602, "student_r1_sha256": "1b232167234f3305686975ffa3326442f6237a59120d1b25ad1932104febc5d2", "teacher_r1_sha256": "df33afec1903100eb4f65597ea315080cce62fe5d2a7cb970acd6ca6fa5515cc"}
+      ]
+    }
+  },
+  "closed_loop_evaluation": {
+    "precondition": "offline gate PASS and Changmin approval; R3 is not a GPU run before both",
+    "arms": {
+      "R3v7": "only if C2c was approved and executed; --issued-clock-deadband 2. If C2c was not approved, the R3 v7 arm is omitted and reported as such.",
+      "R3v6": "always run; pre-registered expectation is FAIL (student pe <= 2.1 s); recording only"
+    },
+    "design": "HO4 and TRAIN4, N=3, interleaved order, temporal_ensemble_coeff=.01, done threshold .65, --record-done-prob; baseline is the C2 B0 when code/environment match, else an R8 A0 HO4 anchor per boot; no pooling.",
+    "metrics": ["G (grasp_done with physical lift)", "Pre (done before 3 s stable lift)", "done probability max/p95 and first >= .65 tick pe", "phase reach (lift/backoff onset/done/release entry/release physical success)", "T task_success", "per-seed lift ratio non-regression"],
+    "judgement": {
+      "PASS_R3v7": "G(HO4) >= 8 and G(TRAIN4) >= 8 and Pre(24) <= 1 and L(HO4) >= L(B0-HO4) - 2; if C2c ran, also G(HO4) >= G(C2c-HO4) + 3",
+      "FAIL": "G(HO4) <= 3, or Pre >= 4/24, or (if C2c ran) G(HO4) <= G(C2c-HO4)",
+      "INCONCLUSIVE": "otherwise; rerun seed 20261018 once and judge again",
+      "R3v6": "not part of PASS/FAIL; G(HO4) >= 4 is reported as an exceptional 'fires without the clock' result"
+    },
+    "ho4_harness_dependency": "The base 95e668c59 act18_evaluate.py has no HO4 'diag' stage. HO4 evaluation must use the E2/C2 diag stage (--stage diag --diag-prereg) once that code is merged; until then only TRAIN4 can be run and HO4 is reported as not submitted."
+  },
+  "reproduction": {
+    "passing_arm_only": "rerun training with seed 20261018 and the same checkpoint/data configuration; report the two results side by side and do not pool them",
+    "seed": 20261018
+  },
+  "stop_conditions": {
+    "cpu_precheck_failure": "stop; no GPU training",
+    "offline_gate_any_failure": "close R3 as FAIL; no GPU evaluation",
+    "host_error_twice": "stop and report",
+    "input_audit_violation": "INVALID, not counted",
+    "cap_end": "valid failure, counted",
+    "checkpoint_sha_mismatch": "INVALID",
+    "budget": "gcp2 net cost stop is 2,000 KRW; stop immediately when the device fires or is imminent"
+  },
+  "risks": [
+    "The window is anchored on grasp completion rows only; release positives stay at one row per episode and the release done head is unchanged.",
+    "K=10 covers the pilot hold-end pe 10.3 and dataset pe 11.3, but a student whose pe never reaches ~10 s still cannot fire; R3v6 is expected to fail for that reason.",
+    "The per-skill grasp prior rises 10x (0.00365 -> 0.03651). The spec's 0.0277 is a pooled approximation and is not used as the loss prior.",
+    "The window truncates the chunk target to h=0 for 2000 rows and shortens 3000 rows in total; this is pre-registered and recorded, not hidden.",
+    "R3-B jitter is applied on each access from a frozen per-row offset table (seed 20261017), not resampled per epoch; this is deterministic and recorded.",
+    "C2a has not reported; the R3-A/R3-B choice is conditional and must be recorded at launch.",
+    "HO4 closed-loop evaluation depends on the E2/C2 diag harness, which is not in this base branch.",
+    "The local Oracle dry-run used an image-free derived root with placeholder frames.json because the retrieval did not include JPEG metadata; labels/priors/targets are hash-verified and complete, but the VM must run the same dry-run on the full dataset before training."
+  ]
+}

@@ -1,0 +1,126 @@
+{
+  "schema": "ugrp.act18.r3_config_resolved.v1",
+  "experiment": "2026-10-17-act18",
+  "phase": "R3",
+  "candidate": "act18-r3dw",
+  "probe_kind": "done_window_finetune_v1",
+  "prepared_utc": "2026-10-19T20:05:32Z",
+  "training_executed": false,
+  "base_sha": "95e668c59",
+  "prereg": "experiments/2026-10-17-act18/R3_DONEWINDOW_PREREG.json",
+  "arm_selection": {
+    "primary": "R3-A",
+    "primary_rule": "C2a PASS, INCONCLUSIVE, or no C2a result at training start",
+    "conditional": "R3-B",
+    "conditional_rule": "C2a FAIL",
+    "c2a_status_at_prep": "not arrived (no C2a result file at 2026-10-19T20:05:32Z)",
+    "record_at_launch": "launch.json records the C2a verdict artifact path+sha or 'absent'"
+  },
+  "resolved": {
+    "R3-A": {
+      "candidate": "act18-r3dw",
+      "probe_kind": "done_window_finetune_v1",
+      "init_checkpoint": "/home/ugrp/ugrp-sim/runs/act18/training-r1/R8/step-100000",
+      "init_model_sha256": "e1ec659216e289e1e5e9bb48ac597763ad8d1a088c3c85eb3205336307bb8d5a",
+      "init_adapter_sha256": "2b84ac1110a211ddaf5d69d846fafc0e8bae8dd99698e7ef8182857ba1528005",
+      "steps": 10000,
+      "precision": "bf16_autocast_v1",
+      "precision_scope": "fp32 weights/optimizer/grad clip; forward+loss bf16 autocast",
+      "batch_size": 8,
+      "lr": 1e-05,
+      "chunk": 8,
+      "sampling": "uniform_episode_v1",
+      "seed": 20261017,
+      "done_positive_batch_fraction": 0.5,
+      "done_window_ticks": 10,
+      "done_clock_jitter_s": null,
+      "done_clock_jitter_seed": null,
+      "checkpoint_path": "/home/ugrp/ugrp-sim/runs/act18-r3-donewindow-<UTC TS>/train/step-10000",
+      "save_steps": [10000],
+      "readback_verification": "save_actor then Actor.load and bit-equal predict_action_chunk",
+      "packaging_eligible": false,
+      "release_or_registry": false
+    },
+    "R3-B": {
+      "candidate": "act18-r3dw",
+      "probe_kind": "done_window_finetune_v1",
+      "init_checkpoint": "/home/ugrp/ugrp-sim/runs/act18/training-r1/R8/step-100000",
+      "init_model_sha256": "e1ec659216e289e1e5e9bb48ac597763ad8d1a088c3c85eb3205336307bb8d5a",
+      "init_adapter_sha256": "2b84ac1110a211ddaf5d69d846fafc0e8bae8dd99698e7ef8182857ba1528005",
+      "steps": 10000,
+      "precision": "bf16_autocast_v1",
+      "precision_scope": "fp32 weights/optimizer/grad clip; forward+loss bf16 autocast",
+      "batch_size": 8,
+      "lr": 1e-05,
+      "chunk": 8,
+      "sampling": "uniform_episode_v1",
+      "seed": 20261017,
+      "done_positive_batch_fraction": 0.5,
+      "done_window_ticks": 10,
+      "done_clock_jitter_s": 1.0,
+      "done_clock_jitter_seed": 20261017,
+      "done_clock_jitter_phases": ["verify_lift", "hold"],
+      "done_clock_jitter_units": "seconds added to the two recorded clock state dims (divided by the 120 s contract cap) before normalization; clamp at 0; targets unchanged; per-row frozen offsets",
+      "checkpoint_path": "/home/ugrp/ugrp-sim/runs/act18-r3-donewindow-<UTC TS>/train/step-10000",
+      "save_steps": [10000],
+      "readback_verification": "save_actor then Actor.load and bit-equal predict_action_chunk",
+      "packaging_eligible": false,
+      "release_or_registry": false
+    }
+  },
+  "dataset": {
+    "root_vm": "/home/ugrp/ugrp-sim/runs/act17-v7/dataset-r1",
+    "manifest_sha256": "44c1c46073aa08ea028324ffe924b67d862a2f01b56f4db11afad17000a9b198",
+    "normalization_sha256": "d08f8672434791ad68cf99fb36a87d76e6d089c908da7b2a27effbf729ba6ee6",
+    "train_rows": 72572,
+    "train_episodes": 200,
+    "grasp_rows_N": 55042,
+    "release_rows_N": 17530,
+    "grasp_positive_rows_before": 200,
+    "grasp_positive_rows_after": 2000,
+    "release_positive_rows_before_after": 200,
+    "grasp_prior_before": 0.0036508156812095154,
+    "grasp_prior_after": 0.03650815681209501,
+    "release_prior_before_after": 0.011408796206887156,
+    "chunk_rows_with_earlier_truncation": 3000,
+    "chunk_added_padded_slots": 12600,
+    "rows_with_h0_done_change": 1800,
+    "clock_jitter_rows": 8200,
+    "clock_jitter_rows_by_phase": {"verify_lift": 2200, "hold": 6000},
+    "note": "Measured on the registered dataset-r1 tensors+samples with the R3 data dry-run; image frames were absent from the Oracle retrieval, so the derived-root placeholder only satisfied dataset initialization. Labels/priors/targets are hash-verified and complete. Re-run scripts/act18_r3_data_delta.py on the VM full dataset before training."
+  },
+  "protocol_sha256": "1db4e22345fdf29cdd80d07bbf61f23aa6101a6859e125f974f550577be1fb4e",
+  "training_command": {
+    "R3-A": "python3 scripts/act18_train.py --enabled --candidate act18-r3dw --precision bf16_autocast_v1 --init-checkpoint /home/ugrp/ugrp-sim/runs/act18/training-r1/R8/step-100000 --steps 10000 --done-window-ticks 10 --done-positive-batch-fraction 0.5 --dataset /home/ugrp/ugrp-sim/runs/act17-v7/dataset-r1 --protocol experiments/2026-10-17-act18/protocol.json --queue <run root>/queue.json --out <run root>/train",
+    "R3-B": "same plus --done-clock-jitter-s 1.0",
+    "queue": "candidates=['act18-r3dw'], training_precision='bf16_autocast_v1', dataset_manifest_sha256=44c1c460..., protocol_sha256=1db4e223..., source_sha=<clean branch head>. Must pass scripts/check_current_stack.py --flow train before submission."
+  },
+  "changes_vs_R8_base_training": [
+    "init: R8 100k checkpoint instead of from scratch",
+    "schedule: 10,000 bf16 steps instead of 100,000 fp32 steps",
+    "completion labels: grasp done window K=10 (200 -> 2,000 positives); release labels unchanged",
+    "done-positive-batch-fraction: 0.5 (R8 batch was uniform only)",
+    "completion prior: recomputed per skill from the modified labels (grasp 0.00365 -> 0.03651; release 0.01141 unchanged)",
+    "R3-B only: U(-1,+1) s clock jitter on verify_lift/hold inputs, seed 20261017"
+  ],
+  "unchanged": [
+    "policy input contract and 252-dim state layout",
+    "chunk 8, ACT architecture, lr 1e-5, batch 8, episode-uniform sampling",
+    "done threshold .65 and evaluation contract",
+    "TRAIN4/HO4 seeds; VAL8 and FINAL40 locked; no pooling"
+  ],
+  "offline_gate": {
+    "script": "scripts/act18_r3_offline_gate.py",
+    "PASS_rule": "g1 AND g2 AND g3 AND g4 AND g5",
+    "commands": [
+      "python3 scripts/act18_r3_offline_gate.py --enabled pilot --checkpoint <R3 step-10000> --prereg experiments/2026-10-17-act18/R3_DONEWINDOW_PREREG.json --out <run root>/offline/pilot",
+      "python3 scripts/act18_r3_offline_gate.py --enabled c2b --c2b-summary <C2b adapter summary> --checkpoint <R3 model sha> --out <run root>/offline/c2b",
+      "python3 scripts/act18_r3_offline_gate.py --enabled e0 --dataset /home/ugrp/ugrp-sim/runs/act17-v7/dataset-r1 --checkpoint <R3 step-10000> --out <run root>/offline/e0",
+      "python3 scripts/act18_r3_offline_gate.py --enabled report --gate-dir <run root>/offline --out <run root>/offline"
+    ],
+    "R8_validation": {
+      "pilot": "/home/ubuntu/UGRP/outputs/runs/act18-r3-donewindow-prep-20261019T200500Z/offline/r8-validation/pilot",
+      "e0": "/home/ubuntu/UGRP/outputs/runs/act18-r3-donewindow-prep-20261019T200500Z/offline/r8-validation/e0"
+    }
+  }
+}

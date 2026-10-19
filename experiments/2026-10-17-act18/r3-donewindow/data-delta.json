@@ -1,0 +1,281 @@
+{
+  "schema": "ugrp.act18.r3_data_delta.v1",
+  "generated_utc": "2026-10-19T20:05:27Z",
+  "source": {
+    "dataset": "/home/ubuntu/UGRP/outputs/runs/act18-clockaudit-20261019T151956Z/retrieved/act17-v7/dataset-r1",
+    "manifest_path": "/home/ubuntu/UGRP/outputs/runs/act18-clockaudit-20261019T151956Z/retrieved/act17-v7/dataset-r1/manifest.json.zst",
+    "manifest_sha256": "44c1c46073aa08ea028324ffe924b67d862a2f01b56f4db11afad17000a9b198",
+    "normalization_sha256": "d08f8672434791ad68cf99fb36a87d76e6d089c908da7b2a27effbf729ba6ee6",
+    "used_root": "/home/ubuntu/UGRP/outputs/runs/act18-r3-donewindow-prep-20261019T200500Z/dryrun/derived-dataset",
+    "derived_root": true,
+    "derived_manifest_sha256": "1f635af506737486965bb2415d85d94b29e6b5cb8f10691302eda0b3e8b3f81b",
+    "missing_files": [
+      "frames.json",
+      "frames.json.zst"
+    ],
+    "replaced_image_metadata_rows": 240,
+    "note": "image-free derived root: frozen image frames were not part of the local retrieval; targets/priors/labels read only tensors+samples, whose hashes are verified against the registered manifest"
+  },
+  "flags": {
+    "chunk": 8,
+    "done_window_ticks": 10,
+    "done_clock_jitter_s": 1.0,
+    "done_clock_jitter_seed": 20261017
+  },
+  "rows": {
+    "train_rows": 72572,
+    "train_episodes": 200
+  },
+  "positives": {
+    "before": {
+      "grasp": {
+        "positive_n": 200,
+        "rows_N": 55042,
+        "positive_fraction": 0.0036335888957523344
+      },
+      "release": {
+        "positive_n": 200,
+        "rows_N": 17530,
+        "positive_fraction": 0.011409013120365089
+      }
+    },
+    "after": {
+      "grasp": {
+        "positive_n": 2000,
+        "rows_N": 55042,
+        "positive_fraction": 0.03633588895752335
+      },
+      "release": {
+        "positive_n": 200,
+        "rows_N": 17530,
+        "positive_fraction": 0.011409013120365089
+      }
+    },
+    "grasp_expected": 2000,
+    "receipt": {
+      "window_ticks": 10,
+      "positive_rows": 200,
+      "window_rows": 2000,
+      "added_rows": 1800,
+      "stopped_by_boundary": 0,
+      "episodes": 200
+    }
+  },
+  "prior": {
+    "before": {
+      "grasp": {
+        "mass": 0.7575757125523833,
+        "positive_mass": 0.0027657692910897135,
+        "positive_n": 200,
+        "rows_N": 55042,
+        "positive_fraction": 0.0036508156812095154,
+        "source": "unique TRAIN h0 labels weighted by exact declared sampler; not VAL"
+      },
+      "release": {
+        "mass": 0.24242428744761868,
+        "positive_mass": 0.0027657692910897135,
+        "positive_n": 200,
+        "rows_N": 17530,
+        "positive_fraction": 0.011408796206887156,
+        "source": "unique TRAIN h0 labels weighted by exact declared sampler; not VAL"
+      }
+    },
+    "after": {
+      "grasp": {
+        "mass": 0.7575757125523833,
+        "positive_mass": 0.027657692910897022,
+        "positive_n": 2000,
+        "rows_N": 55042,
+        "positive_fraction": 0.03650815681209501,
+        "source": "unique TRAIN h0 labels weighted by exact declared sampler; not VAL"
+      },
+      "release": {
+        "mass": 0.24242428744761868,
+        "positive_mass": 0.0027657692910897135,
+        "positive_n": 200,
+        "rows_N": 17530,
+        "positive_fraction": 0.011408796206887156,
+        "source": "unique TRAIN h0 labels weighted by exact declared sampler; not VAL"
+      }
+    }
+  },
+  "chunk_targets": {
+    "rows_with_earlier_truncation": 3000,
+    "added_padded_slots": 12600,
+    "rows_with_h0_done_change": 1800,
+    "max_valid_horizons_before": 8,
+    "max_valid_horizons_after": 8,
+    "samples": [
+      {
+        "index": 245,
+        "skill": "grasp",
+        "teacher_phase": "hold",
+        "before": 8,
+        "after": 7
+      },
+      {
+        "index": 246,
+        "skill": "grasp",
+        "teacher_phase": "hold",
+        "before": 8,
+        "after": 6
+      },
+      {
+        "index": 247,
+        "skill": "grasp",
+        "teacher_phase": "hold",
+        "before": 8,
+        "after": 5
+      },
+      {
+        "index": 248,
+        "skill": "grasp",
+        "teacher_phase": "hold",
+        "before": 8,
+        "after": 4
+      },
+      {
+        "index": 249,
+        "skill": "grasp",
+        "teacher_phase": "hold",
+        "before": 8,
+        "after": 3
+      },
+      {
+        "index": 250,
+        "skill": "grasp",
+        "teacher_phase": "hold",
+        "before": 8,
+        "after": 2
+      },
+      {
+        "index": 251,
+        "skill": "grasp",
+        "teacher_phase": "hold",
+        "before": 8,
+        "after": 1
+      },
+      {
+        "index": 252,
+        "skill": "grasp",
+        "teacher_phase": "hold",
+        "before": 8,
+        "after": 1
+      },
+      {
+        "index": 253,
+        "skill": "grasp",
+        "teacher_phase": "hold",
+        "before": 8,
+        "after": 1
+      },
+      {
+        "index": 254,
+        "skill": "grasp",
+        "teacher_phase": "hold",
+        "before": 7,
+        "after": 1
+      },
+      {
+        "index": 255,
+        "skill": "grasp",
+        "teacher_phase": "hold",
+        "before": 6,
+        "after": 1
+      },
+      {
+        "index": 256,
+        "skill": "grasp",
+        "teacher_phase": "hold",
+        "before": 5,
+        "after": 1
+      },
+      {
+        "index": 257,
+        "skill": "grasp",
+        "teacher_phase": "hold",
+        "before": 4,
+        "after": 1
+      },
+      {
+        "index": 258,
+        "skill": "grasp",
+        "teacher_phase": "hold",
+        "before": 3,
+        "after": 1
+      },
+      {
+        "index": 259,
+        "skill": "grasp",
+        "teacher_phase": "hold",
+        "before": 2,
+        "after": 1
+      },
+      {
+        "index": 605,
+        "skill": "grasp",
+        "teacher_phase": "hold",
+        "before": 8,
+        "after": 7
+      },
+      {
+        "index": 606,
+        "skill": "grasp",
+        "teacher_phase": "hold",
+        "before": 8,
+        "after": 6
+      },
+      {
+        "index": 607,
+        "skill": "grasp",
+        "teacher_phase": "hold",
+        "before": 8,
+        "after": 5
+      },
+      {
+        "index": 608,
+        "skill": "grasp",
+        "teacher_phase": "hold",
+        "before": 8,
+        "after": 4
+      },
+      {
+        "index": 609,
+        "skill": "grasp",
+        "teacher_phase": "hold",
+        "before": 8,
+        "after": 3
+      }
+    ]
+  },
+  "jitter": {
+    "done_clock_jitter_s": 1.0,
+    "rng_seed": 20261017,
+    "augmented_rows": 8200,
+    "rows_by_phase": {
+      "verify_lift": 2200,
+      "hold": 6000
+    },
+    "ineligible_nonzero": 0,
+    "eligible_min_s": -0.9995954416755521,
+    "eligible_max_s": 0.9996211557733905,
+    "eligible_mean_s": -0.0046241699783537505
+  },
+  "checks": {
+    "grasp_window_rows_equal_window_ticks_times_base": true,
+    "release_positives_untouched": true,
+    "window_only_truncates": true,
+    "window_added_rows_match_receipt": true,
+    "prior_both_classes_per_skill": true,
+    "jitter_outside_target_phases_zero": true
+  },
+  "reproduce": [
+    "scripts/act18_r3_data_delta.py",
+    "--dataset",
+    "/home/ubuntu/UGRP/outputs/runs/act18-clockaudit-20261019T151956Z/retrieved/act17-v7/dataset-r1",
+    "--out",
+    "/home/ubuntu/UGRP/outputs/runs/act18-r3-donewindow-prep-20261019T200500Z/dryrun/data-delta.json",
+    "--scratch",
+    "/home/ubuntu/UGRP/outputs/runs/act18-r3-donewindow-prep-20261019T200500Z/dryrun/derived-dataset"
+  ]
+}
