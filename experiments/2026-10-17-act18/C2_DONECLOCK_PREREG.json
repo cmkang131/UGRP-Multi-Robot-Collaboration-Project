@@ -1,0 +1,320 @@
+{
+  "schema": "ugrp.act18.c2_doneclock_prereg.v1",
+  "experiment": "2026-10-17-act18",
+  "phase": "C2",
+  "title": "C2a teacher-state pe shift/sweep + C2b student-stall counterfactual (Oracle CPU, GPU 0)",
+  "pre_registered_utc": "2026-10-19T20:01:56Z",
+  "registration_order": "Committed before any C2a or C2b model inference. At commit time the only things inspected were E1 replay outputs (hold-end pe), input hashes, the recovered read-only copies of finish-r3/repro/20261019c, and evaluation-only truth used to define the C2b replay window. No C2a V4/sweep or C2b S0-S4 Actor.predict output existed.",
+  "approval": "창민 2026-10-19 위임: \"Claude 결정이 곧 승인\". C2a/C2b 즉시 착수, 둘 다 PASS면 C2c를 오프피크(지금은 실행 금지), R3 학습 금지(준비만).",
+  "spec": {
+    "path": "/home/ubuntu/UGRP/outputs/reports/claude-arch-parallel-20261019/act-C2-R3-spec.md",
+    "sha256": "87e78ce3e44e113ddfebe5347a939d3a8b657db2410bd39970e02872a4c63b92",
+    "sections": [
+      "§3 C2a",
+      "§3 C2b",
+      "§5 순서"
+    ],
+    "design_path": "/home/ubuntu/UGRP/outputs/reports/claude-arch-parallel-20261019/act-student-failure-design.md",
+    "design_sha256": "89e030624b5575c92a42b8f6ea565d9fc930ec0f32f1332fc9b419f902a4a442",
+    "directives_path": "/home/ubuntu/UGRP/outputs/reports/claude-arch-parallel-20261019/claude-directives-20261019T18.md",
+    "directives_sha256": "c7e553c4f34745778c15351f8a67f02af38194fb7786b47de7844ad56b934f6f"
+  },
+  "checkpoint": {
+    "release": "models-20261017-act18-v7-r1",
+    "asset": "act18-v7-r8-step100000-20261017.zip",
+    "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/download/models-20261017-act18-v7-r1/act18-v7-r8-step100000-20261017.zip",
+    "archive_bytes": 191989583,
+    "archive_sha256": "6ac5a49ecb871120cbbd0ac240d499f8a4eddddcffb3af84b48a322b9308a2c7",
+    "model_sha256": "e1ec659216e289e1e5e9bb48ac597763ad8d1a088c3c85eb3205336307bb8d5a",
+    "adapter_schema": "ugrp.act18.adapter.v1",
+    "adapter_chunk": 8,
+    "done_mode": "balanced_bce_v1",
+    "image_mode": "current_full_v1",
+    "fallback": "다운로드 실패 또는 해시 불일치 시 대체 체크포인트를 쓰지 않고 BLOCKED로 보고한다."
+  },
+  "inputs": {
+    "pilot_root": "/home/ubuntu/UGRP/outputs/reports/act-chunk8-pilot/act-chunk8-pilot",
+    "evidence_tar": {
+      "path": "/home/ubuntu/UGRP/outputs/reports/act-chunk8-pilot/act-chunk8-pilot-evidence.tar.gz",
+      "sha256": "432baee4c6bd22344368c3966dcd71c4e979d668d5e3ca5feabb30bdb681c40e",
+      "verified_before_replay": true
+    },
+    "worlds": [
+      {
+        "group": "group-000",
+        "world": "world-000",
+        "seed": 88600,
+        "student_r1_jsonl": "group-000/world-000/student-r1.jsonl",
+        "student_r1_sha256": "6c814f31ac39809f01dbf514c81543230bef7cbbc72f6714b0507d27f5f638e4",
+        "teacher_r1_jsonl": "group-000/world-000/teacher-r1.jsonl",
+        "teacher_r1_sha256": "f668e931ccdddc3681cee07d9b16dfe70afb8ebde34367d72fa182b9addee099"
+      },
+      {
+        "group": "group-000",
+        "world": "world-001",
+        "seed": 88603,
+        "student_r1_jsonl": "group-000/world-001/student-r1.jsonl",
+        "student_r1_sha256": "392f8ab87564aa64803f99b33921f9e4a7c41ec9f04b429ce2b040ec27d46778",
+        "teacher_r1_jsonl": "group-000/world-001/teacher-r1.jsonl",
+        "teacher_r1_sha256": "f0ffaa920848cbea3e458e2174cebc3dd7695023c066b600184231dfb1d2b5ad"
+      },
+      {
+        "group": "group-001",
+        "world": "world-000",
+        "seed": 88601,
+        "student_r1_jsonl": "group-001/world-000/student-r1.jsonl",
+        "student_r1_sha256": "058a8bc95d64d6551e96715d20b0eb4b93d5d2a528c31503fcff0d43eb48f9d1",
+        "teacher_r1_jsonl": "group-001/world-000/teacher-r1.jsonl",
+        "teacher_r1_sha256": "8b66ef2324b1f8d50fa8053f766ad4c9b13791d40a65d1890b0c3ec1b7e6ee4c"
+      },
+      {
+        "group": "group-001",
+        "world": "world-001",
+        "seed": 88602,
+        "student_r1_jsonl": "group-001/world-001/student-r1.jsonl",
+        "student_r1_sha256": "1b232167234f3305686975ffa3326442f6237a59120d1b25ad1932104febc5d2",
+        "teacher_r1_jsonl": "group-001/world-001/teacher-r1.jsonl",
+        "teacher_r1_sha256": "df33afec1903100eb4f65597ea315080cce62fe5d2a7cb970acd6ca6fa5515cc"
+      }
+    ],
+    "no_pooling": "act-chunk8-pilot 4세계와 finish-r3/repro/20261019c R8·R100 결과를 합산하지 않는다. C2b는 TRAIN4 진단 재생이며 VAL8/FINAL40/act17/act16w와 합산하지 않는다."
+  },
+  "c2": {
+    "c2a": {
+      "experiment": "C2a",
+      "question": "teacher 상태에서 pwm_elapsed_s를 데이터셋 teacher hold 끝 값(11.25 s)으로 옮기면(V4) R8 done head가 발화하는가, 그리고 hold 끝 tick의 pe→raw h=0 곡선이 [10.8, 11.8] s 지문을 갖는가.",
+      "target_hold_end_pe": 11.25,
+      "sweep_points": [
+        9.0,
+        10.0,
+        10.5,
+        10.8,
+        11.0,
+        11.1,
+        11.2,
+        11.3,
+        11.4,
+        11.6,
+        12.0,
+        13.0
+      ],
+      "worlds": [
+        {
+          "group": "group-000",
+          "world": "world-000",
+          "seed": 88600,
+          "student_r1_jsonl": "group-000/world-000/student-r1.jsonl",
+          "student_r1_sha256": "6c814f31ac39809f01dbf514c81543230bef7cbbc72f6714b0507d27f5f638e4",
+          "teacher_r1_jsonl": "group-000/world-000/teacher-r1.jsonl",
+          "teacher_r1_sha256": "f668e931ccdddc3681cee07d9b16dfe70afb8ebde34367d72fa182b9addee099",
+          "hold_end_pe_recorded": 10.3,
+          "v4_delta_pwm_s": 0.9499999999999993
+        },
+        {
+          "group": "group-000",
+          "world": "world-001",
+          "seed": 88603,
+          "student_r1_jsonl": "group-000/world-001/student-r1.jsonl",
+          "student_r1_sha256": "392f8ab87564aa64803f99b33921f9e4a7c41ec9f04b429ce2b040ec27d46778",
+          "teacher_r1_jsonl": "group-000/world-001/teacher-r1.jsonl",
+          "teacher_r1_sha256": "f0ffaa920848cbea3e458e2174cebc3dd7695023c066b600184231dfb1d2b5ad",
+          "hold_end_pe_recorded": 10.2,
+          "v4_delta_pwm_s": 1.0500000000000007
+        },
+        {
+          "group": "group-001",
+          "world": "world-000",
+          "seed": 88601,
+          "student_r1_jsonl": "group-001/world-000/student-r1.jsonl",
+          "student_r1_sha256": "058a8bc95d64d6551e96715d20b0eb4b93d5d2a528c31503fcff0d43eb48f9d1",
+          "teacher_r1_jsonl": "group-001/world-000/teacher-r1.jsonl",
+          "teacher_r1_sha256": "8b66ef2324b1f8d50fa8053f766ad4c9b13791d40a65d1890b0c3ec1b7e6ee4c",
+          "hold_end_pe_recorded": 10.3,
+          "v4_delta_pwm_s": 0.9499999999999993
+        },
+        {
+          "group": "group-001",
+          "world": "world-001",
+          "seed": 88602,
+          "student_r1_jsonl": "group-001/world-001/student-r1.jsonl",
+          "student_r1_sha256": "1b232167234f3305686975ffa3326442f6237a59120d1b25ad1932104febc5d2",
+          "teacher_r1_jsonl": "group-001/world-001/teacher-r1.jsonl",
+          "teacher_r1_sha256": "df33afec1903100eb4f65597ea315080cce62fe5d2a7cb970acd6ca6fa5515cc",
+          "hold_end_pe_recorded": 10.200000000000003,
+          "v4_delta_pwm_s": 1.0499999999999972
+        }
+      ],
+      "variants": {
+        "V0": {
+          "pwm_elapsed_s": "기록 그대로",
+          "skill_elapsed_s": "기록 그대로",
+          "role": "determinism reference + a4 onset reference"
+        },
+        "V4": {
+          "pwm_elapsed_s": "recorded + v4_delta_pwm_s (world별)",
+          "skill_elapsed_s": "기록 그대로",
+          "role": "hold 끝 pe를 11.25 s로 이동"
+        },
+        "mutation_rule": "화이트리스트 시계 필드만 바꾸고 harness.grasp_act_contract.validate_observation을 통과해야 한다. RGB 참조·명령 이력·다른 필드는 바이트 동일. 반사실은 정책 입력에만 쓰고 rollout/물리 실행은 하지 않는다."
+      },
+      "determinism": {
+        "rule": "V0를 다시 재생해 E1 run root `V0/world-<group>-<world>.jsonl`과 tick별로 비교한다. 어떤 tick이든 chunk max|diff| > 1e-6이면 C2a 전체를 중단한다.",
+        "reference": "/home/ubuntu/UGRP/outputs/runs/act18-tsreplay-20261019T152456Z",
+        "tolerance": 1e-06
+      },
+      "metrics": {
+        "a1": "V4 hold 끝 ±10틱 TE done_score 최대.",
+        "a2": "V4 첫 TE done fire tick - teacher hold 끝 tick (없으면 null).",
+        "a3": "hold 끝 tick에서 pe만 9.0..13.0으로 바꾼 raw h=0 done_score 곡선. p >= .5인 연속 sweep 구간의 [pe_min, pe_max]와 반치폭(raw >= max/2)을 기록한다.",
+        "a4": "V4 lookback onset tick이 V0 onset과 같은지, teacher lookback 대비 delta(+4틱 기대).",
+        "done_threshold": 0.65,
+        "low_threshold": 0.05,
+        "sweep_pass": 0.5,
+        "sweep_target_interval_s": [
+          10.8,
+          11.8
+        ]
+      },
+      "pre_registered_decisions": {
+        "PASS_fingerprint_confirmed": "a1 >= .65가 4세계 중 >=3이고, a3의 p >= .5 구간이 [10.8, 11.8] s 안에 들어가는 세계가 >=3.",
+        "FAIL_not_fingerprint": "a1 < .05가 >=3/4이고, sweep 전 구간 raw < .05가 >=3/4.",
+        "INCONCLUSIVE": "그 밖.",
+        "D11_condition_i": "PASS이면 \"done은 pe 시계 지문\"을 확인한 것으로 보고 D11(i) 충족으로 기록한다.",
+        "branch": "PASS -> C2b v7 반사실(C2b는 어차피 실행). FAIL -> C2c 취소, R3-B. INCONCLUSIVE -> C2c는 C2b S2로만 판단.",
+        "no_threshold_tuning": "임계값 .65, .05, .5, [10.8, 11.8], 3/4은 act-C2-R3-spec.md §3 C2a에 적힌 값을 그대로 쓴다. 결과를 본 뒤 바꾸지 않는다."
+      },
+      "environment": {
+        "host": "Oracle CPU x86_64/aarch64, 2 vCPU, GPU 0",
+        "torch_threads": 2,
+        "device": "cpu",
+        "wall_expected_minutes": 40
+      }
+    },
+    "c2b": {
+      "experiment": "C2b",
+      "question": "student rollout의 정지 상태에서 v7 시계(S2)만으로 lift 뒤 TE done이 발화하는가. S3(±1 지터 제거 이력), S4(teacher 자세·se 치환, 진단 전용)가 각각 후진 onset을 만드는가.",
+      "source": "finish-r3와 finish-r3-repro-dsh-20261019T123200Z의 R8-train recorder가 남긴 `evaluation/actor-inputs.jsonl` 관측(자기 RGB 4장·자기 발행 명령 16틱·과제 토큰·시계 2개)과 `evaluation/actor-inputs/world-*/rgb/r1/*.jpg`. 기록 그대로 재생하며 정책 입력에 정답·teacher 명령을 넣지 않는다.",
+      "rollout_root": "/home/ubuntu/UGRP/outputs/runs/act18-c2-doneclock-20261019T2002Z/c2b/retrieved",
+      "runs": [
+        {
+          "label": "finish-r3-R8-train-group-000-world-000",
+          "root": "finish-r3/R8-train",
+          "group": "group-000",
+          "world": 0,
+          "seed": 88600,
+          "lift_expected": false
+        },
+        {
+          "label": "finish-r3-R8-train-group-000-world-001",
+          "root": "finish-r3/R8-train",
+          "group": "group-000",
+          "world": 1,
+          "seed": 88603,
+          "lift_expected": true
+        },
+        {
+          "label": "finish-r3-R8-train-group-001-world-000",
+          "root": "finish-r3/R8-train",
+          "group": "group-001",
+          "world": 0,
+          "seed": 88601,
+          "lift_expected": true
+        },
+        {
+          "label": "finish-r3-R8-train-group-001-world-001",
+          "root": "finish-r3/R8-train",
+          "group": "group-001",
+          "world": 1,
+          "seed": 88602,
+          "lift_expected": false
+        },
+        {
+          "label": "repro-dsh-R8-train-group-000-world-000",
+          "root": "finish-r3-repro-dsh-20261019T123200Z/R8-train",
+          "group": "group-000",
+          "world": 0,
+          "seed": 88600,
+          "lift_expected": true
+        },
+        {
+          "label": "repro-dsh-R8-train-group-000-world-001",
+          "root": "finish-r3-repro-dsh-20261019T123200Z/R8-train",
+          "group": "group-000",
+          "world": 1,
+          "seed": 88603,
+          "lift_expected": true
+        },
+        {
+          "label": "repro-dsh-R8-train-group-001-world-000",
+          "root": "finish-r3-repro-dsh-20261019T123200Z/R8-train",
+          "group": "group-001",
+          "world": 0,
+          "seed": 88601,
+          "lift_expected": true
+        },
+        {
+          "label": "repro-dsh-R8-train-group-001-world-001",
+          "root": "finish-r3-repro-dsh-20261019T123200Z/R8-train",
+          "group": "group-001",
+          "world": 1,
+          "seed": 88602,
+          "lift_expected": true
+        }
+      ],
+      "window": {
+        "anchor": "world별 evaluation-only truth에서 min_z >= .012(lift clearance)인 첫 tick. 비-lift 대조는 같은 기준을 만족하는 tick이 없으므로 max(finger_forces) >= .5 N인 첫 tick을 fallback anchor로 쓴다.",
+        "range": "anchor - 1.0 s 부터 anchor + 14.0 s 까지(포함, 10 Hz).",
+        "ticks_expected": "약 151/run.",
+        "reason": "lift 시작 직전부터 +14 s가 student 정지·done 판단·teacher lookback 시점(≈+6~10 s)을 모두 덮는다."
+      },
+      "variants": {
+        "S0": "기록 그대로(대조).",
+        "S1": "after-anchor에서 기록 pe가 최대인 tick 하나에서 pe만 C2a와 같은 12점으로 스윕한 raw h=0(발화 판정 미사용).",
+        "S2": "v7 시계: 발행 이력 PWM은 그대로 두고 pwm_elapsed_s만 \"servo 하나라도 |Δ| >= 3이면 리셋\" 규칙으로 tick마다 재계산. deadband-1 재계산이 기록 pe와 1e-6 이내로 일치하는지 fail-closed로 확인한 뒤 deadband-3을 쓴다.",
+        "S3": "S2 + after-anchor 발행 명령의 PWM을 \"직전에 servo 하나가 |Δ| >= 3 움직인 값\"으로 고정해 ±1-2 지터를 이력에서 제거.",
+        "S4": "S3 + skill_elapsed_s를 같은 seed 파일럿 teacher의 se 곡선으로 치환(δ = student anchor - teacher lift 시작 tick, se_S4(t) = teacher_se(t-δ); 범위 밖은 마지막 값 + 경과) + 발행 이력 servo 3/4/5를 같은 seed teacher의 lift 끝 자세(teacher_command)로 치환. 진단 전용 반사실이며 배포 입력이 아니다."
+      },
+      "metrics": {
+        "b1": "anchor 이후 first TE done >= .65 tick과 그 시점 pwm_elapsed_s. S2/S3/S4 각각.",
+        "b2": "anchor 이후 네 바퀴 TE 음수가 >=5틱 연속인 첫 구간의 유무와 시작 tick. S0/S2/S3/S4 각각.",
+        "b3": "비-lift 대조 2개(원본 88600/88602)에서 done 발화(위양성). S2를 1차로, S0/S3/S4도 기록."
+      },
+      "pre_registered_decisions": {
+        "done_path_PASS": "S2에서 lift 6개 중 >=4개가 anchor 이후 done >= .65로 발화하고, 그 발화 시점 pe가 [10.3, 12.0] s 안에 있다. 이때 D11(ii)(student pe가 지문 값에 못 미침)를 확인한 것으로 본다.",
+        "done_path_FAIL": "S2와 S3 모두 lift 6개 중 발화가 <=1개.",
+        "done_path_INCONCLUSIVE": "그 밖.",
+        "backward_attribution": "보고용(판정 미사용). 단일 변형만으로 lift 6개 중 >=4개에서 후진 onset이 생기면 그 변형을 원인으로 기록한다(S2->시계, S3->지터 이력, S4->자세·se). 어느 것도 아니면 화면/분포 이동(C5)->R5 후보.",
+        "false_positive_rule": "b3 > 0이면 위양성 위험으로 기록한다. 판정 반영은 C2c의 Pre 지표에서 한다.",
+        "no_threshold_tuning": "임계값 .65, [10.3, 12.0], >=4/6, <=1/6, >=5틱은 act-C2-R3-spec.md §3 C2b에 적힌 값을 그대로 쓴다. 결과를 본 뒤 바꾸지 않는다."
+      },
+      "scope": {
+        "offline": "정책 출력은 실행되지 않는다. 물리 성공·폐루프 성능을 주장하지 않는다.",
+        "S4_diagnostic_only": "S4는 teacher PWM·se를 넣는 진단용 반사실이며 배포 입력이 아니다. 결과 표에도 그렇게 표기한다.",
+        "no_contact_force_input": "접촉력·정답은 평가측 window/anchor와 b2 판정에만 쓴다."
+      },
+      "environment": {
+        "host": "Oracle CPU, 2 vCPU, GPU 0",
+        "torch_threads": 2,
+        "device": "cpu",
+        "wall_expected_minutes": 90
+      }
+    }
+  },
+  "outputs": {
+    "c2a_root": "/home/ubuntu/UGRP/outputs/runs/act18-c2-doneclock-<TS>/c2a",
+    "c2b_root": "/home/ubuntu/UGRP/outputs/runs/act18-c2-doneclock-<TS>/c2b/replay",
+    "c2b_retrieved": "/home/ubuntu/UGRP/outputs/runs/act18-c2-doneclock-<TS>/c2b/retrieved",
+    "labels": [
+      "engineering-only",
+      "sim",
+      "gate 비대상",
+      "pooling 금지"
+    ]
+  },
+  "exclusions": {
+    "no_c2c": "C2c(R8+v7 폐루프)는 이 prereg에서 실행하지 않는다. C2a PASS + C2b done PASS + 창민 결정 카드 승인 뒤 오프피크에서 별도 prereg로 실행한다.",
+    "no_r3_training": "R3 학습·GPU 평가는 실행하지 않는다. 준비만 한다.",
+    "no_gpu": "C2a/C2b는 Oracle CPU only. GPU 연산 0. 회수용 temp CPU VM만 쓴다.",
+    "no_original_writes": "finish-r3·20261019c·E0/E1·act-chunk8-pilot·R8 원본은 읽기 전용이다. 스냅샷 사본은 read-only로 마운트했다."
+  }
+}
