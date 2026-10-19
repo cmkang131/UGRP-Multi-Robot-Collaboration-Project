@@ -79,11 +79,17 @@ GATE_MODES = {
     GATE_MODE_V1: dict(zone_profile='gpu_calib_v1',
                        acquisition_mode='search_in_place',
                        forward_cap_m=0.0,
-                       zone_min_component=600),
+                       zone_min_component=600,
+                       bearing_convention='positive_right'),
     GATE_MODE_V230_FWD24: dict(zone_profile='gpu_calib_v230',
                                acquisition_mode='forward_then_search',
                                forward_cap_m=FORWARD_ACQUISITION_CAP_M,
-                               zone_min_component=600),
+                               zone_min_component=600,
+                               # Controller turn is +left; the unmirrored
+                               # camera puts robot-left on image-left.  The
+                               # legacy image-column bearing would turn away
+                               # (preflight evidence: PREFLIGHT_AMENDMENT.md).
+                               bearing_convention='positive_left'),
 }
 DEFAULT_GATE_MODE = GATE_MODE_V1
 
@@ -229,7 +235,8 @@ def navigation_factory(robot_id, static=None, **kwargs):
     constants = record['constants']
     return SelfCentricNavigation(
         robot_id, static, option=OPTION,
-        detector=GpuCalibZoneDetector(profile=mode['zone_profile']),
+        detector=GpuCalibZoneDetector(profile=mode['zone_profile'],
+                                       bearing_convention=mode['bearing_convention']),
         odometry=OwnCommandOdometry(forward_m_per_pct_s=constants['forward_m_per_pct_s'],
                                     yaw_deg_per_pct_s=constants['yaw_deg_per_pct_s']),
         destination_kind=DESTINATION_KIND,
@@ -251,6 +258,7 @@ def gate_queue_fields(seed, calibration=None, sim_budget_s=SIM_BUDGET_S):
                 nav_acquisition=mode['acquisition_mode'],
                 nav_forward_cap_m=float(mode['forward_cap_m']),
                 nav_zone_min_component=int(mode['zone_min_component']),
+                nav_bearing_convention=mode['bearing_convention'],
                 nav_calibration=dict(path=record['path'], sha256=record['sha256'],
                                      source_sha=record['source_sha'],
                                      constants=dict(record['constants'])))
@@ -305,6 +313,9 @@ def validate_gate_queue(queue):
         raise ValueError('NAV_GATE_MIN_COMPONENT_INVALID') from None
     if min_component != int(mode['zone_min_component']):
         raise ValueError('NAV_GATE_MIN_COMPONENT_MISMATCH')
+    if queue.get('nav_bearing_convention', expected['bearing_convention']) != \
+            mode['bearing_convention']:
+        raise ValueError('NAV_GATE_BEARING_CONVENTION_MISMATCH')
     return queue
 
 

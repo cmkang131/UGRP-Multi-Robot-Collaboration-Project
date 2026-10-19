@@ -94,9 +94,10 @@ def poses_path(lane):
 def measure_frame(rgb):
     """Measure one RGB frame with the exact detector path (no acceptance claim)."""
     import numpy as np
-    from harness.e2ewarp_selfnav import (GPU_CALIB_V1, GPU_CALIB_V230,
-                                         GpuCalibZoneDetector, hue_degrees_to_opencv,
-                                         largest_component, rgb_to_hsv)
+    from harness.e2ewarp_selfnav import (BEARING_POSITIVE_LEFT, GPU_CALIB_V1,
+                                         GPU_CALIB_V230, GpuCalibZoneDetector,
+                                         hue_degrees_to_opencv, largest_component,
+                                         rgb_to_hsv)
     arr = np.asarray(rgb, dtype=np.uint8)
     h_deg, s, v = rgb_to_hsv(arr)
     h = hue_degrees_to_opencv(h_deg)
@@ -133,7 +134,8 @@ def measure_frame(rgb):
         v1=band_measure(GPU_CALIB_V1),
         v230_upper_largest_component_px=0 if upper is None else int(upper['area']),
         v230_lower_largest_component_px=0 if lower is None else int(lower['area']),
-        detections_v230=GpuCalibZoneDetector(profile='gpu_calib_v230')(arr),
+        detections_v230=GpuCalibZoneDetector(
+            profile='gpu_calib_v230', bearing_convention=BEARING_POSITIVE_LEFT)(arr),
         detections_v1=GpuCalibZoneDetector()(arr),
         wall_pixels=int(wall.sum()), wall_fraction=round(float(wall.mean()), 6),
         neutral_pixels=int(neutral.sum()), neutral_fraction=round(float(neutral.mean()), 6),

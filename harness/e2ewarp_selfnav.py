@@ -551,6 +551,20 @@ GPU_CALIB_V230 = dict(hue_cv=(110.0, 114.0), sat_min=100.0, val=(30.0, 230.0),
                       min_pixels=600, units='opencv_h_0_180_sv_0_255')
 GPU_CALIB_PROFILES = {'gpu_calib_v1': GPU_CALIB_V1, 'gpu_calib_v230': GPU_CALIB_V230}
 DEFAULT_GPU_CALIB_PROFILE = 'gpu_calib_v1'
+# Bearing convention of the detector.  ``positive_right`` is the legacy
+# image-column convention (cx right of centre -> positive); the frozen v1 gate
+# never detected a destination, so it was never exercised.  The controller
+# treats a *positive* turn as a left (CCW) turn: calibration with the +turn
+# pulse pattern measured turn_deg_signed=+120.9 deg (measured yaw, not
+# magnitude), and a +5 deg yaw render shifts the zone strip right
+# (bbox centre 230 -> 287.5 px), i.e. the unmirrored image has robot-left on
+# image-left.  The approved v230_fwd24 mode therefore uses ``positive_left``
+# so that a destination seen on the left produces a left turn.  The legacy
+# default is unchanged for the frozen v1 gate.
+BEARING_POSITIVE_RIGHT = 'positive_right'
+BEARING_POSITIVE_LEFT = 'positive_left'
+BEARING_CONVENTIONS = (BEARING_POSITIVE_RIGHT, BEARING_POSITIVE_LEFT)
+DEFAULT_BEARING_CONVENTION = BEARING_POSITIVE_RIGHT
 
 
 def rgb_to_hsv(rgb):
@@ -666,10 +680,14 @@ class GpuCalibZoneDetector:
     hue/saturation/min-component, V ceiling 230.  Only
     ``harness.e2ewarp_nav_gate`` selects it; the default stays ``gpu_calib_v1``.
     """
-    def __init__(self, *, profile=DEFAULT_GPU_CALIB_PROFILE, hfov_deg=120.0, min_pixels=None):
+    def __init__(self, *, profile=DEFAULT_GPU_CALIB_PROFILE, hfov_deg=120.0,
+                 min_pixels=None, bearing_convention=DEFAULT_BEARING_CONVENTION):
         if profile not in GPU_CALIB_PROFILES:
             raise ValueError('unknown own-RGB appearance profile')
+        if bearing_convention not in BEARING_CONVENTIONS:
+            raise ValueError('unknown bearing convention: ' + str(bearing_convention))
         self.profile = profile
+        self.bearing_convention = bearing_convention
         self.band = GPU_CALIB_PROFILES[profile]
         self.hfov_deg = float(hfov_deg)
         self.min_pixels = int(min_pixels or self.band['min_pixels'])
@@ -693,7 +711,10 @@ class GpuCalibZoneDetector:
         left, right, top, bottom = comp['left'], comp['right'], comp['top'], comp['bottom']
         width, height = right - left, bottom - top
         cx = (left + right - 1) / 2.0
-        bearing = (cx / max(W - 1, 1) - 0.5) * self.hfov_deg
+        offset = cx / max(W - 1, 1) - 0.5
+        if self.bearing_convention == BEARING_POSITIVE_LEFT:
+            offset = -offset
+        bearing = offset * self.hfov_deg
         return [dict(kind='zone_B', bearing_deg=bearing, bottom_norm=bottom / H,
                      width_norm=width / W, height_norm=height / H,
                      area_norm=comp['area'] / (H * W), solidity=comp['area'] / (width * height),
@@ -701,7 +722,8 @@ class GpuCalibZoneDetector:
                      touches_left=bool(left <= 0), touches_right=bool(right >= W),
                      touches_top=bool(top <= 0),
                      bbox=(left, top, right, bottom), pixels=comp['area'], total_pixels=total,
-                     hue_units=self.band['units'], profile=self.profile)]
+                     hue_units=self.band['units'], profile=self.profile,
+                     bearing_convention=self.bearing_convention)]
 
 
 # Issued rows carry the adapter's *normalized* wheel duty in [-1, 1] (`WHEEL_PCT =

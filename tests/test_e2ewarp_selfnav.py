@@ -713,3 +713,29 @@ def test_forward_acquisition_is_one_shot_and_never_restarts_after_following():
     cmd = nav.command(3.0)
     assert cmd['wheels'][0] < 0.0 < cmd['wheels'][1]
     assert nav._forward_used_m == used
+
+
+def test_detector_bearing_convention_matches_the_controller_turn_sign():
+    import numpy as np
+    img = np.zeros((48, 64, 3), dtype=np.uint8)
+    img[12:, 6:26] = (51, 89, 194)   # patch left of image centre
+    legacy = sn.GpuCalibZoneDetector(profile='gpu_calib_v230')
+    control = sn.GpuCalibZoneDetector(profile='gpu_calib_v230',
+                                      bearing_convention=sn.BEARING_POSITIVE_LEFT)
+    ldet, cdet = legacy(img), control(img)
+    assert len(ldet) == 1 and len(cdet) == 1
+    # Image-column convention: left of centre is negative (legacy default).
+    assert ldet[0]['bearing_deg'] < 0.0
+    # Controller convention: the same left target is positive (turn left).
+    assert cdet[0]['bearing_deg'] > 0.0
+    assert cdet[0]['bearing_deg'] == pytest.approx(-ldet[0]['bearing_deg'], rel=1e-12)
+    assert cdet[0]['bearing_convention'] == sn.BEARING_POSITIVE_LEFT
+    assert ldet[0]['bearing_convention'] == sn.BEARING_POSITIVE_RIGHT
+    with pytest.raises(ValueError, match='unknown bearing convention'):
+        sn.GpuCalibZoneDetector(bearing_convention='mirrored')
+    # The corrected convention drives a left target with a left (CCW) turn.
+    nav = sn.navigation_factory('r1', {}, option=sn.OPTION, odometry=gate_odometry(),
+                                detector=lambda fr: cdet)
+    nav.observe(frame(0.0))
+    cmd = nav.command(0.0)
+    assert cmd['wheels'][0] < 0.0 < cmd['wheels'][1]

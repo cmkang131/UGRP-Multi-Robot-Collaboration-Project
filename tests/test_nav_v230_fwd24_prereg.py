@@ -9,6 +9,7 @@ from harness import e2ewarp_selfnav as sn
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 PREREG = ROOT / 'experiments/2026-10-19-nav-v230-fwd24/PREREG.md'
+AMENDMENT = ROOT / 'experiments/2026-10-19-nav-v230-fwd24/PREFLIGHT_AMENDMENT.md'
 RENDER = ROOT / 'experiments/2026-10-19-nav-v230-fwd24/render_check.py'
 
 
@@ -34,11 +35,14 @@ def test_approved_mode_is_v230_fwd24_with_the_frozen_constants():
 
 
 def test_prereg_and_render_check_freeze_the_approved_conditions():
-    assert PREREG.is_file() and RENDER.is_file()
+    assert PREREG.is_file() and RENDER.is_file() and AMENDMENT.is_file()
     pre = PREREG.read_text()
     assert 'FROZEN' in pre and 'V 30–230' in pre and '2.4 m' in pre
     assert 'detections == 0' in pre and 'min_component 600' in pre
     assert 'pooling 금지' in pre and 'calibration_source_sha' in pre
+    amendment = AMENDMENT.read_text()
+    assert 'bearing_convention' in amendment and 'positive_left' in amendment
+    assert 'Step B는 이 SHA에서 실행하지 않았다' in amendment
     module = load_render_check()
     assert module.FORWARD_CAP_M == gate.FORWARD_ACQUISITION_CAP_M
     assert module.MIN_COMPONENT_PX == sn.GPU_CALIB_V230['min_pixels']

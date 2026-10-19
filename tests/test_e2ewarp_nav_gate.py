@@ -333,6 +333,7 @@ def test_default_gate_mode_is_the_frozen_v1_gate(tmp_path, monkeypatch):
     nav = gate.navigation_factory('r1', {'destination_zone': 'B'},
                                   calibration=gate.load_calibration(write_calibration(tmp_path)))
     assert nav.detector.profile == 'gpu_calib_v1'
+    assert nav.detector.bearing_convention == 'positive_right'
     assert nav.acquisition_mode == 'search_in_place' and nav.forward_cap_m == 0.0
 
 
@@ -350,11 +351,14 @@ def test_v230_fwd24_gate_mode_binds_band_forward_cap_and_queue(tmp_path, monkeyp
     assert fields['nav_acquisition'] == 'forward_then_search'
     assert fields['nav_forward_cap_m'] == 2.4
     assert fields['nav_zone_min_component'] == 600
+    assert fields['nav_bearing_convention'] == 'positive_left'
     queue = valid_queue(**{k: v for k, v in fields.items() if k.startswith('nav_')})
     assert gate.validate_gate_queue(queue)['nav_gate_mode'] == 'v230_fwd24'
     nav = gate.navigation_factory('r1', {'destination_zone': 'B'}, calibration=record)
     assert nav.detector.profile == 'gpu_calib_v230'
     assert nav.detector.band['val'] == (30.0, 230.0)
+    # Controller convention: a destination on the image left turns left.
+    assert nav.detector.bearing_convention == 'positive_left'
     assert nav.acquisition_mode == 'forward_then_search'
     assert nav.forward_cap_m == 2.4
     # No observation yet, no landmark: the approved forward leg runs first.
@@ -377,6 +381,7 @@ def test_legacy_v1_queue_without_mode_markers_is_still_admitted(monkeypatch):
     (dict(nav_acquisition='forward_then_search'), 'NAV_GATE_ACQUISITION_MISMATCH'),
     (dict(nav_forward_cap_m=2.4), 'NAV_GATE_FORWARD_CAP_MISMATCH'),
     (dict(nav_zone_min_component=150), 'NAV_GATE_MIN_COMPONENT_MISMATCH'),
+    (dict(nav_bearing_convention='positive_left'), 'NAV_GATE_BEARING_CONVENTION_MISMATCH'),
 ])
 def test_v1_gate_queue_rejects_unapproved_mode_markers(overrides, message, monkeypatch):
     monkeypatch.delenv(gate.GATE_MODE_ENV, raising=False)
@@ -400,6 +405,8 @@ def test_v230_queue_rejects_a_non_approved_forward_cap(tmp_path, monkeypatch):
     for cap in (1.7, 2.5, 0.0):
         with pytest.raises(ValueError, match='NAV_GATE_FORWARD_CAP_MISMATCH'):
             gate.validate_gate_queue(dict(queue, nav_forward_cap_m=cap))
+    with pytest.raises(ValueError, match='NAV_GATE_BEARING_CONVENTION_MISMATCH'):
+        gate.validate_gate_queue(dict(queue, nav_bearing_convention='positive_right'))
     assert gate.validate_gate_queue(dict(queue, nav_forward_cap_m=2.4))['nav_gate_mode'] == 'v230_fwd24'
 
 
