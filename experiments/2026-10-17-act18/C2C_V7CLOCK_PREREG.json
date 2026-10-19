@@ -1,0 +1,204 @@
+{
+  "schema": "ugrp.act18.c2c_prereg.v1",
+  "experiment": "2026-10-17-act18",
+  "phase": "C2c",
+  "title": "C2c R8 + v7 own-issued clock closed loop (deadband 2, no retraining, GPU)",
+  "pre_registered_utc": "2026-10-19T22:52:00Z",
+  "registration_order": "Committed before any C2c GPU evaluation. At commit time no C2c eval output existed. Only the specification/report documents, the finished C2a/C2b CPU results, the read-only R8 checkpoint hash, and the C2c code/tests were inspected.",
+  "approval": "창민 2026-10-19 C2c 승인: 2.9 VM-h, 새 run root, 새 branch. R3 재학습은 no-go 유지.",
+  "label": "engineering-only / sim / HO4 diagnostic / not a promotion gate / pooling 금지",
+  "spec": {
+    "path": "/home/ubuntu/UGRP/outputs/reports/claude-arch-parallel-20261019/act-C2-R3-spec.md",
+    "sha256": "87e78ce3e44e113ddfebe5347a939d3a8b657db2410bd39970e02872a4c63b92",
+    "section": "§3 C2c",
+    "design_path": "/home/ubuntu/UGRP/outputs/reports/claude-arch-parallel-20261019/act-student-failure-design.md",
+    "design_sha256": "89e030624b5575c92a42b8f6ea565d9fc930ec0f32f1332fc9b419f902a4a442",
+    "design_sections": [
+      "§3 E2 (HO4, --stage diag --diag-prereg, deadband A/B)"
+    ],
+    "directives_path": "/home/ubuntu/UGRP/outputs/reports/claude-arch-parallel-20261019/claude-directives-20261019T18.md",
+    "directives_sha256": "c7e553c4f34745778c15351f8a67f02af38194fb7786b47de7844ad56b934f6f",
+    "c2_report_path": "/home/ubuntu/UGRP/outputs/reports/2026-10-19-act18-c2-doneclock-20261019T2002Z.md",
+    "c2_report_sha256": "ca14d7cdde88deb5dba4f294e9aa0e584e534812c0b3cee226e8c6ed9b382a54",
+    "opening_condition": "C2a INCONCLUSIVE + C2b done path PASS + 창민 approval; all three are satisfied."
+  },
+  "change": {
+    "only": "Evaluation-side own-issued PWM clock (pwm_elapsed_s) definition. No contract file, adapter, weight, dataset or label change.",
+    "flag": "--issued-clock-deadband {0,2} (default 0 = v6 clock, behavior unchanged)",
+    "v6": "reset the pwm clock whenever the last issued PWM differs from the previous tick (any change).",
+    "v7": "reset the pwm clock only when one servo moves by at least 3 PWM from the previously observed issued value, i.e. a ±2 deadband is ignored (the flag names the tolerated band; the reset threshold is 3, equal to C2b S2/S3/S4).",
+    "hook": "scripts/act18_evaluate.py patches harness.grasp_act_contract.IssuedClock for the evaluation process (contract file itself unchanged, sha checked) and re-applies the same clock to the allowed observation received from the physics owner before Actor.predict, because the owner builds observations in a separate process. skill_elapsed_s and every other observation field are unchanged.",
+    "diag_stage": "--stage diag --diag-prereg <this file> admits only the HO4 seeds below; overlapping TRAIN4/VAL8/FINAL40 fails closed; summary records stage=diag, gate_eligible=false and the prereg SHA.",
+    "no_retraining": "R3 training is no-go. R8 step-100000 is read-only; its sha256 is recorded before and after every run."
+  },
+  "checkpoint": {
+    "release": "models-20261017-act18-v7-r1",
+    "path": "/home/ugrp/ugrp-sim/runs/act18/training-r1/R8/step-100000",
+    "model_sha256": "e1ec659216e289e1e5e9bb48ac597763ad8d1a088c3c85eb3205336307bb8d5a",
+    "adapter_chunk": 8,
+    "done_mode": "balanced_bce_v1",
+    "image_mode": "current_full_v1",
+    "contract_sha256": "6bc58d6f9707abd5d854c6dbbb63357ed14dab6c37bcf055ddd8d1d66d171056"
+  },
+  "holdout": {
+    "name": "HO4",
+    "seeds": [
+      88668,
+      88669,
+      88670,
+      88671
+    ],
+    "expected_worlds": 4,
+    "kinds": [
+      "cyan",
+      "red",
+      "green",
+      "yellow"
+    ],
+    "groups": {
+      "group-000": {
+        "seeds": [
+          88668,
+          88669
+        ],
+        "compiled_reference_case": "case-068"
+      },
+      "group-001": {
+        "seeds": [
+          88670,
+          88671
+        ],
+        "compiled_reference_case": "case-070"
+      }
+    },
+    "rule": "HO4 seeds are not TRAIN4, VAL8 or FINAL40, and are not used for best-val selection or DAgger in any R run. The diag path fails closed if any registered seed overlaps a locked gate set.",
+    "gate_eligible": false
+  },
+  "arms": {
+    "B0": {
+      "issued_clock_deadband": 0,
+      "clock": "v6 (baseline)"
+    },
+    "C2c": {
+      "issued_clock_deadband": 2,
+      "clock": "v7 (own-issued PWM deadband 2)"
+    }
+  },
+  "queues": {
+    "HO4": {
+      "stage": "diag",
+      "seeds": [
+        88668,
+        88669,
+        88670,
+        88671
+      ],
+      "worlds_per_run": 4
+    },
+    "TRAIN4": {
+      "stage": "train",
+      "seeds": [
+        88600,
+        88601,
+        88602,
+        88603
+      ],
+      "worlds_per_run": 4,
+      "groups": {
+        "group-000": {
+          "seeds": [
+            88600,
+            88603
+          ],
+          "compiled_reference_case": "case-000"
+        },
+        "group-001": {
+          "seeds": [
+            88601,
+            88602
+          ],
+          "compiled_reference_case": "case-001"
+        }
+      },
+      "grouping_note": "Same two-world grouping as the finish-r3/repro TRAIN4 baseline; the four seeds cannot be paired arbitrarily because the compiled reference is shared per group."
+    }
+  },
+  "repetitions_N": 3,
+  "cross_order": [
+    "C2c-ho4-rep1",
+    "B0-ho4-rep1",
+    "C2c-train4-rep1",
+    "C2c-ho4-rep2",
+    "B0-ho4-rep2",
+    "C2c-train4-rep2",
+    "C2c-ho4-rep3",
+    "B0-ho4-rep3",
+    "C2c-train4-rep3"
+  ],
+  "runs": 9,
+  "run_root": "/home/ugrp/ugrp-sim/runs/act18/c2c-v7clock-<UTC_TS>",
+  "run_layout": "<root>/{B0,C2c}-{ho4,train4}-rep{1,2,3}/R8-{diag|train}/group-00{0,1}/evaluation",
+  "evaluator": {
+    "script": "scripts/act18_evaluate.py",
+    "n_action_steps": 1,
+    "temporal_ensemble_coeff": 0.01,
+    "full_evaluation": true,
+    "sim_cap_s": 90,
+    "record_done_prob": true,
+    "collect_failure_camera_window": true,
+    "worlds_per_process": 2,
+    "groups_in_parallel": 2,
+    "cwd": "/home/ugrp/ugrp-sim/src/f0db6b1abb842ea65b71c433738210254f300a7c (frozen qualified source)",
+    "seed": "2 robots per group (r1 student, r2 partner/solo teacher-controlled according to the frozen owner), dataset/eval seed set as listed; no new seed",
+    "checkpoint_immutable": true
+  },
+  "metrics": {
+    "G": "grasp_done requested AND a 3 s stable lift (clearance >= .012 m, tilt <= 10 deg, each finger >= .5 N, weld off) completed at or before the grasp done tick.",
+    "Pre": "a grasp done was requested but no 3 s stable lift had completed at that tick (early or ungraded done).",
+    "done_claim": "issued grasp done tick (the ACT done claim); release_done_claim likewise for release.",
+    "first_done_prob_ge_065": "first chunk-level raw done probability >= .65 tick and its pwm_elapsed_s (recorded with --record-done-prob; reporting only).",
+    "post_lift_max_pe": "maximum pwm_elapsed_s after the first 3 s stable lift onset (evaluation-only truth for timing).",
+    "phases": [
+      "lift",
+      "backward_onset (4 wheels negative >= 5 consecutive ticks)",
+      "done",
+      "release skill entry",
+      "release physical success"
+    ],
+    "T": "task_success from the native score (report only, no gate).",
+    "cap_end": "90 SIM s cap reached."
+  },
+  "acceptance": {
+    "PASS": "G(C2c-HO4) >= 4 AND G(C2c-TRAIN4) >= 4 AND Pre(C2c total 24) <= 2 AND G(B0-HO4) <= 1.",
+    "FAIL": "G(C2c-HO4) <= 1 AND G(C2c-TRAIN4) <= 1, OR Pre(C2c total 24) >= 5.",
+    "INCONCLUSIVE": "anything else; no training seed exists so an N increase requires approval.",
+    "T": "reported only; §8 milestone T(C2c-HO4) >= 1 is reported separately.",
+    "fisher_note": "PASS reference: Fisher one-sided 4/12 vs 0/12 p = 0.047.",
+    "no_result_based_changes": "No threshold, seed, arm or metric definition may change after results are seen."
+  },
+  "pooling": {
+    "forbidden": true,
+    "statement": "Do not pool with finish-r3, 20261019/20261019c, act-chunk8-pilot, E0/E1, VAL8, FINAL40, act17 or act16w. B0-TRAIN4 is a new run in this root; existing finish-r3 reproductions are shown only as context and are never summed.",
+    "HO4": "HO4 is a diagnostic holdout outside the promotion gate; no gate-eligible claim."
+  },
+  "r3": {
+    "retraining": "no-go",
+    "training_runs": 0,
+    "note": "This prereg authorizes evaluation only; no C2c result can open R3 training."
+  },
+  "safety": {
+    "contract_file_modified": false,
+    "weights_modified": false,
+    "dataset_modified": false,
+    "original_run_roots_read_only": true,
+    "host": "gcp2 only (ugrp-act-l4-gcp2, ugrp-sim-b-1014, asia-northeast3-a)",
+    "vm_budget_estimate": "2.9 VM-h",
+    "window": "weekday UTC 10:00-01:00 or 04:00-06:00",
+    "stop": "processes 0 and GPU 0 after runs, lease removed, TERMINATED confirmed; no VM restart loop, only start retries after STOCKOUT."
+  },
+  "analysis": {
+    "script": "scripts/act18_c2c_analyze.py",
+    "outputs": "<run_root>/summary.json (per-world rows and acceptance) and <run_root>/analysis.json",
+    "raw_locations": "each run's evaluation/summary.json, rejection_table.json, actor-inputs.jsonl, done-prob jsonl, owner/evaluation-only.jsonl"
+  }
+}
