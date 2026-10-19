@@ -323,11 +323,21 @@ def _point_segment(p, a, b):
 
 
 def _segments_cross(a, b, c, d):
+    """Proper segment intersection (collinear *disjoint* segments are not crossing)."""
     def orient(p, q, r):
         return (q[0] - p[0]) * (r[1] - p[1]) - (q[1] - p[1]) * (r[0] - p[0])
     o1, o2 = orient(a, b, c), orient(a, b, d)
     o3, o4 = orient(c, d, a), orient(c, d, b)
-    return o1 * o2 <= 0.0 and o3 * o4 <= 0.0
+    if not (o1 * o2 <= 0.0 and o3 * o4 <= 0.0):
+        return False
+    # The orientation test alone also accepts collinear-but-disjoint edges (for
+    # example two axis-aligned robot boxes exactly side by side at yaw 0), so
+    # the segment bounding boxes must overlap as well.
+    if max(min(a[0], b[0]), min(c[0], d[0])) > min(max(a[0], b[0]), max(c[0], d[0])):
+        return False
+    if max(min(a[1], b[1]), min(c[1], d[1])) > min(max(a[1], b[1]), max(c[1], d[1])):
+        return False
+    return True
 
 
 def polygon_distance(poly_a, poly_b):

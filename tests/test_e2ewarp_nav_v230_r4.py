@@ -15,6 +15,7 @@ constructor defaults keep their bytes and behaviour, and only
 import json
 import os
 import types
+from pathlib import Path
 
 import numpy as np
 import pytest
@@ -391,3 +392,21 @@ def test_build_context_supports_one_robot_and_the_pair_default():
     signature = inspect.signature(physics.build_context)
     assert signature.parameters['nav_keep'].default == ('r1', 'r2')
     assert signature.parameters['nav_spawns'].default is None
+
+
+def test_analysis_base_box_distance_handles_collinear_edges_and_overlap():
+    """The r4 analysis tool's OBB distance (post-run fix: collinear disjoint edges)."""
+    import importlib.util
+    path = Path(__file__).resolve().parents[1] / 'experiments/2026-10-19-nav-v230-r4/nav_v230_r4_analysis.py'
+    spec = importlib.util.spec_from_file_location('nav_v230_r4_analysis', path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    half = (0.0905, 0.0435)
+    base = module._rect_corners((0.0, 0.0), 0.0, *half)
+    # two axis-aligned boxes 0.5 m apart: collinear left/right edges must not
+    # count as an intersection (0.5 - 0.087 = 0.413 m of clear space)
+    apart = module._rect_corners((0.0, -0.5), 0.0, *half)
+    assert module.polygon_distance(base, apart) == pytest.approx(0.413, abs=1e-6)
+    # overlapping boxes are a contact
+    overlap = module._rect_corners((0.0, -0.05), 0.0, *half)
+    assert module.polygon_distance(base, overlap) == 0.0
