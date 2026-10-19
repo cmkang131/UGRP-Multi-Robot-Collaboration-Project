@@ -739,3 +739,85 @@ def test_detector_bearing_convention_matches_the_controller_turn_sign():
     nav.observe(frame(0.0))
     cmd = nav.command(0.0)
     assert cmd['wheels'][0] < 0.0 < cmd['wheels'][1]
+
+
+# ---- memory decay (2026-10-19 A fix: linear, anchored at last_seen) ----
+
+def test_landmark_decay_is_linear_in_time_since_last_seen():
+    """4.0 s -> 8.5 s: 0.5 -> 0.59 m; the old code reached 2.57 m (quadratic)."""
+    lm = sn.Landmark('zone_B', 1.0, 0.0, 4.0)
+    assert lm.base_uncertainty_m == 0.5
+    values = []
+    for step in range(1, 46):                      # 4.1 .. 8.5 s, 10 Hz ticks
+        lm.decay(4.0 + step / 10.0)
+        values.append(lm.uncertainty_m)
+    assert values[0] == pytest.approx(0.502)
+    assert values[-1] == pytest.approx(0.59)       # 4.5 s x 0.02 m/s = +0.09
+    assert all(b >= a for a, b in zip(values, values[1:]))
+    # Equal time steps add equal (not growing) increments.
+    for a, b in zip(values, values[1:]):
+        assert b - a == pytest.approx(0.002, abs=1e-12)
+
+
+def test_landmark_decay_is_idempotent_at_the_same_instant():
+    lm = sn.Landmark('zone_B', 1.0, 0.0, 0.0)
+    for _ in range(45):                            # 45 calls at 4.5 s, not 4.5 s total
+        lm.decay(4.5)
+    assert lm.uncertainty_m == pytest.approx(0.59)
+
+
+def test_landmark_decay_caps_at_max_uncertainty():
+    lm = sn.Landmark('zone_B', 1.0, 0.0, 0.0)
+    lm.decay(10.0)
+    assert lm.uncertainty_m == pytest.approx(0.7)
+    lm.decay(1000.0)
+    assert lm.uncertainty_m == 3.0                 # min(max_m=3.0, ...)
+    lm.decay(10000.0)
+    assert lm.uncertainty_m == 3.0
+
+
+def test_explicit_initial_uncertainty_becomes_the_decay_base():
+    lm = sn.Landmark('zone_B', 1.0, 0.0, 0.0, uncertainty_m=0.3)
+    lm.decay(5.0)
+    assert lm.base_uncertainty_m == 0.3
+    assert lm.uncertainty_m == pytest.approx(0.4)
+
+
+def test_reobservation_resets_base_and_last_seen_together():
+    detections = {'items': [{'kind': 'zone_B', 'range_m': 1.2, 'bearing_deg': 5.0}]}
+    nav = sn.navigation_factory('r1', {}, option=sn.OPTION,
+                                detector=lambda fr: detections['items'], odometry=odometry())
+    nav.observe(frame(0.0))
+    first = nav.memory.items[-1]
+    detections['items'] = []
+    nav.observe(frame(2.0))                        # no fresh detection: the clock ages
+    assert first.uncertainty_m == pytest.approx(0.54)
+    detections['items'] = [{'kind': 'zone_B', 'range_m': 1.0, 'bearing_deg': 4.0}]
+    nav.observe(frame(3.0))                        # re-observation
+    fresh = nav.memory.items[-1]
+    assert fresh.last_seen_s == 3.0
+    assert fresh.base_uncertainty_m == 0.5
+    assert fresh.uncertainty_m == 0.5
+    fresh.decay(4.0)
+    assert fresh.uncertainty_m == pytest.approx(0.52)  # anchored at the new sighting
+    # The earlier sighting keeps its own older clock (nothing rewrites it).
+    assert first.last_seen_s == 0.0 and first.uncertainty_m == pytest.approx(0.56)
+
+
+def test_single_detection_survives_past_the_old_nine_second_drop():
+    """A target seen once at 4.0 s is still remembered at 45.0 s.
+
+    The quadratic bug crossed the 3.0 m retention threshold at 9.0 s and deleted
+    the target (the r2 search_timeout in the 2026-10-19 45 s diagnostic).
+    """
+    detections = {'items': [{'kind': 'zone_B', 'range_m': 1.0, 'bearing_deg': 20.0}]}
+    nav = sn.navigation_factory('r1', {}, option=sn.OPTION,
+                                detector=lambda fr: detections['items'], odometry=odometry())
+    nav.observe(frame(4.0))
+    detections['items'] = []
+    for step in range(1, 411):                     # 4.1 .. 45.0 s, no new detection
+        nav.observe(frame(4.0 + step / 10.0))
+    target = nav.memory.nearest('zone_B')
+    assert target is not None                      # old code: dropped at 9.0 s
+    assert target.last_seen_s == 4.0
+    assert target.uncertainty_m == pytest.approx(0.5 + 0.02 * 41.0)  # 1.32, below 3.0

@@ -171,9 +171,24 @@ class Landmark:
     # Appearance-only detectors (e.g. GpuCalibZoneDetector) report no metric
     # range.  A default 0.0 must never be read as "arrived at 0 m".
     range_measured: bool = True
+    # Uncertainty at ``last_seen_s``.  ``decay()`` re-derives the age term from
+    # this anchor on every call; the old code added it to the running value, so
+    # a 10 Hz loop added rate*sum(now_k - last_seen) instead of
+    # rate*(now - last_seen) and grew quadratically (measured 0.5 -> 2.57 m in
+    # 4.5 s where the intended growth is 0.59 m).  A fresh detection sets
+    # ``last_seen_s`` and this base together (a re-observation is a new
+    # Landmark; ``__post_init__`` keeps the base equal to the initial
+    # measurement uncertainty when one is supplied explicitly).
+    base_uncertainty_m: float | None = None
+
+    def __post_init__(self):
+        if self.base_uncertainty_m is None:
+            self.base_uncertainty_m = float(self.uncertainty_m)
 
     def decay(self, now_s, *, rate_m_per_s=0.02, max_m=3.0):
-        self.uncertainty_m = min(max_m, self.uncertainty_m + rate_m_per_s * max(0.0, now_s - self.last_seen_s))
+        """Uncertainty = min(max_m, base + rate * (now - last_seen))."""
+        age_s = max(0.0, float(now_s) - self.last_seen_s)
+        self.uncertainty_m = min(max_m, self.base_uncertainty_m + rate_m_per_s * age_s)
 
 
 @dataclass
@@ -190,6 +205,8 @@ class SelfCentricMemory:
                 kept.append(item)
         for det in detections or ():
             measured = 'range_m' in det and det.get('range_m') is not None
+            # Re-observation: this Landmark writes last_seen_s and the decay base
+            # together, so the decay clock restarts from this measurement.
             kept.append(Landmark(str(det['kind']), float(det.get('range_m') or 0.0), float(det['bearing_deg']),
                                  float(now_s), bottom_norm=float(det.get('bottom_norm', 0.0)),
                                  width_norm=float(det.get('width_norm', 0.0)), pixels=int(det.get('pixels', 0)),
