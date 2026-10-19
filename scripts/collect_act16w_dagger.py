@@ -13,6 +13,7 @@ import sys
 import time
 from act16w_runtime import ACT_SHA, frozen_source, require_gcp2, sha256
 from act16w_dagger_rpc import DaggerClient
+from act18_chunk8 import contract_chunk_predict, pilot_checkpoint_chunk
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -26,9 +27,13 @@ def main():
     p.add_argument('--takeover-after-s',type=float,default=6.0);p.add_argument('--max-ticks',type=int,default=300)
     p.add_argument('--takeover-pilot',action='store_true')
     p.add_argument('--plan-seeds',type=int,nargs='+')
+    # Default OFF: admit only a checkpoint whose declared ACT horizon already
+    # equals the frozen contract (R8).  R100 chunk100 is rejected, never sliced.
+    p.add_argument('--contract-chunk8',action='store_true')
     a=p.parse_args()
     if not a.enabled:p.error('DAgger collection default OFF')
     if a.takeover_pilot and not a.takeover:p.error('--takeover-pilot requires explicit --takeover')
+    if a.contract_chunk8 and not a.takeover_pilot:p.error('--contract-chunk8 is takeover-pilot-only')
     if a.plan_seeds and not a.takeover_pilot:p.error('--plan-seeds is takeover-pilot-only')
     if a.plan_seeds and len(set(a.plan_seeds))!=len(a.plan_seeds):p.error('unique pilot seeds required')
     if a.takeover_pilot and a.max_ticks!=900:p.error('takeover pilot uses the unchanged 90 SIM s owner cap (--max-ticks 900)')
@@ -43,6 +48,7 @@ def main():
         missing=[seed for seed in a.plan_seeds if seed not in by_seed]
         if missing:raise ValueError('pilot seeds missing from reference plans: '+repr(missing))
         plans=[by_seed[seed] for seed in a.plan_seeds]
+    checkpoint_chunk=None
     if a.interface_probe_only:
         if len(plans)!=1 or not 86820<=plans[0]['seed']<=86864:p.error('single TRAIN-world interface probe only')
     else:
@@ -69,6 +75,10 @@ def main():
     sys.path.insert(0,str(a.actor_source))
     from harness.grasp_act_contract import validate_observation
     if not a.interface_probe_only:
+        # Resolve the chunk only after the pinned actor source is on sys.path,
+        # so this guard and the executor both read the frozen contract package.
+        checkpoint_chunk=pilot_checkpoint_chunk(meta,takeover_pilot=a.takeover_pilot,
+            enabled=a.contract_chunk8)
         from harness.grasp_act_policy import ChunkExecutor
         from harness.grasp_act_rollout import SoloSequence
         if act18_checkpoint:
@@ -77,14 +87,16 @@ def main():
         else:
             from act16w_input import Act16wActor
             actor=Act16wActor.load(a.checkpoint,device='cuda')
-        chunks=[ChunkExecutor(actor.predict) for _ in plans];seq=[SoloSequence(with_release=True) for _ in plans]
+        predict=contract_chunk_predict(actor.predict,enabled=a.contract_chunk8)
+        chunks=[ChunkExecutor(predict) for _ in plans];seq=[SoloSequence(with_release=True) for _ in plans]
     client=DaggerClient(python=a.physics_python,qualified_source=a.qualified_source,teacher_source=a.teacher_source,
         qualification=a.qualification,references=a.references,compiled_reference=a.compiled_reference,compiled_geometry=a.compiled_geometry,
         out=a.out,nworld=len(plans),enabled=True,training=True,takeover=a.takeover,
         takeover_hold_s=a.takeover_hold_s,takeover_after_s=a.takeover_after_s)
     report=dict(status='running',complete=False,source_sha=source,host=host,interface_probe_only=a.interface_probe_only,training_data_admitted=False,
         checkpoint_sha256=sha256(a.checkpoint/'model.safetensors') if a.checkpoint else None,teacher_actions_executed=0,
-        prefix_cap_SIM_s=a.max_ticks/10,takeover=dict(enabled=bool(a.takeover),hold_s=a.takeover_hold_s,
+        prefix_cap_SIM_s=a.max_ticks/10,contract_chunk8=bool(a.contract_chunk8),checkpoint_chunk=checkpoint_chunk,
+        takeover=dict(enabled=bool(a.takeover),hold_s=a.takeover_hold_s,
         after_s=a.takeover_after_s,max_ticks=a.max_ticks,trigger='elapsed>=after_s and 20 consecutive moving/stopped issued ticks'),
         takeover_ticks=0,takeover_worlds=[],
         scope=('executed teacher takeover on student-induced TRAIN states; labels are the executed teacher commands; capped prefix is not task success'
