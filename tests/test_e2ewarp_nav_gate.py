@@ -312,3 +312,98 @@ def test_factory_uses_only_the_admitted_calibration(tmp_path, monkeypatch):
     path.write_text(json.dumps(changed))
     nav = gate.navigation_factory('r1', {'destination_zone': 'B'})
     assert nav.odometry.forward == record['constants']['forward_m_per_pct_s']
+
+
+# ---- approved 2026-10-19 gate mode (default OFF): v230_fwd24 ----
+
+def test_default_gate_mode_is_the_frozen_v1_gate(tmp_path, monkeypatch):
+    monkeypatch.delenv(gate.GATE_MODE_ENV, raising=False)
+    mode = gate.gate_mode()
+    assert mode['name'] == gate.GATE_MODE_V1
+    assert mode['zone_profile'] == 'gpu_calib_v1'
+    assert mode['acquisition_mode'] == 'search_in_place'
+    assert mode['forward_cap_m'] == 0.0
+    assert mode['zone_min_component'] == 600
+    fields = gate.gate_queue_fields(601, calibration=gate.load_calibration(write_calibration(tmp_path)))
+    assert fields['nav_gate_mode'] == 'v1_search'
+    assert fields['nav_zone_profile'] == 'gpu_calib_v1'
+    assert fields['nav_acquisition'] == 'search_in_place'
+    assert fields['nav_forward_cap_m'] == 0.0
+    assert fields['nav_zone_min_component'] == 600
+    nav = gate.navigation_factory('r1', {'destination_zone': 'B'},
+                                  calibration=gate.load_calibration(write_calibration(tmp_path)))
+    assert nav.detector.profile == 'gpu_calib_v1'
+    assert nav.acquisition_mode == 'search_in_place' and nav.forward_cap_m == 0.0
+
+
+def test_v230_fwd24_gate_mode_binds_band_forward_cap_and_queue(tmp_path, monkeypatch):
+    monkeypatch.setenv(gate.GATE_MODE_ENV, gate.GATE_MODE_V230_FWD24)
+    record = gate.load_calibration(write_calibration(tmp_path))
+    mode = gate.gate_mode()
+    assert mode['name'] == 'v230_fwd24'
+    assert mode['zone_profile'] == 'gpu_calib_v230'
+    assert mode['acquisition_mode'] == 'forward_then_search'
+    assert mode['forward_cap_m'] == 2.4
+    fields = gate.gate_queue_fields(601, calibration=record)
+    assert fields['nav_gate_mode'] == 'v230_fwd24'
+    assert fields['nav_zone_profile'] == 'gpu_calib_v230'
+    assert fields['nav_acquisition'] == 'forward_then_search'
+    assert fields['nav_forward_cap_m'] == 2.4
+    assert fields['nav_zone_min_component'] == 600
+    queue = valid_queue(**{k: v for k, v in fields.items() if k.startswith('nav_')})
+    assert gate.validate_gate_queue(queue)['nav_gate_mode'] == 'v230_fwd24'
+    nav = gate.navigation_factory('r1', {'destination_zone': 'B'}, calibration=record)
+    assert nav.detector.profile == 'gpu_calib_v230'
+    assert nav.detector.band['val'] == (30.0, 230.0)
+    assert nav.acquisition_mode == 'forward_then_search'
+    assert nav.forward_cap_m == 2.4
+    # No observation yet, no landmark: the approved forward leg runs first.
+    assert nav._drive_plan(0.0)['reason'] == 'acquiring_forward'
+    assert nav.command(0.0)['wheels'] == [0.35] * 4
+
+
+def test_legacy_v1_queue_without_mode_markers_is_still_admitted(monkeypatch):
+    monkeypatch.delenv(gate.GATE_MODE_ENV, raising=False)
+    queue = valid_queue()
+    for key in ('nav_gate_mode', 'nav_zone_profile', 'nav_acquisition',
+                'nav_forward_cap_m', 'nav_zone_min_component'):
+        queue.pop(key, None)
+    assert gate.validate_gate_queue(queue)['nav_scene'] == gate.NAV_SCENARIO
+
+
+@pytest.mark.parametrize('overrides,message', [
+    (dict(nav_gate_mode='v230_fwd24'), 'NAV_GATE_MODE_MISMATCH'),
+    (dict(nav_zone_profile='gpu_calib_v230'), 'NAV_GATE_ZONE_PROFILE_MISMATCH'),
+    (dict(nav_acquisition='forward_then_search'), 'NAV_GATE_ACQUISITION_MISMATCH'),
+    (dict(nav_forward_cap_m=2.4), 'NAV_GATE_FORWARD_CAP_MISMATCH'),
+    (dict(nav_zone_min_component=150), 'NAV_GATE_MIN_COMPONENT_MISMATCH'),
+])
+def test_v1_gate_queue_rejects_unapproved_mode_markers(overrides, message, monkeypatch):
+    monkeypatch.delenv(gate.GATE_MODE_ENV, raising=False)
+    with pytest.raises(ValueError, match=message):
+        gate.validate_gate_queue(valid_queue(**overrides))
+
+
+def test_v230_queue_cannot_run_under_the_v1_environment(tmp_path, monkeypatch):
+    monkeypatch.setenv(gate.GATE_MODE_ENV, gate.GATE_MODE_V230_FWD24)
+    fields = gate.gate_queue_fields(601, calibration=gate.load_calibration(write_calibration(tmp_path)))
+    queue = valid_queue(**{k: v for k, v in fields.items() if k.startswith('nav_')})
+    monkeypatch.delenv(gate.GATE_MODE_ENV, raising=False)
+    with pytest.raises(ValueError, match='NAV_GATE_MODE_MISMATCH'):
+        gate.validate_gate_queue(queue)
+
+
+def test_v230_queue_rejects_a_non_approved_forward_cap(tmp_path, monkeypatch):
+    monkeypatch.setenv(gate.GATE_MODE_ENV, gate.GATE_MODE_V230_FWD24)
+    fields = gate.gate_queue_fields(601, calibration=gate.load_calibration(write_calibration(tmp_path)))
+    queue = valid_queue(**{k: v for k, v in fields.items() if k.startswith('nav_')})
+    for cap in (1.7, 2.5, 0.0):
+        with pytest.raises(ValueError, match='NAV_GATE_FORWARD_CAP_MISMATCH'):
+            gate.validate_gate_queue(dict(queue, nav_forward_cap_m=cap))
+    assert gate.validate_gate_queue(dict(queue, nav_forward_cap_m=2.4))['nav_gate_mode'] == 'v230_fwd24'
+
+
+def test_unknown_gate_mode_environment_fails_closed(monkeypatch):
+    monkeypatch.setenv(gate.GATE_MODE_ENV, 'v230_no_forward')
+    with pytest.raises(ValueError, match='NAV_GATE_MODE_UNKNOWN'):
+        gate.gate_mode()

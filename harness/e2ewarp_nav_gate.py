@@ -26,6 +26,16 @@ Odometry calibration: ``OwnCommandOdometry`` requires *measured* metres and
 degrees per percent-second. The constants are read from a calibration artifact
 produced by an eval-only GPU calibration run; a missing/unmeasured artifact
 fails closed. No default constants are invented here.
+
+Gate modes (2026-10-19 user approval; default OFF):
+- ``v1_search`` (default): frozen gate-1/r5 condition, ``gpu_calib_v1`` band and
+  the bounded in-place SEARCH. Unchanged.
+- ``v230_fwd24``: ``gpu_calib_v230`` (H 110-114 / S>=100 / V 30-230, min
+  component 600) plus a bounded forward acquisition of at most 2.4 m before the
+  same in-place SEARCH. The 2.4 m replaces the earlier 1.7 m proposal and is a
+  user-approved acquisition limit, not a calibrated constant. The mode is bound
+  into the queue and into the run environment; results from the two modes are
+  separate conditions and are never pooled.
 """
 from __future__ import annotations
 
@@ -49,6 +59,49 @@ CALIBRATION_SCHEMA = 'ugrp.e2ewarp.nav_calibration.v1'
 CALIBRATION_ENV = 'E2EWARP_NAV_CALIBRATION'
 CALIBRATION_PATH = ROOT / 'configs/e2ewarp/nav_gate_calibration.json'
 _ADMITTED = None
+
+# --- gate modes (default OFF) -------------------------------------------------
+# `v1_search` is the frozen gate-1/r5 condition and the default: gpu_calib_v1
+# (H 110-114 / S>=100 / V 30-110 / min component 600) plus the bounded in-place
+# SEARCH.  `v230_fwd24` is the mode approved by the user on 2026-10-19 after the
+# V<=230 window analysis: the same hue/saturation/min-component with the V
+# ceiling raised to 230, and a bounded forward acquisition of at most 2.4 m
+# (replacing Claude's earlier 1.7 m proposal) before the same in-place SEARCH.
+# Selecting the mode is explicit and fail-closed: the queue records every
+# field, and prepare/execute must run with the same E2EWARP_NAV_GATE_MODE.
+GATE_MODE_ENV = 'E2EWARP_NAV_GATE_MODE'
+GATE_MODE_V1 = 'v1_search'
+GATE_MODE_V230_FWD24 = 'v230_fwd24'
+#: User-approved forward acquisition cap (2026-10-19), replacing the 1.7 m
+#: proposal.  It is a control limit, not a calibrated constant.
+FORWARD_ACQUISITION_CAP_M = 2.4
+GATE_MODES = {
+    GATE_MODE_V1: dict(zone_profile='gpu_calib_v1',
+                       acquisition_mode='search_in_place',
+                       forward_cap_m=0.0,
+                       zone_min_component=600),
+    GATE_MODE_V230_FWD24: dict(zone_profile='gpu_calib_v230',
+                               acquisition_mode='forward_then_search',
+                               forward_cap_m=FORWARD_ACQUISITION_CAP_M,
+                               zone_min_component=600),
+}
+DEFAULT_GATE_MODE = GATE_MODE_V1
+
+
+def gate_mode(name=None):
+    """Resolve the gate mode from an explicit name or the environment.
+
+    Unknown names and unknown environment values fail closed; the default is
+    the frozen v1 gate, so a process without the variable is byte-for-byte the
+    old condition.
+    """
+    name = DEFAULT_GATE_MODE if name is None and GATE_MODE_ENV not in os.environ \
+        else (name or os.environ.get(GATE_MODE_ENV))
+    if name not in GATE_MODES:
+        raise ValueError('NAV_GATE_MODE_UNKNOWN:' + str(name))
+    value = dict(GATE_MODES[name])
+    value['name'] = name
+    return value
 
 
 def pair_lane_spawns(scene_spawns):
@@ -158,7 +211,8 @@ def navigation_factory(robot_id, static=None, **kwargs):
 
     Uses only the calibration record admitted by ``validate_calibration_binding``
     (same bytes, same constants); a file changed after admission cannot alter the
-    run (no re-read / TOCTOU).
+    run (no re-read / TOCTOU).  The appearance band and the acquisition policy
+    come from the explicit gate mode (default: the frozen v1 gate).
     """
     from harness.e2ewarp_selfnav import (GpuCalibZoneDetector, OPTION, OwnCommandOdometry,
                                         SelfCentricNavigation)
@@ -171,23 +225,32 @@ def navigation_factory(robot_id, static=None, **kwargs):
         record = _ADMITTED
     else:
         raise ValueError('NAV_CALIBRATION_NOT_ADMITTED')
+    mode = gate_mode()
     constants = record['constants']
     return SelfCentricNavigation(
         robot_id, static, option=OPTION,
-        detector=GpuCalibZoneDetector(),
+        detector=GpuCalibZoneDetector(profile=mode['zone_profile']),
         odometry=OwnCommandOdometry(forward_m_per_pct_s=constants['forward_m_per_pct_s'],
                                     yaw_deg_per_pct_s=constants['yaw_deg_per_pct_s']),
-        destination_kind=DESTINATION_KIND)
+        destination_kind=DESTINATION_KIND,
+        acquisition_mode=mode['acquisition_mode'],
+        forward_cap_m=mode['forward_cap_m'])
 
 
 def gate_queue_fields(seed, calibration=None, sim_budget_s=SIM_BUDGET_S):
     """Scene/adaptor markers written by ``--prepare --mode nav`` (audit only)."""
     record = calibration or load_calibration()
+    mode = gate_mode()
     return dict(nav_scene=NAV_SCENARIO, nav_map='zone_wide_two_doors_final_v3',
                 nav_robots=list(ROBOTS), nav_spawn_y=dict(LANE_Y),
                 nav_destination_kind=DESTINATION_KIND,
                 nav_static_map_input=False, nav_cargo_spawned=False,
                 nav_sim_budget_s=float(sim_budget_s), nav_leader_rotation=True,
+                nav_gate_mode=mode['name'],
+                nav_zone_profile=mode['zone_profile'],
+                nav_acquisition=mode['acquisition_mode'],
+                nav_forward_cap_m=float(mode['forward_cap_m']),
+                nav_zone_min_component=int(mode['zone_min_component']),
                 nav_calibration=dict(path=record['path'], sha256=record['sha256'],
                                      source_sha=record['source_sha'],
                                      constants=dict(record['constants'])))
@@ -217,6 +280,31 @@ def validate_gate_queue(queue):
         raise ValueError('NAV_GATE_CALIBRATION_SHA_REQUIRED')
     if float((record.get('constants') or {}).get('forward_m_per_pct_s', 0.)) <= 0.:
         raise ValueError('NAV_GATE_CALIBRATION_CONSTANTS_REQUIRED')
+    # Explicit gate-mode binding.  A legacy queue without these markers is
+    # admitted only as the frozen v1 gate; a queue prepared for the approved
+    # v230_fwd24 mode must carry all four markers and must match the process
+    # environment (so prepare and execute cannot silently disagree).
+    mode = gate_mode()
+    admitted = queue.get('nav_gate_mode', GATE_MODE_V1)
+    if admitted != mode['name']:
+        raise ValueError('NAV_GATE_MODE_MISMATCH')
+    expected = GATE_MODES[admitted]
+    if queue.get('nav_zone_profile', expected['zone_profile']) != mode['zone_profile']:
+        raise ValueError('NAV_GATE_ZONE_PROFILE_MISMATCH')
+    if queue.get('nav_acquisition', expected['acquisition_mode']) != mode['acquisition_mode']:
+        raise ValueError('NAV_GATE_ACQUISITION_MISMATCH')
+    try:
+        forward_cap = float(queue.get('nav_forward_cap_m', 0.0))
+    except (TypeError, ValueError):
+        raise ValueError('NAV_GATE_FORWARD_CAP_INVALID') from None
+    if abs(forward_cap - float(mode['forward_cap_m'])) > 1e-9:
+        raise ValueError('NAV_GATE_FORWARD_CAP_MISMATCH')
+    try:
+        min_component = int(queue.get('nav_zone_min_component', 600))
+    except (TypeError, ValueError):
+        raise ValueError('NAV_GATE_MIN_COMPONENT_INVALID') from None
+    if min_component != int(mode['zone_min_component']):
+        raise ValueError('NAV_GATE_MIN_COMPONENT_MISMATCH')
     return queue
 
 

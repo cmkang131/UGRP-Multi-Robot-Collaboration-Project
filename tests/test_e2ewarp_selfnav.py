@@ -558,3 +558,158 @@ def test_cross_robot_frame_and_issued_row_are_rejected():
     assert nav.observe(frame(0.0, robot_id='r1'))['robot_id'] == 'r1'
     # owned issued rows carry no robot_id and still apply
     assert nav.step_odometry(dict(t=0.0, wheels=[0.0] * 4, duration_s=[0.0] * 4, pwm={})) == (0.0, 0.0)
+
+
+# ---- approved 2026-10-19 gate mode: gpu_calib_v230 + bounded forward leg ----
+
+def test_gpu_calib_v230_raises_only_the_v_ceiling():
+    """The approved band keeps H/S/min-component and raises V 110 -> 230."""
+    import numpy as np
+    bright = np.zeros((48, 64, 3), dtype=np.uint8)  # black
+    # RGB (51, 89, 194) -> OpenCV H 112, S 188, V 194: measured bright zone paint.
+    bright[20:, 20:44] = (51, 89, 194)
+    assert sn.GpuCalibZoneDetector()(bright) == []  # v1 V<=110 rejects it
+    v230 = sn.GpuCalibZoneDetector(profile='gpu_calib_v230')
+    out = v230(bright)
+    assert len(out) == 1 and out[0]['kind'] == 'zone_B'
+    assert out[0]['profile'] == 'gpu_calib_v230' and out[0]['pixels'] >= 600
+    assert sn.GPU_CALIB_V230['hue_cv'] == sn.GPU_CALIB_V1['hue_cv']
+    assert sn.GPU_CALIB_V230['sat_min'] == sn.GPU_CALIB_V1['sat_min']
+    assert sn.GPU_CALIB_V230['val'] == (30.0, 230.0)
+    assert sn.GPU_CALIB_V230['min_pixels'] == 600
+    with pytest.raises(ValueError, match='unknown own-RGB appearance profile'):
+        sn.GpuCalibZoneDetector(profile='gpu_calib_v999')
+
+
+def test_gpu_calib_v230_keeps_the_600_pixel_component_rule():
+    import numpy as np
+    img = np.zeros((64, 64, 3), dtype=np.uint8)
+    img[20:44, 20:44] = (51, 89, 194)      # 24x24 = 576 px < 600
+    assert sn.GpuCalibZoneDetector(profile='gpu_calib_v230')(img) == []
+    img[20:45, 20:45] = (51, 89, 194)      # 25x25 = 625 px >= 600
+    assert len(sn.GpuCalibZoneDetector(profile='gpu_calib_v230')(img)) == 1
+
+
+def gate_odometry():
+    """Measured gate calibration (experiments/2026-10-18-nav-gate-1/raw)."""
+    return sn.OwnCommandOdometry(forward_m_per_pct_s=0.0040237052109054995,
+                                 yaw_deg_per_pct_s=1.7277518947686832)
+
+
+def forward_nav(detector=None, cap=2.4, odometry=None):
+    return sn.navigation_factory(
+        'r1', {}, option=sn.OPTION,
+        detector=detector if detector is not None else constant_detector([]),
+        odometry=gate_odometry() if odometry is None else odometry,
+        acquisition_mode=sn.ACQUISITION_FORWARD_THEN_SEARCH, forward_cap_m=cap)
+
+
+def test_forward_acquisition_is_straight_and_stops_exactly_at_2p4_m():
+    nav = forward_nav()
+    rep = nav.observe(frame(0.0))
+    assert rep['drive_reason'] == 'acquiring_forward'
+    assert rep['acquisition_mode'] == 'forward_then_search'
+    assert rep['forward_cap_m'] == pytest.approx(2.4)
+    assert rep['forward_used_m'] == 0.0
+    used = 0.0
+    step = 0
+    while True:
+        rep = nav.observe(frame(step / 10.0))
+        if rep['drive_reason'] != 'acquiring_forward':
+            break
+        cmd = nav.command(step / 10.0)
+        issued_command(cmd)
+        # Straight +x: all four wheels at the calibrated 35 % amplitude.
+        assert cmd['wheels'] == [sn.WHEEL_PCT] * 4
+        assert all(dt > 0.0 for dt in cmd['duration_s'])
+        assert all(dt <= sn.PULSE_S + 1e-12 for dt in cmd['duration_s'])
+        used += gate_odometry().step(cmd)[0]
+        assert used <= 2.4 + 1e-9
+        step += 1
+        assert step < 400
+    # The cap is reached, then the same bounded in-place SEARCH starts.
+    assert rep['drive_reason'] == 'searching'
+    assert rep['forward_used_m'] == pytest.approx(2.4, abs=1e-9)
+    assert used == pytest.approx(2.4, abs=1e-9)
+    assert 165 <= rep['forward_steps'] <= 175          # ~171 x 0.01408 m
+    assert 16.0 <= step / 10.0 <= 18.0                 # ~17.1 s of the 60 s budget
+    turn = nav.command(step / 10.0)
+    assert turn['wheels'][0] < 0.0 < turn['wheels'][1]  # in place, no advance
+    assert turn['wheels'][0] == -turn['wheels'][1]
+    # Nothing can move forward after the cap, even much later without detection.
+    for later in range(1, 5):
+        assert nav.command(step / 10.0 + later)['wheels'][0] < 0.0
+
+
+def test_forward_acquisition_clips_the_final_pulse_to_the_cap():
+    nav = forward_nav(cap=0.02)
+    nav.observe(frame(0.0))
+    first = nav.command(0.0)
+    second = nav.command(0.1)
+    od = gate_odometry()
+    total = od.step(first)[0] + od.step(second)[0]
+    assert total == pytest.approx(0.02, abs=1e-12)
+    assert nav._forward_used_m == pytest.approx(0.02, abs=1e-12)
+    assert nav._drive_plan(0.2)['reason'] == 'searching'
+    assert nav.command(0.2)['wheels'][0] < 0.0
+
+
+def test_forward_acquisition_switches_to_follow_in_the_same_control_step():
+    items = {'items': []}
+    nav = forward_nav(detector=lambda fr: items['items'])
+    for step in range(20):
+        nav.observe(frame(step / 10.0))
+        nav.command(step / 10.0)
+    assert nav._forward_used_m < 2.4
+    items['items'] = zone_detection(range_m=2.0, bearing_deg=0.0)
+    rep = nav.observe(frame(2.0))
+    assert rep['drive_reason'] == 'driving'  # detection acted on immediately
+    cmd = nav.command(2.0)
+    assert cmd['wheels'] == [sn.WHEEL_PCT] * 4  # no residual turn
+    assert all(dt == pytest.approx(sn.PULSE_S) for dt in cmd['duration_s'])
+    # Follow pulses are not charged to (or capped by) the acquisition distance.
+    assert nav._forward_used_m < 2.4
+
+
+def test_forward_acquisition_is_default_off_and_fails_closed_on_bad_inputs():
+    nav = sn.navigation_factory('r1', {}, option=sn.OPTION,
+                                detector=constant_detector([]), odometry=gate_odometry())
+    assert nav.acquisition_mode == sn.ACQUISITION_SEARCH_IN_PLACE
+    assert nav.forward_cap_m == 0.0
+    assert nav.observe(frame(0.0))['drive_reason'] == 'searching'
+    assert nav.command(0.0)['wheels'][0] < 0.0
+    with pytest.raises(ValueError, match='positive forward cap'):
+        sn.navigation_factory('r1', {}, option=sn.OPTION, odometry=gate_odometry(),
+                              acquisition_mode=sn.ACQUISITION_FORWARD_THEN_SEARCH)
+    with pytest.raises(ValueError, match='forward cap is only valid'):
+        sn.navigation_factory('r1', {}, option=sn.OPTION, odometry=gate_odometry(),
+                              forward_cap_m=2.4)
+    with pytest.raises(ValueError, match='unknown acquisition mode'):
+        sn.navigation_factory('r1', {}, option=sn.OPTION, odometry=gate_odometry(),
+                              acquisition_mode='blind_run')
+    # Without injected odometry the forward leg cannot be integrated: hold.
+    nav = sn.navigation_factory('r1', {}, option=sn.OPTION, detector=constant_detector([]),
+                                acquisition_mode=sn.ACQUISITION_FORWARD_THEN_SEARCH,
+                                forward_cap_m=2.4)
+    rep = nav.observe(frame(0.0))
+    assert rep['drive_reason'] == 'no_odometry'
+    assert nav.command(0.0)['wheels'] == [0.0] * 4
+
+
+def test_forward_acquisition_is_one_shot_and_never_restarts_after_following():
+    items = {'items': []}
+    nav = forward_nav(detector=lambda fr: items['items'])
+    for step in range(20):
+        nav.observe(frame(step / 10.0))
+        nav.command(step / 10.0)
+    items['items'] = zone_detection(range_m=2.0, bearing_deg=0.0)
+    nav.observe(frame(2.0))
+    nav.command(2.0)
+    used = nav._forward_used_m
+    assert nav._destination_seen is True and used < 2.4
+    # A later memory loss must not open a second blind forward leg.
+    nav.memory.items = []
+    assert nav._drive_plan(3.0)['reason'] == 'searching'
+    cmd = nav.command(3.0)
+    assert cmd['wheels'][0] < 0.0 < cmd['wheels'][1]
+    assert nav._forward_used_m == used

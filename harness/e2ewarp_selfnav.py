@@ -36,6 +36,21 @@ Contract v1 (2026-10-18, user decisions):
 - `ready` is true only when the option is active AND both the own-RGB detector
   and the odometry/motion model were injected. Detector and motion model are
   deliberately absent in this scaffold; the physical gates still apply.
+- **Approved gate mode v230_fwd24 (2026-10-19 user approval; default OFF).**
+  The 2026-10-19 window analysis showed that the v1 band (V<=110) has no
+  reproducible acquisition window and that the destination paint is brighter
+  than the v1 ceiling in the frozen light_scale 0.30 scene. The approved gate
+  mode keeps H 110-114 / S>=100 / min_component 600 and raises only the V
+  ceiling to 230 (`gpu_calib_v230`), and replaces the blind in-place sweep with
+  a bounded forward acquisition of at most 2.4 m before the existing bounded
+  in-place SEARCH. The forward cap is integrated from the adapter's *own
+  issued* pulses with the owner-injected percent-second calibration (no GT,
+  range sensor or map); a detection appearing during the leg switches to
+  following in the same control step, and once the cap is reached the wheels
+  can only turn in place, never advance farther. The mode is selected only by
+  `harness.e2ewarp_nav_gate` (`E2EWARP_NAV_GATE_MODE=v230_fwd24`); the
+  constructor default remains `search_in_place` with no forward leg, so every
+  existing v1/gate-1/r5 condition is unchanged.
 
 No ground truth, contact, evaluator, top camera, or peer raw input is accepted.
 """
@@ -76,6 +91,18 @@ SEARCH_BUDGET_S = 20.0
 SEARCH_MAX_STEPS = 220
 SEARCH_LEG_STEPS = 80
 SEARCH_PULSE_DUTY = .75
+# Acquisition modes.  `search_in_place` is the frozen v1/gate-1/r5 behaviour
+# (default and constructor default).  `forward_then_search` is the 2026-10-19
+# approved mode: a bounded straight +x leg of at most FORWARD_CAP_M (2.4 m)
+# before the same bounded in-place SEARCH.  The cap is a user-approved control
+# limit, not a calibrated constant: 2.4 m at the gate forward calibration
+# (0.1408 m/s at the 35 % x 0.1 s pulse) is ~17.0 s of the 60 s budget.
+ACQUISITION_SEARCH_IN_PLACE = 'search_in_place'
+ACQUISITION_FORWARD_THEN_SEARCH = 'forward_then_search'
+ACQUISITION_MODES = (ACQUISITION_SEARCH_IN_PLACE, ACQUISITION_FORWARD_THEN_SEARCH)
+# Floating-point slack for "the 2.4 m leg is finished"; a step is clipped so
+# the integrated own-command distance can never exceed the cap.
+FORWARD_ACQUISITION_EPS_M = 1e-9
 # Arrival evidence recorded in self-centric memory (contract v1 scaffold values).
 ARRIVAL_BOTTOM_NORM = .98
 ARRIVAL_RANGE_M = .25
@@ -199,11 +226,22 @@ class SelfCentricNavigation:
     """navigation_factory ABI: observe/task_candidates/start/command/confirm_act/on_messages/accept_release_fix."""
 
     def __init__(self, robot_id, static=None, *, option='off', detector=None, odometry=None,
-                 destination_kind=None, arrival_range_m=ARRIVAL_RANGE_M):
+                 destination_kind=None, arrival_range_m=ARRIVAL_RANGE_M,
+                 acquisition_mode=ACQUISITION_SEARCH_IN_PLACE, forward_cap_m=0.0):
         if robot_id not in ('r1', 'r2'):
             raise ValueError('contract v1 navigation is two-robot only (r1/r2)')
+        if acquisition_mode not in ACQUISITION_MODES:
+            raise ValueError('unknown acquisition mode: ' + str(acquisition_mode))
+        forward_cap_m = float(forward_cap_m)
+        if acquisition_mode == ACQUISITION_FORWARD_THEN_SEARCH:
+            if not forward_cap_m > 0.0:
+                raise ValueError('forward acquisition requires a positive forward cap')
+        elif forward_cap_m != 0.0:
+            raise ValueError('forward cap is only valid with forward acquisition')
         self.robot_id = robot_id
         self.option = option
+        self.acquisition_mode = acquisition_mode
+        self.forward_cap_m = forward_cap_m
         sheet = order_sheet(static)
         self.orders = sheet.get('orders') or []
         zone = sheet.get('destination_zone')
@@ -230,6 +268,15 @@ class SelfCentricNavigation:
         # the budget before the robot actually moves.
         self._search_started_s = None
         self._search_steps = 0
+        # Bounded forward-acquisition state (own issued commands only).  The
+        # distance is accumulated when a forward pulse is issued; the plan is
+        # pure and only reads it.  The forward leg is one-shot: once the
+        # destination has ever been seen, a later memory loss falls back to the
+        # bounded in-place SEARCH, so the 2.4 m can never become a second blind
+        # leg after following.
+        self._forward_used_m = 0.0
+        self._forward_steps = 0
+        self._destination_seen = False
 
     @property
     def ready(self):
@@ -253,6 +300,8 @@ class SelfCentricNavigation:
         if self.option != OPTION:
             return self._report(active=False, now_s=frame.sim_s)
         self.memory.observe(frame.sim_s, self.detector(frame) if self.detector else ())
+        if self.memory.nearest(self.destination_kind) is not None:
+            self._destination_seen = True
         self._revision += 1
         return self._report(active=True, now_s=frame.sim_s)
 
@@ -296,6 +345,16 @@ class SelfCentricNavigation:
             return 'search_timeout'
         return 'searching'
 
+    def _forward_remaining_m(self):
+        """Own-command odometry distance left in the approved forward-acquisition cap."""
+        return max(0.0, self.forward_cap_m - self._forward_used_m)
+
+    def _forward_acquisition_active(self):
+        """True while the bounded, one-shot forward leg may still advance the robot."""
+        return (self.acquisition_mode == ACQUISITION_FORWARD_THEN_SEARCH
+                and not self._destination_seen
+                and self._forward_remaining_m() > FORWARD_ACQUISITION_EPS_M)
+
     def _drive_plan(self, now_s=None):
         """Own-memory control plan; no plan means the wheel hold is returned."""
         if now_s is None:  # test/introspection default: the last own frame's time
@@ -306,11 +365,14 @@ class SelfCentricNavigation:
         if self.odometry is None:
             return dict(reason='no_odometry', landmark=landmark, forward=0.0, turn=0.0)
         if landmark is None:
-            # No remembered destination: acquire it with a bounded in-place
-            # sweep.  Fail closed when the detector was not injected (nothing
-            # could ever be acquired) or when the budget is exhausted.
+            # No remembered destination: acquire it with a bounded forward leg
+            # (approved mode only), then the bounded in-place sweep.  Fail
+            # closed when the detector was not injected (nothing could ever be
+            # acquired) or when both budgets are exhausted.
             if not self.ready:
                 return dict(reason='no_destination', landmark=None, forward=0.0, turn=0.0)
+            if self._forward_acquisition_active():
+                return dict(reason='acquiring_forward', landmark=None, forward=1.0, turn=0.0)
             reason = self._search_reason(now_s)
             if reason == 'search_timeout':
                 return dict(reason=reason, landmark=None, forward=0.0, turn=0.0)
@@ -349,7 +411,11 @@ class SelfCentricNavigation:
                     ready=self.ready, drive_reason=plan['reason'],
                     destination_landmark=(None if zone is None else zone.kind),
                     search_elapsed_s=round(self._search_elapsed_s(now_s), 3),
-                    search_steps=int(self._search_steps))
+                    search_steps=int(self._search_steps),
+                    acquisition_mode=self.acquisition_mode,
+                    forward_cap_m=round(self.forward_cap_m, 6),
+                    forward_used_m=round(self._forward_used_m, 6),
+                    forward_steps=int(self._forward_steps))
 
     # --- task/order sheet -------------------------------------------------
     def task_candidates(self, completed):
@@ -378,15 +444,21 @@ class SelfCentricNavigation:
         plan = self._drive_plan(now_s)
         self._drive_reason = plan['reason']
         searching = plan['reason'] == 'searching'
+        acquiring = plan['reason'] == 'acquiring_forward'
         if searching:
             # The budget clock starts with the first issued pulse, and each
             # pulse advances the sweep leg (direction reverses every leg).
             if self._search_started_s is None:
                 self._search_started_s = float(now_s)
             self._search_steps += 1
-        if plan['reason'] == 'driving' or searching:
+        if plan['reason'] == 'driving' or searching or acquiring:
             from harness.grasp_act_contract import wheel_mix
-            forward, turn = (0.0, plan['turn']) if searching else (plan['forward'], plan['turn'])
+            if acquiring:
+                forward, turn = 1.0, 0.0  # straight +x bounded leg, no turn
+            elif searching:
+                forward, turn = 0.0, plan['turn']
+            else:
+                forward, turn = plan['forward'], plan['turn']
             pulse_s = SEARCH_PULSE_DUTY * PULSE_S if searching else PULSE_S
             wheels, duration = [], []
             for value in wheel_mix((forward, 0.0, turn)):
@@ -402,8 +474,32 @@ class SelfCentricNavigation:
         else:
             wheels, duration = [0.0] * 4, [0.0] * 4
         row = dict(t=float(now_s), wheels=wheels, duration_s=duration, pwm=pwm)
+        if acquiring:
+            self._consume_forward_step(row)
         self._issued.append(row)
         return row
+
+    def _consume_forward_step(self, row):
+        """Charge one issued forward pulse against the approved 2.4 m cap.
+
+        The distance is the *own-command* integral with the injected
+        percent-second calibration (the same `OwnCommandOdometry.step` used for
+        self-centric memory).  The pulse width is clipped so the accumulated
+        distance cannot pass the cap; after the cap the plan can only turn in
+        place.  No GT, range sensor or map is read.
+        """
+        remaining = self._forward_remaining_m()
+        if remaining <= FORWARD_ACQUISITION_EPS_M:
+            return
+        step_m, _yaw = self.odometry.step(row)
+        if step_m <= 0.0:
+            return
+        if step_m > remaining:
+            scale = remaining / step_m
+            row['duration_s'] = [dt * scale for dt in row['duration_s']]
+            step_m = remaining
+        self._forward_used_m += step_m
+        self._forward_steps += 1
 
     def step_odometry(self, row):
         """Apply an issued command to self-centric memory using owner-injected odometry.
@@ -446,6 +542,15 @@ def navigation_factory(robot_id, static=None, **kwargs):
 # with /2.0 before comparing.  Mixing the two units was the gate-1 failure.
 GPU_CALIB_V1 = dict(hue_cv=(110.0, 114.0), sat_min=100.0, val=(30.0, 110.0),
                     min_pixels=600, units='opencv_h_0_180_sv_0_255')
+# Approved 2026-10-19 gate mode: same hue/saturation/min-component as v1, only
+# the V ceiling is raised (110 -> 230).  This is the `candidate` band frozen in
+# outputs/reports/2026-10-19-nav-rerun-runbook.md §2.1 and approved by the user
+# on 2026-10-19 together with the 2.4 m forward acquisition.  The v1 profile is
+# unchanged and remains the default; results from the two bands are not pooled.
+GPU_CALIB_V230 = dict(hue_cv=(110.0, 114.0), sat_min=100.0, val=(30.0, 230.0),
+                      min_pixels=600, units='opencv_h_0_180_sv_0_255')
+GPU_CALIB_PROFILES = {'gpu_calib_v1': GPU_CALIB_V1, 'gpu_calib_v230': GPU_CALIB_V230}
+DEFAULT_GPU_CALIB_PROFILE = 'gpu_calib_v1'
 
 
 def rgb_to_hsv(rgb):
@@ -542,7 +647,7 @@ def largest_component(mask):
 
 
 class GpuCalibZoneDetector:
-    """Detect destination zone paint from one own RGB frame (gpu_calib_v1 profile).
+    """Detect destination zone paint from one own RGB frame (frozen appearance profile).
 
     Threshold provenance: experiments/2026-10-17-e2ewarp/r4-selfmap-recount/zonecal-gpu
     (MJWarp native render, 36 frames): OpenCV hue 110-114, S>=100, 30<=V<=110,
@@ -556,11 +661,18 @@ class GpuCalibZoneDetector:
     decides.  This detector supplies *evidence only* (bearing/bottom band/component
     geometry), never a success claim and never reads a map, GT, top camera, or
     simulator state.
+
+    ``profile='gpu_calib_v230'`` is the 2026-10-19 approved band: identical
+    hue/saturation/min-component, V ceiling 230.  Only
+    ``harness.e2ewarp_nav_gate`` selects it; the default stays ``gpu_calib_v1``.
     """
-    def __init__(self, *, profile='gpu_calib_v1', hfov_deg=120.0, min_pixels=None):
-        if profile != 'gpu_calib_v1':
+    def __init__(self, *, profile=DEFAULT_GPU_CALIB_PROFILE, hfov_deg=120.0, min_pixels=None):
+        if profile not in GPU_CALIB_PROFILES:
             raise ValueError('unknown own-RGB appearance profile')
-        self.hfov_deg, self.min_pixels = float(hfov_deg), int(min_pixels or GPU_CALIB_V1['min_pixels'])
+        self.profile = profile
+        self.band = GPU_CALIB_PROFILES[profile]
+        self.hfov_deg = float(hfov_deg)
+        self.min_pixels = int(min_pixels or self.band['min_pixels'])
 
     def __call__(self, frame_or_rgb):
         import io
@@ -571,8 +683,8 @@ class GpuCalibZoneDetector:
         rgb = np.asarray(img)
         h_deg, s, v = rgb_to_hsv(rgb)
         h = hue_degrees_to_opencv(h_deg)  # OpenCV H 0-180, the profile's unit
-        lo, hi = GPU_CALIB_V1['hue_cv']; vlo, vhi = GPU_CALIB_V1['val']
-        mask = (h >= lo) & (h <= hi) & (s >= GPU_CALIB_V1['sat_min']) & (v >= vlo) & (v <= vhi)
+        lo, hi = self.band['hue_cv']; vlo, vhi = self.band['val']
+        mask = (h >= lo) & (h <= hi) & (s >= self.band['sat_min']) & (v >= vlo) & (v <= vhi)
         total = int(mask.sum())
         comp = largest_component(mask)
         if comp is None or comp['area'] < self.min_pixels:
@@ -589,7 +701,7 @@ class GpuCalibZoneDetector:
                      touches_left=bool(left <= 0), touches_right=bool(right >= W),
                      touches_top=bool(top <= 0),
                      bbox=(left, top, right, bottom), pixels=comp['area'], total_pixels=total,
-                     hue_units=GPU_CALIB_V1['units'], profile='gpu_calib_v1')]
+                     hue_units=self.band['units'], profile=self.profile)]
 
 
 # Issued rows carry the adapter's *normalized* wheel duty in [-1, 1] (`WHEEL_PCT =
