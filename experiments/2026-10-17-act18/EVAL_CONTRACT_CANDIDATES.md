@@ -7,7 +7,7 @@
 - B4 hybrid done(`act18-doneh`): TRAIN4 **0/4**이지만 4/4 `issued_done=True·cap_end=False`, grasp done 31.3–31.7s·release done 34.8–35.3s. **물리 lift는 0/4(reason=lift_not_stable)**.
   - 즉 done 모듈은 물리 성공 없이도 "완료"를 발화했다. 성공 정의에서 물리 조건을 빼면 **실패를 성공으로 보고**하게 된다.
 - B1–B3: done 미발화로 cap_end 90s까지 실행. done을 policy가 학습하지 못함(현재 스텝 확률 ~1e-3).
-- closed-loop 진단(B4 raw): 교사 grasp 10–15s에 base 이동 0.26·gripper closed 0.63→1.0으로 전환하는데 모델은 base 0.75 계속·gripper 0.24에 머묾; 교사 release 0–2s 이동 1.0인데 모델 0.05. **행동/물리 축 실패**가 남아 있다.
+- closed-loop 진단(B4 raw): 교사 grasp 10–15s에 base 이동 0.26·gripper closed 0.63→1.0으로 전환하는데 모델은 base 0.75 계속·gripper 0.24에 머묾; 교사 release 0–2s 이동 1.0인데 모델 0.05. **행동/물리 축 실패**가 남아 있다. **(정정 10/18: 여기 `gripper closed` 수치는 servo 5(어깨) 펄스 비율이며 gripper가 아니다 — README `### 정정 (10/18)` 절.)**
 
 ## 후보 (권고 아님, 결정 필요)
 

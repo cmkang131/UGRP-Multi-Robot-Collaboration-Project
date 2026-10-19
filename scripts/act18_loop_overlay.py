@@ -5,12 +5,17 @@ ground-truth, top-camera or map input. It targets the diagnosed closed-loop
 divergence: the student keeps driving the base during the grasp hold and does
 not retreat during release. Constants are pre-registered and must not be tuned
 on validation outcomes.
+
+Gripper-closed is servo 1 below 1900 (`act18_gripper_state`); servo 5 is the
+shoulder and must not trigger the hold brake.
 """
 import numpy as np
 
+from act18_gripper_state import (GRIPPER_OPEN_PWM, GRIPPER_SERVO,
+                                 gripper_closed)
+
 HOLD_WHEEL_SCALE = .25
 HOLD_TICKS = 20
-CLOSE_PWM = 1900
 RETREAT_TICKS = 15
 RETREAT_WHEEL = .31
 STOP_THRESHOLD = .155
@@ -20,7 +25,12 @@ CLOSE_STREAK = 3
 def overlay_receipt():
     return dict(kind='closed_loop_transition_overlay_v1',
         scope='own issued base command post-processing only; no teacher/GT/top-camera input',
-        hold_wheel_scale=HOLD_WHEEL_SCALE, hold_ticks=HOLD_TICKS, close_pwm=CLOSE_PWM,
+        hold_wheel_scale=HOLD_WHEEL_SCALE, hold_ticks=HOLD_TICKS,
+        # Legacy receipt key, kept for schema stability: 1900 is the servo-1
+        # "clearly open" cutoff, so closed is pwm['1'] < 1900, not > 1900.
+        close_pwm=GRIPPER_OPEN_PWM,
+        gripper_servo=GRIPPER_SERVO, gripper_closed_rule='pwm[1] < 1900',
+        gripper_open_pwm=GRIPPER_OPEN_PWM,
         retreat_ticks=RETREAT_TICKS, retreat_wheel=RETREAT_WHEEL, stop_threshold=STOP_THRESHOLD,
         close_streak=CLOSE_STREAK,
         approach_direction='sign of mean own grasp-phase wheel command (own history only)')
@@ -61,7 +71,7 @@ class LoopOverlay:
             if moving:
                 self.grasp_sum += wheels
                 self.grasp_count += 1
-            closed = float(command['pwm']['5']) > CLOSE_PWM
+            closed = gripper_closed(command['pwm'])
             self.closed_streak = self.closed_streak+1 if closed else 0
             if self.closed_streak == CLOSE_STREAK:
                 self.hold = HOLD_TICKS
