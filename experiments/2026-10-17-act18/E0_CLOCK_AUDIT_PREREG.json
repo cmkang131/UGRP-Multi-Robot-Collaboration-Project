@@ -1,0 +1,138 @@
+{
+  "schema": "ugrp.act18.e0_clock_audit.prereg.v1",
+  "experiment": "2026-10-17-act18",
+  "phase": "E0",
+  "title": "기존 rollout 시계·경로 감사 + teacher 행 done 재분석 (CPU, GPU 0)",
+  "pre_registered_utc": "2026-10-19T15:17:00Z",
+  "spec": "outputs/reports/claude-arch-parallel-20261019/act-student-failure-design.md §3 E0 (v2 2026-10-19)",
+  "approval": "창민 2026-10-19 E0/E1 즉시 실행 승인. GPU 연산 0, 모델 추론 0, 반사실 재생. 이 파일은 결과를 보기 전에 커밋되며, 아래 정의·임계값·판정 규칙은 결과 확인 뒤 변경하지 않는다.",
+  "branch": "dsh/act18-e0-clockaudit",
+  "base": "95e668c59",
+  "code": "scripts/act18_clock_audit.py (default OFF, --enabled, pure Python)",
+  "unittest": "tests/test_act18_clock_audit.py",
+  "scope": {
+    "inputs": [
+      "runs/act18/finish-r3/R8-TRAIN-open/frames.jsonl.gz (원본 R8 open-loop, TRAIN4 1,430행)",
+      "runs/act18/finish-r3/R8-train/group-00{0,1}/evaluation/{actor-inputs,actor-actions,owner/evaluation-only}.jsonl + initial-plans.json (원본, jpg 제외)",
+      "runs/act18/finish-r3-repro-dsh-20261019T123200Z/R8-train/group-00{0,1}/evaluation/ 동일 파일 (repro)",
+      "runs/act18/doneprobe-r1/R8-done-group-00{0,1}.jsonl (보조 확인, 판정 미사용)",
+      "runs/act17-v7/dataset-r1 발행 issued PWM·teacher action·samples metadata 열 (R1a 사전검사 및 M0.6 teacher 대조)"
+    ],
+    "read_only": "VM 원본 수정·삭제 0. 새 출력은 Oracle /home/ubuntu/UGRP/outputs/runs/act18-clockaudit-<UTC TS>/ 에만 쓴다.",
+    "no_new_inference": "기존 로그의 재계수만 한다. 새 정책 추론 0회, GPU 0.",
+    "labels": "engineering-only / sim / TRAIN4·VAL8·FINAL40 gate 비대상 / pooling 금지",
+    "gcp2": "읽기 전용 부팅 1회, tar+sha256 회수, act 프로세스 0·GPU 0 확인 후 stop→TERMINATED"
+  },
+  "normalization": {
+    "period_s": 0.1,
+    "servo_map": {"1": "gripper", "3": "wrist_pitch", "4": "elbow", "5": "shoulder", "6": "yaw"},
+    "pwm_elapsed_s": "obs['pwm_elapsed_s'] (v6 IssuedClock, PWM 완전 일치가 아니면 리셋) 기록값 그대로",
+    "reset_tick": "post-lift 구간에서 pe[i] < pe[i-1] - 1e-9 인 tick i",
+    "base_move": "actor-actions의 command.wheels 중 |w| > 0.01 인 마지막 tick",
+    "close_onset": "해당 stream(학생 actor-actions command, teacher dataset h=0 action)에서 servo 1 PWM이 직전 tick 대비 |Δ| >= 100 인 첫 tick",
+    "unilateral_touch": "evaluation-only finger_forces에서 max(f) >= 0.5 N 이고 min(f) <= 0.05 N 인 첫 tick",
+    "physical_lift": "evaluation-only event의 lift_success true 또는 max_stable_lift_s > 0 가 한 번이라도 있음"
+  },
+  "metrics": {
+    "M0.1": {
+      "population": "원본 finish-r3 R8-train group-000/001 + repro R8-train group-000/001, 각 evaluation의 world 0/1 = 8 world-run",
+      "post_lift_start": "issued servo 3 PWM <= 800 이 처음 나온 tick (없으면 그 world-run은 M0.1/H1 모집단에서 제외)",
+      "segment": "post_lift_start 부터 cap(로그 끝)까지",
+      "max_pwm_elapsed_s": "구간 내 pwm_elapsed_s 최대값",
+      "resets_per_10s": "구간 내 리셋 횟수 / (구간 tick 수 * 0.1 / 10)",
+      "reset_delta_by_servo": "각 리셋 tick에서 직전 tick issued PWM 대비 servo별 |Δ| 분포(리셋을 일으킨 servo 포함, 0 제외)",
+      "reset_driver_counts": "리셋 tick마다 |Δ|가 가장 큰 servo를 driver로 세분화"
+    },
+    "M0.2": {
+      "population": "M0.1과 동일 8 world-run",
+      "value": "obs['skill_elapsed_s']의 min/max/final"
+    },
+    "M0.3": {
+      "population": "M0.1과 동일 8 world-run",
+      "value": "base_last_move_t (마지막 |wheel|>0.01 tick의 obs t), physical_lift, lift_first_t"
+    },
+    "M0.4": {
+      "population": "R8-TRAIN-open frames.jsonl.gz의 TRAIN4 seed 88600–88603, skill=='grasp' 행",
+      "positive": "teacher[13] >= 0.5 인 grasp 행. pre-registered 기대: seed당 정확히 1행, 총 4행 (hold 끝 done 라벨). 기대와 다르면 수를 그대로 보고하고 기준을 바꾸지 않는다.",
+      "h0_done_probability": "positive 행의 prediction[13] (h=0 raw done 확률)",
+      "episode_rank": "같은 seed의 grasp 행을 prediction[13] 내림차순으로 정렬했을 때 positive 행의 순위(1=최고). rank_fraction = rank / grasp_rows",
+      "hold_distribution": "teacher_phase=='hold' 행들의 prediction[13] min/median/max/n"
+    },
+    "M0.5": {
+      "population": "M0.4와 동일 frames, seed별 lookback onset = teacher_phase=='lookback' && skill=='grasp' 인 첫 행",
+      "window": "onset index ±3 (7행, 경계 밖 제외)",
+      "reverse_tick": "해당 행 projected[0:4] (wheel 4개) 전부 <= -0.155 (decode_action이 0으로 지우지 않는 실제 후진 크기)",
+      "reverse_world": "window 안에 reverse_tick이 1개 이상",
+      "report": "onset t, onset tick의 projected wheels, window 각 행 t·wheels·reverse"
+    },
+    "M0.6": {
+      "population": "M0.1과 동일 8 world-run",
+      "prefix": "각 world-run의 close_onset 직전 10틱(offset -10..-1)",
+      "student_stream": "actor-actions command.pwm servo 3/4/5",
+      "teacher_stream": "같은 seed의 dataset-r1 h=0 teacher action PWM servo 3/4/5 (teacher 쪽 close_onset도 같은 규칙으로 검출)",
+      "alignment": "각 stream의 close_onset을 0으로 두고 offset -10..-1을 짝지어 |student-teacher| 분포를 servo별로 기록. teacher onset이 없거나 10틱이 없으면 available=false",
+      "unilateral_first_t": "evaluation-only 편측 접촉 첫 tick (정의는 normalization)"
+    },
+    "R1a": {
+      "population": "runs/act17-v7/dataset-r1 TRAIN episode 전체 행 (split=='train')",
+      "old_clock": "v6 IssuedClock: issued PWM dict가 직전 관측과 완전히 다르면 리셋(정확 일치 비교)",
+      "new_clock": "v7 후보: 마지막 리셋 시점 baseline 대비 servo 하나라도 |Δ| >= 3 이면 리셋, 그 미만 변화는 baseline을 갱신하지 않고 누적",
+      "deadband": 2,
+      "reset_at": 3,
+      "changed_row": "|new_pe - recorded_pe| > 0.051 s (반 tick)",
+      "changed_ratio": "changed rows / TRAIN rows",
+      "reconstruction_guard": "v6 정확 일치 시계로 재계산한 값이 recorded pwm_elapsed_s와 0.051 s 이내로 전부 일치해야 한다. 하나라도 불일치하면 R1a 재계산을 신뢰하지 않고 verdict=blocked로 보고한다."
+    }
+  },
+  "judgment": {
+    "H1": {
+      "support": "M0.1 모집단 world-run 중 max pwm_elapsed_s < 4.0 s 인 비율 >= 0.75",
+      "refute": "M0.1 모집단 world-run 중 max pwm_elapsed_s >= 4.6 s 인 비율 >= 0.75 → 시계는 도달했는데 움직이지 않았으므로 기전이 아니다. E2 취소, E1 결과로 학습 측 설계.",
+      "ambiguous": "어느 쪽도 아니면(4.0–4.6 s 사이 또는 비율 미달) support/refute 어느 쪽도 주장하지 않고 ambiguous로 보고한다.",
+      "note": "모집단은 post-lift 구간(issued servo 3 <= 800)이 있는 world-run만 센다."
+    },
+    "done_head": {
+      "normal": "M0.4 양성 4행 중 >= 3행이 (p >= 0.65) 또는 (episode rank_fraction <= 0.01). 이 경우 C2(done head 학습 실패)를 주원인 후보에서 강등한다.",
+      "c2_support": "양성 4/4가 p < 0.05 이면 C2 지지(done head는 teacher 종료 상태에서도 실패).",
+      "inconclusive": "그 외."
+    },
+    "M0_5": {
+      "transition_possible": "M0.5 모집단 4 world-run 중 >= 3 world-run이 reverse_world 이면 teacher 상태에서는 전이 가능으로 본다.",
+      "not_possible": "그 외."
+    },
+    "R1a": {
+      "pass": "changed_ratio <= 0.001 (0.1%) 이면 R1a는 가중치 재학습 없이 계약 변경·adapter 재저장만으로 갈 수 있다.",
+      "fail": "changed_ratio > 0.001 이면 R8 10k bf16 fine-tune 경로(설계 R1a).",
+      "blocked": "재구성 guard 불일치 시 판정하지 않는다."
+    }
+  },
+  "thresholds": {
+    "h1_max_pe_support_s": 4.0,
+    "h1_max_pe_refute_s": 4.6,
+    "h1_fraction": 0.75,
+    "done_p_normal": 0.65,
+    "done_top_fraction": 0.01,
+    "done_c2_p": 0.05,
+    "done_normal_min": 3,
+    "m05_wheel_max_negative": -0.155,
+    "m05_min": 3,
+    "r1a_threshold": 0.001,
+    "r1a_deadband": 2
+  },
+  "exclusions": {
+    "invalid": "HOST_ERROR, 입력 감사 위반, launch.json provenance 누락/불일치, checkpoint sha 불일치 → n에서 제외하고 원본 보존",
+    "cap_end": "실패(valid)로 센다",
+    "no_pooling": "기존 act18 결과·다른 후보·다른 호스트 결과와 합산하지 않는다. 원본 vs repro는 seed/world 표로 나란히 보고만 한다."
+  },
+  "outputs": {
+    "root": "/home/ubuntu/UGRP/outputs/runs/act18-clockaudit-<UTC TS>/",
+    "files": ["summary.json", "manifest.json (code sha256, prereg sha256, 입력 sha256)", "보고서: /home/ubuntu/UGRP/outputs/reports/2026-10-19-act18-e0-clockaudit-<UTC TS>.md"],
+    "git": "출력 root와 보고서는 git에 넣지 않는다. 코드·prereg·테스트만 branch dsh/act18-e0-clockaudit에 push한다."
+  },
+  "expected_limits": [
+    "M0.4/M0.5는 TRAIN fit seed(88600–88603)의 open-loop teacher 상태이며 일반화 증거가 아니다.",
+    "R8 vs R100, noslip10 vs native, 다른 호스트 결과와 합산하지 않는다.",
+    "M0.6은 close onset 정렬 기반 서술 통계이고 인과 판정이 아니다.",
+    "gcp2 회수 데이터는 원본 VM 디스크의 사본이며, 원본 수정은 하지 않는다."
+  ]
+}
