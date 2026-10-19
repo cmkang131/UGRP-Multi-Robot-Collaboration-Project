@@ -86,12 +86,13 @@ tests/test_act18_chunk8.py tests/test_act18_policy.py -q` → **9 passed.**
 - group-000: seeds `88600 88603` (nbody 162), `case-000` compiled reference.
 - group-001: seeds `88601 88602` (nbody 159), `case-001` compiled reference.
   `act16w_native_contact.initialize`가 index 0에 `--compiled-reference`를
-  강제하므로 그룹 첫 세계의 case를 써야 한다.
+  강제하므로 그룹 첫 세계의 case를 써야 한다. 그룹 내 다른 세계는
+  `--references`의 exact-XML mapping에서 각자 reference를 찾는다.
 
 공통 변수(새 체크아웃에서):
 
 ```bash
-cd /home/ugrp/ugrp-sim/src/act-chunk-<COMMIT>   # 이 PR의 커밋
+cd /home/ugrp/ugrp-sim/src/act-chunk-<COMMIT>   # 이 PR의 clean checkout
 export UGRP_ACT16W_NATIVE_GATE=/home/ugrp/ugrp-sim/runs/act16w-native-gate-r2/independent-gate-recount.json
 REF=/home/ugrp/ugrp-sim/runs/act17-v7/record-references-r1-owner-regen
 T=/home/ugrp/ugrp-sim/src/warp1-teacher-snapshot-6f057f7e
