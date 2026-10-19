@@ -20,15 +20,18 @@ PROFILES = {
     'walls_floor_contrast_v5_indigo110_s80': {'rgb':[90,75,110],'hsv':[133,81,110],'pattern':'v1_common_mode'},
     # 2026-10-18 nav gate: same indigo wall paint and the same published wall
     # textures (assets alias), but the pickup floor overlay is repainted
-    # neutral (sim/neutral_pickup_floor.py) and light_scale raises the
-    # noshadow_bright_v1 light colours from 0.30 to 0.70, so the floor is not
-    # V~90.  sim/render_profile.py is byte-pinned by the p03 provider and is
-    # deliberately not edited; the extra scale is applied here.
+    # neutral (sim/neutral_pickup_floor.py).  sim/render_profile.py is
+    # byte-pinned by the p03 provider and is deliberately not edited.
+    # light_scale stays at the base 0.30 (factor 1.0): #611 raised it to 0.70,
+    # which pushed zone B to V~195 and out of the frozen v1 detector band
+    # (H 110-114 / S>=100 / V 30-110).  Reverted per Claude's 2026-10-19 review
+    # §3(a) so the neutral floor keeps the original lighting; do not raise it
+    # again without a user-approved band change.
     # New name on purpose: the v5 profile stays frozen and reproducible.
     'walls_floor_contrast_v6_indigo110_s80_neutral_start': {
         'rgb':[90,75,110],'hsv':[133,81,110],'pattern':'v1_common_mode',
         'assets':'walls_floor_contrast_v5_indigo110_s80',
-        'light_scale':0.70,'pickup':'neutral_grid_v1'},
+        'light_scale':0.30,'pickup':'neutral_grid_v1'},
     'walls_floor_contrast_v5_indigo125_s65': {'rgb':[107,93,125],'hsv':[133,65,125],'pattern':'v1_common_mode'},
     'walls_floor_contrast_v5_indigo100_flat': {'rgb':[54,18,100],'hsv':[133,209,100]},
 }

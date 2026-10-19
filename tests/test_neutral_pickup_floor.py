@@ -4,9 +4,10 @@ The nav gate's own-RGB view showed the shared map's pickup overlay as an
 opaque indigo floor (OpenCV H 107-108, S median 212, V median 90) only 2-6 hue
 units from zone B paint (110-114).  The scene profile
 ``walls_floor_contrast_v6_indigo110_s80_neutral_start`` replaces that overlay
-with neutral grey tiles (S == 0) and raises the light scale; zone B paint and
-every map file stay unchanged.  These tests check the authored paint, not a
-rendered frame: V values are predictions and the GPU gate frame is the evidence.
+with neutral grey tiles (S == 0) and keeps the base light scale (0.30); zone B
+paint and every map file stay unchanged.  These tests check the authored paint,
+not a rendered frame: V values are predictions and the GPU gate frame is the
+evidence.
 """
 import copy
 import hashlib
@@ -158,8 +159,13 @@ def test_v6_scene_profile_pins_the_light_and_pickup_contract():
     assert old['sha256'] == 'b95ad4e77326ccce3a428d77efbddb9a25ac03fc606d74ed952732a82bd94fc4'
     assert 'light_scale' not in old and 'pickup_paint' not in old
     assert new['base_render_profile'] == 'noshadow_bright_v1'
-    assert new['light_scale'] == .70
-    assert new['light_scale_factor_vs_base'] == pytest.approx(7/3, rel=1e-9)
+    # 2026-10-19 Claude review §3(a): v6 keeps the base lighting (0.30, factor 1.0)
+    # so zone B stays inside the frozen v1 band (H 110-114 / S>=100 / V 30-110).
+    # #611 used 0.70 and measured zone B at V~195 => 0 px in the v1 band.
+    assert new['light_scale'] == .30
+    assert new['light_scale_factor_vs_base'] == pytest.approx(1.0, rel=1e-9)
+    assert new['sha256'] == '1c57232468d2b7a3e580eb0d3e78ccdccdef7a94161cd7567baa3adee8c39bed'
+    assert new['changes_physics'] is False
     assert new['texture_asset_profile'] == OLD
     assert new['pickup_paint'] == neutral.record()
     assert new['sha256'] != old['sha256']
@@ -236,11 +242,16 @@ def test_scene_profile_application_neutralizes_pickup_only_for_v6(monkeypatch):
     assert v6.find("worldbody/geom[@name='zone_pickup']") is None
     assert len([g for g in v6.iter('geom') if (g.get('name') or '').startswith('zone_pickup_tile_')]) == 60
     new_light = v6.find("worldbody/light")
-    assert [float(v) for v in new_light.get('diffuse').split()] == pytest.approx([.49]*3)
+    # light_scale 0.30 (factor 1.0) keeps the base lighting: diffuse .7 x .3 = .21,
+    # byte-for-byte the same light attributes as the frozen v5 profile.
+    assert [float(v) for v in new_light.get('diffuse').split()] == pytest.approx([.21]*3)
     assert new_light.get('cutoff') == '180'
     wall = v6.find("worldbody/geom[@name='zone_wall_west']")
     assert wall.get('material') == 'contrast_v5_zone_wall_west' and wall.get('rgba') == '1 1 1 1'
     assert v6.find("worldbody/geom[@name='zone_zone_B']").get('rgba') == '.20 .40 .95 .30'
     v5 = ET.fromstring(contrast.apply_xml(base, OLD))
+    old_light = v5.find("worldbody/light")
+    for attr in ('diffuse', 'ambient', 'specular', 'cutoff', 'pos', 'directional'):
+        assert new_light.get(attr) == old_light.get(attr)  # no light change vs frozen v5
     assert v5.find("worldbody/geom[@name='zone_pickup']").get('rgba') == neutral.SOURCE_RGBA
     assert v5.find("worldbody/geom[@name='zone_zone_B']").get('rgba') == '.20 .40 .95 .30'

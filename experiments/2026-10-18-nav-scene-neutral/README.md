@@ -135,3 +135,23 @@ python experiments/2026-10-18-nav-scene-neutral/measure.py  # before/예측 재�
   (`harness/scene_colour_boundary.py:25`). v6 렌더에서 mission/release를 돌리려면
   새 scene colour calibration을 만들거나, 그 flow는 v5를 명시적으로 pin해야 한다.
   nav gate는 colour boundary를 쓰지 않아 이번 범위에서는 영향이 없다.
+
+## 9. 후속 (2026-10-19): light_scale 0.70 → 0.30 복귀
+
+Claude 수석 아키텍트 리뷰(`outputs/reports/2026-10-19-claude-final-review.md` §3)에 따라
+v6 프로필의 `light_scale`만 base 값 0.30(배율 1.0)으로 되돌렸다. neutral pickup floor
+(타일 60장, S=0)와 v5 자산·맵은 그대로다. `sim/render_profile.py`도 수정하지 않았다.
+
+- **이유**: 0.70 조명에서 zone B 도색이 V p50 195로 올라가 동결된 v1 검출기 밴드
+  (H 110–114, S≥100, V 30–110, min_component 600) 밖으로 나갔고(0 px), 스폰에서는
+  zone B 기하 투영 자체가 485 px < 600이라 밴드와 무관하게 스폰 검출이 불가능했다.
+  밴드·문턱·스폰·맵을 바꾸지 않는 쪽이 승인 안건을 만들지 않는 최소 변경이다.
+- **프로필 해시**: `8c30b5f2…956ae`(0.70) → **`1c57232468d2b7a3e580eb0d3e78ccdccdef7a94161cd7567baa3adee8c39bed`**.
+  `light_scale_factor_vs_base = 1.0`, `changes_physics = False`(조명·도색만), v5 해시
+  `b95ad4e7…94fc4`와 맵 SHA `b6a61f7e…a41b`는 불변.
+- **함께 고친 pin**: `tests/test_neutral_pickup_floor.py`의 `light_scale == .70` /
+  `7/3` / light diffuse `.49` 단언을 `.30` / `1.0` / `.21`과 "v5와 동일 조명" 비교로
+  바꾸고, v6 프로필 해시를 테스트에 고정했다. 그 외 코드·fixture pin은 없었다
+  (`configs/current_stack.json`은 이름만 참조).
+- **검증**: 로컬 8개 suite 207 passed/17 skipped(mujoco 없음 → 장면 compile skip 정상).
+  GPU render-only 실측은 새 보고서(`outputs/reports/2026-10-19-nav-gate-light30-dsh-*.md`)에 있다.
