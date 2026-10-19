@@ -50,6 +50,8 @@ def parser():
     p.add_argument('--teacher-gate-queue',type=Path,help='optional pinned independent-case gate admission; no training admission')
     p.add_argument('--export-compiled-only',action='store_true')
     p.add_argument('--vm-hourly-usd',type=float,required=True)
+    from sim.execution_contact_profile import add_argument
+    add_argument(p, warp=True)
     return p
 
 
@@ -120,13 +122,14 @@ def main():
         world_seeds=[p['seed'] for p in world_plans],unique_seeds=len({p['seed'] for p in world_plans}),cap_s=a.cap_s,
         training_rgb=False,training_recording_supported=False,student_evaluation_supported=False,
         native_sleep_policy_compat_v1=a.native_sleep_policy_compat_v1,
+        contact_profile=a.contact_profile,
         float32_solver_default_v1=a.float32_solver_default_v1,sap_segmented_v1=a.sap_segmented_v1,
         teacher_vectorized=False,scope='transitional scalar frozen teacher on batched physics/commands/RGB',
         gate_eligible=False,scene_status='HOLD_SCENE',reproduce=sys.argv,
         plan_sha256=hashlib.sha256(a.plan.read_bytes()).hexdigest(),mujoco=mujoco.__version__,
         hourly_usd=a.vm_hourly_usd,price_basis='user/inherited VM estimate; actual billing not measured')
     write(a.out/'summary.json',report)
-    hooks=(WarpTransport if a.physics_backend=='mjwarp_batch_v1' else CTransport)(host,source_sha,a.physics_backend,a.out,native_sleep_policy_compat_v1=a.native_sleep_policy_compat_v1)
+    hooks=(WarpTransport if a.physics_backend=='mjwarp_batch_v1' else CTransport)(host,source_sha,a.physics_backend,a.out,native_sleep_policy_compat_v1=a.native_sleep_policy_compat_v1,contact_profile=a.contact_profile)
     hooks.scene_v5_v1=a.scene_v5_v1
     hooks.numpy_teacher_v1=a.numpy_teacher_v1
     hooks.batch_sleep_v1=a.batch_sleep_v1

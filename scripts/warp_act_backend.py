@@ -13,6 +13,7 @@ import time
 from pathlib import Path
 import numpy as np
 from warp_act_core import SERVOS, control_tape, model_key, varying_model_arrays, masked_restore, sleep_scene_xml, runtime_sleep_policy, physics_schedule
+from sim.execution_contact_profile import CPU_DEFAULT, WARP_DEFAULT, LEGACY_NAMES, assert_model_profile, build_world_with_contact
 
 
 class PerceptionWorld:
@@ -57,8 +58,9 @@ class PerceptionWorld:
 class Transport:
     native_render = False
 
-    def __init__(self, host, source_sha, backend, out, *, native_sleep_policy_compat_v1=False):
+    def __init__(self, host, source_sha, backend, out, *, native_sleep_policy_compat_v1=False, contact_profile=None):
         self.host, self.source_sha, self.backend, self.out = host, source_sha, backend, Path(out)
+        self.contact_profile = contact_profile or (CPU_DEFAULT if self.native_render else WARP_DEFAULT)
         self.seconds = defaultdict(float)
         self.samples = defaultdict(list)
         self.rgb = []
@@ -67,6 +69,9 @@ class Transport:
         self.prototype_hits=0
         self.native_sleep_policy_compat_v1=native_sleep_policy_compat_v1
         self.scene_v5_v1=False
+
+    def build_world(self, builder, *args, **kwargs):
+        return build_world_with_contact(builder, self.contact_profile, *args, **kwargs)
 
     def make_world(self, plan, scene, factory, bind_camera, **kwargs):
         if self.native_sleep_policy_compat_v1:
@@ -86,13 +91,13 @@ class Transport:
             scene.manifest['native_sleep_policy_compat_v1']={'active_robot':'never sleeps','other_free_bodies':'native allowed; collision wakes normally',
                 'extra_quiet_setup_s':.4,'mass_friction_dt_unchanged':True}
         if self.native_render:
-            world=factory(scene,**kwargs)
+            world=self.build_world(factory,scene,**kwargs)
             for controller in world.controllers.values():bind_camera(controller)
             scene.setup(world)
             return world,scene
         key=hashlib.sha256(json.dumps(plan,sort_keys=True).encode()).hexdigest()
         if key not in self.prototypes:
-            prototype=factory(scene,**kwargs)
+            prototype=self.build_world(factory,scene,**kwargs)
             for controller in prototype.controllers.values():bind_camera(controller)
             scene.setup(prototype)
             self.prototypes[key]=(prototype,copy.deepcopy(scene))
@@ -201,8 +206,7 @@ class WarpTransport(Transport):
             compat={}
             if geometry_asset:compat['geometry']=apply_geometry(model,scene_xml,geometry_asset)
             if actuator_asset:compat['damping']=apply_reference(model,scene_xml,actuator_asset)
-            if model.opt.noslip_iterations!=10 or np.any(c['world'].data.eq_active):
-                raise ValueError('noslip10 / weld OFF required in every world')
+            compat['contact_profile']=assert_model_profile(model, self.contact_profile, c['world'].data.eq_active)
             if self.native_sleep_policy_compat_v1:
                 enum=mujoco.mjtSleepPolicy
                 original=model.tree_sleep_policy.copy()
@@ -238,8 +242,9 @@ class WarpTransport(Transport):
             'effective_tolerance':float(self.wm.opt.tolerance.numpy().item()),
             'basis':'pinned io.py433 clamps float64 C tolerance to minimum1e-6 to avoid float32 needless iterations; task Score unchanged'}
         self.solver_samples=[]
-        if self.wm.opt.noslip_iterations != 10:
-            raise RuntimeError('noslip lost in Warp conversion')
+        expected_noslip=10 if self.contact_profile in LEGACY_NAMES else 0
+        if self.wm.opt.noslip_iterations != expected_noslip:
+            raise RuntimeError('contact profile lost in Warp conversion')
         self.compat['collision'] = install_legacy_plane(m)
         # Existing simalt4 dense trace observed max nefc134, rounded to256.
         # Full scene import is added; these are workspace sizes, not physics changes.
