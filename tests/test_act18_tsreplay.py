@@ -203,3 +203,202 @@ def test_world_metrics_onset_done_and_jitter():
     assert metrics['jitter_pairs_1to3'] == 10   # 2 tick pairs x 5 servos, each step 0 or 2
     assert metrics['jitter_ticks_1to3'] == 2    # both consecutive pairs change by 2
     assert metrics['lift_settle_ticks'] == 3
+
+
+def test_v4_requires_preregistered_delta_and_moves_only_pwm_clock():
+    obs, _ = observation(now=1.7)
+    recorded = dict(obs, pwm_elapsed_s=.9, skill_elapsed_s=5.0)
+    c.validate_observation(recorded)
+    mutated = mutate_observation(recorded, 'V4', 1.05)
+    assert abs(mutated['pwm_elapsed_s'] - 1.95) < 1e-12
+    assert mutated['skill_elapsed_s'] == 5.0
+    left = {k: v for k, v in mutated.items() if k != 'pwm_elapsed_s'}
+    right = {k: v for k, v in recorded.items() if k != 'pwm_elapsed_s'}
+    assert json.dumps(left, sort_keys=True) == json.dumps(right, sort_keys=True)
+    c.validate_observation(mutated)
+    with pytest.raises(ValueError, match='V4 requires'):
+        mutate_observation(recorded, 'V4')
+    with pytest.raises(ValueError, match='V4 requires'):
+        mutate_observation(recorded, 'V4', -1.)
+    assert recorded['pwm_elapsed_s'] == .9
+
+
+def test_parse_sweep_accepts_preregistered_grid_and_rejects_bad_orders():
+    from act18_teacher_state_replay import parse_sweep
+    assert parse_sweep('9.0,10.0,10.5') == (9.0, 10.0, 10.5)
+    assert parse_sweep('off') == ()
+    assert parse_sweep(None) == ()
+    with pytest.raises(ValueError, match='strictly increasing'):
+        parse_sweep('10.0,9.0')
+    with pytest.raises(ValueError, match='strictly increasing'):
+        parse_sweep('10.0,10.0')
+    with pytest.raises(ValueError, match='empty'):
+        parse_sweep(',')
+
+
+def test_sweep_interval_and_half_max_use_the_fixed_grid():
+    from act18_teacher_state_replay import sweep_interval, sweep_half_max
+    points = [(10.8, .61), (11.0, .82), (11.2, .70), (11.4, .40), (11.6, .1)]
+    interval = sweep_interval(points)
+    assert interval['pe_min'] == 10.8 and interval['pe_max'] == 11.2
+    assert interval['peak_pe'] == 11.0 and interval['peak_raw'] == .82
+    assert interval['width_s'] == pytest.approx(.4)
+    half = sweep_half_max(points)
+    assert half['peak_raw'] == .82 and half['half_max'] == pytest.approx(.41)
+    assert half['pe_min'] == 10.8 and half['pe_max'] == 11.2
+    assert sweep_interval([(9., .1), (10., .2)]) is None
+
+
+def _replay_row(index, chunk_value=0., done=0.):
+    chunk = np.full((c.CHUNK, c.ACTION_DIM), chunk_value)
+    chunk[:, -1] = done
+    return {'index': index, 'chunk': chunk.tolist(),
+            'te': {'wheels': [0.] * 4, 'duration_s': [0.] * 4,
+                   'pwm': {str(s): 1500 for s in c.SERVOS},
+                   'done': done >= .65, 'done_score': max(0., min(1., done))}}
+
+
+def test_compare_replay_rows_is_fail_closed_at_one_microunit():
+    from act18_teacher_state_replay import compare_replay_rows
+    rows = [_replay_row(10), _replay_row(11)]
+    reference = [_replay_row(10), _replay_row(11)]
+    result = compare_replay_rows(rows, reference)
+    assert result['passed'] and result['max_abs_chunk_diff'] == 0.
+    rows[1]['chunk'][0][0] = 1e-3
+    result = compare_replay_rows(rows, reference)
+    assert not result['passed'] and result['max_abs_chunk_diff'] == pytest.approx(1e-3)
+    assert result['max_abs_chunk_diff_tick'] == 11
+    with pytest.raises(ValueError, match='row count mismatch'):
+        compare_replay_rows(rows, reference[:1])
+
+
+def _clock_rows(values):
+    rows = []
+    for index, pwm in enumerate(values):
+        rows.append({'observation': {'t': index * c.PERIOD_S,
+                                     'issued': [{'pwm': {str(s): pwm[str(s)] for s in c.SERVOS}}]}})
+    return rows
+
+
+def test_reconstruct_clock_deadband_removes_one_pwm_jitter():
+    from act18_teacher_state_replay import reconstruct_clock
+    base = {str(s): 1500 for s in c.SERVOS}
+    base['1'] = 2000
+    def with_servo4(value):
+        return dict(base, **{'4': value})
+    values = [base, base, with_servo4(1501), with_servo4(1502),
+              with_servo4(1503), with_servo4(1504), with_servo4(1510)]
+    rows = _clock_rows(values)
+    any_change = reconstruct_clock(rows, 1)
+    deadband = reconstruct_clock(rows, 3)
+    assert any_change[round(0.2, 6)] == 0.
+    assert any_change[round(0.6, 6)] == 0.
+    assert deadband[round(0.2, 6)] == pytest.approx(.2)
+    assert deadband[round(0.4, 6)] == pytest.approx(.4)
+    assert deadband[round(0.5, 6)] == pytest.approx(.5)
+    assert deadband[round(0.6, 6)] == 0.
+    with pytest.raises(ValueError, match='deadband'):
+        reconstruct_clock(rows, 0)
+
+
+def test_rollout_anchor_prefers_lift_and_falls_back_to_grasp():
+    from act18_teacher_state_replay import rollout_anchor
+    truth = [{'t': 1.0, 'min_z': 0., 'finger_forces': [0., 0.]},
+             {'t': 1.1, 'min_z': .013, 'finger_forces': [.1, .1]},
+             {'t': 1.2, 'min_z': .02, 'finger_forces': [1., 1.]}]
+    assert rollout_anchor(truth) == (1.1, 'lift_clearance')
+    fallback = [{'t': 2.0, 'min_z': -.001, 'finger_forces': [0., 0.]},
+                {'t': 2.1, 'min_z': 0., 'finger_forces': [.6, .7]}]
+    assert rollout_anchor(fallback) == (2.1, 'grasp_force_fallback')
+    with pytest.raises(ValueError, match='no physical lift'):
+        rollout_anchor([{'t': 0., 'min_z': 0., 'finger_forces': [0., 0.]}])
+
+
+def test_aligned_skill_elapsed_interpolates_and_extrapolates():
+    from act18_teacher_state_replay import aligned_skill_elapsed
+    teacher = {'t': [0., 1., 2.], 'skill_elapsed_s': [0., 1., 2.5]}
+    assert aligned_skill_elapsed(teacher, .5) == pytest.approx(.5)
+    assert aligned_skill_elapsed(teacher, 1.5) == pytest.approx(1.75)
+    assert aligned_skill_elapsed(teacher, 3.5) == pytest.approx(4.)
+    assert aligned_skill_elapsed(teacher, -1.) == 0.
+
+
+def test_stabilize_history_replaces_only_post_anchor_jitter():
+    from act18_teacher_state_replay import stabilize_history, stabilized_commands
+    base = {str(s): 1500 for s in c.SERVOS}
+    values = [dict(base), dict(base, **{'3': 740}), dict(base, **{'3': 741}),
+              dict(base, **{'3': 745})]
+    rows = []
+    for index, pwm in enumerate(values):
+        rows.append({'observation': {
+            't': index * c.PERIOD_S,
+            'issued': [{'t': index * c.PERIOD_S, 'wheels': [0.] * 4, 'duration_s': [0.] * 4,
+                        'pwm': {str(s): pwm[str(s)] for s in c.SERVOS}}]}})
+    stabilized = stabilized_commands(rows)
+    assert stabilized[round(0.1, 6)]['3'] == 740
+    assert stabilized[round(0.2, 6)]['3'] == 740
+    assert stabilized[round(0.3, 6)]['3'] == 745
+    obs, _ = observation(now=0.3)
+    obs['pwm_elapsed_s'] = .1
+    obs['skill_elapsed_s'] = 1.
+    keep = stabilize_history(obs, stabilized, 0.0)
+    for entry in keep['issued']:
+        reference = stabilized.get(round(float(entry['t']), 6))
+        if reference is not None:
+            assert entry['pwm']['3'] == reference['3']
+    unchanged = stabilize_history(obs, stabilized, 99.)
+    assert [entry['pwm'] for entry in unchanged['issued']] == [entry['pwm'] for entry in obs['issued']]
+
+
+def test_c2a_decision_pass_fail_and_inconclusive():
+    from act18_teacher_state_replay import c2a_decision
+    names = ['w0', 'w1', 'w2', 'w3']
+    pass_rows = {name: {'a1_ge_065': index < 3,
+                        'a1_done_max_hold_pm10': .9 if index < 3 else .01,
+                        'a3_interval_inside_10_8_11_8': index < 3,
+                        'a3_sweep_points': [(11.0, .7)] if index < 3 else [(11.0, .01)]}
+                 for index, name in enumerate(names)}
+    decision = c2a_decision(names, pass_rows)
+    assert decision['verdict'] == 'PASS' and decision['D11_condition_i_met']
+    fail_rows = {name: {'a1_ge_065': False, 'a1_done_max_hold_pm10': .01,
+                        'a3_interval_inside_10_8_11_8': False,
+                        'a3_sweep_points': [(11.0, .01)]} for name in names}
+    assert c2a_decision(names, fail_rows)['verdict'] == 'FAIL'
+    mixed = dict(pass_rows)
+    mixed['w3'] = fail_rows['w3']
+    assert c2a_decision(names, mixed)['verdict'] == 'PASS'
+    mixed['w2'] = fail_rows['w2']
+    assert c2a_decision(names, mixed)['verdict'] == 'INCONCLUSIVE'
+
+
+def test_c2b_decision_done_path_and_backward_attribution():
+    from act18_teacher_state_replay import c2b_decision
+    lift = [f'L{index}' for index in range(6)]
+    control = ['C0', 'C1']
+    per_variant = {variant: {} for variant in ('S0', 'S2', 'S3', 'S4')}
+    for variant in per_variant:
+        for index, label in enumerate(lift):
+            fire = variant == 'S2' and index < 5
+            per_variant[variant][label] = {
+                'done_fire': fire,
+                'fire_pe_in_10_3_12_0': fire,
+                'backward_onset': variant == 'S2' and index < 5,
+            }
+        for label in control:
+            per_variant[variant][label] = {'done_fire': False,
+                                           'fire_pe_in_10_3_12_0': False,
+                                           'backward_onset': False}
+    decision = c2b_decision(per_variant, lift, control)
+    assert decision['done_path_verdict'] == 'PASS'
+    assert decision['b1_S2_lift_fires_pe_in_range'] == 5
+    assert decision['b2_single_variant_attribution'] == 'S2'
+    assert decision['D11_condition_ii_confirmed'] is True
+    for variant in per_variant:
+        for label in lift:
+            per_variant[variant][label] = {'done_fire': variant == 'S2' and label == 'L0',
+                                           'fire_pe_in_10_3_12_0': variant == 'S2' and label == 'L0',
+                                           'backward_onset': False}
+    decision = c2b_decision(per_variant, lift, control)
+    assert decision['done_path_verdict'] == 'FAIL'
+    assert decision['D11_condition_ii_confirmed'] is False
+    assert decision['b2_single_variant_attribution'] is None
