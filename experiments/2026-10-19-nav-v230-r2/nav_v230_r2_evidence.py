@@ -293,7 +293,7 @@ def main():
         ground_forward(320, v, 0.29983, 18.9934) + 0.0255 for v in patch_centre_rows), 4)
     contact = next(r for r in r1 if r['bottom_norm'] >= 0.96)
     replays = []
-    for residual in (0.25, 0.40, 0.55, 0.68):
+    for residual in (0.25, 0.40, 0.52, 0.55, 0.68):
         travel = 0.0
         claim = None
         previous = contact['base_xy']

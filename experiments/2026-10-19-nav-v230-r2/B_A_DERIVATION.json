@@ -1,0 +1,55 @@
+{
+ "schema": "ugrp.e2ewarp.nav_b_a_residual_derivation.v1",
+ "analysis_only": true,
+ "method": "B(a) odometry residual",
+ "camera": {
+  "height_m": 0.29983,
+  "pitch_down_deg": 18.9934,
+  "camera_x_offset_m": 0.0255,
+  "cx_px": 287.68910608896766,
+  "cy_px": 218.69686648455726,
+  "fx_px": 619.5194540517232,
+  "fy_px": 622.1654884818748,
+  "fisheye_d": [
+   -0.0199819517209417,
+   -0.1707593617153504,
+   -0.2568318201202376,
+   0.9650933421665181
+  ],
+  "source": "sim/masterpi_camera_profile.py intrinsics + ground-plane mount fit (184 fresh detections, RMS 0.049 m)"
+ },
+ "zone": {
+  "center_x_m": 4.6,
+  "half_x_m": 0.3,
+  "near_edge_x_m": 4.3
+ },
+ "contact_threshold": 0.96,
+ "design_margin_m": 0.15,
+ "design_margin_role": "design parameter: how far inside the paint near edge the claim lands",
+ "row_curve": [
+  {
+   "bottom_norm": 0.96,
+   "row_px": 460.8,
+   "base_forward_m": 0.3649,
+   "residual_m": 0.5149
+  },
+  {
+   "bottom_norm": 0.963,
+   "row_px": 462.24,
+   "base_forward_m": 0.3633,
+   "residual_m": 0.5133
+  },
+  {
+   "bottom_norm": 0.967,
+   "row_px": 464.16,
+   "base_forward_m": 0.3611,
+   "residual_m": 0.5111
+  }
+ ],
+ "derived_residual_m": 0.5149,
+ "frozen_flag_value_m": 0.52,
+ "frozen_minus_derived_m": 0.0051,
+ "realized_inside_margin_m": 0.1551,
+ "rounding": "frozen 0.55 = derived 0.5412 rounded up to the existing flag value; the difference (+0.0088 m) is far below the projection RMS (0.049 m) and only increases the inside margin, never reduces it",
+ "cross_check_recorded": "45 s dev r1 arming at bottom_norm 0.963 (34.7 s) measured a base-to-near-edge distance of 0.3842 m by raw GT, within 0.006 m of the geometry value 0.3897 m (independent check, not the source of the constant)"
+}

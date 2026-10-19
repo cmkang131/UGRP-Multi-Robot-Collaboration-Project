@@ -149,14 +149,21 @@ ACQUIRE_MAX_AGE_S = ARRIVAL_EVIDENCE_MAX_AGE_S
 ARRIVAL_BOTTOM_BAND = 'bottom_band'
 # (a) `--arrival-odom-residual`: after the near paint edge first reaches the
 # bottom of the visible ground region, drive a fixed own-command residual and
-# claim.  The contact threshold is reachable: the recorded r1 approach saturates
-# at 0.967 from 34.8 s to 42.1 s.  At that saturation the base was 0.382 m
-# behind the paint's near edge (x=3.918 vs x=4.3) and the paint centre was
-# 0.682 m ahead; a 0.55 m residual lands 0.168 m inside the west edge
-# (recorded replay: (4.450, -1.959), y inside -2.8..-1.4).
+# claim.  **The residual is derived from camera geometry, not from the 45 s
+# diagnostic fit** (2026-10-19 decision): the ground-distance row curve of
+# `GATE_GROUND_PROJECTION` puts the paint's near edge 0.3649 m ahead of the base
+# origin at the contact threshold (bottom_norm 0.96, row 460.8, principal
+# column), and the 0.15 m inside margin (design parameter) gives
+# 0.3649 + 0.15 = 0.5149 m; frozen at 0.52 m (rounded up so rounding cannot
+# shrink the margin; realized margin 0.155 m).  The recorded 45 s r1 approach is
+# only a cross-check (arming at 0.963, raw base-to-near-edge 0.3842 m, within
+# 0.035 m of the projection) - see experiments/2026-10-19-nav-v230-r2/
+# B_A_DERIVATION.json.  The contact threshold itself is reachable: the recorded
+# approach saturates at 0.967 (the chassis occlusion boundary of the visible
+# ground), so 0.96 is arming 3 px earlier.
 ARRIVAL_ODOM_RESIDUAL = 'odom_residual'
 ARRIVAL_BOTTOM_CONTACT_NORM = 0.96
-ARRIVAL_ODOM_RESIDUAL_M = 0.55
+ARRIVAL_ODOM_RESIDUAL_M = 0.52
 # (b) `--arrival-ground-distance-m 0.25`: project the detected patch's centre
 # pixel onto the floor with the measured pinhole+fisheye camera model and claim
 # when the ground distance is at most the flag value.  The camera model is the

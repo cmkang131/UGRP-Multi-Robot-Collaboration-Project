@@ -178,13 +178,14 @@ def test_b_odom_residual_arms_only_on_a_bottom_contact_then_claims_by_distance()
     rep = nav.observe(frame(0.0))
     assert rep['arrival_armed'] is True and rep['destination_arrived'] is False
     reports = run_ticks(nav, 45)
-    # 45 x (35 % x 0.1 s) at 0.0040242 m/pct-s = 0.6338 m; the 0.55 m residual
-    # is crossed at the 40th issued pulse.
+    # 45 x (35 % x 0.1 s) at 0.0040242 m/pct-s = 0.6338 m; the geometry-derived
+    # 0.52 m residual is crossed at the 37th issued pulse (36 x 0.0140847 =
+    # 0.5071 < 0.52, 37 x 0.0140847 = 0.5211).
     first_claim = next(i for i, r in enumerate(reports) if r['destination_arrived'])
-    assert first_claim == 40
-    assert reports[39]['destination_arrived'] is False
-    assert reports[39]['arrival_travel_m'] < sn.ARRIVAL_ODOM_RESIDUAL_M
-    assert reports[40]['arrival_travel_m'] >= sn.ARRIVAL_ODOM_RESIDUAL_M
+    assert first_claim == 37
+    assert reports[36]['destination_arrived'] is False
+    assert reports[36]['arrival_travel_m'] < sn.ARRIVAL_ODOM_RESIDUAL_M
+    assert reports[37]['arrival_travel_m'] >= sn.ARRIVAL_ODOM_RESIDUAL_M
     assert reports[-1]['drive_reason'] == 'arrived'
 
 
@@ -194,6 +195,14 @@ def test_b_odom_residual_does_not_arm_below_the_contact_band():
     reports = run_ticks(nav, 60)
     assert all(r['arrival_armed'] is False for r in reports)
     assert all(r['destination_arrived'] is False for r in reports)
+
+
+def test_b_odom_residual_is_the_geometry_derivation():
+    """0.3649 m (row curve at bottom_norm 0.96) + 0.15 m margin -> frozen 0.52 m."""
+    point = sn.ground_point_robot(sn.GATE_GROUND_PROJECTION['cx_px'], 0.96 * 480.0)
+    assert point[0] == pytest.approx(0.3649, abs=0.002)
+    assert sn.ARRIVAL_ODOM_RESIDUAL_M == 0.52
+    assert sn.ARRIVAL_ODOM_RESIDUAL_M - point[0] >= 0.15   # margin never shrinks
 
 
 def test_b_odom_residual_honours_an_explicit_residual():
@@ -327,7 +336,7 @@ def test_arrival_method_binds_only_to_v230_r2_and_must_match_the_queue(tmp_path)
     queue = _queue(gate.GATE_MODE_V230_R2, cal, **{gate.ARRIVAL_ENV: 'odom_residual'})
     gate.validate_gate_queue(queue)
     assert queue['nav_arrival_mode'] == 'odom_residual'
-    assert queue['nav_arrival_odom_residual_m'] == sn.ARRIVAL_ODOM_RESIDUAL_M == 0.55
+    assert queue['nav_arrival_odom_residual_m'] == sn.ARRIVAL_ODOM_RESIDUAL_M == 0.52
     os.environ[gate.ARRIVAL_ENV] = 'bottom_band'
     with pytest.raises(ValueError, match='NAV_ARRIVAL_MODE_MISMATCH'):
         gate.validate_gate_queue(queue)
