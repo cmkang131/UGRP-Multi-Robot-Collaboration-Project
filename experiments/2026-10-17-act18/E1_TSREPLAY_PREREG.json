@@ -1,0 +1,160 @@
+{
+  "schema": "ugrp.act18.e1_tsreplay_prereg.v1",
+  "experiment": "2026-10-17-act18",
+  "phase": "E1",
+  "title": "R8 teacher-state TE replay + clock counterfactuals V0-V3 (Oracle CPU, GPU 0)",
+  "pre_registered_utc": "2026-10-19T15:17:21Z",
+  "registration_order": "This file is committed before any model inference of E1. Only input hashes, checkpoint hashes and window boundaries were inspected while writing it; no Actor.predict output existed when the prereg commit was made.",
+  "approval": "창민 2026-10-19 approved immediate execution of E0/E1 (design doc v2, §3 E1). E1 scope is Oracle CPU only, GPU/VM 0, no rollout.",
+  "spec": {
+    "path": "/home/ubuntu/UGRP/outputs/reports/claude-arch-parallel-20261019/act-student-failure-design.md",
+    "sha256": "4eaab0e9a0fc0c0d94632571ac4c59aab453f86ad2967fa3d20c99547b4760ee",
+    "sections": ["§0 자료", "§3 E1", "§6.0 공통 규칙"]
+  },
+  "question": "R8이 teacher가 운전한 관측열에서 (a) teacher lookback onset에 맞춰 후진을 내는가, (b) hold 끝에서 TE done >= .65를 내는가, (c) pwm_elapsed_s를 리셋하는 반사실에서 그 후진 onset이 사라지거나 15틱 넘게 늦어지는가.",
+  "hypotheses": {
+    "H1": "student의 post-lift 정지/후진 실패는 teacher 상태에서도 재현되지 않고, pwm_elapsed_s 시계(±1 PWM 흔들림으로 0으로 리셋되는 입력)에 대한 의존 때문에 발생한다. E1의 모델수준 인과 검정은 V1(pwm_elapsed_s := min(pe, .3))에서 V0 onset이 사라지거나 15틱 넘게 늦어지는지다.",
+    "C2": "done head가 teacher 상태에서도 낮으면(hold 끝 ±10틱 최대 done < .05가 4/4) done 감독/용량 문제(C2)로 확정한다.",
+    "competence_failure": "V0 onset이 1/4 이하이면 teacher 상태에서도 전이를 못 하는 능력 실패(C2/C5/C7)이며 E2를 보류하고 학습 측 설계(PWM ±1 jitter 증강, post-lift DAgger)로 간다."
+  },
+  "inputs": {
+    "pilot_root": "/home/ubuntu/UGRP/outputs/reports/act-chunk8-pilot/act-chunk8-pilot",
+    "evidence_tar": {
+      "path": "/home/ubuntu/UGRP/outputs/reports/act-chunk8-pilot/act-chunk8-pilot-evidence.tar.gz",
+      "sha256": "432baee4c6bd22344368c3966dcd71c4e979d668d5e3ca5feabb30bdb681c40e",
+      "verified_before_replay": true
+    },
+    "worlds": [
+      {
+        "group": "group-000", "world": "world-000", "seed": 88600,
+        "student_r1_jsonl": "group-000/world-000/student-r1.jsonl",
+        "student_r1_sha256": "6c814f31ac39809f01dbf514c81543230bef7cbbc72f6714b0507d27f5f638e4",
+        "teacher_r1_jsonl": "group-000/world-000/teacher-r1.jsonl",
+        "teacher_r1_sha256": "f668e931ccdddc3681cee07d9b16dfe70afb8ebde34367d72fa182b9addee099"
+      },
+      {
+        "group": "group-000", "world": "world-001", "seed": 88603,
+        "student_r1_jsonl": "group-000/world-001/student-r1.jsonl",
+        "student_r1_sha256": "392f8ab87564aa64803f99b33921f9e4a7c41ec9f04b429ce2b040ec27d46778",
+        "teacher_r1_jsonl": "group-000/world-001/teacher-r1.jsonl",
+        "teacher_r1_sha256": "f0ffaa920848cbea3e458e2174cebc3dd7695023c066b600184231dfb1d2b5ad"
+      },
+      {
+        "group": "group-001", "world": "world-000", "seed": 88601,
+        "student_r1_jsonl": "group-001/world-000/student-r1.jsonl",
+        "student_r1_sha256": "058a8bc95d64d6551e96715d20b0eb4b93d5d2a528c31503fcff0d43eb48f9d1",
+        "teacher_r1_jsonl": "group-001/world-000/teacher-r1.jsonl",
+        "teacher_r1_sha256": "8b66ef2324b1f8d50fa8053f766ad4c9b13791d40a65d1890b0c3ec1b7e6ee4c"
+      },
+      {
+        "group": "group-001", "world": "world-001", "seed": 88602,
+        "student_r1_jsonl": "group-001/world-001/student-r1.jsonl",
+        "student_r1_sha256": "1b232167234f3305686975ffa3326442f6237a59120d1b25ad1932104febc5d2",
+        "teacher_r1_jsonl": "group-001/world-001/teacher-r1.jsonl",
+        "teacher_r1_sha256": "df33afec1903100eb4f65597ea315080cce62fe5d2a7cb970acd6ca6fa5515cc"
+      }
+    ],
+    "rgb": "rgb/r1/*.jpg per world (640x480 student camera); every referenced JPEG is sha256-checked against the observation reference at load time.",
+    "policy_input": "student-r1.jsonl observation (own RGB history refs + own issued command history + skill/object/role/destination tokens + skill_elapsed_s + pwm_elapsed_s). teacher-r1.jsonl is used ONLY for evaluation-side phase labels (window, lookback onset, hold end, lift_settle); no teacher command enters the policy input.",
+    "no_pooling": "이 4세계는 act-chunk8-pilot 원본이며 R8/R100 TRAIN4, VAL8, FINAL40, act17/act16w 결과와 합산하지 않는다."
+  },
+  "checkpoint": {
+    "release": "models-20261017-act18-v7-r1",
+    "asset": "act18-v7-r8-step100000-20261017.zip",
+    "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/download/models-20261017-act18-v7-r1/act18-v7-r8-step100000-20261017.zip",
+    "archive_bytes": 191989583,
+    "archive_sha256": "6ac5a49ecb871120cbbd0ac240d499f8a4eddddcffb3af84b48a322b9308a2c7",
+    "model_sha256": "e1ec659216e289e1e5e9bb48ac597763ad8d1a088c3c85eb3205336307bb8d5a",
+    "adapter_schema": "ugrp.act18.adapter.v1",
+    "adapter_chunk": 8,
+    "done_mode": "balanced_bce_v1",
+    "image_mode": "current_full_v1",
+    "fallback": "다운로드 실패 또는 해시 불일치 시 대체 체크포인트를 쓰지 않고 BLOCKED로 보고한다."
+  },
+  "environment": {
+    "host": "Oracle CPU x86_64, 2 vCPU",
+    "venv": "new isolated venv (/home/ubuntu/ugrp-e1-venv); existing /home/ubuntu/ugrp-venv is not modified",
+    "requirements": "requirements-reference-act.txt: LeRobot git 89236ea0f4f81a81ca566081e20dd1ff5f823cbe, torch 2.11.0, torchvision 0.26.0, numpy 2.2.6",
+    "torch_threads": 2,
+    "device": "cpu",
+    "wall_cap_minutes": 120,
+    "gpu_vm": "none"
+  },
+  "window": {
+    "definition": "각 세계에서 teacher_phase == 'close'인 첫 tick부터 teacher_phase == 'lookback_return'인 첫 tick의 t + 1.0 s 이하인 마지막 tick까지(연속 10 Hz).",
+    "expected_ticks_per_world": "약 130 (실제 137-139)",
+    "state_regime": "takeover 6 s 이후 teacher가 운전한 관측. teacher 명령은 rollout에 쓰지 않는다(rollout 자체를 하지 않는다).",
+    "pre_window_ticks": "close 이전 tick은 사용하지 않는다."
+  },
+  "variants": {
+    "V0": {"pwm_elapsed_s": "기록 그대로", "skill_elapsed_s": "기록 그대로"},
+    "V1": {"pwm_elapsed_s": "min(recorded, 0.3)", "skill_elapsed_s": "기록 그대로", "purpose": "±1 PWM 흔들림으로 pwm clock이 0으로 리셋되는 상황 모사"},
+    "V2": {"pwm_elapsed_s": "기록 그대로", "skill_elapsed_s": "recorded + 40.0", "purpose": "정지 후 분포 밖 skill 시계 모사"},
+    "V3": {"pwm_elapsed_s": "min(recorded, 0.3)", "skill_elapsed_s": "recorded + 40.0", "purpose": "V1+V2"},
+    "mutation_rule": "화이트리스트 필드 값만 바꾸고 harness.grasp_act_contract.validate_observation을 통과해야 한다. 다른 필드·RGB 참조·명령 이력은 바이트 동일하게 유지한다. 반사실은 정책 입력에만 쓰고 rollout/물리 실행은 하지 않는다.",
+    "same_tick_source": "네 변형은 같은 student-r1.jsonl 행과 같은 JPEG를 쓰며, 모델 입력은 시계 두 필드만 다르다."
+  },
+  "replay": {
+    "predict": "매 tick scripts/act18_policy.Actor.predict(observation, jpegs)로 8x14 encoded chunk 전체를 저장한다(모델 출력 decode_predictions 적용 뒤, 계약 action 공간).",
+    "te": "harness/grasp_act_policy.py:182-188의 temporal ensemble을 numpy로 그대로 재현한다: weights = exp(-0.01*arange(len(chunks))); averaged = np.average([chunk[0] for chunk in chunks], axis=0, weights=weights); action = grasp_act_contract.decode_action(averaged); shift all chunks by one row; k=0.01, n_action_steps=1 상당(매 tick 재예측).",
+    "chunk_consumption": "ChunkExecutor는 done 뒤 정지하므로 재생 루프에는 쓰지 않는다. done 이후에도 계속 TE를 계산해 hold 끝 done 점수를 기록한다. 단위 테스트에서만 done 이전 구간을 ChunkExecutor(n=1,k=.01)와 tick별 완전 일치로 비교한다.",
+    "determinism": "torch CPU inference_mode, eval; ACT inference latent는 고정(코드 확인). 동일 입력 반복 시 같은 출력이어야 한다."
+  },
+  "metrics": {
+    "M1.1_onset": {
+      "te_onset_tick": "window 안에서 TE 디코드 action의 wheels 네 개가 모두 음수(<0)인 첫 tick. decode_action이 |wheel|<.155를 0으로 만들므로 실제로는 -0.31..-0.40 네 바퀴를 뜻한다.",
+      "teacher_onset_tick": "teacher_phase == 'lookback'인 첫 tick(같은 world index). teacher가 그 phase에서 _drive(now,-.05)로 후진을 시작한다.",
+      "delta_ticks": "te_onset_tick - teacher_onset_tick (음수 = 빠름, 양수 = 늦음). onset이 window에 없으면 null.",
+      "capability_hit": "onset이 존재하고 |delta_ticks| <= 5."
+    },
+    "M1.2_done": {
+      "hold_end_tick": "teacher_phase == 'hold'인 마지막 tick.",
+      "band": "hold_end_tick ± 10 tick (window와 교집합).",
+      "value": "band 안 TE 디코드 done_score(=max(0,min(1,decoded last dim)))의 최대값.",
+      "fire": "band 안에서 done_score >= .65인 첫 tick(없으면 null). window 전체의 첫 fire tick도 함께 기록한다."
+    },
+    "M1.3_jitter": {
+      "segment": "teacher_phase == 'lift_settle'인 tick들(window 교집합).",
+      "primary_count": "연속 lift_settle tick 쌍 × 5 servo 중 |pwm_t - pwm_{t-1}|가 1,2,3인 (tick,servo) 개수.",
+      "secondary_count": "그런 변화가 하나라도 있는 tick 쌍의 개수.",
+      "denominator": "(len(lift_settle)-1) * 5."
+    }
+  },
+  "pre_registered_decisions": {
+    "capability_ok": "V0에서 M1.1 capability_hit이 4세계 중 3 이상 (onset 없는 세계는 실패로 센다).",
+    "done_ok": "V0에서 M1.2 value >= .65가 4세계 중 3 이상.",
+    "h1_model_level_supported": "V0에서 onset이 있던 세계들 중 V1에서 onset이 사라지거나(없음) V0 onset보다 15틱 넘게 늦어진 세계의 비율이 0.75 이상 (올림, onset world가 4개면 3/4). onset이 하나도 없으면 이 판정은 '능력 실패'로 대체되며 H1 지지 없음.",
+    "h1_secondary_descriptive": "전체 4세계 기준 affected/4도 함께 보고한다.",
+    "competence_failure": "V0 M1.1 capability_hit이 1세계 이하(<= 1/4)이면 teacher 상태에서도 전이를 못 하는 능력 실패(C2/C5/C7)로 판정하고, E2를 보류하며 학습 측 설계(PWM ±1 jitter 증강, post-lift DAgger)로 간다.",
+    "c2_confirmed": "V0 M1.2 value < .05가 4/4이면 C2 확정. E2와 함께 E3 done 대체를 묶는다.",
+    "no_threshold_tuning": "위 임계값(5틱, 15틱, .65, .05, 3/4, 1/4)은 design §3 E1에 적힌 값을 그대로 쓴다. 결과를 본 뒤 바꾸지 않는다."
+  },
+  "descriptive_only": [
+    "V2/V3 onset·done (사전 판정에는 쓰지 않고 V0/V1 판정의 맥락으로만 보고)",
+    "M1.3 jitter (학생 흔들림이 teacher 상태에서도 생기는지 기술 통계로 보고, 합격/불합격 없음)",
+    "done_score 분포, TE chunk와 teacher command의 wheel/PWM 차이(참고)",
+    "버전별 wall time"
+  ],
+  "outputs": {
+    "root": "/home/ubuntu/UGRP/outputs/runs/act18-tsreplay-<UTC TS>/",
+    "per_variant": "<root>/<V>/world-<group>-<world>.jsonl: 매 tick {index,t,teacher_phase,chunk(8x14),te action,onset}",
+    "summary": "<root>/summary.json: 입력 sha, 체크포인트 sha, 코드 SHA, 환경 버전, world별/변형별 지표, 사전 판정",
+    "labels": ["engineering-only", "sim", "gate 비대상", "pooling 금지"]
+  },
+  "code": {
+    "script": "scripts/act18_teacher_state_replay.py",
+    "default": "OFF. --enabled 없이는 어떤 입력·모델도 읽지 않고 종료한다.",
+    "unit_test": "tests/test_act18_tsreplay.py: 같은 chunk 열에서 ChunkExecutor(n=1,k=.01)의 done 이전 wheels/duration_s/pwm/done/tick별 완전 일치, 변형 화이트리스트·validate_observation, default-off gate.",
+    "branch": "dsh/act18-e1-tsreplay (base 95e668c59); #608/#612 head는 건드리지 않는다."
+  },
+  "report": {
+    "path": "/home/ubuntu/UGRP/outputs/reports/2026-10-19-act18-e1-tsreplay-<TS>.md",
+    "required": ["결론 3줄", "world별 V0-V3 표(onset tick/done max/±1-3 흔들림)", "사전 판정", "증거 SHA", "미검증·리스크", "labels"]
+  },
+  "exclusions": {
+    "no_rollout": "물리 rollout, 후진 실행, done 이후 정책 거동은 이 실험 범위 밖이다.",
+    "no_student_execution_claim": "teacher-state 재생 결과는 student 폐루프 성능이나 물리 성공이 아니다.",
+    "no_model_selection": "R8 단일 체크포인트만 쓴다. R100/TUNE/다른 후보와 비교·합산하지 않는다.",
+    "no_input_audit_claim": "입력 감사(held_world_reads 등)는 이 오프라인 재생에 해당하지 않는다. 정답·teacher 명령은 평가 측 지표에만 쓴다."
+  }
+}
